@@ -1,4 +1,4 @@
-# _loose
+# assets/_loose
 
 Files placed here are published as **loose files**: the updater writes them to the
 client root at the same relative path (e.g. `_loose/bgm/x.mp3` -> `<client>/bgm/x.mp3`,

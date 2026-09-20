@@ -7,7 +7,8 @@
     python pack.py publish ../staging user@host:/srv/nova-server/share/patch [--dry-run]
 
 `novapack` (built from nova-client-src) must be on PATH or next to this script.
-Group order comes from groups.txt; loose files from _loose/.
+Group order comes from groups.txt; loose files from _loose/ (see LOOSE-FILES.md;
+keep documentation out of that folder, everything in it is published).
 """
 import os
 import shutil

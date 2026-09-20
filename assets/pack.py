@@ -1,51 +1,51 @@
-import subprocess
-import shutil
+#!/usr/bin/env python3
+"""Publish a release with novapack.
+
+    python pack.py build  --out ../staging [--key ../keys/nova.key] [--channel live]
+    python pack.py keygen --out ../keys/nova
+    python pack.py verify ../staging
+
+`novapack` (built from nova-client-src) must be on PATH or next to this script.
+Group order comes from groups.txt; loose files from _loose/.
+"""
 import os
+import shutil
+import subprocess
 import sys
-import argparse
-from concurrent.futures import ThreadPoolExecutor
 
-output_folder_path = "../pack"
-IGNORE_FOLDERS = {
-	"zz_ignore_old"
-}
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 
-def pack_folder(folder_path):
-    folder_name = os.path.basename(folder_path)
-    if not os.path.exists(folder_name):
-        print(f"Error: Folder \"{folder_name}\" doesn't exist")
-        return
+def find_novapack():
+    for name in ("novapack.exe", "novapack"):
+        local = os.path.join(HERE, name)
+        if os.path.exists(local):
+            return local
+        found = shutil.which(name)
+        if found:
+            return found
+    sys.exit("novapack not found: build nova-client-src and put novapack(.exe) on PATH or next to pack.py")
 
-    try:
-        result = subprocess.run(["PackMaker.exe", "--input", folder_name, "--output", output_folder_path], check=True)
-    except subprocess.CalledProcessError as e:
-        print(f"Error occurred while packing {folder_name}: {e}")
-        return
 
-def pack_all_folders():
-    all_folders = [f for f in os.listdir() if os.path.isdir(f) and f not in IGNORE_FOLDERS]
-
-    with ThreadPoolExecutor() as executor:
-        executor.map(pack_folder, all_folders)
-
-def main():
-    parser = argparse.ArgumentParser(description="Pack folders for the game.")
-    parser.add_argument("folder_name", nargs="?", help="The name of the folder to pack")
-    parser.add_argument("--all", action="store_true", help="Pack all folders")
-
-    args = parser.parse_args()
-
-    if not os.path.exists(output_folder_path):
-        os.makedirs(output_folder_path)
-
-    if args.all:
-        pack_all_folders()
-    elif args.folder_name:
-        folder_path = os.path.abspath(args.folder_name)
-        pack_folder(folder_path)
+def main(argv):
+    if not argv or argv[0] in ("-h", "--help"):
+        print(__doc__)
+        return 0
+    exe = find_novapack()
+    cmd, rest = argv[0], argv[1:]
+    if cmd == "build":
+        args = [exe, "build", "--groups", os.path.join(HERE, "groups.txt"), "--assets", HERE]
+        loose = os.path.join(HERE, "_loose")
+        if os.path.isdir(loose):
+            args += ["--loose", loose]
+        args += rest
+    elif cmd in ("keygen", "verify", "inspect", "gc"):
+        args = [exe, cmd] + rest
     else:
-        print("Please provide a folder name or use the --all option to pack all folders.")
+        sys.exit(f"unknown command {cmd!r}; see --help")
+    print(" ".join(args))
+    return subprocess.call(args)
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))

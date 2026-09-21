@@ -1,0 +1,123 @@
+# Manual content deploy: pack the assets at a chosen ref and publish them to
+# the patch server. Rolling back is running this again with an older tag or
+# commit: the builder is deterministic, so the old content comes back as a
+# new release whose bundles already sit on the server (only the manifest and
+# the channel pointer are uploaded).
+#
+# One-time setup (repository settings):
+#   secrets.PATCH_SIGNING_KEY   contents of nova.key (hex) from `pack.py keygen`
+#   secrets.PATCH_DEPLOY_KEY    private SSH key whose public half is in the
+#                               patch server's authorized_keys (rsync only)
+#   vars.PATCH_SERVER           user@host
+#   vars.PATCH_DIR              /srv/nova-server/share/patch
+#   vars.PATCH_KNOWN_HOSTS      output of `ssh-keyscan host` (pins the server)
+#   vars.NOVAPACK_URL           where to download a Linux novapack binary
+#                               (a nova-client-src release asset)
+#
+# Runner: the asset tree is ~2 GB in LFS. A self-hosted runner keeps its
+# checkout between runs and pulls only what changed; a hosted runner
+# re-downloads everything through the LFS bandwidth quota each time.
+name: Publish content release
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag or commit to deploy (default: this branch)"
+        required: false
+        default: ""
+      optional:
+        description: "Optional patch: players on the previous release stay in"
+        type: boolean
+        default: false
+      channel:
+        description: "Channel"
+        required: false
+        default: "live"
+      release_id:
+        description: "Release id (default: next number after the live pointer)"
+        required: false
+        default: ""
+      runner:
+        description: "Runner label"
+        required: false
+        default: "self-hosted"
+
+concurrency:
+  group: publish-${{ inputs.channel }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: 90
+    steps:
+      - name: Check out the requested ref (with LFS)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+          lfs: true
+          fetch-depth: 1
+
+      - name: Tools
+        run: |
+          set -eu
+          command -v rsync >/dev/null || { echo "rsync is required on the runner"; exit 1; }
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -fsSL "${{ vars.NOVAPACK_URL }}" -o "$RUNNER_TEMP/bin/novapack"
+          chmod +x "$RUNNER_TEMP/bin/novapack"
+          "$RUNNER_TEMP/bin/novapack" --help >/dev/null
+
+      - name: Credentials
+        run: |
+          set -eu
+          umask 077
+          mkdir -p "$RUNNER_TEMP/keys" ~/.ssh
+          printf '%s' "${{ secrets.PATCH_SIGNING_KEY }}" > "$RUNNER_TEMP/keys/nova.key"
+          printf '%s\n' "${{ secrets.PATCH_DEPLOY_KEY }}" > "$RUNNER_TEMP/keys/deploy"
+          printf '%s\n' "${{ vars.PATCH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+          cat > assets/pack.local.cfg <<CFG
+          [paths]
+          staging = $RUNNER_TEMP/staging
+          key = $RUNNER_TEMP/keys/nova.key
+          novapack = $RUNNER_TEMP/bin/novapack
+          [release]
+          channel = ${{ inputs.channel }}
+          [publish]
+          target = ${{ vars.PATCH_SERVER }}:${{ vars.PATCH_DIR }}
+          CFG
+          echo "RSYNC_RSH=ssh -i $RUNNER_TEMP/keys/deploy -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
+
+      - name: Number the release from what is live
+        working-directory: assets
+        run: python3 pack.py pull-pointers && python3 pack.py status
+
+      - name: Build
+        working-directory: assets
+        run: |
+          set -eu
+          args=()
+          [ "${{ inputs.optional }}" = "true" ] && args+=(--optional)
+          [ -n "${{ inputs.release_id }}" ] && args+=(--release-id "${{ inputs.release_id }}")
+          python3 pack.py build "${args[@]}" | tee "$RUNNER_TEMP/build.log"
+          python3 pack.py verify
+
+      - name: Publish (bundles and manifests first, channel pointer last)
+        working-directory: assets
+        run: python3 pack.py publish
+
+      - name: Summary
+        run: |
+          {
+            echo "### Content release published"
+            echo
+            echo '```'
+            head -1 "$RUNNER_TEMP/build.log"
+            grep -E "^(bundles|bytes|overrides)" "$RUNNER_TEMP/build.log" || true
+            echo '```'
+            echo "ref: \`${{ inputs.ref || github.ref }}\` (${{ github.sha }})  channel: \`${{ inputs.channel }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Scrub credentials
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/keys" assets/pack.local.cfg

@@ -5,6 +5,7 @@
     python pack.py build [--optional]     next release id, configured staging + key
     python pack.py publish [--dry-run]    two-phase rsync to the configured server
     python pack.py release [--optional]   build, then publish
+    python pack.py pull-pointers          copy the server's channel pointers into staging (fresh machines, CI)
     python pack.py keygen                 create the signing key at the configured path
     python pack.py verify | inspect | gc  passed through to novapack (staging by default)
 
@@ -186,6 +187,25 @@ def publish(staging, target, extra, run=subprocess.call):
     return 0
 
 
+def pull_pointers(staging, target, extra, run=subprocess.call):
+    """Brings the server's channels/ into staging so `build` numbers the next
+    release from what is actually live. A fresh checkout (a CI runner) has no
+    staging history; the bundles themselves need not be pulled because the
+    builder is deterministic and the publish rsync skips what the server has."""
+    if not target:
+        raise PackError("no publish target configured: set [publish] target in pack.local.cfg or pass --target")
+    if not shutil.which("rsync"):
+        raise PackError("rsync not found on PATH")
+    channels = os.path.join(os.path.abspath(staging), "channels")
+    os.makedirs(channels, exist_ok=True)
+    cmd = ["rsync", "-a"] + extra + [target.rstrip("/") + "/channels/", channels + "/"]
+    print(" ".join(cmd))
+    rc = run(cmd)
+    if rc != 0:
+        raise PackError(f"rsync failed with exit code {rc}")
+    return 0
+
+
 def status(cfg, args):
     args = list(args)
     staging = take_option(args, "--out", cfg["staging"])
@@ -223,10 +243,12 @@ def main(argv, cfg=None, run=subprocess.call):
     cmd, rest = argv[0], list(argv[1:])
     if cmd == "status":
         return status(cfg, rest)
-    if cmd == "publish":
+    if cmd in ("publish", "pull-pointers"):
         target = take_option(rest, "--target", cfg["target"])
         staging = take_option(rest, "--out", cfg["staging"])
-        return publish(staging, target, rest, run)
+        if cmd == "publish":
+            return publish(staging, target, rest, run)
+        return pull_pointers(staging, target, rest, run)
     exe = find_novapack(cfg)
     if cmd in ("build", "release"):
         dry = take_flag(rest, "--dry-run")

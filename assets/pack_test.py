@@ -145,6 +145,12 @@ class Commands(TempAssets):
             pack.publish(self.staging, "host:/srv/patch", [], failing)
         self.assertEqual(len(self.calls), 2)
 
+    def test_pull_pointers_copies_only_the_channels_directory_down(self):
+        pack.main(["pull-pointers"], self.cfg, self.run_)
+        self.assertEqual(len(self.calls), 1)
+        self.assertEqual(self.calls[0][-2], "host:/srv/patch/channels/")
+        self.assertTrue(self.calls[0][-1].endswith("channels/"))
+
     def test_publish_without_a_target_is_refused(self):
         self.cfg["target"] = ""
         with self.assertRaises(SystemExit):

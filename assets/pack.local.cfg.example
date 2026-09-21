@@ -1,0 +1,7 @@
+# Copy to pack.local.cfg (git-ignored) and fill in your machine's values.
+[paths]
+key = C:/nova/keys/nova.key
+staging = C:/nova/staging
+
+[publish]
+target = nova@patch.example.com:/srv/nova-server/share/patch

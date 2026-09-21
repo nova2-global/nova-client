@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Publish a release with novapack.
 
-    python pack.py build  --out ../staging [--key ../keys/nova.key] [--channel live]
+    python pack.py build  --out ../staging [--key ../keys/nova.key] [--channel live] [--optional]
     python pack.py keygen --out ../keys/nova
     python pack.py verify ../staging
     python pack.py publish ../staging user@host:/srv/nova-server/share/patch [--dry-run]
@@ -9,7 +9,14 @@
 `novapack` (built from nova-client-src) must be on PATH or next to this script.
 Group order comes from groups.txt; loose files from _loose/ (see LOOSE-FILES.md;
 keep documentation out of that folder, everything in it is published).
+
+`build --optional` publishes a nice-to-have patch: clients that start pick it
+up, but the login gate keeps accepting the previously required release, so
+nobody in game or at the login window is forced out. It keeps the channel's
+current "required" id (read from <out>/channels/<channel>.json) and only
+advances "release". A plain `build` makes the new release mandatory again.
 """
+import json
 import os
 import shutil
 import subprocess
@@ -53,6 +60,33 @@ def publish(staging, target, extra):
     return 0
 
 
+def option_value(args, name, default=None):
+    if name in args:
+        i = args.index(name)
+        if i + 1 < len(args):
+            return args[i + 1]
+    return default
+
+
+def current_required(args):
+    """The release the login gate must keep accepting after an optional patch:
+    the channel's current "required" id, or its "release" when every earlier
+    patch was mandatory."""
+    out = option_value(args, "--out")
+    if not out:
+        sys.exit("build --optional needs --out <staging dir> (the previous channel pointer lives there)")
+    channel = option_value(args, "--channel", "live")
+    path = os.path.join(out, "channels", channel + ".json")
+    try:
+        with open(path, encoding="utf-8") as handle:
+            pointer = json.load(handle)
+        required = pointer.get("required") or pointer["release"]
+    except (OSError, ValueError, KeyError) as error:
+        sys.exit(f"build --optional: cannot read the current channel pointer {path}: {error}")
+    print(f"optional patch: login gate keeps accepting {required}")
+    return required
+
+
 def main(argv):
     if not argv or argv[0] in ("-h", "--help"):
         print(__doc__)
@@ -65,6 +99,9 @@ def main(argv):
         if os.path.isdir(loose):
             args += ["--loose", loose]
         args += rest
+        if "--optional" in args:
+            args.remove("--optional")
+            args += ["--required-release", current_required(args)]
     elif cmd == "publish":
         if len(rest) < 2:
             sys.exit("usage: pack.py publish <staging dir> <rsync target> [rsync options]")

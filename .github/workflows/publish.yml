@@ -1,0 +1,84 @@
+# Manual content deploy. The runner never touches the assets: it resolves
+# the requested ref to a commit and tells the patch server to deploy it.
+# The server keeps its own checkout of this repository (git + LFS, so a
+# deploy pulls only the changed objects), packs with its local signing key
+# and publishes into share/patch. See nova-server/deploy_content.py.
+#
+# Rolling back is deploying an older tag or commit: the builder is
+# deterministic, so the old content comes back as a new release whose
+# bundles are already on the server.
+#
+# One-time setup (repository settings):
+#   secrets.PATCH_DEPLOY_KEY   private SSH key; its public half sits in the
+#                              server's authorized_keys restricted to
+#                              deploy_content.py (see that script's header)
+#   vars.PATCH_SERVER          user@host
+#   vars.PATCH_KNOWN_HOSTS     output of `ssh-keyscan host`
+name: Publish content release
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag or commit to deploy (default: this branch)"
+        required: false
+        default: ""
+      optional:
+        description: "Optional patch: players on the previous release stay in"
+        type: boolean
+        default: false
+      channel:
+        description: "Channel"
+        required: false
+        default: "live"
+      release_id:
+        description: "Release id (default: next number after the live pointer)"
+        required: false
+        default: ""
+
+concurrency:
+  group: publish-${{ inputs.channel }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Resolve the ref to a commit (no checkout, no LFS)
+        id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -eu
+          ref='${{ inputs.ref }}'
+          [ -n "$ref" ] || ref='${{ github.ref_name }}'
+          sha=$(gh api "repos/${{ github.repository }}/commits/$ref" --jq .sha)
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          echo "Deploying $ref = $sha"
+
+      - name: Tell the server to deploy it
+        run: |
+          set -eu
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.PATCH_DEPLOY_KEY }}" > ~/.ssh/deploy
+          printf '%s\n' "${{ vars.PATCH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+          args="--sha ${{ steps.resolve.outputs.sha }} --channel ${{ inputs.channel }}"
+          [ "${{ inputs.optional }}" = "true" ] && args="$args --optional"
+          [ -n "${{ inputs.release_id }}" ] && args="$args --release-id ${{ inputs.release_id }}"
+          # The key is pinned to deploy_content.py on the server; only the
+          # arguments travel.
+          ssh -i ~/.ssh/deploy -o IdentitiesOnly=yes "${{ vars.PATCH_SERVER }}" $args | tee deploy.log
+          rm -f ~/.ssh/deploy
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "### Content release"
+            echo
+            echo '```'
+            cat deploy.log 2>/dev/null || echo "(no output)"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

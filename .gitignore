@@ -76,3 +76,6 @@ ErrorLog.txt
 *.*.bAk
 *.*.baK
 *.*.bak
+
+# per-machine publisher settings (see assets/pack.cfg)
+assets/pack.local.cfg

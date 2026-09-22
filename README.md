@@ -201,23 +201,29 @@ Now that you have your proto files, it's time for the few final steps.
   >
   > <br>
   >
-  > Now `cd` in the `assets` folder if not already there and execute the `PackMaker.exe` with the help of the `pack.py` script that is included in the `assets` folder:
+  > Now `cd` in the `assets` folder if not already there. `pack.py` drives `novapack`
+  > (built from nova-client-src, on PATH or next to the script). One-time setup: copy
+  > `pack.local.cfg.example` to `pack.local.cfg` (git-ignored) and fill in where your
+  > staging folder, signing key and patch server live; then create the key once:
   >
   > ```
-  > python pack.py --all
+  > python pack.py keygen
   > ```
   >
-  > This process will take some time, grab a coffee and come back in a little bit.
+  > Day to day:
   >
-  > After it's done, you won't see any messages, but if the command prompt is ready for the next command, you're done!
-  >
-  > ![](https://metin2.download/picture/pSAwVDRpqgiu49T7GrXNDH4Voyd6LpGD/.png)
-  >
-  > **Note**: `--all` packs everything inside the `assets` folder, if you wanna pack only one folder (`root` for example), you can execute this command instead:
-  > 
   > ```
-  > python pack.py root
+  > python pack.py status              # what the channel points at and what ships next
+  > python pack.py build               # next release id (r4 -> r5), mandatory patch
+  > python pack.py build --optional    # nice-to-have patch: players on the previous release stay in
+  > python pack.py publish             # two-phase rsync to the server, channel pointer last
+  > python pack.py release [--optional]  # build + publish in one go
   > ```
+  >
+  > The first build packs everything and takes a while; later builds rewrite only the
+  > bundles whose folder changed. Every value from the config can still be overridden on
+  > the command line (`--release-id`, `--channel`, `--out`, `--key`, `--target`), and
+  > `--dry-run` prints the plan without building.
   >
   > <br>
   >

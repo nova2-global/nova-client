@@ -395,6 +395,7 @@ Markup:
 - `@ui.KEY` resolves from `locale_interface.txt` (the `uiScriptLocale` module) and `@game.KEY` from `locale_game.txt` (`localeInfo`), for the client's current locale.
 - Translation applies to text content, to `{{ }}` output and to the document `<title>`. It does not apply to attribute values: `placeholder="@ui.KEY"` shows the raw key. Put translated attribute text in the model instead (`data-attr-placeholder="hint"`, with the controller setting `hint` from `uiScriptLocale`).
 - A missing key stays visible as `@ui.KEY` and is logged once.
+- Translated text is parsed as RML. Some shipped strings contain `<` or `&` (key hints such as `<CTRL> + Q`: 31 in `locale_interface.txt`, 4 in `locale_game.txt` across all locales), which render correctly only if the string tables are escaped when they are pushed. Check such a key in a snapshot before using it.
 - Dynamic text (names, numbers, counts) comes from the model.
 - After a locale change, `nui.refresh_strings()` pushes the tables again and re-loads open documents; controllers re-apply state in `on_reload()`.
 - Noto Sans covers Latin, Greek and Cyrillic, which includes every non-right-to-left locale the client ships. It has no Arabic, Hebrew, CJK or Thai glyphs.
@@ -451,7 +452,7 @@ nuitool snap --root assets/nui --root assets/icon \
 
 ## Hot reload and debugging
 
-In non-distribution builds, while the asset store is in file-load mode (dev runs without an installed release, `--no-patch`), every asset lookup reads the file under the client's working directory, and a `HotReloader` watches the `nui/` folder there. One way to edit in place is to make `<client>/nui` a directory junction to `nova-client/assets/nui/nui`.
+In non-distribution builds, while the asset store is in file-load mode (dev runs without an installed release, `--no-patch`), every asset lookup reads the file under the client's working directory, and a `HotReloader` watches the `nui/` folder there. One way to edit in place is to make `<client>/nui` a directory junction to `nova-client/assets/nui/nui`. Note that `nova-client-src/CMakeLists.txt` defines `_DISTRIBUTE` for RelWithDebInfo as well as Release, so today only Debug builds have hot reload and the two hotkeys below.
 
 - Saving an `.rcss` re-applies style sheets to open documents.
 - Saving an `.rml` or `.rtpl`, or adding or removing one of those, re-loads open documents in place. Element handlers from `element_on()` are re-attached, then `on_reload()` runs. Models are kept.
@@ -462,6 +463,7 @@ In non-distribution builds, while the asset store is in file-load mode (dev runs
 
 - The runtime (`NuiRuntime`), the Direct3D 9 renderer, the host wiring and the `_nui` module are separate workstreams being integrated. Until then, only the tools and the content can be exercised.
 - The window-open animation plays when a document loads, not on every `show()`. Replaying it needs the runtime to mark shown documents (for example a body class set on show and removed on hide); that is a pending decision.
-- The gallery's theme button (`#gallery-theme`) and close button (`#gallery-close`) do nothing until a gallery controller (`assets/root/nui_gallery.py`) binds them with `element_on()`.
+- The gallery's theme button (`#gallery-theme`) and close button (`#gallery-close`) do nothing until a gallery controller binds them with `element_on()`. A draft is in `docs/ui/examples/nui_gallery.py`; integration moves it to `assets/root/nui_gallery.py`.
 - Attribute values are not translated (see [Localization](#localization)).
 - Right-to-left scripts and IME composition display are not supported yet.
+- Hot reload, the debugger and the render test hotkey are compiled out of RelWithDebInfo builds (`_DISTRIBUTE`); a separate dev switch is an integration decision.

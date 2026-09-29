@@ -6,7 +6,8 @@ New UI windows are RmlUi 6.3 documents in `assets/nui/nui/` (the `nui` group in 
 
 - Style sheets use `dp` and theme tokens only. `assets/nui/nui/theme/tokens.rcss` is generated: edit `tokens.json`, then run `python tools/nui_tokens.py` (it also checks contrast and updates the token table in the guide). `python -B -m unittest nui_tokens_test` in `tools/` tests the script.
 - The Python API is `assets/root/nui.py`; its docstrings are the specification. Python runs only on events.
-- Motion goes in `.component.nui-anim` rules with the values written out; RmlUi 6.3 ignores `var()` inside `transition`.
+- Motion goes in `.component.nui-anim` rules with the values written out; RmlUi 6.3 ignores `var()` inside `transition`. Lint rejects gradients, `box-shadow`, `filter`, `backdrop-filter`, `mask-image` and repeat image fits (see "What the renderer draws" in the guide).
+- `nuitool lint` findings are `path:line: NUIxxx: message`; the codes (NUI001 to NUI011) are listed under Tools in `docs/ui/AUTHORING.md`.
 
 New window checklist:
 

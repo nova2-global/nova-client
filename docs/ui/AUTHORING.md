@@ -30,7 +30,7 @@ Status: the content (tokens, components, gallery, render test) and the contracts
 1. Pick a lowercase name, for example `settings`. Create `assets/nui/nui/windows/settings/`.
 2. Write `settings.rml` from the skeleton in [A complete window](#a-complete-window): link `../../nui.rtpl`, put `template="nui"` and `class="nui-window nui-anim"` on `<body>`.
 3. Write `settings.rcss` for the window's size and position and anything the components do not cover. Use tokens for every color and `dp` for every length.
-4. Write `settings.fixture.json` with every key of every data model the document binds. Lint and snapshots load the document with it.
+4. Write `settings.fixture.json` with every key of every data model the document binds. `nuitool lint` loads the document with it automatically; pass it to `nuitool snap` with `--fixture`.
 5. Write the controller `assets/root/nui_settings.py`: subclass `nui.Window`, set `DOCUMENT` and `MODEL`, return every model key from `initial_model()`, and add one `@nui.on("name")` method for every `data-event-*="name(...)"` in the document.
 6. Use `@ui.KEY` (from `locale_interface.txt`) or `@game.KEY` (from `locale_game.txt`) for every visible string. The key must exist in every locale.
 7. Run `python tools/nui_tokens.py --check` if you touched `tokens.json`, then `nuitool lint` until it prints nothing.
@@ -63,7 +63,7 @@ Paths inside documents and style sheets:
 
 - A relative path resolves against the file that contains it: `href` and `src` in an `.rml` against the document, `image(...)` in an `.rcss` against that style sheet. `..` segments are normalized.
 - Never start a path with `/`. The runtime passes such a path through unchanged and the store has no names starting with `/`, so it never loads.
-- Name files in lowercase with hyphens. The store lowercases every lookup; tools on Linux are case-sensitive, so write references with the exact case of the file. The three font files are the only mixed-case names (fixed by `NuiPaths.h`).
+- Name files in lowercase with hyphens. The store and `nuitool` look paths up without regard to case, so a reference in the wrong case still resolves; write the exact case anyway, because git and Linux file systems are case-sensitive. The three font files are the only mixed-case names (fixed by `NuiPaths.h`).
 - Legacy assets outside `nui/` are reached by climbing to the store root. From `nui/windows/<name>/` that is three levels: `../../../icon/item/27001.tga`. Model values from Python are store paths (`item.GetIconImageFileName()` style), so prefix them in the binding: `data-attr-src="'../../../' + slot.icon"`.
 - Legacy `d:/ymir work/...` paths work as written; the runtime treats the drive prefix as absolute.
 
@@ -258,7 +258,7 @@ A document binds one data model by name; the controller owns it. Expressions use
 | Attribute | Example | Effect |
 |---|---|---|
 | `data-model` | `<body data-model="inventory">` | Binds the element and its descendants to the model. The model must exist before the document loads, or RmlUi logs an error and nothing binds. |
-| `{{ expr }}` | `{{ gold }} / {{ slot.count }}` | Text. The result is translated like other text, so `@ui.KEY` inside a model string also resolves. |
+| `{{ expr }}` | `{{ gold }} / {{ slot.count }}` | Text only. The result is translated like other text, so `@ui.KEY` inside a model string also resolves. In an attribute the braces stay literal (`src="{{ icon }}"` loads a file of that name); bind attributes with `data-attr-NAME`. |
 | `data-for` | `data-for="slot : slots"`, `data-for="slot, i : slots"` | Repeats the element per list entry. Without names the item is `it` and the index `it_index`. |
 | `data-if` | `data-if="slot.count > 1"` | Removes the element from layout when false (`display: none`). |
 | `data-visible` | `data-visible="loading"` | Hides with `visibility`, keeping the space. |
@@ -309,22 +309,22 @@ Python never runs per frame. It runs when a handler fires or when game code call
 
 `nuitool lint` enforces the ones marked with a code.
 
-1. **Lengths in `dp`** (NUI002). `px` is allowed only as `1px`, for hairlines that stay one physical pixel at every scale. Unitless `0`, `%`, `em`, `vw` and `vh` are fine.
-2. **Colors from tokens** (NUI003, NUI004). No `#hex`, `rgb()`, `rgba()`, `hsl()` or named colors outside `nui/theme/`; `transparent` is allowed. Every `var(--x)` must be a token.
-3. **No inline styles** (NUI009): no `style="..."` and no `data-style-*`. Put rules in the window's `.rcss`.
+1. **Lengths in `dp`** (NUI002). `px` is allowed only for hairlines that stay one physical pixel at every scale (`1px`, `-1px`, `0px`), in `@spritesheet` rectangles (texture pixels) and under `nui/theme/`. Unitless `0`, `%`, `em`, `vw` and `vh` are fine.
+2. **Colors from tokens** (NUI003, NUI004). No `#hex`, `rgb()`, `rgba()`, `hsl()` or named colors outside `nui/theme/`; `transparent` is allowed. Every `var(--x)` must be a token or a custom property declared in the same file.
+3. **No inline styles** (NUI009): no `style="..."`, no `data-style-*` and no `data-attr-style`. Put rules in the window's `.rcss` and switch them with `data-class-*`.
 4. **Strings from the locale files** (NUI005): every `@ui.KEY` and `@game.KEY` must exist.
 5. **Every data event has a handler** (NUI006): `data-event-*="name(...)"` in `nui/windows/<name>/<name>.rml` needs `@nui.on("name")` in `assets/root/nui_<name>.py`.
-6. **Every reference resolves** (NUI007): `<link>` targets, templates and image sources.
-7. **Documents load cleanly** (NUI001 parse, NUI008 load): no RmlUi warnings or errors with the fixture.
+6. **Every reference resolves** (NUI007): `<link>` targets, templates, `<img>` sources and sprites, and image paths in style sheets.
+7. **Documents load cleanly** (NUI001 parse, NUI008 load): no RmlUi warnings or errors with the fixture. For template files NUI001 also runs RmlUi's template reader (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)).
 8. **No per-frame Python.** No polling from `OnUpdate`; drive views with `set()` from game events.
 9. **Overlays do not take the mouse.** A full-screen document that is not a modal dialog uses `body.nui-overlay` (`pointer-events: none`). The input arbiter only routes clicks to NovaUI while the pointer is over an element that accepts pointer events, so a full-screen body without it would swallow every world click.
-10. **Only features the renderer draws** (see the next section).
-11. **Motion only in `.component.nui-anim` rules**, with values written out (see [Motion and reduced motion](#motion-and-reduced-motion)).
+10. **Only features the renderer draws** (NUI010, see the next section).
+11. **Motion only in `.component.nui-anim` rules**, with values written out (NUI011, see [Motion and reduced motion](#motion-and-reduced-motion)).
 12. **No fixed widths on text.** Give buttons, tabs and labels room (`min-width`, wrapping rows) instead of `width`; translations are longer than English.
 
 ## What the renderer draws
 
-The Direct3D 9 renderer implements geometry, textures, scissor clipping, transforms and the stencil clip mask. It does not implement render layers, filters or shaders, the same as the CPU renderer used by `nuitool snap`. Checked in `Source/Core`, these RCSS features need what is missing and must not be used:
+The Direct3D 9 renderer implements geometry, textures, scissor clipping, transforms and the stencil clip mask. It does not implement render layers, filters or shaders, the same as the CPU renderer used by `nuitool snap`. Checked in `Source/Core`, these RCSS features need what is missing and must not be used; `nuitool lint` reports each as NUI010:
 
 | Do not use | Why |
 |---|---|
@@ -343,7 +343,7 @@ Clipping cost: overflow on an element with `border-radius`, or on a transformed 
 
 Stock motion: button, list, slot, input, toggle and tooltip state changes take 0.1s, the tab indicator slides in 0.2s, and the window fades in with a 4dp rise over 0.2s when its document loads. All of it uses `cubic-out`.
 
-How to add motion, with reasons from RmlUi 6.3:
+How to add motion, with reasons from RmlUi 6.3. `nuitool lint` reports a break of the first four points as NUI011:
 
 - Declare `transition` and `animation` only in a rule of the form `.your-class.nui-anim { ... }`, and put `nui-anim` on the element. Motion is then opt-in, and the reduced-motion rule in `base.rcss` (`.nui-anim.nui-anim.nui-anim`, three classes because RCSS has no `!important`) always outranks it.
 - Write durations and easings out, matching the tokens (`--dur-fast` 0.1s, `--dur-med` 0.2s, `--dur-slow` 0.3s, `--ease-out` cubic-out). RmlUi ignores a `transition` that contains `var()`, without any warning: the property jumps to its end value. An `animation` with `var()` does run, but restarts every time the theme changes.
@@ -387,7 +387,7 @@ Markup:
 - `<button>` is a plain element: the `disabled` attribute does not stop clicks by itself. The button component adds `pointer-events: none` for `[disabled]`. `:disabled` exists only on `<input>`, `<select>` and `<textarea>`.
 - `<input>` gets its type as a class (`input.text`, `input.checkbox`, `input.range`).
 - `<handle move_target="#document">` drags the whole document; `#self`, `#parent` and plain ids also work.
-- A template file must start with its `<template>` tag. Text before it that contains `/template`, even inside a comment, hides the tag from RmlUi's template reader and the template fails to load.
+- RmlUi does not parse a template file as XML: it searches the text for `<head>`, `</head>`, `<body>`, `</body>` and `<template`. Once that search has passed a `/` in front of the word it looks for, it no longer matches an opening tag, so text such as `/template` before the `<template>` tag, `/head` before `<head>` or `/body` between `</head>` and `<body>` (even inside a comment) makes the template fail to load. Start the file with its `<template name="...">` tag; lint reports this as NUI001.
 - A document needs its data model when it loads (see the cheatsheet), which is why every window with a model has a fixture.
 
 ## Localization
@@ -409,7 +409,7 @@ Markup:
 
 ## Tools
 
-The Python tool runs from the asset repository root. `nuitool` is built from `nova-client-src` (target `nuitool`); the commands assume it is on `PATH`.
+The Python tool runs from the asset repository root. `nuitool` is built from `nova-client-src` (target `nuitool`; an MSVC build writes `build/bin/<config>/nuitool.exe`); the commands assume it is on `PATH`.
 
 Tokens: `python tools/nui_tokens.py`, see [Tokens](#tokens).
 
@@ -419,21 +419,26 @@ Lint, from the asset repository root:
 nuitool lint --root assets/nui --root assets/icon --locale assets/locale/locale/en
 ```
 
-- `--root` is a folder that contains store paths; `assets/nui` holds `nui/...`. Repeat it for the groups that images come from (`assets/icon` for `icon/...`; the group that holds a `ymir work/` folder for `d:/ymir work/...`).
-- `--locale` points at one locale folder. `--scripts` points at the controllers; the default tries `<root>/root`, then `<root>/../root`, which finds `assets/root`. `--no-load` skips the document loads.
-- Findings print as `path:line: NUIxxx: message`, one per line. Exit code 0 means clean.
+- `--root` is a folder that contains store paths. The first one holds the documents: `assets/nui` holds `nui/...`. Repeat it for the groups that images come from: `assets/icon` for `icon/...`, and a group with a `ymir work/` folder, such as `assets/ETC`, for `d:/ymir work/...`.
+- `--locale` points at one locale folder with `locale_interface.txt` and `locale_game.txt`. Without it, NUI005 is skipped. Run lint once per shipped locale when you add keys.
+- `--scripts` points at the controllers. The default tries `<root>/root`, then `<root>/../root`, which finds `assets/root`.
+- `--no-load` skips the document loads (NUI008).
+- Paths after the options limit the run to those files or folders, relative to the first root: `nuitool lint --root assets/nui --root assets/icon nui/windows/settings`.
+- Findings go to standard output as `path:line: NUIxxx: message`, one per line. Notes about skipped checks and the summary line go to standard error. The exit code is 0 when clean, 1 with findings and 2 for a usage error.
 
 | Code | Finding |
 |---|---|
-| NUI001 | A document, template or style sheet does not parse. |
-| NUI002 | A `px` length other than `1px`. |
+| NUI001 | A document, template or style sheet does not parse, or RmlUi's template reader cannot find the parts of a template file. |
+| NUI002 | A `px` length other than a hairline (`1px`, `-1px`, `0px`), outside `nui/theme/` and sprite rectangles. |
 | NUI003 | A raw color outside `nui/theme/`. |
-| NUI004 | `var(--x)` that is not a token. |
+| NUI004 | `var(--x)` that is neither a token nor declared in the same file. |
 | NUI005 | `@ui.KEY` or `@game.KEY` missing from the locale files. |
 | NUI006 | A `data-event-*` without a matching `@nui.on` handler. |
-| NUI007 | A link, template or image source that does not resolve. |
+| NUI007 | A link, template, image or sprite that does not resolve, including any path that starts with `/` or holds `{{ }}`. |
 | NUI008 | RmlUi warnings or errors while loading the document with its fixture. |
-| NUI009 | An inline style. |
+| NUI009 | An inline style: `style="..."`, `data-style-*` or `data-attr-style`. |
+| NUI010 | A feature the renderers do not draw (see [What the renderer draws](#what-the-renderer-draws)). |
+| NUI011 | Motion that RmlUi drops or that reduced motion cannot stop (see [Motion and reduced motion](#motion-and-reduced-motion)). |
 
 Snapshots:
 
@@ -443,8 +448,12 @@ nuitool snap --root assets/nui --root assets/icon \
 	--theme dark --scale 1.5 --size 1920x1080 --out gallery-dark-150.png
 ```
 
+- `--doc` is a store path, or a file path under the first root.
+- `--fixture` is not picked up automatically; pass the window's `<name>.fixture.json`.
+- `--size WxH` is the backbuffer in pixels (default 1280x720). `--scale` is 0.75 to 2, or `auto` for the client's height-based scale (default 1). `--theme` is `dark` (the default) or `light`.
 - `--time` is how many seconds of animation run before the frame is taken (default 1, which lets the window-open fade finish). `--reduced-motion` renders the resting state.
-- `--compare golden.png --tolerance N --diff diff.png` compares against a stored image and exits 1 on a mismatch.
+- `--compare golden.png [--tolerance N] [--diff diff.png]` compares with a stored image, channel by channel (N is 0 to 255, default 0), and exits 1 on a mismatch. The diff image goes to `--diff`, by default the output name with `.png` replaced by `.diff.png`.
+- RmlUi warnings and errors during a snapshot print as `rmlui: ...` on standard error and do not change the exit code; lint reports them as NUI008.
 - DDS and legacy `.sub` images do not decode in snapshots and stay blank; the client draws them. Prefer PNG or TGA for NovaUI art.
 - The CPU renderer follows the same RmlUi render interface rules as the D3D9 renderer (premultiplied alpha, the same unsupported features), and integration cross-checks the two within a small tolerance.
 
@@ -455,7 +464,7 @@ nuitool snap --root assets/nui --root assets/icon \
 In non-distribution builds, while the asset store is in file-load mode (dev runs without an installed release, `--no-patch`), every asset lookup reads the file under the client's working directory, and a `HotReloader` watches the `nui/` folder there. One way to edit in place is to make `<client>/nui` a directory junction to `nova-client/assets/nui/nui`. Note that `nova-client-src/CMakeLists.txt` defines `_DISTRIBUTE` for RelWithDebInfo as well as Release, so today only Debug builds have hot reload and the two hotkeys below.
 
 - Saving an `.rcss` re-applies style sheets to open documents.
-- Saving an `.rml` or `.rtpl`, or adding or removing one of those, re-loads open documents in place. Element handlers from `element_on()` are re-attached, then `on_reload()` runs. Models are kept.
+- Saving an `.rml` or `.rtpl`, or adding or removing any `.rml`, `.rtpl` or `.rcss` file, re-loads open documents in place. Element handlers from `element_on()` are re-attached, then `on_reload()` runs. Models are kept.
 - Ctrl+Shift+D toggles the RmlUi debugger (element tree, computed styles, events).
 - Ctrl+Shift+U toggles the render test page.
 

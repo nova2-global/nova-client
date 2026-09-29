@@ -1,0 +1,84 @@
+/* Layout helpers, so documents never need inline styles for common arrangements. */
+
+.nui-row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+}
+.nui-row--wrap
+{
+	flex-wrap: wrap;
+}
+.nui-row--end
+{
+	justify-content: flex-end;
+}
+.nui-row--between
+{
+	justify-content: space-between;
+}
+
+.nui-stack
+{
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+.nui-stack--loose
+{
+	gap: var(--space-4);
+}
+
+.nui-grow
+{
+	flex: 1 1 auto;
+}
+
+.nui-muted
+{
+	color: var(--text-muted);
+}
+.nui-small
+{
+	font-size: var(--font-sm);
+}
+
+/* Full-screen document that never takes the mouse (HUD layers, toasts): the
+   input arbiter treats pointer-events: none as "not hovering", so clicks reach
+   the legacy UI and the world. Interactive children opt back in. */
+body.nui-overlay
+{
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+.nui-interactive
+{
+	pointer-events: auto;
+}
+
+/* Ultrawide: keep content within 1600dp, centered. */
+.nui-center-max
+{
+	max-width: 1600dp;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* HUD anchor area limited to 16:9 of the screen height, centered, so corner
+   widgets stay near the middle on 21:9 and 32:9 screens. */
+.nui-safe-16x9
+{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	max-width: 177.78vh;
+	margin-left: auto;
+	margin-right: auto;
+}

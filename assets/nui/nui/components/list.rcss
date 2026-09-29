@@ -1,0 +1,65 @@
+/* List with selection:
+   <div class="nui-list">
+       <div class="nui-list__item nui-anim" data-for="row : rows"
+            data-class-is-selected="row.id == selected"
+            data-event-click="select(row.id)">{{ row.name }}</div>
+   </div>
+   Give the list a height (or max-height) in the window's sheet to scroll. */
+
+.nui-list
+{
+	display: block;
+	overflow-y: auto;
+	padding: var(--space-1);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+
+.nui-list__item
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-3);
+	border-left-width: 2dp;
+	border-left-color: transparent;
+	border-radius: var(--radius-sm);
+	color: var(--text);
+	tab-index: auto;
+}
+.nui-list__item:hover, .nui-list__item.is-hover
+{
+	background-color: var(--surface-hover);
+}
+.nui-list__item:focus-visible, .nui-list__item.is-focus
+{
+	border-left-color: var(--focus-ring);
+}
+.nui-list__item.is-selected
+{
+	background-color: var(--selection);
+	border-left-color: var(--accent);
+}
+.nui-list__item[disabled]
+{
+	color: var(--text-muted);
+	pointer-events: none;
+}
+/* Hover fade (--dur-fast, --ease-out). */
+.nui-list__item.nui-anim
+{
+	transition: background-color border-color 0.1s cubic-out;
+}
+
+.nui-list__label
+{
+	flex: 1 1 auto;
+}
+.nui-list__meta
+{
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}

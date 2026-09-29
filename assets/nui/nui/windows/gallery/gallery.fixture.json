@@ -1,0 +1,29 @@
+{
+	"gallery": {
+		"gold": 1234567,
+		"hint": "Username",
+		"show_hint": true,
+		"selected": 2,
+		"rows": [
+			{"id": 1, "name": "Warrior", "meta": "Lv. 42", "disabled": false, "hover": false},
+			{"id": 2, "name": "Ninja", "meta": "Lv. 37", "disabled": false, "hover": false},
+			{"id": 3, "name": "Sura", "meta": "Lv. 51", "disabled": false, "hover": true},
+			{"id": 4, "name": "Shaman", "meta": "Lv. 12", "disabled": true, "hover": false},
+			{"id": 5, "name": "Lycan", "meta": "Lv. 29", "disabled": false, "hover": false}
+		],
+		"slots": [
+			{"icon": "icon/item/27001.tga", "count": 200, "locked": false, "selected": false, "hover": false},
+			{"icon": "icon/item/27002.tga", "count": 35, "locked": false, "selected": false, "hover": true},
+			{"icon": "icon/item/27003.tga", "count": 1, "locked": false, "selected": true, "hover": false},
+			{"icon": "icon/item/27004.tga", "count": 5, "locked": false, "selected": false, "hover": false},
+			{"icon": "icon/item/27100.tga", "count": 1, "locked": true, "selected": false, "hover": false},
+			{"icon": "icon/item/27101.tga", "count": 12, "locked": false, "selected": false, "hover": false},
+			{"icon": "icon/item/30000.tga", "count": 1, "locked": false, "selected": false, "hover": false},
+			{"icon": "icon/item/50001.tga", "count": 3, "locked": false, "selected": false, "hover": false},
+			{"icon": "icon/item/70001.tga", "count": 1, "locked": false, "selected": false, "hover": false},
+			{"icon": "icon/item/71001.tga", "count": 1, "locked": false, "selected": false, "hover": false},
+			{"icon": "", "count": 0, "locked": false, "selected": false, "hover": false},
+			{"icon": "", "count": 0, "locked": false, "selected": false, "hover": false}
+		]
+	}
+}

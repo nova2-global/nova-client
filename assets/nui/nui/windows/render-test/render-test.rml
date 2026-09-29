@@ -1,0 +1,118 @@
+<rml>
+<head>
+	<!-- One page with every visual feature the renderer must support
+	     (NuiPaths.h kRenderTestDocument, Ctrl+Shift+U in dev builds). It needs
+	     no data model and no controller, so the host can load it directly.
+	     Each cell has an id so tests can find it. -->
+	<title>NovaUI render test</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="render-test.rcss"/>
+</head>
+<body template="nui" class="rt">
+	<div class="rt-grid">
+
+		<div class="rt-cell" id="rt-text">
+			<span class="rt-caption">text xs..xl</span>
+			<p class="rt-xs">xs 11dp The quick brown fox</p>
+			<p class="rt-sm">sm 12dp The quick brown fox</p>
+			<p class="rt-md">md 14dp The quick brown fox</p>
+			<p class="rt-lg">lg 16dp The quick brown fox</p>
+			<p class="rt-xl">xl 20dp The quick brown fox</p>
+			<p class="rt-md"><strong>Bold</strong> / <em>Italic</em> / &#196;&#214;&#220; &#231;&#351;&#287; &#1046;&#1103; &#945;&#946;</p>
+		</div>
+
+		<div class="rt-cell" id="rt-borders">
+			<span class="rt-caption">borders</span>
+			<div class="rt-row">
+				<div class="rt-box rt-border-hair"></div>
+				<div class="rt-box rt-border-1"></div>
+				<div class="rt-box rt-border-2"></div>
+				<div class="rt-box rt-border-4"></div>
+				<div class="rt-box rt-border-sides"></div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-radius">
+			<span class="rt-caption">radius</span>
+			<div class="rt-row">
+				<div class="rt-box rt-radius-sm"></div>
+				<div class="rt-box rt-radius-md"></div>
+				<div class="rt-box rt-radius-lg"></div>
+				<div class="rt-box rt-radius-round"></div>
+				<div class="rt-box rt-radius-border"></div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-image">
+			<span class="rt-caption">image decorator, img</span>
+			<div class="rt-row">
+				<div class="rt-icon rt-icon-decorator" id="rt-image-decorator"></div>
+				<div class="rt-icon rt-icon-contain"></div>
+				<img class="rt-img" src="../../../icon/item/27001.tga"/>
+				<img class="rt-img rt-img-large" src="../../../icon/item/27001.tga"/>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-transform">
+			<span class="rt-caption">transform</span>
+			<div class="rt-row rt-row-tall">
+				<div class="rt-box rt-rotate" id="rt-rotate">15&#176;</div>
+				<div class="rt-box rt-scale" id="rt-scale">1.25x</div>
+				<div class="rt-box rt-skew">skew</div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-scroll">
+			<span class="rt-caption">overflow scroll</span>
+			<div class="rt-scroller" id="rt-scroller">
+				<p>Line 01 of the scroll container</p>
+				<p>Line 02 of the scroll container</p>
+				<p>Line 03 of the scroll container</p>
+				<p>Line 04 of the scroll container</p>
+				<p>Line 05 of the scroll container</p>
+				<p>Line 06 of the scroll container</p>
+				<p>Line 07 of the scroll container</p>
+				<p>Line 08 of the scroll container</p>
+				<p>Line 09 of the scroll container</p>
+				<p>Line 10 of the scroll container</p>
+				<p>Line 11 of the scroll container</p>
+				<p>Line 12 of the scroll container</p>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-animation">
+			<span class="rt-caption">animation</span>
+			<div class="rt-track">
+				<div class="rt-mover nui-anim" id="rt-mover"></div>
+			</div>
+			<div class="rt-pulse nui-anim" id="rt-pulse"></div>
+		</div>
+
+		<div class="rt-cell" id="rt-clip">
+			<span class="rt-caption">clip mask</span>
+			<div class="rt-row rt-row-tall">
+				<div class="rt-clip-rotated" id="rt-clip-rotated">
+					<div class="rt-clip-content">rotated overflow hidden clips this text</div>
+				</div>
+				<div class="rt-clip-round" id="rt-clip-round">
+					<div class="rt-clip-fill"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-blend">
+			<span class="rt-caption">opacity and alpha</span>
+			<div class="rt-row">
+				<div class="rt-stack">
+					<div class="rt-layer rt-layer-a"></div>
+					<div class="rt-layer rt-layer-b"></div>
+					<div class="rt-layer rt-layer-scrim"></div>
+				</div>
+				<div class="rt-box rt-opacity-75">75</div>
+				<div class="rt-box rt-opacity-40">40</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+</rml>

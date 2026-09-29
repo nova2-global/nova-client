@@ -1,0 +1,104 @@
+/* Gallery page layout. Components come from nui/nui.rtpl. */
+
+body.nui-window
+{
+	left: 24dp;
+	top: 24dp;
+	width: 1040dp;
+}
+
+.gallery-body
+{
+	height: 620dp;
+	overflow-y: auto;
+}
+
+.gallery-columns
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-5);
+}
+.gallery-column
+{
+	flex: 1 1 0;
+}
+.gallery-column h2
+{
+	margin-top: var(--space-4);
+}
+
+/* Button states as a table: columns line up and still grow with longer
+   translations (German labels run about a third longer than English). RmlUi
+   does not shrink tables to fit, so the table spans the body. */
+.gallery-matrix
+{
+	display: table;
+	column-gap: var(--space-2);
+	row-gap: var(--space-2);
+	margin-bottom: var(--space-2);
+}
+.gallery-matrix__row
+{
+	display: table-row;
+}
+.gallery-matrix__cell
+{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+.gallery-matrix__cell.gallery-label
+{
+	text-align: left;
+}
+.gallery-label, .gallery-state
+{
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+}
+.gallery-state
+{
+	text-align: center;
+}
+.gallery-matrix .nui-button
+{
+	min-width: 76dp;
+}
+.gallery-gap
+{
+	margin-bottom: var(--space-2);
+}
+
+.gallery-fields
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+}
+
+.gallery-type h1, .gallery-type h2, .gallery-type h3, .gallery-type h4
+{
+	margin-top: 0;
+}
+
+.gallery-list
+{
+	height: 196dp;
+}
+
+.gallery-tooltip-host
+{
+	margin-left: var(--space-5);
+}
+
+.gallery-panels
+{
+	align-items: stretch;
+}
+
+.gallery-first
+{
+	margin-top: 0;
+}

@@ -1,0 +1,75 @@
+/* Item slots: square cells with a 32dp icon, a count badge and a hover
+   highlight. Legacy icons are store paths such as icon/item/27001.tga; from a
+   document in nui/windows/<name>/ they are reached as '../../../' + path.
+
+   <div class="nui-slot-grid">
+       <div class="nui-slot nui-anim" data-for="slot : slots"
+            data-class-is-disabled="slot.locked">
+           <img class="nui-slot__icon" data-if="slot.icon != ''"
+                data-attr-src="'../../../' + slot.icon"/>
+           <span class="nui-slot__count" data-if="slot.count > 1">{{ slot.count }}</span>
+       </div>
+   </div> */
+
+.nui-slot-grid
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-1);
+}
+
+.nui-slot
+{
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	width: 40dp;
+	height: 40dp;
+	padding: 3dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+}
+.nui-slot:hover, .nui-slot.is-hover
+{
+	background-color: var(--surface-hover);
+	border-color: var(--accent);
+}
+.nui-slot.is-selected
+{
+	border-color: var(--accent);
+}
+.nui-slot.is-disabled, .nui-slot[disabled]
+{
+	opacity: 0.4;
+	pointer-events: none;
+}
+/* Hover fade (--dur-fast, --ease-out). */
+.nui-slot.nui-anim
+{
+	transition: background-color border-color 0.1s cubic-out;
+}
+
+.nui-slot__icon
+{
+	display: block;
+	width: 32dp;
+	height: 32dp;
+}
+
+.nui-slot__count
+{
+	position: absolute;
+	right: 1dp;
+	bottom: 1dp;
+	padding: 0 3dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 14dp;
+	pointer-events: none;
+}

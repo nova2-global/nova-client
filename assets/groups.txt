@@ -91,6 +91,8 @@ locale
 uiscript
 ETC
 uiloading
+# NovaUI (RmlUi): assets/nui/nui/... publishes as nui/... (src/NovaUI/Core/NuiPaths.h)
+nui
 
 # Folders present in assets/ but not in the old pack list (not published until uncommented):
 # Outdoor

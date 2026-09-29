@@ -1,0 +1,92 @@
+/* NovaUI base: element defaults, typography, focus, scrollbars, reduced motion.
+   Linked through nui/nui.rtpl right after nui/theme/tokens.rcss.
+   Rules for authors: docs/ui/AUTHORING.md (asset repository). */
+
+/* RmlUi lays out every element as inline unless a style sheet says otherwise. */
+body, div, p, h1, h2, h3, h4, h5, h6, section, header, footer, nav, form,
+ul, ol, li, dl, dt, dd, pre, panels, panel
+{
+	display: block;
+}
+
+body
+{
+	font-family: var(--font-family);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 1.4;
+	color: var(--text);
+}
+
+h1 { font-size: var(--font-xl); font-weight: bold; margin-bottom: var(--space-3); }
+h2 { font-size: var(--font-lg); font-weight: bold; margin-bottom: var(--space-2); }
+h3 { font-size: var(--font-md); font-weight: bold; margin-bottom: var(--space-2); }
+h4 { font-size: var(--font-sm); font-weight: bold; margin-bottom: var(--space-1); color: var(--text-muted); }
+p { margin-bottom: var(--space-2); }
+strong, b { font-weight: bold; }
+em, i { font-style: italic; }
+small { font-size: var(--font-sm); }
+
+/* Focus: RCSS has no outline and box-shadow needs render layers, so keyboard
+   focus shows as a border color. Components carry their own :focus-visible
+   rule; .nui-focusable gives the same ring to any other interactive element. */
+.nui-focusable
+{
+	tab-index: auto;
+	border-width: 1dp;
+	border-color: transparent;
+}
+.nui-focusable:focus-visible
+{
+	border-color: var(--focus-ring);
+}
+
+/* Scrollbars: RmlUi draws none unless they are styled (width 0). */
+scrollbarvertical
+{
+	width: 10dp;
+}
+scrollbarhorizontal
+{
+	height: 10dp;
+}
+scrollbarvertical slidertrack, scrollbarhorizontal slidertrack, scrollbarcorner
+{
+	background-color: transparent;
+}
+scrollbarvertical sliderbar
+{
+	margin-left: 2dp;
+	width: 6dp;
+	min-height: 24dp;
+	border-radius: 3dp;
+	background-color: var(--border);
+}
+scrollbarhorizontal sliderbar
+{
+	margin-top: 2dp;
+	height: 6dp;
+	min-width: 24dp;
+	border-radius: 3dp;
+	background-color: var(--border);
+}
+scrollbarvertical sliderbar:hover, scrollbarvertical sliderbar:active,
+scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
+{
+	background-color: var(--text-muted);
+}
+
+/* Reduced motion (NuiRuntime::SetReducedMotion activates the media theme).
+   Motion is opt-in: transition and animation are only declared in rules of the
+   form `.component.nui-anim`, so they apply only to elements tagged nui-anim.
+   The class is repeated here to raise specificity, because RCSS has no
+   !important: three classes outrank those two-class rules even when they are
+   linked later. */
+@media (theme: reduced-motion)
+{
+	.nui-anim.nui-anim.nui-anim
+	{
+		transition: none;
+		animation: none;
+	}
+}

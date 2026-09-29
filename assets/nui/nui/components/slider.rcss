@@ -1,0 +1,49 @@
+/* Slider on the native range input:
+   <input type="range" class="nui-slider" min="0" max="100" step="1" value="40"
+          data-event-change="set_volume(ev.value)"/>
+   RmlUi builds the parts (slidertrack, sliderprogress, sliderbar and the arrow
+   buttons) as children of the input; the arrows stay 0 wide. */
+
+.nui-slider
+{
+	display: inline-block;
+	width: 200dp;
+	height: 20dp;
+	vertical-align: middle;
+}
+.nui-slider slidertrack
+{
+	margin-top: 8dp;
+	height: 4dp;
+	border-radius: 2dp;
+	background-color: var(--surface-sunken);
+}
+.nui-slider sliderprogress
+{
+	margin-top: 8dp;
+	height: 4dp;
+	border-radius: 2dp;
+	background-color: var(--accent);
+}
+.nui-slider sliderbar
+{
+	margin-top: 2dp;
+	width: 16dp;
+	height: 16dp;
+	border-width: 2dp;
+	border-color: var(--accent);
+	border-radius: 8dp;
+	background-color: var(--surface-raised);
+}
+.nui-slider sliderbar:hover, .nui-slider sliderbar:active
+{
+	background-color: var(--accent);
+}
+.nui-slider:focus-visible sliderbar
+{
+	border-color: var(--focus-ring);
+}
+.nui-slider:disabled
+{
+	opacity: 0.45;
+}

@@ -1,0 +1,37 @@
+/* Badge: <span class="nui-badge nui-badge--success">3</span>.
+   Variants: --accent, --danger, --warning, --success; the default is neutral. */
+
+.nui-badge
+{
+	display: inline-block;
+	height: 18dp;
+	padding: 0 var(--space-2);
+	border-radius: 9dp;
+	background-color: var(--surface-hover);
+	color: var(--text);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 18dp;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+.nui-badge--accent
+{
+	background-color: var(--accent);
+	color: var(--accent-text);
+}
+.nui-badge--danger
+{
+	background-color: var(--danger);
+	color: var(--accent-text);
+}
+.nui-badge--warning
+{
+	background-color: var(--warning);
+	color: var(--accent-text);
+}
+.nui-badge--success
+{
+	background-color: var(--success);
+	color: var(--accent-text);
+}

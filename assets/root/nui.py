@@ -24,19 +24,36 @@ a controller class in root/nui_<name>.py:
 Rules (docs/ui/AUTHORING.md has the full list):
   * Python runs only on events and when you call set(); never per frame.
   * The kind of each model key (scalar, list, map) is fixed by
-    initial_model(); set() with a different kind fails and logs.
-  * Handlers get the evaluated data-event arguments as plain Python values
-    (int, float, str, bool, list, dict, None). Number literals written in the
-    markup arrive as float: use(3) calls on_use(3.0).
+    initial_model(); set() with a different kind fails and logs. Writes
+    from the document (data-value, data-checked, an assignment in a
+    data-event) keep a scalar key's type: an int key stays an int (a
+    fraction is cut toward zero), and text that does not read as a number
+    of that type leaves the key as it was. A None key takes the first type
+    written to it. A text field bound to a number key shows the number as
+    RmlUi prints it after each accepted keystroke; bind free-form text to a
+    str key and convert in Python.
+  * Handlers get the evaluated data-event arguments as Python scalars: int,
+    float, str, bool or None. A whole number arrives as an int, including
+    literals and arithmetic (use(3) and use(slot.index + 1) pass an int);
+    other numbers arrive as float. A list or map argument arrives as its
+    length or member count, with no warning, so pass its members:
+    use(slot.index), not use(slot). Event parameters that are not scalars
+    (ev.drag_element) arrive as None.
+  * Handlers also run for changes the model causes, not only for input: a
+    bound checkbox, radio, select or slider sends change when set() or a
+    (re-)load moves it. On the first load that happens inside __init__
+    (see there). Apply ev.checked or ev.value idempotently; do not toggle,
+    resend a packet or open a window from such a handler.
   * After a hot reload or a locale change the document is re-loaded in place:
     element handlers registered with element_on() are re-attached for you,
-    then on_reload() runs.
+    the @nui.on handlers get the new document's own events (its load, change
+    from bindings), then on_reload() runs. The replaced document's unload
+    does not reach your handlers.
   * A window lives until destroy(): the runtime holds its handlers, so
     dropping the last reference does not close it. Only one window per MODEL
     name can exist at a time.
-  * destroy() inside one of the window's own @nui.on handlers (a close
-    button) hides it at once; the document and model go once the handler
-    has returned.
+  * destroy() inside one of the window's own handlers (a close button) hides
+    it at once; the document and model go by the end of the frame.
 
 The C++ module `_nui` (src/NovaUI/Python) is the only thing this file calls;
 when it is missing or has no runtime (headless tests) is_available() is False
@@ -127,8 +144,15 @@ class Window(object):
 	_model = 0        # model id, 0 when there is none
 
 	def __init__(self):
-		"""Creates the model (if MODEL) from initial_model(), loads DOCUMENT,
-		binds @on handlers. The document starts hidden.
+		"""Creates the model (if MODEL) from initial_model(), binds the @on
+		handlers, then loads DOCUMENT. The document starts hidden.
+
+		Events the document raises while it loads (data-event-load on
+		<body>, change from bindings such as data-attrif-checked) reach the
+		handlers before __init__ returns, while self._doc is still 0: show(),
+		hide(), is_visible() and element_on() do nothing then, and set() and
+		get() work. A handler that calls destroy() then leaves the window
+		unavailable.
 
 		Raises ValueError when DOCUMENT is not set, or when the class has @on
 		handlers but no MODEL (checked only while NovaUI is available). When
@@ -152,16 +176,19 @@ class Window(object):
 			if not model:
 				return
 			self._model = model
+			# Before the load, which already raises events.
+			for event_name, method_name in handlers.items():
+				_nui.ModelOn(model, event_name, getattr(self, method_name))
 
 		doc = _nui.LoadDocument(self.DOCUMENT)
 		if not doc:
 			self._drop_model()
 			return
+		if self.MODEL and not self._model:
+			_nui.Close(doc)  # a handler destroyed the window while it loaded
+			return
 		self._doc = doc
 		_windows[doc] = self
-
-		for event_name, method_name in handlers.items():
-			_nui.ModelOn(self._model, event_name, getattr(self, method_name))
 
 	def initial_model(self):
 		"""Top-level model keys and their initial values."""
@@ -214,7 +241,8 @@ class Window(object):
 		"mouse_y", the modifier keys, "key_identifier" for key events).
 		An empty element_id means the document itself. A second call for the
 		same element and event replaces fn; fn=None removes it. True if the
-		handler was registered (or removed)."""
+		handler was registered (or removed). Events of the copy a re-load
+		replaced (its unload, blur, mouseout) do not reach fn."""
 		if not self._doc:
 			return False
 		return bool(_nui.On(self._doc, element_id, event, fn))
@@ -224,7 +252,9 @@ class Window(object):
 		pass
 
 	def destroy(self):
-		"""Close the document, drop the model and every handler."""
+		"""Close the document, drop the model and every handler. Inside one
+		of the window's handlers the document hides at once, and it goes
+		with the model by the end of the frame."""
 		doc = self._doc
 		self._doc = 0
 		if doc:
@@ -353,24 +383,16 @@ def is_reduced_motion():
 
 # --- strings ----------------------------------------------------------------
 
-def _escape_rml(text):
-	# RmlUi parses translated text again: a "<" would start markup and an
-	# entity would be decoded, so the tables carry them escaped.
-	return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-
-
 def _string_table(module_name):
 	"""The str globals of a locale module (names not starting with "_"), or
-	None when the module cannot be imported here."""
+	None when the module cannot be imported here. The values stay plain
+	text: the runtime escapes them where they land in RML."""
 	try:
 		module = __import__(module_name)
 	except Exception:
 		return None
-	table = {}
-	for key, value in vars(module).items():
-		if not key.startswith("_") and isinstance(value, str):
-			table[key] = _escape_rml(value)
-	return table
+	return {key: value for key, value in vars(module).items()
+		if not key.startswith("_") and isinstance(value, str)}
 
 
 def refresh_strings():

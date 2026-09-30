@@ -13,11 +13,11 @@ All of them use the English strings (`--locale assets/locale/locale/en`) and the
 
 The snapshots come from `SoftRenderInterface`, the CPU renderer. It follows the Direct3D 9 renderer's rules (premultiplied filtering, per-axis wrap, `.sub` regions, the color key; see `src/NovaUI/README.md` in `nova-client-src`), but it is not the client: compare the client against these by eye, not pixel for pixel.
 
-They were written by a Linux build of `nuitool` from `nova-client-src` branch `nui-int-c` (a8ce386). A second run of that build matches every image at tolerance 0. A Windows build has not been compared against them yet.
+They were written by a Linux (GCC) build of `nuitool` from `nova-client-src` branch `nui-int-c` (a8ce386). A Linux build of `nui-foundation` d0d0a8f matches every image at tolerance 0. A Windows (MSVC) build of the same commit matches the six gallery images at tolerance 0; in four render-test images one or two pixels differ by 1, all inside the rotated text of the clip-mask cell. So the check below allows a difference of 1 per channel, and a build for either platform passes it.
 
 ## Check
 
-From the asset repository root, with `nuitool` on `PATH`. Every run exits 0 when its image matches; a mismatch exits 1 and writes a diff image (magenta where pixels differ) next to the output.
+From the asset repository root, with `nuitool` on `PATH`. Every run exits 0 when its image matches within 1 per channel; a mismatch exits 1 and writes a diff image (magenta where pixels differ) next to the output. A change of 1 per channel anywhere passes too; to catch those, drop `--tolerance 1` and check with a Linux build, the platform that wrote the goldens.
 
 ```bash
 out=$(mktemp -d)
@@ -27,11 +27,11 @@ for theme in dark light; do
     nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/en \
       --doc nui/windows/gallery/gallery.rml --fixture assets/nui/nui/windows/gallery/gallery.fixture.json \
       --theme $theme --scale $1 --size $3 --out $out/gallery-$theme-$2.png \
-      --compare docs/ui/snapshots/gallery-$theme-$2.png
+      --compare docs/ui/snapshots/gallery-$theme-$2.png --tolerance 1
     nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/en \
       --doc nui/windows/render-test/render-test.rml \
       --theme $theme --scale $1 --size $4 --out $out/render-test-$theme-$2.png \
-      --compare docs/ui/snapshots/render-test-$theme-$2.png
+      --compare docs/ui/snapshots/render-test-$theme-$2.png --tolerance 1
   done
 done
 ```

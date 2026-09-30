@@ -1,0 +1,238 @@
+<rml>
+<head>
+	<!-- Every component in nui/components/ in every state it styles. A
+	     developer page: section headings are plain English, labels that
+	     windows would localize use @ui keys. Forced states (is-hover,
+	     is-active, is-focus) stand in for pointer and keyboard states so
+	     snapshots show them. Not shown: the body-level layers (nui-overlay,
+	     nui-scrim) and the layout helpers other than nui-row.
+	     It fits a 1920x1080 dp viewport, so a snapshot at the client's auto
+	     scale for 1080, 1620 and 2160 lines shows everything. -->
+	<title>NovaUI gallery</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="gallery.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-anim" data-model="gallery">
+	<div class="nui-window__titlebar">
+		<handle class="nui-window__handle" move_target="#document">
+			<span class="nui-window__title">NovaUI gallery</span>
+		</handle>
+		<!-- Bound by id with element_on() in the gallery controller (drafted in
+		     docs/ui/examples/nui_gallery.py, not in assets/root yet). -->
+		<button id="gallery-theme" class="nui-button nui-button--small nui-button--secondary nui-anim">Theme</button>
+		<button id="gallery-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim">&#215;</button>
+	</div>
+
+	<div class="nui-window__body gallery-body">
+		<h2 class="gallery-first">Buttons</h2>
+		<div class="gallery-matrix">
+			<div class="gallery-matrix__row">
+				<span class="gallery-matrix__cell"></span>
+				<span class="gallery-matrix__cell gallery-state">rest</span>
+				<span class="gallery-matrix__cell gallery-state">hover</span>
+				<span class="gallery-matrix__cell gallery-state">active</span>
+				<span class="gallery-matrix__cell gallery-state">focus</span>
+				<span class="gallery-matrix__cell gallery-state">disabled</span>
+			</div>
+			<div class="gallery-matrix__row">
+				<span class="gallery-matrix__cell gallery-label">primary</span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--primary nui-anim">@ui.ACCEPT</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--primary nui-anim is-hover">@ui.ACCEPT</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--primary nui-anim is-active">@ui.ACCEPT</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--primary nui-anim is-focus">@ui.ACCEPT</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--primary nui-anim" disabled="">@ui.ACCEPT</button></span>
+			</div>
+			<div class="gallery-matrix__row">
+				<span class="gallery-matrix__cell gallery-label">secondary</span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--secondary nui-anim">@ui.CANCEL</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--secondary nui-anim is-hover">@ui.CANCEL</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--secondary nui-anim is-active">@ui.CANCEL</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--secondary nui-anim is-focus">@ui.CANCEL</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--secondary nui-anim" disabled="">@ui.CANCEL</button></span>
+			</div>
+			<div class="gallery-matrix__row">
+				<span class="gallery-matrix__cell gallery-label">ghost</span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--ghost nui-anim">@ui.CLOSE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--ghost nui-anim is-hover">@ui.CLOSE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--ghost nui-anim is-active">@ui.CLOSE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--ghost nui-anim is-focus">@ui.CLOSE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--ghost nui-anim" disabled="">@ui.CLOSE</button></span>
+			</div>
+			<div class="gallery-matrix__row">
+				<span class="gallery-matrix__cell gallery-label">danger</span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--danger nui-anim">@ui.SELECT_DELETE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--danger nui-anim is-hover">@ui.SELECT_DELETE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--danger nui-anim is-active">@ui.SELECT_DELETE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--danger nui-anim is-focus">@ui.SELECT_DELETE</button></span>
+				<span class="gallery-matrix__cell"><button class="nui-button nui-button--danger nui-anim" disabled="">@ui.SELECT_DELETE</button></span>
+			</div>
+		</div>
+		<div class="nui-row gallery-gap">
+			<span class="gallery-label">sizes</span>
+			<button class="nui-button nui-button--small nui-button--primary nui-anim">@ui.OK</button>
+			<button class="nui-button nui-button--small nui-anim">@ui.NO</button>
+			<button class="nui-button nui-button--icon nui-anim">+</button>
+			<button class="nui-button nui-button--small nui-button--icon nui-button--ghost nui-anim">&#215;</button>
+		</div>
+
+		<div class="gallery-columns">
+			<div class="gallery-column">
+				<h2>Text input</h2>
+				<div class="gallery-fields">
+					<div class="nui-field">
+						<label class="nui-field__label" for="gallery-user">@ui.LOGIN_ID</label>
+						<input id="gallery-user" type="text" class="nui-input nui-anim" data-attr-placeholder="hint"/>
+					</div>
+					<div class="nui-field">
+						<label class="nui-field__label" for="gallery-pass">@ui.LOGIN_PASSWORD</label>
+						<input id="gallery-pass" type="password" class="nui-input nui-anim is-focus" value="secret"/>
+					</div>
+					<div class="nui-field">
+						<label class="nui-field__label">hover</label>
+						<input type="text" class="nui-input nui-anim is-hover" value="Metin2"/>
+					</div>
+					<div class="nui-field">
+						<label class="nui-field__label">invalid</label>
+						<input type="text" class="nui-input nui-input--invalid nui-anim" value="ab"/>
+						<span class="nui-field__error">3..16 letters</span>
+					</div>
+					<div class="nui-field">
+						<label class="nui-field__label">disabled</label>
+						<input type="text" class="nui-input nui-anim" value="read only" disabled=""/>
+					</div>
+				</div>
+
+				<h2>Toggle</h2>
+				<div class="nui-row nui-row--wrap gallery-gap">
+					<label class="nui-toggle">
+						<input type="checkbox" class="nui-toggle__input"/>
+						<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+						<span class="nui-toggle__label">@ui.OPTION_SOUND</span>
+					</label>
+					<label class="nui-toggle">
+						<input type="checkbox" class="nui-toggle__input" checked=""/>
+						<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+						<span class="nui-toggle__label">@ui.OPTION_MUSIC</span>
+					</label>
+					<label class="nui-toggle is-hover">
+						<input type="checkbox" class="nui-toggle__input"/>
+						<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+						<span class="nui-toggle__label">hover</span>
+					</label>
+					<label class="nui-toggle is-focus">
+						<input type="checkbox" class="nui-toggle__input" checked=""/>
+						<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+						<span class="nui-toggle__label">focus</span>
+					</label>
+					<label class="nui-toggle">
+						<input type="checkbox" class="nui-toggle__input" disabled=""/>
+						<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+						<span class="nui-toggle__label">disabled</span>
+					</label>
+					<label class="nui-toggle">
+						<input type="checkbox" class="nui-toggle__input" checked="" disabled=""/>
+						<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+						<span class="nui-toggle__label">disabled</span>
+					</label>
+				</div>
+
+				<h2>Slider</h2>
+				<div class="nui-row nui-row--wrap gallery-sliders">
+					<span class="gallery-slider"><span class="gallery-state">rest</span><input type="range" class="nui-slider" min="0" max="100" step="1" value="40"/></span>
+					<span class="gallery-slider"><span class="gallery-state">hover</span><input type="range" class="nui-slider is-hover" min="0" max="100" step="1" value="40"/></span>
+					<span class="gallery-slider"><span class="gallery-state">active</span><input type="range" class="nui-slider is-active" min="0" max="100" step="1" value="40"/></span>
+					<span class="gallery-slider"><span class="gallery-state">focus</span><input type="range" class="nui-slider is-focus" min="0" max="100" step="1" value="40"/></span>
+					<span class="gallery-slider"><span class="gallery-state">disabled</span><input type="range" class="nui-slider" min="0" max="100" step="1" value="75" disabled=""/></span>
+				</div>
+			</div>
+
+			<div class="gallery-column">
+				<h2>Typography</h2>
+				<div class="gallery-type">
+					<h1>Heading xl</h1>
+					<h2>Heading lg</h2>
+					<h3>Heading md</h3>
+					<h4>Heading sm, muted</h4>
+					<p>Body text at --font-md. <strong>Bold</strong> and <em>italic</em> faces are loaded too.</p>
+					<p class="nui-muted nui-small">Muted small text for hints and metadata.</p>
+					<p>Bound values: {{ gold }} gold<span data-if="show_hint">, hint shown by data-if</span>.</p>
+				</div>
+
+				<h2>Badges and tooltip</h2>
+				<div class="nui-row nui-row--wrap gallery-gap">
+					<span class="nui-badge">12</span>
+					<span class="nui-badge nui-badge--accent">@ui.OK</span>
+					<span class="nui-badge nui-badge--success">+250</span>
+					<span class="nui-badge nui-badge--warning">3</span>
+					<span class="nui-badge nui-badge--danger">-40</span>
+					<span class="nui-has-tooltip gallery-tooltip-host">
+						<span class="nui-badge">?</span>
+						<span class="nui-tooltip nui-anim is-open">@ui.OPTION_MUSIC</span>
+					</span>
+				</div>
+				<!-- Hosts in running text (block flow) rather than in a flex row. -->
+				<p class="gallery-hint-line">A host in running text <span class="nui-has-tooltip"><span class="nui-badge">?</span><span class="nui-tooltip nui-tooltip--wrap nui-anim is-open">@ui.OPTION_PVPMODE_GUILD_TOOLTIP</span></span> keeps its hint above it.</p>
+
+				<h2>Panels</h2>
+				<div class="nui-row gallery-panels">
+					<div class="nui-panel nui-grow">
+						<span class="nui-panel__title">raised</span>
+						<p>Groups related controls.</p>
+					</div>
+					<div class="nui-panel nui-panel--sunken nui-grow">
+						<span class="nui-panel__title">sunken</span>
+						<p>Wells and read-only areas.</p>
+					</div>
+					<div class="nui-panel nui-panel--flat nui-grow">
+						<span class="nui-panel__title">flat</span>
+						<p>Outline only.</p>
+						<div class="nui-divider"></div>
+						<p>A divider above.</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="gallery-column">
+				<h2>Tabs</h2>
+				<tabset class="nui-tabs nui-tabs--3">
+					<tab>@ui.CHARACTER_MAIN</tab>
+					<panel><p>The native tabset switches panels on click; the indicator slides under the selected tab.</p></panel>
+					<tab class="is-focus">@ui.INVENTORY_TITLE</tab>
+					<panel><p>Second panel.</p></panel>
+					<tab class="is-hover">@ui.CHARACTER_ACTION</tab>
+					<panel><p>Third panel.</p></panel>
+					<tab class="nui-tabs__indicator nui-anim"></tab>
+				</tabset>
+
+				<h2>List</h2>
+				<div class="nui-list gallery-list">
+					<div class="nui-list__item nui-anim" data-for="row : rows"
+						data-class-is-selected="row.id == selected"
+						data-class-is-hover="row.hover"
+						data-class-is-focus="row.focus"
+						data-attrif-disabled="row.disabled">
+						<span class="nui-list__label">{{ row.name }}</span>
+						<span class="nui-list__meta">{{ row.meta }}</span>
+					</div>
+				</div>
+
+				<h2>Slot grid</h2>
+				<div class="nui-slot-grid">
+					<div class="nui-slot nui-anim" data-for="slot : slots"
+						data-class-is-disabled="slot.locked"
+						data-class-is-selected="slot.selected"
+						data-class-is-hover="slot.hover">
+						<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="'../../../' + slot.icon"/>
+						<span class="nui-slot__count" data-if="slot.count > 1">{{ slot.count }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="nui-window__footer">
+		<button class="nui-button nui-button--secondary nui-anim">@ui.CANCEL</button>
+		<button class="nui-button nui-button--primary nui-anim">@ui.OK</button>
+	</div>
+</body>
+</rml>

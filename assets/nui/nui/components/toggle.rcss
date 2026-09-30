@@ -1,0 +1,93 @@
+/* Toggle switch over a real checkbox. The label forwards clicks to the input
+   (no Python needed to flip it); the track and knob follow :checked through
+   the sibling selector. The checkbox stays in the tab order, so Tab reaches
+   the toggle and Space flips it; its focus shows on the track. is-hover and
+   is-focus force a state without the pointer or the keyboard.
+
+   <label class="nui-toggle">
+       <input type="checkbox" class="nui-toggle__input" checked
+              data-event-change="set_music(ev.checked)"/>
+       <span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"/></span>
+       <span class="nui-toggle__label">@ui.OPTION_MUSIC</span>
+   </label> */
+
+.nui-toggle
+{
+	display: inline-flex;
+	position: relative;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+}
+/* Hidden without display: none, which would drop it from tab navigation.
+   RmlUi counts only display and visibility, so a zero size and opacity keep
+   the checkbox focusable; absolute keeps it out of the flex row, and the
+   relative toggle is its containing block, so Tab scrolls the toggle into
+   view. */
+.nui-toggle__input
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	opacity: 0;
+	pointer-events: none;
+}
+.nui-toggle__track
+{
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	width: 34dp;
+	height: 20dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+	background-color: var(--surface-sunken);
+}
+.nui-toggle__knob
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 12dp;
+	height: 12dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+	transform: translateX(0dp);
+}
+.nui-toggle:hover .nui-toggle__track, .nui-toggle.is-hover .nui-toggle__track
+{
+	border-color: var(--text-muted);
+}
+.nui-toggle__input:checked + .nui-toggle__track
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+}
+.nui-toggle__input:checked + .nui-toggle__track .nui-toggle__knob
+{
+	background-color: var(--accent-text);
+	transform: translateX(14dp);
+}
+/* After the checked rules: both weigh the same, so a checked toggle shows the
+   ring too. */
+.nui-toggle__input:focus-visible + .nui-toggle__track, .nui-toggle.is-focus .nui-toggle__track
+{
+	border-color: var(--focus-ring);
+}
+.nui-toggle__input:disabled + .nui-toggle__track, .nui-toggle__input:disabled + .nui-toggle__track + .nui-toggle__label
+{
+	opacity: 0.45;
+}
+/* Slide and fade (--dur-fast, --ease-out). */
+.nui-toggle__track.nui-anim
+{
+	transition: background-color border-color 0.1s cubic-out;
+}
+.nui-toggle__knob.nui-anim
+{
+	transition: transform background-color 0.1s cubic-out;
+}

@@ -1,0 +1,31 @@
+<template name="nui">
+<head>
+	<!-- Style bundle for NovaUI documents. RCSS has no @import, so documents
+	     get the tokens, base styles and every component sheet from here: link
+	     this file as a template in the document head and put template="nui" on
+	     the body. The body below is empty on purpose, so the document's own
+	     children stay direct children of its body. Paths are relative to this
+	     file. RmlUi 6.3 needs the template tag to be the first thing in the
+	     file: text before it can hide the tag from the template reader. -->
+	<link type="text/rcss" href="theme/tokens.rcss"/>
+	<link type="text/rcss" href="base.rcss"/>
+	<!-- The tooltip host rule sets display on any element; the component sheets
+	     after it must win that tie with their own display. -->
+	<link type="text/rcss" href="components/tooltip.rcss"/>
+	<link type="text/rcss" href="components/panel.rcss"/>
+	<link type="text/rcss" href="components/window-frame.rcss"/>
+	<link type="text/rcss" href="components/button.rcss"/>
+	<link type="text/rcss" href="components/badge.rcss"/>
+	<link type="text/rcss" href="components/input.rcss"/>
+	<link type="text/rcss" href="components/toggle.rcss"/>
+	<link type="text/rcss" href="components/slider.rcss"/>
+	<link type="text/rcss" href="components/list.rcss"/>
+	<link type="text/rcss" href="components/tabs.rcss"/>
+	<link type="text/rcss" href="components/slot-grid.rcss"/>
+	<!-- Layout helpers last: they are combined with component classes on one
+	     element and must win ties (same specificity, later sheet). -->
+	<link type="text/rcss" href="components/layout.rcss"/>
+</head>
+<body>
+</body>
+</template>

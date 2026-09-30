@@ -1,0 +1,70 @@
+/* Single-line text input: <input type="text" class="nui-input" placeholder="@ui.KEY"/>
+   (type="password" works the same). While it has focus, the host sends typed
+   text and IME results to it and holds back game hotkeys. */
+
+.nui-input
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 200dp;
+	height: 32dp;
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	caret-color: var(--text);
+	font-size: var(--font-md);
+	line-height: 30dp;
+	vertical-align: middle;
+}
+.nui-input:hover, .nui-input.is-hover
+{
+	border-color: var(--text-muted);
+}
+.nui-input:focus, .nui-input.is-focus
+{
+	border-color: var(--focus-ring);
+}
+.nui-input:placeholder-shown
+{
+	color: var(--text-muted);
+}
+.nui-input:disabled
+{
+	opacity: 0.45;
+}
+.nui-input selection
+{
+	background-color: var(--selection);
+	color: var(--text);
+}
+.nui-input--invalid, .nui-input--invalid:hover
+{
+	border-color: var(--danger);
+}
+/* Hover and focus fade (--dur-fast, --ease-out). */
+.nui-input.nui-anim
+{
+	transition: border-color 0.1s cubic-out;
+}
+
+.nui-field
+{
+	display: block;
+}
+.nui-field__label
+{
+	display: block;
+	margin-bottom: var(--space-1);
+	font-size: var(--font-sm);
+	color: var(--text-muted);
+}
+.nui-field__error
+{
+	display: block;
+	margin-top: var(--space-1);
+	font-size: var(--font-sm);
+	color: var(--danger);
+}

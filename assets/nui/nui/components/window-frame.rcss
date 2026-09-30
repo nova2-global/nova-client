@@ -1,0 +1,108 @@
+/* Window frame: title bar with a drag handle and a close button, body, footer.
+   Put .nui-window on <body> (the document is the window; the handle moves
+   #document) or on a <div> inside a full-screen modal <body class="nui-scrim">
+   (the handle then names the div's id in move_target). A handle moves its
+   target by writing left and top, which a static box ignores, so this sheet
+   makes the modal div position: relative: the scrim keeps it centered and
+   the drag offsets it from there. The window's own sheet sets width and
+   height, and position only for a body-level window; a modal div must not
+   get a position or left/top of its own. */
+
+.nui-window
+{
+	display: block;
+	min-width: 240dp;
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+}
+
+/* Opens with a fade and a 4dp rise when the document loads. Values mirror
+   --dur-med and --ease-out: motion values are written out, not var(), see
+   docs/ui/AUTHORING.md "Motion". */
+.nui-window.nui-anim
+{
+	animation: 0.2s cubic-out nui-window-open;
+}
+
+@keyframes nui-window-open
+{
+	from
+	{
+		opacity: 0;
+		transform: translateY(4dp);
+	}
+	to
+	{
+		opacity: 1;
+		transform: translateY(0dp);
+	}
+}
+
+.nui-window__titlebar
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 36dp;
+	padding-left: var(--space-3);
+	padding-right: var(--space-1);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+}
+
+.nui-window__handle
+{
+	display: block;
+	flex: 1 1 auto;
+	height: 36dp;
+	line-height: 36dp;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.nui-window__title
+{
+	font-size: var(--font-md);
+	font-weight: bold;
+	color: var(--text);
+}
+
+.nui-window__body
+{
+	display: block;
+	padding: var(--space-4);
+}
+
+.nui-window__footer
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	gap: var(--space-2);
+	padding: var(--space-3) var(--space-4);
+	border-top-width: 1dp;
+	border-top-color: var(--border);
+}
+
+/* Full-screen modal backdrop; put the .nui-window div inside it. It takes the
+   mouse on purpose, so nothing behind the dialog can be clicked. */
+body.nui-scrim
+{
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--overlay-scrim);
+}
+/* Not absolute: the flex scrim would stop centering it. With left and top at
+   auto, relative is the centered spot until the handle moves it. */
+body.nui-scrim .nui-window
+{
+	position: relative;
+}

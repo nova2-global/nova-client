@@ -1,0 +1,57 @@
+/* Hint tooltip, shown while the host is hovered; no Python involved.
+   <span class="nui-has-tooltip">?<span class="nui-tooltip nui-anim">@ui.KEY</span></span>
+   One line by default; nui-tooltip--wrap wraps long hints at 240dp.
+   Item tooltips keep using the legacy uitooltip windows.
+
+   The host is laid out as inline-block. In RmlUi 6.3 an inline box is never
+   the containing block of an absolutely positioned child, even with
+   position: relative, so an inline host would place the hint against the
+   window. The host is therefore one box that does not wrap with the text
+   around it. Use a span or a component element as the host; a bare div or p
+   becomes inline-block as well. nui.rtpl links this sheet before the other
+   components, so a component's own display (list row, toggle, slot) wins
+   the tie. */
+
+.nui-has-tooltip
+{
+	display: inline-block;
+	position: relative;
+}
+.nui-tooltip
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	bottom: 100%;
+	z-index: 10;
+	margin-bottom: var(--space-1);
+	/* RmlUi caps an absolutely positioned box's shrink-to-fit width at the
+	   host's width; the negative margin widens that limit without moving it. */
+	margin-right: -320dp;
+	padding: var(--space-1) var(--space-2);
+	border-radius: var(--radius-sm);
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	line-height: 1.35;
+	white-space: nowrap;
+	pointer-events: none;
+	visibility: hidden;
+	opacity: 0;
+}
+.nui-tooltip--wrap
+{
+	width: 240dp;
+	white-space: normal;
+}
+.nui-has-tooltip:hover .nui-tooltip, .nui-tooltip.is-open
+{
+	visibility: visible;
+	opacity: 1;
+}
+/* Fade in (--dur-fast, --ease-out). */
+.nui-tooltip.nui-anim
+{
+	transition: opacity 0.1s cubic-out;
+}

@@ -47,8 +47,8 @@ Rules (docs/ui/AUTHORING.md has the full list):
   * After a hot reload or a locale change the document is re-loaded in place:
     element handlers registered with element_on() are re-attached for you,
     the @nui.on handlers get the new document's own events (its load, change
-    from bindings), then on_reload() runs. The replaced document's unload
-    does not reach your handlers.
+    from bindings), then on_reload() runs. The replaced document's events
+    (its unload, a mouseout as it leaves) reach none of your handlers.
   * A window lives until destroy(): the runtime holds its handlers, so
     dropping the last reference does not close it. Only one window per MODEL
     name can exist at a time.

@@ -1,6 +1,6 @@
 """Python side of the NovaUI (RmlUi) windows.
 
-OWNER: P2 (contract from the shared base; the bodies below are stubs).
+OWNER: P2.
 
 A window is one RmlUi document (.rml + .rcss) plus an optional data model and
 a controller class in root/nui_<name>.py:
@@ -26,10 +26,17 @@ Rules (docs/ui/AUTHORING.md has the full list):
   * The kind of each model key (scalar, list, map) is fixed by
     initial_model(); set() with a different kind fails and logs.
   * Handlers get the evaluated data-event arguments as plain Python values
-    (int, float, str, bool, list, dict, None).
+    (int, float, str, bool, list, dict, None). Number literals written in the
+    markup arrive as float: use(3) calls on_use(3.0).
   * After a hot reload or a locale change the document is re-loaded in place:
     element handlers registered with element_on() are re-attached for you,
     then on_reload() runs.
+  * A window lives until destroy(): the runtime holds its handlers, so
+    dropping the last reference does not close it. Only one window per MODEL
+    name can exist at a time.
+  * destroy() inside one of the window's own @nui.on handlers (a close
+    button) hides it at once; the document and model go once the handler
+    has returned.
 
 The C++ module `_nui` (src/NovaUI/Python) is the only thing this file calls;
 when it is missing or has no runtime (headless tests) is_available() is False
@@ -42,21 +49,71 @@ except ImportError:  # pragma: no cover - client builds always have it
 	_nui = None
 
 
+_THEMES = ("dark", "light")
+_SCALE_MIN_PERCENT = 75
+_SCALE_MAX_PERCENT = 200
+
+# Open windows by document id, so a re-load reaches the right on_reload().
+_windows = {}
+
+
 def is_available():
 	"""True when the `_nui` module is present and the client created a runtime."""
-	raise NotImplementedError
+	return _nui is not None and bool(_nui.IsAvailable())
 
 
 def enabled_for_locale():
 	"""False for locales NovaUI cannot render yet (right-to-left scripts), so
 	callers keep the legacy window there."""
-	raise NotImplementedError
+	try:
+		import app
+	except ImportError:
+		return True
+	is_rtl = getattr(app, "IsRTL", None)
+	return not (is_rtl is not None and is_rtl())
 
 
 def on(event_name):
 	"""Method decorator: the method handles data-event `event_name` of the
-	window's model and is called with the evaluated arguments."""
-	raise NotImplementedError
+	window's model and is called with the evaluated arguments.
+
+	One method may carry several @on decorators. A subclass that overrides a
+	decorated method without repeating the decorator still receives the
+	event; a subclass method decorated for the same event name wins over the
+	base class one."""
+	if not isinstance(event_name, str) or not event_name:
+		raise TypeError("nui.on() takes the data-event name as a non-empty str")
+
+	def mark(method):
+		method._nui_events = getattr(method, "_nui_events", ()) + (event_name,)
+		return method
+
+	return mark
+
+
+def _event_methods(cls):
+	"""{event name: method name} over cls and its bases, subclasses last so
+	they win."""
+	found = {}
+	for klass in reversed(cls.__mro__):
+		for name, attr in vars(klass).items():
+			for event_name in getattr(attr, "_nui_events", ()):
+				found[event_name] = name
+	return found
+
+
+def _on_document_reloaded(doc):
+	window = _windows.get(doc)
+	if window is not None:
+		window.on_reload()
+
+
+def _prepare_runtime():
+	"""Before a window loads: the reload hook, and the string tables once per
+	runtime so @ui.KEY / @game.KEY resolve in its first document."""
+	_nui.SetReloadHandler(_on_document_reloaded)
+	if not _nui.HasStrings():
+		refresh_strings()
 
 
 class Window(object):
@@ -66,37 +123,101 @@ class Window(object):
 	MODEL = None      # data model name the document binds to, or None
 	MODAL = False     # show() as a modal document
 
+	_doc = 0          # document id, 0 when there is none
+	_model = 0        # model id, 0 when there is none
+
 	def __init__(self):
 		"""Creates the model (if MODEL) from initial_model(), loads DOCUMENT,
-		binds @on handlers. The document starts hidden."""
-		raise NotImplementedError
+		binds @on handlers. The document starts hidden.
+
+		Raises ValueError when DOCUMENT is not set, or when the class has @on
+		handlers but no MODEL (checked only while NovaUI is available). When
+		the model or the document cannot be made (the runtime logs why), the
+		window stays unavailable and its methods do nothing."""
+		self._doc = 0
+		self._model = 0
+		if not is_available():
+			return
+
+		cls = type(self)
+		if not self.DOCUMENT:
+			raise ValueError("%s.DOCUMENT is not set" % cls.__name__)
+		handlers = _event_methods(cls)
+		if handlers and not self.MODEL:
+			raise ValueError("%s has @nui.on handlers but no MODEL" % cls.__name__)
+
+		_prepare_runtime()
+		if self.MODEL:
+			model = _nui.CreateModel(self.MODEL, self.initial_model())
+			if not model:
+				return
+			self._model = model
+
+		doc = _nui.LoadDocument(self.DOCUMENT)
+		if not doc:
+			self._drop_model()
+			return
+		self._doc = doc
+		_windows[doc] = self
+
+		for event_name, method_name in handlers.items():
+			_nui.ModelOn(self._model, event_name, getattr(self, method_name))
 
 	def initial_model(self):
 		"""Top-level model keys and their initial values."""
 		return {}
 
 	def show(self):
-		raise NotImplementedError
+		"""Shows the document (modal if MODAL). True if it was shown."""
+		if not self._doc:
+			return False
+		return bool(_nui.Show(self._doc, bool(self.MODAL)))
 
 	def hide(self):
-		raise NotImplementedError
+		"""Hides the document. True if it was hidden."""
+		if not self._doc:
+			return False
+		return bool(_nui.Hide(self._doc))
 
 	def is_visible(self):
-		raise NotImplementedError
+		if not self._doc:
+			return False
+		return bool(_nui.IsVisible(self._doc))
 
 	def set(self, **values):
-		"""Replace model keys; only the views that use them update."""
-		raise NotImplementedError
+		"""Replace model keys; only the views that use them update.
+
+		True if every key was accepted. An unknown key or a kind that differs
+		from initial_model() is refused and logged; a value that is not an
+		int, float, str, bool, None, list, tuple or dict (with str keys)
+		raises TypeError."""
+		if not self._model:
+			return False
+		accepted = True
+		for key, value in values.items():
+			if not _nui.ModelSet(self._model, key, value):
+				accepted = False
+		return accepted
 
 	def get(self, key):
 		"""Current value of a model key (a copy), or None if unknown."""
-		raise NotImplementedError
+		if not self._model:
+			return None
+		return _nui.ModelGet(self._model, key)
 
 	def element_on(self, element_id, event, fn):
 		"""Plain DOM event on the element with this id ("click", "dragstart",
 		"keydown", ...); fn receives a dict with "type", "target_id" and, for
-		mouse events, "button"."""
-		raise NotImplementedError
+		mouse events, "button".
+
+		The dict also carries the event's other parameters ("mouse_x",
+		"mouse_y", the modifier keys, "key_identifier" for key events).
+		An empty element_id means the document itself. A second call for the
+		same element and event replaces fn; fn=None removes it. True if the
+		handler was registered (or removed)."""
+		if not self._doc:
+			return False
+		return bool(_nui.On(self._doc, element_id, event, fn))
 
 	def on_reload(self):
 		"""Hook: the document was re-loaded in place (hot reload, locale)."""
@@ -104,51 +225,174 @@ class Window(object):
 
 	def destroy(self):
 		"""Close the document, drop the model and every handler."""
-		raise NotImplementedError
+		doc = self._doc
+		self._doc = 0
+		if doc:
+			_windows.pop(doc, None)
+			if _nui is not None:
+				_nui.Close(doc)
+		self._drop_model()
+
+	def _drop_model(self):
+		model = self._model
+		self._model = 0
+		if model and _nui is not None:
+			_nui.DestroyModel(model)
 
 
 # --- appearance -------------------------------------------------------------
 # Each setter applies immediately and persists to config/metin2.cfg through
-# systemSetting (UI_THEME, UI_SCALE, UI_REDUCED_MOTION).
+# systemSetting (UI_THEME, UI_SCALE, UI_REDUCED_MOTION): it stores the value
+# and saves the file. Without NovaUI running only the saved value changes.
+
+def _system_setting():
+	try:
+		import systemSetting
+	except ImportError:
+		return None
+	return systemSetting
+
+
+def _save(setting):
+	save = getattr(setting, "SaveConfig", None)
+	if save is not None:
+		save()
+
 
 def set_theme(name):
-	""""dark" or "light"."""
-	raise NotImplementedError
+	""""dark" or "light" (any case); anything else raises ValueError."""
+	if not isinstance(name, str) or name.lower() not in _THEMES:
+		raise ValueError('nui.set_theme() takes "dark" or "light", not %r' % (name,))
+	theme = name.lower()
+	if is_available():
+		_nui.SetTheme(theme)
+	setting = _system_setting()
+	if setting is not None:
+		setting.SetUITheme(theme)
+		_save(setting)
 
 
 def get_theme():
-	raise NotImplementedError
+	"""The theme in use ("dark" or "light"); the saved one without NovaUI."""
+	if is_available():
+		theme = _nui.GetTheme()
+		if theme:
+			return theme
+	setting = _system_setting()
+	if setting is not None:
+		return setting.GetUITheme()
+	return "dark"
+
+
+def _clamp_scale_percent(percent):
+	if isinstance(percent, bool) or not isinstance(percent, (int, float)):
+		raise TypeError("nui.set_scale_percent() takes a number, not %s" % type(percent).__name__)
+	percent = int(round(percent))
+	if percent <= 0:
+		return 0
+	return min(max(percent, _SCALE_MIN_PERCENT), _SCALE_MAX_PERCENT)
 
 
 def set_scale_percent(percent):
-	"""0 = automatic (from the resolution), else 75..200."""
-	raise NotImplementedError
+	"""0 = automatic (from the resolution), else 75..200.
+
+	Values in between are clamped to that range, and anything at or below 0
+	means automatic, as the config file reads them."""
+	percent = _clamp_scale_percent(percent)
+	if is_available():
+		_nui.SetScalePercent(percent)
+	setting = _system_setting()
+	if setting is not None:
+		setting.SetUIScalePercent(percent)
+		_save(setting)
 
 
 def get_scale_percent():
 	"""The saved choice: 0 for automatic."""
-	raise NotImplementedError
+	setting = _system_setting()
+	if setting is not None:
+		return int(setting.GetUIScalePercent())
+	if is_available():
+		return int(_nui.GetScalePercent())
+	return 0
 
 
 def get_scale():
 	"""The scale factor in use now (1.0 = 100%)."""
-	raise NotImplementedError
+	if is_available():
+		return float(_nui.GetScale())
+	return 1.0
 
 
 def get_auto_scale():
 	"""The factor automatic mode would pick for the current resolution."""
-	raise NotImplementedError
+	if is_available():
+		return float(_nui.GetAutoScale())
+	return 1.0
 
 
 def set_reduced_motion(on):
-	raise NotImplementedError
+	on = bool(on)
+	if is_available():
+		_nui.SetReducedMotion(on)
+	setting = _system_setting()
+	if setting is not None:
+		setting.SetUIReducedMotion(1 if on else 0)
+		_save(setting)
 
 
 def is_reduced_motion():
-	raise NotImplementedError
+	"""Whether reduced motion is on now; the saved choice without NovaUI."""
+	if is_available():
+		return bool(_nui.GetReducedMotion())
+	setting = _system_setting()
+	if setting is not None:
+		return bool(setting.IsUIReducedMotion())
+	return False
+
+
+# --- strings ----------------------------------------------------------------
+
+def _escape_rml(text):
+	# RmlUi parses translated text again: a "<" would start markup and an
+	# entity would be decoded, so the tables carry them escaped.
+	return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _string_table(module_name):
+	"""The str globals of a locale module (names not starting with "_"), or
+	None when the module cannot be imported here."""
+	try:
+		module = __import__(module_name)
+	except Exception:
+		return None
+	table = {}
+	for key, value in vars(module).items():
+		if not key.startswith("_") and isinstance(value, str):
+			table[key] = _escape_rml(value)
+	return table
 
 
 def refresh_strings():
 	"""Push uiScriptLocale ("ui") and localeInfo ("game") to the runtime so
-	@ui.KEY / @game.KEY resolve; re-loads open documents."""
-	raise NotImplementedError
+	@ui.KEY / @game.KEY resolve; re-loads open documents.
+
+	Called for you before the first window loads and after every locale
+	reload (it registers itself with localeInfo.RegisterReloadCallback).
+	A locale module that cannot be imported keeps its previous table. True
+	if a table was pushed."""
+	if not is_available():
+		return False
+	ui = _string_table("uiScriptLocale")
+	game = _string_table("localeInfo")
+	if game is not None:
+		import localeInfo
+		register = getattr(localeInfo, "RegisterReloadCallback", None)
+		if register is not None:
+			register(refresh_strings)
+	if ui is not None:
+		# One re-load for both tables: only the last push re-loads.
+		_nui.SetStrings("ui", ui, game is None)
+	if game is not None:
+		_nui.SetStrings("game", game, True)
+	return ui is not None or game is not None

@@ -62,10 +62,10 @@ The client itself loads the fonts, the gallery and the render test by the consta
 Paths inside documents and style sheets:
 
 - A relative path resolves against the file that contains it: `href` and `src` in an `.rml` against the document, `image(...)` in an `.rcss` against that style sheet. `..` segments are normalized.
-- Templates are the exception. `href` in a template's `<head>` resolves against the template file, but the template's body is copied into each document that uses it, so an `<img src>` or an inline-style image path there resolves against that document (RmlUi joins them with the owner document's path). Put images in a template's body through an image decorator in a linked `.rcss`, a sprite, or a `d:/` path; lint reports a relative one as NUI007.
-- Never start a path with `/`. The runtime passes such a path through unchanged and the store has no names starting with `/`, so it never loads.
+- A path that starts with `/` is a store path from the store root and resolves the same from any file: `/nui/theme/tokens.rcss`, `/icon/item/27001.tga`. `_nui.LoadDocument` takes one too.
+- Templates are the exception to the first rule. `href` in a template's `<head>` resolves against the template file, but the template's body is copied into each document that uses it, so a relative `<img src>` or inline-style image path there resolves against that document (RmlUi joins them with the owner document's path). Put images in a template's body through an image decorator in a linked `.rcss`, a sprite, a `/` store path or a `d:/` path; lint reports a relative one as NUI007.
 - Name files in lowercase with hyphens. The store and `nuitool` look paths up without regard to case, so a reference in the wrong case still resolves; write the exact case anyway, because git and Linux file systems are case-sensitive. The three font files are the only mixed-case names (fixed by `NuiPaths.h`).
-- Legacy assets outside `nui/` are reached by climbing to the store root. From `nui/windows/<name>/` that is three levels: `../../../icon/item/27001.tga`. Model values from Python are store paths (`item.GetIconImageFileName()` style), so prefix them in the binding: `data-attr-src="'../../../' + slot.icon"`.
+- Legacy assets outside `nui/` are reached from the store root: `/icon/item/27001.tga`, or by climbing to it (three levels from `nui/windows/<name>/`: `../../../icon/item/27001.tga`). Model values from Python are store paths (`item.GetIconImageFileName()` style), so root them in the binding: `data-attr-src="'/' + slot.icon"`; Python may also pass `/icon/...` values itself.
 - Legacy `d:/ymir work/...` paths work as written; the runtime treats the drive prefix as absolute.
 
 ## A complete window
@@ -399,10 +399,13 @@ Markup:
 ## Localization
 
 - `@ui.KEY` resolves from `locale_interface.txt` (the `uiScriptLocale` module) and `@game.KEY` from `locale_game.txt` (`localeInfo`), for the client's current locale.
-- Translation applies to text content, to `{{ }}` output, to the document `<title>`, and to attribute values written in markup, such as `placeholder="@ui.KEY"` or `title="@ui.KEY"`. The runtime translates those when the element is created, every attribute except `id`, `class`, `style` and `data-*`; stock RmlUi translates text only, so this rests on the runtime's attribute pass (`nui-p0-core` b57f523), which arrives with integration.
+- What is translated:
+  - Text content, `{{ }}` output and the document `<title>` (RmlUi's text path).
+  - Attribute values written in markup, such as `placeholder="@ui.KEY"` or `title="@ui.KEY"`: the runtime translates every attribute except `id`, `class`, `style` and `data-*` when the element is created, in documents, templates and `data-for` items alike. The `<body>` attributes are translated once the document has loaded.
+  - Not values set later: see the next point.
 - Values set after the element exists are not translated: a `data-attr-*` or `data-value` binding, or an attribute set from code, shows `@ui.KEY` as written, and lint reports a key there as NUI005. Bind such an attribute to a model string that the controller fills from `uiScriptLocale` (`data-attr-placeholder="hint"`).
 - A missing key stays visible as `@ui.KEY` and is logged once, in text and in attributes alike.
-- Translated text is parsed as RML. Some shipped strings contain `<` or `&` (key hints such as `<CTRL> + Q`: 31 in `locale_interface.txt`, 4 in `locale_game.txt` across all locales), which render correctly only if the string tables are escaped when they are pushed. Check such a key in a snapshot before using it.
+- String tables are plain text. Some shipped strings contain `<` or `&` (key hints such as `<CTRL> + Q`: 31 in `locale_interface.txt`, 4 in `locale_game.txt` across all locales). RmlUi parses translated text again as RML, so the runtime escapes `&`, `<` and `>` in each entry there, and puts entries into attributes as they are: `<CTRL> + Q` shows as written in both. Two places show such an entry with its entities (`&lt;CTRL&gt;`): `<textarea>` content and `{{ }}` output of a model string that holds a key. Keep those keys out of them, or put the translated text into the model from Python.
 - Dynamic text (names, numbers, counts) comes from the model.
 - After a locale change, `nui.refresh_strings()` pushes the tables again and re-loads open documents; controllers re-apply state in `on_reload()`.
 - Noto Sans covers Latin, Greek and Cyrillic, which includes every non-right-to-left locale the client ships. It has no Arabic, Hebrew, CJK or Thai glyphs.
@@ -441,7 +444,7 @@ nuitool lint --root assets/nui --root assets/icon --locale assets/locale/locale/
 | NUI004 | `var(--x)` that is neither a token nor declared in the same file. |
 | NUI005 | `@ui.KEY` or `@game.KEY` missing from the locale files, or any such key in a `data-attr-*` or `data-value` binding, which is never translated. |
 | NUI006 | A `data-event-*` without a matching `@nui.on` handler. |
-| NUI007 | A link, template, image or sprite that does not resolve, including any path that starts with `/` or holds `{{ }}`, and a relative image path in a template's body. |
+| NUI007 | A link, template, image or sprite that does not resolve (a `/` path resolves from the store root), a path that holds `{{ }}`, and a relative image path in a template's body. |
 | NUI008 | RmlUi warnings or errors while loading the document with its fixture, one finding per report; or the runtime did not start while loading was on. |
 | NUI009 | An inline style: `style="..."`, `data-style-*` or `data-attr-style`. |
 | NUI010 | A feature the renderers do not draw (see [What the renderer draws](#what-the-renderer-draws)). |
@@ -480,6 +483,6 @@ In non-distribution builds, while the asset store is in file-load mode (dev runs
 
 - The runtime (`NuiRuntime`), the Direct3D 9 renderer, the host wiring and the `_nui` module are separate workstreams being integrated. Until then, only the tools and the content can be exercised.
 - The gallery's theme button (`#gallery-theme`) and close button (`#gallery-close`) do nothing until a gallery controller binds them with `element_on()`. A draft is in `docs/ui/examples/nui_gallery.py`; integration moves it to `assets/root/nui_gallery.py`.
-- Attribute values set after the element exists (`data-attr-*`, `data-value`, code) are not translated; attribute values written in markup are, once the runtime's attribute pass is integrated (see [Localization](#localization)).
+- Attribute values set after the element exists (`data-attr-*`, `data-value`, code) are not translated (see [Localization](#localization)).
 - Right-to-left scripts and IME composition display are not supported yet.
 - Hot reload, the debugger and the render test hotkey are compiled out of RelWithDebInfo builds (`_DISTRIBUTE`); a separate dev switch is an integration decision.

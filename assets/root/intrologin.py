@@ -17,6 +17,7 @@ import serverCommandParser
 import ime
 import uiScriptLocale
 import debugInfo
+import nui_login
 
 # Multi-language hot-reload system
 from uilocaleselector import LocaleSelector
@@ -154,6 +155,9 @@ class LoginWindow(ui.ScriptWindow):
 		# Multi-language hot-reload system
 		self.localeSelector = None
 
+		# NovaUI login board (nui_login.py), made in Open() while UI_NUI_LOGIN is on.
+		self.nuiBoard = None
+
 	def __del__(self):
 		net.ClearPhaseWindow(net.PHASE_WINDOW_LOGIN, self)
 		net.SetAccountConnectorHandler(0)
@@ -200,6 +204,11 @@ class LoginWindow(ui.ScriptWindow):
 		if not self.__LoadScript(selectPath):
 			dbg.TraceError("SelectCharacterWindow.Open - __LoadScript Error")
 			return
+
+		# NovaUI board when UI_NUI_LOGIN is on; None keeps the legacy boards.
+		self.nuiBoard = nui_login.open_board(self,
+			ui.__mem_func__(self.__OnClickSelectConnectButton),
+			ui.__mem_func__(self.__OnClickExitButton))
 
 		# Changed .xml -> .py because pack.Get does not allow .xml extension
 		self.__LoadLoginInfo("loginInfo.py")
@@ -248,6 +257,8 @@ class LoginWindow(ui.ScriptWindow):
 		app.ShowCursor()
 
 	def Close(self):
+		# First: the popupWindow.Close() below runs callbacks that would show it.
+		nui_login.close_board(self)
 
 		if self.connectingDialog:
 			self.connectingDialog.Close()
@@ -348,10 +359,14 @@ class LoginWindow(ui.ScriptWindow):
 		app.Exit()
 
 	def SetIDEditLineFocus(self):
+		if nui_login.focus_field(self, "user"):
+			return
 		if self.idEditLine != None:
 			self.idEditLine.SetFocus()
 
 	def SetPasswordEditLineFocus(self):
+		if nui_login.focus_field(self, "password"):
+			return
 		if self.pwdEditLine != None:
 			self.pwdEditLine.SetFocus()
 
@@ -578,7 +593,8 @@ class LoginWindow(ui.ScriptWindow):
 
 		else:
 			self.stream.popupWindow.Close()
-			self.stream.popupWindow.Open(localeInfo.LOGIN_CONNETING, self.SetPasswordEditLineFocus, localeInfo.UI_CANCEL)
+			nui_login.before_popup(self)
+			self.stream.popupWindow.Open(localeInfo.LOGIN_CONNETING, nui_login.after_popup(self, self.SetPasswordEditLineFocus), localeInfo.UI_CANCEL)
 
 		self.stream.SetLoginInfo(id, pwd)
 		self.stream.Connect()
@@ -618,9 +634,15 @@ class LoginWindow(ui.ScriptWindow):
 			dbg.TraceError("RTL/LTR direction changed, reloading UI script...")
 
 			# Save current state before Close() destroys references
-			wasOnLoginBoard = self.connectBoard and self.connectBoard.IsShow()
-			savedId = self.idEditLine.GetText() if self.idEditLine else ""
-			savedPwd = self.pwdEditLine.GetText() if self.pwdEditLine else ""
+			wasOnLoginBoard = nui_login.on_login_board(self)
+			if wasOnLoginBoard is None:
+				wasOnLoginBoard = self.connectBoard and self.connectBoard.IsShow()
+			typed = nui_login.typed_values(self)
+			if typed:
+				savedId, savedPwd = typed
+			else:
+				savedId = self.idEditLine.GetText() if self.idEditLine else ""
+				savedPwd = self.pwdEditLine.GetText() if self.pwdEditLine else ""
 
 			# Rebuild popup dialog for new direction
 			self.stream.popupWindow.Destroy()
@@ -633,10 +655,12 @@ class LoginWindow(ui.ScriptWindow):
 			# Restore the board the user was on
 			if wasOnLoginBoard:
 				self.__OpenLoginBoard()
-				if savedId:
-					self.idEditLine.SetText(savedId)
-				if savedPwd:
-					self.pwdEditLine.SetText(savedPwd)
+				# The NovaUI board takes the ID only; the legacy lines take both.
+				if not nui_login.restore_typed(self, savedId):
+					if savedId:
+						self.idEditLine.SetText(savedId)
+					if savedPwd:
+						self.pwdEditLine.SetText(savedPwd)
 			else:
 				self.__RefreshServerList()
 				self.__OpenServerBoard()
@@ -712,6 +736,7 @@ class LoginWindow(ui.ScriptWindow):
 	def __SetServerInfo(self, name):
 		net.SetServerInfo(name.strip())
 		self.serverInfo.SetText(name)
+		nui_login.set_server(self, name)
 
 	def __LoadLoginInfo(self, loginInfoFileName):
 		# This should not work in production
@@ -752,6 +777,7 @@ class LoginWindow(ui.ScriptWindow):
 
 				net.SetServerInfo(addr+":"+str(port))
 				self.serverInfo.SetText("K:"+addr+":"+str(port))
+				nui_login.set_server(self, "K:"+addr+":"+str(port))
 
 			slot=loginInfo.get("slot", 0)
 			isAutoLogin=loginInfo.get("auto", 0)
@@ -784,14 +810,16 @@ class LoginWindow(ui.ScriptWindow):
 		
 	def PopupDisplayMessage(self, msg):
 		self.stream.popupWindow.Close()
-		self.stream.popupWindow.Open(msg)
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(msg, nui_login.after_popup(self, 0))
 
 	def PopupNotifyMessage(self, msg, func=0):
 		if not func:
 			func=self.EmptyFunc
 
 		self.stream.popupWindow.Close()
-		self.stream.popupWindow.Open(msg, func, localeInfo.UI_OK)
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(msg, nui_login.after_popup(self, func), localeInfo.UI_OK)
 
 	def __OnCloseInputDialog(self):
 		if self.inputDialog:
@@ -871,6 +899,8 @@ class LoginWindow(ui.ScriptWindow):
 		if self.virtualKeyboard:
 			self.virtualKeyboard.Hide()
 
+		nui_login.leave_login_board(self)
+
 		if app.loggined and not SKIP_LOGIN_PHASE_SUPPORT_CHANNEL:
 			self.serverList.SelectItem(self.loginnedServer-1)
 			self.channelList.SelectItem(self.loginnedChannel-1)
@@ -883,6 +913,9 @@ class LoginWindow(ui.ScriptWindow):
 
 		self.serverBoard.SetPosition(self.xServerBoard, wndMgr.GetScreenHeight())
 		self.serverBoard.Hide()
+
+		if nui_login.enter_login_board(self):
+			return  # NovaUI: the legacy boards, the keyboard and the EditLine focus stay off
 
 		if self.virtualKeyboard:
 			self.virtualKeyboard.Show()
@@ -1133,4 +1166,5 @@ class LoginWindow(ui.ScriptWindow):
 	
 	def SameLogin_OpenUI(self):
 		self.stream.popupWindow.Close()
-		self.stream.popupWindow.Open(localeInfo.LOGIN_FAILURE_SAMELOGIN, 0, localeInfo.UI_OK)
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(localeInfo.LOGIN_FAILURE_SAMELOGIN, nui_login.after_popup(self, 0), localeInfo.UI_OK)

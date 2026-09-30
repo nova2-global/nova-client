@@ -1,12 +1,12 @@
 /* Item slots: square cells with a 32dp icon, a count badge and a hover
-   highlight. Legacy icons are store paths such as icon/item/27001.tga; from a
-   document in nui/windows/<name>/ they are reached as '../../../' + path.
+   highlight. Legacy icons are store paths such as icon/item/27001.tga; a
+   leading '/' makes a path resolve from the store root in any document.
 
    <div class="nui-slot-grid">
        <div class="nui-slot nui-anim" data-for="slot : slots"
             data-class-is-disabled="slot.locked">
            <img class="nui-slot__icon" data-if="slot.icon != ''"
-                data-attr-src="'../../../' + slot.icon"/>
+                data-attr-src="'/' + slot.icon"/>
            <span class="nui-slot__count" data-if="slot.count > 1">{{ slot.count }}</span>
        </div>
    </div> */

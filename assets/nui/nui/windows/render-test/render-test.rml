@@ -33,7 +33,7 @@
 		</div>
 
 		<div class="rt-cell" id="rt-radius">
-			<span class="rt-caption">radius</span>
+			<span class="rt-caption">radius, vertex-color gradients</span>
 			<div class="rt-row">
 				<div class="rt-box rt-radius-sm"></div>
 				<div class="rt-box rt-radius-md"></div>
@@ -41,16 +41,22 @@
 				<div class="rt-box rt-radius-round"></div>
 				<div class="rt-box rt-radius-border"></div>
 			</div>
+			<div class="rt-row rt-row-next">
+				<div class="rt-gradient rt-gradient-across" id="rt-gradient-across"></div>
+				<div class="rt-gradient rt-gradient-down" id="rt-gradient-down"></div>
+				<div class="rt-gradient rt-gradient-round" id="rt-gradient-round"></div>
+			</div>
 		</div>
 
 		<div class="rt-cell" id="rt-image">
-			<span class="rt-caption">image decorator, img</span>
+			<span class="rt-caption">image decorator, img, repeat-x fit</span>
 			<div class="rt-row">
 				<div class="rt-icon rt-icon-decorator" id="rt-image-decorator"></div>
 				<div class="rt-icon rt-icon-contain"></div>
 				<img class="rt-img" src="../../../icon/item/27001.tga"/>
 				<img class="rt-img rt-img-large" src="../../../icon/item/27001.tga"/>
 			</div>
+			<div class="rt-tiles" id="rt-tiles"></div>
 		</div>
 
 		<div class="rt-cell" id="rt-transform">

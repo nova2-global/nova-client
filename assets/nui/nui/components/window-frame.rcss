@@ -18,10 +18,13 @@
 	border-radius: var(--radius-lg);
 }
 
-/* Opens with a fade and a 4dp rise when the document loads. Values mirror
-   --dur-med and --ease-out: motion values are written out, not var(), see
-   docs/ui/AUTHORING.md "Motion". */
-.nui-window.nui-anim
+/* Opens with a fade and a 4dp rise each time the window is shown: the
+   runtime puts nui-shown on the <body> in Show and takes it off in Hide, and
+   the second selector covers the window div inside a modal scrim body.
+   Values mirror --dur-med and --ease-out: motion values are written out, not
+   var(), see docs/ui/AUTHORING.md "Motion". */
+.nui-window.nui-shown.nui-anim,
+.nui-shown .nui-window.nui-anim
 {
 	animation: 0.2s cubic-out nui-window-open;
 }

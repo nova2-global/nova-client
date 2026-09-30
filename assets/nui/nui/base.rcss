@@ -89,14 +89,15 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
    Motion is opt-in: transition and animation are only declared in rules of the
    form `.component.nui-anim`, so they apply only to elements tagged nui-anim.
    The class is repeated here to raise specificity, because RCSS has no
-   !important: three classes (300,000) outrank those two-class rules, which
-   are linked later and would win a tie. So a motion rule's whole selector,
-   ancestors and :not() included, may hold nui-anim, one other class and
-   tags, but no id, attribute or pseudo-class; nuitool lint reports a heavier
-   one as NUI011, measured against this rule. */
+   !important: four classes (400,000) outrank those rules, which are linked
+   later and would win a tie. So a motion rule's whole selector, ancestors
+   and :not() included, may hold nui-anim, two other classes and tags, but no
+   id, attribute or pseudo-class (the window frame's .nui-window.nui-shown
+   .nui-anim is the heaviest); nuitool lint reports a heavier one as NUI011,
+   measured against this rule. */
 @media (theme: reduced-motion)
 {
-	.nui-anim.nui-anim.nui-anim
+	.nui-anim.nui-anim.nui-anim.nui-anim
 	{
 		transition: none;
 		animation: none;

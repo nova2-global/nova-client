@@ -4,7 +4,7 @@ NovaUI is the RmlUi 6.3 layer that new client windows are written in: RML markup
 
 This guide is for people and AI agents writing windows. It is a reference: every rule below is either enforced by `nuitool lint` or explained by an RmlUi 6.3 behavior that was checked in the vendored source (`nova-client-src/vendor/RmlUi-6.3`). Where the RmlUi documentation and this guide disagree, this guide describes what the vendored version does.
 
-Status: the content (tokens, components, gallery, render test) and the contracts are in place. The runtime, the Direct3D 9 renderer and the `_nui` Python module are being integrated, so some behavior described here is the contract rather than something you can run in the client yet. [Status and known gaps](#status-and-known-gaps) lists what is pending.
+Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool snap`, the client host, the `_nui` Python module and this content are integrated and covered by unit and integration tests. They have not been checked in the running client yet. [Status and known gaps](#status-and-known-gaps) lists what is missing.
 
 ## Contents
 
@@ -34,8 +34,8 @@ Status: the content (tokens, components, gallery, render test) and the contracts
 5. Write the controller `assets/root/nui_settings.py`: subclass `nui.Window`, set `DOCUMENT` and `MODEL`, return every model key from `initial_model()`, and add one `@nui.on("name")` method for every `data-event-*="name(...)"` in the document.
 6. Use `@ui.KEY` (from `locale_interface.txt`) or `@game.KEY` (from `locale_game.txt`) for every visible string. The key must exist in every locale.
 7. If you touched `tokens.json`, run `python tools/nui_tokens.py` (it rewrites `tokens.rcss` and the token table below, and prints the contrast ratios). `python tools/nui_tokens.py --check` verifies without writing and exits 1 while an output is stale. Then run `nuitool lint` until it exits 0. Findings are the only thing on standard output; the `N findings in M files` summary and any note about a skipped check always go to standard error. Exit 2 (a missing root, a mistyped path) also leaves standard output empty, so go by the exit code.
-8. Run `nuitool snap` in both themes at scale 1.0, 1.5 and 2.0, and once with `--reduced-motion`. `--size` is in pixels: give it the scale times the dp area the window needs, for a full-screen window 1920x1080 at 1.0, 2880x1620 at 1.5 and 3840x2160 at 2.0 (the client's own sizes at those scales). Snap does not scroll, so a scroll container shows only its first screen. Look at the images.
-9. Check the window with the German locale (strings run about a third longer than English) and at 75% scale.
+8. Run `nuitool snap` with `--locale assets/locale/locale/en` in both themes at scale 1.0, 1.5 and 2.0, and once with `--reduced-motion`. `--size` is in pixels: give it the scale times the dp area the window needs, for a full-screen window 1920x1080 at 1.0, 2880x1620 at 1.5 and 3840x2160 at 2.0 (the client's own sizes at those scales). Snap does not scroll, so a scroll container shows only its first screen. Look at the images.
+9. Check the window with the German locale (`--locale assets/locale/locale/de`; strings run about a third longer than English) and at 75% scale.
 10. Open the window from game code only through its controller. Never call RmlUi or `_nui` directly.
 
 ## File layout and store paths
@@ -158,7 +158,8 @@ What the example relies on:
 - `template="nui"` pulls in the tokens, `base.rcss` and every component sheet, so the document links only its own sheet.
 - `data-model` goes on `<body>`. The model must exist before the document loads; `nui.Window.__init__` creates it first.
 - The toggle and the slider use one-way bindings (`data-attrif-checked`, `data-attr-value`) and report changes through `data-event-change`. The controller calls `set()`, which updates the view. `ev.checked` and `ev.value` are parameters of RmlUi's change event.
-- A range input reports `ev.value` as a float, so the handler rounds it before storing an int.
+- Handler arguments are Python scalars. A range input's `ev.value` arrives as an int while the value is a whole number and as a float otherwise, so the handler rounds before storing an int.
+- `on_set_music` and `on_set_volume` also run when nothing was clicked: the bindings send `change` whenever the view moves the control, after `set()`, on every re-load, and on the first load inside `__init__`. Both handlers only store the value they are given, so running them again changes nothing.
 
 ## Components
 
@@ -264,7 +265,7 @@ A document binds one data model by name; the controller owns it. Expressions use
 | `data-if` | `data-if="slot.count > 1"` | Removes the element from layout when false (`display: none`). |
 | `data-visible` | `data-visible="loading"` | Hides with `visibility`, keeping the space. |
 | `data-class-NAME` | `data-class-is-selected="row.id == selected"` | Adds class NAME while true. |
-| `data-attr-NAME` | `data-attr-src="'../../../' + slot.icon"` | Sets attribute NAME to the result. |
+| `data-attr-NAME` | `data-attr-src="'/' + slot.icon"` | Sets attribute NAME to the result. |
 | `data-attrif-NAME` | `data-attrif-disabled="!can_buy"` | Sets attribute NAME (empty value) while true, removes it while false. |
 | `data-event-TYPE` | `data-event-click="use(slot.index)"` | Calls the controller handler `@nui.on("use")` with the evaluated arguments. `TYPE` is any RmlUi event: `click`, `dblclick`, `mousedown`, `change`, `keydown`, `dragstart`, ... |
 | `data-alias-NAME` | `data-alias-item="slots[3]"` | A local name for an address, for templates. |
@@ -279,7 +280,7 @@ Expressions:
 - Event parameters: `ev.NAME` reads a parameter of the current event, for example `ev.value` and `ev.checked` on `change`, `ev.button` on mouse events, `ev.tab_index` on the tabset's `tabchange`.
 - Several actions in one event: `data-event-click="select(slot.index); open_menu()"`.
 
-Keep bindings one-way: write model values from Python with `set()`. Setting `checked` or `value` through a binding also fires `change`, so a handler must accept the value the model already has. RmlUi can also write into a model from the document (`data-value`, `data-checked`, and assignments such as `data-event-click="tab = 2"`), but `DynamicModel.h` does not promise that, so do not rely on it.
+Keep bindings one-way: write model values from Python with `set()`. A binding that sets `checked` or `value` makes the control send `change`, so a `change` handler runs for input and also after `set()` moves the control, on every re-load, and on the first load, inside `__init__`. Apply `ev.checked` or `ev.value` idempotently: never toggle, resend a packet or open a window from such a handler. RmlUi can also write into a model from the document (`data-value`, `data-checked`, and assignments such as `data-event-click="tab = 2"`). `nui.py` specifies that such a write keeps a scalar key's type: an int key stays an int (a fraction is cut toward zero), text that does not read as a number of that type leaves the key as it was, and a `None` key takes the first type written. A text field bound to a number key shows the number as RmlUi prints it after each accepted keystroke, so bind free-form text to a string key and convert in Python.
 
 ## Python controller API
 
@@ -293,17 +294,19 @@ A window is one document plus an optional model and a controller class:
 | `MODEL` | Name the document uses in `data-model`, or `None`. |
 | `MODAL` | `True` to show the window as a modal document. |
 | `initial_model()` | Returns every top-level model key with its first value. Each key's kind (scalar, list, map) is fixed from then on. |
-| `@nui.on("name")` | Marks a method as the handler for `data-event-*="name(...)"`. It receives the evaluated arguments as plain Python values (`int`, `float`, `str`, `bool`, `list`, `dict`, `None`). |
-| `__init__()` | Creates the model, loads the document hidden and binds the handlers. |
+| `@nui.on("name")` | Marks a method as the handler for `data-event-*="name(...)"`. It receives the evaluated arguments as Python scalars: `int`, `float`, `str`, `bool` or `None`. A whole number arrives as an `int`, literals and arithmetic included (`use(3)` and `use(slot.index + 1)` pass an `int`); other numbers arrive as `float`. A list or map argument arrives as its length or member count, with no warning, so pass its members: `use(slot.index)`, not `use(slot)`. Event parameters that are not scalars (`ev.drag_element`) arrive as `None`. |
+| `__init__()` | Creates the model, binds the handlers, then loads the document hidden. Events the document raises while it loads (`data-event-load` on `<body>`, `change` from bindings such as `data-attrif-checked`) reach the handlers before `__init__` returns; until then `show()`, `hide()`, `is_visible()` and `element_on()` do nothing, while `set()` and `get()` work. |
 | `show()`, `hide()`, `is_visible()` | Visibility. |
 | `focus(element_id)` | Gives the element with that id the keyboard focus (a text field gets the caret); `False` while the window or the element is hidden. `hide()` takes the focus off the window's fields and a later `show()` does not put it back, so focus the field again after `show()`. Works inside handlers. |
-| `set(**values)` | Replaces model keys; only views that use them update. A value of a different kind fails and logs. |
+| `set(**values)` | Replaces model keys; only views that use them update. An unknown key or a value of a different kind is refused and logged; a value that is not an `int`, `float`, `str`, `bool`, `None`, `list`, `tuple` or `dict` with `str` keys raises `TypeError`. |
 | `get(key)` | A copy of the current value, or `None`. |
-| `element_on(element_id, event, fn)` | A plain DOM event on the element with that id; `fn` gets a dict with `type`, `target_id` and, for mouse events, `button`. Re-attached after reloads. |
-| `on_reload()` | Hook: the document was re-loaded in place (hot reload, locale change). |
-| `destroy()` | Closes the document and drops the model and every handler. |
+| `element_on(element_id, event, fn)` | A plain DOM event on the element with that id; `fn` gets a dict with `type`, `target_id` and, for mouse events, `button`, plus the event's other parameters. Re-attached after reloads. |
+| `on_reload()` | Hook: the document was re-loaded in place (hot reload, locale change). By then the `element_on()` handlers are attached again and the new document's own events (its load, `change` from bindings) have reached the `@nui.on` handlers. The replaced document's events (its unload, a `mouseout` as it leaves) reach no handler. |
+| `destroy()` | Closes the document and drops the model and every handler. Inside one of the window's own handlers (a close button) the document hides at once, and it goes with the model by the end of the frame. |
 
 Module functions: `nui.is_available()` (false without the `_nui` module or a runtime, for example in headless tests; every `Window` method is then a no-op), `nui.enabled_for_locale()` (false for right-to-left locales), `nui.set_theme("dark"|"light")`, `nui.get_theme()`, `nui.set_scale_percent(p)` (0 = automatic, else 75..200), `nui.get_scale_percent()`, `nui.get_scale()`, `nui.get_auto_scale()`, `nui.set_reduced_motion(on)`, `nui.is_reduced_motion()`, `nui.refresh_strings()`. The appearance setters apply at once and persist to `config/metin2.cfg` (`UI_THEME`, `UI_SCALE`, `UI_REDUCED_MOTION`).
+
+A window lives until `destroy()`: the runtime holds its handlers, so dropping the last reference does not close it. Only one window per `MODEL` name can exist at a time.
 
 Python never runs per frame. It runs when a handler fires or when game code calls a controller method that calls `set()`.
 
@@ -326,18 +329,27 @@ Python never runs per frame. It runs when a handler fires or when game code call
 
 ## What the renderer draws
 
-The Direct3D 9 renderer implements geometry, textures, scissor clipping, transforms and the stencil clip mask. It does not implement render layers, filters or shaders, the same as the CPU renderer used by `nuitool snap`. Checked in `Source/Core`, these RCSS features need what is missing and must not be used; `nuitool lint` reports each as NUI010:
+The Direct3D 9 renderer implements geometry, textures, scissor clipping, transforms and the stencil clip mask. It does not implement render layers, filters or shaders, the same as the CPU renderer used by `nuitool snap`. The list at the top of `nova-client-src/src/NovaUI/D3D9/NuiRenderInterfaceD3D9.h` is the source of truth; this table follows it. These RCSS features need what is missing and must not be used; `nuitool lint` reports each as NUI010:
 
-| Do not use | Why |
+| Do not use | What happens |
 |---|---|
-| `decorator: linear-gradient(...)`, `repeating-linear-gradient`, `radial-gradient`, `repeating-radial-gradient`, `conic-gradient`, `repeating-conic-gradient`, `shader(...)` | Compiled shaders (`RenderInterface::CompileShader`). |
-| `decorator: gradient(...)`, `horizontal-gradient`, `vertical-gradient` | Drawn with vertex colors, but excluded to keep one rule: no gradients. |
-| `box-shadow` | Rendered into a layer and saved as a texture. |
-| `filter`, `backdrop-filter` (blur, drop-shadow, brightness, contrast, grayscale, hue-rotate, invert, opacity, saturate, sepia) | Render layers plus compiled filters. |
-| `mask-image` | Render layers plus a mask image. |
-| `image(...)` with fit `repeat`, `repeat-x` or `repeat-y` | Tiling needs wrap addressing. The CPU renderer behind `nuitool snap` clamps, so its snapshots smear the edge texels, while the Direct3D 9 renderer wraps such geometry; the two would not match. Repeat by laying out several elements, or use a larger image. |
+| `box-shadow` | It needs a render layer saved as a texture. Without one RmlUi draws the element's background near the screen origin on every frame. Never use it. |
+| `filter`, `backdrop-filter` (blur, drop-shadow, brightness, contrast, grayscale, hue-rotate, invert, opacity, saturate, sepia) | They need render layers and compiled filters. The content renders unfiltered and RmlUi logs "Could not compile filter on element". `filter: opacity()` stays opaque: use the `opacity` property. |
+| `mask-image` | It needs render layers. The mask image is drawn as visible content. |
+| `decorator: linear-gradient(...)`, `repeating-linear-gradient`, `radial-gradient`, `repeating-radial-gradient`, `conic-gradient`, `repeating-conic-gradient`, `shader(...)` | They need compiled shaders (`RenderInterface::CompileShader`). Nothing is drawn, and RmlUi logs "Could not generate decorator element data". |
 
-Safe to use: solid backgrounds, borders (all sides solid), `border-radius`, `opacity`, `transform` (translate, rotate, scale, skew, matrix, perspective), `overflow` clipping, `image`, `tiled-horizontal`, `tiled-vertical`, `tiled-box` (their tiles stretch) and `ninepatch` decorators, `<img>`, sprite sheets (`@spritesheet`), `image-color` tints and `font-effect` (outline, shadow, glow, blur; the font engine draws those into glyph textures on the CPU).
+More rules for art, from the client's image loader (`GrpImageTexture.cpp`):
+
+- Use PNG, TGA, JPEG, BMP or DDS files. SVG does not load.
+- Avoid pure `#FF00FF` in PNG, TGA, JPEG and BMP art. On the client's Direct3D 9Ex device those files load through D3DX with a color key that turns every opaque `#FF00FF` texel transparent. `nuitool lint` reports an image with such texels as NUI010, and snapshots show them transparent, as the client does. DDS files load without the key.
+- On a device the client counts as low on texture memory, PNG, TGA, JPEG and BMP images are stored in 16 bits per texel (`A4R4G4B4`, or `A1R5G5B5` without alpha) and may be halved in size. Smooth color and alpha ramps band there; DDS files keep their format.
+- An image that is missing when a document first asks for it stays missing until the client restarts: RmlUi does not ask for that path again, for that document or any other. Hot reload does not retry it (see [Hot reload and debugging](#hot-reload-and-debugging)).
+- A legacy `.sub` image (a region of an atlas) never shows its atlas neighbors: filtering and clamping stop at the region's own edges, and a repeat fit tiles the region alone. On a device without pixel shader 2.0 the Direct3D 9 renderer falls back to point sampling, and a `.sub` region then clamps at the atlas's edges and cannot tile.
+
+Safe to use: solid backgrounds, borders (all sides solid), `border-radius`, `opacity`, `transform` (translate, rotate, scale, skew, matrix, perspective), `overflow` clipping, `image`, `tiled-horizontal`, `tiled-vertical`, `tiled-box` (their tiles stretch) and `ninepatch` decorators, `<img>`, sprite sheets (`@spritesheet`), `image-color` tints, `font-effect` (outline, shadow, glow, blur; the font engine draws those into glyph textures on the CPU), and:
+
+- Two-color gradients: `decorator: horizontal-gradient(var(--accent) var(--danger))` and `vertical-gradient(...)`. RmlUi colors the background mesh's vertices, so no shader is involved, and the gradient follows `border-radius`. The older form `gradient(horizontal ...)` draws the same but RmlUi 6.3 logs it as deprecated, which lint reports as NUI008.
+- Image fits `repeat`, `repeat-x` and `repeat-y`. Both renderers wrap along an axis whose texture coordinates leave the image (by more than 1/4096) and clamp along the other, so `repeat-x` tiles across without bleeding the top and bottom rows into each other. RmlUi refuses these fits for `@spritesheet` sprites.
 
 Clipping cost: an overflow element with `border-radius` always uses the stencil clip mask. An overflow element that has a transform, or sits inside a transformed element (RmlUi applies ancestor transforms to descendants), uses the mask when its content overflows, and never the scissor, because its box can be projected anywhere. Other rectangular overflow uses the cheaper scissor. The client creates a D24S8 depth-stencil surface, so the mask is available. If the bound depth-stencil surface had no stencil bits, the Direct3D 9 renderer would skip the mask and log a warning once: rounded overflow would then clip to a rectangle, and the overflow of a transformed element would not be clipped by that element at all.
 
@@ -397,6 +409,10 @@ Markup:
 - RmlUi does not parse a template file as XML: it searches the text for `<head>`, `</head>`, `<body>`, `</body>` and `<template`. Once that search has passed a `/` in front of the word it looks for, it no longer matches an opening tag, so text such as `/template` before the `<template>` tag, `/head` before `<head>` or `/body` between `</head>` and `<body>` (even inside a comment) makes the template fail to load. Start the file with its `<template name="...">` tag; lint reports this as NUI001.
 - A document needs its data model when it loads (see the cheatsheet), which is why every window with a model has a fixture.
 
+Events:
+
+- RmlUi has no drag cancel. When a drag-and-drop ends (`drag: drag-drop` or `drag: clone`), RmlUi sends `dragdrop` to the element under the pointer, if there is one, and then `dragend` to the dragged element. When the client cancels a drag, for example because the window loses activation, it ends the drag with the pointer outside every element, so only `dragend` arrives; a release outside NovaUI looks the same. Treat a `dragend` without a `dragdrop` as a cancelled drag and undo what the drag started (a lifted item, a highlighted slot). A cancelled handle or slider drag stops where it is.
+
 ## Localization
 
 - `@ui.KEY` resolves from `locale_interface.txt` (the `uiScriptLocale` module) and `@game.KEY` from `locale_game.txt` (`localeInfo`), for the client's current locale.
@@ -448,42 +464,48 @@ nuitool lint --root assets/nui --root assets/icon --locale assets/locale/locale/
 | NUI007 | A link, template, image or sprite that does not resolve (a `/` path resolves from the store root), a path that holds `{{ }}`, and a relative image path in a template's body. |
 | NUI008 | RmlUi warnings or errors while loading the document with its fixture, one finding per report; or the runtime did not start while loading was on. |
 | NUI009 | An inline style: `style="..."`, `data-style-*` or `data-attr-style`. |
-| NUI010 | A feature the renderers do not draw (see [What the renderer draws](#what-the-renderer-draws)). |
+| NUI010 | A feature the renderers do not draw, or an image with opaque `#FF00FF` texels, which the client's color key draws transparent (see [What the renderer draws](#what-the-renderer-draws)). |
 | NUI011 | Motion that RmlUi drops or that reduced motion cannot stop, including a motion selector that ties or outranks the reduced-motion rule (see [Motion and reduced motion](#motion-and-reduced-motion)). |
 
 Snapshots:
 
 ```
-nuitool snap --root assets/nui --root assets/icon \
+nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/en \
 	--doc nui/windows/gallery/gallery.rml --fixture assets/nui/nui/windows/gallery/gallery.fixture.json \
 	--theme dark --scale 1.5 --size 2880x1620 --out gallery-dark-150.png
 ```
 
 - `--doc` is a store path, or a file path under the first root.
 - `--fixture` is not picked up automatically; pass the window's `<name>.fixture.json`.
+- `--locale` points at one locale folder, as for lint, and fills the string tables before the document loads. Without it every `@ui.KEY` and `@game.KEY` shows as written, and RmlUi warns once for each.
 - `--size WxH` is the backbuffer in pixels (default 1280x720). `--scale` is 0.75 to 2, or `auto` for the client's height-based scale (default 1). `--theme` is `dark` (the default) or `light`.
 - Snap does not scroll and does not move the window, so the frame has to hold the window: `--size` at least the scale times the window's right and bottom edges in dp. A scroll container shows only its first screen. The gallery is sized for a 1920x1080 dp area: `--size 1920x1080 --scale 1`, `--size 2880x1620 --scale 1.5` and `--size 3840x2160 --scale 2` show all of it. The 1280x720 default is a smaller dp area than the client uses at any automatic scale. Snap notes on standard error when the window reaches past the frame, or when a scroll container (`overflow: auto` or `scroll`) holds more than it shows; neither changes the exit code.
-- `--time` is how many seconds of animation run before the frame is taken (default 1, which lets the window-open fade finish). `--reduced-motion` renders the resting state.
-- `--compare golden.png [--tolerance N] [--diff diff.png]` compares with a stored image, channel by channel (N is 0 to 255, default 0), and exits 1 on a mismatch. The diff image goes to `--diff`, by default the output name with `.png` replaced by `.diff.png`. A snapshot matches the golden it was saved as at tolerance 0, as long as the golden was written by `nuitool snap` with the same `--size`, `--scale`, `--theme` and `--time`. `--compare` may not name the `--out` or the diff file, since snap writes those.
+- `--time` is how many seconds of animation run before the frame is taken (default 1, which lets the window-open fade and every stock transition finish). RmlUi moves an animation at most 0.1 s per update, so snap advances the clock in steps of at most 0.1 s; long times cost one update per 0.1 s. An endless animation is caught at the phase `--time` gives it. `--reduced-motion` renders the resting state.
+- `--compare golden.png [--tolerance N] [--diff diff.png]` compares with a stored image, channel by channel (N is 0 to 255, default 0), and exits 1 on a mismatch. The diff image goes to `--diff`, by default the output name with `.png` replaced by `.diff.png`. A snapshot matches the golden it was saved as at tolerance 0, as long as the golden was written by `nuitool snap` with the same `--size`, `--scale`, `--theme` and `--time`, by a build for the same platform. Windows and Linux builds can differ by 1 in a few pixels of rotated content, so compare across platforms with `--tolerance 1`. `--compare` may not name the `--out` or the diff file, since snap writes those.
 - RmlUi warnings and errors during a snapshot print as `rmlui: ...` on standard error and do not change the exit code; lint reports them as NUI008.
-- DDS and legacy `.sub` images are not decoded in snapshots. The image area stays transparent at the file's own size, so the layout matches the client, which draws them, and snap prints a warning naming each file (`rmlui: SoftRenderInterface: ... is not decoded`). Prefer PNG or TGA for NovaUI art.
-- The CPU renderer follows the same RmlUi render interface rules as the D3D9 renderer (premultiplied alpha, the same unsupported features). The two differ at the alpha edges of scaled file images: the CPU renderer filters premultiplied texels, like RmlUi's GL3 backend, while the D3D9 renderer premultiplies after filtering, which darkens the edges of black-matte icons by up to about 50 of 255 (measured on the render test's icon with the CPU renderer set to the D3D9 order). With the Direct3D 9 renderer as it is now (`nui-p1-render` f239f91), scaled legacy icons show that dark fringe in the client at UI scales other than 100%; integration decides whether that changes. Solid colors, borders, text and 1:1 images should agree within a small tolerance, which the integration cross-check verifies.
+- DDS files are not decoded in snapshots, and neither are `.sub` images whose atlas is a DDS file (most legacy `.sub` files). The image area stays transparent at the image's own size, so the layout matches the client, which draws them, and snap prints a warning naming each file (`rmlui: SoftRenderInterface: ... is not decoded`). A `.sub` image of a PNG, TGA, JPEG or BMP atlas is drawn. Prefer PNG or TGA for NovaUI art.
+- The CPU renderer follows the Direct3D 9 renderer's rules: premultiplied texels filtered, clamp addressing that wraps per axis for repeat fits, `.sub` regions clamped at their own edges, the color key and the same unsupported features. Colors, borders, text and images should therefore agree within a small tolerance, but a snapshot is not a screenshot of the client.
+- `docs/ui/snapshots/` holds goldens of the gallery and the render test in both themes at scales 1.0, 1.5 and 2.0, with the commands that check and regenerate them in its README. Regenerate them in the same change as anything they show.
 
 `nuitool help` prints the current options.
 
 ## Hot reload and debugging
 
-In non-distribution builds, while the asset store is in file-load mode (dev runs without an installed release, `--no-patch`), every asset lookup reads the file under the client's working directory, and a `HotReloader` watches the `nui/` folder there. One way to edit in place is to make `<client>/nui` a directory junction to `nova-client/assets/nui/nui`. Note that `nova-client-src/CMakeLists.txt` defines `_DISTRIBUTE` for RelWithDebInfo as well as Release, so today only Debug builds have hot reload and the two hotkeys below.
+Hot reload and the two hotkeys below are dev tools. They are compiled into every client build except a distribution one (the CMake option `NOVA_DISTRIBUTION` sets the define `NOVA_UI_DEV_TOOLS` to 0), in every configuration. They switch on only in a build that does not enforce the safe gate (`NOVA_SAFEGATE=OFF`, the dev and test builds), started with the environment variable `NOVA_UI_DEV` set to anything but `0`; a build that enforces the gate, as every player build does, never reads the variable (`nova-client-src/src/UserInterface/NuiHost.h`).
+
+Hot reload also needs the asset store in file-load mode (dev runs without an installed release, `--no-patch`): every asset lookup then reads the file under the client's working directory, and a `HotReloader` watches the `nui/` folder there. One way to edit in place is to make `<client>/nui` a directory junction to `nova-client/assets/nui/nui`.
 
 - Saving an `.rcss` re-applies style sheets to open documents.
-- Saving an `.rml` or `.rtpl`, or adding or removing any `.rml`, `.rtpl` or `.rcss` file, re-loads open documents in place. Element handlers from `element_on()` are re-attached, then `on_reload()` runs. Models are kept. A removal counts one poll (0.5 s by default) late, so an editor that saves by replacing the file causes one reload of the kind of file it saved, not two.
+- Saving an `.rml` or `.rtpl`, or adding or removing any `.rml`, `.rtpl` or `.rcss` file, re-loads open documents in place. Element handlers from `element_on()` are re-attached, the new document's own events (its load, `change` from bindings) reach the `@nui.on` handlers, then `on_reload()` runs; the replaced document's events reach no handler. Models are kept. A removal counts one poll (0.5 s by default) late, so an editor that saves by replacing the file causes one reload of the kind of file it saved, not two.
+- A reload does not retry an image that was missing: add the file, then restart the client (see [What the renderer draws](#what-the-renderer-draws)).
 - Ctrl+Shift+D toggles the RmlUi debugger (element tree, computed styles, events).
 - Ctrl+Shift+U toggles the render test page.
 
 ## Status and known gaps
 
-- The runtime (`NuiRuntime`), the Direct3D 9 renderer, the host wiring and the `_nui` module are separate workstreams being integrated. Until then, only the tools and the content can be exercised.
-- The gallery's theme button (`#gallery-theme`) and close button (`#gallery-close`) do nothing until a gallery controller binds them with `element_on()`. A draft is in `docs/ui/examples/nui_gallery.py`; integration moves it to `assets/root/nui_gallery.py`.
+- Nothing here has been checked in the running client yet; the unit and integration tests and the snapshots are the evidence so far. That includes the gallery controller, `assets/root/nui_gallery.py`, which binds the theme and close buttons with `element_on()`.
 - Attribute values set after the element exists (`data-attr-*`, `data-value`, code) are not translated (see [Localization](#localization)).
-- Right-to-left scripts and IME composition display are not supported yet.
-- Hot reload, the debugger and the render test hotkey are compiled out of RelWithDebInfo builds (`_DISTRIBUTE`); a separate dev switch is an integration decision.
+- Right-to-left scripts are not supported. NovaUI text fields show the IME composition, underlined, inside the field; like the legacy edit line, they show no candidate list.
+- RmlUi has no drag cancel event (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)).
+- Snapshots do not decode DDS files or `.sub` images of a DDS atlas; they stay transparent.
+- A missing image is not retried until the client restarts, hot reload included (see [What the renderer draws](#what-the-renderer-draws)).

@@ -1,9 +1,9 @@
-"""Controller for the NovaUI gallery (nui/windows/gallery/gallery.rml).
+"""Controller for the NovaUI gallery (nui/windows/gallery/gallery.rml), the
+developer page that shows every component in every state it styles.
 
-A draft kept in docs/ui/examples/ because controllers live in assets/root/,
-outside the NovaUI content folders; integration moves it to
-assets/root/nui_gallery.py. It follows the nui.py contract and has not run in
-the client yet.
+The model holds the same data as gallery.fixture.json, so the client shows
+what the snapshots in docs/ui/snapshots/ show. The page has no data-event
+handlers; its two title bar buttons are bound by id with element_on().
 
 Open it from a debug command:
 	import nui_gallery
@@ -41,8 +41,6 @@ class GalleryWindow(nui.Window):
 
 	def __init__(self):
 		nui.Window.__init__(self)
-		# The gallery has no data-event handlers (nuitool lint wants a
-		# controller for those); its two title bar buttons are bound by id.
 		self.element_on("gallery-theme", "click", self._on_theme)
 		self.element_on("gallery-close", "click", self._on_close)
 

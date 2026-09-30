@@ -96,6 +96,10 @@ body.rt
 }
 
 /* Radius */
+.rt-row-next
+{
+	margin-top: var(--space-3);
+}
 .rt-radius-sm { border-radius: var(--radius-sm); background-color: var(--accent); }
 .rt-radius-md { border-radius: var(--radius-md); background-color: var(--accent); }
 .rt-radius-lg { border-radius: var(--radius-lg); background-color: var(--accent); }
@@ -106,6 +110,22 @@ body.rt
 	border-color: var(--warning);
 	border-radius: 12dp 0 12dp 0;
 	background-color: var(--surface-sunken);
+}
+
+/* Vertex-color gradients: RmlUi colors the background mesh's vertices, so
+   both renderers draw them without shaders; one follows a border radius. */
+.rt-gradient
+{
+	display: block;
+	width: 72dp;
+	height: 40dp;
+}
+.rt-gradient-across { decorator: horizontal-gradient(var(--accent) var(--danger)); }
+.rt-gradient-down { decorator: vertical-gradient(var(--success) var(--surface-sunken)); }
+.rt-gradient-round
+{
+	border-radius: var(--radius-lg);
+	decorator: horizontal-gradient(var(--warning) var(--accent));
 }
 
 /* Images: an existing legacy icon (straight-alpha TGA) through the image
@@ -136,6 +156,17 @@ body.rt
 {
 	width: 64dp;
 	height: 64dp;
+}
+/* repeat-x scales the texture coordinates across the strip and leaves them
+   in [0, 1] down it, so the renderers wrap horizontally and clamp vertically.
+   The strip is not a whole number of icons wide, so the last one is cut. */
+.rt-tiles
+{
+	display: block;
+	height: 32dp;
+	margin-top: var(--space-2);
+	background-color: var(--surface-sunken);
+	decorator: image(../../../icon/item/27001.tga repeat-x);
 }
 
 /* Transforms */

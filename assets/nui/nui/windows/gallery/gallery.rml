@@ -17,8 +17,8 @@
 		<handle class="nui-window__handle" move_target="#document">
 			<span class="nui-window__title">NovaUI gallery</span>
 		</handle>
-		<!-- Bound by id with element_on() in the gallery controller (drafted in
-		     docs/ui/examples/nui_gallery.py, not in assets/root yet). -->
+		<!-- Bound by id with element_on() in the controller,
+		     assets/root/nui_gallery.py. -->
 		<button id="gallery-theme" class="nui-button nui-button--small nui-button--secondary nui-anim">Theme</button>
 		<button id="gallery-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim">&#215;</button>
 	</div>
@@ -222,7 +222,7 @@
 						data-class-is-disabled="slot.locked"
 						data-class-is-selected="slot.selected"
 						data-class-is-hover="slot.hover">
-						<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="'../../../' + slot.icon"/>
+						<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="'/' + slot.icon"/>
 						<span class="nui-slot__count" data-if="slot.count > 1">{{ slot.count }}</span>
 					</div>
 				</div>

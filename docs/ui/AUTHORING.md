@@ -333,13 +333,16 @@ The Direct3D 9 renderer implements geometry, textures, scissor clipping, transfo
 | Do not use | What happens |
 |---|---|
 | `box-shadow` | It needs a render layer saved as a texture. Without one RmlUi draws the element's background near the screen origin on every frame. Never use it. |
-| `filter`, `backdrop-filter` (blur, drop-shadow, brightness, contrast, grayscale, hue-rotate, invert, opacity, saturate, sepia) | They need render layers and compiled filters. The content renders unfiltered and RmlUi logs a warning. `filter: opacity()` stays opaque: use the `opacity` property. |
+| `filter`, `backdrop-filter` (blur, drop-shadow, brightness, contrast, grayscale, hue-rotate, invert, opacity, saturate, sepia) | They need render layers and compiled filters. The content renders unfiltered and RmlUi logs "Could not compile filter on element". `filter: opacity()` stays opaque: use the `opacity` property. |
 | `mask-image` | It needs render layers. The mask image is drawn as visible content. |
 | `decorator: linear-gradient(...)`, `repeating-linear-gradient`, `radial-gradient`, `repeating-radial-gradient`, `conic-gradient`, `repeating-conic-gradient`, `shader(...)` | They need compiled shaders (`RenderInterface::CompileShader`). Nothing is drawn, and RmlUi logs "Could not generate decorator element data". |
 
-Two more rules for art:
+More rules for art, from the client's image loader (`GrpImageTexture.cpp`):
 
+- Use PNG, TGA, JPEG, BMP or DDS files. SVG does not load.
 - Avoid pure `#FF00FF` in PNG, TGA, JPEG and BMP art. On the client's Direct3D 9Ex device those files load through D3DX with a color key that turns every opaque `#FF00FF` texel transparent. `nuitool lint` reports an image with such texels as NUI010, and snapshots show them transparent, as the client does. DDS files load without the key.
+- On a device the client counts as low on texture memory, PNG, TGA, JPEG and BMP images are stored in 16 bits per texel (`A4R4G4B4`, or `A1R5G5B5` without alpha) and may be halved in size. Smooth color and alpha ramps band there; DDS files keep their format.
+- An image that is missing when a document first asks for it stays missing until the client restarts: RmlUi does not ask for that path again, for that document or any other. Hot reload does not retry it (see [Hot reload and debugging](#hot-reload-and-debugging)).
 - A legacy `.sub` image (a region of an atlas) never shows its atlas neighbors: filtering and clamping stop at the region's own edges, and a repeat fit tiles the region alone. On a device without pixel shader 2.0 the Direct3D 9 renderer falls back to point sampling, and a `.sub` region then clamps at the atlas's edges and cannot tile.
 
 Safe to use: solid backgrounds, borders (all sides solid), `border-radius`, `opacity`, `transform` (translate, rotate, scale, skew, matrix, perspective), `overflow` clipping, `image`, `tiled-horizontal`, `tiled-vertical`, `tiled-box` (their tiles stretch) and `ninepatch` decorators, `<img>`, sprite sheets (`@spritesheet`), `image-color` tints, `font-effect` (outline, shadow, glow, blur; the font engine draws those into glyph textures on the CPU), and:
@@ -487,10 +490,13 @@ nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/
 
 ## Hot reload and debugging
 
-In non-distribution builds, while the asset store is in file-load mode (dev runs without an installed release, `--no-patch`), every asset lookup reads the file under the client's working directory, and a `HotReloader` watches the `nui/` folder there. One way to edit in place is to make `<client>/nui` a directory junction to `nova-client/assets/nui/nui`. Note that `nova-client-src/CMakeLists.txt` defines `_DISTRIBUTE` for RelWithDebInfo as well as Release, so today only Debug builds have hot reload and the two hotkeys below.
+Hot reload and the two hotkeys below are dev tools. They are compiled into every client build except a distribution one (the CMake option `NOVA_DISTRIBUTION` sets the define `NOVA_UI_DEV_TOOLS` to 0), in every configuration. They switch on only in a build that does not enforce the safe gate (`NOVA_SAFEGATE=OFF`, the dev and test builds), started with the environment variable `NOVA_UI_DEV` set to anything but `0`; a build that enforces the gate, as every player build does, never reads the variable (`nova-client-src/src/UserInterface/NuiHost.h`).
+
+Hot reload also needs the asset store in file-load mode (dev runs without an installed release, `--no-patch`): every asset lookup then reads the file under the client's working directory, and a `HotReloader` watches the `nui/` folder there. One way to edit in place is to make `<client>/nui` a directory junction to `nova-client/assets/nui/nui`.
 
 - Saving an `.rcss` re-applies style sheets to open documents.
 - Saving an `.rml` or `.rtpl`, or adding or removing any `.rml`, `.rtpl` or `.rcss` file, re-loads open documents in place. Element handlers from `element_on()` are re-attached, the new document's own events (its load, `change` from bindings) reach the `@nui.on` handlers, then `on_reload()` runs; the replaced document's events reach no handler. Models are kept. A removal counts one poll (0.5 s by default) late, so an editor that saves by replacing the file causes one reload of the kind of file it saved, not two.
+- A reload does not retry an image that was missing: add the file, then restart the client (see [What the renderer draws](#what-the-renderer-draws)).
 - Ctrl+Shift+D toggles the RmlUi debugger (element tree, computed styles, events).
 - Ctrl+Shift+U toggles the render test page.
 
@@ -501,4 +507,4 @@ In non-distribution builds, while the asset store is in file-load mode (dev runs
 - Right-to-left scripts are not supported. NovaUI text fields show the IME composition, underlined, inside the field; like the legacy edit line, they show no candidate list.
 - RmlUi has no drag cancel event (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)).
 - Snapshots do not decode DDS files or `.sub` images of a DDS atlas; they stay transparent.
-- Hot reload, the debugger and the render test hotkey are compiled out of RelWithDebInfo builds (`_DISTRIBUTE`); a separate dev switch is an integration decision.
+- A missing image is not retried until the client restarts, hot reload included (see [What the renderer draws](#what-the-renderer-draws)).

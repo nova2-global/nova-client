@@ -73,6 +73,8 @@ CONTRAST_PAIRS = (
     ("text-muted", "surface", 4.5, "secondary text"),
     ("text-muted", "surface-raised", 4.5, "secondary text on panels"),
     ("text-muted", "surface-sunken", 4.5, "placeholders"),
+    ("text-muted", "surface-hover", 4.5, "list row meta on hovered rows"),
+    ("text-muted", "selection", 4.5, "list row meta on selected rows"),
     ("accent", "surface", 4.5, "accent text (selected tab)"),
     ("accent", "surface-raised", 4.5, "accent text on panels"),
     ("accent-text", "accent", 4.5, "primary button label"),
@@ -89,6 +91,7 @@ CONTRAST_PAIRS = (
     ("focus-ring", "surface", 3.0, "focus ring"),
     ("focus-ring", "surface-raised", 3.0, "focus ring on panels"),
     ("focus-ring", "surface-sunken", 3.0, "focus ring on inputs"),
+    ("focus-ring", "selection", 3.0, "focus ring on a selected list row"),
     ("accent", "surface-sunken", 3.0, "slider fill, checked toggle"),
 )
 

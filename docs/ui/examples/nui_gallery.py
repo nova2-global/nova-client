@@ -13,11 +13,11 @@ import nui
 
 # Same data as gallery.fixture.json, so the client shows what snapshots show.
 _ROWS = [
-	{"id": 1, "name": "Warrior", "meta": "Lv. 42", "disabled": False, "hover": False},
-	{"id": 2, "name": "Ninja", "meta": "Lv. 37", "disabled": False, "hover": False},
-	{"id": 3, "name": "Sura", "meta": "Lv. 51", "disabled": False, "hover": True},
-	{"id": 4, "name": "Shaman", "meta": "Lv. 12", "disabled": True, "hover": False},
-	{"id": 5, "name": "Lycan", "meta": "Lv. 29", "disabled": False, "hover": False},
+	{"id": 1, "name": "Warrior", "meta": "Lv. 42", "disabled": False, "hover": False, "focus": False},
+	{"id": 2, "name": "Ninja", "meta": "Lv. 37", "disabled": False, "hover": False, "focus": True},
+	{"id": 3, "name": "Sura", "meta": "Lv. 51", "disabled": False, "hover": True, "focus": False},
+	{"id": 4, "name": "Shaman", "meta": "Lv. 12", "disabled": True, "hover": False, "focus": False},
+	{"id": 5, "name": "Lycan", "meta": "Lv. 29", "disabled": False, "hover": False, "focus": False},
 ]
 
 _ICONS = [

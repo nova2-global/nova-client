@@ -11,7 +11,11 @@
    The indicator is one more <tab> after the real ones (a tabset only accepts
    tab and panel children). It ignores the mouse and slides under the selected
    tab: nui-tabs--N (2..6) sizes it to 1/N, so the real tabs share the width
-   equally. */
+   equally.
+
+   Tabs are in the tab order: Tab moves between them, and Enter or Space
+   selects one (the click reaches the tabset). is-hover and is-focus force a
+   state without the pointer or the keyboard. */
 
 .nui-tabs
 {
@@ -30,10 +34,14 @@
 	display: block;
 	flex: 1 1 0;
 	padding: var(--space-2) var(--space-3);
+	/* Reserved for the focus ring, so focus does not move the label. */
+	border-width: 1dp;
+	border-color: transparent;
 	color: var(--text-muted);
 	font-weight: bold;
 	text-align: center;
 	white-space: nowrap;
+	tab-index: auto;
 }
 .nui-tabs tab:hover, .nui-tabs tab.is-hover
 {
@@ -44,6 +52,10 @@
 {
 	color: var(--accent);
 	background-color: transparent;
+}
+.nui-tabs tab:focus-visible, .nui-tabs tab.is-focus
+{
+	border-color: var(--focus-ring);
 }
 .nui-tabs panels
 {
@@ -59,8 +71,12 @@
 	width: 50%;
 	height: 2dp;
 	padding: 0;
+	/* translateX(N * 100%) moves it by its own width, which has to stay one
+	   tab: no border. It is not a tab to focus either. */
+	border-width: 0;
 	background-color: var(--accent);
 	pointer-events: none;
+	tab-index: none;
 	transform: translateX(0%);
 }
 /* Slide (--dur-med, --ease-out). */

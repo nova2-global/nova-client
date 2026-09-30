@@ -1,7 +1,11 @@
 /* Button: <button class="nui-button nui-button--primary nui-anim">.
    Variants: --primary, --secondary (default look), --ghost, --danger.
    Sizes: --small, --icon (square). Disabled: the `disabled` attribute
-   (static, or data-attrif-disabled="expr"); it also blocks clicks.
+   (static, or data-attrif-disabled="expr"). <button> is a plain element in
+   RmlUi, so the attribute does nothing by itself; the rule below takes the
+   button out of pointer hit testing (pointer-events), the tab order and
+   Focus() (focus), and keeps Enter and Space from clicking it while it has
+   focus (tab-index). A button disabled while focused keeps its focus ring.
    is-hover, is-active and is-focus force a state without the pointer or the
    keyboard (gallery snapshots, data-driven highlights). */
 
@@ -40,6 +44,8 @@
 {
 	opacity: 0.45;
 	pointer-events: none;
+	tab-index: none;
+	focus: none;
 }
 
 /* Hover and press fade (--dur-fast, --ease-out). */

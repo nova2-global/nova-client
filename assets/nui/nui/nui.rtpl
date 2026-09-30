@@ -9,6 +9,9 @@
 	     file: text before it can hide the tag from the template reader. -->
 	<link type="text/rcss" href="theme/tokens.rcss"/>
 	<link type="text/rcss" href="base.rcss"/>
+	<!-- The tooltip host rule sets display on any element; the component sheets
+	     after it must win that tie with their own display. -->
+	<link type="text/rcss" href="components/tooltip.rcss"/>
 	<link type="text/rcss" href="components/panel.rcss"/>
 	<link type="text/rcss" href="components/window-frame.rcss"/>
 	<link type="text/rcss" href="components/button.rcss"/>
@@ -19,7 +22,6 @@
 	<link type="text/rcss" href="components/list.rcss"/>
 	<link type="text/rcss" href="components/tabs.rcss"/>
 	<link type="text/rcss" href="components/slot-grid.rcss"/>
-	<link type="text/rcss" href="components/tooltip.rcss"/>
 	<!-- Layout helpers last: they are combined with component classes on one
 	     element and must win ties (same specificity, later sheet). -->
 	<link type="text/rcss" href="components/layout.rcss"/>

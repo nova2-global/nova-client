@@ -1,8 +1,12 @@
 /* Window frame: title bar with a drag handle and a close button, body, footer.
    Put .nui-window on <body> (the document is the window; the handle moves
-   #document) or on a <div> inside a full-screen modal body (the handle then
-   names the div's id in move_target). The window's own sheet sets width,
-   height and position. */
+   #document) or on a <div> inside a full-screen modal <body class="nui-scrim">
+   (the handle then names the div's id in move_target). A handle moves its
+   target by writing left and top, which a static box ignores, so this sheet
+   makes the modal div position: relative: the scrim keeps it centered and
+   the drag offsets it from there. The window's own sheet sets width and
+   height, and position only for a body-level window; a modal div must not
+   get a position or left/top of its own. */
 
 .nui-window
 {
@@ -95,4 +99,10 @@ body.nui-scrim
 	align-items: center;
 	justify-content: center;
 	background-color: var(--overlay-scrim);
+}
+/* Not absolute: the flex scrim would stop centering it. With left and top at
+   auto, relative is the centered spot until the handle moves it. */
+body.nui-scrim .nui-window
+{
+	position: relative;
 }

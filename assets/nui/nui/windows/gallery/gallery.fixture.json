@@ -5,11 +5,11 @@
 		"show_hint": true,
 		"selected": 2,
 		"rows": [
-			{"id": 1, "name": "Warrior", "meta": "Lv. 42", "disabled": false, "hover": false},
-			{"id": 2, "name": "Ninja", "meta": "Lv. 37", "disabled": false, "hover": false},
-			{"id": 3, "name": "Sura", "meta": "Lv. 51", "disabled": false, "hover": true},
-			{"id": 4, "name": "Shaman", "meta": "Lv. 12", "disabled": true, "hover": false},
-			{"id": 5, "name": "Lycan", "meta": "Lv. 29", "disabled": false, "hover": false}
+			{"id": 1, "name": "Warrior", "meta": "Lv. 42", "disabled": false, "hover": false, "focus": false},
+			{"id": 2, "name": "Ninja", "meta": "Lv. 37", "disabled": false, "hover": false, "focus": true},
+			{"id": 3, "name": "Sura", "meta": "Lv. 51", "disabled": false, "hover": true, "focus": false},
+			{"id": 4, "name": "Shaman", "meta": "Lv. 12", "disabled": true, "hover": false, "focus": false},
+			{"id": 5, "name": "Lycan", "meta": "Lv. 29", "disabled": false, "hover": false, "focus": false}
 		],
 		"slots": [
 			{"icon": "icon/item/27001.tga", "count": 200, "locked": false, "selected": false, "hover": false},

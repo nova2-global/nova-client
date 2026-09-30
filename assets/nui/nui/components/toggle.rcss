@@ -1,6 +1,8 @@
 /* Toggle switch over a real checkbox. The label forwards clicks to the input
    (no Python needed to flip it); the track and knob follow :checked through
-   the sibling selector.
+   the sibling selector. The checkbox stays in the tab order, so Tab reaches
+   the toggle and Space flips it; its focus shows on the track. is-hover and
+   is-focus force a state without the pointer or the keyboard.
 
    <label class="nui-toggle">
        <input type="checkbox" class="nui-toggle__input" checked
@@ -12,13 +14,25 @@
 .nui-toggle
 {
 	display: inline-flex;
+	position: relative;
 	flex-direction: row;
 	align-items: center;
 	gap: var(--space-2);
 }
+/* Hidden without display: none, which would drop it from tab navigation.
+   RmlUi counts only display and visibility, so a zero size and opacity keep
+   the checkbox focusable; absolute keeps it out of the flex row, and the
+   relative toggle is its containing block, so Tab scrolls the toggle into
+   view. */
 .nui-toggle__input
 {
-	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	opacity: 0;
+	pointer-events: none;
 }
 .nui-toggle__track
 {
@@ -44,7 +58,7 @@
 	background-color: var(--text-muted);
 	transform: translateX(0dp);
 }
-.nui-toggle:hover .nui-toggle__track
+.nui-toggle:hover .nui-toggle__track, .nui-toggle.is-hover .nui-toggle__track
 {
 	border-color: var(--text-muted);
 }
@@ -57,6 +71,12 @@
 {
 	background-color: var(--accent-text);
 	transform: translateX(14dp);
+}
+/* After the checked rules: both weigh the same, so a checked toggle shows the
+   ring too. */
+.nui-toggle__input:focus-visible + .nui-toggle__track, .nui-toggle.is-focus .nui-toggle__track
+{
+	border-color: var(--focus-ring);
 }
 .nui-toggle__input:disabled + .nui-toggle__track, .nui-toggle__input:disabled + .nui-toggle__track + .nui-toggle__label
 {

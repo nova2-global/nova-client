@@ -4,7 +4,10 @@
             data-class-is-selected="row.id == selected"
             data-event-click="select(row.id)">{{ row.name }}</div>
    </div>
-   Give the list a height (or max-height) in the window's sheet to scroll. */
+   Give the list a height (or max-height) in the window's sheet to scroll.
+   The `disabled` attribute takes a row out of hit testing, the tab order and
+   Enter/Space, like a disabled button. is-hover and is-focus force a state
+   without the pointer or the keyboard. */
 
 .nui-list
 {
@@ -24,8 +27,11 @@
 	align-items: center;
 	gap: var(--space-2);
 	padding: var(--space-2) var(--space-3);
-	border-left-width: 2dp;
-	border-left-color: transparent;
+	/* The left edge is the selection stripe; the focus ring uses all four, so
+	   they are reserved here and focus does not move the row. RmlUi paints the
+	   background inside the border, so a transparent edge shows the list. */
+	border-width: 1dp 1dp 1dp 2dp;
+	border-color: transparent;
 	border-radius: var(--radius-sm);
 	color: var(--text);
 	tab-index: auto;
@@ -34,19 +40,27 @@
 {
 	background-color: var(--surface-hover);
 }
-.nui-list__item:focus-visible, .nui-list__item.is-focus
-{
-	border-left-color: var(--focus-ring);
-}
 .nui-list__item.is-selected
 {
 	background-color: var(--selection);
+	border-left-color: var(--accent);
+}
+/* After is-selected: both weigh the same, so the later rule wins. */
+.nui-list__item:focus-visible, .nui-list__item.is-focus
+{
+	border-color: var(--focus-ring);
+}
+/* A focused selected row keeps its stripe (the heavier selector). */
+.nui-list__item.is-selected:focus-visible, .nui-list__item.is-selected.is-focus
+{
 	border-left-color: var(--accent);
 }
 .nui-list__item[disabled]
 {
 	color: var(--text-muted);
 	pointer-events: none;
+	tab-index: none;
+	focus: none;
 }
 /* Hover fade (--dur-fast, --ease-out). */
 .nui-list__item.nui-anim

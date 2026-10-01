@@ -1,9 +1,9 @@
 """Python side of the NovaUI (RmlUi) windows.
 
-OWNER: P2.
-
 A window is one RmlUi document (.rml + .rcss) plus an optional data model and
-a controller class in root/nui_<name>.py:
+a controller class in root/nui_<name>.py, with each hyphen in the window name
+written as an underscore (window item-shop: root/nui_item_shop.py, imported
+as nui_item_shop):
 
     import nui
 
@@ -49,15 +49,39 @@ Rules (docs/ui/AUTHORING.md has the full list):
     the @nui.on handlers get the new document's own events (its load, change
     from bindings), then on_reload() runs. The replaced document's events
     (its unload, a mouseout as it leaves) reach none of your handlers.
+  * Model keys (initial_model()) and event names (@on) are letters, digits
+    and _, start with a letter, and are none of it, it_index, ev, true,
+    false, size and literal, in any case. RmlUi refuses the rest: a refused
+    key leaves the whole window unavailable (syserr names the key), and on()
+    raises ValueError for such an event name. Nested list and map members
+    are not restricted.
+  * Model strings shown with {{ }} are translated like markup text, so an
+    @ui.KEY or @game.KEY inside one is replaced. Never bind text another
+    player wrote (chat, names, shop signs, mail) through {{ }} as it is.
+    Model strings are always text, never markup: the runtime refuses
+    data-rml.
   * A window lives until destroy(): the runtime holds its handlers, so
     dropping the last reference does not close it. Only one window per MODEL
     name can exist at a time.
   * destroy() inside one of the window's own handlers (a close button) hides
-    it at once; the document and model go by the end of the frame.
+    it at once; the document and model go by the end of the frame. From
+    destroy() on, the document's own events (a mouseout as it hides, its
+    unload) reach none of its handlers, so a window made again in its own
+    handler keeps the model.
+  * Keys: a NovaUI window gets keys only while one of its text fields has
+    the focus, while a modal (MODAL = True) is shown, or while the focus is
+    on a control the player reached with Tab; Escape reaches the focused
+    window first in any case. An element_on("", "keydown", fn) handler that
+    returns exactly True keeps the key: an Escape then does not also reach
+    the legacy UI. KEY_ESCAPE, KEY_RETURN, KEY_NUMPADENTER, KEY_TAB and
+    KEY_SPACE are the key_identifier values.
 
 The C++ module `_nui` (src/NovaUI/Python) is the only thing this file calls;
-when it is missing or has no runtime (headless tests) is_available() is False
-and every Window method is a no-op that returns a falsy value.
+when it is missing (plain Python outside the client) or no runtime is active
+(NovaUI failed to start or has shut down, or a test started none)
+is_available() is False and every Window method is a no-op that returns a
+falsy value. A headless runtime (NOVA_UI_HEADLESS, or a test's null
+renderer) is active, so there is_available() is True and windows work.
 """
 
 try:
@@ -69,13 +93,24 @@ except ImportError:  # pragma: no cover - client builds always have it
 _THEMES = ("dark", "light")
 _SCALE_MIN_PERCENT = 75
 _SCALE_MAX_PERCENT = 200
+_RESERVED_NAMES = ("it", "it_index", "ev", "true", "false", "size", "literal")
+
+# RmlUi's key identifiers, as ev["key_identifier"] of a key event carries
+# them. `_nui` exports RmlUi's own values; the numbers here are the same, for
+# Python run without the client.
+KEY_ESCAPE = getattr(_nui, "KEY_ESCAPE", 81)
+KEY_RETURN = getattr(_nui, "KEY_RETURN", 72)
+KEY_NUMPADENTER = getattr(_nui, "KEY_NUMPADENTER", 61)
+KEY_TAB = getattr(_nui, "KEY_TAB", 70)
+KEY_SPACE = getattr(_nui, "KEY_SPACE", 1)
 
 # Open windows by document id, so a re-load reaches the right on_reload().
 _windows = {}
 
 
 def is_available():
-	"""True when the `_nui` module is present and the client created a runtime."""
+	"""True when the `_nui` module is present and a runtime is active (the
+	client's, headless or not)."""
 	return _nui is not None and bool(_nui.IsAvailable())
 
 
@@ -90,6 +125,16 @@ def enabled_for_locale():
 	return not (is_rtl is not None and is_rtl())
 
 
+def _is_legal_name(name):
+	"""RmlUi's rule for model keys and data-event names."""
+	if not name or not ("a" <= name[0].lower() <= "z"):
+		return False
+	for c in name.lower():
+		if not (c == "_" or "a" <= c <= "z" or "0" <= c <= "9"):
+			return False
+	return name.lower() not in _RESERVED_NAMES
+
+
 def on(event_name):
 	"""Method decorator: the method handles data-event `event_name` of the
 	window's model and is called with the evaluated arguments.
@@ -97,9 +142,17 @@ def on(event_name):
 	One method may carry several @on decorators. A subclass that overrides a
 	decorated method without repeating the decorator still receives the
 	event; a subclass method decorated for the same event name wins over the
-	base class one."""
+	base class one.
+
+	The name follows RmlUi's rule (letters, digits and _, starting with a
+	letter; not it, it_index, ev, true, false, size or literal, in any case);
+	another one raises ValueError. A data-event handler cannot stop an event;
+	to keep a key, use element_on() and return True."""
 	if not isinstance(event_name, str) or not event_name:
 		raise TypeError("nui.on() takes the data-event name as a non-empty str")
+	if not _is_legal_name(event_name):
+		raise ValueError("nui.on(%r): a data-event name is letters, digits and _, starts with a letter, "
+			"and is not one of %s" % (event_name, ", ".join(_RESERVED_NAMES)))
 
 	def mark(method):
 		method._nui_events = getattr(method, "_nui_events", ()) + (event_name,)
@@ -191,7 +244,13 @@ class Window(object):
 		_windows[doc] = self
 
 	def initial_model(self):
-		"""Top-level model keys and their initial values."""
+		"""Top-level model keys and their initial values.
+
+		Keys follow RmlUi's rule (letters, digits and _, starting with a
+		letter; not it, it_index, ev, true, false, size or literal, in any
+		case). One other key makes RmlUi refuse the whole model, and the
+		window stays unavailable (syserr names the key). Members of nested
+		lists and maps may have any name."""
 		return {}
 
 	def show(self):
@@ -229,7 +288,11 @@ class Window(object):
 		True if every key was accepted. An unknown key or a kind that differs
 		from initial_model() is refused and logged; a value that is not an
 		int, float, str, bool, None, list, tuple or dict (with str keys)
-		raises TypeError."""
+		raises TypeError.
+
+		A string shown with {{ }} is translated: an @ui.KEY or @game.KEY in
+		it is replaced, so do not set text another player wrote into a key
+		that {{ }} shows. Strings are text, never markup."""
 		if not self._model:
 			return False
 		accepted = True
@@ -250,11 +313,23 @@ class Window(object):
 		mouse events, "button".
 
 		The dict also carries the event's other parameters ("mouse_x",
-		"mouse_y", the modifier keys, "key_identifier" for key events).
+		"mouse_y", the modifier keys, "key_identifier" for key events,
+		compared with KEY_ESCAPE and the other KEY_ constants).
 		An empty element_id means the document itself. A second call for the
 		same element and event replaces fn; fn=None removes it. True if the
 		handler was registered (or removed). Events of the copy a re-load
-		replaced (its unload, blur, mouseout) do not reach fn."""
+		replaced (its unload, blur, mouseout) do not reach fn.
+
+		For "keydown", fn returning exactly True keeps the key: it stops
+		there, so ancestor handlers and RmlUi's own Tab, arrow and Enter/Space
+		handling do not run, and an Escape does not also reach the legacy UI
+		(which would close a legacy window or open the system menu). Return
+		True only when the handler acted on the key, and only while the
+		window is shown; any other return value lets the key go on. Note that
+		a lambda returns its expression, and show(), hide() and set() return
+		True. A focused text field stops every key but Tab itself, so a
+		document-level handler sees no Escape typed in a field: register the
+		same handler on the field too."""
 		if not self._doc:
 			return False
 		return bool(_nui.On(self._doc, element_id, event, fn))
@@ -266,7 +341,8 @@ class Window(object):
 	def destroy(self):
 		"""Close the document, drop the model and every handler. Inside one
 		of the window's handlers the document hides at once, and it goes
-		with the model by the end of the frame."""
+		with the model by the end of the frame. From here on its document's
+		events reach none of the handlers, its unload included."""
 		doc = self._doc
 		self._doc = 0
 		if doc:

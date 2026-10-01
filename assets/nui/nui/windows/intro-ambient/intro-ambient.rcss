@@ -1,0 +1,165 @@
+/* Intro ambience (see intro-ambient.rml). Motion rules follow
+   docs/ui/AUTHORING.md "Motion": values written out, nui-anim plus at most
+   two other classes, so base.rcss's reduced-motion rule stops all of it.
+   With the animations off every ember stays below the bottom edge and the
+   sweep band stays clipped left of the logo, so the layer shows nothing. */
+
+body.intro-ambient
+{
+	left: 0dp;
+	top: 0dp;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+/* --- Embers -----------------------------------------------------------------
+   24 embers: a round warm glow with a bright core, 24dp below the bottom
+   edge until their animation lifts them. Each one fades in, drifts sideways
+   and fades out 600 to 700dp up, around the logo. Three paths, each holding
+   still for a different share of its loop, and durations from 7.5s to 11.5s
+   keep them from moving in step. Each ember's own opacity changes, which
+   rebuilds only its two small meshes per frame. */
+.intro-ember
+{
+	position: absolute;
+	bottom: -24dp;
+	width: 14dp;
+	height: 14dp;
+	border-radius: 7dp;
+	background-color: var(--ember-glow);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.intro-ember__core
+{
+	width: 5dp;
+	height: 5dp;
+	border-radius: 3dp;
+	background-color: var(--ember);
+}
+.intro-ember--s
+{
+	width: 10dp;
+	height: 10dp;
+	border-radius: 5dp;
+}
+.intro-ember--s .intro-ember__core
+{
+	width: 3dp;
+	height: 3dp;
+	border-radius: 2dp;
+}
+.intro-ember--l
+{
+	width: 20dp;
+	height: 20dp;
+	border-radius: 10dp;
+}
+.intro-ember--l .intro-ember__core
+{
+	width: 7dp;
+	height: 7dp;
+	border-radius: 4dp;
+	background-color: var(--ember-hot);
+}
+
+.intro-ember-1.nui-anim { left: 3%; animation: 8.0s linear-in-out infinite intro-rise-a; }
+.intro-ember-2.nui-anim { left: 7%; animation: 10.0s linear-in-out infinite intro-rise-b; }
+.intro-ember-3.nui-anim { left: 12%; animation: 9.0s linear-in-out infinite intro-rise-c; }
+.intro-ember-4.nui-anim { left: 16%; animation: 11.5s linear-in-out infinite intro-rise-a; }
+.intro-ember-5.nui-anim { left: 21%; animation: 8.5s linear-in-out infinite intro-rise-b; }
+.intro-ember-6.nui-anim { left: 25%; animation: 10.5s linear-in-out infinite intro-rise-c; }
+.intro-ember-7.nui-anim { left: 29%; animation: 9.5s linear-in-out infinite intro-rise-a; }
+.intro-ember-8.nui-anim { left: 34%; animation: 7.5s linear-in-out infinite intro-rise-b; }
+.intro-ember-9.nui-anim { left: 38%; animation: 11.0s linear-in-out infinite intro-rise-c; }
+.intro-ember-10.nui-anim { left: 42%; animation: 8.0s linear-in-out infinite intro-rise-a; }
+.intro-ember-11.nui-anim { left: 47%; animation: 10.0s linear-in-out infinite intro-rise-b; }
+.intro-ember-12.nui-anim { left: 51%; animation: 8.5s linear-in-out infinite intro-rise-c; }
+.intro-ember-13.nui-anim { left: 55%; animation: 11.0s linear-in-out infinite intro-rise-a; }
+.intro-ember-14.nui-anim { left: 59%; animation: 9.0s linear-in-out infinite intro-rise-b; }
+.intro-ember-15.nui-anim { left: 63%; animation: 7.5s linear-in-out infinite intro-rise-c; }
+.intro-ember-16.nui-anim { left: 67%; animation: 10.5s linear-in-out infinite intro-rise-a; }
+.intro-ember-17.nui-anim { left: 71%; animation: 8.0s linear-in-out infinite intro-rise-b; }
+.intro-ember-18.nui-anim { left: 75%; animation: 11.5s linear-in-out infinite intro-rise-c; }
+.intro-ember-19.nui-anim { left: 79%; animation: 9.0s linear-in-out infinite intro-rise-a; }
+.intro-ember-20.nui-anim { left: 83%; animation: 10.5s linear-in-out infinite intro-rise-b; }
+.intro-ember-21.nui-anim { left: 87%; animation: 8.0s linear-in-out infinite intro-rise-c; }
+.intro-ember-22.nui-anim { left: 91%; animation: 9.5s linear-in-out infinite intro-rise-a; }
+.intro-ember-23.nui-anim { left: 95%; animation: 11.0s linear-in-out infinite intro-rise-b; }
+.intro-ember-24.nui-anim { left: 98%; animation: 8.5s linear-in-out infinite intro-rise-c; }
+
+@keyframes intro-rise-a
+{
+	0%   { opacity: 0; transform: translate(0dp, 0dp); }
+	10%  { opacity: 1; }
+	55%  { transform: translate(26dp, -340dp); }
+	100% { opacity: 0; transform: translate(-10dp, -660dp); }
+}
+@keyframes intro-rise-b
+{
+	0%   { opacity: 0; transform: translate(0dp, 0dp); }
+	30%  { opacity: 0; transform: translate(0dp, 0dp); }
+	38%  { opacity: 1; }
+	72%  { transform: translate(-30dp, -380dp); }
+	100% { opacity: 0; transform: translate(12dp, -620dp); }
+}
+@keyframes intro-rise-c
+{
+	0%   { opacity: 0; transform: translate(0dp, 0dp); }
+	55%  { opacity: 0; transform: translate(0dp, 0dp); }
+	62%  { opacity: 1; }
+	84%  { transform: translate(18dp, -420dp); }
+	100% { opacity: 0; transform: translate(-22dp, -700dp); }
+}
+
+/* --- Logo sweep -------------------------------------------------------------
+   A slanted light band crosses the logo region every 6s. The region is in
+   percent of the screen because the legacy background, logo included, is
+   stretched to the window; the band is clipped to it (overflow: hidden with
+   clip: always). */
+.intro-logo-sweep
+{
+	position: absolute;
+	left: 30%;
+	top: 14%;
+	width: 40%;
+	height: 19%;
+	overflow: hidden;
+	/* RmlUi clips only when it sees overflowing content, and a transformed
+	   or absolutely positioned child is not counted, so force it. */
+	clip: always;
+}
+.intro-logo-sweep__band
+{
+	position: absolute;
+	top: -40%;
+	bottom: -40%;
+	left: 0dp;
+	width: 180dp;
+	display: flex;
+	flex-direction: row;
+	transform: translateX(-220dp) skewX(-22deg);
+}
+.intro-sweep-half
+{
+	width: 50%;
+	height: 100%;
+	decorator: horizontal-gradient(var(--sweep-clear) var(--sweep));
+}
+.intro-sweep-half--out
+{
+	decorator: horizontal-gradient(var(--sweep) var(--sweep-clear));
+}
+.intro-logo-sweep__band.nui-anim
+{
+	animation: 6s cubic-in-out infinite intro-logo-sweep;
+}
+
+@keyframes intro-logo-sweep
+{
+	0%   { transform: translateX(-220dp) skewX(-22deg); }
+	65%  { transform: translateX(-220dp) skewX(-22deg); }
+	100% { transform: translateX(900dp) skewX(-22deg); }
+}

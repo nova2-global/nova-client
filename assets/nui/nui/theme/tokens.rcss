@@ -49,6 +49,13 @@ body, body.theme-dark
 	--selection: #2a3a55;
 	--overlay-scrim: #000000a6;
 	--tooltip-bg: #e7eaf0;
+	--ember: #ffb24ff2;
+	--ember-hot: #fff3cff7;
+	--ember-glow: #ff9e3a47;
+	--sheen: #ffffff73;
+	--sheen-clear: #ffffff00;
+	--sweep: #fff6dc8c;
+	--sweep-clear: #fff4d600;
 }
 
 body.theme-light
@@ -72,4 +79,11 @@ body.theme-light
 	--selection: #d6e4fb;
 	--overlay-scrim: #0000007a;
 	--tooltip-bg: #2a2f37;
+	--ember: #ffb24ff2;
+	--ember-hot: #fff3cff7;
+	--ember-glow: #ff9e3a47;
+	--sheen: #ffffff73;
+	--sheen-clear: #ffffff00;
+	--sweep: #fff6dc8c;
+	--sweep-clear: #fff4d600;
 }

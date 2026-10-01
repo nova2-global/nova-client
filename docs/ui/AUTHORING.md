@@ -229,6 +229,13 @@ What the color roles mean:
 | `--selection` | `#2a3a55` | `#d6e4fb` |
 | `--overlay-scrim` | `#000000a6` | `#0000007a` |
 | `--tooltip-bg` | `#e7eaf0` | `#2a2f37` |
+| `--ember` | `#ffb24ff2` | `#ffb24ff2` |
+| `--ember-hot` | `#fff3cff7` | `#fff3cff7` |
+| `--ember-glow` | `#ff9e3a47` | `#ff9e3a47` |
+| `--sheen` | `#ffffff73` | `#ffffff73` |
+| `--sheen-clear` | `#ffffff00` | `#ffffff00` |
+| `--sweep` | `#fff6dc8c` | `#fff6dc8c` |
+| `--sweep-clear` | `#fff4d600` | `#fff4d600` |
 
 | Token | Value (both themes) |
 |---|---|

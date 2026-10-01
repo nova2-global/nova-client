@@ -17,6 +17,12 @@ draws above the legacy UI and would otherwise cover the popup and keep its
 keys. It comes back when the popup closes (after_popup).
 
 The password is never put into the data model, a log line or a message.
+
+With the board comes the intro ambience (nui/windows/intro-ambient): embers
+and a light sweep over the logo, drawn under the board and never taking
+input. It is shown before the board, so the board stays on top and keeps
+the keyboard, hides with the board while a legacy popup is open, and goes
+with the board.
 """
 
 import weakref
@@ -47,6 +53,7 @@ except ImportError:  # a client without assets/root/nui.py
 
 
 DOCUMENT = "nui/windows/login/login.rml"
+AMBIENT_DOCUMENT = "nui/windows/intro-ambient/intro-ambient.rml"
 ID_FIELD = "login-user"
 PASSWORD_FIELD = "login-password"
 ID_MAX = 19        # uiscript/loginwindow.py ID_LIMIT_COUNT
@@ -217,10 +224,60 @@ class LoginBoard(nui.Window):
 			self.focus(PASSWORD_FIELD if self._user else ID_FIELD)
 
 
+class IntroAmbient(nui.Window):
+	"""Embers and the logo sweep under the board. It only draws: its body has
+	pointer-events: none. Optional: when it does not load, the board runs
+	without it."""
+
+	DOCUMENT = AMBIENT_DOCUMENT
+
+
 # --- hooks for intrologin.py -------------------------------------------------
 
 def _board(win):
 	return getattr(win, "nuiBoard", None)
+
+
+def _ambient(win):
+	return getattr(win, "nuiAmbient", None)
+
+
+def _open_ambient(win):
+	"""Shows the ambience. Called before the board is first shown, so the
+	board, shown later, is drawn above it and takes the keyboard."""
+	try:
+		ambient = IntroAmbient()
+	except Exception as error:
+		dbg.TraceError("nui_login: the intro ambience could not be made (%s)" % type(error).__name__)
+		return
+	if not ambient._doc:
+		ambient.destroy()
+		dbg.TraceError("nui_login: %s did not load; the board runs without it" % AMBIENT_DOCUMENT)
+		return
+	win.nuiAmbient = ambient
+	ambient.show()
+
+
+def _show_ambient(win):
+	"""After a popup: back under the board. A visible one is left alone,
+	since a show would also pull it to the front."""
+	ambient = _ambient(win)
+	if ambient is not None and not ambient.is_visible():
+		ambient.show()
+
+
+def _hide_ambient(win):
+	ambient = _ambient(win)
+	if ambient is not None and ambient.is_visible():
+		ambient.hide()
+
+
+def _close_ambient(win):
+	ambient = _ambient(win)
+	if ambient is None:
+		return
+	win.nuiAmbient = None
+	ambient.destroy()
 
 
 def open_board(win, on_choose, on_exit):
@@ -253,12 +310,14 @@ def open_board(win, on_choose, on_exit):
 		line = getattr(win, name, None)
 		if line and line.IsFocus():
 			line.KillFocus()
+	_open_ambient(win)
 	LAST_DECISION = "nui"
 	return board
 
 
 def close_board(win):
 	"""LoginWindow.Close, first: the popup callbacks Close runs find no board."""
+	_close_ambient(win)
 	board = _board(win)
 	if board is None:
 		return
@@ -305,6 +364,7 @@ def before_popup(win):
 	"""Right before stream.popupWindow.Open, after its Close."""
 	board = _board(win)
 	if board is not None:
+		_hide_ambient(win)
 		board.suspend()
 
 
@@ -319,6 +379,7 @@ def after_popup(win, callback):
 		window = owner()
 		board = _board(window) if window is not None else None
 		if board is not None:
+			_show_ambient(window)
 			board.resume()
 		if callback:
 			return callback(*args)

@@ -49,3 +49,160 @@ button.login-button
 {
 	min-height: 17dp;
 }
+
+/* --- Intro motion ----------------------------------------------------------
+   Adapted from RmlUi's animation sample (Samples/basic/animation): keyframe
+   transforms, a class-triggered keyframe set, and transitions on hover.
+   Rules here follow docs/ui/AUTHORING.md "Motion":
+   - values are written out (RmlUi 6.3 ignores var() inside transition);
+   - every animating rule carries nui-anim and at most two other classes, so
+     the reduced-motion rule in base.rcss switches all of it off;
+   - the board itself only moves (transform). Fading the whole board would
+     rebuild every mesh in it on each frame (see window-frame.rcss); the
+     small rows fade instead.
+   RmlUi has no animation-fill-mode, and a delayed animation shows the final
+   state until it starts, so each row's keyframes hold the hidden state
+   first instead of using a delay. */
+
+/* The board rises from below with a small overshoot on every show. Same
+   weight as the window frame's open rule and linked later, so it wins. */
+.login.nui-shown.nui-anim
+{
+	animation: 0.7s back-out login-enter;
+}
+
+@keyframes login-enter
+{
+	from { transform: translateY(64dp) scale(0.95); }
+	to   { transform: translateY(0dp) scale(1); }
+}
+
+/* Rows follow one after another, 80ms apart: each holds hidden for its
+   offset, then fades and rises 12dp over 0.4s. */
+.nui-shown .login-r1.nui-anim { animation: 0.55s cubic-out login-row-1; }
+.nui-shown .login-r2.nui-anim { animation: 0.63s cubic-out login-row-2; }
+.nui-shown .login-r3.nui-anim { animation: 0.71s cubic-out login-row-3; }
+.nui-shown .login-r4.nui-anim { animation: 0.79s cubic-out login-row-4; }
+
+@keyframes login-row-1
+{
+	0%   { opacity: 0; transform: translateY(12dp); }
+	27%  { opacity: 0; transform: translateY(12dp); }
+	100% { opacity: 1; transform: translateY(0dp); }
+}
+@keyframes login-row-2
+{
+	0%   { opacity: 0; transform: translateY(12dp); }
+	36%  { opacity: 0; transform: translateY(12dp); }
+	100% { opacity: 1; transform: translateY(0dp); }
+}
+@keyframes login-row-3
+{
+	0%   { opacity: 0; transform: translateY(12dp); }
+	44%  { opacity: 0; transform: translateY(12dp); }
+	100% { opacity: 1; transform: translateY(0dp); }
+}
+@keyframes login-row-4
+{
+	0%   { opacity: 0; transform: translateY(12dp); }
+	49%  { opacity: 0; transform: translateY(12dp); }
+	100% { opacity: 1; transform: translateY(0dp); }
+}
+
+/* Buttons lift on hover and dip on press. The transition list repeats the
+   button component's color transitions and adds the transform. */
+button.login-button.nui-anim
+{
+	transition: transform background-color border-color color 0.14s cubic-out;
+}
+button.login-button:hover
+{
+	transform: translateY(-2dp);
+}
+button.login-button:active
+{
+	transform: translateY(1dp) scale(0.97);
+}
+
+/* Fields ease their focus border in a little slower than the default. */
+input.login-input.nui-anim
+{
+	transition: border-color background-color 0.2s cubic-out;
+}
+
+/* A slanted light band crosses the Connect button every 4.5s. The button
+   clips it (overflow: hidden, clip: always), and pointer-events: none
+   keeps the band out of the hover and click path. Two halves make one
+   band that is brightest in its middle, from horizontal-gradient
+   decorators (vertex colors, drawn by both renderers). */
+button.login-connect
+{
+	position: relative;
+	overflow: hidden;
+	/* RmlUi clips only when it sees overflowing content; the band is moved by
+	   a transform and positioned absolutely, which it does not count. */
+	clip: always;
+}
+.login-sheen
+{
+	position: absolute;
+	top: -8dp;
+	bottom: -8dp;
+	left: 0dp;
+	width: 44dp;
+	display: flex;
+	flex-direction: row;
+	pointer-events: none;
+	transform: translateX(-72dp) skewX(-20deg);
+}
+.login-sheen__half
+{
+	width: 50%;
+	height: 100%;
+	decorator: horizontal-gradient(var(--sheen-clear) var(--sheen));
+}
+.login-sheen__half--out
+{
+	decorator: horizontal-gradient(var(--sheen) var(--sheen-clear));
+}
+.login-sheen.nui-anim
+{
+	animation: 4.5s cubic-in-out infinite login-sheen;
+}
+
+@keyframes login-sheen
+{
+	0%   { transform: translateX(-72dp) skewX(-20deg); }
+	72%  { transform: translateX(-72dp) skewX(-20deg); }
+	100% { transform: translateX(168dp) skewX(-20deg); }
+}
+
+/* An empty-field error shakes the fields and slides its text in. The
+   classes come from the model (data-class-*), so each new error after a
+   cleared one plays them again. */
+.login-shake.nui-anim
+{
+	animation: 0.45s linear-in-out login-shake;
+}
+
+@keyframes login-shake
+{
+	0%   { transform: translateX(0dp); }
+	15%  { transform: translateX(-9dp); }
+	30%  { transform: translateX(8dp); }
+	45%  { transform: translateX(-6dp); }
+	60%  { transform: translateX(4dp); }
+	75%  { transform: translateX(-2dp); }
+	100% { transform: translateX(0dp); }
+}
+
+.login-error--in.nui-anim
+{
+	animation: 0.3s cubic-out login-error-in;
+}
+
+@keyframes login-error-in
+{
+	from { opacity: 0; transform: translateX(-10dp); }
+	to   { opacity: 1; transform: translateX(0dp); }
+}

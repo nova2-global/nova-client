@@ -18,9 +18,13 @@
 	border-radius: var(--radius-lg);
 }
 
-/* Opens with a fade and a 4dp rise each time the window is shown: the
-   runtime puts nui-shown on the <body> in Show and takes it off in Hide, and
-   the second selector covers the window div inside a modal scrim body.
+/* Rises 4dp over 0.2s each time the window is shown: the runtime puts
+   nui-shown on the <body> in Show and takes it off in Hide, and the second
+   selector covers the window div inside a modal scrim body. It does not
+   fade: RmlUi 6.3 bakes the inherited opacity into every element's vertex
+   colors, so fading the window would rebuild every mesh in it on each frame
+   of the fade, and a child with its own opacity (an open tooltip, a
+   disabled control) would not fade anyway. A transform rebuilds nothing.
    Values mirror --dur-med and --ease-out: motion values are written out, not
    var(), see docs/ui/AUTHORING.md "Motion". */
 .nui-window.nui-shown.nui-anim,
@@ -33,12 +37,10 @@
 {
 	from
 	{
-		opacity: 0;
 		transform: translateY(4dp);
 	}
 	to
 	{
-		opacity: 1;
 		transform: translateY(0dp);
 	}
 }
@@ -91,7 +93,9 @@
 }
 
 /* Full-screen modal backdrop; put the .nui-window div inside it. It takes the
-   mouse on purpose, so nothing behind the dialog can be clicked. */
+   mouse on purpose, so nothing behind the dialog can be clicked. Pair it
+   with MODAL = True in the controller: the modal takes the keyboard (and
+   every click beside the dialog) while the scrim draws the backdrop. */
 body.nui-scrim
 {
 	left: 0;

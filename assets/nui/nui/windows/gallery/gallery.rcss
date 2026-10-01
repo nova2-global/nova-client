@@ -88,7 +88,7 @@ body.nui-window
 	margin-top: 0;
 }
 
-.gallery-list
+.gallery-list .nui-list__viewport
 {
 	height: 196dp;
 }

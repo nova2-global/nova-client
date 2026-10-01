@@ -1,6 +1,11 @@
 /* Single-line text input: <input type="text" class="nui-input" placeholder="@ui.KEY"/>
    (type="password" works the same). While it has focus, the host sends typed
-   text and IME results to it and holds back game hotkeys. */
+   text and IME results to it and holds back game hotkeys.
+
+   The corners are square on purpose: RmlUi makes every text input clip its
+   content (overflow: hidden), and an element that clips with a border-radius
+   needs the stencil clip mask on every frame, while a square one clips with
+   the scissor alone. */
 
 .nui-input
 {
@@ -11,7 +16,7 @@
 	padding: 0 var(--space-2);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
+	border-radius: 0;
 	background-color: var(--surface-sunken);
 	color: var(--text);
 	caret-color: var(--text);

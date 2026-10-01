@@ -1,23 +1,36 @@
 /* List with selection:
    <div class="nui-list">
-       <div class="nui-list__item nui-anim" data-for="row : rows"
-            data-class-is-selected="row.id == selected"
-            data-event-click="select(row.id)">{{ row.name }}</div>
+       <div class="nui-list__viewport">
+           <div class="nui-list__item nui-anim" data-for="row : rows"
+                data-class-is-selected="row.id == selected"
+                data-event-click="select(row.id)">{{ row.name }}</div>
+       </div>
    </div>
-   Give the list a height (or max-height) in the window's sheet to scroll.
+   The rounded frame (.nui-list) does not clip; the square viewport inside
+   it scrolls. An element that clips with a border-radius needs the stencil
+   clip mask on every frame, a square one only the scissor. The frame's
+   padding (4dp) is more than its inner radius (3dp), so rows never reach the
+   rounded corners. Give the viewport a height (or max-height) in the
+   window's sheet to scroll: .my-list .nui-list__viewport { height: ...; }.
    The `disabled` attribute takes a row out of hit testing, the tab order and
-   Enter/Space, like a disabled button. is-hover and is-focus force a state
-   without the pointer or the keyboard. */
+   Enter/Space, like a disabled button. Enter and Space select the row that
+   has the keyboard focus (see docs/ui/AUTHORING.md "Keyboard and modals").
+   is-hover and is-focus force a state without the pointer or the keyboard. */
 
 .nui-list
 {
 	display: block;
-	overflow-y: auto;
 	padding: var(--space-1);
 	background-color: var(--surface-sunken);
 	border-width: 1dp;
 	border-color: var(--border);
 	border-radius: var(--radius-md);
+}
+
+.nui-list__viewport
+{
+	display: block;
+	overflow-y: auto;
 }
 
 .nui-list__item

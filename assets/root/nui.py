@@ -211,6 +211,18 @@ class Window(object):
 			return False
 		return bool(_nui.IsVisible(self._doc))
 
+	def focus(self, element_id):
+		"""Gives the keyboard focus to the element with this id (a text field
+		gets the caret); "" means the document itself. False when the window
+		or the element is hidden, the id is unknown or the element cannot take
+		focus (focus: none, a modal elsewhere). Works inside handlers.
+
+		hide() moves the focus off a field, and show() puts it back where
+		hide() left it, so focus the field again after show()."""
+		if not self._doc:
+			return False
+		return bool(_nui.Focus(self._doc, element_id))
+
 	def set(self, **values):
 		"""Replace model keys; only the views that use them update.
 

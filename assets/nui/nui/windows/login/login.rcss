@@ -1,0 +1,52 @@
+/* Login board: a body-level window, centered horizontally and 72dp above the
+   bottom edge like the legacy server board. It stays off the screen center,
+   where the legacy locale confirm dialog opens without a lock (uicommon.py
+   QuestionDialog) and NovaUI, drawn above it, would take its clicks. */
+body.login
+{
+	width: 360dp;
+	left: 50%;
+	margin-left: -180dp;
+	bottom: 72dp;
+}
+
+.login-server__name
+{
+	color: var(--text-muted);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* The input component is 200dp wide; these fill the panel. */
+input.login-input
+{
+	width: 100%;
+}
+
+/* An empty-field error focuses the field it names, and the component's
+   :focus border (200,000) outweighs --invalid (100,000); this keeps the
+   error border on the focused field (210,000). */
+input.login-input.nui-input--invalid
+{
+	border-color: var(--danger);
+}
+
+/* Tab moves only between the two fields, as on the legacy board. A focused
+   button would also hand the next keys to the legacy UI, since only text
+   focus sends keys to NovaUI in a window that is not modal. */
+button.login-button
+{
+	tab-index: none;
+}
+.nui-window__footer .login-button
+{
+	min-width: 96dp;
+}
+
+/* One line kept for the error (data-visible hides it with visibility), so
+   the bottom-anchored panel does not grow upward when an error appears. */
+.login-error
+{
+	min-height: 17dp;
+}

@@ -1,8 +1,10 @@
 /* Toggle switch over a real checkbox. The label forwards clicks to the input
    (no Python needed to flip it); the track and knob follow :checked through
    the sibling selector. The checkbox stays in the tab order, so Tab reaches
-   the toggle and Space flips it; its focus shows on the track. is-hover and
-   is-focus force a state without the pointer or the keyboard.
+   the toggle and Space flips it, where NovaUI has the keyboard: in a modal,
+   or after a Tab out of a text field (docs/ui/AUTHORING.md "Keyboard and
+   modals"). Its focus shows on the track. is-hover and is-focus force a
+   state without the pointer or the keyboard.
 
    <label class="nui-toggle">
        <input type="checkbox" class="nui-toggle__input" checked

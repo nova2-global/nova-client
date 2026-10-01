@@ -32,9 +32,8 @@ input.login-input.nui-input--invalid
 	border-color: var(--danger);
 }
 
-/* Tab moves only between the two fields, as on the legacy board. A focused
-   button would also hand the next keys to the legacy UI, since only text
-   focus sends keys to NovaUI in a window that is not modal. */
+/* Tab moves only between the two fields, as on the legacy board; the
+   buttons are for the mouse, and Enter in a field submits. */
 button.login-button
 {
 	tab-index: none;

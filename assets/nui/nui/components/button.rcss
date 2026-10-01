@@ -5,7 +5,9 @@
    RmlUi, so the attribute does nothing by itself; the rule below takes the
    button out of pointer hit testing (pointer-events), the tab order and
    Focus() (focus), and keeps Enter and Space from clicking it while it has
-   focus (tab-index). A button disabled while focused keeps its focus ring.
+   focus (tab-index). Enter and Space reach a focused button where NovaUI has
+   the keyboard (docs/ui/AUTHORING.md "Keyboard and modals"). A button
+   disabled while focused keeps its focus ring.
    is-hover, is-active and is-focus force a state without the pointer or the
    keyboard (gallery snapshots, data-driven highlights). */
 

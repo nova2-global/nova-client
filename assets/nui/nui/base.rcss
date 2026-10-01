@@ -32,7 +32,10 @@ small { font-size: var(--font-sm); }
    list row, slider, toggle, tab) carry their own :focus-visible rule;
    .nui-focusable gives the same ring to any other interactive element. A
    `disabled` attribute takes such an element out of hit testing, the tab
-   order and Enter/Space (RmlUi does that by itself only for form controls). */
+   order and Enter/Space (RmlUi does that by itself only for form controls).
+   Keys reach these only where NovaUI has the keyboard: in a modal, in a
+   text field, or after a Tab out of one (docs/ui/AUTHORING.md "Keyboard
+   and modals"). */
 .nui-focusable
 {
 	tab-index: auto;

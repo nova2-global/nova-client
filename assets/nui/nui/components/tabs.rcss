@@ -14,8 +14,10 @@
    equally.
 
    Tabs are in the tab order: Tab moves between them, and Enter or Space
-   selects one (the click reaches the tabset). is-hover and is-focus force a
-   state without the pointer or the keyboard. */
+   selects one (the click reaches the tabset), where NovaUI has the keyboard:
+   in a modal, or after a Tab out of a text field (docs/ui/AUTHORING.md
+   "Keyboard and modals"). is-hover and is-focus force a state without the
+   pointer or the keyboard. */
 
 .nui-tabs
 {

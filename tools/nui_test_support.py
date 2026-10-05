@@ -183,6 +183,19 @@ def make_nui(state):
                     return True
             return False
 
+        def click(self, element_id, event_name=None, *args):
+            """A mouse click as RmlUi delivers it: the press focuses the
+            clicked element, the element's data event (if named) runs, then
+            the click bubbles to the element's handler and the document's."""
+            if self._doc and self.visible:
+                self._take_focus(element_id)
+            if event_name is not None:
+                self.fire(event_name, *args)
+            for target in ([element_id, ""] if element_id else [""]):
+                handler = self.handlers.get((target, "click"))
+                if handler is not None:
+                    handler({"type": "click", "target_id": element_id})
+
         def fire(self, event_name, *args):
             """A data event from the document: its @nui.on handler, if any."""
             method = event_methods(type(self)).get(event_name)

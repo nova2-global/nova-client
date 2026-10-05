@@ -18,7 +18,8 @@ replace them for the legacy code too. Only the board moves to the document:
 the gender, shape and slot pickers set the model instead of the legacy
 radio buttons, the job description is plain paragraphs (nui_desc_text, the
 G15 subset), the gauges show at once, and there is no tooltip (the legacy
-board shows one only over its hidden + buttons). F1 and F2 select man and
+board shows one only over its hidden + buttons). A click on the board gives
+the name field the focus back, as the legacy edit line never lost it. F1 and F2 select man and
 woman (the legacy keys name MAN_PAGE and WOMAN_PAGE, which do not exist).
 
 The document loads hidden in __init__ (nui_ready, nui_discard and __del__
@@ -86,6 +87,7 @@ class CreateBoard(nui.Window):
 		nui.Window.__init__(self)
 		if self._doc:
 			self.element_on(NAME_FIELD, "keydown", self._on_name_key)
+			self.element_on("", "click", self._on_click)
 
 	def initial_model(self):
 		values = {"slot": 0, "job_image": "", "paragraphs": [], "gender": 0, "shape": 0, "busy": False}
@@ -102,6 +104,15 @@ class CreateBoard(nui.Window):
 		answers, else the last edit."""
 		value = self.get_value(NAME_FIELD)
 		return value if isinstance(value, str) else self.name
+
+	def _on_click(self, event):
+		# The legacy edit line keeps the keyboard while the mouse picks race,
+		# gender and shape. RmlUi gives the focus to what was clicked, so the
+		# name field takes it back: typing after a pick still names the
+		# character, and digits never reach the slot hotkeys.
+		if event.get("target_id") != NAME_FIELD and self.is_visible() and self._idle():
+			self._owner._focus_name()
+		return None
 
 	def _on_name_key(self, event):
 		# Escape in the field cancels, as the legacy edit line's escape event.

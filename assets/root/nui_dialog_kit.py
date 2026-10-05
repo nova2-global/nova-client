@@ -24,7 +24,10 @@ the legacy constructor and method names and meanings, so no caller changes.
 - Escape is an element_on("", "keydown") handler on the document and on
   each field; it returns True only when it acted. Enter presses the focused
   default button (RmlUi clicks a focused button), or comes from the field's
-  change event with linebreak.
+  change event with linebreak. The question's document has
+  nui-escape-passes-key-down: a kept Escape still reaches the legacy key
+  handlers, as under a legacy question (game.py's OnKeyDown ends the item
+  drop question and the inventory lock).
 - A field takes its text after it has the focus: RmlUi places the caret only
   in a focused field, and a focus does not move it.
 - A legacy common dialog that opens above NovaUI (the busy fallback, the

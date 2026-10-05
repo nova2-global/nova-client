@@ -1150,6 +1150,24 @@ class CreateTest(unittest.TestCase):
         self.assertEqual((window.board.get("gender"), window.board.get("shape"), window.board.get("slot")), (1, 0, 3))
         self.assertEqual(window.shapeList, [[1, 0, 1, 0], [0, 0, 0, 0]])
 
+    def test_a_click_on_the_board_gives_the_name_field_the_focus_back(self):
+        # The legacy edit line keeps the keyboard while the mouse picks: a
+        # name typed after the picks lands in it (live S2L, 2026-10-05).
+        world = World(randoms=list(self.RANDOMS))
+        with world:
+            window = create_setup(world, True)
+            board = window.board
+            self.assertEqual(board.focused, CREATE_FIELD)
+            for element_id, event in (("create-right", ("right",)), ("create-man", ("gender", 0)),
+                                      ("create-shape-2", ("shape", 1)), ("create-text", ())):
+                board.click(element_id, *event)
+                self.assertEqual(board.focused, CREATE_FIELD, element_id)
+            self.assertEqual((board.get("slot"), board.get("gender"), board.get("shape")), (3, 0, 1))
+            board.set_value(CREATE_FIELD, "Nova")
+            board.click("create-create", "create")
+            self.assertTrue(board.get("busy"))
+            self.assertEqual(board.focused, "create-create")   # busy: the field is disabled
+
     def test_the_name_checks_open_the_legacy_popups(self):
         legacy_world, _, novaui_world, window = self.both(
             [type_name(""), ("create",), type_name("a[b"), ("create",), type_name("fool"), ("create",)])

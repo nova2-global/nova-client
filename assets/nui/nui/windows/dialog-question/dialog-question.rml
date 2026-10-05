@@ -4,12 +4,15 @@
 	     assets/root/nui_dialog_question.py): uiCommon.QuestionDialog and
 	     QuestionDialog2. A modal; the accept button has the focus on each
 	     show, so Enter accepts. The buttons call the caller's events and
-	     leave the dialog open, as the legacy buttons do. -->
+	     leave the dialog open, as the legacy buttons do. Escape hides it, and
+	     nui-escape-passes-key-down lets the legacy key handlers see the key
+	     too, as under a legacy question: the game window ends its item drop
+	     question and the inventory lock there. -->
 	<title>dialog-question</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="dialog-question.rcss"/>
 </head>
-<body template="nui" class="nui-scrim dialog-question" data-model="dialog_question">
+<body template="nui" class="nui-scrim nui-escape-passes-key-down dialog-question" data-model="dialog_question">
 	<div class="nui-window nui-dialog nui-anim" id="dialog-question">
 		<div class="nui-window__body">
 			<p class="nui-dialog__text" data-for="line : lines">{{ line }}</p>

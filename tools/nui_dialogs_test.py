@@ -905,5 +905,26 @@ class Fixtures(KitTest):
         self.assertEqual(self.dbg.errors, [])
 
 
+class EscapeKeyDown(unittest.TestCase):
+    """Under a legacy dialog without a field, Escape closes it and the legacy
+    key handlers still see the key (game.py's OnKeyDown ends the item drop
+    question and the inventory lock, live S3, 2026-10-05). Only the question
+    asks the host for that; a dialog with a field must not (a legacy edit line
+    keeps the key), and the message keeps the key for itself (legacy's phase
+    popup would also leave the select screen)."""
+
+    def body_classes(self, folder):
+        import re
+        path = os.path.join(ROOT, "..", "nui", "nui", "windows", folder, folder + ".rml")
+        with open(path, encoding="utf-8") as file:
+            body = re.search(r"<body[^>]*\bclass=\"([^\"]*)\"", file.read())
+        return body.group(1).split()
+
+    def test_only_the_question_passes_the_escape_key_down_to_the_legacy_ui(self):
+        self.assertIn("nui-escape-passes-key-down", self.body_classes("dialog-question"))
+        for folder in ("dialog-message", "dialog-input", "dialog-money", "pick-money"):
+            self.assertNotIn("nui-escape-passes-key-down", self.body_classes(folder), folder)
+
+
 if __name__ == "__main__":
     unittest.main()

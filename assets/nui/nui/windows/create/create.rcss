@@ -1,0 +1,288 @@
+/* Character create: an overlay (nui-overlay) over the legacy background and
+   the 3D characters, like the select screen; only the board and the arrows
+   take the mouse (nui-interactive). Positions are the legacy screen
+   fractions and sizes the legacy pixels in dp (uiscript
+   createcharacterwindow.py): the board, 208dp wide, at 65/800 from the left
+   with its bottom where the legacy board's was (56/600 above the bottom
+   edge); the class-name art keeps its legacy offset from the board's top
+   (-27, -149); the arrows are the select screen's. In the modern skin each
+   picker's label stands above its two buttons, so long labels fit. */
+.create-board
+{
+	position: absolute;
+	left: 8.125%;
+	bottom: 9.33%;
+	width: 208dp;
+	min-width: 0dp;
+	box-sizing: border-box;
+}
+.create-job
+{
+	position: absolute;
+	left: -27dp;
+	top: -149dp;
+	pointer-events: none;
+}
+
+/* The description scrolls in a square box (the scissor clips it). */
+.create-text
+{
+	box-sizing: border-box;
+	height: 122dp;
+	margin: var(--space-3) var(--space-3) 0dp var(--space-3);
+	padding: var(--space-1) var(--space-2);
+	overflow-y: auto;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	font-size: var(--font-sm);
+}
+.create-text__paragraph
+{
+	margin-bottom: var(--space-2);
+}
+
+.create-stats
+{
+	padding: var(--space-2) var(--space-3) 0dp var(--space-3);
+}
+.create-stat
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	height: 20dp;
+}
+.create-stat__label
+{
+	flex: 0 0 auto;
+	min-width: 30dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.create-stat__gauge
+{
+	flex: 1 1 auto;
+}
+.create-value
+{
+	display: block;
+	white-space: nowrap;
+}
+.create-stat__value
+{
+	flex: 0 0 auto;
+	width: 24dp;
+	text-align: right;
+}
+
+.create-row
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-1) var(--space-2);
+	padding: var(--space-2) var(--space-3) 0dp var(--space-3);
+}
+.create-label
+{
+	display: block;
+	flex: 0 0 100%;
+	color: var(--text-muted);
+}
+.create-name
+{
+	flex: 1 1 auto;
+}
+.create-choice
+{
+	flex: 1 1 0dp;
+	min-width: 0dp;
+	padding: 0dp var(--space-1);
+}
+.create-choice.is-selected
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-text);
+}
+
+.create-footer
+{
+	justify-content: center;
+	margin-top: var(--space-3);
+}
+
+/* Modern arrows: icon buttons centered on the legacy dragon art (160 by 36),
+   at the select screen's places. */
+.create-arrow
+{
+	position: absolute;
+	top: 84.17%;
+	margin: 2dp 0dp 0dp 64dp;
+}
+.create-arrow--left
+{
+	left: 48%;
+}
+.create-arrow--right
+{
+	left: 69.75%;
+}
+
+/* --- Classic skin ------------------------------------------------------------
+   The legacy thin board with its rows at the legacy offsets: the
+   description box (black, in a light line) 189 by 122 at (8, 10); the stat
+   rows 19dp apart from 138 (the legacy gauge, 120dp, at x 45, and a 24 by 16
+   box at x 172); the name, gender and shape rows with their labels
+   centered on x 43 and the field (115 by 18) or the two middle buttons at
+   x 79; Cancel and Create (the large art, 88dp) at x 11 and 109, 14dp above
+   the bottom. A chosen gender or shape shows the down art, as the legacy
+   radio buttons do. The arrows are the legacy dragon art. */
+.skin-classic .nui-window.create-board
+{
+	decorator: classic-thinboard;
+	padding: 10dp 0dp 14dp 0dp;
+}
+.skin-classic .create-text
+{
+	width: 189dp;
+	margin: 0dp 0dp 0dp 8dp;
+	padding: 6dp 7dp;
+	background-color: var(--classic-slot-fill);
+	border-color: var(--classic-slot-light);
+	font-size: var(--font-md);
+}
+.skin-classic .create-stats
+{
+	padding: 4dp 0dp 0dp 15dp;
+}
+.skin-classic .create-stat
+{
+	gap: 0dp;
+	width: 181dp;
+	height: 19dp;
+}
+.skin-classic .create-stat__label
+{
+	min-width: 30dp;
+	padding-right: 2dp;
+	box-sizing: border-box;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+.skin-classic .create-stat__gauge
+{
+	flex: 1 1 auto;
+	max-width: 120dp;
+	margin: 0dp 7dp 0dp auto;
+}
+.skin-classic .create-stat__value
+{
+	box-sizing: border-box;
+	width: 24dp;
+	height: 16dp;
+	line-height: 14dp;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	color: var(--text);
+	text-align: center;
+}
+/* A row is the legacy 192dp (x 8 to 200); a label column narrows when a
+   long button label needs the room. */
+.skin-classic .create-row
+{
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 0dp;
+	height: 23dp;
+	padding: 0dp 8dp 0dp 8dp;
+}
+.skin-classic .create-row--name
+{
+	margin-top: 8dp;
+}
+.skin-classic .create-label
+{
+	flex: 0 1 auto;
+	width: 70dp;
+	min-width: 0dp;
+	padding: 0dp 1dp;
+	box-sizing: border-box;
+	color: var(--text);
+	text-align: center;
+}
+.skin-classic .create-name
+{
+	flex: 0 0 auto;
+	width: 115dp;
+	margin-left: 3dp;
+}
+.skin-classic .create-choice
+{
+	flex: 0 0 auto;
+	min-width: 61dp;
+	margin-left: 1dp;
+	padding: 0dp 4dp;
+}
+.skin-classic .create-choice + .create-choice
+{
+	margin-left: 0dp;
+}
+.skin-classic .create-choice.is-selected
+{
+	decorator: tiled-horizontal(classic-button-middle-03-l, classic-button-middle-03-c, classic-button-middle-03-r);
+	background-color: transparent;
+	border-color: transparent;
+	color: var(--classic-button-text);
+}
+.skin-classic .create-footer
+{
+	justify-content: flex-start;
+	gap: 10dp;
+	margin: 3dp 0dp 0dp 11dp;
+	padding: 0dp;
+}
+.skin-classic .create-button
+{
+	min-width: 88dp;
+	padding: 0dp;
+}
+/* The legacy Create label is gray, as every legacy button label. */
+.skin-classic .create-button.nui-button--primary
+{
+	color: var(--classic-button-text);
+}
+.skin-classic .create-arrow
+{
+	width: 160dp;
+	height: 36dp;
+	margin: 0dp;
+	color: transparent;
+}
+.skin-classic .create-arrow--left
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_left_button_01.sub");
+}
+.skin-classic .create-arrow--right
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_right_button_01.sub");
+}
+.skin-classic .create-arrow--left:hover, .skin-classic .create-arrow--left:focus-visible
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_left_button_02.sub");
+}
+.skin-classic .create-arrow--right:hover, .skin-classic .create-arrow--right:focus-visible
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_right_button_02.sub");
+}
+.skin-classic .create-arrow--left:active
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_left_button_03.sub");
+}
+.skin-classic .create-arrow--right:active
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_right_button_03.sub");
+}

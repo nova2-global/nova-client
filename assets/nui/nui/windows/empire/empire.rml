@@ -1,0 +1,54 @@
+<rml>
+<head>
+	<!-- Empire select: replaces the legacy empire window (uiscript
+	     selectempirewindow.py) while the empire flag is on (controller:
+	     assets/root/nui_empire.py; SelectEmpireWindow and
+	     ReselectEmpireWindow subclass the legacy classes, which keep the
+	     packets and the phase changes). Full screen and opaque. The backdrop,
+	     the title, the atlas, its areas and flags and the empire flags are
+	     legacy art in every theme; the board and the buttons follow the
+	     theme. An area lights while its empire is chosen or the pointer is
+	     over it, and fades in and out (a CSS transition, no Python per
+	     frame). The description is plain paragraphs that scroll
+	     (nui_desc_text); they come from the model through nui.plain_text. -->
+	<title>empire</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="empire.rcss"/>
+</head>
+<body template="nui" class="empire" data-model="empire">
+	<div class="empire-pattern"></div>
+	<div class="empire-shade"></div>
+	<div class="empire-line empire-line--top"></div>
+	<div class="empire-line empire-line--bottom"></div>
+	<img class="empire-title" data-attr-src="'/' + title_image" data-if="title_image != ''"/>
+	<div id="empire-atlas" class="empire-atlas">
+		<img id="empire-area-1" class="empire-area empire-area--a nui-anim" src="d:/ymir work/ui/intro/empire/empirearea_a.sub"
+			data-class-is-lit="empire == 1 || hover == 1"
+			data-event-mouseover="hover(1)" data-event-mouseout="unhover(1)" data-event-click="pick(1)"/>
+		<img id="empire-area-2" class="empire-area empire-area--b nui-anim" src="d:/ymir work/ui/intro/empire/empirearea_b.sub"
+			data-class-is-lit="empire == 2 || hover == 2"
+			data-event-mouseover="hover(2)" data-event-mouseout="unhover(2)" data-event-click="pick(2)"/>
+		<img id="empire-area-3" class="empire-area empire-area--c nui-anim" src="d:/ymir work/ui/intro/empire/empirearea_c.sub"
+			data-class-is-lit="empire == 3 || hover == 3"
+			data-event-mouseover="hover(3)" data-event-mouseout="unhover(3)" data-event-click="pick(3)"/>
+		<img class="empire-area-flag empire-area-flag--a nui-anim" src="d:/ymir work/ui/intro/empire/empireareaflag_a.sub" data-class-is-lit="empire == 1"/>
+		<img class="empire-area-flag empire-area-flag--b nui-anim" src="d:/ymir work/ui/intro/empire/empireareaflag_b.sub" data-class-is-lit="empire == 2"/>
+		<img class="empire-area-flag empire-area-flag--c nui-anim" src="d:/ymir work/ui/intro/empire/empireareaflag_c.sub" data-class-is-lit="empire == 3"/>
+		<button id="empire-left" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--left" data-event-click="left()">&#8249;</button>
+		<button id="empire-right" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--right" data-event-click="right()">&#8250;</button>
+	</div>
+	<div id="empire-board" class="nui-window empire-board">
+		<div class="empire-flag-bar">
+			<img class="empire-flag" data-attr-src="flag_image" data-if="flag_image != ''"/>
+		</div>
+		<p class="empire-name">{{ name }}</p>
+		<div id="empire-text" class="empire-text">
+			<p class="empire-text__paragraph" data-for="p : paragraphs">{{ p }}</p>
+		</div>
+		<div class="nui-window__footer empire-footer">
+			<button id="empire-exit" class="nui-button nui-anim empire-button" data-event-click="leave()">@ui.EMPIRE_EXIT</button>
+			<button id="empire-choose" class="nui-button nui-button--primary nui-anim empire-button" data-event-click="choose()">@ui.EMPIRE_SELECT</button>
+		</div>
+	</div>
+</body>
+</rml>

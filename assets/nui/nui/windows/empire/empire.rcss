@@ -1,0 +1,269 @@
+/* Empire select: full screen and opaque. Positions are the legacy screen
+   fractions and sizes the legacy pixels in dp (uiscript
+   selectempirewindow.py): the title at (237/800, 46/600), the atlas
+   (495 by 357) at (282/800, 170/600) with its areas and area flags at their
+   legacy offsets, the arrows under the atlas at its legacy offsets
+   (160, 340) and (290, 340), and the board, 208dp wide, at 40/800 from the
+   left with its bottom where the legacy board's was (75/600 above the
+   bottom edge), so a tall scale keeps its buttons on the screen. The
+   backdrop is the legacy pattern between two legacy line strips, under the
+   legacy shade. */
+body.empire
+{
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: var(--surface-sunken);
+}
+
+.empire-pattern
+{
+	position: absolute;
+	left: 0dp;
+	top: 42dp;
+	right: 0dp;
+	bottom: 42dp;
+	decorator: image("d:/ymir work/ui/intro/pattern/background_pattern.tga" repeat left top);
+}
+.empire-shade
+{
+	position: absolute;
+	left: 0dp;
+	top: 0dp;
+	width: 100%;
+	height: 100%;
+	decorator: image("d:/ymir work/ui/intro/select/background_alpha.sub" fill);
+}
+.empire-line
+{
+	position: absolute;
+	left: 0dp;
+	width: 100%;
+	height: 42dp;
+	decorator: image("d:/ymir work/ui/intro/pattern/line_pattern.tga" repeat-x left top);
+}
+.empire-line--top
+{
+	top: 0dp;
+}
+.empire-line--bottom
+{
+	bottom: 0dp;
+}
+
+.empire-title
+{
+	position: absolute;
+	left: 29.625%;
+	top: 7.67%;
+}
+
+.empire-atlas
+{
+	position: absolute;
+	left: 35.25%;
+	top: 28.33%;
+	width: 495dp;
+	height: 357dp;
+	decorator: image("d:/ymir work/ui/intro/empire/atlas.sub");
+}
+/* An area and its flag show while lit; otherwise they are clear (and an area
+   still takes the pointer, as the legacy area button over it did). */
+.empire-area, .empire-area-flag
+{
+	position: absolute;
+	opacity: 0;
+}
+.empire-area.is-lit, .empire-area-flag.is-lit
+{
+	opacity: 1;
+}
+/* Small single images, so the fade rebuilds only their own quads. */
+.empire-area.nui-anim, .empire-area-flag.nui-anim
+{
+	transition: opacity 0.3s cubic-out;
+}
+.empire-area-flag
+{
+	pointer-events: none;
+}
+.empire-area--a
+{
+	left: 43dp;
+	top: 201dp;
+}
+.empire-area--b
+{
+	left: 17dp;
+	top: 16dp;
+}
+.empire-area--c
+{
+	left: 314dp;
+	top: 33dp;
+}
+.empire-area-flag--a
+{
+	left: 167dp;
+	top: 235dp;
+}
+.empire-area-flag--b
+{
+	left: 70dp;
+	top: 42dp;
+}
+.empire-area-flag--c
+{
+	left: 357dp;
+	top: 78dp;
+}
+
+/* Modern arrows: icon buttons centered on the legacy arrow art (82 by 28). */
+.empire-arrow
+{
+	position: absolute;
+	top: 338dp;
+}
+.empire-arrow--left
+{
+	left: 185dp;
+}
+.empire-arrow--right
+{
+	left: 315dp;
+}
+
+.empire-board
+{
+	position: absolute;
+	left: 5%;
+	bottom: 12.5%;
+	width: 208dp;
+	min-width: 0dp;
+	box-sizing: border-box;
+}
+.empire-flag-bar
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 159dp;
+	height: 119dp;
+	margin: var(--space-3) auto 0dp auto;
+	background-color: var(--surface-sunken);
+	border-radius: var(--radius-md);
+}
+.empire-name
+{
+	margin: var(--space-2) var(--space-3);
+	text-align: center;
+	font-weight: bold;
+}
+/* The description scrolls in a square box (the scissor clips it). */
+.empire-text
+{
+	box-sizing: border-box;
+	height: 122dp;
+	margin: 0dp var(--space-3) var(--space-3) var(--space-3);
+	padding: var(--space-1) var(--space-2);
+	overflow-y: auto;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	font-size: var(--font-sm);
+}
+.empire-text__paragraph
+{
+	margin-bottom: var(--space-2);
+}
+.empire-footer
+{
+	justify-content: center;
+}
+
+/* --- Classic skin ------------------------------------------------------------
+   The legacy thin board at the legacy offsets: the flag bar (black) at
+   (24, 17), the name under it, the description box (black, in a light line)
+   189 by 122 at x 10, and Exit and Choose (the large art, 88dp) 9dp under
+   it, 16dp above the bottom. The arrows are the legacy art (82 by 28),
+   without a label. */
+body.skin-classic.empire
+{
+	background-color: var(--classic-slot-fill);
+}
+.skin-classic .nui-window.empire-board
+{
+	decorator: classic-thinboard;
+	padding: 17dp 0dp 16dp 0dp;
+}
+.skin-classic .empire-flag-bar
+{
+	margin: 0dp 0dp 0dp 24dp;
+	background-color: var(--classic-slot-fill);
+	border-radius: 0dp;
+}
+.skin-classic .empire-name
+{
+	margin: 2dp 10dp 3dp 10dp;
+	font-weight: normal;
+}
+.skin-classic .empire-text
+{
+	width: 189dp;
+	margin: 0dp 0dp 0dp 10dp;
+	padding: 6dp 7dp;
+	background-color: var(--classic-slot-fill);
+	border-color: var(--classic-slot-light);
+	font-size: var(--font-md);
+}
+.skin-classic .empire-footer
+{
+	justify-content: flex-start;
+	gap: 3dp;
+	margin: 9dp 0dp 0dp 14dp;
+	padding: 0dp;
+}
+.skin-classic .empire-button
+{
+	min-width: 88dp;
+	padding: 0dp;
+}
+/* The legacy Choose label is gray, as every legacy button label. */
+.skin-classic .empire-button.nui-button--primary
+{
+	color: var(--classic-button-text);
+}
+.skin-classic .empire-arrow
+{
+	top: 340dp;
+	width: 82dp;
+	height: 28dp;
+	color: transparent;
+}
+.skin-classic .empire-arrow--left
+{
+	left: 160dp;
+	decorator: image("d:/ymir work/ui/intro/select/left_button_01.sub");
+}
+.skin-classic .empire-arrow--right
+{
+	left: 290dp;
+	decorator: image("d:/ymir work/ui/intro/select/right_button_01.sub");
+}
+.skin-classic .empire-arrow--left:hover, .skin-classic .empire-arrow--left:focus-visible
+{
+	decorator: image("d:/ymir work/ui/intro/select/left_button_02.sub");
+}
+.skin-classic .empire-arrow--right:hover, .skin-classic .empire-arrow--right:focus-visible
+{
+	decorator: image("d:/ymir work/ui/intro/select/right_button_02.sub");
+}
+.skin-classic .empire-arrow--left:active
+{
+	decorator: image("d:/ymir work/ui/intro/select/left_button_03.sub");
+}
+.skin-classic .empire-arrow--right:active
+{
+	decorator: image("d:/ymir work/ui/intro/select/right_button_03.sub");
+}

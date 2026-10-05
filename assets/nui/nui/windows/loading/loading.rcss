@@ -1,0 +1,104 @@
+/* Loading screen: full screen and opaque, under a body that never takes the
+   mouse (nui-overlay). Positions are the legacy screen fractions and sizes
+   the legacy pixels in dp (uiscript loadingwindow.py): the board is 400 by
+   80 at the horizontal middle and 500/600 of the height, the emblem at its
+   top left and the gauge (336 by 30) at (70, 25). The background and the
+   emblem are legacy art in every theme; the gauge follows the theme. */
+body.loading
+{
+	background-color: var(--surface-sunken);
+}
+
+/* Stretched over the whole screen, as legacy scales it by width / image width
+   and height / image height. */
+.loading-background
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.loading-board
+{
+	position: absolute;
+	left: 50%;
+	top: 83.33%;
+	width: 400dp;
+	height: 80dp;
+	margin-left: -200dp;
+}
+
+/* The engine's contract for nui-frames (Core/ElementFrames.h): an inline
+   flex box takes the size of frame 0, and the frames are blocks. */
+.loading-frames
+{
+	position: absolute;
+	left: 0dp;
+	top: 0dp;
+	display: inline-flex;
+}
+.loading-frames .nui-frames__frame
+{
+	display: block;
+}
+
+/* Modern: a track and a fill in tokens, on the middle line of the legacy
+   gauge's box. */
+progress.loading-gauge
+{
+	position: absolute;
+	left: 70dp;
+	top: 36dp;
+	width: 336dp;
+	height: 8dp;
+	background-color: var(--gauge-track);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+}
+progress.loading-gauge fill
+{
+	background-color: var(--accent);
+	border-radius: 3dp;
+}
+
+.loading-error
+{
+	position: absolute;
+	left: 10dp;
+	top: 10dp;
+	padding: var(--space-1) var(--space-2);
+	background-color: var(--surface);
+	border-radius: var(--radius-sm);
+	color: var(--danger);
+}
+
+/* --- Classic skin ------------------------------------------------------------
+   The legacy gauge: the empty art, and the full art as the fill image, which
+   RmlUi crops to the value as legacy SetPercentage crops it. The error line
+   is the legacy text line, outlined for the image under it. */
+.skin-classic progress.loading-gauge
+{
+	top: 25dp;
+	height: 30dp;
+	decorator: image("d:/ymir work/ui/intro/loading/gauge_empty.sub");
+	fill-image: "d:/ymir work/ui/intro/loading/gauge_full.sub";
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
+}
+.skin-classic progress.loading-gauge fill
+{
+	background-color: transparent;
+	border-radius: 0dp;
+}
+.skin-classic .loading-error
+{
+	padding: 0dp;
+	background-color: transparent;
+	border-radius: 0dp;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

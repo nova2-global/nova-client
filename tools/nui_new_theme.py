@@ -242,6 +242,13 @@ def write(root, files):
             handle.write(text)
 
 
+def golden_args(name):
+    """check_nui_snapshots.py's arguments that write the theme's goldens. The
+    text starts with '-', so it is joined to --only: argparse reads a separate
+    "-name-" as an option and stops."""
+    return ["--write", "--optimize", "--only=-%s-" % name]
+
+
 def next_steps(theme_id, palette, skin, name, shipped, new_skin):
     key = "THEME_" + theme_id.upper().replace("-", "_")
     steps = [
@@ -257,8 +264,8 @@ def next_steps(theme_id, palette, skin, name, shipped, new_skin):
         " and to tools/nui_button_fit.py for a translated label." % key,
         "- nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading"
         " --locale assets/locale/locale/en  (it loads every window in every theme)",
-        "- python3 tools/check_nui_snapshots.py --write --optimize --only -%s-   (%s)" % (
-            name, "the full matrix" if shipped else "experimental: the gallery and the representative pages"),
+        "- python3 tools/check_nui_snapshots.py %s   (%s)" % (
+            " ".join(golden_args(name)), "the full matrix" if shipped else "experimental: the gallery and the representative pages"),
     ]
     return "\n".join(steps)
 

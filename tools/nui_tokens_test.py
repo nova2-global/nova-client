@@ -266,10 +266,11 @@ class CommittedTokens(unittest.TestCase):
         below = [row for row in t.contrast_report(tokens, themes) if row[3] < row[4]]
         self.assertEqual(below, [], t.format_report(below))
 
-    def test_the_committed_table_has_the_three_player_themes(self):
+    def test_the_committed_table_starts_with_the_three_base_themes(self):
+        # Themes added later (docs/ui/AUTHORING.md, Adding a theme) come after them.
         _, themes = t.load()
-        self.assertEqual([theme[0] for theme in themes], ["modern-dark", "modern-light", "classic"])
-        self.assertEqual(t.palette_order(themes), ["dark", "light", "classic"])
+        self.assertEqual([theme[0] for theme in themes][:3], ["modern-dark", "modern-light", "classic"])
+        self.assertEqual(t.palette_order(themes)[:3], ["dark", "light", "classic"])
 
     def test_the_committed_outputs_are_up_to_date(self):
         tokens, themes = t.load()

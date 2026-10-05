@@ -9,6 +9,8 @@ import hashlib
 import io
 import json
 import os
+import re
+import shlex
 import shutil
 import subprocess
 import tempfile
@@ -20,6 +22,18 @@ import nui_tokens
 
 REPO = nui_new_theme.REPO
 NUITOOL = os.environ.get("NUITOOL") or shutil.which("nuitool")
+
+# The scaffold runs in a copy of the live content, so the tests use ids that
+# no real theme takes (the guide's examples, ember and stone, may become real
+# themes). Scratch.setUp stops with a clear message if one is taken anyway.
+PALETTE = "test-palette"     # a palette theme on the modern skin
+SKIN = "test-skin"           # a component skin, its theme and its palette
+NIGHT = "test-night"         # a palette theme on an existing skin
+TEST_IDS = (PALETTE, SKIN, NIGHT)
+
+
+def golden_name(theme_id):
+    return theme_id.replace("-", "")
 
 
 def tree_digest(folder):
@@ -45,6 +59,18 @@ class Scratch(unittest.TestCase):
             shutil.copy(os.path.join(REPO, rel), os.path.join(self.root, rel))
         self.nui = os.path.join(self.root, nui_new_theme.NUI)
         self.before = tree_digest(self.nui)
+        self.assert_the_test_ids_are_free()
+
+    def assert_the_test_ids_are_free(self):
+        themes = [theme["id"] for theme in self.read_json(nui_new_theme.THEMES_JSON)["themes"]]
+        palettes = nui_tokens.palettes_of(self.read_json(nui_new_theme.TOKENS_JSON))
+        names = [entry["name"] for entry in self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"]]
+        skins = os.listdir(os.path.join(self.nui, "skins"))
+        for theme_id in TEST_IDS:
+            taken = [what for what, used in (("theme", themes), ("palette", palettes), ("skin", skins),
+                                             ("golden name", names)) if theme_id in used or golden_name(theme_id) in used]
+            self.assertEqual(taken, [], "the content now has a %s %r; give the scaffold tests other ids (TEST_IDS)"
+                             % (" and ".join(taken), theme_id))
 
     def run_tool(self, *args):
         out, err = io.StringIO(), io.StringIO()
@@ -70,18 +96,31 @@ class Scratch(unittest.TestCase):
 
 class PaletteOnly(Scratch):
     def test_a_palette_theme_copies_its_base_and_registers_itself(self):
-        code, out, err = self.run_tool("ember", "--base", "dark")
+        code, out, err = self.run_tool(PALETTE, "--base", "dark")
         self.assertEqual(code, 0, err)
         tokens = self.read_json(nui_new_theme.TOKENS_JSON)
-        self.assertEqual(tokens["ember"], tokens["dark"])
-        self.assertEqual(list(tokens)[-2:], ["ember", "skins"])
+        self.assertEqual(tokens[PALETTE], tokens["dark"])
+        self.assertEqual(list(tokens)[-2:], [PALETTE, "skins"])
         themes = self.read_json(nui_new_theme.THEMES_JSON)["themes"]
-        self.assertEqual(themes[-1], {"id": "ember", "label": "Ember", "body": ["skin-modern", "theme-ember"]})
+        self.assertEqual(themes[-1], {"id": PALETTE, "label": "Test palette", "body": ["skin-modern", "theme-" + PALETTE]})
         self.assertEqual(themes[0]["id"], "modern-dark")
-        self.assertIn("python3 tools/check_nui_snapshots.py --write --optimize --only -ember-", out)
+        self.assertIn("python3 tools/check_nui_snapshots.py --write --optimize --only=-testpalette-", out)
+
+    def test_the_printed_golden_command_selects_exactly_the_new_goldens(self):
+        before = set(self.golden_names())
+        code, out, err = self.run_tool(PALETTE, "--base", "dark")
+        self.assertEqual(code, 0, err)
+        line = next(line for line in out.splitlines() if "tools/check_nui_snapshots.py" in line)
+        argv = shlex.split(line.split("tools/check_nui_snapshots.py", 1)[1].split("   (", 1)[0])
+        with contextlib.redirect_stderr(io.StringIO()):
+            args = check_nui_snapshots.make_parser().parse_args(argv)  # argparse exits on a value read as an option
+        self.assertTrue(args.write and args.optimize)
+        selected = {case[0] for case in check_nui_snapshots.cases(self.root) if args.only in case[0]}
+        self.assertEqual(selected, set(self.golden_names()) - before)
+        self.assertEqual(len(selected), 12)
 
     def test_the_generated_outputs_are_current_for_nui_tokens(self):
-        self.assertEqual(self.run_tool("ember", "--base", "light")[0], 0)
+        self.assertEqual(self.run_tool(PALETTE, "--base", "light")[0], 0)
         theme = os.path.join(self.nui, "theme")
         tokens, themes = nui_tokens.load(os.path.join(theme, "tokens.json"), os.path.join(theme, "themes.json"))
         with open(os.path.join(theme, "tokens.rcss"), encoding="utf-8") as handle:
@@ -89,20 +128,20 @@ class PaletteOnly(Scratch):
         with open(os.path.join(self.root, nui_new_theme.AUTHORING_MD), encoding="utf-8") as handle:
             guide = handle.read()
         self.assertEqual(nui_tokens.splice_table(guide, nui_tokens.render_table(tokens, themes)), guide)
-        self.assertIn("| Ember |", guide)
+        self.assertIn("| %s |" % PALETTE.capitalize(), guide)
 
     def test_a_palette_theme_touches_only_the_theme_files(self):
-        self.assertEqual(self.run_tool("ember", "--base", "dark")[0], 0)
+        self.assertEqual(self.run_tool(PALETTE, "--base", "dark")[0], 0)
         self.assertEqual(self.changed(), sorted(os.path.join("theme", name) for name in ("themes.json", "tokens.json", "tokens.rcss")))
 
     def test_an_existing_skin_takes_a_new_palette_without_a_new_folder(self):
-        self.assertEqual(self.run_tool("classic-night", "--base", "classic", "--skin", "classic", "--name", "night")[0], 0)
+        self.assertEqual(self.run_tool(NIGHT, "--base", "classic", "--skin", "classic", "--name", golden_name(NIGHT))[0], 0)
         themes = self.read_json(nui_new_theme.THEMES_JSON)["themes"]
-        self.assertEqual(themes[-1]["body"], ["skin-classic", "theme-classic-night"])
+        self.assertEqual(themes[-1]["body"], ["skin-classic", "theme-" + NIGHT])
         self.assertEqual(self.changed(), sorted(os.path.join("theme", name) for name in ("themes.json", "tokens.json", "tokens.rcss")))
 
     def test_a_dry_run_writes_nothing(self):
-        code, out, _err = self.run_tool("ember", "--base", "dark", "--dry-run")
+        code, out, _err = self.run_tool(PALETTE, "--base", "dark", "--dry-run")
         self.assertEqual(code, 0)
         self.assertIn("would write assets/nui/nui/theme/themes.json", out)
         self.assertEqual(self.changed(), [])
@@ -110,30 +149,34 @@ class PaletteOnly(Scratch):
 
 class ComponentSkin(Scratch):
     def test_a_new_skin_gets_its_folder_and_its_link(self):
-        code, _out, err = self.run_tool("stone", "--base", "classic", "--skin", "stone")
+        with open(os.path.join(self.nui, "nui.rtpl"), encoding="utf-8") as handle:
+            skin_links = re.findall(r'href="(skins/[^"]+)"', handle.read())
+        self.assertTrue(skin_links)
+        code, _out, err = self.run_tool(SKIN, "--base", "classic", "--skin", SKIN)
         self.assertEqual(code, 0, err)
-        folder = os.path.join(self.nui, "skins", "stone")
-        self.assertEqual(sorted(os.listdir(folder)), ["README.md", "stone.rcss"])
-        with open(os.path.join(folder, "stone.rcss"), encoding="utf-8") as handle:
+        folder = os.path.join(self.nui, "skins", SKIN)
+        self.assertEqual(sorted(os.listdir(folder)), ["README.md", SKIN + ".rcss"])
+        with open(os.path.join(folder, SKIN + ".rcss"), encoding="utf-8") as handle:
             sheet = handle.read()
-        self.assertIn("\n.skin-stone\n{\n}\n", sheet, "RmlUi refuses a sheet without a rule")
+        self.assertIn("\n.skin-%s\n{\n}\n" % SKIN, sheet, "RmlUi refuses a sheet without a rule")
         with open(os.path.join(self.nui, "nui.rtpl"), encoding="utf-8") as handle:
             template = handle.read()
-        self.assertLess(template.index('href="skins/classic/classic.rcss"'), template.index('href="skins/stone/stone.rcss"'))
-        self.assertLess(template.index('href="skins/stone/stone.rcss"'), template.index("</head>"))
+        link = 'href="skins/%s/%s.rcss"' % (SKIN, SKIN)
+        self.assertLess(max(template.index('href="%s"' % href) for href in skin_links), template.index(link), "after every skin sheet")
+        self.assertLess(template.index(link), template.index("</head>"))
         self.assert_no_window_or_component_changed()
 
     def test_layout_overrides_get_one_overlay_stub_per_window(self):
-        code, _out, err = self.run_tool("stone", "--base", "classic", "--skin", "stone", "--window", "login", "--window", "select")
+        code, _out, err = self.run_tool(SKIN, "--base", "classic", "--skin", SKIN, "--window", "login", "--window", "select")
         self.assertEqual(code, 0, err)
-        overlays = os.path.join(self.nui, "skins", "stone", "windows")
+        overlays = os.path.join(self.nui, "skins", SKIN, "windows")
         self.assertEqual(sorted(os.listdir(overlays)), ["login.rcss", "select.rcss"])
         with open(os.path.join(overlays, "login.rcss"), encoding="utf-8") as handle:
             self.assertIn("nui/windows/login/login.rml", handle.read())
         self.assert_no_window_or_component_changed()
 
     def test_the_modern_skin_takes_no_overlay(self):
-        code, _out, err = self.run_tool("ember", "--base", "dark", "--window", "login")
+        code, _out, err = self.run_tool(PALETTE, "--base", "dark", "--window", "login")
         self.assertEqual(code, 1)
         self.assertIn("layout overrides need another skin", err)
         self.assertEqual(self.changed(), [])
@@ -148,28 +191,35 @@ class GoldenPolicy(Scratch):
         golden = self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"]
         shipped = self.read_json(nui_new_theme.THEMES_JSON)["themes"]
         self.assertEqual([entry["id"] for entry in golden], [theme["id"] for theme in shipped])
-        self.assertEqual(len(self.base), 141)
+
+    def test_every_golden_case_has_its_image_and_every_image_is_a_case(self):
+        # Whatever themes the content has: a theme's goldens come with it, and
+        # go with it when it is removed.
+        images = {name[:-len(".png")] for name in os.listdir(os.path.join(REPO, check_nui_snapshots.SNAPSHOTS)) if name.endswith(".png")}
+        goldens = {case[1] for case in check_nui_snapshots.cases(REPO) if case[-1] is None}
+        self.assertEqual(sorted(goldens - images), [], "write them: check_nui_snapshots.py --write --optimize --only ...")
+        self.assertEqual(sorted(images - goldens), [], "no case draws these; delete them")
 
     def test_an_experimental_theme_gets_the_gallery_and_the_representative_pages(self):
-        self.assertEqual(self.run_tool("ember", "--base", "dark")[0], 0)
+        self.assertEqual(self.run_tool(PALETTE, "--base", "dark")[0], 0)
         entry = self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"][-1]
-        self.assertEqual(entry, {"name": "ember", "id": "ember", "experimental": True,
+        self.assertEqual(entry, {"name": golden_name(PALETTE), "id": PALETTE, "experimental": True,
                                  "pages": ["login", "select", "dialog-question"]})
         added = sorted(set(self.golden_names()) - set(self.base))
-        expected = sorted("%s-ember-%s" % (page, percent)
+        expected = sorted("%s-%s-%s" % (page, golden_name(PALETTE), percent)
                           for page in ("gallery", "login", "select", "dialog-question") for percent in ("100", "150", "200"))
         self.assertEqual(added, expected)
 
     def test_named_pages_replace_the_representative_ones(self):
-        self.assertEqual(self.run_tool("ember", "--base", "dark", "--pages", "empire")[0], 0)
+        self.assertEqual(self.run_tool(PALETTE, "--base", "dark", "--pages", "empire")[0], 0)
         added = set(self.golden_names()) - set(self.base)
         self.assertEqual(sorted(name.rsplit("-", 2)[0] for name in added), ["empire"] * 3 + ["gallery"] * 3)
 
     def test_a_shipped_theme_gets_the_full_matrix(self):
-        self.assertEqual(self.run_tool("ember", "--base", "dark", "--shipped")[0], 0)
-        self.assertEqual(self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"][-1], {"name": "ember", "id": "ember"})
+        self.assertEqual(self.run_tool(PALETTE, "--base", "dark", "--shipped")[0], 0)
+        self.assertEqual(self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"][-1], {"name": golden_name(PALETTE), "id": PALETTE})
         added = set(self.golden_names()) - set(self.base)
-        classic = {name.replace("-classic-", "-ember-") for name in self.base if "-classic-" in name
+        classic = {name.replace("-classic-", "-%s-" % golden_name(PALETTE)) for name in self.base if "-classic-" in name
                    and not name.startswith(("skin-proof-", "select-busy-", "create-busy-"))}
         self.assertEqual(added, classic)
 
@@ -177,10 +227,10 @@ class GoldenPolicy(Scratch):
         path = os.path.join(self.root, nui_new_theme.GOLDEN_THEMES)
         with open(path, encoding="utf-8") as handle:
             config = json.load(handle)
-        config["themes"] = config["themes"][:-1]
+        removed = config["themes"].pop()
         with open(path, "w", encoding="utf-8") as handle:
             json.dump(config, handle)
-        with self.assertRaisesRegex(ValueError, "no entry for theme classic"):
+        with self.assertRaisesRegex(ValueError, "no entry for theme %s" % re.escape(removed["id"])):
             list(check_nui_snapshots.cases(self.root))
 
 
@@ -192,31 +242,33 @@ class Refusals(Scratch):
         self.assertEqual(self.changed(), [])
 
     def test_an_id_the_table_already_holds(self):
-        self.assert_refused("already has a theme 'classic'", "classic", "--base", "dark", "--palette", "x")
+        taken = self.read_json(nui_new_theme.THEMES_JSON)["themes"][-1]["id"]
+        self.assert_refused("already has a theme %r" % taken, taken, "--base", "dark", "--palette", PALETTE, "--name", golden_name(PALETTE))
 
     def test_a_base_palette_that_does_not_exist(self):
-        self.assert_refused("no palette 'sepia'", "ember", "--base", "sepia")
+        self.assert_refused("no palette 'no-such-palette'", PALETTE, "--base", "no-such-palette")
 
     def test_a_palette_name_already_taken(self):
-        self.assert_refused("already has a section 'light'", "ember", "--base", "dark", "--palette", "light")
+        self.assert_refused("already has a section 'light'", PALETTE, "--base", "dark", "--palette", "light")
 
     def test_an_id_out_of_form(self):
-        self.assert_refused("the id is 1 to 31", "Ember", "--base", "dark")
+        self.assert_refused("the id is 1 to 31", "Test-Palette", "--base", "dark")
 
     def test_a_golden_name_already_taken(self):
-        self.assert_refused("already uses the name 'dark'", "ember", "--base", "dark", "--name", "dark")
+        taken = self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"][0]["name"]
+        self.assert_refused("already uses the name %r" % taken, PALETTE, "--base", "dark", "--name", taken)
 
     def test_a_page_without_golden_cases(self):
-        self.assert_refused("no golden case for page 'nowhere'", "ember", "--base", "dark", "--pages", "nowhere")
+        self.assert_refused("no golden case for page 'nowhere'", PALETTE, "--base", "dark", "--pages", "nowhere")
 
     def test_an_unknown_window(self):
-        self.assert_refused("no window 'nowhere'", "stone", "--base", "dark", "--skin", "stone", "--window", "nowhere")
+        self.assert_refused("no window 'nowhere'", SKIN, "--base", "dark", "--skin", SKIN, "--window", "nowhere")
 
 
 @unittest.skipUnless(NUITOOL, "set NUITOOL to a nuitool build (or put nuitool on PATH)")
 class ScaffoldWithNuitool(Scratch):
     def test_a_scaffolded_skin_with_an_overlay_lints_clean(self):
-        code, _out, err = self.run_tool("stone", "--base", "classic", "--skin", "stone", "--window", "login")
+        code, _out, err = self.run_tool(SKIN, "--base", "classic", "--skin", SKIN, "--window", "login")
         self.assertEqual(code, 0, err)
         groups = []
         for group in ("icon", "ETC", "locale", "uiloading"):

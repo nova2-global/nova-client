@@ -5,6 +5,7 @@
     python3 tools/check_nui_snapshots.py --write    # regenerate every golden
     python3 tools/check_nui_snapshots.py --only login --tolerance 0
     python3 tools/check_nui_snapshots.py --write --optimize --only dialog-question
+    python3 tools/check_nui_snapshots.py --write --optimize --only=-ember-   # one theme's goldens
 
 Run it from anywhere; it works in the asset repository root and passes
 nuitool relative paths, so a Windows nuitool.exe started from WSL works too.
@@ -251,16 +252,21 @@ def optimize(path):
     copy.save(path, optimize=True)
 
 
-def main(argv=None):
+def make_parser():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--write", action="store_true", help="regenerate the goldens instead of comparing")
     parser.add_argument("--nuitool", default=os.environ.get("NUITOOL", "nuitool"), help="nuitool to run (default: $NUITOOL or nuitool on PATH)")
     parser.add_argument("--tolerance", type=int, default=1,
                         help="allowed difference per channel when comparing (default 1: builds for other platforms differ by 1 in a few pixels)")
-    parser.add_argument("--only", default="", help="only the goldens whose name contains this text")
+    parser.add_argument("--only", default="",
+                        help="only the goldens whose name contains this text; write a text that starts with '-' as --only=-x-")
     parser.add_argument("--optimize", action="store_true",
                         help="with --write: re-save each written PNG with Pillow's optimizer (needs Pillow)")
-    args = parser.parse_args(argv)
+    return parser
+
+
+def main(argv=None):
+    args = make_parser().parse_args(argv)
 
     os.chdir(ROOT)
     if shutil.which(args.nuitool) is None and not os.path.isfile(args.nuitool):

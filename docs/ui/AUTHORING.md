@@ -238,7 +238,7 @@ The gallery shows every component but the body-level layers, the dialog look (th
 | `rest` | The frame shown under reduced motion, and while paused before the first update (default 0). |
 | `paused` | Present: hold the current frame. |
 
-- The first frame stays in the flow and sizes the element; the others are placed over it. `components/frames.rcss` gives the element `display: inline-block; position: relative`.
+- The first frame stays in the flow and sizes the element; the others are placed over it. `components/frames.rcss` gives the element `display: inline-flex; position: relative; vertical-align: top` and the frames `display: block`, which makes the box exactly frame 0's size, on the line's top. RmlUi 6.3 sizes an `inline-block` around a block image to 0 wide, and adds the line's descent below an inline one. A sheet that overrides `display` keeps the frames as blocks.
 - Changing `frames`, `pattern`, `count` or `first` (in markup or through `data-attr-*`) rebuilds the frames; `delay`, `loop`, `rest` and `paused` do not.
 - Reduced motion shows the `rest` frame and holds it.
 - `nuitool snap --time S` shows frame `floor(S / delay) mod count`.

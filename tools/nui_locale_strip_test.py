@@ -269,6 +269,18 @@ class RightToLeft(StripTest):
         self.assertIsInstance(win.localeSelector, self.selector.LegacyLocaleSelector)
 
 
+class Markup(unittest.TestCase):
+    def test_a_flag_is_a_button_so_a_press_plays_the_click_sound(self):
+        # G11 plays the legacy click on a mousedown over a button that takes
+        # no focus (UiSounds.cpp: a <button>, nui-button or input button); the
+        # legacy flags were ui.Button objects, which click too.
+        import re
+        with open(os.path.join(support.ROOT, "..", "nui", STRIP), encoding="utf-8") as file:
+            markup = file.read()
+        hosts = re.findall(r'<(\w+)\s+class="locale-strip__flag\b', markup)
+        self.assertEqual(hosts, ["button"])
+
+
 class Wiring(unittest.TestCase):
     def test_uilocaleselector_rebinds_its_name_to_the_factory(self):
         with open(os.path.join(ROOT, "uilocaleselector.py"), encoding="utf-8") as file:

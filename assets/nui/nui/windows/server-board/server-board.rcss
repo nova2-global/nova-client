@@ -163,10 +163,20 @@ body.skin-classic.server-board
 {
 	padding: 0dp var(--space-1);
 }
-.skin-classic .server-board__state
+/* Legacy writes the state as plain list text after the name ("CH1 NORM",
+   intrologin.py), not as a badge: no pill, no variant color, the list's own
+   type. The extra class outranks the badge variants. */
+.skin-classic .server-board__state.nui-badge
 {
 	height: 15dp;
 	line-height: 15dp;
+	margin-left: 0dp;
+	padding: 0dp;
+	border-radius: 0dp;
+	background-color: transparent;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: normal;
 }
 /* The legacy OK label is gray. */
 .skin-classic .server-board__button.nui-button--primary

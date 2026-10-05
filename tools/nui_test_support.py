@@ -9,7 +9,12 @@ autofocus element (NuiState.autofocus) the focus, hide() takes it off, and a
 later show() leaves it off. Text fields hold their text: set_value() and
 insert_text() change it and, when the text changed, call the window's
 change handler as RmlUi's change event would (NuiState.field_events names
-the data event a field's data-event-change calls)."""
+the data event a field's data-event-change calls). Each field has a caret,
+as RmlUi's text widget does: a new field has it at 0, the focus leaves it
+where it is, set_value() places it only in the focused field (another
+field's caret is cut to its new text, as the next layout does), and
+insert_text() types and erases at it. show() records whether it showed the
+window as a modal (Window.modal)."""
 import importlib.util
 import os
 import sys
@@ -78,7 +83,9 @@ def make_nui(state):
             self.model = {}
             self.visible = False
             self.focused = None
+            self.modal = False
             self.fields = {}
+            self.carets = {}         # field id -> caret index
             self.handlers = {}       # (element id, event) -> fn
             self.placement = None
             self.keep_clear = []
@@ -108,6 +115,7 @@ def make_nui(state):
             self.calls.append(("show",))
             state.shows.append((type(self).__name__, self.DOCUMENT))
             self.visible = True
+            self.modal = bool(self.MODAL)
             if not self._shown_before:
                 self._shown_before = True
                 element = state.autofocus.get(self.DOCUMENT)
@@ -257,9 +265,23 @@ def make_nui(state):
             if limit is not None:
                 text = text[:limit]
             text = text.replace("\r", "").replace("\n", "").replace("\t", "")
+            focused = self.focused == element_id
+            kept = self.carets.get(element_id, 0)
             if self.fields.get(element_id, "") != text:
                 self.fields[element_id] = text
+                self.carets[element_id] = min(kept, len(text))
                 self._change(element_id, False)
+            # Only into a field that had the focus and still has it.
+            if focused and self.focused == element_id:
+                if caret == "keep":
+                    at = kept
+                elif caret == "start":
+                    at = 0
+                elif caret == "end":
+                    at = len(text)
+                else:
+                    at = caret
+                self.carets[element_id] = max(0, min(at, len(text)))
             return True
 
         def insert_text(self, element_id, text):
@@ -271,22 +293,24 @@ def make_nui(state):
             if self.focused != element_id:
                 self._take_focus(element_id)
             current = self.fields.get(element_id, "")
+            at = max(0, min(self.carets.get(element_id, 0), len(current)))
             if text == "\b":
-                if not current:
+                if at == 0:
                     return False
-                self.fields[element_id] = current[:-1]
+                self.fields[element_id] = current[:at - 1] + current[at:]
+                self.carets[element_id] = at - 1
                 self._change(element_id, False)
                 return True
             if text == "\n":
                 self._change(element_id, True)
                 return True
             limit = state.maxlength.get((self.DOCUMENT, element_id))
-            new = current + text
             if limit is not None:
-                new = new[:limit]
-            if new == current:
+                text = text[:max(0, limit - len(current))]
+            if not text:
                 return False
-            self.fields[element_id] = new
+            self.fields[element_id] = current[:at] + text + current[at:]
+            self.carets[element_id] = at + len(text)
             self._change(element_id, False)
             return True
 

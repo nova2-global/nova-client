@@ -60,7 +60,8 @@ class KitTest(unittest.TestCase):
 
     def setUp(self):
         self.state = support.NuiState()
-        for document, field in ((INPUT, "dialog-input-field"), (MONEY, "dialog-money-field"), (PICK, "pick-money-field")):
+        for document, field in ((INPUT, "dialog-input-field"), (INPUT, "dialog-input-secret"), (MONEY, "dialog-money-field"),
+                                (PICK, "pick-money-field")):
             self.state.field_events[(document, field)] = "edit"
         self.nui = support.make_nui(self.state)
         self.dbg = support.make_dbg()
@@ -483,18 +484,18 @@ class Input(KitTest):
         window = self.kit_window(INPUT)
         self.assertEqual(window.model, {"title": "INPUT_PRIVATE_CODE_DIALOG_TITLE",
                                         "lines": ["INPUT_PRIVATE_CODE_DIALOG_DESCRIPTION"], "secret": True, "max": 7})
-        self.assertEqual(window.focused, "dialog-input-field")
+        self.assertEqual(window.focused, "dialog-input-secret", "secret mode uses the password field")
 
     def test_number_mode_keeps_digits_and_enter_accepts_and_escape_cancels(self):
         dialog = self.make()
         dialog.Open()
         window = self.kit_window(INPUT)
-        window.insert_text("dialog-input-field", "12a3")
+        window.insert_text("dialog-input-secret", "12a3")
         self.assertEqual(dialog.GetText(), "123")
-        self.assertIn(("set_value", "dialog-input-field", "123", "end"), window.calls)
-        window.insert_text("dialog-input-field", "\n")
+        self.assertIn(("set_value", "dialog-input-secret", "123", "end"), window.calls)
+        window.insert_text("dialog-input-secret", "\n")
         self.assertEqual(self.events.seen, [("accept",)])
-        self.assertTrue(window.key("dialog-input-field", self.nui.KEY_ESCAPE))
+        self.assertTrue(window.key("dialog-input-secret", self.nui.KEY_ESCAPE))
         self.assertEqual(self.events.seen, [("accept",), ("cancel",)])
         self.assertTrue(dialog.IsShow(), "the events close it, not the keys")
 
@@ -510,23 +511,69 @@ class Input(KitTest):
         dialog = self.make()
         dialog.Open()
         window = self.kit_window(INPUT)
-        window.insert_text("dialog-input-field", "4242")
+        window.insert_text("dialog-input-secret", "4242")
         dialog.Close()
         self.assertFalse(window.is_visible())
-        self.assertEqual(window.fields["dialog-input-field"], "", "the code does not stay in the hidden field")
+        self.assertEqual(window.fields["dialog-input-secret"], "", "the code does not stay in the hidden field")
         self.assertEqual(dialog.GetText(), "4242")
 
     def test_a_new_dialog_starts_with_an_empty_field(self):
         first = self.make()
         first.Open()
         window = self.kit_window(INPUT)
-        window.insert_text("dialog-input-field", "777")
+        window.insert_text("dialog-input-secret", "777")
         first.Close()
         second = self.uiCommon.InputDialog()
         second.Open()
-        self.assertEqual(window.fields["dialog-input-field"], "")
+        self.assertEqual(window.fields["dialog-input-secret"], "")
+        self.assertEqual(window.fields.get("dialog-input-field", ""), "")
         self.assertEqual(second.GetText(), "")
         self.assertEqual(window.model["secret"], False)
+        self.assertEqual(window.focused, "dialog-input-field")
+
+    def test_each_mode_uses_its_own_field_so_no_field_changes_type(self):
+        # RmlUi rebuilds an input whose type changes, which drops its
+        # maxlength, caret and IME: the document has one field per type.
+        plain = self.uiCommon.InputDialog()
+        plain.SetMaxLength(12)
+        plain.Open()
+        window = self.kit_window(INPUT)
+        window.insert_text("dialog-input-field", "friend")
+        self.assertEqual(plain.GetText(), "friend")
+        plain.Close()
+        code = self.make()
+        code.Open()
+        self.assertEqual((window.model["secret"], window.model["max"]), (True, 7))
+        self.assertEqual(window.focused, "dialog-input-secret")
+        window.insert_text("dialog-input-secret", "1234")
+        self.assertEqual(code.GetText(), "1234")
+        self.assertEqual(window.fields["dialog-input-field"], "", "the text field stays empty")
+        code.Close()
+        again = self.uiCommon.InputDialog()
+        again.Open()
+        self.assertEqual((window.model["secret"], window.model["max"]), (False, 12))
+        self.assertEqual(window.focused, "dialog-input-field")
+        self.assertEqual(window.fields["dialog-input-secret"], "")
+
+    def test_secret_mode_set_while_shown_moves_the_text_and_the_focus(self):
+        dialog = self.uiCommon.InputDialog()
+        dialog.Open()
+        window = self.kit_window(INPUT)
+        window.insert_text("dialog-input-field", "ab")
+        dialog.SetSecretMode()
+        self.assertTrue(window.model["secret"])
+        self.assertEqual(window.focused, "dialog-input-secret")
+        self.assertEqual(window.fields["dialog-input-secret"], "ab")
+        self.assertEqual(window.fields["dialog-input-field"], "")
+        self.assertEqual(window.carets["dialog-input-secret"], 2)
+        self.assertEqual(dialog.GetText(), "ab")
+
+    def test_the_field_takes_its_text_after_the_focus_so_the_caret_goes_to_the_end(self):
+        dialog = self.make()
+        dialog.Open()
+        window = self.kit_window(INPUT)
+        calls = [call[:2] for call in window.calls if call[0] in ("focus", "set_value")]
+        self.assertLess(calls.index(("focus", "dialog-input-secret")), calls.index(("set_value", "dialog-input-secret")))
 
     def test_description2_shows_both_lines(self):
         dialog = self.uiCommon.InputDialogWithDescription2()
@@ -618,6 +665,28 @@ class PickMoney(KitTest):
         self.assertEqual(self.events.seen, [("accept", 250)])
         self.assertFalse(dialog.IsShow())
 
+    def test_the_caret_follows_the_unit_so_backspace_then_typing_replaces_it(self):
+        # The legacy habit: Backspace over the 1, then the amount. A caret
+        # left before the 1 would make 50 read 501.
+        dialog = self.make()
+        dialog.Open(1000, 1)
+        window = self.kit_window(PICK)
+        self.assertEqual(window.carets["pick-money-field"], 1)
+        window.insert_text("pick-money-field", "\b")
+        window.insert_text("pick-money-field", "50")
+        window.insert_text("pick-money-field", "\n")
+        self.assertEqual(self.events.seen, [("accept", 50)])
+
+    def test_a_second_open_after_a_close_puts_the_caret_after_the_unit_again(self):
+        dialog = self.make()
+        dialog.Open(1000, 1)
+        window = self.kit_window(PICK)
+        window.insert_text("pick-money-field", "234")
+        dialog.Close()
+        dialog.Open(1000, 1)
+        self.assertEqual(window.fields["pick-money-field"], "1")
+        self.assertEqual(window.carets["pick-money-field"], 1)
+
     def test_escape_cancel_and_close_close_with_no_event(self):
         dialog = self.make()
         dialog.Open(250, 1)
@@ -706,6 +775,92 @@ class Busy(KitTest):
         self.assertEqual(popup.CloseEvent.__class__.__name__, "function")
         popup.Close()
         self.assertEqual(self.events.seen, [("close",)])
+
+
+class Covered(KitTest):
+    """A legacy common dialog above NovaUI (TOP_MOST) covers the kit: the kit
+    modals step aside, so the keys go to the dialog the player sees."""
+
+    def open_pair(self):
+        first = self.uiCommon.QuestionDialog()
+        first.SetText("drop the item?")
+        first.SetAcceptEvent(self.events("drop"))
+        first.Open()
+        second = self.uiCommon.QuestionDialog()
+        second.SetText("party invite")
+        second.Open()
+        return first, second, self.kit_window(QUESTION)
+
+    def test_a_busy_fallback_takes_the_keys_from_the_question_it_covers(self):
+        first, second, window = self.open_pair()
+        self.assertIsNotNone(second._legacy)
+        self.assertTrue(window.is_visible())
+        self.assertFalse(window.modal, "not modal: the host sends the keys to the legacy dialog")
+        self.assertEqual(window.focused, "", "no focused button for Enter to press")
+        self.assertFalse(window.key("", self.nui.KEY_ESCAPE), "the Escape goes on to the legacy dialog")
+        self.assertTrue(first.IsShow())
+        self.assertEqual(self.events.seen, [])
+
+    def test_the_covered_question_comes_back_when_the_legacy_one_closes(self):
+        first, second, window = self.open_pair()
+        second._legacy.OnPressEscapeKey()  # the legacy dialog closes itself
+        self.assertTrue(window.modal)
+        self.assertEqual(window.focused, "dialog-question-accept")
+        self.assertTrue(window.key("", self.nui.KEY_ESCAPE))
+        self.assertFalse(first.IsShow())
+
+    def test_a_closed_facade_uncovers_too(self):
+        first, second, window = self.open_pair()
+        second.Close()
+        self.assertTrue(window.modal)
+        self.assertEqual(window.focused, "dialog-question-accept")
+
+    def test_a_legacy_dialog_dropped_while_shown_uncovers(self):
+        first, second, window = self.open_pair()
+        legacy = second._legacy
+        second._legacy = None
+        del second, legacy
+        gc.collect()
+        self.assertTrue(window.modal)
+        self.assertEqual(window.focused, "dialog-question-accept")
+
+    def test_the_time_limited_question_covers_an_input_dialog(self):
+        dialog = self.uiCommon.InputDialog()
+        dialog.Open()
+        window = self.kit_window(INPUT)
+        window.insert_text("dialog-input-field", "nov")
+        timed = self.uiCommon.QuestionDialogWithTimeLimit()
+        timed.Open("accept the duel?", 10)
+        self.assertEqual(self.wndmgr.layers[timed.hWnd], "TOP_MOST")
+        self.assertFalse(window.modal)
+        self.assertEqual(window.focused, "", "typing does not reach the covered field")
+        timed.Close()
+        self.assertTrue(window.modal)
+        self.assertEqual(window.focused, "dialog-input-field")
+        self.assertEqual(window.carets["dialog-input-field"], 3, "the caret is where it was")
+
+    def test_a_kit_dialog_that_opens_while_covered_waits_aside(self):
+        first, second, window = self.open_pair()
+        popup = self.uiCommon.PopupDialog()
+        popup.Open()
+        message = self.kit_window(MESSAGE)
+        self.assertTrue(message.is_visible())
+        self.assertFalse(message.modal)
+        self.assertEqual(message.focused, "")
+        second.Close()
+        self.assertTrue(message.modal)
+        self.assertEqual(message.focused, "dialog-message-accept")
+        self.assertTrue(window.modal)
+
+    def test_a_legacy_dialog_in_the_ui_layer_covers_nothing(self):
+        legacy = self.uiCommon.LegacyQuestionDialog()
+        legacy.Open()  # no NovaUI window shown: UI layer, under NovaUI
+        self.assertEqual(self.wndmgr.layers[legacy.hWnd], "UI")
+        question = self.uiCommon.QuestionDialog()
+        question.Open()
+        window = self.kit_window(QUESTION)
+        self.assertTrue(window.modal)
+        self.assertEqual(window.focused, "dialog-question-accept")
 
 
 class PlainText(KitTest):

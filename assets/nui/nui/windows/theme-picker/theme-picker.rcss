@@ -60,12 +60,14 @@ body.skin-classic.theme-picker
 {
 	color: var(--text);
 }
+/* The labels are localized (D15): a long one widens the button, and the
+   9dp of padding (the medium button's) keep its text off the 6dp caps. */
 .skin-classic.theme-picker .nui-button
 {
 	decorator: tiled-horizontal(classic-button-large-01-l, classic-button-large-01-c, classic-button-large-01-r);
 	min-width: 88dp;
 	width: auto;
-	padding: 0;
+	padding: 0 9dp;
 }
 .skin-classic.theme-picker .nui-button:hover, .skin-classic.theme-picker .nui-button.is-hover
 {

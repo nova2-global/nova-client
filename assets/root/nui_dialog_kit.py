@@ -21,10 +21,19 @@ the legacy constructor and method names and meanings, so no caller changes.
 - Every caller string goes through nui.plain_text() before it reaches the
   model, since {{ }} would translate an @ui.KEY inside it. The default labels
   are locale keys on purpose.
-- Escape is an element_on("", "keydown") handler on the document and on the
-  field; it returns True only when it acted. Enter presses the focused
+- Escape is an element_on("", "keydown") handler on the document and on
+  each field; it returns True only when it acted. Enter presses the focused
   default button (RmlUi clicks a focused button), or comes from the field's
   change event with linebreak.
+- A field takes its text after it has the focus: RmlUi places the caret only
+  in a focused field, and a focus does not move it.
+- A legacy common dialog that opens above NovaUI (the busy fallback, the
+  time-limited question, a dialog the kit does not port) covers the kit:
+  nui_windows.legacy_dialog_layer calls cover(). Until it hides, every kit
+  modal steps aside: it stops being modal and gives up the focus, so the
+  host sends the keys to the legacy dialog on top and Enter cannot press a
+  button the player does not see. Then it is modal again and takes its
+  focus back.
 
 Events are whatever the caller passed: a function, a ui.__mem_func__, 0 or
 None. They are called with no arguments, as legacy button events are; a
@@ -38,6 +47,9 @@ import nui
 
 # KindWindow subclass -> its one shared window, or False after it failed.
 _kinds = {}
+
+# The legacy dialogs that cover the kit: id(dialog) -> weak reference.
+_covers = {}
 
 
 def call_event(event, *args):
@@ -56,6 +68,63 @@ def text_lines(text):
 	if text == "":
 		return []
 	return [nui.plain_text(line) for line in text.split("\n")]
+
+
+def _windows():
+	return [window for window in _kinds.values() if window and window._doc]
+
+
+def covered():
+	"""True while a legacy dialog opened above NovaUI has not hidden."""
+	return bool(_covers)
+
+
+def cover(dialog):
+	"""A legacy common dialog opens in TOP_MOST above NovaUI (called by
+	nui_windows.legacy_dialog_layer at its Open): every kit modal steps aside
+	until it hides. Its Hide is wrapped on the instance (its Close hides
+	through self.Hide()), and a dialog that dies without hiding uncovers as
+	well. A dialog shown again with Show() rather than Open() does not cover
+	again, as G5 decides the layer at each Open only."""
+	key = id(dialog)
+	if key not in _covers:
+		try:
+			_covers[key] = weakref.ref(dialog, lambda ref, key=key: _forget(key))
+		except TypeError:
+			return
+		_watch(dialog)
+	for window in _windows():
+		window.step_aside()
+
+
+def uncover(dialog):
+	"""The legacy dialog hid: the kit modals come back once none covers them."""
+	_forget(id(dialog))
+
+
+def _forget(key):
+	if _covers.pop(key, None) is None or _covers:
+		return
+	for window in _windows():
+		window.step_back()
+
+
+def _watch(dialog):
+	if getattr(dialog, "_nui_kit_watched", False):
+		return
+	cls = type(dialog)
+	ref = weakref.ref(dialog)
+
+	def hide(*args):
+		target = ref()
+		if target is None:
+			return None
+		result = cls.Hide(target, *args)
+		uncover(target)
+		return result
+
+	dialog.Hide = hide
+	dialog._nui_kit_watched = True
 
 
 def kind_window(cls):
@@ -94,16 +163,21 @@ class KindWindow(nui.Window):
 	BOX = ""          # the element whose box GetWidth and GetHeight give
 	DEFAULT = None    # the button focused on each show, for Enter
 	FIELD = None      # the text field, if the kind has one
+	FIELDS = ()       # every text field, when the kind has more than FIELD
 
 	def __init__(self, owner):
 		self._holder = None
 		self._holder_id = 0
+		self._aside = False
 		self.set_owner(owner)
 		nui.Window.__init__(self)
 		if self._doc:
 			self.element_on("", "keydown", self._on_key)
-			if self.FIELD:
-				self.element_on(self.FIELD, "keydown", self._on_key)
+			for field in self.field_ids():
+				self.element_on(field, "keydown", self._on_key)
+
+	def field_ids(self):
+		return tuple(self.FIELDS) or ((self.FIELD,) if self.FIELD else ())
 
 	def set_owner(self, owner):
 		"""The facade the window reports to now; None for none. Kept by weak
@@ -151,7 +225,36 @@ class KindWindow(nui.Window):
 	def _on_key(self, event):
 		if event.get("key_identifier") != nui.KEY_ESCAPE or not self.is_visible():
 			return None
+		if self._aside:
+			# Covered: the Escape is the legacy dialog's.
+			return None
 		return True if self.forward("_nui_escape") else None
+
+	def is_aside(self):
+		return self._aside
+
+	def step_aside(self):
+		"""Covered by a legacy dialog: shown again as not modal, with the
+		focus on the document, so no NovaUI rule holds the keys and Enter has
+		no button to press. Pick money (not modal) gives up the focus only."""
+		if self._aside or not self.is_visible():
+			return
+		self._aside = True
+		if type(self).MODAL:
+			self.MODAL = False
+			self.show()
+		self.focus("")
+
+	def step_back(self):
+		"""No legacy dialog covers the kit any more: modal again, and the
+		owner focuses its field or default button."""
+		if not self._aside:
+			return
+		self._aside = False
+		self.__dict__.pop("MODAL", None)
+		if self.is_visible():
+			self.show()
+			self.forward("_nui_refocus")
 
 	def on_reload(self):
 		# A locale change re-loaded the document: its field starts empty.
@@ -205,9 +308,10 @@ class DialogFacade(object):
 		window = self._window
 		if window is None or not window.held_by(self):
 			return
-		if window.FIELD and window.is_visible():
+		if window.is_visible():
 			window.set_owner(None)
-			window.set_value(window.FIELD, "")
+			for field in window.field_ids():
+				window.set_value(field, "")
 		window.set_owner(None)
 		window.hide()
 
@@ -228,8 +332,10 @@ class DialogFacade(object):
 	def _show(self, reset=None):
 		"""Shows the dialog for this facade: the legacy one while routed; else
 		claims the window, fills the model, shows it (a modal centered by its
-		scrim), lets `reset` set its fields, and focuses the default button
-		or the field. False while the kind is busy."""
+		scrim), puts the text in the field, lets `reset` set its fields, and
+		focuses the field or the default button. A legacy dialog that covers
+		the kit leaves the window aside, the focus taken back when it hides.
+		False while the kind is busy."""
 		if self._routed():
 			self._legacy.Show()
 			return True
@@ -239,12 +345,26 @@ class DialogFacade(object):
 		window.set(**self._fill())
 		self._place(window)
 		window.show()
-		if window.FIELD:
-			window.set_value(window.FIELD, self._field_text(), caret="end")
+		self._fill_field(window)
 		if reset is not None:
 			reset(window)
-		window.focus(window.FIELD or window.DEFAULT)
+		window.focus(self._field_id(window) or window.DEFAULT)
+		if covered():
+			window.step_aside()
+			window.focus("")
 		return True
+
+	def _fill_field(self, window):
+		"""The field's text with the caret at its end: the focus first, since
+		RmlUi moves the caret only in a focused field."""
+		field = self._field_id(window)
+		if field:
+			window.focus(field)
+			window.set_value(field, self._field_text(), caret="end")
+
+	def _field_id(self, window):
+		"""The id of the field in use; None for a kind without one."""
+		return window.FIELD
 
 	def _place(self, window):
 		"""Before a show: a modal is centered by its scrim; pick money places
@@ -294,9 +414,15 @@ class DialogFacade(object):
 
 	def _nui_reloaded(self):
 		window = self._window
-		if window is not None and window.FIELD:
-			window.set_value(window.FIELD, self._field_text(), caret="end")
-			window.focus(window.FIELD)
+		if window is not None and self._field_id(window):
+			self._fill_field(window)
+			if window.is_aside():
+				window.focus("")
+
+	def _nui_refocus(self):
+		window = self._window
+		if window is not None:
+			window.focus(self._field_id(window) or window.DEFAULT)
 
 	# --- ui.ScriptWindow shims callers use ------------------------------------------
 

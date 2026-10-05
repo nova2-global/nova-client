@@ -24,3 +24,24 @@ body.skin-classic.dialog-input .nui-window__footer
 	padding: 8dp 16dp 11dp 16dp;
 	gap: 10dp;
 }
+
+/* The field of the other type (dialog-input.rml): it takes no room, no
+   pointer and no Tab, and draws nothing. Not display: none or visibility:
+   hidden, which RmlUi would apply only at the next update: the kit fills
+   and focuses the field in use in the same call that set secret, and a
+   hidden field takes neither. After the classic field rule, which it
+   outranks. */
+body.dialog-input .nui-window__body .nui-dialog__field.is-idle
+{
+	position: absolute;
+	width: 0dp;
+	min-width: 0dp;
+	height: 0dp;
+	min-height: 0dp;
+	margin: 0dp;
+	padding: 0dp;
+	border-width: 0dp;
+	opacity: 0;
+	pointer-events: none;
+	tab-index: none;
+}

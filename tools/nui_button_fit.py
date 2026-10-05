@@ -11,7 +11,9 @@ Tahoma 12px (the legacy UI font; /mnt/c/Windows/Fonts/tahoma.ttf, else
 Noto Sans from assets/nui/nui/fonts). A classic button keeps 9dp between
 its label and each end of its art, so a label wider than the size's legacy
 width minus 18dp is listed as information: the button grows, and its caps
-keep a gap.
+keep a gap. The buttons whose label is bound ({{ }}) to a locale key the
+controller picks are listed in BOUND and measured the same way, at the
+size of their classic art.
 
 Errors (exit 1):
 - a --small button with a text label in a window other than the pre-Wave 1
@@ -40,6 +42,13 @@ EXEMPT = ("gallery", "login", "theme-picker", "render-test", "skin-proof", "intr
 SIZE_WIDTHS = {"small": 43, "medium": 61, "large": 88, "icon": 21}
 ID_WIDTHS = {"vkey-symbols": 45, "vkey-shift": 58, "vkey-space": 293, "vkey-enter": 58, "vkey-backspace": 45}
 CAP_GAP = 18
+
+# Buttons whose label is a binding the controller fills with a locale key:
+# (window, id, classic art size, key kind, the keys). The theme picker's
+# labels are @ui.THEME_<ID> (nui_theme_picker.py), on the large classic art.
+BOUND = [
+    ("theme-picker", "theme-pick-<id>", "large", "ui", ("THEME_MODERN_DARK", "THEME_MODERN_LIGHT", "THEME_CLASSIC")),
+]
 
 BUTTON = re.compile(r"<button\b([^>]*)>(.*?)</button>", re.S)
 ATTRIBUTE = re.compile(r'([\w:-]+)\s*=\s*"([^"]*)"')
@@ -97,6 +106,9 @@ def buttons():
             attrs = dict(ATTRIBUTE.findall(attributes))
             classes = attrs.get("class", "").split()
             found.append((window, attrs.get("id", ""), size_class(classes), keys[0][0], keys[0][1]))
+    for window, element_id, size, kind, keys in BOUND:
+        for key in keys:
+            found.append((window, element_id, size, kind, key))
     return found
 
 

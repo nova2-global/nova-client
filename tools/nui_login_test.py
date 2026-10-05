@@ -804,6 +804,19 @@ class KeyboardWithTheBoard(ControllerTest):
         self.assertEqual([name for name, _ in self.state.shows], ["IntroAmbient", "ThemePicker", "VirtualKeyboard", "LoginBoard"])
         self.assertEqual(board.focused, ID_FIELD, "the board keeps the focus")
 
+    def test_the_keyboard_is_raised_each_time_it_shows_so_the_embers_stay_under_it(self):
+        # It never takes the focus, so a show does not raise it, and RmlUi
+        # stacks the documents nothing raised in load order: the ambience,
+        # made after the keyboard, would draw its embers over the keys.
+        win, board = self.open_board()
+        keyboard = win.nuiKeyboard
+        steps = lambda: [call[0] for call in keyboard.calls if call[0] in ("show", "bring_to_front")]
+        self.assertEqual(steps(), ["show", "bring_to_front"])
+        wrapper = self.m.after_popup(win, 0)
+        self.m.before_popup(win)
+        wrapper()
+        self.assertEqual(steps(), ["show", "bring_to_front", "show", "bring_to_front"])
+
     def test_without_the_flag_there_is_no_keyboard_and_the_model_says_so(self):
         self.setting = make_setting(1)
         self.load()
@@ -897,6 +910,21 @@ class PickerPlace(ControllerTest):
         win.nuiBoard = self.m.open_board(win, self.choices.choose, self.choices.exit)
         picker = win.nuiPicker
         self.assertEqual(picker.placement, ("next_to", strip, "below", 4, ""))
+
+    def test_the_strip_goes_above_the_picker_after_each_show_so_its_hints_show(self):
+        # The flag hints open below the strip, where the picker is; every
+        # document is its own stacking context, so the strip must be the
+        # later one.
+        win = self.Window(Stream())
+        strip = self.strip_window()
+        win.localeSelector = Strip(strip)
+        win.nuiBoard = self.m.open_board(win, self.choices.choose, self.choices.exit)
+        raised = strip.front
+        self.assertGreaterEqual(raised, 1)
+        wrapper = self.m.after_popup(win, 0)
+        self.m.before_popup(win)
+        wrapper()
+        self.assertGreater(strip.front, raised, "raised again after the picker came back")
 
     def test_without_a_novaui_strip_the_sheet_places_the_picker(self):
         win, board = self.open_board()

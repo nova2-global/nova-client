@@ -8,13 +8,16 @@ cancel event, as the legacy edit line did (its OnIMEReturn and
 OnPressEscapeKey were the events); the buttons and the title bar's close
 button call them too, and none of them closes the dialog. Number mode keeps
 digits only, secret mode shows stars, and the field's value never enters a
-data model. See nui_dialog_kit.py for the shared rules.
+data model. The document has a text field and a password field, never a
+field whose type changes (dialog-input.rml); the facade uses the one its
+secret mode names. See nui_dialog_kit.py for the shared rules.
 """
 
 import nui
 import nui_dialog_kit as kit
 
 FIELD = "dialog-input-field"
+SECRET_FIELD = "dialog-input-secret"
 DIGITS = "0123456789"
 
 
@@ -27,6 +30,7 @@ class InputWindow(kit.KindWindow):
 	MODEL = "dialog_input"
 	BOX = "dialog-input"
 	FIELD = FIELD
+	FIELDS = (FIELD, SECRET_FIELD)
 
 	def initial_model(self):
 		return {"title": "", "lines": [], "secret": False, "max": 12}
@@ -74,6 +78,9 @@ class InputDialog(kit.DialogFacade):
 	def _field_text(self):
 		return self._value
 
+	def _field_id(self, window):
+		return SECRET_FIELD if self._secret else FIELD
+
 	def _replay_descriptions(self, legacy):
 		pass
 
@@ -120,16 +127,31 @@ class InputDialog(kit.DialogFacade):
 			self._legacy.SetNumberMode()
 
 	def SetSecretMode(self):
-		self._secret = True
 		if self._legacy is not None:
+			self._secret = True
 			self._legacy.SetSecretMode()
-		self._refresh(secret=True)
+			return
+		if self._secret or not self._held():
+			self._secret = True
+			return
+		# Shown: the text and the focus move to the password field.
+		window = self._window
+		value = window.get_value(FIELD)
+		self._secret = True
+		window.set(secret=True)
+		window.set_value(FIELD, "")
+		if value is not None:
+			self._value = value
+		if not window.is_aside():
+			self._fill_field(window)
+		else:
+			window.set_value(SECRET_FIELD, self._value)
 
 	def SetFocus(self):
 		if self._legacy is not None:
 			self._legacy.SetFocus()
 		elif self._held():
-			self._window.focus(FIELD)
+			self._window.focus(self._field_id(self._window))
 
 	def SetMaxLength(self, length):
 		self._max = int(length)
@@ -159,7 +181,7 @@ class InputDialog(kit.DialogFacade):
 		if self._legacy is not None:
 			return self._legacy.GetText()
 		if self._held():
-			value = self._window.get_value(FIELD)
+			value = self._window.get_value(self._field_id(self._window))
 			if value is not None:
 				return value
 		return self._value
@@ -172,7 +194,7 @@ class InputDialog(kit.DialogFacade):
 			# set_value sends a change of its own with the digits.
 			value = digits_of(value)
 			if self._held():
-				self._window.set_value(FIELD, value, caret="end")
+				self._window.set_value(self._field_id(self._window), value, caret="end")
 		self._value = value
 		if linebreak:
 			kit.call_event(self._accept_event)

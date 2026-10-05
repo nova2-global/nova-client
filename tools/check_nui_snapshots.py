@@ -13,7 +13,9 @@ PATH. The goldens are the table PAGES below (the pages that have no window
 folder of their own case file) plus the cases each window declares in
 assets/nui/nui/windows/<name>/<name>.snapshots.json, which the checker
 discovers: their page, themes, scales, frame sizes, fixture, extra roots and
-time (docs/ui/snapshots/README.md explains each). A golden's file name holds the
+time, and an optional variant: a second fixture of the same window,
+<name>.<variant>.fixture.json, whose goldens are <name>-<variant>-<theme>-
+<percent>.png (docs/ui/snapshots/README.md explains each). A golden's file name holds the
 theme's short name (dark, light, classic); nuitool gets its id from
 nui/theme/themes.json (modern-dark, modern-light, classic), which needs a
 nuitool that takes theme ids.
@@ -36,6 +38,7 @@ import argparse
 import glob
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -99,9 +102,18 @@ def window_pages(root=None):
             time = case.get("time")
             if time is not None and not isinstance(time, (int, float)):
                 raise ValueError("%s: time is a number of seconds or null" % where)
+            variant = case.get("variant")
+            if variant is not None and (not isinstance(variant, str) or not re.fullmatch(r"[a-z][a-z0-9-]*", variant)):
+                raise ValueError("%s: variant is a name of lowercase letters, digits and hyphens" % where)
+            if variant is not None and not case.get("fixture"):
+                raise ValueError("%s: a variant is a fixture of its own; set fixture to true" % where)
             document = "nui/windows/%s/%s.rml" % (folder, folder)
-            fixture = ("assets/nui/nui/windows/%s/%s.fixture.json" % (folder, folder)) if case.get("fixture") else None
-            pages.append((folder, document, fixture, themes, scales, roots, time))
+            stem = folder if variant is None else "%s.%s" % (folder, variant)
+            fixture = ("assets/nui/nui/windows/%s/%s.fixture.json" % (folder, stem)) if case.get("fixture") else None
+            if fixture and not os.path.isfile(os.path.join(root, fixture)):
+                raise ValueError("%s: no %s" % (where, fixture))
+            name = folder if variant is None else "%s-%s" % (folder, variant)
+            pages.append((name, document, fixture, themes, scales, roots, time))
     return pages
 
 

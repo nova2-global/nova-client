@@ -24,6 +24,22 @@
 	top: -149dp;
 	pointer-events: none;
 }
+/* The modern board is about 480dp tall, so below 720dp of screen its top
+   is too close to the screen's top for the art 149dp above it, which would
+   be cut (2400x1350 at 200%: 675dp). There the art is left out, as D13
+   leaves out the keyboard. The classic board is short enough at any
+   height. */
+@media (max-height: 719dp)
+{
+	.select-job
+	{
+		display: none;
+	}
+	.skin-classic .select-job
+	{
+		display: block;
+	}
+}
 
 .select-empire
 {
@@ -231,6 +247,15 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/* Legacy draws the empire name centered on its 90px slot art, unclipped
+   ("Shinsoo Kingdom" is 91px in Tahoma 12): it may run past the box by a
+   pixel or two rather than lose its end. Guild names keep the ellipsis. */
+.skin-classic .select-value.select-empire__name
+{
+	padding: 0dp;
+	overflow: visible;
+	text-overflow: clip;
+}
 .skin-classic .select-slots
 {
 	margin: 6dp 10dp 0dp 10dp;
@@ -330,6 +355,12 @@
 .skin-classic .select-button.nui-button--primary
 {
 	color: var(--classic-button-text);
+}
+/* The classic disabled label (classic.rcss), which the rule above ties and
+   follows. */
+.skin-classic .select-button[disabled]
+{
+	color: var(--classic-disabled-text);
 }
 .skin-classic .select-arrow
 {

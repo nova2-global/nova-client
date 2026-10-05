@@ -11,6 +11,8 @@ Each decision is logged once to log.txt (dbg.Tracen); a failure of a
 window that was asked for is also logged once to syserr.txt
 (dbg.TraceError)."""
 
+import sys
+
 import dbg
 import systemSetting
 
@@ -230,8 +232,16 @@ def legacy_dialog_layer(window):
 	dialog opened while a NovaUI window is shown goes to the TOP_MOST layer,
 	which draws above NovaUI and takes the pointer before it; one opened
 	while none is shown goes (back) to the UI layer, where it always was. An
-	exe without wndMgr.SetWindowLayer changes nothing."""
+	exe without wndMgr.SetWindowLayer changes nothing.
+
+	A dialog that goes to TOP_MOST also covers the NovaUI dialog kit, when
+	the kit is in use (nui_dialog_kit.cover): the kit's modals step aside
+	until it hides, so the keys reach the dialog the player sees."""
 	set_layer = getattr(wndMgr, "SetWindowLayer", None)
 	if set_layer is None or not getattr(window, "hWnd", None):
 		return
-	set_layer(window.hWnd, "TOP_MOST" if nui.any_window_shown() else "UI")
+	top = nui.any_window_shown()
+	set_layer(window.hWnd, "TOP_MOST" if top else "UI")
+	kit = sys.modules.get("nui_dialog_kit")
+	if top and kit is not None:
+		kit.cover(window)

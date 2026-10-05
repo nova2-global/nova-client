@@ -5,8 +5,11 @@
 	     InputDialogWithDescription classes. A modal with a title bar, 0 to 2
 	     lines of description and one field. The field's value never enters
 	     the model: it reports every edit through change (ev.value), and
-	     Enter there arrives as ev.linebreak. secret makes it a password
-	     field. -->
+	     Enter there arrives as ev.linebreak. There is one field per type,
+	     and secret picks the one in use: RmlUi gives an input a new text
+	     widget whenever its type attribute changes, which drops its
+	     maxlength, caret and IME (lint NUI013). The other field is idle
+	     (dialog-input.rcss). -->
 	<title>dialog-input</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="dialog-input.rcss"/>
@@ -21,7 +24,7 @@
 		</div>
 		<div class="nui-window__body">
 			<p class="nui-dialog__text" data-for="line : lines">{{ line }}</p>
-			<input id="dialog-input-field" class="nui-input nui-dialog__field" data-attr-type="secret ? 'password' : 'text'" data-attr-maxlength="max" data-event-change="edit(ev.value, ev.linebreak)"/>
+			<input id="dialog-input-field" type="text" class="nui-input nui-dialog__field" data-class-is-idle="secret" data-attr-maxlength="max" data-event-change="edit(ev.value, ev.linebreak)"/><input id="dialog-input-secret" type="password" class="nui-input nui-dialog__field" data-class-is-idle="!secret" data-attr-maxlength="max" data-event-change="edit(ev.value, ev.linebreak)"/>
 		</div>
 		<div class="nui-window__footer nui-dialog__footer">
 			<button id="dialog-input-cancel" class="nui-button nui-button--medium nui-anim" data-event-click="cancel()">@ui.CANCEL</button>

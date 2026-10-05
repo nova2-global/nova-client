@@ -23,6 +23,22 @@
 	top: -149dp;
 	pointer-events: none;
 }
+/* The modern board is about 480dp tall, so below 720dp of screen its top
+   is too close to the screen's top for the art 149dp above it, which would
+   be cut (2400x1350 at 200%: 675dp). There the art is left out, as D13
+   leaves out the keyboard. The classic board is short enough at any
+   height. */
+@media (max-height: 719dp)
+{
+	.create-job
+	{
+		display: none;
+	}
+	.skin-classic .create-job
+	{
+		display: block;
+	}
+}
 
 /* The description scrolls in a square box (the scissor clips it). */
 .create-text
@@ -254,6 +270,12 @@
 .skin-classic .create-button.nui-button--primary
 {
 	color: var(--classic-button-text);
+}
+/* The classic disabled label (classic.rcss), which this rule and the
+   selected choice's tie and follow. */
+.skin-classic .create-button[disabled], .skin-classic .create-choice[disabled]
+{
+	color: var(--classic-disabled-text);
 }
 .skin-classic .create-arrow
 {

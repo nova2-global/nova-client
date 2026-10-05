@@ -354,11 +354,15 @@ def _open_keyboard(win, board):
 
 
 def _show_keyboard(win):
-	"""Right before the board shows: the keyboard under it. A visible one is
-	left alone."""
+	"""Right before the board shows: the keyboard under it, above the
+	ambience. The keyboard never takes the focus, so a show does not raise
+	it, and RmlUi stacks the documents nothing raised in load order: the
+	ambience, made after it, would draw its embers over the keys. A visible
+	one is left alone."""
 	keyboard = _keyboard(win) if win is not None else None
 	if keyboard is not None and not keyboard.is_visible():
 		keyboard.show()
+		keyboard.bring_to_front()
 
 
 def _hide_keyboard(win):
@@ -390,13 +394,29 @@ def place_picker(win):
 	picker = _picker(win)
 	if picker is None:
 		return
-	strip = getattr(getattr(win, "localeSelector", None), "nui_window", None)
-	if strip is not None and getattr(strip, "_doc", 0):
+	strip = _strip(win)
+	if strip is not None:
 		picker.place_next_to(strip, "below", 4)
 	else:
 		picker.clear_placement()
 	targets = [window for window in (_board(win), getattr(win, "nuiServerBoard", None), _keyboard(win)) if window is not None]
 	picker.keep_clear_of(*targets)
+	_raise_strip(win)
+
+
+def _strip(win):
+	"""The NovaUI locale strip's window, or None."""
+	strip = getattr(getattr(win, "localeSelector", None), "nui_window", None)
+	return strip if strip is not None and getattr(strip, "_doc", 0) else None
+
+
+def _raise_strip(win):
+	"""The strip's flag hints open below it, over the picker: the strip goes
+	above the picker after every show of the picker (a show raises it while
+	a field has the focus). They never overlap otherwise."""
+	strip = _strip(win)
+	if strip is not None:
+		strip.bring_to_front()
 
 
 def _open_picker(win):
@@ -419,6 +439,7 @@ def _open_picker(win):
 	win.nuiPicker = picker
 	place_picker(win)
 	picker.show()
+	_raise_strip(win)
 
 
 def _show_picker(win):
@@ -426,6 +447,7 @@ def _show_picker(win):
 	picker = _picker(win)
 	if picker is not None and not picker.is_visible():
 		picker.show()
+		_raise_strip(win)
 
 
 def _hide_picker(win):

@@ -570,8 +570,9 @@ The legacy common dialogs run on NovaUI while the `dialogs` window flag is on (s
 | pick money | in the field: accept (the amount, capped at the maximum, goes to the event), then close | in the field: close |
 
 - The buttons call their events and leave a question or input dialog open, as the legacy buttons do: callers close it themselves. A caller that replaces `OnPressEscapeKey` on a message or question dialog (the friend request does) gets its own.
+- **Fields:** a field gets its text after the focus, so the caret lands at the end (RmlUi moves the caret only in a focused field, and a focus leaves it where it was). The input dialog has a text field and a password field (`dialog-input-field`, `dialog-input-secret`), and its secret mode picks one: a field never changes its `type`, since RmlUi then gives it a new widget without the old maxlength, caret and IME (lint NUI013). The other field is idle, collapsed rather than hidden, so the facade can fill and focus the field in use in the same call that set `secret`.
 - **Not ported:** `uiCommon.QuestionDialogWithTimeLimit` stays legacy until a timer exists.
-- **The legacy dialogs above NovaUI (G5):** the legacy dialogs are in the UI layer, which draws under NovaUI. `nui_windows.legacy_dialog_layer(self)`, the first statement of each legacy common dialog's `Open`, moves the dialog to the `TOP_MOST` layer while a NovaUI window is shown (`nui.any_window_shown()`), which draws above NovaUI and takes the pointer first, and back to `UI` otherwise. A session without NovaUI windows is unchanged. It decides at each `Open` only, and it does not move the keyboard: a legacy input dialog opened while a NovaUI field has the focus types into that field until the player clicks the dialog.
+- **The legacy dialogs above NovaUI (G5):** the legacy dialogs are in the UI layer, which draws under NovaUI. `nui_windows.legacy_dialog_layer(self)`, the first statement of each legacy common dialog's `Open`, moves the dialog to the `TOP_MOST` layer while a NovaUI window is shown (`nui.any_window_shown()`), which draws above NovaUI and takes the pointer first, and back to `UI` otherwise. A session without NovaUI windows is unchanged. It decides at each `Open` only. A legacy dialog that goes to `TOP_MOST` also covers the kit (`nui_dialog_kit.cover`): until it hides, every kit dialog steps aside (it stops being modal and gives up the focus), so the keys reach the legacy dialog the player sees, and Enter cannot press the default button of a kit dialog under it; then the kit dialog is modal again and takes its focus back. That is the busy fallback's second dialog and the time-limited question. Outside the kit it does not move the keyboard: a legacy input dialog opened while a NovaUI field of another window (the login board) has the focus types into that field until the player clicks the dialog.
 
 ## Window flags and the factory
 
@@ -919,6 +920,7 @@ All five roots: the gauge component and the login screen's windows name legacy a
 | NUI010 | A feature the renderers do not draw, or an image with opaque `#FF00FF` texels, which the client's color key draws transparent (see [What the renderer draws](#what-the-renderer-draws)). |
 | NUI011 | Motion that RmlUi drops or that reduced motion cannot stop, including a motion selector that ties or outranks the reduced-motion rule (see [Motion and reduced motion](#motion-and-reduced-motion)). |
 | NUI012 | `data-rml` or `data-rml-*` in markup: model strings are text, never markup (the runtime removes the attribute). |
+| NUI013 | `data-attr-type` or `data-attrif-type` on an `<input>`: RmlUi gives the field a new widget on each type change, which drops its maxlength, caret and IME; use one input per type. |
 
 Snapshots:
 
@@ -961,7 +963,7 @@ A window declares its goldens in `assets/nui/nui/windows/<name>/<name>.snapshots
 ```
 
 - `page` is the folder name and the golden name's prefix: `dialog-question-classic-150.png`. `themes` are short names (`dark`, `light`, `classic`); each `scales` row is the percent in the file name, `--scale` and `--size`.
-- `fixture: true` passes `<name>.fixture.json`. `roots` are extra `--root` values after `assets/nui` and `assets/icon`, among `assets/ETC` (art under `d:/ymir work/`), `assets/locale`, `assets/uiloading` and `assets/icon`. `time` is `--time` in seconds, or `null` for the default.
+- `fixture: true` passes `<name>.fixture.json`. A case with `"variant": "busy"` passes `<name>.busy.fixture.json` instead, for a state of the window the main fixture does not show, and its goldens are `<name>-busy-<theme>-<percent>.png` (select and create have a classic busy case, for the disabled buttons). `roots` are extra `--root` values after `assets/nui` and `assets/icon`, among `assets/ETC` (art under `d:/ymir work/`), `assets/locale`, `assets/uiloading` and `assets/icon`. `time` is `--time` in seconds, or `null` for the default.
 - The frame sizes: dialogs 640x360, 960x540 and 1280x720; the locale strip 1280x120, 1920x180 and 2560x240; the server board, the keyboard and the phase windows (a 1280x720dp design frame) 1280x720, 1920x1080 and 2560x1440.
 - `python3 tools/check_nui_snapshots.py --write --optimize --only <name>` writes a window's goldens and re-saves them with Pillow's optimizer; the check compares pixels, so an optimized file matches the same. A case file that breaks these rules stops the checker with exit 2.
 
@@ -992,7 +994,7 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - Classic text is antialiased in grayscale, the legacy text in LCD subpixels, and the outline the legacy tooltips draw around their text is not reproduced.
 - The legacy buttons have no disabled art: a disabled classic button is its default art tinted gray.
 - The dialog kit: one shown dialog per kind (a second one at the same time is the legacy dialog); `QuestionDialogWithTimeLimit` stays legacy until a timer exists; Enter on a question presses its default button (new); widths come from CSS, so `SetWidth`, `SetBoardWidth` and `SetSlotWidth` do nothing, and the dialogs are wider than the fixed legacy boards. Classic shows the focused default button in its over art.
-- The G5 stopgap decides a legacy dialog's layer at each `Open` only, and does not move the keyboard focus.
+- The G5 stopgap decides a legacy dialog's layer at each `Open` only. It takes the keys from the dialog kit while a legacy dialog covers it, but not from a NovaUI field of another window. A legacy dialog shown again with `Show()` rather than `Open()` does not cover the kit again.
 - The virtual keyboard shows only on a screen at least 680dp tall (below that the board and the keyboard do not fit together). It plays the typing sound from Python after each key. Its classic key art and the classic gauge art are 1x only.
 - Every Wave 1 window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
 - `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.

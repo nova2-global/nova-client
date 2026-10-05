@@ -807,7 +807,7 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - Classic art covers the frames, the title bar and close button, the buttons, the login field, the check mark and the vertical scrollbar; other inputs, slots, lists, tabs, sliders, badges and horizontal scrollbars are CSS in the legacy colors (see [Classic skin](#classic-skin)).
 - The classic login board is one thin board where the legacy UI draws two, and keeps the NovaUI button order (Exit, Connect).
 - Every document parses the classic sheets and holds the classic sprites in its sprite namespace; the sheet textures load only when a classic rule matches.
-- A client without the `nui-repeat-box` decorator (an exe older than this content) logs a parse warning for the classic sheet and draws classic windows without frames. The exe and the `nui` group ship together.
+- A client without the `nui-repeat-box` decorator (an exe older than this content) logs eight parse warnings when it loads the classic sheet: `Invalid decorator type 'nui-repeat-box'` and then `Invalid character '}'` for each of the four named decorators. It has no theme table either: `nui.get_themes()` is empty, so the login board opens without the picker, and only dark and light exist. The exe and the `nui` group ship together.
 - If FreeType refuses one of the two Tahoma faces the client hands over, classic text can mix Tahoma and Noto Sans; the runtime logs it.
 - A well-formed `UI_THEME` id the table does not hold stays in the config and shows the default theme; an older client reads a new id as the default and drops it when it saves the config.
 - Below a scale of 1.125 the 1x classic art is drawn, minified at 0.75 and 0.875.

@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Nie możesz używać przedmiotów, jeśli otworzy�
 ITEM_GET	Otrzymano: %s	SA
 ITEM_GET_FROM_PARTY	Otrzymano: %s od %s	SAA
 ITEM_DELIVER_TO_PARTY	Dostarczono: %s do %s	SAA
+MAINTENANCE_TIME_LEFT	Przerwa techniczna za:

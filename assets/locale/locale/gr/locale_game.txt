@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Δεν μπορείς να χρησιμοποιή�
 ITEM_GET	Ελήφθη: %s	SA
 ITEM_GET_FROM_PARTY	Ελήφθη: %s από %s	SAA
 ITEM_DELIVER_TO_PARTY	Παραδόθηκε: %s σε %s	SAA
+MAINTENANCE_TIME_LEFT	Συντήρηση σε:

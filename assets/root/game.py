@@ -33,6 +33,7 @@ import uiAffectShower
 import uiPlayerGauge
 import uiCharacter
 import uiTarget
+import uiMaintenance
 
 # PRIVATE_SHOP_PRICE_LIST
 import uiPrivateShopBuilder
@@ -80,6 +81,7 @@ class GameWindow(ui.ScriptWindow):
 		self.mapNameShower = None
 		self.affectShower = None
 		self.playerGauge = None
+		self.wndMaintenance = None
 
 		self.stream = stream
 		self.interface = interfaceModule.Interface()
@@ -104,6 +106,9 @@ class GameWindow(ui.ScriptWindow):
 
 		self.playerGauge = uiPlayerGauge.PlayerGauge(self)
 		self.playerGauge.Hide()
+
+		# Before the preserved server commands below run.
+		self.wndMaintenance = uiMaintenance.MaintenanceWindow()
 		
 		#wj 2014.1.2. ESC key prioritizes closing DropQuestionDialog. However, itemDropQuestionDialog not initially declared, causing ERROR, so declared and initialized in init.
 		self.itemDropQuestionDialog = None
@@ -276,6 +281,10 @@ class GameWindow(ui.ScriptWindow):
 		self.playerGauge = None
 		self.mapNameShower = None
 		self.affectShower = None
+
+		if self.wndMaintenance:
+			self.wndMaintenance.Close()
+			self.wndMaintenance = None
 
 		if self.console:
 			self.console.BindGameClass(0)
@@ -1931,6 +1940,9 @@ class GameWindow(ui.ScriptWindow):
 			# PRIVATE_SHOP_PRICE_LIST
 			"MyShopPriceList"		: self.__PrivateShop_PriceList,
 			# END_OF_PRIVATE_SHOP_PRICE_LIST
+
+			"shutdown_schedule"		: self.OpenShutdownCountdown,
+			"shutdown_cancel"		: self.CloseShutdownCountdown,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()
@@ -1958,6 +1970,21 @@ class GameWindow(ui.ScriptWindow):
 		except RuntimeError as msg:
 			dbg.TraceError(msg)
 			return 0
+
+	# Server command shutdown_schedule <seconds left>: a shutdown was scheduled, or brought forward.
+	def OpenShutdownCountdown(self, secondsLeft):
+		try:
+			secondsLeft = int(secondsLeft)
+		except ValueError:
+			return
+
+		if self.wndMaintenance:
+			self.wndMaintenance.Open(secondsLeft)
+
+	# Server command shutdown_cancel: the scheduled shutdown was called off.
+	def CloseShutdownCountdown(self):
+		if self.wndMaintenance:
+			self.wndMaintenance.Close()
 
 	def PartyHealReady(self):
 		self.interface.PartyHealReady()

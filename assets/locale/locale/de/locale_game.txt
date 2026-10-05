@@ -828,3 +828,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Du kannst keine Gegenstände verwenden, solange du
 ITEM_GET	Erhalten: %s	SA
 ITEM_GET_FROM_PARTY	Erhalten: %s von %s	SAA
 ITEM_DELIVER_TO_PARTY	Geliefert: %s an %s	SAA
+MAINTENANCE_TIME_LEFT	Wartung in:

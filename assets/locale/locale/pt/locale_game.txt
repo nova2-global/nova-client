@@ -842,3 +842,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Não podes usar este Item enquanto tiveres uma Loj
 ITEM_GET	Recebido: %s	SA
 ITEM_GET_FROM_PARTY	Recebido: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Entregue: %s para %s	SAA
+MAINTENANCE_TIME_LEFT	Manutenção em:

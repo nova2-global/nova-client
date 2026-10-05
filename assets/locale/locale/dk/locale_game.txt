@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Du kan ikke bruge den genstand mens du har åbnet 
 ITEM_GET	Modtaget: %s	SA
 ITEM_GET_FROM_PARTY	Modtaget: %s fra %s	SAA
 ITEM_DELIVER_TO_PARTY	Leveret: %s til %s	SAA
+MAINTENANCE_TIME_LEFT	Vedligeholdelse om:

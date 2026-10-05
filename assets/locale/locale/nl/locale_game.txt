@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Je kunt voorwerpen niet gebruiken terwijl je priv√
 ITEM_GET	Ontvangen: %s	SA
 ITEM_GET_FROM_PARTY	Ontvangen: %s van %s	SAA
 ITEM_DELIVER_TO_PARTY	Afgeleverd: %s aan %s	SAA
+MAINTENANCE_TIME_LEFT	Onderhoud over:

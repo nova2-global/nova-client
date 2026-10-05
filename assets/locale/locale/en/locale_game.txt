@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	You cannot use items while you have a private shop
 ITEM_GET	Received: %s	SA
 ITEM_GET_FROM_PARTY	Received: %s from %s	SAA
 ITEM_DELIVER_TO_PARTY	Delivered: %s to %s	SAA
+MAINTENANCE_TIME_LEFT	Maintenance in:

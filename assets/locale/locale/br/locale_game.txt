@@ -831,3 +831,4 @@ ITEM_GET	Recebido: %s	SA
 ITEM_GET_FROM_PARTY	Recebido: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Entregue: %s para %s	SAA
 USE_ITEM_FAILURE_PRIVATE_SHOP	Não é possível utilizar o item enquanto a Loja Particular estiver aberta.	
+MAINTENANCE_TIME_LEFT	Manutenção em:

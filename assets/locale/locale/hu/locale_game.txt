@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Nem használhatsz tárgyakat, amíg nyitva van a p
 ITEM_GET	Kapott: %s	SA
 ITEM_GET_FROM_PARTY	Kapott: %s tőle: %s	SAA
 ITEM_DELIVER_TO_PARTY	Átadva: %s neki: %s	SAA
+MAINTENANCE_TIME_LEFT	Karbantartásig:

@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Nu poți folosi obiectul dacă ai deschis un magaz
 ITEM_GET	Primit: %s	SA
 ITEM_GET_FROM_PARTY	Primit: %s de la %s	SAA
 ITEM_DELIVER_TO_PARTY	Livrat: %s către %s	SAA
+MAINTENANCE_TIME_LEFT	Mentenanță în:

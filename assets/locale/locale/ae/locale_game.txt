@@ -922,3 +922,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	لا يمكنك استعمال أي شيء، طا�
 ITEM_GET	تم الحصول على: %s	SA
 ITEM_GET_FROM_PARTY	تم الحصول على: %s من %s	SAA
 ITEM_DELIVER_TO_PARTY	تم التسليم: %s إلى %s	SAA
+MAINTENANCE_TIME_LEFT	الصيانة خلال:

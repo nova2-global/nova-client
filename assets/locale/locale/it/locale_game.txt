@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Non puoi usare degli oggetti se hai un negozio pri
 ITEM_GET	Ricevuto: %s	SA
 ITEM_GET_FROM_PARTY	Ricevuto: %s da %s	SAA
 ITEM_DELIVER_TO_PARTY	Consegnato: %s a %s	SAA
+MAINTENANCE_TIME_LEFT	Manutenzione tra:

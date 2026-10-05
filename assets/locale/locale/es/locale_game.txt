@@ -830,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	No puedes utilizar ningún objeto mientras tengas 
 ITEM_GET	Recibido: %s	SA
 ITEM_GET_FROM_PARTY	Recibido: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Entregado: %s a %s	SAA
+MAINTENANCE_TIME_LEFT	Mantenimiento en:

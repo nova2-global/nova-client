@@ -25,6 +25,12 @@
 	<!-- Layout helpers last: they are combined with component classes on one
 	     element and must win ties (same specificity, later sheet). -->
 	<link type="text/rcss" href="components/layout.rcss"/>
+	<!-- Skins: every document links every skin; each skin's rules are scoped
+	     under its body class (skin-<name>), which nui/theme/themes.json puts on
+	     the body, so they apply only while a theme of that skin is in use.
+	     Sprite sheets first. -->
+	<link type="text/rcss" href="skins/classic/classic-sprites.rcss"/>
+	<link type="text/rcss" href="skins/classic/classic.rcss"/>
 </head>
 <body>
 </body>

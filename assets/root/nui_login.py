@@ -23,6 +23,11 @@ and a light sweep over the logo, drawn under the board and never taking
 input. It is shown before the board, so the board stays on top and keeps
 the keyboard, hides with the board while a legacy popup is open, and goes
 with the board.
+
+The theme picker (nui/windows/theme-picker, nui_theme_picker.py) comes the
+same way, as win.nuiPicker: shown after the ambience and before the board,
+hidden while a legacy popup is open, gone with the board. It never takes the
+focus, so a theme picked there leaves the board's caret and typed text.
 """
 
 import weakref
@@ -50,6 +55,11 @@ except ImportError:  # a client without assets/root/nui.py
 		@staticmethod
 		def enabled_for_locale():
 			return False
+
+try:
+	import nui_theme_picker
+except ImportError:  # no nui module, or a client without nui_theme_picker.py
+	nui_theme_picker = None
 
 
 DOCUMENT = "nui/windows/login/login.rml"
@@ -280,6 +290,52 @@ def _close_ambient(win):
 	ambient.destroy()
 
 
+def _picker(win):
+	return getattr(win, "nuiPicker", None)
+
+
+def _open_picker(win):
+	"""Shows the theme picker. Called after the ambience and before the board
+	is first shown, so the board keeps the front and the keyboard. Optional:
+	without player themes (an exe without nui/theme/themes.json) or when its
+	document does not load, the board runs without it."""
+	get_themes = getattr(nui, "get_themes", None)
+	if nui_theme_picker is None or get_themes is None or not get_themes():
+		return
+	try:
+		picker = nui_theme_picker.ThemePicker()
+	except Exception as error:
+		dbg.TraceError("nui_login: the theme picker could not be made (%s)" % type(error).__name__)
+		return
+	if not picker._doc:
+		picker.destroy()
+		dbg.TraceError("nui_login: %s did not load; the board runs without it" % nui_theme_picker.ThemePicker.DOCUMENT)
+		return
+	win.nuiPicker = picker
+	picker.show()
+
+
+def _show_picker(win):
+	"""After a popup: back, as the ambience. A visible one is left alone."""
+	picker = _picker(win)
+	if picker is not None and not picker.is_visible():
+		picker.show()
+
+
+def _hide_picker(win):
+	picker = _picker(win)
+	if picker is not None and picker.is_visible():
+		picker.hide()
+
+
+def _close_picker(win):
+	picker = _picker(win)
+	if picker is None:
+		return
+	win.nuiPicker = None
+	picker.destroy()
+
+
 def open_board(win, on_choose, on_exit):
 	"""LoginWindow.Open: the board, or None to keep the legacy boards."""
 	global LAST_DECISION
@@ -311,6 +367,7 @@ def open_board(win, on_choose, on_exit):
 		if line and line.IsFocus():
 			line.KillFocus()
 	_open_ambient(win)
+	_open_picker(win)
 	LAST_DECISION = "nui"
 	return board
 
@@ -318,6 +375,7 @@ def open_board(win, on_choose, on_exit):
 def close_board(win):
 	"""LoginWindow.Close, first: the popup callbacks Close runs find no board."""
 	_close_ambient(win)
+	_close_picker(win)
 	board = _board(win)
 	if board is None:
 		return
@@ -365,6 +423,7 @@ def before_popup(win):
 	board = _board(win)
 	if board is not None:
 		_hide_ambient(win)
+		_hide_picker(win)
 		board.suspend()
 
 
@@ -380,6 +439,7 @@ def after_popup(win, callback):
 		board = _board(window) if window is not None else None
 		if board is not None:
 			_show_ambient(window)
+			_show_picker(window)
 			board.resume()
 		if callback:
 			return callback(*args)

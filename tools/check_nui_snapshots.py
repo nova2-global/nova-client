@@ -10,7 +10,10 @@ nuitool relative paths, so a Windows nuitool.exe started from WSL works too.
 nuitool comes from --nuitool, else the NUITOOL environment variable, else
 PATH. The case table below is the single list of goldens: their page,
 theme, scale, frame size, fixture and motion setting (docs/ui/snapshots/
-README.md explains why each is what it is).
+README.md explains why each is what it is). A golden's file name holds the
+theme's short name (dark, light, classic); nuitool gets its id from
+nui/theme/themes.json (modern-dark, modern-light, classic), which needs a
+nuitool that takes theme ids.
 
 A check runs every case, even after a mismatch, lists every mismatch with
 nuitool's own report, and leaves the snapshots and diff images of the
@@ -28,26 +31,36 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SNAPSHOTS = os.path.join("docs", "ui", "snapshots")
 ROOTS = ["--root", "assets/nui", "--root", "assets/icon", "--locale", "assets/locale/locale/en"]
 
-# (golden name, document, fixture or None, theme, --scale, --size, reduced motion)
+# (name in the file name, theme id)
+THEMES = (("dark", "modern-dark"), ("light", "modern-light"), ("classic", "classic"))
+FULL_SCREEN = [("100", "1", "1920x1080"), ("150", "1.5", "2880x1620"), ("200", "2", "3840x2160")]
+
+# (page, document, fixture or None, theme names, [(percent, --scale, --size)])
 PAGES = [
     ("gallery", "nui/windows/gallery/gallery.rml", "assets/nui/nui/windows/gallery/gallery.fixture.json",
-     [("100", "1", "1920x1080"), ("150", "1.5", "2880x1620"), ("200", "2", "3840x2160")]),
+     ("dark", "light", "classic"), FULL_SCREEN),
     ("render-test", "nui/windows/render-test/render-test.rml", None,
-     [("100", "1", "1280x720"), ("150", "1.5", "1920x1080"), ("200", "2", "2560x1440")]),
+     ("dark", "light"), [("100", "1", "1280x720"), ("150", "1.5", "1920x1080"), ("200", "2", "2560x1440")]),
     ("login", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
-     [("100", "1", "1920x1080"), ("150", "1.5", "2880x1620"), ("200", "2", "3840x2160")]),
+     ("dark", "light", "classic"), FULL_SCREEN),
+    ("theme-picker", "nui/windows/theme-picker/theme-picker.rml", "assets/nui/nui/windows/theme-picker/theme-picker.fixture.json",
+     ("dark", "light", "classic"), [("100", "1", "640x360")]),
+    ("skin-proof", "nui/windows/skin-proof/skin-proof.rml", None,
+     ("classic",), [("100", "1", "640x360"), ("150", "1.5", "960x540"), ("200", "2", "1280x720")]),
 ]
 
 
 def cases():
-    for page, document, fixture, scales in PAGES:
-        for theme in ("dark", "light"):
+    """(golden name, document, fixture or None, theme id, --scale, --size, reduced motion)"""
+    theme_ids = dict(THEMES)
+    for page, document, fixture, themes, scales in PAGES:
+        for theme in themes:
             for percent, scale, size in scales:
-                yield (f"{page}-{theme}-{percent}", document, fixture, theme, scale, size, False)
+                yield (f"{page}-{theme}-{percent}", document, fixture, theme_ids[theme], scale, size, False)
     # Reduced motion renders the resting state, which at the default --time 1
     # is the settled frame: the board's open animation has finished.
     yield ("login-dark-100-reduced-motion", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
-           "dark", "1", "1920x1080", True)
+           "modern-dark", "1", "1920x1080", True)
 
 
 def command(nuitool, case, out, compare=None, tolerance=None):

@@ -22,6 +22,8 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 - [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)
 - [Localization](#localization)
 - [Scale and themes](#scale-and-themes)
+- [Themes](#themes)
+- [Classic skin](#classic-skin)
 - [Tools](#tools)
 - [Hot reload and debugging](#hot-reload-and-debugging)
 - [Status and known gaps](#status-and-known-gaps)
@@ -35,7 +37,7 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 5. Write the controller `assets/root/nui_settings.py`: subclass `nui.Window`, set `DOCUMENT` and `MODEL` (and `MODAL = True` for a dialog), return every model key from `initial_model()`, and add one `@nui.on("name")` method for every `data-event-*="name(...)"` in the document. The controller's name writes each hyphen of the window name as an underscore: window `item-shop` has `assets/root/nui_item_shop.py`, imported as `nui_item_shop`. Model keys and event names follow RmlUi's name rule (see [Data binding cheatsheet](#data-binding-cheatsheet)).
 6. Use `@ui.KEY` (from `locale_interface.txt`) or `@game.KEY` (from `locale_game.txt`) for every visible string. The key must exist in every locale, and a `@game.KEY` must be a plain string, not one of the typed entries localeInfo makes functions of (see [Localization](#localization), which also says how to add a key).
 7. If you touched `tokens.json`, run `python tools/nui_tokens.py` (it rewrites `tokens.rcss` and the token table below, and prints the contrast ratios). `python tools/nui_tokens.py --check` verifies without writing and exits 1 while an output is stale. Then run `nuitool lint` until it exits 0. Findings are the only thing on standard output; the `N findings in M files` summary and any note about a skipped check always go to standard error. Exit 2 (a missing root, a mistyped path) also leaves standard output empty, so go by the exit code.
-8. Run `nuitool snap` with `--locale assets/locale/locale/en` in both themes at scale 1.0, 1.5 and 2.0, and once with `--reduced-motion`. `--size` is in pixels: give it the scale times the dp area the window needs, for a full-screen window 1920x1080 at 1.0, 2880x1620 at 1.5 and 3840x2160 at 2.0 (the client's own sizes at those scales). Snap does not scroll, so a scroll container shows only its first screen. Look at the images.
+8. Run `nuitool snap` with `--locale assets/locale/locale/en` in every theme (`--theme modern-dark`, `modern-light` and `classic`, the ids in `nui/theme/themes.json`) at scale 1.0, 1.5 and 2.0, and once with `--reduced-motion`. The components follow every theme by themselves; when the window's own sheet draws something the classic look needs to change, add a classic section to it (see [Classic skin](#classic-skin)). `--size` is in pixels: give it the scale times the dp area the window needs, for a full-screen window 1920x1080 at 1.0, 2880x1620 at 1.5 and 3840x2160 at 2.0 (the client's own sizes at those scales). Snap does not scroll, so a scroll container shows only its first screen. Look at the images.
 9. Check the window with the German locale (`--locale assets/locale/locale/de`; strings run about a third longer than English) and at 75% scale.
 10. Open the window from game code only through its controller. Never call RmlUi or `_nui` directly.
 
@@ -49,7 +51,9 @@ NovaPack publishes a file at `assets/<group>/<path>` under the store path `<path
 | `assets/nui/nui/base.rcss` | `nui/base.rcss` | element defaults, typography, focus, scrollbars, reduced motion |
 | `assets/nui/nui/theme/tokens.json` | `nui/theme/tokens.json` | design tokens, the source of truth |
 | `assets/nui/nui/theme/tokens.rcss` | `nui/theme/tokens.rcss` | generated from `tokens.json`, never edit by hand |
+| `assets/nui/nui/theme/themes.json` | `nui/theme/themes.json` | the player themes and the `<body>` classes each one sets (see [Themes](#themes)) |
 | `assets/nui/nui/components/*.rcss` | `nui/components/*.rcss` | one style sheet per component |
+| `assets/nui/nui/skins/<skin>/` | `nui/skins/<skin>/...` | a skin's rules and art, scoped under `body.skin-<skin>` (see [Classic skin](#classic-skin)) |
 | `assets/nui/nui/fonts/NotoSans-{Regular,Bold,Italic}.ttf` | `nui/fonts/...` | Noto Sans 2.015 (OFL, see `OFL.txt` next to them) |
 | `assets/nui/nui/windows/<name>/<name>.rml` | `nui/windows/<name>/<name>.rml` | the window document |
 | `assets/nui/nui/windows/<name>/<name>.rcss` | same folder | the window's own rules |
@@ -57,6 +61,8 @@ NovaPack publishes a file at `assets/<group>/<path>` under the store path `<path
 | `assets/root/nui_<module>.py` | `nui_<module>.py` | the controller, imported as `nui_<module>`: the window name with each hyphen as an underscore (`item-shop`: `nui_item_shop`) |
 | `assets/nui/nui/windows/gallery/` | | every component in `nui/components/` in every state it styles |
 | `assets/nui/nui/windows/render-test/` | | every renderer feature on one page |
+| `assets/nui/nui/windows/theme-picker/` | | the intro theme picker, one button per theme (controller `nui_theme_picker.py`) |
+| `assets/nui/nui/windows/skin-proof/` | | a dev page with a skin's frame pieces at legacy sizes, for the sharpness and fidelity checks; nothing in the game opens it |
 
 The client loads the fonts (`kDefaultFonts`, which `nuitool lint` and `snap` also use) and the render test (`kRenderTestDocument`, Ctrl+Shift+U in a dev build) by the constants in `nova-client-src/src/NovaUI/Core/NuiPaths.h`. The gallery has no client constant: its controller, `assets/root/nui_gallery.py`, names the document in `DOCUMENT` and opens it with `import nui_gallery; nui_gallery.open_gallery()`.
 
@@ -189,55 +195,61 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 
 ## Tokens
 
-`assets/nui/nui/theme/tokens.json` is the source of truth. `tools/nui_tokens.py` turns it into `nui/theme/tokens.rcss`: the `shared` values go into `body { ... }`, each theme's colors into `body.theme-dark { ... }` and `body.theme-light { ... }`, and the dark colors double as the default for a `<body>` without a theme class. Change a token by editing the JSON and running, from the repository root:
+`assets/nui/nui/theme/tokens.json` is the source of truth. It has three kinds of sections:
+
+- `shared`: lengths, font sizes, the font family, durations and easings that every theme starts from.
+- Palettes: every other top-level key except `skins` is a palette of colors, named by the `theme-<palette>` class a theme in `nui/theme/themes.json` sets (`dark`, `light`, `classic`). Every palette defines the same colors, and a palette holds colors only.
+- `skins` (optional): per skin, tokens that override a shared one (the classic skin's font family and sizes) or tokens of its own, named `<skin>-...` and holding a color or a `dp` length (`--classic-slot-dark`).
+
+`tools/nui_tokens.py` turns it into `nui/theme/tokens.rcss`: the `shared` values go into `body { ... }`, each palette's colors into `body.theme-<palette> { ... }` in the order the themes first name them, and each skin's tokens into `body.skin-<skin> { ... }`. The palette of the first theme doubles as the default for a `<body>` without a theme class. The script also reads `themes.json` and fails when a theme does not set exactly one `skin-*` and one `theme-*` class, when a theme names a palette `tokens.json` lacks, or when a palette or skin is named by no theme. Change a token by editing the JSON and running, from the repository root:
 
 ```
 python tools/nui_tokens.py           # writes tokens.rcss and the table below, prints contrast ratios
 python tools/nui_tokens.py --check   # writes nothing; exit 1 when an output is stale or a ratio fails
 ```
 
-The script checks WCAG 2.x contrast for every text color a component draws on each background it uses, at 4.5:1 (body text, muted text on panels, hovered and selected rows, labels on accent and status fills, tooltip text, status text), and for the focus ring and the accent fill of the slider and the checked toggle at 3:1. It fails when any pair is below its minimum; the pairs are listed in `CONTRAST_PAIRS` in `tools/nui_tokens.py`. `--border` is deliberately subtle (1.4 to 1.8:1 on the surfaces) and is not checked, both as a border and as the scrollbar thumb; controls are recognizable by their fill.
+The script checks WCAG 2.x contrast in every palette for every text color a component draws on each background it uses, at 4.5:1 (body text, muted text on panels, hovered and selected rows, labels on accent and status fills, tooltip text, status text), and for the focus ring and the accent fill of the slider and the checked toggle at 3:1. It fails when any pair is below its minimum; the pairs are listed in `CONTRAST_PAIRS` in `tools/nui_tokens.py`. `--border` is deliberately subtle in the modern palettes (1.4 to 1.8:1 on the surfaces) and is not checked, both as a border and as the scrollbar thumb; controls are recognizable by their fill.
 
 What the color roles mean:
 
 - `--surface` is the window background, `--surface-raised` panels and secondary buttons, `--surface-sunken` inputs, slots and tracks, `--surface-hover` hovered rows and buttons, `--selection` selected rows and selected text.
-- `--text` is body text, `--text-muted` secondary text and placeholders. `--text-inverse` is text on `--tooltip-bg`, the inverse surface used by tooltips and slot counts (light in the dark theme, dark in the light theme).
+- `--text` is body text, `--text-muted` secondary text and placeholders. `--text-inverse` is text on `--tooltip-bg`, the inverse surface used by tooltips and slot counts (light in the dark theme, dark in the light theme; classic keeps the legacy dark tooltip with light text).
 - `--accent` fills primary buttons, the checked toggle, the slider fill and the tab indicator, and colors the selected tab label. `--accent-text` is text on `--accent`, `--accent-hover`, `--danger`, `--danger-hover`, `--success` and `--warning` fills.
 - `--danger`, `--warning` and `--success` work both as text on surfaces and as fills.
 - `--focus-ring` is the keyboard focus border. `--overlay-scrim` is the translucent modal backdrop.
 
 <!-- tokens:begin (generated by tools/nui_tokens.py; do not edit by hand) -->
 
-| Token | Dark | Light |
-|---|---|---|
-| `--surface` | `#1a1d23` | `#f3f4f6` |
-| `--surface-raised` | `#232830` | `#ffffff` |
-| `--surface-sunken` | `#121418` | `#e7e9ed` |
-| `--surface-hover` | `#2c323c` | `#e3e6eb` |
-| `--border` | `#3b424e` | `#c3c8d1` |
-| `--text` | `#e7eaf0` | `#1a1d23` |
-| `--text-muted` | `#a4acba` | `#525a67` |
-| `--text-inverse` | `#16191e` | `#f3f4f6` |
-| `--accent` | `#8ab4f8` | `#1a5fc4` |
-| `--accent-hover` | `#a8c7fa` | `#154ea3` |
-| `--accent-text` | `#0c1a30` | `#ffffff` |
-| `--danger` | `#f28b82` | `#b3261e` |
-| `--danger-hover` | `#f6aea9` | `#8c1d18` |
-| `--warning` | `#f6c75a` | `#8a5300` |
-| `--success` | `#7fd29a` | `#1e7a3c` |
-| `--focus-ring` | `#f2f5f9` | `#111317` |
-| `--selection` | `#2a3a55` | `#d6e4fb` |
-| `--overlay-scrim` | `#000000a6` | `#0000007a` |
-| `--tooltip-bg` | `#e7eaf0` | `#2a2f37` |
-| `--ember` | `#ffb24ff2` | `#ffb24ff2` |
-| `--ember-hot` | `#fff3cff7` | `#fff3cff7` |
-| `--ember-glow` | `#ff9e3a47` | `#ff9e3a47` |
-| `--sheen` | `#ffffff73` | `#ffffff73` |
-| `--sheen-clear` | `#ffffff00` | `#ffffff00` |
-| `--sweep` | `#fff6dc8c` | `#fff6dc8c` |
-| `--sweep-clear` | `#fff4d600` | `#fff4d600` |
+| Token | Dark | Light | Classic |
+|---|---|---|---|
+| `--surface` | `#1a1d23` | `#f3f4f6` | `#1b1918` |
+| `--surface-raised` | `#232830` | `#ffffff` | `#23201e` |
+| `--surface-sunken` | `#121418` | `#e7e9ed` | `#000000` |
+| `--surface-hover` | `#2c323c` | `#e3e6eb` | `#494746` |
+| `--border` | `#3b424e` | `#c3c8d1` | `#777777` |
+| `--text` | `#e7eaf0` | `#1a1d23` | `#dadada` |
+| `--text-muted` | `#a4acba` | `#525a67` | `#c2c2c2` |
+| `--text-inverse` | `#16191e` | `#f3f4f6` | `#dadada` |
+| `--accent` | `#8ab4f8` | `#1a5fc4` | `#ffc800` |
+| `--accent-hover` | `#a8c7fa` | `#154ea3` | `#ffd84d` |
+| `--accent-text` | `#0c1a30` | `#ffffff` | `#000000` |
+| `--danger` | `#f28b82` | `#b3261e` | `#ff4d4d` |
+| `--danger-hover` | `#f6aea9` | `#8c1d18` | `#ff7a7a` |
+| `--warning` | `#f6c75a` | `#8a5300` | `#ffb96d` |
+| `--success` | `#7fd29a` | `#1e7a3c` | `#8ab98e` |
+| `--focus-ring` | `#f2f5f9` | `#111317` | `#f2e7c1` |
+| `--selection` | `#2a3a55` | `#d6e4fb` | `#131237` |
+| `--overlay-scrim` | `#000000a6` | `#0000007a` | `#00000080` |
+| `--tooltip-bg` | `#e7eaf0` | `#2a2f37` | `#0d0c0b` |
+| `--ember` | `#ffb24ff2` | `#ffb24ff2` | `#ffb24ff2` |
+| `--ember-hot` | `#fff3cff7` | `#fff3cff7` | `#fff3cff7` |
+| `--ember-glow` | `#ff9e3a47` | `#ff9e3a47` | `#ff9e3a47` |
+| `--sheen` | `#ffffff73` | `#ffffff73` | `#ffffff73` |
+| `--sheen-clear` | `#ffffff00` | `#ffffff00` | `#ffffff00` |
+| `--sweep` | `#fff6dc8c` | `#fff6dc8c` | `#fff6dc8c` |
+| `--sweep-clear` | `#fff4d600` | `#fff4d600` | `#fff4d600` |
 
-| Token | Value (both themes) |
+| Token | Shared value |
 |---|---|
 | `--font-family` | `Noto Sans` |
 | `--space-1` | `4dp` |
@@ -259,6 +271,27 @@ What the color roles mean:
 | `--dur-slow` | `0.3s` |
 | `--ease-out` | `cubic-out` |
 | `--ease-in-out` | `cubic-in-out` |
+| `--legacy-strip-bottom` | `60px` |
+
+| Token | Skin | Value |
+|---|---|---|
+| `--font-family` | classic | `Nova Classic` |
+| `--font-xs` | classic | `11dp` |
+| `--font-sm` | classic | `12dp` |
+| `--font-md` | classic | `12dp` |
+| `--font-lg` | classic | `14dp` |
+| `--font-xl` | classic | `14dp` |
+| `--classic-slot-fill` | classic | `#000000` |
+| `--classic-slot-dark` | classic | `#333333` |
+| `--classic-slot-light` | classic | `#b3b3b3` |
+| `--classic-edit-text` | classic | `#ffffff` |
+| `--classic-button-text` | classic | `#c7c7c7` |
+| `--classic-tooltip-text` | classic | `#c2c2c2` |
+| `--classic-hover-white` | classic | `#ffffff33` |
+| `--classic-press-white` | classic | `#ffffff80` |
+| `--classic-select` | classic | `#0000804d` |
+| `--classic-separator` | classic | `#777777` |
+| `--classic-separator-shadow` | classic | `#111111` |
 
 <!-- tokens:end -->
 
@@ -317,9 +350,10 @@ A window is one document plus an optional model and a controller class:
 | `get(key)` | A copy of the current value, or `None`. |
 | `element_on(element_id, event, fn)` | A plain DOM event on the element with that id; `fn` gets a dict with `type`, `target_id` and, for mouse events, `button`, plus the event's other parameters (`key_identifier` for key events). Re-attached after reloads. For `"keydown"`, `fn` returning exactly `True` keeps the key (see [Keyboard and modals](#keyboard-and-modals)); any other value lets it go on, and nothing else stops an event. |
 | `on_reload()` | Hook: the document was re-loaded in place (hot reload, locale change). By then the `element_on()` handlers are attached again and the new document's own events (its load, `change` from bindings) have reached the `@nui.on` handlers. The replaced document's events (its unload, a `mouseout` as it leaves) reach no handler. |
+| `on_theme_changed(theme_id)` | Hook: `nui.set_theme()` applied a theme. The window's documents already carry the new theme's classes, and the components restyle by themselves; override it only to update model values that name the theme (the picker's selection). |
 | `destroy()` | Closes the document and drops the model and every handler. Inside one of the window's own handlers (a close button) the document hides at once, and it goes with the model by the end of the frame. From `destroy()` on, the document's own events (a `mouseout` as it hides, its unload) reach none of the window's handlers, so a window made again in its own handler (a reset button, a wizard step) keeps the model; a close by C++ or RmlUi still delivers the unload. |
 
-Module functions: `nui.is_available()` (false without the `_nui` module or an active runtime, for example when NovaUI failed to start or a test started no runtime; every `Window` method is then a no-op. A headless runtime, under `NOVA_UI_HEADLESS` or a test's null renderer, is available), `nui.enabled_for_locale()` (false for right-to-left locales), `nui.set_theme("dark"|"light")`, `nui.get_theme()`, `nui.set_scale_percent(p)` (0 = automatic, else 75..200), `nui.get_scale_percent()`, `nui.get_scale()`, `nui.get_auto_scale()`, `nui.set_reduced_motion(on)`, `nui.is_reduced_motion()`, `nui.refresh_strings()`. The appearance setters apply at once and persist to `config/metin2.cfg` (`UI_THEME`, `UI_SCALE`, `UI_REDUCED_MOTION`). The constants `nui.KEY_ESCAPE`, `nui.KEY_RETURN`, `nui.KEY_NUMPADENTER`, `nui.KEY_TAB` and `nui.KEY_SPACE` are the `key_identifier` values of those keys (RmlUi's own numbers).
+Module functions: `nui.is_available()` (false without the `_nui` module or an active runtime, for example when NovaUI failed to start or a test started no runtime; every `Window` method is then a no-op. A headless runtime, under `NOVA_UI_HEADLESS` or a test's null renderer, is available), `nui.enabled_for_locale()` (false for right-to-left locales), `nui.set_theme(theme_id)`, `nui.get_theme()`, `nui.get_themes()` (see [Themes](#themes)), `nui.set_scale_percent(p)` (0 = automatic, else 75..200), `nui.get_scale_percent()`, `nui.get_scale()`, `nui.get_auto_scale()`, `nui.set_reduced_motion(on)`, `nui.is_reduced_motion()`, `nui.refresh_strings()`. The appearance setters apply at once and persist to `config/metin2.cfg` (`UI_THEME`, `UI_SCALE`, `UI_REDUCED_MOTION`). The constants `nui.KEY_ESCAPE`, `nui.KEY_RETURN`, `nui.KEY_NUMPADENTER`, `nui.KEY_TAB` and `nui.KEY_SPACE` are the `key_identifier` values of those keys (RmlUi's own numbers).
 
 A window lives until `destroy()`: the runtime holds its handlers, so dropping the last reference does not close it. Only one window per `MODEL` name can exist at a time.
 
@@ -433,12 +467,12 @@ More rules for art, from the client's image loader (`GrpImageTexture.cpp`):
 - An `<img>` with an empty or absent `src`, or an unknown sprite, is different: RmlUi draws it as a solid box in its `image-color` (white by default) at its CSS size, without any image. Guard bound sources with `data-if`, as the slot grid does (`data-if="slot.icon != ''"`). Lint checks static paths only (NUI007), so a controller that binds paths at run time (slot icons) passes `''` for a file that does not exist (`app.IsExistFile`), as the legacy item data does, and the `data-if` hides the `<img>`.
 - A legacy `.sub` image (a region of an atlas) never shows its atlas neighbors: filtering and clamping stop at the region's own edges, and a repeat fit tiles the region alone. On a device without pixel shader 2.0 the Direct3D 9 renderer falls back to point sampling, and a `.sub` region then clamps at the atlas's edges and cannot tile.
 
-Safe to use: solid backgrounds, borders (all sides solid), `border-radius`, `opacity` (but do not animate it on a container, see [Motion and reduced motion](#motion-and-reduced-motion)), `transform` (translate, rotate, scale, skew, matrix, perspective), `overflow` clipping, `image`, `tiled-horizontal`, `tiled-vertical`, `tiled-box` (their tiles stretch) and `ninepatch` decorators, `<img>`, sprite sheets (`@spritesheet`, with a gutter, see below), `image-color` tints, `font-effect` (outline, shadow, glow, blur; the font engine draws those into glyph textures on the CPU), and:
+Safe to use: solid backgrounds, borders (all sides solid), `border-radius`, `opacity` (but do not animate it on a container, see [Motion and reduced motion](#motion-and-reduced-motion)), `transform` (translate, rotate, scale, skew, matrix, perspective), `overflow` clipping, `image`, `tiled-horizontal`, `tiled-vertical`, `tiled-box` (their tiles stretch) and `ninepatch` decorators, NovaUI's `nui-repeat-box` decorator (nine tiles whose edges and center repeat 1:1, sprites included; see [Classic skin](#classic-skin)), `<img>`, sprite sheets (`@spritesheet`, with a gutter, see below), `image-color` tints, `font-effect` (outline, shadow, glow, blur; the font engine draws those into glyph textures on the CPU), and:
 
 - Two-color gradients: `decorator: horizontal-gradient(var(--accent) var(--danger))` and `vertical-gradient(...)`. RmlUi colors the background mesh's vertices, so no shader is involved, and the gradient follows `border-radius`. The older form `gradient(horizontal ...)` draws the same but RmlUi 6.3 logs it as deprecated, which lint reports as NUI008.
-- Image fits `repeat`, `repeat-x` and `repeat-y`. Both renderers wrap along an axis whose texture coordinates leave the image (by more than 1/4096) and clamp along the other, so `repeat-x` tiles across without bleeding the top and bottom rows into each other. RmlUi refuses these fits for `@spritesheet` sprites.
+- Image fits `repeat`, `repeat-x` and `repeat-y`. Both renderers wrap along an axis whose texture coordinates leave the image (by more than 1/4096) and clamp along the other, so `repeat-x` tiles across without bleeding the top and bottom rows into each other. RmlUi refuses these fits for `@spritesheet` sprites; `nui-repeat-box` repeats sprites instead, one quad per copy.
 
-Sprite sheets need a gutter. RmlUi addresses a sprite on its whole sheet and passes only texture coordinates, so neither renderer knows the sprite's rectangle: drawn larger than the sheet's resolution, at any UI scale above it (the automatic scale on 1440 and 2160 lines), the sprite's edge pixels filter in up to half a texel of the neighboring sprite. A `.sub` region does not have this problem. Keep at least 1 px of transparent gutter between sprites; for art whose edges must stay opaque (button-state strips, frames), repeat each sprite's edge texels into a 1 px ring around it, which means 2 px between two such sprites. The sheet's outer border needs nothing. One image per icon, or a sheet drawn at twice the size and declared `resolution: 2x`, avoids the question.
+Sprite sheets need a gutter. RmlUi addresses a sprite on its whole sheet and passes only texture coordinates, so neither renderer knows the sprite's rectangle: drawn larger than the sheet's resolution, at any UI scale above it (the automatic scale on 1440 and 2160 lines), the sprite's edge pixels filter in up to half a texel of the neighboring sprite. A `.sub` region does not have this problem. Keep at least 1 px of transparent gutter between sprites; for art whose edges must stay opaque (button-state strips, frames), repeat each sprite's edge texels into a 1 px ring around it, which means 2 px between two such sprites. The sheet's outer border needs nothing. One image per icon, or a sheet drawn at twice the size and declared `resolution: 2x`, avoids the question. The classic skin's sheets (`tools/nui_classic_art.py`) give every sprite a 2 px ring of its own texels at 1x and 4 px at 2x, wrapped around on the axes the skin repeats the sprite on and extruded on the others, so a repeated copy filters into the next copy and nothing else.
 
 Clipping cost: an overflow element with `border-radius` always uses the stencil clip mask, on every frame, so put the radius on a wrapper that does not clip and clip with a square element inside it, as the list component does (and RmlUi makes every text input clip, so the input component has square corners). An overflow element that has a transform, or sits inside a transformed element (RmlUi applies ancestor transforms to descendants), uses the mask when its content overflows, and never the scissor, because its box can be projected anywhere. Other rectangular overflow uses the cheaper scissor. The client creates a D24S8 depth-stencil surface, so the mask is available. If the bound depth-stencil surface had no stencil bits, the Direct3D 9 renderer would skip the mask and log a warning once: rounded overflow would then clip to a rectangle, and the overflow of a transformed element would not be clipped by that element at all.
 
@@ -465,6 +499,8 @@ Reduced motion is the RmlUi media theme `reduced-motion`. `nui.set_reduced_motio
 	.shop-sparkles { display: none; }
 }
 ```
+
+A theme switch holds transitions off for one update. From `nui.set_theme()` to the end of the next update the runtime activates the media theme `theme-switch`, and `base.rcss` sets `transition: none` on every `nui-anim` element under it, with the reduced-motion rule's weight. So no color fades from the old theme to the new one, and every element shows the new theme in the next frame. Animations are not stopped: a skin that declared other `animation` values would restart them on a switch, so skins declare none (the classic skin changes how things look, not how they move).
 
 ## RCSS and RML differences that matter
 
@@ -546,11 +582,135 @@ done
 
 - One `dp` is one pixel at scale 1.0. The runtime sets the ratio from the backbuffer height (1080 lines = 1.0, in steps of 0.125, between 0.75 and 2.0), or from the player's override (75 to 200 percent, `UI_SCALE`). Glyphs are rasterized at the scaled size, so text stays sharp.
 - Test at 0.75, 1.0, 1.5 and 2.0. `nuitool snap --scale` takes a factor in whole percents (`1.25`, not `1.125`, which is a usage error); `--scale auto` with a `--size` gives the client's automatic scale for that height, including its 1/8 steps (0.875 at 900 lines).
-- Every document's `<body>` has exactly one of `theme-dark` and `theme-light`; the runtime sets it and swaps it on `nui.set_theme()`. Components never mention the theme; they read tokens, and the tokens change with the class.
+- Every document's `<body>` carries the classes of the player's theme, for example `skin-modern theme-dark`; the runtime sets them and swaps them on `nui.set_theme()` (see [Themes](#themes)). Components never mention the theme: they read tokens, which change with the `theme-*` palette class and the `skin-*` class, and a skin's own rules apply under its `skin-*` class.
+- The classic skin's art has a 1x sheet with the legacy pixels and a 2x sheet that takes over from a scale of 1.125, so frames and buttons stay sharp up to 200% (see [Classic skin](#classic-skin)).
+
+## Themes
+
+Players pick a theme, and the change applies at once, with no reload and no restart. A theme is data: a list of `<body>` classes. The runtime knows no theme by name.
+
+**The registry.** `nui/theme/themes.json` lists the player themes in menu order; the first one is the default:
+
+```json
+{
+	"$comment": "...",
+	"themes": [
+		{"id": "modern-dark", "label": "Modern dark", "body": ["skin-modern", "theme-dark"]},
+		{"id": "modern-light", "label": "Modern light", "body": ["skin-modern", "theme-light"]},
+		{"id": "classic", "label": "Classic", "body": ["skin-classic", "theme-classic"]}
+	]
+}
+```
+
+- `id`: 1 to 31 characters of lowercase letters, digits and `-`, unique. This is what `UI_THEME` stores.
+- `label`: plain text for menus, 1 to 64 bytes of UTF-8. The labels are English for now (see [Status and known gaps](#status-and-known-gaps)).
+- `body`: 1 to 8 class names, each `[a-z][a-z0-9-]*` and not `nui-shown`. By convention exactly one `skin-<skin>` class (the component rules: `modern` is the stock components, `classic` the legacy look) and exactly one `theme-<palette>` class (the colors in `tokens.json`); `tools/nui_tokens.py` and lint check it.
+- The first theme must be `modern-dark`: the client never writes the default to `UI_THEME`.
+- The runtime reads the file at start, and so do `nuitool lint` and `snap`. It ignores unknown keys, so newer content still loads on an older client; lint reports them (NUI001). Without the file, documents get no theme class. Python cannot read the file (the pack API serves no `.json`), so it asks the runtime: `nui.get_themes()`.
+
+**How a theme applies.** The runtime puts the theme's classes on the `<body>` of every NovaUI document and takes every other theme's classes off. It swaps the union of all themes' classes, so a class two themes share stays set: going from `modern-dark` to `modern-light` changes only `theme-dark` to `theme-light`. A switch reaches the open documents, the ones loaded later and the copies a reload makes; nothing re-loads, so windows keep their focus, typed text and models. The next update restyles, without transitions (see [Motion and reduced motion](#motion-and-reduced-motion)). Never write a theme class in markup: the runtime replaces it.
+
+**Palettes and skins.** A theme's colors come from its palette, its other tokens from `shared` and its skin's tokens (see [Tokens](#tokens)). Its component rules come from the stock components plus, for a skin other than `modern`, the skin's own sheets under `nui/skins/<skin>/`, which `nui.rtpl` links into every document and which scope every rule under `.skin-<skin>`. A modern theme matches no classic rule, so the classic art is never loaded there.
+
+**Python** (`assets/root/nui.py`):
+
+- `nui.set_theme(theme_id)` applies a theme at once, saves it (`UI_THEME` in `config/metin2.cfg`) and returns its id. The id is matched without regard to case; `"dark"` and `"light"`, from older configs and callers, mean `modern-dark` and `modern-light`. With NovaUI running, an id `themes.json` does not hold raises `ValueError` and nothing is saved. Then every open window's `on_theme_changed(theme_id)` runs.
+- `nui.get_theme()` is the id in use (the saved one without NovaUI, else `modern-dark`). `nui.get_themes()` is the list of `(id, label)` pairs in menu order, `[]` without NovaUI.
+- The config holds an id only when it is not the default: choosing `modern-dark` removes the `UI_THEME` line. A well-formed id the table does not know (content from a newer release) stays in the file and shows the default theme; a malformed value reads as the default.
+
+**The theme picker.** `nui/windows/theme-picker` (controller `assets/root/nui_theme_picker.py`) shows one button per theme at the top left of the login screen, under the legacy flag strip. `nui_login.py` opens it with the NovaUI login board (`win.nuiPicker`), hides it while a legacy popup is open and destroys it with the board. Its `<body>` has `focus: none`, so a press never takes the focus from the board's fields; RmlUi then sends no `click` there, so the buttons act on `mousedown` (`pick(theme.id, ev.button)`, left button only). The gallery's Theme button cycles through `nui.get_themes()`.
+
+**Adding a theme.** A new palette for an existing skin is a new top-level palette in `tokens.json` plus an entry in `themes.json` (`["skin-modern", "theme-<palette>"]`); run `python tools/nui_tokens.py`, which checks its contrast. A new skin also needs its sheets under `nui/skins/<skin>/`, linked at the end of `nui.rtpl`, written like the classic skin's. Add goldens for it in `tools/check_nui_snapshots.py`.
+
+## Classic skin
+
+The classic theme (`skin-classic theme-classic`) draws NovaUI windows in the legacy Metin2 look: the stone board and its title bar, the thin translucent board, the legacy buttons, fields and scrollbar, the legacy colors and Tahoma at the legacy sizes. Its art is the legacy pixels at 1x, plus 2x art made with an AI upscaler, so it stays sharp when the UI scales.
+
+| File | What |
+|---|---|
+| `nui/skins/classic/classic.rcss` | The component rules, all under `.skin-classic`, and the named frame decorators |
+| `nui/skins/classic/classic-sprites.rcss` | Generated by `tools/nui_classic_art.py`: the 1x and 2x sprite sheets. Do not edit. |
+| `nui/skins/classic/classic-1x.png`, `classic-2x.png` | Generated: the sheets |
+| `tools/classic_art/manifest.json` | The legacy pieces the sheets hold, and how each one is cut and upscaled |
+| `tools/classic_art/record.json` | Generated: the method that made each 2x piece, the hashes `check` compares, and every review note |
+| `nui/theme/tokens.json` | The `classic` palette and the `skins.classic` tokens |
+| `nui/windows/<name>/<name>.rcss` | A window's own classic rules, in a section headed `/* --- Classic skin --- */` |
+
+**Selector scheme.** Classic rules must win against the modern component rules by weight, never by sheet order. RmlUi weighs an id 1,000,000, a class, attribute or pseudo-class 100,000 and a tag 10,000.
+
+1. Every classic rule starts with `.skin-classic`.
+2. A classic rule takes the exact modern selector it overrides and puts `.skin-classic` in front, which makes it heavier by exactly 100,000: modern `.nui-button:hover` (200,000) becomes classic `.skin-classic .nui-button:hover` (300,000).
+3. A component that can be the `<body>` itself lists both forms: `.skin-classic.nui-window, .skin-classic .nui-window`.
+4. Every modern state rule (`:hover`, `.is-hover`, `:active`, `:focus-visible`, the variants' states) has a classic rule at least one class heavier that sets everything the classic look needs, resets included (`background-color: transparent`, `border-width: 0`, `border-radius: 0`, `transform: none`).
+5. A window's classic rules go into its own sheet, in a section headed `/* --- Classic skin --- */`, with the same prefix: `body.skin-classic.login` (210,000) outweighs `body.login` (110,000). A window sheet comes after `classic.rcss`, so it also wins ties against it.
+6. No `transition` and no `animation` in classic rules, so the reduced-motion and theme-switch rules act on classic as on modern. No ids.
+7. Colors from tokens, lengths in `dp`, as everywhere (NUI002, NUI003).
+
+A window's classic section, from `login.rcss`:
+
+```css
+/* --- Classic skin --- */
+body.skin-classic.login
+{
+	width: 208dp;
+	margin-left: -104dp;
+	decorator: classic-thinboard;
+}
+.skin-classic input.login-input
+{
+	decorator: image(classic-login-field);
+	width: 120dp;
+	height: 18dp;
+	border-width: 0;
+	background-color: transparent;
+}
+```
+
+**What the components look like.** The window frame is the stone board (`ui.Board`) with the legacy title bar and close button; panels and tooltips are the thin board (`ui.ThinBoard`); buttons use the legacy large art (`--small` and `--icon` the small art) with the over art on hover and focus and the down art on press; text inputs, toggle tracks, slider tracks, slots and the scrollbar track are the legacy slot bar (black, a dark top and left line, a light bottom and right line); a checked toggle shows the legacy check mark; the vertical scrollbar has the legacy arrows and ribbed thumb. Lists use the legacy highlights (white at 0.2 on hover, the translucent navy selection); sliders get a slot-bar track and a small button as the thumb. Tabs, badges and horizontal scrollbars keep their modern shapes in the classic colors. Labels are the legacy gray (`#dadada`), button labels a darker gray, `--primary` labels gold and `--danger` labels red. Buttons do not lift or dip: the art swap is the feedback.
+
+**Sprites.** Every piece is the sprite `classic-<id>` in both sheets. A piece with slices also has `classic-<id>-l`, `-c` and `-r` (the buttons: 6dp caps and a center), which `tiled-horizontal` draws: the caps keep their width and the center stretches, which at the legacy widths (43, 61 and 88dp) draws the art 1:1. The names: `classic-board-{tl,t,tr,l,c,r,bl,b,br}`, `classic-thin-...` (the same nine), `classic-title-{l,c,r}`, `classic-close-0{1,2,3}`, `classic-button-{small,middle,large}-0{1,2,3}` with their slices, `classic-login-field`, `classic-check`, `classic-scroll-{up,down}-0{1,2,3}` and `classic-thumb-{t,c,b}`. `01` is the default art, `02` over and `03` down.
+
+The frames repeat their edges and center 1:1, as the legacy UI draws them, through the `nui-repeat-box` decorator. It takes the nine property names of `tiled-box` (`top-left-image` to `bottom-right-image`), each a sprite or an image; `auto` leaves a tile out, so three tiles make a bar. Corners keep their size, edges repeat between them from their leading edge, the center repeats on both axes, and the last copy is clipped. `classic.rcss` names four of them:
+
+| Decorator | Use |
+|---|---|
+| `classic-board` | the stone board of a window |
+| `classic-thinboard` | the thin translucent board: panels, tooltips, the login board, the picker |
+| `classic-titlebar` | the title bar (left, center, right) |
+| `classic-thumb` | the scrollbar thumb (top, center, bottom) |
+
+The 1x sheet holds the exact legacy pixels, so at 100% the frame and button art of a classic window is the legacy art (on the skin-proof page, `nuitool snap` matches a legacy-rule drawing of the same window to the pixel). The 2x sheet replaces it from a scale of 1.125 up (`@media (min-resolution: 1.125x)` in `classic-sprites.rcss`; `min-resolution` compares the context's dp ratio, which is the UI scale). Below 1.125 the 1x art is drawn, minified at 0.75 and 0.875.
+
+**The art tool.** `tools/nui_classic_art.py` (Python 3 with Pillow) reads `tools/classic_art/manifest.json`:
+
+```
+python3 tools/nui_classic_art.py build [--no-ai] [--work DIR]   # decode, upscale, pack, write the sheets, the RCSS and the record
+python3 tools/nui_classic_art.py check                          # write nothing; exit 1 when an output is stale
+python3 tools/nui_classic_art.py rcss [--threshold X] [--force-1x] [--out FILE]
+python3 tools/nui_classic_art.py legacy-ref --out DIR           # the legacy references the validation compares with
+python3 tools/nui_classic_art.py sheets --out DIR               # review sheets from the committed sheets
+```
+
+- A piece is a TGA, DDS or PNG file, a `.sub` atlas region (parsed from the `.sub`, version 1.0 or 2.0) or a generated fill, with an optional crop, the axes the skin repeats it on (`tile`), optional slices, and optionally a forced method (`lanczos` or `nearest`, with a `why`) or a review `note`.
+- A repeated piece is cut from a context composite that lays it out between copies of itself, as the legacy UI draws it, so the upscaler sees its real neighbors and its copies join without seams. The tool checks the composite holds those copies.
+- `build` runs Real-ESRGAN ncnn-vulkan once, on the GPU (`realesr-animevideov3` at x2, from `E:\nova-build\tools\realesrgan`), over the RGB of every composite and standalone piece; alpha never goes through the network. Each 2x piece is the network's luma plus half the Lanczos detail, with Lanczos chroma and alpha ("av3cd"). Every input side must be 11 to 512 px: one smaller input turns the whole run into noise, so the tool refuses to start the upscaler then.
+- Lanczos replaces the AI piece where the upscaler fails, where a piece differs from the Lanczos one by more than the manifest's `garbage_mad` (a backstop, not proof), with `--no-ai`, and where the manifest forces it. The record names the method of every piece and why it is not `av3cd`.
+- Look at every review sheet `build` writes (`<work>/review/`, on E:): each piece at 1x, Lanczos 2x, AI 2x and final 2x, and the two assembled layouts. A visibly broken AI piece (a mangled ornament, an invented crack, a color cast) gets `"method": "lanczos"` and a `why` in the manifest and a line in the commit message; never hide one. Today the close buttons use Lanczos (the AI lifted the X to white, so the pressed state read like the default) and the check mark does (the garbage guard).
+- The sheets are packed in shelves, 512 px wide at 1x, each sprite in a gutter of its own texels (2 px at 1x, 4 px at 2x). An opaque `#FF00FF` texel becomes `#FE00FF`, since the client's color key would make it transparent.
+- `check` rebuilds the 1x sheet and the RCSS and compares them, and checks the 2x sheet against the record (the upscaler's output depends on the GPU, so `check` never re-runs it). `python3 -B -m unittest nui_classic_art_test` in `tools/` tests the tool without a GPU.
+- The work folder, the review sheets and the legacy references stay on E: and are never committed; neither is a `--force-1x` RCSS, which is for validation runs only.
+
+**The font.** The classic skin's tokens set `--font-family: Nova Classic` and the legacy sizes: 12dp for body text and buttons, 14dp for large text, 11dp for the smallest (`UI_DEF_FONT Tahoma:12` and `Tahoma:14` in every locale; 12dp at 100% is the legacy 12 px em). In the client, Nova Classic is the player's installed Tahoma: the client reads `tahoma.ttf` and `tahomabd.ttf` from the Windows font folder at start and hands both to the runtime, or neither. Without them, and in `nuitool lint` and `snap`, Nova Classic is Noto Sans, so the goldens are deterministic; `nuitool snap --font "Nova Classic=<path to tahoma.ttf>"` previews Tahoma. Italic is always Noto Sans Italic. Tahoma is never shipped or copied. RmlUi draws grayscale antialiased text, where the legacy UI draws LCD subpixel text, so classic text has the legacy metrics but not its exact pixels.
+
+**Art and CSS.** Art: the frames, the title bar and close button, the buttons (small, middle, large), the login field, the check mark and the vertical scrollbar. CSS only, in the legacy colors: text inputs other than the login field (the legacy slot bar), slots, lists, tabs, sliders, badges and horizontal scrollbars. The legacy buttons have no disabled art, so a disabled classic button is the default art at 0.45 opacity, the modern rule. To give another component art, add its legacy pieces to the manifest, run `build`, review the sheets, and write the rules.
+
+**The login board.** The legacy login draws two boards (the connect board and the login window art); the NovaUI board is one document, so classic draws one thin board, 208dp wide, with the server row, the painted login fields, and Exit and Connect at the legacy button sizes. It keeps the NovaUI button order (Exit, Connect; the legacy order is Connect, Exit) and its place 72dp above the bottom edge.
+
+**Tool licenses.** The 2x art is made with Real-ESRGAN ncnn-vulkan (MIT) and the `realesr-animevideov3` model (BSD-3-Clause, from Real-ESRGAN). Both are run on a developer machine, never shipped. Tahoma is read from the player's Windows and never shipped.
 
 ## Tools
 
-The Python tool runs from the asset repository root. `nuitool` is built from `nova-client-src`; the commands assume it is on `PATH` and run from the asset repository root, with the relative paths shown. Two ways to get it:
+The Python tools run from the asset repository root. `nuitool` is built from `nova-client-src`; the commands assume it is on `PATH` and run from the asset repository root, with the relative paths shown. Two ways to get it:
 
 - On Linux or WSL, with the portable harness in `nova-client-src` (no `protocol/` submodule, no GPU), the platform the snapshot goldens were written on:
 
@@ -562,7 +722,7 @@ ln -sf "$PWD/build-nui/bin/nuitool" ~/.local/bin/nuitool
 
 - On Windows, the MSVC build of `nova-client-src` (target `nuitool`, which needs the `protocol/` submodule) writes `build/bin/<config>/nuitool.exe`. From WSL, build it with the recipe in `nova-client-src/tests/README.md` ("Driving the Windows toolchain from WSL") and link it under a name without `.exe`, since WSL does not add the extension (no `PATHEXT`): `ln -s <build>/bin/RelWithDebInfo/nuitool.exe ~/.local/bin/nuitool`. Run it from the asset repository root with relative paths: a Windows executable started from a `/mnt/<drive>` directory does not translate an absolute Linux path such as a `mktemp` directory under `/tmp` (keep `--out` relative, or pass it through `wslpath -w`). A Windows build can differ from the goldens by 1 in a few pixels (see the snapshot README).
 
-Tokens: `python tools/nui_tokens.py`, see [Tokens](#tokens).
+Tokens: `python tools/nui_tokens.py`, see [Tokens](#tokens). Classic art: `python3 tools/nui_classic_art.py`, see [Classic skin](#classic-skin).
 
 Lint, from the asset repository root:
 
@@ -573,21 +733,21 @@ nuitool lint --root assets/nui --root assets/icon --locale assets/locale/locale/
 - `--root` is a folder that contains store paths. The first one holds the documents: `assets/nui` holds `nui/...`. Repeat it for the groups that images come from: `assets/icon` for `icon/...`, and a group with a `ymir work/` folder, such as `assets/ETC`, for `d:/ymir work/...`.
 - `--locale` points at one locale folder with `locale_interface.txt` and `locale_game.txt`. Without it, NUI005 is skipped. Run lint once per shipped locale when you add keys.
 - `--scripts` points at the controllers. The default tries `<root>/root`, then `<root>/../root`, which finds `assets/root`.
-- Lint loads every document through the runtime, with its fixture, for NUI008. When the runtime cannot start (for example a font that fails to load), that is itself an NUI008 finding and the exit code is 1. `--no-load` skips the loads and runs the static checks only; fixture syntax and model key names (NUI001) are checked either way.
+- Lint loads every document through the runtime, with its fixture, for NUI008, in every theme of `nui/theme/themes.json` (under the first root) at 100% and again at 200%. A problem that shows only after the first pass (the first theme at 100%) is prefixed with its pass, for example `[classic 200%] `, and a message already reported for the document is not repeated. When the runtime cannot start (for example a font that fails to load), that is itself an NUI008 finding and the exit code is 1. `--no-load` skips the loads and runs the static checks only; fixture syntax and model key names (NUI001) are checked either way.
 - Lint and snap run no controller, so they give every data-event name a document calls a handler that does nothing, before the document raises its first event: the events a load raises (`data-event-load`, `change` from a binding that moves a toggle or a slider) are not findings. NUI006 is the handler check, and it checks only `nui/windows/<w>/<w>.rml` against `nui_<w>.py` (hyphens as underscores); other documents get no handler check.
 - Paths after the options limit the run to those files or folders, relative to the first root: `nuitool lint --root assets/nui --root assets/icon nui/windows/settings`.
 - Findings go to standard output as `path:line: NUIxxx: message`, one per line. Notes about skipped checks and the summary line go to standard error. The exit code is 0 when clean, 1 with findings and 2 for a usage error.
 
 | Code | Finding |
 |---|---|
-| NUI001 | A document, template or style sheet does not parse, RmlUi's template reader cannot find the parts of a template file, or a `.fixture.json` is not valid JSON holding one object per model, or has a top-level model key RmlUi refuses (reported on the fixture, at the JSON line; a key name at line 1). |
+| NUI001 | `nui/theme/themes.json` breaks a rule of [Themes](#themes) (a JSON error, an id, label or class out of form, an unknown key, a first theme other than `modern-dark`, a theme without exactly one `skin-*` and one `theme-*` class); a document, template or style sheet does not parse, RmlUi's template reader cannot find the parts of a template file, or a `.fixture.json` is not valid JSON holding one object per model, or has a top-level model key RmlUi refuses (reported on the fixture, at the JSON line; a key name at line 1). |
 | NUI002 | A `px` length other than a hairline (`1px`, `-1px`, `0px`), outside `nui/theme/` and sprite rectangles. |
 | NUI003 | A raw color outside `nui/theme/`. |
 | NUI004 | `var(--x)` that is neither a token nor declared in the same file. |
 | NUI005 | `@ui.KEY` or `@game.KEY` missing from the locale files; a `@game.KEY` typed `SA`, `SNA`, `SAA` or `SAN` in `locale_game.txt`, which `localeInfo` makes a function; any such key in a `data-attr-*` or `data-value` binding, which is never translated; or a locale file whose last line has no newline (reported at that line). |
 | NUI006 | A `data-event-*` without a matching `@nui.on` handler in the controller (`nui_<window>.py`, each hyphen as an underscore), or a window name outside lowercase letters, digits and hyphens. |
-| NUI007 | A link, template, image or sprite that does not resolve (a `/` path resolves from the store root), an image of a type the client has no loader for (only `.png`, `.tga`, `.jpg`, `.bmp`, `.dds` and `.sub` load), a path that holds `{{ }}`, and a relative image path in a template's body. |
-| NUI008 | RmlUi warnings or errors while loading the document with its fixture, one finding per report; or the runtime did not start while loading was on. RmlUi's binding reports carry no line, so lint reports them at the line of the binding whose expression or name they quote, and a report that only follows another one (a view that could not be added) at that one's line; line 1 when nothing matches, as for a binding from a linked template. A key NUI005 already reported is not reported again. |
+| NUI007 | A link, template, image or sprite that does not resolve (a `/` path resolves from the store root), a sprite that only a `@spritesheet` inside `@media` defines (outside that media query it does not exist), an image of a type the client has no loader for (only `.png`, `.tga`, `.jpg`, `.bmp`, `.dds` and `.sub` load), a path that holds `{{ }}`, and a relative image path in a template's body. |
+| NUI008 | RmlUi warnings or errors while loading the document with its fixture, in any theme at 100% or 200%, one finding per report; or the runtime did not start while loading was on. RmlUi's binding reports carry no line, so lint reports them at the line of the binding whose expression or name they quote, and a report that only follows another one (a view that could not be added) at that one's line; line 1 when nothing matches, as for a binding from a linked template. A key NUI005 already reported is not reported again. |
 | NUI009 | An inline style: `style="..."`, `data-style-*` or `data-attr-style`. |
 | NUI010 | A feature the renderers do not draw, or an image with opaque `#FF00FF` texels, which the client's color key draws transparent (see [What the renderer draws](#what-the-renderer-draws)). |
 | NUI011 | Motion that RmlUi drops or that reduced motion cannot stop, including a motion selector that ties or outranks the reduced-motion rule (see [Motion and reduced motion](#motion-and-reduced-motion)). |
@@ -598,20 +758,22 @@ Snapshots:
 ```
 nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/en \
 	--doc nui/windows/gallery/gallery.rml --fixture assets/nui/nui/windows/gallery/gallery.fixture.json \
-	--theme dark --scale 1.5 --size 2880x1620 --out gallery-dark-150.png
+	--theme modern-dark --scale 1.5 --size 2880x1620 --out gallery-dark-150.png
 ```
 
 - `--doc` is a store path, or a file path under the first root.
 - `--fixture` is not picked up automatically; pass the window's `<name>.fixture.json`.
 - `--locale` points at one locale folder, as for lint, and fills the string tables before the document loads. Without it every `@ui.KEY` and `@game.KEY` shows as written, and RmlUi warns once for each.
-- `--size WxH` is the backbuffer in pixels (default 1280x720). `--scale` is 0.75 to 2 in whole percents (`1.125` is a usage error, since the runtime takes a whole percent), or `auto` for the client's height-based scale, which includes the 1/8 steps (default 1). `--theme` is `dark` (the default) or `light`.
+- `--size WxH` is the backbuffer in pixels (default 1280x720). `--scale` is 0.75 to 2 in whole percents (`1.125` is a usage error, since the runtime takes a whole percent), or `auto` for the client's height-based scale, which includes the 1/8 steps (default 1). `--theme` is a theme id from `nui/theme/themes.json` under the first root (default: its first theme, `modern-dark`); an id the table does not hold is a usage error that lists the ids.
 - Snap does not scroll and does not move the window, so the frame has to hold the window: `--size` at least the scale times the window's right and bottom edges in dp. A scroll container shows only its first screen. The gallery is sized for a 1920x1080 dp area: `--size 1920x1080 --scale 1`, `--size 2880x1620 --scale 1.5` and `--size 3840x2160 --scale 2` show all of it. The 1280x720 default is a smaller dp area than the client uses at any automatic scale. Snap notes on standard error when the window reaches past the frame, or when a scroll container (`overflow: auto` or `scroll`) holds more than it shows; neither changes the exit code.
 - `--time` is how many seconds of animation run before the frame is taken (default 1, which lets the window-open motion and every stock transition finish). RmlUi moves an animation at most 0.1 s per update, so snap advances the clock in steps of at most 0.1 s; long times cost one update per 0.1 s. An endless animation is caught at the phase `--time` gives it. `--reduced-motion` renders the resting state.
 - `--compare golden.png [--tolerance N] [--diff diff.png]` compares with a stored image, channel by channel (N is 0 to 255, default 0), and exits 1 on a mismatch. The diff image goes to `--diff`, by default the output name with `.png` replaced by `.diff.png`. A snapshot matches the golden it was saved as at tolerance 0, as long as the golden was written by `nuitool snap` with the same `--size`, `--scale`, `--theme` and `--time`, by a build for the same platform. Windows and Linux builds can differ by 1 in a few pixels of rotated content, so compare across platforms with `--tolerance 1`. `--compare` may not name the `--out` or the diff file, since snap writes those.
 - RmlUi warnings and errors during a snapshot print as `rmlui: ...` on standard error and do not change the exit code; lint reports them as NUI008. Like lint, snap gives every data event a handler that does nothing, so the guide's own windows snap without warnings.
+- `--font "<family>[:bold][:italic]=<file>"` loads a local font file under a family before the runtime's own fonts, once per face: `--font "Nova Classic=/mnt/c/Windows/Fonts/tahoma.ttf" --font "Nova Classic:bold=/mnt/c/Windows/Fonts/tahomabd.ttf"` shows the classic skin in Tahoma, as the client does. Quote it: the family name has a space.
+- `--boxes <json>` writes the border box `[x, y, width, height]`, in frame pixels, of the `<body>` (key `""`) and of every element with an id.
 - DDS files are not decoded in snapshots, and neither are `.sub` images whose atlas is a DDS file (most legacy `.sub` files). The image area stays transparent at the image's own size, so the layout matches the client, which draws them, and snap prints a warning naming each file (`rmlui: SoftRenderInterface: ... is not decoded`). A `.sub` image of a PNG, TGA, JPEG or BMP atlas is drawn. Prefer PNG or TGA for NovaUI art.
 - The CPU renderer follows the Direct3D 9 renderer's rules: premultiplied texels filtered, clamp addressing that wraps per axis for repeat fits, `.sub` regions clamped at their own edges, the color key and the same unsupported features. Colors, borders, text and images should therefore agree within a small tolerance, but a snapshot is not a screenshot of the client.
-- `docs/ui/snapshots/` holds goldens of the gallery, the render test and the login board in both themes at scales 1.0, 1.5 and 2.0. `python3 tools/check_nui_snapshots.py` checks all of them and `--write` regenerates them (see the README there). Regenerate them in the same change as anything they show.
+- `docs/ui/snapshots/` holds goldens of the gallery and the login board in all three themes, the render test in the two modern ones, at scales 1.0, 1.5 and 2.0, and of the theme picker and the classic skin-proof page. A golden's name holds the theme's short name (`dark`, `light`, `classic`). `python3 tools/check_nui_snapshots.py` checks all of them and `--write` regenerates them (see the README there). Regenerate them in the same change as anything they show.
 
 `nuitool help` prints the current options.
 
@@ -638,3 +800,14 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - RmlUi has no drag cancel event (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)).
 - Snapshots do not decode DDS files or `.sub` images of a DDS atlas; they stay transparent.
 - A missing image is not retried until the client restarts, hot reload included (see [What the renderer draws](#what-the-renderer-draws)).
+- Themes and the classic skin are covered by unit tests, lint in every theme and the snapshots; their checks in the running client (the scaling matrix, switching on the go, persistence) come separately.
+- Theme labels and the picker's "Theme" heading are plain English; there are no locale keys for them yet.
+- Classic text is antialiased in grayscale, the legacy text in LCD subpixels, and the outline the legacy tooltips draw around their text is not reproduced.
+- The legacy buttons have no disabled art: a disabled classic button is the default art at 0.45 opacity.
+- Classic art covers the frames, the title bar and close button, the buttons, the login field, the check mark and the vertical scrollbar; other inputs, slots, lists, tabs, sliders, badges and horizontal scrollbars are CSS in the legacy colors (see [Classic skin](#classic-skin)).
+- The classic login board is one thin board where the legacy UI draws two, and keeps the NovaUI button order (Exit, Connect).
+- Every document parses the classic sheets and holds the classic sprites in its sprite namespace; the sheet textures load only when a classic rule matches.
+- A client without the `nui-repeat-box` decorator (an exe older than this content) logs a parse warning for the classic sheet and draws classic windows without frames. The exe and the `nui` group ship together.
+- If FreeType refuses one of the two Tahoma faces the client hands over, classic text can mix Tahoma and Noto Sans; the runtime logs it.
+- A well-formed `UI_THEME` id the table does not hold stays in the config and shows the default theme; an older client reads a new id as the default and drops it when it saves the config.
+- Below a scale of 1.125 the 1x classic art is drawn, minified at 0.75 and 0.875.

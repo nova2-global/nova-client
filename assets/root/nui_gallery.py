@@ -55,7 +55,13 @@ class GalleryWindow(nui.Window):
 		}
 
 	def _on_theme(self, event):
-		nui.set_theme("light" if nui.get_theme() == "dark" else "dark")
+		# The next player theme after the one in use, wrapping around.
+		themes = [theme_id for theme_id, _ in nui.get_themes()]
+		if not themes:
+			return
+		current = nui.get_theme()
+		following = themes.index(current) + 1 if current in themes else 0
+		nui.set_theme(themes[following % len(themes)])
 
 	def _on_close(self, event):
 		self.hide()

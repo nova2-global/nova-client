@@ -16,7 +16,10 @@ import unittest
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", "assets", "root"))
 NUI_LOGIN = os.path.join(ROOT, "nui_login.py")
+NUI_THEME_PICKER = os.path.join(ROOT, "nui_theme_picker.py")
 INTROLOGIN = os.path.join(ROOT, "intrologin.py")
+PICKER_DOCUMENT = "nui/windows/theme-picker/theme-picker.rml"
+THEMES = [("modern-dark", "Modern dark"), ("modern-light", "Modern light"), ("classic", "Classic")]
 
 USER = "novaverify01"
 PASSWORD = "Nv-login-42"
@@ -35,7 +38,12 @@ class NuiState(object):
         self.available = True
         self.rtl = False
         self.loads = True
+        self.failing = set()     # documents that do not load
         self.next_doc = 1
+        self.themes = list(THEMES)
+        self.theme = "modern-dark"
+        self.shows = []          # (class name, document) of every show(), in order
+        self.windows = []        # every window made, for on_theme_changed
 
 
 def make_nui(state):
@@ -70,11 +78,12 @@ def make_nui(state):
                 return
             self.model = dict(self.initial_model())
             self._model = 1
-            if not state.loads:
+            if not state.loads or self.DOCUMENT in state.failing:
                 self._model = 0
                 return
             self._doc = state.next_doc
             state.next_doc += 1
+            state.windows.append(self)
 
         def initial_model(self):
             return {}
@@ -83,6 +92,7 @@ def make_nui(state):
             if not self._doc:
                 return False
             self.calls.append(("show",))
+            state.shows.append((type(self).__name__, self.DOCUMENT))
             if not self._shown_before:
                 self._shown_before = True
                 self.focused = ID_FIELD  # autofocus
@@ -126,10 +136,27 @@ def make_nui(state):
             self.visible = False
             self.focused = None
 
+        def on_theme_changed(self, theme_id):
+            pass
+
+    def set_theme(name):
+        """nui.set_theme as far as a window sees it: a known id applies and
+        reaches every live window's on_theme_changed; anything else raises."""
+        if name not in [theme_id for theme_id, _ in state.themes]:
+            raise ValueError("no theme %r" % (name,))
+        state.theme = name
+        for window in state.windows:
+            if window._doc:
+                window.on_theme_changed(name)
+        return name
+
     nui.Window = Window
     nui.on = on
     nui.is_available = lambda: state.available
     nui.enabled_for_locale = lambda: not state.rtl
+    nui.get_themes = lambda: list(state.themes) if state.available else []
+    nui.get_theme = lambda: state.theme
+    nui.set_theme = set_theme
     return nui
 
 
@@ -147,18 +174,29 @@ def make_dbg():
     return dbg
 
 
+def load_module(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
 def load_nui_login(nui_module, setting, dbg_module):
     """nui_login.py as a fresh module over the given stand-ins (nui_module
-    None: `import nui` fails)."""
-    names = ("nui", "dbg", "systemSetting")
+    None: `import nui` fails), with the real nui_theme_picker.py loaded over
+    the same stand-ins for its `import nui_theme_picker`."""
+    names = ("nui", "dbg", "systemSetting", "nui_theme_picker")
     saved = {name: sys.modules.get(name, _MISSING) for name in names}
     sys.modules["nui"] = nui_module
     sys.modules["dbg"] = dbg_module
     sys.modules["systemSetting"] = setting
+    sys.modules.pop("nui_theme_picker", None)
     try:
-        spec = importlib.util.spec_from_file_location("nui_login", NUI_LOGIN)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        try:
+            sys.modules["nui_theme_picker"] = load_module("nui_theme_picker", NUI_THEME_PICKER)
+        except ImportError:
+            pass  # no nui module: nui_login's own import fails the same way
+        module = load_module("nui_login", NUI_LOGIN)
     finally:
         for name, value in saved.items():
             if value is _MISSING:
@@ -780,6 +818,83 @@ class LegacyPath(ControllerTest):
         self.assertIsNone(m.on_login_board(win))
         self.assertIsNone(m.typed_values(win))
         self.assertFalse(m.restore_typed(win, USER))
+
+
+# --- The intro theme picker ----------------------------------------------------
+
+class ThemePicker(ControllerTest):
+    def test_the_picker_opens_after_the_ambience_and_before_the_board_which_keeps_the_focus(self):
+        win, board = self.open_board()
+        self.assertIsNotNone(win.nuiPicker)
+        self.assertTrue(win.nuiPicker.is_visible())
+        self.assertEqual([name for name, _ in self.state.shows], ["IntroAmbient", "ThemePicker", "LoginBoard"])
+        self.assertEqual(board.focused, ID_FIELD)
+        self.assertEqual(self.dbg.errors, [])
+
+    def test_the_picker_lists_the_themes_and_marks_the_one_in_use(self):
+        self.state.theme = "classic"
+        win, _ = self.open_board()
+        self.assertEqual(win.nuiPicker.model, {"themes": [{"id": i, "label": l} for i, l in THEMES], "current": "classic"})
+
+    def test_without_player_themes_there_is_no_picker_and_no_error(self):
+        self.state.themes = []
+        win, board = self.open_board()
+        self.assertIsNone(getattr(win, "nuiPicker", None))
+        self.assertTrue(board.is_visible())
+        self.assertEqual(self.dbg.errors, [])
+
+    def test_a_picker_that_does_not_load_leaves_the_board_running_and_says_so_once(self):
+        self.state.failing.add(PICKER_DOCUMENT)
+        win, board = self.open_board()
+        self.assertIsNone(getattr(win, "nuiPicker", None))
+        self.assertTrue(board.is_visible())
+        self.assertEqual(len(self.dbg.errors), 1)
+        self.assertIn(PICKER_DOCUMENT, self.dbg.errors[0])
+        self.assertEqual(self.m.LAST_DECISION, "nui")
+
+    def test_a_popup_hides_the_picker_and_its_close_brings_it_back(self):
+        win, board = self.open_board()
+        picker = win.nuiPicker
+        wrapper = self.m.after_popup(win, 0)
+        self.m.before_popup(win)
+        self.assertFalse(picker.is_visible())
+        wrapper()
+        self.assertTrue(picker.is_visible())
+        self.assertTrue(board.is_visible())
+        shows = [name for name, _ in self.state.shows]
+        self.assertEqual(shows[-3:], ["IntroAmbient", "ThemePicker", "LoginBoard"], "the board comes back on top")
+
+    def test_closing_the_board_destroys_the_picker(self):
+        win, board = self.open_board()
+        picker = win.nuiPicker
+        self.m.close_board(win)
+        self.assertIsNone(win.nuiPicker)
+        self.assertIn(("destroy",), picker.calls)
+        self.assertFalse(picker.is_visible())
+
+    def test_a_left_press_applies_the_theme_and_the_selection_follows(self):
+        win, board = self.open_board()
+        picker = win.nuiPicker
+        picker.on_pick("classic", 0)
+        self.assertEqual(self.state.theme, "classic")
+        self.assertEqual(picker.model["current"], "classic")
+        self.assertTrue(board.is_visible())
+        self.assertEqual(board.focused, ID_FIELD, "the press leaves the board's focus where it was")
+
+    def test_other_buttons_do_nothing_and_a_refused_id_is_logged_not_raised(self):
+        win, _ = self.open_board()
+        picker = win.nuiPicker
+        picker.on_pick("classic", 1)
+        self.assertEqual(self.state.theme, "modern-dark")
+        picker.on_pick("sepia", 0)
+        self.assertEqual(self.state.theme, "modern-dark")
+        self.assertEqual(len(self.dbg.errors), 1)
+        self.assertIn("nui_theme_picker", self.dbg.errors[0])
+
+    def test_without_the_nui_module_there_is_no_picker(self):
+        self.load(nui_module=None)
+        self.assertIsNone(self.m.nui_theme_picker)
+        self.assertIsNone(self.open_window().nuiBoard)
 
 
 # --- T7: the hooks are in place in intrologin.py ----------------------------------

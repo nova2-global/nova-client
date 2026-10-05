@@ -106,3 +106,16 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 		animation: none;
 	}
 }
+
+/* Theme switches (nui.set_theme): the runtime activates the media theme
+   theme-switch for the one update that restyles, so nothing transitions
+   from the old theme's look to the new one and every element shows the new
+   theme in the next frame. It has the reduced-motion rule's weight
+   (400,000), which every motion rule stays under (nuitool lint NUI011). */
+@media (theme: theme-switch)
+{
+	.nui-anim.nui-anim.nui-anim.nui-anim
+	{
+		transition: none;
+	}
+}

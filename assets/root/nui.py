@@ -90,7 +90,12 @@ except ImportError:  # pragma: no cover - client builds always have it
 	_nui = None
 
 
-_THEMES = ("dark", "light")
+# Theme ids are lowercase letters, digits and '-', at most 31 characters
+# (UI_THEME). The first theme of nui/theme/themes.json is the default.
+_THEME_DEFAULT = "modern-dark"
+_THEME_LEGACY = {"dark": "modern-dark", "light": "modern-light"}
+_THEME_ID_CHARS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
+_THEME_ID_MAX = 31
 _SCALE_MIN_PERCENT = 75
 _SCALE_MAX_PERCENT = 200
 _RESERVED_NAMES = ("it", "it_index", "ev", "true", "false", "size", "literal")
@@ -338,6 +343,12 @@ class Window(object):
 		"""Hook: the document was re-loaded in place (hot reload, locale)."""
 		pass
 
+	def on_theme_changed(self, theme_id):
+		"""Hook: nui.set_theme() applied `theme_id`. The documents carry the
+		new theme's classes already; override this to update model values
+		that name the theme (a picker's selection)."""
+		pass
+
 	def destroy(self):
 		"""Close the document, drop the model and every handler. Inside one
 		of the window's handlers the document hides at once, and it goes
@@ -377,29 +388,69 @@ def _save(setting):
 		save()
 
 
+def _theme_id(name):
+	"""The theme id `name` stands for: stripped and lowercased, "dark" and
+	"light" mapped to their ids. ValueError when that is not an id."""
+	if not isinstance(name, str):
+		raise ValueError("nui.set_theme() takes a theme id, not %r" % (name,))
+	theme = name.strip().lower()
+	theme = _THEME_LEGACY.get(theme, theme)
+	if not 1 <= len(theme) <= _THEME_ID_MAX or not _THEME_ID_CHARS.issuperset(theme):
+		raise ValueError("nui.set_theme(): %r is not a theme id (lowercase letters, digits and '-', at most %d)"
+			% (name, _THEME_ID_MAX))
+	return theme
+
+
 def set_theme(name):
-	""""dark" or "light" (any case); anything else raises ValueError."""
-	if not isinstance(name, str) or name.lower() not in _THEMES:
-		raise ValueError('nui.set_theme() takes "dark" or "light", not %r' % (name,))
-	theme = name.lower()
-	if is_available():
-		_nui.SetTheme(theme)
+	"""Applies a theme at once and saves it (UI_THEME). Returns its id.
+
+	`name` is an id from get_themes(), in any case. "dark" and "light", the
+	values older config files and callers use, mean "modern-dark" and
+	"modern-light". With NovaUI running, an id the runtime's table
+	(nui/theme/themes.json) does not hold raises ValueError and nothing is
+	saved; without it only the form of the id is checked. Then every open
+	window's on_theme_changed() runs. No document re-loads: open windows keep
+	their focus, typed text and models."""
+	theme = _theme_id(name)
+	if is_available() and not _nui.SetTheme(theme):
+		known = ", ".join(theme_id for theme_id, _ in get_themes())
+		raise ValueError("nui.set_theme(): no theme %r (themes: %s)" % (theme, known or "none"))
 	setting = _system_setting()
 	if setting is not None:
 		setting.SetUITheme(theme)
 		_save(setting)
+	for window in list(_windows.values()):
+		window.on_theme_changed(theme)
+	return theme
 
 
 def get_theme():
-	"""The theme in use ("dark" or "light"); the saved one without NovaUI."""
+	"""The id of the theme in use. Without NovaUI, the saved one ("dark" and
+	"light" from an older client read as their ids), else the default,
+	"modern-dark"."""
 	if is_available():
 		theme = _nui.GetTheme()
 		if theme:
 			return theme
 	setting = _system_setting()
 	if setting is not None:
-		return setting.GetUITheme()
-	return "dark"
+		theme = setting.GetUITheme()
+		if theme:
+			theme = theme.lower()
+			return _THEME_LEGACY.get(theme, theme)
+	return _THEME_DEFAULT
+
+
+def get_themes():
+	"""The player themes as (id, label) pairs in menu order; the first is the
+	default. Labels are plain English for now. [] without NovaUI, or with a
+	client whose _nui has no GetThemes."""
+	if not is_available():
+		return []
+	themes = getattr(_nui, "GetThemes", None)
+	if themes is None:
+		return []
+	return [(str(theme_id), str(label)) for theme_id, label in themes()]
 
 
 def _clamp_scale_percent(percent):

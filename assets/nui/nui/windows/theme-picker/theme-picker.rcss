@@ -1,0 +1,73 @@
+/* Intro theme picker (theme-picker.rml): under the legacy flag strip, which
+   never scales (legacy-strip-bottom is in px), and away from the login board
+   (bottom center) and the locale dialog (center). Nothing in it takes the
+   focus. */
+body.theme-picker
+{
+	left: 16dp;
+	top: var(--legacy-strip-bottom);
+	focus: none;
+	tab-index: none;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-1);
+	padding: var(--space-1) var(--space-2);
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+.theme-picker__label
+{
+	margin-right: var(--space-1);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.theme-picker__button
+{
+	focus: none;
+}
+/* The theme in use has the primary look, hovered or pressed too. */
+body.theme-picker .theme-picker__button.is-selected
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-text);
+}
+
+/* --- Classic skin --------------------------------------------------------------
+   A thin board with the large legacy buttons; the theme in use holds the
+   down art, as legacy radio buttons do. 6dp of padding keep the board 33dp
+   tall, above its two 16dp corners. */
+body.skin-classic.theme-picker
+{
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+	padding: 6dp 10dp;
+}
+.skin-classic .theme-picker__label
+{
+	color: var(--text);
+}
+.skin-classic.theme-picker .nui-button
+{
+	decorator: tiled-horizontal(classic-button-large-01-l, classic-button-large-01-c, classic-button-large-01-r);
+	width: 88dp;
+	padding: 0;
+}
+.skin-classic.theme-picker .nui-button:hover, .skin-classic.theme-picker .nui-button.is-hover
+{
+	decorator: tiled-horizontal(classic-button-large-02-l, classic-button-large-02-c, classic-button-large-02-r);
+}
+/* After hover, which they tie: a press and the selection show the down art. */
+.skin-classic.theme-picker .nui-button:active, .skin-classic.theme-picker .nui-button.is-active,
+.skin-classic.theme-picker .nui-button.is-selected
+{
+	decorator: tiled-horizontal(classic-button-large-03-l, classic-button-large-03-c, classic-button-large-03-r);
+	background-color: transparent;
+	border-color: transparent;
+	color: var(--classic-button-text);
+}

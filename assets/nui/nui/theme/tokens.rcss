@@ -140,4 +140,5 @@ body.skin-classic
 	--classic-select: #0000804d;
 	--classic-separator: #777777;
 	--classic-separator-shadow: #111111;
+	--classic-text-outline: #000000;
 }

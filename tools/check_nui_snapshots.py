@@ -19,6 +19,12 @@ A check runs every case, even after a mismatch, lists every mismatch with
 nuitool's own report, and leaves the snapshots and diff images of the
 mismatches in a folder it names. RmlUi warnings (nuitool's "rmlui:" lines)
 are listed too; a regeneration should print none.
+
+The switched cases (SWITCHED) have no golden of their own: each snaps a
+golden's page after a run-time theme switch (nuitool snap --switch-from,
+settled in another theme, then one update in the golden's theme) and
+compares it with that golden, so a switch must render exactly what a start
+in that theme renders. --write writes the goldens first, then checks these.
 """
 import argparse
 import os
@@ -50,22 +56,44 @@ PAGES = [
 ]
 
 
+# (golden, the theme the page settles in before the switch): a skin switch
+# onto classic over the login board's transitioning buttons and fields, one
+# away from classic, one onto the 2x classic art, a skin switch of the
+# gallery and a palette-only switch.
+SWITCHED = [
+    ("login-classic-100", "dark"),
+    ("login-dark-150", "classic"),
+    ("skin-proof-classic-200", "light"),
+    ("gallery-light-100", "classic"),
+    ("gallery-dark-100", "light"),
+]
+
+
 def cases():
-    """(golden name, document, fixture or None, theme id, --scale, --size, reduced motion)"""
+    """(case name, golden name, document, fixture or None, theme id, --scale, --size, reduced motion,
+    --switch-from theme id or None); the goldens first, then the switched cases."""
     theme_ids = dict(THEMES)
+    goldens = []
     for page, document, fixture, themes, scales in PAGES:
         for theme in themes:
             for percent, scale, size in scales:
-                yield (f"{page}-{theme}-{percent}", document, fixture, theme_ids[theme], scale, size, False)
+                goldens.append((f"{page}-{theme}-{percent}", document, fixture, theme_ids[theme], scale, size, False))
     # Reduced motion renders the resting state, which at the default --time 1
     # is the settled frame: the board's open animation has finished.
-    yield ("login-dark-100-reduced-motion", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
-           "modern-dark", "1", "1920x1080", True)
+    goldens.append(("login-dark-100-reduced-motion", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
+                    "modern-dark", "1", "1920x1080", True))
+    for golden in goldens:
+        yield (golden[0],) + golden + (None,)
+    by_name = {golden[0]: golden for golden in goldens}
+    for name, source in SWITCHED:
+        yield (f"{name}-from-{source}",) + by_name[name] + (theme_ids[source],)
 
 
 def command(nuitool, case, out, compare=None, tolerance=None):
-    name, document, fixture, theme, scale, size, reduced = case
+    _, _, document, fixture, theme, scale, size, reduced, switch_from = case
     cmd = [nuitool, "snap"] + ROOTS + ["--doc", document, "--theme", theme, "--scale", scale, "--size", size, "--out", out]
+    if switch_from:
+        cmd += ["--switch-from", switch_from]
     if fixture:
         cmd += ["--fixture", fixture]
     if reduced:
@@ -93,12 +121,13 @@ def main(argv=None):
         print(f"check_nui_snapshots: no golden matches '{args.only}'", file=sys.stderr)
         return 2
 
-    work = None if args.write else os.path.relpath(tempfile.mkdtemp(prefix=".snapshot-check-", dir=ROOT), ROOT)
+    switched = any(case[-1] for case in selected)
+    work = None if args.write and not switched else os.path.relpath(tempfile.mkdtemp(prefix=".snapshot-check-", dir=ROOT), ROOT)
     failed, warned = [], []
     for case in selected:
-        name = case[0]
-        golden = os.path.join(SNAPSHOTS, name + ".png")
-        if args.write:
+        name, golden_name = case[0], case[1]
+        golden = os.path.join(SNAPSHOTS, golden_name + ".png")
+        if args.write and not case[-1]:
             cmd = command(args.nuitool, case, golden)
         else:
             cmd = command(args.nuitool, case, os.path.join(work, name + ".png"), golden, args.tolerance)
@@ -121,8 +150,13 @@ def main(argv=None):
             print(f"      {line}")
     if work and not failed:
         shutil.rmtree(work, ignore_errors=True)
+    goldens = [case for case in selected if not case[-1]]
     action = "written" if args.write else f"matching within {args.tolerance}"
-    print(f"{len(selected) - len(failed)} of {len(selected)} goldens {action}" + (f"; snapshots and diffs in {work}" if work and failed else ""))
+    summary = f"{len(goldens) - len([g for g in goldens if g[0] in failed])} of {len(goldens)} goldens {action}"
+    if switched:
+        checks = [case for case in selected if case[-1]]
+        summary += f", {len(checks) - len([c for c in checks if c[0] in failed])} of {len(checks)} switched snapshots matching within {args.tolerance}"
+    print(summary + (f"; snapshots and diffs in {work}" if work and failed else ""))
     return 1 if failed or (args.write and warned) else 0
 
 

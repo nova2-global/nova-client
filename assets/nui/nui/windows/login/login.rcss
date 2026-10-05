@@ -222,9 +222,11 @@ body.skin-classic.login
 	min-width: 0dp;
 	decorator: classic-thinboard;
 }
-/* The rows sit where the legacy boards put them: the server row is the
-   connect board (30dp), the first label starts 39dp down and the fields
-   37dp apart, one under the other's label. */
+/* The rows sit where the legacy art puts them, measured from the top of the
+   connect board: the server row is the connect board (30dp), the painted
+   fields are at +56 and +91 (35dp apart; the legacy edit lines inside them
+   are 37 apart), each 17dp under the top of its label, and Exit and
+   Connect are at +114, so the board is 142dp tall at rest. */
 .skin-classic.login .nui-window__body
 {
 	padding: 0dp 15dp 0dp 15dp;
@@ -254,17 +256,24 @@ body.skin-classic.login
 {
 	text-align: center;
 }
+/* 15dp lines plus the classic 2dp margin: 17dp from a label's top to its field. */
 .skin-classic.login .nui-field__label
 {
 	text-align: center;
+	line-height: 15dp;
 }
-/* The field art of the legacy login window, 120 by 18, painted, not bordered. */
+/* The field art of the legacy login window, 120 by 18, painted, not bordered.
+   vertical-align: top keeps the field off the text baseline of its line,
+   whose strut comes from the font's rounded ascent and descent and so does
+   not scale linearly: on the baseline, each field row of the board grew
+   1.5px beyond twice its 100% size at 200% with Tahoma. */
 .skin-classic input.login-input
 {
 	decorator: image(classic-login-field);
 	width: 120dp;
 	height: 18dp;
 	line-height: 18dp;
+	vertical-align: top;
 	padding: 0 4dp;
 	border-width: 0;
 	background-color: transparent;
@@ -277,11 +286,28 @@ body.skin-classic.login
 {
 	image-color: var(--danger);
 }
+/* The legacy UI shows login errors in popups, so classic keeps no empty
+   line for one: the error line takes space only while there is an error
+   (login-error--in follows error != ''), and the board, anchored at its
+   bottom, grows upward by one line then. Centered like the labels, with
+   the outline the legacy UI gives text over its art, since the thin board
+   is translucent over the bright intro. */
+.skin-classic.login .login-error
+{
+	display: none;
+	min-height: 0dp;
+	text-align: center;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+.skin-classic.login .login-error.login-error--in
+{
+	display: block;
+}
 .skin-classic.login .nui-window__footer
 {
 	justify-content: center;
 	gap: 2dp;
-	padding: 4dp 15dp 7dp 15dp;
+	padding: 5dp 15dp 7dp 15dp;
 }
 /* Exit and Connect: the large art at its legacy width, again as a minimum. */
 .skin-classic .nui-window__footer .login-button

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Classic skin art: legacy UI pieces into the skin's 1x and 2x sprite sheets.
 
-    python3 tools/nui_classic_art.py build [--no-ai] [--work DIR]
+    python3 tools/nui_classic_art.py build [--no-ai] [--work DIR] [--replay DIR]
     python3 tools/nui_classic_art.py check
     python3 tools/nui_classic_art.py rcss [--threshold X] [--force-1x] [--out FILE]
     python3 tools/nui_classic_art.py legacy-ref --out DIR
@@ -25,12 +25,15 @@ piece between copies of itself). `build`:
   4. writes the sheets and the sprites RCSS under the manifest's out_dir,
      tools/classic_art/record.json with the method of every piece, and
      review sheets in <work>/review/.
-`rcss` writes only the sprites RCSS; --force-1x leaves out the 2x block, for
-validation runs only. `legacy-ref` draws the legacy references the sharpness
-checks compare with, `sheets` the review sheets. `check` writes nothing and
-exits 1 when an output is stale or inconsistent. The upscaler's output
-depends on the GPU, so `check` never rebuilds the 2x art: it checks the 2x
-sheet against the record and its gutters against the packing rules.
+--replay DIR takes the network output of an earlier run (DIR/out) instead
+of running the upscaler, so a manifest change to a method or a detail
+changes only the pieces it names. `rcss` writes only the sprites RCSS;
+--force-1x leaves out the 2x block, for validation runs only. `legacy-ref`
+draws the legacy references the sharpness checks compare with, `sheets` the
+review sheets. `check` writes nothing and exits 1 when an output is stale
+or inconsistent. The upscaler's output depends on the GPU, so `check` never
+rebuilds the 2x art: it checks the 2x sheet against the record and its
+gutters against the packing rules.
 
 Real-ESRGAN ncnn-vulkan (MIT) and the realesr-animevideov3 model
 (BSD-3-Clause) are run, never shipped. Exit codes: 0 success, 1 failure or
@@ -571,6 +574,47 @@ def mad_vs(image, reference):
     return total / count if count else 0.0
 
 
+OVERSHOOT_LUMA = 40   # above the brightest opaque 1x neighbor
+BLEED_ALPHA = 32      # where the 1x texel is fully transparent
+
+
+def warnings_2x(image_1x, image_2x):
+    """(bright, bleed): the 2x texels with alpha above 0 whose luma exceeds
+    the brightest opaque texel of their 1x 3x3 neighborhood by more than 40,
+    and the 2x texels at alpha 32 or more where the 1x texel (nearest) is
+    fully transparent. A review warning, not a failure: av3cd lifting a 1 px
+    outline into a cut-out shows as both, where a MAD against Lanczos stays
+    small."""
+    w, h = image_1x.size
+    luma_1x = list(image_1x.convert("RGB").convert("L").getdata())
+    alpha_1x = list(image_1x.getchannel("A").getdata())
+    ceiling = []
+    for y in range(h):
+        for x in range(w):
+            near = [(luma_1x[j * w + i], alpha_1x[j * w + i]) for j in range(max(y - 1, 0), min(y + 2, h))
+                    for i in range(max(x - 1, 0), min(x + 2, w))]
+            opaque = [luma for luma, alpha in near if alpha == 255] or [luma for luma, alpha in near if alpha]
+            ceiling.append(max(opaque) if opaque else None)
+    luma_2x = list(image_2x.convert("RGB").convert("L").getdata())
+    alpha_2x = list(image_2x.getchannel("A").getdata())
+    bright = bleed = 0
+    for k, (luma, alpha) in enumerate(zip(luma_2x, alpha_2x)):
+        if not alpha:
+            continue
+        i = (k // (2 * w) // 2) * w + (k % (2 * w)) // 2
+        if ceiling[i] is not None and luma > ceiling[i] + OVERSHOOT_LUMA:
+            bright += 1
+        if alpha >= BLEED_ALPHA and not alpha_1x[i]:
+            bleed += 1
+    return bright, bleed
+
+
+def warning_text(counts):
+    bright, bleed = counts
+    parts = (["%d texel(s) over the 1x luma" % bright] if bright else []) + (["%d into clear texels" % bleed] if bleed else [])
+    return "; ".join(parts)
+
+
 def network_inputs(manifest, pieces_1x, composites):
     """{input name: 1x RGBA} for the pieces the upscaler serves: every context
     of such a piece, and every such piece without a context."""
@@ -663,10 +707,12 @@ def realesrgan(manifest):
     return upscale
 
 
-def replay(work):
-    """An upscaler that reads an earlier run's <work>/out instead of running."""
+def replay(work, previous=None):
+    """An upscaler that reads an earlier run's <work>/out instead of running.
+    Its info is `previous` (that run's, from the record) with "replayed_from"."""
     def upscale(inputs, _work):
-        info = {"exe": "", "exe_sha256": "", "model": "", "ran": False, "seconds": 0.0, "error": ""}
+        info = dict(previous or {"exe": "", "exe_sha256": "", "model": "", "ran": False, "seconds": 0.0, "error": ""})
+        info.update(replayed_from=work, error="")
         outputs = {}
         for name in inputs:
             path = os.path.join(work, "out", name + ".png")
@@ -911,6 +957,7 @@ def read_text(path):
 # --- legacy layouts (review sheets and legacy references) ------------------------
 
 BACKGROUND = (46, 50, 56, 255)
+BRIGHT = (221, 160, 170, 255)    # the intro backdrop behind the login board
 THIN_FILL = (0, 0, 0, 130)       # ui.ThinBoard.BOARD_COLOR, black at 0.51
 SLOT_FILL, SLOT_DARK, SLOT_LIGHT = (0, 0, 0, 255), (51, 51, 51, 255), (179, 179, 179, 255)
 
@@ -1092,10 +1139,20 @@ def family(pid):
     return re.sub(r"-(0\d|tl|tr|bl|br|t|b|l|r|c)$", "", pid)
 
 
+def piece_zoom(image_1x):
+    """The extra nearest zoom of a piece's row in a review sheet: its 1x cell
+    (drawn x4) is at least 120 px on its longer side, so a 16 px piece is
+    drawn x8 and x4 and its single texels show."""
+    return max(1, -(-120 // (4 * max(image_1x.size))))
+
+
 def review_sheets(build, out_dir, final=None, note=""):
-    """Writes per-family sheets (1x x4 nearest, Lanczos 2x x2, the AI 2x x2,
-    the final 2x x2, on a checkerboard) and the two layout sheets. Returns
-    the paths."""
+    """Writes per-family sheets and the two layout sheets. Each row is one
+    piece at one physical size: the 1x x4, Lanczos 2x x2, the AI 2x x2 and
+    the final 2x x2 on a checkerboard, then the 1x and the final 2x on the
+    login backdrop's pink, where a pale fringe in a cut-out shows. A row
+    gets a further zoom (piece_zoom). The final cell names the method and
+    warnings_2x's counts. Returns the paths."""
     os.makedirs(out_dir, exist_ok=True)
     manifest, results = build.manifest, build.results
     final = final or {pid: result.image for pid, result in results.items()}
@@ -1108,27 +1165,33 @@ def review_sheets(build, out_dir, final=None, note=""):
     def zoomed(image, factor):
         return image.resize((image.width * factor, image.height * factor), Image.Resampling.NEAREST)
 
+    def on_bright(image):
+        return on_background(image, Image.new("RGBA", image.size, BRIGHT))
+
     paths = []
     for name, ids in families:
-        # Small pieces get a further zoom, the same in every column, so the
-        # columns keep showing one physical size.
-        largest = max(4 * max(build.pieces_1x[pid].size) for pid in ids)
-        zoom = 1 if largest >= 120 else -(-120 // largest)
         rows = []
         for pid in ids:
             result = results[pid]
+            zoom = piece_zoom(build.pieces_1x[pid])
             lanczos = result.lanczos if result.lanczos is not None else final[pid]
-            cells = [("%s 1x x%d" % (pid, 4 * zoom), on_background(zoomed(build.pieces_1x[pid], 4 * zoom)))]
+            one = zoomed(build.pieces_1x[pid], 4 * zoom)
+            two = zoomed(final[pid], 2 * zoom)
+            cells = [("%s 1x x%d" % (pid, 4 * zoom), on_background(one))]
             cells.append(("Lanczos 2x x%d" % (2 * zoom), on_background(zoomed(lanczos, 2 * zoom))))
             if result.ai is not None:
                 cells.append(("AI 2x x%d, MAD %.1f" % (2 * zoom, result.mad), on_background(zoomed(result.ai, 2 * zoom))))
             else:
                 blank = Image.new("RGBA", (2 * zoom * lanczos.width, 2 * zoom * lanczos.height), (0, 0, 0, 0))
                 cells.append(("AI 2x: none (%s)" % result.method, on_background(blank)))
-            cells.append(("final 2x x%d: %s" % (2 * zoom, result.method), on_background(zoomed(final[pid], 2 * zoom))))
+            warned = warning_text(warnings_2x(build.pieces_1x[pid], final[pid]))
+            cells.append(("final 2x x%d: %s" % (2 * zoom, result.method), on_background(two)))
+            cells.append(("1x on pink", on_bright(one)))
+            cells.append(("final 2x on pink" + (": " + warned if warned else ""), on_bright(two)))
             rows.append(cells)
         path = os.path.join(out_dir, "family-%s.png" % name)
-        grid(rows, "%s: 1x | Lanczos 2x | AI 2x | final 2x, nearest zoom, one physical size per row. %s" % (name, note)).save(path)
+        grid(rows, "%s: 1x | Lanczos 2x | AI 2x | final 2x, then 1x and final 2x on pink; nearest zoom, one physical size "
+                   "per row. %s" % (name, note)).save(path)
         paths.append(path)
 
     art_1x = dict(build.pieces_1x)
@@ -1161,10 +1224,20 @@ def latest_work():
     return os.path.join(WORK_ROOT, runs[-1]) if runs else None
 
 
-def cmd_build(no_ai=False, work=None, upscale=None):
+def cmd_build(no_ai=False, work=None, upscale=None, replay_dir=None):
     manifest = load_manifest()
     work = work or default_work()
     os.makedirs(work, exist_ok=True)
+    if replay_dir:
+        # The same network output as that run, so only what the manifest
+        # changed can change; the record keeps that run's upscaler fields.
+        if not os.path.isdir(os.path.join(replay_dir, "out")):
+            raise UsageError("--replay needs a work folder with out/: %s" % replay_dir)
+        text = read_text(RECORD)
+        previous = json.loads(text).get("upscaler") if text else None
+        if previous:
+            previous = {key: value for key, value in previous.items() if key != "replayed_from"}
+        upscale = replay(replay_dir, previous)
     build = Build(manifest)
     build.make_2x(upscale or realesrgan(manifest), work, no_ai)
     record = make_record(build)
@@ -1174,10 +1247,19 @@ def cmd_build(no_ai=False, work=None, upscale=None):
     write_text(RECORD, dump_record(record))
     paths = review_sheets(build, os.path.join(work, "review"), note="work: %s" % work)
     info = build.info
-    print("upscaler: %s" % ("ran in %.2f s" % info["seconds"] if info["ran"] else "not used (%s)" % info["error"]))
+    if not info["ran"]:
+        print("upscaler: not used (%s)" % info["error"])
+    elif info.get("replayed_from"):
+        print("upscaler: replayed %s" % info["replayed_from"])
+    else:
+        print("upscaler: ran in %.2f s" % info["seconds"])
+    # The warning counts are for the reviewer: bevels and highlights that
+    # the network sharpens count too, so a count is a place to look.
     for entry in record["pieces"]:
         mad = "" if entry["mad_vs_lanczos"] is None else "MAD %5.2f" % entry["mad_vs_lanczos"]
-        print("  %-18s %-9s %-10s %s" % (entry["id"], entry["method"], mad, entry["note"]))
+        warned = warning_text(warnings_2x(build.pieces_1x[entry["id"]], build.results[entry["id"]].image))
+        print("  %-18s %-9s %-10s %s" % (entry["id"], entry["method"], mad,
+                                         "; ".join(part for part in (entry["note"], "look: " + warned if warned else "") if part)))
     print("sheets %dx%d and %dx%d, %d color-key texel(s) fixed" % (build.sheet_1x.size + build.sheet_2x.size + (record["color_key_fixed"],)))
     print("wrote %s, %s, %s and %s" % (relative(out_path(manifest, "1x")), relative(out_path(manifest, "2x")),
                                        relative(out_path(manifest, "rcss")), relative(RECORD)))
@@ -1317,7 +1399,7 @@ def parse(argv):
     if not argv or argv[0] in ("-h", "--help", "help"):
         raise UsageError("")
     command, rest = argv[0], list(argv[1:])
-    flags = {"build": {"--no-ai": False, "--work": True}, "check": {},
+    flags = {"build": {"--no-ai": False, "--work": True, "--replay": True}, "check": {},
              "rcss": {"--threshold": True, "--force-1x": False, "--out": True},
              "legacy-ref": {"--out": True}, "sheets": {"--out": True, "--work": True}}
     if command not in flags:
@@ -1348,7 +1430,7 @@ def main(argv=None):
     try:
         command, options = parse(argv)
         if command == "build":
-            return cmd_build(no_ai=options.get("--no-ai", False), work=options.get("--work"))
+            return cmd_build(no_ai=options.get("--no-ai", False), work=options.get("--work"), replay_dir=options.get("--replay"))
         if command == "check":
             return cmd_check()
         if command == "rcss":

@@ -376,6 +376,69 @@ class TheTwoX(FixtureTest):
         with self.assertRaises(art.ArtError):
             art.validate_manifest(manifest)
 
+    def test_a_piece_detail_overrides_the_recipe_for_its_context(self):
+        def noisy(name, image):
+            return image.filter(art.ImageFilter.GaussianBlur(2))
+        manifest = self.fixture.manifest()
+        for piece in manifest["pieces"][:2]:
+            piece["detail"] = 1.25
+        build = self.build(manifest)
+        build.make_2x(fake_upscaler(noisy), None)
+        self.assertEqual(build.results["corner"].detail, 1.25)
+        self.assertEqual(build.results["edge"].detail, 1.25)
+        self.assertEqual(build.results["button"].detail, 0.5)
+        recipe = self.build()
+        recipe.make_2x(fake_upscaler(noisy), None)
+        self.assertNotEqual(build.results["edge"].image.tobytes(), recipe.results["edge"].image.tobytes())
+        self.assertEqual(build.results["button"].image.tobytes(), recipe.results["button"].image.tobytes())
+
+    def test_the_warnings_count_a_lifted_outline_and_texels_grown_into_a_cut_out(self):
+        # A 1 px gray outline (85) under a transparent row, as on the thin-board corners.
+        piece = Image.new("RGBA", (4, 4), (0, 0, 0, 0))
+        for x in range(4):
+            piece.putpixel((x, 2), (85, 85, 85, 255))
+            piece.putpixel((x, 3), (8, 8, 8, 255))
+        self.assertEqual(art.warnings_2x(piece, art.nearest2x(piece)), (0, 0))
+        fringe = art.nearest2x(piece)
+        for x in range(8):
+            fringe.putpixel((x, 3), (180, 180, 180, 61))   # into the clear row
+            fringe.putpixel((x, 4), (175, 175, 175, 203))  # the outline, lifted
+        self.assertEqual(art.warnings_2x(piece, fringe), (16, 8))
+        self.assertEqual(art.warning_text((16, 8)), "16 texel(s) over the 1x luma; 8 into clear texels")
+        self.assertEqual(art.warning_text((0, 0)), "")
+
+    def test_a_review_row_draws_a_small_piece_large_enough_to_see_its_texels(self):
+        self.assertEqual(art.piece_zoom(Image.new("RGBA", (16, 16))), 2)
+        self.assertEqual(art.piece_zoom(Image.new("RGBA", (15, 15))), 2)
+        self.assertEqual(art.piece_zoom(Image.new("RGBA", (10, 4))), 3)
+        self.assertEqual(art.piece_zoom(Image.new("RGBA", (64, 64))), 1)
+        for pid, image in art.Build(art.load_manifest()).pieces_1x.items():
+            self.assertGreaterEqual(4 * art.piece_zoom(image) * max(image.size), 120, pid)
+
+    def test_review_sheets_show_the_pieces_on_pink_too(self):
+        # The layout sheets need the committed pieces; no network (--no-ai).
+        build = art.Build(art.load_manifest())
+        build.make_2x(fake_upscaler(), None, no_ai=True)
+        paths = art.review_sheets(build, os.path.join(self.fixture.root, "review"))
+        names = [os.path.basename(p) for p in paths]
+        self.assertIn("family-thin.png", names)
+        self.assertEqual(names[-2:], ["layout-window.png", "layout-login.png"])
+        with Image.open(paths[names.index("family-thin.png")]) as sheet:
+            colors = [color for _, color in sheet.convert("RGB").getcolors(1 << 22)]
+        self.assertIn(art.BRIGHT[:3], colors)
+
+    def test_a_replay_serves_an_earlier_run_and_keeps_that_runs_upscaler_fields(self):
+        work = os.path.join(self.fixture.root, "work")
+        os.makedirs(os.path.join(work, "out"))
+        Image.new("RGB", (4, 2), (9, 8, 7)).save(os.path.join(work, "out", "context-edge.png"))
+        previous = {"exe": "E:\\up.exe", "exe_sha256": "ab", "model": "m", "ran": True, "seconds": 1.5, "error": ""}
+        outputs, info = art.replay(work, previous)({"context-edge": None}, None)
+        self.assertEqual(outputs["context-edge"].getpixel((0, 0)), (9, 8, 7))
+        self.assertEqual(info, dict(previous, replayed_from=work))
+        outputs, info = art.replay(work, previous)({"piece-button": None}, None)
+        self.assertIsNone(outputs)
+        self.assertIn("no output for piece-button", info["error"])
+
     def test_recombination_takes_alpha_and_chroma_from_lanczos(self):
         # Mild chroma, so the luma swap does not clip in RGB.
         piece = Image.new("RGBA", (12, 12))

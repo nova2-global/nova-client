@@ -1,0 +1,52 @@
+/* Pick money (nui_pick_money.py): a body-level window, not modal. The
+   controller places it above the mouse (nui.Window.set_position); until
+   then the sheet centers it, so a snapshot without a placement shows it. */
+body.pick-money
+{
+	width: 240dp;
+	left: 50%;
+	top: 50%;
+	margin-left: -120dp;
+	margin-top: -64dp;
+}
+.pick-money__row
+{
+	justify-content: center;
+}
+input.pick-money__field
+{
+	width: 96dp;
+}
+.pick-money__limit
+{
+	color: var(--text-muted);
+	white-space: nowrap;
+}
+
+/* --- Classic skin ------------------------------------------------------------
+   The legacy pick money board (uiscript pickmoneydialog.py): 170dp wide, the
+   title bar, the field and the maximum beside it, the two middle buttons
+   10dp apart. */
+body.skin-classic.pick-money
+{
+	width: 170dp;
+	margin-left: -85dp;
+	margin-top: -45dp;
+}
+body.skin-classic.pick-money .nui-window__body
+{
+	padding: 6dp 12dp 0dp 12dp;
+}
+.skin-classic input.pick-money__field
+{
+	width: 60dp;
+}
+.skin-classic .pick-money__limit
+{
+	color: var(--text);
+}
+body.skin-classic.pick-money .nui-window__footer
+{
+	padding: 7dp 12dp 11dp 12dp;
+	gap: 10dp;
+}

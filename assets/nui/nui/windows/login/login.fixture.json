@@ -3,6 +3,7 @@
 		"server": "@ui.LOGIN_DEFAULT_SERVERADDR",
 		"user": "novaverify01",
 		"error": "@game.LOGIN_INPUT_PASSWORD",
-		"error_on": "password"
+		"error_on": "password",
+		"keyboard": false
 	}
 }

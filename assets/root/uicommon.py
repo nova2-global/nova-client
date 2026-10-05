@@ -3,6 +3,7 @@ import localeInfo
 import app
 import ime
 import uiScriptLocale
+import nui_windows
 
 class PopupDialog(ui.ScriptWindow):
 
@@ -29,6 +30,7 @@ class PopupDialog(ui.ScriptWindow):
 			exception.Abort("PopupDialog.LoadDialog.BindObject")
 
 	def Open(self):
+		nui_windows.legacy_dialog_layer(self)
 		self.SetCenterPosition()
 		self.SetTop()
 		self.Show()
@@ -88,6 +90,7 @@ class InputDialog(ui.ScriptWindow):
 		self.inputValue = getObject("InputValue")
 
 	def Open(self):
+		nui_windows.legacy_dialog_layer(self)
 		self.inputValue.SetFocus()
 		self.SetCenterPosition()
 		self.SetTop()
@@ -153,7 +156,7 @@ class InputDialogWithDescription(InputDialog):
 		self.__CreateDialog()
 
 	def __del__(self):
-		InputDialog.__del__(self)
+		LegacyInputDialog.__del__(self)
 
 	def __CreateDialog(self):
 
@@ -187,7 +190,7 @@ class InputDialogWithDescription2(InputDialog):
 		self.__CreateDialog()
 
 	def __del__(self):
-		InputDialog.__del__(self)
+		LegacyInputDialog.__del__(self)
 
 	def __CreateDialog(self):
 
@@ -239,6 +242,7 @@ class QuestionDialog(ui.ScriptWindow):
 		self.cancelButton = self.GetChild("cancel")
 
 	def Open(self):
+		nui_windows.legacy_dialog_layer(self)
 		self.SetCenterPosition()
 		self.SetTop()
 		self.Show()
@@ -303,11 +307,11 @@ class QuestionDialog2(QuestionDialog):
 	# MR-15: -- END OF -- Multiline dialog messages
 
 	def __init__(self):
-		QuestionDialog.__init__(self)
+		LegacyQuestionDialog.__init__(self)
 		self.__CreateDialog()
 
 	def __del__(self):
-		QuestionDialog.__del__(self)
+		LegacyQuestionDialog.__del__(self)
 
 	def __CreateDialog(self):
 		pyScrLoader = ui.PythonScriptLoader()
@@ -359,7 +363,7 @@ class QuestionDialogWithTimeLimit(QuestionDialog2):
 		self.endTime = 0
 
 	def __del__(self):
-		QuestionDialog2.__del__(self)
+		LegacyQuestionDialog2.__del__(self)
 
 	def __CreateDialog(self):
 		pyScrLoader = ui.PythonScriptLoader()
@@ -372,6 +376,7 @@ class QuestionDialogWithTimeLimit(QuestionDialog2):
 		self.cancelButton = self.GetChild("cancel")
 
 	def Open(self, msg, timeout):
+		nui_windows.legacy_dialog_layer(self)
 		self.SetCenterPosition()
 		self.SetTop()
 		self.Show()
@@ -410,6 +415,7 @@ class MoneyInputDialog(ui.ScriptWindow):
 		self.moneyText = getObject("MoneyValue")
 
 	def Open(self):
+		nui_windows.legacy_dialog_layer(self)
 		self.inputValue.SetText("")
 		self.inputValue.SetFocus()
 		self.__OnValueUpdate()
@@ -470,3 +476,22 @@ class MoneyInputDialog(ui.ScriptWindow):
 				money = 199999999
 
 		self.moneyText.SetText(self.moneyHeaderText + localeInfo.NumberToMoneyString(money))
+
+# NovaUI dialog kit (nui_dialog_*.py, flag "dialogs"): with the flag on these
+# names make the NovaUI dialogs; with it off, the legacy classes above. The
+# legacy subclasses above call their bases through these Legacy names, since
+# the plain names stop being classes here.
+LegacyPopupDialog = PopupDialog
+LegacyInputDialog = InputDialog
+LegacyInputDialogWithDescription = InputDialogWithDescription
+LegacyInputDialogWithDescription2 = InputDialogWithDescription2
+LegacyQuestionDialog = QuestionDialog
+LegacyQuestionDialog2 = QuestionDialog2
+LegacyMoneyInputDialog = MoneyInputDialog
+PopupDialog = nui_windows.factory("dialogs", LegacyPopupDialog, "nui_dialog_message.PopupDialog")
+InputDialog = nui_windows.factory("dialogs", LegacyInputDialog, "nui_dialog_input.InputDialog")
+InputDialogWithDescription = nui_windows.factory("dialogs", LegacyInputDialogWithDescription, "nui_dialog_input.InputDialogWithDescription")
+InputDialogWithDescription2 = nui_windows.factory("dialogs", LegacyInputDialogWithDescription2, "nui_dialog_input.InputDialogWithDescription2")
+QuestionDialog = nui_windows.factory("dialogs", LegacyQuestionDialog, "nui_dialog_question.QuestionDialog")
+QuestionDialog2 = nui_windows.factory("dialogs", LegacyQuestionDialog2, "nui_dialog_question.QuestionDialog2")
+MoneyInputDialog = nui_windows.factory("dialogs", LegacyMoneyInputDialog, "nui_dialog_money.MoneyInputDialog")

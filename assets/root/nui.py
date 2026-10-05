@@ -99,6 +99,9 @@ _THEME_ID_MAX = 31
 _SCALE_MIN_PERCENT = 75
 _SCALE_MAX_PERCENT = 200
 _RESERVED_NAMES = ("it", "it_index", "ev", "true", "false", "size", "literal")
+_SIDES = ("left", "right", "above", "below")
+_CARETS = ("end", "start", "keep")
+_WORD_JOINER = "\u2060"
 
 # RmlUi's key identifiers, as ev["key_identifier"] of a key event carries
 # them. `_nui` exports RmlUi's own values; the numbers here are the same, for
@@ -128,6 +131,23 @@ def enabled_for_locale():
 		return True
 	is_rtl = getattr(app, "IsRTL", None)
 	return not (is_rtl is not None and is_rtl())
+
+
+def any_window_shown():
+	"""True while a window made through Window is shown. The legacy common
+	dialogs ask this when they open (nui_windows.legacy_dialog_layer)."""
+	return any(window.is_visible() for window in list(_windows.values()))
+
+
+def plain_text(text):
+	"""`text` safe to show with {{ }}: a U+2060 WORD JOINER (zero width) after
+	every "@", so text from game data or another player can never name a
+	locale key (@ui.KEY, @game.KEY). It looks the same. None reads as ""."""
+	if text is None:
+		return ""
+	if not isinstance(text, str):
+		text = str(text)
+	return text.replace("@", "@" + _WORD_JOINER)
 
 
 def _is_legal_name(name):
@@ -286,6 +306,107 @@ class Window(object):
 		if not self._doc:
 			return False
 		return bool(_nui.Focus(self._doc, element_id))
+
+	# --- placement --------------------------------------------------------------
+	# Places the window's <body> on the screen in dp, so a placement follows
+	# the UI scale. A placement holds until the next one or clear_placement():
+	# after a layout in which the window's size, the screen size, the scale or
+	# the other window changed, the runtime places the window again, and it
+	# keeps the window on the screen. A body that fills the screen (an overlay
+	# or a scrim) is not moved. None of these take the focus or show the window.
+
+	def set_position(self, x_dp, y_dp, origin=(0.0, 0.0)):
+		"""Puts the point `origin` of the window's border box ((0, 0) its top
+		left, (1, 1) its bottom right, (0.5, 1) the middle of its bottom edge)
+		at (x_dp, y_dp) of the screen. True if the placement was stored."""
+		if not self._doc:
+			return False
+		origin_x, origin_y = origin
+		return bool(_nui.SetPosition(self._doc, float(x_dp), float(y_dp), float(origin_x), float(origin_y)))
+
+	def center(self):
+		"""Keeps the window in the middle of the screen."""
+		if not self._doc:
+			return False
+		return bool(_nui.Center(self._doc))
+
+	def place_next_to(self, other, side, gap_dp=0, element_id=""):
+		"""Keeps the window beside `other` (a Window), or beside the element of
+		`other` with this id: on `side` ("left", "right", "above" or "below"),
+		`gap_dp` apart, its top edge (left, right) or left edge (above, below)
+		in line with the other's. Where that side has no room the opposite side
+		is used. ValueError for another side."""
+		if side not in _SIDES:
+			raise ValueError("nui.Window.place_next_to(): side is one of %s, not %r" % (", ".join(_SIDES), side))
+		other_doc = getattr(other, "_doc", 0)
+		if not self._doc or not other_doc:
+			return False
+		return bool(_nui.PlaceNextTo(self._doc, other_doc, side, float(gap_dp), element_id))
+
+	def clear_placement(self):
+		"""Hands the window's position back to its style sheet."""
+		if not self._doc:
+			return False
+		return bool(_nui.ClearPlacement(self._doc))
+
+	def bring_to_front(self):
+		"""Draws the window above the other NovaUI windows without giving it
+		the focus. A later show() or focus() of another window raises that one."""
+		if not self._doc:
+			return False
+		return bool(_nui.BringToFront(self._doc))
+
+	def keep_clear_of(self, *targets):
+		"""While the window overlaps one of `targets` that is shown, the runtime
+		puts the class nui-overlapping on its <body>, so its sheet can hide it
+		(opacity: 0 and pointer-events: none; not display, whose zero size
+		would end the overlap). A target is a Window or a (Window, element id)
+		pair; keep_clear_of() with none clears the list."""
+		if not self._doc:
+			return False
+		pairs = []
+		for target in targets:
+			window, element_id = target if isinstance(target, tuple) else (target, "")
+			doc = getattr(window, "_doc", 0)
+			if doc:
+				pairs.append((doc, element_id))
+		return bool(_nui.SetKeepClear(self._doc, pairs))
+
+	# --- text fields ------------------------------------------------------------
+
+	def set_value(self, element_id, text, caret="end"):
+		"""Replaces the text of the text field with this id (an input that takes
+		text, or a textarea), cut to its maxlength, and sends one change event
+		(linebreak False) when the text changed, as typing would. `caret`
+		("end", "start", "keep" or a character index) places the caret, with no
+		selection, when the field has the focus; a field without the focus
+		keeps its own caret. False for an unknown or hidden element, or one
+		that takes no text."""
+		if not isinstance(text, str):
+			raise TypeError("nui.Window.set_value() takes str text, not %s" % type(text).__name__)
+		if not (caret in _CARETS or (isinstance(caret, int) and not isinstance(caret, bool) and caret >= 0)):
+			raise ValueError("nui.Window.set_value(): caret is one of %s or an index >= 0, not %r" % (", ".join(_CARETS), caret))
+		if not self._doc:
+			return False
+		return bool(_nui.SetValue(self._doc, element_id, text, caret))
+
+	def insert_text(self, element_id, text):
+		"""Types `text` into the text field with this id at its caret, replacing
+		the selection, as key presses would: the field takes the focus first,
+		maxlength applies, and one change event follows. "\\b" is Backspace;
+		"\\n" in a single-line field is Enter (change with linebreak True).
+		False when nothing could be typed there."""
+		if not isinstance(text, str):
+			raise TypeError("nui.Window.insert_text() takes str text, not %s" % type(text).__name__)
+		if not self._doc:
+			return False
+		return bool(_nui.InsertText(self._doc, element_id, text))
+
+	def get_value(self, element_id):
+		"""The text of the text field with this id, or None."""
+		if not self._doc:
+			return None
+		return _nui.GetValue(self._doc, element_id)
 
 	def set(self, **values):
 		"""Replace model keys; only the views that use them update.

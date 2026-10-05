@@ -1,9 +1,9 @@
 {
 	"theme_picker": {
 		"themes": [
-			{"id": "modern-dark", "label": "Modern dark"},
-			{"id": "modern-light", "label": "Modern light"},
-			{"id": "classic", "label": "Classic"}
+			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},
+			{"id": "modern-light", "label": "@ui.THEME_MODERN_LIGHT"},
+			{"id": "classic", "label": "@ui.THEME_CLASSIC"}
 		],
 		"current": "modern-dark"
 	}

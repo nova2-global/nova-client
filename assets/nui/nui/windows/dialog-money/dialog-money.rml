@@ -1,0 +1,30 @@
+<rml>
+<head>
+	<!-- The money dialog of the dialog kit (controller:
+	     assets/root/nui_dialog_money.py): uiCommon.MoneyInputDialog, the
+	     private shop's price. A modal with a title bar, a digits-only field
+	     and the amount spelled out under it. The field's value never enters
+	     the model; the controller writes the amount line on every edit. -->
+	<title>dialog-money</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dialog-money.rcss"/>
+</head>
+<body template="nui" class="nui-scrim dialog-money" data-model="dialog_money">
+	<div class="nui-window nui-dialog nui-anim" id="dialog-money">
+		<div class="nui-window__titlebar">
+			<handle class="nui-window__handle" move_target="dialog-money">
+				<span class="nui-window__title">{{ title }}</span>
+			</handle>
+			<button id="dialog-money-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-click="cancel()">&#215;</button>
+		</div>
+		<div class="nui-window__body">
+			<input id="dialog-money-field" type="text" class="nui-input nui-dialog__field" data-attr-maxlength="max" data-event-change="edit(ev.value, ev.linebreak)"/>
+			<p class="nui-dialog__text dialog-money__amount">{{ money }}</p>
+		</div>
+		<div class="nui-window__footer nui-dialog__footer">
+			<button id="dialog-money-cancel" class="nui-button nui-button--medium nui-anim" data-event-click="cancel()">@ui.CANCEL</button>
+			<button id="dialog-money-accept" class="nui-button nui-button--medium nui-button--primary nui-anim" data-event-click="accept()">@ui.OK</button>
+		</div>
+	</div>
+</body>
+</rml>

@@ -309,3 +309,12 @@ WHISPER_REPORT
 WHISPER_SEND	Αποστολή
 YES	Ναι
 ZONE_MAP	Μεγάλος Χάρτης
+THEME_TITLE	Θέμα
+THEME_MODERN_DARK	Μοντέρνο σκούρο
+THEME_MODERN_LIGHT	Μοντέρνο ανοιχτό
+THEME_CLASSIC	Κλασικό
+VKEY_SHIFT	Shift
+VKEY_SPACE	Κενό
+VKEY_BACKSPACE	Διαγραφή
+VKEY_ENTER	Enter
+VKEY_SYMBOLS	@#!

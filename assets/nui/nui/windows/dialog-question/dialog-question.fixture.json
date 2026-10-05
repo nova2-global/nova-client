@@ -1,0 +1,10 @@
+{
+	"dialog_question": {
+		"lines": [
+			"Nova added you as a friend.",
+			"@game.MESSENGER_DO_YOU_ACCEPT_ADD_FRIEND_2"
+		],
+		"accept_label": "@ui.YES",
+		"cancel_label": "@ui.NO"
+	}
+}

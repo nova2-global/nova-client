@@ -24,6 +24,7 @@ import ui
 import uiCommon
 import localeInfo
 import wndMgr
+import nui_windows
 
 
 # Available locales configuration
@@ -190,3 +191,8 @@ class LocaleSelector(ui.Window):
 			event: Callback function(localeCode) to handle locale change
 		"""
 		self.eventLocaleChanged = event
+
+# NovaUI locale strip (nui_locale_strip.py, flag "locale-strip"): with the
+# flag on this name makes the NovaUI strip; with it off, the legacy class.
+LegacyLocaleSelector = LocaleSelector
+LocaleSelector = nui_windows.factory("locale-strip", LegacyLocaleSelector, "nui_locale_strip.LocaleStrip")

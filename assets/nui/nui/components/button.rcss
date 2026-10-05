@@ -1,6 +1,8 @@
 /* Button: <button class="nui-button nui-button--primary nui-anim">.
    Variants: --primary, --secondary (default look), --ghost, --danger.
-   Sizes: --small, --icon (square). Disabled: the `disabled` attribute
+   Sizes: --small, --medium (the dialog size; never --small for a text
+   label, which the classic small art fits only when short), --icon
+   (square). Disabled: the `disabled` attribute
    (static, or data-attrif-disabled="expr"). <button> is a plain element in
    RmlUi, so the attribute does nothing by itself; the rule below takes the
    button out of pointer hit testing (pointer-events), the tab order and
@@ -118,6 +120,12 @@
 	padding: 0 var(--space-2);
 	font-size: var(--font-sm);
 	line-height: 22dp;
+}
+/* The dialog buttons: a minimum width, so short labels (OK, No) line up. In
+   classic this is the legacy middle art (61dp). */
+.nui-button--medium
+{
+	min-width: 80dp;
 }
 .nui-button--icon
 {

@@ -1,0 +1,48 @@
+<rml>
+<head>
+	<!-- Server and channel board: replaces the legacy ServerBoard while the
+	     server-board flag is on (controller: assets/root/nui_server_board.py).
+	     The hidden legacy lists stay the data; this board mirrors them and
+	     drives them by line (pick_server, pick_channel). Enter confirms
+	     through the login window's key-up hook. Row labels and channel names
+	     come from the model through nui.plain_text. -->
+	<title>server-board</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="server-board.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-anim server-board" data-model="server_board">
+	<div class="server-board__title">@ui.LOGIN_SELECT_TITLE</div>
+	<div class="nui-divider server-board__rule"></div>
+	<div class="server-board__row">
+		<div class="nui-list server-board__servers">
+			<div class="nui-list__viewport">
+				<div class="nui-list__item nui-anim" data-for="row : servers"
+					data-attr-id="'server-row-' + row.line"
+					data-class-is-selected="row.line == server_line"
+					data-event-click="pick_server(row.line)"><span class="nui-list__label">{{ row.label }}</span></div>
+			</div>
+		</div>
+		<div class="server-board__split"></div>
+		<div class="server-board__side">
+			<div class="nui-list server-board__channels">
+				<div class="nui-list__viewport">
+					<div class="nui-list__item nui-anim" data-for="row : channels"
+						data-attr-id="'channel-row-' + row.line"
+						data-class-is-selected="row.line == channel_line"
+						data-event-click="pick_channel(row.line)">
+						<span class="nui-list__label">{{ row.name }}</span>
+						<span class="nui-badge server-board__state"
+							data-class-nui-badge--success="row.state_class == 'normal'"
+							data-class-nui-badge--warning="row.state_class == 'busy'"
+							data-class-nui-badge--danger="row.state_class == 'full'">{{ row.state }}</span>
+					</div>
+				</div>
+			</div>
+			<div class="server-board__buttons">
+				<button id="server-board-ok" class="nui-button nui-button--primary nui-anim server-board__button" data-event-click="confirm()">@ui.OK</button>
+				<button id="server-board-exit" class="nui-button nui-anim server-board__button" data-event-click="leave()">{{ exit_label }}</button>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

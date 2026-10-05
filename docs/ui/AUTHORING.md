@@ -12,10 +12,18 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 - [File layout and store paths](#file-layout-and-store-paths)
 - [A complete window](#a-complete-window)
 - [Components](#components)
+- [Gauges](#gauges)
+- [Frame animations](#frame-animations)
 - [Tokens](#tokens)
 - [Data binding cheatsheet](#data-binding-cheatsheet)
+- [Text from game data and players](#text-from-game-data-and-players)
 - [Python controller API](#python-controller-api)
+- [Placement](#placement)
+- [Text fields](#text-fields)
 - [Keyboard and modals](#keyboard-and-modals)
+- [UI sounds](#ui-sounds)
+- [The dialog kit](#the-dialog-kit)
+- [Window flags and the factory](#window-flags-and-the-factory)
 - [Rules](#rules)
 - [What the renderer draws](#what-the-renderer-draws)
 - [Motion and reduced motion](#motion-and-reduced-motion)
@@ -25,6 +33,7 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 - [Themes](#themes)
 - [Classic skin](#classic-skin)
 - [Tools](#tools)
+- [Golden case files](#golden-case-files)
 - [Hot reload and debugging](#hot-reload-and-debugging)
 - [Status and known gaps](#status-and-known-gaps)
 
@@ -36,8 +45,8 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 4. Write `settings.fixture.json` with every key of every data model the document binds. `nuitool lint` checks its JSON (NUI001) and loads the document with it; pass it to `nuitool snap` with `--fixture`.
 5. Write the controller `assets/root/nui_settings.py`: subclass `nui.Window`, set `DOCUMENT` and `MODEL` (and `MODAL = True` for a dialog), return every model key from `initial_model()`, and add one `@nui.on("name")` method for every `data-event-*="name(...)"` in the document. The controller's name writes each hyphen of the window name as an underscore: window `item-shop` has `assets/root/nui_item_shop.py`, imported as `nui_item_shop`. Model keys and event names follow RmlUi's name rule (see [Data binding cheatsheet](#data-binding-cheatsheet)).
 6. Use `@ui.KEY` (from `locale_interface.txt`) or `@game.KEY` (from `locale_game.txt`) for every visible string. The key must exist in every locale, and a `@game.KEY` must be a plain string, not one of the typed entries localeInfo makes functions of (see [Localization](#localization), which also says how to add a key).
-7. If you touched `tokens.json`, run `python tools/nui_tokens.py` (it rewrites `tokens.rcss` and the token table below, and prints the contrast ratios). `python tools/nui_tokens.py --check` verifies without writing and exits 1 while an output is stale. Then run `nuitool lint` until it exits 0. Findings are the only thing on standard output; the `N findings in M files` summary and any note about a skipped check always go to standard error. Exit 2 (a missing root, a mistyped path) also leaves standard output empty, so go by the exit code.
-8. Run `nuitool snap` with `--locale assets/locale/locale/en` in every theme (`--theme modern-dark`, `modern-light` and `classic`, the ids in `nui/theme/themes.json`) at scale 1.0, 1.5 and 2.0, and once with `--reduced-motion`. The components follow every theme by themselves; when the window's own sheet draws something the classic look needs to change, add a classic section to it (see [Classic skin](#classic-skin)). `--size` is in pixels: give it the scale times the dp area the window needs, for a full-screen window 1920x1080 at 1.0, 2880x1620 at 1.5 and 3840x2160 at 2.0 (the client's own sizes at those scales). Snap does not scroll, so a scroll container shows only its first screen. Look at the images.
+7. If you touched `tokens.json`, run `python tools/nui_tokens.py` (it rewrites `tokens.rcss` and the token table below, and prints the contrast ratios). `python tools/nui_tokens.py --check` verifies without writing and exits 1 while an output is stale. Then run `nuitool lint` (with the five roots of [Tools](#tools)) until it exits 0. Findings are the only thing on standard output; the `N findings in M files` summary and any note about a skipped check always go to standard error. Exit 2 (a missing root, a mistyped path) also leaves standard output empty, so go by the exit code.
+8. Run `nuitool snap` with `--locale assets/locale/locale/en` in every theme (`--theme modern-dark`, `modern-light` and `classic`, the ids in `nui/theme/themes.json`) at scale 1.0, 1.5 and 2.0, and once with `--reduced-motion`. The components follow every theme by themselves; when the window's own sheet draws something the classic look needs to change, add a classic section to it (see [Classic skin](#classic-skin)). `--size` is in pixels: give it the scale times the dp area the window needs, for a full-screen window 1920x1080 at 1.0, 2880x1620 at 1.5 and 3840x2160 at 2.0 (the client's own sizes at those scales). Snap does not scroll, so a scroll container shows only its first screen. Look at the images. Declare the window's goldens in `<name>.snapshots.json` (see [Golden case files](#golden-case-files)) and write them with `python3 tools/check_nui_snapshots.py --write --optimize --only <name>`.
 9. Check the window with the German locale (`--locale assets/locale/locale/de`; strings run about a third longer than English) and at 75% scale.
 10. Open the window from game code only through its controller. Never call RmlUi or `_nui` directly.
 
@@ -58,11 +67,16 @@ NovaPack publishes a file at `assets/<group>/<path>` under the store path `<path
 | `assets/nui/nui/windows/<name>/<name>.rml` | `nui/windows/<name>/<name>.rml` | the window document |
 | `assets/nui/nui/windows/<name>/<name>.rcss` | same folder | the window's own rules |
 | `assets/nui/nui/windows/<name>/<name>.fixture.json` | same folder | sample model data for lint and snapshots |
+| `assets/nui/nui/windows/<name>/<name>.snapshots.json` | same folder | the window's golden cases (see [Golden case files](#golden-case-files)); not used by the client |
 | `assets/root/nui_<module>.py` | `nui_<module>.py` | the controller, imported as `nui_<module>`: the window name with each hyphen as an underscore (`item-shop`: `nui_item_shop`) |
 | `assets/nui/nui/windows/gallery/` | | every component in `nui/components/` in every state it styles |
 | `assets/nui/nui/windows/render-test/` | | every renderer feature on one page |
 | `assets/nui/nui/windows/theme-picker/` | | the intro theme picker, one button per theme (controller `nui_theme_picker.py`) |
 | `assets/nui/nui/windows/skin-proof/` | | a dev page with a skin's frame pieces at legacy sizes, for the sharpness and fidelity checks; nothing in the game opens it |
+| `assets/nui/nui/windows/dialog-*/`, `pick-money/` | | the dialog kit's documents (see [The dialog kit](#the-dialog-kit)) |
+| `assets/nui/nui/windows/server-board/`, `virtual-keyboard/`, `locale-strip/` | | the login screen's server and channel board, virtual keyboard and locale flag strip |
+| `assets/root/nui_windows.py` | `nui_windows.py` | the window flags and the factory that picks the NovaUI or the legacy class (see [Window flags and the factory](#window-flags-and-the-factory)) |
+| `assets/root/nui_dialog_kit.py` | `nui_dialog_kit.py` | what the dialog kit's windows share |
 
 The client loads the fonts (`kDefaultFonts`, which `nuitool lint` and `snap` also use) and the render test (`kRenderTestDocument`, Ctrl+Shift+U in a dev build) by the constants in `nova-client-src/src/NovaUI/Core/NuiPaths.h`. The gallery has no client constant: its controller, `assets/root/nui_gallery.py`, names the document in `DOCUMENT` and opens it with `import nui_gallery; nui_gallery.open_gallery()`.
 
@@ -178,7 +192,7 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 | Component | Markup | Variants and states |
 |---|---|---|
 | Window frame | `<body class="nui-window nui-anim">` with `nui-window__titlebar`, `nui-window__handle` (a `<handle move_target="#document">`), `nui-window__title`, `nui-window__close`, `nui-window__body`, `nui-window__footer` | Rises 4dp each time the window is shown. For a modal dialog, use `<body class="nui-scrim">` with a `div.nui-window` inside, set `MODAL = True` in the controller, and point the handle at the div's id: `move_target="my-dialog"` (a plain id, no `#`). The modal takes the keyboard and every click beside the dialog; the scrim draws the backdrop. A scrim without `MODAL` blocks clicks but gets no keys; `MODAL` on a plain `body.nui-window` blocks the world with nothing on screen to show it. The scrim centers the div, and the component makes it `position: relative` so the drag can offset it; the dialog's sheet sets only its width and height, never `position`, `left` or `top`. |
-| Button | `<button class="nui-button nui-button--primary nui-anim">` | `--primary`, `--secondary` (the default look), `--ghost`, `--danger`; sizes `--small`, `--icon`. `:hover`, `:active`, `:focus-visible`. Enter and Space press a focused button where NovaUI has the keyboard ([Keyboard and modals](#keyboard-and-modals)). The `disabled` attribute takes the button out of pointer hit testing, the tab order and Enter/Space (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)). |
+| Button | `<button class="nui-button nui-button--primary nui-anim">` | `--primary`, `--secondary` (the default look), `--ghost`, `--danger`; sizes `--small`, `--medium` (the dialogs' size: a minimum width, the legacy middle art in classic), `--icon`. A new window never puts a text label on `--small`: the classic small art fits only short labels (`tools/nui_button_fit.py` reports it). `:hover`, `:active`, `:focus-visible`. Enter and Space press a focused button where NovaUI has the keyboard ([Keyboard and modals](#keyboard-and-modals)). The `disabled` attribute takes the button out of pointer hit testing, the tab order and Enter/Space (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)). |
 | Panel | `<div class="nui-panel">` with an optional `nui-panel__title` | `--sunken`, `--flat`. `nui-divider` is a 1dp rule. |
 | Tabs | native `<tabset class="nui-tabs nui-tabs--3">` with `<tab>` and `<panel>` pairs and a last `<tab class="nui-tabs__indicator nui-anim">` | `nui-tabs--2` to `--6` must match the number of real tabs. Tabs switch without Python; the selected tab and panel get `:selected`. Tabs are in the tab order: where NovaUI has the keyboard, Tab moves between them, Enter or Space selects one, and `:focus-visible` rings the focused tab. |
 | List | `<div class="nui-list">` around a `<div class="nui-list__viewport">` that holds the rows `<div class="nui-list__item nui-anim">`, parts `nui-list__label`, `nui-list__meta` | `is-selected`, `:hover`, `:focus-visible` (a ring on every edge; a selected row keeps its accent stripe). Enter or Space selects the focused row where NovaUI has the keyboard. The `disabled` attribute takes a row out of hit testing, the tab order and Enter/Space. Give the viewport a height in the window sheet to scroll (`.my-list .nui-list__viewport { height: 200dp; }`): the rounded frame does not clip, the square viewport does, so the list clips with the scissor alone (see [What the renderer draws](#what-the-renderer-draws)). |
@@ -188,10 +202,47 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 | Text input | `<input type="text" class="nui-input">` (also `type="password"`), inside `div.nui-field` with `label.nui-field__label` and `span.nui-field__error` | `--invalid`, `disabled` attribute, `:focus`, `:placeholder-shown`. The corners are square on purpose: RmlUi makes every text input clip, and square clipping needs no stencil mask. `nui-escape-keeps-focus` on `<body>`: Escape in a field of this document does not leave the field (the login board). |
 | Tooltip | `<span class="nui-has-tooltip">` host with `<span class="nui-tooltip nui-anim">` inside | One line by default; `--wrap` wraps at 240dp. `is-open` shows it without hover. The host is laid out as `inline-block` (one box that does not wrap with the text around it), because RmlUi never places an absolute child against an inline box. Use a span or a component element as the host; a bare `div` or `p` becomes inline-block too. Item tooltips stay on the legacy `uitooltip` windows. |
 | Badge | `<span class="nui-badge">` | `--accent`, `--danger`, `--warning`, `--success`. |
+| Gauge | `<progress class="nui-gauge nui-gauge--red" direction="right" data-attr-value="hp"/>` | `--red` (default), `--pink`, `--purple`, `--blue`. See [Gauges](#gauges). |
+| Frame animation | `<nui-frames frames="a.sub, b.sub" delay="0.1"/>` | See [Frame animations](#frame-animations). |
+| Dialog | `div.nui-window.nui-dialog` inside `body.nui-scrim`, with `nui-dialog__text`, `nui-dialog__field` and a `nui-window__footer nui-dialog__footer` | The dialog kit's look (`components/dialog.rcss`): 280dp to 420dp wide, centered text that wraps, a centered 160dp field, centered buttons. See [The dialog kit](#the-dialog-kit). |
 | Layout helpers | `nui-row` (flex row, `--wrap`, `--end`, `--between`), `nui-stack` (flex column, `--loose`), `nui-grow`, `nui-muted`, `nui-small` | Use these instead of inline styles. |
 | Full-screen layers | `<body class="nui-overlay">` for HUD layers that never take the mouse; `nui-interactive` on children that should | `nui-center-max` caps content at 1600dp; `nui-safe-16x9` limits a HUD anchor area to 16:9 of the screen height on ultrawide screens. |
 
+The gallery shows every component but the body-level layers, the dialog look (the `dialog-*` windows have goldens of their own), `nui-frames` (the loading window shows it) and most layout helpers.
+
 `is-hover`, `is-active` and `is-focus` force the look of `:hover`, `:active` and `:focus-visible` where a component styles that state: buttons and sliders take all three, inputs, list rows, tabs and toggles take `is-hover` and `is-focus`, and slots take `is-hover`. Use them only where no pointer or keyboard is behind the state: gallery snapshots, or a highlight driven by data (`data-class-is-hover="slot.target"`).
+
+## Gauges
+
+`<progress class="nui-gauge nui-gauge--blue" direction="right" data-attr-value="sp"/>`, with a value from 0 to 1 (`max` defaults to 1). RmlUi sizes the inner `<fill>` from the value; bind it with `data-attr-value`, since an inline style is NUI009.
+
+- **Modern:** a 6dp track in `--gauge-track` with a fill in `--gauge-red`, `--gauge-pink`, `--gauge-purple` or `--gauge-blue` (every palette defines the five).
+- **Classic:** the legacy gauge (`ui.Gauge`): the slot art with its two caps, 8dp tall, and the colored bar inset 12dp from both ends. The art comes from the legacy pattern folder (`d:/ymir work/ui/pattern/gauge_*.tga`) and is 1x only: it is not in the classic sprite sheets, so it is filtered above 100%. Lint and snapshots of a document with a gauge need the `assets/ETC` root.
+- **No easing:** a gauge shows a new value at once. The legacy gauges eased toward it every frame, which is per-frame Python.
+
+## Frame animations
+
+`nui-frames` is an element the NovaUI runtime registers (`nova-client-src/src/NovaUI/Core/ElementFrames.h`). It plays a legacy `ani_image` sequence: it makes one `<img class="nui-frames__frame">` per frame, stacked, and shows one at a time from the clock. A frame switch changes two visibility properties and rebuilds no mesh; each frame's quad is built the first time it is drawn.
+
+```xml
+<nui-frames pattern="d:/ymir work/ui/intro/loading/%02d.sub" count="24" delay="0.05"/>
+<nui-frames frames="a.sub, b.sub, c.sub" delay="0.1" loop="false" data-event-framesend="done()"/>
+```
+
+| Attribute | Meaning |
+|---|---|
+| `frames` | The frame sources, separated by commas; each is trimmed at its ends, so legacy paths with spaces work. A source is what `<img src>` takes. |
+| `pattern`, `count`, `first` | Used without `frames`: `pattern` holds one `%d` or `%0Nd`, and `count` (1 to 256) frames are made from `first` (default 0). |
+| `delay` | Seconds per frame, above 0 (default 0.1). |
+| `loop` | `"false"` stops on the last frame and sends `framesend` once (not bubbling); anything else loops. |
+| `rest` | The frame shown under reduced motion, and while paused before the first update (default 0). |
+| `paused` | Present: hold the current frame. |
+
+- The first frame stays in the flow and sizes the element; the others are placed over it. `components/frames.rcss` gives the element `display: inline-block; position: relative`.
+- Changing `frames`, `pattern`, `count` or `first` (in markup or through `data-attr-*`) rebuilds the frames; `delay`, `loop`, `rest` and `paused` do not.
+- Reduced motion shows the `rest` frame and holds it.
+- `nuitool snap --time S` shows frame `floor(S / delay) mod count`.
+- Lint checks every source of a literal `frames` or `pattern` as it checks `<img src>` (NUI007); a bound `data-attr-frames` is not checked. A bad `delay`, a bad pattern or no frames is one warning per element (`nui-frames: <reason>`).
 
 ## Tokens
 
@@ -248,6 +299,11 @@ What the color roles mean:
 | `--sheen-clear` | `#ffffff00` | `#ffffff00` | `#ffffff00` |
 | `--sweep` | `#fff6dc8c` | `#fff6dc8c` | `#fff6dc8c` |
 | `--sweep-clear` | `#fff4d600` | `#fff4d600` | `#fff4d600` |
+| `--gauge-track` | `#121418` | `#d5d9e0` | `#242424` |
+| `--gauge-red` | `#f28b82` | `#b3261e` | `#bc5353` |
+| `--gauge-pink` | `#f48fb1` | `#b0306f` | `#bc5296` |
+| `--gauge-purple` | `#c58af9` | `#7438c4` | `#8052bc` |
+| `--gauge-blue` | `#8ab4f8` | `#1a5fc4` | `#5283bc` |
 
 | Token | Shared value |
 |---|---|
@@ -293,6 +349,9 @@ What the color roles mean:
 | `--classic-separator` | classic | `#777777` |
 | `--classic-separator-shadow` | classic | `#111111` |
 | `--classic-text-outline` | classic | `#000000` |
+| `--classic-disabled-tint` | classic | `#8c8c8cff` |
+| `--classic-disabled-text` | classic | `#6e6e6e` |
+| `--classic-key-text` | classic | `#000000` |
 
 <!-- tokens:end -->
 
@@ -331,6 +390,18 @@ Expressions:
 
 Keep bindings one-way: write model values from Python with `set()`. A binding that sets `checked` or `value` makes the control send `change`, so a `change` handler runs for input and also after `set()` moves the control, on every re-load, and on the first load, inside `__init__`. Apply `ev.checked` or `ev.value` idempotently: never toggle, resend a packet or open a window from such a handler. RmlUi can also write into a model from the document (`data-value`, `data-checked`, and assignments such as `data-event-click="tab = 2"`). `nui.py` specifies that such a write keeps a scalar key's type: an int key stays an int (a fraction is cut toward zero), text that does not read as a number of that type leaves the key as it was, and a `None` key takes the first type written. A text field bound to a number key shows the number as RmlUi prints it after each accepted keystroke, so bind free-form text to a string key and convert in Python.
 
+## Text from game data and players
+
+`{{ }}` translates `@ui.KEY` and `@game.KEY` inside model strings, so text that does not come from the locale files must not reach a model key as it is: a name another player chose, a message from game code, a file's text. `nui.plain_text(text)` puts a zero-width WORD JOINER (U+2060) after every `@`, so such text can never name a locale key and still looks the same:
+
+```python
+self.set(lines=[nui.plain_text(line) for line in text.split("\n")], title=nui.plain_text(title))
+```
+
+- Pass every string from callers, game data, files or players through it before it reaches a key shown with `{{ }}`. Fixed strings stay `@ui.KEY` or `@game.KEY`, which do translate.
+- `None` reads as `""`, and other values as their `str()`.
+- It relies on U+2060 being zero width in Noto Sans, the fallback face for every family (Tahoma included).
+
 ## Python controller API
 
 From `assets/root/nui.py` (its docstrings are the specification).
@@ -347,6 +418,8 @@ A window is one document plus an optional model and a controller class:
 | `__init__()` | Creates the model, binds the handlers, then loads the document hidden. Events the document raises while it loads (`data-event-load` on `<body>`, `change` from bindings such as `data-attrif-checked`) reach the handlers before `__init__` returns; until then `show()`, `hide()`, `is_visible()` and `element_on()` do nothing, while `set()` and `get()` work. |
 | `show()`, `hide()`, `is_visible()` | Visibility. |
 | `focus(element_id)` | Gives the element with that id the keyboard focus (a text field gets the caret); `False` while the window or the element is hidden. `hide()` takes the focus off the window's fields and a later `show()` does not put it back, so focus the field again after `show()`. Works inside handlers. |
+| `set_position(x_dp, y_dp, origin=(0, 0))`, `center()`, `place_next_to(other, side, gap_dp=0, element_id="")`, `clear_placement()`, `bring_to_front()`, `keep_clear_of(*targets)` | Placement in dp; see [Placement](#placement). |
+| `set_value(element_id, text, caret="end")`, `insert_text(element_id, text)`, `get_value(element_id)` | A text field's text; see [Text fields](#text-fields). |
 | `set(**values)` | Replaces model keys; only views that use them update. An unknown key or a value of a different kind is refused and logged; a value that is not an `int`, `float`, `str`, `bool`, `None`, `list`, `tuple` or `dict` with `str` keys raises `TypeError`. Inside a handler the values wait until the event is over (`get()` sees them at once), so a list the clicked element lives in is not rebuilt under it. |
 | `get(key)` | A copy of the current value, or `None`. |
 | `element_on(element_id, event, fn)` | A plain DOM event on the element with that id; `fn` gets a dict with `type`, `target_id` and, for mouse events, `button`, plus the event's other parameters (`key_identifier` for key events). Re-attached after reloads. For `"keydown"`, `fn` returning exactly `True` keeps the key (see [Keyboard and modals](#keyboard-and-modals)); any other value lets it go on, and nothing else stops an event. |
@@ -354,11 +427,44 @@ A window is one document plus an optional model and a controller class:
 | `on_theme_changed(theme_id)` | Hook: `nui.set_theme()` applied a theme. The window's documents already carry the new theme's classes, and the components restyle by themselves; override it only to update model values that name the theme (the picker's selection). |
 | `destroy()` | Closes the document and drops the model and every handler. Inside one of the window's own handlers (a close button) the document hides at once, and it goes with the model by the end of the frame. From `destroy()` on, the document's own events (a `mouseout` as it hides, its unload) reach none of the window's handlers, so a window made again in its own handler (a reset button, a wizard step) keeps the model; a close by C++ or RmlUi still delivers the unload. |
 
-Module functions: `nui.is_available()` (false without the `_nui` module or an active runtime, for example when NovaUI failed to start or a test started no runtime; every `Window` method is then a no-op. A headless runtime, under `NOVA_UI_HEADLESS` or a test's null renderer, is available), `nui.enabled_for_locale()` (false for right-to-left locales), `nui.set_theme(theme_id)`, `nui.get_theme()`, `nui.get_themes()` (see [Themes](#themes)), `nui.set_scale_percent(p)` (0 = automatic, else 75..200), `nui.get_scale_percent()`, `nui.get_scale()`, `nui.get_auto_scale()`, `nui.set_reduced_motion(on)`, `nui.is_reduced_motion()`, `nui.refresh_strings()`. The appearance setters apply at once and persist to `config/metin2.cfg` (`UI_THEME`, `UI_SCALE`, `UI_REDUCED_MOTION`). The constants `nui.KEY_ESCAPE`, `nui.KEY_RETURN`, `nui.KEY_NUMPADENTER`, `nui.KEY_TAB` and `nui.KEY_SPACE` are the `key_identifier` values of those keys (RmlUi's own numbers).
+Module functions: `nui.is_available()` (false without the `_nui` module or an active runtime, for example when NovaUI failed to start or a test started no runtime; every `Window` method is then a no-op. A headless runtime, under `NOVA_UI_HEADLESS` or a test's null renderer, is available), `nui.enabled_for_locale()` (false for right-to-left locales), `nui.set_theme(theme_id)`, `nui.get_theme()`, `nui.get_themes()` (see [Themes](#themes)), `nui.set_scale_percent(p)` (0 = automatic, else 75..200), `nui.get_scale_percent()`, `nui.get_scale()`, `nui.get_auto_scale()`, `nui.set_reduced_motion(on)`, `nui.is_reduced_motion()`, `nui.refresh_strings()`, `nui.any_window_shown()` (true while a window made through `Window` is shown; the legacy common dialogs ask it, see [The dialog kit](#the-dialog-kit)) and `nui.plain_text(text)` (see [Text from game data and players](#text-from-game-data-and-players)). The appearance setters apply at once and persist to `config/metin2.cfg` (`UI_THEME`, `UI_SCALE`, `UI_REDUCED_MOTION`). The constants `nui.KEY_ESCAPE`, `nui.KEY_RETURN`, `nui.KEY_NUMPADENTER`, `nui.KEY_TAB` and `nui.KEY_SPACE` are the `key_identifier` values of those keys (RmlUi's own numbers).
 
 A window lives until `destroy()`: the runtime holds its handlers, so dropping the last reference does not close it. Only one window per `MODEL` name can exist at a time.
 
 Python never runs per frame. It runs when a handler fires or when game code calls a controller method that calls `set()`.
+
+## Placement
+
+A window's `<body>` can be placed from Python, in dp, so a placement follows the UI scale:
+
+| Call | Effect |
+|---|---|
+| `set_position(x_dp, y_dp, origin=(0, 0))` | Puts the point `origin` of the border box (`(0, 0)` its top left, `(1, 1)` its bottom right, `(0.5, 1)` the middle of its bottom edge) at that screen point. Pick money: `set_position(mouse_x / s, mouse_y / s - 20, origin=(0.5, 1.0))`. |
+| `center()` | Keeps the window in the middle of the screen. |
+| `place_next_to(other, side, gap_dp=0, element_id="")` | Keeps it beside another window, or beside the element of that window with this id: `"left"`, `"right"`, `"above"` or `"below"`, `gap_dp` apart, aligned with the other's top edge (left, right) or left edge (above, below). Where that side has no room, the opposite one is used. Another side raises `ValueError`. |
+| `clear_placement()` | Hands `left` and `top` back to the style sheet. |
+| `bring_to_front()` | Draws it above the other NovaUI windows, without the focus. |
+| `keep_clear_of(*targets)` | While the window overlaps a shown target (a `Window`, or a `(Window, element id)` pair), its `<body>` carries `nui-overlapping`, so its sheet can hide it: `body.x.nui-overlapping { opacity: 0; pointer-events: none; }`. Not `display: none`, whose zero size would end the overlap and bring it back on the next update. No argument clears the list. |
+
+- The runtime resolves a placement after the layout of the next update, keeps the border box on the screen, and places the window again when its size, the screen size, the scale or the other window changes. A position change rebuilds no geometry.
+- A body that fills the screen (an overlay, a scrim) is not moved; the scrim centers a modal dialog by itself.
+- A placement holds until the next placement call, `clear_placement()` or the window's close, across re-loads. None of these calls changes the focus or the visibility.
+- A window placed in a frame shows there from that frame's render on. A drag with a `<handle>` holds only until the next size, scale or screen change places the window again.
+- The intro theme picker sits below the NovaUI locale strip (`place_next_to(strip, "below", 4)`) and keeps clear of the login board, the server board and the virtual keyboard.
+
+## Text fields
+
+A text field is an `<input>` whose type takes text (every type but radio, checkbox, range, submit and button) or a `<textarea>`. Python reaches its text through RmlUi's own input element, so the caret, the selection and the IME stay right:
+
+| Call | Effect |
+|---|---|
+| `set_value(element_id, text, caret="end")` | Replaces the text, cut to `maxlength`, without line breaks in a single-line field, and sends one `change` event (`linebreak` false) when it changed, as typing does. When the field has the focus, `caret` (`"end"`, `"start"`, `"keep"` or a character index) places the caret with no selection; a field without the focus keeps its own caret. |
+| `insert_text(element_id, text)` | Types `text` at the caret, replacing the selection, as key presses would: the field takes the focus first, `maxlength` applies, and one `change` follows. `"\b"` is Backspace; `"\n"` in a single-line field is Enter (`change` with `linebreak` true). The virtual keyboard types this way. |
+| `get_value(element_id)` | The text, or `None`. A password field answers its real text. |
+
+- All three return `False` (or `None`) for an unknown or hidden element and for one that takes no text. `set_value` with a caret other than those raises `ValueError`, and text that is not a `str` raises `TypeError`.
+- They work inside handlers. The `change` handlers they cause wait until the handler that called them ends, as every handler does.
+- A field's text never needs to enter a model: read it from `change` (`ev.value`) or with `get_value`. The dialog kit's number fields put their digits back with `set_value(..., caret="end")`.
 
 ## Keyboard and modals
 
@@ -429,6 +535,63 @@ class ConfirmDialog(nui.Window):
 
 - Enter needs no handler: `autofocus` puts the focus on the default button when the dialog is shown, and RmlUi clicks a focused element whose `tab-index` is `auto` on Enter, keypad Enter or Space. For a destructive confirm, put `autofocus` on Cancel. Do not also treat Enter as accept in the keydown handler, or it runs twice.
 - A dialog with a text field: give the field the same `keydown` handler (`self.element_on("name-field", "keydown", self.on_key)`), and submit from the field with `data-event-change="submit(ev.value, ev.linebreak)"`, acting only when `linebreak` is true.
+- `autofocus` acts on the first show of a document only: a show after a hide keeps the focus where the hide left it (the document). A dialog shown again focuses its default button itself, as the dialog kit does with `focus()` after each `show()`.
+
+## UI sounds
+
+The client host plays the legacy UI sounds for NovaUI input, the way the legacy widgets did (`ui.Button.CallEvent`, `ui.EditLine`): `sound/ui/click.wav` for a click on a button (and a left press on a button that takes no focus, which gets no click), a checkbox or radio change and a tab change; `sound/ui/type.wav` for typed text and Backspace or Delete in a field; the click for Enter in a single-line field.
+
+- One listener on the context hears each input event once, before any handler can stop it, and plays at most one sound per event. It plays only for input: a change the model or Python makes (a bound checkbox moved by `set()`, `set_value`, `insert_text`) is silent.
+- `nui-silent` on the target or an ancestor silences it.
+- Controllers play no sound themselves. The one exception is the virtual keyboard, which plays the typing sound after each key, as the legacy edit line did for pasted keys.
+
+## The dialog kit
+
+The legacy common dialogs run on NovaUI while the `dialogs` window flag is on (see [Window flags and the factory](#window-flags-and-the-factory)). Callers do not change: at the end of `uicommon.py`, `uipickmoney.py` and `networkmodule.py` each class name is rebound to a factory, which makes the NovaUI facade with the flag on and the legacy class (`uiCommon.LegacyQuestionDialog` and so on) with it off.
+
+| Window | Facades | Stands for |
+|---|---|---|
+| `dialog-message` | `nui_dialog_message.PopupDialog`, `PhasePopupDialog` | `uiCommon.PopupDialog`, `networkModule.PopupDialog` (the phase popup: connecting, login failures) |
+| `dialog-question` | `nui_dialog_question.QuestionDialog`, `QuestionDialog2` | `uiCommon.QuestionDialog`, `QuestionDialog2` |
+| `dialog-input` | `nui_dialog_input.InputDialog`, `InputDialogWithDescription`, `InputDialogWithDescription2` | the three `uiCommon` input dialogs |
+| `dialog-money` | `nui_dialog_money.MoneyInputDialog` | `uiCommon.MoneyInputDialog` |
+| `pick-money` | `nui_pick_money.PickMoneyDialog` | `uiPickMoney.PickMoneyDialog` |
+
+- **The facades** keep the legacy constructors, method names and meanings, the `ui.ScriptWindow` calls callers make (`Show`, `Hide`, `IsShow`, `SetTop`, `GetWidth` and the rest; the layout calls such as `SetWidth`, `SetBoardWidth`, `SetSize` and `Lock` do nothing, since widths come from CSS and a modal replaces the lock), and any attribute a caller stores on them. Events are whatever the caller passed (a function, a `ui.__mem_func__`, `0`), called with no arguments; a falsy one is skipped. Every caller string goes through `nui.plain_text`.
+- **One document per kind,** made with the kind's first facade and kept hidden between uses (RmlUi allows one model per name). A facade claims its kind's window to show it. While the window is shown for another facade, the second one makes the legacy dialog, replays its state into it, and routes every call to it until it closes: two invites at once still work.
+- **Modal:** every kind but pick money (`MODAL = True`, `body.nui-scrim`). Pick money is a plain window placed above the mouse, as in legacy, so the inventory under it stays usable.
+- **Enter and Escape** follow each legacy class:
+
+| Kind | Enter | Escape |
+|---|---|---|
+| message | presses the button (it has the focus): `Close()` and the event | `Close()` and the event |
+| question | presses the accept button (it has the focus): the accept event. New: legacy Enter did nothing here | `Close()` only, no event |
+| input, money | in the field: the accept event | in the field: the cancel event |
+| pick money | in the field: accept (the amount, capped at the maximum, goes to the event), then close | in the field: close |
+
+- The buttons call their events and leave a question or input dialog open, as the legacy buttons do: callers close it themselves. A caller that replaces `OnPressEscapeKey` on a message or question dialog (the friend request does) gets its own.
+- **Not ported:** `uiCommon.QuestionDialogWithTimeLimit` stays legacy until a timer exists.
+- **The legacy dialogs above NovaUI (G5):** the legacy dialogs are in the UI layer, which draws under NovaUI. `nui_windows.legacy_dialog_layer(self)`, the first statement of each legacy common dialog's `Open`, moves the dialog to the `TOP_MOST` layer while a NovaUI window is shown (`nui.any_window_shown()`), which draws above NovaUI and takes the pointer first, and back to `UI` otherwise. A session without NovaUI windows is unchanged. It decides at each `Open` only, and it does not move the keyboard: a legacy input dialog opened while a NovaUI field has the focus types into that field until the player clicks the dialog.
+
+## Window flags and the factory
+
+`assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default; `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file. `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself.
+
+| Id | Window | Default |
+|---|---|---|
+| `login` | the login board | off |
+| `dialogs` | the dialog kit | off |
+| `server-board` | the server and channel board | off |
+| `virtual-keyboard` | the virtual keyboard (needs the NovaUI login board) | off |
+| `locale-strip` | the locale flag strip | off |
+| `loading`, `empire`, `select`, `create` | the phase windows | off |
+
+- **`use(window_id)`** returns `(True, "")` or `(False, reason)` with the first check that failed: `"flag off"`, `"NovaUI unavailable"`, `"right-to-left locale"` (`nui.enabled_for_locale()`). It records the decision in `nui_windows.DECISIONS` (`"nui"` or `"legacy: <reason>"`) and writes it to `log.txt` when it changed.
+- **`make(window_id, legacy, novaui, *args)`** makes the NovaUI class (a class or a `"module.Class"` string, imported only then) when `use()` allows it, else the legacy one with the same arguments. A NovaUI constructor that raises, or one whose module cannot be imported, falls back to legacy, and so does an instance whose `nui_ready()` answers `False` (its document did not load): `make()` calls its `nui_discard()` and drops it before it makes the legacy one. Each such fallback is written once to `syserr.txt` as `nui_windows: <id>: <reason>; using the legacy window` (`note_failure`).
+- **`factory(window_id, legacy, novaui)`** is a function named like the legacy class that calls `make()`: the class-level wiring (`PopupDialog = nui_windows.factory("dialogs", LegacyPopupDialog, "nui_dialog_message.PopupDialog")`). A legacy class in the same module that calls its base by name must name the `Legacy` alias, since the plain name is a function after the rebinding (`uicommon.py` does).
+- **The protocol of what `make()` builds:** load the document in `__init__` (hidden), not in `Open()`; `nui_ready()` says whether it loaded; `nui_discard()` destroys the NovaUI parts and sets `self._nui_discarded`. A phase window's NovaUI subclass skips the legacy `net.SetPhaseWindow(<phase>, 0)` in `__del__` once discarded, so a late collection does not clear the slot of the legacy window made in its place.
+- **`refuse(window_id, reason)`** records a refusal `use()` does not know (the virtual keyboard without the NovaUI login board); `set_override(window_id, on)` writes one override and saves the config, for a settings window and tests.
+- **Adding a window:** give it an id (lowercase letters, digits and `-`), add `(id, False)` to `WINDOWS`, and make it through `make()` or a factory. It stays off until its default turns on.
 
 ## Rules
 
@@ -573,7 +736,7 @@ done
 
 ```bash
 for l in ae br cz de dk en es fr gr hu it nl pl pt ro ru tr; do
-  echo "== $l"; nuitool lint --root assets/nui --root assets/icon --locale assets/locale/locale/$l
+  echo "== $l"; nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading --locale assets/locale/locale/$l
 done
 ```
 - Noto Sans covers Latin, Greek and Cyrillic, which includes every non-right-to-left locale the client ships. It has no Arabic, Hebrew, CJK or Thai glyphs.
@@ -604,7 +767,7 @@ Players pick a theme, and the change applies at once, with no reload and no rest
 ```
 
 - `id`: 1 to 31 characters of lowercase letters, digits and `-`, unique. This is what `UI_THEME` stores.
-- `label`: plain text for menus, 1 to 64 bytes of UTF-8. The labels are English for now (see [Status and known gaps](#status-and-known-gaps)).
+- `label`: plain text for menus, 1 to 64 bytes of UTF-8, the fallback when the locale has no key for the theme: menus show `@ui.THEME_<ID>` (the id in upper case, `-` as `_`; `THEME_MODERN_DARK`), which every locale defines for the three themes.
 - `body`: 1 to 8 class names, each `[a-z][a-z0-9-]*` and not `nui-shown`. By convention exactly one `skin-<skin>` class (the component rules: `modern` is the stock components, `classic` the legacy look) and exactly one `theme-<palette>` class (the colors in `tokens.json`); `tools/nui_tokens.py` and lint check it.
 - The first theme must be `modern-dark`: the client never writes the default to `UI_THEME`.
 - The runtime reads the file at start, and so do `nuitool lint` and `snap`. It ignores unknown keys, so newer content still loads on an older client; lint reports them (NUI001). Without the file, documents get no theme class. Python cannot read the file (the pack API serves no `.json`), so it asks the runtime: `nui.get_themes()`.
@@ -619,7 +782,7 @@ Players pick a theme, and the change applies at once, with no reload and no rest
 - `nui.get_theme()` is the id in use (the saved one without NovaUI, else `modern-dark`). `nui.get_themes()` is the list of `(id, label)` pairs in menu order, `[]` without NovaUI.
 - The config holds an id only when it is not the default: choosing `modern-dark` removes the `UI_THEME` line. A well-formed id the table does not know (content from a newer release) stays in the file and shows the default theme; a malformed value reads as the default.
 
-**The theme picker.** `nui/windows/theme-picker` (controller `assets/root/nui_theme_picker.py`) shows one button per theme at the top left of the login screen, under the legacy flag strip. `nui_login.py` opens it with the NovaUI login board (`win.nuiPicker`), hides it while a legacy popup is open and destroys it with the board. Its `<body>` has `focus: none`, so a press never takes the focus from the board's fields; RmlUi then sends no `click` there, so the buttons act on `mousedown` (`pick(theme.id, ev.button)`, left button only). The gallery's Theme button cycles through `nui.get_themes()`.
+**The theme picker.** `nui/windows/theme-picker` (controller `assets/root/nui_theme_picker.py`) shows one button per theme at the top left of the login screen, under the flag strip: placed below the NovaUI strip, or where its sheet puts it under the legacy one. Its heading is `@ui.THEME_TITLE` and its labels `@ui.THEME_*`. It keeps clear of the login board, the server board and the keyboard: while it overlaps one of them, it hides (`nui-overlapping`). `nui_login.py` opens it with the NovaUI login board (`win.nuiPicker`), hides it while a legacy popup is open and destroys it with the board. Its `<body>` has `focus: none`, so a press never takes the focus from the board's fields; RmlUi then sends no `click` there, so the buttons act on `mousedown` (`pick(theme.id, ev.button)`, left button only). The gallery's Theme button cycles through `nui.get_themes()`.
 
 **Adding a theme.** A new palette for an existing skin is a new top-level palette in `tokens.json` plus an entry in `themes.json` (`["skin-modern", "theme-<palette>"]`); run `python tools/nui_tokens.py`, which checks its contrast. A new skin also needs its sheets under `nui/skins/<skin>/`, linked at the end of `nui.rtpl`, written like the classic skin's. Add goldens for it in `tools/check_nui_snapshots.py`.
 
@@ -667,7 +830,7 @@ body.skin-classic.login
 }
 ```
 
-**What the components look like.** The window frame is the stone board (`ui.Board`) with the legacy title bar and close button; panels and tooltips are the thin board (`ui.ThinBoard`); buttons use the legacy large art (`--small` and `--icon` the small art) with the over art on hover and focus and the down art on press; text inputs, toggle tracks, slider tracks, slots and the scrollbar track are the legacy slot bar (black, a dark top and left line, a light bottom and right line); a checked toggle shows the legacy check mark; the vertical scrollbar has the legacy arrows and ribbed thumb. Lists use the legacy highlights (white at 0.2 on hover, the translucent navy selection); sliders get a slot-bar track and a small button as the thumb. Tabs, badges and horizontal scrollbars keep their modern shapes in the classic colors. Labels are the legacy gray (`#dadada`), button labels a darker gray, `--primary` labels gold and `--danger` labels red. Buttons do not lift or dip: the art swap is the feedback.
+**What the components look like.** The window frame is the stone board (`ui.Board`) with the legacy title bar and close button; panels and tooltips are the thin board (`ui.ThinBoard`); buttons use the legacy large art (`--small` and `--icon` the small art, `--medium` the middle art, 61dp) with the over art on hover and focus and the down art on press; text inputs, toggle tracks, slider tracks, slots and the scrollbar track are the legacy slot bar (black, a dark top and left line, a light bottom and right line); a checked toggle shows the legacy check mark; the vertical scrollbar has the legacy arrows and ribbed thumb. Lists use the legacy highlights (white at 0.2 on hover, the translucent navy selection); sliders get a slot-bar track and a small button as the thumb. Tabs, badges and horizontal scrollbars keep their modern shapes in the classic colors. Labels are the legacy gray (`#dadada`), button labels a darker gray, `--primary` labels gold and `--danger` labels red. Buttons do not lift or dip: the art swap is the feedback. A disabled button shows its default art tinted gray (`image-color: var(--classic-disabled-tint)`) with a dimmed label (`--classic-disabled-text`), at full opacity: the legacy buttons have no disabled art, and a lower opacity let the background show through the bevel. Dialog buttons keep the legacy gray label, the primary one too.
 
 **Sprites.** Every piece is the sprite `classic-<id>` in both sheets. A piece with slices also has `classic-<id>-l`, `-c` and `-r` (the buttons: 6dp caps and a center), which `tiled-horizontal` draws: the caps keep their width and the center stretches, which at the legacy widths (43, 61 and 88dp) draws the art 1:1. The names: `classic-board-{tl,t,tr,l,c,r,bl,b,br}`, `classic-thin-...` (the same nine), `classic-title-{l,c,r}`, `classic-close-0{1,2,3}`, `classic-button-{small,middle,large}-0{1,2,3}` with their slices, `classic-login-field`, `classic-check`, `classic-scroll-{up,down}-0{1,2,3}` and `classic-thumb-{t,c,b}`. `01` is the default art, `02` over and `03` down.
 
@@ -704,7 +867,7 @@ python3 tools/nui_classic_art.py sheets --out DIR               # review sheets 
 
 **The font.** The classic skin's tokens set `--font-family: Nova Classic` and the legacy sizes: 12dp for body text and buttons, 14dp for large text, 11dp for the smallest (`UI_DEF_FONT Tahoma:12` and `Tahoma:14` in every locale; 12dp at 100% is the legacy 12 px em). In the client, Nova Classic is the player's installed Tahoma: the client reads `tahoma.ttf` and `tahomabd.ttf` from the Windows font folder at start and hands both to the runtime, or neither. Without them, and in `nuitool lint` and `snap`, Nova Classic is Noto Sans, so the goldens are deterministic; `nuitool snap --font "Nova Classic=<path to tahoma.ttf>"` previews Tahoma. Italic is always Noto Sans Italic. Tahoma is never shipped or copied. RmlUi draws grayscale antialiased text, where the legacy UI draws LCD subpixel text, so classic text has the legacy metrics but not its exact pixels.
 
-**Art and CSS.** Art: the frames, the title bar and close button, the buttons (small, middle, large), the login field, the check mark and the vertical scrollbar. CSS only, in the legacy colors: text inputs other than the login field (the legacy slot bar), slots, lists, tabs, sliders, badges and horizontal scrollbars. The legacy buttons have no disabled art, so a disabled classic button is the default art at 0.45 opacity, the modern rule. To give another component art, add its legacy pieces to the manifest, run `build`, review the sheets, and write the rules.
+**Art and CSS.** Art: the frames, the title bar and close button, the buttons (small, middle, large), the login field, the check mark and the vertical scrollbar. CSS only, in the legacy colors: text inputs other than the login field (the legacy slot bar), slots, lists, tabs, sliders, badges and horizontal scrollbars. The legacy buttons have no disabled art, so a disabled classic button is its default art tinted gray, at full opacity. The gauge and the virtual keyboard's keys use legacy art files directly (1x only, not in the sheets). To give another component art, add its legacy pieces to the manifest, run `build`, review the sheets, and write the rules.
 
 **The login board.** The legacy login draws two boards (the connect board and the login window art); the NovaUI board is one document, so classic draws one thin board, 208dp wide, with the server row, the painted login fields, and Exit and Connect at the legacy button sizes. Its rows sit at the legacy offsets, measured from the top of the connect board: the fields at +56 and +91 and the buttons at +114, so the board is 142dp tall at rest, the legacy pair's height. The legacy UI shows login errors in popups, so the classic board keeps no empty line for one: the error line, centered and outlined, takes space only while there is an error, and the board grows upward by one line then. It keeps the NovaUI button order (Exit, Connect; the legacy order is Connect, Exit) and its place 72dp above the bottom edge.
 
@@ -729,8 +892,10 @@ Tokens: `python tools/nui_tokens.py`, see [Tokens](#tokens). Classic art: `pytho
 Lint, from the asset repository root:
 
 ```
-nuitool lint --root assets/nui --root assets/icon --locale assets/locale/locale/en
+nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading --locale assets/locale/locale/en
 ```
+
+All five roots: the gauge component and the login screen's windows name legacy art under `d:/ymir work/` (`assets/ETC`), and the phase windows name locale and loading art.
 
 - `--root` is a folder that contains store paths. The first one holds the documents: `assets/nui` holds `nui/...`. Repeat it for the groups that images come from: `assets/icon` for `icon/...`, and a group with a `ymir work/` folder, such as `assets/ETC`, for `d:/ymir work/...`.
 - `--locale` points at one locale folder with `locale_interface.txt` and `locale_game.txt`. Without it, NUI005 is skipped. Run lint once per shipped locale when you add keys.
@@ -774,11 +939,31 @@ nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/
 - RmlUi warnings and errors during a snapshot print as `rmlui: ...` on standard error and do not change the exit code; lint reports them as NUI008. Like lint, snap gives every data event a handler that does nothing, so the guide's own windows snap without warnings.
 - `--font "<family>[:bold][:italic]=<file>"` loads a local font file under a family before the runtime's own fonts, once per face: `--font "Nova Classic=/mnt/c/Windows/Fonts/tahoma.ttf" --font "Nova Classic:bold=/mnt/c/Windows/Fonts/tahomabd.ttf"` shows the classic skin in Tahoma, as the client does. Quote it: the family name has a space.
 - `--boxes <json>` writes the border box `[x, y, width, height]`, in frame pixels, of the `<body>` (key `""`) and of every element with an id.
-- DDS files are not decoded in snapshots, and neither are `.sub` images whose atlas is a DDS file (most legacy `.sub` files). The image area stays transparent at the image's own size, so the layout matches the client, which draws them, and snap prints a warning naming each file (`rmlui: SoftRenderInterface: ... is not decoded`). A `.sub` image of a PNG, TGA, JPEG or BMP atlas is drawn. Prefer PNG or TGA for NovaUI art.
+- Snapshots decode DDS files and the `.sub` images of DDS atlases (most legacy `.sub` files): DXT1 (with its 1-bit alpha), DXT3, DXT5 and the uncompressed formats (A8R8G8B8, X8R8G8B8, A8B8G8R8, R8G8B8, A1R5G5B5, X1R5G5B5, R5G6B5, A4R4G4B4, 8-bit luminance), the top mip level only, with no color key, as the client loads DDS. DXT2, DXT4, a DX10 header, a cube map or a volume is refused: that image stays transparent at its own size, so the layout matches the client, and snap prints a warning naming the file (`rmlui: SoftRenderInterface: ... is not decoded`).
 - The CPU renderer follows the Direct3D 9 renderer's rules: premultiplied texels filtered, clamp addressing that wraps per axis for repeat fits, `.sub` regions clamped at their own edges, the color key and the same unsupported features. Colors, borders, text and images should therefore agree within a small tolerance, but a snapshot is not a screenshot of the client.
-- `docs/ui/snapshots/` holds goldens of the gallery and the login board in all three themes, the render test in the two modern ones, at scales 1.0, 1.5 and 2.0, and of the theme picker and the classic skin-proof page. A golden's name holds the theme's short name (`dark`, `light`, `classic`). `python3 tools/check_nui_snapshots.py` checks all of them and `--write` regenerates them (see the README there). Regenerate them in the same change as anything they show.
+- `docs/ui/snapshots/` holds goldens of the gallery, the login board and the Wave 1 windows (the dialogs, the server board, the virtual keyboard, the locale strip and the phase windows) in all three themes, the render test in the two modern ones, at scales 1.0, 1.5 and 2.0, and of the theme picker and the classic skin-proof page. A golden's name holds the theme's short name (`dark`, `light`, `classic`). `python3 tools/check_nui_snapshots.py` checks all of them and `--write --optimize` regenerates them (see [Golden case files](#golden-case-files) and the README there). Regenerate them in the same change as anything they show.
 
 `nuitool help` prints the current options.
+
+## Golden case files
+
+A window declares its goldens in `assets/nui/nui/windows/<name>/<name>.snapshots.json`; `tools/check_nui_snapshots.py` finds every such file, so a new window adds its goldens without editing the checker:
+
+```json
+{
+	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py).",
+	"cases": [
+		{"page": "dialog-question", "themes": ["dark", "light", "classic"],
+		 "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]],
+		 "fixture": true, "roots": [], "time": null}
+	]
+}
+```
+
+- `page` is the folder name and the golden name's prefix: `dialog-question-classic-150.png`. `themes` are short names (`dark`, `light`, `classic`); each `scales` row is the percent in the file name, `--scale` and `--size`.
+- `fixture: true` passes `<name>.fixture.json`. `roots` are extra `--root` values after `assets/nui` and `assets/icon`, among `assets/ETC` (art under `d:/ymir work/`), `assets/locale`, `assets/uiloading` and `assets/icon`. `time` is `--time` in seconds, or `null` for the default.
+- The frame sizes: dialogs 640x360, 960x540 and 1280x720; the locale strip 1280x120, 1920x180 and 2560x240; the server board, the keyboard and the phase windows (a 1280x720dp design frame) 1280x720, 1920x1080 and 2560x1440.
+- `python3 tools/check_nui_snapshots.py --write --optimize --only <name>` writes a window's goldens and re-saves them with Pillow's optimizer; the check compares pixels, so an optimized file matches the same. A case file that breaks these rules stops the checker with exit 2.
 
 ## Hot reload and debugging
 
@@ -797,16 +982,24 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 
 - Nothing here has been checked in the running client yet; the unit and integration tests and the snapshots are the evidence so far. That includes the gallery controller, `assets/root/nui_gallery.py`, which binds the theme and close buttons with `element_on()`, and the keyboard rules of [Keyboard and modals](#keyboard-and-modals).
 - A data-event handler (`@nui.on`) cannot stop an event; only an `element_on` keydown handler can keep a key (by returning `True`).
-- There is no helper yet that marks text another player wrote so `{{ }}` leaves its `@ui.`/`@game.` words alone; until there is, do not bind such text through `{{ }}`.
+- `nui.plain_text()` keeps text from players and game data from naming a locale key (see [Text from game data and players](#text-from-game-data-and-players)); it relies on U+2060 being zero width in Noto Sans.
 - Attribute values set after the element exists (`data-attr-*`, `data-value`, code) are not translated (see [Localization](#localization)).
 - Right-to-left scripts are not supported. NovaUI text fields show the IME composition, underlined, inside the field; like the legacy edit line, they show no candidate list.
 - RmlUi has no drag cancel event (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)).
-- Snapshots do not decode DDS files or `.sub` images of a DDS atlas; they stay transparent.
+- Snapshots refuse DXT2, DXT4, DX10 headers, cube maps and volumes; those images stay transparent. Other DDS files and `.sub` regions of DDS atlases are drawn.
 - A missing image is not retried until the client restarts, hot reload included (see [What the renderer draws](#what-the-renderer-draws)).
 - Themes and the classic skin are covered by unit tests, lint in every theme and the snapshots; their checks in the running client (the scaling matrix, switching on the go, persistence) come separately.
-- Theme labels and the picker's "Theme" heading are plain English; there are no locale keys for them yet.
 - Classic text is antialiased in grayscale, the legacy text in LCD subpixels, and the outline the legacy tooltips draw around their text is not reproduced.
-- The legacy buttons have no disabled art: a disabled classic button is the default art at 0.45 opacity.
+- The legacy buttons have no disabled art: a disabled classic button is its default art tinted gray.
+- The dialog kit: one shown dialog per kind (a second one at the same time is the legacy dialog); `QuestionDialogWithTimeLimit` stays legacy until a timer exists; Enter on a question presses its default button (new); widths come from CSS, so `SetWidth`, `SetBoardWidth` and `SetSlotWidth` do nothing, and the dialogs are wider than the fixed legacy boards. Classic shows the focused default button in its over art.
+- The G5 stopgap decides a legacy dialog's layer at each `Open` only, and does not move the keyboard focus.
+- The virtual keyboard shows only on a screen at least 680dp tall (below that the board and the keyboard do not fit together). It plays the typing sound from Python after each key. Its classic key art and the classic gauge art are 1x only.
+- Every Wave 1 window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
+- `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.
+- Gauges show their value at once, with no easing.
+- A placement is resolved after layout: a window placed in a frame shows there from that frame's render on, and a handle drag holds until the next size, scale or screen change.
+- UI sounds play for input only: changes Python or the model make are silent, by design.
+- `nui-frames` builds each frame's mesh the first time it is drawn; a bound `data-attr-frames` is not linted.
 - Classic art covers the frames, the title bar and close button, the buttons, the login field, the check mark and the vertical scrollbar; other inputs, slots, lists, tabs, sliders, badges and horizontal scrollbars are CSS in the legacy colors (see [Classic skin](#classic-skin)).
 - The classic login board is one thin board where the legacy UI draws two, and keeps the NovaUI button order (Exit, Connect).
 - Every document parses the classic sheets and holds the classic sprites in its sprite namespace; the sheet textures load only when a classic rule matches.

@@ -1,0 +1,13 @@
+/* Frame animation: <nui-frames frames="a.sub, b.sub" delay="0.1"/> or
+   <nui-frames pattern="d:/ymir work/ui/x/%02d.sub" count="24" delay="0.05"/>.
+   The NovaUI runtime registers the element: it makes one <img> per frame and
+   shows one at a time from the clock, so a frame switch rebuilds no mesh;
+   reduced motion holds the `rest` frame. The first frame stays in the flow
+   and sizes the element; the others are stacked on it, which needs a
+   positioned box (docs/ui/AUTHORING.md "Frame animations"). */
+
+nui-frames
+{
+	display: inline-block;
+	position: relative;
+}

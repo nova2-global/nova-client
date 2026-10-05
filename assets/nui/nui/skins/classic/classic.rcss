@@ -188,6 +188,12 @@
 	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
 	padding: 0 6dp;
 }
+.skin-classic .nui-button--medium
+{
+	decorator: tiled-horizontal(classic-button-middle-01-l, classic-button-middle-01-c, classic-button-middle-01-r);
+	min-width: 61dp;
+	padding: 0 9dp;
+}
 .skin-classic .nui-button--icon
 {
 	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
@@ -235,6 +241,15 @@
 {
 	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
 }
+.skin-classic .nui-button--medium:hover, .skin-classic .nui-button--medium.is-hover,
+.skin-classic .nui-button--medium:focus-visible, .skin-classic .nui-button--medium.is-focus
+{
+	decorator: tiled-horizontal(classic-button-middle-02-l, classic-button-middle-02-c, classic-button-middle-02-r);
+}
+.skin-classic .nui-button--medium:active, .skin-classic .nui-button--medium.is-active
+{
+	decorator: tiled-horizontal(classic-button-middle-03-l, classic-button-middle-03-c, classic-button-middle-03-r);
+}
 /* Last of the states, which they tie: the legacy list highlights. */
 .skin-classic .nui-button--ghost:hover, .skin-classic .nui-button--ghost.is-hover,
 .skin-classic .nui-button--ghost:focus-visible, .skin-classic .nui-button--ghost.is-focus
@@ -247,8 +262,17 @@
 	decorator: none;
 	background-color: var(--classic-press-white);
 }
-/* Disabled keeps the modern opacity on the default art: the legacy buttons
-   have no disabled art. */
+/* Disabled, after every state: the legacy buttons have no disabled art, so
+   the default art is tinted gray and the label dimmed, at full opacity (a
+   lower opacity let the background show through the bevel). A disabled
+   button takes no pointer (the modern rule), so it never shows the over or
+   down art. tiled-horizontal and nui-repeat-box honor image-color. */
+.skin-classic .nui-button[disabled], .skin-classic .nui-button:disabled
+{
+	opacity: 1;
+	image-color: var(--classic-disabled-tint);
+	color: var(--classic-disabled-text);
+}
 
 /* --- Text input: the legacy slot bar (Bar3D) ------------------------------------- */
 

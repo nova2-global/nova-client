@@ -1,0 +1,10 @@
+{
+	"dialog_message": {
+		"title": "",
+		"lines": [
+			"@game.LOGIN_CONNECT_FAILURE",
+			"@game.CHANNEL_SELECT_CHANNEL"
+		],
+		"button": "@ui.OK"
+	}
+}

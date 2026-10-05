@@ -6,12 +6,14 @@
 	     the model: its field reports every edit through change (ev.value).
 	     The body class nui-escape-keeps-focus keeps the caret in a field on
 	     Escape, as a legacy EditLine does. The login-r1..r4 rows and the
-	     Connect sheen carry the intro motion (login.rcss "Intro motion"). -->
+	     Connect sheen carry the intro motion (login.rcss "Intro motion").
+	     keyboard is true while the NovaUI virtual keyboard comes with the
+	     board: the board then rises above it (login--keyboard). -->
 	<title>login</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="login.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-anim nui-escape-keeps-focus login" data-model="login">
+<body template="nui" class="nui-window nui-anim nui-escape-keeps-focus login" data-model="login" data-class-login--keyboard="keyboard">
 	<div class="nui-window__body nui-stack nui-anim" data-class-login-shake="error != ''">
 		<div class="nui-row login-server login-r1 nui-anim">
 			<span class="nui-grow login-server__name">{{ server }}</span>

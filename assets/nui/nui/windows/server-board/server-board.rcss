@@ -1,0 +1,191 @@
+/* Server and channel board: a body-level window, 375dp wide, centered and
+   72dp above the bottom edge, as the legacy ServerBoard (uiscript
+   loginwindow.py). The server list (232dp) and the channel column (109dp)
+   sit side by side; OK and Exit end the column. The list viewports are the
+   legacy 351dp, and 160dp on a screen under 560dp, so the board fits at 200%
+   on 900 lines. */
+body.server-board
+{
+	width: 375dp;
+	left: 50%;
+	margin-left: -187.5dp;
+	bottom: 72dp;
+	min-width: 0dp;
+	box-sizing: border-box;
+	padding: var(--space-3);
+}
+.server-board__title
+{
+	display: block;
+	text-align: center;
+	font-weight: bold;
+}
+.server-board__row
+{
+	display: flex;
+	flex-direction: row;
+}
+.server-board__servers
+{
+	width: 232dp;
+	flex: 0 0 auto;
+}
+.server-board__servers .nui-list__viewport
+{
+	height: 351dp;
+}
+.server-board__split
+{
+	display: block;
+	width: 0dp;
+	margin: 0 3dp;
+	border-left-width: 1dp;
+	border-left-color: var(--border);
+}
+.server-board__side
+{
+	display: flex;
+	flex-direction: column;
+	width: 109dp;
+	flex: 0 0 auto;
+}
+/* The column is as tall as the server list: the channel viewport, the list's
+   10dp of padding and border, and the two buttons with their gaps. */
+.server-board__channels .nui-list__viewport
+{
+	height: 279dp;
+}
+/* The column is narrow: tighter rows, and neither the name nor the state
+   shrinks (RmlUi flex items shrink below their content). */
+.server-board__channels .nui-list__item
+{
+	padding: var(--space-2) 6dp;
+	gap: var(--space-1);
+}
+.server-board__channels .nui-list__label
+{
+	flex: 0 0 auto;
+}
+.server-board__state
+{
+	flex: 0 0 auto;
+	margin-left: auto;
+}
+.server-board__buttons
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-1);
+	margin-top: var(--space-1);
+}
+.server-board__button
+{
+	min-width: 88dp;
+}
+
+@media (max-height: 560dp)
+{
+	.server-board__servers .nui-list__viewport
+	{
+		height: 160dp;
+	}
+	.server-board__channels .nui-list__viewport
+	{
+		height: 88dp;
+	}
+}
+
+/* --- Classic skin ------------------------------------------------------------
+   The legacy thin board, exactly 400dp tall: the title 12dp from the top,
+   the separator (a light line over a dark one) at 34dp, the lists at 40dp,
+   the vertical separator at 246dp, the channel column at 255dp, and OK and
+   Exit (the large art, 88dp) at 267dp, 351dp and 373dp. The lists are the
+   legacy list boxes: no frame, 17dp rows. */
+body.skin-classic.server-board
+{
+	height: 400dp;
+	padding: 0dp;
+	decorator: classic-thinboard;
+}
+.skin-classic .server-board__title
+{
+	height: 23dp;
+	padding-top: 11dp;
+	line-height: 15dp;
+	font-weight: normal;
+}
+.skin-classic .server-board__rule
+{
+	margin: 0dp 11dp 0dp 10dp;
+}
+.skin-classic .server-board__row
+{
+	margin: 2dp 0dp 0dp 10dp;
+}
+.skin-classic.server-board .nui-list
+{
+	padding: 0dp;
+}
+.skin-classic .server-board__servers
+{
+	margin-top: 2dp;
+}
+.skin-classic .server-board__split
+{
+	height: 355dp;
+	margin: 0dp 0dp 0dp 4dp;
+	border-left-color: var(--classic-separator);
+	border-right-width: 1dp;
+	border-right-color: var(--classic-separator-shadow);
+}
+.skin-classic .server-board__side
+{
+	margin: 2dp 0dp 0dp 7dp;
+}
+.skin-classic .server-board__channels .nui-list__viewport
+{
+	height: 311dp;
+}
+.skin-classic .server-board__buttons
+{
+	align-items: flex-start;
+	gap: 1dp;
+	margin: 0dp 0dp 0dp 12dp;
+}
+.skin-classic .server-board__button
+{
+	min-width: 88dp;
+	padding: 0dp;
+}
+/* The legacy rows are 17dp: the state fits the 15dp line. */
+.skin-classic .server-board__channels .nui-list__item
+{
+	padding: 0dp var(--space-1);
+}
+.skin-classic .server-board__state
+{
+	height: 15dp;
+	line-height: 15dp;
+}
+/* The legacy OK label is gray. */
+.skin-classic .server-board__button.nui-button--primary
+{
+	color: var(--classic-button-text);
+}
+
+@media (max-height: 560dp)
+{
+	body.skin-classic.server-board
+	{
+		height: 209dp;
+	}
+	.skin-classic .server-board__split
+	{
+		height: 164dp;
+	}
+	.skin-classic .server-board__channels .nui-list__viewport
+	{
+		height: 120dp;
+	}
+}

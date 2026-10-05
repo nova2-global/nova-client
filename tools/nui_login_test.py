@@ -7,202 +7,85 @@ stand-ins. The hooked LoginWindow methods are compiled from intrologin.py
 itself onto a stand-in window, so the flows below run the real hook calls,
 with the board and without it (the legacy path)."""
 import ast
-import importlib.util
 import os
 import sys
 import types
 import unittest
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import nui_test_support as support  # noqa: E402
+from nui_test_support import NuiState, make_dbg, make_setting  # noqa: E402,F401 (shared stand-ins)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.normpath(os.path.join(HERE, "..", "assets", "root"))
+ROOT = support.ROOT
 NUI_LOGIN = os.path.join(ROOT, "nui_login.py")
-NUI_THEME_PICKER = os.path.join(ROOT, "nui_theme_picker.py")
 INTROLOGIN = os.path.join(ROOT, "intrologin.py")
+LOGIN_DOCUMENT = "nui/windows/login/login.rml"
 PICKER_DOCUMENT = "nui/windows/theme-picker/theme-picker.rml"
-THEMES = [("modern-dark", "Modern dark"), ("modern-light", "Modern light"), ("classic", "Classic")]
+KEYBOARD_DOCUMENT = "nui/windows/virtual-keyboard/virtual-keyboard.rml"
+THEMES = support.THEMES
 
 USER = "novaverify01"
 PASSWORD = "Nv-login-42"
 ID_FIELD = "login-user"
 PASSWORD_FIELD = "login-password"
 
-_MISSING = object()
+_MISSING = support.MISSING
 
 
 # --- stand-ins ------------------------------------------------------------------
 
-class NuiState(object):
-    """What the stand-in nui module answers."""
+def make_nui(state):
+    """The shared stand-in nui (nui_test_support.make_nui), with the login
+    board's autofocus field and its fields' change events: the first show()
+    gives the ID field the focus, hide() takes it off, and a later show()
+    leaves it off, as NuiRuntime does."""
+    state.autofocus.setdefault(LOGIN_DOCUMENT, ID_FIELD)
+    state.field_events.setdefault((LOGIN_DOCUMENT, ID_FIELD), "user_edit")
+    state.field_events.setdefault((LOGIN_DOCUMENT, PASSWORD_FIELD), "password_edit")
+    return support.make_nui(state)
+
+
+class Randoms(object):
+    """app.GetRandom: a fixed sequence, recorded."""
 
     def __init__(self):
-        self.available = True
-        self.rtl = False
-        self.loads = True
-        self.failing = set()     # documents that do not load
-        self.next_doc = 1
-        self.themes = list(THEMES)
-        self.theme = "modern-dark"
-        self.shows = []          # (class name, document) of every show(), in order
-        self.windows = []        # every window made, for on_theme_changed
+        self.calls = []
+
+    def __call__(self, low, high):
+        self.calls.append((low, high))
+        return (len(self.calls) * 7) % (high - low + 1) + low
 
 
-def make_nui(state):
-    """A stand-in for assets/root/nui.py. A window keeps its model in a dict and
-    records every call. Focus follows NuiRuntime: the first show() gives the
-    autofocus field the focus, hide() takes it off every field, and a later
-    show() leaves it off."""
-    nui = types.ModuleType("nui")
-
-    def on(event_name):
-        def mark(method):
-            method._nui_events = getattr(method, "_nui_events", ()) + (event_name,)
-            return method
-        return mark
-
-    class Window(object):
-        DOCUMENT = None
-        MODEL = None
-        MODAL = False
-        _doc = 0
-        _model = 0
-
-        def __init__(self):
-            self._doc = 0
-            self._model = 0
-            self.calls = []
-            self.model = {}
-            self.visible = False
-            self.focused = None
-            self._shown_before = False
-            if not state.available:
-                return
-            self.model = dict(self.initial_model())
-            self._model = 1
-            if not state.loads or self.DOCUMENT in state.failing:
-                self._model = 0
-                return
-            self._doc = state.next_doc
-            state.next_doc += 1
-            state.windows.append(self)
-
-        def initial_model(self):
-            return {}
-
-        def show(self):
-            if not self._doc:
-                return False
-            self.calls.append(("show",))
-            state.shows.append((type(self).__name__, self.DOCUMENT))
-            if not self._shown_before:
-                self._shown_before = True
-                self.focused = ID_FIELD  # autofocus
-            self.visible = True
-            return True
-
-        def hide(self):
-            if not self._doc:
-                return False
-            self.calls.append(("hide",))
-            self.visible = False
-            self.focused = None
-            return True
-
-        def is_visible(self):
-            return bool(self._doc) and self.visible
-
-        def focus(self, element_id):
-            self.calls.append(("focus", element_id))
-            if not self._doc or not self.visible:
-                return False
-            self.focused = element_id
-            return True
-
-        def set(self, **values):
-            if not self._model:
-                return False
-            self.calls.append(("set", dict(values)))
-            self.model.update(values)
-            return True
-
-        def get(self, key):
-            if not self._model:
-                return None
-            return self.model.get(key)
-
-        def destroy(self):
-            self.calls.append(("destroy",))
-            self._doc = 0
-            self._model = 0
-            self.visible = False
-            self.focused = None
-
-        def on_theme_changed(self, theme_id):
-            pass
-
-    def set_theme(name):
-        """nui.set_theme as far as a window sees it: a known id applies and
-        reaches every live window's on_theme_changed; anything else raises."""
-        if name not in [theme_id for theme_id, _ in state.themes]:
-            raise ValueError("no theme %r" % (name,))
-        state.theme = name
-        for window in state.windows:
-            if window._doc:
-                window.on_theme_changed(name)
-        return name
-
-    nui.Window = Window
-    nui.on = on
-    nui.is_available = lambda: state.available
-    nui.enabled_for_locale = lambda: not state.rtl
-    nui.get_themes = lambda: list(state.themes) if state.available else []
-    nui.get_theme = lambda: state.theme
-    nui.set_theme = set_theme
-    return nui
+def keyboard_locale():
+    return support.LocaleInfo(
+        VIRTUAL_KEY_ALPHABET_LOWERS=r"[1234567890]/qwertyuiop\=asdfghjkl;`'zxcvbnm.,",
+        VIRTUAL_KEY_ALPHABET_UPPERS=r"{1234567890}?QWERTYUIOP|+ASDFGHJKL:~'ZXCVBNM<>",
+        VIRTUAL_KEY_SYMBOLS="!@#$%^&*()_+|{}:'<>?~",
+        VIRTUAL_KEY_NUMBERS="1234567890-=\\[];',./`")
 
 
-def make_setting(flag=1, has_binding=True):
-    setting = types.ModuleType("systemSetting")
-    if has_binding:
-        setting.IsUINuiLogin = lambda: flag
-    return setting
-
-
-def make_dbg():
-    dbg = types.ModuleType("dbg")
-    dbg.errors = []
-    dbg.TraceError = dbg.errors.append
-    return dbg
-
-
-def load_module(name, path):
-    spec = importlib.util.spec_from_file_location(name, path)
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-def load_nui_login(nui_module, setting, dbg_module):
+def load_nui_login(nui_module, setting, dbg_module, app=None, snd=None):
     """nui_login.py as a fresh module over the given stand-ins (nui_module
-    None: `import nui` fails), with the real nui_theme_picker.py loaded over
-    the same stand-ins for its `import nui_theme_picker`."""
-    names = ("nui", "dbg", "systemSetting", "nui_theme_picker")
-    saved = {name: sys.modules.get(name, _MISSING) for name in names}
-    sys.modules["nui"] = nui_module
-    sys.modules["dbg"] = dbg_module
-    sys.modules["systemSetting"] = setting
-    sys.modules.pop("nui_theme_picker", None)
+    None: `import nui` fails), with the real nui_windows.py,
+    nui_theme_picker.py and nui_virtual_keyboard.py loaded over the same
+    stand-ins for its imports."""
+    modules = support.Modules(
+        dbg=dbg_module, systemSetting=setting, wndMgr=support.make_wndmgr(),
+        app=app or support.stub_module("app", GetRandom=Randoms(), IsRTL=lambda: False),
+        snd=snd or support.stub_module("snd", PlaySound=lambda name: None),
+        localeInfo=keyboard_locale())
+    modules.put("nui", nui_module)
     try:
-        try:
-            sys.modules["nui_theme_picker"] = load_module("nui_theme_picker", NUI_THEME_PICKER)
-        except ImportError:
-            pass  # no nui module: nui_login's own import fails the same way
-        module = load_module("nui_login", NUI_LOGIN)
+        modules.load("nui_windows")
+        for name in ("nui_theme_picker", "nui_virtual_keyboard"):
+            try:
+                modules.load(name)
+            except ImportError:
+                pass  # no nui module: nui_login's own imports fail the same way
+        module = modules.load("nui_login")
     finally:
-        for name, value in saved.items():
-            if value is _MISSING:
-                sys.modules.pop(name, None)
-            else:
-                sys.modules[name] = value
+        modules.restore()
     return module
 
 
@@ -368,6 +251,9 @@ def compile_login_window(nui_login):
     namespace = {
         "WindowBase": WindowBase,
         "nui_login": nui_login,
+        # The server board hooks do nothing here; nui_server_board_test runs them.
+        "nui_server_board": _stub_module("nui_server_board", **{name: (lambda *args: None) for name in (
+            "open_board", "close_board", "enter", "leave", "refresh_servers", "refresh_channels")}),
         "localeInfo": LocaleInfo(),
         "snd": _stub_module("snd", PlaySound=lambda name: None),
         "app": _stub_module("app", loggined=False, Exit=lambda: None),
@@ -469,8 +355,7 @@ class TheDecision(ControllerTest):
         win = self.open_window()
         self.assertIsNone(win.nuiBoard)
         self.assertEqual(self.m.LAST_DECISION, "legacy: the document did not load")
-        self.assertEqual(len(self.dbg.errors), 1)
-        self.assertIn(self.m.DOCUMENT, self.dbg.errors[0])
+        self.assertEqual(self.dbg.errors, ["nui_windows: login: the document did not load; using the legacy window"])
         self.assertTrue(win.connectBoard.IsShow() and win.loginBoard.IsShow())
 
     def test_the_board_hides_the_legacy_parts_and_takes_the_focus_from_an_edit_line(self):
@@ -897,6 +782,142 @@ class ThemePicker(ControllerTest):
         self.assertIsNone(self.open_window().nuiBoard)
 
 
+# --- Wave 1: the virtual keyboard, the strip and the picker's place ------------------
+
+class KeyboardWithTheBoard(ControllerTest):
+    def setUp(self):
+        super(KeyboardWithTheBoard, self).setUp()
+        self.setting = make_setting(1, windows="+virtual-keyboard")
+        self.load()
+
+    def test_the_keyboard_comes_with_the_board_and_the_board_knows(self):
+        win, board = self.open_board()
+        keyboard = win.nuiKeyboard
+        self.assertIsNotNone(keyboard)
+        self.assertTrue(keyboard.is_visible())
+        self.assertIs(board.model["keyboard"], True)
+        self.assertEqual(self.m.nui_windows.DECISIONS["virtual-keyboard"], "nui")
+        self.assertEqual(self.dbg.errors, [])
+
+    def test_the_show_order_is_ambience_picker_keyboard_then_the_board(self):
+        win, board = self.open_board()
+        self.assertEqual([name for name, _ in self.state.shows], ["IntroAmbient", "ThemePicker", "VirtualKeyboard", "LoginBoard"])
+        self.assertEqual(board.focused, ID_FIELD, "the board keeps the focus")
+
+    def test_without_the_flag_there_is_no_keyboard_and_the_model_says_so(self):
+        self.setting = make_setting(1)
+        self.load()
+        win, board = self.open_board()
+        self.assertIsNone(getattr(win, "nuiKeyboard", None))
+        self.assertIs(board.model["keyboard"], False)
+        self.assertEqual(self.m.nui_windows.DECISIONS["virtual-keyboard"], "legacy: flag off")
+
+    def test_the_keyboard_needs_the_novaui_board(self):
+        self.setting = make_setting(0, windows="+virtual-keyboard")
+        self.load()
+        win = self.open_window()
+        self.assertIsNone(win.nuiBoard)
+        self.assertIsNone(getattr(win, "nuiKeyboard", None))
+        self.assertEqual(self.m.nui_windows.DECISIONS["virtual-keyboard"], "legacy: needs the NovaUI login board")
+        self.assertEqual(self.dbg.errors, [], "not a failure: the legacy keyboard runs")
+        self.state.rtl = True
+        self.setting = make_setting(1, windows="+virtual-keyboard")
+        self.load()
+        self.open_window()
+        self.assertEqual(self.m.nui_windows.DECISIONS["virtual-keyboard"], "legacy: right-to-left locale")
+
+    def test_the_keyboard_follows_the_server_board_the_popups_and_close(self):
+        win, board = self.open_board()
+        keyboard = win.nuiKeyboard
+        win._LoginWindow__OpenServerBoard()
+        self.assertFalse(keyboard.is_visible())
+        win._LoginWindow__OpenLoginBoard()
+        self.assertTrue(keyboard.is_visible())
+        wrapper = self.m.after_popup(win, 0)
+        self.m.before_popup(win)
+        self.assertFalse(keyboard.is_visible())
+        wrapper()
+        self.assertTrue(keyboard.is_visible())
+        shows = [name for name, _ in self.state.shows]
+        self.assertEqual(shows[-2:], ["VirtualKeyboard", "LoginBoard"], "shown again before the board")
+        self.m.close_board(win)
+        self.assertIsNone(win.nuiKeyboard)
+        self.assertIn(("destroy",), keyboard.calls)
+
+    def test_a_popup_open_before_the_board_holds_the_keyboard_back_too(self):
+        win = self.open_window()
+        win.stream.popupWindow.Open("LOGIN_FAILURE_SAMELOGIN", 0)
+        win._LoginWindow__OpenLoginBoard()
+        self.assertFalse(win.nuiKeyboard.is_visible())
+        win.stream.popupWindow.Close()
+        self.assertTrue(win.nuiKeyboard.is_visible())
+
+    def test_type_text_types_into_the_last_focused_field(self):
+        win, board = self.open_board()
+        self.assertTrue(board.type_text("nova"))
+        self.assertEqual(board.typed_values(), ("nova", ""))
+        board.focus(PASSWORD_FIELD)
+        board.type_text("pw")
+        self.assertEqual(board.typed_values(), ("nova", "pw"))
+        board.type_text("\b")
+        self.assertEqual(board.typed_values(), ("nova", "p"))
+
+    def test_enter_from_the_keyboard_moves_to_the_password_field_and_then_submits(self):
+        win, board = self.open_board()
+        board.type_text("nova")
+        board.type_text("\n")
+        self.assertEqual(board.focused, PASSWORD_FIELD)
+        board.type_text("Nv1")
+        board.type_text("\n")
+        self.assertEqual(win.stream.login_info, [("nova", "Nv1")])
+
+    def test_a_hidden_board_types_nothing(self):
+        win, board = self.open_board()
+        self.m.before_popup(win)
+        self.assertFalse(board.type_text("x"))
+
+
+class Strip(object):
+    """A LocaleStrip facade as far as place_picker sees it."""
+
+    def __init__(self, window):
+        self.nui_window = window
+
+
+class PickerPlace(ControllerTest):
+    def strip_window(self):
+        window = self.nui.Window()
+        window.DOCUMENT = "nui/windows/locale-strip/locale-strip.rml"
+        return window
+
+    def test_the_picker_goes_below_a_novaui_strip(self):
+        win = self.Window(Stream())
+        strip = self.strip_window()
+        win.localeSelector = Strip(strip)
+        win.nuiBoard = self.m.open_board(win, self.choices.choose, self.choices.exit)
+        picker = win.nuiPicker
+        self.assertEqual(picker.placement, ("next_to", strip, "below", 4, ""))
+
+    def test_without_a_novaui_strip_the_sheet_places_the_picker(self):
+        win, board = self.open_board()
+        self.assertIsNone(win.nuiPicker.placement)
+
+    def test_the_picker_keeps_clear_of_every_novaui_board(self):
+        self.setting = make_setting(1, windows="+virtual-keyboard")
+        self.load()
+        win, board = self.open_board()
+        picker = win.nuiPicker
+        self.assertEqual(picker.keep_clear, [board, win.nuiKeyboard])
+        server_board = self.nui.Window()
+        win.nuiServerBoard = server_board
+        self.m.place_picker(win)
+        self.assertEqual(picker.keep_clear, [board, server_board, win.nuiKeyboard])
+
+    def test_place_picker_without_a_picker_does_nothing(self):
+        win = self.Window(Stream())
+        self.assertIsNone(self.m.place_picker(win))
+
+
 # --- T7: the hooks are in place in intrologin.py ----------------------------------
 
 def dotted(node):
@@ -997,6 +1018,10 @@ class IntroLoginHooks(unittest.TestCase):
             self.assertIn(hook, names)
         self.assertLess(names.index("nui_login.typed_values"), names.index("self.Close"))
         self.assertLess(names.index("self.Open"), names.index("nui_login.restore_typed"))
+
+    def test_a_rebuilt_strip_places_the_picker_again(self):
+        names = self.names("__RefreshLocaleUI")
+        self.assertLess(names.index("self.localeSelector.SetTop"), names.index("nui_login.place_picker"))
 
     def test_the_login_button_path_is_left_alone(self):
         self.assertFalse([name for name in self.names("__OnClickLoginButton") if name.startswith("nui_login.")])

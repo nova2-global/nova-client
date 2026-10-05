@@ -121,6 +121,21 @@ body.nui-window
 	width: 140dp;
 }
 
+.gallery-size-label
+{
+	margin-left: var(--space-3);
+}
+
+.gallery-gauges
+{
+	gap: var(--space-4);
+	margin-bottom: var(--space-2);
+}
+.gallery-gauge
+{
+	width: 160dp;
+}
+
 .gallery-panels
 {
 	align-items: stretch;

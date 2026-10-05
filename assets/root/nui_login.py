@@ -1,7 +1,8 @@
 """NovaUI login board (nui/windows/login/login.rml).
 
-While config/metin2.cfg has UI_NUI_LOGIN 1, this board replaces the legacy
-connect and login boards of introLogin.LoginWindow. The LoginWindow stays the
+While the "login" window flag is on (nui_windows: UI_NUI_LOGIN 1, or +login
+in UI_NUI_WINDOWS), this board replaces the legacy connect and login boards
+of introLogin.LoginWindow. The LoginWindow stays the
 phase window and the network handler: the board only takes the input and
 calls back into the legacy code (LoginWindow.Connect, the server board and
 the exit handler), so a login ends in exactly the legacy code path.
@@ -27,7 +28,17 @@ with the board.
 The theme picker (nui/windows/theme-picker, nui_theme_picker.py) comes the
 same way, as win.nuiPicker: shown after the ambience and before the board,
 hidden while a legacy popup is open, gone with the board. It never takes the
-focus, so a theme picked there leaves the board's caret and typed text.
+focus, so a theme picked there leaves the board's caret and typed text. It
+sits below the NovaUI locale strip when there is one, and keeps clear of the
+boards and the keyboard: while it overlaps one of them that is shown, its
+sheet hides it (place_picker).
+
+The NovaUI virtual keyboard (nui/windows/virtual-keyboard,
+nui_virtual_keyboard.py) comes with the board while the "virtual-keyboard"
+flag is on, as win.nuiKeyboard: shown right before the board each time the
+board shows, hidden with it and while a popup is open, gone with it. It
+types into the board's last focused field (LoginBoard.type_text), and the
+board rises above it (the model's keyboard key).
 """
 
 import weakref
@@ -61,9 +72,18 @@ try:
 except ImportError:  # no nui module, or a client without nui_theme_picker.py
 	nui_theme_picker = None
 
+try:
+	import nui_virtual_keyboard
+except ImportError:  # no nui module, or a client without nui_virtual_keyboard.py
+	nui_virtual_keyboard = None
+
+import nui_windows
+
 
 DOCUMENT = "nui/windows/login/login.rml"
 AMBIENT_DOCUMENT = "nui/windows/intro-ambient/intro-ambient.rml"
+WINDOW_ID = "login"
+KEYBOARD_ID = "virtual-keyboard"
 ID_FIELD = "login-user"
 PASSWORD_FIELD = "login-password"
 ID_MAX = 19        # uiscript/loginwindow.py ID_LIMIT_COUNT
@@ -83,15 +103,9 @@ def _as_text(value):
 
 
 def wanted():
-	"""(True, "") when the NovaUI board should be used, else (False, reason)."""
-	is_on = getattr(systemSetting, "IsUINuiLogin", None)
-	if is_on is None or not is_on():
-		return False, "flag off"
-	if not nui.is_available():
-		return False, "NovaUI unavailable"
-	if not nui.enabled_for_locale():
-		return False, "right-to-left locale"
-	return True, ""
+	"""(True, "") when the NovaUI board should be used, else (False, reason):
+	the "login" window flag (nui_windows.use), which UI_NUI_LOGIN 1 turns on."""
+	return nui_windows.use("login")
 
 
 class LoginBoard(nui.Window):
@@ -113,10 +127,20 @@ class LoginBoard(nui.Window):
 		self.active = False       # the login state: between enter and leave
 		self._suspended = False   # hidden for a legacy popup
 		self._pending_focus = None
+		self._active_field = ID_FIELD  # where the virtual keyboard types
+		self.before_show = None   # called right before each show (the keyboard)
 		nui.Window.__init__(self)
+		# The last focused field takes the virtual keyboard's keys.
+		self.element_on(ID_FIELD, "focus", self._on_field_focus)
+		self.element_on(PASSWORD_FIELD, "focus", self._on_field_focus)
 
 	def initial_model(self):
-		return {"server": "@ui.LOGIN_DEFAULT_SERVERADDR", "user": "", "error": "", "error_on": ""}
+		return {"server": "@ui.LOGIN_DEFAULT_SERVERADDR", "user": "", "error": "", "error_on": "", "keyboard": False}
+
+	def _on_field_focus(self, event):
+		target = event.get("target_id")
+		if target in (ID_FIELD, PASSWORD_FIELD):
+			self._active_field = target
 
 	# --- handlers -------------------------------------------------------------
 	# change fires on every edit, with linebreak on Enter. A binding that sets
@@ -189,6 +213,8 @@ class LoginBoard(nui.Window):
 		while it was hidden. show() after hide() leaves no field focused."""
 		if not self._may_show():
 			return False
+		if self.before_show is not None:
+			self.before_show()
 		self.show()
 		pending, self._pending_focus = self._pending_focus, None
 		if pending:
@@ -224,6 +250,13 @@ class LoginBoard(nui.Window):
 
 	def typed_values(self):
 		return (self._user, self._password)
+
+	def type_text(self, text):
+		"""The virtual keyboard: types `text` into the last focused field, as
+		keys would ("\b" Backspace, "\n" Enter). True when it typed."""
+		if not self.is_visible():
+			return False
+		return self.insert_text(self._active_field, text)
 
 	def on_reload(self):
 		# A locale change or hot reload re-loaded the document: its ID field
@@ -294,6 +327,78 @@ def _picker(win):
 	return getattr(win, "nuiPicker", None)
 
 
+def _keyboard(win):
+	return getattr(win, "nuiKeyboard", None)
+
+
+def _open_keyboard(win, board):
+	"""The NovaUI virtual keyboard, when its flag allows it; its decision is
+	recorded either way. Optional: when it cannot be made, the board runs
+	without it (and without the legacy keyboard, which types into the legacy
+	IME only)."""
+	if not nui_windows.use(KEYBOARD_ID)[0]:
+		return
+	try:
+		keyboard = nui_virtual_keyboard.VirtualKeyboard(board)
+	except Exception as error:
+		nui_windows.note_failure(KEYBOARD_ID, "the controller could not be made (%s)" % type(error).__name__)
+		return
+	if not keyboard._doc:
+		keyboard.destroy()
+		nui_windows.note_failure(KEYBOARD_ID, "the document did not load")
+		return
+	win.nuiKeyboard = keyboard
+	board.set(keyboard=True)
+	owner = weakref.ref(win)
+	board.before_show = lambda: _show_keyboard(owner())
+
+
+def _show_keyboard(win):
+	"""Right before the board shows: the keyboard under it. A visible one is
+	left alone."""
+	keyboard = _keyboard(win) if win is not None else None
+	if keyboard is not None and not keyboard.is_visible():
+		keyboard.show()
+
+
+def _hide_keyboard(win):
+	keyboard = _keyboard(win)
+	if keyboard is not None and keyboard.is_visible():
+		keyboard.hide()
+
+
+def _close_keyboard(win):
+	keyboard = _keyboard(win)
+	if keyboard is None:
+		return
+	win.nuiKeyboard = None
+	keyboard.destroy()
+
+
+def _refuse_keyboard():
+	"""The legacy login board runs: a keyboard asked for cannot come."""
+	if nui_windows.use(KEYBOARD_ID)[0]:
+		nui_windows.refuse(KEYBOARD_ID, "needs the NovaUI login board")
+
+
+def place_picker(win):
+	"""The picker below the NovaUI locale strip when there is one (else where
+	its sheet puts it, under the legacy strip), kept clear of the login
+	board, the server board and the keyboard: its sheet hides it while it
+	overlaps one of them that is shown. Called when the picker, the server
+	board or the strip is made."""
+	picker = _picker(win)
+	if picker is None:
+		return
+	strip = getattr(getattr(win, "localeSelector", None), "nui_window", None)
+	if strip is not None and getattr(strip, "_doc", 0):
+		picker.place_next_to(strip, "below", 4)
+	else:
+		picker.clear_placement()
+	targets = [window for window in (_board(win), getattr(win, "nuiServerBoard", None), _keyboard(win)) if window is not None]
+	picker.keep_clear_of(*targets)
+
+
 def _open_picker(win):
 	"""Shows the theme picker. Called after the ambience and before the board
 	is first shown, so the board keeps the front and the keyboard. Optional:
@@ -312,6 +417,7 @@ def _open_picker(win):
 		dbg.TraceError("nui_login: %s did not load; the board runs without it" % nui_theme_picker.ThemePicker.DOCUMENT)
 		return
 	win.nuiPicker = picker
+	place_picker(win)
 	picker.show()
 
 
@@ -343,17 +449,20 @@ def open_board(win, on_choose, on_exit):
 	use, reason = wanted()
 	if not use:
 		LAST_DECISION = "legacy: " + reason
+		_refuse_keyboard()
 		return None
 	try:
 		board = LoginBoard(win, on_choose, on_exit)
 	except Exception as error:
 		LAST_DECISION = "legacy: the board could not be made"
-		dbg.TraceError("nui_login: the board could not be made (%s); using the legacy board" % type(error).__name__)
+		nui_windows.note_failure(WINDOW_ID, "the controller could not be made (%s)" % type(error).__name__)
+		_refuse_keyboard()
 		return None
 	if not board._doc:
 		board.destroy()
 		LAST_DECISION = "legacy: the document did not load"
-		dbg.TraceError("nui_login: %s did not load; using the legacy board" % DOCUMENT)
+		nui_windows.note_failure(WINDOW_ID, "the document did not load")
+		_refuse_keyboard()
 		return None
 	# The script loader showed every legacy part; the virtual keyboard types
 	# into the legacy IME only, so it goes as well.
@@ -366,6 +475,8 @@ def open_board(win, on_choose, on_exit):
 		line = getattr(win, name, None)
 		if line and line.IsFocus():
 			line.KillFocus()
+	win.nuiBoard = board  # for place_picker; the caller stores it as well
+	_open_keyboard(win, board)
 	_open_ambient(win)
 	_open_picker(win)
 	LAST_DECISION = "nui"
@@ -376,6 +487,7 @@ def close_board(win):
 	"""LoginWindow.Close, first: the popup callbacks Close runs find no board."""
 	_close_ambient(win)
 	_close_picker(win)
+	_close_keyboard(win)
 	board = _board(win)
 	if board is None:
 		return
@@ -408,6 +520,7 @@ def leave_login_board(win):
 	if board is None:
 		return
 	board.active = False
+	_hide_keyboard(win)
 	board.hide()
 
 
@@ -424,6 +537,7 @@ def before_popup(win):
 	if board is not None:
 		_hide_ambient(win)
 		_hide_picker(win)
+		_hide_keyboard(win)
 		board.suspend()
 
 

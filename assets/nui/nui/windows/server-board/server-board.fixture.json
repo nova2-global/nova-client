@@ -1,0 +1,43 @@
+{
+	"server_board": {
+		"servers": [
+			{
+				"line": 0,
+				"label": "01. Metin2"
+			},
+			{
+				"line": 1,
+				"label": "02. Test"
+			}
+		],
+		"server_line": 1,
+		"channels": [
+			{
+				"line": 0,
+				"name": "CH1",
+				"state": "....",
+				"state_class": "down"
+			},
+			{
+				"line": 1,
+				"name": "CH2",
+				"state": "NORM",
+				"state_class": "normal"
+			},
+			{
+				"line": 2,
+				"name": "CH3",
+				"state": "BUSY",
+				"state_class": "busy"
+			},
+			{
+				"line": 3,
+				"name": "CH4",
+				"state": "FULL",
+				"state_class": "full"
+			}
+		],
+		"channel_line": 0,
+		"exit_label": "@ui.LOGIN_SELECT_EXIT"
+	}
+}

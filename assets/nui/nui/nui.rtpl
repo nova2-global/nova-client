@@ -22,6 +22,9 @@
 	<link type="text/rcss" href="components/list.rcss"/>
 	<link type="text/rcss" href="components/tabs.rcss"/>
 	<link type="text/rcss" href="components/slot-grid.rcss"/>
+	<link type="text/rcss" href="components/frames.rcss"/>
+	<link type="text/rcss" href="components/gauge.rcss"/>
+	<link type="text/rcss" href="components/dialog.rcss"/>
 	<!-- Layout helpers last: they are combined with component classes on one
 	     element and must win ties (same specificity, later sheet). -->
 	<link type="text/rcss" href="components/layout.rcss"/>

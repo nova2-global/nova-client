@@ -28,6 +28,14 @@ body.theme-picker
 {
 	focus: none;
 }
+/* Kept clear of the boards and the keyboard (nui.Window.keep_clear_of): while
+   it overlaps one that is shown, it is hidden. Not display: none, whose zero
+   size would end the overlap and bring it back on the next update. */
+body.theme-picker.nui-overlapping
+{
+	opacity: 0;
+	pointer-events: none;
+}
 /* The theme in use has the primary look, hovered or pressed too. */
 body.theme-picker .theme-picker__button.is-selected
 {
@@ -55,7 +63,8 @@ body.skin-classic.theme-picker
 .skin-classic.theme-picker .nui-button
 {
 	decorator: tiled-horizontal(classic-button-large-01-l, classic-button-large-01-c, classic-button-large-01-r);
-	width: 88dp;
+	min-width: 88dp;
+	width: auto;
 	padding: 0;
 }
 .skin-classic.theme-picker .nui-button:hover, .skin-classic.theme-picker .nui-button.is-hover

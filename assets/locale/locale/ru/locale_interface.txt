@@ -309,3 +309,12 @@ WHISPER_REPORT
 WHISPER_SEND	Отправить
 YES	да
 ZONE_MAP	Большая карта
+THEME_TITLE	Тема
+THEME_MODERN_DARK	Современная тёмная
+THEME_MODERN_LIGHT	Современная светлая
+THEME_CLASSIC	Классическая
+VKEY_SHIFT	Shift
+VKEY_SPACE	Пробел
+VKEY_BACKSPACE	Стереть
+VKEY_ENTER	Ввод
+VKEY_SYMBOLS	@#!

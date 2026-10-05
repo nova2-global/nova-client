@@ -18,6 +18,7 @@ import ime
 import uiScriptLocale
 import debugInfo
 import nui_login
+import nui_server_board
 
 # Multi-language hot-reload system
 from uilocaleselector import LocaleSelector
@@ -157,6 +158,8 @@ class LoginWindow(ui.ScriptWindow):
 
 		# NovaUI login board (nui_login.py), made in Open() while UI_NUI_LOGIN is on.
 		self.nuiBoard = None
+		# NovaUI server and channel board (nui_server_board.py), made in Open().
+		self.nuiServerBoard = None
 
 	def __del__(self):
 		net.ClearPhaseWindow(net.PHASE_WINDOW_LOGIN, self)
@@ -209,6 +212,7 @@ class LoginWindow(ui.ScriptWindow):
 		self.nuiBoard = nui_login.open_board(self,
 			ui.__mem_func__(self.__OnClickSelectConnectButton),
 			ui.__mem_func__(self.__OnClickExitButton))
+		self.nuiServerBoard = nui_server_board.open_board(self, ui.__mem_func__(self.__OnClickSelectServerButton), ui.__mem_func__(self.__OnClickExitButton))
 
 		# Changed .xml -> .py because pack.Get does not allow .xml extension
 		self.__LoadLoginInfo("loginInfo.py")
@@ -259,6 +263,7 @@ class LoginWindow(ui.ScriptWindow):
 	def Close(self):
 		# First: the popupWindow.Close() below runs callbacks that would show it.
 		nui_login.close_board(self)
+		nui_server_board.close_board(self)
 
 		if self.connectingDialog:
 			self.connectingDialog.Close()
@@ -729,6 +734,7 @@ class LoginWindow(ui.ScriptWindow):
 			self.localeSelector.SetLocaleChangedEvent(ui.__mem_func__(self.__OnLocaleChanged))
 			self.localeSelector.Show()
 			self.localeSelector.SetTop()
+			nui_login.place_picker(self)
 
 		except Exception as e:
 			dbg.TraceError("LoginWindow.__RefreshLocaleUI failed: %s" % str(e))
@@ -900,6 +906,7 @@ class LoginWindow(ui.ScriptWindow):
 			self.virtualKeyboard.Hide()
 
 		nui_login.leave_login_board(self)
+		nui_server_board.enter(self)
 
 		if app.loggined and not SKIP_LOGIN_PHASE_SUPPORT_CHANNEL:
 			self.serverList.SelectItem(self.loginnedServer-1)
@@ -913,6 +920,7 @@ class LoginWindow(ui.ScriptWindow):
 
 		self.serverBoard.SetPosition(self.xServerBoard, wndMgr.GetScreenHeight())
 		self.serverBoard.Hide()
+		nui_server_board.leave(self)
 
 		if nui_login.enter_login_board(self):
 			return  # NovaUI: the legacy boards, the keyboard and the EditLine focus stay off
@@ -977,6 +985,7 @@ class LoginWindow(ui.ScriptWindow):
 			self.serverList.InsertItem(id, "  %02d. %s" % (int(server_id), name))
 			visible_index += 1
 		# END_OF_SEVER_LIST_BUG_FIX
+		nui_server_board.refresh_servers(self)
 
 	def __OnSelectServer(self):
 		self.__OnCloseInputDialog()
@@ -1022,6 +1031,7 @@ class LoginWindow(ui.ScriptWindow):
 			self.channelList.InsertItem(channelID, " %s %s" % (channelName, channelState))
 
 		self.channelList.SelectItem(bakChannelID-1)
+		nui_server_board.refresh_channels(self)
 
 	def __GetChannelName(self, regionID, selServerID, selChannelID):
 		try:

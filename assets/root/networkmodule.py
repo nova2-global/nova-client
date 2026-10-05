@@ -15,6 +15,7 @@ import playerSettingModule
 
 import ui
 import uiPhaseCurtain
+import nui_windows
 
 import localeInfo
 
@@ -46,6 +47,7 @@ class PopupDialog(ui.ScriptWindow):
 		if True == self.IsShow():
 			self.Close()
 
+		nui_windows.legacy_dialog_layer(self)
 		self.Lock()
 		self.SetTop()
 		self.CloseEvent = event
@@ -201,7 +203,7 @@ class MainStream(object):
 	def SetSelectEmpirePhase(self):
 		try:
 			import introEmpire	
-			self.SetPhaseWindow(introEmpire.SelectEmpireWindow(self))
+			self.SetPhaseWindow(nui_windows.make("empire", introEmpire.SelectEmpireWindow, "nui_empire.SelectEmpireWindow", self))
 		except:
 			import exception
 			exception.Abort("networkModule.SetSelectEmpirePhase")
@@ -210,7 +212,7 @@ class MainStream(object):
 	def SetReselectEmpirePhase(self):
 		try:
 			import introEmpire
-			self.SetPhaseWindow(introEmpire.ReselectEmpireWindow(self))
+			self.SetPhaseWindow(nui_windows.make("empire", introEmpire.ReselectEmpireWindow, "nui_empire.ReselectEmpireWindow", self))
 		except:
 			import exception
 			exception.Abort("networkModule.SetReselectEmpirePhase")
@@ -220,7 +222,7 @@ class MainStream(object):
 			localeInfo.LoadLocaleData()
 			import introSelect
 			self.popupWindow.Close()
-			self.SetPhaseWindow(introSelect.SelectCharacterWindow(self))
+			self.SetPhaseWindow(nui_windows.make("select", introSelect.SelectCharacterWindow, "nui_select.SelectCharacterWindow", self))
 		except:
 			import exception
 			exception.Abort("networkModule.SetSelectCharacterPhase")
@@ -228,7 +230,7 @@ class MainStream(object):
 	def SetCreateCharacterPhase(self):
 		try:
 			import introCreate
-			self.SetPhaseWindow(introCreate.CreateCharacterWindow(self))
+			self.SetPhaseWindow(nui_windows.make("create", introCreate.CreateCharacterWindow, "nui_create.CreateCharacterWindow", self))
 		except:
 			import exception
 			exception.Abort("networkModule.SetCreateCharacterPhase")
@@ -236,7 +238,7 @@ class MainStream(object):
 	def SetTestGamePhase(self, x, y):
 		try:
 			import introLoading
-			loadingPhaseWindow=introLoading.LoadingWindow(self)
+			loadingPhaseWindow=nui_windows.make("loading", introLoading.LoadingWindow, "nui_loading.LoadingWindow", self)
 			loadingPhaseWindow.LoadData(x, y)
 			self.SetPhaseWindow(loadingPhaseWindow)
 		except:
@@ -248,7 +250,7 @@ class MainStream(object):
 	def SetLoadingPhase(self):
 		try:
 			import introLoading
-			self.SetPhaseWindow(introLoading.LoadingWindow(self))
+			self.SetPhaseWindow(nui_windows.make("loading", introLoading.LoadingWindow, "nui_loading.LoadingWindow", self))
 		except:
 			import exception
 			exception.Abort("networkModule.SetLoadingPhase")
@@ -303,3 +305,9 @@ class MainStream(object):
 	## Empty
 	def EmptyFunction(self):
 		pass
+
+# NovaUI dialog kit (nui_dialog_message.py, flag "dialogs"): with the flag on
+# this name makes the NovaUI phase popup (MainStream.CreatePopupDialog names
+# it); with it off, the legacy class above.
+LegacyPopupDialog = PopupDialog
+PopupDialog = nui_windows.factory("dialogs", LegacyPopupDialog, "nui_dialog_message.PhasePopupDialog")

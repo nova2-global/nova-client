@@ -57,6 +57,11 @@ body, body.theme-dark
 	--sheen-clear: #ffffff00;
 	--sweep: #fff6dc8c;
 	--sweep-clear: #fff4d600;
+	--gauge-track: #121418;
+	--gauge-red: #f28b82;
+	--gauge-pink: #f48fb1;
+	--gauge-purple: #c58af9;
+	--gauge-blue: #8ab4f8;
 }
 
 body.theme-light
@@ -87,6 +92,11 @@ body.theme-light
 	--sheen-clear: #ffffff00;
 	--sweep: #fff6dc8c;
 	--sweep-clear: #fff4d600;
+	--gauge-track: #d5d9e0;
+	--gauge-red: #b3261e;
+	--gauge-pink: #b0306f;
+	--gauge-purple: #7438c4;
+	--gauge-blue: #1a5fc4;
 }
 
 body.theme-classic
@@ -117,6 +127,11 @@ body.theme-classic
 	--sheen-clear: #ffffff00;
 	--sweep: #fff6dc8c;
 	--sweep-clear: #fff4d600;
+	--gauge-track: #242424;
+	--gauge-red: #bc5353;
+	--gauge-pink: #bc5296;
+	--gauge-purple: #8052bc;
+	--gauge-blue: #5283bc;
 }
 
 /* Skin classic: overrides shared tokens and adds its own (classic-...) while a
@@ -141,4 +156,7 @@ body.skin-classic
 	--classic-separator: #777777;
 	--classic-separator-shadow: #111111;
 	--classic-text-outline: #000000;
+	--classic-disabled-tint: #8c8c8cff;
+	--classic-disabled-text: #6e6e6e;
+	--classic-key-text: #000000;
 }

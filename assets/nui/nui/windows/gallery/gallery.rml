@@ -5,7 +5,11 @@
 	     windows would localize use @ui keys. Forced states (is-hover,
 	     is-active, is-focus) stand in for pointer and keyboard states so
 	     snapshots show them. Not shown: the body-level layers (nui-overlay,
-	     nui-scrim) and the layout helpers other than nui-row.
+	     nui-scrim), the dialog look (the dialog-* windows have goldens of
+	     their own), the nui-frames element (the loading window shows it)
+	     and the layout helpers other than nui-row. The classic
+	     gauge art is legacy art under d:/ymir work/, so snapshots of this
+	     page need the assets/ETC root.
 	     It fits a 1920x1080 dp viewport, so a snapshot at the client's auto
 	     scale for 1080, 1620 and 2160 lines shows everything. -->
 	<title>NovaUI gallery</title>
@@ -71,7 +75,16 @@
 			<span class="gallery-label">sizes</span>
 			<button class="nui-button nui-button--small nui-button--primary nui-anim">@ui.OK</button>
 			<button class="nui-button nui-button--small nui-anim">@ui.NO</button>
+			<button class="nui-button nui-button--small nui-anim" disabled="">@ui.NO</button>
+			<span class="gallery-label gallery-size-label">medium</span>
+			<button class="nui-button nui-button--medium nui-button--primary nui-anim">@ui.YES</button>
+			<button class="nui-button nui-button--medium nui-anim">@ui.NO</button>
+			<button class="nui-button nui-button--medium nui-anim is-hover">@ui.NO</button>
+			<button class="nui-button nui-button--medium nui-anim is-active">@ui.NO</button>
+			<button class="nui-button nui-button--medium nui-anim" disabled="">@ui.NO</button>
+			<span class="gallery-label gallery-size-label">icon</span>
 			<button class="nui-button nui-button--icon nui-anim">+</button>
+			<button class="nui-button nui-button--icon nui-anim" disabled="">+</button>
 			<button class="nui-button nui-button--small nui-button--icon nui-button--ghost nui-anim">&#215;</button>
 		</div>
 
@@ -143,6 +156,14 @@
 					<span class="gallery-slider"><span class="gallery-state">active</span><input type="range" class="nui-slider is-active" min="0" max="100" step="1" value="40"/></span>
 					<span class="gallery-slider"><span class="gallery-state">focus</span><input type="range" class="nui-slider is-focus" min="0" max="100" step="1" value="40"/></span>
 					<span class="gallery-slider"><span class="gallery-state">disabled</span><input type="range" class="nui-slider" min="0" max="100" step="1" value="75" disabled=""/></span>
+				</div>
+
+				<h2>Gauge</h2>
+				<div class="nui-row nui-row--wrap gallery-gauges">
+					<progress class="nui-gauge gallery-gauge" direction="right" value="0.8"/>
+					<progress class="nui-gauge nui-gauge--pink gallery-gauge" direction="right" value="0.55"/>
+					<progress class="nui-gauge nui-gauge--purple gallery-gauge" direction="right" value="0.3"/>
+					<progress class="nui-gauge nui-gauge--blue gallery-gauge" direction="right" value="1"/>
 				</div>
 			</div>
 

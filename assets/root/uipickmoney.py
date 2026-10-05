@@ -2,6 +2,7 @@ import wndMgr
 import ui
 import ime
 import app
+import nui_windows
 
 class PickMoneyDialog(ui.ScriptWindow):
 	def __init__(self):
@@ -57,6 +58,7 @@ class PickMoneyDialog(ui.ScriptWindow):
 		self.pickValueEditLine.SetMax(max)
 
 	def Open(self, maxValue, unitValue = 1):
+		nui_windows.legacy_dialog_layer(self)
 		width = self.GetWidth()
 		(mouseX, mouseY) = wndMgr.GetMousePosition()
 
@@ -102,3 +104,8 @@ class PickMoneyDialog(ui.ScriptWindow):
 					self.eventAccept(money)
 
 		self.Close()
+
+# NovaUI dialog kit (nui_pick_money.py, flag "dialogs"): with the flag on this
+# name makes the NovaUI dialog; with it off, the legacy class above.
+LegacyPickMoneyDialog = PickMoneyDialog
+PickMoneyDialog = nui_windows.factory("dialogs", LegacyPickMoneyDialog, "nui_pick_money.PickMoneyDialog")

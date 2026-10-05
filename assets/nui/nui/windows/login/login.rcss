@@ -10,6 +10,16 @@ body.login
 	bottom: 72dp;
 }
 
+/* The NovaUI virtual keyboard below the board: the board rises above it.
+   Same threshold as the keyboard's own sheet. */
+@media (min-height: 680dp)
+{
+	body.login.login--keyboard
+	{
+		bottom: 303dp;
+	}
+}
+
 .login-server__name
 {
 	color: var(--text-muted);

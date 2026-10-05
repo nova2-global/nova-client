@@ -5,14 +5,16 @@
 	     assets/root/nui_theme_picker.py; nui_login.py opens it with the login
 	     board. Its body never takes the focus, so a press leaves the board's
 	     caret and typed text where they are; RmlUi then sends no click, so
-	     the buttons act on mousedown. The label is plain English for now, like
-	     the theme labels. -->
+	     the buttons act on mousedown. The heading and the theme labels are
+	     locale keys (@ui.THEME_*); the controller maps the ids to them. While
+	     it overlaps a board or the keyboard, the runtime puts nui-overlapping
+	     on the body and the sheet hides it. -->
 	<title>theme-picker</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="theme-picker.rcss"/>
 </head>
 <body template="nui" class="theme-picker" data-model="theme_picker">
-	<span class="theme-picker__label">Theme</span>
+	<span class="theme-picker__label">@ui.THEME_TITLE</span>
 	<button class="nui-button nui-button--small theme-picker__button" data-for="theme : themes" data-attr-id="'theme-pick-' + theme.id" data-class-is-selected="theme.id == current" data-event-mousedown="pick(theme.id, ev.button)">{{ theme.label }}</button>
 </body>
 </rml>

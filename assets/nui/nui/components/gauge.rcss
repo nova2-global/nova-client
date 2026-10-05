@@ -1,0 +1,94 @@
+/* Gauge: <progress class="nui-gauge nui-gauge--red" direction="right"
+   data-attr-value="hp"/>, with a value from 0 to 1 (max defaults to 1).
+   Colors: --red, --pink, --purple, --blue (the legacy gauge colors); red is
+   the default. RmlUi sizes the inner <fill> from the value, and the value
+   shows at once: nothing eases toward it, so no Python runs per frame. Bind
+   the value with data-attr-value; an inline style would be NUI009.
+
+   Classic draws the legacy gauge (ui.Gauge): the slot art with its two caps
+   and the colored bar inset 12dp from both ends, 8dp tall. The art is 1x
+   only, from the legacy pattern folder, so the documents that use a gauge
+   need the asset group that holds d:/ymir work/ (assets/ETC) for lint and
+   snapshots. */
+
+progress.nui-gauge
+{
+	display: block;
+	height: 6dp;
+	background-color: var(--gauge-track);
+	border-radius: 3dp;
+}
+progress.nui-gauge fill
+{
+	background-color: var(--gauge-red);
+	border-radius: 3dp;
+}
+progress.nui-gauge--pink fill
+{
+	background-color: var(--gauge-pink);
+}
+progress.nui-gauge--purple fill
+{
+	background-color: var(--gauge-purple);
+}
+progress.nui-gauge--blue fill
+{
+	background-color: var(--gauge-blue);
+}
+
+/* --- Classic skin --------------------------------------------------------------
+   Here rather than in skins/classic/: the decorators name legacy art that only
+   the gauge uses. Each rule is one class heavier than the modern rule it
+   overrides. */
+@decorator nui-gauge-track : nui-repeat-box
+{
+	left-image: "d:/ymir work/ui/pattern/gauge_slot_left.tga";
+	center-image: "d:/ymir work/ui/pattern/gauge_slot_center.tga";
+	right-image: "d:/ymir work/ui/pattern/gauge_slot_right.tga";
+}
+@decorator nui-gauge-red : nui-repeat-box
+{
+	center-image: "d:/ymir work/ui/pattern/gauge_red.tga";
+}
+@decorator nui-gauge-pink : nui-repeat-box
+{
+	center-image: "d:/ymir work/ui/pattern/gauge_pink.tga";
+}
+@decorator nui-gauge-purple : nui-repeat-box
+{
+	center-image: "d:/ymir work/ui/pattern/gauge_purple.tga";
+}
+@decorator nui-gauge-blue : nui-repeat-box
+{
+	center-image: "d:/ymir work/ui/pattern/gauge_blue.tga";
+}
+
+.skin-classic progress.nui-gauge
+{
+	decorator: nui-gauge-track;
+	height: 8dp;
+	background-color: transparent;
+	border-radius: 0;
+}
+.skin-classic progress.nui-gauge fill
+{
+	decorator: nui-gauge-red;
+	margin: 0 12dp;
+	background-color: transparent;
+	border-radius: 0;
+}
+.skin-classic progress.nui-gauge--pink fill
+{
+	decorator: nui-gauge-pink;
+	background-color: transparent;
+}
+.skin-classic progress.nui-gauge--purple fill
+{
+	decorator: nui-gauge-purple;
+	background-color: transparent;
+}
+.skin-classic progress.nui-gauge--blue fill
+{
+	decorator: nui-gauge-blue;
+	background-color: transparent;
+}

@@ -674,6 +674,7 @@ TOOLTIP_BUYPRICE	Τιμή: %s
 TOOLTIP_CAST_SPEED	Ταχύτητα Μαγείας +%d%%	SA
 TOOLTIP_CON	Ζωτικότητα +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Μπόνους φορεσιάς %d%%	SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Διατηρεί τα μπόνους και τους λίθους του αντικειμένου.
 TOOLTIP_DEF_GRADE	Άμυνα +%d	SA
 TOOLTIP_DEX	Ευκινησία +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Γη	SNA

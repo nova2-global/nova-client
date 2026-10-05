@@ -1633,7 +1633,7 @@ class GameWindow(ui.ScriptWindow):
 			
 			i = 0
 			for cubeInfo in cubeInfoList:								
-				self.interface.wndCube.AddCubeResultItem(cubeInfo["vnum"], cubeInfo["count"])
+				self.interface.wndCube.AddCubeResultItem(cubeInfo["vnum"], cubeInfo["count"], cubeInfo.get("keeps", False))
 				
 				j = 0				
 				for materialList in cubeInfo["materialList"]:
@@ -1665,6 +1665,7 @@ class GameWindow(ui.ScriptWindow):
 
 	def BINARY_Cube_ResultList(self, npcVNUM, listText):
 		# ResultList Text Format: 72723,1/72725,1/72730.1/50001,5 - list separated by "/" character
+		# An optional third field, 72723,1,1, marks a result that keeps the bonuses and stones of its first material
 		#print listText
 		
 		if npcVNUM == 0:
@@ -1677,9 +1678,10 @@ class GameWindow(ui.ScriptWindow):
 				eachInfo	= eachInfoText.split(",")
 				itemVnum	= int(eachInfo[0])
 				itemCount	= int(eachInfo[1])
+				keeps		= 2 < len(eachInfo) and "1" == eachInfo[2]
 
-				self.cubeInformation[npcVNUM].append({"vnum": itemVnum, "count": itemCount})
-				self.interface.wndCube.AddCubeResultItem(itemVnum, itemCount)
+				self.cubeInformation[npcVNUM].append({"vnum": itemVnum, "count": itemCount, "keeps": keeps})
+				self.interface.wndCube.AddCubeResultItem(itemVnum, itemCount, keeps)
 			
 			resultCount = len(self.cubeInformation[npcVNUM])
 			requestCount = 7

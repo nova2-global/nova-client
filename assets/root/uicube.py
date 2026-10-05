@@ -91,6 +91,7 @@ class CubeWindow(ui.ScriptWindow):
 		self.xShopStart = 0
 		self.yShopStart = 0
 		self.isUsable	= False
+		self.cubeResultKeeps = []
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -160,6 +161,7 @@ class CubeWindow(ui.ScriptWindow):
 
 		self.cubeItemInfo = {}
 		self.cubeResultInfos = []
+		self.cubeResultKeeps = []
 		self.cubeMaterialInfos = {}
 
 		self.tooltipItem = None
@@ -186,9 +188,14 @@ class CubeWindow(ui.ScriptWindow):
 			self.firstSlotIndex = startIndex
 			self.Refresh()
 
-	def AddCubeResultItem(self, itemVnum, count):
+	# keeps: the result keeps the bonuses and stones of its first material
+	def AddCubeResultItem(self, itemVnum, count, keeps=False):
 		self.cubeResultInfos.append((itemVnum, count))
+		self.cubeResultKeeps.append(keeps)
 		#self.Refresh()
+
+	def IsCubeResultKeeping(self, resultIndex):
+		return resultIndex < len(self.cubeResultKeeps) and self.cubeResultKeeps[resultIndex]
 
 	def AddMaterialInfo(self, itemIndex, orderIndex, itemVnum, itemCount):
 		if itemIndex not in self.cubeMaterialInfos:
@@ -199,6 +206,7 @@ class CubeWindow(ui.ScriptWindow):
 
 	def ClearCubeResultItem(self):
 		self.cubeResultInfos = []
+		self.cubeResultKeeps = []
 		self.Refresh()
 
 	def Destroy(self):
@@ -232,6 +240,10 @@ class CubeWindow(ui.ScriptWindow):
 		itemVnum, itemCount = self.cubeResultInfos[resultIndex]
 
 		self.tooltipItem.AddItemData(itemVnum, metinSlot, attrSlot)
+
+		if self.IsCubeResultKeeping(resultIndex):
+			self.tooltipItem.AppendSpace(5)
+			self.tooltipItem.AppendTextLine(localeInfo.TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES, self.tooltipItem.POSITIVE_COLOR)
 		
 
 	# Click material to find and register item from inventory.
@@ -361,6 +373,7 @@ class CubeWindow(ui.ScriptWindow):
 	def Open(self):
 		self.cubeItemInfo = {}
 		self.cubeResultInfos = []
+		self.cubeResultKeeps = []
 		self.cubeMaterialInfos = {}
 
 		self.Refresh()
@@ -387,6 +400,7 @@ class CubeWindow(ui.ScriptWindow):
 		self.cubeItemInfo = {}
 		self.cubeMaterialInfos = {}
 		self.cubeResultInfos = {}
+		self.cubeResultKeeps = []
 		self.firstSlotIndex = 0
 		self.contentScrollbar.SetPos(0)
 

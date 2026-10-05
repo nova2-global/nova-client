@@ -672,6 +672,7 @@ TOOLTIP_BUYPRICE	Preis: %s
 TOOLTIP_CAST_SPEED	Zaubergeschwindigkeit +%d%%	SA
 TOOLTIP_CON	Vitalität +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Kostümbonus %d%%	SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Behält die Boni und Steine des Gegenstands.
 TOOLTIP_DEF_GRADE	Verteidigung +%d	SA
 TOOLTIP_DEX	Beweglichkeit +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Erde	SNA

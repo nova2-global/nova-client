@@ -766,6 +766,7 @@ TOOLTIP_BUYPRICE	السعر: %s
 TOOLTIP_CAST_SPEED	سرعة السحر: +%d%%	SA
 TOOLTIP_CON	قوة الحياة +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	علاوة الزي %d%%	SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	يحتفظ بعلاوات الشيء وأحجاره.
 TOOLTIP_DEF_GRADE	دفاع +%d	SA
 TOOLTIP_DEX	المناورة +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	سماء	SNA

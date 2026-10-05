@@ -1,0 +1,211 @@
+/* Classic skin overlay of nui/windows/select/select.rml. The runtime and
+   nuitool apply it after the window's own sheet, select.rcss, in every theme;
+   every rule starts with .skin-classic, so it acts only while a classic theme
+   is in use (docs/ui/AUTHORING.md, Skins). */
+
+/* The classic board is short enough at any height, so the class-name art
+   stays where the window's sheet leaves it out for the modern board. */
+@media (max-height: 719dp)
+{
+	.skin-classic .select-job
+	{
+		display: block;
+	}
+}
+
+/* The legacy thin board with its rows at the legacy offsets: the empire flag
+   (half size) at (21, 12) beside the empire and guild boxes (90 by 18) at
+   x 100, then the slot list (17dp rows), the name and level boxes (130 by
+   18) at x 60 and the play time box (90 by 18) at x 100, 26dp apart, and
+   the four stat rows (the legacy gauge, 100dp, at x 47, and a 39 by 18 box
+   at x 151). Start or Create spans the board (180dp; the large art,
+   stretched), Delete and Exit (88dp) under it. Value boxes are the legacy
+   slot bar, with the text centered. The arrows are the legacy dragon art
+   (160 by 36), without a label. */
+.skin-classic .nui-window.select-board
+{
+	decorator: classic-thinboard;
+	padding: 0dp 0dp 13dp 0dp;
+}
+.skin-classic .select-empire
+{
+	gap: 15dp;
+	align-items: flex-start;
+	padding: 12dp 0dp 0dp 21dp;
+}
+.skin-classic .select-empire__text
+{
+	flex: 0 0 auto;
+	width: 90dp;
+}
+.skin-classic .select-empire__name
+{
+	font-weight: normal;
+}
+.skin-classic .select-empire__guild
+{
+	margin-top: 3dp;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+.skin-classic .select-value
+{
+	box-sizing: border-box;
+	height: 18dp;
+	line-height: 16dp;
+	padding: 0dp 2dp;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	color: var(--text);
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* Legacy draws the empire name centered on its 90px slot art, unclipped
+   ("Shinsoo Kingdom" is 91px in Tahoma 12): it may run past the box by a
+   pixel or two rather than lose its end. Guild names keep the ellipsis. */
+.skin-classic .select-value.select-empire__name
+{
+	padding: 0dp;
+	overflow: visible;
+	text-overflow: clip;
+}
+.skin-classic .select-slots
+{
+	margin: 6dp 10dp 0dp 10dp;
+}
+.skin-classic .select-info
+{
+	padding: 4dp 0dp 0dp 17dp;
+}
+/* A row spans the legacy 173dp (x 17 to 190). A label longer than the legacy
+   offset (43dp, 83dp for the play time) narrows its box, which keeps its
+   right edge. */
+.skin-classic .select-row
+{
+	justify-content: flex-start;
+	width: 173dp;
+	height: 26dp;
+}
+.skin-classic .select-label
+{
+	min-width: 43dp;
+	padding-right: 2dp;
+	box-sizing: border-box;
+	color: var(--text);
+}
+.skin-classic .select-label--long
+{
+	min-width: 83dp;
+}
+.skin-classic .select-row .select-value
+{
+	flex: 1 1 auto;
+	min-width: 40dp;
+	margin-left: auto;
+	text-align: center;
+}
+.skin-classic .select-value--wide
+{
+	max-width: 130dp;
+}
+.skin-classic .select-value--time
+{
+	max-width: 90dp;
+}
+.skin-classic .select-stats
+{
+	padding: 0dp 0dp 0dp 17dp;
+}
+/* A stat row spans 173dp too: the label (30dp, longer where the locale's
+   is), the gauge (100dp, narrower after a long label) and the box. */
+.skin-classic .select-stat
+{
+	gap: 0dp;
+	width: 173dp;
+	height: 26dp;
+}
+.skin-classic .select-stat__label
+{
+	min-width: 30dp;
+	padding-right: 2dp;
+	box-sizing: border-box;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+.skin-classic .select-stat__gauge
+{
+	flex: 1 1 auto;
+	max-width: 100dp;
+	margin: 0dp 4dp 0dp auto;
+}
+.skin-classic .select-stat__value
+{
+	width: 39dp;
+	text-align: center;
+}
+.skin-classic .select-footer
+{
+	gap: 14dp;
+	margin: 4dp 0dp 0dp 14dp;
+	padding: 0dp;
+}
+.skin-classic .select-footer__row
+{
+	gap: 3dp;
+}
+.skin-classic .select-button
+{
+	flex: 0 0 auto;
+	width: 88dp;
+	min-width: 88dp;
+	padding: 0dp;
+}
+.skin-classic .select-button--main
+{
+	width: 180dp;
+}
+/* The legacy labels are gray, Start and Create too. */
+.skin-classic .select-button.nui-button--primary
+{
+	color: var(--classic-button-text);
+}
+/* The classic disabled label (classic.rcss), which the rule above ties and
+   follows. */
+.skin-classic .select-button[disabled]
+{
+	color: var(--classic-disabled-text);
+}
+.skin-classic .select-arrow
+{
+	width: 160dp;
+	height: 36dp;
+	margin: 0dp;
+	color: transparent;
+}
+.skin-classic .select-arrow--left
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_left_button_01.sub");
+}
+.skin-classic .select-arrow--right
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_right_button_01.sub");
+}
+.skin-classic .select-arrow--left:hover, .skin-classic .select-arrow--left:focus-visible
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_left_button_02.sub");
+}
+.skin-classic .select-arrow--right:hover, .skin-classic .select-arrow--right:focus-visible
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_right_button_02.sub");
+}
+.skin-classic .select-arrow--left:active
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_left_button_03.sub");
+}
+.skin-classic .select-arrow--right:active
+{
+	decorator: image("d:/ymir work/ui/intro/select/dragon_right_button_03.sub");
+}

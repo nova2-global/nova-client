@@ -1,0 +1,8 @@
+{
+	"$comment": "The themes the goldens cover, read by tools/check_nui_snapshots.py (docs/ui/AUTHORING.md, Adding a theme). name is the short name in golden file names, id the theme id in assets/nui/nui/theme/themes.json; every theme there needs an entry here. A shipped theme is in every case whose themes are \"all\" (the full matrix). An experimental theme (\"experimental\": true) is only in the gallery and the pages its \"pages\" list names, at each of their scales.",
+	"themes": [
+		{"name": "dark", "id": "modern-dark"},
+		{"name": "light", "id": "modern-light"},
+		{"name": "classic", "id": "classic"}
+	]
+}

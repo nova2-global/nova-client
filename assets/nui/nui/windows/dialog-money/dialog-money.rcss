@@ -5,24 +5,3 @@
 {
 	margin-top: var(--space-2);
 }
-
-/* --- Classic skin ------------------------------------------------------------
-   The legacy money dialog (uiscript moneyinputdialog.py): the title bar, the
-   slot-bar field, the amount under it, the two middle buttons 10dp apart. */
-body.skin-classic.dialog-money .nui-window__body
-{
-	padding: 6dp 16dp 0dp 16dp;
-}
-body.skin-classic.dialog-money .nui-dialog__field
-{
-	width: 96dp;
-}
-body.skin-classic.dialog-money .dialog-money__amount
-{
-	margin-top: 7dp;
-}
-body.skin-classic.dialog-money .nui-window__footer
-{
-	padding: 7dp 16dp 11dp 16dp;
-	gap: 10dp;
-}

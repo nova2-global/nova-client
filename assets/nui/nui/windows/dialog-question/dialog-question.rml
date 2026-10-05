@@ -7,10 +7,11 @@
 	     leave the dialog open, as the legacy buttons do. Escape hides it, and
 	     nui-escape-passes-key-down lets the legacy key handlers see the key
 	     too, as under a legacy question: the game window ends its item drop
-	     question and the inventory lock there. -->
+	     question and the inventory lock there. The look is
+	     components/dialog.rcss's, so the window has no sheet of its own (RmlUi
+	     refuses a sheet without rules). -->
 	<title>dialog-question</title>
 	<link type="text/template" href="../../nui.rtpl"/>
-	<link type="text/rcss" href="dialog-question.rcss"/>
 </head>
 <body template="nui" class="nui-scrim nui-escape-passes-key-down dialog-question" data-model="dialog_question">
 	<div class="nui-window nui-dialog nui-anim" id="dialog-question">

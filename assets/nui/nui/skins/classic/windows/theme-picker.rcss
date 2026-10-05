@@ -1,0 +1,42 @@
+/* Classic skin overlay of nui/windows/theme-picker/theme-picker.rml. The
+   runtime and nuitool apply it after the window's own sheet,
+   theme-picker.rcss, in every theme; every rule starts with .skin-classic, so
+   it acts only while a classic theme is in use (docs/ui/AUTHORING.md, Skins). */
+
+/* A thin board with the large legacy buttons; the theme in use holds the
+   down art, as legacy radio buttons do. 6dp of padding keep the board 33dp
+   tall, above its two 16dp corners. */
+body.skin-classic.picker
+{
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+	padding: 6dp 10dp;
+}
+.skin-classic .picker__label
+{
+	color: var(--text);
+}
+/* The labels are localized (D15): a long one widens the button, and the
+   9dp of padding (the medium button's) keep its text off the 6dp caps. */
+.skin-classic.picker .nui-button
+{
+	decorator: tiled-horizontal(classic-button-large-01-l, classic-button-large-01-c, classic-button-large-01-r);
+	min-width: 88dp;
+	width: auto;
+	padding: 0 9dp;
+}
+.skin-classic.picker .nui-button:hover, .skin-classic.picker .nui-button.is-hover
+{
+	decorator: tiled-horizontal(classic-button-large-02-l, classic-button-large-02-c, classic-button-large-02-r);
+}
+/* After hover, which they tie: a press and the selection show the down art. */
+.skin-classic.picker .nui-button:active, .skin-classic.picker .nui-button.is-active,
+.skin-classic.picker .nui-button.is-selected
+{
+	decorator: tiled-horizontal(classic-button-large-03-l, classic-button-large-03-c, classic-button-large-03-r);
+	background-color: transparent;
+	border-color: transparent;
+	color: var(--classic-button-text);
+}

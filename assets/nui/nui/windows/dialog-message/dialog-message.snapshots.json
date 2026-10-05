@@ -1,7 +1,7 @@
 {
 	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py).",
 	"cases": [
-		{"page": "dialog-message", "themes": ["dark", "light", "classic"],
+		{"page": "dialog-message", "themes": "all",
 		 "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]],
 		 "fixture": true, "roots": [], "time": null}
 	]

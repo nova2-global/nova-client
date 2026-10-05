@@ -20,6 +20,12 @@ theme's short name (dark, light, classic); nuitool gets its id from
 nui/theme/themes.json (modern-dark, modern-light, classic), which needs a
 nuitool that takes theme ids.
 
+docs/ui/snapshots/golden-themes.json maps the short names to the ids and
+sets the golden policy: a case's themes are a list of short names or "all",
+every shipped theme; an experimental theme ("experimental": true) is only
+in the gallery and the pages it names. Every theme of nui/theme/themes.json
+needs an entry there.
+
 A check runs every case, even after a mismatch, lists every mismatch with
 nuitool's own report, and leaves the snapshots and diff images of the
 mismatches in a folder it names. RmlUi warnings (nuitool's "rmlui:" lines)
@@ -52,33 +58,88 @@ LOCALE = ["--locale", "assets/locale/locale/en"]
 # the loading screens in uiloading), locale art, item icons.
 EXTRA_ROOTS = ("assets/ETC", "assets/locale", "assets/uiloading", "assets/icon")
 WINDOWS = os.path.join("assets", "nui", "nui", "windows")
-
-# (name in the file name, theme id)
-THEMES = (("dark", "modern-dark"), ("light", "modern-light"), ("classic", "classic"))
+GOLDEN_THEMES = os.path.join("docs", "ui", "snapshots", "golden-themes.json")
+PLAYER_THEMES = os.path.join("assets", "nui", "nui", "theme", "themes.json")
+SHORT_NAME_RE = re.compile(r"[a-z][a-z0-9]*")
+# The pages an experimental theme always gets, before the ones it names.
+EXPERIMENTAL_PAGES = ("gallery",)
 FULL_SCREEN = [("100", "1", "1920x1080"), ("150", "1.5", "2880x1620"), ("200", "2", "3840x2160")]
 
 # (page, document, fixture or None, theme names, [(percent, --scale, --size)], extra roots, --time or None).
 # The gallery shows the classic gauge, whose art is under d:/ymir work/.
 PAGES = [
     ("gallery", "nui/windows/gallery/gallery.rml", "assets/nui/nui/windows/gallery/gallery.fixture.json",
-     ("dark", "light", "classic"), FULL_SCREEN, ("assets/ETC",), None),
+     "all", FULL_SCREEN, ("assets/ETC",), None),
     ("render-test", "nui/windows/render-test/render-test.rml", None,
      ("dark", "light"), [("100", "1", "1280x720"), ("150", "1.5", "1920x1080"), ("200", "2", "2560x1440")], (), None),
     ("login", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
-     ("dark", "light", "classic"), FULL_SCREEN, (), None),
+     "all", FULL_SCREEN, (), None),
     ("theme-picker", "nui/windows/theme-picker/theme-picker.rml", "assets/nui/nui/windows/theme-picker/theme-picker.fixture.json",
-     ("dark", "light", "classic"), [("100", "1", "640x360")], (), None),
+     "all", [("100", "1", "640x360")], (), None),
     ("skin-proof", "nui/windows/skin-proof/skin-proof.rml", None,
      ("classic",), [("100", "1", "640x360"), ("150", "1.5", "960x540"), ("200", "2", "1280x720")], (), None),
 ]
 
 
-def window_pages(root=None):
+def golden_themes(root=None):
+    """[{"name", "id", "experimental", "pages"}] from docs/ui/snapshots/golden-themes.json,
+    in file order. ValueError for a file that breaks its rules or does not
+    cover nui/theme/themes.json exactly."""
+    root = root or os.getcwd()
+    path = os.path.join(root, GOLDEN_THEMES)
+    with open(path, encoding="utf-8") as file:
+        entries = json.load(file).get("themes")
+    if not isinstance(entries, list) or not entries:
+        raise ValueError("%s: themes is a non-empty list" % GOLDEN_THEMES)
+    themes, names, ids = [], set(), set()
+    for entry in entries:
+        where = "%s: %r" % (GOLDEN_THEMES, entry)
+        if not isinstance(entry, dict) or set(entry) - {"name", "id", "experimental", "pages"}:
+            raise ValueError("%s: an entry has name, id and, for an experimental theme, experimental and pages" % where)
+        name, theme_id = entry.get("name"), entry.get("id")
+        if not isinstance(name, str) or not SHORT_NAME_RE.fullmatch(name) or name in names:
+            raise ValueError("%s: name is a unique word of lowercase letters and digits" % where)
+        if not isinstance(theme_id, str) or theme_id in ids:
+            raise ValueError("%s: id is a theme id, once" % where)
+        experimental = entry.get("experimental", False)
+        pages = entry.get("pages", [])
+        if not isinstance(experimental, bool) or not isinstance(pages, list) or not all(isinstance(p, str) for p in pages):
+            raise ValueError("%s: experimental is true or false, pages a list of page names" % where)
+        if pages and not experimental:
+            raise ValueError("%s: only an experimental theme names pages; a shipped one is in every \"all\" case" % where)
+        names.add(name)
+        ids.add(theme_id)
+        themes.append({"name": name, "id": theme_id, "experimental": experimental,
+                       "pages": list(EXPERIMENTAL_PAGES) + [p for p in pages if p not in EXPERIMENTAL_PAGES] if experimental else []})
+    with open(os.path.join(root, PLAYER_THEMES), encoding="utf-8") as file:
+        player = [theme.get("id") for theme in json.load(file).get("themes", [])]
+    missing = [theme_id for theme_id in player if theme_id not in ids]
+    if missing:
+        raise ValueError("%s has no entry for theme %s of %s" % (GOLDEN_THEMES, ", ".join(missing), PLAYER_THEMES))
+    unknown = [theme_id for theme_id in ids if theme_id not in player]
+    if unknown:
+        raise ValueError("%s names theme %s, which %s does not hold" % (GOLDEN_THEMES, ", ".join(sorted(unknown)), PLAYER_THEMES))
+    return themes
+
+
+def case_themes(themes, listed, where):
+    """The short names a case's `themes` value stands for: "all" (every
+    shipped theme) or a list of short names."""
+    names = [theme["name"] for theme in themes]
+    if listed == "all":
+        return tuple(theme["name"] for theme in themes if not theme["experimental"])
+    listed = tuple(listed) if isinstance(listed, (list, tuple)) else ()
+    if not listed or any(name not in names for name in listed):
+        raise ValueError("%s: themes are \"all\" or among %s" % (where, ", ".join(names)))
+    return listed
+
+
+def window_pages(root=None, themes=None):
     """PAGES entries from every assets/nui/nui/windows/<name>/<name>.snapshots.json,
     in folder order. ValueError for a case file that breaks its rules: a page
     other than its folder name, an unknown theme or root, a bad scale row."""
     root = root or os.getcwd()
-    theme_names = dict(THEMES)
+    themes = themes if themes is not None else golden_themes(root)
     pages = []
     for path in sorted(glob.glob(os.path.join(root, WINDOWS, "*", "*.snapshots.json"))):
         folder = os.path.basename(os.path.dirname(path))
@@ -90,9 +151,7 @@ def window_pages(root=None):
             where = "%s: %r" % (os.path.relpath(path, root), case.get("page"))
             if case.get("page") != folder:
                 raise ValueError("%s: page must be the folder name %r" % (where, folder))
-            themes = tuple(case.get("themes", ()))
-            if not themes or any(theme not in theme_names for theme in themes):
-                raise ValueError("%s: themes are among %s" % (where, ", ".join(theme_names)))
+            listed = case_themes(themes, case.get("themes"), where)
             scales = [tuple(row) for row in case.get("scales", ())]
             if not scales or any(len(row) != 3 or not all(isinstance(item, str) for item in row) for row in scales):
                 raise ValueError("%s: scales are [percent, --scale, --size] rows of strings" % where)
@@ -113,7 +172,7 @@ def window_pages(root=None):
             if fixture and not os.path.isfile(os.path.join(root, fixture)):
                 raise ValueError("%s: no %s" % (where, fixture))
             name = folder if variant is None else "%s-%s" % (folder, variant)
-            pages.append((name, document, fixture, themes, scales, roots, time))
+            pages.append((name, document, fixture, listed, scales, roots, time))
     return pages
 
 
@@ -130,14 +189,23 @@ SWITCHED = [
 ]
 
 
-def cases():
+def cases(root=None):
     """(case name, golden name, document, fixture or None, theme id, --scale, --size, reduced motion,
     extra roots, --time or None, --switch-from theme id or None); the goldens first, then the
     switched cases."""
-    theme_ids = dict(THEMES)
+    themes = golden_themes(root)
+    theme_ids = {theme["name"]: theme["id"] for theme in themes}
+    pages = [(page, document, fixture, case_themes(themes, listed, page), scales, roots, time)
+             for page, document, fixture, listed, scales, roots, time in PAGES] + window_pages(root, themes)
+    page_names = {page[0] for page in pages}
+    for theme in themes:
+        unknown = [page for page in theme["pages"] if page not in page_names]
+        if unknown:
+            raise ValueError("%s: theme %s names page %s, which has no golden case" % (GOLDEN_THEMES, theme["name"], ", ".join(unknown)))
     goldens = []
-    for page, document, fixture, themes, scales, roots, time in PAGES + window_pages():
-        for theme in themes:
+    for page, document, fixture, listed, scales, roots, time in pages:
+        extra = tuple(theme["name"] for theme in themes if page in theme["pages"] and theme["name"] not in listed)
+        for theme in listed + extra:
             for percent, scale, size in scales:
                 goldens.append((f"{page}-{theme}-{percent}", document, fixture, theme_ids[theme], scale, size, False, roots, time))
     # Reduced motion renders the resting state, which at the default --time 1
@@ -200,7 +268,7 @@ def main(argv=None):
         return 2
     try:
         selected = [c for c in cases() if args.only in c[0]]
-    except ValueError as error:
+    except (ValueError, OSError) as error:
         print(f"check_nui_snapshots: {error}", file=sys.stderr)
         return 2
     if not selected:

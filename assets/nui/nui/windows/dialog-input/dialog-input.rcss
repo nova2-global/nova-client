@@ -6,31 +6,12 @@
 	margin-bottom: var(--space-1);
 }
 
-/* --- Classic skin ------------------------------------------------------------
-   The legacy input dialogs (uiscript inputdialog*.py): the title bar, the
-   description and the slot-bar field under it, the two middle buttons 10dp
-   apart, 11dp above the bottom edge. */
-body.skin-classic.dialog-input .nui-window__body
-{
-	padding: 6dp 16dp 0dp 16dp;
-}
-body.skin-classic.dialog-input .nui-dialog__field
-{
-	width: 120dp;
-	margin-top: 2dp;
-}
-body.skin-classic.dialog-input .nui-window__footer
-{
-	padding: 8dp 16dp 11dp 16dp;
-	gap: 10dp;
-}
-
 /* The field of the other type (dialog-input.rml): it takes no room, no
    pointer and no Tab, and draws nothing. Not display: none or visibility:
    hidden, which RmlUi would apply only at the next update: the kit fills
    and focuses the field in use in the same call that set secret, and a
-   hidden field takes neither. After the classic field rule, which it
-   outranks. */
+   hidden field takes neither. It outranks the classic field rule
+   (skins/classic/windows/dialog-input.rcss). */
 body.dialog-input .nui-window__body .nui-dialog__field.is-idle
 {
 	position: absolute;

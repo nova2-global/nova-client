@@ -1,0 +1,21 @@
+/* Classic skin overlay of nui/windows/locale-strip/locale-strip.rml. The
+   runtime and nuitool apply it after the window's own sheet,
+   locale-strip.rcss, in every theme; every rule starts with .skin-classic, so
+   it acts only while a classic theme is in use (docs/ui/AUTHORING.md, Skins). */
+
+/* The legacy thin board with the flags on it; the legacy strip shows no
+   selection and no hover. */
+body.skin-classic.locale-strip
+{
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-bottom-width: 0dp;
+}
+.skin-classic .locale-strip__flag, .skin-classic .locale-strip__flag:hover
+{
+	background-color: transparent;
+}
+.skin-classic .locale-strip__flag.is-selected
+{
+	border-bottom-color: transparent;
+}

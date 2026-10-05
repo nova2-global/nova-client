@@ -53,21 +53,3 @@ body.locale-strip
 	margin-top: var(--space-1);
 	margin-bottom: 0dp;
 }
-
-/* --- Classic skin ------------------------------------------------------------
-   The legacy thin board with the flags on it; the legacy strip shows no
-   selection and no hover. */
-body.skin-classic.locale-strip
-{
-	decorator: classic-thinboard;
-	background-color: transparent;
-	border-bottom-width: 0dp;
-}
-.skin-classic .locale-strip__flag, .skin-classic .locale-strip__flag:hover
-{
-	background-color: transparent;
-}
-.skin-classic .locale-strip__flag.is-selected
-{
-	border-bottom-color: transparent;
-}

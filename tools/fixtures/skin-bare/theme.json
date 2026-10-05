@@ -1,0 +1,17 @@
+{
+	"$comment": "Test-only theme: the bare skin (body class skin-bare), which has no rules and no folder of its own, so every window shows the stock components on its modern layout, with the bare palette (theme-bare: the dark palette with these colors changed, so a snapshot shows the palette applied). tools/nui_skin_bare.py adds it to a scratch copy of assets/nui/nui for nui_skin_bare_test.py; it is never in the shipped nui/theme/themes.json. docs/ui/AUTHORING.md, Adding a theme.",
+	"theme": {"id": "bare", "label": "Bare", "body": ["skin-bare", "theme-bare"]},
+	"palette": {
+		"name": "bare",
+		"base": "dark",
+		"colors": {
+			"surface": "#1b2120",
+			"surface-raised": "#232b29",
+			"surface-hover": "#2d3734",
+			"accent": "#7fd6a4",
+			"accent-hover": "#a3e4bd",
+			"accent-text": "#0b2416",
+			"selection": "#24453a"
+		}
+	}
+}

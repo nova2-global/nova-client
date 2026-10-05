@@ -39,22 +39,3 @@
 	justify-content: center;
 	gap: var(--space-2);
 }
-
-/* --- Classic skin --------------------------------------------------------------
-   The stone board comes from the window component (.skin-classic .nui-window).
-   Its minimum width (200,000) would otherwise outweigh the one above, and the
-   text is the legacy gray. The footer keeps the centered row above. */
-.skin-classic .nui-window.nui-dialog
-{
-	min-width: 280dp;
-}
-.skin-classic .nui-dialog__text
-{
-	color: var(--text);
-}
-/* The legacy dialog buttons have gray labels; the primary one too. Before the
-   classic disabled rule (classic.rcss, the same weight, linked later). */
-.skin-classic .nui-dialog__footer .nui-button--primary
-{
-	color: var(--classic-button-text);
-}

@@ -1,7 +1,7 @@
 {
 	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py). The emblem shows frame 5 of 24 (0.1 s at 1/60 s a frame).",
 	"cases": [
-		{"page": "loading", "themes": ["dark", "light", "classic"],
+		{"page": "loading", "themes": "all",
 		 "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]],
 		 "fixture": true, "roots": ["assets/ETC", "assets/uiloading"], "time": 0.1}
 	]

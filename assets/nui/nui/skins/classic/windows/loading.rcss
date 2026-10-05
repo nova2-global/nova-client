@@ -1,0 +1,31 @@
+/* Classic skin overlay of nui/windows/loading/loading.rml. The runtime and
+   nuitool apply it after the window's own sheet, loading.rcss, in every theme;
+   every rule starts with .skin-classic, so it acts only while a classic theme
+   is in use (docs/ui/AUTHORING.md, Skins). */
+
+/* The legacy gauge: the empty art, and the full art as the fill image, which
+   RmlUi crops to the value as legacy SetPercentage crops it. The error line
+   is the legacy text line, outlined for the image under it. */
+.skin-classic progress.loading-gauge
+{
+	top: 25dp;
+	height: 30dp;
+	decorator: image("d:/ymir work/ui/intro/loading/gauge_empty.sub");
+	fill-image: "d:/ymir work/ui/intro/loading/gauge_full.sub";
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
+}
+.skin-classic progress.loading-gauge fill
+{
+	background-color: transparent;
+	border-radius: 0dp;
+}
+.skin-classic .loading-error
+{
+	padding: 0dp;
+	background-color: transparent;
+	border-radius: 0dp;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

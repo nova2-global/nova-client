@@ -1,0 +1,15 @@
+/* The gift icon's modern place: above the modern taskbar's left end, over
+   the item mall button that opens the gift. Classic:
+   skins/classic/windows/gift-box.rcss. */
+
+body.gift-box
+{
+	focus: none;
+}
+.gift-box__icon
+{
+	position: absolute;
+	left: 2dp;
+	bottom: 50dp;
+	pointer-events: none;
+}

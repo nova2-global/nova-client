@@ -9,6 +9,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_test_support as support  # noqa: E402
 
 WAVE1 = ["login", "dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"]
+WAVE2A = ["taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
+          "edge-buttons", "tip-board", "big-board", "map-name"]
 
 
 class Legacy(object):
@@ -65,12 +67,69 @@ class WindowsTest(unittest.TestCase):
 
 class Flags(WindowsTest):
     def test_every_wave1_window_defaults_to_legacy(self):
-        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1)
-        for window_id, default in self.m.WINDOWS:
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1)], WAVE1)
+        for window_id, default in self.m.WINDOWS[:len(WAVE1)]:
             self.assertIs(default, False, window_id)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+
+    def test_every_wave2a_window_defaults_to_legacy(self):
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A, "appended in this order")
+        for window_id, default in self.m.WINDOWS[len(WAVE1):]:
+            self.assertIs(default, False, window_id)
+            self.assertFalse(self.m.is_on(window_id), window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+
+    def test_a_group_turns_its_members_on_and_off_in_token_order(self):
+        self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A))
+        self.assertEqual(self.m.GROUPS["wave1"], tuple(WAVE1[1:]), "login is in no group")
+        self.setting.windows = "+hud,-target"
+        on = self.m.overrides()
+        self.assertEqual(on, dict([(window_id, window_id != "target") for window_id in WAVE2A]))
+        self.assertFalse(self.m.is_on("target"))
+        self.assertTrue(self.m.is_on("taskbar"))
+        self.assertEqual(self.m.use("taskbar"), (True, ""))
+        self.setting.windows = "-target,+hud"
+        self.assertTrue(self.m.is_on("target"), "the later token wins")
+        self.setting.windows = "+wave1,+hud,-hud"
+        self.assertTrue(all(self.m.is_on(window_id) for window_id in WAVE1[1:]))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2A))
+        self.assertFalse(self.m.is_on("login"))
+        self.reload(systemSetting=support.make_setting(flag=1, windows="+wave1"))
+        self.assertTrue(self.m.is_on("login"), "UI_NUI_LOGIN 1 still means +login")
+        self.reload(systemSetting=support.make_setting(flag=1, windows="+wave1,-login"))
+        self.assertFalse(self.m.is_on("login"))
+
+    def test_a_group_id_is_not_a_window(self):
+        self.setting.windows = "+hud,+wave1"
+        for group in ("hud", "wave1"):
+            self.assertNotIn(group, self.m.overrides())
+            self.assertFalse(self.m.is_on(group))
+            self.assertEqual(self.m.use(group), (False, "flag off"))
+            self.assertNotIn(group, [window_id for window_id, _ in self.m.WINDOWS])
+
+    def test_set_override_refuses_a_group(self):
+        self.setting.windows = "+hud"
+        for group in ("hud", "wave1"):
+            self.assertRaises(ValueError, self.m.set_override, group, True)
+            self.assertRaises(ValueError, self.m.set_override, group, None)
+        self.assertEqual(self.setting.saved, 0)
+        self.assertTrue(self.m.set_override("target", False))
+        self.assertEqual(self.setting.windows, "+hud,-target", "the group token stays; the new one after it wins")
+        self.assertFalse(self.m.is_on("target"))
+        self.assertTrue(self.m.is_on("party"))
+
+    def test_the_demo_string_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud"
+        self.assertLessEqual(len(demo), 200)
+        known = [window_id for window_id, _ in self.m.WINDOWS]
+        for members in self.m.GROUPS.values():
+            for window_id in members:
+                self.assertIn(window_id, known)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on), sorted(WAVE1[1:] + WAVE2A))
 
     def test_overrides_turn_windows_on_and_off(self):
         self.setting.windows = "+dialogs,+server-board,-select,+unknown-window"

@@ -1,8 +1,10 @@
 """Which windows run on NovaUI, and the factory that makes them.
 
-Each Wave 1 window has an id. Its default lives here (every Wave 1 window
-is off: legacy) and config/metin2.cfg overrides it through UI_NUI_WINDOWS
-("+id" on, "-id" off, comma-separated; systemSetting.GetUINuiWindows).
+Each window has an id. Its default lives here (every Wave 1 and Wave 2a
+window is off: legacy) and config/metin2.cfg overrides it through
+UI_NUI_WINDOWS ("+id" on, "-id" off, comma-separated;
+systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud") in that
+string stands for each of its windows, in its place among the tokens.
 UI_NUI_LOGIN 1 means "+login" unless UI_NUI_WINDOWS names login itself.
 A window runs on NovaUI only when its flag is on, NovaUI is available, the
 locale is not right-to-left (nui.enabled_for_locale), its document loaded
@@ -40,7 +42,7 @@ except ImportError:  # plain Python outside the client
 	wndMgr = None
 
 
-WINDOWS = (            # (id, default) in this order; the defaults stay False in Wave 1
+WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1 and 2a
 	("login", False),
 	("dialogs", False),
 	("server-board", False),
@@ -50,7 +52,25 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("empire", False),
 	("select", False),
 	("create", False),
+	("taskbar", False),            # the taskbar: gauges, quickslots, the mouse-button pickers
+	("expanded-taskbar", False),   # the expanded taskbar (the dragon soul button)
+	("energy-bar", False),
+	("gift-box", False),           # the gift icon; needs the NovaUI taskbar, which makes it
+	("game-buttons", False),       # the stat, skill, help, quest, build and observer buttons
+	("affects", False),
+	("target", False),
+	("party", False),
+	("edge-buttons", False),       # the quest and whisper edge buttons
+	("tip-board", False),
+	("big-board", False),
+	("map-name", False),
 )
+
+GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
+	"wave1": ("dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"),
+	"hud": ("taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
+	        "edge-buttons", "tip-board", "big-board", "map-name"),
+}
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
 
@@ -82,11 +102,15 @@ def _tokens():
 
 
 def overrides():
-	"""{id: bool} from UI_NUI_WINDOWS, plus the UI_NUI_LOGIN mapping. Ids this
-	table does not know are kept (content from a newer release)."""
+	"""{id: bool} from UI_NUI_WINDOWS, plus the UI_NUI_LOGIN mapping. A group
+	token stands for each of its windows in its place ("+hud,-target" is
+	every HUD window but the target board; "-target,+hud" has it on), so a
+	later token wins per id. A group id itself is no key. Ids this table
+	does not know are kept (content from a newer release)."""
 	result = {}
 	for window_id, on in _tokens():
-		result[window_id] = on
+		for member in GROUPS.get(window_id, (window_id,)):
+			result[member] = on
 	if "login" not in result:
 		is_login = getattr(systemSetting, "IsUINuiLogin", None)
 		if is_login is not None and is_login():
@@ -96,7 +120,7 @@ def overrides():
 
 def is_on(window_id):
 	"""The flag alone: the override, else the default (False for an id this
-	table does not know)."""
+	table does not know, and for a group id, which is not a window)."""
 	return bool(overrides().get(window_id, _DEFAULTS.get(window_id, False)))
 
 
@@ -211,8 +235,10 @@ def set_override(window_id, on):
 	"""Sets the override of one window: True ("+id"), False ("-id") or None
 	(removes it, so the default applies). Saves config/metin2.cfg. True when
 	the client took the new value; False with an exe that has no binding or
-	refuses it. ValueError for an id out of form."""
-	if not _is_id(window_id):
+	refuses it. ValueError for an id out of form, and for a group id: the
+	override names single windows only (a group token already in the string
+	stays, and the new token after it wins)."""
+	if not _is_id(window_id) or window_id in GROUPS:
 		raise ValueError("nui_windows.set_override(): %r is not a window id" % (window_id,))
 	tokens = [(other, value) for other, value in _tokens() if other != window_id]
 	if on is not None:

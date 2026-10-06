@@ -145,3 +145,10 @@ body.nui-window
 {
 	margin-top: 0;
 }
+
+/* The two slot grids side by side, aligned at their tops. */
+.gallery-slots
+{
+	align-items: flex-start;
+	gap: var(--space-2);
+}

@@ -56,8 +56,13 @@ SNAPSHOTS = os.path.join("docs", "ui", "snapshots")
 BASE_ROOTS = ["assets/nui", "assets/icon"]
 LOCALE = ["--locale", "assets/locale/locale/en"]
 # Extra --root values a case may add: legacy art under d:/ymir work/ (ETC, and
-# the loading screens in uiloading), locale art, item icons.
-EXTRA_ROOTS = ("assets/ETC", "assets/locale", "assets/uiloading", "assets/icon")
+# the loading screens in uiloading), locale art, item icons, the season1 group
+# (season1/interface/...: the big notice board's frame) and the patch groups
+# that hold the HUD art under d:/ymir work/ (the energy bar in
+# metin2_patch_eu4, the gift icon in metin2_patch_etc, the dragon soul button
+# in metin2_patch_ds).
+EXTRA_ROOTS = ("assets/ETC", "assets/locale", "assets/uiloading", "assets/icon", "assets/season1",
+               "assets/metin2_patch_eu4", "assets/metin2_patch_etc", "assets/metin2_patch_ds")
 WINDOWS = os.path.join("assets", "nui", "nui", "windows")
 GOLDEN_THEMES = os.path.join("docs", "ui", "snapshots", "golden-themes.json")
 PLAYER_THEMES = os.path.join("assets", "nui", "nui", "theme", "themes.json")

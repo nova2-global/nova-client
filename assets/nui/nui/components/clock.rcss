@@ -1,0 +1,36 @@
+/* Clock elements (docs/ui/AUTHORING.md "Clock elements"). The NovaUI runtime
+   registers them; their clock is nui.now(), so a time a controller writes
+   into a model is nui.now() plus seconds.
+
+   <nui-countdown format="dhms" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE"
+   	second="@game.SECOND" data-attr-end="icon.end"/>
+   	the remaining time as text, changed at most once a second; format="none"
+   	is a timer that only sends countdownend.
+   <nui-cooldown data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+   	a cooldown sweep: the remaining part of [start, end), counter-clockwise
+   	from the top as the legacy box draws it, in 64 steps; hidden outside
+   	its span.
+
+   The sweep is a progress element: RmlUi builds its circular geometry only
+   from a fill-image, which it resolves against the document, so the image
+   is a store path (a white texel tinted by image-color). The sweep covers
+   its positioned parent's box; a component that places it inside a part of
+   that box (the slot grid) sets its own left, top and size. */
+
+nui-countdown
+{
+	display: inline;
+}
+
+nui-cooldown
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	fill-image: /nui/components/img/solid.tga;
+	image-color: var(--cooldown-shade);
+	pointer-events: none;
+}

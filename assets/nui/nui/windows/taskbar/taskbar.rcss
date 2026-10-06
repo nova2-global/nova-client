@@ -1,0 +1,421 @@
+/* The taskbar's modern layout: one bar along the bottom edge, the gauges and
+   the EXP orbs at its left, the mouse-button modes and the quickslots in its
+   middle, the window buttons at its right; the mode menus and the skill
+   picker above the mode buttons. The classic layout is in
+   skins/classic/windows/taskbar.rcss. Positions are anchored as legacy
+   anchors them: the middle group from the screen's center, the window
+   buttons from its right edge. The buttons keep the legacy icons, drawn on
+   a modern button. */
+
+body.taskbar
+{
+	focus: none;
+	tab-index: none;
+}
+.taskbar button
+{
+	focus: none;
+	tab-index: none;
+}
+
+.taskbar-bar
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 48dp;
+	background-color: var(--surface);
+	border-top-width: 1dp;
+	border-color: var(--border);
+}
+.taskbar-base
+{
+	display: none;
+}
+
+/* --- Gauges, the mall button and the EXP orbs --------------------------------- */
+
+.taskbar-gauges
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 212dp;
+	height: 47dp;
+}
+.taskbar-mall
+{
+	position: absolute;
+	left: 4dp;
+	top: 3dp;
+	pointer-events: auto;
+}
+.taskbar-gauge-host
+{
+	display: block;
+	position: absolute;
+	left: 52dp;
+	width: 150dp;
+	pointer-events: auto;
+}
+.taskbar-gauge-host--hp
+{
+	top: 8dp;
+	height: 10dp;
+}
+.taskbar-gauge-host--sp
+{
+	top: 21dp;
+	height: 10dp;
+}
+.taskbar-gauge-host--st
+{
+	top: 34dp;
+	height: 6dp;
+}
+progress.taskbar-gauge
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 150dp;
+	height: 10dp;
+}
+progress.taskbar-gauge--st
+{
+	height: 6dp;
+}
+/* The recovery to come: a lighter bar under the gauge, as long as the HP or
+   SP the regeneration will reach. */
+progress.taskbar-recovery
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 150dp;
+	height: 10dp;
+	border-radius: 3dp;
+	background-color: var(--gauge-track);
+}
+progress.taskbar-recovery fill
+{
+	border-radius: 3dp;
+}
+progress.taskbar-recovery--hp fill
+{
+	background-color: var(--hp-recovery);
+}
+progress.taskbar-recovery--sp fill
+{
+	background-color: var(--sp-recovery);
+}
+/* HP and SP draw over their recovery bar, which holds the track. */
+progress.taskbar-gauge--hp.nui-gauge, progress.taskbar-gauge--sp.nui-gauge
+{
+	background-color: transparent;
+}
+
+.taskbar-exp
+{
+	display: block;
+	position: absolute;
+	left: 212dp;
+	top: 9dp;
+	width: 56dp;
+	height: 30dp;
+	pointer-events: auto;
+}
+progress.taskbar-orb
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 11dp;
+	height: 30dp;
+	background-color: var(--gauge-track);
+	border-radius: 3dp;
+}
+progress.taskbar-orb fill
+{
+	background-color: var(--accent);
+	border-radius: 3dp;
+}
+.taskbar-orb--1 { left: 0; }
+.taskbar-orb--2 { left: 15dp; }
+.taskbar-orb--3 { left: 30dp; }
+.taskbar-orb--4 { left: 45dp; }
+
+/* --- Buttons with legacy icons ------------------------------------------------- */
+
+.taskbar-mode, .taskbar-window, .taskbar-expand, .taskbar-pager__up, .taskbar-pager__down
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+	pointer-events: auto;
+}
+.taskbar-mode, .taskbar-window
+{
+	width: 40dp;
+	height: 40dp;
+}
+.taskbar-mode:hover, .taskbar-window:hover, .taskbar-expand:hover, .taskbar-pager__up:hover, .taskbar-pager__down:hover
+{
+	background-color: var(--surface-hover);
+	border-color: var(--accent);
+}
+.taskbar-mode:active, .taskbar-window:active, .taskbar-expand:active, .taskbar-pager__up:active, .taskbar-pager__down:active,
+.taskbar-mode.is-open
+{
+	background-color: var(--surface-sunken);
+}
+
+.taskbar-mode--move { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_move_01.sub" scale-none center center); }
+.taskbar-mode--attack { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_attack_01.sub" scale-none center center); }
+.taskbar-mode--auto { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_auto_attack_01.sub" scale-none center center); }
+.taskbar-mode--camera { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub" scale-none center center); }
+.taskbar-mode--skill { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_skill_01.sub" scale-none center center); }
+
+.taskbar-mode--left
+{
+	left: 50%;
+	top: 4dp;
+	margin-left: -262dp;
+}
+.taskbar-mode--right
+{
+	left: 50%;
+	top: 4dp;
+	margin-left: 222dp;
+}
+.taskbar-right-skill
+{
+	position: absolute;
+	left: 50%;
+	top: 4dp;
+	margin-left: 222dp;
+}
+
+.taskbar-window--character
+{
+	right: 140dp;
+	top: 4dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/character_button_01.sub" scale-none center center);
+}
+.taskbar-window--inventory
+{
+	right: 96dp;
+	top: 4dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/inventory_button_01.sub" scale-none center center);
+}
+.taskbar-window--messenger
+{
+	right: 52dp;
+	top: 4dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/community_button_01.sub" scale-none center center);
+}
+.taskbar-window--system
+{
+	right: 8dp;
+	top: 4dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/system_button_01.sub" scale-none center center);
+}
+
+/* The camera mode image while the quick camera key is held, over the right
+   mode button. */
+.taskbar-camera
+{
+	position: absolute;
+	left: 50%;
+	top: 4dp;
+	margin-left: 222dp;
+	width: 40dp;
+	height: 40dp;
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+	decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub" scale-none center center);
+}
+
+/* --- Quickslots ------------------------------------------------------------------ */
+
+.taskbar-quick
+{
+	position: absolute;
+	left: 50%;
+	top: 4dp;
+	margin-left: -214dp;
+	width: 428dp;
+	height: 40dp;
+}
+.taskbar-quick-group
+{
+	position: absolute;
+	top: 0;
+	pointer-events: auto;
+}
+.taskbar-quick-group--1
+{
+	left: 0;
+}
+.taskbar-quick-group--2
+{
+	left: 204dp;
+}
+.taskbar-expand
+{
+	left: 176dp;
+	top: 0;
+	width: 24dp;
+	height: 40dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/chat_button_01.sub" scale-none center center);
+}
+.taskbar-key
+{
+	padding: 0 2dp;
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 12dp;
+}
+.taskbar-key-art
+{
+	display: none;
+}
+
+.taskbar-pager
+{
+	position: absolute;
+	left: 380dp;
+	top: 0;
+	width: 24dp;
+	height: 40dp;
+}
+.taskbar-pager__board
+{
+	display: none;
+}
+.taskbar-pager__up, .taskbar-pager__down
+{
+	left: 0;
+	width: 24dp;
+	height: 12dp;
+}
+.taskbar-pager__up
+{
+	top: 0;
+	decorator: image("d:/ymir work/ui/game/taskbar/quickslot_upbutton_01.sub" scale-none center center);
+}
+.taskbar-pager__down
+{
+	top: 28dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/quickslot_downbutton_01.sub" scale-none center center);
+}
+.taskbar-pager__page
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 12dp;
+	width: 24dp;
+	height: 16dp;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 16dp;
+	text-align: center;
+	pointer-events: none;
+}
+
+/* --- Tooltips -------------------------------------------------------------------- */
+
+.taskbar-tip
+{
+	pointer-events: none;
+}
+/* Near the screen's right edge: the hint grows to the left. */
+.taskbar-tip--end
+{
+	left: auto;
+	right: 0;
+	margin-right: 0;
+	margin-left: -320dp;
+}
+/* The left mode menu's hints, left of their buttons. */
+.taskbar-tip--side
+{
+	left: auto;
+	right: 100%;
+	bottom: auto;
+	top: 10dp;
+	margin-bottom: 0;
+	margin-right: var(--space-1);
+	margin-left: -320dp;
+}
+
+/* --- Mode menus and the skill picker --------------------------------------------- */
+
+.taskbar-menu
+{
+	position: absolute;
+	bottom: 52dp;
+	padding: var(--space-1);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface);
+}
+.taskbar-menu .taskbar-mode
+{
+	position: relative;
+	margin: 0;
+}
+.taskbar-menu--left
+{
+	left: 50%;
+	margin-left: -267dp;
+	width: 50dp;
+	height: 130dp;
+}
+.taskbar-menu--left .taskbar-mode
+{
+	display: block;
+	margin-bottom: var(--space-1);
+}
+.taskbar-menu--right
+{
+	left: 50%;
+	margin-left: 173dp;
+	width: 94dp;
+	height: 50dp;
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-1);
+}
+/* One panel above the right menu: the first category's row at the bottom,
+   each row's first skill at its right, as legacy lays the picker out. */
+.taskbar-picker
+{
+	position: absolute;
+	right: 50%;
+	margin-right: -262dp;
+	bottom: 104dp;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-end;
+	gap: var(--space-1);
+	padding: var(--space-1);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface);
+}
+.taskbar-picker__row
+{
+	flex-direction: row-reverse;
+}

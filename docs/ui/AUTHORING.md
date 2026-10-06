@@ -14,15 +14,22 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 - [Components](#components)
 - [Gauges](#gauges)
 - [Frame animations](#frame-animations)
+- [Slot grids](#slot-grids)
+- [Clock elements](#clock-elements)
+- [Digit art](#digit-art)
+- [Additive images](#additive-images)
 - [Tokens](#tokens)
 - [Data binding cheatsheet](#data-binding-cheatsheet)
 - [Text from game data and players](#text-from-game-data-and-players)
 - [Python controller API](#python-controller-api)
+- [Feeds](#feeds)
 - [Placement](#placement)
 - [Text fields](#text-fields)
 - [Keyboard and modals](#keyboard-and-modals)
 - [UI sounds](#ui-sounds)
 - [The dialog kit](#the-dialog-kit)
+- [The drag bridge](#the-drag-bridge)
+- [HUD windows](#hud-windows)
 - [Window flags and the factory](#window-flags-and-the-factory)
 - [Rules](#rules)
 - [What the renderer draws](#what-the-renderer-draws)
@@ -47,7 +54,7 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 4. Write `settings.fixture.json` with every key of every data model the document binds. `nuitool lint` checks its JSON (NUI001) and loads the document with it; pass it to `nuitool snap` with `--fixture`.
 5. Write the controller `assets/root/nui_settings.py`: subclass `nui.Window`, set `DOCUMENT` and `MODEL` (and `MODAL = True` for a dialog), return every model key from `initial_model()`, and add one `@nui.on("name")` method for every `data-event-*="name(...)"` in the document. The controller's name writes each hyphen of the window name as an underscore: window `item-shop` has `assets/root/nui_item_shop.py`, imported as `nui_item_shop`. Model keys and event names follow RmlUi's name rule (see [Data binding cheatsheet](#data-binding-cheatsheet)).
 6. Use `@ui.KEY` (from `locale_interface.txt`) or `@game.KEY` (from `locale_game.txt`) for every visible string. The key must exist in every locale, and a `@game.KEY` must be a plain string, not one of the typed entries localeInfo makes functions of (see [Localization](#localization), which also says how to add a key).
-7. If you touched `tokens.json`, run `python tools/nui_tokens.py` (it rewrites `tokens.rcss` and the token table below, and prints the contrast ratios). `python tools/nui_tokens.py --check` verifies without writing and exits 1 while an output is stale. Then run `nuitool lint` (with the five roots of [Tools](#tools)) until it exits 0. Findings are the only thing on standard output; the `N findings in M files` summary and any note about a skipped check always go to standard error. Exit 2 (a missing root, a mistyped path) also leaves standard output empty, so go by the exit code.
+7. If you touched `tokens.json`, run `python tools/nui_tokens.py` (it rewrites `tokens.rcss` and the token table below, and prints the contrast ratios). `python tools/nui_tokens.py --check` verifies without writing and exits 1 while an output is stale. Then run `nuitool lint` (with the nine roots of [Tools](#tools)) until it exits 0. Findings are the only thing on standard output; the `N findings in M files` summary and any note about a skipped check always go to standard error. Exit 2 (a missing root, a mistyped path) also leaves standard output empty, so go by the exit code.
 8. Run `nuitool snap` with `--locale assets/locale/locale/en` in every theme (`--theme modern-dark`, `modern-light` and `classic`, the ids in `nui/theme/themes.json`) at scale 1.0, 1.5 and 2.0, and once with `--reduced-motion`. The components follow every theme by themselves; when the window's own sheet draws something the classic look needs to change, write those rules in the window's classic overlay, `nui/skins/classic/windows/<name>.rcss`, never in the window's sheet (see [Skins](#skins)). `--size` is in pixels: give it the scale times the dp area the window needs, for a full-screen window 1920x1080 at 1.0, 2880x1620 at 1.5 and 3840x2160 at 2.0 (the client's own sizes at those scales). Snap does not scroll, so a scroll container shows only its first screen. Look at the images. Declare the window's goldens in `<name>.snapshots.json` (see [Golden case files](#golden-case-files)) and write them with `python3 tools/check_nui_snapshots.py --write --optimize --only <name>`.
 9. Check the window with the German locale (`--locale assets/locale/locale/de`; strings run about a third longer than English) and at 75% scale.
 10. Open the window from game code only through its controller. Never call RmlUi or `_nui` directly.
@@ -80,6 +87,9 @@ NovaPack publishes a file at `assets/<group>/<path>` under the store path `<path
 | `assets/nui/nui/windows/server-board/`, `virtual-keyboard/`, `locale-strip/` | | the login screen's server and channel board, virtual keyboard and locale flag strip |
 | `assets/root/nui_windows.py` | `nui_windows.py` | the window flags and the factory that picks the NovaUI or the legacy class (see [Window flags and the factory](#window-flags-and-the-factory)) |
 | `assets/root/nui_dialog_kit.py` | `nui_dialog_kit.py` | what the dialog kit's windows share |
+| `assets/root/nui_slots.py` | `nui_slots.py` | the slot model, the drag bridge and the tooltip bridge of every slot window (see [Slot grids](#slot-grids)) |
+| `assets/root/nui_hud.py` | `nui_hud.py` | what the HUD facades share (see [HUD windows](#hud-windows)) |
+| `assets/nui/nui/windows/taskbar/`, `expanded-taskbar/`, `energy-bar/`, `gift-box/`, `game-buttons/` and the other Wave 2a windows | | the HUD (see [HUD windows](#hud-windows)) |
 
 The client loads the fonts (`kDefaultFonts`, which `nuitool lint` and `snap` also use) and the render test (`kRenderTestDocument`, Ctrl+Shift+U in a dev build) by the constants in `nova-client-src/src/NovaUI/Core/NuiPaths.h`. The gallery has no client constant: its controller, `assets/root/nui_gallery.py`, names the document in `DOCUMENT` and opens it with `import nui_gallery; nui_gallery.open_gallery()`.
 
@@ -199,19 +209,22 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 | Panel | `<div class="nui-panel">` with an optional `nui-panel__title` | `--sunken`, `--flat`. `nui-divider` is a 1dp rule. |
 | Tabs | native `<tabset class="nui-tabs nui-tabs--3">` with `<tab>` and `<panel>` pairs and a last `<tab class="nui-tabs__indicator nui-anim">` | `nui-tabs--2` to `--6` must match the number of real tabs. Tabs switch without Python; the selected tab and panel get `:selected`. Tabs are in the tab order: where NovaUI has the keyboard, Tab moves between them, Enter or Space selects one, and `:focus-visible` rings the focused tab. |
 | List | `<div class="nui-list">` around a `<div class="nui-list__viewport">` that holds the rows `<div class="nui-list__item nui-anim">`, parts `nui-list__label`, `nui-list__meta` | `is-selected`, `:hover`, `:focus-visible` (a ring on every edge; a selected row keeps its accent stripe). Enter or Space selects the focused row where NovaUI has the keyboard. The `disabled` attribute takes a row out of hit testing, the tab order and Enter/Space. Give the viewport a height in the window sheet to scroll (`.my-list .nui-list__viewport { height: 200dp; }`): the rounded frame does not clip, the square viewport does, so the list clips with the scissor alone (see [What the renderer draws](#what-the-renderer-draws)). |
-| Slot grid | `<div class="nui-slot-grid">` with `<div class="nui-slot nui-anim">`, `<img class="nui-slot__icon">`, `<span class="nui-slot__count">` | 40dp cells for 32dp icons. `is-selected`, `is-disabled`, `:hover`. |
+| Slot grid | `<div class="nui-slot-grid">` with `<div class="nui-slot nui-anim">` cells and their parts `__icon`, `__cover`, `__tint`, `__cooldown`, `__active`, `__finish`, `__count`, `__digits`, `__key` | 40dp cells for 32dp icons (the legacy 32dp pitch in classic). `--cols-1` to `--cols-10`, `--pick`, `--layered`; `is-empty`, `is-disabled`, `is-locked`, `is-picked`, `is-selected`, `is-target`, `:hover`, `is-hover`. See [Slot grids](#slot-grids). |
 | Slider | `<input type="range" class="nui-slider" min max step value>` | `:hover` and `:active` on the thumb, `:focus-visible`; `disabled` attribute. The arrow keys move a focused slider where NovaUI has the keyboard. RmlUi builds the track, fill and thumb; the component centers them in the 20dp input, so give `.nui-slider` no padding or border. |
 | Toggle | `<label class="nui-toggle">` around `<input type="checkbox" class="nui-toggle__input">`, `nui-toggle__track`, `nui-toggle__knob`, `nui-toggle__label` | `checked` and `disabled` attributes. The label forwards clicks to the hidden checkbox. The checkbox stays in the tab order: where NovaUI has the keyboard, Tab reaches the toggle, Space flips it, and `:focus-visible` rings the track. |
 | Text input | `<input type="text" class="nui-input">` (also `type="password"`), inside `div.nui-field` with `label.nui-field__label` and `span.nui-field__error` | `--invalid`, `disabled` attribute, `:focus`, `:placeholder-shown`. The corners are square on purpose: RmlUi makes every text input clip, and square clipping needs no stencil mask. `nui-escape-keeps-focus` on `<body>`: Escape in a field of this document does not leave the field (the login board). |
 | Tooltip | `<span class="nui-has-tooltip">` host with `<span class="nui-tooltip nui-anim">` inside | One line by default; `--wrap` wraps at 240dp. `is-open` shows it without hover. The host is laid out as `inline-block` (one box that does not wrap with the text around it), because RmlUi never places an absolute child against an inline box. Use a span or a component element as the host; a bare `div` or `p` becomes inline-block too. Item tooltips stay on the legacy `uitooltip` windows. |
 | Badge | `<span class="nui-badge">` | `--accent`, `--danger`, `--warning`, `--success`. |
 | Gauge | `<progress class="nui-gauge nui-gauge--red" direction="right" data-attr-value="hp"/>` | `--red` (default), `--pink`, `--purple`, `--blue`. See [Gauges](#gauges). |
-| Frame animation | `<nui-frames frames="a.sub, b.sub" delay="0.1"/>` | See [Frame animations](#frame-animations). |
+| Frame animation | `<nui-frames frames="a.sub, b.sub" delay="0.1"/>` | `start`, `after="none"`. See [Frame animations](#frame-animations). |
+| Countdown | `<nui-countdown format="dhms" data-attr-end="icon.end"/>` | The time left as text, or a timer (`format="none"`). See [Clock elements](#clock-elements). |
+| Cooldown sweep | `<nui-cooldown data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>` | Over its positioned parent. See [Clock elements](#clock-elements). |
+| Digit art | `<nui-number value="m1"/>` | The legacy number glyphs. See [Digit art](#digit-art). |
 | Dialog | `div.nui-window.nui-dialog` inside `body.nui-scrim`, with `nui-dialog__text`, `nui-dialog__field` and a `nui-window__footer nui-dialog__footer` | The dialog kit's look (`components/dialog.rcss`): 280dp to 420dp wide, centered text that wraps, a centered 160dp field, centered buttons. See [The dialog kit](#the-dialog-kit). |
 | Layout helpers | `nui-row` (flex row, `--wrap`, `--end`, `--between`), `nui-stack` (flex column, `--loose`), `nui-grow`, `nui-muted`, `nui-small` | Use these instead of inline styles. |
 | Full-screen layers | `<body class="nui-overlay">` for HUD layers that never take the mouse; `nui-interactive` on children that should | `nui-center-max` caps content at 1600dp; `nui-safe-16x9` limits a HUD anchor area to 16:9 of the screen height on ultrawide screens. |
 
-The gallery shows every component but the body-level layers, the dialog look (the `dialog-*` windows have goldens of their own), `nui-frames` (the loading window shows it) and most layout helpers.
+The gallery shows every component but the body-level layers, the dialog look (the `dialog-*` windows have goldens of their own), `nui-frames` outside the slot effects (the loading window shows it), `nui-countdown` (the HUD windows show it) and most layout helpers.
 
 `is-hover`, `is-active` and `is-focus` force the look of `:hover`, `:active` and `:focus-visible` where a component styles that state: buttons and sliders take all three, inputs, list rows, tabs and toggles take `is-hover` and `is-focus`, and slots take `is-hover`. Use them only where no pointer or keyboard is behind the state: gallery snapshots, or a highlight driven by data (`data-class-is-hover="slot.target"`).
 
@@ -240,12 +253,141 @@ The gallery shows every component but the body-level layers, the dialog look (th
 | `loop` | `"false"` stops on the last frame and sends `framesend` once (not bubbling); anything else loops. |
 | `rest` | The frame shown under reduced motion, and while paused before the first update (default 0). |
 | `paused` | Present: hold the current frame. |
+| `start` | Clock time in seconds the sequence starts (a slot's cooldown end, written from `nui.now()`): the frame counts from then, and before it no frame shows. A change (a bound `data-attr-start`) re-bases the clock, arms `framesend` again and rebuilds nothing. |
+| `after` | `last` (default): a non-looping sequence keeps its last frame. `none`: it shows nothing once its last frame has shown for one `delay`, so an effect plays once and goes. |
 
 - The first frame stays in the flow and sizes the element; the others are placed over it. `components/frames.rcss` gives the element `display: inline-flex; position: relative; vertical-align: top` and the frames `display: block`, which makes the box exactly frame 0's size, on the line's top. RmlUi 6.3 sizes an `inline-block` around a block image to 0 wide, and adds the line's descent below an inline one. A sheet that overrides `display` keeps the frames as blocks.
 - Changing `frames`, `pattern`, `count` or `first` (in markup or through `data-attr-*`) rebuilds the frames; `delay`, `loop`, `rest` and `paused` do not.
 - Reduced motion shows the `rest` frame and holds it.
 - `nuitool snap --time S` shows frame `floor(S / delay) mod count`.
 - Lint checks every source of a literal `frames` or `pattern` as it checks `<img src>` (NUI007); a bound `data-attr-frames` is not checked. A bad `delay`, a bad pattern or no frames is one warning per element (`nui-frames: <reason>`).
+
+## Slot grids
+
+Item, skill and emotion cells are `nui/components/slot-grid.rcss` (slot grid v2). Every slot window shares one Python helper, `assets/root/nui_slots.py`, for the model, the drags and the tooltips.
+
+**The slot model.** One dict per cell, with the same keys whether `nui_slots` or C++ (the quickslot feed, `NuiGameFeeds::BuildQuickSlots`) makes it:
+
+| Key | Type | Empty | Meaning |
+|---|---|---|---|
+| `index` | int | the cell | the cell's index in its grid, 0-based |
+| `kind` | str | `""` | `"item"`, `"skill"`, `"emotion"` or `""` |
+| `type` | int | 0 | the content's legacy slot type (`player.SLOT_TYPE_*`), for tooltips and drags |
+| `ref` | int | 0 | what the cell holds: an inventory position, a skill slot, an emotion index |
+| `icon` | str | `""` | an image source as `<img src>` takes it: `/icon/item/27001.tga`, `d:/ymir work/ui/skill/...` |
+| `count` | str | `""` | the label at the bottom right: an item count above 1, a skill level label (`"20"`, `"m1"`, `"g2"`, `"p"`) |
+| `w`, `h` | int | 1, 1 | the cells the icon spans (an item's `item.GetItemSize()`, 1 to 3) |
+| `cd_start`, `cd_end` | float | 0.0, 0.0 | the cooldown's span in `nui.now()` seconds; 0 and 0 for none |
+| `active` | bool | false | the 13-frame "active" effect (a toggle skill, an auto potion that is on) |
+| `cover` | bool | false | the cover art over skills and emotions |
+| `disabled` | bool | false | the legacy red tint |
+| `locked` | bool | false | the legacy black tint; the window refuses a pick |
+
+`nui_slots.SLOT_KEYS` lists the keys, and `empty_slot(index)`, `item_slot(index, inventory_pos, window=None)`, `skill_slot(index, skill_slot_number)` and `emotion_slot(index, emotion_index)` build cells as the legacy `RefreshQuickSlot` shows them (a vnum or a skill index of 0 is an empty cell; a guild skill has grade 0 and the guild's level). `icon_source(path)` puts a `/` in front of a store path and keeps a `d:/` path; `count_label(grade, level)` is `CSlotWindow::SetSlotCountNew`'s label; `cooldown_span(cool_time, elapsed=0.0)` is the `(start, end)` of a cooldown in `nui.now()` seconds. Selection and the pick highlight are window state, not cell state: a window keeps `<grid>_picked` and `<grid>_selected` keys (int, -1 for none) and compares them with `slot.index`.
+
+**Markup.** The component's comment holds a cell with every part; copy it. In short:
+
+```xml
+<div class="nui-slot-grid nui-slot-grid--cols-4" id="quick-slots">
+	<div class="nui-slot nui-anim" data-for="slot : quick_slots"
+	     data-class-is-empty="slot.kind == ''" data-class-is-locked="slot.locked"
+	     data-event-mousedown="slot_press('quick', slot.index, ev.button)"
+	     data-event-mouseup="slot_release('quick', slot.index, ev.button)"
+	     data-event-mouseover="slot_over('quick', slot.index)"
+	     data-event-mouseout="slot_out('quick', slot.index)"
+	     data-event-nuidrop="slot_drop('quick', slot.index)">
+		<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
+		<div class="nui-slot__cover" data-if="slot.cover"></div>
+		<div class="nui-slot__tint"></div>
+		<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0" data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+		<nui-frames class="nui-slot__active" data-if="slot.active"
+			pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
+		<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0"
+			pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+			delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+		<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
+		<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+	</div>
+</div>
+```
+
+- **The event names** are the window's own, each with the grid's name first, so one window with several grids has one handler per kind.
+- **Every part ignores the pointer**, so the cell is always the event target and moving over its icon sends no `mouseout`.
+- **The parts draw in the legacy order** (`CSlotWindow::OnRender`): the pick and selection tint under the icon, then the icon, the disabled tint, the sweep, the cover, the count, the finish effect, the active effect and the locked tint on top. The cell is a stacking context (`z-index: 0`), so the negative z-index of the pick tint draws above its background and under the icon.
+- **The pick highlight** draws only in a grid with `nui-slot-grid--pick` (legacy `SLOT_STYLE_PICK_UP`); the quickslots have none. A disabled or locked cell keeps its pointer events, as legacy cells take clicks.
+- **Reduced motion** hides the finish effect and holds the active effect on its rest frame.
+- **The effects are additive art** (`#nui-additive`, see [Additive images](#additive-images)): on a light surface (the modern light theme) they wash a cell out toward white.
+
+**Pick and place, never RmlUi drag-and-drop.** `mouseModule.mouseController` stays the one drag state of the client while both UIs live, so NovaUI and legacy windows trade items through it, and the legacy dragged icon draws above both UIs. A window hands its cells' events to a `nui_slots.SlotDrag(pick, drop, use=None, on_pick=None, on_end=None, owner=None)`:
+
+- `press(index, button)` (`mousedown`): with the left button and something attached, `drop(index)`; else `pick(index)` answers `(slot_type, slot_number, item_index, count)` or `None` (an empty or locked cell), and the cell is attached. The right button with nothing attached is `use(index)`; with something attached it does nothing, because the host already cancelled the attach (see [The drag bridge](#the-drag-bridge)).
+- `release(index, button)` (`mouseup`): after a pick on another cell, of any NovaUI grid, and a drag of 10 px or more (`wndMgr.IsDragging()`), `drop(index)`. A release on the cell the item came from keeps it attached: the next press places it.
+- `legacy_drop(index)` (`nuidrop`): a press in the legacy UI dragged and released over the cell drops what is attached.
+- `nui_slots.attach(owner, slot_type, slot_number, item_index, count=0, on_end=None)` attaches after detaching what the controller held. For that attach only it shadows `DeattachObject` on the controller instance, to free the icon instance the legacy method leaves behind (quick slots and dragon soul items) and to call `on_end()`; a legacy attach never sees it. `nui_slots.attached()` asks the controller.
+- What a drop does is the window's: the taskbar's is the legacy `AddQuickSlot`, MR-3 swap included.
+- A release over the same NovaUI grid outside every cell keeps the item attached, where legacy cancels the drag.
+
+**Tooltips.** Item and skill tooltips stay the legacy `uitooltip` windows, drawn above NovaUI in the legacy top layer. A window passes the tooltips the Interface hands it (`SetItemToolTip`, `SetSkillToolTip`) to a `nui_slots.TooltipBridge` and calls `show_inventory_item(pos)`, `show_skill(skill_slot, skill_index, grade, level)` or `show_skill_index(skill_index)` from `slot_over`, and `hide()` from `slot_out`, from its `Hide()` and when an attach starts. Nothing shows while an item is attached, and a tooltip not set yet (0) is skipped.
+
+**Multi-cell items.** A grid that holds items larger than one cell (the inventory) draws their icons in a layer over the cells, which stay the hit targets:
+
+```xml
+<div class="nui-slot-grid nui-slot-grid--cols-5 nui-slot-grid--layered">
+	<div class="nui-slot nui-anim" data-for="cell : bag_cells" data-class-is-target="cell.target">
+		<div class="nui-slot__tint"></div>
+	</div>
+	<div class="nui-slot-grid__items">
+		<div class="nui-slot-item" data-for="item : bag_items"
+		     data-class-nui-slot-item--c1="item.c == 1" data-class-nui-slot-item--r2="item.r == 2"
+		     data-class-nui-slot-item--w2="item.w == 2" data-class-nui-slot-item--h3="item.h == 3">
+			<img class="nui-slot__icon" data-attr-src="item.icon"/>
+			<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
+			<nui-number class="nui-slot__digits" data-if="item.count != ''" data-attr-value="item.count"/>
+		</div>
+	</div>
+</div>
+```
+
+- `nui-slot-item--c0` to `--c9` and `--r0` to `--r9` place an item at its cell, `--w1` to `--w3` and `--h1` to `--h3` size it (44dp steps in the modern skins, 32dp in classic); bind one class per value, since an inline style is NUI009. In a layered grid the cells show no icon or count of their own.
+- `nui_slots.item_layer(items, cols, rows)` makes the layer's entries (the slot keys plus `c` and `r`) from `(cell, slot)` pairs, `owner_of_cells(items, cols, rows)` maps every covered cell to its item for hit testing, and `footprint(cell, w, h, cols, rows)` gives the cells an attached item would cover from the hovered cell, as `CGridSlotWindow` works them out (an area that leaves the grid moves back into it; `[]` for an item larger than the grid). The window sets `target` on those cells on `slot_over` while something is attached and clears it on `slot_out`; give the cells a `__tint`, which shows the state (classic: the legacy white over the slot base).
+- The gallery shows a 5 x 3 layered grid with a 1x2 and a 2x3 item and a two-cell footprint.
+
+**Classic.** `skins/classic/classic.rcss` gives slots the legacy 32dp pitch: no gap, the `slot_base.sub` art, the icon at 0,0, the cover button art (`slot_cover_button_01` to `_03`), the legacy tints (the `--slot-*` tokens hold the legacy colors in the classic palette), the legacy digits right-aligned 4dp in from the item's right edge with their top 10dp above its bottom, and no hover look. Window overlays add the placement.
+
+## Clock elements
+
+Three elements read the NovaUI clock (`nui.now()`): `nui-countdown`, `nui-cooldown` and `nui-frames` with `start`. A time a controller writes into a model for them is `nui.now()` plus seconds, so no Python runs while they count; `nuitool snap --time S` shows them at time S, and fixture times are seconds of that clock (the default `--time 1`).
+
+**`nui-countdown`**: the time left until `end`, as text that changes at most once a second.
+
+| Attribute | Meaning |
+|---|---|
+| `end` | Clock time in seconds the countdown ends. Absent, or 0 or less: nothing shows and nothing is sent. |
+| `format` | `dhms` (default, `localeInfo.RTSecondToDHMS`: "1 Days, 2 Hours, 3 Minutes, 4 Sec", zero parts left out), `dhm` (`localeInfo.SecondToDHM`), `hms` ("H:MM:SS"), `ms` ("M:SS"), `s` (whole seconds), or `none`: no text, a timer. |
+| `day`, `hour`, `minute`, `second` | The unit words, plain attributes: `day="@game.DAY"`. Defaults `d`, `h`, `m`, `s`. |
+
+- The element owns its one text child; markup gives it none. `countdownend` (not bubbling, `data-event-countdownend`) is sent once at `end`, again for a new `end`, at once for an `end` already past. Reduced motion changes nothing.
+- `components/clock.rcss` makes it inline.
+
+**`nui-cooldown`**: a cooldown sweep, a `<progress>` whose value is the remaining fraction of `[start, end)`, counter-clockwise from the top as the legacy box sweeps it, in `steps` values (default 64), so one cooldown compiles at most 64 meshes whatever the frame rate. Outside its span it is hidden. `components/clock.rcss` lays it over its positioned parent and draws it as a white texel tinted with `--cooldown-shade` (the legacy black at 50%). RmlUi resolves a progress element's `fill-image` against its document, not the sheet that names it, so a sheet names one from the store root (`/nui/components/img/solid.tga`) or a `d:/` path. RmlUi projects the sweep's angle onto the square, where the legacy box moves along each edge: a few pixels apart mid-octant.
+
+**`nui-frames` `start` and `after`**: see [Frame animations](#frame-animations). The slot grid's finish effect plays once from the cooldown's end: `loop="false" after="none" data-attr-start="slot.cd_end"`.
+
+## Digit art
+
+`<nui-number value="200"/>` draws the legacy digit art as `CNumberLine` draws quickslot counts and skill levels: one `<img class="nui-number__glyph">` per character, from `path` (default `d:/ymir work/ui/game/taskbar/`), for the digits, `:`, `?`, `/`, `%`, `+`, `m`, `g` and `p`; other characters are skipped, as legacy skips them. `components/number.rcss` lays the glyphs out in a row with no gaps. The art is 1x only (legacy `.sub` regions, the `assets/ETC` root for lint and snapshots). The slot grid shows it in classic (`__digits`) and the count badge in the modern skins (`__count`). Lint checks a literal `value`'s glyphs (NUI007).
+
+## Additive images
+
+A `#nui-additive` suffix on an image source draws the image additively: its color is added to what is under it and its alpha is ignored, so black texels show nothing. Legacy effects such as the slot effects were made for a screen blend, and the finish effect's frames are opaque black where they are dark; drawn normally they would be black squares.
+
+```xml
+<nui-frames pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
+```
+
+- It works wherever a source does: `<img src>`, `decorator: image(...)`, a `@spritesheet`'s `src`, a progress `fill-image`, the frames of `nui-frames`. The flagged and the plain source are two textures.
+- Additive and screen differ only where both colors are bright, which the dark slot art rarely is; over a light surface additive art washes out toward white.
+- Lint resolves the path part; a suffix that is not a flag is NUI007 ("unknown image flag").
 
 ## Tokens
 
@@ -307,6 +449,17 @@ What the color roles mean:
 | `--gauge-pink` | `#f48fb1` | `#b0306f` | `#bc5296` |
 | `--gauge-purple` | `#c58af9` | `#7438c4` | `#8052bc` |
 | `--gauge-blue` | `#8ab4f8` | `#1a5fc4` | `#5283bc` |
+| `--cooldown-shade` | `#00000080` | `#00000080` | `#00000080` |
+| `--slot-disabled` | `#f28b8259` | `#b3261e47` | `#ff00004d` |
+| `--slot-locked` | `#0000008c` | `#1a1d2366` | `#00000080` |
+| `--slot-picked` | `#8ab4f859` | `#1a5fc440` | `#ffffff80` |
+| `--notice-bar` | `#00000080` | `#00000080` | `#00000080` |
+| `--notice-text-big` | `#f2e7c1` | `#f2e7c1` | `#f2e7c1` |
+| `--edge-gm` | `#ffb547` | `#9a5a00` | `#ffa200` |
+| `--party-link` | `#e7eaf0` | `#1a1d23` | `#c2c2c2` |
+| `--party-unlink` | `#7f8794` | `#7a828f` | `#808080` |
+| `--hp-recovery` | `#f28b8255` | `#b3261e40` | `#ff000055` |
+| `--sp-recovery` | `#8ab4f855` | `#1a5fc440` | `#0000ff55` |
 
 | Token | Shared value |
 |---|---|
@@ -331,6 +484,7 @@ What the color roles mean:
 | `--ease-out` | `cubic-out` |
 | `--ease-in-out` | `cubic-in-out` |
 | `--legacy-strip-bottom` | `60px` |
+| `--font-notice-big` | `18dp` |
 
 | Token | Skin | Value |
 |---|---|---|
@@ -355,6 +509,7 @@ What the color roles mean:
 | `--classic-disabled-tint` | classic | `#8c8c8cff` |
 | `--classic-disabled-text` | classic | `#6e6e6e` |
 | `--classic-key-text` | classic | `#000000` |
+| `--classic-label-white` | classic | `#ffffff` |
 
 <!-- tokens:end -->
 
@@ -416,6 +571,7 @@ A window is one document plus an optional model and a controller class:
 | `DOCUMENT` | Store path of the `.rml` (required). |
 | `MODEL` | Name the document uses in `data-model`, or `None`. |
 | `MODAL` | `True` to show the window as a modal document: it takes every key and every click that the legacy lock window and the legacy top layer leave, also beside the window. Pair it with `body.nui-scrim` (see [Keyboard and modals](#keyboard-and-modals)). |
+| `FEEDS` | `{model key: feed name}`: keys that follow values the game publishes from C++, with no Python (see [Feeds](#feeds)). Needs `MODEL`. |
 | `initial_model()` | Returns every top-level model key with its first value. Each key's kind (scalar, list, map) is fixed from then on. Keys follow the name rule in the [Data binding cheatsheet](#data-binding-cheatsheet); one other key leaves the window unavailable. |
 | `@nui.on("name")` | Marks a method as the handler for `data-event-*="name(...)"`. It receives the evaluated arguments as Python scalars: `int`, `float`, `str`, `bool` or `None`. A whole number arrives as an `int`, literals and arithmetic included (`use(3)` and `use(slot.index + 1)` pass an `int`); other numbers arrive as `float`. A list or map argument arrives as its length or member count, with no warning, so pass its members: `use(slot.index)`, not `use(slot)`. Event parameters that are not scalars (`ev.drag_element`) arrive as `None`. The name follows the name rule in the [Data binding cheatsheet](#data-binding-cheatsheet); another one raises `ValueError`. A data-event handler cannot stop an event. |
 | `__init__()` | Creates the model, binds the handlers, then loads the document hidden. Events the document raises while it loads (`data-event-load` on `<body>`, `change` from bindings such as `data-attrif-checked`) reach the handlers before `__init__` returns; until then `show()`, `hide()`, `is_visible()` and `element_on()` do nothing, while `set()` and `get()` work. |
@@ -430,11 +586,45 @@ A window is one document plus an optional model and a controller class:
 | `on_theme_changed(theme_id)` | Hook: `nui.set_theme()` applied a theme. The window's documents already carry the new theme's classes, and the components restyle by themselves; override it only to update model values that name the theme (the picker's selection). |
 | `destroy()` | Closes the document and drops the model and every handler. Inside one of the window's own handlers (a close button) the document hides at once, and it goes with the model by the end of the frame. From `destroy()` on, the document's own events (a `mouseout` as it hides, its unload) reach none of the window's handlers, so a window made again in its own handler (a reset button, a wizard step) keeps the model; a close by C++ or RmlUi still delivers the unload. |
 
-Module functions: `nui.is_available()` (false without the `_nui` module or an active runtime, for example when NovaUI failed to start or a test started no runtime; every `Window` method is then a no-op. A headless runtime, under `NOVA_UI_HEADLESS` or a test's null renderer, is available), `nui.enabled_for_locale()` (false for right-to-left locales), `nui.set_theme(theme_id)`, `nui.get_theme()`, `nui.get_themes()` (see [Themes](#themes)), `nui.set_scale_percent(p)` (0 = automatic, else 75..200), `nui.get_scale_percent()`, `nui.get_scale()`, `nui.get_auto_scale()`, `nui.set_reduced_motion(on)`, `nui.is_reduced_motion()`, `nui.refresh_strings()`, `nui.any_window_shown()` (true while a window made through `Window` is shown; the legacy common dialogs ask it, see [The dialog kit](#the-dialog-kit)) and `nui.plain_text(text)` (see [Text from game data and players](#text-from-game-data-and-players)). The appearance setters apply at once and persist to `config/metin2.cfg` (`UI_THEME`, `UI_SCALE`, `UI_REDUCED_MOTION`). The constants `nui.KEY_ESCAPE`, `nui.KEY_RETURN`, `nui.KEY_NUMPADENTER`, `nui.KEY_TAB` and `nui.KEY_SPACE` are the `key_identifier` values of those keys (RmlUi's own numbers).
+Module functions: `nui.is_available()` (false without the `_nui` module or an active runtime, for example when NovaUI failed to start or a test started no runtime; every `Window` method is then a no-op. A headless runtime, under `NOVA_UI_HEADLESS` or a test's null renderer, is available), `nui.enabled_for_locale()` (false for right-to-left locales), `nui.set_theme(theme_id)`, `nui.get_theme()`, `nui.get_themes()` (see [Themes](#themes)), `nui.set_scale_percent(p)` (0 = automatic, else 75..200), `nui.get_scale_percent()`, `nui.get_scale()`, `nui.get_auto_scale()`, `nui.set_reduced_motion(on)`, `nui.is_reduced_motion()`, `nui.refresh_strings()`, `nui.any_window_shown()` (true while a window made through `Window` is shown; the legacy common dialogs ask it, see [The dialog kit](#the-dialog-kit)) `nui.plain_text(text)` (see [Text from game data and players](#text-from-game-data-and-players)), and `nui.now()` and `nui.feed(name)` (see [Feeds](#feeds)). The appearance setters apply at once and persist to `config/metin2.cfg` (`UI_THEME`, `UI_SCALE`, `UI_REDUCED_MOTION`). The constants `nui.KEY_ESCAPE`, `nui.KEY_RETURN`, `nui.KEY_NUMPADENTER`, `nui.KEY_TAB` and `nui.KEY_SPACE` are the `key_identifier` values of those keys (RmlUi's own numbers).
 
 A window lives until `destroy()`: the runtime holds its handlers, so dropping the last reference does not close it. Only one window per `MODEL` name can exist at a time.
 
 Python never runs per frame. It runs when a handler fires or when game code calls a controller method that calls `set()`.
+
+## Feeds
+
+The game publishes some values from C++ under feed names (`player.hp`, `quickslot.slots`), and a model key can follow one: the value reaches the document once per frame, before the runtime's update, and no Python runs. This replaces per-frame Python for values that change without an event the window hears (gauges, quickslots, a distance).
+
+```python
+class TaskBarBoard(nui.Window):
+	DOCUMENT = "nui/windows/taskbar/taskbar.rml"
+	MODEL = "taskbar"
+	FEEDS = {"hp": "player.hp", "hp_max": "player.hp_max", "quick_slots": "quickslot.slots"}
+
+	def initial_model(self):
+		return {"hp": 0, "hp_max": 0, "quick_slots": [nui_slots.empty_slot(i) for i in range(8)]}
+```
+
+- `nui.Window` binds each key before the document loads (`_nui.BindFeed`); a value published before (the status packets at game entry) applies at once. `FEEDS` without `MODEL` raises `ValueError`.
+- `initial_model()` gives each fed key its empty value of the feed's shape (an int, a float, a list); a value of another shape is refused with one warning, and the key keeps its value.
+- A `set()` on a fed key lasts until the feed changes. A value published and changed again within one frame shows only the last.
+- `nui.feed(name)` is the value published last, or `None`; `nui.now()` is the NovaUI clock in seconds (0.0 without a runtime), the clock of the [Clock elements](#clock-elements).
+- Content asks whether the exe has the feeds before it relies on them: `nui_hud.has_engine()` (the `nuigame` module and `_nui.BindFeed`).
+
+The game's feeds (`nova-client-src/src/UserInterface/NuiGameFeeds.h`):
+
+| Feed | Value |
+|---|---|
+| `player.hp`, `player.hp_max`, `player.sp`, `player.sp_max`, `player.stamina`, `player.stamina_max`, `player.hp_recovery`, `player.sp_recovery`, `player.level` | int |
+| `player.exp`, `player.exp_next` | int (the unsigned 32-bit value) |
+| `player.hp_ratio`, `player.sp_ratio`, `player.stamina_ratio` | float 0..1, as the legacy gauges cut them |
+| `player.hp_recovery_ratio`, `player.sp_recovery_ratio` | float 0..1: what the regeneration will reach, 0 without one |
+| `player.exp_orbs` | four floats 0..1, the taskbar's EXP quarters |
+| `player.exp_percent` | float |
+| `quickslot.page` | int 0..3 |
+| `quickslot.slots` | the current page's eight cells in the slot model ([Slot grids](#slot-grids)), rebuilt at most once a frame when a quickslot packet, a page change or `nuigame.RefreshQuickSlots()` marks it |
+| `target.in_range` | bool: whether the character `nuigame.WatchTargetRange(vid, range)` watches is in range |
 
 ## Placement
 
@@ -578,6 +768,31 @@ The legacy common dialogs run on NovaUI while the `dialogs` window flag is on (s
 - **Not ported:** `uiCommon.QuestionDialogWithTimeLimit` stays legacy until a timer exists.
 - **The legacy dialogs above NovaUI (G5):** the legacy dialogs are in the UI layer, which draws under NovaUI. `nui_windows.legacy_dialog_layer(self)`, the first statement of each legacy common dialog's `Open`, moves the dialog to the `TOP_MOST` layer while a NovaUI window is shown (`nui.any_window_shown()`), which draws above NovaUI and takes the pointer first, and back to `UI` otherwise. A session without NovaUI windows is unchanged. It decides at each `Open` only. A legacy dialog that goes to `TOP_MOST` also covers the kit (`nui_dialog_kit.cover`): until it hides, every kit dialog steps aside (it stops being modal and gives up the focus), so the keys reach the legacy dialog the player sees, and Enter cannot press the default button of a kit dialog under it; then the kit dialog is modal again and takes its focus back. That is the busy fallback's second dialog and the time-limited question. Outside the kit it does not move the keyboard: a legacy input dialog opened while a NovaUI field of another window (the login board) has the focus types into that field until the player clicks the dialog.
 
+## The drag bridge
+
+While both UIs live, a drag is the legacy mouse controller's (`mouseModule.mouseController`), whichever UI started it, and the client host routes the pointer and Escape around it (`nova-client-src/src/UserInterface/NuiHost.h`, the arbiter's `RouteDragPointer` and `RouteDragEscape`):
+
+- **A right press over NovaUI while something is attached** cancels the attach, as the legacy right release does; neither the press nor its release reach either UI, so it uses no quickslot.
+- **Escape while something is attached** cancels the attach when a shown NovaUI document holds the focus, and then reaches neither UI. Otherwise it goes on as before, and the game window's Escape cancels it. The HUD documents never take the focus.
+- **A legacy press dragged 10 px or more and released over NovaUI** reaches the legacy UI as before, then the hovered NovaUI element gets `nuidrop` (it bubbles, carries `mouse_x`, `mouse_y` and `button`; bind it as `data-event-nuidrop`). A NovaUI press dragged off NovaUI and released reaches RmlUi and then the legacy UI, whose slot windows drop it. A left press NovaUI takes starts wndMgr's 10 px from there.
+- Without the drag distance an item stays attached on both sides: pick and place.
+
+The slot grid's `SlotDrag` is the content side of it ([Slot grids](#slot-grids)).
+
+## HUD windows
+
+The HUD windows of Wave 2a (the taskbar and its pieces, the affects, the target board, the party, the edge buttons, the notice boards and the map name) replace legacy windows that the Interface and the game window hold and call by method name, and that the C++ callbacks reach through them. Each is a **facade**: a plain class with the legacy class's name, constructor and methods (`nui_taskbar.TaskBar` for `uiTaskBar.TaskBar`), made by `nui_windows.make()` where the legacy one is made, and a `nui.Window` board for its document.
+
+- **The protocol of `make()`:** the document loads hidden in the constructor; `nui_ready()` answers whether it loaded and whether the exe has the Wave 2a engine (`nui_hud.has_engine()`), so an older exe keeps the legacy window; `nui_discard()` destroys the NovaUI parts. A `LoadWindow()` the Interface calls does only what legacy did after loading its uiscript.
+- **`NUI_FACADE = True`** marks every facade class. The wiring in `interfacemodule.py` and `game.py` uses it to touch only NovaUI objects: their `Close` methods destroy a facade where legacy only drops the reference, and `game.py` skips the per-frame `Update()` of a NovaUI map name splash.
+- **The owner rule:** a board keeps a weak proxy to its facade and never calls it while it is being made.
+- **No per-frame Python:** a facade has no `OnUpdate` or `OnRender`; it acts on the Interface's calls, the C++ callbacks and its document's events. Fed keys carry what changes in between; hints open on `:hover`.
+- **Strings:** fixed text is `@ui.KEY` or `@game.KEY` in markup; a `localeInfo` entry that is a function, and every name and message, goes through `nui_hud.locale_text(name, *args)` or `nui.plain_text()`.
+- **Escape:** a legacy window with an Escape action keeps its place in the legacy Escape chain through a `nui_hud.EscapeProxy(action)`: a 0 x 0 legacy window in the UI layer, shown while the NovaUI window shows, whose `OnPressEscapeKey` runs the action and returns `True`. The expanded taskbar and the target board use one, and no NovaUI keydown handler, so Escape acts in the legacy order whatever NovaUI document has the focus.
+- **One facade per window:** `nui_hud.take_over(key, facade)` (first in each constructor) destroys the NovaUI parts of a previous facade still alive, a phase that ended without `Destroy`; `Destroy()` calls `nui_hud.forget(key, facade)`.
+- **Layout and layers:** every HUD document is `body.nui-overlay` (full screen, no pointer events) with `nui-interactive` on its clickable parts and `focus: none` on the body, so a press never takes the focus from a field and buttons act on `mousedown` (RmlUi then sends no `click`). None is modal, none has a text field. The classic overlays put the legacy art at the legacy positions at 100% (1dp to the legacy pixel), anchored as legacy anchors them: from the screen's left, its center (`left: 50%` plus a margin) or its right, and from its bottom. The legacy taskbar, its menus, the edge buttons and the map name splash were `TOP_MOST` windows; their NovaUI versions draw in the NovaUI pass, above the legacy UI layer and below the legacy top layer, so the legacy tooltips and a `TOP_MOST` dialog still draw above them.
+- **Tests:** `tools/nui_game_support.py` holds recording stand-ins of the game modules (and the real `mousemodule.py` and `constinfo.py`); `tools/nui_hud_core_test.py` and `tools/nui_hud_test.py` check every facade's methods and constants against the legacy class, compare the legacy and NovaUI windows' `player`, `net`, `app` and mouse controller calls flow by flow, check the fixtures against the models, and check that no HUD module defines `OnUpdate` or `OnRender`.
+
 ## Window flags and the factory
 
 `assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default; `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file. `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself.
@@ -590,12 +805,25 @@ The legacy common dialogs run on NovaUI while the `dialogs` window flag is on (s
 | `virtual-keyboard` | the virtual keyboard (needs the NovaUI login board) | off |
 | `locale-strip` | the locale flag strip | off |
 | `loading`, `empire`, `select`, `create` | the phase windows | off |
+| `taskbar` | the taskbar: gauges, quickslots, the mouse-button pickers | off |
+| `expanded-taskbar` | the expanded taskbar (the dragon soul button) | off |
+| `energy-bar` | the energy bar | off |
+| `gift-box` | the gift icon (needs the NovaUI taskbar, which makes it) | off |
+| `game-buttons` | the stat, skill, help, quest, build and observer buttons | off |
+| `affects` | the affect icons | off |
+| `target` | the target board | off |
+| `party` | the party boards and menu | off |
+| `edge-buttons` | the quest and whisper edge buttons | off |
+| `tip-board`, `big-board` | the tip and big notice boards | off |
+| `map-name` | the map name splash | off |
+
+**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), and `hud` for the twelve above. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud` (11 of its 200 characters).
 
 - **`use(window_id)`** returns `(True, "")` or `(False, reason)` with the first check that failed: `"flag off"`, `"NovaUI unavailable"`, `"right-to-left locale"` (`nui.enabled_for_locale()`). It records the decision in `nui_windows.DECISIONS` (`"nui"` or `"legacy: <reason>"`) and writes it to `log.txt` when it changed.
 - **`make(window_id, legacy, novaui, *args)`** makes the NovaUI class (a class or a `"module.Class"` string, imported only then) when `use()` allows it, else the legacy one with the same arguments. A NovaUI constructor that raises, or one whose module cannot be imported, falls back to legacy, and so does an instance whose `nui_ready()` answers `False` (its document did not load): `make()` calls its `nui_discard()` and drops it before it makes the legacy one. Each such fallback is written once to `syserr.txt` as `nui_windows: <id>: <reason>; using the legacy window` (`note_failure`).
 - **`factory(window_id, legacy, novaui)`** is a function named like the legacy class that calls `make()`: the class-level wiring (`PopupDialog = nui_windows.factory("dialogs", LegacyPopupDialog, "nui_dialog_message.PopupDialog")`). A legacy class in the same module that calls its base by name must name the `Legacy` alias, since the plain name is a function after the rebinding (`uicommon.py` does).
 - **The protocol of what `make()` builds:** load the document in `__init__` (hidden), not in `Open()`; `nui_ready()` says whether it loaded; `nui_discard()` destroys the NovaUI parts and sets `self._nui_discarded`. A phase window's NovaUI subclass skips the legacy `net.SetPhaseWindow(<phase>, 0)` in `__del__` once discarded, so a late collection does not clear the slot of the legacy window made in its place.
-- **`refuse(window_id, reason)`** records a refusal `use()` does not know (the virtual keyboard without the NovaUI login board); `set_override(window_id, on)` writes one override and saves the config, for a settings window and tests.
+- **`refuse(window_id, reason)`** records a refusal `use()` does not know (the virtual keyboard without the NovaUI login board, the gift box without the NovaUI taskbar); `set_override(window_id, on)` writes one override and saves the config, for a settings window and tests.
 - **Adding a window:** give it an id (lowercase letters, digits and `-`), add `(id, False)` to `WINDOWS`, and make it through `make()` or a factory. It stays off until its default turns on.
 
 ## Rules
@@ -741,7 +969,7 @@ done
 
 ```bash
 for l in ae br cz de dk en es fr gr hu it nl pl pt ro ru tr; do
-  echo "== $l"; nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading --locale assets/locale/locale/$l
+  echo "== $l"; nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading --root assets/season1 --root assets/metin2_patch_eu4 --root assets/metin2_patch_etc --root assets/metin2_patch_ds --locale assets/locale/locale/$l
 done
 ```
 - Noto Sans covers Latin, Greek and Cyrillic, which includes every non-right-to-left locale the client ships. It has no Arabic, Hebrew, CJK or Thai glyphs.
@@ -860,7 +1088,7 @@ body.skin-classic.login
 }
 ```
 
-**What the components look like.** The window frame is the stone board (`ui.Board`) with the legacy title bar and close button; panels and tooltips are the thin board (`ui.ThinBoard`); buttons use the legacy large art (`--small` and `--icon` the small art, `--medium` the middle art, 61dp) with the over art on hover and focus and the down art on press; text inputs, toggle tracks, slider tracks, slots and the scrollbar track are the legacy slot bar (black, a dark top and left line, a light bottom and right line); a checked toggle shows the legacy check mark; the vertical scrollbar has the legacy arrows and ribbed thumb. Lists use the legacy highlights (white at 0.2 on hover, the translucent navy selection); sliders get a slot-bar track and a small button as the thumb. Tabs, badges and horizontal scrollbars keep their modern shapes in the classic colors. Labels are the legacy gray (`#dadada`), button labels a darker gray, `--primary` labels gold and `--danger` labels red. Buttons do not lift or dip: the art swap is the feedback. A disabled button shows its default art tinted gray (`image-color: var(--classic-disabled-tint)`) with a dimmed label (`--classic-disabled-text`), at full opacity: the legacy buttons have no disabled art, and a lower opacity let the background show through the bevel. Dialog buttons keep the legacy gray label, the primary one too.
+**What the components look like.** The window frame is the stone board (`ui.Board`) with the legacy title bar and close button; panels and tooltips are the thin board (`ui.ThinBoard`); buttons use the legacy large art (`--small` and `--icon` the small art, `--medium` the middle art, 61dp) with the over art on hover and focus and the down art on press; text inputs, toggle tracks, slider tracks and the scrollbar track are the legacy slot bar; slots are the legacy slot base art at the legacy 32dp pitch, with the legacy cover art, tints and digits ([Slot grids](#slot-grids)) (black, a dark top and left line, a light bottom and right line); a checked toggle shows the legacy check mark; the vertical scrollbar has the legacy arrows and ribbed thumb. Lists use the legacy highlights (white at 0.2 on hover, the translucent navy selection); sliders get a slot-bar track and a small button as the thumb. Tabs, badges and horizontal scrollbars keep their modern shapes in the classic colors. Labels are the legacy gray (`#dadada`), button labels a darker gray, `--primary` labels gold and `--danger` labels red. Buttons do not lift or dip: the art swap is the feedback. A disabled button shows its default art tinted gray (`image-color: var(--classic-disabled-tint)`) with a dimmed label (`--classic-disabled-text`), at full opacity: the legacy buttons have no disabled art, and a lower opacity let the background show through the bevel. Dialog buttons keep the legacy gray label, the primary one too.
 
 **Sprites.** Every piece is the sprite `classic-<id>` in both sheets. A piece with slices also has `classic-<id>-l`, `-c` and `-r` (the buttons: 6dp caps and a center), which `tiled-horizontal` draws: the caps keep their width and the center stretches, which at the legacy widths (43, 61 and 88dp) draws the art 1:1. The names: `classic-board-{tl,t,tr,l,c,r,bl,b,br}`, `classic-thin-...` (the same nine), `classic-title-{l,c,r}`, `classic-close-0{1,2,3}`, `classic-button-{small,middle,large}-0{1,2,3}` with their slices, `classic-login-field`, `classic-check`, `classic-scroll-{up,down}-0{1,2,3}` and `classic-thumb-{t,c,b}`. `01` is the default art, `02` over and `03` down.
 
@@ -898,7 +1126,7 @@ python3 tools/nui_classic_art.py sheets --out DIR               # review sheets 
 
 **The font.** The classic skin's tokens set `--font-family: Nova Classic` and the legacy sizes: 12dp for body text and buttons, 14dp for large text, 11dp for the smallest (`UI_DEF_FONT Tahoma:12` and `Tahoma:14` in every locale; 12dp at 100% is the legacy 12 px em). In the client, Nova Classic is the player's installed Tahoma: the client reads `tahoma.ttf` and `tahomabd.ttf` from the Windows font folder at start and hands both to the runtime, or neither. Without them, and in `nuitool lint` and `snap`, Nova Classic is Noto Sans, so the goldens are deterministic; `nuitool snap --font "Nova Classic=<path to tahoma.ttf>"` previews Tahoma. Italic is always Noto Sans Italic. Tahoma is never shipped or copied. RmlUi draws grayscale antialiased text, where the legacy UI draws LCD subpixel text, so classic text has the legacy metrics but not its exact pixels.
 
-**Art and CSS.** Art: the frames, the title bar and close button, the buttons (small, middle, large), the login field, the check mark and the vertical scrollbar. CSS only, in the legacy colors: text inputs other than the login field (the legacy slot bar), slots, lists, tabs, sliders, badges and horizontal scrollbars. The legacy buttons have no disabled art, so a disabled classic button is its default art tinted gray, at full opacity. The gauge and the virtual keyboard's keys use legacy art files directly (1x only, not in the sheets). To give another component art, add its legacy pieces to the manifest, run `build`, review the sheets, and write the rules.
+**Art and CSS.** Art: the frames, the title bar and close button, the buttons (small, middle, large), the login field, the check mark and the vertical scrollbar. CSS only, in the legacy colors: text inputs other than the login field (the legacy slot bar), lists, tabs, sliders, badges and horizontal scrollbars. Slots use legacy art files directly (`slot_base.sub`, the cover buttons, the digits; 1x only, not in the sheets), as the HUD windows' overlays do for their art. The legacy buttons have no disabled art, so a disabled classic button is its default art tinted gray, at full opacity. The gauge and the virtual keyboard's keys use legacy art files directly (1x only, not in the sheets). To give another component art, add its legacy pieces to the manifest, run `build`, review the sheets, and write the rules.
 
 **The login board.** The legacy login draws two boards (the connect board and the login window art); the NovaUI board is one document, so classic draws one thin board, 208dp wide, with the server row, the painted login fields, and Exit and Connect at the legacy button sizes. Its rows sit at the legacy offsets, measured from the top of the connect board: the fields at +56 and +91 and the buttons at +114, so the board is 142dp tall at rest, the legacy pair's height. The legacy UI shows login errors in popups, so the classic board keeps no empty line for one: the error line, centered and outlined, takes space only while there is an error, and the board grows upward by one line then. It keeps the NovaUI button order (Exit, Connect; the legacy order is Connect, Exit) and its place 72dp above the bottom edge.
 
@@ -963,10 +1191,10 @@ Tokens: `python tools/nui_tokens.py`, see [Tokens](#tokens). Classic art: `pytho
 Lint, from the asset repository root:
 
 ```
-nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading --locale assets/locale/locale/en
+nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading --root assets/season1 --root assets/metin2_patch_eu4 --root assets/metin2_patch_etc --root assets/metin2_patch_ds --locale assets/locale/locale/en
 ```
 
-All five roots: the gauge component and the login screen's windows name legacy art under `d:/ymir work/` (`assets/ETC`), and the phase windows name locale and loading art.
+All nine roots: the gauge component, the slot grid, the login screen's windows and the HUD name legacy art under `d:/ymir work/` (`assets/ETC`), the phase windows name locale and loading art, the big notice board names `season1/interface/...` (`assets/season1`), and the HUD names art that only patch groups hold under `d:/ymir work/`: the energy bar (`assets/metin2_patch_eu4`), the gift icon (`assets/metin2_patch_etc`) and the dragon soul button (`assets/metin2_patch_ds`). The client finds all of them in its packs; lint and snapshots find them only through these roots.
 
 - `--root` is a folder that contains store paths. The first one holds the documents: `assets/nui` holds `nui/...`. Repeat it for the groups that images come from: `assets/icon` for `icon/...`, and a group with a `ymir work/` folder, such as `assets/ETC`, for `d:/ymir work/...`.
 - `--locale` points at one locale folder with `locale_interface.txt` and `locale_game.txt`. Without it, NUI005 is skipped. Run lint once per shipped locale when you add keys.
@@ -1014,7 +1242,7 @@ nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/
 - `--boxes <json>` writes the border box `[x, y, width, height]`, in frame pixels, of the `<body>` (key `""`) and of every element with an id.
 - Snapshots decode DDS files and the `.sub` images of DDS atlases (most legacy `.sub` files): DXT1 (with its 1-bit alpha), DXT3, DXT5 and the uncompressed formats (A8R8G8B8, X8R8G8B8, A8B8G8R8, R8G8B8, A1R5G5B5, X1R5G5B5, R5G6B5, A4R4G4B4, 8-bit luminance), the top mip level only, with no color key, as the client loads DDS. DXT2, DXT4, a DX10 header, a cube map or a volume is refused: that image stays transparent at its own size, so the layout matches the client, and snap prints a warning naming the file (`rmlui: SoftRenderInterface: ... is not decoded`).
 - The CPU renderer follows the Direct3D 9 renderer's rules: premultiplied texels filtered, clamp addressing that wraps per axis for repeat fits, `.sub` regions clamped at their own edges, the color key and the same unsupported features. Colors, borders, text and images should therefore agree within a small tolerance, but a snapshot is not a screenshot of the client.
-- `docs/ui/snapshots/` holds goldens of the gallery, the login board and the Wave 1 windows (the dialogs, the server board, the virtual keyboard, the locale strip and the phase windows) in all three themes, the render test in the two modern ones, at scales 1.0, 1.5 and 2.0, and of the theme picker and the classic skin-proof page. A golden's name holds the theme's short name (`dark`, `light`, `classic`). `python3 tools/check_nui_snapshots.py` checks all of them and `--write --optimize` regenerates them (see [Golden case files](#golden-case-files) and the README there). Regenerate them in the same change as anything they show.
+- `docs/ui/snapshots/` holds goldens of the gallery, the login board, the Wave 1 windows (the dialogs, the server board, the virtual keyboard, the locale strip and the phase windows) and the Wave 2a windows (the taskbar and its pieces, then the rest of the HUD) in all three themes, the render test in the two modern ones, at scales 1.0, 1.5 and 2.0, and of the theme picker and the classic skin-proof page. A golden's name holds the theme's short name (`dark`, `light`, `classic`). `python3 tools/check_nui_snapshots.py` checks all of them and `--write --optimize` regenerates them (see [Golden case files](#golden-case-files) and the README there). Regenerate them in the same change as anything they show.
 
 `nuitool help` prints the current options.
 
@@ -1034,7 +1262,7 @@ A window declares its goldens in `assets/nui/nui/windows/<name>/<name>.snapshots
 ```
 
 - `page` is the folder name and the golden name's prefix: `dialog-question-classic-150.png`. `themes` is `"all"`, every shipped theme of `docs/ui/snapshots/golden-themes.json` (the full matrix, so a new theme needs no edit here), or a list of short names (`dark`, `light`, `classic`) for a case that covers only some (`"variant": "busy"` is classic only). An experimental theme is added to the gallery and the pages it names (see [Adding a theme](#adding-a-theme)). Each `scales` row is the percent in the file name, `--scale` and `--size`.
-- `fixture: true` passes `<name>.fixture.json`. A case with `"variant": "busy"` passes `<name>.busy.fixture.json` instead, for a state of the window the main fixture does not show, and its goldens are `<name>-busy-<theme>-<percent>.png` (select and create have a classic busy case, for the disabled buttons). `roots` are extra `--root` values after `assets/nui` and `assets/icon`, among `assets/ETC` (art under `d:/ymir work/`), `assets/locale`, `assets/uiloading` and `assets/icon`. `time` is `--time` in seconds, or `null` for the default.
+- `fixture: true` passes `<name>.fixture.json`. A case with `"variant": "busy"` passes `<name>.busy.fixture.json` instead, for a state of the window the main fixture does not show, and its goldens are `<name>-busy-<theme>-<percent>.png` (select and create have a classic busy case, for the disabled buttons). `roots` are extra `--root` values after `assets/nui` and `assets/icon`, among `assets/ETC` (art under `d:/ymir work/`), `assets/locale`, `assets/uiloading`, `assets/icon`, `assets/season1` and the HUD's patch groups `assets/metin2_patch_eu4`, `assets/metin2_patch_etc` and `assets/metin2_patch_ds`. `time` is `--time` in seconds, or `null` for the default.
 - The frame sizes: dialogs 640x360, 960x540 and 1280x720; the locale strip 1280x120, 1920x180 and 2560x240; the server board, the keyboard and the phase windows (a 1280x720dp design frame) 1280x720, 1920x1080 and 2560x1440.
 - `python3 tools/check_nui_snapshots.py --write --optimize --only <name>` writes a window's goldens and re-saves them with Pillow's optimizer; the check compares pixels, so an optimized file matches the same. A case file that breaks these rules stops the checker with exit 2.
 
@@ -1067,13 +1295,18 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - The dialog kit: one shown dialog per kind (a second one at the same time is the legacy dialog); `QuestionDialogWithTimeLimit` stays legacy until a timer exists; Enter on a question presses its default button (new); widths come from CSS, so `SetWidth`, `SetBoardWidth` and `SetSlotWidth` do nothing, and the dialogs are wider than the fixed legacy boards. Classic shows the focused default button in its over art.
 - The G5 stopgap decides a legacy dialog's layer at each `Open` only. It takes the keys from the dialog kit while a legacy dialog covers it, but not from a NovaUI field of another window. A legacy dialog shown again with `Show()` rather than `Open()` does not cover the kit again.
 - The virtual keyboard shows only on a screen at least 680dp tall (below that the board and the keyboard do not fit together). It plays the typing sound from Python after each key. Its classic key art and the classic gauge art are 1x only.
-- Every Wave 1 window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
+- Every Wave 1 and Wave 2a window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
+- **Slot grids and the drag bridge:** a release over a NovaUI grid outside every cell keeps the item attached, where legacy cancels the drag; with a legacy window open and a NovaUI document focused, Escape cancels a drag before it closes that window. The cooldown sweep follows RmlUi's angle projection, a few pixels from the legacy edge interpolation mid-octant, in 64 steps. The slot effects are additive, not screen: brighter than legacy where effect and background are both bright, and washed toward white on the modern light theme's slots.
+- **Feeds** apply once per frame; a value published and changed again within one frame shows only the last, and a `set()` on a fed key lasts until the feed changes.
+- **Tooltips:** item and skill tooltips stay the legacy windows (the tooltip bridge), drawn above NovaUI.
+- **The taskbar:** the classic gauges show the first of the legacy seven fill frames, still: RmlUi 6.3 does not animate `fill-image`, the property that cuts the art at the value. The right mode menu shows attack and camera, as legacy does (its skill button is hidden there; skills are picked in the picker). The gauge and digit art is 1x only.
+- **The energy bar** changes state only on a status refresh or a hover, as legacy. **The gift icon** stays legacy while the taskbar is legacy (the NovaUI taskbar makes it).
 - `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.
 - Gauges show their value at once, with no easing.
 - A placement is resolved after layout: a window placed in a frame shows there from that frame's render on, and a handle drag holds until the next size, scale or screen change.
 - UI sounds play for input only: changes Python or the model make are silent, by design.
 - `nui-frames` builds each frame's mesh the first time it is drawn; a bound `data-attr-frames` is not linted.
-- Classic art covers the frames, the title bar and close button, the buttons, the login field, the check mark and the vertical scrollbar; other inputs, slots, lists, tabs, sliders, badges and horizontal scrollbars are CSS in the legacy colors (see [Classic skin](#classic-skin)).
+- Classic art covers the frames, the title bar and close button, the buttons, the login field, the check mark and the vertical scrollbar; slots, the gauges and the HUD use legacy art files directly (1x only); other inputs, lists, tabs, sliders, badges and horizontal scrollbars are CSS in the legacy colors (see [Classic skin](#classic-skin)).
 - The classic login board is one thin board where the legacy UI draws two, and keeps the NovaUI button order (Exit, Connect).
 - Every document parses the classic sheets and holds the classic sprites in its sprite namespace; the sheet textures load only when a classic rule matches.
 - A client without the `nui-repeat-box` decorator (an exe older than this content) logs two parse warnings for each named decorator of the classic sheet (the four frame and the five gauge decorators): `Invalid decorator type 'nui-repeat-box'` and then `Invalid character '}'`. It has no theme table either: `nui.get_themes()` is empty, so the login board opens without the picker, and only dark and light exist. An exe without skin overlays applies no `nui/skins/<skin>/windows/` sheet, so its classic windows show the classic components on their modern layout. The exe and the `nui` group ship together.

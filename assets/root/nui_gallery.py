@@ -20,19 +20,63 @@ _ROWS = [
 	{"id": 5, "name": "Lycan", "meta": "Lv. 29", "disabled": False, "hover": False, "focus": False},
 ]
 
-_ICONS = [
-	("icon/item/27001.tga", 200), ("icon/item/27002.tga", 35), ("icon/item/27003.tga", 1),
-	("icon/item/27004.tga", 5), ("icon/item/27100.tga", 1), ("icon/item/27101.tga", 12),
-	("icon/item/30000.tga", 1), ("icon/item/50001.tga", 3), ("icon/item/70001.tga", 1),
-	("icon/item/71001.tga", 1), ("", 0), ("", 0),
+_SKILLS = "d:/ymir work/ui/skill/warrior/"
+
+# The slot grid v2 cells (nui_slots' model): an item with a count, a skill
+# with its cover and level, a cooldown at 60% at the snapshot's --time 1, an
+# active effect, a disabled, a locked, a picked, a selected, a hovered and an
+# empty cell.
+_SLOTS = [
+	{"kind": "item", "type": 1, "ref": 0, "icon": "/icon/item/27001.tga", "count": "200"},
+	{"kind": "skill", "type": 2, "ref": 1, "icon": _SKILLS + "samyeon_02.sub", "count": "m1", "cover": True},
+	{"kind": "skill", "type": 2, "ref": 2, "icon": _SKILLS + "palbang_01.sub", "count": "10", "cover": True,
+	 "cd_start": -1.0, "cd_end": 4.0},
+	{"kind": "skill", "type": 2, "ref": 3, "icon": _SKILLS + "jeongwi_02.sub", "count": "20", "cover": True, "active": True},
+	{"kind": "item", "type": 1, "ref": 4, "icon": "/icon/item/27002.tga", "count": "35", "disabled": True},
+	{"kind": "item", "type": 1, "ref": 5, "icon": "/icon/item/27003.tga", "locked": True},
+	{"kind": "item", "type": 1, "ref": 6, "icon": "/icon/item/27004.tga", "count": "5"},
+	{"kind": "item", "type": 1, "ref": 7, "icon": "/icon/item/27100.tga"},
+	{"kind": "item", "type": 1, "ref": 8, "icon": "/icon/item/30000.tga"},
+	{},
 ]
+_SLOT_PICKED, _SLOT_SELECTED, _SLOT_HOVER = 6, 7, 8
+
+# A 5 x 3 layered grid: a 1x2 sword at cell 0, a 2x3 armor at cell 2, and the
+# footprint of a 1x2 item held over cell 4.
+_BAG_COLUMNS, _BAG_ROWS = 5, 3
+_BAG_ITEMS = [(0, {"icon": "/icon/item/00010.tga", "w": 1, "h": 2}),
+              (2, {"icon": "/icon/item/03000.tga", "w": 2, "h": 3, "count": "2"})]
+_BAG_TARGET = (4, 9)
+
+
+def _empty_slot(index):
+	"""nui_slots.empty_slot, without importing the game modules it needs."""
+	return {"index": index, "kind": "", "type": 0, "ref": 0, "icon": "", "count": "", "w": 1, "h": 1,
+		"cd_start": 0.0, "cd_end": 0.0, "active": False, "cover": False, "disabled": False, "locked": False}
 
 
 def _slots():
 	slots = []
-	for index, (icon, count) in enumerate(_ICONS):
-		slots.append({"icon": icon, "count": count, "locked": index == 4, "selected": index == 2, "hover": index == 1})
+	for index, values in enumerate(_SLOTS):
+		slot = _empty_slot(index)
+		slot.update(values)
+		slots.append(slot)
 	return slots
+
+
+def _bag_cells():
+	return [{"index": index, "target": index in _BAG_TARGET} for index in range(_BAG_COLUMNS * _BAG_ROWS)]
+
+
+def _bag_items():
+	"""nui_slots.item_layer's entries for _BAG_ITEMS."""
+	items = []
+	for cell, values in _BAG_ITEMS:
+		item = _empty_slot(cell)
+		item.update(values, kind="item", type=1, ref=cell)
+		item["c"], item["r"] = cell % _BAG_COLUMNS, cell // _BAG_COLUMNS
+		items.append(item)
+	return items
 
 
 class GalleryWindow(nui.Window):
@@ -52,6 +96,11 @@ class GalleryWindow(nui.Window):
 			"selected": 2,
 			"rows": _ROWS,
 			"slots": _slots(),
+			"slot_picked": _SLOT_PICKED,
+			"slot_selected": _SLOT_SELECTED,
+			"slot_hover": _SLOT_HOVER,
+			"bag_cells": _bag_cells(),
+			"bag_items": _bag_items(),
 		}
 
 	def _on_theme(self, event):

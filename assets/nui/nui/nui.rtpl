@@ -23,6 +23,8 @@
 	<link type="text/rcss" href="components/tabs.rcss"/>
 	<link type="text/rcss" href="components/slot-grid.rcss"/>
 	<link type="text/rcss" href="components/frames.rcss"/>
+	<link type="text/rcss" href="components/clock.rcss"/>
+	<link type="text/rcss" href="components/number.rcss"/>
 	<link type="text/rcss" href="components/gauge.rcss"/>
 	<link type="text/rcss" href="components/dialog.rcss"/>
 	<!-- Layout helpers last: they are combined with component classes on one

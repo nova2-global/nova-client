@@ -1,0 +1,8 @@
+{
+	"$comment": "Golden cases of the taskbar (tools/check_nui_snapshots.py): the bar, the bar with both mouse menus and the skill picker open (menus), and the classic bar at a 1600-wide screen, the legacy layout's own width (wide). Its legacy art is under d:/ymir work/ (assets/ETC); the fixture times are seconds of the snap clock at its default --time 1.",
+	"cases": [
+		{"page": "taskbar", "themes": "all", "scales": [["100", "1", "1280x200"], ["150", "1.5", "1920x300"], ["200", "2", "2560x400"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "taskbar", "variant": "menus", "themes": "all", "scales": [["100", "1", "1280x200"], ["150", "1.5", "1920x300"], ["200", "2", "2560x400"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "taskbar", "variant": "wide", "themes": ["classic"], "scales": [["100", "1", "1600x200"], ["150", "1.5", "2400x300"], ["200", "2", "3200x400"]], "fixture": true, "roots": ["assets/ETC"], "time": null}
+	]
+}

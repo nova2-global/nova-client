@@ -219,8 +219,10 @@ class GoldenPolicy(Scratch):
         self.assertEqual(self.run_tool(PALETTE, "--base", "dark", "--shipped")[0], 0)
         self.assertEqual(self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"][-1], {"name": golden_name(PALETTE), "id": PALETTE})
         added = set(self.golden_names()) - set(self.base)
+        # The classic-only cases (their themes list classic alone) are not in the matrix.
         classic = {name.replace("-classic-", "-%s-" % golden_name(PALETTE)) for name in self.base if "-classic-" in name
-                   and not name.startswith(("skin-proof-", "select-busy-", "create-busy-"))}
+                   and not name.startswith(("skin-proof-", "select-busy-", "create-busy-", "taskbar-wide-",
+                                            "energy-bar-hungry-", "energy-bar-empty-"))}
         self.assertEqual(added, classic)
 
     def test_a_theme_without_a_golden_entry_stops_the_checker(self):
@@ -271,7 +273,7 @@ class ScaffoldWithNuitool(Scratch):
         code, _out, err = self.run_tool(SKIN, "--base", "classic", "--skin", SKIN, "--window", "login")
         self.assertEqual(code, 0, err)
         groups = []
-        for group in ("icon", "ETC", "locale", "uiloading"):
+        for group in ("icon", "ETC", "locale", "uiloading", "season1", "metin2_patch_eu4", "metin2_patch_etc", "metin2_patch_ds"):
             groups += ["--root", os.path.join(REPO, "assets", group)]
         result = subprocess.run([NUITOOL, "lint", "--root", os.path.join(self.root, "assets", "nui")] + groups +
                                 ["--scripts", os.path.join(REPO, "assets", "root"),

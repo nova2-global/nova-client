@@ -1,0 +1,23 @@
+<rml>
+<head>
+	<!-- The expanded taskbar (uiscript/expandedtaskbar.py, uitaskbar.py
+	     ExpandedTaskBar): the dragon soul button the taskbar's expand button
+	     opens, with its hint (Deactivated until the character qualifies).
+	     While the expanded-taskbar flag is on, the Interface makes the
+	     facade nui_expanded_taskbar.ExpandedTaskBar (controller
+	     assets/root/nui_expanded_taskbar.py); Escape closes it in its legacy
+	     place in the Escape chain (nui_hud.EscapeProxy). Nothing takes the
+	     focus, so the button acts on mousedown. The classic art is in the
+	     metin2_patch_ds group (d:/ymir work/ui/dragonsoul/), a root for lint
+	     and snapshots. -->
+	<title>expanded-taskbar</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="expanded-taskbar.rcss"/>
+</head>
+<body template="nui" class="nui-overlay expanded-taskbar" data-model="expanded_taskbar">
+	<div id="expanded-taskbar" class="expanded-taskbar__board nui-interactive">
+		<button id="dragon-soul" class="expanded-taskbar__button nui-has-tooltip"
+			data-event-mousedown="dragon_soul(ev.button)"><span class="nui-tooltip nui-anim expanded-taskbar__tip">{{ tip }}</span></button>
+	</div>
+</body>
+</rml>

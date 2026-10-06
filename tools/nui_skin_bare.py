@@ -31,7 +31,8 @@ import nui_tokens  # noqa: E402
 REPO = os.path.dirname(HERE)
 FIXTURE = os.path.join(HERE, "fixtures", "skin-bare", "theme.json")
 SOURCE = os.path.join(REPO, "assets", "nui", "nui")
-GROUPS = ("icon", "ETC", "locale", "uiloading")
+# The lint roots of docs/ui/AUTHORING.md (Tools) after the documents.
+GROUPS = ("icon", "ETC", "locale", "uiloading", "season1", "metin2_patch_eu4", "metin2_patch_etc", "metin2_patch_ds")
 SCRIPTS = os.path.join(REPO, "assets", "root")
 LOCALE = os.path.join(REPO, "assets", "locale", "locale", "en")
 # The gallery and three representative windows: a board, a phase window and

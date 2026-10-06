@@ -1,15 +1,70 @@
-/* Item slots: square cells with a 32dp icon, a count badge and a hover
-   highlight. Legacy icons are store paths such as icon/item/27001.tga; a
-   leading '/' makes a path resolve from the store root in any document.
+/* Slot grid v2: square cells for items, skills and emotions, fed by the slot
+   model of assets/root/nui_slots.py (docs/ui/AUTHORING.md "Slot grids").
+   One cell, every part (the window's event names; the grid's name first):
 
-   <div class="nui-slot-grid">
-       <div class="nui-slot nui-anim" data-for="slot : slots"
-            data-class-is-disabled="slot.locked">
-           <img class="nui-slot__icon" data-if="slot.icon != ''"
-                data-attr-src="'/' + slot.icon"/>
-           <span class="nui-slot__count" data-if="slot.count > 1">{{ slot.count }}</span>
-       </div>
-   </div> */
+   <div class="nui-slot-grid nui-slot-grid--cols-4" id="quick-slots">
+   	<div class="nui-slot nui-anim" data-for="slot : quick_slots"
+   	     data-class-is-empty="slot.kind == ''"
+   	     data-class-is-disabled="slot.disabled" data-class-is-locked="slot.locked"
+   	     data-class-is-picked="slot.index == quick_picked"
+   	     data-class-is-selected="slot.index == quick_selected"
+   	     data-event-mousedown="slot_press('quick', slot.index, ev.button)"
+   	     data-event-mouseup="slot_release('quick', slot.index, ev.button)"
+   	     data-event-mouseover="slot_over('quick', slot.index)"
+   	     data-event-mouseout="slot_out('quick', slot.index)"
+   	     data-event-nuidrop="slot_drop('quick', slot.index)">
+   		<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
+   		<div class="nui-slot__cover" data-if="slot.cover"></div>
+   		<div class="nui-slot__tint"></div>
+   		<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
+   			data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+   		<nui-frames class="nui-slot__active" data-if="slot.active"
+   			pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
+   		<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0"
+   			pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+   			delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+   		<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
+   		<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+   	</div>
+   </div>
+
+   States: is-empty, is-disabled (the legacy red tint), is-locked (the legacy
+   black tint; the controller refuses a pick), is-picked (drawn only in a grid
+   with nui-slot-grid--pick, as legacy's SLOT_STYLE_PICK_UP), is-selected,
+   is-target (a drop footprint cell), :hover and is-hover. A disabled or
+   locked cell keeps its pointer events, as legacy cells take clicks.
+   Every part ignores the pointer, so the cell is always the event target and
+   moving over its icon sends no mouseout.
+
+   The parts draw in the legacy order (CSlotWindow::OnRender): the pick and
+   selection tint under the icon, then the icon, the disabled tint, the
+   cooldown sweep, the cover, the count, the finish effect, the active effect
+   and the locked tint on top. The cell is a stacking context (z-index 0), so
+   a negative z-index draws above its background and under the icon.
+
+   A grid that holds items larger than one cell draws their icons in a layer
+   over the cells, which stay the hit targets:
+
+   <div class="nui-slot-grid nui-slot-grid--cols-5 nui-slot-grid--layered">
+   	<div class="nui-slot nui-anim" data-for="cell : bag_cells" data-class-is-target="cell.target">
+   		<div class="nui-slot__tint"></div>
+   	</div>
+   	<div class="nui-slot-grid__items">
+   		<div class="nui-slot-item" data-for="item : bag_items"
+   		     data-class-nui-slot-item--c1="item.c == 1" data-class-nui-slot-item--r2="item.r == 2"
+   		     data-class-nui-slot-item--w2="item.w == 2" data-class-nui-slot-item--h3="item.h == 3">
+   			<img class="nui-slot__icon" data-attr-src="item.icon"/>
+   			<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
+   		</div>
+   	</div>
+   </div>
+
+   A footprint cell shows its state through its __tint (classic draws the
+   legacy white over the slot base there), so give the cells one.
+
+   Modern: 40dp cells 4dp apart (a 44dp pitch), the 32dp icon 4dp inside.
+   Classic (skins/classic/classic.rcss): the legacy 32dp pitch with the slot
+   base art, the legacy tints and cover art, and the legacy digits. */
 
 .nui-slot-grid
 {
@@ -18,11 +73,23 @@
 	flex-wrap: wrap;
 	gap: var(--space-1);
 }
+/* n cells of 40dp and n - 1 gaps of 4dp: the cells wrap into n columns. */
+.nui-slot-grid--cols-1 { width: 40dp; }
+.nui-slot-grid--cols-2 { width: 84dp; }
+.nui-slot-grid--cols-3 { width: 128dp; }
+.nui-slot-grid--cols-4 { width: 172dp; }
+.nui-slot-grid--cols-5 { width: 216dp; }
+.nui-slot-grid--cols-6 { width: 260dp; }
+.nui-slot-grid--cols-7 { width: 304dp; }
+.nui-slot-grid--cols-8 { width: 348dp; }
+.nui-slot-grid--cols-9 { width: 392dp; }
+.nui-slot-grid--cols-10 { width: 436dp; }
 
 .nui-slot
 {
 	display: block;
 	position: relative;
+	z-index: 0;
 	box-sizing: border-box;
 	width: 40dp;
 	height: 40dp;
@@ -41,10 +108,11 @@
 {
 	border-color: var(--accent);
 }
-.nui-slot.is-disabled, .nui-slot[disabled]
+/* A drop footprint cell: the cells an attached item would cover. */
+.nui-slot.is-target
 {
-	opacity: 0.4;
-	pointer-events: none;
+	background-color: var(--surface-hover);
+	border-color: var(--accent);
 }
 /* Hover fade (--dur-fast, --ease-out). */
 .nui-slot.nui-anim
@@ -57,6 +125,88 @@
 	display: block;
 	width: 32dp;
 	height: 32dp;
+	pointer-events: none;
+}
+
+/* Skills and emotions: a 1dp ring inside the icon. */
+.nui-slot__cover
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	z-index: 3;
+	box-sizing: border-box;
+	width: 32dp;
+	height: 32dp;
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: var(--radius-sm);
+	pointer-events: none;
+}
+
+/* The tints of the disabled, locked, picked and selected states, over the
+   whole cell inside its border. */
+.nui-slot__tint
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+}
+.nui-slot.is-disabled .nui-slot__tint
+{
+	z-index: 1;
+	background-color: var(--slot-disabled);
+}
+.nui-slot-grid--pick .nui-slot.is-picked .nui-slot__tint
+{
+	z-index: -1;
+	background-color: var(--slot-picked);
+}
+.nui-slot.is-locked .nui-slot__tint
+{
+	z-index: 7;
+	background-color: var(--slot-locked);
+}
+
+/* The cooldown sweep over the icon (components/clock.rcss draws it). */
+.nui-slot__cooldown
+{
+	left: 3dp;
+	top: 3dp;
+	right: auto;
+	bottom: auto;
+	z-index: 2;
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+
+/* The two legacy effects: the 13-frame active loop and the 11-frame
+   cooldown end, both additive art over the icon. */
+.nui-slot__active, .nui-slot__finish
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	pointer-events: none;
+}
+.nui-slot__finish
+{
+	z-index: 5;
+}
+.nui-slot__active
+{
+	z-index: 6;
+}
+@media (theme: reduced-motion)
+{
+	.nui-slot__finish
+	{
+		display: none;
+	}
 }
 
 .nui-slot__count
@@ -64,6 +214,7 @@
 	position: absolute;
 	right: 1dp;
 	bottom: 1dp;
+	z-index: 4;
 	padding: 0 3dp;
 	border-radius: var(--radius-sm);
 	background-color: var(--tooltip-bg);
@@ -73,3 +224,96 @@
 	line-height: 14dp;
 	pointer-events: none;
 }
+/* The legacy digit art (components/number.rcss); classic shows it instead
+   of the count. */
+.nui-slot__digits
+{
+	display: none;
+	position: absolute;
+	right: 4dp;
+	bottom: 3dp;
+	z-index: 4;
+	pointer-events: none;
+}
+/* A window's key label in a cell (the taskbar's 1 to 4, F1 to F4); the
+   window styles it. */
+.nui-slot__key
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	z-index: 4;
+	pointer-events: none;
+}
+
+/* --- Multi-cell items -------------------------------------------------------- */
+
+.nui-slot-grid--layered
+{
+	position: relative;
+}
+.nui-slot-grid--layered .nui-slot__icon, .nui-slot-grid--layered .nui-slot__count
+{
+	display: none;
+}
+.nui-slot-grid__items
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+.nui-slot-item
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	width: 40dp;
+	height: 40dp;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: none;
+}
+/* The item's own icon at its size (32x32, 32x64 or 32x96dp), shown in a
+   layered grid. */
+.nui-slot-grid--layered .nui-slot-item .nui-slot__icon
+{
+	display: block;
+	width: auto;
+	height: auto;
+}
+.nui-slot-grid--layered .nui-slot-item .nui-slot__count
+{
+	display: block;
+}
+.nui-slot-item--c0 { left: 0; }
+.nui-slot-item--c1 { left: 44dp; }
+.nui-slot-item--c2 { left: 88dp; }
+.nui-slot-item--c3 { left: 132dp; }
+.nui-slot-item--c4 { left: 176dp; }
+.nui-slot-item--c5 { left: 220dp; }
+.nui-slot-item--c6 { left: 264dp; }
+.nui-slot-item--c7 { left: 308dp; }
+.nui-slot-item--c8 { left: 352dp; }
+.nui-slot-item--c9 { left: 396dp; }
+.nui-slot-item--r0 { top: 0; }
+.nui-slot-item--r1 { top: 44dp; }
+.nui-slot-item--r2 { top: 88dp; }
+.nui-slot-item--r3 { top: 132dp; }
+.nui-slot-item--r4 { top: 176dp; }
+.nui-slot-item--r5 { top: 220dp; }
+.nui-slot-item--r6 { top: 264dp; }
+.nui-slot-item--r7 { top: 308dp; }
+.nui-slot-item--r8 { top: 352dp; }
+.nui-slot-item--r9 { top: 396dp; }
+.nui-slot-item--w1 { width: 40dp; }
+.nui-slot-item--w2 { width: 84dp; }
+.nui-slot-item--w3 { width: 128dp; }
+.nui-slot-item--h1 { height: 40dp; }
+.nui-slot-item--h2 { height: 84dp; }
+.nui-slot-item--h3 { height: 128dp; }

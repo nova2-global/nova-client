@@ -60,6 +60,10 @@ Rules (docs/ui/AUTHORING.md has the full list):
     player wrote (chat, names, shop signs, mail) through {{ }} as it is.
     Model strings are always text, never markup: the runtime refuses
     data-rml.
+  * A key the class names in FEEDS follows a C++ feed (nui.feed): the game
+    publishes the value (player.hp, quickslot.slots) and the key takes it
+    once per frame, with no Python. Times that nui-frames, nui-cooldown and
+    nui-countdown read are seconds of nui.now().
   * A window lives until destroy(): the runtime holds its handlers, so
     dropping the last reference does not close it. Only one window per MODEL
     name can exist at a time.
@@ -150,6 +154,24 @@ def plain_text(text):
 	return text.replace("@", "@" + _WORD_JOINER)
 
 
+def now():
+	"""The NovaUI clock in seconds, the one nui-frames, nui-cooldown and
+	nui-countdown read: a time written into a model for them (a cooldown's
+	start and end, an affect's end) is now() plus seconds. 0.0 without a
+	runtime."""
+	if not is_available():
+		return 0.0
+	return float(_nui.Now())
+
+
+def feed(name):
+	"""The value C++ published last under this feed name ("player.hp"; the
+	list is in src/UserInterface/NuiGameFeeds.h), or None."""
+	if _nui is None:
+		return None
+	return _nui.FeedGet(name)
+
+
 def _is_legal_name(name):
 	"""RmlUi's rule for model keys and data-event names."""
 	if not name or not ("a" <= name[0].lower() <= "z"):
@@ -217,6 +239,7 @@ class Window(object):
 	DOCUMENT = None   # asset path of the .rml (required)
 	MODEL = None      # data model name the document binds to, or None
 	MODAL = False     # show() as a modal document
+	FEEDS = {}        # model key -> C++ feed name the key follows (see nui.feed)
 
 	_doc = 0          # document id, 0 when there is none
 	_model = 0        # model id, 0 when there is none
@@ -233,7 +256,7 @@ class Window(object):
 		unavailable.
 
 		Raises ValueError when DOCUMENT is not set, or when the class has @on
-		handlers but no MODEL (checked only while NovaUI is available). When
+		handlers or FEEDS but no MODEL (checked only while NovaUI is available). When
 		the model or the document cannot be made (the runtime logs why), the
 		window stays unavailable and its methods do nothing."""
 		self._doc = 0
@@ -247,6 +270,8 @@ class Window(object):
 		handlers = _event_methods(cls)
 		if handlers and not self.MODEL:
 			raise ValueError("%s has @nui.on handlers but no MODEL" % cls.__name__)
+		if self.FEEDS and not self.MODEL:
+			raise ValueError("%s has FEEDS but no MODEL" % cls.__name__)
 
 		_prepare_runtime()
 		if self.MODEL:
@@ -257,6 +282,8 @@ class Window(object):
 			# Before the load, which already raises events.
 			for event_name, method_name in handlers.items():
 				_nui.ModelOn(model, event_name, getattr(self, method_name))
+			for key, feed_name in self.FEEDS.items():
+				_nui.BindFeed(model, key, feed_name)
 
 		doc = _nui.LoadDocument(self.DOCUMENT)
 		if not doc:

@@ -1,0 +1,6 @@
+{
+	"$comment": "Golden cases of the gift icon (tools/check_nui_snapshots.py); its art is in the metin2_patch_etc group.",
+	"cases": [
+		{"page": "gift-box", "themes": "all", "scales": [["100", "1", "240x160"], ["150", "1.5", "360x240"], ["200", "2", "480x320"]], "fixture": true, "roots": ["assets/metin2_patch_etc"], "time": null}
+	]
+}

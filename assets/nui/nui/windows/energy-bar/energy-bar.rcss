@@ -1,0 +1,53 @@
+/* The energy bar's modern look: a small bar above the modern taskbar's item
+   mall button, in the success color while full, the warning color while
+   hungry and the gauge track while empty. Classic (the legacy arc around
+   the mall button): skins/classic/windows/energy-bar.rcss. */
+
+body.energy-bar
+{
+	focus: none;
+}
+.energy-bar__base
+{
+	position: absolute;
+	left: 4dp;
+	bottom: 52dp;
+	width: 40dp;
+	height: 8dp;
+	padding: 1dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+	background-color: var(--surface);
+}
+.energy-bar__gauge
+{
+	display: block;
+	height: 4dp;
+	border-radius: 2dp;
+	background-color: var(--gauge-track);
+}
+.energy-bar__gauge.is-full
+{
+	background-color: var(--success);
+}
+.energy-bar__gauge.is-hungry
+{
+	width: 15%;
+	background-color: var(--warning);
+}
+.energy-bar__gauge.is-empty
+{
+	width: 0;
+}
+/* The hint host over the bar. */
+.energy-bar__tip
+{
+	display: block;
+	position: absolute;
+	left: 4dp;
+	bottom: 52dp;
+	width: 40dp;
+	height: 8dp;
+	pointer-events: auto;
+}

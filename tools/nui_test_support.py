@@ -14,7 +14,11 @@ as RmlUi's text widget does: a new field has it at 0, the focus leaves it
 where it is, set_value() places it only in the focused field (another
 field's caret is cut to its new text, as the next layout does), and
 insert_text() types and erases at it. show() records whether it showed the
-window as a modal (Window.modal)."""
+window as a modal (Window.modal). Feeds follow nui.py's FEEDS: a window
+binds each key it names when it is made (the key takes the feed's value
+then, if NuiState.feeds holds one), NuiState.publish() changes a feed and
+every bound key, as the runtime's next frame would, and nui.now() and
+nui.feed() answer NuiState.now and NuiState.feeds."""
 import importlib.util
 import os
 import sys
@@ -49,6 +53,20 @@ class NuiState(object):
         self.field_events = {}   # (document, field id) -> data-event name of its change
         self.boxes = {}          # (document, element id) -> (x, y, w, h) in pixels
         self.maxlength = {}      # (document, field id) -> maxlength
+        self.now = 0.0           # nui.now()
+        self.feeds = {}          # feed name -> the value C++ published last (nui.feed)
+        self.binds = []          # (window class name, model key, feed name) of every bind, in order
+
+    def publish(self, name, value):
+        """A feed changes: every live window's key bound to it takes the value,
+        as the runtime applies feeds before its next update."""
+        self.feeds[name] = value
+        for window in self.windows:
+            if not window._model:
+                continue
+            for key, feed_name in window.FEEDS.items():
+                if feed_name == name:
+                    window.model[key] = value
 
 
 def make_nui(state):
@@ -73,6 +91,7 @@ def make_nui(state):
         DOCUMENT = None
         MODEL = None
         MODAL = False
+        FEEDS = {}
         _doc = 0
         _model = 0
 
@@ -95,8 +114,14 @@ def make_nui(state):
                 return
             if self.DOCUMENT in state.raising:
                 raise RuntimeError("stand-in: %s raises" % self.DOCUMENT)
+            if self.FEEDS and not self.MODEL:
+                raise ValueError("%s has FEEDS but no MODEL" % type(self).__name__)
             self.model = dict(self.initial_model())
             self._model = 1
+            for key, feed_name in self.FEEDS.items():
+                state.binds.append((type(self).__name__, key, feed_name))
+                if feed_name in state.feeds:
+                    self.model[key] = state.feeds[feed_name]
             if not state.loads or self.DOCUMENT in state.failing:
                 self._model = 0
                 return
@@ -361,6 +386,8 @@ def make_nui(state):
     nui.get_scale = lambda: state.scale
     nui.any_window_shown = any_window_shown
     nui.plain_text = plain_text
+    nui.now = lambda: float(state.now) if state.available else 0.0
+    nui.feed = lambda name: state.feeds.get(name)
     nui.KEY_ESCAPE = KEY_ESCAPE
     nui.KEY_RETURN = KEY_RETURN
     nui.KEY_NUMPADENTER = KEY_NUMPADENTER

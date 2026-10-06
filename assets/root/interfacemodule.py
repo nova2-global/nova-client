@@ -1,6 +1,8 @@
 ##
 ## Interface
 ##
+import sys
+
 import constInfo
 import systemSetting
 import wndMgr
@@ -44,6 +46,7 @@ import uiScriptLocale
 
 import event
 import localeInfo
+import nui_windows
 
 IsQBHide = 0
 class Interface(object):
@@ -124,8 +127,11 @@ class Interface(object):
 		self.wndChat.SetOpenChatLogEvent(ui.__mem_func__(self.ToggleChatLogWindow))
 
 	def __MakeTaskBar(self):
-		wndTaskBar = uiTaskBar.TaskBar()
+		wndTaskBar = nui_windows.make("taskbar", uiTaskBar.TaskBar, "nui_taskbar.TaskBar")
 		wndTaskBar.LoadWindow()
+		# The NovaUI gift box needs the NovaUI taskbar, which makes it (spec D17).
+		if not getattr(wndTaskBar, "NUI_FACADE", False) and nui_windows.is_on("gift-box"):
+			nui_windows.refuse("gift-box", "needs the NovaUI taskbar")
 		self.wndTaskBar = wndTaskBar
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_CHARACTER, ui.__mem_func__(self.ToggleCharacterWindowStatusPage))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_INVENTORY, ui.__mem_func__(self.ToggleInventoryWindow))
@@ -133,7 +139,7 @@ class Interface(object):
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_SYSTEM, ui.__mem_func__(self.ToggleSystemDialog))
 		if uiTaskBar.TaskBar.IS_EXPANDED:
 			self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_EXPAND, ui.__mem_func__(self.ToggleExpandedButton))
-			self.wndExpandedTaskBar = uiTaskBar.ExpandedTaskBar()
+			self.wndExpandedTaskBar = nui_windows.make("expanded-taskbar", uiTaskBar.ExpandedTaskBar, "nui_expanded_taskbar.ExpandedTaskBar")
 			self.wndExpandedTaskBar.LoadWindow()
 			self.wndExpandedTaskBar.SetToggleButtonEvent(uiTaskBar.ExpandedTaskBar.BUTTON_DRAGON_SOUL, ui.__mem_func__(self.ToggleDragonSoulWindow))
 
@@ -143,17 +149,17 @@ class Interface(object):
 		self.wndEnergyBar = None
 		import app
 		if app.ENABLE_ENERGY_SYSTEM:
-			wndEnergyBar = uiTaskBar.EnergyBar()
+			wndEnergyBar = nui_windows.make("energy-bar", uiTaskBar.EnergyBar, "nui_energy_bar.EnergyBar")
 			wndEnergyBar.LoadWindow()
 			self.wndEnergyBar = wndEnergyBar	
 
 	def __MakeParty(self):
-		wndParty = uiParty.PartyWindow()
+		wndParty = nui_windows.make("party", uiParty.PartyWindow, "nui_party.PartyWindow")
 		wndParty.Hide()
 		self.wndParty = wndParty
 
 	def __MakeGameButtonWindow(self):
-		wndGameButton = uiGameButton.GameButtonWindow()
+		wndGameButton = nui_windows.make("game-buttons", uiGameButton.GameButtonWindow, "nui_game_buttons.GameButtonWindow")
 		wndGameButton.SetTop()
 		wndGameButton.Show()
 		wndGameButton.SetButtonEvent("STATUS", ui.__mem_func__(self.__OnClickStatusPlusButton))
@@ -252,10 +258,10 @@ class Interface(object):
 		self.wndHelp.Hide()
 
 	def __MakeTipBoard(self):
-		self.tipBoard = uiTip.TipBoard()
+		self.tipBoard = nui_windows.make("tip-board", uiTip.TipBoard, "nui_tip_board.TipBoard")
 		self.tipBoard.Hide()
 
-		self.bigBoard = uiTip.BigBoard()
+		self.bigBoard = nui_windows.make("big-board", uiTip.BigBoard, "nui_big_board.BigBoard")
 		self.bigBoard.Hide()
 
 	def __MakeWebWindow(self):
@@ -511,11 +517,18 @@ class Interface(object):
 		del self.dlgRefineNew
 		del self.wndGuildBuilding
 		del self.wndGameButton
+		# The NovaUI boards' documents go with them (spec D26); legacy only drops the reference.
+		for board in (self.tipBoard, self.bigBoard):
+			if getattr(board, "NUI_FACADE", False):
+				board.Destroy()
 		del self.tipBoard
 		del self.bigBoard
 		del self.wndItemSelect
 
 		self.questButtonList = []
+		edge = sys.modules.get("nui_edge_buttons")
+		if edge is not None:
+			edge.close_all()
 		self.whisperButtonList = []
 		self.whisperDialogDict = {}
 		self.privateShopAdvertisementBoardDict = {}

@@ -6,10 +6,11 @@
 	     is-active, is-focus) stand in for pointer and keyboard states so
 	     snapshots show them. Not shown: the body-level layers (nui-overlay,
 	     nui-scrim), the dialog look (the dialog-* windows have goldens of
-	     their own), the nui-frames element (the loading window shows it)
-	     and the layout helpers other than nui-row. The classic
-	     gauge art is legacy art under d:/ymir work/, so snapshots of this
-	     page need the assets/ETC root.
+	     their own), the nui-frames element outside the slot effects (the
+	     loading window shows it), nui-countdown (the HUD windows show it)
+	     and the layout helpers other than nui-row. The classic gauge and
+	     slot art and the slot effects are legacy art under d:/ymir work/,
+	     so snapshots of this page need the assets/ETC root.
 	     It fits a 1920x1080 dp viewport, so a snapshot at the client's auto
 	     scale for 1080, 1620 and 2160 lines shows everything. -->
 	<title>NovaUI gallery</title>
@@ -240,13 +241,50 @@
 				</div>
 
 				<h2>Slot grid</h2>
-				<div class="nui-slot-grid">
-					<div class="nui-slot nui-anim" data-for="slot : slots"
-						data-class-is-disabled="slot.locked"
-						data-class-is-selected="slot.selected"
-						data-class-is-hover="slot.hover">
-						<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="'/' + slot.icon"/>
-						<span class="nui-slot__count" data-if="slot.count > 1">{{ slot.count }}</span>
+				<!-- v2 cells: an item with a count, a skill with its cover and level,
+				     a cooldown at 60% (the snapshot's --time 1 in [-1, 4)), an active
+				     effect, a disabled, a locked, a picked, a selected, a hovered and an
+				     empty cell; then a 5 x 3 layered grid with a 1x2 and a 2x3 item and
+				     a two-cell drop footprint. -->
+				<div class="nui-row gallery-slots">
+					<div class="nui-slot-grid nui-slot-grid--cols-5 nui-slot-grid--pick">
+						<div class="nui-slot nui-anim" data-for="slot : slots"
+							data-class-is-empty="slot.kind == ''"
+							data-class-is-disabled="slot.disabled" data-class-is-locked="slot.locked"
+							data-class-is-picked="slot.index == slot_picked"
+							data-class-is-selected="slot.index == slot_selected"
+							data-class-is-hover="slot.index == slot_hover">
+							<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
+							<div class="nui-slot__cover" data-if="slot.cover"></div>
+							<div class="nui-slot__tint"></div>
+							<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
+								data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+							<nui-frames class="nui-slot__active" data-if="slot.active"
+								pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
+							<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0"
+								pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+								delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+							<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
+							<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+						</div>
+					</div>
+					<div class="nui-slot-grid nui-slot-grid--cols-5 nui-slot-grid--layered">
+						<div class="nui-slot nui-anim" data-for="cell : bag_cells" data-class-is-target="cell.target"><div class="nui-slot__tint"></div></div>
+						<div class="nui-slot-grid__items">
+							<div class="nui-slot-item" data-for="item : bag_items"
+								data-class-nui-slot-item--c0="item.c == 0" data-class-nui-slot-item--c1="item.c == 1"
+								data-class-nui-slot-item--c2="item.c == 2" data-class-nui-slot-item--c3="item.c == 3"
+								data-class-nui-slot-item--c4="item.c == 4"
+								data-class-nui-slot-item--r0="item.r == 0" data-class-nui-slot-item--r1="item.r == 1"
+								data-class-nui-slot-item--r2="item.r == 2"
+								data-class-nui-slot-item--w1="item.w == 1" data-class-nui-slot-item--w2="item.w == 2"
+								data-class-nui-slot-item--h1="item.h == 1" data-class-nui-slot-item--h2="item.h == 2"
+								data-class-nui-slot-item--h3="item.h == 3">
+								<img class="nui-slot__icon" data-attr-src="item.icon"/>
+								<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
+								<nui-number class="nui-slot__digits" data-if="item.count != ''" data-attr-value="item.count"/>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

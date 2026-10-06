@@ -1,0 +1,41 @@
+<rml>
+<head>
+	<!-- The game buttons (uiscript/gamewindow.py, uigamebutton.py): raise
+	     stats, raise skills, help, tasks, guild building and the end of the
+	     observer mode, each a large plus with its label below; each shows
+	     only while it applies. While the game-buttons flag is on, the
+	     Interface makes the facade nui_game_buttons.GameButtonWindow
+	     (controller assets/root/nui_game_buttons.py). Nothing takes the
+	     focus, so the buttons act on mousedown. The classic art is legacy
+	     art under d:/ymir work/ (assets/ETC). -->
+	<title>game-buttons</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="game-buttons.rcss"/>
+</head>
+<body template="nui" class="nui-overlay game-buttons" data-model="game_buttons">
+	<div id="game-help" class="game-button game-button--help nui-interactive" data-if="show_help">
+		<button class="game-button__plus" data-event-mousedown="press('HELP', ev.button)">+</button>
+		<span class="game-button__label"><span class="game-button__text">@ui.GAME_HELP</span></span>
+	</div>
+	<div id="game-status" class="game-button game-button--status nui-interactive" data-if="show_status">
+		<button class="game-button__plus" data-event-mousedown="press('STATUS', ev.button)">+</button>
+		<span class="game-button__label"><span class="game-button__text">@ui.GAME_STAT_UP</span></span>
+	</div>
+	<div id="game-quest" class="game-button game-button--quest nui-interactive" data-if="show_quest">
+		<button class="game-button__plus" data-event-mousedown="press('QUEST', ev.button)">+</button>
+		<span class="game-button__label"><span class="game-button__text">@ui.GAME_QUEST</span></span>
+	</div>
+	<div id="game-exit-observer" class="game-button game-button--observer nui-interactive" data-if="show_observer">
+		<button class="game-button__plus" data-event-mousedown="press('EXIT_OBSERVER', ev.button)">+</button>
+		<span class="game-button__label"><span class="game-button__text">@ui.GAME_EXIT_OBSERVER</span></span>
+	</div>
+	<div id="game-build" class="game-button game-button--build nui-interactive" data-if="show_build">
+		<button class="game-button__plus" data-event-mousedown="press('BUILD', ev.button)">+</button>
+		<span class="game-button__label"><span class="game-button__text">@ui.GUILD_BUILDING_TITLE</span></span>
+	</div>
+	<div id="game-skill" class="game-button game-button--skill nui-interactive" data-if="show_skill">
+		<button class="game-button__plus" data-event-mousedown="press('SKILL', ev.button)">+</button>
+		<span class="game-button__label"><span class="game-button__text">@ui.GAME_SKILL_UP</span></span>
+	</div>
+</body>
+</rml>

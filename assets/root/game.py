@@ -44,6 +44,7 @@ import localeInfo
 
 import playerSettingModule
 import interfaceModule
+import nui_windows
 
 import musicInfo
 import debugInfo
@@ -90,7 +91,7 @@ class GameWindow(ui.ScriptWindow):
 		self.curtain.speed = 0.03
 		self.curtain.Hide()
 
-		self.targetBoard = uiTarget.TargetBoard()
+		self.targetBoard = nui_windows.make("target", uiTarget.TargetBoard, "nui_target.TargetBoard")
 		self.targetBoard.SetWhisperEvent(ui.__mem_func__(self.interface.OpenWhisperDialog))
 		self.targetBoard.Hide()
 
@@ -99,8 +100,8 @@ class GameWindow(ui.ScriptWindow):
 		self.console.SetConsoleSize(wndMgr.GetScreenWidth(), 200)
 		self.console.Hide()
 
-		self.mapNameShower = uiMapNameShower.MapNameShower()
-		self.affectShower = uiAffectShower.AffectShower()
+		self.mapNameShower = nui_windows.make("map-name", uiMapNameShower.MapNameShower, "nui_map_name.MapNameShower")
+		self.affectShower = nui_windows.make("affects", uiAffectShower.AffectShower, "nui_affects.AffectShower")
 
 		self.playerGauge = uiPlayerGauge.PlayerGauge(self)
 		self.playerGauge.Hide()
@@ -274,6 +275,10 @@ class GameWindow(ui.ScriptWindow):
 		self.ClearDictionary()
 
 		self.playerGauge = None
+		# The NovaUI showers' documents go with them (spec D26); legacy only drops the reference.
+		for shower in (self.mapNameShower, self.affectShower):
+			if getattr(shower, "NUI_FACADE", False):
+				shower.Destroy()
 		self.mapNameShower = None
 		self.affectShower = None
 
@@ -1468,7 +1473,7 @@ class GameWindow(ui.ScriptWindow):
 	def OnUpdate(self):	
 		app.UpdateGame()
 		
-		if self.mapNameShower.IsShow():
+		if self.mapNameShower.IsShow() and not getattr(self.mapNameShower, "NUI_FACADE", False):
 			self.mapNameShower.Update()
 
 		if self.isShowDebugInfo:

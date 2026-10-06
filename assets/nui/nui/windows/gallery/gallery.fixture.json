@@ -5,25 +5,311 @@
 		"show_hint": true,
 		"selected": 2,
 		"rows": [
-			{"id": 1, "name": "Warrior", "meta": "Lv. 42", "disabled": false, "hover": false, "focus": false},
-			{"id": 2, "name": "Ninja", "meta": "Lv. 37", "disabled": false, "hover": false, "focus": true},
-			{"id": 3, "name": "Sura", "meta": "Lv. 51", "disabled": false, "hover": true, "focus": false},
-			{"id": 4, "name": "Shaman", "meta": "Lv. 12", "disabled": true, "hover": false, "focus": false},
-			{"id": 5, "name": "Lycan", "meta": "Lv. 29", "disabled": false, "hover": false, "focus": false}
+			{
+				"id": 1,
+				"name": "Warrior",
+				"meta": "Lv. 42",
+				"disabled": false,
+				"hover": false,
+				"focus": false
+			},
+			{
+				"id": 2,
+				"name": "Ninja",
+				"meta": "Lv. 37",
+				"disabled": false,
+				"hover": false,
+				"focus": true
+			},
+			{
+				"id": 3,
+				"name": "Sura",
+				"meta": "Lv. 51",
+				"disabled": false,
+				"hover": true,
+				"focus": false
+			},
+			{
+				"id": 4,
+				"name": "Shaman",
+				"meta": "Lv. 12",
+				"disabled": true,
+				"hover": false,
+				"focus": false
+			},
+			{
+				"id": 5,
+				"name": "Lycan",
+				"meta": "Lv. 29",
+				"disabled": false,
+				"hover": false,
+				"focus": false
+			}
 		],
 		"slots": [
-			{"icon": "icon/item/27001.tga", "count": 200, "locked": false, "selected": false, "hover": false},
-			{"icon": "icon/item/27002.tga", "count": 35, "locked": false, "selected": false, "hover": true},
-			{"icon": "icon/item/27003.tga", "count": 1, "locked": false, "selected": true, "hover": false},
-			{"icon": "icon/item/27004.tga", "count": 5, "locked": false, "selected": false, "hover": false},
-			{"icon": "icon/item/27100.tga", "count": 1, "locked": true, "selected": false, "hover": false},
-			{"icon": "icon/item/27101.tga", "count": 12, "locked": false, "selected": false, "hover": false},
-			{"icon": "icon/item/30000.tga", "count": 1, "locked": false, "selected": false, "hover": false},
-			{"icon": "icon/item/50001.tga", "count": 3, "locked": false, "selected": false, "hover": false},
-			{"icon": "icon/item/70001.tga", "count": 1, "locked": false, "selected": false, "hover": false},
-			{"icon": "icon/item/71001.tga", "count": 1, "locked": false, "selected": false, "hover": false},
-			{"icon": "", "count": 0, "locked": false, "selected": false, "hover": false},
-			{"icon": "", "count": 0, "locked": false, "selected": false, "hover": false}
+			{
+				"index": 0,
+				"kind": "item",
+				"type": 1,
+				"ref": 0,
+				"icon": "/icon/item/27001.tga",
+				"count": "200",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 1,
+				"kind": "skill",
+				"type": 2,
+				"ref": 1,
+				"icon": "d:/ymir work/ui/skill/warrior/samyeon_02.sub",
+				"count": "m1",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": true,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 2,
+				"kind": "skill",
+				"type": 2,
+				"ref": 2,
+				"icon": "d:/ymir work/ui/skill/warrior/palbang_01.sub",
+				"count": "10",
+				"w": 1,
+				"h": 1,
+				"cd_start": -1.0,
+				"cd_end": 4.0,
+				"active": false,
+				"cover": true,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 3,
+				"kind": "skill",
+				"type": 2,
+				"ref": 3,
+				"icon": "d:/ymir work/ui/skill/warrior/jeongwi_02.sub",
+				"count": "20",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": true,
+				"cover": true,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 4,
+				"kind": "item",
+				"type": 1,
+				"ref": 4,
+				"icon": "/icon/item/27002.tga",
+				"count": "35",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": true,
+				"locked": false
+			},
+			{
+				"index": 5,
+				"kind": "item",
+				"type": 1,
+				"ref": 5,
+				"icon": "/icon/item/27003.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": true
+			},
+			{
+				"index": 6,
+				"kind": "item",
+				"type": 1,
+				"ref": 6,
+				"icon": "/icon/item/27004.tga",
+				"count": "5",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 7,
+				"kind": "item",
+				"type": 1,
+				"ref": 7,
+				"icon": "/icon/item/27100.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 8,
+				"kind": "item",
+				"type": 1,
+				"ref": 8,
+				"icon": "/icon/item/30000.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 9,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false
+			}
+		],
+		"slot_picked": 6,
+		"slot_selected": 7,
+		"slot_hover": 8,
+		"bag_cells": [
+			{
+				"index": 0,
+				"target": false
+			},
+			{
+				"index": 1,
+				"target": false
+			},
+			{
+				"index": 2,
+				"target": false
+			},
+			{
+				"index": 3,
+				"target": false
+			},
+			{
+				"index": 4,
+				"target": true
+			},
+			{
+				"index": 5,
+				"target": false
+			},
+			{
+				"index": 6,
+				"target": false
+			},
+			{
+				"index": 7,
+				"target": false
+			},
+			{
+				"index": 8,
+				"target": false
+			},
+			{
+				"index": 9,
+				"target": true
+			},
+			{
+				"index": 10,
+				"target": false
+			},
+			{
+				"index": 11,
+				"target": false
+			},
+			{
+				"index": 12,
+				"target": false
+			},
+			{
+				"index": 13,
+				"target": false
+			},
+			{
+				"index": 14,
+				"target": false
+			}
+		],
+		"bag_items": [
+			{
+				"index": 0,
+				"kind": "item",
+				"type": 1,
+				"ref": 0,
+				"icon": "/icon/item/00010.tga",
+				"count": "",
+				"w": 1,
+				"h": 2,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"c": 0,
+				"r": 0
+			},
+			{
+				"index": 2,
+				"kind": "item",
+				"type": 1,
+				"ref": 2,
+				"icon": "/icon/item/03000.tga",
+				"count": "2",
+				"w": 2,
+				"h": 3,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"c": 2,
+				"r": 0
+			}
 		]
 	}
 }

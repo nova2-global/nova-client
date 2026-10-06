@@ -555,22 +555,144 @@
 	padding: 8dp 10dp;
 }
 
-/* CSS only: the slot art is out of scope. */
+/* --- Slot grid (CSlotWindow, CGridSlotWindow) ------------------------------------
+   The legacy 32dp pitch: no gap, cells of the slot base art with the icon at
+   0,0, the legacy tints (the --slot-* tokens hold the legacy colors in the
+   classic palette), the cover button art and the legacy digits, placed as
+   CSlotWindow places its number line: right-aligned 4dp in from the item's
+   right edge, its top 10dp above the bottom. Legacy cells have no hover look.
+   The art is 1x only (legacy .sub regions), so slot documents need the
+   assets/ETC root. */
+.skin-classic .nui-slot-grid
+{
+	gap: 0;
+}
+.skin-classic .nui-slot-grid--cols-1 { width: 32dp; }
+.skin-classic .nui-slot-grid--cols-2 { width: 64dp; }
+.skin-classic .nui-slot-grid--cols-3 { width: 96dp; }
+.skin-classic .nui-slot-grid--cols-4 { width: 128dp; }
+.skin-classic .nui-slot-grid--cols-5 { width: 160dp; }
+.skin-classic .nui-slot-grid--cols-6 { width: 192dp; }
+.skin-classic .nui-slot-grid--cols-7 { width: 224dp; }
+.skin-classic .nui-slot-grid--cols-8 { width: 256dp; }
+.skin-classic .nui-slot-grid--cols-9 { width: 288dp; }
+.skin-classic .nui-slot-grid--cols-10 { width: 320dp; }
 .skin-classic .nui-slot
 {
-	background-color: var(--classic-slot-fill);
-	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	width: 32dp;
+	height: 32dp;
+	padding: 0;
+	border-width: 0;
 	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/slot_base.sub");
 }
 .skin-classic .nui-slot:hover, .skin-classic .nui-slot.is-hover
 {
-	background-color: var(--classic-slot-dark);
-	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: transparent;
+	border-width: 0;
 }
-.skin-classic .nui-slot.is-selected
+.skin-classic .nui-slot.is-selected, .skin-classic .nui-slot.is-target
 {
-	border-color: var(--accent);
+	background-color: transparent;
+	border-width: 0;
 }
+.skin-classic .nui-slot__icon
+{
+	width: 32dp;
+	height: 32dp;
+}
+.skin-classic .nui-slot__cover
+{
+	left: 0;
+	top: 0;
+	border-width: 0;
+	border-radius: 0;
+	decorator: image("d:/ymir work/ui/public/slot_cover_button_01.sub");
+}
+.skin-classic .nui-slot:hover .nui-slot__cover
+{
+	decorator: image("d:/ymir work/ui/public/slot_cover_button_02.sub");
+}
+.skin-classic .nui-slot:active .nui-slot__cover
+{
+	decorator: image("d:/ymir work/ui/public/slot_cover_button_03.sub");
+}
+/* The pick highlight and the selection: white at 50% under the icon. */
+.skin-classic .nui-slot.is-selected .nui-slot__tint
+{
+	z-index: -1;
+	background-color: var(--slot-picked);
+}
+.skin-classic .nui-slot.is-target .nui-slot__tint
+{
+	z-index: -1;
+	background-color: var(--slot-picked);
+}
+/* After the two above, which they tie: the disabled and locked tints win. */
+.skin-classic .nui-slot.is-disabled .nui-slot__tint
+{
+	z-index: 1;
+	background-color: var(--slot-disabled);
+}
+.skin-classic .nui-slot.is-locked .nui-slot__tint
+{
+	z-index: 7;
+	background-color: var(--slot-locked);
+}
+.skin-classic .nui-slot__cooldown, .skin-classic .nui-slot__active, .skin-classic .nui-slot__finish
+{
+	left: 0;
+	top: 0;
+}
+.skin-classic .nui-slot__count
+{
+	display: none;
+}
+.skin-classic .nui-slot__digits
+{
+	display: flex;
+}
+.skin-classic .nui-slot__key
+{
+	left: 0;
+	top: 0;
+}
+.skin-classic .nui-slot-item
+{
+	width: 32dp;
+	height: 32dp;
+	align-items: flex-start;
+	justify-content: flex-start;
+}
+.skin-classic .nui-slot-grid--layered .nui-slot-item .nui-slot__count
+{
+	display: none;
+}
+.skin-classic .nui-slot-item--c1 { left: 32dp; }
+.skin-classic .nui-slot-item--c2 { left: 64dp; }
+.skin-classic .nui-slot-item--c3 { left: 96dp; }
+.skin-classic .nui-slot-item--c4 { left: 128dp; }
+.skin-classic .nui-slot-item--c5 { left: 160dp; }
+.skin-classic .nui-slot-item--c6 { left: 192dp; }
+.skin-classic .nui-slot-item--c7 { left: 224dp; }
+.skin-classic .nui-slot-item--c8 { left: 256dp; }
+.skin-classic .nui-slot-item--c9 { left: 288dp; }
+.skin-classic .nui-slot-item--r1 { top: 32dp; }
+.skin-classic .nui-slot-item--r2 { top: 64dp; }
+.skin-classic .nui-slot-item--r3 { top: 96dp; }
+.skin-classic .nui-slot-item--r4 { top: 128dp; }
+.skin-classic .nui-slot-item--r5 { top: 160dp; }
+.skin-classic .nui-slot-item--r6 { top: 192dp; }
+.skin-classic .nui-slot-item--r7 { top: 224dp; }
+.skin-classic .nui-slot-item--r8 { top: 256dp; }
+.skin-classic .nui-slot-item--r9 { top: 288dp; }
+.skin-classic .nui-slot-item--w1 { width: 32dp; }
+.skin-classic .nui-slot-item--w2 { width: 64dp; }
+.skin-classic .nui-slot-item--w3 { width: 96dp; }
+.skin-classic .nui-slot-item--h1 { height: 32dp; }
+.skin-classic .nui-slot-item--h2 { height: 64dp; }
+.skin-classic .nui-slot-item--h3 { height: 96dp; }
 
 .skin-classic .nui-slider slidertrack
 {

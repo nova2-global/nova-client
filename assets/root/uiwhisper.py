@@ -7,7 +7,7 @@ import localeInfo
 import ime
 import chr
 
-class WhisperButton(ui.Button):
+class LegacyWhisperButton(ui.Button):
 	def __init__(self):
 		ui.Button.__init__(self, "TOP_MOST")
 
@@ -304,6 +304,11 @@ class WhisperDialog(ui.ScriptWindow):
 				ime.PasteString(link)
 			else:
 				self.interface.MakeHyperlinkTooltip(hyperlink)
+
+# NovaUI edge buttons (nui_edge_buttons.py, flag "edge-buttons"): with the flag
+# on this name makes a NovaUI edge button; with it off, the legacy one above.
+import nui_windows
+WhisperButton = nui_windows.factory("edge-buttons", LegacyWhisperButton, "nui_edge_buttons.EdgeButton")
 
 if "__main__" == __name__:
 	import uiTest

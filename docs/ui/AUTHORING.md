@@ -1301,6 +1301,13 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - **Tooltips:** item and skill tooltips stay the legacy windows (the tooltip bridge), drawn above NovaUI.
 - **The taskbar:** the classic gauges show the first of the legacy seven fill frames, still: RmlUi 6.3 does not animate `fill-image`, the property that cuts the art at the value. The right mode menu shows attack and camera, as legacy does (its skill button is hidden there; skills are picked in the picker). The gauge and digit art is 1x only.
 - **The energy bar** changes state only on a status refresh or a hover, as legacy. **The gift icon** stays legacy while the taskbar is legacy (the NovaUI taskbar makes it).
+- **The other HUD windows**, where they differ from legacy on purpose:
+  - Affects: the auto potion and dragon soul values are read once per hover, where legacy reads them every frame; the love point heart uses the grade legacy meant (its `/` looks up a fraction and falls back to a missing `00.dds`); a mall affect's text is formatted again on a locale change. The auto potion art is only in the `patch2` group, which the golden checker does not take as a root, so no golden shows it.
+  - Target board: the classic board is as wide as its content (legacy computes 200 plus 7 per letter, or 75dp per button), and a label wider than its 60dp button overflows both sides, as legacy's centered text does.
+  - Party: a former leader sees Leave alone (legacy also keeps Break up); the menu and role buttons hide with the party window, where legacy makes them separate windows.
+  - Edge buttons: a stack's column height stands for the legacy row count with `bottom: 75dp`, exact at 900 lines (at 720 lines it holds 7 rows where legacy has 6).
+  - Notice boards: one line at a time, advanced by a `nui-countdown` timer and slid by `transform`, where legacy scrolls a pixel per frame; the big board shows a batch once through and hides, as legacy's inverted cleanup does, and a long notice wraps where legacy splits it in two.
+  - Map name splash: a keyframe fade hidden by a timer; `game.py` skips its per-frame `Update()` for the facade.
 - `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.
 - Gauges show their value at once, with no easing.
 - A placement is resolved after layout: a window placed in a frame shows there from that frame's render on, and a handle drag holds until the next size, scale or screen change.

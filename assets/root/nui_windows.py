@@ -11,7 +11,8 @@ locale is not right-to-left (nui.enabled_for_locale), its document loaded
 and its controller was made; otherwise the legacy window runs, unchanged.
 Each decision is logged once to log.txt (dbg.Tracen); a failure of a
 window that was asked for is also logged once to syserr.txt
-(dbg.TraceError)."""
+(dbg.TraceError). At each phase change, end_phase() unloads the documents
+the ended phase shared, so none stays in the frame update of the next."""
 
 import sys
 
@@ -73,6 +74,10 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 }
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
+
+# Modules holding NovaUI documents that no phase window owns (shared between
+# windows), each with an end_phase() that unloads them; see end_phase().
+PHASE_SCOPED = ("nui_dialog_kit",)
 
 _DEFAULTS = dict(WINDOWS)
 _ID_CHARS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
@@ -251,6 +256,30 @@ def set_override(window_id, on):
 	if save is not None:
 		save()
 	return True
+
+
+def end_phase():
+	"""networkModule.MainStream calls this when a phase window has closed,
+	before the next one opens. RmlUi updates every loaded document each
+	frame, shown or not, so nothing the ended phase loaded may stay: a phase
+	window's own documents go with its Close, and the documents no phase
+	window owns (PHASE_SCOPED: the dialog kit's shared ones) go here. Each
+	loads again when the next phase shows it. Only modules already imported
+	are asked (a flag that is off imports none). Returns how many documents
+	went, and logs that count to log.txt when it is not 0; an error in a
+	module goes to syserr.txt and the phase change goes on."""
+	count = 0
+	for name in PHASE_SCOPED:
+		end = getattr(sys.modules.get(name), "end_phase", None)
+		if end is None:
+			continue
+		try:
+			count += int(end() or 0)
+		except Exception as error:
+			dbg.TraceError("nui_windows: %s.end_phase() failed (%s)" % (name, type(error).__name__))
+	if count:
+		dbg.Tracen("nui_windows: phase ended, %d document(s) unloaded" % count)
+	return count
 
 
 def legacy_dialog_layer(window):

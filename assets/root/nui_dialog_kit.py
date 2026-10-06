@@ -9,7 +9,11 @@ the legacy constructor and method names and meanings, so no caller changes.
 
 - One shared document per kind (KindWindow): RmlUi allows one data model per
   name, and a document binds its model by name, so a kind's document is made
-  once, with its first facade, and kept hidden between uses.
+  with its first facade and kept hidden between uses, until the phase ends.
+- At a phase end (end_phase, through nui_windows.end_phase) every kind's
+  window goes, with its document, model and handlers: RmlUi updates hidden
+  documents every frame. One shown then goes when it hides. A facade keeps
+  its state, and its next show loads its kind again (_claim).
 - A facade claims its kind's window to show it. While the window is shown
   for another facade, the second facade makes the legacy dialog instead,
   replays its state into it, and routes every call to it until its Close or
@@ -155,6 +159,37 @@ def kind_window(cls):
 	return window
 
 
+def end_phase():
+	"""The phase ended (nui_windows.end_phase, called by networkModule when a
+	phase window closed): every kind's window is destroyed, so no hidden
+	dialog document of the ended phase stays in RmlUi's frame update. A
+	window shown right now (a popup the stream opened for the next phase)
+	stays until it hides, then goes. A kind whose document failed stays
+	remembered. Returns how many documents went now."""
+	count = 0
+	for cls, window in list(_kinds.items()):
+		if not window:
+			continue
+		if window._doc and window.is_visible():
+			window.unload_on_hide = True
+			continue
+		del _kinds[cls]
+		if window._doc:
+			count += 1
+		window.destroy()
+	return count
+
+
+def _unload_if_due(window):
+	"""After a hide: a window a phase end left because it was shown goes now."""
+	if not window.unload_on_hide or window.is_visible():
+		return
+	for cls, kept in list(_kinds.items()):
+		if kept is window:
+			del _kinds[cls]
+	window.destroy()
+
+
 class KindWindow(nui.Window):
 	"""The document of one dialog kind, shared by every facade of the kind.
 	It forwards its events to the facade that holds it (its owner, kept by
@@ -167,6 +202,7 @@ class KindWindow(nui.Window):
 	DEFAULT = None    # the button focused on each show, for Enter
 	FIELD = None      # the text field, if the kind has one
 	FIELDS = ()       # every text field, when the kind has more than FIELD
+	unload_on_hide = False  # set by end_phase on a window shown at the phase end
 
 	def __init__(self, owner):
 		self._holder = None
@@ -297,8 +333,11 @@ class DialogFacade(object):
 
 	def _claim(self):
 		"""The kind's window for this facade, or None while it is shown for
-		another one (busy) or missing."""
+		another one (busy) or missing. A window that went at a phase end is
+		replaced by the kind's current one, loaded again if need be."""
 		window = self._window
+		if (window is None or not window._doc) and not self._nui_discarded:
+			window = self._window = kind_window(self.KIND)
 		if window is None or not window._doc:
 			return None
 		if window.is_visible() and window.owner() is not None and not window.held_by(self):
@@ -307,7 +346,8 @@ class DialogFacade(object):
 		return window
 
 	def _release(self):
-		"""Hides the window when this facade holds it; no event."""
+		"""Hides the window when this facade holds it; no event. A window the
+		last phase end left because it was shown goes with the hide."""
 		window = self._window
 		if window is None or not window.held_by(self):
 			return
@@ -317,6 +357,7 @@ class DialogFacade(object):
 				window.set_value(field, "")
 		window.set_owner(None)
 		window.hide()
+		_unload_if_due(window)
 
 	def _legacy_class(self):
 		module_name, _, class_name = self.LEGACY.rpartition(".")

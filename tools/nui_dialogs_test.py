@@ -905,6 +905,200 @@ class Fixtures(KitTest):
         self.assertEqual(self.dbg.errors, [])
 
 
+class Curtain(object):
+    """uiPhaseCurtain.PhaseCurtain whose fade out ends at once."""
+
+    def FadeOut(self, event, args=-1):
+        event()
+
+    def FadeIn(self):
+        pass
+
+
+class Phase(object):
+    """A phase window: records its Open and Close in `log`; `on_open` and
+    `on_close` act inside them, as a phase's own dialogs would."""
+
+    def __init__(self, name, log, on_open=None, on_close=None):
+        self.name = name
+        self.log = log
+        self.on_open = on_open
+        self.on_close = on_close
+
+    def Open(self):
+        self.log.append(("open", self.name))
+        if self.on_open is not None:
+            self.on_open()
+
+    def Close(self):
+        if self.on_close is not None:
+            self.on_close()
+        self.log.append(("close", self.name))
+
+
+class PhaseEnd(KitTest):
+    """Every kind's document goes when a phase ends (nui_windows.end_phase,
+    from networkModule's phase change), with its model and handlers, so no
+    hidden dialog document stays in RmlUi's frame update; the next show loads
+    the kind again from the facade's state."""
+
+    def kit(self):
+        return sys.modules["nui_dialog_kit"]
+
+    def live(self, document=None):
+        """The kit windows whose document is loaded."""
+        return [window for window in self.state.windows if window._doc and (document is None or window.DOCUMENT == document)]
+
+    def stream(self, log):
+        net = self.networkModule.net
+        net.SetHandler = lambda handler: None
+        net.SetTCPRecvBufferSize = net.SetTCPSendBufferSize = lambda size: None
+        self.networkModule.uiPhaseCurtain = support.stub_module("uiPhaseCurtain", PhaseCurtain=Curtain)
+        end_phase = self.nui_windows.end_phase
+
+        def logged_end_phase():
+            count = end_phase()
+            log.append(("end_phase", count))
+            return count
+
+        self.nui_windows.end_phase = logged_end_phase
+        stream = self.networkModule.MainStream()
+        stream.Create()
+        return stream
+
+    def test_end_phase_unloads_every_hidden_kind_and_the_next_open_loads_it_again(self):
+        question = self.uiCommon.QuestionDialog()
+        question.SetText("drop the item?")
+        question.SetAcceptEvent(self.events("accept"))
+        question.Open()
+        question.Close()
+        money = self.uiPickMoney.PickMoneyDialog()
+        before = self.kit_window(QUESTION)
+        self.assertEqual(len(self.live()), 2)
+
+        self.assertEqual(self.nui_windows.end_phase(), 2)
+        self.assertEqual(self.live(), [], "no kind document is left loaded")
+        self.assertIn(("destroy",), before.calls)
+        self.assertEqual((before._doc, before._model), (0, 0), "its model went with it")
+        self.assertEqual([window for window in self.kit()._kinds.values() if window], [])
+        self.assertIn("nui_windows: phase ended, 2 document(s) unloaded", self.dbg.lines)
+
+        question.Open()
+        after = self.kit_window(QUESTION)
+        self.assertIsNot(after, before)
+        self.assertEqual(after.model["lines"], ["drop the item?"], "the facade's state fills the new model")
+        self.assertEqual(after.focused, "dialog-question-accept")
+        self.assertIsNone(question._legacy, "the NovaUI dialog, not the busy fallback")
+        after.fire("accept")
+        self.assertEqual(self.events.seen, [("accept",)])
+        self.assertTrue(after.key("", self.nui.KEY_ESCAPE), "Escape is wired on the new document")
+        self.assertFalse(question.IsShow())
+        self.assertEqual(self.live(PICK), [], "pick money loads again only when it shows")
+        money.Open(10)
+        self.assertTrue(money.IsShow())
+
+    def test_a_dialog_shown_at_the_phase_end_stays_until_it_hides_then_goes(self):
+        popup = self.networkModule.PopupDialog()
+        popup.LoadDialog()
+        popup.Open("LOGIN_FAILURE_SAMELOGIN", self.events("close"), "OK")
+        shown = self.kit_window(MESSAGE)
+        self.assertEqual(self.nui_windows.end_phase(), 0)
+        self.assertTrue(popup.IsShow(), "still the player's popup")
+        self.assertIs(self.kit_window(MESSAGE), shown)
+        other = self.uiCommon.PopupDialog()
+        other.Open()
+        self.assertIsNotNone(other._legacy, "still busy for a second facade")
+        other.Close()
+        shown.fire("accept")
+        self.assertEqual(self.events.seen, [("close",)])
+        self.assertEqual(shown._doc, 0, "it went with its hide")
+        self.assertEqual(self.live(MESSAGE), [])
+        popup.Open("again", 0, "OK")
+        self.assertEqual(self.kit_window(MESSAGE).model["lines"], ["again"])
+
+    def test_a_kind_that_did_not_load_stays_legacy_and_is_not_tried_again(self):
+        self.state.failing.add(QUESTION)
+        self.assertIsInstance(self.uiCommon.QuestionDialog(), self.uiCommon.LegacyQuestionDialog)
+        made = len(self.state.windows)
+        errors = list(self.dbg.errors)
+        self.nui_windows.end_phase()
+        self.assertIsInstance(self.uiCommon.QuestionDialog(), self.uiCommon.LegacyQuestionDialog)
+        self.assertEqual(len(self.state.windows), made, "no second load")
+        self.assertEqual(self.dbg.errors, errors, "said once")
+
+    def test_a_phase_change_unloads_the_kit_after_the_old_phase_closes_and_before_the_new_one_opens(self):
+        log = []
+        stream = self.stream(log)
+        message = self.kit_window(MESSAGE)
+        seen_at_open = []
+        confirm = self.uiCommon.QuestionDialog()
+
+        def login_open():
+            stream.popupWindow.Open("LOGIN_CONNETING", 0)
+
+        def login_close():
+            stream.popupWindow.Close()
+            confirm.Open()
+            confirm.Close()
+
+        login = Phase("login", log, on_open=login_open, on_close=login_close)
+        select = Phase("select", log, on_open=lambda: seen_at_open.extend(self.live()))
+        stream.SetPhaseWindow(login)
+        self.assertEqual(log, [("open", "login")], "the first phase ends none")
+        self.assertIs(self.kit_window(MESSAGE), message, "the stream's popup kept its document")
+        question = self.kit_window(QUESTION)
+
+        stream.SetPhaseWindow(select)
+        self.assertEqual(log, [("open", "login"), ("close", "login"), ("end_phase", 2), ("open", "select")])
+        self.assertEqual(seen_at_open, [], "unloaded before the next phase opened")
+        self.assertEqual((message._doc, question._doc), (0, 0))
+
+        stream.popupWindow.Open("LOGIN_FAILURE", self.events("close"), "OK")
+        reloaded = self.kit_window(MESSAGE)
+        self.assertIsNot(reloaded, message)
+        self.assertEqual(reloaded.model["lines"], ["LOGIN_FAILURE"])
+        reloaded.fire("accept")
+        self.assertEqual(self.events.seen, [("close",)])
+
+    def test_phases_that_come_back_load_their_dialogs_again_and_nothing_piles_up(self):
+        import weakref
+        log = []
+        stream = self.stream(log)
+        made = {}
+
+        def use_dialogs(name):
+            def run():
+                dialog = self.uiCommon.QuestionDialog()
+                dialog.SetText(name)
+                dialog.Open()
+                window = self.kit_window(QUESTION)
+                self.assertEqual(window.model["lines"], [name])
+                made.setdefault(name, []).append(weakref.ref(window))
+                dialog.Close()
+                stream.popupWindow.Open(name, 0)
+                stream.popupWindow.Close()
+                self.assertEqual(len(self.live()), 2, "one document per kind while the phase runs")
+            return run
+
+        for _ in range(3):
+            for name in ("select", "game"):
+                stream.SetPhaseWindow(Phase(name, log, on_open=use_dialogs(name)))
+                self.assertEqual(len(self.live()), 2)
+        stream.SetPhaseWindow(Phase("login", log))
+        self.assertEqual(self.live(), [], "the last phase's dialogs went too")
+        self.assertEqual([count for event, count in log if event == "end_phase"], [2] * 6,
+                         "each of the six phases that ended unloaded its two documents")
+
+        # Nothing holds an unloaded window: the stand-in runtime's own record
+        # (which the real runtime drops at destroy) aside.
+        del self.state.windows[:]
+        stream.popupWindow.Open("x", 0)
+        stream.popupWindow.Close()
+        gc.collect()
+        alive = [ref for refs in made.values() for ref in refs if ref() is not None]
+        self.assertEqual(alive, [])
+
+
 class EscapeKeyDown(unittest.TestCase):
     """Under a legacy dialog without a field, Escape closes it and the legacy
     key handlers still see the key (game.py's OnKeyDown ends the item drop

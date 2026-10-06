@@ -301,5 +301,43 @@ class LayerStopgap(WindowsTest):
         self.m.legacy_dialog_layer(types.SimpleNamespace(hWnd=3))
 
 
+class PhaseEnd(WindowsTest):
+    def test_end_phase_asks_each_phase_scoped_module_that_is_loaded_and_logs_the_count(self):
+        self.assertEqual(self.m.PHASE_SCOPED, ("nui_dialog_kit",))
+        calls = []
+
+        def end_phase():
+            calls.append("end")
+            return 3
+
+        self.modules.put("nui_dialog_kit", support.stub_module("nui_dialog_kit", end_phase=end_phase))
+        self.assertEqual(self.m.end_phase(), 3)
+        self.assertEqual(calls, ["end"])
+        self.assertEqual(self.dbg.lines[-1], "nui_windows: phase ended, 3 document(s) unloaded")
+        self.assertEqual(self.dbg.errors, [])
+
+    def test_with_no_phase_scoped_module_imported_end_phase_imports_none_and_logs_nothing(self):
+        self.modules.put("nui_dialog_kit", None)  # an import would raise ImportError
+        lines = list(self.dbg.lines)
+        self.assertEqual(self.m.end_phase(), 0)
+        self.assertIsNone(sys.modules["nui_dialog_kit"])
+        self.assertEqual(self.dbg.lines, lines)
+        self.assertEqual(self.dbg.errors, [])
+
+    def test_nothing_unloaded_logs_nothing(self):
+        self.modules.put("nui_dialog_kit", support.stub_module("nui_dialog_kit", end_phase=lambda: 0))
+        lines = list(self.dbg.lines)
+        self.assertEqual(self.m.end_phase(), 0)
+        self.assertEqual(self.dbg.lines, lines)
+
+    def test_an_end_phase_that_raises_goes_to_syserr_and_the_phase_change_goes_on(self):
+        def end_phase():
+            raise KeyError("boom")
+
+        self.modules.put("nui_dialog_kit", support.stub_module("nui_dialog_kit", end_phase=end_phase))
+        self.assertEqual(self.m.end_phase(), 0)
+        self.assertEqual(self.dbg.errors, ["nui_windows: nui_dialog_kit.end_phase() failed (KeyError)"])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -166,6 +166,8 @@ class MainStream(object):
 
 		if oldPhaseWindow:
 			oldPhaseWindow.Close()
+			# NovaUI: the documents the ended phase shared (the dialog kit's) unload; the next phase loads what it shows.
+			nui_windows.end_phase()
 
 		if newPhaseWindow:
 			newPhaseWindow.Open()

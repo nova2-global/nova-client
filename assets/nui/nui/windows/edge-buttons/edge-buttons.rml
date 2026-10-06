@@ -10,7 +10,8 @@
 	     document, in the legacy order. A new whisper or letter flashes: its
 	     art hides every other half second while the pointer is not over it,
 	     with a visibility animation (a steady ring under reduced motion).
-	     Nothing takes the focus, so the buttons act on mousedown. The art is
+	     Nothing takes the focus, so the buttons act on mousedown, and each
+	     press plays the click (legacy WhisperButton is a ui.Button). The art is
 	     legacy art (d:/ymir work/ in assets/ETC, the letters in assets/season1). -->
 	<title>edge-buttons</title>
 	<link type="text/template" href="../../nui.rtpl"/>
@@ -20,13 +21,13 @@
 	<div id="quest-stack" class="edge-stack edge-stack--quest" data-class-edge-stack--shift="quest_shift">
 		<div class="edge edge--quest" data-for="e : quests" data-attr-id="'edge-quest-' + e.id">
 			<div class="edge__inner" data-if="e.shown">
-				<div class="edge__button nui-interactive" data-event-mousedown="press('quest', e.id, ev.button)">
+				<button class="edge__button nui-interactive" data-event-mousedown="press('quest', e.id, ev.button)">
 					<div class="edge__blink nui-anim" data-class-is-flashing="e.flashing">
 						<img class="edge__art edge__art--up" data-if="e.up != ''" data-attr-src="e.up"/>
 					</div>
 					<img class="edge__art edge__art--over" data-if="e.over != ''" data-attr-src="e.over"/>
 					<img class="edge__art edge__art--down" data-if="e.down != ''" data-attr-src="e.down"/>
-				</div>
+				</button>
 				<div class="edge__label" data-if="e.label_shown &amp;&amp; e.label != ''"
 					data-class-edge__label--left="e.align == 'left'" data-class-is-gm="e.gm"><span class="edge__text">{{ e.label }}</span></div>
 			</div>
@@ -35,13 +36,13 @@
 	<div id="whisper-stack" class="edge-stack edge-stack--whisper">
 		<div class="edge edge--whisper" data-for="e : whispers" data-attr-id="'edge-whisper-' + e.id">
 			<div class="edge__inner" data-if="e.shown">
-				<div class="edge__button nui-interactive" data-event-mousedown="press('whisper', e.id, ev.button)">
+				<button class="edge__button nui-interactive" data-event-mousedown="press('whisper', e.id, ev.button)">
 					<div class="edge__blink nui-anim" data-class-is-flashing="e.flashing">
 						<img class="edge__art edge__art--up" data-if="e.up != ''" data-attr-src="e.up"/>
 					</div>
 					<img class="edge__art edge__art--over" data-if="e.over != ''" data-attr-src="e.over"/>
 					<img class="edge__art edge__art--down" data-if="e.down != ''" data-attr-src="e.down"/>
-				</div>
+				</button>
 				<div class="edge__label" data-if="e.label_shown &amp;&amp; e.label != ''"
 					data-class-edge__label--left="e.align == 'left'" data-class-is-gm="e.gm"><span class="edge__text">{{ e.label }}</span></div>
 			</div>

@@ -45,7 +45,9 @@ body.skin-classic.game-buttons .game-button__plus:active
 body.skin-classic.game-buttons .game-button__label
 {
 	left: -84dp;
+	right: auto;
 	top: 40dp;
+	text-align: center;
 }
 body.skin-classic.game-buttons .game-button__text
 {

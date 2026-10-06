@@ -10,7 +10,10 @@
 	     the gauge and button hints open on :hover, and the slot cells call
 	     Python only on a press, a release, a drop and when the pointer
 	     enters or leaves them (for the legacy item and skill tooltips).
-	     Nothing takes the focus, so the buttons act on mousedown. The
+	     The eight quickslots are one grid (one cell each: every cell is
+	     updated each frame, shown or not), with the gap of the expand
+	     button before the fifth. Nothing takes the focus, so the buttons
+	     act on mousedown. The
 	     classic layout (skins/classic/windows/taskbar.rcss) puts the legacy
 	     art at the legacy positions; its gauge, button and digit art is
 	     under d:/ymir work/, so lint and snapshots need the assets/ETC root. -->
@@ -57,8 +60,8 @@
 			data-event-mousedown="toggle_mouse(0, ev.button)"><span class="nui-tooltip nui-anim taskbar-tip">{{ left_tip }}</span></button>
 
 		<div id="quick-slots" class="taskbar-quick">
-			<div id="quick-slots-1" class="nui-slot-grid nui-slot-grid--cols-4 taskbar-quick-group taskbar-quick-group--1">
-				<div class="nui-slot nui-anim taskbar-cell" data-for="slot : quick_slots" data-if="slot.index &lt; 4"
+			<div id="quick-slot-grid" class="nui-slot-grid taskbar-quick-grid">
+				<div class="nui-slot nui-anim taskbar-cell" data-for="slot : quick_slots"
 					data-attr-id="'quick-slot-' + slot.index"
 					data-class-is-empty="slot.kind == ''"
 					data-class-is-disabled="slot.disabled" data-class-is-locked="slot.locked"
@@ -81,42 +84,15 @@
 						delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 					<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
 					<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
-					<span class="nui-slot__key taskbar-key">{{ slot.index + 1 }}</span>
+					<span class="nui-slot__key taskbar-key">{{ slot.index >= 4 ? 'F' + (slot.index - 3) : slot.index + 1 }}</span>
 					<span class="taskbar-key-art" data-class-taskbar-key-art--0="slot.index == 0" data-class-taskbar-key-art--1="slot.index == 1"
-						data-class-taskbar-key-art--2="slot.index == 2" data-class-taskbar-key-art--3="slot.index == 3"></span>
+						data-class-taskbar-key-art--2="slot.index == 2" data-class-taskbar-key-art--3="slot.index == 3"
+						data-class-taskbar-key-art--4="slot.index == 4" data-class-taskbar-key-art--5="slot.index == 5"
+						data-class-taskbar-key-art--6="slot.index == 6" data-class-taskbar-key-art--7="slot.index == 7"></span>
 				</div>
 			</div>
 			<button id="btn-expand" class="taskbar-expand nui-has-tooltip" data-if="expandable"
 				data-event-mousedown="button('expand', ev.button)"><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_EXPAND</span></button>
-			<div id="quick-slots-2" class="nui-slot-grid nui-slot-grid--cols-4 taskbar-quick-group taskbar-quick-group--2">
-				<div class="nui-slot nui-anim taskbar-cell" data-for="slot : quick_slots" data-if="slot.index >= 4"
-					data-attr-id="'quick-slot-' + slot.index"
-					data-class-is-empty="slot.kind == ''"
-					data-class-is-disabled="slot.disabled" data-class-is-locked="slot.locked"
-					data-class-is-picked="slot.index == quick_picked"
-					data-class-is-selected="slot.index == quick_selected"
-					data-event-mousedown="slot_press('quick', slot.index, ev.button)"
-					data-event-mouseup="slot_release('quick', slot.index, ev.button)"
-					data-event-mouseover="slot_over('quick', slot.index)"
-					data-event-mouseout="slot_out('quick', slot.index)"
-					data-event-nuidrop="slot_drop('quick', slot.index)">
-					<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
-					<div class="nui-slot__cover" data-if="slot.cover"></div>
-					<div class="nui-slot__tint"></div>
-					<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
-						data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
-					<nui-frames class="nui-slot__active" data-if="slot.active"
-						pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
-					<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0"
-						pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
-						delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
-					<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
-					<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
-					<span class="nui-slot__key taskbar-key">F{{ slot.index - 3 }}</span>
-					<span class="taskbar-key-art" data-class-taskbar-key-art--4="slot.index == 4" data-class-taskbar-key-art--5="slot.index == 5"
-						data-class-taskbar-key-art--6="slot.index == 6" data-class-taskbar-key-art--7="slot.index == 7"></span>
-				</div>
-			</div>
 			<div class="taskbar-pager">
 				<div class="taskbar-pager__board"></div>
 				<button id="quick-page-up" class="taskbar-pager__up nui-has-tooltip"
@@ -160,9 +136,9 @@
 		<button id="btn-character" class="taskbar-window taskbar-window--character nui-has-tooltip"
 			data-event-mousedown="button('character', ev.button)"><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_CHARACTER</span></button>
 		<button id="btn-inventory" class="taskbar-window taskbar-window--inventory nui-has-tooltip"
-			data-event-mousedown="button('inventory', ev.button)"><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_INVENTORY</span></button>
+			data-event-mousedown="button('inventory', ev.button)"><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_INVENTORY</span></button>
 		<button id="btn-messenger" class="taskbar-window taskbar-window--messenger nui-has-tooltip"
-			data-event-mousedown="button('messenger', ev.button)"><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_MESSENGER</span></button>
+			data-event-mousedown="button('messenger', ev.button)"><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_MESSENGER</span></button>
 		<button id="btn-system" class="taskbar-window taskbar-window--system nui-has-tooltip"
 			data-event-mousedown="button('system', ev.button)"><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_SYSTEM</span></button>
 

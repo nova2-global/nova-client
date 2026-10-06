@@ -338,9 +338,19 @@ Item, skill and emotion cells are `nui/components/slot-grid.rcss` (slot grid v2)
 	</div>
 	<div class="nui-slot-grid__items">
 		<div class="nui-slot-item" data-for="item : bag_items"
+		     data-class-is-disabled="item.disabled" data-class-is-locked="item.locked"
 		     data-class-nui-slot-item--c1="item.c == 1" data-class-nui-slot-item--r2="item.r == 2"
 		     data-class-nui-slot-item--w2="item.w == 2" data-class-nui-slot-item--h3="item.h == 3">
 			<img class="nui-slot__icon" data-attr-src="item.icon"/>
+			<div class="nui-slot__cover" data-if="item.cover"></div>
+			<div class="nui-slot__tint"></div>
+			<nui-cooldown class="nui-slot__cooldown" data-if="item.cd_end > 0"
+				data-attr-start="item.cd_start" data-attr-end="item.cd_end"/>
+			<nui-frames class="nui-slot__active" data-if="item.active"
+				pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
+			<nui-frames class="nui-slot__finish" data-if="item.cd_end > 0"
+				pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+				delay="0.0333" loop="false" after="none" data-attr-start="item.cd_end"/>
 			<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
 			<nui-number class="nui-slot__digits" data-if="item.count != ''" data-attr-value="item.count"/>
 		</div>
@@ -348,9 +358,11 @@ Item, skill and emotion cells are `nui/components/slot-grid.rcss` (slot grid v2)
 </div>
 ```
 
+- **What goes where.** The item layer draws above every cell, so everything legacy draws over an icon belongs to the item entry: `is-disabled` and `is-locked` on it, and its own `__tint`, `__cover`, `__cooldown`, `__active` and `__finish`. Those 32dp parts sit on the item's anchor cell, as `CSlotWindow` draws them at the slot with its cell size; the tint covers the whole item in the modern skins and only the anchor cell in classic. The cells keep what legacy draws under the icon: `is-picked`, `is-selected` and the footprint's `is-target`, each through the cell's `__tint`. A state put on a cell of a layered grid draws under the item's icon.
+
 - `nui-slot-item--c0` to `--c9` and `--r0` to `--r9` place an item at its cell, `--w1` to `--w3` and `--h1` to `--h3` size it (44dp steps in the modern skins, 32dp in classic); bind one class per value, since an inline style is NUI009. In a layered grid the cells show no icon or count of their own.
 - `nui_slots.item_layer(items, cols, rows)` makes the layer's entries (the slot keys plus `c` and `r`) from `(cell, slot)` pairs, `owner_of_cells(items, cols, rows)` maps every covered cell to its item for hit testing, and `footprint(cell, w, h, cols, rows)` gives the cells an attached item would cover from the hovered cell, as `CGridSlotWindow` works them out (an area that leaves the grid moves back into it; `[]` for an item larger than the grid). The window sets `target` on those cells on `slot_over` while something is attached and clears it on `slot_out`; give the cells a `__tint`, which shows the state (classic: the legacy white over the slot base).
-- The gallery shows a 5 x 3 layered grid with a 1x2 and a 2x3 item and a two-cell footprint.
+- The gallery shows a 5 x 3 layered grid with a 1x2 item, a locked 1x2 item, a 2x3 item, an active 1x1 item and a two-cell footprint.
 
 **Classic.** `skins/classic/classic.rcss` gives slots the legacy 32dp pitch: no gap, the `slot_base.sub` art, the icon at 0,0, the cover button art (`slot_cover_button_01` to `_03`), the legacy tints (the `--slot-*` tokens hold the legacy colors in the classic palette), the legacy digits right-aligned 4dp in from the item's right edge with their top 10dp above its bottom, and no hover look. Window overlays add the placement.
 
@@ -455,7 +467,7 @@ What the color roles mean:
 | `--slot-picked` | `#8ab4f859` | `#1a5fc440` | `#ffffff80` |
 | `--notice-bar` | `#00000080` | `#00000080` | `#00000080` |
 | `--notice-text-big` | `#f2e7c1` | `#f2e7c1` | `#f2e7c1` |
-| `--edge-gm` | `#ffb547` | `#9a5a00` | `#ffa200` |
+| `--edge-gm` | `#9a5a00` | `#ffb547` | `#ffa200` |
 | `--party-link` | `#e7eaf0` | `#1a1d23` | `#c2c2c2` |
 | `--party-unlink` | `#7f8794` | `#7a828f` | `#808080` |
 | `--hp-recovery` | `#f28b8255` | `#b3261e40` | `#ff000055` |
@@ -772,9 +784,9 @@ The legacy common dialogs run on NovaUI while the `dialogs` window flag is on (s
 
 While both UIs live, a drag is the legacy mouse controller's (`mouseModule.mouseController`), whichever UI started it, and the client host routes the pointer and Escape around it (`nova-client-src/src/UserInterface/NuiHost.h`, the arbiter's `RouteDragPointer` and `RouteDragEscape`):
 
-- **A right press over NovaUI while something is attached** cancels the attach, as the legacy right release does; neither the press nor its release reach either UI, so it uses no quickslot.
+- **A right press over NovaUI while something is attached** cancels the attach, as the legacy right release does; neither the press nor its release reach either UI, so it uses no quickslot. An element whose right press acts on the attach, as the legacy party member board's starts a trade, takes the class `nui-attach-right` (on it or an ancestor): its right press then reaches it, and its release cancels an attach the handler left, as the legacy right release would.
 - **Escape while something is attached** cancels the attach when a shown NovaUI document holds the focus, and then reaches neither UI. Otherwise it goes on as before, and the game window's Escape cancels it. The HUD documents never take the focus.
-- **A legacy press dragged 10 px or more and released over NovaUI** reaches the legacy UI as before, then the hovered NovaUI element gets `nuidrop` (it bubbles, carries `mouse_x`, `mouse_y` and `button`; bind it as `data-event-nuidrop`). A NovaUI press dragged off NovaUI and released reaches RmlUi and then the legacy UI, whose slot windows drop it. A left press NovaUI takes starts wndMgr's 10 px from there.
+- **A legacy press dragged 10 px or more and released over NovaUI** reaches the legacy UI as before, then the hovered NovaUI element gets `nuidrop` (it bubbles, carries `mouse_x`, `mouse_y` and `button`; bind it as `data-event-nuidrop`). A NovaUI press on a slot cell (class `nui-slot`) dragged off NovaUI and released reaches RmlUi and then the legacy UI, whose slot windows or game window drop it. A press on anything else keeps its release, as a legacy button does (only a legacy slot window passes a release on), so a slipped click on a NovaUI button with an item on the cursor drops nothing. A left press NovaUI takes starts wndMgr's 10 px from there.
 - Without the drag distance an item stays attached on both sides: pick and place.
 
 The slot grid's `SlotDrag` is the content side of it ([Slot grids](#slot-grids)).
@@ -1299,7 +1311,7 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - **Slot grids and the drag bridge:** a release over a NovaUI grid outside every cell keeps the item attached, where legacy cancels the drag; with a legacy window open and a NovaUI document focused, Escape cancels a drag before it closes that window. The cooldown sweep follows RmlUi's angle projection, a few pixels from the legacy edge interpolation mid-octant, in 64 steps. The slot effects are additive, not screen: brighter than legacy where effect and background are both bright, and washed toward white on the modern light theme's slots.
 - **Feeds** apply once per frame; a value published and changed again within one frame shows only the last, and a `set()` on a fed key lasts until the feed changes.
 - **Tooltips:** item and skill tooltips stay the legacy windows (the tooltip bridge), drawn above NovaUI.
-- **The taskbar:** the classic gauges show the first of the legacy seven fill frames, still: RmlUi 6.3 does not animate `fill-image`, the property that cuts the art at the value. The right mode menu shows attack and camera, as legacy does (its skill button is hidden there; skills are picked in the picker). The gauge and digit art is 1x only.
+- **The taskbar:** the classic gauges show the first of the legacy seven fill frames, still: RmlUi 6.3 does not animate `fill-image`, the property that cuts the art at the value. The right mode menu shows attack and camera, as legacy does (its skill button is hidden there; skills are picked in the picker). The gauge and digit art is 1x only. The modern bar needs 1060dp; on a narrower screen (1280 wide at 150%, 1024 at 100%) its document shrinks about the bottom-left corner in steps of 5% down to 60%, which fits from 636dp; below that its parts touch, and text in a shrunk bar is filtered. Classic fits from 800dp and never shrinks.
 - **The energy bar** changes state only on a status refresh or a hover, as legacy. **The gift icon** stays legacy while the taskbar is legacy (the NovaUI taskbar makes it).
 - **The other HUD windows**, where they differ from legacy on purpose:
   - Affects: the auto potion and dragon soul values are read once per hover, where legacy reads them every frame; the love point heart uses the grade legacy meant (its `/` looks up a fraction and falls back to a missing `00.dds`); a mall affect's text is formatted again on a locale change. The auto potion art is only in the `patch2` group, which the golden checker does not take as a root, so no golden shows it.

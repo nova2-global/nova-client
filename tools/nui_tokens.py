@@ -96,6 +96,7 @@ CONTRAST_PAIRS = (
     ("warning", "surface-raised", 4.5, "warning text on panels"),
     ("success", "surface-raised", 4.5, "success text on panels"),
     ("text-inverse", "tooltip-bg", 4.5, "tooltip text"),
+    ("edge-gm", "tooltip-bg", 4.5, "GM names on edge button labels"),
     ("focus-ring", "surface", 3.0, "focus ring"),
     ("focus-ring", "surface-raised", 3.0, "focus ring on panels"),
     ("focus-ring", "surface-sunken", 3.0, "focus ring on inputs"),

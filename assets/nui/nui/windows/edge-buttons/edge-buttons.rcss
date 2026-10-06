@@ -13,6 +13,12 @@ body.edge-buttons
 	focus: none;
 	tab-index: none;
 }
+/* Buttons that take no focus: the UI click sounds on the press. */
+.edge-buttons button
+{
+	focus: none;
+	tab-index: none;
+}
 .edge-stack
 {
 	position: absolute;

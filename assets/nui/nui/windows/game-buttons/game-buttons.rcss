@@ -1,8 +1,11 @@
 /* The game buttons' modern look: a round accent button with a plus and its
    label in a pill below it, at the legacy anchors (the left buttons from
-   the screen's left, the right ones from its right, all from its bottom).
-   Classic (the legacy plus art and white labels): skins/classic/windows/
-   game-buttons.rcss. */
+   the screen's left, the right ones from its right, all from its bottom),
+   raised 12dp for the modern taskbar, which is 11dp taller than legacy's, so
+   the lower labels clear its top edge. The right column's labels end 18dp
+   from the screen's edge instead of centering under the button, so a long
+   label (pt, pl) stays on screen. Classic (the legacy plus art and white
+   labels at the legacy places): skins/classic/windows/game-buttons.rcss. */
 
 body.game-buttons
 {
@@ -21,12 +24,13 @@ body.game-buttons
 	width: 36dp;
 	height: 36dp;
 }
-/* help 170 and status 100 above the bottom at the left; tasks, the observer
-   end and the guild building 170, and skills 100, above it at the right. */
-.game-button--help { left: 48dp; bottom: 134dp; }
-.game-button--status { left: 66dp; bottom: 64dp; }
-.game-button--quest, .game-button--observer, .game-button--build { right: 48dp; bottom: 134dp; }
-.game-button--skill { right: 48dp; bottom: 64dp; }
+/* help 182 and status 112 above the bottom at the left (legacy 170 and 100);
+   tasks, the observer end and the guild building 182, and skills 112, above
+   it at the right. */
+.game-button--help { left: 48dp; bottom: 146dp; }
+.game-button--status { left: 66dp; bottom: 76dp; }
+.game-button--quest, .game-button--observer, .game-button--build { right: 48dp; bottom: 146dp; }
+.game-button--skill { right: 48dp; bottom: 76dp; }
 
 .game-button__plus
 {
@@ -63,6 +67,13 @@ body.game-buttons
 	top: 40dp;
 	text-align: center;
 	pointer-events: none;
+}
+.game-button--quest .game-button__label, .game-button--observer .game-button__label,
+.game-button--build .game-button__label, .game-button--skill .game-button__label
+{
+	left: auto;
+	right: -30dp;
+	text-align: right;
 }
 .game-button__text
 {

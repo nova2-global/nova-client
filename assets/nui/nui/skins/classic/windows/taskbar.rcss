@@ -14,6 +14,14 @@
    fallback is frame 01. The art is 1x only (legacy files under
    d:/ymir work/), filtered above 100%. */
 
+/* The legacy layout fits from 800dp: no narrow-screen shrink. */
+body.skin-classic.taskbar
+{
+	top: 0;
+	width: 100%;
+	height: 100%;
+	transform: none;
+}
 body.skin-classic.taskbar .taskbar-bar
 {
 	height: 37dp;
@@ -233,13 +241,15 @@ body.skin-classic.taskbar .taskbar-quick
 	width: 283dp;
 	height: 37dp;
 }
-body.skin-classic.taskbar .taskbar-quick-group
+body.skin-classic.taskbar .taskbar-quick-grid
 {
 	top: 3dp;
+	width: 270dp;
 }
-body.skin-classic.taskbar .taskbar-quick-group--2
+/* quickslot 5 at 142 in the board, past the expand button. */
+body.skin-classic.taskbar .taskbar-quick-grid .nui-slot:nth-child(5)
 {
-	left: 142dp;
+	margin-left: 14dp;
 }
 body.skin-classic.taskbar .taskbar-expand
 {

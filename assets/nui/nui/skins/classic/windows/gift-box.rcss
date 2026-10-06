@@ -7,4 +7,6 @@ body.skin-classic.gift-box .gift-box__icon
 {
 	left: 5dp;
 	bottom: 61dp;
+	width: auto;
+	height: auto;
 }

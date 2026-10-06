@@ -272,6 +272,7 @@
 						<div class="nui-slot nui-anim" data-for="cell : bag_cells" data-class-is-target="cell.target"><div class="nui-slot__tint"></div></div>
 						<div class="nui-slot-grid__items">
 							<div class="nui-slot-item" data-for="item : bag_items"
+								data-class-is-disabled="item.disabled" data-class-is-locked="item.locked"
 								data-class-nui-slot-item--c0="item.c == 0" data-class-nui-slot-item--c1="item.c == 1"
 								data-class-nui-slot-item--c2="item.c == 2" data-class-nui-slot-item--c3="item.c == 3"
 								data-class-nui-slot-item--c4="item.c == 4"
@@ -281,6 +282,15 @@
 								data-class-nui-slot-item--h1="item.h == 1" data-class-nui-slot-item--h2="item.h == 2"
 								data-class-nui-slot-item--h3="item.h == 3">
 								<img class="nui-slot__icon" data-attr-src="item.icon"/>
+								<div class="nui-slot__cover" data-if="item.cover"></div>
+								<div class="nui-slot__tint"></div>
+								<nui-cooldown class="nui-slot__cooldown" data-if="item.cd_end > 0"
+									data-attr-start="item.cd_start" data-attr-end="item.cd_end"/>
+								<nui-frames class="nui-slot__active" data-if="item.active"
+									pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
+								<nui-frames class="nui-slot__finish" data-if="item.cd_end > 0"
+									pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+									delay="0.0333" loop="false" after="none" data-attr-start="item.cd_end"/>
 								<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
 								<nui-number class="nui-slot__digits" data-if="item.count != ''" data-attr-value="item.count"/>
 							</div>

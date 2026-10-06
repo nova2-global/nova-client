@@ -51,16 +51,30 @@
    	</div>
    	<div class="nui-slot-grid__items">
    		<div class="nui-slot-item" data-for="item : bag_items"
+   		     data-class-is-disabled="item.disabled" data-class-is-locked="item.locked"
    		     data-class-nui-slot-item--c1="item.c == 1" data-class-nui-slot-item--r2="item.r == 2"
    		     data-class-nui-slot-item--w2="item.w == 2" data-class-nui-slot-item--h3="item.h == 3">
    			<img class="nui-slot__icon" data-attr-src="item.icon"/>
+   			<div class="nui-slot__cover" data-if="item.cover"></div>
+   			<div class="nui-slot__tint"></div>
+   			<nui-cooldown class="nui-slot__cooldown" data-if="item.cd_end > 0" ... />
+   			<nui-frames class="nui-slot__active" data-if="item.active" ... />
+   			<nui-frames class="nui-slot__finish" data-if="item.cd_end > 0" ... />
    			<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
+   			<nui-number class="nui-slot__digits" data-if="item.count != ''" data-attr-value="item.count"/>
    		</div>
    	</div>
    </div>
 
-   A footprint cell shows its state through its __tint (classic draws the
-   legacy white over the slot base there), so give the cells one.
+   The item layer draws above every cell, so what legacy draws over an icon
+   belongs to the item entry: is-disabled and is-locked go on it, with the
+   __tint, __cover, __cooldown, __active and __finish parts, which sit over
+   the item's anchor cell as legacy draws them at the slot with its cell
+   size (the tint covers the whole item in the modern skins). The cells keep
+   the states legacy draws under the icon: is-picked, is-selected and the
+   drop footprint's is-target, each shown through the cell's __tint
+   (classic draws the legacy white over the slot base there), so give the
+   cells one.
 
    Modern: 40dp cells 4dp apart (a 44dp pitch), the 32dp icon 4dp inside.
    Classic (skins/classic/classic.rcss): the legacy 32dp pitch with the slot
@@ -271,6 +285,7 @@
 	position: absolute;
 	left: 0;
 	top: 0;
+	z-index: 0;
 	box-sizing: border-box;
 	width: 40dp;
 	height: 40dp;
@@ -317,3 +332,54 @@
 .nui-slot-item--h1 { height: 40dp; }
 .nui-slot-item--h2 { height: 84dp; }
 .nui-slot-item--h3 { height: 128dp; }
+
+/* An item's own state parts, in the plain cell's order (the disabled tint
+   over the icon, the sweep, the cover, the count, the finish effect, the
+   active effect, the locked tint on top). The tint covers the item inside a
+   cell's 1dp border; the 32dp parts sit on the icon's top cell, whose offset
+   in the centered item is 4dp, 10dp or 16dp for an item 1, 2 or 3 cells
+   across or down. */
+.nui-slot-item .nui-slot__tint
+{
+	left: 1dp;
+	top: 1dp;
+	right: 1dp;
+	bottom: 1dp;
+	border-radius: var(--radius-sm);
+}
+.nui-slot-item.is-disabled .nui-slot__tint
+{
+	z-index: 1;
+	background-color: var(--slot-disabled);
+}
+.nui-slot-item.is-locked .nui-slot__tint
+{
+	z-index: 7;
+	background-color: var(--slot-locked);
+}
+.nui-slot-item .nui-slot__cover, .nui-slot-item .nui-slot__cooldown,
+.nui-slot-item .nui-slot__active, .nui-slot-item .nui-slot__finish
+{
+	left: 4dp;
+	top: 4dp;
+}
+.nui-slot-item--w2 .nui-slot__cover, .nui-slot-item--w2 .nui-slot__cooldown,
+.nui-slot-item--w2 .nui-slot__active, .nui-slot-item--w2 .nui-slot__finish
+{
+	left: 10dp;
+}
+.nui-slot-item--w3 .nui-slot__cover, .nui-slot-item--w3 .nui-slot__cooldown,
+.nui-slot-item--w3 .nui-slot__active, .nui-slot-item--w3 .nui-slot__finish
+{
+	left: 16dp;
+}
+.nui-slot-item--h2 .nui-slot__cover, .nui-slot-item--h2 .nui-slot__cooldown,
+.nui-slot-item--h2 .nui-slot__active, .nui-slot-item--h2 .nui-slot__finish
+{
+	top: 10dp;
+}
+.nui-slot-item--h3 .nui-slot__cover, .nui-slot-item--h3 .nui-slot__cooldown,
+.nui-slot-item--h3 .nui-slot__active, .nui-slot-item--h3 .nui-slot__finish
+{
+	top: 16dp;
+}

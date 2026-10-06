@@ -1,6 +1,8 @@
 /* The gift icon's modern place: above the modern taskbar's left end, over
-   the item mall button that opens the gift. Classic:
-   skins/classic/windows/gift-box.rcss. */
+   the item mall button that opens the gift, at half the art's size (32 x
+   37dp) just above the energy bar, so it covers neither that bar nor the
+   status button's label. Classic (the legacy 63 x 74 art at the legacy
+   place): skins/classic/windows/gift-box.rcss. */
 
 body.gift-box
 {
@@ -9,7 +11,9 @@ body.gift-box
 .gift-box__icon
 {
 	position: absolute;
-	left: 2dp;
-	bottom: 50dp;
+	left: 8dp;
+	bottom: 64dp;
+	width: 32dp;
+	height: 37dp;
 	pointer-events: none;
 }

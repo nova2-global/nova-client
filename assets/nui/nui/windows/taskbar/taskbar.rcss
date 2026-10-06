@@ -253,19 +253,20 @@ progress.taskbar-orb fill
 	width: 428dp;
 	height: 40dp;
 }
-.taskbar-quick-group
+/* Eight 40dp cells 4dp apart, the fifth 28dp further right: the gap the
+   expand button sits in (cells 1 to 4 end at 172dp, 5 to 8 start at 204dp). */
+.taskbar-quick-grid
 {
 	position: absolute;
+	left: 0;
 	top: 0;
+	width: 376dp;
+	flex-wrap: nowrap;
 	pointer-events: auto;
 }
-.taskbar-quick-group--1
+.taskbar-quick-grid .nui-slot:nth-child(5)
 {
-	left: 0;
-}
-.taskbar-quick-group--2
-{
-	left: 204dp;
+	margin-left: 28dp;
 }
 .taskbar-expand
 {
@@ -338,7 +339,8 @@ progress.taskbar-orb fill
 {
 	pointer-events: none;
 }
-/* Near the screen's right edge: the hint grows to the left. */
+/* Near the screen's right edge (the inventory, messenger and system
+   buttons): the hint grows to the left. */
 .taskbar-tip--end
 {
 	left: auto;
@@ -399,12 +401,14 @@ progress.taskbar-orb fill
 }
 /* One panel above the right menu: the first category's row at the bottom,
    each row's first skill at its right, as legacy lays the picker out. */
+/* 4dp above the right menu, whose box is 60dp tall from 52dp up (50dp,
+   its padding and its border). */
 .taskbar-picker
 {
 	position: absolute;
 	right: 50%;
 	margin-right: -262dp;
-	bottom: 104dp;
+	bottom: 116dp;
 	display: flex;
 	flex-direction: column-reverse;
 	align-items: flex-end;
@@ -418,4 +422,46 @@ progress.taskbar-orb fill
 .taskbar-picker__row
 {
 	flex-direction: row-reverse;
+}
+
+/* --- Narrow screens ----------------------------------------------------------------
+   The bar needs 1060dp: the gauges and the EXP orbs end at 268dp, and the
+   middle group starts 262dp left of the center. On a narrower screen (a
+   1280 wide one at 150%, 1024 at 100%) the whole document shrinks about its
+   bottom-left corner, in steps, until the bar fits again; the document grows
+   by the inverse, so its center and right anchors stay on the screen's, and
+   the menus and the picker shrink with their buttons. Classic fits from
+   800dp and resets this (skins/classic/windows/taskbar.rcss). The last step
+   (60%) fits from 636dp; below that the parts touch again. */
+@media (max-width: 1059dp)
+{
+	body.taskbar { top: -5.2632%; width: 105.2632%; height: 105.2632%; transform-origin: 0% 100%; transform: scale(0.95); }
+}
+@media (max-width: 1006dp)
+{
+	body.taskbar { top: -11.1111%; width: 111.1111%; height: 111.1111%; transform: scale(0.9); }
+}
+@media (max-width: 953dp)
+{
+	body.taskbar { top: -17.6471%; width: 117.6471%; height: 117.6471%; transform: scale(0.85); }
+}
+@media (max-width: 900dp)
+{
+	body.taskbar { top: -25%; width: 125%; height: 125%; transform: scale(0.8); }
+}
+@media (max-width: 847dp)
+{
+	body.taskbar { top: -33.3333%; width: 133.3333%; height: 133.3333%; transform: scale(0.75); }
+}
+@media (max-width: 794dp)
+{
+	body.taskbar { top: -42.8571%; width: 142.8571%; height: 142.8571%; transform: scale(0.7); }
+}
+@media (max-width: 741dp)
+{
+	body.taskbar { top: -53.8462%; width: 153.8462%; height: 153.8462%; transform: scale(0.65); }
+}
+@media (max-width: 688dp)
+{
+	body.taskbar { top: -66.6667%; width: 166.6667%; height: 166.6667%; transform: scale(0.6); }
 }

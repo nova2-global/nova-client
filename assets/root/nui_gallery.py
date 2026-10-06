@@ -41,11 +41,14 @@ _SLOTS = [
 ]
 _SLOT_PICKED, _SLOT_SELECTED, _SLOT_HOVER = 6, 7, 8
 
-# A 5 x 3 layered grid: a 1x2 sword at cell 0, a 2x3 armor at cell 2, and the
-# footprint of a 1x2 item held over cell 4.
+# A 5 x 3 layered grid: a 1x2 sword at cell 0, a locked 1x2 bow at cell 1, a
+# 2x3 armor at cell 2, an active auto potion at cell 10, and the footprint of
+# a 1x2 item held over cell 4.
 _BAG_COLUMNS, _BAG_ROWS = 5, 3
 _BAG_ITEMS = [(0, {"icon": "/icon/item/00010.tga", "w": 1, "h": 2}),
-              (2, {"icon": "/icon/item/03000.tga", "w": 2, "h": 3, "count": "2"})]
+              (1, {"icon": "/icon/item/02000.tga", "w": 1, "h": 2, "locked": True}),
+              (2, {"icon": "/icon/item/03000.tga", "w": 2, "h": 3, "count": "2"}),
+              (10, {"icon": "/icon/item/72723.tga", "active": True})]
 _BAG_TARGET = (4, 9)
 
 

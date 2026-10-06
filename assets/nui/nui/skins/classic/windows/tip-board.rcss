@@ -6,6 +6,12 @@ body.skin-classic.tip-board .tip-board__bar
 {
 	border-radius: 0;
 }
+/* The legacy clip, from the bar's top 18dp down (SetClipRect y, y + 18). */
+body.skin-classic.tip-board .tip-board__clip
+{
+	top: 0;
+	height: 18dp;
+}
 body.skin-classic.tip-board .tip-line
 {
 	top: 4dp;

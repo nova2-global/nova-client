@@ -23,9 +23,13 @@ def minimal_tokens():
     shared = {name: "4dp" for name in t.REQUIRED_SHARED}
     shared.update({"font-family": "Noto Sans", "dur-fast": "0.1s", "dur-med": "0.2s", "dur-slow": "0.3s",
                    "ease-out": "cubic-out", "ease-in-out": "cubic-in-out"})
-    dark = {name: "#000000" for name in t.REQUIRED_COLORS}
-    light = {name: "#ffffff" for name in t.REQUIRED_COLORS}
-    classic = {name: "#202020" for name in t.REQUIRED_COLORS}
+    # Every required color, and every color a contrast pair names.
+    colors = list(t.REQUIRED_COLORS)
+    colors += [name for fg, bg, _, _ in t.CONTRAST_PAIRS for name in (fg, bg) if name not in t.REQUIRED_COLORS]
+    colors = list(dict.fromkeys(colors))
+    dark = {name: "#000000" for name in colors}
+    light = {name: "#ffffff" for name in colors}
+    classic = {name: "#202020" for name in colors}
     skins = {"classic": {"font-family": "Nova Classic", "font-md": "12dp", "classic-slot-fill": "#000000",
                          "classic-gap": "3dp"}}
     return {"shared": shared, "dark": dark, "light": light, "classic": classic, "skins": skins}

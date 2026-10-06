@@ -8,7 +8,10 @@
 	     facade nui_party.PartyWindow (controller assets/root/nui_party.py).
 	     A press on a member's board targets the member; with an item
 	     attached, a press, a release or a drop from the legacy UI (nuidrop)
-	     starts an exchange. Nothing takes the focus, so the buttons act on
+	     starts an exchange. The board has nui-attach-right, so its right
+	     press reaches it with an item attached (legacy maps the right press
+	     to the left one) where the host would cancel the attach. Nothing
+	     takes the focus, so the buttons act on
 	     mousedown. The art is legacy art under d:/ymir work/ (assets/ETC). -->
 	<title>party</title>
 	<link type="text/template" href="../../nui.rtpl"/>
@@ -17,7 +20,7 @@
 <body template="nui" class="nui-overlay party" data-model="party">
 	<div id="party" class="party">
 		<div class="party__row" data-for="m : members">
-			<div class="party-member nui-interactive" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"
+			<div class="party-member nui-interactive nui-attach-right" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"
 				data-event-mousedown="member_press(m.pid, ev.button)" data-event-mouseup="member_release(m.pid, ev.button)"
 				data-event-nuidrop="member_drop(m.pid)">
 				<div class="party-member__state party-art-host">

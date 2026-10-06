@@ -69,7 +69,7 @@ body, body.theme-dark
 	--slot-picked: #8ab4f859;
 	--notice-bar: #00000080;
 	--notice-text-big: #f2e7c1;
-	--edge-gm: #ffb547;
+	--edge-gm: #9a5a00;
 	--party-link: #e7eaf0;
 	--party-unlink: #7f8794;
 	--hp-recovery: #f28b8255;
@@ -115,7 +115,7 @@ body.theme-light
 	--slot-picked: #1a5fc440;
 	--notice-bar: #00000080;
 	--notice-text-big: #f2e7c1;
-	--edge-gm: #9a5a00;
+	--edge-gm: #ffb547;
 	--party-link: #1a1d23;
 	--party-unlink: #7a828f;
 	--hp-recovery: #b3261e40;

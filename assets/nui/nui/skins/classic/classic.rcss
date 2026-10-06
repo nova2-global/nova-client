@@ -693,6 +693,24 @@
 .skin-classic .nui-slot-item--h1 { height: 32dp; }
 .skin-classic .nui-slot-item--h2 { height: 64dp; }
 .skin-classic .nui-slot-item--h3 { height: 96dp; }
+/* An item's state parts on its anchor cell only, the icon's top-left 32dp,
+   as CSlotWindow draws them with the slot's cell size. */
+.skin-classic .nui-slot-item .nui-slot__tint
+{
+	left: 0;
+	top: 0;
+	right: auto;
+	bottom: auto;
+	width: 32dp;
+	height: 32dp;
+	border-radius: 0;
+}
+.skin-classic .nui-slot-item .nui-slot__cover, .skin-classic .nui-slot-item .nui-slot__cooldown,
+.skin-classic .nui-slot-item .nui-slot__active, .skin-classic .nui-slot-item .nui-slot__finish
+{
+	left: 0;
+	top: 0;
+}
 
 .skin-classic .nui-slider slidertrack
 {

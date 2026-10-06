@@ -28,6 +28,7 @@ import inspect
 import io
 import json
 import os
+import re
 import sys
 import types
 import unittest
@@ -647,6 +648,43 @@ class NoPerFramePython(unittest.TestCase):
             self.assertEqual(world.game.log[mark:], [])
 
 
+HUD_DOCUMENTS = ("affects", "target", "party", "edge-buttons", "tip-board", "big-board", "map-name")
+TAG = re.compile(r"<[A-Za-z][\w-]*\s([^>]*?\bdata-for=\"[^\"]+\"[^>]*)>", re.S)
+ATTRIBUTE = re.compile(r"([\w-]+)=\"([^\"]*)\"")
+
+
+def repeated_element_reads(markup):
+    """(data-for, attribute) of every view on a data-for element that reads
+    the loop's item. RmlUi 6.3 sorts the views of a repeated element at the
+    same order as the data-for that removes it, so when the list shrinks they
+    may read the gone entry first: "list index N is out of range" and "Could
+    not get value from data variable" in syserr."""
+    found = []
+    for match in TAG.finditer(markup):
+        attributes = dict(ATTRIBUTE.findall(match.group(1)))
+        names = attributes["data-for"].split(":")[0].split(",") if ":" in attributes["data-for"] else ["it"]
+        item = re.compile(r"(?<![\w.])%s\b" % re.escape(names[0].strip()))
+        for name, value in attributes.items():
+            if name.startswith("data-") and name != "data-for" and not name.startswith("data-event-") and item.search(value):
+                found.append((attributes["data-for"], name))
+    return found
+
+
+class RepeatedElements(unittest.TestCase):
+    def test_no_repeated_hud_element_binds_its_own_item(self):
+        for window in HUD_DOCUMENTS:
+            markup = read(os.path.join(WINDOWS, window, window + ".rml"))
+            self.assertEqual(repeated_element_reads(markup), [], window)
+
+    def test_the_check_finds_a_view_that_reads_the_item_and_lets_the_index_pass(self):
+        self.assertEqual(repeated_element_reads('<div data-for="b : buttons" data-if="b.shown"></div>'),
+                         [("b : buttons", "data-if")])
+        self.assertEqual(repeated_element_reads('<div data-for="items" data-attr-id="it.id"></div>'),
+                         [("items", "data-attr-id")])
+        self.assertEqual(repeated_element_reads('<div data-for="b, i : buttons" data-if="i != at || shown"\n'
+                                                ' data-event-click="press(b.id)"><span data-attr-id="b.id"/></div>'), [])
+
+
 # --- the affect icons: differential ----------------------------------------------------------
 
 AFFECT_GETTERS = ("AffectIndexToSkillIndex",)
@@ -949,7 +987,7 @@ class TargetWorlds(unittest.TestCase):
     def novaui_view(world):
         board = world.board
         model = board.board.model
-        buttons = [b["id"] for b in model["buttons"] if not b["needs_range"] or model["in_range"]]
+        buttons = [b["id"] for i, b in enumerate(model["buttons"]) if i != model["exchange_at"] or model["in_range"]]
         return {"shown": bool(board.IsShow()), "name": plain(model["name"]), "buttons": buttons,
                 "hp": model["hp"] if model["show_hp"] else None}
 

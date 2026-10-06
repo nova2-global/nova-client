@@ -69,7 +69,7 @@ class TargetBoardBoard(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
-		return {"name": "", "hp": 0.0, "show_hp": False, "buttons": [], "in_range": False}
+		return {"name": "", "hp": 0.0, "show_hp": False, "buttons": [], "exchange_at": -1, "in_range": False}
 
 	@nui.on("press")
 	def on_press(self, button_id, button):
@@ -511,9 +511,13 @@ class TargetBoard(object):
 			return
 		buttons = []
 		seen = set()
+		# The exchange button's index: the markup hides that slot out of range.
+		exchange_at = -1
 		for button_id in self.showingButtonList:
 			if button_id in self.shownButtons and button_id not in seen:
 				seen.add(button_id)
-				buttons.append({"id": button_id, "label": self.buttonLabels.get(button_id, ""),
-				                "needs_range": button_id == self.BTN_EXCHANGE})
-		self.board.set(name=nui.plain_text(self.nameString), hp=self.hp, show_hp=self.hpShown, buttons=buttons)
+				if button_id == self.BTN_EXCHANGE:
+					exchange_at = len(buttons)
+				buttons.append({"id": button_id, "label": self.buttonLabels.get(button_id, "")})
+		self.board.set(name=nui.plain_text(self.nameString), hp=self.hp, show_hp=self.hpShown, buttons=buttons,
+		               exchange_at=exchange_at)

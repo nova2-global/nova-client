@@ -6,40 +6,34 @@
 		"buttons": [
 			{
 				"id": 0,
-				"label": "Whispering",
-				"needs_range": false
+				"label": "Whispering"
 			},
 			{
 				"id": 1,
-				"label": "Trading",
-				"needs_range": true
+				"label": "Trading"
 			},
 			{
 				"id": 2,
-				"label": "Duel",
-				"needs_range": false
+				"label": "Duel"
 			},
 			{
 				"id": 16,
-				"label": "Emotions",
-				"needs_range": false
+				"label": "Emotions"
 			},
 			{
 				"id": 9,
-				"label": "Guild Invitation",
-				"needs_range": false
+				"label": "Guild Invitation"
 			},
 			{
 				"id": 5,
-				"label": "Friend",
-				"needs_range": false
+				"label": "Friend"
 			},
 			{
 				"id": 6,
-				"label": "Group Invitation",
-				"needs_range": false
+				"label": "Group Invitation"
 			}
 		],
+		"exchange_at": 1,
 		"in_range": true
 	}
 }

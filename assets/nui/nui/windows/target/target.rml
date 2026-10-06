@@ -26,10 +26,15 @@
 			</div>
 			<button id="target-close" class="nui-button nui-button--ghost nui-button--icon nui-anim target-board__close"
 				data-event-mousedown="close(ev.button)">&#215;</button>
+			<!-- The repeated slot reads only its index and top-level keys: RmlUi
+			     updates a repeated element's own views with the data-for that
+			     removes it, so when the list shrinks they could read an entry
+			     that is gone. The button's views run after that removal. -->
 			<div id="target-buttons" class="target-board__buttons" data-if="size(buttons) > 0">
-				<button class="nui-button nui-anim target-board__button" data-for="b : buttons"
-					data-attr-id="'target-button-' + b.id" data-if="!b.needs_range || in_range"
-					data-event-mousedown="press(b.id, ev.button)"><span class="target-board__label">{{ b.label }}</span></button>
+				<div class="target-board__slot" data-for="b, i : buttons" data-if="i != exchange_at || in_range">
+					<button class="nui-button nui-anim target-board__button" data-attr-id="'target-button-' + b.id"
+						data-event-mousedown="press(b.id, ev.button)"><span class="target-board__label">{{ b.label }}</span></button>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -17,6 +17,11 @@ body.affects
 	display: flex;
 	flex-direction: row;
 }
+/* The repeated slot around each icon (it binds nothing). */
+.affects__slot
+{
+	display: block;
+}
 /* The tooltip host: one cell of the row, the legacy IMAGE_STEP wide. */
 .affect
 {

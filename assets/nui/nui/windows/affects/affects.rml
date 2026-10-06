@@ -18,17 +18,22 @@
 </head>
 <body template="nui" class="nui-overlay affects" data-model="affects">
 	<div id="affects" class="affects__row">
-		<div class="affect nui-has-tooltip nui-interactive" data-for="icon : icons"
-			data-attr-id="'affect-' + icon.key" data-class-affect--small="icon.small"
-			data-event-mouseover="icon_over(icon.key)">
-			<img class="affect__image" data-if="icon.image != ''" data-attr-src="icon.image"/>
-			<span class="nui-tooltip nui-tooltip--wrap nui-anim affect__tip"
-				data-if="icon.title != '' || icon.line != '' || icon.end > 0"
-				data-class-affect__tip--label="icon.label" data-class-is-open="icon.key == open_key">
-				<span class="affect__title" data-if="icon.title != ''">{{ icon.title }}</span>
-				<span class="affect__line affect__time" data-if="icon.clocked &amp;&amp; icon.end > 0">(<span>@game.LEFT_TIME</span> : <nui-countdown format="dhms" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND" data-attr-end="icon.end"/>)</span>
-				<span class="affect__line" data-if="!(icon.clocked &amp;&amp; icon.end > 0) &amp;&amp; icon.line != ''">{{ icon.line }}</span>
-			</span>
+		<!-- The repeated slot binds nothing: RmlUi updates a repeated
+		     element's own views with the data-for that removes it, so when an
+		     affect ends they could read an entry that is gone. -->
+		<div class="affects__slot" data-for="icon : icons">
+			<div class="affect nui-has-tooltip nui-interactive"
+				data-attr-id="'affect-' + icon.key" data-class-affect--small="icon.small"
+				data-event-mouseover="icon_over(icon.key)">
+				<img class="affect__image" data-if="icon.image != ''" data-attr-src="icon.image"/>
+				<span class="nui-tooltip nui-tooltip--wrap nui-anim affect__tip"
+					data-if="icon.title != '' || icon.line != '' || icon.end > 0"
+					data-class-affect__tip--label="icon.label" data-class-is-open="icon.key == open_key">
+					<span class="affect__title" data-if="icon.title != ''">{{ icon.title }}</span>
+					<span class="affect__line affect__time" data-if="icon.clocked &amp;&amp; icon.end > 0">(<span>@game.LEFT_TIME</span> : <nui-countdown format="dhms" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND" data-attr-end="icon.end"/>)</span>
+					<span class="affect__line" data-if="!(icon.clocked &amp;&amp; icon.end > 0) &amp;&amp; icon.line != ''">{{ icon.line }}</span>
+				</span>
+			</div>
 		</div>
 	</div>
 </body>

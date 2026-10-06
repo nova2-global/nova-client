@@ -44,6 +44,11 @@ body.edge-buttons
 	right: 20dp;
 	flex-wrap: wrap-reverse;
 }
+/* The repeated slot around each button (it binds nothing). */
+.edge-stack__slot
+{
+	display: block;
+}
 .edge
 {
 	display: block;

@@ -1,0 +1,37 @@
+<rml>
+<head>
+	<!-- The target board (uitarget.py): the name of the character or monster
+	     the player clicked, a monster's HP and, for another player, the
+	     relation buttons (whisper, exchange, fight, friend, party, guild).
+	     While the target flag is on, the game window makes the facade
+	     nui_target.TargetBoard (controller assets/root/nui_target.py). The
+	     exchange button shows while the target is within the exchange range,
+	     which C++ watches (the in_range key follows the target.in_range
+	     feed), where legacy measured it every frame. Nothing takes the
+	     focus, so the buttons act on mousedown; Escape closes the board in
+	     its legacy place in the Escape chain (nui_hud.EscapeProxy). The
+	     classic art is under d:/ymir work/ (assets/ETC). -->
+	<title>target</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="target.rcss"/>
+</head>
+<body template="nui" class="nui-overlay target" data-model="target">
+	<div class="target__wrap">
+		<div id="target-board" class="target-board nui-interactive" data-class-target-board--hp="show_hp"
+			data-class-target-board--buttons="size(buttons) > 0">
+			<div class="target-board__head">
+				<span id="target-name" class="target-board__name">{{ name }}</span>
+				<progress id="target-hp" class="nui-gauge nui-gauge--red target-board__hp" direction="right"
+					data-if="show_hp" data-attr-value="hp"/>
+			</div>
+			<button id="target-close" class="nui-button nui-button--ghost nui-button--icon nui-anim target-board__close"
+				data-event-mousedown="close(ev.button)">&#215;</button>
+			<div id="target-buttons" class="target-board__buttons" data-if="size(buttons) > 0">
+				<button class="nui-button nui-anim target-board__button" data-for="b : buttons"
+					data-attr-id="'target-button-' + b.id" data-if="!b.needs_range || in_range"
+					data-event-mousedown="press(b.id, ev.button)"><span class="target-board__label">{{ b.label }}</span></button>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

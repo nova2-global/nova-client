@@ -1,0 +1,45 @@
+{
+	"target": {
+		"name": "NuiW2B2",
+		"hp": 0.0,
+		"show_hp": false,
+		"buttons": [
+			{
+				"id": 0,
+				"label": "Whispering",
+				"needs_range": false
+			},
+			{
+				"id": 1,
+				"label": "Trading",
+				"needs_range": true
+			},
+			{
+				"id": 2,
+				"label": "Duel",
+				"needs_range": false
+			},
+			{
+				"id": 16,
+				"label": "Emotions",
+				"needs_range": false
+			},
+			{
+				"id": 9,
+				"label": "Guild Invitation",
+				"needs_range": false
+			},
+			{
+				"id": 5,
+				"label": "Friend",
+				"needs_range": false
+			},
+			{
+				"id": 6,
+				"label": "Group Invitation",
+				"needs_range": false
+			}
+		],
+		"in_range": true
+	}
+}

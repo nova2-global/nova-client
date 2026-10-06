@@ -1,0 +1,26 @@
+<rml>
+<head>
+	<!-- The tip board (uitip.py TipBoard): the notices the server sends
+	     (BINARY_SetTipMessage), one line at a time on a bar at the top
+	     center. While the tip-board flag is on, the Interface makes the
+	     facade nui_tip_board.TipBoard (controller
+	     assets/root/nui_tip_board.py). The board steps on a timer, a
+	     format="none" nui-countdown whose end the controller writes once per
+	     step, so no Python runs between steps; each step slides the
+	     incoming line in from below and the outgoing one up (lines a and b
+	     swap), and under reduced motion the lines swap without the slide.
+	     It takes no input. -->
+	<title>tip-board</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="tip-board.rcss"/>
+</head>
+<body template="nui" class="nui-overlay tip-board" data-model="tip_board">
+	<div id="tip-board" class="tip-board__bar" data-if="shown">
+		<div class="tip-board__clip">
+			<span id="tip-line-a" class="tip-line nui-anim" data-class-is-front="front == 'a'" data-class-is-back="front != 'a'">{{ line_a }}</span>
+			<span id="tip-line-b" class="tip-line nui-anim" data-class-is-front="front == 'b'" data-class-is-back="front != 'b'">{{ line_b }}</span>
+		</div>
+		<nui-countdown id="tip-timer" format="none" data-attr-end="next_at" data-event-countdownend="advance()"/>
+	</div>
+</body>
+</rml>

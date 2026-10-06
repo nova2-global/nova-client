@@ -1,0 +1,6 @@
+{
+	"$comment": "Golden cases of the map name splash (tools/check_nui_snapshots.py): one map's name art, at --time 3, in the splash's hold; the art is locale art (assets/locale).",
+	"cases": [
+		{"page": "map-name", "themes": "all", "scales": [["100", "1", "960x320"], ["150", "1.5", "1440x480"], ["200", "2", "1920x640"]], "fixture": true, "roots": ["assets/locale"], "time": 3.0}
+	]
+}

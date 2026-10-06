@@ -1,0 +1,9 @@
+{
+	"target": {
+		"name": "Wild Dog",
+		"hp": 0.0,
+		"show_hp": false,
+		"buttons": [],
+		"in_range": false
+	}
+}

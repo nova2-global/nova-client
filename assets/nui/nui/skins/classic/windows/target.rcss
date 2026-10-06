@@ -1,0 +1,105 @@
+/* Classic skin overlay of nui/windows/target/target.rml: the legacy
+   TargetBoard (uitarget.py), a thin board at the top center. Without the HP
+   gauge it is 250 x 40 with the outlined name centered at y 13; with it the
+   name is at 23, 13 and the 130dp legacy gauge at 175dp from the board's
+   right edge, y 17 (legacy sizes the board 200 + 7 per letter; here it is as
+   wide as the name needs); with buttons it is 65 tall, the small thin
+   buttons 68dp apart at y 33, centered (legacy makes it 75dp per button,
+   at least 150). The close button is 30dp from the right edge, y 13. */
+
+body.skin-classic.target .target-board
+{
+	min-width: 250dp;
+	height: 40dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.target .target-board--buttons
+{
+	min-width: 150dp;
+	height: 65dp;
+}
+body.skin-classic.target .target-board__head
+{
+	align-items: flex-start;
+	height: 33dp;
+	padding: 13dp 0 0 0;
+	box-sizing: border-box;
+}
+body.skin-classic.target .target-board--hp .target-board__head
+{
+	padding: 13dp 45dp 0 23dp;
+}
+body.skin-classic.target .target-board__name
+{
+	font-weight: normal;
+	font-size: var(--font-md);
+	line-height: 14dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.target .target-board--hp .target-board__name
+{
+	margin-right: 2dp;
+}
+body.skin-classic.target .target-board__hp
+{
+	margin-top: 4dp;
+}
+body.skin-classic.target .target-board__close
+{
+	right: 15dp;
+	top: 13dp;
+	width: 15dp;
+	height: 15dp;
+	color: transparent;
+	font-size: 1dp;
+	line-height: 1dp;
+	decorator: image("d:/ymir work/ui/public/close_button_01.sub");
+}
+body.skin-classic.target .target-board__close:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_02.sub");
+}
+body.skin-classic.target .target-board__close:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_03.sub");
+}
+body.skin-classic.target .target-board__buttons
+{
+	gap: 8dp;
+	margin-top: 0;
+	margin-right: 0;
+	padding: 0 18dp;
+}
+body.skin-classic.target .target-board__button
+{
+	width: 60dp;
+	height: 20dp;
+	line-height: 20dp;
+	padding: 0;
+	color: var(--classic-button-text);
+	font-size: var(--font-md);
+	decorator: image("d:/ymir work/ui/public/small_thin_button_01.sub");
+}
+/* A label wider than the art overflows it on both sides, as the legacy
+   centered button text does. */
+body.skin-classic.target .target-board__label
+{
+	display: block;
+	margin: 0 -30dp;
+	text-align: center;
+	white-space: nowrap;
+}
+body.skin-classic.target .target-board__button:hover
+{
+	decorator: image("d:/ymir work/ui/public/small_thin_button_02.sub");
+}
+body.skin-classic.target .target-board__button:active
+{
+	decorator: image("d:/ymir work/ui/public/small_thin_button_03.sub");
+}

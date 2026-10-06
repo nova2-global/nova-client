@@ -1,0 +1,175 @@
+/* The edge buttons' modern look: each letter or whisper button on a small
+   rounded tile, with its label in a pill below it. The stacks follow the
+   legacy arrangement: both start at 170/600 of the screen height and are
+   columns of 63dp rows that wrap before the bottom (the legacy row count is
+   (height - 330) / 63, which bottom: 75dp matches at 900 lines); quest
+   columns are 100dp apart going right from 20dp (130dp while the party
+   shows), whisper columns 50dp apart going left from 70dp left of the right
+   edge. Classic (the bare legacy art and outlined labels):
+   skins/classic/windows/edge-buttons.rcss. */
+
+body.edge-buttons
+{
+	focus: none;
+	tab-index: none;
+}
+.edge-stack
+{
+	position: absolute;
+	top: 28.33%;
+	bottom: 75dp;
+	width: 400dp;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}
+.edge-stack--quest
+{
+	left: 20dp;
+}
+.edge-stack--quest.edge-stack--shift
+{
+	left: 130dp;
+}
+/* The whisper columns go left from the right edge. */
+.edge-stack--whisper
+{
+	right: 20dp;
+	flex-wrap: wrap-reverse;
+}
+.edge
+{
+	display: block;
+	position: relative;
+	height: 63dp;
+}
+.edge--quest
+{
+	width: 100dp;
+}
+.edge--whisper
+{
+	width: 50dp;
+}
+.edge__inner
+{
+	display: block;
+	position: relative;
+	height: 63dp;
+}
+.edge__button
+{
+	display: block;
+	position: absolute;
+	left: -2dp;
+	top: -2dp;
+	box-sizing: border-box;
+	width: 36dp;
+	height: 36dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface);
+}
+.edge__button:hover
+{
+	background-color: var(--surface-hover);
+}
+.edge__blink
+{
+	display: block;
+	position: absolute;
+	left: 1dp;
+	top: 1dp;
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+.edge__art
+{
+	display: block;
+	position: absolute;
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+.edge__art--over, .edge__art--down
+{
+	left: 1dp;
+	top: 1dp;
+	visibility: hidden;
+}
+/* The legacy over and down art; over a flashing button it never hides. */
+.edge__button:hover .edge__art--up
+{
+	visibility: hidden;
+}
+.edge__button:hover .edge__art--over
+{
+	visibility: visible;
+}
+.edge__button:active .edge__art--over
+{
+	visibility: hidden;
+}
+.edge__button:active .edge__art--down
+{
+	visibility: visible;
+}
+/* CButton::OnRender: the art is drawn every other half second. */
+.edge__blink.is-flashing.nui-anim
+{
+	animation: 1s linear-in-out infinite edge-flash;
+}
+@keyframes edge-flash
+{
+	0% { visibility: visible; }
+	49.9% { visibility: visible; }
+	50% { visibility: hidden; }
+	100% { visibility: hidden; }
+}
+@media (theme: reduced-motion)
+{
+	.edge__blink.is-flashing
+	{
+		left: 0;
+		top: 0;
+		border-width: 1dp;
+		border-color: var(--accent);
+		border-radius: var(--radius-sm);
+	}
+}
+/* The label, centered under the button (a whisper) or from 4dp left of its
+   left edge (a quest letter, legacy SetToolTipText(name, -20, 35)). */
+.edge__label
+{
+	display: block;
+	position: absolute;
+	left: -34dp;
+	top: 36dp;
+	width: 100dp;
+	text-align: center;
+	pointer-events: none;
+}
+.edge__label--left
+{
+	left: -4dp;
+	top: 38dp;
+	width: 200dp;
+	text-align: left;
+}
+.edge__text
+{
+	padding: 1dp 6dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.is-gm .edge__text
+{
+	color: var(--edge-gm);
+	font-weight: bold;
+}

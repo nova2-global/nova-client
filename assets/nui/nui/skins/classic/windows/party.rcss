@@ -1,0 +1,142 @@
+/* Classic skin overlay of nui/windows/party/party.rml: the legacy
+   PartyWindow at 10, 52. Each PartyMemberInfoBoard (partymemberinfoboard.py)
+   is 106 x 36, 38dp apart: the role button at 0, 0, the 84 x 17 name bar
+   (black, the name at 3, 2 in the legacy link or unlink gray) at 22, 0, the
+   84dp legacy gauge at 22, 17 and the affect images at y 24. The menu
+   toggle (Party_Menu_Open / Close, 111 x 20) is centered under the boards,
+   and the PartyMenu, a 106 x 140 thin board, 2dp below it: its buttons at
+   y 15, 37dp apart and centered, the distribution title centered at y 70,
+   the two large mode buttons at y 85 and 110. */
+
+body.skin-classic.party .party-member
+{
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.party .party-member__state
+{
+	left: 0;
+	top: 0;
+}
+body.skin-classic.party .party-member__bar
+{
+	left: 22dp;
+	top: 0;
+	right: auto;
+	width: 84dp;
+	height: 17dp;
+	background-color: var(--notice-bar);
+}
+body.skin-classic.party .party-member__name
+{
+	padding: 2dp 0 0 3dp;
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.party .party-member__hp
+{
+	left: 22dp;
+	width: 84dp;
+	top: 17dp;
+	height: 8dp;
+}
+body.skin-classic.party .party-affect
+{
+	top: 24dp;
+}
+body.skin-classic.party .party-affect--0 { left: 22dp; }
+body.skin-classic.party .party-affect--1 { left: 34dp; }
+body.skin-classic.party .party-affect--2 { left: 46dp; }
+body.skin-classic.party .party-affect--3 { left: 34dp; }
+body.skin-classic.party .party-affect--4 { left: 46dp; }
+body.skin-classic.party .party-affect--5 { left: 58dp; }
+body.skin-classic.party .party-affect--6 { left: 70dp; }
+body.skin-classic.party .party-affect--7 { left: 82dp; }
+body.skin-classic.party .party-affect--8 { left: 94dp; }
+
+body.skin-classic.party .party__menu-button
+{
+	width: 111dp;
+	height: 20dp;
+	margin-left: -2dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_open_01.sub");
+}
+body.skin-classic.party .party__menu-button:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_open_02.sub");
+}
+body.skin-classic.party .party__menu-button:active
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_open_03.sub");
+}
+body.skin-classic.party .party__menu-button.is-open
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_close_01.sub");
+}
+body.skin-classic.party .party__menu-button.is-open:hover
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_close_02.sub");
+}
+body.skin-classic.party .party__menu-button.is-open:active
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_close_03.sub");
+}
+body.skin-classic.party .party__menu-mark
+{
+	display: none;
+}
+body.skin-classic.party .party-menu
+{
+	width: 106dp;
+	height: 140dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.party .party-menu__buttons
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 15dp;
+}
+body.skin-classic.party .party-menu__icon
+{
+	margin: 0 2dp 0 3dp;
+}
+body.skin-classic.party .party-menu__title
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 63dp;
+	margin: 0;
+	color: var(--text);
+	font-weight: normal;
+	font-size: var(--font-md);
+	line-height: 14dp;
+}
+body.skin-classic.party .party-menu__modes
+{
+	position: absolute;
+	left: 9dp;
+	top: 85dp;
+	gap: 4dp;
+}
+body.skin-classic.party .party-menu__mode
+{
+	width: 88dp;
+	height: 21dp;
+	line-height: 21dp;
+	padding: 0;
+	font-size: var(--font-md);
+	border-width: 0;
+	color: var(--classic-button-text);
+}

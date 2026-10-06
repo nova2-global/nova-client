@@ -1,0 +1,30 @@
+/* Classic skin overlay of nui/windows/big-board/big-board.rml: the legacy
+   BigBoard, a 512 x 55 bar of black at 50% at the top center, 150dp from the
+   top, its text in the legacy cream (242, 231, 193) clipped to the two
+   lines from 8dp down, and the three OX event frame images at -20, -12,
+   256dp apart (uitip.py). */
+
+body.skin-classic.big-board .big-board__bar
+{
+	border-width: 0;
+	border-radius: 0;
+}
+body.skin-classic.big-board .big-board__clip
+{
+	top: 8dp;
+	width: 512dp;
+}
+body.skin-classic.big-board .big-line
+{
+	left: 6dp;
+}
+body.skin-classic.big-board .big-board__frame
+{
+	display: block;
+	position: absolute;
+	top: -12dp;
+	pointer-events: none;
+}
+body.skin-classic.big-board .big-board__frame--0 { left: -20dp; }
+body.skin-classic.big-board .big-board__frame--1 { left: 236dp; }
+body.skin-classic.big-board .big-board__frame--2 { left: 492dp; }

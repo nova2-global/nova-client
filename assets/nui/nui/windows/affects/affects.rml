@@ -1,0 +1,35 @@
+<rml>
+<head>
+	<!-- The affect icons (uiaffectshower.py): the buffs, potions, mall and
+	     premium affects, the lover's heart and the horse, a row from the top
+	     left. While the affects flag is on, the game window makes the facade
+	     nui_affects.AffectShower (controller assets/root/nui_affects.py).
+	     Each icon's tooltip opens on :hover with no Python: a title and a
+	     line, the remaining time as a nui-countdown that counts on the
+	     NovaUI clock, or, for a skill affect without a duration, its name
+	     under the icon (label). icon_over() runs once as the pointer enters
+	     an icon, for the two values legacy read every frame (an auto
+	     potion's remainder, a dragon soul deck's time). The icons are legacy
+	     art under d:/ymir work/ (assets/ETC, and metin2_patch_ds for the
+	     dragon soul decks). -->
+	<title>affects</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="affects.rcss"/>
+</head>
+<body template="nui" class="nui-overlay affects" data-model="affects">
+	<div id="affects" class="affects__row">
+		<div class="affect nui-has-tooltip nui-interactive" data-for="icon : icons"
+			data-attr-id="'affect-' + icon.key" data-class-affect--small="icon.small"
+			data-event-mouseover="icon_over(icon.key)">
+			<img class="affect__image" data-if="icon.image != ''" data-attr-src="icon.image"/>
+			<span class="nui-tooltip nui-tooltip--wrap nui-anim affect__tip"
+				data-if="icon.title != '' || icon.line != '' || icon.end > 0"
+				data-class-affect__tip--label="icon.label" data-class-is-open="icon.key == open_key">
+				<span class="affect__title" data-if="icon.title != ''">{{ icon.title }}</span>
+				<span class="affect__line affect__time" data-if="icon.clocked &amp;&amp; icon.end > 0">(<span>@game.LEFT_TIME</span> : <nui-countdown format="dhms" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND" data-attr-end="icon.end"/>)</span>
+				<span class="affect__line" data-if="!(icon.clocked &amp;&amp; icon.end > 0) &amp;&amp; icon.line != ''">{{ icon.line }}</span>
+			</span>
+		</div>
+	</div>
+</body>
+</rml>

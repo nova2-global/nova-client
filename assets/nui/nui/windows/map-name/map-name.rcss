@@ -1,0 +1,66 @@
+/* The map name splash, in every theme: the legacy name art centered 80dp from
+   the top (60dp or 75dp left of the center beside a floor), the floor art
+   100dp right of the center, both at the legacy 0.9 at rest. The fade over
+   6.65 s: 0 until 1.0 s (the legacy one-second wait), 0.9 at 1.3 s (legacy
+   adds 0.05 a frame), 0.9 until 6.3 s (the five-second hold), 0 at 6.6 s,
+   when the timer hides the window. */
+
+body.map-name
+{
+	focus: none;
+	tab-index: none;
+	opacity: 0.9;
+}
+.map-name__row
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 80dp;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.map-name__image, .map-name__floor
+{
+	display: block;
+	position: relative;
+}
+.map-name__row--tower .map-name__image
+{
+	left: -60dp;
+}
+.map-name__row--catacomb .map-name__image
+{
+	left: -75dp;
+}
+.map-name__row--floor .map-name__floor
+{
+	left: 100dp;
+}
+.map-name.map-name--run-a.nui-anim
+{
+	animation: 6.65s linear-in-out map-name-fade-a;
+}
+.map-name.map-name--run-b.nui-anim
+{
+	animation: 6.65s linear-in-out map-name-fade-b;
+}
+@keyframes map-name-fade-a
+{
+	0% { opacity: 0; }
+	15.04% { opacity: 0; }
+	19.55% { opacity: 0.9; }
+	94.74% { opacity: 0.9; }
+	99.25% { opacity: 0; }
+	100% { opacity: 0; }
+}
+@keyframes map-name-fade-b
+{
+	0% { opacity: 0; }
+	15.04% { opacity: 0; }
+	19.55% { opacity: 0.9; }
+	94.74% { opacity: 0.9; }
+	99.25% { opacity: 0; }
+	100% { opacity: 0; }
+}

@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the affect icons (tools/check_nui_snapshots.py): a horse, a skill affect, a clocked potion, an unclocked mall affect, a premium affect and a dragon soul deck; the tooltip variant opens the potion's tooltip with its countdown. The icons are under d:/ymir work/ (assets/ETC, the deck in assets/metin2_patch_ds); the fixture times are seconds of the snap clock at its default --time 1.",
+	"cases": [
+		{"page": "affects", "themes": "all", "scales": [["100", "1", "640x160"], ["150", "1.5", "960x240"], ["200", "2", "1280x320"]], "fixture": true, "roots": ["assets/ETC", "assets/metin2_patch_ds"], "time": null},
+		{"page": "affects", "variant": "tooltip", "themes": "all", "scales": [["100", "1", "640x160"], ["150", "1.5", "960x240"], ["200", "2", "1280x320"]], "fixture": true, "roots": ["assets/ETC", "assets/metin2_patch_ds"], "time": null}
+	]
+}

@@ -1,0 +1,22 @@
+{
+	"edge_buttons": {
+		"quests": [
+			{"id": 4, "up": "/season1/icon/scroll_close.tga", "over": "/season1/icon/scroll_open.tga", "down": "/season1/icon/scroll_open.tga",
+			 "label": "Ancient Letter", "label_shown": true, "align": "left", "gm": false, "flashing": true, "shown": true},
+			{"id": 1, "up": "/season1/icon/scroll_close.tga", "over": "/season1/icon/scroll_open.tga", "down": "/season1/icon/scroll_open.tga",
+			 "label": "The Wolf Hunt", "label_shown": true, "align": "left", "gm": false, "flashing": false, "shown": true}
+		],
+		"whispers": [
+			{"id": 5, "up": "d:/ymir work/ui/game/windows/btn_mail_up.sub", "over": "d:/ymir work/ui/game/windows/btn_mail_up.sub",
+			 "down": "d:/ymir work/ui/game/windows/btn_mail_up.sub", "label": "NuiW2B2", "label_shown": true, "align": "center",
+			 "gm": false, "flashing": true, "shown": true},
+			{"id": 3, "up": "d:/ymir work/ui/game/windows/btn_mail_up.sub", "over": "d:/ymir work/ui/game/windows/btn_mail_up.sub",
+			 "down": "d:/ymir work/ui/game/windows/btn_mail_up.sub", "label": "GameMaster", "label_shown": true, "align": "center",
+			 "gm": true, "flashing": false, "shown": true},
+			{"id": 2, "up": "d:/ymir work/ui/game/windows/btn_mail_up.sub", "over": "d:/ymir work/ui/game/windows/btn_mail_up.sub",
+			 "down": "d:/ymir work/ui/game/windows/btn_mail_up.sub", "label": "NuiW2X1", "label_shown": true, "align": "center",
+			 "gm": false, "flashing": false, "shown": true}
+		],
+		"quest_shift": false
+	}
+}

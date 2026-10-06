@@ -1,0 +1,9 @@
+{
+	"big_board": {
+		"shown": true,
+		"line_a": "",
+		"line_b": "The OX event starts in 5 minutes. Gather in the square!",
+		"front": "b",
+		"next_at": 0.0
+	}
+}

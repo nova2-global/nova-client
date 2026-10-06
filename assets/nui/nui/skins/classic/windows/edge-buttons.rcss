@@ -1,0 +1,53 @@
+/* Classic skin overlay of nui/windows/edge-buttons/edge-buttons.rml: the
+   legacy buttons, the bare 32 x 32 art at the arranged place, with the
+   legacy tooltip text below it, outlined and always shown: centered 32dp
+   below the top of a whisper button, from 4dp left of a quest letter's left
+   edge and 35dp below its top, in a game master's name the legacy GM
+   orange (0xffffa200). */
+
+body.skin-classic.edge-buttons .edge__button
+{
+	left: 0;
+	top: 0;
+	width: 32dp;
+	height: 32dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.edge-buttons .edge__button:hover
+{
+	background-color: transparent;
+}
+body.skin-classic.edge-buttons .edge__blink
+{
+	left: 0;
+	top: 0;
+}
+body.skin-classic.edge-buttons .edge__art--over, body.skin-classic.edge-buttons .edge__art--down
+{
+	left: 0;
+	top: 0;
+}
+body.skin-classic.edge-buttons .edge__label
+{
+	top: 32dp;
+}
+body.skin-classic.edge-buttons .edge__label--left
+{
+	top: 35dp;
+}
+body.skin-classic.edge-buttons .edge__text
+{
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.edge-buttons .is-gm .edge__text
+{
+	color: var(--edge-gm);
+	font-weight: normal;
+}

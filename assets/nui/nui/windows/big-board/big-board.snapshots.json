@@ -1,0 +1,6 @@
+{
+	"$comment": "Golden cases of the big notice board (tools/check_nui_snapshots.py): the board with one notice in view; the classic frame art is in assets/season1.",
+	"cases": [
+		{"page": "big-board", "themes": "all", "scales": [["100", "1", "960x260"], ["150", "1.5", "1440x390"], ["200", "2", "1920x520"]], "fixture": true, "roots": ["assets/season1"], "time": null}
+	]
+}

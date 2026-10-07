@@ -1,0 +1,26 @@
+{
+	"$comment": "Legacy tag cases for ParseTextTags, VisibleText, VisibleLength and RunsToRml (client) and nui_text.py (assets). P10 spec 2.2.6. Keep the two copies byte-identical.",
+	"cases": [
+		{"id": "plain", "text": "hello", "runs": [["hello", -1, ""]], "visible": "hello", "visible_length": 5, "rml": "<span class=\"nui-text__run\">hello</span>"},
+		{"id": "empty", "text": "", "runs": [], "visible": "", "visible_length": 0, "rml": ""},
+		{"id": "escaped-bar", "text": "a||b", "runs": [["a|b", -1, ""]], "visible": "a|b", "visible_length": 3, "rml": "<span class=\"nui-text__run\">a|b</span>"},
+		{"id": "color-restore", "text": "|cffff0000red|r plain", "runs": [["red", 4294901760, ""], [" plain", -1, ""]], "visible": "red plain", "visible_length": 9, "rml": "<span class=\"nui-text__run\" style=\"color: #ff0000ff;\">red</span><span class=\"nui-text__run\"> plain</span>"},
+		{"id": "color-open", "text": "|cFF00FF00green", "runs": [["green", 4278255360, ""]], "visible": "green", "visible_length": 5, "rml": "<span class=\"nui-text__run\" style=\"color: #00ff00ff;\">green</span>"},
+		{"id": "color-bad-hex", "text": "|cXYZ12345bad", "runs": [["bad", 4294967295, ""]], "visible": "bad", "visible_length": 3, "rml": "<span class=\"nui-text__run\" style=\"color: #ffffffff;\">bad</span>"},
+		{"id": "color-short", "text": "|c1234", "runs": [["|c1234", -1, ""]], "visible": "|c1234", "visible_length": 6, "rml": "<span class=\"nui-text__run\">|c1234</span>"},
+		{"id": "color-alpha", "text": "|c80ffffffhalf", "runs": [["half", 2164260863, ""]], "visible": "half", "visible_length": 4, "rml": "<span class=\"nui-text__run\" style=\"color: #ffffff80;\">half</span>"},
+		{"id": "bar-other", "text": "x|qy", "runs": [["x|qy", -1, ""]], "visible": "x|qy", "visible_length": 4, "rml": "<span class=\"nui-text__run\">x|qy</span>"},
+		{"id": "bar-end", "text": "end|", "runs": [["end|", -1, ""]], "visible": "end|", "visible_length": 4, "rml": "<span class=\"nui-text__run\">end|</span>"},
+		{"id": "item-link", "text": "|cfff1e6c0|Hitem:4e21:0:0:0:0|h[Sword+9]|h|r", "runs": [["[Sword+9] ", 4294043328, "item:4e21:0:0:0:0"]], "visible": "[Sword+9]", "visible_length": 9, "rml": "<span class=\"nui-text__run nui-link\" data-link=\"item:4e21:0:0:0:0\" style=\"color: #f1e6c0ff;\">[Sword+9] </span>"},
+		{"id": "chat-with-link", "text": "Test : look |cffffc700|Hitem:1:0:0:0:0:1:2|h[A]|h|r ok", "runs": [["Test : look ", -1, ""], ["[A] ", 4294952704, "item:1:0:0:0:0:1:2"], [" ok", -1, ""]], "visible": "Test : look [A] ok", "visible_length": 18, "rml": "<span class=\"nui-text__run\">Test : look </span><span class=\"nui-text__run nui-link\" data-link=\"item:1:0:0:0:0:1:2\" style=\"color: #ffc700ff;\">[A] </span><span class=\"nui-text__run\"> ok</span>"},
+		{"id": "link-metadata-open", "text": "a|Hitem:1:0", "runs": [["a", -1, ""]], "visible": "a", "visible_length": 1, "rml": "<span class=\"nui-text__run\">a</span>"},
+		{"id": "link-text-open", "text": "|Hitem:1|h[B", "runs": [["[B", -1, ""]], "visible": "[B", "visible_length": 2, "rml": "<span class=\"nui-text__run\">[B</span>"},
+		{"id": "color-inside-link", "text": "|Hitem:1|hab|cffff0000cd|h", "runs": [["ab", -1, ""], ["cd ", 4294901760, "item:1"]], "visible": "abcd", "visible_length": 4, "rml": "<span class=\"nui-text__run\">ab</span><span class=\"nui-text__run nui-link\" data-link=\"item:1\" style=\"color: #ff0000ff;\">cd </span>"},
+		{"id": "link-then-text", "text": "|Hitem:1|h[X]|h tail", "runs": [["[X] ", -1, "item:1"], [" tail", -1, ""]], "visible": "[X] tail", "visible_length": 8, "rml": "<span class=\"nui-text__run nui-link\" data-link=\"item:1\">[X] </span><span class=\"nui-text__run\"> tail</span>"},
+		{"id": "bar-in-metadata", "text": "|Hitem:a||b|h[C]|h", "runs": [["[C] ", -1, "item:a|b"]], "visible": "[C]", "visible_length": 3, "rml": "<span class=\"nui-text__run nui-link\" data-link=\"item:a|b\">[C] </span>"},
+		{"id": "restore-twice", "text": "a|r|rb", "runs": [["ab", -1, ""]], "visible": "ab", "visible_length": 2, "rml": "<span class=\"nui-text__run\">ab</span>"},
+		{"id": "unicode", "text": "Grüße |cff00ff00ок|r", "runs": [["Grüße ", -1, ""], ["ок", 4278255360, ""]], "visible": "Grüße ок", "visible_length": 8, "rml": "<span class=\"nui-text__run\">Grüße </span><span class=\"nui-text__run\" style=\"color: #00ff00ff;\">ок</span>"},
+		{"id": "player-markup", "text": "@ui.OK <b>&\"{{ x }}", "runs": [["@ui.OK <b>&\"{{ x }}", -1, ""]], "visible": "@ui.OK <b>&\"{{ x }}", "visible_length": 19, "rml": "<span class=\"nui-text__run\">@⁠ui.OK &lt;b&gt;&amp;&quot;&#123;&#123; x &#125;&#125;</span>"},
+		{"id": "link-attribute-escape", "text": "|Hitem:\"<x>&|h[Q]|h", "runs": [["[Q] ", -1, "item:\"<x>&"]], "visible": "[Q]", "visible_length": 3, "rml": "<span class=\"nui-text__run nui-link\" data-link=\"item:&quot;&lt;x&gt;&amp;\">[Q] </span>"}
+	]
+}

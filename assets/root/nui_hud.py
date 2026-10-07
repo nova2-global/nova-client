@@ -11,6 +11,7 @@ Interface's calls, the C++ callbacks that reach it and its document's
 events, and fed model keys (nui.Window.FEEDS) carry what changes in between."""
 
 import sys
+import weakref
 
 import ui
 
@@ -29,6 +30,16 @@ def has_engine():
 		except ImportError:
 			return False
 	return getattr(getattr(nui, "_nui", None), "BindFeed", None) is not None
+
+
+def has_engine_2b():
+	"""True when the exe has the Wave 2b engine as well: nuigame's chat,
+	view and anchor functions. A Wave 2b facade's nui_ready() is False
+	without it, so make() keeps the legacy window on an older exe."""
+	if not has_engine():
+		return False
+	nuigame = sys.modules.get("nuigame")
+	return all(getattr(nuigame, name, None) is not None for name in ("ChatAttach", "ViewState", "AnchorState"))
 
 
 def take_over(key, facade):
@@ -107,6 +118,115 @@ class EscapeProxy(object):
 		if window is not None:
 			window.Hide()
 			window._action = None
+			window.Destroy()
+
+
+def _weak(method):
+	"""A bound method held weakly (its object may go first), else as given."""
+	if method is None or not hasattr(method, "__self__"):
+		return method
+	ref = weakref.WeakMethod(method)
+
+	def call():
+		target = ref()
+		if target is not None:
+			target()
+	return call
+
+
+def _call(method):
+	"""A weak method whose owner is gone does nothing."""
+	if method is None:
+		return
+	try:
+		method()
+	except ReferenceError:
+		pass
+
+
+class _FocusWindow(ui.Window):
+	"""The legacy window behind a FocusProxy: 0 x 0, so never picked. wndMgr
+	calls OnKillFocus when another window takes its focus
+	(CWindowManager::ActivateWindow) and OnSetFocus when it gives it back
+	(DeactivateWindow); OnKeyDown passes every key on to the root window,
+	as a legacy edit line passes the game keys it does not keep."""
+
+	def __init__(self, on_lost, on_gained):
+		ui.Window.__init__(self, "UI")
+		self.SetWindowName("NuiFocusProxy")
+		self._on_lost = on_lost
+		self._on_gained = on_gained
+		self._quiet = False
+
+	def __del__(self):
+		ui.Window.__del__(self)
+
+	def OnKillFocus(self):
+		if not self._quiet:
+			_call(self._on_lost)
+
+	def OnSetFocus(self):
+		if not self._quiet:
+			_call(self._on_gained)
+
+	def OnKeyDown(self, key):
+		return False
+
+
+class FocusProxy(object):
+	"""A 0 x 0 legacy ui.Window in the UI layer that holds wndMgr's focus
+	while a NovaUI text field has NovaUI's, as a focused legacy edit line
+	would hold it (ui.EditLine.SetFocus). Legacy code that asks whether the
+	game window has the focus (game.py CheckFocus, :1112-1117) then answers
+	as it would with the legacy chat: a world press closes the chat. When a
+	legacy edit line takes wndMgr's focus, the proxy's OnKillFocus runs
+	`on_lost` (the facade moves NovaUI's focus off its field); when wndMgr
+	gives the focus back (the window that took it closed,
+	PythonWindowManager.cpp:670-689), its OnSetFocus runs `on_gained` (the
+	facade focuses its field again). Its OnKeyDown returns False, so the
+	keys the host lets through while typing (F1 to F4, left Alt, Print
+	Screen, left Ctrl) reach the game window as through a legacy edit line.
+	Never picked (no area); `on_lost` and
+	`on_gained` are held as weak methods; neither runs for take() and
+	release() themselves."""
+
+	def __init__(self, on_lost, on_gained):
+		self._window = _FocusWindow(_weak(on_lost), _weak(on_gained))
+		self._window.SetSize(0, 0)
+		self._window.Show()
+
+	def _quietly(self, call):
+		window = self._window
+		window._quiet = True
+		try:
+			call()
+		finally:
+			window._quiet = False
+
+	def take(self):
+		"""wndMgr.SetFocus on the proxy, unless it has it."""
+		window = self._window
+		if window is None or window.IsFocus():
+			return
+		self._quietly(window.SetFocus)
+
+	def release(self):
+		"""wndMgr.KillFocus on the proxy, when it has it; on_lost does not run."""
+		window = self._window
+		if window is None or not window.IsFocus():
+			return
+		self._quietly(window.KillFocus)
+
+	def has_focus(self):
+		return self._window is not None and bool(self._window.IsFocus())
+
+	def destroy(self):
+		self.release()
+		window, self._window = self._window, None
+		if window is not None:
+			window._on_lost = None
+			window._on_gained = None
+			window.Hide()
 			window.Destroy()
 
 

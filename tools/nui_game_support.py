@@ -26,12 +26,40 @@ Game.load(name) imports a module from assets/root over them. Game.log holds
 every recorded call as (module.function, args) in order; Game.effects()
 leaves out the getters (Get*, Is*, Has*, Can*, the quick slot index
 conversions), as the differential tests compare them. HUD CONTENT extends
-this in its own test file, not here."""
+this in its own test file, not here.
+
+Wave 2b (P10 spec 4.3) adds, for every Game:
+- `chat`: CPythonChat's line store (300 lines, each with a serial) and its
+  chat sets (board state, end position, modes, height, step), the wait list
+  of AppendChatWithDelay, and GetLinkFromHyperlink as the client wraps an
+  item link (Game.item_names gives the names); every call recorded;
+- `ime`: PasteString types into the NovaUI text field that has the focus
+  (NuiState.text_fields names the fields), as the client's paste bridge
+  does (P10 spec D7), else into the legacy edit line with wndMgr's focus;
+- `nuigame`: the Wave 2b functions (ChatAttach, ChatDetach, ChatState from
+  the chat store and Game.chat_rows, ViewState, SetViewHoverFormat,
+  AnchorState), recorded, a scripted answer (Game.answer) winning;
+- `miniMap` (every function of PythonMiniMapModule.cpp, with the client's
+  answer shapes), `shop`, `textTail`, `chr.GetProjectPosition`, the `guild`
+  mark functions, `net.SendChatPacket`, `IsChatInsultIn`, `SendOnClickPacket`,
+  `GetServerInfo`, `systemSetting.IsViewChat` and `IsShowSalesText`
+  (Game.view_chat, .show_sales_text), `uiScriptLocale.ZONE_MAP`,
+  `localeInfo.MINIMAP_ZONE_NAME_DICT`, `app.IsPressed` (Game.pressed) and the
+  arrow and Alt key codes, `ui.GetHyperlink` (Game.hyperlink);
+- wndMgr's focus as CWindowManager keeps it (Game.focus: ActivateWindow
+  pushes the window that had it, which gets OnKillFocus; DeactivateWindow
+  gives it back with OnSetFocus), behind ui.Window.SetFocus, KillFocus and
+  IsFocus and wndMgr's own;
+- install_wave2b_ui(game): the legacy widgets the Wave 2b legacy windows
+  make (EditLine, DragButton, ScrollBar, SmallThinScrollBar, ThinBoard,
+  MarkBox, Gauge, RadioButton, ToggleButton and buttons that keep their
+  events), installed on request so the Wave 2a tests keep their widgets."""
 import contextlib
 import io
 import os
 import sys
 import types
+import weakref
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_test_support as support  # noqa: E402
@@ -74,6 +102,14 @@ APP_CONSTANTS = {name: index for index, name in enumerate((
     "NORMAL", "ATTACK", "TARGET", "TALK", "CANT_GO", "PICK", "DOOR", "CHAIR", "MAGIC", "BUY", "SELL",
     "CAMERA_ROTATE", "HSIZE", "VSIZE", "HVSIZE"))}
 APP_CONSTANTS.update({"ENABLE_ENERGY_SYSTEM": 1, "ENABLE_DRAGON_SOUL_SYSTEM": 1})
+# Wave 2b: the keys the chat reads (app.VK_UP and VK_DOWN as the IME's
+# OnIMEKeyDown gets them; the DirectInput codes app.IsPressed takes).
+APP_CONSTANTS.update({"VK_UP": 0x26, "VK_DOWN": 0x28, "DIK_LALT": 0x38, "DIK_LSHIFT": 0x2A, "DIK_LCONTROL": 0x1D})
+MINIMAP_CONSTANTS = {"TYPE_OPC": 0, "TYPE_OPCPVP": 1, "TYPE_OPCPVPSELF": 2, "TYPE_NPC": 3, "TYPE_MONSTER": 4, "TYPE_WARP": 5,
+                     "TYPE_WAYPOINT": 6, "TYPE_PARTY": 7, "TYPE_EMPIRE": 8, "TYPE_EMPIRE_END": 12}
+# miniMap's answers when a test scripts none (PythonMiniMapModule.cpp's shapes).
+MINIMAP_ANSWERS = {"isShow": False, "isShowAtlas": False, "IsAtlas": False, "GetInfo": (0, "", 0, 0, 0),
+                   "GetAtlasInfo": (0, "", 0, 0, 0, 0), "GetAtlasSize": (0, 0, 0), "GetGuildAreaID": 0}
 
 
 def is_getter(name):
@@ -242,9 +278,11 @@ class LegacySlots(LegacyWidget):
     del __setevent
 
 
-def make_legacy_ui(log):
-    """nui_test_support's legacy ui, extended for the HUD classes."""
+def make_legacy_ui(log, focus=None):
+    """nui_test_support's legacy ui, extended for the HUD classes; `focus`
+    is wndMgr's focus (FocusModel) its windows take and give up."""
     ui = support.make_legacy_ui()
+    ui.focus = focus
     Window = ui.Window
 
     class HudWindow(Window):
@@ -253,6 +291,24 @@ def make_legacy_ui(log):
             self.size = (0, 0)
             self.position = (0, 0)
             self.name = ""
+            if focus is not None:
+                focus.register(self)
+
+        # wndMgr's focus (Game.focus), as ui.Window reaches it.
+        def SetFocus(self):
+            if focus is not None:
+                focus.activate(self)
+
+        def KillFocus(self):
+            if focus is not None:
+                focus.kill(self)
+
+        def IsFocus(self):
+            return focus is not None and focus.is_focus(self)
+
+        def Destroy(self):
+            if focus is not None:
+                focus.forget(self)
 
         def SetSize(self, width, height):
             self.size = (width, height)
@@ -423,6 +479,416 @@ def make_tooltips():
     return module
 
 
+# --- wndMgr's focus (Wave 2b) ---------------------------------------------------------------
+
+class FocusModel(object):
+    """wndMgr's focus as CWindowManager keeps it (PythonWindowManager.cpp
+    ActivateWindow, DeactivateWindow, NotifyDestroyWindow): the active window
+    and the windows that had the focus before, newest last."""
+
+    def __init__(self):
+        self.active = None
+        self.stack = []
+        self.windows = weakref.WeakValueDictionary()  # handle -> window
+
+    def register(self, window):
+        handle = getattr(window, "hWnd", None)
+        if handle:
+            self.windows[handle] = window
+
+    @staticmethod
+    def _notify(window, name):
+        hook = getattr(window, name, None)
+        if callable(hook):
+            hook()
+
+    def activate(self, window):
+        """ActivateWindow: the window that had the focus is pushed and gets
+        OnKillFocus; this one gets OnSetFocus."""
+        if window in self.stack:
+            self.stack.remove(window)
+        if window is self.active:
+            return
+        previous = self.active
+        if previous is not None:
+            self.stack.append(previous)
+        self.active = window
+        if previous is not None:
+            self._notify(previous, "OnKillFocus")
+        self._notify(window, "OnSetFocus")
+
+    def deactivate(self):
+        """DeactivateWindow: the window pushed last gets the focus back."""
+        previous = self.active
+        if previous is None:
+            return
+        self.active = self.stack.pop() if self.stack else None
+        self._notify(previous, "OnKillFocus")
+        if self.active is not None:
+            self._notify(self.active, "OnSetFocus")
+
+    def kill(self, window):
+        """wndMgr.KillFocus: only the window that has the focus gives it up."""
+        if window is self.active:
+            self.deactivate()
+
+    def is_focus(self, window):
+        return window is not None and window is self.active
+
+    def forget(self, window):
+        """NotifyDestroyWindow: a destroyed window leaves without a call."""
+        if window is self.active:
+            self.active = None
+        while window in self.stack:
+            self.stack.remove(window)
+
+    def window(self, handle):
+        return self.windows.get(handle)
+
+
+# --- the chat store (Wave 2b) -------------------------------------------------------------------
+
+CHAT_CONSTANTS = {
+    "CHAT_TYPE_TALKING": 0, "CHAT_TYPE_INFO": 1, "CHAT_TYPE_NOTICE": 2, "CHAT_TYPE_PARTY": 3, "CHAT_TYPE_GUILD": 4,
+    "CHAT_TYPE_COMMAND": 5, "CHAT_TYPE_SHOUT": 6, "CHAT_TYPE_WHISPER": 7,
+    "WHISPER_TYPE_CHAT": 0, "WHISPER_TYPE_SYSTEM": 255, "WHISPER_TYPE_GM": 5,
+    "BOARD_STATE_VIEW": 0, "BOARD_STATE_EDIT": 1, "BOARD_STATE_LOG": 2,
+    "CHAT_SET_CHAT_WINDOW": 0, "CHAT_SET_LOG_WINDOW": 1,
+}
+CHAT_TYPE_COUNT = 9      # CHAT_TYPE_MAX_NUM (Packet.h): TALKING to BIG_NOTICE
+CHAT_LINE_MAX = 300      # CPythonChat::CHAT_LINE_MAX_NUM
+
+
+class ChatStore(object):
+    """CPythonChat's state as the chat module shows it."""
+
+    def __init__(self):
+        self.lines = []          # [serial, type, text], oldest first
+        self.serial = 0
+        self.sets = {}           # id -> {"board", "end", "modes", "height", "step"}
+        self.waiting = []        # (due time, type, text) of AppendChatWithDelay
+        self.colors = {}
+
+    def append(self, chat_type, text):
+        self.serial += 1
+        self.lines.append([self.serial, chat_type, text])
+        if len(self.lines) > CHAT_LINE_MAX:
+            self.lines.pop(0)
+
+    def create(self, set_id):
+        # std::map::insert keeps a set made before.
+        self.sets.setdefault(set_id, {"board": 0, "end": 1.0, "modes": [1] * CHAT_TYPE_COUNT, "height": 0, "step": 15})
+        return set_id
+
+    def shows(self, set_id, chat_type):
+        modes = self.sets[set_id]["modes"]
+        return 0 <= chat_type < len(modes) and bool(modes[chat_type])
+
+    def filtered(self, set_id):
+        if set_id not in self.sets:
+            return []
+        return [line for line in self.lines if self.shows(set_id, line[1])]
+
+    def view(self, set_id, rows):
+        """P10 spec 2.3.2: the published window of lines and its end index."""
+        lines = self.filtered(set_id)
+        total = len(lines)
+        if total == 0:
+            return [], -1, total
+        state = self.sets[set_id]
+        if state["board"] == CHAT_CONSTANTS["BOARD_STATE_VIEW"]:
+            return lines[-5:], total - 1, total
+        r = min(max(rows, 1), 64)
+        end = total - 1 if total <= r else min(total - 1, r + int((total - r - 1) * state["end"]))
+        return lines[max(0, end - r + 1):end + 1], end, total
+
+
+def link_from_hyperlink(link, names):
+    """chat.GetLinkFromHyperlink (PythonChatModule.cpp:420-483): an item link
+    of at least six fields of a known item, rewritten in hex, with the attribute
+    pairs it carries, wrapped in the client's color and link tags; "" else."""
+    fields = (link or "").split(":")
+    if ":" not in (link or "") or fields[0] != "item" or len(fields) < 6:
+        return ""
+
+    def hexi(text):
+        try:
+            return int(text, 16)
+        except ValueError:
+            return -1
+    vnum = hexi(fields[1])
+    if vnum not in names:
+        return ""
+    body = "item:%x:%x:%x:%x:%x" % tuple(hexi(field) & 0xFFFFFFFF for field in fields[1:6])
+    attributes = False
+    if len(fields) >= 8:
+        for i in range(6, len(fields) - 1, 2):
+            body += ":%x:%d" % (hexi(fields[i]) & 0xFFFFFFFF, int(fields[i + 1] or 0))
+            attributes = True
+    color = "ffffc700" if attributes else "fff1e6c0"
+    return "|c%s|H%s|h[%s]|h|r" % (color, body, names[vnum])
+
+
+def define(module, name, fn):
+    """A function of a Recording module that records its call; a scripted
+    answer (Game.answer) wins over `fn`."""
+    log = module.__dict__["_log"]
+    answers = module.__dict__["_answers"]
+    full = module.__name__ + "." + name
+
+    def call(*args, **kwargs):
+        log.append((full, args))
+        if name in answers:
+            answer = answers[name]
+            return answer(*args) if callable(answer) else answer
+        return fn(*args, **kwargs)
+    call.__name__ = name
+    setattr(module, name, call)
+
+
+# --- the legacy widgets of the Wave 2b windows --------------------------------------------------
+
+def install_wave2b_ui(game):
+    """Adds to game's ui module the legacy widgets the Wave 2b legacy windows
+    make (uichat.py, uiminimap.py, uiplayergauge.py, uiprivateshopbuilder.py,
+    uiguild.py): windows that record what they are not asked to keep, an
+    edit line that keeps its text, events and focus, a scroll bar whose
+    SetPos sends its scroll event unless locked (as ui.ScrollBar.OnMove),
+    radio and toggle buttons, and buttons that keep their events. Each
+    widget's test helpers are lower case (type, click, drag_to)."""
+    ui = game.modules["ui"]
+    base = ui.HudWindow
+
+    class Win(base):
+        """A legacy window: what HudWindow keeps; every other capitalized
+        call does nothing."""
+
+        def __init__(self, layer="UI"):
+            base.__init__(self, layer)
+            self.shown = False
+            self.parent = None
+            self.flags = set()
+
+        def __getattr__(self, attr):
+            if attr.startswith("__") or not attr[:1].isupper():
+                raise AttributeError(attr)
+            return lambda *args, **kwargs: None
+
+        def __del__(self):
+            pass
+
+        def SetParent(self, parent):
+            self.parent = parent
+
+        def AddFlag(self, flag):
+            self.flags.add(flag)
+
+        def GetRect(self):
+            x, y = self.GetGlobalPosition()
+            return (x, y, self.size[0], self.size[1])
+
+        def IsIn(self):
+            return False
+
+        def IsRTL(self):
+            return False
+
+    class EditLine(Win):
+        """ui.EditLine: the text, its limits and events; typing goes through
+        type(), as the IME's update would."""
+
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.text = ""
+            self.max = 0
+            self.userMax = 0
+            self.eventReturn = lambda *args: None
+            self.eventEscape = lambda *args: None
+            self.eventTab = None
+
+        def SetText(self, text):
+            self.text = text
+
+        def GetText(self):
+            return self.text
+
+        def SetMax(self, value):
+            self.max = value
+
+        def SetUserMax(self, value):
+            self.userMax = value
+
+        def SetReturnEvent(self, event):
+            self.eventReturn = event
+
+        def SetEscapeEvent(self, event):
+            self.eventEscape = event
+
+        def SetTabEvent(self, event):
+            self.eventTab = event
+
+        def OnIMEUpdate(self):
+            pass
+
+        def OnIMEKeyDown(self, key):
+            return False
+
+        def OnSetFocus(self):
+            pass
+
+        def OnKillFocus(self):
+            pass
+
+        def type(self, text):
+            self.text += text
+            self.OnIMEUpdate()
+
+    class Button(LegacyWidget):
+        """ui.Button that keeps its event (SetEvent, SAFE_SetEvent)."""
+
+        def __init__(self, layer="UI"):
+            LegacyWidget.__init__(self, "button")
+            ui.handles[0] += 1
+            self.hWnd = ui.handles[0]
+
+        def __del__(self):
+            pass
+
+        def SAFE_SetEvent(self, event, *args):
+            self.event = event
+            self.eventArgs = args
+
+        def click(self):
+            if self.event:
+                self.event(*self.eventArgs)
+
+    class RadioButton(Button):
+        def __init__(self, layer="UI"):
+            Button.__init__(self, layer)
+            self.down = False
+
+        def Down(self):
+            self.down = True
+
+        def SetUp(self):
+            self.down = False
+
+        def click(self):
+            self.down = True
+            Button.click(self)
+
+    class ToggleButton(Button):
+        """ui.ToggleButton: a click flips it and calls its down or up event."""
+
+        def __init__(self, layer="UI"):
+            Button.__init__(self, layer)
+            self.down = False
+            self.eventUp = None
+            self.eventDown = None
+
+        def SetToggleUpEvent(self, event, *args):
+            self.eventUp = (event, args)
+
+        def SetToggleDownEvent(self, event, *args):
+            self.eventDown = (event, args)
+
+        def Down(self):
+            self.down = True
+
+        def SetUp(self):
+            self.down = False
+
+        def click(self):
+            self.down = not self.down
+            event = self.eventDown if self.down else self.eventUp
+            if event and event[0]:
+                event[0](*event[1])
+
+    class DragButton(Win):
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.moveEvent = None
+
+        def SetMoveEvent(self, event):
+            self.moveEvent = event
+
+        def drag_to(self, x, y):
+            self.SetPosition(x, y)
+            if self.moveEvent:
+                self.moveEvent()
+
+    class ScrollBar(Win):
+        """ui.ScrollBar: SetPos sends the scroll event unless locked, at the
+        position its pixel grid leaves (ui.py ScrollBar.SetPos, OnMove)."""
+
+        BUTTON_HEIGHT = 17
+        MIDDLE_HEIGHT = 9
+        EXTRA = 7           # MIDDLE_BAR_UPPER_PLACE + MIDDLE_BAR_DOWNER_PLACE
+
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.eventScroll = lambda *args: None
+            self.curPos = 0.0
+            self.pageSize = 1
+            self.lockFlag = False
+
+        def SetScrollEvent(self, event):
+            self.eventScroll = event
+
+        def SetScrollBarSize(self, height):
+            self.pageSize = height - self.BUTTON_HEIGHT * 2 - self.MIDDLE_HEIGHT - self.EXTRA
+            self.SetSize(13, height)
+
+        def GetPos(self):
+            return self.curPos
+
+        def SetPos(self, pos):
+            pos = min(max(0.0, pos), 1.0)
+            if self.lockFlag or self.pageSize == 0:
+                return
+            self.curPos = int(float(self.pageSize) * pos) / float(self.pageSize)
+            self.eventScroll()
+
+        def LockScroll(self):
+            self.lockFlag = True
+
+        def UnlockScroll(self):
+            self.lockFlag = False
+
+        def drag_to(self, pos):
+            self.SetPos(pos)
+
+    class SmallThinScrollBar(ScrollBar):
+        BUTTON_HEIGHT = 13
+        MIDDLE_HEIGHT = 18
+        EXTRA = 0
+
+    class Gauge(Win):
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.percentage = None
+
+        def SetPercentage(self, current, maximum):
+            self.percentage = (current, maximum)
+
+    class MarkBox(Win):
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.index = None
+
+        def SetIndex(self, index):
+            self.index = index
+
+    for name, cls in (("Window", Win), ("EditLine", EditLine), ("Button", Button), ("RadioButton", RadioButton),
+                      ("ToggleButton", ToggleButton), ("DragButton", DragButton), ("ScrollBar", ScrollBar),
+                      ("ThinScrollBar", ScrollBar), ("SmallThinScrollBar", SmallThinScrollBar), ("ThinBoard", Win),
+                      ("Bar", Win), ("Gauge", Gauge), ("MarkBox", MarkBox)):
+        setattr(ui, name, cls)
+    ui.ExpandedImageBox = ui.ImageBox
+    ui.RenderRoundBox = lambda *args: None
+    return ui
+
+
 # --- the game --------------------------------------------------------------------------
 
 class Game(object):
@@ -456,6 +922,16 @@ class Game(object):
         self.observer = False
         self.emotion_icons = {}  # emotion index -> icon path
         self.handles = [1000]
+        # Wave 2b
+        self.chat = ChatStore()
+        self.focus = FocusModel()
+        self.item_names = {}     # vnum -> name, for chat.GetLinkFromHyperlink
+        self.chat_rows = {"window": 8, "log": 3}  # the rows the lines elements report
+        self.view_chat = True    # systemSetting.IsViewChat
+        self.show_sales_text = True  # systemSetting.IsShowSalesText
+        self.pressed = set()     # app.IsPressed: the DIK codes held down
+        self.hyperlink = ""      # ui.GetHyperlink: the link under the mouse
+        self.legacy_pasted = []  # what ime.PasteString gave the legacy edit line
         self.state = support.NuiState()
         self.state.available = nui_on
         self.engine = engine
@@ -590,6 +1066,10 @@ class Game(object):
         wndmgr = support.make_wndmgr()
         for key, value in WNDMGR_CONSTANTS.items():
             setattr(wndmgr, key, value)
+        wndmgr.SetFocus = lambda handle: game.focus.window(handle) is not None and game.focus.activate(game.focus.window(handle))
+        wndmgr.KillFocus = lambda handle=None: (game.focus.deactivate() if handle is None else
+                                                game.focus.kill(game.focus.window(handle)))
+        wndmgr.IsFocus = lambda handle: game.focus.is_focus(game.focus.window(handle))
         wndmgr.IsDragging = lambda: game.dragging
         wndmgr.AttachIcon = recorded(log, "wndMgr.AttachIcon", lambda *args: None)
         wndmgr.SetAttachingFlag = lambda flag: None
@@ -601,13 +1081,14 @@ class Game(object):
         modules["wndMgr"] = wndmgr
 
         for name in ("net", "chr", "chrmgr", "nonplayer", "messenger", "textTail", "snd", "grp", "grpText",
-                     "systemSetting", "background", "quest", "event", "chat", "ime", "exception"):
+                     "systemSetting", "background", "quest", "event", "chat", "ime", "exception", "miniMap", "shop"):
             modules[name] = Recording(name, log)
         modules["systemSetting"].IsSoftwareCursor = lambda: False
         modules["systemSetting"].GetUINuiWindows = lambda: "+hud"
         modules["systemSetting"].IsUINuiLogin = lambda: 0
         nuigame = Recording("nuigame", log)
         modules["nuigame"] = nuigame if self.engine else None
+        self._wave2b_modules(modules)
 
         modules["localeInfo"] = support.LocaleInfo(
             TOOLTIP_ENERGY=lambda value: "Energy %s" % (value,),
@@ -615,12 +1096,142 @@ class Game(object):
         modules["uiScriptLocale"] = support.LocaleInfo(LOCALE_UISCRIPT_PATH="locale/en/ui/")
         modules["uiToolTip"] = make_tooltips()
         modules["dbg"] = self.dbg
-        modules["ui"] = make_legacy_ui(log)
+        modules["ui"] = make_legacy_ui(log, self.focus)
+        modules["ui"].GetHyperlink = lambda: game.hyperlink
+        modules["localeInfo"].MINIMAP_ZONE_NAME_DICT = {}
+        modules["uiScriptLocale"].ZONE_MAP = "ZONE_MAP"
         nui = support.make_nui(self.state)
         if self.engine:
             nui._nui.BindFeed = lambda *args: True
         modules["nui"] = nui
         return modules
+
+    def _wave2b_modules(self, modules):
+        """The Wave 2b stand-ins (the module docstring lists them)."""
+        game = self
+        store = self.chat
+
+        chat = modules["chat"]
+        for name, value in CHAT_CONSTANTS.items():
+            setattr(chat, name, value)
+
+        def set_state(key):
+            def apply(set_id, value):
+                if set_id in store.sets:
+                    store.sets[set_id][key] = value
+            return apply
+
+        def set_mode(value):
+            def apply(set_id, mode):
+                if set_id in store.sets and 0 <= mode < CHAT_TYPE_COUNT:
+                    modes = store.sets[set_id]["modes"]
+                    modes[mode] = (1 - modes[mode]) if value is None else value
+            return apply
+
+        def set_end(set_id, pos):
+            if set_id in store.sets:
+                store.sets[set_id]["end"] = min(max(float(pos), 0.0), 1.0)
+
+        def visible(set_id):
+            if set_id not in store.sets:
+                return 0
+            state = store.sets[set_id]
+            return min(len(store.filtered(set_id)), (state["height"] + state["step"]) // state["step"])
+
+        def delay(chat_type, text, ms):
+            store.waiting.append((game.time + ms / 1000.0, chat_type, text))
+
+        def update(set_id):
+            due = [entry for entry in store.waiting if entry[0] <= game.time]
+            store.waiting = [entry for entry in store.waiting if entry[0] > game.time]
+            for _, chat_type, text in due:
+                store.append(chat_type, text)
+
+        def clear():
+            store.lines = []
+
+        define(chat, "SetChatColor", lambda chat_type, r, g, b: store.colors.__setitem__(chat_type, (r, g, b)))
+        define(chat, "CreateChatSet", store.create)
+        define(chat, "SetBoardState", set_state("board"))
+        define(chat, "SetHeight", set_state("height"))
+        define(chat, "SetStep", set_state("step"))
+        define(chat, "EnableChatMode", set_mode(1))
+        define(chat, "DisableChatMode", set_mode(0))
+        define(chat, "ToggleChatMode", set_mode(None))
+        define(chat, "SetEndPos", set_end)
+        define(chat, "GetLineCount", lambda set_id: len(store.filtered(set_id)))
+        define(chat, "GetVisibleLineCount", visible)
+        define(chat, "GetLineStep", lambda set_id: store.sets.get(set_id, {}).get("step", 0))
+        define(chat, "AppendChat", store.append)
+        define(chat, "AppendChatWithDelay", delay)
+        define(chat, "Update", update)
+        define(chat, "Clear", clear)
+        define(chat, "GetLinkFromHyperlink", lambda link: link_from_hyperlink(link, game.item_names))
+
+        net = modules["net"]
+        define(net, "IsChatInsultIn", lambda text: False)
+        define(net, "GetServerInfo", lambda: "")
+
+        def paste(text):
+            """The client's paste bridge (P10 spec D7): a NovaUI text field with
+            the focus takes the text at its caret, else the legacy IME."""
+            for window in game.state.windows:
+                if window._doc and window.visible and (window.DOCUMENT, window.focused) in game.state.text_fields:
+                    window.insert_text(window.focused, text)
+                    return
+            game.legacy_pasted.append(text)
+            active = game.focus.active
+            if active is not None and hasattr(active, "type"):
+                active.type(text)
+        define(modules["ime"], "PasteString", paste)
+
+        setting = modules["systemSetting"]
+        setting.IsViewChat = lambda: game.view_chat
+        setting.IsShowSalesText = lambda: game.show_sales_text
+
+        mini_map = modules["miniMap"]
+        for name, value in MINIMAP_CONSTANTS.items():
+            setattr(mini_map, name, value)
+        mini_map.__dict__["_answers"].update(MINIMAP_ANSWERS)
+
+        define(modules["chr"], "GetProjectPosition", lambda vid, height: (-100, -100))
+        define(modules["textTail"], "GetPosition", lambda vid: (0, 0, 0))
+        define(modules["textTail"], "IsChat", lambda vid: False)
+        guild = modules["guild"]
+        define(guild, "GuildIDToMarkID", lambda guild_id: -1)
+        define(guild, "GetMarkImageFilenameByMarkID", lambda mark_id: "")
+        define(guild, "GetMarkIndexByMarkID", lambda mark_id: 0)
+        define(guild, "GetGuildName", lambda guild_id: (True, "guild %d" % guild_id))
+
+        app = modules["app"]
+        app.IsPressed = lambda key: key in game.pressed
+
+        nuigame = modules["nuigame"]
+        if nuigame is None:
+            return
+        attached = [False]
+
+        def chat_state(view):
+            if view not in ("window", "log"):
+                raise ValueError("nuigame.ChatState: no view %r" % (view,))
+            set_id = 0 if view == "window" else 1
+            rows = game.chat_rows.get(view, 8)
+            if set_id not in store.sets:
+                return {"attached": attached[0], "rows": rows, "total": 0, "end": -1, "at_end": True,
+                        "board_state": 0, "end_pos": 1.0, "mask": 0}
+            state = store.sets[set_id]
+            _, end, total = store.view(set_id, rows)
+            mask = sum(1 << t for t in range(CHAT_TYPE_COUNT) if store.shows(set_id, t))
+            return {"attached": attached[0], "rows": rows, "total": total, "end": end, "at_end": end == total - 1,
+                    "board_state": state["board"], "end_pos": state["end"], "mask": mask}
+
+        define(nuigame, "ChatAttach", lambda: attached.__setitem__(0, True))
+        define(nuigame, "ChatDetach", lambda: attached.__setitem__(0, False))
+        define(nuigame, "ChatState", chat_state)
+        define(nuigame, "ViewState", lambda name: {"wanted": False, "renders": 0, "texels": [0, 0], "natural": [0, 0], "hover": ""})
+        define(nuigame, "SetViewHoverFormat", lambda name, format, names=None: True)
+        define(nuigame, "AnchorState", lambda: {"source": False, "anchors": 0})
+        self.chat_attached = attached
 
     # --- sys.modules ----------------------------------------------------------------
 

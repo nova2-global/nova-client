@@ -113,7 +113,7 @@ class Interface(object):
 		self.wndGuild = uiGuild.GuildWindow()
 
 	def __MakeChatWindow(self):
-		wndChat = uiChat.ChatWindow()
+		wndChat = nui_windows.make("chat", uiChat.ChatWindow, "nui_chat.ChatWindow")
 		
 		wndChat.SetSize(wndChat.CHAT_WINDOW_WIDTH, 0)
 		wndChat.SetPosition(wndMgr.GetScreenWidth() // 2 - wndChat.CHAT_WINDOW_WIDTH // 2, wndMgr.GetScreenHeight() - wndChat.EDIT_LINE_HEIGHT - 37)
@@ -197,7 +197,10 @@ class Interface(object):
 			wndDragonSoul = None
 			wndDragonSoulRefine = None
  
-		wndMiniMap = uiMiniMap.MiniMap()
+		wndMiniMap = nui_windows.make("minimap", uiMiniMap.MiniMap, "nui_minimap.MiniMap")
+		# The NovaUI atlas needs the NovaUI minimap, which makes it (P10 spec D16).
+		if not getattr(wndMiniMap, "NUI_FACADE", False) and nui_windows.is_on("atlas"):
+			nui_windows.refuse("atlas", "needs the NovaUI minimap")
 		wndSafebox = uiSafebox.SafeboxWindow()
 		
 		# ITEM_MALL
@@ -205,7 +208,7 @@ class Interface(object):
 		self.wndMall = wndMall
 		# END_OF_ITEM_MALL
 
-		wndChatLog = uiChat.ChatLogWindow()
+		wndChatLog = nui_windows.make("chat-log", uiChat.ChatLogWindow, "nui_chat_log.ChatLogWindow")
 		wndChatLog.BindInterface(self)
 		
 		self.wndCharacter = wndCharacter
@@ -543,6 +546,10 @@ class Interface(object):
 			edge.close_all()
 		self.whisperButtonList = []
 		self.whisperDialogDict = {}
+		# The NovaUI shop signs share one document, which goes with the last sign.
+		signs = sys.modules.get("nui_shop_signs")
+		if signs is not None:
+			signs.close_all()
 		self.privateShopAdvertisementBoardDict = {}
 		self.guildScoreBoardDict = {}
 		self.equipmentDialogDict = {}
@@ -791,7 +798,7 @@ class Interface(object):
 	def OnStartGuildWar(self, guildSelf, guildOpp):
 		self.wndGuild.OnStartGuildWar(guildSelf, guildOpp)
 
-		guildWarScoreBoard = uiGuild.GuildWarScoreBoard()
+		guildWarScoreBoard = nui_windows.make("guild-war", uiGuild.GuildWarScoreBoard, "nui_guild_war.GuildWarScoreBoard")
 		guildWarScoreBoard.Open(guildSelf, guildOpp)
 		guildWarScoreBoard.Show()
 		self.guildScoreBoardDict[uiGuild.GetGVGKey(guildSelf, guildOpp)] = guildWarScoreBoard
@@ -1264,7 +1271,7 @@ class Interface(object):
 
 	def AppearPrivateShop(self, vid, text):
 
-		board = uiPrivateShopBuilder.PrivateShopAdvertisementBoard()
+		board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopAdvertisementBoard, "nui_shop_signs.ShopSign")
 		board.Open(vid, text)
 
 		self.privateShopAdvertisementBoardDict[vid] = board

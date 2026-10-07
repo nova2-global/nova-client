@@ -1,0 +1,132 @@
+[
+	{
+		"id": 301,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Test : anyone selling potions?",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 302,
+		"type": 1,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "You received 1,200 experience points.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 303,
+		"type": 2,
+		"t": 0.2,
+		"runs": [
+			{
+				"text": "The castle siege starts in ten minutes.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 304,
+		"type": 3,
+		"t": 0.2,
+		"runs": [
+			{
+				"text": "Test : party up at the well",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 305,
+		"type": 4,
+		"t": 0.3,
+		"runs": [
+			{
+				"text": "Guildie : war at nine",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 306,
+		"type": 5,
+		"t": 0.3,
+		"runs": [
+			{
+				"text": "/notice nuiw2b",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 307,
+		"type": 6,
+		"t": 0.4,
+		"runs": [
+			{
+				"text": "Shouter : buying 200 wood",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 308,
+		"type": 7,
+		"t": 0.4,
+		"runs": [
+			{
+				"text": "Test : see you",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 309,
+		"type": 8,
+		"t": 0.5,
+		"runs": [
+			{
+				"text": "Server maintenance at 04:00.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 310,
+		"type": 0,
+		"t": 0.5,
+		"runs": [
+			{
+				"text": "[SA]Admin : look ",
+				"color": -1,
+				"link": ""
+			},
+			{
+				"text": "[Red Potion] ",
+				"color": 4294043328,
+				"link": "item:6979:0:0:0:0"
+			},
+			{
+				"text": " cheap",
+				"color": -1,
+				"link": ""
+			}
+		]
+	}
+]

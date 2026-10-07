@@ -88,6 +88,18 @@ body.nui-window
 	margin-top: 0;
 }
 
+/* Tagged text as the chat shows it: the chat's backdrop and line color, so
+   the game's own tag colors read in every theme. One tight line: the body
+   shows its content whole at 80vh only with room to spare of about 28dp. */
+.gallery-tagged
+{
+	margin-bottom: 0;
+	padding: 1dp var(--space-2);
+	background-color: var(--chat-edit-shade);
+	color: var(--chat-talking);
+	font-size: var(--font-sm);
+}
+
 .gallery-list .nui-list__viewport
 {
 	height: 196dp;

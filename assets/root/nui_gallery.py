@@ -82,6 +82,11 @@ def _bag_items():
 	return items
 
 
+# A chat line with the legacy tags: a colored run, an item link (the client's
+# link colors) and text that stays as written in a nui-text.
+_TAGGED = '|cff9fe6c3Test|r: look |cfff1e6c0|Hitem:6b:0:0:0:0|h[Red Potion]|h|r and @ui.OK {{ x }}, as written'
+
+
 class GalleryWindow(nui.Window):
 	DOCUMENT = "nui/windows/gallery/gallery.rml"
 	MODEL = "gallery"
@@ -104,6 +109,7 @@ class GalleryWindow(nui.Window):
 			"slot_hover": _SLOT_HOVER,
 			"bag_cells": _bag_cells(),
 			"bag_items": _bag_items(),
+			"tagged": _TAGGED,
 		}
 
 	def _on_theme(self, event):

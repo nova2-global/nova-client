@@ -95,29 +95,32 @@ def lint_command(nuitool, dest):
 
 
 def snap_cases():
-    """(page, document, fixture path or None, --scale, --size, groups, --time)
-    for every golden page at its first scale, the variants left out."""
+    """(page, document, fixture path or None, --scale, --size, groups, --time,
+    stand-in arguments) for every golden page at its first scale, the
+    variants left out."""
     out, seen = [], set()
-    for page, document, fixture_path, _themes, scales, extra, time in (
+    for page, document, fixture_path, _themes, scales, extra, time, stand_ins in (
             check_nui_snapshots.PAGES + check_nui_snapshots.window_pages(REPO)):
         if page in seen or not os.path.isfile(os.path.join(REPO, "assets", "nui", document)):
             continue
         seen.add(page)
         groups = tuple(root.split("/", 1)[1] for root in extra)
         _percent, scale, size = scales[0]
-        out.append((page, document, os.path.join(REPO, fixture_path) if fixture_path else None, scale, size, groups, time))
+        out.append((page, document, os.path.join(REPO, fixture_path) if fixture_path else None, scale, size, groups, time,
+                    stand_ins))
     return out
 
 
 def snap_command(nuitool, dest, case, theme_id, out):
-    page, document, fixture_path, scale, size, groups, time = case
+    page, document, fixture_path, scale, size, groups, time, stand_ins = case
     cmd = [nuitool, "snap"] + roots(dest, tuple(dict.fromkeys(("icon",) + groups))) + [
         "--locale", LOCALE, "--doc", document, "--theme", theme_id, "--scale", scale, "--size", size, "--out", out]
     if fixture_path:
         cmd += ["--fixture", fixture_path]
     if time is not None:
         cmd += ["--time", str(time)]
-    return cmd
+    # The feed and view files are store paths, which the scratch root holds.
+    return cmd + list(stand_ins)
 
 
 def main(argv=None):

@@ -1,0 +1,58 @@
+/* Chat lines (docs/ui/AUTHORING.md "Chat lines"). The runtime registers
+   nui-chat-lines; it reads the C++ feed chat.<view>.lines and makes one
+   absolutely placed line element per line, keyed by the line's id, so an
+   append lays out one line and moves the others by their bottom offset.
+
+   <nui-chat-lines view="window" step="15" data-attr-mode="open ? 'edit' : 'view'"/>
+   	view mode (the chat closed): the newest 5 lines younger than 5 s, each
+   	fading out (is-fading) before it goes; the element sets its own height
+   	to its lines. edit and log modes: as many lines as its height holds,
+   	the newest at the bottom; in edit mode the top two get is-edge-0 and
+   	is-edge-1, legacy's ramp.
+
+   A line is div.nui-chat__line.nui-anim.nui-chat__line--t<type>, its runs
+   spans (text.rcss); a run without a color tag takes the line's color, the
+   chat type's token (CHAT_TYPE_TALKING 0 to BIG_NOTICE 8, Packet.h). The
+   lines are single, not wrapped, as legacy draws them. Under reduced motion
+   a line goes without its fade (the element removes it at once). */
+
+nui-chat-lines
+{
+	display: block;
+	position: relative;
+}
+.nui-chat__line
+{
+	position: absolute;
+	white-space: nowrap;
+	height: 15dp;
+	line-height: 15dp;
+	font-size: var(--font-sm);
+	color: var(--chat-talking);
+}
+.nui-chat__line--t0 { color: var(--chat-talking); }
+.nui-chat__line--t1 { color: var(--chat-info); }
+.nui-chat__line--t2 { color: var(--chat-notice); }
+.nui-chat__line--t3 { color: var(--chat-party); }
+.nui-chat__line--t4 { color: var(--chat-guild); }
+.nui-chat__line--t5 { color: var(--chat-command); }
+.nui-chat__line--t6 { color: var(--chat-shout); }
+.nui-chat__line--t7 { color: var(--chat-whisper); }
+.nui-chat__line--t8 { color: var(--chat-big-notice); }
+/* Legacy's ramp of a full open chat (CPythonChat::UpdateEditMode): the top
+   line clear, the next at half. */
+.nui-chat__line.is-edge-0
+{
+	opacity: 0;
+}
+.nui-chat__line.is-edge-1
+{
+	opacity: 0.5;
+}
+/* A closed chat's line fades as a whole in legacy's time (D13): 0.36 s, the
+   tenth per frame at 60 fps of PythonChat.cpp. */
+.nui-chat__line.nui-anim.is-fading
+{
+	opacity: 0;
+	transition: opacity 0.36s linear-in-out;
+}

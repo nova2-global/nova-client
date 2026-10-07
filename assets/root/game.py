@@ -103,7 +103,7 @@ class GameWindow(ui.ScriptWindow):
 		self.mapNameShower = nui_windows.make("map-name", uiMapNameShower.MapNameShower, "nui_map_name.MapNameShower")
 		self.affectShower = nui_windows.make("affects", uiAffectShower.AffectShower, "nui_affects.AffectShower")
 
-		self.playerGauge = uiPlayerGauge.PlayerGauge(self)
+		self.playerGauge = nui_windows.make("player-gauge", uiPlayerGauge.PlayerGauge, "nui_player_gauge.PlayerGauge", self)
 		self.playerGauge.Hide()
 		
 		#wj 2014.1.2. ESC key prioritizes closing DropQuestionDialog. However, itemDropQuestionDialog not initially declared, causing ERROR, so declared and initialized in init.
@@ -274,6 +274,9 @@ class GameWindow(ui.ScriptWindow):
 
 		self.ClearDictionary()
 
+		# The NovaUI gauge's document goes with it (P10 spec 5.8); legacy only drops the reference.
+		if getattr(self.playerGauge, "NUI_FACADE", False):
+			self.playerGauge.Destroy()
 		self.playerGauge = None
 		# The NovaUI showers' documents go with them (spec D26); legacy only drops the reference.
 		for shower in (self.mapNameShower, self.affectShower):

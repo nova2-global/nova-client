@@ -1,0 +1,57 @@
+<rml>
+<head>
+	<!-- The chat window and its input (uichat.py ChatWindow, ChatInputSet,
+	     ChatLine, ChatModeButton). While the chat flag is on, the Interface
+	     makes the facade nui_chat.ChatWindow (controller
+	     assets/root/nui_chat.py). CPythonChat keeps the lines; C++ publishes
+	     the ones this view shows (feed chat.window.lines), and the lines
+	     element builds one element per line, so no Python runs per frame.
+	     Closed, the newest five lines show for 5 s above the taskbar on the
+	     view shade; open, the history (as tall as history_height, which the
+	     sizing bar's drag sets) shows as many lines as it holds above the
+	     input row. The body is the 600dp block, placed by the facade with
+	     its bottom on the taskbar's top; it takes no pointer but on its
+	     interactive parts and never the focus, so a press on a button or a
+	     line keeps the field's caret, and the buttons act on mousedown. The
+	     input row stays in the layout while the chat is closed, collapsed,
+	     so the facade can fill and focus the field in the call that opens
+	     the chat. draft is the field's text in a fixture only: the facade
+	     keeps it "" and moves the text with set_value, so the binding never
+	     changes what the player typed. A press on a link sends nuilink, which the facade turns
+	     into the legacy item tooltip, or with left Alt a paste. The closed
+	     lines take no pointer but their links, so a press beside a link
+	     reaches the world as in legacy; the open history takes it, for the
+	     wheel (new: legacy never scrolls the chat window). -->
+	<title>chat</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="chat.rcss"/>
+</head>
+<body template="nui" class="chat nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus" data-model="chat">
+	<div id="chat" class="chat__block" data-class-is-open="open" data-class-is-quiet="!open &amp;&amp; !view_chat" data-event-nuilink="link(ev.link)">
+		<div id="chat-history" class="chat__history">
+			<nui-resize id="chat-resize" class="nui-resize--top chat__resize nui-interactive" edge="top" target="chat-history"
+				min-height="25" data-attr-height="history_height" data-event-resized="resized(ev.height)"><div class="chat__grip"></div></nui-resize>
+			<nui-chat-lines id="chat-lines" class="chat__lines" view="window" step="15"
+				data-attr-mode="open ? 'edit' : 'view'" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
+		</div>
+		<div id="chat-input-row" class="chat__input-row nui-interactive">
+			<button id="chat-mode" class="chat__mode" data-event-mousedown="mode(ev.button)"><span
+				data-if="chat_mode == 0">@game.CHAT_NORMAL</span><span
+				data-if="chat_mode == 3">@game.CHAT_PARTY</span><span
+				data-if="chat_mode == 4">@game.CHAT_GUILD</span><span
+				data-if="chat_mode == 6">@game.CHAT_SHOUT</span></button>
+			<div id="chat-field" class="chat__field">
+				<input id="chat-input" type="text" maxlength="512" class="nui-input chat__input"
+					data-attr-value="draft" data-event-change="changed(ev.value, ev.linebreak)"/>
+				<span id="chat-mark" class="chat__mark" data-if="mark != ''">{{ mark }}</span>
+			</div>
+			<span id="chat-send" class="chat__button chat__send nui-has-tooltip" data-event-mousedown="send(ev.button)"><span
+				class="nui-tooltip nui-anim chat__tip">@game.CHAT_SEND_CHAT</span></span>
+			<span id="chat-whisper" class="chat__button chat__whisper nui-has-tooltip" data-event-mousedown="whisper(ev.button)"><span
+				class="nui-tooltip nui-anim chat__tip">@game.CHAT_SEND_MEMO</span></span>
+			<span id="chat-log-open" class="chat__button chat__log-open nui-has-tooltip" data-event-mousedown="open_log(ev.button)"><span
+				class="nui-tooltip nui-anim chat__tip">@game.CHAT_LOG</span></span>
+		</div>
+	</div>
+</body>
+</rml>

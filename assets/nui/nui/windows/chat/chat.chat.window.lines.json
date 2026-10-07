@@ -1,0 +1,38 @@
+[
+	{
+		"id": 101,
+		"type": 0,
+		"t": 0.2,
+		"runs": [
+			{
+				"text": "Test : see you at the gate",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 102,
+		"type": 1,
+		"t": 0.5,
+		"runs": [
+			{
+				"text": "You received 1,200 experience points.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 103,
+		"type": 2,
+		"t": 0.8,
+		"runs": [
+			{
+				"text": "The castle siege starts in ten minutes.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	}
+]

@@ -40,7 +40,11 @@ EXEMPT = ("gallery", "login", "theme-picker", "render-test", "skin-proof", "intr
 # Legacy widths in dp: the art of each size, and the keys whose art has a
 # width of its own (the virtual keyboard's special keys).
 SIZE_WIDTHS = {"small": 43, "medium": 61, "large": 88, "icon": 21}
-ID_WIDTHS = {"vkey-symbols": 45, "vkey-shift": 58, "vkey-space": 293, "vkey-enter": 58, "vkey-backspace": 45}
+ID_WIDTHS = {"vkey-symbols": 45, "vkey-shift": 58, "vkey-space": 293, "vkey-enter": 58, "vkey-backspace": 45,
+             # The chat's mode buttons (a 41 x 18 outline, uichat.py ChatModeButton) and the
+             # chat log's filters on the xsmall art (38dp, 48dp apart).
+             "chat-mode": 41, "chat-log-mode": 41, "chat-log-all": 38}
+ID_WIDTHS.update({"chat-log-filter-%d" % i: 38 for i in range(6)})
 CAP_GAP = 18
 
 # Buttons whose label is a binding the controller fills with a locale key:
@@ -48,6 +52,10 @@ CAP_GAP = 18
 # labels are @ui.THEME_<ID> (nui_theme_picker.py), on the large classic art.
 BOUND = [
     ("theme-picker", "theme-pick-<id>", "large", "ui", ("THEME_MODERN_DARK", "THEME_MODERN_LIGHT", "THEME_CLASSIC")),
+    # A chat mode button shows one of four names (data-if); the literal scan
+    # measures the first, these the other three.
+    ("chat", "chat-mode", "large", "game", ("CHAT_PARTY", "CHAT_GUILD", "CHAT_SHOUT")),
+    ("chat-log", "chat-log-mode", "large", "game", ("CHAT_PARTY", "CHAT_GUILD", "CHAT_SHOUT")),
 ]
 
 BUTTON = re.compile(r"<button\b([^>]*)>(.*?)</button>", re.S)

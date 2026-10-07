@@ -11,6 +11,7 @@ import nui_test_support as support  # noqa: E402
 WAVE1 = ["login", "dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"]
 WAVE2A = ["taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
           "edge-buttons", "tip-board", "big-board", "map-name"]
+WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
 
 
 class Legacy(object):
@@ -75,12 +76,47 @@ class Flags(WindowsTest):
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
 
     def test_every_wave2a_window_defaults_to_legacy(self):
-        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A, "appended in this order")
-        for window_id, default in self.m.WINDOWS[len(WAVE1):]:
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A)], WAVE1 + WAVE2A,
+                         "appended in this order")
+        for window_id, default in self.m.WINDOWS[len(WAVE1):len(WAVE1 + WAVE2A)]:
             self.assertIs(default, False, window_id)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+
+    def test_every_wave2b_window_defaults_to_legacy(self):
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A + WAVE2B, "appended in this order")
+        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A):]:
+            self.assertIs(default, False, window_id)
+            self.assertFalse(self.m.is_on(window_id), window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+
+    def test_hud2_names_the_seven_wave2b_windows_and_hud_keeps_its_twelve(self):
+        self.assertEqual(self.m.GROUPS["hud2"], tuple(WAVE2B))
+        self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A), "+hud keeps meaning the Wave 2a windows")
+        self.assertEqual(len(self.m.GROUPS["hud"]), 12)
+        self.setting.windows = "+hud"
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2B), "+hud turns no Wave 2b window on")
+        self.setting.windows = "+hud2,-atlas"
+        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "atlas") for window_id in WAVE2B))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2A), "+hud2 turns no Wave 2a window on")
+        self.assertEqual(self.m.use("chat"), (True, ""))
+        self.assertEqual(self.m.use("atlas"), (False, "flag off"))
+        self.assertNotIn("hud2", self.m.overrides())
+        self.assertRaises(ValueError, self.m.set_override, "hud2", True)
+
+    def test_the_wave2b_demo_string_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud,+hud2"
+        self.assertLessEqual(len(demo), 200)
+        self.assertEqual(len(demo), 17)
+        known = [window_id for window_id, _ in self.m.WINDOWS]
+        for group in ("wave1", "hud", "hud2"):
+            for window_id in self.m.GROUPS[group]:
+                self.assertIn(window_id, known)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
+                         sorted(WAVE1[1:] + WAVE2A + WAVE2B))
 
     def test_a_group_turns_its_members_on_and_off_in_token_order(self):
         self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A))
@@ -103,8 +139,8 @@ class Flags(WindowsTest):
         self.assertFalse(self.m.is_on("login"))
 
     def test_a_group_id_is_not_a_window(self):
-        self.setting.windows = "+hud,+wave1"
-        for group in ("hud", "wave1"):
+        self.setting.windows = "+hud,+wave1,+hud2"
+        for group in ("hud", "wave1", "hud2"):
             self.assertNotIn(group, self.m.overrides())
             self.assertFalse(self.m.is_on(group))
             self.assertEqual(self.m.use(group), (False, "flag off"))

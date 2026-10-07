@@ -64,6 +64,11 @@ Rules (docs/ui/AUTHORING.md has the full list):
     publishes the value (player.hp, quickslot.slots) and the key takes it
     once per frame, with no Python. Times that nui-frames, nui-cooldown and
     nui-countdown read are seconds of nui.now().
+  * Text with the legacy color and link tags (|c, |r, |H ... |h ... |h)
+    that players or game data wrote goes into a <nui-text> element's value
+    (or reaches a chat lines element through its feed): it is shown as
+    written, never translated or parsed. A press on a link sends "nuilink"
+    with ev.link (data-event-nuilink).
   * A window lives until destroy(): the runtime holds its handlers, so
     dropping the last reference does not close it. Only one window per MODEL
     name can exist at a time.
@@ -513,6 +518,17 @@ class Window(object):
 		if not self._doc or has is None:
 			return False
 		return bool(has(self._doc, element_id, name))
+
+	def element_box(self, element_id):
+		"""(x, y, width, height) of the element's border box in screen pixels
+		("" is the <body>), as the last frame laid it out; None for an unknown
+		element, without a document, or with an exe whose _nui has no
+		GetElementBox."""
+		get = getattr(_nui, "GetElementBox", None) if _nui is not None else None
+		if not self._doc or get is None:
+			return None
+		box = get(self._doc, element_id)
+		return tuple(box) if box is not None else None
 
 	def destroy(self):
 		"""Close the document, drop the model and every handler. Inside one

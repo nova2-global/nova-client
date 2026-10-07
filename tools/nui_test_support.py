@@ -59,6 +59,7 @@ class NuiState(object):
         self.now = 0.0           # nui.now()
         self.feeds = {}          # feed name -> the value C++ published last (nui.feed)
         self.binds = []          # (window class name, model key, feed name) of every bind, in order
+        self.text_fields = set()  # (document, element id) of the text fields (ime.PasteString reaches them)
 
     def publish(self, name, value):
         """A feed changes: every live window's key bound to it takes the value,
@@ -239,6 +240,12 @@ def make_nui(state):
 
         def on_scale_changed(self, scale):
             pass
+
+        def element_box(self, element_id):
+            """NuiState.boxes, while the window is shown (nui.py element_box)."""
+            if not self._doc:
+                return None
+            return _box(state, self._doc, element_id)
 
         def has_class(self, name, element_id=""):
             """The theme's classes on the <body> (element "")."""

@@ -749,3 +749,25 @@
 	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
 	background-color: transparent;
 }
+
+/* --- Tagged text, views and resize handles (Wave 2b) ------------------------------ */
+
+/* A link keeps its run's color and gets no hover look, as legacy draws it. */
+.skin-classic .nui-link:hover
+{
+	text-decoration: none;
+}
+/* The hover label of a view: legacy's outlined text line (uiminimap.py
+   MapTextToolTip, SetOutline) at the legacy size. */
+.skin-classic .nui-view__label
+{
+	font-size: var(--font-md);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+/* A resize handle draws nothing of its own: a window's classic overlay puts
+   the legacy art (the chat's sizing bar) on it, or leaves it bare. */
+.skin-classic nui-resize
+{
+	background-color: transparent;
+	border-width: 0;
+}

@@ -25,6 +25,11 @@
 	<link type="text/rcss" href="components/frames.rcss"/>
 	<link type="text/rcss" href="components/clock.rcss"/>
 	<link type="text/rcss" href="components/number.rcss"/>
+	<link type="text/rcss" href="components/text.rcss"/>
+	<link type="text/rcss" href="components/chat.rcss"/>
+	<link type="text/rcss" href="components/view.rcss"/>
+	<link type="text/rcss" href="components/anchor.rcss"/>
+	<link type="text/rcss" href="components/resize.rcss"/>
 	<link type="text/rcss" href="components/gauge.rcss"/>
 	<link type="text/rcss" href="components/dialog.rcss"/>
 	<!-- Layout helpers last: they are combined with component classes on one

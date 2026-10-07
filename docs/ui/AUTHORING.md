@@ -19,6 +19,11 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 - [Digit art](#digit-art)
 - [Additive images](#additive-images)
 - [Nearest images](#nearest-images)
+- [Text with tags and links](#text-with-tags-and-links)
+- [Chat lines](#chat-lines)
+- [Views](#views)
+- [World anchors](#world-anchors)
+- [Resize handles](#resize-handles)
 - [Tokens](#tokens)
 - [Data binding cheatsheet](#data-binding-cheatsheet)
 - [Text from game data and players](#text-from-game-data-and-players)
@@ -221,6 +226,11 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 | Countdown | `<nui-countdown format="dhms" data-attr-end="icon.end"/>` | The time left as text, or a timer (`format="none"`). See [Clock elements](#clock-elements). |
 | Cooldown sweep | `<nui-cooldown data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>` | Over its positioned parent. See [Clock elements](#clock-elements). |
 | Digit art | `<nui-number value="m1"/>` | The legacy number glyphs. See [Digit art](#digit-art). |
+| Tagged text | `<nui-text data-attr-value="sign.text"/>` | `links="off"`; link runs are `span.nui-link` (underlined on hover in the modern skins). See [Text with tags and links](#text-with-tags-and-links). |
+| Chat lines | `<nui-chat-lines view="window" step="15" data-attr-mode="..."/>` | `view`, `edit`, `log` modes; lines `div.nui-chat__line--t<type>`, `is-fading`, `is-edge-0`, `is-edge-1`. See [Chat lines](#chat-lines). |
+| View | `<nui-view name="minimap" class="nui-interactive"/>` | `hover="none"`; its label `div.nui-view__label` and mark `img.nui-view__mark`. See [Views](#views). |
+| World anchor | `<nui-anchor mode="project" height="220" data-attr-vid="sign.vid"/>` | `mode="tail"`, `align-x`, `align-y`, `offset-x`, `offset-y`, `chat-offset-y`, `snap`. See [World anchors](#world-anchors). |
+| Resize handle | `<nui-resize class="nui-resize--top" edge="top" target="id"/>` | `edge="bottom-right"` with `nui-resize--bottom-right`; `resized` at the end of a drag. See [Resize handles](#resize-handles). |
 | Dialog | `div.nui-window.nui-dialog` inside `body.nui-scrim`, with `nui-dialog__text`, `nui-dialog__field` and a `nui-window__footer nui-dialog__footer` | The dialog kit's look (`components/dialog.rcss`): 280dp to 420dp wide, centered text that wraps, a centered 160dp field, centered buttons. See [The dialog kit](#the-dialog-kit). |
 | Layout helpers | `nui-row` (flex row, `--wrap`, `--end`, `--between`), `nui-stack` (flex column, `--loose`), `nui-grow`, `nui-muted`, `nui-small` | Use these instead of inline styles. |
 | Full-screen layers | `<body class="nui-overlay">` for HUD layers that never take the mouse; `nui-interactive` on children that should | `nui-center-max` caps content at 1600dp; `nui-safe-16x9` limits a HUD anchor area to 16:9 of the screen height on ultrawide screens. |
@@ -409,6 +419,93 @@ A `#nui-additive` suffix on an image source draws the image additively: its colo
 
 A `#nui-nearest` suffix samples the image at the texel under each pixel's center, with no filtering, as the legacy UI draws every image (`D3DTEXF_NONE`). Drawn 1:1 it changes nothing; scaled, it shows legacy's texels where the filtered image is softer. The classic affect icons, drawn at legacy's 70%, use it at 100% and below: the window has a second, nearest copy of each icon (`affect__image--nearest`, `display: none`) that the classic overlay shows under `@media (max-resolution: 1x)`. To pick legacy's texels the scaled image must cover legacy's 22.4 px, not a whole number: RmlUi lays out a 22.4dp box at 22 px, a step of 32 / 22 that shows other texels, so the overlay draws the copy at 32dp and scales it by `transform: scale(0.7)` from its top left corner, which is not snapped (pixel k then shows texel floor((k + 0.5) / 0.7), as legacy's quad does; `nui_hud_test.ClassicAffectIcons` checks the golden against the atlas). Above 100% there is no legacy picture to match, and the filtered copy shows. The flagged and the plain source are two textures; it works wherever a source does, as `#nui-additive` does, and the two do not combine.
 
+## Text with tags and links
+
+Text that players or game data wrote may carry the legacy color and link tags: `|cAARRGGBB` sets a color, `|r` restores the line's own, `||` is one `|`, and `|H<link>|h<text>|h` is a link (`item:4e21:0:0:0:0`, the item tooltip's fields). `nui-text` shows such text as legacy draws it, and never as markup:
+
+```xml
+<nui-text data-attr-value="sign.text"/>            <!-- link runs clickable -->
+<nui-text links="off" data-attr-value="name"/>    <!-- link runs shown as plain runs -->
+```
+
+- The runtime registers the element (`nova-client-src/src/NovaUI/Core/ElementText.h`). It builds one `span.nui-text__run` per run through RmlUi's DOM calls, its text in a text node, so the text is never parsed, translated (`@ui.KEY`) or data-bound (`{{ }}`). A run with a color tag gets an inline color; a link run is also `nui-link` with `data-link`. Bind `value` with `data-attr-value` (a literal `value` would be translated as an attribute). Markup gives the element no children; `components/text.rcss` makes it inline.
+- **The run rules** follow the legacy render path (`GrpTextInstance.cpp`), which is what players see: `|c` needs 8 more characters, else its `|` is plain text, and 8 that are not all hex draw white; `|c` and `|r` end the run before them, `|H` does not; the link's text is drawn with one space after it; a color tag inside a link's text leaves the part before it plain; text after an unclosed `|H` is dropped, and an unclosed link's text is plain.
+- **A press on a link**: a left press on an element with `data-link` (or inside one) sends `nuilink` to it, which bubbles; bind it anywhere above, `data-event-nuilink="link(ev.link)"`. The press itself goes on. The chat windows open the legacy item tooltip (`Interface.MakeHyperlinkTooltip`) with it, or with the left Alt key down paste the link (`ime.PasteString(chat.GetLinkFromHyperlink(link))`); the facades read the key from `app.IsPressed(app.DIK_LALT)`.
+- **`assets/root/nui_text.py`** reads the tags in plain Python: `parse_runs(text)` (the runs, as `(text, color, link)`), `visible_text(text)` and `visible_length(text)` (the legacy edit line's text and length, which leave the link's metadata out) and `link_tokens(link)`. It passes the same cases as the client's `Core/TextTags.h` (`tools/fixtures/text_tags_cases.json`, byte-identical to the client's `tests/fixtures/nui/text-tags/cases.json`).
+- **Which helper where:** a model string shown with `{{ }}` goes through `nui.plain_text()` ([Text from game data and players](#text-from-game-data-and-players)); text with tags goes into a `nui-text` value, or reaches the chat lines through their C++ feed ([Chat lines](#chat-lines)); RML built in C++ uses `RunsToRml` or `EscapeRmlText`.
+- The gallery's typography section shows a tagged line on the chat's backdrop.
+
+## Chat lines
+
+The chat's lines stay in the C++ line store (`CPythonChat`, 300 lines). C++ publishes the lines a view shows, and `nui-chat-lines` makes one element per line, keyed by the line's serial, so an append builds and lays out one line and no Python runs per frame.
+
+```xml
+<nui-chat-lines id="chat-lines" view="window" step="15" data-attr-mode="open ? 'edit' : 'view'"/>
+<nui-chat-lines id="chat-log-lines" view="log" mode="log" step="15"/>
+```
+
+| Attribute | Meaning |
+|---|---|
+| `view` | `window` reads the feed `chat.window.lines` (chat set 0), `log` reads `chat.log.lines` (chat set 1). |
+| `mode` | `view` (the chat closed), `edit` (open) or `log`; bind it with `data-attr-mode`. |
+| `step` | The line pitch in dp (15). |
+| `max-view`, `fade-after`, `fade-time`, `view-pad`, `edge-lines` | View mode: at most 5 lines, each for 5 s, then a 0.36 s fade; the element's height is its lines times the step plus 20dp. Edit mode: the top 2 lines take the edge classes. |
+
+- **A line map** (the feed's list, oldest first): `id` (the line's serial), `type` (`CHAT_TYPE_*`: 0 talking, 1 info, 2 notice, 3 party, 4 guild, 5 command, 6 shout, 7 whisper, 8 big notice), `t` (`nui.now()` when it was appended) and `runs` (the tag runs as maps of `text`, `color`, `link`).
+- **A line** is `div.nui-chat__line.nui-anim.nui-chat__line--t<type>` with the id `<element id>-line-<line id>`, placed by its `bottom` offset (the newest at 0); its runs are those of [Text with tags and links](#text-with-tags-and-links), and its link spans have the ids `<element id>-link-<line id>-<run>`. A run without a color tag takes the line's color: the chat type's token (`--chat-talking` to `--chat-big-notice`, `components/chat.rcss`).
+- **View mode** shows the newest 5 lines younger than 5 s; a line that stops showing gets `is-fading` (an opacity fade) and goes when it ends, at once under reduced motion. The element sets its own height then and has `has-lines` while it shows any (the chat's view shade).
+- **Edit and log modes** show as many lines as the element's height holds, `floor(height / step)` rows (1 to 64), and report the rows to C++ (`nuigame.ChatState(view)["rows"]`), which publishes that many lines ending at the chat set's end position. In edit mode, when the history is full, the top line has `is-edge-0` (clear) and the next `is-edge-1` (half), legacy's ramp. The height comes from the sheet.
+- Lines are single and not wrapped, as legacy draws them.
+- **`nuigame`:** `ChatAttach()` and `ChatDetach()` start and stop the feeds (the chat facades share one attach), `ChatState(view)` answers `rows`, `total`, `end`, `at_end`, `board_state`, `end_pos`, `mask` and `attached`.
+- `nuitool snap --feed chat.window.lines=<json>` publishes a fixture's lines; a golden case names them in `feeds` ([Golden case files](#golden-case-files)). Fixture times are seconds of the snap clock, so a line's `t` lies within the 4 s before `--time`.
+
+## Views
+
+`nui-view` draws, as one textured quad, what a C++ view provider renders into its own render target: the legacy minimap and atlas, drawn by `CPythonMiniMap` unchanged. The element is transformed, faded, clipped and stacked like any image.
+
+```xml
+<nui-view id="minimap-view" name="minimap" class="nui-interactive"/>
+```
+
+- `name` is the provider's name (`minimap`, `atlas`). Without a size in the sheet the element takes the provider's natural size (the atlas image's); with one (the minimap's 128dp) that wins. A view that is not shown is not rendered.
+- `hover="label"` (the default) shows the provider's hover text in the element's own `div.nui-view__label`, right-aligned 5dp left of the pointer, in the color the provider gives, after a guild mark (`img.nui-view__mark`) when it has one. The text is shown as written. `hover="none"` shows none. The element needs pointer events (`nui-interactive`) for the label.
+- The facades set the label's format once: `nuigame.SetViewHoverFormat(name, "{name} ({x}, {y})", names)`; `nuigame.ViewState(name)` answers what the provider was asked for.
+- `nuitool snap --view minimap=<png>` stands a PNG in for a provider (its pixel size is the natural size in dp); a golden case names it in `views`. Without one a view draws nothing; lint does not report that.
+
+## World anchors
+
+`nui-anchor` places itself each frame on a character's point on the screen, by its `left` and `top` offset, which moves it without a layout or a new mesh. The player gauge and the private shop signs use it.
+
+```xml
+<body template="nui" class="nui-overlay ...">
+	<nui-anchor mode="project" height="220" data-attr-vid="s.vid">...</nui-anchor>
+</body>
+```
+
+| Attribute | Meaning |
+|---|---|
+| `vid` | The character (bound with `data-attr-vid`); 0 hides the anchor. |
+| `mode` | `project` (default): the character's position raised by `height` world units, projected, as `chr.GetProjectPosition`. `tail`: its name tail, as `textTail.GetPosition`. |
+| `align-x`, `align-y` | The point of the anchor's own box that sits on the character's point, as fractions (0.5, 0.5: its center). |
+| `offset-x`, `offset-y`, `chat-offset-y` | dp added; `chat-offset-y` only while the character shows a chat bubble. |
+| `snap` | `floor` (default) rounds the point down, as the text tails do; `none`. |
+
+- The anchor stays hidden while the character is not on the screen, behind the camera, or while its own box is not laid out yet. Its px are screen px, so put it in a `body.nui-overlay`.
+- `nuitool snap --anchor 1=160,120` stands character 1 at (160, 120) dp; a golden case names its characters in `anchors`.
+
+## Resize handles
+
+`nui-resize` resizes another element of its document by a drag, in dp, so the size follows a scale change; no Python runs during the drag.
+
+```xml
+<nui-resize class="nui-resize--top" edge="top" target="chat-history" min-height="25"
+	data-attr-height="history_height" data-event-resized="resized(ev.height)"/>
+```
+
+- `edge="top"` grows the target upward (place the target by its bottom edge); `edge="bottom-right"` grows its width and height with the drag. `min-width`, `max-width`, `min-height` and `max-height` are dp limits (the maxima also capped by the screen).
+- `width` and `height` (bound with `data-attr-*`) apply to the target as inline dp at load and whenever they change, so the model keeps the size and a re-load restores it. The handle sends `resized` once at the drag's end, with `ev.width` and `ev.height` in dp; store them in the model.
+- `components/resize.rcss` makes it draggable; give it a size (`nui-resize--top`, `nui-resize--bottom-right`) and `nui-interactive` in a document without pointer events. The host shows no resize cursor over it.
+
 ## Tokens
 
 `assets/nui/nui/theme/tokens.json` is the source of truth. It has three kinds of sections:
@@ -480,6 +577,20 @@ What the color roles mean:
 | `--party-unlink` | `#7f8794` | `#7a828f` | `#808080` |
 | `--hp-recovery` | `#f28b8255` | `#b3261e40` | `#ff000055` |
 | `--sp-recovery` | `#8ab4f855` | `#1a5fc440` | `#0000ff55` |
+| `--chat-talking` | `#e7eaf0` | `#e7eaf0` | `#ffffff` |
+| `--chat-info` | `#ffb4b4` | `#ffb4b4` | `#ffc8c8` |
+| `--chat-notice` | `#f6d79a` | `#f6d79a` | `#ffe6ba` |
+| `--chat-party` | `#5fe3d4` | `#5fe3d4` | `#00ffe4` |
+| `--chat-guild` | `#e6ea7a` | `#e6ea7a` | `#fdff7c` |
+| `--chat-command` | `#9fe6c3` | `#9fe6c3` | `#a7ffd4` |
+| `--chat-shout` | `#9fe6c3` | `#9fe6c3` | `#a7ffd4` |
+| `--chat-whisper` | `#7fd29a` | `#7fd29a` | `#4ae14a` |
+| `--chat-big-notice` | `#f6d79a` | `#f6d79a` | `#ffe6ba` |
+| `--chat-view-shade-top` | `#12141800` | `#12141800` | `#00000000` |
+| `--chat-view-shade-bottom` | `#121418cc` | `#121418cc` | `#000000cc` |
+| `--chat-edit-shade` | `#1a1d23d9` | `#1a1d23d9` | `#00000080` |
+| `--chat-mark` | `#f6c75a` | `#8a5300` | `#ffff00` |
+| `--text-outline` | `#000000` | `#000000` | `#000000` |
 
 | Token | Shared value |
 |---|---|
@@ -530,6 +641,9 @@ What the color roles mean:
 | `--classic-disabled-text` | classic | `#6e6e6e` |
 | `--classic-key-text` | classic | `#000000` |
 | `--classic-label-white` | classic | `#ffffff` |
+| `--classic-chat-press` | classic | `#ffffff4d` |
+| `--classic-chat-log-fill` | classic | `#00000077` |
+| `--classic-chat-grip` | classic | `#989898` |
 
 <!-- tokens:end -->
 
@@ -690,6 +804,8 @@ The legacy UI and the game keep the keyboard unless NovaUI has a reason to take 
 - Keep a control out of the tab order when it should not be reached that way: `tab-index: none` on buttons, tabs, list rows and `.nui-focusable`; `focus: none` on form controls (the toggle's checkbox, the slider, input buttons), whose inline `tab-index: auto` outranks a style sheet. The login board takes its buttons out, so Tab moves only between its two fields.
 - While a legacy modal (a lock window: the connect-failure popup, a quest dialog) is open, NovaUI gets neither the pointer (except the release of its own press) nor keys, also from a field that keeps its focus behind it, or from a NovaUI modal. Do not open a NovaUI modal from a locked legacy dialog.
 - The middle button turns the game camera: it starts no autoscroll in NovaUI.
+- **Typing like a legacy edit line** (the chat and the chat log): `nui-field-passes-hotkeys` on `<body>` lets F1 to F4, left Alt, Print Screen and left Ctrl reach the game while one of the document's text fields has the focus, as a legacy edit line lets them through (`ui.py` `EditLine.OnKeyDown`); every other key stays the field's. `nui-field-keeps-focus` keeps the field's focus when the player presses a legacy UI window (not the world), as a legacy edit line keeps it. The chat facades also hold wndMgr's focus away from the game window while their field has NovaUI's (`nui_hud.FocusProxy`), so `game.py`'s `CheckFocus` closes the chat on a world press, as with the legacy chat, and a legacy edit line that takes wndMgr's focus (a whisper dialog) gets the keys while the chat stays open.
+- `ime.PasteString` (the legacy inventory's Alt+click on an item) types into the NovaUI text field that has the focus, at its caret; with none it reaches the legacy IME as before.
 
 Escape:
 
@@ -814,7 +930,8 @@ The HUD windows of Wave 2a (the taskbar and its pieces, the affects, the target 
 - **Escape:** a legacy window with an Escape action keeps its place in the legacy Escape chain through a `nui_hud.EscapeProxy(action)`: a 0 x 0 legacy window in the UI layer, shown while the NovaUI window shows, whose `OnPressEscapeKey` runs the action and returns `True`. The expanded taskbar and the target board use one, and no NovaUI keydown handler, so Escape acts in the legacy order whatever NovaUI document has the focus.
 - **One facade per window:** `nui_hud.take_over(key, facade)` (first in each constructor) destroys the NovaUI parts of a previous facade still alive, a phase that ended without `Destroy`; `Destroy()` calls `nui_hud.forget(key, facade)`.
 - **Layout and layers:** every HUD document is `body.nui-overlay` (full screen, no pointer events) with `nui-interactive` on its clickable parts and `focus: none` on the body, so a press never takes the focus from a field and buttons act on `mousedown` (RmlUi then sends no `click`). None is modal, none has a text field. The classic overlays put the legacy art at the legacy positions at 100% (1dp to the legacy pixel), anchored as legacy anchors them: from the screen's left, its center (`left: 50%` plus a margin) or its right, and from its bottom. The client draws NovaUI in two bands, which keep the legacy layers: a document whose `<body>` has the class **`nui-below-legacy-ui`** draws below the legacy UI layer, so a legacy window of that layer opened over it (a whisper dialog, the inventory) covers it and gets the pointer there, as legacy draws a later window on top; every other document draws above the UI layer and below the legacy top layer. A HUD window takes the band of its legacy window: the expanded taskbar, the energy bar, the gift icon, the game buttons, the affects, the target board, the party and the notice boards lived in the UI layer and have the class; the taskbar, the edge buttons and the map name splash were `TOP_MOST` windows and do not, so the legacy tooltips and a `TOP_MOST` dialog still draw above them, and a legacy window of the UI layer below them. `nui_hud_test.Layers` checks each window against its legacy class. Lint and snap draw every document in one pass.
-- **The legacy chat** stays legacy until Wave 2b and sits on the taskbar's top edge: the Interface places it above the NovaUI taskbar's height (`TaskBar.GetBarHeight()`: 49dp modern, shrunk with the document on a narrow screen, 37dp classic, at the scale in use) and again after a theme or scale change (`SetBarHeightEvent`).
+- **The chat** sits on the taskbar's top edge: the Interface places it above the NovaUI taskbar's height (`TaskBar.GetBarHeight()`: 49dp modern, shrunk with the document on a narrow screen, 37dp classic, at the scale in use) and again after a theme or scale change (`SetBarHeightEvent`). The NovaUI chat (`nui_chat.ChatWindow`) takes the same `SetPosition` and puts its body's bottom center there.
+- **Wave 2b** (the chat window and its input, the chat log; the minimap, the atlas, the player gauge, the shop signs and the guild war boards follow the same rules): every document is `nui-below-legacy-ui` (their legacy windows live in the GAME, UI_BOTTOM or UI layer), its `<body>` takes no focus but its text fields, and a facade's `nui_ready()` needs the Wave 2b engine as well (`nui_hud.has_engine_2b()`: `nuigame.ChatAttach`, `ViewState` and `AnchorState`). The chat's body is its 600dp block, as tall as its content; the chat log is a movable window. The chat's input (`nui_chat.ChatInput`, shared with the log) is legacy's `ChatLine` on a NovaUI field: the modes and their `#`, `%` and `!` prefixes with the mark over the field's first character, the 33-line history on Up and Down, Enter (send and stay open), Escape (clear and close), Tab (nothing), the shout limit, the insult check, and the field's length limit counted without a link's metadata (`nui_text.visible_length`). A mode change reaches every chat input (`uiChat.RefreshChatMode`), a hidden one's on its next show. The log's filters keep legacy's bit logic (command, whisper and big notice are never filtered). New: the wheel scrolls the open chat (legacy never shows its scroll bar).
 - **Tests:** `tools/nui_game_support.py` holds recording stand-ins of the game modules (and the real `mousemodule.py` and `constinfo.py`); `tools/nui_hud_core_test.py` and `tools/nui_hud_test.py` check every facade's methods and constants against the legacy class, compare the legacy and NovaUI windows' `player`, `net`, `app` and mouse controller calls flow by flow, check the fixtures against the models, and check that no HUD module defines `OnUpdate` or `OnRender`.
 
 ## Window flags and the factory
@@ -840,15 +957,22 @@ The HUD windows of Wave 2a (the taskbar and its pieces, the affects, the target 
 | `edge-buttons` | the quest and whisper edge buttons | off |
 | `tip-board`, `big-board` | the tip and big notice boards | off |
 | `map-name` | the map name splash | off |
+| `chat` | the chat window and its input | off |
+| `chat-log` | the chat log | off |
+| `minimap` | the minimap: frame, controls and the map view | off |
+| `atlas` | the atlas (needs the NovaUI minimap, which makes it) | off |
+| `player-gauge` | the HP gauge over the player's head | off |
+| `shop-signs` | the private shop signs | off |
+| `guild-war` | the guild war score boards | off |
 
-**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), and `hud` for the twelve above. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud` (11 of its 200 characters).
+**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`), and `hud2` for the seven Wave 2b ones (`chat` to `guild-war`). A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2` (17 of its 200 characters).
 
 - **`use(window_id)`** returns `(True, "")` or `(False, reason)` with the first check that failed: `"flag off"`, `"NovaUI unavailable"`, `"right-to-left locale"` (`nui.enabled_for_locale()`). It records the decision in `nui_windows.DECISIONS` (`"nui"` or `"legacy: <reason>"`) and writes it to `log.txt` when it changed.
 - **`make(window_id, legacy, novaui, *args)`** makes the NovaUI class (a class or a `"module.Class"` string, imported only then) when `use()` allows it, else the legacy one with the same arguments. A NovaUI constructor that raises, or one whose module cannot be imported, falls back to legacy, and so does an instance whose `nui_ready()` answers `False` (its document did not load): `make()` calls its `nui_discard()` and drops it before it makes the legacy one. Each such fallback is written once to `syserr.txt` as `nui_windows: <id>: <reason>; using the legacy window` (`note_failure`).
 - **`factory(window_id, legacy, novaui)`** is a function named like the legacy class that calls `make()`: the class-level wiring (`PopupDialog = nui_windows.factory("dialogs", LegacyPopupDialog, "nui_dialog_message.PopupDialog")`). A legacy class in the same module that calls its base by name must name the `Legacy` alias, since the plain name is a function after the rebinding (`uicommon.py` does).
 - **The protocol of what `make()` builds:** load the document in `__init__` (hidden), not in `Open()`; `nui_ready()` says whether it loaded; `nui_discard()` destroys the NovaUI parts and sets `self._nui_discarded`. A phase window's NovaUI subclass skips the legacy `net.SetPhaseWindow(<phase>, 0)` in `__del__` once discarded, so a late collection does not clear the slot of the legacy window made in its place.
 - **Phases:** a phase window's NovaUI documents go with its `Close()` (the login board and its parts, the server board, the locale strip, the phase windows' boards; the HUD with `Interface.Close` and the game window's `Close`), and come back when the phase is built again. `networkModule.MainStream` calls **`end_phase()`** after the old phase window's `Close()` and before the new one's `Open()`; it unloads the documents no phase window owns, those of the modules in `PHASE_SCOPED` (the dialog kit), and writes `nui_windows: phase ended, <n> document(s) unloaded` to `log.txt`. A document shared between windows needs such an `end_phase()`, and its module goes into `PHASE_SCOPED`: a hidden document that outlives its phase costs its update in every frame of the next.
-- **`refuse(window_id, reason)`** records a refusal `use()` does not know (the virtual keyboard without the NovaUI login board, the gift box without the NovaUI taskbar); `set_override(window_id, on)` writes one override and saves the config, for a settings window and tests.
+- **`refuse(window_id, reason)`** records a refusal `use()` does not know (the virtual keyboard without the NovaUI login board, the gift box without the NovaUI taskbar, the atlas without the NovaUI minimap); `set_override(window_id, on)` writes one override and saves the config, for a settings window and tests.
 - **Adding a window:** give it an id (lowercase letters, digits and `-`), add `(id, False)` to `WINDOWS`, and make it through `make()` or a factory. It stays off until its default turns on.
 
 ## Rules
@@ -868,6 +992,7 @@ The HUD windows of Wave 2a (the taskbar and its pieces, the affects, the target 
 11. **Motion only in `.component.nui-anim` rules**, with values written out, and on selectors lighter than the reduced-motion rule (NUI011, see [Motion and reduced motion](#motion-and-reduced-motion)).
 12. **No fixed widths on text.** Give buttons, tabs and labels room (`min-width`, wrapping rows) instead of `width`; translations are longer than English.
 13. **Model strings are text** (NUI012): no `data-rml` or `data-rml-*`; the runtime removes them (see [Data binding cheatsheet](#data-binding-cheatsheet)).
+14. **Literal values a NovaUI element takes** (NUI015): `nui-view` `name` and `hover`, `nui-chat-lines` `view`, `mode` and its numbers, `nui-anchor` `mode`, `snap` and its numbers, `nui-resize` `edge` and its numbers, `nui-text` `links`. A bound value (`data-attr-*`) is checked by the element when it arrives (one warning).
 
 ## What the renderer draws
 
@@ -1245,6 +1370,7 @@ All nine roots: the gauge component, the slot grid, the login screen's windows a
 | NUI012 | `data-rml` or `data-rml-*` in markup: model strings are text, never markup (the runtime removes the attribute). |
 | NUI013 | `data-attr-type` or `data-attrif-type` on an `<input>`: RmlUi gives the field a new widget on each type change, which drops its maxlength, caret and IME; use one input per type. |
 | NUI014 | A theme class outside the theme folders: a `.skin-*` or `.theme-*` class in a selector (`:not()` included) of a style sheet or `<style>` block anywhere under `nui/` except `nui/skins/` and `nui/theme/` (a skin's rules go in its folder, `nui/skins/<skin>/`, a window's in the skin's overlay of it, `nui/skins/<skin>/windows/<window>.rcss`, and the palettes in `nui/theme/`; a window's block class gets no exemption, so a window named `theme-*` takes another block name); a selector under `nui/skins/<skin>/` that does not start with `.skin-<skin>`, after an optional element name, since it would apply in every theme; and a `<link>` from a document under `nui/windows/` into `nui/skins/` (see [Skins](#skins)). |
+| NUI015 | A literal attribute value a NovaUI element refuses: `<tag>: bad <attribute> '<value>'` (rule 14). |
 
 Snapshots:
 
@@ -1265,6 +1391,7 @@ nuitool snap --root assets/nui --root assets/icon --locale assets/locale/locale/
 - RmlUi warnings and errors during a snapshot print as `rmlui: ...` on standard error and do not change the exit code; lint reports them as NUI008. Like lint, snap gives every data event a handler that does nothing, so the guide's own windows snap without warnings.
 - `--font "<family>[:bold][:italic]=<file>"` loads a local font file under a family before the runtime's own fonts, once per face: `--font "Nova Classic=/mnt/c/Windows/Fonts/tahoma.ttf" --font "Nova Classic:bold=/mnt/c/Windows/Fonts/tahomabd.ttf"` shows the classic skin in Tahoma, as the client does. Quote it: the family name has a space.
 - `--boxes <json>` writes the border box `[x, y, width, height]`, in frame pixels, of the `<body>` (key `""`) and of every element with an id.
+- `--feed NAME=JSON`, `--view NAME=PNG` and `--anchor VID=X,Y` (each repeatable) stand in for the engine's C++ side: a feed's value published before the first update (the chat lines), a view provider's image, a character's point in dp. The files are files on disk or store paths in the roots. See [Chat lines](#chat-lines), [Views](#views) and [World anchors](#world-anchors).
 - Snapshots decode DDS files and the `.sub` images of DDS atlases (most legacy `.sub` files): DXT1 (with its 1-bit alpha), DXT3, DXT5 and the uncompressed formats (A8R8G8B8, X8R8G8B8, A8B8G8R8, R8G8B8, A1R5G5B5, X1R5G5B5, R5G6B5, A4R4G4B4, 8-bit luminance), the top mip level only, with no color key, as the client loads DDS. DXT2, DXT4, a DX10 header, a cube map or a volume is refused: that image stays transparent at its own size, so the layout matches the client, and snap prints a warning naming the file (`rmlui: SoftRenderInterface: ... is not decoded`).
 - The CPU renderer follows the Direct3D 9 renderer's rules: premultiplied texels filtered, clamp addressing that wraps per axis for repeat fits, `.sub` regions clamped at their own edges, the color key and the same unsupported features. Colors, borders, text and images should therefore agree within a small tolerance, but a snapshot is not a screenshot of the client.
 - `docs/ui/snapshots/` holds goldens of the gallery, the login board, the Wave 1 windows (the dialogs, the server board, the virtual keyboard, the locale strip and the phase windows) and the Wave 2a windows (the taskbar and its pieces, then the rest of the HUD) in all three themes, the render test in the two modern ones, at scales 1.0, 1.5 and 2.0, and of the theme picker and the classic skin-proof page. A golden's name holds the theme's short name (`dark`, `light`, `classic`). `python3 tools/check_nui_snapshots.py` checks all of them and `--write --optimize` regenerates them (see [Golden case files](#golden-case-files) and the README there). Regenerate them in the same change as anything they show.
@@ -1289,6 +1416,7 @@ A window declares its goldens in `assets/nui/nui/windows/<name>/<name>.snapshots
 - `page` is the folder name and the golden name's prefix: `dialog-question-classic-150.png`. `themes` is `"all"`, every shipped theme of `docs/ui/snapshots/golden-themes.json` (the full matrix, so a new theme needs no edit here), or a list of short names (`dark`, `light`, `classic`) for a case that covers only some (`"variant": "busy"` is classic only). An experimental theme is added to the gallery and the pages it names (see [Adding a theme](#adding-a-theme)). Each `scales` row is the percent in the file name, `--scale` and `--size`.
 - `fixture: true` passes `<name>.fixture.json`. A case with `"variant": "busy"` passes `<name>.busy.fixture.json` instead, for a state of the window the main fixture does not show, and its goldens are `<name>-busy-<theme>-<percent>.png` (select and create have a classic busy case, for the disabled buttons). `roots` are extra `--root` values after `assets/nui` and `assets/icon`, among `assets/ETC` (art under `d:/ymir work/`), `assets/locale`, `assets/uiloading`, `assets/icon`, `assets/season1` and the HUD's patch groups `assets/metin2_patch_eu4`, `assets/metin2_patch_etc` and `assets/metin2_patch_ds`. `time` is `--time` in seconds, or `null` for the default.
 - The frame sizes: dialogs 640x360, 960x540 and 1280x720; the locale strip 1280x120, 1920x180 and 2560x240; the server board, the keyboard and the phase windows (a 1280x720dp design frame) 1280x720, 1920x1080 and 2560x1440.
+- `feeds` (feed name to a JSON file), `views` (view name to a PNG) and `anchors` (a vid, as a string, to `[x, y]` dp) stand in for the engine's C++ side; the checker passes them as `--feed`, `--view` and `--anchor`. Paths are store paths under `assets/nui` (as `--doc` takes them): `"feeds": {"chat.window.lines": "nui/windows/chat/chat.chat.window.lines.json"}`. A feed or view file of a window sits in its folder as `<name>[.<variant>].<feed>.json` or `<name>.view.png`; the client never loads them.
 - `python3 tools/check_nui_snapshots.py --write --optimize --only <name>` writes a window's goldens and re-saves them with Pillow's optimizer; the check compares pixels, so an optimized file matches the same. A case file that breaks these rules stops the checker with exit 2.
 
 ## Hot reload and debugging
@@ -1320,7 +1448,7 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - The dialog kit: one shown dialog per kind (a second one at the same time is the legacy dialog); `QuestionDialogWithTimeLimit` stays legacy until a timer exists; Enter on a question presses its default button (new); widths come from CSS, so `SetWidth`, `SetBoardWidth` and `SetSlotWidth` do nothing, and the dialogs are wider than the fixed legacy boards. Classic shows the focused default button in its over art.
 - The G5 stopgap decides a legacy dialog's layer at each `Open` only. It takes the keys from the dialog kit while a legacy dialog covers it, but not from a NovaUI field of another window. A legacy dialog shown again with `Show()` rather than `Open()` does not cover the kit again.
 - The virtual keyboard shows only on a screen at least 680dp tall (below that the board and the keyboard do not fit together). It plays the typing sound from Python after each key. Its classic key art and the classic gauge art are 1x only.
-- Every Wave 1 and Wave 2a window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
+- Every Wave 1, 2a and 2b window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
 - **Slot grids and the drag bridge:** a release over a NovaUI grid outside every cell keeps the item attached, where legacy cancels the drag; with a legacy window open and a NovaUI document focused, Escape cancels a drag before it closes that window. The cooldown sweep follows RmlUi's angle projection, a few pixels from the legacy edge interpolation mid-octant, in 64 steps. The slot effects are additive, not screen: brighter than legacy where effect and background are both bright, and washed toward white on the modern light theme's slots.
 - **Feeds** apply once per frame; a value published and changed again within one frame shows only the last, and a `set()` on a fed key lasts until the feed changes.
 - **Tooltips:** item and skill tooltips stay the legacy windows (the tooltip bridge), drawn above NovaUI.
@@ -1337,6 +1465,15 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
   - Affects: classic draws the icons nearest-sampled at 100% and below (`#nui-nearest`), as legacy does.
   - Notice boards: one line at a time, advanced by a `nui-countdown` timer and slid by `transform`, where legacy scrolls a pixel per frame; the big board shows a batch once through and hides, as legacy's inverted cleanup does, and a long notice wraps where legacy splits it in two.
   - Map name splash: a keyframe fade hidden by a timer; `game.py` skips its per-frame `Update()` for the facade.
+- **The chat and the chat log** (Wave 2b), where they differ from legacy:
+  - The field shows a pasted link as its raw tags: an RmlUi input cannot style parts of its text.
+  - The field's length limit counts characters (code points) without a link's metadata, as the shared tag cases fix it; legacy's IME counts the UTF-8 bytes of the visible text (`IME.cpp:1445-1460`), so a line in Cyrillic or Greek holds about twice as many characters as in legacy.
+  - The closed chat's lines fade as whole lines (an opacity transition), where legacy fades their color per frame; a tagged run keeps its own color until the line goes in both.
+  - New: the wheel scrolls the open chat, and a press on the open history does nothing (legacy's history is not a window, so a press there reached the world, which closed the chat).
+  - Tab in the field does nothing; legacy's `ChatLine.OnIMETab` answers False, so wndMgr gave its focus to the oldest window of its focus list (inferred from `PythonWindowManager.cpp:1276-1296`, not run).
+  - No resize cursor over the sizing bar and the log's grip (the host sets no cursor), and no candidate list for an IME (as the legacy edit line).
+  - Classic: the log's body has no darker edge (legacy draws two 1 px boxes at 47%), and the filter labels overflow the 38dp xsmall art in several locales, as legacy's do on the same art.
+  - The modern chat keeps a dark backdrop and dark-backdrop line colors in the light theme too: the colors of tags (item links, notices) come from game data made for a dark backdrop.
 - `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.
 - Gauges show their value at once, with no easing.
 - A placement is resolved after layout: a window placed in a frame shows there from that frame's render on, and a handle drag holds until the next size, scale or screen change.

@@ -178,6 +178,8 @@
 					<p>Body text at --font-md. <strong>Bold</strong> and <em>italic</em> faces are loaded too.</p>
 					<p class="nui-muted nui-small">Muted small text for hints and metadata.</p>
 					<p>Bound values: {{ gold }} gold<span data-if="show_hint">, hint shown by data-if</span>.</p>
+					<!-- nui-text: the legacy tags on a chat backdrop, a link run underlined on hover (modern). -->
+					<p class="gallery-tagged"><nui-text id="gallery-tagged" data-attr-value="tagged"/></p>
 				</div>
 
 				<h2>Badges and tooltip</h2>

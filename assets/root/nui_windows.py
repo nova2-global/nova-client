@@ -1,10 +1,11 @@
 """Which windows run on NovaUI, and the factory that makes them.
 
-Each window has an id. Its default lives here (every Wave 1 and Wave 2a
+Each window has an id. Its default lives here (every Wave 1, 2a and 2b
 window is off: legacy) and config/metin2.cfg overrides it through
 UI_NUI_WINDOWS ("+id" on, "-id" off, comma-separated;
-systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud") in that
-string stands for each of its windows, in its place among the tokens.
+systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud", "hud2")
+in that string stands for each of its windows, in its place among the
+tokens.
 UI_NUI_LOGIN 1 means "+login" unless UI_NUI_WINDOWS names login itself.
 A window runs on NovaUI only when its flag is on, NovaUI is available, the
 locale is not right-to-left (nui.enabled_for_locale), its document loaded
@@ -43,7 +44,7 @@ except ImportError:  # plain Python outside the client
 	wndMgr = None
 
 
-WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1 and 2a
+WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a and 2b
 	("login", False),
 	("dialogs", False),
 	("server-board", False),
@@ -65,12 +66,20 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("tip-board", False),
 	("big-board", False),
 	("map-name", False),
+	("chat", False),               # the chat window and its input
+	("chat-log", False),           # the chat log
+	("minimap", False),            # the minimap: frame, controls and the map view
+	("atlas", False),              # the atlas (large map); needs the NovaUI minimap, which makes it
+	("player-gauge", False),       # the HP gauge over the player's head
+	("shop-signs", False),         # the private shop signs
+	("guild-war", False),          # the guild war score boards
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"wave1": ("dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"),
 	"hud": ("taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
 	        "edge-buttons", "tip-board", "big-board", "map-name"),
+	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
 }
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision

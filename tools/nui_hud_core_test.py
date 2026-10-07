@@ -932,17 +932,25 @@ class SmallWindows(unittest.TestCase):
 
 # --- the wiring (spec 5.13) --------------------------------------------------------------------------------
 
+# Wave 2b's sites (P10 spec 5.8) are in their place in the file order;
+# nui_chat_test.Wiring checks them in more detail.
 EXPECTED_SITES = {
-    "interfacemodule.py": [("make", "taskbar", "uiTaskBar.TaskBar", "nui_taskbar.TaskBar"),
+    "interfacemodule.py": [("make", "chat", "uiChat.ChatWindow", "nui_chat.ChatWindow"),
+                           ("make", "taskbar", "uiTaskBar.TaskBar", "nui_taskbar.TaskBar"),
                            ("make", "expanded-taskbar", "uiTaskBar.ExpandedTaskBar", "nui_expanded_taskbar.ExpandedTaskBar"),
                            ("make", "energy-bar", "uiTaskBar.EnergyBar", "nui_energy_bar.EnergyBar"),
                            ("make", "party", "uiParty.PartyWindow", "nui_party.PartyWindow"),
                            ("make", "game-buttons", "uiGameButton.GameButtonWindow", "nui_game_buttons.GameButtonWindow"),
+                           ("make", "minimap", "uiMiniMap.MiniMap", "nui_minimap.MiniMap"),
+                           ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
                            ("make", "tip-board", "uiTip.TipBoard", "nui_tip_board.TipBoard"),
-                           ("make", "big-board", "uiTip.BigBoard", "nui_big_board.BigBoard")],
+                           ("make", "big-board", "uiTip.BigBoard", "nui_big_board.BigBoard"),
+                           ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
+                           ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign")],
     "game.py": [("make", "target", "uiTarget.TargetBoard", "nui_target.TargetBoard"),
                 ("make", "map-name", "uiMapNameShower.MapNameShower", "nui_map_name.MapNameShower"),
-                ("make", "affects", "uiAffectShower.AffectShower", "nui_affects.AffectShower")],
+                ("make", "affects", "uiAffectShower.AffectShower", "nui_affects.AffectShower"),
+                ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
 }
@@ -1178,7 +1186,8 @@ class Wiring(unittest.TestCase):
         guards = [ast.unparse(node) for node in ast.walk(tree) if isinstance(node, ast.Call)
                   and isinstance(node.func, ast.Name) and node.func.id == "getattr"
                   and len(node.args) == 3 and ast.literal_eval(node.args[1]) == "NUI_FACADE"]
-        self.assertEqual(guards, ["getattr(shower, 'NUI_FACADE', False)", "getattr(self.mapNameShower, 'NUI_FACADE', False)"])
+        self.assertEqual(sorted(guards), sorted(["getattr(shower, 'NUI_FACADE', False)", "getattr(self.mapNameShower, 'NUI_FACADE', False)",
+                                                 "getattr(self.playerGauge, 'NUI_FACADE', False)"]))
         source = read(os.path.join(ROOT, "game.py"))
         self.assertIn("if self.mapNameShower.IsShow() and not getattr(self.mapNameShower, \"NUI_FACADE\", False):\n"
                       "\t\t\tself.mapNameShower.Update()", source)

@@ -14,9 +14,13 @@ PATH. The goldens are the table PAGES below (the pages that have no window
 folder of their own case file) plus the cases each window declares in
 assets/nui/nui/windows/<name>/<name>.snapshots.json, which the checker
 discovers: their page, themes, scales, frame sizes, fixture, extra roots and
-time, and an optional variant: a second fixture of the same window,
+time, an optional variant: a second fixture of the same window,
 <name>.<variant>.fixture.json, whose goldens are <name>-<variant>-<theme>-
-<percent>.png (docs/ui/snapshots/README.md explains each). A golden's file name holds the
+<percent>.png, and the stand-ins of the engine's C++ side: "feeds" (feed
+name to a JSON file, nuitool snap --feed), "views" (view name to a PNG,
+--view) and "anchors" (a character vid to [x, y] dp, --anchor); their
+paths are store paths under assets/nui, as --doc takes them
+(docs/ui/snapshots/README.md explains each). A golden's file name holds the
 theme's short name (dark, light, classic); nuitool gets its id from
 nui/theme/themes.json (modern-dark, modern-light, classic), which needs a
 nuitool that takes theme ids.
@@ -71,20 +75,47 @@ SHORT_NAME_RE = re.compile(r"[a-z][a-z0-9]*")
 EXPERIMENTAL_PAGES = ("gallery",)
 FULL_SCREEN = [("100", "1", "1920x1080"), ("150", "1.5", "2880x1620"), ("200", "2", "3840x2160")]
 
-# (page, document, fixture or None, theme names, [(percent, --scale, --size)], extra roots, --time or None).
-# The gallery shows the classic gauge, whose art is under d:/ymir work/.
+# (page, document, fixture or None, theme names, [(percent, --scale, --size)], extra roots, --time or None,
+# stand-in arguments: --feed, --view and --anchor). The gallery shows the classic gauge, whose art is under
+# d:/ymir work/.
 PAGES = [
     ("gallery", "nui/windows/gallery/gallery.rml", "assets/nui/nui/windows/gallery/gallery.fixture.json",
-     "all", FULL_SCREEN, ("assets/ETC",), None),
+     "all", FULL_SCREEN, ("assets/ETC",), None, ()),
     ("render-test", "nui/windows/render-test/render-test.rml", None,
-     ("dark", "light"), [("100", "1", "1280x720"), ("150", "1.5", "1920x1080"), ("200", "2", "2560x1440")], (), None),
+     ("dark", "light"), [("100", "1", "1280x720"), ("150", "1.5", "1920x1080"), ("200", "2", "2560x1440")], (), None, ()),
     ("login", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
-     "all", FULL_SCREEN, (), None),
+     "all", FULL_SCREEN, (), None, ()),
     ("theme-picker", "nui/windows/theme-picker/theme-picker.rml", "assets/nui/nui/windows/theme-picker/theme-picker.fixture.json",
-     "all", [("100", "1", "640x360")], (), None),
+     "all", [("100", "1", "640x360")], (), None, ()),
     ("skin-proof", "nui/windows/skin-proof/skin-proof.rml", None,
-     ("classic",), [("100", "1", "640x360"), ("150", "1.5", "960x540"), ("200", "2", "1280x720")], (), None),
+     ("classic",), [("100", "1", "640x360"), ("150", "1.5", "960x540"), ("200", "2", "1280x720")], (), None, ()),
 ]
+STAND_IN_NAME_RE = re.compile(r"[a-z][a-z0-9_.-]*")
+
+
+def stand_in_args(case, where, root):
+    """The --feed, --view and --anchor arguments of a case's "feeds", "views"
+    and "anchors"; ValueError for one out of form or a file that is missing."""
+    args = []
+    for key, option in (("feeds", "--feed"), ("views", "--view")):
+        table = case.get(key, {})
+        if not isinstance(table, dict):
+            raise ValueError("%s: %s maps a name to a store path under assets/nui" % (where, key))
+        for name, path in sorted(table.items()):
+            if not isinstance(name, str) or not STAND_IN_NAME_RE.fullmatch(name) or not isinstance(path, str) or not path:
+                raise ValueError("%s: %s maps a name to a store path under assets/nui, not %r: %r" % (where, key, name, path))
+            if not os.path.isfile(os.path.join(root, "assets", "nui", path)):
+                raise ValueError("%s: %s %s: no assets/nui/%s" % (where, key, name, path))
+            args += [option, "%s=%s" % (name, path)]
+    anchors = case.get("anchors", {})
+    if not isinstance(anchors, dict):
+        raise ValueError("%s: anchors maps a vid to [x, y] dp" % where)
+    for vid, point in sorted(anchors.items(), key=lambda item: int(item[0]) if str(item[0]).isdigit() else 0):
+        if (not isinstance(vid, str) or not vid.isdigit() or int(vid) < 1 or not isinstance(point, list) or len(point) != 2
+                or not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in point)):
+            raise ValueError("%s: anchors maps a vid (1 or more) to [x, y] dp, not %r: %r" % (where, vid, point))
+        args += ["--anchor", "%s=%s,%s" % (vid, format(point[0], "g"), format(point[1], "g"))]
+    return tuple(args)
 
 
 def golden_themes(root=None):
@@ -178,7 +209,7 @@ def window_pages(root=None, themes=None):
             if fixture and not os.path.isfile(os.path.join(root, fixture)):
                 raise ValueError("%s: no %s" % (where, fixture))
             name = folder if variant is None else "%s-%s" % (folder, variant)
-            pages.append((name, document, fixture, listed, scales, roots, time))
+            pages.append((name, document, fixture, listed, scales, roots, time, stand_in_args(case, where, root)))
     return pages
 
 
@@ -197,27 +228,28 @@ SWITCHED = [
 
 def cases(root=None):
     """(case name, golden name, document, fixture or None, theme id, --scale, --size, reduced motion,
-    extra roots, --time or None, --switch-from theme id or None); the goldens first, then the
-    switched cases."""
+    extra roots, --time or None, stand-in arguments, --switch-from theme id or None); the goldens
+    first, then the switched cases."""
     themes = golden_themes(root)
     theme_ids = {theme["name"]: theme["id"] for theme in themes}
-    pages = [(page, document, fixture, case_themes(themes, listed, page), scales, roots, time)
-             for page, document, fixture, listed, scales, roots, time in PAGES] + window_pages(root, themes)
+    pages = [(page, document, fixture, case_themes(themes, listed, page), scales, roots, time, extras)
+             for page, document, fixture, listed, scales, roots, time, extras in PAGES] + window_pages(root, themes)
     page_names = {page[0] for page in pages}
     for theme in themes:
         unknown = [page for page in theme["pages"] if page not in page_names]
         if unknown:
             raise ValueError("%s: theme %s names page %s, which has no golden case" % (GOLDEN_THEMES, theme["name"], ", ".join(unknown)))
     goldens = []
-    for page, document, fixture, listed, scales, roots, time in pages:
+    for page, document, fixture, listed, scales, roots, time, extras in pages:
         extra = tuple(theme["name"] for theme in themes if page in theme["pages"] and theme["name"] not in listed)
         for theme in listed + extra:
             for percent, scale, size in scales:
-                goldens.append((f"{page}-{theme}-{percent}", document, fixture, theme_ids[theme], scale, size, False, roots, time))
+                goldens.append((f"{page}-{theme}-{percent}", document, fixture, theme_ids[theme], scale, size, False, roots, time,
+                                extras))
     # Reduced motion renders the resting state, which at the default --time 1
     # is the settled frame: the board's open animation has finished.
     goldens.append(("login-dark-100-reduced-motion", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
-                    "modern-dark", "1", "1920x1080", True, (), None))
+                    "modern-dark", "1", "1920x1080", True, (), None, ()))
     for golden in goldens:
         yield (golden[0],) + golden + (None,)
     by_name = {golden[0]: golden for golden in goldens}
@@ -226,7 +258,7 @@ def cases(root=None):
 
 
 def command(nuitool, case, out, compare=None, tolerance=None):
-    _, _, document, fixture, theme, scale, size, reduced, roots, time, switch_from = case
+    _, _, document, fixture, theme, scale, size, reduced, roots, time, extras, switch_from = case
     root_args = []
     for root in BASE_ROOTS + [extra for extra in roots if extra not in BASE_ROOTS]:
         root_args += ["--root", root]
@@ -237,6 +269,7 @@ def command(nuitool, case, out, compare=None, tolerance=None):
         cmd += ["--switch-from", switch_from]
     if fixture:
         cmd += ["--fixture", fixture]
+    cmd += list(extras)
     if reduced:
         cmd.append("--reduced-motion")
     if compare:

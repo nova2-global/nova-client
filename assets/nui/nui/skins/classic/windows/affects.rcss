@@ -34,7 +34,11 @@ body.skin-classic.affects .affect__tip--label .affect__title
 }
 /* At 100% and below, the icons point sampled, as legacy draws its scaled
    affect icons (D3DTEXF_NONE): the nearest copy instead of the filtered one.
-   Above 100% the filtered one, as there is no legacy picture to match. */
+   Legacy's Direct3D 9 quads put pixel centers on whole coordinates, so its
+   22.4 px icon covers 23 pixels and pixel k shows texel floor(k / 0.7);
+   moved half a pixel right and down, the nearest copy covers and picks the
+   same. Above 100% the filtered one, as there is no legacy picture to
+   match. */
 @media (max-resolution: 1x)
 {
 	body.skin-classic.affects .affect__image
@@ -44,5 +48,6 @@ body.skin-classic.affects .affect__tip--label .affect__title
 	body.skin-classic.affects .affect__image.affect__image--nearest
 	{
 		display: block;
+		transform: translate(0.5px, 0.5px);
 	}
 }

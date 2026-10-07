@@ -34,11 +34,13 @@ body.skin-classic.affects .affect__tip--label .affect__title
 }
 /* At 100% and below, the icons point sampled, as legacy draws its scaled
    affect icons (D3DTEXF_NONE): the nearest copy instead of the filtered one.
-   Legacy's Direct3D 9 quads put pixel centers on whole coordinates, so its
-   22.4 px icon covers 23 pixels and pixel k shows texel floor(k / 0.7);
-   moved half a pixel right and down, the nearest copy covers and picks the
-   same. Above 100% the filtered one, as there is no legacy picture to
-   match. */
+   Legacy's SetScale(0.7) draws the 32 px icon as a 22.4 px quad, so pixel k
+   shows texel floor((k + 0.5) / 0.7) (measured in game: F-L frames against
+   the atlas). A 22.4dp box would be laid out at 22 px, a step of 32 / 22
+   that picks other texels; a 32dp image scaled by 0.7 from its top left
+   corner is not snapped, covers 22.4 px and picks legacy's texels
+   (nui_hud_test.ClassicAffectIcons). Above 100% the filtered one, as there
+   is no legacy picture to match. */
 @media (max-resolution: 1x)
 {
 	body.skin-classic.affects .affect__image
@@ -48,6 +50,15 @@ body.skin-classic.affects .affect__tip--label .affect__title
 	body.skin-classic.affects .affect__image.affect__image--nearest
 	{
 		display: block;
-		transform: translate(0.5px, 0.5px);
+	}
+	body.skin-classic.affects .affect--small .affect__image.affect__image--nearest
+	{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 32dp;
+		height: 32dp;
+		transform: scale(0.7);
+		transform-origin: left top;
 	}
 }

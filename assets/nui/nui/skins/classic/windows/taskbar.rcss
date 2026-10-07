@@ -386,11 +386,15 @@ body.skin-classic.taskbar .taskbar-picker
 
 /* --- Hints: outlined text, as the legacy text tooltips draw them ------------------------ */
 
+/* Legacy's TextToolTip lines have no color of their own; the client draws
+   that default text at #c7c7c7 (measured in game on the HP hint and on the
+   debug line, 199 at their brightest), the gray of the legacy button
+   labels, where --text is #dadada. */
 body.skin-classic.taskbar .nui-tooltip.taskbar-tip
 {
 	decorator: none;
 	padding: 0;
-	color: var(--text);
+	color: var(--classic-button-text);
 	font-effect: outline(1dp var(--classic-text-outline));
 }
 /* The gauge and EXP hints (TextToolTip.OnRender) follow the pointer in

@@ -39,6 +39,7 @@ import nui_game_support as support  # noqa: E402
 
 ROOT = support.ROOT
 WINDOWS = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "nui", "nui", "windows"))
+CLASSIC_WINDOWS = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "nui", "nui", "skins", "classic", "windows"))
 HUD_MODULES = ("nui_affects", "nui_target", "nui_party", "nui_edge_buttons", "nui_tip_board", "nui_big_board", "nui_map_name")
 LEGACY_MODULES = (("uiAffectShower", "uiaffectshower.py"), ("uiTarget", "uitarget.py"), ("uiParty", "uiparty.py"),
                   ("uiTip", "uitip.py"), ("uiMapNameShower", "uimapnameshower.py"), ("uiWhisper", "uiwhisper.py"))
@@ -708,6 +709,89 @@ class Layers(unittest.TestCase):
             self.assertEqual(BELOW_LEGACY_UI in body, layer == "UI", "%s (legacy %s.%s in %s)" % (window, file_name, class_name, layer))
         self.assertEqual(sorted(window for window, layer in layers.items() if layer != "UI"),
                          ["edge-buttons", "map-name", "taskbar"], "the legacy TOP_MOST windows")
+
+
+REPO = os.path.normpath(os.path.join(support.support.HERE, ".."))
+YMIR_UI = os.path.join(REPO, "assets", "ETC", "ymir work", "ui")
+
+
+def legacy_texel(k):
+    """The icon texel legacy's SetScale(0.7) quad shows at pixel k of the
+    icon (22.4 px wide, pixel centers at k + 0.5), measured in game against
+    the atlas (Wave 2a final stage)."""
+    return int((k + 0.5) / 0.7)
+
+
+def snapped_texel(k):
+    """The texel a 22.4dp box laid out at 22 px shows (the copy before the
+    fix): another step, other texels."""
+    return int((k + 0.5) * 32 / 22)
+
+
+class ClassicAffectIcons(unittest.TestCase):
+    """The classic affect icons at 100%: the nearest copy draws legacy's
+    texels (finding P5 of the Wave 2a in-game validation)."""
+
+    def nearest_block(self):
+        sheet = read(os.path.join(CLASSIC_WINDOWS, "affects.rcss"))
+        media = re.search(r"@media \(max-resolution: 1x\)\s*\{(.*)\}\s*$", sheet, re.S).group(1)
+        return re.search(r"\.affect--small \.affect__image\.affect__image--nearest\s*\{([^}]*)\}", media).group(1)
+
+    def test_the_nearest_copy_is_its_32dp_art_scaled_by_70_percent_from_its_top_left_corner(self):
+        block = self.nearest_block()
+        for declaration in ("position: absolute", "width: 32dp", "height: 32dp", "transform: scale(0.7)",
+                            "transform-origin: left top"):
+            self.assertIn(declaration, block)
+        self.assertNotIn("px", block.replace("32dp", ""), "a layout box in px or a translate would be snapped again")
+
+    def sub_region(self, image):
+        path = os.path.join(YMIR_UI, image.lower().split("d:/ymir work/ui/", 1)[1])
+        fields = {}
+        with io.open(path, "r", encoding="latin-1") as f:
+            for line in f:
+                parts = line.split(None, 1)
+                if len(parts) == 2:
+                    fields[parts[0]] = parts[1].strip().strip('"')
+        return os.path.join(YMIR_UI, fields["image"].lower()), int(fields["left"]), int(fields["top"])
+
+    def matches(self, golden, atlas, left, top, x0, y0, texel):
+        """Opaque texels of the icon whose golden pixel has the texel's
+        color (within 4, the DDS decoders' rounding), and all of them."""
+        good = total = 0
+        for j in range(22):
+            for k in range(22):
+                tx, ty = texel(k), texel(j)
+                if tx > 31 or ty > 31:
+                    continue
+                r, g, b, a = atlas.getpixel((left + tx, top + ty))
+                if a < 255:
+                    continue
+                total += 1
+                pr, pg, pb = golden.getpixel((x0 + k, y0 + j))[:3]
+                good += max(abs(pr - r), abs(pg - g), abs(pb - b)) <= 4
+        return good, total
+
+    def test_the_golden_draws_the_texels_legacy_draws(self):
+        try:
+            from PIL import Image
+        except ImportError:
+            self.skipTest("needs Pillow")
+        golden = Image.open(os.path.join(REPO, "docs", "ui", "snapshots", "affects-classic-100.png")).convert("RGBA")
+        fixture = json.loads(read(os.path.join(WINDOWS, "affects", "affects.fixture.json")))
+        checked = 0
+        for index, icon in enumerate(fixture["affects"]["icons"]):
+            if not icon["small"] or not icon["image"].lower().endswith(".sub"):
+                continue
+            atlas_path, left, top = self.sub_region(icon["image"])
+            atlas = Image.open(atlas_path).convert("RGBA")
+            x0, y0 = 10 + 25 * index, 10  # .affects__row at 10dp, 25dp cells
+            good, total = self.matches(golden, atlas, left, top, x0, y0, legacy_texel)
+            self.assertGreater(total, 300, icon["image"])
+            self.assertEqual(good, total, "%s: legacy's texels" % icon["image"])
+            good, total = self.matches(golden, atlas, left, top, x0, y0, snapped_texel)
+            self.assertLess(good, 0.9 * total, "%s: the check tells the 22 px step apart" % icon["image"])
+            checked += 1
+        self.assertGreaterEqual(checked, 4)
 
 
 class RepeatedElements(unittest.TestCase):

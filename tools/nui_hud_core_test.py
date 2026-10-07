@@ -786,6 +786,20 @@ class TaskbarHeight(unittest.TestCase):
         self.assertEqual(sorted((int(width), float(factor)) for width, factor in steps), sorted(taskbar.NARROW_STEPS))
 
 
+class ClassicHints(unittest.TestCase):
+    """The classic taskbar hints draw legacy's default text gray (finding P4
+    of the Wave 2a in-game validation: legacy's TextToolTip lines peak at
+    199, the classic ones at 218 with --text)."""
+
+    def test_the_hints_use_the_legacy_text_gray(self):
+        classic = read(os.path.join(CLASSIC_WINDOWS, "taskbar.rcss"))
+        block = re.search(r"body\.skin-classic\.taskbar \.nui-tooltip\.taskbar-tip\s*\{([^}]*)\}", classic).group(1)
+        self.assertIn("color: var(--classic-button-text)", block)
+        self.assertIn("font-effect: outline(1dp var(--classic-text-outline))", block)
+        tokens = json.loads(read(os.path.join(WINDOWS, "..", "theme", "tokens.json")))
+        self.assertEqual(tokens["skins"]["classic"]["classic-button-text"], "#c7c7c7")
+
+
 class SmallWindows(unittest.TestCase):
     def pair(self, setup=None):
         legacy, novaui = World(False, setup=setup), World(True, setup=setup)

@@ -5,6 +5,16 @@
    edge and 35dp below its top, in a game master's name the legacy GM
    orange (0xffffa200). */
 
+/* The legacy row count ((height - 330) / 63, so 75dp from the bottom at 900
+   lines) and the legacy shift while the party shows. */
+body.skin-classic.edge-buttons .edge-stack
+{
+	bottom: 75dp;
+}
+body.skin-classic.edge-buttons .edge-stack--quest.edge-stack--shift
+{
+	left: 130dp;
+}
 body.skin-classic.edge-buttons .edge__button
 {
 	left: 0;

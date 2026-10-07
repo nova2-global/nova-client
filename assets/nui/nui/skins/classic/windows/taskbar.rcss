@@ -393,3 +393,35 @@ body.skin-classic.taskbar .nui-tooltip.taskbar-tip
 	color: var(--text);
 	font-effect: outline(1dp var(--classic-text-outline));
 }
+/* The gauge and EXP hints (TextToolTip.OnRender) follow the pointer in
+   legacy, centered on it with their top 15 px above it; these sit where a
+   pointer in the middle of their board puts legacy's: centered on the
+   board, the glyphs' top where legacy's are (the line's top 15dp above the
+   board's middle, less a pixel for the line's leading). They draw above the
+   energy bar's art, as legacy's TOP_MOST text does, because the energy bar's
+   document is drawn below the legacy UI layer and this one above it. */
+body.skin-classic.taskbar .taskbar-gauge-host .nui-tooltip.taskbar-tip,
+body.skin-classic.taskbar .taskbar-exp .nui-tooltip.taskbar-tip
+{
+	bottom: auto;
+	margin-bottom: 0;
+	margin-right: 0;
+	width: 200dp;
+	text-align: center;
+}
+/* The 95dp gauges, 11dp tall (6dp for stamina). */
+body.skin-classic.taskbar .taskbar-gauge-host .nui-tooltip.taskbar-tip
+{
+	left: -53dp;
+	top: -10dp;
+}
+body.skin-classic.taskbar .taskbar-gauge-host--st .nui-tooltip.taskbar-tip
+{
+	top: -12dp;
+}
+/* The 105 x 37dp EXP board. */
+body.skin-classic.taskbar .taskbar-exp .nui-tooltip.taskbar-tip
+{
+	left: -48dp;
+	top: 3dp;
+}

@@ -2,8 +2,9 @@
 <head>
 	<!-- The game buttons (uiscript/gamewindow.py, uigamebutton.py): raise
 	     stats, raise skills, help, tasks, guild building and the end of the
-	     observer mode, each a large plus with its label below; each shows
-	     only while it applies. While the game-buttons flag is on, the
+	     observer mode, each a large plus with its label (below it in
+	     classic, beside it in modern); each shows only while it applies.
+	     While the game-buttons flag is on, the
 	     Interface makes the facade nui_game_buttons.GameButtonWindow
 	     (controller assets/root/nui_game_buttons.py). Nothing takes the
 	     focus, so the buttons act on mousedown. The classic art is legacy
@@ -12,7 +13,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="game-buttons.rcss"/>
 </head>
-<body template="nui" class="nui-overlay game-buttons" data-model="game_buttons">
+<body template="nui" class="nui-overlay nui-below-legacy-ui game-buttons" data-model="game_buttons">
 	<div id="game-help" class="game-button game-button--help nui-interactive" data-if="show_help">
 		<button class="game-button__plus" data-event-mousedown="press('HELP', ev.button)">+</button>
 		<span class="game-button__label"><span class="game-button__text">@ui.GAME_HELP</span></span>

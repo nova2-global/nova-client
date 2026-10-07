@@ -14,7 +14,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="energy-bar.rcss"/>
 </head>
-<body template="nui" class="nui-overlay energy-bar" data-model="energy_bar">
+<body template="nui" class="nui-overlay nui-below-legacy-ui energy-bar" data-model="energy_bar">
 	<div id="energy-bar" class="energy-bar__base">
 		<div id="energy-gauge" class="energy-bar__gauge" data-class-is-full="state == 'full'"
 			data-class-is-hungry="state == 'hungry'" data-class-is-empty="state == 'empty'"></div>

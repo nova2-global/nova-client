@@ -28,6 +28,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", "assets", "root"))
 
 THEMES = [("modern-dark", "Modern dark"), ("modern-light", "Modern light"), ("classic", "Classic")]
+# Each theme's <body> classes (nui/theme/themes.json).
+THEME_CLASSES = {"modern-dark": ("skin-modern", "theme-dark"), "modern-light": ("skin-modern", "theme-light"),
+                 "classic": ("skin-classic", "theme-classic")}
 
 MISSING = object()
 
@@ -234,6 +237,15 @@ def make_nui(state):
         def on_theme_changed(self, theme_id):
             pass
 
+        def on_scale_changed(self, scale):
+            pass
+
+        def has_class(self, name, element_id=""):
+            """The theme's classes on the <body> (element "")."""
+            if not self._doc or element_id:
+                return False
+            return name in THEME_CLASSES.get(state.theme, ())
+
         def destroy(self):
             self.calls.append(("destroy",))
             self._doc = 0
@@ -366,6 +378,12 @@ def make_nui(state):
                 window.on_theme_changed(name)
         return name
 
+    def set_scale_percent(percent):
+        state.scale = percent / 100.0 if percent > 0 else 1.0
+        for window in state.windows:
+            if window._doc:
+                window.on_scale_changed(state.scale)
+
     def any_window_shown():
         return any(window.is_visible() for window in state.windows)
 
@@ -384,6 +402,7 @@ def make_nui(state):
     nui.get_theme = lambda: state.theme
     nui.set_theme = set_theme
     nui.get_scale = lambda: state.scale
+    nui.set_scale_percent = set_scale_percent
     nui.any_window_shown = any_window_shown
     nui.plain_text = plain_text
     nui.now = lambda: float(state.now) if state.available else 0.0

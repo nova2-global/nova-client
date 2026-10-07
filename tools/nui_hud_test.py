@@ -670,6 +670,46 @@ def repeated_element_reads(markup):
     return found
 
 
+# Each Wave 2a window and the legacy class it stands for (file, class).
+LEGACY_CLASSES = {
+    "taskbar": ("uitaskbar.py", "TaskBar"), "expanded-taskbar": ("uitaskbar.py", "ExpandedTaskBar"),
+    "energy-bar": ("uitaskbar.py", "EnergyBar"), "gift-box": ("uitaskbar.py", "GiftBox"),
+    "game-buttons": ("uigamebutton.py", "GameButtonWindow"), "affects": ("uiaffectshower.py", "AffectShower"),
+    "target": ("uitarget.py", "TargetBoard"), "party": ("uiparty.py", "PartyWindow"),
+    "edge-buttons": ("uiwhisper.py", "LegacyWhisperButton"), "tip-board": ("uitip.py", "TipBoard"),
+    "big-board": ("uitip.py", "BigBoard"), "map-name": ("uimapnameshower.py", "MapNameShower"),
+}
+BELOW_LEGACY_UI = "nui-below-legacy-ui"
+
+
+def legacy_layer(file_name, class_name):
+    """The wndMgr layer the legacy class's own __init__ passes to its base
+    class's (ui.Window's default, "UI", when it passes none)."""
+    tree = ast.parse(read(os.path.join(ROOT, file_name)))
+    for node in tree.body:
+        if isinstance(node, ast.ClassDef) and node.name == class_name:
+            for item in node.body:
+                if isinstance(item, ast.FunctionDef) and item.name == "__init__":
+                    for call in ast.walk(item):
+                        if (isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute) and call.func.attr == "__init__"
+                                and len(call.args) >= 2 and isinstance(call.args[1], ast.Constant)):
+                            return call.args[1].value
+                    return "UI"
+    raise AssertionError("%s has no class %s" % (file_name, class_name))
+
+
+class Layers(unittest.TestCase):
+    def test_a_window_whose_legacy_window_lives_in_the_ui_layer_draws_below_that_layer(self):
+        layers = {}
+        for window, (file_name, class_name) in LEGACY_CLASSES.items():
+            layer = legacy_layer(file_name, class_name)
+            layers[window] = layer
+            body = re.search(r"<body[^>]*\bclass=\"([^\"]*)\"", read(os.path.join(WINDOWS, window, window + ".rml"))).group(1).split()
+            self.assertEqual(BELOW_LEGACY_UI in body, layer == "UI", "%s (legacy %s.%s in %s)" % (window, file_name, class_name, layer))
+        self.assertEqual(sorted(window for window, layer in layers.items() if layer != "UI"),
+                         ["edge-buttons", "map-name", "taskbar"], "the legacy TOP_MOST windows")
+
+
 class RepeatedElements(unittest.TestCase):
     def test_no_repeated_hud_element_binds_its_own_item(self):
         for window in HUD_DOCUMENTS:

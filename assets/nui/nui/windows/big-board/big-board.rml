@@ -12,7 +12,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="big-board.rcss"/>
 </head>
-<body template="nui" class="nui-overlay big-board" data-model="big_board">
+<body template="nui" class="nui-overlay nui-below-legacy-ui big-board" data-model="big_board">
 	<div id="big-board" class="big-board__bar" data-if="shown">
 		<div class="big-board__clip">
 			<div id="big-line-a" class="big-line nui-anim" data-class-is-front="front == 'a'" data-class-is-back="front != 'a'"><span class="big-line__text">{{ line_a }}</span></div>

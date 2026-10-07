@@ -1,11 +1,13 @@
 /* The game buttons' modern look: a round accent button with a plus and its
-   label in a pill below it, at the legacy anchors (the left buttons from
+   label in a pill beside it, at the legacy anchors (the left buttons from
    the screen's left, the right ones from its right, all from its bottom),
-   raised 12dp for the modern taskbar, which is 11dp taller than legacy's, so
-   the lower labels clear its top edge. The right column's labels end 18dp
-   from the screen's edge instead of centering under the button, so a long
-   label (pt, pl) stays on screen. Classic (the legacy plus art and white
-   labels at the legacy places): skins/classic/windows/game-buttons.rcss. */
+   raised 12dp for the modern taskbar, which is 11dp taller than legacy's.
+   The pill sits right of a left button and left of a right one, not under
+   it as legacy's see-through text does: under the button it would cover the
+   taskbar's gauge and button hints, which open just above the bar, and a
+   long label (pt, pl) grows away from the screen's edge. Classic (the
+   legacy plus art and white labels at the legacy places):
+   skins/classic/windows/game-buttons.rcss. */
 
 body.game-buttons
 {
@@ -62,17 +64,17 @@ body.game-buttons
 {
 	display: block;
 	position: absolute;
-	left: -82dp;
+	left: 42dp;
 	width: 200dp;
-	top: 40dp;
-	text-align: center;
+	top: 9dp;
+	text-align: left;
 	pointer-events: none;
 }
 .game-button--quest .game-button__label, .game-button--observer .game-button__label,
 .game-button--build .game-button__label, .game-button--skill .game-button__label
 {
 	left: auto;
-	right: -30dp;
+	right: 42dp;
 	text-align: right;
 }
 .game-button__text

@@ -126,6 +126,14 @@ class Interface(object):
 		self.wndChat.SetSendWhisperEvent(ui.__mem_func__(self.OpenWhisperDialogWithoutTarget))
 		self.wndChat.SetOpenChatLogEvent(ui.__mem_func__(self.ToggleChatLogWindow))
 
+	def __PlaceChatAboveTaskBar(self):
+		wndChat = getattr(self, "wndChat", None)
+		if wndChat is None:
+			return
+		height = self.wndTaskBar.GetBarHeight()
+		wndChat.SetPosition(wndMgr.GetScreenWidth() // 2 - wndChat.CHAT_WINDOW_WIDTH // 2, wndMgr.GetScreenHeight() - wndChat.EDIT_LINE_HEIGHT - height)
+		wndChat.Refresh()
+
 	def __MakeTaskBar(self):
 		wndTaskBar = nui_windows.make("taskbar", uiTaskBar.TaskBar, "nui_taskbar.TaskBar")
 		wndTaskBar.LoadWindow()
@@ -133,6 +141,10 @@ class Interface(object):
 		if not getattr(wndTaskBar, "NUI_FACADE", False) and nui_windows.is_on("gift-box"):
 			nui_windows.refuse("gift-box", "needs the NovaUI taskbar")
 		self.wndTaskBar = wndTaskBar
+		# The NovaUI bar is not legacy's 37 px: the legacy chat stays above it, also after a theme or scale change.
+		if getattr(wndTaskBar, "NUI_FACADE", False) and hasattr(wndTaskBar, "SetBarHeightEvent"):
+			wndTaskBar.SetBarHeightEvent(ui.__mem_func__(self.__PlaceChatAboveTaskBar))
+			self.__PlaceChatAboveTaskBar()
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_CHARACTER, ui.__mem_func__(self.ToggleCharacterWindowStatusPage))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_INVENTORY, ui.__mem_func__(self.ToggleInventoryWindow))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_MESSENGER, ui.__mem_func__(self.ToggleMessenger))

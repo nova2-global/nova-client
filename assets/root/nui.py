@@ -497,6 +497,23 @@ class Window(object):
 		that name the theme (a picker's selection)."""
 		pass
 
+	def on_scale_changed(self, scale):
+		"""Hook: nui.set_scale_percent() applied a new choice; `scale` is the
+		factor in use now (get_scale()). Override this to move what follows
+		the window's size in pixels (a legacy window kept clear of it)."""
+		pass
+
+	def has_class(self, name, element_id=""):
+		"""True when the element with this id ("" is the <body>) has the class
+		`name` now. The theme's classes (skin-classic, theme-dark, ...) are on
+		the <body> as soon as nui.set_theme() returns, before the restyle.
+		False without a document, and with an exe whose _nui has no
+		HasClass."""
+		has = getattr(_nui, "HasClass", None) if _nui is not None else None
+		if not self._doc or has is None:
+			return False
+		return bool(has(self._doc, element_id, name))
+
 	def destroy(self):
 		"""Close the document, drop the model and every handler. Inside one
 		of the window's handlers the document hides at once, and it goes
@@ -614,7 +631,8 @@ def set_scale_percent(percent):
 	"""0 = automatic (from the resolution), else 75..200.
 
 	Values in between are clamped to that range, and anything at or below 0
-	means automatic, as the config file reads them."""
+	means automatic, as the config file reads them. Then every open window's
+	on_scale_changed() runs with the factor in use."""
 	percent = _clamp_scale_percent(percent)
 	if is_available():
 		_nui.SetScalePercent(percent)
@@ -622,6 +640,9 @@ def set_scale_percent(percent):
 	if setting is not None:
 		setting.SetUIScalePercent(percent)
 		_save(setting)
+	scale = get_scale()
+	for window in list(_windows.values()):
+		window.on_scale_changed(scale)
 
 
 def get_scale_percent():

@@ -27,6 +27,7 @@ import inspect
 import io
 import json
 import os
+import re
 import sys
 import types
 import unittest
@@ -37,6 +38,7 @@ import nui_game_support as support  # noqa: E402
 
 ROOT = support.ROOT
 WINDOWS = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "nui", "nui", "windows"))
+CLASSIC_WINDOWS = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "nui", "nui", "skins", "classic", "windows"))
 P = support.PLAYER_CONSTANTS
 INVENTORY, SKILL, EMOTION, QUICK = P["SLOT_TYPE_INVENTORY"], P["SLOT_TYPE_SKILL"], P["SLOT_TYPE_EMOTION"], P["SLOT_TYPE_QUICK_SLOT"]
 CORE_MODULES = ("nui_taskbar", "nui_expanded_taskbar", "nui_energy_bar", "nui_gift_box", "nui_game_buttons", "nui_hud", "nui_slots")
@@ -733,6 +735,57 @@ class TaskbarDifferential(TaskbarWorlds):
 
 # --- the small windows ----------------------------------------------------------------------------
 
+class TaskbarHeight(unittest.TestCase):
+    """GetBarHeight: the drawn bar in pixels, which the legacy chat stays
+    above (interfacemodule.py __PlaceChatAboveTaskBar)."""
+
+    def bar(self, screen_width=1600):
+        world = World(True)
+        world.game.modules["wndMgr"].GetScreenWidth = lambda: screen_width
+        with world, quiet():
+            bar = world.nui_windows.make("taskbar", world.uiTaskBar.TaskBar, "nui_taskbar.TaskBar")
+            bar.LoadWindow()
+        self.assertEqual(type(bar).__module__, "nui_taskbar")
+        return world, bar
+
+    def test_it_follows_the_theme_and_the_scale_and_says_so_after_each_change(self):
+        world, bar = self.bar()
+        nui = world.game.modules["nui"]
+        heard = []
+        with world:
+            self.assertEqual(bar.GetBarHeight(), 49, "48dp and its 1dp top border")
+            bar.SetBarHeightEvent(lambda: heard.append(bar.GetBarHeight()))
+            nui.set_scale_percent(150)
+            nui.set_theme("classic")
+            nui.set_scale_percent(100)
+            nui.set_theme("modern-light")
+        self.assertEqual(heard, [74, 56, 37, 49], "73.5 and 55.5 pixels round up")
+
+    def test_on_a_narrow_screen_the_modern_bar_shrinks_with_its_document(self):
+        for width, scale, height in ((1600, 100, 49), (1060, 100, 49), (1059, 100, 47), (853, 100, 40), (800, 100, 37),
+                                     (600, 100, 30), (1600, 200, 74), (1600, 150, 74)):
+            world, bar = self.bar(width)
+            with world:
+                world.game.modules["nui"].set_scale_percent(scale)
+                self.assertEqual(bar.GetBarHeight(), height, (width, scale))
+                world.game.modules["nui"].set_theme("classic")
+                self.assertEqual(bar.GetBarHeight(), {100: 37, 150: 56, 200: 74}[scale], "classic never shrinks")
+
+    def test_the_heights_are_the_style_sheets(self):
+        taskbar = World(True).game.load("nui_taskbar", "nui_taskbar.py")
+        sheet = read(os.path.join(WINDOWS, "taskbar", "taskbar.rcss"))
+        block = re.search(r"\n\.taskbar-bar\s*\{([^}]*)\}", sheet).group(1)
+        height = float(re.search(r"(?<![-\w])height:\s*([\d.]+)dp", block).group(1))
+        border = float(re.search(r"border-top-width:\s*([\d.]+)dp", block).group(1))
+        self.assertEqual(height + border, taskbar.BAR_HEIGHT_DP)
+        classic = read(os.path.join(CLASSIC_WINDOWS, "taskbar.rcss"))
+        block = re.search(r"body\.skin-classic\.taskbar \.taskbar-bar\s*\{([^}]*)\}", classic).group(1)
+        self.assertEqual(float(re.search(r"(?<![-\w])height:\s*([\d.]+)dp", block).group(1)), taskbar.CLASSIC_BAR_HEIGHT_DP)
+        self.assertIn("border-width: 0", block)
+        steps = re.findall(r"@media \(max-width: (\d+)dp\)\s*\{\s*body\.taskbar \{[^}]*scale\(([\d.]+)\)", sheet)
+        self.assertEqual(sorted((int(width), float(factor)) for width, factor in steps), sorted(taskbar.NARROW_STEPS))
+
+
 class SmallWindows(unittest.TestCase):
     def pair(self, setup=None):
         legacy, novaui = World(False, setup=setup), World(True, setup=setup)
@@ -1045,6 +1098,51 @@ class Wiring(unittest.TestCase):
             self.assertEqual(("Destroy",) in big.calls, facades, windows)
             self.assertEqual(closed, [1] if facades else [], windows)
             self.assertFalse(hasattr(interface, "tipBoard"))
+
+    def test_the_legacy_chat_sits_above_a_novaui_taskbar_and_follows_its_height(self):
+        heights = [49]
+
+        class Bar(Recorded):
+            NUI_FACADE = True
+            event = None
+
+            def GetBarHeight(self):
+                return heights[0]
+
+            def SetBarHeightEvent(self, event):
+                Bar.event = event
+
+        class Chat(object):
+            CHAT_WINDOW_WIDTH = 600
+            EDIT_LINE_HEIGHT = 25
+
+            def __init__(self):
+                self.calls = []
+
+            def SetPosition(self, x, y):
+                self.calls.append(("SetPosition", x, y))
+
+            def Refresh(self):
+                self.calls.append(("Refresh",))
+
+        for windows in ("+taskbar", ""):
+            heights[0] = 49
+            Bar.event = None
+            game, module, interface = self.interface(windows)
+            game.modules["nui_taskbar"].TaskBar = Bar
+            game.modules["wndMgr"].GetScreenWidth = lambda: 1600
+            game.modules["wndMgr"].GetScreenHeight = lambda: 900
+            interface.wndChat = Chat()
+            with game:
+                interface._Interface__MakeTaskBar()
+                if not windows:
+                    self.assertEqual(interface.wndChat.calls, [], "flags off: legacy's place, untouched")
+                    self.assertIsNone(Bar.event)
+                    continue
+                self.assertEqual(interface.wndChat.calls, [("SetPosition", 500, 900 - 25 - 49), ("Refresh",)])
+                heights[0] = 74  # a scale change
+                Bar.event()
+            self.assertEqual(interface.wndChat.calls[2:], [("SetPosition", 500, 900 - 25 - 74), ("Refresh",)])
 
     def test_the_whisper_button_name_is_the_edge_button_factory(self):
         game = support.Game()

@@ -17,7 +17,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="party.rcss"/>
 </head>
-<body template="nui" class="nui-overlay party" data-model="party">
+<body template="nui" class="nui-overlay nui-below-legacy-ui party" data-model="party">
 	<div id="party" class="party">
 		<div class="party__row" data-for="m : members">
 			<div class="party-member nui-interactive nui-attach-right" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"

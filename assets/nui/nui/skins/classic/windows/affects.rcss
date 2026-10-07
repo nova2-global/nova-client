@@ -32,3 +32,17 @@ body.skin-classic.affects .affect__tip--label .affect__title
 	color: var(--text);
 	font-effect: outline(1dp var(--classic-text-outline));
 }
+/* At 100% and below, the icons point sampled, as legacy draws its scaled
+   affect icons (D3DTEXF_NONE): the nearest copy instead of the filtered one.
+   Above 100% the filtered one, as there is no legacy picture to match. */
+@media (max-resolution: 1x)
+{
+	body.skin-classic.affects .affect__image
+	{
+		display: none;
+	}
+	body.skin-classic.affects .affect__image.affect__image--nearest
+	{
+		display: block;
+	}
+}

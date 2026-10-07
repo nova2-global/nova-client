@@ -41,6 +41,11 @@ body.affects
 	width: 22.4dp;
 	height: 22.4dp;
 }
+/* The nearest-sampled copy of the icon: a skin may show it instead. */
+.affect__image--nearest
+{
+	display: none;
+}
 /* Below the icon, at its left edge; as wide as the text, up to 320dp. */
 .affect__tip
 {

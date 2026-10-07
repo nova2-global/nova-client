@@ -11,7 +11,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="gift-box.rcss"/>
 </head>
-<body template="nui" class="nui-overlay gift-box">
+<body template="nui" class="nui-overlay nui-below-legacy-ui gift-box">
 	<img id="gift-box" class="gift-box__icon" src="d:/ymir work/ui/pattern/giftbox/present_for_fruends_icon.tga"/>
 </body>
 </rml>

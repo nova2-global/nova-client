@@ -18,6 +18,7 @@ their menus, the skill picker, the window buttons and the item mall button.
 The document loads hidden in __init__ (nui_ready and nui_discard follow
 nui_windows.make()'s protocol); the board keeps a weak proxy to its facade."""
 
+import math
 import weakref
 
 import constInfo
@@ -26,6 +27,7 @@ import mouseModule
 import net
 import player
 import skill
+import wndMgr
 
 import nui
 import nui_hud
@@ -44,6 +46,16 @@ SKILL_PAGE = 6               # skills per picker row (OpenSelectSkill's PAGE_SLO
 SKILL_CATEGORIES = (1, 21, 41)  # ACTIVE_1, ACTIVE_2, ACTIVE_3: their first skill slot
 
 _BUTTON_NAMES = {0: "character", 1: "inventory", 2: "messenger", 3: "system", 4: "expand"}
+
+# The bar's height above the screen's bottom in dp, its top border included:
+# taskbar.rcss .taskbar-bar (48dp and a 1dp border) and the classic skin's
+# (37dp, legacy's bar, no border). Below 1060dp the modern document shrinks
+# about its bottom-left corner (taskbar.rcss @media max-width): the widest
+# screen in dp of each step, and its factor. nui_hud_core_test checks both
+# against the sheets.
+BAR_HEIGHT_DP = 49
+CLASSIC_BAR_HEIGHT_DP = 37
+NARROW_STEPS = ((688, 0.6), (741, 0.65), (794, 0.7), (847, 0.75), (900, 0.8), (953, 0.85), (1006, 0.9), (1059, 0.95))
 
 
 def _keep(owner):
@@ -96,6 +108,12 @@ class TaskBarBoard(nui.Window):
 			"mouse_image": False,
 			"expandable": True,
 		}
+
+	def on_theme_changed(self, theme_id):
+		self._owner.nui_bar_height_changed()
+
+	def on_scale_changed(self, scale):
+		self._owner.nui_bar_height_changed()
 
 	@nui.on("slot_press")
 	def on_slot_press(self, grid, index, button):
@@ -211,6 +229,7 @@ class TaskBar(object):
 		self.board = None
 		self.tooltips = nui_slots.TooltipBridge()
 		self.toggleButtonEvents = {}
+		self.barHeightEvent = None
 		self.wndGiftBox = None
 		self._right_slot = 0       # the right skill's skill slot (curSkillButton.slotIndex)
 		self._right_index = 0      # its skill index (curSkillButton.skillIndex)
@@ -313,6 +332,32 @@ class TaskBar(object):
 
 	def SetToggleButtonEvent(self, eButton, kEventFunc):
 		self.toggleButtonEvents[eButton] = kEventFunc
+
+	## The bar's height (NovaUI only: the legacy bar is always 37 px)
+	def GetBarHeight(self):
+		"""The bar's height in screen pixels above the bottom edge, as drawn
+		now: 49dp modern (shrunk with the document on a narrow screen) or
+		37dp classic, at the scale in use. The Interface keeps the legacy
+		chat above it."""
+		scale = nui.get_scale()
+		if self.board is not None and self.board.has_class("skin-classic"):
+			return int(math.ceil(CLASSIC_BAR_HEIGHT_DP * scale - 0.001))
+		width_dp = wndMgr.GetScreenWidth() / scale if scale > 0 else 0
+		factor = 1.0
+		for widest, step in NARROW_STEPS:
+			if width_dp <= widest:
+				factor = step
+				break
+		return int(math.ceil(BAR_HEIGHT_DP * scale * factor - 0.001))
+
+	def SetBarHeightEvent(self, event):
+		"""`event()` runs after a theme or scale change, when GetBarHeight()
+		may answer differently."""
+		self.barHeightEvent = event
+
+	def nui_bar_height_changed(self):
+		if self.barHeightEvent is not None:
+			self.barHeightEvent()
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltips.set_item_tooltip(tooltipItem)

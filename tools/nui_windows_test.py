@@ -12,6 +12,7 @@ WAVE1 = ["login", "dialogs", "server-board", "virtual-keyboard", "locale-strip",
 WAVE2A = ["taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
           "edge-buttons", "tip-board", "big-board", "map-name"]
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
+WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
 
 
 class Legacy(object):
@@ -85,8 +86,9 @@ class Flags(WindowsTest):
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
 
     def test_every_wave2b_window_defaults_to_legacy(self):
-        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A + WAVE2B, "appended in this order")
-        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A):]:
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B)], WAVE1 + WAVE2A + WAVE2B,
+                         "appended in this order")
+        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A):len(WAVE1 + WAVE2A + WAVE2B)]:
             self.assertIs(default, False, window_id)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
@@ -117,6 +119,44 @@ class Flags(WindowsTest):
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
                          sorted(WAVE1[1:] + WAVE2A + WAVE2B))
+
+    def test_every_wave3a_window_defaults_to_legacy(self):
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A + WAVE2B + WAVE3A,
+                         "appended in this order")
+        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B):]:
+            self.assertIs(default, False, window_id)
+            self.assertFalse(self.m.is_on(window_id), window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+
+    def test_sys_names_the_six_wave3a_windows_and_hud2_keeps_its_seven(self):
+        self.assertEqual(self.m.GROUPS["sys"], tuple(WAVE3A))
+        self.assertEqual(self.m.GROUPS["hud2"], tuple(WAVE2B), "+hud2 keeps meaning the Wave 2b windows")
+        self.assertEqual(len(self.m.GROUPS["hud2"]), 7)
+        self.setting.windows = "+hud2"
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE3A), "+hud2 turns no Wave 3a window on")
+        self.setting.windows = "+sys,-help"
+        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "help") for window_id in WAVE3A))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE1 + WAVE2A + WAVE2B),
+                         "+sys turns no earlier window on")
+        self.assertEqual(self.m.use("system-menu"), (True, ""))
+        self.assertEqual(self.m.use("help"), (False, "flag off"))
+        self.assertNotIn("sys", self.m.overrides())
+        self.assertNotIn("sys", [window_id for window_id, _ in self.m.WINDOWS])
+        self.assertEqual(self.m.use("sys"), (False, "flag off"))
+        self.assertRaises(ValueError, self.m.set_override, "sys", True)
+
+    def test_the_wave3a_demo_string_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud,+hud2,+sys"
+        self.assertLessEqual(len(demo), 200)
+        self.assertEqual(len(demo), 22)
+        known = [window_id for window_id, _ in self.m.WINDOWS]
+        for group in ("wave1", "hud", "hud2", "sys"):
+            for window_id in self.m.GROUPS[group]:
+                self.assertIn(window_id, known)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
+                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A))
 
     def test_a_group_turns_its_members_on_and_off_in_token_order(self):
         self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A))

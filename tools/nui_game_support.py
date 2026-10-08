@@ -50,6 +50,9 @@ Wave 2b (P10 spec 4.3) adds, for every Game:
   pushes the window that had it, which gets OnKillFocus; DeactivateWindow
   gives it back with OnSetFocus), behind ui.Window.SetFocus, KillFocus and
   IsFocus and wndMgr's own;
+- `nuigame.NuiStats` (Wave 3a, P11 spec 3.1): the loaded documents from
+  the nui stand-in, their elements from Game.element_counts; a Game made
+  with engine_3a=False has none (Recording.lack), as a Wave 2b exe;
 - install_wave2b_ui(game): the legacy widgets the Wave 2b legacy windows
   make (EditLine, DragButton, ScrollBar, SmallThinScrollBar, ThinBoard,
   MarkBox, Gauge, RadioButton, ToggleButton and buttons that keep their
@@ -122,17 +125,25 @@ def is_getter(name):
 class Recording(types.ModuleType):
     """A module that records every call of a function it does not define as
     (module.name, args) in `log` and answers `answers.get(name, 0)` (a
-    callable answer is called with the arguments)."""
+    callable answer is called with the arguments). A name in `_missing`
+    (Recording.lack) does not exist, as in an older exe."""
 
     def __init__(self, name, log, **members):
         types.ModuleType.__init__(self, name)
         self.__dict__["_log"] = log
         self.__dict__["_answers"] = {}
+        self.__dict__["_missing"] = set()
         for key, value in members.items():
             setattr(self, key, value)
 
+    def lack(self, *names):
+        """The module has none of these names from now on."""
+        for name in names:
+            self.__dict__.pop(name, None)
+            self.__dict__["_missing"].add(name)
+
     def __getattr__(self, attr):
-        if attr.startswith("__"):
+        if attr.startswith("__") or attr in self.__dict__["_missing"]:
             raise AttributeError(attr)
         log, answers, name = self.__dict__["_log"], self.__dict__["_answers"], self.__name__
 
@@ -896,7 +907,7 @@ class Game(object):
     loaded over them. `with game:` puts the modules into sys.modules (the
     legacy code imports some inside its functions); load() does it too."""
 
-    def __init__(self, nui_on=True, engine=True):
+    def __init__(self, nui_on=True, engine=True, engine_3a=True):
         self.log = []
         self.attaches = []       # ("attach", type, slot, index, count) and ("detach", type)
         self.created = []        # icon instances made: (kind, handle)
@@ -932,9 +943,11 @@ class Game(object):
         self.pressed = set()     # app.IsPressed: the DIK codes held down
         self.hyperlink = ""      # ui.GetHyperlink: the link under the mouse
         self.legacy_pasted = []  # what ime.PasteString gave the legacy edit line
+        self.element_counts = {}  # document -> elements, for nuigame.NuiStats (default 1)
         self.state = support.NuiState()
         self.state.available = nui_on
         self.engine = engine
+        self.engine_3a = engine and engine_3a
         self.dbg = support.make_dbg()
         self.modules = self._modules()
         self._saved = {}
@@ -1232,6 +1245,23 @@ class Game(object):
         define(nuigame, "SetViewHoverFormat", lambda name, format, names=None: True)
         define(nuigame, "AnchorState", lambda: {"source": False, "anchors": 0})
         self.chat_attached = attached
+        if not self.engine_3a:
+            nuigame.lack("NuiStats")
+            return
+
+        def nui_stats():
+            """P11 spec 3.1: every loaded document, whether it shows, and its
+            elements (Game.element_counts, 1 by default)."""
+            documents = [{"path": window.DOCUMENT, "shown": bool(window.visible),
+                          "elements": game.element_counts.get(window.DOCUMENT, 1)}
+                         for window in game.state.windows if window._doc]
+            return {"documents": documents, "elements": sum(d["elements"] for d in documents),
+                    "shown_elements": sum(d["elements"] for d in documents if d["shown"])}
+        define(nuigame, "NuiStats", nui_stats)
+
+    def loaded_documents(self):
+        """The documents loaded now, as nuigame.NuiStats lists them."""
+        return [window.DOCUMENT for window in self.state.windows if window._doc]
 
     # --- sys.modules ----------------------------------------------------------------
 

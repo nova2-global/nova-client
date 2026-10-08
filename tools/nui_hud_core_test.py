@@ -186,6 +186,184 @@ class HudHelpers(unittest.TestCase):
         proxy.show()
         proxy.destroy()
 
+    def test_has_engine_3a_needs_the_wave2b_engine_and_nui_stats(self):
+        self.assertTrue(self.hud.has_engine_3a())
+        nuigame = self.world.game.modules["nuigame"]
+        nuigame.lack("NuiStats")
+        self.assertFalse(self.hud.has_engine_3a(), "a Wave 2b exe")
+        self.assertTrue(self.hud.has_engine_2b())
+        world = support.Game(engine_3a=False)
+        self.assertRaises(AttributeError, getattr, world.modules["nuigame"], "NuiStats")
+        world = World(True)
+        with world:
+            nuigame = world.game.modules["nuigame"]
+            nuigame.lack("ChatAttach")
+            self.assertFalse(world.module("nui_hud").has_engine_3a(), "NuiStats without the Wave 2b engine is not enough")
+
+    def on_demand(self, document="nui/windows/test/test.rml"):
+        nui = self.world.game.modules["nui"]
+        log = []
+
+        class Board(nui.Window):
+            DOCUMENT = document
+            MODEL = "test"
+
+            def initial_model(self):
+                return {"value": 0}
+
+        class Facade(object):
+            def __init__(self):
+                self.value = 7
+                self.place = None
+                self.boards = []
+                self.demand = hud.OnDemand(self.make, self.restore, self.keep)
+
+            def make(self):
+                board = Board()
+                self.boards.append(board)
+                log.append("make")
+                return board
+
+            def restore(self, board):
+                log.append("restore")
+                board.set(value=self.value)
+                if self.place is not None:
+                    board.set_position(*self.place)
+
+            def keep(self, board):
+                log.append("keep")
+                self.value = board.get("value")
+                box = board.element_box("")
+                if box is not None:
+                    self.place = (box[0], box[1])
+
+        hud = self.hud
+        return Facade(), log
+
+    def test_on_demand_makes_the_board_at_show_and_destroys_it_at_hide(self):
+        facade, log = self.on_demand()
+        demand = facade.demand
+        self.assertIsNone(demand.board())
+        self.assertFalse(demand.is_shown())
+        demand.hide()
+        self.assertEqual(log, [], "a hide with no board does nothing")
+        self.assertTrue(demand.show())
+        board = demand.board()
+        self.assertIs(board, facade.boards[0])
+        self.assertTrue(board.is_visible())
+        self.assertTrue(demand.is_shown())
+        self.assertEqual(log, ["make", "restore"])
+        self.assertTrue(demand.show(), "a second show keeps the same board")
+        self.assertIs(demand.board(), board)
+        self.assertEqual(log, ["make", "restore"])
+        demand.hide()
+        self.assertIsNone(demand.board())
+        self.assertEqual(board.calls[-1], ("destroy",))
+        self.assertFalse(board._doc, "the document went with the hide")
+        self.assertEqual(log, ["make", "restore", "keep"])
+        demand.show()
+        self.assertIsNot(demand.board(), board, "a new board at the next show")
+        demand.destroy()
+        self.assertIsNone(demand.board())
+        self.assertFalse(demand.show(), "forgotten callbacks make nothing")
+
+    def test_on_demand_keeps_and_restores_state_across_a_hide(self):
+        facade, log = self.on_demand()
+        state = self.world.game.state
+        facade.demand.show()
+        first = facade.demand.board()
+        self.assertEqual(first.model["value"], 7, "restore set the model from the facade")
+        first.model["value"] = 9   # the document changed it (a drag, a resize)
+        state.boxes[(first.DOCUMENT, "")] = (120, 80, 300, 200)
+        facade.demand.hide()
+        self.assertEqual((facade.value, facade.place), (9, (120, 80)), "keep read it back before the destroy")
+        facade.demand.show()
+        second = facade.demand.board()
+        self.assertEqual(second.model["value"], 9)
+        self.assertEqual(second.placement, ("position", 120, 80, (0.0, 0.0)))
+
+    def test_on_demand_probe_answers_whether_the_document_loads_and_leaves_nothing(self):
+        facade, log = self.on_demand()
+        state = self.world.game.state
+        self.assertTrue(facade.demand.probe())
+        self.assertEqual(log, ["make"], "the probe neither restores nor keeps")
+        self.assertFalse(facade.boards[0]._doc, "the probe destroyed its board")
+        self.assertIsNone(facade.demand.board())
+        self.assertFalse(any(window._doc for window in facade.boards))
+        state.failing.add(facade.boards[0].DOCUMENT)
+        self.assertFalse(facade.demand.probe(), "a document that does not load")
+        self.assertFalse(facade.demand.show(), "nor does it show")
+        self.assertIsNone(facade.demand.board())
+        state.failing.clear()
+        facade.demand.show()
+        self.assertTrue(facade.demand.probe(), "a shown board answers for itself")
+        self.assertTrue(facade.demand.is_shown(), "and stays")
+
+    def test_on_demand_holds_its_callbacks_weakly(self):
+        facade, log = self.on_demand()
+        demand = facade.demand
+        del facade
+        import gc
+        gc.collect()
+        self.assertFalse(demand.show(), "a facade that went makes nothing")
+        self.assertEqual(log, [])
+
+    def escape_chain(self, *windows):
+        """The windows' OnPressEscapeKey in the order wndMgr walks them: the
+        TOP_MOST layer before the UI layer, each layer's children last
+        first (CWindow::RunPressEscapeKeyEvent); the first True stops it."""
+        order = {"TOP_MOST": 0, "UI": 1}
+        ranked = sorted(enumerate(windows), key=lambda pair: (order[pair[1].layer], -pair[0]))
+        for _, window in ranked:
+            if window.IsShow() and window.OnPressEscapeKey():
+                return window
+        return None
+
+    def test_an_escape_proxy_in_top_most_comes_first(self):
+        ran = []
+        ui_proxy = self.hud.EscapeProxy(lambda: ran.append("ui"))
+        top_proxy = self.hud.EscapeProxy(lambda: ran.append("top"), layer="TOP_MOST")
+        later_ui = self.hud.EscapeProxy(lambda: ran.append("later ui"))
+        self.assertEqual(ui_proxy._window.layer, "UI", "the default is today's layer")
+        self.assertEqual(top_proxy._window.layer, "TOP_MOST")
+        self.assertEqual(top_proxy._window.size, (0, 0))
+        for proxy in (ui_proxy, top_proxy, later_ui):
+            proxy.show()
+        windows = (ui_proxy._window, top_proxy._window, later_ui._window)
+        self.assertIs(self.escape_chain(*windows), top_proxy._window)
+        self.assertEqual(ran, ["top"], "before every UI-layer window, the later one too")
+        top_proxy.hide()
+        self.assertIs(self.escape_chain(*windows), later_ui._window)
+        none = self.hud.EscapeProxy(None)
+        none.show()
+        self.assertIs(none._window.OnPressEscapeKey(), True, "no action: the key is kept and nothing runs")
+        self.assertEqual(ran, ["top", "later ui"])
+        for proxy in (ui_proxy, top_proxy, later_ui, none):
+            proxy.destroy()
+
+    def test_an_exit_action_closes_and_answers_true(self):
+        ran = []
+
+        class Owner(object):
+            def Close(self):
+                ran.append("close")
+
+        owner = Owner()
+        plain = self.hud.EscapeProxy(owner.Close)
+        self.assertIs(plain._window.OnPressExitKey(), False, "without an exit action the exit key goes on")
+        self.assertEqual(ran, [])
+        proxy = self.hud.EscapeProxy(owner.Close, exit_action=owner.Close)
+        proxy.show()
+        self.assertIs(proxy._window.OnPressExitKey(), True)
+        self.assertEqual(ran, ["close"])
+        kept = self.hud.EscapeProxy(None, exit_action=lambda: None)
+        self.assertIs(kept._window.OnPressExitKey(), True, "an exit action that does nothing still keeps the key")
+        self.assertEqual(ran, ["close"])
+        proxy.destroy()
+        self.assertIsNone(proxy._window)
+        plain.destroy()
+        kept.destroy()
+
     def test_locale_text_calls_typed_entries_and_makes_the_text_plain(self):
         locale = self.world.game.modules["localeInfo"]
         locale.PLAIN_KEY = "Hello @ui.X"

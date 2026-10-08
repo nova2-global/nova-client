@@ -42,6 +42,15 @@ def has_engine_2b():
 	return all(getattr(nuigame, name, None) is not None for name in ("ChatAttach", "ViewState", "AnchorState"))
 
 
+def has_engine_3a():
+	"""True when the exe has the Wave 3a engine as well: nuigame.NuiStats.
+	Only the chat's closed view needs it (nui-chat-lines mode="off"); the
+	Wave 3a windows need has_engine() alone."""
+	if not has_engine_2b():
+		return False
+	return getattr(sys.modules.get("nuigame"), "NuiStats", None) is not None
+
+
 def take_over(key, facade):
 	"""Destroys the NovaUI parts of the previous facade registered under `key`
 	if they are still alive (a phase that ended without Destroy, D26), then
@@ -69,10 +78,11 @@ def current(key):
 class _EscapeWindow(ui.Window):
 	"""The legacy window behind an EscapeProxy: 0 x 0, so never picked."""
 
-	def __init__(self, action):
-		ui.Window.__init__(self, "UI")
+	def __init__(self, action, layer="UI", exit_action=None):
+		ui.Window.__init__(self, layer)
 		self.SetWindowName("NuiEscapeProxy")
 		self._action = action
+		self._exit_action = exit_action
 
 	def __del__(self):
 		ui.Window.__del__(self)
@@ -83,21 +93,44 @@ class _EscapeWindow(ui.Window):
 			action()
 		return True
 
+	def OnPressExitKey(self):
+		action = self._exit_action
+		if action is None:
+			return False
+		action()
+		return True
+
+
+def _mem_func(action):
+	"""A bound method as a weak ui.__mem_func__, so a proxy keeps no facade
+	alive; anything else as given."""
+	mem_func = getattr(ui, "__mem_func__", None)
+	if mem_func is not None and hasattr(action, "__self__"):
+		return mem_func(action)
+	return action
+
 
 class EscapeProxy(object):
-	"""A 0 x 0 legacy ui.Window in the UI layer, shown while its NovaUI
-	window is shown, whose OnPressEscapeKey runs `action` and returns True.
-	It keeps the window's place in the legacy Escape chain
+	"""A 0 x 0 legacy ui.Window, shown while its NovaUI window is shown, whose
+	OnPressEscapeKey runs `action` (None: nothing) and returns True. It keeps
+	the window's place in the legacy Escape chain
 	(CWindow::RunPressEscapeKeyEvent, PythonWindow.cpp:643-659), so Escape
 	acts in the legacy order whatever NovaUI document has the focus. It is
-	never picked (no area). `action` is held as a weak method
-	(ui.__mem_func__), so the proxy keeps no facade alive."""
+	never picked (no area).
 
-	def __init__(self, action):
-		mem_func = getattr(ui, "__mem_func__", None)
-		if mem_func is not None and hasattr(action, "__self__"):
-			action = mem_func(action)
-		self._window = _EscapeWindow(action)
+	`layer` is the proxy's legacy layer, "UI" (the default) or "TOP_MOST":
+	the chain walks each layer's children last first, and the TOP_MOST
+	layer before the UI layer, so a TOP_MOST proxy comes before every
+	UI-layer window, as a legacy TOP_MOST window would. `exit_action`, when
+	given, is run by the proxy's OnPressExitKey, which then returns True
+	(the window's close button and WM_CLOSE reach it through
+	CWindowManager::RunPressExitKey, PythonWindowManager.cpp:1486-1500);
+	without it the proxy returns False there and the exit key goes on.
+	`action` and `exit_action` are held as weak methods (ui.__mem_func__)
+	when they are bound methods."""
+
+	def __init__(self, action, layer="UI", exit_action=None):
+		self._window = _EscapeWindow(_mem_func(action), layer, _mem_func(exit_action))
 		self._window.SetSize(0, 0)
 		self._window.Hide()
 
@@ -118,6 +151,7 @@ class EscapeProxy(object):
 		if window is not None:
 			window.Hide()
 			window._action = None
+			window._exit_action = None
 			window.Destroy()
 
 
@@ -132,6 +166,98 @@ def _weak(method):
 		if target is not None:
 			target()
 	return call
+
+
+def _weak_fn(fn):
+	"""A bound method held weakly, returning its result (None once its
+	object went); anything else as given."""
+	if fn is None or not hasattr(fn, "__self__"):
+		return fn
+	ref = weakref.WeakMethod(fn)
+
+	def call(*args):
+		target = ref()
+		if target is None:
+			return None
+		return target(*args)
+	return call
+
+
+class OnDemand(object):
+	"""A board (a nui.Window) that exists only while its window is shown:
+	made at show(), destroyed at hide(), because RmlUi updates every loaded
+	document each frame, shown or not. make() makes a new board; restore(board)
+	runs after each make, to set the board's model and place from the
+	facade's state; keep(board) runs before each destroy, to read back what
+	the document holds (a moved window's place: element_box of its body).
+	All three are held weakly when they are bound methods (the facade owns
+	the OnDemand)."""
+
+	def __init__(self, make, restore=None, keep=None):
+		self._make = _weak_fn(make)
+		self._restore = _weak_fn(restore)
+		self._keep = _weak_fn(keep)
+		self._board = None
+
+	def _new(self):
+		make = self._make
+		if make is None:
+			return None
+		return make()
+
+	def probe(self):
+		"""Makes one board and destroys it: True when its document loaded. A
+		board that is shown now answers for itself and stays."""
+		if self._board is not None:
+			return bool(self._board._doc)
+		board = self._new()
+		if board is None:
+			return False
+		loaded = bool(board._doc)
+		board.destroy()
+		return loaded
+
+	def board(self):
+		"""The board while shown, else None."""
+		return self._board
+
+	def show(self):
+		"""Makes the board if there is none (then restore(board)), then shows
+		it. True when it is shown; a board whose document did not load is
+		destroyed again, and nothing shows."""
+		board = self._board
+		if board is None:
+			board = self._new()
+			if board is None:
+				return False
+			if not board._doc:
+				board.destroy()
+				return False
+			self._board = board
+			if self._restore is not None:
+				self._restore(board)
+			if self._board is not board:
+				# restore() hid it again (a caller's Hide inside it).
+				return False
+		return bool(board.show())
+
+	def hide(self):
+		"""keep(board), then destroys it; nothing when there is none."""
+		board = self._board
+		if board is None:
+			return
+		self._board = None
+		if self._keep is not None:
+			self._keep(board)
+		board.destroy()
+
+	def is_shown(self):
+		return self._board is not None and bool(self._board.is_visible())
+
+	def destroy(self):
+		"""hide() and forgets the callbacks."""
+		self.hide()
+		self._make = self._restore = self._keep = None
 
 
 def _call(method):

@@ -1,10 +1,10 @@
 """Which windows run on NovaUI, and the factory that makes them.
 
-Each window has an id. Its default lives here (every Wave 1, 2a and 2b
+Each window has an id. Its default lives here (every Wave 1, 2a, 2b and 3a
 window is off: legacy) and config/metin2.cfg overrides it through
 UI_NUI_WINDOWS ("+id" on, "-id" off, comma-separated;
-systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud", "hud2")
-in that string stands for each of its windows, in its place among the
+systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud", "hud2",
+"sys") in that string stands for each of its windows, in its place among the
 tokens.
 UI_NUI_LOGIN 1 means "+login" unless UI_NUI_WINDOWS names login itself.
 A window runs on NovaUI only when its flag is on, NovaUI is available, the
@@ -44,7 +44,7 @@ except ImportError:  # plain Python outside the client
 	wndMgr = None
 
 
-WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a and 2b
+WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a, 2b and 3a
 	("login", False),
 	("dialogs", False),
 	("server-board", False),
@@ -73,6 +73,12 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("player-gauge", False),       # the HP gauge over the player's head
 	("shop-signs", False),         # the private shop signs
 	("guild-war", False),          # the guild war score boards
+	("system-menu", False),        # the system menu (Escape in game)
+	("system-options", False),     # the system options, its music list and the Interface section
+	("game-options", False),       # the game options
+	("restart", False),            # the restart dialog after a death
+	("help", False),               # the help window
+	("point-reset", False),        # the point reset questions; needs the NovaUI dialog kit
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
@@ -80,6 +86,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"hud": ("taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
 	        "edge-buttons", "tip-board", "big-board", "map-name"),
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
+	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 }
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision

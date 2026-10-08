@@ -21,7 +21,9 @@ one more choice; nui.set_scale_percent) and reduced motion
 
 A slider's or the toggle's change event also arrives when the model moves
 the control (each show); a value equal to the model's is that echo and does
-nothing, so opening the window writes no setting. Escape closes the window
+nothing, so opening the window writes no setting. The toggle itself acts on
+a left mousedown: RmlUi makes no click in a document that takes no focus,
+so its label cannot flip the checkbox. Escape closes the window
 in its legacy place (nui_hud.EscapeProxy). A window the player moved keeps
 its place across a hide, as legacy's one window does; a scale change
 centers it again.
@@ -112,6 +114,11 @@ class OptionBoard(nui.Window):
 	@nui.on("motion")
 	def on_motion(self, checked):
 		self._owner.nui_motion(checked)
+
+	@nui.on("flip_motion")
+	def on_flip_motion(self, button):
+		if button == 0:
+			self._owner.nui_flip_motion()
 
 
 class OptionDialog(nui_hud.LayoutCalls):
@@ -396,6 +403,15 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return
 		board.set(reduced_motion=checked)
 		nui.set_reduced_motion(checked)
+
+	def nui_flip_motion(self):
+		"""A left press on the toggle flips reduced motion. RmlUi clicks only a
+		focusable element, and this document takes no focus (D11), so the
+		toggle's label never forwards a click to its checkbox; the checkbox
+		then follows the model, and its change event is the echo."""
+		board = self._board()
+		if board is not None:
+			self.nui_motion(not bool(board.get("reduced_motion")))
 
 	def on_theme_changed(self, theme_id):
 		self._set(theme=nui.get_theme())

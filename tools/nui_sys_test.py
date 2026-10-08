@@ -31,6 +31,7 @@ import inspect
 import io
 import json
 import os
+import re
 import sys
 import types
 import unittest
@@ -797,6 +798,20 @@ class InterfaceSection(unittest.TestCase):
         self.options.Show()
         self.assertIs(self.model()["reduced_motion"], True, "read back at the next show")
 
+    def test_a_left_press_on_the_toggle_flips_reduced_motion_and_the_checkbox_echo_does_nothing(self):
+        # RmlUi makes no click in a document that takes no focus, so the
+        # toggle's label never flips its checkbox: the press flips the setting.
+        board(self.options).fire("flip_motion", 1)
+        self.assertEqual(self.state.appearance, [], "left button only")
+        board(self.options).fire("flip_motion", 0)
+        self.assertEqual(self.state.appearance, [("set_reduced_motion", True)])
+        self.assertIs(self.model()["reduced_motion"], True)
+        board(self.options).fire("motion", True)
+        self.assertEqual(self.state.appearance, [("set_reduced_motion", True)], "the checkbox following the model")
+        board(self.options).fire("flip_motion", 0)
+        self.assertEqual(self.state.appearance[-1], ("set_reduced_motion", False))
+        self.assertIs(self.model()["reduced_motion"], False)
+
     def test_the_interface_section_calls_no_legacy_setter_itself(self):
         mark = self.world.mark()
         for event in (("choose_theme", "classic", 0), ("choose_scale", 125, 0), ("motion", True)):
@@ -1221,6 +1236,9 @@ class Bands(unittest.TestCase):
                         body_rule = sheet.split("body.%s" % window)[1].split("}")[0]
                         self.assertIn("focus: none", body_rule, window)
                     self.assertNotIn("data-event-click", markup, "buttons act on mousedown")
+                    for label in re.findall(r"<label\b[^>]*>", markup):
+                        self.assertIn("data-event-mousedown", label,
+                                      "RmlUi makes no click in a document that takes no focus, so a label never forwards one")
 
 
 class NoPerFramePython(unittest.TestCase):

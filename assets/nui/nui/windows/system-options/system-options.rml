@@ -15,8 +15,9 @@
 	     set_scale_percent, set_reduced_motion); the scale is a row of
 	     choices, not a slider, so the window does not rescale under a drag
 	     (P11 spec D12). The body and its controls take no focus: the buttons
-	     act on a left mousedown, the sliders and the toggle on their change
-	     events; Escape reaches the window in its legacy place
+	     and the toggle act on a left mousedown (RmlUi makes no click in a
+	     document that takes no focus), the sliders on their change events;
+	     Escape reaches the window in its legacy place
 	     (nui_hud.EscapeProxy). The theme and scale choices are repeated in a
 	     bare wrapper, so their own bindings read the item from a child (the
 	     scale list shrinks when a custom percent goes). -->
@@ -89,9 +90,12 @@
 				</div>
 			</div>
 			<div class="so-row so-row--motion">
-				<!-- The checkbox inside a nui-toggle has no box of its own: a
-				     click on the label (its id: so-motion-toggle) toggles it. -->
-				<label id="so-motion-toggle" class="nui-toggle so-motion">
+				<!-- RmlUi makes no click in a document that takes no focus
+				     (Context::ProcessMouseButtonUp clicks only a focusable
+				     element), so this label cannot forward one to its checkbox:
+				     a left mousedown on it flips the setting, and the checkbox
+				     follows the model. -->
+				<label id="so-motion-toggle" class="nui-toggle so-motion" data-event-mousedown="flip_motion(ev.button)">
 					<input id="so-motion" type="checkbox" class="nui-toggle__input"
 						data-attrif-checked="reduced_motion" data-event-change="motion(ev.checked)"/>
 					<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>

@@ -13,8 +13,9 @@ legacy place (P10 spec D19).
 The texts are legacy's __RefreshName (uiguild.py:456-468): "name score"
 until the server sends both member counts, then "name(count) score". A
 guild's mark is a 16 x 12 region of the mark atlas the client downloads
-(mark_source, spec D20); a guild without a mark shows none. A board's width
-follows its text, where legacy computes it from the name's length."""
+(mark_source, spec D20); a guild without a mark shows none. A modern board's width follows its
+text; each entry also carries legacy's width from the names' length
+(legacy_width), which the classic skin uses (--legacy-width)."""
 
 import guild
 
@@ -172,7 +173,7 @@ class GuildWarScoreBoard(object):
 		self.__RefreshName()
 
 	def __RefreshName(self):
-		"""Legacy's texts (uiguild.py:456-468); the width follows them."""
+		"""Legacy's texts (uiguild.py:456-468), and its width (_legacy_width)."""
 		ally, enemy = self.allyDataDict, self.enemyDataDict
 		if -1 == ally["MEMBER_COUNT"] or -1 == enemy["MEMBER_COUNT"]:
 			ally["TEXT"] = "%s %d" % (ally["NAME"], ally["SCORE"])
@@ -206,7 +207,18 @@ class GuildWarScoreBoard(object):
 		for data in (self.allyDataDict, self.enemyDataDict):
 			src, rect = data["MARK"]
 			rows.append({"src": src, "rect": rect, "text": nui.plain_text(data["TEXT"])})
-		return {"key": self._key, "rows": rows}
+		return {"key": self._key, "rows": rows, "legacy_width": self._legacy_width()}
+
+	def _legacy_width(self):
+		"""The legacy board's width in dp (__RefreshName, uiguild.py:456-468):
+		30 + the longer name's length * 6 + 40, and 15 more with the member
+		counts. The classic skin sizes the board by it (--legacy-width); the
+		modern ones follow the drawn text."""
+		ally, enemy = self.allyDataDict, self.enemyDataDict
+		width = 30 + max(len(ally["NAME"]), len(enemy["NAME"])) * 6 + 8 * 5
+		if -1 != ally["MEMBER_COUNT"] and -1 != enemy["MEMBER_COUNT"]:
+			width += 15
+		return "%ddp" % max(32, width)
 
 	def _changed(self):
 		if self in _wars and self._opened:

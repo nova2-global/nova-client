@@ -142,6 +142,20 @@ body.skin-classic.chat-log .chat-log__filter.is-on, body.skin-classic.chat-log .
 	decorator: image("d:/ymir work/ui/public/xsmall_button_03.sub" scale-none left top);
 	color: var(--classic-button-text);
 }
+/* Legacy centers each label on its button and lets a long one run past
+   both ends ("Announcement" over "Info", ui.Button's centered text line): a
+   label box much wider than the button, centered on it, that takes no
+   pointer. */
+body.skin-classic.chat-log .chat-log__filter-label
+{
+	position: absolute;
+	left: -100dp;
+	right: -100dp;
+	top: 0;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
 body.skin-classic.chat-log .chat-log__filter--all { left: 13dp; }
 body.skin-classic.chat-log .chat-log__filter--0 { left: 61dp; }
 body.skin-classic.chat-log .chat-log__filter--1 { left: 109dp; }

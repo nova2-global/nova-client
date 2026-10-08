@@ -699,6 +699,23 @@ class ChatDifferential(unittest.TestCase):
             board.on_scale_changed(1.5)
         self.assertEqual(board.placement, ("position", 800 / 1.5, 826 / 1.5, (0.5, 1.0)))
 
+    def test_the_history_holds_legacys_138_pixels_as_dp_at_every_scale(self):
+        """interfacemodule.py's SetHeight(200) over the input line 62 px up:
+        138 legacy pixels, 8 rows of 15dp, whatever the scale at login (a
+        division by the scale gave 69dp, 3 rows, at 200%)."""
+        for scale in (1.0, 1.5, 2.0):
+            world = World(True)
+            world.game.state.scale = scale
+            world.make_chat()
+            self.assertEqual(world.board().get("history_height"), 138.0, scale)
+            with world:
+                world.chat.SetPosition(500, 900 - 25 - 74)
+                world.chat.SetHeight(200)
+            self.assertEqual(world.board().get("history_height"), 138.0, "the taskbar's place does not change it")
+        with world:
+            world.chat.SetHeight(40)
+        self.assertEqual(world.board().get("history_height"), 25.0, "at least 25, as the sizing bar's minimum")
+
     def test_the_sizing_bar_drag_sets_the_history_height(self):
         world = World(True)
         world.make_chat()
@@ -866,6 +883,44 @@ class LogDifferential(unittest.TestCase):
         self.assertFalse(world.log.escapeProxy.is_shown())
         self.assertIs(world.game.focus.active, world.gameWindow, "the log's field gave wndMgr's focus back")
 
+    def test_the_log_field_keeps_the_focus_it_takes_from_the_open_chat(self):
+        """Both facades own a FocusProxy. A press on the log's field moves
+        wndMgr's focus from the chat's proxy to the log's; the chat must not
+        answer by moving NovaUI's one focus to its mode button, which would
+        leave no field focused and send the keys to the game's hotkeys."""
+        world = World(True)
+        world.enter_game()
+        with world, quiet():
+            world.chat.OpenChat()
+            world.log.Show()
+        chat_board, log_board = world.chat.board, world.log.board
+        mark = len(chat_board.calls)
+        with world:
+            log_board.nui_field_press({"type": "mousedown", "button": 0, "target_id": "chat-log-input"})
+        self.assertEqual(log_board.focused, "chat-log-input")
+        self.assertTrue(world.log.focusProxy.has_focus())
+        self.assertNotIn(("focus", "chat-mode"), chat_board.calls[mark:], "the chat left NovaUI's focus on the log's field")
+        self.assertTrue(world.chat.IsEditMode(), "the chat stays open")
+        with world:
+            world.log.Close()
+        self.assertTrue(world.chat.focusProxy.has_focus(), "wndMgr gave the chat's proxy its focus back")
+        self.assertEqual(chat_board.focused, "chat-input", "and the chat's field took NovaUI's")
+
+    def test_the_open_chat_keeps_the_focus_it_takes_from_the_log_field(self):
+        world = World(True)
+        world.enter_game()
+        with world, quiet():
+            world.log.Open()
+        log_board = world.log.board
+        self.assertTrue(world.log.focusProxy.has_focus())
+        mark = len(log_board.calls)
+        with world:
+            world.chat.OpenChat()
+        self.assertEqual(world.chat.board.focused, "chat-input")
+        self.assertTrue(world.chat.focusProxy.has_focus())
+        self.assertNotIn(("focus", "chat-log-mode"), log_board.calls[mark:], "the log left NovaUI's focus on the chat's field")
+        self.assertTrue(world.log.IsShow())
+
     def test_the_resize_sets_the_size_and_the_field_limit(self):
         world = World(True)
         world.enter_game()
@@ -924,6 +979,22 @@ class FocusProxy(unittest.TestCase):
         self.assertIs(self.world.game.focus.active, self.world.gameWindow)
         self.assertEqual(self.events, [])
         proxy.destroy()
+
+    def test_another_proxy_taking_the_focus_runs_no_on_lost(self):
+        events = []
+        first = self.world.module("nui_hud").FocusProxy(self.lost, self.gained)
+        second = self.world.module("nui_hud").FocusProxy(lambda: events.append("second lost"), lambda: events.append("second gained"))
+        first.take()
+        second.take()
+        self.assertTrue(second.has_focus())
+        self.assertEqual(self.events, [], "the second proxy's field has NovaUI's focus already")
+        second.release()
+        self.assertTrue(first.has_focus())
+        self.assertEqual(self.events, ["gained"], "wndMgr gave the first its focus back")
+        line = self.world.game.modules["ui"].EditLine()
+        line.SetFocus()
+        self.assertEqual(self.events, ["gained", "lost"], "a legacy edit line still runs on_lost")
+        self.assertEqual(events, [])
 
     def test_the_callbacks_are_held_weakly(self):
         class Owner(object):
@@ -1132,7 +1203,10 @@ class SharedPieces(unittest.TestCase):
         sheet = read(os.path.join(NUI, "components", "chat.rcss"))
         for index, name in enumerate(names[:9]):
             self.assertIn(".nui-chat__line--t%d { color: var(--%s); }" % (index, name), sheet)
-        self.assertIn(".nui-chat__line.nui-anim.is-fading", sheet)
+        # The element steps the fade's opacity; a transition on is-fading would
+        # rebuild the line's meshes every frame (WAVE2B F3).
+        self.assertNotIn("is-fading\n{", sheet)
+        self.assertNotIn("transition: opacity", sheet)
 
     def test_no_window_or_component_sheet_names_a_skin_class(self):
         for folder in (os.path.join(WINDOWS, "chat"), os.path.join(WINDOWS, "chat-log"), os.path.join(NUI, "components")):

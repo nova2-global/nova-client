@@ -702,6 +702,23 @@ class SignDifferential(unittest.TestCase):
                 world.module("uiPrivateShopBuilder").g_privateShopAdvertisementBoardDict[vid].OnMouseLeftButtonUp()
         return step
 
+    def test_the_classic_width_is_legacys_text_length_rule(self):
+        """--legacy-width, which the classic skin sizes a sign by, is the
+        width legacy's board gets (len * 6 + 20, at least ThinBoard's 32; a
+        color tag counts, as legacy counts it)."""
+        legacy, novaui = self.worlds()
+        names = {11: "Potions and more", 12: "|cffffc700Golden|r Bazaar", 13: "My", 14: ""}
+        for world in (legacy, novaui):
+            with world, quiet():
+                for vid, name in names.items():
+                    world.interface.AppearPrivateShop(vid, name)
+        boards = self.builder(legacy).g_privateShopAdvertisementBoardDict
+        legacy_widths = {vid: "%ddp" % max(32, boards[vid].size[0]) for vid in names}
+        novaui_widths = {s["vid"]: s["legacy_width"] for s in novaui.module("nui_shop_signs")._board.model["signs"]}
+        self.assertEqual(novaui_widths, legacy_widths)
+        self.assertEqual(novaui_widths[11], "116dp")
+        self.assertEqual(novaui_widths[14], "32dp")
+
     def test_signs_appear_hide_with_the_option_and_open_their_shop(self):
         legacy, novaui, seen = self.flow([
             lambda w: w.interface.AppearPrivateShop(11, "Potions and more"),
@@ -809,6 +826,31 @@ class WarDifferential(unittest.TestCase):
         self.assertEqual(seen[0][-1], [])
         self.assertIsNone(novaui.module("nui_guild_war")._board, "the document goes with the last war")
 
+    def test_the_classic_width_is_legacys_name_length_rule(self):
+        """--legacy-width, which the classic skin sizes a board by: legacy's
+        __RefreshName width, 15 wider once both member counts are known."""
+        legacy, novaui = pair()
+        steps = [
+            lambda w: w.interface.OnStartGuildWar(1, 2),
+            lambda w: w.interface.UpdateMemberCount(1, 3, 2, 4),
+            lambda w: w.interface.OnStartGuildWar(1, 3),
+        ]
+        seen = []
+        for world in (legacy, novaui):
+            states = []
+            for step in steps:
+                with world, quiet():
+                    step(world)
+                if world.nui_on:
+                    entries = reversed(world.module("nui_guild_war")._board.model["boards"])
+                    states.append([entry["legacy_width"] for entry in entries])
+                else:
+                    states.append(["%ddp" % max(32, board.size[0]) for board in world.interface.guildScoreBoardDict.values()
+                                   if board.IsShow()])
+            seen.append(states)
+        self.assertEqual(seen[1], seen[0])
+        self.assertEqual(seen[0][1], ["%ddp" % (30 + 9 * 6 + 40 + 15)], "Lionheart, with the counts")
+
     def test_the_marks_are_the_regions_legacy_mark_box_draws(self):
         legacy, novaui = pair()
         for world in (legacy, novaui):
@@ -906,8 +948,9 @@ class Fixtures(unittest.TestCase):
         self.check(self.world.module("nui_shop_signs").ShopSignBoard(), "shop-signs", ("own-only",))
         signs = fixture("shop-signs")["shop_signs"]["signs"]
         self.assertEqual(len(signs), 4)
-        for sign in signs:
-            self.assertEqual(set(sign), {"vid", "text", "own", "shown"})
+        for sign in signs + fixture("shop-signs", "own-only")["shop_signs"]["signs"]:
+            self.assertEqual(set(sign), {"vid", "text", "own", "shown", "legacy_width"})
+            self.assertEqual(sign["legacy_width"], self.world.module("nui_shop_signs").legacy_width(sign["text"]))
         self.assertEqual(sum(1 for sign in signs if sign["own"]), 1)
         self.assertTrue(any("|c" in sign["text"] for sign in signs))
         self.assertFalse(fixture("shop-signs", "own-only")["shop_signs"]["show_all"])
@@ -922,7 +965,7 @@ class Fixtures(unittest.TestCase):
                          [("/nui/windows/guild-war/fixture/marks.tga", "0 0 16 12"),
                           ("/nui/windows/guild-war/fixture/marks.tga", "16 0 16 12")])
         for board in boards + fixture("guild-war", "two")["guild_war"]["boards"]:
-            self.assertEqual(set(board), {"key", "rows"})
+            self.assertEqual(set(board), {"key", "rows", "legacy_width"})
             for row in board["rows"]:
                 self.assertEqual(set(row), {"src", "rect", "text"})
 

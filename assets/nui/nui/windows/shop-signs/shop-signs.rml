@@ -23,7 +23,7 @@
 	<div class="shop-signs__slot" data-for="s : signs">
 		<nui-anchor class="shop-signs__anchor" mode="project" height="220" data-attr-vid="s.vid"
 			data-attr-id="'shop-sign-' + s.vid" data-if="s.shown &amp;&amp; (show_all || s.own)"><div
-			class="nui-panel shop-sign nui-interactive" data-event-mouseup="open(s.vid, ev.button)"><nui-text
+			class="nui-panel shop-sign nui-interactive" data-style---legacy-width="s.legacy_width" data-event-mouseup="open(s.vid, ev.button)"><nui-text
 			class="shop-sign__text" links="off" data-attr-value="s.text"/></div></nui-anchor>
 	</div>
 </body>

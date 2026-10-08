@@ -540,9 +540,13 @@ class ChatWindow(object):
 		self.nui_place()
 
 	def SetHeight(self, height):
-		"""The sizing bar at the screen height minus `height` (uichat.py:727-729)."""
-		s = nui.get_scale() or 1.0
-		self.nui_set(history_height=max(25.0, float(self.yLast - (wndMgr.GetScreenHeight() - height))) / s)
+		"""The sizing bar at the screen height minus `height` (uichat.py:727-729),
+		over the input line the Interface first puts EDIT_LINE_HEIGHT + 37 px
+		above the bottom (interfacemodule.py:119): a history of height - 62
+		legacy pixels, kept in dp as every classic size is (1dp is a legacy
+		pixel), so it holds the same rows at every scale and wherever the
+		taskbar later moves the chat."""
+		self.nui_set(history_height=max(25.0, float(height - self.EDIT_LINE_HEIGHT - 37)))
 
 	def Refresh(self):
 		self.nui_place()

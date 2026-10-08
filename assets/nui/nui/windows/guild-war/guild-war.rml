@@ -21,7 +21,7 @@
 <body template="nui" class="nui-overlay nui-below-legacy-ui guild-war" data-model="guild_war">
 	<div id="guild-war" class="guild-war__column">
 		<div class="guild-war__slot" data-for="b : boards">
-			<div class="nui-panel guild-war__board" data-attr-id="'guild-war-' + b.key">
+			<div class="nui-panel guild-war__board" data-attr-id="'guild-war-' + b.key" data-style---legacy-width="b.legacy_width">
 				<div class="guild-war__row-slot" data-for="row : b.rows">
 					<div class="guild-war__row">
 						<img class="guild-war__mark" data-if="row.src != ''" data-attr-src="row.src" data-attr-rect="row.rect"/>

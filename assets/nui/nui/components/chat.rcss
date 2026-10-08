@@ -4,9 +4,10 @@
    append lays out one line and moves the others by their bottom offset.
 
    <nui-chat-lines view="window" step="15" data-attr-mode="open ? 'edit' : 'view'"/>
-   	view mode (the chat closed): the newest 5 lines younger than 5 s, each
-   	fading out (is-fading) before it goes; the element sets its own height
-   	to its lines. edit and log modes: as many lines as its height holds,
+   	view mode (the chat closed): the newest 4 lines younger than 5 s (legacy
+   	keeps five but fades the fifth newest at once), each fading out
+   	(is-fading) before it goes; the element sets its own height to its
+   	lines. edit and log modes: as many lines as its height holds,
    	the newest at the bottom; in edit mode the top two get is-edge-0 and
    	is-edge-1, legacy's ramp.
 
@@ -50,9 +51,7 @@ nui-chat-lines
 	opacity: 0.5;
 }
 /* A closed chat's line fades as a whole in legacy's time (D13): 0.36 s, the
-   tenth per frame at 60 fps of PythonChat.cpp. */
-.nui-chat__line.nui-anim.is-fading
-{
-	opacity: 0;
-	transition: opacity 0.36s linear-in-out;
-}
+   tenth per frame at 60 fps of PythonChat.cpp. The element steps the line's
+   inline opacity (three steps, its fade-steps): an opacity change rebuilds
+   the line's meshes, so a transition here would rebuild them every frame.
+   is-fading marks the line while it fades. */

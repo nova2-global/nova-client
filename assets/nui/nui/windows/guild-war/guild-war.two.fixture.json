@@ -1,11 +1,11 @@
 {
 	"guild_war": {
 		"boards": [
-			{"key": 2, "rows": [
+			{"key": 2, "legacy_width": "139dp", "rows": [
 				{"src": "/nui/windows/guild-war/fixture/marks.tga", "rect": "16 0 16 12", "text": "Lionheart(4) 3"},
 				{"src": "", "rect": "", "text": "Northwind(6) 5"}
 			]},
-			{"key": 1, "rows": [
+			{"key": 1, "legacy_width": "124dp", "rows": [
 				{"src": "/nui/windows/guild-war/fixture/marks.tga", "rect": "0 0 16 12", "text": "Dragons 12"},
 				{"src": "/nui/windows/guild-war/fixture/marks.tga", "rect": "16 0 16 12", "text": "Lionheart 7"}
 			]}

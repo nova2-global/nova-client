@@ -144,12 +144,19 @@ def _call(method):
 		pass
 
 
+# FocusProxy.take() calls in progress. While another proxy takes wndMgr's
+# focus, NovaUI's focus already sits on that proxy's field (RmlUi keeps one
+# focus), so the proxy that loses wndMgr's focus must not move NovaUI's.
+_taking = [0]
+
+
 class _FocusWindow(ui.Window):
 	"""The legacy window behind a FocusProxy: 0 x 0, so never picked. wndMgr
 	calls OnKillFocus when another window takes its focus
 	(CWindowManager::ActivateWindow) and OnSetFocus when it gives it back
 	(DeactivateWindow); OnKeyDown passes every key on to the root window,
-	as a legacy edit line passes the game keys it does not keep."""
+	as a legacy edit line passes the game keys it does not keep. A
+	FocusProxy.take() of another proxy runs no `on_lost` here."""
 
 	def __init__(self, on_lost, on_gained):
 		ui.Window.__init__(self, "UI")
@@ -162,7 +169,7 @@ class _FocusWindow(ui.Window):
 		ui.Window.__del__(self)
 
 	def OnKillFocus(self):
-		if not self._quiet:
+		if not self._quiet and not _taking[0]:
 			_call(self._on_lost)
 
 	def OnSetFocus(self):
@@ -188,7 +195,9 @@ class FocusProxy(object):
 	Screen, left Ctrl) reach the game window as through a legacy edit line.
 	Never picked (no area); `on_lost` and
 	`on_gained` are held as weak methods; neither runs for take() and
-	release() themselves."""
+	release() themselves, and `on_lost` does not run when another proxy
+	takes the focus: its field already has NovaUI's (the chat window and
+	the chat log each own one)."""
 
 	def __init__(self, on_lost, on_gained):
 		self._window = _FocusWindow(_weak(on_lost), _weak(on_gained))
@@ -208,7 +217,11 @@ class FocusProxy(object):
 		window = self._window
 		if window is None or window.IsFocus():
 			return
-		self._quietly(window.SetFocus)
+		_taking[0] += 1
+		try:
+			self._quietly(window.SetFocus)
+		finally:
+			_taking[0] -= 1
 
 	def release(self):
 		"""wndMgr.KillFocus on the proxy, when it has it; on_lost does not run."""

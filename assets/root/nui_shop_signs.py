@@ -85,8 +85,17 @@ def _sync():
 		board, _board = _board, None
 		board.destroy()
 		return
-	_board.set(signs=[{"vid": entry["vid"], "text": entry["text"], "own": entry["own"], "shown": entry["shown"]}
+	_board.set(signs=[{"vid": entry["vid"], "text": entry["text"], "own": entry["own"], "shown": entry["shown"],
+	                   "legacy_width": legacy_width(entry["text"])}
 	                  for entry in _entries.values()])
+
+
+def legacy_width(text):
+	"""The legacy board's width for `text`, in dp: len(text) * 6 + 20
+	(uiprivateshopbuilder.py:86), tags counted as legacy counts them, at
+	least ThinBoard's 32 (ui.py:2003-2007). The classic skin sizes the sign
+	by it (--legacy-width); the modern ones follow the drawn text."""
+	return "%ddp" % max(32, len(text) * 6 + 20)
 
 
 def _forget(vid, serial):

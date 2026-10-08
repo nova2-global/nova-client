@@ -1228,7 +1228,7 @@ class Game(object):
         define(nuigame, "ChatAttach", lambda: attached.__setitem__(0, True))
         define(nuigame, "ChatDetach", lambda: attached.__setitem__(0, False))
         define(nuigame, "ChatState", chat_state)
-        define(nuigame, "ViewState", lambda name: {"wanted": False, "renders": 0, "texels": [0, 0], "natural": [0, 0], "hover": ""})
+        define(nuigame, "ViewState", lambda name: {"wanted": False, "renders": 0, "draws": 0, "texels": [0, 0], "natural": [0, 0], "hover": ""})
         define(nuigame, "SetViewHoverFormat", lambda name, format, names=None: True)
         define(nuigame, "AnchorState", lambda: {"source": False, "anchors": 0})
         self.chat_attached = attached

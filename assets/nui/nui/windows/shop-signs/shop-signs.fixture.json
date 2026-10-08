@@ -2,10 +2,10 @@
 	"shop_signs": {
 		"show_all": true,
 		"signs": [
-			{"vid": 11, "text": "Potions and more", "own": false, "shown": true},
-			{"vid": 12, "text": "|cffffc700Golden|r Bazaar", "own": false, "shown": true},
-			{"vid": 13, "text": "My shop", "own": true, "shown": true},
-			{"vid": 14, "text": "Swords +9 cheap", "own": false, "shown": true}
+			{"vid": 11, "text": "Potions and more", "own": false, "shown": true, "legacy_width": "116dp"},
+			{"vid": 12, "text": "|cffffc700Golden|r Bazaar", "own": false, "shown": true, "legacy_width": "170dp"},
+			{"vid": 13, "text": "My shop", "own": true, "shown": true, "legacy_width": "62dp"},
+			{"vid": 14, "text": "Swords +9 cheap", "own": false, "shown": true, "legacy_width": "110dp"}
 		]
 	}
 }

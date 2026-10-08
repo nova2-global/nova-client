@@ -29,13 +29,13 @@
 			class="chat-log__close-x">&#215;</span><span class="nui-tooltip nui-anim chat-log__tip">@game.UI_CLOSE</span></span>
 	</div>
 	<div id="chat-log-filters" class="chat-log__filters">
-		<button id="chat-log-all" class="chat-log__filter chat-log__filter--all" data-class-is-on="all" data-event-mousedown="filter_all(ev.button)">@game.CHAT_ALL</button>
-		<button id="chat-log-filter-0" class="chat-log__filter chat-log__filter--0" data-class-is-on="filters[0]" data-event-mousedown="filter(0, ev.button)">@game.CHAT_NORMAL</button>
-		<button id="chat-log-filter-1" class="chat-log__filter chat-log__filter--1" data-class-is-on="filters[1]" data-event-mousedown="filter(1, ev.button)">@game.CHAT_PARTY</button>
-		<button id="chat-log-filter-2" class="chat-log__filter chat-log__filter--2" data-class-is-on="filters[2]" data-event-mousedown="filter(2, ev.button)">@game.CHAT_GUILD</button>
-		<button id="chat-log-filter-3" class="chat-log__filter chat-log__filter--3" data-class-is-on="filters[3]" data-event-mousedown="filter(3, ev.button)">@game.CHAT_SHOUT</button>
-		<button id="chat-log-filter-4" class="chat-log__filter chat-log__filter--4" data-class-is-on="filters[4]" data-event-mousedown="filter(4, ev.button)">@game.CHAT_INFORMATION</button>
-		<button id="chat-log-filter-5" class="chat-log__filter chat-log__filter--5" data-class-is-on="filters[5]" data-event-mousedown="filter(5, ev.button)">@game.CHAT_NOTICE</button>
+		<button id="chat-log-all" class="chat-log__filter chat-log__filter--all" data-class-is-on="all" data-event-mousedown="filter_all(ev.button)"><span class="chat-log__filter-label">@game.CHAT_ALL</span></button>
+		<button id="chat-log-filter-0" class="chat-log__filter chat-log__filter--0" data-class-is-on="filters[0]" data-event-mousedown="filter(0, ev.button)"><span class="chat-log__filter-label">@game.CHAT_NORMAL</span></button>
+		<button id="chat-log-filter-1" class="chat-log__filter chat-log__filter--1" data-class-is-on="filters[1]" data-event-mousedown="filter(1, ev.button)"><span class="chat-log__filter-label">@game.CHAT_PARTY</span></button>
+		<button id="chat-log-filter-2" class="chat-log__filter chat-log__filter--2" data-class-is-on="filters[2]" data-event-mousedown="filter(2, ev.button)"><span class="chat-log__filter-label">@game.CHAT_GUILD</span></button>
+		<button id="chat-log-filter-3" class="chat-log__filter chat-log__filter--3" data-class-is-on="filters[3]" data-event-mousedown="filter(3, ev.button)"><span class="chat-log__filter-label">@game.CHAT_SHOUT</span></button>
+		<button id="chat-log-filter-4" class="chat-log__filter chat-log__filter--4" data-class-is-on="filters[4]" data-event-mousedown="filter(4, ev.button)"><span class="chat-log__filter-label">@game.CHAT_INFORMATION</span></button>
+		<button id="chat-log-filter-5" class="chat-log__filter chat-log__filter--5" data-class-is-on="filters[5]" data-event-mousedown="filter(5, ev.button)"><span class="chat-log__filter-label">@game.CHAT_NOTICE</span></button>
 	</div>
 	<nui-chat-lines id="chat-log-lines" class="chat-log__lines" view="log" mode="log" step="15"
 		data-event-mousescroll="wheel(ev.wheel_delta_y)"/>

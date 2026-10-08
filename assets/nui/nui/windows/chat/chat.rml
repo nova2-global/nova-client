@@ -6,8 +6,8 @@
 	     assets/root/nui_chat.py). CPythonChat keeps the lines; C++ publishes
 	     the ones this view shows (feed chat.window.lines), and the lines
 	     element builds one element per line, so no Python runs per frame.
-	     Closed, the newest five lines show for 5 s above the taskbar on the
-	     view shade; open, the history (as tall as history_height, which the
+	     Closed, the newest four lines show for 5 s above the taskbar on the
+	     view shade (legacy keeps five and fades the fifth newest at once); open, the history (as tall as history_height, which the
 	     sizing bar's drag sets) shows as many lines as it holds above the
 	     input row. The body is the 600dp block, placed by the facade with
 	     its bottom on the taskbar's top; it takes no pointer but on its

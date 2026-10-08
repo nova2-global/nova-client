@@ -1201,7 +1201,7 @@ class Game(object):
         define(guild, "GuildIDToMarkID", lambda guild_id: -1)
         define(guild, "GetMarkImageFilenameByMarkID", lambda mark_id: "")
         define(guild, "GetMarkIndexByMarkID", lambda mark_id: 0)
-        define(guild, "GetGuildName", lambda guild_id: (True, "guild %d" % guild_id))
+        define(guild, "GetGuildName", lambda guild_id: "guild %d" % guild_id)  # a str, as PythonGuild.cpp answers
 
         app = modules["app"]
         app.IsPressed = lambda key: key in game.pressed

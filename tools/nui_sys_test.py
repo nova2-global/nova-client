@@ -1241,6 +1241,28 @@ class Bands(unittest.TestCase):
                                       "RmlUi makes no click in a document that takes no focus, so a label never forwards one")
 
 
+class ClassicTitleBars(unittest.TestCase):
+    """RmlUi hit-tests positioned boxes in document order: a classic overlay
+    that places its title bar absolutely, ahead of the legacy rows it places
+    from the board's corner, must lift the bar (z-index), or the rows' boxes
+    take the close button's and the handle's presses."""
+
+    def test_an_absolute_classic_title_bar_comes_above_the_rows(self):
+        skins = os.path.join(os.path.dirname(WINDOWS), "skins", "classic", "windows")
+        for _, _, window, _ in BOARDS:
+            path = os.path.join(skins, window + ".rcss")
+            if not os.path.exists(path):
+                continue
+            sheet = read(path)
+            marker = ".%s__titlebar\n{" % window
+            if marker not in sheet:
+                continue
+            rule = sheet.split(marker)[1].split("}")[0]
+            with self.subTest(window=window):
+                if "position: absolute" in rule:
+                    self.assertIn("z-index: 1", rule)
+
+
 class NoPerFramePython(unittest.TestCase):
     def test_no_wave3a_module_defines_a_per_frame_hook(self):
         for name in NOVAUI_MODULES:

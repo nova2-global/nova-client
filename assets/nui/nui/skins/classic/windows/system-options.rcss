@@ -17,6 +17,9 @@ body.skin-classic.system-options
 	width: 305dp;
 	min-width: 0;
 }
+/* z-index: the legacy rows below are positioned boxes placed from the
+   board's corner, later in the document, so without it they would sit above
+   the bar and take its close button's and handle's presses. */
 body.skin-classic.system-options .system-options__titlebar
 {
 	display: block;
@@ -27,6 +30,7 @@ body.skin-classic.system-options .system-options__titlebar
 	height: 32dp;
 	margin: 0;
 	padding: 0;
+	z-index: 1;
 }
 body.skin-classic.system-options .system-options__handle
 {

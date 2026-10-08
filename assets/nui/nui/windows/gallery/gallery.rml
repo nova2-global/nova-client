@@ -4,7 +4,8 @@
 	     developer page: section headings are plain English, labels that
 	     windows would localize use @ui keys. Forced states (is-hover,
 	     is-active, is-focus) stand in for pointer and keyboard states so
-	     snapshots show them. Not shown: the body-level layers (nui-overlay,
+	     snapshots show them; is-selected is a choice that is on (a small and
+	     a medium button in the sizes row). Not shown: the body-level layers (nui-overlay,
 	     nui-scrim), the dialog look (the dialog-* windows have goldens of
 	     their own), the nui-frames element outside the slot effects (the
 	     loading window shows it), nui-countdown (the HUD windows show it)
@@ -77,12 +78,14 @@
 			<button class="nui-button nui-button--small nui-button--primary nui-anim">@ui.OK</button>
 			<button class="nui-button nui-button--small nui-anim">@ui.NO</button>
 			<button class="nui-button nui-button--small nui-anim" disabled="">@ui.NO</button>
+			<button class="nui-button nui-button--small nui-anim is-selected">@ui.OK</button>
 			<span class="gallery-label gallery-size-label">medium</span>
 			<button class="nui-button nui-button--medium nui-button--primary nui-anim">@ui.YES</button>
 			<button class="nui-button nui-button--medium nui-anim">@ui.NO</button>
 			<button class="nui-button nui-button--medium nui-anim is-hover">@ui.NO</button>
 			<button class="nui-button nui-button--medium nui-anim is-active">@ui.NO</button>
 			<button class="nui-button nui-button--medium nui-anim" disabled="">@ui.NO</button>
+			<button class="nui-button nui-button--medium nui-anim is-selected">@ui.YES</button>
 			<span class="gallery-label gallery-size-label">icon</span>
 			<button class="nui-button nui-button--icon nui-anim">+</button>
 			<button class="nui-button nui-button--icon nui-anim" disabled="">+</button>

@@ -1312,6 +1312,19 @@ class ChatView(unittest.TestCase):
             chat.CloseChat()
         self.assertEqual(chat.board.get("lines_mode"), "view")
 
+    def test_the_view_boards_fixtures_match_its_model(self):
+        world = World(True)
+        with world:
+            board = world.module("nui_chat_view").ChatViewBoard(object())
+            model = board.initial_model()
+            for variant in (None, "no-view-chat"):
+                data = fixture("chat-view", variant)
+                self.assertEqual(list(data), ["chat_view"])
+                self.assertEqual(set(data["chat_view"]), set(model), variant)
+                self.assertTrue(board.set(**data["chat_view"]))
+            board.destroy()
+        self.assertEqual(world.game.dbg.errors, [])
+
     def test_a_link_in_the_view_board_reaches_the_interface_as_in_the_chat(self):
         world = World(True)
         world.enter_game()

@@ -1197,6 +1197,32 @@ class OnDemand(unittest.TestCase):
             self.assertEqual(stats["documents"], [])
 
 
+class Bands(unittest.TestCase):
+    """D10: the system windows draw above the legacy UI layer; the help is a
+    modal on a scrim, the others plain windows; D11: no focus but the help's
+    body."""
+
+    def test_no_wave3a_document_draws_below_the_legacy_ui_and_only_the_help_is_modal(self):
+        world = World(True)
+        with world:
+            for module, name, window, _ in BOARDS:
+                board_class = getattr(world.m(module), name)
+                markup = read(os.path.join(WINDOWS, window, window + ".rml"))
+                body = markup[markup.index("<body"):markup.index(">", markup.index("<body"))]
+                with self.subTest(window=window):
+                    self.assertNotIn("nui-below-legacy-ui", body)
+                    self.assertEqual("nui-scrim" in body, window == "help")
+                    self.assertEqual("nui-window" in body, window != "help")
+                    self.assertIs(bool(board_class.MODAL), window == "help")
+                    sheet = read(os.path.join(WINDOWS, window, window + ".rcss"))
+                    if window == "help":
+                        self.assertIn("focus: none", sheet.split(".help button")[1].split("}")[0], "its button")
+                    else:
+                        body_rule = sheet.split("body.%s" % window)[1].split("}")[0]
+                        self.assertIn("focus: none", body_rule, window)
+                    self.assertNotIn("data-event-click", markup, "buttons act on mousedown")
+
+
 class NoPerFramePython(unittest.TestCase):
     def test_no_wave3a_module_defines_a_per_frame_hook(self):
         for name in NOVAUI_MODULES:

@@ -8,9 +8,9 @@
    the facade's center() replaces it in the client. */
 body.music-list
 {
-	left: 20dp;
+	left: 10dp;
 	top: 12dp;
-	width: 280dp;
+	width: 300dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -21,7 +21,7 @@ body.music-list
 }
 .music-list__body
 {
-	padding: var(--space-3) var(--space-3) 0 var(--space-3);
+	padding: var(--space-3);
 }
 .music-list .music-list__viewport
 {
@@ -38,11 +38,15 @@ body.music-list
 {
 	white-space: nowrap;
 }
+/* Three buttons fit the width in the longest locale (de: Aktualisieren);
+   a longer label wraps the row rather than leave the window. */
 .music-list__footer
 {
 	justify-content: center;
+	flex-wrap: wrap;
 }
 .music-list__button
 {
+	min-width: 64dp;
 	padding: 0 var(--space-2);
 }

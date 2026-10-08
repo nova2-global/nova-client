@@ -901,10 +901,20 @@ class LogDifferential(unittest.TestCase):
         self.assertTrue(world.log.focusProxy.has_focus())
         self.assertNotIn(("focus", "chat-mode"), chat_board.calls[mark:], "the chat left NovaUI's focus on the log's field")
         self.assertTrue(world.chat.IsEditMode(), "the chat stays open")
+        # RmlUi keeps one focus: the last focus call across both documents is
+        # the one that holds. Closing the log moves its own focus off first,
+        # then wndMgr gives the chat's proxy its focus back and the chat's
+        # field takes NovaUI's.
+        order = []
+        for board in (chat_board, log_board):
+            def recording(element_id, board=board, focus=board.focus):
+                order.append(element_id)
+                return focus(element_id)
+            board.focus = recording
         with world:
             world.log.Close()
         self.assertTrue(world.chat.focusProxy.has_focus(), "wndMgr gave the chat's proxy its focus back")
-        self.assertEqual(chat_board.focused, "chat-input", "and the chat's field took NovaUI's")
+        self.assertEqual(order, ["chat-log-mode", "chat-input"], "the chat's field holds NovaUI's focus last")
 
     def test_the_open_chat_keeps_the_focus_it_takes_from_the_log_field(self):
         world = World(True)
@@ -920,6 +930,21 @@ class LogDifferential(unittest.TestCase):
         self.assertTrue(world.chat.focusProxy.has_focus())
         self.assertNotIn(("focus", "chat-log-mode"), log_board.calls[mark:], "the log left NovaUI's focus on the chat's field")
         self.assertTrue(world.log.IsShow())
+        # The log's field lost NovaUI's focus to the chat's (RmlUi's blur);
+        # the chat closing gives wndMgr's back to the log's proxy, whose field
+        # takes NovaUI's again, and the chat does not move it after.
+        with world:
+            log_board.handlers[("chat-log-input", "blur")]({"type": "blur", "target_id": "chat-log-input"})
+        order = []
+        for board in (world.chat.board, log_board):
+            def recording(element_id, board=board, focus=board.focus):
+                order.append(element_id)
+                return focus(element_id)
+            board.focus = recording
+        with world:
+            world.chat.CloseChat()
+        self.assertTrue(world.log.focusProxy.has_focus())
+        self.assertEqual(order[-1], "chat-log-input", "the log's field holds NovaUI's focus last")
 
     def test_the_resize_sets_the_size_and_the_field_limit(self):
         world = World(True)

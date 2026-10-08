@@ -386,6 +386,9 @@ class ChatBoard(nui.Window):
 	def nui_field_focus(self, event):
 		self._owner.nui_field_focus()
 
+	def nui_field_blur(self, event):
+		self._owner.nui_field_blur()
+
 	def nui_field_press(self, event):
 		self._owner.nui_field_press(event.get("button", 0))
 
@@ -464,6 +467,7 @@ class ChatWindow(object):
 		self._nui_discarded = False
 		self.board = None
 		self.focusProxy = None
+		self.fieldFocused = False   # NovaUI's focus on the field, as its focus and blur events said
 		self.modeShim = None
 		self.attached = False
 		self.boardState = chat.BOARD_STATE_VIEW
@@ -492,6 +496,7 @@ class ChatWindow(object):
 			self.input.board = self.board
 			self.board.element_on("chat-input", "keydown", self.board.nui_key)
 			self.board.element_on("chat-input", "focus", self.board.nui_field_focus)
+			self.board.element_on("chat-input", "blur", self.board.nui_field_blur)
 			self.board.element_on("chat-input", "mousedown", self.board.nui_field_press)
 			self.focusProxy = nui_hud.FocusProxy(self._on_focus_lost, self._on_focus_gained)
 			self.modeShim = add_mode_shim(self)
@@ -599,8 +604,8 @@ class ChatWindow(object):
 		chat.SetBoardState(self.chatID, chat.BOARD_STATE_EDIT)
 		self.boardState = chat.BOARD_STATE_EDIT
 		self.nui_set(open=True)
-		if self.board is not None:
-			self.board.focus("chat-input")
+		if self.board is not None and self.board.focus("chat-input"):
+			self.fieldFocused = True
 		self.input.ResetChat()
 
 	def CloseChat(self):
@@ -612,10 +617,13 @@ class ChatWindow(object):
 			self.endPos = 1.0
 			chat.SetEndPos(self.chatID, 1.0)
 		self.nui_set(open=False)
+		# NovaUI's focus off the field (when the field has it: not the log's
+		# field's), then wndMgr's: the window wndMgr then activates may focus
+		# its own field (FocusProxy on_gained), which must stay.
+		if self.board is not None and self.fieldFocused:
+			self.board.focus("chat-mode")
 		if self.focusProxy is not None:
 			self.focusProxy.release()
-		if self.board is not None:
-			self.board.focus("chat-mode")
 
 	def IsEditMode(self):
 		return chat.BOARD_STATE_EDIT == self.boardState
@@ -634,8 +642,12 @@ class ChatWindow(object):
 	# --- the field's focus (D11 b) ----------------------------------------------------
 
 	def nui_field_focus(self):
+		self.fieldFocused = True
 		if self.focusProxy is not None:
 			self.focusProxy.take()
+
+	def nui_field_blur(self):
+		self.fieldFocused = False
 
 	def nui_field_press(self, button):
 		"""The document takes no focus from a press (body focus: none), so a

@@ -52,6 +52,9 @@ class ChatLogBoard(nui.Window):
 	def nui_field_focus(self, event):
 		self._owner.nui_field_focus()
 
+	def nui_field_blur(self, event):
+		self._owner.nui_field_blur()
+
 	def nui_field_press(self, event):
 		self._owner.nui_field_press(event.get("button", 0))
 
@@ -123,6 +126,7 @@ class ChatLogWindow(object):
 		self._nui_discarded = False
 		self.board = None
 		self.focusProxy = None
+		self.fieldFocused = False   # NovaUI's focus on the field, as its focus and blur events said
 		self.escapeProxy = None
 		self.modeShim = None
 		self.attached = False
@@ -148,6 +152,7 @@ class ChatLogWindow(object):
 			self.input.board = self.board
 			self.board.element_on("chat-log-input", "keydown", self.board.nui_key)
 			self.board.element_on("chat-log-input", "focus", self.board.nui_field_focus)
+			self.board.element_on("chat-log-input", "blur", self.board.nui_field_blur)
 			self.board.element_on("chat-log-input", "mousedown", self.board.nui_field_press)
 			self.focusProxy = nui_hud.FocusProxy(self._on_focus_lost, self._on_focus_gained)
 			self.escapeProxy = nui_hud.EscapeProxy(self.OnPressEscapeKey)
@@ -215,15 +220,18 @@ class ChatLogWindow(object):
 	def Open(self):
 		"""Shows the log and focuses its field (uichat.py:1063-1066)."""
 		self.Show()
-		if self.board is not None:
-			self.board.focus("chat-log-input")
+		if self.board is not None and self.board.focus("chat-log-input"):
+			self.fieldFocused = True
 
 	def Close(self):
-		"""The field gives up the focus, then the log hides (uichat.py:1068-1071)."""
+		"""The field gives up the focus, then the log hides (uichat.py:1068-1071).
+		NovaUI's focus leaves the field first (when the field has it), then
+		wndMgr's: the window wndMgr then activates (the open chat's proxy)
+		focuses its own field, which must stay."""
+		if self.board is not None and self.fieldFocused:
+			self.board.focus("chat-log-mode")
 		if self.focusProxy is not None:
 			self.focusProxy.release()
-		if self.board is not None:
-			self.board.focus("chat-log-mode")
 		self.Hide()
 
 	def OnPressEscapeKey(self):
@@ -290,8 +298,12 @@ class ChatLogWindow(object):
 	# --- the field's focus -----------------------------------------------------------------
 
 	def nui_field_focus(self):
+		self.fieldFocused = True
 		if self.focusProxy is not None:
 			self.focusProxy.take()
+
+	def nui_field_blur(self):
+		self.fieldFocused = False
 
 	def nui_field_press(self, button):
 		"""The document takes no focus from a press (body focus: none), so a

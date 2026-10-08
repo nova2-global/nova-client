@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Canc
 VKEY_ENTER	Invio
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Slot vuoto
+OPTION_INTERFACE	Interfaccia
+OPTION_UI_SCALE	Scala
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Movimento ridotto
+POINT_RESET_QUESTION_1	Posso azzerare i tuoi punti status e abilità.
+POINT_RESET_QUESTION_2	Costa 500 Yang. Li azzero?
+POINT_RESET_CONFIRM_1	Tutta l'esperienza del tuo livello attuale andrà persa.
+POINT_RESET_CONFIRM_2	Vuoi davvero azzerarli?

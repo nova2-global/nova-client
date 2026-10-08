@@ -122,6 +122,12 @@
 {
 	color: var(--text);
 }
+/* After the text rule it ties: legacy's red, SetFontColor(1.0, 0.3, 0.3)
+   (uipointreset.py). */
+.skin-classic .nui-dialog__text--warning
+{
+	color: var(--classic-warning-text);
+}
 /* The legacy dialog buttons have gray labels; the primary one too. Before the
    classic disabled rule below, which has the same weight. */
 .skin-classic .nui-dialog__footer .nui-button--primary
@@ -331,6 +337,25 @@
 	decorator: tiled-horizontal(classic-button-middle-02-l, classic-button-middle-02-c, classic-button-middle-02-r);
 }
 .skin-classic .nui-button--medium:active, .skin-classic .nui-button--medium.is-active
+{
+	decorator: tiled-horizontal(classic-button-middle-03-l, classic-button-middle-03-c, classic-button-middle-03-r);
+}
+/* Selected (is-selected): a choice legacy draws held down (RadioButton and
+   ToggleButton Down) shows the down art, under the pointer too, as legacy's
+   does. After the size states, which these tie; the small and middle rules
+   after the large one, which they would otherwise lose to by order. */
+.skin-classic .nui-button.is-selected
+{
+	decorator: tiled-horizontal(classic-button-large-03-l, classic-button-large-03-c, classic-button-large-03-r);
+	background-color: transparent;
+	border-color: transparent;
+	transform: none;
+}
+.skin-classic .nui-button--small.is-selected
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+.skin-classic .nui-button--medium.is-selected
 {
 	decorator: tiled-horizontal(classic-button-middle-03-l, classic-button-middle-03-c, classic-button-middle-03-r);
 }

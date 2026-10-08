@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the closed chat's lines (tools/check_nui_snapshots.py): three lines on the view shade, from the feed stand-in, as C++ publishes them; no-view-chat: the view-chat option off, no lines.",
+	"cases": [
+		{"page": "chat-view", "themes": "all", "scales": [["100", "1", "960x320"], ["150", "1.5", "1440x480"], ["200", "2", "1920x640"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"chat.window.lines": "nui/windows/chat-view/chat-view.chat.window.lines.json"}},
+		{"page": "chat-view", "variant": "no-view-chat", "themes": "all", "scales": [["100", "1", "960x320"], ["150", "1.5", "1440x480"], ["200", "2", "1920x640"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"chat.window.lines": "nui/windows/chat-view/chat-view.chat.window.lines.json"}}
+	]
+}

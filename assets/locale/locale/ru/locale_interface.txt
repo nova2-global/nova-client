@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Стереть
 VKEY_ENTER	Ввод
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Пустой слот
+OPTION_INTERFACE	Интерфейс
+OPTION_UI_SCALE	Масштаб
+OPTION_UI_SCALE_AUTO	Авто
+OPTION_UI_REDUCED_MOTION	Меньше движения
+POINT_RESET_QUESTION_1	Я могу сбросить твои очки характеристик и умений.
+POINT_RESET_QUESTION_2	Это стоит 500 янг. Сбросить их?
+POINT_RESET_CONFIRM_1	Весь опыт текущего уровня будет потерян.
+POINT_RESET_CONFIRM_2	Ты действительно хочешь их сбросить?

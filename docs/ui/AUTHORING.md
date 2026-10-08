@@ -644,6 +644,10 @@ What the color roles mean:
 | `--classic-chat-press` | classic | `#ffffff4d` |
 | `--classic-chat-log-fill` | classic | `#00000077` |
 | `--classic-chat-grip` | classic | `#989898` |
+| `--classic-warning-text` | classic | `#ff4c4c` |
+| `--classic-mall-text` | classic | `#f8bf24` |
+| `--classic-help-curtain` | classic | `#00000077` |
+| `--classic-list-ex-select` | classic | `#0000b3b3` |
 
 <!-- tokens:end -->
 

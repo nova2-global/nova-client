@@ -1110,8 +1110,9 @@ class SmallWindows(unittest.TestCase):
 
 # --- the wiring (spec 5.13) --------------------------------------------------------------------------------
 
-# Wave 2b's sites (P10 spec 5.8) are in their place in the file order;
-# nui_chat_test.Wiring checks them in more detail.
+# Wave 2b's sites (P10 spec 5.8) and Wave 3a's (P11 spec 6.8) are in their
+# place in the file order; nui_chat_test.Wiring and nui_sys_test.Wiring check
+# them in more detail.
 EXPECTED_SITES = {
     "interfacemodule.py": [("make", "chat", "uiChat.ChatWindow", "nui_chat.ChatWindow"),
                            ("make", "taskbar", "uiTaskBar.TaskBar", "nui_taskbar.TaskBar"),
@@ -1121,6 +1122,10 @@ EXPECTED_SITES = {
                            ("make", "game-buttons", "uiGameButton.GameButtonWindow", "nui_game_buttons.GameButtonWindow"),
                            ("make", "minimap", "uiMiniMap.MiniMap", "nui_minimap.MiniMap"),
                            ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
+                           ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
+                           ("make", "restart", "uiRestart.RestartDialog", "nui_restart.RestartDialog"),
+                           ("make", "system-menu", "uiSystem.SystemDialog", "nui_system_menu.SystemDialog"),
+                           ("make", "help", "uiHelp.HelpWindow", "nui_help.HelpWindow"),
                            ("make", "tip-board", "uiTip.TipBoard", "nui_tip_board.TipBoard"),
                            ("make", "big-board", "uiTip.BigBoard", "nui_big_board.BigBoard"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),

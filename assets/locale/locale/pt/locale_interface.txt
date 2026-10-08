@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Apagar
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Espaço vazio
+OPTION_INTERFACE	Interface
+OPTION_UI_SCALE	Escala
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Movimento reduzido
+POINT_RESET_QUESTION_1	Posso repor os teus pontos de estado e de competência.
+POINT_RESET_QUESTION_2	Custa 500 Yang. Devo repô-los?
+POINT_RESET_CONFIRM_1	Toda a experiência do teu nível atual será perdida.
+POINT_RESET_CONFIRM_2	Queres mesmo repô-los?

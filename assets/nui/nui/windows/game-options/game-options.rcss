@@ -1,0 +1,74 @@
+/* The game options' modern look: a movable window of label and choice
+   rows in legacy's order; the six block toggles in two rows of three, as
+   legacy's. The choice in effect is selected (is-selected); a blocked
+   request is a selected toggle. The facade centers the body. Classic (the
+   legacy board, 300 x 283, at legacy's places):
+   skins/classic/windows/game-options.rcss. */
+
+/* The sheet's own place frames the window in its 480 x 420dp snapshots;
+   the facade's center() replaces it in the client. */
+body.game-options
+{
+	left: 20dp;
+	top: 8dp;
+	width: 440dp;
+	focus: none;
+	tab-index: none;
+}
+.game-options button
+{
+	tab-index: none;
+}
+.game-options__body
+{
+	padding: var(--space-2) var(--space-4) var(--space-3) var(--space-4);
+}
+.go-row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: 6dp;
+}
+.go-row:first-child
+{
+	margin-top: 0;
+}
+.go-label
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 120dp;
+	color: var(--text-muted);
+	font-size: var(--font-md);
+}
+.go-choices
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex: 1 1 auto;
+	gap: var(--space-1);
+}
+.go-choice
+{
+	display: block;
+	height: 30dp;
+	line-height: 28dp;
+	padding: 0 var(--space-2);
+}
+/* Four PvP choices fit one row: shorter buttons. */
+.go-row--pk .go-choice
+{
+	min-width: 0;
+	padding: 0 10dp;
+}
+.go-row--block .go-choice
+{
+	width: 92dp;
+	min-width: 0;
+}
+.go-tip
+{
+	font-weight: normal;
+}

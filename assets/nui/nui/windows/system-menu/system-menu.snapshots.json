@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the system menu (tools/check_nui_snapshots.py): the eight buttons, the mall shown.",
+	"cases": [
+		{"page": "system-menu", "themes": "all", "scales": [["100", "1", "320x360"], ["150", "1.5", "480x540"], ["200", "2", "640x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null}
+	]
+}

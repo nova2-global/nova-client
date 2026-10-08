@@ -46,7 +46,7 @@ WINDOWS = os.path.join(NUI, "windows")
 CLASSIC_WINDOWS = os.path.join(NUI, "skins", "classic", "windows")
 CHAT_DOC = "nui/windows/chat/chat.rml"
 LOG_DOC = "nui/windows/chat-log/chat-log.rml"
-CHAT_MODULES = ("nui_text", "nui_chat", "nui_chat_log")
+CHAT_MODULES = ("nui_text", "nui_chat_view", "nui_chat", "nui_chat_log")
 C = support.CHAT_CONSTANTS
 A = support.APP_CONSTANTS
 ITEM = "item:6979:0:0:0:0"
@@ -761,9 +761,13 @@ class ChatDifferential(unittest.TestCase):
 
 class LogDifferential(unittest.TestCase):
     def worlds(self):
+        """The log shown in both, as a player opens it before pressing its
+        controls (its NovaUI document exists only while it shows, P11 D5)."""
         legacy, novaui = pair()
         for world in (legacy, novaui):
             world.enter_game()
+            with world, quiet():
+                world.log.Show()
         return legacy, novaui
 
     def filter(self, world, index):
@@ -831,6 +835,7 @@ class LogDifferential(unittest.TestCase):
         world = World(True)
         world.enter_game()
         with world:
+            world.log.Show()
             for i in range(20):
                 world.game.modules["chat"].AppendChat(0, "line %d" % i)
             world.log.board.fire("wheel", -2.0)
@@ -950,6 +955,7 @@ class LogDifferential(unittest.TestCase):
         world = World(True)
         world.enter_game()
         with world:
+            world.log.Show()
             world.log.board.fire("resized", 570.0, 210.0)
         self.assertEqual(world.log.board.get("log_width"), 570.0)
         self.assertEqual(world.log.input.userMax, 570 // 8)
@@ -1170,7 +1176,11 @@ class Fixtures(unittest.TestCase):
                            "chat-log-input-row", "chat-log-resize"] + ["chat-log-filter-%d" % i for i in range(6)]:
             self.assertIn('id="%s"' % element_id, log, element_id)
         self.assertIn('<nui-chat-lines id="chat-lines" class="chat__lines" view="window" step="15"', chat)
-        self.assertIn('data-attr-mode="open ? \'edit\' : \'view\'"', chat)
+        self.assertIn('data-attr-mode="lines_mode"', chat)
+        view = read(os.path.join(WINDOWS, "chat-view", "chat-view.rml"))
+        self.assertIn('<nui-chat-lines id="chat-view-lines" class="chat__lines" view="window" step="15" mode="view" '
+                      'data-event-nuilink="link(ev.link)"/>', view)
+        self.assertIn('class="chat-view nui-below-legacy-ui" data-model="chat_view"', view)
         self.assertIn('view="log" mode="log" step="15"', log)
         self.assertIn('edge="top" target="chat-history"', chat)
         self.assertIn('edge="bottom-right" target="chat-log"', log)
@@ -1184,6 +1194,135 @@ class Fixtures(unittest.TestCase):
             sheet = read(os.path.join(WINDOWS, window, window + ".rcss"))
             self.assertRegex(sheet, r"body\.%s\s*\{[^}]*focus: none;" % window, window)
             self.assertRegex(sheet, r"input\.%s__input\s*\{[^}]*focus: auto;" % window.replace("-log", "-log"), window)
+
+
+# --- the chat log on demand (P11 spec 5.3, D5) -----------------------------------------------------------
+
+class LogOnDemand(unittest.TestCase):
+    def test_the_hidden_chat_log_holds_no_document(self):
+        world = World(True)
+        world.enter_game()
+        log = world.log
+        self.assertIsNone(log.board)
+        self.assertNotIn(LOG_DOC, world.game.loaded_documents(), "the constructor's probe left nothing")
+        with world:
+            self.assertTrue(log.nui_ready())
+            log.Show()
+        self.assertIn(LOG_DOC, world.game.loaded_documents())
+        self.assertTrue(log.IsShow())
+        with world:
+            log.Hide()
+        self.assertIsNone(log.board)
+        self.assertNotIn(LOG_DOC, world.game.loaded_documents())
+        self.assertFalse(log.IsShow())
+        self.assertFalse(log.escapeProxy.is_shown())
+
+    def test_the_log_shows_again_with_its_filters_size_place_and_draft(self):
+        world = World(True)
+        world.enter_game()
+        log = world.log
+        with world, quiet():
+            log.Open()
+            log.board.fire("filter", 2, 0)
+            log.board.fire("resized", 520.0, 180.0)
+            world.game.chat.append(0, "x")
+            log.board.fire("scroll", 0.4)
+        world.type("draft text", which="log")
+        world.game.state.boxes[(LOG_DOC, "")] = (300.0, 120.0, 520.0, 180.0)
+        mark = world.mark_log()
+        with world:
+            log.Close()
+        self.assertIsNone(log.board)
+        guild = log.CHAT_MODE_INDEX[2]
+        self.assertEqual([i for i, on in enumerate(world.game.chat.sets[1]["modes"]) if on and i in log.CHAT_MODE_INDEX],
+                         [guild], "chat set 1 keeps the filter")
+        with world:
+            log.Show()
+        board = log.board
+        self.assertEqual((board.get("all"), board.get("filters")), (False, [False, False, True, False, False, False]))
+        self.assertEqual((board.get("log_width"), board.get("log_height")), (520.0, 180.0))
+        self.assertEqual(board.get("end_pos"), 0.4)
+        self.assertEqual(board.placement, ("position", 300.0, 120.0, (0.0, 0.0)), "its place, read back at the hide")
+        self.assertEqual(board.get_value("chat-log-input"), "draft text", "legacy's edit line keeps its text while hidden")
+        self.assertEqual(log.input.userMax, 520 // 8)
+        self.assertEqual([name for name, _ in world.effects(mark)], [], "a hide and a show send nothing")
+        self.assertIn(("chat-log-input", "keydown"), board.handlers, "the field's handlers on the new board")
+
+
+# --- the closed chat's own document (P11 spec 5.1, D4) -----------------------------------------------------
+
+VIEW_DOC = "nui/windows/chat-view/chat-view.rml"
+
+
+class ChatView(unittest.TestCase):
+    def test_the_closed_view_board_shows_while_the_chat_is_closed_and_hides_while_open(self):
+        world = World(True)
+        chat = world.make_chat()
+        view = chat.viewBoard
+        self.assertIsNotNone(view)
+        self.assertEqual(view.DOCUMENT, VIEW_DOC)
+        self.assertTrue(view.visible, "closed and shown")
+        with world:
+            chat.OpenChat()
+        self.assertFalse(view.visible, "open: the chat's own lines")
+        with world:
+            chat.CloseChat()
+        self.assertTrue(view.visible)
+        with world:
+            chat.Hide()
+        self.assertFalse(view.visible, "a hidden chat shows no lines")
+        with world:
+            chat.Show()
+        self.assertTrue(view.visible)
+        self.assertEqual(view.placement, chat.board.placement, "placed where the chat is")
+        self.assertEqual(view.placement, ("position", 800.0, 900 - 37.0, (0.5, 1.0)))
+        with world:
+            chat.SetPosition(10, 500)
+        self.assertEqual(view.placement, chat.board.placement, "and moved with it")
+        self.assertEqual(view.FEEDS, {"view_chat": "system.view_chat"})
+
+    def test_lines_mode_is_off_closed_and_edit_open_with_the_wave3a_engine(self):
+        world = World(True)
+        chat = world.make_chat()
+        self.assertEqual(chat.board.get("lines_mode"), "off")
+        with world:
+            chat.OpenChat()
+        self.assertEqual(chat.board.get("lines_mode"), "edit")
+        with world:
+            chat.CloseChat()
+        self.assertEqual(chat.board.get("lines_mode"), "off")
+        with world:
+            self.assertTrue(chat.nui_ready())
+            chat.Destroy()
+        self.assertIsNone(chat.viewBoard)
+        self.assertEqual(world.game.loaded_documents(), [], "both documents went")
+
+    def test_without_the_wave3a_engine_the_chat_keeps_one_document(self):
+        world = World(True, setup=lambda game: game.modules["nuigame"].lack("NuiStats"))
+        chat = world.make_chat()
+        self.assertIsNone(chat.viewBoard)
+        with world:
+            self.assertTrue(chat.nui_ready())
+        self.assertEqual(world.game.loaded_documents(), [CHAT_DOC])
+        self.assertEqual(chat.board.get("lines_mode"), "view", "the closed lines in the chat's own document")
+        with world:
+            chat.OpenChat()
+        self.assertEqual(chat.board.get("lines_mode"), "edit")
+        with world:
+            chat.CloseChat()
+        self.assertEqual(chat.board.get("lines_mode"), "view")
+
+    def test_a_link_in_the_view_board_reaches_the_interface_as_in_the_chat(self):
+        world = World(True)
+        world.enter_game()
+        with world, quiet():
+            world.chat.viewBoard.fire("link", ITEM)
+        self.assertEqual(world.game.calls("interface.MakeHyperlinkTooltip"), [("interface.MakeHyperlinkTooltip", (ITEM,))])
+        world.game.pressed.add(A["DIK_LALT"])
+        with world, quiet():
+            world.chat.viewBoard.fire("link", ITEM)
+        self.assertEqual(world.game.calls("ime.PasteString"), [("ime.PasteString", (TAGGED_ITEM,))],
+                         "left Alt pastes, as a press on the chat's own lines")
 
 
 class NoPerFramePython(unittest.TestCase):

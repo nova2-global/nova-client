@@ -1,0 +1,45 @@
+/* The closed chat's lines (chat-view.rml): the chat's closed-mode rules for
+   the lines and the view shade, in this document's own block. The chat's
+   sheet keeps them too, for an exe without the Wave 3a engine, whose chat
+   shows its closed lines in its own document. */
+
+/* The facade places the body (set_position, its bottom center on the
+   taskbar's top), which writes left and top; the sheet's own place frames
+   the window in its 960 x 320dp snapshots, as the chat's does. */
+body.chat-view
+{
+	left: 50%;
+	top: 258dp;
+	width: 600dp;
+	margin-left: -300dp;
+	focus: none;
+	tab-index: none;
+	pointer-events: none;
+}
+.chat-view__block
+{
+	position: relative;
+	width: 600dp;
+}
+/* The lines element sets its own height in view mode and places each line
+   by its bottom offset, the newest on the block's bottom edge. */
+.chat-view__block .chat__lines
+{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 600dp;
+	pointer-events: none;
+}
+.chat-view__block .chat__lines .nui-chat__line
+{
+	margin-left: 10dp;
+}
+.chat-view__block .chat__lines.has-lines
+{
+	decorator: vertical-gradient(var(--chat-view-shade-top) var(--chat-view-shade-bottom));
+}
+.chat-view__block.is-quiet .chat__lines
+{
+	visibility: hidden;
+}

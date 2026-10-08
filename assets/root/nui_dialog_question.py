@@ -6,8 +6,10 @@ countdown needs a timer, which comes with the C++ data feeds (G8).
 The buttons call their events and leave the dialog open, as the legacy
 buttons do: callers close it themselves. Enter presses the accept button,
 which has the focus (new; legacy Enter did nothing here). Escape only closes
-it, with no event (uicommon.py:294-296). See nui_dialog_kit.py for the
-shared rules.
+it, with no event (uicommon.py:294-296). QuestionDialog2.SetWarningLine
+marks one of its two texts as a warning (the point reset's confirmation,
+which legacy colors red); every other facade of the kind shows none. See
+nui_dialog_kit.py for the shared rules.
 """
 
 import nui
@@ -22,7 +24,7 @@ class QuestionWindow(kit.KindWindow):
 	DEFAULT = "dialog-question-accept"
 
 	def initial_model(self):
-		return {"lines": [], "accept_label": "@ui.YES", "cancel_label": "@ui.NO"}
+		return {"lines": [], "accept_label": "@ui.YES", "cancel_label": "@ui.NO", "warn_line": -1}
 
 	@nui.on("accept")
 	def on_accept(self):
@@ -50,11 +52,17 @@ class QuestionDialog(kit.DialogFacade):
 	def _lines(self):
 		return kit.text_lines(self._text)
 
+	def _warn_row(self):
+		"""The row of the model's lines that shows as a warning: -1 here, so a
+		facade that claims the window takes any mark another one left off."""
+		return -1
+
 	def _fill(self):
 		return {
 			"lines": self._lines(),
 			"accept_label": "@ui.YES" if self._accept_text is None else nui.plain_text(self._accept_text),
 			"cancel_label": "@ui.NO" if self._cancel_text is None else nui.plain_text(self._cancel_text),
+			"warn_line": self._warn_row(),
 		}
 
 	def _replay_text(self, legacy):
@@ -144,16 +152,45 @@ class QuestionDialog2(QuestionDialog):
 
 	LEGACY = "uiCommon.LegacyQuestionDialog2"
 
+	# The legacy warning color, uipointreset.py's SetFontColor(1.0, 0.3, 0.3).
+	WARNING_COLOR = (1.0, 0.3, 0.3)
+
 	def __init__(self):
 		self._text2 = ""
+		self._warning = -1
 		QuestionDialog.__init__(self)
 
 	def _lines(self):
 		return kit.text_lines(self._text) + kit.text_lines(self._text2)
 
+	def _warn_row(self):
+		"""Text 0 starts at row 0, text 1 after text 0's lines; a warning
+		text of several lines marks its first."""
+		if self._warning == 0 and kit.text_lines(self._text):
+			return 0
+		if self._warning == 1 and kit.text_lines(self._text2):
+			return len(kit.text_lines(self._text))
+		return -1
+
 	def _replay_text(self, legacy):
 		legacy.SetText1(self._text)
 		legacy.SetText2(self._text2)
+		self._replay_warning(legacy)
+
+	def _replay_warning(self, legacy):
+		line = {0: "textLine1", 1: "textLine2"}.get(self._warning)
+		target = getattr(legacy, line, None) if line else None
+		if target is not None:
+			target.SetFontColor(*self.WARNING_COLOR)
+
+	def SetWarningLine(self, index):
+		"""Marks text line `index` (0 the text of SetText1, 1 of SetText2) as
+		a warning, or none with -1 (the default). New: legacy colors its text
+		line itself (uipointreset.py:40)."""
+		self._warning = index if index in (0, 1) else -1
+		if self._legacy is not None:
+			self._replay_warning(self._legacy)
+		self._refresh(warn_line=self._warn_row())
 
 	def SetText(self, text):
 		self.SetText1(text)
@@ -162,10 +199,10 @@ class QuestionDialog2(QuestionDialog):
 		self._text = text
 		if self._legacy is not None:
 			self._legacy.SetText1(text)
-		self._refresh(lines=self._lines())
+		self._refresh(lines=self._lines(), warn_line=self._warn_row())
 
 	def SetText2(self, text):
 		self._text2 = text
 		if self._legacy is not None:
 			self._legacy.SetText2(text)
-		self._refresh(lines=self._lines())
+		self._refresh(lines=self._lines(), warn_line=self._warn_row())

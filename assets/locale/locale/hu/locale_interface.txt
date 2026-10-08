@@ -318,3 +318,11 @@ VKEY_BACKSPACE	Törlés
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Üres hely
+OPTION_INTERFACE	Felület
+OPTION_UI_SCALE	Méretezés
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Csökkentett mozgás
+POINT_RESET_QUESTION_1	Vissza tudom állítani a státusz- és képességpontjaidat.
+POINT_RESET_QUESTION_2	500 Yangba kerül. Visszaállítsam őket?
+POINT_RESET_CONFIRM_1	A jelenlegi szinted összes tapasztalata elvész.
+POINT_RESET_CONFIRM_2	Tényleg vissza akarod állítani őket?

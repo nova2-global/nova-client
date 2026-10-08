@@ -6,7 +6,7 @@
    </div>
    Widths come from here, not from the caller: a long message wraps inside
    the maximum width. .nui-dialog__field is a text input centered under the
-   text. The footer centers its buttons (secondary first, primary last). */
+   text; .nui-dialog__text--warning marks a warning line. The footer centers its buttons (secondary first, primary last). */
 
 .nui-dialog
 {
@@ -19,6 +19,12 @@
 	margin: 0;
 	text-align: center;
 	white-space: normal;
+}
+/* A warning line (QuestionDialog2.SetWarningLine): the point reset's
+   confirmation, which legacy draws in red. */
+.nui-dialog__text--warning
+{
+	color: var(--danger);
 }
 /* Centered by the body's text-align, not by auto margins: RmlUi sizes a
    shrink-to-fit box with an auto-margin child to its maximum width. */

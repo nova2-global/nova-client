@@ -96,6 +96,11 @@ PLAYER_CONSTANTS = {
     "MAX_STAMINA": 10, "STAT": 28, "SKILL_ACTIVE": 29, "HP_RECOVERY": 32, "SP_RECOVERY": 33,
     "ENERGY": 128, "ENERGY_END_TIME": 129,
     "METIN_SOCKET_MAX_NUM": 3, "ITEM_MONEY": -1, "QUICKSLOT_PER_PAGE": 8, "QUICKSLOT_PAGES": 4,
+    # Wave 3a: PythonPlayerModule.cpp:2551-2564 (Packet.h's EPKModes and block bits).
+    "PK_MODE_PEACE": 0, "PK_MODE_REVENGE": 1, "PK_MODE_FREE": 2, "PK_MODE_PROTECT": 3, "PK_MODE_GUILD": 4,
+    "PK_MODE_MAX_NUM": 5,
+    "BLOCK_EXCHANGE": 1, "BLOCK_PARTY": 2, "BLOCK_GUILD": 4, "BLOCK_WHISPER": 8, "BLOCK_FRIEND": 16,
+    "BLOCK_PARTY_REQUEST": 32,
 }
 SKILL_CONSTANTS = {"SKILL_TYPE_NONE": 0, "SKILL_TYPE_ACTIVE": 1, "SKILL_TYPE_SUPPORT": 2, "SKILL_TYPE_GUILD": 5}
 WNDMGR_CONSTANTS = {"SLOT_STYLE_NONE": 0, "SLOT_STYLE_PICK_UP": 1, "SLOT_STYLE_SELECT": 2,
@@ -108,6 +113,8 @@ APP_CONSTANTS.update({"ENABLE_ENERGY_SYSTEM": 1, "ENABLE_DRAGON_SOUL_SYSTEM": 1}
 # Wave 2b: the keys the chat reads (app.VK_UP and VK_DOWN as the IME's
 # OnIMEKeyDown gets them; the DirectInput codes app.IsPressed takes).
 APP_CONSTANTS.update({"VK_UP": 0x26, "VK_DOWN": 0x28, "DIK_LALT": 0x38, "DIK_LSHIFT": 0x2A, "DIK_LCONTROL": 0x1D})
+# Wave 3a: the help closes on H (uihelp.py OnKeyDown).
+APP_CONSTANTS.update({"DIK_H": 0x23})
 MINIMAP_CONSTANTS = {"TYPE_OPC": 0, "TYPE_OPCPVP": 1, "TYPE_OPCPVPSELF": 2, "TYPE_NPC": 3, "TYPE_MONSTER": 4, "TYPE_WARP": 5,
                      "TYPE_WAYPOINT": 6, "TYPE_PARTY": 7, "TYPE_EMPIRE": 8, "TYPE_EMPIRE_END": 12}
 # miniMap's answers when a test scripts none (PythonMiniMapModule.cpp's shapes).
@@ -900,6 +907,181 @@ def install_wave2b_ui(game):
     return ui
 
 
+# --- the legacy widgets of the Wave 3a windows ----------------------------------------------------
+
+UISCRIPT_ROOT = os.path.normpath(os.path.join(support.HERE, "..", "assets", "uiscript"))
+
+
+def read_uiscript(path, screen=(1600, 900)):
+    """The window dict of a legacy uiscript file, as ui.PythonScriptLoader
+    reads it: the file executed with SCREEN_WIDTH and SCREEN_HEIGHT (its own
+    imports come from sys.modules, the Game's stand-ins under `with game`).
+    `path` is the loader's argument ("uiscript/systemdialog.py",
+    "UIScript/HelpWindow.py"); the files are lower case on disk."""
+    file_name = os.path.join(UISCRIPT_ROOT, path.replace("\\", "/").lower())
+    with open(file_name, encoding="utf-8", errors="replace") as handle:
+        source = handle.read()
+    namespace = {"SCREEN_WIDTH": screen[0], "SCREEN_HEIGHT": screen[1], "__name__": "uiscript"}
+    exec(compile(source, file_name, "exec"), namespace)
+    return namespace["window"]
+
+
+def install_wave3a_ui(game):
+    """Adds to game's ui module (after install_wave2b_ui) what the Wave 3a
+    legacy windows use (uisystem.py, uisystemoption.py, uiselectmusic.py,
+    uigameoption.py, uirestart.py, uihelp.py, uipointreset.py): a
+    PythonScriptLoader that reads the real uiscript file and makes each
+    named child of its type, so a test presses legacy's buttons as a player
+    does (`click()`); a SliderBar whose drag_to(fraction) lands on the
+    cursor's pixel, as legacy's DragButton does (curPos = pixel / 122); a
+    TitleBar and board that keep their close event (`close()`); ListBoxEx
+    with its Item base. Screen 1600 x 900."""
+    ui = game.modules["ui"]
+    Win = ui.Window
+    Button, RadioButton, ToggleButton = ui.Button, ui.RadioButton, ui.ToggleButton
+
+    class TextLine(LegacyWidget):
+        def __init__(self, layer="UI"):
+            LegacyWidget.__init__(self, "text")
+            self.extraLines = []
+            self.color = None
+
+        def SetFontColor(self, r, g, b):
+            self.calls.append(("SetFontColor", r, g, b))
+            self.color = (r, g, b)
+
+    class SliderBar(Win):
+        """ui.SliderBar: a 175 px track and a 53 px cursor (pageSize 122)."""
+
+        PAGE = 122
+
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.curPos = 1.0
+            self.eventChange = None
+
+        def SetSliderPos(self, pos):
+            self.curPos = pos
+
+        def GetSliderPos(self):
+            return self.curPos
+
+        def SetEvent(self, event):
+            self.eventChange = event
+
+        def drag_to(self, fraction):
+            self.curPos = float(int(round(fraction * self.PAGE))) / self.PAGE
+            if self.eventChange:
+                self.eventChange()
+
+    class TitleBar(Win):
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.closeEvent = None
+
+        def SetCloseEvent(self, event):
+            self.closeEvent = event
+
+        def close(self):
+            if self.closeEvent:
+                self.closeEvent()
+
+    class Board(TitleBar):
+        def SetTitleName(self, name):
+            self.title = name
+
+    class ListBoxEx(Win):
+        class Item(Win):
+            def __init__(self, layer="UI"):
+                Win.__init__(self, layer)
+
+            def SetParent(self, parent):
+                self.parent = parent
+
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.itemList = []
+            self.selItem = None
+            self.scrollBar = None
+
+        def IsEmpty(self):
+            return 0 if self.itemList else 1
+
+        def AppendItem(self, item):
+            item.SetParent(self)
+            item.SetSize(100, 16)
+            self.itemList.append(item)
+
+        def RemoveAllItems(self):
+            self.selItem = None
+            self.itemList = []
+
+        def GetSelectedItem(self):
+            return self.selItem
+
+        def SelectItem(self, item):
+            self.selItem = item
+
+        def SetScrollBar(self, scrollBar):
+            self.scrollBar = scrollBar
+
+        def select(self, index):
+            """A press on row `index` (Item.OnMouseLeftButtonDown)."""
+            self.SelectItem(self.itemList[index])
+
+        def texts(self):
+            return [item.GetText() for item in self.itemList]
+
+    kinds = {"button": Button, "radio_button": RadioButton, "toggle_button": ToggleButton, "sliderbar": SliderBar,
+             "titlebar": TitleBar, "board": Board, "board_with_titlebar": Board, "thinboard": Board, "text": TextLine,
+             "scrollbar": ui.ScrollBar}
+
+    def build(window, value):
+        for child in value.get("children", ()) or ():
+            widget = kinds.get(child.get("type"), Win)()
+            widget.name = child.get("name", "")
+            if "text" in child:
+                widget.SetText(child["text"])
+            window.ElementDictionary[widget.name] = widget
+            build(window, child)
+
+    class PythonScriptLoader(object):
+        loaded = []
+
+        def LoadScriptFile(self, window, path):
+            PythonScriptLoader.loaded.append(path)
+            clear = getattr(window, "ClearDictionary", None)
+            if clear is not None:
+                clear()
+            if not hasattr(window, "ElementDictionary"):
+                window.ElementDictionary = {}
+            if not hasattr(window, "scripts"):
+                window.scripts = []
+            window.scripts.append(path)
+            build(window, read_uiscript(path))
+
+    script_base = ui.ScriptWindow
+
+    class ScriptWindow(script_base):
+        def GetChild(self, name):
+            return self.ElementDictionary[name]
+
+        def __getattr__(self, attr):
+            if attr.startswith("__") or not attr[:1].isupper():
+                raise AttributeError(attr)
+            return lambda *args, **kwargs: None
+
+    ui.ScriptWindow = ScriptWindow
+    ui.PythonScriptLoader = PythonScriptLoader
+    ui.TextLine = TextLine
+    ui.SliderBar = SliderBar
+    ui.TitleBar = TitleBar
+    ui.Board = Board
+    ui.BoardWithTitleBar = Board
+    ui.ListBoxEx = ListBoxEx
+    return ui
+
+
 # --- the game --------------------------------------------------------------------------
 
 class Game(object):
@@ -944,6 +1126,15 @@ class Game(object):
         self.hyperlink = ""      # ui.GetHyperlink: the link under the mouse
         self.legacy_pasted = []  # what ime.PasteString gave the legacy edit line
         self.element_counts = {}  # document -> elements, for nuigame.NuiStats (default 1)
+        # Wave 3a (P11 spec 5.6): what the option windows read and write.
+        self.settings = {"music_volume": 0.5, "sound_volume": 0.75, "fog_level": 1, "always_show_name": True,
+                         "show_damage": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0}
+        self.pk_mode = 0         # player.GetPKMode
+        self.guild_id = 0        # player.GetGuildID
+        self.software_tiling = False  # background.IsSoftwareTiling
+        self.file_lists = {"BGM/*.mp3": ["a_rhapsody_of_war.mp3", "another_way.mp3", "back_to_back.mp3",
+                                         "blacksea.mp3", "catacomb_of_devil.mp3", "characterselect.mp3"]}
+        self.saved_configs = 0   # systemSetting.SaveConfig calls
         self.state = support.NuiState()
         self.state.available = nui_on
         self.engine = engine
@@ -1022,6 +1213,8 @@ class Game(object):
         def set_play_time(value):
             game.play_time = value
         define("SetPlayTime", set_play_time)
+        define("GetPKMode", lambda: game.pk_mode)
+        define("GetGuildID", lambda: game.guild_id)
         modules["player"] = player
 
         item = Recording("item", log)
@@ -1094,7 +1287,8 @@ class Game(object):
         modules["wndMgr"] = wndmgr
 
         for name in ("net", "chr", "chrmgr", "nonplayer", "messenger", "textTail", "snd", "grp", "grpText",
-                     "systemSetting", "background", "quest", "event", "chat", "ime", "exception", "miniMap", "shop"):
+                     "systemSetting", "background", "quest", "event", "chat", "ime", "exception", "miniMap", "shop",
+                     "uiPrivateShopBuilder"):
             modules[name] = Recording(name, log)
         modules["systemSetting"].IsSoftwareCursor = lambda: False
         modules["systemSetting"].GetUINuiWindows = lambda: "+hud"
@@ -1201,6 +1395,7 @@ class Game(object):
         setting = modules["systemSetting"]
         setting.IsViewChat = lambda: game.view_chat
         setting.IsShowSalesText = lambda: game.show_sales_text
+        self._wave3a_modules(modules)
 
         mini_map = modules["miniMap"]
         for name, value in MINIMAP_CONSTANTS.items():
@@ -1263,15 +1458,81 @@ class Game(object):
         """The documents loaded now, as nuigame.NuiStats lists them."""
         return [window.DOCUMENT for window in self.state.windows if window._doc]
 
+    def _wave3a_modules(self, modules):
+        """The Wave 3a stand-ins (P11 spec 5.6): systemSetting's getters and
+        setters of the option windows over Game.settings (and the view chat
+        and sales text flags of Wave 2b), every setter and SaveConfig
+        recorded; background.IsSoftwareTiling (Game.software_tiling) and
+        EnableSoftwareTiling; app.GetFileList (Game.file_lists) and
+        SetCameraMaxDistance. snd, net, chrmgr and uiPrivateShopBuilder are
+        plain recording modules; musicInfo comes from load_music_info()."""
+        game = self
+        settings = self.settings
+        setting = modules["systemSetting"]
+
+        def getter(name, key, kind=lambda value: value):
+            setattr(setting, name, lambda: kind(settings[key]))
+
+        def setter(name, store):
+            define(setting, name, store)
+
+        getter("GetMusicVolume", "music_volume", float)
+        getter("GetSoundVolume", "sound_volume", float)
+        getter("GetFogLevel", "fog_level", int)
+        getter("IsAlwaysShowName", "always_show_name", bool)
+        getter("IsShowDamage", "show_damage", bool)
+        getter("GetUITheme", "ui_theme")
+        getter("GetUIScalePercent", "ui_scale_percent", int)
+        getter("IsUIReducedMotion", "ui_reduced_motion", int)
+        setter("SetMusicVolume", lambda value: settings.__setitem__("music_volume", float(value)))
+        setter("SetSoundVolume", lambda value: settings.__setitem__("sound_volume", float(value)))
+        setter("SetFogLevel", lambda value: settings.__setitem__("fog_level", int(value)))
+        setter("SetAlwaysShowNameFlag", lambda value: settings.__setitem__("always_show_name", bool(value)))
+        setter("SetShowDamageFlag", lambda value: settings.__setitem__("show_damage", bool(value)))
+        setter("SetViewChatFlag", lambda value: setattr(game, "view_chat", bool(value)))
+        setter("SetShowSalesTextFlag", lambda value: setattr(game, "show_sales_text", bool(value)))
+        setter("SetUITheme", lambda value: settings.__setitem__("ui_theme", value))
+        setter("SetUIScalePercent", lambda value: settings.__setitem__("ui_scale_percent", int(value)))
+        setter("SetUIReducedMotion", lambda value: settings.__setitem__("ui_reduced_motion", int(value)))
+        setter("SaveConfig", lambda: setattr(game, "saved_configs", game.saved_configs + 1))
+
+        background = modules["background"]
+        background.IsSoftwareTiling = lambda: bool(game.software_tiling)
+        define(background, "EnableSoftwareTiling", lambda value: setattr(game, "software_tiling", bool(value)))
+
+        app = modules["app"]
+        app.GetFileList = lambda pattern: list(game.file_lists.get(pattern, []))
+
+    def load_music_info(self):
+        """The real assets/root/musicinfo.py (its names, fieldMusic,
+        METIN2THEMA), its file writes kept in Game.files (BGM/lastplay.inf)
+        instead of the folder, its SaveLastPlayFieldMusic recorded."""
+        module = self.load("musicInfo", "musicinfo.py")
+        module.open = self._open
+        save = module.SaveLastPlayFieldMusic
+        log = self.log
+
+        def recorded_save():
+            log.append(("musicInfo.SaveLastPlayFieldMusic", (module.fieldMusic,)))
+            return save()
+        module.SaveLastPlayFieldMusic = recorded_save
+        return module
+
     # --- sys.modules ----------------------------------------------------------------
 
     def __enter__(self):
+        """Reentrant: a nested `with game:` (a helper inside a test's own)
+        leaves the modules in place until the outermost one ends."""
+        self._depth = getattr(self, "_depth", 0) + 1
         for name, module in self.modules.items():
             self._saved.setdefault(name, sys.modules.get(name, support.MISSING))
             sys.modules[name] = module
         return self
 
     def __exit__(self, *exc):
+        self._depth = getattr(self, "_depth", 1) - 1
+        if self._depth > 0:
+            return False
         for name, value in self._saved.items():
             if value is support.MISSING:
                 sys.modules.pop(name, None)

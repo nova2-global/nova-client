@@ -1,0 +1,227 @@
+/* Classic skin overlay of nui/windows/system-options/system-options.rml:
+   the legacy system options (uiscript systemoptiondialog.py) at 100%, 1dp
+   to the legacy pixel. The stone board is 305 wide; its legacy part is 207
+   tall above the Interface section, which grows the board downward (legacy
+   has no such section: its layout is new, on legacy art). The title bar at
+   8, 8 (284 wide) with the title centered over the whole bar and the close
+   button at 266, 3; the labels at x 30 (y 50, 75, 137, 162, 187); the
+   sliders at 110, 50 and 110, 75 (the sliderbar art, 175 x 12, with its 53
+   wide cursor); Change at 20, 100 and the file name at 100, 102; the
+   camera choices at 110 and 180, y 135 (middle art); the fog choices at
+   110, 160 and 210, y 160 and the tiling choices at 110 and 160, y 185
+   (small art); Apply at 210, 185 (middle art). The choice in effect shows
+   the down art. */
+
+body.skin-classic.system-options
+{
+	width: 305dp;
+	min-width: 0;
+}
+body.skin-classic.system-options .system-options__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	width: 284dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.system-options .system-options__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 284dp;
+	height: 23dp;
+	line-height: 21dp;
+	text-align: center;
+}
+body.skin-classic.system-options .system-options__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 266dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.system-options .system-options__body
+{
+	padding: 0 0 12dp 0;
+}
+
+/* The legacy part: every row is a static box of no height, so each label
+   and control is placed from the board's corner. */
+body.skin-classic.system-options .so-legacy
+{
+	display: block;
+	position: relative;
+	height: 207dp;
+}
+body.skin-classic.system-options .so-legacy .so-row,
+body.skin-classic.system-options .so-legacy .so-choices
+{
+	display: block;
+	height: 0;
+	min-height: 0;
+	margin: 0;
+}
+body.skin-classic.system-options .so-legacy .so-label
+{
+	position: absolute;
+	left: 30dp;
+	width: auto;
+	color: var(--text);
+	line-height: 14dp;
+	white-space: nowrap;
+}
+body.skin-classic.system-options .so-label--sound { top: 50dp; }
+body.skin-classic.system-options .so-label--music { top: 75dp; }
+body.skin-classic.system-options .so-label--camera { top: 137dp; }
+body.skin-classic.system-options .so-label--fog { top: 162dp; }
+body.skin-classic.system-options .so-label--tiling { top: 187dp; }
+
+body.skin-classic.system-options .so-music-file
+{
+	position: absolute;
+	left: 100dp;
+	top: 102dp;
+	margin: 0;
+	line-height: 14dp;
+}
+
+/* Every choice is placed, at legacy's art width (the middle art, 61dp, by
+   default: nui-button--medium; the small art, 43dp, below), its label
+   centered over the art as legacy's text line is, a wider one overflowing
+   both ends. */
+body.skin-classic.system-options .so-legacy .so-choice
+{
+	position: absolute;
+	width: 61dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.system-options .so-legacy .so-choice--small
+{
+	width: 43dp;
+}
+body.skin-classic.system-options .so-choice__label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+}
+body.skin-classic.system-options .so-music-change { left: 20dp; top: 100dp; }
+body.skin-classic.system-options .so-choice--camera-0 { left: 110dp; top: 135dp; }
+body.skin-classic.system-options .so-choice--camera-1 { left: 180dp; top: 135dp; }
+body.skin-classic.system-options .so-choice--fog-0 { left: 110dp; top: 160dp; }
+body.skin-classic.system-options .so-choice--fog-1 { left: 160dp; top: 160dp; }
+body.skin-classic.system-options .so-choice--fog-2 { left: 210dp; top: 160dp; }
+body.skin-classic.system-options .so-choice--tiling-0 { left: 110dp; top: 185dp; }
+body.skin-classic.system-options .so-choice--tiling-1 { left: 160dp; top: 185dp; }
+body.skin-classic.system-options .so-tiling-apply { left: 210dp; top: 185dp; }
+
+/* The small art of legacy's fog and tiling choices, and of the Interface
+   section's scale choices: the default, over and down art; the choice in
+   effect shows the down art, under the pointer too. */
+body.skin-classic.system-options .so-choice--small,
+body.skin-classic.system-options .so-choice--scale
+{
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+	min-width: 43dp;
+	padding: 0 6dp;
+}
+body.skin-classic.system-options .so-choice--small:hover,
+body.skin-classic.system-options .so-choice--scale:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.system-options .so-choice--small:active,
+body.skin-classic.system-options .so-choice--scale:active,
+body.skin-classic.system-options .so-choice--small.is-selected,
+body.skin-classic.system-options .so-choice--scale.is-selected
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+
+/* The sliders: the sliderbar art and its cursor, no fill (legacy draws
+   none); the cursor travels 175 - 53 = 122dp, as legacy's. */
+body.skin-classic.system-options .so-slider
+{
+	position: absolute;
+	left: 110dp;
+	width: 175dp;
+	height: 12dp;
+}
+body.skin-classic.system-options .so-slider--sound { top: 50dp; }
+body.skin-classic.system-options .so-slider--music { top: 75dp; }
+body.skin-classic.system-options .so-slider slidertrack
+{
+	margin-top: 0;
+	height: 12dp;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar.sub");
+}
+body.skin-classic.system-options .so-slider sliderprogress
+{
+	background-color: transparent;
+}
+body.skin-classic.system-options .so-slider sliderbar,
+body.skin-classic.system-options .so-slider sliderbar:hover,
+body.skin-classic.system-options .so-slider sliderbar:active
+{
+	margin-top: 0;
+	width: 53dp;
+	height: 12dp;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar_cursor.sub");
+	background-color: transparent;
+}
+
+/* The Interface section: below the legacy rows, under a separator, each
+   label on its own line at x 30 and its choices from x 20. */
+body.skin-classic.system-options .so-interface
+{
+	margin: 0 12dp 0 12dp;
+	padding: 6dp 0 0 8dp;
+	border-top-width: 1dp;
+	border-top-color: var(--classic-separator);
+}
+body.skin-classic.system-options .so-heading
+{
+	margin: 0 0 2dp 10dp;
+	color: var(--text);
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.system-options .so-interface .so-row
+{
+	display: block;
+	min-height: 0;
+	margin-top: 4dp;
+}
+body.skin-classic.system-options .so-interface .so-label
+{
+	width: auto;
+	margin: 0 0 3dp 10dp;
+	color: var(--text);
+	line-height: 14dp;
+}
+body.skin-classic.system-options .so-interface .so-choices
+{
+	gap: 2dp;
+}
+body.skin-classic.system-options .so-auto-percent,
+body.skin-classic.system-options .so-choice--scale.is-selected .so-auto-percent
+{
+	color: var(--classic-button-text);
+}
+body.skin-classic.system-options .so-motion
+{
+	margin-left: 10dp;
+	color: var(--text);
+}

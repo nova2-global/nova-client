@@ -1,0 +1,11 @@
+{
+	"dialog_question": {
+		"lines": [
+			"@ui.POINT_RESET_CONFIRM_1",
+			"@ui.POINT_RESET_CONFIRM_2"
+		],
+		"accept_label": "@ui.YES",
+		"cancel_label": "@ui.NO",
+		"warn_line": 0
+	}
+}

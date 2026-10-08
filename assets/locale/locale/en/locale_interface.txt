@@ -318,3 +318,11 @@ VKEY_BACKSPACE	Back
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Empty slot
+OPTION_INTERFACE	Interface
+OPTION_UI_SCALE	Scale
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Reduced motion
+POINT_RESET_QUESTION_1	I can reset your status and skill points.
+POINT_RESET_QUESTION_2	It costs 500 Yang. Shall I reset them?
+POINT_RESET_CONFIRM_1	All the experience of your current level will be lost.
+POINT_RESET_CONFIRM_2	Do you really want to reset them?

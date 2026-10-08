@@ -317,3 +317,11 @@ VKEY_BACKSPACE	Zurück
 VKEY_ENTER	Eingabe
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Freier Platz
+OPTION_INTERFACE	Oberfläche
+OPTION_UI_SCALE	Skalierung
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Weniger Bewegung
+POINT_RESET_QUESTION_1	Ich kann deine Status- und Fertigkeitspunkte zurücksetzen.
+POINT_RESET_QUESTION_2	Das kostet 500 Yang. Soll ich sie zurücksetzen?
+POINT_RESET_CONFIRM_1	Die gesamte Erfahrung deiner aktuellen Stufe geht verloren.
+POINT_RESET_CONFIRM_2	Willst du sie wirklich zurücksetzen?

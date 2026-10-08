@@ -239,4 +239,8 @@ body.skin-classic
 	--classic-chat-press: #ffffff4d;
 	--classic-chat-log-fill: #00000077;
 	--classic-chat-grip: #989898;
+	--classic-warning-text: #ff4c4c;
+	--classic-mall-text: #f8bf24;
+	--classic-help-curtain: #00000077;
+	--classic-list-ex-select: #0000b3b3;
 }

@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Smazat
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Prázdný slot
+OPTION_INTERFACE	Rozhraní
+OPTION_UI_SCALE	Měřítko
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Omezený pohyb
+POINT_RESET_QUESTION_1	Mohu vynulovat tvé body statusu a dovedností.
+POINT_RESET_QUESTION_2	Stojí to 500 Yang. Mám je vynulovat?
+POINT_RESET_CONFIRM_1	Veškeré zkušenosti tvé současné úrovně budou ztraceny.
+POINT_RESET_CONFIRM_2	Opravdu je chceš vynulovat?

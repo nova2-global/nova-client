@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Borrar
 VKEY_ENTER	Intro
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Ranura vacía
+OPTION_INTERFACE	Interfaz
+OPTION_UI_SCALE	Escala
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Movimiento reducido
+POINT_RESET_QUESTION_1	Puedo restablecer tus puntos de estado y de habilidad.
+POINT_RESET_QUESTION_2	Cuesta 500 Yang. ¿Los restablezco?
+POINT_RESET_CONFIRM_1	Se perderá toda la experiencia de tu nivel actual.
+POINT_RESET_CONFIRM_2	¿De verdad quieres restablecerlos?

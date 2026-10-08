@@ -10,6 +10,7 @@ import chrmgr
 import player
 import uiPrivateShopBuilder # 占쏙옙占쏙옙호
 import interfaceModule # 占쏙옙占쏙옙호
+import nui_windows
 
 blockMode = 0
 viewChatMode = 0
@@ -368,3 +369,8 @@ class OptionDialog(ui.ScriptWindow):
 
 	def Close(self):
 		self.Hide()
+
+# The system menu (legacy or NovaUI) makes this window by this name: with the
+# game-options flag on, the NovaUI facade (P11 spec 6.8).
+LegacyOptionDialog = OptionDialog
+OptionDialog = nui_windows.factory("game-options", LegacyOptionDialog, "nui_game_options.OptionDialog")

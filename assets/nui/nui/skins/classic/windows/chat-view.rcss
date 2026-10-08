@@ -1,0 +1,11 @@
+/* Classic skin overlay of nui/windows/chat-view/chat-view.rml: the legacy
+   closed chat (uichat.py ChatWindow in its view board state) at 100%, 1dp to
+   the legacy pixel: the lines from 10dp in, the newest ending on the
+   taskbar's top edge, on the gradient bar 20dp taller than the lines
+   (black, clear to 80%). The block, the margin and the bar are the modern
+   rules with the classic palette's chat tokens, so this overlay only keeps
+   the chat's font for the lines, as the chat's own overlay leaves them. */
+body.skin-classic.chat-view .chat-view__block .chat__lines .nui-chat__line
+{
+	margin-left: 10dp;
+}

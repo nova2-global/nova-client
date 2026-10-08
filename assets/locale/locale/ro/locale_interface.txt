@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Șterge
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Slot liber
+OPTION_INTERFACE	Interfață
+OPTION_UI_SCALE	Scalare
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Mișcare redusă
+POINT_RESET_QUESTION_1	Pot să-ți resetez punctele de status și de abilitate.
+POINT_RESET_QUESTION_2	Costă 500 Yang. Să le resetez?
+POINT_RESET_CONFIRM_1	Toată experiența nivelului tău actual se va pierde.
+POINT_RESET_CONFIRM_2	Chiar vrei să le resetezi?

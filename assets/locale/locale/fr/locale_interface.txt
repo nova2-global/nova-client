@@ -318,3 +318,11 @@ VKEY_BACKSPACE	Retour
 VKEY_ENTER	Entrée
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Emplacement libre
+OPTION_INTERFACE	Interface
+OPTION_UI_SCALE	Échelle
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Mouvements réduits
+POINT_RESET_QUESTION_1	Je peux réinitialiser tes points de statut et de compétence.
+POINT_RESET_QUESTION_2	Cela coûte 500 Yang. Dois-je les réinitialiser ?
+POINT_RESET_CONFIRM_1	Toute l'expérience de ton niveau actuel sera perdue.
+POINT_RESET_CONFIRM_2	Veux-tu vraiment les réinitialiser ?

@@ -15,7 +15,15 @@ disables the six and enables its own; later presses toggle their type. The
 types the six never name (command, whisper, big notice) stay shown, as
 legacy leaves them. The log's input is nui_chat.ChatInput with the log's
 events: Escape closes the log, an empty Enter does nothing, and the field's
-user maximum is the log's width // 8, as legacy's (uichat.py:1096)."""
+user maximum is the log's width // 8, as legacy's (uichat.py:1096).
+
+The document exists only while the log shows (nui_hud.OnDemand, P11 spec
+D5): RmlUi updates every loaded document each frame, shown or not. The
+constructor loads it once to answer nui_ready(). What legacy's one window
+keeps while hidden lives on the facade and goes into each new board: the
+filters (chat set 1 holds them as well), the scroll position, the size, the
+place (read back from the body's box at each hide) and the field's text when
+it is not empty."""
 
 import chat
 import net
@@ -124,7 +132,10 @@ class ChatLogWindow(object):
 	def __init__(self):
 		nui_hud.take_over(self.KEY, self)
 		self._nui_discarded = False
-		self.board = None
+		self.demand = None
+		self.loaded = False
+		self.logSize = (float(self.CHAT_LOG_WINDOW_MINIMUM_WIDTH), float(self.CHAT_LOG_WINDOW_MINIMUM_HEIGHT))
+		self.place = None           # the body's top left in dp, read back at each hide
 		self.focusProxy = None
 		self.fieldFocused = False   # NovaUI's focus on the field, as its focus and blur events said
 		self.escapeProxy = None
@@ -148,12 +159,8 @@ class ChatLogWindow(object):
 		if not nui_hud.has_engine_2b():
 			return
 		try:
-			self.board = ChatLogBoard(self)
-			self.input.board = self.board
-			self.board.element_on("chat-log-input", "keydown", self.board.nui_key)
-			self.board.element_on("chat-log-input", "focus", self.board.nui_field_focus)
-			self.board.element_on("chat-log-input", "blur", self.board.nui_field_blur)
-			self.board.element_on("chat-log-input", "mousedown", self.board.nui_field_press)
+			self.demand = nui_hud.OnDemand(self._make_board, self._restore_board, self._keep_board)
+			self.loaded = self.demand.probe()
 			self.focusProxy = nui_hud.FocusProxy(self._on_focus_lost, self._on_focus_gained)
 			self.escapeProxy = nui_hud.EscapeProxy(self.OnPressEscapeKey)
 			self.modeShim = nui_chat.add_mode_shim(self)
@@ -165,8 +172,13 @@ class ChatLogWindow(object):
 
 	# --- the make() protocol ------------------------------------------------------
 
+	@property
+	def board(self):
+		"""The log's board while it shows, else None."""
+		return self.demand.board() if self.demand is not None else None
+
 	def nui_ready(self):
-		return self.board is not None and bool(self.board._doc) and nui_hud.has_engine_2b()
+		return self.loaded and self.demand is not None and nui_hud.has_engine_2b()
 
 	def nui_discard(self):
 		self._nui_discarded = True
@@ -180,11 +192,41 @@ class ChatLogWindow(object):
 			setattr(self, name, None)
 			if proxy is not None:
 				proxy.destroy()
-		board, self.board = self.board, None
+		demand, self.demand = self.demand, None
+		if demand is not None:
+			demand.destroy()
 		self.input.board = None
-		if board is not None:
-			board.destroy()
 		nui_hud.forget(self.KEY, self)
+
+	def _make_board(self):
+		return ChatLogBoard(self)
+
+	def _restore_board(self, board):
+		"""A new board: the facade's state into its model, its field's
+		handlers, its place; the field's text after the show (ShowText)."""
+		width, height = self.logSize
+		board.set(shown=self.shown, all=self.allChatMode, filters=list(self.filters), end_pos=self.scrollBarPos,
+		          chat_mode=self.input.GetChatMode(), mark=nui_chat.mark_of(self.input.GetText()),
+		          log_width=width, log_height=height)
+		board.element_on("chat-log-input", "keydown", board.nui_key)
+		board.element_on("chat-log-input", "focus", board.nui_field_focus)
+		board.element_on("chat-log-input", "blur", board.nui_field_blur)
+		board.element_on("chat-log-input", "mousedown", board.nui_field_press)
+		if self.place is not None:
+			board.set_position(*self.place)
+		self.input.board = board
+
+	def _keep_board(self, board):
+		"""Before the board goes: its place and the field's text."""
+		box = board.element_box("")
+		if box:
+			s = nui.get_scale() or 1.0
+			self.place = (box[0] / s, box[1] / s)
+		text = board.get_value("chat-log-input")
+		if text:
+			self.input.pending = text
+		self.input.board = None
+		self.fieldFocused = False
 
 	def Destroy(self):
 		self.nui_discard()
@@ -197,8 +239,8 @@ class ChatLogWindow(object):
 	def Show(self):
 		"""Shows the log without focusing its field, as ui.Window.Show."""
 		self.shown = True
-		if self.board is not None:
-			self.board.show()
+		if self.demand is not None:
+			self.demand.show()
 		self.input.ShowText()
 		if self.escapeProxy is not None:
 			self.escapeProxy.show()
@@ -210,9 +252,8 @@ class ChatLogWindow(object):
 			self.focusProxy.release()
 		if self.escapeProxy is not None:
 			self.escapeProxy.hide()
-		if self.board is not None:
-			self.board.hide()
-		self._set(shown=False)
+		if self.demand is not None:
+			self.demand.hide()
 
 	def IsShow(self):
 		return self.shown and self.board is not None and self.board.is_visible()
@@ -292,6 +333,7 @@ class ChatLogWindow(object):
 		self.OnScroll()
 
 	def nui_resized(self, width, height):
+		self.logSize = (float(width), float(height))
 		self._set(log_width=float(width), log_height=float(height))
 		self.input.SetUserMax(int(width) // 8)
 

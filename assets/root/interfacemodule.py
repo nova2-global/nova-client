@@ -230,7 +230,13 @@ class Interface(object):
 		self.dlgExchange.SetCenterPosition()
 		self.dlgExchange.Hide()
 
-		self.dlgPointReset = uiPointReset.PointResetDialog()
+		# The NovaUI point reset is the dialog kit's question: without the kit
+		# it is refused (P11 spec 4.2).
+		if nui_windows.is_on("point-reset") and not nui_windows.use("dialogs")[0]:
+			nui_windows.refuse("point-reset", "needs the NovaUI dialog kit")
+			self.dlgPointReset = uiPointReset.PointResetDialog()
+		else:
+			self.dlgPointReset = nui_windows.make("point-reset", uiPointReset.PointResetDialog, "nui_point_reset.PointResetDialog")
 		self.dlgPointReset.LoadDialog()
 		self.dlgPointReset.Hide()
 
@@ -238,11 +244,11 @@ class Interface(object):
 		self.dlgShop.LoadDialog()
 		self.dlgShop.Hide()
 
-		self.dlgRestart = uiRestart.RestartDialog()
+		self.dlgRestart = nui_windows.make("restart", uiRestart.RestartDialog, "nui_restart.RestartDialog")
 		self.dlgRestart.LoadDialog()
 		self.dlgRestart.Hide()
 
-		self.dlgSystem = uiSystem.SystemDialog()
+		self.dlgSystem = nui_windows.make("system-menu", uiSystem.SystemDialog, "nui_system_menu.SystemDialog")
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
 
@@ -267,7 +273,7 @@ class Interface(object):
 		self.dlgRefineNew.Hide()
 
 	def __MakeHelpWindow(self):
-		self.wndHelp = uiHelp.HelpWindow()
+		self.wndHelp = nui_windows.make("help", uiHelp.HelpWindow, "nui_help.HelpWindow")
 		self.wndHelp.LoadDialog()
 		self.wndHelp.SetCloseEvent(ui.__mem_func__(self.CloseHelpWindow))
 		self.wndHelp.Hide()
@@ -1122,11 +1128,15 @@ class Interface(object):
 		self.BUILD_OpenWindow()
 
 	def OpenHelpWindow(self):
-		self.wndUICurtain.Show()
+		# The NovaUI help's scrim is its curtain: a TOP_MOST bar would draw
+		# above every NovaUI document.
+		if not getattr(self.wndHelp, "NUI_FACADE", False):
+			self.wndUICurtain.Show()
 		self.wndHelp.Open()
 
 	def CloseHelpWindow(self):
-		self.wndUICurtain.Hide()
+		if not getattr(self.wndHelp, "NUI_FACADE", False):
+			self.wndUICurtain.Hide()
 		self.wndHelp.Close()
 
 	def OpenWebWindow(self, url):

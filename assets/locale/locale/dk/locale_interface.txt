@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Slet
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Tom plads
+OPTION_INTERFACE	Brugerflade
+OPTION_UI_SCALE	Skalering
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Reduceret bevægelse
+POINT_RESET_QUESTION_1	Jeg kan nulstille dine status- og færdighedspoint.
+POINT_RESET_QUESTION_2	Det koster 500 Yang. Skal jeg nulstille dem?
+POINT_RESET_CONFIRM_1	Al erfaring fra dit nuværende niveau går tabt.
+POINT_RESET_CONFIRM_2	Vil du virkelig nulstille dem?

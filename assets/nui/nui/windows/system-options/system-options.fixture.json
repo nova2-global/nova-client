@@ -1,0 +1,29 @@
+{
+	"system_options": {
+		"sound_volume": 75,
+		"music_volume": 50,
+		"music_file": "Metin2 Standard music",
+		"camera": 0,
+		"fog": 1,
+		"tiling": 1,
+		"interface": true,
+		"themes": [
+			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},
+			{"id": "modern-light", "label": "@ui.THEME_MODERN_LIGHT"},
+			{"id": "classic", "label": "@ui.THEME_CLASSIC"}
+		],
+		"theme": "modern-dark",
+		"scales": [
+			{"id": "auto", "percent": 0, "label": "@ui.OPTION_UI_SCALE_AUTO"},
+			{"id": "75", "percent": 75, "label": "75%"},
+			{"id": "100", "percent": 100, "label": "100%"},
+			{"id": "125", "percent": 125, "label": "125%"},
+			{"id": "150", "percent": 150, "label": "150%"},
+			{"id": "175", "percent": 175, "label": "175%"},
+			{"id": "200", "percent": 200, "label": "200%"}
+		],
+		"scale": 0,
+		"auto_percent": 88,
+		"reduced_motion": false
+	}
+}

@@ -11,7 +11,9 @@
    the keyboard (docs/ui/AUTHORING.md "Keyboard and modals"). A button
    disabled while focused keeps its focus ring.
    is-hover, is-active and is-focus force a state without the pointer or the
-   keyboard (gallery snapshots, data-driven highlights). */
+   keyboard (gallery snapshots, data-driven highlights). is-selected marks a
+   choice that is on: a radio choice or a toggle that legacy draws as a
+   button held down (data-class-is-selected). */
 
 .nui-button
 {
@@ -43,6 +45,14 @@
 .nui-button:focus-visible, .nui-button.is-focus
 {
 	border-color: var(--focus-ring);
+}
+/* After the states it ties, so a selected choice keeps its look under the
+   pointer, as a legacy button held down does. */
+.nui-button.is-selected
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+	color: var(--text);
 }
 .nui-button[disabled], .nui-button:disabled
 {

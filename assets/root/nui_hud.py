@@ -260,6 +260,61 @@ class OnDemand(object):
 		self._make = self._restore = self._keep = None
 
 
+class LayoutCalls(object):
+	"""The ui.ScriptWindow layout calls callers make on a Wave 3a facade
+	(P11 spec 6.0.2): CSS places the window, so SetCenterPosition, Lock and
+	Unlock do nothing (a modal replaces the lock), and GetWidth and GetHeight
+	answer the shown board's box in pixels (0 while hidden). A facade keeps
+	its OnDemand in `demand`."""
+
+	demand = None
+
+	def _box(self):
+		board = self.demand.board() if self.demand is not None else None
+		box = board.element_box("") if board is not None and board.is_visible() else None
+		return box or (0, 0, 0, 0)
+
+	def SetCenterPosition(self, x=0, y=0):
+		pass
+
+	def Lock(self):
+		pass
+
+	def Unlock(self):
+		pass
+
+	def GetWidth(self):
+		return int(round(self._box()[2]))
+
+	def GetHeight(self):
+		return int(round(self._box()[3]))
+
+
+def moved_place(board):
+	"""The board's top left in dp when the player moved it away from the
+	screen's center (a handle drag), else None: a window that was centered
+	is centered again at its next show. For OnDemand's keep()."""
+	box = board.element_box("")
+	if not box:
+		return None
+	import wndMgr
+	x, y, width, height = box
+	if (abs(x + width / 2.0 - wndMgr.GetScreenWidth() / 2.0) <= 2
+	        and abs(y + height / 2.0 - wndMgr.GetScreenHeight() / 2.0) <= 2):
+		return None
+	s = nui.get_scale() or 1.0
+	return (x / s, y / s)
+
+
+def keep_weakly(owner):
+	"""A weak proxy to a board's facade (the owner rule: a board never keeps
+	its facade alive); an object that takes no weak reference as it is."""
+	try:
+		return weakref.proxy(owner)
+	except TypeError:
+		return owner
+
+
 def _call(method):
 	"""A weak method whose owner is gone does nothing."""
 	if method is None:

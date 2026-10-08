@@ -1,0 +1,91 @@
+<rml>
+<head>
+	<!-- The game options (uigameoption.py OptionDialog, uiscript
+	     gameoptiondialog.py). While the game-options flag is on, the system
+	     menu makes the facade nui_game_options.OptionDialog (controller
+	     assets/root/nui_game_options.py) through uiGameOption's factory. The
+	     document exists only while the window shows (nui_hud.OnDemand); the
+	     facade fills the model at each show and on the server's answers
+	     (OnBlockMode, OnChangePKMode). Every choice sends legacy's command or
+	     makes legacy's setting call; the PvP and block choices show the
+	     server's state, not the press, until the server answers. The body and
+	     its buttons take no focus, so they act on a left mousedown; Escape
+	     reaches the window in its legacy place (nui_hud.EscapeProxy). The PvP
+	     choices carry legacy's hints. -->
+	<title>game-options</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="game-options.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-anim game-options" data-model="game_options">
+	<div class="nui-window__titlebar game-options__titlebar">
+		<handle class="nui-window__handle game-options__handle" move_target="#document">
+			<span class="nui-window__title game-options__title">@ui.GAMEOPTION_TITLE</span>
+		</handle>
+		<button id="go-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="close(ev.button)">&#215;</button>
+	</div>
+	<div class="nui-window__body game-options__body">
+		<div class="go-row go-row--name-color">
+			<span class="go-label go-label--name-color">@ui.OPTION_NAME_COLOR</span>
+			<div class="go-choices">
+				<button id="go-name-color-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--name-color-0" data-class-is-selected="name_color == 0" data-event-mousedown="choose('name_color', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_NAME_COLOR_NORMAL</span></button>
+				<button id="go-name-color-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--name-color-1" data-class-is-selected="name_color == 1" data-event-mousedown="choose('name_color', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_NAME_COLOR_EMPIRE</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--target-board">
+			<span class="go-label go-label--target-board">@ui.OPTION_TARGET_BOARD</span>
+			<div class="go-choices">
+				<button id="go-target-board-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--target-board-0" data-class-is-selected="target_board == 0" data-event-mousedown="choose('target_board', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_TARGET_BOARD_NO_VIEW</span></button>
+				<button id="go-target-board-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--target-board-1" data-class-is-selected="target_board == 1" data-event-mousedown="choose('target_board', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_TARGET_BOARD_VIEW</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--pk">
+			<span class="go-label go-label--pk">@ui.OPTION_PVPMODE</span>
+			<div class="go-choices">
+				<button id="go-pk-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--small go-choice--pk-0 nui-has-tooltip" data-class-is-selected="pk_mode == 0" data-event-mousedown="choose('pk', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_PVPMODE_PEACE</span><span class="nui-tooltip nui-tooltip--wrap nui-anim go-tip">@ui.OPTION_PVPMODE_PEACE_TOOLTIP</span></button>
+				<button id="go-pk-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--small go-choice--pk-1 nui-has-tooltip" data-class-is-selected="pk_mode == 1" data-event-mousedown="choose('pk', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_PVPMODE_REVENGE</span><span class="nui-tooltip nui-tooltip--wrap nui-anim go-tip">@ui.OPTION_PVPMODE_REVENGE_TOOLTIP</span></button>
+				<button id="go-pk-4" class="nui-button nui-button--medium nui-anim go-choice go-choice--small go-choice--pk-4 nui-has-tooltip" data-class-is-selected="pk_mode == 4" data-event-mousedown="choose('pk', 4, ev.button)"><span class="go-choice__label">@ui.OPTION_PVPMODE_GUILD</span><span class="nui-tooltip nui-tooltip--wrap nui-anim go-tip">@ui.OPTION_PVPMODE_GUILD_TOOLTIP</span></button>
+				<button id="go-pk-2" class="nui-button nui-button--medium nui-anim go-choice go-choice--small go-choice--pk-2 nui-has-tooltip" data-class-is-selected="pk_mode == 2" data-event-mousedown="choose('pk', 2, ev.button)"><span class="go-choice__label">@ui.OPTION_PVPMODE_FREE</span><span class="nui-tooltip nui-tooltip--wrap nui-anim go-tip">@ui.OPTION_PVPMODE_FREE_TOOLTIP</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--block">
+			<span class="go-label go-label--block">@ui.OPTION_BLOCK</span>
+			<div class="go-choices">
+				<button id="go-block-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--block-0" data-class-is-selected="blocked[0]" data-event-mousedown="block(0, ev.button)"><span class="go-choice__label">@ui.OPTION_BLOCK_EXCHANGE</span></button>
+				<button id="go-block-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--block-1" data-class-is-selected="blocked[1]" data-event-mousedown="block(1, ev.button)"><span class="go-choice__label">@ui.OPTION_BLOCK_PARTY</span></button>
+				<button id="go-block-2" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--block-2" data-class-is-selected="blocked[2]" data-event-mousedown="block(2, ev.button)"><span class="go-choice__label">@ui.OPTION_BLOCK_GUILD</span></button>
+				<button id="go-block-3" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--block-3" data-class-is-selected="blocked[3]" data-event-mousedown="block(3, ev.button)"><span class="go-choice__label">@ui.OPTION_BLOCK_WHISPER</span></button>
+				<button id="go-block-4" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--block-4" data-class-is-selected="blocked[4]" data-event-mousedown="block(4, ev.button)"><span class="go-choice__label">@ui.OPTION_BLOCK_FRIEND</span></button>
+				<button id="go-block-5" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--block-5" data-class-is-selected="blocked[5]" data-event-mousedown="block(5, ev.button)"><span class="go-choice__label">@ui.OPTION_BLOCK_PARTY_REQUEST</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--view-chat">
+			<span class="go-label go-label--view-chat">@ui.OPTION_VIEW_CHAT</span>
+			<div class="go-choices">
+				<button id="go-view-chat-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--view-chat-1" data-class-is-selected="view_chat" data-event-mousedown="choose('view_chat', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_ON</span></button>
+				<button id="go-view-chat-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--view-chat-0" data-class-is-selected="!view_chat" data-event-mousedown="choose('view_chat', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_OFF</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--always-name">
+			<span class="go-label go-label--always-name">@ui.OPTION_ALWAYS_SHOW_NAME</span>
+			<div class="go-choices">
+				<button id="go-always-name-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--always-name-1" data-class-is-selected="always_show_name" data-event-mousedown="choose('always_show_name', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_ALWAYS_SHOW_NAME_ON</span></button>
+				<button id="go-always-name-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--always-name-0" data-class-is-selected="!always_show_name" data-event-mousedown="choose('always_show_name', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_ALWAYS_SHOW_NAME_OFF</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--damage">
+			<span class="go-label go-label--damage">@ui.OPTION_EFFECT</span>
+			<div class="go-choices">
+				<button id="go-damage-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--damage-1" data-class-is-selected="show_damage" data-event-mousedown="choose('show_damage', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_ON</span></button>
+				<button id="go-damage-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--damage-0" data-class-is-selected="!show_damage" data-event-mousedown="choose('show_damage', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_OFF</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--sales">
+			<span class="go-label go-label--sales">@ui.OPTION_SALESTEXT</span>
+			<div class="go-choices">
+				<button id="go-sales-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--sales-1" data-class-is-selected="sales_text" data-event-mousedown="choose('sales_text', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_ON</span></button>
+				<button id="go-sales-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--sales-0" data-class-is-selected="!sales_text" data-event-mousedown="choose('sales_text', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_OFF</span></button>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

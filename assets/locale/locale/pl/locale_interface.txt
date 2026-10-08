@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Usuń
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Pusty slot
+OPTION_INTERFACE	Interfejs
+OPTION_UI_SCALE	Skala
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Ograniczony ruch
+POINT_RESET_QUESTION_1	Mogę zresetować twoje punkty statusu i umiejętności.
+POINT_RESET_QUESTION_2	Kosztuje to 500 Yang. Mam je zresetować?
+POINT_RESET_CONFIRM_1	Całe doświadczenie z twojego obecnego poziomu przepadnie.
+POINT_RESET_CONFIRM_2	Czy na pewno chcesz je zresetować?

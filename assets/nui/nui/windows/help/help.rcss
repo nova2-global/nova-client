@@ -1,0 +1,80 @@
+/* The help's modern look (P11 spec D14): a centered card on the scrim, the
+   20 lines in two columns, the taskbar pointers' texts as a list under
+   them (the pointers aim at the legacy taskbar's places, which the modern
+   taskbar does not keep, so their art is hidden), and Close in the footer.
+   Classic (legacy's layout over the whole screen):
+   skins/classic/windows/help.rcss. */
+/* The modal's body takes the focus when it shows (RmlUi's FocusFlag::Auto
+   needs a focusable element), so its keydown handler hears Escape and H;
+   the button takes none, so a press keeps the focus on the body. */
+body.help
+{
+	tab-index: none;
+}
+.help button
+{
+	focus: none;
+	tab-index: none;
+}
+.help__card
+{
+	width: 720dp;
+	padding: var(--space-4) var(--space-5) 0 var(--space-5);
+}
+.help__heading
+{
+	display: block;
+	margin: 0 0 var(--space-3) 0;
+	color: var(--text);
+	font-size: var(--font-lg);
+	font-weight: bold;
+}
+.help__lines, .help__sticks
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+/* Two columns read down, in legacy's order. */
+.help__column
+{
+	display: block;
+	width: 50%;
+}
+.help__line
+{
+	display: block;
+	margin: 0;
+	padding: 3dp 0;
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.help__sticks
+{
+	margin-top: var(--space-3);
+	padding-top: var(--space-3);
+	border-top-width: 1dp;
+	border-top-color: var(--border);
+}
+.help-stick
+{
+	display: block;
+	width: 50%;
+	padding: 3dp 0;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.help-stick__art
+{
+	display: none;
+}
+.help-stick__label
+{
+	display: inline;
+	margin-right: 4dp;
+}
+/* The footer spans the card's width, out of its side padding. */
+.help__footer
+{
+	margin: 12dp -24dp 0 -24dp;
+}

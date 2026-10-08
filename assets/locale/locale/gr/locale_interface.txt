@@ -319,3 +319,11 @@ VKEY_BACKSPACE	Διαγραφή
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Κενή θέση
+OPTION_INTERFACE	Διεπαφή
+OPTION_UI_SCALE	Κλίμακα
+OPTION_UI_SCALE_AUTO	Αυτόματο
+OPTION_UI_REDUCED_MOTION	Μειωμένη κίνηση
+POINT_RESET_QUESTION_1	Μπορώ να επαναφέρω τους πόντους κατάστασης και ικανοτήτων σου.
+POINT_RESET_QUESTION_2	Κοστίζει 500 Yang. Να τους επαναφέρω;
+POINT_RESET_CONFIRM_1	Όλη η εμπειρία του τρέχοντος επιπέδου σου θα χαθεί.
+POINT_RESET_CONFIRM_2	Θέλεις πραγματικά να τους επαναφέρεις;

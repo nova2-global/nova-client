@@ -554,14 +554,45 @@ class MapNovaUI(unittest.TestCase):
     def test_the_atlas_titles_and_places_as_legacy(self):
         world = self.world()
         atlas = world.minimap.AtlasWindow
-        self.assertEqual(atlas.board.model["title"], "")
+        self.assertIsNone(atlas.board, "hidden: no document (P11 spec D5)")
+        self.assertEqual(atlas.title, "")
         atlas.SetMapName(MAP_A1)
-        self.assertEqual(atlas.board.model["title"], "Yongan Area")
-        atlas.SetMapName("metin2_map_unknown")
-        self.assertEqual(atlas.board.model["title"], "", "a map the dict lacks: the default title (legacy raises)")
+        self.assertEqual(atlas.title, "Yongan Area", "kept for the next board")
         world.game.state.scale = 1.5
         atlas.SetCenterPositionAdjust(30, -20)
+        world.game.answer("miniMap", "GetAtlasSize", (1, 256, 256))
+        with quiet():
+            atlas.Show()
+        self.assertEqual(atlas.board.model["title"], "Yongan Area")
         self.assertEqual(atlas.board.placement, ("position", (800 + 30) / 1.5, (450 - 20) / 1.5, (0.5, 0.5)))
+        atlas.SetMapName("metin2_map_unknown")
+        self.assertEqual(atlas.board.model["title"], "", "a map the dict lacks: the default title (legacy raises)")
+        atlas.SetCenterPositionAdjust(10, 10)
+        self.assertEqual(atlas.board.placement, ("position", (800 + 10) / 1.5, (450 + 10) / 1.5, (0.5, 0.5)))
+
+    def test_the_hidden_atlas_holds_no_document_and_keeps_its_place(self):
+        world = self.world()
+        atlas = world.minimap.AtlasWindow
+        atlas_doc = "nui/windows/atlas/atlas.rml"
+        documents = lambda: [window.DOCUMENT for window in world.game.state.windows if window._doc]
+        self.assertNotIn(atlas_doc, documents(), "the constructor's probe left nothing")
+        with world.game:
+            self.assertTrue(atlas.nui_ready())
+        world.game.answer("miniMap", "GetAtlasSize", (1, 256, 256))
+        atlas.SetCenterPositionAdjust(-40, 25)
+        with quiet():
+            atlas.Show()
+        self.assertIn(atlas_doc, documents())
+        self.assertEqual(atlas.board.placement, ("position", 800 - 40.0, 450 + 25.0, (0.5, 0.5)))
+        with quiet():
+            atlas.Hide()
+        self.assertNotIn(atlas_doc, documents())
+        self.assertIsNone(atlas.board)
+        self.assertFalse(atlas.escapeProxy.is_shown())
+        with quiet():
+            atlas.Show()
+        self.assertEqual(atlas.board.placement, ("position", 800 - 40.0, 450 + 25.0, (0.5, 0.5)), "the place survives")
+        self.assertIs(atlas.board.model["shown"], True)
 
     def test_the_atlas_shows_only_with_a_size(self):
         world = self.world()

@@ -1,7 +1,10 @@
 {
-	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py).",
+	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py): a friend request, and the point reset's confirmation with its first line marked as a warning (QuestionDialog2.SetWarningLine).",
 	"cases": [
 		{"page": "dialog-question", "themes": "all",
+		 "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]],
+		 "fixture": true, "roots": [], "time": null},
+		{"page": "dialog-question", "variant": "warning", "themes": "all",
 		 "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]],
 		 "fixture": true, "roots": [], "time": null}
 	]

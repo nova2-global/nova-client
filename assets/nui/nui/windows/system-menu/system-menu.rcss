@@ -1,0 +1,47 @@
+/* The system menu's modern look: one column of buttons, the mall and the
+   exit button set apart by a wider gap, as legacy's column (40 px before
+   them, 30 px elsewhere, 25 px buttons). The facade centers the body.
+   Classic (the thin board, 200 x 288, with the xlarge button art at
+   legacy's places): skins/classic/windows/system-menu.rcss. */
+
+/* The sheet's own place frames the window in its 320 x 360dp snapshots;
+   the facade's center() replaces it in the client. */
+body.system-menu
+{
+	left: 50dp;
+	top: 12dp;
+	width: 220dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.system-menu button
+{
+	tab-index: none;
+}
+
+.system-menu__buttons
+{
+	display: flex;
+	flex-direction: column;
+	padding: var(--space-4);
+}
+.system-menu__button
+{
+	display: block;
+	width: 100%;
+	margin-top: var(--space-1);
+}
+.system-menu__button--group
+{
+	margin-top: var(--space-3);
+}
+.system-menu__button:first-child
+{
+	margin-top: 0;
+}
+/* The mall stands out, as legacy's gold label does: the accent. */
+.system-menu__button--mall
+{
+	color: var(--accent);
+}

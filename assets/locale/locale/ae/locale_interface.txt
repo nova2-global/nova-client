@@ -343,3 +343,11 @@ VKEY_BACKSPACE	حذف
 VKEY_ENTER	إدخال
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	خانة فارغة
+OPTION_INTERFACE	الواجهة
+OPTION_UI_SCALE	الحجم
+OPTION_UI_SCALE_AUTO	تلقائي
+OPTION_UI_REDUCED_MOTION	تقليل الحركة
+POINT_RESET_QUESTION_1	يمكنني إعادة تعيين نقاط الحالة والمهارات الخاصة بك.
+POINT_RESET_QUESTION_2	التكلفة 500 يانغ. هل أعيد تعيينها؟
+POINT_RESET_CONFIRM_1	ستفقد كل خبرة مستواك الحالي.
+POINT_RESET_CONFIRM_2	هل تريد حقاً إعادة تعيينها؟

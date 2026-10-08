@@ -318,3 +318,11 @@ VKEY_BACKSPACE	Wissen
 VKEY_ENTER	Enter
 VKEY_SYMBOLS	@#!
 SELECT_SLOT_EMPTY	Lege plek
+OPTION_INTERFACE	Interface
+OPTION_UI_SCALE	Schaal
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Minder beweging
+POINT_RESET_QUESTION_1	Ik kan je status- en vaardigheidspunten resetten.
+POINT_RESET_QUESTION_2	Het kost 500 Yang. Zal ik ze resetten?
+POINT_RESET_CONFIRM_1	Alle ervaring van je huidige level gaat verloren.
+POINT_RESET_CONFIRM_2	Wil je ze echt resetten?

@@ -1,0 +1,129 @@
+/* Classic skin overlay of nui/windows/music-list/music-list.rml: the
+   legacy music list (uiscript musiclistwindow.py, uiselectmusic.py) at
+   100%, 1dp to the legacy pixel. The stone board, 170 x 300, with its title
+   bar at 8, 7 (155 wide; the title centered over the whole bar, the close
+   button at 137, 3); the list box (ui.ListBoxEx) at 15, 50: ten rows 20dp
+   apart, each a text line whose selection is a dark blue bar as wide as
+   its text plus 4dp (legacy draws no hover); the scroll bar at 143, 40,
+   220 tall, always shown, as legacy's; OK, Cancel and Refresh on the small
+   art (43dp) at 15, 60 and 115, y 265, their labels centered over the art
+   as legacy draws them, wider labels overflowing it. */
+
+body.skin-classic.music-list
+{
+	width: 170dp;
+	height: 300dp;
+	min-width: 0;
+}
+body.skin-classic.music-list .music-list__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 155dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.music-list .music-list__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 155dp;
+	height: 23dp;
+	text-align: center;
+}
+body.skin-classic.music-list .music-list__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 137dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.music-list .music-list__body
+{
+	padding: 0;
+}
+body.skin-classic.music-list .music-list__list
+{
+	position: absolute;
+	left: 15dp;
+	top: 40dp;
+	width: 143dp;
+	height: 220dp;
+	padding: 0;
+}
+body.skin-classic.music-list .music-list__viewport
+{
+	height: 220dp;
+	overflow-y: scroll;
+}
+body.skin-classic.music-list .music-list__item
+{
+	display: block;
+	height: 20dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	line-height: 16dp;
+}
+body.skin-classic.music-list .music-list__item:first-child
+{
+	margin-top: 10dp;
+}
+body.skin-classic.music-list .music-list__item:hover,
+body.skin-classic.music-list .music-list__item.is-selected
+{
+	background-color: transparent;
+}
+body.skin-classic.music-list .music-list__label
+{
+	display: inline-block;
+	height: 16dp;
+	padding: 0 4dp 0 0;
+	color: var(--text);
+}
+body.skin-classic.music-list .music-list__item.is-selected .music-list__label
+{
+	background-color: var(--classic-list-ex-select);
+}
+
+body.skin-classic.music-list .music-list__footer
+{
+	display: block;
+	height: 0;
+	padding: 0;
+}
+body.skin-classic.music-list .music-list__button
+{
+	position: absolute;
+	top: 265dp;
+	width: 43dp;
+	min-width: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.music-list .music-list__button:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.music-list .music-list__button:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+/* The label centered over the art, a wider one overflowing both ends. */
+body.skin-classic.music-list .music-list__button-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+}
+body.skin-classic.music-list .music-list__button--ok { left: 15dp; }
+body.skin-classic.music-list .music-list__button--cancel { left: 60dp; }
+body.skin-classic.music-list .music-list__button--refresh { left: 115dp; }

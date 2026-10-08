@@ -1,0 +1,24 @@
+<rml>
+<head>
+	<!-- The closed chat's lines (P11 spec D4): the newest four lines for 5 s
+	     above the taskbar, on the view shade, in a document of their own, so
+	     an appended line lays out this small document and not the whole
+	     chat. While the chat is closed and shown, the facade
+	     nui_chat.ChatWindow shows this board (nui_chat_view.ChatViewBoard,
+	     controller assets/root/nui_chat_view.py) and the chat document's
+	     lines element is off; while the chat is open, this board hides. The
+	     body is the chat's 600dp block, placed by the facade where it places
+	     the chat (its bottom center on the taskbar's top). It takes no
+	     pointer but on its links and never the focus; a press on a link sends
+	     nuilink, which the chat facade turns into the legacy item tooltip,
+	     or with left Alt a paste. The view-chat option hides the lines. -->
+	<title>chat-view</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="chat-view.rcss"/>
+</head>
+<body template="nui" class="chat-view nui-below-legacy-ui" data-model="chat_view">
+	<div id="chat-view" class="chat-view__block" data-class-is-quiet="!view_chat">
+		<nui-chat-lines id="chat-view-lines" class="chat__lines" view="window" step="15" mode="view" data-event-nuilink="link(ev.link)"/>
+	</div>
+</body>
+</rml>

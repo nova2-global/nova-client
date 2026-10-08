@@ -22,7 +22,13 @@ The field keeps wndMgr's focus away from the game window while it has
 NovaUI's, through a nui_hud.FocusProxy, as a focused legacy edit line
 would: a press on the world then closes the chat through game.py's
 CheckFocus, and a legacy edit line that takes wndMgr's focus (a whisper
-dialog) takes the keys from the field while the chat stays open."""
+dialog) takes the keys from the field while the chat stays open.
+
+With an exe that has the Wave 3a engine (nui_hud.has_engine_3a), the closed
+chat's lines show in a document of their own (nui_chat_view.ChatViewBoard,
+P11 spec D4), shown while the chat is closed and shown; the chat's own lines
+element is then off while it is closed (lines_mode). With an older exe the
+chat keeps one document, its lines in view mode while closed, as before."""
 
 import weakref
 
@@ -41,6 +47,7 @@ except ImportError:  # an exe without the Wave 2b engine: nui_ready() is False
 	nuigame = None
 
 import nui
+import nui_chat_view
 import nui_hud
 import nui_text
 
@@ -153,12 +160,13 @@ class ChatInput(object):
 
 	def SetText(self, text):
 		"""ChatLine.SetText with SetEndPosition: the caret at the end. A
-		hidden document's field takes no text (the mode buttons cycle every
-		chat input, the hidden log's too, as legacy's), so it waits for
+		hidden document's field, or a board not made yet (the chat log's
+		exists only while it shows), takes no text (the mode buttons cycle
+		every chat input, the hidden log's too, as legacy's), so it waits for
 		ShowText()."""
 		self.lastValue = text
 		self.pending = None
-		if self.board is not None and not self.board.set_value(self.field, text, caret="end"):
+		if self.board is None or not self.board.set_value(self.field, text, caret="end"):
 			self.pending = text
 		self.CheckChatMark()
 
@@ -373,7 +381,8 @@ class ChatBoard(nui.Window):
 
 	def initial_model(self):
 		return {"open": False, "shown": False, "chat_mode": chat.CHAT_TYPE_TALKING, "mark": "",
-		        "history_height": ChatWindow.HISTORY_HEIGHT, "view_chat": True, "draft": ""}
+		        "history_height": ChatWindow.HISTORY_HEIGHT, "view_chat": True,
+		        "lines_mode": "off" if nui_hud.has_engine_3a() else "view", "draft": ""}
 
 	def on_scale_changed(self, scale):
 		self._owner.nui_place()
@@ -466,6 +475,7 @@ class ChatWindow(object):
 		nui_hud.take_over(self.KEY, self)
 		self._nui_discarded = False
 		self.board = None
+		self.viewBoard = None       # the closed lines' board (Wave 3a engine only)
 		self.focusProxy = None
 		self.fieldFocused = False   # NovaUI's focus on the field, as its focus and blur events said
 		self.modeShim = None
@@ -499,6 +509,8 @@ class ChatWindow(object):
 			self.board.element_on("chat-input", "blur", self.board.nui_field_blur)
 			self.board.element_on("chat-input", "mousedown", self.board.nui_field_press)
 			self.focusProxy = nui_hud.FocusProxy(self._on_focus_lost, self._on_focus_gained)
+			if nui_hud.has_engine_3a():
+				self.viewBoard = nui_chat_view.ChatViewBoard(self)
 			self.modeShim = add_mode_shim(self)
 			attach_feed()
 			self.attached = True
@@ -509,7 +521,8 @@ class ChatWindow(object):
 	# --- the make() protocol ------------------------------------------------------
 
 	def nui_ready(self):
-		return self.board is not None and bool(self.board._doc) and nui_hud.has_engine_2b()
+		return (self.board is not None and bool(self.board._doc) and nui_hud.has_engine_2b()
+		        and (self.viewBoard is None or bool(self.viewBoard._doc)))
 
 	def nui_discard(self):
 		self._nui_discarded = True
@@ -521,10 +534,12 @@ class ChatWindow(object):
 		proxy, self.focusProxy = self.focusProxy, None
 		if proxy is not None:
 			proxy.destroy()
-		board, self.board = self.board, None
+		for name in ("viewBoard", "board"):
+			board = getattr(self, name)
+			setattr(self, name, None)
+			if board is not None:
+				board.destroy()
 		self.input.board = None
-		if board is not None:
-			board.destroy()
 		nui_hud.forget(self.KEY, self)
 
 	def Destroy(self):
@@ -557,11 +572,27 @@ class ChatWindow(object):
 		self.nui_place()
 
 	def nui_place(self):
-		if self.board is None:
-			return
+		"""The chat's body, and the closed lines' with it: the bottom center on
+		the input line's bottom center, the taskbar's top."""
 		s = nui.get_scale() or 1.0
 		x, y = self.position
-		self.board.set_position((x + self.CHAT_WINDOW_WIDTH // 2) / s, (y + self.EDIT_LINE_HEIGHT) / s, origin=(0.5, 1.0))
+		for board in (self.board, self.viewBoard):
+			if board is not None:
+				board.set_position((x + self.CHAT_WINDOW_WIDTH // 2) / s, (y + self.EDIT_LINE_HEIGHT) / s, origin=(0.5, 1.0))
+
+	def nui_sync_lines(self):
+		"""Which lines show: open, the chat's own in edit mode; closed, the
+		closed lines' board while the chat shows (the chat's element off), or
+		with an older exe the chat's own element in view mode."""
+		editing = self.boardState == chat.BOARD_STATE_EDIT
+		self.nui_set(lines_mode="edit" if editing else ("off" if self.viewBoard is not None else "view"))
+		view = self.viewBoard
+		if view is None:
+			return
+		if self.shown and not editing:
+			view.show()
+		else:
+			view.hide()
 
 	def nui_set(self, **values):
 		if self.board is not None:
@@ -575,12 +606,14 @@ class ChatWindow(object):
 			self.board.show()
 		self.input.ShowText()
 		self.nui_set(shown=True)
+		self.nui_sync_lines()
 
 	def Hide(self):
 		self.shown = False
 		if self.board is not None:
 			self.board.hide()
 		self.nui_set(shown=False)
+		self.nui_sync_lines()
 
 	def IsShow(self):
 		return self.shown and self.board is not None and self.board.is_visible()
@@ -604,6 +637,7 @@ class ChatWindow(object):
 		chat.SetBoardState(self.chatID, chat.BOARD_STATE_EDIT)
 		self.boardState = chat.BOARD_STATE_EDIT
 		self.nui_set(open=True)
+		self.nui_sync_lines()
 		if self.board is not None and self.board.focus("chat-input"):
 			self.fieldFocused = True
 		self.input.ResetChat()
@@ -617,6 +651,7 @@ class ChatWindow(object):
 			self.endPos = 1.0
 			chat.SetEndPos(self.chatID, 1.0)
 		self.nui_set(open=False)
+		self.nui_sync_lines()
 		# NovaUI's focus off the field (when the field has it: not the log's
 		# field's), then wndMgr's: the window wndMgr then activates may focus
 		# its own field (FocusProxy on_gained), which must stay.

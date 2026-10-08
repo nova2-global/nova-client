@@ -18,7 +18,10 @@ window as a modal (Window.modal). Feeds follow nui.py's FEEDS: a window
 binds each key it names when it is made (the key takes the feed's value
 then, if NuiState.feeds holds one), NuiState.publish() changes a feed and
 every bound key, as the runtime's next frame would, and nui.now() and
-nui.feed() answer NuiState.now and NuiState.feeds."""
+nui.feed() answer NuiState.now and NuiState.feeds. The appearance calls
+(set_theme, set_scale_percent, set_reduced_motion and their getters,
+get_auto_scale) follow NuiState.theme, .scale_percent, .auto_scale and
+.reduced_motion, and each setter is recorded in NuiState.appearance."""
 import importlib.util
 import os
 import sys
@@ -60,6 +63,10 @@ class NuiState(object):
         self.feeds = {}          # feed name -> the value C++ published last (nui.feed)
         self.binds = []          # (window class name, model key, feed name) of every bind, in order
         self.text_fields = set()  # (document, element id) of the text fields (ime.PasteString reaches them)
+        self.scale_percent = 0   # nui.get_scale_percent(): the saved choice, 0 for automatic
+        self.auto_scale = 0.875  # nui.get_auto_scale(): 900 lines in 1/8 steps
+        self.reduced_motion = False
+        self.appearance = []     # ("set_theme", id), ("set_scale_percent", p), ("set_reduced_motion", on), in order
 
     def publish(self, name, value):
         """A feed changes: every live window's key bound to it takes the value,
@@ -379,17 +386,27 @@ def make_nui(state):
     def set_theme(name):
         if name not in [theme_id for theme_id, _ in state.themes]:
             raise ValueError("no theme %r" % (name,))
+        state.appearance.append(("set_theme", name))
         state.theme = name
-        for window in state.windows:
+        for window in list(state.windows):
             if window._doc:
                 window.on_theme_changed(name)
         return name
 
     def set_scale_percent(percent):
-        state.scale = percent / 100.0 if percent > 0 else 1.0
-        for window in state.windows:
+        """nui.py's clamp: 0 or less is automatic, else 75..200."""
+        percent = int(round(percent))
+        percent = 0 if percent <= 0 else min(max(percent, 75), 200)
+        state.appearance.append(("set_scale_percent", percent))
+        state.scale_percent = percent
+        state.scale = percent / 100.0 if percent > 0 else state.auto_scale
+        for window in list(state.windows):
             if window._doc:
                 window.on_scale_changed(state.scale)
+
+    def set_reduced_motion(on):
+        state.appearance.append(("set_reduced_motion", bool(on)))
+        state.reduced_motion = bool(on)
 
     def any_window_shown():
         return any(window.is_visible() for window in state.windows)
@@ -410,6 +427,10 @@ def make_nui(state):
     nui.set_theme = set_theme
     nui.get_scale = lambda: state.scale
     nui.set_scale_percent = set_scale_percent
+    nui.get_scale_percent = lambda: state.scale_percent
+    nui.get_auto_scale = lambda: state.auto_scale if state.available else 1.0
+    nui.set_reduced_motion = set_reduced_motion
+    nui.is_reduced_motion = lambda: state.reduced_motion
     nui.any_window_shown = any_window_shown
     nui.plain_text = plain_text
     nui.now = lambda: float(state.now) if state.available else 0.0

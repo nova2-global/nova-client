@@ -5,6 +5,7 @@
 			"@game.MESSENGER_DO_YOU_ACCEPT_ADD_FRIEND_2"
 		],
 		"accept_label": "@ui.YES",
-		"cancel_label": "@ui.NO"
+		"cancel_label": "@ui.NO",
+		"warn_line": -1
 	}
 }

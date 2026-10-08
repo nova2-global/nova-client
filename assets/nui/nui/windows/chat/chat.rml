@@ -21,7 +21,10 @@
 	     into the legacy item tooltip, or with left Alt a paste. The closed
 	     lines take no pointer but their links, so a press beside a link
 	     reaches the world as in legacy; the open history takes it, for the
-	     wheel (new: legacy never scrolls the chat window). -->
+	     wheel (new: legacy never scrolls the chat window). lines_mode is the
+	     lines element's mode: edit while open; while closed, off with an
+	     exe that has the Wave 3a engine, whose closed lines show in their
+	     own document (chat-view.rml, P11 spec D4), else view, as before. -->
 	<title>chat</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="chat.rcss"/>
@@ -32,7 +35,7 @@
 			<nui-resize id="chat-resize" class="nui-resize--top chat__resize nui-interactive" edge="top" target="chat-history"
 				min-height="25" data-attr-height="history_height" data-event-resized="resized(ev.height)"><div class="chat__grip"></div></nui-resize>
 			<nui-chat-lines id="chat-lines" class="chat__lines" view="window" step="15"
-				data-attr-mode="open ? 'edit' : 'view'" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
+				data-attr-mode="lines_mode" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
 		</div>
 		<div id="chat-input-row" class="chat__input-row nui-interactive">
 			<button id="chat-mode" class="chat__mode" data-event-mousedown="mode(ev.button)"><span

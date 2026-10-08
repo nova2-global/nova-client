@@ -9,11 +9,15 @@
    its left edge 402dp left of the screen's right edge):
    skins/classic/windows/atlas.rcss. */
 
+/* No window minimum: 18 of the 37 atlas images are narrower than the
+   frame's 240dp allows (171 px for Pyungmoo, metin2_map_c1), which left an
+   empty strip right of the map. */
 body.atlas
 {
 	left: auto;
 	right: 160dp;
 	top: 12dp;
+	min-width: 0;
 	focus: none;
 	tab-index: none;
 }

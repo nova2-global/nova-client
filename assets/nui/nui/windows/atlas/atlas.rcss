@@ -1,0 +1,45 @@
+/* The atlas's modern look: the window frame left of the modern minimap, its
+   top right 160dp from the screen's right edge and 12dp from the top, the
+   map image (the view at the atlas image's size, 256dp for most maps) in a
+   padded body, the title in the title row. The window's width and height
+   follow the view's: RmlUi counts an inline-level replaced box in a
+   window's shrink-to-fit width, and not a block-level one, so the view is
+   an inline-block on the line's top. Classic (the stone board with the legacy title bar,
+   the view at 7, 30, the frame 15dp wider and 38dp taller than the image,
+   its left edge 402dp left of the screen's right edge):
+   skins/classic/windows/atlas.rcss. */
+
+body.atlas
+{
+	left: auto;
+	right: 160dp;
+	top: 12dp;
+	focus: none;
+	tab-index: none;
+}
+.atlas button
+{
+	tab-index: none;
+	focus: none;
+}
+.atlas__body
+{
+	display: block;
+	padding: var(--space-2);
+}
+.atlas__view
+{
+	display: inline-block;
+	vertical-align: top;
+}
+/* The hint opens left of the close button, inside the window. */
+.atlas__tip
+{
+	left: auto;
+	right: 100%;
+	bottom: auto;
+	top: 0;
+	margin-bottom: 0;
+	margin-right: var(--space-1);
+	margin-left: -320dp;
+}

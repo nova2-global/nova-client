@@ -1,0 +1,10 @@
+/* Classic skin overlay of nui/windows/player-gauge/player-gauge.rml: legacy's
+   gauge (ui.Gauge MakeGauge(100, "red"), ui.py:1752-1780), the slot art with
+   its caps and the red bar inset 12dp from both ends, which the classic
+   gauge component draws; 100dp wide and 8dp tall, without the modern rim. */
+
+body.skin-classic.player-gauge progress.player-gauge__gauge
+{
+	height: 8dp;
+	border-width: 0;
+}

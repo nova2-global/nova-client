@@ -1,0 +1,23 @@
+/* The player gauge's modern look: the modern red gauge, 100dp wide, on a
+   dark rim so it reads over the world in both palettes. The anchor is the
+   gauge's own box, so its center sits on the name tail's x and its top 5dp
+   below the tail (uiplayergauge.py:25-31). Classic (legacy's gauge art, 8dp
+   tall): skins/classic/windows/player-gauge.rcss. */
+
+body.player-gauge
+{
+	focus: none;
+	tab-index: none;
+}
+.player-gauge__anchor
+{
+	width: 100dp;
+}
+progress.player-gauge__gauge
+{
+	width: 100dp;
+	height: 6dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--surface-sunken);
+}

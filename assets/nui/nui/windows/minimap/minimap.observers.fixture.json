@@ -1,0 +1,11 @@
+{
+	"minimap": {
+		"shown": true,
+		"open": true,
+		"can_see": true,
+		"has_atlas": true,
+		"server_info": "Nova - CH1",
+		"observers": 3,
+		"observer_text": "3 observers"
+	}
+}

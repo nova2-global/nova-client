@@ -1,0 +1,176 @@
+/* Classic skin overlay of nui/windows/minimap/minimap.rml: the legacy MiniMap
+   (uiscript/minimap.py) at 100%, 1dp to the legacy pixel. The window at
+   W - 136, 0, 136 x 137: the view at 4, 5 under the frame art (minimap.sub,
+   its ring and the art of the four buttons), the atlas button at 12, 12,
+   close at 111, 6, zoom out at 115, 103 and zoom in at 101, 116, each with
+   its default, over and down art; the server line centered on x 70 at 140
+   and the observer line at 180, outlined. Closed: the 132 x 48 window at
+   W - 136, 0 with the show button (minimap_open_default.sub for every
+   state) at 100, 4. The hints are legacy's MapTextToolTip: outlined text,
+   right-aligned 5dp left of the button, level with its top. */
+
+body.skin-classic.minimap .minimap__window
+{
+	right: 0;
+	top: 0;
+	width: 136dp;
+	height: 137dp;
+}
+body.skin-classic.minimap .minimap__base
+{
+	display: none;
+}
+body.skin-classic.minimap .minimap__view
+{
+	left: 4dp;
+	top: 5dp;
+}
+body.skin-classic.minimap .minimap__frame
+{
+	width: 136dp;
+	height: 137dp;
+	border-width: 0;
+	border-radius: 0;
+	decorator: image("d:/ymir work/ui/minimap/minimap.sub" scale-none left top);
+}
+
+body.skin-classic.minimap .minimap__button
+{
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.minimap .minimap__button:hover, body.skin-classic.minimap .minimap__button:active
+{
+	background-color: transparent;
+}
+body.skin-classic.minimap .minimap__glyph
+{
+	visibility: hidden;
+}
+body.skin-classic.minimap .minimap__button--atlas
+{
+	left: 12dp;
+	top: 12dp;
+	width: 15dp;
+	height: 15dp;
+	decorator: image("d:/ymir work/ui/minimap/atlas_open_default.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--atlas:hover
+{
+	decorator: image("d:/ymir work/ui/minimap/atlas_open_over.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--atlas:active
+{
+	decorator: image("d:/ymir work/ui/minimap/atlas_open_down.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--hide
+{
+	left: 111dp;
+	top: 6dp;
+	width: 19dp;
+	height: 20dp;
+	decorator: image("d:/ymir work/ui/minimap/minimap_close_default.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--hide:hover
+{
+	decorator: image("d:/ymir work/ui/minimap/minimap_close_over.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--hide:active
+{
+	decorator: image("d:/ymir work/ui/minimap/minimap_close_down.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--down
+{
+	left: 115dp;
+	top: 103dp;
+	width: 15dp;
+	height: 15dp;
+	decorator: image("d:/ymir work/ui/minimap/minimap_scaledown_default.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--down:hover
+{
+	decorator: image("d:/ymir work/ui/minimap/minimap_scaledown_over.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--down:active
+{
+	decorator: image("d:/ymir work/ui/minimap/minimap_scaledown_down.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--up
+{
+	left: 101dp;
+	top: 116dp;
+	width: 15dp;
+	height: 15dp;
+	decorator: image("d:/ymir work/ui/minimap/minimap_scaleup_default.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--up:hover
+{
+	decorator: image("d:/ymir work/ui/minimap/minimap_scaleup_over.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__button--up:active
+{
+	decorator: image("d:/ymir work/ui/minimap/minimap_scaleup_down.sub" scale-none left top);
+}
+
+body.skin-classic.minimap .nui-tooltip.minimap__tip
+{
+	decorator: none;
+	padding: 0;
+	margin-right: 5dp;
+	background-color: transparent;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 14dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+
+/* The lines: legacy's centered text lines at x 70, 140 and 180 from the
+   window's top, outlined, without a board. */
+body.skin-classic.minimap .minimap__line
+{
+	left: -30dp;
+	width: 200dp;
+}
+body.skin-classic.minimap .minimap__line--server
+{
+	top: 140dp;
+}
+body.skin-classic.minimap .minimap__line--observers
+{
+	top: 180dp;
+}
+body.skin-classic.minimap .minimap__text
+{
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 14dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+
+body.skin-classic.minimap .minimap__closed
+{
+	right: 4dp;
+	top: 0;
+	width: 132dp;
+	height: 48dp;
+}
+body.skin-classic.minimap .minimap__show
+{
+	left: 100dp;
+	top: 4dp;
+	width: 32dp;
+	height: 32dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/minimap/minimap_open_default.sub" scale-none left top);
+}
+body.skin-classic.minimap .minimap__show:hover, body.skin-classic.minimap .minimap__show:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/minimap/minimap_open_default.sub" scale-none left top);
+}

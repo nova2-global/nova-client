@@ -1,0 +1,19 @@
+/* Classic skin overlay of nui/windows/shop-signs/shop-signs.rml: the legacy
+   sign, a ThinBoard (the classic panel) with the name centered both ways,
+   10dp on each side. Legacy sizes it len(name) * 6 + 20 by 20, and
+   ThinBoard.SetSize makes that at least 32 by 32 (ui.py:2003-2007), so the
+   board is 32dp tall; its width follows the drawn name (at least 32dp). */
+
+body.skin-classic.shop-signs .nui-panel.shop-sign
+{
+	min-width: 32dp;
+	height: 32dp;
+	padding: 0 10dp;
+	font-size: var(--font-md);
+	line-height: 32dp;
+	color: var(--text);
+}
+body.skin-classic.shop-signs .nui-panel.shop-sign:hover
+{
+	border-color: transparent;
+}

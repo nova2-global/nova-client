@@ -1,0 +1,50 @@
+<rml>
+<head>
+	<!-- The minimap (uiminimap.py MiniMap, uiscript/minimap.py): the map view
+	     behind its round frame, the zoom, close and atlas buttons, the server
+	     line and the observer count; closed, only the show button. While the
+	     minimap flag is on, the Interface makes the facade
+	     nui_minimap.MiniMap (controller assets/root/nui_minimap.py), which
+	     makes the atlas too. The map image is a nui-view: C++ renders the
+	     legacy minimap (CPythonMiniMap, its terrain, round filter and marks)
+	     into a render target each frame the view shows, and the view's own
+	     label shows what lies under the pointer, so no Python runs per frame.
+	     The body is a full-screen overlay that takes the pointer only on the
+	     view and the buttons and never the focus, so the buttons act on
+	     mousedown. The hints open on hover. The classic art is under
+	     d:/ymir work/ui/minimap/ (assets/ETC). -->
+	<title>minimap</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="minimap.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui minimap" data-model="minimap">
+	<div id="minimap" class="minimap__window" data-if="shown &amp;&amp; open">
+		<div class="minimap__base"></div>
+		<nui-view id="minimap-view" name="minimap" class="minimap__view nui-interactive"/>
+		<div id="minimap-frame" class="minimap__frame"></div>
+		<span id="minimap-atlas" class="minimap__button minimap__button--atlas nui-interactive nui-has-tooltip"
+			data-event-mousedown="atlas(ev.button)"><span class="minimap__glyph">M</span><span
+			class="nui-tooltip nui-anim minimap__tip" data-if="has_atlas">@game.MINIMAP_SHOW_AREAMAP</span><span
+			class="nui-tooltip nui-anim minimap__tip" data-if="!has_atlas">@game.MINIMAP_CAN_NOT_SHOW_AREAMAP</span></span>
+		<span id="minimap-hide" class="minimap__button minimap__button--hide nui-interactive nui-has-tooltip"
+			data-event-mousedown="hide_map(ev.button)"><span class="minimap__glyph">&#215;</span><span
+			class="nui-tooltip nui-anim minimap__tip">@game.UI_CLOSE</span></span>
+		<span id="minimap-scale-down" class="minimap__button minimap__button--down nui-interactive nui-has-tooltip"
+			data-event-mousedown="scale_down(ev.button)"><span class="minimap__glyph">&#8722;</span><span
+			class="nui-tooltip nui-anim minimap__tip">@game.MINIMAP_DEC_SCALE</span></span>
+		<span id="minimap-scale-up" class="minimap__button minimap__button--up nui-interactive nui-has-tooltip"
+			data-event-mousedown="scale_up(ev.button)"><span class="minimap__glyph">+</span><span
+			class="nui-tooltip nui-anim minimap__tip">@game.MINIMAP_INC_SCALE</span></span>
+		<div id="minimap-server" class="minimap__line minimap__line--server" data-if="server_info != ''"><span
+			class="minimap__text">{{ server_info }}</span></div>
+		<div id="minimap-observers" class="minimap__line minimap__line--observers" data-if="observers > 0"><span
+			class="minimap__text">{{ observer_text }}</span></div>
+	</div>
+	<div id="minimap-closed" class="minimap__closed" data-if="shown &amp;&amp; !open">
+		<span id="minimap-show" class="minimap__show nui-interactive nui-has-tooltip"
+			data-event-mousedown="show_map(ev.button)"><span
+			class="nui-tooltip nui-anim minimap__tip" data-if="can_see">@game.MINIMAP</span><span
+			class="nui-tooltip nui-anim minimap__tip" data-if="!can_see">@game.MINIMAP_CANNOT_SEE</span></span>
+	</div>
+</body>
+</rml>

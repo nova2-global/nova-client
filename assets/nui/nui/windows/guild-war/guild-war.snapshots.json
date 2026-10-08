@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the guild war boards (tools/check_nui_snapshots.py): one war with both guilds' marks from the fixture mark atlas (fixture/marks.tga, two 16 x 12 marks, made by tools/nui_view_fixtures.py); two: a second, newer war above it, with member counts and one guild without a mark. The classic thin board art is under d:/ymir work/ (assets/ETC).",
+	"cases": [
+		{"page": "guild-war", "themes": "all", "scales": [["100", "1", "480x200"], ["150", "1.5", "720x300"], ["200", "2", "960x400"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "guild-war", "variant": "two", "themes": "all", "scales": [["100", "1", "480x200"], ["150", "1.5", "720x300"], ["200", "2", "960x400"]], "fixture": true, "roots": ["assets/ETC"], "time": null}
+	]
+}

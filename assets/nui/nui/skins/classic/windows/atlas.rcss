@@ -1,0 +1,28 @@
+/* Classic skin overlay of nui/windows/atlas/atlas.rml: the legacy AtlasWindow
+   (uiscript/atlaswindow.py, uiminimap.py:83-107, :164-177) at 100%, 1dp to
+   the legacy pixel. Its left edge 402dp left of the screen's right edge
+   (W - 136 - 256 - 10) at the top; the stone board with the legacy title bar
+   (the classic window frame: the bar at 8, 7, the content from 30dp down);
+   the view at 7, 30, so the board is 15dp wider and 38dp taller than the
+   image, as legacy sizes it. The close hint is the legacy button tooltip,
+   outlined text without a board. */
+
+body.skin-classic.atlas
+{
+	left: 100%;
+	right: auto;
+	margin-left: -402dp;
+	top: 0;
+}
+body.skin-classic.atlas .atlas__body
+{
+	padding: 0 8dp 8dp 7dp;
+}
+body.skin-classic.atlas .nui-tooltip.atlas__tip
+{
+	decorator: none;
+	padding: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

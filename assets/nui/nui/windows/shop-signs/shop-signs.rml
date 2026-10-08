@@ -1,0 +1,30 @@
+<rml>
+<head>
+	<!-- The private shop signs (uiprivateshopbuilder.py
+	     PrivateShopAdvertisementBoard): one sign over each open private shop,
+	     its name centered on the shop owner's position raised 220 units and
+	     projected (chr.GetProjectPosition). While the shop-signs flag is on,
+	     the Interface makes one facade per sign, nui_shop_signs.ShopSign
+	     (controller assets/root/nui_shop_signs.py), and every sign is an entry
+	     of this one document (spec D18). Each anchor places itself every
+	     frame, where legacy positioned each sign from Python every frame; the
+	     game option that hides the signs of other players reaches the
+	     document through the system.show_sales_text feed. A release of the
+	     left button on a sign opens the shop (net.SendOnClickPacket). The
+	     names are shown as written, their color tags drawn and links not
+	     (nui-text links="off"). Each repeated slot binds nothing: RmlUi
+	     updates a repeated element's own views with the data-for that removes
+	     it. The classic thin board art is under d:/ymir work/ (assets/ETC). -->
+	<title>shop-signs</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="shop-signs.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui shop-signs" data-model="shop_signs">
+	<div class="shop-signs__slot" data-for="s : signs">
+		<nui-anchor class="shop-signs__anchor" mode="project" height="220" data-attr-vid="s.vid"
+			data-attr-id="'shop-sign-' + s.vid" data-if="s.shown &amp;&amp; (show_all || s.own)"><div
+			class="nui-panel shop-sign nui-interactive" data-event-mouseup="open(s.vid, ev.button)"><nui-text
+			class="shop-sign__text" links="off" data-attr-value="s.text"/></div></nui-anchor>
+	</div>
+</body>
+</rml>

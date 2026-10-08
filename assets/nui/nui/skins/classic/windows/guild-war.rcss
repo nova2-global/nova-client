@@ -1,0 +1,24 @@
+/* Classic skin overlay of nui/windows/guild-war/guild-war.rml: the legacy
+   GuildWarScoreBoard (uiguild.py:376-468) at 100%, 1dp to the legacy pixel:
+   a thin board (the classic panel) 50dp tall at 10, H - 100, its two marks
+   at 10, 10 + 18k and its two texts at 30, 10 + 18k. Its width follows the
+   longest text plus 10dp. */
+
+body.skin-classic.guild-war .nui-panel.guild-war__board
+{
+	height: 50dp;
+	box-sizing: border-box;
+	padding: 10dp 10dp 0 10dp;
+	font-size: var(--font-md);
+	color: var(--text);
+}
+body.skin-classic.guild-war .guild-war__row
+{
+	height: 18dp;
+	padding-left: 20dp;
+	line-height: 14dp;
+}
+body.skin-classic.guild-war .guild-war__mark
+{
+	top: 0;
+}

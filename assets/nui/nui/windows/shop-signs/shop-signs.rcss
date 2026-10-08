@@ -1,0 +1,32 @@
+/* The shop signs' modern look: each sign a small panel (the panel
+   component) 22dp tall, its name on one line with 10dp on each side,
+   centered on the shop's point (the anchor's default alignment). Its width
+   follows the drawn name, where legacy computes len(name) * 6 + 20. Classic
+   (the thin board, 32dp tall as legacy's ThinBoard makes it at least):
+   skins/classic/windows/shop-signs.rcss. */
+
+body.shop-signs
+{
+	focus: none;
+	tab-index: none;
+}
+.shop-signs__slot
+{
+	display: block;
+}
+.nui-panel.shop-sign
+{
+	display: block;
+	height: 22dp;
+	box-sizing: border-box;
+	padding: 0 10dp;
+	font-size: var(--font-sm);
+	line-height: 20dp;
+	white-space: nowrap;
+	text-align: center;
+	color: var(--text);
+}
+.nui-panel.shop-sign:hover
+{
+	border-color: var(--accent);
+}

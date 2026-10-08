@@ -1,0 +1,11 @@
+{
+	"$comment": "Golden cases of the minimap (tools/check_nui_snapshots.py): open with the server line, closed (the show button alone), and open with three observers. The map view is the stand-in tools/nui_view_fixtures.py makes (--view); the art is under d:/ymir work/ui/minimap/ (assets/ETC).",
+	"cases": [
+		{"page": "minimap", "themes": "all", "scales": [["100", "1", "320x240"], ["150", "1.5", "480x360"], ["200", "2", "640x480"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		 "views": {"minimap": "nui/windows/minimap/minimap.view.png"}},
+		{"page": "minimap", "variant": "closed", "themes": "all", "scales": [["100", "1", "320x240"], ["150", "1.5", "480x360"], ["200", "2", "640x480"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		 "views": {"minimap": "nui/windows/minimap/minimap.view.png"}},
+		{"page": "minimap", "variant": "observers", "themes": "all", "scales": [["100", "1", "320x240"], ["150", "1.5", "480x360"], ["200", "2", "640x480"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		 "views": {"minimap": "nui/windows/minimap/minimap.view.png"}}
+	]
+}

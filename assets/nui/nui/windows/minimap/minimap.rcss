@@ -1,0 +1,192 @@
+/* The minimap's modern look: a round map at the top right, 12dp from the
+   edges: the view (128dp) on a dark disc inside a ring, the round icon
+   buttons on the ring (the atlas top left, close top right, zoom out and in
+   at the bottom right, as the legacy frame places them), and the server and
+   observer lines under it on small pills, so they read over the world in
+   both palettes. The ring is a border with a radius and no clip: it covers
+   the edge of the legacy terrain's round filter (128dp across). Closed, a
+   36dp button with the legacy map thumbnail. Classic (the legacy frame art
+   at W - 136, 0 with its buttons at the legacy places):
+   skins/classic/windows/minimap.rcss. */
+
+body.minimap
+{
+	focus: none;
+	tab-index: none;
+}
+
+.minimap__window
+{
+	position: absolute;
+	right: 12dp;
+	top: 12dp;
+	width: 136dp;
+	height: 136dp;
+}
+.minimap__base
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 136dp;
+	height: 136dp;
+	border-radius: 68dp;
+	background-color: var(--surface);
+}
+.minimap__view
+{
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	width: 128dp;
+	height: 128dp;
+}
+.minimap__frame
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 136dp;
+	height: 136dp;
+	box-sizing: border-box;
+	border-width: 5dp;
+	border-color: var(--border);
+	border-radius: 68dp;
+}
+
+/* The buttons: 22dp discs on the ring; the glyph takes no pointer, so the
+   button is the hover and press target. */
+.minimap__button
+{
+	display: block;
+	position: absolute;
+	width: 22dp;
+	height: 22dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 11dp;
+	background-color: var(--surface-raised);
+	color: var(--text);
+	text-align: center;
+}
+.minimap__button:hover
+{
+	border-color: var(--accent);
+	background-color: var(--surface-hover);
+}
+.minimap__button:active
+{
+	background-color: var(--surface-sunken);
+}
+.minimap__glyph
+{
+	display: block;
+	font-size: var(--font-md);
+	font-weight: bold;
+	line-height: 20dp;
+	pointer-events: none;
+}
+.minimap__button--atlas
+{
+	left: 9dp;
+	top: 9dp;
+}
+.minimap__button--atlas .minimap__glyph
+{
+	font-size: var(--font-sm);
+}
+.minimap__button--hide
+{
+	left: 105dp;
+	top: 9dp;
+}
+.minimap__button--down
+{
+	left: 112dp;
+	top: 92dp;
+}
+.minimap__button--up
+{
+	left: 94dp;
+	top: 112dp;
+}
+
+/* The hints open left of their button, vertically centered, inside the
+   screen at the right edge. RmlUi caps an absolutely placed box's
+   shrink-to-fit width at its host's, so a negative margin widens it. */
+.minimap__tip
+{
+	left: auto;
+	right: 100%;
+	bottom: auto;
+	top: 0;
+	margin-bottom: 0;
+	margin-right: var(--space-1);
+	margin-left: -320dp;
+}
+
+/* The server and observer lines: centered under the map, each a pill. */
+.minimap__line
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	position: absolute;
+	left: -32dp;
+	width: 200dp;
+	pointer-events: none;
+}
+.minimap__line--server
+{
+	top: 142dp;
+}
+.minimap__line--observers
+{
+	top: 164dp;
+}
+.minimap__text
+{
+	display: block;
+	padding: 1dp var(--space-2);
+	border-radius: var(--radius-md);
+	background-color: var(--surface);
+	color: var(--text);
+	font-size: var(--font-xs);
+	line-height: 16dp;
+	white-space: nowrap;
+}
+
+/* Closed: the show button alone, where the map's top right corner was. */
+.minimap__closed
+{
+	position: absolute;
+	right: 12dp;
+	top: 12dp;
+	width: 36dp;
+	height: 36dp;
+}
+.minimap__show
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 36dp;
+	height: 36dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+	decorator: image("d:/ymir work/ui/minimap/minimap_open_default.sub" scale-none center center);
+}
+.minimap__show:hover
+{
+	border-color: var(--accent);
+	background-color: var(--surface-hover);
+}
+.minimap__show:active
+{
+	background-color: var(--surface-sunken);
+}

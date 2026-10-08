@@ -89,7 +89,9 @@
 				</div>
 			</div>
 			<div class="so-row so-row--motion">
-				<label class="nui-toggle so-motion">
+				<!-- The checkbox inside a nui-toggle has no box of its own: a
+				     click on the label (its id: so-motion-toggle) toggles it. -->
+				<label id="so-motion-toggle" class="nui-toggle so-motion">
 					<input id="so-motion" type="checkbox" class="nui-toggle__input"
 						data-attrif-checked="reduced_motion" data-event-change="motion(ev.checked)"/>
 					<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>

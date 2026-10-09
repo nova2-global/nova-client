@@ -23,10 +23,12 @@
 
 /* Legacy's curtain is a TOP_MOST bar made before the TOP_MOST taskbar
    (interfacemodule.py __MakeUICurtain, then __MakeTaskBar), so the taskbar
-   draws over it at full brightness: its 37dp bar along the bottom and its
-   gauge board, 158 x 47 at the left, 10dp above the bar. The curtain here
-   is the screen without those two parts; the scrim stays clear and still
-   takes every press. */
+   draws over it at full brightness: its 37dp bar along the bottom, and the
+   rampage orb's dome, the only opaque part of the gauge board's 10dp above
+   the bar (taskbar.tga rows 0 to 9: x 6 to 47 at most); the rest of those
+   10dp is transparent art over the dimmed world. The curtain here is the
+   screen without the bar and the dome's 48dp; the scrim stays clear and
+   still takes every press. */
 body.skin-classic.help
 {
 	display: block;
@@ -47,7 +49,7 @@ body.skin-classic.help .help__curtain--top
 }
 body.skin-classic.help .help__curtain--gauge
 {
-	left: 158dp;
+	left: 48dp;
 	right: 0;
 	bottom: 37dp;
 	height: 10dp;

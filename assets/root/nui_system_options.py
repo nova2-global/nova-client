@@ -329,7 +329,21 @@ class OptionDialog(nui_hud.LayoutCalls):
 		elif what == "tiling_apply":
 			self.__OnClickTilingApplyButton()
 
+	def _in_effect(self, what):
+		"""The choice a legacy row shows selected, as nui_model fills it."""
+		if what == "camera":
+			return constInfo.GET_CAMERA_MAX_DISTANCE_INDEX()
+		if what == "fog":
+			return systemSetting.GetFogLevel()
+		if what == "tiling":
+			return self.tilingMode
+		return None
+
 	def nui_choose(self, what, index):
+		# Legacy's radio buttons ignore a press on the one that is down
+		# (CRadioButton::OnMouseLeftButtonDown): no call and no info lines.
+		if index == self._in_effect(what):
+			return
 		if what == "camera" and index in (0, 1):
 			constInfo.SET_CAMERA_MAX_DISTANCE_INDEX(index)
 			self._set(camera=index)

@@ -792,6 +792,10 @@ def install_wave2b_ui(game):
             self.down = False
 
         def click(self):
+            # CRadioButton::OnMouseLeftButtonDown: a press on the button that
+            # is down calls nothing.
+            if self.down:
+                return
             self.down = True
             Button.click(self)
 

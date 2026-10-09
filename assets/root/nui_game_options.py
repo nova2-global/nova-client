@@ -212,7 +212,30 @@ class OptionDialog(nui_hud.LayoutCalls):
 
 	# --- the board's events (uigameoption.py:149-311) -----------------------------------
 
+	def _in_effect(self, what):
+		"""The choice the row shows selected, as nui_model fills it; None for
+		a row of no choices."""
+		if what == "name_color":
+			return constInfo.GET_CHRNAME_COLOR_INDEX()
+		if what == "target_board":
+			return constInfo.GET_VIEW_OTHER_EMPIRE_PLAYER_TARGET_BOARD()
+		if what == "pk":
+			return self.pkMode
+		if what == "view_chat":
+			return int(bool(systemSetting.IsViewChat()))
+		if what == "always_show_name":
+			return int(bool(systemSetting.IsAlwaysShowName()))
+		if what == "show_damage":
+			return int(bool(systemSetting.IsShowDamage()))
+		if what == "sales_text":
+			return int(bool(systemSetting.IsShowSalesText()))
+		return None
+
 	def nui_choose(self, what, value):
+		# Legacy's radio buttons ignore a press on the one that is down
+		# (CRadioButton::OnMouseLeftButtonDown): no call, and no /pkmode again.
+		if value == self._in_effect(what):
+			return
 		if what == "name_color" and value in (0, 1):
 			constInfo.SET_CHRNAME_COLOR_INDEX(value)
 			self._set(name_color=value)

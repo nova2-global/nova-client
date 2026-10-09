@@ -577,6 +577,18 @@ class SystemOptions(Pair):
                          novaui.m("constInfo").GET_CAMERA_MAX_DISTANCE_INDEX())
         self.assertEqual(novaui.game.settings["fog_level"], 2)
 
+    def test_a_press_on_the_choice_in_effect_makes_no_call_as_legacys_radio_buttons(self):
+        legacy, novaui, a, b = self.pair()
+        for child, event in (("camera_short", ("choose", "camera", 0, 0)), ("fog_level1", ("choose", "fog", 1, 0)),
+                             ("tiling_gpu", ("choose", "tiling", 1, 0))):
+            with self.subTest(event=event):
+                self.assertTrue(a.GetChild(child).down, "legacy shows it in effect")
+                self.assertEqual(board(b).get(event[1]), event[2], "NovaUI shows it in effect")
+                self.assertEqual(self.same(legacy, novaui, a.GetChild(child).click, lambda: fire(b, *event), str(event)), [])
+        # The other choice still acts.
+        calls = self.same(legacy, novaui, a.GetChild("fog_level2").click, lambda: fire(b, "choose", "fog", 2, 0), "fog 2")
+        self.assertEqual(calls, [("systemSetting.SetFogLevel", (2,))])
+
     def test_apply_tiling_switches_and_leaves_the_game_and_close_puts_the_choice_back(self):
         for choice, cpu in ((0, 1), (1, 0)):
             with self.subTest(choice=choice):
@@ -874,7 +886,8 @@ class GameOptions(Pair):
         for child, mode in (("pvp_free", 2), ("pvp_revenge", 1), ("pvp_peace", 0)):
             with self.subTest(mode=mode):
                 calls = self.same(legacy, novaui, a.GetChild(child).click, lambda: fire(b, "choose", "pk", mode, 0), child)
-                self.assertEqual(calls, [("net.SendChatPacket", ("/pkmode %d" % mode, 0))])
+                # Peace stays in effect until the server answers: a press on it sends nothing.
+                self.assertEqual(calls, [("net.SendChatPacket", ("/pkmode %d" % mode, 0))] if mode else [])
                 self.assertEqual(board(b).get("pk_mode"), P["PK_MODE_PEACE"], "the server's mode until it answers")
         for world in (legacy, novaui):
             world.game.pk_mode = 2
@@ -882,6 +895,27 @@ class GameOptions(Pair):
         b.OnChangePKMode()
         self.assertEqual(board(b).get("pk_mode"), 2)
         self.assertTrue(a.pvpModeButtonDict[2].down)
+
+    def test_a_press_on_the_choice_in_effect_makes_no_call_as_legacys_radio_buttons(self):
+        legacy, novaui, a, b = self.pair()
+        steps = (("name_color_normal", ("name_color", 0)), ("target_board_view", ("target_board", 1)),
+                 ("pvp_peace", ("pk", 0)), ("view_chat_on_button", ("view_chat", 1)),
+                 ("always_show_name_on_button", ("always_show_name", 1)), ("show_damage_on_button", ("show_damage", 1)),
+                 ("salestext_on_button", ("sales_text", 1)))
+        for child, (what, value) in steps:
+            with self.subTest(button=child):
+                self.assertTrue(a.GetChild(child).down, "legacy shows it in effect")
+                self.assertEqual(self.same(legacy, novaui, a.GetChild(child).click,
+                                           lambda: fire(b, "choose", what, value, 0), child), [])
+        # PvP: the mode the server answered is the one in effect; a press on it
+        # sends no /pkmode again.
+        for world in (legacy, novaui):
+            world.game.pk_mode = 2
+        a.OnChangePKMode()
+        b.OnChangePKMode()
+        self.assertEqual(self.same(legacy, novaui, a.GetChild("pvp_free").click, lambda: fire(b, "choose", "pk", 2, 0), "free"), [])
+        calls = self.same(legacy, novaui, a.GetChild("pvp_peace").click, lambda: fire(b, "choose", "pk", 0, 0), "peace")
+        self.assertEqual(calls, [("net.SendChatPacket", ("/pkmode 0", 0))])
 
     def test_guild_mode_without_a_guild_and_a_protected_level_send_nothing(self):
         legacy, novaui, a, b = self.pair()

@@ -6,12 +6,18 @@
    skins/classic/windows/system-options.rcss. */
 
 /* The sheet's own place frames the window in its 560 x 600dp snapshots;
-   the facade's center() replaces it in the client. */
+   the facade's center() replaces it in the client. The window is never
+   taller than the screen (about 500dp: 999 px at 200% on a 900 px screen):
+   the title bar stays and the rows scroll. 99vh leaves room for the border
+   outside the content box. */
 body.system-options
 {
 	left: 30dp;
 	top: 12dp;
 	width: 500dp;
+	max-height: 99vh;
+	display: flex;
+	flex-direction: column;
 	focus: none;
 	tab-index: none;
 }
@@ -19,9 +25,15 @@ body.system-options
 {
 	tab-index: none;
 }
+.system-options__titlebar
+{
+	flex: 0 0 auto;
+}
 
 .system-options__body
 {
+	flex: 1 1 auto;
+	overflow-y: auto;
 	padding: var(--space-3) var(--space-4) var(--space-4) var(--space-4);
 }
 

@@ -94,6 +94,9 @@ body.skin-classic.game-options .go-row--block .go-choice
 {
 	width: 61dp;
 }
+/* The label centered over the art, a wider one overflowing both ends. It
+   takes no pointer, as legacy's text line takes none: the next choice's label
+   would otherwise take the presses on the right part of the choice before it. */
 body.skin-classic.game-options .go-choice__label
 {
 	position: absolute;
@@ -101,6 +104,7 @@ body.skin-classic.game-options .go-choice__label
 	right: -40dp;
 	top: 0;
 	text-align: center;
+	pointer-events: none;
 }
 body.skin-classic.game-options .go-choice--name-color-0 { left: 90dp; top: 40dp; }
 body.skin-classic.game-options .go-choice--name-color-1 { left: 155dp; top: 40dp; }

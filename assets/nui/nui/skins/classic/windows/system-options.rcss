@@ -12,10 +12,15 @@
    (small art); Apply at 210, 185 (middle art). The choice in effect shows
    the down art. */
 
+/* Legacy's board, in block flow and as tall as its rows: the legacy rows
+   are placed from the board's corner, so they cannot scroll with the
+   Interface section (at 200% the board is 738 px tall). */
 body.skin-classic.system-options
 {
+	display: block;
 	width: 305dp;
 	min-width: 0;
+	max-height: none;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
    board's corner, later in the document, so without it they would sit above
@@ -52,6 +57,7 @@ body.skin-classic.system-options .system-options__titlebar .nui-window__close
 }
 body.skin-classic.system-options .system-options__body
 {
+	overflow-y: visible;
 	padding: 0 0 12dp 0;
 }
 
@@ -98,7 +104,9 @@ body.skin-classic.system-options .so-music-file
 /* Every choice is placed, at legacy's art width (the middle art, 61dp, by
    default: nui-button--medium; the small art, 43dp, below), its label
    centered over the art as legacy's text line is, a wider one overflowing
-   both ends. */
+   both ends. The label takes no pointer, as legacy's text line takes none:
+   the next choice's label would otherwise take the presses on the right
+   part of the choice before it. */
 body.skin-classic.system-options .so-legacy .so-choice
 {
 	position: absolute;
@@ -118,6 +126,7 @@ body.skin-classic.system-options .so-choice__label
 	right: -40dp;
 	top: 0;
 	text-align: center;
+	pointer-events: none;
 }
 body.skin-classic.system-options .so-music-change { left: 20dp; top: 100dp; }
 body.skin-classic.system-options .so-choice--camera-0 { left: 110dp; top: 135dp; }

@@ -5,7 +5,7 @@
    button at 137, 3); the list box (ui.ListBoxEx) at 15, 50: ten rows 20dp
    apart, each a text line whose selection is a dark blue bar as wide as
    its text plus 4dp (legacy draws no hover); the scroll bar at 143, 40,
-   220 tall, always shown, as legacy's; OK, Cancel and Refresh on the small
+   220 tall with a 12dp cursor, always shown, as legacy's; OK, Cancel and Refresh on the small
    art (43dp) at 15, 60 and 115, y 265, their labels centered over the art
    as legacy draws them, wider labels overflowing it. */
 
@@ -51,19 +51,42 @@ body.skin-classic.music-list .music-list__body
 {
 	padding: 0;
 }
+/* The rows' box is legacy's list box: ten rows from 50 to 250, so no
+   eleventh row shows in part. Legacy's scroll bar is its own window, 220
+   tall from 40: the viewport's scroll bar reaches 10dp past it at both ends
+   (clip: 1 lets its parts out of the viewport's clip), and its cursor keeps
+   legacy's fixed 12dp (ui.ScrollBar's middle bar; the music list never sizes
+   it to the page). */
 body.skin-classic.music-list .music-list__list
 {
 	position: absolute;
 	left: 15dp;
-	top: 40dp;
+	top: 50dp;
 	width: 143dp;
-	height: 220dp;
+	height: 200dp;
 	padding: 0;
 }
 body.skin-classic.music-list .music-list__viewport
 {
-	height: 220dp;
+	height: 200dp;
 	overflow-y: scroll;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical
+{
+	margin-top: -10dp;
+	margin-bottom: -10dp;
+	clip: 1;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical slidertrack,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowdec,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowinc,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderbar
+{
+	clip: 1;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderbar
+{
+	height: 12dp;
 }
 body.skin-classic.music-list .music-list__item
 {
@@ -73,10 +96,6 @@ body.skin-classic.music-list .music-list__item
 	padding: 0;
 	border-width: 0;
 	line-height: 16dp;
-}
-body.skin-classic.music-list .music-list__item:first-child
-{
-	margin-top: 10dp;
 }
 body.skin-classic.music-list .music-list__item:hover,
 body.skin-classic.music-list .music-list__item.is-selected
@@ -119,7 +138,9 @@ body.skin-classic.music-list .music-list__button:active
 {
 	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
 }
-/* The label centered over the art, a wider one overflowing both ends. */
+/* The label centered over the art, a wider one overflowing both ends. It
+   takes no pointer, as legacy's text line takes none: the next button's label
+   would otherwise take the presses on the right part of the button before it. */
 body.skin-classic.music-list .music-list__button-label
 {
 	position: absolute;
@@ -127,6 +148,7 @@ body.skin-classic.music-list .music-list__button-label
 	right: -40dp;
 	top: 0;
 	text-align: center;
+	pointer-events: none;
 }
 body.skin-classic.music-list .music-list__button--ok { left: 15dp; }
 body.skin-classic.music-list .music-list__button--cancel { left: 60dp; }

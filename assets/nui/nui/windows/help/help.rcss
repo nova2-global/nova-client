@@ -16,10 +16,33 @@ body.help
 	focus: none;
 	tab-index: none;
 }
+/* Classic's curtain parts; the modern scrim dims the whole screen. */
+.help__curtain
+{
+	display: none;
+}
+/* 790dp with its padding and border: each column (370dp) holds the longest
+   English line (HELP_SCREEN_CAPTURE, 358 to 364dp wide from 100 to 200%, as
+   the font's hinting moves it) on one line at every scale. The card is never
+   taller than the screen (about 480dp: 998 px at 200% on a 900 px screen):
+   the heading, the pointers' list and Close stay, and the lines scroll. */
 .help__card
 {
-	width: 720dp;
+	box-sizing: border-box;
+	width: 790dp;
+	max-height: 100vh;
+	display: flex;
+	flex-direction: column;
 	padding: var(--space-4) var(--space-5) 0 var(--space-5);
+}
+.help__heading, .help__sticks, .help__footer
+{
+	flex: 0 0 auto;
+}
+.help__lines
+{
+	flex: 1 1 auto;
+	overflow-y: auto;
 }
 .help__heading
 {

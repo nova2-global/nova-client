@@ -87,13 +87,16 @@ body.skin-classic.target .target-board__button
 	decorator: image("d:/ymir work/ui/public/small_thin_button_01.sub");
 }
 /* A label wider than the art overflows it on both sides, as the legacy
-   centered button text does. */
+   centered button text does. It takes no pointer, as legacy's text line
+   takes none: the next button's label would otherwise take the presses on
+   the right part of the button before it. */
 body.skin-classic.target .target-board__label
 {
 	display: block;
 	margin: 0 -30dp;
 	text-align: center;
 	white-space: nowrap;
+	pointer-events: none;
 }
 body.skin-classic.target .target-board__button:hover
 {

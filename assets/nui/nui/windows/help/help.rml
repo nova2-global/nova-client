@@ -10,7 +10,9 @@
 	     exit key reaches it through a TOP_MOST nui_hud.EscapeProxy. The
 	     document exists only while it shows (nui_hud.OnDemand). Classic keeps
 	     legacy's layout: the 20 lines and the close button at legacy's screen
-	     fractions, the 8 pointers on the legacy taskbar's parts. Modern is a
+	     fractions, the 8 pointers on the legacy taskbar's parts, and the two
+	     curtain parts that dim everything but the taskbar, as legacy's
+	     curtain lies under the TOP_MOST taskbar. Modern is a
 	     centered card: the lines in two columns, the pointers' texts as a
 	     list, no pointers (P11 spec D14: the modern taskbar is laid out
 	     otherwise). -->
@@ -19,6 +21,8 @@
 	<link type="text/rcss" href="help.rcss"/>
 </head>
 <body template="nui" class="nui-scrim help" data-model="help">
+	<div class="help__curtain help__curtain--top"></div>
+	<div class="help__curtain help__curtain--gauge"></div>
 	<div id="help" class="nui-window nui-anim help__card">
 		<p class="help__heading">@ui.SYSTEM_HELP</p>
 		<div class="help__lines">

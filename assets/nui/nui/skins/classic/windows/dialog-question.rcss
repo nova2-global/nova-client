@@ -5,13 +5,45 @@
 
 /* The legacy question (uiscript questiondialog.py): the message about 38dp
    below the top of the stone board, the two middle buttons 63dp below it,
-   18dp apart, 21dp above the bottom edge. */
+   19dp apart, 21dp above the bottom edge. Yes comes first, then No (accept
+   at x -40 and cancel at +40 of the center, in both legacy questions), where
+   the modern footer puts the primary button last. */
 body.skin-classic.dialog-question .nui-window__body
 {
 	padding: 31dp 16dp 0dp 16dp;
 }
 body.skin-classic.dialog-question .nui-window__footer
 {
+	flex-direction: row-reverse;
 	padding: 12dp 16dp 21dp 16dp;
-	gap: 18dp;
+	gap: 19dp;
+}
+
+/* The legacy two-line question (uiscript questiondialog2.py, the point reset
+   and the friend request): a 280 x 105 board, its text lines centered on 25
+   and 50 (14dp lines from 18 and 43), the buttons at 68, the board 15dp right of the screen's center (legacy
+   places it at SCREEN_WIDTH / 2 - 125). The board is as wide as its longer
+   line where that is wider (legacy's text runs past the board's edges),
+   up to the dialog's 420dp, then the line wraps. */
+body.skin-classic.dialog-question .dialog-question--two
+{
+	left: 15dp;
+	min-width: 280dp;
+}
+body.skin-classic.dialog-question .dialog-question--two .nui-window__body
+{
+	padding: 18dp 3dp 0 3dp;
+}
+body.skin-classic.dialog-question .dialog-question--two .nui-dialog__text
+{
+	font-size: var(--font-md);
+	line-height: 14dp;
+}
+body.skin-classic.dialog-question .dialog-question--two .nui-dialog__text + .nui-dialog__text
+{
+	margin-top: 11dp;
+}
+body.skin-classic.dialog-question .dialog-question--two .nui-window__footer
+{
+	padding: 11dp 0 16dp 0;
 }

@@ -12,12 +12,14 @@
 	     refuses a sheet without rules). warn_line is the row a
 	     QuestionDialog2.SetWarningLine marks (the point reset's
 	     confirmation), -1 for none; its class reads only the index and a
-	     top-level key, as a row of a list that can shrink must. -->
+	     top-level key, as a row of a list that can shrink must. The dialog
+	     carries dialog-question--two with two lines (QuestionDialog2), whose
+	     legacy board a skin may follow. -->
 	<title>dialog-question</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 </head>
 <body template="nui" class="nui-scrim nui-escape-passes-key-down dialog-question" data-model="dialog_question">
-	<div class="nui-window nui-dialog nui-anim" id="dialog-question">
+	<div class="nui-window nui-dialog nui-anim" id="dialog-question" data-class-dialog-question--two="size(lines) == 2">
 		<div class="nui-window__body">
 			<p class="nui-dialog__text" data-for="line : lines" data-class-nui-dialog__text--warning="it_index == warn_line">{{ line }}</p>
 		</div>

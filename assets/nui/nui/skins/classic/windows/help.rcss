@@ -21,18 +21,47 @@
 	help-stick-70: 0px 70px 8px 30px;
 }
 
+/* Legacy's curtain is a TOP_MOST bar made before the TOP_MOST taskbar
+   (interfacemodule.py __MakeUICurtain, then __MakeTaskBar), so the taskbar
+   draws over it at full brightness: its 37dp bar along the bottom and its
+   gauge board, 158 x 47 at the left, 10dp above the bar. The curtain here
+   is the screen without those two parts; the scrim stays clear and still
+   takes every press. */
 body.skin-classic.help
 {
 	display: block;
+	background-color: transparent;
+}
+body.skin-classic.help .help__curtain
+{
+	display: block;
+	position: absolute;
 	background-color: var(--classic-help-curtain);
+}
+body.skin-classic.help .help__curtain--top
+{
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 47dp;
+}
+body.skin-classic.help .help__curtain--gauge
+{
+	left: 158dp;
+	right: 0;
+	bottom: 37dp;
+	height: 10dp;
 }
 body.skin-classic.help .help__card
 {
+	display: block;
+	box-sizing: content-box;
 	position: absolute;
 	left: 0;
 	top: 0;
 	width: 100%;
 	height: 100%;
+	max-height: none;
 	padding: 0;
 	decorator: none;
 	background-color: transparent;
@@ -49,6 +78,7 @@ body.skin-classic.help .help__sticks
 	margin: 0;
 	padding: 0;
 	border-width: 0;
+	overflow: visible;
 }
 body.skin-classic.help .help__line
 {
@@ -170,6 +200,8 @@ body.skin-classic.help .help__close:active
 {
 	decorator: image("d:/ymir work/ui/public/xlarge_thin_button_03.sub");
 }
+/* Centered over the art, overflowing it; it takes no pointer, so only the
+   button's art takes a press, as legacy's. */
 body.skin-classic.help .help__close-label
 {
 	position: absolute;
@@ -177,4 +209,5 @@ body.skin-classic.help .help__close-label
 	right: -40dp;
 	top: 0;
 	text-align: center;
+	pointer-events: none;
 }

@@ -201,6 +201,74 @@ class Sheets(unittest.TestCase):
             art.build_outputs(wide)
 
 
+def ring_manifest():
+    return {
+        "name": "skin", "out_dir": "out", "scales": [1, 2], "sheet_width": 64,
+        "sprites": [
+            {"id": "fill", "kind": "chamfer-fill", "size": 16, "chamfer": 4, "corners": ["tl", "br"], "alpha": 1.0},
+            {"id": "ring", "kind": "ring", "size": 32, "line": 4, "glow": 3, "glow_alpha": 0.5},
+        ],
+    }
+
+
+class Rings(unittest.TestCase):
+
+    def refuse(self, change, text):
+        broken = copy.deepcopy(ring_manifest())
+        change(broken)
+        with self.assertRaises(art.ArtError) as caught:
+            art.validate(broken)
+        self.assertIn(text, str(caught.exception))
+
+    def test_a_ring_takes_no_corners_chamfer_or_inner(self):
+        art.validate(ring_manifest())
+        self.refuse(lambda m: m["sprites"][1].update(chamfer=2), "unknown key chamfer")
+        self.refuse(lambda m: m["sprites"][1].update(inner=4), "unknown key inner")
+
+    def test_its_line_and_glow_fit_and_a_glow_needs_its_strength(self):
+        self.refuse(lambda m: m["sprites"][1].update(line=14), "do not fit")
+        self.refuse(lambda m: m["sprites"][1].update(glow_alpha=0), "glow_alpha")
+        self.refuse(lambda m: m["sprites"][1].update(alpha=0), "alpha")
+
+    def test_the_line_is_opaque_on_its_circle_and_clear_at_the_center_and_corners(self):
+        sprite = dict(ring_manifest()["sprites"][1], glow=0)
+        alpha = art.draw(sprite, 1)
+        # The outer edge sits at radius 16, the inner at 12: the line holds
+        # the pixels between, on the row and the column through the center.
+        for x in (1, 2, 29, 30):
+            self.assertEqual(alpha_at(alpha, x, 16), 255, x)
+            self.assertEqual(alpha_at(alpha, 16, x), 255, x)
+        self.assertEqual(alpha_at(alpha, 16, 16), 0)
+        self.assertEqual(alpha_at(alpha, 0, 0), 0)
+        self.assertEqual(alpha_at(alpha, 31, 31), 0)
+
+    def test_the_glow_lies_outside_and_inside_the_line_and_fades(self):
+        alpha = art.draw(ring_manifest()["sprites"][1], 1)
+        line = alpha_at(alpha, 5, 16)
+        self.assertEqual(line, 255)
+        # The line holds radii 9 to 13 around 16: x 3 to 6 on the center row.
+        outside, inside = alpha_at(alpha, 1, 16), alpha_at(alpha, 8, 16)
+        self.assertTrue(0 < outside < line and 0 < inside < line, (outside, inside))
+        self.assertLess(alpha_at(alpha, 0, 16), outside)
+
+    def test_it_is_round_the_same_on_every_axis(self):
+        # Exact along x, 16 samples along y: the two axes agree within 3 levels.
+        alpha = art.draw(ring_manifest()["sprites"][1], 2)
+        size = len(alpha)
+        for i in range(size):
+            self.assertLessEqual(abs(alpha_at(alpha, i, size // 2) - alpha_at(alpha, size // 2, i)), 3, i)
+            self.assertEqual(alpha_at(alpha, i, size // 2), alpha_at(alpha, size - 1 - i, size // 2))
+
+    def test_the_rcss_names_it_without_an_inner_rectangle(self):
+        rcss = art.build_outputs(ring_manifest())[os.path.join("out", "skin-sprites.rcss")]
+        self.assertIn("skin-ring: ", rcss)
+        self.assertNotIn("skin-ring-inner", rcss)
+        self.assertIn("skin-fill-inner", rcss)
+        one, two = rcss.split("@media (min-resolution: 1.125x)")
+        self.assertIn("skin-ring: 22px 2px 32px 32px;", one)
+        self.assertIn("skin-ring: 44px 4px 64px 64px;", two)
+
+
 class Commands(unittest.TestCase):
 
     def setUp(self):

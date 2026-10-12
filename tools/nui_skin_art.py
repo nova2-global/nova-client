@@ -16,10 +16,11 @@ manifest's out_dir:
     <name>-sprites.rcss               @spritesheet <name>-1x, and <name>-2x
                                       under @media (min-resolution: 1.125x)
 
-Each sprite <id> is the sprite <name>-<id>, plus <name>-<id>-inner, the
-rectangle a ninepatch decorator stretches: ninepatch(<name>-<id>,
-<name>-<id>-inner). The art is white, so the skin tints it with
-image-color from its tokens (docs/ui/AUTHORING.md "Adding a theme").
+Each sprite <id> is the sprite <name>-<id>, plus, but for a ring,
+<name>-<id>-inner, the rectangle a ninepatch decorator stretches:
+ninepatch(<name>-<id>, <name>-<id>-inner). The art is white, so the
+skin tints it with image-color from its tokens (docs/ui/AUTHORING.md
+"Adding a theme").
 `check` writes nothing and exits 1 when an output differs from what
 `build` would write (pixels and text; the PNG encoding may differ).
 Without --manifest both commands take every nui/skins/*/art.json that
@@ -43,10 +44,15 @@ scaled so its peak is `glow_alpha`, under the line. `inner` (optional) is
 the inset of the ninepatch rectangle from every side; by default it holds
 the inset, the chamfer and 2 pixels, and for an edge one more glow width
 (the glow bends around the chamfer's ends), so the stretched patches are
-uniform along their length. `sheet_width` (optional, 1x pixels) is the packing
-width, 256 by default. Every value is drawn exactly: coverage is exact
-along x and sampled 16 times per pixel along y, and the blur is computed
-in Python, so a build gives the same pixels on every machine.
+uniform along their length. A ring is a circle's outline, `line` pixels
+wide, its outer edge `glow` pixels inside the sprite's sides, at `alpha`
+(1 by default), with the same glow; it is drawn whole, never as a
+ninepatch, so it has no -inner rectangle (a circular progress bar's
+fill-image, which the element cuts by its value). `sheet_width`
+(optional, 1x pixels) is the packing width, 256 by default. Every value
+is drawn exactly: coverage is exact along x and sampled 16 times per
+pixel along y, and the blur is computed in Python, so a build gives the
+same pixels on every machine.
 
 Exit codes: 0 success, 1 failure or stale outputs, 2 usage.
 """
@@ -63,11 +69,12 @@ from PIL import Image
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKINS = os.path.join(REPO, "assets", "nui", "nui", "skins")
 COMMAND = "python3 tools/nui_skin_art.py build"
-KINDS = ("chamfer-fill", "chamfer-edge")
+KINDS = ("chamfer-fill", "chamfer-edge", "ring")
 CORNERS = ("tl", "tr", "bl", "br")
 TOP_KEYS = {"$comment", "name", "out_dir", "scales", "sheet_width", "sprites"}
 SPRITE_KEYS = {"chamfer-fill": {"id", "kind", "size", "chamfer", "corners", "alpha", "inner", "$comment"},
-               "chamfer-edge": {"id", "kind", "size", "chamfer", "corners", "line", "glow", "glow_alpha", "inner", "$comment"}}
+               "chamfer-edge": {"id", "kind", "size", "chamfer", "corners", "line", "glow", "glow_alpha", "inner", "$comment"},
+               "ring": {"id", "kind", "size", "line", "glow", "glow_alpha", "alpha", "$comment"}}
 GUTTER_1X = 2
 # Rows of samples per pixel; x coverage is exact.
 SUBROWS = 16
@@ -123,6 +130,14 @@ def validate(manifest, where="art.json"):
         need(not sprite["id"].endswith("-inner"), "%s: an id ending in -inner would clash with a ninepatch rectangle" % at)
         ids.add(sprite["id"])
         need(_number(sprite.get("size"), 4, 512, integer=True), "%s: size is 4 to 512 pixels" % at)
+        if kind == "ring":
+            need(_number(sprite.get("line"), 0.5), "%s: line is at least 0.5 pixels" % at)
+            need(_number(sprite.get("glow", 0), 0), "%s: glow is 0 or more pixels" % at)
+            need(_number(sprite.get("glow_alpha", 0.0), 0.0, 1.0), "%s: glow_alpha is 0 to 1" % at)
+            need(sprite.get("glow", 0) == 0 or sprite.get("glow_alpha", 0) > 0, "%s: a glow needs a glow_alpha above 0" % at)
+            need(_number(sprite.get("alpha", 1.0), 0.0, 1.0) and sprite.get("alpha", 1.0) > 0, "%s: alpha is above 0 and at most 1" % at)
+            need(2 * (sprite.get("glow", 0) + sprite["line"]) < sprite["size"], "%s: the line and the glow do not fit the sprite" % at)
+            continue
         corners = sprite.get("corners")
         need(isinstance(corners, list) and all(c in CORNERS for c in corners) and len(set(corners)) == len(corners),
              "%s: corners lists tl, tr, bl and br, each at most once" % at)
@@ -220,9 +235,52 @@ def blur(rows, sigma):
             for y in range(h)]
 
 
+def ring_coverage(size, outer, inner):
+    """[row][column] in 0..1: the share of each pixel the annulus between the
+    radii covers, around the sprite's center; exact along x, SUBROWS samples
+    along y."""
+    center = size / 2.0
+    rows = []
+    for py in range(size):
+        row = [0.0] * size
+        for sub in range(SUBROWS):
+            dy = py + (sub + 0.5) / SUBROWS - center
+            if abs(dy) >= outer:
+                continue
+            half_outer = math.sqrt(outer * outer - dy * dy)
+            half_inner = math.sqrt(inner * inner - dy * dy) if abs(dy) < inner else 0.0
+            spans = [(center - half_outer, center - half_inner), (center + half_inner, center + half_outer)]
+            for left, right in spans:
+                if right <= left:
+                    continue
+                first, last = max(0, int(math.floor(left))), min(size - 1, int(math.ceil(right)) - 1)
+                for px in range(first, last + 1):
+                    overlap = min(right, px + 1) - max(left, px)
+                    if overlap > 0:
+                        row[px] += overlap / SUBROWS
+        rows.append(row)
+    return rows
+
+
+def with_glow(line, sprite, scale):
+    """The line's alpha with the sprite's glow under it."""
+    glow = sprite.get("glow", 0)
+    if not glow:
+        return line
+    halo = blur(line, glow * scale / 3.0)
+    peak = max(max(row) for row in halo) or 1.0
+    strength = sprite["glow_alpha"]
+    return [[r + (1.0 - r) * min(1.0, g / peak) * strength for r, g in zip(rrow, grow)] for rrow, grow in zip(line, halo)]
+
+
 def draw(sprite, scale):
     """The sprite at a scale: a size x size list of alpha rows in 0..1."""
     size = sprite["size"] * scale
+    if sprite["kind"] == "ring":
+        outer = size / 2.0 - sprite.get("glow", 0) * scale
+        cover = ring_coverage(size, outer, outer - sprite["line"] * scale)
+        alpha = sprite.get("alpha", 1.0)
+        return with_glow([[min(1.0, c) * alpha for c in row] for row in cover], sprite, scale)
     chamfer = sprite["chamfer"] * scale
     chamfers = {corner: chamfer for corner in sprite["corners"]}
     if sprite["kind"] == "chamfer-fill":
@@ -237,13 +295,7 @@ def draw(sprite, scale):
     inner = coverage(size, (pad + line, pad + line, size - pad - line, size - pad - line),
                      {corner: inner_chamfer for corner in sprite["corners"]})
     ring = [[max(0.0, min(1.0, o) - min(1.0, i)) for o, i in zip(orow, irow)] for orow, irow in zip(outer, inner)]
-    glow = sprite.get("glow", 0)
-    if not glow:
-        return ring
-    halo = blur(ring, glow * scale / 3.0)
-    peak = max(max(row) for row in halo) or 1.0
-    strength = sprite["glow_alpha"]
-    return [[r + (1.0 - r) * min(1.0, g / peak) * strength for r, g in zip(rrow, grow)] for rrow, grow in zip(ring, halo)]
+    return with_glow(ring, sprite, scale)
 
 
 def to_image(alpha):
@@ -301,8 +353,10 @@ def build_outputs(manifest):
             image = with_gutter(to_image(draw(sprite, scale)), gutter)
             sheet.paste(image, (x * scale - gutter, y * scale - gutter))
             size = sprite["size"] * scale
-            inner = sprite.get("inner", default_inner(sprite)) * scale
             lines.append("\t%s-%s: %dpx %dpx %dpx %dpx;" % (name, sprite["id"], x * scale, y * scale, size, size))
+            if sprite["kind"] == "ring":
+                continue
+            inner = sprite.get("inner", default_inner(sprite)) * scale
             lines.append("\t%s-%s-inner: %dpx %dpx %dpx %dpx;" % (name, sprite["id"], x * scale + inner, y * scale + inner,
                                                                   size - 2 * inner, size - 2 * inner))
         sheet_file = "%s-%dx.png" % (name, scale)
@@ -311,10 +365,10 @@ def build_outputs(manifest):
                                "\tresolution: %dx;" % scale] + lines + ["}"]))
     text = ["/* Generated by tools/nui_skin_art.py from %s/art.json. Do not edit:" % out_dir.replace("assets/nui/", ""),
             "   %s (check verifies it). White art with alpha," % COMMAND,
-            "   tinted by image-color; each sprite <id> has <id>-inner, the rectangle a",
-            "   ninepatch decorator stretches. The 2x sheet replaces the 1x one from a dp",
-            "   ratio of %s up (min-resolution compares the context's dp ratio, which is" % THRESHOLD[:-1],
-            "   NovaUI's UI scale). */", ""]
+            "   tinted by image-color; each sprite <id> but a ring has <id>-inner, the",
+            "   rectangle a ninepatch decorator stretches. The 2x sheet replaces the 1x",
+            "   one from a dp ratio of %s up (min-resolution compares the context's dp" % THRESHOLD[:-1],
+            "   ratio, which is NovaUI's UI scale). */", ""]
     for scale, block in blocks:
         if scale == 1:
             text += block

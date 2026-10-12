@@ -26,9 +26,9 @@
 		<div class="taskbar-base"></div>
 
 		<div id="taskbar-gauges" class="taskbar-gauges">
-			<nui-frames id="mall-button" class="taskbar-mall" delay="0.1"
-				frames="d:/ymir work/ui/game/mall/00.sub, d:/ymir work/ui/game/mall/01.sub, d:/ymir work/ui/game/mall/02.sub, d:/ymir work/ui/game/mall/03.sub, d:/ymir work/ui/game/mall/04.sub, d:/ymir work/ui/game/mall/05.sub, d:/ymir work/ui/game/mall/06.sub, d:/ymir work/ui/game/mall/07.sub, d:/ymir work/ui/game/mall/08.sub, d:/ymir work/ui/game/mall/09.sub, d:/ymir work/ui/game/mall/11.sub, d:/ymir work/ui/game/mall/12.sub, d:/ymir work/ui/game/mall/13.sub, d:/ymir work/ui/game/mall/14.sub, d:/ymir work/ui/game/mall/15.sub, d:/ymir work/ui/game/mall/16.sub"
-				data-event-mousedown="mall_click(ev.button)"/>
+			<button id="mall-button" class="taskbar-mall" data-event-mousedown="mall_click(ev.button)"><nui-frames
+				class="taskbar-mall__frames" delay="0.1"/><span class="nui-glyph nui-glyph--shop taskbar-glyph"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-mall__sheen nui-anim"></span></button>
 			<span id="gauge-hp-host" class="nui-has-tooltip taskbar-gauge-host taskbar-gauge-host--hp">
 				<progress id="gauge-hp-recovery" class="taskbar-recovery taskbar-recovery--hp" direction="right" data-attr-value="hp_recovery_ratio"/>
 				<progress id="gauge-hp" class="nui-gauge nui-gauge--red taskbar-gauge taskbar-gauge--hp" direction="right" data-attr-value="hp_ratio"/>

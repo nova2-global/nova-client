@@ -49,10 +49,30 @@ body.skin-classic.taskbar .taskbar-gauges
 	height: 47dp;
 	decorator: image("d:/ymir work/ui/game/taskbar/gauge.sub");
 }
+/* The item mall button: the legacy coin animation, its 16 frames (no 10)
+   at 0.1s each, as skin-provided frames on the button's frames part; the
+   button itself draws nothing and takes the size of its frames. */
 body.skin-classic.taskbar .taskbar-mall
 {
 	left: 8dp;
 	top: 4dp;
+	width: auto;
+	height: auto;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-mall:hover, body.skin-classic.taskbar .taskbar-mall:active
+{
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-mall__frames
+{
+	--frames-list: "d:/ymir work/ui/game/mall/00.sub, d:/ymir work/ui/game/mall/01.sub, d:/ymir work/ui/game/mall/02.sub, d:/ymir work/ui/game/mall/03.sub, d:/ymir work/ui/game/mall/04.sub, d:/ymir work/ui/game/mall/05.sub, d:/ymir work/ui/game/mall/06.sub, d:/ymir work/ui/game/mall/07.sub, d:/ymir work/ui/game/mall/08.sub, d:/ymir work/ui/game/mall/09.sub, d:/ymir work/ui/game/mall/11.sub, d:/ymir work/ui/game/mall/12.sub, d:/ymir work/ui/game/mall/13.sub, d:/ymir work/ui/game/mall/14.sub, d:/ymir work/ui/game/mall/15.sub, d:/ymir work/ui/game/mall/16.sub";
+}
+body.skin-classic.taskbar .taskbar-mall__sheen
+{
+	display: none;
 }
 body.skin-classic.taskbar .taskbar-gauge-host
 {

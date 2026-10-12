@@ -42,12 +42,43 @@ body.taskbar
 	width: 212dp;
 	height: 47dp;
 }
+/* The item mall button: a chip with the shop glyph, and a sheen that
+   sweeps across it once every 4s (a thin accent bar moved by transform; it
+   rests invisible, so reduced motion leaves the plain chip). Classic draws
+   the legacy coin animation in its frames part instead. */
 .taskbar-mall
 {
-	position: absolute;
 	left: 4dp;
+	top: 4dp;
+}
+/* A gold coin, in the warning color, also under the pointer. */
+.taskbar-mall .taskbar-glyph, .taskbar-mall:hover .taskbar-glyph
+{
+	--glyph-ink: var(--warning);
+}
+.taskbar-mall__sheen
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
 	top: 3dp;
-	pointer-events: auto;
+	width: 3dp;
+	height: 32dp;
+	border-radius: 1dp;
+	background-color: var(--accent);
+	opacity: 0;
+	pointer-events: none;
+}
+.taskbar-mall__sheen.nui-anim
+{
+	animation: 4s linear infinite taskbar-mall-sheen;
+}
+@keyframes taskbar-mall-sheen
+{
+	0% { transform: translateX(0dp); opacity: 0; }
+	4% { transform: translateX(4dp); opacity: 0.6; }
+	18% { transform: translateX(29dp); opacity: 0; }
+	100% { transform: translateX(29dp); opacity: 0; }
 }
 .taskbar-gauge-host
 {
@@ -146,7 +177,7 @@ progress.taskbar-orb fill
 
 /* --- Buttons: chips with glyphs ------------------------------------------------ */
 
-.taskbar-mode, .taskbar-window, .taskbar-expand, .taskbar-pager__up, .taskbar-pager__down
+.taskbar-mall, .taskbar-mode, .taskbar-window, .taskbar-expand, .taskbar-pager__up, .taskbar-pager__down
 {
 	display: block;
 	position: absolute;
@@ -158,17 +189,17 @@ progress.taskbar-orb fill
 	background-color: var(--surface-raised);
 	pointer-events: auto;
 }
-.taskbar-mode, .taskbar-window
+.taskbar-mall, .taskbar-mode, .taskbar-window
 {
 	width: 40dp;
 	height: 40dp;
 }
-.taskbar-mode:hover, .taskbar-window:hover, .taskbar-expand:hover, .taskbar-pager__up:hover, .taskbar-pager__down:hover
+.taskbar-mall:hover, .taskbar-mode:hover, .taskbar-window:hover, .taskbar-expand:hover, .taskbar-pager__up:hover, .taskbar-pager__down:hover
 {
 	background-color: var(--surface-hover);
 	border-color: var(--accent);
 }
-.taskbar-mode:active, .taskbar-window:active, .taskbar-expand:active, .taskbar-pager__up:active, .taskbar-pager__down:active,
+.taskbar-mall:active, .taskbar-mode:active, .taskbar-window:active, .taskbar-expand:active, .taskbar-pager__up:active, .taskbar-pager__down:active,
 .taskbar-mode.is-open
 {
 	background-color: var(--surface-sunken);
@@ -184,7 +215,7 @@ progress.taskbar-orb fill
 	top: 11dp;
 	transform: scale(1.25);
 }
-.taskbar-mode:hover .taskbar-glyph, .taskbar-window:hover .taskbar-glyph, .taskbar-expand:hover .taskbar-glyph,
+.taskbar-mall:hover .taskbar-glyph, .taskbar-mode:hover .taskbar-glyph, .taskbar-window:hover .taskbar-glyph, .taskbar-expand:hover .taskbar-glyph,
 .taskbar-pager__up:hover .taskbar-glyph, .taskbar-pager__down:hover .taskbar-glyph
 {
 	--glyph-ink: var(--accent);

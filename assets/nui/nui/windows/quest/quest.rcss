@@ -43,6 +43,14 @@ body.nui-scrim.quest
 {
 	display: block;
 }
+/* A page with no text (an NPC's menu of chat titles) has only the open
+   empty line: it takes no room, so the choices start at the card's top. A
+   blank line between text lines keeps its pitch. */
+.quest__text .nui-quest__line.is-empty:only-child
+{
+	min-height: 0dp;
+	line-height: 0dp;
+}
 
 /* Images: only where the content is an image (the quest scripts' own art). */
 /* The quest art is legacy's textures (a 220 x 151 picture in the top left of
@@ -134,7 +142,10 @@ body.quest .quest__input.is-idle input.quest__field
 	tab-index: none;
 }
 
-/* The choices: one row per answer, left-aligned, wrapping a long answer. */
+/* The choices: one row per answer, left-aligned, wrapping a long answer.
+   A one-line row is 32dp (an 18dp line, 6dp of padding above and below, the
+   1dp border), so the list shows six whole rows (6 x 32 + 5 x 4) and
+   scrolls past them. */
 .quest__choices
 {
 	display: flex;
@@ -151,7 +162,7 @@ body.quest .quest__input.is-idle input.quest__field
 	height: auto;
 	min-height: 32dp;
 	padding: 6dp var(--space-3);
-	line-height: 1.35;
+	line-height: 18dp;
 	text-align: left;
 	white-space: normal;
 	font-weight: normal;

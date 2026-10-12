@@ -52,6 +52,14 @@ body.skin-classic.quest .quest__body
 	overflow: visible;
 }
 
+/* Legacy keeps the open empty line of a page without text (a menu), and
+   places the answers after it (its 16dp pitch, classic.rcss). */
+body.skin-classic.quest .quest__text .nui-quest__line.is-empty:only-child
+{
+	min-height: 16dp;
+	line-height: 16dp;
+}
+
 /* The answers: the first 25dp below the last finished line, which is 11dp
    above the end of the interpreter's open line. */
 body.skin-classic.quest .quest__choices

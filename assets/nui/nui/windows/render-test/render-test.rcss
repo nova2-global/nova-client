@@ -1,5 +1,7 @@
-/* Render test layout: a 3 x 3 grid of fixed cells, so a snapshot of each cell
-   lands on the same pixels at a given scale. Only tokens and dp. */
+/* Render test layout: a grid of fixed cells, three a row, so a snapshot of
+   each cell lands on the same pixels at a given scale: two rows of effect
+   cells, then three rows of the drawing every page uses. Only tokens and
+   dp. */
 
 body.rt
 {
@@ -307,3 +309,147 @@ body.rt
 .rt-layer-scrim { left: 40dp; top: 24dp; background-color: var(--overlay-scrim); }
 .rt-opacity-75 { background-color: var(--accent); color: var(--accent-text); opacity: 0.75; }
 .rt-opacity-40 { background-color: var(--accent); color: var(--accent-text); opacity: 0.4; }
+
+/* --- Effect cells (P13) ------------------------------------------------------
+   One element per effect, with an id, so the live parity check and the
+   in-game bench can take them one at a time. Filters, backdrop filters and
+   masks sit in .nui-fx rules (lint NUI010), so reduced effects and a device
+   without effects show each element plain; box-shadow and the gradients stay
+   under reduced effects (drawn once), and without effects a shadow is not
+   drawn and a gradient is one flat color. */
+.rt-row-fx
+{
+	height: 120dp;
+	justify-content: space-around;
+}
+.rt-fx-panel
+{
+	display: block;
+	box-sizing: border-box;
+	width: 96dp;
+	height: 72dp;
+	padding: var(--space-2);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+}
+.rt-fx-bar
+{
+	display: block;
+	height: 12dp;
+	margin-bottom: var(--space-2);
+	background-color: var(--accent);
+	border-radius: var(--radius-sm);
+}
+.rt-fx-blur-4.nui-fx { filter: blur(4dp); }
+.rt-fx-blur-16.nui-fx { filter: blur(16dp); }
+.rt-fx-drop-shadow.nui-fx { filter: drop-shadow(var(--accent) 0dp 4dp 8dp); }
+.rt-fx-box-shadow { box-shadow: 0dp 4dp 16dp var(--danger); }
+
+/* Gradients: three stops, three stops, six stops, and a repeating stripe. */
+.rt-fx-swatch
+{
+	display: block;
+	width: 56dp;
+	height: 56dp;
+	border-radius: var(--radius-md);
+}
+.rt-fx-linear { decorator: linear-gradient(90deg, var(--accent), var(--success), var(--warning)); }
+.rt-fx-radial { decorator: radial-gradient(circle, var(--warning), var(--danger), transparent); }
+.rt-fx-conic
+{
+	border-radius: 28dp;
+	decorator: conic-gradient(var(--accent), var(--success), var(--warning), var(--danger), var(--gauge-purple), var(--accent));
+}
+.rt-fx-repeating
+{
+	decorator: repeating-linear-gradient(45deg, var(--accent) 0dp, var(--accent) 4dp, transparent 4dp, transparent 10dp);
+	border-width: 1dp;
+	border-color: var(--border);
+}
+
+/* The backdrop blur: a panel without a background over a tiled icon and a
+   line of text, so what it blurs is the page drawn below it. */
+.rt-fx-scene
+{
+	position: relative;
+	height: 120dp;
+	background-color: var(--surface-sunken);
+	decorator: image(../../../icon/item/27001.tga repeat);
+}
+.rt-fx-scene__text
+{
+	margin: 0;
+	padding: var(--space-2);
+	color: var(--text);
+	font-size: var(--font-lg);
+	font-weight: bold;
+}
+.rt-fx-glass
+{
+	position: absolute;
+	left: 56dp;
+	top: 20dp;
+	width: 160dp;
+	height: 80dp;
+	border-width: 1dp;
+	border-color: var(--text);
+	border-radius: var(--radius-md);
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	text-align: center;
+	line-height: 80dp;
+}
+.rt-fx-glass.nui-fx { backdrop-filter: blur(8dp); }
+
+/* A radial mask; and a group of two overlapping boxes faded as one layer
+   (filter: opacity) beside the same group under the opacity property, where
+   each box fades alone and the overlap shows. */
+.rt-fx-masked.nui-fx { mask-image: radial-gradient(circle, var(--text) 45%, transparent 75%); }
+.rt-fx-group
+{
+	position: relative;
+	width: 64dp;
+	height: 64dp;
+}
+.rt-fx-group__a, .rt-fx-group__b
+{
+	position: absolute;
+	width: 40dp;
+	height: 40dp;
+	border-radius: var(--radius-sm);
+}
+.rt-fx-group__a { left: 0; top: 0; background-color: var(--accent); }
+.rt-fx-group__b { left: 24dp; top: 24dp; background-color: var(--danger); }
+.rt-fx-group-fade.nui-fx { filter: opacity(0.5); }
+.rt-fx-plain-fade { opacity: 0.5; }
+
+/* Color filters on the item icon, two rows of four: none, grayscale, sepia,
+   hue-rotate; invert, brightness, contrast, saturate. */
+.rt-fx-icons
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	gap: var(--space-3) var(--space-4);
+	padding: var(--space-2) var(--space-4);
+}
+.rt-fx-icon
+{
+	display: block;
+	width: 40dp;
+	height: 40dp;
+}
+.rt-fx-grayscale.nui-fx { filter: grayscale(1); }
+.rt-fx-sepia.nui-fx { filter: sepia(1); }
+.rt-fx-hue-rotate.nui-fx { filter: hue-rotate(120deg); }
+.rt-fx-invert.nui-fx { filter: invert(1); }
+.rt-fx-brightness.nui-fx { filter: brightness(1.6); }
+.rt-fx-contrast.nui-fx { filter: contrast(2); }
+.rt-fx-saturate.nui-fx { filter: saturate(3); }

@@ -3,13 +3,79 @@
 	<!-- One page with every visual feature the renderer must support
 	     (NuiPaths.h kRenderTestDocument, Ctrl+Shift+U in dev builds). It needs
 	     no data model and no controller, so the host can load it directly.
-	     Each cell has an id so tests can find it. -->
+	     Each cell has an id so tests can find it, and so does each effect
+	     element of the first two rows, the effect cells (P13: filters,
+	     shadows, gradients, a backdrop blur, a mask, a group fade and the
+	     color filters, one element per effect, for the live parity check and
+	     the in-game cost of each effect). They come first so that they stay
+	     on screen at 150% in a 1600x900 client. -->
 	<title>NovaUI render test</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="render-test.rcss"/>
 </head>
 <body template="nui" class="rt">
 	<div class="rt-grid">
+
+		<div class="rt-cell" id="rt-fx-blur">
+			<span class="rt-caption">filter: blur 4dp, 16dp</span>
+			<div class="rt-row rt-row-fx">
+				<div class="rt-fx-panel rt-fx-blur-4 nui-fx" id="rt-fx-blur-4"><span class="rt-fx-bar"></span>Blur 4</div>
+				<div class="rt-fx-panel rt-fx-blur-16 nui-fx" id="rt-fx-blur-16"><span class="rt-fx-bar"></span>Blur 16</div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-fx-shadow">
+			<span class="rt-caption">filter: drop-shadow, box-shadow</span>
+			<div class="rt-row rt-row-fx">
+				<div class="rt-fx-panel rt-fx-drop-shadow nui-fx" id="rt-fx-drop-shadow"><span class="rt-fx-bar"></span>Drop</div>
+				<div class="rt-fx-panel rt-fx-box-shadow" id="rt-fx-box-shadow"><span class="rt-fx-bar"></span>Box</div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-fx-gradients">
+			<span class="rt-caption">linear, radial, conic, repeating</span>
+			<div class="rt-row rt-row-fx">
+				<div class="rt-fx-swatch rt-fx-linear" id="rt-fx-linear"></div>
+				<div class="rt-fx-swatch rt-fx-radial" id="rt-fx-radial"></div>
+				<div class="rt-fx-swatch rt-fx-conic" id="rt-fx-conic"></div>
+				<div class="rt-fx-swatch rt-fx-repeating" id="rt-fx-repeating"></div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-fx-backdrop">
+			<span class="rt-caption">backdrop-filter: blur 8dp</span>
+			<div class="rt-fx-scene">
+				<p class="rt-fx-scene__text">BACKDROP behind the panel</p>
+				<div class="rt-fx-glass nui-fx" id="rt-fx-backdrop-blur">Glass</div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-fx-mask">
+			<span class="rt-caption">mask-image; filter: opacity, opacity</span>
+			<div class="rt-row rt-row-fx">
+				<div class="rt-fx-panel rt-fx-masked nui-fx" id="rt-fx-mask-radial"><span class="rt-fx-bar"></span>Mask</div>
+				<div class="rt-fx-group rt-fx-group-fade nui-fx" id="rt-fx-group-fade">
+					<div class="rt-fx-group__a"></div><div class="rt-fx-group__b"></div>
+				</div>
+				<div class="rt-fx-group rt-fx-plain-fade" id="rt-fx-plain-fade">
+					<div class="rt-fx-group__a"></div><div class="rt-fx-group__b"></div>
+				</div>
+			</div>
+		</div>
+
+		<div class="rt-cell" id="rt-fx-color">
+			<span class="rt-caption">color filters (the sheet lists them)</span>
+			<div class="rt-fx-icons">
+				<img class="rt-fx-icon" id="rt-fx-none" src="../../../icon/item/27001.tga"/>
+				<img class="rt-fx-icon rt-fx-grayscale nui-fx" id="rt-fx-grayscale" src="../../../icon/item/27001.tga"/>
+				<img class="rt-fx-icon rt-fx-sepia nui-fx" id="rt-fx-sepia" src="../../../icon/item/27001.tga"/>
+				<img class="rt-fx-icon rt-fx-hue-rotate nui-fx" id="rt-fx-hue-rotate" src="../../../icon/item/27001.tga"/>
+				<img class="rt-fx-icon rt-fx-invert nui-fx" id="rt-fx-invert" src="../../../icon/item/27001.tga"/>
+				<img class="rt-fx-icon rt-fx-brightness nui-fx" id="rt-fx-brightness" src="../../../icon/item/27001.tga"/>
+				<img class="rt-fx-icon rt-fx-contrast nui-fx" id="rt-fx-contrast" src="../../../icon/item/27001.tga"/>
+				<img class="rt-fx-icon rt-fx-saturate nui-fx" id="rt-fx-saturate" src="../../../icon/item/27001.tga"/>
+			</div>
+		</div>
 
 		<div class="rt-cell" id="rt-text">
 			<span class="rt-caption">text xs..xl</span>

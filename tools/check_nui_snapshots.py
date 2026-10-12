@@ -94,8 +94,6 @@ FULL_SCREEN = [("100", "1", "1920x1080"), ("150", "1.5", "2880x1620"), ("200", "
 PAGES = [
     ("gallery", "nui/windows/gallery/gallery.rml", "assets/nui/nui/windows/gallery/gallery.fixture.json",
      "all", FULL_SCREEN, ("assets/ETC",), None, ()),
-    ("render-test", "nui/windows/render-test/render-test.rml", None,
-     ("dark", "light"), [("100", "1", "1280x720"), ("150", "1.5", "1920x1080"), ("200", "2", "2560x1440")], (), None, ()),
     ("login", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",
      "all", FULL_SCREEN, (), None, ()),
     ("theme-picker", "nui/windows/theme-picker/theme-picker.rml", "assets/nui/nui/windows/theme-picker/theme-picker.fixture.json",

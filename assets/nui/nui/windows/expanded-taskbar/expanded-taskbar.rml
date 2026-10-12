@@ -17,7 +17,7 @@
 <body template="nui" class="nui-overlay nui-below-legacy-ui expanded-taskbar" data-model="expanded_taskbar">
 	<div id="expanded-taskbar" class="expanded-taskbar__board nui-board nui-fx nui-interactive">
 		<button id="dragon-soul" class="expanded-taskbar__button nui-has-tooltip"
-			data-event-mousedown="dragon_soul(ev.button)"><span class="nui-tooltip nui-anim expanded-taskbar__tip">{{ tip }}</span></button>
+			data-event-mousedown="dragon_soul(ev.button)"><span class="nui-glyph nui-glyph--gem expanded-taskbar__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim expanded-taskbar__tip">{{ tip }}</span></button>
 	</div>
 </body>
 </rml>

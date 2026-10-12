@@ -172,9 +172,20 @@ body.minimap
 	box-sizing: border-box;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
+	border-radius: 9999dp;
 	background-color: var(--surface-raised);
-	decorator: image("d:/ymir work/ui/minimap/minimap_open_default.sub" scale-none center center);
+}
+/* The open button: a round chip with the plus glyph (components/glyph.rcss);
+   classic draws the legacy open art (its overlay). */
+.minimap__show-glyph
+{
+	position: absolute;
+	left: 9dp;
+	top: 9dp;
+}
+.minimap__show:hover .minimap__show-glyph
+{
+	--glyph-ink: var(--accent);
 }
 .minimap__show:hover
 {

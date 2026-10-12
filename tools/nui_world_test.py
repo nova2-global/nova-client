@@ -1098,7 +1098,7 @@ class Documents(unittest.TestCase):
             document = read(os.path.join(WINDOWS, window, window + ".rml"))
             for element_id in ids:
                 self.assertIn('id="%s"' % element_id, document, "%s#%s" % (window, element_id))
-        self.assertIn('<nui-view id="minimap-view" name="minimap" class="minimap__view nui-interactive"/>',
+        self.assertIn('<nui-view id="minimap-view" name="minimap" class="minimap__view nui-fx nui-interactive"/>',
                       read(os.path.join(WINDOWS, "minimap", "minimap.rml")))
         self.assertIn('<nui-view id="atlas-view" name="atlas" class="atlas__view nui-interactive"/>',
                       read(os.path.join(WINDOWS, "atlas", "atlas.rml")))

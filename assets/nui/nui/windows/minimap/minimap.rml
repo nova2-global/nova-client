@@ -20,7 +20,7 @@
 <body template="nui" class="nui-overlay nui-below-legacy-ui minimap" data-model="minimap">
 	<div id="minimap" class="minimap__window" data-if="shown &amp;&amp; open">
 		<div class="minimap__base nui-board--disc"></div>
-		<nui-view id="minimap-view" name="minimap" class="minimap__view nui-interactive"/>
+		<nui-view id="minimap-view" name="minimap" class="minimap__view nui-fx nui-interactive"/>
 		<div id="minimap-frame" class="minimap__frame nui-board nui-board--ring nui-fx"></div>
 		<span id="minimap-atlas" class="minimap__button minimap__button--atlas nui-interactive nui-has-tooltip"
 			data-event-mousedown="atlas(ev.button)"><span class="minimap__glyph">M</span><span
@@ -42,7 +42,7 @@
 	</div>
 	<div id="minimap-closed" class="minimap__closed" data-if="shown &amp;&amp; !open">
 		<span id="minimap-show" class="minimap__show nui-interactive nui-has-tooltip"
-			data-event-mousedown="show_map(ev.button)"><span
+			data-event-mousedown="show_map(ev.button)"><span class="nui-glyph nui-glyph--plus minimap__show-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="can_see">@game.MINIMAP</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="!can_see">@game.MINIMAP_CANNOT_SEE</span></span>
 	</div>

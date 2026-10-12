@@ -1615,3 +1615,488 @@ class Game(object):
         if "r" in mode and path not in self.files:
             raise IOError("stand-in: no %s" % path)
         return File(self.files.get(path, "") if "r" in mode else "")
+
+
+# --- Wave 5a (P12 spec 5.4) ---------------------------------------------------------------------------
+
+# PythonEventManager.h:28-33.
+QUEST_BUTTON_TYPES = {"BUTTON_TYPE_NEXT": 0, "BUTTON_TYPE_DONE": 1, "BUTTON_TYPE_CANCEL": 2}
+# The DirectInput codes the legacy dialogs compare (dinput.h).
+WAVE5A_APP_CONSTANTS = {"DIK_ESCAPE": 0x01, "DIK_RETURN": 0x1C, "DIK_UP": 0xC8, "DIK_DOWN": 0xD0}
+# PythonCharacterModule.cpp:1334, :1435-1436 (CActorInstance::EType, CRaceMotionData).
+CHR_CONSTANTS = {"INSTANCE_TYPE_BUILDING": 5, "INSTANCE_TYPE_OBJECT": 10, "MOTION_WAIT": 1}
+GUILD_BUILDING_LIST = os.path.normpath(os.path.join(support.HERE, "..", "assets", "locale", "locale", "en",
+                                                     "guildbuildinglist.txt"))
+# The guild building rows when the real list cannot be read: (vnum, type, name, local name, x, y, z limits,
+# price, material).
+FALLBACK_BUILDINGS = (
+    (14100, "HEADQUARTER", "headquarter_1", "Headquarters", 0, 0, 360, "20000000", ["50", "30", "20"]),
+    (14200, "FACILITY", "facility_1", "Blacksmith", 0, 0, 360, "3000000", ["25", "25", "10"]),
+    (14201, "FACILITY", "facility_2", "Alchemist", 0, 0, 360, "3000000", ["25", "25", "10"]),
+    (14300, "OBJECT", "object_1", "Stone Lantern", 30, 30, 360, "500000", ["5", "0", "0"]),
+    (14301, "OBJECT", "object_2", "Flag", 0, 0, 0, "100000", ["0", "5", "0"]),
+)
+
+
+def source_of(file_name, names, inside=None):
+    """The source of the top-level definitions (functions, classes and simple
+    assignments) `names` of a root module, or of the methods `names` of its
+    class `inside`, dedented to the top level."""
+    import ast
+    with open(os.path.join(ROOT, file_name), encoding="utf-8") as handle:
+        source = handle.read()
+    tree = ast.parse(source)
+    body = tree.body
+    if inside is not None:
+        body = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == inside).body
+    parts = []
+    for node in body:
+        named = getattr(node, "name", None)
+        if isinstance(node, ast.Assign):
+            named = next((target.id for target in node.targets if isinstance(target, ast.Name)), None)
+        if named in names:
+            segment = ast.get_source_segment(source, node, padded=True)
+            lines = segment.split("\n")
+            indent = len(lines[0]) - len(lines[0].lstrip("\t"))
+            parts.append("\n".join(line[indent:] if line.startswith("\t" * indent) else line for line in lines))
+    return "\n\n".join(parts)
+
+
+def empty_quest_page(skin=0):
+    """quest.<index>.page before the interpreter made anything (P12 spec 3.2)."""
+    return {"skin": int(skin), "choices": [], "pages": 0, "button": "", "input": False,
+            "images": {"left": "", "top": "", "background": "", "title": "", "title_serial": 0},
+            "free_images": [], "size": {"width": 0, "height": 0},
+            "fade": {"kind": "", "speed": 0.0, "serial": 0}, "delay": 10,
+            "waiting": False, "locked": False, "ended": False, "done": False}
+
+
+def install_wave5a_ui(game):
+    """Adds to game what the Wave 5a legacy windows and facades use (P12 spec
+    5.4), after install_wave2b_ui and install_wave3a_ui (made here when a test
+    has not), and loads the legacy modules with their real uiscripts:
+
+    - `uiQuest` (uiquest.py, the legacy dialog and curtain), `uiWeb`
+      (uiweb.py), `consoleModule` (consolemodule.py, its os calls on
+      Game.console_os) and `uiGuild` with BuildGuildBuildingWindow,
+      NumberToMoneyString and its material constants (compiled from
+      uiguild.py; BUILDING_DATA_LIST from the real en guildbuildinglist.txt
+      through playersettingmodule.LoadGuildBuildingList, else
+      FALLBACK_BUILDINGS);
+    - `ui`: a Button whose CallEvent plays the click and calls its event (as
+      ui.Button.CallEvent), SlotBar, MakeImageBox, and a ListBox with
+      legacy's selection rule (SelectItem fires only on a change) for the
+      loader, which builds listbox, slotbar and image children too;
+    - `event`: BUTTON_TYPE_NEXT, DONE and CANCEL; RegisterEventSetFromString
+      (the next free index, Game.event_sets holds the scripts) and
+      ClearEventSet (which detaches the sink, as C++ does); every call
+      recorded, layout getters answering 0;
+    - `nuigame`: QuestAttach, QuestDetach, QuestState, QuestScript,
+      QuestOpenScript (P12 spec 3.4) over Game.quest_sets, Game.publish_quest()
+      standing in for the C++ driver's feeds; WebPageFollow and WebPageState
+      (6.4.4) over Game.web;
+    - `app`: the DIK codes, ShowWebPage, MoveWebPage, HideWebPage and
+      IsWebPageMode over Game.web, IsEnableTestServerFlag (Game.test_server);
+    - `chr` (the constants, GetBoundBoxOnlyXY), `background` (GetHeight,
+      GetPickingPoint: Game.picking_point), `player` (GetMainCharacterPosition,
+      GetMoney, GetItemCountByVnum: Game.main_position, .money,
+      .material_counts), `debugInfo.IsDebugMode` (Game.debug_mode),
+      `uiCommon.PopupDialog` (recording, Game.popups) when the test put no
+      uiCommon of its own.
+
+    Returns game."""
+    ui = game.modules["ui"]
+    if not getattr(ui, "_wave3a", False):
+        install_wave2b_ui(game)
+        install_wave3a_ui(game)
+        ui._wave3a = True
+    if getattr(ui, "_wave5a", False):
+        return game
+    ui._wave5a = True
+    log = game.log
+    _install_wave5a_ui(game, ui)
+    _install_wave5a_modules(game, log)
+    _load_wave5a_legacy(game)
+    return game
+
+
+def _install_wave5a_ui(game, ui):
+    Win, Button = ui.Window, ui.Button
+    snd = game.modules["snd"]
+
+    def call_event(self):
+        """ui.Button.CallEvent: the click, then the event."""
+        snd.PlaySound("sound/ui/click.wav")
+        if self.event:
+            self.event(*self.eventArgs)
+    Button.CallEvent = call_event
+
+    class SlotBar(Win):
+        pass
+
+    class ListBox(Win):
+        """ui.ListBox: rows of (number, text); SelectItem fires the event only
+        when the selection changes (ui.py ListBox.SelectItem)."""
+
+        def __init__(self, layer="UI"):
+            Win.__init__(self, layer)
+            self.keyDict = {}
+            self.textDict = {}
+            self.itemList = []
+            self.selectedLine = -1
+            self.basePos = 0
+            self.stepSize = 17
+            self.event = lambda *args: None
+
+        def ClearItem(self):
+            self.keyDict, self.textDict, self.itemList, self.selectedLine = {}, {}, [], -1
+
+        def InsertItem(self, number, text):
+            self.keyDict[len(self.itemList)] = number
+            self.textDict[len(self.itemList)] = text
+            self.itemList.append(text)
+
+        def ChangeItem(self, number, text):
+            for key, value in list(self.keyDict.items()):
+                if value == number:
+                    self.textDict[key] = text
+                    self.itemList[key] = text
+                    return
+
+        def SetEvent(self, event):
+            self.event = event
+
+        def SelectItem(self, line):
+            if line not in self.keyDict or line == self.selectedLine:
+                return
+            self.selectedLine = line
+            self.event(self.keyDict.get(line, 0), self.textDict.get(line, "None"))
+
+        def GetSelectedItem(self):
+            return self.keyDict.get(self.selectedLine, 0)
+
+        def GetItemCount(self):
+            return len(self.itemList)
+
+        def GetViewItemCount(self):
+            return int(self.GetHeight() // self.stepSize) if self.GetHeight() else 8
+
+        def SetBasePos(self, pos):
+            self.basePos = pos
+
+        def ArrangeItem(self):
+            pass
+
+        def LocateItem(self):
+            pass
+
+        def texts(self):
+            return [self.textDict[i] for i in range(len(self.itemList))]
+
+        def select(self, line):
+            """A press on visible row `line` (OnMouseLeftButtonUp)."""
+            self.SelectItem(line + self.basePos)
+
+    def make_image_box(parent, filename, x, y):
+        box = ui.ImageBox()
+        box.SetParent(parent)
+        box.LoadImage(filename)
+        box.SetPosition(x, y)
+        box.Show()
+        return box
+
+    ui.SlotBar = SlotBar
+    ui.ListBox = ListBox
+    ui.MakeImageBox = make_image_box
+    # Legacy subclasses call their base's destructor (uiquest.ToolTipImageBox).
+    ui.ImageBox.__del__ = lambda self: None
+
+    class PlainToolTip(ToolTip):
+        """uiToolTip.ToolTip as uiquest.ToolTipImageBox uses it: its lines kept."""
+
+        def __init__(self, *args):
+            ToolTip.__init__(self, "plain")
+            self.lines = []
+
+        def AutoAppendTextLine(self, text, *args):
+            self.lines.append(text)
+
+        def ResizeToolTip(self):
+            pass
+
+        def Show(self):
+            self.visible = True
+    game.modules["uiToolTip"].ToolTip = PlainToolTip
+    loader = ui.PythonScriptLoader
+    build_children = loader.LoadScriptFile
+
+    def load_script_file(self, window, path):
+        """The Wave 3a loader, with list boxes, slot bars and images made of
+        their kinds."""
+        build_children(self, window, path)
+        _rebuild_kinds(window, read_uiscript(path), {"listbox": ListBox, "slotbar": SlotBar, "image": ui.ImageBox})
+    loader.LoadScriptFile = load_script_file
+
+
+def _rebuild_kinds(window, value, kinds):
+    for child in value.get("children", ()) or ():
+        cls = kinds.get(child.get("type"))
+        if cls is not None:
+            widget = cls()
+            widget.name = child.get("name", "")
+            window.ElementDictionary[widget.name] = widget
+        _rebuild_kinds(window, child, kinds)
+
+
+def _install_wave5a_modules(game, log):
+    game.event_sets = {}         # index -> the script registered (RegisterEventSetFromString)
+    game.quest_sets = {}         # index -> the sink's state of an attached set (nuigame.QuestState)
+    game.game_window = None      # the window QuestOpenScript calls OpenQuestWindow on
+    game.web = {"mode": False, "url": "", "rect": None, "moves": [], "follow": None, "zoom": 0.0,
+                "navigation": {"uri": "", "cancelled": False}}
+    game.test_server = False     # app.IsEnableTestServerFlag
+    game.picking_point = (12000.0, 34000.0, 100.0)  # background.GetPickingPoint
+    game.main_position = (12000.0, 34000.0, 100.0)  # player.GetMainCharacterPosition
+    game.money = 0               # player.GetMoney
+    game.material_counts = {}    # vnum -> player.GetItemCountByVnum
+    game.debug_mode = False      # debugInfo.IsDebugMode
+    game.popups = []             # every uiCommon.PopupDialog the stand-in made
+    game.console_os = ConsoleOs()
+
+    event = game.modules["event"]
+    for name, value in QUEST_BUTTON_TYPES.items():
+        setattr(event, name, value)
+
+    def register(script):
+        index = 0
+        while index in game.event_sets:
+            index += 1
+        game.event_sets[index] = script
+        return index
+
+    def clear(index):
+        game.event_sets.pop(index, None)
+        state = game.quest_sets.get(index)
+        if state is not None and state["attached"]:
+            detach(index)
+    define(event, "RegisterEventSetFromString", register)
+    define(event, "ClearEventSet", clear)
+
+    app = game.modules["app"]
+    for name, value in WAVE5A_APP_CONSTANTS.items():
+        setattr(app, name, value)
+    web = game.web
+
+    def show_web_page(url, rect):
+        web.update(mode=True, url=url, rect=tuple(rect))
+
+    def move_web_page(rect):
+        web["moves"].append(tuple(rect))
+
+    def hide_web_page():
+        web["mode"] = False
+    define(app, "ShowWebPage", show_web_page)
+    define(app, "MoveWebPage", move_web_page)
+    define(app, "HideWebPage", hide_web_page)
+    app.IsWebPageMode = lambda: web["mode"]
+    app.IsEnableTestServerFlag = lambda: game.test_server
+
+    chr_module = game.modules["chr"]
+    for name, value in CHR_CONSTANTS.items():
+        setattr(chr_module, name, value)
+    chr_module.GetBoundBoxOnlyXY = lambda vid: (-100.0, -100.0, 100.0, 100.0)
+    background = game.modules["background"]
+    background.GetHeight = lambda x, y: 0.0
+    background.GetPickingPoint = lambda: game.picking_point
+    player = game.modules["player"]
+    player.GetMainCharacterPosition = lambda: game.main_position
+    player.GetMoney = lambda: game.money
+    player.GetItemCountByVnum = lambda vnum: game.material_counts.get(vnum, 0)
+    game.modules["debugInfo"] = support.stub_module("debugInfo", IsDebugMode=lambda: game.debug_mode)
+    if "uiCommon" not in game.modules:
+        game.modules["uiCommon"] = support.stub_module("uiCommon", PopupDialog=_popup_class(game))
+
+    nuigame = game.modules["nuigame"]
+    if nuigame is None:
+        return
+
+    def attach(index, skin):
+        state = game.quest_sets.get(index)
+        if index not in game.event_sets or (state is not None and state["attached"]):
+            return False
+        game.quest_sets[index] = {"attached": True, "skin": int(skin), "lines": [], "page": empty_quest_page(skin),
+                                  "lines_revision": 0, "page_revision": 0, "updates": 0}
+        return True
+
+    def detach(index):
+        state = game.quest_sets.get(index)
+        if state is None:
+            return None
+        state["attached"] = False
+        state["lines"], state["page"] = [], empty_quest_page(state["skin"])
+        game.state.publish("quest.%d.lines" % index, [])
+        game.state.publish("quest.%d.page" % index, empty_quest_page(state["skin"]))
+        return None
+
+    def quest_state(index):
+        state = game.quest_sets.get(index)
+        return dict(state) if state is not None else None
+
+    def open_script(skin, script):
+        if game.game_window is None:
+            return -1
+        index = register(script)
+        game.game_window.OpenQuestWindow(skin, index)
+        return index
+
+    def follow(document, element_id):
+        web["follow"] = (document, element_id) if document else None
+        return True
+
+    def web_state():
+        following = web["follow"]
+        return {"following": following is not None, "document": following[0] if following else "",
+                "element": following[1] if following else "", "page_mode": web["mode"], "rect": web["rect"],
+                "wanted": None, "zoom": web["zoom"], "navigation": dict(web["navigation"])}
+    define(nuigame, "QuestAttach", attach)
+    define(nuigame, "QuestDetach", detach)
+    define(nuigame, "QuestState", quest_state)
+    define(nuigame, "QuestScript", lambda index: game.event_sets.get(index, ""))
+    define(nuigame, "QuestOpenScript", open_script)
+    define(nuigame, "WebPageFollow", follow)
+    define(nuigame, "WebPageState", web_state)
+
+    def publish_quest(index, lines=None, **page):
+        """The C++ driver's publish for set `index`: the lines as given, the
+        page's keys changed (the rest kept), each feed only when given."""
+        state = game.quest_sets[index]
+        if lines is not None:
+            state["lines"] = lines
+            state["lines_revision"] += 1
+            game.state.publish("quest.%d.lines" % index, lines)
+        if page:
+            state["page"] = dict(state["page"], **page)
+            state["page_revision"] += 1
+            game.state.publish("quest.%d.page" % index, state["page"])
+    game.publish_quest = publish_quest
+
+
+class ConsoleOs(object):
+    """What consolemodule.py asks of os: a fixed folder tree (Game.console_os),
+    the real os.path and os.sep."""
+
+    R_OK = os.R_OK
+    path = os.path
+    sep = os.sep
+
+    def __init__(self):
+        self.tree = {"D:\\Ymir Work\\": ["effect", "item", "pc", "readme.txt"]}
+        self.calls = []
+
+    def listdir(self, path):
+        self.calls.append(("listdir", path))
+        for folder, names in self.tree.items():
+            if os.path.normcase(folder.rstrip("\\/")) == os.path.normcase(str(path).rstrip("\\/")):
+                return list(names)
+        raise OSError("stand-in: no folder %s" % path)
+
+    def stat(self, path):
+        import stat
+        is_dir = "." not in os.path.basename(str(path).rstrip("\\/"))
+        return os.stat_result(((stat.S_IFDIR if is_dir else stat.S_IFREG) | 0o755, 0, 0, 1, 0, 0, 0, 0, 0, 0))
+
+    def access(self, path, mode):
+        self.calls.append(("access", path, mode))
+        return True
+
+
+def _popup_class(game):
+    class PopupDialog(object):
+        """uiCommon.PopupDialog: what it was given; Open records it in Game.popups."""
+
+        def __init__(self, *args):
+            self.text = ""
+            self.event = None
+            self.shown = False
+
+        def SetText(self, text):
+            self.text = text
+
+        def SetAcceptEvent(self, event):
+            self.event = event
+
+        def Open(self):
+            self.shown = True
+            game.popups.append(self.text)
+
+        def Close(self):
+            self.shown = False
+
+        def Destroy(self):
+            self.shown = False
+
+        def __getattr__(self, attr):
+            if attr.startswith("__") or not attr[:1].isupper():
+                raise AttributeError(attr)
+            return lambda *args, **kwargs: None
+    return PopupDialog
+
+
+def _load_wave5a_legacy(game):
+    if "constInfo" not in game.loaded:
+        game.load("constInfo", "constinfo.py")
+    if "mouseModule" not in game.loaded:
+        game.load("mouseModule", "mousemodule.py")
+    with contextlib.redirect_stdout(io.StringIO()):
+        game.load("uiQuest", "uiquest.py").print = lambda *args, **kwargs: None
+        game.load("uiWeb", "uiweb.py").print = lambda *args, **kwargs: None
+        console = game.load("consoleModule", "consolemodule.py")
+        console.print = lambda *args, **kwargs: None
+        console.os = game.console_os
+        game.modules["uiGuild"] = _legacy_guild(game)
+        game.loaded["uiGuild"] = game.modules["uiGuild"]
+
+
+def _legacy_guild(game):
+    """uiGuild with BuildGuildBuildingWindow, compiled from uiguild.py over the
+    game's stand-ins, and BUILDING_DATA_LIST filled."""
+    module = types.ModuleType("uiGuild")
+    module.__file__ = os.path.join(ROOT, "uiguild.py")
+    names = ("NumberToMoneyString", "MATERIAL_STONE_INDEX", "MATERIAL_LOG_INDEX", "MATERIAL_PLYWOOD_INDEX",
+             "MATERIAL_STONE_ID", "MATERIAL_LOG_ID", "MATERIAL_PLYWOOD_ID", "BUILDING_DATA_LIST",
+             "BuildGuildBuildingWindow")
+    with game:
+        namespace = module.__dict__
+        for name in ("app", "ui", "net", "wndMgr", "grp", "localeInfo", "player", "chr", "background", "miniMap",
+                     "uiScriptLocale", "uiCommon", "constInfo", "mouseModule"):
+            namespace[name] = sys.modules.get(name) or game.modules.get(name)
+        exec(compile(source_of("uiguild.py", names), "uiguild.py", "exec"), namespace)
+        game.modules["uiGuild"] = module
+        sys.modules["uiGuild"] = module
+        if not _load_building_list(game, module):
+            module.BUILDING_DATA_LIST = [
+                {"VNUM": vnum, "TYPE": kind, "NAME": name, "LOCAL_NAME": local, "X_ROT_LIMIT": x, "Y_ROT_LIMIT": y,
+                 "Z_ROT_LIMIT": z, "PRICE": price, "MATERIAL": list(material), "SHOW": True}
+                for vnum, kind, name, local, x, y, z, price, material in FALLBACK_BUILDINGS]
+    return module
+
+
+def _load_building_list(game, module):
+    """The real LoadGuildBuildingList (playersettingmodule.py) over a stand-in
+    app that reads the en list from disk. False when that fails."""
+    try:
+        with open(GUILD_BUILDING_LIST, encoding="utf-8", errors="replace") as handle:
+            lines = handle.read().split("\n")
+    except OSError:
+        return False
+    files = types.SimpleNamespace(OpenTextFile=lambda name: 1, GetTextFileLineCount=lambda handle: len(lines),
+                                  GetTextFileLine=lambda handle, i: lines[i].rstrip("\r"),
+                                  CloseTextFile=lambda handle: None)
+    namespace = {"app": files}
+    try:
+        exec(compile(source_of("playersettingmodule.py", ("LoadGuildBuildingList",)), "playersettingmodule.py", "exec"),
+             namespace)
+        namespace["LoadGuildBuildingList"]("guildbuildinglist.txt")
+    except Exception:
+        return False
+    return bool(module.BUILDING_DATA_LIST)

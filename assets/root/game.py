@@ -95,7 +95,7 @@ class GameWindow(ui.ScriptWindow):
 		self.targetBoard.SetWhisperEvent(ui.__mem_func__(self.interface.OpenWhisperDialog))
 		self.targetBoard.Hide()
 
-		self.console = consoleModule.ConsoleWindow()
+		self.console = nui_windows.make("console", consoleModule.ConsoleWindow, "nui_console.ConsoleWindow")
 		self.console.BindGameClass(self)
 		self.console.SetConsoleSize(wndMgr.GetScreenWidth(), 200)
 		self.console.Hide()

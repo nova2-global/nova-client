@@ -1,0 +1,151 @@
+/* Quest text (docs/ui/AUTHORING.md "Quest dialogs"). The runtime registers
+   nui-quest-text; it reads the feed quest.<set>.lines, which C++ publishes
+   from the quest interpreter, and builds its own children through RmlUi's
+   DOM calls, so quest text is never parsed as markup, translated or
+   data-bound. Markup gives it no children:
+
+   <nui-quest-text id="quest-text" data-attr-set="set_index"/>
+   	rest="hidden" (the default): a typing line holds its unrevealed text in
+   	span.nui-quest__rest, laid out but not drawn, so a word never jumps to
+   	the next line as it types; rest="none": no rest span, the line grows as
+   	it types.
+
+   What it builds (P12 spec 3.7):
+   div.nui-quest__line (--center, is-typing, is-empty)
+   	span.nui-quest__run.nui-quest__run--<role> per run; role is text, body,
+   	title, reward, item (the colors the server's quest library writes) or
+   	custom (an inline color); a name run also has nui-quest__name--item or
+   	nui-quest__name--mob. Then span.nui-quest__rest.
+   div.nui-quest__icons
+   	span.nui-slot.nui-quest__icon.nui-has-tooltip per icon, holding
+   	img.nui-slot__icon, span.nui-quest__caption and
+   	span.nui-tooltip.nui-tooltip--wrap.nui-quest__tip (its
+   	span.nui-quest__tip-title and span.nui-quest__tip-line rows).
+   div.nui-quest__line.nui-quest__line--center.nui-quest__countdown
+   	the left-time prefix, a nui-countdown format="s", the suffix.
+
+   The roles read tokens (--quest-text to --quest-item), so every palette
+   colors them; a skin restyles any part from its own folder. The line pitch
+   is --quest-line (classic sets legacy's 16dp); a line wraps by width, a
+   word longer than the line at its end. The icon is a slot: the
+   slot component draws its box, code-drawn here and the legacy slot art in
+   classic. Under reduced motion the rest shows, so a line appears whole
+   while the interpreter keeps its timing. */
+
+nui-quest-text
+{
+	--quest-line: 1.4em;
+	display: block;
+	font-size: var(--font-md);
+	color: var(--quest-text);
+}
+
+.nui-quest__line
+{
+	display: block;
+	line-height: var(--quest-line);
+	min-height: var(--quest-line);
+	text-align: left;
+	white-space: normal;
+	word-break: break-word;
+}
+.nui-quest__line--center
+{
+	text-align: center;
+}
+.nui-quest__run--text
+{
+	color: var(--quest-text);
+}
+.nui-quest__run--body
+{
+	color: var(--quest-body);
+}
+.nui-quest__run--title
+{
+	color: var(--quest-title);
+}
+.nui-quest__run--reward
+{
+	color: var(--quest-reward);
+}
+.nui-quest__run--item
+{
+	color: var(--quest-item);
+}
+/* The unrevealed part of a typing line: laid out, never drawn. It is one
+   text node after the revealed runs; when it shows (reduced motion) it takes
+   the color of the run it continues. */
+.nui-quest__rest
+{
+	visibility: hidden;
+}
+.nui-quest__run--body + .nui-quest__rest
+{
+	color: var(--quest-body);
+}
+.nui-quest__run--title + .nui-quest__rest
+{
+	color: var(--quest-title);
+}
+.nui-quest__run--reward + .nui-quest__rest
+{
+	color: var(--quest-reward);
+}
+.nui-quest__run--item + .nui-quest__rest
+{
+	color: var(--quest-item);
+}
+@media (theme: reduced-motion)
+{
+	.nui-quest__rest
+	{
+		visibility: visible;
+	}
+}
+
+/* An icon row: the icons centered side by side, each a slot with its
+   caption under it, 32dp of room on each side of a slot for the caption.
+   The caption sits below the slot box, so the row keeps one line of room
+   under its slots. */
+.nui-quest__icons
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	padding-top: var(--space-1);
+	padding-bottom: var(--quest-line);
+}
+.nui-quest__icon
+{
+	flex: 0 0 auto;
+	margin: 0 var(--space-6);
+}
+.nui-quest__caption
+{
+	display: block;
+	position: absolute;
+	top: 100%;
+	left: -80dp;
+	right: -80dp;
+	text-align: center;
+	font-size: var(--font-sm);
+	line-height: var(--quest-line);
+	white-space: nowrap;
+	color: var(--quest-text);
+	pointer-events: none;
+}
+.nui-quest__tip-title
+{
+	display: block;
+	font-weight: bold;
+}
+.nui-quest__tip-line
+{
+	display: block;
+}
+
+.nui-quest__countdown
+{
+	text-align: center;
+}

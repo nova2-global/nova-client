@@ -287,7 +287,7 @@ class Interface(object):
 
 	def __MakeWebWindow(self):
 		import uiWeb
-		self.wndWeb = uiWeb.WebWindow()
+		self.wndWeb = nui_windows.make("web", uiWeb.WebWindow, "nui_web.WebWindow")
 		self.wndWeb.LoadWindow()
 		self.wndWeb.Hide()
 
@@ -692,7 +692,7 @@ class Interface(object):
 
 		wnds = ()
 
-		q = uiQuest.QuestDialog(skin, idx)
+		q = nui_windows.make("quest", uiQuest.QuestDialog, "nui_quest.QuestDialog", skin, idx)
 		q.SetWindowName("QuestWindow" + str(idx))
 		q.Show()
 		if skin:
@@ -1667,7 +1667,8 @@ class Interface(object):
 	### Guild Building ###
 
 	def BUILD_OpenWindow(self):
-		self.wndGuildBuilding = uiGuild.BuildGuildBuildingWindow()
+		self.wndGuildBuilding = nui_windows.make("guild-building", uiGuild.BuildGuildBuildingWindow,
+		                                         "nui_guild_building.BuildGuildBuildingWindow")
 		self.wndGuildBuilding.Open()
 		self.wndGuildBuilding.wnds = self.__HideWindows()
 		self.wndGuildBuilding.SetCloseEvent(ui.__mem_func__(self.BUILD_CloseWindow))

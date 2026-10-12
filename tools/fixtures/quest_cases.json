@@ -1,0 +1,2787 @@
+[
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeQuestion",
+     2
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "OX contest",
+     0
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Close",
+     1
+    ]
+   ],
+   "frames": 4,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "",
+    "choices": [
+     {"page": 0, "text": "OX contest"},
+     {"page": 0, "text": "Close"}
+    ],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 1,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "npc-menu",
+  "refused": false,
+  "script": "[QUESTION 1;OX contest |2;Close]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [
+     ["handler", "MakeQuestion", 2],
+     ["handler", "AppendQuestion", "OX contest", 0],
+     ["handler", "AppendQuestion", "Close", 1]
+    ],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [{"page": 0, "text": "OX contest"}, {"page": 0, "text": "Close"}],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 1,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     0
+    ]
+   ],
+   "frames": 97,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}],
+     "shown": 7,
+     "total": 7,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "Hey - you there! Yes, you - you look quite"}],
+     "shown": 42,
+     "total": 42,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "intelligent. There is a contest called the OX"}],
+     "shown": 45,
+     "total": 45,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 4,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "contest. You can test your knowledge there. If"}],
+     "shown": 46,
+     "total": 46,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 5,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "you win, you'll get a nice reward. "}],
+     "shown": 35,
+     "total": 35,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 6,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "next",
+    "choices": [],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "ox-page-1",
+  "refused": false,
+  "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]Uriel: [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]Hey - you there! Yes, you - you look quite[ENTER]intelligent. There is a contest called the OX[ENTER]contest. You can test your knowledge there. If[ENTER]you win, you'll get a nice reward. [ENTER][NEXT]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 0, "total": 7, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 7, "total": 7, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 7, "total": 7, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "Hey - you there! Yes, you - you look quite"}], "shown": 28, "total": 42, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 60,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 7, "total": 7, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "Hey - you there! Yes, you - you look quite"}], "shown": 42, "total": 42, "wraps": []},
+     {"align": "left", "id": 3, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "intelligent. There is a contest called the OX"}], "shown": 45, "total": 45, "wraps": []},
+     {"align": "left", "id": 4, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "contest. You can test your knowledge there. If"}], "shown": 18, "total": 46, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 83,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}],
+     "shown": 7,
+     "total": 7,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "I can let you participate in the contest once it"}],
+     "shown": 48,
+     "total": 48,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "starts."}],
+     "shown": 7,
+     "total": 7,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 4,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "The starting time has not been set yet."}],
+     "shown": 39,
+     "total": 39,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 5,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "I'll let you know when it's time, so be ready! "}],
+     "shown": 47,
+     "total": 47,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 6,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "ox-page-2",
+  "refused": false,
+  "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]Uriel: [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]I can let you participate in the contest once it[ENTER]starts.[ENTER]The starting time has not been set yet.[ENTER]I'll let you know when it's time, so be ready! [ENTER][DONE]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 0, "total": 7, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 7, "total": 7, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 7, "total": 7, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "I can let you participate in the contest once it"}], "shown": 28, "total": 48, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 60,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Uriel: "}], "shown": 7, "total": 7, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "I can let you participate in the contest once it"}], "shown": 48, "total": 48, "wraps": []},
+     {"align": "left", "id": 3, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "starts."}], "shown": 7, "total": 7, "wraps": []},
+     {"align": "left", "id": 4, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "The starting time has not been set yet."}], "shown": 39, "total": 39, "wraps": []},
+     {"align": "left", "id": 5, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "I'll let you know when it's time, so be ready! "}], "shown": 10, "total": 47, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeQuestion",
+     2
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Yes",
+     0
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "No",
+     1
+    ]
+   ],
+   "frames": 215,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Teleporter:  "}],
+     "shown": 13,
+     "total": 13,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "This is a fascinating place. But does anything"}],
+     "shown": 46,
+     "total": 46,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "out of the ordinary ever happen here? Probably"}],
+     "shown": 46,
+     "total": 46,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 4,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "not. In other parts of the country, everything"}],
+     "shown": 46,
+     "total": 46,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 5,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "looks a little different! I'm sure there's"}],
+     "shown": 42,
+     "total": 42,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 6,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "somewhere interesting that I could teleport you"}],
+     "shown": 47,
+     "total": 47,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 7,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "to. As the powers of evil have got stronger"}],
+     "shown": 43,
+     "total": 43,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 8,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "again, time and space has been thrown into chaos."}],
+     "shown": 49,
+     "total": 49,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 9,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "Your return might not always work. Do you want to"}],
+     "shown": 49,
+     "total": 49,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 10,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "be teleported anyway? "}],
+     "shown": 22,
+     "total": 22,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 11,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "",
+    "choices": [
+     {"page": 0, "text": "Yes"},
+     {"page": 0, "text": "No"}
+    ],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 1,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "warp-question",
+  "refused": false,
+  "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]Teleporter:  [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]This is a fascinating place. But does anything[ENTER]out of the ordinary ever happen here? Probably[ENTER]not. In other parts of the country, everything[ENTER]looks a little different! I'm sure there's[ENTER]somewhere interesting that I could teleport you[ENTER]to. As the powers of evil have got stronger[ENTER]again, time and space has been thrown into chaos.[ENTER]Your return might not always work. Do you want to[ENTER]be teleported anyway? [ENTER][QUESTION 1;Yes |2;No ]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Teleporter:  "}], "shown": 0, "total": 13, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Teleporter:  "}], "shown": 8, "total": 13, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Teleporter:  "}], "shown": 13, "total": 13, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "This is a fascinating place. But does anything"}], "shown": 22, "total": 46, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 60,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "Teleporter:  "}], "shown": 13, "total": 13, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "This is a fascinating place. But does anything"}], "shown": 46, "total": 46, "wraps": []},
+     {"align": "left", "id": 3, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "out of the ordinary ever happen here? Probably"}], "shown": 46, "total": 46, "wraps": []},
+     {"align": "left", "id": 4, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "not. In other parts of the country, everything"}], "shown": 6, "total": 46, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 88,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "The fresh supply "}],
+     "shown": 17,
+     "total": 17,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "Go to the General Store Saleswoman and find out"}],
+     "shown": 47,
+     "total": 47,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "why there is a delay in fresh potion supplies. "}],
+     "shown": 47,
+     "total": 47,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 4,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 5,
+     "kind": "text",
+     "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "The General Store Saleswoman is in Pyungmoo . "}],
+     "shown": 46,
+     "total": 46,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 6,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "letter-info",
+  "refused": false,
+  "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]The fresh supply [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]Go to the General Store Saleswoman and find out[ENTER]why there is a delay in fresh potion supplies. [ENTER][ENTER]The General Store Saleswoman is in Pyungmoo . [ENTER][DONE]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "The fresh supply "}], "shown": 0, "total": 17, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "The fresh supply "}], "shown": 8, "total": 17, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "The fresh supply "}], "shown": 17, "total": 17, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "Go to the General Store Saleswoman and find out"}], "shown": 18, "total": 47, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 60,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294960826, "name": "", "role": "title", "text": "The fresh supply "}], "shown": 17, "total": 17, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "Go to the General Store Saleswoman and find out"}], "shown": 47, "total": 47, "wraps": []},
+     {"align": "left", "id": 3, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "why there is a delay in fresh potion supplies. "}], "shown": 47, "total": 47, "wraps": []},
+     {"align": "left", "id": 4, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []},
+     {"align": "left", "id": 5, "kind": "text", "runs": [{"color": 4291085508, "name": "", "role": "body", "text": "The General Store Saleswoman is in Pyungmoo . "}], "shown": 0, "total": 46, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "OnInput"
+    ]
+   ],
+   "frames": 24,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Please enter the name you want to have"}],
+     "shown": 38,
+     "total": 38,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": true,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "name-input",
+  "refused": false,
+  "script": "Please enter the name you want to have[ENTER][INPUT]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Please enter the name you want to have"}], "shown": 2, "total": 38, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Please enter the name you want to have"}], "shown": 10, "total": 38, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Please enter the name you want to have"}], "shown": 38, "total": 38, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 26,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "This name is too long. Please try again."}],
+     "shown": 40,
+     "total": 40,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "name-too-long",
+  "refused": false,
+  "script": "This name is too long. Please try again.[ENTER][ENTER][DONE]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "This name is too long. Please try again."}], "shown": 2, "total": 40, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "This name is too long. Please try again."}], "shown": 10, "total": 40, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "This name is too long. Please try again."}], "shown": 40, "total": 40, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 4,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 0,
+    "waiting": false
+   }
+  },
+  "name": "done-only",
+  "refused": false,
+  "script": "[DONE]",
+  "skin": 0,
+  "steps": [
+   {
+    "calls": [
+     ["handler", "MakeNextButton", 1],
+     ["handler", "DoneEvent"]
+    ],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": true,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 0,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "interface",
+     "RecvQuest",
+     7,
+     "Hunting bears"
+    ],
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 5,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 0,
+    "waiting": false
+   }
+  },
+  "name": "letter-button",
+  "refused": false,
+  "script": "[QUESTBUTTON idx;7|name;Hunting bears][DONE]",
+  "skin": 0,
+  "steps": [
+   {
+    "calls": [
+     ["interface", "RecvQuest", 7, "Hunting bears"]
+    ],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 0,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [
+     ["interface", "RecvQuest", 7, "Hunting bears"],
+     ["handler", "MakeNextButton", 1],
+     ["handler", "DoneEvent"]
+    ],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": true,
+     "ended": true,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": true,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 0,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 84,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294934528, "name": "", "role": "custom", "text": "Orange "}, {"color": 4294967295, "name": "", "role": "text", "text": "and "}, {"color": 4294914867, "name": "item", "role": "item", "text": "Red Potion (S)"}, {"color": 4294967295, "name": "", "role": "text", "text": " from "}, {"color": 4294967295, "name": "mob", "role": "text", "text": "Wild Dog"}, {"color": 4294967295, "name": "", "role": "text", "text": "."}],
+     "shown": 40,
+     "total": 40,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Slow letters fast again."}],
+     "shown": 24,
+     "total": 24,
+     "wraps": []
+    },
+    {
+     "align": "center",
+     "id": 3,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Centered from here"}],
+     "shown": 18,
+     "total": 18,
+     "wraps": []
+    },
+    {
+     "align": "center",
+     "id": 4,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Seventy letters on one line: legacy breaks it at sixty bytes, we don't"}],
+     "shown": 70,
+     "total": 70,
+     "wraps": [60]
+    },
+    {
+     "align": "center",
+     "id": 5,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "colors-names",
+  "refused": false,
+  "script": "[COLOR r;1|g;0.5|b;0]Orange [/COLOR]and [ITEM value;27001] from [MOB value;101].[ENTER][DELAY value;30]Slow letters[/DELAY] fast again.[ENTER][TEXT_HORIZONTAL_ALIGN_CENTER]Centered from here[ENTER]Seventy letters on one line: legacy breaks it at sixty bytes, we don't[ENTER][DONE]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294934528, "name": "", "role": "custom", "text": "Orange "}, {"color": 4294967295, "name": "", "role": "text", "text": "and "}, {"color": 4294914867, "name": "item", "role": "item", "text": "Red Potion (S)"}, {"color": 4294967295, "name": "", "role": "text", "text": " from "}, {"color": 4294967295, "name": "mob", "role": "text", "text": "Wild Dog"}, {"color": 4294967295, "name": "", "role": "text", "text": "."}], "shown": 0, "total": 40, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294934528, "name": "", "role": "custom", "text": "Orange "}, {"color": 4294967295, "name": "", "role": "text", "text": "and "}, {"color": 4294914867, "name": "item", "role": "item", "text": "Red Potion (S)"}, {"color": 4294967295, "name": "", "role": "text", "text": " from "}, {"color": 4294967295, "name": "mob", "role": "text", "text": "Wild Dog"}, {"color": 4294967295, "name": "", "role": "text", "text": "."}], "shown": 7, "total": 40, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294934528, "name": "", "role": "custom", "text": "Orange "}, {"color": 4294967295, "name": "", "role": "text", "text": "and "}, {"color": 4294914867, "name": "item", "role": "item", "text": "Red Potion (S)"}, {"color": 4294967295, "name": "", "role": "text", "text": " from "}, {"color": 4294967295, "name": "mob", "role": "text", "text": "Wild Dog"}, {"color": 4294967295, "name": "", "role": "text", "text": "."}], "shown": 40, "total": 40, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Slow letters fast again."}], "shown": 7, "total": 24, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 30,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 60,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294934528, "name": "", "role": "custom", "text": "Orange "}, {"color": 4294967295, "name": "", "role": "text", "text": "and "}, {"color": 4294914867, "name": "item", "role": "item", "text": "Red Potion (S)"}, {"color": 4294967295, "name": "", "role": "text", "text": " from "}, {"color": 4294967295, "name": "mob", "role": "text", "text": "Wild Dog"}, {"color": 4294967295, "name": "", "role": "text", "text": "."}], "shown": 40, "total": 40, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Slow letters fast again."}], "shown": 24, "total": 24, "wraps": []},
+     {"align": "center", "id": 3, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Centered from here"}], "shown": 18, "total": 18, "wraps": []},
+     {"align": "center", "id": 4, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Seventy letters on one line: legacy breaks it at sixty bytes, we don't"}], "shown": 32, "total": 70, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "OnInsertItemIcon",
+     "item",
+     27001,
+     "Red Potion (S)",
+     "Red Potion (S)",
+     0,
+     3
+    ],
+    [
+     "handler",
+     "OnInsertItemIcon",
+     "item",
+     27002,
+     "Red Potion (M)",
+     "Red Potion (M)",
+     1,
+     3
+    ],
+    [
+     "handler",
+     "OnInsertItemIcon",
+     "item",
+     27003,
+     "Red Potion (L)",
+     "Red Potion (L)",
+     2,
+     3
+    ],
+    [
+     "handler",
+     "OnInsertItemIcon",
+     "item",
+     50001,
+     "",
+     "",
+     0,
+     1
+    ],
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 17,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Three rewards:"}],
+     "shown": 14,
+     "total": 14,
+     "wraps": []
+    },
+    {
+     "align": "center",
+     "icons": [{"caption": "Red Potion (S)", "desc": ["Red Potion (S)"], "index": 0, "src": "/icon/item/27001.tga", "title": "Red Potion (S)", "total": 3, "vnum": 27001}, {"caption": "Red Potion (M)", "desc": ["Red Potion (M)"], "index": 1, "src": "/icon/item/27002.tga", "title": "Red Potion (M)", "total": 3, "vnum": 27002}, {"caption": "Red Potion (L)", "desc": ["Red Potion (L)"], "index": 2, "src": "/icon/item/27003.tga", "title": "Red Potion (L)", "total": 3, "vnum": 27003}],
+     "id": 3,
+     "kind": "icons"
+    },
+    {
+     "align": "center",
+     "icons": [{"caption": "", "desc": ["A book with lucky numbers. The lottery is run by the government."], "index": 0, "src": "/icon/item/50001.tga", "title": "Lucky Book", "total": 1, "vnum": 50001}],
+     "id": 5,
+     "kind": "icons"
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "icons",
+  "refused": false,
+  "script": "Three rewards:[ENTER][INSERT_IMAGE image_type;item|idx;27001|title;Red Potion (S)|desc;|index;0|total;3][INSERT_IMAGE image_type;item|idx;27002|title;Red Potion (M)|desc;|index;1|total;3][INSERT_IMAGE image_type;item|idx;27003|title;Red Potion (L)|desc;|index;2|total;3][ENTER][INSERT_IMAGE image_type;item|idx;50001|index;0|total;1][DONE]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Three rewards:"}], "shown": 2, "total": 14, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Three rewards:"}], "shown": 10, "total": 14, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeQuestion",
+     10
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "One",
+     0
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Two",
+     1
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Three",
+     2
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Four",
+     3
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Five",
+     4
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Six",
+     5
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Seven",
+     6
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Eight",
+     7
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Nine",
+     8
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Close",
+     9
+    ]
+   ],
+   "frames": 9,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Pick one."}],
+     "shown": 9,
+     "total": 9,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "",
+    "choices": [
+     {"page": 0, "text": "One"},
+     {"page": 0, "text": "Two"},
+     {"page": 0, "text": "Three"},
+     {"page": 0, "text": "Four"},
+     {"page": 0, "text": "Five"},
+     {"page": 0, "text": "Six"},
+     {"page": 0, "text": "Seven"},
+     {"page": 0, "text": "Eight"},
+     {"page": 1, "text": "Nine"},
+     {"page": 1, "text": "Close"}
+    ],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 2,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "many-choices",
+  "refused": false,
+  "script": "Pick one.[ENTER][QUESTION 1;One|2;Two|3;Three|4;Four|5;Five|6;Six|7;Seven|8;Eight|9;Nine|10;Close]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Pick one."}], "shown": 2, "total": 9, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Pick one."}], "shown": 9, "total": 9, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "OnLeftImage",
+     "gwoijil.tga"
+    ],
+    [
+     "handler",
+     "OnTopImage",
+     "mil_chu.tga"
+    ],
+    [
+     "handler",
+     "OnBackgroundImage",
+     "level_bg.tga"
+    ],
+    [
+     "handler",
+     "OnImage",
+     20,
+     12,
+     "1001.tga"
+    ],
+    [
+     "handler",
+     "OnTitleImage",
+     "d:/ymir work/ui/game/questboard/level_20.tga"
+    ],
+    [
+     "handler",
+     "OnSize",
+     420,
+     320
+    ],
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 14,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Images."}],
+     "shown": 7,
+     "total": 7,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [
+     {"src": "d:/ymir work/ui/game/questboard/1001.tga", "x": 20, "y": 12}
+    ],
+    "images": {
+     "background": "d:/ymir work/ui/game/questboard/level_bg.tga",
+     "left": "d:/ymir work/ui/game/questboard/gwoijil.tga",
+     "title": "d:/ymir work/ui/game/questboard/level_20.tga",
+     "title_serial": 1,
+     "top": "d:/ymir work/ui/game/questboard/mil_chu.tga"
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 320,
+     "width": 420
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "images",
+  "refused": false,
+  "script": "[LEFTIMAGE src;gwoijil.tga][TOPIMAGE src;mil_chu.tga][BGIMAGE src;level_bg.tga][IMAGE x;20|y;12|src;1001.tga][TITLE_IMAGE src;d:/ymir work/ui/game/questboard/level_20.tga][WINDOW_SIZE width;420|height;320]Images.[ENTER][DONE]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [
+     ["handler", "OnLeftImage", "gwoijil.tga"]
+    ],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Images."}], "shown": 0, "total": 7, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "d:/ymir work/ui/game/questboard/gwoijil.tga", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [
+     ["handler", "OnLeftImage", "gwoijil.tga"],
+     ["handler", "OnTopImage", "mil_chu.tga"],
+     ["handler", "OnBackgroundImage", "level_bg.tga"],
+     ["handler", "OnImage", 20, 12, "1001.tga"],
+     ["handler", "OnTitleImage", "d:/ymir work/ui/game/questboard/level_20.tga"]
+    ],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Images."}], "shown": 0, "total": 7, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [{"src": "d:/ymir work/ui/game/questboard/1001.tga", "x": 20, "y": 12}],
+     "images": {"background": "d:/ymir work/ui/game/questboard/level_bg.tga", "left": "d:/ymir work/ui/game/questboard/gwoijil.tga", "title": "d:/ymir work/ui/game/questboard/level_20.tga", "title_serial": 1, "top": "d:/ymir work/ui/game/questboard/mil_chu.tga"},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "FadeOut",
+     0.05000000074505806
+    ],
+    [
+     "replay",
+     "EndEventProcess"
+    ],
+    [
+     "handler",
+     "FadeIn",
+     0.05
+    ],
+    [
+     "replay",
+     "EndEventProcess"
+    ],
+    [
+     "handler",
+     "WhiteOut",
+     0.0
+    ],
+    [
+     "replay",
+     "EndEventProcess"
+    ],
+    [
+     "handler",
+     "WhiteIn",
+     0.1
+    ],
+    [
+     "replay",
+     "EndEventProcess"
+    ],
+    [
+     "handler",
+     "MakeNextButton",
+     1
+    ],
+    [
+     "handler",
+     "DoneEvent"
+    ]
+   ],
+   "frames": 15,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Dark."}],
+     "shown": 5,
+     "total": 5,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Bright."}],
+     "shown": 7,
+     "total": 7,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "done",
+    "choices": [],
+    "delay": 10,
+    "done": true,
+    "ended": true,
+    "fade": {
+     "kind": "white_in",
+     "serial": 4,
+     "speed": 0.1
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "fades",
+  "refused": false,
+  "script": "Dark.[ENTER][FADE_OUT speed;0.05]Bright.[ENTER][FADE_IN speed;0.05][WHITE_OUT speed;0][WHITE_IN speed;0.1][DONE]",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Dark."}], "shown": 2, "total": 5, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [
+     ["handler", "FadeOut", 0.05000000074505806],
+     ["replay", "EndEventProcess"]
+    ],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Dark."}], "shown": 5, "total": 5, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Bright."}], "shown": 2, "total": 7, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "fade_out", "serial": 1, "speed": 0.05000000074505806},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     2
+    ],
+    [
+     "handler",
+     "CloseSelf"
+    ]
+   ],
+   "frames": 18,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Waiting for the answer."}],
+     "shown": 23,
+     "total": 23,
+     "wraps": []
+    },
+    {
+     "align": "center",
+     "end": 10.208,
+     "id": 3,
+     "kind": "countdown",
+     "prefix": "Remaining Time: ",
+     "suffix": " Sec."
+    },
+    {
+     "align": "center",
+     "id": 4,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "cancel",
+    "choices": [],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "confirm",
+  "refused": false,
+  "scripts": [
+   "Waiting for the answer.[ENTER][CONFIRM_WAIT timeout;10]",
+   "[END_CONFIRM_WAIT]"
+  ],
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Waiting for the answer."}], "shown": 2, "total": 23, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Waiting for the answer."}], "shown": 10, "total": 23, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "OnBackgroundImage",
+     "level_bg.tga"
+    ],
+    [
+     "handler",
+     "OnImage",
+     20,
+     12,
+     "1001.tga"
+    ],
+    [
+     "handler",
+     "MakeQuestion",
+     1
+    ],
+    [
+     "handler",
+     "AppendQuestion",
+     "Close",
+     0
+    ]
+   ],
+   "frames": 18,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 4,
+     "kind": "text",
+     "runs": [{"color": 4278190080, "name": "", "role": "custom", "text": "Hunt 20 wolves."}],
+     "shown": 15,
+     "total": 15,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 5,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "",
+    "choices": [
+     {"page": 0, "text": "Close"}
+    ],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [
+     {"src": "d:/ymir work/ui/game/questboard/1001.tga", "x": 20, "y": 12}
+    ],
+    "images": {
+     "background": "d:/ymir work/ui/game/questboard/level_bg.tga",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 1,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 3,
+    "waiting": false
+   }
+  },
+  "name": "scroll",
+  "refused": false,
+  "script": "[BGIMAGE src;level_bg.tga][ENTER][ENTER][ENTER][IMAGE x;20|y;12|src;1001.tga][COLOR r;0|g;0|b;0]Hunt 20 wolves.[ENTER][QUESTION 1;Close]",
+  "skin": 3,
+  "steps": [
+   {
+    "calls": [
+     ["handler", "OnBackgroundImage", "level_bg.tga"]
+    ],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "d:/ymir work/ui/game/questboard/level_bg.tga", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 3,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [
+     ["handler", "OnBackgroundImage", "level_bg.tga"],
+     ["handler", "OnImage", 20, 12, "1001.tga"]
+    ],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []},
+     {"align": "left", "id": 3, "kind": "text", "runs": [], "shown": 0, "total": 0, "wraps": []},
+     {"align": "left", "id": 4, "kind": "text", "runs": [{"color": 4278190080, "name": "", "role": "custom", "text": "Hunt 20 wolves."}], "shown": 0, "total": 15, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [{"src": "d:/ymir work/ui/game/questboard/1001.tga", "x": 20, "y": 12}],
+     "images": {"background": "d:/ymir work/ui/game/questboard/level_bg.tga", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 3,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [
+    [
+     "handler",
+     "MakeNextButton",
+     0
+    ]
+   ],
+   "frames": 16,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "The ship left at dawn."}],
+     "shown": 22,
+     "total": 22,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "next",
+    "choices": [],
+    "delay": 10,
+    "done": false,
+    "ended": true,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 5,
+    "waiting": false
+   }
+  },
+  "name": "cinema",
+  "refused": false,
+  "script": "The ship left at dawn.[ENTER][NEXT]",
+  "skin": 5,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "The ship left at dawn."}], "shown": 2, "total": 22, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 5,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "The ship left at dawn."}], "shown": 10, "total": 22, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 5,
+     "waiting": false
+    }
+   }
+  ]
+ },
+ {
+  "final": {
+   "calls": [],
+   "frames": 0,
+   "lines": [],
+   "page": {
+    "button": "",
+    "choices": [],
+    "delay": 10,
+    "done": false,
+    "ended": false,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": false,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "long-choice",
+  "refused": true,
+  "script": "[QUESTION 1;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
+  "skin": 1,
+  "steps": []
+ }
+]

@@ -1,0 +1,27 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Pick one.",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 9,
+		"total": 9,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	}
+]

@@ -1,0 +1,142 @@
+/* The quest curtain, in every theme: two letterbox bars of --quest-bar-height
+   (the facade's bar_dp) on the top and bottom edges, and one fade layer over
+   the whole screen. The bars slide 0.4s (legacy moves them 200 px a second:
+   0.6 s for its 120 px at 1280 x 960); the fades draw in one of four
+   duration classes (the facade picks one from legacy's per-frame speed), and
+   the timer of the document ends both on the NovaUI clock. Under reduced
+   motion everything shows its resting state at once, and the facade ends
+   the slide or fade at once too. Legacy draws no frame and no art here, so
+   classic needs no overlay: black bars and plain fades are its look. */
+
+body.quest-curtain
+{
+	--quest-bar-height: 0dp;
+	focus: none;
+	tab-index: none;
+}
+
+.quest-curtain__bar
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: var(--quest-bar-height);
+	background-color: var(--letterbox);
+}
+.quest-curtain__bar--top
+{
+	top: 0;
+	transform: translateY(-100%);
+}
+.quest-curtain__bar--bottom
+{
+	bottom: 0;
+	transform: translateY(100%);
+}
+.quest-curtain__bar--top.is-in, .quest-curtain__bar--bottom.is-in
+{
+	transform: translateY(0%);
+}
+.quest-curtain__bar--top.is-in.nui-anim
+{
+	animation: 0.4s linear-in-out quest-curtain-top-in;
+}
+.quest-curtain__bar--top.is-out.nui-anim
+{
+	animation: 0.4s linear-in-out quest-curtain-top-out;
+}
+.quest-curtain__bar--bottom.is-in.nui-anim
+{
+	animation: 0.4s linear-in-out quest-curtain-bottom-in;
+}
+.quest-curtain__bar--bottom.is-out.nui-anim
+{
+	animation: 0.4s linear-in-out quest-curtain-bottom-out;
+}
+@keyframes quest-curtain-top-in
+{
+	from { transform: translateY(-100%); }
+	to { transform: translateY(0%); }
+}
+@keyframes quest-curtain-top-out
+{
+	from { transform: translateY(0%); }
+	to { transform: translateY(-100%); }
+}
+@keyframes quest-curtain-bottom-in
+{
+	from { transform: translateY(100%); }
+	to { transform: translateY(0%); }
+}
+@keyframes quest-curtain-bottom-out
+{
+	from { transform: translateY(0%); }
+	to { transform: translateY(100%); }
+}
+
+/* The fade layer: opaque at the end of FADE_OUT and WHITE_OUT (it stays so
+   until the next fade), transparent at the end of FADE_IN and WHITE_IN,
+   when the facade takes it away. One element without children, so its
+   opacity animation rebuilds one mesh per frame. */
+.quest-curtain__fade
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 1;
+	background-color: var(--fade-black);
+}
+.quest-curtain__fade.is-white
+{
+	background-color: var(--fade-white);
+}
+.quest-curtain__fade.is-in
+{
+	opacity: 0;
+}
+.quest-curtain__fade.is-out-fast.nui-anim
+{
+	animation: 0.25s linear-in-out quest-curtain-fade-out;
+}
+.quest-curtain__fade.is-out-normal.nui-anim
+{
+	animation: 0.5s linear-in-out quest-curtain-fade-out;
+}
+.quest-curtain__fade.is-out-slow.nui-anim
+{
+	animation: 1s linear-in-out quest-curtain-fade-out;
+}
+.quest-curtain__fade.is-out-slower.nui-anim
+{
+	animation: 2s linear-in-out quest-curtain-fade-out;
+}
+.quest-curtain__fade.is-in-fast.nui-anim
+{
+	animation: 0.25s linear-in-out quest-curtain-fade-in;
+}
+.quest-curtain__fade.is-in-normal.nui-anim
+{
+	animation: 0.5s linear-in-out quest-curtain-fade-in;
+}
+.quest-curtain__fade.is-in-slow.nui-anim
+{
+	animation: 1s linear-in-out quest-curtain-fade-in;
+}
+.quest-curtain__fade.is-in-slower.nui-anim
+{
+	animation: 2s linear-in-out quest-curtain-fade-in;
+}
+@keyframes quest-curtain-fade-out
+{
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+@keyframes quest-curtain-fade-in
+{
+	from { opacity: 1; }
+	to { opacity: 0; }
+}

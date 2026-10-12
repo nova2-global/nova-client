@@ -37,6 +37,8 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 - [The drag bridge](#the-drag-bridge)
 - [HUD windows](#hud-windows)
 - [System windows](#system-windows)
+- [Quest dialogs](#quest-dialogs)
+- [Wave 5a windows](#wave-5a-windows)
 - [Window flags and the factory](#window-flags-and-the-factory)
 - [Rules](#rules)
 - [What the renderer draws](#what-the-renderer-draws)
@@ -97,6 +99,7 @@ NovaPack publishes a file at `assets/<group>/<path>` under the store path `<path
 | `assets/root/nui_slots.py` | `nui_slots.py` | the slot model, the drag bridge and the tooltip bridge of every slot window (see [Slot grids](#slot-grids)) |
 | `assets/root/nui_hud.py` | `nui_hud.py` | what the HUD facades share (see [HUD windows](#hud-windows)) |
 | `assets/nui/nui/windows/taskbar/`, `expanded-taskbar/`, `energy-bar/`, `gift-box/`, `game-buttons/` and the other Wave 2a windows | | the HUD (see [HUD windows](#hud-windows)) |
+| `assets/nui/nui/windows/quest/`, `quest-curtain/` and `assets/root/nui_quest.py`, `nui_quest_curtain.py` | | the quest dialog and its curtain (see [Quest dialogs](#quest-dialogs)) |
 
 The client loads the fonts (`kDefaultFonts`, which `nuitool lint` and `snap` also use) and the render test (`kRenderTestDocument`, Ctrl+Shift+U in a dev build) by the constants in `nova-client-src/src/NovaUI/Core/NuiPaths.h`. The gallery has no client constant: its controller, `assets/root/nui_gallery.py`, names the document in `DOCUMENT` and opens it with `import nui_gallery; nui_gallery.open_gallery()`.
 
@@ -228,6 +231,7 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 | Cooldown sweep | `<nui-cooldown data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>` | Over its positioned parent. See [Clock elements](#clock-elements). |
 | Digit art | `<nui-number value="m1"/>` | The legacy number glyphs. See [Digit art](#digit-art). |
 | Tagged text | `<nui-text data-attr-value="sign.text"/>` | `links="off"`; link runs are `span.nui-link` (underlined on hover in the modern skins). See [Text with tags and links](#text-with-tags-and-links). |
+| Quest text | `<nui-quest-text data-attr-set="set_index"/>` | `rest="none"`; lines `div.nui-quest__line` (`--center`, `is-typing`, `is-empty`), runs `span.nui-quest__run--<role>`, icon rows of `nui-slot` slots. See [Quest dialogs](#quest-dialogs). |
 | Chat lines | `<nui-chat-lines view="window" step="15" data-attr-mode="..."/>` | `view`, `edit`, `log` modes; lines `div.nui-chat__line--t<type>`, `is-fading`, `is-edge-0`, `is-edge-1`. See [Chat lines](#chat-lines). |
 | View | `<nui-view name="minimap" class="nui-interactive"/>` | `hover="none"`; its label `div.nui-view__label` and mark `img.nui-view__mark`. See [Views](#views). |
 | World anchor | `<nui-anchor mode="project" height="220" data-attr-vid="sign.vid"/>` | `mode="tail"`, `align-x`, `align-y`, `offset-x`, `offset-y`, `chat-offset-y`, `snap`. See [World anchors](#world-anchors). |
@@ -593,6 +597,20 @@ What the color roles mean:
 | `--chat-edit-shade` | `#1a1d23d9` | `#1a1d23d9` | `#00000080` |
 | `--chat-mark` | `#f6c75a` | `#8a5300` | `#ffff00` |
 | `--text-outline` | `#000000` | `#000000` | `#000000` |
+| `--quest-text` | `#e7eaf0` | `#1a1d23` | `#ffffff` |
+| `--quest-body` | `#c4c9d2` | `#3b414b` | `#c4c4c4` |
+| `--quest-title` | `#f2d39b` | `#7a4a06` | `#ffe6ba` |
+| `--quest-reward` | `#f5b5bc` | `#9b2c48` | `#ffc8c8` |
+| `--quest-item` | `#ff7a72` | `#b3261e` | `#ff3333` |
+| `--quest-scrim` | `#00000000` | `#00000000` | `#00000000` |
+| `--letterbox` | `#000000` | `#000000` | `#000000` |
+| `--fade-black` | `#000000` | `#000000` | `#000000` |
+| `--fade-white` | `#ffffff` | `#ffffff` | `#ffffff` |
+| `--console-bg` | `#121418d9` | `#f3f4f6e6` | `#00000080` |
+| `--console-field` | `#121418` | `#e7e9ed` | `#000000` |
+| `--console-text` | `#e7eaf0` | `#1a1d23` | `#ffffff` |
+| `--console-grip` | `#3b424e` | `#c3c8d1` | `#ffffff` |
+| `--web-page` | `#121418` | `#e7e9ed` | `#000000` |
 
 | Token | Shared value |
 |---|---|
@@ -650,6 +668,14 @@ What the color roles mean:
 | `--classic-mall-text` | classic | `#f8bf24` |
 | `--classic-help-curtain` | classic | `#00000077` |
 | `--classic-list-ex-select` | classic | `#0000b3b3` |
+| `--classic-quest-bar` | classic | `#99999940` |
+| `--classic-quest-bar-down` | classic | `#aaaacc40` |
+| `--classic-quest-bar-over` | classic | `#ddddff40` |
+| `--classic-quest-scroll-bar` | classic | `#00000050` |
+| `--classic-quest-scroll-bar-down` | classic | `#40404050` |
+| `--classic-quest-scroll-bar-over` | classic | `#60606050` |
+| `--classic-gb-enough` | classic | `#c2c2c2` |
+| `--classic-gb-short` | classic | `#e67976` |
 
 <!-- tokens:end -->
 
@@ -956,6 +982,45 @@ The Wave 3a windows (the system menu, the system options with the music list and
 - **Choices:** a press on the choice in effect does nothing, as legacy's radio buttons ignore a press on the one that is down (`CRadioButton::OnMouseLeftButtonDown`): no setting is written again and no `/pkmode` is sent again.
 - **Tests:** `tools/nui_hit_test.py` asks RmlUi's own hit test (`nuitool snap --hits`) about a grid of points on every control with an id in every golden case and fails when another element takes one; `tools/nui_sys_test.py`: each facade against its legacy class, the differential flows (the legacy windows made from their real uiscripts and pressed as a player presses them, against the boards' data events: the same `net`, `systemSetting`, `snd`, `background`, `app`, `chrmgr`, `musicInfo`, `chat` and `uiPrivateShopBuilder` calls in order, slider values within 0.01), the fixtures, the on-demand rule and the wiring.
 
+## Quest dialogs
+
+The quest dialog (`nui/windows/quest/`, `assets/root/nui_quest.py`) and its curtain (`nui/windows/quest-curtain/`, `nui_quest_curtain.py`) replace `uiQuest.QuestDialog` and `uiQuest.QuestCurtain` while the `quest` window flag is on. They need the Wave 5a engine (`nui_hud.has_engine_5a()`: `nuigame.QuestAttach`, `QuestState` and `WebPageFollow`); with an older exe `make()` keeps the legacy dialog. `Interface.OpenQuestWindow` makes one `nui_quest.QuestDialog` per script packet, as it makes the legacy one: a facade with legacy's constructor, methods, class constants and the attributes callers touch (`nextCurtainMode`, `OnCloseEvent` and the rest).
+
+- **The sink.** The client's quest interpreter (`CPythonEventManager`) stays the only parser, timer and caller of the dialog's callbacks (`MakeQuestion`, `MakeNextButton`, `OnInput`, `DoneEvent`, the fades and the rest). Its sink publishes each attached event set as two feeds: `quest.<index>.lines`, the text, which changes while it types, and `quest.<index>.page`, the structure (the choices, the button, input mode, the images, a size, the last fade and the interpreter's flags). `nuigame.QuestAttach(index, skin)` has C++ drive the set once per frame and publish both feeds; `nuigame.QuestDetach(index)` and `event.ClearEventSet` stop it, and the feeds are published once more as empty. So no Python runs while a dialog types: the facade acts on the callbacks, its document's events and the player's keys. The feed shapes are fixed in the client (`src/NovaUI/README.md`, "Wave 5a").
+- **`nui-quest-text`** builds the lines from the feed, through RmlUi's DOM calls, as text that is never parsed as markup, translated or data-bound: `<nui-quest-text id="quest-text" data-attr-set="set_index"/>`. A line is `div.nui-quest__line` (`--center` while centered, `is-typing` while it types, `is-empty` without runs) holding one `span.nui-quest__run.nui-quest__run--<role>` per run (`nui-quest__name--item` or `--mob` for an item or monster name) and, while it types, `span.nui-quest__rest` with the text not revealed yet: laid out but not drawn, so a word never jumps to the next line as it types. `rest="none"` leaves the rest out, and the line grows as it types. An icon row is `div.nui-quest__icons` of `span.nui-slot.nui-quest__icon` slots, each with its item icon, a caption under it and a tooltip; the confirm wait's countdown line holds a `nui-countdown`. `components/quest-text.rcss` styles every class; a line wraps by width (legacy wraps by a count of bytes), and under reduced motion the rest shows at once while the interpreter keeps its timing. With an element id, lines get the ids `<id>-line-<line id>`.
+- **Roles and their tokens.** The five colors the server's quest library writes are roles: `text` (the interpreter's white), `body` (the 196 gray of `say`), `title`, `reward` and `item` (the red of an item name), each a token in every palette (`--quest-text`, `--quest-body`, `--quest-title`, `--quest-reward`, `--quest-item`), so the light theme stays readable; classic keeps the server's colors. Any other script color is `custom`, an inline color. Each run keeps its own color, where legacy draws a whole line in the color of its last letter.
+- **The board.** One per dialog with a skin (`nui_quest.QuestBoard`, model `quest`): a modal (`MODAL = True`, `body.nui-scrim`; its backdrop `--quest-scrim` is transparent, as legacy draws none) that takes every key and click, as legacy's lock window did, and draws above every NovaUI HUD document (no `nui-below-legacy-ui`). Its `page` key follows its set's page feed, bound per instance: the board sets `self.FEEDS = {"page": "quest.%d.page" % index}` before `nui.Window.__init__`. Its controls take no focus and act on a left `mousedown`: in a modal whose body keeps the focus, RmlUi sends `click` to the body, not to the button. The field takes the focus in input mode; while idle it is collapsed, not hidden, so the facade focuses it in the same call that turns input mode on. A skin-0 dialog has no board. RmlUi allows one model per name, so a skinned dialog made while a NovaUI quest board exists is a facade that routes every call and attribute to a legacy `uiQuest.QuestDialog` made in its place (the busy fallback; one script per answer makes it rare).
+- **Keys and presses** follow legacy's rules exactly, and the board keeps every key while it shows (`OnKeyDown`, `OnPressEscapeKey` and `OnIMEReturn` keep their names; the board maps Enter, Up and Down onto legacy's `app.DIK_*` codes):
+
+| Key or press | State | What happens |
+|---|---|---|
+| Enter | a Next button, no answers | as Escape |
+| Up, Down | a Next button, no answers | the button's hover look, until the pointer leaves it |
+| Up, Down | answers | the focus over all answers, wrapping; the page does not follow |
+| Enter | answers | the focused answer, the first without an arrow, with legacy's click |
+| Escape | a Next button | its action: Next answers 254, OK closes, Cancel answers 254 and cancels |
+| Escape | no Next button (typing, a question) | the last answer of the last question any dialog made (legacy's module global), then a cancel |
+| Enter, Escape in the field | input mode | closes and sends the text typed |
+| a press on an answer, the Next button, a page button | | that button's action |
+| numpad Enter, any other key, the exit key, a press beside the board | | nothing |
+
+  No click skips the typing and none continues outside the buttons: the Next button exists only once the interpreter reached it. The exit key does nothing while a board shows (a `TOP_MOST` `nui_hud.EscapeProxy` keeps it); a skin-0 dialog keeps its place in the UI layer's Escape chain through one.
+- **Modern and classic.** Modern is a code-drawn card in the middle of the screen: a 380dp text column, every answer in a list that scrolls past six, the Next button in the footer, a script's pictures at sizes of their own (a portrait beside the card, a banner, a faint background, the free images in a row) and its title card at the bottom center; cinema (skin 5) is the text alone in a subtitle box, scroll (skin 3) the card with its background whole. Classic (`skins/classic/windows/quest.rcss`) is legacy's geometry at 100%: the thin board 350 x 300 (or the script's size), the text at (20, 20) 16dp a line, legacy's translucent bars (`--classic-quest-bar` tokens) for the answers, eight to a page with legacy's page buttons, and the Next button at legacy's offsets, the pictures where legacy puts them. The layout is semantic (`quest__board`, `quest__text`, `quest__choices`, `quest__next`, ...), so a skin re-places any part from its folder.
+- **The curtain object.** While the flag is on, `nui_quest.QuestCurtain` is `uiQuest.QuestDialog.QuestCurtain`, the one curtain every dialog writes, a legacy dialog made in a fallback included (`nui_quest.install_curtain()`, which keeps a curtain already there). `CurtainMode` keeps legacy's meaning (1 slides the bars in; -1 slides them out and then runs `Close()`, at once when they are out; 0 holds and lets a slide finish), `BarHeight` is legacy's class attribute that each dialog sets (0 at 16:9: the bars change state at once and get no board), and `Close()` runs every done event of the class list `uiQuest.QuestCurtain.OnDoneEventList` with the curtain as its argument (the Interface's shows the HUD again) and empties it. The bars slide in 0.4s.
+- **The fades** (`FadeOut`, `FadeIn`, `WhiteOut`, `WhiteIn`) draw in one of four duration classes picked from legacy's per-frame speed at 60 frames a second (`fast` 0.25s, `normal` 0.5s, `slow` 1s, `slower` 2s), as keyframe animations of one element's opacity, and end on the curtain board's timer (`nui-countdown format="none"`), which runs `event.EndEventProcess` for the dialog's set, so the interpreter goes on as legacy's. Under reduced motion a fade ends at once. A fade that replaces a running one still ends that one's wait; a dialog that closes takes its fade layer with it, as legacy's per-dialog curtain goes with its dialog. The fade layer takes every press while it shows.
+- **The curtain board** (`nui/windows/quest-curtain/`) exists only while bars or a fade show; it stands behind the quest board while only the bars show and in front of it during a fade. `nui_windows.end_phase()` unloads it with any quest board left (`nui_quest` is in `PHASE_SCOPED`).
+- **The HUD.** The Interface's `__HideWindows` and `__ShowWindows` need no change: the HUD facades answer `Show`, `Hide` and `IsShow`, and the curtain's `Close()` runs the done event that shows them again.
+- **Tests:** `tools/nui_quest_test.py`: the facade against `uiQuest.QuestDialog`; the differential flows, the legacy dialog made from its real uiscript (`nui_game_support.install_wave5a_ui`) and the NovaUI one, each made by the Interface's own `OpenQuestWindow` and driven by the interpreter's callbacks, keys and presses, which must make the same `event` and `net` calls, module globals, curtain modes, done events and HUD; the fades; the curtain; the fixtures and the feed shapes; on demand; the wiring.
+
+## Wave 5a windows
+
+The other Wave 5a windows are facades on the system windows' rules ([System windows](#system-windows): on demand, no focus, a left `mousedown`, `nui_hud.EscapeProxy`), with these additions:
+
+- **Guild building** (`guild-building`, `nui_guild_building.BuildGuildBuildingWindow`): the placement window of `uiGuild.BuildGuildBuildingWindow`, made by `Interface.BUILD_OpenWindow`, with legacy's state and world calls in legacy's order (the preview instances, the camera, the guild area view, the money and material checks, `/build`). `game.py` keeps calling `IsPositioningMode()` every frame and, while positioning, `SetBuildingPosition()`, as it does with legacy's; the facade answers both without touching a model (its board does not exist while the window hides to position). These two are the only per-frame calls a Wave 5a facade gets.
+- **The web window** (`web`, `nui_web.WebWindow`): a NovaUI frame and title bar around the client's WebView2 page, which is a native child window drawn over every layer and taking the pointer inside its rectangle. `Open(url)` shows the page on the frame's `web-page` element, and `nuigame.WebPageFollow(document, element_id)` has C++ keep the page on that element's content box, and its zoom at the UI scale, whenever either changes, also when the page appears later (legacy moves it from `OnUpdate`); `WebPageFollow("", "")` stops it, and `nuigame.WebPageState()` answers what it applied. It needs `nui_hud.has_engine_5a()`. The `mall` server command opens it.
+- **The console** (`console`, `nui_console.ConsoleWindow`, a developer tool, available exactly where legacy opens it: debug mode or the server's `ConsoleEnable`): legacy's command object (`consoleModule.Console`) and legacy's own command table (`ConsoleWindow.InitFunction`), so the command set is legacy's by construction, on a NovaUI band at the top of the screen: the output in `nui-text` lines, the input in a field. `help` and `?` print the command list (legacy raises `UnboundLocalError` under Python 3 there).
+- **Tests:** `tools/nui_guild_building_test.py`, `nui_web_test.py` and `nui_console_test.py`, on the stand-ins of `nui_game_support.install_wave5a_ui`, which loads the legacy windows with their real uiscripts.
+
 ## Window flags and the factory
 
 `assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default; `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file. `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself.
@@ -992,14 +1057,18 @@ The Wave 3a windows (the system menu, the system options with the music list and
 | `restart` | the restart dialog after a death | off |
 | `help` | the help window | off |
 | `point-reset` | the point reset questions (needs the NovaUI dialog kit) | off |
+| `quest` | the quest dialog, its letterbox and fades, and the HUD hiding it causes (needs the Wave 5a engine) | off |
+| `guild-building` | the guild building placement window | off |
+| `web` | the web window around the WebView2 page, the mall (needs the Wave 5a engine) | off |
+| `console` | the developer console, only where legacy opens it | off |
 
-**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), and `sys` for the six Wave 3a ones (`system-menu` to `point-reset`). A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys` (22 of its 200 characters).
+**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), and `rest` for the four Wave 5a ones (`quest` to `console`). A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest` (28 of its 200 characters).
 
 - **`use(window_id)`** returns `(True, "")` or `(False, reason)` with the first check that failed: `"flag off"`, `"NovaUI unavailable"`, `"right-to-left locale"` (`nui.enabled_for_locale()`). It records the decision in `nui_windows.DECISIONS` (`"nui"` or `"legacy: <reason>"`) and writes it to `log.txt` when it changed.
 - **`make(window_id, legacy, novaui, *args)`** makes the NovaUI class (a class or a `"module.Class"` string, imported only then) when `use()` allows it, else the legacy one with the same arguments. A NovaUI constructor that raises, or one whose module cannot be imported, falls back to legacy, and so does an instance whose `nui_ready()` answers `False` (its document did not load): `make()` calls its `nui_discard()` and drops it before it makes the legacy one. Each such fallback is written once to `syserr.txt` as `nui_windows: <id>: <reason>; using the legacy window` (`note_failure`).
 - **`factory(window_id, legacy, novaui)`** is a function named like the legacy class that calls `make()`: the class-level wiring (`PopupDialog = nui_windows.factory("dialogs", LegacyPopupDialog, "nui_dialog_message.PopupDialog")`). A legacy class in the same module that calls its base by name must name the `Legacy` alias, since the plain name is a function after the rebinding (`uicommon.py` does).
 - **The protocol of what `make()` builds:** load the document in `__init__` (hidden), not in `Open()`; `nui_ready()` says whether it loaded; `nui_discard()` destroys the NovaUI parts and sets `self._nui_discarded`. A phase window's NovaUI subclass skips the legacy `net.SetPhaseWindow(<phase>, 0)` in `__del__` once discarded, so a late collection does not clear the slot of the legacy window made in its place.
-- **Phases:** a phase window's NovaUI documents go with its `Close()` (the login board and its parts, the server board, the locale strip, the phase windows' boards; the HUD with `Interface.Close` and the game window's `Close`), and come back when the phase is built again. `networkModule.MainStream` calls **`end_phase()`** after the old phase window's `Close()` and before the new one's `Open()`; it unloads the documents no phase window owns, those of the modules in `PHASE_SCOPED` (the dialog kit), and writes `nui_windows: phase ended, <n> document(s) unloaded` to `log.txt`. A document shared between windows needs such an `end_phase()`, and its module goes into `PHASE_SCOPED`: a hidden document that outlives its phase costs its update in every frame of the next.
+- **Phases:** a phase window's NovaUI documents go with its `Close()` (the login board and its parts, the server board, the locale strip, the phase windows' boards; the HUD with `Interface.Close` and the game window's `Close`), and come back when the phase is built again. `networkModule.MainStream` calls **`end_phase()`** after the old phase window's `Close()` and before the new one's `Open()`; it unloads the documents no phase window owns, those of the modules in `PHASE_SCOPED` (the dialog kit, and `nui_quest`: the quest curtain and any quest board left), and writes `nui_windows: phase ended, <n> document(s) unloaded` to `log.txt`. A document shared between windows needs such an `end_phase()`, and its module goes into `PHASE_SCOPED`: a hidden document that outlives its phase costs its update in every frame of the next.
 - **`refuse(window_id, reason)`** records a refusal `use()` does not know (the virtual keyboard without the NovaUI login board, the gift box without the NovaUI taskbar, the atlas without the NovaUI minimap, the point reset without the dialog kit); `set_override(window_id, on)` writes one override and saves the config, for a settings window and tests.
 - **Adding a window:** give it an id (lowercase letters, digits and `-`), add `(id, False)` to `WINDOWS`, and make it through `make()` or a factory. It stays off until its default turns on.
 
@@ -1020,7 +1089,7 @@ The Wave 3a windows (the system menu, the system options with the music list and
 11. **Motion only in `.component.nui-anim` rules**, with values written out, and on selectors lighter than the reduced-motion rule (NUI011, see [Motion and reduced motion](#motion-and-reduced-motion)).
 12. **No fixed widths on text.** Give buttons, tabs and labels room (`min-width`, wrapping rows) instead of `width`; translations are longer than English.
 13. **Model strings are text** (NUI012): no `data-rml` or `data-rml-*`; the runtime removes them (see [Data binding cheatsheet](#data-binding-cheatsheet)).
-14. **Literal values a NovaUI element takes** (NUI015): `nui-view` `name` and `hover`, `nui-chat-lines` `view`, `mode` and its numbers, `nui-anchor` `mode`, `snap` and its numbers, `nui-resize` `edge` and its numbers, `nui-text` `links`. A bound value (`data-attr-*`) is checked by the element when it arrives (one warning).
+14. **Literal values a NovaUI element takes** (NUI015): `nui-view` `name` and `hover`, `nui-chat-lines` `view`, `mode` and its numbers, `nui-anchor` `mode`, `snap` and its numbers, `nui-resize` `edge` and its numbers, `nui-text` `links`, `nui-quest-text` `set` (an integer 0 or more) and `rest` (`hidden`, `none`). A bound value (`data-attr-*`) is checked by the element when it arrives (one warning).
 
 ## What the renderer draws
 
@@ -1478,7 +1547,7 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
 - The dialog kit: one shown dialog per kind (a second one at the same time is the legacy dialog); `QuestionDialogWithTimeLimit` stays legacy until a timer exists; Enter on a question presses its default button (new); widths come from CSS, so `SetWidth`, `SetBoardWidth` and `SetSlotWidth` do nothing, and the dialogs are wider than the fixed legacy boards. Classic shows the focused default button in its over art.
 - The G5 stopgap decides a legacy dialog's layer at each `Open` only. It takes the keys from the dialog kit while a legacy dialog covers it, but not from a NovaUI field of another window. A legacy dialog shown again with `Show()` rather than `Open()` does not cover the kit again.
 - The virtual keyboard shows only on a screen at least 680dp tall (below that the board and the keyboard do not fit together). It plays the typing sound from Python after each key. Its classic key art and the classic gauge art are 1x only.
-- Every Wave 1, 2a, 2b and 3a window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
+- Every Wave 1, 2a, 2b, 3a and 5a window is off by default (`nui_windows.WINDOWS`) until its flows have run against a game server.
 - **Slot grids and the drag bridge:** a release over a NovaUI grid outside every cell keeps the item attached, where legacy cancels the drag; with a legacy window open and a NovaUI document focused, Escape cancels a drag before it closes that window. The cooldown sweep follows RmlUi's angle projection, a few pixels from the legacy edge interpolation mid-octant, in 64 steps. The slot effects are additive, not screen: brighter than legacy where effect and background are both bright, and washed toward white on the modern light theme's slots.
 - **Feeds** apply once per frame; a value published and changed again within one frame shows only the last, and a `set()` on a fed key lasts until the feed changes.
 - **Tooltips:** item and skill tooltips stay the legacy windows (the tooltip bridge), drawn above NovaUI.
@@ -1504,11 +1573,20 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
   - No resize cursor over the sizing bar and the log's grip (the host sets no cursor), and no candidate list for an IME (as the legacy edit line).
   - Classic: the log's body has no darker edge (legacy draws two 1 px boxes at 47%), and the filter labels overflow the 38dp xsmall art in several locales, as legacy's do on the same art.
   - The modern chat keeps a dark backdrop and dark-backdrop line colors in the light theme too: the colors of tags (item links, notices) come from game data made for a dark backdrop.
+- **The quest dialog and curtain** (Wave 5a), where they differ from legacy:
+  - Quest lines wrap by width, at a word (a word longer than the line at its end), where legacy starts a new line at a count of bytes, in the middle of a word; the server's English text is hand-wrapped below that count, so at 100% in English the lines match.
+  - Each run keeps its authored color, where legacy draws a whole line in the color of its last letter (an item name shows red, the rest of its line white in legacy).
+  - Modern lists every answer in a list that scrolls; classic pages them eight at a time, and the empty second page legacy shows at exactly eight answers is not reproduced (it shows at nine).
+  - The fades use four duration classes; legacy's last as many frames as `1 / speed`, so their length depends on the frame rate. A letterbox slide takes 0.4s (legacy moves 200 px a second), mode 0 lets a slide finish where legacy stops the bars where they are, and a slide reversed midway starts again from its end.
+  - No third render band: a legacy `TOP_MOST` window (a tooltip, a dialog the G5 stopgap raised) draws above a NovaUI fade, where legacy's `CURTAIN` layer covers it. No quest this server loads fades.
+  - The title card is not drawn under reduced motion. The modern pictures take sizes of their own; classic puts them at legacy's places, the background replacing the board's art, but it does not grow the board to the background's size.
+  - A typing line lays its document out once a frame (RmlUi lays a whole document out after any text change).
+  - The confirm wait's time-limited question (`uiCommon.QuestionDialogWithTimeLimit`) stays legacy; `ShowDungeonResult` has no window in either UI.
 - **The system windows** (Wave 3a), where they differ from legacy:
   - The point reset shows one question at a time and localized texts (`POINT_RESET_*`), where legacy shows the confirmation over the question and hard-codes Korean in every locale. No path reaches it on this client and server: `SendPointResetPacket` has no caller and the server has no `pointreset` command.
   - The modern help is a centered card without the taskbar pointers, which aim at the legacy taskbar's places. With the legacy taskbar (`hud` off) the taskbar's `TOP_MOST` buttons stay above the help's scrim and take the pointer first.
   - The camera distance, the name color and the target board option are not saved across a restart, as in legacy (module state in `constinfo.py`). The music list's empty-list popup cannot show, as in legacy: the default entry is always there.
-  - The mall button sends `/in_game_mall` as legacy does; the web window it opens is not ported. The portal variant of the system menu (`SYSTEM_MENU_FOR_PORTAL`, off) is not ported.
+  - The mall button sends `/in_game_mall` as legacy does; the web window it opens is the Wave 5a one while `web` is on ([Wave 5a windows](#wave-5a-windows)). The portal variant of the system menu (`SYSTEM_MENU_FOR_PORTAL`, off) is not ported.
   - The classic Interface section has no legacy original: its layout is new, on legacy art, and the board grows under legacy's 255 px by its height.
   - The music list's popups are `uiCommon.PopupDialog` (the kit's facade with `dialogs` on), not legacy's private copy.
 - `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.

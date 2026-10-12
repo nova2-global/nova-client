@@ -1,0 +1,157 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Uriel: ",
+				"role": "title",
+				"color": 4294960826,
+				"name": ""
+			},
+			{
+				"text": "the title, ",
+				"role": "title",
+				"color": 4294960826,
+				"name": ""
+			}
+		],
+		"shown": 18,
+		"total": 18,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "the body of a page, ",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			},
+			{
+				"text": "and a reward: 5000 Yang",
+				"role": "reward",
+				"color": 4294953160,
+				"name": ""
+			}
+		],
+		"shown": 43,
+		"total": 43,
+		"wraps": []
+	},
+	{
+		"id": 3,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Orange ",
+				"role": "custom",
+				"color": 4294934528,
+				"name": ""
+			},
+			{
+				"text": "and ",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			},
+			{
+				"text": "Red Potion (S)",
+				"role": "item",
+				"color": 4294914867,
+				"name": "item"
+			},
+			{
+				"text": " from ",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			},
+			{
+				"text": "Wild Dog",
+				"role": "text",
+				"color": 4294967295,
+				"name": "mob"
+			},
+			{
+				"text": ".",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 40,
+		"total": 40,
+		"wraps": []
+	},
+	{
+		"id": 4,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Slow letters",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			},
+			{
+				"text": " fast again.",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 24,
+		"total": 24,
+		"wraps": []
+	},
+	{
+		"id": 5,
+		"kind": "text",
+		"align": "center",
+		"runs": [
+			{
+				"text": "Centered from here",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 18,
+		"total": 18,
+		"wraps": []
+	},
+	{
+		"id": 6,
+		"kind": "text",
+		"align": "center",
+		"runs": [
+			{
+				"text": "abcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghijabcdefghij",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 70,
+		"total": 70,
+		"wraps": [
+			60
+		]
+	},
+	{
+		"id": 7,
+		"kind": "text",
+		"align": "center",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	}
+]

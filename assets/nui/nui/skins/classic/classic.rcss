@@ -796,3 +796,26 @@
 	background-color: transparent;
 	border-width: 0;
 }
+
+/* --- Quest text (Wave 5a) --------------------------------------------------------- */
+
+/* The interpreter's lines in the default font (Tahoma 12 in every locale,
+   font-md), 16 px apart (c_fLine_Temp, PythonEventManager.cpp:14), without
+   an outline; the roles keep their tokens, which the classic palette sets
+   to the server's colors. The icon is the legacy slot (the slot component's
+   classic art) with its caption under it; a row spaces its icons evenly
+   across the board, as OnInsertImage centers icon i of n at
+   width * (i + 1) / (n + 1) (uiquest.py:779). */
+.skin-classic nui-quest-text
+{
+	--quest-line: 16dp;
+}
+.skin-classic .nui-quest__icons
+{
+	justify-content: space-evenly;
+	padding-top: 0;
+}
+.skin-classic .nui-quest__icon
+{
+	margin: 0;
+}

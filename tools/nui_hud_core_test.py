@@ -1126,9 +1126,9 @@ class SmallWindows(unittest.TestCase):
 
 # --- the wiring (spec 5.13) --------------------------------------------------------------------------------
 
-# Wave 2b's sites (P10 spec 5.8) and Wave 3a's (P11 spec 6.8) are in their
-# place in the file order; nui_chat_test.Wiring and nui_sys_test.Wiring check
-# them in more detail.
+# Wave 2b's sites (P10 spec 5.8), Wave 3a's (P11 spec 6.8) and Wave 5a's (P12
+# spec 6.6) are in their place in the file order; nui_chat_test.Wiring,
+# nui_sys_test.Wiring and nui_quest_test.Wiring check them in more detail.
 EXPECTED_SITES = {
     "interfacemodule.py": [("make", "chat", "uiChat.ChatWindow", "nui_chat.ChatWindow"),
                            ("make", "taskbar", "uiTaskBar.TaskBar", "nui_taskbar.TaskBar"),
@@ -1144,9 +1144,14 @@ EXPECTED_SITES = {
                            ("make", "help", "uiHelp.HelpWindow", "nui_help.HelpWindow"),
                            ("make", "tip-board", "uiTip.TipBoard", "nui_tip_board.TipBoard"),
                            ("make", "big-board", "uiTip.BigBoard", "nui_big_board.BigBoard"),
+                           ("make", "web", "uiWeb.WebWindow", "nui_web.WebWindow"),
+                           ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
-                           ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign")],
+                           ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign"),
+                           ("make", "guild-building", "uiGuild.BuildGuildBuildingWindow",
+                            "nui_guild_building.BuildGuildBuildingWindow")],
     "game.py": [("make", "target", "uiTarget.TargetBoard", "nui_target.TargetBoard"),
+                ("make", "console", "consoleModule.ConsoleWindow", "nui_console.ConsoleWindow"),
                 ("make", "map-name", "uiMapNameShower.MapNameShower", "nui_map_name.MapNameShower"),
                 ("make", "affects", "uiAffectShower.AffectShower", "nui_affects.AffectShower"),
                 ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge")],

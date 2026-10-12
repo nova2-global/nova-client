@@ -102,6 +102,19 @@ CONTRAST_PAIRS = (
     ("focus-ring", "surface-sunken", 3.0, "focus ring on inputs"),
     ("focus-ring", "selection", 3.0, "focus ring on a selected list row"),
     ("accent", "surface-sunken", 3.0, "slider fill, checked toggle"),
+    # The quest text roles (P12 spec 5.2). The item red is checked on the
+    # board's own background only: classic keeps legacy's (1.0, 0.2, 0.2),
+    # 4.45:1 on the classic raised surface, which no quest board uses.
+    ("quest-text", "surface", 4.5, "quest text"),
+    ("quest-text", "surface-raised", 4.5, "quest text on panels"),
+    ("quest-body", "surface", 4.5, "quest body text"),
+    ("quest-body", "surface-raised", 4.5, "quest body text on panels"),
+    ("quest-title", "surface", 4.5, "quest titles"),
+    ("quest-title", "surface-raised", 4.5, "quest titles on panels"),
+    ("quest-reward", "surface", 4.5, "quest rewards"),
+    ("quest-reward", "surface-raised", 4.5, "quest rewards on panels"),
+    ("quest-item", "surface", 4.5, "item names in quest text"),
+    ("console-text", "surface-sunken", 4.5, "console lines"),
 )
 
 NAME_RE = re.compile(r"^[a-z][a-z0-9-]*$")

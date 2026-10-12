@@ -1,0 +1,45 @@
+{
+	"quest": {
+		"set_index": 0,
+		"skin": 1,
+		"page": {
+			"skin": 1,
+			"choices": [],
+			"pages": 0,
+			"button": "done",
+			"input": false,
+			"images": {
+				"left": "d:/ymir work/ui/game/questboard/gwoijil.tga",
+				"top": "d:/ymir work/ui/game/questboard/mil_chu.tga",
+				"background": "d:/ymir work/ui/game/questboard/level_bg.tga",
+				"title": "d:/ymir work/ui/game/questboard/level_20.tga",
+				"title_serial": 1
+			},
+			"free_images": [
+				{
+					"x": 20,
+					"y": 12,
+					"src": "d:/ymir work/ui/game/questboard/1001.tga"
+				}
+			],
+			"size": {
+				"width": 420,
+				"height": 320
+			},
+			"fade": {
+				"kind": "",
+				"speed": 0.0,
+				"serial": 0
+			},
+			"delay": 10,
+			"waiting": false,
+			"locked": true,
+			"ended": true,
+			"done": true
+		},
+		"choice_page": 0,
+		"focus_index": -1,
+		"next_hover": false,
+		"title_on": false
+	}
+}

@@ -1,0 +1,80 @@
+{
+	"quest": {
+		"set_index": 0,
+		"skin": 1,
+		"page": {
+			"skin": 1,
+			"choices": [
+				{
+					"text": "One",
+					"page": 0
+				},
+				{
+					"text": "Two",
+					"page": 0
+				},
+				{
+					"text": "Three",
+					"page": 0
+				},
+				{
+					"text": "Four",
+					"page": 0
+				},
+				{
+					"text": "Five",
+					"page": 0
+				},
+				{
+					"text": "Six",
+					"page": 0
+				},
+				{
+					"text": "Seven",
+					"page": 0
+				},
+				{
+					"text": "Eight",
+					"page": 0
+				},
+				{
+					"text": "Nine",
+					"page": 1
+				},
+				{
+					"text": "Close",
+					"page": 1
+				}
+			],
+			"pages": 2,
+			"button": "",
+			"input": false,
+			"images": {
+				"left": "",
+				"top": "",
+				"background": "",
+				"title": "",
+				"title_serial": 0
+			},
+			"free_images": [],
+			"size": {
+				"width": 0,
+				"height": 0
+			},
+			"fade": {
+				"kind": "",
+				"speed": 0.0,
+				"serial": 0
+			},
+			"delay": 10,
+			"waiting": false,
+			"locked": true,
+			"ended": false,
+			"done": false
+		},
+		"choice_page": 0,
+		"focus_index": 9,
+		"next_hover": false,
+		"title_on": false
+	}
+}

@@ -1,0 +1,171 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Teleporter:  ",
+				"role": "title",
+				"color": 4294960826,
+				"name": ""
+			}
+		],
+		"shown": 13,
+		"total": 13,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "This is a fascinating place. But does anything",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 46,
+		"total": 46,
+		"wraps": []
+	},
+	{
+		"id": 3,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "out of the ordinary ever happen here? Probably",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 46,
+		"total": 46,
+		"wraps": []
+	},
+	{
+		"id": 4,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "not. In other parts of the country, everything",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 46,
+		"total": 46,
+		"wraps": []
+	},
+	{
+		"id": 5,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "looks a little different! I'm sure there's",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 42,
+		"total": 42,
+		"wraps": []
+	},
+	{
+		"id": 6,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "somewhere interesting that I could teleport you",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 47,
+		"total": 47,
+		"wraps": []
+	},
+	{
+		"id": 7,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "to. As the powers of evil have got stronger",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 43,
+		"total": 43,
+		"wraps": []
+	},
+	{
+		"id": 8,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "again, time and space has been thrown into chaos.",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 49,
+		"total": 49,
+		"wraps": []
+	},
+	{
+		"id": 9,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Your return might not always work. Do you want to",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 49,
+		"total": 49,
+		"wraps": []
+	},
+	{
+		"id": 10,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "be teleported anyway? ",
+				"role": "body",
+				"color": 4291085508,
+				"name": ""
+			}
+		],
+		"shown": 22,
+		"total": 22,
+		"wraps": []
+	},
+	{
+		"id": 11,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	}
+]

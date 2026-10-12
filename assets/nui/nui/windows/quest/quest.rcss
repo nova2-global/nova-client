@@ -1,0 +1,264 @@
+/* The quest dialog, modern: a code-drawn card in the middle of the screen,
+   a 380dp text column (the server's lines are hand-wrapped below 60 bytes,
+   about 58 characters of --font-md), its height from its content up to 90%
+   of the screen, the text scrolling inside it beyond that. The choices are a
+   full-width list of buttons that scrolls past six; every choice shows (the
+   pager is classic's). The Next button sits in the footer. A portrait
+   stands left of the card, a banner above the text, a background faintly
+   behind it, a script's free images in a row above it; the title card at
+   the bottom center of the screen. Cinema (skin 5): the text alone in a
+   subtitle box at the bottom center, no footer, as legacy hides its board
+   and the button with it. Scroll (skin 3): the card shows its background
+   whole, the choices two to a row. The scrim draws no backdrop: legacy draws
+   none (--quest-scrim). Every control takes no focus (the modal body keeps
+   it, for the facade's key rules) and acts on a left mousedown.
+   Classic's legacy geometry is in skins/classic/windows/quest.rcss. */
+
+body.nui-scrim.quest
+{
+	background-color: var(--quest-scrim);
+}
+
+.quest__board
+{
+	display: flex;
+	flex-direction: column;
+	width: 412dp;
+	max-width: 94vw;
+	max-height: 90vh;
+}
+
+.quest__body
+{
+	display: block;
+	position: relative;
+	z-index: 0;
+	flex: 1 1 auto;
+	min-height: 0;
+	padding: var(--space-4) var(--space-4) var(--space-3) var(--space-4);
+	overflow-y: auto;
+}
+
+.quest__text
+{
+	display: block;
+}
+
+/* Images: only where the content is an image (the quest scripts' own art). */
+/* The quest art is legacy's textures (a 220 x 151 picture in the top left of
+   256 x 256); modern shows each at a size of its own, scaled evenly: the
+   portrait 200dp beside the card's top, the banner 140dp, the free images
+   96dp in a row; the background faintly over the whole text area
+   (stretched, so it never makes the area scroll). */
+.quest__portrait
+{
+	display: block;
+	position: absolute;
+	right: 100%;
+	top: 0;
+	width: 200dp;
+	height: 200dp;
+	margin-right: var(--space-3);
+	pointer-events: none;
+}
+.quest__banner
+{
+	display: block;
+	width: 140dp;
+	height: 140dp;
+	margin: var(--space-3) auto 0 auto;
+	pointer-events: none;
+}
+.quest__background
+{
+	display: block;
+	position: absolute;
+	z-index: -1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	opacity: 0.25;
+	pointer-events: none;
+}
+.quest__images
+{
+	display: block;
+	text-align: center;
+}
+.quest__image
+{
+	display: inline-block;
+	width: 96dp;
+	margin: 0 var(--space-1) var(--space-2) var(--space-1);
+	pointer-events: none;
+}
+.quest__image-art
+{
+	display: block;
+	width: 96dp;
+	height: 96dp;
+}
+
+/* Input mode: the field under the text. While idle it takes no room, no
+   pointer and no Tab and draws nothing, but stays laid out, so the facade
+   focuses it in the same call that turns input mode on (the dialog kit's
+   idle field). The idle rule outranks the classic field rule
+   (skins/classic/windows/quest.rcss). */
+.quest__input
+{
+	display: block;
+	margin-top: var(--space-3);
+}
+.quest__field
+{
+	display: block;
+	width: 100%;
+}
+.quest__input.is-idle
+{
+	margin-top: 0;
+}
+body.quest .quest__input.is-idle input.quest__field
+{
+	position: absolute;
+	width: 0dp;
+	min-width: 0dp;
+	height: 0dp;
+	min-height: 0dp;
+	margin: 0dp;
+	padding: 0dp;
+	border-width: 0dp;
+	opacity: 0;
+	pointer-events: none;
+	tab-index: none;
+}
+
+/* The choices: one row per answer, left-aligned, wrapping a long answer. */
+.quest__choices
+{
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+	max-height: 212dp;
+	margin-top: var(--space-3);
+	overflow-y: auto;
+}
+.quest__choice
+{
+	display: block;
+	flex: 0 0 auto;
+	height: auto;
+	min-height: 32dp;
+	padding: 6dp var(--space-3);
+	line-height: 1.35;
+	text-align: left;
+	white-space: normal;
+	font-weight: normal;
+	focus: none;
+	tab-index: none;
+}
+/* The answer the arrows focus: the hover look and the accent edge. */
+.quest__choice.is-hover
+{
+	border-color: var(--accent);
+}
+.quest__pager
+{
+	display: none;
+}
+.quest__pager-prev, .quest__pager-next
+{
+	focus: none;
+	tab-index: none;
+}
+
+.quest__footer
+{
+	flex: 0 0 auto;
+}
+.quest__next
+{
+	focus: none;
+	tab-index: none;
+}
+
+/* The title card (TITLE_IMAGE): bottom center of the screen, legacy's 0.5s
+   in, 1s shown, 0.5s out; at rest (and under reduced motion) not drawn. */
+.quest__title-card
+{
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 100%;
+	margin-top: -53dp;
+	transform: translateX(-50%);
+	opacity: 0;
+	pointer-events: none;
+}
+.quest__title-card.is-on.nui-anim
+{
+	animation: 2s linear-in-out quest-title-card;
+}
+@keyframes quest-title-card
+{
+	0% { opacity: 0; }
+	25% { opacity: 1; }
+	75% { opacity: 1; }
+	100% { opacity: 0; }
+}
+
+/* Cinema (skin 5): the text in a subtitle box above the bottom edge. */
+body.quest.quest--cinema
+{
+	align-items: flex-end;
+}
+.quest--cinema .quest__board
+{
+	width: 640dp;
+	max-width: 90vw;
+	margin-bottom: 12vh;
+	border-width: 0;
+}
+.quest--cinema .nui-quest__line
+{
+	text-align: center;
+}
+.quest--cinema .quest__footer
+{
+	display: none;
+}
+
+/* Scroll (skin 3): the background whole at its own size (legacy's scroll
+   art fills the top 331 rows of a 256 x 512 texture), the text over it, the
+   choices two to a row. */
+.quest--scroll .quest__board
+{
+	width: 288dp;
+}
+.quest--scroll .quest__body
+{
+	min-height: 365dp;
+	overflow: visible;
+}
+.quest--scroll .quest__background
+{
+	left: var(--space-4);
+	top: var(--space-4);
+	width: 256dp;
+	height: 512dp;
+	opacity: 1;
+}
+.quest--scroll .quest__text
+{
+	padding: 0 var(--space-3);
+}
+.quest--scroll .quest__choices
+{
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+.quest--scroll .quest__choice
+{
+	flex: 1 1 40%;
+}

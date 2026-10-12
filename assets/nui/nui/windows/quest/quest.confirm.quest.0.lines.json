@@ -1,0 +1,35 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Waiting for the answer.",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 23,
+		"total": 23,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "countdown",
+		"align": "center",
+		"end": 8.0,
+		"prefix": "Remaining Time: ",
+		"suffix": " Sec."
+	},
+	{
+		"id": 3,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	}
+]

@@ -1,0 +1,39 @@
+{
+	"quest": {
+		"set_index": 0,
+		"skin": 1,
+		"page": {
+			"skin": 1,
+			"choices": [],
+			"pages": 0,
+			"button": "done",
+			"input": true,
+			"images": {
+				"left": "",
+				"top": "",
+				"background": "",
+				"title": "",
+				"title_serial": 0
+			},
+			"free_images": [],
+			"size": {
+				"width": 0,
+				"height": 0
+			},
+			"fade": {
+				"kind": "",
+				"speed": 0.0,
+				"serial": 0
+			},
+			"delay": 10,
+			"waiting": false,
+			"locked": true,
+			"ended": false,
+			"done": false
+		},
+		"choice_page": 0,
+		"focus_index": -1,
+		"next_hover": false,
+		"title_on": false
+	}
+}

@@ -32,6 +32,7 @@
 	<link type="text/rcss" href="components/resize.rcss"/>
 	<link type="text/rcss" href="components/gauge.rcss"/>
 	<link type="text/rcss" href="components/dialog.rcss"/>
+	<link type="text/rcss" href="components/quest-text.rcss"/>
 	<!-- Layout helpers last: they are combined with component classes on one
 	     element and must win ties (same specificity, later sheet). -->
 	<link type="text/rcss" href="components/layout.rcss"/>

@@ -1,0 +1,54 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	},
+	{
+		"id": 3,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	},
+	{
+		"id": 4,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Hunt 20 wolves.",
+				"role": "custom",
+				"color": 4278190080,
+				"name": ""
+			}
+		],
+		"shown": 15,
+		"total": 15,
+		"wraps": []
+	},
+	{
+		"id": 5,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	}
+]

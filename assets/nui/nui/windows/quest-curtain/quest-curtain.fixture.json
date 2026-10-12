@@ -1,0 +1,11 @@
+{
+	"quest_curtain": {
+		"bars": "in",
+		"bar_dp": "90.00",
+		"fade": "",
+		"fade_dir": "out",
+		"fade_class": "normal",
+		"timer_on": false,
+		"timer_end_at": 0.0
+	}
+}

@@ -3,6 +3,17 @@
    every rule starts with .skin-classic, so it acts only while a classic theme
    is in use (docs/ui/AUTHORING.md, Skins). */
 
+/* The legacy emblem: its 24 frames of 1/60 s as skin-provided frames (the
+   timing stays in the markup); the modern ring does not show. */
+.skin-classic .loading-frames
+{
+	--frames-pattern: "d:/ymir work/ui/intro/loading/%02d.sub";
+}
+.skin-classic .loading__track, .skin-classic .loading__hole, .skin-classic .loading__ring
+{
+	display: none;
+}
+
 /* The legacy gauge: the empty art, and the full art as the fill image, which
    RmlUi crops to the value as legacy SetPercentage crops it. The error line
    is the legacy text line, outlined for the image under it. */

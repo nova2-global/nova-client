@@ -2,8 +2,10 @@
    mouse (nui-overlay). Positions are the legacy screen fractions and sizes
    the legacy pixels in dp (uiscript loadingwindow.py): the board is 400 by
    80 at the horizontal middle and 500/600 of the height, the emblem at its
-   top left and the gauge (336 by 30) at (70, 25). The background and the
-   emblem are legacy art in every theme; the gauge follows the theme. */
+   top left and the gauge (336 by 30) at (70, 25). The background is the
+   loading picture (content) in every theme; the emblem's spinning art is
+   classic's (its frames come from skins/classic/windows/loading.rcss), and
+   modern turns a ring at its place; the gauge follows the theme. */
 body.loading
 {
 	background-color: var(--surface-sunken);
@@ -42,6 +44,58 @@ body.loading
 .loading-frames .nui-frames__frame
 {
 	display: block;
+}
+
+/* Modern: a track ring centered on the emblem's 70 by 74dp place and an
+   accent dot that circles on it once a second; only the ring box turns
+   (transform only), and reduced motion holds it still. Every part is a
+   borderless disc: RmlUi fits a radius into the padding box, so a bordered
+   circle would draw flat sides. */
+.loading__track, .loading__hole, .loading__ring
+{
+	display: block;
+	position: absolute;
+}
+.loading__track, .loading__ring
+{
+	left: 15dp;
+	top: 17dp;
+	width: 40dp;
+	height: 40dp;
+}
+.loading__track
+{
+	border-radius: 20dp;
+	background-color: var(--border);
+}
+.loading__hole
+{
+	left: 21dp;
+	top: 23dp;
+	width: 28dp;
+	height: 28dp;
+	border-radius: 14dp;
+	background-color: var(--surface);
+}
+.loading__dot
+{
+	display: block;
+	position: absolute;
+	left: 17dp;
+	top: 0;
+	width: 6dp;
+	height: 6dp;
+	border-radius: 3dp;
+	background-color: var(--accent);
+}
+.loading__ring.nui-anim
+{
+	animation: 1s linear infinite loading-ring-turn;
+}
+@keyframes loading-ring-turn
+{
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
 }
 
 /* Modern: a track and a fill in tokens, on the middle line of the legacy

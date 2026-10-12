@@ -597,6 +597,27 @@
    right edge, its top 10dp above the bottom. Legacy cells have no hover look.
    The art is 1x only (legacy .sub regions), so slot documents need the
    assets/ETC root. */
+
+/* The legacy slot effects and digits as skin-provided art (P13 spec 4.6):
+   the active loop and the cooldown's end take their frames from here (their
+   timing stays in the markup), the digits their glyph folder; the modern
+   ring and flash do not show. */
+.skin-classic .nui-slot__active
+{
+	--frames-pattern: "d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive";
+}
+.skin-classic .nui-slot__finish
+{
+	--frames-pattern: "d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive";
+}
+.skin-classic .nui-slot__ring, .skin-classic .nui-slot__flash
+{
+	display: none;
+}
+.skin-classic nui-number
+{
+	--number-path: "d:/ymir work/ui/game/taskbar/";
+}
 .skin-classic .nui-slot-grid
 {
 	gap: 0;

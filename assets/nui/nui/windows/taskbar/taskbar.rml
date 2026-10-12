@@ -78,10 +78,11 @@
 					<div class="nui-slot__tint"></div>
 					<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 						data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
-					<nui-frames class="nui-slot__active" data-if="slot.active"
-						pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
-					<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0"
-						pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+					<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+					<span class="nui-slot__ring nui-anim" data-if="slot.active"></span>
+					<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
+						delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+					<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
 						delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 					<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
 					<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
@@ -125,10 +126,11 @@
 				<div class="nui-slot__tint"></div>
 				<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 					data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
-				<nui-frames class="nui-slot__active" data-if="slot.active"
-					pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
-				<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0"
-					pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+				<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+				<span class="nui-slot__ring nui-anim" data-if="slot.active"></span>
+				<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
+					delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+				<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
 					delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 				<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
 				<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
@@ -173,8 +175,8 @@
 				<div class="nui-slot__tint"></div>
 				<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 					data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
-				<nui-frames class="nui-slot__active" data-if="slot.active"
-					pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
+				<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+				<span class="nui-slot__ring nui-anim" data-if="slot.active"></span>
 				<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
 				<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
 			</div>

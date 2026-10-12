@@ -18,10 +18,11 @@
    		<div class="nui-slot__tint"></div>
    		<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
    			data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
-   		<nui-frames class="nui-slot__active" data-if="slot.active"
-   			pattern="d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive" count="13" delay="0.0667"/>
-   		<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0"
-   			pattern="d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive" count="11"
+   		<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+   		<span class="nui-slot__ring nui-anim" data-if="slot.active"></span>
+   		<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
+   			delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+   		<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
    			delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
    		<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
    		<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
@@ -59,7 +60,9 @@
    			<div class="nui-slot__tint"></div>
    			<nui-cooldown class="nui-slot__cooldown" data-if="item.cd_end > 0" ... />
    			<nui-frames class="nui-slot__active" data-if="item.active" ... />
+   			<span class="nui-slot__ring nui-anim" data-if="item.active"></span>
    			<nui-frames class="nui-slot__finish" data-if="item.cd_end > 0" ... />
+   			<nui-frames class="nui-slot__flash nui-anim" data-if="item.cd_end > 0" ... />
    			<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
    			<nui-number class="nui-slot__digits" data-if="item.count != ''" data-attr-value="item.count"/>
    		</div>
@@ -198,8 +201,16 @@
 	pointer-events: none;
 }
 
-/* The two legacy effects: the 13-frame active loop and the 11-frame
-   cooldown end, both additive art over the icon. */
+/* The two effects: an active skill or item, and the end of a cooldown.
+   __active and __finish keep the legacy timing (13 frames of 1/15 s looped,
+   11 of 1/30 s once from the cooldown's end) and take their frames from the
+   skin (--frames-pattern, P13 spec 4.6): classic gives them the legacy
+   additive art (skins/classic/classic.rcss). Without art they run their
+   clock and draw nothing. The modern look is code: __ring, a 2dp accent
+   ring inside the cell that pulses while the slot is active, and __flash, a
+   clock of its own (no art) whose accent fill fades out while it plays at
+   the cooldown's end (is-playing). Classic hides both. Under reduced motion
+   the ring holds still and the flash does not show. */
 .nui-slot__active, .nui-slot__finish
 {
 	position: absolute;
@@ -221,6 +232,56 @@
 	{
 		display: none;
 	}
+}
+.nui-slot__ring
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 6;
+	border-width: 2dp;
+	border-color: var(--accent);
+	border-radius: var(--radius-sm);
+	pointer-events: none;
+}
+/* 1 to 0.45 and back in 0.8s, endlessly; at rest (reduced motion) the ring
+   shows whole. An opacity motion on a small part rebuilds its one mesh. */
+.nui-slot__ring.nui-anim
+{
+	animation: 0.8s sine-in-out infinite nui-slot-ring;
+}
+@keyframes nui-slot-ring
+{
+	0% { opacity: 1; }
+	50% { opacity: 0.45; }
+	100% { opacity: 1; }
+}
+.nui-slot__flash
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 5;
+	border-radius: var(--radius-sm);
+	background-color: var(--accent);
+	opacity: 0;
+	pointer-events: none;
+}
+/* The flash's 11 frames of 1/30 s: from half opacity to none. */
+.nui-slot__flash.is-playing.nui-anim
+{
+	animation: 0.37s cubic-out nui-slot-flash;
+}
+@keyframes nui-slot-flash
+{
+	from { opacity: 0.5; }
+	to { opacity: 0; }
 }
 
 .nui-slot__count

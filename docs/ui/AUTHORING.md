@@ -1202,8 +1202,8 @@ The other Wave 5a windows are facades on the system windows' rules ([System wind
 
 `nuitool lint` enforces the ones marked with a code.
 
-1. **Lengths in `dp`** (NUI002). `px` is allowed only for hairlines that stay one physical pixel at every scale (`1px`, `-1px`, `0px`), in `@spritesheet` rectangles (texture pixels) and under `nui/theme/`. Unitless `0`, `%`, `em`, `vw` and `vh` are fine.
-2. **Colors from tokens** (NUI003, NUI004). No `#hex`, `rgb()`, `rgba()`, `hsl()` or named colors outside `nui/theme/`; `transparent` is allowed. Every `var(--x)` must be a token or a custom property declared in the same file.
+1. **Lengths in `dp`** (NUI002). `px` is allowed only for hairlines that stay one physical pixel at every scale (`1px`, `-1px`, `0px`), in `@spritesheet` rectangles (texture pixels), under `nui/theme/` and in a skin's generated token sheet. Unitless `0`, `%`, `em`, `vw` and `vh` are fine.
+2. **Colors from tokens** (NUI003, NUI004). No `#hex`, `rgb()`, `rgba()`, `hsl()` or named colors outside `nui/theme/` and a skin's generated token sheet; `transparent` is allowed. Every `var(--x)` must be a token or a custom property declared in the same file; a skin's own tokens (`--cyberpunk-*`, from its `<skin>-tokens.rcss`) count only in that skin's folder, since no other theme declares them.
 3. **No inline styles** (NUI009): no `style="..."`, no `data-style-*` and no `data-attr-style`. Put rules in the window's `.rcss` and switch them with `data-class-*`. One exception: `data-style---<name>` sets the custom property `--<name>` from data, a value a skin may read with `var()` and the others ignore (the classic shop signs and guild war boards take legacy's text-length widths this way); the skin file that reads it declares a fallback.
 4. **Strings from the locale files** (NUI005): every `@ui.KEY` and `@game.KEY` must exist, a `@game.KEY` must be a plain string (not an entry typed `SA`, `SNA`, `SAA` or `SAN`), the locale files end with a newline, and no key may sit in a `data-attr-*` or `data-value` binding, which is never translated (see [Localization](#localization)).
 5. **Every data event has a handler** (NUI006): `data-event-*="name(...)"` in `nui/windows/<name>/<name>.rml` needs `@nui.on("name")` in the controller, `assets/root/nui_<name>.py` with each hyphen of `<name>` written as an underscore. A window name outside lowercase letters, digits and hyphens is reported too.
@@ -1263,23 +1263,23 @@ Clipping cost: an overflow element with `border-radius` always uses the stencil 
 - **Once, then one draw a frame:** `box-shadow` (its texture is drawn again only when the box or the shadow changes) and the gradients (a lookup texture per distinct stop list).
 - **Rule of thumb:** an effect on an always-loaded HUD document costs every frame; on a window that loads on demand, only while it is open. A cached effect (a shadow, a gradient) is free per frame after its first. That is why the translucent panels blur behind windows only, never behind boards, and why every filter, mask and backdrop filter is in a `.nui-fx` rule that reduced effects can switch off.
 
-Measured on 2026-10-12 (`NuiEffectsBench.DISABLED_EachEffectAtTheClientsSize`, `nova-client-src/tests/NovaUI/win/effects_bench_test.cpp`: RelWithDebInfo, a hidden Direct3D 9Ex device at 1600x900 presented every frame, an RTX 2080 Ti; the idle stream of `NuiRenderBench` plus one element with the effect; medians of three runs of 600 frames). The idle stream alone takes 20.3 µs of submit, a 23.1 µs CPU frame and 9.1 µs of GPU, and switching effects off changes nothing there. Each row is what one element adds:
+Measured on 2026-10-12 (`NuiEffectsBench.DISABLED_EachEffectAtTheClientsSize`, `nova-client-src/tests/NovaUI/win/effects_bench_test.cpp`: RelWithDebInfo, a hidden Direct3D 9Ex pure device at 1600x900 presented every frame, an RTX 2080 Ti; the 129-draw idle stream of `NuiRenderBench` plus one element with the effect; medians of three runs of 600 frames). The idle stream alone takes 24.0 µs of submit, a 27.7 µs CPU frame and 10.2 µs of GPU, and switching effects off changes it by less than the run spread. Each row is what one element adds:
 
 | Effect | Element | Submit | CPU frame | GPU | Layers, passes |
 |---|---|---|---|---|---|
-| `filter: blur(4dp)` | a 400x300 panel with text | +9.5 µs | +12.2 µs | +17.1 µs | 1, 6 |
-| `filter: blur(16dp)` | the same | +10.1 µs | +12.9 µs | +21.9 µs | 1, 9 |
-| `filter: drop-shadow(... 0 4dp 8dp)` | the same | +12.7 µs | +15.6 µs | +32.8 µs | 1, 11 |
-| `backdrop-filter: blur(8dp)` | a 600x400 window over a textured frame | +18.2 µs | +22.4 µs | +66.7 µs | 1, 12 |
-| `mask-image: radial-gradient(...)` | a 300x300 panel | +8.8 µs | +11.7 µs | +15.3 µs | 2, 4 |
-| `filter: opacity(0.5)`, the group fade | a 600x400 window | +5.9 µs | +7.8 µs | +14.9 µs | 1, 3 |
-| `filter: grayscale(1)` | a 400x300 panel | +6.9 µs | +9.7 µs | +11.1 µs | 1, 3 |
-| `linear-gradient`, 3 stops | a 400x300 decorator | +0.4 µs | +1.6 µs | +1.0 µs | 0, 0 |
-| `radial-gradient`, 3 stops | the same | +1.8 µs | +3.9 µs | +1.1 µs | 0, 0 |
-| `conic-gradient`, 6 stops | the same | +1.5 µs | +2.8 µs | +1.0 µs | 0, 0 |
-| `box-shadow: 0 4dp 16dp ...` | a 400x300 panel, steady frames | +0.4 µs | +1.4 µs | +0.3 µs | 0, 0 |
+| `filter: blur(4dp)` | a 400x300 panel with text | +9.5 µs | +12.4 µs | +17.5 µs | 1, 6 |
+| `filter: blur(16dp)` | the same | +8.2 µs | +11.7 µs | +29.3 µs | 1, 9 |
+| `filter: drop-shadow(... 0 4dp 8dp)` | the same | +11.5 µs | +14.7 µs | +36.5 µs | 1, 11 |
+| `backdrop-filter: blur(8dp)` | a 600x400 window over a textured frame | +15.8 µs | +19.5 µs | +72.8 µs | 1, 12 |
+| `mask-image: radial-gradient(...)` | a 300x300 panel | +6.7 µs | +10.0 µs | +14.2 µs | 2, 4 |
+| `filter: opacity(0.5)`, the group fade | a 600x400 window | +4.2 µs | +7.0 µs | +13.8 µs | 1, 3 |
+| `filter: grayscale(1)` | a 400x300 panel | +4.7 µs | +7.0 µs | +10.3 µs | 1, 3 |
+| `linear-gradient`, 3 stops | a 400x300 decorator | +1.4 µs | +2.3 µs | +0.5 µs | 0, 0 |
+| `radial-gradient`, 3 stops | the same | -0.5 µs | +1.4 µs | +0.5 µs | 0, 0 |
+| `conic-gradient`, 6 stops | the same | +2.6 µs | +3.9 µs | +0.4 µs | 0, 0 |
+| `box-shadow: 0 4dp 16dp ...` | a 400x300 panel, steady frames | +1.9 µs | +3.3 µs | +0.0 µs | 0, 0 |
 
-- **First frames.** The frame that makes an effect's resources is slower: 0.25 to 2.7 ms of CPU where it makes the layer targets or a gradient's lookup texture, and about 8 ms for a box shadow's texture or the first backdrop blur, most of it inside single driver calls. A window with a box shadow or a backdrop blur therefore hitches once, the first time it shows in a session.
+- **First frames.** The frame that makes an effect's resources is slower: 0.3 to 2.6 ms of CPU where it makes the layer targets or a gradient's lookup texture, and about 8 ms for a box shadow's texture (8.2 ms) or the first backdrop blur (7.7 ms), most of it inside single driver calls. A window with a box shadow or a backdrop blur therefore hitches once, the first time it shows in a session.
 - The soft renderer's times for the same cases (`SoftEffectsBench.DISABLED_EachEffect`) are what lint and snapshots cost, not the client.
 - The cost in game, per effect over the idle HUD (the render test's effect cells) and for a whole skin (cyberpunk against modern-dark), comes from the fx validation.
 
@@ -1359,6 +1359,7 @@ Layout and styling:
 - `opacity` is inherited but not multiplied: each element uses its own value, so a child that sets `opacity` replaces its parent's.
 - An auto-width inline-block or absolutely positioned box is never wider than the space available to it, and flex items shrink below their content (`min-width` defaults to 0, there is no `min-width: auto`). When a row is too narrow, a button is squeezed and its label spills out; CSS would widen the box instead. Tables do not shrink to fit; they take the full width.
 - `translate()` needs two values; use `translateX()` or `translateY()` for one. Translate percentages are of the element's own size.
+- Inside an auto-height flex container that is the containing block of an absolutely positioned child, a child sized by `top` and `bottom` gets an indefinite height (RmlUi 6.3 closes the flex box after the absolute child was laid out against the unsized one), so it ends at the container's top; corner offsets with `bottom` and `right` still work. The cyberpunk skin lays out the system options and the theme picker as blocks for this (its README).
 - An inline element is never the containing block of an absolutely positioned child, even with `position: relative`: only container boxes can be, that is block, inline-block, flow-root, flex and table boxes (`Layout/ContainerBox.cpp`). The child is placed against the nearest positioned block ancestor, often the window body. Give the parent `display: inline-block` (as the tooltip host has) or put the child in a block.
 - `font-family` takes one family name. Loaded faces: Noto Sans regular, bold and italic.
 - Unitless `0` is accepted for lengths.
@@ -1666,9 +1667,9 @@ All nine roots: the gauge component, the slot grid, the login screen's windows a
 | Code | Finding |
 |---|---|
 | NUI001 | `nui/theme/themes.json` breaks a rule of [Themes](#themes) (a JSON error, an id, label or class out of form, an unknown key, a first theme other than `modern-dark`, a theme without exactly one `skin-*` and one `theme-*` class, a `chrome` list with an unknown part or a part twice); a document, template or style sheet does not parse, RmlUi's template reader cannot find the parts of a template file, or a `.fixture.json` is not valid JSON holding one object per model, or has a top-level model key RmlUi refuses (reported on the fixture, at the JSON line; a key name at line 1). |
-| NUI002 | A `px` length other than a hairline (`1px`, `-1px`, `0px`), outside `nui/theme/` and sprite rectangles. |
-| NUI003 | A raw color outside `nui/theme/`. |
-| NUI004 | `var(--x)` that is neither a token nor declared in the same file. |
+| NUI002 | A `px` length other than a hairline (`1px`, `-1px`, `0px`), outside `nui/theme/`, a skin's generated token sheet (`nui/skins/<skin>/<skin>-tokens.rcss`) and sprite rectangles. |
+| NUI003 | A raw color outside `nui/theme/` and a skin's generated token sheet. |
+| NUI004 | `var(--x)` that is neither a token (of `nui/theme/`, or in a skin's folder of that skin's token sheet) nor declared in the same file. |
 | NUI005 | `@ui.KEY` or `@game.KEY` missing from the locale files; a `@game.KEY` typed `SA`, `SNA`, `SAA` or `SAN` in `locale_game.txt`, which `localeInfo` makes a function; any such key in a `data-attr-*` or `data-value` binding, which is never translated; or a locale file whose last line has no newline (reported at that line). |
 | NUI006 | A `data-event-*` without a matching `@nui.on` handler in the controller (`nui_<window>.py`, each hyphen as an underscore), or a window name outside lowercase letters, digits and hyphens. |
 | NUI007 | A link, template, image or sprite that does not resolve (a `/` path resolves from the store root; in style sheets also the skin-provided art of `--frames-list`, `--frames-pattern` and `--number-path`), a sprite that only a `@spritesheet` inside `@media` defines (outside that media query it does not exist), an image of a type the client has no loader for (only `.png`, `.tga`, `.jpg`, `.bmp`, `.dds` and `.sub` load), a path that holds `{{ }}`, and a relative image path in a template's body. |
@@ -1817,7 +1818,6 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
   - A gradient's lookup texture holds 1024 texels, so a one-pixel ramp is resolved exactly up to a 1024 px gradient line and spread over at most 2.5 px at 2560.
   - Classic offers no player colors. Reduced effects does not turn itself on when a frame budget is missed.
   - The translucent panels' blur (`blur(6dp)`) and the opacity choices are starting values.
-  - The lint of this content's `nuitool` (P13 step 4) checks a skin's generated token sheet, `nui/skins/<skin>/<skin>-tokens.rcss`, as an ordinary style sheet: the cyberpunk stub's sheet gives 74 NUI003 findings (raw colors) in every locale until lint treats it as it treats `nui/theme/` (and takes the skin's tokens as declared, for NUI004).
   - The glyphs are approximations at 16dp; the shapes a symbol needs beyond boxes, borders and rotations (curves) are drawn with radii.
 - `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.
 - Gauges show their value at once, with no easing.

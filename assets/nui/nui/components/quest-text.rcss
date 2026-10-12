@@ -5,18 +5,18 @@
    data-bound. Markup gives it no children:
 
    <nui-quest-text id="quest-text" data-attr-set="set_index"/>
-   	rest="hidden" (the default): a typing line holds its unrevealed text in
-   	nui-quest__rest spans, laid out but not drawn, so a word never jumps to
-   	the next line as it types; rest="none": no rest spans, the line grows as
-   	it types.
+   	rest="hidden" (the default): a typing line is laid out with its whole
+   	text and draws only the part revealed, so a word never jumps to the
+   	next line and a letter lays nothing out; rest="none": the line holds
+   	only its revealed text and grows as it types.
 
-   What it builds (P12 spec 3.7):
+   What it builds (P12 spec 3.7, and the fix stage's reveal):
    div.nui-quest__line (--center, is-typing, is-empty)
-   	span.nui-quest__run.nui-quest__run--<role> per run; role is text, body,
-   	title, reward, item (the colors the server's quest library writes) or
-   	custom (an inline color); a name run also has nui-quest__name--item or
-   	nui-quest__name--mob. Then, while it types, one span.nui-quest__rest
-   	per run with unrevealed text, carrying that run's classes.
+   	span.nui-quest__run.nui-quest__run--<role> per run, holding the run's
+   	whole text; role is text, body, title, reward, item (the colors the
+   	server's quest library writes) or custom (an inline color); a name run
+   	also has nui-quest__name--item or nui-quest__name--mob. A skin's rule
+   	for a role or a name lays the unrevealed text out as the run it is.
    div.nui-quest__icons
    	span.nui-slot.nui-quest__icon.nui-has-tooltip per icon, holding
    	img.nui-slot__icon, span.nui-quest__caption and
@@ -30,8 +30,8 @@
    is --quest-line (classic sets legacy's 16dp); a line wraps by width, a
    word longer than the line at its end. The icon is a slot: the
    slot component draws its box, code-drawn here and the legacy slot art in
-   classic. Under reduced motion the rest shows, so a line appears whole
-   while the interpreter keeps its timing. */
+   classic. Under reduced motion a typing line draws whole (the element
+   reads the reduced-motion theme), while the interpreter keeps its timing. */
 
 nui-quest-text
 {
@@ -74,21 +74,6 @@ nui-quest-text
 {
 	color: var(--quest-item);
 }
-/* The unrevealed part of a typing line: laid out, never drawn. Each rest
-   span carries the classes of the run it continues, so it is laid out, and
-   colored when it shows (reduced motion), by that run's rules. */
-.nui-quest__rest
-{
-	visibility: hidden;
-}
-@media (theme: reduced-motion)
-{
-	.nui-quest__rest
-	{
-		visibility: visible;
-	}
-}
-
 /* An icon row: the icons centered side by side, each a slot with its
    caption under it, 32dp of room on each side of a slot for the caption.
    The caption sits below the slot box, so the row keeps one line of room

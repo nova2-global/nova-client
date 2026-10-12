@@ -44,6 +44,13 @@
 				<span class="nui-tooltip nui-anim taskbar-tip"><span>@game.TASKBAR_ST</span> : {{ stamina }} / {{ stamina_max }}</span>
 			</span>
 		</div>
+		<!-- Optional skin parts (P13 D21): an HP ring and the HP and SP values,
+		     which the modern and classic layouts hide (taskbar.rcss); a skin
+		     that lays the bar out as the cyberpunk mockup does shows them from
+		     its overlay. They read the gauges' feeds, so they add no Python. -->
+		<progress id="taskbar-hp-ring" class="taskbar-hp-ring" direction="clockwise" data-attr-value="hp_ratio"/>
+		<span id="taskbar-hp-value" class="taskbar-value taskbar-value--hp">{{ hp }}</span>
+		<span id="taskbar-sp-value" class="taskbar-value taskbar-value--sp">{{ sp }}</span>
 
 		<span id="exp-orbs" class="nui-has-tooltip taskbar-exp">
 			<progress id="exp-orb-1" class="taskbar-orb taskbar-orb--1" direction="top" data-attr-value="exp_orbs[0]"/>

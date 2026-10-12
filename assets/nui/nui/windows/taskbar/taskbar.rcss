@@ -175,6 +175,13 @@ progress.taskbar-orb fill
 .taskbar-orb--3 { left: 30dp; }
 .taskbar-orb--4 { left: 45dp; }
 
+/* The optional skin parts (P13 D21): hidden here and in classic; a skin's
+   overlay gives them a display and a place. */
+.taskbar-hp-ring, .taskbar-value
+{
+	display: none;
+}
+
 /* --- Buttons: chips with glyphs ------------------------------------------------ */
 
 .taskbar-mall, .taskbar-mode, .taskbar-window, .taskbar-expand, .taskbar-pager__up, .taskbar-pager__down

@@ -66,11 +66,16 @@ body.skin-cyberpunk.taskbar .taskbar-value
 	white-space: nowrap;
 	pointer-events: none;
 }
+/* The HP value sits inside the ring, whose opening is about 29dp: 9dp digits
+   with a slight squeeze keep a level-100 character's five digits (and six,
+   just) off the ring's stroke. */
 body.skin-cyberpunk.taskbar .taskbar-value--hp
 {
 	left: 4dp;
 	width: 40dp;
 	color: var(--cyberpunk-hp);
+	font-size: 9dp;
+	letter-spacing: -0.3dp;
 	text-align: center;
 }
 body.skin-cyberpunk.taskbar .taskbar-value--sp

@@ -1,0 +1,9 @@
+{
+	"name": "cyberpunk",
+	"out_dir": "assets/nui/nui/skins/cyberpunk",
+	"scales": [
+		1,
+		2
+	],
+	"sprites": []
+}

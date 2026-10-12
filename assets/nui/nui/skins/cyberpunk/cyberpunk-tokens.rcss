@@ -1,0 +1,81 @@
+/* Generated from nui/skins/cyberpunk/tokens.json by tools/nui_tokens.py. Do not edit by hand.
+   Regenerate from the nova-client repository root: python tools/nui_tokens.py
+   Contrast of every text pair is checked there (WCAG AA). */
+
+body.skin-cyberpunk.theme-cyberpunk
+{
+	--surface: #1a1d23;
+	--surface-raised: #232830;
+	--surface-sunken: #121418;
+	--surface-hover: #2c323c;
+	--surface-band: #121418d9;
+	--scene: #121418;
+	--scene-band: #1a1d23;
+	--border: #3b424e;
+	--text: #e7eaf0;
+	--text-muted: #a4acba;
+	--text-inverse: #16191e;
+	--accent: #8ab4f8;
+	--accent-hover: #a8c7fa;
+	--accent-text: #0c1a30;
+	--danger: #f28b82;
+	--danger-hover: #f6aea9;
+	--warning: #f6c75a;
+	--success: #7fd29a;
+	--focus-ring: #f2f5f9;
+	--selection: #2a3a55;
+	--overlay-scrim: #000000a6;
+	--tooltip-bg: #e7eaf0;
+	--ember: #ffb24ff2;
+	--ember-hot: #fff3cff7;
+	--ember-glow: #ff9e3a47;
+	--sheen: #ffffff73;
+	--sheen-clear: #ffffff00;
+	--sweep: #fff6dc8c;
+	--sweep-clear: #fff4d600;
+	--gauge-track: #121418;
+	--gauge-red: #f28b82;
+	--gauge-pink: #f48fb1;
+	--gauge-purple: #c58af9;
+	--gauge-blue: #8ab4f8;
+	--cooldown-shade: #00000080;
+	--slot-disabled: #f28b8259;
+	--slot-locked: #0000008c;
+	--slot-picked: #8ab4f859;
+	--notice-bar: #00000080;
+	--notice-text-big: #f2e7c1;
+	--edge-gm: #9a5a00;
+	--party-link: #e7eaf0;
+	--party-unlink: #7f8794;
+	--hp-recovery: #f28b8255;
+	--sp-recovery: #8ab4f855;
+	--chat-talking: #e7eaf0;
+	--chat-info: #ffb4b4;
+	--chat-notice: #f6d79a;
+	--chat-party: #5fe3d4;
+	--chat-guild: #e6ea7a;
+	--chat-command: #9fe6c3;
+	--chat-shout: #9fe6c3;
+	--chat-whisper: #7fd29a;
+	--chat-big-notice: #f6d79a;
+	--chat-view-shade-top: #12141800;
+	--chat-view-shade-bottom: #121418cc;
+	--chat-edit-shade: #1a1d23d9;
+	--chat-mark: #f6c75a;
+	--text-outline: #000000;
+	--quest-text: #e7eaf0;
+	--quest-body: #c4c9d2;
+	--quest-title: #f2d39b;
+	--highlight: #f2d39b;
+	--quest-reward: #f5b5bc;
+	--quest-item: #ff7a72;
+	--quest-scrim: #00000000;
+	--letterbox: #000000;
+	--fade-black: #000000;
+	--fade-white: #ffffff;
+	--console-bg: #121418d9;
+	--console-field: #121418;
+	--console-text: #e7eaf0;
+	--console-grip: #3b424e;
+	--web-page: #121418;
+}

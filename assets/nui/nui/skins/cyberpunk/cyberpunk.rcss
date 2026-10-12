@@ -1,0 +1,9 @@
+/* The cyberpunk skin's component rules (README.md next to this file). Every
+   document links this sheet through nui/nui.rtpl; every rule starts with
+   .skin-cyberpunk, so nothing here applies in a theme of another skin. Take the
+   exact modern selector a rule overrides and put .skin-cyberpunk in front of it.
+   No transition and no animation. RmlUi refuses a sheet without a rule, so
+   the empty one below stays until the first real one. */
+.skin-cyberpunk
+{
+}

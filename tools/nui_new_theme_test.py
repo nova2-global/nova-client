@@ -29,7 +29,8 @@ NUITOOL = os.environ.get("NUITOOL") or shutil.which("nuitool")
 PALETTE = "test-palette"     # a palette theme on the modern skin
 SKIN = "test-skin"           # a component skin, its theme and its palette
 NIGHT = "test-night"         # a palette theme on an existing skin
-TEST_IDS = (PALETTE, SKIN, NIGHT)
+LOCAL = "test-local"         # a skin that keeps its palette in its folder (P13 spec 7.1)
+TEST_IDS = (PALETTE, SKIN, NIGHT, LOCAL)
 
 
 def golden_name(theme_id):
@@ -54,7 +55,8 @@ class Scratch(unittest.TestCase):
         self.root = tempfile.mkdtemp(prefix="nui-new-theme-")
         self.addCleanup(shutil.rmtree, self.root, True)
         shutil.copytree(os.path.join(REPO, nui_new_theme.NUI), os.path.join(self.root, nui_new_theme.NUI))
-        for rel in (nui_new_theme.AUTHORING_MD, nui_new_theme.GOLDEN_THEMES):
+        # The backdrop the translucent cases name (check_nui_snapshots refuses a missing one).
+        for rel in (nui_new_theme.AUTHORING_MD, nui_new_theme.GOLDEN_THEMES, os.path.join("docs", "ui", "snapshots", "backdrop.png")):
             os.makedirs(os.path.dirname(os.path.join(self.root, rel)), exist_ok=True)
             shutil.copy(os.path.join(REPO, rel), os.path.join(self.root, rel))
         self.nui = os.path.join(self.root, nui_new_theme.NUI)
@@ -100,7 +102,7 @@ class PaletteOnly(Scratch):
         self.assertEqual(code, 0, err)
         tokens = self.read_json(nui_new_theme.TOKENS_JSON)
         self.assertEqual(tokens[PALETTE], tokens["dark"])
-        self.assertEqual(list(tokens)[-2:], [PALETTE, "skins"])
+        self.assertEqual(list(tokens)[-3:], [PALETTE, "slots", "skins"], "after the last palette, before the slot tables")
         themes = self.read_json(nui_new_theme.THEMES_JSON)["themes"]
         self.assertEqual(themes[-1], {"id": PALETTE, "label": "Test palette", "body": ["skin-modern", "theme-" + PALETTE]})
         self.assertEqual(themes[0]["id"], "modern-dark")
@@ -195,7 +197,8 @@ class GoldenPolicy(Scratch):
     def test_every_golden_case_has_its_image_and_every_image_is_a_case(self):
         # Whatever themes the content has: a theme's goldens come with it, and
         # go with it when it is removed.
-        images = {name[:-len(".png")] for name in os.listdir(os.path.join(REPO, check_nui_snapshots.SNAPSHOTS)) if name.endswith(".png")}
+        images = {name[:-len(".png")] for name in os.listdir(os.path.join(REPO, check_nui_snapshots.SNAPSHOTS))
+                  if name.endswith(".png")} - set(check_nui_snapshots.INPUT_IMAGES)
         goldens = {case[1] for case in check_nui_snapshots.cases(REPO) if case[-1] is None}
         self.assertEqual(sorted(goldens - images), [], "write them: check_nui_snapshots.py --write --optimize --only ...")
         self.assertEqual(sorted(images - goldens), [], "no case draws these; delete them")
@@ -281,6 +284,52 @@ class ScaffoldWithNuitool(Scratch):
                                 capture_output=True, text=True)
         self.assertEqual(result.stdout, "")
         self.assertEqual(result.returncode, 0, result.stderr)
+
+
+class SkinLocal(Scratch):
+    """--skin-local and --chrome (P13 spec 7.1, 4.2): the stub of a skin that
+    keeps its palette, slots and art in its own folder."""
+
+    def test_the_palette_lives_in_the_skin_folder_with_its_generated_files_and_stubs(self):
+        main_tokens = self.read_json(nui_new_theme.TOKENS_JSON)
+        code, out, err = self.run_tool(LOCAL, "--base", "dark", "--skin", LOCAL, "--skin-local", "--shipped",
+                                       "--chrome", "outline,corner-tl,scan,accent")
+        self.assertEqual(code, 0, err)
+        self.assertEqual(self.read_json(nui_new_theme.TOKENS_JSON), main_tokens, "nui/theme/tokens.json stays")
+        folder = os.path.join(nui_new_theme.NUI, "skins", LOCAL)
+        doc = self.read_json(os.path.join(folder, "tokens.json"))
+        self.assertEqual(doc["palettes"], {LOCAL: main_tokens["dark"]})
+        self.assertEqual(doc["slots"], {LOCAL: main_tokens["slots"]["dark"]}, "the base's color slots")
+        self.assertEqual(doc["themes"], {LOCAL: LOCAL})
+        theme = self.read_json(nui_new_theme.THEMES_JSON)["themes"][-1]
+        self.assertEqual(theme, {"id": LOCAL, "label": "Test local", "body": ["skin-" + LOCAL, "theme-" + LOCAL],
+                                 "chrome": ["outline", "corner-tl", "scan", "accent"]})
+        themes = nui_tokens.validate_themes(self.read_json(nui_new_theme.THEMES_JSON))
+        with open(os.path.join(self.root, folder, LOCAL + "-tokens.rcss"), encoding="utf-8") as handle:
+            self.assertEqual(handle.read(), nui_tokens.render_skin_rcss(LOCAL, doc))
+        self.assertEqual(json.loads(nui_tokens.render_skin_colors(LOCAL, doc, themes)),
+                         self.read_json(os.path.join(folder, "colors.json")))
+        self.assertEqual(self.read_json(os.path.join(folder, "art.json"))["sprites"], [])
+        for stub in (LOCAL + ".rcss", LOCAL + "-sprites.rcss"):
+            with open(os.path.join(self.root, folder, stub), encoding="utf-8") as handle:
+                self.assertIn(".skin-%s\n{\n}" % LOCAL, handle.read(), stub)
+        with open(os.path.join(self.root, nui_new_theme.TEMPLATE), encoding="utf-8") as handle:
+            template = handle.read()
+        links = [template.index('href="skins/%s/%s"' % (LOCAL, name)) for name in
+                 (LOCAL + "-tokens.rcss", LOCAL + "-sprites.rcss", LOCAL + ".rcss")]
+        self.assertEqual(links, sorted(links), "tokens, then sprites, then the component sheet")
+        with open(os.path.join(self.root, folder, "README.md"), encoding="utf-8") as handle:
+            self.assertIn(nui_tokens.SKIN_TABLE_BEGIN, handle.read())
+        self.assert_no_window_or_component_changed()
+
+    def test_chrome_parts_and_a_skin_local_modern_skin_are_refused(self):
+        code, _, err = self.run_tool(LOCAL, "--base", "dark", "--skin", LOCAL, "--skin-local", "--chrome", "outline,halo")
+        self.assertEqual(code, 1)
+        self.assertIn("chrome is 0 to 10 of", err)
+        code, _, err = self.run_tool(LOCAL, "--base", "dark", "--skin-local")
+        self.assertEqual(code, 1)
+        self.assertIn("--skin-local makes a new skin folder", err)
+        self.assertEqual(self.changed(), [])
 
 
 if __name__ == "__main__":

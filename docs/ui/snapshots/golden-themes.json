@@ -3,6 +3,7 @@
 	"themes": [
 		{"name": "dark", "id": "modern-dark"},
 		{"name": "light", "id": "modern-light"},
-		{"name": "classic", "id": "classic"}
+		{"name": "classic", "id": "classic"},
+		{"name": "cyber", "id": "cyberpunk"}
 	]
 }

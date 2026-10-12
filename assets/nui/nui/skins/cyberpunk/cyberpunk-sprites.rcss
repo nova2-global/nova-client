@@ -1,0 +1,6 @@
+/* The cyberpunk skin's sprite sheets (tools/nui_skin_art.py writes this file from art.json) (README.md next to this file), linked through
+   nui/nui.rtpl. Every rule starts with .skin-cyberpunk. RmlUi refuses a sheet
+   without a rule, so the empty one below stays until the first real one. */
+.skin-cyberpunk
+{
+}

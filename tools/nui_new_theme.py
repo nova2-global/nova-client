@@ -2,8 +2,8 @@
 """Scaffold a new NovaUI player theme (docs/ui/AUTHORING.md, Adding a theme).
 
     python3 tools/nui_new_theme.py <id> --base <palette> [--label TEXT] [--palette NAME]
-                                   [--skin NAME] [--window NAME ...] [--name SHORT]
-                                   [--shipped | --pages PAGE,...] [--root DIR] [--dry-run]
+                                   [--skin NAME [--skin-local]] [--window NAME ...] [--name SHORT]
+                                   [--chrome PART,...] [--shipped | --pages PAGE,...] [--root DIR] [--dry-run]
 
 The three kinds of theme:
   a palette only     --skin modern (the default) or another skin that exists
@@ -11,6 +11,14 @@ The three kinds of theme:
                      with a README and <skin>.rcss, linked at the end of nui.rtpl
   layout overrides   --window <window>, once per window: an overlay stub
                      nui/skins/<skin>/windows/<window>.rcss for each
+  skin-local tokens  --skin-local with a new --skin: the palette lives in the
+                     skin folder (nui/skins/<skin>/tokens.json, with the base's
+                     color slots), with its generated <skin>-tokens.rcss and
+                     colors.json, a sprites stub and an empty art manifest
+                     (art.json), all linked from nui.rtpl; nothing changes in
+                     nui/theme/tokens.json (P13 spec 7.1)
+  --chrome PART,...  the chrome hooks the theme asks for (themes.json "chrome":
+                     outline, corner-tl, ... ; docs/ui/AUTHORING.md "Chrome")
 
 It writes, under the repository root (--root, default this repository):
   assets/nui/nui/theme/tokens.json      the palette (default: the id), a copy of
@@ -133,6 +141,57 @@ def overlay_sheet(skin, window):
 """.format(skin=skin, window=window)
 
 
+def skin_local_readme(skin, table):
+    return """# The {skin} skin
+
+Body class `skin-{skin}`: the themes in `nui/theme/themes.json` whose `body`
+names it put it on every NovaUI document. Made by `tools/nui_new_theme.py
+--skin-local`; `docs/ui/AUTHORING.md` ("Adding a theme", "Skins" and "Player
+colors") says how to finish it. The skin keeps its palette and tokens here.
+
+| File | What |
+|---|---|
+| `tokens.json` | The skin's palettes (`palettes`), its own tokens (`skin`: `{skin}-...` and shared overrides), its color slots (`slots`), extra contrast pairs (`pairs`) and the themes of its palettes (`themes`) |
+| `{skin}-tokens.rcss`, `colors.json` | Generated from `tokens.json` by `python tools/nui_tokens.py`, which checks the contrast; do not edit |
+| `art.json` | The manifest of the skin's few art pieces (empty until it has some) |
+| `{skin}-sprites.rcss` | The sprite sheets of that art (a stub until then) |
+| `{skin}.rcss` | The component rules |
+| `windows/<window>.rcss` | A window's own rules for this skin, applied after the window's sheets |
+
+- Every selector starts with `.skin-{skin}` (the scheme of "Classic skin" with
+  this class) and takes the exact modern selector it overrides behind it.
+- Motion only on the chrome hooks (`.nui-chrome--<part>.nui-anim`), transform
+  and opacity only, values written out ("Motion and reduced motion").
+- Colors come from the palette and the skin's tokens, lengths in `dp`.
+
+## Tokens
+
+{table}
+""".format(skin=skin, table=table)
+
+
+def stub_sheet(skin, what):
+    return """/* The {skin} skin's {what} (README.md next to this file), linked through
+   nui/nui.rtpl. Every rule starts with .skin-{skin}. RmlUi refuses a sheet
+   without a rule, so the empty one below stays until the first real one. */
+.skin-{skin}
+{{
+}}
+""".format(skin=skin, what=what)
+
+
+def link_skin_local(template, skin):
+    """nui.rtpl with the skin's tokens, sprites and component sheets linked, in
+    that order, after the last skin sheet."""
+    hrefs = ["skins/%s/%s-tokens.rcss" % (skin, skin), "skins/%s/%s-sprites.rcss" % (skin, skin), "skins/%s/%s.rcss" % (skin, skin)]
+    links = list(re.finditer(r'[ \t]*<link type="text/rcss" href="skins/[^"]+"/>\n', template))
+    if not links:
+        raise ScaffoldError("%s: no skin sheet link to add the new ones after" % TEMPLATE)
+    end = links[-1].end()
+    added = "".join('\t<link type="text/rcss" href="%s"/>\n' % href for href in hrefs if href not in template)
+    return template[:end] + added + template[end:]
+
+
 def link_skin(template, skin):
     """nui.rtpl with the skin's sheet linked after the last skin sheet."""
     href = "skins/%s/%s.rcss" % (skin, skin)
@@ -146,7 +205,7 @@ def link_skin(template, skin):
 
 
 def plan(root, theme_id, base, label=None, palette=None, skin=MODERN, windows=(), name=None,
-         shipped=False, pages=None):
+         shipped=False, pages=None, skin_local=False, chrome=()):
     """{repository-relative path: new text} for the theme; ScaffoldError when
     the request breaks a rule. Writes nothing."""
     palette = palette or theme_id
@@ -186,6 +245,9 @@ def plan(root, theme_id, base, label=None, palette=None, skin=MODERN, windows=()
 
     skin_dir = os.path.join(NUI, "skins", skin)
     new_skin = skin != MODERN and not os.path.isdir(os.path.join(root, skin_dir))
+    if skin_local and not new_skin:
+        raise ScaffoldError("--skin-local makes a new skin folder; %r is modern or exists already" % skin)
+    chrome = list(chrome or ())
     if windows and skin == MODERN:
         raise ScaffoldError("the modern skin is the windows' own sheets; layout overrides need another skin")
     for window in windows:
@@ -194,17 +256,30 @@ def plan(root, theme_id, base, label=None, palette=None, skin=MODERN, windows=()
         if os.path.exists(os.path.join(root, skin_dir, "windows", window + ".rcss")):
             raise ScaffoldError("the %s skin already has an overlay of %s" % (skin, window))
 
-    # tokens.json: the copy goes after the last palette, before "skins".
-    copied = {}
-    for key, value in tokens.items():
-        if key == nui_tokens.SKINS and palette not in copied:
+    skin_doc = None
+    if skin_local:
+        # The palette, its slots and its theme live in the skin folder.
+        copied = tokens
+        skin_doc = {"$comment": "The %s skin's palettes, tokens, color slots, extra contrast pairs and themes "
+                                "(docs/ui/AUTHORING.md \"Adding a theme\"); python tools/nui_tokens.py writes "
+                                "%s-tokens.rcss and colors.json from it." % (skin, skin),
+                    "palettes": {palette: dict(tokens[base])}, "skin": {}, "slots": {}, "pairs": [], "themes": {theme_id: palette}}
+        if base in tokens.get(nui_tokens.SLOTS, {}):
+            skin_doc["slots"][palette] = json.loads(json.dumps(tokens[nui_tokens.SLOTS][base]))
+    else:
+        # tokens.json: the copy goes after the last palette, before "skins".
+        copied = {}
+        for key, value in tokens.items():
+            if key in (nui_tokens.SKINS, nui_tokens.SLOTS) and palette not in copied:
+                copied[palette] = dict(tokens[base])
+            copied[key] = value
+        if palette not in copied:
             copied[palette] = dict(tokens[base])
-        copied[key] = value
-    if palette not in copied:
-        copied[palette] = dict(tokens[base])
     tokens_text = json.dumps(copied, indent="\t", ensure_ascii=False) + "\n"
 
     entry = {"id": theme_id, "label": label, "body": ["skin-" + skin, "theme-" + palette]}
+    if chrome:
+        entry["chrome"] = chrome
     new_themes_text = append_entry(themes_text, entry, THEMES_JSON)
     golden_entry = {"name": name, "id": theme_id}
     if not shipped:
@@ -213,19 +288,36 @@ def plan(root, theme_id, base, label=None, palette=None, skin=MODERN, windows=()
 
     try:
         themes = nui_tokens.validate_themes(json.loads(new_themes_text))
-        nui_tokens.validate(copied, themes)
+        skin_tokens = nui_tokens.load_skin_tokens(themes, os.path.join(root, NUI, "skins"))
+        if skin_doc is not None:
+            skin_tokens[skin] = skin_doc
+        nui_tokens.validate(copied, themes, skin_tokens)
     except nui_tokens.TokenError as error:
         raise ScaffoldError(str(error))
 
     out = {
-        TOKENS_JSON: tokens_text,
         THEMES_JSON: new_themes_text,
         TOKENS_RCSS: nui_tokens.render_rcss(copied, themes),
         GOLDEN_THEMES: new_golden_text,
     }
+    if not skin_local:
+        out[TOKENS_JSON] = tokens_text
     if os.path.isfile(os.path.join(root, AUTHORING_MD)):
         out[AUTHORING_MD] = nui_tokens.splice_table(read(root, AUTHORING_MD), nui_tokens.render_table(copied, themes))
-    if new_skin:
+    if skin_local:
+        table = nui_tokens.render_skin_table(skin, skin_doc)
+        out[os.path.join(skin_dir, "README.md")] = skin_local_readme(skin, table)
+        out[os.path.join(skin_dir, "tokens.json")] = json.dumps(skin_doc, indent="\t", ensure_ascii=False) + "\n"
+        out[os.path.join(skin_dir, skin + "-tokens.rcss")] = nui_tokens.render_skin_rcss(skin, skin_doc)
+        colors = nui_tokens.render_skin_colors(skin, skin_doc, themes)
+        if colors is not None:
+            out[os.path.join(skin_dir, "colors.json")] = colors
+        out[os.path.join(skin_dir, skin + "-sprites.rcss")] = stub_sheet(skin, "sprite sheets (tools/nui_skin_art.py writes this file from art.json)")
+        out[os.path.join(skin_dir, skin + ".rcss")] = skin_sheet(skin)
+        out[os.path.join(skin_dir, "art.json")] = json.dumps(
+            {"name": skin, "out_dir": "assets/nui/nui/skins/" + skin, "scales": [1, 2], "sprites": []}, indent="\t") + "\n"
+        out[TEMPLATE] = link_skin_local(read(root, TEMPLATE), skin)
+    elif new_skin:
         out[os.path.join(skin_dir, "README.md")] = skin_readme(skin)
         out[os.path.join(skin_dir, skin + ".rcss")] = skin_sheet(skin)
         out[TEMPLATE] = link_skin(read(root, TEMPLATE), skin)
@@ -249,11 +341,12 @@ def golden_args(name):
     return ["--write", "--optimize", "--only=-%s-" % name]
 
 
-def next_steps(theme_id, palette, skin, name, shipped, new_skin):
+def next_steps(theme_id, palette, skin, name, shipped, new_skin, skin_local=False):
     key = "THEME_" + theme_id.upper().replace("-", "_")
+    where = "assets/nui/nui/skins/%s/tokens.json" % skin if skin_local else "assets/nui/nui/theme/tokens.json"
     steps = [
         "Next:",
-        "- Set the colors of palette %r in assets/nui/nui/theme/tokens.json, then run python tools/nui_tokens.py (contrast)." % palette,
+        "- Set the colors of palette %r in %s, then run python tools/nui_tokens.py (contrast)." % (palette, where),
     ]
     if new_skin:
         steps.append("- Write the skin's component rules in assets/nui/nui/skins/%s/%s.rcss, every one under .skin-%s." % (skin, skin, skin))
@@ -277,6 +370,8 @@ def main(argv=None):
     parser.add_argument("--label", help="the menu label when the locale has no THEME_<ID> key (default: from the id)")
     parser.add_argument("--palette", help="the new palette's name, its class theme-<palette> (default: the id)")
     parser.add_argument("--skin", default=MODERN, help="the skin, its class skin-<skin> (default: modern); a new name makes the skin folder")
+    parser.add_argument("--skin-local", action="store_true", help="keep the palette in the new skin's folder (tokens.json there)")
+    parser.add_argument("--chrome", default="", help="the chrome hooks the theme asks for, comma-separated (themes.json \"chrome\")")
     parser.add_argument("--window", action="append", default=[], help="a window to give an overlay stub in the skin (repeatable)")
     parser.add_argument("--name", help="the short name in golden file names (default: the id without hyphens)")
     parser.add_argument("--shipped", action="store_true", help="give the theme the full golden matrix instead of the experimental set")
@@ -289,7 +384,8 @@ def main(argv=None):
     pages = [page for page in args.pages.split(",") if page] if args.pages is not None else None
     try:
         files = plan(args.root, args.id, args.base, label=args.label, palette=args.palette, skin=args.skin,
-                     windows=args.window, name=args.name, shipped=args.shipped, pages=pages)
+                     windows=args.window, name=args.name, shipped=args.shipped, pages=pages, skin_local=args.skin_local,
+                     chrome=[part for part in args.chrome.split(",") if part])
     except (ScaffoldError, OSError, ValueError) as error:
         print("nui_new_theme: %s" % error, file=sys.stderr)
         return 1
@@ -298,7 +394,8 @@ def main(argv=None):
         print(("would write " if args.dry_run else "wrote ") + rel.replace(os.sep, "/"))
     if not args.dry_run:
         write(args.root, files)
-        print(next_steps(args.id, args.palette or args.id, args.skin, args.name or args.id.replace("-", ""), args.shipped, new_skin))
+        print(next_steps(args.id, args.palette or args.id, args.skin, args.name or args.id.replace("-", ""), args.shipped, new_skin,
+                         args.skin_local))
     return 0
 
 

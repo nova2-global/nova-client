@@ -43,6 +43,9 @@
 	     Sprite sheets first. -->
 	<link type="text/rcss" href="skins/classic/classic-sprites.rcss"/>
 	<link type="text/rcss" href="skins/classic/classic.rcss"/>
+	<link type="text/rcss" href="skins/cyberpunk/cyberpunk-tokens.rcss"/>
+	<link type="text/rcss" href="skins/cyberpunk/cyberpunk-sprites.rcss"/>
+	<link type="text/rcss" href="skins/cyberpunk/cyberpunk.rcss"/>
 </head>
 <body>
 </body>

@@ -3,6 +3,7 @@
 	"themes": [
 		{"id": "modern-dark", "label": "Modern dark", "body": ["skin-modern", "theme-dark"]},
 		{"id": "modern-light", "label": "Modern light", "body": ["skin-modern", "theme-light"]},
-		{"id": "classic", "label": "Classic", "body": ["skin-classic", "theme-classic"]}
+		{"id": "classic", "label": "Classic", "body": ["skin-classic", "theme-classic"]},
+		{"id": "cyberpunk", "label": "Cyberpunk", "body": ["skin-cyberpunk", "theme-cyberpunk"], "chrome": ["outline", "corner-tl", "corner-br", "edge-top", "scan", "accent"]}
 	]
 }

@@ -4,8 +4,9 @@
    picker above the mode buttons. The classic layout is in
    skins/classic/windows/taskbar.rcss. Positions are anchored as legacy
    anchors them: the middle group from the screen's center, the window
-   buttons from its right edge. The buttons keep the legacy icons, drawn on
-   a modern button. */
+   buttons from its right edge. The buttons are code-drawn chips with glyphs
+   (components/glyph.rcss); the legacy button art is classic's, in its
+   overlay. */
 
 body.taskbar
 {
@@ -143,7 +144,7 @@ progress.taskbar-orb fill
 .taskbar-orb--3 { left: 30dp; }
 .taskbar-orb--4 { left: 45dp; }
 
-/* --- Buttons with legacy icons ------------------------------------------------- */
+/* --- Buttons: chips with glyphs ------------------------------------------------ */
 
 .taskbar-mode, .taskbar-window, .taskbar-expand, .taskbar-pager__up, .taskbar-pager__down
 {
@@ -173,11 +174,33 @@ progress.taskbar-orb fill
 	background-color: var(--surface-sunken);
 }
 
-.taskbar-mode--move { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_move_01.sub" scale-none center center); }
-.taskbar-mode--attack { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_attack_01.sub" scale-none center center); }
-.taskbar-mode--auto { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_auto_attack_01.sub" scale-none center center); }
-.taskbar-mode--camera { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub" scale-none center center); }
-.taskbar-mode--skill { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_skill_01.sub" scale-none center center); }
+/* Each button's glyph, centered in the button's padding box (the mode
+   buttons switch their glyph's shape with their mode), in the accent under
+   the pointer. */
+.taskbar-glyph
+{
+	position: absolute;
+	left: 11dp;
+	top: 11dp;
+	transform: scale(1.25);
+}
+.taskbar-mode:hover .taskbar-glyph, .taskbar-window:hover .taskbar-glyph, .taskbar-expand:hover .taskbar-glyph,
+.taskbar-pager__up:hover .taskbar-glyph, .taskbar-pager__down:hover .taskbar-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.taskbar-expand .taskbar-glyph
+{
+	left: 3dp;
+}
+/* The page buttons are 12dp tall: the chevron's ink, the middle of its
+   16dp box, on the middle of their 10dp padding box. */
+.taskbar-pager__up .taskbar-glyph, .taskbar-pager__down .taskbar-glyph
+{
+	left: 3dp;
+	top: -3dp;
+	transform: none;
+}
 
 .taskbar-mode--left
 {
@@ -203,25 +226,21 @@ progress.taskbar-orb fill
 {
 	right: 140dp;
 	top: 4dp;
-	decorator: image("d:/ymir work/ui/game/taskbar/character_button_01.sub" scale-none center center);
 }
 .taskbar-window--inventory
 {
 	right: 96dp;
 	top: 4dp;
-	decorator: image("d:/ymir work/ui/game/taskbar/inventory_button_01.sub" scale-none center center);
 }
 .taskbar-window--messenger
 {
 	right: 52dp;
 	top: 4dp;
-	decorator: image("d:/ymir work/ui/game/taskbar/community_button_01.sub" scale-none center center);
 }
 .taskbar-window--system
 {
 	right: 8dp;
 	top: 4dp;
-	decorator: image("d:/ymir work/ui/game/taskbar/system_button_01.sub" scale-none center center);
 }
 
 /* The camera mode image while the quick camera key is held, over the right
@@ -236,7 +255,6 @@ progress.taskbar-orb fill
 	height: 40dp;
 	border-radius: var(--radius-md);
 	background-color: var(--surface-raised);
-	decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub" scale-none center center);
 }
 
 /* --- Quickslots ------------------------------------------------------------------ */
@@ -271,7 +289,6 @@ progress.taskbar-orb fill
 	top: 0;
 	width: 24dp;
 	height: 40dp;
-	decorator: image("d:/ymir work/ui/game/taskbar/chat_button_01.sub" scale-none center center);
 }
 .taskbar-key
 {
@@ -307,12 +324,10 @@ progress.taskbar-orb fill
 .taskbar-pager__up
 {
 	top: 0;
-	decorator: image("d:/ymir work/ui/game/taskbar/quickslot_upbutton_01.sub" scale-none center center);
 }
 .taskbar-pager__down
 {
 	top: 28dp;
-	decorator: image("d:/ymir work/ui/game/taskbar/quickslot_downbutton_01.sub" scale-none center center);
 }
 .taskbar-pager__page
 {

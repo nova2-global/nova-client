@@ -31,7 +31,6 @@ import uiPointReset
 import uiShop
 import uiExchange
 import uiSystem
-import uiOption
 import uiRestart
 ####################################
 

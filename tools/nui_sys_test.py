@@ -81,7 +81,7 @@ class World(object):
         game.modules["systemSetting"].GetUINuiWindows = lambda: windows if nui_on else ""
         game.modules["localeInfo"].OPTION_PVPMODE_PROTECT = "Level %d needed"
         game.status[P["LEVEL"]] = 105
-        for name in ("uiOption", "networkModule", "interfaceModule"):
+        for name in ("networkModule", "interfaceModule"):
             game.put(name, types.ModuleType(name))
         if setup is not None:
             setup(game)

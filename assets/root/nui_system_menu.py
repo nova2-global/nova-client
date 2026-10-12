@@ -13,9 +13,7 @@ frame; the constructor loads it once to answer nui_ready().
 Each button closes the menu first and then makes legacy's calls, in
 legacy's order (uisystem.py:77-131). The option windows are made through
 uiSystemOption.OptionDialog and uiGameOption.OptionDialog, the factories
-their own flags decide (P11 spec D7), once each, as legacy's. The portal
-variant of the menu (SYSTEM_MENU_FOR_PORTAL, False in uisystem.py) is not
-ported: its document would be another one."""
+their own flags decide (P11 spec D7), once each, as legacy's."""
 
 import net
 import uiGameOption

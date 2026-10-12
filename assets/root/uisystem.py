@@ -1,7 +1,6 @@
 import net
 import app
 import ui
-import uiOption
 
 import uiSystemOption
 import uiGameOption
@@ -9,8 +8,6 @@ import uiScriptLocale
 import networkModule
 import constInfo
 import localeInfo
-
-SYSTEM_MENU_FOR_PORTAL = False
 
 ###################################################################################################
 ## System
@@ -27,10 +24,7 @@ class SystemDialog(ui.ScriptWindow):
 		
 		
 	def LoadDialog(self):	
-		if SYSTEM_MENU_FOR_PORTAL:
-			self.__LoadSystemMenu_ForPortal()
-		else:
-			self.__LoadSystemMenu_Default()
+		self.__LoadSystemMenu_Default()
 			
 	def __LoadSystemMenu_Default(self):
 		pyScrLoader = ui.PythonScriptLoader()
@@ -44,18 +38,6 @@ class SystemDialog(ui.ScriptWindow):
 		self.GetChild("help_button").SAFE_SetEvent(self.__ClickHelpButton)
 		self.GetChild("cancel_button").SAFE_SetEvent(self.Close)
 		self.GetChild("mall_button").SAFE_SetEvent(self.__ClickInGameShopButton)
-
-	def __LoadSystemMenu_ForPortal(self):
-		pyScrLoader = ui.PythonScriptLoader()
-		pyScrLoader.LoadScriptFile(self, "uiscript/systemdialog_forportal.py")
-
-		self.GetChild("system_option_button").SAFE_SetEvent(self.__ClickSystemOptionButton)
-		self.GetChild("game_option_button").SAFE_SetEvent(self.__ClickGameOptionButton)
-		self.GetChild("change_button").SAFE_SetEvent(self.__ClickChangeCharacterButton)
-		self.GetChild("exit_button").SAFE_SetEvent(self.__ClickExitButton)
-		self.GetChild("help_button").SAFE_SetEvent(self.__ClickHelpButton)
-		self.GetChild("cancel_button").SAFE_SetEvent(self.Close)
-		
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -83,16 +65,8 @@ class SystemDialog(ui.ScriptWindow):
 		self.popup = None		
 
 	def __ClickLogOutButton(self):
-		if SYSTEM_MENU_FOR_PORTAL: 
-			if app.loggined:
-				self.Close()
-				net.ExitApplication()
-			else:
-				self.Close()
-				net.LogOutGame()
-		else:
-			self.Close()
-			net.LogOutGame()
+		self.Close()
+		net.LogOutGame()
 
 
 	def __ClickExitButton(self):

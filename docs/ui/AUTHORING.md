@@ -1586,7 +1586,7 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
   - The point reset shows one question at a time and localized texts (`POINT_RESET_*`), where legacy shows the confirmation over the question and hard-codes Korean in every locale. No path reaches it on this client and server: `SendPointResetPacket` has no caller and the server has no `pointreset` command.
   - The modern help is a centered card without the taskbar pointers, which aim at the legacy taskbar's places. With the legacy taskbar (`hud` off) the taskbar's `TOP_MOST` buttons stay above the help's scrim and take the pointer first.
   - The camera distance, the name color and the target board option are not saved across a restart, as in legacy (module state in `constinfo.py`). The music list's empty-list popup cannot show, as in legacy: the default entry is always there.
-  - The mall button sends `/in_game_mall` as legacy does; the web window it opens is the Wave 5a one while `web` is on ([Wave 5a windows](#wave-5a-windows)). The portal variant of the system menu (`SYSTEM_MENU_FOR_PORTAL`, off) is not ported.
+  - The mall button sends `/in_game_mall` as legacy does; the web window it opens is the Wave 5a one while `web` is on ([Wave 5a windows](#wave-5a-windows)).
   - The classic Interface section has no legacy original: its layout is new, on legacy art, and the board grows under legacy's 255 px by its height.
   - The music list's popups are `uiCommon.PopupDialog` (the kit's facade with `dialogs` on), not legacy's private copy.
 - `UI_NUI_WINDOWS` holds at most 200 characters, and an older client drops it when it saves the config.

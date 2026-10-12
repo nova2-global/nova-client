@@ -49,6 +49,7 @@ import localeInfo
 import nui_windows
 
 IsQBHide = 0
+ItemMallTraced = False  # OpenItemMall writes its log line once per session
 class Interface(object):
 	CHARACTER_STATUS_TAB = 1
 	CHARACTER_SKILL_TAB = 2
@@ -63,10 +64,6 @@ class Interface(object):
 		# MR-11: Suppress quest button when quest dialog is open to prevent quest button flashing
 		self.questButtonSuppressed = False
 		# MR-11: -- END OF -- Suppress quest button when quest dialog is open to prevent quest button flashing
-
-		# ITEM_MALL
-		self.mallPageDlg = None
-		# END_OF_ITEM_MALL
 
 		self.wndWeb = None
 		self.wndTaskBar = None
@@ -476,11 +473,6 @@ class Interface(object):
 		if self.wndGameButton:
 			self.wndGameButton.Destroy()
 
-		# ITEM_MALL
-		if self.mallPageDlg:
-			self.mallPageDlg.Destroy()
-		# END_OF_ITEM_MALL
-
 		# ACCESSORY_REFINE_ADD_METIN_STONE
 		if self.wndItemSelect:
 			self.wndItemSelect.Destroy()
@@ -497,10 +489,6 @@ class Interface(object):
 			brd.Destroy()
 		for dlg in list(self.equipmentDialogDict.values()):
 			dlg.Destroy()
-
-		# ITEM_MALL
-		del self.mallPageDlg
-		# END_OF_ITEM_MALL
 
 		del self.wndGuild
 		del self.wndMessenger
@@ -627,10 +615,17 @@ class Interface(object):
 		self.wndMall.RefreshMall()
 
 	def OpenItemMall(self):
-		if not self.mallPageDlg:
-			self.mallPageDlg = uiShop.MallPageDialog()
-
-		self.mallPageDlg.Open()
+		# The item_mall server command opens the item mall's web page, as the
+		# system menu's Mall button does (the server answers with its mall
+		# command). Legacy's mall page dialog (uishop.py) loaded a uiscript
+		# that does not exist, and the load failure exited the client.
+		global ItemMallTraced
+		if not ItemMallTraced:
+			ItemMallTraced = True
+			import dbg
+			dbg.Tracen("item_mall: opening the mall web page through /in_game_mall")
+		import net
+		net.SendChatPacket("/in_game_mall")
 	# END_OF_ITEM_MALL
 
 	def RefreshMessenger(self):

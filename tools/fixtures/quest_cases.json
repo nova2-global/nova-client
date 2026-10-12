@@ -1,5 +1,6 @@
 [
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -67,6 +68,7 @@
   },
   "name": "npc-menu",
   "refused": false,
+  "restricted": 60,
   "script": "[QUESTION 1;OX contest |2;Close]",
   "skin": 1,
   "steps": [
@@ -100,6 +102,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -197,6 +200,7 @@
   },
   "name": "ox-page-1",
   "refused": false,
+  "restricted": 60,
   "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]Uriel: [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]Hey - you there! Yes, you - you look quite[ENTER]intelligent. There is a contest called the OX[ENTER]contest. You can test your knowledge there. If[ENTER]you win, you'll get a nice reward. [ENTER][NEXT]",
   "skin": 1,
   "steps": [
@@ -299,6 +303,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -400,6 +405,7 @@
   },
   "name": "ox-page-2",
   "refused": false,
+  "restricted": 60,
   "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]Uriel: [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]I can let you participate in the contest once it[ENTER]starts.[ENTER]The starting time has not been set yet.[ENTER]I'll let you know when it's time, so be ready! [ENTER][DONE]",
   "skin": 1,
   "steps": [
@@ -503,6 +509,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -660,6 +667,7 @@
   },
   "name": "warp-question",
   "refused": false,
+  "restricted": 60,
   "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]Teleporter:  [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]This is a fascinating place. But does anything[ENTER]out of the ordinary ever happen here? Probably[ENTER]not. In other parts of the country, everything[ENTER]looks a little different! I'm sure there's[ENTER]somewhere interesting that I could teleport you[ENTER]to. As the powers of evil have got stronger[ENTER]again, time and space has been thrown into chaos.[ENTER]Your return might not always work. Do you want to[ENTER]be teleported anyway? [ENTER][QUESTION 1;Yes |2;No ]",
   "skin": 1,
   "steps": [
@@ -762,6 +770,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -863,6 +872,7 @@
   },
   "name": "letter-info",
   "refused": false,
+  "restricted": 60,
   "script": "[COLOR r;1|g;0.90196078431373|b;0.72941176470588]The fresh supply [COLOR r;0.76862745098039|g;0.76862745098039|b;0.76862745098039][ENTER]Go to the General Store Saleswoman and find out[ENTER]why there is a delay in fresh potion supplies. [ENTER][ENTER]The General Store Saleswoman is in Pyungmoo . [ENTER][DONE]",
   "skin": 1,
   "steps": [
@@ -966,6 +976,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -1035,6 +1046,7 @@
   },
   "name": "name-input",
   "refused": false,
+  "restricted": 60,
   "script": "Please enter the name you want to have[ENTER][INPUT]",
   "skin": 1,
   "steps": [
@@ -1111,6 +1123,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -1185,6 +1198,7 @@
   },
   "name": "name-too-long",
   "refused": false,
+  "restricted": 60,
   "script": "This name is too long. Please try again.[ENTER][ENTER][DONE]",
   "skin": 1,
   "steps": [
@@ -1260,6 +1274,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -1316,6 +1331,7 @@
   },
   "name": "done-only",
   "refused": false,
+  "restricted": 60,
   "script": "[DONE]",
   "skin": 0,
   "steps": [
@@ -1348,6 +1364,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -1410,6 +1427,7 @@
   },
   "name": "letter-button",
   "refused": false,
+  "restricted": 60,
   "script": "[QUESTBUTTON idx;7|name;Hunting bears][DONE]",
   "skin": 0,
   "steps": [
@@ -1468,6 +1486,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -1560,6 +1579,7 @@
   },
   "name": "colors-names",
   "refused": false,
+  "restricted": 60,
   "script": "[COLOR r;1|g;0.5|b;0]Orange [/COLOR]and [ITEM value;27001] from [MOB value;101].[ENTER][DELAY value;30]Slow letters[/DELAY] fast again.[ENTER][TEXT_HORIZONTAL_ALIGN_CENTER]Centered from here[ENTER]Seventy letters on one line: legacy breaks it at sixty bytes, we don't[ENTER][DONE]",
   "skin": 1,
   "steps": [
@@ -1662,6 +1682,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -1770,6 +1791,7 @@
   },
   "name": "icons",
   "refused": false,
+  "restricted": 60,
   "script": "Three rewards:[ENTER][INSERT_IMAGE image_type;item|idx;27001|title;Red Potion (S)|desc;|index;0|total;3][INSERT_IMAGE image_type;item|idx;27002|title;Red Potion (M)|desc;|index;1|total;3][INSERT_IMAGE image_type;item|idx;27003|title;Red Potion (L)|desc;|index;2|total;3][ENTER][INSERT_IMAGE image_type;item|idx;50001|index;0|total;1][DONE]",
   "skin": 1,
   "steps": [
@@ -1822,6 +1844,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -1954,6 +1977,7 @@
   },
   "name": "many-choices",
   "refused": false,
+  "restricted": 60,
   "script": "Pick one.[ENTER][QUESTION 1;One|2;Two|3;Three|4;Four|5;Five|6;Six|7;Seven|8;Eight|9;Nine|10;Close]",
   "skin": 1,
   "steps": [
@@ -2007,6 +2031,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -2107,6 +2132,7 @@
   },
   "name": "images",
   "refused": false,
+  "restricted": 60,
   "script": "[LEFTIMAGE src;gwoijil.tga][TOPIMAGE src;mil_chu.tga][BGIMAGE src;level_bg.tga][IMAGE x;20|y;12|src;1001.tga][TITLE_IMAGE src;d:/ymir work/ui/game/questboard/level_20.tga][WINDOW_SIZE width;420|height;320]Images.[ENTER][DONE]",
   "skin": 1,
   "steps": [
@@ -2167,6 +2193,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -2277,6 +2304,7 @@
   },
   "name": "fades",
   "refused": false,
+  "restricted": 60,
   "script": "Dark.[ENTER][FADE_OUT speed;0.05]Bright.[ENTER][FADE_IN speed;0.05][WHITE_OUT speed;0][WHITE_IN speed;0.1][DONE]",
   "skin": 1,
   "steps": [
@@ -2333,6 +2361,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -2406,6 +2435,7 @@
   },
   "name": "confirm",
   "refused": false,
+  "restricted": 60,
   "scripts": [
    "Waiting for the answer.[ENTER][CONFIRM_WAIT timeout;10]",
    "[END_CONFIRM_WAIT]"
@@ -2461,6 +2491,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -2571,6 +2602,7 @@
   },
   "name": "scroll",
   "refused": false,
+  "restricted": 36,
   "script": "[BGIMAGE src;level_bg.tga][ENTER][ENTER][ENTER][IMAGE x;20|y;12|src;1001.tga][COLOR r;0|g;0|b;0]Hunt 20 wolves.[ENTER][QUESTION 1;Close]",
   "skin": 3,
   "steps": [
@@ -2631,6 +2663,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [
     [
@@ -2692,6 +2725,7 @@
   },
   "name": "cinema",
   "refused": false,
+  "restricted": 60,
   "script": "The ship left at dawn.[ENTER][NEXT]",
   "skin": 5,
   "steps": [
@@ -2744,6 +2778,7 @@
   ]
  },
  {
+  "file": false,
   "final": {
    "calls": [],
    "frames": 0,
@@ -2780,8 +2815,230 @@
   },
   "name": "long-choice",
   "refused": true,
+  "restricted": 60,
   "script": "[QUESTION 1;xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]",
   "skin": 1,
   "steps": []
+ },
+ {
+  "file": true,
+  "final": {
+   "calls": [],
+   "frames": 69,
+   "lines": [
+    {
+     "align": "left",
+     "id": 1,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Shinsoo Kingdom The Shinsoo"}],
+     "shown": 27,
+     "total": 27,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 2,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Kingdom is in the south of"}],
+     "shown": 26,
+     "total": 26,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 3,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "the continent. The"}],
+     "shown": 18,
+     "total": 18,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 4,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "inhabitants are mainly"}],
+     "shown": 22,
+     "total": 22,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 5,
+     "kind": "text",
+     "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "involved in trade. Opened by"}],
+     "shown": 28,
+     "total": 28,
+     "wraps": []
+    },
+    {
+     "align": "left",
+     "id": 6,
+     "kind": "text",
+     "runs": [],
+     "shown": 0,
+     "total": 0,
+     "wraps": []
+    }
+   ],
+   "page": {
+    "button": "",
+    "choices": [],
+    "delay": 10,
+    "done": false,
+    "ended": false,
+    "fade": {
+     "kind": "",
+     "serial": 0,
+     "speed": 0.0
+    },
+    "free_images": [],
+    "images": {
+     "background": "",
+     "left": "",
+     "title": "",
+     "title_serial": 0,
+     "top": ""
+    },
+    "input": false,
+    "locked": true,
+    "pages": 0,
+    "size": {
+     "height": 0,
+     "width": 0
+    },
+    "skin": 1,
+    "waiting": false
+   }
+  },
+  "name": "empiredesc-a",
+  "refused": false,
+  "restricted": 35,
+  "script": "[DELAY value;10]\nShinsoo Kingdom The Shinsoo[ENTER]\nKingdom is in the south of[ENTER]\nthe continent. The[ENTER]\ninhabitants are mainly[ENTER]\ninvolved in trade. Opened by[ENTER]\n[WAIT]\nYoon-Yoing after the fall of[ENTER]\nthe Empire, trade relations[ENTER]\nwith the east transformed[ENTER]\nquickly into a profitable[ENTER]\narrangement. The inhabitants[ENTER]\n[WAIT]\nfight constantly with the[ENTER]\nwest and this trade route is[ENTER]\nnow totally cut off. When[ENTER]\nthey recognized the threat[ENTER]\nposed by the Metin Stones,[ENTER]\n[WAIT]\nthe merchants armed[ENTER]\nthemselves. It is their aim[ENTER]\nto withstand the attacks[ENTER]\nfrom the west, to reopen all[ENTER]\ntrade routes and to unite[ENTER]\n[WAIT]\nthe whole continent under[ENTER]\ntheir leadership.",
+  "skin": 1,
+  "steps": [
+   {
+    "calls": [],
+    "frames": 1,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Shinsoo Kingdom The Shinsoo"}], "shown": 0, "total": 27, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 5,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Shinsoo Kingdom The Shinsoo"}], "shown": 8, "total": 27, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 20,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Shinsoo Kingdom The Shinsoo"}], "shown": 27, "total": 27, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Kingdom is in the south of"}], "shown": 10, "total": 26, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 38,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Shinsoo Kingdom The Shinsoo"}], "shown": 27, "total": 27, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Kingdom is in the south of"}], "shown": 26, "total": 26, "wraps": []},
+     {"align": "left", "id": 3, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "the continent. The"}], "shown": 18, "total": 18, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   },
+   {
+    "calls": [],
+    "frames": 60,
+    "lines": [
+     {"align": "left", "id": 1, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Shinsoo Kingdom The Shinsoo"}], "shown": 27, "total": 27, "wraps": []},
+     {"align": "left", "id": 2, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "Kingdom is in the south of"}], "shown": 26, "total": 26, "wraps": []},
+     {"align": "left", "id": 3, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "the continent. The"}], "shown": 18, "total": 18, "wraps": []},
+     {"align": "left", "id": 4, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "inhabitants are mainly"}], "shown": 22, "total": 22, "wraps": []},
+     {"align": "left", "id": 5, "kind": "text", "runs": [{"color": 4294967295, "name": "", "role": "text", "text": "involved in trade. Opened by"}], "shown": 18, "total": 28, "wraps": []}
+    ],
+    "page": {
+     "button": "",
+     "choices": [],
+     "delay": 10,
+     "done": false,
+     "ended": false,
+     "fade": {"kind": "", "serial": 0, "speed": 0.0},
+     "free_images": [],
+     "images": {"background": "", "left": "", "title": "", "title_serial": 0, "top": ""},
+     "input": false,
+     "locked": false,
+     "pages": 0,
+     "size": {"height": 0, "width": 0},
+     "skin": 1,
+     "waiting": false
+    }
+   }
+  ]
  }
 ]

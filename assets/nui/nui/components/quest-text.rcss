@@ -6,8 +6,8 @@
 
    <nui-quest-text id="quest-text" data-attr-set="set_index"/>
    	rest="hidden" (the default): a typing line holds its unrevealed text in
-   	span.nui-quest__rest, laid out but not drawn, so a word never jumps to
-   	the next line as it types; rest="none": no rest span, the line grows as
+   	nui-quest__rest spans, laid out but not drawn, so a word never jumps to
+   	the next line as it types; rest="none": no rest spans, the line grows as
    	it types.
 
    What it builds (P12 spec 3.7):
@@ -15,7 +15,8 @@
    	span.nui-quest__run.nui-quest__run--<role> per run; role is text, body,
    	title, reward, item (the colors the server's quest library writes) or
    	custom (an inline color); a name run also has nui-quest__name--item or
-   	nui-quest__name--mob. Then span.nui-quest__rest.
+   	nui-quest__name--mob. Then, while it types, one span.nui-quest__rest
+   	per run with unrevealed text, carrying that run's classes.
    div.nui-quest__icons
    	span.nui-slot.nui-quest__icon.nui-has-tooltip per icon, holding
    	img.nui-slot__icon, span.nui-quest__caption and
@@ -73,28 +74,12 @@ nui-quest-text
 {
 	color: var(--quest-item);
 }
-/* The unrevealed part of a typing line: laid out, never drawn. It is one
-   text node after the revealed runs; when it shows (reduced motion) it takes
-   the color of the run it continues. */
+/* The unrevealed part of a typing line: laid out, never drawn. Each rest
+   span carries the classes of the run it continues, so it is laid out, and
+   colored when it shows (reduced motion), by that run's rules. */
 .nui-quest__rest
 {
 	visibility: hidden;
-}
-.nui-quest__run--body + .nui-quest__rest
-{
-	color: var(--quest-body);
-}
-.nui-quest__run--title + .nui-quest__rest
-{
-	color: var(--quest-title);
-}
-.nui-quest__run--reward + .nui-quest__rest
-{
-	color: var(--quest-reward);
-}
-.nui-quest__run--item + .nui-quest__rest
-{
-	color: var(--quest-item);
 }
 @media (theme: reduced-motion)
 {

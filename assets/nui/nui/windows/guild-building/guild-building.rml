@@ -24,7 +24,7 @@
 <body template="nui" class="nui-window nui-anim guild-building" data-model="guild_building">
 	<div class="nui-window__titlebar guild-building__titlebar">
 		<handle class="nui-window__handle guild-building__handle" move_target="#document">
-			<span class="nui-window__title guild-building__title">@ui.GUILD_BUILDING_TITLE</span>
+			<span id="gb-title" class="nui-window__title guild-building__title">@ui.GUILD_BUILDING_TITLE</span>
 		</handle>
 		<button id="gb-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)">&#215;</button>
 	</div>

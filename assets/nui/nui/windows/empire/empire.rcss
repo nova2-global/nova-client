@@ -6,15 +6,18 @@
    (160, 340) and (290, 340), and the board, 208dp wide, at 40/800 from the
    left with its bottom where the legacy board's was (75/600 above the
    bottom edge), so a tall scale keeps its buttons on the screen. The
-   backdrop is the legacy pattern between two legacy line strips, under the
-   legacy shade. */
+   modern backdrop is the scene color with a 42dp band along the top and the
+   bottom that fades from the scene's band color (two-color vertex gradients,
+   no shader). The scene is dark in every palette: the locale's title art
+   holds its subtitle in white, made for legacy's dark backdrop. Classic draws the legacy pattern between the legacy line
+   strips, under the legacy shade (skins/classic/windows/empire.rcss). */
 body.empire
 {
 	left: 0;
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background-color: var(--surface-sunken);
+	background-color: var(--scene);
 }
 
 .empire-pattern
@@ -24,7 +27,6 @@ body.empire
 	top: 42dp;
 	right: 0dp;
 	bottom: 42dp;
-	decorator: image("d:/ymir work/ui/intro/pattern/background_pattern.tga" repeat left top);
 }
 .empire-shade
 {
@@ -33,7 +35,6 @@ body.empire
 	top: 0dp;
 	width: 100%;
 	height: 100%;
-	decorator: image("d:/ymir work/ui/intro/select/background_alpha.sub" fill);
 }
 .empire-line
 {
@@ -41,15 +42,16 @@ body.empire
 	left: 0dp;
 	width: 100%;
 	height: 42dp;
-	decorator: image("d:/ymir work/ui/intro/pattern/line_pattern.tga" repeat-x left top);
 }
 .empire-line--top
 {
 	top: 0dp;
+	decorator: vertical-gradient(var(--scene-band) transparent);
 }
 .empire-line--bottom
 {
 	bottom: 0dp;
+	decorator: vertical-gradient(transparent var(--scene-band));
 }
 
 .empire-title

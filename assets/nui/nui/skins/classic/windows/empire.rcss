@@ -12,6 +12,20 @@ body.skin-classic.empire
 {
 	background-color: var(--classic-slot-fill);
 }
+/* The legacy backdrop: the pattern between the two line strips, under the
+   shade. */
+.skin-classic .empire-pattern
+{
+	decorator: image("d:/ymir work/ui/intro/pattern/background_pattern.tga" repeat left top);
+}
+.skin-classic .empire-shade
+{
+	decorator: image("d:/ymir work/ui/intro/select/background_alpha.sub" fill);
+}
+.skin-classic .empire-line, .skin-classic .empire-line--top, .skin-classic .empire-line--bottom
+{
+	decorator: image("d:/ymir work/ui/intro/pattern/line_pattern.tga" repeat-x left top);
+}
 .skin-classic .nui-window.empire-board
 {
 	decorator: classic-thinboard;

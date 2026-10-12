@@ -29,6 +29,18 @@ import types
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.normpath(os.path.join(HERE, "..", "assets", "root"))
+sys.path.insert(0, HERE)
+import nui_palette  # noqa: E402
+
+_PALETTE_DATA = []
+
+
+def palette_data():
+    """The shipped player color data (nui/theme/colors.json and the skins'),
+    read once."""
+    if not _PALETTE_DATA:
+        _PALETTE_DATA.append(nui_palette.load())
+    return _PALETTE_DATA[0]
 
 THEMES = [("modern-dark", "Modern dark"), ("modern-light", "Modern light"), ("classic", "Classic")]
 # Each theme's <body> classes (nui/theme/themes.json).
@@ -66,7 +78,11 @@ class NuiState(object):
         self.scale_percent = 0   # nui.get_scale_percent(): the saved choice, 0 for automatic
         self.auto_scale = 0.875  # nui.get_auto_scale(): 900 lines in 1/8 steps
         self.reduced_motion = False
-        self.appearance = []     # ("set_theme", id), ("set_scale_percent", p), ("set_reduced_motion", on), in order
+        self.reduced_effects = False   # the player's setting (nui.set_reduced_effects)
+        self.effects_available = True  # nui.effects_available(): False for a device without effects
+        self.colors = {}         # theme id -> {slot: value}, the player colors set (nui.set_color)
+        self.appearance = []     # ("set_theme", id), ("set_scale_percent", p), ("set_reduced_motion", on),
+                                 # ("set_reduced_effects", on), ("set_color", slot, value), ("reset_colors", all), in order
 
     def publish(self, name, value):
         """A feed changes: every live window's key bound to it takes the value,
@@ -245,6 +261,9 @@ def make_nui(state):
         def on_theme_changed(self, theme_id):
             pass
 
+        def on_colors_changed(self, slot):
+            pass
+
         def on_scale_changed(self, scale):
             pass
 
@@ -408,6 +427,50 @@ def make_nui(state):
         state.appearance.append(("set_reduced_motion", bool(on)))
         state.reduced_motion = bool(on)
 
+    def set_reduced_effects(on):
+        state.appearance.append(("set_reduced_effects", bool(on)))
+        state.reduced_effects = bool(on)
+
+    # The player colors, over the shipped palette data and the reference
+    # resolve (tools/nui_palette.py), as the runtime answers them.
+    def color_slots():
+        if not state.available:
+            return []
+        values = state.colors.get(state.theme, {})
+        return [{"slot": s["slot"], "kind": s["kind"], "label": s["label"], "default": s["default"],
+                 "value": values.get(s["slot"], s["default"]), "swatches": list(s["swatches"]),
+                 "min": s["min"], "max": s["max"], "step": s["step"]} for s in nui_palette.slots_of_theme(palette_data(), state.theme)]
+
+    def set_color(slot, value):
+        state.appearance.append(("set_color", slot, str(value)))
+        if not state.available:
+            return {"ok": False, "value": str(value), "adjusted": {}, "failed": [], "opacity": 100}
+        spec = next((s for s in nui_palette.slots_of_theme(palette_data(), state.theme) if s["slot"] == slot), None)
+        normal = nui_palette.normalize_slot_value(spec, str(value)) if spec else None
+        if normal is None:
+            raise ValueError("nui.set_color(): no slot %r or a malformed value %r" % (slot, value))
+        values = state.colors.setdefault(state.theme, {})
+        if normal == spec["default"]:
+            values.pop(slot, None)
+        else:
+            values[slot] = normal
+        result = nui_palette.resolve(palette_data(), state.theme, values)
+        for window in list(state.windows):
+            if window._doc:
+                window.on_colors_changed(slot)
+        return {"ok": True, "value": normal, "adjusted": result["adjusted"], "failed": result["failed"],
+                "opacity": result["opacity"]}
+
+    def reset_colors(all_themes=False):
+        state.appearance.append(("reset_colors", bool(all_themes)))
+        if all_themes:
+            state.colors.clear()
+        else:
+            state.colors.pop(state.theme, None)
+        for window in list(state.windows):
+            if window._doc:
+                window.on_colors_changed(None)
+
     def any_window_shown():
         return any(window.is_visible() for window in state.windows)
 
@@ -431,6 +494,13 @@ def make_nui(state):
     nui.get_auto_scale = lambda: state.auto_scale if state.available else 1.0
     nui.set_reduced_motion = set_reduced_motion
     nui.is_reduced_motion = lambda: state.reduced_motion
+    nui.set_reduced_effects = set_reduced_effects
+    nui.is_reduced_effects = lambda: state.reduced_effects or not state.effects_available
+    nui.effects_available = lambda: bool(state.effects_available) if state.available else False
+    nui.get_color_slots = color_slots
+    nui.set_color = set_color
+    nui.reset_colors = reset_colors
+    nui.get_colors = lambda: dict(state.colors.get(state.theme, {}))
     nui.any_window_shown = any_window_shown
     nui.plain_text = plain_text
     nui.now = lambda: float(state.now) if state.available else 0.0

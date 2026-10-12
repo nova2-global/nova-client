@@ -508,6 +508,13 @@ class Window(object):
 		the window's size in pixels (a legacy window kept clear of it)."""
 		pass
 
+	def on_colors_changed(self, slot):
+		"""Hook: nui.set_color() set color slot `slot`, or nui.reset_colors()
+		reset them (`slot` None). The documents show the new colors already;
+		override this to refill model values that show the colors (the
+		Interface section's swatches)."""
+		pass
+
 	def has_class(self, name, element_id=""):
 		"""True when the element with this id ("" is the <body>) has the class
 		`name` now. The theme's classes (skin-classic, theme-dark, ...) are on
@@ -552,8 +559,9 @@ class Window(object):
 
 # --- appearance -------------------------------------------------------------
 # Each setter applies immediately and persists to config/metin2.cfg through
-# systemSetting (UI_THEME, UI_SCALE, UI_REDUCED_MOTION): it stores the value
-# and saves the file. Without NovaUI running only the saved value changes.
+# systemSetting (UI_THEME, UI_SCALE, UI_REDUCED_MOTION, UI_REDUCED_EFFECTS,
+# UI_COLORS): it stores the value and saves the file. Without NovaUI running
+# only the saved value changes (the colors need the runtime to apply).
 
 def _system_setting():
 	try:
@@ -703,6 +711,129 @@ def is_reduced_motion():
 	if setting is not None:
 		return bool(setting.IsUIReducedMotion())
 	return False
+
+
+def _nui_call(name):
+	"""The _nui function `name` while NovaUI runs, else None (also with an
+	older exe that has no such function)."""
+	return getattr(_nui, name, None) if is_available() else None
+
+
+def set_reduced_effects(on):
+	"""Reduced effects on or off at once (the reduced-effects media theme:
+	no filters, backdrop filters or masks; shadows and gradients stay), and
+	saved (UI_REDUCED_EFFECTS). A device without effects keeps them reduced
+	whatever this says (effects_available())."""
+	on = bool(on)
+	setter = _nui_call("SetReducedEffects")
+	if setter is not None:
+		setter(on)
+	setting = _system_setting()
+	if setting is not None and getattr(setting, "SetUIReducedEffects", None) is not None:
+		setting.SetUIReducedEffects(1 if on else 0)
+		_save(setting)
+
+
+def is_reduced_effects():
+	"""Whether effects are reduced now: the player's setting, or True when the
+	device draws no effects. The saved choice without NovaUI."""
+	getter = _nui_call("GetReducedEffects")
+	if getter is not None:
+		return bool(getter())
+	setting = _system_setting()
+	if setting is not None and getattr(setting, "IsUIReducedEffects", None) is not None:
+		return bool(setting.IsUIReducedEffects())
+	return False
+
+
+def effects_available():
+	"""Whether the renderer draws effects (filters, layers, shaders) on this
+	device; False without NovaUI, or with an exe that has none."""
+	available = _nui_call("EffectsAvailable")
+	return bool(available()) if available is not None else False
+
+
+# --- player colors (docs/ui/AUTHORING.md "Player colors") --------------------
+
+def get_color_slots():
+	"""The color slots the theme in use offers, in order: dicts {"slot",
+	"kind" ("color" or "percent"), "label" (a locale key, @ui.), "default",
+	"value" (the one in use), "swatches", "min", "max", "step"}. [] when the
+	theme offers none (classic), without NovaUI, or with an exe that has no
+	player colors."""
+	get = _nui_call("GetColorSlots")
+	if get is None:
+		return []
+	return [dict(slot) for slot in get()]
+
+
+def get_colors():
+	"""The theme in use's player colors: {slot: value} for every slot not at
+	its default; {} when none is set."""
+	return {slot["slot"]: str(slot["value"]) for slot in get_color_slots() if str(slot["value"]) != str(slot["default"])}
+
+
+def _save_colors():
+	overrides = _nui_call("GetColorOverrides")
+	setting = _system_setting()
+	if overrides is None or setting is None or getattr(setting, "SetUIColors", None) is None:
+		return
+	setting.SetUIColors(overrides())
+	_save(setting)
+
+
+def set_color(slot, value):
+	"""Sets one color slot of the theme in use for every open window at once,
+	saves every theme's colors (UI_COLORS), then runs every open window's
+	on_colors_changed(slot). Returns the resolve's result: {"ok": True,
+	"value", "adjusted": {token: value} (the colors it changed to keep text
+	readable; "opacity" when it raised the panel opacity), "failed": [[fg,
+	bg], ...], "opacity"}.
+
+	`value` is "#rrggbb" for a color slot or a whole percent for a percent
+	slot ("opacity", 50 to 100 in steps of 5, as an int or a string); the
+	slot's default removes the override. ValueError for a slot the theme does
+	not offer or a malformed value. Without NovaUI nothing applies and the
+	result has "ok": False."""
+	if not isinstance(slot, str) or isinstance(value, bool) or not isinstance(value, (str, int)):
+		raise ValueError("nui.set_color() takes a slot name and a #rrggbb color or a whole percent, not %r, %r" % (slot, value))
+	setter = _nui_call("SetColor")
+	if setter is None:
+		return {"ok": False, "value": str(value), "adjusted": {}, "failed": [], "opacity": 100}
+	result = dict(setter(slot, str(value)))
+	_save_colors()
+	for window in list(_windows.values()):
+		window.on_colors_changed(slot)
+	return result
+
+
+def reset_colors(all_themes=False):
+	"""Removes the player colors of the theme in use (every theme's with
+	all_themes), applies and saves at once, then runs every open window's
+	on_colors_changed(None)."""
+	reset = _nui_call("ResetColors")
+	if reset is None:
+		return
+	reset("*" if all_themes else "")
+	_save_colors()
+	for window in list(_windows.values()):
+		window.on_colors_changed(None)
+
+
+# --- first opens --------------------------------------------------------------
+
+def prewarm(paths):
+	"""Asks the runtime to parse the style sheets of these documents ahead of
+	their first open, one document per calm frame (P13 spec 8.2 F-H1), so the
+	first open of an on-demand window costs what a second one does. `paths`
+	are store paths of documents (nui/windows/<w>/<w>.rml). True when the
+	runtime took the list; False without NovaUI or with an exe that has no
+	prewarm."""
+	queue = _nui_call("Prewarm")
+	if queue is None:
+		return False
+	queue([str(path) for path in paths])
+	return True
 
 
 # --- strings ----------------------------------------------------------------

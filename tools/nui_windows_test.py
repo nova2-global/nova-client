@@ -478,5 +478,64 @@ class PhaseEnd(WindowsTest):
         self.assertEqual(self.dbg.errors, ["nui_windows: nui_dialog_kit.end_phase() failed (KeyError)"])
 
 
+class GameWindow(object):
+    """Stands in for game.GameWindow, the game phase's window (by class name)."""
+
+
+class SelectWindow(object):
+    pass
+
+
+class PhaseStart(WindowsTest):
+    def prewarm_seen(self, accepted=True):
+        seen = []
+
+        def prewarm(paths):
+            seen.append(list(paths))
+            return accepted
+        self.m.nui.prewarm = prewarm
+        return seen
+
+    def test_the_game_phase_queues_the_on_demand_documents_of_the_windows_that_are_on(self):
+        self.setting.windows = "+sys,+dialogs,+chat-log,-help"
+        seen = self.prewarm_seen()
+        self.assertEqual(self.m.start_phase(GameWindow()), 11)
+        self.assertEqual(seen, [["nui/windows/system-menu/system-menu.rml", "nui/windows/system-options/system-options.rml",
+                                 "nui/windows/music-list/music-list.rml", "nui/windows/game-options/game-options.rml",
+                                 "nui/windows/restart/restart.rml", "nui/windows/dialog-question/dialog-question.rml",
+                                 "nui/windows/dialog-message/dialog-message.rml", "nui/windows/dialog-input/dialog-input.rml",
+                                 "nui/windows/dialog-money/dialog-money.rml", "nui/windows/pick-money/pick-money.rml",
+                                 "nui/windows/chat-log/chat-log.rml"]],
+                         "the windows that are on, in the table's order, each document once (point reset shares the "
+                         "question dialog); help is off")
+        self.assertEqual(self.dbg.lines[-1], "nui_windows: game phase, 11 document(s) queued for a prewarm")
+
+    def test_another_phase_novaui_off_or_nothing_on_queues_nothing(self):
+        self.setting.windows = "+sys"
+        seen = self.prewarm_seen()
+        self.assertEqual(self.m.start_phase(SelectWindow()), 0, "only the game phase prewarms")
+        self.state.available = False
+        self.assertEqual(self.m.start_phase(GameWindow()), 0)
+        self.state.available = True
+        self.setting.windows = ""
+        self.assertEqual(self.m.start_phase(GameWindow()), 0, "no on-demand window is on")
+        self.assertEqual(seen, [])
+
+    def test_an_exe_or_nui_without_prewarm_queues_nothing(self):
+        self.setting.windows = "+sys"
+        self.assertFalse(hasattr(self.m.nui, "prewarm"))
+        self.assertEqual(self.m.start_phase(GameWindow()), 0)
+        self.prewarm_seen(accepted=False)
+        self.assertEqual(self.m.start_phase(GameWindow()), 0, "a runtime that refuses the list queued nothing")
+
+    def test_every_prewarm_document_is_an_on_demand_window_document(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        root = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "nui")
+        for window_id, names in self.m.ON_DEMAND_DOCUMENTS:
+            self.assertIn(window_id, ids)
+            for name in names:
+                self.assertTrue(os.path.isfile(os.path.join(root, "nui", "windows", name, name + ".rml")), name)
+
+
 if __name__ == "__main__":
     unittest.main()

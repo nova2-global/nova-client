@@ -13,7 +13,9 @@ and its controller was made; otherwise the legacy window runs, unchanged.
 Each decision is logged once to log.txt (dbg.Tracen); a failure of a
 window that was asked for is also logged once to syserr.txt
 (dbg.TraceError). At each phase change, end_phase() unloads the documents
-the ended phase shared, so none stays in the frame update of the next."""
+the ended phase shared, so none stays in the frame update of the next, and
+start_phase() queues the game phase's on-demand documents for a prewarm, so
+their first open costs what a later one does."""
 
 import sys
 
@@ -100,6 +102,27 @@ DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
 # windows: the dialog kit's, the quest curtain and any quest board left),
 # each with an end_phase() that unloads them; see end_phase().
 PHASE_SCOPED = ("nui_dialog_kit", "nui_quest")
+
+# The game phase's on-demand documents by window id (loaded at their first
+# show and unloaded at their hide or at the phase end: nui_hud.OnDemand, the
+# dialog kit, the quest board), which start_phase() asks the runtime to
+# prewarm. Each is the window folder of nui/windows/<name>/<name>.rml.
+ON_DEMAND_DOCUMENTS = (
+	("system-menu", ("system-menu",)),
+	("system-options", ("system-options", "music-list")),
+	("game-options", ("game-options",)),
+	("restart", ("restart",)),
+	("help", ("help",)),
+	("dialogs", ("dialog-question", "dialog-message", "dialog-input", "dialog-money", "pick-money")),
+	("point-reset", ("dialog-question",)),
+	("chat-log", ("chat-log",)),
+	("atlas", ("atlas",)),
+	("quest", ("quest", "quest-curtain")),
+	("guild-building", ("guild-building",)),
+	("web", ("web",)),
+	("console", ("console",)),
+)
+GAME_PHASE_CLASS = "GameWindow"   # game.GameWindow, the game phase's window
 
 _DEFAULTS = dict(WINDOWS)
 _ID_CHARS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
@@ -303,6 +326,39 @@ def end_phase():
 	if count:
 		dbg.Tracen("nui_windows: phase ended, %d document(s) unloaded" % count)
 	return count
+
+
+def prewarm_documents():
+	"""The store paths of the on-demand documents whose window's flag is on, in
+	ON_DEMAND_DOCUMENTS order, each once."""
+	paths = []
+	for window_id, names in ON_DEMAND_DOCUMENTS:
+		if not is_on(window_id):
+			continue
+		for name in names:
+			path = "nui/windows/%s/%s.rml" % (name, name)
+			if path not in paths:
+				paths.append(path)
+	return paths
+
+
+def start_phase(phase_window):
+	"""networkModule.MainStream calls this when a phase window has opened. In
+	the game phase it asks the runtime to prewarm the style sheets of the
+	on-demand documents whose window is on (nui.prewarm, P13 spec 8.2): the
+	runtime parses one document's sheets per calm frame from a little after
+	the phase starts, so the first open of the system options, a dialog or a
+	quest no longer parses them while the game runs. Returns how many
+	documents it queued (0 in another phase, without NovaUI or with nothing
+	to queue), and logs that count to log.txt."""
+	if type(phase_window).__name__ != GAME_PHASE_CLASS or not nui.is_available():
+		return 0
+	paths = prewarm_documents()
+	prewarm = getattr(nui, "prewarm", None)
+	if not paths or prewarm is None or not prewarm(paths):
+		return 0
+	dbg.Tracen("nui_windows: game phase, %d document(s) queued for a prewarm" % len(paths))
+	return len(paths)
 
 
 def legacy_dialog_layer(window):

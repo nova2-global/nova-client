@@ -171,6 +171,8 @@ class MainStream(object):
 
 		if newPhaseWindow:
 			newPhaseWindow.Open()
+			# NovaUI: the game phase queues its on-demand documents for a prewarm in calm frames.
+			nui_windows.start_phase(newPhaseWindow)
 
 		self.curPhaseWindow=newPhaseWindow
 		

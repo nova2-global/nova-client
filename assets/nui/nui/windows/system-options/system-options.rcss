@@ -136,3 +136,100 @@ body.system-options
 	color: var(--text);
 	font-size: var(--font-md);
 }
+
+/* Reduced effects: as reduced motion, with the note beside it while the
+   device draws no effects. */
+.so-row--effects
+{
+	min-height: 28dp;
+}
+.so-effects
+{
+	color: var(--text);
+	font-size: var(--font-md);
+}
+.so-note
+{
+	display: block;
+	flex: 1 1 auto;
+	margin-left: var(--space-3);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+
+/* The player colors: one row per color slot (20dp swatches, or the opacity
+   choices), the accent's hue slider, the reset with its note, and the
+   preview card. A swatch takes its color from the model through --swatch. */
+.so-colors
+{
+	display: block;
+	margin-top: var(--space-3);
+}
+.so-color-slot
+{
+	display: block;
+}
+.so-swatch
+{
+	--swatch: transparent;
+	display: block;
+	box-sizing: border-box;
+	width: 22dp;
+	height: 22dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--swatch);
+}
+.so-swatch:hover
+{
+	border-color: var(--text-muted);
+}
+.so-swatch.is-selected
+{
+	border-width: 2dp;
+	border-color: var(--text);
+}
+.so-row--hue
+{
+	margin-top: var(--space-1);
+}
+.so-row--reset
+{
+	margin-top: var(--space-3);
+}
+.so-preview
+{
+	margin-top: var(--space-2);
+}
+.so-preview__title
+{
+	display: block;
+	font-size: var(--font-md);
+	font-weight: bold;
+}
+.so-preview__body
+{
+	margin: var(--space-1) 0 0 0;
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.so-preview__muted
+{
+	margin: 0;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.so-preview__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	margin-top: var(--space-2);
+}
+.so-preview__item
+{
+	flex: 1 1 auto;
+}

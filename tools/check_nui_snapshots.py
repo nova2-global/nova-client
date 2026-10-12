@@ -20,7 +20,17 @@ time, an optional variant: a second fixture of the same window,
 name to a JSON file, nuitool snap --feed), "views" (view name to a PNG,
 --view) and "anchors" (a character vid to [x, y] dp, --anchor); their
 paths are store paths under assets/nui, as --doc takes them
-(docs/ui/snapshots/README.md explains each). A golden's file name holds the
+(docs/ui/snapshots/README.md explains each). The player's settings of a
+case (P13 spec 7.8): "colors" (slot=value,... for the theme of the run,
+--colors), "backdrop" (a PNG of this repository the frame starts from,
+--backdrop), "effects" ("on", the default, "reduced": --reduced-effects,
+"off": --no-effects), "reduced_motion" (true: --reduced-motion) and
+"switch_from" (a theme's short name: the page settles there and switches,
+--switch-from). A case that differs from another by its settings only
+gives itself a "name": its goldens are <page>[-<variant>]-<name>-<theme>-
+<percent>.png. Each skin may keep cases of its own, for any window, in
+assets/nui/nui/skins/<skin>/snapshots.json, which the checker reads too
+(a new skin's extra cases need no window's case file). A golden's file name holds the
 theme's short name (dark, light, classic); nuitool gets its id from
 nui/theme/themes.json (modern-dark, modern-light, classic), which needs a
 nuitool that takes theme ids.
@@ -91,6 +101,13 @@ PAGES = [
      ("classic",), [("100", "1", "640x360"), ("150", "1.5", "960x540"), ("200", "2", "1280x720")], (), None, ()),
 ]
 STAND_IN_NAME_RE = re.compile(r"[a-z][a-z0-9_.-]*")
+SKINS = os.path.join("assets", "nui", "nui", "skins")
+CASE_KEYS = {"$comment", "page", "themes", "scales", "fixture", "roots", "time", "variant", "name", "feeds", "views", "anchors",
+             "colors", "backdrop", "effects", "reduced_motion", "switch_from"}
+CASE_NAME_RE = re.compile(r"[a-z][a-z0-9-]*")
+COLOR_SLOT_VALUE = r"[a-z][a-z0-9-]*=(#[0-9a-fA-F]{6}|[0-9]{1,3})"
+COLORS_RE = re.compile(r"%s(,%s)*" % (COLOR_SLOT_VALUE, COLOR_SLOT_VALUE))
+EFFECTS = {"on": (), "reduced": ("--reduced-effects",), "off": ("--no-effects",)}
 
 
 def stand_in_args(case, where, root):
@@ -115,6 +132,39 @@ def stand_in_args(case, where, root):
                 or not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in point)):
             raise ValueError("%s: anchors maps a vid (1 or more) to [x, y] dp, not %r: %r" % (where, vid, point))
         args += ["--anchor", "%s=%s,%s" % (vid, format(point[0], "g"), format(point[1], "g"))]
+    return tuple(args)
+
+
+def setting_args(case, where, root, themes):
+    """The --colors, --backdrop, --reduced-effects or --no-effects,
+    --reduced-motion and --switch-from arguments of a case's player settings;
+    ValueError for one out of form or a backdrop that is missing."""
+    args = []
+    colors = case.get("colors")
+    if colors is not None:
+        if not isinstance(colors, str) or not COLORS_RE.fullmatch(colors):
+            raise ValueError("%s: colors is slot=value,... (#rrggbb or a percent), not %r" % (where, colors))
+        args += ["--colors", colors]
+    backdrop = case.get("backdrop")
+    if backdrop is not None:
+        if not isinstance(backdrop, str) or not backdrop.endswith(".png") or not os.path.isfile(os.path.join(root, backdrop)):
+            raise ValueError("%s: backdrop is a PNG of this repository, not %r" % (where, backdrop))
+        args += ["--backdrop", backdrop]
+    effects = case.get("effects", "on")
+    if effects not in EFFECTS:
+        raise ValueError("%s: effects is on, reduced or off, not %r" % (where, effects))
+    args += list(EFFECTS[effects])
+    reduced = case.get("reduced_motion", False)
+    if not isinstance(reduced, bool):
+        raise ValueError("%s: reduced_motion is true or false" % where)
+    if reduced:
+        args.append("--reduced-motion")
+    switch = case.get("switch_from")
+    if switch is not None:
+        ids = {theme["name"]: theme["id"] for theme in themes}
+        if switch not in ids:
+            raise ValueError("%s: switch_from is a theme's short name, not %r" % (where, switch))
+        args += ["--switch-from", ids[switch]]
     return tuple(args)
 
 
@@ -173,21 +223,33 @@ def case_themes(themes, listed, where):
 
 def window_pages(root=None, themes=None):
     """PAGES entries from every assets/nui/nui/windows/<name>/<name>.snapshots.json,
-    in folder order. ValueError for a case file that breaks its rules: a page
-    other than its folder name, an unknown theme or root, a bad scale row."""
+    in folder order, then from every skin's assets/nui/nui/skins/<skin>/snapshots.json.
+    ValueError for a case file that breaks its rules: a page other than its
+    folder name (a skin's: other than a window folder), an unknown theme,
+    root or key, a bad scale row or setting."""
     root = root or os.getcwd()
     themes = themes if themes is not None else golden_themes(root)
-    pages = []
+    files = []
     for path in sorted(glob.glob(os.path.join(root, WINDOWS, "*", "*.snapshots.json"))):
         folder = os.path.basename(os.path.dirname(path))
         if os.path.basename(path) != folder + ".snapshots.json":
             raise ValueError("%s: a case file is named after its folder" % path)
+        files.append((path, folder))
+    files += [(path, None) for path in sorted(glob.glob(os.path.join(root, SKINS, "*", "snapshots.json")))]
+    pages = []
+    for path, own_folder in files:
         with open(path, encoding="utf-8") as file:
             cases = json.load(file).get("cases", [])
         for case in cases:
             where = "%s: %r" % (os.path.relpath(path, root), case.get("page"))
-            if case.get("page") != folder:
-                raise ValueError("%s: page must be the folder name %r" % (where, folder))
+            unknown = sorted(set(case) - CASE_KEYS) if isinstance(case, dict) else ["(not an object)"]
+            if unknown:
+                raise ValueError("%s: unknown key %s" % (where, ", ".join(unknown)))
+            folder = case.get("page")
+            if own_folder is not None and folder != own_folder:
+                raise ValueError("%s: page must be the folder name %r" % (where, own_folder))
+            if own_folder is None and (not isinstance(folder, str) or not os.path.isfile(os.path.join(root, WINDOWS, folder, folder + ".rml"))):
+                raise ValueError("%s: a skin's case names a window folder of assets/nui/nui/windows" % where)
             listed = case_themes(themes, case.get("themes"), where)
             scales = [tuple(row) for row in case.get("scales", ())]
             if not scales or any(len(row) != 3 or not all(isinstance(item, str) for item in row) for row in scales):
@@ -203,13 +265,17 @@ def window_pages(root=None, themes=None):
                 raise ValueError("%s: variant is a name of lowercase letters, digits and hyphens" % where)
             if variant is not None and not case.get("fixture"):
                 raise ValueError("%s: a variant is a fixture of its own; set fixture to true" % where)
+            label = case.get("name")
+            if label is not None and (not isinstance(label, str) or not CASE_NAME_RE.fullmatch(label)):
+                raise ValueError("%s: name is a word of lowercase letters, digits and hyphens" % where)
             document = "nui/windows/%s/%s.rml" % (folder, folder)
             stem = folder if variant is None else "%s.%s" % (folder, variant)
             fixture = ("assets/nui/nui/windows/%s/%s.fixture.json" % (folder, stem)) if case.get("fixture") else None
             if fixture and not os.path.isfile(os.path.join(root, fixture)):
                 raise ValueError("%s: no %s" % (where, fixture))
-            name = folder if variant is None else "%s-%s" % (folder, variant)
-            pages.append((name, document, fixture, listed, scales, roots, time, stand_in_args(case, where, root)))
+            name = "-".join(part for part in (folder, variant, label) if part)
+            pages.append((name, document, fixture, listed, scales, roots, time,
+                          stand_in_args(case, where, root) + setting_args(case, where, root, themes)))
     return pages
 
 
@@ -246,6 +312,10 @@ def cases(root=None):
             for percent, scale, size in scales:
                 goldens.append((f"{page}-{theme}-{percent}", document, fixture, theme_ids[theme], scale, size, False, roots, time,
                                 extras))
+    names = [golden[0] for golden in goldens]
+    twice = sorted({name for name in names if names.count(name) > 1})
+    if twice:
+        raise ValueError("two cases make the golden %s; give one a name" % ", ".join(twice))
     # Reduced motion renders the resting state, which at the default --time 1
     # is the settled frame: the board's open animation has finished.
     goldens.append(("login-dark-100-reduced-motion", "nui/windows/login/login.rml", "assets/nui/nui/windows/login/login.fixture.json",

@@ -94,6 +94,21 @@ def lint_command(nuitool, dest):
     return [nuitool, "lint"] + roots(dest) + ["--scripts", SCRIPTS, "--locale", LOCALE]
 
 
+STAND_IN_OPTIONS = ("--feed", "--view", "--anchor")
+
+
+def stand_ins_only(arguments):
+    """A case's stand-in arguments (--feed, --view, --anchor and their values)
+    without its player settings (--colors, --backdrop, --switch-from, the
+    effects and motion flags): the bare theme offers no color slots, and a
+    settings case snaps the page of another case."""
+    out, items = [], list(arguments)
+    for index, item in enumerate(items):
+        if item in STAND_IN_OPTIONS:
+            out += [item, items[index + 1]]
+    return tuple(out)
+
+
 def snap_cases():
     """(page, document, fixture path or None, --scale, --size, groups, --time,
     stand-in arguments) for every golden page at its first scale, the
@@ -107,7 +122,7 @@ def snap_cases():
         groups = tuple(root.split("/", 1)[1] for root in extra)
         _percent, scale, size = scales[0]
         out.append((page, document, os.path.join(REPO, fixture_path) if fixture_path else None, scale, size, groups, time,
-                    stand_ins))
+                    stand_ins_only(stand_ins)))
     return out
 
 

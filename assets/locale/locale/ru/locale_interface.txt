@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Я могу сбросить твои очки харак
 POINT_RESET_QUESTION_2	Это стоит 500 янг. Сбросить их?
 POINT_RESET_CONFIRM_1	Весь опыт текущего уровня будет потерян.
 POINT_RESET_CONFIRM_2	Ты действительно хочешь их сбросить?
+OPTION_UI_REDUCED_EFFECTS	Меньше эффектов
+OPTION_UI_EFFECTS_UNAVAILABLE	Недоступно на этой видеокарте
+OPTION_UI_COLORS	Цвета
+OPTION_UI_COLOR_ACCENT	Акцент
+OPTION_UI_COLOR_PANEL	Панели
+OPTION_UI_COLOR_OPACITY	Непрозрачность панелей
+OPTION_UI_COLOR_HIGHLIGHT	Выделение
+OPTION_UI_COLOR_CUSTOM	Свой
+OPTION_UI_COLORS_RESET	Сбросить цвета
+OPTION_UI_COLORS_ADJUSTED	Некоторые цвета текста изменены, чтобы он оставался читаемым.
+THEME_CYBERPUNK	Киберпанк

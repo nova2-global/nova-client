@@ -25,6 +25,11 @@
 		],
 		"scale": 110,
 		"auto_percent": 88,
-		"reduced_motion": true
+		"reduced_motion": true,
+		"reduced_effects": true,
+		"effects_available": true,
+		"color_slots": [],
+		"accent_hue": 0,
+		"colors_adjusted": false
 	}
 }

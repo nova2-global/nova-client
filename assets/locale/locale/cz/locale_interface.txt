@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Mohu vynulovat tvé body statusu a dovedností.
 POINT_RESET_QUESTION_2	Stojí to 500 Yang. Mám je vynulovat?
 POINT_RESET_CONFIRM_1	Veškeré zkušenosti tvé současné úrovně budou ztraceny.
 POINT_RESET_CONFIRM_2	Opravdu je chceš vynulovat?
+OPTION_UI_REDUCED_EFFECTS	Omezené efekty
+OPTION_UI_EFFECTS_UNAVAILABLE	Na této grafické kartě nedostupné
+OPTION_UI_COLORS	Barvy
+OPTION_UI_COLOR_ACCENT	Hlavní barva
+OPTION_UI_COLOR_PANEL	Panely
+OPTION_UI_COLOR_OPACITY	Neprůhlednost panelů
+OPTION_UI_COLOR_HIGHLIGHT	Zvýraznění
+OPTION_UI_COLOR_CUSTOM	Vlastní
+OPTION_UI_COLORS_RESET	Obnovit barvy
+OPTION_UI_COLORS_ADJUSTED	Některé barvy textu byly upraveny, aby zůstaly čitelné.
+THEME_CYBERPUNK	Cyberpunk

@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Puedo restablecer tus puntos de estado y de habilidad.
 POINT_RESET_QUESTION_2	Cuesta 500 Yang. ¿Los restablezco?
 POINT_RESET_CONFIRM_1	Se perderá toda la experiencia de tu nivel actual.
 POINT_RESET_CONFIRM_2	¿De verdad quieres restablecerlos?
+OPTION_UI_REDUCED_EFFECTS	Efectos reducidos
+OPTION_UI_EFFECTS_UNAVAILABLE	No disponible con esta tarjeta gráfica
+OPTION_UI_COLORS	Colores
+OPTION_UI_COLOR_ACCENT	Color de acento
+OPTION_UI_COLOR_PANEL	Paneles
+OPTION_UI_COLOR_OPACITY	Opacidad de los paneles
+OPTION_UI_COLOR_HIGHLIGHT	Resaltado
+OPTION_UI_COLOR_CUSTOM	Personalizado
+OPTION_UI_COLORS_RESET	Restablecer colores
+OPTION_UI_COLORS_ADJUSTED	Se ajustaron algunos colores de texto para que sigan siendo legibles.
+THEME_CYBERPUNK	Cyberpunk

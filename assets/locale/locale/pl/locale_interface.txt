@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Mogę zresetować twoje punkty statusu i umiejętności.
 POINT_RESET_QUESTION_2	Kosztuje to 500 Yang. Mam je zresetować?
 POINT_RESET_CONFIRM_1	Całe doświadczenie z twojego obecnego poziomu przepadnie.
 POINT_RESET_CONFIRM_2	Czy na pewno chcesz je zresetować?
+OPTION_UI_REDUCED_EFFECTS	Ograniczone efekty
+OPTION_UI_EFFECTS_UNAVAILABLE	Niedostępne na tej karcie graficznej
+OPTION_UI_COLORS	Kolory
+OPTION_UI_COLOR_ACCENT	Kolor akcentu
+OPTION_UI_COLOR_PANEL	Panele
+OPTION_UI_COLOR_OPACITY	Krycie paneli
+OPTION_UI_COLOR_HIGHLIGHT	Wyróżnienie
+OPTION_UI_COLOR_CUSTOM	Własny
+OPTION_UI_COLORS_RESET	Przywróć kolory
+OPTION_UI_COLORS_ADJUSTED	Niektóre kolory tekstu dostosowano, aby pozostały czytelne.
+THEME_CYBERPUNK	Cyberpunk

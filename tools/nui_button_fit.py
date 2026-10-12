@@ -51,10 +51,10 @@ CAP_GAP = 18
 # (window, id, classic art size, key kind, the keys). The theme picker's
 # labels are @ui.THEME_<ID> (nui_theme_picker.py), on the large classic art.
 BOUND = [
-    ("theme-picker", "theme-pick-<id>", "large", "ui", ("THEME_MODERN_DARK", "THEME_MODERN_LIGHT", "THEME_CLASSIC")),
+    ("theme-picker", "theme-pick-<id>", "large", "ui", ("THEME_MODERN_DARK", "THEME_MODERN_LIGHT", "THEME_CLASSIC", "THEME_CYBERPUNK")),
     # The system options' Interface section shows the same labels on the
     # classic middle art (nui_system_options.py, P11 spec 7).
-    ("system-options", "so-theme-<id>", "medium", "ui", ("THEME_MODERN_DARK", "THEME_MODERN_LIGHT", "THEME_CLASSIC")),
+    ("system-options", "so-theme-<id>", "medium", "ui", ("THEME_MODERN_DARK", "THEME_MODERN_LIGHT", "THEME_CLASSIC", "THEME_CYBERPUNK")),
     # A chat mode button shows one of four names (data-if); the literal scan
     # measures the first, these the other three.
     ("chat", "chat-mode", "large", "game", ("CHAT_PARTY", "CHAT_GUILD", "CHAT_SHOUT")),

@@ -16,8 +16,13 @@ lines each and Apply its line, background.EnableSoftwareTiling and
 net.ExitGame; Close puts the tiling choice back to the one in effect. The
 Interface section is new: the theme (nui.set_theme), the UI scale (a row of
 choices, D12: auto, 75 to 200 percent, and a saved percent outside them as
-one more choice; nui.set_scale_percent) and reduced motion
-(nui.set_reduced_motion), each applied at once and saved by nui.py.
+one more choice; nui.set_scale_percent), reduced motion
+(nui.set_reduced_motion), reduced effects (nui.set_reduced_effects; on and
+locked while the device draws no effects) and the player colors of the theme
+in use (P13 spec 5.6: its color slots' swatches, the accent's hue slider,
+the panel opacity choices, a reset and a preview; nui.set_color,
+nui.reset_colors), each applied at once and saved by nui.py. The colors rows
+show only for a theme that offers slots (not classic).
 
 A slider's or the toggle's change event also arrives when the model moves
 the control (each show); a value equal to the model's is that echo and does
@@ -34,6 +39,8 @@ BGM/*.mp3 file; OK hands the selected name to the options' select event,
 and its popups are uiCommon.PopupDialog (the dialog kit's facade with the
 dialogs flag on, the legacy one with the G5 stopgap otherwise) instead of
 legacy's private copy."""
+
+import colorsys
 
 import app
 import background
@@ -55,6 +62,7 @@ DOCUMENT = "nui/windows/system-options/system-options.rml"
 MUSIC_FILENAME_MAX_LEN = 25   # uisystemoption.py:17
 FILE_NAME_LEN = 20            # uiselectmusic.py:6
 SCALE_CHOICES = (75, 100, 125, 150, 175, 200)
+OPACITY_CHOICES = (100, 90, 80, 70, 60)   # a row of choices, not a slider: no repaint storm under a drag
 
 
 def _plain(text):
@@ -82,6 +90,9 @@ class OptionBoard(nui.Window):
 
 	def on_scale_changed(self, scale):
 		self._owner.on_scale_changed(scale)
+
+	def on_colors_changed(self, slot):
+		self._owner.on_colors_changed(slot)
 
 	@nui.on("act")
 	def on_act(self, what, button):
@@ -120,6 +131,29 @@ class OptionBoard(nui.Window):
 		if button == 0:
 			self._owner.nui_flip_motion()
 
+	@nui.on("effects")
+	def on_effects(self, checked):
+		self._owner.nui_effects(checked)
+
+	@nui.on("flip_effects")
+	def on_flip_effects(self, button):
+		if button == 0:
+			self._owner.nui_flip_effects()
+
+	@nui.on("pick_color")
+	def on_pick_color(self, slot, value, button):
+		if button == 0:
+			self._owner.nui_pick_color(slot, value)
+
+	@nui.on("hue")
+	def on_hue(self, value):
+		self._owner.nui_hue(value)
+
+	@nui.on("reset_colors")
+	def on_reset_colors(self, button):
+		if button == 0:
+			self._owner.nui_reset_colors()
+
 
 class OptionDialog(nui_hud.LayoutCalls):
 	"""uiSystemOption.OptionDialog on NovaUI (SystemDialog.systemOptionDlg)."""
@@ -137,6 +171,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		self.demand = None
 		self.escapeProxy = None
 		self.loaded = False
+		self.colorsAdjusted = False   # the last color the player set made the resolve adjust a token
 		self.__SetCurTilingMode()
 		if not nui_hud.has_engine():
 			return
@@ -172,7 +207,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 	def empty_model():
 		return {"sound_volume": 0, "music_volume": 0, "music_file": "", "camera": 0, "fog": 0, "tiling": 0,
 		        "interface": True, "themes": [], "theme": "", "scales": [], "scale": 0, "auto_percent": 100,
-		        "reduced_motion": False}
+		        "reduced_motion": False, "reduced_effects": False, "effects_available": False,
+		        "color_slots": [], "accent_hue": 0, "colors_adjusted": False}
 
 	def _music_file(self):
 		"""uisystemoption.py:119-122."""
@@ -195,7 +231,47 @@ class OptionDialog(nui_hud.LayoutCalls):
 		return {"themes": [{"id": theme_id, "label": nui_theme_picker.theme_label(theme_id, label)}
 		                   for theme_id, label in nui.get_themes()],
 		        "theme": nui.get_theme(), "scales": self.scale_choices(saved), "scale": saved,
-		        "auto_percent": int(round(nui.get_auto_scale() * 100)), "reduced_motion": bool(nui.is_reduced_motion())}
+		        "auto_percent": int(round(nui.get_auto_scale() * 100)), "reduced_motion": bool(nui.is_reduced_motion()),
+		        "reduced_effects": bool(nui.is_reduced_effects()), "effects_available": bool(nui.effects_available())}
+
+	@staticmethod
+	def color_rows(slots):
+		"""The theme's color slots (nui.get_color_slots) as the Interface rows
+		show them: a color slot's swatches (the default first, as the palette
+		lists them), a percent slot's choices (OPACITY_CHOICES within its
+		range), the label as a locale key, the value in use as text."""
+		rows = []
+		for slot in slots:
+			row = {"slot": str(slot["slot"]), "kind": str(slot["kind"]),
+			       "label": "@ui." + slot["label"] if slot.get("label") else str(slot["slot"]),
+			       "value": str(slot["value"]), "swatches": [], "choices": []}
+			if slot["kind"] == "color":
+				row["swatches"] = [{"index": i, "color": str(color)} for i, color in enumerate(slot.get("swatches", ()))]
+			else:
+				row["choices"] = [{"value": str(p)} for p in OPACITY_CHOICES if int(slot["min"]) <= p <= int(slot["max"])]
+			rows.append(row)
+		return rows
+
+	@staticmethod
+	def hue_of(color):
+		"""The hue in degrees (0 to 359) of a #rrggbb color."""
+		r, g, b = (int(color[i:i + 2], 16) / 255.0 for i in (1, 3, 5))
+		return int(round(colorsys.rgb_to_hsv(r, g, b)[0] * 360)) % 360
+
+	@staticmethod
+	def color_of_hue(hue, default):
+		"""#rrggbb at `hue` degrees with the saturation and value of `default`
+		(the palette's own accent), so a custom accent keeps its brightness."""
+		r, g, b = (int(default[i:i + 2], 16) / 255.0 for i in (1, 3, 5))
+		_, s, v = colorsys.rgb_to_hsv(r, g, b)
+		r, g, b = colorsys.hsv_to_rgb((int(hue) % 360) / 360.0, s, v)
+		return "#%02x%02x%02x" % tuple(int(round(c * 255)) for c in (r, g, b))
+
+	def _colors_model(self):
+		slots = nui.get_color_slots()
+		accent = next((slot for slot in slots if slot["slot"] == "accent"), None)
+		return {"color_slots": self.color_rows(slots), "colors_adjusted": self.colorsAdjusted,
+		        "accent_hue": self.hue_of(str(accent["value"])) if accent else 0}
 
 	def nui_model(self):
 		"""Every key from the getters, as legacy's controls show them."""
@@ -205,6 +281,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		         "camera": constInfo.GET_CAMERA_MAX_DISTANCE_INDEX(), "fog": systemSetting.GetFogLevel(),
 		         "tiling": self.tilingMode, "interface": True}
 		model.update(self._interface_model())
+		model.update(self._colors_model())
 		return model
 
 	def _board(self):
@@ -427,8 +504,65 @@ class OptionDialog(nui_hud.LayoutCalls):
 		if board is not None:
 			self.nui_motion(not bool(board.get("reduced_motion")))
 
+	def nui_effects(self, checked):
+		"""The toggle moved: applies and saves reduced effects. The model's own
+		value coming back is not a move; nothing changes while the device
+		draws no effects (the toggle shows on and is disabled)."""
+		board = self._board()
+		checked = bool(checked)
+		if board is None or not board.get("effects_available") or checked == bool(board.get("reduced_effects")):
+			return
+		board.set(reduced_effects=checked)
+		nui.set_reduced_effects(checked)
+
+	def nui_flip_effects(self):
+		"""A left press on the toggle flips reduced effects (as nui_flip_motion)."""
+		board = self._board()
+		if board is not None:
+			self.nui_effects(not bool(board.get("reduced_effects")))
+
+	def nui_pick_color(self, slot, value):
+		"""A swatch or an opacity choice: sets the slot of the theme in use;
+		nui.set_color saves it and calls on_colors_changed. The note shows
+		while the resolve had to adjust a color to keep text readable."""
+		try:
+			result = nui.set_color(str(slot), str(value))
+		except ValueError as error:
+			dbg.TraceError("nui_system_options: %s" % error)
+			return
+		self.colorsAdjusted = bool(result.get("adjusted"))
+		self._set(colors_adjusted=self.colorsAdjusted)
+
+	def nui_hue(self, value):
+		"""The accent's hue slider moved: a color of that hue with the default
+		accent's saturation and value. The model's own value coming back is
+		not a move."""
+		board = self._board()
+		try:
+			hue = int(round(float(value)))
+		except (TypeError, ValueError):
+			return
+		if board is None or hue == board.get("accent_hue"):
+			return
+		accent = next((slot for slot in nui.get_color_slots() if slot["slot"] == "accent"), None)
+		if accent is None:
+			return
+		board.set(accent_hue=hue)
+		self.nui_pick_color("accent", self.color_of_hue(hue, str(accent["default"])))
+
+	def nui_reset_colors(self):
+		"""Reset: the theme in use's palette colors again (nui.reset_colors
+		saves and calls on_colors_changed)."""
+		self.colorsAdjusted = False
+		nui.reset_colors()
+
+	def on_colors_changed(self, slot):
+		self._set(**self._colors_model())
+
 	def on_theme_changed(self, theme_id):
-		self._set(theme=nui.get_theme())
+		"""The theme's color slots replace the old theme's (none in classic)."""
+		self.colorsAdjusted = False
+		self._set(theme=nui.get_theme(), **self._colors_model())
 
 	def on_scale_changed(self, scale):
 		"""The window's size follows the scale: it is centered again, and the

@@ -326,3 +326,14 @@ POINT_RESET_QUESTION_1	Ik kan je status- en vaardigheidspunten resetten.
 POINT_RESET_QUESTION_2	Het kost 500 Yang. Zal ik ze resetten?
 POINT_RESET_CONFIRM_1	Alle ervaring van je huidige level gaat verloren.
 POINT_RESET_CONFIRM_2	Wil je ze echt resetten?
+OPTION_UI_REDUCED_EFFECTS	Minder effecten
+OPTION_UI_EFFECTS_UNAVAILABLE	Niet beschikbaar op deze videokaart
+OPTION_UI_COLORS	Kleuren
+OPTION_UI_COLOR_ACCENT	Accent
+OPTION_UI_COLOR_PANEL	Panelen
+OPTION_UI_COLOR_OPACITY	Dekking van panelen
+OPTION_UI_COLOR_HIGHLIGHT	Markering
+OPTION_UI_COLOR_CUSTOM	Aangepast
+OPTION_UI_COLORS_RESET	Kleuren herstellen
+OPTION_UI_COLORS_ADJUSTED	Sommige tekstkleuren zijn aangepast zodat ze leesbaar blijven.
+THEME_CYBERPUNK	Cyberpunk

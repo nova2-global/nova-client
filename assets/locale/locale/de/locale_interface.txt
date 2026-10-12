@@ -325,3 +325,14 @@ POINT_RESET_QUESTION_1	Ich kann deine Status- und Fertigkeitspunkte zurücksetze
 POINT_RESET_QUESTION_2	Das kostet 500 Yang. Soll ich sie zurücksetzen?
 POINT_RESET_CONFIRM_1	Die gesamte Erfahrung deiner aktuellen Stufe geht verloren.
 POINT_RESET_CONFIRM_2	Willst du sie wirklich zurücksetzen?
+OPTION_UI_REDUCED_EFFECTS	Weniger Effekte
+OPTION_UI_EFFECTS_UNAVAILABLE	Mit dieser Grafikkarte nicht verfügbar
+OPTION_UI_COLORS	Farben
+OPTION_UI_COLOR_ACCENT	Akzent
+OPTION_UI_COLOR_PANEL	Flächen
+OPTION_UI_COLOR_OPACITY	Deckkraft der Flächen
+OPTION_UI_COLOR_HIGHLIGHT	Hervorhebung
+OPTION_UI_COLOR_CUSTOM	Eigene
+OPTION_UI_COLORS_RESET	Farben zurücksetzen
+OPTION_UI_COLORS_ADJUSTED	Einige Textfarben wurden angepasst, damit sie lesbar bleiben.
+THEME_CYBERPUNK	Cyberpunk

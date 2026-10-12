@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Jeg kan nulstille dine status- og færdighedspoint.
 POINT_RESET_QUESTION_2	Det koster 500 Yang. Skal jeg nulstille dem?
 POINT_RESET_CONFIRM_1	Al erfaring fra dit nuværende niveau går tabt.
 POINT_RESET_CONFIRM_2	Vil du virkelig nulstille dem?
+OPTION_UI_REDUCED_EFFECTS	Reducerede effekter
+OPTION_UI_EFFECTS_UNAVAILABLE	Ikke tilgængelig med dette grafikkort
+OPTION_UI_COLORS	Farver
+OPTION_UI_COLOR_ACCENT	Accent
+OPTION_UI_COLOR_PANEL	Paneler
+OPTION_UI_COLOR_OPACITY	Panelernes uigennemsigtighed
+OPTION_UI_COLOR_HIGHLIGHT	Fremhævning
+OPTION_UI_COLOR_CUSTOM	Brugerdefineret
+OPTION_UI_COLORS_RESET	Nulstil farver
+OPTION_UI_COLORS_ADJUSTED	Nogle tekstfarver blev justeret, så de forbliver læsbare.
+THEME_CYBERPUNK	Cyberpunk

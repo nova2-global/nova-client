@@ -326,3 +326,14 @@ POINT_RESET_QUESTION_1	I can reset your status and skill points.
 POINT_RESET_QUESTION_2	It costs 500 Yang. Shall I reset them?
 POINT_RESET_CONFIRM_1	All the experience of your current level will be lost.
 POINT_RESET_CONFIRM_2	Do you really want to reset them?
+OPTION_UI_REDUCED_EFFECTS	Reduced effects
+OPTION_UI_EFFECTS_UNAVAILABLE	Not available on this graphics card
+OPTION_UI_COLORS	Colors
+OPTION_UI_COLOR_ACCENT	Accent
+OPTION_UI_COLOR_PANEL	Panels
+OPTION_UI_COLOR_OPACITY	Panel opacity
+OPTION_UI_COLOR_HIGHLIGHT	Highlight
+OPTION_UI_COLOR_CUSTOM	Custom
+OPTION_UI_COLORS_RESET	Reset colors
+OPTION_UI_COLORS_ADJUSTED	Some text colors were adjusted to stay readable.
+THEME_CYBERPUNK	Cyberpunk

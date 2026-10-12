@@ -233,8 +233,20 @@ body.skin-classic.system-options .so-choice--scale.is-selected .so-auto-percent
 {
 	color: var(--classic-button-text);
 }
-body.skin-classic.system-options .so-motion
+body.skin-classic.system-options .so-motion, body.skin-classic.system-options .so-effects
 {
 	margin-left: 10dp;
 	color: var(--text);
+}
+/* Classic offers no color slots (its art is the legacy pixels), so the
+   colors rows never show here, whatever the model holds. */
+body.skin-classic.system-options .so-colors
+{
+	display: none;
+}
+body.skin-classic.system-options .so-note
+{
+	margin: 2dp 0 0 10dp;
+	color: var(--text);
+	line-height: 14dp;
 }

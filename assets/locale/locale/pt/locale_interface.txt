@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Posso repor os teus pontos de estado e de competência.
 POINT_RESET_QUESTION_2	Custa 500 Yang. Devo repô-los?
 POINT_RESET_CONFIRM_1	Toda a experiência do teu nível atual será perdida.
 POINT_RESET_CONFIRM_2	Queres mesmo repô-los?
+OPTION_UI_REDUCED_EFFECTS	Efeitos reduzidos
+OPTION_UI_EFFECTS_UNAVAILABLE	Indisponível nesta placa gráfica
+OPTION_UI_COLORS	Cores
+OPTION_UI_COLOR_ACCENT	Cor principal
+OPTION_UI_COLOR_PANEL	Painéis
+OPTION_UI_COLOR_OPACITY	Opacidade dos painéis
+OPTION_UI_COLOR_HIGHLIGHT	Realce
+OPTION_UI_COLOR_CUSTOM	Personalizada
+OPTION_UI_COLORS_RESET	Repor cores
+OPTION_UI_COLORS_ADJUSTED	Algumas cores de texto foram ajustadas para continuarem legíveis.
+THEME_CYBERPUNK	Cyberpunk

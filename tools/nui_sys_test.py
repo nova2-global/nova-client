@@ -826,9 +826,90 @@ class InterfaceSection(unittest.TestCase):
 
     def test_the_interface_section_calls_no_legacy_setter_itself(self):
         mark = self.world.mark()
-        for event in (("choose_theme", "classic", 0), ("choose_scale", 125, 0), ("motion", True)):
+        for event in (("choose_theme", "classic", 0), ("choose_scale", 125, 0), ("motion", True), ("effects", True),
+                      ("choose_theme", "modern-dark", 0), ("pick_color", "accent", "#c58af9", 0), ("reset_colors", 0)):
             board(self.options).fire(*event)
         self.assertEqual(self.world.effects_since(mark), [], "nui.py saves the UI_* keys")
+
+    # --- reduced effects and the player colors (P13 spec 5.6) ---------------------------------------
+
+    def test_reduced_effects_applies_flips_on_a_left_press_and_the_echo_does_nothing(self):
+        self.assertEqual((self.model()["reduced_effects"], self.model()["effects_available"]), (False, True))
+        board(self.options).fire("effects", False)
+        self.assertEqual(self.state.appearance, [], "the model's own value coming back")
+        board(self.options).fire("flip_effects", 1)
+        self.assertEqual(self.state.appearance, [], "left button only")
+        board(self.options).fire("flip_effects", 0)
+        self.assertEqual(self.state.appearance, [("set_reduced_effects", True)])
+        self.assertIs(self.model()["reduced_effects"], True)
+        board(self.options).fire("effects", True)
+        self.assertEqual(self.state.appearance, [("set_reduced_effects", True)], "the checkbox following the model")
+        self.options.Hide()
+        self.options.Show()
+        self.assertIs(self.model()["reduced_effects"], True, "read back at the next show")
+
+    def test_a_device_without_effects_shows_the_toggle_on_and_locked(self):
+        self.state.effects_available = False
+        self.options.Hide()
+        self.options.Show()
+        self.assertEqual((self.model()["reduced_effects"], self.model()["effects_available"]), (True, False))
+        board(self.options).fire("flip_effects", 0)
+        board(self.options).fire("effects", False)
+        self.assertEqual(self.state.appearance, [], "a locked toggle sets nothing")
+
+    def test_the_colors_rows_are_the_themes_slots_with_their_swatches_and_the_opacity_choices(self):
+        rows = self.model()["color_slots"]
+        self.assertEqual([(row["slot"], row["kind"], row["label"]) for row in rows],
+                         [("accent", "color", "@ui.OPTION_UI_COLOR_ACCENT"), ("panel", "color", "@ui.OPTION_UI_COLOR_PANEL"),
+                          ("opacity", "percent", "@ui.OPTION_UI_COLOR_OPACITY"), ("highlight", "color", "@ui.OPTION_UI_COLOR_HIGHLIGHT")])
+        accent = rows[0]
+        self.assertEqual(accent["value"], "#8ab4f8")
+        self.assertEqual(accent["swatches"][0], {"index": 0, "color": "#8ab4f8"}, "the default first")
+        self.assertEqual(len(accent["swatches"]), 8)
+        self.assertEqual([choice["value"] for choice in rows[2]["choices"]], ["100", "90", "80", "70", "60"])
+        self.assertEqual(rows[2]["value"], "100")
+        self.assertEqual(self.model()["accent_hue"], 217)
+        self.assertIs(self.model()["colors_adjusted"], False)
+
+    def test_a_swatch_and_an_opacity_choice_set_the_slot_and_the_rows_follow(self):
+        board(self.options).fire("pick_color", "accent", "#c58af9", 1)
+        self.assertEqual(self.state.appearance, [], "left button only")
+        board(self.options).fire("pick_color", "accent", "#c58af9", 0)
+        self.assertEqual(self.state.appearance, [("set_color", "accent", "#c58af9")])
+        self.assertEqual(self.model()["color_slots"][0]["value"], "#c58af9")
+        self.assertEqual(self.model()["accent_hue"], 272)
+        board(self.options).fire("pick_color", "opacity", "80", 0)
+        self.assertEqual(self.state.appearance[-1], ("set_color", "opacity", "80"))
+        self.assertEqual(self.model()["color_slots"][2]["value"], "80")
+        self.assertIs(self.model()["colors_adjusted"], True, "the resolve raised colors over the translucent panels")
+        board(self.options).fire("pick_color", "no-slot", "#ffffff", 0)
+        self.assertIn("nui_system_options: nui.set_color()", self.world.game.dbg.errors[-1])
+
+    def test_the_hue_slider_keeps_the_default_accents_saturation_and_value_and_its_echo_does_nothing(self):
+        board(self.options).fire("hue", 217)
+        self.assertEqual(self.state.appearance, [], "the model's own value coming back")
+        board(self.options).fire("hue", 120)
+        self.assertEqual(self.state.appearance, [("set_color", "accent", "#8af88a")],
+                         "#8ab4f8's saturation and value at 120 degrees")
+        self.assertEqual(self.model()["accent_hue"], 120)
+
+    def test_reset_puts_the_palette_back_and_the_note_goes(self):
+        board(self.options).fire("pick_color", "opacity", "60", 0)
+        self.assertIs(self.model()["colors_adjusted"], True)
+        board(self.options).fire("reset_colors", 1)
+        self.assertEqual(self.state.appearance[-1], ("set_color", "opacity", "60"), "left button only")
+        board(self.options).fire("reset_colors", 0)
+        self.assertEqual(self.state.appearance[-1], ("reset_colors", False))
+        self.assertEqual(self.model()["color_slots"][2]["value"], "100")
+        self.assertIs(self.model()["colors_adjusted"], False)
+
+    def test_classic_offers_no_colors_rows_and_a_theme_switch_refills_them(self):
+        board(self.options).fire("choose_theme", "classic", 0)
+        self.assertEqual(self.model()["color_slots"], [], "classic offers no color slots")
+        board(self.options).fire("choose_theme", "modern-light", 0)
+        rows = self.model()["color_slots"]
+        self.assertEqual(rows[0]["value"], "#1a5fc4", "the light palette's own accent and swatches")
+        self.assertEqual(rows[0]["swatches"][0]["color"], "#1a5fc4")
 
 
 # --- the game options (spec 6.4) ---------------------------------------------------------------
@@ -1195,9 +1276,13 @@ class Fixtures(unittest.TestCase):
 
     def test_the_options_model_keys_are_the_spec_table(self):
         options = self.world.make_options()
-        self.assertEqual(set(options.nui_model()), {"sound_volume", "music_volume", "music_file", "camera", "fog", "tiling",
-                                                    "interface", "themes", "theme", "scales", "scale", "auto_percent",
-                                                    "reduced_motion"})
+        keys = {"sound_volume", "music_volume", "music_file", "camera", "fog", "tiling", "interface", "themes", "theme",
+                "scales", "scale", "auto_percent", "reduced_motion",
+                # P13 spec 5.6: reduced effects and the player colors.
+                "reduced_effects", "effects_available", "color_slots", "accent_hue", "colors_adjusted"}
+        self.assertEqual(set(options.nui_model()), keys)
+        for variant in (None, "custom-scale", "colors", "no-effects"):
+            self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
         game_options = self.world.make_game_options()
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text"})

@@ -326,3 +326,14 @@ POINT_RESET_QUESTION_1	Je peux réinitialiser tes points de statut et de compét
 POINT_RESET_QUESTION_2	Cela coûte 500 Yang. Dois-je les réinitialiser ?
 POINT_RESET_CONFIRM_1	Toute l'expérience de ton niveau actuel sera perdue.
 POINT_RESET_CONFIRM_2	Veux-tu vraiment les réinitialiser ?
+OPTION_UI_REDUCED_EFFECTS	Effets réduits
+OPTION_UI_EFFECTS_UNAVAILABLE	Indisponible avec cette carte graphique
+OPTION_UI_COLORS	Couleurs
+OPTION_UI_COLOR_ACCENT	Accent
+OPTION_UI_COLOR_PANEL	Panneaux
+OPTION_UI_COLOR_OPACITY	Opacité des panneaux
+OPTION_UI_COLOR_HIGHLIGHT	Mise en valeur
+OPTION_UI_COLOR_CUSTOM	Personnalisée
+OPTION_UI_COLORS_RESET	Réinitialiser les couleurs
+OPTION_UI_COLORS_ADJUSTED	Certaines couleurs de texte ont été ajustées pour rester lisibles.
+THEME_CYBERPUNK	Cyberpunk

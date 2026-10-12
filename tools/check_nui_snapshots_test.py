@@ -1,7 +1,8 @@
-"""Tests for tools/check_nui_snapshots.py's stand-in keys (P10 spec 4.3): a
-golden case's "feeds", "views" and "anchors" become nuitool snap's --feed,
---view and --anchor: python3 -B -m unittest check_nui_snapshots_test (from
-tools/). Plain CPython; nothing is snapped."""
+"""Tests for tools/check_nui_snapshots.py's case keys: the stand-ins (P10 spec
+4.3: "feeds", "views" and "anchors" become nuitool snap's --feed, --view and
+--anchor), the player settings and names (P13 spec 7.8) and the skins' own
+case files: python3 -B -m unittest check_nui_snapshots_test (from tools/).
+Plain CPython; nothing is snapped."""
 import json
 import os
 import shutil
@@ -27,6 +28,8 @@ class StandIns(unittest.TestCase):
                 handle.write("[]")
         with open(os.path.join(folder, "demo.fixture.json"), "w") as handle:
             handle.write("{}")
+        with open(os.path.join(folder, "demo.rml"), "w") as handle:
+            handle.write("<rml/>")
         for path in (check_nui_snapshots.GOLDEN_THEMES, check_nui_snapshots.PLAYER_THEMES):
             os.makedirs(os.path.dirname(os.path.join(self.root, path)), exist_ok=True)
             shutil.copy(os.path.join(REPO, path), os.path.join(self.root, path))
@@ -72,6 +75,47 @@ class StandIns(unittest.TestCase):
             with self.subTest(keys=keys):
                 self.write_case(**keys)
                 self.assertRaises(ValueError, check_nui_snapshots.window_pages, self.root)
+
+    def test_the_player_settings_become_snap_options_and_a_name_names_the_goldens(self):
+        backdrop = os.path.join(self.root, "back.png")
+        with open(backdrop, "wb") as handle:
+            handle.write(b"png")
+        self.write_case(name="tinted", colors="accent=#c58af9,opacity=80", backdrop="back.png", effects="off",
+                        reduced_motion=True, switch_from="light")
+        page = check_nui_snapshots.window_pages(self.root)[0]
+        self.assertEqual(page[0], "demo-tinted")
+        self.assertEqual(page[-1], ("--colors", "accent=#c58af9,opacity=80", "--backdrop", "back.png", "--no-effects",
+                                    "--reduced-motion", "--switch-from", "modern-light"))
+        self.assertEqual([c[0] for c in check_nui_snapshots.cases(self.root) if c[0].startswith("demo")], ["demo-tinted-dark-100"])
+        self.write_case(effects="reduced")
+        self.assertEqual(check_nui_snapshots.window_pages(self.root)[0][-1], ("--reduced-effects",))
+
+    def test_a_setting_or_key_out_of_form_stops_the_checker(self):
+        bad = [{"colors": "accent=red"}, {"colors": "Accent=#ffffff"}, {"backdrop": "missing.png"}, {"effects": "half"},
+               {"reduced_motion": 1}, {"switch_from": "modern-light"}, {"name": "Two Words"}, {"colours": "accent=#ffffff"}]
+        for keys in bad:
+            with self.subTest(keys=keys):
+                self.write_case(**keys)
+                self.assertRaises(ValueError, lambda: list(check_nui_snapshots.cases(self.root)))
+
+    def test_a_skin_keeps_cases_of_its_own_for_any_window_and_two_cases_may_not_share_a_golden(self):
+        self.write_case()
+        skin = os.path.join(self.root, "assets", "nui", "nui", "skins", "demo-skin")
+        os.makedirs(skin)
+        case = {"page": "demo", "name": "calm", "themes": ["dark"], "scales": [["100", "1", "320x200"]], "fixture": True,
+                "roots": [], "time": None, "reduced_motion": True}
+        with open(os.path.join(skin, "snapshots.json"), "w") as handle:
+            json.dump({"cases": [case]}, handle)
+        self.assertEqual([c[0] for c in check_nui_snapshots.cases(self.root) if c[0].startswith("demo")],
+                         ["demo-dark-100", "demo-calm-dark-100"])
+        del case["name"]
+        with open(os.path.join(skin, "snapshots.json"), "w") as handle:
+            json.dump({"cases": [case]}, handle)
+        self.assertRaises(ValueError, lambda: list(check_nui_snapshots.cases(self.root)))
+        case.update(page="nowhere", name="calm")
+        with open(os.path.join(skin, "snapshots.json"), "w") as handle:
+            json.dump({"cases": [case]}, handle)
+        self.assertRaises(ValueError, lambda: list(check_nui_snapshots.cases(self.root)))
 
     def test_the_shipped_chat_cases_pass_their_feeds(self):
         cases = [c for c in check_nui_snapshots.cases(REPO) if c[0].startswith("chat")]

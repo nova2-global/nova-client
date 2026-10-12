@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Pot să-ți resetez punctele de status și de abilitate.
 POINT_RESET_QUESTION_2	Costă 500 Yang. Să le resetez?
 POINT_RESET_CONFIRM_1	Toată experiența nivelului tău actual se va pierde.
 POINT_RESET_CONFIRM_2	Chiar vrei să le resetezi?
+OPTION_UI_REDUCED_EFFECTS	Efecte reduse
+OPTION_UI_EFFECTS_UNAVAILABLE	Indisponibil pe această placă video
+OPTION_UI_COLORS	Culori
+OPTION_UI_COLOR_ACCENT	Culoare de accent
+OPTION_UI_COLOR_PANEL	Panouri
+OPTION_UI_COLOR_OPACITY	Opacitatea panourilor
+OPTION_UI_COLOR_HIGHLIGHT	Evidențiere
+OPTION_UI_COLOR_CUSTOM	Personalizat
+OPTION_UI_COLORS_RESET	Resetează culorile
+OPTION_UI_COLORS_ADJUSTED	Unele culori ale textului au fost ajustate pentru a rămâne lizibile.
+THEME_CYBERPUNK	Cyberpunk

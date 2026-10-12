@@ -24,6 +24,16 @@
 		],
 		"scale": 0,
 		"auto_percent": 88,
-		"reduced_motion": false
+		"reduced_motion": false,
+		"reduced_effects": false,
+		"effects_available": true,
+		"color_slots": [
+			{"slot": "accent", "kind": "color", "label": "@ui.OPTION_UI_COLOR_ACCENT", "value": "#8ab4f8", "swatches": [{"index": 0, "color": "#8ab4f8"}, {"index": 1, "color": "#7fd29a"}, {"index": 2, "color": "#f6c75a"}, {"index": 3, "color": "#f28b82"}, {"index": 4, "color": "#c58af9"}, {"index": 5, "color": "#5fe3d4"}, {"index": 6, "color": "#ff9e3a"}, {"index": 7, "color": "#e7eaf0"}], "choices": []},
+			{"slot": "panel", "kind": "color", "label": "@ui.OPTION_UI_COLOR_PANEL", "value": "#1a1d23", "swatches": [{"index": 0, "color": "#1a1d23"}, {"index": 1, "color": "#1b2430"}, {"index": 2, "color": "#20202a"}, {"index": 3, "color": "#1e2a24"}, {"index": 4, "color": "#2a1e24"}, {"index": 5, "color": "#262626"}], "choices": []},
+			{"slot": "opacity", "kind": "percent", "label": "@ui.OPTION_UI_COLOR_OPACITY", "value": "100", "swatches": [], "choices": [{"value": "100"}, {"value": "90"}, {"value": "80"}, {"value": "70"}, {"value": "60"}]},
+			{"slot": "highlight", "kind": "color", "label": "@ui.OPTION_UI_COLOR_HIGHLIGHT", "value": "#f2d39b", "swatches": [{"index": 0, "color": "#f2d39b"}, {"index": 1, "color": "#ffd166"}, {"index": 2, "color": "#9fefff"}, {"index": 3, "color": "#ff9fbf"}, {"index": 4, "color": "#b9f18c"}, {"index": 5, "color": "#e7eaf0"}], "choices": []}
+		],
+		"accent_hue": 217,
+		"colors_adjusted": false
 	}
 }

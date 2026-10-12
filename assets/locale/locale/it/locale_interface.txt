@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Posso azzerare i tuoi punti status e abilità.
 POINT_RESET_QUESTION_2	Costa 500 Yang. Li azzero?
 POINT_RESET_CONFIRM_1	Tutta l'esperienza del tuo livello attuale andrà persa.
 POINT_RESET_CONFIRM_2	Vuoi davvero azzerarli?
+OPTION_UI_REDUCED_EFFECTS	Effetti ridotti
+OPTION_UI_EFFECTS_UNAVAILABLE	Non disponibile con questa scheda grafica
+OPTION_UI_COLORS	Colori
+OPTION_UI_COLOR_ACCENT	Colore principale
+OPTION_UI_COLOR_PANEL	Pannelli
+OPTION_UI_COLOR_OPACITY	Opacità dei pannelli
+OPTION_UI_COLOR_HIGHLIGHT	Evidenziazione
+OPTION_UI_COLOR_CUSTOM	Personalizzato
+OPTION_UI_COLORS_RESET	Ripristina colori
+OPTION_UI_COLORS_ADJUSTED	Alcuni colori del testo sono stati regolati per restare leggibili.
+THEME_CYBERPUNK	Cyberpunk

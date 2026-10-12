@@ -327,3 +327,14 @@ POINT_RESET_QUESTION_1	Durum ve beceri puanlarını sıfırlayabilirim.
 POINT_RESET_QUESTION_2	Bunun bedeli 500 Yang. Sıfırlayayım mı?
 POINT_RESET_CONFIRM_1	Mevcut seviyendeki tüm tecrübe kaybolacak.
 POINT_RESET_CONFIRM_2	Gerçekten sıfırlamak istiyor musun?
+OPTION_UI_REDUCED_EFFECTS	Azaltılmış efektler
+OPTION_UI_EFFECTS_UNAVAILABLE	Bu ekran kartında kullanılamaz
+OPTION_UI_COLORS	Renkler
+OPTION_UI_COLOR_ACCENT	Vurgu rengi
+OPTION_UI_COLOR_PANEL	Paneller
+OPTION_UI_COLOR_OPACITY	Panel opaklığı
+OPTION_UI_COLOR_HIGHLIGHT	Öne çıkarma
+OPTION_UI_COLOR_CUSTOM	Özel
+OPTION_UI_COLORS_RESET	Renkleri sıfırla
+OPTION_UI_COLORS_ADJUSTED	Bazı metin renkleri okunabilir kalması için ayarlandı.
+THEME_CYBERPUNK	Cyberpunk

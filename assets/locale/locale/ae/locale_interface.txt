@@ -351,3 +351,14 @@ POINT_RESET_QUESTION_1	يمكنني إعادة تعيين نقاط الحالة 
 POINT_RESET_QUESTION_2	التكلفة 500 يانغ. هل أعيد تعيينها؟
 POINT_RESET_CONFIRM_1	ستفقد كل خبرة مستواك الحالي.
 POINT_RESET_CONFIRM_2	هل تريد حقاً إعادة تعيينها؟
+OPTION_UI_REDUCED_EFFECTS	تقليل المؤثرات
+OPTION_UI_EFFECTS_UNAVAILABLE	غير متاح على بطاقة الرسومات هذه
+OPTION_UI_COLORS	الألوان
+OPTION_UI_COLOR_ACCENT	اللون المميز
+OPTION_UI_COLOR_PANEL	اللوحات
+OPTION_UI_COLOR_OPACITY	شفافية اللوحات
+OPTION_UI_COLOR_HIGHLIGHT	التمييز
+OPTION_UI_COLOR_CUSTOM	مخصص
+OPTION_UI_COLORS_RESET	إعادة تعيين الألوان
+OPTION_UI_COLORS_ADJUSTED	تم تعديل بعض ألوان النص لتبقى مقروءة.
+THEME_CYBERPUNK	سايبربانك

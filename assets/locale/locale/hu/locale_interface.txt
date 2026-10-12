@@ -326,3 +326,14 @@ POINT_RESET_QUESTION_1	Vissza tudom állítani a státusz- és képességpontjai
 POINT_RESET_QUESTION_2	500 Yangba kerül. Visszaállítsam őket?
 POINT_RESET_CONFIRM_1	A jelenlegi szinted összes tapasztalata elvész.
 POINT_RESET_CONFIRM_2	Tényleg vissza akarod állítani őket?
+OPTION_UI_REDUCED_EFFECTS	Csökkentett effektek
+OPTION_UI_EFFECTS_UNAVAILABLE	Ezen a videokártyán nem érhető el
+OPTION_UI_COLORS	Színek
+OPTION_UI_COLOR_ACCENT	Kiemelőszín
+OPTION_UI_COLOR_PANEL	Panelek
+OPTION_UI_COLOR_OPACITY	Panelek átlátszatlansága
+OPTION_UI_COLOR_HIGHLIGHT	Kiemelés
+OPTION_UI_COLOR_CUSTOM	Egyéni
+OPTION_UI_COLORS_RESET	Színek visszaállítása
+OPTION_UI_COLORS_ADJUSTED	Néhány szövegszín módosult, hogy olvasható maradjon.
+THEME_CYBERPUNK	Cyberpunk

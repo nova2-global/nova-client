@@ -1,8 +1,9 @@
 /* The party's modern look: the member boards in a column at the top left
-   (10, 52), each a small panel with the legacy role badge, the name, a
-   modern HP gauge and the party affect icons; the role buttons to the right
-   of a board; the menu toggle under the boards and the menu below it, a
-   panel with the heal, break up or leave icons and the two EXP modes.
+   (10, 52), each a small tile with a role chip (a dot in the role's color;
+   the tooltip names the role), the name, a modern HP gauge and the party
+   affect icons; the role chips a leader opens to the right of a board; the
+   menu toggle under the boards and the menu below it, a board with the
+   heal, break up or leave glyph chips and the two EXP modes.
    Classic (the legacy boards at the legacy positions, the stone menu
    toggle, the thin board menu and the large buttons):
    skins/classic/windows/party.rcss. */
@@ -33,7 +34,13 @@ body.party
 	margin-bottom: 2dp;
 }
 
-/* --- The three states of a legacy button's art, stacked ---------------------- */
+/* --- Role chips and glyph chips ------------------------------------------------
+   A party-art-host is a member's role or one of the buttons. Its face holds
+   the role as data-state (the controller's state_name; on a child, since a
+   repeated element's own views may read a gone entry when its list
+   shrinks). Modern draws the face as a 12dp dot in the role's color, or a
+   glyph (components/glyph.rcss); classic draws the legacy button art on the
+   face instead (skins/classic/windows/party.rcss). */
 
 .party-art-host
 {
@@ -43,33 +50,66 @@ body.party
 	border-width: 0;
 	background-color: transparent;
 }
-.party-art
+.party-role__face
 {
 	display: block;
 	position: absolute;
-	left: 0;
-	top: 0;
+	left: 5dp;
+	top: 12dp;
+	width: 12dp;
+	height: 12dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
 	pointer-events: none;
 }
-.party-art--over, .party-art--down
+.party-role__face[data-state=leader] { background-color: var(--warning); }
+.party-role__face[data-state=attacker] { background-color: var(--danger); }
+.party-role__face[data-state=berserker] { background-color: var(--gauge-pink); }
+.party-role__face[data-state=tanker] { background-color: var(--accent); }
+.party-role__face[data-state=defender] { background-color: var(--success); }
+.party-role__face[data-state=buffer] { background-color: var(--gauge-purple); }
+.party-role__face[data-state=skill-master] { background-color: var(--gauge-blue); }
+/* The expel button shows its glyph; its face carries classic's art only. */
+.party-role__face[data-state=expel] { display: none; }
+/* The role buttons and the menu's buttons are chips: raised, with a border. */
+.party-role, .party-menu__icon
 {
-	visibility: hidden;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-raised);
 }
-.party-art-host:hover .party-art--up
+.party-role .party-role__face
 {
-	visibility: hidden;
+	left: 4dp;
+	top: 11dp;
 }
-.party-art-host:hover .party-art--over
+.party-role:hover, .party-menu__icon:hover
 {
-	visibility: visible;
+	border-color: var(--accent);
+	background-color: var(--surface-hover);
 }
-.party-art-host:active .party-art--over
+.party-role:active, .party-menu__icon:active
 {
-	visibility: hidden;
+	background-color: var(--surface-sunken);
 }
-.party-art-host:active .party-art--down
+.party-role:hover .nui-glyph, .party-menu__icon:hover .nui-glyph
 {
-	visibility: visible;
+	--glyph-ink: var(--accent);
+}
+.party-role__glyph
+{
+	position: absolute;
+	left: 2dp;
+	top: 9dp;
+}
+.party-menu__glyph
+{
+	position: absolute;
+	left: 7dp;
+	top: 7dp;
+	transform: scale(1.25);
 }
 
 /* --- A member's board ------------------------------------------------------------ */

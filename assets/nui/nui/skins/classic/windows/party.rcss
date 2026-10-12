@@ -140,3 +140,66 @@ body.skin-classic.party .party-menu__mode
 	border-width: 0;
 	color: var(--classic-button-text);
 }
+
+/* The legacy role art of a member's board and of the role buttons a leader
+   opens (PartyMemberInfoBoard's state buttons), by role (data-state): the
+   default art, the over art under the pointer and the down art while
+   pressed; the menu's heal, break up and leave buttons the same. The modern
+   role chips and glyphs do not show here. */
+body.skin-classic.party .party-role__face
+{
+	left: 0;
+	top: 0;
+	width: 22dp;
+	height: 36dp;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.party .party-role__face[data-state=expel]
+{
+	display: block;
+}
+body.skin-classic.party .party-art-host, body.skin-classic.party .party-art-host:hover, body.skin-classic.party .party-art-host:active
+{
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.party .party-art-host .party-role__face[data-state=leader] { decorator: image("d:/ymir work/ui/game/windows/party_state_leader_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=leader] { decorator: image("d:/ymir work/ui/game/windows/party_state_leader_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=leader] { decorator: image("d:/ymir work/ui/game/windows/party_state_leader_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=attacker] { decorator: image("d:/ymir work/ui/game/windows/party_state_attacker_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=attacker] { decorator: image("d:/ymir work/ui/game/windows/party_state_attacker_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=attacker] { decorator: image("d:/ymir work/ui/game/windows/party_state_attacker_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=berserker] { decorator: image("d:/ymir work/ui/game/windows/party_state_berserker_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=berserker] { decorator: image("d:/ymir work/ui/game/windows/party_state_berserker_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=berserker] { decorator: image("d:/ymir work/ui/game/windows/party_state_berserker_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=tanker] { decorator: image("d:/ymir work/ui/game/windows/party_state_tanker_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=tanker] { decorator: image("d:/ymir work/ui/game/windows/party_state_tanker_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=tanker] { decorator: image("d:/ymir work/ui/game/windows/party_state_tanker_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=defender] { decorator: image("d:/ymir work/ui/game/windows/party_state_defender_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=defender] { decorator: image("d:/ymir work/ui/game/windows/party_state_defender_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=defender] { decorator: image("d:/ymir work/ui/game/windows/party_state_defender_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=buffer] { decorator: image("d:/ymir work/ui/game/windows/party_state_buffer_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=buffer] { decorator: image("d:/ymir work/ui/game/windows/party_state_buffer_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=buffer] { decorator: image("d:/ymir work/ui/game/windows/party_state_buffer_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=skill-master] { decorator: image("d:/ymir work/ui/game/windows/party_state_skill_master_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=skill-master] { decorator: image("d:/ymir work/ui/game/windows/party_state_skill_master_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=skill-master] { decorator: image("d:/ymir work/ui/game/windows/party_state_skill_master_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=normal] { decorator: image("d:/ymir work/ui/game/windows/party_state_normal_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=normal] { decorator: image("d:/ymir work/ui/game/windows/party_state_normal_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=normal] { decorator: image("d:/ymir work/ui/game/windows/party_state_normal_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=warp] { decorator: image("d:/ymir work/ui/game/windows/party_skill_warp_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=warp] { decorator: image("d:/ymir work/ui/game/windows/party_skill_warp_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=warp] { decorator: image("d:/ymir work/ui/game/windows/party_skill_warp_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=expel] { decorator: image("d:/ymir work/ui/game/windows/party_expel_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=expel] { decorator: image("d:/ymir work/ui/game/windows/party_expel_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=expel] { decorator: image("d:/ymir work/ui/game/windows/party_expel_03.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--heal { decorator: image("d:/ymir work/ui/game/windows/party_skill_heal_01.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--heal:hover { decorator: image("d:/ymir work/ui/game/windows/party_skill_heal_02.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--heal:active { decorator: image("d:/ymir work/ui/game/windows/party_skill_heal_03.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--break-up { decorator: image("d:/ymir work/ui/game/windows/party_disband_01.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--break-up:hover { decorator: image("d:/ymir work/ui/game/windows/party_disband_02.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--break-up:active { decorator: image("d:/ymir work/ui/game/windows/party_disband_03.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--leave { decorator: image("d:/ymir work/ui/game/windows/party_exit_01.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--leave:hover { decorator: image("d:/ymir work/ui/game/windows/party_exit_02.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--leave:active { decorator: image("d:/ymir work/ui/game/windows/party_exit_03.sub" scale-none left top); }

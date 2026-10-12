@@ -617,7 +617,7 @@ class Fixtures(unittest.TestCase):
                 self.assertEqual(len(member["affects"]), 9)
                 self.assertEqual(len(member["affect_tips"]), 9)
                 for button in member["state_buttons"]:
-                    self.assertEqual(set(button), {"state", "art", "tip"})
+                    self.assertEqual(set(button), {"state", "art", "state_name", "tip"})
 
     def test_the_edge_button_fixture_matches_the_model_and_the_entries_the_facade_writes(self):
         module = self.world.module("nui_edge_buttons")
@@ -1419,6 +1419,40 @@ class PartyWorlds(unittest.TestCase):
 
 
 class PartyDifferential(PartyWorlds):
+    # Every legacy role art (uiparty.PartyMemberInfoBoard
+    # MEMBER_BUTTON_IMAGE_FILE_NAME_DICT) and the role the markup's data-state
+    # names it by (P13 spec 4.5): the modern chips and classic's art rules key on it.
+    STATE_NAMES = {"party_state_leader": "leader", "party_state_attacker": "attacker",
+                   "party_state_berserker": "berserker", "party_state_tanker": "tanker",
+                   "party_state_defender": "defender", "party_state_buffer": "buffer",
+                   "party_state_skill_master": "skill-master", "party_state_normal": "normal",
+                   "party_skill_warp": "warp", "party_expel": "expel"}
+
+    def test_every_legacy_role_art_has_a_state_name_and_its_classic_art(self):
+        legacy, _ = self.worlds()
+        arts = set(legacy.module("uiParty").PartyMemberInfoBoard.MEMBER_BUTTON_IMAGE_FILE_NAME_DICT.values())
+        self.assertEqual(arts, set(self.STATE_NAMES))
+        classic = read(os.path.join(CLASSIC_WINDOWS, "party.rcss"))
+        for art, name in self.STATE_NAMES.items():
+            for state, number in (("", "01"), (":hover", "02"), (":active", "03")):
+                rule = r'\.party-art-host%s \.party-role__face\[data-state=%s\] \{ decorator: image\("d:/ymir work/ui/game/windows/%s_%s\.sub"' % (
+                    state, re.escape(name), art, number)
+                self.assertRegex(classic, rule, (art, state))
+
+    def test_each_role_reaches_the_markup_as_its_state_name(self):
+        legacy, novaui = self.worlds(skill_level=40)
+        self.form(legacy, novaui)
+        self.both(legacy, novaui, lambda world: self.board(world, MEMBER).OnMouseLeftButtonDown(),
+                  lambda world: world.window.board.fire("member_press", MEMBER, 0))
+        members = novaui.window.board.model["members"]
+        self.assertEqual([m["state_name"] for m in members], ["leader", "attacker", "normal"])
+        self.assertEqual([b["state_name"] for b in members[1]["state_buttons"]],
+                         ["normal", "berserker", "tanker", "buffer", "skill-master", "defender"])
+        for m in members:
+            self.assertEqual(m["state_name"], self.STATE_NAMES[m["state_art"]])
+            for button in m["state_buttons"]:
+                self.assertEqual(button["state_name"], self.STATE_NAMES[button["art"]])
+
     def test_members_join_link_and_update_as_legacy_shows_them(self):
         legacy, novaui = self.worlds()
         view = self.form(legacy, novaui)

@@ -50,6 +50,17 @@ def _text(value):
 	return nui.plain_text(value) if value else ""
 
 
+def _state_name(art):
+	"""The role a legacy art name stands for, as the markup's data-state
+	(party_state_skill_master: skill-master, party_skill_warp: warp): the
+	modern skin colors its role chip by it, classic draws the legacy art
+	(skins/classic/windows/party.rcss)."""
+	for prefix in ("party_state_", "party_skill_", "party_"):
+		if art.startswith(prefix):
+			return art[len(prefix):].replace("_", "-")
+	return art.replace("_", "-")
+
+
 def _on_locale_reload():
 	"""The affect and role texts in the new locale; uiParty rebuilt its
 	tables first (its callback was registered when it was imported)."""
@@ -410,9 +421,11 @@ class PartyWindow(object):
 
 	def _role_button(self, state):
 		if state == -1:
-			return {"state": -1, "art": _ART[_Board.MEMBER_BUTTON_NORMAL],
+			art = _ART[_Board.MEMBER_BUTTON_NORMAL]
+			return {"state": -1, "art": art, "state_name": _state_name(art),
 			        "tip": nui_hud.locale_text("PARTY_SET_NORMAL")}
-		return {"state": state, "art": _ART[state], "tip": _text(_Board.STATE_NAME_DICT.get(state, ""))}
+		return {"state": state, "art": _ART[state], "state_name": _state_name(_ART[state]),
+		        "tip": _text(_Board.STATE_NAME_DICT.get(state, ""))}
 
 	def _affect_tip(self, member, index):
 		text_for = _Board.AFFECT_STRING_DICT.get(index)
@@ -431,6 +444,7 @@ class PartyWindow(object):
 			members.append({
 				"pid": member.pid, "vid": member.vid or 0, "name": _text(member.name), "linked": member.linked,
 				"hp": member.hp, "state": member.state, "state_art": self._state_art(member.state),
+				"state_name": _state_name(self._state_art(member.state)),
 				"affects": list(member.affects),
 				"affect_tips": [self._affect_tip(member, i) for i in range(AFFECT_COUNT)],
 				"show_states": member.isShowStateButton,

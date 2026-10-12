@@ -23,11 +23,7 @@
 			<div class="party-member nui-tile nui-interactive nui-attach-right" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"
 				data-event-mousedown="member_press(m.pid, ev.button)" data-event-mouseup="member_release(m.pid, ev.button)"
 				data-event-nuidrop="member_drop(m.pid)">
-				<div class="party-member__state party-art-host">
-					<img class="party-art party-art--up" data-attr-src="'d:/ymir work/ui/game/windows/' + m.state_art + '_01.sub'"/>
-					<img class="party-art party-art--over" data-attr-src="'d:/ymir work/ui/game/windows/' + m.state_art + '_02.sub'"/>
-					<img class="party-art party-art--down" data-attr-src="'d:/ymir work/ui/game/windows/' + m.state_art + '_03.sub'"/>
-				</div>
+				<div class="party-member__state party-art-host"><span class="party-role__face" data-attr-data-state="m.state_name"></span></div>
 				<div class="party-member__bar"><span class="party-member__name">{{ m.name }}</span></div>
 				<progress class="nui-gauge nui-gauge--red party-member__hp" direction="right" data-if="m.linked" data-attr-value="m.hp"/>
 				<span class="party-affect party-affect--0 nui-has-tooltip" data-if="m.affects[0]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_experience.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[0] }}</span></span>
@@ -42,43 +38,27 @@
 			</div>
 			<div class="party-roles nui-interactive" data-if="m.show_states" data-attr-id="'party-states-' + m.pid">
 				<button class="party-role party-art-host nui-has-tooltip" data-for="b : m.state_buttons"
-					data-event-mousedown="state_pick(m.pid, b.state, ev.button)">
-					<img class="party-art party-art--up" data-attr-src="'d:/ymir work/ui/game/windows/' + b.art + '_01.sub'"/>
-					<img class="party-art party-art--over" data-attr-src="'d:/ymir work/ui/game/windows/' + b.art + '_02.sub'"/>
-					<img class="party-art party-art--down" data-attr-src="'d:/ymir work/ui/game/windows/' + b.art + '_03.sub'"/>
-					<span class="nui-tooltip nui-anim party-role__tip">{{ b.tip }}</span>
-				</button>
-				<button class="party-role party-art-host nui-has-tooltip" data-event-mousedown="expel(m.pid, ev.button)">
-					<img class="party-art party-art--up" src="d:/ymir work/ui/game/windows/party_expel_01.sub"/>
-					<img class="party-art party-art--over" src="d:/ymir work/ui/game/windows/party_expel_02.sub"/>
-					<img class="party-art party-art--down" src="d:/ymir work/ui/game/windows/party_expel_03.sub"/>
-					<span class="nui-tooltip nui-anim party-role__tip">@game.TARGET_BUTTON_EXCLUDE</span>
-				</button>
+					data-event-mousedown="state_pick(m.pid, b.state, ev.button)"><span class="party-role__face" data-attr-data-state="b.state_name"></span><span
+					class="nui-tooltip nui-anim party-role__tip">{{ b.tip }}</span></button>
+				<button class="party-role party-art-host nui-has-tooltip" data-event-mousedown="expel(m.pid, ev.button)"><span
+					class="party-role__face" data-state="expel"></span><span class="nui-glyph nui-glyph--close party-role__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="nui-tooltip nui-anim party-role__tip">@game.TARGET_BUTTON_EXCLUDE</span></button>
 			</div>
 		</div>
 		<button id="party-menu-button" class="party__menu-button nui-interactive" data-class-is-open="menu_open"
 			data-event-mousedown="toggle_menu(ev.button)"><span class="party__menu-mark"></span></button>
 		<div id="party-menu" class="party-menu nui-board nui-fx nui-interactive" data-if="menu_open">
 			<div class="party-menu__buttons">
-				<button id="party-heal" class="party-menu__icon party-art-host nui-has-tooltip" data-if="heal_ready"
-					data-event-mousedown="heal(ev.button)">
-					<img class="party-art party-art--up" src="d:/ymir work/ui/game/windows/party_skill_heal_01.sub"/>
-					<img class="party-art party-art--over" src="d:/ymir work/ui/game/windows/party_skill_heal_02.sub"/>
-					<img class="party-art party-art--down" src="d:/ymir work/ui/game/windows/party_skill_heal_03.sub"/>
+				<button id="party-heal" class="party-menu__icon party-menu__icon--heal party-art-host nui-has-tooltip" data-if="heal_ready"
+					data-event-mousedown="heal(ev.button)"><span class="nui-glyph nui-glyph--heal party-menu__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
 					<span class="nui-tooltip nui-anim party-menu__tip">@game.PARTY_HEAL_ALL_MEMBER</span>
 				</button>
-				<button id="party-break-up" class="party-menu__icon party-art-host nui-has-tooltip" data-if="has_role &amp;&amp; is_leader"
-					data-event-mousedown="break_up(ev.button)">
-					<img class="party-art party-art--up" src="d:/ymir work/ui/game/windows/party_disband_01.sub"/>
-					<img class="party-art party-art--over" src="d:/ymir work/ui/game/windows/party_disband_02.sub"/>
-					<img class="party-art party-art--down" src="d:/ymir work/ui/game/windows/party_disband_03.sub"/>
+				<button id="party-break-up" class="party-menu__icon party-menu__icon--break-up party-art-host nui-has-tooltip" data-if="has_role &amp;&amp; is_leader"
+					data-event-mousedown="break_up(ev.button)"><span class="nui-glyph nui-glyph--minus party-menu__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
 					<span class="nui-tooltip nui-anim party-menu__tip">@game.PARTY_BREAK_UP</span>
 				</button>
-				<button id="party-leave" class="party-menu__icon party-art-host nui-has-tooltip" data-if="has_role &amp;&amp; !is_leader"
-					data-event-mousedown="leave(ev.button)">
-					<img class="party-art party-art--up" src="d:/ymir work/ui/game/windows/party_exit_01.sub"/>
-					<img class="party-art party-art--over" src="d:/ymir work/ui/game/windows/party_exit_02.sub"/>
-					<img class="party-art party-art--down" src="d:/ymir work/ui/game/windows/party_exit_03.sub"/>
+				<button id="party-leave" class="party-menu__icon party-menu__icon--leave party-art-host nui-has-tooltip" data-if="has_role &amp;&amp; !is_leader"
+					data-event-mousedown="leave(ev.button)"><span class="nui-glyph nui-glyph--leave party-menu__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
 					<span class="nui-tooltip nui-anim party-menu__tip">@game.PARTY_LEAVE</span>
 				</button>
 			</div>

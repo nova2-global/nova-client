@@ -8,7 +8,7 @@
 				"linked": true,
 				"hp": 0.8,
 				"state": 1,
-				"state_art": "party_state_leader",
+				"state_art": "party_state_leader", "state_name": "leader",
 				"affects": [
 					true,
 					false,
@@ -41,7 +41,7 @@
 				"linked": true,
 				"hp": 0.4,
 				"state": 2,
-				"state_art": "party_state_attacker",
+				"state_art": "party_state_attacker", "state_name": "attacker",
 				"affects": [
 					false,
 					true,
@@ -68,17 +68,17 @@
 				"state_buttons": [
 					{
 						"state": -1,
-						"art": "party_state_normal",
+						"art": "party_state_normal", "state_name": "normal",
 						"tip": "Withdraw settings."
 					},
 					{
 						"state": 6,
-						"art": "party_state_berserker",
+						"art": "party_state_berserker", "state_name": "berserker",
 						"tip": "Constitute as Berserker."
 					},
 					{
 						"state": 3,
-						"art": "party_state_tanker",
+						"art": "party_state_tanker", "state_name": "tanker",
 						"tip": "Constitute as Tanker."
 					}
 				]
@@ -90,7 +90,7 @@
 				"linked": false,
 				"hp": 0.0,
 				"state": 0,
-				"state_art": "party_state_normal",
+				"state_art": "party_state_normal", "state_name": "normal",
 				"affects": [
 					false,
 					false,

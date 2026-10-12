@@ -48,11 +48,11 @@
 					data-attr-value="draft" data-event-change="changed(ev.value, ev.linebreak)"/>
 				<span id="chat-mark" class="chat__mark" data-if="mark != ''">{{ mark }}</span>
 			</div>
-			<span id="chat-send" class="chat__button chat__send nui-has-tooltip" data-event-mousedown="send(ev.button)"><span
+			<span id="chat-send" class="chat__button chat__send nui-has-tooltip" data-event-mousedown="send(ev.button)"><span class="nui-glyph nui-glyph--send chat__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 				class="nui-tooltip nui-anim chat__tip">@game.CHAT_SEND_CHAT</span></span>
-			<span id="chat-whisper" class="chat__button chat__whisper nui-has-tooltip" data-event-mousedown="whisper(ev.button)"><span
+			<span id="chat-whisper" class="chat__button chat__whisper nui-has-tooltip" data-event-mousedown="whisper(ev.button)"><span class="nui-glyph nui-glyph--whisper chat__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
 				class="nui-tooltip nui-anim chat__tip">@game.CHAT_SEND_MEMO</span></span>
-			<span id="chat-log-open" class="chat__button chat__log-open nui-has-tooltip" data-event-mousedown="open_log(ev.button)"><span
+			<span id="chat-log-open" class="chat__button chat__log-open nui-has-tooltip" data-event-mousedown="open_log(ev.button)"><span class="nui-glyph nui-glyph--log chat__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
 				class="nui-tooltip nui-anim chat__tip">@game.CHAT_LOG</span></span>
 		</div>
 	</div>

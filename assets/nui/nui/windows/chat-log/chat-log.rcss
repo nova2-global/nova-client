@@ -228,7 +228,17 @@ input.chat-log__input
 	width: 24dp;
 	height: 21dp;
 	border-radius: var(--radius-sm);
-	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_01.sub" scale-none center center);
+}
+/* The send glyph (components/glyph.rcss); classic draws the legacy art. */
+.chat-log__glyph
+{
+	position: absolute;
+	left: 4dp;
+	top: 3dp;
+}
+.chat-log__send:hover .chat-log__glyph
+{
+	--glyph-ink: var(--accent);
 }
 .chat-log__send:hover
 {

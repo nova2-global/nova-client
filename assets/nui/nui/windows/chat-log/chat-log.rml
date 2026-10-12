@@ -54,7 +54,7 @@
 				data-event-change="changed(ev.value, ev.linebreak)"/>
 			<span id="chat-log-mark" class="chat-log__mark" data-if="mark != ''">{{ mark }}</span>
 		</div>
-		<span id="chat-log-send" class="chat-log__send nui-has-tooltip" data-event-mousedown="send(ev.button)"><span
+		<span id="chat-log-send" class="chat-log__send nui-has-tooltip" data-event-mousedown="send(ev.button)"><span class="nui-glyph nui-glyph--send chat-log__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim chat-log__tip">@game.CHAT_SEND_CHAT</span></span>
 	</div>
 	<nui-resize id="chat-log-resize" class="nui-resize--bottom-right chat-log__resize" edge="bottom-right" target="chat-log"

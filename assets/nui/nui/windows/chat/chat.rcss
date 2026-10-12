@@ -218,15 +218,15 @@ input.chat__input
 {
 	background-color: var(--surface-sunken);
 }
-.chat__send
+/* The send, whisper and log buttons draw a glyph (components/glyph.rcss);
+   classic draws the legacy button art instead (its overlay). */
+.chat__glyph
 {
-	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_01.sub" scale-none center center);
+	position: absolute;
+	left: 4dp;
+	top: 3dp;
 }
-.chat__whisper
+.chat__button:hover .chat__glyph
 {
-	decorator: image("d:/ymir work/ui/game/taskbar/send_whisper_button_01.sub" scale-none center center);
-}
-.chat__log-open
-{
-	decorator: image("d:/ymir work/ui/game/taskbar/open_chat_log_button_01.sub" scale-none center center);
+	--glyph-ink: var(--accent);
 }

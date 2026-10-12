@@ -231,15 +231,22 @@ class QuestCurtain(object):
 		color, direction = FADE_KINDS[kind]
 		name, duration = fade_class(speed)
 		previous = self._fade
+		# Under reduced motion the layer shows its end at once (the motion
+		# rule stops its animation), and the timer ends the fade on the next
+		# NovaUI update: never inside the interpreter's callback, which
+		# raises the set's wait flag only after the callback returns.
+		now = nui.now()
+		end = now if nui.is_reduced_motion() else now + duration
 		self._fade = {"color": color, "dir": direction, "class": name, "index": index,
-		              "end": nui.now() + duration, "running": True}
+		              "end": end, "running": True}
 		if previous is not None and previous["running"] and previous["index"] != index:
 			event.EndEventProcess(previous["index"])
-		if nui.is_reduced_motion():
-			self._finish_fade()
-			return
 		self._arm()
 		self._sync_board()
+		if self._board is None and not self._held:
+			# No document to time it (it did not load): the fade ends now, or
+			# the interpreter would wait for good.
+			self._finish_fade()
 
 	def fading(self):
 		"""The fade shown, a copy, or None."""
@@ -320,7 +327,10 @@ class QuestCurtain(object):
 			self._board = board
 			board.show()
 		end = self._deadline()
-		board.set(bars="in" if self._bars in ("in", "sliding_in") else "out", bar_dp=self._bar_dp(),
+		# A resting "out" is not a slide out: only "leaving" animates the bars
+		# off screen, so a board made for a fade with the bars out shows none.
+		shown = {"in": "in", "sliding_in": "in", "sliding_out": "leaving"}.get(self._bars, "out")
+		board.set(bars=shown, bar_dp=self._bar_dp(),
 		          fade=fade["color"] if fade is not None else "",
 		          fade_dir=fade["dir"] if fade is not None else "out",
 		          fade_class=fade["class"] if fade is not None else "normal",
@@ -473,6 +483,26 @@ class QuestBoard(nui.Window):
 		self._call("nui_title_end")
 
 
+class _BusyDelegate(uiQuest.QuestDialog):
+	"""The legacy dialog a busy facade routes every call to (D10). nui_hud
+	keeps the facade under its key and the facade keeps this dialog, so when
+	it closes (its Destroy, from its own CloseSelf or from the Interface) it
+	hides, which stops wndMgr's OnUpdate on a dialog that has no event set
+	any more, and tells the facade, which drops its key. The Interface's
+	RemoveQuestDialog then lets both go, as it lets a legacy dialog go."""
+
+	def __init__(self, owner, skin, idx):
+		uiQuest.QuestDialog.__init__(self, skin, idx)
+		self._nui_owner = weakref.ref(owner)
+
+	def Destroy(self):
+		uiQuest.QuestDialog.Destroy(self)
+		self.Hide()
+		owner = self._nui_owner()
+		if owner is not None:
+			owner._delegate_closed()
+
+
 def _routed(method):
 	"""A facade method that a busy fallback (QuestDialog._legacy) answers."""
 	@functools.wraps(method)
@@ -526,7 +556,7 @@ class QuestDialog(nui_hud.LayoutCalls):
 			return
 		if skin and _board_busy():
 			# One board at a time: this dialog is legacy's, made in its place.
-			self._legacy = uiQuest.QuestDialog(skin, idx)
+			self._legacy = _BusyDelegate(self, skin, idx)
 			self._ready = True
 			return
 
@@ -628,6 +658,11 @@ class QuestDialog(nui_hud.LayoutCalls):
 		if _curtain[0] is not None:
 			_curtain[0].end_fades_of(self._index)
 		_live[:] = [ref for ref in _live if ref() is not None and ref() is not self]
+		nui_hud.forget(self._key, self)
+
+	def _delegate_closed(self):
+		"""The busy delegate closed: its key goes, so nothing keeps the facade
+		and its closed legacy dialog alive once the Interface drops them."""
 		nui_hud.forget(self._key, self)
 
 	def _board(self):

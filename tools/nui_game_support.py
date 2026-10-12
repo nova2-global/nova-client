@@ -1688,9 +1688,11 @@ def install_wave5a_ui(game):
       legacy's selection rule (SelectItem fires only on a change) for the
       loader, which builds listbox, slotbar and image children too;
     - `event`: BUTTON_TYPE_NEXT, DONE and CANCEL; RegisterEventSetFromString
-      (the next free index, Game.event_sets holds the scripts) and
-      ClearEventSet (which detaches the sink, as C++ does); every call
-      recorded, layout getters answering 0;
+      (the next free index, Game.event_sets holds the scripts),
+      ClearEventSet (which detaches the sink, as C++ does) and
+      EndEventProcess (which lowers the set's wait flag that
+      Game.run_fade raises before a fade callback, as C++ does); every
+      call recorded, layout getters answering 0;
     - `nuigame`: QuestAttach, QuestDetach, QuestState, QuestScript,
       QuestOpenScript (P12 spec 3.4) over Game.quest_sets, Game.publish_quest()
       standing in for the C++ driver's feeds; WebPageFollow and WebPageState
@@ -1850,6 +1852,7 @@ def _rebuild_kinds(window, value, kinds):
 
 def _install_wave5a_modules(game, log):
     game.event_sets = {}         # index -> the script registered (RegisterEventSetFromString)
+    game.event_waits = {}        # index -> the set's wait flag (Game.run_fade raises it, EndEventProcess lowers it)
     game.quest_sets = {}         # index -> the sink's state of an attached set (nuigame.QuestState)
     game.game_window = None      # the window QuestOpenScript calls OpenQuestWindow on
     game.web = {"mode": False, "url": "", "rect": None, "moves": [], "follow": None, "zoom": 0.0,
@@ -1876,11 +1879,25 @@ def _install_wave5a_modules(game, log):
 
     def clear(index):
         game.event_sets.pop(index, None)
+        game.event_waits.pop(index, None)
         state = game.quest_sets.get(index)
         if state is not None and state["attached"]:
             detach(index)
+
+    def end_event_process(index):
+        game.event_waits[index] = False
     define(event, "RegisterEventSetFromString", register)
     define(event, "ClearEventSet", clear)
+    define(event, "EndEventProcess", end_event_process)
+
+    def run_fade(handler, index, name, speed):
+        """A fade command as the interpreter runs it (PythonEventManager.cpp,
+        ProcessEventSet): the set's wait flag raised, then the handler's
+        FadeOut, FadeIn, WhiteOut or WhiteIn; EndEventProcess lowers it, and
+        the set goes on only while it is down (Game.event_waits)."""
+        game.event_waits[index] = True
+        return getattr(handler, name)(speed)
+    game.run_fade = run_fade
 
     app = game.modules["app"]
     for name, value in WAVE5A_APP_CONSTANTS.items():

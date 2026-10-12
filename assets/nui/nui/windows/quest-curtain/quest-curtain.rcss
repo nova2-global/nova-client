@@ -1,6 +1,9 @@
 /* The quest curtain, in every theme: two letterbox bars of --quest-bar-height
    (the facade's bar_dp) on the top and bottom edges, and one fade layer over
-   the whole screen. The bars slide 0.4s (legacy moves them 200 px a second:
+   the whole screen. A bar rests off screen (its base transform) unless it
+   is in; is-in slides it in and holds it, is-leaving slides it out, so a
+   board made for a fade while the bars are out keeps them off screen. The
+   bars slide 0.4s (legacy moves them 200 px a second:
    0.6 s for its 120 px at 1280 x 960); the fades draw in one of four
    duration classes (the facade picks one from legacy's per-frame speed), and
    the timer of the document ends both on the NovaUI clock. Under reduced
@@ -42,7 +45,7 @@ body.quest-curtain
 {
 	animation: 0.4s linear-in-out quest-curtain-top-in;
 }
-.quest-curtain__bar--top.is-out.nui-anim
+.quest-curtain__bar--top.is-leaving.nui-anim
 {
 	animation: 0.4s linear-in-out quest-curtain-top-out;
 }
@@ -50,7 +53,7 @@ body.quest-curtain
 {
 	animation: 0.4s linear-in-out quest-curtain-bottom-in;
 }
-.quest-curtain__bar--bottom.is-out.nui-anim
+.quest-curtain__bar--bottom.is-leaving.nui-anim
 {
 	animation: 0.4s linear-in-out quest-curtain-bottom-out;
 }

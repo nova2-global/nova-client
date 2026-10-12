@@ -32,6 +32,7 @@ compiled from interfacemodule.py, so the wiring under test is the real one.
 - wiring and no per-frame Python."""
 import ast
 import contextlib
+import gc
 import inspect
 import io
 import json
@@ -39,6 +40,7 @@ import os
 import sys
 import types
 import unittest
+import weakref
 from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -755,6 +757,39 @@ class BusyBoard(unittest.TestCase):
             self.assertIn(("event.SelectAnswer", (second, 254)), world.effects())
             self.assertIsNotNone(world.board(a), "the first keeps its board")
 
+    def test_a_busy_delegate_that_closes_is_hidden_and_let_go(self):
+        world = World(True)
+        with world:
+            first, a, handler_a = world.open(1)
+            second, b, handler_b = world.open(1)
+            nui_hud = world.game.loaded["nui_hud"]
+            key = "quest-%d" % second
+            self.assertIs(nui_hud.current(key), b)
+            self.assertTrue(handler_b.IsShow())
+            world.call(handler_b, "MakeNextButton", 1)
+            press_key(world, handler_b, "escape")
+            self.assertNotIn(b, world.interface.wndQuestWindow.values(), "the Interface dropped it")
+            self.assertFalse(handler_b.IsShow(), "hidden, so wndMgr updates it no more")
+            self.assertIsNone(nui_hud.current(key), "nothing keeps the facade and its legacy dialog")
+            facade = weakref.ref(b)
+            del b
+            gc.collect()
+            self.assertIsNone(facade(), "the closed facade is collected")
+            self.assertIsNotNone(world.board(a), "the first keeps its board")
+            self.assertIs(nui_hud.current("quest-%d" % first), a)
+
+    def test_a_busy_delegate_closed_by_its_own_done_event_is_let_go_too(self):
+        world = World(True)
+        with world:
+            world.open(1)
+            second, b, handler_b = world.open(5)
+            nui_hud = world.game.loaded["nui_hud"]
+            world.call(handler_b, "MakeNextButton", 0)
+            world.call(handler_b, "DoneEvent")
+            self.assertFalse(handler_b.IsShow())
+            self.assertIsNone(nui_hud.current("quest-%d" % second))
+            self.assertEqual(sorted(world.interface.wndQuestWindow), [0])
+
     def test_a_skin_0_dialog_while_a_board_shows_is_novauis(self):
         world = World(True)
         with world:
@@ -781,8 +816,9 @@ class Fades(unittest.TestCase):
         with world:
             index, dialog, handler = world.open(1)
             for name, speed in FADES:
-                world.call(handler, name, speed)
                 before = len(self.ends(world))
+                self.fade(world, handler, index, name, speed)
+                self.assertEqual(len(self.ends(world)), before, "no fade ends inside its callback")
                 if nui_on:
                     curtain = world.nui_quest.curtain()
                     board = curtain.board()
@@ -800,6 +836,7 @@ class Fades(unittest.TestCase):
                             handler.eventCurtain.OnUpdate()
                     shown = handler.eventCurtain.IsShow()
                     seen.append(("white" if handler.eventCurtain.fadeColor == 1.0 else "black") if shown else "")
+                self.assertFalse(world.game.event_waits[index], "%s: the set goes on" % name)
             return self.ends(world), seen, index
 
     def test_each_fade_ends_the_interpreters_wait_once_as_legacys(self):
@@ -855,13 +892,38 @@ class Fades(unittest.TestCase):
             self.assertIsNone(world.nui_quest.curtain().fading())
             self.assertIsNone(world.nui_quest.curtain().board())
 
-    def test_under_reduced_motion_a_fade_ends_at_once(self):
+    def fade(self, world, handler, index, name, speed):
+        """A fade command as the interpreter runs it: the wait flag raised,
+        then the callback (Game.run_fade)."""
+        with world.game, quiet():
+            world.game.run_fade(handler, index, name, speed)
+
+    def test_under_reduced_motion_a_fade_ends_on_the_next_update_not_in_its_callback(self):
         world = World(True, reduced=True)
         with world:
             index, dialog, handler = world.open(1)
-            world.call(handler, "FadeOut", 0.05)
+            self.fade(world, handler, index, "FadeOut", 0.05)
+            self.assertEqual(self.ends(world), [], "never inside the interpreter's callback")
+            self.assertTrue(world.game.event_waits[index])
+            curtain = world.nui_quest.curtain()
+            board = curtain.board()
+            self.assertEqual(curtain.fading()["color"], "black", "opaque at once")
+            self.assertTrue(board.model["timer_on"])
+            self.assertLessEqual(board.model["timer_end_at"], world.game.state.now, "the timer ends it at once")
+            with world.game, quiet():
+                board.fire("timer_end")
             self.assertEqual(self.ends(world), [(index,)])
-            self.assertEqual(world.nui_quest.curtain().fading()["color"], "black", "opaque at once")
+            self.assertFalse(world.game.event_waits[index], "the set goes on")
+
+    def test_a_fade_whose_board_does_not_load_ends_at_once_and_the_set_goes_on(self):
+        world = World(True)
+        with world:
+            index, dialog, handler = world.open(1)
+            world.game.state.failing.add(CURTAIN_DOCUMENT)
+            self.fade(world, handler, index, "WhiteOut", 0.05)
+            self.assertIsNone(world.nui_quest.curtain().board())
+            self.assertEqual(self.ends(world), [(index,)])
+            self.assertFalse(world.game.event_waits[index], "no wait for a timer that does not exist")
 
 
 # --- the curtain ----------------------------------------------------------------------------------------
@@ -894,13 +956,24 @@ class Curtain(unittest.TestCase):
         world.call(handler, "MakeNextButton", 1)
         world.call(handler, "DoneEvent")
         press_next(world, dialog)
-        self.assertEqual((curtain.bars(), board.model["bars"]), ("sliding_out", "out"))
+        self.assertEqual((curtain.bars(), board.model["bars"]), ("sliding_out", "leaving"))
         self.assertEqual(world.interface.hud()[0], (), "the HUD back only after the bars are out")
         self.end_timer(world)
         self.assertEqual(curtain.bars(), "out")
         self.assertIsNone(curtain.board())
         self.assertEqual(world.interface.hud()[0], HUD)
         self.assertEqual(world.done_events(), 0)
+
+    def test_a_fade_with_the_bars_out_makes_a_board_whose_bars_rest_out(self):
+        world = self.world()
+        index, dialog, handler = world.open(0)
+        curtain = world.nui_quest.curtain()
+        self.assertEqual(curtain.bars(), "out")
+        with world.game, quiet():
+            world.game.run_fade(handler, index, "WhiteOut", 0.05)
+        board = curtain.board()
+        self.assertEqual((board.model["bars"], board.model["fade"]), ("out", "white"),
+                         "out, not leaving: no slide out on a new board")
 
     def test_the_bars_scale_with_the_ui(self):
         world = self.world()

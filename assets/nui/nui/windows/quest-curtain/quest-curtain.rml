@@ -8,8 +8,10 @@
 	     shares, and this is its board (controller
 	     assets/root/nui_quest_curtain.py). The bars are BarHeight pixels
 	     tall, given in dp as bar_dp (0 at 16:9: then the curtain makes no
-	     board for them); they slide by keyframe animations of their
-	     transform. The fade layer is one element whose opacity animates in
+	     board for them); bars is "in" (resting or sliding in), "leaving"
+	     (sliding out) or "out" (resting off screen), and only "in" and
+	     "leaving" run a keyframe animation of the bars' transform, so a
+	     board made for a fade while the bars are out shows none. The fade layer is one element whose opacity animates in
 	     one of four duration classes; it takes every press while it shows,
 	     as legacy's CURTAIN bar is picked first. One format="none" timer
 	     ends the slides and the fades on the NovaUI clock. The board stands
@@ -22,9 +24,9 @@
 <body template="nui" class="nui-overlay quest-curtain" data-model="quest_curtain"
 	data-style---quest-bar-height="bar_dp + 'dp'">
 	<div id="quest-curtain-top" class="quest-curtain__bar quest-curtain__bar--top nui-anim"
-		data-class-is-in="bars == 'in'" data-class-is-out="bars == 'out'"></div>
+		data-class-is-in="bars == 'in'" data-class-is-leaving="bars == 'leaving'"></div>
 	<div id="quest-curtain-bottom" class="quest-curtain__bar quest-curtain__bar--bottom nui-anim"
-		data-class-is-in="bars == 'in'" data-class-is-out="bars == 'out'"></div>
+		data-class-is-in="bars == 'in'" data-class-is-leaving="bars == 'leaving'"></div>
 	<div id="quest-curtain-fade" class="quest-curtain__fade nui-anim nui-interactive" data-if="fade != ''"
 		data-class-is-black="fade == 'black'" data-class-is-white="fade == 'white'" data-class-is-in="fade_dir == 'in'"
 		data-class-is-out-fast="fade_dir == 'out' &amp;&amp; fade_class == 'fast'"

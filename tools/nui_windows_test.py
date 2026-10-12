@@ -13,6 +13,7 @@ WAVE2A = ["taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons
           "edge-buttons", "tip-board", "big-board", "map-name"]
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
+WAVE5A = ["quest", "guild-building", "web", "console"]
 
 
 class Legacy(object):
@@ -121,9 +122,10 @@ class Flags(WindowsTest):
                          sorted(WAVE1[1:] + WAVE2A + WAVE2B))
 
     def test_every_wave3a_window_defaults_to_legacy(self):
-        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A + WAVE2B + WAVE3A,
+        earlier = WAVE1 + WAVE2A + WAVE2B + WAVE3A
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(earlier)], earlier,
                          "appended in this order")
-        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B):]:
+        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B):len(earlier)]:
             self.assertIs(default, False, window_id)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
@@ -157,6 +159,44 @@ class Flags(WindowsTest):
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
                          sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A))
+
+    def test_every_wave5a_window_defaults_to_legacy(self):
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A,
+                         "appended in this order")
+        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A):]:
+            self.assertIs(default, False, window_id)
+            self.assertFalse(self.m.is_on(window_id), window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+
+    def test_rest_names_the_four_wave5a_windows_and_sys_keeps_its_six(self):
+        self.assertEqual(self.m.GROUPS["rest"], tuple(WAVE5A))
+        self.assertEqual(self.m.GROUPS["sys"], tuple(WAVE3A), "+sys keeps meaning the Wave 3a windows")
+        self.assertEqual(len(self.m.GROUPS["sys"]), 6)
+        self.setting.windows = "+sys"
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE5A), "+sys turns no Wave 5a window on")
+        self.setting.windows = "+rest,-console"
+        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "console") for window_id in WAVE5A))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE1 + WAVE2A + WAVE2B + WAVE3A),
+                         "+rest turns no earlier window on")
+        self.assertEqual(self.m.use("quest"), (True, ""))
+        self.assertEqual(self.m.use("console"), (False, "flag off"))
+        self.assertNotIn("rest", self.m.overrides())
+        self.assertNotIn("rest", [window_id for window_id, _ in self.m.WINDOWS])
+        self.assertEqual(self.m.use("rest"), (False, "flag off"))
+        self.assertRaises(ValueError, self.m.set_override, "rest", True)
+
+    def test_the_wave5a_demo_string_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud,+hud2,+sys,+rest"
+        self.assertLessEqual(len(demo), 200)
+        self.assertEqual(len(demo), 28)
+        known = [window_id for window_id, _ in self.m.WINDOWS]
+        for group in ("wave1", "hud", "hud2", "sys", "rest"):
+            for window_id in self.m.GROUPS[group]:
+                self.assertIn(window_id, known)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
+                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A))
 
     def test_a_group_turns_its_members_on_and_off_in_token_order(self):
         self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A))
@@ -379,7 +419,7 @@ class LayerStopgap(WindowsTest):
 
 class PhaseEnd(WindowsTest):
     def test_end_phase_asks_each_phase_scoped_module_that_is_loaded_and_logs_the_count(self):
-        self.assertEqual(self.m.PHASE_SCOPED, ("nui_dialog_kit",))
+        self.assertEqual(self.m.PHASE_SCOPED, ("nui_dialog_kit", "nui_quest"))
         calls = []
 
         def end_phase():
@@ -392,11 +432,34 @@ class PhaseEnd(WindowsTest):
         self.assertEqual(self.dbg.lines[-1], "nui_windows: phase ended, 3 document(s) unloaded")
         self.assertEqual(self.dbg.errors, [])
 
+    def test_end_phase_asks_nui_quest_too(self):
+        calls = []
+
+        def kit_end():
+            calls.append("kit")
+            return 1
+
+        def quest_end():
+            calls.append("quest")
+            return 2
+
+        self.modules.put("nui_dialog_kit", support.stub_module("nui_dialog_kit", end_phase=kit_end))
+        self.modules.put("nui_quest", support.stub_module("nui_quest", end_phase=quest_end))
+        self.assertEqual(self.m.end_phase(), 3)
+        self.assertEqual(calls, ["kit", "quest"], "in PHASE_SCOPED's order")
+        self.assertEqual(self.dbg.lines[-1], "nui_windows: phase ended, 3 document(s) unloaded")
+        self.modules.put("nui_dialog_kit", None)
+        calls[:] = []
+        self.assertEqual(self.m.end_phase(), 2, "a module not imported is skipped, the next one still asked")
+        self.assertEqual(calls, ["quest"])
+
     def test_with_no_phase_scoped_module_imported_end_phase_imports_none_and_logs_nothing(self):
         self.modules.put("nui_dialog_kit", None)  # an import would raise ImportError
+        self.modules.put("nui_quest", None)
         lines = list(self.dbg.lines)
         self.assertEqual(self.m.end_phase(), 0)
         self.assertIsNone(sys.modules["nui_dialog_kit"])
+        self.assertIsNone(sys.modules["nui_quest"])
         self.assertEqual(self.dbg.lines, lines)
         self.assertEqual(self.dbg.errors, [])
 

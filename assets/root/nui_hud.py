@@ -51,6 +51,17 @@ def has_engine_3a():
 	return getattr(sys.modules.get("nuigame"), "NuiStats", None) is not None
 
 
+def has_engine_5a():
+	"""True when the exe has the Wave 5a engine as well: nuigame.QuestAttach,
+	QuestState and WebPageFollow (P12 spec 3.4, 6.4). The quest dialog and the
+	web window need it; the guild building window and the console need
+	has_engine() alone."""
+	if not has_engine_3a():
+		return False
+	nuigame = sys.modules.get("nuigame")
+	return all(getattr(nuigame, name, None) is not None for name in ("QuestAttach", "QuestState", "WebPageFollow"))
+
+
 def take_over(key, facade):
 	"""Destroys the NovaUI parts of the previous facade registered under `key`
 	if they are still alive (a phase that ended without Destroy, D26), then

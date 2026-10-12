@@ -200,6 +200,22 @@ class HudHelpers(unittest.TestCase):
             nuigame.lack("ChatAttach")
             self.assertFalse(world.module("nui_hud").has_engine_3a(), "NuiStats without the Wave 2b engine is not enough")
 
+    def test_has_engine_5a_needs_the_three_functions_and_the_3a_engine(self):
+        self.assertTrue(self.hud.has_engine_5a(), "the recording nuigame answers every name")
+        for name in ("QuestAttach", "QuestState", "WebPageFollow"):
+            world = World(True)
+            with world:
+                world.game.modules["nuigame"].lack(name)
+                self.assertFalse(world.module("nui_hud").has_engine_5a(), "a Wave 3a exe: no %s" % name)
+                self.assertTrue(world.module("nui_hud").has_engine_3a())
+        world = World(True)
+        with world:
+            world.game.modules["nuigame"].lack("NuiStats")
+            self.assertFalse(world.module("nui_hud").has_engine_5a(), "the quest functions without the 3a engine")
+        world = World(True, engine=False)
+        with world:
+            self.assertFalse(world.module("nui_hud").has_engine_5a(), "no nuigame at all")
+
     def on_demand(self, document="nui/windows/test/test.rml"):
         nui = self.world.game.modules["nui"]
         log = []

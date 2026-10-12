@@ -1,11 +1,11 @@
 """Which windows run on NovaUI, and the factory that makes them.
 
-Each window has an id. Its default lives here (every Wave 1, 2a, 2b and 3a
-window is off: legacy) and config/metin2.cfg overrides it through
+Each window has an id. Its default lives here (every Wave 1, 2a, 2b, 3a and
+5a window is off: legacy) and config/metin2.cfg overrides it through
 UI_NUI_WINDOWS ("+id" on, "-id" off, comma-separated;
 systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud", "hud2",
-"sys") in that string stands for each of its windows, in its place among the
-tokens.
+"sys", "rest") in that string stands for each of its windows, in its place
+among the tokens.
 UI_NUI_LOGIN 1 means "+login" unless UI_NUI_WINDOWS names login itself.
 A window runs on NovaUI only when its flag is on, NovaUI is available, the
 locale is not right-to-left (nui.enabled_for_locale), its document loaded
@@ -44,7 +44,7 @@ except ImportError:  # plain Python outside the client
 	wndMgr = None
 
 
-WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a, 2b and 3a
+WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a, 2b, 3a and 5a
 	("login", False),
 	("dialogs", False),
 	("server-board", False),
@@ -79,6 +79,10 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("restart", False),            # the restart dialog after a death
 	("help", False),               # the help window
 	("point-reset", False),        # the point reset questions; needs the NovaUI dialog kit
+	("quest", False),              # the quest dialog, its letterbox and fades, the HUD hiding it causes
+	("guild-building", False),     # the guild building placement window
+	("web", False),                # the web window around the WebView2 page (the mall)
+	("console", False),            # the developer console (only where legacy opens it)
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
@@ -87,13 +91,15 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	        "edge-buttons", "tip-board", "big-board", "map-name"),
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
+	"rest": ("quest", "guild-building", "web", "console"),
 }
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
 
 # Modules holding NovaUI documents that no phase window owns (shared between
-# windows), each with an end_phase() that unloads them; see end_phase().
-PHASE_SCOPED = ("nui_dialog_kit",)
+# windows: the dialog kit's, the quest curtain and any quest board left),
+# each with an end_phase() that unloads them; see end_phase().
+PHASE_SCOPED = ("nui_dialog_kit", "nui_quest")
 
 _DEFAULTS = dict(WINDOWS)
 _ID_CHARS = frozenset("abcdefghijklmnopqrstuvwxyz0123456789-")
@@ -279,9 +285,10 @@ def end_phase():
 	before the next one opens. RmlUi updates every loaded document each
 	frame, shown or not, so nothing the ended phase loaded may stay: a phase
 	window's own documents go with its Close, and the documents no phase
-	window owns (PHASE_SCOPED: the dialog kit's shared ones) go here. Each
-	loads again when the next phase shows it. Only modules already imported
-	are asked (a flag that is off imports none). Returns how many documents
+	window owns (PHASE_SCOPED: the dialog kit's shared ones, the quest
+	curtain and any quest board left) go here. Each loads again when the
+	next phase shows it. Only modules already imported are asked (a flag
+	that is off imports none). Returns how many documents
 	went, and logs that count to log.txt when it is not 0; an error in a
 	module goes to syserr.txt and the phase change goes on."""
 	count = 0

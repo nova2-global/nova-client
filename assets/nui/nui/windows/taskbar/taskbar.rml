@@ -145,7 +145,7 @@
 		<div id="camera-image" class="taskbar-camera" data-if="mouse_image"></div>
 	</div>
 
-	<div id="mouse-left-menu" class="taskbar-menu taskbar-menu--left nui-interactive" data-if="left_open">
+	<div id="mouse-left-menu" class="taskbar-menu taskbar-menu--left nui-board nui-fx nui-interactive" data-if="left_open">
 		<button id="mouse-left-attack" class="taskbar-mode taskbar-mode--attack nui-has-tooltip"
 			data-event-mousedown="pick_mode(0, 2, ev.button)"><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--side">@ui.MOUSEBUTTON_ATTACK</span></button>
 		<button id="mouse-left-auto" class="taskbar-mode taskbar-mode--auto nui-has-tooltip"
@@ -153,13 +153,13 @@
 		<button id="mouse-left-camera" class="taskbar-mode taskbar-mode--camera nui-has-tooltip"
 			data-event-mousedown="pick_mode(0, 3, ev.button)"><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--side">@ui.MOUSEBUTTON_CAMERA</span></button>
 	</div>
-	<div id="mouse-right-menu" class="taskbar-menu taskbar-menu--right nui-interactive" data-if="right_open">
+	<div id="mouse-right-menu" class="taskbar-menu taskbar-menu--right nui-board nui-fx nui-interactive" data-if="right_open">
 		<button id="mouse-right-attack" class="taskbar-mode taskbar-mode--attack nui-has-tooltip"
 			data-event-mousedown="pick_mode(1, 2, ev.button)"><span class="nui-tooltip nui-anim taskbar-tip">@ui.MOUSEBUTTON_ATTACK</span></button>
 		<button id="mouse-right-camera" class="taskbar-mode taskbar-mode--camera nui-has-tooltip"
 			data-event-mousedown="pick_mode(1, 3, ev.button)"><span class="nui-tooltip nui-anim taskbar-tip">@ui.MOUSEBUTTON_CAMERA</span></button>
 	</div>
-	<div id="skill-picker" class="taskbar-picker" data-if="right_open &amp;&amp; size(skill_rows) > 0">
+	<div id="skill-picker" class="taskbar-picker nui-board nui-fx" data-if="right_open &amp;&amp; size(skill_rows) > 0">
 		<div class="nui-slot-grid taskbar-picker__row nui-interactive" data-for="row : skill_rows">
 			<div class="nui-slot nui-anim taskbar-cell" data-for="slot : row.slots"
 				data-attr-id="'skill-pick-' + slot.ref"

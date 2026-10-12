@@ -13,7 +13,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="theme-picker.rcss"/>
 </head>
-<body template="nui" class="picker" data-model="theme_picker">
+<body template="nui" class="nui-board nui-fx picker" data-model="theme_picker">
 	<span class="picker__label">@ui.THEME_TITLE</span>
 	<button class="nui-button nui-button--small picker__button" data-for="theme : themes" data-attr-id="'theme-pick-' + theme.id" data-class-is-selected="theme.id == current" data-event-mousedown="pick(theme.id, ev.button)">{{ theme.label }}</button>
 </body>

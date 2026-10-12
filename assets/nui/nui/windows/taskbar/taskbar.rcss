@@ -364,10 +364,6 @@ progress.taskbar-orb fill
 	position: absolute;
 	bottom: 52dp;
 	padding: var(--space-1);
-	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--surface);
 }
 .taskbar-menu .taskbar-mode
 {
@@ -411,10 +407,6 @@ progress.taskbar-orb fill
 	align-items: flex-end;
 	gap: var(--space-1);
 	padding: var(--space-1);
-	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--surface);
 }
 .taskbar-picker__row
 {

@@ -1,4 +1,5 @@
-/* NovaUI base: element defaults, typography, focus, scrollbars, reduced motion.
+/* NovaUI base: element defaults, typography, focus, scrollbars, reduced motion,
+   reduced effects.
    Linked through nui/nui.rtpl right after nui/theme/tokens.rcss.
    Rules for authors: docs/ui/AUTHORING.md (asset repository). */
 
@@ -104,6 +105,23 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 	{
 		transition: none;
 		animation: none;
+	}
+}
+
+/* Reduced effects: no per-frame layer. Filters, backdrop filters and masks
+   need one on every frame while their element shows; shadows and gradients
+   are drawn once and stay. nuitool lint NUI010 keeps every filter, backdrop
+   filter and mask in a .nui-fx rule lighter than this one. The runtime
+   activates the media theme while the player's setting is on
+   (nui.set_reduced_effects, UI_REDUCED_EFFECTS) and on a device without
+   effects (docs/ui/AUTHORING.md "Reduced effects"). */
+@media (theme: reduced-effects)
+{
+	.nui-fx.nui-fx.nui-fx.nui-fx
+	{
+		filter: none;
+		backdrop-filter: none;
+		mask-image: none;
 	}
 }
 

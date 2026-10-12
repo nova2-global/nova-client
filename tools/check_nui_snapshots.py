@@ -67,6 +67,9 @@ import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SNAPSHOTS = os.path.join("docs", "ui", "snapshots")
+# Images in SNAPSHOTS that are inputs of cases, not goldens: the synthetic
+# world the translucent cases are snapped over (tools/nui_make_backdrop.py).
+INPUT_IMAGES = ("backdrop",)
 BASE_ROOTS = ["assets/nui", "assets/icon"]
 LOCALE = ["--locale", "assets/locale/locale/en"]
 # Extra --root values a case may add: legacy art under d:/ymir work/ (ETC, and

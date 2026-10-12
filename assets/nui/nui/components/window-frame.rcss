@@ -28,6 +28,14 @@
 	border-color: var(--border);
 	border-radius: var(--radius-lg);
 }
+/* Translucent panels (docs/ui/AUTHORING.md "Player colors"): the opacity
+   slot sets --panel-backdrop; boards and tiles stay unblurred (they are
+   always loaded, and a backdrop blur costs a layer every frame). With the
+   token at none (the default, and opacity 100) no layer exists. */
+.nui-window.nui-fx
+{
+	backdrop-filter: var(--panel-backdrop);
+}
 /* A band across the screen: no side borders and no corners, one line along
    its bottom (the console). */
 .nui-window--band

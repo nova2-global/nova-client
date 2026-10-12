@@ -1812,7 +1812,7 @@ Hot reload also needs the asset store in file-load mode (dev runs without an ins
   - The classic Interface section has no legacy original: its layout is new, on legacy art, and the board grows under legacy's 255 px by its height.
   - The music list's popups are `uiCommon.PopupDialog` (the kit's facade with `dialogs` on), not legacy's private copy.
 - **Effects, chrome and player colors (P13)**, where the tests and the goldens are the evidence so far and the live checks come from the fx validation:
-  - The effects are not checked in the running client yet; the offline parity fixtures hold the two renderers within 2 per channel.
+  - The client's Direct3D 9 frames match `nuitool snap` within 3 per channel for every effect of the render test's effect cells (100% and 150%, modern-dark and cyberpunk) and within 4 for the cyberpunk gallery, live at the login screen (the fx kit's FXP, 2026-10-13); the offline parity fixtures hold the two renderers within 2. In game, effects are checked by eye so far.
   - Where effects are off, an element with a `box-shadow` loses its background and border with the shadow (RmlUi draws them into the shadow's texture); give the shadow its own element ([What the renderer draws](#what-the-renderer-draws)).
   - The first frame of a box shadow or a backdrop blur takes about 8 ms in the driver, a one-time hitch per session ([What effects cost](#what-effects-cost)).
   - A gradient's lookup texture holds 1024 texels, so a one-pixel ramp is resolved exactly up to a 1024 px gradient line and spread over at most 2.5 px at 2560.

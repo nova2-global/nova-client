@@ -97,7 +97,7 @@ The sheets: `cyberpunk-1x.png` 256 x 68 px, 2,674 bytes; `cyberpunk-2x.png`
 
 | Window | What changes |
 |---|---|
-| `taskbar` | The bar as the cut-corner panel with the glowing outline, the edge streak and the violet cut; the HP ring (P13 D21) at its left with the HP value inside, the SP value right of the right mode button; the mall button right of the ring and the HP, SP and stamina bars 106dp wide, so the left group still ends at 268dp; every button a chip; the EXP orbs filled violet to cyan |
+| `taskbar` | The bar as the cut-corner panel with the glowing outline, the edge streak and the violet cut; the HP ring (P13 D21) at its left with the HP value inside (9dp, so five digits stay off the ring's stroke), the SP value right of the right mode button; the mall button right of the ring and the HP, SP and stamina bars 106dp wide, so the left group still ends at 268dp; every button a chip; the EXP orbs filled violet to cyan |
 | `minimap` | A 1dp neon ring with a halo, a ring of ticks between the map and the ring, the map's rim faded by a mask, violet round buttons, the place line on a neon plate |
 | `chat` | The open chat framed by one dim neon edge; the mode, send, whisper and log buttons as chips |
 | `chat-log` | The filters as a strip of neon tabs, the active ones filled; the mode button a chip; a thin neon scroll bar |

@@ -1,0 +1,13 @@
+/* Classic skin overlay of nui/windows/gallery/gallery.rml: classic draws the
+   legacy art where the modern look draws a glyph, so the glyph and board
+   column does not show, and the window keeps the width of its three
+   component columns. */
+
+body.skin-classic.nui-window
+{
+	width: 1400dp;
+}
+.skin-classic .gallery-column--chrome
+{
+	display: none;
+}

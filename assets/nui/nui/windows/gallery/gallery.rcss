@@ -1,15 +1,17 @@
 /* Gallery page layout. Components come from nui/nui.rtpl. */
 
 /* Sized to fit a 1920x1080 dp viewport whole (the client's auto scale at
-   1080, 1620 and 2160 lines): 24dp margins, a 1400dp width, and a body whose
-   content is shown whole up to 80vh (864dp at 1080). On a shorter viewport
-   the body scrolls instead: 80vh leaves the 152dp of margin, title bar,
-   padding and footer on screen down to 760dp (RCSS has no calc()). */
+   1080, 1620 and 2160 lines): 24dp margins, a 1720dp width (the three
+   component columns of 440dp and the 296dp glyph and board column; classic,
+   which hides that column, keeps 1400dp), and a body whose content is shown
+   whole up to 80vh (864dp at 1080). On a shorter viewport the body scrolls
+   instead: 80vh leaves the 152dp of margin, title bar, padding and footer
+   on screen down to 760dp (RCSS has no calc()). */
 body.nui-window
 {
 	left: 24dp;
 	top: 24dp;
-	width: 1400dp;
+	width: 1720dp;
 }
 
 .gallery-body
@@ -31,6 +33,78 @@ body.nui-window
 .gallery-column h2
 {
 	margin-top: var(--space-4);
+}
+.gallery-column--chrome
+{
+	flex: 0 0 296dp;
+}
+
+/* Every glyph (components/glyph.rcss) in a 32dp cell, at 125%. */
+.gallery-glyphs
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-1);
+	margin-bottom: var(--space-3);
+}
+.gallery-glyph
+{
+	display: block;
+	position: relative;
+	width: 32dp;
+	height: 32dp;
+}
+.gallery-glyph .nui-glyph
+{
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	transform: scale(1.25);
+}
+
+/* The chrome's boards and tile (components/window-frame.rcss). */
+.gallery-boards
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-2);
+	margin-bottom: var(--space-3);
+}
+.gallery-board
+{
+	display: block;
+	width: 80dp;
+	height: 32dp;
+	padding: 0 var(--space-2);
+	line-height: 32dp;
+}
+.gallery-ring
+{
+	display: block;
+	position: relative;
+	width: 64dp;
+	height: 64dp;
+}
+.gallery-ring__disc, .gallery-ring__ring
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 64dp;
+	height: 64dp;
+}
+.gallery-ring__ring
+{
+	box-sizing: border-box;
+}
+.gallery-band
+{
+	height: 32dp;
+	padding: 0 var(--space-2);
+	line-height: 32dp;
 }
 
 /* Button states as a table: columns line up and still grow with longer

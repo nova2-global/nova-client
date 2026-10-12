@@ -181,8 +181,10 @@ body.nui-scrim .nui-window
 }
 /* A round ring around something drawn under it (the minimap's map). RmlUi
    scales radii that do not fit down until they do, measured against the
-   padding box (CSS measures the border box), so 9999dp is a circle of any
-   size: on the 136dp minimap it draws exactly what 68dp drew. */
+   padding box (CSS measures the border box), so 9999dp rounds a box of any
+   size as far as RmlUi can: the outer edge keeps flat sides twice the
+   border's width (10dp on the 136dp minimap, where it draws exactly what
+   68dp drew). A true circle at a small size is a borderless disc. */
 .nui-board--ring
 {
 	background-color: transparent;

@@ -9,7 +9,9 @@
 	     nui-scrim), the dialog look (the dialog-* windows have goldens of
 	     their own), the nui-frames element outside the slot effects (the
 	     loading window shows it), nui-countdown (the HUD windows show it)
-	     and the layout helpers other than nui-row. The classic gauge and
+	     and the layout helpers other than nui-row. The fourth column holds
+	     the glyphs and the chrome's boards (classic hides it: it draws no
+	     glyph, skins/classic/windows/gallery.rcss). The classic gauge and
 	     slot art and the slot effects are legacy art under d:/ymir work/,
 	     so snapshots of this page need the assets/ETC root.
 	     It fits a 1920x1080 dp viewport, so a snapshot at the client's auto
@@ -304,6 +306,54 @@
 						</div>
 					</div>
 				</div>
+			</div>
+			<div class="gallery-column gallery-column--chrome">
+				<h2>Glyphs</h2>
+				<div class="gallery-glyphs">
+					<span class="gallery-glyph" title="close"><span class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="plus"><span class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="minus"><span class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="chevron-up"><span class="nui-glyph nui-glyph--chevron-up"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="chevron-down"><span class="nui-glyph nui-glyph--chevron-down"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="chevron-left"><span class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="chevron-right"><span class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="send"><span class="nui-glyph nui-glyph--send"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="log"><span class="nui-glyph nui-glyph--log"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="chat"><span class="nui-glyph nui-glyph--chat"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="whisper"><span class="nui-glyph nui-glyph--whisper"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="character"><span class="nui-glyph nui-glyph--character"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="inventory"><span class="nui-glyph nui-glyph--inventory"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="community"><span class="nui-glyph nui-glyph--community"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="system"><span class="nui-glyph nui-glyph--system"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="map"><span class="nui-glyph nui-glyph--map"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="gift"><span class="nui-glyph nui-glyph--gift"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="gem"><span class="nui-glyph nui-glyph--gem"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="shop"><span class="nui-glyph nui-glyph--shop"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="heal"><span class="nui-glyph nui-glyph--heal"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="leave"><span class="nui-glyph nui-glyph--leave"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="mouse-move"><span class="nui-glyph nui-glyph--mouse-move"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="mouse-attack"><span class="nui-glyph nui-glyph--mouse-attack"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="mouse-auto"><span class="nui-glyph nui-glyph--mouse-auto"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="mouse-camera"><span class="nui-glyph nui-glyph--mouse-camera"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="mouse-skill"><span class="nui-glyph nui-glyph--mouse-skill"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="home"><span class="nui-glyph nui-glyph--home"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+				</div>
+				<div class="nui-row gallery-gap">
+					<span class="gallery-label">compact close</span>
+					<button class="nui-button nui-button--ghost nui-button--icon-sm nui-anim">&#215;</button>
+					<button class="nui-button nui-button--ghost nui-button--icon-sm nui-anim is-hover">&#215;</button>
+				</div>
+
+				<h2>Boards</h2>
+				<div class="gallery-boards">
+					<div class="gallery-board nui-board nui-fx"><span class="gallery-label">board</span></div>
+					<div class="gallery-board nui-board nui-board--edge nui-fx"><span class="gallery-label">edge</span></div>
+					<div class="gallery-board nui-board nui-board--notice nui-fx"><span class="gallery-label">notice</span></div>
+					<div class="gallery-board nui-board nui-board--strip nui-fx"><span class="gallery-label">strip</span></div>
+					<div class="gallery-board nui-tile"><span class="gallery-label">tile</span></div>
+					<div class="gallery-ring"><div class="gallery-ring__disc nui-board--disc"></div><div class="gallery-ring__ring nui-board nui-board--ring nui-fx"></div></div>
+				</div>
+				<div class="gallery-band nui-window nui-window--band nui-fx"><span class="gallery-label">window band</span></div>
 			</div>
 		</div>
 	</div>

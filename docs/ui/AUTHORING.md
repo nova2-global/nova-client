@@ -603,6 +603,7 @@ What the color roles mean:
 | `--quest-text` | `#e7eaf0` | `#1a1d23` | `#ffffff` |
 | `--quest-body` | `#c4c9d2` | `#3b414b` | `#c4c4c4` |
 | `--quest-title` | `#f2d39b` | `#7a4a06` | `#ffe6ba` |
+| `--highlight` | `#f2d39b` | `#7a4a06` | `#ffe6ba` |
 | `--quest-reward` | `#f5b5bc` | `#9b2c48` | `#ffc8c8` |
 | `--quest-item` | `#ff7a72` | `#b3261e` | `#ff3333` |
 | `--quest-scrim` | `#00000000` | `#00000000` | `#00000000` |
@@ -627,6 +628,7 @@ What the color roles mean:
 | `--radius-sm` | `2dp` |
 | `--radius-md` | `4dp` |
 | `--radius-lg` | `8dp` |
+| `--panel-backdrop` | `none` |
 | `--font-xs` | `11dp` |
 | `--font-sm` | `12dp` |
 | `--font-md` | `14dp` |

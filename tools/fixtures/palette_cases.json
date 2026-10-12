@@ -1,0 +1,1684 @@
+{
+	"$comment": "P13 spec 5.7: the player color resolve's vectors. Until the integration stage replaces this file with a byte copy of nova-client-src's tests/fixtures/nui/palette/cases.json (written by PaletteVectors.DISABLED_WritesTheCases), it holds that file's 16 inputs (its data and each case's theme and values, client 006184d) with the outputs of tools/nui_palette.py, which equal the client's. tools/nui_palette_test.py requires the resolve to give each case's outputs.",
+	"version": 1,
+	"data": [
+		{
+			"$comment": "Written by make_palette_fixture.py: the shipped dark and light palettes with the slots of P13 spec 5.1.",
+			"version": 1,
+			"pairs": [
+				[
+					"text",
+					"surface",
+					4.5
+				],
+				[
+					"text",
+					"surface-raised",
+					4.5
+				],
+				[
+					"text",
+					"surface-sunken",
+					4.5
+				],
+				[
+					"text",
+					"surface-hover",
+					4.5
+				],
+				[
+					"text",
+					"selection",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface-raised",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface-sunken",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface-hover",
+					4.5
+				],
+				[
+					"text-muted",
+					"selection",
+					4.5
+				],
+				[
+					"accent",
+					"surface",
+					4.5
+				],
+				[
+					"accent",
+					"surface-raised",
+					4.5
+				],
+				[
+					"accent-text",
+					"accent",
+					4.5
+				],
+				[
+					"accent-text",
+					"accent-hover",
+					4.5
+				],
+				[
+					"accent-text",
+					"danger",
+					4.5
+				],
+				[
+					"accent-text",
+					"danger-hover",
+					4.5
+				],
+				[
+					"accent-text",
+					"success",
+					4.5
+				],
+				[
+					"accent-text",
+					"warning",
+					4.5
+				],
+				[
+					"danger",
+					"surface",
+					4.5
+				],
+				[
+					"danger",
+					"surface-raised",
+					4.5
+				],
+				[
+					"warning",
+					"surface-raised",
+					4.5
+				],
+				[
+					"success",
+					"surface-raised",
+					4.5
+				],
+				[
+					"text-inverse",
+					"tooltip-bg",
+					4.5
+				],
+				[
+					"edge-gm",
+					"tooltip-bg",
+					4.5
+				],
+				[
+					"focus-ring",
+					"surface",
+					3.0
+				],
+				[
+					"focus-ring",
+					"surface-raised",
+					3.0
+				],
+				[
+					"focus-ring",
+					"surface-sunken",
+					3.0
+				],
+				[
+					"focus-ring",
+					"selection",
+					3.0
+				],
+				[
+					"accent",
+					"surface-sunken",
+					3.0
+				],
+				[
+					"quest-text",
+					"surface",
+					4.5
+				],
+				[
+					"quest-text",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-body",
+					"surface",
+					4.5
+				],
+				[
+					"quest-body",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-title",
+					"surface",
+					4.5
+				],
+				[
+					"quest-title",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-reward",
+					"surface",
+					4.5
+				],
+				[
+					"quest-reward",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-item",
+					"surface",
+					4.5
+				],
+				[
+					"console-text",
+					"surface-sunken",
+					4.5
+				]
+			],
+			"palettes": {
+				"dark": {
+					"tone": "dark",
+					"tokens": {
+						"surface": "#1a1d23",
+						"surface-raised": "#232830",
+						"surface-sunken": "#121418",
+						"surface-hover": "#2c323c",
+						"border": "#3b424e",
+						"text": "#e7eaf0",
+						"text-muted": "#a4acba",
+						"text-inverse": "#16191e",
+						"accent": "#8ab4f8",
+						"accent-hover": "#a8c7fa",
+						"accent-text": "#0c1a30",
+						"danger": "#f28b82",
+						"danger-hover": "#f6aea9",
+						"warning": "#f6c75a",
+						"success": "#7fd29a",
+						"focus-ring": "#f2f5f9",
+						"selection": "#2a3a55",
+						"overlay-scrim": "#000000a6",
+						"tooltip-bg": "#e7eaf0",
+						"ember": "#ffb24ff2",
+						"ember-hot": "#fff3cff7",
+						"ember-glow": "#ff9e3a47",
+						"sheen": "#ffffff73",
+						"sheen-clear": "#ffffff00",
+						"sweep": "#fff6dc8c",
+						"sweep-clear": "#fff4d600",
+						"gauge-track": "#121418",
+						"gauge-red": "#f28b82",
+						"gauge-pink": "#f48fb1",
+						"gauge-purple": "#c58af9",
+						"gauge-blue": "#8ab4f8",
+						"cooldown-shade": "#00000080",
+						"slot-disabled": "#f28b8259",
+						"slot-locked": "#0000008c",
+						"slot-picked": "#8ab4f859",
+						"notice-bar": "#00000080",
+						"notice-text-big": "#f2e7c1",
+						"edge-gm": "#9a5a00",
+						"party-link": "#e7eaf0",
+						"party-unlink": "#7f8794",
+						"hp-recovery": "#f28b8255",
+						"sp-recovery": "#8ab4f855",
+						"chat-talking": "#e7eaf0",
+						"chat-info": "#ffb4b4",
+						"chat-notice": "#f6d79a",
+						"chat-party": "#5fe3d4",
+						"chat-guild": "#e6ea7a",
+						"chat-command": "#9fe6c3",
+						"chat-shout": "#9fe6c3",
+						"chat-whisper": "#7fd29a",
+						"chat-big-notice": "#f6d79a",
+						"chat-view-shade-top": "#12141800",
+						"chat-view-shade-bottom": "#121418cc",
+						"chat-edit-shade": "#1a1d23d9",
+						"chat-mark": "#f6c75a",
+						"text-outline": "#000000",
+						"quest-text": "#e7eaf0",
+						"quest-body": "#c4c9d2",
+						"quest-title": "#f2d39b",
+						"quest-reward": "#f5b5bc",
+						"quest-item": "#ff7a72",
+						"quest-scrim": "#00000000",
+						"letterbox": "#000000",
+						"fade-black": "#000000",
+						"fade-white": "#ffffff",
+						"console-bg": "#121418d9",
+						"console-field": "#121418",
+						"console-text": "#e7eaf0",
+						"console-grip": "#3b424e",
+						"web-page": "#121418",
+						"highlight": "#f2d39b",
+						"surface-band": "#121418d9"
+					},
+					"slots": [
+						{
+							"slot": "accent",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_ACCENT",
+							"swatches": [
+								"#8ab4f8",
+								"#7fd29a",
+								"#f6c75a",
+								"#f28b82",
+								"#c58af9",
+								"#5fe3d4",
+								"#ff9e3a",
+								"#e7eaf0"
+							],
+							"sets": [
+								{
+									"token": "accent",
+									"rule": "value"
+								},
+								{
+									"token": "accent-hover",
+									"rule": "mix",
+									"with": "#ffffff",
+									"t": 0.2
+								},
+								{
+									"token": "accent-text",
+									"rule": "pick",
+									"from": [
+										"accent-text",
+										"text"
+									],
+									"on": "accent"
+								},
+								{
+									"token": "selection",
+									"rule": "mix",
+									"with": "surface",
+									"t": 0.72
+								}
+							]
+						},
+						{
+							"slot": "panel",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_PANEL",
+							"swatches": [
+								"#1a1d23",
+								"#1b2430",
+								"#20202a",
+								"#1e2a24",
+								"#2a1e24",
+								"#262626"
+							],
+							"sets": [
+								{
+									"token": "surface",
+									"rule": "value"
+								},
+								{
+									"token": "surface-raised",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-sunken",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-hover",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-band",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "border",
+									"rule": "delta",
+									"ref": "surface"
+								}
+							]
+						},
+						{
+							"slot": "opacity",
+							"kind": "percent",
+							"label": "OPTION_UI_COLOR_OPACITY",
+							"min": 50,
+							"max": 100,
+							"step": 5,
+							"backdrop": "blur(6dp)",
+							"sets": [
+								{
+									"token": "surface",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-raised",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-sunken",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-hover",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-band",
+									"rule": "alpha"
+								}
+							]
+						},
+						{
+							"slot": "highlight",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_HIGHLIGHT",
+							"swatches": [
+								"#f2d39b",
+								"#ffd166",
+								"#9fefff",
+								"#ff9fbf",
+								"#b9f18c",
+								"#e7eaf0"
+							],
+							"sets": [
+								{
+									"token": "highlight",
+									"rule": "value"
+								},
+								{
+									"token": "quest-title",
+									"rule": "value"
+								},
+								{
+									"token": "notice-text-big",
+									"rule": "value"
+								},
+								{
+									"token": "chat-notice",
+									"rule": "value"
+								},
+								{
+									"token": "chat-big-notice",
+									"rule": "value"
+								}
+							]
+						}
+					]
+				},
+				"light": {
+					"tone": "light",
+					"tokens": {
+						"surface": "#f3f4f6",
+						"surface-raised": "#ffffff",
+						"surface-sunken": "#e7e9ed",
+						"surface-hover": "#e3e6eb",
+						"border": "#c3c8d1",
+						"text": "#1a1d23",
+						"text-muted": "#525a67",
+						"text-inverse": "#f3f4f6",
+						"accent": "#1a5fc4",
+						"accent-hover": "#154ea3",
+						"accent-text": "#ffffff",
+						"danger": "#b3261e",
+						"danger-hover": "#8c1d18",
+						"warning": "#8a5300",
+						"success": "#1e7a3c",
+						"focus-ring": "#111317",
+						"selection": "#d6e4fb",
+						"overlay-scrim": "#0000007a",
+						"tooltip-bg": "#2a2f37",
+						"ember": "#ffb24ff2",
+						"ember-hot": "#fff3cff7",
+						"ember-glow": "#ff9e3a47",
+						"sheen": "#ffffff73",
+						"sheen-clear": "#ffffff00",
+						"sweep": "#fff6dc8c",
+						"sweep-clear": "#fff4d600",
+						"gauge-track": "#d5d9e0",
+						"gauge-red": "#b3261e",
+						"gauge-pink": "#b0306f",
+						"gauge-purple": "#7438c4",
+						"gauge-blue": "#1a5fc4",
+						"cooldown-shade": "#00000080",
+						"slot-disabled": "#b3261e47",
+						"slot-locked": "#1a1d2366",
+						"slot-picked": "#1a5fc440",
+						"notice-bar": "#00000080",
+						"notice-text-big": "#f2e7c1",
+						"edge-gm": "#ffb547",
+						"party-link": "#1a1d23",
+						"party-unlink": "#7a828f",
+						"hp-recovery": "#b3261e40",
+						"sp-recovery": "#1a5fc440",
+						"chat-talking": "#e7eaf0",
+						"chat-info": "#ffb4b4",
+						"chat-notice": "#f6d79a",
+						"chat-party": "#5fe3d4",
+						"chat-guild": "#e6ea7a",
+						"chat-command": "#9fe6c3",
+						"chat-shout": "#9fe6c3",
+						"chat-whisper": "#7fd29a",
+						"chat-big-notice": "#f6d79a",
+						"chat-view-shade-top": "#12141800",
+						"chat-view-shade-bottom": "#121418cc",
+						"chat-edit-shade": "#1a1d23d9",
+						"chat-mark": "#8a5300",
+						"text-outline": "#000000",
+						"quest-text": "#1a1d23",
+						"quest-body": "#3b414b",
+						"quest-title": "#7a4a06",
+						"quest-reward": "#9b2c48",
+						"quest-item": "#b3261e",
+						"quest-scrim": "#00000000",
+						"letterbox": "#000000",
+						"fade-black": "#000000",
+						"fade-white": "#ffffff",
+						"console-bg": "#f3f4f6e6",
+						"console-field": "#e7e9ed",
+						"console-text": "#1a1d23",
+						"console-grip": "#c3c8d1",
+						"web-page": "#e7e9ed",
+						"highlight": "#7a4a06",
+						"surface-band": "#f3f4f6e6"
+					},
+					"slots": [
+						{
+							"slot": "accent",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_ACCENT",
+							"swatches": [
+								"#8ab4f8",
+								"#7fd29a",
+								"#f6c75a",
+								"#f28b82",
+								"#c58af9",
+								"#5fe3d4",
+								"#ff9e3a",
+								"#e7eaf0"
+							],
+							"sets": [
+								{
+									"token": "accent",
+									"rule": "value"
+								},
+								{
+									"token": "accent-hover",
+									"rule": "mix",
+									"with": "#000000",
+									"t": 0.2
+								},
+								{
+									"token": "accent-text",
+									"rule": "pick",
+									"from": [
+										"accent-text",
+										"text"
+									],
+									"on": "accent"
+								},
+								{
+									"token": "selection",
+									"rule": "mix",
+									"with": "surface",
+									"t": 0.72
+								}
+							]
+						},
+						{
+							"slot": "panel",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_PANEL",
+							"swatches": [
+								"#ffffff",
+								"#f4f1ea",
+								"#eef3f8",
+								"#f1f6ef",
+								"#f8eff2",
+								"#f2f2f2"
+							],
+							"sets": [
+								{
+									"token": "surface",
+									"rule": "value"
+								},
+								{
+									"token": "surface-raised",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-sunken",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-hover",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-band",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "border",
+									"rule": "delta",
+									"ref": "surface"
+								}
+							]
+						},
+						{
+							"slot": "opacity",
+							"kind": "percent",
+							"label": "OPTION_UI_COLOR_OPACITY",
+							"min": 50,
+							"max": 100,
+							"step": 5,
+							"backdrop": "blur(6dp)",
+							"sets": [
+								{
+									"token": "surface",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-raised",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-sunken",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-hover",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-band",
+									"rule": "alpha"
+								}
+							]
+						},
+						{
+							"slot": "highlight",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_HIGHLIGHT",
+							"swatches": [
+								"#f2d39b",
+								"#ffd166",
+								"#9fefff",
+								"#ff9fbf",
+								"#b9f18c",
+								"#e7eaf0"
+							],
+							"sets": [
+								{
+									"token": "highlight",
+									"rule": "value"
+								},
+								{
+									"token": "quest-title",
+									"rule": "value"
+								},
+								{
+									"token": "notice-text-big",
+									"rule": "value"
+								},
+								{
+									"token": "chat-notice",
+									"rule": "value"
+								},
+								{
+									"token": "chat-big-notice",
+									"rule": "value"
+								}
+							]
+						}
+					]
+				}
+			},
+			"themes": {
+				"modern-dark": "dark",
+				"modern-light": "light"
+			}
+		},
+		{
+			"$comment": "Written by make_palette_fixture.py: P13 spec 7.2's cyberpunk palette with the slots of spec 5.1.",
+			"version": 1,
+			"pairs": [
+				[
+					"text",
+					"surface",
+					4.5
+				],
+				[
+					"text",
+					"surface-raised",
+					4.5
+				],
+				[
+					"text",
+					"surface-sunken",
+					4.5
+				],
+				[
+					"text",
+					"surface-hover",
+					4.5
+				],
+				[
+					"text",
+					"selection",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface-raised",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface-sunken",
+					4.5
+				],
+				[
+					"text-muted",
+					"surface-hover",
+					4.5
+				],
+				[
+					"text-muted",
+					"selection",
+					4.5
+				],
+				[
+					"accent",
+					"surface",
+					4.5
+				],
+				[
+					"accent",
+					"surface-raised",
+					4.5
+				],
+				[
+					"accent-text",
+					"accent",
+					4.5
+				],
+				[
+					"accent-text",
+					"accent-hover",
+					4.5
+				],
+				[
+					"accent-text",
+					"danger",
+					4.5
+				],
+				[
+					"accent-text",
+					"danger-hover",
+					4.5
+				],
+				[
+					"accent-text",
+					"success",
+					4.5
+				],
+				[
+					"accent-text",
+					"warning",
+					4.5
+				],
+				[
+					"danger",
+					"surface",
+					4.5
+				],
+				[
+					"danger",
+					"surface-raised",
+					4.5
+				],
+				[
+					"warning",
+					"surface-raised",
+					4.5
+				],
+				[
+					"success",
+					"surface-raised",
+					4.5
+				],
+				[
+					"text-inverse",
+					"tooltip-bg",
+					4.5
+				],
+				[
+					"edge-gm",
+					"tooltip-bg",
+					4.5
+				],
+				[
+					"focus-ring",
+					"surface",
+					3.0
+				],
+				[
+					"focus-ring",
+					"surface-raised",
+					3.0
+				],
+				[
+					"focus-ring",
+					"surface-sunken",
+					3.0
+				],
+				[
+					"focus-ring",
+					"selection",
+					3.0
+				],
+				[
+					"accent",
+					"surface-sunken",
+					3.0
+				],
+				[
+					"quest-text",
+					"surface",
+					4.5
+				],
+				[
+					"quest-text",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-body",
+					"surface",
+					4.5
+				],
+				[
+					"quest-body",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-title",
+					"surface",
+					4.5
+				],
+				[
+					"quest-title",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-reward",
+					"surface",
+					4.5
+				],
+				[
+					"quest-reward",
+					"surface-raised",
+					4.5
+				],
+				[
+					"quest-item",
+					"surface",
+					4.5
+				],
+				[
+					"console-text",
+					"surface-sunken",
+					4.5
+				],
+				[
+					"cyberpunk-title",
+					"surface",
+					4.5
+				],
+				[
+					"cyberpunk-name",
+					"surface",
+					4.5
+				],
+				[
+					"accent-text",
+					"cyberpunk-edge",
+					4.5
+				],
+				[
+					"text",
+					"tooltip-bg",
+					4.5
+				]
+			],
+			"palettes": {
+				"cyberpunk": {
+					"tone": "dark",
+					"tokens": {
+						"surface": "#0b1322",
+						"surface-raised": "#101c30",
+						"surface-sunken": "#060c17",
+						"surface-hover": "#16283f",
+						"border": "#1e4f73",
+						"text": "#e6f6ff",
+						"text-muted": "#9cb8cc",
+						"text-inverse": "#e6f6ff",
+						"accent": "#2fd4ff",
+						"accent-hover": "#85e6ff",
+						"accent-text": "#03131f",
+						"danger": "#ff5c8a",
+						"danger-hover": "#ff8cab",
+						"warning": "#ffc857",
+						"success": "#4dffb5",
+						"focus-ring": "#c77dff",
+						"selection": "#123955",
+						"overlay-scrim": "#02050acc",
+						"tooltip-bg": "#08111e",
+						"ember": "#ffb24ff2",
+						"ember-hot": "#fff3cff7",
+						"ember-glow": "#ff9e3a47",
+						"sheen": "#ffffff73",
+						"sheen-clear": "#ffffff00",
+						"sweep": "#fff6dc8c",
+						"sweep-clear": "#fff4d600",
+						"gauge-track": "#121418",
+						"gauge-red": "#ff4d7a",
+						"gauge-pink": "#ff6fb5",
+						"gauge-purple": "#b06bff",
+						"gauge-blue": "#36a8ff",
+						"cooldown-shade": "#00000080",
+						"slot-disabled": "#f28b8259",
+						"slot-locked": "#0000008c",
+						"slot-picked": "#8ab4f859",
+						"notice-bar": "#00000080",
+						"notice-text-big": "#9fefff",
+						"edge-gm": "#ffb347",
+						"party-link": "#e7eaf0",
+						"party-unlink": "#7f8794",
+						"hp-recovery": "#f28b8255",
+						"sp-recovery": "#8ab4f855",
+						"chat-talking": "#e7eaf0",
+						"chat-info": "#ffb4b4",
+						"chat-notice": "#ffd166",
+						"chat-party": "#5ff0e0",
+						"chat-guild": "#e2f36b",
+						"chat-command": "#9fe6c3",
+						"chat-shout": "#9fe6c3",
+						"chat-whisper": "#6dffb0",
+						"chat-big-notice": "#ffd166",
+						"chat-view-shade-top": "#12141800",
+						"chat-view-shade-bottom": "#121418cc",
+						"chat-edit-shade": "#1a1d23d9",
+						"chat-mark": "#f6c75a",
+						"text-outline": "#000000",
+						"quest-text": "#e7eaf0",
+						"quest-body": "#b9cde0",
+						"quest-title": "#ffd166",
+						"quest-reward": "#ff9fbf",
+						"quest-item": "#ff6b8a",
+						"quest-scrim": "#00000000",
+						"letterbox": "#000000",
+						"fade-black": "#000000",
+						"fade-white": "#ffffff",
+						"console-bg": "#121418d9",
+						"console-field": "#121418",
+						"console-text": "#e7eaf0",
+						"console-grip": "#3b424e",
+						"web-page": "#121418",
+						"surface-band": "#060c17e0",
+						"highlight": "#ffd166",
+						"cyberpunk-edge": "#2fd4ff",
+						"cyberpunk-edge-dim": "#1a6f99",
+						"cyberpunk-glow": "#2fd4ff59",
+						"cyberpunk-holo-a": "#2fd4ff1f",
+						"cyberpunk-name": "#ffd166",
+						"cyberpunk-title": "#c9f3ff"
+					},
+					"slots": [
+						{
+							"slot": "accent",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_ACCENT",
+							"swatches": [
+								"#8ab4f8",
+								"#7fd29a",
+								"#f6c75a",
+								"#f28b82",
+								"#c58af9",
+								"#5fe3d4",
+								"#ff9e3a",
+								"#e7eaf0"
+							],
+							"sets": [
+								{
+									"token": "accent",
+									"rule": "value"
+								},
+								{
+									"token": "accent-hover",
+									"rule": "mix",
+									"with": "#ffffff",
+									"t": 0.2
+								},
+								{
+									"token": "accent-text",
+									"rule": "pick",
+									"from": [
+										"accent-text",
+										"text"
+									],
+									"on": "accent"
+								},
+								{
+									"token": "selection",
+									"rule": "mix",
+									"with": "surface",
+									"t": 0.72
+								},
+								{
+									"token": "cyberpunk-edge",
+									"rule": "value"
+								},
+								{
+									"token": "cyberpunk-glow",
+									"rule": "alpha",
+									"a": 89
+								},
+								{
+									"token": "cyberpunk-holo-a",
+									"rule": "alpha",
+									"a": 31
+								},
+								{
+									"token": "cyberpunk-edge-dim",
+									"rule": "mix",
+									"with": "surface",
+									"t": 0.55
+								}
+							]
+						},
+						{
+							"slot": "panel",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_PANEL",
+							"swatches": [
+								"#0b1322",
+								"#120b22",
+								"#0b1c1c",
+								"#1a0b16",
+								"#101010",
+								"#0d1a2e"
+							],
+							"sets": [
+								{
+									"token": "surface",
+									"rule": "value"
+								},
+								{
+									"token": "surface-raised",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-sunken",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-hover",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "surface-band",
+									"rule": "delta",
+									"ref": "surface"
+								},
+								{
+									"token": "border",
+									"rule": "delta",
+									"ref": "surface"
+								}
+							]
+						},
+						{
+							"slot": "opacity",
+							"kind": "percent",
+							"label": "OPTION_UI_COLOR_OPACITY",
+							"min": 50,
+							"max": 100,
+							"step": 5,
+							"backdrop": "none",
+							"sets": [
+								{
+									"token": "surface",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-raised",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-sunken",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-hover",
+									"rule": "alpha"
+								},
+								{
+									"token": "surface-band",
+									"rule": "alpha"
+								}
+							]
+						},
+						{
+							"slot": "highlight",
+							"kind": "color",
+							"label": "OPTION_UI_COLOR_HIGHLIGHT",
+							"swatches": [
+								"#f2d39b",
+								"#ffd166",
+								"#9fefff",
+								"#ff9fbf",
+								"#b9f18c",
+								"#e7eaf0"
+							],
+							"sets": [
+								{
+									"token": "highlight",
+									"rule": "value"
+								},
+								{
+									"token": "quest-title",
+									"rule": "value"
+								},
+								{
+									"token": "notice-text-big",
+									"rule": "value"
+								},
+								{
+									"token": "chat-notice",
+									"rule": "value"
+								},
+								{
+									"token": "chat-big-notice",
+									"rule": "value"
+								},
+								{
+									"token": "cyberpunk-name",
+									"rule": "value"
+								}
+							]
+						}
+					]
+				}
+			},
+			"themes": {
+				"cyberpunk": "cyberpunk"
+			}
+		}
+	],
+	"cases": [
+		{
+			"name": "accent-dark",
+			"theme": "modern-dark",
+			"values": {
+				"accent": "#7fd29a"
+			},
+			"tokens": {
+				"accent": "#7fd29aff",
+				"accent-hover": "#99dbaeff",
+				"accent-text": "#0c1a30ff",
+				"selection": "#365044ff",
+				"text-muted": "#b4bac6ff"
+			},
+			"adjusted": {
+				"text-muted": "#b4bac6ff"
+			},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "accent-light",
+			"theme": "modern-light",
+			"values": {
+				"accent": "#f6c75a"
+			},
+			"tokens": {
+				"accent": "#836a30ff",
+				"accent-hover": "#c59f48ff",
+				"accent-text": "#ffffffff",
+				"selection": "#f4e7caff"
+			},
+			"adjusted": {
+				"accent": "#836a30ff",
+				"accent-text": "#ffffffff"
+			},
+			"failed": [
+				[
+					"accent-text",
+					"accent"
+				],
+				[
+					"accent-text",
+					"danger"
+				],
+				[
+					"accent-text",
+					"danger-hover"
+				],
+				[
+					"accent-text",
+					"success"
+				],
+				[
+					"accent-text",
+					"warning"
+				]
+			],
+			"opacity": 100
+		},
+		{
+			"name": "panel-dark",
+			"theme": "modern-dark",
+			"values": {
+				"panel": "#20202a"
+			},
+			"tokens": {
+				"border": "#414555ff",
+				"surface": "#20202aff",
+				"surface-band": "#18171fd9",
+				"surface-hover": "#323543ff",
+				"surface-raised": "#292b37ff",
+				"surface-sunken": "#18171fff"
+			},
+			"adjusted": {},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "panel-light",
+			"theme": "modern-light",
+			"values": {
+				"panel": "#f4f1ea"
+			},
+			"tokens": {
+				"border": "#c4c5c5ff",
+				"surface": "#f4f1eaff",
+				"surface-band": "#f4f1eae6",
+				"surface-hover": "#e4e3dfff",
+				"surface-raised": "#fffcf3ff",
+				"surface-sunken": "#e8e6e1ff"
+			},
+			"adjusted": {},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "opacity-50-dark",
+			"theme": "modern-dark",
+			"values": {
+				"opacity": "50"
+			},
+			"tokens": {
+				"accent": "#dbe8fdff",
+				"danger": "#fce1deff",
+				"panel-backdrop": "blur(6dp)",
+				"quest-body": "#e4e7ebff",
+				"quest-item": "#ffd1cfff",
+				"quest-reward": "#fbe1e3ff",
+				"quest-title": "#f7e5c3ff",
+				"success": "#d1efdbff",
+				"surface": "#1a1d23b3",
+				"surface-band": "#121418b3",
+				"surface-hover": "#2c323cb3",
+				"surface-raised": "#232830b3",
+				"surface-sunken": "#121418b3",
+				"text": "#f1f3f6ff",
+				"text-muted": "#f1f2f4ff",
+				"warning": "#fbe5b2ff"
+			},
+			"adjusted": {
+				"accent": "#dbe8fdff",
+				"danger": "#fce1deff",
+				"opacity": "70",
+				"quest-body": "#e4e7ebff",
+				"quest-item": "#ffd1cfff",
+				"quest-reward": "#fbe1e3ff",
+				"quest-title": "#f7e5c3ff",
+				"success": "#d1efdbff",
+				"text": "#f1f3f6ff",
+				"text-muted": "#f1f2f4ff",
+				"warning": "#fbe5b2ff"
+			},
+			"failed": [],
+			"opacity": 70
+		},
+		{
+			"name": "opacity-50-light",
+			"theme": "modern-light",
+			"values": {
+				"opacity": "50"
+			},
+			"tokens": {
+				"accent": "#081e3dff",
+				"console-text": "#15171cff",
+				"danger": "#3e0d0aff",
+				"panel-backdrop": "blur(6dp)",
+				"quest-body": "#1d1f24ff",
+				"quest-item": "#3e0d0aff",
+				"quest-reward": "#3a111bff",
+				"quest-title": "#2c1b02ff",
+				"success": "#0b2c16ff",
+				"surface": "#f3f4f68c",
+				"surface-band": "#f3f4f68c",
+				"surface-hover": "#e3e6eb8c",
+				"surface-raised": "#ffffff8c",
+				"surface-sunken": "#e7e9ed8c",
+				"text": "#13151aff",
+				"text-muted": "#131518ff",
+				"warning": "#362000ff"
+			},
+			"adjusted": {
+				"accent": "#081e3dff",
+				"console-text": "#15171cff",
+				"danger": "#3e0d0aff",
+				"opacity": "55",
+				"quest-body": "#1d1f24ff",
+				"quest-item": "#3e0d0aff",
+				"quest-reward": "#3a111bff",
+				"quest-title": "#2c1b02ff",
+				"success": "#0b2c16ff",
+				"text": "#13151aff",
+				"text-muted": "#131518ff",
+				"warning": "#362000ff"
+			},
+			"failed": [],
+			"opacity": 55
+		},
+		{
+			"name": "highlight-dark",
+			"theme": "modern-dark",
+			"values": {
+				"highlight": "#9fefff"
+			},
+			"tokens": {
+				"chat-big-notice": "#9fefffff",
+				"chat-notice": "#9fefffff",
+				"highlight": "#9fefffff",
+				"notice-text-big": "#9fefffff",
+				"quest-title": "#9fefffff"
+			},
+			"adjusted": {},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "highlight-light",
+			"theme": "modern-light",
+			"values": {
+				"highlight": "#ffd166"
+			},
+			"tokens": {
+				"chat-big-notice": "#ffd166ff",
+				"chat-notice": "#ffd166ff",
+				"highlight": "#ffd166ff",
+				"notice-text-big": "#ffd166ff",
+				"quest-title": "#836c35ff"
+			},
+			"adjusted": {
+				"quest-title": "#836c35ff"
+			},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "panel-mid-gray-fails",
+			"theme": "modern-dark",
+			"values": {
+				"panel": "#777777"
+			},
+			"tokens": {
+				"accent": "#000000ff",
+				"border": "#989ca2ff",
+				"console-text": "#eff1f5ff",
+				"danger": "#000000ff",
+				"quest-body": "#000000ff",
+				"quest-item": "#000000ff",
+				"quest-reward": "#000000ff",
+				"quest-text": "#000000ff",
+				"quest-title": "#000000ff",
+				"success": "#000000ff",
+				"surface": "#777777ff",
+				"surface-band": "#6f6e6cd9",
+				"surface-hover": "#898c90ff",
+				"surface-raised": "#808284ff",
+				"surface-sunken": "#6f6e6cff",
+				"text": "#000000ff",
+				"text-muted": "#000000ff",
+				"warning": "#000000ff"
+			},
+			"adjusted": {
+				"accent": "#000000ff",
+				"console-text": "#eff1f5ff",
+				"danger": "#000000ff",
+				"quest-body": "#000000ff",
+				"quest-item": "#000000ff",
+				"quest-reward": "#000000ff",
+				"quest-text": "#000000ff",
+				"quest-title": "#000000ff",
+				"success": "#000000ff",
+				"text": "#000000ff",
+				"text-muted": "#000000ff",
+				"warning": "#000000ff"
+			},
+			"failed": [
+				[
+					"text",
+					"surface"
+				],
+				[
+					"text",
+					"surface-raised"
+				],
+				[
+					"text",
+					"surface-hover"
+				],
+				[
+					"text-muted",
+					"surface"
+				],
+				[
+					"text-muted",
+					"surface-raised"
+				],
+				[
+					"text-muted",
+					"surface-hover"
+				],
+				[
+					"accent",
+					"surface"
+				],
+				[
+					"accent",
+					"surface-raised"
+				],
+				[
+					"danger",
+					"surface"
+				],
+				[
+					"danger",
+					"surface-raised"
+				],
+				[
+					"warning",
+					"surface-raised"
+				],
+				[
+					"success",
+					"surface-raised"
+				],
+				[
+					"quest-text",
+					"surface"
+				],
+				[
+					"quest-text",
+					"surface-raised"
+				],
+				[
+					"quest-body",
+					"surface"
+				],
+				[
+					"quest-body",
+					"surface-raised"
+				],
+				[
+					"quest-title",
+					"surface"
+				],
+				[
+					"quest-title",
+					"surface-raised"
+				],
+				[
+					"quest-reward",
+					"surface"
+				],
+				[
+					"quest-reward",
+					"surface-raised"
+				],
+				[
+					"quest-item",
+					"surface"
+				]
+			],
+			"opacity": 100
+		},
+		{
+			"name": "cyberpunk-accent",
+			"theme": "cyberpunk",
+			"values": {
+				"accent": "#c06bff"
+			},
+			"tokens": {
+				"accent": "#c06bffff",
+				"accent-hover": "#cd89ffff",
+				"accent-text": "#03131fff",
+				"cyberpunk-edge": "#c06bffff",
+				"cyberpunk-edge-dim": "#5c3b85ff",
+				"cyberpunk-glow": "#c06bff59",
+				"cyberpunk-holo-a": "#c06bff1f",
+				"selection": "#3e2c60ff"
+			},
+			"adjusted": {},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "reset",
+			"theme": "modern-dark",
+			"values": {},
+			"tokens": {},
+			"adjusted": {},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "opacity-80-dark",
+			"theme": "modern-dark",
+			"values": {
+				"opacity": "80"
+			},
+			"tokens": {
+				"accent": "#a9c8faff",
+				"danger": "#f7b6b1ff",
+				"panel-backdrop": "blur(6dp)",
+				"quest-item": "#ff9f9aff",
+				"quest-reward": "#f5b6bdff",
+				"success": "#8bd6a3ff",
+				"surface": "#1a1d23cc",
+				"surface-band": "#121418cc",
+				"surface-hover": "#2c323ccc",
+				"surface-raised": "#232830cc",
+				"surface-sunken": "#121418cc",
+				"text-muted": "#ced2daff"
+			},
+			"adjusted": {
+				"accent": "#a9c8faff",
+				"danger": "#f7b6b1ff",
+				"quest-item": "#ff9f9aff",
+				"quest-reward": "#f5b6bdff",
+				"success": "#8bd6a3ff",
+				"text-muted": "#ced2daff"
+			},
+			"failed": [],
+			"opacity": 80
+		},
+		{
+			"name": "every-slot-dark",
+			"theme": "modern-dark",
+			"values": {
+				"accent": "#f28b82",
+				"highlight": "#b9f18c",
+				"opacity": "70",
+				"panel": "#1b2430"
+			},
+			"tokens": {
+				"accent": "#fdeae8ff",
+				"accent-hover": "#f5a29bff",
+				"accent-text": "#0c1a30ff",
+				"border": "#3c495bff",
+				"chat-big-notice": "#b9f18cff",
+				"chat-notice": "#b9f18cff",
+				"danger": "#fdeae8ff",
+				"highlight": "#b9f18cff",
+				"notice-text-big": "#b9f18cff",
+				"panel-backdrop": "blur(6dp)",
+				"quest-body": "#edeef1ff",
+				"quest-item": "#ffdad7ff",
+				"quest-reward": "#fceaecff",
+				"quest-text": "#ebeef3ff",
+				"quest-title": "#d9f8c1ff",
+				"selection": "#563c3eff",
+				"success": "#dff4e6ff",
+				"surface": "#1b2430b3",
+				"surface-band": "#131b25b3",
+				"surface-hover": "#2d3949b3",
+				"surface-raised": "#242f3db3",
+				"surface-sunken": "#131b25b3",
+				"text": "#f9fafbff",
+				"text-muted": "#f9fafbff",
+				"warning": "#fcedc9ff"
+			},
+			"adjusted": {
+				"accent": "#fdeae8ff",
+				"danger": "#fdeae8ff",
+				"quest-body": "#edeef1ff",
+				"quest-item": "#ffdad7ff",
+				"quest-reward": "#fceaecff",
+				"quest-text": "#ebeef3ff",
+				"quest-title": "#d9f8c1ff",
+				"success": "#dff4e6ff",
+				"text": "#f9fafbff",
+				"text-muted": "#f9fafbff",
+				"warning": "#fcedc9ff"
+			},
+			"failed": [],
+			"opacity": 70
+		},
+		{
+			"name": "cyberpunk-opacity-70",
+			"theme": "cyberpunk",
+			"values": {
+				"highlight": "#9fefff",
+				"opacity": "70"
+			},
+			"tokens": {
+				"accent": "#88e7ffff",
+				"chat-big-notice": "#9fefffff",
+				"chat-notice": "#9fefffff",
+				"cyberpunk-name": "#9fefffff",
+				"danger": "#ffccdaff",
+				"focus-ring": "#d49bffff",
+				"highlight": "#9fefffff",
+				"notice-text-big": "#9fefffff",
+				"panel-backdrop": "none",
+				"quest-body": "#cddbe9ff",
+				"quest-item": "#ffc1ceff",
+				"quest-reward": "#ffcbdcff",
+				"quest-title": "#9fefffff",
+				"surface": "#0b1322b3",
+				"surface-band": "#060c17b3",
+				"surface-hover": "#16283fb3",
+				"surface-raised": "#101c30b3",
+				"surface-sunken": "#060c17b3",
+				"text-muted": "#dde7eeff",
+				"warning": "#ffd379ff"
+			},
+			"adjusted": {
+				"accent": "#88e7ffff",
+				"danger": "#ffccdaff",
+				"focus-ring": "#d49bffff",
+				"quest-body": "#cddbe9ff",
+				"quest-item": "#ffc1ceff",
+				"quest-reward": "#ffcbdcff",
+				"text-muted": "#dde7eeff",
+				"warning": "#ffd379ff"
+			},
+			"failed": [],
+			"opacity": 70
+		},
+		{
+			"name": "default-is-no-override",
+			"theme": "modern-light",
+			"values": {
+				"accent": "#1a5fc4",
+				"opacity": "100"
+			},
+			"tokens": {},
+			"adjusted": {},
+			"failed": [],
+			"opacity": 100
+		},
+		{
+			"name": "malformed-is-unset",
+			"theme": "modern-dark",
+			"values": {
+				"accent": "#12345",
+				"opacity": "57",
+				"unknown": "#ffffff"
+			},
+			"tokens": {},
+			"adjusted": {},
+			"failed": [],
+			"opacity": 100
+		}
+	]
+}

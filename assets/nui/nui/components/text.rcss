@@ -30,3 +30,10 @@ nui-text
 {
 	text-decoration: underline;
 }
+
+/* The player's highlight color (the highlight color slot, docs/ui/AUTHORING.md
+   "Player colors"): text that should follow it takes this class. */
+.nui-text--highlight
+{
+	color: var(--highlight);
+}

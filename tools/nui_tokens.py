@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Generate the NovaUI theme style sheet from the design tokens.
 
-    python tools/nui_tokens.py           write tokens.rcss and the token table in
+    python tools/nui_tokens.py           write tokens.rcss, colors.json and the token table in
                                          docs/ui/AUTHORING.md, print the contrast report
-    python tools/nui_tokens.py --check   write nothing; exit 1 if either output is
-                                         stale or a contrast pair fails (for CI and agents)
+    python tools/nui_tokens.py --check   write nothing; exit 1 if an output is stale, a
+                                         contrast pair fails or a color slot's swatch leaves
+                                         a pair failed (for CI and agents)
 
-Input:  assets/nui/nui/theme/tokens.json  {"shared": {...}, "skins": {...}, <palette>: {...}, ...}
+Input:  assets/nui/nui/theme/tokens.json  {"shared": {...}, "skins": {...}, "slots": {...}, <palette>: {...}, ...}
         assets/nui/nui/theme/themes.json  the player themes and the body classes each one sets
 Output: assets/nui/nui/theme/tokens.rcss  (store path nui/theme/tokens.rcss)
+        assets/nui/nui/theme/colors.json  the palettes that offer player colors, their slots and
+                                          the contrast pairs (P13 spec 5.2; Core/Palette.h reads it)
 
 `shared` holds the values every theme starts from and goes into `body { ... }`.
 Every other top-level key except `skins` is a palette of colors: palette `p`
@@ -20,6 +23,12 @@ theme puts exactly one `skin-*` and one `theme-*` class on every document's
 `body`, because RmlUi resolves styles once inside LoadDocument, before any
 class can be set.
 
+`slots` (optional) holds the color slots a player may set, per palette
+(docs/ui/AUTHORING.md "Player colors"): `slots.p` is the list colors.json
+gives palette p, which tools/nui_palette.py and the runtime resolve. Every
+slot's every swatch must leave no contrast pair failed, alone and at the
+lowest panel opacity (the swatch check).
+
 Contrast uses the WCAG 2.x relative luminance formula, per palette.
 Translucent colors are composited over the pair's background before measuring.
 """
@@ -28,10 +37,13 @@ import os
 import re
 import sys
 
+import nui_palette
+
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOKENS_JSON = os.path.join(REPO, "assets", "nui", "nui", "theme", "tokens.json")
 THEMES_JSON = os.path.join(REPO, "assets", "nui", "nui", "theme", "themes.json")
 TOKENS_RCSS = os.path.join(REPO, "assets", "nui", "nui", "theme", "tokens.rcss")
+COLORS_JSON = os.path.join(REPO, "assets", "nui", "nui", "theme", "colors.json")
 AUTHORING_MD = os.path.join(REPO, "docs", "ui", "AUTHORING.md")
 COMMAND = "python tools/nui_tokens.py"
 
@@ -42,6 +54,13 @@ TABLE_END = "<!-- tokens:end -->"
 # (nova-client-src NuiPaths.h kDefaultThemeId).
 DEFAULT_THEME_ID = "modern-dark"
 SKINS = "skins"
+SLOTS = "slots"
+RESERVED_SECTIONS = ("shared", SKINS, SLOTS)
+# Shared tokens whose value is a filter list (backdrop-filter: var(--x)),
+# "none" for no filter: the translucent panels' blur (P13 spec 7.7).
+FILTER_TOKENS = ("panel-backdrop",)
+FILTER_RE = re.compile(r"^(none|((blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|opacity|saturate|sepia)"
+                       r"\([^()]*\)\s*)+)$")
 
 # Every palette must define these colors (docs/ui/AUTHORING.md explains each role).
 REQUIRED_COLORS = (
@@ -115,6 +134,10 @@ CONTRAST_PAIRS = (
     ("quest-reward", "surface-raised", 4.5, "quest rewards on panels"),
     ("quest-item", "surface", 4.5, "item names in quest text"),
     ("console-text", "surface-sunken", 4.5, "console lines"),
+    # The player's highlight (P13 spec 5.1): content that follows it
+    # (.nui-text--highlight) sits on panels.
+    ("highlight", "surface", 4.5, "the player's highlight"),
+    ("highlight", "surface-raised", 4.5, "the player's highlight on panels"),
 )
 
 NAME_RE = re.compile(r"^[a-z][a-z0-9-]*$")
@@ -254,7 +277,7 @@ def load(tokens_path=TOKENS_JSON, themes_path=THEMES_JSON):
 
 
 def palettes_of(tokens):
-    return [name for name in tokens if name not in ("shared", SKINS)]
+    return [name for name in tokens if name not in RESERVED_SECTIONS]
 
 
 def validate(tokens, themes):
@@ -330,6 +353,32 @@ def validate(tokens, themes):
             if name in palette_names:
                 raise TokenError("%s reuses a palette token name" % where)
 
+    validate_slots(tokens.get(SLOTS, {}), tokens, palettes)
+
+
+def validate_slots(slots, tokens, palettes):
+    """slots: {"$comment"?, <palette>: [slot, ...]}, each slot as
+    tools/nui_palette.py and Core/Palette.h parse it; its rules name colors of
+    its palette."""
+    if not isinstance(slots, dict):
+        raise TokenError("tokens.json 'slots' maps a palette to its list of color slots")
+    for palette, entries in slots.items():
+        if palette == "$comment":
+            continue
+        if palette not in palettes:
+            raise TokenError("slots.%s: no palette of that name" % palette)
+        if not isinstance(entries, list) or not entries:
+            raise TokenError("slots.%s is a non-empty list of slots" % palette)
+        names = [entry.get("slot") for entry in entries if isinstance(entry, dict)]
+        if len(names) != len(set(names)):
+            raise TokenError("slots.%s: a slot is listed twice" % palette)
+        parsed = {"tokens": {name: nui_palette.parse_color(value) for name, value in tokens[palette].items()}}
+        for entry in entries:
+            try:
+                nui_palette._parse_slot(entry, parsed)
+            except nui_palette.PaletteError as error:
+                raise TokenError("slots.%s: %s" % (palette, error))
+
 
 def check_shared_value(name, value, where=None):
     """The prefix decides the kind, so a typo like '4px' or '120ms' fails here
@@ -348,6 +397,9 @@ def check_shared_value(name, value, where=None):
     elif name == "font-family":
         if any(c in value for c in ",;{}"):
             raise TokenError("%s: RCSS takes one family name, got %r" % (where, value))
+    elif name in FILTER_TOKENS:
+        if not FILTER_RE.match(value.strip()):
+            raise TokenError("%s: a filter list (blur(6dp), ...) or none, got %r" % (where, value))
     elif COLOR_RE.match(value):
         raise TokenError("%s: colors belong to the palettes" % where)
 
@@ -414,6 +466,68 @@ def render_table(tokens, themes):
     return "\n".join(rows)
 
 
+def palette_tone(colors):
+    """dark or light: the palette's surface luminance below or above 0.18."""
+    return "dark" if relative_luminance(parse_color(colors["surface"])) < 0.18 else "light"
+
+
+def render_colors(tokens, themes, comment=None, palettes=None, pairs=None, theme_ids=None):
+    """colors.json (P13 spec 5.2): the contrast pairs, every palette that
+    offers color slots with all its colors and its slots, and the themes of
+    those palettes. One entry per line, so a change reads as a line."""
+    slots = tokens.get(SLOTS, {})
+    names = [p for p in (palettes if palettes is not None else palette_order(themes)) if p in slots]
+    pairs = pairs if pairs is not None else [[fg, bg, minimum] for fg, bg, minimum, _ in CONTRAST_PAIRS]
+    theme_map = [(theme[0], theme_class(theme, "theme-")) for theme in themes
+                 if theme_class(theme, "theme-") in names and (theme_ids is None or theme[0] in theme_ids)]
+    dump = lambda value: json.dumps(value, ensure_ascii=False)
+    lines = ["{",
+             '	"$comment": %s,' % dump(comment or "Generated from tokens.json by %s. Do not edit by hand. The palettes that "
+                                                   "offer player colors, their slots and the contrast pairs the resolve keeps "
+                                                   "(docs/ui/AUTHORING.md \"Player colors\")." % COMMAND),
+             '	"version": 1,',
+             '	"pairs": [']
+    lines += ["		%s%s" % (dump(pair), "," if i < len(pairs) - 1 else "") for i, pair in enumerate(pairs)]
+    lines += ["	],", '	"palettes": {']
+    for index, name in enumerate(names):
+        colors = tokens[name]
+        lines += ['		%s: {' % dump(name), '			"tone": %s,' % dump(palette_tone(colors)), '			"tokens": {']
+        items = list(colors.items())
+        lines += ["				%s: %s%s" % (dump(k), dump(v.lower()), "," if i < len(items) - 1 else "") for i, (k, v) in enumerate(items)]
+        lines += ["			},", '			"slots": [']
+        lines += ["				%s%s" % (dump(slot), "," if i < len(slots[name]) - 1 else "") for i, slot in enumerate(slots[name])]
+        lines += ["			]", "		}%s" % ("," if index < len(names) - 1 else "")]
+    lines += ["	},", '	"themes": {']
+    lines += ["		%s: %s%s" % (dump(theme_id), dump(name), "," if i < len(theme_map) - 1 else "") for i, (theme_id, name) in enumerate(theme_map)]
+    lines += ["	}", "}"]
+    return "\n".join(lines) + "\n"
+
+
+def swatch_failures(documents):
+    """The swatch check (P13 spec 5.2): resolve every swatch of every slot of
+    every theme the colors.json documents offer, alone and with the lowest
+    opacity, and list (theme, values, failed pairs) for each that leaves a
+    pair failed."""
+    data = {"palettes": {}, "themes": {}}
+    for document in documents:
+        nui_palette.parse_colors(document, data)
+    failures = []
+    for theme_id in sorted(data["themes"]):
+        slots = nui_palette.slots_of_theme(data, theme_id)
+        opacity = next((s for s in slots if s["slot"] == nui_palette.OPACITY and s["kind"] == "percent"), None)
+        for slot in slots:
+            values = slot["swatches"] if slot["kind"] == "color" else [str(slot["min"])]
+            for value in values:
+                cases = [{slot["slot"]: value}]
+                if opacity is not None and slot is not opacity:
+                    cases.append({slot["slot"]: value, opacity["slot"]: str(opacity["min"])})
+                for case in cases:
+                    failed = nui_palette.resolve(data, theme_id, case)["failed"]
+                    if failed:
+                        failures.append((theme_id, case, failed))
+    return failures
+
+
 def splice_table(markdown, table):
     begin = markdown.find(TABLE_BEGIN)
     end = markdown.find(TABLE_END)
@@ -463,18 +577,23 @@ def main(argv):
     try:
         tokens, themes = load()
         rcss = render_rcss(tokens, themes)
+        colors = render_colors(tokens, themes)
+        swatches = swatch_failures([colors])
         markdown = read_text(AUTHORING_MD)
         if markdown is None:
             raise TokenError("docs/ui/AUTHORING.md not found")
         docs = splice_table(markdown, render_table(tokens, themes))
         report = contrast_report(tokens, themes)
-    except (TokenError, ValueError, OSError) as error:
+    except (TokenError, nui_palette.PaletteError, ValueError, OSError) as error:
         print("nui_tokens: %s" % error, file=sys.stderr)
         return 1
 
     print(format_report(report))
     failures = [row for row in report if row[3] < row[4]]
-    outputs = ((TOKENS_RCSS, rcss), (AUTHORING_MD, docs))
+    for theme_id, case, failed in swatches:
+        print("FAIL swatch %s %s leaves %s" % (theme_id, ",".join("%s=%s" % kv for kv in sorted(case.items())),
+                                               ", ".join("%s on %s" % tuple(pair) for pair in failed)), file=sys.stderr)
+    outputs = ((TOKENS_RCSS, rcss), (COLORS_JSON, colors), (AUTHORING_MD, docs))
     stale = [(path, text) for path, text in outputs if read_text(path) != text]
     for path, text in stale:
         name = os.path.relpath(path, REPO)
@@ -485,7 +604,9 @@ def main(argv):
             print("wrote %s" % name)
     if failures:
         print("%d contrast pair(s) below the minimum" % len(failures), file=sys.stderr)
-    return 1 if failures or (check_only and stale) else 0
+    if swatches:
+        print("%d swatch case(s) leave a contrast pair failed" % len(swatches), file=sys.stderr)
+    return 1 if failures or swatches or (check_only and stale) else 0
 
 
 if __name__ == "__main__":

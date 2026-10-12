@@ -1,6 +1,7 @@
 """Unit tests for nui_tokens.py: python -B -m unittest nui_tokens_test (from tools/; -B keeps
 __pycache__ out of the repository)"""
 import copy
+import json
 import unittest
 
 import nui_tokens as t
@@ -289,6 +290,57 @@ class CommittedTokens(unittest.TestCase):
         t.render_rcss(tokens, themes)
         t.render_table(tokens, themes)
         self.assertEqual((tokens, themes), before)
+
+
+class PlayerColors(unittest.TestCase):
+    """colors.json and the slot tables (P13 spec 5.2)."""
+
+    def test_the_committed_colors_json_is_up_to_date_and_lists_the_slot_palettes(self):
+        tokens, themes = t.load()
+        rendered = t.render_colors(tokens, themes)
+        self.assertEqual(t.read_text(t.COLORS_JSON), rendered, "run python tools/nui_tokens.py")
+        document = json.loads(rendered)
+        self.assertEqual(document["version"], 1)
+        self.assertEqual(document["themes"], {"modern-dark": "dark", "modern-light": "light"}, "classic offers none")
+        self.assertEqual(document["pairs"], [[fg, bg, minimum] for fg, bg, minimum, _ in t.CONTRAST_PAIRS])
+        self.assertEqual((document["palettes"]["dark"]["tone"], document["palettes"]["light"]["tone"]), ("dark", "light"))
+        self.assertEqual(set(document["palettes"]["dark"]["tokens"]), set(tokens["dark"]))
+
+    def test_every_swatch_of_the_committed_slots_passes_the_swatch_check(self):
+        tokens, themes = t.load()
+        self.assertEqual(t.swatch_failures([t.render_colors(tokens, themes)]), [])
+
+    def test_a_swatch_that_leaves_a_pair_failed_is_reported(self):
+        tokens, themes = t.load()
+        tokens = copy.deepcopy(tokens)
+        accent = next(slot for slot in tokens["slots"]["light"] if slot["slot"] == "accent")
+        accent["swatches"].append("#ffe680")
+        failures = t.swatch_failures([t.render_colors(tokens, themes)])
+        self.assertTrue(failures)
+        self.assertEqual({(theme, case.get("accent")) for theme, case, _ in failures}, {("modern-light", "#ffe680")})
+
+    def test_slot_tables_name_palettes_and_tokens_they_have(self):
+        tokens, themes = t.load()
+        for change, fragment in ((lambda s: s.update(nowhere=s["dark"]), "no palette of that name"),
+                                 (lambda s: s["dark"][0]["sets"].append({"token": "missing", "rule": "value"}), "not a color of its palette"),
+                                 (lambda s: s["dark"].append(dict(s["dark"][0])), "listed twice")):
+            broken = copy.deepcopy(tokens)
+            change(broken["slots"])
+            with self.subTest(fragment=fragment), self.assertRaises(t.TokenError) as caught:
+                t.validate(broken, themes)
+            self.assertIn(fragment, str(caught.exception))
+
+    def test_the_panel_backdrop_is_a_filter_list_or_none(self):
+        for good in ("none", "blur(6dp)", "blur(4dp) brightness(1.1)"):
+            t.check_shared_value("panel-backdrop", good)
+        for bad in ("6dp", "blur(6dp", "shader(x)", "#ffffff"):
+            with self.subTest(value=bad):
+                self.assertRaises(t.TokenError, t.check_shared_value, "panel-backdrop", bad)
+
+    def test_every_palette_has_a_highlight_its_quest_title_by_default(self):
+        tokens, _ = t.load()
+        for palette in ("dark", "light", "classic"):
+            self.assertEqual(tokens[palette]["highlight"], tokens[palette]["quest-title"], palette)
 
 
 if __name__ == "__main__":

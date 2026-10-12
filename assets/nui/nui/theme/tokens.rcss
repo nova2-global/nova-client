@@ -14,6 +14,7 @@ body
 	--radius-sm: 2dp;
 	--radius-md: 4dp;
 	--radius-lg: 8dp;
+	--panel-backdrop: none;
 	--font-xs: 11dp;
 	--font-sm: 12dp;
 	--font-md: 14dp;
@@ -94,6 +95,7 @@ body, body.theme-dark
 	--quest-text: #e7eaf0;
 	--quest-body: #c4c9d2;
 	--quest-title: #f2d39b;
+	--highlight: #f2d39b;
 	--quest-reward: #f5b5bc;
 	--quest-item: #ff7a72;
 	--quest-scrim: #00000000;
@@ -171,6 +173,7 @@ body.theme-light
 	--quest-text: #1a1d23;
 	--quest-body: #3b414b;
 	--quest-title: #7a4a06;
+	--highlight: #7a4a06;
 	--quest-reward: #9b2c48;
 	--quest-item: #b3261e;
 	--quest-scrim: #00000000;
@@ -248,6 +251,7 @@ body.theme-classic
 	--quest-text: #ffffff;
 	--quest-body: #c4c4c4;
 	--quest-title: #ffe6ba;
+	--highlight: #ffe6ba;
 	--quest-reward: #ffc8c8;
 	--quest-item: #ff3333;
 	--quest-scrim: #00000000;

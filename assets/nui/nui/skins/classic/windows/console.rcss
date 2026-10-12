@@ -13,11 +13,15 @@ body.skin-classic.console
 	border-width: 0;
 	background-color: var(--console-bg);
 }
+/* The newest line's descenders reach the edit bar (legacy draws its lines
+   after the bar); like legacy's text lines they take no pointer, so a
+   press there reaches the field. */
 body.skin-classic.console .console__lines
 {
 	left: 10dp;
 	right: 10dp;
 	bottom: 20dp;
+	pointer-events: none;
 }
 body.skin-classic.console .console__line
 {
@@ -32,8 +36,11 @@ body.skin-classic.console .console__field
 	bottom: 6dp;
 	height: 17dp;
 }
+/* A block, so the bar sits on its box's top edge and not on a line box's
+   baseline (an inline input stood 1dp lower). */
 body.skin-classic.console input.console__input
 {
+	display: block;
 	height: 17dp;
 	padding: 0 2dp;
 	border-width: 0;

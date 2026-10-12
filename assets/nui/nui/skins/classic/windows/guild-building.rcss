@@ -116,7 +116,8 @@ body.skin-classic.guild-building .guild-building__axis--rot-y { top: 135dp; }
 body.skin-classic.guild-building .guild-building__axis--rot-z { top: 155dp; }
 
 /* The two lists on their slot bars (Bar3D): rows 17 high from 1dp inside
-   the bar, the highlight 2dp in from the left edge, the text centered. */
+   the bar, the highlight 2dp in from the left edge and 3dp narrower than the
+   list box (ui.ListBox.OnRender), the text centered. */
 body.skin-classic.guild-building .guild-building__list
 {
 	position: absolute;
@@ -147,12 +148,19 @@ body.skin-classic.guild-building .guild-building__viewport--buildings
 {
 	height: 169dp;
 }
+/* Legacy never sizes the building list's middle bar to the page (uiguild.py
+   calls no SetMiddleBarSize), so its thumb stays the 12 px square
+   ui.ScrollBar makes. */
+body.skin-classic.guild-building .guild-building__viewport--buildings scrollbarvertical sliderbar
+{
+	max-height: 12dp;
+}
 body.skin-classic.guild-building .guild-building__row
 {
 	display: block;
 	height: 17dp;
 	margin-left: 1dp;
-	margin-right: 1dp;
+	margin-right: 0;
 	padding: 0;
 	border-width: 0;
 	color: var(--text);

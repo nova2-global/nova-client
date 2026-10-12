@@ -23,12 +23,20 @@ body.skin-classic.quest
 	--quest-y: 0dp;
 }
 
+/* The board by its top left from the screen's middle: legacy centers its
+   800 x 450 window on the screen and the 350 x 300 board in it, a picture
+   command moves the board, and a later SetSize keeps its top left
+   (CWindow::SetSize does not center again, PythonWindow.cpp:303-310). */
 body.skin-classic.quest .quest__board
 {
 	display: block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
 	z-index: 0;
 	width: 350dp;
 	height: 300dp;
+	margin: -150dp 0 0 -175dp;
 	min-width: 0;
 	max-width: none;
 	max-height: none;
@@ -223,7 +231,8 @@ body.skin-classic.quest.quest--scroll .quest__board.has-background
 {
 	width: 256dp;
 	height: 333dp;
-	left: -190dp;
+	margin-left: -318dp;
+	margin-top: -167dp;
 }
 body.skin-classic.quest.quest--scroll .quest__board.has-background .quest__body
 {
@@ -254,19 +263,47 @@ body.skin-classic.quest.quest--scroll .quest__choice:active, body.skin-classic.q
 	background-color: var(--classic-quest-scroll-bar-down);
 }
 
-/* The pictures at legacy's places. */
+/* The pictures at legacy's places (uiquest.py:731-926), each at its own
+   size: legacy's ExpandedImageBox.SetSize sets the window, not the drawn
+   size, so a 256 x 256 board picture draws whole (its art the top left
+   220 x 151). In the order a script sends them (LEFTIMAGE, TOPIMAGE,
+   BGIMAGE, IMAGE, WINDOW_SIZE):
+   - the portrait at the 800 x 450 window's top left, the board moved 160
+     right of its middle;
+   - the banner at (the board's x, 10) of the window, the board below it,
+     420 - 256 tall (every banner is 256 tall);
+   - the background (BGIMAGE, here level_bg's 256 x 512) centers the board
+     at 350 x 512 again and hides its frame, the picture centered in it;
+   - the free images at their x and y in the board. */
+body.skin-classic.quest .quest__board.has-portrait
+{
+	margin-left: -15dp;
+}
+body.skin-classic.quest .quest__board.has-banner
+{
+	margin-top: 126dp;
+	height: 164dp;
+}
 body.skin-classic.quest .quest__board.has-background
 {
+	margin-left: -175dp;
+	margin-top: -256dp;
+	height: 512dp;
 	decorator: none;
+}
+body.skin-classic.quest.quest--sized .quest__board.has-banner,
+body.skin-classic.quest.quest--sized .quest__board.has-background
+{
+	height: var(--quest-board-height);
 }
 body.skin-classic.quest .quest__background
 {
-	z-index: -1;
-	left: 50%;
-	top: 50%;
+	z-index: -2;
+	left: 47dp;
+	top: 0dp;
 	width: auto;
 	height: auto;
-	transform: translate(-50%, -50%);
+	transform: none;
 	opacity: 1;
 }
 /* At its own size, from the board's top left: the art is the top 331 rows
@@ -279,36 +316,48 @@ body.skin-classic.quest.quest--scroll .quest__background
 	height: 512dp;
 	transform: none;
 }
-body.skin-classic.quest .quest__board.has-portrait
-{
-	left: -65dp;
-}
+/* Legacy's stacking: the board and its own pictures (the background, the
+   free images, z-index -2), then the portrait and the banner (the dialog's
+   children made after the board, -1), then the text and the buttons (a
+   TOP_MOST window, and bars the text never covers). */
 body.skin-classic.quest .quest__portrait
 {
 	z-index: -1;
 	right: auto;
-	left: -160dp;
+	left: -385dp;
 	top: -75dp;
-	width: 400dp;
-	height: 450dp;
+	width: auto;
+	height: auto;
 	margin-right: 0;
 }
-body.skin-classic.quest .quest__board.has-banner
+body.skin-classic.quest .quest__board.has-banner .quest__portrait
 {
-	top: 90dp;
-	height: 250dp;
+	top: -351dp;
 }
-/* Legacy draws the pictures under its text (a TOP_MOST text window). */
+body.skin-classic.quest .quest__board.has-background .quest__portrait
+{
+	left: -225dp;
+	top: 31dp;
+}
 body.skin-classic.quest .quest__banner
 {
 	position: absolute;
 	z-index: -1;
-	left: 0;
-	top: -180dp;
-	width: 350dp;
-	height: 170dp;
+	left: -225dp;
+	top: -341dp;
+	width: auto;
+	height: auto;
 	max-width: none;
 	margin: 0;
+}
+body.skin-classic.quest .quest__board.has-background .quest__banner
+{
+	left: -225dp;
+	top: 41dp;
+}
+body.skin-classic.quest .quest__board.has-background.has-portrait .quest__banner
+{
+	left: -65dp;
 }
 body.skin-classic.quest .quest__images
 {
@@ -318,7 +367,7 @@ body.skin-classic.quest .quest__image
 {
 	display: block;
 	position: absolute;
-	z-index: -1;
+	z-index: -2;
 	left: var(--quest-x);
 	top: var(--quest-y);
 	width: auto;

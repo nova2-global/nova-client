@@ -195,8 +195,6 @@ class WindowBase(object):
     def __init__(self, stream):
         self.stream = stream
         self.nuiBoard = None  # hook H2
-        self.isNowCountDown = False
-        self.connectingDialog = None
         self.timeOutMsg = False
         self.connectBoard = Widget()
         self.loginBoard = Widget()
@@ -259,8 +257,6 @@ def compile_login_window(nui_login):
         "app": _stub_module("app", loggined=False, Exit=lambda: None),
         "net": _stub_module("net", SetServerInfo=lambda text: None, Disconnect=lambda: None),
         "wndMgr": _stub_module("wndMgr", GetScreenHeight=lambda: 768),
-        "IsLoginDelay": lambda: False,
-        "GetLoginDelay": lambda: 0.0,
         "SKIP_LOGIN_PHASE": False,
         "SKIP_LOGIN_PHASE_SUPPORT_CHANNEL": False,
     }

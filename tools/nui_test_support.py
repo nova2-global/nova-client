@@ -724,10 +724,18 @@ def make_legacy_ui():
             PythonScriptLoader.loaded.append(path)
 
     class mem_func(object):
+        """Legacy's rule (ui.py:58-84): a bound method that takes only self
+        is called with no argument, whatever the caller passes (a list box
+        passes the row's number and text)."""
+
         def __init__(self, fn):
             self.fn = fn
+            code = getattr(getattr(fn, "__func__", None), "__code__", None)
+            self.drops_args = code is not None and code.co_argcount <= 1
 
         def __call__(self, *args):
+            if self.drops_args:
+                return self.fn()
             return self.fn(*args)
 
     class Button(Widget):

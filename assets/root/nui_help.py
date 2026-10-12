@@ -132,7 +132,7 @@ class HelpWindow(nui_hud.LayoutCalls):
 		if board is not None:
 			board.bring_to_front()
 
-	# Legacy's key events (uihelp.py:152-169), for callers and the facade
+	# Legacy's key events (uihelp.py:48-65), for callers and the facade
 	# check: the NovaUI help gets its keys from its own document.
 	def OnKeyDown(self, key):
 		if app.DIK_H == key and 0 != self.eventClose:

@@ -11,7 +11,7 @@ shows (nui_hud.OnDemand), since RmlUi updates every loaded document each
 frame; the constructor loads it once to answer nui_ready().
 
 Each button closes the menu first and then makes legacy's calls, in
-legacy's order (uisystem.py:77-131). The option windows are made through
+legacy's order (uisystem.py:59-105). The option windows are made through
 uiSystemOption.OptionDialog and uiGameOption.OptionDialog, the factories
 their own flags decide (P11 spec D7), once each, as legacy's."""
 
@@ -98,7 +98,7 @@ class SystemDialog(nui_hud.LayoutCalls):
 		pass
 
 	def Destroy(self):
-		"""As uisystem.py:60-69: the option windows it made go first."""
+		"""As uisystem.py:42-51: the option windows it made go first."""
 		if self.gameOptionDlg:
 			self.gameOptionDlg.Destroy()
 		if self.systemOptionDlg:
@@ -156,7 +156,7 @@ class SystemDialog(nui_hud.LayoutCalls):
 		self.Close()
 		return True
 
-	# --- the buttons (uisystem.py:77-131) -----------------------------------------------
+	# --- the buttons (uisystem.py:59-105) -----------------------------------------------
 
 	def nui_act(self, what):
 		"""A button pressed: the menu closes first, then legacy's calls."""

@@ -15,6 +15,7 @@
 	<link type="text/rcss" href="components/panel.rcss"/>
 	<link type="text/rcss" href="components/window-frame.rcss"/>
 	<link type="text/rcss" href="components/button.rcss"/>
+	<link type="text/rcss" href="components/glyph.rcss"/>
 	<link type="text/rcss" href="components/badge.rcss"/>
 	<link type="text/rcss" href="components/input.rcss"/>
 	<link type="text/rcss" href="components/toggle.rcss"/>

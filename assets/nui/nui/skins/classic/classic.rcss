@@ -208,6 +208,15 @@
 	border-top-width: 0;
 }
 
+/* --- Glyphs ---------------------------------------------------------------------------
+   Classic draws the legacy button and icon art where the modern look draws a
+   glyph (components/glyph.rcss), so no glyph shows. Window sheets never set a
+   glyph's display, so this rule wins in every window. */
+.skin-classic .nui-glyph
+{
+	display: none;
+}
+
 /* --- Panel and divider: the thin board (ui.ThinBoard) ----------------------------- */
 
 .skin-classic .nui-panel

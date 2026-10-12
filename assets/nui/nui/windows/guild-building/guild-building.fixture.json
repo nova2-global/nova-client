@@ -1,0 +1,38 @@
+{
+	"guild_building": {
+		"categories": [
+			{"label": "@game.GUILD_HEADQUARTER"},
+			{"label": "@game.GUILD_FACILITY"},
+			{"label": "@game.GUILD_OBJECT"}
+		],
+		"category": 1,
+		"buildings": [
+			{"label": "weapons factory"},
+			{"label": "Armour blacksmith"},
+			{"label": "accessory factory"},
+			{"label": "training centre"},
+			{"label": "Alchemist"},
+			{"label": "Smelter"},
+			{"label": "Altar of Power"}
+		],
+		"building": 1,
+		"price": "20.000.000 Yang",
+		"stone": "20all",
+		"log": "30all",
+		"plywood": "20all",
+		"price_short": false,
+		"stone_short": false,
+		"log_short": false,
+		"plywood_short": false,
+		"pos_x": "352800",
+		"pos_y": "887400",
+		"rot_x": 50,
+		"rot_y": 70,
+		"rot_z": 50,
+		"rot_x_on": true,
+		"rot_y_on": true,
+		"rot_z_on": false,
+		"positioning": false,
+		"preview": false
+	}
+}

@@ -1,0 +1,53 @@
+/* Classic skin overlay of nui/windows/console/console.rml: the legacy
+   console (consolemodule.py ConsoleWindow) at 100%, 1dp to the legacy
+   pixel. Legacy draws it in code, so there is no art: the black band at
+   50% (BACK_GROUND_COLOR), no frame; the lines at x 10, 15dp apart, the
+   newest ending 20dp above the band's bottom edge; the black edit bar
+   (EDIT_LINE_COLOR) at 5, H - 23, 17 high and W - 40 wide, its text from
+   x 7; the white resize square (BUTTON_COLOR), 15 x 15, at W - 22, H - 23.
+   The colors are the classic palette's console tokens. */
+
+body.skin-classic.console
+{
+	decorator: none;
+	border-width: 0;
+	background-color: var(--console-bg);
+}
+body.skin-classic.console .console__lines
+{
+	left: 10dp;
+	right: 10dp;
+	bottom: 20dp;
+}
+body.skin-classic.console .console__line
+{
+	height: 15dp;
+	font-size: var(--font-md);
+	line-height: 15dp;
+}
+body.skin-classic.console .console__field
+{
+	left: 5dp;
+	right: 35dp;
+	bottom: 6dp;
+	height: 17dp;
+}
+body.skin-classic.console input.console__input
+{
+	height: 17dp;
+	padding: 0 2dp;
+	border-width: 0;
+	background-color: var(--console-field);
+	color: var(--console-text);
+	font-size: var(--font-md);
+	line-height: 17dp;
+}
+body.skin-classic.console .console__resize
+{
+	right: 7dp;
+	bottom: 8dp;
+	width: 15dp;
+	height: 15dp;
+	border-radius: 0;
+	background-color: var(--console-grip);
+}

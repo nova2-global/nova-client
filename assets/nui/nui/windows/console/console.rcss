@@ -1,0 +1,75 @@
+/* The console's modern look: a band across the top of the screen, 200dp
+   tall (the handle resizes its height only, as legacy restricts its
+   resize button to y), code drawn from the console tokens: the lines on
+   the translucent band from 10dp in, 16dp apart, the newest 10dp above
+   the field (ten whole lines in the 200dp band), the older ones climbing
+   until the band clips them; the field along the bottom edge and the
+   square handle at the bottom right. The band does not rise or fade in:
+   it is a tool, shown at once. Classic (legacy's colors and 15dp line
+   pitch, no art: legacy draws its bars in code):
+   skins/classic/windows/console.rcss. */
+
+body.console
+{
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 200dp;
+	min-width: 0;
+	overflow: hidden;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--console-bg);
+	focus: none;
+	tab-index: none;
+}
+
+/* Above the field, which the newest line's descenders may reach (legacy
+   draws its lines after the edit bar). */
+.console__lines
+{
+	position: absolute;
+	left: 10dp;
+	right: 10dp;
+	bottom: 40dp;
+	z-index: 1;
+}
+.console__line
+{
+	display: block;
+	height: 16dp;
+	color: var(--console-text);
+	font-size: var(--font-sm);
+	line-height: 16dp;
+	white-space: nowrap;
+}
+
+.console__field
+{
+	position: absolute;
+	left: 6dp;
+	right: 32dp;
+	bottom: 6dp;
+	height: 24dp;
+}
+input.console__input
+{
+	width: 100%;
+	height: 24dp;
+	border-color: var(--border);
+	background-color: var(--console-field);
+	color: var(--console-text);
+	font-size: var(--font-sm);
+	line-height: 22dp;
+	focus: auto;
+}
+
+.console__resize
+{
+	position: absolute;
+	right: 8dp;
+	bottom: 10dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--console-grip);
+}

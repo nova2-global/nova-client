@@ -1,0 +1,9 @@
+{
+	"$comment": "Golden cases of the developer console (tools/check_nui_snapshots.py): eight lines of pwd and perfinfo output above the empty field, in every theme at 100, 150 and 200%; at 100% the band full, the last 50 lines of help's command list climbing until the top edge clips them. A field's text is never in the model, so no golden shows a typed command.",
+	"cases": [
+		{"page": "console", "themes": "all", "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "console", "variant": "full", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null}
+	]
+}

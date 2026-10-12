@@ -1,0 +1,38 @@
+/* The web window's modern look: legacy's 760 x 590dp frame, at most 96% of
+   the screen's width and 92% of its height, a column whose page area takes
+   what the title bar leaves, inset 8dp from the frame. The page area is a
+   plain box: the client puts the native page on its border box (no border,
+   no padding, no radius), and its background shows only until the page
+   draws. The sheet's own place centers the window in its 1280 x 720dp
+   snapshots; the facade's center() replaces it in the client. Classic (the
+   legacy board, the title bar and the page at 10, 30 of it):
+   skins/classic/windows/web.rcss. */
+
+body.web
+{
+	left: 260dp;
+	top: 65dp;
+	width: 760dp;
+	height: 590dp;
+	max-width: 96vw;
+	max-height: 92vh;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	focus: none;
+	tab-index: none;
+}
+.web button
+{
+	tab-index: none;
+}
+.web__titlebar
+{
+	flex: 0 0 auto;
+}
+.web__page
+{
+	flex: 1 1 auto;
+	margin: var(--space-2);
+	background-color: var(--web-page);
+}

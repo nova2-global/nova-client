@@ -1,0 +1,42 @@
+/* Classic skin overlay of nui/windows/web/web.rml: the legacy web window
+   (uiscript webwindow.py) at 100%, 1dp to the legacy pixel: the stone
+   board, 760 x 590, its title bar at 8, 7 (750 wide) with the title
+   centered on x 50 of the bar, as the uiscript puts it, and the page area
+   at 10, 30, 740 x 550: at 100% exactly the rectangle legacy gives the
+   page (uiweb.py Open). No screen limit: legacy's frame does not shrink. */
+
+body.skin-classic.web
+{
+	display: block;
+	width: 760dp;
+	height: 590dp;
+	max-width: none;
+	max-height: none;
+}
+body.skin-classic.web .web__titlebar
+{
+	margin: 7dp 2dp -9dp 8dp;
+}
+body.skin-classic.web .web__handle
+{
+	position: relative;
+	text-align: left;
+}
+body.skin-classic.web .web__title
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100dp;
+	text-align: center;
+	white-space: nowrap;
+}
+body.skin-classic.web .web__page
+{
+	position: absolute;
+	left: 10dp;
+	top: 30dp;
+	width: 740dp;
+	height: 550dp;
+	margin: 0;
+}

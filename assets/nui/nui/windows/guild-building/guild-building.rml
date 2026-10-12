@@ -1,0 +1,111 @@
+<rml>
+<head>
+	<!-- The guild building placement window (uiguild.py
+	     BuildGuildBuildingWindow, uiscript buildguildbuildingwindow.py):
+	     the building categories and the buildings of the chosen one, the
+	     price and the three materials (short of one: the danger look), the
+	     position with its Change button, the three rotation sliders (a
+	     building whose limit is 0 keeps the slider still), Preview, Accept
+	     and Cancel. While the guild-building flag is on, the Interface makes
+	     the facade nui_guild_building.BuildGuildBuildingWindow (controller
+	     assets/root/nui_guild_building.py) at each open; the facade makes
+	     legacy's preview instances, camera and guild area calls. The
+	     document exists only while the window shows (nui_hud.OnDemand): it
+	     goes while the player places the building (Change) and comes back
+	     with the new position. The body and its controls take no focus, so
+	     the buttons and rows act on a left mousedown and the sliders on
+	     their change events; Escape closes the window in its legacy place
+	     (nui_hud.EscapeProxy). The parts are named sections, so a skin can
+	     restyle or re-place each of them. -->
+	<title>guild-building</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="guild-building.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-anim guild-building" data-model="guild_building">
+	<div class="nui-window__titlebar guild-building__titlebar">
+		<handle class="nui-window__handle guild-building__handle" move_target="#document">
+			<span class="nui-window__title guild-building__title">@ui.GUILD_BUILDING_TITLE</span>
+		</handle>
+		<button id="gb-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)">&#215;</button>
+	</div>
+	<div class="nui-window__body guild-building__body">
+		<section class="guild-building__categories">
+			<span class="guild-building__heading guild-building__heading--categories">@ui.GUILD_BUILDING_CATEGORY_TITLE</span>
+			<div id="gb-categories" class="nui-list guild-building__list guild-building__list--categories">
+				<div class="nui-list__viewport guild-building__viewport guild-building__viewport--categories">
+					<div class="nui-list__item nui-anim guild-building__row" data-for="c : categories"
+						data-attr-id="'gb-category-' + it_index" data-class-is-selected="it_index == category"
+						data-event-mousedown="pick_category(it_index, ev.button)"><span class="nui-list__label guild-building__row-label">{{ c.label }}</span></div>
+				</div>
+			</div>
+		</section>
+		<section class="guild-building__buildings">
+			<span class="guild-building__heading guild-building__heading--buildings">@ui.GUILD_BUILDING_LIST_TITLE</span>
+			<div id="gb-buildings" class="nui-list guild-building__list guild-building__list--buildings">
+				<div class="nui-list__viewport guild-building__viewport guild-building__viewport--buildings">
+					<div class="nui-list__item nui-anim guild-building__row" data-for="b : buildings"
+						data-attr-id="'gb-building-' + it_index" data-class-is-selected="it_index == building"
+						data-event-mousedown="pick_building(it_index, ev.button)"><span class="nui-list__label guild-building__row-label">{{ b.label }}</span></div>
+				</div>
+			</div>
+		</section>
+		<section class="guild-building__costs">
+			<div class="guild-building__cost guild-building__cost--price">
+				<span class="guild-building__label guild-building__label--price">@ui.GUILD_BUILDING_PRICE</span>
+				<span id="gb-price" class="guild-building__value guild-building__value--price" data-class-is-short="price_short">{{ price }}</span>
+			</div>
+			<div class="guild-building__cost guild-building__cost--stone">
+				<span class="guild-building__label guild-building__label--stone">@ui.GUILD_BUILDING_STONE</span>
+				<span id="gb-stone" class="guild-building__value guild-building__value--stone" data-class-is-short="stone_short">{{ stone }}</span>
+			</div>
+			<div class="guild-building__cost guild-building__cost--log">
+				<span class="guild-building__label guild-building__label--log">@ui.GUILD_BUILDING_LOG</span>
+				<span id="gb-log" class="guild-building__value guild-building__value--log" data-class-is-short="log_short">{{ log }}</span>
+			</div>
+			<div class="guild-building__cost guild-building__cost--plywood">
+				<span class="guild-building__label guild-building__label--plywood">@ui.GUILD_BUILDING_PLY</span>
+				<span id="gb-plywood" class="guild-building__value guild-building__value--plywood" data-class-is-short="plywood_short">{{ plywood }}</span>
+			</div>
+		</section>
+		<section class="guild-building__position">
+			<span class="guild-building__heading guild-building__heading--position">@ui.GUILD_BUILDING_POSITION</span>
+			<div class="guild-building__coord guild-building__coord--x">
+				<span class="guild-building__axis guild-building__axis--pos-x">X</span>
+				<span id="gb-pos-x" class="guild-building__coord-value guild-building__coord-value--x">{{ pos_x }}</span>
+			</div>
+			<div class="guild-building__coord guild-building__coord--y">
+				<span class="guild-building__axis guild-building__axis--pos-y">Y</span>
+				<span id="gb-pos-y" class="guild-building__coord-value guild-building__coord-value--y">{{ pos_y }}</span>
+			</div>
+			<button id="gb-position" class="nui-button nui-button--medium nui-anim guild-building__change" data-class-is-selected="positioning"
+				data-event-mousedown="act('position', ev.button)"><span class="guild-building__button-label">@ui.GUILD_BUILDING_CHANGE</span></button>
+		</section>
+		<section class="guild-building__rotation">
+			<span class="guild-building__heading guild-building__heading--rotation">@ui.GUILD_BUILDING_DIRECTION</span>
+			<div class="guild-building__axis-row guild-building__axis-row--x">
+				<span class="guild-building__axis guild-building__axis--rot-x">X</span>
+				<input id="gb-rot-x" type="range" class="nui-slider guild-building__slider guild-building__slider--x" min="0" max="100" step="1"
+					data-attr-value="rot_x" data-attrif-disabled="!rot_x_on" data-event-change="rotate('x', ev.value)"/>
+			</div>
+			<div class="guild-building__axis-row guild-building__axis-row--y">
+				<span class="guild-building__axis guild-building__axis--rot-y">Y</span>
+				<input id="gb-rot-y" type="range" class="nui-slider guild-building__slider guild-building__slider--y" min="0" max="100" step="1"
+					data-attr-value="rot_y" data-attrif-disabled="!rot_y_on" data-event-change="rotate('y', ev.value)"/>
+			</div>
+			<div class="guild-building__axis-row guild-building__axis-row--z">
+				<span class="guild-building__axis guild-building__axis--rot-z">Z</span>
+				<input id="gb-rot-z" type="range" class="nui-slider guild-building__slider guild-building__slider--z" min="0" max="100" step="1"
+					data-attr-value="rot_z" data-attrif-disabled="!rot_z_on" data-event-change="rotate('z', ev.value)"/>
+			</div>
+		</section>
+	</div>
+	<div class="nui-window__footer guild-building__footer">
+		<button id="gb-preview" class="nui-button nui-button--medium nui-anim guild-building__preview" data-class-is-selected="preview"
+			data-event-mousedown="act('preview', ev.button)"><span class="guild-building__button-label">@ui.GUILD_BUILDING_PREVIEW</span></button>
+		<button id="gb-accept" class="nui-button nui-button--medium nui-button--primary nui-anim guild-building__accept"
+			data-event-mousedown="act('accept', ev.button)"><span class="guild-building__button-label">@ui.ACCEPT</span></button>
+		<button id="gb-cancel" class="nui-button nui-button--medium nui-anim guild-building__cancel"
+			data-event-mousedown="act('cancel', ev.button)"><span class="guild-building__button-label">@ui.CANCEL</span></button>
+	</div>
+</body>
+</rml>

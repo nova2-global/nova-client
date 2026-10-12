@@ -1,0 +1,33 @@
+<rml>
+<head>
+	<!-- The developer console (consolemodule.py ConsoleWindow): a band at
+	     the top of the screen with the last 50 lines of output, the newest
+	     at the bottom, a field for the command and a handle that resizes the
+	     band's height. While the console flag is on, the game window makes
+	     the facade nui_console.ConsoleWindow (controller
+	     assets/root/nui_console.py); it opens where legacy's opens (the ","
+	     key, in debug mode or after the server's ConsoleEnable), and its
+	     commands are legacy's own. The output lines are nui-text: file names
+	     and game data, shown as written (tags included), never translated.
+	     The body takes no focus but its field. Enter runs the command (an
+	     empty field closes the console); Escape in the field closes it. The
+	     field lets the game's F keys and Alt through and keeps its focus on
+	     a press on a legacy window, as legacy's edit line. The document
+	     exists only while the console shows (nui_hud.OnDemand). -->
+	<title>console</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="console.rcss"/>
+</head>
+<body id="console" template="nui" class="nui-window console nui-field-passes-hotkeys nui-field-keeps-focus" data-model="console">
+	<div id="console-lines" class="console__lines">
+		<div class="console__line" data-for="l : lines" data-attr-id="'console-line-' + l.id"><nui-text links="off" data-attr-value="l.text"/></div>
+	</div>
+	<div class="console__field">
+		<input id="console-field" type="text" maxlength="100" class="nui-input console__input"
+			data-event-change="submit(ev.value, ev.linebreak)"/>
+	</div>
+	<nui-resize id="console-resize" class="nui-resize--bottom-right console__resize" edge="bottom-right" target="console"
+		min-height="60" data-attr-width="width" data-attr-min-width="width" data-attr-max-width="width" data-attr-height="height"
+		data-event-resized="resized(ev.width, ev.height)"/>
+</body>
+</rml>

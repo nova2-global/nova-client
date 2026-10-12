@@ -71,7 +71,7 @@ body.taskbar
 }
 .taskbar-mall__sheen.nui-anim
 {
-	animation: 4s linear infinite taskbar-mall-sheen;
+	animation: 4s linear-in-out infinite taskbar-mall-sheen;
 }
 @keyframes taskbar-mall-sheen
 {

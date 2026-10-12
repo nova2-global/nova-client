@@ -90,7 +90,7 @@ body.loading
 }
 .loading__ring.nui-anim
 {
-	animation: 1s linear infinite loading-ring-turn;
+	animation: 1s linear-in-out infinite loading-ring-turn;
 }
 @keyframes loading-ring-turn
 {

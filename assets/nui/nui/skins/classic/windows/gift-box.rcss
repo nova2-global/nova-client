@@ -9,4 +9,12 @@ body.skin-classic.gift-box .gift-box__icon
 	bottom: 61dp;
 	width: auto;
 	height: auto;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+/* The legacy present as one skin-provided frame (an <img> at its own size). */
+body.skin-classic.gift-box .gift-box__frames
+{
+	--frames-list: "d:/ymir work/ui/pattern/giftbox/present_for_fruends_icon.tga";
 }

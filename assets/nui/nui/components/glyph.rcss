@@ -260,30 +260,31 @@
 	background-color: var(--glyph-ink);
 }
 
-/* gift: a box with a ribbon and a lid. */
+/* gift: a box, its lid and the ribbon's loop on top. */
 .nui-glyph--gift .nui-glyph__a
 {
 	left: 2dp;
-	top: 6dp;
+	top: 8dp;
 	width: 12dp;
-	height: 9dp;
+	height: 7dp;
 	border-width: 2dp;
 }
 .nui-glyph--gift .nui-glyph__b
 {
-	left: 7dp;
-	top: 3dp;
-	width: 2dp;
-	height: 12dp;
+	left: 1dp;
+	top: 5dp;
+	width: 14dp;
+	height: 3dp;
 	background-color: var(--glyph-ink);
 }
 .nui-glyph--gift .nui-glyph__c
 {
-	left: 1dp;
-	top: 3dp;
-	width: 14dp;
-	height: 3dp;
-	background-color: var(--glyph-ink);
+	left: 5dp;
+	top: 0;
+	width: 6dp;
+	height: 6dp;
+	border-width: 2dp;
+	transform: rotate(45deg);
 }
 
 /* gem: a diamond in the accent's ramp (vertex colors, no shader, so it draws

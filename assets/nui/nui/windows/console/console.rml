@@ -6,7 +6,8 @@
 	     band's height. While the console flag is on, the game window makes
 	     the facade nui_console.ConsoleWindow (controller
 	     assets/root/nui_console.py); it opens where legacy's opens (the ","
-	     key, in debug mode or after the server's ConsoleEnable), and its
+	     key, in debug mode; the client's C++ drops the server's
+	     ConsoleEnable), and its
 	     commands are legacy's own. The output lines are nui-text: file names
 	     and game data, shown as written (tags included), never translated.
 	     The body takes no focus but its field. Enter runs the command (an

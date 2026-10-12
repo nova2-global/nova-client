@@ -4,7 +4,9 @@ While the "console" window flag is on, the game window makes ConsoleWindow
 below through nui_windows.make() instead of consoleModule.ConsoleWindow:
 the facade of the legacy window, with its name, constructor, methods and
 constants. It opens exactly where legacy's does: game.ShowConsole (the ","
-key) in debug mode or after the server's ConsoleEnable.
+key) in debug mode or after the server's ConsoleEnable, which this
+client's C++ drops before Python sees it (CPythonNetworkStream::
+ServerCommand), so in practice in debug mode only.
 
 The command set is legacy's by construction: the facade holds legacy's
 command object (consoleModule.Console, whose output is this facade) and

@@ -19,7 +19,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="console.rcss"/>
 </head>
-<body id="console" template="nui" class="nui-window console nui-field-passes-hotkeys nui-field-keeps-focus" data-model="console">
+<body id="console" template="nui" class="nui-window nui-window--band nui-fx console nui-field-passes-hotkeys nui-field-keeps-focus" data-model="console">
 	<div id="console-lines" class="console__lines">
 		<div class="console__line" data-for="l : lines" data-attr-id="'console-line-' + l.id"><nui-text links="off" data-attr-value="l.text"/></div>
 	</div>

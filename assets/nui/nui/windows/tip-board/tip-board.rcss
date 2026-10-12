@@ -21,8 +21,6 @@ body.tip-board
 	margin-left: -185dp;
 	width: 370dp;
 	height: 20dp;
-	border-radius: var(--radius-sm);
-	background-color: var(--notice-bar);
 }
 /* The lines move by transform, which RmlUi does not count as overflow, so
    the clip is forced. */

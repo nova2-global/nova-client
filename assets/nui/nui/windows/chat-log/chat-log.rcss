@@ -38,31 +38,11 @@ body.chat-log
 	height: 24dp;
 	line-height: 24dp;
 }
-.chat-log__title
-{
-	font-size: var(--font-sm);
-}
+/* The close is the shared 20dp ghost close button (nui-button--icon-sm). */
 .chat-log__close
 {
 	display: block;
 	flex: 0 0 auto;
-	position: relative;
-	width: 20dp;
-	height: 20dp;
-	border-radius: var(--radius-sm);
-	color: var(--text-muted);
-	font-size: var(--font-md);
-	line-height: 20dp;
-	text-align: center;
-}
-.chat-log__close:hover
-{
-	background-color: var(--surface-hover);
-	color: var(--text);
-}
-.chat-log__close:active
-{
-	background-color: var(--surface-sunken);
 }
 .chat-log__close-x
 {

@@ -15,7 +15,7 @@
 	<link type="text/rcss" href="select.rcss"/>
 </head>
 <body template="nui" class="nui-overlay select" data-model="select">
-	<div id="select-board" class="nui-window nui-interactive select-board">
+	<div id="select-board" class="nui-window nui-fx nui-interactive select-board">
 		<img class="select-job" data-attr-src="'/' + job_image" data-if="job_image != ''"/>
 		<div class="select-empire">
 			<div class="select-empire__flag">

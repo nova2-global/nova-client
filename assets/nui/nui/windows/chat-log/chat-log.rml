@@ -19,14 +19,15 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="chat-log.rcss"/>
 </head>
-<body id="chat-log" template="nui" class="nui-window nui-anim nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus chat-log"
+<body id="chat-log" template="nui" class="nui-window nui-window--compact nui-fx nui-anim nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus chat-log"
 	data-model="chatlog" data-event-nuilink="link(ev.link)">
 	<div class="nui-window__titlebar chat-log__titlebar">
 		<handle class="nui-window__handle chat-log__handle" move_target="#document">
 			<span id="chat-log-title" class="nui-window__title chat-log__title">@game.CHAT_LOG_TITLE</span>
 		</handle>
-		<span id="chat-log-close" class="chat-log__close nui-has-tooltip" data-event-mousedown="close(ev.button)"><span
-			class="chat-log__close-x">&#215;</span><span class="nui-tooltip nui-anim chat-log__tip">@game.UI_CLOSE</span></span>
+		<button id="chat-log-close" class="nui-button nui-button--ghost nui-button--icon-sm nui-window__close nui-anim nui-has-tooltip chat-log__close"
+			data-event-mousedown="close(ev.button)"><span class="chat-log__close-x">&#215;</span><span
+			class="nui-tooltip nui-anim chat-log__tip">@game.UI_CLOSE</span></button>
 	</div>
 	<div id="chat-log-filters" class="chat-log__filters">
 		<button id="chat-log-all" class="chat-log__filter chat-log__filter--all" data-class-is-on="all" data-event-mousedown="filter_all(ev.button)"><span class="chat-log__filter-label">@game.CHAT_ALL</span></button>

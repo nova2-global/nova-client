@@ -37,7 +37,7 @@
 		<button id="empire-left" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--left" data-event-click="left()">&#8249;</button>
 		<button id="empire-right" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--right" data-event-click="right()">&#8250;</button>
 	</div>
-	<div id="empire-board" class="nui-window empire-board">
+	<div id="empire-board" class="nui-window nui-fx empire-board">
 		<div class="empire-flag-bar">
 			<img class="empire-flag" data-attr-src="flag_image" data-if="flag_image != ''"/>
 		</div>

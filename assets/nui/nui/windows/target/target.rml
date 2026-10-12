@@ -17,7 +17,7 @@
 </head>
 <body template="nui" class="nui-overlay nui-below-legacy-ui target" data-model="target">
 	<div class="target__wrap">
-		<div id="target-board" class="target-board nui-interactive" data-class-target-board--hp="show_hp"
+		<div id="target-board" class="target-board nui-board nui-fx nui-interactive" data-class-target-board--hp="show_hp"
 			data-class-target-board--buttons="size(buttons) > 0">
 			<div class="target-board__head">
 				<span id="target-name" class="target-board__name">{{ name }}</span>

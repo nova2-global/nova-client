@@ -1,4 +1,12 @@
-/* Window frame: title bar with a drag handle and a close button, body, footer.
+/* The shared window chrome (docs/ui/AUTHORING.md "Chrome"): every window's
+   frame, title bar, close button and footer, and the HUD's boards and tiles,
+   take their look from this sheet and the skins, never from the window's own
+   sheet, which sets only layout on them (size, margins, padding, position
+   and offsets, display, flex and alignment, overflow, z-index, a placement
+   transform; lint NUI017). A look no variant has gets a new variant here,
+   named for its role, never for a window.
+
+   Window frame: title bar with a drag handle and a close button, body, footer.
    Put .nui-window on <body> (the document is the window; the handle moves
    #document) or on a <div> inside a full-screen modal <body class="nui-scrim">
    (the handle then names the div's id in move_target). A handle moves its
@@ -6,7 +14,10 @@
    makes the modal div position: relative: the scrim keeps it centered and
    the drag offsets it from there. The window's own sheet sets width and
    height, and position only for a body-level window; a modal div must not
-   get a position or left/top of its own. */
+   get a position or left/top of its own. Every element with nui-window or
+   nui-board, and every body.nui-scrim, also carries nui-fx, so a skin may
+   give it a filter, a backdrop filter or a mask that reduced effects can
+   switch off (base.rcss). */
 
 .nui-window
 {
@@ -16,6 +27,20 @@
 	border-width: 1dp;
 	border-color: var(--border);
 	border-radius: var(--radius-lg);
+}
+/* A band across the screen: no side borders and no corners, one line along
+   its bottom (the console). */
+.nui-window--band
+{
+	min-width: 0;
+	border-width: 0 0 1dp 0;
+	border-radius: 0;
+	background-color: var(--surface-band);
+}
+/* A frame without its border (the quest board's cinema skin). */
+.nui-window--borderless
+{
+	border-width: 0;
 }
 
 /* Rises 4dp over 0.2s each time the window is shown: the runtime puts
@@ -74,6 +99,12 @@
 	font-weight: bold;
 	color: var(--text);
 }
+/* A compact frame's title bar holds a smaller title (the chat log's 24dp
+   row); the window sets the bar's height. */
+.nui-window--compact .nui-window__title
+{
+	font-size: var(--font-sm);
+}
 
 .nui-window__body
 {
@@ -112,4 +143,80 @@ body.nui-scrim
 body.nui-scrim .nui-window
 {
 	position: relative;
+}
+
+/* Boards: the HUD's framed parts that are not windows (a target board, a
+   menu, a notice bar, the minimap's ring). A board gets the chrome hooks a
+   theme asks for, as a frame does, so never put nui-board inside a data-for
+   (a list row is a tile). This sheet gives a board no position: a skin with
+   hooks makes static boards relative in its own sheet, since positioning
+   changes the painting order. */
+.nui-board
+{
+	display: block;
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+/* A bar along the screen's edge: one line on its top side, no corners (the
+   taskbar). */
+.nui-board--edge
+{
+	border-width: 1dp 0 0 0;
+	border-radius: 0;
+}
+/* A notice board: the notice fill inside the board's border (the big
+   notice). */
+.nui-board--notice
+{
+	background-color: var(--notice-bar);
+}
+/* A notice strip: the notice fill, no border, small corners (the tip line). */
+.nui-board--strip
+{
+	background-color: var(--notice-bar);
+	border-width: 0;
+	border-radius: var(--radius-sm);
+}
+/* A round ring around something drawn under it (the minimap's map). RmlUi
+   scales radii that do not fit down until they do, measured against the
+   padding box (CSS measures the border box), so 9999dp is a circle of any
+   size: on the 136dp minimap it draws exactly what 68dp drew. */
+.nui-board--ring
+{
+	background-color: transparent;
+	border-width: 5dp;
+	border-radius: 9999dp;
+}
+/* A filled disc, used alone without nui-board (so it gets no hooks): the
+   backing under a ring. */
+.nui-board--disc
+{
+	background-color: var(--surface);
+	border-width: 0;
+	border-radius: 9999dp;
+}
+/* A tile: a small framed item of a list or a group (a party member's row).
+   Tiles never get hooks. */
+.nui-tile
+{
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+}
+
+/* Chrome hooks (docs/ui/AUTHORING.md "Chrome"): decorative parts the runtime
+   puts as the first children of every static frame and board, and of every
+   title bar, while a theme that asks for them in nui/theme/themes.json
+   ("chrome") is in use: <div class="nui-chrome nui-chrome--<part> nui-anim
+   nui-fx">. Hidden until a skin shows one, and never in hit testing. A theme
+   without "chrome" leaves documents without any, so they cost nothing. The
+   class is the runtime's: markup never names it (lint NUI017). */
+.nui-chrome
+{
+	display: none;
+	position: absolute;
+	pointer-events: none;
 }

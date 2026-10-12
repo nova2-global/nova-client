@@ -23,10 +23,6 @@ body.expanded-taskbar
 	height: 48dp;
 	padding: var(--space-1);
 	box-sizing: border-box;
-	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--surface);
 }
 .expanded-taskbar__button
 {

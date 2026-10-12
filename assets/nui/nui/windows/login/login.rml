@@ -13,7 +13,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="login.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-anim nui-escape-keeps-focus login" data-model="login" data-class-login--keyboard="keyboard">
+<body template="nui" class="nui-window nui-fx nui-anim nui-escape-keeps-focus login" data-model="login" data-class-login--keyboard="keyboard">
 	<div class="nui-window__body nui-stack nui-anim" data-class-login-shake="error != ''">
 		<div class="nui-row login-server login-r1 nui-anim">
 			<span class="nui-grow login-server__name">{{ server }}</span>

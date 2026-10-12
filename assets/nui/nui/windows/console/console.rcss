@@ -1,6 +1,6 @@
 /* The console's modern look: a band across the top of the screen, 200dp
    tall (the handle resizes its height only, as legacy restricts its
-   resize button to y), code drawn from the console tokens: the lines on
+   resize button to y), the shared frame's band (nui-window--band): the lines on
    the translucent band from 10dp in, 16dp apart, the newest 10dp above
    the field (ten whole lines in the 200dp band), the older ones climbing
    until the band clips them; the field along the bottom edge and the
@@ -15,12 +15,7 @@ body.console
 	top: 0;
 	width: 100%;
 	height: 200dp;
-	min-width: 0;
 	overflow: hidden;
-	border-width: 0 0 1dp 0;
-	border-color: var(--border);
-	border-radius: 0;
-	background-color: var(--console-bg);
 	focus: none;
 	tab-index: none;
 }

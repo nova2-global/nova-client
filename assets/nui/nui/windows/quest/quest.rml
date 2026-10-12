@@ -20,11 +20,11 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="quest.rcss"/>
 </head>
-<body template="nui" class="nui-scrim quest" data-model="quest"
+<body template="nui" class="nui-scrim nui-fx quest" data-model="quest"
 	data-class-quest--cinema="skin == 5" data-class-quest--scroll="skin == 3"
 	data-class-quest--sized="page.size.width > 0" data-class-quest--input="page.input"
 	data-style---quest-board-width="page.size.width + 'dp'" data-style---quest-board-height="page.size.height + 'dp'">
-	<div id="quest-board" class="nui-window nui-anim quest__board"
+	<div id="quest-board" class="nui-window nui-fx nui-anim quest__board" data-class-nui-window--borderless="skin == 5"
 		data-class-has-portrait="page.images.left != ''" data-class-has-banner="page.images.top != ''"
 		data-class-has-background="page.images.background != ''">
 		<img id="quest-portrait" class="quest__portrait" data-if="page.images.left != ''" data-attr-src="page.images.left"/>

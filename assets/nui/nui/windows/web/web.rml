@@ -17,7 +17,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="web.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-anim web" data-model="web">
+<body template="nui" class="nui-window nui-fx nui-anim web" data-model="web">
 	<div class="nui-window__titlebar web__titlebar">
 		<handle class="nui-window__handle web__handle" move_target="#document">
 			<span id="web-title" class="nui-window__title web__title">@ui.SYSTEM_MALL</span>

@@ -17,7 +17,7 @@
 	<link type="text/rcss" href="create.rcss"/>
 </head>
 <body template="nui" class="nui-overlay create" data-model="create">
-	<div id="create-board" class="nui-window nui-interactive create-board">
+	<div id="create-board" class="nui-window nui-fx nui-interactive create-board">
 		<img class="create-job" data-attr-src="'/' + job_image" data-if="job_image != ''"/>
 		<div id="create-text" class="create-text">
 			<p class="create-text__paragraph" data-for="p : paragraphs">{{ p }}</p>

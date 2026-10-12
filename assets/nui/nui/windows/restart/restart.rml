@@ -15,7 +15,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="restart.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-anim restart" data-model="restart">
+<body template="nui" class="nui-window nui-fx nui-anim restart" data-model="restart">
 	<div class="restart__buttons">
 		<button id="restart-here" class="nui-button nui-anim restart__button restart__button--here" data-event-mousedown="act('here', ev.button)">@ui.RESTART_HERE</button>
 		<button id="restart-town" class="nui-button nui-anim restart__button restart__button--town" data-event-mousedown="act('town', ev.button)">@ui.RESTART_TOWN</button>

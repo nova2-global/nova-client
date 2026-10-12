@@ -25,7 +25,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="system-options.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-anim system-options" data-model="system_options">
+<body template="nui" class="nui-window nui-fx nui-anim system-options" data-model="system_options">
 	<div class="nui-window__titlebar system-options__titlebar">
 		<handle class="nui-window__handle system-options__handle" move_target="#document">
 			<span class="nui-window__title system-options__title">@ui.SYSTEMOPTION_TITLE</span>

@@ -80,6 +80,8 @@ body.skin-classic.chat-log .chat-log__title
 	font-size: var(--font-md);
 	line-height: 14dp;
 }
+/* The legacy close art at legacy's place; it is the shared close button, so
+   the classic close rule's 3dp socket margin is taken back. */
 body.skin-classic.chat-log .chat-log__close
 {
 	position: absolute;
@@ -87,6 +89,7 @@ body.skin-classic.chat-log .chat-log__close
 	top: 5dp;
 	width: 15dp;
 	height: 15dp;
+	margin: 0;
 	border-radius: 0;
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/public/close_button_01.sub" scale-none left top);

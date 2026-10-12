@@ -15,7 +15,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="music-list.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-anim music-list" data-model="music_list">
+<body template="nui" class="nui-window nui-fx nui-anim music-list" data-model="music_list">
 	<div class="nui-window__titlebar music-list__titlebar">
 		<handle class="nui-window__handle music-list__handle" move_target="#document">
 			<span class="nui-window__title music-list__title">@ui.MUSICLIST_TITLE</span>

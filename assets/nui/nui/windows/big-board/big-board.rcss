@@ -19,10 +19,6 @@ body.big-board
 	width: 512dp;
 	height: 55dp;
 	box-sizing: border-box;
-	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--notice-bar);
 }
 /* The lines move by transform, which RmlUi does not count as overflow, so
    the clip is forced. */

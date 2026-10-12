@@ -22,7 +22,7 @@
 	<link type="text/rcss" href="taskbar.rcss"/>
 </head>
 <body template="nui" class="nui-overlay taskbar" data-model="taskbar">
-	<div id="taskbar" class="taskbar-bar nui-interactive">
+	<div id="taskbar" class="taskbar-bar nui-board nui-board--edge nui-fx nui-interactive">
 		<div class="taskbar-base"></div>
 
 		<div id="taskbar-gauges" class="taskbar-gauges">

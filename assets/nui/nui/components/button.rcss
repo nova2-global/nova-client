@@ -148,3 +148,27 @@
 	width: 24dp;
 	font-size: var(--font-md);
 }
+/* A 20dp icon button for a compact title bar (the chat log's close): a
+   regular-weight glyph in muted ink that brightens under the pointer. Use it
+   with --ghost and without --icon. It has no border, so its glyph sits on the
+   same pixels at every scale (RmlUi rounds a 1dp border to 1 or 2 px, which
+   moves a 20dp line box by half a pixel at 150%); keyboard focus shows as the
+   hover fill instead of the ring. */
+.nui-button--icon-sm
+{
+	width: 20dp;
+	height: 20dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: var(--radius-sm);
+	color: var(--text-muted);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 20dp;
+}
+.nui-button--icon-sm:hover, .nui-button--icon-sm.is-hover,
+.nui-button--icon-sm:focus-visible, .nui-button--icon-sm.is-focus
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}

@@ -20,7 +20,7 @@
 <body template="nui" class="nui-overlay nui-below-legacy-ui party" data-model="party">
 	<div id="party" class="party">
 		<div class="party__row" data-for="m : members">
-			<div class="party-member nui-interactive nui-attach-right" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"
+			<div class="party-member nui-tile nui-interactive nui-attach-right" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"
 				data-event-mousedown="member_press(m.pid, ev.button)" data-event-mouseup="member_release(m.pid, ev.button)"
 				data-event-nuidrop="member_drop(m.pid)">
 				<div class="party-member__state party-art-host">
@@ -58,7 +58,7 @@
 		</div>
 		<button id="party-menu-button" class="party__menu-button nui-interactive" data-class-is-open="menu_open"
 			data-event-mousedown="toggle_menu(ev.button)"><span class="party__menu-mark"></span></button>
-		<div id="party-menu" class="party-menu nui-interactive" data-if="menu_open">
+		<div id="party-menu" class="party-menu nui-board nui-fx nui-interactive" data-if="menu_open">
 			<div class="party-menu__buttons">
 				<button id="party-heal" class="party-menu__icon party-art-host nui-has-tooltip" data-if="heal_ready"
 					data-event-mousedown="heal(ev.button)">

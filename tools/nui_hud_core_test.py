@@ -970,7 +970,13 @@ class TaskbarHeight(unittest.TestCase):
         sheet = read(os.path.join(WINDOWS, "taskbar", "taskbar.rcss"))
         block = re.search(r"\n\.taskbar-bar\s*\{([^}]*)\}", sheet).group(1)
         height = float(re.search(r"(?<![-\w])height:\s*([\d.]+)dp", block).group(1))
-        border = float(re.search(r"border-top-width:\s*([\d.]+)dp", block).group(1))
+        # The bar is an edge board (the shared chrome): its top border comes
+        # from the component's variant, the first of its border widths.
+        markup = read(os.path.join(WINDOWS, "taskbar", "taskbar.rml"))
+        self.assertRegex(markup, r'class="taskbar-bar nui-board nui-board--edge ')
+        frame = read(os.path.join(WINDOWS, os.pardir, "components", "window-frame.rcss"))
+        edge = re.search(r"\n\.nui-board--edge\s*\{([^}]*)\}", frame).group(1)
+        border = float(re.search(r"border-width:\s*([\d.]+)dp", edge).group(1))
         self.assertEqual(height + border, taskbar.BAR_HEIGHT_DP)
         classic = read(os.path.join(CLASSIC_WINDOWS, "taskbar.rcss"))
         block = re.search(r"body\.skin-classic\.taskbar \.taskbar-bar\s*\{([^}]*)\}", classic).group(1)

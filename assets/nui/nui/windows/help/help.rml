@@ -20,10 +20,10 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="help.rcss"/>
 </head>
-<body template="nui" class="nui-scrim help" data-model="help">
+<body template="nui" class="nui-scrim nui-fx help" data-model="help">
 	<div class="help__curtain help__curtain--top"></div>
 	<div class="help__curtain help__curtain--gauge"></div>
-	<div id="help" class="nui-window nui-anim help__card">
+	<div id="help" class="nui-window nui-fx nui-anim help__card">
 		<p class="help__heading">@ui.SYSTEM_HELP</p>
 		<div class="help__lines">
 			<div class="help__column">

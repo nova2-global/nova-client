@@ -17,7 +17,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="atlas.rcss"/>
 </head>
-<body id="atlas" template="nui" class="nui-window nui-anim nui-below-legacy-ui atlas" data-model="atlas">
+<body id="atlas" template="nui" class="nui-window nui-fx nui-anim nui-below-legacy-ui atlas" data-model="atlas">
 	<div class="nui-window__titlebar atlas__titlebar">
 		<handle class="nui-window__handle atlas__handle" move_target="#document">
 			<span id="atlas-title" class="nui-window__title atlas__title"><span

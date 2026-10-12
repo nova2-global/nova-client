@@ -30,8 +30,6 @@ body.minimap
 	top: 0;
 	width: 136dp;
 	height: 136dp;
-	border-radius: 68dp;
-	background-color: var(--surface);
 }
 .minimap__view
 {
@@ -49,9 +47,6 @@ body.minimap
 	width: 136dp;
 	height: 136dp;
 	box-sizing: border-box;
-	border-width: 5dp;
-	border-color: var(--border);
-	border-radius: 68dp;
 }
 
 /* The buttons: 22dp discs on the ring; the glyph takes no pointer, so the

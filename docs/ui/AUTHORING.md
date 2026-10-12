@@ -545,6 +545,7 @@ What the color roles mean:
 | `--surface-raised` | `#232830` | `#ffffff` | `#23201e` |
 | `--surface-sunken` | `#121418` | `#e7e9ed` | `#000000` |
 | `--surface-hover` | `#2c323c` | `#e3e6eb` | `#494746` |
+| `--surface-band` | `#121418d9` | `#f3f4f6e6` | `#00000080` |
 | `--border` | `#3b424e` | `#c3c8d1` | `#777777` |
 | `--text` | `#e7eaf0` | `#1a1d23` | `#dadada` |
 | `--text-muted` | `#a4acba` | `#525a67` | `#c2c2c2` |

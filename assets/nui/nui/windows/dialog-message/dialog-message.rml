@@ -11,8 +11,8 @@
 	<title>dialog-message</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 </head>
-<body template="nui" class="nui-scrim dialog-message" data-model="dialog_message">
-	<div class="nui-window nui-dialog nui-anim" id="dialog-message">
+<body template="nui" class="nui-scrim nui-fx dialog-message" data-model="dialog_message">
+	<div class="nui-window nui-fx nui-dialog nui-anim" id="dialog-message">
 		<div class="nui-window__titlebar" data-if="title != ''">
 			<handle class="nui-window__handle" move_target="dialog-message">
 				<span class="nui-window__title">{{ title }}</span>

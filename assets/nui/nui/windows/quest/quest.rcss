@@ -219,7 +219,8 @@ body.quest .quest__input.is-idle input.quest__field
 	100% { opacity: 0; }
 }
 
-/* Cinema (skin 5): the text in a subtitle box above the bottom edge. */
+/* Cinema (skin 5): the text in a subtitle box above the bottom edge, on a
+   frame without its border (nui-window--borderless, bound in the markup). */
 body.quest.quest--cinema
 {
 	align-items: flex-end;
@@ -229,7 +230,6 @@ body.quest.quest--cinema
 	width: 640dp;
 	max-width: 90vw;
 	margin-bottom: 12vh;
-	border-width: 0;
 }
 .quest--cinema .nui-quest__line
 {

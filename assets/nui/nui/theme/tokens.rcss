@@ -36,6 +36,7 @@ body, body.theme-dark
 	--surface-raised: #232830;
 	--surface-sunken: #121418;
 	--surface-hover: #2c323c;
+	--surface-band: #121418d9;
 	--border: #3b424e;
 	--text: #e7eaf0;
 	--text-muted: #a4acba;
@@ -110,6 +111,7 @@ body.theme-light
 	--surface-raised: #ffffff;
 	--surface-sunken: #e7e9ed;
 	--surface-hover: #e3e6eb;
+	--surface-band: #f3f4f6e6;
 	--border: #c3c8d1;
 	--text: #1a1d23;
 	--text-muted: #525a67;
@@ -184,6 +186,7 @@ body.theme-classic
 	--surface-raised: #23201e;
 	--surface-sunken: #000000;
 	--surface-hover: #494746;
+	--surface-band: #00000080;
 	--border: #777777;
 	--text: #dadada;
 	--text-muted: #c2c2c2;

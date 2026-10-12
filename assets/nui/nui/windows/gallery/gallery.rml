@@ -18,7 +18,7 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="gallery.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-anim" data-model="gallery">
+<body template="nui" class="nui-window nui-fx nui-anim" data-model="gallery">
 	<div class="nui-window__titlebar">
 		<handle class="nui-window__handle" move_target="#document">
 			<span class="nui-window__title">NovaUI gallery</span>

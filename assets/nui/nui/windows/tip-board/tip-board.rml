@@ -15,7 +15,7 @@
 	<link type="text/rcss" href="tip-board.rcss"/>
 </head>
 <body template="nui" class="nui-overlay nui-below-legacy-ui tip-board" data-model="tip_board">
-	<div id="tip-board" class="tip-board__bar" data-if="shown">
+	<div id="tip-board" class="tip-board__bar nui-board nui-board--strip nui-fx" data-if="shown">
 		<div class="tip-board__clip">
 			<span id="tip-line-a" class="tip-line nui-anim" data-class-is-front="front == 'a'" data-class-is-back="front != 'a'">{{ line_a }}</span>
 			<span id="tip-line-b" class="tip-line nui-anim" data-class-is-front="front == 'b'" data-class-is-back="front != 'b'">{{ line_b }}</span>

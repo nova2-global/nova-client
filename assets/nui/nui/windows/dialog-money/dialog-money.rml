@@ -9,8 +9,8 @@
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="dialog-money.rcss"/>
 </head>
-<body template="nui" class="nui-scrim dialog-money" data-model="dialog_money">
-	<div class="nui-window nui-dialog nui-anim" id="dialog-money">
+<body template="nui" class="nui-scrim nui-fx dialog-money" data-model="dialog_money">
+	<div class="nui-window nui-fx nui-dialog nui-anim" id="dialog-money">
 		<div class="nui-window__titlebar">
 			<handle class="nui-window__handle" move_target="dialog-money">
 				<span class="nui-window__title">{{ title }}</span>

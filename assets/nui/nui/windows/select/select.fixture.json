@@ -38,7 +38,7 @@
 		"guild": "Nova",
 		"empire_name": "@game.EMPIRE_B",
 		"flag_image": "d:/ymir work/ui/intro/empire/empireflag_b.sub",
-		"job_image": "locale/en/ui/select/name_warrior.sub",
+		"job_image": "/locale/en/ui/select/name_warrior.sub",
 		"busy": false
 	}
 }

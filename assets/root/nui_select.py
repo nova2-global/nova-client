@@ -76,9 +76,10 @@ def empty_board():
 
 
 def job_image(job):
-	"""The class-name art of a job, from the current locale; "" for none."""
+	"""The class-name art of a job, from the current locale, as a store path
+	from the root (the document binds it as it is); "" for none."""
 	if 0 <= job < len(JOB_NAMES):
-		return uiScriptLocale.SELECT_PATH + "name_%s.sub" % JOB_NAMES[job]
+		return "/" + uiScriptLocale.SELECT_PATH + "name_%s.sub" % JOB_NAMES[job]
 	return ""
 
 

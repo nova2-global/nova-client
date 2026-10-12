@@ -1,7 +1,7 @@
 {
 	"create": {
 		"slot": 0,
-		"job_image": "locale/en/ui/select/name_warrior.sub",
+		"job_image": "/locale/en/ui/select/name_warrior.sub",
 		"paragraphs": [
 			"Thanks to their skills as well as their heavy armour, Warriors play an important role in close combat situations. They strive principally for great physical strength and a balanced, calm psyche. Depending on their chosen speciality, they can wreak havoc with their two-handed weapons or through their skilful use of sword and shield, which can defend against any opponent's attack."
 		],

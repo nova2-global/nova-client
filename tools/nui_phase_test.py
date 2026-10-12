@@ -621,7 +621,7 @@ class FixtureTest(unittest.TestCase):
             desc = world.modules["nui_desc_text"]
             empire = fixture("empire")["empire"]
             self.assertEqual(empire["paragraphs"], desc.load(os.path.join(LOCALE_EN, "empiredesc_a.txt")))
-            self.assertEqual(empire["title_image"], "locale/en/ui/empire/title.sub")
+            self.assertEqual(empire["title_image"], "/locale/en/ui/empire/title.sub")
             create = fixture("create")["create"]
             self.assertEqual(create["paragraphs"], desc.load(os.path.join(LOCALE_EN, "jobdesc_warrior.txt")))
         select = fixture("select")["select"]
@@ -872,7 +872,7 @@ class EmpireTest(unittest.TestCase):
             self.assertEqual(board.get("empire"), 2)
             self.assertEqual(board.get("name"), "@game.EMPIRE_B")
             self.assertEqual(board.get("flag_image"), "d:/ymir work/ui/intro/empire/empireflag_b.sub")
-            self.assertEqual(board.get("title_image"), "locale/en/ui/empire/title.sub")
+            self.assertEqual(board.get("title_image"), "/locale/en/ui/empire/title.sub")
             self.assertEqual(board.get("paragraphs"),
                              world.modules["nui_desc_text"].load(os.path.join(LOCALE_EN, "empiredesc_b.txt")))
             board.fire("hover", 3)
@@ -956,7 +956,7 @@ class SelectTest(unittest.TestCase):
         self.assertEqual((board.get("level"), board.get("playtime")), ("71", "1234"))
         self.assertEqual([board.get("stat_" + s) for s in ("hth", "int", "str", "dex")], ["45", "12", "60", "30"])
         self.assertEqual(board.get("gauge_str"), 60 / 90.0)
-        self.assertEqual(board.get("job_image"), "locale/en/ui/select/name_warrior.sub")
+        self.assertEqual(board.get("job_image"), "/locale/en/ui/select/name_warrior.sub")
         self.assertEqual((board.get("empire_name"), board.get("flag_image")),
                          ("@game.EMPIRE_B", "d:/ymir work/ui/intro/empire/empireflag_b.sub"))
         self.assertEqual([(s["label"], s["level"]) for s in board.get("slots")],
@@ -973,7 +973,7 @@ class SelectTest(unittest.TestCase):
             window = select_setup(world, True)
             window.board.fire("pick_slot", 0)
             self.assertEqual(window.board.get("guild"), "Nova@\u2060ui.LOGIN_ID")
-            self.assertEqual(window.board.get("job_image"), "locale/en/ui/select/name_assassin.sub")
+            self.assertEqual(window.board.get("job_image"), "/locale/en/ui/select/name_assassin.sub")
             window.board.fire("pick_slot", 2)
             self.assertFalse(window.board.get("occupied"))
             self.assertEqual(window.board.get("guild"), "@game.SELECT_NOT_JOIN_GUILD")
@@ -1135,7 +1135,7 @@ class CreateTest(unittest.TestCase):
         legacy_world, _, novaui_world, window = self.both([])
         board = window.board
         self.assertEqual((board.get("gender"), board.get("shape"), board.get("slot")), (1, 0, 2))
-        self.assertEqual(board.get("job_image"), "locale/en/ui/select/name_sura.sub")
+        self.assertEqual(board.get("job_image"), "/locale/en/ui/select/name_sura.sub")
         self.assertEqual([board.get("stat_" + s) for s in ("hth", "int", "str", "dex")], ["3", "5", "5", "3"])
         self.assertEqual(board.get("gauge_int"), 5 / 16.0)
         self.assertEqual(board.get("paragraphs"),

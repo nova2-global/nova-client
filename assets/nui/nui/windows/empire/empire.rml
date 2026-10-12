@@ -20,7 +20,7 @@
 	<div class="empire-shade"></div>
 	<div class="empire-line empire-line--top"></div>
 	<div class="empire-line empire-line--bottom"></div>
-	<img class="empire-title" data-attr-src="'/' + title_image" data-if="title_image != ''"/>
+	<img class="empire-title" data-attr-src="title_image" data-if="title_image != ''"/>
 	<div id="empire-atlas" class="empire-atlas">
 		<img id="empire-area-1" class="empire-area empire-area--a nui-anim" src="d:/ymir work/ui/intro/empire/empirearea_a.sub"
 			data-class-is-lit="empire == 1 || hover == 1"

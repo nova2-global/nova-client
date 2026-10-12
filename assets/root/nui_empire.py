@@ -146,7 +146,7 @@ class SelectEmpireWindow(introEmpire.SelectEmpireWindow):
 		self.SetWindowName("SelectEmpireWindow")
 		self.Show()
 
-		self._set(title_image=uiScriptLocale.EMPIRE_PATH + "title.sub")
+		self._set(title_image="/" + uiScriptLocale.EMPIRE_PATH + "title.sub")
 		self.OnSelectEmpire(self.empireID)
 		if self.board is not None:
 			self.board.show()

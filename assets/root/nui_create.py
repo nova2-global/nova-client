@@ -66,9 +66,10 @@ def _keep(owner):
 
 def job_image(slot):
 	"""The class-name art of a slot's job, from the current locale (the
-	legacy board names the cz art in every locale)."""
+	legacy board names the cz art in every locale), as a store path from the
+	root, which the document binds as it is."""
 	if 0 <= slot < len(JOB_NAMES):
-		return uiScriptLocale.SELECT_PATH + "name_%s.sub" % JOB_NAMES[slot]
+		return "/" + uiScriptLocale.SELECT_PATH + "name_%s.sub" % JOB_NAMES[slot]
 	return ""
 
 

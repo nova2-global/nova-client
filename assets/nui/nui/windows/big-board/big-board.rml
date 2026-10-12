@@ -18,9 +18,9 @@
 			<div id="big-line-a" class="big-line nui-anim" data-class-is-front="front == 'a'" data-class-is-back="front != 'a'"><span class="big-line__text">{{ line_a }}</span></div>
 			<div id="big-line-b" class="big-line nui-anim" data-class-is-front="front == 'b'" data-class-is-back="front != 'b'"><span class="big-line__text">{{ line_b }}</span></div>
 		</div>
-		<img class="big-board__frame big-board__frame--0" src="/season1/interface/oxevent/frame_0.sub"/>
-		<img class="big-board__frame big-board__frame--1" src="/season1/interface/oxevent/frame_1.sub"/>
-		<img class="big-board__frame big-board__frame--2" src="/season1/interface/oxevent/frame_2.sub"/>
+		<span class="big-board__frame big-board__frame--0"></span>
+		<span class="big-board__frame big-board__frame--1"></span>
+		<span class="big-board__frame big-board__frame--2"></span>
 		<nui-countdown id="big-timer" format="none" data-attr-end="next_at" data-event-countdownend="advance()"/>
 	</div>
 </body>

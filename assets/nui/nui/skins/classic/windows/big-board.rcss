@@ -25,6 +25,25 @@ body.skin-classic.big-board .big-board__frame
 	top: -12dp;
 	pointer-events: none;
 }
-body.skin-classic.big-board .big-board__frame--0 { left: -20dp; }
-body.skin-classic.big-board .big-board__frame--1 { left: 236dp; }
-body.skin-classic.big-board .big-board__frame--2 { left: 492dp; }
+/* The OX event board's frame art (its three pieces at their own sizes). */
+body.skin-classic.big-board .big-board__frame--0
+{
+	left: -20dp;
+	width: 256dp;
+	height: 74dp;
+	decorator: image("/season1/interface/oxevent/frame_0.sub" scale-none left top);
+}
+body.skin-classic.big-board .big-board__frame--1
+{
+	left: 236dp;
+	width: 256dp;
+	height: 74dp;
+	decorator: image("/season1/interface/oxevent/frame_1.sub" scale-none left top);
+}
+body.skin-classic.big-board .big-board__frame--2
+{
+	left: 492dp;
+	width: 41dp;
+	height: 74dp;
+	decorator: image("/season1/interface/oxevent/frame_2.sub" scale-none left top);
+}

@@ -1,0 +1,9 @@
+/* Cyberpunk overlay of nui/windows/target/target.rml: the target's name in
+   the skin's title color with a faint glow, as the mockup's window titles. */
+
+body.skin-cyberpunk.target .target-board__name
+{
+	color: var(--cyberpunk-title);
+	letter-spacing: 1dp;
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

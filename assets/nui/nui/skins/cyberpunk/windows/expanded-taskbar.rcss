@@ -1,0 +1,24 @@
+/* Cyberpunk overlay of nui/windows/expanded-taskbar/expanded-taskbar.rml: the
+   dragon soul button as a neon chip, as the taskbar's. */
+
+body.skin-cyberpunk.expanded-taskbar .expanded-taskbar__button
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.expanded-taskbar .expanded-taskbar__button:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.expanded-taskbar .expanded-taskbar__button:active
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-alt);
+}

@@ -1,0 +1,35 @@
+/* Cyberpunk overlay of nui/windows/loading/loading.rml: the spinner as a neon
+   sweep, a conic gradient from the accent to clear on the turning ring
+   (its dot becomes the dark middle that leaves a 3dp band), and the
+   progress bar as a neon gauge. Without effects the sweep draws one flat
+   tint of the accent around the band. */
+
+body.skin-cyberpunk.loading .loading__track
+{
+	background-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.loading .loading__ring
+{
+	border-radius: 20dp;
+	decorator: conic-gradient(var(--accent) 0deg, transparent 270deg);
+}
+body.skin-cyberpunk.loading .loading__dot
+{
+	left: 3dp;
+	top: 3dp;
+	width: 34dp;
+	height: 34dp;
+	border-radius: 17dp;
+	background-color: var(--surface);
+}
+body.skin-cyberpunk.loading progress.loading-gauge
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.loading progress.loading-gauge fill
+{
+	border-radius: 0;
+	decorator: horizontal-gradient(var(--cyberpunk-edge-alt) var(--accent));
+}

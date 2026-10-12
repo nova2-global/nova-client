@@ -1,0 +1,78 @@
+/* Cyberpunk overlay of nui/windows/chat-log/chat-log.rml: the filters as the
+   mockup's strip of neon tabs along the top, the ones that are on filled;
+   the mode button a chip; a thin neon scroll bar. */
+
+body.skin-cyberpunk.chat-log .chat-log__filter
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+	color: var(--text-muted);
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.chat-log .chat-log__filter:hover
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+	color: var(--text);
+}
+body.skin-cyberpunk.chat-log .chat-log__filter.is-on
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--accent);
+	color: var(--accent-text);
+}
+body.skin-cyberpunk.chat-log .chat-log__mode
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+	color: var(--accent);
+}
+body.skin-cyberpunk.chat-log .chat-log__mode:hover
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	color: var(--text);
+}
+body.skin-cyberpunk.chat-log .chat-log__mode:active
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	color: var(--accent-text);
+}
+body.skin-cyberpunk.chat-log .chat-log__send:hover
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.chat-log .chat-log__scroll slidertrack
+{
+	width: 2dp;
+	margin-left: 5dp;
+	border-radius: 0;
+	background-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.chat-log .chat-log__scroll sliderbar
+{
+	width: 6dp;
+	margin-left: 3dp;
+	border-radius: 0;
+	background-color: var(--accent);
+}
+body.skin-cyberpunk.chat-log .chat-log__scroll sliderbar:hover, body.skin-cyberpunk.chat-log .chat-log__scroll sliderbar:active
+{
+	background-color: var(--accent-hover);
+}
+body.skin-cyberpunk.chat-log .chat-log__grip
+{
+	background-color: var(--accent);
+}

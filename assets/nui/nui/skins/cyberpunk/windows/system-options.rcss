@@ -1,0 +1,16 @@
+/* Cyberpunk overlay of nui/windows/system-options/system-options.rml. RmlUi
+   6.3 sizes an absolute child by its top and bottom against an auto-height
+   flex container's unsized box (FlexFormattingContext.cpp keeps the box it
+   started from), so the frame's outline and scan hooks would end under the
+   title bar of the modern flex column. Here the window is a block, and its
+   rows scroll under the title bar from 89% of the screen's height (the
+   modern column lets them reach 99% less the title bar). */
+
+body.skin-cyberpunk.system-options
+{
+	display: block;
+}
+body.skin-cyberpunk.system-options .system-options__body
+{
+	max-height: 89vh;
+}

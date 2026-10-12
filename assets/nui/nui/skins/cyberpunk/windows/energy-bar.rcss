@@ -1,0 +1,12 @@
+/* Cyberpunk overlay of nui/windows/energy-bar/energy-bar.rml: a crisp neon
+   track. */
+
+body.skin-cyberpunk.energy-bar .energy-bar__base
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}
+body.skin-cyberpunk.energy-bar .energy-bar__gauge
+{
+	border-radius: 0;
+}

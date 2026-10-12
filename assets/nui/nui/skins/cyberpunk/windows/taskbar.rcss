@@ -1,0 +1,203 @@
+/* Cyberpunk overlay of nui/windows/taskbar/taskbar.rml: the mockup's neon bar.
+   The bar is the cut-corner panel with the glowing outline, a light that
+   runs along its top edge and the violet cut at its left; the HP ring (the
+   optional skin part of P13 D21, hidden in modern and classic) stands at
+   its left with the HP value inside, where the modern layout has the mall
+   button, and the SP value stands right of the right mode button, in the
+   SP blue. The mall button moves right of the ring and the HP, SP and
+   stamina bars narrow to make room, so the left group still ends where the
+   modern one does (268dp) and the modern narrow-screen steps still fit.
+   Every button is a neon chip. Everything else keeps the modern places
+   (taskbar.rcss). */
+
+/* --- The bar --------------------------------------------------------------------- */
+
+body.skin-cyberpunk.taskbar .taskbar-bar
+{
+	decorator: ninepatch(cyberpunk-panel, cyberpunk-panel-inner) border-box;
+}
+/* The bar has a top border only: its padding box starts 1dp below its top
+   and at its sides. */
+body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--outline
+{
+	left: -6dp;
+	top: -7dp;
+	right: -6dp;
+	bottom: -6dp;
+	decorator: ninepatch(cyberpunk-panel-edge, cyberpunk-panel-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top
+{
+	display: block;
+}
+body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--corner-tl
+{
+	display: block;
+	left: -3dp;
+}
+
+/* --- The HP ring and the values (P13 D21) -------------------------------------------
+   A circular progress bar draws its fill from fill-image only: the ring
+   sprite tinted in the HP color, cut clockwise by the HP ratio, over a faint
+   track drawn by a gradient. */
+body.skin-cyberpunk.taskbar progress.taskbar-hp-ring
+{
+	display: block;
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	width: 40dp;
+	height: 40dp;
+	fill-image: cyberpunk-ring;
+	image-color: var(--cyberpunk-hp);
+	decorator: radial-gradient(circle closest-side, transparent 72%, var(--hp-recovery) 76%, var(--hp-recovery) 86%, transparent 90%);
+	pointer-events: none;
+}
+body.skin-cyberpunk.taskbar .taskbar-value
+{
+	display: block;
+	position: absolute;
+	top: 4dp;
+	height: 40dp;
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 40dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
+body.skin-cyberpunk.taskbar .taskbar-value--hp
+{
+	left: 4dp;
+	width: 40dp;
+	color: var(--cyberpunk-hp);
+	text-align: center;
+}
+body.skin-cyberpunk.taskbar .taskbar-value--sp
+{
+	left: 50%;
+	margin-left: 268dp;
+	width: 64dp;
+	color: var(--cyberpunk-sp);
+	font-size: var(--font-md);
+	letter-spacing: 1dp;
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+
+/* --- The mall button and the bars, right of the ring ------------------------------- */
+
+body.skin-cyberpunk.taskbar .taskbar-mall
+{
+	left: 50dp;
+	image-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.taskbar .taskbar-mall__sheen
+{
+	background-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.taskbar .taskbar-gauge-host
+{
+	left: 96dp;
+	width: 106dp;
+}
+body.skin-cyberpunk.taskbar progress.taskbar-gauge, body.skin-cyberpunk.taskbar progress.taskbar-recovery
+{
+	width: 106dp;
+	border-radius: 0;
+}
+body.skin-cyberpunk.taskbar progress.taskbar-recovery fill
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.taskbar progress.taskbar-orb
+{
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.taskbar progress.taskbar-orb fill
+{
+	border-radius: 0;
+	decorator: vertical-gradient(var(--cyberpunk-edge-alt) var(--accent));
+}
+
+/* --- Buttons: neon chips ----------------------------------------------------------- */
+
+body.skin-cyberpunk.taskbar .taskbar-mall, body.skin-cyberpunk.taskbar .taskbar-mode, body.skin-cyberpunk.taskbar .taskbar-window,
+body.skin-cyberpunk.taskbar .taskbar-expand, body.skin-cyberpunk.taskbar .taskbar-pager__up, body.skin-cyberpunk.taskbar .taskbar-pager__down
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+}
+body.skin-cyberpunk.taskbar .taskbar-mode, body.skin-cyberpunk.taskbar .taskbar-window,
+body.skin-cyberpunk.taskbar .taskbar-expand, body.skin-cyberpunk.taskbar .taskbar-pager__up, body.skin-cyberpunk.taskbar .taskbar-pager__down
+{
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.taskbar .taskbar-mall:hover, body.skin-cyberpunk.taskbar .taskbar-mode:hover, body.skin-cyberpunk.taskbar .taskbar-window:hover,
+body.skin-cyberpunk.taskbar .taskbar-expand:hover, body.skin-cyberpunk.taskbar .taskbar-pager__up:hover, body.skin-cyberpunk.taskbar .taskbar-pager__down:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.taskbar .taskbar-mall:active, body.skin-cyberpunk.taskbar .taskbar-mode:active, body.skin-cyberpunk.taskbar .taskbar-window:active,
+body.skin-cyberpunk.taskbar .taskbar-expand:active, body.skin-cyberpunk.taskbar .taskbar-pager__up:active, body.skin-cyberpunk.taskbar .taskbar-pager__down:active,
+body.skin-cyberpunk.taskbar .taskbar-mode.is-open
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.taskbar .taskbar-camera
+{
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-alt);
+}
+
+/* --- Quickslots and the pager ------------------------------------------------------ */
+
+body.skin-cyberpunk.taskbar .taskbar-key
+{
+	color: var(--accent);
+}
+body.skin-cyberpunk.taskbar .taskbar-pager__page
+{
+	color: var(--accent);
+}
+
+/* --- Menus and the skill picker ------------------------------------------------------
+   The picker grows with its rows as a flex column, and RmlUi 6.3 sizes an
+   absolute child by top and bottom against an auto-height flex container's
+   unsized box (FlexFormattingContext.cpp keeps it), so its outline hook
+   would end at its top: the picker draws a plain neon border instead. */
+body.skin-cyberpunk.taskbar .taskbar-picker
+{
+	decorator: none;
+	background-color: var(--surface);
+	border-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.taskbar .taskbar-picker > .nui-chrome--outline
+{
+	display: none;
+}
+
+/* --- Reduced effects ------------------------------------------------------------------
+   No edge light, as on every frame (cyberpunk.rcss), and no gradient track
+   under the HP ring: without effects a gradient draws one flat color over
+   its whole box. */
+@media (theme: reduced-effects)
+{
+	body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top
+	{
+		display: none;
+	}
+	body.skin-cyberpunk.taskbar progress.taskbar-hp-ring
+	{
+		decorator: none;
+	}
+}

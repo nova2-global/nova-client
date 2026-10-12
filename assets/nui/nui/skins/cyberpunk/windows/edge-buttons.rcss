@@ -1,0 +1,10 @@
+/* Cyberpunk overlay of nui/windows/edge-buttons/edge-buttons.rml: the quest
+   and whisper labels on neon plates. The letter and whisper icons are
+   content and keep their art. */
+
+body.skin-cyberpunk.edge-buttons .edge__text
+{
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}

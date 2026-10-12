@@ -1,0 +1,13 @@
+/* Cyberpunk overlay of nui/windows/affects/affects.rml: each affect icon in
+   a dim neon chip, as the mockup's buff row; the time left in the accent.
+   The icons themselves are content and are never tinted. */
+
+body.skin-cyberpunk.affects .affect
+{
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.affects .affect__time
+{
+	color: var(--accent);
+}

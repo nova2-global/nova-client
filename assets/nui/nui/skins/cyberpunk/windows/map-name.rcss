@@ -1,0 +1,8 @@
+/* Cyberpunk overlay of nui/windows/map-name/map-name.rml: the floor line
+   glows in the neon; the map name art is content and keeps its pixels. */
+
+body.skin-cyberpunk.map-name .map-name__floor
+{
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

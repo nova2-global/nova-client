@@ -1,0 +1,23 @@
+/* Cyberpunk overlay of nui/windows/big-board/big-board.rml: the big notice as
+   a neon chip with the holographic scan layer and the violet cut. */
+
+body.skin-cyberpunk.big-board .big-board__bar > .nui-chrome--outline
+{
+	image-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.big-board .big-board__bar > .nui-chrome--scan
+{
+	display: block;
+}
+body.skin-cyberpunk.big-board .big-line__text
+{
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+
+@media (theme: reduced-effects)
+{
+	body.skin-cyberpunk.big-board .big-board__bar > .nui-chrome--scan
+	{
+		display: none;
+	}
+}

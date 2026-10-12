@@ -1,0 +1,26 @@
+/* Cyberpunk overlay of nui/windows/game-buttons/game-buttons.rml: the round
+   plus buttons as dark neon discs, their labels on neon plates. */
+
+body.skin-cyberpunk.game-buttons .game-button__plus
+{
+	border-color: var(--accent);
+	background-color: var(--surface-sunken);
+	color: var(--accent);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.game-buttons .game-button__plus:hover
+{
+	border-color: var(--accent-hover);
+	background-color: var(--surface-hover);
+}
+body.skin-cyberpunk.game-buttons .game-button__plus:active
+{
+	border-color: var(--accent);
+	background-color: var(--selection);
+}
+body.skin-cyberpunk.game-buttons .game-button__text
+{
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}

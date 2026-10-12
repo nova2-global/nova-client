@@ -1,0 +1,61 @@
+/* Cyberpunk overlay of nui/windows/chat/chat.rml: the open chat as the
+   mockup's panel, its line area and input row framed by one neon line, the
+   mode button and the send, whisper and log buttons as chips beside the
+   sunken field. Closed, the lines keep the modern shade. */
+
+body.skin-cyberpunk.chat .chat__block.is-open .chat__history
+{
+	box-sizing: border-box;
+	border-width: 1dp 1dp 0 1dp;
+	border-color: var(--cyberpunk-edge);
+	border-radius: 0;
+}
+body.skin-cyberpunk.chat .chat__block.is-open .chat__input-row
+{
+	border-width: 0 1dp 1dp 1dp;
+	border-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.chat .chat__grip
+{
+	background-color: var(--accent);
+	opacity: 1;
+}
+body.skin-cyberpunk.chat .chat__mode
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+	color: var(--accent);
+}
+body.skin-cyberpunk.chat .chat__mode:hover
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	color: var(--text);
+}
+body.skin-cyberpunk.chat .chat__mode:active
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	color: var(--accent-text);
+}
+body.skin-cyberpunk.chat .chat__button
+{
+	border-radius: 0;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.chat .chat__button:hover
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.chat .chat__button:active
+{
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--accent);
+}

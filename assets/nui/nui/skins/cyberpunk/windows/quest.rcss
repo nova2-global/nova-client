@@ -1,0 +1,22 @@
+/* Cyberpunk overlay of nui/windows/quest/quest.rml. The quest's scrim leaves
+   the world sharp (legacy dims nothing behind a quest dialog), so it takes
+   no backdrop blur; on the scroll skin's paper the choices are solid chips,
+   so their labels keep their contrast. */
+
+body.skin-cyberpunk.quest.nui-fx
+{
+	backdrop-filter: none;
+}
+body.skin-cyberpunk.quest--scroll .quest__choice
+{
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--surface-raised);
+	color: var(--text);
+}
+body.skin-cyberpunk.quest--scroll .quest__choice:hover, body.skin-cyberpunk.quest--scroll .quest__choice.is-hover,
+body.skin-cyberpunk.quest--scroll .quest__choice:active, body.skin-cyberpunk.quest--scroll .quest__choice.is-active
+{
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--accent);
+	color: var(--accent-text);
+}

@@ -356,6 +356,8 @@ def next_steps(theme_id, palette, skin, name, shipped, new_skin, skin_local=Fals
         "- The picker shows @ui.%s when the locale has it, else the label; add it to all 17 locale_interface.txt files"
         " and to tools/nui_button_fit.py for a translated label." % key,
         "- nuitool lint --root assets/nui --root assets/icon --root assets/ETC --root assets/locale --root assets/uiloading"
+        " --root assets/season1 --root assets/metin2_patch_eu4 --root assets/metin2_patch_etc --root assets/metin2_patch_ds"
+        " --root assets/metin2_patch_w21_etc --root assets/metin2_patch_dss_box --root assets/patch2"
         " --locale assets/locale/locale/en  (it loads every window in every theme)",
         "- python3 tools/check_nui_snapshots.py %s   (%s)" % (
             " ".join(golden_args(name)), "the full matrix" if shipped else "experimental: the gallery and the representative pages"),

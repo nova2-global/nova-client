@@ -32,7 +32,8 @@ REPO = os.path.dirname(HERE)
 FIXTURE = os.path.join(HERE, "fixtures", "skin-bare", "theme.json")
 SOURCE = os.path.join(REPO, "assets", "nui", "nui")
 # The lint roots of docs/ui/AUTHORING.md (Tools) after the documents.
-GROUPS = ("icon", "ETC", "locale", "uiloading", "season1", "metin2_patch_eu4", "metin2_patch_etc", "metin2_patch_ds")
+GROUPS = ("icon", "ETC", "locale", "uiloading", "season1", "metin2_patch_eu4", "metin2_patch_etc", "metin2_patch_ds",
+          "metin2_patch_w21_etc", "metin2_patch_dss_box", "patch2")
 SCRIPTS = os.path.join(REPO, "assets", "root")
 LOCALE = os.path.join(REPO, "assets", "locale", "locale", "en")
 # The gallery and three representative windows: a board, a phase window and

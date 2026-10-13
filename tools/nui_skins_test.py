@@ -245,7 +245,8 @@ class ChromeArt(unittest.TestCase):
     def test_lint_reports_no_chrome_art(self):
         roots = []
         for root in ("assets/nui", "assets/icon", "assets/ETC", "assets/locale", "assets/uiloading", "assets/season1",
-                     "assets/metin2_patch_eu4", "assets/metin2_patch_etc", "assets/metin2_patch_ds"):
+                     "assets/metin2_patch_eu4", "assets/metin2_patch_etc", "assets/metin2_patch_ds",
+                     "assets/metin2_patch_w21_etc", "assets/metin2_patch_dss_box", "assets/patch2"):
             roots += ["--root", root]
         result = subprocess.run([NUITOOL, "lint", "--no-load"] + roots + ["--locale", "assets/locale/locale/en"],
                                 cwd=REPO, capture_output=True, text=True)

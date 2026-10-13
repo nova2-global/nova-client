@@ -276,7 +276,8 @@ class ScaffoldWithNuitool(Scratch):
         code, _out, err = self.run_tool(SKIN, "--base", "classic", "--skin", SKIN, "--window", "login")
         self.assertEqual(code, 0, err)
         groups = []
-        for group in ("icon", "ETC", "locale", "uiloading", "season1", "metin2_patch_eu4", "metin2_patch_etc", "metin2_patch_ds"):
+        for group in ("icon", "ETC", "locale", "uiloading", "season1", "metin2_patch_eu4", "metin2_patch_etc", "metin2_patch_ds",
+                      "metin2_patch_w21_etc", "metin2_patch_dss_box", "patch2"):
             groups += ["--root", os.path.join(REPO, "assets", group)]
         result = subprocess.run([NUITOOL, "lint", "--root", os.path.join(self.root, "assets", "nui")] + groups +
                                 ["--scripts", os.path.join(REPO, "assets", "root"),

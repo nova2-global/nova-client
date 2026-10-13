@@ -149,6 +149,10 @@ class OptionBoard(nui.Window):
 	def on_hue(self, value):
 		self._owner.nui_hue(value)
 
+	@nui.on("hue_done")
+	def on_hue_done(self):
+		self._owner.nui_hue_done()
+
 	@nui.on("reset_colors")
 	def on_reset_colors(self, button):
 		if button == 0:
@@ -172,6 +176,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		self.escapeProxy = None
 		self.loaded = False
 		self.colorsAdjusted = False   # the last color the player set made the resolve adjust a token
+		self.colorsUnsaved = False    # the hue slider's drag applied colors it has not saved yet
 		self.__SetCurTilingMode()
 		if not nui_hud.has_engine():
 			return
@@ -317,6 +322,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 				self.escapeProxy.show()
 
 	def Hide(self):
+		self.nui_hue_done()
 		if self.escapeProxy is not None:
 			self.escapeProxy.hide()
 		if self.demand is not None:
@@ -521,12 +527,13 @@ class OptionDialog(nui_hud.LayoutCalls):
 		if board is not None:
 			self.nui_effects(not bool(board.get("reduced_effects")))
 
-	def nui_pick_color(self, slot, value):
+	def nui_pick_color(self, slot, value, save=True):
 		"""A swatch or an opacity choice: sets the slot of the theme in use;
-		nui.set_color saves it and calls on_colors_changed. The note shows
-		while the resolve had to adjust a color to keep text readable."""
+		nui.set_color saves it (unless `save` is False: the hue slider's drag)
+		and calls on_colors_changed. The note shows while the resolve had to
+		adjust a color to keep text readable."""
 		try:
-			result = nui.set_color(str(slot), str(value))
+			result = nui.set_color(str(slot), str(value), save=save)
 		except ValueError as error:
 			dbg.TraceError("nui_system_options: %s" % error)
 			return
@@ -535,8 +542,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 
 	def nui_hue(self, value):
 		"""The accent's hue slider moved: a color of that hue with the default
-		accent's saturation and value. The model's own value coming back is
-		not a move."""
+		accent's saturation and value, applied at once but not saved: the
+		slider sends a change on every step of a drag, and each save rewrites
+		the config file. The drag's end (nui_hue_done) or the window's Hide
+		saves it. The model's own value coming back is not a move."""
 		board = self._board()
 		try:
 			hue = int(round(float(value)))
@@ -548,7 +557,15 @@ class OptionDialog(nui_hud.LayoutCalls):
 		if accent is None:
 			return
 		board.set(accent_hue=hue)
-		self.nui_pick_color("accent", self.color_of_hue(hue, str(accent["default"])))
+		self.nui_pick_color("accent", self.color_of_hue(hue, str(accent["default"])), save=False)
+		self.colorsUnsaved = True
+
+	def nui_hue_done(self):
+		"""The hue slider let go (its dragend, or the mouseup of a press on
+		the bar): the colors the drag applied are saved once."""
+		if self.colorsUnsaved:
+			self.colorsUnsaved = False
+			nui.save_colors()
 
 	def nui_reset_colors(self):
 		"""Reset: the theme in use's palette colors again (nui.reset_colors

@@ -889,9 +889,24 @@ class InterfaceSection(unittest.TestCase):
         board(self.options).fire("hue", 217)
         self.assertEqual(self.state.appearance, [], "the model's own value coming back")
         board(self.options).fire("hue", 120)
-        self.assertEqual(self.state.appearance, [("set_color", "accent", "#8af88a")],
+        self.assertEqual(self.state.appearance, [("set_color", "accent", "#8af88a", "unsaved")],
                          "#8ab4f8's saturation and value at 120 degrees")
         self.assertEqual(self.model()["accent_hue"], 120)
+
+    def test_the_hue_slider_applies_each_step_of_a_drag_and_saves_once_when_it_ends(self):
+        # RmlUi sends a change on every step of a drag; each nui.set_color save
+        # rewrites metin2.cfg (the review's finding), so only the end saves.
+        for hue in (100, 110, 120):
+            board(self.options).fire("hue", hue)
+        self.assertEqual(self.state.appearance, [("set_color", "accent", color, "unsaved") for color in ("#aff88a", "#9cf88a", "#8af88a")])
+        board(self.options).fire("hue_done")
+        self.assertEqual(self.state.appearance[-1], ("save_colors",))
+        board(self.options).fire("hue_done")
+        self.assertEqual(self.state.appearance.count(("save_colors",)), 1, "the mouseup after the dragend saves nothing more")
+        board(self.options).fire("hue", 130)
+        self.options.Hide()
+        self.assertEqual(self.state.appearance[-1], ("save_colors",), "a hide saves what a drag left unsaved")
+        self.assertEqual(self.state.appearance.count(("save_colors",)), 2)
 
     def test_reset_puts_the_palette_back_and_the_note_goes(self):
         board(self.options).fire("pick_color", "opacity", "60", 0)

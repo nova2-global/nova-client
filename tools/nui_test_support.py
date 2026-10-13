@@ -82,7 +82,7 @@ class NuiState(object):
         self.effects_available = True  # nui.effects_available(): False for a device without effects
         self.colors = {}         # theme id -> {slot: value}, the player colors set (nui.set_color)
         self.appearance = []     # ("set_theme", id), ("set_scale_percent", p), ("set_reduced_motion", on),
-                                 # ("set_reduced_effects", on), ("set_color", slot, value), ("reset_colors", all), in order
+                                 # ("set_reduced_effects", on), ("set_color", slot, value[, "unsaved"]), ("save_colors",), ("reset_colors", all), in order
 
     def publish(self, name, value):
         """A feed changes: every live window's key bound to it takes the value,
@@ -441,8 +441,8 @@ def make_nui(state):
                  "value": values.get(s["slot"], s["default"]), "swatches": list(s["swatches"]),
                  "min": s["min"], "max": s["max"], "step": s["step"]} for s in nui_palette.slots_of_theme(palette_data(), state.theme)]
 
-    def set_color(slot, value):
-        state.appearance.append(("set_color", slot, str(value)))
+    def set_color(slot, value, save=True):
+        state.appearance.append(("set_color", slot, str(value)) if save else ("set_color", slot, str(value), "unsaved"))
         if not state.available:
             return {"ok": False, "value": str(value), "adjusted": {}, "failed": [], "opacity": 100}
         spec = next((s for s in nui_palette.slots_of_theme(palette_data(), state.theme) if s["slot"] == slot), None)
@@ -460,6 +460,9 @@ def make_nui(state):
                 window.on_colors_changed(slot)
         return {"ok": True, "value": normal, "adjusted": result["adjusted"], "failed": result["failed"],
                 "opacity": result["opacity"]}
+
+    def save_colors():
+        state.appearance.append(("save_colors",))
 
     def reset_colors(all_themes=False):
         state.appearance.append(("reset_colors", bool(all_themes)))
@@ -500,6 +503,7 @@ def make_nui(state):
     nui.get_color_slots = color_slots
     nui.set_color = set_color
     nui.reset_colors = reset_colors
+    nui.save_colors = save_colors
     nui.get_colors = lambda: dict(state.colors.get(state.theme, {}))
     nui.any_window_shown = any_window_shown
     nui.plain_text = plain_text

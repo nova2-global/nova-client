@@ -135,7 +135,8 @@
 					<div class="so-row so-row--hue" data-if="c.slot == 'accent'">
 						<span class="so-label">@ui.OPTION_UI_COLOR_CUSTOM</span>
 						<input id="so-color-accent-hue" type="range" class="nui-slider so-slider so-hue" min="0" max="359" step="1"
-							data-attr-value="accent_hue" data-event-change="hue(ev.value)"/>
+							data-attr-value="accent_hue" data-event-change="hue(ev.value)" data-event-dragend="hue_done()"
+							data-event-mouseup="hue_done()"/>
 					</div>
 				</div>
 				<div class="so-row so-row--reset">

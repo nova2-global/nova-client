@@ -529,7 +529,9 @@ class Window(object):
 	def element_box(self, element_id):
 		"""(x, y, width, height) of the element's border box in screen pixels
 		("" is the <body>), as the last frame laid it out; None for an unknown
-		element, without a document, or with an exe whose _nui has no
+		element, one not laid out (it or an element above it has display:
+		none, such as a data-if that is off; a hidden document keeps its
+		boxes), without a document, or with an exe whose _nui has no
 		GetElementBox."""
 		get = getattr(_nui, "GetElementBox", None) if _nui is not None else None
 		if not self._doc or get is None:
@@ -782,9 +784,18 @@ def _save_colors():
 	_save(setting)
 
 
-def set_color(slot, value):
+def save_colors():
+	"""Writes every theme's player colors (UI_COLORS) to the config now: after
+	a run of set_color(..., save=False), such as a slider's drag. Nothing
+	without NovaUI or with an exe that has no player colors."""
+	_save_colors()
+
+
+def set_color(slot, value, save=True):
 	"""Sets one color slot of the theme in use for every open window at once,
-	saves every theme's colors (UI_COLORS), then runs every open window's
+	saves every theme's colors (UI_COLORS; with save=False it does not, for a
+	live preview that calls save_colors() once it ends, as a slider's drag
+	does: each save rewrites the config file), then runs every open window's
 	on_colors_changed(slot). Returns the resolve's result: {"ok": True,
 	"value", "adjusted": {token: value} (the colors it changed to keep text
 	readable; "opacity" when it raised the panel opacity), "failed": [[fg,
@@ -801,7 +812,8 @@ def set_color(slot, value):
 	if setter is None:
 		return {"ok": False, "value": str(value), "adjusted": {}, "failed": [], "opacity": 100}
 	result = dict(setter(slot, str(value)))
-	_save_colors()
+	if save:
+		_save_colors()
 	for window in list(_windows.values()):
 		window.on_colors_changed(slot)
 	return result

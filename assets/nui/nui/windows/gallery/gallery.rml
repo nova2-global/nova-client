@@ -299,6 +299,7 @@
 							data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3">
 							<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
 							<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+							<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
 						</div>
 					</div>
 				</div>

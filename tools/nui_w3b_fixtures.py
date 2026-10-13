@@ -211,8 +211,10 @@ def fixtures():
             "buffi_costume_body": 45001, "buffi_costume_hair": 73001, "buffi_costume_weapon": 3000,
             "buffi_costume_sash2": 27002, "buffi_costume_facial": 16000, "costume_facial": 17000,
             "effect_weapon_1": 14000, "effect_armor_1": 15000, "costume_aura": 72723}),
-        ("belt-inventory", ""): belt(TODAY, 4, {0: (27001, 5, {}), 1: (27002, 1, {}), 3: (72723, 1, {"active": True})}),
-        ("belt-inventory", "foundation"): belt(FOUNDATION, 4, {0: (27001, 2000, {}), 1: (27002, 1, {}), 3: (72723, 1, {"active": True})}),
+        # An auto potion in the belt is never active: legacy activates only the
+        # bag's cells (uiinventory.py RefreshBagSlotWindow).
+        ("belt-inventory", ""): belt(TODAY, 4, {0: (27001, 5, {}), 1: (27002, 1, {}), 3: (72723, 1, {})}),
+        ("belt-inventory", "foundation"): belt(FOUNDATION, 4, {0: (27001, 2000, {}), 1: (27002, 1, {}), 3: (72723, 1, {})}),
         ("belt-inventory", "collapsed"): belt(TODAY, 4, {0: (27001, 5, {}), 1: (27002, 1, {})}, expanded=False),
         ("select-item", ""): select_item(TODAY, [(i * 3, STONES[i % len(STONES)], 1 + i % 3) for i in range(7)]),
         ("select-item", "foundation"): select_item(FOUNDATION, [(i, STONES[i % len(STONES)], 1) for i in range(55)]),

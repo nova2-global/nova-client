@@ -631,7 +631,7 @@
 /* The flash draws nothing but keeps its clock (a hidden nui-frames runs
    none), so a switch to a modern skin during a burst shows it at the phase
    it would have without the switch. */
-.skin-classic .nui-slot__flash
+.skin-classic .nui-slot__flash.is-playing
 {
 	decorator: none;
 }
@@ -779,8 +779,9 @@
 /* The lean grid: the slot base art tiled under the whole grid at the legacy
    32dp pitch, with no gap; a cell draws nothing at rest and has no hover
    look; the states in the legacy colors as above. An active item (an auto
-   potion that is on) shows the legacy active effect's first frame under its
-   icon: the lean cell has no frames part (P14 spec 4.2's budget). */
+   potion that is on) plays the legacy active effect's 13 frames over its
+   icon and count, as CSlotWindow::OnRender draws m_pSlotActiveEffect after
+   them (the bag's __active part, shown only while the cell is active). */
 .skin-classic .nui-slot-grid--lean
 {
 	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat left top);
@@ -808,7 +809,10 @@
 .skin-classic .nui-slot-grid--lean > .nui-slot.is-active
 {
 	border-width: 0;
-	decorator: image("d:/ymir work/ui/public/slotactiveeffect/00.sub#nui-additive");
+}
+.skin-classic .nui-slot-grid--lean .nui-slot__active
+{
+	display: inline-flex;
 }
 .skin-classic .nui-slot.is-active.nui-fx
 {

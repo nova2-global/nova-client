@@ -298,12 +298,11 @@
 	border-radius: var(--radius-sm);
 	pointer-events: none;
 }
-/* The glow: drawn once into a texture with the ring, which the breathing
-   transform then moves (P14 spec D3); reduced effects keeps it. */
-.nui-slot__ring.nui-fx
-{
-	box-shadow: 0 0 6dp var(--accent-glow);
-}
+/* No glow on the ring: a box-shadow on the breathing ring made RmlUi compile
+   its meshes again on every frame of the motion (about 4 a frame) and cost
+   the idle HUD as much in classic, where the ring is hidden but its
+   animation runs (P14 fix stage, NuiHudBench). The lean cell's static glow
+   below stays. */
 /* The ring breathes in to 0.88 of the slot and back in 0.8s, endlessly,
    only while the slot is active (is-on, bound to the same value as its
    data-if): RmlUi advances an element's animation on every update even
@@ -331,16 +330,20 @@
 	right: 0;
 	bottom: 0;
 	z-index: 5;
-	decorator: radial-gradient(circle, var(--accent) 0%, transparent 70%);
 	transform: scale(0);
 	pointer-events: none;
 }
 /* The burst's 11 frames of 1/30 s: from 0.6 of the cell to 1.15, by
    transform only (an opacity change would make the gradient again on every
-   frame); at rest and at is-done it is scaled to nothing, not hidden, since
-   a hidden nui-frames runs no clock and would never play. */
+   frame). At rest and at is-done it has no decorator and is scaled to
+   nothing, not hidden, since a hidden nui-frames runs no clock and would
+   never play: RmlUi draws a decorator whatever the element's transform, so
+   a gradient at rest would cost a draw every frame for as long as the slot
+   keeps its cooldown's end (the quickslot feed keeps it until a rebuild).
+   The gradient is made once per burst. */
 .nui-slot__flash.is-playing
 {
+	decorator: radial-gradient(circle, var(--accent) 0%, transparent 70%);
 	transform: scale(1.15);
 }
 .nui-slot__flash.is-playing.nui-anim
@@ -508,6 +511,14 @@
 	top: 2dp;
 }
 .nui-slot-grid--lean .nui-slot__number { z-index: 5; }
+/* The bag's active part is the legacy effect's frames, which only classic
+   shows (its art); the modern skins show the cell's own look above, and a
+   hidden nui-frames builds no frames and runs no clock. */
+.nui-slot-grid--lean .nui-slot__active
+{
+	display: none;
+	z-index: 7;
+}
 .nui-slot-grid--lean .nui-slot__sign { z-index: 9; }
 /* An anchor cell's item at its own size, centered in the item's area: a
    1x2 item's 64dp icon in 84dp, a 1x3 item's 96dp in 128dp; its count at

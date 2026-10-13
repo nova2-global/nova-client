@@ -17,12 +17,14 @@
 	     no focus, so controls act on a left mousedown. It draws below the
 	     legacy UI layer (nui-below-legacy-ui), as legacy's window lived in
 	     it, so the shop, exchange and safebox windows opened over it cover
-	     it; the belt docks to inv-belt-dock. -->
+	     it; the belt docks to inv-belt-dock. A left or right
+	     press anywhere on it raises the window (board_press), as legacy's
+	     window manager raised the window under a press. -->
 	<title>inventory</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="inventory.rcss"/>
 </head>
-<body template="nui" id="inventory" class="nui-window nui-fx nui-anim nui-below-legacy-ui inv" data-model="inventory"
+<body template="nui" id="inventory" class="nui-window nui-fx nui-anim nui-below-legacy-ui inv" data-model="inventory" data-event-mousedown="board_press(ev.button)"
       data-class-inv--table-new="table == 'new'" data-class-inv--table-old="table == 'old'"
       data-class-inv--tabs-small="size(pages) > 2" data-class-inv--placed="placed">
 	<div class="nui-window__titlebar inv__titlebar">
@@ -79,6 +81,7 @@
 			     data-event-mouseout="bag_out(it_index)" data-event-nuidrop="bag_drop(it_index)">
 				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
 				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
 			</div>
 		</div>
 		<div id="inv-money" class="inv-money" data-event-mousedown="money_press(ev.button)">

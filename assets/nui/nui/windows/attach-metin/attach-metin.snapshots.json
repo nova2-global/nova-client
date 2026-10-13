@@ -3,6 +3,6 @@
 	"cases": [
 		{"page": "attach-metin", "themes": "all", "scales": [["100", "1", "640x480"], ["150", "1.5", "960x720"], ["200", "2", "1280x960"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "attach-metin", "variant": "foundation", "themes": "all", "scales": [["100", "1", "640x480"], ["150", "1.5", "960x720"], ["200", "2", "1280x960"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
-		{"page": "attach-metin", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "640x480"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"}
+		{"page": "attach-metin", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "640x480"], ["200", "2", "1280x960"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"}
 	]
 }

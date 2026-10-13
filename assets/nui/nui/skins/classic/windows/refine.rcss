@@ -120,6 +120,12 @@ body.skin-classic.refine .refine__cancel
 {
 	margin: 0 0 0 5dp;
 }
+/* The legacy buttons' labels are gray, the first one too (refinedialog.py
+   gives it no color): the classic primary's accent stays off. */
+body.skin-classic.refine .refine__accept
+{
+	color: var(--classic-button-text);
+}
 
 /* --- the tooltip lines: legacy's (uitooltip.py ToolTip), the same in every
    overlay of a document with the tooltip block (tools/nui_tooltip_test.py

@@ -3,6 +3,6 @@
 	"cases": [
 		{"page": "select-item", "themes": "all", "scales": [["100", "1", "400x700"], ["150", "1.5", "600x1050"], ["200", "2", "800x1400"]], "fixture": true, "roots": ["assets/ETC", "assets/metin2_patch_w21_etc", "assets/metin2_patch_dss_box", "assets/patch2"], "time": null},
 		{"page": "select-item", "variant": "foundation", "themes": "all", "scales": [["100", "1", "400x700"], ["150", "1.5", "600x1050"], ["200", "2", "800x1400"]], "fixture": true, "roots": ["assets/ETC", "assets/metin2_patch_w21_etc", "assets/metin2_patch_dss_box", "assets/patch2"], "time": null},
-		{"page": "select-item", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "400x700"]], "fixture": true, "roots": ["assets/ETC", "assets/metin2_patch_w21_etc", "assets/metin2_patch_dss_box", "assets/patch2"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"}
+		{"page": "select-item", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "400x700"], ["200", "2", "800x1400"]], "fixture": true, "roots": ["assets/ETC", "assets/metin2_patch_w21_etc", "assets/metin2_patch_dss_box", "assets/patch2"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"}
 	]
 }

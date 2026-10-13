@@ -4,6 +4,6 @@
 		{"page": "refine", "themes": "all", "scales": [["100", "1", "960x760"], ["150", "1.5", "1440x1140"], ["200", "2", "1920x1520"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "refine", "variant": "foundation", "themes": "all", "scales": [["100", "1", "960x760"], ["150", "1.5", "1440x1140"], ["200", "2", "1920x1520"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "refine", "variant": "old", "themes": "all", "scales": [["100", "1", "960x760"], ["150", "1.5", "1440x1140"], ["200", "2", "1920x1520"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
-		{"page": "refine", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "960x760"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"}
+		{"page": "refine", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "960x760"], ["200", "2", "1920x1520"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"}
 	]
 }

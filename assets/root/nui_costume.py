@@ -126,16 +126,18 @@ class CostumeWindow(uiInventory.CostumeWindow):
 	def _place_beside(self):
 		"""Beside the inventory's left edge, top in line, as legacy creates its
 		window (a pixel over the edge: SCREEN_WIDTH - 175 - 140 against the
-		inventory's SCREEN_WIDTH - 176); docked instead while the inventory's
-		board is not laid out yet (its first frame)."""
+		inventory's SCREEN_WIDTH - 176). When both open together (the
+		inventory's Show reopens it), the inventory's new board has no layout
+		yet and an empty box, so its origin is the place it opens at; docked
+		instead when neither is known."""
 		board = self.demand.board() if self.demand is not None else None
 		other = self.wndInventory.board() if hasattr(self.wndInventory, "board") else None
 		if board is None or other is None:
 			return
-		box = other.element_box("")
-		if box:
-			scale = nui.get_scale() or 1.0
-			board.set_position(box[0] / scale + 1.0, box[1] / scale, origin=(1.0, 0.0))
+		origin = getattr(self.wndInventory, "board_origin", None)
+		origin = origin() if origin is not None else None
+		if origin is not None:
+			board.set_position(origin[0] + 1.0, origin[1], origin=(1.0, 0.0))
 		else:
 			board.place_next_to(other, "left", 0)
 

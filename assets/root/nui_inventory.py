@@ -265,6 +265,17 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		"""The board while shown, else None (the belt docks to it)."""
 		return self.demand.board() if self.demand is not None else None
 
+	def board_origin(self):
+		"""The board's top left in dp: where it is laid out, else, while its
+		document has not had its first layout (the frame it opens in, when
+		its box is still empty), the place it opens at; None without either."""
+		board = self.board()
+		box = board.element_box("") if board is not None else None
+		if box and box[2] > 0 and box[3] > 0:
+			scale = nui.get_scale() or 1.0
+			return box[0] / scale, box[1] / scale
+		return self._place
+
 	# --- the proxies' callbacks ---------------------------------------------------------
 
 	def _bag_position(self, local):

@@ -1038,6 +1038,25 @@ class Placement(unittest.TestCase):
         placement = board(self.window.wndCostume).placement
         self.assertIn(placement[0], ("position", "next_to"))
 
+    def test_the_costume_reopens_beside_the_inventory_before_the_inventory_s_layout(self):
+        """Escape, then I (the kit's IV-10): the inventory's Show reopens the
+        costume window while the inventory's new board has had no layout, so
+        its box is empty; the costume window opens beside the place the
+        inventory opens at, not at the screen's corner."""
+        state = self.world.game.state
+        state.boxes = getattr(state, "boxes", {})
+        inventory_doc = board(self.window).DOCUMENT
+        scale = self.world.m("nui_inventory").nui.get_scale() or 1.0
+        state.boxes[(inventory_doc, "")] = [1200.0 * scale, 150.0 * scale, 236.0 * scale, 699.0 * scale]
+        with self.world.game, quiet():
+            self.window.ClickCostumeButton()
+            self.window.Close()
+        state.boxes[(inventory_doc, "")] = [0.0, 0.0, 0.0, 0.0]
+        with self.world.game, quiet():
+            self.window.Show()
+        self.assertTrue(self.window.wndCostume.IsShow())
+        self.assertEqual(board(self.window.wndCostume).placement, ("position", 1201.0, 150.0, (1.0, 0.0)))
+
     def test_set_top_raises_the_board_and_calls_legacy_s(self):
         with self.world.game:
             self.window.SetTop()

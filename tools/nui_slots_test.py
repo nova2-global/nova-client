@@ -338,6 +338,7 @@ class Tooltips(SlotsTest):
 
 
 FOOTPRINT_CASES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "footprint_cases.json")
+DROP_TARGET_CASES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "drop_target_cases.json")
 
 
 class Cells(SlotsTest):
@@ -398,55 +399,84 @@ class Cells(SlotsTest):
 
 
 class FootprintVectors(SlotsTest):
-    """footprint_states, drop_target and the CheckMoving rule against every
-    case of tools/fixtures/footprint_cases.json (P14 spec 4.9.2: ENGINE's
-    file from the real CGridSlotWindow replaces the hand cases)."""
+    """footprint_states and the CheckMoving rule against every case of
+    tools/fixtures/footprint_cases.json, ENGINE's vectors recorded from the
+    real CGridSlotWindow (P14 spec 4.9.2: eterpythonlib_tests
+    GridFootprintVectors), and drop_target against the hand cases of
+    tools/fixtures/drop_target_cases.json, which the recorder does not cover."""
 
-    def setUp(self):
-        SlotsTest.setUp(self)
-        with open(FOOTPRINT_CASES, encoding="utf-8") as handle:
-            self.vectors = json.load(handle)
-        self.cols, self.rows = self.vectors["grid"]
-        for entry in self.vectors["items"]:
-            self.game.give(entry["cell"], entry["vnum"], 1, size=(entry["w"], entry["h"]))
-        self.cells = self.m.item_cells(list(range(self.cols * self.rows)), self.cols, self.rows)
-        self.vnums = dict((entry["cell"], entry["vnum"]) for entry in self.vectors["items"])
+    def load(self, path):
+        with open(path, encoding="utf-8") as handle:
+            vectors = json.load(handle)
+        game = self.game
+        game.items.clear()
+        cols, rows = vectors["grid"]
+        for entry in vectors["items"]:
+            game.give(entry["cell"], entry["vnum"], 1, size=(entry["w"], entry["h"]))
+        cells = self.m.item_cells(list(range(cols * rows)), cols, rows)
+        vnums = dict((entry["cell"], entry["vnum"]) for entry in vectors["items"])
+        return vectors, cols, rows, cells, vnums
 
-    def test_the_file_has_the_schema_of_the_contract(self):
-        self.assertIn(self.vectors["source"], ("hand", "CGridSlotWindow"))
-        self.assertEqual(self.vectors["grid"], [5, 9])
-        for case in self.vectors["cases"]:
-            self.assertTrue({"hovered", "w", "h", "vnum", "use_mode", "usable", "cells", "moving", "state"} <= set(case), case)
+    def test_the_files_have_the_schema_of_the_contract(self):
+        vectors = self.load(FOOTPRINT_CASES)[0]
+        self.assertEqual(vectors["source"], "CGridSlotWindow")
+        self.assertEqual(vectors["grid"], [5, 9])
+        for case in vectors["cases"]:
+            self.assertTrue({"hovered", "slot", "w", "h", "vnum", "pick_up", "use_mode", "usable", "cells", "moving",
+                             "state", "marked"} <= set(case), case)
             self.assertIn(case["state"], self.m.TARGET_STATES)
+        hand = self.load(DROP_TARGET_CASES)[0]
+        self.assertEqual(hand["source"], "hand")
+        for case in hand["cases"]:
+            self.assertTrue({"hovered", "slot", "w", "h", "vnum", "use_mode", "usable", "cells", "target"} <= set(case), case)
 
-    def test_every_case_matches(self):
-        for number, case in enumerate(self.vectors["cases"]):
-            attached = (INVENTORY, case.get("slot", -1), case["vnum"], 1, case["w"], case["h"])
+    def test_every_recorded_case_matches(self):
+        vectors, cols, rows, cells, vnums = self.load(FOOTPRINT_CASES)
+        for number, case in enumerate(vectors["cases"]):
+            # 9999 is no cell of the grid: the icon came from elsewhere.
+            attached = (INVENTORY, case["slot"], case["vnum"], 1, case["w"], case["h"])
             where = "case %d %r" % (number, case)
-            found = self.m._picked_list(self.cells, case["hovered"], case["w"], case["h"], self.cols, self.rows,
-                                        case["use_mode"])
-            self.assertEqual(sorted(found), sorted(case["cells"]), where)
-            self.assertEqual(self.m._check_moving(self.cells, found, attached, self.cols, self.rows, vnums=self.vnums),
-                             case["moving"], where)
-            states = self.m.footprint_states(self.cells, case["hovered"], attached, self.cols, self.rows,
-                                             case["use_mode"], case["usable"], vnums=self.vnums)
+            found = self.m._picked_list(cells, case["hovered"], case["w"], case["h"], cols, rows, case["use_mode"])
+            self.assertEqual(found, case["cells"], where + ": GetPickedSlotList's cells in its order")
+            if not case["pick_up"]:
+                # SLOT_STYLE_NONE: CheckMoving answers TRUE and nothing draws.
+                self.assertTrue(case["moving"], where)
+                self.assertEqual(self.m.footprint_states(cells, case["hovered"], attached, cols, rows, case["use_mode"],
+                                                         case["usable"], pick_up=False, vnums=vnums), {}, where)
+                continue
+            self.assertEqual(self.m._check_moving(cells, found, attached, cols, rows, vnums=vnums), case["moving"], where)
+            states = self.m.footprint_states(cells, case["hovered"], attached, cols, rows, case["use_mode"],
+                                             case["usable"], vnums=vnums)
             self.assertEqual(set(states.values()), {case["state"]}, where)
-            if "target" in case:
-                self.assertEqual(self.m.drop_target(self.cells, case["hovered"], attached, self.cols, self.rows,
-                                                    case["use_mode"]), case["target"], where)
+            self.assertEqual(sorted(states), case["marked"], where)
             # Without the vnum map, the player's inventory answers the same.
-            self.assertEqual(self.m.footprint_states(self.cells, case["hovered"], attached, self.cols, self.rows,
-                                                     case["use_mode"], case["usable"]), states, where)
+            self.assertEqual(self.m.footprint_states(cells, case["hovered"], attached, cols, rows, case["use_mode"],
+                                                     case["usable"]), states, where)
+
+    def test_every_drop_target_matches(self):
+        vectors, cols, rows, cells, vnums = self.load(DROP_TARGET_CASES)
+        for number, case in enumerate(vectors["cases"]):
+            attached = (INVENTORY, case["slot"], case["vnum"], 1, case["w"], case["h"])
+            where = "case %d %r" % (number, case)
+            found = self.m._picked_list(cells, case["hovered"], case["w"], case["h"], cols, rows, case["use_mode"])
+            self.assertEqual(sorted(found), sorted(case["cells"]), where)
+            self.assertEqual(self.m.drop_target(cells, case["hovered"], attached, cols, rows, case["use_mode"]),
+                             case["target"], where)
+            states = self.m.footprint_states(cells, case["hovered"], attached, cols, rows, case["use_mode"],
+                                             case["usable"], vnums=vnums)
+            self.assertEqual(set(states.values()), {case["state"]}, where)
 
     def test_the_usable_state_covers_the_target_items_area(self):
+        cells = self.load(DROP_TARGET_CASES)[3]
         attached = (INVENTORY, -1, 25040, 1, 1, 1)
-        states = self.m.footprint_states(self.cells, 9, attached, 5, 9, True, True)
+        states = self.m.footprint_states(cells, 9, attached, 5, 9, True, True)
         self.assertEqual(states, {4: "usable", 9: "usable", 14: "usable"}, "the glaive's three cells")
 
     def test_no_pick_up_style_draws_no_footprint(self):
+        cells = self.load(DROP_TARGET_CASES)[3]
         attached = (INVENTORY, -1, 12200, 1, 1, 1)
-        self.assertEqual(self.m.footprint_states(self.cells, 1, attached, 5, 9, False, False, pick_up=False), {})
-        self.assertEqual(self.m.footprint_states(self.cells, 1, None, 5, 9, False, False), {})
+        self.assertEqual(self.m.footprint_states(cells, 1, attached, 5, 9, False, False, pick_up=False), {})
+        self.assertEqual(self.m.footprint_states(cells, 1, None, 5, 9, False, False), {})
 
 
 class Proxy(SlotsTest):

@@ -570,13 +570,17 @@ class Model(Pair):
         self.assertEqual(model["money_value"], 99)
 
     def test_the_belt_s_cells_and_its_unavailable_ones_equal_legacy_s(self):
-        legacy, novaui = self.worlds()
+        def single(game):
+            # The belt's refresh passes a count of 1, which CSlotWindow shows.
+            game.give(I["BELT_INVENTORY_SLOT_START"] + 1, BLUE_POTION, 1)
+        legacy, novaui = self.worlds(with_state(single))
         a, b = legacy.make_inventory(), novaui.make_inventory()
         cells = board(b.wndBelt).model["cells"]
         legacy_slots = a.wndBelt.wndBeltInventorySlot.slots
         self.assertEqual([cell["unavailable"] for cell in cells],
                          [legacy_slots[number]["unavailable"] for number in sorted(legacy_slots)])
         self.assertEqual(self.shown_named(cells, b.wndBelt.wndBeltInventorySlot), a.wndBelt.wndBeltInventorySlot.shown())
+        self.assertEqual(cells[1]["count"], "1")
 
     def test_the_footprint_of_an_attached_tall_item_and_the_picked_cell(self):
         world = World(True)
@@ -1034,11 +1038,14 @@ class Placement(unittest.TestCase):
             self.window.SetTop()
         self.assertEqual(board(self.window).front, 1)
 
-    def test_the_documents_sit_below_the_legacy_ui(self):
-        for name in ("inventory", "costume", "belt-inventory"):
+    def test_the_documents_sit_below_the_legacy_ui_but_select_item(self):
+        """D13: the inventory's windows take their legacy windows' band, the
+        UI layer, under the shop, exchange and safebox windows they trade
+        with; select item, a quest's window, draws above it (spec 6.6)."""
+        for name, below in (("inventory", True), ("costume", True), ("belt-inventory", True), ("select-item", False)):
             text = read(os.path.join(WINDOWS, name, name + ".rml"))
             body = re.search(r"<body[^>]*>", text).group(0)
-            self.assertIn("nui-below-legacy-ui", body, name)
+            self.assertEqual("nui-below-legacy-ui" in body, below, name)
 
 
 class OnDemand(unittest.TestCase):

@@ -65,23 +65,28 @@ def empty_cell(index):
             "covered": False, "target": "", "picked": False, "unavailable": False}
 
 
-def item_cell(index, position, vnum, count=1, **states):
+def item_cell(index, position, vnum, count=1, one=False, **states):
+    """A cell as the proxy makes it from SetItemSlot(slot, vnum, count): the
+    label shows every count above 0 (CSlotWindow::SetSlotCount); the
+    inventory, wear and select item refreshes pass 0 for a count of 1, the
+    belt's passes it (one)."""
     icon, w, h = ITEMS[vnum]
     cell = empty_cell(index)
+    shown = count if (count > 1 or one) else 0
     cell.update({"kind": "item", "type": INVENTORY, "ref": position, "icon": icon, "w": w, "h": h,
-                 "count": str(count) if count > 1 else ""})
+                 "count": str(shown) if shown > 0 else ""})
     cell.update(states)
     return cell
 
 
-def grid(cols, rows, start, items, targets=None, unavailable=()):
+def grid(cols, rows, start, items, targets=None, unavailable=(), one=False):
     """The cells of a cols x rows lean grid whose cell i shows position
     start + i: items {cell: (vnum, count, states)}, then the covered cells
     (nui_slots.mark_covered), the footprint's targets and the unavailable
     cells."""
     cells = [empty_cell(i) for i in range(cols * rows)]
     for index, (vnum, count, states) in items.items():
-        cells[index] = item_cell(index, start + index, vnum, count, **states)
+        cells[index] = item_cell(index, start + index, vnum, count, one, **states)
     for anchor, cell in enumerate(list(cells)):
         if not cell["kind"]:
             continue
@@ -173,7 +178,7 @@ def belt(limits, available, items, expanded=True):
     cols = limits.BELT_COLUMNS
     rows = limits.BELT_INVENTORY_SLOT_COUNT // cols
     cells = grid(cols, rows, limits.BELT_INVENTORY_SLOT_START, items,
-                 unavailable=[i for i in range(cols * rows) if i >= available])
+                 unavailable=[i for i in range(cols * rows) if i >= available], one=True)
     return {"belt": {"cells": cells, "cols": cols, "expanded": expanded}}
 
 

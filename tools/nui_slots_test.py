@@ -629,7 +629,7 @@ class Events(SlotsTest):
         self.assertEqual(self.calls, [("unselect_item", 2), ("unselect_empty", 9), ("unselect_item", 0)])
         self.controller.AttachObject("legacy", INVENTORY, 2, 27001, 5)
         self.events.press(3, 1)
-        self.assertEqual(len(self.calls), 3, "the host cancelled the attach; nothing is unselected")
+        self.assertEqual(len(self.calls), 3, "the host canceled the attach; nothing is unselected")
         self.controller.DeattachObject()
         self.events.use(5)
         self.events.use(9)

@@ -1066,7 +1066,7 @@ class LegacySlotEvents(object):
 	- drop(index) (nuidrop: a legacy press released here): the same.
 	- press(index, 1) with nothing attached: the unselect-item or
 	  unselect-empty event; with something attached nothing (the host
-	  cancelled the attach and kept the press).
+	  canceled the attach and kept the press).
 	- use(index) (dblclick): the use event of an item.
 	- over(index), out(index): the over-in event once per item, the over-out
 	  event once, as CSlotWindow keeps m_dwToolTipSlotNumber; and while

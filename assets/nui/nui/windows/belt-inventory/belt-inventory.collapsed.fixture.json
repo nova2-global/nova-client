@@ -27,7 +27,7 @@
 				"type": 1,
 				"ref": 153,
 				"icon": "/icon/item/27002.tga",
-				"count": "",
+				"count": "1",
 				"w": 1,
 				"h": 1,
 				"cd_start": 0.0,

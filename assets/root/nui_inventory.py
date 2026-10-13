@@ -153,6 +153,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		self._limits = nui_limits.current()
 		self._state = self._empty_state()
 		self._place = None
+		self._opening = False  # Show() is making the board (board_origin)
 		self._bag_events = None
 		self._wear_events = None
 		self.loaded = False
@@ -266,9 +267,14 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		return self.demand.board() if self.demand is not None else None
 
 	def board_origin(self):
-		"""The board's top left in dp: where it is laid out, else, while its
-		document has not had its first layout (the frame it opens in, when
-		its box is still empty), the place it opens at; None without either."""
+		"""The board's top left in dp. While Show() makes the board (legacy's
+		Show reopens the costume window in that call), the placement has not
+		resolved yet and the box is the unplaced one, at the screen's corner:
+		then the place it opens at, its kept place (None the first time, when
+		the costume window cannot be open). Otherwise its laid-out box, or the
+		kept place while it has none."""
+		if self._opening:
+			return self._place
 		board = self.board()
 		box = board.element_box("") if board is not None else None
 		if box and box[2] > 0 and box[3] > 0:
@@ -407,9 +413,16 @@ class InventoryWindow(uiInventory.InventoryWindow):
 
 	def Show(self):
 		# The board first, so the belt and the costume, which legacy's Show
-		# opens again, are placed beside a shown board.
+		# opens again, are placed beside a shown board. A board made here is
+		# placed in the next update, so until legacy's Show returns its
+		# origin is the place it opens at (board_origin).
+		made = self.board() is None
 		self._show_board()
-		uiInventory.InventoryWindow.Show(self)
+		self._opening = made and self.board() is not None
+		try:
+			uiInventory.InventoryWindow.Show(self)
+		finally:
+			self._opening = False
 
 	def Hide(self):
 		uiInventory.InventoryWindow.Hide(self)

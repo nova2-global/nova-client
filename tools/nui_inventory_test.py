@@ -1040,9 +1040,10 @@ class Placement(unittest.TestCase):
 
     def test_the_costume_reopens_beside_the_inventory_before_the_inventory_s_layout(self):
         """Escape, then I (the kit's IV-10): the inventory's Show reopens the
-        costume window while the inventory's new board has had no layout, so
-        its box is empty; the costume window opens beside the place the
-        inventory opens at, not at the screen's corner."""
+        costume window while the inventory's new board waits for its
+        placement (the next update), so its box is the unplaced one, sized at
+        the screen's corner, as the client reports it; the costume window
+        opens beside the place the inventory opens at, not at the corner."""
         state = self.world.game.state
         state.boxes = getattr(state, "boxes", {})
         inventory_doc = board(self.window).DOCUMENT
@@ -1050,12 +1051,19 @@ class Placement(unittest.TestCase):
         state.boxes[(inventory_doc, "")] = [1200.0 * scale, 150.0 * scale, 236.0 * scale, 699.0 * scale]
         with self.world.game, quiet():
             self.window.ClickCostumeButton()
-            self.window.Close()
-        state.boxes[(inventory_doc, "")] = [0.0, 0.0, 0.0, 0.0]
-        with self.world.game, quiet():
-            self.window.Show()
-        self.assertTrue(self.window.wndCostume.IsShow())
-        self.assertEqual(board(self.window.wndCostume).placement, ("position", 1201.0, 150.0, (1.0, 0.0)))
+        for unplaced in ([0.0, 0.0, 236.0 * scale, 699.0 * scale], [0.0, 0.0, 0.0, 0.0]):
+            with self.subTest(box=unplaced):
+                with self.world.game, quiet():
+                    self.window.Close()
+                state.boxes[(inventory_doc, "")] = unplaced
+                with self.world.game, quiet():
+                    self.window.Show()
+                self.assertTrue(self.window.wndCostume.IsShow())
+                self.assertEqual(board(self.window.wndCostume).placement, ("position", 1201.0, 150.0, (1.0, 0.0)))
+                # Its next open beside the laid-out board reads the live box.
+                state.boxes[(inventory_doc, "")] = [1100.0 * scale, 100.0 * scale, 236.0 * scale, 699.0 * scale]
+                self.assertEqual(self.window.board_origin(), (1100.0, 100.0))
+                state.boxes[(inventory_doc, "")] = [1200.0 * scale, 150.0 * scale, 236.0 * scale, 699.0 * scale]
 
     def test_set_top_raises_the_board_and_calls_legacy_s(self):
         with self.world.game:

@@ -106,6 +106,18 @@ class Cells(SelectItemTest):
         self.assertEqual(len(board(window).model["cells"]), 20)
         self.assertEqual(len(self.shown(window)), 17)
 
+    def test_the_legacy_window_underneath_has_the_uiscript_s_flags_and_a_press_raises_it(self):
+        legacy, novaui = self.worlds(stones(7))
+        a, b = self.open(legacy), self.open(novaui)
+        self.assertEqual(b.flags, a.flags)
+        self.assertIn("float", b.flags)
+        raised = []
+        original = b.SetTop
+        b.SetTop = lambda: (raised.append(True), original())
+        with novaui.game, quiet():
+            inventory.press(b, "cell_press", 12, 0)  # an empty cell: nothing else happens
+        self.assertEqual(raised, [True])
+
     def test_the_legacy_window_underneath_stays_0_by_0(self):
         world = inventory.World(True, setup=stones(20))
         window = self.open(world)
@@ -179,6 +191,26 @@ class Flows(SelectItemTest):
         (_, a, _), (_, b, _) = self.run_both(flow)
         self.assertEqual(b.tooltipItem.shown, a.tooltipItem.shown)
         self.assertEqual(b.tooltipItem.shown, [("SetInventoryItem", a.inventorySlotPosDict[1])])
+        self.assertFalse(b.tooltipItem.visible)
+
+    def test_a_press_on_the_hovered_stone_hides_its_tooltip_and_the_next_open_shows_none(self):
+        """The press hides the board under the pointer, which then hears no
+        mouseout: legacy's next mouse move hides the tooltip, and its next
+        open re-shows nothing while the pointer is elsewhere."""
+        def flow(world, window):
+            if world.nui_on:
+                fire(window, "cell_over", 1)
+                fire(window, "cell_press", 1, 0)
+            else:
+                window.itemSlot.fire("over_in", 1)
+                window.itemSlot.fire("select_item", 1)
+                window.itemSlot.fire("over_out")
+            window.tooltipItem.shown[:] = []
+            window.Open()
+        (legacy, a, _), (novaui, b, _) = self.run_both(flow)
+        self.assertEqual(self.without_ignore(legacy), novaui)
+        self.assertEqual(b.tooltipItem.shown, a.tooltipItem.shown)
+        self.assertEqual(b.tooltipItem.shown, [])
         self.assertFalse(b.tooltipItem.visible)
 
     def test_no_ignore_call_in_the_novaui_window(self):

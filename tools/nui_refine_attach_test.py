@@ -346,6 +346,43 @@ class Attach(unittest.TestCase):
         self.assertEqual(pair.novaui.dialog.size, (0, 0))
 
 
+class Raise(unittest.TestCase):
+    """A press on a dialog's board raises the dialog, as legacy's window
+    manager raises the window under a press (P14 V-1): its legacy window
+    carries the uiscript's flags (refinedialog.py and attachstonedialog.py:
+    "movable", "float"), and each press raises it once, before the button
+    acts."""
+
+    OPENS = {"new": open_new, "old": lambda w, d, n: d.Open(20, 5),
+             "attach": lambda w, d, n: d.Open(2, 0)}
+    ITEMS = {"new": GLAIVE, "old": GLAIVE + [{"pos": 20, "vnum": 25040}], "attach": Attach.ITEMS}
+
+    def test_the_legacy_window_underneath_has_the_uiscript_s_flags(self):
+        for which in ("new", "old", "attach"):
+            pair = Pair(which, self.ITEMS[which])
+            pair.run(self.OPENS[which])  # the new dialog loads its uiscript at its first Open
+            with self.subTest(which=which):
+                self.assertEqual(pair.novaui.dialog.flags, pair.legacy.dialog.flags)
+                self.assertIn("float", pair.novaui.dialog.flags)
+
+    def test_each_press_raises_the_dialog_once_before_its_button_acts(self):
+        for which in ("new", "attach"):
+            pair = Pair(which, self.ITEMS[which])
+            pair.run(self.OPENS[which])
+            dialog = pair.novaui.dialog
+            seen = []
+            original_top, original_cancel = dialog.SetTop, dialog.cancelButton.click
+            dialog.SetTop = lambda: (seen.append("raise"), original_top())
+            dialog.cancelButton.click = lambda: (seen.append("cancel"), original_cancel())
+            board = pair.board()
+            with pair.novaui, corpus_tool.quiet():
+                board.fire("board_press", 0)      # the title bar
+                board.fire("cancel_press", 0)     # the button, then the body hears it
+                board.fire("board_press", 0)
+            with self.subTest(which=which):
+                self.assertEqual(seen, ["raise", "raise", "cancel"])
+
+
 class Facades(unittest.TestCase):
     CLASSES = (("nui_refine", "RefineDialogNew", "uiRefine", "RefineDialogNew"),
                ("nui_refine", "RefineDialog", "uiRefine", "RefineDialog"),

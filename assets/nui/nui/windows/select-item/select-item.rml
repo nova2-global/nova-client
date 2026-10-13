@@ -9,12 +9,14 @@
 	     (3 under 15 stones, then one per 5, at most 55). A press on a stone
 	     sends its position, the close button 0. The document exists only
 	     while it shows; its list is set once per load. The body and its
-	     controls take no focus; controls act on a left mousedown. -->
+	     controls take no focus; controls act on a left mousedown. A left or right
+	     press anywhere on it raises the window (board_press), as legacy's
+	     window manager raised the window under a press. -->
 	<title>select-item</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="select-item.rcss"/>
 </head>
-<body template="nui" id="select-item" class="nui-window nui-fx nui-anim sel" data-model="select_item">
+<body template="nui" id="select-item" class="nui-window nui-fx nui-anim sel" data-model="select_item" data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar sel__titlebar">
 		<handle class="nui-window__handle sel__handle" move_target="#document">
 			<span class="nui-window__title sel__title">@ui.SELECT_METIN_STONE_TITLE</span>

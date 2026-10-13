@@ -483,6 +483,9 @@ class ToolTip(object):
     def ShowToolTip(self):
         self.visible = True
 
+    def SetTop(self):
+        """A raise, not a request to show (the inventory's OnTop)."""
+
     def Hide(self):
         self.visible = False
 
@@ -2461,7 +2464,13 @@ def install_wave3b_ui(game):
     - stand-ins of uiCommon, uiPickMoney, uiRefine and uiAttachMetin whose
       dialogs record their opens (Game.dialogs, LegacyDialog);
     - an Interface stand-in (Game.interface) whose ToggleDragonSoulWindow is
-      recorded, and a dragon soul refine window that is hidden."""
+      recorded, and a dragon soul refine window that is hidden;
+    - the UI layer's order as CWindowManager keeps it (Game.ui_order, the
+      ScriptWindows of the UI layer, bottom first): the loader adds the
+      uiscript's root "style" as flags (AddFlag), SetTop moves a "float"
+      window last and runs its OnTop (CWindow::SetTop), and
+      Game.press_escape() walks the shown windows last first until an
+      OnPressEscapeKey returns True (CWindow::RunPressEscapeKeyEvent)."""
     ui = game.modules["ui"]
     Win = ui.Window
     windows_by_handle = {}
@@ -2529,17 +2538,56 @@ def install_wave3b_ui(game):
             value = read_uiscript(path)
             if "width" in value:
                 window.SetSize(value.get("width", 0), value.get("height", 0))
+            for style in value.get("style", ()) or ():
+                window.AddFlag(style)
             build(window, value)
 
     script_base = ui.ScriptWindow
+    order = game.ui_order = []
 
     class ScriptWindow(script_base):
         def __init__(self, layer="UI"):
             script_base.__init__(self, layer)
             windows_by_handle[self.hWnd] = weakref.ref(self)
+            self.flags = set()
+            if layer == "UI":
+                order.append(weakref.ref(self))
 
         def GetChild2(self, name):
             return self.ElementDictionary.get(name)
+
+        def AddFlag(self, flag):
+            self.flags.add(flag)
+
+        def SetTop(self):
+            """CWindow::SetTop: only a float window moves, last in its layer,
+            and then hears OnTop."""
+            script_base.SetTop(self)
+            if "float" not in self.flags:
+                return
+            for ref in list(order):
+                if ref() is self:
+                    order.remove(ref)
+                    order.append(ref)
+                    break
+            on_top = getattr(self, "OnTop", None)
+            if on_top is not None:
+                on_top()
+
+    def press_escape():
+        """CWindowManager::RunPressEscapeKey over the UI layer: the shown
+        windows last first; the first whose OnPressEscapeKey answers True
+        ends it. The window that took it, or None."""
+        for ref in reversed(list(order)):
+            window = ref()
+            if window is None or not window.IsShow():
+                continue
+            escape = getattr(window, "OnPressEscapeKey", None)
+            if escape is not None and escape():
+                return window
+        return None
+
+    game.press_escape = press_escape
 
     ui.ScriptWindow = ScriptWindow
     ui.PythonScriptLoader = PythonScriptLoader

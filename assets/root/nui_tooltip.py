@@ -37,6 +37,20 @@ import nui
 import nui_hud
 import nui_text
 
+# The legacy taskbar's height at the screen's bottom (uiscript/taskbar.py).
+LEGACY_TASKBAR_HEIGHT = 37
+
+
+def bottom_reserve_dp():
+	"""The dp a tooltip keeps clear of at the screen's bottom (P14 spec
+	5.5.7): the legacy taskbar's while it is the one in use, since it is a
+	TOP_MOST window and the tooltips draw below that layer; none with the
+	NovaUI taskbar, which draws below them."""
+	if nui_hud.current("taskbar") is not None:
+		return 0
+	return LEGACY_TASKBAR_HEIGHT / (nui.get_scale() or 1.0)
+
+
 # --- the role table (spec 5.3) -------------------------------------------------------------
 
 # uitooltip.ToolTip's color constants, in this order; a value already in the
@@ -764,7 +778,7 @@ class Facade(object):
 			x, y = self._fixed
 			found.set_position(x / scale, y / scale + 10, origin=(0.5, 1.0))
 		elif self.followFlag:
-			found.follow_pointer(once=self.FOLLOW_ONCE)
+			found.follow_pointer(once=self.FOLLOW_ONCE, bottom_reserve_dp=bottom_reserve_dp())
 
 	def model(self):
 		"""The last model built: {"lines", "min_w"}."""

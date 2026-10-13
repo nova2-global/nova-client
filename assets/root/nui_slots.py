@@ -1075,7 +1075,9 @@ class LegacySlotEvents(object):
 	  the hovered cell).
 
 	The proxy's RefreshSlot calls refresh_hover(): the hovered item's over-in
-	again, as CSlotWindow::RefreshSlot does."""
+	again, as CSlotWindow::RefreshSlot does while its window renders. A board
+	that goes away sends its cells no mouseout (nui.Window.destroy), so the
+	window calls reset() just before it hides its board."""
 
 	def __init__(self, proxy, owner_of=None, on_states=None):
 		self.proxy = proxy
@@ -1197,6 +1199,17 @@ class LegacySlotEvents(object):
 		self._over_out()
 		self._over_in(self.hovered)
 		self.refresh_states()
+
+	def reset(self):
+		"""The pointer leaves every cell, as legacy's next mouse move after its
+		window hid (CWindowManager sends the hidden slot window
+		OnMouseOverOut): the over-out event when an item's tooltip was
+		asked for, no hovered cell, no footprint states. Without it a refresh
+		of the hidden window (D15) would show the stale cell's tooltip again,
+		and the cell's first hover after the next show would show none."""
+		self._over_out()
+		self.hovered = None
+		self.clear_states()
 
 	def _picked_index(self):
 		info = attached_info()

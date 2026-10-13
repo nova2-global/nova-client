@@ -26,8 +26,9 @@ DOCUMENT = "nui/windows/attach-metin/attach-metin.rml"
 KEY = "attach-metin"
 
 
-class _AttachBoard(nui.Window):
-	"""The attach dialog's document; its events go to its dialog."""
+class _AttachBoard(nui_hud.RaisesOnPress, nui.Window):
+	"""The attach dialog's document; its events go to its dialog. A press on
+	it raises the dialog, as legacy's window manager does."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "attach_metin"
@@ -40,18 +41,25 @@ class _AttachBoard(nui.Window):
 	def initial_model(self):
 		return dict(self._initial)
 
+	@nui.on("board_press")
+	def on_board_press(self, button):
+		self.body_pressed(button)
+
 	@nui.on("accept_press")
 	def on_accept_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.acceptButton.click()
 
 	@nui.on("cancel_press")
 	def on_cancel_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.cancelButton.click()
 
 	@nui.on("close_press")
 	def on_close_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.titleBar.close()
 
@@ -123,6 +131,9 @@ class AttachMetinDialog(uiAttachMetin.AttachMetinDialog):
 	# --- the loader (uiattachmetin.py:19-56, on proxies) ---------------------------------
 
 	def _AttachMetinDialog__LoadScript(self):
+		# The uiscript's style (attachstonedialog.py: "movable", "float").
+		self.AddFlag("movable")
+		self.AddFlag("float")
 		self.board = nui_proxies.BoardProxy()
 		self.titleBar = nui_proxies.BoardProxy()
 		self.metinImage = nui_proxies.ImageProxy(lambda path: self._set(metin_icon=nui_slots.icon_source(path)))

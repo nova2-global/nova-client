@@ -194,6 +194,18 @@ def fire(window, event, *args):
     return shown.fire(event, *args)
 
 
+def press(window, event, *args):
+    """A mousedown's data event, then the body's own (board_press), which
+    RmlUi runs last as the press bubbles; not when the press took the board
+    away, and not on a board without one (the belt's: legacy's belt window
+    is not float). The last argument is the button."""
+    shown = board(window)
+    result = fire(window, event, *args)
+    if board(window) is shown and hasattr(type(shown), "on_board_press"):
+        shown.fire("board_press", args[-1])
+    return result
+
+
 
 
 # Where a cell lives: the window that owns the slot window (from the
@@ -226,7 +238,10 @@ class Input(object):
     def _fire(self, place, event, number, cell, *args):
         window, proxy, prefix = self._where(place)
         index = proxy.index_of(number) if cell is None else cell
-        fire(window, "%s_%s" % (prefix, event), index, *args)
+        if event == "press":
+            press(window, "%s_%s" % (prefix, event), index, *args)
+        else:
+            fire(window, "%s_%s" % (prefix, event), index, *args)
 
     def _select(self, slot_window, number):
         """CSlotWindow's left press: the select-item event of an unlocked
@@ -239,7 +254,8 @@ class Input(object):
         if self.nui:
             self._fire(place, "press", number, cell, button)
             return
-        slot_window = self._where(place)[1]
+        window, slot_window, _ = self._where(place)
+        window.SetTop()  # SetTopUIWindow, before the press reaches the window
         target = number if legacy is None else legacy
         if button == 0:
             self._select(slot_window, target)
@@ -285,14 +301,16 @@ class Input(object):
         window that holds the button, the inventory by default)."""
         window = owner or self.window
         if self.nui:
-            fire(window, event, 0)
+            press(window, event, 0)
             return
+        window.SetTop()
         getattr(window, legacy_name).Click()
 
     def tab(self, page):
         if self.nui:
-            fire(self.window, "page_press", page, 0)
+            press(self.window, "page_press", page, 0)
             return
+        self.window.SetTop()
         tab = self.window.inventoryTab[page]
         tab.Down()
         tab.Click()
@@ -931,6 +949,35 @@ class Flows(Pair):
         self.assertFalse(window.wndCostume.IsShow())
         self.assertIsNone(board(window.wndCostume))
 
+    # --- the world drop (game.py's code, the inventory's attach) ---------------------------
+
+    def test_a_stack_dropped_on_the_ground_asks_then_drops(self):
+        def flow(w, win, i):
+            i.press("bag", 4)
+            game_window(w).OnMouseLeftButtonUp()
+            accept_last(w)
+        legacy, _, _ = self.same(flow, expect=["uiCommon.QuestionDialog.Open", "net.SendItemDropPacketNew"])
+        self.assertIn(("net.SendItemDropPacketNew", (P["INVENTORY"], 4, 10)), legacy)
+
+    def test_a_drop_whose_question_is_canceled_sends_nothing(self):
+        def flow(w, win, i):
+            i.press("bag", 0, cell=5)  # the sword's lower cell stands for its anchor
+            game_window(w).OnMouseLeftButtonUp()
+            w.game.dialogs[-1].cancel()
+        legacy, _, _ = self.same(flow, expect=["uiCommon.QuestionDialog.Open"])
+        self.assertNotIn("net.SendItemDropPacketNew", [name for name, _ in legacy])
+
+    def test_a_split_stack_dropped_on_the_ground_drops_the_split_count(self):
+        def flow(w, win, i):
+            w.game.pressed.add(A["DIK_LSHIFT"])
+            i.press("bag", 4)
+            accept_last(w, 3)
+            w.game.pressed.clear()
+            game_window(w).OnMouseLeftButtonUp()
+            accept_last(w)
+        legacy, _, _ = self.same(flow, expect=["net.SendItemDropPacketNew"])
+        self.assertIn(("net.SendItemDropPacketNew", (P["INVENTORY"], 4, 3)), legacy)
+
     # --- tooltips, the belt, the costume, closing -------------------------------------------
 
     def test_a_hover_shows_the_item_s_tooltip(self):
@@ -938,6 +985,59 @@ class Flows(Pair):
             i.over("bag", 4)
             i.over("bag", 0, cell=5)
         self.same(flow)
+
+    def test_a_refresh_of_the_hidden_inventory_shows_no_tooltip(self):
+        """Its board went with the pointer on a cell, so the cell heard no
+        mouseout; legacy re-shows only while its slot window renders."""
+        def flow(w, win, i):
+            i.over("bag", 4)
+            i.over("wear", I["EQUIPMENT_BODY"])
+            win.Hide()
+            win.tooltipItem.shown[:] = []
+            win.RefreshItemSlot()
+        _, world, window = self.same(flow)
+        self.assertEqual(window.tooltipItem.shown, [])
+
+    def test_the_cell_hovered_at_the_close_shows_its_tooltip_after_the_next_open(self):
+        def flow(w, win, i):
+            i.over("bag", 4)
+            win.Hide()
+            win.Show()
+            win.tooltipItem.shown[:] = []
+            i.over("bag", 4)
+        _, world, window = self.same(flow)
+        self.assertEqual(window.tooltipItem.shown, [("SetInventoryItem", 4)])
+
+    def test_closing_with_an_item_attached_clears_the_footprint_on_the_next_board(self):
+        world = World(True)
+        window = world.make_inventory()
+        with world.game, quiet():
+            Input(world, window).press("bag", 0)
+            Input(world, window).over("bag", 6)
+            window.Hide()
+            window.Show()
+        cells = board(window).model["bag"]
+        self.assertEqual([c["index"] for c in cells if c["target"]], [])
+        self.assertTrue(cells[0]["picked"], "the attach holds, so the item's own cell stays picked")
+
+    def test_a_refresh_of_the_hidden_costume_and_belt_shows_no_tooltip(self):
+        def costume(game):
+            game.give(I["COSTUME_SLOT_BODY"] + 1, 45001)
+
+        def before(world, window):
+            window.ClickCostumeButton()
+            window.wndBelt.OpenInventory()
+
+        def flow(w, win, i):
+            i.over("costume", I["COSTUME_SLOT_BODY"] + 1)
+            i.over("belt", I["BELT_INVENTORY_SLOT_START"])
+            win.Hide()
+            win.tooltipItem.shown[:] = []
+            win.RefreshItemSlot()
+            win.wndCostume.RefreshCostumeSlot()
+            win.wndBelt.RefreshSlot()
+        _, world, window = self.same(flow, with_state(costume), before)
+        self.assertEqual(window.tooltipItem.shown, [])
 
     def test_a_hover_while_a_scroll_is_attached(self):
         def flow(w, win, i):
@@ -1009,6 +1109,156 @@ class Flows(Pair):
         _, world, window = self.same(flow)
         self.assertTrue(window.IsShow())
         self.assertIsNotNone(board(window))
+
+
+# game.GameWindow's world drop (game.py OnMouseLeftButtonUp to
+# __SendDropItemPacket; Wave 3b leaves it unchanged, P14 spec 6.1's "world
+# drop, give, trade" row).
+GAME_DROP = ("OnMouseLeftButtonUp", "__PutItem", "__PutMoney", "__DropMoney", "__DropItem", "RequestDropItem",
+             "__SendDropItemPacket")
+
+
+def game_window(world):
+    """A GameWindow with game.py's own drop methods over the world's modules,
+    the ground under the pointer (no character picked)."""
+    source = support.source_of("game.py", GAME_DROP, inside="GameWindow")
+    body = "\n".join("\t" + line if line else line for line in source.split("\n"))
+    namespace = dict(world.game.modules)
+    namespace.update(world.game.loaded)
+    exec(compile("class GameWindow(object):\n" + body + "\n", "game.py", "exec"), namespace)
+    window = namespace["GameWindow"]()
+    window.interface = types.SimpleNamespace(BUILD_OnMouseLeftButtonUp=lambda: False)
+    window.PickingCharacterIndex = 0
+    window.itemDropQuestionDialog = None
+    return window
+
+
+def later_window(world):
+    """A float legacy window of the UI layer made after the inventory and
+    raised over it, whose Escape closes it (the NPC shop: uiscript
+    shopdialog.py is "movable", "float")."""
+    ui = world.game.modules["ui"]
+
+    class Shop(ui.ScriptWindow):
+        def OnPressEscapeKey(self):
+            self.Hide()
+            return True
+
+    shop = Shop()
+    shop.AddFlag("float")
+    shop.Show()
+    shop.SetTop()
+    world.shop = shop
+    return shop
+
+
+class Raise(Pair):
+    """A press on the board raises the window as legacy's window manager
+    raises the window under a press (SetTopUIWindow), which orders the
+    Escape chain and the windows (P14 V-1, the kit's IF-11 and IV-09)."""
+
+    def order(self, world, *windows):
+        """The windows' places in the UI layer, bottom first."""
+        handles = [ref() for ref in world.game.ui_order]
+        return [handles.index(window) for window in windows]
+
+    def test_each_window_underneath_has_its_uiscript_s_flags(self):
+        legacy, novaui = self.worlds()
+        a, b = legacy.make_inventory(), novaui.make_inventory()
+        with legacy.game, quiet():
+            a.ClickCostumeButton()
+        with novaui.game, quiet():
+            b.ClickCostumeButton()
+        for name in ("inventory", "costume", "belt"):
+            pick = {"inventory": lambda w: w, "costume": lambda w: w.wndCostume, "belt": lambda w: w.wndBelt}[name]
+            self.assertEqual(pick(b).flags, pick(a).flags, name)
+        self.assertIn("float", b.flags)
+        self.assertIn("float", b.wndBelt.flags, "legacy's belt constructor adds it")
+
+    def test_after_a_press_on_the_inventory_escape_closes_it_before_a_later_window(self):
+        for button, cell in ((0, 6), (1, 6), (0, 4)):
+            def flow(w, win, i, button=button, cell=cell):
+                later_window(w)
+                i.press("bag", cell, button)
+                if w.mouse.isAttached():
+                    w.mouse.DeattachObject()
+                w.escaped = w.game.press_escape()
+            with self.subTest(button=button, cell=cell):
+                (_, _, legacy, a), (_, _, novaui, b) = self.run_flow(flow)
+                self.assertIs(legacy.escaped, a)
+                self.assertIs(novaui.escaped, b)
+                self.assertFalse(b.IsShow())
+                self.assertTrue(novaui.shop.IsShow())
+                self.same(flow)
+
+    def test_without_a_press_escape_closes_the_later_window_first(self):
+        def flow(w, win, i):
+            later_window(w)
+            w.escaped = w.game.press_escape()
+        (_, _, legacy, a), (_, _, novaui, b) = self.run_flow(flow)
+        self.assertIs(legacy.escaped, legacy.shop)
+        self.assertIs(novaui.escaped, novaui.shop)
+        self.assertTrue(b.IsShow())
+
+    def test_a_press_on_the_title_bar_or_a_control_raises_it_too(self):
+        def title(w, win, i):
+            later_window(w)
+            if i.nui:
+                board(win).fire("board_press", 0)
+            else:
+                win.SetTop()
+            w.escaped = w.game.press_escape()
+
+        def tab(w, win, i):
+            later_window(w)
+            i.tab(1)
+            w.escaped = w.game.press_escape()
+        for flow in (title, tab):
+            with self.subTest(flow=flow.__name__):
+                legacy, world, window = self.same(flow)
+                self.assertIs(world.escaped, window)
+
+    def test_a_press_on_the_belt_raises_the_belt_which_takes_no_escape(self):
+        def flow(w, win, i):
+            win.wndBelt.OpenInventory()
+            later_window(w)
+            i.press("belt", I["BELT_INVENTORY_SLOT_START"] + 2)
+            self.assertEqual(self.order(w, win.wndBelt, w.shop), sorted(self.order(w, win.wndBelt, w.shop))[::-1])
+            w.escaped = w.game.press_escape()
+        _, world, window = self.same(flow)
+        self.assertIs(world.escaped, world.shop)
+
+    def test_one_press_raises_once_before_the_legacy_handler_runs(self):
+        """A press that opens something leaves it above: the body's own
+        mousedown, last in the bubble, does not raise again."""
+        world = World(True)
+        window = world.make_inventory()
+        seen = []
+        handlers = window.wndItem._events
+        select = handlers["select_empty"]
+        handlers["select_empty"] = lambda *args: (seen.append("select"), select(*args))
+        original = window.SetTop
+        window.SetTop = lambda: (seen.append("raise"), original())
+        with world.game, quiet():
+            Input(world, window).press("bag", 6)
+            Input(world, window).press("bag", 8)
+        self.assertEqual(seen, ["raise", "select", "raise", "select"])
+
+    def test_a_press_on_the_dragged_inventory_draws_it_over_the_costume_window(self):
+        def before(world, window):
+            window.ClickCostumeButton()
+
+        def flow(w, win, i):
+            if i.nui:
+                board(win).fire("board_press", 0)  # the title bar's handle
+            else:
+                win.SetTop()
+            inventory, costume = self.order(w, win, win.wndCostume)
+            self.assertGreater(inventory, costume)
+            if i.nui:
+                boards = [b for b in w.game.state.fronts if b in (board(win), board(win.wndCostume))]
+                self.assertIs(boards[-1], board(win))
+        self.same(flow, before=before)
 
 
 P_ITEM_MONEY = support.PLAYER_CONSTANTS["ITEM_MONEY"]
@@ -1239,7 +1489,9 @@ class NoPerFrameMethods(unittest.TestCase):
 
 class LeanCells(unittest.TestCase):
     """P14 spec 4.2: a lean grid's cell is one element with an icon and a
-    number child, and no state of its own needs another element."""
+    number child, and no state of its own needs another element, but the
+    bag's active effect: legacy plays its frames over an active cell (the
+    auto potions), which classic shows (P14 V-5)."""
 
     def cell_template(self, name, collection):
         text = read(os.path.join(WINDOWS, name, name + ".rml"))
@@ -1247,14 +1499,20 @@ class LeanCells(unittest.TestCase):
         self.assertIsNotNone(match, name)
         return match.group(0)
 
-    def test_each_lean_cell_is_three_elements(self):
-        for name, collection, grid in (("inventory", "bag", "inv-bag"), ("belt-inventory", "cells", "belt-grid"),
-                                       ("select-item", "cells", "select-grid")):
+    def test_each_lean_cell_is_three_elements_and_the_bag_s_four(self):
+        for name, collection, grid, parts in (
+                ("inventory", "bag", "inv-bag", ["div", "img", "nui-number", "nui-frames"]),
+                ("belt-inventory", "cells", "belt-grid", ["div", "img", "nui-number"]),
+                ("select-item", "cells", "select-grid", ["div", "img", "nui-number"])):
             template = self.cell_template(name, collection)
             tags = re.findall(r"<([a-z-]+)[\s>/]", template)
-            self.assertEqual(tags, ["div", "img", "nui-number"], name)
+            self.assertEqual(tags, parts, name)
             text = read(os.path.join(WINDOWS, name, name + ".rml"))
             self.assertRegex(text, r'id="%s" class="nui-slot-grid nui-slot-grid--lean[ "]' % grid, name)
+
+    def test_the_bag_s_active_part_shows_only_while_the_cell_is_active(self):
+        template = self.cell_template("inventory", "bag")
+        self.assertRegex(template, r'<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>')
 
 
 if __name__ == "__main__":

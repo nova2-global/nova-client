@@ -13,13 +13,15 @@
 	     (icon and "name x 02"), the lines legacy shows (its probability line
 	     is hidden in both dialogs), OK and Cancel. The document exists only
 	     while the dialog shows; it opens at legacy's place. The body and its
-	     controls take no focus; controls act on a left mousedown. -->
+	     controls take no focus; controls act on a left mousedown. A left or right
+	     press anywhere on it raises the window (board_press), as legacy's
+	     window manager raised the window under a press. -->
 	<title>refine</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="../../components/item-tip.rcss"/>
 	<link type="text/rcss" href="refine.rcss"/>
 </head>
-<body template="nui" id="refine" class="nui-window nui-fx nui-anim refine" data-model="refine"
+<body template="nui" id="refine" class="nui-window nui-fx nui-anim refine" data-model="refine" data-event-mousedown="board_press(ev.button)"
       data-class-refine--old="variant == 'old'" data-style---tip-min-w="min_w + 'dp'">
 	<div class="nui-window__titlebar refine__titlebar">
 		<handle class="nui-window__handle refine__handle" move_target="#document">

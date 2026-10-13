@@ -388,21 +388,31 @@ class Window(object):
 			return False
 		return bool(_nui.BringToFront(self._doc))
 
-	def follow_pointer(self, below_dp=40, above_dp=20, flip_dp=300, once=False):
+	def follow_pointer(self, below_dp=40, above_dp=20, flip_dp=300, once=False, bottom_reserve_dp=0):
 		"""Keeps the window at the pointer, by legacy's tooltip rule
 		(uitooltip.py ToolTip.OnUpdate), in every update after layout and with
 		no Python: with the pointer at (mx, my) dp, the screen W x H dp and the
 		window's border box w x h dp, y = my + below_dp while my < H - flip_dp,
 		else my - h - above_dp; x = mx - w / 2; then the box is kept on the
 		screen. The pointer is the host's, which keeps moving over the legacy
-		UI. `once`: placed in the first update after the call, then held. The
-		placement replaces any other and holds until clear_placement() or
-		another placement call. True when stored; False without a document or
-		with an exe whose _nui has no FollowPointer."""
+		UI. `once`: placed in the first update after the call, then held.
+		`bottom_reserve_dp`: the box's bottom also stays that far above the
+		screen's bottom (its top on the screen), clear of a legacy window that
+		draws over it there (the legacy taskbar); an exe without the reserve
+		places it on the whole screen. The placement replaces any other and
+		holds until clear_placement() or another placement call. True when
+		stored; False without a document or with an exe whose _nui has no
+		FollowPointer."""
 		follow = getattr(_nui, "FollowPointer", None) if _nui is not None else None
 		if not self._doc or follow is None:
 			return False
-		return bool(follow(self._doc, float(below_dp), float(above_dp), float(flip_dp), bool(once)))
+		args = (self._doc, float(below_dp), float(above_dp), float(flip_dp), bool(once))
+		if bottom_reserve_dp:
+			try:
+				return bool(follow(*(args + (float(bottom_reserve_dp),))))
+			except TypeError:
+				pass  # an exe from before the reserve takes five arguments
+		return bool(follow(*args))
 
 	def keep_clear_of(self, *targets):
 		"""While the window overlaps one of `targets` that is shown, the runtime

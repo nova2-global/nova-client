@@ -26,8 +26,9 @@ DOCUMENT = "nui/windows/costume/costume.rml"
 KEY = "costume"
 
 
-class _CostumeBoard(nui.Window):
-	"""The costume window's document; its events go to its window."""
+class _CostumeBoard(nui_hud.RaisesOnPress, nui.Window):
+	"""The costume window's document; its events go to its window. A press
+	on it raises the window, as legacy's window manager does."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "costume"
@@ -40,8 +41,13 @@ class _CostumeBoard(nui.Window):
 	def initial_model(self):
 		return dict(self._initial)
 
+	@nui.on("board_press")
+	def on_board_press(self, button):
+		self.body_pressed(button)
+
 	@nui.on("cos_press")
 	def on_press(self, index, button):
+		self.raise_for(button)
 		self._owner._events.press(int(index), button)
 
 	@nui.on("cos_release")
@@ -66,6 +72,7 @@ class _CostumeBoard(nui.Window):
 
 	@nui.on("close_press")
 	def on_close_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.Close()
 
@@ -147,6 +154,9 @@ class CostumeWindow(uiInventory.CostumeWindow):
 		if self.isLoaded == 1:
 			return
 		self.isLoaded = 1
+		# The uiscript's style (costumewindow.py: "movable", "float").
+		self.AddFlag("movable")
+		self.AddFlag("float")
 		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._slots], self._on_slots)
 
 		## Equipment
@@ -177,6 +187,8 @@ class CostumeWindow(uiInventory.CostumeWindow):
 
 	def Hide(self):
 		uiInventory.CostumeWindow.Hide(self)
+		if self._events is not None:
+			self._events.reset()
 		if self.demand is not None:
 			self.demand.hide()
 

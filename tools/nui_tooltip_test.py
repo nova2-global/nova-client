@@ -328,7 +328,8 @@ class Transactions(unittest.TestCase):
             board = world.board()
             self.assertTrue(board.visible)
             self.assertTrue(tip.IsShow())
-            self.assertEqual(board.placement, ("pointer", 40, 20, 300, False))
+            self.assertEqual(board.placement, ("pointer", 40, 20, 300, False, 37.0),
+                             "clear of the legacy taskbar, the one in use without a NovaUI one")
             self.assertGreaterEqual(board.front, 1)
             self.assertFalse(world.m("uiToolTip").ToolTip.IsShow(tip), "the legacy board never shows")
 
@@ -357,6 +358,24 @@ class Transactions(unittest.TestCase):
             tip.ClearToolTip()
             self.assertEqual(world.board().model["lines"], [])
 
+    def test_the_tooltips_keep_clear_of_the_legacy_taskbar_only_while_it_is_the_one_in_use(self):
+        """The legacy taskbar is a TOP_MOST window of 37 px at the screen's
+        bottom and the tooltips draw below that layer (P14 spec 5.5.7); the
+        NovaUI taskbar draws below them."""
+        for scale, taskbar, reserve in ((1.0, False, 37.0), (2.0, False, 18.5), (1.0, True, 0)):
+            with World() as world:
+                world.case()
+                world.game.state.scale = scale
+                hud = world.m("nui_hud")
+                bar = object()
+                if taskbar:
+                    hud.take_over("taskbar", bar)
+                tip = world.item()
+                tip.SetInventoryItem(0)
+                with self.subTest(scale=scale, taskbar=taskbar):
+                    self.assertEqual(world.board().placement, ("pointer", 40, 20, 300, False, reserve))
+                hud.forget("taskbar", bar)
+
     def test_a_fixed_point_places_the_bottom_center_10_px_below_it(self):
         with World() as world:
             world.case()
@@ -373,7 +392,7 @@ class Transactions(unittest.TestCase):
             link = world.m("nui_link_tooltip").HyperlinkItemToolTip()
             link.SetHyperlinkItem("item:a:0:1:0:0".split(":"))
             board = world.board("link")
-            self.assertEqual(board.placement, ("pointer", 40, 20, 300, True))
+            self.assertEqual(board.placement, ("pointer", 40, 20, 300, True, 37.0))
             self.assertTrue(link.IsShow())
             board.fire("tip_press", 1)
             self.assertTrue(link.IsShow(), "only the left button")

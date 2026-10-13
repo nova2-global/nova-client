@@ -45,8 +45,9 @@ KEY = "inventory"
 LEGACY_MONEY_DIGITS = 7
 
 
-class _InventoryBoard(nui.Window):
-	"""The inventory's document; its events go to its window."""
+class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
+	"""The inventory's document; its events go to its window. A press on it
+	raises the window, as legacy's window manager does (RaisesOnPress)."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "inventory"
@@ -59,10 +60,15 @@ class _InventoryBoard(nui.Window):
 	def initial_model(self):
 		return dict(self._initial)
 
+	@nui.on("board_press")
+	def on_board_press(self, button):
+		self.body_pressed(button)
+
 	# --- the bag and the wear cells: the legacy slot windows' events ---------------
 
 	@nui.on("bag_press")
 	def on_bag_press(self, index, button):
+		self.raise_for(button)
 		self._owner._bag_events.press(int(index), button)
 
 	@nui.on("bag_release")
@@ -87,6 +93,7 @@ class _InventoryBoard(nui.Window):
 
 	@nui.on("wear_press")
 	def on_wear_press(self, index, button):
+		self.raise_for(button)
 		self._owner._wear_events.press(int(index), button)
 
 	@nui.on("wear_release")
@@ -113,31 +120,37 @@ class _InventoryBoard(nui.Window):
 
 	@nui.on("page_press")
 	def on_page_press(self, index, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner._press_page(int(index))
 
 	@nui.on("money_press")
 	def on_money_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.wndMoneySlot.click()
 
 	@nui.on("costume_press")
 	def on_costume_press(self, button):
+		self.raise_for(button)
 		if button == 0 and self._owner.costumeButton:
 			self._owner.costumeButton.click()
 
 	@nui.on("dss_press")
 	def on_dss_press(self, button):
+		self.raise_for(button)
 		if button == 0 and self._owner.DSSButton:
 			self._owner.DSSButton.click()
 
 	@nui.on("mall_press")
 	def on_mall_press(self, button):
+		self.raise_for(button)
 		if button == 0 and self._owner.mallButton:
 			self._owner.mallButton.click()
 
 	@nui.on("close_press")
 	def on_close_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.Close()
 
@@ -259,6 +272,10 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			self.demand.show()
 
 	def _hide_board(self):
+		# The board's cells hear no mouseout as it goes (nui_slots.LegacySlotEvents.reset).
+		for events in (self._bag_events, self._wear_events):
+			if events is not None:
+				events.reset()
 		if self.demand is not None:
 			self.demand.hide()
 
@@ -324,6 +341,10 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		if self.isLoaded == 1:
 			return
 		self.isLoaded = 1
+		# The uiscript's style (inventorywindow.py: "movable", "float"): a
+		# float window is the one SetTop raises (CWindow::SetTop).
+		self.AddFlag("movable")
+		self.AddFlag("float")
 		limits = self._limits
 
 		wndItem = nui_slots.SlotWindowProxy(range(limits.INVENTORY_PAGE_SIZE), self._on_bag,

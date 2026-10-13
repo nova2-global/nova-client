@@ -41,8 +41,9 @@ DOCUMENT = "nui/windows/refine/refine.rml"
 PLACE_X, PLACE_Y_NUMERATOR = 400, 70 * 800   # uiscript/refinedialog.py: x SCREEN_WIDTH - 400, y 70 * 800 / SCREEN_HEIGHT
 
 
-class _RefineBoard(nui.Window):
-	"""The refine document; its events go to its dialog."""
+class _RefineBoard(nui_hud.RaisesOnPress, nui.Window):
+	"""The refine document; its events go to its dialog. A press on it raises
+	the dialog, as legacy's window manager does."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "refine"
@@ -55,18 +56,25 @@ class _RefineBoard(nui.Window):
 	def initial_model(self):
 		return dict(self._initial)
 
+	@nui.on("board_press")
+	def on_board_press(self, button):
+		self.body_pressed(button)
+
 	@nui.on("accept_press")
 	def on_accept_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.acceptButton.click()
 
 	@nui.on("cancel_press")
 	def on_cancel_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.cancelButton.click()
 
 	@nui.on("close_press")
 	def on_close_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.titleBar.close()
 
@@ -191,6 +199,9 @@ class RefineDialogNew(_Dialog, uiRefine.RefineDialogNew):
 
 	def _RefineDialogNew__LoadScript(self):
 		"""Legacy's loader (uirefine.py:206-251) on proxies."""
+		# The uiscript's style (refinedialog.py: "movable", "float").
+		self.AddFlag("movable")
+		self.AddFlag("float")
 		self.board = nui_proxies.BoardProxy()
 		self.titleBar = nui_proxies.BoardProxy()
 		self.probText = self._text("prob_text", "prob_shown")
@@ -259,6 +270,9 @@ class RefineDialog(_Dialog, uiRefine.RefineDialog):
 
 	def _RefineDialog__LoadScript(self):
 		"""Legacy's loader (uirefine.py:26-57) on proxies."""
+		# The uiscript's style (refinedialog.py: "movable", "float").
+		self.AddFlag("movable")
+		self.AddFlag("float")
 		self._RefineDialog__LoadQuestionDialog()
 
 		self.board = nui_proxies.BoardProxy()

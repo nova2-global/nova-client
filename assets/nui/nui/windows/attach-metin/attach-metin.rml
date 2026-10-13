@@ -11,13 +11,15 @@
 	     the stone between them, the question, Yes and No. The document
 	     exists only while the dialog shows; it opens at legacy's place, the
 	     screen's corner. The body and its controls take no focus; controls
-	     act on a left mousedown. -->
+	     act on a left mousedown. A left or right
+	     press anywhere on it raises the window (board_press), as legacy's
+	     window manager raised the window under a press. -->
 	<title>attach-metin</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="../../components/item-tip.rcss"/>
 	<link type="text/rcss" href="attach-metin.rcss"/>
 </head>
-<body template="nui" id="attach-metin" class="nui-window nui-fx nui-anim attach" data-model="attach_metin">
+<body template="nui" id="attach-metin" class="nui-window nui-fx nui-anim attach" data-model="attach_metin" data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar attach__titlebar">
 		<handle class="nui-window__handle attach__handle" move_target="#document">
 			<span class="nui-window__title attach__title">@ui.ATTACH_METIN_TITLE</span>

@@ -33,8 +33,9 @@ COLUMNS, ROWS = 5, 8
 BOARD_WIDTH, BOARD_HEIGHT = 184, 332
 
 
-class _SelectItemBoard(nui.Window):
-	"""Select item's document; its events go to its window."""
+class _SelectItemBoard(nui_hud.RaisesOnPress, nui.Window):
+	"""Select item's document; its events go to its window. A press on it
+	raises the window, as legacy's window manager does."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "select_item"
@@ -47,8 +48,13 @@ class _SelectItemBoard(nui.Window):
 	def initial_model(self):
 		return dict(self._initial)
 
+	@nui.on("board_press")
+	def on_board_press(self, button):
+		self.body_pressed(button)
+
 	@nui.on("cell_press")
 	def on_cell_press(self, index, button):
+		self.raise_for(button)
 		self._owner._events.press(int(index), button)
 
 	@nui.on("cell_over")
@@ -61,6 +67,7 @@ class _SelectItemBoard(nui.Window):
 
 	@nui.on("close_press")
 	def on_close_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.btnExit.click()
 
@@ -117,6 +124,9 @@ class SelectItemWindow(uiselectitem.SelectItemWindow):
 	# --- the loader (uiselectitem.py:20-43, on proxies) -----------------------------
 
 	def LoadWindow(self):
+		# The uiscript's style (selectitemwindow.py: "movable", "float").
+		self.AddFlag("movable")
+		self.AddFlag("float")
 		self.board = nui_proxies.BoardProxy(BOARD_WIDTH, BOARD_HEIGHT)
 		self.titleBar = nui_proxies.BoardProxy(169, 23)
 		self.itemSlot = nui_slots.SlotWindowProxy(range(COLUMNS * ROWS), self._on_cells, cols=COLUMNS, rows=ROWS,
@@ -144,6 +154,10 @@ class SelectItemWindow(uiselectitem.SelectItemWindow):
 
 	def Hide(self):
 		uiselectitem.SelectItemWindow.Hide(self)
+		# A press on a stone hides the board under the pointer, which then
+		# hears no mouseout (nui_slots.LegacySlotEvents.reset).
+		if self._events is not None:
+			self._events.reset()
 		if self.demand is not None:
 			self.demand.hide()
 

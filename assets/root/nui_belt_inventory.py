@@ -33,8 +33,10 @@ WIDTH = 148
 HEIGHT = 139
 
 
-class _BeltBoard(nui.Window):
-	"""The belt's document; its events go to its window."""
+class _BeltBoard(nui_hud.RaisesOnPress, nui.Window):
+	"""The belt's document; its events go to its window. A press on it raises
+	the window, as legacy's window manager does (legacy's constructor makes
+	the belt window float)."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "belt"
@@ -47,8 +49,13 @@ class _BeltBoard(nui.Window):
 	def initial_model(self):
 		return dict(self._initial)
 
+	@nui.on("board_press")
+	def on_board_press(self, button):
+		self.body_pressed(button)
+
 	@nui.on("belt_press")
 	def on_press(self, index, button):
+		self.raise_for(button)
 		self._owner._events.press(int(index), button)
 
 	@nui.on("belt_release")
@@ -73,11 +80,13 @@ class _BeltBoard(nui.Window):
 
 	@nui.on("expand_press")
 	def on_expand_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.expandBtn.click()
 
 	@nui.on("minimize_press")
 	def on_minimize_press(self, button):
+		self.raise_for(button)
 		if button == 0:
 			self._owner.minBtn.click()
 
@@ -185,6 +194,8 @@ class BeltInventoryWindow(uiInventory.BeltInventoryWindow):
 
 	def Hide(self):
 		uiInventory.BeltInventoryWindow.Hide(self)
+		if self._events is not None:
+			self._events.reset()
 		if self.demand is not None:
 			self.demand.hide()
 

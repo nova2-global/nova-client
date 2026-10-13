@@ -179,6 +179,38 @@ class EscapeProxy(object):
 			window.Destroy()
 
 
+class RaisesOnPress(object):
+	"""For the board (a nui.Window) of a legacy window whose uiscript makes it
+	"float": legacy's window manager raises the UI-layer window under the
+	pointer on every left and right press, before the press reaches it
+	(CWindowManager::RunMouseLeftButtonDown and RunMouseRightButtonDown call
+	SetTopUIWindow, PythonWindowManager.cpp:704-719). The raise puts the window
+	first in the Escape chain and above the windows it overlaps, and runs its
+	OnTop. A NovaUI board takes the press, so it raises its window itself:
+	every mousedown handler of the board calls raise_for(button) before it
+	acts, and the body's own mousedown (board_press, which RmlUi runs last as
+	the press bubbles; each board's @nui.on("board_press") calls
+	body_pressed(button)) raises only when no handler did, so a press that
+	opens a dialog leaves that dialog above. The board's `_owner` is the
+	window, whose SetTop raises the board and the legacy window (the window
+	adds the "float" flag its uiscript gave legacy's, P14 V-1)."""
+
+	_raised = False
+
+	def raise_for(self, button):
+		if button not in (0, 1) or self._raised:
+			return
+		self._raised = True
+		self._owner.SetTop()
+
+	def body_pressed(self, button):
+		if self._raised:
+			self._raised = False
+			return
+		if button in (0, 1):
+			self._owner.SetTop()
+
+
 def _weak(method):
 	"""A bound method held weakly (its object may go first), else as given."""
 	if method is None or not hasattr(method, "__self__"):

@@ -324,7 +324,7 @@ Since 2026-10-12 the modern look is drawn in code: boxes, borders, radii, transf
 }
 ```
 
-Without art an element runs its clock in timer mode and carries `is-playing` and `is-done`, so a modern effect is code timed by the same element: the slot's finish flash (`nui-slot__flash`) is an `accent` fill that fades from 0.5 to 0 while it has `is-playing`, and the active ring (`nui-slot__ring`) pulses its opacity. Classic hides both and shows the legacy frames.
+Without art an element runs its clock in timer mode and carries `is-playing` and `is-done`, so a modern effect is code timed by the same element: the slot's finish flash (`nui-slot__flash`) is an `accent` fill that fades from 0.5 to 0 while it has `is-playing`, and the active ring (`nui-slot__ring`) breathes by `transform: scale()` while its slot is active (an opacity pulse rebuilt its mesh on every frame). Classic hides both and shows the legacy frames.
 
 ## Gauges
 

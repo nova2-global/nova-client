@@ -247,21 +247,23 @@
 	border-radius: var(--radius-sm);
 	pointer-events: none;
 }
-/* 1 to 0.45 and back in 0.8s, endlessly, only while the slot is active
-   (is-on, bound to the same value as its data-if): RmlUi advances an
-   element's animation on every update even while it is hidden, so an
-   animation on every cell's ring cost the idle HUD each frame. At rest
-   (reduced motion) the ring shows whole. An opacity motion on a small part
-   rebuilds its one mesh. */
+/* The ring breathes in to 0.88 of the slot and back in 0.8s, endlessly,
+   only while the slot is active (is-on, bound to the same value as its
+   data-if): RmlUi advances an element's animation on every update even
+   while it is hidden, so an animation on every cell's ring cost the idle
+   HUD each frame. By transform, not opacity: an opacity change rebuilds the
+   ring's mesh on every frame of the motion, a transform nothing (an active
+   auto potion pulses for as long as it is on). At rest (reduced motion) the
+   ring shows whole. */
 .nui-slot__ring.is-on.nui-anim
 {
 	animation: 0.8s sine-in-out infinite nui-slot-ring;
 }
 @keyframes nui-slot-ring
 {
-	0% { opacity: 1; }
-	50% { opacity: 0.45; }
-	100% { opacity: 1; }
+	0% { transform: scale(1); }
+	50% { transform: scale(0.88); }
+	100% { transform: scale(1); }
 }
 .nui-slot__flash
 {

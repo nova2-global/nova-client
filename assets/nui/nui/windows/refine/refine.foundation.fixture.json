@@ -1,0 +1,395 @@
+{
+	"refine": {
+		"variant": "new",
+		"prob_text": "Chance for Advancement 90%",
+		"prob_shown": false,
+		"cost_text": "Costs for Advancement: 2000000000000 Yang",
+		"cost_shown": true,
+		"item_icon": "/icon/item/03000.tga",
+		"item_cells": 3,
+		"materials": [
+			{
+				"icon": "/icon/item/27799.tga",
+				"text": "Fishbones x 02"
+			},
+			{
+				"icon": "/icon/item/27990.tga",
+				"text": "Piece of Stone x 01"
+			}
+		],
+		"lines": [
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Glaive+1",
+						"role": "special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Value 14 - 22",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +36%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Max. HP +1500",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength +12",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +10%",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Chance of critical hit +8% ",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "6% Chance for piercing Hits",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "[ Wearable ]",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": " Warrior",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "/icon/item/28000.tga",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Stone of Penetration+0",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "1% Chance for piercing Hits",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "gold",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			}
+		],
+		"min_w": 227
+	}
+}

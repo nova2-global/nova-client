@@ -1,0 +1,57 @@
+<rml>
+<head>
+	<!-- The NovaUI link tooltip (P14 spec 5): the item tooltip of a chat link
+	     (uiToolTip.HyperlinkItemToolTip, Interface.hyperlinkItemTooltip),
+	     placed at the pointer once and held; a left press on it hides it,
+	     as legacy's does. While the tooltips flag is on, the Interface makes
+	     nui_link_tooltip.HyperlinkItemToolTip (controller
+	     assets/root/nui_link_tooltip.py), a subclass of the legacy class.
+	     The legacy rules run unchanged, and the recorder
+	     (assets/root/nui_tooltip.py) turns the widgets they build into this
+	     document's model once per hover. The document is loaded at its first
+	     show in a phase and kept, hidden and empty, until the phase ends; the
+	     runtime places it at the pointer, and a remaining time is a
+	     nui-countdown run, so no Python runs per frame. The block is
+	     components/item-tip.rcss's; the board is nui-board--tooltip. -->
+	<title>link-tooltip</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="../../components/item-tip.rcss"/>
+</head>
+<body template="nui" id="link-tooltip" class="nui-board nui-board--tooltip nui-fx nui-tip nui-tip--pickable" data-model="link_tooltip"
+      data-style---tip-min-w="min_w + 'dp'" data-event-mousedown="tip_press(ev.button)">
+	<div id="tip-body" class="nui-tip__body">
+		<div class="nui-tip__slot" data-for="l : lines">
+			<div class="nui-tip__rule" data-if="l.rule"></div>
+			<div class="nui-tip__line" data-if="l.t == 'line'"
+			     data-class-nui-tip--gap-5="l.gap == 5" data-class-nui-tip--gap-10="l.gap == 10" data-class-nui-tip--gap-15="l.gap == 15" data-class-nui-tip--gap-20="l.gap == 20" data-class-nui-tip--gap-25="l.gap == 25" data-class-nui-tip--gap-30="l.gap == 30" data-class-nui-tip--gap-35="l.gap == 35" data-class-nui-tip--gap-40="l.gap == 40"
+			     data-class-nui-tip__line--left="l.align == 'left'" data-class-nui-tip__line--right="l.align == 'right'"
+			     data-class-nui-tip__line--plain="!l.outline">
+				<span class="nui-tip__runslot" data-for="r : l.runs">
+					<span class="nui-tip__run" data-if="r.k == 'text'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color">{{ r.text }}</span>
+					<nui-text class="nui-tip__run" data-if="r.k == 'tags'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color" data-attr-value="r.text"/>
+					<nui-countdown class="nui-tip__run" data-if="r.k == 'count'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color"
+					     data-attr-end="r.end" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND"/>
+				</span>
+			</div>
+			<img class="nui-tip__image" data-if="l.t == 'image'" data-attr-src="l.src"
+			     data-class-nui-tip--gap-5="l.gap == 5" data-class-nui-tip--gap-10="l.gap == 10" data-class-nui-tip--gap-15="l.gap == 15" data-class-nui-tip--gap-20="l.gap == 20" data-class-nui-tip--gap-25="l.gap == 25" data-class-nui-tip--gap-30="l.gap == 30" data-class-nui-tip--gap-35="l.gap == 35" data-class-nui-tip--gap-40="l.gap == 40"/>
+			<div class="nui-tip__socket" data-if="l.t == 'socket'" data-class-nui-tip__socket--gold="l.frame == 'gold'"
+			     data-class-nui-tip--gap-5="l.gap == 5" data-class-nui-tip--gap-10="l.gap == 10" data-class-nui-tip--gap-15="l.gap == 15" data-class-nui-tip--gap-20="l.gap == 20" data-class-nui-tip--gap-25="l.gap == 25" data-class-nui-tip--gap-30="l.gap == 30" data-class-nui-tip--gap-35="l.gap == 35" data-class-nui-tip--gap-40="l.gap == 40">
+				<span class="nui-tip__socket-frame"><img class="nui-tip__socket-icon" data-if="l.icon != ''" data-attr-src="l.icon"/></span>
+				<div class="nui-tip__socket-lines">
+					<div class="nui-tip__slot" data-for="s : l.sub">
+						<div class="nui-tip__line nui-tip__line--left" data-class-nui-tip__line--plain="!s.outline">
+							<span class="nui-tip__runslot" data-for="r : s.runs">
+								<span class="nui-tip__run" data-if="r.k == 'text'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color">{{ r.text }}</span>
+								<nui-text class="nui-tip__run" data-if="r.k == 'tags'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color" data-attr-value="r.text"/>
+								<nui-countdown class="nui-tip__run" data-if="r.k == 'count'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color"
+								     data-attr-end="r.end" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND"/>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

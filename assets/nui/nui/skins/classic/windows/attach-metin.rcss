@@ -1,0 +1,184 @@
+/* Classic skin overlay of nui/windows/attach-metin/attach-metin.rml:
+   legacy's attach dialog (uiattachmetin.py AttachMetinDialog, uiscript
+   attachstonedialog.py) at 100%, 1dp to the legacy pixel. The board is
+   15 + old + 45 + new + 15 wide and the new tooltip + 98 tall (UpdateDialog):
+   the title bar at (8, 8), the two tooltips (thin boards, as legacy's
+   ItemToolTips are) at y 38, 45 apart; in that gap the arrow 33 above the
+   board's middle and the stone's slot 5 below it, the stone 1 in from its
+   top; the question 54 above the bottom, the middle buttons 35 above it,
+   35 left and right of the middle. */
+
+body.skin-classic.attach
+{
+	min-width: 0;
+	padding: 0;
+}
+body.skin-classic.attach .attach__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	right: 7dp;
+	margin: 0;
+	z-index: 1;
+}
+body.skin-classic.attach .attach__body
+{
+	display: block;
+	padding: 38dp 15dp 0 15dp;
+}
+body.skin-classic.attach .attach__tips
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+body.skin-classic.attach .attach__tip
+{
+	--tip-min-w: 190dp;
+	box-sizing: border-box;
+	min-width: var(--tip-min-w);
+	padding: 11dp 0 11dp 0;
+}
+/* The gap: as tall as the taller (new) tooltip, whose middle is 11 above
+   the board's. */
+body.skin-classic.attach .attach__middle
+{
+	display: block;
+	position: relative;
+	width: 45dp;
+	align-self: stretch;
+}
+body.skin-classic.attach .attach__arrow
+{
+	position: absolute;
+	left: 11dp;
+	top: 50%;
+	width: 22dp;
+	height: 25dp;
+	margin: -34dp 0 0 0;
+	decorator: image("d:/ymir work/ui/game/windows/attach_metin_arrow.sub" scale-none left top);
+}
+body.skin-classic.attach .attach__stone
+{
+	position: absolute;
+	left: 4dp;
+	top: 50%;
+	width: 36dp;
+	height: 36dp;
+	margin: -2dp 0 0 0;
+	border-width: 0;
+	border-radius: 0;
+	decorator: image("d:/ymir work/ui/game/windows/metin_slot_silver.sub" scale-none left top);
+}
+body.skin-classic.attach .attach__stone-icon
+{
+	position: absolute;
+	left: 3dp;
+	top: 1dp;
+}
+body.skin-classic.attach .attach__question
+{
+	height: 19dp;
+	margin: 6dp 0 0 0;
+	line-height: 17dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.attach .attach__footer
+{
+	display: block;
+	position: relative;
+	height: 21dp;
+	margin: 0;
+	padding: 0 0 14dp 0;
+}
+body.skin-classic.attach .attach__accept, body.skin-classic.attach .attach__cancel
+{
+	position: absolute;
+	left: 50%;
+	top: 0;
+	margin: 0 0 0 -65dp;
+}
+body.skin-classic.attach .attach__cancel
+{
+	margin: 0 0 0 5dp;
+}
+
+/* --- the tooltip lines: legacy's (uitooltip.py ToolTip), the same in every
+   overlay of a document with the tooltip block (tools/nui_tooltip_test.py
+   checks it): 17 px a line, text outlined but where the rules leave it out
+   (AppendMetinWearInformation), left lines 10 px in; a socket row is the
+   legacy frame (36 x 36) at (9, -1) with the stone at (1, 1) in it and its lines at
+   x 50, 16 px apart then 18 (legacy lets a long one run past the board's
+   edge; here the board grows to hold it, 10 px to spare); a divider is legacy's two lines, 150 px wide,
+   3 px under the line above, 11 px in all, centered by its slot (an
+   inline block: auto margins would stretch a shrink-to-fit board). --- */
+.skin-classic .nui-tip__line
+{
+	line-height: 17dp;
+	padding: 0 10dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+.skin-classic .nui-tip__line--plain
+{
+	font-effect: none;
+}
+.skin-classic .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--title,
+.skin-classic .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--special
+{
+	font-weight: normal;
+}
+.skin-classic .nui-tip__rule
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 150dp;
+	height: 1dp;
+	margin: 3dp 0 6dp 0;
+	background-color: var(--tip-divider);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--tip-divider-shadow);
+}
+.skin-classic .nui-tip__socket
+{
+	display: block;
+	position: relative;
+	min-height: 35dp;
+	padding: 0 0 0 50dp;
+}
+.skin-classic .nui-tip__socket-frame
+{
+	position: absolute;
+	left: 9dp;
+	top: -1dp;
+	width: 36dp;
+	height: 36dp;
+	border-width: 0;
+	border-radius: 0;
+	decorator: image("d:/ymir work/ui/game/windows/metin_slot_silver.sub" scale-none left top);
+}
+.skin-classic .nui-tip__socket--gold .nui-tip__socket-frame
+{
+	decorator: image("d:/ymir work/ui/game/windows/metin_slot_gold.sub" scale-none left top);
+}
+.skin-classic .nui-tip__socket-icon
+{
+	position: absolute;
+	left: 1dp;
+	top: 1dp;
+}
+.skin-classic .nui-tip__socket-lines
+{
+	margin-left: 0;
+	padding: 2dp 0 1dp 0;
+}
+.skin-classic .nui-tip__socket-lines .nui-tip__line
+{
+	line-height: 16dp;
+	padding: 0 10dp 0 0;
+}
+.skin-classic .nui-tip__socket-lines > .nui-tip__slot:nth-child(n+3)
+{
+	margin-top: 2dp;
+}
+/* --- end of the tooltip lines --- */

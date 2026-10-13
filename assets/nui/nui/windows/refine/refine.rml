@@ -1,0 +1,93 @@
+<rml>
+<head>
+	<!-- The refine dialogs (uirefine.py RefineDialogNew, which the server
+	     opens, and RefineDialog, which the inventory makes; uiscript
+	     refinedialog.py; P14 spec 6.4). While the refine flag is on, the
+	     Interface and the inventory make nui_refine.RefineDialogNew and
+	     nui_refine.RefineDialog (controller assets/root/nui_refine.py),
+	     subclasses of the legacy classes on proxies: Open, the materials,
+	     the questions, Accept and the cancel packet are legacy's code. One
+	     document for both (variant). The item in its 1 to 3 cells beside
+	     the item's tooltip (the next grade's, built by the legacy rules and
+	     recorded: the block is components/item-tip.rcss's), the materials
+	     (icon and "name x 02"), the lines legacy shows (its probability line
+	     is hidden in both dialogs), OK and Cancel. The document exists only
+	     while the dialog shows; it opens at legacy's place. The body and its
+	     controls take no focus; controls act on a left mousedown. -->
+	<title>refine</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="../../components/item-tip.rcss"/>
+	<link type="text/rcss" href="refine.rcss"/>
+</head>
+<body template="nui" id="refine" class="nui-window nui-fx nui-anim refine" data-model="refine"
+      data-class-refine--old="variant == 'old'" data-style---tip-min-w="min_w + 'dp'">
+	<div class="nui-window__titlebar refine__titlebar">
+		<handle class="nui-window__handle refine__handle" move_target="#document">
+			<span class="nui-window__title refine__title">@ui.REFINE_TTILE</span>
+		</handle>
+		<button id="refine-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim refine__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body refine__body">
+		<div class="refine__main">
+			<div class="refine__item-column" data-if="item_cells > 0">
+				<div id="refine-item" class="nui-slot refine__item" data-class-nui-slot--h2="item_cells == 2"
+				     data-class-nui-slot--h3="item_cells == 3">
+					<img class="nui-slot__icon refine__item-icon" data-if="item_icon != ''" data-attr-src="item_icon"/>
+				</div>
+			</div>
+			<div id="refine-tip" class="nui-board nui-board--tooltip nui-fx nui-tip refine__tip">
+				<div id="tip-body" class="nui-tip__body">
+					<div class="nui-tip__slot" data-for="l : lines">
+						<div class="nui-tip__rule" data-if="l.rule"></div>
+						<div class="nui-tip__line" data-if="l.t == 'line'"
+						     data-class-nui-tip--gap-5="l.gap == 5" data-class-nui-tip--gap-10="l.gap == 10" data-class-nui-tip--gap-15="l.gap == 15" data-class-nui-tip--gap-20="l.gap == 20" data-class-nui-tip--gap-25="l.gap == 25" data-class-nui-tip--gap-30="l.gap == 30" data-class-nui-tip--gap-35="l.gap == 35" data-class-nui-tip--gap-40="l.gap == 40"
+						     data-class-nui-tip__line--left="l.align == 'left'" data-class-nui-tip__line--right="l.align == 'right'"
+						     data-class-nui-tip__line--plain="!l.outline">
+							<span class="nui-tip__runslot" data-for="r : l.runs">
+								<span class="nui-tip__run" data-if="r.k == 'text'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color">{{ r.text }}</span>
+								<nui-text class="nui-tip__run" data-if="r.k == 'tags'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color" data-attr-value="r.text"/>
+								<nui-countdown class="nui-tip__run" data-if="r.k == 'count'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color"
+								     data-attr-end="r.end" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND"/>
+							</span>
+						</div>
+						<img class="nui-tip__image" data-if="l.t == 'image'" data-attr-src="l.src"
+						     data-class-nui-tip--gap-5="l.gap == 5" data-class-nui-tip--gap-10="l.gap == 10" data-class-nui-tip--gap-15="l.gap == 15" data-class-nui-tip--gap-20="l.gap == 20" data-class-nui-tip--gap-25="l.gap == 25" data-class-nui-tip--gap-30="l.gap == 30" data-class-nui-tip--gap-35="l.gap == 35" data-class-nui-tip--gap-40="l.gap == 40"/>
+						<div class="nui-tip__socket" data-if="l.t == 'socket'" data-class-nui-tip__socket--gold="l.frame == 'gold'"
+						     data-class-nui-tip--gap-5="l.gap == 5" data-class-nui-tip--gap-10="l.gap == 10" data-class-nui-tip--gap-15="l.gap == 15" data-class-nui-tip--gap-20="l.gap == 20" data-class-nui-tip--gap-25="l.gap == 25" data-class-nui-tip--gap-30="l.gap == 30" data-class-nui-tip--gap-35="l.gap == 35" data-class-nui-tip--gap-40="l.gap == 40">
+							<span class="nui-tip__socket-frame"><img class="nui-tip__socket-icon" data-if="l.icon != ''" data-attr-src="l.icon"/></span>
+							<div class="nui-tip__socket-lines">
+								<div class="nui-tip__slot" data-for="s : l.sub">
+									<div class="nui-tip__line nui-tip__line--left" data-class-nui-tip__line--plain="!s.outline">
+										<span class="nui-tip__runslot" data-for="r : s.runs">
+											<span class="nui-tip__run" data-if="r.k == 'text'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color">{{ r.text }}</span>
+											<nui-text class="nui-tip__run" data-if="r.k == 'tags'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color" data-attr-value="r.text"/>
+											<nui-countdown class="nui-tip__run" data-if="r.k == 'count'" data-attr-class="'nui-tip__run nui-tip-role--' + r.role" data-style---tip-color="r.color"
+											     data-attr-end="r.end" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND"/>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="refine__materials">
+			<div class="refine__material" data-for="m : materials" data-attr-id="'refine-material-' + it_index">
+				<span class="nui-slot refine__material-cell"><img class="nui-slot__icon" data-if="m.icon != ''" data-attr-src="m.icon"/></span>
+				<span class="refine__material-text">{{ m.text }}</span>
+			</div>
+		</div>
+		<div class="refine__line refine__prob" data-if="prob_shown">{{ prob_text }}</div>
+		<div class="refine__line refine__cost" data-if="cost_shown">{{ cost_text }}</div>
+	</div>
+	<div class="nui-window__footer refine__footer">
+		<button id="refine-accept" class="nui-button nui-button--primary nui-button--medium nui-anim refine__accept"
+		        data-event-mousedown="accept_press(ev.button)">@ui.OK</button>
+		<button id="refine-cancel" class="nui-button nui-button--medium nui-anim refine__cancel"
+		        data-event-mousedown="cancel_press(ev.button)">@ui.CANCEL</button>
+	</div>
+</body>
+</rml>

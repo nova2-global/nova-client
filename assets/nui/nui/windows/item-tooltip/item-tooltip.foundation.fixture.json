@@ -1,0 +1,630 @@
+{
+	"item_tooltip": {
+		"lines": [
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Price: 2.000.000.000.000 Yang",
+						"role": "special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Sword+9",
+						"role": "special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "From Level: 30",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Value 154 - 158",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Magical Attack Value 45 - 60",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +22%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength +8",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Chance of critical hit +5% ",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "5% Chance for piercing Hits",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Max. HP +1500",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength against monsters +10%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Defence chance against warrior attacks: 7%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Max. HP +1500",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength +12",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +10%",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Chance of critical hit +8% ",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "6% Chance for piercing Hits",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "10% Chance for EXP Bonus",
+						"role": "positive-rare",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "10% Chance to drop double Yang",
+						"role": "positive-rare",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "[ Wearable ]",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": " Warrior Ninja Sura",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "/icon/item/28000.tga",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Stone of Penetration+0",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "1% Chance for piercing Hits",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "gold",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "/icon/item/28000.tga",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Stone of Penetration+0",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "1% Chance for piercing Hits",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			}
+		],
+		"min_w": 272
+	}
+}

@@ -15,11 +15,10 @@ WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", 
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
 WAVE5A = ["quest", "guild-building", "web", "console"]
 WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
-# The Wave 3b documents TOOLTIPS AND DIALOGS writes after SLOTS AND INVENTORY
-# (P14 spec 9.1, 9.4): listed for the prewarm already (6.7). That stage
-# empties this set when its documents exist; the test below fails while a
-# document named here exists, or one not named here is missing.
-PENDING_DOCUMENTS = {"refine", "attach-metin", "item-tooltip", "skill-tooltip", "link-tooltip"}
+# Documents a later stage writes, listed for the prewarm already: the test
+# below fails while a document named here exists, or one not named here is
+# missing. TOOLTIPS AND DIALOGS (P14 spec 9.1, 9.4) wrote the last Wave 3b ones.
+PENDING_DOCUMENTS = set()
 
 
 class Legacy(object):

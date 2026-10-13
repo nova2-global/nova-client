@@ -1,0 +1,192 @@
+/* Item tooltip lines (P14 spec 5.4, 5.7): the item, skill and link
+   tooltips (nui/windows/item-tooltip, skill-tooltip, link-tooltip) and the
+   tooltips inside the refine and attach dialogs show the model the
+   recorder builds from the legacy rules (assets/root/nui_tooltip.py). Each
+   document links this sheet from its head (nui.rtpl does not).
+
+   The block, as every one of those documents holds it (the dialogs with
+   their key prefix: old_lines, new_lines); tools/nui_tooltip_test.py
+   checks that they all match this one:
+
+   <div id="tip-body" class="nui-tip__body">
+   	<div class="nui-tip__slot" data-for="l : lines">
+   		<div class="nui-tip__rule" data-if="l.rule"></div>
+   		<div class="nui-tip__line" data-if="l.t == 'line'" (the gap classes)
+   		     data-class-nui-tip__line--left="l.align == 'left'"
+   		     data-class-nui-tip__line--right="l.align == 'right'"
+   		     data-class-nui-tip__line--plain="!l.outline">
+   			<span class="nui-tip__runslot" data-for="r : l.runs">
+   				<span class="nui-tip__run" data-if="r.k == 'text'" (the role class)>{{ r.text }}</span>
+   				<nui-text class="nui-tip__run" data-if="r.k == 'tags'" (the role class) data-attr-value="r.text"/>
+   				<nui-countdown class="nui-tip__run" data-if="r.k == 'count'" (the role class)
+   				     data-attr-end="r.end" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND"/>
+   			</span>
+   		</div>
+   		<img class="nui-tip__image" data-if="l.t == 'image'" data-attr-src="l.src" (the gap classes)/>
+   		<div class="nui-tip__socket" data-if="l.t == 'socket'" data-class-nui-tip__socket--gold="l.frame == 'gold'" (the gap classes)>
+   			<span class="nui-tip__socket-frame"><img class="nui-tip__socket-icon" data-if="l.icon != ''" data-attr-src="l.icon"/></span>
+   			<div class="nui-tip__socket-lines">
+   				<div class="nui-tip__slot" data-for="s : l.sub">
+   					<div class="nui-tip__line nui-tip__line--left" data-class-nui-tip__line--plain="!s.outline">
+   						(the run slot, over s.runs)
+   					</div>
+   				</div>
+   			</div>
+   		</div>
+   	</div>
+   </div>
+
+   The gap classes: data-class-nui-tip--gap-<n>="l.gap == <n>" for n = 5 to
+   40 in steps of 5 (the space above the entry, legacy px as dp). The role
+   class: data-attr-class="'nui-tip__run nui-tip-role--' + r.role" with
+   data-style---tip-color="r.color" (a custom run's own color). The
+   repeated elements bind nothing (the lists shrink between hovers); their
+   children read the entry. A divider (legacy's two lines,
+   AppendHorizontalLine) is the entry's rule element above it.
+
+   The modern look: centered lines in the roles' colors (--tip-<role>,
+   which every palette defines, so the player's colors reach them), a
+   socket as a ring holding the stone's icon with its lines beside it. The
+   board itself is nui-board--tooltip (window-frame.rcss). Classic's legacy
+   thin board, sizes and outlines are each document's classic overlay. */
+
+.nui-tip
+{
+	--tip-color: var(--tip-normal);
+	font-size: var(--font-sm);
+	color: var(--tip-normal);
+	pointer-events: none;
+	focus: none;
+	tab-index: none;
+}
+.nui-tip--pickable
+{
+	pointer-events: auto;
+}
+
+.nui-tip__body
+{
+	display: block;
+}
+/* A slot centers its image (an inline block; a block image with auto
+   margins would take the whole width a shrink-to-fit board offers); its
+   lines set their own line height, so the slot's 0 adds no strut under
+   the image. */
+.nui-tip__slot
+{
+	display: block;
+	text-align: center;
+	line-height: 0;
+}
+.nui-tip__line
+{
+	display: block;
+	line-height: 17dp;
+	text-align: center;
+	white-space: nowrap;
+}
+.nui-tip__line--left
+{
+	text-align: left;
+}
+.nui-tip__line--right
+{
+	text-align: right;
+}
+.nui-tip__runslot
+{
+	display: inline;
+}
+.nui-tip__run
+{
+	display: inline;
+}
+
+/* The roles (spec 5.3). */
+.nui-tip-role--title { color: var(--tip-title); }
+.nui-tip-role--special { color: var(--tip-special); }
+.nui-tip-role--normal { color: var(--tip-normal); }
+.nui-tip-role--price { color: var(--tip-price); }
+.nui-tip-role--price-middle { color: var(--tip-price-middle); }
+.nui-tip-role--price-low { color: var(--tip-price-low); }
+.nui-tip-role--negative { color: var(--tip-negative); }
+.nui-tip-role--positive { color: var(--tip-positive); }
+.nui-tip-role--positive-special { color: var(--tip-positive-special); }
+.nui-tip-role--positive-rare { color: var(--tip-positive-rare); }
+.nui-tip-role--condition { color: var(--tip-condition); }
+.nui-tip-role--level-up { color: var(--tip-level-up); }
+.nui-tip-role--skill-point { color: var(--tip-skill-point); }
+.nui-tip-role--custom { color: var(--tip-color, var(--tip-normal)); }
+
+/* The title stands out a little in the modern skins (an item with
+   attributes takes the special title color, SPECIAL_TITLE_COLOR). */
+.nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--title,
+.nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--special
+{
+	font-weight: bold;
+}
+
+/* The space above an entry, as legacy leaves it (AppendSpace). */
+.nui-tip--gap-5 { margin-top: 5dp; }
+.nui-tip--gap-10 { margin-top: 10dp; }
+.nui-tip--gap-15 { margin-top: 15dp; }
+.nui-tip--gap-20 { margin-top: 20dp; }
+.nui-tip--gap-25 { margin-top: 25dp; }
+.nui-tip--gap-30 { margin-top: 30dp; }
+.nui-tip--gap-35 { margin-top: 35dp; }
+.nui-tip--gap-40 { margin-top: 40dp; }
+
+/* A divider: one line across the tooltip (legacy's are two, 150 wide). */
+.nui-tip__rule
+{
+	display: block;
+	height: 1dp;
+	margin: 4dp 0 6dp 0;
+	background-color: var(--tip-divider);
+}
+
+/* A content image (the hair preview), centered by its slot. */
+.nui-tip__image
+{
+	display: inline-block;
+	vertical-align: top;
+}
+
+/* A socket row: the ring holding the stone's icon, its lines beside it. */
+.nui-tip__socket
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	text-align: left;
+	padding: 1dp 0;
+}
+.nui-tip__socket-frame
+{
+	display: block;
+	flex-shrink: 0;
+	width: 32dp;
+	height: 32dp;
+	border-width: 2dp;
+	border-color: var(--tip-socket-silver);
+	border-radius: 18dp;
+}
+.nui-tip__socket--gold .nui-tip__socket-frame
+{
+	border-color: var(--tip-socket-gold);
+}
+.nui-tip__socket-icon
+{
+	display: block;
+	width: 32dp;
+	height: 32dp;
+}
+.nui-tip__socket-lines
+{
+	display: block;
+	margin-left: 8dp;
+}
+.nui-tip__socket-lines .nui-tip__line
+{
+	line-height: 16dp;
+}

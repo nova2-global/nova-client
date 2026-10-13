@@ -1,0 +1,8 @@
+{
+	"$comment": "Golden cases of the skill tooltip (tools/check_nui_snapshots.py; P14 spec 6.9), each fixture a model the recorder built from the legacy rules: a grade 2 skill at level 5 with its next level and a requirement under a divider; foundation: the sage grade (grade 4, level 50); party: the leadership skill's centered lines (AutoAppendTextLine). The pointer stands at (210, 10) dp.",
+	"cases": [
+		{"page": "skill-tooltip", "themes": "all", "scales": [["100", "1", "420x520"], ["150", "1.5", "630x780"], ["200", "2", "840x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "pointer": [210, 10]},
+		{"page": "skill-tooltip", "variant": "foundation", "themes": "all", "scales": [["100", "1", "420x520"], ["150", "1.5", "630x780"], ["200", "2", "840x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "pointer": [210, 10]},
+		{"page": "skill-tooltip", "variant": "party", "themes": "all", "scales": [["100", "1", "420x520"], ["150", "1.5", "630x780"], ["200", "2", "840x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "pointer": [210, 10]}
+	]
+}

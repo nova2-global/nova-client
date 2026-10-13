@@ -93,15 +93,16 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
    Motion is opt-in: transition and animation are only declared in rules of the
    form `.component.nui-anim`, so they apply only to elements tagged nui-anim.
    The class is repeated here to raise specificity, because RCSS has no
-   !important: four classes (400,000) outrank those rules, which are linked
+   !important: six classes (600,000) outrank those rules, which are linked
    later and would win a tie. So a motion rule's whole selector, ancestors
-   and :not() included, may hold nui-anim, two other classes and tags, but no
-   id, attribute or pseudo-class (the window frame's .nui-window.nui-shown
-   .nui-anim is the heaviest); nuitool lint reports a heavier one as NUI011,
-   measured against this rule. */
+   and :not() included, may hold nui-anim, four other classes and tags, but
+   no id (a skin overlay's motion on one board's hook, such as
+   body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top.nui-anim,
+   is the heaviest); nuitool lint reports a heavier one as NUI011, measured
+   against this rule. */
 @media (theme: reduced-motion)
 {
-	.nui-anim.nui-anim.nui-anim.nui-anim
+	.nui-anim.nui-anim.nui-anim.nui-anim.nui-anim.nui-anim
 	{
 		transition: none;
 		animation: none;
@@ -125,15 +126,28 @@ scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active
 	}
 }
 
-/* Theme switches (nui.set_theme): the runtime activates the media theme
-   theme-switch for the one update that restyles, so nothing transitions
-   from the old theme's look to the new one and every element shows the new
-   theme in the next frame. It has the reduced-motion rule's weight
-   (400,000), which every motion rule stays under (nuitool lint NUI011). */
-@media (theme: theme-switch)
+/* A device without effects (the runtime's no-effects media theme, never the
+   player's setting): box-shadow as well. RmlUi draws an element's background
+   and border inside its box-shadow texture, which such a device cannot
+   make, so the element would lose them; without the shadow it draws plain.
+   nuitool lint NUI010 keeps every box-shadow in a .nui-fx rule lighter than
+   this one. */
+@media (theme: no-effects)
 {
-	.nui-anim.nui-anim.nui-anim.nui-anim
+	.nui-fx.nui-fx.nui-fx.nui-fx
 	{
-		transition: none;
+		box-shadow: none;
 	}
+}
+
+/* Theme switches (nui.set_theme): the runtime puts the class
+   nui-theme-switch on every document's body for the one update that
+   restyles, so nothing transitions from the old theme's look to the new one
+   and every element shows the new theme in the next frame. It has the
+   reduced-motion rule's weight (600,000), which every motion rule stays
+   under (nuitool lint NUI011). A class and not a media theme: RmlUi compiles
+   every document's style sheets again when the media themes change. */
+.nui-theme-switch.nui-anim.nui-anim.nui-anim.nui-anim.nui-anim, .nui-theme-switch .nui-anim.nui-anim.nui-anim.nui-anim.nui-anim
+{
+	transition: none;
 }

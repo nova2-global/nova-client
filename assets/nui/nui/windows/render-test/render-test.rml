@@ -28,7 +28,7 @@
 			<span class="rt-caption">filter: drop-shadow, box-shadow</span>
 			<div class="rt-row rt-row-fx">
 				<div class="rt-fx-panel rt-fx-drop-shadow nui-fx" id="rt-fx-drop-shadow"><span class="rt-fx-bar"></span>Drop</div>
-				<div class="rt-fx-panel rt-fx-box-shadow" id="rt-fx-box-shadow"><span class="rt-fx-bar"></span>Box</div>
+				<div class="rt-fx-panel rt-fx-box-shadow nui-fx" id="rt-fx-box-shadow"><span class="rt-fx-bar"></span>Box</div>
 			</div>
 		</div>
 

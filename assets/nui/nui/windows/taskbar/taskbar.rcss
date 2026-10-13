@@ -45,7 +45,12 @@ body.taskbar
 /* The item mall button: a chip with the shop glyph, and a sheen that
    sweeps across it once every 4s (a thin accent bar moved by transform; it
    rests invisible, so reduced motion leaves the plain chip). Classic draws
-   the legacy coin animation in its frames part instead. */
+   the legacy coin animation in its frames part instead, and hides the
+   sheen's host, which stops its clock too. The sweep is a 0.72s animation
+   that the nui-blink clock starts at each of its off halves, so between
+   two sweeps nothing restyles: an endless animation on an always shown HUD
+   part set its properties (and rebuilt its quad for the opacity) on every
+   frame. */
 .taskbar-mall
 {
 	left: 4dp;
@@ -69,15 +74,24 @@ body.taskbar
 	opacity: 0;
 	pointer-events: none;
 }
-.taskbar-mall__sheen.nui-anim
+.taskbar-mall__beat, .taskbar-mall__blink
 {
-	animation: 4s linear-in-out infinite taskbar-mall-sheen;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+}
+nui-blink.nui-blink-off .taskbar-mall__sheen.nui-anim
+{
+	animation: 0.72s linear-in-out taskbar-mall-sheen;
 }
 @keyframes taskbar-mall-sheen
 {
 	0% { transform: translateX(0dp); opacity: 0; }
-	4% { transform: translateX(4dp); opacity: 0.6; }
-	18% { transform: translateX(29dp); opacity: 0; }
+	22% { transform: translateX(4dp); opacity: 0.6; }
 	100% { transform: translateX(29dp); opacity: 0; }
 }
 .taskbar-gauge-host

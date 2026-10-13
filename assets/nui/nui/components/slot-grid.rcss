@@ -19,7 +19,7 @@
    		<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
    			data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
    		<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
-   		<span class="nui-slot__ring nui-anim" data-if="slot.active"></span>
+   		<span class="nui-slot__ring nui-anim" data-if="slot.active" data-class-is-on="slot.active"></span>
    		<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
    			delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
    		<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
@@ -60,7 +60,7 @@
    			<div class="nui-slot__tint"></div>
    			<nui-cooldown class="nui-slot__cooldown" data-if="item.cd_end > 0" ... />
    			<nui-frames class="nui-slot__active" data-if="item.active" ... />
-   			<span class="nui-slot__ring nui-anim" data-if="item.active"></span>
+   			<span class="nui-slot__ring nui-anim" data-if="item.active" data-class-is-on="item.active"></span>
    			<nui-frames class="nui-slot__finish" data-if="item.cd_end > 0" ... />
    			<nui-frames class="nui-slot__flash nui-anim" data-if="item.cd_end > 0" ... />
    			<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
@@ -247,9 +247,13 @@
 	border-radius: var(--radius-sm);
 	pointer-events: none;
 }
-/* 1 to 0.45 and back in 0.8s, endlessly; at rest (reduced motion) the ring
-   shows whole. An opacity motion on a small part rebuilds its one mesh. */
-.nui-slot__ring.nui-anim
+/* 1 to 0.45 and back in 0.8s, endlessly, only while the slot is active
+   (is-on, bound to the same value as its data-if): RmlUi advances an
+   element's animation on every update even while it is hidden, so an
+   animation on every cell's ring cost the idle HUD each frame. At rest
+   (reduced motion) the ring shows whole. An opacity motion on a small part
+   rebuilds its one mesh. */
+.nui-slot__ring.is-on.nui-anim
 {
 	animation: 0.8s sine-in-out infinite nui-slot-ring;
 }

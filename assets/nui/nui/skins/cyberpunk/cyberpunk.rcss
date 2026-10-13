@@ -11,9 +11,13 @@
    <body> itself list .skin-cyberpunk.x too. Motion only on the chrome hooks
    the theme asks for (outline, corner-tl, corner-br, edge-top, scan,
    accent), transform and opacity only, values written out, every selector
-   under 400,000 (lint NUI011). Filters, backdrop filters and masks only in
-   .nui-fx rules (NUI010). Colors from the palette and the skin's tokens,
-   lengths in dp.
+   under 600,000 (lint NUI011), and only on hooks that show: RmlUi advances
+   an element's animation on every update even while it is hidden, so the
+   motion rules name the window frame (or, in an overlay, the one board that
+   shows the hook), not every hook. A board that is a document's <body>
+   keeps the frame's hooks (the hide rules below name a board inside one).
+   Filters, backdrop filters and masks only in .nui-fx rules (NUI010).
+   Colors from the palette and the skin's tokens, lengths in dp.
 
    The only art is the six white sprites of cyberpunk-sprites.rcss (the cut
    corner fills and outlines, and the taskbar's HP ring; art.json), drawn as
@@ -78,10 +82,12 @@
 }
 
 /* The two cut corners: a violet bar along each cut, pulsing from full to
-   0.55 opacity and back, the second half a cycle after the first. Each is a
-   16dp bar turned -45 degrees about its middle, which is the middle of the
-   10dp cut (5dp in from the border box's corner). At rest (reduced motion)
-   both show whole. */
+   0.55 opacity and back, the second half a cycle after the first, on window
+   frames and on a document that is a board itself (the theme picker; other
+   boards hide them, and the taskbar's overlay shows and moves its own).
+   Each is a 16dp bar turned -45 degrees about its middle, which is the
+   middle of the 10dp cut (5dp in from the border box's corner). At rest
+   (reduced motion) both show whole. */
 .skin-cyberpunk .nui-chrome--corner-tl, .skin-cyberpunk .nui-chrome--corner-br
 {
 	display: block;
@@ -100,11 +106,13 @@
 	right: -4dp;
 	bottom: 3dp;
 }
-.skin-cyberpunk .nui-chrome--corner-tl.nui-anim
+.skin-cyberpunk.nui-window > .nui-chrome--corner-tl.nui-anim, .skin-cyberpunk .nui-window > .nui-chrome--corner-tl.nui-anim,
+.skin-cyberpunk.nui-board > .nui-chrome--corner-tl.nui-anim
 {
 	animation: 2.4s sine-in-out infinite cyberpunk-pulse;
 }
-.skin-cyberpunk .nui-chrome--corner-br.nui-anim
+.skin-cyberpunk.nui-window > .nui-chrome--corner-br.nui-anim, .skin-cyberpunk .nui-window > .nui-chrome--corner-br.nui-anim,
+.skin-cyberpunk.nui-board > .nui-chrome--corner-br.nui-anim
 {
 	animation: 2.4s 1.2s sine-in-out infinite cyberpunk-pulse;
 }
@@ -115,10 +123,13 @@
 	100% { opacity: 1; }
 }
 
-/* A light that runs along the top edge every 6s: a bar as wide as the
-   frame whose first 12% holds a neon streak, moved by transform from just
-   left of the frame to its right end, then faded. It rests invisible, so
-   reduced motion shows the plain edge. */
+/* A light that runs along the top edge of a window frame every 6s: a bar
+   as wide as the frame whose first 12% holds a neon streak, moved by
+   transform from just left of the frame to its right end. The streak grows
+   from nothing at the start and shrinks to nothing at the end (scaleX about
+   its own middle) instead of fading: an opacity change regenerates the
+   gradient decorator, its shader and mesh, on every frame, a transform
+   nothing. It rests at no width, so reduced motion shows the plain edge. */
 .skin-cyberpunk .nui-chrome--edge-top
 {
 	display: block;
@@ -127,20 +138,21 @@
 	top: -1dp;
 	height: 2dp;
 	decorator: linear-gradient(90deg, transparent 0%, var(--cyberpunk-edge) 6%, transparent 12%);
-	opacity: 0;
-	transform: translateX(-12%);
+	transform-origin: 6% 50%;
+	transform: translateX(-12%) scaleX(0);
 }
-.skin-cyberpunk .nui-chrome--edge-top.nui-anim
+.skin-cyberpunk.nui-window > .nui-chrome--edge-top.nui-anim, .skin-cyberpunk .nui-window > .nui-chrome--edge-top.nui-anim,
+.skin-cyberpunk.nui-board > .nui-chrome--edge-top.nui-anim
 {
 	animation: 6s linear-in-out infinite cyberpunk-sweep;
 }
 @keyframes cyberpunk-sweep
 {
-	0% { transform: translateX(-12%); opacity: 0; }
-	4% { transform: translateX(-3%); opacity: 1; }
-	40% { transform: translateX(79%); opacity: 1; }
-	44% { transform: translateX(88%); opacity: 0; }
-	100% { transform: translateX(88%); opacity: 0; }
+	0% { transform: translateX(-12%) scaleX(0); }
+	4% { transform: translateX(-3%) scaleX(1); }
+	40% { transform: translateX(79%) scaleX(1); }
+	44% { transform: translateX(88%) scaleX(0); }
+	100% { transform: translateX(88%) scaleX(0); }
 }
 
 /* The holographic layer under the content: fine scan lines over a cyan to
@@ -177,6 +189,12 @@
 .skin-cyberpunk.nui-window--band > .nui-chrome--corner-br, .skin-cyberpunk .nui-window--band > .nui-chrome--corner-br
 {
 	display: none;
+}
+/* Hidden there, so they do not pulse either (the frame rule's weight, later). */
+.skin-cyberpunk.nui-window--band > .nui-chrome--corner-tl.nui-anim, .skin-cyberpunk .nui-window--band > .nui-chrome--corner-tl.nui-anim,
+.skin-cyberpunk.nui-window--band > .nui-chrome--corner-br.nui-anim, .skin-cyberpunk .nui-window--band > .nui-chrome--corner-br.nui-anim
+{
+	animation: none;
 }
 
 /* --- Title bar, close button, footer ---------------------------------------------- */
@@ -703,6 +721,12 @@ body.skin-cyberpunk.nui-scrim.nui-fx
 	.skin-cyberpunk .nui-chrome--scan, .skin-cyberpunk .nui-chrome--edge-top
 	{
 		display: none;
+	}
+	/* Hidden, so its motion stops too (the frame rule's weight, later). */
+	.skin-cyberpunk.nui-window > .nui-chrome--edge-top.nui-anim, .skin-cyberpunk .nui-window > .nui-chrome--edge-top.nui-anim,
+	.skin-cyberpunk.nui-board > .nui-chrome--edge-top.nui-anim
+	{
+		animation: none;
 	}
 	.skin-cyberpunk .nui-chrome--accent
 	{

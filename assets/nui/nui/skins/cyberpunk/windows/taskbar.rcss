@@ -36,6 +36,17 @@ body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--corner-tl
 	display: block;
 	left: -3dp;
 }
+/* The bar is a board, so cyberpunk.rcss moves neither hook: the bar's own
+   motion, on these two only (every other board's hooks stay still and
+   hidden). */
+body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top.nui-anim
+{
+	animation: 6s linear-in-out infinite cyberpunk-sweep;
+}
+body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--corner-tl.nui-anim
+{
+	animation: 2.4s sine-in-out infinite cyberpunk-pulse;
+}
 
 /* --- The HP ring and the values (P13 D21) -------------------------------------------
    A circular progress bar draws its fill from fill-image only: the ring
@@ -200,6 +211,10 @@ body.skin-cyberpunk.taskbar .taskbar-picker > .nui-chrome--outline
 	body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top
 	{
 		display: none;
+	}
+	body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top.nui-anim
+	{
+		animation: none;
 	}
 	body.skin-cyberpunk.taskbar progress.taskbar-hp-ring
 	{

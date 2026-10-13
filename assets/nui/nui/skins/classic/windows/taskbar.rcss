@@ -70,7 +70,7 @@ body.skin-classic.taskbar .taskbar-mall__frames
 {
 	--frames-list: "d:/ymir work/ui/game/mall/00.sub, d:/ymir work/ui/game/mall/01.sub, d:/ymir work/ui/game/mall/02.sub, d:/ymir work/ui/game/mall/03.sub, d:/ymir work/ui/game/mall/04.sub, d:/ymir work/ui/game/mall/05.sub, d:/ymir work/ui/game/mall/06.sub, d:/ymir work/ui/game/mall/07.sub, d:/ymir work/ui/game/mall/08.sub, d:/ymir work/ui/game/mall/09.sub, d:/ymir work/ui/game/mall/11.sub, d:/ymir work/ui/game/mall/12.sub, d:/ymir work/ui/game/mall/13.sub, d:/ymir work/ui/game/mall/14.sub, d:/ymir work/ui/game/mall/15.sub, d:/ymir work/ui/game/mall/16.sub";
 }
-body.skin-classic.taskbar .taskbar-mall__sheen
+body.skin-classic.taskbar .taskbar-mall__beat
 {
 	display: none;
 }

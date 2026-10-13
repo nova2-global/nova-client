@@ -267,7 +267,7 @@
 							<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 								data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
 							<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
-							<span class="nui-slot__ring nui-anim" data-if="slot.active"></span>
+							<span class="nui-slot__ring nui-anim" data-if="slot.active" data-class-is-on="slot.active"></span>
 							<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
 								delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 							<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
@@ -295,7 +295,7 @@
 								<nui-cooldown class="nui-slot__cooldown" data-if="item.cd_end > 0"
 									data-attr-start="item.cd_start" data-attr-end="item.cd_end"/>
 								<nui-frames class="nui-slot__active" data-if="item.active" count="13" delay="0.0667"/>
-								<span class="nui-slot__ring nui-anim" data-if="item.active"></span>
+								<span class="nui-slot__ring nui-anim" data-if="item.active" data-class-is-on="item.active"></span>
 								<nui-frames class="nui-slot__finish" data-if="item.cd_end > 0" count="11"
 									delay="0.0333" loop="false" after="none" data-attr-start="item.cd_end"/>
 								<nui-frames class="nui-slot__flash nui-anim" data-if="item.cd_end > 0" count="11"

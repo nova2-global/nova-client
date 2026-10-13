@@ -56,18 +56,23 @@ The theme asks for `outline`, `corner-tl`, `corner-br`, `edge-top`, `scan`
 |---|---|---|
 | `outline` | The panel's edge with its glow baked in, 6dp outside the frame, under the content (`z-index: -1`) | The chip's 1dp edge; the minimap ring's halo (a gradient); none on the skill picker (below) |
 | `corner-tl`, `corner-br` | A violet 16dp bar along each cut, pulsing from full to 0.55 opacity over 2.4s, the second half a cycle later | The taskbar's `corner-tl` only |
-| `edge-top` | A neon streak running along the top edge every 6s (transform), resting invisible | The taskbar only |
+| `edge-top` | A neon streak running along the top edge every 6s, growing from no width and shrinking to none at its ends (transform only: an opacity fade would regenerate its gradient every frame), resting at no width | The taskbar only |
 | `scan` | Scan lines over a cyan to violet sheen across the diagonal, under the content, fading out toward the cuts | The tip and the big notice only |
 | `accent` | A short violet bar on the title bar's line, its glow a gradient | |
 
 Three hooks move per frame, `transform` and `opacity` only, with the values
 written out; a frame without its hooks' motion (reduced motion) shows the
 pulses whole and the streak out. Board hooks other than the outline are
-hidden by default: boards are always loaded. Each hook is one element per
-frame; the shown ones draw one decorator each (the scan two gradients).
+hidden by default: boards are always loaded. The motion rules name the
+window frame (`.nui-window > .nui-chrome--corner-tl.nui-anim`), and the
+taskbar's overlay moves its bar's two shown hooks itself, since RmlUi
+advances an animation on every update even while its element is hidden:
+the first cut moved the hidden hooks of every HUD board on every frame (the
+P13 review). Each hook is one element per frame; the shown ones draw one
+decorator each (the scan two gradients).
 
 **Reduced effects** (the player's setting, and every device without
-effects): no scan layer, no edge streak, no minimap halo or mask, no HP ring
+effects): no scan layer, no edge streak, no minimap halo or rim, no HP ring
 track and no empire grid (without effects a gradient draws one flat color
 over its whole box), the title accent a plain bar; the scrim's blur goes
 (`base.rcss`). Toggle, slider and slot gradients stay: their flat color is
@@ -98,9 +103,9 @@ The sheets: `cyberpunk-1x.png` 256 x 68 px, 2,674 bytes; `cyberpunk-2x.png`
 | Window | What changes |
 |---|---|
 | `taskbar` | The bar as the cut-corner panel with the glowing outline, the edge streak and the violet cut; the HP ring (P13 D21) at its left with the HP value inside (9dp, so five digits stay off the ring's stroke), the SP value right of the right mode button; the mall button right of the ring and the HP, SP and stamina bars 106dp wide, so the left group still ends at 268dp; every button a chip; the EXP orbs filled violet to cyan |
-| `minimap` | A 1dp neon ring with a halo, a ring of ticks between the map and the ring, the map's rim faded by a mask, violet round buttons, the place line on a neon plate |
+| `minimap` | A 1dp neon ring with a halo, a ring of ticks between the map and the ring, the map's rim faded into the disc by a gradient ring the frame draws over it (not a mask: a mask took two layers on every idle frame), violet round buttons, the place line on a neon plate |
 | `chat` | The open chat framed by one dim neon edge; the mode, send, whisper and log buttons as chips |
-| `chat-log` | The filters as a strip of neon tabs, the active ones filled; the mode button a chip; a thin neon scroll bar |
+| `chat-log` | The filters as a strip of neon tabs, the active ones filled, with the modern letter spacing (1dp more ran the long locales' labels past their chips); the mode button a chip; a thin neon scroll bar |
 | `target` | The name in `cyberpunk-title` with a glow |
 | `party` | The role and menu buttons as neon chips |
 | `affects` | Each icon in a dim neon chip; the time left in `accent` |

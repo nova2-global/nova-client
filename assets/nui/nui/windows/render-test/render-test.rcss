@@ -315,8 +315,10 @@ body.rt
    in-game bench can take them one at a time. Filters, backdrop filters and
    masks sit in .nui-fx rules (lint NUI010), so reduced effects and a device
    without effects show each element plain; box-shadow and the gradients stay
-   under reduced effects (drawn once), and without effects a shadow is not
-   drawn and a gradient is one flat color. */
+   under reduced effects (drawn once). Without effects a gradient is one flat
+   color, and box-shadow, also in a .nui-fx rule, goes (base.rcss's
+   no-effects rule), so its panel draws plain instead of vanishing with the
+   shadow texture that holds its background and border. */
 .rt-row-fx
 {
 	height: 120dp;
@@ -348,7 +350,7 @@ body.rt
 .rt-fx-blur-4.nui-fx { filter: blur(4dp); }
 .rt-fx-blur-16.nui-fx { filter: blur(16dp); }
 .rt-fx-drop-shadow.nui-fx { filter: drop-shadow(var(--accent) 0dp 4dp 8dp); }
-.rt-fx-box-shadow { box-shadow: 0dp 4dp 16dp var(--danger); }
+.rt-fx-box-shadow.nui-fx { box-shadow: 0dp 4dp 16dp var(--danger); }
 
 /* Gradients: three stops, three stops, six stops, and a repeating stripe. */
 .rt-fx-swatch

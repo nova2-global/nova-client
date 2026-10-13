@@ -1,6 +1,9 @@
 /* Cyberpunk overlay of nui/windows/chat-log/chat-log.rml: the filters as the
    mockup's strip of neon tabs along the top, the ones that are on filled;
-   the mode button a chip; a thin neon scroll bar. */
+   the mode button a chip; a thin neon scroll bar. The tabs keep the modern
+   letter spacing: the seven share the log's minimum width (450dp), and with
+   1dp more per letter the long locales' labels (cz, gr, ru) ran past their
+   chips. */
 
 body.skin-cyberpunk.chat-log .chat-log__filter
 {
@@ -10,7 +13,6 @@ body.skin-cyberpunk.chat-log .chat-log__filter
 	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--cyberpunk-edge-dim);
 	color: var(--text-muted);
-	letter-spacing: 1dp;
 }
 body.skin-cyberpunk.chat-log .chat-log__filter:hover
 {

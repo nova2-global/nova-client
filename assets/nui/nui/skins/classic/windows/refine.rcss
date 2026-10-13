@@ -5,7 +5,8 @@
    tooltip (a thin board, as legacy's ItemToolTip is) at (50, 38), the
    item's slots and icon 35 to its left, centered on it; the materials 8
    under it, every 34 px: the slot at x 15 and a thin board of the
-   tooltip's width at x 50, 20 tall, its text 15 in; the cost 64 above the
+   tooltip's width at x 50, 32 tall (legacy asks 20, and ThinBoard.SetSize
+   keeps two corners' 32), its text 15 in and centered; the cost 64 above the
    bottom, the middle buttons 35 above it, 35 left and right of the middle.
    The old dialog has no item, no materials: the tooltip at (15, 38), the
    board the tooltip + 30 wide. */
@@ -83,10 +84,10 @@ body.skin-classic.refine .refine__material-text
 	top: 0;
 	box-sizing: border-box;
 	width: var(--tip-min-w);
-	height: 20dp;
+	height: 32dp;
 	margin: 0;
 	padding: 0 0 0 15dp;
-	line-height: 20dp;
+	line-height: 32dp;
 	color: var(--text);
 	decorator: classic-thinboard;
 	font-effect: outline(1dp var(--classic-text-outline));

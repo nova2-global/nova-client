@@ -126,6 +126,7 @@ The snapshots come from `SoftRenderInterface`, the CPU renderer. It follows the 
   - `belt-inventory-*` and `belt-inventory-foundation-*` (24) and the belt's two translucent cases: the belt's fixture has no active auto potion any more, since legacy activates only the bag's cells.
   - `refine-*`, `refine-foundation-*`, `refine-old-*` and `attach-metin-*`, `attach-metin-foundation-*` of classic (15): the OK and Yes labels are the legacy gray, not the accent (V-6).
   - New: the `translucent` cases of the skill and link tooltips (8, dark and light at 100 and 200%) and the 200% translucent cases of the costume window, the belt, select item, refine and attach metin stone (10).
+  - Then, after the first live refine with materials (the kit's RA family on Long Sword+8) showed classic's material row shorter than legacy's: `refine-classic-*` and `refine-foundation-classic-*` (6) again. The material's thin board is 32dp tall with its text centered, as legacy's (`ThinBoard.SetSize` keeps two corners' 32 px over the 20 that `AppendMaterial` asks), where it was 20dp.
   1271 goldens; that build matches all of them and the five switched snapshots at tolerance 0 after the writes.
 So the check allows a difference of 1 per channel, and a build for either platform passes it. To catch a change of 1 anywhere, check at `--tolerance 0` with a Linux build, the platform that wrote the goldens: `nova-client-src/tools/linux-nui` builds `nuitool` on Linux or WSL (see "Tools" in `docs/ui/AUTHORING.md`).
 

@@ -81,6 +81,7 @@ class NuiState(object):
         self.reduced_effects = False   # the player's setting (nui.set_reduced_effects)
         self.effects_available = True  # nui.effects_available(): False for a device without effects
         self.colors = {}         # theme id -> {slot: value}, the player colors set (nui.set_color)
+        self.decorators = set()  # nui.has_decorator(): the decorators the runtime registered (Wave 3b: nui-cells)
         self.appearance = []     # ("set_theme", id), ("set_scale_percent", p), ("set_reduced_motion", on),
                                  # ("set_reduced_effects", on), ("set_color", slot, value[, "unsaved"]), ("save_colors",), ("reset_colors", all), in order
 
@@ -324,6 +325,15 @@ def make_nui(state):
             self.front += 1
             return True
 
+        def follow_pointer(self, below_dp=40, above_dp=20, flip_dp=300, once=False):
+            """nui.py follow_pointer: recorded as the placement, when the
+            stand-in _nui has FollowPointer (the Wave 3b engine)."""
+            if not self._doc or getattr(nui._nui, "FollowPointer", None) is None:
+                return False
+            self.calls.append(("follow_pointer", below_dp, above_dp, flip_dp, bool(once)))
+            self.placement = ("pointer", below_dp, above_dp, flip_dp, bool(once))
+            return True
+
         def keep_clear_of(self, *targets):
             if not self._doc:
                 return False
@@ -515,6 +525,7 @@ def make_nui(state):
     nui.KEY_TAB = KEY_TAB
     nui.KEY_SPACE = KEY_SPACE
     nui._nui = types.SimpleNamespace(GetElementBox=lambda doc, element_id: _box(state, doc, element_id))
+    nui.has_decorator = lambda name: state.available and name in state.decorators
     return nui
 
 

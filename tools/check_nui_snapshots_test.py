@@ -1,6 +1,6 @@
 """Tests for tools/check_nui_snapshots.py's case keys: the stand-ins (P10 spec
 4.3: "feeds", "views" and "anchors" become nuitool snap's --feed, --view and
---anchor), the player settings and names (P13 spec 7.8) and the skins' own
+--anchor; P14 spec 5.5.4: "pointer" becomes --pointer), the player settings and names (P13 spec 7.8) and the skins' own
 case files: python3 -B -m unittest check_nui_snapshots_test (from tools/).
 Plain CPython; nothing is snapped."""
 import json
@@ -55,6 +55,22 @@ class StandIns(unittest.TestCase):
         self.assertEqual(cmd[at + 2:at + 10], ["--feed", "chat.window.lines=nui/windows/demo/demo.lines.json",
                                                "--view", "minimap=nui/windows/demo/demo.view.png",
                                                "--anchor", "3=10,20", "--anchor", "12=160,120.5"])
+
+    def test_the_pointer_becomes_snap_pointer_and_one_out_of_form_stops_the_checker(self):
+        self.write_case(pointer=[400, 300.5])
+        self.assertEqual(check_nui_snapshots.window_pages(self.root)[0][-1], ("--pointer", "400,300.5"))
+        case = next(c for c in check_nui_snapshots.cases(self.root) if c[0] == "demo-dark-100")
+        cmd = check_nui_snapshots.command("nuitool", case, "out.png")
+        self.assertEqual(cmd[cmd.index("--pointer") + 1], "400,300.5")
+        for bad in ([1], [1, True], [-1, 3], "400,300", {"x": 1}):
+            with self.subTest(pointer=bad):
+                self.write_case(pointer=bad)
+                self.assertRaises(ValueError, check_nui_snapshots.window_pages, self.root)
+
+    def test_the_wave3b_roots_are_known(self):
+        for root in ("assets/metin2_patch_w21_etc", "assets/metin2_patch_dss_box", "assets/patch2"):
+            self.assertIn(root, check_nui_snapshots.EXTRA_ROOTS)
+            self.assertTrue(os.path.isdir(os.path.join(REPO, root)), root)
 
     def test_a_case_without_them_passes_none(self):
         self.write_case()

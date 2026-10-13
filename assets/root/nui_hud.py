@@ -62,6 +62,19 @@ def has_engine_5a():
 	return all(getattr(nuigame, name, None) is not None for name in ("QuestAttach", "QuestState", "WebPageFollow"))
 
 
+def has_engine_3b():
+	"""True when the exe has the Wave 3b engine as well (P14 spec 4.9.4):
+	_nui.FollowPointer (pointer placement, the marker) and the nui-cells
+	decorator (nui.has_decorator). Every Wave 3b facade's nui_ready() needs
+	it, so make() keeps the legacy window on an older exe."""
+	if not has_engine():
+		return False
+	if getattr(getattr(nui, "_nui", None), "FollowPointer", None) is None:
+		return False
+	has = getattr(nui, "has_decorator", None)
+	return has is not None and bool(has("nui-cells"))
+
+
 def take_over(key, facade):
 	"""Destroys the NovaUI parts of the previous facade registered under `key`
 	if they are still alive (a phase that ended without Destroy, D26), then

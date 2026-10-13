@@ -18,7 +18,9 @@ time, an optional variant: a second fixture of the same window,
 <name>.<variant>.fixture.json, whose goldens are <name>-<variant>-<theme>-
 <percent>.png, and the stand-ins of the engine's C++ side: "feeds" (feed
 name to a JSON file, nuitool snap --feed), "views" (view name to a PNG,
---view) and "anchors" (a character vid to [x, y] dp, --anchor); their
+--view), "anchors" (a character vid to [x, y] dp, --anchor) and
+"pointer" (the pointer at [x, y] dp at scale 1, --pointer: a tooltip that
+follows it, P14 spec 5.5.4); their
 paths are store paths under assets/nui, as --doc takes them
 (docs/ui/snapshots/README.md explains each). The player's settings of a
 case (P13 spec 7.8): "colors" (slot=value,... for the theme of the run,
@@ -77,9 +79,12 @@ LOCALE = ["--locale", "assets/locale/locale/en"]
 # (season1/interface/...: the big notice board's frame) and the patch groups
 # that hold the HUD art under d:/ymir work/ (the energy bar in
 # metin2_patch_eu4, the gift icon in metin2_patch_etc, the dragon soul button
-# in metin2_patch_ds).
+# in metin2_patch_ds), and the Wave 3b item windows' classic art (P14 spec
+# 4.11): the equipment and belt art in metin2_patch_w21_etc, the inventory's
+# dragon soul button in metin2_patch_dss_box, the mall button in patch2.
 EXTRA_ROOTS = ("assets/ETC", "assets/locale", "assets/uiloading", "assets/icon", "assets/season1",
-               "assets/metin2_patch_eu4", "assets/metin2_patch_etc", "assets/metin2_patch_ds")
+               "assets/metin2_patch_eu4", "assets/metin2_patch_etc", "assets/metin2_patch_ds",
+               "assets/metin2_patch_w21_etc", "assets/metin2_patch_dss_box", "assets/patch2")
 WINDOWS = os.path.join("assets", "nui", "nui", "windows")
 GOLDEN_THEMES = os.path.join("docs", "ui", "snapshots", "golden-themes.json")
 PLAYER_THEMES = os.path.join("assets", "nui", "nui", "theme", "themes.json")
@@ -104,7 +109,7 @@ PAGES = [
 STAND_IN_NAME_RE = re.compile(r"[a-z][a-z0-9_.-]*")
 SKINS = os.path.join("assets", "nui", "nui", "skins")
 CASE_KEYS = {"$comment", "page", "themes", "scales", "fixture", "roots", "time", "variant", "name", "feeds", "views", "anchors",
-             "colors", "backdrop", "effects", "reduced_motion", "switch_from"}
+             "colors", "backdrop", "effects", "reduced_motion", "switch_from", "pointer"}
 CASE_NAME_RE = re.compile(r"[a-z][a-z0-9-]*")
 COLOR_SLOT_VALUE = r"[a-z][a-z0-9-]*=(#[0-9a-fA-F]{6}|[0-9]{1,3})"
 COLORS_RE = re.compile(r"%s(,%s)*" % (COLOR_SLOT_VALUE, COLOR_SLOT_VALUE))
@@ -133,6 +138,12 @@ def stand_in_args(case, where, root):
                 or not all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in point)):
             raise ValueError("%s: anchors maps a vid (1 or more) to [x, y] dp, not %r: %r" % (where, vid, point))
         args += ["--anchor", "%s=%s,%s" % (vid, format(point[0], "g"), format(point[1], "g"))]
+    pointer = case.get("pointer")
+    if pointer is not None:
+        if (not isinstance(pointer, list) or len(pointer) != 2
+                or not all(isinstance(v, (int, float)) and not isinstance(v, bool) and v >= 0 for v in pointer)):
+            raise ValueError("%s: pointer is [x, y] dp at scale 1, not %r" % (where, pointer))
+        args += ["--pointer", "%s,%s" % (format(pointer[0], "g"), format(pointer[1], "g"))]
     return tuple(args)
 
 

@@ -14,6 +14,13 @@ WAVE2A = ["taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
 WAVE5A = ["quest", "guild-building", "web", "console"]
+WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
+# The Wave 3b documents TOOLTIPS AND DIALOGS writes after SLOTS AND INVENTORY
+# (P14 spec 9.1, 9.4): listed for the prewarm already (6.7). That stage
+# empties this set when its documents exist; the test below fails while a
+# document named here exists, or one not named here is missing.
+PENDING_DOCUMENTS = {"refine", "attach-metin", "item-tooltip", "skill-tooltip", "link-tooltip",
+                     "inventory", "costume", "belt-inventory", "select-item"}
 
 
 class Legacy(object):
@@ -161,8 +168,8 @@ class Flags(WindowsTest):
                          sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A))
 
     def test_every_wave5a_window_defaults_to_legacy(self):
-        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS], WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A,
-                         "appended in this order")
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A)],
+                         WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A, "appended in this order")
         for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A):]:
             self.assertIs(default, False, window_id)
             self.assertFalse(self.m.is_on(window_id), window_id)
@@ -197,6 +204,36 @@ class Flags(WindowsTest):
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
                          sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A))
+
+    def test_every_wave3b_window_defaults_to_legacy(self):
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS],
+                         WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B, "appended after console, in this order")
+        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A):]:
+            self.assertIs(default, False, window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+
+    def test_items_names_the_five_wave3b_windows_and_rest_keeps_its_four(self):
+        self.assertEqual(self.m.GROUPS["items"], tuple(WAVE3B))
+        self.assertEqual(self.m.GROUPS["rest"], tuple(WAVE5A), "+rest keeps meaning the Wave 5a windows")
+        self.setting.windows = "+rest"
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE3B), "+rest turns no Wave 3b window on")
+        self.setting.windows = "+items,-tooltips"
+        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "tooltips") for window_id in WAVE3B))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A),
+                         "+items turns no earlier window on")
+        self.assertEqual(self.m.use("inventory"), (True, ""))
+        self.assertEqual(self.m.use("tooltips"), (False, "flag off"))
+        self.assertEqual(self.m.use("items"), (False, "flag off"), "a group is not a window")
+        self.assertRaises(ValueError, self.m.set_override, "items", True)
+
+    def test_the_wave3b_demo_string_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud,+hud2,+sys,+rest,+items"
+        self.assertLessEqual(len(demo), 200)
+        self.assertEqual(len(demo), 35)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
+                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B))
 
     def test_a_group_turns_its_members_on_and_off_in_token_order(self):
         self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A))
@@ -419,7 +456,7 @@ class LayerStopgap(WindowsTest):
 
 class PhaseEnd(WindowsTest):
     def test_end_phase_asks_each_phase_scoped_module_that_is_loaded_and_logs_the_count(self):
-        self.assertEqual(self.m.PHASE_SCOPED, ("nui_dialog_kit", "nui_quest"))
+        self.assertEqual(self.m.PHASE_SCOPED, ("nui_dialog_kit", "nui_quest", "nui_tooltip"))
         calls = []
 
         def end_phase():
@@ -456,10 +493,12 @@ class PhaseEnd(WindowsTest):
     def test_with_no_phase_scoped_module_imported_end_phase_imports_none_and_logs_nothing(self):
         self.modules.put("nui_dialog_kit", None)  # an import would raise ImportError
         self.modules.put("nui_quest", None)
+        self.modules.put("nui_tooltip", None)
         lines = list(self.dbg.lines)
         self.assertEqual(self.m.end_phase(), 0)
         self.assertIsNone(sys.modules["nui_dialog_kit"])
         self.assertIsNone(sys.modules["nui_quest"])
+        self.assertIsNone(sys.modules["nui_tooltip"])
         self.assertEqual(self.dbg.lines, lines)
         self.assertEqual(self.dbg.errors, [])
 
@@ -534,7 +573,19 @@ class PhaseStart(WindowsTest):
         for window_id, names in self.m.ON_DEMAND_DOCUMENTS:
             self.assertIn(window_id, ids)
             for name in names:
-                self.assertTrue(os.path.isfile(os.path.join(root, "nui", "windows", name, name + ".rml")), name)
+                exists = os.path.isfile(os.path.join(root, "nui", "windows", name, name + ".rml"))
+                if name in PENDING_DOCUMENTS:
+                    self.assertFalse(exists, "%s exists: take it out of PENDING_DOCUMENTS" % name)
+                else:
+                    self.assertTrue(exists, name)
+
+    def test_the_wave3b_documents_are_prewarmed_with_their_flags(self):
+        self.assertIn(("inventory", ("inventory", "costume", "belt-inventory")), self.m.ON_DEMAND_DOCUMENTS)
+        self.assertIn(("tooltips", ("item-tooltip", "skill-tooltip", "link-tooltip")), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+inventory,+select-item"
+        self.assertEqual(self.m.prewarm_documents(),
+                         ["nui/windows/inventory/inventory.rml", "nui/windows/costume/costume.rml",
+                          "nui/windows/belt-inventory/belt-inventory.rml", "nui/windows/select-item/select-item.rml"])
 
 
 if __name__ == "__main__":

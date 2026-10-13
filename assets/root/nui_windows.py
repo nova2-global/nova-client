@@ -1,11 +1,11 @@
 """Which windows run on NovaUI, and the factory that makes them.
 
-Each window has an id. Its default lives here (every Wave 1, 2a, 2b, 3a and
-5a window is off: legacy) and config/metin2.cfg overrides it through
+Each window has an id. Its default lives here (every Wave 1, 2a, 2b, 3a, 3b
+and 5a window is off: legacy) and config/metin2.cfg overrides it through
 UI_NUI_WINDOWS ("+id" on, "-id" off, comma-separated;
 systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud", "hud2",
-"sys", "rest") in that string stands for each of its windows, in its place
-among the tokens.
+"sys", "rest", "items") in that string stands for each of its windows, in its
+place among the tokens.
 UI_NUI_LOGIN 1 means "+login" unless UI_NUI_WINDOWS names login itself.
 A window runs on NovaUI only when its flag is on, NovaUI is available, the
 locale is not right-to-left (nui.enabled_for_locale), its document loaded
@@ -46,7 +46,7 @@ except ImportError:  # plain Python outside the client
 	wndMgr = None
 
 
-WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a, 2b, 3a and 5a
+WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a, 2b, 3a, 3b and 5a
 	("login", False),
 	("dialogs", False),
 	("server-board", False),
@@ -85,6 +85,11 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("guild-building", False),     # the guild building placement window
 	("web", False),                # the web window around the WebView2 page (the mall)
 	("console", False),            # the developer console (only where legacy opens it)
+	("inventory", False),          # the inventory, its costume and belt windows (Wave 3b)
+	("tooltips", False),           # the Interface's item, skill and link tooltips
+	("refine", False),             # both refine dialogs
+	("attach-metin", False),       # the attach metin stone dialog
+	("select-item", False),        # the select item window (a quest's [SELECT_ITEM])
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
@@ -94,14 +99,16 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item"),
 }
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
 
 # Modules holding NovaUI documents that no phase window owns (shared between
-# windows: the dialog kit's, the quest curtain and any quest board left),
-# each with an end_phase() that unloads them; see end_phase().
-PHASE_SCOPED = ("nui_dialog_kit", "nui_quest")
+# windows: the dialog kit's, the quest curtain and any quest board left, the
+# three tooltip documents), each with an end_phase() that unloads them; see
+# end_phase().
+PHASE_SCOPED = ("nui_dialog_kit", "nui_quest", "nui_tooltip")
 
 # The game phase's on-demand documents by window id (loaded at their first
 # show and unloaded at their hide or at the phase end: nui_hud.OnDemand, the
@@ -121,6 +128,13 @@ ON_DEMAND_DOCUMENTS = (
 	("guild-building", ("guild-building",)),
 	("web", ("web",)),
 	("console", ("console",)),
+	("inventory", ("inventory", "costume", "belt-inventory")),
+	("refine", ("refine",)),
+	("attach-metin", ("attach-metin",)),
+	("select-item", ("select-item",)),
+	# The tooltips load at their first show and stay loaded, hidden and empty,
+	# until the phase ends (P14 spec D8); listed for the prewarm.
+	("tooltips", ("item-tooltip", "skill-tooltip", "link-tooltip")),
 )
 GAME_PHASE_CLASS = "GameWindow"   # game.GameWindow, the game phase's window
 
@@ -309,7 +323,7 @@ def end_phase():
 	frame, shown or not, so nothing the ended phase loaded may stay: a phase
 	window's own documents go with its Close, and the documents no phase
 	window owns (PHASE_SCOPED: the dialog kit's shared ones, the quest
-	curtain and any quest board left) go here. Each loads again when the
+	curtain and any quest board left, the tooltip documents) go here. Each loads again when the
 	next phase shows it. Only modules already imported are asked (a flag
 	that is off imports none). Returns how many documents
 	went, and logs that count to log.txt when it is not 0; an error in a

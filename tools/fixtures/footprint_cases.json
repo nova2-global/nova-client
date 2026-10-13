@@ -1,0 +1,29 @@
+{
+	"$comment": "The drop footprint of CGridSlotWindow (P14 spec 4.9.2, D2): a 5 x 9 grid with items at fixed cells, an attached icon over a cell, use mode off and on. cells: GetPickedSlotList's cells; moving: CheckMoving's answer; state: what OnRenderPickingSlot draws (move white, blocked red, usable yellow, unusable red). source hand: worked out by reading src/EterPythonLib/PythonGridSlotWindow.cpp until ENGINE's eterpythonlib_tests record the file from the C++ (source CGridSlotWindow), which integration copies here. Optional keys this file adds: slot (the attached icon's slot number, -1: from another window) and target (the cell GetPickedSlotPointer answers while attaching).",
+	"source": "hand",
+	"grid": [5, 9],
+	"items": [
+		{"cell": 0, "w": 1, "h": 1, "vnum": 27001},
+		{"cell": 2, "w": 1, "h": 2, "vnum": 10},
+		{"cell": 4, "w": 1, "h": 3, "vnum": 3000},
+		{"cell": 21, "w": 1, "h": 1, "vnum": 27001},
+		{"cell": 40, "w": 1, "h": 1, "vnum": 12200}
+	],
+	"cases": [
+		{"hovered": 1, "w": 1, "h": 1, "vnum": 12200, "slot": -1, "use_mode": false, "usable": false, "cells": [1], "moving": true, "state": "move", "target": 1},
+		{"hovered": 0, "w": 1, "h": 1, "vnum": 27001, "slot": -1, "use_mode": false, "usable": false, "cells": [0], "moving": true, "state": "move", "target": 0},
+		{"hovered": 0, "w": 1, "h": 1, "vnum": 12200, "slot": -1, "use_mode": false, "usable": false, "cells": [0], "moving": false, "state": "blocked", "target": 0},
+		{"hovered": 7, "w": 1, "h": 1, "vnum": 12200, "slot": -1, "use_mode": false, "usable": false, "cells": [7], "moving": false, "state": "blocked", "target": 2},
+		{"hovered": 6, "w": 1, "h": 2, "vnum": 10, "slot": -1, "use_mode": false, "usable": false, "cells": [6, 11], "moving": true, "state": "move", "target": 6},
+		{"hovered": 41, "w": 1, "h": 2, "vnum": 10, "slot": -1, "use_mode": false, "usable": false, "cells": [36, 41], "moving": true, "state": "move", "target": 36},
+		{"hovered": 1, "w": 1, "h": 3, "vnum": 3000, "slot": -1, "use_mode": false, "usable": false, "cells": [1, 6, 11], "moving": true, "state": "move", "target": 1},
+		{"hovered": 44, "w": 1, "h": 3, "vnum": 3000, "slot": -1, "use_mode": false, "usable": false, "cells": [34, 39, 44], "moving": true, "state": "move", "target": 34},
+		{"hovered": 9, "w": 1, "h": 3, "vnum": 3000, "slot": 4, "use_mode": false, "usable": false, "cells": [4, 9, 14], "moving": true, "state": "move", "target": 4},
+		{"hovered": 9, "w": 1, "h": 3, "vnum": 12, "slot": -1, "use_mode": false, "usable": false, "cells": [4, 9, 14], "moving": false, "state": "blocked", "target": 4},
+		{"hovered": 9, "w": 1, "h": 3, "vnum": 3000, "slot": -1, "use_mode": false, "usable": false, "cells": [4, 9, 14], "moving": true, "state": "move", "target": 4},
+		{"hovered": 7, "w": 1, "h": 1, "vnum": 25040, "slot": -1, "use_mode": true, "usable": true, "cells": [7, 2], "moving": false, "state": "usable", "target": 2},
+		{"hovered": 7, "w": 1, "h": 1, "vnum": 25040, "slot": -1, "use_mode": true, "usable": false, "cells": [7, 2], "moving": false, "state": "unusable", "target": 2},
+		{"hovered": 1, "w": 1, "h": 1, "vnum": 25040, "slot": -1, "use_mode": true, "usable": true, "cells": [1], "moving": true, "state": "move", "target": 1},
+		{"hovered": 16, "w": 1, "h": 2, "vnum": 12200, "slot": -1, "use_mode": false, "usable": false, "cells": [16, 21], "moving": false, "state": "blocked", "target": 21}
+	]
+}

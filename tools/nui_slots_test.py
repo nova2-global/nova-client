@@ -5,6 +5,7 @@ nui_slots_test (from tools/).
 Plain CPython over nui_game_support's stand-ins: the real mousemodule.py
 (its controller records each attach and detach), and item, skill and
 grpImage stand-ins that count the icon instances made and freed."""
+import json
 import os
 import sys
 import unittest
@@ -343,6 +344,342 @@ class Tooltips(SlotsTest):
         self.assertFalse(item.visible or skill.visible, "nothing shows while an item is attached")
         self.assertEqual(len(item.shown) + len(skill.shown), 4)
 
+
+
+FOOTPRINT_CASES = os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "footprint_cases.json")
+
+
+class Cells(SlotsTest):
+    """Slot grid v2's item grids (P14 spec 4.2 to 4.4, 4.8)."""
+
+    def test_an_empty_cell_has_every_cell_key(self):
+        cell = self.m.empty_cell(4)
+        self.assertEqual(tuple(self.m.CELL_KEYS[:len(self.m.SLOT_KEYS)]), tuple(self.m.SLOT_KEYS))
+        self.assertEqual(set(cell), set(self.m.CELL_KEYS))
+        self.assertEqual((cell["index"], cell["covered"], cell["target"], cell["picked"], cell["unavailable"]),
+                         (4, False, "", False, False))
+
+    def test_item_cells_put_an_item_on_its_anchor_and_mark_the_cells_it_covers(self):
+        game = self.game
+        game.give(0, 10, 1, size=(1, 2))         # a 1x2 sword at the top left
+        game.give(2, 3000, 1, size=(1, 3))       # a 1x3 glaive
+        game.give(4, 27001, 200)
+        game.give(40, 10, 1, size=(1, 2))        # on the last row: its lower cell is outside the grid
+        cells = self.m.item_cells(list(range(45)), 5, 9)
+        self.assertEqual(len(cells), 45)
+        self.assertEqual([set(c) for c in cells], [set(self.m.CELL_KEYS)] * 45)
+        self.assertEqual((cells[0]["kind"], cells[0]["h"], cells[0]["ref"], cells[0]["covered"]), ("item", 2, 0, False))
+        covered = cells[5]
+        self.assertEqual((covered["kind"], covered["icon"], covered["count"], covered["covered"], covered["ref"],
+                          covered["type"], covered["h"]), ("", "", "", True, 0, INVENTORY, 1),
+                         "the covered cell stays a hit target that names its owner")
+        self.assertEqual([i for i, c in enumerate(cells) if c["covered"]], [5, 7, 12], "1x2 and 1x3; the last row's spill dropped")
+        self.assertEqual(cells[4]["count"], "200")
+        self.assertEqual(cells[40]["h"], 2, "the anchor keeps its size; legacy draws it clipped")
+        self.assertEqual([self.m.owner_index(cells, i, 5, 9) for i in (0, 5, 7, 12, 13)], [0, 0, 2, 2, 13])
+        # A page boundary: page II shows positions 45 to 89.
+        game.give(45, 3000, 1, size=(1, 3))
+        page = self.m.item_cells([45 + i for i in range(45)], 5, 9)
+        self.assertEqual((page[0]["ref"], page[0]["h"], page[5]["covered"], page[10]["covered"]), (45, 3, True, True))
+        self.assertEqual(self.m.item_cells([None, 4], 2, 1)[0], self.m.empty_cell(0), "a cell with no position is empty")
+
+    def test_with_states_sets_each_target_and_the_picked_cell(self):
+        cells = [self.m.empty_cell(i) for i in range(4)]
+        marked = self.m.with_states(cells, {1: "move", 2: "blocked"}, picked=3)
+        self.assertEqual([c["target"] for c in marked], ["", "move", "blocked", ""])
+        self.assertEqual([c["picked"] for c in marked], [False, False, False, True])
+        self.assertEqual(cells[1]["target"], "", "a new list; the cells are not changed")
+
+    def test_attached_info_answers_what_the_controller_holds_with_its_size(self):
+        game = self.game
+        self.assertIsNone(self.m.attached_info())
+        game.give(3, 10, 1, size=(1, 2))
+        self.controller.AttachObject("legacy", INVENTORY, 3, 10, 1)
+        self.assertEqual(self.m.attached_info(), (INVENTORY, 3, 10, 1, 1, 2))
+        self.controller.DeattachObject()
+        game.learn(4, 4, level=1)
+        self.controller.AttachObject("legacy", SKILL, 4, 4)
+        self.assertEqual(self.m.attached_info()[4:], (1, 1), "a skill is one cell")
+        self.controller.DeattachObject()
+        game.put_quick(0, INVENTORY, 3)
+        self.controller.AttachObject("legacy", QUICK, 0, 0)
+        self.assertEqual(self.m.attached_info()[4:], (1, 2), "a quick slot's item has its size")
+
+
+class FootprintVectors(SlotsTest):
+    """footprint_states, drop_target and the CheckMoving rule against every
+    case of tools/fixtures/footprint_cases.json (P14 spec 4.9.2: ENGINE's
+    file from the real CGridSlotWindow replaces the hand cases)."""
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        with open(FOOTPRINT_CASES, encoding="utf-8") as handle:
+            self.vectors = json.load(handle)
+        self.cols, self.rows = self.vectors["grid"]
+        for entry in self.vectors["items"]:
+            self.game.give(entry["cell"], entry["vnum"], 1, size=(entry["w"], entry["h"]))
+        self.cells = self.m.item_cells(list(range(self.cols * self.rows)), self.cols, self.rows)
+        self.vnums = dict((entry["cell"], entry["vnum"]) for entry in self.vectors["items"])
+
+    def test_the_file_has_the_schema_of_the_contract(self):
+        self.assertIn(self.vectors["source"], ("hand", "CGridSlotWindow"))
+        self.assertEqual(self.vectors["grid"], [5, 9])
+        for case in self.vectors["cases"]:
+            self.assertTrue({"hovered", "w", "h", "vnum", "use_mode", "usable", "cells", "moving", "state"} <= set(case), case)
+            self.assertIn(case["state"], self.m.TARGET_STATES)
+
+    def test_every_case_matches(self):
+        for number, case in enumerate(self.vectors["cases"]):
+            attached = (INVENTORY, case.get("slot", -1), case["vnum"], 1, case["w"], case["h"])
+            where = "case %d %r" % (number, case)
+            found = self.m._picked_list(self.cells, case["hovered"], case["w"], case["h"], self.cols, self.rows,
+                                        case["use_mode"])
+            self.assertEqual(sorted(found), sorted(case["cells"]), where)
+            self.assertEqual(self.m._check_moving(self.cells, found, attached, self.cols, self.rows, vnums=self.vnums),
+                             case["moving"], where)
+            states = self.m.footprint_states(self.cells, case["hovered"], attached, self.cols, self.rows,
+                                             case["use_mode"], case["usable"], vnums=self.vnums)
+            self.assertEqual(set(states.values()), {case["state"]}, where)
+            if "target" in case:
+                self.assertEqual(self.m.drop_target(self.cells, case["hovered"], attached, self.cols, self.rows,
+                                                    case["use_mode"]), case["target"], where)
+            # Without the vnum map, the player's inventory answers the same.
+            self.assertEqual(self.m.footprint_states(self.cells, case["hovered"], attached, self.cols, self.rows,
+                                                     case["use_mode"], case["usable"]), states, where)
+
+    def test_the_usable_state_covers_the_target_items_area(self):
+        attached = (INVENTORY, -1, 25040, 1, 1, 1)
+        states = self.m.footprint_states(self.cells, 9, attached, 5, 9, True, True)
+        self.assertEqual(states, {4: "usable", 9: "usable", 14: "usable"}, "the glaive's three cells")
+
+    def test_no_pick_up_style_draws_no_footprint(self):
+        attached = (INVENTORY, -1, 12200, 1, 1, 1)
+        self.assertEqual(self.m.footprint_states(self.cells, 1, attached, 5, 9, False, False, pick_up=False), {})
+        self.assertEqual(self.m.footprint_states(self.cells, 1, None, 5, 9, False, False), {})
+
+
+class Proxy(SlotsTest):
+    """SlotWindowProxy (P14 spec 6.0)."""
+
+    def refreshed(self):
+        seen = []
+        return seen, seen.append
+
+    def test_legacy_calls_become_cells_at_refresh(self):
+        game = self.game
+        game.give(45, 10, 1, size=(1, 2))
+        game.give(47, 72723, 1)
+        seen, keep = self.refreshed()
+        page = [1]
+        proxy = self.m.SlotWindowProxy(range(45), keep, cols=5, rows=9, positions=lambda local: page[0] * 45 + local)
+        proxy.SetItemSlot(0, 10, 0)
+        proxy.SetItemSlot(2, 72723, 0)
+        proxy.ActivateSlot(2)
+        proxy.SetItemSlot(3, 27001, 200)
+        proxy.SetItemSlot(99, 27001, 5)
+        self.assertEqual(seen, [], "nothing is handed over before RefreshSlot")
+        proxy.RefreshSlot()
+        cells = seen[-1]
+        self.assertEqual(len(cells), 45)
+        self.assertEqual((cells[0]["kind"], cells[0]["ref"], cells[0]["h"], cells[0]["icon"]), ("item", 45, 2, "/icon/item/00010.tga"))
+        self.assertTrue(cells[5]["covered"])
+        self.assertEqual((cells[2]["active"], cells[3]["count"]), (True, "200"))
+        self.assertEqual(cells[0]["count"], "", "legacy passes 0 for a single item")
+        self.assertEqual(proxy.owner(5), 0)
+        self.assertEqual(proxy.vnums(), {0: 10, 2: 72723, 3: 27001})
+        # The same vnum again keeps the active state; another one, or a clear, ends it.
+        proxy.SetItemSlot(2, 72723, 0)
+        proxy.RefreshSlot()
+        self.assertTrue(seen[-1][2]["active"])
+        proxy.SetItemSlot(2, 27002, 0)
+        proxy.RefreshSlot()
+        self.assertFalse(seen[-1][2]["active"])
+        proxy.SetItemSlot(3, 0, 0)
+        proxy.RefreshSlot()
+        self.assertEqual(seen[-1][3], self.m.empty_cell(3), "vnum 0 clears the slot")
+        self.assertEqual(proxy.cells(), seen[-1])
+
+    def test_a_count_shows_whenever_legacy_passes_one_above_zero(self):
+        seen, keep = self.refreshed()
+        proxy = self.m.SlotWindowProxy([152, 153], keep, cols=2, rows=1)
+        proxy.SetItemSlot(152, 27001, 1)
+        proxy.SetItemSlot(153, 27001, 0)
+        proxy.RefreshSlot()
+        self.assertEqual([c["count"] for c in seen[-1]], ["1", ""], "CSlotWindow::SetSlotCount draws any count above 0")
+
+    def test_cover_buttons_unavailable_and_the_states(self):
+        seen, keep = self.refreshed()
+        proxy = self.m.SlotWindowProxy([152, 153, 154], keep, cols=3, rows=1)
+        for slot in (152, 153, 154):
+            proxy.SetCoverButton(slot, "d:/ymir work/ui/game/quest/slot_button_01.sub", "", "", "d:/ymir work/ui/game/belt_inventory/slot_disabled.tga")
+            proxy.SetAlwaysRenderCoverButton(slot, True)
+        proxy.EnableCoverButton(152)
+        proxy.DisableCoverButton(153)
+        proxy.DisableCoverButton(154)
+        proxy.SetItemSlot(152, 27001, 3)
+        proxy.LockSlot(152)
+        proxy.RefreshSlot()
+        cells = seen[-1]
+        self.assertEqual([c["unavailable"] for c in cells], [False, True, True], "an empty cell shows its cover too")
+        self.assertEqual([c["cover"] for c in cells], [False, False, False], "the belt's art is no skill cover")
+        self.assertTrue(cells[0]["locked"])
+        skills = self.m.SlotWindowProxy([0, 1], keep)
+        skills.SetCoverButton(0)
+        skills.SetCoverButton(1)
+        self.game.learn(0, 7, level=3)
+        skills.SetSkillSlotNew(0, 7, 0, 3)
+        skills.SetSlotCountNew(0, 0, 3)
+        skills.RefreshSlot()
+        self.assertEqual([(c["kind"], c["cover"], c["count"]) for c in seen[-1]], [("skill", True, "3"), ("", False, "")],
+                         "the skill cover shows on a skill, not on an empty slot")
+
+    def test_events_styles_and_the_grid_size(self):
+        proxy = self.m.SlotWindowProxy(range(15), None, cols=5, rows=3)
+        picked = []
+        proxy.SetSelectItemSlotEvent(picked.append)
+        proxy.SAFE_SetButtonEvent("RIGHT", "ALWAYS", picked.append)
+        handlers = proxy.handlers()
+        self.assertEqual(handlers["select_item"], picked.append)
+        self.assertIsNotNone(handlers["unselect_item"])
+        self.assertIsNotNone(handlers["unselect_empty"])
+        self.assertIsNone(handlers["select_empty"])
+        proxy.SetSlotStyle(self.game.modules["wndMgr"].SLOT_STYLE_NONE)
+        self.assertFalse(proxy.pick_up)
+        proxy.SetUseMode(True)
+        proxy.SetUsableItem(True)
+        self.assertEqual((proxy.use_mode, proxy.usable), (True, True))
+        proxy.ArrangeSlot(0, 5, 7, 32, 32, 0, 0)
+        self.assertEqual((proxy.cols, proxy.rows, proxy.GetSlotCount()), (5, 7, 35))
+        proxy.SetSlotBaseImage("d:/ymir work/ui/public/slot_base.sub", 1.0, 1.0, 1.0, 1.0)
+        with self.assertRaises(AttributeError):
+            proxy.SetSlotDiffuseColor(0, 1)
+
+
+class Events(SlotsTest):
+    """LegacySlotEvents: the cells' events as the legacy C++ slot window sends
+    them (P14 spec 6.0's table)."""
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        game = self.game
+        game.give(0, 10, 1, size=(1, 2))
+        game.give(2, 27001, 5)
+        game.give(3, 12200, 1)
+        self.calls = []
+        self.seen_states = []
+        self.proxy = self.m.SlotWindowProxy(range(15), None, cols=5, rows=3)
+        record = self.calls.append
+        self.proxy.SetSelectItemSlotEvent(lambda n: (record(("select_item", n)),
+                                                     self.controller.AttachObject("legacy", INVENTORY, n, game._item_at(n)["vnum"])))
+        self.proxy.SetSelectEmptySlotEvent(lambda n: (record(("select_empty", n)), self.controller.DeattachObject()))
+        self.proxy.SetUnselectItemSlotEvent(lambda n: record(("unselect_item", n)))
+        self.proxy.SetUnselectEmptySlotEvent(lambda n: record(("unselect_empty", n)))
+        self.proxy.SetUseSlotEvent(lambda n: record(("use", n)))
+        self.proxy.SetOverInItemEvent(lambda n: record(("over_in", n)))
+        self.proxy.SetOverOutItemEvent(lambda: record(("over_out",)))
+        for slot in (0, 2, 3):
+            self.proxy.SetItemSlot(slot, game._item_at(slot)["vnum"], 0)
+        self.proxy.RefreshSlot()
+        self.events = self.m.LegacySlotEvents(self.proxy, on_states=lambda states, picked: self.seen_states.append((states, picked)))
+
+    def test_a_press_selects_the_item_or_its_owner_or_the_empty_cell(self):
+        self.events.press(5, 0)
+        self.assertEqual(self.calls, [("select_item", 0)], "a covered cell stands for its anchor")
+        self.assertTrue(self.m.attached())
+        self.events.press(9, 0)
+        self.assertEqual(self.calls[-1], ("select_empty", 9), "with the sword attached, the empty cell under it")
+        self.assertFalse(self.m.attached())
+        self.proxy.LockSlot(2)
+        self.proxy.RefreshSlot()
+        self.events.press(2, 0)
+        self.assertEqual(self.calls[-1], ("select_empty", 2), "a locked item counts as empty (OnMouseLeftButtonDown)")
+
+    def test_while_attached_a_press_in_a_grid_goes_to_the_drop_target(self):
+        self.controller.AttachObject("legacy", INVENTORY, 30, 10, 1)   # a 1x2 sword from elsewhere
+        self.game.item_sizes[10] = (1, 2)
+        del self.calls[:]
+        self.events.press(12, 0)   # rows 2..3 do not fit: the footprint moves up to 7 and 12
+        self.assertEqual(self.calls, [("select_empty", 7)], "the footprint's first cell, as GetPickedSlotPointer")
+
+    def test_the_right_button_and_a_double_click(self):
+        self.events.press(2, 1)
+        self.events.press(9, 1)
+        self.events.press(5, 1)
+        self.assertEqual(self.calls, [("unselect_item", 2), ("unselect_empty", 9), ("unselect_item", 0)])
+        self.controller.AttachObject("legacy", INVENTORY, 2, 27001, 5)
+        self.events.press(3, 1)
+        self.assertEqual(len(self.calls), 3, "the host cancelled the attach; nothing is unselected")
+        self.controller.DeattachObject()
+        self.events.use(5)
+        self.events.use(9)
+        self.assertEqual(self.calls[-1], ("use", 0), "an empty cell has no use event")
+
+    def test_release_drops_after_a_drag_from_another_cell_only(self):
+        self.events.press(2, 0)
+        self.events.release(2, 0)
+        self.assertEqual([c for c in self.calls if c[0].startswith("select")], [("select_item", 2)],
+                         "a release on the pressed cell keeps the item attached")
+        self.assertTrue(self.m.attached())
+        self.controller.DeattachObject()
+        self.events.press(2, 0)
+        self.events.release(4, 0)
+        self.assertEqual(self.calls[-1], ("select_empty", 4))
+        self.assertFalse(self.m.attached())
+        self.controller.AttachObject("legacy", INVENTORY, 3, 12200, 1)
+        self.events.drop(9)
+        self.assertEqual(self.calls[-1], ("select_empty", 9), "nuidrop: a legacy press released here")
+
+    def test_over_and_out_send_one_over_in_per_item_and_one_over_out(self):
+        self.events.over(0)
+        self.events.over(5)
+        self.assertEqual(self.calls, [("over_in", 0)], "the same item: m_dwToolTipSlotNumber holds it")
+        self.events.over(9)
+        self.assertEqual(self.calls[-1], ("over_out",))
+        self.events.out(9)
+        self.assertEqual(self.calls.count(("over_out",)), 1)
+        self.events.over(2)
+        self.proxy.SetItemSlot(2, 27001, 4)
+        self.proxy.RefreshSlot()
+        self.assertEqual(self.calls[-2:], [("over_out",), ("over_in", 2)], "a refresh shows the hovered item again")
+
+    def test_footprint_states_follow_the_hover_while_attached_and_clear_at_the_end(self):
+        self.events.over(9)
+        self.assertEqual(self.seen_states, [], "nothing attached: no states")
+        self.events.press(2, 0)     # pick the stack
+        self.assertEqual(self.seen_states[-1], ({2: "move"}, 2), "its own cell, and it is the picked cell")
+        self.events.out(2)
+        self.events.over(3)
+        self.assertEqual(self.seen_states[-1], ({3: "blocked"}, 2), "another item: red")
+        self.events.over(5)
+        self.assertEqual(self.seen_states[-1], ({5: "blocked"}, 2))
+        self.controller.DeattachObject()
+        self.assertEqual(self.seen_states[-1], ({}, -1), "the end of the attach clears every grid")
+        self.assertNotIn("DeattachObject", self.controller.__dict__, "the watch goes with its attach")
+
+    def test_single_slots_mark_the_hovered_slot_while_attached(self):
+        states = []
+        wear = self.m.SlotWindowProxy([90, 94], None)
+        events = self.m.LegacySlotEvents(wear, on_states=lambda s, p: states.append(s))
+        wear.RefreshSlot()
+        self.controller.AttachObject("legacy", INVENTORY, 2, 27001, 5)
+        events.over(1)
+        self.assertEqual(states[-1], {1: "move"})
+        events.out(1)
+        self.assertEqual(states[-1], {})
+
+
+class TooltipsWhileAttached(SlotsTest):
+    def test_while_attached_shows_the_hovered_item_and_another_window_type_passes_through(self):
+        tooltips = self.game.modules["uiToolTip"]
+        bridge = self.m.TooltipBridge(while_attached=True)
+        item = tooltips.ItemToolTip()
+        bridge.set_item_tooltip(item)
+        self.game.give(0, 27001, 1)
+        self.controller.AttachObject("legacy", INVENTORY, 0, 27001)
+        bridge.show_inventory_item(4)
+        bridge.show_inventory_item(5, P["DRAGON_SOUL_INVENTORY"])
+        self.assertEqual(item.shown, [("SetInventoryItem", 4), ("SetInventoryItem", 5, P["DRAGON_SOUL_INVENTORY"])])
+        self.assertFalse(self.m.TooltipBridge().while_attached, "the default keeps the taskbar's rule")
 
 if __name__ == "__main__":
     unittest.main()

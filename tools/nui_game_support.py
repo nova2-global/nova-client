@@ -1093,7 +1093,7 @@ class Game(object):
     loaded over them. `with game:` puts the modules into sys.modules (the
     legacy code imports some inside its functions); load() does it too."""
 
-    def __init__(self, nui_on=True, engine=True, engine_3a=True):
+    def __init__(self, nui_on=True, engine=True, engine_3a=True, engine_3b=True):
         self.log = []
         self.attaches = []       # ("attach", type, slot, index, count) and ("detach", type)
         self.created = []        # icon instances made: (kind, handle)
@@ -1143,6 +1143,8 @@ class Game(object):
         self.state.available = nui_on
         self.engine = engine
         self.engine_3a = engine and engine_3a
+        # Wave 3b (P14 spec 4.9.4): _nui.FollowPointer and the nui-cells decorator.
+        self.engine_3b = self.engine_3a and engine_3b
         self.dbg = support.make_dbg()
         self.modules = self._modules()
         self._saved = {}
@@ -1314,6 +1316,9 @@ class Game(object):
         nui = support.make_nui(self.state)
         if self.engine:
             nui._nui.BindFeed = lambda *args: True
+        if self.engine_3b:
+            nui._nui.FollowPointer = lambda *args: True
+            self.state.decorators.add("nui-cells")
         modules["nui"] = nui
         return modules
 
@@ -2117,3 +2122,987 @@ def _load_building_list(game, module):
     except Exception:
         return False
     return bool(module.BUILDING_DATA_LIST)
+
+
+# --- Wave 3b (P14 spec 9.3): the inventory, costume, belt and select item windows -----------------
+
+# PythonPlayerModule.cpp and GameType.h today (P14 spec 3.2).
+WAVE3B_PLAYER_CONSTANTS = {
+    "INVENTORY_PAGE_SIZE": 45, "INVENTORY_PAGE_COUNT": 2, "INVENTORY_SLOT_COUNT": 168, "EQUIPMENT_SLOT_START": 90,
+    "EQUIPMENT_PAGE_COUNT": 12, "NEW_EQUIPMENT_SLOT_START": 111, "NEW_EQUIPMENT_SLOT_COUNT": 3,
+    "ATTRIBUTE_SLOT_MAX_NUM": 7, "METIN_SOCKET_TYPE_NONE": 0, "METIN_SOCKET_TYPE_SILVER": 1, "METIN_SOCKET_TYPE_GOLD": 2,
+    "REFINE_CANT": 0, "REFINE_OK": 1, "REFINE_ALREADY_MAX_SOCKET_COUNT": 2, "REFINE_NEED_MORE_GOOD_SCROLL": 3,
+    "REFINE_CANT_MAKE_SOCKET_ITEM": 4, "REFINE_NOT_NEXT_GRADE_ITEM": 5, "REFINE_CANT_REFINE_METIN_TO_EQUIPMENT": 6,
+    "REFINE_CANT_REFINE_ROD": 7, "ATTACH_METIN_CANT": 0, "ATTACH_METIN_OK": 1, "ATTACH_METIN_NOT_MATCHABLE_ITEM": 2,
+    "ATTACH_METIN_NO_MATCHABLE_SOCKET": 3, "ATTACH_METIN_NOT_EXIST_GOLD_SOCKET": 4,
+    "ATTACH_METIN_CANT_ATTACH_TO_EQUIPMENT": 5, "DETACH_METIN_CANT": 0, "DETACH_METIN_OK": 1,
+    "AUTO_POTION_TYPE_HP": 0, "AUTO_POTION_TYPE_SP": 1,
+    "DRAGON_SOUL_PAGE_SIZE": 32, "DRAGON_SOUL_PAGE_COUNT": 5, "DRAGON_SOUL_SLOT_COUNT": 960,
+    "DRAGON_SOUL_EQUIPMENT_SLOT_START": 122, "DRAGON_SOUL_EQUIPMENT_PAGE_COUNT": 2, "DRAGON_SOUL_EQUIPMENT_FIRST_SIZE": 6,
+}
+# PythonItemModule.cpp today (the slot numbers; the flags as CItemData's bits).
+WAVE3B_ITEM_CONSTANTS = {
+    "COSTUME_SLOT_START": 109, "COSTUME_SLOT_COUNT": 2, "COSTUME_SLOT_END": 111, "COSTUME_SLOT_BODY": 109,
+    "COSTUME_SLOT_HAIR": 110, "BELT_INVENTORY_SLOT_START": 152, "BELT_INVENTORY_SLOT_COUNT": 16,
+    "BELT_INVENTORY_SLOT_END": 168, "EQUIPMENT_COUNT": 12, "EQUIPMENT_BODY": 90, "EQUIPMENT_HEAD": 91,
+    "EQUIPMENT_SHOES": 92, "EQUIPMENT_WRIST": 93, "EQUIPMENT_WEAPON": 94, "EQUIPMENT_NECK": 95, "EQUIPMENT_EAR": 96,
+    "EQUIPMENT_UNIQUE1": 97, "EQUIPMENT_UNIQUE2": 98, "EQUIPMENT_ARROW": 99, "EQUIPMENT_RING1": 111,
+    "EQUIPMENT_RING2": 112, "EQUIPMENT_BELT": 113, "ITEM_APPLY_MAX_NUM": 3, "ITEM_SOCKET_MAX_NUM": 3,
+    "LIMIT_MAX_NUM": 2, "ITEM_ANTIFLAG_SELL": 1 << 14, "ANTIFLAG_SELL": 1 << 14, "ITEM_FLAG_CONFIRM_WHEN_USE": 1 << 15,
+    "ITEM_TYPE_NONE": 0, "ITEM_TYPE_WEAPON": 1, "ITEM_TYPE_ARMOR": 2, "ITEM_TYPE_USE": 3, "ITEM_TYPE_METIN": 10,
+    "ITEM_TYPE_BELT": 34, "ITEM_TYPE_COSTUME": 28, "ARMOR_BODY": 0, "ARMOR_WRIST": 3, "ARMOR_NECK": 5, "ARMOR_EAR": 6,
+}
+WAVE3B_APP_CONSTANTS = {"ENABLE_COSTUME_SYSTEM": 1, "ENABLE_NEW_EQUIPMENT_SYSTEM": 1}
+MODULE_CONSTANTS = os.path.join(support.HERE, "fixtures", "module_constants.json")
+
+
+def module_constants():
+    """{module: {name: value}}: the client's item, player, skill and app int
+    constants (tools/fixtures/module_constants.json, made by
+    tools/nui_module_constants.py from nova-client-src), read once."""
+    if not _MODULE_CONSTANTS:
+        import json
+        with open(MODULE_CONSTANTS, encoding="utf-8") as handle:
+            _MODULE_CONSTANTS.append(json.load(handle)["modules"])
+    return _MODULE_CONSTANTS[0]
+
+
+_MODULE_CONSTANTS = []
+
+
+def _client_values(table, module):
+    """table's names with the client's values where module_constants() has
+    them (the literals above stand for the rest)."""
+    known = module_constants().get(module, {})
+    return dict((name, known.get(name, value)) for name, value in table.items())
+# The legacy dialog modules a Wave 3b legacy window makes, as stand-ins.
+WAVE3B_DIALOG_MODULES = ("uiCommon", "uiPickMoney", "uiRefine", "uiAttachMetin")
+
+
+class LegacySlotWindow(object):
+    """ui.SlotWindow and ui.GridSlotWindow as the C++ CSlotWindow keeps them
+    (P14 spec 6.0): the slots a uiscript or ArrangeSlot made, what legacy set
+    on each (vnum, count, active, lock, disable, the cover button's state),
+    the events in ui.py's attributes and a dict (`events`), use mode, usable
+    and the slot style. A test fires an event as the C++ would
+    (fire("select_item", slot)) and reads what legacy shows (shown())."""
+
+    EVENTS = ("select_empty", "select_item", "unselect_empty", "unselect_item", "use", "over_in", "over_out")
+
+    def __init__(self, base):
+        self._base = base
+        self.slots = {}
+        self.events = dict.fromkeys(self.EVENTS)
+        self.use_mode = False
+        self.usable = False
+        self.style = WNDMGR_CONSTANTS["SLOT_STYLE_PICK_UP"]
+        self.start_index = 0
+        self.x_count = self.y_count = 0
+        self.refreshes = 0
+
+    @staticmethod
+    def empty():
+        return {"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False, "cover": None,
+                "unavailable": False, "always_cover": False}
+
+    def AppendSlot(self, index, x=0, y=0, w=32, h=32):
+        self.slots[int(index)] = self.empty()
+
+    def ArrangeSlot(self, start, x_count, y_count, w=32, h=32, xb=0, yb=0):
+        self.start_index, self.x_count, self.y_count = int(start), int(x_count), int(y_count)
+        self.slots = dict((int(start) + i, self.empty()) for i in range(int(x_count) * int(y_count)))
+
+    def _slot(self, index):
+        return self.slots.get(int(index))
+
+    def SetItemSlot(self, index, vnum, count=0, color=None):
+        slot = self._slot(index)
+        if slot is None:
+            return
+        if not vnum:
+            self.ClearSlot(index)
+            return
+        if slot["vnum"] != vnum:
+            slot["active"] = False
+        slot.update({"vnum": int(vnum), "count": int(count), "locked": False, "disabled": False})
+
+    def ClearSlot(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot.update({"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False})
+
+    def ActivateSlot(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["active"] = True
+
+    def DeactivateSlot(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["active"] = False
+
+    def SetCoverButton(self, index, up="", over="", down="", disable="", left=False, right=True):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["cover"] = (up, over, down, disable)
+
+    def EnableCoverButton(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["unavailable"] = False
+
+    def DisableCoverButton(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["unavailable"] = True
+
+    def SetAlwaysRenderCoverButton(self, index, flag=True):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["always_cover"] = bool(flag)
+
+    def LockSlot(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["locked"] = True
+
+    def UnlockSlot(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["locked"] = False
+
+    def SetUseMode(self, flag):
+        self.use_mode = bool(flag)
+
+    def SetUsableItem(self, flag):
+        self.usable = bool(flag)
+
+    def SetSlotStyle(self, style):
+        self.style = style
+
+    def SetSlotBaseImage(self, *args):
+        pass
+
+    def RefreshSlot(self):
+        self.refreshes += 1
+
+    def __set_event(name, attribute):
+        def set_event(self, event):
+            self.events[name] = event
+            setattr(self, attribute, event)
+        return set_event
+
+    SetSelectEmptySlotEvent = __set_event("select_empty", "eventSelectEmptySlot")
+    SetSelectItemSlotEvent = __set_event("select_item", "eventSelectItemSlot")
+    SetUnselectEmptySlotEvent = __set_event("unselect_empty", "eventUnselectEmptySlot")
+    SetUnselectItemSlotEvent = __set_event("unselect_item", "eventUnselectItemSlot")
+    SetUseSlotEvent = __set_event("use", "eventUseSlot")
+    SetOverInItemEvent = __set_event("over_in", "eventOverInItem")
+    SetOverOutItemEvent = __set_event("over_out", "eventOverOutItem")
+    del __set_event
+
+    def SAFE_SetButtonEvent(self, button, state, event):
+        names = {"LEFT": ("select_empty", "select_item"), "RIGHT": ("unselect_empty", "unselect_item")}[button]
+        if state in ("EMPTY", "ALWAYS"):
+            self.events[names[0]] = event
+        if state in ("EXIST", "ALWAYS"):
+            self.events[names[1]] = event
+
+    def fire(self, name, *args):
+        """The event the C++ slot window sends its handler."""
+        event = self.events[name]
+        if event:
+            event(*args)
+
+    def shown(self):
+        """{slot: (vnum, count label, active)} of the slots that hold an item,
+        as CSlotWindow draws them (SetSlotCount shows a count above 0)."""
+        return dict((index, (slot["vnum"], str(slot["count"]) if slot["count"] > 0 else "", slot["active"]))
+                    for index, slot in self.slots.items() if slot["vnum"])
+
+    def __getattr__(self, attr):
+        return getattr(self._base, attr)
+
+
+class LegacyDialog(object):
+    """A legacy common dialog (uiCommon.QuestionDialog, QuestionDialog2,
+    PopupDialog; uiPickMoney.PickMoneyDialog): records Open and Close with
+    its texts in the Game's log, keeps its events; accept() and cancel()
+    press its buttons. Callers store attributes on it (count, slotIndex)."""
+
+    def __init__(self, game, module, kind):
+        self._game = game
+        self._name = "%s.%s" % (module, kind)
+        self.texts = []
+        self.title = ""
+        self.accept_event = None
+        self.cancel_event = None
+        self.max = None
+        self.opened = None
+        self.is_open = False
+        game.dialogs.append(self)
+
+    def _log(self, what, *args):
+        self._game.log.append(("%s.%s" % (self._name, what), args))
+
+    def SetText(self, text):
+        self.texts = [text]
+
+    def SetText1(self, text):
+        self.texts[:1] = [text]
+
+    def SetText2(self, text):
+        while len(self.texts) < 1:
+            self.texts.append("")
+        self.texts[1:2] = [text]
+
+    def SetTitleName(self, name):
+        self.title = name
+
+    def SetAcceptEvent(self, event):
+        self.accept_event = event
+
+    def SetCancelEvent(self, event):
+        self.cancel_event = event
+
+    def SetMax(self, digits):
+        self.max = digits
+        self._log("SetMax", digits)
+
+    def Open(self, *args):
+        self.opened = args
+        self.is_open = True
+        self._log("Open", *(tuple(self.texts) + (self.title,) + args))
+
+    def Close(self):
+        if self.is_open:
+            self._log("Close")
+        self.is_open = False
+
+    def Hide(self):
+        self.is_open = False
+
+    def Show(self):
+        self.is_open = True
+
+    def IsShow(self):
+        return self.is_open
+
+    def LoadDialog(self):
+        return 1
+
+    def Destroy(self):
+        self.is_open = False
+
+    def SetTop(self):
+        pass
+
+    def SetWarningLine(self, index):
+        pass
+
+    def accept(self, *args):
+        if self.accept_event:
+            self.accept_event(*args)
+
+    def cancel(self):
+        if self.cancel_event:
+            self.cancel_event()
+
+
+class LegacyDialogWindow(object):
+    """uiRefine.RefineDialog, RefineDialogNew and uiAttachMetin.AttachMetinDialog
+    as the inventory sees them: Open's arguments recorded in the log."""
+
+    def __init__(self, game, name):
+        self._game = game
+        self._name = name
+        self.shown = False
+
+    def Open(self, *args):
+        self.shown = True
+        self._game.log.append((self._name + ".Open", args))
+
+    def Close(self):
+        self.shown = False
+
+    def Hide(self):
+        self.shown = False
+
+    def Show(self):
+        self.shown = True
+
+    def IsShow(self):
+        return self.shown
+
+    def SetTop(self):
+        pass
+
+    def Destroy(self):
+        self.shown = False
+
+
+def install_wave3b_ui(game):
+    """Adds to game (after install_wave2b_ui and install_wave3a_ui) what the
+    Wave 3b legacy windows use (uiinventory.py, uiselectitem.py, P14 spec
+    9.3):
+    - a PythonScriptLoader that reads the real uiscript file and makes each
+      named child of its type, slot windows included (LegacySlotWindow: a
+      "slot" element's slots, a "grid_table" arranged as the uiscript says),
+      each widget at its size; wndMgr.Show and Hide of a handle reach its
+      window (the inventory hides itself that way);
+    - player, item and app with today's constants (WAVE3B_*_CONSTANTS) and
+      the inventory's functions over the Game's state: money (Game.elk), the
+      item flags, grades and the belt's available cells, IsEquipmentSlot and
+      the other position checks, the item kinds (Game.refine_scrolls,
+      .metins, .detach_scrolls, .keys, .equipment, .use_types, .antiflags,
+      .item_flags_of, .prices), the cursor (Game.cursor), GetItemLink;
+      CanRefine, CanAttachMetin, CanDetach and CanUnlock answer OK unless a
+      test scripts them (Game.answer);
+    - stand-ins of uiCommon, uiPickMoney, uiRefine and uiAttachMetin whose
+      dialogs record their opens (Game.dialogs, LegacyDialog);
+    - an Interface stand-in (Game.interface) whose ToggleDragonSoulWindow is
+      recorded, and a dragon soul refine window that is hidden."""
+    ui = game.modules["ui"]
+    Win = ui.Window
+    windows_by_handle = {}
+
+    class Image(LegacyWidget):
+        def __init__(self, layer="UI"):
+            LegacyWidget.__init__(self, "image")
+            self.size = (0, 0)
+            self.position = (0, 0)
+
+        def SetSize(self, width, height):
+            self.size = (width, height)
+
+        def GetWidth(self):
+            return self.size[0]
+
+        def GetHeight(self):
+            return self.size[1]
+
+        def SetPosition(self, x, y):
+            self.position = (x, y)
+
+    def slot_window(child):
+        widget = LegacySlotWindow(Win())
+        if child.get("type") == "grid_table":
+            widget.ArrangeSlot(child.get("start_index", 0), child.get("x_count", 0), child.get("y_count", 0))
+        for slot in child.get("slot", ()) or ():
+            widget.AppendSlot(slot["index"], slot.get("x", 0), slot.get("y", 0), slot.get("width", 32), slot.get("height", 32))
+        return widget
+
+    kinds = {"button": ui.Button, "radio_button": ui.RadioButton, "toggle_button": ui.ToggleButton,
+             "titlebar": ui.TitleBar, "board": ui.Board, "board_with_titlebar": ui.Board, "thinboard": ui.Board,
+             "text": ui.TextLine, "image": Image, "expanded_image": Image, "ani_image": Image}
+
+    def build(window, value):
+        for child in value.get("children", ()) or ():
+            kind = child.get("type")
+            if kind in ("slot", "grid_table"):
+                widget = slot_window(child)
+            else:
+                widget = kinds.get(kind, Win)()
+            widget.name = child.get("name", "")
+            if "text" in child and hasattr(widget, "SetText"):
+                widget.SetText(child["text"])
+            if "width" in child and hasattr(widget, "SetSize"):
+                widget.SetSize(child.get("width", 0), child.get("height", 0))
+            if "image" in child and hasattr(widget, "LoadImage"):
+                widget.LoadImage(child["image"])
+            window.ElementDictionary[widget.name] = widget
+            build(window, child)
+
+    class PythonScriptLoader(object):
+        loaded = []
+
+        def LoadScriptFile(self, window, path):
+            PythonScriptLoader.loaded.append(path)
+            clear = getattr(window, "ClearDictionary", None)
+            if clear is not None:
+                clear()
+            if not hasattr(window, "ElementDictionary"):
+                window.ElementDictionary = {}
+            if not hasattr(window, "scripts"):
+                window.scripts = []
+            window.scripts.append(path)
+            value = read_uiscript(path)
+            if "width" in value:
+                window.SetSize(value.get("width", 0), value.get("height", 0))
+            build(window, value)
+
+    script_base = ui.ScriptWindow
+
+    class ScriptWindow(script_base):
+        def __init__(self, layer="UI"):
+            script_base.__init__(self, layer)
+            windows_by_handle[self.hWnd] = weakref.ref(self)
+
+        def GetChild2(self, name):
+            return self.ElementDictionary.get(name)
+
+    ui.ScriptWindow = ScriptWindow
+    ui.PythonScriptLoader = PythonScriptLoader
+    ui.ImageBox = Image
+    ui.SlotWindow = lambda layer="UI": LegacySlotWindow(Win(layer))
+    ui.GridSlotWindow = ui.SlotWindow
+
+    wndmgr = game.modules["wndMgr"]
+
+    def by_handle(handle, shown):
+        ref = windows_by_handle.get(handle)
+        window = ref() if ref is not None else None
+        if window is not None:
+            window.shown = shown
+    wndmgr.Show = lambda handle: by_handle(handle, True)
+    wndmgr.Hide = lambda handle: by_handle(handle, False)
+    wndmgr.OnceIgnoreMouseLeftButtonUpEvent = recorded(game.log, "wndMgr.OnceIgnoreMouseLeftButtonUpEvent", lambda: None)
+
+    _wave3b_modules(game)
+    return ui
+
+
+def _wave3b_modules(game):
+    """The player, item and app functions and the dialog stand-ins of
+    install_wave3b_ui (its docstring lists them)."""
+    modules = game.modules
+    for attribute, value in (("elk", 0), ("cursor", APP_CONSTANTS["NORMAL"]), ("item_flags", {}), ("item_grades", {}),
+                             ("belt_cells", 4), ("refine_scrolls", set()), ("metins", set()), ("detach_scrolls", set()),
+                             ("keys", set()), ("equipment", set()), ("use_types", {}), ("antiflags", {}),
+                             ("item_flags_of", {}), ("prices", {}), ("dialogs", [])):
+        if not hasattr(game, attribute):
+            setattr(game, attribute, value)
+
+    player, item, app = modules["player"], modules["item"], modules["app"]
+    ok = _client_values(WAVE3B_PLAYER_CONSTANTS, "player")
+    for name, value in ok.items():
+        setattr(player, name, value)
+    for name, value in _client_values(WAVE3B_ITEM_CONSTANTS, "item").items():
+        setattr(item, name, value)
+    for name, value in WAVE3B_APP_CONSTANTS.items():
+        setattr(app, name, value)
+
+    define(player, "GetElk", lambda: game.elk)
+    define(player, "IsEquipmentSlot", lambda pos: 90 <= pos < 122)
+    define(player, "IsCostumeSlot", lambda pos: 109 <= pos < 111)
+    define(player, "IsBeltInventorySlot", lambda pos: 152 <= pos < 168)
+    define(player, "IsAvailableBeltInventoryCell", lambda pos: 0 <= pos - 152 < game.belt_cells)
+    define(player, "GetItemFlags", lambda pos: game.item_flags.get(pos, 0))
+    define(player, "GetItemGrade", lambda pos: game.item_grades.get(pos, 0))
+    define(player, "GetItemAttribute", lambda pos, index: (0, 0))
+    define(player, "CanRefine", lambda vnum, pos: ok["REFINE_OK"])
+    define(player, "CanAttachMetin", lambda vnum, pos: ok["ATTACH_METIN_OK"])
+    define(player, "CanDetach", lambda vnum, pos: ok["DETACH_METIN_OK"])
+    define(player, "CanUnlock", lambda vnum, pos: True)
+    define(player, "GetItemLink", lambda pos: "|cfff1e6c0|Hitem:%x:0:0:0:0|h[item %d]|h|r"
+           % (game._item_at(pos)["vnum"], game._item_at(pos)["vnum"]))
+    define(app, "GetCursor", lambda: game.cursor)
+
+    selected = item.selected
+    define(item, "GetItemName", lambda *vnum: "item %d" % (vnum[0] if vnum else selected[0]))
+    define(item, "IsRefineScroll", lambda vnum: vnum in game.refine_scrolls)
+    define(item, "IsMetin", lambda vnum: vnum in game.metins)
+    define(item, "IsDetachScroll", lambda vnum: vnum in game.detach_scrolls)
+    define(item, "IsKey", lambda vnum: vnum in game.keys)
+    define(item, "IsEquipmentVID", lambda vnum: vnum in game.equipment)
+    define(item, "GetUseType", lambda vnum: game.use_types.get(vnum, "USE_NONE"))
+    define(item, "IsAntiFlag", lambda flag: bool(game.antiflags.get(selected[0], 0) & flag))
+    define(item, "IsFlag", lambda flag: bool(game.item_flags_of.get(selected[0], 0) & flag))
+    define(item, "GetISellItemPrice", lambda: game.prices.get(selected[0], 100))
+    define(item, "Is1GoldItem", lambda: False)
+
+    log = game.log
+
+    def module_of(name, **members):
+        module = types.ModuleType(name)
+        for key, value in members.items():
+            setattr(module, key, value)
+        return module
+
+    def dialog(module, kind):
+        def make(*args):
+            return LegacyDialog(game, module, kind)
+        return make
+
+    def window(name):
+        def make(*args):
+            return LegacyDialogWindow(game, name)
+        return make
+
+    game.put("uiCommon", module_of("uiCommon", QuestionDialog=dialog("uiCommon", "QuestionDialog"),
+                                   QuestionDialog2=dialog("uiCommon", "QuestionDialog2"),
+                                   PopupDialog=dialog("uiCommon", "PopupDialog")))
+    game.put("uiPickMoney", module_of("uiPickMoney", PickMoneyDialog=dialog("uiPickMoney", "PickMoneyDialog")))
+    game.put("uiRefine", module_of("uiRefine", RefineDialog=window("uiRefine.RefineDialog"),
+                                   RefineDialogNew=window("uiRefine.RefineDialogNew")))
+    game.put("uiAttachMetin", module_of("uiAttachMetin", AttachMetinDialog=window("uiAttachMetin.AttachMetinDialog")))
+
+    class Interface(object):
+        def ToggleDragonSoulWindow(self):
+            log.append(("interface.ToggleDragonSoulWindow", ()))
+
+    class DragonSoulRefine(object):
+        shown = False
+
+        def IsShow(self):
+            return self.shown
+
+        def AutoSetItem(self, *args):
+            log.append(("interface.AutoSetItem", args))
+
+    game.interface = Interface()
+    game.dragon_soul_refine = DragonSoulRefine()
+
+
+# --- the item data of the tooltip rules (P14 spec 5.8, 9.6) ---------------------------------------
+
+def _constant(value, module, prefixes=()):
+    """A corpus value as the client's int: an int as it is, a name of the
+    module's constants (with or without one of `prefixes`), else 0."""
+    if isinstance(value, bool):
+        return int(value)
+    if isinstance(value, int):
+        return value
+    if not isinstance(value, str) or not value:
+        return 0
+    known = module_constants().get(module, {})
+    for prefix in ("",) + tuple(prefixes):
+        if prefix + value in known:
+            return known[prefix + value]
+    return 0
+
+
+def _flags(value, module, prefixes):
+    """Bit flags: an int, or a list of names OR'ed."""
+    if isinstance(value, (list, tuple)):
+        result = 0
+        for name in value:
+            result |= _constant(name, module, prefixes)
+        return result
+    return _constant(value, module, prefixes)
+
+
+def _pairs(rows, module, prefixes, count):
+    """[[type, value], ...] (types as names or ints), padded to `count` with
+    (0, 0)."""
+    pairs = [(_constant(kind, module, prefixes), int(value)) for kind, value in (rows or ())]
+    return (pairs + [(0, 0)] * count)[:max(count, len(pairs))]
+
+
+class ItemData(object):
+    """The corpus's item rows (P14 spec 9.6: items {vnum: {name, type,
+    subtype, size, antiflags, flags, wear, limits, applies, values, sockets,
+    price, refine, icon, desc, summary}}) as CItemData answers them through
+    the item module, and the case state the player, shop, exchange, safebox
+    and skill modules answer (apply_case)."""
+
+    def __init__(self, corpus):
+        self.items = dict((int(vnum), row) for vnum, row in corpus.get("items", {}).items())
+        self.skills = dict((int(index), row) for index, row in corpus.get("skills", {}).items())
+        self.mobs = dict((int(vnum), name) for vnum, name in corpus.get("mobs", {}).items())
+        self.selected = 0
+        self.case = {}
+
+    def row(self, vnum=None):
+        return self.items.get(self.selected if vnum is None else int(vnum), {})
+
+    def kind(self, vnum=None):
+        return _constant(self.row(vnum).get("type", 0), "item", ("ITEM_TYPE_",))
+
+    def subtype(self, vnum=None):
+        row = self.row(vnum)
+        value = row.get("subtype", 0)
+        if isinstance(value, str):
+            for prefix in ("", "WEAPON_", "ARMOR_", "USE_", "COSTUME_TYPE_", "METIN_", "DS_"):
+                if prefix + value in module_constants()["item"]:
+                    return module_constants()["item"][prefix + value]
+            return 0
+        return int(value or 0)
+
+    def use_type(self, vnum):
+        row = self.row(vnum)
+        if row.get("use_type"):
+            return row["use_type"]
+        if self.kind(vnum) == module_constants()["item"].get("ITEM_TYPE_USE") and isinstance(row.get("subtype"), str):
+            name = row["subtype"]
+            return name if name.startswith("USE_") else "USE_" + name
+        return "USE_NONE"
+
+
+def install_item_data(game, corpus):
+    """The item, player, skill, shop, exchange, safebox, chr, nonplayer and
+    background answers of uitooltip.py's rules over a tooltip corpus (P14
+    spec 5.8, 9.6), on a Game: the item module answers from the corpus's
+    rows, with the client's constants (module_constants()); the others from
+    the case set by apply_case(game, case) (case: {id, context, vnum,
+    sockets, attrs, count, player, clock, shop, link, skill}; `pos`, the
+    inventory position the case's item sits at, 0 by default). Returns the
+    ItemData. Every call is recorded in the Game's log, as the other
+    stand-ins'."""
+    data = ItemData(corpus)
+    game.item_data = data
+    modules = game.modules
+    item, player, skill = modules["item"], modules["player"], modules["skill"]
+    for name, value in module_constants()["item"].items():
+        setattr(item, name, value)
+    for name in ("METIN_SOCKET_MAX_NUM", "ATTRIBUTE_SLOT_MAX_NUM", "LEVEL", "ST", "HT", "DX", "IQ", "INVENTORY",
+                 "EQUIPMENT", "SKILL_INDEX_TONGSOL", "SKILL_INDEX_SUMMON", "SKILL_INDEX_RIDING", "SKILL_GRADE_MASTER",
+                 "SKILL_GRADE_GRAND_MASTER", "SKILL_GRADE_PERFECT_MASTER", "METIN_SOCKET_TYPE_NONE",
+                 "METIN_SOCKET_TYPE_SILVER", "METIN_SOCKET_TYPE_GOLD", "SKILL_GRADE_COUNT"):
+        if name in module_constants()["player"]:
+            setattr(player, name, module_constants()["player"][name])
+    for name, value in module_constants()["skill"].items():
+        setattr(skill, name, value)
+    item_max = module_constants()["item"]
+    socket_max = module_constants()["player"].get("METIN_SOCKET_MAX_NUM", 3)
+    attr_max = module_constants()["player"].get("ATTRIBUTE_SLOT_MAX_NUM", 7)
+
+    def select(vnum):
+        data.selected = int(vnum)
+        item.selected[0] = int(vnum)
+
+    def size():
+        value = data.row().get("size", (1, 1))
+        return tuple(value) if isinstance(value, (list, tuple)) else (1, int(value or 1))
+
+    def price(kind):
+        value = data.row().get("price", 0)
+        if isinstance(value, dict):
+            return int(value.get(kind, 0))
+        return int(value or 0) if kind == "buy" else int(value or 0) // 5
+
+    define(item, "SelectItem", select)
+    define(item, "GetItemName", lambda *vnum: data.row(vnum[0] if vnum else None).get("name", "item %d" % (vnum[0] if vnum else data.selected)))
+    define(item, "GetItemType", data.kind)
+    define(item, "GetItemSubType", data.subtype)
+    define(item, "GetItemSize", size)
+    define(item, "GetIconImageFileName", lambda: data.row().get("icon", "icon/item/%05d.tga" % data.selected))
+    define(item, "GetItemDescription", lambda: data.row().get("desc", ""))
+    define(item, "GetItemSummary", lambda: data.row().get("summary", ""))
+    define(item, "GetValue", lambda i: int((list(data.row().get("values", ())) + [0] * 6)[i]))
+    define(item, "GetAffect", lambda i: _pairs(data.row().get("applies"), "item", ("APPLY_",), item_max.get("ITEM_APPLY_MAX_NUM", 3))[i])
+    define(item, "GetLimit", lambda i: _pairs(data.row().get("limits"), "item", ("LIMIT_",), item_max.get("LIMIT_MAX_NUM", 2))[i])
+    define(item, "GetLimitType", lambda i: _pairs(data.row().get("limits"), "item", ("LIMIT_",), item_max.get("LIMIT_MAX_NUM", 2))[i][0])
+    define(item, "GetLimitValue", lambda i: _pairs(data.row().get("limits"), "item", ("LIMIT_",), item_max.get("LIMIT_MAX_NUM", 2))[i][1])
+    define(item, "IsAntiFlag", lambda flag: bool(_flags(data.row().get("antiflags", 0), "item", ("ITEM_ANTIFLAG_",)) & flag))
+    define(item, "IsFlag", lambda flag: bool(_flags(data.row().get("flags", 0), "item", ("ITEM_FLAG_",)) & flag))
+    define(item, "IsWearableFlag", lambda flag: bool(_flags(data.row().get("wear", 0), "item", ("WEARABLE_",)) & flag))
+    define(item, "GetUseType", data.use_type)
+    define(item, "IsEquipmentVID", lambda vnum: data.kind(vnum) in (item_max.get("ITEM_TYPE_WEAPON"), item_max.get("ITEM_TYPE_ARMOR")))
+    define(item, "GetISellItemPrice", lambda: price("sell"))
+    define(item, "GetIBuyItemPrice", lambda: price("buy"))
+    define(item, "Is1GoldItem", lambda: bool(_flags(data.row().get("flags", 0), "item", ("ITEM_FLAG_",))
+                                              & item_max.get("ITEM_FLAG_COUNT_PER_1GOLD", 8)))
+
+    def case_item(*at):
+        position = at[-1] if at else 0
+        return data.case.get("items", {}).get(position)
+
+    def socket(*at):
+        held = case_item(*at[:-1])
+        values = list(held["sockets"]) if held is not None else []
+        return int((values + [0] * socket_max)[at[-1]])
+
+    def attribute(*at):
+        held = case_item(*at[:-1])
+        values = [tuple(a) for a in held["attrs"]] if held is not None else []
+        return (values + [(0, 0)] * attr_max)[at[-1]]
+
+    status = {"LEVEL": "level", "ST": "st", "HT": "ht", "DX": "dx", "IQ": "iq"}
+    status_keys = dict((module_constants()["player"].get(k, -1), v) for k, v in status.items())
+
+    define(player, "GetItemIndex", lambda *at: (case_item(*at) or {}).get("vnum", 0))
+    define(player, "GetItemCount", lambda *at: (case_item(*at) or {}).get("count", 0))
+    define(player, "GetItemMetinSocket", socket)
+    define(player, "GetItemAttribute", attribute)
+    define(player, "GetStatus", lambda kind: int(data.case.get("player", {}).get(status_keys.get(kind, ""), 0)))
+    define(player, "GetRace", lambda: int(data.case.get("player", {}).get("race", 0)))
+    define(player, "IsEquipmentSlot", lambda pos: 90 <= pos < 122)
+    define(player, "GetISellItemPrice", lambda *at: int((case_item(*at) or {}).get("sell_price", 0)))
+    skill_state = lambda: data.case.get("skill", {})
+    define(player, "GetSkillSlotIndex", lambda index: int(skill_state().get("slot", 0)))
+    define(player, "GetSkillLevel", lambda slot: int(skill_state().get("level", 0)))
+    define(player, "GetSkillGrade", lambda slot: int(skill_state().get("grade", 0)))
+    define(player, "GetSkillCurrentEfficientPercentage", lambda slot: float(skill_state().get("efficient", 0.0)))
+    define(player, "GetSkillNextEfficientPercentage", lambda slot: float(skill_state().get("next", 0.0)))
+
+    chr_module = modules["chr"]
+    define(chr_module, "RaceToJob", lambda race: race % 4)
+    define(chr_module, "RaceToSex", lambda race: 1 if race in (0, 2, 5, 7) else 0)
+    define(modules["nonplayer"], "GetMonsterName", lambda vnum: data.mobs.get(int(vnum), "mob %d" % vnum))
+    define(modules["background"], "GlobalPositionToMapInfo", lambda x, y: ("metin2_map_a1", x, y))
+
+    shop_state = lambda: data.case.get("shop", {})
+    shop = modules["shop"]
+    define(shop, "IsOpen", lambda: bool(shop_state().get("open", False)))
+    define(shop, "IsPrivateShop", lambda: bool(shop_state().get("private", False)))
+    define(shop, "GetItemID", lambda slot: (case_item(slot) or {}).get("vnum", 0))
+    define(shop, "GetItemMetinSocket", lambda slot, i: socket(slot, i))
+    define(shop, "GetItemAttribute", lambda slot, i: attribute(slot, i))
+    define(shop, "GetItemPrice", lambda slot: int(shop_state().get("price", 0)))
+    define(shop, "GetPrivateShopItemPrice", lambda kind, pos: int(shop_state().get("price", 0)))
+    for name in ("exchange", "safebox", "grpText"):
+        if name not in modules:
+            game.put(name, Recording(name, game.log))
+    exchange = modules["exchange"]
+    for side in ("Self", "Target"):
+        define(exchange, "GetItemVnumFrom" + side, lambda slot: (case_item(slot) or {}).get("vnum", 0))
+        define(exchange, "GetItemMetinSocketFrom" + side, lambda slot, i: socket(slot, i))
+        define(exchange, "GetItemAttributeFrom" + side, lambda slot, i: attribute(slot, i))
+    safebox = modules["safebox"]
+    for prefix in ("", "Mall"):
+        define(safebox, "Get%sItemID" % prefix, lambda slot: (case_item(slot) or {}).get("vnum", 0))
+        define(safebox, "Get%sItemMetinSocket" % prefix, lambda slot, i: socket(slot, i))
+        define(safebox, "Get%sItemAttribute" % prefix, lambda slot, i: attribute(slot, i))
+    define(safebox, "GetItemFlags", lambda slot: int((case_item(slot) or {}).get("flags", 0)))
+
+    def skill_row(index):
+        return data.skills.get(int(index), {})
+
+    def listed(key):
+        return lambda index, i, *rest: (list(skill_row(index).get(key, ())) + [""] * (i + 1))[i]
+    define(skill, "GetSkillName", lambda index, grade=0: (lambda names: names[min(grade, len(names) - 1)] if isinstance(names, list) and names else names)(skill_row(index).get("name", "skill %d" % index)))
+    define(skill, "GetSkillDescription", lambda index: skill_row(index).get("desc", ""))
+    define(skill, "GetSkillType", lambda index: int(skill_row(index).get("type", 1)))
+    define(skill, "GetSkillMaxLevel", lambda index: int(skill_row(index).get("max_level", 40)))
+    define(skill, "GetSkillLevelLimit", lambda index: int(skill_row(index).get("level_limit", 0)))
+    define(skill, "GetSkillAffectDescriptionCount", lambda index: len(skill_row(index).get("affects", ())))
+    define(skill, "GetSkillAffectDescription", listed("affects"))
+    define(skill, "GetSkillConditionDescriptionCount", lambda index: len(skill_row(index).get("conditions", ())))
+    define(skill, "GetSkillConditionDescription", listed("conditions"))
+    define(skill, "GetSkillNeedSP", lambda index, level: int(skill_row(index).get("need_sp", 0)))
+    define(skill, "GetSkillContinuationSP", lambda index, level: int(skill_row(index).get("continuation_sp", 0)))
+    define(skill, "GetSkillCoolTime", lambda index, level: int(skill_row(index).get("cool_time", 0)))
+    define(skill, "GetDuration", lambda index, level: int(skill_row(index).get("duration", 0)))
+    define(skill, "IsUseHPSkill", lambda index: bool(skill_row(index).get("use_hp", False)))
+    define(skill, "IsSkillRequirement", lambda index: bool(skill_row(index).get("requirement")))
+    define(skill, "GetSkillRequirementData", lambda index: tuple(skill_row(index).get("requirement", ("", 0, 0))))
+    define(skill, "GetSkillRequireStatCount", lambda index: len(skill_row(index).get("require_stats", ())))
+    define(skill, "GetSkillRequireStatData", lambda index, i: tuple(skill_row(index).get("require_stats", ())[i]))
+    define(skill, "CheckRequirementSueccess", lambda index: bool(skill_row(index).get("requirement_met", True)))
+    define(skill, "GetNewAffectDataCount", lambda index: len(skill_row(index).get("new_affects", ())))
+    define(skill, "GetNewAffectData", lambda index, i, level: tuple(skill_row(index).get("new_affects", ())[i]))
+    return data
+
+
+def apply_case(game, case):
+    """Puts a corpus case's state into the stand-ins of install_item_data:
+    its item (vnum, count, sockets, attrs) at `pos` (0 by default) for every
+    context's getters, the player's status and race, the clock
+    (app.GetGlobalTimeStamp), the shop's state and the skill's."""
+    data = game.item_data
+    position = int(case.get("pos", 0))
+    held = {"vnum": int(case.get("vnum", 0)), "count": int(case.get("count", 1)),
+            "sockets": list(case.get("sockets", ())), "attrs": [tuple(a) for a in case.get("attrs", ())],
+            "flags": int(case.get("flags", 0)), "sell_price": int(case.get("sell_price", 0))}
+    data.case = dict(case)
+    data.case["items"] = {position: held}
+    if case.get("clock") is not None:
+        game.timestamp = int(case["clock"])
+    return held
+
+
+# The sizes of the images the tooltip rules load (the legacy art's own), for
+# the tooltip ui stand-in: a socket frame is 32 x 32 (metin_slot_*.sub), an
+# item or hair icon 32 x 32 (64 or 96 tall for 1x2 and 1x3 items); others
+# answer TOOLTIP_IMAGE_SIZES.get(path, (32, 32)).
+TOOLTIP_IMAGE_SIZES = {}
+# The tooltip ui stand-in's text metric: TOOLTIP_CHAR_WIDTH px per visible
+# character, TOOLTIP_LINE_HEIGHT px tall (one fixed metric, P14 spec 5.8).
+TOOLTIP_CHAR_WIDTH = 6
+TOOLTIP_LINE_HEIGHT = 12
+LOCALE_ROOT = os.path.normpath(os.path.join(support.HERE, "..", "assets", "locale", "locale"))
+LOCALE_FUNCTIONS = ("DO_YOU_SELL_ITEM", "DO_YOU_BUY_ITEM", "REFINE_FAILURE_CAN_NOT_ATTACH", "REFINE_FAILURE_NO_SOCKET",
+                    "REFINE_FAILURE_NO_GOLD_SOCKET", "HOW_MANY_ITEM_DO_YOU_DROP", "NumberToMoneyString",
+                    "NumberToSecondaryCoinString", "SecondToDHM", "SecondToHM", "RTSecondToDHMS")
+
+
+def generate_color(r, g, b, a):
+    """grp.GenerateColor as the client packs it (CGraphicBase::GetColor, a
+    truncation to 0xAARRGGBB) and returns it, a signed C long: negative
+    while the alpha's top bit is set (P14 spec D7)."""
+    value = (int(a * 255) << 24) | (int(r * 255) << 16) | (int(g * 255) << 8) | int(b * 255)
+    return value - (1 << 32) if value & 0x80000000 else value
+
+
+def locale_info(locale="en"):
+    """A localeInfo over the locale's real locale_game.txt, as localeinfo.py
+    loads it (the SA, SNA, SAA and SAN entries functions), with localeinfo.py's
+    own helpers (NumberToMoneyString, RTSecondToDHMS and the rest of
+    LOCALE_FUNCTIONS). An unknown name is still its own name."""
+    module = support.LocaleInfo(RegisterReloadCallback=lambda fn: None, UI_DEF_FONT="Tahoma:12",
+                                MINIMAP_ZONE_NAME_DICT={})
+
+    def typed(kind, text):
+        if kind == "SNA":
+            return lambda x=0: text
+        return lambda x: text % x
+
+    with open(os.path.join(LOCALE_ROOT, locale, "locale_game.txt"), encoding="utf-8", errors="replace") as handle:
+        for line in handle.read().split("\n"):
+            tokens = line.split("\t")
+            if len(tokens) < 2:
+                continue
+            kind = tokens[2].strip() if len(tokens) >= 3 else ""
+            module.__dict__[tokens[0]] = typed(kind, tokens[1]) if kind in ("SA", "SNA", "SAA", "SAN") else tokens[1]
+    exec(compile(source_of("localeinfo.py", LOCALE_FUNCTIONS), "localeinfo.py", "exec"), module.__dict__)
+    return module
+
+
+def install_tooltip_ui(game, locale="en"):
+    """What uitooltip.py's widgets and strings need in plain CPython (P14
+    spec 5.8): ui.ThinBoard, TextLine, ImageBox and Line with legacy
+    geometry (positions, sizes, parents, shown state; a text line's size by
+    one fixed metric, TOOLTIP_CHAR_WIDTH per visible character and
+    TOOLTIP_LINE_HEIGHT; an image's size from TOOLTIP_IMAGE_SIZES),
+    grp.GenerateColor as the client packs it, and localeInfo over the
+    locale's real strings (locale_info). Each widget keeps what it was told
+    (text, color, outline, feather, alignment, image, the order it was made
+    in: `seq`) for the parity test's legacy side."""
+    ui = game.modules["ui"]
+    counter = [0]
+
+    class Widget(object):
+        def __init__(self, layer="UI"):
+            counter[0] += 1
+            self.seq = counter[0]
+            self.layer = layer
+            self.parent = None
+            self.position = (0, 0)
+            self.size = (0, 0)
+            self.shown = False
+            self.flags = set()
+            self.window_align = ""
+
+        def SetParent(self, parent):
+            self.parent = parent
+
+        def GetParentProxy(self):
+            return None
+
+        def SetPosition(self, x, y):
+            self.position = (int(x), int(y))
+
+        def GetLocalPosition(self):
+            return self.position
+
+        def GetGlobalPosition(self):
+            x, y = self.position
+            if self.parent is not None and hasattr(self.parent, "GetGlobalPosition"):
+                px, py = self.parent.GetGlobalPosition()
+                x, y = x + px, y + py
+            return (x, y)
+
+        def SetSize(self, width, height):
+            self.size = (int(width), int(height))
+
+        def GetWidth(self):
+            return self.size[0]
+
+        def GetHeight(self):
+            return self.size[1]
+
+        def Show(self):
+            self.shown = True
+
+        def Hide(self):
+            self.shown = False
+
+        def IsShow(self):
+            return self.shown
+
+        def SetTop(self):
+            pass
+
+        def AddFlag(self, flag):
+            self.flags.add(flag)
+
+        def SetWindowHorizontalAlignCenter(self):
+            self.window_align = "center"
+
+        def SetWindowHorizontalAlignRight(self):
+            self.window_align = "right"
+
+        def SetWindowVerticalAlignCenter(self):
+            pass
+
+        def Destroy(self):
+            pass
+
+        def __del__(self):
+            pass
+
+    class ThinBoard(Widget):
+        def __init__(self, layer="UI"):
+            Widget.__init__(self, layer)
+
+    class TextLine(Widget):
+        def __init__(self, layer="UI"):
+            Widget.__init__(self, layer)
+            self.text = ""
+            self.font = ""
+            self.color = None
+            self.outline = False
+            self.feather = True
+            self.align = "left"
+
+        def SetFontName(self, name):
+            self.font = name
+
+        def SetText(self, text):
+            self.text = text
+
+        def GetText(self):
+            return self.text
+
+        def SetPackedFontColor(self, color):
+            self.color = int(color) & 0xFFFFFFFF
+
+        def SetFontColor(self, r, g, b):
+            self.color = generate_color(r, g, b, 1.0) & 0xFFFFFFFF
+
+        def SetOutline(self, flag=True):
+            self.outline = bool(flag)
+
+        def SetFeather(self, flag=True):
+            self.feather = bool(flag)
+
+        def SetHorizontalAlignCenter(self):
+            self.align = "center"
+
+        def SetHorizontalAlignRight(self):
+            self.align = "right"
+
+        def SetHorizontalAlignLeft(self):
+            self.align = "left"
+
+        def GetTextSize(self):
+            import nui_text
+            return (TOOLTIP_CHAR_WIDTH * len(nui_text.visible_text(self.text or "")), TOOLTIP_LINE_HEIGHT)
+
+    class ImageBox(Widget):
+        def __init__(self, layer="UI"):
+            Widget.__init__(self, layer)
+            self.image = ""
+
+        def LoadImage(self, path):
+            self.image = path
+            self.size = TOOLTIP_IMAGE_SIZES.get(path, (32, 32))
+
+    class Line(Widget):
+        def __init__(self, layer="UI"):
+            Widget.__init__(self, layer)
+            self.color = None
+
+        def SetColor(self, color):
+            self.color = int(color) & 0xFFFFFFFF
+
+    ui.ThinBoard = ThinBoard
+    ui.TextLine = TextLine
+    ui.ImageBox = ImageBox
+    ui.ExpandedImageBox = ImageBox
+    ui.Line = Line
+    ui.TooltipWidget = Widget
+    define(game.modules["grp"], "GenerateColor", generate_color)
+    game.put("localeInfo", locale_info(locale))
+    return ui

@@ -388,6 +388,22 @@ class Window(object):
 			return False
 		return bool(_nui.BringToFront(self._doc))
 
+	def follow_pointer(self, below_dp=40, above_dp=20, flip_dp=300, once=False):
+		"""Keeps the window at the pointer, by legacy's tooltip rule
+		(uitooltip.py ToolTip.OnUpdate), in every update after layout and with
+		no Python: with the pointer at (mx, my) dp, the screen W x H dp and the
+		window's border box w x h dp, y = my + below_dp while my < H - flip_dp,
+		else my - h - above_dp; x = mx - w / 2; then the box is kept on the
+		screen. The pointer is the host's, which keeps moving over the legacy
+		UI. `once`: placed in the first update after the call, then held. The
+		placement replaces any other and holds until clear_placement() or
+		another placement call. True when stored; False without a document or
+		with an exe whose _nui has no FollowPointer."""
+		follow = getattr(_nui, "FollowPointer", None) if _nui is not None else None
+		if not self._doc or follow is None:
+			return False
+		return bool(follow(self._doc, float(below_dp), float(above_dp), float(flip_dp), bool(once)))
+
 	def keep_clear_of(self, *targets):
 		"""While the window overlaps one of `targets` that is shown, the runtime
 		puts the class nui-overlapping on its <body>, so its sheet can hide it
@@ -830,6 +846,16 @@ def reset_colors(all_themes=False):
 	_save_colors()
 	for window in list(_windows.values()):
 		window.on_colors_changed(None)
+
+
+# --- engine features ------------------------------------------------------------
+
+def has_decorator(name):
+	"""Whether the runtime registered the decorator `name` (nui-cells, the
+	lean slot grids' cell bases, P14 spec 4.9); False without NovaUI or with
+	an exe whose _nui has no HasDecorator."""
+	query = _nui_call("HasDecorator")
+	return bool(query(str(name))) if query is not None else False
 
 
 # --- first opens --------------------------------------------------------------

@@ -216,6 +216,25 @@ class HudHelpers(unittest.TestCase):
         with world:
             self.assertFalse(world.module("nui_hud").has_engine_5a(), "no nuigame at all")
 
+    def test_has_engine_3b_needs_follow_pointer_and_the_cells_decorator(self):
+        self.assertTrue(self.hud.has_engine_3b())
+        world = World(True)
+        with world:
+            del world.game.modules["nui"]._nui.FollowPointer
+            self.assertFalse(world.module("nui_hud").has_engine_3b(), "an exe without pointer placement")
+        world = World(True)
+        with world:
+            world.game.state.decorators.discard("nui-cells")
+            self.assertFalse(world.module("nui_hud").has_engine_3b(), "no nui-cells decorator")
+        world = World(True)
+        with world:
+            del world.game.modules["nui"].has_decorator
+            self.assertFalse(world.module("nui_hud").has_engine_3b(), "a nui.py without has_decorator")
+        self.assertFalse(support.Game(engine_3b=False).engine_3b)
+        world = World(True, engine=False)
+        with world:
+            self.assertFalse(world.module("nui_hud").has_engine_3b(), "no nuigame at all")
+
     def on_demand(self, document="nui/windows/test/test.rml"):
         nui = self.world.game.modules["nui"]
         log = []

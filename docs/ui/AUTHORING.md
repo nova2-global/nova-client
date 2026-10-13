@@ -707,6 +707,30 @@ What the color roles mean:
 | `--console-text` | `#e7eaf0` | `#1a1d23` | `#ffffff` |
 | `--console-grip` | `#3b424e` | `#c3c8d1` | `#ffffff` |
 | `--web-page` | `#121418` | `#e7e9ed` | `#000000` |
+| `--slot-target` | `#8ab4f84d` | `#1a5fc433` | `#ffffff80` |
+| `--slot-blocked` | `#f28b8259` | `#b3261e40` | `#ff000080` |
+| `--slot-usable` | `#f6c75a59` | `#e0a80066` | `#ffff0080` |
+| `--slot-unusable` | `#f28b8259` | `#b3261e40` | `#ff000080` |
+| `--slot-unavailable` | `#000000a6` | `#1a1d2340` | `#00000080` |
+| `--accent-glow` | `#8ab4f866` | `#1a5fc44d` | `#ffc80066` |
+| `--tip-bg` | `#20242c` | `#ffffff` | `#0d0c0b` |
+| `--tip-title` | `#f1e6c0` | `#1a1d23` | `#f1e6c0` |
+| `--tip-special` | `#f2d39b` | `#7a4a06` | `#ffc700` |
+| `--tip-normal` | `#c4c9d2` | `#3b414b` | `#c1c1c1` |
+| `--tip-price` | `#ffb96d` | `#8a5300` | `#ffb96d` |
+| `--tip-price-middle` | `#d8d8d8` | `#525a67` | `#d8d8d8` |
+| `--tip-price-low` | `#b2b2b2` | `#6b7280` | `#b2b2b2` |
+| `--tip-negative` | `#f28b82` | `#b3261e` | `#e57875` |
+| `--tip-positive` | `#89b88d` | `#1e7a3c` | `#89b88d` |
+| `--tip-positive-special` | `#b0dfb4` | `#14532d` | `#b0dfb4` |
+| `--tip-positive-rare` | `#e1fae1` | `#0f5f5a` | `#e1fae1` |
+| `--tip-condition` | `#beb47d` | `#6e6420` | `#beb47d` |
+| `--tip-level-up` | `#8ec292` | `#2e7d32` | `#8ec292` |
+| `--tip-skill-point` | `#9a9cdb` | `#4a4cb0` | `#9a9cdb` |
+| `--tip-divider` | `#3b424e` | `#c3c8d1` | `#555555` |
+| `--tip-divider-shadow` | `#000000` | `#e7e9ed` | `#000000` |
+| `--tip-socket-silver` | `#a4acba` | `#7a828f` | `#c1c1c1` |
+| `--tip-socket-gold` | `#f6c75a` | `#8a5300` | `#ffc700` |
 
 | Token | Shared value |
 |---|---|

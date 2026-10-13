@@ -19,7 +19,7 @@
    chevron-right, send, log (c), chat, whisper (c), character, inventory,
    community (c), system (c), map, gift (c), gem, shop, heal, leave (c),
    mouse-move, mouse-attack (c), mouse-auto, mouse-camera (c), mouse-skill,
-   home. Two or three elements each; nui.rtpl links this sheet after
+   home, coin. Two or three elements each; nui.rtpl links this sheet after
    button.rcss. */
 
 .nui-glyph
@@ -495,4 +495,26 @@
 	width: 10dp;
 	height: 8dp;
 	background-color: var(--glyph-ink);
+}
+
+/* coin: a filled disc with an inner ring (the inventory's money bar, which
+   inks it gold). */
+.nui-glyph--coin .nui-glyph__a
+{
+	left: 2dp;
+	top: 2dp;
+	width: 12dp;
+	height: 12dp;
+	border-radius: 9999dp;
+	background-color: var(--glyph-ink);
+}
+.nui-glyph--coin .nui-glyph__b
+{
+	left: 5dp;
+	top: 5dp;
+	width: 6dp;
+	height: 6dp;
+	border-width: 1dp;
+	border-radius: 9999dp;
+	border-color: var(--surface-sunken);
 }

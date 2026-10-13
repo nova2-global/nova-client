@@ -78,6 +78,30 @@ body.skin-cyberpunk.theme-cyberpunk
 	--console-text: #e6f6ff;
 	--console-grip: #1e4f73;
 	--web-page: #060c17;
+	--slot-target: #2fd4ff4d;
+	--slot-blocked: #ff5c8a59;
+	--slot-usable: #ffc85759;
+	--slot-unusable: #ff5c8a59;
+	--slot-unavailable: #000000a6;
+	--accent-glow: #2fd4ff66;
+	--tip-bg: #08111e;
+	--tip-title: #c9f3ff;
+	--tip-special: #ffd166;
+	--tip-normal: #b9cde0;
+	--tip-price: #ffc857;
+	--tip-price-middle: #d6e3ef;
+	--tip-price-low: #9cb8cc;
+	--tip-negative: #ff5c8a;
+	--tip-positive: #4dffb5;
+	--tip-positive-special: #8dffd0;
+	--tip-positive-rare: #d6fff0;
+	--tip-condition: #e2f36b;
+	--tip-level-up: #6dffb0;
+	--tip-skill-point: #c77dff;
+	--tip-divider: #1e4f73;
+	--tip-divider-shadow: #02050a;
+	--tip-socket-silver: #9cb8cc;
+	--tip-socket-gold: #ffc857;
 }
 
 /* The skin's own tokens (cyberpunk-...) and the shared ones it overrides. */

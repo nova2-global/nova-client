@@ -206,74 +206,46 @@
 				"cover": false,
 				"disabled": false,
 				"locked": false
+			},
+			{
+				"index": 10,
+				"kind": "skill",
+				"type": 2,
+				"ref": 10,
+				"icon": "d:/ymir work/ui/skill/warrior/geomgyeong_01.sub",
+				"count": "5",
+				"w": 1,
+				"h": 1,
+				"cd_start": -4.1,
+				"cd_end": 0.9,
+				"active": false,
+				"cover": true,
+				"disabled": false,
+				"locked": false
+			},
+			{
+				"index": 11,
+				"kind": "item",
+				"type": 1,
+				"ref": 11,
+				"icon": "/icon/item/27005.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false
 			}
 		],
 		"slot_picked": 6,
 		"slot_selected": 7,
 		"slot_hover": 8,
-		"bag_cells": [
-			{
-				"index": 0,
-				"target": false
-			},
-			{
-				"index": 1,
-				"target": false
-			},
-			{
-				"index": 2,
-				"target": false
-			},
-			{
-				"index": 3,
-				"target": false
-			},
-			{
-				"index": 4,
-				"target": true
-			},
-			{
-				"index": 5,
-				"target": false
-			},
-			{
-				"index": 6,
-				"target": false
-			},
-			{
-				"index": 7,
-				"target": false
-			},
-			{
-				"index": 8,
-				"target": false
-			},
-			{
-				"index": 9,
-				"target": true
-			},
-			{
-				"index": 10,
-				"target": false
-			},
-			{
-				"index": 11,
-				"target": false
-			},
-			{
-				"index": 12,
-				"target": false
-			},
-			{
-				"index": 13,
-				"target": false
-			},
-			{
-				"index": 14,
-				"target": false
-			}
-		],
-		"bag_items": [
+		"slot_sign": 11,
+		"tall_icon": "/icon/item/02000.tga",
+		"lean": [
 			{
 				"index": 0,
 				"kind": "item",
@@ -289,26 +261,30 @@
 				"cover": false,
 				"disabled": false,
 				"locked": false,
-				"c": 0,
-				"r": 0
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
 			},
 			{
 				"index": 1,
-				"kind": "item",
-				"type": 1,
-				"ref": 1,
-				"icon": "/icon/item/02000.tga",
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
 				"count": "",
 				"w": 1,
-				"h": 2,
+				"h": 1,
 				"cd_start": 0.0,
 				"cd_end": 0.0,
 				"active": false,
 				"cover": false,
 				"disabled": false,
-				"locked": true,
-				"c": 1,
-				"r": 0
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
 			},
 			{
 				"index": 2,
@@ -316,8 +292,8 @@
 				"type": 1,
 				"ref": 2,
 				"icon": "/icon/item/03000.tga",
-				"count": "2",
-				"w": 2,
+				"count": "",
+				"w": 1,
 				"h": 3,
 				"cd_start": 0.0,
 				"cd_end": 0.0,
@@ -325,14 +301,16 @@
 				"cover": false,
 				"disabled": false,
 				"locked": false,
-				"c": 2,
-				"r": 0
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
 			},
 			{
-				"index": 10,
+				"index": 3,
 				"kind": "item",
 				"type": 1,
-				"ref": 10,
+				"ref": 3,
 				"icon": "/icon/item/72723.tga",
 				"count": "",
 				"w": 1,
@@ -343,10 +321,233 @@
 				"cover": false,
 				"disabled": false,
 				"locked": false,
-				"c": 0,
-				"r": 2
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 4,
+				"kind": "item",
+				"type": 1,
+				"ref": 4,
+				"icon": "/icon/item/27001.tga",
+				"count": "200",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": true,
+				"unavailable": false
+			},
+			{
+				"index": 5,
+				"kind": "",
+				"type": 1,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": true,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 6,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "blocked",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 7,
+				"kind": "",
+				"type": 1,
+				"ref": 2,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": true,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 8,
+				"kind": "item",
+				"type": 1,
+				"ref": 8,
+				"icon": "/icon/item/27002.tga",
+				"count": "35",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "usable",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 9,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "move",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 10,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": true
+			},
+			{
+				"index": 11,
+				"kind": "item",
+				"type": 1,
+				"ref": 11,
+				"icon": "/icon/item/27003.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "unusable",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 12,
+				"kind": "",
+				"type": 1,
+				"ref": 2,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": true,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 13,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 14,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "move",
+				"picked": false,
+				"unavailable": false
 			}
 		],
+		"lean_hover": 1,
 		"tagged": "|cff9fe6c3Test|r: look |cfff1e6c0|Hitem:6b:0:0:0:0|h[Red Potion]|h|r and @ui.OK {{ x }}, as written"
 	}
 }

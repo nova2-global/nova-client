@@ -42,7 +42,20 @@
 		["quest-item", "surface", 4.5],
 		["console-text", "surface-sunken", 4.5],
 		["highlight", "surface", 4.5],
-		["highlight", "surface-raised", 4.5]
+		["highlight", "surface-raised", 4.5],
+		["tip-title", "tip-bg", 4.5],
+		["tip-special", "tip-bg", 4.5],
+		["tip-normal", "tip-bg", 4.5],
+		["tip-price", "tip-bg", 4.5],
+		["tip-price-middle", "tip-bg", 4.5],
+		["tip-price-low", "tip-bg", 4.5],
+		["tip-negative", "tip-bg", 4.5],
+		["tip-positive", "tip-bg", 4.5],
+		["tip-positive-special", "tip-bg", 4.5],
+		["tip-positive-rare", "tip-bg", 4.5],
+		["tip-condition", "tip-bg", 4.5],
+		["tip-level-up", "tip-bg", 4.5],
+		["tip-skill-point", "tip-bg", 4.5]
 	],
 	"palettes": {
 		"dark": {
@@ -121,13 +134,37 @@
 				"console-field": "#121418",
 				"console-text": "#e7eaf0",
 				"console-grip": "#3b424e",
-				"web-page": "#121418"
+				"web-page": "#121418",
+				"slot-target": "#8ab4f84d",
+				"slot-blocked": "#f28b8259",
+				"slot-usable": "#f6c75a59",
+				"slot-unusable": "#f28b8259",
+				"slot-unavailable": "#000000a6",
+				"accent-glow": "#8ab4f866",
+				"tip-bg": "#20242c",
+				"tip-title": "#f1e6c0",
+				"tip-special": "#f2d39b",
+				"tip-normal": "#c4c9d2",
+				"tip-price": "#ffb96d",
+				"tip-price-middle": "#d8d8d8",
+				"tip-price-low": "#b2b2b2",
+				"tip-negative": "#f28b82",
+				"tip-positive": "#89b88d",
+				"tip-positive-special": "#b0dfb4",
+				"tip-positive-rare": "#e1fae1",
+				"tip-condition": "#beb47d",
+				"tip-level-up": "#8ec292",
+				"tip-skill-point": "#9a9cdb",
+				"tip-divider": "#3b424e",
+				"tip-divider-shadow": "#000000",
+				"tip-socket-silver": "#a4acba",
+				"tip-socket-gold": "#f6c75a"
 			},
 			"slots": [
-				{"slot": "accent", "kind": "color", "label": "OPTION_UI_COLOR_ACCENT", "swatches": ["#8ab4f8", "#7fd29a", "#f6c75a", "#f28b82", "#c58af9", "#5fe3d4", "#ff9e3a", "#e7eaf0"], "sets": [{"token": "accent", "rule": "value"}, {"token": "accent-hover", "rule": "mix", "with": "#ffffff", "t": 0.2}, {"token": "accent-text", "rule": "pick", "from": ["accent-text", "text"], "on": "accent"}, {"token": "selection", "rule": "mix", "with": "surface", "t": 0.72}]},
-				{"slot": "panel", "kind": "color", "label": "OPTION_UI_COLOR_PANEL", "swatches": ["#1a1d23", "#1b2430", "#20202a", "#1e2a24", "#2a1e24", "#262626"], "sets": [{"token": "surface", "rule": "value"}, {"token": "surface-raised", "rule": "delta", "ref": "surface"}, {"token": "surface-sunken", "rule": "delta", "ref": "surface"}, {"token": "surface-hover", "rule": "delta", "ref": "surface"}, {"token": "surface-band", "rule": "delta", "ref": "surface"}, {"token": "border", "rule": "delta", "ref": "surface"}]},
+				{"slot": "accent", "kind": "color", "label": "OPTION_UI_COLOR_ACCENT", "swatches": ["#8ab4f8", "#7fd29a", "#f6c75a", "#f28b82", "#c58af9", "#5fe3d4", "#ff9e3a", "#e7eaf0"], "sets": [{"token": "accent", "rule": "value"}, {"token": "accent-hover", "rule": "mix", "with": "#ffffff", "t": 0.2}, {"token": "accent-text", "rule": "pick", "from": ["accent-text", "text"], "on": "accent"}, {"token": "selection", "rule": "mix", "with": "surface", "t": 0.72}, {"token": "accent-glow", "rule": "alpha", "a": 102}, {"token": "slot-target", "rule": "alpha", "a": 77}]},
+				{"slot": "panel", "kind": "color", "label": "OPTION_UI_COLOR_PANEL", "swatches": ["#1a1d23", "#1b2430", "#20202a", "#1e2a24", "#2a1e24", "#262626"], "sets": [{"token": "surface", "rule": "value"}, {"token": "surface-raised", "rule": "delta", "ref": "surface"}, {"token": "surface-sunken", "rule": "delta", "ref": "surface"}, {"token": "surface-hover", "rule": "delta", "ref": "surface"}, {"token": "surface-band", "rule": "delta", "ref": "surface"}, {"token": "border", "rule": "delta", "ref": "surface"}, {"token": "tip-bg", "rule": "delta", "ref": "surface"}]},
 				{"slot": "opacity", "kind": "percent", "label": "OPTION_UI_COLOR_OPACITY", "min": 50, "max": 100, "step": 5, "backdrop": "blur(6dp)", "sets": [{"token": "surface", "rule": "alpha"}, {"token": "surface-raised", "rule": "alpha"}, {"token": "surface-sunken", "rule": "alpha"}, {"token": "surface-hover", "rule": "alpha"}, {"token": "surface-band", "rule": "alpha"}]},
-				{"slot": "highlight", "kind": "color", "label": "OPTION_UI_COLOR_HIGHLIGHT", "swatches": ["#f2d39b", "#ffd166", "#9fefff", "#ff9fbf", "#b9f18c", "#e7eaf0"], "sets": [{"token": "highlight", "rule": "value"}, {"token": "quest-title", "rule": "value"}, {"token": "notice-text-big", "rule": "value"}, {"token": "chat-notice", "rule": "value"}, {"token": "chat-big-notice", "rule": "value"}]}
+				{"slot": "highlight", "kind": "color", "label": "OPTION_UI_COLOR_HIGHLIGHT", "swatches": ["#f2d39b", "#ffd166", "#9fefff", "#ff9fbf", "#b9f18c", "#e7eaf0"], "sets": [{"token": "highlight", "rule": "value"}, {"token": "quest-title", "rule": "value"}, {"token": "notice-text-big", "rule": "value"}, {"token": "chat-notice", "rule": "value"}, {"token": "chat-big-notice", "rule": "value"}, {"token": "tip-special", "rule": "value"}]}
 			]
 		},
 		"light": {
@@ -206,13 +243,37 @@
 				"console-field": "#e7e9ed",
 				"console-text": "#1a1d23",
 				"console-grip": "#c3c8d1",
-				"web-page": "#e7e9ed"
+				"web-page": "#e7e9ed",
+				"slot-target": "#1a5fc433",
+				"slot-blocked": "#b3261e40",
+				"slot-usable": "#e0a80066",
+				"slot-unusable": "#b3261e40",
+				"slot-unavailable": "#1a1d2340",
+				"accent-glow": "#1a5fc44d",
+				"tip-bg": "#ffffff",
+				"tip-title": "#1a1d23",
+				"tip-special": "#7a4a06",
+				"tip-normal": "#3b414b",
+				"tip-price": "#8a5300",
+				"tip-price-middle": "#525a67",
+				"tip-price-low": "#6b7280",
+				"tip-negative": "#b3261e",
+				"tip-positive": "#1e7a3c",
+				"tip-positive-special": "#14532d",
+				"tip-positive-rare": "#0f5f5a",
+				"tip-condition": "#6e6420",
+				"tip-level-up": "#2e7d32",
+				"tip-skill-point": "#4a4cb0",
+				"tip-divider": "#c3c8d1",
+				"tip-divider-shadow": "#e7e9ed",
+				"tip-socket-silver": "#7a828f",
+				"tip-socket-gold": "#8a5300"
 			},
 			"slots": [
-				{"slot": "accent", "kind": "color", "label": "OPTION_UI_COLOR_ACCENT", "swatches": ["#1a5fc4", "#1e7a3c", "#8a5300", "#b3261e", "#7438c4", "#0b6f6a", "#b14a00", "#1a1d23"], "sets": [{"token": "accent", "rule": "value"}, {"token": "accent-hover", "rule": "mix", "with": "#000000", "t": 0.2}, {"token": "accent-text", "rule": "pick", "from": ["accent-text", "text"], "on": "accent"}, {"token": "selection", "rule": "mix", "with": "surface", "t": 0.72}]},
-				{"slot": "panel", "kind": "color", "label": "OPTION_UI_COLOR_PANEL", "swatches": ["#f3f4f6", "#ffffff", "#f4f1ea", "#eef3f8", "#f1f6ef", "#f8eff2"], "sets": [{"token": "surface", "rule": "value"}, {"token": "surface-raised", "rule": "delta", "ref": "surface"}, {"token": "surface-sunken", "rule": "delta", "ref": "surface"}, {"token": "surface-hover", "rule": "delta", "ref": "surface"}, {"token": "surface-band", "rule": "delta", "ref": "surface"}, {"token": "border", "rule": "delta", "ref": "surface"}]},
+				{"slot": "accent", "kind": "color", "label": "OPTION_UI_COLOR_ACCENT", "swatches": ["#1a5fc4", "#1e7a3c", "#8a5300", "#b3261e", "#7438c4", "#0b6f6a", "#b14a00", "#1a1d23"], "sets": [{"token": "accent", "rule": "value"}, {"token": "accent-hover", "rule": "mix", "with": "#000000", "t": 0.2}, {"token": "accent-text", "rule": "pick", "from": ["accent-text", "text"], "on": "accent"}, {"token": "selection", "rule": "mix", "with": "surface", "t": 0.72}, {"token": "accent-glow", "rule": "alpha", "a": 102}, {"token": "slot-target", "rule": "alpha", "a": 51}]},
+				{"slot": "panel", "kind": "color", "label": "OPTION_UI_COLOR_PANEL", "swatches": ["#f3f4f6", "#ffffff", "#f4f1ea", "#eef3f8", "#f1f6ef", "#f8eff2"], "sets": [{"token": "surface", "rule": "value"}, {"token": "surface-raised", "rule": "delta", "ref": "surface"}, {"token": "surface-sunken", "rule": "delta", "ref": "surface"}, {"token": "surface-hover", "rule": "delta", "ref": "surface"}, {"token": "surface-band", "rule": "delta", "ref": "surface"}, {"token": "border", "rule": "delta", "ref": "surface"}, {"token": "tip-bg", "rule": "delta", "ref": "surface"}]},
 				{"slot": "opacity", "kind": "percent", "label": "OPTION_UI_COLOR_OPACITY", "min": 50, "max": 100, "step": 5, "backdrop": "blur(6dp)", "sets": [{"token": "surface", "rule": "alpha"}, {"token": "surface-raised", "rule": "alpha"}, {"token": "surface-sunken", "rule": "alpha"}, {"token": "surface-hover", "rule": "alpha"}, {"token": "surface-band", "rule": "alpha"}]},
-				{"slot": "highlight", "kind": "color", "label": "OPTION_UI_COLOR_HIGHLIGHT", "swatches": ["#7a4a06", "#6b3fa0", "#0b6f6a", "#9b2c48", "#3e6b1f", "#1a1d23"], "sets": [{"token": "highlight", "rule": "value"}, {"token": "quest-title", "rule": "value"}, {"token": "notice-text-big", "rule": "mix", "with": "#ffffff", "t": 0.65}, {"token": "chat-notice", "rule": "mix", "with": "#ffffff", "t": 0.65}, {"token": "chat-big-notice", "rule": "mix", "with": "#ffffff", "t": 0.65}]}
+				{"slot": "highlight", "kind": "color", "label": "OPTION_UI_COLOR_HIGHLIGHT", "swatches": ["#7a4a06", "#6b3fa0", "#0b6f6a", "#9b2c48", "#3e6b1f", "#1a1d23"], "sets": [{"token": "highlight", "rule": "value"}, {"token": "quest-title", "rule": "value"}, {"token": "notice-text-big", "rule": "mix", "with": "#ffffff", "t": 0.65}, {"token": "chat-notice", "rule": "mix", "with": "#ffffff", "t": 0.65}, {"token": "chat-big-notice", "rule": "mix", "with": "#ffffff", "t": 0.65}, {"token": "tip-special", "rule": "value"}]}
 			]
 		}
 	},

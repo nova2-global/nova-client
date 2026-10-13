@@ -153,6 +153,21 @@ CONTRAST_PAIRS = (
     # (.nui-text--highlight) sits on panels.
     ("highlight", "surface", 4.5, "the player's highlight"),
     ("highlight", "surface-raised", 4.5, "the player's highlight on panels"),
+    # The item, skill and link tooltips' roles (P14 spec 5.3) on their board
+    # (nui-board--tooltip, --tip-bg).
+    ("tip-title", "tip-bg", 4.5, "tooltip titles"),
+    ("tip-special", "tip-bg", 4.5, "special titles and high prices (the player's highlight)"),
+    ("tip-normal", "tip-bg", 4.5, "tooltip lines"),
+    ("tip-price", "tip-bg", 4.5, "tooltip prices"),
+    ("tip-price-middle", "tip-bg", 4.5, "middle prices"),
+    ("tip-price-low", "tip-bg", 4.5, "low prices"),
+    ("tip-negative", "tip-bg", 4.5, "negative values, unmet limits"),
+    ("tip-positive", "tip-bg", 4.5, "positive values, affects, sockets"),
+    ("tip-positive-special", "tip-bg", 4.5, "attributes"),
+    ("tip-positive-rare", "tip-bg", 4.5, "rare attributes"),
+    ("tip-condition", "tip-bg", 4.5, "summaries and skill conditions"),
+    ("tip-level-up", "tip-bg", 4.5, "skill grades, met requirements"),
+    ("tip-skill-point", "tip-bg", 4.5, "skill points"),
 )
 
 NAME_RE = re.compile(r"^[a-z][a-z0-9-]*$")

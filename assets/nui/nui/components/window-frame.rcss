@@ -207,6 +207,21 @@ body.nui-scrim .nui-window
 	border-width: 0;
 	border-radius: 9999dp;
 }
+/* A tooltip board: the item, skill and link tooltips (P14 spec 5.7), on
+   the item tooltips' own panel color (--tip-bg, a raised panel that the
+   --tip-* role colors are checked against), with a static shadow. It sizes
+   itself to its lines. */
+.nui-board--tooltip
+{
+	background-color: var(--tip-bg);
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	padding: 8dp 12dp;
+}
+.nui-board--tooltip.nui-fx
+{
+	box-shadow: 0 2dp 8dp var(--overlay-scrim);
+}
 /* A tile: a small framed item of a list or a group (a party member's row).
    Tiles never get hooks. */
 .nui-tile

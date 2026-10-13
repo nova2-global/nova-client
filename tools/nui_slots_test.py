@@ -131,19 +131,10 @@ class Model(SlotsTest):
 
 
 class Layers(SlotsTest):
-    def test_the_item_layer_places_and_sizes_items_and_owner_of_cells_maps_every_covered_cell(self):
+    def test_owner_of_cells_maps_every_covered_cell(self):
         tall = dict(self.m.empty_slot(1), kind="item", icon="/icon/item/00010.tga", w=1, h=2)
         big = dict(self.m.empty_slot(3), kind="item", icon="/icon/item/00020.tga", w=2, h=3, count="5")
-        small = dict(self.m.empty_slot(9), kind="item", icon="/icon/item/27001.tga")
-        outside = dict(self.m.empty_slot(9), kind="item", w=1, h=3)
-        items = [(1, tall), (3, big), (9, small), (9, outside)]
-        layer = self.m.item_layer(items, 5, 2)
-        self.assertEqual([(e["c"], e["r"], e["w"], e["h"]) for e in layer], [(1, 0, 1, 2), (4, 1, 1, 1)],
-                         "an item that does not fit from its cell is left out")
-        self.assertEqual(layer[0]["icon"], "/icon/item/00010.tga")
-        self.assertEqual(set(layer[0]) - set(self.m.SLOT_KEYS), {"c", "r"})
-        layer = self.m.item_layer([(1, tall), (2, big)], 5, 3)
-        self.assertEqual([(e["c"], e["r"], e["w"], e["h"], e["count"]) for e in layer], [(1, 0, 1, 2, ""), (2, 0, 2, 3, "5")])
+        self.assertFalse(hasattr(self.m, "item_layer"), "the layered grid went with slot grid v2's lean grid (P14 spec D1)")
         owners = self.m.owner_of_cells([(1, tall), (2, big)], 5, 3)
         self.assertEqual(owners, [-1, 0, 1, 1, -1,
                                   -1, 0, 1, 1, -1,

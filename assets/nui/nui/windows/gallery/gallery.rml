@@ -248,13 +248,19 @@
 				</div>
 
 				<h2>Slot grid</h2>
-				<!-- v2 cells: an item with a count, a skill with its cover and level,
-				     a cooldown at 60% (the snapshot's --time 1 in [-1, 4)), an active
-				     effect, a disabled, a locked, a picked, a selected, a hovered and an
-				     empty cell; then a 5 x 3 layered grid with a 1x2 and a 2x3 item and
-				     a two-cell drop footprint. -->
+				<!-- Full cells (4 x 3): an item with a count, a skill with its cover and
+				     level, a cooldown at 60% (the snapshot's --time 1 in [-1, 4)), an
+				     active effect (the ring's glow), a disabled, a locked, a picked, a
+				     selected, a hovered and an empty cell, a cooldown that ended at 0.9
+				     (the finish burst plays) and the requirement sign. Beside them a
+				     single cell holding a locked 1x2 item. Then a 5 x 3 lean grid (P14
+				     spec 4.2): a 1x2 sword at cell 0 and a 1x3 glaive at cell 2 over the
+				     cells they cover, an active auto potion, a picked stack, the
+				     two-cell footprint of a 1x2 item held over cell 9, a blocked cell, an
+				     item an attached scroll can be used on and one it cannot, a hovered
+				     cell and an unavailable one. -->
 				<div class="nui-row gallery-slots">
-					<div class="nui-slot-grid nui-slot-grid--cols-5 nui-slot-grid--pick">
+					<div class="nui-slot-grid nui-slot-grid--cols-4 nui-slot-grid--pick">
 						<div class="nui-slot nui-anim" data-for="slot : slots"
 							data-class-is-empty="slot.kind == ''"
 							data-class-is-disabled="slot.disabled" data-class-is-locked="slot.locked"
@@ -267,42 +273,32 @@
 							<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 								data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
 							<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
-							<span class="nui-slot__ring nui-anim" data-if="slot.active" data-class-is-on="slot.active"></span>
+							<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
 							<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
 								delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 							<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
 								delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 							<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
 							<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+							<span class="nui-slot__sign" data-if="slot.index == slot_sign"></span>
 						</div>
 					</div>
-					<div class="nui-slot-grid nui-slot-grid--cols-5 nui-slot-grid--layered">
-						<div class="nui-slot nui-anim" data-for="cell : bag_cells" data-class-is-target="cell.target"><div class="nui-slot__tint"></div></div>
-						<div class="nui-slot-grid__items">
-							<div class="nui-slot-item" data-for="item : bag_items"
-								data-class-is-disabled="item.disabled" data-class-is-locked="item.locked"
-								data-class-nui-slot-item--c0="item.c == 0" data-class-nui-slot-item--c1="item.c == 1"
-								data-class-nui-slot-item--c2="item.c == 2" data-class-nui-slot-item--c3="item.c == 3"
-								data-class-nui-slot-item--c4="item.c == 4"
-								data-class-nui-slot-item--r0="item.r == 0" data-class-nui-slot-item--r1="item.r == 1"
-								data-class-nui-slot-item--r2="item.r == 2"
-								data-class-nui-slot-item--w1="item.w == 1" data-class-nui-slot-item--w2="item.w == 2"
-								data-class-nui-slot-item--h1="item.h == 1" data-class-nui-slot-item--h2="item.h == 2"
-								data-class-nui-slot-item--h3="item.h == 3">
-								<img class="nui-slot__icon" data-attr-src="item.icon"/>
-								<div class="nui-slot__cover" data-if="item.cover"></div>
-								<div class="nui-slot__tint"></div>
-								<nui-cooldown class="nui-slot__cooldown" data-if="item.cd_end > 0"
-									data-attr-start="item.cd_start" data-attr-end="item.cd_end"/>
-								<nui-frames class="nui-slot__active" data-if="item.active" count="13" delay="0.0667"/>
-								<span class="nui-slot__ring nui-anim" data-if="item.active" data-class-is-on="item.active"></span>
-								<nui-frames class="nui-slot__finish" data-if="item.cd_end > 0" count="11"
-									delay="0.0333" loop="false" after="none" data-attr-start="item.cd_end"/>
-								<nui-frames class="nui-slot__flash nui-anim" data-if="item.cd_end > 0" count="11"
-									delay="0.0333" loop="false" after="none" data-attr-start="item.cd_end"/>
-								<span class="nui-slot__count" data-if="item.count != ''">{{ item.count }}</span>
-								<nui-number class="nui-slot__digits" data-if="item.count != ''" data-attr-value="item.count"/>
-							</div>
+					<div class="nui-slot-grid nui-slot-grid--cols-1">
+						<div class="nui-slot nui-slot--h2 nui-anim is-locked">
+							<img class="nui-slot__icon" data-attr-src="tall_icon"/>
+							<div class="nui-slot__tint"></div>
+						</div>
+					</div>
+					<div class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5" id="gallery-lean">
+						<div class="nui-slot nui-anim nui-fx" data-for="c : lean" data-attr-id="'gallery-lean-' + it_index"
+							data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+							data-class-is-picked="c.picked" data-class-is-active="c.active"
+							data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+							data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
+							data-class-is-unavailable="c.unavailable" data-class-is-hover="it_index == lean_hover"
+							data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3">
+							<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+							<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 						</div>
 					</div>
 				</div>

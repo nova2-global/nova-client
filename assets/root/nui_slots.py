@@ -154,25 +154,9 @@ def emotion_slot(index, emotion_index):
 	return slot
 
 
-def item_layer(items, cols, rows):
-	"""The item layer of a layered grid (multi-cell icons): one entry per
-	(cell, slot) pair in `items` whose w x h fits the grid from that cell,
-	with the slot's keys plus "c" and "r", the cell's column and row."""
-	layer = []
-	for cell, slot in items:
-		c, r = cell % cols, cell // cols
-		w, h = int(slot.get("w", 1)), int(slot.get("h", 1))
-		if 0 <= cell and r < rows and c + w <= cols and r + h <= rows:
-			entry = dict(slot)
-			entry["c"], entry["r"] = c, r
-			layer.append(entry)
-	return layer
-
-
 def owner_of_cells(items, cols, rows):
 	"""Per cell of a cols x rows grid, the position in `items` of the
-	(cell, slot) pair whose item covers it, or -1, for hit testing a layered
-	grid."""
+	(cell, slot) pair whose item covers it, or -1."""
 	owners = [-1] * (cols * rows)
 	for position, (cell, slot) in enumerate(items):
 		c, r = cell % cols, cell // cols

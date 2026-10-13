@@ -208,6 +208,20 @@
 	border-top-width: 0;
 }
 
+/* A tooltip board: the legacy thin board (ui.ThinBoard, the item, skill and
+   link tooltips' base), no shadow; its window sets the legacy padding. */
+.skin-classic.nui-board--tooltip, .skin-classic .nui-board--tooltip
+{
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+}
+.skin-classic.nui-board--tooltip.nui-fx, .skin-classic .nui-board--tooltip.nui-fx
+{
+	box-shadow: none;
+}
+
 /* --- Glyphs ---------------------------------------------------------------------------
    Classic draws the legacy button and icon art where the modern look draws a
    glyph (components/glyph.rcss), so no glyph shows. Window sheets never set a
@@ -610,9 +624,16 @@
 {
 	--frames-pattern: "d:/ymir work/ui/public/slotfinishcooltimeeffect/%02d.sub#nui-additive";
 }
-.skin-classic .nui-slot__ring, .skin-classic .nui-slot__flash
+.skin-classic .nui-slot__ring
 {
 	display: none;
+}
+/* The flash draws nothing but keeps its clock (a hidden nui-frames runs
+   none), so a switch to a modern skin during a burst shows it at the phase
+   it would have without the switch. */
+.skin-classic .nui-slot__flash
+{
+	decorator: none;
 }
 .skin-classic nui-number
 {
@@ -647,7 +668,7 @@
 	background-color: transparent;
 	border-width: 0;
 }
-.skin-classic .nui-slot.is-selected, .skin-classic .nui-slot.is-target
+.skin-classic .nui-slot.is-selected
 {
 	background-color: transparent;
 	border-width: 0;
@@ -673,18 +694,13 @@
 {
 	decorator: image("d:/ymir work/ui/public/slot_cover_button_03.sub");
 }
-/* The pick highlight and the selection: white at 50% under the icon. */
+/* The selection: white at 50% under the icon. */
 .skin-classic .nui-slot.is-selected .nui-slot__tint
 {
 	z-index: -1;
 	background-color: var(--slot-picked);
 }
-.skin-classic .nui-slot.is-target .nui-slot__tint
-{
-	z-index: -1;
-	background-color: var(--slot-picked);
-}
-/* After the two above, which they tie: the disabled and locked tints win. */
+/* After the one above, which they tie: the disabled and locked tints win. */
 .skin-classic .nui-slot.is-disabled .nui-slot__tint
 {
 	z-index: 1;
@@ -713,59 +729,123 @@
 	left: 0;
 	top: 0;
 }
-.skin-classic .nui-slot-item
-{
-	width: 32dp;
-	height: 32dp;
-	align-items: flex-start;
-	justify-content: flex-start;
-}
-.skin-classic .nui-slot-grid--layered .nui-slot-item .nui-slot__count
-{
-	display: none;
-}
-.skin-classic .nui-slot-item--c1 { left: 32dp; }
-.skin-classic .nui-slot-item--c2 { left: 64dp; }
-.skin-classic .nui-slot-item--c3 { left: 96dp; }
-.skin-classic .nui-slot-item--c4 { left: 128dp; }
-.skin-classic .nui-slot-item--c5 { left: 160dp; }
-.skin-classic .nui-slot-item--c6 { left: 192dp; }
-.skin-classic .nui-slot-item--c7 { left: 224dp; }
-.skin-classic .nui-slot-item--c8 { left: 256dp; }
-.skin-classic .nui-slot-item--c9 { left: 288dp; }
-.skin-classic .nui-slot-item--r1 { top: 32dp; }
-.skin-classic .nui-slot-item--r2 { top: 64dp; }
-.skin-classic .nui-slot-item--r3 { top: 96dp; }
-.skin-classic .nui-slot-item--r4 { top: 128dp; }
-.skin-classic .nui-slot-item--r5 { top: 160dp; }
-.skin-classic .nui-slot-item--r6 { top: 192dp; }
-.skin-classic .nui-slot-item--r7 { top: 224dp; }
-.skin-classic .nui-slot-item--r8 { top: 256dp; }
-.skin-classic .nui-slot-item--r9 { top: 288dp; }
-.skin-classic .nui-slot-item--w1 { width: 32dp; }
-.skin-classic .nui-slot-item--w2 { width: 64dp; }
-.skin-classic .nui-slot-item--w3 { width: 96dp; }
-.skin-classic .nui-slot-item--h1 { height: 32dp; }
-.skin-classic .nui-slot-item--h2 { height: 64dp; }
-.skin-classic .nui-slot-item--h3 { height: 96dp; }
-/* An item's state parts on its anchor cell only, the icon's top-left 32dp,
-   as CSlotWindow draws them with the slot's cell size. */
-.skin-classic .nui-slot-item .nui-slot__tint
+/* The single cell's span (a wear cell): 32dp steps. */
+.skin-classic .nui-slot--h2 { height: 64dp; }
+.skin-classic .nui-slot--h3 { height: 96dp; }
+.skin-classic .nui-slot--w2 { width: 64dp; }
+.skin-classic .nui-slot--w3 { width: 96dp; }
+/* A taller item's icon at its own size at the slot's corner, as legacy
+   draws the instance. */
+.skin-classic .nui-slot--h2 > .nui-slot__icon, .skin-classic .nui-slot--h3 > .nui-slot__icon
 {
 	left: 0;
 	top: 0;
-	right: auto;
-	bottom: auto;
+	height: auto;
+}
+/* The drop footprint and the use mode in the legacy colors
+   (CGridSlotWindow::OnRenderPickingSlot: white, red, yellow at 50%), under
+   the icon; no border. */
+.skin-classic .nui-slot.is-target, .skin-classic .nui-slot.is-blocked,
+.skin-classic .nui-slot.is-usable, .skin-classic .nui-slot.is-unusable,
+.skin-classic .nui-slot.is-unavailable, .skin-classic .nui-slot.is-unavailable:hover
+{
+	border-width: 0;
+}
+.skin-classic .nui-slot.is-target { background-color: var(--slot-target); }
+.skin-classic .nui-slot.is-blocked { background-color: var(--slot-blocked); }
+.skin-classic .nui-slot.is-usable { background-color: var(--slot-usable); }
+.skin-classic .nui-slot.is-unusable { background-color: var(--slot-unusable); }
+.skin-classic .nui-slot.is-unavailable, .skin-classic .nui-slot.is-unavailable:hover
+{
+	background-color: var(--slot-unavailable);
+}
+/* The count of a lean cell or a wear cell: the legacy digits, right-aligned
+   4dp in from the item's right edge, their top 10dp above its bottom
+   (CSlotWindow's number line, at the item's placed size). */
+.skin-classic .nui-slot__number
+{
+	right: 4dp;
+	bottom: 3dp;
+}
+/* The requirement sign: the window names its image in its overlay (legacy
+   AppendRequirementSignImage takes any). */
+.skin-classic .nui-slot__sign
+{
+	border-width: 0;
+	width: 7dp;
+	height: 7dp;
+}
+
+/* The lean grid: the slot base art tiled under the whole grid at the legacy
+   32dp pitch, with no gap; a cell draws nothing at rest and has no hover
+   look; the states in the legacy colors as above. An active item (an auto
+   potion that is on) shows the legacy active effect's first frame under its
+   icon: the lean cell has no frames part (P14 spec 4.2's budget). */
+.skin-classic .nui-slot-grid--lean
+{
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat left top);
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot,
+.skin-classic .nui-slot-grid--lean > .nui-slot:hover, .skin-classic .nui-slot-grid--lean > .nui-slot.is-hover,
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-picked
+{
 	width: 32dp;
 	height: 32dp;
+	padding: 0;
+	border-width: 0;
 	border-radius: 0;
+	background-color: transparent;
+	decorator: none;
 }
-.skin-classic .nui-slot-item .nui-slot__cover, .skin-classic .nui-slot-item .nui-slot__cooldown,
-.skin-classic .nui-slot-item .nui-slot__active, .skin-classic .nui-slot-item .nui-slot__finish
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-target { background-color: var(--slot-target); }
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-blocked { background-color: var(--slot-blocked); }
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-usable { background-color: var(--slot-usable); }
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-unusable { background-color: var(--slot-unusable); }
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-unavailable
+{
+	background-color: var(--slot-unavailable);
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-active
+{
+	border-width: 0;
+	decorator: image("d:/ymir work/ui/public/slotactiveeffect/00.sub#nui-additive");
+}
+.skin-classic .nui-slot.is-active.nui-fx
+{
+	box-shadow: none;
+}
+.skin-classic .nui-slot-grid--lean .nui-slot__icon,
+.skin-classic .nui-slot-grid--lean .nui-slot.is-active .nui-slot__icon,
+.skin-classic .nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__icon,
+.skin-classic .nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__icon
 {
 	left: 0;
 	top: 0;
 }
+.skin-classic .nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__icon,
+.skin-classic .nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__icon
+{
+	height: auto;
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot--h2, .skin-classic .nui-slot-grid--lean > .nui-slot--h3
+{
+	height: 32dp;
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__number { bottom: -29dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__number { bottom: -61dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w2, .skin-classic .nui-slot-grid--lean > .nui-slot--w3
+{
+	width: 32dp;
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__icon,
+.skin-classic .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__icon
+{
+	left: 0;
+	width: auto;
+	height: auto;
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__number { right: -28dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__number { right: -60dp; }
 
 .skin-classic .nui-slider slidertrack
 {

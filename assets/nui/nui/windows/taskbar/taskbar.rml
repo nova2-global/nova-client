@@ -87,7 +87,7 @@
 					<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 						data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
 					<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
-					<span class="nui-slot__ring nui-anim" data-if="slot.active" data-class-is-on="slot.active"></span>
+					<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
 					<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
 						delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 					<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
@@ -135,7 +135,7 @@
 				<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 					data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
 				<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
-				<span class="nui-slot__ring nui-anim" data-if="slot.active" data-class-is-on="slot.active"></span>
+				<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
 				<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
 					delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
 				<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
@@ -184,7 +184,7 @@
 				<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
 					data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
 				<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
-				<span class="nui-slot__ring nui-anim" data-if="slot.active" data-class-is-on="slot.active"></span>
+				<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
 				<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
 				<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
 			</div>

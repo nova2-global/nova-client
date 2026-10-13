@@ -250,6 +250,16 @@
 {
 	image-color: var(--notice-bar);
 }
+/* A tooltip board: the chip in the tooltips' panel color, with no shadow
+   (the chip's outline is its edge). */
+.skin-cyberpunk.nui-board--tooltip, .skin-cyberpunk .nui-board--tooltip
+{
+	image-color: var(--tip-bg);
+}
+.skin-cyberpunk.nui-board--tooltip.nui-fx, .skin-cyberpunk .nui-board--tooltip.nui-fx
+{
+	box-shadow: none;
+}
 /* The ring and the disc are drawn by the minimap's overlay. */
 .skin-cyberpunk .nui-board--ring
 {
@@ -626,12 +636,44 @@
 }
 .skin-cyberpunk .nui-slot.is-target
 {
-	background-color: var(--surface-hover);
+	background-color: var(--slot-target);
 	border-color: var(--accent);
 }
-.skin-cyberpunk .nui-slot__count
+.skin-cyberpunk .nui-slot__count, .skin-cyberpunk .nui-slot__number .nui-number__text
 {
 	border-radius: 0;
+}
+/* The lean grid (P14 spec 4.2): its bases with the dim neon edge, in one
+   draw; a lean cell draws nothing at rest, and the hover above lights it. */
+.skin-cyberpunk .nui-slot-grid--lean
+{
+	decorator: nui-cells(40dp 4dp var(--radius-sm) var(--surface-sunken) var(--cyberpunk-edge-dim) 1dp);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot
+{
+	border-color: transparent;
+}
+/* After the rule above, which they outweigh: each state's edge. */
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot:hover, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-hover,
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-picked, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-target,
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active
+{
+	border-color: var(--accent);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-blocked, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unusable
+{
+	border-color: var(--danger);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-usable
+{
+	border-color: var(--warning);
+}
+.skin-cyberpunk .nui-slot.is-unavailable, .skin-cyberpunk .nui-slot.is-unavailable:hover,
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unavailable, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unavailable:hover
+{
+	background-color: var(--slot-unavailable);
+	border-color: var(--cyberpunk-edge-dim);
+	decorator: none;
 }
 
 /* --- Gauges: a crisp track, fills that brighten toward their end ---------------------

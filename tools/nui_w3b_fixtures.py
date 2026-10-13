@@ -149,6 +149,7 @@ def inventory(limits, page, wear, bag, money, **rest):
         "has_costume": True,
         "has_dss": True,
         "has_mall": True,
+        "placed": False,
     }
     model.update(rest)
     return {"inventory": model}

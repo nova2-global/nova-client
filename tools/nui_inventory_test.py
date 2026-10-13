@@ -32,16 +32,21 @@ import io
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import types
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
+import check_nui_snapshots  # noqa: E402
 
 ROOT = support.ROOT
 WINDOWS = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "nui", "nui", "windows"))
 FLAGS = "+inventory,+select-item"
+NUITOOL = os.environ.get("NUITOOL") or shutil.which("nuitool")
 P = support.module_constants()["player"]
 I = support.module_constants()["item"]
 A = support.APP_CONSTANTS
@@ -1046,6 +1051,81 @@ class Placement(unittest.TestCase):
             text = read(os.path.join(WINDOWS, name, name + ".rml"))
             body = re.search(r"<body[^>]*>", text).group(0)
             self.assertEqual("nui-below-legacy-ui" in body, below, name)
+
+
+class _NuiTaskBar(object):
+    """The NovaUI taskbar facade, as far as the inventory reads it."""
+    NUI_FACADE = True
+
+    def GetBarHeight(self):
+        return 48
+
+
+class DefaultPlace(unittest.TestCase):
+    """Above the NovaUI taskbar the board is placed from Python, and its sheet's
+    right and bottom give way (inv--placed): a placement writes only left and
+    top (NuiRuntime.h), so with right: 0 and bottom: 37dp the board stretched
+    between its placed top and that bottom, and each placement from the
+    stretched height moved it higher, to the screen's top (integration,
+    2026-10-13, IV-N)."""
+
+    def test_above_the_nui_taskbar_the_board_is_placed_and_marked_placed(self):
+        world = World(True)
+        world.interface.wndTaskBar = _NuiTaskBar()
+        window = world.make_inventory()
+        shown = board(window)
+        module = world.m("nui_inventory")
+        scale = module.nui.get_scale() or 1.0
+        width, height = module.wndMgr.GetScreenWidth(), module.wndMgr.GetScreenHeight()
+        self.assertEqual(shown.placement, ("position", width / scale, height / scale - 48 / scale, (1.0, 1.0)))
+        self.assertIs(shown.model["placed"], True)
+
+    def test_with_the_legacy_taskbar_the_sheet_places_it(self):
+        world = World(True)
+        window = world.make_inventory()
+        shown = board(window)
+        self.assertIsNone(shown.placement)
+        self.assertIs(shown.model["placed"], False)
+
+    def test_the_placed_class_hands_right_and_bottom_back(self):
+        rml = read(os.path.join(WINDOWS, "inventory", "inventory.rml"))
+        start = rml.index("<body")
+        body = rml[start:rml.index("<div", start)]  # its attributes hold a ">"
+        self.assertIn('data-class-inv--placed="placed"', body)
+        rule = re.search(r"body\.inv\.inv--placed\s*\{([^}]*)\}", read(os.path.join(WINDOWS, "inventory", "inventory.rcss")))
+        self.assertIsNotNone(rule)
+        self.assertIn("right: auto;", rule.group(1))
+        self.assertIn("bottom: auto;", rule.group(1))
+
+
+@unittest.skipUnless(NUITOOL, "set NUITOOL to a nuitool build (or put nuitool on PATH)")
+class DockBox(unittest.TestCase):
+    """inv-belt-dock is on the inventory's left border-box edge in every golden
+    case of the inventory, so the docked belt's right edge meets it (D16; the
+    kit's IV-07-docked). The modern rule was 3dp inside the body."""
+
+    def test_the_belt_dock_is_on_the_body_edge_in_every_inventory_case(self):
+        work = tempfile.mkdtemp(prefix="nui-dock-")
+        cwd = os.getcwd()
+        os.chdir(check_nui_snapshots.ROOT)
+        try:
+            cases = [case for case in check_nui_snapshots.cases(check_nui_snapshots.ROOT)
+                     if case[0].startswith("inventory-") and case[-1] is None]
+            self.assertTrue(cases)
+            for case in cases:
+                with self.subTest(case=case[0]):
+                    out = os.path.join(work, case[0] + ".png")
+                    boxes = os.path.join(work, case[0] + ".boxes.json")
+                    process = subprocess.run(check_nui_snapshots.command(NUITOOL, case, out) + ["--boxes", boxes],
+                                             capture_output=True, text=True)
+                    self.assertEqual(process.returncode, 0, process.stdout + process.stderr)
+                    with open(boxes, encoding="utf-8") as handle:
+                        found = json.load(handle)
+                    # Within a pixel's rounding at 150 percent.
+                    self.assertLessEqual(abs(found["inv-belt-dock"][0] - found[""][0]), 0.5, (found[""], found["inv-belt-dock"]))
+        finally:
+            os.chdir(cwd)
+            shutil.rmtree(work, True)
 
 
 class OnDemand(unittest.TestCase):

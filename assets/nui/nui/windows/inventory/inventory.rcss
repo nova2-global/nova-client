@@ -16,6 +16,14 @@ body.inv
 	focus: none;
 	tab-index: none;
 }
+/* Placed from Python (above the NovaUI taskbar, or where the player left
+   it): the placement writes left and top only, so right and bottom give way
+   and the board keeps its own height. */
+body.inv.inv--placed
+{
+	right: auto;
+	bottom: auto;
+}
 .inv button
 {
 	tab-index: none;
@@ -158,11 +166,13 @@ body.inv
 .inv-wear--foots { left: 88dp; top: 132dp; }
 .inv-wear--belt { left: 132dp; top: 132dp; }
 /* The belt docks here: its right edge on the inventory's left edge, its top
-   at the bag's top (place_next_to). */
+   at the bag's top (place_next_to). The equipment starts 11dp inside the
+   body's border box (the 1dp border, the body's 8dp padding, 2dp of
+   centering). */
 .inv-belt-dock
 {
 	position: absolute;
-	left: -8dp;
+	left: -11dp;
 	top: 180dp;
 	width: 0;
 	height: 0;

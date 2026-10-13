@@ -1254,6 +1254,7 @@
 		"dss_active": false,
 		"has_costume": true,
 		"has_dss": true,
-		"has_mall": true
+		"has_mall": true,
+		"placed": false
 	}
 }

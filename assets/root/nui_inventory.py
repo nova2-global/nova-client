@@ -202,6 +202,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"has_costume": False,
 			"has_dss": False,
 			"has_mall": False,
+			# The board is placed from Python (inv--placed: the sheet's
+			# right and bottom give way to the placement's left and top).
+			"placed": False,
 		}
 
 	def _set(self, **values):
@@ -216,9 +219,18 @@ class InventoryWindow(uiInventory.InventoryWindow):
 	def _restore_board(self, board):
 		board.set(**self._state)
 		if self._place is not None:
+			self._placed(board)
 			board.set_position(self._place[0], self._place[1])
 		else:
 			self._default_place(board)
+
+	def _placed(self, board):
+		"""A placement writes only the body's left and top (NuiRuntime.h), so
+		the sheet's right: 0 and bottom: 37dp must give way, or the board
+		stretches between its placed top and that bottom, and every later
+		placement, from the stretched height, moves it higher."""
+		self._state["placed"] = True
+		board.set(placed=True)
 
 	def _keep_board(self, board):
 		box = board.element_box("")
@@ -238,6 +250,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			return
 		scale = nui.get_scale() or 1.0
 		bar = float(height()) / scale
+		self._placed(board)
 		board.set_position(wndMgr.GetScreenWidth() / scale, wndMgr.GetScreenHeight() / scale - bar, origin=(1.0, 1.0))
 
 	def _show_board(self):

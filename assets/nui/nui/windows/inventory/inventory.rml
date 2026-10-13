@@ -24,9 +24,9 @@
 </head>
 <body template="nui" id="inventory" class="nui-window nui-fx nui-anim nui-below-legacy-ui inv" data-model="inventory"
       data-class-inv--table-new="table == 'new'" data-class-inv--table-old="table == 'old'"
-      data-class-inv--tabs-small="size(pages) > 2">
+      data-class-inv--tabs-small="size(pages) > 2" data-class-inv--placed="placed">
 	<div class="nui-window__titlebar inv__titlebar">
-		<handle class="nui-window__handle inv__handle" move_target="#document">
+		<handle id="inv-title" class="nui-window__handle inv__handle" move_target="#document">
 			<span class="nui-window__title inv__title">@ui.INVENTORY_TITLE</span>
 		</handle>
 		<button id="inv-costume" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip inv-button inv-button--costume"

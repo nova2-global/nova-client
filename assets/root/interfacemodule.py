@@ -184,7 +184,7 @@ class Interface(object):
 		
 	def __MakeWindows(self):
 		wndCharacter = uiCharacter.CharacterWindow()
-		wndInventory = uiInventory.InventoryWindow()
+		wndInventory = nui_windows.make("inventory", uiInventory.InventoryWindow, "nui_inventory.InventoryWindow")
 		wndInventory.BindInterfaceClass(self)
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			wndDragonSoul = uiDragonSoul.DragonSoulWindow()	
@@ -254,19 +254,19 @@ class Interface(object):
 		self.dlgPassword = uiSafebox.PasswordDialog()
 		self.dlgPassword.Hide()
 
-		self.hyperlinkItemTooltip = uiToolTip.HyperlinkItemToolTip()
+		self.hyperlinkItemTooltip = nui_windows.make("tooltips", uiToolTip.HyperlinkItemToolTip, "nui_link_tooltip.HyperlinkItemToolTip")
 		self.hyperlinkItemTooltip.Hide()
 
-		self.tooltipItem = uiToolTip.ItemToolTip()
+		self.tooltipItem = nui_windows.make("tooltips", uiToolTip.ItemToolTip, "nui_item_tooltip.ItemToolTip")
 		self.tooltipItem.Hide()
 
-		self.tooltipSkill = uiToolTip.SkillToolTip()
+		self.tooltipSkill = nui_windows.make("tooltips", uiToolTip.SkillToolTip, "nui_skill_tooltip.SkillToolTip")
 		self.tooltipSkill.Hide()
 
 		self.privateShopBuilder = uiPrivateShopBuilder.PrivateShopBuilder()
 		self.privateShopBuilder.Hide()
 
-		self.dlgRefineNew = uiRefine.RefineDialogNew()
+		self.dlgRefineNew = nui_windows.make("refine", uiRefine.RefineDialogNew, "nui_refine.RefineDialogNew")
 		self.dlgRefineNew.Hide()
 
 	def __MakeHelpWindow(self):
@@ -300,7 +300,7 @@ class Interface(object):
 
 	# ACCESSORY_REFINE_ADD_METIN_STONE
 	def __MakeItemSelectWindow(self):
-		self.wndItemSelect = uiselectitem.SelectItemWindow()
+		self.wndItemSelect = nui_windows.make("select-item", uiselectitem.SelectItemWindow, "nui_select_item.SelectItemWindow")
 		self.wndItemSelect.Hide()
 	# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
 				

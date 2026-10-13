@@ -1,0 +1,82 @@
+/* Classic skin overlay of nui/windows/belt-inventory/belt-inventory.rml:
+   the legacy belt inventory (uiscript beltinventorywindow.py) at 100%,
+   1dp to the legacy pixel. The window is 148 x 139 (10 wide collapsed); the
+   legacy loader draws nothing for its root (a uiscript body takes only its
+   place and size, so bg.tga does not show); the expand button (10 x 108 art)
+   at 2, 15; the layer at 5, 0 with the minimize button at 2, 15 and the
+   stone board, 138 x 139, at 10, 0 (it reaches 5 past the window's right
+   edge, under the inventory's left edge, as legacy's); the grid at 5, 5 of
+   the board on the slot base at the 32px pitch. A cell beyond the belt's
+   grade shows the legacy cover's disabled art (slot_disabled.tga); the
+   cover's up, over and down art (quest/slot_button_01.sub) is not in the
+   assets, so an available cell shows none (P14 spec 2.1). */
+
+body.skin-classic.belt,
+body.skin-classic.belt.belt--expanded
+{
+	width: 10dp;
+	height: 139dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: none;
+}
+body.skin-classic.belt.belt--expanded
+{
+	width: 148dp;
+}
+body.skin-classic.belt .belt__layer
+{
+	display: block;
+	position: absolute;
+	left: 5dp;
+	top: 0;
+	width: 148dp;
+	height: 139dp;
+}
+body.skin-classic.belt .belt__expand,
+body.skin-classic.belt .belt__minimize
+{
+	position: absolute;
+	left: 2dp;
+	top: 15dp;
+	width: 10dp;
+	height: 108dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.belt .belt__expand { decorator: image("d:/ymir work/ui/game/belt_inventory/btn_expand_normal.tga"); }
+body.skin-classic.belt .belt__expand:hover { decorator: image("d:/ymir work/ui/game/belt_inventory/btn_expand_over.tga"); background-color: transparent; }
+body.skin-classic.belt .belt__expand:active { decorator: image("d:/ymir work/ui/game/belt_inventory/btn_expand_down.tga"); background-color: transparent; }
+body.skin-classic.belt .belt__minimize { decorator: image("d:/ymir work/ui/game/belt_inventory/btn_minimize_normal.tga"); }
+body.skin-classic.belt .belt__minimize:hover { decorator: image("d:/ymir work/ui/game/belt_inventory/btn_minimize_over.tga"); background-color: transparent; }
+body.skin-classic.belt .belt__minimize:active { decorator: image("d:/ymir work/ui/game/belt_inventory/btn_minimize_down.tga"); background-color: transparent; }
+/* Above the board, which legacy draws over the button's right 2px: a
+   press anywhere on the button minimizes (tools/nui_hit_test.py). */
+body.skin-classic.belt .belt__minimize
+{
+	z-index: 1;
+}
+body.skin-classic.belt .belt__board
+{
+	position: absolute;
+	left: 10dp;
+	top: 0;
+	width: 138dp;
+	height: 139dp;
+	decorator: classic-board;
+}
+body.skin-classic.belt .belt__grid
+{
+	position: absolute;
+	left: 5dp;
+	top: 5dp;
+}
+body.skin-classic.belt .belt__grid > .nui-slot.is-unavailable
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/belt_inventory/slot_disabled.tga" scale-none left top);
+}

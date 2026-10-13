@@ -19,8 +19,7 @@ WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # (P14 spec 9.1, 9.4): listed for the prewarm already (6.7). That stage
 # empties this set when its documents exist; the test below fails while a
 # document named here exists, or one not named here is missing.
-PENDING_DOCUMENTS = {"refine", "attach-metin", "item-tooltip", "skill-tooltip", "link-tooltip",
-                     "inventory", "costume", "belt-inventory", "select-item"}
+PENDING_DOCUMENTS = {"refine", "attach-metin", "item-tooltip", "skill-tooltip", "link-tooltip"}
 
 
 class Legacy(object):

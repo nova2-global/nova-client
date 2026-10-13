@@ -338,3 +338,6 @@ OPTION_UI_COLOR_CUSTOM	Brugerdefineret
 OPTION_UI_COLORS_RESET	Nulstil farver
 OPTION_UI_COLORS_ADJUSTED	Nogle tekstfarver blev justeret, så de forbliver læsbare.
 THEME_CYBERPUNK	Cyberpunk
+INVENTORY_PAGE_BUTTON_TOOLTIP_3	3. inventar
+INVENTORY_PAGE_BUTTON_TOOLTIP_4	4. inventar
+INVENTORY_PAGE_BUTTON_TOOLTIP_5	5. inventar

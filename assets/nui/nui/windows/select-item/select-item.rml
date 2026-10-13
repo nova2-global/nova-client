@@ -1,0 +1,42 @@
+<rml>
+<head>
+	<!-- Select item (uiselectitem.py SelectItemWindow, uiscript
+	     selectitemwindow.py; P14 spec 6.6): the stones a quest's
+	     [SELECT_ITEM] lets the player pick. While the select-item flag is on,
+	     the Interface makes nui_select_item.SelectItemWindow (controller
+	     assets/root/nui_select_item.py), a subclass of the legacy class on
+	     proxies: legacy's RefreshSlot scans the inventory and sets the rows
+	     (3 under 15 stones, then one per 5, at most 55). A press on a stone
+	     sends its position, the close button 0. The document exists only
+	     while it shows; its list is set once per load. The body and its
+	     controls take no focus; controls act on a left mousedown. -->
+	<title>select-item</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="select-item.rcss"/>
+</head>
+<body template="nui" id="select-item" class="nui-window nui-fx nui-anim sel" data-model="select_item">
+	<div class="nui-window__titlebar sel__titlebar">
+		<handle class="nui-window__handle sel__handle" move_target="#document">
+			<span class="nui-window__title sel__title">@ui.SELECT_METIN_STONE_TITLE</span>
+		</handle>
+		<button id="select-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim sel__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body sel__body">
+		<div id="select-grid" class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5 sel__grid">
+			<div class="nui-slot nui-anim" data-for="c : cells" data-attr-id="'select-cell-' + it_index"
+			     data-class-is-empty="c.kind == ''"
+			     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseover="cell_over(it_index)"
+			     data-event-mouseout="cell_out(it_index)">
+				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+			</div>
+		</div>
+	</div>
+	<div class="nui-window__footer sel__footer">
+		<button id="select-close" class="nui-button nui-anim sel__close"
+		        data-event-mousedown="close_press(ev.button)">@ui.CLOSE</button>
+	</div>
+</body>
+</rml>

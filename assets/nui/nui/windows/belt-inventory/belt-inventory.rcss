@@ -1,0 +1,48 @@
+/* The belt's modern look (P14 spec 6.3): a board beside the inventory with
+   a lean 4 x 4 grid and a minimize chevron on its left; collapsed, a 16dp
+   tab with the expand chevron. The controller docks it (place_next_to),
+   so its place here only frames it in its snapshots. Classic (legacy's
+   expand and minimize art and the stone board; no title):
+   skins/classic/windows/belt-inventory.rcss. */
+
+body.belt
+{
+	left: 8dp;
+	top: 8dp;
+	focus: none;
+	tab-index: none;
+}
+.belt button
+{
+	tab-index: none;
+}
+body.belt.belt--expanded
+{
+	padding: var(--space-2);
+}
+.belt__layer
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	gap: var(--space-1);
+}
+.belt__expand, .belt__minimize
+{
+	display: block;
+	width: 16dp;
+	min-width: 0;
+	height: 48dp;
+	margin-top: 8dp;
+	padding: 0;
+}
+.belt__expand .nui-glyph, .belt__minimize .nui-glyph
+{
+	position: absolute;
+	left: 0;
+	top: 16dp;
+}
+.belt__expand, .belt__minimize
+{
+	position: relative;
+}

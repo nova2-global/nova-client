@@ -338,3 +338,6 @@ OPTION_UI_COLOR_CUSTOM	Personalizat
 OPTION_UI_COLORS_RESET	Resetează culorile
 OPTION_UI_COLORS_ADJUSTED	Unele culori ale textului au fost ajustate pentru a rămâne lizibile.
 THEME_CYBERPUNK	Cyberpunk
+INVENTORY_PAGE_BUTTON_TOOLTIP_3	3. Inventar
+INVENTORY_PAGE_BUTTON_TOOLTIP_4	4. Inventar
+INVENTORY_PAGE_BUTTON_TOOLTIP_5	5. Inventar

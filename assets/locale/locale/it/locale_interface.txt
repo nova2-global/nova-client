@@ -338,3 +338,6 @@ OPTION_UI_COLOR_CUSTOM	Personalizzato
 OPTION_UI_COLORS_RESET	Ripristina colori
 OPTION_UI_COLORS_ADJUSTED	Alcuni colori del testo sono stati regolati per restare leggibili.
 THEME_CYBERPUNK	Cyberpunk
+INVENTORY_PAGE_BUTTON_TOOLTIP_3	3° Inventario
+INVENTORY_PAGE_BUTTON_TOOLTIP_4	4° Inventario
+INVENTORY_PAGE_BUTTON_TOOLTIP_5	5° Inventario

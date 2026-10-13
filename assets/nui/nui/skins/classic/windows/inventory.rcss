@@ -1,0 +1,371 @@
+/* Classic skin overlay of nui/windows/inventory/inventory.rml: the legacy
+   inventory (uiscript inventorywindow.py) at 100%, 1dp to the legacy pixel.
+   Today's table (inv--table-new): the stone board, 176 x 565, at legacy's
+   place (the screen's right, 37 above the bottom); the title bar at 8, 7,
+   161 wide; Equipment_Base at 10, 33 with equipment_bg_without_ring.tga
+   (155 x 187), its slot window at 3, 3 and the wear slots at their uiscript
+   places, no slot base (the art has the frames); the costume, dragon soul
+   and mall buttons at their places on the base (78, 5; 114, 107; 118, 148);
+   the two large tabs at 10, 224 and 88, 224 (three to five pages: the small
+   tabs at a 32px pitch from 10); the bag at 8, 246 on the slot base, at the
+   32px pitch; the money slot (parameter_slot_05.sub, 130 x 18) 28 above the
+   bottom, centered 8 right of the middle (31, 537), its icon 18 left of it
+   and the amount right-aligned 3 in from its right. The dragon soul
+   button's active effect is legacy's slot active frames over it.
+   The foundation's table (inv--table-old): OLD's 196 x 627 board and
+   places (newinventorywindow.py: the title bar at 6, 22, the equipment at
+   12, 43, the tabs at 28 + 32 i, 275, the bag at 18, 311, the money at 41,
+   599) with today's art: OLD's own art (board_new, inventory_m_new.tga) is
+   not in the assets, so the wear cells stand on the slot base; the
+   foundation wave's C2 decides at the cut (P14 spec 11). */
+
+body.skin-classic.inv
+{
+	width: 176dp;
+	height: 565dp;
+	min-width: 0;
+}
+body.skin-classic.inv.inv--table-old
+{
+	width: 196dp;
+	height: 627dp;
+}
+
+/* The title bar: legacy's, placed from the board's corner. z-index: the
+   parts below are positioned boxes later in the document. */
+body.skin-classic.inv .inv__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 161dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+}
+body.skin-classic.inv.inv--table-old .inv__titlebar
+{
+	left: 6dp;
+	top: 22dp;
+	width: 180dp;
+}
+body.skin-classic.inv .inv__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 23dp;
+	line-height: 21dp;
+	text-align: center;
+}
+body.skin-classic.inv .inv__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 143dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.inv.inv--table-old .inv__titlebar .nui-window__close
+{
+	left: 162dp;
+}
+
+/* The costume, dragon soul and mall buttons: legacy's art at their places
+   on the equipment base (Equipment_Base + their uiscript offsets), placed
+   from the title bar's corner. */
+body.skin-classic.inv .inv__titlebar .inv-button
+{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.inv .inv__titlebar .inv-button--costume
+{
+	left: 80dp;
+	top: 31dp;
+	width: 32dp;
+	height: 32dp;
+	decorator: image("d:/ymir work/ui/game/costume_button_01.tga");
+}
+body.skin-classic.inv .inv__titlebar .inv-button--costume:hover
+{
+	decorator: image("d:/ymir work/ui/game/costume_button_02.tga");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv__titlebar .inv-button--costume:active
+{
+	decorator: image("d:/ymir work/ui/game/costume_button_03.tga");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv__titlebar .inv-button--dss,
+body.skin-classic.inv .inv__titlebar .inv-button--dss.is-active
+{
+	left: 116dp;
+	top: 133dp;
+	width: 38dp;
+	height: 34dp;
+	decorator: image("d:/ymir work/ui/dragonsoul/dss_inventory_button_01.tga");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv__titlebar .inv-button--dss:hover
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/dss_inventory_button_02.tga");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv__titlebar .inv-button--dss:active
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/dss_inventory_button_03.tga");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv__titlebar .inv-button--mall
+{
+	left: 120dp;
+	top: 174dp;
+	width: 32dp;
+	height: 32dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/mall_button_01.tga");
+}
+body.skin-classic.inv .inv__titlebar .inv-button--mall:hover
+{
+	decorator: image("d:/ymir work/ui/game/taskbar/mall_button_02.tga");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv__titlebar .inv-button--mall:active
+{
+	decorator: image("d:/ymir work/ui/game/taskbar/mall_button_03.tga");
+	background-color: transparent;
+}
+/* The foundation's places for the three: OLD's equipment has none of them
+   (only its storage button, at its right column's foot) and every other
+   spot holds a slot, so they stack in that column from OLD's storage
+   button down to the tabs (board 155, 171; 158, 206; 158, 239); C2 decides
+   at the cut (P14 spec 11). */
+body.skin-classic.inv.inv--table-old .inv__titlebar .inv-button--dss { left: 149dp; top: 149dp; }
+body.skin-classic.inv.inv--table-old .inv__titlebar .inv-button--costume { left: 152dp; top: 184dp; }
+body.skin-classic.inv.inv--table-old .inv__titlebar .inv-button--mall { left: 152dp; top: 217dp; }
+/* The active dragon soul: legacy's slot window over the button at 3.2, 0
+   with the 13 frames of the slot active effect. */
+body.skin-classic.inv .inv-button__effect
+{
+	display: block;
+	left: 3dp;
+	top: 0;
+	--frames-pattern: "d:/ymir work/ui/public/slotactiveeffect/%02d.sub#nui-additive";
+}
+
+/* The body's parts, placed from the board's corner. */
+body.skin-classic.inv .inv__body
+{
+	display: block;
+	position: relative;
+	height: 565dp;
+	padding: 0;
+}
+body.skin-classic.inv.inv--table-old .inv__body
+{
+	height: 627dp;
+}
+
+/* --- The equipment ----------------------------------------------------------- */
+
+body.skin-classic.inv .inv-equip
+{
+	position: absolute;
+	left: 10dp;
+	top: 33dp;
+	width: 155dp;
+	height: 187dp;
+	decorator: image("d:/ymir work/ui/equipment_bg_without_ring.tga" scale-none left top);
+}
+body.skin-classic.inv.inv--table-old .inv-equip
+{
+	left: 12dp;
+	top: 43dp;
+	width: 187dp;
+	height: 226dp;
+	decorator: none;
+}
+body.skin-classic.inv .inv-figure
+{
+	display: none;
+}
+/* A wear cell: the place's size, no base and no hover look (the base art
+   draws the frames), the icon at the slot's corner. */
+body.skin-classic.inv .inv-wear-place
+{
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.inv .inv-wear,
+body.skin-classic.inv .inv-wear:hover
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+	decorator: none;
+}
+body.skin-classic.inv.inv--table-old .inv-wear,
+body.skin-classic.inv.inv--table-old .inv-wear:hover
+{
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat left top);
+}
+body.skin-classic.inv .inv-wear--weapon { height: 96dp; }
+body.skin-classic.inv .inv-wear--body { height: 64dp; }
+
+/* Today's places: the slot window's (3, 3) on the base plus each uiscript
+   slot's x, y. */
+body.skin-classic.inv.inv--table-new .inv-wear--body { left: 42dp; top: 40dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--head { left: 42dp; top: 5dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--foots { left: 42dp; top: 148dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--wrist { left: 78dp; top: 70dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--weapon { left: 6dp; top: 6dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--neck { left: 117dp; top: 70dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--ear { left: 117dp; top: 38dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--unique1 { left: 5dp; top: 148dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--unique2 { left: 78dp; top: 148dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--arrow { left: 117dp; top: 5dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--shield { left: 78dp; top: 38dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--belt { left: 42dp; top: 109dp; }
+/* OLD's places in today's sheet too, for a table that holds them: the
+   rings where legacy's commented-out slots were (inventorywindow.py:90-91)
+   and the sash, which today's table has not. */
+body.skin-classic.inv.inv--table-new .inv-wear--ring1 { left: 5dp; top: 109dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--ring2 { left: 78dp; top: 109dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--costume_sash { left: 78dp; top: 5dp; }
+
+/* The foundation's places (OLD's, P14 spec 3.3): the slot window's (3, 3)
+   on the base plus each slot's x, y. */
+body.skin-classic.inv.inv--table-old .inv-wear--body { left: 63dp; top: 54dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--head { left: 62dp; top: 14dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--foots { left: 63dp; top: 170dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--wrist { left: 104dp; top: 87dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--weapon { left: 19dp; top: 21dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--neck { left: 146dp; top: 86dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--ear { left: 146dp; top: 54dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--unique1 { left: 20dp; top: 169dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--unique2 { left: 104dp; top: 169dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--arrow { left: 146dp; top: 13dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--shield { left: 104dp; top: 53dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--costume_sash { left: 103dp; top: 13dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--ring1 { left: 20dp; top: 129dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--ring2 { left: 104dp; top: 129dp; }
+body.skin-classic.inv.inv--table-old .inv-wear--belt { left: 63dp; top: 128dp; }
+
+/* The belt docks at the board's left edge, 241 below its top (legacy's
+   GetBasePosition: x - 148, y + 241). */
+body.skin-classic.inv .inv-belt-dock
+{
+	left: -10dp;
+	top: 208dp;
+}
+body.skin-classic.inv.inv--table-old .inv-belt-dock
+{
+	left: -12dp;
+	top: 263dp;
+}
+
+/* --- The tabs ----------------------------------------------------------------- */
+
+body.skin-classic.inv .inv-tabs
+{
+	position: absolute;
+	left: 10dp;
+	top: 224dp;
+	width: 156dp;
+	gap: 0;
+}
+body.skin-classic.inv .inv-tab,
+body.skin-classic.inv .inv-tab:hover,
+body.skin-classic.inv .inv-tab:active,
+body.skin-classic.inv .inv-tab.is-selected
+{
+	flex: 0 0 auto;
+	width: 78dp;
+	height: 19dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--text);
+	line-height: 19dp;
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_large_01.sub");
+}
+body.skin-classic.inv .inv-tab:hover
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_large_02.sub");
+}
+body.skin-classic.inv .inv-tab:active, body.skin-classic.inv .inv-tab.is-selected
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_large_03.sub");
+}
+/* Three to five pages: the small tab art, 32 wide at a 32px pitch. */
+body.skin-classic.inv.inv--tabs-small .inv-tab,
+body.skin-classic.inv.inv--tabs-small .inv-tab:hover,
+body.skin-classic.inv.inv--tabs-small .inv-tab:active,
+body.skin-classic.inv.inv--tabs-small .inv-tab.is-selected
+{
+	width: 32dp;
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_01.sub");
+}
+body.skin-classic.inv.inv--tabs-small .inv-tab:hover
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_02.sub");
+}
+body.skin-classic.inv.inv--tabs-small .inv-tab:active,
+body.skin-classic.inv.inv--tabs-small .inv-tab.is-selected
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_03.sub");
+}
+body.skin-classic.inv.inv--table-old .inv-tabs
+{
+	left: 28dp;
+	top: 275dp;
+	width: 160dp;
+}
+
+/* --- The bag and the money ----------------------------------------------------- */
+
+body.skin-classic.inv .inv-bag
+{
+	position: absolute;
+	left: 8dp;
+	top: 246dp;
+}
+body.skin-classic.inv.inv--table-old .inv-bag
+{
+	left: 18dp;
+	top: 311dp;
+}
+/* The money slot from its icon (18 left of the slot) to the slot's right
+   edge: 148 x 18 at 13, 537, the amount right-aligned 3 in from the right. */
+body.skin-classic.inv .inv-money,
+body.skin-classic.inv .inv-money:hover
+{
+	position: absolute;
+	left: 13dp;
+	top: 537dp;
+	width: 148dp;
+	height: 18dp;
+	padding: 0 3dp 0 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/money_icon.sub" scale-none left bottom),
+	           image("d:/ymir work/ui/public/parameter_slot_05.sub" scale-none right top);
+}
+body.skin-classic.inv.inv--table-old .inv-money
+{
+	left: 23dp;
+	top: 599dp;
+}
+body.skin-classic.inv .inv-money__amount
+{
+	color: var(--text);
+	line-height: 18dp;
+}

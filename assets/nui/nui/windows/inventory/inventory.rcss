@@ -1,0 +1,231 @@
+/* The inventory's modern look (P14 spec 6.1): a 236dp window at the
+   screen's right above the taskbar (legacy's place; the controller keeps
+   the player's drags), the costume, dragon soul and mall buttons in the title
+   bar, the equipment on a 44dp pitch over a code-drawn figure, the page tabs
+   (one per page, sharing the width), the bag (a lean slot grid of 5 x 44dp
+   columns) and the money bar. Classic (legacy's 176 x 565 board, its art and
+   places; OLD's 196 x 627 at the foundation's table):
+   skins/classic/windows/inventory.rcss. */
+
+body.inv
+{
+	right: 0;
+	bottom: 37dp;
+	width: 236dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.inv button
+{
+	tab-index: none;
+}
+.inv__body
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: var(--space-2);
+	gap: var(--space-2);
+}
+
+/* The title bar's buttons: ghost icon buttons left of the close button. */
+.inv-button
+{
+	position: relative;
+	margin-left: 2dp;
+}
+.inv-button.is-active
+{
+	border-color: var(--accent);
+}
+.inv-button.is-active .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+/* The legacy active effect over the dragon soul button is classic's. */
+.inv-button__effect
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	pointer-events: none;
+}
+.inv-tip
+{
+	white-space: nowrap;
+}
+
+/* --- The equipment: a 5 x 4 grid of 40dp cells 4dp apart -------------------- */
+
+.inv-equip
+{
+	position: relative;
+	width: 216dp;
+	height: 172dp;
+}
+/* The figure: a quiet silhouette behind the wear cells. */
+.inv-figure
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 216dp;
+	height: 172dp;
+	pointer-events: none;
+}
+.inv-figure__head, .inv-figure__body, .inv-figure__arm, .inv-figure__leg
+{
+	display: block;
+	position: absolute;
+	background-color: var(--surface-raised);
+}
+.inv-figure__head
+{
+	left: 92dp;
+	top: 2dp;
+	width: 32dp;
+	height: 32dp;
+	border-radius: 9999dp;
+}
+.inv-figure__body
+{
+	left: 80dp;
+	top: 30dp;
+	width: 56dp;
+	height: 80dp;
+	border-radius: var(--radius-lg);
+}
+.inv-figure__arm
+{
+	top: 40dp;
+	width: 18dp;
+	height: 70dp;
+	border-radius: var(--radius-lg);
+}
+.inv-figure__arm--left { left: 60dp; transform: rotate(12deg); }
+.inv-figure__arm--right { left: 138dp; transform: rotate(-12deg); }
+.inv-figure__leg
+{
+	top: 104dp;
+	width: 22dp;
+	height: 66dp;
+	border-radius: var(--radius-lg);
+}
+.inv-figure__leg--left { left: 84dp; }
+.inv-figure__leg--right { left: 110dp; }
+
+/* A wear cell's place, by the wear slot's name (nui_limits' tables): a
+   place the table in use lacks has no element. Column c and row r on the
+   44dp pitch: left c x 44dp, top r x 44dp. */
+.inv-wear-place
+{
+	position: absolute;
+	width: 40dp;
+	height: 40dp;
+}
+/* The tall places: the weapon is three cells, the armor two. */
+.inv-wear--weapon { height: 128dp; }
+.inv-wear--body { height: 84dp; }
+/* The wear cell fills its place; the item's icon at its own size in the
+   middle (a 1x2 sword in the weapon's three cells too). */
+.inv-wear
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+.inv-wear .nui-slot__icon
+{
+	height: auto;
+}
+.inv-wear--weapon { left: 0; top: 0; }
+.inv-wear--unique1 { left: 44dp; top: 0; }
+.inv-wear--head { left: 88dp; top: 0; }
+.inv-wear--costume_sash { left: 132dp; top: 0; }
+.inv-wear--arrow { left: 176dp; top: 0; }
+.inv-wear--ring1 { left: 44dp; top: 44dp; }
+.inv-wear--body { left: 88dp; top: 44dp; }
+.inv-wear--ring2 { left: 132dp; top: 44dp; }
+.inv-wear--ear { left: 176dp; top: 44dp; }
+.inv-wear--wrist { left: 44dp; top: 88dp; }
+.inv-wear--shield { left: 132dp; top: 88dp; }
+.inv-wear--neck { left: 176dp; top: 88dp; }
+.inv-wear--unique2 { left: 44dp; top: 132dp; }
+.inv-wear--foots { left: 88dp; top: 132dp; }
+.inv-wear--belt { left: 132dp; top: 132dp; }
+/* The belt docks here: its right edge on the inventory's left edge, its top
+   at the bag's top (place_next_to). */
+.inv-belt-dock
+{
+	position: absolute;
+	left: -8dp;
+	top: 180dp;
+	width: 0;
+	height: 0;
+}
+
+/* --- The page tabs ----------------------------------------------------------- */
+
+.inv-tabs
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-1);
+	width: 216dp;
+}
+.inv-tab
+{
+	flex: 1 1 0;
+	min-width: 0;
+	height: 28dp;
+	padding: 0;
+	line-height: 26dp;
+}
+.inv-tab__label
+{
+	pointer-events: none;
+}
+
+/* --- The bag and the money ------------------------------------------------- */
+
+.inv-bag
+{
+	flex: 0 0 auto;
+}
+/* The money bar: a sunken field with the coin and the amount on its right,
+   wide enough for MONEY_DIGITS and their separators. */
+.inv-money
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+	width: 216dp;
+	height: 28dp;
+	padding: 0 var(--space-2);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+}
+.inv-money:hover
+{
+	border-color: var(--accent);
+}
+.inv-money__coin
+{
+	--glyph-ink: var(--warning);
+}
+.inv-money__amount
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-size: var(--font-sm);
+	text-align: right;
+	white-space: nowrap;
+	pointer-events: none;
+}

@@ -1,0 +1,94 @@
+/* The costume window's modern look (P14 spec 6.2): a movable window beside
+   the inventory, its cells on the 44dp pitch by the wear slot's name
+   (nui_limits' costume group): today's three in a 3 x 2 area, the
+   foundation's five columns, its companion's block in rows 4 to 6 under a
+   divider.
+   Classic (legacy's 140 x 180 board with costume_bg.jpg; OLD's 314 x 320
+   at the foundation's table): skins/classic/windows/costume.rcss. */
+
+body.cos
+{
+	left: 20dp;
+	top: 20dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.cos button
+{
+	tab-index: none;
+}
+.cos__body
+{
+	padding: var(--space-2);
+}
+.cos-grid
+{
+	position: relative;
+	width: 128dp;
+	height: 84dp;
+}
+body.cos.inv--table-old .cos-grid
+{
+	width: 216dp;
+	height: 128dp;
+}
+body.cos.cos--companion .cos-grid
+{
+	height: 304dp;
+}
+.cos-divider
+{
+	position: absolute;
+	left: 0;
+	top: 151dp;
+	width: 100%;
+	height: 1dp;
+	background-color: var(--border);
+}
+
+/* A place by name: column c and row r on the 44dp pitch (left c x 44dp,
+   top r x 44dp); a place the table in use lacks has no element. */
+.cos-wear-place
+{
+	position: absolute;
+	width: 40dp;
+	height: 40dp;
+}
+.cos-wear--costume_body, .cos-wear--buffi_costume_body { height: 84dp; }
+.cos-wear--costume_weapon, .cos-wear--buffi_costume_weapon { height: 128dp; }
+.cos-wear--costume_hair { left: 0; top: 0; }
+.cos-wear--costume_body { left: 44dp; top: 0; }
+.cos-wear--ring1 { left: 88dp; top: 0; }
+.cos-wear--costume_weapon { left: 88dp; top: 0; }
+.cos-wear--costume_facial { left: 132dp; top: 0; }
+.cos-wear--costume_aura { left: 176dp; top: 0; }
+.cos-wear--costume_mount { left: 0; top: 44dp; }
+.cos-wear--costume_sash2 { left: 132dp; top: 44dp; }
+.cos-wear--costume_pet { left: 176dp; top: 44dp; }
+.cos-wear--effect_weapon { left: 0; top: 88dp; }
+.cos-wear--effect_armor { left: 44dp; top: 88dp; }
+/* The companion's block, rows 4 to 6 under the divider. */
+.cos-wear--buffi_costume_hair { left: 0; top: 176dp; }
+.cos-wear--buffi_costume_body { left: 44dp; top: 176dp; }
+.cos-wear--buffi_costume_weapon { left: 88dp; top: 176dp; }
+.cos-wear--buffi_costume_facial { left: 132dp; top: 176dp; }
+.cos-wear--buffi_costume_sash2 { left: 132dp; top: 220dp; }
+.cos-wear--effect_weapon_1 { left: 0; top: 220dp; }
+.cos-wear--effect_armor_1 { left: 44dp; top: 264dp; }
+/* The names the other table holds in another window keep a place here too,
+   so a table change needs no new rule (P14 spec 3.3). */
+.cos-wear--costume_sash, .cos-wear--ring2, .cos-wear--belt { left: 132dp; top: 88dp; }
+
+.cos-wear
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+.cos-wear .nui-slot__icon
+{
+	height: auto;
+}

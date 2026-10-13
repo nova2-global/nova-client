@@ -338,3 +338,6 @@ OPTION_UI_COLOR_CUSTOM	Προσαρμοσμένο
 OPTION_UI_COLORS_RESET	Επαναφορά χρωμάτων
 OPTION_UI_COLORS_ADJUSTED	Ορισμένα χρώματα κειμένου προσαρμόστηκαν ώστε να παραμένουν ευανάγνωστα.
 THEME_CYBERPUNK	Cyberpunk
+INVENTORY_PAGE_BUTTON_TOOLTIP_3	3. Κατάλογος
+INVENTORY_PAGE_BUTTON_TOOLTIP_4	4. Κατάλογος
+INVENTORY_PAGE_BUTTON_TOOLTIP_5	5. Κατάλογος

@@ -338,3 +338,6 @@ OPTION_UI_COLOR_CUSTOM	Свой
 OPTION_UI_COLORS_RESET	Сбросить цвета
 OPTION_UI_COLORS_ADJUSTED	Некоторые цвета текста изменены, чтобы он оставался читаемым.
 THEME_CYBERPUNK	Киберпанк
+INVENTORY_PAGE_BUTTON_TOOLTIP_3	3. Инвентарь
+INVENTORY_PAGE_BUTTON_TOOLTIP_4	4. Инвентарь
+INVENTORY_PAGE_BUTTON_TOOLTIP_5	5. Инвентарь

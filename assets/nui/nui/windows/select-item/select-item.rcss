@@ -1,0 +1,26 @@
+/* Select item's modern look (P14 spec 6.6): a movable window at legacy's
+   place (100, 20), a lean grid of 5 columns and the rows legacy computes,
+   the close button. Classic (legacy's 184-wide board, 76 + 32 per row tall,
+   the grid at 12, 34, the large button at the bottom):
+   skins/classic/windows/select-item.rcss. */
+
+body.sel
+{
+	left: 100dp;
+	top: 20dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.sel button
+{
+	tab-index: none;
+}
+.sel__body
+{
+	padding: var(--space-3);
+}
+.sel__footer
+{
+	justify-content: center;
+}

@@ -1161,15 +1161,21 @@ EXPECTED_SITES = {
                            ("make", "energy-bar", "uiTaskBar.EnergyBar", "nui_energy_bar.EnergyBar"),
                            ("make", "party", "uiParty.PartyWindow", "nui_party.PartyWindow"),
                            ("make", "game-buttons", "uiGameButton.GameButtonWindow", "nui_game_buttons.GameButtonWindow"),
+                           ("make", "inventory", "uiInventory.InventoryWindow", "nui_inventory.InventoryWindow"),
                            ("make", "minimap", "uiMiniMap.MiniMap", "nui_minimap.MiniMap"),
                            ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
                            ("make", "restart", "uiRestart.RestartDialog", "nui_restart.RestartDialog"),
                            ("make", "system-menu", "uiSystem.SystemDialog", "nui_system_menu.SystemDialog"),
+                           ("make", "tooltips", "uiToolTip.HyperlinkItemToolTip", "nui_link_tooltip.HyperlinkItemToolTip"),
+                           ("make", "tooltips", "uiToolTip.ItemToolTip", "nui_item_tooltip.ItemToolTip"),
+                           ("make", "tooltips", "uiToolTip.SkillToolTip", "nui_skill_tooltip.SkillToolTip"),
+                           ("make", "refine", "uiRefine.RefineDialogNew", "nui_refine.RefineDialogNew"),
                            ("make", "help", "uiHelp.HelpWindow", "nui_help.HelpWindow"),
                            ("make", "tip-board", "uiTip.TipBoard", "nui_tip_board.TipBoard"),
                            ("make", "big-board", "uiTip.BigBoard", "nui_big_board.BigBoard"),
                            ("make", "web", "uiWeb.WebWindow", "nui_web.WebWindow"),
+                           ("make", "select-item", "uiselectitem.SelectItemWindow", "nui_select_item.SelectItemWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign"),
@@ -1182,6 +1188,12 @@ EXPECTED_SITES = {
                 ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
+    # Wave 3b (P14 spec 6.7): the inventory's dialogs, in the legacy class
+    # and in the NovaUI loader that stands for its uiscript loader.
+    "uiinventory.py": [("make", "refine", "uiRefine.RefineDialog", "nui_refine.RefineDialog"),
+                       ("make", "attach-metin", "uiAttachMetin.AttachMetinDialog", "nui_attach_metin.AttachMetinDialog")],
+    "nui_inventory.py": [("make", "refine", "uiRefine.RefineDialog", "nui_refine.RefineDialog"),
+                         ("make", "attach-metin", "uiAttachMetin.AttachMetinDialog", "nui_attach_metin.AttachMetinDialog")],
 }
 
 

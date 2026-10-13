@@ -1,0 +1,46 @@
+<rml>
+<head>
+	<!-- The belt inventory (uiinventory.py BeltInventoryWindow, uiscript
+	     beltinventorywindow.py; P14 spec 6.3). The NovaUI inventory makes
+	     nui_belt_inventory.BeltInventoryWindow (controller
+	     assets/root/nui_belt_inventory.py), a subclass of the legacy class
+	     on proxies: legacy's RefreshSlot fills the belt's cells and marks the
+	     ones beyond the belt's grade unavailable (its disabled cover
+	     buttons). It has no title, as legacy's; collapsed it is a tab with
+	     the expand button. It is docked to the inventory (its right edge on
+	     the inventory's left edge, its top at inv-belt-dock), exists only
+	     while it shows and draws below the legacy UI layer. -->
+	<title>belt-inventory</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="belt-inventory.rcss"/>
+</head>
+<body template="nui" id="belt-inventory" class="nui-board nui-fx nui-anim nui-below-legacy-ui belt" data-model="belt"
+      data-class-belt--expanded="expanded">
+	<button id="belt-expand" class="nui-button nui-button--ghost nui-anim belt__expand" data-if="!expanded"
+	        data-event-mousedown="expand_press(ev.button)"><span class="nui-glyph nui-glyph--chevron-left"><span
+		class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	<div class="belt__layer" data-if="expanded">
+		<button id="belt-minimize" class="nui-button nui-button--ghost nui-anim belt__minimize"
+		        data-event-mousedown="minimize_press(ev.button)"><span class="nui-glyph nui-glyph--chevron-right"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		<div class="belt__board">
+			<div id="belt-grid" class="nui-slot-grid nui-slot-grid--lean belt__grid"
+			     data-class-nui-slot-grid--cols-4="cols == 4" data-class-nui-slot-grid--cols-5="cols == 5">
+				<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'belt-cell-' + it_index"
+				     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+				     data-class-is-picked="c.picked" data-class-is-active="c.active"
+				     data-class-is-unavailable="c.unavailable"
+				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+				     data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
+				     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+				     data-event-mousedown="belt_press(it_index, ev.button)" data-event-mouseup="belt_release(it_index, ev.button)"
+				     data-event-dblclick="belt_use(it_index)" data-event-mouseover="belt_over(it_index)"
+				     data-event-mouseout="belt_out(it_index)" data-event-nuidrop="belt_drop(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

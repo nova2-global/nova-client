@@ -112,3 +112,90 @@ class Question(ProxiesTest):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# --- Wave 3c (P15) ---
+
+class WindowAndToggle(ProxiesTest):
+    def test_a_window_records_its_place_and_reports_its_shown_state(self):
+        seen = []
+        window = self.m.WindowProxy(seen.append)
+        window.Hide()
+        window.Show()
+        window.SetPosition(109, 34)
+        window.SetSize(10, 20)
+        self.assertEqual(seen, [False, True])
+        self.assertEqual((window.GetLocalPosition(), window.size, window.IsShow()), ((109, 34), (10, 20), True))
+        with self.assertRaises(AttributeError):
+            window.LoadImage("x.sub")
+
+    def test_a_toggle_goes_down_and_up_as_ctoggle_button(self):
+        events, changes = [], []
+        toggle = self.m.ToggleButtonProxy(changes.append)
+        toggle.SetToggleDownEvent(lambda: events.append("down"))
+        toggle.SetToggleUpEvent(lambda: events.append("up"))
+        toggle.click()
+        self.assertTrue(toggle.IsDown())
+        toggle.click()
+        self.assertFalse(toggle.IsDown())
+        toggle.Disable()
+        toggle.click()
+        self.assertEqual(events, ["down", "up"], "a disabled toggle does nothing")
+        self.assertEqual(len(changes), 3)
+
+
+class ScrollBar(ProxiesTest):
+    def test_set_pos_clamps_and_runs_the_event_and_a_step_moves_by_the_step(self):
+        moves, changes = [], []
+        bar = self.m.ScrollBarProxy(changes.append)
+        bar.SetScrollEvent(lambda: moves.append(bar.GetPos()))
+        self.assertEqual(bar.GetScrollStep(), 0.2, "ui.ScrollBar's default step")
+        bar.SetPos(2.0)
+        bar.SetScrollStep(0.25)
+        bar.step(-1)
+        bar.step(-9)
+        self.assertEqual(moves, [1.0, 0.75, 0.0])
+        bar.Hide()
+        self.assertFalse(bar.IsShow())
+        self.assertEqual(len(changes), 4)
+
+
+class SafeEventsAndHover(ProxiesTest):
+    def test_safe_set_event_keeps_its_arguments_and_holds_a_method_weakly(self):
+        class Owner(object):
+            def __init__(self):
+                self.pressed = []
+
+            def press(self, key):
+                self.pressed.append(key)
+        owner = Owner()
+        button = self.m.ButtonProxy()
+        button.SAFE_SetEvent(owner.press, "HTH")
+        button.click()
+        self.assertEqual(owner.pressed, ["HTH"])
+
+    def test_over_and_out_call_the_tooltip_functions_a_window_set_on_the_instance(self):
+        seen = []
+        button = self.m.ButtonProxy()
+        button.over()
+        button.out()
+        button.ShowToolTip = lambda: seen.append("show")
+        button.HideToolTip = lambda: seen.append("hide")
+        button.over()
+        button.out()
+        self.assertEqual(seen, ["show", "hide"])
+
+    def test_an_image_s_string_events_fire_by_name(self):
+        class Owner(object):
+            def __init__(self):
+                self.seen = []
+
+            def show(self):
+                self.seen.append("in")
+        owner = Owner()
+        image = self.m.ImageProxy()
+        image.fire("MOUSE_OVER_IN")
+        image.SAFE_SetStringEvent("MOUSE_OVER_IN", owner.show)
+        image.fire("MOUSE_OVER_IN")
+        image.fire("MOUSE_OVER_OUT")
+        self.assertEqual(owner.seen, ["in"])

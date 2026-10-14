@@ -136,6 +136,7 @@ def make_nui(state):
             self.carets = {}         # field id -> caret index
             self.handlers = {}       # (element id, event) -> fn
             self.placement = None
+            self.pointer_side = None  # follow_pointer_as_tooltip's kept side (frame())
             self.keep_clear = []
             self.front = 0
             self._shown_before = False
@@ -335,6 +336,35 @@ def make_nui(state):
             self.calls.append(("follow_pointer", below_dp, above_dp, flip_dp, bool(once), bottom_reserve_dp))
             self.placement = ("pointer", below_dp, above_dp, flip_dp, bool(once), bottom_reserve_dp)
             return True
+
+        def follow_pointer_as_tooltip(self, once=False, target=0, bottom_reserve_px=0):
+            """nui.py follow_pointer_as_tooltip (P14c): recorded as the
+            placement ("tooltip", once, target, reserve); the side the runtime
+            keeps is modeled by frame()."""
+            if not self._doc or getattr(nui._nui, "FollowPointer", None) is None:
+                return False
+            last = self.placement or (None,)
+            same = last[0] == "tooltip" and bool(target) and last[2] == target
+            self.calls.append(("follow_pointer_as_tooltip", bool(once), target, bottom_reserve_px))
+            self.placement = ("tooltip", bool(once), target, bottom_reserve_px)
+            if not same:
+                self.pointer_side = None
+            return True
+
+        def frame(self, pointer_y, screen_height=900):
+            """One runtime update of a tooltip placement, as NuiRuntime's
+            (P14c): the side legacy's rule picks (below while the pointer is
+            more than 300 px above the screen's bottom), chosen once and kept
+            until a call for another target or an update that finds the
+            window hidden. The side, or None while hidden or not so placed."""
+            if not self.visible:
+                self.pointer_side = None
+                return None
+            if (self.placement or (None,))[0] != "tooltip":
+                return None
+            if self.pointer_side is None:
+                self.pointer_side = "below" if pointer_y < screen_height - 300 else "above"
+            return self.pointer_side
 
         def keep_clear_of(self, *targets):
             if not self._doc:

@@ -414,6 +414,33 @@ class Window(object):
 				pass  # an exe from before the reserve takes five arguments
 		return bool(follow(*args))
 
+	def follow_pointer_as_tooltip(self, once=False, target=0, bottom_reserve_px=0):
+		"""Keeps the window at the pointer as legacy's tooltip
+		(uitooltip.py ToolTip.OnUpdate), in legacy's units and with no Python
+		per frame (P14c): 40 px below the pointer while it is more than 300 px
+		above the screen's bottom, else its bottom 20 px above it, centered on
+		the pointer's x, kept on the screen. Screen pixels, so the UI scale
+		moves neither the offsets nor the line. Unlike legacy, the side (below
+		or above) is chosen once, in the first update after the call, and kept
+		while the window stays shown, also through later calls with the same
+		`target` (a nonzero int naming what it shows: a refresh hides and
+		shows a tooltip within one frame); another target, target 0 or a hide
+		chooses again. So the tooltip does not jump from one side of the
+		pointer to the other while the pointer moves over one item.
+		`once`: placed in the first update, then held (the link tooltip).
+		`bottom_reserve_px`: its bottom also stays that far above the screen's
+		bottom. An exe from before P14c gets follow_pointer()'s dp rule. True
+		when stored."""
+		follow = getattr(_nui, "FollowPointer", None) if _nui is not None else None
+		if not self._doc or follow is None:
+			return False
+		try:
+			return bool(follow(self._doc, 40.0, 20.0, 300.0, bool(once), float(bottom_reserve_px), True, True,
+				int(target) & 0xFFFFFFFFFFFFFFFF))
+		except TypeError:
+			pass  # an exe from before P14c takes at most six arguments
+		return self.follow_pointer(once=once, bottom_reserve_dp=float(bottom_reserve_px) / (get_scale() or 1.0))
+
 	def keep_clear_of(self, *targets):
 		"""While the window overlaps one of `targets` that is shown, the runtime
 		puts the class nui-overlapping on its <body>, so its sheet can hide it

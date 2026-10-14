@@ -17,7 +17,9 @@ ends with the tooltip shown and changed, the recorded widgets become one
 model (build_model: lines of runs with roles, images, sockets, countdowns)
 that a NovaUI document renders. The model is built once per hover, and the
 documents need no per-frame Python: placement is the runtime's
-(follow_pointer), remaining times are nui-countdown runs.
+(follow_pointer_as_tooltip: legacy's rule in its pixels, the side kept while
+the pointer stays on one target, P14c), remaining times are nui-countdown
+runs.
 
 The three tooltip documents are loaded at their first show in a phase and
 then kept, hidden and empty, until the phase ends (end_phase(), spec D8)."""
@@ -41,14 +43,14 @@ import nui_text
 LEGACY_TASKBAR_HEIGHT = 37
 
 
-def bottom_reserve_dp():
-	"""The dp a tooltip keeps clear of at the screen's bottom (P14 spec
-	5.5.7): the legacy taskbar's while it is the one in use, since it is a
-	TOP_MOST window and the tooltips draw below that layer; none with the
+def bottom_reserve_px():
+	"""The screen pixels a tooltip keeps clear of at the screen's bottom (P14
+	spec 5.5.7): the legacy taskbar's while it is the one in use, since it is
+	a TOP_MOST window and the tooltips draw below that layer; none with the
 	NovaUI taskbar, which draws below them."""
 	if nui_hud.current("taskbar") is not None:
 		return 0
-	return LEGACY_TASKBAR_HEIGHT / (nui.get_scale() or 1.0)
+	return LEGACY_TASKBAR_HEIGHT
 
 
 # --- the role table (spec 5.3) -------------------------------------------------------------
@@ -597,6 +599,9 @@ def _transactional(fn):
 	that raises still ends it, as legacy's board shows what the rules built
 	before the raise; the exception goes on."""
 	def call(self, *args, **kwargs):
+		if self._tx_depth == 0:
+			# What the tooltip shows, for its placement's side (P14c).
+			self._tx_call = (fn.__name__, args, kwargs)
 		self._tx_depth += 1
 		try:
 			return fn(self, *args, **kwargs)
@@ -649,6 +654,7 @@ class Facade(object):
 		self._rec_version = 0
 		self._built_version = None
 		self._tx_depth = 0
+		self._tx_call = None
 		self._want_show = False
 		self._shown = False
 		self._fixed = None
@@ -778,7 +784,16 @@ class Facade(object):
 			x, y = self._fixed
 			found.set_position(x / scale, y / scale + 10, origin=(0.5, 1.0))
 		elif self.followFlag:
-			found.follow_pointer(once=self.FOLLOW_ONCE, bottom_reserve_dp=bottom_reserve_dp())
+			found.follow_pointer_as_tooltip(once=self.FOLLOW_ONCE, target=self._target(),
+				bottom_reserve_px=bottom_reserve_px())
+
+	def _target(self):
+		"""What the tooltip shows, as a nonzero int: the outermost public call
+		that showed it (SetInventoryItem(62), SetSkillNew(...)) on this facade.
+		A refresh of the hovered item calls the same again, so the placement
+		keeps its side; another item names another target (P14c)."""
+		key = hash((id(self), repr(self._tx_call))) & 0xFFFFFFFFFFFFFFFF
+		return key or 1
 
 	def model(self):
 		"""The last model built: {"lines", "min_w"}."""

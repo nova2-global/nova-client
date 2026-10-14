@@ -27,6 +27,7 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
+import nui_test_support  # noqa: E402
 import nui_tooltip_corpus as corpus_tool  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -187,6 +188,12 @@ class World(object):
         return self.rec.board(kind)
 
 
+def placed(board):
+    """A tooltip board's placement without its target: (kind, once, reserve)."""
+    p = board.placement
+    return (p[0], p[1], p[3]) if p and p[0] == "tooltip" else p
+
+
 class Recorder(unittest.TestCase):
     def test_the_rules_see_the_recording_widgets_and_every_other_name_the_real_ui(self):
         with World() as world:
@@ -328,8 +335,10 @@ class Transactions(unittest.TestCase):
             board = world.board()
             self.assertTrue(board.visible)
             self.assertTrue(tip.IsShow())
-            self.assertEqual(board.placement, ("pointer", 40, 20, 300, False, 37.0),
-                             "clear of the legacy taskbar, the one in use without a NovaUI one")
+            self.assertEqual(placed(board), ("tooltip", False, 37),
+                             "legacy's rule in pixels, clear of the legacy taskbar, the one in use without a NovaUI one")
+            self.assertIsInstance(board.placement[2], int)
+            self.assertNotEqual(board.placement[2], 0, "a target, so a refresh keeps the side (P14c)")
             self.assertGreaterEqual(board.front, 1)
             self.assertFalse(world.m("uiToolTip").ToolTip.IsShow(tip), "the legacy board never shows")
 
@@ -362,7 +371,7 @@ class Transactions(unittest.TestCase):
         """The legacy taskbar is a TOP_MOST window of 37 px at the screen's
         bottom and the tooltips draw below that layer (P14 spec 5.5.7); the
         NovaUI taskbar draws below them."""
-        for scale, taskbar, reserve in ((1.0, False, 37.0), (2.0, False, 18.5), (1.0, True, 0)):
+        for scale, taskbar, reserve in ((1.0, False, 37), (2.0, False, 37), (1.0, True, 0)):
             with World() as world:
                 world.case()
                 world.game.state.scale = scale
@@ -373,7 +382,7 @@ class Transactions(unittest.TestCase):
                 tip = world.item()
                 tip.SetInventoryItem(0)
                 with self.subTest(scale=scale, taskbar=taskbar):
-                    self.assertEqual(world.board().placement, ("pointer", 40, 20, 300, False, reserve))
+                    self.assertEqual(placed(world.board()), ("tooltip", False, reserve), "the bar's pixels at every scale")
                 hud.forget("taskbar", bar)
 
     def test_a_fixed_point_places_the_bottom_center_10_px_below_it(self):
@@ -385,14 +394,14 @@ class Transactions(unittest.TestCase):
             self.assertEqual(world.board().placement, ("position", 400.0, 310.0, (0.5, 1.0)))
             tip.SetToolTipPosition(-1, -1)
             tip.SetItemToolTip(10)
-            self.assertEqual(world.board().placement[0], "pointer")
+            self.assertEqual(world.board().placement[0], "tooltip")
 
     def test_the_link_tooltip_is_placed_once_and_a_left_press_hides_it(self):
         with World() as world:
             link = world.m("nui_link_tooltip").HyperlinkItemToolTip()
             link.SetHyperlinkItem("item:a:0:1:0:0".split(":"))
             board = world.board("link")
-            self.assertEqual(board.placement, ("pointer", 40, 20, 300, True, 37.0))
+            self.assertEqual(placed(board), ("tooltip", True, 37))
             self.assertTrue(link.IsShow())
             board.fire("tip_press", 1)
             self.assertTrue(link.IsShow(), "only the left button")
@@ -437,6 +446,116 @@ class Transactions(unittest.TestCase):
                 text = read(os.path.join(support.ROOT, name + ".py"))
                 self.assertNotIn("def OnRender", text)
                 self.assertEqual(text.count("def OnUpdate"), 1 if name == "nui_tooltip" else 0)
+
+
+class TooltipSide(unittest.TestCase):
+    """P14c: the item tooltip picks its side of the pointer once per hovered
+    item, by legacy's rule (below while the pointer is more than 300 px above
+    the screen's bottom, in pixels), and keeps it while the pointer stays on
+    the item. A board's frame() is the runtime's update (nui_test_support,
+    as NuiRuntime's kept side). The pointer path is HVS-Y's live one over the
+    Soul Stealing Blade+9 at 62 (1x3; its area y 590 to 702 of a 900 px
+    screen, so legacy's line at 600 crosses its top cell)."""
+
+    UP = list(range(699, 591, -1))
+    DOWN = list(range(593, 700))
+
+    def world(self):
+        world = World()
+        world.case(pos=62)
+        items = world.game.item_data.case["items"]
+        items[63] = dict(items[62])  # its neighbor
+        return world
+
+    def test_a_pointer_path_up_over_a_straddling_1x3_item_and_back_keeps_one_side(self):
+        with self.world() as world:
+            tip = world.item()
+            tip.SetInventoryItem(62)  # entered at its bottom, under the line
+            board = world.board()
+            sides = [board.frame(y) for y in self.UP + self.DOWN]
+            self.assertEqual(set(sides), {"above"}, "legacy's rule at the show, then kept across the line at 600")
+            self.assertEqual(sum(1 for c in board.calls if c[0] == "follow_pointer_as_tooltip"), 1)
+
+    def test_entered_at_its_top_it_stays_below_all_the_way_down(self):
+        with self.world() as world:
+            tip = world.item()
+            tip.SetInventoryItem(62)
+            board = world.board()
+            sides = [board.frame(y) for y in self.DOWN + list(reversed(self.DOWN))]
+            self.assertEqual(set(sides), {"below"})
+
+    def test_a_refresh_of_the_hovered_item_keeps_the_side(self):
+        """The inventory's refresh while an item is hovered (refresh_hover, as
+        CSlotWindow::RefreshSlot): its tooltip hidden and shown again within
+        one frame, for the same item."""
+        with self.world() as world:
+            tip = world.item()
+            tip.SetInventoryItem(62)
+            board = world.board()
+            for y in range(699, 640, -1):
+                self.assertEqual(board.frame(y), "above")
+            tip.HideToolTip()
+            tip.SetInventoryItem(62)
+            self.assertEqual([board.frame(y) for y in range(640, 591, -1)], ["above"] * 49,
+                             "refreshed under the line, then moved over it: still above")
+
+    def test_another_item_or_a_hide_chooses_the_side_again(self):
+        with self.world() as world:
+            tip = world.item()
+            tip.SetInventoryItem(62)
+            board = world.board()
+            self.assertEqual(board.frame(699), "above")
+            # Straight onto its neighbor: one hide and one show in one frame.
+            tip.HideToolTip()
+            tip.SetInventoryItem(63)
+            self.assertEqual(board.frame(595), "below", "another item: legacy's rule at the pointer then")
+            self.assertEqual(board.frame(650), "below")
+            # Off every item for a frame, then back onto 62 at its top.
+            tip.HideToolTip()
+            self.assertIsNone(board.frame(580))
+            tip.SetInventoryItem(62)
+            self.assertEqual(set(board.frame(y) for y in self.DOWN), {"below"}, "the same item again after a hide")
+            # A second facade showing the same call is another target.
+            other = world.item()
+            first = board.placement[2]
+            other.SetInventoryItem(62)
+            self.assertNotEqual(world.board().placement[2], first)
+
+    def test_nui_py_asks_the_runtime_for_legacy_pixels_and_an_older_exe_gets_the_dp_rule(self):
+        """assets/root/nui.py itself over a fake _nui: the nine arguments of
+        P14c's FollowPointer (pixels and the kept side on, the target modulo
+        2**64), and with an exe whose FollowPointer takes at most six,
+        follow_pointer()'s dp rule with the reserve in dp."""
+        import types
+        calls = []
+        fake = types.ModuleType("_nui")
+        fake.IsAvailable = lambda: True
+        fake.GetScale = lambda: 0.875
+
+        def nine(doc, below, above, flip, once, reserve=0.0, pixels=False, keep=False, target=0):
+            calls.append(("nine", doc, below, above, flip, once, reserve, pixels, keep, target))
+            return True
+
+        def six(doc, below, above, flip, once, reserve=0.0):
+            calls.append(("six", doc, below, above, flip, once, reserve))
+            return True
+        modules = nui_test_support.Modules(_nui=fake)
+        try:
+            nui = modules.load("nui")
+            window = nui.Window.__new__(nui.Window)
+            window._doc = 5
+            fake.FollowPointer = nine
+            self.assertTrue(window.follow_pointer_as_tooltip(target=-1, bottom_reserve_px=37))
+            self.assertTrue(window.follow_pointer_as_tooltip(once=True, target=7))
+            fake.FollowPointer = six
+            self.assertTrue(window.follow_pointer_as_tooltip(bottom_reserve_px=37))
+            window._doc = 0
+            self.assertFalse(window.follow_pointer_as_tooltip())
+        finally:
+            modules.restore()
+        self.assertEqual(calls, [("nine", 5, 40.0, 20.0, 300.0, False, 37.0, True, True, 2 ** 64 - 1),
+                                 ("nine", 5, 40.0, 20.0, 300.0, True, 0.0, True, True, 7),
+                                 ("six", 5, 40.0, 20.0, 300.0, False, 37.0 / 0.875)])
 
 
 class Facades(unittest.TestCase):

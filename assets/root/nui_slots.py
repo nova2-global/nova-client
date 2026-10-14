@@ -18,6 +18,8 @@ ui.SlotWindow or ui.GridSlotWindow was and turns what the legacy controller
 tells it into cells, and LegacySlotEvents turns the cells' events into the
 legacy slot window's events, so every flow stays the legacy controller's."""
 
+import weakref
+
 import app
 import constInfo
 import grpImage
@@ -1014,10 +1016,31 @@ class SlotWindowProxy(object):
 # clears them (watch_attach).
 _with_states = set()
 
+# P14b: the LegacySlotEvents whose grid keeps is-attaching (a lean grid's
+# anchor covers its whole item only while nothing is attached), told when an
+# attach starts or ends, whichever grid or window saw it.
+_attach_watchers = weakref.WeakSet()
+# What they were last told.
+_attach_told = [False]
+
 
 def _end_of_attach():
 	for events in list(_with_states):
 		events.clear_states()
+	_attach_told[0] = False
+	for events in list(_attach_watchers):
+		events.set_attaching(False)
+
+
+def _note_attach():
+	"""Tells every grid that keeps is-attaching whether something is attached
+	now; an attach is watched, so its end tells them again."""
+	flag = attached()
+	if flag:
+		watch_attach()
+	_attach_told[0] = flag
+	for events in list(_attach_watchers):
+		events.set_attaching(flag)
 
 
 def watch_attach():
@@ -1077,17 +1100,39 @@ class LegacySlotEvents(object):
 	The proxy's RefreshSlot calls refresh_hover(): the hovered item's over-in
 	again, as CSlotWindow::RefreshSlot does while its window renders. A board
 	that goes away sends its cells no mouseout (nui.Window.destroy), so the
-	window calls reset() just before it hides its board."""
+	window calls reset() just before it hides its board.
 
-	def __init__(self, proxy, owner_of=None, on_states=None):
+	P14b: a lean grid that can hold a multi-cell item gives on_attaching(flag),
+	which keeps the grid's is-attaching class: at rest an anchor's box covers
+	its whole item (one hover, one tooltip over every cell and gap of it),
+	and while something is attached every cell is its own target, so the
+	footprint and the drop follow the cell under the pointer. It is told
+	when an attach starts (a press here, or the first pointer event of any
+	such grid while one is attached) and when it ends (watch_attach), in
+	every grid at once."""
+
+	def __init__(self, proxy, owner_of=None, on_states=None, on_attaching=None):
 		self.proxy = proxy
 		proxy.events = self
 		self.owner_of = owner_of
 		self.on_states = on_states
+		self.on_attaching = on_attaching
+		self.attaching = False
 		self.hovered = None
 		self.tooltip = None
 		self.states = {}
 		self.picked = -1
+		if on_attaching is not None:
+			_attach_watchers.add(self)
+
+	def set_attaching(self, flag):
+		"""The grid's is-attaching, handed to on_attaching when it changes."""
+		flag = bool(flag)
+		if flag == self.attaching:
+			return
+		self.attaching = flag
+		if self.on_attaching is not None:
+			self.on_attaching(flag)
 
 	def _grid(self):
 		return self.proxy.cols is not None
@@ -1138,7 +1183,7 @@ class LegacySlotEvents(object):
 			self._select(index, True)
 			if not before and attached():
 				_press = (self, index)
-				watch_attach()
+			_note_attach()
 			self.refresh_states()
 		elif button == 1:
 			if attached():
@@ -1159,12 +1204,14 @@ class LegacySlotEvents(object):
 			return
 		if attached() and _dragging():
 			self._select(index, False)
+			_note_attach()
 			self.refresh_states()
 
 	def drop(self, index):
 		self.hovered = index
 		if attached():
 			self._select(index, False)
+			_note_attach()
 			self.refresh_states()
 
 	def use(self, index):
@@ -1174,6 +1221,8 @@ class LegacySlotEvents(object):
 
 	def over(self, index):
 		self.hovered = index
+		if attached() != _attach_told[0]:
+			_note_attach()
 		self._over_in(index)
 		self.refresh_states()
 

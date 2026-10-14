@@ -1152,6 +1152,97 @@ def later_window(world):
     return shop
 
 
+def hover_layout(game):
+    """P14b's hover fixture (inventory.hover.fixture.json): a 200 stack at
+    30, a 1x3 glaive at 31 (over 36 and 41) and a 1x2 sword at 37 (over 42),
+    side by side at page I's bottom edge."""
+    game.give(30, POTION, 200)
+    game.give(31, GLAIVE, size=(1, 3))
+    game.give(37, SWORD, size=(1, 2))
+    game.equipment.update((SWORD, GLAIVE))
+
+
+class SlotHover(unittest.TestCase):
+    """P14b: the pointer moved along the lines of tools/fixtures/hover_paths.json
+    (the cells RmlUi's hit test reaches over the hover fixture, every dp, in
+    every look and scale: tools/nui_hit_test.py checks them), replayed as
+    Context::UpdateHoverChain sends it (the left cell's mouseout, then the
+    entered one's mouseover) through the NovaUI inventory, and the tooltip
+    calls legacy's OverInItem and OverOutItem make."""
+
+    @classmethod
+    def setUpClass(cls):
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "hover_paths.json"), encoding="utf-8") as handle:
+            cls.paths = json.load(handle)["paths"]
+
+    def setUp(self):
+        self.world = World(True, setup=hover_layout)
+        self.window = self.world.make_inventory()
+
+    def replay(self, path):
+        tip = self.window.tooltipItem
+        with self.world.game, quiet():
+            tip.calls[:] = []
+            hovered = None
+            for cell in path:
+                if hovered is not None:
+                    fire(self.window, "bag_out", hovered)
+                if cell is not None:
+                    fire(self.window, "bag_over", cell)
+                hovered = cell
+            calls = list(tip.calls)
+            if hovered is not None:
+                fire(self.window, "bag_out", hovered)
+        return calls
+
+    def test_the_pointer_over_an_item_s_cells_and_gaps_shows_its_tooltip_once_and_never_hides_it(self):
+        self.assertEqual(self.replay(self.paths["glaive-down"]), [("SetInventoryItem", 31)])
+        self.assertEqual(self.replay(self.paths["sword-down"]), [("SetInventoryItem", 37)])
+
+    def test_from_an_item_to_its_neighbor_one_hide_then_one_show(self):
+        for name, first, second in (("across-middle", 31, 37), ("across-bottom", 31, 37), ("stack-to-glaive", 30, 31)):
+            with self.subTest(path=name):
+                self.assertEqual(self.replay(self.paths[name]),
+                                 [("SetInventoryItem", first), ("HideToolTip",), ("SetInventoryItem", second)])
+
+    def test_the_old_cells_with_dead_gaps_hid_the_tooltip_in_each_gap(self):
+        """What the pointer met before P14b over the glaive (its cells, each
+        with no hit target in the gap below): a hide and a show per gap, the
+        flicker Eddy saw."""
+        self.assertEqual(self.replay([31, None, 36, None, 41]), [("SetInventoryItem", 31), ("HideToolTip",),
+                                                                  ("SetInventoryItem", 31), ("HideToolTip",),
+                                                                  ("SetInventoryItem", 31)])
+
+    def test_an_attach_makes_every_cell_its_own_target_and_its_end_undoes_it(self):
+        """Rule 4: while an item is attached, the bag is is-attaching (each
+        anchor one cell again, the covered cells targets), so the footprint
+        follows the cell under the pointer; the attach's end gives the
+        anchors their items back."""
+        game_board = board(self.window)
+        self.assertFalse(game_board.model["bag_attaching"])
+        with self.world.game, quiet():
+            press(self.window, "bag_press", 30, 0)
+            self.assertTrue(self.world.mouse.isAttached())
+            self.assertTrue(board(self.window).model["bag_attaching"])
+            fire(self.window, "bag_over", 36)
+            targets = dict((c["index"], c["target"]) for c in board(self.window).model["bag"] if c["target"])
+            self.assertEqual(targets, {36: "blocked"})
+            fire(self.window, "bag_out", 36)
+            self.world.mouse.DeattachObject()
+        self.assertFalse(board(self.window).model["bag_attaching"])
+
+    def test_an_attach_from_another_window_is_seen_at_the_first_pointer_event(self):
+        player = self.world.game.modules["player"]
+        with self.world.game, quiet():
+            self.world.mouse.AttachObject(object(), player.SLOT_TYPE_SHOP, 3, POTION, 1)
+            self.assertFalse(board(self.window).model["bag_attaching"])
+            fire(self.window, "bag_over", 41)
+            self.assertTrue(board(self.window).model["bag_attaching"])
+            fire(self.window, "bag_out", 41)
+            self.world.mouse.DeattachObject()
+        self.assertFalse(board(self.window).model["bag_attaching"])
+
+
 class Raise(Pair):
     """A press on the board raises the window as legacy's window manager
     raises the window under a press (SetTopUIWindow), which orders the

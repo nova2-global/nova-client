@@ -466,6 +466,7 @@ class ToolTip(object):
     def __init__(self, kind):
         self.kind = kind
         self.shown = []     # every Set* call, in order
+        self.calls = []     # every Set* call, HideToolTip and ShowToolTip, in order (P14b)
         self.visible = False
 
     def __getattr__(self, name):
@@ -474,13 +475,16 @@ class ToolTip(object):
 
         def show(*args):
             self.shown.append((name,) + args)
+            self.calls.append((name,) + args)
             self.visible = True
         return show
 
     def HideToolTip(self):
+        self.calls.append(("HideToolTip",))
         self.visible = False
 
     def ShowToolTip(self):
+        self.calls.append(("ShowToolTip",))
         self.visible = True
 
     def SetTop(self):

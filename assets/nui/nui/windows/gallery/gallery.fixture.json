@@ -548,6 +548,7 @@
 			}
 		],
 		"lean_hover": 1,
+		"lean_attaching": false,
 		"tagged": "|cff9fe6c3Test|r: look |cfff1e6c0|Hitem:6b:0:0:0:0|h[Red Potion]|h|r and @ui.OK {{ x }}, as written"
 	}
 }

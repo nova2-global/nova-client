@@ -219,6 +219,8 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			# The board is placed from Python (inv--placed: the sheet's
 			# right and bottom give way to the placement's left and top).
 			"placed": False,
+			# P14b: the bag's is-attaching (nui_slots.LegacySlotEvents).
+			"bag_attaching": False,
 		}
 
 	def _set(self, **values):
@@ -311,6 +313,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 
 	def _on_bag_states(self, states, picked):
 		self._set(bag=nui_slots.with_states(self.wndItem.cells(), states, picked))
+
+	def _on_bag_attaching(self, flag):
+		self._set(bag_attaching=flag)
 
 	def _named(self, cells, states=None, picked=-1):
 		marked = nui_slots.with_states(cells, states or {}, picked)
@@ -412,7 +417,8 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		self.wndItem = wndItem
 		self.wndEquip = wndEquip
 		self.dlgPickMoney = dlgPickMoney
-		self._bag_events = nui_slots.LegacySlotEvents(wndItem, on_states=self._on_bag_states)
+		self._bag_events = nui_slots.LegacySlotEvents(wndItem, on_states=self._on_bag_states,
+		                                              on_attaching=self._on_bag_attaching)
 		self._wear_events = nui_slots.LegacySlotEvents(wndEquip, on_states=self._on_wear_states)
 
 		if self.mallButton:

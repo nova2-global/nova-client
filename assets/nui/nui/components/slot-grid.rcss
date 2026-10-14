@@ -85,6 +85,21 @@
    classic. A lean cell's active state is the cell itself (a 2dp accent
    border and a static glow, no motion).
 
+   No dead zones, hover per item (P14b): a cell's hit box reaches half the
+   gap to its neighbors (nui-hit-outset, Core/ElementHitOutset.h: the
+   pointer sees a div larger than it draws), so the pointer anywhere in a
+   grid is over exactly one cell and the drawn cells stay as they were. In
+   a lean grid at rest, an anchor's box is its item's whole area, gaps
+   included (the negative margin keeps the rows), and the cells it covers
+   take no pointer: the pointer anywhere over an item is over its anchor,
+   so :hover lights the item as one shape and the tooltip stays up while
+   the pointer crosses the item's gaps. While something is attached (the
+   grid's is-attaching, which the window sets through nui_slots'
+   LegacySlotEvents), every cell is its own target again, so the drop
+   footprint follows the cell under the pointer as legacy's does. A grid
+   whose cells can hold a multi-cell item binds is-attaching
+   (docs/ui/AUTHORING.md "Slot grids").
+
    Modern: 40dp cells 4dp apart (a 44dp pitch), the 32dp icon 4dp inside.
    The active ring has a static glow (a box-shadow, drawn once), and the
    finish effect is a burst: a radial gradient that scales by transform while
@@ -124,6 +139,8 @@
 	border-width: 1dp;
 	border-color: var(--border);
 	border-radius: var(--radius-sm);
+	/* Half the 4dp gap on every side: the cells' hit boxes tile the grid. */
+	nui-hit-outset: 2dp;
 }
 .nui-slot:hover, .nui-slot.is-hover
 {
@@ -522,19 +539,23 @@
 .nui-slot-grid--lean .nui-slot__sign { z-index: 9; }
 /* An anchor cell's item at its own size, centered in the item's area: a
    1x2 item's 64dp icon in 84dp, a 1x3 item's 96dp in 128dp; its count at
-   the bottom right of that area. */
-.nui-slot-grid--lean > .nui-slot--h2, .nui-slot-grid--lean > .nui-slot--h3
+   the bottom right of that area. At rest the anchor's box is that area
+   (P14b): the negative margin gives the row back its 44dp, so the box
+   reaches over the cells the item covers, which take no pointer; the
+   pointer anywhere over the item is over the anchor, and its hover look is
+   one shape. */
+.nui-slot-grid--lean > .nui-slot--h2 { height: 84dp; margin-bottom: -44dp; }
+.nui-slot-grid--lean > .nui-slot--h3 { height: 128dp; margin-bottom: -88dp; }
+.nui-slot-grid--lean > .nui-slot.is-covered
 {
-	height: 40dp;
+	pointer-events: none;
 }
 .nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__icon { top: 9dp; }
 .nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__icon { top: 15dp; }
 /* A wider item (no legacy item is; Wave 4's grids may hold one): its icon
    at its own width, centered across its columns. */
-.nui-slot-grid--lean > .nui-slot--w2, .nui-slot-grid--lean > .nui-slot--w3
-{
-	width: 40dp;
-}
+.nui-slot-grid--lean > .nui-slot--w2 { width: 84dp; margin-right: -44dp; }
+.nui-slot-grid--lean > .nui-slot--w3 { width: 128dp; margin-right: -88dp; }
 .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__icon, .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__icon
 {
 	width: auto;
@@ -542,7 +563,24 @@
 }
 .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__icon { left: 9dp; }
 .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__icon { left: 15dp; }
-.nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__number { right: -43dp; }
-.nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__number { right: -87dp; }
-.nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__number { bottom: -43dp; }
-.nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__number { bottom: -87dp; }
+/* While something is attached (is-attaching): every cell is one cell again
+   and takes the pointer, so the footprint and the drop follow the cell
+   under the pointer (P14 spec 4.4); the count keeps its place. */
+.nui-slot-grid--lean.is-attaching > .nui-slot--h2, .nui-slot-grid--lean.is-attaching > .nui-slot--h3
+{
+	height: 40dp;
+	margin-bottom: 0;
+}
+.nui-slot-grid--lean.is-attaching > .nui-slot--w2, .nui-slot-grid--lean.is-attaching > .nui-slot--w3
+{
+	width: 40dp;
+	margin-right: 0;
+}
+.nui-slot-grid--lean.is-attaching > .nui-slot.is-covered
+{
+	pointer-events: auto;
+}
+.nui-slot-grid--lean.is-attaching > .nui-slot--w2 > .nui-slot__number { right: -43dp; }
+.nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -87dp; }
+.nui-slot-grid--lean.is-attaching > .nui-slot--h2 > .nui-slot__number { bottom: -43dp; }
+.nui-slot-grid--lean.is-attaching > .nui-slot--h3 > .nui-slot__number { bottom: -87dp; }

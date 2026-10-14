@@ -21,6 +21,14 @@ body.skin-classic.sel .sel__titlebar
 	margin: 0;
 	padding: 0;
 	z-index: 1;
+	/* Its last 5dp lie over the grid's first row, which takes the pointer
+	   there, as legacy's slot window over its title bar (P14b: no dead
+	   zone); the handle and the close button take it. */
+	pointer-events: none;
+}
+body.skin-classic.sel .sel__handle, body.skin-classic.sel .sel__titlebar .nui-window__close
+{
+	pointer-events: auto;
 }
 body.skin-classic.sel .sel__handle
 {

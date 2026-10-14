@@ -12,6 +12,11 @@ music list's OK as Cancel. The goldens are pictures and the facade tests call
 the handlers directly, so neither saw it. A label that overflows its control
 needs pointer-events: none, as legacy's text line takes no pointer.
 
+P14b adds the slot grids' sweep: the same snap writes `--sweep`, which hit
+tests every dp over the document's slot cells, and tools/nui_hit_sweep.py
+checks it: the cells' hit boxes tile each grid, gaps included, and every
+point over an item reaches its anchor (docs/ui/AUTHORING.md "Slot grids").
+
 Needs NUITOOL (or nuitool on PATH) and skips without it.
 
     cd tools && NUITOOL=<path> python3 -B -m unittest nui_hit_test
@@ -25,6 +30,7 @@ import tempfile
 import unittest
 
 import check_nui_snapshots
+import nui_hit_sweep
 
 NUITOOL = os.environ.get("NUITOOL") or shutil.which("nuitool")
 REPO = check_nui_snapshots.ROOT
@@ -41,6 +47,8 @@ class PressesReachTheirControls(unittest.TestCase):
     def setUpClass(cls):
         cls.work = tempfile.mkdtemp(prefix="nui-hits-")
         cls.results = {}
+        cls.sweeps = {}
+        cls.paths = {}
         cwd = os.getcwd()
         os.chdir(REPO)
         try:
@@ -59,12 +67,21 @@ class PressesReachTheirControls(unittest.TestCase):
         name = case[0]
         out = os.path.join(cls.work, name + ".png")
         hits = os.path.join(cls.work, name + ".hits.json")
-        command = check_nui_snapshots.command(NUITOOL, case, out) + ["--hits", hits]
+        sweep = os.path.join(cls.work, name + ".sweep.json")
+        command = check_nui_snapshots.command(NUITOOL, case, out) + ["--hits", hits, "--sweep", sweep]
         process = subprocess.run(command, capture_output=True, text=True)
         if process.returncode != 0:
             return name, (None, process.stdout + process.stderr)
         with open(hits, encoding="utf-8") as handle:
-            return name, (json.load(handle), "")
+            found = json.load(handle)
+        with open(sweep, encoding="utf-8") as handle:
+            swept = json.load(handle)
+        cls.sweeps[name] = nui_hit_sweep.check(swept)
+        if name.startswith("inventory-hover-"):
+            cls.paths[name] = nui_hit_sweep.hover_paths(swept)
+        for path in (out, hits, sweep):
+            os.remove(path)
+        return name, (found, "")
 
     def test_every_golden_case_was_hit_tested(self):
         self.assertTrue(self.results)
@@ -79,6 +96,35 @@ class PressesReachTheirControls(unittest.TestCase):
             with self.subTest(case=name):
                 taken = {control: entry["taken"] for control, entry in hits.items() if entry["taken"]}
                 self.assertEqual(taken, {}, "presses on these controls reach the listed elements instead")
+
+    def test_every_point_of_a_slot_grid_reaches_its_cell_or_its_item(self):
+        """P14b: no dead zone between cells, and every point over an item,
+        its gaps included, reaches the item's anchor."""
+        swept = 0
+        for name, report in sorted(self.sweeps.items()):
+            if not report["cells"]:
+                continue
+            swept += 1
+            with self.subTest(case=name):
+                self.assertGreater(report["points"], 0)
+                self.assertEqual((report["dead"], report["wrong"]), (0, 0),
+                                 "points with no cell or another cell than the owner ([x, y, reached, wanted]): %s" % report["examples"])
+        # The slot windows' cases are in it: the inventory, costume, belt,
+        # select item, taskbar and gallery in every theme.
+        self.assertGreater(swept, 100)
+
+    def test_the_hover_paths_cross_no_gap_inside_an_item(self):
+        """The P14b fixture (a 1x3 glaive and a 1x2 sword at the bag's bottom
+        edge, side by side): along each line of tools/fixtures/hover_paths.json
+        the pointer stays on an item's anchor over all its cells and gaps,
+        and goes from one item straight to the next, in every look and
+        scale; nui_inventory_test.SlotHover replays these paths."""
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "fixtures", "hover_paths.json"), encoding="utf-8") as handle:
+            wanted = json.load(handle)["paths"]
+        self.assertEqual(len(self.paths), 45, sorted(self.paths))
+        for name, paths in sorted(self.paths.items()):
+            with self.subTest(case=name):
+                self.assertEqual(paths, wanted)
 
     def test_the_wave_3a_choices_are_covered(self):
         hits, _ = self.results.get("system-options-classic-100", (None, ""))

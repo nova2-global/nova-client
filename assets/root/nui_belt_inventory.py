@@ -108,6 +108,8 @@ class BeltInventoryWindow(uiInventory.BeltInventoryWindow):
 			"cells": [nui_slots.empty_cell(i) for i in range(self._cols * self._rows)],
 			"cols": self._cols,
 			"expanded": False,
+			# P14b: the grid's is-attaching (nui_slots.LegacySlotEvents).
+			"attaching": False,
 		}
 		self.demand = nui_hud.OnDemand(self._make_board, self._restore_board) if nui_hud.has_engine_3b() else None
 		uiInventory.BeltInventoryWindow.__init__(self, wndInventory)
@@ -183,7 +185,8 @@ class BeltInventoryWindow(uiInventory.BeltInventoryWindow):
 		wndBeltInventorySlot.SetSelectItemSlotEvent(ui.__mem_func__(self.wndInventory.SelectItemSlot))
 
 		self.wndBeltInventorySlot = wndBeltInventorySlot
-		self._events = nui_slots.LegacySlotEvents(wndBeltInventorySlot, on_states=self._on_states)
+		self._events = nui_slots.LegacySlotEvents(wndBeltInventorySlot, on_states=self._on_states,
+		                                          on_attaching=lambda flag: self._set(attaching=flag))
 
 	# --- what NovaUI changes (P14 spec 6.3) --------------------------------------------
 

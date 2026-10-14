@@ -222,10 +222,12 @@ class GoldenPolicy(Scratch):
         self.assertEqual(self.run_tool(PALETTE, "--base", "dark", "--shipped")[0], 0)
         self.assertEqual(self.read_json(nui_new_theme.GOLDEN_THEMES)["themes"][-1], {"name": golden_name(PALETTE), "id": PALETTE})
         added = set(self.golden_names()) - set(self.base)
-        # The classic-only cases (their themes list classic alone) are not in the matrix.
+        # The classic-only cases (their themes list classic alone) are not in the matrix;
+        # nor are the slot hover cases (P14b), whose pointer stands on each skin's own
+        # cell places: a new skin adds its own.
         classic = {name.replace("-classic-", "-%s-" % golden_name(PALETTE)) for name in self.base if "-classic-" in name
                    and not name.startswith(("skin-proof-", "select-busy-", "create-busy-", "taskbar-wide-",
-                                            "energy-bar-hungry-", "energy-bar-empty-"))}
+                                            "energy-bar-hungry-", "energy-bar-empty-", "inventory-hover-"))}
         self.assertEqual(added, classic)
 
     def test_a_theme_without_a_golden_entry_stops_the_checker(self):

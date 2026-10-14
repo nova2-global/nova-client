@@ -662,6 +662,9 @@
 	border-radius: 0;
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/public/slot_base.sub");
+	/* The legacy pitch has no gap, so the cells tile without an outset;
+	   a window with uneven gaps (the wear places) sets its own by side. */
+	nui-hit-outset: 0;
 }
 .skin-classic .nui-slot:hover, .skin-classic .nui-slot.is-hover
 {
@@ -778,7 +781,8 @@
 
 /* The lean grid: the slot base art tiled under the whole grid at the legacy
    32dp pitch, with no gap; a cell draws nothing at rest and has no hover
-   look; the states in the legacy colors as above. An active item (an auto
+   look; the states in the legacy colors as above. At rest an anchor's box
+   covers its item, as in the modern skins (P14b). An active item (an auto
    potion that is on) plays the legacy active effect's 13 frames over its
    icon and count, as CSlotWindow::OnRender draws m_pSlotActiveEffect after
    them (the bag's __active part, shown only while the cell is active). */
@@ -786,12 +790,20 @@
 {
 	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat left top);
 }
-.skin-classic .nui-slot-grid--lean > .nui-slot,
-.skin-classic .nui-slot-grid--lean > .nui-slot:hover, .skin-classic .nui-slot-grid--lean > .nui-slot.is-hover,
-.skin-classic .nui-slot-grid--lean > .nui-slot.is-picked
+.skin-classic .nui-slot-grid--lean > .nui-slot
 {
 	width: 32dp;
 	height: 32dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: none;
+}
+/* No size here: an anchor keeps its item's area while hovered (P14b). */
+.skin-classic .nui-slot-grid--lean > .nui-slot:hover, .skin-classic .nui-slot-grid--lean > .nui-slot.is-hover,
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-picked
+{
 	padding: 0;
 	border-width: 0;
 	border-radius: 0;
@@ -831,16 +843,25 @@
 {
 	height: auto;
 }
-.skin-classic .nui-slot-grid--lean > .nui-slot--h2, .skin-classic .nui-slot-grid--lean > .nui-slot--h3
+/* At rest an anchor's box is its item's area at the legacy pitch (P14b, as
+   the modern rules in components/slot-grid.rcss); while something is
+   attached it is one cell again. */
+.skin-classic .nui-slot-grid--lean > .nui-slot--h2 { height: 64dp; margin-bottom: -32dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--h3 { height: 96dp; margin-bottom: -64dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w2 { width: 64dp; margin-right: -32dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w3 { width: 96dp; margin-right: -64dp; }
+.skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--h2, .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--h3
 {
 	height: 32dp;
+	margin-bottom: 0;
 }
-.skin-classic .nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__number { bottom: -29dp; }
-.skin-classic .nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__number { bottom: -61dp; }
-.skin-classic .nui-slot-grid--lean > .nui-slot--w2, .skin-classic .nui-slot-grid--lean > .nui-slot--w3
+.skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w2, .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w3
 {
 	width: 32dp;
+	margin-right: 0;
 }
+.skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--h2 > .nui-slot__number { bottom: -29dp; }
+.skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--h3 > .nui-slot__number { bottom: -61dp; }
 .skin-classic .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__icon,
 .skin-classic .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__icon
 {
@@ -848,8 +869,8 @@
 	width: auto;
 	height: auto;
 }
-.skin-classic .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__number { right: -28dp; }
-.skin-classic .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__number { right: -60dp; }
+.skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w2 > .nui-slot__number { right: -28dp; }
+.skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -60dp; }
 
 .skin-classic .nui-slider slidertrack
 {

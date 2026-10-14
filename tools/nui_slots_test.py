@@ -702,5 +702,106 @@ class TooltipsWhileAttached(SlotsTest):
         self.assertEqual(item.shown, [("SetInventoryItem", 4), ("SetInventoryItem", 5, P["DRAGON_SOUL_INVENTORY"])])
         self.assertFalse(self.m.TooltipBridge().while_attached, "the default keeps the taskbar's rule")
 
+class Attaching(SlotsTest):
+    """P14b: the grids that keep is-attaching hear when an attach starts and
+    ends, whichever grid or window made it."""
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        self.game.give(0, 10, 1, size=(1, 2))
+        self.told = {"bag": [], "belt": []}
+        self.grids = {}
+        for name in ("bag", "belt"):
+            proxy = self.m.SlotWindowProxy(range(15), None, cols=5, rows=3)
+            proxy.SetSelectItemSlotEvent(lambda n: self.controller.AttachObject("legacy", INVENTORY, n, 10))
+            proxy.SetItemSlot(0, 10, 0)
+            proxy.RefreshSlot()
+            self.grids[name] = self.m.LegacySlotEvents(proxy, on_attaching=self.told[name].append)
+        self.plain = self.m.LegacySlotEvents(self.m.SlotWindowProxy(range(4), None))
+
+    def test_a_pick_in_one_grid_tells_every_grid_and_the_end_tells_them_again(self):
+        self.grids["bag"].press(5, 0)
+        self.assertTrue(self.m.attached())
+        self.assertEqual(self.told, {"bag": [True], "belt": [True]})
+        self.controller.DeattachObject()
+        self.assertEqual(self.told, {"bag": [True, False], "belt": [True, False]})
+        self.assertFalse(self.grids["belt"].attaching)
+
+    def test_an_attach_from_a_legacy_window_is_told_at_the_first_pointer_event_of_any_grid(self):
+        self.controller.AttachObject("legacy", SHOP, 3, 27001, 1)
+        self.assertEqual(self.told, {"bag": [], "belt": []})
+        self.plain.over(1)
+        self.assertEqual(self.told, {"bag": [True], "belt": [True]})
+        self.grids["bag"].over(7)
+        self.assertEqual(self.told["bag"], [True], "told once")
+        self.controller.DeattachObject()
+        self.assertEqual(self.told, {"bag": [True, False], "belt": [True, False]})
+
+
+# The markup and sheets that keep every slot grid on the shared hit layout
+# (P14b; docs/ui/AUTHORING.md "Slot grids"): nuitool's sweep (nui_hit_test)
+# checks the goldens' grids point by point; these catch a new window that
+# would opt out of it without a golden that shows it.
+NUI = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "nui", "nui"))
+
+
+def _files(folder, ext):
+    for base, _, names in os.walk(os.path.join(NUI, folder)):
+        for name in sorted(names):
+            if name.endswith(ext):
+                yield os.path.join(base, name)
+
+
+def _read(path):
+    with open(path, encoding="utf-8") as handle:
+        return handle.read()
+
+
+class SharedHitLayout(unittest.TestCase):
+    TAG = __import__("re").compile(r"<([a-zA-Z][\w-]*)((?:\s+[^>]*?)?)\s*/?>", __import__("re").S)
+    CLASS = __import__("re").compile(r'\bclass="([^"]*)"')
+
+    def cells(self):
+        """(document, tag, attributes) of every element of class nui-slot."""
+        for path in _files("windows", ".rml"):
+            for tag, attributes in self.TAG.findall(_read(path)):
+                classes = self.CLASS.search(attributes)
+                if classes and "nui-slot" in classes.group(1).split():
+                    yield os.path.relpath(path, NUI), tag, attributes
+
+    def test_every_slot_cell_that_takes_the_pointer_is_a_div(self):
+        """nui-hit-outset holds for divs only (Core/ElementHitOutset.h)."""
+        found = [(path, tag) for path, tag, attributes in self.cells() if "data-event-mouse" in attributes and tag != "div"]
+        self.assertEqual(found, [])
+        self.assertGreater(len(list(self.cells())), 10)
+
+    def test_a_lean_grid_that_can_hold_a_tall_item_binds_is_attaching(self):
+        """Its anchors cover their items only at rest; without is-attaching a
+        drop footprint would follow the anchor, not the cell under the
+        pointer."""
+        missing = []
+        for path in _files("windows", ".rml"):
+            text = _read(path)
+            if "data-class-nui-slot--h2" not in text and "data-class-nui-slot--h3" not in text:
+                continue
+            for tag, attributes in self.TAG.findall(text):
+                classes = self.CLASS.search(attributes)
+                if classes and "nui-slot-grid--lean" in classes.group(1).split() and "data-class-is-attaching=" not in attributes:
+                    missing.append(os.path.relpath(path, NUI))
+        self.assertEqual(missing, [])
+
+    def test_no_window_sheet_changes_a_slot_cell_s_hit_box(self):
+        """The hit outsets are the shared component's and the skins' (classic's
+        uneven wear places); a window sheet that set its own, or took the
+        pointer from a cell, would leave a dead zone."""
+        found = []
+        for path in _files("windows", ".rcss"):
+            for match in __import__("re").finditer(r"([^{}]*)\{([^}]*)\}", _read(path)):
+                selector, body = match.group(1), match.group(2)
+                if "nui-hit-outset" in body or ("pointer-events" in body and ("nui-slot" in selector or "-wear" in selector)):
+                    found.append((os.path.relpath(path, NUI), selector.strip().splitlines()[-1]))
+        self.assertEqual(found, [])
+
+
 if __name__ == "__main__":
     unittest.main()

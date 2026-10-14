@@ -1255,6 +1255,7 @@
 		"has_costume": true,
 		"has_dss": true,
 		"has_mall": true,
-		"placed": false
+		"placed": false,
+		"bag_attaching": false
 	}
 }

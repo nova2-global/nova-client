@@ -150,6 +150,8 @@ def inventory(limits, page, wear, bag, money, **rest):
         "has_dss": True,
         "has_mall": True,
         "placed": False,
+        # P14b: nothing attached, so an anchor's box covers its item.
+        "bag_attaching": False,
     }
     model.update(rest)
     return {"inventory": model}
@@ -161,6 +163,14 @@ def today_bag(cols, rows, start):
         18: (13000, 1, {"target": "usable"}), 30: (12200, 1, {}), 35: (27002, 3, {}), 40: (25040, 1, {}),
         44: (70043, 1, {}), 23: (28030, 1, {"picked": True})},
         targets={21: "move", 26: "move"})
+
+
+def hover_bag(cols, rows, start):
+    """P14b's hover goldens: a 1x3 glaive and, beside it, a 1x2 sword at the
+    page's bottom edge, with 1x1 items around them."""
+    return grid(cols, rows, start, {
+        30: (27001, 200, {}), 31: (3000, 1, {}), 32: (72723, 1, {}), 37: (10, 1, {}), 33: (12200, 1, {}),
+        43: (25040, 1, {}), 44: (28030, 1, {})})
 
 
 def foundation_bag(cols, rows, start):
@@ -180,7 +190,7 @@ def belt(limits, available, items, expanded=True):
     rows = limits.BELT_INVENTORY_SLOT_COUNT // cols
     cells = grid(cols, rows, limits.BELT_INVENTORY_SLOT_START, items,
                  unavailable=[i for i in range(cols * rows) if i >= available], one=True)
-    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded}}
+    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded, "attaching": False}}
 
 
 def select_item(limits, stones):
@@ -204,6 +214,7 @@ def fixtures():
         ("inventory", ""): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999),
         ("inventory", "foundation"): inventory(FOUNDATION, 2, FOUNDATION_WEAR, foundation_bag, 2000000000000),
         ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}), 0),
+        ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),
         ("costume", ""): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}),
         ("costume", "foundation"): costume(FOUNDATION, {
             "costume_body": 41001, "costume_hair": 73001, "costume_weapon": 1000, "costume_mount": 71027,

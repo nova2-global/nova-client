@@ -44,6 +44,14 @@ body.skin-classic.inv .inv__titlebar
 	margin: 0;
 	padding: 0;
 	z-index: 1;
+	/* Its last pixel lies over the top wear places, which take the pointer
+	   there (P14b: no dead zone); its own controls take it. */
+	pointer-events: none;
+}
+body.skin-classic.inv .inv__handle, body.skin-classic.inv .inv__titlebar .nui-window__close,
+body.skin-classic.inv .inv__titlebar .inv-button
+{
+	pointer-events: auto;
 }
 body.skin-classic.inv.inv--table-old .inv__titlebar
 {
@@ -256,6 +264,32 @@ body.skin-classic.inv.inv--table-old .inv-wear--costume_sash { left: 103dp; top:
 body.skin-classic.inv.inv--table-old .inv-wear--ring1 { left: 20dp; top: 129dp; }
 body.skin-classic.inv.inv--table-old .inv-wear--ring2 { left: 104dp; top: 129dp; }
 body.skin-classic.inv.inv--table-old .inv-wear--belt { left: 63dp; top: 128dp; }
+
+/* No dead zone between two wear places (P14b): each cell's hit box reaches
+   half the gap to the place beside it (nui-hit-outset: top, right,
+   bottom, left), where the places stand 8dp apart or less; nothing draws
+   differently. tools/nui_hit_test.py sweeps them. */
+body.skin-classic.inv.inv--table-new .inv-wear--body > .inv-wear { nui-hit-outset: 1.5dp 2dp 2.5dp 2dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--head > .inv-wear { nui-hit-outset: 0 0 1.5dp 2dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--foots > .inv-wear { nui-hit-outset: 3.5dp 2dp 0 2.5dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--wrist > .inv-wear { nui-hit-outset: 0 3.5dp 0 2dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--weapon > .inv-wear { nui-hit-outset: 0 2dp 0 0; }
+body.skin-classic.inv.inv--table-new .inv-wear--neck > .inv-wear { nui-hit-outset: 0 0 0 3.5dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--ear > .inv-wear { nui-hit-outset: 0.5dp 0 0 3.5dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--unique1 > .inv-wear { nui-hit-outset: 0 2.5dp 0 0; }
+body.skin-classic.inv.inv--table-new .inv-wear--unique2 > .inv-wear { nui-hit-outset: 0 0 0 2dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--arrow > .inv-wear { nui-hit-outset: 0 0 0.5dp 0; }
+body.skin-classic.inv.inv--table-new .inv-wear--shield > .inv-wear { nui-hit-outset: 0 3.5dp 0 2dp; }
+body.skin-classic.inv.inv--table-new .inv-wear--belt > .inv-wear { nui-hit-outset: 2.5dp 0 3.5dp 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--body > .inv-wear { nui-hit-outset: 4dp 0 0 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--head > .inv-wear { nui-hit-outset: 0 0 4dp 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--wrist > .inv-wear { nui-hit-outset: 1dp 0 0 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--unique1 > .inv-wear { nui-hit-outset: 4dp 0 0 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--unique2 > .inv-wear { nui-hit-outset: 4dp 0 0 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--shield > .inv-wear { nui-hit-outset: 4dp 0 1dp 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--costume_sash > .inv-wear { nui-hit-outset: 0 0 4dp 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--ring1 > .inv-wear { nui-hit-outset: 0 0 4dp 0; }
+body.skin-classic.inv.inv--table-old .inv-wear--ring2 > .inv-wear { nui-hit-outset: 0 0 4dp 0; }
 
 /* The belt docks at the board's left edge, 241 below its top (legacy's
    GetBasePosition: x - 148, y + 241). */

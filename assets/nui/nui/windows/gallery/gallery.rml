@@ -289,7 +289,7 @@
 							<div class="nui-slot__tint"></div>
 						</div>
 					</div>
-					<div class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5" id="gallery-lean">
+					<div class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5" id="gallery-lean" data-class-is-attaching="lean_attaching">
 						<div class="nui-slot nui-anim nui-fx" data-for="c : lean" data-attr-id="'gallery-lean-' + it_index"
 							data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
 							data-class-is-picked="c.picked" data-class-is-active="c.active"

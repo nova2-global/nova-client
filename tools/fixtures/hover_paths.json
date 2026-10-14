@@ -1,0 +1,10 @@
+{
+	"$comment": "P14b: the bag cells RmlUi's hit test reaches along lines over assets/nui/nui/windows/inventory/inventory.hover.fixture.json (a 1x3 glaive at cell 31 over 36 and 41, a 1x2 sword at 37 over 42, a stack at 30), one entry per change, null for no cell (tools/nui_hit_sweep.py HOVER_PATHS). tools/nui_hit_test.py checks that every inventory-hover golden case (each look and scale) sweeps to these; tools/nui_inventory_test.py SlotHover replays them as RmlUi's mouseout and mouseover through the NovaUI inventory and checks the tooltip calls.",
+	"paths": {
+		"across-bottom": [31, 37],
+		"across-middle": [31, 37],
+		"glaive-down": [31],
+		"stack-to-glaive": [30, 31],
+		"sword-down": [37]
+	}
+}

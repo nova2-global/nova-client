@@ -323,6 +323,7 @@
 			}
 		],
 		"cols": 4,
-		"expanded": true
+		"expanded": true,
+		"attaching": false
 	}
 }

@@ -20,7 +20,8 @@ time, an optional variant: a second fixture of the same window,
 name to a JSON file, nuitool snap --feed), "views" (view name to a PNG,
 --view), "anchors" (a character vid to [x, y] dp, --anchor) and
 "pointer" (the pointer at [x, y] dp at scale 1, --pointer: a tooltip that
-follows it, P14 spec 5.5.4); their
+follows it, P14 spec 5.5.4) and "hover" (RmlUi's pointer at [x, y] dp at
+scale 1, --hover: what is hovered there, P14b); their
 paths are store paths under assets/nui, as --doc takes them
 (docs/ui/snapshots/README.md explains each). The player's settings of a
 case (P13 spec 7.8): "colors" (slot=value,... for the theme of the run,
@@ -109,7 +110,7 @@ PAGES = [
 STAND_IN_NAME_RE = re.compile(r"[a-z][a-z0-9_.-]*")
 SKINS = os.path.join("assets", "nui", "nui", "skins")
 CASE_KEYS = {"$comment", "page", "themes", "scales", "fixture", "roots", "time", "variant", "name", "feeds", "views", "anchors",
-             "colors", "backdrop", "effects", "reduced_motion", "switch_from", "pointer"}
+             "colors", "backdrop", "effects", "reduced_motion", "switch_from", "pointer", "hover"}
 CASE_NAME_RE = re.compile(r"[a-z][a-z0-9-]*")
 COLOR_SLOT_VALUE = r"[a-z][a-z0-9-]*=(#[0-9a-fA-F]{6}|[0-9]{1,3})"
 COLORS_RE = re.compile(r"%s(,%s)*" % (COLOR_SLOT_VALUE, COLOR_SLOT_VALUE))
@@ -144,6 +145,13 @@ def stand_in_args(case, where, root):
                 or not all(isinstance(v, (int, float)) and not isinstance(v, bool) and v >= 0 for v in pointer)):
             raise ValueError("%s: pointer is [x, y] dp at scale 1, not %r" % (where, pointer))
         args += ["--pointer", "%s,%s" % (format(pointer[0], "g"), format(pointer[1], "g"))]
+    # P14b: RmlUi's own pointer, so the frame shows what is hovered there.
+    hover = case.get("hover")
+    if hover is not None:
+        if (not isinstance(hover, list) or len(hover) != 2
+                or not all(isinstance(v, (int, float)) and not isinstance(v, bool) and v >= 0 for v in hover)):
+            raise ValueError("%s: hover is [x, y] dp at scale 1, not %r" % (where, hover))
+        args += ["--hover", "%s,%s" % (format(hover[0], "g"), format(hover[1], "g"))]
     return tuple(args)
 
 

@@ -133,6 +133,7 @@ body.skin-classic.cos.inv--table-old .cos-wear--costume_facial { left: 255dp; to
 body.skin-classic.cos.inv--table-old .cos-wear--effect_weapon_1 { left: 75dp; top: 232dp; }
 body.skin-classic.cos.inv--table-old .cos-wear--effect_armor_1 { left: 203dp; top: 232dp; }
 body.skin-classic.cos.inv--table-old .cos-wear--costume_aura { left: 255dp; top: 112dp; }
+
 /* The names the other table shows in the inventory keep a place too. */
 body.skin-classic.cos.inv--table-new .cos-wear--costume_weapon,
 body.skin-classic.cos.inv--table-new .cos-wear--costume_mount,
@@ -150,3 +151,10 @@ body.skin-classic.cos.inv--table-new .cos-wear--effect_weapon_1,
 body.skin-classic.cos.inv--table-new .cos-wear--effect_armor_1,
 body.skin-classic.cos.inv--table-new .cos-wear--costume_aura { left: 8dp; top: 148dp; }
 body.skin-classic.cos.inv--table-old .cos-wear--ring1 { left: 20dp; top: 183dp; }
+
+/* No dead zone between two wear places (P14b): half the gap to the place
+   beside it, where they stand 8dp apart or less (as the inventory's). */
+body.skin-classic.cos.inv--table-new .cos-wear--costume_body > .cos-wear { nui-hit-outset: 2.5dp 0 0 0; }
+body.skin-classic.cos.inv--table-new .cos-wear--costume_hair > .cos-wear { nui-hit-outset: 0 0 2.5dp 0; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_sash2 > .cos-wear { nui-hit-outset: 0 0 1.5dp 0; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_aura > .cos-wear { nui-hit-outset: 1.5dp 0 0 0; }

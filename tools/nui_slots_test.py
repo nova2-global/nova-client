@@ -805,3 +805,275 @@ class SharedHitLayout(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# --- Wave 3c (P15) ---
+
+class _Limits(object):
+    """A stand-in for nui_limits' Limits: the count label rule only."""
+
+    def __init__(self, labels):
+        self.SKILL_LABELS = labels
+
+
+class CountLabelFor(SlotsTest):
+    def test_today_s_rule_and_the_sage_grade_s(self):
+        today, sage = _Limits("p"), _Limits("over_p")
+        label = self.m.count_label_for
+        for grade in range(5):
+            for level in (-1, 0, 1, 10, 40, 50):
+                self.assertEqual(label(grade, level, today), self.m.count_label(grade, level), (grade, level))
+        self.assertEqual([label(g, 7, sage) for g in range(5)], ["7", "m7", "g7", "p7", "s"])
+        self.assertEqual([label(g, 0, sage) for g in range(5)], [""] * 5, "level 0 shows nothing")
+        self.assertEqual(label(3, 50, sage), "p50")
+
+    def test_without_limits_it_takes_the_current_ones_or_today_s_rule(self):
+        self.assertNotIn("nui_limits", sys.modules)
+        self.assertEqual(self.m.count_label_for(3, 9), "p", "no limits module: today's rule")
+
+
+class FullProxy(SlotsTest):
+    """FullSlotWindowProxy (P15 spec 11.3), rule for rule with CSlotWindow."""
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        self.seen = []
+        self.game.state.now = 100.0
+
+    def proxy(self, slots=(1, 21, 41, 2, 22, 42), **kwargs):
+        kwargs.setdefault("limits", _Limits("p"))
+        return self.m.FullSlotWindowProxy(list(slots), self.seen.append, **kwargs)
+
+    def cell(self, proxy, slot):
+        proxy.RefreshSlot()
+        return self.seen[-1][proxy.index_of(slot)]
+
+    def test_the_same_skill_again_keeps_its_state_and_another_clears_it(self):
+        proxy = self.proxy()
+        self.game.learn(1, 5, level=3)
+        proxy.SetSkillSlotNew(1, 5, 0, 3)
+        proxy.SetSlotCountNew(1, 0, 3)
+        proxy.SetSlotCoolTime(1, 10.0)
+        proxy.ActivateSlot(1)
+        proxy.SetSkillSlotNew(1, 5, 1, 3)   # the same skill at another grade: its icon changes
+        cell = self.cell(proxy, 1)
+        self.assertEqual((cell["kind"], cell["icon"], cell["count"], cell["active"], cell["cd_end"]),
+                         ("skill", "d:/ymir work/ui/skill/test/5_02.sub", "3", True, 110.0))
+        self.assertEqual((cell["type"], cell["ref"]), (P["SLOT_TYPE_SKILL"], 1))
+        proxy.SetSkillSlotNew(1, 6, 0, 3)   # another skill: CSlotWindow::ClearSlot first
+        cell = self.cell(proxy, 1)
+        self.assertEqual((cell["count"], cell["active"], cell["cd_end"]), ("", False, 0.0))
+        proxy.SetSkillSlotNew(1, 0, 0, 3)   # no icon: cleared
+        self.assertEqual(self.cell(proxy, 1)["kind"], "")
+        proxy.SetSkillSlotNew(99, 5, 0, 3)  # a slot the window does not hold: ignored
+        self.assertEqual(proxy.GetSlotCount(), 6)
+
+    def test_set_skill_slot_shows_the_grade_0_icon_and_the_level(self):
+        proxy = self.proxy(slots=range(101, 113), cols=6, rows=2)
+        proxy.SetSkillSlot(101, 122, 20)
+        cell = self.cell(proxy, 101)
+        self.assertEqual((cell["kind"], cell["icon"], cell["count"]), ("skill", "d:/ymir work/ui/skill/test/122_01.sub", "20"))
+        self.assertEqual(proxy.GetStartIndex(), 101)
+
+    def test_set_slot_takes_its_icon_from_the_window_and_its_alpha(self):
+        names = {}
+        proxy = self.proxy(slots=range(5), cols=1, rows=5, icon_of=lambda slot, handle: names.get(slot, ""))
+        names[0] = "d:/ymir work/ui/game/quest/questicon/scroll.tga"
+        proxy.SetSlot(0, 0, 1, 1, 12345)
+        proxy.SetSlot(1, 1, 1, 1, 0, (1.0, 1.0, 1.0, 0.5))
+        self.seen[:] = []
+        proxy.RefreshSlot()
+        cells = self.seen[-1]
+        self.assertEqual((cells[0]["kind"], cells[0]["icon"], cells[0]["type"], cells[0]["ref"]),
+                         ("icon", "d:/ymir work/ui/game/quest/questicon/scroll.tga", 0, 0))
+        self.assertEqual((cells[1]["kind"], cells[1]["icon"]), ("icon", ""), "no file: no image, still a set slot")
+        extras = proxy.extras()
+        self.assertEqual((extras[0]["alpha"], extras[1]["alpha"]), (1.0, 0.5))
+        self.assertTrue(proxy.is_item(0), "a set slot takes a press as an item (CSlotWindow isItem)")
+
+    def test_emotions_and_a_missing_icon(self):
+        self.game.emotion_icons[3] = "icon/action/clap.tga"
+        proxy = self.proxy(slots=range(1, 19), cols=6, rows=3)
+        proxy.SetEmotionSlot(3, 3)
+        proxy.SetEmotionSlot(4, 4)
+        proxy.SetCoverButton(3)
+        proxy.SetCoverButton(4)
+        proxy.RefreshSlot()
+        cells = self.seen[-1]
+        self.assertEqual((cells[2]["kind"], cells[2]["icon"], cells[2]["cover"]), ("emotion", "/icon/action/clap.tga", True))
+        self.assertEqual((cells[3]["kind"], cells[3]["cover"]), ("", False), "an emotion with no icon is cleared")
+
+    def test_cover_buttons_are_enabled_again_by_set_cover_button(self):
+        proxy = self.proxy()
+        self.game.learn(1, 5, level=3)
+        proxy.SetSkillSlotNew(21, 5, 1, 3)
+        proxy.SetCoverButton(21)
+        proxy.DisableCoverButton(21)
+        self.assertTrue(self.cell(proxy, 21)["unavailable"])
+        proxy.SetCoverButton(21)
+        self.assertFalse(self.cell(proxy, 21)["unavailable"], "CSlotWindow::SetCoverButton enables it")
+
+    def test_count_labels_follow_the_limits(self):
+        proxy = self.proxy(limits=_Limits("over_p"))
+        proxy.SetSkillSlotNew(41, 5, 2, 50)
+        proxy.SetSlotCountNew(41, 3, 7)
+        self.assertEqual(self.cell(proxy, 41)["count"], "p7")
+        proxy.SetSlotCountNew(41, 4, 50)
+        self.assertEqual(self.cell(proxy, 41)["count"], "s")
+
+    def test_slot_buttons_and_the_base_image(self):
+        proxy = self.proxy()
+        proxy.ShowSlotButton(1)
+        self.assertFalse(proxy.extras()[0]["button"], "no button before AppendSlotButton")
+        proxy.AppendSlotButton("up", "over", "down")
+        self.assertEqual([e["button"] for e in proxy.extras().values()], [False] * 6, "appended hidden")
+        proxy.ShowSlotButton(1)
+        proxy.ShowSlotButton(2)
+        self.assertEqual([proxy.extras()[i]["button"] for i in range(6)], [True, False, False, True, False, False])
+        proxy.ClearSlot(1)
+        self.assertFalse(proxy.extras()[0]["button"], "a cleared slot hides its button")
+        proxy.HideAllSlotButton()
+        self.assertFalse(proxy.extras()[3]["button"])
+        self.assertTrue(proxy.extras()[1]["closed"], "the base image shows until hidden")
+        proxy.HideSlotBaseImage(21)
+        self.assertFalse(proxy.extras()[1]["closed"])
+        proxy.ClearSlot(21)
+        self.assertTrue(proxy.extras()[1]["closed"], "ClearSlot shows it again")
+        proxy.HideSlotBaseImage(21)
+        proxy.ShowSlotBaseImage(21)
+        self.assertTrue(proxy.extras()[1]["closed"])
+
+    def test_the_cooldown_store_restores_in_slot_order_and_stops_at_a_slot_it_lacks(self):
+        proxy = self.proxy()
+        for slot in (1, 21, 2):
+            proxy.SetSkillSlotNew(slot, 5, 0, 1)
+        proxy.StoreSlotCoolTime(1, 21, 10.0)
+        self.game.state.now = 102.0
+        proxy.StoreSlotCoolTime(1, 2, 8.0, 1.0)
+        proxy.ActivateSlot(2)          # marks the stored ACTIVE entry
+        proxy.StoreSlotCoolTime(1, 30, 5.0)   # the window lacks 30
+        proxy.StoreSlotCoolTime(1, 1, 4.0)
+        self.assertEqual(proxy.stored(1)[2], (8.0, 101.0, True))
+        proxy.RestoreSlotCoolTime(1)
+        proxy.RefreshSlot()
+        cells = dict((proxy.slot_number(i), c) for i, c in enumerate(self.seen[-1]))
+        self.assertEqual((cells[1]["cd_start"], cells[1]["cd_end"]), (102.0, 106.0))
+        self.assertEqual((cells[2]["cd_start"], cells[2]["cd_end"], cells[2]["active"]), (101.0, 109.0, True))
+        self.assertEqual((cells[21]["cd_start"], cells[21]["cd_end"], cells[21]["active"]), (100.0, 110.0, False))
+        proxy.StoreSlotCoolTime(1, 21, 10.0)   # stored again: not active
+        proxy.ActivateSlot(21)
+        proxy.StoreSlotCoolTime(1, 21, 12.0)
+        self.assertEqual(proxy.stored(1)[21][2], False, "a store resets the entry's active state")
+
+    def test_the_store_survives_a_clear_and_restore_deactivates_a_slot_stored_inactive(self):
+        proxy = self.proxy()
+        proxy.SetSkillSlotNew(1, 5, 0, 1)
+        proxy.StoreSlotCoolTime(1, 1, 10.0)
+        proxy.ActivateSlot(1)
+        proxy.DeactivateSlot(1)
+        proxy.ClearSlot(1)
+        proxy.SetSkillSlotNew(1, 5, 0, 1)
+        proxy.ActivateSlot(1)
+        proxy.StoreSlotCoolTime(1, 1, 10.0)
+        proxy.RestoreSlotCoolTime(1)
+        cell = self.cell(proxy, 1)
+        self.assertEqual((cell["cd_end"], cell["active"]), (110.0, False))
+
+    def test_transfer_moves_the_active_entry_and_shows_it_only_on_a_learned_target(self):
+        proxy = self.proxy()
+        for slot in (1, 21, 41):
+            proxy.SetSkillSlotNew(slot, 5, 0, 1)
+        proxy.StoreSlotCoolTime(1, 1, 10.0)
+        proxy.ActivateSlot(1)
+        proxy.SetSlotCoolTime(1, 10.0)
+        proxy.TransferSlotCoolTime(1, 21)    # player.GetSkillLevel(21) is 0: no cooldown shown there
+        proxy.RefreshSlot()
+        cells = dict((proxy.slot_number(i), c) for i, c in enumerate(self.seen[-1]))
+        self.assertEqual((cells[1]["cd_end"], cells[21]["cd_end"], cells[21]["active"]), (0.0, 0.0, True))
+        self.assertEqual(list(proxy.stored(1)), [21])
+        self.game.learn(41, 9, level=3)
+        proxy.TransferSlotCoolTime(21, 41)
+        proxy.RefreshSlot()
+        cells = dict((proxy.slot_number(i), c) for i, c in enumerate(self.seen[-1]))
+        self.assertEqual((cells[41]["cd_start"], cells[41]["cd_end"]), (100.0, 110.0))
+        proxy.TransferSlotCoolTime(1, 41)    # no entry: nothing
+        proxy.TransferSlotCoolTime(41, 99)   # the window lacks 99: nothing
+        self.assertEqual(list(proxy.stored(1)), [41])
+
+
+class PressedButton(SlotsTest):
+    def test_a_plus_button_sends_its_slot_and_nothing_while_attached(self):
+        pressed = []
+        proxy = self.m.FullSlotWindowProxy([1, 21, 41], None, limits=_Limits("p"))
+        proxy.SetPressedSlotButtonEvent(pressed.append)
+        events = self.m.LegacySlotEvents(proxy)
+        events.pressed_button(1)
+        events.pressed_button(7)
+        self.assertEqual(pressed, [21])
+        self.game.give(0, 27001, 1)
+        self.controller.AttachObject("legacy", INVENTORY, 0, 27001)
+        events.pressed_button(0)
+        self.assertEqual(pressed, [21], "CSlotButton ignores a press while attaching")
+
+    def test_attach_right_is_off_until_f2(self):
+        self.assertIs(self.m.ATTACH_RIGHT, False)
+
+
+class Adopt(SlotsTest):
+    """adopt_attach (P15 spec 7): a legacy handler's attach from a NovaUI
+    press, of a type DeattachObject leaves unfreed."""
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        game = self.game
+        self.ds = (P["DRAGON_SOUL_INVENTORY"], 4)
+        game.give(self.ds, 110000, 1)
+        game.give(0, 27001, 1)
+        game.learn(3, 3, level=1)
+        game.put_quick(0, INVENTORY, 0)
+        game.put_quick(1, SKILL, 3)
+
+    def legacy_attach(self, slot_type, number, index):
+        self.controller.AttachObject("legacy", slot_type, number, index)
+
+    def test_a_dragon_soul_or_quick_slot_attach_is_freed_once_at_its_end(self):
+        for slot_type, number, index, ends in ((DRAGON_SOUL, 4, 110000, "detach"), (QUICK, 0, 0, "detach"),
+                                               (QUICK, 1, 1, "detach"), (DRAGON_SOUL, 4, 110000, "replace")):
+            made_before, freed_before = len(self.game.created), len(self.game.deleted)
+            self.legacy_attach(slot_type, number, index)
+            self.assertTrue(self.m.adopt_attach())
+            self.assertFalse(self.m.adopt_attach(), "adopted once")
+            if ends == "replace":
+                self.legacy_attach(INVENTORY, 0, 27001)   # legacy attaches again without a detach
+            self.controller.DeattachObject()
+            made = self.game.created[made_before:]
+            freed = self.game.deleted[freed_before:]
+            self.assertEqual(sorted(freed), sorted(made), (slot_type, number, ends))
+            self.assertNotIn("DeattachObject", self.controller.__dict__)
+            self.controller.DeattachObject()
+            self.assertEqual(self.game.deleted[freed_before:], freed, "never twice")
+
+    def test_types_the_class_method_frees_and_attach_s_own_are_not_adopted(self):
+        self.legacy_attach(INVENTORY, 0, 27001)
+        self.assertFalse(self.m.adopt_attach())
+        self.controller.DeattachObject()
+        self.m.attach("owner", QUICK, 0, 0)
+        self.assertFalse(self.m.adopt_attach(), "attach()'s own shadow frees it")
+        self.controller.DeattachObject()
+        made, freed = self.icons()
+        self.assertEqual(sorted(made), sorted(freed))
+        self.assertFalse(self.m.adopt_attach(), "nothing attached")
+
+    def test_with_the_attach_watch_before_and_after(self):
+        cleared = []
+        self.m._with_states.add(type("Events", (object,), {"clear_states": lambda self: cleared.append(1)})())
+        self.legacy_attach(DRAGON_SOUL, 4, 110000)
+        self.m.watch_attach()
+        self.assertTrue(self.m.adopt_attach(), "the watch's shadow is adopted around")
+        self.assertTrue(self.m.watch_attach(), "watched already, through the adoption")
+        self.controller.DeattachObject()
+        self.assertEqual(cleared, [1])
+        made, freed = self.icons()
+        self.assertEqual(sorted(made), sorted(freed))
+        self.assertNotIn("DeattachObject", self.controller.__dict__)
+        self.m._with_states.clear()

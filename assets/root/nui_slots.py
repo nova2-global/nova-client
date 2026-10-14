@@ -1299,3 +1299,334 @@ class LegacySlotEvents(object):
 			_with_states.discard(self)
 		if self.on_states is not None:
 			self.on_states(dict(states), picked)
+
+
+# --- Wave 3c (P15) ---
+
+# F-2 (P15 spec 8.2): whether a right press on a cell while something is
+# attached reaches the cell's owner, as legacy's CSlotWindow sends its
+# unselect event whatever is attached. Every LegacySlotEvents grid binds
+# data-class-nui-attach-right="attach_right" from its window's state, which
+# copies this, so the host gives the press to the grid only while it holds.
+ATTACH_RIGHT = False
+
+
+def _current_limits(limits=None):
+	"""`limits`, else nui_limits.current(); None outside the client when the
+	module is not there."""
+	if limits is not None:
+		return limits
+	try:
+		import nui_limits
+	except ImportError:
+		return None
+	return nui_limits.current()
+
+
+def count_label_for(grade, level, limits=None):
+	"""A skill's count label by the limits' rule (P15 spec D19): today's
+	CSlotWindow::SetSlotCountNew (count_label) while SKILL_LABELS is "p";
+	with the sage grade ("over_p", OLD's ENABLE_SKILLS_LEVEL_OVER_P) grade 3
+	is "p<level>" and grade 4 "s". "" for a level of 0 or less."""
+	limits = _current_limits(limits)
+	if getattr(limits, "SKILL_LABELS", "p") != "over_p":
+		return count_label(grade, level)
+	level, grade = int(level), int(grade)
+	if level <= 0:
+		return ""
+	if grade == 3:
+		return "p%d" % level
+	if grade == 4:
+		return "s"
+	return count_label(grade, level)
+
+
+class FullSlotWindowProxy(SlotWindowProxy):
+	"""SlotWindowProxy with the rest of what legacy's slot windows do in the
+	character and dragon soul windows (P15 spec 11.3), rule for rule with
+	ui.SlotWindow (root/ui.py:1323-1597) and CSlotWindow
+	(src/EterPythonLib/PythonSlotWindow.cpp):
+
+	- SetSlot, SetSkillSlotNew, SetSkillSlot and SetEmotionSlot follow
+	  CSlotWindow::SetSlot: the same index again keeps the slot's state
+	  (its cooldown, active state and count) and takes the new icon; another
+	  index clears the slot first. A missing icon clears it, as legacy's
+	  wrappers do for an image of 0. SetSlot's icon is `icon_of(slot, icon)`
+	  (legacy passes an image pointer; the window names its file), its kind
+	  "icon", its alpha diffuse[3].
+	- the cooldown store: StoreSlotCoolTime, RestoreSlotCoolTime (in slot
+	  order, stopping at the first slot the window does not hold),
+	  TransferSlotCoolTime (the ACTIVE key's entry; the target's cooldown
+	  only while player.GetSkillLevel(target) > 0); ActivateSlot and
+	  DeactivateSlot mark a stored ACTIVE entry; ClearSlot keeps the store.
+	- the slot buttons (AppendSlotButton, ShowSlotButton, HideAllSlotButton;
+	  a cleared slot hides its button) and the base image
+	  (Show/HideSlotBaseImage; a cleared slot shows it), as extras().
+	- SetSlotCountNew by count_label_for and the limits; SetCoverButton
+	  enables the cover again, as CSlotWindow::SetCoverButton does.
+
+	Times are nui.now() seconds. `limits` defaults to nui_limits.current()."""
+
+	_ACTIVE_KEY = getattr(skill, "SKILL_TYPE_ACTIVE", 1)
+
+	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, icon_of=None,
+	             limits=None):
+		self.icon_of = icon_of
+		self.limits = _current_limits(limits)
+		self._store = {}
+		SlotWindowProxy.__init__(self, slot_numbers, on_refresh, cols, rows, positions, window)
+
+	def _record(self, slot):
+		record = SlotWindowProxy._record(self, slot)
+		if "alpha" not in record:
+			record.update({"alpha": 1.0, "closed": True, "has_button": False, "button": False})
+		return record
+
+	def _clear_full(self, record):
+		"""CSlotWindow::ClearSlot(TSlot*)."""
+		self._clear(record)
+		record.update({"alpha": 1.0, "closed": True, "button": False})
+
+	def _set_slot(self, slot, kind, index, icon, w=1, h=1, alpha=1.0):
+		"""CSlotWindow::SetSlot. The record, or None for a slot the window does
+		not hold."""
+		if not self._holds(slot):
+			return None
+		record = self._record(int(slot))
+		if record["kind"] and record["vnum"] == int(index):
+			record.update({"kind": kind, "icon": icon, "locked": False, "disabled": False})
+			return record
+		self._clear_full(record)
+		record.update({"kind": kind, "vnum": int(index), "icon": icon, "w": int(w), "h": int(h), "alpha": float(alpha)})
+		return record
+
+	# --- what legacy calls -----------------------------------------------------------
+
+	def SetSlot(self, slot, item_index, w=1, h=1, icon=0, diffuse=(1.0, 1.0, 1.0, 1.0)):
+		source = self.icon_of(slot, icon) if self.icon_of is not None else ""
+		alpha = diffuse[3] if diffuse is not None and len(diffuse) > 3 else 1.0
+		self._set_slot(slot, "icon", item_index, icon_source(source) if source else "", w, h, alpha)
+
+	def SetItemSlot(self, slot, vnum, count=0, color=None):
+		if self._holds(slot) and vnum:
+			record = self._record(int(slot))
+			if not (record["kind"] == "item" and record["vnum"] == vnum):
+				self._clear_full(record)
+				if color is not None and len(color) > 3:
+					record["alpha"] = float(color[3])
+		SlotWindowProxy.SetItemSlot(self, slot, vnum, count, color)
+
+	def SetSkillSlotNew(self, slot, skill_index, grade, level):
+		get_icon = getattr(skill, "GetIconImageFileNameNew", None)
+		icon = get_icon(skill_index, grade) if get_icon is not None else ""
+		if not icon:
+			self.ClearSlot(slot)
+			return
+		self._set_slot(slot, "skill", skill_index, icon_source(icon))
+
+	def SetSkillSlot(self, slot, skill_index, level):
+		"""ui.SlotWindow.SetSkillSlot: the skill's icon (skill.GetIconImage,
+		the file GetIconImageFileNameNew names for grade 0 of the support,
+		guild and horse skills, whose grades share one image), then its level
+		as the count."""
+		get_icon = getattr(skill, "GetIconImageFileNameNew", None)
+		icon = get_icon(skill_index, 0) if get_icon is not None else ""
+		if not icon:
+			self.ClearSlot(slot)
+			return
+		if self._set_slot(slot, "skill", skill_index, icon_source(icon)) is not None:
+			self.SetSlotCount(slot, level)
+
+	def SetEmotionSlot(self, slot, emotion_index):
+		get_icon = getattr(player, "GetEmotionIconFileName", None)
+		icon = get_icon(emotion_index) if get_icon is not None else ""
+		if not icon:
+			self.ClearSlot(slot)
+			return
+		self._set_slot(slot, "emotion", emotion_index, icon_source(icon))
+
+	def SetSlotCountNew(self, slot, grade, level):
+		if self._holds(slot):
+			self._record(int(slot))["count"] = count_label_for(grade, level, self.limits)
+
+	def SetCoverButton(self, slot, up=_DEFAULT_COVER, over="", down="", disable="", left=False, right=True):
+		SlotWindowProxy.SetCoverButton(self, slot, up, over, down, disable, left, right)
+		if self._holds(slot):
+			self._record(int(slot))["unavailable"] = False
+
+	def ClearSlot(self, slot):
+		if self._holds(slot):
+			self._clear_full(self._record(int(slot)))
+
+	def ClearAllSlot(self):
+		for record in self._slots.values():
+			self._clear_full(record)
+
+	def ActivateSlot(self, slot):
+		SlotWindowProxy.ActivateSlot(self, slot)
+		if self._holds(slot):
+			entry = self._store.get(self._ACTIVE_KEY, {}).get(int(slot))
+			if entry is not None:
+				entry["active"] = True
+
+	def DeactivateSlot(self, slot):
+		SlotWindowProxy.DeactivateSlot(self, slot)
+		if self._holds(slot):
+			entry = self._store.get(self._ACTIVE_KEY, {}).get(int(slot))
+			if entry is not None:
+				entry["active"] = False
+
+	def StoreSlotCoolTime(self, key, slot, cool_time, elapsed=0.0):
+		"""CSlotWindow::StoreSlotCoolTime: the cooldown and its start (now less
+		`elapsed`) under `key`, not active; any slot number, held or not."""
+		self._store.setdefault(int(key), {})[int(slot)] = {
+			"cool": float(cool_time), "start": nui.now() - float(elapsed), "active": False}
+
+	def RestoreSlotCoolTime(self, key):
+		"""CSlotWindow::RestoreSlotCoolTime: each stored slot of `key` in slot
+		order takes its cooldown and its stored active state; the first slot
+		the window does not hold ends it."""
+		for slot in sorted(self._store.get(int(key), {})):
+			if not self._holds(slot):
+				return
+			entry = self._store[int(key)][slot]
+			self._record(slot)["cd"] = self._span(entry)
+			if entry["active"]:
+				self.ActivateSlot(slot)
+			else:
+				self.DeactivateSlot(slot)
+
+	def TransferSlotCoolTime(self, slot1, slot2):
+		"""CSlotWindow::TransferSlotCoolTime: the ACTIVE key's entry of slot1
+		moves to slot2; slot1's cooldown is cleared, slot2 is activated when
+		the entry was active and takes the cooldown when
+		player.GetSkillLevel(slot2) > 0. Nothing when slot1 has no entry or
+		the window lacks either slot."""
+		store = self._store.get(self._ACTIVE_KEY, {})
+		entry = store.get(int(slot1))
+		if entry is None or not self._holds(slot1) or not self._holds(slot2):
+			return
+		level = player.GetSkillLevel(int(slot2))
+		store[int(slot2)] = entry
+		del store[int(slot1)]
+		self._record(int(slot1))["cd"] = (0.0, 0.0)
+		if entry["active"]:
+			self.ActivateSlot(slot2)
+		if level > 0:
+			self._record(int(slot2))["cd"] = self._span(entry)
+
+	@staticmethod
+	def _span(entry):
+		if entry["cool"] <= 0:
+			return (0.0, 0.0)
+		return (entry["start"], entry["start"] + entry["cool"])
+
+	def AppendSlotButton(self, up="", over="", down=""):
+		"""CSlotWindow::AppendSlotButton: every slot gets a button, hidden."""
+		for slot in self.slot_numbers:
+			self._record(slot).update({"has_button": True, "button": False})
+
+	def ShowSlotButton(self, slot):
+		if self._holds(slot):
+			record = self._record(int(slot))
+			if record["has_button"]:
+				record["button"] = True
+
+	def HideAllSlotButton(self):
+		for record in self._slots.values():
+			record["button"] = False
+
+	def ShowSlotBaseImage(self, slot):
+		if self._holds(slot):
+			self._record(int(slot))["closed"] = True
+
+	def HideSlotBaseImage(self, slot):
+		if self._holds(slot):
+			self._record(int(slot))["closed"] = False
+
+	# --- what the NovaUI window calls -----------------------------------------------
+
+	def _build(self):
+		cells = SlotWindowProxy._build(self)
+		for cell, slot in zip(cells, self.slot_numbers):
+			record = self._slots.get(slot)
+			if record is not None and record["kind"] == "icon" and not cell.get("covered"):
+				cell["type"] = 0
+				cell["ref"] = int(slot)
+		return cells
+
+	def extras(self):
+		"""Per cell index, what the slot model has no key for:
+		{index: {"button": its plus button shown, "closed": its base image
+		shown (CSlotWindow's bRenderBaseSlotImage), "alpha": its icon's
+		alpha}}."""
+		found = {}
+		for index, slot in enumerate(self.slot_numbers):
+			record = self._slots.get(slot)
+			if record is None:
+				found[index] = {"button": False, "closed": True, "alpha": 1.0}
+			else:
+				found[index] = {"button": bool(record.get("button")), "closed": bool(record.get("closed", True)),
+				                "alpha": float(record.get("alpha", 1.0))}
+		return found
+
+	def stored(self, key):
+		"""{slot: (cool, start, active)} of the cooldown store under `key`."""
+		return dict((slot, (entry["cool"], entry["start"], entry["active"]))
+		            for slot, entry in self._store.get(int(key), {}).items())
+
+
+def _pressed_button(self, index):
+	"""A press on a cell's plus button (the CSlotButton of
+	AppendSlotButton): the window's pressed-button event with the cell's
+	slot number, as CSlotWindow::OnPressedSlotButton; nothing while
+	something is attached (CSlotButton::OnMouseLeftButtonDown)."""
+	if attached() or not (0 <= index < len(self.proxy.slot_numbers)):
+		return
+	self._call("pressed_button", self.proxy.slot_number(index))
+
+
+LegacySlotEvents.pressed_button = _pressed_button
+
+
+def adopt_attach():
+	"""Frees, at the attach's end, the icon instance mouseModule's
+	DeattachObject leaves behind (dragon soul items and quick slots) for an
+	attach a legacy handler made from a NovaUI cell press (the dragon soul
+	window's SelectItemSlot; P15 spec 7). It shadows DeattachObject on the
+	controller instance once, as attach() does: the shadow puts back what
+	was there (the class method, or watch_attach's shadow), calls it, then
+	frees the handle seen now (a later AttachObject that replaced it without
+	a detach left it unfreed too) and removes itself. Nothing for a type the
+	class method frees, an attach attach() made (its own shadow frees it),
+	or one adopted already. True when it adopted."""
+	controller = mouseModule.mouseController
+	if not controller.isAttached():
+		return False
+	leaked = _leaked_kind(controller.GetAttachedType(), controller.GetAttachedSlotNumber())
+	if leaked is None:
+		return False
+	current = controller.__dict__.get("DeattachObject")
+	if current is not None and not getattr(current, "_nui_watch", False):
+		return False
+	handle = getattr(controller, "AttachedIconHandle", 0)
+
+	def deattach():
+		if current is None:
+			controller.__dict__.pop("DeattachObject", None)
+		else:
+			controller.DeattachObject = current
+		try:
+			if current is not None:
+				current()
+			else:
+				type(controller).DeattachObject(controller)
+		finally:
+			_free_icon(handle, leaked)
+
+	deattach._nui_adopt = True
+	# It calls the watch it wraps, so it stands for that watch (watch_attach
+	# adds no second one).
+	deattach._nui_watch = bool(getattr(current, "_nui_watch", False))
+	controller.DeattachObject = deattach
+	return True

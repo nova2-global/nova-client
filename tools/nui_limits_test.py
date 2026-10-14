@@ -42,7 +42,11 @@ def today_modules():
                                  BELT_INVENTORY_SLOT_COUNT=16, ITEM_APPLY_MAX_NUM=3, ITEM_SOCKET_MAX_NUM=3,
                                  LIMIT_MAX_NUM=2)
     skill = types.SimpleNamespace(SKILL_GRADE_COUNT=3)
-    return {"player": player, "item": item, "skill": skill, "app": types.SimpleNamespace()}
+    # Wave 3c (P15 spec 3.3): today's skill step, quest rows and the loaded
+    # character window's class constants.
+    skill.SKILL_GRADE_STEP_COUNT = 20
+    return {"player": player, "item": item, "skill": skill, "app": types.SimpleNamespace(),
+            "quest": types.SimpleNamespace(QUEST_MAX_NUM=5), "uiCharacter.CharacterWindow": character_class()}
 
 
 def foundation_modules(module):
@@ -62,7 +66,18 @@ def foundation_modules(module):
         setattr(item, "WEAR_" + name.upper(), index)
     skill = types.SimpleNamespace(SKILL_GRADE_COUNT=4)
     introselect = types.SimpleNamespace(SLOT_COUNT=5)
-    return {"player": player, "item": item, "skill": skill, "app": types.SimpleNamespace(), "introselect": introselect}
+    # Wave 3c (P15 spec 3.2): the names C2 was asked for, and those of today.
+    player.EXP_DIGITS = 13
+    player.HP_DIGITS = 6
+    player.DRAGON_SOUL_STEP_COUNT = 5
+    skill.SKILL_GRADE_STEP_COUNT = 20
+    return {"player": player, "item": item, "skill": skill, "app": types.SimpleNamespace(), "introselect": introselect,
+            "quest": types.SimpleNamespace(QUEST_MAX_NUM=5), "uiCharacter.CharacterWindow": character_class()}
+
+
+def character_class(active=8, support=12):
+    """uiCharacter.CharacterWindow's class constants (uicharacter.py:38-39)."""
+    return types.SimpleNamespace(ACTIVE_PAGE_SLOT_COUNT=active, SUPPORT_PAGE_SLOT_COUNT=support)
 
 
 class LimitsTest(unittest.TestCase):
@@ -88,7 +103,9 @@ class Reading(LimitsTest):
         self.assertEqual(sorted(limits.fell_back),
                          sorted(["INVENTORY_COLUMNS", "WEAR_SLOT_COUNT", "BELT_COLUMNS", "STACK_MAX", "GOLD_MAX",
                                  "MONEY_DIGITS", "INVENTORY_MONEY_DIGITS", "SKILL_LEVEL_MAX", "SKILL_GRADE_SAGE",
-                                 "PLAYER_LEVEL_MAX", "CHARACTER_SLOT_COUNT", "WEAR_TABLE"]))
+                                 "PLAYER_LEVEL_MAX", "CHARACTER_SLOT_COUNT", "WEAR_TABLE",
+                                 # Wave 3c (P15 spec 3.2): proposed.
+                                 "EXP_DIGITS", "HP_DIGITS", "DRAGON_SOUL_STEP_COUNT"]))
 
     def test_the_foundations_names_give_the_foundation(self):
         limits = self.m.read(foundation_modules(self.m))
@@ -251,3 +268,157 @@ class WearTables(LimitsTest):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# --- Wave 3c (P15) ---
+
+UISCRIPT = os.path.join(REPO, "assets", "uiscript", "uiscript")
+DRAGON_SOUL_MODULE = os.path.join(REPO, "assets", "root", "uidragonsoul.py")
+
+
+def uiscript_children(path):
+    """Every child dict of a legacy uiscript, by name (the file run with
+    stand-ins for uiScriptLocale and the screen size)."""
+    # The names ui.PythonScriptLoader gives every uiscript (ui.py:2852-2860).
+    namespace = {"SCREEN_WIDTH": 1600, "SCREEN_HEIGHT": 900, "DRAGON_SOUL_EQUIPMENT_SLOT_START": 122,
+                 "PLAYER_NAME_MAX_LEN": 24, "LOCALE_PATH": "locale/en", "LOCALE_PATH_COMMON": "locale/common"}
+    source = open(path, encoding="utf-8", errors="replace").read().replace("import uiScriptLocale", "")
+    namespace["uiScriptLocale"] = support.LocaleInfo()
+    exec(compile(source, path, "exec"), namespace)
+    found = {}
+
+    def walk(value):
+        for child in value.get("children", ()) or ():
+            found[child.get("name")] = child
+            walk(child)
+    walk(namespace["window"])
+    return found
+
+
+def legacy_ds_type_info(vnum):
+    """uidragonsoul.py's own DragonSoulRefineWindow.__GetDragonSoulTypeInfo,
+    taken from the file (once) and run with every vnum a dragon soul."""
+    if not _DS_TYPE_INFO:
+        import ast
+        tree = ast.parse(open(DRAGON_SOUL_MODULE, encoding="utf-8", errors="replace").read())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef) and node.name == "__GetDragonSoulTypeInfo":
+                namespace = {}
+                exec(compile(ast.Module(body=[node], type_ignores=[]), DRAGON_SOUL_MODULE, "exec"), namespace)
+                _DS_TYPE_INFO.append(namespace["__GetDragonSoulTypeInfo"])
+                break
+        else:
+            raise AssertionError("no __GetDragonSoulTypeInfo in uidragonsoul.py")
+    # The function is compiled outside its class, so its own call
+    # self.__IsDragonSoul is not mangled.
+    owner = types.SimpleNamespace(**{"__IsDragonSoul": lambda vnum: True})
+    return _DS_TYPE_INFO[0](owner, vnum)
+
+
+_DS_TYPE_INFO = []
+
+
+class Wave3c(LimitsTest):
+    def test_every_new_key_has_today_s_value_and_the_foundation_s(self):
+        today, foundation = self.m.read({}), self.m.foundation()
+        expected = {
+            "SKILL_GRADE_STEP_COUNT": (20, 20), "SKILL_ACTIVE_SLOTS": (8, 8), "SKILL_SUPPORT_SLOTS": (12, 12),
+            "SKILL_SUPPORT_SLOT_START": (101, 101), "SKILL_SUPPORT_COLUMNS": (6, 6), "EXP_DIGITS": (10, 13),
+            "POINT_DIGITS": (3, 3), "STAT_DIGITS": (3, 3), "HP_DIGITS": (5, 6), "QUEST_ROWS": (5, 5),
+            "EMOTE_COLUMNS": (6, 6), "EMOTE_ROWS": (3, 3), "EMOTE_SOLO_START": (1, 1), "EMOTE_DUAL_START": (51, 51),
+            "DRAGON_SOUL_STEP_COUNT": (5, 5), "DRAGON_SOUL_COLUMNS": (8, 8), "DRAGON_SOUL_REFINE_CELLS": (15, 15),
+            "DRAGON_SOUL_REFINE_COLUMNS": (5, 5), "DRAGON_SOUL_RESULT_CELLS": (6, 6),
+            "DRAGON_SOUL_RESULT_COLUMNS": (2, 2), "DRAGON_SOUL_STRENGTH_MAX": (6, 6),
+            # Derived.
+            "SKILL_GRADE_COLUMNS": (3, 3), "SKILL_LABELS": ("p", "over_p"), "DRAGON_SOUL_KIND_COUNT": (6, 6),
+            "DRAGON_SOUL_ROWS": (4, 4), "DRAGON_SOUL_FEE_DIGITS": (10, 13),
+        }
+        for key, (now, then) in expected.items():
+            self.assertEqual((getattr(today, key), getattr(foundation, key)), (now, then), key)
+        for key in self.m.DERIVED:
+            self.assertNotIn(key, self.m.TODAY, "%s is derived" % key)
+
+    def test_the_sage_grade_alone_turns_the_labels_and_keeps_three_columns(self):
+        modules = today_modules()
+        modules["player"].SKILL_GRADE_SAGE_MASTER = 4
+        modules["skill"].SKILL_GRADE_COUNT = 4
+        limits = self.m.read(modules)
+        self.assertEqual((limits.SKILL_GRADE_COLUMNS, limits.SKILL_LABELS), (3, "over_p"))
+        del modules["player"].SKILL_GRADE_SAGE_MASTER
+        limits = self.m.read(modules)
+        self.assertEqual((limits.SKILL_GRADE_COLUMNS, limits.SKILL_LABELS), (4, "p"),
+                         "four grades and no sage: a fourth column, today's labels")
+
+    def test_skill_active_slots_equal_the_uiscript_s_slot_list(self):
+        children = uiscript_children(os.path.join(UISCRIPT, "characterwindow.py"))
+        legacy = [slot["index"] for slot in children["Skill_Active_Slot"]["slot"]]
+        self.assertEqual(self.m.skill_active_slots(self.m.read({})), legacy)
+        self.assertEqual(self.m.skill_active_slots(self.m.foundation()), legacy, "the cut keeps three columns")
+        self.assertEqual(self.m.skill_active_slots(), legacy, "current() by default")
+        support = children["Skill_ETC_Slot"]
+        today = self.m.read({})
+        self.assertEqual((support["start_index"], support["x_count"], support["x_count"] * support["y_count"]),
+                         (today.SKILL_SUPPORT_SLOT_START, today.SKILL_SUPPORT_COLUMNS, today.SKILL_SUPPORT_SLOTS))
+
+    def test_emote_slots_equal_the_two_grids(self):
+        children = uiscript_children(os.path.join(UISCRIPT, "characterwindow.py"))
+        for kind, name in (("solo", "SoloEmotionSlot"), ("dual", "DualEmotionSlot")):
+            grid = children[name]
+            start = grid["start_index"]
+            self.assertEqual(self.m.emote_slots(kind), list(range(start, start + grid["x_count"] * grid["y_count"])), kind)
+        with self.assertRaises(ValueError):
+            self.m.emote_slots("both")
+
+    def test_the_quest_rows_and_the_dragon_soul_grids_equal_the_uiscripts(self):
+        today = self.m.read({})
+        quest = uiscript_children(os.path.join(UISCRIPT, "characterwindow.py"))["Quest_Slot"]
+        self.assertEqual(quest["y_count"], today.QUEST_ROWS)
+        dragon_soul = uiscript_children(os.path.join(UISCRIPT, "dragonsoulwindow.py"))["ItemSlot"]
+        self.assertEqual((dragon_soul["x_count"], dragon_soul["y_count"]), (today.DRAGON_SOUL_COLUMNS, today.DRAGON_SOUL_ROWS))
+        refine = uiscript_children(os.path.join(UISCRIPT, "dragonsoulrefinewindow.py"))
+        for name, cells, columns in (("RefineSlot", "DRAGON_SOUL_REFINE_CELLS", "DRAGON_SOUL_REFINE_COLUMNS"),
+                                     ("ResultSlot", "DRAGON_SOUL_RESULT_CELLS", "DRAGON_SOUL_RESULT_COLUMNS")):
+            grid = refine[name]
+            self.assertEqual((grid["x_count"] * grid["y_count"], grid["x_count"]),
+                             (getattr(today, cells), getattr(today, columns)), name)
+
+    def test_dragon_soul_page_equals_the_refine_window_s_decoding(self):
+        for ds_type in range(11, 17):
+            for grade in range(5):
+                for step in range(5):
+                    for strength in range(7):
+                        vnum = ds_type * 10000 + grade * 1000 + step * 100 + strength * 10
+                        kind, g, s, t = self.m.dragon_soul_page(vnum)
+                        self.assertEqual((kind + 11, g, s, t), legacy_ds_type_info(vnum), vnum)
+        self.assertIsNone(self.m.dragon_soul_page(27001))
+
+    def test_a_class_constant_is_read_from_a_loaded_ui_character_and_never_imported(self):
+        self.assertNotIn("uiCharacter", sys.modules)
+        found = self.m._modules()
+        self.assertNotIn("uiCharacter.CharacterWindow", found, "not loaded: not imported")
+        self.assertNotIn("uiCharacter", sys.modules)
+        loaded = types.ModuleType("uiCharacter")
+        loaded.CharacterWindow = type("CharacterWindow", (object,), {"ACTIVE_PAGE_SLOT_COUNT": 10,
+                                                                     "SUPPORT_PAGE_SLOT_COUNT": 14})
+        sys.modules["uiCharacter"] = loaded
+        try:
+            found = self.m._modules()
+            self.assertIs(found["uiCharacter.CharacterWindow"], loaded.CharacterWindow)
+            limits = self.m.read(found)
+            self.assertEqual((limits.SKILL_ACTIVE_SLOTS, limits.SKILL_SUPPORT_SLOTS), (10, 14))
+            self.assertEqual(len(self.m.skill_active_slots(limits)), 10 * 3)
+        finally:
+            del sys.modules["uiCharacter"]
+
+    def test_the_strength_maximum_comes_from_the_loaded_refine_settings(self):
+        settings = types.SimpleNamespace(default_strength_max_table=[[2, 2, 3], [4, 7, 4]])
+        self.assertEqual(self.m.read({"dragon_soul_refine_settings": settings}).DRAGON_SOUL_STRENGTH_MAX, 7)
+        self.assertEqual(self.m.read({"dragon_soul_refine_settings": types.SimpleNamespace()}).DRAGON_SOUL_STRENGTH_MAX, 6)
+        real = os.path.join(REPO, "assets", "root", "dragon_soul_refine_settings.py")
+        source = open(real, encoding="utf-8").read()
+        namespace = {"item": types.SimpleNamespace(MATERIAL_DS_REFINE_NORMAL=0, MATERIAL_DS_REFINE_BLESSED=1,
+                                                   MATERIAL_DS_REFINE_HOLLY=2)}
+        exec(compile(source.replace("import item", ""), real, "exec"), namespace)
+        loaded = types.SimpleNamespace(**namespace)
+        self.assertEqual(self.m.read({"dragon_soul_refine_settings": loaded}).DRAGON_SOUL_STRENGTH_MAX,
+                         self.m.TODAY["DRAGON_SOUL_STRENGTH_MAX"], "the shipped table's largest entry is today's")

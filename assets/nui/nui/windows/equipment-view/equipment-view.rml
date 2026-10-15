@@ -1,0 +1,51 @@
+<rml>
+<head>
+	<!-- The equipment view: another player's equipment
+	     (uiequipmentdialog.py EquipmentDialog, uiscript equipmentdialog.py;
+	     P16 spec 5.6). While the equipment-view flag is on, the Interface
+	     makes nui_equipment_view.EquipmentDialog (controller
+	     assets/root/nui_equipment_view.py) per viewed player, a subclass of the
+	     legacy class on proxies: the items, their sockets and attributes, the
+	     tooltips and the close are legacy's code. Its places are the limits
+	     module's view table, each placed by its wear name (eqv-place--<name>)
+	     in every skin: today's 11 (eqv--table-new), OLD's 16 at the foundation
+	     (eqv--table-old: the rings and the belt; its two costume entries do
+	     not show). The document is instanced (one model per open view,
+	     equipment_view_<n>) and exists only while its view shows. The body and
+	     its controls take no focus; the close button acts on a left
+	     mousedown. It draws below the legacy UI layer, as legacy's window
+	     lived in it. A left or right press anywhere on it raises the window
+	     (board_press). -->
+	<title>equipment-view</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="equipment-view.rcss"/>
+</head>
+<body template="nui" id="equipment-view" class="nui-window nui-fx nui-anim nui-below-legacy-ui eqv" data-model="equipment_view"
+      data-event-mousedown="board_press(ev.button)"
+      data-class-eqv--table-new="table == 'new'" data-class-eqv--table-old="table == 'old'">
+	<div class="nui-window__titlebar eqv__titlebar">
+		<handle class="nui-window__handle eqv__handle" move_target="#document">
+			<span id="equipment-view-title" class="nui-window__title eqv__title">{{ title }}</span>
+		</handle>
+		<button id="equipment-view-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim eqv__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body eqv__body">
+		<div id="equipment-view-equip" class="eqv-equip">
+			<div class="eqv-figure"><span class="eqv-figure__head"></span><span class="eqv-figure__body"></span><span
+				class="eqv-figure__arm eqv-figure__arm--left"></span><span class="eqv-figure__arm eqv-figure__arm--right"></span><span
+				class="eqv-figure__leg eqv-figure__leg--left"></span><span class="eqv-figure__leg eqv-figure__leg--right"></span></div>
+			<div class="eqv-place" data-for="p, i : places"
+			     data-attr-class="'eqv-place eqv-place--' + p.name + (p.shown ? '' : ' is-hidden')">
+				<div class="nui-slot nui-anim eqv-cell" data-attr-id="'equipment-view-cell-' + i"
+				     data-class-is-empty="cells[i].kind == ''"
+				     data-event-mouseover="cell_over(i)" data-event-mouseout="cell_out(i)">
+					<img class="nui-slot__icon" data-if="cells[i].icon != ''" data-attr-src="cells[i].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[i].count != ''" data-attr-value="cells[i].count"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

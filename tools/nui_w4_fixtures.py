@@ -252,6 +252,35 @@ def mall(limits, items, attaching=False, targets=None):
     }}
 
 
+
+# --- the equipment view (spec 5.6.5) -------------------------------------------------------------------
+
+# By wear name: what the viewed player wears (unique2 empty, as the spec's
+# case); the foundation adds the rings and the belt, and two costume
+# entries that do not show.
+EQUIPPED = {"body": 11200, "head": 12200, "foots": 15000, "wrist": 14000, "weapon": 10, "neck": 16000, "ear": 17000,
+            "unique1": 72723, "arrow": 8000, "shield": 13000}
+EQUIPPED_FOUNDATION = dict(EQUIPPED, ring1=18000, ring2=70043, belt=73001, costume_body=11200, costume_hair=12200)
+
+
+def equipment_view(limits, equipped, title_length=12):
+    """The equipment view's model as nui_equipment_view builds it: the view
+    table's places (nui_limits.view_equip_table) and one cell per place, its
+    ref the view index (the slot window's slot number)."""
+    table = LIMITS.view_equip_table(limits)
+    cells = []
+    for i, slot in enumerate(table):
+        vnum = equipped.get(slot.name)
+        cell = typed_cell(i, SLOT_TYPE_INVENTORY, slot.index, vnum) if vnum else empty_cell(i)
+        cells.append(cell)
+    return {"equipment_view": {
+        "title": name_of(title_length),
+        "table": LIMITS.view_equip_id(limits),
+        "places": [{"index": slot.index, "name": slot.name, "shown": slot.group == "shown"} for slot in table],
+        "cells": cells,
+    }}
+
+
 def fixtures():
     return {
         ("exchange", ""): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, target_accept=True),
@@ -293,6 +322,9 @@ def fixtures():
         ("mall", "foundation"): mall(FOUNDATION, MALL_ITEMS_FOUNDATION),
         ("mall", "empty"): mall(TODAY, {}),
         ("mall", "attaching"): mall(TODAY, MALL_ITEMS, attaching=True, targets={17: "move", 22: "move"}),
+        ("equipment-view", ""): equipment_view(TODAY, EQUIPPED),
+        ("equipment-view", "foundation"): equipment_view(FOUNDATION, EQUIPPED_FOUNDATION, 22),
+        ("equipment-view", "empty"): equipment_view(TODAY, {}),
     }
 
 

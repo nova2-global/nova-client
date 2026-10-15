@@ -378,4 +378,5 @@ body.skin-classic
 	--classic-quest-scroll-bar-over: #60606050;
 	--classic-gb-enough: #c2c2c2;
 	--classic-gb-short: #e67976;
+	--classic-skill-group-text: #ffe3ad;
 }

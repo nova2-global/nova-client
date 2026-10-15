@@ -828,6 +828,7 @@ What the color roles mean:
 | `--classic-quest-scroll-bar-over` | classic | `#60606050` |
 | `--classic-gb-enough` | classic | `#c2c2c2` |
 | `--classic-gb-short` | classic | `#e67976` |
+| `--classic-skill-group-text` | classic | `#ffe3ad` |
 
 <!-- tokens:end -->
 

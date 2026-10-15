@@ -36,6 +36,13 @@ NUITOOL = os.environ.get("NUITOOL") or shutil.which("nuitool")
 REPO = check_nui_snapshots.ROOT
 
 
+def own_slot_button(control, taker):
+    """P15: a slot cell's own plus button (its id plus "-plus") lies over the
+    cell's corner, as legacy's CSlotButton over its slot, so it may take
+    the cell's points under it."""
+    return taker == control + "-plus"
+
+
 def hit_cases():
     """The golden cases, without the switched snapshots (the same frames)."""
     return [case for case in check_nui_snapshots.cases(REPO) if not case[-1]]
@@ -94,7 +101,9 @@ class PressesReachTheirControls(unittest.TestCase):
             if hits is None:
                 continue
             with self.subTest(case=name):
-                taken = {control: entry["taken"] for control, entry in hits.items() if entry["taken"]}
+                taken = {control: [taker for taker in entry["taken"] if not own_slot_button(control, taker)]
+                         for control, entry in hits.items()}
+                taken = dict((control, takers) for control, takers in taken.items() if takers)
                 self.assertEqual(taken, {}, "presses on these controls reach the listed elements instead")
 
     def test_every_point_of_a_slot_grid_reaches_its_cell_or_its_item(self):
@@ -171,6 +180,33 @@ class TallWindowsKeepToTheScreen(unittest.TestCase):
                         height = int(size.split("x")[1])
                         self.assertLessEqual(box[frame_id][3], height, "the window's height")
                         self.assertLessEqual(box[close_id][3], box[frame_id][3])
+
+
+
+# --- Wave 3c (P15) ---
+
+class SlotButtonRules(unittest.TestCase):
+    """The sweep and the hit test leave a slot's plus button its points
+    (no nuitool needed)."""
+
+    def sweep(self, reached):
+        """One 40dp cell at 0, 0 swept at one point per 10dp: the 4 x 4
+        points reach `reached` row by row (runs of one)."""
+        rows = [sum(([value, 1] for value in row), []) for row in reached]
+        return {"dp": 1.0, "step": 10.0, "origin": [0, 0], "hits": rows,
+                "cells": [{"index": 0, "id": "char-skill-1", "box": [0, 0, 40, 40], "group": "g", "classes": "nui-slot"}]}
+
+    def test_the_sweep_skips_a_plus_button_s_points_and_still_finds_dead_ones(self):
+        plus = nui_hit_sweep.SLOT_BUTTON
+        report = nui_hit_sweep.check(self.sweep([[0, 0, 0, 0], [0, 0, 0, 0], [plus, plus, 0, 0], [plus, plus, 0, 0]]))
+        self.assertEqual((report["points"], report["dead"], report["wrong"]), (12, 0, 0))
+        report = nui_hit_sweep.check(self.sweep([[0, 0, 0, 0], [0, -1, 0, 0], [plus, plus, 0, 0], [plus, plus, 0, 0]]))
+        self.assertEqual(report["dead"], 1)
+
+    def test_only_a_cell_s_own_plus_button_may_take_its_points(self):
+        self.assertTrue(own_slot_button("char-skill-1", "char-skill-1-plus"))
+        self.assertFalse(own_slot_button("char-skill-1", "char-skill-21-plus"))
+        self.assertFalse(own_slot_button("char-skill-1", "char-close"))
 
 
 if __name__ == "__main__":

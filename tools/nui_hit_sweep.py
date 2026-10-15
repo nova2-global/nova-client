@@ -19,6 +19,10 @@ wide gap such as the taskbar's expand button, an empty wear place).
 import json
 import sys
 
+# P15 (nuitool snap --sweep, ENGINE's E4): a point whose element is a slot's
+# plus button (class nui-slot-button) or inside one.
+SLOT_BUTTON = -3
+
 # The widest gap that still counts two cells as neighbors, in dp: the
 # modern pitch's 4dp and classic's uneven wear places stay under it, a
 # control between two cells (the taskbar's expand button) does not.
@@ -109,6 +113,10 @@ def check(sweep):
         y = oy + (j + 0.5) * step
         for i, reached in enumerate(runs(row)):
             if reached == -2:
+                continue
+            # P15: a slot's plus button lies over its cell, as legacy's
+            # CSlotButton over its slot: its points are the button's.
+            if reached == SLOT_BUTTON:
                 continue
             x = ox + (i + 0.5) * step
             wanted = set(owner[c] for c, r in region.items() if r[0] <= x <= r[2] and r[1] <= y <= r[3])

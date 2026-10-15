@@ -111,6 +111,41 @@ TODAY = {
 	"QUICKSLOT_PAGE_COUNT": 4,
 	"QUICKSLOT_PAGE_SIZE": 8,
 	"CHARACTER_SLOT_COUNT": 4,
+	# Wave 4 (P16 spec 3): the trade and social windows. The window enum's
+	# values are the client's (GameType.h EWindows: GROUND 6, BELT_INVENTORY 7).
+	"EXCHANGE_ITEM_MAX_NUM": 12,
+	"EXCHANGE_COLUMNS": 4,
+	"EXCHANGE_MONEY_DIGITS": 7,
+	"SHOP_SLOT_COUNT": 40,
+	"SHOP_COLUMNS": 5,
+	"SHOP_TAB_COUNT_MAX": 3,
+	"PRIVATE_SHOP_SIGN_MAX": 32,
+	"SAFEBOX_COLUMNS": 5,
+	"SAFEBOX_PAGE_ROWS": 9,
+	"SAFEBOX_PAGE_SIZE": 45,
+	"SAFEBOX_PAGE_COUNT_MAX": 3,
+	"SAFEBOX_SLOT_COUNT_MAX": 135,
+	"SAFEBOX_PASSWORD_MAX_LEN": 6,
+	"MALL_SLOT_COUNT": 135,
+	"WINDOW_SAFEBOX": 3,
+	"WINDOW_MALL": 4,
+	"WINDOW_DRAGON_SOUL_INVENTORY": 5,
+	"WINDOW_BELT_INVENTORY": 7,
+	"WINDOW_GROUND": 6,
+	"VIEW_EQUIP_SLOT_NUM": 11,
+	"GUILD_NAME_MAX_LEN": 12,
+	"GUILD_GRADE_NAME_MAX_LEN": 8,
+	"GUILD_GRADE_COUNT": 15,
+	"GUILD_COMMENT_MAX_LEN": 50,
+	"GUILD_BOARD_LINES": 12,
+	"GUILD_MEMBER_LINES": 13,
+	"GUILD_MEMBER_MAX": 88,
+	"GUILD_ENEMY_SLOTS": 6,
+	"GUILD_SKILL_ROW": 9,
+	"GUILD_BUILDING_ROWS": 7,
+	"GUILD_RESOURCE_COLUMNS": 6,
+	"PLAYER_NAME_INPUT_MAX": 12,
+	"PLAYER_NAME_SHOWN_MAX": 12,
 }
 
 # 3.2's "foundation" column ([PLAN], [RC]); never read at run time.
@@ -135,6 +170,17 @@ FOUNDATION.update({
 	"PLAYER_LEVEL_MAX": 150,
 	"DRAGON_SOUL_EQUIPMENT_SLOT_START": 265,
 	"CHARACTER_SLOT_COUNT": 5,
+	# Wave 4 (P16 spec 3): OLD's money digits, safebox pages and size, view
+	# packet, guild names and longest player names; OLD's window enum (its
+	# EXTRA_INVENTORY 6 puts BELT_INVENTORY at 7 and GROUND at 12).
+	"EXCHANGE_MONEY_DIGITS": 13,
+	"SAFEBOX_PAGE_COUNT_MAX": 5,
+	"SAFEBOX_SLOT_COUNT_MAX": 225,
+	"WINDOW_BELT_INVENTORY": 7,
+	"WINDOW_GROUND": 12,
+	"VIEW_EQUIP_SLOT_NUM": 16,
+	"GUILD_NAME_MAX_LEN": 24,
+	"PLAYER_NAME_SHOWN_MAX": 22,
 })
 
 # Where each key comes from: (module, attribute) pairs, tried in order. A key
@@ -174,6 +220,35 @@ NAMES = {
 	"CHARACTER_SLOT_COUNT": (("introselect", "SLOT_COUNT"),),
 	# The wear table: item.WEAR_<NAME> for every name of a table (proposed).
 	"WEAR_TABLE": tuple(("item", "WEAR_" + name.upper()) for name in WEAR_NAMES),
+	# Wave 4 (P16 spec 3): keys without an entry (SHOP_COLUMNS,
+	# PRIVATE_SHOP_SIGN_MAX, MALL_SLOT_COUNT, the guild pages' line and row
+	# counts, GUILD_MEMBER_MAX) have no constant and the same value in both
+	# columns.
+	"EXCHANGE_ITEM_MAX_NUM": (("exchange", "EXCHANGE_ITEM_MAX_NUM"),),
+	"EXCHANGE_COLUMNS": (("exchange", "EXCHANGE_COLUMNS"),),  # proposed
+	"EXCHANGE_MONEY_DIGITS": (("player", "MONEY_DIGITS"),),  # C2's money-digits constant
+	"SHOP_SLOT_COUNT": (("shop", "SHOP_SLOT_COUNT"),),
+	"SHOP_TAB_COUNT_MAX": (("shop", "SHOP_TAB_COUNT_MAX"),),  # proposed
+	"SAFEBOX_COLUMNS": (("safebox", "SAFEBOX_SLOT_X_COUNT"),),
+	"SAFEBOX_PAGE_ROWS": (("safebox", "SAFEBOX_SLOT_Y_COUNT"),),
+	"SAFEBOX_PAGE_SIZE": (("safebox", "SAFEBOX_PAGE_SIZE"),),
+	"SAFEBOX_PAGE_COUNT_MAX": (("safebox", "SAFEBOX_PAGE_COUNT_MAX"),),  # proposed
+	"SAFEBOX_SLOT_COUNT_MAX": (("safebox", "SAFEBOX_MAX_NUM"),),  # proposed
+	"SAFEBOX_PASSWORD_MAX_LEN": (("safebox", "SAFEBOX_PASSWORD_MAX_LEN"),),  # proposed
+	"WINDOW_SAFEBOX": (("player", "SAFEBOX"),),
+	"WINDOW_MALL": (("player", "MALL"),),
+	"WINDOW_DRAGON_SOUL_INVENTORY": (("player", "DRAGON_SOUL_INVENTORY"),),
+	"WINDOW_BELT_INVENTORY": (("player", "BELT_INVENTORY"),),  # proposed
+	"WINDOW_GROUND": (("player", "GROUND"),),
+	"VIEW_EQUIP_SLOT_NUM": (("player", "VIEW_EQUIP_SLOT_NUM"),),  # proposed
+	"GUILD_NAME_MAX_LEN": (("guild", "GUILD_NAME_MAX_LEN"),),  # proposed
+	"GUILD_GRADE_NAME_MAX_LEN": (("guild", "GUILD_GRADE_NAME_MAX_LEN"),),  # proposed
+	"GUILD_GRADE_COUNT": (("guild", "GUILD_GRADE_COUNT"),),  # proposed
+	"GUILD_COMMENT_MAX_LEN": (("guild", "GUILD_COMMENT_MAX_LEN"),),  # proposed
+	"GUILD_ENEMY_SLOTS": (("guild", "ENEMY_GUILD_SLOT_MAX_COUNT"),),
+	"PLAYER_NAME_INPUT_MAX": (("chr", "PLAYER_NAME_MAX_LEN"),),
+	# The longest character name the server sends (OLD's names reach 22 bytes).
+	"PLAYER_NAME_SHOWN_MAX": (("chr", "PLAYER_NAME_SHOWN_MAX"),),  # proposed
 }
 
 # Keys read() computes after the others.
@@ -181,6 +256,20 @@ DERIVED = ("INVENTORY_ROWS", "STACK_DIGITS", "SELECT_ITEM_SCAN", "WEAR_TABLE", "
 # The modules read() imports itself (each optional); introselect is only read
 # when the client imported it already (a login-phase module).
 _IMPORTED = ("player", "item", "skill", "app")
+# Wave 4 (P16 spec 3): the modules of the trade and social windows' keys,
+# read after _IMPORTED (each optional).
+_IMPORTED_W4 = ("exchange", "shop", "safebox", "guild", "chr")
+
+
+def _optional_module(name):
+	"""The loaded module of that name, else its import, else None."""
+	module = sys.modules.get(name)
+	if module is None:
+		try:
+			module = __import__(name)
+		except Exception:
+			module = None
+	return module
 
 
 class Limits(object):
@@ -232,6 +321,8 @@ def _modules():
 			found[name] = module
 	if sys.modules.get("introselect") is not None:
 		found["introselect"] = sys.modules["introselect"]
+	for name in _IMPORTED_W4:
+		found[name] = _optional_module(name)
 	return found
 
 
@@ -380,3 +471,64 @@ def money_text(value):
 	formats."""
 	import localeInfo
 	return localeInfo.NumberToMoneyString(int(value))
+
+
+# --- Wave 4 (P16 spec 3.2) -----------------------------------------------------------
+
+# The window enum's keys only the differential tests' stand-ins read, at the
+# foundation's sizes; no window writes them.
+WINDOW_KEYS_W4 = ("WINDOW_SAFEBOX", "WINDOW_MALL", "WINDOW_DRAGON_SOUL_INVENTORY", "WINDOW_BELT_INVENTORY", "WINDOW_GROUND")
+
+# The equipment view's slots by view index: today's are the wear positions
+# 0 to VIEW_EQUIP_SLOT_NUM - 1 in the view packet's order (Packet.h
+# TPacketViewEquip); OLD's 16 are its position list (char.cpp
+# ViewEquip), of which OLD's dialog does not show the two costumes.
+OLD_VIEW = ("body", "head", "foots", "wrist", "weapon", "neck", "ear", "unique1", "unique2", "arrow", "shield",
+            "costume_body", "costume_hair", "ring1", "ring2", "belt")
+OLD_VIEW_HIDDEN = ("costume_body", "costume_hair")
+
+
+class ViewSlot(tuple):
+	"""One cell of the equipment view: (index, name, group). index is the
+	view index the server fills (SetEquipmentDialogItem's slot); name is the
+	wear table's; group is "shown" or "hidden" (OLD's costume entries)."""
+
+	__slots__ = ()
+
+	def __new__(cls, index, name, group="shown"):
+		return tuple.__new__(cls, (int(index), str(name), str(group)))
+
+	index = property(lambda self: self[0])
+	name = property(lambda self: self[1])
+	group = property(lambda self: self[2])
+
+
+def safebox_pages(rows, limits=None):
+	"""The safebox's page buttons for a size of `rows` (the server's size, 9
+	rows a page): [{"index": i, "label": "I" * (i + 1)}] for i <
+	min(SAFEBOX_PAGE_COUNT_MAX, max(1, rows // SAFEBOX_PAGE_ROWS)), legacy's
+	rule (uisafebox.py:318-345, :360-366): each label one "I" more than the
+	last, so OLD's fourth and fifth are "IIII" and "IIIII"."""
+	limits = limits or current()
+	count = min(limits.SAFEBOX_PAGE_COUNT_MAX, max(1, int(rows) // max(1, limits.SAFEBOX_PAGE_ROWS)))
+	return [{"index": i, "label": "I" * (i + 1)} for i in range(count)]
+
+
+def view_equip_table(limits=None):
+	"""The equipment view's slots, a tuple of ViewSlot(index, name, group) in
+	view order: with OLD's 16 entries, OLD's position list (body to shield,
+	costume_body and costume_hair hidden, ring1, ring2, belt at 13 to 15);
+	otherwise the wear positions 0 to VIEW_EQUIP_SLOT_NUM - 1 by the wear
+	table's names, all shown (today's 11: body to shield)."""
+	count = (limits or current()).VIEW_EQUIP_SLOT_NUM
+	if count == len(OLD_VIEW):
+		return tuple(ViewSlot(i, name, "hidden" if name in OLD_VIEW_HIDDEN else "shown")
+		             for i, name in enumerate(OLD_VIEW))
+	names = [name for name, _, _, _ in NEW_WEAR]
+	return tuple(ViewSlot(i, names[i] if i < len(names) else "view%d" % i) for i in range(count))
+
+
+def view_equip_id(limits=None):
+	""""new" (today's 11) or "old" (OLD's 16): the classic sheet's body class
+	(eqv--table-new, eqv--table-old)."""
+	return "old" if (limits or current()).VIEW_EQUIP_SLOT_NUM == len(OLD_VIEW) else "new"

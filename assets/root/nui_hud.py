@@ -75,6 +75,20 @@ def has_engine_3b():
 	return has is not None and bool(has("nui-cells"))
 
 
+def has_engine_4():
+	"""True when the exe has the Wave 4 engine as well (P16 spec 4.3, 7.5):
+	nuigame.WatchLeaveRange (the trade windows' distance rule),
+	nuigame.WhisperAttach (the whisper lines) and _nui.LoadDocumentAs (the
+	instanced documents). Every Wave 4 facade's nui_ready() needs it, so
+	make() keeps the legacy window on an older exe."""
+	if not has_engine_3b():
+		return False
+	nuigame = sys.modules.get("nuigame")
+	if any(getattr(nuigame, name, None) is None for name in ("WatchLeaveRange", "WhisperAttach")):
+		return False
+	return getattr(getattr(nui, "_nui", None), "LoadDocumentAs", None) is not None
+
+
 def take_over(key, facade):
 	"""Destroys the NovaUI parts of the previous facade registered under `key`
 	if they are still alive (a phase that ended without Destroy, D26), then

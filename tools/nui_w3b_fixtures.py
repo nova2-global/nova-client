@@ -16,6 +16,7 @@ import argparse
 import importlib.util
 import json
 import os
+import re
 import sys
 import types
 
@@ -35,6 +36,17 @@ def load_limits():
 
 
 LIMITS = load_limits()
+
+
+def read_attach_right():
+    """nui_slots.ATTACH_RIGHT as assets/root/nui_slots.py sets it (P15 F-2's
+    switch), so the fixtures carry what the windows' models carry."""
+    with open(os.path.join(REPO, "assets", "root", "nui_slots.py"), encoding="utf-8") as handle:
+        found = re.search(r"^ATTACH_RIGHT = (True|False)\b", handle.read(), re.M)
+    return found is not None and found.group(1) == "True"
+
+
+ATTACH_RIGHT = read_attach_right()
 TODAY = LIMITS.read({})
 FOUNDATION = LIMITS.foundation()
 
@@ -152,8 +164,8 @@ def inventory(limits, page, wear, bag, money, **rest):
         "placed": False,
         # P14b: nothing attached, so an anchor's box covers its item.
         "bag_attaching": False,
-        # P15 F-2: nui_slots.ATTACH_RIGHT, off until its commit.
-        "attach_right": False,
+        # P15 F-2: nui_slots.ATTACH_RIGHT.
+        "attach_right": ATTACH_RIGHT,
         # P15 V-2: the kept board's lists, shown.
         "wear_on": [1], "tabs_on": [1], "bag_on": [1],
     }
@@ -187,7 +199,7 @@ def costume(limits, filled):
     slots = wear_cells(limits, "costume", filled)
     return {"costume": {"table": limits.WEAR_TABLE_ID, "slots": slots,
                         "has_companion": any(cell["name"].startswith("buffi_") for cell in slots),
-                        "attach_right": False, "wear_on": [1]}}
+                        "attach_right": ATTACH_RIGHT, "wear_on": [1]}}
 
 
 def belt(limits, available, items, expanded=True):
@@ -195,7 +207,7 @@ def belt(limits, available, items, expanded=True):
     rows = limits.BELT_INVENTORY_SLOT_COUNT // cols
     cells = grid(cols, rows, limits.BELT_INVENTORY_SLOT_START, items,
                  unavailable=[i for i in range(cols * rows) if i >= available], one=True)
-    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded, "attaching": False, "attach_right": False,
+    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded, "attaching": False, "attach_right": ATTACH_RIGHT,
                      "cells_on": [1]}}
 
 
@@ -209,7 +221,7 @@ def select_item(limits, stones):
     cells = [empty_cell(i) for i in range(cols * rows)]
     for index, (position, vnum, number) in enumerate(stones[:count]):
         cells[index] = item_cell(index, position, vnum, number)
-    return {"select_item": {"cells": cells, "cols": cols, "attach_right": False}}
+    return {"select_item": {"cells": cells, "cols": cols, "attach_right": ATTACH_RIGHT}}
 
 
 STONES = [28030, 28031, 28032, 28033, 28034, 28035, 28036, 28037, 28038, 28039, 28040]

@@ -166,7 +166,7 @@ def character(limits, tab, values=None, guild=True, skill_rows=None, support_row
         "panel_quest": [1] if tab == "QUEST" else [],
         "placed": False,
         "art": art(),
-        "attach_right": False,
+        "attach_right": w3b.ATTACH_RIGHT,
         "face": "/icon/face/warrior_m.tga",
         "name": "Kalinka",
         "guild": "Nova Riders" if guild else "",
@@ -261,7 +261,7 @@ def dragon_soul(limits, deck, activated, bag, equip, kind=0, grade=3):
         cell["sub"] = sub
         equipment.append(cell)
     return {"dragon_soul": {
-        "placed": False, "attach_right": False,
+        "placed": False, "attach_right": w3b.ATTACH_RIGHT,
         "kinds": [{"index": i, "label": "@ui.DRAGONSOUL_TAP_TITLE_%d" % (i + 1), "down": i == kind}
                   for i in range(limits.DRAGON_SOUL_KIND_COUNT)],
         "kind": kind, "kind_title": "@ui.DRAGONSOUL_TAP_TITLE_%d" % (kind + 1),
@@ -300,7 +300,7 @@ def ds_refine(limits, mode, cells, lock, fee, fee_value, result=None):
     if result is not None:
         results[0] = ds_cell(0, result, 200)
     return {"ds_refine": {
-        "placed": False, "attach_right": False, "mode": mode,
+        "placed": False, "attach_right": w3b.ATTACH_RIGHT, "mode": mode,
         "modes": [{"name": name, "label": label, "down": name == mode}
                   for name, label in (("grade", "@ui.GRADE_SELECT"), ("step", "@ui.STEP_SELECT"),
                                       ("strength", "@ui.STRENGTH_SELECT"))],

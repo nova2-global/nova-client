@@ -38,3 +38,23 @@ class ItemToolTip(nui_tooltip.Facade, uiToolTip.ItemToolTip):
 
 	def _make_board(self):
 		return _ItemTooltipBoard()
+
+
+# --- Wave 3c (P15) ---
+
+@nui_tooltip.transactional
+class PlainToolTip(nui_tooltip.Facade, uiToolTip.ToolTip):
+	"""uiToolTip.ToolTip on NovaUI (P15 spec D6): a plain tooltip a window
+	makes for itself (the character window's stat, job, alignment and
+	emotion tooltips), made with the legacy constructor's arguments
+	(PlainToolTip(130)). Its lines are legacy's own calls (AppendTextLine,
+	AutoAppendTextLine, SetTitle) on recording widgets, shown in the item
+	tooltip's document (KIND "item": a plain tooltip and an item tooltip
+	never show at once), which follows the pointer with no per-frame
+	Python, as the item tooltip does."""
+
+	LEGACY = uiToolTip.ToolTip
+	KIND = "item"
+
+	def _make_board(self):
+		return _ItemTooltipBoard()

@@ -710,5 +710,64 @@ def block(prefix, body_id):
 BLOCK = block("", "tip-body")
 
 
+
+# --- Wave 3c (P15) ---
+
+class PlainTooltips(unittest.TestCase):
+    """nui_item_tooltip.PlainToolTip (P15 spec D6): a window's own plain
+    ToolTip on NovaUI."""
+
+    def test_its_legacy_lines_show_in_the_item_board_at_the_pointer(self):
+        with World() as world:
+            plain = world.m("nui_item_tooltip").PlainToolTip(130)
+            self.assertTrue(isinstance(plain, world.m("uiToolTip").ToolTip))
+            self.assertEqual(plain.toolTipWidth, 130, "the legacy constructor's width")
+            plain.ClearToolTip()
+            plain.AutoAppendTextLine("Chivalric", 0xFFFFFFFF)
+            plain.AutoAppendTextLine("Rank: 1200")
+            plain.AlignHorizonalCenter()
+            board = world.board()
+            self.assertTrue(board is None or not board.visible, "nothing shows before ShowToolTip")
+            plain.ShowToolTip()
+            board = world.board()
+            self.assertTrue(board.visible)
+            texts = [r["text"] for e in board.model["lines"] for r in e["runs"]]
+            self.assertEqual(texts, ["Chivalric", "Rank: 1200"])
+            self.assertEqual(placed(board), ("tooltip", False, 37))
+            plain.HideToolTip()
+            self.assertFalse(board.visible)
+            self.assertEqual(board.model["lines"], [])
+
+    def test_show_and_hide_as_the_stat_tooltips_use_them(self):
+        with World() as world:
+            plain = world.m("nui_item_tooltip").PlainToolTip()
+            plain.ClearToolTip()
+            plain.AppendTextLine("Vitality: raises HP and defense.")
+            plain.Show()
+            self.assertTrue(plain.IsShow())
+            self.assertEqual(world.board().model["lines"][0]["runs"][0]["text"], "Vitality: raises HP and defense.")
+            plain.Hide()
+            self.assertFalse(plain.IsShow())
+            emotion = world.m("nui_item_tooltip").PlainToolTip()
+            emotion.ClearToolTip()
+            emotion.SetTitle("Clap")
+            emotion.AlignHorizonalCenter()
+            emotion.ShowToolTip()
+            self.assertEqual(world.board().model["lines"][0]["runs"][0]["role"], "title")
+
+    def test_every_legacy_method_exists_and_make_s_protocol(self):
+        with World() as world:
+            facade = world.m("nui_item_tooltip").PlainToolTip
+            legacy = world.m("uiToolTip").ToolTip
+            self.assertTrue(issubclass(facade, legacy))
+            self.assertTrue(facade.NUI_FACADE)
+            for name, member in inspect.getmembers(legacy, inspect.isfunction):
+                if not name.startswith("__"):
+                    self.assertTrue(callable(getattr(facade, name)), name)
+            self.assertTrue(facade().nui_ready())
+        with World(engine_3b=False) as world:
+            self.assertFalse(world.m("nui_item_tooltip").PlainToolTip().nui_ready(), "an exe without the 3b engine")
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -156,8 +156,18 @@ class Layers(SlotsTest):
         self.assertEqual(footprint(-1, 1, 1, 5, 9), [])
 
 
+def without_the_legacy_fix(test):
+    """mousemodule.py as before P15 item 4's legacy fix: its DeattachObject
+    leaves the dragon soul and quick slot icons, which NovaUI frees."""
+    module = test.game.loaded["mouseModule"]
+    test.assertIs(module.DEATTACH_FREES_EVERY_ICON, True)
+    module.DEATTACH_FREES_EVERY_ICON = False
+    test.addCleanup(setattr, module, "DEATTACH_FREES_EVERY_ICON", True)
+
+
 class Attach(SlotsTest):
     def test_attach_detaches_first_and_the_shadow_frees_what_the_class_method_leaves_then_goes(self):
+        without_the_legacy_fix(self)
         game = self.game
         game.give(0, 27001, 3)
         game.give((P["DRAGON_SOUL_INVENTORY"], 4), 110000, 1)
@@ -1039,7 +1049,11 @@ class Adopt(SlotsTest):
     def legacy_attach(self, slot_type, number, index):
         self.controller.AttachObject("legacy", slot_type, number, index)
 
+    # The adoption frees what legacy's DeattachObject leaves on a client
+    # without P15 item 4's legacy fix; with it (LeakFree) nothing is adopted.
+
     def test_a_dragon_soul_or_quick_slot_attach_is_freed_once_at_its_end(self):
+        without_the_legacy_fix(self)
         for slot_type, number, index, ends in ((DRAGON_SOUL, 4, 110000, "detach"), (QUICK, 0, 0, "detach"),
                                                (QUICK, 1, 1, "detach"), (DRAGON_SOUL, 4, 110000, "replace")):
             made_before, freed_before = len(self.game.created), len(self.game.deleted)
@@ -1057,6 +1071,7 @@ class Adopt(SlotsTest):
             self.assertEqual(self.game.deleted[freed_before:], freed, "never twice")
 
     def test_types_the_class_method_frees_and_attach_s_own_are_not_adopted(self):
+        without_the_legacy_fix(self)
         self.legacy_attach(INVENTORY, 0, 27001)
         self.assertFalse(self.m.adopt_attach())
         self.controller.DeattachObject()
@@ -1068,6 +1083,7 @@ class Adopt(SlotsTest):
         self.assertFalse(self.m.adopt_attach(), "nothing attached")
 
     def test_with_the_attach_watch_before_and_after(self):
+        without_the_legacy_fix(self)
         cleared = []
         self.m._with_states.add(type("Events", (object,), {"clear_states": lambda self: cleared.append(1)})())
         self.legacy_attach(DRAGON_SOUL, 4, 110000)
@@ -1228,4 +1244,66 @@ class AttachRight(SlotsTest):
         self.events.press(2, 1)
         self.assertEqual(self.calls[-1], ("unselect_item", 2))
         self.assertEqual(self.seen_states[-1], ({}, -1), "the attach's end cleared it")
+
+
+class LeakFree(SlotsTest):
+    """P15 item 4: with mousemodule.DEATTACH_FREES_EVERY_ICON (the legacy
+    fix) DeattachObject frees the dragon soul and quick slot icons
+    AttachObject makes, whoever attached them, and NovaUI frees nothing
+    more (nui_slots._leaked_kind answers None), so each icon instance is
+    freed exactly once. The three free calls are all
+    CGraphicImageInstance::Delete, so the handles are compared."""
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        game = self.game
+        game.give((P["DRAGON_SOUL_INVENTORY"], 4), 110000, 1)
+        game.give(0, 27001, 1)
+        game.learn(3, 3, level=1)
+        game.put_quick(0, INVENTORY, 0)
+        game.put_quick(1, SKILL, 3)
+        game.put_quick(2, EMOTION, 11)
+        self.cases = ((DRAGON_SOUL, 4, 110000), (QUICK, 0, 0), (QUICK, 1, 1), (QUICK, 2, 2))
+
+    def handles(self, since):
+        made = [handle for _, handle in self.game.created[since[0]:]]
+        freed = [handle for _, handle in self.game.deleted[since[1]:]]
+        return made, freed
+
+    def mark(self):
+        return len(self.game.created), len(self.game.deleted)
+
+    def test_the_flag_is_set_and_novaui_adopts_nothing(self):
+        self.assertIs(self.game.loaded["mouseModule"].DEATTACH_FREES_EVERY_ICON, True)
+        for slot_type, number, index in self.cases:
+            self.assertIsNone(self.m._leaked_kind(slot_type, number))
+            self.controller.AttachObject("legacy", slot_type, number, index)
+            self.assertFalse(self.m.adopt_attach(), "the class method frees it")
+            self.controller.DeattachObject()
+
+    def test_a_legacy_window_s_own_attach_is_freed_once_by_the_class_method(self):
+        for slot_type, number, index in self.cases:
+            since = self.mark()
+            self.controller.AttachObject("legacy", slot_type, number, index)
+            self.controller.DeattachObject()
+            self.controller.DeattachObject()
+            made, freed = self.handles(since)
+            self.assertEqual(len(made), 1, slot_type)
+            self.assertEqual(freed, made, "type %d: freed exactly once" % slot_type)
+
+    def test_attach_s_own_and_an_adopted_press_are_freed_once_at_the_end_a_replacing_attach_and_a_cancel(self):
+        for slot_type, number, index in self.cases:
+            since = self.mark()
+            self.assertTrue(self.m.attach("owner", slot_type, number, index))
+            self.assertTrue(self.m.attach("owner", slot_type, number, index), "a replacing attach detaches first")
+            self.controller.DeattachObject()   # a right-press cancel, Escape, a drop: DeattachObject
+            made, freed = self.handles(since)
+            self.assertEqual(len(made), 2)
+            self.assertEqual(sorted(freed), sorted(made), "type %d: each freed once" % slot_type)
+            since = self.mark()
+            self.controller.AttachObject("legacy", slot_type, number, index)
+            self.m.adopt_attach()
+            self.controller.DeattachObject()
+            made, freed = self.handles(since)
+            self.assertEqual(freed, made, "type %d: a legacy handler's attach from a NovaUI press" % slot_type)
 

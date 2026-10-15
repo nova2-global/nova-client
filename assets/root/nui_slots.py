@@ -486,6 +486,8 @@ def _leaked_kind(slot_type, slot_number):
 	"""The kind of icon instance mouseModule's DeattachObject leaves behind
 	for an attach of this type (it frees only inventory, shop, safebox, mall,
 	skill and emotion icons), or None when it frees it."""
+	if getattr(mouseModule, "DEATTACH_FREES_EVERY_ICON", False):
+		return None  # P15 item 4: legacy frees every icon itself now.
 	if slot_type == player.SLOT_TYPE_QUICK_SLOT:
 		return player.GetGlobalQuickSlot(slot_number)[0]
 	if slot_type == getattr(player, "SLOT_TYPE_DRAGON_SOUL_INVENTORY", None):

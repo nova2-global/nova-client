@@ -15,6 +15,11 @@ import systemSetting
 
 import localeInfo
 
+# P15 item 4: DeattachObject also frees the dragon soul and quick slot icon
+# instances AttachObject makes (they leaked). NovaUI's nui_slots reads it and
+# frees nothing more; False keeps the old frees.
+DEATTACH_FREES_EVERY_ICON = True
+
 ## Mouse Controller
 ## When operating the mouse cursor, you can exchange information with the attached Object.
 
@@ -292,7 +297,8 @@ class CMouseController(object):
 				self.AttachedType == player.SLOT_TYPE_PRIVATE_SHOP or\
 				self.AttachedType == player.SLOT_TYPE_SHOP or\
 				self.AttachedType == player.SLOT_TYPE_SAFEBOX or\
-				self.AttachedType == player.SLOT_TYPE_MALL:
+				self.AttachedType == player.SLOT_TYPE_MALL or\
+				(DEATTACH_FREES_EVERY_ICON and self.AttachedType == player.SLOT_TYPE_DRAGON_SOUL_INVENTORY):
 
 				item.DeleteIconInstance(self.AttachedIconHandle)
 
@@ -300,6 +306,10 @@ class CMouseController(object):
 				skill.DeleteIconInstance(self.AttachedIconHandle)
 
 			elif self.AttachedType == player.SLOT_TYPE_EMOTION:
+				grpImage.Delete(self.AttachedIconHandle)
+
+			# An item, skill or emotion icon: all three frees are CGraphicImageInstance::Delete.
+			elif DEATTACH_FREES_EVERY_ICON and self.AttachedType == player.SLOT_TYPE_QUICK_SLOT:
 				grpImage.Delete(self.AttachedIconHandle)
 
 		self.AttachedFlag = False

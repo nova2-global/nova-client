@@ -1,0 +1,79 @@
+/* Classic skin overlay of nui/windows/private-shop/private-shop.rml: the
+   legacy private shop builder (uiscript privateshopbuilder.py) at 100%, 1dp
+   to the legacy pixel: the stone board, 184 x 354; the title bar at 8, 8,
+   169 wide; the name's slot bar at 13, 35, 157 x 18, its text at 3, 3; the
+   grid at 12, 60 on the slot base at the 32px pitch; OK at 21, 321 and
+   Close at 104, 321 on the middle art. */
+
+body.skin-classic.pshop
+{
+	width: 184dp;
+	height: 354dp;
+	min-width: 0;
+}
+body.skin-classic.pshop .pshop__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	width: 169dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.pshop .pshop__handle, body.skin-classic.pshop .pshop__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.pshop .pshop__body
+{
+	display: block;
+	padding: 0;
+}
+/* The slot bar (ui.SlotBar): black with a dark top and left line and a light
+   bottom and right line, as the classic text field. */
+body.skin-classic.pshop .pshop__name
+{
+	position: absolute;
+	left: 13dp;
+	top: 35dp;
+	width: 157dp;
+	height: 18dp;
+	padding: 0 0 0 3dp;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
+}
+body.skin-classic.pshop .pshop__name-text
+{
+	line-height: 15dp;
+	font-size: var(--font-md);
+	color: var(--classic-edit-text);
+}
+body.skin-classic.pshop .pshop__grid
+{
+	position: absolute;
+	left: 12dp;
+	top: 60dp;
+}
+body.skin-classic.pshop .pshop__footer
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.pshop .pshop__ok, body.skin-classic.pshop .pshop__close
+{
+	position: absolute;
+	top: 321dp;
+	width: 61dp;
+	color: var(--classic-button-text);
+}
+body.skin-classic.pshop .pshop__ok
+{
+	left: 21dp;
+}
+body.skin-classic.pshop .pshop__close
+{
+	left: 104dp;
+}

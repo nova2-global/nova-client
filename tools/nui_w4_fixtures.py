@@ -137,6 +137,64 @@ EXCHANGE_OWNER_FOUNDATION = {0: (10, 1), 1: (3000, 1), 2: (27001, 2000), 3: (122
 EXCHANGE_TARGET_FOUNDATION = {0: (3000, 1), 3: (10, 1), 1: (27003, 2000), 2: (25040, 1), 6: (13000, 1)}
 
 
+# --- the shop and the private shop builder (spec 5.2.6, 5.3.5) -----------------------------------
+
+SHOP_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 4: (27002, 1), 7: (13000, 1), 8: (25040, 1),
+              9: (27003, 50), 12: (14000, 1), 13: (15000, 1)}
+SHOP_ITEMS_FOUNDATION = dict(SHOP_ITEMS)
+SHOP_ITEMS_FOUNDATION.update({2: (27001, 2000), 9: (27003, 1999)})
+SHOP_TAB_NAMES = ("Weapons", "Armour", "Potions")
+
+
+def shop(limits, items, group="none", tab=0, down=(), mine=False, attaching=False):
+    """The shop's model as nui_shop's _on_tabs and _on_buttons build it: one
+    tab shows the buy and sell toggles; two or three show their group's
+    buttons (legacy hides the toggles); the player's own shop shows the
+    close-shop button only."""
+    cols, count = limits.SHOP_COLUMNS, limits.SHOP_SLOT_COUNT
+    shown = {"none": 0, "middle": 2, "small": 3}[group]
+    tabs = [{"index": i, "name": SHOP_TAB_NAMES[i] if i < shown else "", "down": i in down, "shown": i < shown}
+            for i in range(limits.SHOP_TAB_COUNT_MAX)]
+    toggles = group == "none" and not mine
+    return {"shop": {
+        "cells": typed_grid(cols, count // cols, SLOT_TYPE_SHOP, items, ref=lambda index: tab * count + index),
+        "cols": cols,
+        "attaching": attaching,
+        "tabs": tabs,
+        "tab": tab,
+        "tab_group": group,
+        "buy_shown": toggles,
+        "sell_shown": toggles,
+        "close_shop_shown": mine,
+        "buy_down": False,
+        "sell_down": False,
+    }}
+
+
+# Inventory positions of the builder's stock, by cell: (position, vnum, count).
+BUILDER_STOCK = {0: (4, 10, 1), 1: (7, 3000, 1), 2: (12, 27001, 200), 7: (13, 12200, 1), 8: (20, 27002, 3),
+                 9: (21, 13000, 1)}
+BUILDER_STOCK_FOUNDATION = dict(BUILDER_STOCK)
+BUILDER_STOCK_FOUNDATION.update({2: (12, 27001, 2000), 8: (20, 27002, 1999)})
+# A 32-character shop name (PRIVATE_SHOP_SIGN_MAX), shown cut past 25 as
+# legacy's Open cuts it: its first 22 characters and "...".
+BUILDER_TITLE = "Swords, armour and potions cheap"
+
+
+def private_shop(limits, stock, title=BUILDER_TITLE, attaching=False, targets=None):
+    cols, count = limits.SHOP_COLUMNS, limits.SHOP_SLOT_COUNT
+    items = dict((cell, (vnum, number)) for cell, (_, vnum, number) in stock.items())
+    positions = dict((cell, position) for cell, (position, _, _) in stock.items())
+    shown = title[:22] + "..." if len(title) > 25 else title
+    return {"private_shop": {
+        "title": shown,
+        "cells": with_targets(typed_grid(cols, count // cols, SLOT_TYPE_INVENTORY, items,
+                                         ref=lambda index: positions.get(index, 0)), targets or {}),
+        "cols": cols,
+        "attaching": attaching,
+    }}
+
+
 def fixtures():
     return {
         ("exchange", ""): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, target_accept=True),
@@ -149,6 +207,21 @@ def fixtures():
         # 10, every cell its own target (P14b, the hit test's sweep).
         ("exchange", "attaching"): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, attaching=True,
                                             owner_targets={6: "move", 10: "move"}),
+        ("shop", ""): shop(TODAY, SHOP_ITEMS),
+        ("shop", "foundation"): shop(FOUNDATION, SHOP_ITEMS_FOUNDATION),
+        ("shop", "tabs2"): shop(TODAY, SHOP_ITEMS, "middle", 0, down=(0,)),
+        # Legacy's three-tab open (D16): the small group shows, tab 1's items
+        # show, and the button down is the small group's first, from its
+        # Create at load (uishop.py:100, :199-204).
+        ("shop", "tabs3"): shop(TODAY, SHOP_ITEMS, "small", 1, down=(0,)),
+        ("shop", "mine"): shop(TODAY, SHOP_ITEMS, mine=True),
+        # An item attached over the grid: every cell its own target; the
+        # shop's SLOT_STYLE_NONE draws no footprint (P14b, the sweep).
+        ("shop", "attaching"): shop(TODAY, SHOP_ITEMS, attaching=True),
+        ("private-shop", ""): private_shop(TODAY, BUILDER_STOCK),
+        ("private-shop", "foundation"): private_shop(FOUNDATION, BUILDER_STOCK_FOUNDATION),
+        ("private-shop", "empty"): private_shop(TODAY, {}),
+        ("private-shop", "attaching"): private_shop(TODAY, BUILDER_STOCK, attaching=True, targets={17: "move", 22: "move"}),
     }
 
 

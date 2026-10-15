@@ -20,7 +20,9 @@ subclass's override), then self.nui_end(). Facade gives the window:
 - Show (the board, then legacy's), Hide (legacy's, then the slot events'
   reset, then the board goes), SetTop (bring_to_front, then legacy's),
   Destroy (nui_discard, then legacy's), SetCenterPosition and SetPosition
-  (the board's place, never the 0 x 0 legacy window's);
+  (the board's place, never the 0 x 0 legacy window's; legacy's
+  SetCenterPosition forgets a place the player dragged it to, as legacy's
+  centers the window again);
 - OnUpdate = None and OnRender = None: the legacy window underneath stays
   shown while the board shows, and the C++ calls any callable OnUpdate or
   OnRender every frame (CWindow::OnUpdate); the per-frame distance rule is
@@ -154,7 +156,13 @@ class Facade(object):
 		super(Facade, self).Destroy()
 
 	def SetCenterPosition(self, x=0, y=0):
-		"""The board is placed by PLACE; the 0 x 0 legacy window stays put."""
+		"""Legacy's centering, on the board: the kept place is forgotten and a
+		shown board is centered (a hidden one is at its next show, through
+		PLACE); the 0 x 0 legacy window stays put."""
+		self._place = None
+		board = self.board()
+		if board is not None:
+			board.center()
 
 	def SetPosition(self, x, y):
 		"""Legacy's pixels as the board's place in dp."""

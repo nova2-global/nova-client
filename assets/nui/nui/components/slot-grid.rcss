@@ -618,8 +618,13 @@
 	background-color: var(--accent);
 	border-radius: var(--radius-sm);
 }
+/* The glyph fills the button, off the text line (a 16dp inline box on a
+   line of the inherited font would sit lower). */
 .nui-slot-button .nui-glyph
 {
+	position: absolute;
+	left: 0;
+	top: 0;
 	--glyph-ink: var(--accent-text);
 }
 .nui-slot-button:hover

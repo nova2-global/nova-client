@@ -781,12 +781,15 @@ body.skin-cyberpunk.nui-scrim.nui-fx
 
 /* --- Wave 3c (P15) ------------------------------------------------------------------- */
 
-/* A skill cell's plus button: square, with the neon edge. */
+/* A skill cell's plus button: square; its glyph in the accent's text color
+   (the skin inks every other glyph in the accent). */
 .skin-cyberpunk .nui-slot-button
 {
-	border-width: 1dp;
-	border-color: var(--accent);
 	border-radius: 0;
+}
+.skin-cyberpunk .nui-slot-button .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
 }
 /* The refine's closed cell: no holographic hover. */
 .skin-cyberpunk .nui-slot.is-closed:hover, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-closed:hover

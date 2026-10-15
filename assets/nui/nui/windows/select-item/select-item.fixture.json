@@ -303,6 +303,6 @@
 			}
 		],
 		"cols": 5,
-		"attach_right": false
+		"attach_right": true
 	}
 }

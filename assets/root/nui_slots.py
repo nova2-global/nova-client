@@ -1186,13 +1186,22 @@ class LegacySlotEvents(object):
 			_note_attach()
 			self.refresh_states()
 		elif button == 1:
-			if attached():
+			# P15 F-2: CSlotWindow::OnMouseRightButtonDown sends the unselect
+			# event of the slot it picks whatever is attached (a grid picks
+			# as for a left press, the attached item's footprint), so the
+			# clicked item is used and the handler drops the attach; the
+			# host's right release cancels one it left. Without ATTACH_RIGHT
+			# the host has already canceled the attach and nothing happens.
+			holding = attached()
+			if holding and not ATTACH_RIGHT:
 				return
-			target = self._owner(index)
+			target = self._target(index)
 			if target is None or not (0 <= target < len(self.proxy.slot_numbers)):
 				return
 			number = self.proxy.slot_number(target)
 			self._call("unselect_item" if self.proxy.is_item(target) else "unselect_empty", number)
+			if holding:
+				self.refresh_states()
 
 	def release(self, index, button):
 		global _press
@@ -1308,7 +1317,9 @@ class LegacySlotEvents(object):
 # unselect event whatever is attached. Every LegacySlotEvents grid binds
 # data-class-nui-attach-right="attach_right" from its window's state, which
 # copies this, so the host gives the press to the grid only while it holds.
-ATTACH_RIGHT = False
+# On since F-2's own commit (revert it for Wave 3b's rule: the host cancels
+# the attach and the press uses nothing).
+ATTACH_RIGHT = True
 
 
 def _current_limits(limits=None):

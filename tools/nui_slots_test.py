@@ -629,7 +629,10 @@ class Events(SlotsTest):
         self.assertEqual(self.calls, [("unselect_item", 2), ("unselect_empty", 9), ("unselect_item", 0)])
         self.controller.AttachObject("legacy", INVENTORY, 2, 27001, 5)
         self.events.press(3, 1)
-        self.assertEqual(len(self.calls), 3, "the host canceled the attach; nothing is unselected")
+        # P15 F-2: CSlotWindow sends the unselect event whatever is attached
+        # (with ATTACH_RIGHT off the host cancels the attach and nothing
+        # is unselected: AttachRight).
+        self.assertEqual(self.calls[3:], [("unselect_item", 3)] if self.m.ATTACH_RIGHT else [])
         self.controller.DeattachObject()
         self.events.use(5)
         self.events.use(9)
@@ -1015,8 +1018,8 @@ class PressedButton(SlotsTest):
         events.pressed_button(0)
         self.assertEqual(pressed, [21], "CSlotButton ignores a press while attaching")
 
-    def test_attach_right_is_off_until_f2(self):
-        self.assertIs(self.m.ATTACH_RIGHT, False)
+    def test_attach_right_is_on_since_f2(self):
+        self.assertIs(self.m.ATTACH_RIGHT, True)
 
 
 class Adopt(SlotsTest):
@@ -1184,3 +1187,45 @@ class AttachRightBinding(unittest.TestCase):
                 for model in models.values():
                     with self.subTest(fixture=name):
                         self.assertIs(model.get("attach_right"), switch)
+
+
+class AttachRight(SlotsTest):
+    """P15 F-2 (spec 8.2): a right press while something is attached sends
+    the unselect event of the slot CSlotWindow picks
+    (OnMouseRightButtonDown: GetPickedSlotPointer, a grid's by the attached
+    footprint, as for a left press) while nui_slots.ATTACH_RIGHT holds;
+    without it nothing (the host canceled the attach). The grid of Events."""
+
+    setUp = Events.setUp
+
+    def test_with_the_switch_off_a_right_press_while_attached_sends_nothing(self):
+        self.m.ATTACH_RIGHT = False
+        self.addCleanup(setattr, self.m, "ATTACH_RIGHT", True)
+        self.controller.AttachObject("legacy", INVENTORY, 30, 27001, 1)
+        self.events.press(3, 1)
+        self.events.press(9, 1)
+        self.assertEqual(self.calls, [])
+
+    def test_the_unselect_event_of_the_item_or_the_empty_cell_under_a_one_cell_attach(self):
+        self.controller.AttachObject("legacy", INVENTORY, 30, 27001, 1)
+        self.events.press(3, 1)
+        self.events.press(9, 1)
+        self.events.press(2, 1)
+        self.assertEqual(self.calls, [("unselect_item", 3), ("unselect_empty", 9), ("unselect_item", 2)])
+
+    def test_a_grid_picks_by_the_attached_footprint_as_for_a_left_press(self):
+        self.controller.AttachObject("legacy", INVENTORY, 30, 10, 1)   # a 1x2 sword from elsewhere
+        self.game.item_sizes[10] = (1, 2)
+        self.events.press(12, 1)   # rows 2..3 do not fit: the footprint moves up to 7 and 12
+        self.assertEqual(self.calls, [("unselect_empty", 7)])
+
+    def test_the_footprint_states_follow_the_attach_the_handler_dropped(self):
+        self.proxy.SetUnselectItemSlotEvent(lambda n: (self.calls.append(("unselect_item", n)),
+                                                       self.controller.DeattachObject()))
+        self.controller.AttachObject("legacy", INVENTORY, 30, 27001, 1)
+        self.events.over(2)
+        self.assertTrue(self.seen_states[-1][0], "a footprint while attached")
+        self.events.press(2, 1)
+        self.assertEqual(self.calls[-1], ("unselect_item", 2))
+        self.assertEqual(self.seen_states[-1], ({}, -1), "the attach's end cleared it")
+

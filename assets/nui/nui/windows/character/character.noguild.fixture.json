@@ -24,7 +24,7 @@
 			"ext_item1": "/locale/en/ui/windows/label_ext_item1.sub",
 			"ext_item2": "/locale/en/ui/windows/label_ext_item2.sub"
 		},
-		"attach_right": false,
+		"attach_right": true,
 		"face": "/icon/face/warrior_m.tga",
 		"name": "Kalinka",
 		"guild": "",

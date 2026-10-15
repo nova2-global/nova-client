@@ -259,9 +259,20 @@ class Input(object):
         target = number if legacy is None else legacy
         if button == 0:
             self._select(slot_window, target)
-        elif not self.world.mouse.isAttached():
+        else:
+            # CSlotWindow::OnMouseRightButtonDown: the picked slot's unselect
+            # event whatever is attached (P15 F-2; `legacy` names the slot a
+            # grid picks by the attached footprint when it differs).
             slot = slot_window.slots.get(target)
             slot_window.fire("unselect_item" if slot and slot["vnum"] else "unselect_empty", target)
+
+    def right_release(self):
+        """The right button's release: the window manager cancels whatever is
+        still attached (PythonWindowManager.cpp, RunMouseRightButtonUp); over
+        a NovaUI grid the host does the same after the press reached it
+        (nui-attach-right)."""
+        if self.world.mouse.isAttached():
+            self.world.mouse.DeattachObject()
 
     def release(self, place, number, legacy=None, cell=None):
         """The release of a drag onto the cell (OnMouseLeftButtonUp)."""
@@ -395,6 +406,56 @@ class Pair(unittest.TestCase):
         for wanted in expect:
             self.assertIn(wanted, names, "the legacy flow makes no %s call: %r" % (wanted, legacy))
         return legacy, world, window
+
+
+class F2RightPressWhileAttached(Pair):
+    """P15 F-2 (spec 8.2): a right press on an item while another is
+    attached does what legacy's CSlotWindow does, the clicked item's
+    unselect event (uiInventory.UseItemSlot uses it, then drops the
+    attach), while nui_slots.ATTACH_RIGHT holds."""
+
+    def test_a_right_press_on_a_potion_while_a_stack_is_attached_uses_the_potion(self):
+        def flow(w, win, i):
+            i.press("bag", 20)          # the refine scrolls, attached
+            i.press("bag", 9, 1)        # a right press on the auto potion
+            i.right_release()
+        legacy, world, window = self.same(flow, expect=["mouse.AttachObject", "net.SendItemUsePacket"])
+        used = [args for name, args in legacy if name == "net.SendItemUsePacket"]
+        self.assertEqual(used, [(9,)], "the clicked item, not the attached one")
+        self.assertFalse(world.mouse.isAttached())
+
+    def test_a_right_press_on_an_empty_cell_while_attached_sends_nothing_and_the_release_drops_it(self):
+        def flow(w, win, i):
+            i.press("bag", 4)
+            i.press("bag", 30, 1)
+            i.right_release()
+        legacy, world, window = self.same(flow, expect=["mouse.AttachObject"])
+        self.assertFalse([name for name, _ in legacy if name.startswith("net.")])
+        self.assertFalse(world.mouse.isAttached())
+
+    def test_with_the_switch_off_the_press_uses_nothing(self):
+        """Wave 3b's rule (the host cancels the attach over NovaUI and the
+        press uses nothing), what reverting F-2's commit restores."""
+        legacy, novaui = self.worlds()
+        novaui.m("nui_slots").ATTACH_RIGHT = False
+        calls = []
+        for world in (novaui,):
+            window = world.make_inventory()
+            with world.game, quiet():
+                mark = world.mark()
+                i = Input(world, window)
+                i.press("bag", 20)
+                i.press("bag", 9, 1)
+                calls = world.effects_since(mark)
+        self.assertNotIn("net.SendItemUsePacket", [name for name, _ in calls])
+
+    def test_every_grid_of_the_inventory_binds_the_switch_on(self):
+        world = World(True)
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.ClickCostumeButton()
+        for state in (window._state, window.wndCostume._state, window.wndBelt._state):
+            self.assertIs(state["attach_right"], True)
 
 
 class Construction(Pair):

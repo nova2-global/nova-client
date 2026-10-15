@@ -1,0 +1,104 @@
+<rml>
+<head>
+	<!-- The dragon soul inventory (uidragonsoul.py DragonSoulWindow, uiscript
+	     dragonsoulwindow.py; P15 spec 5). While the dragon-soul flag is on,
+	     the Interface makes nui_dragon_soul.DragonSoulWindow (controller
+	     assets/root/nui_dragon_soul.py), a subclass of the legacy class whose
+	     widgets are proxies: every flow, packet, question and rule is
+	     legacy's code, and this document shows what legacy's refreshes tell
+	     the proxies. It exists only while the window shows (nui_hud.OnDemand).
+	     The deck's six equipment cells stand around the emblem in legacy's
+	     order (sub 0 at the top, then counterclockwise), each in its place
+	     (ds-equip-place--<sub>); the deck choices and the activate toggle
+	     sit under the ring. The kind strip, the kind's title and the grade
+	     choices choose the bag page, a lean slot grid of
+	     DRAGON_SOUL_PAGE_SIZE cells; every count comes from the limits
+	     module. Cell events reach the legacy handlers through
+	     nui_slots.LegacySlotEvents (pick and place through the legacy mouse
+	     controller). The body and its controls take no focus, so controls
+	     act on a left mousedown. It draws below the legacy UI layer, as
+	     legacy's window lived in it. A left or right press anywhere on it
+	     raises the window (board_press), as legacy's window manager raised
+	     the window under a press. Classic's art (the board's picture, the
+	     kind strip's, the deck, grade and activate buttons') is its
+	     overlay's. -->
+	<title>dragon-soul</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dragon-soul.rcss"/>
+</head>
+<body template="nui" id="dragon-soul" class="nui-window nui-fx nui-anim nui-below-legacy-ui ds" data-model="dragon_soul"
+      data-event-mousedown="board_press(ev.button)" data-class-ds--placed="placed" data-class-ds--active="activated">
+	<div class="ds-bg"></div>
+	<div class="nui-window__titlebar ds__titlebar">
+		<handle id="ds-title" class="nui-window__handle ds__handle" move_target="#document">
+			<span class="nui-window__title ds__title">@ui.DRAGONSOUL_TITLE</span>
+		</handle>
+		<button id="ds-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim ds__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body ds__body">
+		<!-- The deck: the equipment cells on the emblem's ring, the deck
+		     choices and the activate toggle. -->
+		<div class="ds-deck">
+			<div class="ds-emblem"><span class="ds-emblem__ring"></span><span class="ds-emblem__core"></span><span
+				class="ds-emblem__gem"></span></div>
+			<div id="ds-equip" class="nui-slot-grid ds-equip-grid" data-class-nui-attach-right="attach_right">
+				<div class="ds-equip-place" data-for="c : equip" data-attr-class="'ds-equip-place ds-equip-place--' + c.sub">
+					<div class="nui-slot nui-anim nui-fx ds-equip" data-attr-id="'ds-equip-' + c.sub"
+					     data-class-is-empty="c.kind == ''" data-class-is-disabled="c.disabled" data-class-is-active="c.active"
+					     data-class-is-picked="c.picked" data-class-is-target="c.target == 'move'"
+					     data-class-is-blocked="c.target == 'blocked'"
+					     data-event-mousedown="equip_press(it_index, ev.button)" data-event-mouseup="equip_release(it_index, ev.button)"
+					     data-event-dblclick="equip_use(it_index)" data-event-mouseover="equip_over(it_index)"
+					     data-event-mouseout="equip_out(it_index)" data-event-nuidrop="equip_drop(it_index)">
+						<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+						<div class="nui-slot__tint" data-if="c.disabled"></div>
+						<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
+					</div>
+				</div>
+			</div>
+			<div class="ds-decks">
+				<div class="ds-deck-place" data-for="d : decks" data-attr-class="'ds-deck-place ds-deck-place--' + d.index">
+					<button class="nui-button nui-anim ds-deck-button" data-attr-id="'ds-deck-' + d.index"
+					        data-class-is-selected="d.down" data-event-mousedown="deck_press(d.index, ev.button)"><span
+						class="ds-deck-button__label">{{ d.label }}</span></button>
+				</div>
+			</div>
+			<button id="ds-activate" class="nui-button nui-anim ds-activate" data-class-is-selected="activated"
+			        data-event-mousedown="activate_press(ev.button)"><span class="ds-activate__label">@ui.DRAGONSOUL_ACTIVATE</span></button>
+		</div>
+		<!-- The kinds: one choice per kind (its gem; its name as a hint), the
+		     shown kind's name, the grade choices. -->
+		<div class="ds-kinds">
+			<div class="ds-kind-art" data-attr-class="'ds-kind-art ds-kind-art--' + kind"></div>
+			<button class="nui-button nui-anim nui-has-tooltip ds-kind" data-for="k : kinds" data-attr-id="'ds-kind-' + k.index"
+			        data-class-is-selected="k.down" data-event-mousedown="kind_press(k.index, ev.button)"><span
+				class="ds-gem" data-attr-class="'ds-gem ds-gem--' + k.index"><span class="ds-gem__face"></span></span><span
+				class="nui-tooltip nui-anim ds-tip">{{ k.label }}</span></button>
+		</div>
+		<span id="ds-kind-title" class="ds-kind-title">{{ kind_title }}</span>
+		<div class="ds-grades">
+			<button class="nui-button nui-anim ds-grade" data-for="g : grades" data-attr-id="'ds-grade-' + g.index"
+			        data-class-is-selected="g.down" data-event-mousedown="grade_press(g.index, ev.button)"><span
+				class="ds-grade__label">{{ g.label }}</span></button>
+		</div>
+		<div id="ds-bag" class="nui-slot-grid nui-slot-grid--lean ds-bag" data-class-nui-attach-right="attach_right"
+		     data-class-nui-slot-grid--cols-8="bag_cols == 8">
+			<div class="nui-slot nui-anim nui-fx" data-for="c : bag" data-attr-id="'ds-bag-' + it_index"
+			     data-class-is-empty="c.kind == ''" data-class-is-disabled="c.disabled" data-class-is-picked="c.picked"
+			     data-class-is-active="c.active"
+			     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+			     data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
+			     data-event-mousedown="bag_press(it_index, ev.button)" data-event-mouseup="bag_release(it_index, ev.button)"
+			     data-event-dblclick="bag_use(it_index)" data-event-mouseover="bag_over(it_index)"
+			     data-event-mouseout="bag_out(it_index)" data-event-nuidrop="bag_drop(it_index)">
+				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				<div class="nui-slot__tint" data-if="c.disabled"></div>
+				<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

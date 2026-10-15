@@ -242,7 +242,7 @@ def ds_cell(index, vnum, ref, cell_type=DRAGON_SOUL_TYPE, **states):
     return cell
 
 
-def dragon_soul(limits, deck, activated, bag, equip, kind=0, grade=3):
+def dragon_soul(limits, deck, activated, bag, equip, kind=0, grade=3, equip_states=None):
     size = limits.DRAGON_SOUL_PAGE_SIZE
     start = limits.DRAGON_SOUL_EQUIPMENT_SLOT_START
     first = limits.DRAGON_SOUL_EQUIPMENT_FIRST_SIZE
@@ -258,6 +258,7 @@ def dragon_soul(limits, deck, activated, bag, equip, kind=0, grade=3):
             cell = ds_cell(sub, vnum, position, INVENTORY, **states)
         else:
             cell = empty_cell(sub)
+        cell.update((equip_states or {}).get(sub, {}))
         cell["sub"] = sub
         equipment.append(cell)
     return {"dragon_soul": {
@@ -309,13 +310,23 @@ def ds_refine(limits, mode, cells, lock, fee, fee_value, result=None):
     }}
 
 
+def _with(table, more):
+    found = dict(table)
+    found.update(more)
+    return found
+
+
 def dragon_soul_fixtures():
     return {
         ("dragon-soul", ""): dragon_soul(TODAY, 0, True, DS_BAG, DS_EQUIP),
         ("dragon-soul", "deck2"): dragon_soul(TODAY, 1, False, DS_BAG, {}),
         ("dragon-soul", "foundation"): dragon_soul(FOUNDATION, 0, True, DS_BAG, DS_EQUIP),
         ("dragon-soul", "hover"): dragon_soul(TODAY, 0, True, DS_BAG, DS_EQUIP),
-        ("dragon-soul", "attaching"): dragon_soul(TODAY, 0, False, DS_BAG, {0: (113300, {})}),
+        # A dragon soul picked from the bag (cell 9, its own cell marked) over
+        # the deck's empty sub 1 cell, where it would go (a single slot's
+        # footprint: "move" on the hovered cell).
+        ("dragon-soul", "attaching"): dragon_soul(TODAY, 0, False, _with(DS_BAG, {9: (113120, {"picked": True})}),
+                                                  {0: (113300, {})}, equip_states={1: {"target": "move"}}),
         ("dragon-soul-refine", ""): ds_refine(TODAY, "grade", {0: (113000, False), 1: (113000, False), 2: (113000, True)},
                                               3, "100.000 Yang", 100000),
         ("dragon-soul-refine", "step"): ds_refine(TODAY, "step", {0: (113300, False)}, 1, "50.000 Yang", 50000),

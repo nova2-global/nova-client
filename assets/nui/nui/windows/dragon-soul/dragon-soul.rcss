@@ -1,0 +1,294 @@
+/* The dragon soul inventory's modern look (P15 spec 5.2): a 372dp window
+   beside the inventory above the taskbar (legacy's place: legacy opens it
+   10 left of its 176 wide inventory, 37 above the screen's bottom; the
+   modern inventory is 236dp wide, so this one keeps 246dp from the right),
+   in three parts:
+   - the deck: the six equipment cells on a code-drawn emblem's ring in
+     legacy's order (sub 0 at the top, then counterclockwise), the deck
+     choices (I, II) at its lower left, the activate toggle at its lower
+     right; while the deck is active the ring and the gem take the accent
+     and every active cell its accent border;
+   - the kinds: one choice per kind, a gem in the kind's color with its
+     name as a hint, the shown kind's name under them, the grade choices;
+   - the bag: the page as a lean slot grid of 8 x 44dp columns.
+   The body keeps one height (the refine window opens beside it with its top
+   on this one's: dragon-soul-refine.rcss) but in Russian, whose grades take
+   two rows.
+   Classic (legacy's 287 x 505 board with its picture, the kind strip's art
+   and every button's at 100%): skins/classic/windows/dragon-soul.rcss. */
+
+body.ds
+{
+	right: 246dp;
+	bottom: 37dp;
+	width: 372dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+/* Placed from Python (where the player left it): the placement writes left
+   and top only, so right and bottom give way. */
+body.ds.ds--placed
+{
+	right: auto;
+	bottom: auto;
+}
+.ds button
+{
+	tab-index: none;
+}
+/* The board's picture and the kind strip's art are classic's. */
+.ds-bg, .ds-kind-art
+{
+	display: none;
+}
+/* 500dp tall (the refine window's top is level with this one's), more
+   only where the grades wrap. */
+.ds__body
+{
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	min-height: 500dp;
+	padding: var(--space-3);
+}
+
+/* --- The deck ------------------------------------------------------------------------ */
+
+/* The ring: a 76dp radius around the emblem's middle (174, 96), the cells'
+   middles on it at 60 degree steps. */
+.ds-deck
+{
+	position: relative;
+	flex: 0 0 auto;
+	width: 348dp;
+	height: 192dp;
+}
+.ds-emblem
+{
+	position: absolute;
+	left: 98dp;
+	top: 20dp;
+	width: 152dp;
+	height: 152dp;
+	pointer-events: none;
+}
+.ds-emblem__ring, .ds-emblem__core, .ds-emblem__gem
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+}
+.ds-emblem__ring
+{
+	left: 0;
+	top: 0;
+	width: 152dp;
+	height: 152dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 76dp;
+}
+.ds-emblem__core
+{
+	left: 44dp;
+	top: 44dp;
+	width: 64dp;
+	height: 64dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 32dp;
+}
+.ds-emblem__gem
+{
+	left: 66dp;
+	top: 66dp;
+	width: 20dp;
+	height: 20dp;
+	background-color: var(--text-muted);
+	border-radius: var(--radius-sm);
+	transform: rotate(45deg);
+}
+/* Active: the ring and the gem in the accent (a static look; the cells'
+   own active look is their border). */
+.ds--active .ds-emblem__ring, .ds--active .ds-emblem__core
+{
+	border-color: var(--accent);
+}
+.ds--active .ds-emblem__gem
+{
+	background-color: transparent;
+	decorator: vertical-gradient(var(--accent-hover) var(--accent));
+}
+.ds-equip-grid
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 348dp;
+	height: 192dp;
+}
+.ds-equip-place
+{
+	position: absolute;
+	width: 40dp;
+	height: 40dp;
+}
+.ds-equip-place--0 { left: 154dp; top: 0; }
+.ds-equip-place--1 { left: 88dp; top: 38dp; }
+.ds-equip-place--2 { left: 88dp; top: 114dp; }
+.ds-equip-place--3 { left: 154dp; top: 152dp; }
+.ds-equip-place--4 { left: 220dp; top: 114dp; }
+.ds-equip-place--5 { left: 220dp; top: 38dp; }
+/* An item of the active deck: the lean cell's active look (a 2dp accent
+   border and the component's static glow), the icon where it was. */
+.ds-equip.is-active
+{
+	padding: 2dp;
+	border-width: 2dp;
+	border-color: var(--accent);
+}
+/* The legacy active effect's frames are classic's (a hidden nui-frames
+   builds no frames and runs no clock). */
+.ds-equip .nui-slot__active
+{
+	display: none;
+}
+.ds-decks
+{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-1);
+}
+.ds-deck-button
+{
+	width: 36dp;
+	height: 28dp;
+	padding: 0;
+	font-size: var(--font-sm);
+	line-height: 26dp;
+}
+.ds-deck-button__label, .ds-activate__label
+{
+	pointer-events: none;
+}
+.ds-activate
+{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	height: 28dp;
+	padding: 0 var(--space-3);
+	font-size: var(--font-sm);
+	line-height: 26dp;
+}
+
+/* --- The kinds and the grades ------------------------------------------------------ */
+
+.ds-kinds
+{
+	display: flex;
+	flex-direction: row;
+	flex: 0 0 auto;
+	gap: var(--space-1);
+	width: 348dp;
+	margin-top: 10dp;
+}
+.ds-kind
+{
+	flex: 1 1 0;
+	min-width: 0;
+	height: 32dp;
+	padding: 0;
+	line-height: 30dp;
+}
+/* A kind's gem: a 10dp square turned on its corner, in the kind's color. */
+.ds-gem
+{
+	display: inline-block;
+	position: relative;
+	width: 16dp;
+	height: 16dp;
+	vertical-align: middle;
+	pointer-events: none;
+}
+.ds-gem__face
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 10dp;
+	height: 10dp;
+	border-radius: 1dp;
+	background-color: var(--text-muted);
+	transform: rotate(45deg);
+}
+/* The six kinds as legacy's strip colors them: diamond, ruby, jade,
+   sapphire, garnet, onyx. */
+.ds-gem--0 .ds-gem__face { background-color: var(--text); }
+.ds-gem--1 .ds-gem__face { background-color: var(--gauge-red); }
+.ds-gem--2 .ds-gem__face { background-color: var(--success); }
+.ds-gem--3 .ds-gem__face { background-color: var(--gauge-blue); }
+.ds-gem--4 .ds-gem__face { background-color: var(--warning); }
+.ds-gem--5 .ds-gem__face { background-color: var(--text-muted); }
+.ds-tip
+{
+	white-space: nowrap;
+}
+.ds-kind-title
+{
+	display: block;
+	flex: 0 0 auto;
+	height: 20dp;
+	margin-top: 6dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	line-height: 20dp;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* The grades share the row by their labels, at the extra small size and the
+   regular weight, 2dp apart with 2dp inside. Every locale's five fit one
+   row but Russian's (377dp of words, Noto Sans at 11dp), which wraps to a
+   second row and makes the window 30dp taller, so the words stay whole. */
+.ds-grades
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex: 0 0 auto;
+	gap: 2dp;
+	width: 348dp;
+	margin-top: 6dp;
+}
+.ds-grade
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 28dp;
+	padding: 0 2dp;
+	font-size: var(--font-xs);
+	font-weight: normal;
+	line-height: 26dp;
+	white-space: nowrap;
+}
+.ds-grade__label
+{
+	pointer-events: none;
+}
+
+/* --- The bag ------------------------------------------------------------------------ */
+
+.ds-bag
+{
+	flex: 0 0 auto;
+	margin-top: 10dp;
+}

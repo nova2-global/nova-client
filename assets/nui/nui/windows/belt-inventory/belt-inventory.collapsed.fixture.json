@@ -325,6 +325,9 @@
 		"cols": 4,
 		"expanded": false,
 		"attaching": false,
-		"attach_right": false
+		"attach_right": false,
+		"cells_on": [
+			1
+		]
 	}
 }

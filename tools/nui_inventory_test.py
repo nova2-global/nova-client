@@ -1095,7 +1095,8 @@ class Flows(Pair):
         def flow(w, win, i):
             i.escape()
             if i.nui:
-                self.assertEqual(w.game.loaded_documents(), [])
+                # V-2 (P15 spec 8.1): the boards stay loaded, hidden.
+                self.assertEqual(shown_documents(w.game), [])
             win.Show()
         _, world, window = self.same(flow, before=before)
         self.assertTrue(window.wndCostume.IsShow())
@@ -1496,8 +1497,19 @@ class DockBox(unittest.TestCase):
             shutil.rmtree(work, True)
 
 
+def shown_documents(game):
+    """The documents loaded and shown now."""
+    return [window.DOCUMENT for window in game.state.windows if window._doc and window.visible]
+
+
 class OnDemand(unittest.TestCase):
-    def test_no_document_while_hidden_and_the_board_made_at_show(self):
+    """V-2 (P15 spec 8.1): the inventory, costume and belt load their
+    documents at their first open and keep them, hidden, their lists
+    emptied (nui_hud.KeptBoard)."""
+
+    INVENTORY = ["nui/windows/belt-inventory/belt-inventory.rml", "nui/windows/inventory/inventory.rml"]
+
+    def test_no_document_before_the_first_open_and_the_boards_kept_hidden_after(self):
         world = World(True)
         with world.game, quiet():
             window = world.nui_windows.make("inventory", world.m("uiInventory").InventoryWindow,
@@ -1507,13 +1519,56 @@ class OnDemand(unittest.TestCase):
         self.assertEqual(world.game.loaded_documents(), [])
         with world.game, quiet():
             window.Show()
-        self.assertEqual(sorted(world.game.loaded_documents()),
-                         ["nui/windows/belt-inventory/belt-inventory.rml", "nui/windows/inventory/inventory.rml"])
+        self.assertEqual(sorted(world.game.loaded_documents()), self.INVENTORY)
+        self.assertEqual(sorted(shown_documents(world.game)), self.INVENTORY)
         with world.game, quiet():
             window.Hide()
-        self.assertEqual(world.game.loaded_documents(), [])
+        self.assertEqual(sorted(world.game.loaded_documents()), self.INVENTORY, "kept loaded")
+        self.assertEqual(shown_documents(world.game), [], "and hidden")
 
-    def test_destroy_unloads_every_board(self):
+    def test_the_second_open_loads_nothing_and_shows_the_same_boards(self):
+        world = World(True)
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.ClickCostumeButton()
+            boards = (window.demand.board(), window.wndCostume.demand.board(), window.wndBelt.demand.board())
+            window.Hide()
+        made = len(world.game.state.windows)
+        self.assertEqual([demand.kept() for demand in (window.demand, window.wndCostume.demand, window.wndBelt.demand)],
+                         list(boards))
+        with world.game, quiet():
+            window.Show()
+        self.assertEqual(len(world.game.state.windows), made, "no board made, no document loaded")
+        self.assertIs(window.demand.board(), boards[0])
+        self.assertIs(window.wndBelt.demand.board(), boards[2])
+        self.assertIs(window.wndCostume.demand.board(), boards[1], "legacy's Show opens the costume again")
+
+    def test_a_hidden_board_holds_no_list_and_the_next_show_sets_them_again(self):
+        world = World(True)
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.ClickCostumeButton()
+            window.Hide()
+        inventory, costume, belt = (window.demand.kept(), window.wndCostume.demand.kept(), window.wndBelt.demand.kept())
+        self.assertEqual((inventory.model["bag_on"], inventory.model["wear_on"], inventory.model["tabs_on"]), ([], [], []))
+        self.assertEqual(costume.model["wear_on"], [])
+        self.assertEqual(belt.model["cells_on"], [])
+        with world.game, quiet():
+            world.game.give(7, POTION, 3)
+            window.RefreshItemSlot()
+            window.Show()
+        self.assertEqual((inventory.model["bag_on"], inventory.model["wear_on"], inventory.model["tabs_on"]), ([1], [1], [1]))
+        self.assertEqual(belt.model["cells_on"], [1])
+        self.assertEqual(inventory.model["bag"][7]["count"], "3", "a refresh while hidden reaches the next show")
+
+    def test_destroy_unloads_every_board_shown_or_kept(self):
+        world = World(True)
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.ClickCostumeButton()
+            window.Hide()
+            window.Destroy()
+        self.assertEqual(world.game.loaded_documents(), [])
         world = World(True)
         window = world.make_inventory()
         with world.game, quiet():

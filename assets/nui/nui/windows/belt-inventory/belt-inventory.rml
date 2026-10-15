@@ -26,7 +26,8 @@
 		        data-event-mousedown="minimize_press(ev.button)"><span class="nui-glyph nui-glyph--chevron-right"><span
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<div class="belt__board">
-			<div id="belt-grid" class="nui-slot-grid nui-slot-grid--lean belt__grid" data-class-is-attaching="attaching"
+			<div id="belt-grid" class="nui-slot-grid nui-slot-grid--lean belt__grid" data-for="g : cells_on"
+			     data-class-is-attaching="attaching"
 			     data-class-nui-attach-right="attach_right"
 			     data-class-nui-slot-grid--cols-4="cols == 4" data-class-nui-slot-grid--cols-5="cols == 5">
 				<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'belt-cell-' + it_index"

@@ -94,8 +94,12 @@ class CostumeWindow(uiInventory.CostumeWindow):
 			"has_companion": any(slot.name.startswith("buffi_") for slot in self._slots),
 			# P15 F-2 (nui_slots.ATTACH_RIGHT; the grid's nui-attach-right).
 			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
+			# V-2: the wear grid, none while the board is kept hidden.
+			"wear_on": [1],
 		}
-		self.demand = nui_hud.OnDemand(self._make_board, self._restore_board) if nui_hud.has_engine_3b() else None
+		# V-2 (P15 spec 8.1): kept, hidden, after its first open.
+		self.demand = (nui_hud.KeptBoard(self._make_board, self._restore_board, empty=self._empty_board)
+		               if nui_hud.has_engine_3b() else None)
 		uiInventory.CostumeWindow.__init__(self, wndInventory)
 
 	def nui_ready(self):
@@ -119,6 +123,10 @@ class CostumeWindow(uiInventory.CostumeWindow):
 
 	def _restore_board(self, board):
 		board.set(**self._state)
+
+	def _empty_board(self, board):
+		"""V-2: the hidden kept board holds no wear cell."""
+		board.set(wear_on=[])
 
 	def _named(self, cells, states=None):
 		marked = nui_slots.with_states(cells, states or {})

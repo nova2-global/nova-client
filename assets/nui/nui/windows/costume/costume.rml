@@ -28,7 +28,7 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body cos__body">
-		<div id="cos-grid" class="cos-grid" data-class-nui-attach-right="attach_right">
+		<div id="cos-grid" class="cos-grid" data-for="g : wear_on" data-class-nui-attach-right="attach_right">
 			<div class="cos-divider" data-if="has_companion"></div>
 			<div class="cos-wear-place" data-for="w : slots" data-attr-class="'cos-wear-place cos-wear--' + w.name">
 				<div class="nui-slot nui-anim cos-wear" data-attr-id="'cos-wear-' + w.name"

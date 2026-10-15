@@ -172,7 +172,8 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		self.loaded = False
 		self.demand = None
 		if nui_hud.has_engine_3b():
-			self.demand = nui_hud.OnDemand(self._make_board, self._restore_board, self._keep_board)
+			# V-2 (P15 spec 8.1): the board is kept, hidden, after its first open.
+			self.demand = nui_hud.KeptBoard(self._make_board, self._restore_board, self._keep_board, self._empty_board)
 		try:
 			uiInventory.InventoryWindow.__init__(self)
 			if self.demand is not None:
@@ -224,6 +225,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			# P15 F-2: the grids take a right press while something is attached
 			# (nui-attach-right) only while nui_slots.ATTACH_RIGHT holds.
 			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
+			# V-2: the wear places, the tabs and the bag, each a list of one
+			# entry while the board shows and none while it is kept hidden.
+			"wear_on": [1], "tabs_on": [1], "bag_on": [1],
 		}
 
 	def _set(self, **values):
@@ -250,6 +254,12 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		placement, from the stretched height, moves it higher."""
 		self._state["placed"] = True
 		board.set(placed=True)
+
+	def _empty_board(self, board):
+		"""V-2: the hidden kept board holds no wear place, tab or bag cell
+		(RmlUi updates every element of a loaded document each frame);
+		_restore_board sets the lists again at the next show."""
+		board.set(wear_on=[], tabs_on=[], bag_on=[])
 
 	def _keep_board(self, board):
 		box = board.element_box("")

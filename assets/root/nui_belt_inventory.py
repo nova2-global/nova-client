@@ -112,8 +112,12 @@ class BeltInventoryWindow(uiInventory.BeltInventoryWindow):
 			"attaching": False,
 			# P15 F-2 (nui_slots.ATTACH_RIGHT; the grid's nui-attach-right).
 			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
+			# V-2: the grid, none while the board is kept hidden.
+			"cells_on": [1],
 		}
-		self.demand = nui_hud.OnDemand(self._make_board, self._restore_board) if nui_hud.has_engine_3b() else None
+		# V-2 (P15 spec 8.1): kept, hidden, after its first open.
+		self.demand = (nui_hud.KeptBoard(self._make_board, self._restore_board, empty=self._empty_board)
+		               if nui_hud.has_engine_3b() else None)
 		uiInventory.BeltInventoryWindow.__init__(self, wndInventory)
 
 	def nui_ready(self):
@@ -134,6 +138,10 @@ class BeltInventoryWindow(uiInventory.BeltInventoryWindow):
 
 	def _make_board(self):
 		return _BeltBoard(self, self._state)
+
+	def _empty_board(self, board):
+		"""V-2: the hidden kept board holds no cell."""
+		board.set(cells_on=[])
 
 	def _restore_board(self, board):
 		board.set(**self._state)

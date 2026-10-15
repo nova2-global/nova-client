@@ -1179,6 +1179,15 @@
 		"has_mall": true,
 		"placed": false,
 		"bag_attaching": false,
-		"attach_right": false
+		"attach_right": false,
+		"wear_on": [
+			1
+		],
+		"tabs_on": [
+			1
+		],
+		"bag_on": [
+			1
+		]
 	}
 }

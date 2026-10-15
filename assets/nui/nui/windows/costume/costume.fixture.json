@@ -67,6 +67,9 @@
 			}
 		],
 		"has_companion": false,
-		"attach_right": false
+		"attach_right": false,
+		"wear_on": [
+			1
+		]
 	}
 }

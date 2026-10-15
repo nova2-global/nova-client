@@ -50,25 +50,29 @@
 			<div class="inv-figure"><span class="inv-figure__head"></span><span class="inv-figure__body"></span><span
 				class="inv-figure__arm inv-figure__arm--left"></span><span class="inv-figure__arm inv-figure__arm--right"></span><span
 				class="inv-figure__leg inv-figure__leg--left"></span><span class="inv-figure__leg inv-figure__leg--right"></span></div>
-			<div class="inv-wear-place" data-for="w : wear" data-attr-class="'inv-wear-place inv-wear--' + w.name">
-				<div class="nui-slot nui-anim inv-wear" data-attr-id="'inv-wear-' + w.name"
-				     data-class-is-empty="w.kind == ''" data-class-is-target="w.target == 'move'"
-				     data-class-is-blocked="w.target == 'blocked'"
-				     data-event-mousedown="wear_press(it_index, ev.button)" data-event-mouseup="wear_release(it_index, ev.button)"
-				     data-event-dblclick="wear_use(it_index)" data-event-mouseover="wear_over(it_index)"
-				     data-event-mouseout="wear_out(it_index)" data-event-nuidrop="wear_drop(it_index)">
-					<img class="nui-slot__icon" data-if="w.icon != ''" data-attr-src="w.icon"/>
-					<nui-number class="nui-slot__number" data-if="w.count != ''" data-attr-value="w.count"/>
+			<!-- V-2: the wear places go while the kept board hides (wear_on is [] then). -->
+			<div class="inv-wear-places" data-for="g : wear_on">
+				<div class="inv-wear-place" data-for="w : wear" data-attr-class="'inv-wear-place inv-wear--' + w.name">
+					<div class="nui-slot nui-anim inv-wear" data-attr-id="'inv-wear-' + w.name"
+					     data-class-is-empty="w.kind == ''" data-class-is-target="w.target == 'move'"
+					     data-class-is-blocked="w.target == 'blocked'"
+					     data-event-mousedown="wear_press(it_index, ev.button)" data-event-mouseup="wear_release(it_index, ev.button)"
+					     data-event-dblclick="wear_use(it_index)" data-event-mouseover="wear_over(it_index)"
+					     data-event-mouseout="wear_out(it_index)" data-event-nuidrop="wear_drop(it_index)">
+						<img class="nui-slot__icon" data-if="w.icon != ''" data-attr-src="w.icon"/>
+						<nui-number class="nui-slot__number" data-if="w.count != ''" data-attr-value="w.count"/>
+					</div>
 				</div>
 			</div>
 			<div id="inv-belt-dock" class="inv-belt-dock"></div>
 		</div>
-		<div id="inv-tabs" class="inv-tabs">
+		<div id="inv-tabs" class="inv-tabs" data-for="g : tabs_on">
 			<button class="nui-button nui-anim nui-has-tooltip inv-tab" data-for="p : pages" data-attr-id="'inv-tab-' + it_index"
 			        data-class-is-selected="it_index == page" data-event-mousedown="page_press(it_index, ev.button)"><span
 				class="inv-tab__label">{{ p.label }}</span><span class="nui-tooltip nui-anim inv-tip">{{ p.hint }}</span></button>
 		</div>
-		<div id="inv-bag" class="nui-slot-grid nui-slot-grid--lean inv-bag" data-class-is-attaching="bag_attaching"
+		<div id="inv-bag" class="nui-slot-grid nui-slot-grid--lean inv-bag" data-for="g : bag_on"
+		     data-class-is-attaching="bag_attaching"
 		     data-class-nui-attach-right="attach_right"
 		     data-class-nui-slot-grid--cols-5="bag_cols == 5" data-class-nui-slot-grid--cols-4="bag_cols == 4">
 			<div class="nui-slot nui-anim nui-fx" data-for="c : bag" data-attr-id="'inv-bag-' + it_index"

@@ -154,6 +154,8 @@ def inventory(limits, page, wear, bag, money, **rest):
         "bag_attaching": False,
         # P15 F-2: nui_slots.ATTACH_RIGHT, off until its commit.
         "attach_right": False,
+        # P15 V-2: the kept board's lists, shown.
+        "wear_on": [1], "tabs_on": [1], "bag_on": [1],
     }
     model.update(rest)
     return {"inventory": model}
@@ -185,7 +187,7 @@ def costume(limits, filled):
     slots = wear_cells(limits, "costume", filled)
     return {"costume": {"table": limits.WEAR_TABLE_ID, "slots": slots,
                         "has_companion": any(cell["name"].startswith("buffi_") for cell in slots),
-                        "attach_right": False}}
+                        "attach_right": False, "wear_on": [1]}}
 
 
 def belt(limits, available, items, expanded=True):
@@ -193,7 +195,8 @@ def belt(limits, available, items, expanded=True):
     rows = limits.BELT_INVENTORY_SLOT_COUNT // cols
     cells = grid(cols, rows, limits.BELT_INVENTORY_SLOT_START, items,
                  unavailable=[i for i in range(cols * rows) if i >= available], one=True)
-    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded, "attaching": False, "attach_right": False}}
+    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded, "attaching": False, "attach_right": False,
+                     "cells_on": [1]}}
 
 
 def select_item(limits, stones):

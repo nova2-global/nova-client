@@ -227,7 +227,9 @@ class GoldenPolicy(Scratch):
         # cell places: a new skin adds its own.
         classic = {name.replace("-classic-", "-%s-" % golden_name(PALETTE)) for name in self.base if "-classic-" in name
                    and not name.startswith(("skin-proof-", "select-busy-", "create-busy-", "taskbar-wide-",
-                                            "energy-bar-hungry-", "energy-bar-empty-", "inventory-hover-"))}
+                                            "energy-bar-hungry-", "energy-bar-empty-", "inventory-hover-",
+                                            # Wave 3c's slot hover cases, as the inventory's.
+                                            "character-hover-", "dragon-soul-hover-", "dragon-soul-refine-hover-"))}
         self.assertEqual(added, classic)
 
     def test_a_theme_without_a_golden_entry_stops_the_checker(self):

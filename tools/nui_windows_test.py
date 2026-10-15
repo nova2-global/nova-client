@@ -21,7 +21,7 @@ WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 PENDING_DOCUMENTS = set()
 # Wave 4 (P16 spec 6.1, 11.3): the documents its TRADE and SOCIAL stages
 # write, each taken out as it lands.
-WAVE4_PENDING = {"shop", "private-shop", "safebox", "safebox-password", "change-password", "mall",
+WAVE4_PENDING = {"safebox", "safebox-password", "change-password", "mall",
                  "equipment-view", "messenger", "whisper", "guild", "guild-grade-name", "guild-war-declare",
                  "guild-war-accept", "guild-mark"}
 PENDING_DOCUMENTS = PENDING_DOCUMENTS | WAVE4_PENDING

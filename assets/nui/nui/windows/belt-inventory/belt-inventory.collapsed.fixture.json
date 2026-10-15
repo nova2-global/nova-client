@@ -324,6 +324,7 @@
 		],
 		"cols": 4,
 		"expanded": false,
-		"attaching": false
+		"attaching": false,
+		"attach_right": false
 	}
 }

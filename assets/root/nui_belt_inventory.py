@@ -110,6 +110,8 @@ class BeltInventoryWindow(uiInventory.BeltInventoryWindow):
 			"expanded": False,
 			# P14b: the grid's is-attaching (nui_slots.LegacySlotEvents).
 			"attaching": False,
+			# P15 F-2 (nui_slots.ATTACH_RIGHT; the grid's nui-attach-right).
+			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
 		}
 		self.demand = nui_hud.OnDemand(self._make_board, self._restore_board) if nui_hud.has_engine_3b() else None
 		uiInventory.BeltInventoryWindow.__init__(self, wndInventory)

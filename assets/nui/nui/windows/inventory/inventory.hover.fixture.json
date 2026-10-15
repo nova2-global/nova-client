@@ -1178,6 +1178,7 @@
 		"has_dss": true,
 		"has_mall": true,
 		"placed": false,
-		"bag_attaching": false
+		"bag_attaching": false,
+		"attach_right": false
 	}
 }

@@ -46,7 +46,7 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body inv__body">
-		<div id="inv-equip" class="inv-equip">
+		<div id="inv-equip" class="inv-equip" data-class-nui-attach-right="attach_right">
 			<div class="inv-figure"><span class="inv-figure__head"></span><span class="inv-figure__body"></span><span
 				class="inv-figure__arm inv-figure__arm--left"></span><span class="inv-figure__arm inv-figure__arm--right"></span><span
 				class="inv-figure__leg inv-figure__leg--left"></span><span class="inv-figure__leg inv-figure__leg--right"></span></div>
@@ -69,6 +69,7 @@
 				class="inv-tab__label">{{ p.label }}</span><span class="nui-tooltip nui-anim inv-tip">{{ p.hint }}</span></button>
 		</div>
 		<div id="inv-bag" class="nui-slot-grid nui-slot-grid--lean inv-bag" data-class-is-attaching="bag_attaching"
+		     data-class-nui-attach-right="attach_right"
 		     data-class-nui-slot-grid--cols-5="bag_cols == 5" data-class-nui-slot-grid--cols-4="bag_cols == 4">
 			<div class="nui-slot nui-anim nui-fx" data-for="c : bag" data-attr-id="'inv-bag-' + it_index"
 			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"

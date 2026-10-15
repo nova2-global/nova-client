@@ -1098,3 +1098,89 @@ class FullProxyPush(SlotsTest):
         self.assertTrue(proxy.dirty)
         proxy.RefreshSlot()
         self.assertFalse(proxy.dirty, "RefreshSlot hands the cells over too")
+
+
+class AttachRightBinding(unittest.TestCase):
+    """F-2's preparation (P15 spec 8.2, D16): every window whose cells reach
+    legacy handlers through LegacySlotEvents binds
+    data-class-nui-attach-right="attach_right" on an ancestor of each cell
+    that takes a press, and every fixture of its document carries the
+    switch's value, so F-2's one commit (ATTACH_RIGHT) changes every grid
+    at once and reverting it restores 3b's behavior."""
+
+    ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "root"))
+
+    def windows(self):
+        """{document path: controller} of the controllers that make a
+        LegacySlotEvents."""
+        import re
+        found = {}
+        for name in sorted(os.listdir(self.ROOT)):
+            if not (name.startswith("nui_") and name.endswith(".py")) or name == "nui_slots.py":
+                continue
+            source = _read(os.path.join(self.ROOT, name))
+            if "LegacySlotEvents(" not in source:
+                continue
+            for document in re.findall(r'DOCUMENT = "nui/(windows/[a-z0-9-]+/[a-z0-9-]+\.rml)"', source):
+                found[os.path.join(NUI, document)] = name
+        return found
+
+    @staticmethod
+    def unbound_cells(text):
+        """The pressable nui-slot cells with no ancestor binding the class."""
+        import html.parser
+
+        class Walk(html.parser.HTMLParser):
+            VOID = {"img", "input", "br"}
+
+            def __init__(self):
+                html.parser.HTMLParser.__init__(self)
+                self.stack, self.missing, self.cells = [], [], 0
+
+            def handle_starttag(self, tag, attrs):
+                attrs = dict(attrs)
+                bound = 'attach_right' == attrs.get("data-class-nui-attach-right")
+                classes = (attrs.get("class") or "").split()
+                if "nui-slot" in classes and attrs.get("data-event-mousedown"):
+                    self.cells += 1
+                    if not any(self.stack):
+                        self.missing.append(attrs.get("data-attr-id") or attrs.get("id") or tag)
+                if tag not in self.VOID:
+                    self.stack.append(bound)
+
+            def handle_startendtag(self, tag, attrs):
+                if tag not in self.VOID:
+                    self.handle_starttag(tag, attrs)
+                    self.stack.pop()
+                else:
+                    self.handle_starttag(tag, attrs)
+
+            def handle_endtag(self, tag):
+                if tag not in self.VOID and self.stack:
+                    self.stack.pop()
+
+        walk = Walk()
+        walk.feed(text)
+        return walk.cells, walk.missing
+
+    def test_every_legacy_slot_events_cell_lies_inside_the_binding(self):
+        windows = self.windows()
+        self.assertGreaterEqual(len(windows), 4, windows)
+        for document, controller in windows.items():
+            cells, missing = self.unbound_cells(_read(document))
+            with self.subTest(document=os.path.relpath(document, NUI)):
+                self.assertGreater(cells, 0, controller)
+                self.assertEqual(missing, [])
+
+    def test_every_fixture_carries_the_switch_s_value(self):
+        switch = support.Game().load_standard().loaded["nui_slots"].ATTACH_RIGHT
+        for document in self.windows():
+            folder = os.path.dirname(document)
+            for name in sorted(os.listdir(folder)):
+                if not name.endswith(".fixture.json"):
+                    continue
+                with open(os.path.join(folder, name), encoding="utf-8") as handle:
+                    models = json.load(handle)
+                for model in models.values():
+                    with self.subTest(fixture=name):
+                        self.assertIs(model.get("attach_right"), switch)

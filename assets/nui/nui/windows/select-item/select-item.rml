@@ -26,7 +26,8 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body sel__body">
-		<div id="select-grid" class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5 sel__grid">
+		<div id="select-grid" class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5 sel__grid"
+		     data-class-nui-attach-right="attach_right">
 			<div class="nui-slot nui-anim" data-for="c : cells" data-attr-id="'select-cell-' + it_index"
 			     data-class-is-empty="c.kind == ''"
 			     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseover="cell_over(it_index)"

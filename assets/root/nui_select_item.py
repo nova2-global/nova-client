@@ -82,8 +82,10 @@ class SelectItemWindow(uiselectitem.SelectItemWindow):
 		self._nui_discarded = False
 		self._limits = nui_limits.current()
 		self._events = None
+		# attach_right: P15 F-2 (nui_slots.ATTACH_RIGHT; the grid's nui-attach-right).
 		self._state = {"cells": [nui_slots.empty_cell(i) for i in range(COLUMNS * 3)],
-		               "cols": self._limits.SELECT_ITEM_COLUMNS}
+		               "cols": self._limits.SELECT_ITEM_COLUMNS,
+		               "attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False))}
 		self.loaded = False
 		self.demand = nui_hud.OnDemand(self._make_board, self._restore_board) if nui_hud.has_engine_3b() else None
 		uiselectitem.SelectItemWindow.__init__(self)

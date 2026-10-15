@@ -221,6 +221,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"placed": False,
 			# P14b: the bag's is-attaching (nui_slots.LegacySlotEvents).
 			"bag_attaching": False,
+			# P15 F-2: the grids take a right press while something is attached
+			# (nui-attach-right) only while nui_slots.ATTACH_RIGHT holds.
+			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
 		}
 
 	def _set(self, **values):

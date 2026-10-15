@@ -360,6 +360,7 @@
 				"name": "costume_aura"
 			}
 		],
-		"has_companion": true
+		"has_companion": true,
+		"attach_right": false
 	}
 }

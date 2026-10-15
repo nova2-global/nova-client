@@ -92,6 +92,8 @@ class CostumeWindow(uiInventory.CostumeWindow):
 			"table": self._limits.WEAR_TABLE_ID,
 			"slots": [dict(nui_slots.empty_cell(i), name=slot.name) for i, slot in enumerate(self._slots)],
 			"has_companion": any(slot.name.startswith("buffi_") for slot in self._slots),
+			# P15 F-2 (nui_slots.ATTACH_RIGHT; the grid's nui-attach-right).
+			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
 		}
 		self.demand = nui_hud.OnDemand(self._make_board, self._restore_board) if nui_hud.has_engine_3b() else None
 		uiInventory.CostumeWindow.__init__(self, wndInventory)

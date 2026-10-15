@@ -152,6 +152,8 @@ def inventory(limits, page, wear, bag, money, **rest):
         "placed": False,
         # P14b: nothing attached, so an anchor's box covers its item.
         "bag_attaching": False,
+        # P15 F-2: nui_slots.ATTACH_RIGHT, off until its commit.
+        "attach_right": False,
     }
     model.update(rest)
     return {"inventory": model}
@@ -182,7 +184,8 @@ def foundation_bag(cols, rows, start):
 def costume(limits, filled):
     slots = wear_cells(limits, "costume", filled)
     return {"costume": {"table": limits.WEAR_TABLE_ID, "slots": slots,
-                        "has_companion": any(cell["name"].startswith("buffi_") for cell in slots)}}
+                        "has_companion": any(cell["name"].startswith("buffi_") for cell in slots),
+                        "attach_right": False}}
 
 
 def belt(limits, available, items, expanded=True):
@@ -190,7 +193,7 @@ def belt(limits, available, items, expanded=True):
     rows = limits.BELT_INVENTORY_SLOT_COUNT // cols
     cells = grid(cols, rows, limits.BELT_INVENTORY_SLOT_START, items,
                  unavailable=[i for i in range(cols * rows) if i >= available], one=True)
-    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded, "attaching": False}}
+    return {"belt": {"cells": cells, "cols": cols, "expanded": expanded, "attaching": False, "attach_right": False}}
 
 
 def select_item(limits, stones):
@@ -203,7 +206,7 @@ def select_item(limits, stones):
     cells = [empty_cell(i) for i in range(cols * rows)]
     for index, (position, vnum, number) in enumerate(stones[:count]):
         cells[index] = item_cell(index, position, vnum, number)
-    return {"select_item": {"cells": cells, "cols": cols}}
+    return {"select_item": {"cells": cells, "cols": cols, "attach_right": False}}
 
 
 STONES = [28030, 28031, 28032, 28033, 28034, 28035, 28036, 28037, 28038, 28039, 28040]

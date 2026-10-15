@@ -1102,6 +1102,7 @@
 				"unavailable": false
 			}
 		],
-		"cols": 5
+		"cols": 5,
+		"attach_right": false
 	}
 }

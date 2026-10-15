@@ -66,6 +66,7 @@
 				"name": "ring1"
 			}
 		],
-		"has_companion": false
+		"has_companion": false,
+		"attach_right": false
 	}
 }

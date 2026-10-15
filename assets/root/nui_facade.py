@@ -40,7 +40,10 @@ class Facade(object):
 	"""The NovaUI half of a Wave 4 window (module docstring)."""
 
 	NUI_FACADE = True
-	KEY = None           # nui_hud.take_over's key: the window id
+	# nui_hud.take_over's key: the window id. None for a window the Interface
+	# makes several of at once (the equipment view, one per viewed player),
+	# which no later instance takes over.
+	KEY = None
 	BOARD = None         # the board class (a nui.Window), made with (facade, model)
 	PLACE = None         # None, "center", or a callable(facade) -> (x_dp, y_dp)
 
@@ -51,7 +54,8 @@ class Facade(object):
 
 	def nui_begin(self):
 		"""First in the subclass's constructor, before the legacy one."""
-		nui_hud.take_over(self.KEY, self)
+		if self.KEY is not None:
+			nui_hud.take_over(self.KEY, self)
 		self._nui_discarded = False
 		self._limits = nui_limits.current()
 		self._state = self.nui_model()
@@ -80,18 +84,19 @@ class Facade(object):
 		demand, self.demand = self.demand, None
 		if demand is not None:
 			demand.destroy()
-		nui_hud.forget(self.KEY, self)
+		if self.KEY is not None:
+			nui_hud.forget(self.KEY, self)
 
 	# --- the board ------------------------------------------------------------------------
 
-	def board(self):
+	def nui_board(self):
 		"""The board while shown, else None."""
 		return self.demand.board() if self.demand is not None else None
 
 	def nui_set(self, **values):
 		"""Model keys: kept in the state, and set on the board when it shows."""
 		self._state.update(values)
-		board = self.board()
+		board = self.nui_board()
 		if board is not None:
 			board.set(**values)
 
@@ -146,7 +151,7 @@ class Facade(object):
 			self.demand.hide()
 
 	def SetTop(self):
-		board = self.board()
+		board = self.nui_board()
 		if board is not None:
 			board.bring_to_front()
 		super(Facade, self).SetTop()
@@ -160,7 +165,7 @@ class Facade(object):
 		shown board is centered (a hidden one is at its next show, through
 		PLACE); the 0 x 0 legacy window stays put."""
 		self._place = None
-		board = self.board()
+		board = self.nui_board()
 		if board is not None:
 			board.center()
 
@@ -168,6 +173,6 @@ class Facade(object):
 		"""Legacy's pixels as the board's place in dp."""
 		scale = nui.get_scale() or 1.0
 		self._place = (x / scale, y / scale)
-		board = self.board()
+		board = self.nui_board()
 		if board is not None:
 			board.set_position(self._place[0], self._place[1])

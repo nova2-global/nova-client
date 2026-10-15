@@ -310,7 +310,7 @@ class _DialogFacade(nui_facade.Facade):
 	reach the document, and whose GetText reads the document's field."""
 
 	def _value(self, field_id):
-		board = self.board()
+		board = self.nui_board()
 		return board.get_value(field_id) if board is not None else None
 
 	def _field(self, field_id, maximum):
@@ -323,7 +323,7 @@ class _DialogFacade(nui_facade.Facade):
 		return ()
 
 	def _on_field(self, field, what):
-		board = self.board()
+		board = self.nui_board()
 		if board is None or not board.is_visible():
 			return
 		if what == "text":
@@ -336,7 +336,7 @@ class _DialogFacade(nui_facade.Facade):
 
 	def Show(self):
 		nui_facade.Facade.Show(self)
-		board = self.board()
+		board = self.nui_board()
 		if board is None:
 			return
 		# The fields as legacy left them (a text set while hidden), and the

@@ -19,6 +19,12 @@ WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # below fails while a document named here exists, or one not named here is
 # missing. TOOLTIPS AND DIALOGS (P14 spec 9.1, 9.4) wrote the last Wave 3b ones.
 PENDING_DOCUMENTS = set()
+# Wave 4 (P16 spec 6.1, 11.3): the documents its TRADE and SOCIAL stages
+# write, each taken out as it lands.
+WAVE4_PENDING = {"exchange", "shop", "private-shop", "safebox", "safebox-password", "change-password", "mall",
+                 "equipment-view", "messenger", "whisper", "guild", "guild-grade-name", "guild-war-declare",
+                 "guild-war-accept", "guild-mark"}
+PENDING_DOCUMENTS = PENDING_DOCUMENTS | WAVE4_PENDING
 
 
 class Legacy(object):
@@ -204,7 +210,7 @@ class Flags(WindowsTest):
                          sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A))
 
     def test_every_wave3b_window_defaults_to_legacy(self):
-        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS],
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B)],
                          WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B, "appended after console, in this order")
         for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A):]:
             self.assertIs(default, False, window_id)
@@ -454,7 +460,7 @@ class LayerStopgap(WindowsTest):
 
 class PhaseEnd(WindowsTest):
     def test_end_phase_asks_each_phase_scoped_module_that_is_loaded_and_logs_the_count(self):
-        self.assertEqual(self.m.PHASE_SCOPED, ("nui_dialog_kit", "nui_quest", "nui_tooltip"))
+        self.assertEqual(self.m.PHASE_SCOPED[:3], ("nui_dialog_kit", "nui_quest", "nui_tooltip"))
         calls = []
 
         def end_phase():
@@ -584,6 +590,119 @@ class PhaseStart(WindowsTest):
         self.assertEqual(self.m.prewarm_documents(),
                          ["nui/windows/inventory/inventory.rml", "nui/windows/costume/costume.rml",
                           "nui/windows/belt-inventory/belt-inventory.rml", "nui/windows/select-item/select-item.rml"])
+
+
+# --- Wave 4 (P16 spec 6.1) -----------------------------------------------------------------
+
+WAVE4_TRADE = ["exchange", "shop", "private-shop", "safebox", "mall", "equipment-view"]
+WAVE4_SOCIAL = ["messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"]
+
+
+class Wave4Flags(WindowsTest):
+    def test_every_wave4_window_defaults_to_legacy_appended_after_select_item(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        start = ids.index("select-item") + 1
+        self.assertEqual(ids[start:start + 11], WAVE4_TRADE + WAVE4_SOCIAL, "appended after select-item, in this order")
+        for window_id in WAVE4_TRADE + WAVE4_SOCIAL:
+            self.assertIs(dict(self.m.WINDOWS)[window_id], False, window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
+        self.assertNotIn("guild-war", WAVE4_SOCIAL, "Wave 2b's score boards keep their id")
+
+    def test_trade_and_social_name_their_windows_and_turn_no_other_on(self):
+        self.assertEqual(self.m.GROUPS["trade"], tuple(WAVE4_TRADE))
+        self.assertEqual(self.m.GROUPS["social"], tuple(WAVE4_SOCIAL))
+        self.assertEqual(self.m.GROUPS["items"], tuple(WAVE3B), "+items keeps meaning the Wave 3b windows")
+        self.setting.windows = "+trade,-mall"
+        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "mall") for window_id in WAVE4_TRADE))
+        self.assertEqual(self.m.use("exchange"), (True, ""))
+        self.assertEqual(self.m.use("mall"), (False, "flag off"))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE4_SOCIAL + WAVE3B))
+        self.setting.windows = "+social"
+        self.assertTrue(all(self.m.is_on(window_id) for window_id in WAVE4_SOCIAL))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE4_TRADE))
+        for group in ("trade", "social"):
+            self.assertNotIn(group, [window_id for window_id, _ in self.m.WINDOWS])
+            self.assertEqual(self.m.use(group), (False, "flag off"))
+            self.assertRaises(ValueError, self.m.set_override, group, True)
+
+    def test_the_wave4_demo_string_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud,+hud2,+sys,+rest,+items,+trade,+social"
+        self.assertLessEqual(len(demo), 200)
+        self.assertEqual(len(demo), 50)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
+                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE4_TRADE + WAVE4_SOCIAL))
+
+    def test_the_wave4_documents_are_on_demand_and_prewarmed_with_their_flags(self):
+        expected = [("exchange", ("exchange",)), ("shop", ("shop",)), ("private-shop", ("private-shop",)),
+                    ("safebox", ("safebox", "safebox-password", "change-password")), ("mall", ("mall",)),
+                    ("equipment-view", ("equipment-view",)), ("messenger", ("messenger",)), ("whisper", ("whisper",)),
+                    ("guild", ("guild", "guild-grade-name")),
+                    ("guild-war-dialogs", ("guild-war-declare", "guild-war-accept")), ("guild-mark", ("guild-mark",))]
+        for entry in expected:
+            self.assertIn(entry, self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+safebox,+equipment-view"
+        self.assertEqual(self.m.prewarm_documents(),
+                         ["nui/windows/safebox/safebox.rml", "nui/windows/safebox-password/safebox-password.rml",
+                          "nui/windows/change-password/change-password.rml",
+                          "nui/windows/equipment-view/equipment-view.rml"])
+
+    def test_end_phase_asks_nui_whisper(self):
+        self.assertIn("nui_whisper", self.m.PHASE_SCOPED)
+        self.modules.put("nui_whisper", support.stub_module("nui_whisper", end_phase=lambda: 2))
+        self.assertEqual(self.m.end_phase(), 2)
+
+    def test_the_wave4_lines_name_importable_modules_and_classes(self):
+        """The factory strings of the 16 legacy lines (P16 spec 6.2), each
+        made through make(); with the flags off make() builds the legacy
+        class with the same arguments."""
+        root = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "root")
+        texts = dict((name, open(os.path.join(root, name), encoding="utf-8", errors="replace").read())
+                     for name in ("interfacemodule.py", "game.py", "uiguild.py"))
+        lines = [
+            ("interfacemodule.py", 'self.wndMessenger = nui_windows.make("messenger", uiMessenger.MessengerWindow, "nui_messenger.MessengerWindow")'),
+            ("interfacemodule.py", 'self.wndGuild = nui_windows.make("guild", uiGuild.GuildWindow, "nui_guild.GuildWindow")'),
+            ("interfacemodule.py", 'wndSafebox = nui_windows.make("safebox", uiSafebox.SafeboxWindow, "nui_safebox.SafeboxWindow")'),
+            ("interfacemodule.py", 'wndMall = nui_windows.make("mall", uiSafebox.MallWindow, "nui_mall.MallWindow")'),
+            ("interfacemodule.py", 'self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")'),
+            ("interfacemodule.py", 'self.dlgShop = nui_windows.make("shop", uiShop.ShopDialog, "nui_shop.ShopDialog")'),
+            ("interfacemodule.py", 'self.dlgPassword = nui_windows.make("safebox", uiSafebox.PasswordDialog, "nui_safebox.PasswordDialog")'),
+            ("interfacemodule.py", 'self.privateShopBuilder = nui_windows.make("private-shop", uiPrivateShopBuilder.PrivateShopBuilder, "nui_private_shop.PrivateShopBuilder")'),
+            ("interfacemodule.py", 'dlg = nui_windows.make("equipment-view", uiEquipmentDialog.EquipmentDialog, "nui_equipment_view.EquipmentDialog")'),
+            ("interfacemodule.py", 'dlgWhisper = nui_windows.make("whisper", uiWhisper.WhisperDialog, "nui_whisper.WhisperDialog", self.MinimizeWhisperDialog, self.CloseWhisperDialog)'),
+            ("game.py", 'questionDialog = nui_windows.make("guild-war-dialogs", uiGuild.AcceptGuildWarDialog, "nui_guild_war_accept.AcceptGuildWarDialog")'),
+            ("uiguild.py", 'self.markSelectDialog=nui_windows.make("guild-mark", uiUploadMark.MarkSelectDialog, "nui_guild_mark.MarkSelectDialog")'),
+            ("uiguild.py", 'self.symbolSelectDialog=nui_windows.make("guild-mark", uiUploadMark.SymbolSelectDialog, "nui_guild_mark.SymbolSelectDialog")'),
+            ("uiguild.py", 'inputDialog = nui_windows.make("guild-war-dialogs", DeclareGuildWarDialog, "nui_guild_war_declare.DeclareGuildWarDialog")'),
+        ]
+        for name, line in lines:
+            self.assertIn(line, texts[name], name)
+        self.assertEqual(texts["interfacemodule.py"].count(lines[9][1]), 2, "both whisper dialogs")
+        self.assertIn("\nimport nui_windows\n", texts["uiguild.py"])
+        known = set(window_id for window_id, _ in self.m.WINDOWS)
+        for _, line in lines:
+            window_id = line.split('make("', 1)[1].split('"', 1)[0]
+            self.assertIn(window_id, known, line)
+
+    def test_uiguild_holds_nothing_of_novaui_but_its_four_wave4_lines(self):
+        """nui_chat_test and nui_quest_test kept uiguild.py free of NovaUI;
+        Wave 4 adds its import and three make() lines, and nothing else."""
+        root = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "root")
+        lines = open(os.path.join(root, "uiguild.py"), encoding="utf-8").read().split("\n")
+        novaui = [line.strip() for line in lines if "nui_" in line]
+        self.assertEqual(novaui, [
+            "import nui_windows",
+            'self.markSelectDialog=nui_windows.make("guild-mark", uiUploadMark.MarkSelectDialog, "nui_guild_mark.MarkSelectDialog")',
+            'self.symbolSelectDialog=nui_windows.make("guild-mark", uiUploadMark.SymbolSelectDialog, "nui_guild_mark.SymbolSelectDialog")',
+            'inputDialog = nui_windows.make("guild-war-dialogs", DeclareGuildWarDialog, "nui_guild_war_declare.DeclareGuildWarDialog")'])
+
+    def test_with_the_flags_off_make_builds_the_legacy_class_with_the_same_arguments(self):
+        for window_id in WAVE4_TRADE + WAVE4_SOCIAL:
+            made = self.m.make(window_id, Legacy, "nui_never_imported.Window", 1, kind=window_id)
+            self.assertIsInstance(made, Legacy)
+            self.assertEqual((made.args, made.kwargs), ((1,), {"kind": window_id}))
+        self.assertNotIn("nui_never_imported", sys.modules)
 
 
 if __name__ == "__main__":

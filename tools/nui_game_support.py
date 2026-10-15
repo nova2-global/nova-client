@@ -3343,6 +3343,10 @@ def install_wave4_ui(game):
         setattr(item, name, known.get("item", {}).get(name, getattr(item, name, 0)))
 
     app = modules["app"]
+
+    def set_cursor(cursor):
+        game.cursor = cursor
+    define(app, "SetCursor", set_cursor)
     define(app, "GetFileList", lambda pattern: list(w4["files"].get(pattern.split("/", 1)[0], [])))
     define(app, "GetImageInfo", lambda path: w4["images"].get(path, (False, 0, 0)))
 

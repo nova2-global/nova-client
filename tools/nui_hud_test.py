@@ -681,6 +681,9 @@ LEGACY_CLASSES = {
     "big-board": ("uitip.py", "BigBoard"), "map-name": ("uimapnameshower.py", "MapNameShower"),
     # Wave 3c (P15 spec 4.6.2): the character window lived in the UI layer too.
     "character": ("uicharacter.py", "CharacterWindow"),
+    # and the dragon soul windows (P15 spec 5.6, 6.6).
+    "dragon-soul": ("uidragonsoul.py", "DragonSoulWindow"),
+    "dragon-soul-refine": ("uidragonsoul.py", "DragonSoulRefineWindow"),
 }
 BELOW_LEGACY_UI = "nui-below-legacy-ui"
 

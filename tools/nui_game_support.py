@@ -3605,8 +3605,15 @@ def install_wave3c_ui(game):
     ui.PythonScriptLoader = PythonScriptLoader
     ui.ImageBox = Image
     ui.ExpandedImageBox = Image
-    ui.SlotWindow = lambda layer="UI": LegacySkillSlotWindow(Win(layer), clock)
-    ui.GridSlotWindow = ui.SlotWindow
+    class SlotWindow(LegacySkillSlotWindow):
+        """ui.SlotWindow and ui.GridSlotWindow, a class, so a legacy module
+        loaded after this (uitaskbar.py's SkillButton) can subclass it."""
+
+        def __init__(self, layer="UI"):
+            LegacySkillSlotWindow.__init__(self, Win(layer), clock)
+
+    ui.SlotWindow = SlotWindow
+    ui.GridSlotWindow = SlotWindow
     ui.GenerateColor = lambda r, g, b: generate_color(r / 255.0 if r > 1 else r, g / 255.0 if g > 1 else g,
                                                       b / 255.0 if b > 1 else b, 1.0)
     game.modules["uiToolTip"].ToolTip = PlainToolTip

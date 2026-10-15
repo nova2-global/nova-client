@@ -3369,6 +3369,19 @@ class LegacySkillSlotWindow(LegacySlotWindow):
     def HasSlot(self, index):
         return int(index) in self.slots
 
+    # The dragon soul windows' disabled slots (an expired dragon soul):
+    # CSlotWindow::DisableSlot and EnableSlot set and clear the slot's
+    # SLOT_STATE_DISABLE, which SetSlot and ClearSlot reset.
+    def EnableSlot(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["disabled"] = False
+
+    def DisableSlot(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["disabled"] = True
+
     def GetStartIndex(self):
         """ui.GridSlotWindow's start index; ui.SlotWindow answers 0."""
         return self.start_index if self.x_count else 0

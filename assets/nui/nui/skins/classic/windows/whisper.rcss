@@ -1,0 +1,303 @@
+/* Classic skin overlay of nui/windows/whisper/whisper.rml: the legacy
+   whisper dialog (uiscript whisperdialog.py, uiwhisper.py
+   SetWhisperDialogSize) at 100%, 1dp to the legacy pixel, at the size the
+   player made it (w x h, legacy's first 300 x 200): the thin board; the
+   name slot (Parameter_Slot_05, 130 x 18) at 10, 10 with the partner's name
+   at 13, 13 (or the partner field and the small thin OK at 145, 10); the
+   GM mark (ymirred.tga at 0.2, 49 x 25) at 206, 6; minimize and close
+   (15 x 15) at w - 42 and w - 24, 12; the lines in legacy's whisper box,
+   20, 28 to w - 30, h - 62; the thin scroll bar (17 wide) at w - 25, 35,
+   h - 100 tall; the dark edit bar (0x77000000) at 10, h - 60, w - 18 x 50,
+   the edit line at 5, 5 in it, w - 90 x 40, and Send (the extra large thin
+   art, 57 x 30) at w - 80, 10; the resize corner legacy's 20 x 20 drag
+   button, which draws nothing. */
+
+body.skin-classic.whisper
+{
+	display: block;
+	min-width: 0;
+	decorator: classic-thinboard;
+}
+body.skin-classic.whisper .whisper__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	height: 28dp;
+	margin: 0;
+	padding: 0;
+	decorator: none;
+	z-index: 1;
+}
+body.skin-classic.whisper .whisper__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	height: 28dp;
+	line-height: 18dp;
+	text-align: left;
+}
+/* The name slot's art behind the name or the field. */
+body.skin-classic.whisper .whisper__title,
+body.skin-classic.whisper .whisper__slot
+{
+	display: block;
+	position: absolute;
+	left: 10dp;
+	top: 10dp;
+	width: 130dp;
+	height: 18dp;
+	decorator: image("d:/ymir work/ui/public/Parameter_Slot_05.sub");
+}
+body.skin-classic.whisper .whisper__title
+{
+	padding: 0 0 0 3dp;
+	line-height: 18dp;
+	font-weight: normal;
+	color: var(--text);
+	overflow: hidden;
+}
+body.skin-classic.whisper .whisper__slot
+{
+	z-index: 1;
+}
+body.skin-classic.whisper input.whisper__target
+{
+	position: absolute;
+	left: 3dp;
+	top: 1dp;
+	width: 120dp;
+	height: 17dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 16dp;
+}
+body.skin-classic.whisper .whisper__gm
+{
+	position: absolute;
+	left: 206dp;
+	top: 6dp;
+	width: 49dp;
+	height: 25dp;
+	margin: 0;
+}
+body.skin-classic.whisper .whisper__gm-mark
+{
+	display: block;
+	width: 49dp;
+	height: 25dp;
+}
+body.skin-classic.whisper .whisper__gm-badge
+{
+	display: none;
+}
+body.skin-classic.whisper .whisper__accept
+{
+	position: absolute;
+	left: 145dp;
+	top: 10dp;
+	width: 60dp;
+	height: 20dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 20dp;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/public/small_thin_button_01.sub");
+}
+body.skin-classic.whisper .whisper__accept:hover
+{
+	decorator: image("d:/ymir work/ui/public/small_thin_button_02.sub");
+}
+body.skin-classic.whisper .whisper__accept:active
+{
+	decorator: image("d:/ymir work/ui/public/small_thin_button_03.sub");
+}
+body.skin-classic.whisper .whisper__titlebar .whisper__minimize,
+body.skin-classic.whisper .whisper__titlebar .whisper__close
+{
+	position: absolute;
+	top: 12dp;
+	width: 15dp;
+	height: 15dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	transform: none;
+}
+body.skin-classic.whisper .whisper__titlebar .whisper__minimize
+{
+	right: 27dp;
+	decorator: image("d:/ymir work/ui/public/minimize_button_01.sub");
+}
+body.skin-classic.whisper .whisper__titlebar .whisper__minimize:hover
+{
+	decorator: image("d:/ymir work/ui/public/minimize_button_02.sub");
+}
+body.skin-classic.whisper .whisper__titlebar .whisper__minimize:active
+{
+	decorator: image("d:/ymir work/ui/public/minimize_button_03.sub");
+}
+body.skin-classic.whisper .whisper__titlebar .whisper__close
+{
+	right: 9dp;
+	decorator: image("d:/ymir work/ui/public/close_button_01.sub");
+}
+body.skin-classic.whisper .whisper__titlebar .whisper__close:hover
+{
+	decorator: image("d:/ymir work/ui/public/close_button_02.sub");
+}
+body.skin-classic.whisper .whisper__titlebar .whisper__close:active
+{
+	decorator: image("d:/ymir work/ui/public/close_button_03.sub");
+}
+
+/* --- The lines and the scroll bar --------------------------------------------------- */
+
+body.skin-classic.whisper .whisper__body
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+body.skin-classic.whisper .whisper__lines
+{
+	left: 20dp;
+	top: 28dp;
+	right: 30dp;
+	bottom: 62dp;
+}
+body.skin-classic.whisper .whisper__lines .nui-chat__line
+{
+	font-size: var(--font-md);
+}
+body.skin-classic.whisper .whisper__scroll-box
+{
+	right: 8dp;
+	top: 35dp;
+	bottom: 65dp;
+	width: 17dp;
+}
+body.skin-classic.whisper input.whisper__scroll
+{
+	width: 17dp;
+}
+body.skin-classic.whisper .whisper__scroll slidertrack
+{
+	width: 17dp;
+	margin-left: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.whisper .whisper__scroll sliderbar
+{
+	width: 17dp;
+	height: 9dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_middle_button_01.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderbar:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_middle_button_02.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderbar:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_middle_button_03.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderarrowdec
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_up_button_01.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderarrowdec:hover
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_up_button_02.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderarrowdec:active
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_up_button_03.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderarrowinc
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_down_button_01.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderarrowinc:hover
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_down_button_02.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__scroll sliderarrowinc:active
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_thin_down_button_03.sub" scale-none left top);
+}
+
+/* --- The edit bar ------------------------------------------------------------------------ */
+
+body.skin-classic.whisper .whisper__edit
+{
+	display: block;
+	position: absolute;
+	left: 10dp;
+	right: 8dp;
+	bottom: 10dp;
+	height: 50dp;
+	padding: 0;
+	background-color: var(--classic-chat-log-fill);
+}
+body.skin-classic.whisper textarea.whisper__input
+{
+	position: absolute;
+	left: 5dp;
+	top: 5dp;
+	right: 67dp;
+	width: auto;
+	height: 40dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 15dp;
+}
+body.skin-classic.whisper .whisper__send
+{
+	position: absolute;
+	right: 5dp;
+	top: 10dp;
+	width: 57dp;
+	height: 30dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 30dp;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/public/xlarge_thin_button_01.sub");
+}
+body.skin-classic.whisper .whisper__send:hover
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_thin_button_02.sub");
+}
+body.skin-classic.whisper .whisper__send:active
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_thin_button_03.sub");
+}
+body.skin-classic.whisper .whisper__resize
+{
+	width: 20dp;
+	height: 20dp;
+}

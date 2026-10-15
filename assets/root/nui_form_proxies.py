@@ -366,15 +366,24 @@ class RadioGroupProxy(object):
 
 class ScrollProxy(nui_proxies._Shown):
 	"""ui.ScrollBar and ui.ThinScrollBar: the position (0 to 1), the middle
-	bar's share and the shown state; moved(pos) is a drag of the middle bar:
-	the position, then the scroll event."""
+	bar's share and the shown state. SetPos runs the scroll event as legacy's
+	does (ui.py ScrollBar.SetPos calls OnMove), unless the bar's page is 0
+	pixels; moved(pos) is a drag of the middle bar: the position, then the
+	scroll event."""
 
 	SCROLLBAR_WIDTH = 17
+	# ui.ScrollBar's sizes (ui.py:2039-2046): the arrow buttons, the middle
+	# bar until SetMiddleBarSize and the space around it.
+	BUTTON_HEIGHT = 17
+	MIDDLE_HEIGHT = 9
+	TEMP_SPACE = 7
 
 	def __init__(self, on_change=None):
 		self.pos = 0.0
 		self.middle = 1.0
 		self.height = 0
+		self.page_size = 1
+		self.middle_height = self.MIDDLE_HEIGHT
 		self.event = _nothing
 		self.on_change = on_change
 		self.destroyed = False
@@ -388,15 +397,21 @@ class ScrollProxy(nui_proxies._Shown):
 	def SetPos(self, pos):
 		self.pos = max(0.0, min(1.0, float(pos)))
 		self._changed()
+		if self.page_size != 0:
+			_call(self.event)
 
 	def GetPos(self):
 		return self.pos
 
 	def SetScrollBarSize(self, height):
 		self.height = int(height)
+		self.page_size = self.height - self.BUTTON_HEIGHT * 2 - self.middle_height - self.TEMP_SPACE
 
 	def SetMiddleBarSize(self, pageScale):
 		self.middle = max(0.0, min(1.0, float(pageScale)))
+		real = self.height - self.BUTTON_HEIGHT * 2
+		self.middle_height = int(float(pageScale) * float(real))
+		self.page_size = real - self.middle_height - self.TEMP_SPACE
 		self._changed()
 
 	def GetWidth(self):

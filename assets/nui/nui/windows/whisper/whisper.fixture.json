@@ -1,0 +1,16 @@
+{
+	"whisper": {
+		"target": "Partnerabcde",
+		"editing_target": false,
+		"accept_shown": false,
+		"minimize_shown": true,
+		"gm": false,
+		"gm_mark_src": "/locale/common/effect/ymirred.tga",
+		"feed_key": 1,
+		"width": 300.0,
+		"height": 200.0,
+		"pos": 1.0,
+		"input_max": 99,
+		"target_max": 12
+	}
+}

@@ -348,9 +348,46 @@ def fixtures():
     return found
 
 
+# --- the whisper (SOCIAL, spec 5.8.7) ---------------------------------------------------------------------
+
+GM_MARK = "/locale/common/effect/ymirred.tga"
+
+
+def whisper(target, editing=False, gm=False, width=300, height=200, key=1):
+    """A whisper dialog's model as nui_whisper builds it: the partner (or the
+    partner field and OK, without one), the GM look, the feed's key, the
+    size, the scroll at the end, the input's limit for the width (legacy's
+    int((w - 90) / 6) * 3 - 6) and the partner field's."""
+    return {"whisper": {
+        "target": target,
+        "editing_target": editing,
+        "accept_shown": editing,
+        "minimize_shown": not editing,
+        "gm": gm,
+        "gm_mark_src": GM_MARK,
+        "feed_key": 0 if editing else key,
+        "width": float(width),
+        "height": float(height),
+        "pos": 1.0,
+        "input_max": int((width - 90) / 6) * 3 - 6,
+        "target_max": TODAY.PLAYER_NAME_INPUT_MAX,
+    }}
+
+
+def whisper_fixtures():
+    return {
+        ("whisper", ""): whisper(name_of(12)),
+        ("whisper", "foundation"): whisper(long_name("Partner")),
+        ("whisper", "without-target"): whisper("", editing=True),
+        ("whisper", "gm"): whisper("[SA]Admin", gm=True),
+        ("whisper", "small"): whisper(name_of(12), height=170),
+    }
+
+
 def social_fixtures():
     found = {}
     found.update(messenger_fixtures())
+    found.update(whisper_fixtures())
     return found
 
 

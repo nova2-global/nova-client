@@ -215,6 +215,10 @@ class StandIns(unittest.TestCase):
         self.assertEqual(len(safebox.pageButtonList), 1, "SetTableSize(3) at load: one page")
         for name in ("uiGuild", "uiMessenger", "uiWhisper", "uiUploadMark"):
             self.assertIn(name, modules)
+        del view
+        with quiet():
+            import gc
+            gc.collect()  # legacy's __del__ prints, once its cycle goes
 
     def test_w4_compared_names_the_spec_s_modules(self):
         self.assertEqual(support.W4_COMPARED,

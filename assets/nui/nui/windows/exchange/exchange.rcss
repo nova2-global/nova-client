@@ -1,0 +1,107 @@
+/* The exchange's modern look (P16 spec 5.1.2): two columns, the partner left
+   and the player right as legacy, each a lean grid on the 44dp pitch over a
+   money pill (the coin glyph) and a lamp (a 10dp circle, lit when that side
+   accepted); the accept button under the player's column; a 1dp rule
+   between the columns. The controller centers it at its first show and
+   keeps the place the player drags it to; the sheet's place frames it in
+   its snapshots. Classic (legacy's 282 x 167 board, the middle bar, the
+   parameter slot art under each amount, the lamps' art and the small
+   button): skins/classic/windows/exchange.rcss. */
+
+body.exchange
+{
+	left: 16dp;
+	top: 16dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.exchange button
+{
+	tab-index: none;
+	focus: none;
+}
+.exchange__body
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	gap: var(--space-3);
+	padding: var(--space-3);
+}
+.exchange__side
+{
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+.exchange__divider
+{
+	align-self: stretch;
+	width: 1dp;
+	background-color: var(--border);
+}
+.exchange__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	height: 28dp;
+}
+/* The amount: legacy's dotted text, right-aligned in a sunken pill; the
+   player's is a button that opens the money input. */
+.exchange__money
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	height: 28dp;
+	padding: 0 var(--space-2);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+}
+.exchange__money--owner:hover
+{
+	border-color: var(--accent);
+}
+.exchange__coin
+{
+	--glyph-ink: var(--warning);
+}
+.exchange__amount
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-size: var(--font-sm);
+	text-align: right;
+	white-space: nowrap;
+	pointer-events: none;
+}
+/* The lamp: off muted, on the success color; a state, no motion. */
+.exchange__light
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 10dp;
+	height: 10dp;
+	border-radius: 5dp;
+	background-color: var(--text-muted);
+}
+.exchange__light.is-on
+{
+	background-color: var(--success);
+}
+/* The accept button under the player's column, at its right. */
+.exchange__row--accept
+{
+	justify-content: flex-end;
+}
+.exchange__accept
+{
+	flex: 0 0 auto;
+}

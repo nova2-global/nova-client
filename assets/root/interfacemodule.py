@@ -100,14 +100,14 @@ class Interface(object):
 		self.wndUICurtain = wndUICurtain
 
 	def __MakeMessengerWindow(self):
-		self.wndMessenger = uiMessenger.MessengerWindow()
+		self.wndMessenger = nui_windows.make("messenger", uiMessenger.MessengerWindow, "nui_messenger.MessengerWindow")
 
 		from _weakref import proxy
 		self.wndMessenger.SetWhisperButtonEvent(lambda n,i=proxy(self):i.OpenWhisperDialog(n))
 		self.wndMessenger.SetGuildButtonEvent(ui.__mem_func__(self.ToggleGuildWindow))
 
 	def __MakeGuildWindow(self):
-		self.wndGuild = uiGuild.GuildWindow()
+		self.wndGuild = nui_windows.make("guild", uiGuild.GuildWindow, "nui_guild.GuildWindow")
 
 	def __MakeChatWindow(self):
 		wndChat = nui_windows.make("chat", uiChat.ChatWindow, "nui_chat.ChatWindow")
@@ -198,10 +198,10 @@ class Interface(object):
 		# The NovaUI atlas needs the NovaUI minimap, which makes it (P10 spec D16).
 		if not getattr(wndMiniMap, "NUI_FACADE", False) and nui_windows.is_on("atlas"):
 			nui_windows.refuse("atlas", "needs the NovaUI minimap")
-		wndSafebox = uiSafebox.SafeboxWindow()
+		wndSafebox = nui_windows.make("safebox", uiSafebox.SafeboxWindow, "nui_safebox.SafeboxWindow")
 		
 		# ITEM_MALL
-		wndMall = uiSafebox.MallWindow()
+		wndMall = nui_windows.make("mall", uiSafebox.MallWindow, "nui_mall.MallWindow")
 		self.wndMall = wndMall
 		# END_OF_ITEM_MALL
 
@@ -222,7 +222,7 @@ class Interface(object):
 			self.wndInventory.SetDragonSoulRefineWindow(self.wndDragonSoulRefine)
 
 	def __MakeDialogs(self):
-		self.dlgExchange = uiExchange.ExchangeDialog()
+		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
 		self.dlgExchange.LoadDialog()
 		self.dlgExchange.SetCenterPosition()
 		self.dlgExchange.Hide()
@@ -237,7 +237,7 @@ class Interface(object):
 		self.dlgPointReset.LoadDialog()
 		self.dlgPointReset.Hide()
 
-		self.dlgShop = uiShop.ShopDialog()
+		self.dlgShop = nui_windows.make("shop", uiShop.ShopDialog, "nui_shop.ShopDialog")
 		self.dlgShop.LoadDialog()
 		self.dlgShop.Hide()
 
@@ -251,7 +251,7 @@ class Interface(object):
 
 		self.dlgSystem.Hide()
 
-		self.dlgPassword = uiSafebox.PasswordDialog()
+		self.dlgPassword = nui_windows.make("safebox", uiSafebox.PasswordDialog, "nui_safebox.PasswordDialog")
 		self.dlgPassword.Hide()
 
 		self.hyperlinkItemTooltip = nui_windows.make("tooltips", uiToolTip.HyperlinkItemToolTip, "nui_link_tooltip.HyperlinkItemToolTip")
@@ -263,7 +263,7 @@ class Interface(object):
 		self.tooltipSkill = nui_windows.make("tooltips", uiToolTip.SkillToolTip, "nui_skill_tooltip.SkillToolTip")
 		self.tooltipSkill.Hide()
 
-		self.privateShopBuilder = uiPrivateShopBuilder.PrivateShopBuilder()
+		self.privateShopBuilder = nui_windows.make("private-shop", uiPrivateShopBuilder.PrivateShopBuilder, "nui_private_shop.PrivateShopBuilder")
 		self.privateShopBuilder.Hide()
 
 		self.dlgRefineNew = nui_windows.make("refine", uiRefine.RefineDialogNew, "nui_refine.RefineDialogNew")
@@ -1293,7 +1293,7 @@ class Interface(object):
 	### Equipment ###
 
 	def OpenEquipmentDialog(self, vid):
-		dlg = uiEquipmentDialog.EquipmentDialog()
+		dlg = nui_windows.make("equipment-view", uiEquipmentDialog.EquipmentDialog, "nui_equipment_view.EquipmentDialog")
 		dlg.SetItemToolTip(self.tooltipItem)
 		dlg.SetCloseEvent(ui.__mem_func__(self.CloseEquipmentDialog))
 		dlg.Open(vid)
@@ -1457,7 +1457,7 @@ class Interface(object):
 	## Managed separately from WhisperDialogDict because it has no name
 	def OpenWhisperDialogWithoutTarget(self):
 		if not self.dlgWhisperWithoutTarget:
-			dlgWhisper = uiWhisper.WhisperDialog(self.MinimizeWhisperDialog, self.CloseWhisperDialog)
+			dlgWhisper = nui_windows.make("whisper", uiWhisper.WhisperDialog, "nui_whisper.WhisperDialog", self.MinimizeWhisperDialog, self.CloseWhisperDialog)
 			dlgWhisper.BindInterface(self)
 			dlgWhisper.LoadDialog()
 			dlgWhisper.OpenWithoutTarget(self.RegisterTemporaryWhisperDialog)
@@ -1595,7 +1595,7 @@ class Interface(object):
 
 	## Creates window
 	def __MakeWhisperDialog(self, name):
-		dlgWhisper = uiWhisper.WhisperDialog(self.MinimizeWhisperDialog, self.CloseWhisperDialog)
+		dlgWhisper = nui_windows.make("whisper", uiWhisper.WhisperDialog, "nui_whisper.WhisperDialog", self.MinimizeWhisperDialog, self.CloseWhisperDialog)
 		dlgWhisper.BindInterface(self)
 		dlgWhisper.LoadDialog()
 		dlgWhisper.SetPosition(self.windowOpenPosition*30,self.windowOpenPosition*30)

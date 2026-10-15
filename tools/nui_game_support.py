@@ -3735,3 +3735,22 @@ def _wave3c_modules(game):
     game.load("emotion", "emotion.py")
     game.load("playerSettingModule", "playersettingmodule.py")
     game.load("dragon_soul_refine_settings", "dragon_soul_refine_settings.py")
+
+
+def minsec_text(seconds, minute="m", second="s", prefix="", over=None):
+    """What nui-countdown format="minsec" shows with `seconds` left (ENGINE's
+    ElementCountdown, P15 spec 11.2 E1; legacy's __UpdateQuestClock text,
+    uicharacter.py:709-721): "<prefix><m><minute> <s><second>", minutes
+    not capped, a zero part and its space left out, no space between a
+    number and its unit; once the time is up, `over` alone ("" when None)."""
+    seconds = int(seconds)
+    if seconds <= 0:
+        return over or ""
+    m, s = seconds // 60, seconds % 60
+    text = ("%d%s" % (m, minute)) if m > 0 else ""
+    if m > 0 and s > 0:
+        text += " "
+    if s > 0:
+        text += "%d%s" % (s, second)
+    return prefix + text
+

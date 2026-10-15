@@ -679,6 +679,8 @@ LEGACY_CLASSES = {
     "target": ("uitarget.py", "TargetBoard"), "party": ("uiparty.py", "PartyWindow"),
     "edge-buttons": ("uiwhisper.py", "LegacyWhisperButton"), "tip-board": ("uitip.py", "TipBoard"),
     "big-board": ("uitip.py", "BigBoard"), "map-name": ("uimapnameshower.py", "MapNameShower"),
+    # Wave 3c (P15 spec 4.6.2): the character window lived in the UI layer too.
+    "character": ("uicharacter.py", "CharacterWindow"),
 }
 BELOW_LEGACY_UI = "nui-below-legacy-ui"
 

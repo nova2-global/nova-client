@@ -497,3 +497,15 @@ def locale_text(name, *args):
 		except Exception:
 			return ""
 	return nui.plain_text(value)
+
+
+# --- Wave 3c (P15) ---
+
+def has_engine_3c():
+	"""True when the exe has the Wave 3c engine as well (P15 spec 11.2 E2):
+	nuigame.QuestIconFileName, the quest icon's file, which the character
+	window's quest rows need. Every Wave 3c window's nui_ready() needs it,
+	so make() keeps the legacy window on an older exe."""
+	if not has_engine_3b():
+		return False
+	return getattr(sys.modules.get("nuigame"), "QuestIconFileName", None) is not None

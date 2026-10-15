@@ -1437,5 +1437,25 @@ class Wiring(unittest.TestCase):
                       "\t\tself.mapNameShower = None", source)
 
 
+
+# --- Wave 3c (P15) ---
+
+class EngineWave3c(unittest.TestCase):
+    def test_has_engine_3c_needs_the_quest_icon_and_the_3b_engine(self):
+        world = World(True)
+        with world:
+            self.assertTrue(world.module("nui_hud").has_engine_3c(), "the recording nuigame answers every name")
+            world.game.modules["nuigame"].lack("QuestIconFileName")
+            self.assertFalse(world.module("nui_hud").has_engine_3c(), "a Wave 3b exe")
+            self.assertTrue(world.module("nui_hud").has_engine_3b())
+        world = World(True)
+        with world:
+            world.game.state.decorators.discard("nui-cells")
+            self.assertFalse(world.module("nui_hud").has_engine_3c(), "the quest icon without the 3b engine")
+        world = World(True, engine=False)
+        with world:
+            self.assertFalse(world.module("nui_hud").has_engine_3c(), "no nuigame at all")
+
+
 if __name__ == "__main__":
     unittest.main()

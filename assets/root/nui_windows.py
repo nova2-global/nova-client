@@ -90,6 +90,9 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("refine", False),             # both refine dialogs
 	("attach-metin", False),       # the attach metin stone dialog
 	("select-item", False),        # the select item window (a quest's [SELECT_ITEM])
+	("character", False),          # the character window: status, skills, emotes, quests (Wave 3c)
+	("dragon-soul", False),        # the dragon soul inventory
+	("dragon-soul-refine", False), # the dragon soul refine window
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
@@ -100,6 +103,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
 	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item"),
+	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 }
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
@@ -135,6 +139,10 @@ ON_DEMAND_DOCUMENTS = (
 	# The tooltips load at their first show and stay loaded, hidden and empty,
 	# until the phase ends (P14 spec D8); listed for the prewarm.
 	("tooltips", ("item-tooltip", "skill-tooltip", "link-tooltip")),
+	# Wave 3c (P15 spec D9): each board only while its window shows.
+	("character", ("character",)),
+	("dragon-soul", ("dragon-soul",)),
+	("dragon-soul-refine", ("dragon-soul-refine",)),
 )
 GAME_PHASE_CLASS = "GameWindow"   # game.GameWindow, the game phase's window
 

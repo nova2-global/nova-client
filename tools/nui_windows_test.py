@@ -204,9 +204,9 @@ class Flags(WindowsTest):
                          sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A))
 
     def test_every_wave3b_window_defaults_to_legacy(self):
-        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS],
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B)],
                          WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B, "appended after console, in this order")
-        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A):]:
+        for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A):len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B)]:
             self.assertIs(default, False, window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
@@ -584,6 +584,49 @@ class PhaseStart(WindowsTest):
         self.assertEqual(self.m.prewarm_documents(),
                          ["nui/windows/inventory/inventory.rml", "nui/windows/costume/costume.rml",
                           "nui/windows/belt-inventory/belt-inventory.rml", "nui/windows/select-item/select-item.rml"])
+
+
+# --- Wave 3c (P15) ---
+
+WAVE3C = ["character", "dragon-soul", "dragon-soul-refine"]
+# The character window's document comes with its window (CHARACTER), the
+# dragon soul windows' with DRAGON SOUL (P15 spec 11.3, 11.4).
+PENDING_DOCUMENTS.update(("character", "dragon-soul", "dragon-soul-refine"))
+
+
+class Wave3c(WindowsTest):
+    def test_every_wave3c_window_follows_wave3b_s_and_defaults_to_legacy(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        start = ids.index("select-item") + 1
+        self.assertEqual(ids[start:start + len(WAVE3C)], WAVE3C, "appended after select item, in this order")
+        for window_id in WAVE3C:
+            self.assertIs(dict(self.m.WINDOWS)[window_id], False, window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+
+    def test_wave3c_names_the_three_windows_and_items_keeps_its_five(self):
+        self.assertEqual(self.m.GROUPS["wave3c"], tuple(WAVE3C))
+        self.assertEqual(self.m.GROUPS["items"], tuple(WAVE3B), "+items keeps meaning the Wave 3b windows")
+        self.setting.windows = "+items"
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE3C),
+                         "+items turns no Wave 3c window on (Eddy's own config names +items)")
+        self.setting.windows = "+wave3c,-dragon-soul-refine"
+        self.assertEqual(self.m.overrides(), {"character": True, "dragon-soul": True, "dragon-soul-refine": False})
+        self.assertEqual(self.m.use("wave3c"), (False, "flag off"), "a group is not a window")
+        self.assertRaises(ValueError, self.m.set_override, "wave3c", True)
+
+    def test_the_wave3c_demo_string_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud,+hud2,+sys,+rest,+items,+wave3c"
+        self.assertEqual(len(demo), 43)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
+                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE3C))
+
+    def test_the_wave3c_boards_are_prewarmed_with_their_flags(self):
+        for window_id in WAVE3C:
+            self.assertIn((window_id, (window_id,)), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+wave3c,-dragon-soul"
+        self.assertEqual(self.m.prewarm_documents(),
+                         ["nui/windows/character/character.rml", "nui/windows/dragon-soul-refine/dragon-soul-refine.rml"])
 
 
 if __name__ == "__main__":

@@ -1365,7 +1365,14 @@ class FullSlotWindowProxy(SlotWindowProxy):
 	- SetSlotCountNew by count_label_for and the limits; SetCoverButton
 	  enables the cover again, as CSlotWindow::SetCoverButton does.
 
-	Times are nui.now() seconds. `limits` defaults to nui_limits.current()."""
+	Times are nui.now() seconds. `limits` defaults to nui_limits.current().
+
+	CSlotWindow draws a change at once, and legacy's character and dragon
+	soul windows change their slots without RefreshSlot (ActivateSlot, the
+	cooldown store, the plus buttons, every emotion and quest slot), so any
+	change marks the proxy `dirty`, and the window calls push() at the end
+	of the legacy call that made it: the cells to on_refresh, without
+	RefreshSlot's tooltip refresh."""
 
 	_ACTIVE_KEY = getattr(skill, "SKILL_TYPE_ACTIVE", 1)
 
@@ -1375,12 +1382,25 @@ class FullSlotWindowProxy(SlotWindowProxy):
 		self.limits = _current_limits(limits)
 		self._store = {}
 		SlotWindowProxy.__init__(self, slot_numbers, on_refresh, cols, rows, positions, window)
+		self.dirty = True
 
 	def _record(self, slot):
+		self.dirty = True
 		record = SlotWindowProxy._record(self, slot)
 		if "alpha" not in record:
 			record.update({"alpha": 1.0, "closed": True, "has_button": False, "button": False})
 		return record
+
+	def push(self):
+		"""The cells to on_refresh (no tooltip refresh); the proxy is clean."""
+		self._cells = self._build()
+		self.dirty = False
+		if self.on_refresh is not None:
+			self.on_refresh(self.cells())
+
+	def RefreshSlot(self):
+		SlotWindowProxy.RefreshSlot(self)
+		self.dirty = False
 
 	def _clear_full(self, record):
 		"""CSlotWindow::ClearSlot(TSlot*)."""
@@ -1459,6 +1479,7 @@ class FullSlotWindowProxy(SlotWindowProxy):
 			self._clear_full(self._record(int(slot)))
 
 	def ClearAllSlot(self):
+		self.dirty = True
 		for record in self._slots.values():
 			self._clear_full(record)
 
@@ -1533,6 +1554,7 @@ class FullSlotWindowProxy(SlotWindowProxy):
 				record["button"] = True
 
 	def HideAllSlotButton(self):
+		self.dirty = True
 		for record in self._slots.values():
 			record["button"] = False
 

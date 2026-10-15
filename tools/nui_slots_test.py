@@ -1077,3 +1077,24 @@ class Adopt(SlotsTest):
         self.assertEqual(sorted(made), sorted(freed))
         self.assertNotIn("DeattachObject", self.controller.__dict__)
         self.m._with_states.clear()
+
+
+class FullProxyPush(SlotsTest):
+    def test_a_change_without_refresh_slot_marks_it_dirty_and_push_hands_the_cells_over(self):
+        seen = []
+        proxy = self.m.FullSlotWindowProxy([1, 21], seen.append, limits=_Limits("p"))
+        self.assertTrue(proxy.dirty, "the first push gives the window its cells")
+        proxy.push()
+        self.assertFalse(proxy.dirty)
+        self.assertEqual(len(seen), 1)
+        proxy.SetSkillSlotNew(1, 5, 0, 1)
+        proxy.ActivateSlot(1)
+        self.assertTrue(proxy.dirty)
+        proxy.push()
+        self.assertEqual((seen[-1][0]["kind"], seen[-1][0]["active"]), ("skill", True))
+        proxy.StoreSlotCoolTime(1, 1, 5.0)
+        self.assertFalse(proxy.dirty, "a store shows nothing until a restore")
+        proxy.HideAllSlotButton()
+        self.assertTrue(proxy.dirty)
+        proxy.RefreshSlot()
+        self.assertFalse(proxy.dirty, "RefreshSlot hands the cells over too")

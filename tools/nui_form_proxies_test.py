@@ -483,14 +483,57 @@ class Message(FormProxiesTest):
         message.SetTop()
         message.Show()
         made[0].event()
+        # The popup closed itself before its accept event (its OK): the window
+        # is hidden, and legacy's Hide closes nothing more.
         message.Hide()
         message.Show()
         self.assertEqual(len(made), 1, "the same popup each time")
-        self.assertEqual(made[0].log, [("text", "Wrong password"), ("open",), ("close",), ("text", "Wrong password"),
-                                       ("open",)])
+        self.assertEqual(made[0].log, [("text", "Wrong password"), ("open",), ("text", "Wrong password"), ("open",)])
         self.assertEqual(accepted, [True])
         with self.assertRaises(KeyError):
             message.GetChild("cancel")
+
+    def test_the_accept_event_runs_once_when_it_hides_the_window_as_legacy_s_do(self):
+        """uiCommon.PopupDialog.Close hides, then runs its accept event (the
+        kit's facade and the legacy class alike), and legacy's accept events
+        hide the message window (uisafebox.py OnCloseMessageDialog): one
+        event per OK, no recursion; a Hide by legacy runs none."""
+        class Popup(object):
+            def __init__(self):
+                self.event = lambda: None
+                self.shown = False
+                self.closes = 0
+
+            def SetText(self, text):
+                self.text = text
+
+            def SetAcceptEvent(self, event):
+                self.event = event
+
+            def Open(self):
+                self.shown = True
+
+            def Close(self):
+                self.closes += 1
+                self.shown = False
+                self.event()
+        popup = Popup()
+        message = self.m.MessageWindowProxy(make_dialog=lambda: popup)
+        accepted = []
+
+        def on_close():
+            accepted.append(True)
+            message.Hide()
+        message.GetChild("accept").SetEvent(on_close)
+        message.Show()
+        popup.Close()
+        self.assertEqual(accepted, [True])
+        self.assertFalse(message.IsShow())
+        self.assertFalse(popup.shown)
+        message.Show()
+        message.Hide()
+        self.assertEqual(accepted, [True], "a Hide by legacy runs no accept event")
+        self.assertEqual((popup.shown, popup.closes), (False, 2))
 
 
 class TypedSlots(FormProxiesTest):

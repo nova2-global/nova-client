@@ -650,15 +650,27 @@ class MessageWindowProxy(nui_proxies._Shown):
 		if dialog is None:
 			dialog = self.dialog = self._new_dialog()
 		dialog.SetText(self.children["message"].GetText())
-		accept = self.children["accept"]
-		dialog.SetAcceptEvent(lambda: accept.click())
+		dialog.SetAcceptEvent(self._accepted)
 		dialog.Open()
 		self.shown = True
 
-	def Hide(self):
+	def _accepted(self):
+		"""The popup closed by its own hand (its OK, Escape): legacy's accept
+		button's event, once per show. uiCommon.PopupDialog.Close runs its
+		accept event after it hides, also when Hide below closes it, and
+		legacy's accept events hide this window (OnCloseMessageDialog), so the
+		event runs only while the window counts as shown."""
+		if not self.shown:
+			return
 		self.shown = False
+		self.children["accept"].click()
+
+	def Hide(self):
+		"""Legacy's Hide of the raw window runs no event: the popup closes with
+		the window already hidden, so its accept event does nothing."""
+		shown, self.shown = self.shown, False
 		dialog = self.dialog
-		if dialog is not None:
+		if dialog is not None and shown:
 			dialog.Close()
 
 	def SetTop(self):

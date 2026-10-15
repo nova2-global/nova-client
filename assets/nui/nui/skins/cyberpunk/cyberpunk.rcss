@@ -778,3 +778,19 @@ body.skin-cyberpunk.nui-scrim.nui-fx
 		background-color: var(--cyberpunk-edge-alt);
 	}
 }
+
+/* --- Wave 3c (P15) ------------------------------------------------------------------- */
+
+/* A skill cell's plus button: square, with the neon edge. */
+.skin-cyberpunk .nui-slot-button
+{
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 0;
+}
+/* The refine's closed cell: no holographic hover. */
+.skin-cyberpunk .nui-slot.is-closed:hover, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-closed:hover
+{
+	border-color: var(--cyberpunk-edge-dim);
+	decorator: none;
+}

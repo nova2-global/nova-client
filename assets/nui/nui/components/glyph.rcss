@@ -518,3 +518,26 @@
 	border-radius: 9999dp;
 	border-color: var(--surface-sunken);
 }
+
+/* --- Wave 3c (P15) ---------------------------------------------------------------
+   One more name: lock (a refine cell beyond the recipe, P15 spec 6.2). */
+
+/* lock: a shackle, the top of a ring, over a filled body. */
+.nui-glyph--lock .nui-glyph__a
+{
+	left: 4dp;
+	top: 1dp;
+	width: 8dp;
+	height: 9dp;
+	border-width: 2dp 2dp 0 2dp;
+	border-radius: 4dp 4dp 0 0;
+}
+.nui-glyph--lock .nui-glyph__b
+{
+	left: 2dp;
+	top: 7dp;
+	width: 12dp;
+	height: 8dp;
+	border-radius: 1dp;
+	background-color: var(--glyph-ink);
+}

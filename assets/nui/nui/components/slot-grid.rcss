@@ -584,3 +584,72 @@
 .nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -87dp; }
 .nui-slot-grid--lean.is-attaching > .nui-slot--h2 > .nui-slot__number { bottom: -43dp; }
 .nui-slot-grid--lean.is-attaching > .nui-slot--h3 > .nui-slot__number { bottom: -87dp; }
+
+/* --- Wave 3c (P15) ------------------------------------------------------------- */
+
+/* A skill cell's plus button (CSlotWindow::AppendSlotButton: a CSlotButton
+   at the slot's x + 1, y + 19, shown per slot; P15 spec 4.2). It is a div
+   beside the cell in the cell's place, over the cell's lower left corner,
+   never inside the cell: a press on it must not reach the cell, and a data
+   event cannot stop its propagation. It takes the pointer, so the hit
+   test's sweep counts its points as the button's (nuitool snap --sweep
+   reports -3 for them), and the window binds its hover to the cell's
+   tooltip, as legacy's button calls the slot window's OnOverInItem. Modern:
+   a 16dp accent square with the plus glyph in the accent's text color;
+   classic: legacy's btn_plus art (skins/classic/classic.rcss).
+
+   <div class="char-skill-place" data-for="c : skills">
+   	<div class="nui-slot nui-anim" ...>...</div>
+   	<div class="nui-slot-button nui-anim" data-if="c.button"
+   	     data-event-mousedown="skill_plus(c.slot, ev.button)"><span
+   		class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span
+   		class="nui-glyph__b"></span></span></div>
+   </div> */
+.nui-slot-button
+{
+	display: block;
+	position: absolute;
+	left: 1dp;
+	bottom: 1dp;
+	z-index: 10;
+	box-sizing: border-box;
+	width: 16dp;
+	height: 16dp;
+	background-color: var(--accent);
+	border-radius: var(--radius-sm);
+}
+.nui-slot-button .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
+}
+.nui-slot-button:hover
+{
+	background-color: var(--accent-hover);
+}
+.nui-slot-button.nui-anim
+{
+	transition: background-color 0.1s cubic-out;
+}
+
+/* The refine window's cells (P15 spec 6.2). is-closed: a cell at or past
+   the recipe's lock index (legacy shows its base image, the closed look):
+   dimmed, with no hover look, a lock glyph in the middle (the window's
+   markup). is-ghost: the recipe's reference icon at half its alpha
+   (legacy's SetSlot with a diffuse of 0.5), no count. */
+.nui-slot.is-closed, .nui-slot.is-closed:hover,
+.nui-slot-grid--lean > .nui-slot.is-closed, .nui-slot-grid--lean > .nui-slot.is-closed:hover
+{
+	background-color: var(--slot-unavailable);
+	border-color: var(--border);
+}
+.nui-slot.is-closed .nui-glyph--lock
+{
+	position: absolute;
+	left: 11dp;
+	top: 11dp;
+	--glyph-ink: var(--text-muted);
+}
+.nui-slot.is-ghost .nui-slot__icon
+{
+	opacity: 0.5;
+}

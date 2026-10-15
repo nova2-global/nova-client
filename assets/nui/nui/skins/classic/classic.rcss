@@ -954,3 +954,35 @@
 {
 	margin: 0;
 }
+
+/* --- Wave 3c (P15) ------------------------------------------------------------------- */
+
+/* A skill cell's plus button: legacy's btn_plus art (13 x 13) at the slot's
+   x + 1, y + 19, the over and down art on hover and press, no glyph. */
+.skin-classic .nui-slot-button
+{
+	left: 1dp;
+	top: 19dp;
+	bottom: auto;
+	width: 13dp;
+	height: 13dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_up.sub");
+}
+.skin-classic .nui-slot-button:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_over.sub");
+}
+.skin-classic .nui-slot-button:active
+{
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_down.sub");
+}
+/* The refine's closed cell draws the window's base art (its classic
+   overlay names it); the ghost keeps the component's half alpha. */
+.skin-classic .nui-slot.is-closed, .skin-classic .nui-slot.is-closed:hover,
+.skin-classic .nui-slot-grid--lean > .nui-slot.is-closed, .skin-classic .nui-slot-grid--lean > .nui-slot.is-closed:hover
+{
+	background-color: transparent;
+}

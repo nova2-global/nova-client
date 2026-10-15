@@ -292,9 +292,14 @@ def ds_refine(limits, mode, cells, lock, fee, fee_value, result=None):
         cell = empty_cell(index)
         if index in cells:
             vnum, ghost = cells[index]
-            cell.update({"kind": "icon" if ghost else "item", "type": 0 if ghost else DRAGON_SOUL_TYPE,
+            # A placed item keeps its inventory window's slot type (a refine
+            # stone comes from the inventory) and its position there.
+            placed_type = DRAGON_SOUL_TYPE if vnum >= 110000 else INVENTORY
+            cell.update({"kind": "icon" if ghost else "item", "type": 0 if ghost else placed_type,
                          "ref": index if ghost else 100 + index, "icon": ds_icon(vnum) if vnum >= 110000 else
                          "/icon/item/%05d.tga" % vnum})
+            if not ghost:
+                cell["count"] = "1"
         cell.update({"closed": index >= lock, "ghost": bool(index in cells and cells[index][1])})
         material.append(cell)
     results = [empty_cell(i) for i in range(limits.DRAGON_SOUL_RESULT_CELLS)]
@@ -306,7 +311,7 @@ def ds_refine(limits, mode, cells, lock, fee, fee_value, result=None):
                   for name, label in (("grade", "@ui.GRADE_SELECT"), ("step", "@ui.STEP_SELECT"),
                                       ("strength", "@ui.STRENGTH_SELECT"))],
         "cells": material, "cells_cols": limits.DRAGON_SOUL_REFINE_COLUMNS,
-        "result": results, "fee": fee, "fee_value": fee_value,
+        "result": results, "result_cols": limits.DRAGON_SOUL_RESULT_COLUMNS, "fee": fee, "fee_value": fee_value,
     }}
 
 
@@ -332,7 +337,9 @@ def dragon_soul_fixtures():
         ("dragon-soul-refine", "step"): ds_refine(TODAY, "step", {0: (113300, False)}, 1, "50.000 Yang", 50000),
         ("dragon-soul-refine", "strength"): ds_refine(TODAY, "strength", {0: (100300, False), 1: (113000, False)}, 2,
                                                       "10.000 Yang", 10000),
-        ("dragon-soul-refine", "result"): ds_refine(TODAY, "grade", {}, 15, "0 Yang", 0, result=114000),
+        # After a refine: legacy's __Initialize (the grade mode's lock at 1)
+        # and the result cell from the server's position.
+        ("dragon-soul-refine", "result"): ds_refine(TODAY, "grade", {}, 1, "0 Yang", 0, result=114000),
         ("dragon-soul-refine", "foundation"): ds_refine(FOUNDATION, "grade", {0: (113000, False), 1: (113000, False),
                                                                                2: (113000, True)}, 3,
                                                         "1.999.999.999.999 Yang", 1999999999999),

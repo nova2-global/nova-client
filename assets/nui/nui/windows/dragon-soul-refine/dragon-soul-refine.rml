@@ -1,0 +1,83 @@
+<rml>
+<head>
+	<!-- The dragon soul refine window (uidragonsoul.py DragonSoulRefineWindow,
+	     uiscript dragonsoulrefinewindow.py; P15 spec 6). While the
+	     dragon-soul-refine flag is on, the Interface makes
+	     nui_dragon_soul_refine.DragonSoulRefineWindow (controller
+	     assets/root/nui_dragon_soul_refine.py), a subclass of the legacy class
+	     whose widgets are proxies: the three modes, the recipes and their
+	     checks, the popups, the counts, the refine packet and the result are
+	     legacy's code, and this document shows what legacy tells the
+	     proxies. It exists only while the window shows (nui_hud.OnDemand).
+	     The mode choices, the material cells (DRAGON_SOUL_REFINE_CELLS: the
+	     placed items, the recipe's ghosts, and the closed cells at or past
+	     the recipe's count), the result cells, the fee and the refine button.
+	     Cell events reach the legacy handlers through nui_slots.LegacySlotEvents:
+	     an item is dragged in from the inventory or the dragon soul window
+	     (either UI's) through the legacy mouse controller. The body and its
+	     controls take no focus, so controls act on a left mousedown. It draws
+	     below the legacy UI layer, as legacy's window lived in it. A left or
+	     right press anywhere on it raises the window (board_press). Classic's
+	     art (the board's picture, the closed cells' cap, the buttons') is its
+	     overlay's. -->
+	<title>dragon-soul-refine</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dragon-soul-refine.rcss"/>
+</head>
+<body template="nui" id="dragon-soul-refine" class="nui-window nui-fx nui-anim nui-below-legacy-ui dsr" data-model="ds_refine"
+      data-event-mousedown="board_press(ev.button)" data-class-dsr--placed="placed">
+	<div class="dsr-bg"></div>
+	<div class="nui-window__titlebar dsr__titlebar">
+		<handle id="dsr-title" class="nui-window__handle dsr__handle" move_target="#document">
+			<span class="nui-window__title dsr__title">@ui.DRAGONSOUL_REFINE_WINDOW_TITLE</span>
+		</handle>
+		<button id="dsr-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim dsr__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body dsr__body">
+		<div class="dsr-modes">
+			<div class="dsr-mode-place" data-for="m : modes" data-attr-class="'dsr-mode-place dsr-mode-place--' + m.name">
+				<button class="nui-button nui-anim dsr-mode" data-attr-id="'dsr-mode-' + m.name" data-class-is-selected="m.down"
+				        data-event-mousedown="mode_press(m.name, ev.button)"><span class="dsr-mode__label">{{ m.label }}</span></button>
+			</div>
+		</div>
+		<div class="dsr-main">
+			<div id="dsr-cells" class="nui-slot-grid dsr-cells" data-class-nui-attach-right="attach_right"
+			     data-class-nui-slot-grid--cols-5="cells_cols == 5">
+				<div class="nui-slot nui-anim dsr-cell" data-for="c : cells" data-attr-id="'dsr-cell-' + it_index"
+				     data-class-is-empty="c.kind == ''" data-class-is-closed="c.closed" data-class-is-ghost="c.ghost"
+				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+				     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
+				     data-event-dblclick="cell_use(it_index)" data-event-mouseover="cell_over(it_index)"
+				     data-event-mouseout="cell_out(it_index)" data-event-nuidrop="cell_drop(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+					<span class="nui-glyph nui-glyph--lock" data-if="c.closed"><span class="nui-glyph__a"></span><span
+						class="nui-glyph__b"></span></span>
+				</div>
+			</div>
+			<div class="dsr-arrow"><span class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span
+				class="nui-glyph__b"></span></span><span class="nui-glyph nui-glyph--chevron-right"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
+			<div id="dsr-result" class="nui-slot-grid dsr-result" data-class-nui-attach-right="attach_right"
+			     data-class-nui-slot-grid--cols-2="result_cols == 2">
+				<div class="nui-slot nui-anim dsr-result-cell" data-for="c : result" data-attr-id="'dsr-result-' + it_index"
+				     data-class-is-empty="c.kind == ''"
+				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+				     data-event-mouseover="result_over(it_index)" data-event-mouseout="result_out(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				</div>
+			</div>
+		</div>
+		<div class="dsr-foot">
+			<div id="dsr-fee" class="dsr-fee"><span class="nui-glyph nui-glyph--coin dsr-fee__coin"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+				class="dsr-fee__amount">{{ fee }}</span></div>
+			<button id="dsr-refine" class="nui-button nui-button--primary nui-anim dsr-refine"
+			        data-event-mousedown="refine_press(ev.button)"><span class="dsr-refine__label">@ui.DO_REFINE</span></button>
+		</div>
+	</div>
+</body>
+</rml>

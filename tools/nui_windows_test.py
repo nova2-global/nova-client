@@ -589,9 +589,8 @@ class PhaseStart(WindowsTest):
 # --- Wave 3c (P15) ---
 
 WAVE3C = ["character", "dragon-soul", "dragon-soul-refine"]
-# The refine window's document comes with its controller (DRAGON SOUL, P15
-# spec 11.4); the character and dragon soul windows' are in.
-PENDING_DOCUMENTS.update(("dragon-soul-refine",))
+# Every Wave 3c document is in: the character window's (CHARACTER) and the
+# dragon soul windows' (DRAGON SOUL, P15 spec 11.4).
 
 
 class Wave3c(WindowsTest):

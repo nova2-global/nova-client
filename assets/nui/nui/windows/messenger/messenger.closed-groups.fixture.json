@@ -1,0 +1,29 @@
+{
+	"messenger": {
+		"rows": [
+			{
+				"kind": "group",
+				"name": "Friends",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "group",
+				"name": "Guild",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			}
+		],
+		"whisper_enabled": false,
+		"remove_enabled": false,
+		"height": 150.0
+	}
+}

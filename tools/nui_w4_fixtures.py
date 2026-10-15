@@ -281,7 +281,80 @@ def equipment_view(limits, equipped, title_length=12):
     }}
 
 
+# --- the messenger (SOCIAL, spec 5.7.7) ----------------------------------------------------------------
+
+FRIENDS = ("Aldric", "Brenna", "Caius", "Dagny", "Elowen", "Fenwick", "Galen", "Hesper", "Isolde", "Jorund",
+           "Kestrel", "Lunara", "Maelis")
+GUILD_MATES = ("Nyx", "Orrin", "Perrin", "Quilla")
+
+
+def long_name(base, length=22):
+    """A character name of `length` characters (the foundation's 22)."""
+    return (base + "xxxxxxxxxxxxxxxxxxxxxxxxx")[:length]
+
+
+def messenger_row(kind, name, online=False, open_=False, selected=False, love=-1):
+    """A row as nui_messenger.row_of makes it from legacy's item."""
+    return {"kind": kind, "name": name, "online": online, "open": kind == "group" and open_,
+            "selected": selected, "member": kind == "member", "love": love,
+            "hint": (game_text("AFF_LOVE_POINT") % love) if love >= 0 else ""}
+
+
+def messenger_group(name, members, online, open_=True, selected=None):
+    """Legacy's rows of one group (OnRefreshList): the group, then while open
+    its online members, then its offline ones (in their order), or the empty
+    line."""
+    rows = [messenger_row("group", name, open_=open_)]
+    if not open_:
+        return rows
+    if not members:
+        rows.append(messenger_row("empty", game_text("MESSENGER_EMPTY_LIST")))
+        return rows
+    ordered = [m for m in members if m in online] + [m for m in members if m not in online]
+    rows.extend(messenger_row("member", m, online=m in online, selected=m == selected) for m in ordered)
+    return rows
+
+
+def messenger(rows, whisper=False, remove=False, height=310.0):
+    return {"messenger": {"rows": rows, "whisper_enabled": whisper, "remove_enabled": remove, "height": height}}
+
+
+def messenger_fixtures():
+    friends_online = set(FRIENDS[i] for i in (1, 4, 6, 9, 12))
+    base = (messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, selected=FRIENDS[4])
+            + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2])))
+    many = tuple(long_name("Friend%02d" % i) for i in range(64))
+    lover = long_name("Lover")
+    foundation = ([messenger_row("group", game_text("MESSENGER_FAMILY"), open_=True),
+                   messenger_row("member", lover, love=87)]
+                  + messenger_group(game_text("MESSENGER_FRIEND"), many, set(many[::3]), selected=many[3])
+                  + messenger_group(game_text("MESSENGER_GUILD"), tuple(long_name(n) for n in GUILD_MATES),
+                                    set([long_name(GUILD_MATES[0])])))
+    empty = messenger_group(game_text("MESSENGER_FRIEND"), (), set()) + messenger_group(game_text("MESSENGER_GUILD"),
+                                                                                        (), set())
+    closed = (messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, open_=False)
+              + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2]), open_=False))
+    return {
+        ("messenger", ""): messenger(base, whisper=True, remove=True),
+        ("messenger", "foundation"): messenger(foundation, whisper=False, remove=True),
+        ("messenger", "empty"): messenger(empty),
+        ("messenger", "closed-groups"): messenger(closed, height=150.0),
+    }
+
+
 def fixtures():
+    found = trade_fixtures()
+    found.update(social_fixtures())
+    return found
+
+
+def social_fixtures():
+    found = {}
+    found.update(messenger_fixtures())
+    return found
+
+
+def trade_fixtures():
     return {
         ("exchange", ""): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, target_accept=True),
         ("exchange", "foundation"): exchange(FOUNDATION, EXCHANGE_OWNER_FOUNDATION, EXCHANGE_TARGET_FOUNDATION,

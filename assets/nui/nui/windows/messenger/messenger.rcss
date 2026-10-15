@@ -1,0 +1,179 @@
+/* The messenger's modern look (P16 spec 5.7.2): a narrow window of
+   legacy's width (170dp, its height the player's, 150dp at least), the
+   rows in a list that scrolls by pixel, four icon buttons with their hints
+   in the footer. A group row shows a chevron (down while open), a member
+   row a dot (--success online, --text-muted offline) 15dp further in, as
+   legacy's step; the selected row the selection color. The lover's row
+   shows its love points on hover. The controller places it at legacy's
+   (W - 200, H - 450) at its first show and keeps the place the player
+   drags it to; the sheet's place frames it in its snapshots. Classic
+   (legacy's board, the list art, the selection bar from 16dp in, the
+   button art at the uiscript's places): skins/classic/windows/messenger.rcss. */
+
+body.messenger
+{
+	display: flex;
+	flex-direction: column;
+	left: 16dp;
+	top: 16dp;
+	width: 170dp;
+	height: 310dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.messenger button
+{
+	tab-index: none;
+	focus: none;
+}
+.messenger__titlebar
+{
+	flex: 0 0 auto;
+}
+.messenger__body
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-height: 0;
+	padding: var(--space-1) 0;
+}
+.messenger__list
+{
+	display: block;
+	flex: 1 1 0;
+	min-height: 0;
+	overflow-y: auto;
+}
+/* A row is legacy's 20dp step; the mark and the name sit on one line. */
+.messenger__row
+{
+	display: block;
+	height: 20dp;
+}
+.messenger__line
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: relative;
+	height: 20dp;
+	padding-left: var(--space-2);
+	padding-right: var(--space-2);
+	line-height: 20dp;
+	white-space: nowrap;
+	color: var(--text);
+}
+.messenger__line:hover
+{
+	background-color: var(--surface-hover);
+}
+.messenger__line.is-selected
+{
+	background-color: var(--selection);
+}
+.messenger__line.is-member
+{
+	padding-left: 23dp;
+}
+.messenger__line.is-empty
+{
+	padding-left: 23dp;
+	color: var(--text-muted);
+}
+.messenger__line.is-group
+{
+	font-weight: bold;
+}
+.messenger__line.is-member.is-online
+{
+	color: var(--text);
+}
+.messenger__line.is-member
+{
+	color: var(--text-muted);
+}
+/* The mark: a 6dp dot for a member, a chevron for a group (a box with two
+   borders, turned), none for the empty line. */
+.messenger__mark
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 12dp;
+	height: 12dp;
+	margin-right: var(--space-1);
+}
+.messenger__line.is-empty .messenger__mark
+{
+	display: none;
+}
+.messenger__line.is-member .messenger__mark
+{
+	width: 6dp;
+	height: 6dp;
+	margin-left: 3dp;
+	margin-right: 7dp;
+	border-radius: 3dp;
+	background-color: var(--text-muted);
+}
+.messenger__line.is-member.is-online .messenger__mark
+{
+	background-color: var(--success);
+}
+.messenger__line.is-group .messenger__mark
+{
+	width: 6dp;
+	height: 6dp;
+	margin-left: 2dp;
+	margin-right: 8dp;
+	border-width: 0 2dp 2dp 0;
+	border-color: var(--text-muted);
+	transform: rotate(-45deg);
+}
+.messenger__line.is-group.is-open .messenger__mark
+{
+	transform: rotate(45deg);
+}
+/* A long name ends in an ellipsis before the scroll bar. */
+.messenger__name
+{
+	display: block;
+	flex: 1 1 0;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.messenger__hint
+{
+	left: 23dp;
+	margin-bottom: 0;
+}
+/* The four buttons centered in one row: add, whisper, remove, guild. */
+.messenger__footer
+{
+	flex: 0 0 auto;
+	justify-content: center;
+	gap: var(--space-1);
+	padding: var(--space-2);
+}
+.messenger__tip
+{
+	left: -40dp;
+}
+.messenger__button--guild .messenger__tip
+{
+	left: auto;
+	right: 0;
+	margin-right: 0;
+	margin-left: -320dp;
+}
+/* The bottom edge: a drag on it sets the height (the width stays). */
+.messenger__resize
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 6dp;
+}

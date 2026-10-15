@@ -20,8 +20,10 @@ FLAGS = "+trade"
 # The calls a differential test compares: W4_COMPARED's modules, the sounds and
 # the dialogs legacy opens (uiCommon, uiPickMoney).
 EFFECT_MODULES = support.W4_COMPARED + ("snd", "uiCommon", "uiPickMoney")
+# In import order: a module's NovaUI imports load before it (the two password
+# dialogs' boards before nui_safebox).
 TRADE_MODULES = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_facade", "nui_exchange", "nui_shop",
-                 "nui_private_shop", "nui_safebox", "nui_safebox_password", "nui_change_password", "nui_mall",
+                 "nui_private_shop", "nui_safebox_password", "nui_change_password", "nui_safebox", "nui_mall",
                  "nui_equipment_view")
 P = support.module_constants()["player"]
 

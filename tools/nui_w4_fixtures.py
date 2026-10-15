@@ -195,6 +195,63 @@ def private_shop(limits, stock, title=BUILDER_TITLE, attaching=False, targets=No
     }}
 
 
+
+# --- the safebox, its password dialogs and the mall (spec 5.4.5, 5.5.5) -------------------------
+
+SAFEBOX_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 7: (27002, 3), 12: (13000, 1),
+                 30: (25040, 1), 44: (27003, 50)}
+SAFEBOX_ITEMS_FOUNDATION = dict(SAFEBOX_ITEMS)
+SAFEBOX_ITEMS_FOUNDATION.update({2: (27001, 2000), 44: (27003, 1999)})
+
+
+def pages_of(count):
+    """nui_limits.safebox_pages: "I", "II", ... one more "I" a page."""
+    return [{"index": i, "label": "I" * (i + 1)} for i in range(count)]
+
+
+def safebox(limits, items, page_count, page, attaching=False, targets=None):
+    """The safebox's model as nui_safebox builds it: the shown page's cells
+    (their ref the global position, page x SAFEBOX_PAGE_SIZE + cell), the
+    page buttons, the page down."""
+    cols, rows, size = limits.SAFEBOX_COLUMNS, limits.SAFEBOX_PAGE_ROWS, limits.SAFEBOX_PAGE_SIZE
+    return {"safebox": {
+        "cells": with_targets(typed_grid(cols, rows, SLOT_TYPE_SAFEBOX, items, ref=lambda index: page * size + index),
+                              targets or {}),
+        "cols": cols,
+        "pages": pages_of(page_count),
+        "page_count": page_count,
+        "page": page,
+        "attaching": attaching,
+    }}
+
+
+def safebox_password(title_key):
+    """The password dialog's model: the title the Interface sets
+    (localeInfo.PASSWORD_TITLE or MALL_PASSWORD_TITLE), the field's limit."""
+    return {"safebox_password": {"title": game_text(title_key), "max": TODAY.SAFEBOX_PASSWORD_MAX_LEN}}
+
+
+def change_password():
+    return {"change_password": {"max": TODAY.SAFEBOX_PASSWORD_MAX_LEN}}
+
+
+MALL_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 4: (27002, 3), 7: (13000, 1), 8: (25040, 1),
+              9: (27003, 50), 12: (14000, 1), 13: (15000, 1), 20: (10, 1), 24: (12200, 1)}
+MALL_ITEMS_FOUNDATION = dict(MALL_ITEMS)
+MALL_ITEMS_FOUNDATION.update({2: (27001, 2000), 9: (27003, 1999)})
+
+
+def mall(limits, items, attaching=False, targets=None):
+    """The mall's model: one page of SAFEBOX_PAGE_SIZE cells, their ref the
+    mall's cell (legacy's slot number)."""
+    cols, rows = limits.SAFEBOX_COLUMNS, limits.SAFEBOX_PAGE_ROWS
+    return {"mall": {
+        "cells": with_targets(typed_grid(cols, rows, SLOT_TYPE_MALL, items), targets or {}),
+        "cols": cols,
+        "attaching": attaching,
+    }}
+
+
 def fixtures():
     return {
         ("exchange", ""): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, target_accept=True),
@@ -222,6 +279,20 @@ def fixtures():
         ("private-shop", "foundation"): private_shop(FOUNDATION, BUILDER_STOCK_FOUNDATION),
         ("private-shop", "empty"): private_shop(TODAY, {}),
         ("private-shop", "attaching"): private_shop(TODAY, BUILDER_STOCK, attaching=True, targets={17: "move", 22: "move"}),
+        # Three pages, page II shown (its cells' ref from 45).
+        ("safebox", ""): safebox(TODAY, SAFEBOX_ITEMS, 3, 1),
+        # The foundation's five pages ("I" to "IIIII"), the last shown.
+        ("safebox", "foundation"): safebox(FOUNDATION, SAFEBOX_ITEMS_FOUNDATION, 5, 4),
+        ("safebox", "one-page"): safebox(TODAY, SAFEBOX_ITEMS, 1, 0),
+        # A 1x2 sword attached over cell 17: its footprint on 17 and 22.
+        ("safebox", "attaching"): safebox(TODAY, SAFEBOX_ITEMS, 3, 1, attaching=True, targets={17: "move", 22: "move"}),
+        ("safebox-password", ""): safebox_password("PASSWORD_TITLE"),
+        ("safebox-password", "mall"): safebox_password("MALL_PASSWORD_TITLE"),
+        ("change-password", ""): change_password(),
+        ("mall", ""): mall(TODAY, MALL_ITEMS),
+        ("mall", "foundation"): mall(FOUNDATION, MALL_ITEMS_FOUNDATION),
+        ("mall", "empty"): mall(TODAY, {}),
+        ("mall", "attaching"): mall(TODAY, MALL_ITEMS, attaching=True, targets={17: "move", 22: "move"}),
     }
 
 

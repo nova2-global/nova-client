@@ -3158,3 +3158,573 @@ def install_tooltip_ui(game, locale="en"):
     define(game.modules["grp"], "GenerateColor", generate_color)
     game.put("localeInfo", locale_info(locale))
     return ui
+
+
+# --- Wave 3c (P15) ---------------------------------------------------------------------------------
+# The character window and the dragon soul windows (P15 spec 11.3): their
+# legacy windows from the real uiscripts, a model of CSlotWindow for their
+# slot windows, and the skill, quest, emotion and dragon soul stand-ins.
+
+# The client's constants these windows read (module_constants() has them;
+# the values here stand for any it lacks).
+WAVE3C_PLAYER_CONSTANTS = {
+    "STAT": 26, "SKILL_ACTIVE": 28, "SKILL_SUPPORT": 27, "SKILL_HORSE": 113, "LEVEL": 1, "EXP": 3, "NEXT_EXP": 4,
+    "HP": 5, "MAX_HP": 6, "SP": 7, "MAX_SP": 8, "ST": 12, "DX": 14, "HT": 13, "IQ": 15, "ATT_MIN": 29, "ATT_MAX": 30,
+    "ATT_BONUS": 95, "ATTACKER_BONUS": 91, "MAG_ATT": 22, "MIN_MAGIC_WEP": 202, "MAX_MAGIC_WEP": 203, "DEF_GRADE": 20,
+    "DEF_BONUS": 96, "MAG_DEF": 23, "ATT_SPEED": 17, "MOVING_SPEED": 19, "CASTING_SPEED": 21, "EVADE_RATE": 18,
+    "SKILL_INDEX_RIDING": 130, "SKILL_INDEX_LANGUAGE1": 126,
+    "DS_SUB_HEADER_DO_UPGRADE": 2, "DS_SUB_HEADER_DO_IMPROVEMENT": 3, "DS_SUB_HEADER_DO_REFINE": 4,
+    "DS_SUB_HEADER_REFINE_FAIL": 5, "DRAGON_SOUL_REFINE_CLOSE": 1,
+}
+# PythonSkill.cpp's module constants (the client's; SKILL_TYPE_GUILD is 3 there).
+WAVE3C_SKILL_CONSTANTS = {"SKILL_TYPE_NONE": 0, "SKILL_TYPE_ACTIVE": 1, "SKILL_TYPE_SUPPORT": 2, "SKILL_TYPE_GUILD": 3,
+                          "SKILL_TYPE_HORSE": 4, "SKILL_GRADE_COUNT": 3, "SKILL_GRADE_STEP_COUNT": 20}
+# chr's motion constants playerSettingModule and emotion read at import.
+WAVE3C_CHR_CONSTANTS = {"MOTION_SKILL": 400, "MOTION_WAIT": 1, "MOTION_MODE_GENERAL": 1, "MOTION_MODE_WEDDING_DRESS": 7}
+# The dragon soul windows' item constants (PythonItemModule.cpp, ItemData.h).
+WAVE3C_ITEM_CONSTANTS = {"ITEM_TYPE_DS": 28, "ITEM_TYPE_MATERIAL": 18, "MATERIAL_DS_REFINE_NORMAL": 35,
+                         "MATERIAL_DS_REFINE_BLESSED": 36, "MATERIAL_DS_REFINE_HOLLY": 37}
+QUEST_MAX_NUM = 5   # PythonQuest.cpp:269
+
+
+class LegacySkillSlotWindow(LegacySlotWindow):
+    """CSlotWindow as the character and dragon soul windows' slot windows use
+    it (src/EterPythonLib/PythonSlotWindow.cpp), on top of LegacySlotWindow:
+    SetSlot (the same item index keeps the slot's state, another clears it
+    first; the cover shows), the skill, emotion and icon setters of
+    ui.SlotWindow, the count labels (SetSlotCount, SetSlotCountNew's switch),
+    the cooldown and its store (StoreSlotCoolTime, RestoreSlotCoolTime in
+    slot order stopping at a slot it lacks, TransferSlotCoolTime of the
+    ACTIVE key; ActivateSlot and DeactivateSlot mark a stored ACTIVE entry),
+    the slot buttons, the base image, HasSlot and GetStartIndex. Times are
+    the stand-in NovaUI clock (Game.state.now), so both worlds compare."""
+
+    EVENTS = LegacySlotWindow.EVENTS + ("pressed_button",)
+
+    def __init__(self, base, clock):
+        LegacySlotWindow.__init__(self, base)
+        self._clock = clock
+        self.store = {}
+
+    def empty(self):
+        slot = LegacySlotWindow.empty()
+        slot.update({"kind": "", "index": 0, "icon": "", "label": "", "cool": (0.0, 0.0), "has_button": False,
+                     "button": False, "base": True, "alpha": 1.0, "w": 1, "h": 1})
+        return slot
+
+    def AppendSlot(self, index, x=0, y=0, w=32, h=32):
+        self.slots[int(index)] = self.empty()
+
+    def ArrangeSlot(self, start, x_count, y_count, w=32, h=32, xb=0, yb=0):
+        LegacySlotWindow.ArrangeSlot(self, start, x_count, y_count, w, h, xb, yb)
+        self.slots = dict((index, self.empty()) for index in self.slots)
+
+    def _slot(self, index):
+        slot = self.slots.get(int(index))
+        if slot is not None and "kind" not in slot:
+            slot.update(self.empty())
+        return slot
+
+    def ClearSlot(self, index):
+        slot = self._slot(index)
+        if slot is None:
+            return
+        slot.update({"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False, "kind": "",
+                     "index": 0, "icon": "", "cool": (0.0, 0.0), "button": False, "base": True, "w": 1, "h": 1})
+
+    def SetSlot(self, index, item_index, w, h, icon, diffuse=(1.0, 1.0, 1.0, 1.0), kind="icon"):
+        slot = self._slot(index)
+        if slot is None:
+            return
+        if slot["kind"] and slot["index"] == item_index:
+            slot.update({"locked": False, "disabled": False, "icon": icon, "kind": kind})
+            return
+        self.ClearSlot(index)
+        slot.update({"kind": kind, "index": int(item_index), "icon": icon, "w": int(w), "h": int(h),
+                     "alpha": float(diffuse[3]) if diffuse else 1.0, "vnum": int(item_index) if kind == "item" else 0})
+
+    def SetItemSlot(self, index, vnum, count=0, color=None):
+        if not vnum:
+            self.ClearSlot(index)
+            return
+        item = sys.modules.get("item")
+        item.SelectItem(vnum)
+        w, h = item.GetItemSize()
+        self.SetSlot(index, vnum, w, h, item.GetIconImageFileName(), color or (1.0, 1.0, 1.0, 1.0), kind="item")
+        LegacySlotWindow.SetItemSlot(self, index, vnum, count, color)
+        self.SetSlotCount(index, count)
+
+    def SetSkillSlotNew(self, index, skill_index, grade, level):
+        icon = sys.modules["skill"].GetIconImageNew(skill_index, grade)
+        if not icon:
+            self.ClearSlot(index)
+            return
+        self.SetSlot(index, skill_index, 1, 1, icon, kind="skill")
+
+    def SetSkillSlot(self, index, skill_index, level):
+        icon = sys.modules["skill"].GetIconImage(skill_index)
+        if not icon:
+            self.ClearSlot(index)
+            return
+        self.SetSlot(index, skill_index, 1, 1, icon, kind="skill")
+        self.SetSlotCount(index, level)
+
+    def SetEmotionSlot(self, index, emotion_index):
+        icon = sys.modules["player"].GetEmotionIconImage(emotion_index)
+        if not icon:
+            self.ClearSlot(index)
+            return
+        self.SetSlot(index, emotion_index, 1, 1, icon, kind="emotion")
+
+    def SetSlotCount(self, index, count):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["label"] = "%d" % count if count > 0 else ""
+
+    def SetSlotCountNew(self, index, grade, level):
+        slot = self._slot(index)
+        if slot is not None:
+            # The C++ switch: a grade it lacks formats nothing.
+            slot["label"] = {0: "%d" % level, 1: "m%d" % level, 2: "g%d" % level, 3: "p"}.get(grade, "") if level > 0 else ""
+
+    def SetSlotCoolTime(self, index, cool_time, elapsed=0.0):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["cool"] = (float(cool_time), self._clock() - float(elapsed))
+
+    def StoreSlotCoolTime(self, key, index, cool_time, elapsed=0.0):
+        self.store.setdefault(int(key), {})[int(index)] = [float(cool_time), self._clock() - float(elapsed), False]
+
+    def RestoreSlotCoolTime(self, key):
+        for index in sorted(self.store.get(int(key), {})):
+            slot = self._slot(index)
+            if slot is None:
+                return
+            cool, start, active = self.store[int(key)][index]
+            slot["cool"] = (cool, start)
+            if active:
+                self.ActivateSlot(index)
+            else:
+                self.DeactivateSlot(index)
+
+    def TransferSlotCoolTime(self, index1, index2):
+        store = self.store.get(1, {})
+        entry = store.get(int(index1))
+        if entry is None:
+            return
+        slot1, slot2 = self._slot(index1), self._slot(index2)
+        if slot1 is None or slot2 is None:
+            return
+        level = sys.modules["player"].GetSkillLevel(int(index2))
+        store[int(index2)] = entry
+        del store[int(index1)]
+        slot1["cool"] = (0.0, 0.0)
+        if entry[2]:
+            self.ActivateSlot(index2)
+        if level > 0:
+            slot2["cool"] = (entry[0], entry[1])
+
+    def ActivateSlot(self, index):
+        LegacySlotWindow.ActivateSlot(self, index)
+        entry = self.store.get(1, {}).get(int(index))
+        if entry is not None and self._slot(index) is not None:
+            entry[2] = True
+
+    def DeactivateSlot(self, index):
+        LegacySlotWindow.DeactivateSlot(self, index)
+        entry = self.store.get(1, {}).get(int(index))
+        if entry is not None and self._slot(index) is not None:
+            entry[2] = False
+
+    def SetCoverButton(self, index, up="d:/ymir work/ui/public/slot_cover_button_01.sub", over="", down="", disable="",
+                       left=False, right=True):
+        LegacySlotWindow.SetCoverButton(self, index, up, over, down, disable, left, right)
+        slot = self._slot(index)
+        if slot is not None:
+            slot["unavailable"] = False
+
+    def AppendSlotButton(self, up, over, down):
+        for index in list(self.slots):
+            self._slot(index).update({"has_button": True, "button": False})
+
+    def ShowSlotButton(self, index):
+        slot = self._slot(index)
+        if slot is not None and slot["has_button"]:
+            slot["button"] = True
+
+    def HideAllSlotButton(self):
+        for index in list(self.slots):
+            self._slot(index)["button"] = False
+
+    def ShowSlotBaseImage(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["base"] = True
+
+    def HideSlotBaseImage(self, index):
+        slot = self._slot(index)
+        if slot is not None:
+            slot["base"] = False
+
+    def HasSlot(self, index):
+        return int(index) in self.slots
+
+    def GetStartIndex(self):
+        """ui.GridSlotWindow's start index; ui.SlotWindow answers 0."""
+        return self.start_index if self.x_count else 0
+
+    def GetSlotCount(self):
+        return len(self.slots)
+
+    def SetPressedSlotButtonEvent(self, event):
+        self.events["pressed_button"] = event
+        self.eventPressedSlotButton = event
+
+    def skill_cells(self):
+        """{slot: (kind, index, icon, label, cover shown, cover disabled,
+        (start, end) of the cooldown, active, plus button shown)} of every
+        slot that holds something, as CSlotWindow::OnRender draws them (the
+        cover and the count only on a set slot)."""
+        found = {}
+        for index, slot in self._all():
+            if not slot["kind"]:
+                continue
+            cool, start = slot["cool"]
+            found[index] = (slot["kind"], slot["index"], slot["icon"], slot["label"], slot["cover"] is not None,
+                            bool(slot["cover"] is not None and slot["unavailable"]),
+                            (start, start + cool) if cool > 0 else (0.0, 0.0), slot["active"], slot["button"])
+        return found
+
+    def _all(self):
+        for index in sorted(self.slots):
+            yield index, self._slot(index)
+
+
+class PlainToolTip(object):
+    """uiToolTip.ToolTip as a window's own tooltip uses it (the character
+    window's stat, job, alignment and emotion tooltips): its lines and every
+    call recorded."""
+
+    def __init__(self, width=190, pickable=False):
+        self.width = width
+        self.lines = []
+        self.calls = []
+        self.visible = False
+
+    def _log(self, *call):
+        self.calls.append(call)
+
+    def ClearToolTip(self):
+        self._log("ClearToolTip")
+        self.lines = []
+
+    def AppendTextLine(self, text, color=None, centerAlign=True, show=True):
+        self._log("AppendTextLine", text, color)
+        self.lines.append((text, color))
+
+    def AutoAppendTextLine(self, text, color=None, centerAlign=True):
+        self._log("AutoAppendTextLine", text, color)
+        self.lines.append((text, color))
+
+    def SetTitle(self, name):
+        self._log("SetTitle", name)
+        self.lines.append((name, "title"))
+
+    def AlignHorizonalCenter(self):
+        self._log("AlignHorizonalCenter")
+
+    def ShowToolTip(self):
+        self._log("ShowToolTip")
+        self.visible = True
+
+    def HideToolTip(self):
+        self._log("HideToolTip")
+        self.visible = False
+
+    def Show(self):
+        self._log("Show")
+        self.visible = True
+
+    def Hide(self):
+        self._log("Hide")
+        self.visible = False
+
+    def IsShow(self):
+        return self.visible
+
+
+def install_wave3c_ui(game):
+    """Adds to game (after install_wave2b_ui, install_wave3a_ui and
+    install_wave3b_ui) what the Wave 3c legacy windows use (uicharacter.py,
+    uidragonsoul.py; P15 spec 11.3):
+    - a PythonScriptLoader that reads the real uiscript file and makes each
+      named child of its type, every slot window a LegacySkillSlotWindow, a
+      scroll bar at its uiscript size, images whose string events fire
+      (fire("MOUSE_OVER_IN")), with the loader's own names
+      (DRAGON_SOUL_EQUIPMENT_SLOT_START, LOCALE_PATH);
+    - player, skill, item and chr with the client's constants of
+      WAVE3C_*_CONSTANTS, and over the Game's state: skills by slot as
+      playerSettingModule.RegisterSkill sets them (player.SetSkill copies
+      Game.skill_by_index[index]), the riding skill, CanUseSkill
+      (Game.usable_skills, else every skill that is not a support one),
+      CanLevelUpSkill (Game.level_up), the skill icons as file names, the
+      name, guild, exp and alignment (Game.name, .guild_name, .exp,
+      .alignment), the acting emotion and the target (Game.acting,
+      .target_vid, .npc_vids, .enemy_vids, .vid_names), net's main actor
+      (Game.race, .skill_group, .empire), quest (Game.quests: dicts with
+      name, icon, counter_name, counter, clock_name, clock, index; quest
+      clocks count down from Game.state.now), nuigame.QuestIconFileName;
+    - the real playerSettingModule, emotion, colorInfo and
+      dragon_soul_refine_settings modules over them;
+    - uiToolTip.ToolTip, a recording PlainToolTip; ui.GenerateColor."""
+    ui = game.modules["ui"]
+    Win = ui.Window
+    log = game.log
+    for attribute, value in (("skill_by_index", {}), ("usable_skills", set()), ("level_up", {}), ("name", "Hero"),
+                             ("guild_name", ""), ("exp", 0), ("alignment", (0, 4)), ("acting", False), ("target_vid", 0),
+                             ("main_vid", 1), ("npc_vids", set()), ("enemy_vids", set()), ("vid_names", {}),
+                             ("race", 0), ("skill_group", 1), ("empire", 1), ("quests", []), ("level_limits", {}),
+                             ("max_levels", {})):
+        if not hasattr(game, attribute):
+            setattr(game, attribute, value)
+    clock = lambda: game.state.now
+
+    class Image(LegacyWidget):
+        """ui.ImageBox and ExpandedImageBox: its image, size and string
+        events (SAFE_SetStringEvent; fire() is the window manager's)."""
+
+        def __init__(self, layer="UI"):
+            LegacyWidget.__init__(self, "image")
+            self.size = (0, 0)
+            self.position = (0, 0)
+            self.string_events = {}
+
+        def SetSize(self, width, height):
+            self.size = (width, height)
+
+        def GetWidth(self):
+            return self.size[0]
+
+        def GetHeight(self):
+            return self.size[1]
+
+        def SetPosition(self, x, y):
+            self.position = (x, y)
+
+        def GetLocalPosition(self):
+            return self.position
+
+        def SAFE_SetStringEvent(self, event, func):
+            self.string_events[event] = func
+
+        def fire(self, event):
+            if event in self.string_events:
+                self.string_events[event]()
+
+    class Button(ui.Button):
+        """A button that keeps its place (the skill group buttons move)."""
+
+        def __init__(self, layer="UI"):
+            ui.Button.__init__(self, layer)
+            self.position = (0, 0)
+
+        def SetPosition(self, x, y):
+            self.position = (x, y)
+
+    class RadioButton(ui.RadioButton):
+        def __init__(self, layer="UI"):
+            ui.RadioButton.__init__(self, layer)
+            self.position = (0, 0)
+
+        def SetPosition(self, x, y):
+            self.position = (x, y)
+
+    class TextLine(ui.TextLine):
+        def __init__(self, layer="UI"):
+            ui.TextLine.__init__(self, layer)
+            self.position = (0, 0)
+
+        def SetPosition(self, x, y):
+            self.position = (x, y)
+
+    def slot_window(child):
+        widget = LegacySkillSlotWindow(Win(), clock)
+        if child.get("type") == "grid_table":
+            widget.ArrangeSlot(child.get("start_index", 0), child.get("x_count", 0), child.get("y_count", 0))
+        for slot in child.get("slot", ()) or ():
+            widget.AppendSlot(slot["index"], slot.get("x", 0), slot.get("y", 0), slot.get("width", 32), slot.get("height", 32))
+        return widget
+
+    kinds = {"button": Button, "radio_button": RadioButton, "toggle_button": ui.ToggleButton,
+             "titlebar": ui.TitleBar, "board": ui.Board, "board_with_titlebar": ui.Board, "thinboard": ui.Board,
+             "text": TextLine, "image": Image, "expanded_image": Image, "ani_image": Image, "scrollbar": ui.ScrollBar}
+
+    def build(window, value):
+        for child in value.get("children", ()) or ():
+            kind = child.get("type")
+            if kind in ("slot", "grid_table"):
+                widget = slot_window(child)
+            else:
+                widget = kinds.get(kind, Win)()
+            widget.name = child.get("name", "")
+            if "text" in child and hasattr(widget, "SetText"):
+                widget.SetText(child["text"])
+            if "width" in child and hasattr(widget, "SetSize"):
+                widget.SetSize(child.get("width", 0), child.get("height", 0))
+            if "image" in child and hasattr(widget, "LoadImage"):
+                widget.LoadImage(child["image"])
+            if kind == "scrollbar":
+                widget.SetScrollBarSize(child.get("size", 0))
+            if hasattr(widget, "SetPosition") and kind not in ("slot", "grid_table"):
+                widget.SetPosition(child.get("x", 0), child.get("y", 0))
+            window.ElementDictionary[widget.name] = widget
+            build(window, child)
+
+    base_loader = ui.PythonScriptLoader
+
+    class PythonScriptLoader(object):
+        loaded = base_loader.loaded
+
+        def LoadScriptFile(self, window, path):
+            PythonScriptLoader.loaded.append(path)
+            clear = getattr(window, "ClearDictionary", None)
+            if clear is not None:
+                clear()
+            if not hasattr(window, "ElementDictionary"):
+                window.ElementDictionary = {}
+            if not hasattr(window, "scripts"):
+                window.scripts = []
+            window.scripts.append(path)
+            value = read_uiscript_3c(path)
+            if "width" in value:
+                window.SetSize(value.get("width", 0), value.get("height", 0))
+            for style in value.get("style", ()) or ():
+                window.AddFlag(style)
+            build(window, value)
+
+    ui.PythonScriptLoader = PythonScriptLoader
+    ui.ImageBox = Image
+    ui.ExpandedImageBox = Image
+    ui.SlotWindow = lambda layer="UI": LegacySkillSlotWindow(Win(layer), clock)
+    ui.GridSlotWindow = ui.SlotWindow
+    ui.GenerateColor = lambda r, g, b: generate_color(r / 255.0 if r > 1 else r, g / 255.0 if g > 1 else g,
+                                                      b / 255.0 if b > 1 else b, 1.0)
+    game.modules["uiToolTip"].ToolTip = PlainToolTip
+    # Two of the lists and dicts localeinfo.py builds from its strings
+    # (_RebuildDerivedData), which the locale_info() stand-in leaves as names.
+    locale = game.modules.get("localeInfo")
+    if locale is not None:
+        if not isinstance(getattr(locale, "TITLE_NAME_LIST", None), (list, tuple)):
+            locale.TITLE_NAME_LIST = tuple(getattr(locale, "PVP_LEVEL%d" % i) for i in range(9))
+        if not isinstance(getattr(locale, "STAT_MINUS_DESCRIPTION", None), dict):
+            locale.STAT_MINUS_DESCRIPTION = {"HTH-": locale.STAT_MINUS_CON, "INT-": locale.STAT_MINUS_INT,
+                                             "STR-": locale.STAT_MINUS_STR, "DEX-": locale.STAT_MINUS_DEX}
+    _wave3c_modules(game)
+    return ui
+
+
+def read_uiscript_3c(path):
+    """read_uiscript with the names ui.PythonScriptLoader gives every
+    uiscript (ui.py:2852-2860): the dragon soul window's equipment start and
+    the locale paths."""
+    file_name = os.path.join(UISCRIPT_ROOT, path.replace("\\", "/").lower())
+    with open(file_name, encoding="utf-8", errors="replace") as handle:
+        source = handle.read()
+    player = sys.modules.get("player")
+    namespace = {"SCREEN_WIDTH": 1600, "SCREEN_HEIGHT": 900, "__name__": "uiscript",
+                 "DRAGON_SOUL_EQUIPMENT_SLOT_START": getattr(player, "DRAGON_SOUL_EQUIPMENT_SLOT_START", 122),
+                 "PLAYER_NAME_MAX_LEN": 24, "LOCALE_PATH": "locale/en", "LOCALE_PATH_COMMON": "locale/common"}
+    exec(compile(source, file_name, "exec"), namespace)
+    return namespace["window"]
+
+
+def _wave3c_modules(game):
+    """The modules of install_wave3c_ui (its docstring lists them)."""
+    modules = game.modules
+    player, item, skill, chr_ = modules["player"], modules["item"], modules["skill"], modules["chr"]
+    for name, value in _client_values(WAVE3C_PLAYER_CONSTANTS, "player").items():
+        setattr(player, name, value)
+    for name, value in _client_values(WAVE3C_SKILL_CONSTANTS, "skill").items():
+        setattr(skill, name, value)
+    for name, value in WAVE3C_ITEM_CONSTANTS.items():
+        setattr(item, name, value)
+    for name, value in WAVE3C_CHR_CONSTANTS.items():
+        setattr(chr_, name, value)
+    support_type = skill.SKILL_TYPE_SUPPORT
+
+    def set_skill(slot, index):
+        entry = game.skills.setdefault(int(slot), {"index": 0, "grade": 0, "level": 0, "cool": None, "active": False})
+        if entry.get("index") != index:
+            entry.update({"grade": 0, "level": 0, "cool": None, "active": False})
+        entry["index"] = index
+        entry.update(game.skill_by_index.get(index, {}))
+
+    def slot_of(index):
+        for slot in sorted(game.skills):
+            if game.skills[slot].get("index") == index:
+                return slot
+        return 0
+
+    def can_use(index):
+        if game.usable_skills:
+            return index in game.usable_skills
+        return bool(index) and game.skill_types.get(index, 1) != support_type
+
+    define(player, "SetSkill", set_skill)
+    define(player, "GetSkillSlotIndex", slot_of)
+    define(player, "GetName", lambda: game.name)
+    define(player, "GetGuildName", lambda: game.guild_name)
+    define(player, "GetEXP", lambda: game.exp)
+    define(player, "GetAlignmentData", lambda: game.alignment)
+    define(player, "IsActingEmotion", lambda: game.acting)
+    define(player, "GetTargetVID", lambda: game.target_vid)
+    define(player, "GetMainCharacterIndex", lambda: game.main_vid)
+    define(player, "RegisterEmotionIcon", lambda index, path: game.emotion_icons.__setitem__(index, path))
+    define(skill, "CanUseSkill", can_use)
+    define(skill, "CanLevelUpSkill", lambda index, level: bool(game.level_up.get(index, level < 20)))
+    define(skill, "GetSkillMaxLevel", lambda index: game.max_levels.get(index, 40))
+    define(skill, "GetSkillLevelLimit", lambda index: game.level_limits.get(index, 0))
+    define(skill, "GetSkillLevelUpPoint", lambda index: 1)
+    # The images are their files here: the slot windows compare them.
+    define(skill, "GetIconImage", lambda index: "d:/ymir work/ui/skill/test/%d_01.sub" % index if index else 0)
+    define(skill, "GetIconImageNew", lambda index, grade: (
+        "d:/ymir work/ui/skill/test/%d_%02d.sub" % (index, min(max(grade, 0), skill.SKILL_GRADE_COUNT - 1) + 1) if index else 0))
+    skill.GetIconImageFileNameNew = recorded(game.log, "skill.GetIconImageFileNameNew", lambda index, grade: (
+        "d:/ymir work/ui/skill/test/%d_%02d.sub" % (index, min(max(grade, 0), skill.SKILL_GRADE_COUNT - 1) + 1) if index else ""))
+    define(player, "GetEmotionIconImage", lambda index: game.emotion_icons.get(index, 0))
+    define(chr_, "RaceToJob", lambda race: int(race) % 4)
+    define(chr_, "IsNPC", lambda vid: vid in game.npc_vids)
+    define(chr_, "IsEnemy", lambda vid: vid in game.enemy_vids)
+    define(chr_, "GetNameByVID", lambda vid: game.vid_names.get(vid, "vid%d" % vid))
+    net = modules["net"]
+    define(net, "GetMainActorRace", lambda: game.race)
+    define(net, "GetMainActorSkillGroup", lambda: game.skill_group)
+    define(net, "GetMainActorEmpire", lambda: game.empire)
+
+    quest = modules["quest"]
+    quest.QUEST_MAX_NUM = QUEST_MAX_NUM
+
+    def quest_at(index):
+        return game.quests[index] if 0 <= index < len(game.quests) else {}
+
+    def last_time(index):
+        entry = quest_at(index)
+        name = entry.get("clock_name", "")
+        end = entry.get("clock_end")
+        return (name, int(end - game.state.now) if end is not None else 0)
+
+    define(quest, "GetQuestCount", lambda: len(game.quests))
+    define(quest, "GetQuestData", lambda index: (quest_at(index).get("name", ""), quest_at(index).get("icon_handle", 0),
+                                                 quest_at(index).get("counter_name", ""), quest_at(index).get("counter", 0)))
+    define(quest, "GetQuestIndex", lambda index: quest_at(index).get("index", 0))
+    define(quest, "GetQuestLastTime", last_time)
+    nuigame = modules.get("nuigame")
+    if nuigame is not None:
+        define(nuigame, "QuestIconFileName", lambda index: quest_at(index).get("icon", ""))
+    modules["effect"] = Recording("effect", game.log)
+    if "constInfo" not in game.loaded:
+        game.load("constInfo", "constinfo.py")
+    game.load("colorInfo", "colorinfo.py")
+    game.load("emotion", "emotion.py")
+    game.load("playerSettingModule", "playersettingmodule.py")
+    game.load("dragon_soul_refine_settings", "dragon_soul_refine_settings.py")

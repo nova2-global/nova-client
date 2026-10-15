@@ -896,12 +896,8 @@ class CooldownStore(CharacterTest):
 
 
 def legacy_minsec(seconds, minute="Min.", second="Sec."):
-    """ENGINE's format="minsec" (ElementCountdown.h): "<m><minute> <s><second>",
-    a zero part and its space left out, "" at 0."""
-    if seconds <= 0:
-        return ""
-    m, s = seconds // 60, seconds % 60
-    return (("%d%s" % (m, minute)) if m > 0 else "") + (" " if m > 0 and s > 0 else "") + (("%d%s" % (s, second)) if s > 0 else "")
+    """ENGINE's format="minsec" (nui_game_support.minsec_text)."""
+    return support.minsec_text(seconds, minute, second)
 
 
 class Clocks(CharacterTest):
@@ -919,6 +915,12 @@ class Clocks(CharacterTest):
             with self.subTest(seconds=seconds):
                 self.assertEqual(row["clock_prefix"] + legacy_minsec(remaining, locale.QUEST_MIN, locale.QUEST_SEC),
                                  window.questLastTimeList[0].GetText())
+        for seconds in (0, 1, 59, 60, 61, 3599, 3600):
+            with self.subTest(model_of=seconds):
+                expected = window._legacy_clock_text("Time left", seconds)
+                self.assertEqual(support.minsec_text(seconds, locale.QUEST_MIN, locale.QUEST_SEC, "Time left : ",
+                                                     locale.QUEST_TIMEOVER), expected,
+                                 "the countdown's text with its prefix and over is legacy's")
         row = model(window)["quests"][1]
         self.assertEqual((row["clock_end"], row["clock_text"]), (0.0, locale.QUEST_TIMEOVER), "a clock run out: legacy's text")
         row = model(window)["quests"][2]

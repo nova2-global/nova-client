@@ -183,13 +183,13 @@ class Interface(object):
 		return True
 		
 	def __MakeWindows(self):
-		wndCharacter = uiCharacter.CharacterWindow()
+		wndCharacter = nui_windows.make("character", uiCharacter.CharacterWindow, "nui_character.CharacterWindow")
 		wndInventory = nui_windows.make("inventory", uiInventory.InventoryWindow, "nui_inventory.InventoryWindow")
 		wndInventory.BindInterfaceClass(self)
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
-			wndDragonSoul = uiDragonSoul.DragonSoulWindow()	
+			wndDragonSoul = nui_windows.make("dragon-soul", uiDragonSoul.DragonSoulWindow, "nui_dragon_soul.DragonSoulWindow")	
 			wndDragonSoul.BindInterfaceClass(self)
-			wndDragonSoulRefine = uiDragonSoul.DragonSoulRefineWindow()
+			wndDragonSoulRefine = nui_windows.make("dragon-soul-refine", uiDragonSoul.DragonSoulRefineWindow, "nui_dragon_soul_refine.DragonSoulRefineWindow")
 		else:
 			wndDragonSoul = None
 			wndDragonSoulRefine = None

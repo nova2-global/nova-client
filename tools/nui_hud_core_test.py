@@ -1461,5 +1461,120 @@ class EngineWave3c(unittest.TestCase):
             self.assertFalse(world.module("nui_hud").has_engine_3c(), "no nuigame at all")
 
 
+class KeptBoardTest(unittest.TestCase):
+    """nui_hud.KeptBoard (P15 V-2, spec 8.1): OnDemand that keeps its board
+    loaded and hidden after the first show, its lists emptied."""
+
+    def setUp(self):
+        self.world = World(True)
+        self.world.__enter__()
+        self.addCleanup(self.world.__exit__)
+        self.hud = self.world.module("nui_hud")
+
+    def kept(self, document="nui/windows/test/test.rml"):
+        nui = self.world.game.modules["nui"]
+        hud = self.hud
+        log = []
+
+        class Board(nui.Window):
+            DOCUMENT = document
+            MODEL = "test"
+
+            def initial_model(self):
+                return {"value": 0, "cells": [], "cells_on": [1]}
+
+        class Facade(object):
+            def __init__(self):
+                self.value = 7
+                self.cells = [1, 2, 3]
+                self.place = None
+                self.boards = []
+                self.demand = hud.KeptBoard(self.make, self.restore, self.keep, self.empty)
+
+            def make(self):
+                board = Board()
+                self.boards.append(board)
+                log.append("make")
+                return board
+
+            def restore(self, board):
+                log.append("restore")
+                board.set(value=self.value, cells=self.cells, cells_on=[1])
+
+            def keep(self, board):
+                log.append("keep")
+                box = board.element_box("")
+                if box is not None:
+                    self.place = (box[0], box[1])
+
+            def empty(self, board):
+                log.append("empty")
+                board.set(cells_on=[])
+        return Facade(), log
+
+    def test_the_first_show_loads_a_hide_empties_and_hides_and_a_later_show_loads_nothing(self):
+        facade, log = self.kept()
+        demand = facade.demand
+        self.assertFalse(demand.loaded())
+        self.assertTrue(demand.show())
+        board = demand.board()
+        self.assertEqual(log, ["make", "restore"])
+        self.assertTrue(board.is_visible())
+        demand.hide()
+        self.assertIsNone(demand.board(), "board() answers only while it shows")
+        self.assertIs(demand.kept(), board)
+        self.assertTrue(demand.loaded())
+        self.assertTrue(board._doc, "the document stays loaded")
+        self.assertFalse(board.is_visible())
+        self.assertEqual(board.model["cells_on"], [], "its lists emptied while hidden")
+        self.assertEqual(log, ["make", "restore", "keep", "empty"])
+        loaded = list(self.world.game.loaded_documents())
+        self.assertTrue(demand.show())
+        self.assertIs(demand.board(), board, "the same board")
+        self.assertEqual(log, ["make", "restore", "keep", "empty", "restore"], "no make: nothing loads")
+        self.assertEqual(self.world.game.loaded_documents(), loaded)
+        self.assertEqual(board.model["cells_on"], [1])
+        self.assertTrue(board.is_visible())
+
+    def test_writes_while_hidden_reach_the_next_show_and_destroy_unloads(self):
+        facade, log = self.kept()
+        demand = facade.demand
+        demand.show()
+        board = demand.board()
+        self.world.game.state.boxes[(board.DOCUMENT, "")] = (40, 50, 300, 200)
+        demand.hide()
+        self.assertEqual(facade.place, (40, 50))
+        facade.value = 11
+        demand.show()
+        self.assertEqual(board.model["value"], 11)
+        demand.hide()
+        del log[:]
+        demand.destroy()
+        self.assertEqual(log, [], "a kept board's place was read at its hide")
+        self.assertFalse(board._doc)
+        self.assertFalse(demand.loaded())
+        self.assertFalse(demand.show(), "forgotten callbacks make nothing")
+        self.assertEqual(self.world.game.loaded_documents(), [])
+
+    def test_destroy_while_shown_keeps_the_place_first(self):
+        facade, log = self.kept()
+        facade.demand.show()
+        facade.demand.destroy()
+        self.assertEqual(log, ["make", "restore", "keep"])
+        self.assertFalse(facade.boards[0]._doc)
+
+    def test_the_probe_loads_nothing_until_the_first_open(self):
+        facade, log = self.kept()
+        self.assertTrue(facade.demand.probe())
+        self.assertEqual(log, ["make"])
+        self.assertFalse(facade.boards[0]._doc)
+        self.assertFalse(facade.demand.loaded())
+        self.assertEqual(self.world.game.loaded_documents(), [])
+        facade.demand.show()
+        facade.demand.hide()
+        self.assertTrue(facade.demand.probe(), "a kept board answers for itself")
+        self.assertEqual(log.count("make"), 2)
+
+
 if __name__ == "__main__":
     unittest.main()

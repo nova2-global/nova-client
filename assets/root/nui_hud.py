@@ -509,3 +509,75 @@ def has_engine_3c():
 	if not has_engine_3b():
 		return False
 	return getattr(sys.modules.get("nuigame"), "QuestIconFileName", None) is not None
+
+
+class KeptBoard(OnDemand):
+	"""OnDemand whose board is kept, hidden, after its first show (P15 V-2,
+	spec 8.1): a window opened often (the inventory, with its costume and
+	belt) then loads its document once, not at every open. The first show()
+	makes the board (as OnDemand), runs restore(board) and shows it; hide()
+	runs keep(board), then empty(board), which empties the document's lists
+	so the hidden document holds only its frame (RmlUi updates every loaded
+	document each frame), then hides it; a later show() runs restore(board),
+	which sets the lists again, and shows it, with no load. board() answers
+	the board only while it shows, so a window's model writes while hidden
+	stay in its state and restore() sets them at the next show, as with
+	OnDemand. probe() makes and destroys a board, as OnDemand's: nothing is
+	loaded before the first open. destroy() (the window's Destroy, at the
+	phase's end) unloads it. The callbacks are held weakly when they are
+	bound methods."""
+
+	def __init__(self, make, restore=None, keep=None, empty=None):
+		OnDemand.__init__(self, make, restore, keep)
+		self._empty = _weak_fn(empty)
+		self._kept = None
+
+	def loaded(self):
+		"""True while the board exists, shown or kept hidden."""
+		return self._board is not None or self._kept is not None
+
+	def kept(self):
+		"""The board while it is kept hidden, else None (tests, benches)."""
+		return self._kept
+
+	def probe(self):
+		board = self._board or self._kept
+		if board is not None:
+			return bool(board._doc)
+		return OnDemand.probe(self)
+
+	def show(self):
+		board = self._kept
+		if board is None:
+			return OnDemand.show(self)
+		self._kept = None
+		self._board = board
+		if self._restore is not None:
+			self._restore(board)
+		if self._board is not board:
+			# restore() hid it again (a caller's Hide inside it).
+			return False
+		return bool(board.show())
+
+	def hide(self):
+		board = self._board
+		if board is None:
+			return
+		self._board = None
+		if self._keep is not None:
+			self._keep(board)
+		if self._empty is not None:
+			self._empty(board)
+		board.hide()
+		self._kept = board
+
+	def destroy(self):
+		"""Unloads the board, shown or kept, and forgets the callbacks."""
+		shown, board = self._board, self._board or self._kept
+		self._board = self._kept = None
+		if board is not None:
+			# A kept board's place was read at its hide.
+			if shown is not None and self._keep is not None:
+				self._keep(board)
+			board.destroy()
+		self._make = self._restore = self._keep = self._empty = None

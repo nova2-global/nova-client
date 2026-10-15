@@ -1,0 +1,683 @@
+/* Classic skin overlay of nui/windows/character/character.rml: the legacy
+   character window (uiscript characterwindow.py, uicharacter.py) at 100%,
+   1dp to the legacy pixel. The stone board is 253 x 361 with each tab's
+   title bar (the status page's at 61, 7, 185 wide beside the face; the
+   others at 8, 7, 238 wide), the locale's tab strip at 0, 328 with the
+   four tab buttons over it, and each page's widgets at the uiscript's
+   places, as board coordinates (the skill, emotion and quest pages sit 24
+   lower than their uiscript y). The status labels are the locale's label
+   art (the controller binds art.<key>); the values are white on legacy's
+   parameter slots; the bars are legacy's horizontal bar. Every part is
+   placed against the panel (its containers stay static), but the face, a
+   stat row and the skill board, which hold their own parts. */
+
+/* Legacy's horizontal bar (ui.HorizontalBar): its 32 x 32 left and right
+   tiles and its center repeated between them. Sprites, so the decorator
+   knows each tile's size before the texture loads. */
+@spritesheet char-hbar-left-sheet
+{
+	src: "d:/ymir work/ui/pattern/horizontalbar_left.tga";
+	resolution: 1x;
+	char-hbar-left: 0px 0px 32px 32px;
+}
+@spritesheet char-hbar-center-sheet
+{
+	src: "d:/ymir work/ui/pattern/horizontalbar_center.tga";
+	resolution: 1x;
+	char-hbar-center: 0px 0px 32px 32px;
+}
+@spritesheet char-hbar-right-sheet
+{
+	src: "d:/ymir work/ui/pattern/horizontalbar_right.tga";
+	resolution: 1x;
+	char-hbar-right: 0px 0px 32px 32px;
+}
+@decorator char-hbar : nui-repeat-box
+{
+	left-image: char-hbar-left;
+	center-image: char-hbar-center;
+	right-image: char-hbar-right;
+}
+
+body.skin-classic.char
+{
+	width: 253dp;
+	height: 361dp;
+	min-width: 0;
+}
+
+/* --- The frame ------------------------------------------------------------------- */
+
+body.skin-classic.char .char__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 238dp;
+	margin: 0;
+	z-index: 1;
+	/* Its shadow lies over the status page's name slots: the handle and the
+	   close button take the pointer, the rest of the bar does not. */
+	pointer-events: none;
+}
+body.skin-classic.char.char--status .char__titlebar
+{
+	left: 61dp;
+	width: 185dp;
+}
+body.skin-classic.char .char__handle, body.skin-classic.char .char__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.char .char__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 220dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.char.char--status .char__titlebar .nui-window__close
+{
+	left: 167dp;
+}
+body.skin-classic.char .char__body
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 253dp;
+	height: 361dp;
+	padding: 0;
+}
+body.skin-classic.char .char-panel
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 253dp;
+	height: 361dp;
+}
+/* The art and the bars show; the modern labels do not (the art holds them). */
+body.skin-classic.char .char-art
+{
+	display: block;
+	position: absolute;
+}
+body.skin-classic.char .char-bar
+{
+	display: block;
+	position: absolute;
+	width: 223dp;
+	height: 32dp;
+	decorator: char-hbar;
+}
+body.skin-classic.char .char-chip__label, body.skin-classic.char .char-points__label,
+body.skin-classic.char .char-stat__label, body.skin-classic.char .char-tab__label,
+body.skin-classic.char .char-divider--base .char-divider__label, body.skin-classic.char .char-divider--extra .char-divider__label
+{
+	display: none;
+}
+/* The containers keep no box of their own. */
+body.skin-classic.char .char-head, body.skin-classic.char .char-who, body.skin-classic.char .char-who__line,
+body.skin-classic.char .char-progress,
+body.skin-classic.char .char-divider, body.skin-classic.char .char-base, body.skin-classic.char .char-extra,
+body.skin-classic.char .char-stats, body.skin-classic.char .char-groups, body.skin-classic.char .char-quests,
+body.skin-classic.char .char-quest-rows
+{
+	display: block;
+	height: auto;
+	border-width: 0;
+	padding: 0;
+	margin: 0;
+}
+
+/* --- Values: white on legacy's parameter slots, centered ------------------------- */
+
+body.skin-classic.char .char-chip__value, body.skin-classic.char .char-stat__value,
+body.skin-classic.char .char-points__value
+{
+	position: absolute;
+	color: var(--classic-label-white);
+	font-weight: normal;
+	line-height: 14dp;
+	text-align: center;
+	white-space: nowrap;
+}
+
+/* --- The status page (uiscript Character_Page) ----------------------------------- */
+
+body.skin-classic.char .char-face
+{
+	position: absolute;
+	left: 7dp;
+	top: 7dp;
+	width: 53dp;
+	height: 53dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/box_face.sub");
+}
+body.skin-classic.char .char-face__image
+{
+	left: 4dp;
+	top: 4dp;
+	width: auto;
+	height: auto;
+}
+body.skin-classic.char .char-name, body.skin-classic.char .char-guild
+{
+	position: absolute;
+	top: 34dp;
+	width: 90dp;
+	height: 18dp;
+	color: var(--classic-label-white);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	line-height: 18dp;
+	text-align: center;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
+}
+/* The name slot: 109 alone, 153 beside the guild's (RefreshCharacter). */
+body.skin-classic.char .char-name
+{
+	left: 109dp;
+}
+body.skin-classic.char.char--guild .char-name
+{
+	left: 153dp;
+}
+body.skin-classic.char .char-guild
+{
+	left: 60dp;
+}
+body.skin-classic.char .char-chip
+{
+	position: absolute;
+	top: 61dp;
+	height: 42dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-chip--level { left: 12dp; width: 37dp; }
+body.skin-classic.char .char-chip--exp { left: 56dp; width: 90dp; }
+body.skin-classic.char .char-chip--rest { left: 153dp; width: 90dp; }
+body.skin-classic.char .char-chip .char-art
+{
+	left: 0;
+	top: 0;
+}
+/* The values centered at x 19 (the level) or 46, 19 below the art's top. */
+body.skin-classic.char .char-chip__value
+{
+	left: 1dp;
+	top: 19dp;
+	width: 90dp;
+}
+body.skin-classic.char .char-chip--level .char-chip__value
+{
+	left: -11dp;
+	width: 60dp;
+}
+body.skin-classic.char .char-divider--base .char-bar { left: 15dp; top: 108dp; }
+body.skin-classic.char .char-art--std { left: 16dp; top: 109dp; }
+body.skin-classic.char .char-points
+{
+	position: absolute;
+	width: 75dp;
+	height: 14dp;
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-points .char-art
+{
+	left: 0;
+	top: 0;
+}
+/* The points centered at x 62 of the label art. */
+body.skin-classic.char .char-points__value
+{
+	left: 42dp;
+	top: 0;
+	width: 40dp;
+}
+body.skin-classic.char .char-points--stat { left: 153dp; top: 111dp; }
+body.skin-classic.char .char-art--std1 { left: 20dp; top: 131dp; }
+body.skin-classic.char .char-art--std2 { left: 103dp; top: 130dp; }
+body.skin-classic.char .char-stat
+{
+	position: absolute;
+	height: 18dp;
+}
+body.skin-classic.char .char-stat__value
+{
+	left: 0;
+	top: 3dp;
+	width: 100%;
+}
+/* The base stats: the small slot, the plus button 41, 3 in and the minus
+   button left of the slot at 12 (uiscript HTH_Label, HTH_Minus). */
+body.skin-classic.char .char-stat--ht, body.skin-classic.char .char-stat--iq,
+body.skin-classic.char .char-stat--st, body.skin-classic.char .char-stat--dx
+{
+	left: 53dp;
+	width: 39dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_00.sub");
+}
+body.skin-classic.char .char-stat--ht { top: 132dp; }
+body.skin-classic.char .char-stat--iq { top: 155dp; }
+body.skin-classic.char .char-stat--st { top: 178dp; }
+body.skin-classic.char .char-stat--dx { top: 201dp; }
+body.skin-classic.char .char-stat--ht .char-stat__value, body.skin-classic.char .char-stat--iq .char-stat__value,
+body.skin-classic.char .char-stat--st .char-stat__value, body.skin-classic.char .char-stat--dx .char-stat__value
+{
+	left: 0;
+	width: 40dp;
+}
+body.skin-classic.char .char-steps
+{
+	display: block;
+}
+body.skin-classic.char .char-step
+{
+	position: absolute;
+	top: 3dp;
+	width: 13dp;
+	min-width: 0;
+	height: 13dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	transform: none;
+}
+body.skin-classic.char .char-step--plus
+{
+	left: 41dp;
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_up.sub");
+}
+body.skin-classic.char .char-step--plus:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_over.sub");
+}
+body.skin-classic.char .char-step--plus:active
+{
+	background-color: transparent;
+	transform: none;
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_down.sub");
+}
+body.skin-classic.char .char-step--minus
+{
+	left: -41dp;
+	decorator: image("d:/ymir work/ui/game/windows/btn_minus_up.sub");
+}
+body.skin-classic.char .char-step--minus:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_minus_over.sub");
+}
+body.skin-classic.char .char-step--minus:active
+{
+	background-color: transparent;
+	transform: none;
+	decorator: image("d:/ymir work/ui/game/windows/btn_minus_down.sub");
+}
+/* HP, SP, attack, defense: the large slot at 148 (uiscript HEL_Label ...). */
+body.skin-classic.char .char-stat--hp, body.skin-classic.char .char-stat--sp,
+body.skin-classic.char .char-stat--att, body.skin-classic.char .char-stat--def
+{
+	left: 148dp;
+	width: 90dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
+}
+body.skin-classic.char .char-stat--hp { top: 132dp; }
+body.skin-classic.char .char-stat--sp { top: 155dp; }
+body.skin-classic.char .char-stat--att { top: 178dp; }
+body.skin-classic.char .char-stat--def { top: 201dp; }
+body.skin-classic.char .char-divider--extra .char-bar { left: 15dp; top: 227dp; }
+body.skin-classic.char .char-art--ext { left: 16dp; top: 229dp; }
+body.skin-classic.char .char-art--ext1 { left: 14dp; top: 252dp; }
+body.skin-classic.char .char-art--ext2 { left: 131dp; top: 253dp; }
+/* The extra stats: the middle slot at 69 and 186 (uiscript MOV_Label ...). */
+body.skin-classic.char .char-stat--mspd, body.skin-classic.char .char-stat--aspd, body.skin-classic.char .char-stat--cspd,
+body.skin-classic.char .char-stat--matt, body.skin-classic.char .char-stat--mdef, body.skin-classic.char .char-stat--er
+{
+	width: 52dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_01.sub");
+}
+body.skin-classic.char .char-stat--mspd { left: 69dp; top: 254dp; }
+body.skin-classic.char .char-stat--aspd { left: 69dp; top: 277dp; }
+body.skin-classic.char .char-stat--cspd { left: 69dp; top: 300dp; }
+body.skin-classic.char .char-stat--matt { left: 186dp; top: 254dp; }
+body.skin-classic.char .char-stat--mdef { left: 186dp; top: 277dp; }
+body.skin-classic.char .char-stat--er { left: 186dp; top: 300dp; }
+
+/* --- The skill page (uiscript Skill_Page, 24 lower) ------------------------------- */
+
+body.skin-classic.char .char-divider--groups .char-bar { left: 15dp; top: 41dp; }
+/* The group buttons: legacy's radio buttons (skill_tab_button art, 43 x 16)
+   at 5, 50 and 95 of the bar, the label centered on them. */
+body.skin-classic.char .char-group
+{
+	position: absolute;
+	top: 43dp;
+	width: 43dp;
+	min-width: 0;
+	height: 16dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	line-height: 16dp;
+	transform: none;
+	decorator: image("d:/ymir work/ui/game/windows/skill_tab_button_01.sub");
+}
+body.skin-classic.char .char-group:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/skill_tab_button_02.sub");
+}
+body.skin-classic.char .char-group:active, body.skin-classic.char .char-group.is-selected
+{
+	background-color: transparent;
+	border-width: 0;
+	transform: none;
+	decorator: image("d:/ymir work/ui/game/windows/skill_tab_button_03.sub");
+}
+body.skin-classic.char .char-group--col0 { left: 20dp; }
+body.skin-classic.char .char-group--col1 { left: 65dp; }
+body.skin-classic.char .char-group--col2 { left: 110dp; }
+/* The group's name (Active_Skill_Group_Name, legacy's #ffe3ad), and the
+   support title (Support_Skill_Group_Name) in the same color. */
+body.skin-classic.char .char-group-name
+{
+	position: absolute;
+	left: 22dp;
+	top: 43dp;
+	color: var(--classic-skill-group-text);
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.char .char-points--active { left: 160dp; top: 44dp; }
+body.skin-classic.char .char-skills-board
+{
+	position: absolute;
+	left: 13dp;
+	top: 62dp;
+	width: 227dp;
+	height: 152dp;
+	decorator: image("d:/ymir work/ui/game/windows/skill_board.sub");
+}
+body.skin-classic.char .char-skills
+{
+	position: absolute;
+	left: 3dp;
+	top: 0;
+	width: 223dp;
+	height: 152dp;
+}
+/* The slots at the uiscript's places in Skill_Active_Slot. */
+body.skin-classic.char .char-skill-place { width: 32dp; height: 32dp; }
+body.skin-classic.char .char-skill--1 { left: 1dp; top: 4dp; }
+body.skin-classic.char .char-skill--21 { left: 38dp; top: 4dp; }
+body.skin-classic.char .char-skill--41 { left: 75dp; top: 4dp; }
+body.skin-classic.char .char-skill--3 { left: 1dp; top: 40dp; }
+body.skin-classic.char .char-skill--23 { left: 38dp; top: 40dp; }
+body.skin-classic.char .char-skill--43 { left: 75dp; top: 40dp; }
+body.skin-classic.char .char-skill--5 { left: 1dp; top: 76dp; }
+body.skin-classic.char .char-skill--25 { left: 38dp; top: 76dp; }
+body.skin-classic.char .char-skill--45 { left: 75dp; top: 76dp; }
+body.skin-classic.char .char-skill--7 { left: 1dp; top: 112dp; }
+body.skin-classic.char .char-skill--27 { left: 38dp; top: 112dp; }
+body.skin-classic.char .char-skill--47 { left: 75dp; top: 112dp; }
+body.skin-classic.char .char-skill--2 { left: 113dp; top: 4dp; }
+body.skin-classic.char .char-skill--22 { left: 150dp; top: 4dp; }
+body.skin-classic.char .char-skill--42 { left: 187dp; top: 4dp; }
+body.skin-classic.char .char-skill--4 { left: 113dp; top: 40dp; }
+body.skin-classic.char .char-skill--24 { left: 150dp; top: 40dp; }
+body.skin-classic.char .char-skill--44 { left: 187dp; top: 40dp; }
+body.skin-classic.char .char-skill--6 { left: 113dp; top: 76dp; }
+body.skin-classic.char .char-skill--26 { left: 150dp; top: 76dp; }
+body.skin-classic.char .char-skill--46 { left: 187dp; top: 76dp; }
+body.skin-classic.char .char-skill--8 { left: 113dp; top: 112dp; }
+body.skin-classic.char .char-skill--28 { left: 150dp; top: 112dp; }
+body.skin-classic.char .char-skill--48 { left: 187dp; top: 112dp; }
+/* No dead zone (P14b): the slots stand 5 apart across (6 between the two
+   blocks) and 4 down, so each slot's hit box reaches half the gap to its
+   neighbors. */
+body.skin-classic.char .char-skill
+{
+	nui-hit-outset: 2dp 2.5dp;
+}
+body.skin-classic.char .char-skill--41 .char-skill, body.skin-classic.char .char-skill--43 .char-skill,
+body.skin-classic.char .char-skill--45 .char-skill, body.skin-classic.char .char-skill--47 .char-skill
+{
+	nui-hit-outset: 2dp 3dp 2dp 2.5dp;
+}
+body.skin-classic.char .char-skill--2 .char-skill, body.skin-classic.char .char-skill--4 .char-skill,
+body.skin-classic.char .char-skill--6 .char-skill, body.skin-classic.char .char-skill--8 .char-skill
+{
+	nui-hit-outset: 2dp 2.5dp 2dp 3dp;
+}
+/* A column that is not the skill's grade: legacy's disabled cover art over
+   the icon at full alpha. */
+body.skin-classic.char .char-skill.is-unavailable .nui-slot__icon
+{
+	opacity: 1;
+}
+body.skin-classic.char .char-skill.is-unavailable .nui-slot__cover
+{
+	decorator: image("d:/ymir work/ui/public/slot_cover_button_04.sub");
+}
+body.skin-classic.char .char-divider--support .char-bar { left: 15dp; top: 224dp; }
+body.skin-classic.char .char-divider--support .char-divider__label
+{
+	position: absolute;
+	left: 22dp;
+	top: 226dp;
+	color: var(--classic-skill-group-text);
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.char .char-points--support { left: 160dp; top: 227dp; }
+/* Skill_ETC_Slot: 6 x 2 at 18, 245, 32px slots 5 and 4 apart. */
+body.skin-classic.char .char-support
+{
+	position: absolute;
+	left: 18dp;
+	top: 245dp;
+	width: 222dp;
+}
+body.skin-classic.char .char-support-place
+{
+	width: 32dp;
+	height: 32dp;
+	margin: 0 5dp 4dp 0;
+}
+
+/* --- The emotion page (uiscript Emoticon_Page, 24 lower) -------------------------- */
+
+body.skin-classic.char .char-divider--solo .char-bar { left: 12dp; top: 35dp; }
+body.skin-classic.char .char-divider--dual .char-bar { left: 12dp; top: 182dp; }
+body.skin-classic.char .char-divider--solo .char-divider__label,
+body.skin-classic.char .char-divider--dual .char-divider__label
+{
+	position: absolute;
+	left: 15dp;
+	color: var(--text);
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.char .char-divider--solo .char-divider__label { top: 37dp; }
+body.skin-classic.char .char-divider--dual .char-divider__label { top: 184dp; }
+body.skin-classic.char .char-emotes
+{
+	position: absolute;
+	left: 30dp;
+}
+body.skin-classic.char .char-emotes--solo { top: 57dp; }
+body.skin-classic.char .char-emotes--dual { top: 204dp; }
+
+/* --- The quest page (uiscript Quest_Page, 24 lower) ------------------------------- */
+
+/* Quest_Slot: 1 x 5 at 18, 44, 60 apart, the quest slot's base under a
+   quest only (RefreshQuest hides it on an empty row). */
+body.skin-classic.char .char-quest-cells
+{
+	position: absolute;
+	left: 18dp;
+	top: 44dp;
+	gap: 28dp;
+}
+body.skin-classic.char .char-quest-cell
+{
+	decorator: none;
+}
+body.skin-classic.char .char-quest-cell.char-quest-cell--base
+{
+	decorator: image("d:/ymir work/ui/game/quest/slot_base.sub");
+}
+/* Each row's name, time and count at 60, 14 + 60k (and 16 and 32 lower). */
+body.skin-classic.char .char-quest-rows
+{
+	position: absolute;
+	left: 60dp;
+	top: 38dp;
+	width: 140dp;
+}
+body.skin-classic.char .char-quest
+{
+	display: block;
+	height: 60dp;
+}
+body.skin-classic.char .char-quest__name, body.skin-classic.char .char-quest__clock,
+body.skin-classic.char .char-quest__counter
+{
+	display: block;
+	height: 16dp;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	line-height: 14dp;
+	overflow: visible;
+}
+/* Quest_ScrollBar: 17 wide, 25 in from the page's right, 290 tall. Its
+   position shows as the track's fill (legacy moves a thumb). */
+body.skin-classic.char .char-quest-scroll
+{
+	display: block;
+	position: absolute;
+	left: 208dp;
+	top: 36dp;
+	width: 17dp;
+	height: 290dp;
+}
+body.skin-classic.char .char-quest-scroll__up, body.skin-classic.char .char-quest-scroll__down
+{
+	position: absolute;
+	left: 1dp;
+	width: 15dp;
+	height: 16dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	transform: none;
+}
+body.skin-classic.char .char-quest-scroll__up
+{
+	top: 0;
+	decorator: image(classic-scroll-up-01);
+}
+body.skin-classic.char .char-quest-scroll__up:hover
+{
+	background-color: transparent;
+	decorator: image(classic-scroll-up-02);
+}
+body.skin-classic.char .char-quest-scroll__up:active
+{
+	background-color: transparent;
+	transform: none;
+	decorator: image(classic-scroll-up-03);
+}
+body.skin-classic.char .char-quest-scroll__down
+{
+	top: 274dp;
+	decorator: image(classic-scroll-down-01);
+}
+body.skin-classic.char .char-quest-scroll__down:hover
+{
+	background-color: transparent;
+	decorator: image(classic-scroll-down-02);
+}
+body.skin-classic.char .char-quest-scroll__down:active
+{
+	background-color: transparent;
+	transform: none;
+	decorator: image(classic-scroll-down-03);
+}
+body.skin-classic.char .char-quest-scroll progress.char-quest-scroll__track
+{
+	position: absolute;
+	left: 2dp;
+	top: 17dp;
+	width: 13dp;
+	height: 256dp;
+	border-width: 1dp;
+	border-radius: 0;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+	decorator: none;
+}
+body.skin-classic.char .char-quest-scroll progress.char-quest-scroll__track fill
+{
+	margin: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thumb;
+}
+
+/* --- The tabs: the locale's strip with the four buttons over it -------------------- */
+
+body.skin-classic.char .char-tabs
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 328dp;
+	width: 253dp;
+	height: 37dp;
+	padding: 0;
+}
+body.skin-classic.char .char-art--tab
+{
+	left: 0;
+	top: 0;
+}
+body.skin-classic.char .char-tab, body.skin-classic.char .char-tab:hover, body.skin-classic.char .char-tab:active,
+body.skin-classic.char .char-tab.is-selected
+{
+	position: absolute;
+	top: 5dp;
+	height: 27dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	transform: none;
+	decorator: none;
+}
+body.skin-classic.char .char-tab--status { left: 6dp; width: 53dp; }
+body.skin-classic.char .char-tab--skill { left: 61dp; width: 67dp; }
+body.skin-classic.char .char-tab--emoticon { left: 130dp; width: 61dp; }
+body.skin-classic.char .char-tab--quest { left: 192dp; width: 55dp; }

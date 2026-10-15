@@ -1,0 +1,515 @@
+/* The character window's modern look (P15 spec 4.2): a 296dp window opened
+   at legacy's place (24dp from the screen's left, its top 199dp above the
+   screen's middle: legacy's (H - 37 - 361) / 2), the tabs at the bottom as
+   legacy has them, one panel at a time:
+   - status: the face in an accent ring, the name and guild, level and exp
+     chips, the base stats with their minus and plus steps beside HP, SP,
+     attack and defense, the extra stats;
+   - skills: the group choices or the group's name and the points, the
+     active grid as legacy lays it out (odd skills left, even right, a
+     column per grade), each cell's plus button over its lower left corner,
+     the support grid;
+   - emotions: the solo and mutual grids;
+   - quests: the icon cells beside each row's name, clock and counter, the
+     scroll arrows and their track.
+   Classic (legacy's 253 x 361 board, its art and places at 100%, the
+   locale's label art): skins/classic/windows/character.rcss. */
+
+body.char
+{
+	left: 24dp;
+	top: 50%;
+	margin-top: -199dp;
+	width: 296dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+/* Placed from Python (where the player left it): the placement writes left
+   and top only, so the centering margin gives way. */
+body.char.char--placed
+{
+	margin-top: 0;
+}
+.char button
+{
+	tab-index: none;
+}
+/* One height for every tab, so the window keeps its size as the tabs
+   change: the skill page's, the tallest. */
+.char__body
+{
+	box-sizing: border-box;
+	height: 342dp;
+	padding: 10dp var(--space-3);
+}
+.char-panel
+{
+	display: flex;
+	flex-direction: column;
+	gap: 4dp;
+}
+/* The locale's label art and the legacy bars are classic's. */
+.char-art, .char-bar
+{
+	display: none;
+}
+
+/* --- Shared rows: a divider with its label and a points pill ------------------- */
+
+.char-divider
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	height: 24dp;
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+}
+.char-divider__label
+{
+	flex: 1 1 auto;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.char-points
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 0 0 auto;
+	gap: var(--space-1);
+	height: 18dp;
+	padding: 0 var(--space-2);
+	background-color: var(--accent);
+	border-radius: 9dp;
+}
+.char-points__label, .char-points__value
+{
+	color: var(--accent-text);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 18dp;
+	white-space: nowrap;
+}
+
+/* --- Status ------------------------------------------------------------------------- */
+
+.char-head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10dp;
+	height: 44dp;
+}
+.char-face
+{
+	position: relative;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 48dp;
+	height: 48dp;
+	background-color: var(--surface-sunken);
+	border-width: 2dp;
+	border-color: var(--accent);
+	border-radius: 24dp;
+}
+.char-face__image
+{
+	position: absolute;
+	left: 1dp;
+	top: 1dp;
+	width: 42dp;
+	height: 42dp;
+}
+.char-who
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.char-name
+{
+	color: var(--text);
+	font-size: var(--font-lg);
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* The level pill and the guild under the name. */
+.char-who__line
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 6dp;
+	margin-top: 2dp;
+}
+.char-guild
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.char-progress
+{
+	display: flex;
+	flex-direction: row;
+	gap: 4dp;
+}
+/* EXP and Remaining EXP share the row equally: each holds the
+   foundation's 13 digits (EXP_DIGITS) and its label in every locale
+   ("Необходимый опыт", 106dp) at every scale. */
+.char-chip
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-width: 0;
+	padding: 3dp 6dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+.char-chip--level
+{
+	flex: 0 0 auto;
+	flex-direction: row;
+	align-items: center;
+	gap: 4dp;
+	height: 18dp;
+	padding: 0 8dp;
+	border-radius: 9dp;
+}
+.char-chip--level .char-chip__label, .char-chip--level .char-chip__value
+{
+	line-height: 16dp;
+}
+.char-chip__label
+{
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.char-chip__value
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.char-base, .char-extra
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-3);
+}
+.char-stats
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-width: 0;
+	gap: 1dp;
+}
+.char-stat
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-1);
+	height: 21dp;
+}
+.char-stat__label
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.char-stat__value
+{
+	flex: 0 0 auto;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	white-space: nowrap;
+	text-align: right;
+}
+/* The base stats: each column as wide as its content, the rest shared,
+   so Russian's full words on the left ("Подвижность", the steps) and
+   Spanish's on the right ("Daño de ataque", a range) both fit. */
+.char-base > .char-stats
+{
+	flex: 1 1 auto;
+}
+/* The extra stats: the label over its value, as the exp chips, since their
+   legacy terms run to 124dp at the extra small size ("Rapidité de
+   mouvement"); legacy's own art stacks them on two lines. */
+.char-extra
+{
+	gap: var(--space-3);
+}
+.char-extra .char-stats
+{
+	gap: 2dp;
+}
+.char-extra .char-stat
+{
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	gap: 0;
+	height: 26dp;
+}
+.char-extra .char-stat__label
+{
+	flex: 0 0 auto;
+	font-size: var(--font-xs);
+	line-height: 13dp;
+}
+.char-extra .char-stat__value
+{
+	text-align: left;
+	line-height: 14dp;
+}
+/* The steps keep their width when a button is hidden, so the values line up. */
+.char-steps
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	flex: 0 0 44dp;
+	gap: var(--space-1);
+}
+.char-step
+{
+	width: 20dp;
+	height: 20dp;
+	line-height: 18dp;
+}
+.char-step .nui-glyph
+{
+	transform: scale(0.75);
+}
+.char-step--plus .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+
+/* --- Skills ------------------------------------------------------------------------- */
+
+.char-divider--groups
+{
+	height: 30dp;
+}
+.char-groups
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 auto;
+	min-width: 0;
+	gap: var(--space-1);
+}
+.char-group
+{
+	height: 26dp;
+	padding: 0 var(--space-2);
+	line-height: 24dp;
+	font-size: var(--font-sm);
+}
+.char-group__label
+{
+	pointer-events: none;
+}
+.char-group-name
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	white-space: nowrap;
+}
+/* The active grid as legacy lays it out (uiscript Skill_Active_Slot): odd
+   skills in the left block, even ones in the right, a row per pair, a
+   column per grade on the 44dp pitch, the blocks 16dp apart. */
+.char-skills-board
+{
+	position: relative;
+	width: 272dp;
+	height: 172dp;
+}
+.char-skills
+{
+	display: block;
+	position: relative;
+	width: 272dp;
+	height: 172dp;
+}
+.char-skill-place
+{
+	position: absolute;
+	width: 40dp;
+	height: 40dp;
+}
+.char-skill--1 { left: 0; top: 0; }
+.char-skill--21 { left: 44dp; top: 0; }
+.char-skill--41 { left: 88dp; top: 0; }
+.char-skill--3 { left: 0; top: 44dp; }
+.char-skill--23 { left: 44dp; top: 44dp; }
+.char-skill--43 { left: 88dp; top: 44dp; }
+.char-skill--5 { left: 0; top: 88dp; }
+.char-skill--25 { left: 44dp; top: 88dp; }
+.char-skill--45 { left: 88dp; top: 88dp; }
+.char-skill--7 { left: 0; top: 132dp; }
+.char-skill--27 { left: 44dp; top: 132dp; }
+.char-skill--47 { left: 88dp; top: 132dp; }
+.char-skill--2 { left: 144dp; top: 0; }
+.char-skill--22 { left: 188dp; top: 0; }
+.char-skill--42 { left: 232dp; top: 0; }
+.char-skill--4 { left: 144dp; top: 44dp; }
+.char-skill--24 { left: 188dp; top: 44dp; }
+.char-skill--44 { left: 232dp; top: 44dp; }
+.char-skill--6 { left: 144dp; top: 88dp; }
+.char-skill--26 { left: 188dp; top: 88dp; }
+.char-skill--46 { left: 232dp; top: 88dp; }
+.char-skill--8 { left: 144dp; top: 132dp; }
+.char-skill--28 { left: 188dp; top: 132dp; }
+.char-skill--48 { left: 232dp; top: 132dp; }
+/* A grade column that is not the skill's: the disabled cover's dim look. */
+.char-skill.is-unavailable .nui-slot__icon
+{
+	opacity: 0.4;
+}
+.char-support-place
+{
+	position: relative;
+	width: 40dp;
+	height: 40dp;
+}
+.char-support
+{
+	align-self: center;
+}
+
+/* --- Emotions ---------------------------------------------------------------------- */
+
+.char-emotes
+{
+	align-self: center;
+}
+
+/* --- Quests -------------------------------------------------------------------------- */
+
+.char-quests
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-2);
+}
+.char-quest-cells
+{
+	gap: 12dp;
+}
+.char-quest-rows
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-width: 0;
+	gap: 12dp;
+}
+.char-quest
+{
+	display: flex;
+	flex-direction: column;
+	height: 40dp;
+}
+.char-quest.is-hidden
+{
+	visibility: hidden;
+}
+.char-quest__name
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.char-quest__clock, .char-quest__counter
+{
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.char-quest-scroll
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 0 0 auto;
+	gap: var(--space-1);
+	width: 24dp;
+}
+.char-quest-scroll__up, .char-quest-scroll__down
+{
+	width: 24dp;
+	height: 24dp;
+	line-height: 22dp;
+}
+/* A vertical gauge: the position down the list (a component gauge is a
+   6dp bar across). */
+.char-quest-scroll progress.char-quest-scroll__track
+{
+	width: 6dp;
+	height: 192dp;
+}
+
+/* --- Tabs ---------------------------------------------------------------------------- */
+
+/* The tabs share the row by their labels, at the extra small size: the
+   four Greek ones are 251dp there (274dp at the small size), and the row
+   holds 284dp, so every locale keeps its whole words. */
+.char-tabs
+{
+	display: flex;
+	flex-direction: row;
+	gap: 2dp;
+	padding: 0 6dp var(--space-3) 6dp;
+}
+.char-tab
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 28dp;
+	padding: 0 2dp;
+	line-height: 26dp;
+	font-size: var(--font-xs);
+	white-space: nowrap;
+}
+.char-tab__label
+{
+	pointer-events: none;
+}

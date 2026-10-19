@@ -1177,5 +1177,53 @@ class ElementCounts(unittest.TestCase):
         self.assertLess(counts["skill"], 700, counts)
 
 
+
+class EdgePlace(CharacterTest):
+    """Integration I-1 (validation: confirmed): the NovaUI quest buttons
+    along the left edge draw opaque tiles and labels over the window's
+    legacy place and take its tab presses, so in the modern looks the window
+    opens right of them, at legacy's height; classic keeps legacy's place.
+    A place the window was left at wins at the next open (D10)."""
+
+    def world(self, right_px, theme="modern-dark", scale=1.0):
+        world = World(True)
+        state = world.game.state
+        state.theme, state.scale = theme, scale
+        edge = types.ModuleType("nui_edge_buttons")
+        edge.quest_stack_right = lambda: right_px
+        world.game.put("nui_edge_buttons", edge)
+        return world
+
+    def placed(self, window):
+        return [call for call in board(window).calls if call[0] == "set_position"]
+
+    def test_the_modern_window_opens_right_of_the_quest_buttons(self):
+        for theme, scale in (("modern-dark", 1.0), ("modern-light", 1.5)):
+            with self.subTest(theme=theme, scale=scale):
+                world = self.world(232, theme, scale)
+                window = world.open("STATUS")
+                left, top = 232 / scale + 8, 900 / scale / 2.0 - 199
+                self.assertEqual(self.placed(window), [("set_position", left, top, (0.0, 0.0))])
+                self.assertTrue(model(window)["placed"])
+
+    def test_classic_and_a_clear_edge_keep_legacy_s_place(self):
+        for right, theme in ((232, "classic"), (0, "modern-dark"), (16, "modern-dark")):
+            with self.subTest(right=right, theme=theme):
+                window = self.world(right, theme).open("STATUS")
+                self.assertEqual(self.placed(window), [])
+                self.assertFalse(model(window)["placed"])
+        window = World(True).open("STATUS")      # no NovaUI edge buttons at all
+        self.assertEqual(self.placed(window), [])
+
+    def test_the_place_it_was_left_at_wins_at_the_next_open(self):
+        world = self.world(232)
+        window = world.open("STATUS")
+        world.game.state.boxes[(DOCUMENT, "")] = (400.0, 120.0, 296.0, 398.0)
+        with world.game, quiet():
+            world.game.press_escape()
+            window.Show()
+        self.assertEqual(self.placed(window)[-1], ("set_position", 400.0, 120.0, (0.0, 0.0)))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -25,6 +25,8 @@ list of zero or one entry. The board exists only while the window shows
 proxies and the board takes their last state at its next show. Every
 count comes from nui_limits.current()."""
 
+import sys
+
 import localeInfo
 import player
 import quest
@@ -42,6 +44,12 @@ import nui_windows
 
 DOCUMENT = "nui/windows/character/character.rml"
 KEY = "character"
+# Legacy's place (uiscript/characterwindow.py:18-19: x 24, y (H - 37 - 361) / 2,
+# so H / 2 - 199) and, in the modern looks, the gap kept to the quest
+# buttons along the left edge (I-1), in dp.
+LEGACY_LEFT_DP = 24
+LEGACY_HALF_HEIGHT_DP = 199
+EDGE_GAP_DP = 8
 TABS = ("STATUS", "SKILL", "EMOTICON", "QUEST")
 PANELS = {"STATUS": "panel_status", "SKILL": "panel_skill", "EMOTICON": "panel_emoticon", "QUEST": "panel_quest"}
 # The status texts legacy's RefreshStatus sets, by child name, and their model keys.
@@ -400,10 +408,28 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 
 	def _restore_board(self, board):
 		board.set(**self._state)
-		if self._place is not None:
+		place = self._place if self._place is not None else self._edge_place(board)
+		if place is not None:
 			self._state["placed"] = True
 			board.set(placed=True)
-			board.set_position(self._place[0], self._place[1])
+			board.set_position(place[0], place[1])
+
+	def _edge_place(self, board):
+		"""The first open's place in the modern looks (P15 fix stage, I-1):
+		the NovaUI quest buttons along the left edge are opaque tiles and
+		labels drawn over the window's legacy place (24, (H - 37 - 361) / 2;
+		they are TOP_MOST, as legacy's text buttons), and they take its tab
+		presses, so the window opens right of them, at legacy's height. None
+		in classic (legacy's place) or with no quest button over the place."""
+		if board.has_class("skin-classic"):
+			return None
+		edge = sys.modules.get("nui_edge_buttons")
+		right = edge.quest_stack_right() if edge is not None and hasattr(edge, "quest_stack_right") else 0
+		scale = nui.get_scale() or 1.0
+		left = right / scale + EDGE_GAP_DP
+		if right <= 0 or left <= LEGACY_LEFT_DP:
+			return None
+		return (left, wndMgr.GetScreenHeight() / scale / 2.0 - LEGACY_HALF_HEIGHT_DP)
 
 	def _keep_board(self, board):
 		"""Legacy's window keeps the place it was dragged to (D10): the board's

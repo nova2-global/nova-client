@@ -26,10 +26,12 @@ body.skin-classic.guild-grade-name .guild-grade-name__body
 	display: block;
 	padding: 0;
 }
+/* Centered as legacy's window manager centers it: (170 - 61) / 2 rounds up
+   to 55 (the F4 capture's field sits at 58 = 55 + 3). */
 body.skin-classic.guild-grade-name .guild-grade-name__slot
 {
 	position: absolute;
-	left: 54dp;
+	left: 55dp;
 	top: 34dp;
 	width: 61dp;
 	height: 18dp;

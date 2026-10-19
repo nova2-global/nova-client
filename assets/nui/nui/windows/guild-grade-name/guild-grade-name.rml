@@ -8,7 +8,9 @@
 	     at the open, OK and Enter (the window's OnChangeGradeName: an empty
 	     name becomes the default grade's, the packet), Cancel, the close
 	     button and Escape are legacy's code. A modal (D12) above the legacy UI
-	     layer, which the scrim centers. The field's limit is
+	     layer at legacy's place, 50 px below the pointer (D21): the
+	     controller's SetPosition sets placed, x and y (dp), which place the
+	     dialog on the scrim; without them the scrim centers it. The field's limit is
 	     GUILD_GRADE_NAME_MAX_LEN; its text never enters the model. The
 	     buttons take no focus and act on a left mousedown. -->
 	<title>guild-grade-name</title>
@@ -16,6 +18,7 @@
 	<link type="text/rcss" href="guild-grade-name.rcss"/>
 </head>
 <body template="nui" class="nui-scrim nui-fx guild-grade-name" data-model="guild_grade_name"
+      data-class-guild-grade-name--placed="placed" data-style---grade-name-x="x + 'dp'" data-style---grade-name-y="y + 'dp'"
       data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window nui-fx nui-dialog nui-anim guild-grade-name__window" id="guild-grade-name">
 		<div class="nui-window__titlebar guild-grade-name__titlebar">

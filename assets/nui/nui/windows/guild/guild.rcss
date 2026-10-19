@@ -28,6 +28,12 @@ body.guild
 	tab-index: none;
 	focus: none;
 }
+/* The post button parks the focus when a legacy edit line takes wndMgr's
+   (a button takes no keys). */
+.guild .guild__post
+{
+	focus: auto;
+}
 .guild__titlebar
 {
 	flex: 0 0 auto;

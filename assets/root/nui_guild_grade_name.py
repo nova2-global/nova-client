@@ -10,13 +10,16 @@ OnChangeGradeName, Cancel and the close button the dialog's Hide, Escape
 its Close. Open (the field cleared and focused, the place under the mouse),
 Close, the grade number and the name are legacy's code.
 
-A modal (D12) above the legacy UI layer: the scrim centers it, so legacy's
-place 50 px under the mouse moves nothing (nui_facade.DialogFacade). Enter
-in the field, or on the dialog, is the field's OnIMEReturn and Escape its
+A modal (D12) above the legacy UI layer, at legacy's place (D21, spec
+5.9.5): Open's SetPosition (the pointer's x less half the uiscript's
+width, 50 px below the pointer) becomes the dialog's place in dp, while the
+scrim still dims the rest; a SetCenterPosition centers it again. Enter in
+the field, or on the dialog, is the field's OnIMEReturn and Escape its
 OnPressEscapeKey; both keep the key. The buttons act on a left mousedown.
 The field's text never enters the model: the facade reads it at the accept."""
 
 import uiGuild
+import wndMgr
 
 import nui
 import nui_facade
@@ -25,6 +28,9 @@ import nui_proxies
 
 DOCUMENT = "nui/windows/guild-grade-name/guild-grade-name.rml"
 FIELD = "guild-grade-name-field"
+# The uiscript's board (changegradenamedialog.py), 170 x 90: legacy's Open
+# centers that width under the pointer, and its window has that size.
+WIDTH, HEIGHT = 170, 90
 
 
 class GuildGradeNameBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -102,7 +108,37 @@ class ChangeGradeNameDialog(nui_facade.DialogFacade, uiGuild.ChangeGradeNameDial
 			raise
 
 	def nui_model(self):
-		return {"max": self._limits.GUILD_GRADE_NAME_MAX_LEN}
+		return {"max": self._limits.GUILD_GRADE_NAME_MAX_LEN, "placed": False, "x": 0.0, "y": 0.0}
+
+	# --- the place (D21) ----------------------------------------------------------------
+
+	def GetWidth(self):
+		"""The uiscript's width, which legacy's Open centers under the
+		pointer (the legacy window stays 0 x 0)."""
+		return WIDTH
+
+	def GetHeight(self):
+		return HEIGHT
+
+	def SetPosition(self, x, y):
+		"""Legacy's pixels as the dialog's place in dp; the scrim still dims
+		the rest. Kept on the screen with the uiscript's size (legacy's own
+		window could leave it, but a modal off the screen would hold every
+		key and press)."""
+		try:
+			width, height = int(wndMgr.GetScreenWidth()), int(wndMgr.GetScreenHeight())
+		except Exception:
+			width = height = 0
+		x, y = int(x), int(y)
+		if width > WIDTH and height > HEIGHT:
+			x = min(max(x, 0), width - WIDTH)
+			y = min(max(y, 0), height - HEIGHT)
+		scale = nui.get_scale() or 1.0
+		self.nui_set(placed=True, x=x / scale, y=y / scale)
+
+	def SetCenterPosition(self, x=0, y=0):
+		"""Legacy's centering: the scrim centers the dialog."""
+		self.nui_set(placed=False)
 
 	def _fields(self):
 		field = getattr(self, "gradeNameSlot", None)

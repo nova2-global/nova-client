@@ -15,15 +15,18 @@
 	     under its row, one at a time (D11). The skill cells reach legacy's
 	     handlers through nui_slots.LegacySlotEvents. The document exists only
 	     while the window shows; nothing runs per frame (the reflectors and the
-	     combo's hover are :hover and :active). The body takes no focus but on
-	     the comment field; controls act on a left mousedown. It draws below
-	     the legacy UI layer, as legacy's window lived in it. A left or right
-	     press anywhere on it raises the window (board_press). -->
+	     combo's hover are :hover and :active). The body takes no focus, so a
+	     press in the comment field focuses it itself (comment_press), and the
+	     field types like a legacy edit line (nui-field-passes-hotkeys,
+	     nui-field-keeps-focus; the window holds wndMgr's focus meanwhile);
+	     controls act on a left mousedown. It draws below the legacy UI layer,
+	     as legacy's window lived in it. A left or right press anywhere on it
+	     raises the window (board_press). -->
 	<title>guild</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="guild.rcss"/>
 </head>
-<body template="nui" id="guild" class="nui-window nui-fx nui-anim nui-below-legacy-ui guild" data-model="guild"
+<body template="nui" id="guild" class="nui-window nui-fx nui-anim nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus guild" data-model="guild"
       data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar guild__titlebar">
 		<handle class="nui-window__handle guild__handle" move_target="#document">
@@ -229,7 +232,8 @@
 		     field's key handler is registered once), shown with the board page. -->
 		<div class="guild__post-row" data-if="page == 'BOARD'">
 			<div class="guild__post-slot"><input id="guild-comment" type="text" class="nui-input guild__comment-field"
-				data-attr-maxlength="comment_max" data-event-change="comment_change(ev.value, ev.linebreak)"/></div>
+				data-attr-maxlength="comment_max" data-event-change="comment_change(ev.value, ev.linebreak)"
+				data-event-mousedown="comment_press(ev.button)"/></div>
 			<button id="guild-post" class="nui-button nui-anim nui-has-tooltip guild__post" data-event-mousedown="post_press(ev.button)"><span
 				class="nui-glyph nui-glyph--send"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 				class="nui-tooltip nui-anim guild__tip">@ui.GUILD_GRADE_WRITE</span></button>

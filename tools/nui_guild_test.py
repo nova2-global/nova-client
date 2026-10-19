@@ -333,6 +333,55 @@ class Flows(GuildTest):
         self.assertEqual(b_world.kept, (True, True))
         self.assertTrue(b.IsShow(), "legacy's edit line keeps Escape: the window stays open")
 
+    def test_a_press_in_the_comment_field_focuses_it_and_holds_wnd_mgr_s_focus(self):
+        """GU-02 (validation, N, C and Y): body.guild takes no focus, so RmlUi
+        gave a press in the field to nothing (Context::FindFocusElement) and
+        the typed keys and Enter went to the game. The field's own mousedown
+        focuses it, as the whisper's input does, and the window holds
+        wndMgr's focus while it has NovaUI's, as a focused legacy edit line."""
+        world, window = self.world(True)
+        self.open(world, window)
+        self.tab(world, window, "BOARD")
+        nui = world.m("nui")
+        with world.game, w4.quiet():
+            board = w4.board(window)
+            proxy_window = window.focusProxy._window
+            w4.press(window, "comment_press", 1)
+            self.assertNotEqual(board.focused, "guild-comment", "a right press focuses nothing")
+            self.assertFalse(proxy_window.IsFocus())
+            w4.press(window, "comment_press", 0)
+            self.assertEqual(board.focused, "guild-comment")
+            self.assertTrue(proxy_window.IsFocus(), "the field's focus takes wndMgr's")
+            mark = world.mark()
+            board.insert_text("guild-comment", "nuiw4 hello")
+            self.assertTrue(board.key("guild-comment", nui.KEY_RETURN))
+            self.assertEqual(world.calls_since(mark, "net.SendGuildPostCommentPacket"),
+                             [("net.SendGuildPostCommentPacket", ("nuiw4 hello",))])
+        self.tab(world, window, "MEMBER")
+        self.assertFalse(proxy_window.IsFocus(), "the field goes with its page, and its hold on wndMgr's focus")
+        self.tab(world, window, "BOARD")
+        with world.game, w4.quiet():
+            w4.press(window, "comment_press", 0)
+            self.assertTrue(proxy_window.IsFocus())
+            window.Close()
+        self.assertFalse(proxy_window.IsFocus(), "the close lets wndMgr's focus go")
+        with world.game, w4.quiet():
+            window.Destroy()
+        self.assertIsNone(window.focusProxy)
+
+    def test_the_comment_field_takes_its_press_and_types_like_a_legacy_edit_line(self):
+        markup = w4.read(os.path.join(w4.WINDOWS_DIR, "guild", "guild.rml"))
+        sheet = w4.read(os.path.join(w4.WINDOWS_DIR, "guild", "guild.rcss"))
+        field = markup[markup.index('<input id="guild-comment"'):]
+        field = field[:field.index("/>")]
+        self.assertIn('data-event-mousedown="comment_press(ev.button)"', field)
+        body = markup[markup.index("<body"):]
+        body = body[:body.index(">")]
+        for name in ("nui-field-passes-hotkeys", "nui-field-keeps-focus"):
+            self.assertIn(name, body)
+        rule = sheet[sheet.index("body.guild\n"):]
+        self.assertIn("focus: none;", rule[:rule.index("}")], "why the field focuses itself")
+
     def test_delete_and_refresh(self):
         def flow(world, window):
             if world.nui_on:
@@ -513,6 +562,32 @@ class Flows(GuildTest):
                 self.assertFalse(b_world.dialog_shown)
                 self.assertEqual(b_world.focused, "guild-grade-name-field", "Open focuses the field")
 
+    def test_the_grade_name_dialog_opens_50_px_below_the_pointer(self):
+        """GU-06-below (validation, N, C and Y): D21 and spec 5.9.5 put the
+        dialog where legacy's Open puts it, the uiscript's 170 px centered
+        under the pointer, 50 px below it, in dp; the scrim still dims the
+        rest. Kept on the screen."""
+        for mouse, scale, place in (((300, 200), 1.0, (215.0, 250.0)), ((600, 400), 1.5, (343.3333, 300.0)),
+                                    ((1590, 880), 1.0, (1430.0, 810.0))):
+            world, window = self.world(True)
+            self.open(world, window)
+            self.tab(world, window, "GRADE")
+            world.m("wndMgr").mouse = mouse
+            world.game.state.scale = scale
+            with world.game, w4.quiet():
+                w4.press(window, "grade_name_press", 3, 0)
+                model = w4.board(window.changeGradeNameDialog).model
+                with self.subTest(mouse=mouse, scale=scale):
+                    self.assertTrue(model["placed"])
+                    self.assertAlmostEqual(model["x"], place[0], places=3)
+                    self.assertAlmostEqual(model["y"], place[1], places=3)
+                window.changeGradeNameDialog.SetCenterPosition()
+                self.assertFalse(w4.board(window.changeGradeNameDialog).model["placed"])
+        markup = w4.read(os.path.join(w4.WINDOWS_DIR, "guild-grade-name", "guild-grade-name.rml"))
+        for binding in ('data-class-guild-grade-name--placed="placed"', "data-style---grade-name-x=\"x + 'dp'\"",
+                        "data-style---grade-name-y=\"y + 'dp'\""):
+            self.assertIn(binding, markup)
+
     def test_grade_1_opens_no_dialog(self):
         def flow(world, window):
             if world.nui_on:
@@ -652,7 +727,9 @@ class Facade(GuildTest):
         for variant in ("", "board", "member", "member-open", "base", "skill", "grade", "foundation",
                         "foundation-member"):
             self.assertEqual(w4.fixture_keys(window, "guild", variant), kinds, variant)
-        self.assertEqual(w4.fixture_keys(window, "guild-grade-name"), {"max": "int"})
+        for variant in ("", "placed"):
+            self.assertEqual(w4.fixture_keys(window, "guild-grade-name", variant),
+                             {"max": "int", "placed": "bool", "x": "float", "y": "float"}, variant)
 
     def test_no_repeated_element_binds_its_own_entry_in_a_shrinking_list(self):
         from nui_hud_test import repeated_element_reads

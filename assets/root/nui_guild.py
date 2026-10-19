@@ -26,7 +26,9 @@ downloaded atlas's region (nui_guild_war.mark_source), which the client
 reloads when the atlas downloads (_nui.ReloadImage, E4). The board exists
 only while the window shows and draws below the legacy UI layer; nothing
 runs per frame (legacy's reflectors and combo boxes hover in OnRender and
-OnUpdate)."""
+OnUpdate). A press in the comment field focuses it (the body takes no
+focus), and while the field has NovaUI's focus the window holds wndMgr's
+(nui_hud.FocusProxy), as a focused legacy edit line would."""
 
 import guild
 import localeInfo
@@ -75,6 +77,10 @@ KEY_F5, DIK_F5 = 111, 63
 # A wheel notch over the member lines moves this many lines.
 WHEEL_LINES = 1
 SCROLL_STEP = 0.01
+# The comment field, and the control that parks NovaUI's focus when a legacy
+# edit line takes wndMgr's (a button: it takes no keys).
+COMMENT = "guild-comment"
+PARK = "guild-post"
 
 
 class _GuildBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -98,6 +104,9 @@ class _GuildBoard(nui_hud.RaisesOnPress, nui.Window):
 		if not self.is_visible():
 			return None
 		return self._owner._comment_key(event.get("key_identifier"))
+
+	def _on_comment_focus(self, event):
+		self._owner._comment_focused()
 
 	@nui.on("board_press")
 	def on_board_press(self, button):
@@ -160,6 +169,16 @@ class _GuildBoard(nui_hud.RaisesOnPress, nui.Window):
 		self.raise_for(button)
 		if button == 0:
 			self._owner._press(self._owner.pageWindow["BOARD"].deleteButtons[int(line)])
+
+	@nui.on("comment_press")
+	def on_comment_press(self, button):
+		"""A press in the comment field focuses it, as a press focuses
+		legacy's edit line. The body takes no focus (focus: none), so RmlUi
+		gives a press inside it to nothing (Context::FindFocusElement), the
+		field's own focus included."""
+		self.raise_for(button)
+		if button == 0:
+			self.focus(COMMENT)
 
 	@nui.on("comment_change")
 	def on_comment_change(self, value, linebreak):
@@ -270,13 +289,22 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 	BOARD = _GuildBoard
 
 	def __init__(self):
+		self.focusProxy = None
 		self.nui_begin()
 		try:
 			uiGuild.GuildWindow.__init__(self)
+			if self.demand is not None:
+				self.focusProxy = nui_hud.FocusProxy(self._on_focus_lost, self._on_focus_gained)
 			self.nui_end()
 		except Exception:
 			self.nui_discard()
 			raise
+
+	def nui_discard(self):
+		proxy, self.focusProxy = getattr(self, "focusProxy", None), None
+		if proxy is not None:
+			proxy.destroy()
+		nui_facade.Facade.nui_discard(self)
 
 	def PLACE(self):
 		"""The uiscript's place, the screen's corner (D21): Open does not
@@ -548,7 +576,35 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 
 	def _restore_board(self, board):
 		nui_facade.Facade._restore_board(self, board)
-		board.element_on("guild-comment", "keydown", board._on_comment_key)
+		board.element_on(COMMENT, "keydown", board._on_comment_key)
+		board.element_on(COMMENT, "focus", board._on_comment_focus)
+
+	# --- the comment field's focus (as the whisper's: nui_whisper) -------------------------
+
+	def _comment_focused(self):
+		"""The field took NovaUI's focus: the window holds wndMgr's, as a
+		focused legacy edit line would (nui_hud.FocusProxy), so a world press
+		takes it back (game.py CheckFocus) and a legacy edit line that takes
+		it gets the keys."""
+		if self.focusProxy is not None:
+			self.focusProxy.take()
+
+	def _on_focus_lost(self):
+		"""A legacy edit line (or the game window) took wndMgr's focus: the
+		keys are its."""
+		board = self.nui_board()
+		if board is not None and board.is_visible():
+			board.focus(PARK)
+
+	def _on_focus_gained(self):
+		"""wndMgr gave the focus back (the window that took it closed)."""
+		board = self.nui_board()
+		if board is not None and board.is_visible() and self._state.get("page") == "BOARD":
+			board.focus(COMMENT)
+
+	def _release_focus(self):
+		if self.focusProxy is not None:
+			self.focusProxy.release()
 
 	# --- the loader (uiguild.py:804-932 and the six __Make*Page, on proxies) -------------------
 
@@ -580,8 +636,8 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		self.changeGradeNameDialog.gradeNameSlot.OnPressEscapeKey = ui.__mem_func__(self.changeGradeNameDialog.Close)
 
 		## Comment
-		self.commentSlot = nui_form_proxies.FieldProxy("guild-comment", self._on_field)
-		self.commentSlot.reader = lambda: self._value("guild-comment")
+		self.commentSlot = nui_form_proxies.FieldProxy(COMMENT, self._on_field)
+		self.commentSlot.reader = lambda: self._value(COMMENT)
 		self.commentSlot.SetMax(limits.GUILD_COMMENT_MAX_LEN - 1)
 		self.commentSlot.OnIMEReturn = ui.__mem_func__(self.OnPostComment)
 		self.commentSlot.OnKeyDown = lambda key, argSelf=self: argSelf.OnKeyDownInBoardPage(key)
@@ -793,6 +849,11 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		nui_facade.Facade.Show(self)
 		self._sync()
 
+	def Hide(self):
+		nui_facade.Facade.Hide(self)
+		if not self.IsShow():
+			self._release_focus()
+
 	def Destroy(self):
 		"""The NovaUI dialogs the window made go with it (legacy's Destroy only
 		drops them), then the facade's and legacy's."""
@@ -810,6 +871,10 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 	def SelectPage(self, arg):
 		uiGuild.GuildWindow.SelectPage(self, arg)
 		self._sync()
+		# The comment field goes with the board page: its hold on wndMgr's
+		# focus too, or the game window would not get the keys back.
+		if arg != "BOARD":
+			self._release_focus()
 
 	def DeleteGuild(self):
 		uiGuild.GuildWindow.DeleteGuild(self)

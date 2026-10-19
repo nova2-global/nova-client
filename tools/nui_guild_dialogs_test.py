@@ -182,6 +182,66 @@ class DeclareTest(unittest.TestCase):
 
 # --- the accept dialog ---------------------------------------------------------------------------------------
 
+NUITOOL = os.environ.get("NUITOOL") or __import__("shutil").which("nuitool")
+ASSETS = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets"))
+TYPE_KEYS = ("GUILD_WAR_NORMAL", "GUILD_WAR_WARP", "GUILD_WAR_CTF")
+
+
+@unittest.skipUnless(NUITOOL, "set NUITOOL to a nuitool build (or put nuitool on PATH)")
+class TypeLabelsInEveryLocale(unittest.TestCase):
+    """Review: the modern dialogs gave each battle type a third of a 280dp
+    dialog, so a long label (ru "Поле битвы", hu "Harcmező", it "Bandiera")
+    was cut mid-word. Each button is as wide as its label now, in a wider
+    dialog: in every left-to-right locale the three buttons lie inside the
+    dialog's window, side by side, none narrower than its label."""
+
+    def test_the_type_buttons_fit_their_labels(self):
+        import json
+        import subprocess
+        import tempfile
+        from PIL import ImageFont
+        font = ImageFont.truetype(os.path.join(ASSETS, "nui", "nui", "fonts", "NotoSans-Bold.ttf"), 14)
+        locales = sorted(name for name in os.listdir(os.path.join(ASSETS, "locale", "locale"))
+                         if name not in ("common", "ae"))
+        with tempfile.TemporaryDirectory() as work:
+            for locale in locales:
+                table = {}
+                with open(os.path.join(ASSETS, "locale", "locale", locale, "locale_interface.txt"), encoding="utf-8") as handle:
+                    for line in handle.read().split("\n"):
+                        parts = line.split("\t")
+                        if len(parts) >= 2:
+                            table[parts[0]] = parts[1]
+                labels = [table[key] for key in TYPE_KEYS]
+                for name, model in (("guild-war-declare", "guild_war_declare"), ("guild-war-accept", "guild_war_accept")):
+                    folder = os.path.join(ASSETS, "nui", "nui", "windows", name)
+                    with open(os.path.join(folder, name + ".fixture.json"), encoding="utf-8") as handle:
+                        fixture = json.load(handle)
+                    for hint, label in zip(fixture[model]["hints"], labels):
+                        hint["label"] = label
+                    fixture_path = os.path.join(work, "%s-%s.json" % (name, locale))
+                    with open(fixture_path, "w", encoding="utf-8") as handle:
+                        json.dump(fixture, handle, ensure_ascii=False)
+                    boxes_path = os.path.join(work, "%s-%s.boxes.json" % (name, locale))
+                    subprocess.run([NUITOOL, "snap", "--root", os.path.join(ASSETS, "nui"), "--root", os.path.join(ASSETS, "ETC"),
+                                    "--locale", os.path.join(ASSETS, "locale", "locale", locale),
+                                    "--doc", "nui/windows/%s/%s.rml" % (name, name), "--fixture", fixture_path,
+                                    "--theme", "modern-dark", "--scale", "1", "--size", "800x450",
+                                    "--out", os.path.join(work, "frame.png"), "--boxes", boxes_path],
+                                   check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    with open(boxes_path, encoding="utf-8") as handle:
+                        boxes = json.load(handle)
+                    window = boxes[name]
+                    buttons = [boxes["guild-war-type-%d" % i] for i in range(3)]
+                    with self.subTest(window=name, locale=locale):
+                        for (x, y, w, h), label in zip(buttons, labels):
+                            self.assertGreaterEqual(x, window[0])
+                            self.assertLessEqual(x + w, window[0] + window[2] + 0.5, label)
+                            self.assertGreaterEqual(w, font.getlength(label), label)
+                        for left, right in zip(buttons, buttons[1:]):
+                            if abs(left[1] - right[1]) < 0.5:
+                                self.assertLessEqual(left[0] + left[2], right[0] + 0.5)
+
+
 class AcceptTest(unittest.TestCase):
     def open(self, nui_on, name="Black Wolves", war_type=2, **kwargs):
         """game.py __GuildWar_OpenAskDialog: make(), the accept and cancel
@@ -448,6 +508,21 @@ class MarkList(MarkListTest):
             mark.Close()
         self.assertTrue(symbol.IsShow())
         self.assertEqual(w4.board(mark), None)
+
+
+    def test_a_list_its_window_drops_takes_its_board_with_it(self):
+        """Legacy's guild window (the guild flag off, guild-mark on) drops its
+        lists at Destroy without destroying them; a dropped legacy list leaves
+        the screen when it is collected (ui.Window.__del__). A shown NovaUI
+        list's board went with it (review): nui_facade.Facade's finalizer."""
+        import gc
+        world, dialog = self.open(True)
+        board = w4.board(dialog)
+        self.assertTrue(board._doc)
+        del dialog
+        gc.collect()
+        self.assertFalse(board._doc)
+        self.assertNotIn("nui/windows/guild-mark/guild-mark.rml", world.documents())
 
 
 class SymbolList(MarkListTest):

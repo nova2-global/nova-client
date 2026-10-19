@@ -175,6 +175,38 @@ class Flows(EquipmentViewTest):
         with world.game:
             self.assertTrue(first.nui_ready())
 
+    def test_a_second_view_of_the_same_player_replaces_the_first(self):
+        """Interface.OpenEquipmentDialog replaces the dict entry of a vid it
+        views again without Destroy; legacy's dropped window leaves the
+        screen when it is collected. The first board went on the screen
+        until the client exited, and its close deleted the new dialog's
+        entry (review)."""
+        world = self.world(True)
+        dialogs = {}
+
+        def close(vid):
+            dialogs.pop(vid, None)
+
+        views = []
+        for _ in range(2):
+            window, _, _ = self.open(world, PARTNER)
+            with world.game, w4.quiet():
+                window.SetCloseEvent(close)
+            dialogs[PARTNER] = window
+            views.append(window)
+        first, second = views
+        self.assertIsNone(w4.board(first), "the earlier view's board went at the new Open")
+        self.assertIsNone(first.demand)
+        self.assertIsNotNone(w4.board(second))
+        self.assertTrue(w4.board(second).is_visible())
+        self.assertEqual(world.documents().count(DOCUMENT), 1)
+        other, _, _ = self.open(world, OTHER)
+        self.assertIsNotNone(w4.board(second), "another player's view takes no other's place")
+        with world.game, w4.quiet():
+            second.Close()
+        self.assertEqual(dialogs, {})
+        self.assertIsNotNone(w4.board(other))
+
     def test_open_centers_it_and_a_press_raises_it(self):
         world = self.world(True)
         window, _, _ = self.open(world)

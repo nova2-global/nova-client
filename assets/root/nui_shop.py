@@ -113,6 +113,7 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 	"""uiShop.ShopDialog on NovaUI (Interface.dlgShop)."""
 
 	KEY = KEY
+	LEAVE_RANGE = True
 	BOARD = _ShopBoard
 
 	def __init__(self):

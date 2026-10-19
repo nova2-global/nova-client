@@ -90,6 +90,7 @@ class MallWindow(nui_facade.Facade, uiSafebox.MallWindow):
 	"""uiSafebox.MallWindow on NovaUI (Interface.wndMall)."""
 
 	KEY = KEY
+	LEAVE_RANGE = True
 	BOARD = _MallBoard
 
 	def __init__(self):

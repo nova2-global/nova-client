@@ -280,6 +280,37 @@ class Flows(ExchangeTest):
         state = world.game.modules["nuigame"].LeaveRangeState("exchange")
         self.assertEqual((state["range"], state["rearm"], state["start"]), (1000.0, True, [1001.0, 0.0]))
 
+    def test_the_interface_s_destroy_of_a_shown_exchange_stops_its_watch(self):
+        """Review: a trade open at a warp or logout ends on the server with no
+        END packet, so the Interface's Close destroys a shown exchange
+        (Destroy hides nothing). The watch went on in the next phases and,
+        rearmed, called the dead window's _left_range every 1000 units."""
+        world, window = self.world(True)
+        self.open(world, window)
+        nuigame = world.game.modules["nuigame"]
+        self.assertIsNotNone(nuigame.LeaveRangeState("exchange"))
+        with world.game, w4.quiet():
+            window.Destroy()
+        self.assertIsNone(nuigame.LeaveRangeState("exchange"))
+        mark = world.mark()
+        world.game.w4["position"] = (5000.0, 0.0, 0.0)
+        with world.game, w4.quiet():
+            self.assertFalse(support.leave_range(world.game, "exchange"))
+        self.assertEqual(world.calls_since(mark, "net."), [])
+
+    def test_a_newer_exchange_keeps_its_own_watch_when_an_older_one_goes(self):
+        world, older = self.world(True)
+        self.open(world, older)
+        newer = world.make("exchange", "uiExchange", "ExchangeDialog", "nui_exchange.ExchangeDialog")
+        nuigame = world.game.modules["nuigame"]
+        self.assertIsNone(nuigame.LeaveRangeState("exchange"), "take_over discarded the older one's NovaUI parts")
+        with world.game, w4.quiet():
+            newer.LoadDialog()
+            newer.SetItemToolTip(world.tooltip)
+            self.open(world, newer)
+            older.Destroy()
+        self.assertIsNotNone(nuigame.LeaveRangeState("exchange"), "the older one's Destroy left the newer's watch")
+
     def test_open_arms_the_watch_and_the_server_s_end_stops_it_without_the_ignore_call(self):
         world, window = self.world(True)
         mark = world.mark()

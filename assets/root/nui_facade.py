@@ -26,14 +26,54 @@ subclass's override), then self.nui_end(). Facade gives the window:
 - OnUpdate = None and OnRender = None: the legacy window underneath stays
   shown while the board shows, and the C++ calls any callable OnUpdate or
   OnRender every frame (CWindow::OnUpdate); the per-frame distance rule is
-  nuigame.WatchLeaveRange's (D5).
+  nuigame.WatchLeaveRange's (D5), under the window's KEY. A window that
+  watches (LEAVE_RANGE) stops its watch when its NovaUI parts go
+  (nui_discard: Destroy, or a newer window of its key), and every watch
+  stops at the phase's end (end_phase(), through nui_windows.PHASE_SCOPED),
+  as legacy's OnUpdate stops with its window: the Interface destroys the
+  exchange, the safebox and the mall at the phase's end without hiding
+  them;
+- the board goes with the facade: a facade the caller drops without
+  Destroy (the Interface replaces an equipment view, legacy's guild window
+  drops its mark lists) takes its board with it when it is collected, as
+  a dropped legacy window leaves the screen (ui.Window.__del__).
 
 A board is a nui.Window with nui_hud.RaisesOnPress, defined in the window's
 own controller module (lint NUI006 finds its @nui.on handlers there)."""
 
+import weakref
+
 import nui
 import nui_hud
 import nui_limits
+
+# The windows that watch the distance under their KEY (LEAVE_RANGE): the
+# exchange, the shop, the safebox and the mall.
+LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall")
+
+
+def _stop_leave_range(key):
+	try:
+		import nuigame
+	except ImportError:
+		return
+	stop = getattr(nuigame, "StopLeaveRange", None)
+	if stop is not None:
+		stop(key)
+
+
+def end_phase():
+	"""nui_windows.end_phase(): no watch outlives the phase (the main actor
+	goes, and the position the watch reads then is the camera's). No
+	document to unload."""
+	for key in LEAVE_RANGE_KEYS:
+		_stop_leave_range(key)
+	return 0
+
+
+def _collected(demand):
+	"""A facade went without nui_discard: its board goes too."""
+	demand.destroy()
 
 
 class Facade(object):
@@ -46,6 +86,8 @@ class Facade(object):
 	KEY = None
 	BOARD = None         # the board class (a nui.Window), made with (facade, model)
 	PLACE = None         # None, "center", or a callable(facade) -> (x_dp, y_dp)
+	# True for a window that arms nuigame.WatchLeaveRange under its KEY.
+	LEAVE_RANGE = False
 
 	OnUpdate = None
 	OnRender = None
@@ -64,8 +106,13 @@ class Facade(object):
 		self._centered = False
 		self.loaded = False
 		self.demand = None
+		self._nui_finalizer = None
 		if nui_hud.has_engine_4():
 			self.demand = nui_hud.OnDemand(self._make_board, self._restore_board, self._keep_board)
+			# The OnDemand holds the facade's methods weakly, so it never
+			# keeps the facade alive.
+			self._nui_finalizer = weakref.finalize(self, _collected, self.demand)
+			self._nui_finalizer.atexit = False
 
 	def nui_end(self):
 		"""Last in the subclass's constructor: whether a board loads."""
@@ -81,10 +128,16 @@ class Facade(object):
 
 	def nui_discard(self):
 		self._nui_discarded = True
+		finalizer, self._nui_finalizer = getattr(self, "_nui_finalizer", None), None
+		if finalizer is not None:
+			finalizer.detach()
 		demand, self.demand = self.demand, None
 		if demand is not None:
 			demand.destroy()
 		if self.KEY is not None:
+			# Only this window's watch: a newer window of the key arms its own.
+			if self.LEAVE_RANGE and nui_hud.current(self.KEY) is self:
+				_stop_leave_range(self.KEY)
 			nui_hud.forget(self.KEY, self)
 
 	# --- the board ------------------------------------------------------------------------

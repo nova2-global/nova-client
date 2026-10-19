@@ -125,6 +125,7 @@ class SafeboxWindow(nui_facade.Facade, uiSafebox.SafeboxWindow):
 	"""uiSafebox.SafeboxWindow on NovaUI (Interface.wndSafebox)."""
 
 	KEY = KEY
+	LEAVE_RANGE = True
 	BOARD = _SafeboxBoard
 
 	def __init__(self):
@@ -415,7 +416,13 @@ class ChangePasswordDialog(_DialogFacade, uiSafebox.ChangePasswordDialog):
 			raise
 
 	def nui_model(self):
-		return {"max": self._limits.SAFEBOX_PASSWORD_MAX_LEN}
+		return {"max": self._limits.SAFEBOX_PASSWORD_MAX_LEN, "covered": False}
+
+	def _covered(self, shown):
+		"""The mismatch message's own scrim dims the screen while it shows:
+		this dialog's goes clear meanwhile (two stacked scrims left the
+		cyberpunk screen nearly black)."""
+		self.nui_set(covered=bool(shown))
 
 	def _fields(self):
 		return tuple(field for field in (getattr(self, name, None) for name in ("oldPassword", "newPassword",
@@ -427,7 +434,7 @@ class ChangePasswordDialog(_DialogFacade, uiSafebox.ChangePasswordDialog):
 	def _ChangePasswordDialog__LoadDialog(self):
 		"""The mismatch message: the dialog kit's message (popupdialog.py on
 		uiCommon.PopupDialog, D13)."""
-		self.dlgMessage = nui_form_proxies.MessageWindowProxy()
+		self.dlgMessage = nui_form_proxies.MessageWindowProxy(on_shown=self._covered)
 		self.dlgMessage.GetChild("message").SetText(localeInfo.SAFEBOX_WRONG_PASSWORD)
 		self.dlgMessage.GetChild("accept").SetEvent(ui.__mem_func__(self.OnCloseMessageDialog))
 

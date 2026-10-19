@@ -232,7 +232,7 @@ def safebox_password(title_key):
 
 
 def change_password():
-    return {"change_password": {"max": TODAY.SAFEBOX_PASSWORD_MAX_LEN}}
+    return {"change_password": {"max": TODAY.SAFEBOX_PASSWORD_MAX_LEN, "covered": False}}
 
 
 MALL_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 4: (27002, 3), 7: (13000, 1), 8: (25040, 1),
@@ -478,7 +478,11 @@ def guild_fixtures():
         found[("guild", variant)] = {"guild": today[key]}
     found[("guild", "foundation")] = {"guild": foundation["GUILD_INFO"]}
     found[("guild", "foundation-member")] = {"guild": foundation["MEMBER"]}
-    found[("guild-grade-name", "")] = {"guild_grade_name": {"max": TODAY.GUILD_GRADE_NAME_MAX_LEN}}
+    found[("guild-grade-name", "")] = {"guild_grade_name": {"max": TODAY.GUILD_GRADE_NAME_MAX_LEN, "placed": False,
+                                                            "x": 0.0, "y": 0.0}}
+    # At legacy's place (D21), as the controller sets it 50 px under the pointer.
+    found[("guild-grade-name", "placed")] = {"guild_grade_name": {"max": TODAY.GUILD_GRADE_NAME_MAX_LEN, "placed": True,
+                                                                  "x": 60.0, "y": 140.0}}
     return found
 
 

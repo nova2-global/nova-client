@@ -642,12 +642,15 @@ class MessageWindowProxy(nui_proxies._Shown):
 	legacy binds; Show opens one uiCommon.PopupDialog (the dialog kit's
 	facade while the dialogs flag is on; the same one each time) with the
 	message and the accept event, Hide closes it. Open(msg) is
-	uiUploadMark.PopupDialog's."""
+	uiUploadMark.PopupDialog's. on_shown(shown), when given, runs as the
+	popup shows and goes (a modal under it clears its own scrim, so two
+	scrims never stack)."""
 
-	def __init__(self, text_key=None, make_dialog=None):
+	def __init__(self, text_key=None, make_dialog=None, on_shown=None):
 		self.shown = False
 		self.text_key = text_key
 		self._make_dialog = make_dialog
+		self._on_shown = on_shown
 		self.dialog = None
 		self.children = {"message": nui_proxies.TextProxy(), "accept": nui_proxies.ButtonProxy()}
 
@@ -668,6 +671,7 @@ class MessageWindowProxy(nui_proxies._Shown):
 		dialog.SetAcceptEvent(self._accepted)
 		dialog.Open()
 		self.shown = True
+		_call(self._on_shown, True)
 
 	def _accepted(self):
 		"""The popup closed by its own hand (its OK, Escape): legacy's accept
@@ -678,6 +682,7 @@ class MessageWindowProxy(nui_proxies._Shown):
 		if not self.shown:
 			return
 		self.shown = False
+		_call(self._on_shown, False)
 		self.children["accept"].click()
 
 	def Hide(self):
@@ -687,6 +692,8 @@ class MessageWindowProxy(nui_proxies._Shown):
 		dialog = self.dialog
 		if dialog is not None and shown:
 			dialog.Close()
+		if shown:
+			_call(self._on_shown, False)
 
 	def SetTop(self):
 		dialog = self.dialog

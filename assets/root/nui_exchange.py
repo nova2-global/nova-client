@@ -115,6 +115,7 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 	"""uiExchange.ExchangeDialog on NovaUI (Interface.dlgExchange)."""
 
 	KEY = KEY
+	LEAVE_RANGE = True
 	BOARD = _ExchangeBoard
 	PLACE = "center"
 

@@ -15,9 +15,13 @@ attributes, the tooltips (AddItemData on hover), the close and its event are
 legacy's code.
 
 The board is instanced (nui.Window.INSTANCED, spec 4.4): each open dialog
-binds its own model, equipment_view_<n>, so two views can show at once. It
-exists only while its dialog shows; it draws below the legacy UI layer, as
-legacy's window lived in it."""
+binds its own model, equipment_view_<n>, so two views of two players can
+show at once. A second view of the same player replaces the first, as
+legacy's: the Interface drops the earlier dialog (equipmentDialogDict), whose
+legacy window leaves the screen when it is collected; its board goes at the
+new Open (nui_hud.take_over under the player's vid). The board exists only
+while its dialog shows; it draws below the legacy UI layer, as legacy's
+window lived in it."""
 
 import ui
 import uiEquipmentDialog
@@ -88,6 +92,7 @@ class EquipmentDialog(nui_facade.Facade, uiEquipmentDialog.EquipmentDialog):
 	PLACE = "center"
 
 	def __init__(self):
+		self._view_key = None
 		self.nui_begin()
 		try:
 			uiEquipmentDialog.EquipmentDialog.__init__(self)
@@ -137,3 +142,27 @@ class EquipmentDialog(nui_facade.Facade, uiEquipmentDialog.EquipmentDialog):
 		itself, the proxy builds its cells at RefreshSlot."""
 		uiEquipmentDialog.EquipmentDialog.SetEquipmentDialogItem(self, slotIndex, vnum, count)
 		self.slotWindow.RefreshSlot()
+
+	# --- one view per player (the Interface's dict) -----------------------------------------
+
+	def Open(self, vid):
+		"""Legacy's, after the earlier view of this player lost its board:
+		Interface.OpenEquipmentDialog replaces its dict entry without Destroy,
+		and that dialog's close would delete this one's entry."""
+		self._forget_view()
+		self._view_key = "equipment-view:%s" % (vid,)
+		nui_hud.take_over(self._view_key, self)
+		uiEquipmentDialog.EquipmentDialog.Open(self, vid)
+
+	def Close(self):
+		uiEquipmentDialog.EquipmentDialog.Close(self)
+		self._forget_view()
+
+	def nui_discard(self):
+		self._forget_view()
+		nui_facade.Facade.nui_discard(self)
+
+	def _forget_view(self):
+		key, self._view_key = getattr(self, "_view_key", None), None
+		if key is not None:
+			nui_hud.forget(key, self)

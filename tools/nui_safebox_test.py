@@ -278,6 +278,39 @@ class SafeboxFlows(SafeboxTest):
         self.assertNotIn(SAFEBOX_DOCUMENT, world.documents())
         self.assertIsNone(world.game.modules["nuigame"].LeaveRangeState("safebox"))
 
+    def test_the_interface_s_destroy_of_a_shown_safebox_stops_its_watch(self):
+        """Review: the Interface's Close destroys a shown safebox at a warp or
+        logout (Destroy hides nothing); the watch fired in the next phase
+        without a main actor and sent /safebox_close there."""
+        world, window = self.world(True)
+        self.open(world, window)
+        nuigame = world.game.modules["nuigame"]
+        self.assertIsNotNone(nuigame.LeaveRangeState("safebox"))
+        with world.game, w4.quiet():
+            window.Destroy()
+        self.assertIsNone(nuigame.LeaveRangeState("safebox"))
+        mark = world.mark()
+        world.game.w4["position"] = (5000.0, 0.0, 0.0)
+        with world.game, w4.quiet():
+            self.assertFalse(support.leave_range(world.game, "safebox"))
+        self.assertEqual(world.calls_since(mark, "net."), [])
+
+    def test_the_phase_end_stops_every_watch(self):
+        world, window = self.world(True)
+        self.open(world, window)
+        nuigame = world.game.modules["nuigame"]
+        facade = world.m("nui_facade")
+        self.assertIn("nui_facade", world.m("nui_windows").PHASE_SCOPED)
+        self.assertEqual(facade.LEAVE_RANGE_KEYS, ("exchange", "shop", "safebox", "mall"))
+        with world.game, w4.quiet():
+            self.assertEqual(facade.end_phase(), 0, "no document to unload")
+        self.assertIsNone(nuigame.LeaveRangeState("safebox"))
+        for module, name in (("nui_exchange", "ExchangeDialog"), ("nui_shop", "ShopDialog"), ("nui_safebox", "SafeboxWindow"),
+                             ("nui_mall", "MallWindow")):
+            cls = getattr(world.m(module), name)
+            self.assertTrue(cls.LEAVE_RANGE, name)
+            self.assertIn(cls.KEY, facade.LEAVE_RANGE_KEYS, name)
+
     def test_moving_away_sends_the_close_command_once(self):
         """Spec 2.1: legacy sends it every frame until the server answers;
         NovaUI's watch fires once (no rearm)."""
@@ -599,6 +632,7 @@ class ChangePasswordTest(unittest.TestCase):
         self.assertTrue(dialog.IsShow())
         popup = dialog.dlgMessage.dialog
         board = w4.board(dialog)
+        self.assertTrue(board.model["covered"], "the message's scrim dims alone (finding 9: no stacked scrims)")
         with world.game, w4.quiet():
             # The kit's and legacy's popup: Close hides, then runs its accept event.
             popup.Close()
@@ -606,6 +640,9 @@ class ChangePasswordTest(unittest.TestCase):
         self.assertEqual((board.get_value(OLD), board.get_value(NEW), board.get_value(CHECK)), ("000000", "", ""))
         self.assertEqual(board.focused, NEW)
         self.assertFalse(dialog.dlgMessage.IsShow())
+        self.assertFalse(board.model["covered"])
+        markup = w4.read(os.path.join(w4.WINDOWS_DIR, "change-password", "change-password.rml"))
+        self.assertIn('data-class-change-password--covered="covered"', markup)
 
     def test_the_legacy_message_path_matches(self):
         def flow(world, dialog):
@@ -733,6 +770,15 @@ class MallTest(unittest.TestCase):
             with self.subTest(how=how):
                 self.assertEqual(novaui, legacy)
                 self.assertEqual(novaui, [("net.SendChatPacket", ("/mall_close",))])
+
+    def test_the_interface_s_destroy_of_a_shown_mall_stops_its_watch(self):
+        world, window = self.world(True)
+        self.open(world, window)
+        nuigame = world.game.modules["nuigame"]
+        self.assertIsNotNone(nuigame.LeaveRangeState("mall"))
+        with world.game, w4.quiet():
+            window.Destroy()
+        self.assertIsNone(nuigame.LeaveRangeState("mall"))
 
     def test_the_server_s_close_hides_it_and_moving_away_closes_once(self):
         def flow(world, window):

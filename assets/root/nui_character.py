@@ -850,6 +850,8 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		# The board first, so a refresh legacy's Show runs reaches it.
 		if self.demand is not None:
 			self.demand.show()
+			# Legacy's Show raises nothing: the boards raised since stay above (VF-1).
+			nui_hud.keep_order(self)
 		uiCharacter.CharacterWindow.Show(self)
 
 	def Hide(self):
@@ -866,6 +868,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		board = self.board()
 		if board is not None:
 			board.bring_to_front()
+		nui_hud.note_raise(self)
 		uiCharacter.CharacterWindow.SetTop(self)
 
 	def Destroy(self):

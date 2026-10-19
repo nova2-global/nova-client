@@ -1591,5 +1591,106 @@ class ElementCounts(unittest.TestCase):
         self.assertLess(dsr["elements"], 200, dsr["elements"])
 
 
+
+class Order(DragonSoulTest):
+    """Validation VF-1 (IV-C IV-11): legacy's window manager raises the
+    window under a press (SetTopUIWindow) before the press reaches it, and
+    DragonSoulWindow.Show raises nothing (CWindow::Show), so the inventory
+    whose dragon soul button opened the window stays above it. A NovaUI
+    board shown at a Show draws above every other document, so the dragon
+    soul window's Show brings back the boards raised since its own last
+    raise (nui_hud.keep_order)."""
+
+    def world(self):
+        world = World(True, windows=FLAGS + ",+inventory")
+        game = world.game
+        with quiet():
+            for name in ("nui_belt_inventory", "nui_costume", "nui_inventory"):
+                game.load(name, name + ".py")
+        world.make()
+        interface = game.interface
+
+        def toggle():
+            # interfacemodule.py:1033-1048, a qualified tester.
+            if not world.ds.IsShow():
+                world.ds.Show()
+            else:
+                world.ds.Close()
+        interface.ToggleDragonSoulWindow = toggle
+        with game, quiet():
+            inventory = world.nui_windows.make("inventory", world.m("uiInventory").InventoryWindow,
+                                               "nui_inventory.InventoryWindow")
+            inventory.BindInterfaceClass(interface)
+            inventory.SetItemToolTip(game.modules["uiToolTip"].ItemToolTip())
+            inventory.SetDragonSoulRefineWindow(world.refine)
+        # The draw order of the documents, bottom first: a show or a
+        # bring_to_front puts a document on top.
+        order = world.order = []
+        base = game.modules["nui"].Window
+        show, front = base.show, base.bring_to_front
+
+        def ordered(method):
+            def run(window, *args):
+                done = method(window, *args)
+                if done:
+                    if window in order:
+                        order.remove(window)
+                    order.append(window)
+                return done
+            return run
+        base.show, base.bring_to_front = ordered(show), ordered(front)
+        self.addCleanup(setattr, base, "show", show)
+        self.addCleanup(setattr, base, "bring_to_front", front)
+        return world, inventory
+
+    def press_dss(self, world, inventory):
+        """A left press on the inventory's dragon soul button: its handler,
+        then the body's board_press, as RmlUi bubbles the press."""
+        with world.game, quiet():
+            shown = board(inventory)
+            shown.fire("dss_press", 0)
+            if board(inventory) is shown:
+                shown.fire("board_press", 0)
+
+    def test_the_inventory_pressed_stays_above_the_window_its_button_opens(self):
+        world, inventory = self.world()
+        with world.game, quiet():
+            inventory.Show()
+            inventory.SetTop()          # Interface.ToggleInventoryWindow
+        for round in (1, 2):
+            self.press_dss(world, inventory)
+            with self.subTest(round=round):
+                self.assertTrue(world.ds.IsShow())
+                ds_board, inv_board = board(world.ds), board(inventory)
+                self.assertIsNotNone(ds_board)
+                self.assertLess(world.order.index(ds_board), world.order.index(inv_board),
+                                "the inventory draws above the dragon soul window, as legacy's")
+            # A second press reaches the button, not the window over it, and closes it.
+            self.press_dss(world, inventory)
+            self.assertFalse(world.ds.IsShow())
+
+    def test_a_press_on_the_dragon_soul_window_raises_it_over_the_inventory(self):
+        world, inventory = self.world()
+        with world.game, quiet():
+            inventory.Show()
+            inventory.SetTop()
+        self.press_dss(world, inventory)
+        Input(world).grade(3)           # a press on the dragon soul board raises it
+        self.assertLess(world.order.index(board(inventory)), world.order.index(board(world.ds)))
+        # Shown again by the key (ToggleDragonSoulWindowWithNoInfo) after the
+        # inventory was raised: legacy keeps the inventory above.
+        with world.game, quiet():
+            world.ds.Close()
+            inventory.SetTop()
+            world.ds.Show()
+        self.assertLess(world.order.index(board(world.ds)), world.order.index(board(inventory)))
+        # A window raised before the dragon soul window's last raise stays below it.
+        with world.game, quiet():
+            world.ds.SetTop()
+            world.ds.Close()
+            world.ds.Show()
+        self.assertLess(world.order.index(board(inventory)), world.order.index(board(world.ds)))
+
+
 if __name__ == "__main__":
     unittest.main()

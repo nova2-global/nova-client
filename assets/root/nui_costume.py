@@ -206,6 +206,7 @@ class CostumeWindow(uiInventory.CostumeWindow):
 		board = self.demand.board() if self.demand is not None else None
 		if board is not None:
 			board.bring_to_front()
+		nui_hud.note_raise(self)
 		uiInventory.CostumeWindow.SetTop(self)
 
 	def Destroy(self):

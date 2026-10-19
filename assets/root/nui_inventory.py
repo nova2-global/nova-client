@@ -474,6 +474,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		board = self.board()
 		if board is not None:
 			board.bring_to_front()
+		nui_hud.note_raise(self)
 		uiInventory.InventoryWindow.SetTop(self)
 
 	def Destroy(self):

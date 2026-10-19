@@ -404,6 +404,8 @@ class DragonSoulRefineWindow(uiDragonSoul.DragonSoulRefineWindow):
 		# of 0, the refresh), which reaches it.
 		if self.demand is not None:
 			self.demand.show()
+			# Legacy's Show raises nothing: the boards raised since stay above (VF-1).
+			nui_hud.keep_order(self)
 		uiDragonSoul.DragonSoulRefineWindow.Show(self)
 
 	def Hide(self):
@@ -418,6 +420,7 @@ class DragonSoulRefineWindow(uiDragonSoul.DragonSoulRefineWindow):
 		board = self.board()
 		if board is not None:
 			board.bring_to_front()
+		nui_hud.note_raise(self)
 		uiDragonSoul.DragonSoulRefineWindow.SetTop(self)
 
 	def Destroy(self):

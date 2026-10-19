@@ -216,6 +216,7 @@ class BeltInventoryWindow(uiInventory.BeltInventoryWindow):
 		board = self.demand.board() if self.demand is not None else None
 		if board is not None:
 			board.bring_to_front()
+		nui_hud.note_raise(self)
 		uiInventory.BeltInventoryWindow.SetTop(self)
 
 	def Destroy(self):

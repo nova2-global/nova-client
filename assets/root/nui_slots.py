@@ -528,6 +528,9 @@ def attach(owner, slot_type, slot_number, item_index, count=0, on_end=None):
 		if on_end is not None:
 			on_end()
 
+	# P15 (review R-2): the handle whose free this shadow guarantees, so
+	# adopt_attach never adopts it a second time.
+	deattach._nui_frees = handle
 	controller.DeattachObject = deattach
 	return True
 
@@ -1071,6 +1074,8 @@ def watch_attach():
 			_end_of_attach()
 
 	deattach._nui_watch = True
+	# P15 (review R-2): it calls what it wraps, so it frees what that frees.
+	deattach._nui_frees = getattr(current, "_nui_frees", 0)
 	controller.DeattachObject = deattach
 	return True
 
@@ -1634,7 +1639,11 @@ def adopt_attach():
 	frees the handle seen now (a later AttachObject that replaced it without
 	a detach left it unfreed too) and removes itself. Nothing for a type the
 	class method frees, an attach attach() made (its own shadow frees it),
-	or one adopted already. True when it adopted."""
+	or one adopted already: every shadow that frees a handle carries it as
+	_nui_frees, and watch_attach's shadow carries what it wraps frees, so a
+	later press that keeps the attach adopts nothing twice (one free per
+	handle; CDynamicPool would hand a twice-freed instance out twice).
+	True when it adopted."""
 	controller = mouseModule.mouseController
 	if not controller.isAttached():
 		return False
@@ -1642,9 +1651,11 @@ def adopt_attach():
 	if leaked is None:
 		return False
 	current = controller.__dict__.get("DeattachObject")
-	if current is not None and not getattr(current, "_nui_watch", False):
+	if current is not None and not getattr(current, "_nui_watch", False) and not hasattr(current, "_nui_frees"):
 		return False
 	handle = getattr(controller, "AttachedIconHandle", 0)
+	if handle and getattr(current, "_nui_frees", 0) == handle:
+		return False
 
 	def deattach():
 		if current is None:
@@ -1663,5 +1674,6 @@ def adopt_attach():
 	# It calls the watch it wraps, so it stands for that watch (watch_attach
 	# adds no second one).
 	deattach._nui_watch = bool(getattr(current, "_nui_watch", False))
+	deattach._nui_frees = handle
 	controller.DeattachObject = deattach
 	return True

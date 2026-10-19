@@ -1307,3 +1307,52 @@ class LeakFree(SlotsTest):
             made, freed = self.handles(since)
             self.assertEqual(freed, made, "type %d: a legacy handler's attach from a NovaUI press" % slot_type)
 
+    def test_without_the_legacy_fix_a_second_press_that_keeps_the_attach_adopts_nothing_twice(self):
+        """Review R-2: every press that picks runs watch_attach, and the
+        dragon soul board runs adopt_attach after each press; a later press
+        that keeps the attach (a right press on an empty cell, a refused
+        drop) must not adopt it again, or the handle is freed twice."""
+        without_the_legacy_fix(self)
+        for slot_type, number, index in self.cases:
+            since = self.mark()
+            self.controller.AttachObject("legacy", slot_type, number, index)
+            self.m.watch_attach()
+            self.assertTrue(self.m.adopt_attach())
+            self.m.watch_attach()
+            self.assertFalse(self.m.adopt_attach(), "adopted already")
+            self.assertTrue(self.m.watch_attach())
+            self.assertFalse(self.m.adopt_attach())
+            self.controller.DeattachObject()
+            made, freed = self.handles(since)
+            self.assertEqual(len(made), 1, slot_type)
+            self.assertEqual(freed, made, "type %d: freed exactly once" % slot_type)
+
+    def test_without_the_legacy_fix_attach_s_own_watched_shadow_is_not_adopted(self):
+        """Review R-2: a watch over attach()'s freeing shadow carries what
+        that shadow frees, so adopt_attach leaves it."""
+        without_the_legacy_fix(self)
+        for slot_type, number, index in self.cases:
+            since = self.mark()
+            self.assertTrue(self.m.attach("taskbar", slot_type, number, index))
+            self.m.watch_attach()
+            self.assertFalse(self.m.adopt_attach(), "attach() frees it")
+            self.controller.DeattachObject()
+            made, freed = self.handles(since)
+            self.assertEqual(freed, made, "type %d: freed exactly once" % slot_type)
+
+    def test_without_the_legacy_fix_an_attach_that_replaced_attach_s_own_is_adopted_and_both_freed_once(self):
+        """attach()'s shadow frees its own handle when a later AttachObject
+        replaced it without a detach; the new handle is a different one, so
+        adopt_attach still takes it."""
+        without_the_legacy_fix(self)
+        since = self.mark()
+        self.assertTrue(self.m.attach("taskbar", QUICK, 0, 0))
+        self.controller.AttachObject("legacy", DRAGON_SOUL, 4, 110000)
+        self.m.watch_attach()
+        self.assertTrue(self.m.adopt_attach())
+        self.assertFalse(self.m.adopt_attach())
+        self.controller.DeattachObject()
+        made, freed = self.handles(since)
+        self.assertEqual(len(made), 2)
+        self.assertEqual(sorted(freed), sorted(made), "each freed once")
+

@@ -1131,6 +1131,24 @@ class Leak(DragonSoulTest):
         made, freed = self.freed(World(False), False)
         self.assertEqual(freed, [], "legacy without its fix leaks them")
 
+    def test_a_press_that_keeps_the_attach_frees_nothing_twice(self):
+        """Review R-2, through the board without the legacy fix: an F-2
+        right press on an empty bag cell (the bag binds no unselect-empty
+        handler, so the attach stays until the right release cancels it),
+        and a right press on the picked item itself."""
+        for second in (20, 0):
+            world = World(True)
+            world.m("mouseModule").DEATTACH_FREES_EVERY_ICON = False
+            world.open(0, 3)
+            Input(world).press("bag", 0)
+            Input(world).press("bag", second, 1)
+            Input(world).right_release()
+            made = [handle for kind, handle in world.game.created if kind == "item"]
+            freed = [handle for kind, handle in world.game.deleted]
+            with self.subTest(second=second):
+                self.assertEqual(len(made), 1)
+                self.assertEqual(freed, made, "freed exactly once")
+
 
 # --- the refine window's flows (P15 spec 6.5) -----------------------------------------------------------
 

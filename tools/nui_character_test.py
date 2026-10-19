@@ -815,6 +815,30 @@ class Flows(CharacterTest):
         self.assertEqual(model(b)["quests"][0]["name"], "q2")
         self.assertTrue(model(b)["quest_scroll_shown"])
 
+    def test_c23_one_line_per_arrow_click_and_wheel_notch_with_fifteen_quests(self):
+        """Ten scroll lines: each click moves the start one line, down to the
+        last and back up to the first, with no stall or skip (review R-3)."""
+        def setup(game):
+            warrior(game)
+            game.quests = [{"name": "q%d" % i, "index": 30 + i} for i in range(15)]
+        world = World(True, setup=setup)
+        window = world.open("QUEST")
+        down, up, wheel = [], [], []
+        with world.game, quiet():
+            for _ in range(11):
+                press(window, "quest_scroll_press", 1, 0)
+                down.append(window.questShowingStartIndex)
+            for _ in range(11):
+                press(window, "quest_scroll_press", -1, 0)
+                up.append(window.questShowingStartIndex)
+            for _ in range(4):
+                fire(window, "quest_scroll", 120.0)
+                wheel.append(window.questShowingStartIndex)
+        self.assertEqual(down, list(range(1, 11)) + [10])
+        self.assertEqual(up, list(range(9, -1, -1)) + [0])
+        self.assertEqual(wheel, [1, 2, 3, 4])
+        self.assertEqual(model(window)["quests"][0]["name"], "q4")
+
     def test_c24_the_alignment_and_stat_tooltips(self):
         def flow(world, window, input):
             if world.nui_on:
@@ -835,6 +859,54 @@ class Flows(CharacterTest):
         for name in ("toolTip", "toolTipAlignment"):
             self.assertEqual(getattr(b, name).calls, getattr(a, name).calls, name)
         self.assertIn(("ShowToolTip",), b.toolTipAlignment.calls)
+
+    def test_c24_a_hide_ends_the_stat_and_name_hovers_as_legacy_s_next_mouse_move(self):
+        """Legacy's window manager sends the hidden window's stat button and
+        name slot OnMouseOverOut at the next mouse move: the plain tooltips
+        hide and refreshToolTip is cleared, so RefreshStatus shows nothing
+        while the window is closed. The board hears no mouseout as it goes,
+        so Hide sends them (review R-1)."""
+        for over in (("minus", "INT", "INT_Minus"), ("plus", "HTH", "HTH_Plus")):
+            seen = []
+            for world in self.worlds():
+                window = world.open("STATUS")
+                with world.game, quiet():
+                    if world.nui_on:
+                        fire(window, "stat_over", over[0], over[1])
+                        fire(window, "name_over")
+                    else:
+                        window.GetChild(over[2]).ShowToolTip()
+                        window.characterNameSlot.fire("MOUSE_OVER_IN")
+                marks = (len(window.toolTip.calls), len(window.toolTipAlignment.calls))
+                with world.game, quiet():
+                    world.game.press_escape()
+                    if not world.nui_on:
+                        # The C++'s next mouse move over the closed window.
+                        window.GetChild(over[2]).HideToolTip()
+                        window.characterNameSlot.fire("MOUSE_OVER_OUT")
+                    window.RefreshStatus()
+                    window.RefreshStatus()
+                seen.append((window.toolTip.calls[marks[0]:], window.toolTipAlignment.calls[marks[1]:],
+                             bool(window.refreshToolTip), window.IsShow()))
+            self.assertEqual(seen[1], seen[0], over)
+            tip, alignment, refresh, shown = seen[1]
+            self.assertEqual((tip, refresh, shown), ([("Hide",)], False, False), over)
+            # RefreshStatus rebuilds the alignment tooltip's lines (RefreshAlignment) but shows nothing.
+            self.assertEqual(alignment[0], ("HideToolTip",), over)
+            self.assertFalse([call for call in alignment if call[0] in ("Show", "ShowToolTip")], over)
+
+    def test_c24_a_late_mouseout_after_the_hide_sends_nothing_more(self):
+        world = World(True)
+        window = world.open("STATUS")
+        with world.game, quiet():
+            fire(window, "stat_over", "minus", "INT")
+            window.Hide()
+        mark = len(window.toolTip.calls)
+        with world.game, quiet():
+            window.Show()
+            fire(window, "stat_out", "minus", "INT")
+            fire(window, "name_out")
+        self.assertEqual(window.toolTip.calls[mark:], [])
 
     def test_c25_close_by_the_title_bar_and_by_escape(self):
         def flow(world, window, input):

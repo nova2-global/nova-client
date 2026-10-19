@@ -142,11 +142,11 @@ class _CharacterBoard(nui_hud.RaisesOnPress, nui.Window):
 
 	@nui.on("name_over")
 	def on_name_over(self):
-		self._owner.characterNameSlot.fire("MOUSE_OVER_IN")
+		self._owner._name_hover(True)
 
 	@nui.on("name_out")
 	def on_name_out(self):
-		self._owner.characterNameSlot.fire("MOUSE_OVER_OUT")
+		self._owner._name_hover(False)
 
 	# --- the skill page ---------------------------------------------------------
 
@@ -313,6 +313,10 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		self._flush_depth = 0
 		self._flushing = False
 		self._quests_dirty = False
+		# The stat button (kind, key) and the name slot the pointer is over:
+		# their outs, which the board cannot send once it hides (_end_hovers).
+		self._hover_stat = None
+		self._hover_name = False
 		self._state = self._empty_state()
 		self._place = None
 		self.loaded = False
@@ -367,6 +371,8 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			"support": [dict(nui_slots.empty_cell(i), slot=s, button=False) for i, s in enumerate(self._support_slots())],
 			"solo": [dict(nui_slots.empty_cell(i), slot=s) for i, s in enumerate(nui_limits.emote_slots("solo", limits))],
 			"dual": [dict(nui_slots.empty_cell(i), slot=s) for i, s in enumerate(nui_limits.emote_slots("dual", limits))],
+			# The grids' widths (their nui-slot-grid--cols-<n> class) from the limits, as their cells.
+			"support_cols": limits.SKILL_SUPPORT_COLUMNS, "emote_cols": limits.EMOTE_COLUMNS,
 			"quests": [self._empty_row(i) for i in range(limits.QUEST_ROWS)],
 			"quest_cells": [dict(nui_slots.empty_cell(i), slot=i, base=True) for i in range(limits.QUEST_ROWS)],
 			"quest_scroll_shown": False, "quest_scroll_pos": 0.0,
@@ -688,14 +694,43 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			button.click()
 
 	def _stat_button(self, kind, key, over):
+		"""The pointer enters or leaves a stat button: legacy's window manager
+		calls its ShowToolTip or HideToolTip (uicharacter.py:376-382). An out
+		reaches only the button the pointer was over, as legacy sends
+		OnMouseOverOut only to its point window."""
 		buttons = self.statusPlusButtonDict if kind == "plus" else self.statusMinusButtonDict
 		button = buttons.get(str(key) if kind == "plus" else str(key) + "-") if buttons else None
 		if button is None:
 			return
 		if over:
+			self._hover_stat = (kind, key)
 			button.over()
-		else:
+		elif self._hover_stat == (kind, key):
+			self._hover_stat = None
 			button.out()
+
+	def _name_hover(self, over):
+		"""The name slot's MOUSE_OVER_IN or MOUSE_OVER_OUT (the alignment
+		tooltip); an out only after an in, as legacy's."""
+		if over:
+			self._hover_name = True
+			self.characterNameSlot.fire("MOUSE_OVER_IN")
+		elif self._hover_name:
+			self._hover_name = False
+			self.characterNameSlot.fire("MOUSE_OVER_OUT")
+
+	def _end_hovers(self):
+		"""Legacy's window manager sends the window it hid OnMouseOverOut at
+		the next mouse move (CWindowManager::RunMouseMove), so the stat
+		button's HideToolTip runs (it also clears refreshToolTip, which
+		RefreshStatus would otherwise run while the window is closed) and
+		the name slot hides the alignment tooltip. The board hears no
+		mouseout as it goes: send them here."""
+		if self._hover_stat is not None:
+			kind, key = self._hover_stat
+			self._stat_button(kind, key, False)
+		self._hover_stat = None
+		self._name_hover(False)
 
 	def _press_group(self, index):
 		"""A skill group button: a radio button, so a press on the one that
@@ -747,14 +782,19 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		self._grids[name].use(index)
 
 	def _scroll_quests(self, delta):
-		"""The quest list's arrows and the wheel over it: one line per step
-		(the bar's step set from the quest count), then legacy's scroll event."""
+		"""The quest list's arrows and the wheel over it: one line per step,
+		then legacy's scroll event. The position goes to the line itself
+		(the bar's step stays 1 / lines for its readers): adding 1 / lines
+		step by step drifts (0.1 * 8 is 0.7999...), and legacy's OnQuestScroll
+		truncates lines * pos, so a click would stall or skip a line. A hair
+		over the line's own position keeps the truncation on it."""
 		bar = self.questScrollBar
 		if bar is None or not bar.IsShow():
 			return
 		lines = max(1, quest.GetQuestCount() - self._limits.QUEST_ROWS)
 		bar.SetScrollStep(1.0 / lines)
-		bar.step(delta)
+		line = max(0, min(lines, self.questShowingStartIndex + int(delta)))
+		bar.SetPos(1.0 if line >= lines else (line + 1e-6) / lines)
 
 	# --- what NovaUI changes (P15 spec 4.4's table) ------------------------------------
 
@@ -814,7 +854,9 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 
 	def Hide(self):
 		uiCharacter.CharacterWindow.Hide(self)
-		# The board's cells hear no mouseout as it goes (nui_slots.LegacySlotEvents.reset).
+		# The board's parts hear no mouseout as it goes: the stat buttons and
+		# the name slot (_end_hovers), the cells (LegacySlotEvents.reset).
+		self._end_hovers()
 		for events in self._grids.values():
 			events.reset()
 		if self.demand is not None:

@@ -222,7 +222,8 @@
 					data-attr-src="art.uppt"/><span class="char-points__label">@ui.CHARACTER_POINTS</span><span
 					class="char-points__value">{{ support_points }}</span></div>
 			</div>
-			<div id="char-support" class="nui-slot-grid nui-slot-grid--cols-6 char-support" data-class-nui-attach-right="attach_right">
+			<div id="char-support" class="nui-slot-grid char-support" data-class-nui-attach-right="attach_right"
+			     data-class-nui-slot-grid--cols-6="support_cols == 6">
 				<div class="char-support-place" data-for="c : support">
 					<div class="nui-slot nui-anim char-skill" data-attr-id="'char-support-' + c.slot"
 					     data-class-is-empty="c.kind == ''" data-class-is-unavailable="c.unavailable"
@@ -249,8 +250,8 @@
 				<div class="char-bar"></div>
 				<span class="char-divider__label">@ui.CHARACTER_NORMAL_ACTION</span>
 			</div>
-			<div id="char-solo" class="nui-slot-grid nui-slot-grid--cols-6 char-emotes char-emotes--solo"
-			     data-class-nui-attach-right="attach_right">
+			<div id="char-solo" class="nui-slot-grid char-emotes char-emotes--solo"
+			     data-class-nui-attach-right="attach_right" data-class-nui-slot-grid--cols-6="emote_cols == 6">
 				<div class="nui-slot nui-anim char-emote" data-for="c : solo" data-attr-id="'char-solo-' + c.slot"
 				     data-class-is-empty="c.kind == ''"
 				     data-event-mousedown="solo_press(it_index, ev.button)" data-event-mouseup="solo_release(it_index, ev.button)"
@@ -264,8 +265,8 @@
 				<div class="char-bar"></div>
 				<span class="char-divider__label">@ui.CHARACTER_MUTUAL_ACTION</span>
 			</div>
-			<div id="char-dual" class="nui-slot-grid nui-slot-grid--cols-6 char-emotes char-emotes--dual"
-			     data-class-nui-attach-right="attach_right">
+			<div id="char-dual" class="nui-slot-grid char-emotes char-emotes--dual"
+			     data-class-nui-attach-right="attach_right" data-class-nui-slot-grid--cols-6="emote_cols == 6">
 				<div class="nui-slot nui-anim char-emote" data-for="c : dual" data-attr-id="'char-dual-' + c.slot"
 				     data-class-is-empty="c.kind == ''"
 				     data-event-mousedown="dual_press(it_index, ev.button)" data-event-mouseup="dual_release(it_index, ev.button)"

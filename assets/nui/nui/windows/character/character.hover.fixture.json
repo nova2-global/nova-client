@@ -896,6 +896,8 @@
 				"button": false
 			}
 		],
+		"support_cols": 6,
+		"emote_cols": 6,
 		"solo": [
 			{
 				"index": 0,

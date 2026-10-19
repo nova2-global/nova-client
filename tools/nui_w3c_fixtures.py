@@ -180,6 +180,8 @@ def character(limits, tab, values=None, guild=True, skill_rows=None, support_row
         "active_points": "3", "support_points": "0", "support_points_shown": False,
         "skills": skills(limits, skill_rows or {}),
         "support": support(limits, support_rows or {}),
+        "support_cols": limits.SKILL_SUPPORT_COLUMNS,
+        "emote_cols": limits.EMOTE_COLUMNS,
         "solo": emotes(limits, "solo", emotes_filled),
         "dual": emotes(limits, "dual", emotes_filled),
         "quest_scroll_shown": scroll is not None,

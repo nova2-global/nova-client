@@ -20,8 +20,9 @@ OnRender every frame).
 
 What NovaUI adds (brief decision 3, spec D8): a minimized dialog keeps its
 state in STATE (the draft, the size, the place and the scroll position, by
-partner) until the dialog is closed (not minimized) or the phase ends
-(end_phase(), through nui_windows.PHASE_SCOPED); legacy loses the draft when
+partner) until a dialog of that partner opens again and takes it, the
+dialog is closed (not minimized) or the phase ends (end_phase(), through
+nui_windows.PHASE_SCOPED); legacy loses the draft when
 the Interface destroys the minimized dialog. Each dialog's board is
 instanced (whisper_<n>), made at its show and destroyed at its hide; it
 draws below the legacy UI layer, as legacy's window lived in it. While one
@@ -154,7 +155,7 @@ class _WhisperBoard(nui_hud.RaisesOnPress, nui.Window):
 
 	@nui.on("input_change")
 	def on_input_change(self, value):
-		self._owner.chatLine.typed(value)
+		self._owner._input_changed(value)
 
 	@nui.on("scroll")
 	def on_scroll(self, value):
@@ -365,9 +366,12 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 	def OpenWithTarget(self, targetName):
 		"""Legacy's (the store's whisper, the box, the focus, the title; the
 		text renderer's proxy attaches the feed), then a minimized dialog's
-		state: its size, place, draft and scroll position."""
+		state: its size, place, draft and scroll position. The state goes
+		once applied (Minimize keeps it again): a dialog the Interface
+		destroys without a minimize (RegisterTemporaryWhisperDialog replaces
+		it) must not bring back a draft that was sent since."""
 		uiWhisper.WhisperDialog.OpenWithTarget(self, targetName)
-		kept = STATE.get(targetName)
+		kept = STATE.pop(targetName, None) if isinstance(targetName, str) else None
 		if not kept:
 			return
 		width, height = int(kept["width"]), int(kept["height"])
@@ -440,9 +444,37 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		               "x": place[0] if place else None, "y": place[1] if place else None,
 		               "pos": float(self.scrollBar.GetPos())}
 
+	def _input_changed(self, value):
+		"""The input's change: its text, with no line break. Legacy's edit
+		line wraps but never holds one. Keeping Enter's keydown does not
+		stop the textarea's line break: Windows sends the key's WM_CHAR as
+		well, which reaches the field as text input after the send cleared
+		it, so the next whisper would start with it. The caret stays after
+		what was typed."""
+		line = getattr(self, "chatLine", None)
+		if line is None:
+			return
+		value = "" if value is None else str(value)
+		if "\n" in value or "\r" in value:
+			old = line.text
+			start = 0
+			while start < min(len(old), len(value)) and old[start] == value[start]:
+				start += 1
+			end = 0
+			while end < min(len(old), len(value)) - start and old[-1 - end] == value[-1 - end]:
+				end += 1
+			typed_end = len(value) - end
+			caret = typed_end - value.count("\n", 0, typed_end) - value.count("\r", 0, typed_end)
+			value = value.replace("\r", "").replace("\n", "")
+			board = self.nui_board()
+			if board is not None and board.is_visible():
+				board.set_value(INPUT, value, caret=max(0, min(caret, len(value))))
+		line.typed(value)
+
 	def _key(self, element_id, key):
 		"""A key in a field: legacy's edit line events. Enter and Escape are
-		kept (no line break, no legacy Escape chain)."""
+		kept (no legacy Escape chain); the line break Enter's text input
+		still types goes in _input_changed."""
 		field = self.titleNameEdit if element_id == TARGET else self.chatLine
 		if key in (nui.KEY_RETURN, nui.KEY_NUMPADENTER):
 			field.fire_return()

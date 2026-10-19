@@ -169,6 +169,73 @@ class Flows(WhisperTest):
             dialog = world.interface.OpenWhisperDialog("Alice")
             self.assertTrue(self.type_and(world, dialog, "hi", "enter"))
 
+    @staticmethod
+    def textarea_input(board, text):
+        """Text input as RmlUi's textarea takes it at its caret (the stand-in
+        board's insert_text treats a line break as a single-line field's
+        Enter): Windows' WM_CHAR of a kept Enter reaches the field this way,
+        after the keydown's send."""
+        current = board.fields.get(INPUT, "")
+        at = max(0, min(board.carets.get(INPUT, len(current)), len(current)))
+        board.fields[INPUT] = current[:at] + text + current[at:]
+        board.carets[INPUT] = at + len(text)
+        # The document's data-event-change="input_change(ev.value)".
+        board.fire("input_change", board.fields[INPUT])
+
+    def test_the_line_break_enter_types_never_stays_in_the_input(self):
+        """WH-02-cleared (validation, N, C and Y): the send cleared the
+        field, then the key's text input put "\n" in it, and the next
+        whisper went out as "\n<text>". The input holds no line break, as
+        legacy's edit line; the caret stays after what was typed."""
+        def setup(game):
+            game.answer("net", "IsInsultIn", lambda text: "bad" in text)
+        world = self.world(True, setup=setup)
+        with world.game, w4.quiet():
+            dialog = world.interface.OpenWhisperDialog("Alice")
+            board = w4.board(dialog)
+            mark = world.mark()
+            self.assertTrue(self.type_and(world, dialog, "first", "enter"))
+            self.textarea_input(board, "\n")
+            self.assertEqual((board.get_value(INPUT), dialog.chatLine.GetText(), board.carets[INPUT]), ("", "", 0))
+            self.assertTrue(self.type_and(world, dialog, "second", "enter"))
+            self.textarea_input(board, "\n")
+            # Enter on the empty field: nothing to send, and no line break.
+            self.assertTrue(self.type_and(world, dialog, "", "enter"))
+            self.textarea_input(board, "\n")
+            self.assertEqual(board.get_value(INPUT), "")
+            # A refused line stays, without the line break, the caret at its end.
+            self.assertTrue(self.type_and(world, dialog, "bad word", "enter"))
+            self.textarea_input(board, "\n")
+            self.assertEqual((board.get_value(INPUT), board.carets[INPUT]), ("bad word", 8))
+            # A line break typed inside the text (a paste): the caret after it.
+            board.set_value(INPUT, "abcd", caret=2)
+            board.fire("input_change", "abcd")
+            self.textarea_input(board, "x\ny")
+            self.assertEqual((board.get_value(INPUT), board.carets[INPUT], dialog.chatLine.GetText()), ("abxycd", 4, "abxycd"))
+        self.assertEqual(world.calls_since(mark, "net.SendWhisperPacket"),
+                         [("net.SendWhisperPacket", ("Alice", "first")), ("net.SendWhisperPacket", ("Alice", "second"))])
+
+    def test_a_restored_draft_comes_back_once(self):
+        """The kept state goes to the dialog that reopens it: a dialog the
+        Interface replaces through the dialog without a partner
+        (RegisterTemporaryWhisperDialog destroys it, no minimize) does not
+        bring back a draft sent since."""
+        world = self.world(True)
+        with world.game, w4.quiet():
+            dialog = world.interface.OpenWhisperDialog("Alice")
+            self.type_and(world, dialog, "hi", "escape")
+            dialog = world.interface.ShowWhisperDialog("Alice")
+            self.assertEqual(w4.board(dialog).get_value(INPUT), "hi")
+            mark = world.mark()
+            self.type_and(world, dialog, "", "enter")
+            without = world.interface.OpenWhisperDialogWithoutTarget()
+            w4.board(without).insert_text(TARGET, "Alice")
+            w4.board(without).key(TARGET, world.m("nui").KEY_RETURN)
+        self.assertEqual(world.calls_since(mark, "net.SendWhisperPacket"), [("net.SendWhisperPacket", ("Alice", "hi"))])
+        self.assertIs(world.interface.dialogs["Alice"], without)
+        self.assertEqual(w4.board(without).get_value(INPUT), "")
+        self.assertEqual(without.chatLine.GetText(), "")
+
     def test_an_insult_is_refused_with_legacy_s_line(self):
         def setup(game):
             game.answer("net", "IsInsultIn", lambda text: "bad" in text)
@@ -196,13 +263,15 @@ class Flows(WhisperTest):
                 dialog.scrollBar.drag_to(0.4)
             self.type_and(world, dialog, "half a sent", "escape")
             world.minimized = dict(world.interface.dialogs)
+            world.kept = dict(world.m("nui_whisper").STATE.get("Alice", {})) if world.nui_on else None
             world.dialog = world.interface.ShowWhisperDialog("Alice")
         (legacy, a), (novaui, world) = self.run_both(flow)
         self.assertEqual(a.minimized, {})
         self.assertEqual(world.minimized, {})
         self.assertEqual(a.interface.buttons, [])
-        state = world.m("nui_whisper").STATE["Alice"]
+        state = world.kept
         self.assertEqual((state["draft"], state["width"], state["height"], state["pos"]), ("half a sent", 400, 260, 0.4))
+        self.assertNotIn("Alice", world.m("nui_whisper").STATE, "the reopened dialog took the kept state")
         board = w4.board(world.dialog)
         self.assertEqual(board.get_value(INPUT), "half a sent", "D8: the draft is kept")
         self.assertEqual((board.model["width"], board.model["height"], board.model["pos"]), (400.0, 260.0, 0.4))

@@ -331,6 +331,44 @@ class Flows(WhisperTest):
         model = w4.board(world.dialog).model
         self.assertEqual((model["width"], model["height"], model["input_max"], model["pos"]), (400.0, 260.0, 147, 1.0))
 
+    def test_the_board_s_scroll_echo_at_its_load_moves_nothing(self):
+        """In the client, the range that data-attr-value="pos" sets to its
+        first value dispatches change as the document loads (RmlUi's
+        WidgetSlider, pos against the slider's 0), and _nui runs the handler
+        as soon as the load returns. That reaches the probe's board too,
+        which nui_end() makes in the constructor, before the Interface's
+        LoadDialog makes the scroll bar's proxy (the integration smoke's
+        SMK-N traceback). Neither the probe's echo nor a shown board's (the
+        kept position of a restored dialog) may raise or scroll."""
+        runs = []
+        for echo in (False, True):
+            world = self.world(True)
+            echoes, errors = [], []
+            if echo:
+                board_class = world.m("nui_whisper")._WhisperBoard
+                board_init = board_class.__init__
+
+                def init(board, owner, model, board_init=board_init, echoes=echoes, errors=errors):
+                    board_init(board, owner, model)
+                    if board._doc:
+                        echoes.append(model["pos"])
+                        try:
+                            board.fire("scroll", model["pos"])
+                        except Exception as error:  # _nui logs a handler's error and goes on
+                            errors.append(error)
+                board_class.__init__ = init
+            mark = world.mark()
+            with world.game, w4.quiet():
+                dialog = world.interface.OpenWhisperDialog("Alice")
+                w4.fire(dialog, "scroll", 0.4)
+                self.type_and(world, dialog, "", "escape")
+                world.interface.ShowWhisperDialog("Alice")
+            runs.append((world.effects_since(mark, EFFECTS), echoes, errors))
+        (plain, _, _), (echoed, echoes, errors) = runs
+        self.assertEqual(errors, [])
+        self.assertEqual(echoes, [1.0, 1.0, 1.0, 0.4], "probe and show of the first dialog, then of the restored one")
+        self.assertEqual(echoed, plain)
+
     def test_the_wheel_scrolls_three_lines_a_notch(self):
         world = self.world(True)
         with world.game, w4.quiet():

@@ -471,13 +471,20 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		board.focus(field.field_id)
 
 	def _scroll(self, value):
+		# The range echoes the model's position as its document loads (RmlUi
+		# dispatches change when a binding sets a slider's value), also in the
+		# probe's board, which nui_end() makes before the Interface's
+		# LoadDialog: no scroll bar proxy yet (None after Destroy).
+		scroll = getattr(self, "scrollBar", None)
+		if scroll is None:
+			return
 		try:
 			value = min(max(float(value), 0.0), 1.0)
 		except (TypeError, ValueError):
 			return
-		if abs(value - self.scrollBar.GetPos()) < SCROLL_STEP / 2.0:
+		if abs(value - scroll.GetPos()) < SCROLL_STEP / 2.0:
 			return
-		self.scrollBar.moved(value)
+		scroll.moved(value)
 
 	def _wheel(self, delta):
 		"""Three lines a notch (RmlUi's sign: positive is down, toward the

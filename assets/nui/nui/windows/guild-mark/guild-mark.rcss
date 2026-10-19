@@ -1,0 +1,118 @@
+/* The guild mark and symbol lists' modern look (P16 spec 5.11.2): a
+   movable window with a list of ten rows (a mark file's 16 x 12 preview
+   before its name), the scroll range beside it, OK, Cancel and Refresh.
+   The controller centers it at each open, as legacy does; the sheet's place
+   frames it in its snapshots. Classic (legacy's 170 x 300 board, the list
+   at 15, 50, the scroll bar and the small buttons at the uiscript's
+   places): skins/classic/windows/guild-mark.rcss. */
+
+body.guild-mark
+{
+	left: 10dp;
+	top: 12dp;
+	width: 280dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.guild-mark button, .guild-mark .nui-list__item
+{
+	tab-index: none;
+	focus: none;
+}
+.guild-mark__body
+{
+	position: relative;
+	padding: var(--space-3) 28dp var(--space-3) var(--space-3);
+}
+.guild-mark .guild-mark__viewport
+{
+	height: 260dp;
+	overflow-y: hidden;
+}
+.guild-mark__row
+{
+	height: 26dp;
+	padding-top: 0;
+	padding-bottom: 0;
+	line-height: 26dp;
+}
+.guild-mark__line
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 auto;
+	height: 26dp;
+	white-space: nowrap;
+}
+.guild-mark__preview
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 16dp;
+	height: 12dp;
+	margin-right: var(--space-2);
+}
+.guild-mark__name
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild-mark__scroll-box
+{
+	position: absolute;
+	right: var(--space-2);
+	top: var(--space-3);
+	bottom: var(--space-3);
+	width: 12dp;
+}
+input.guild-mark__scroll
+{
+	display: block;
+	width: 12dp;
+	height: 100%;
+	focus: none;
+}
+.guild-mark__scroll slidertrack
+{
+	width: 4dp;
+	margin-left: 4dp;
+	border-radius: 2dp;
+	background-color: var(--surface-sunken);
+}
+.guild-mark__scroll sliderbar
+{
+	width: 12dp;
+	height: 22dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+}
+.guild-mark__scroll sliderbar:hover, .guild-mark__scroll sliderbar:active
+{
+	background-color: var(--accent);
+}
+.guild-mark__scroll sliderprogress
+{
+	display: none;
+}
+.guild-mark__scroll sliderarrowdec, .guild-mark__scroll sliderarrowinc
+{
+	width: 0;
+	height: 0;
+}
+.guild-mark__footer
+{
+	justify-content: center;
+	flex-wrap: wrap;
+}
+.guild-mark__button
+{
+	min-width: 64dp;
+	padding: 0 var(--space-2);
+}
+.guild-mark__button-label
+{
+	pointer-events: none;
+}

@@ -1,0 +1,70 @@
+/* The guild war declare dialog's modern look (P16 spec 5.10.2): the dialog
+   kit's look (components/dialog.rcss): the enemy guild's row, the battle
+   type's three buttons (the declared one selected; each shows its hint on
+   hover), Cancel and OK. The scrim centers it. Classic (legacy's 230 x 130
+   board, the slot bar under the name, the small type buttons and the
+   middle buttons at the uiscript's places):
+   skins/classic/windows/guild-war-declare.rcss. */
+
+.guild-war button
+{
+	tab-index: none;
+	focus: none;
+}
+.guild-war__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: var(--space-2);
+}
+.guild-war__label
+{
+	display: block;
+	flex: 0 0 96dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.guild-war__slot
+{
+	display: block;
+	flex: 1 1 0;
+	min-width: 0;
+}
+.guild-war__field
+{
+	width: 100%;
+}
+.guild-war__types
+{
+	display: flex;
+	flex-direction: row;
+	flex: 1 1 0;
+	gap: var(--space-1);
+}
+.guild-war__type
+{
+	flex: 1 1 0;
+	min-width: 0;
+	padding: 0 var(--space-1);
+}
+.guild-war__type-label, .guild-war__button-label
+{
+	pointer-events: none;
+}
+.guild-war__hint
+{
+	left: 0;
+	text-align: left;
+}
+.guild-war__hint-title
+{
+	display: block;
+	margin-bottom: var(--space-1);
+	font-weight: bold;
+}
+.guild-war__hint-line
+{
+	display: block;
+}

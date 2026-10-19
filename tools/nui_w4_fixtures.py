@@ -384,10 +384,73 @@ def whisper_fixtures():
     }
 
 
+# --- the guild war dialogs and the mark lists (SOCIAL, spec 5.10.4, 5.11.4) ------------------------------
+
+def ui_text(key):
+    """The en locale_interface.txt entry of `key` (uiScriptLocale)."""
+    return _read_table(os.path.join(LOCALE_EN, "locale_interface.txt"))[key]
+
+
+# The war types as nui_guild_war_declare.TYPES: the button's label, the
+# hint's title and its description lines (localeinfo.py:206-210).
+WAR_TYPES = (("GUILD_WAR_NORMAL", "GUILDWAR_NORMAL_TITLE",
+              ("GUILD_WAR_USE_NORMAL_MAP", "GUILD_WAR_LIMIT_30MIN", "GUILD_WAR_WIN_CHECK_SCORE")),
+             ("GUILD_WAR_WARP", "GUILDWAR_WARP_TITLE",
+              ("GUILD_WAR_USE_BATTLE_MAP", "GUILD_WAR_WIN_WIPE_OUT_GUILD", "GUILD_WAR_REWARD_POTION")),
+             ("GUILD_WAR_CTF", "GUILDWAR_CTF_TITLE",
+              ("GUILD_WAR_USE_BATTLE_MAP", "GUILD_WAR_WIN_TAKE_AWAY_FLAG1", "GUILD_WAR_WIN_TAKE_AWAY_FLAG2",
+               "GUILD_WAR_REWARD_POTION")))
+
+
+def war_hints():
+    return [{"label": ui_text(label), "title": game_text(title), "lines": [game_text(line) for line in lines]}
+            for label, title, lines in WAR_TYPES]
+
+
+def war_declare(limits, war_type):
+    return {"guild_war_declare": {"type": war_type, "type_select": True, "hints": war_hints(),
+                                  "max": limits.GUILD_NAME_MAX_LEN}}
+
+
+def war_accept(name, war_type):
+    return {"guild_war_accept": {"type": war_type, "type_select": True, "hints": war_hints(), "name": name}}
+
+
+MARK_FILES = ("castle.png", "dragon.tga", "flag.bmp", "lion.tga", "old_sign.jpeg", "rose.png", "sword.jpg", "wolf.tga")
+# The files the fixture's previews stand in for (16 x 12 marks).
+MARK_PREVIEWS = {"dragon.tga": "/nui/windows/guild-mark/fixture/mark1.png",
+                 "lion.tga": "/nui/windows/guild-mark/fixture/mark2.png",
+                 "wolf.tga": "/nui/windows/guild-mark/fixture/mark3.png"}
+SYMBOL_FILES = ("banner_blue.jpg", "banner_gold.jpg", "banner_red.jpg")
+
+
+def guild_mark(kind, files, selected=-1):
+    """A list's model as nui_guild_mark builds it: its window of rows from
+    the first, each its index, name and preview."""
+    title = ui_text("MARKLIST_TITLE") if kind == "mark" else game_text("SYMBOLLIST_TITLE")
+    rows = [{"index": i, "name": name, "preview": MARK_PREVIEWS.get(name, "") if kind == "mark" else ""}
+            for i, name in enumerate(files[:10])]
+    return {"guild_mark": {"kind": kind, "title": title, "files": rows, "selected": selected,
+                           "selected_row": selected if 0 <= selected < len(rows) else -1, "scroll": 0.0}}
+
+
+def guild_dialog_fixtures():
+    return {
+        ("guild-war-declare", ""): war_declare(TODAY, 1),
+        ("guild-war-declare", "foundation"): war_declare(FOUNDATION, 1),
+        ("guild-war-accept", ""): war_accept("Black Wolves", 2),
+        ("guild-war-accept", "foundation"): war_accept(long_name("Black Wolves Of The North", 24), 2),
+        ("guild-mark", ""): guild_mark("mark", MARK_FILES, 3),
+        ("guild-mark", "symbol"): guild_mark("symbol", SYMBOL_FILES, 0),
+        ("guild-mark", "empty"): guild_mark("mark", ()),
+    }
+
+
 def social_fixtures():
     found = {}
     found.update(messenger_fixtures())
     found.update(whisper_fixtures())
+    found.update(guild_dialog_fixtures())
     return found
 
 

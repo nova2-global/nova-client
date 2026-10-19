@@ -1,0 +1,137 @@
+/* Classic skin overlay of nui/windows/guild-war-accept/guild-war-accept.rml: the
+   legacy guild war accept dialog (uiscript acceptguildwardialog.py) at 100%, 1dp
+   to the legacy pixel: the stone board with its title bar, 230 x 130; the
+   enemy label at 15, 40, its slot bar at 80, 37 (130 x 18) with the name at
+   3, 3; the battle type's label at 15, 68 and its three buttons on the
+   small art (43 x 21) at 80, 125 and 170, 65 (the declared one held down);
+   OK at 48, 95 and Cancel at 119, 95 on the middle art. A type's hint is
+   legacy's thin board tooltip. */
+
+body.skin-classic.guild-war-accept .guild-war__window
+{
+	width: 230dp;
+	height: 130dp;
+	min-width: 0;
+	max-width: none;
+}
+body.skin-classic.guild-war-accept .guild-war__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 215dp;
+	margin: 0;
+	z-index: 1;
+}
+body.skin-classic.guild-war-accept .guild-war__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.guild-war-accept .guild-war__row
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: 0;
+}
+body.skin-classic.guild-war-accept .guild-war__label
+{
+	position: absolute;
+	left: 15dp;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+body.skin-classic.guild-war-accept .guild-war__row--enemy .guild-war__label { top: 40dp; }
+body.skin-classic.guild-war-accept .guild-war__row--type .guild-war__label { top: 68dp; }
+body.skin-classic.guild-war-accept .guild-war__slot
+{
+	position: absolute;
+	left: 80dp;
+	top: 37dp;
+	box-sizing: border-box;
+	width: 130dp;
+	height: 18dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.guild-war-accept .guild-war__field
+{
+	position: absolute;
+	left: 2dp;
+	top: 2dp;
+	width: 90dp;
+	height: 15dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 13dp;
+}
+body.skin-classic.guild-war-accept .guild-war__name
+{
+	position: absolute;
+	left: 2dp;
+	top: 2dp;
+	height: 15dp;
+	line-height: 13dp;
+	overflow: visible;
+}
+body.skin-classic.guild-war-accept .guild-war__types
+{
+	display: block;
+}
+body.skin-classic.guild-war-accept .guild-war__type
+{
+	position: absolute;
+	top: 65dp;
+	width: 43dp;
+	min-width: 0;
+	padding: 0;
+	overflow: visible;
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.guild-war-accept .guild-war__type:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.guild-war-accept .guild-war__type:active,
+body.skin-classic.guild-war-accept .guild-war__type.is-selected
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+body.skin-classic.guild-war-accept .guild-war__type--0 { left: 80dp; }
+body.skin-classic.guild-war-accept .guild-war__type--1 { left: 125dp; }
+body.skin-classic.guild-war-accept .guild-war__type--2 { left: 170dp; }
+body.skin-classic.guild-war-accept .guild-war__type-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+}
+body.skin-classic.guild-war-accept .guild-war__hint
+{
+	left: 0;
+	bottom: auto;
+	top: 24dp;
+	text-align: center;
+}
+body.skin-classic.guild-war-accept .guild-war__footer
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.guild-war-accept .guild-war__button
+{
+	position: absolute;
+	top: 95dp;
+	width: 61dp;
+	min-width: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+}
+body.skin-classic.guild-war-accept .guild-war__button--accept { left: 48dp; }
+body.skin-classic.guild-war-accept .guild-war__button--cancel { left: 119dp; }

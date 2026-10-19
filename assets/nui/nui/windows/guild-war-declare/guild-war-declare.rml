@@ -1,0 +1,50 @@
+<rml>
+<head>
+	<!-- The guild war declare dialog (uiguild.py DeclareGuildWarDialog,
+	     uiscript declareguildwardialog.py; P16 spec 5.10). While the
+	     guild-war-dialogs flag is on, the guild window's declare button makes
+	     nui_guild_war_declare.DeclareGuildWarDialog, a subclass of the legacy
+	     class on proxies: a name, a type, OK or Enter (/war <name> <type>),
+	     Cancel, Escape and the close button are legacy's code. A modal (D12)
+	     above the legacy UI layer, which the scrim centers. Enter in the field
+	     is its OnIMEReturn (OK), Escape its OnPressEscapeKey (Cancel); both
+	     keep the key. The field's limit is GUILD_NAME_MAX_LEN; its text never
+	     enters the model. Each type button shows its hint (the type's title
+	     and descriptions, legacy's tooltip) on hover. The buttons take no
+	     focus and act on a left mousedown. -->
+	<title>guild-war-declare</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="guild-war-declare.rcss"/>
+</head>
+<body template="nui" class="nui-scrim nui-fx guild-war guild-war-declare" data-model="guild_war_declare"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window nui-fx nui-dialog nui-anim guild-war__window" id="guild-war-declare">
+		<div class="nui-window__titlebar guild-war__titlebar">
+			<handle class="nui-window__handle guild-war__handle" move_target="guild-war-declare">
+				<span class="nui-window__title guild-war__title">@ui.GUILD_WAR_DECLARE</span>
+			</handle>
+			<button id="guild-war-declare-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim"
+			        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		</div>
+		<div class="nui-window__body guild-war__body">
+			<div class="guild-war__row guild-war__row--enemy"><span class="guild-war__label">@ui.GUILD_WAR_ENEMY</span><div
+				class="guild-war__slot"><input id="guild-war-name" type="text" class="nui-input nui-dialog__field guild-war__field"
+				data-attr-maxlength="max"/></div></div>
+			<div class="guild-war__row guild-war__row--type" data-if="type_select"><span class="guild-war__label">@ui.GUILD_WAR_BATTLE_TYPE</span><div
+				class="guild-war__types"><button class="nui-button nui-anim nui-has-tooltip guild-war__type" data-for="h, i : hints"
+				data-attr-id="'guild-war-type-' + i" data-class-guild-war__type--0="i == 0" data-class-guild-war__type--1="i == 1"
+				data-class-guild-war__type--2="i == 2" data-class-is-selected="i == type"
+				data-event-mousedown="type_press(i, ev.button)"><span class="guild-war__type-label">{{ h.label }}</span><span
+				class="nui-tooltip nui-tooltip--wrap nui-anim guild-war__hint"><span class="guild-war__hint-title">{{ h.title }}</span><span
+				class="guild-war__hint-line" data-for="line : h.lines">{{ line }}</span></span></button></div></div>
+		</div>
+		<div class="nui-window__footer nui-dialog__footer guild-war__footer">
+			<button id="guild-war-accept-cancel" class="nui-button nui-button--medium nui-anim guild-war__button guild-war__button--cancel"
+			        data-event-mousedown="cancel_press(ev.button)"><span class="guild-war__button-label">@ui.CANCEL</span></button>
+			<button id="guild-war-accept-ok" class="nui-button nui-button--medium nui-button--primary nui-anim guild-war__button guild-war__button--accept"
+			        data-event-mousedown="accept_press(ev.button)"><span class="guild-war__button-label">@ui.OK</span></button>
+		</div>
+	</div>
+</body>
+</rml>

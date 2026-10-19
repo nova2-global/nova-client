@@ -1,0 +1,55 @@
+<rml>
+<head>
+	<!-- The guild mark and symbol lists (uiuploadmark.py MarkSelectDialog and
+	     SymbolSelectDialog, uiscript marklistwindow.py; P16 spec 5.11). While
+	     the guild-mark flag is on, the NovaUI guild window makes
+	     nui_guild_mark.MarkSelectDialog and SymbolSelectDialog through
+	     nui_windows.make(), subclasses of the legacy classes on proxies: the
+	     files of upload/ (a mark list's bmp, tga, jpg, jpeg and png, sorted; a
+	     symbol list's jpg), the selection, Refresh, OK's checks (a file
+	     chosen, readable, 16 x 12 or 64 x 128) with the dialog kit's message,
+	     the upload event, Cancel, the close button and Escape are legacy's
+	     code. The list shows legacy's window of ten rows, which the scroll
+	     range and the wheel move by row; a mark file's 16 x 12 preview shows
+	     before its name, its size read only for the rows that show. The
+	     document is instanced (one per list, guild_mark_<n>) and exists only
+	     while its list shows; nothing runs per frame. A plain window above the
+	     legacy UI layer, centered at each open. The body and its controls take
+	     no focus; controls act on a left mousedown. -->
+	<title>guild-mark</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="guild-mark.rcss"/>
+</head>
+<body template="nui" id="guild-mark" class="nui-window nui-fx nui-anim guild-mark" data-model="guild_mark"
+      data-event-mousedown="board_press(ev.button)" data-class-guild-mark--symbol="kind == 'symbol'">
+	<div class="nui-window__titlebar guild-mark__titlebar">
+		<handle class="nui-window__handle guild-mark__handle" move_target="#document">
+			<span class="nui-window__title guild-mark__title">{{ title }}</span>
+		</handle>
+		<button id="guild-mark-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body guild-mark__body">
+		<div class="nui-list guild-mark__list" data-event-mousescroll="wheel(ev.wheel_delta_y)">
+			<div class="nui-list__viewport guild-mark__viewport">
+				<div class="nui-list__item nui-anim guild-mark__row" data-for="f : files" data-attr-id="'guild-mark-row-' + it_index"
+				     data-class-is-selected="it_index == selected_row"
+				     data-event-mousedown="row_press(it_index, ev.button)"><span class="guild-mark__line"
+					data-class-is-selected="it_index == selected_row"><img class="guild-mark__preview" data-if="f.preview != ''"
+					data-attr-src="f.preview"/><span class="guild-mark__name">{{ f.name }}</span></span></div>
+			</div>
+		</div>
+		<div class="guild-mark__scroll-box"><input id="guild-mark-scroll" type="range" orientation="vertical" class="guild-mark__scroll"
+			min="0" max="1" step="0.01" data-attr-value="scroll" data-event-change="scroll(ev.value)"/></div>
+	</div>
+	<div class="nui-window__footer guild-mark__footer">
+		<button id="guild-mark-ok" class="nui-button nui-button--medium nui-button--primary nui-anim guild-mark__button guild-mark__button--ok"
+		        data-event-mousedown="ok_press(ev.button)"><span class="guild-mark__button-label">@ui.OK</span></button>
+		<button id="guild-mark-cancel" class="nui-button nui-button--medium nui-anim guild-mark__button guild-mark__button--cancel"
+		        data-event-mousedown="cancel_press(ev.button)"><span class="guild-mark__button-label">@ui.CANCEL</span></button>
+		<button id="guild-mark-refresh" class="nui-button nui-button--medium nui-anim guild-mark__button guild-mark__button--refresh"
+		        data-event-mousedown="refresh_press(ev.button)"><span class="guild-mark__button-label">@ui.MARKLIST_REFRESH</span></button>
+	</div>
+</body>
+</rml>

@@ -176,3 +176,72 @@ class Facade(object):
 		board = self.nui_board()
 		if board is not None:
 			board.set_position(self._place[0], self._place[1])
+
+
+class DialogFacade(Facade):
+	"""A Wave 4 modal input dialog (D12: the guild's grade name dialog, the
+	war declare and accept dialogs): the scrim centers its board at each show
+	(legacy's own place, a SetPosition or SetCenterPosition, moves nothing),
+	and its fields are nui_form_proxies.FieldProxys whose text, focus and limit
+	reach the document and whose GetText reads the document's field. The
+	window lists its fields in _fields(); a field's limit goes to the model
+	key that _field() was given."""
+
+	def _value(self, field_id):
+		board = self.nui_board()
+		return board.get_value(field_id) if board is not None and board.is_visible() else None
+
+	def _field(self, field_id, maximum, max_key=None):
+		import nui_form_proxies
+		field = nui_form_proxies.FieldProxy(field_id, self._on_field)
+		field.max_key = max_key
+		field.reader = lambda: self._value(field_id)
+		field.SetMax(maximum)
+		return field
+
+	def _fields(self):
+		return ()
+
+	def _on_field(self, field, what):
+		if what == "max":
+			if getattr(field, "max_key", None):
+				self.nui_set(**{field.max_key: int(field.max)})
+			return
+		board = self.nui_board()
+		if board is None or not board.is_visible():
+			return
+		if what == "text":
+			board.set_value(field.field_id, field.text, caret="end")
+		elif what == "focus":
+			board.focus(field.field_id)
+
+	def _keep_board(self, board):
+		"""Before the board goes: each field's text (legacy's edit line keeps
+		its text while hidden, and legacy reads it after its Hide, as the
+		guild's OnChangeGradeName does). No place: the scrim centers the
+		dialog at each show."""
+		for field in self._fields():
+			value = board.get_value(field.field_id)
+			if isinstance(value, str):
+				field.text = value
+
+	def SetPosition(self, x, y):
+		"""Nothing: the scrim centers the dialog."""
+
+	def SetCenterPosition(self, x=0, y=0):
+		"""Nothing: the scrim centers the dialog."""
+
+	def Show(self):
+		Facade.Show(self)
+		board = self.nui_board()
+		if board is None:
+			return
+		# The fields as legacy left them (a text set while hidden), and the
+		# focus legacy gave before the show (Open).
+		for field in self._fields():
+			if field.text:
+				board.set_value(field.field_id, field.text, caret="end")
+		for field in self._fields():
+			if field.focused:
+				board.focus(field.field_id)
+				break

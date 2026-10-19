@@ -28,7 +28,7 @@ TRADE_MODULES = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_facade", 
 # The social windows (SOCIAL, P16 spec 11.4), in import order after the shared
 # modules: the grade name dialog's board before the guild window.
 SOCIAL_FLAGS = "+social"
-SOCIAL_MODULES = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_facade", "nui_text", "nui_messenger",
+SOCIAL_MODULES = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_facade", "nui_text", "nui_guild_war", "nui_messenger",
                   "nui_whisper", "nui_guild_mark", "nui_guild_war_declare", "nui_guild_war_accept",
                   "nui_guild_grade_name", "nui_guild")
 P = support.module_constants()["player"]
@@ -62,6 +62,20 @@ def quiet():
 def read(path):
     with open(path, encoding="utf-8", errors="replace") as handle:
         return handle.read()
+
+
+def social_locale(locale):
+    """What localeinfo.py defines beyond locale_game.txt for the social
+    windows: GUILD_MARK_MIN_LEVEL (its constant) and the war types'
+    description lists (LoadLocaleData, localeinfo.py:206-210)."""
+    locale.GUILD_MARK_MIN_LEVEL = "3"
+    entry = lambda name: getattr(locale, name)
+    locale.GUILDWAR_NORMAL_DESCLIST = (entry("GUILD_WAR_USE_NORMAL_MAP"), entry("GUILD_WAR_LIMIT_30MIN"),
+                                       entry("GUILD_WAR_WIN_CHECK_SCORE"))
+    locale.GUILDWAR_WARP_DESCLIST = (entry("GUILD_WAR_USE_BATTLE_MAP"), entry("GUILD_WAR_WIN_WIPE_OUT_GUILD"),
+                                     entry("GUILD_WAR_REWARD_POTION"))
+    locale.GUILDWAR_CTF_DESCLIST = (entry("GUILD_WAR_USE_BATTLE_MAP"), entry("GUILD_WAR_WIN_TAKE_AWAY_FLAG1"),
+                                    entry("GUILD_WAR_WIN_TAKE_AWAY_FLAG2"), entry("GUILD_WAR_REWARD_POTION"))
 
 
 def install_social_ui(game):
@@ -192,12 +206,31 @@ def install_social_ui(game):
             pass
 
     game.modules["uiToolTip"].ToolTip = PlainToolTip
+
+    # app.GetFileList by the pattern's folder and extension (legacy's mark
+    # lists ask for upload/*.<ext>, one extension at a time).
+    import fnmatch
+    support.define(game.modules["app"], "GetFileList", lambda pattern: [
+        name for name in game.w4["files"].get(pattern.split("/", 1)[0], [])
+        if fnmatch.fnmatch(name.lower(), pattern.split("/", 1)[-1].lower())])
+
+    # The guild marks (guild.GuildIDToMarkID and the atlas getters) from
+    # game.w4["guild"]["marks"]: guild id -> (atlas path, index in it).
+    # Getters, not recorded (GuildIDToMarkID has no getter prefix).
+    guild = game.modules["guild"]
+    marks = lambda: game.w4["guild"]["marks"]
+    guild.GuildIDToMarkID = lambda guild_id: guild_id if guild_id in marks() else -1
+    guild.GetMarkImageFilenameByMarkID = lambda mark_id: marks().get(mark_id, ("", 0))[0]
+    guild.GetMarkIndexByMarkID = lambda mark_id: marks().get(mark_id, ("", 0))[1]
     ui.MakeImageBox = make_image_box
     ui.MakeTextLine = make_text_line
     ui.MakeButton = make_button
     ui.MakeSlotBar = make_slot_bar
     ui.SlotBar = Win
     ui.ComboBox = ComboBox
+    # The guild's heal question widens itself (uiguild.py:1853).
+    if not hasattr(support.LegacyDialog, "SetWidth"):
+        support.LegacyDialog.SetWidth = lambda self, width: None
     slots = support.LegacySlotWindow
     if not hasattr(slots, "SetSkillSlot"):
         for name, fn in _GUILD_SLOT_CALLS.items():
@@ -265,6 +298,8 @@ class World(object):
             install_social_ui(game)
         game.modules["systemSetting"].GetUINuiWindows = lambda: windows if nui_on else ""
         game.modules["localeInfo"] = support.locale_info("en")
+        if social:
+            social_locale(game.modules["localeInfo"])
         for name in ("networkModule", "interfaceModule"):
             game.put(name, types.ModuleType(name))
         if not engine_4:

@@ -1,0 +1,190 @@
+/* Classic skin overlay of nui/windows/guild-mark/guild-mark.rml: the legacy
+   mark and symbol lists (uiscript marklistwindow.py, uiuploadmark.py) at
+   100%, 1dp to the legacy pixel. The stone board, 170 x 300, its title bar
+   at 8, 7 (155 wide); the list box (ui.ListBoxEx) at 15, 50: ten rows 20
+   apart, 16 tall, a mark row's preview at 0, 2 and its name at 20, a
+   symbol row's name at 1, 2; the selection a dark blue bar over the row's
+   text (legacy's item width, the text plus 4); no hover look, as legacy;
+   the scroll bar at 143, 40, 220 tall; OK, Cancel and Refresh on the small
+   art (43dp) at 15, 60 and 115, y 265, their labels centered over the art
+   as legacy draws them. */
+
+body.skin-classic.guild-mark
+{
+	width: 170dp;
+	height: 300dp;
+	min-width: 0;
+}
+body.skin-classic.guild-mark .guild-mark__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 155dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+}
+body.skin-classic.guild-mark .guild-mark__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 155dp;
+	height: 23dp;
+	text-align: center;
+}
+body.skin-classic.guild-mark .guild-mark__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 137dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.guild-mark .guild-mark__body
+{
+	padding: 0;
+}
+body.skin-classic.guild-mark .guild-mark__list
+{
+	position: absolute;
+	left: 15dp;
+	top: 50dp;
+	width: 125dp;
+	height: 200dp;
+	padding: 0;
+}
+body.skin-classic.guild-mark .guild-mark__viewport
+{
+	height: 200dp;
+}
+body.skin-classic.guild-mark .guild-mark__row
+{
+	display: block;
+	height: 20dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	line-height: 16dp;
+}
+body.skin-classic.guild-mark .guild-mark__row:hover,
+body.skin-classic.guild-mark .guild-mark__row.is-selected
+{
+	background-color: transparent;
+}
+body.skin-classic.guild-mark .guild-mark__line
+{
+	display: inline-block;
+	position: relative;
+	height: 16dp;
+	padding: 0 4dp 0 20dp;
+	font-weight: normal;
+}
+body.skin-classic.guild-mark.guild-mark--symbol .guild-mark__line
+{
+	padding: 2dp 4dp 0 1dp;
+	height: 14dp;
+}
+body.skin-classic.guild-mark .guild-mark__line.is-selected
+{
+	background-color: var(--classic-list-ex-select);
+}
+body.skin-classic.guild-mark .guild-mark__preview
+{
+	position: absolute;
+	left: 0;
+	top: 2dp;
+	margin: 0;
+}
+body.skin-classic.guild-mark .guild-mark__name
+{
+	display: inline;
+	color: var(--text);
+	overflow: visible;
+}
+body.skin-classic.guild-mark .guild-mark__scroll-box
+{
+	left: 143dp;
+	top: 40dp;
+	right: auto;
+	bottom: auto;
+	width: 17dp;
+	height: 220dp;
+}
+body.skin-classic.guild-mark input.guild-mark__scroll
+{
+	width: 17dp;
+}
+body.skin-classic.guild-mark .guild-mark__scroll slidertrack
+{
+	width: 13dp;
+	margin-left: 2dp;
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+body.skin-classic.guild-mark .guild-mark__scroll sliderbar
+{
+	width: 17dp;
+	height: 9dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/scrollbar_middle_button_01.sub" scale-none left top);
+}
+body.skin-classic.guild-mark .guild-mark__scroll sliderbar:hover, body.skin-classic.guild-mark .guild-mark__scroll sliderbar:active
+{
+	background-color: transparent;
+}
+body.skin-classic.guild-mark .guild-mark__scroll sliderarrowdec
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_up_button_01.sub" scale-none left top);
+}
+body.skin-classic.guild-mark .guild-mark__scroll sliderarrowinc
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_down_button_01.sub" scale-none left top);
+}
+body.skin-classic.guild-mark .guild-mark__footer
+{
+	display: block;
+	height: 0;
+	padding: 0;
+}
+body.skin-classic.guild-mark .guild-mark__button
+{
+	position: absolute;
+	top: 265dp;
+	width: 43dp;
+	min-width: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.guild-mark .guild-mark__button:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.guild-mark .guild-mark__button:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+/* The label centered over the art, a wider one overflowing both ends; it
+   takes no pointer, as legacy's text line takes none. */
+body.skin-classic.guild-mark .guild-mark__button-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+}
+body.skin-classic.guild-mark .guild-mark__button--ok { left: 15dp; }
+body.skin-classic.guild-mark .guild-mark__button--cancel { left: 60dp; }
+body.skin-classic.guild-mark .guild-mark__button--refresh { left: 115dp; }

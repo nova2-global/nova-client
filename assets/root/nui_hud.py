@@ -581,3 +581,39 @@ class KeptBoard(OnDemand):
 				self._keep(board)
 			board.destroy()
 		self._make = self._restore = self._keep = self._empty = None
+
+
+# P15 fix stage (VF-1): the order of the boards below the legacy UI band.
+# Legacy's window manager keeps one order in the UI layer: SetTop moves a
+# window to the top, and Show only shows it where it stands
+# (CWindow::Show). A NovaUI board loaded or shown at a Show draws above every
+# other document instead, so a window shown by a press on another (the
+# inventory's dragon soul button: the press raised the inventory first,
+# SetTopUIWindow) covered the window the press had just raised.
+_raises = weakref.WeakKeyDictionary()   # window -> the number of its last SetTop
+_raise_count = [0]
+
+
+def note_raise(window):
+	"""A board's window was raised (its SetTop): remembered, so a board that
+	shows later without a raise of its own stays below it (keep_order)."""
+	_raise_count[0] += 1
+	_raises[window] = _raise_count[0]
+
+
+def keep_order(window):
+	"""After `window`'s board loads or shows at a Show that raises nothing,
+	brings back above it, oldest first, the shown boards of every window
+	raised since `window`'s own last SetTop: the windows legacy's UI layer
+	keeps above it. A window that was never raised counts as raised before
+	every other. Returns how many boards it raised."""
+	mine = _raises.get(window, 0)
+	later = sorted((seq, index, other) for index, (other, seq) in enumerate(list(_raises.items()))
+	               if other is not window and seq > mine)
+	raised = 0
+	for _, _, other in later:
+		demand = getattr(other, "demand", None)
+		board = demand.board() if demand is not None and other.IsShow() else None
+		if board is not None and board.bring_to_front():
+			raised += 1
+	return raised

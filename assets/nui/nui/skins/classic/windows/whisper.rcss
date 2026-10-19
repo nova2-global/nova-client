@@ -177,10 +177,18 @@ body.skin-classic.whisper .whisper__lines
 	top: 28dp;
 	right: 30dp;
 	bottom: 62dp;
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.whisper .whisper__lines .nui-chat__line
 {
 	font-size: var(--font-md);
+}
+/* Legacy's GM line color (1.0, 0.632, 0.0), 1/255 from --edge-gm. */
+body.skin-classic.whisper .whisper__lines .nui-chat__line--w5
+{
+	color: var(--edge-gm);
 }
 body.skin-classic.whisper .whisper__scroll-box
 {

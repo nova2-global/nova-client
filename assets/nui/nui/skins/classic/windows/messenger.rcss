@@ -80,9 +80,13 @@ body.skin-classic.messenger .messenger__list scrollbarvertical sliderbar
 {
 	clip: 1;
 }
+/* A row: the mark, then the name as wide as its text, cut at the row's end
+   (before the scroll bar) when it is longer, so the bar stays under it. */
 body.skin-classic.messenger .messenger__line
 {
-	display: block;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
 	height: 16dp;
 	padding: 0;
 	line-height: 16dp;
@@ -107,7 +111,8 @@ body.skin-classic.messenger .messenger__mark,
 body.skin-classic.messenger .messenger__line.is-member .messenger__mark,
 body.skin-classic.messenger .messenger__line.is-group .messenger__mark
 {
-	display: inline-block;
+	display: block;
+	flex: 0 0 16dp;
 	width: 16dp;
 	height: 16dp;
 	margin: 0;
@@ -115,11 +120,10 @@ body.skin-classic.messenger .messenger__line.is-group .messenger__mark
 	border-radius: 0;
 	background-color: transparent;
 	transform: none;
-	vertical-align: top;
 }
 body.skin-classic.messenger .messenger__line.is-empty .messenger__mark
 {
-	display: inline-block;
+	display: block;
 }
 body.skin-classic.messenger .messenger__line.is-group .messenger__mark
 {
@@ -140,11 +144,13 @@ body.skin-classic.messenger .messenger__line.is-member.is-online .messenger__mar
 /* The name 20 in (text line at 20, 2); the bar from 16 in, 4 past the text. */
 body.skin-classic.messenger .messenger__name
 {
-	display: inline-block;
+	display: block;
+	flex: 0 1 auto;
+	min-width: 0;
 	height: 16dp;
 	padding: 0 4dp 0 4dp;
-	overflow: visible;
-	vertical-align: top;
+	overflow: hidden;
+	text-overflow: clip;
 }
 body.skin-classic.messenger .messenger__line.is-selected .messenger__name
 {

@@ -103,16 +103,21 @@ body.whisper
 	padding: 0;
 }
 /* The flow rules (ElementChatLines.h): a column that ends at the bottom and
-   clips the oldest line at its top; each line static and wrapped. */
+   clips the oldest line at its top; each line static and wrapped. The
+   chat colors are made for a dark ground, so the lines sit on the chat's
+   shade in every modern look, as the chat log's do. */
 .whisper__lines
 {
 	display: flex;
 	flex-direction: column-reverse;
 	position: absolute;
-	left: var(--space-3);
+	left: var(--space-2);
 	top: var(--space-2);
 	right: 24dp;
 	bottom: var(--space-2);
+	padding: 2dp var(--space-1);
+	border-radius: var(--radius-md);
+	background-color: var(--chat-edit-shade);
 	overflow: hidden;
 	clip: always;
 }
@@ -129,9 +134,13 @@ body.whisper
 {
 	color: var(--chat-talking);
 }
+/* A game master's line: italic, in the chat's notice color, the one chat
+   color that reads on the shade in every modern look (--edge-gm is made
+   for the light tooltip chip in modern dark, where it reads at 3:1 here).
+   Classic keeps legacy's orange. */
 .nui-chat__line--w5
 {
-	color: var(--edge-gm);
+	color: var(--chat-notice);
 	font-style: italic;
 }
 .nui-chat__line--w255

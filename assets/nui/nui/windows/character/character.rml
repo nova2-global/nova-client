@@ -7,7 +7,8 @@
 	     assets/root/nui_character.py), a subclass of the legacy class whose
 	     widgets are proxies: every flow, packet and rule is legacy's code,
 	     and this document shows what legacy's refreshes tell the proxies.
-	     It exists only while the window shows (nui_hud.OnDemand), and one
+	     It loads at the window's first show and is kept, hidden, after it
+	     (nui_hud.KeptBoard, P15 V-2b, every panel list empty then), and one
 	     tab's panel at a time (each panel_<tab> list holds one entry for the
 	     shown tab, none for the others), since RmlUi updates every element
 	     of a loaded document each frame. The grids' cells are the legacy
@@ -317,7 +318,8 @@
 			</div>
 		</div>
 	</div>
-	<div class="char-tabs">
+	<!-- V-2b: the tab strip is a list of one entry while the board shows (tabs_on). -->
+	<div class="char-tabs" data-for="w : tabs_on">
 		<img class="char-art char-art--tab" data-if="tab == 'STATUS'" data-attr-src="art.tab_1"/>
 		<img class="char-art char-art--tab" data-if="tab == 'SKILL'" data-attr-src="art.tab_2"/>
 		<img class="char-art char-art--tab" data-if="tab == 'EMOTICON'" data-attr-src="art.tab_3"/>

@@ -919,7 +919,12 @@ class Flows(CharacterTest):
         self.assertEqual(calls, [])
         self.assertFalse(a.IsShow())
         self.assertFalse(b.IsShow())
-        self.assertNotIn(DOCUMENT, nw.game.loaded_documents())
+        # V-2b: the board is kept, hidden, with no panel and no tab strip.
+        kept = b.demand.kept()
+        self.assertIsNotNone(kept)
+        self.assertFalse(kept.is_visible())
+        self.assertEqual([kept.get(key) for key in ("tabs_on", "panel_status", "panel_skill", "panel_emoticon",
+                                                     "panel_quest")], [[]] * 5)
 
 
 class F2RightPress(CharacterTest):
@@ -1035,21 +1040,37 @@ class Panels(CharacterTest):
         source = read(os.path.join(ROOT, "nui_character.py"))
         self.assertNotRegex(source, r"def OnUpdate|def OnRender")
 
-    def test_on_demand_and_the_place_kept_across_hides(self):
+    def test_kept_after_the_first_open_and_the_place_kept_across_hides(self):
+        """V-2b (P15 spec 8.1, D9): nothing loads before the first open; a
+        hide keeps the board loaded and hidden with no panel and no tab
+        strip; the next open shows the same board, no load, the strip and
+        the shown tab's panel set again, at the place it was left."""
         world = World(True)
         window = world.make()
         self.assertEqual(world.game.loaded_documents(), [])
         with world.game, quiet():
+            window.SetState("SKILL")
             window.Show()
         self.assertEqual(world.game.loaded_documents(), [DOCUMENT])
+        first = board(window)
+        made = len(world.game.state.windows)
         world.game.state.boxes[(DOCUMENT, "")] = (300.0, 120.0, 298.0, 421.0)
         with world.game, quiet():
             window.Hide()
-        self.assertEqual(world.game.loaded_documents(), [])
+        self.assertEqual(world.game.loaded_documents(), [DOCUMENT], "kept loaded")
+        self.assertIsNone(board(window))
+        self.assertIs(window.demand.kept(), first)
+        self.assertFalse(first.is_visible())
+        self.assertEqual([first.get(key) for key in ("tabs_on", "panel_status", "panel_skill", "panel_emoticon",
+                                                     "panel_quest")], [[]] * 5)
         with world.game, quiet():
             window.Show()
-        self.assertEqual(board(window).placement, ("position", 300.0, 120.0, (0.0, 0.0)))
+        self.assertIs(board(window), first, "shown again, not made again")
+        self.assertEqual(len(world.game.state.windows), made)
+        self.assertTrue(first.is_visible())
+        self.assertEqual(first.placement, ("position", 300.0, 120.0, (0.0, 0.0)))
         self.assertTrue(model(window)["placed"])
+        self.assertEqual([model(window)[key] for key in ("tabs_on", "panel_status", "panel_skill")], [[1], [], [1]])
         with world.game, quiet():
             window.Destroy()
         self.assertEqual(world.game.loaded_documents(), [])

@@ -1084,7 +1084,11 @@ class Flows(DragonSoulTest):
         self.assertEqual(calls, [])
         self.assertFalse(lw.ds.IsShow())
         self.assertFalse(nw.ds.IsShow())
-        self.assertNotIn(DS_DOCUMENT, nw.game.loaded_documents())
+        # V-2b: the board is kept, hidden, with no deck, kind, grade or bag cell.
+        kept = nw.ds.demand.kept()
+        self.assertIsNotNone(kept)
+        self.assertFalse(kept.is_visible())
+        self.assertEqual([kept.get(key) for key in ("deck_on", "kinds_on", "grades_on", "bag_on")], [[]] * 4)
 
 
 class F2RightPress(DragonSoulTest):
@@ -1401,19 +1405,30 @@ class Boards(DragonSoulTest):
             self.assertFalse(callable(getattr(cls, "OnRender", None)), name)
             self.assertNotRegex(read(os.path.join(ROOT, module + ".py")), r"def OnUpdate|def OnRender")
 
-    def test_on_demand_and_the_place_kept_across_hides(self):
+    def test_kept_after_the_first_open_and_the_place_kept_across_hides(self):
+        """V-2b (P15 spec 8.1, D9): nothing loads before the first open; a
+        hide keeps the board loaded and hidden, its deck, kinds, grades and
+        bag emptied; the next open shows the same board with them set again,
+        at the place it was left. The refine window stays on demand."""
         world = World(True)
         world.make()
         self.assertEqual(world.game.loaded_documents(), [])
-        world.open()
+        world.open(0, 3)
         self.assertEqual(world.game.loaded_documents(), [DS_DOCUMENT])
+        first, cells = board(world.ds), model(world.ds)["bag"]
         world.game.state.boxes[(DS_DOCUMENT, "")] = (300.0, 120.0, 374.0, 539.0)
         with world.game, quiet():
             world.ds.Hide()
-        self.assertEqual(world.game.loaded_documents(), [])
+        self.assertEqual(world.game.loaded_documents(), [DS_DOCUMENT], "kept loaded")
+        self.assertIs(world.ds.demand.kept(), first)
+        self.assertFalse(first.is_visible())
+        self.assertEqual([first.get(key) for key in ("deck_on", "kinds_on", "grades_on", "bag_on")], [[]] * 4)
         world.open()
-        self.assertEqual(board(world.ds).placement, ("position", 300.0, 120.0, (0.0, 0.0)))
+        self.assertIs(board(world.ds), first, "shown again, not made again")
+        self.assertEqual(first.placement, ("position", 300.0, 120.0, (0.0, 0.0)))
         self.assertTrue(model(world.ds)["placed"])
+        self.assertEqual([model(world.ds)[key] for key in ("deck_on", "kinds_on", "grades_on", "bag_on")], [[1]] * 4)
+        self.assertEqual(model(world.ds)["bag"], cells)
         world.open_refine()
         self.assertEqual(sorted(world.game.loaded_documents()), sorted([DS_DOCUMENT, DSR_DOCUMENT]))
         with world.game, quiet():

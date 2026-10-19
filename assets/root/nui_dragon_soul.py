@@ -17,9 +17,10 @@ it. Legacy's ScriptWindow stays underneath, a 0 x 0 window in the UI layer,
 so IsShow, the Escape chain and SetTop are legacy's.
 
 No Python runs per frame: legacy's window has no OnUpdate either. The board
-exists only while the window shows (nui_hud.OnDemand); a refresh while
-hidden runs legacy's refresh on the proxies and the board takes their last
-state at its next show. Legacy activates and deactivates slots without
+loads at the window's first show and is kept, hidden, after it, its lists
+emptied (nui_hud.KeptBoard, P15 V-2b); a refresh while hidden runs
+legacy's refresh on the proxies and the board takes their last state at its
+next show. Legacy activates and deactivates slots without
 RefreshSlot (the highlights, the active deck), which CSlotWindow draws at
 once, so every legacy entry point and board event ends with a flush of the
 slot proxies it changed. Every count comes from nui_limits.current()."""
@@ -211,7 +212,8 @@ class DragonSoulWindow(uiDragonSoul.DragonSoulWindow):
 		self.loaded = False
 		self.demand = None
 		if nui_hud.has_engine_3c():
-			self.demand = nui_hud.OnDemand(self._make_board, self._restore_board, self._keep_board)
+			# V-2b (P15 spec 8.1, D9): the board is kept, hidden, after its first open.
+			self.demand = nui_hud.KeptBoard(self._make_board, self._restore_board, self._keep_board, self._empty_board)
 		try:
 			uiDragonSoul.DragonSoulWindow.__init__(self)
 			if self.demand is not None:
@@ -261,6 +263,9 @@ class DragonSoulWindow(uiDragonSoul.DragonSoulWindow):
 			"bag": [nui_slots.empty_cell(i) for i in range(limits.DRAGON_SOUL_PAGE_SIZE)],
 			"bag_cols": limits.DRAGON_SOUL_COLUMNS,
 			"equip": [dict(nui_slots.empty_cell(i), sub=i) for i in range(limits.DRAGON_SOUL_EQUIPMENT_FIRST_SIZE)],
+			# V-2b: the deck, the kinds, the grades and the bag, each a list of
+			# one entry while the board shows and none while it is kept hidden.
+			"deck_on": [1], "kinds_on": [1], "grades_on": [1], "bag_on": [1],
 		}
 
 	def _set(self, **values):
@@ -284,6 +289,12 @@ class DragonSoulWindow(uiDragonSoul.DragonSoulWindow):
 			self._state["placed"] = True
 			board.set(placed=True)
 			board.set_position(self._place[0], self._place[1])
+
+	def _empty_board(self, board):
+		"""V-2b: the hidden kept board holds no deck, kind, grade or bag cell
+		(RmlUi updates every element of a loaded document each frame);
+		_restore_board sets them again at the next show."""
+		board.set(deck_on=[], kinds_on=[], grades_on=[], bag_on=[])
 
 	def _keep_board(self, board):
 		"""Legacy's window keeps the place it was dragged to (D10): the board's

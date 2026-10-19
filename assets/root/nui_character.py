@@ -20,9 +20,10 @@ window's OnUpdate every frame finds nothing to call. Legacy's OnUpdate
 rewrote the quest clocks every frame; here each RefreshQuest writes each
 clock's end once and the document's nui-countdown elements count it down
 (D4). The board instances one tab's panel at a time (D3): each panel is a
-list of zero or one entry. The board exists only while the window shows
-(nui_hud.OnDemand); a refresh while hidden runs legacy's refresh on the
-proxies and the board takes their last state at its next show. Every
+list of zero or one entry. The board loads at the window's first show and
+is kept, hidden, after it, every panel list empty (nui_hud.KeptBoard, P15
+V-2b); a refresh while hidden runs legacy's refresh on the proxies and the
+board takes their last state at its next show. Every
 count comes from nui_limits.current()."""
 
 import sys
@@ -330,7 +331,8 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		self.loaded = False
 		self.demand = None
 		if nui_hud.has_engine_3c():
-			self.demand = nui_hud.OnDemand(self._make_board, self._restore_board, self._keep_board)
+			# V-2b (P15 spec 8.1, D9): the board is kept, hidden, after its first open.
+			self.demand = nui_hud.KeptBoard(self._make_board, self._restore_board, self._keep_board, self._empty_board)
 		try:
 			uiCharacter.CharacterWindow.__init__(self)
 			if self.demand is not None:
@@ -381,6 +383,8 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			"dual": [dict(nui_slots.empty_cell(i), slot=s) for i, s in enumerate(nui_limits.emote_slots("dual", limits))],
 			# The grids' widths (their nui-slot-grid--cols-<n> class) from the limits, as their cells.
 			"support_cols": limits.SKILL_SUPPORT_COLUMNS, "emote_cols": limits.EMOTE_COLUMNS,
+			# V-2b: the tab strip, one entry while the board shows, none while it is kept hidden.
+			"tabs_on": [1],
 			"quests": [self._empty_row(i) for i in range(limits.QUEST_ROWS)],
 			"quest_cells": [dict(nui_slots.empty_cell(i), slot=i, base=True) for i in range(limits.QUEST_ROWS)],
 			"quest_scroll_shown": False, "quest_scroll_pos": 0.0,
@@ -430,6 +434,12 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		if right <= 0 or left <= LEGACY_LEFT_DP:
 			return None
 		return (left, wndMgr.GetScreenHeight() / scale / 2.0 - LEGACY_HALF_HEIGHT_DP)
+
+	def _empty_board(self, board):
+		"""V-2b: the hidden kept board holds no panel and no tab strip (RmlUi
+		updates every element of a loaded document each frame); _restore_board
+		sets the strip and the shown tab's panel again at the next show."""
+		board.set(tabs_on=[], **dict((key, []) for key in PANELS.values()))
 
 	def _keep_board(self, board):
 		"""Legacy's window keeps the place it was dragged to (D10): the board's

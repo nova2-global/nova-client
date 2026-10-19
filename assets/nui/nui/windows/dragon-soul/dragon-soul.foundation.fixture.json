@@ -848,6 +848,18 @@
 				"unavailable": false,
 				"sub": 5
 			}
+		],
+		"deck_on": [
+			1
+		],
+		"kinds_on": [
+			1
+		],
+		"grades_on": [
+			1
+		],
+		"bag_on": [
+			1
 		]
 	}
 }

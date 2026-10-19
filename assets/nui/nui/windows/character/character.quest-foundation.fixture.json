@@ -898,6 +898,9 @@
 		],
 		"support_cols": 6,
 		"emote_cols": 6,
+		"tabs_on": [
+			1
+		],
 		"solo": [
 			{
 				"index": 0,

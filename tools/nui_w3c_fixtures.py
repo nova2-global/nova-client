@@ -182,6 +182,7 @@ def character(limits, tab, values=None, guild=True, skill_rows=None, support_row
         "support": support(limits, support_rows or {}),
         "support_cols": limits.SKILL_SUPPORT_COLUMNS,
         "emote_cols": limits.EMOTE_COLUMNS,
+        "tabs_on": [1],
         "solo": emotes(limits, "solo", emotes_filled),
         "dual": emotes(limits, "dual", emotes_filled),
         "quest_scroll_shown": scroll is not None,
@@ -276,6 +277,8 @@ def dragon_soul(limits, deck, activated, bag, equip, kind=0, grade=3, equip_stat
         "deck": deck, "activated": activated,
         "bag": cells, "bag_cols": limits.DRAGON_SOUL_COLUMNS,
         "equip": equipment,
+        # V-2b: the kept board's wrappers, one entry while it shows.
+        "deck_on": [1], "kinds_on": [1], "grades_on": [1], "bag_on": [1],
     }}
 
 

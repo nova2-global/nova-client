@@ -486,6 +486,11 @@ body.char.char--placed
 	width: 6dp;
 	height: 192dp;
 }
+/* The thumb's rail is a skin's (classic); the gauge shows the position. */
+.char-quest-scroll__rail
+{
+	display: none;
+}
 
 /* --- Tabs ---------------------------------------------------------------------------- */
 

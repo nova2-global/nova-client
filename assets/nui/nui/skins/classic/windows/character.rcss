@@ -140,6 +140,9 @@ body.skin-classic.char .char-points__value
 	position: absolute;
 	color: var(--classic-label-white);
 	font-weight: normal;
+	/* Legacy's text line draws its glyphs 1px lower in a box of the same
+	   top than a 14dp line does (the fidelity's glyph rows). */
+	padding-top: 1dp;
 	line-height: 14dp;
 	text-align: center;
 	white-space: nowrap;
@@ -175,7 +178,8 @@ body.skin-classic.char .char-name, body.skin-classic.char .char-guild
 	color: var(--classic-label-white);
 	font-size: var(--font-sm);
 	font-weight: normal;
-	line-height: 18dp;
+	/* 2dp over the slot's height: the text 1px lower, as legacy's centered line. */
+	line-height: 20dp;
 	text-align: center;
 	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
 }
@@ -210,12 +214,15 @@ body.skin-classic.char .char-chip .char-art
 	left: 0;
 	top: 0;
 }
-/* The values centered at x 19 (the level) or 46, 19 below the art's top. */
+/* The values centered at x 19 (the level) or 46, 19 below the art's top, in
+   legacy's large font (uiscript "fontsize": "LARGE", UI_DEF_FONT_LARGE). */
 body.skin-classic.char .char-chip__value
 {
 	left: 1dp;
 	top: 19dp;
 	width: 90dp;
+	padding-top: 3dp;
+	font-size: var(--font-lg);
 }
 body.skin-classic.char .char-chip--level .char-chip__value
 {
@@ -562,28 +569,35 @@ body.skin-classic.char .char-quest__name, body.skin-classic.char .char-quest__cl
 body.skin-classic.char .char-quest__counter
 {
 	display: block;
-	height: 16dp;
+	/* 16dp apart, the glyphs 1px lower than a 14dp line's, as the values'. */
+	height: 15dp;
+	padding-top: 1dp;
 	color: var(--text);
 	font-size: var(--font-sm);
 	font-weight: normal;
 	line-height: 14dp;
 	overflow: visible;
 }
-/* Quest_ScrollBar: 17 wide, 25 in from the page's right, 290 tall. Its
-   position shows as the track's fill (legacy moves a thumb). */
+/* Quest_ScrollBar (ui.ScrollBar): right-aligned 25 in, so its left edge at
+   the page's 250 - 25 (CWindow::UpdateRect puts a right-aligned window's
+   left at the parent's width minus x), 15 wide (its arrows' art), 290
+   tall. The arrows at its top and bottom, 15 x 16; the track (Bar3D) at
+   (0, 16), 13 x 256 between its lines; the middle bar, legacy's 10 x 12
+   thumb art, at x 2 and 19 + 239 x the position down (the page size
+   290 - 2 x 16 - 12 - 7), as ui.ScrollBar.SetPos places it. */
 body.skin-classic.char .char-quest-scroll
 {
 	display: block;
 	position: absolute;
-	left: 208dp;
+	left: 225dp;
 	top: 36dp;
-	width: 17dp;
+	width: 15dp;
 	height: 290dp;
 }
 body.skin-classic.char .char-quest-scroll__up, body.skin-classic.char .char-quest-scroll__down
 {
 	position: absolute;
-	left: 1dp;
+	left: 0;
 	width: 15dp;
 	height: 16dp;
 	min-width: 0;
@@ -628,10 +642,10 @@ body.skin-classic.char .char-quest-scroll__down:active
 body.skin-classic.char .char-quest-scroll progress.char-quest-scroll__track
 {
 	position: absolute;
-	left: 2dp;
-	top: 17dp;
-	width: 13dp;
-	height: 256dp;
+	left: 0;
+	top: 16dp;
+	width: 12dp;
+	height: 255dp;
 	border-width: 1dp;
 	border-radius: 0;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
@@ -643,6 +657,25 @@ body.skin-classic.char .char-quest-scroll progress.char-quest-scroll__track fill
 	margin: 0;
 	border-radius: 0;
 	background-color: transparent;
+	decorator: none;
+}
+body.skin-classic.char .char-quest-scroll__rail
+{
+	display: block;
+	position: absolute;
+	left: 2dp;
+	top: 19dp;
+	width: 10dp;
+	height: 239dp;
+}
+body.skin-classic.char .char-quest-scroll__thumb
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: var(--char-quest-thumb, 0%);
+	width: 10dp;
+	height: 12dp;
 	decorator: classic-thumb;
 }
 

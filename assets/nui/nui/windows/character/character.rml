@@ -306,6 +306,10 @@
 						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 					<progress class="nui-gauge nui-gauge--blue char-quest-scroll__track" direction="bottom"
 					          data-attr-value="quest_scroll_pos"/>
+					<!-- A thumb at the position down its rail, for a skin that draws one
+					     (classic: legacy's middle bar); the modern looks show the gauge. -->
+					<div class="char-quest-scroll__rail"><span class="char-quest-scroll__thumb"
+						data-style---char-quest-thumb="(quest_scroll_pos * 100) + '%'"></span></div>
 					<button id="char-quest-down" class="nui-button nui-button--ghost nui-button--icon nui-anim char-quest-scroll__down"
 					        data-event-mousedown="quest_scroll_press(1, ev.button)"><span class="nui-glyph nui-glyph--chevron-down"><span
 						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>

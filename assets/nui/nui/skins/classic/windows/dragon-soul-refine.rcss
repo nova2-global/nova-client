@@ -44,7 +44,9 @@ body.skin-classic.dsr .dsr__titlebar
 	position: absolute;
 	left: 5dp;
 	top: 7dp;
-	width: 275dp;
+	/* 272dp wide with the bar's 3dp right padding (classic.rcss): legacy's
+	   275, so the close button sits at 275 - 18, as ui.TitleBar puts it. */
+	width: 272dp;
 	margin: 0;
 	z-index: 1;
 }

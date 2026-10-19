@@ -384,6 +384,104 @@ def whisper_fixtures():
     }
 
 
+# --- the guild window and its grade name dialog (SOCIAL, spec 5.9.8) ---------------------------------------
+
+GUILD_SKILL_ICONS = {152: "gaho", 153: "chukbok", 154: "seonghwi", 155: "gasok", 156: "bunno", 157: "jumunsul"}
+GUILD_SKILL_LEVELS = {210: 0, 211: 1, 212: 3, 213: 5, 214: 7, 215: 2}
+GUILD_MARK_ATLAS = "nui/windows/guild-war/fixture/marks.tga"
+GUILD_ENEMIES = ("Black Wolves", "", "Red Sun", "", "", "")
+
+
+def guild_state(game, name, enemies, members, member_name_length=12):
+    """The guild of the fixtures as the guild module answers it: the tester
+    (Tester) is the master, so the mark, symbol and war buttons show."""
+    g = game.w4["guild"]
+    g.update({
+        "id": 7, "name": name, "level": 15, "master": "Tester", "my_auth": 15, "money": 0,
+        "members": [{"pid": 1000 + i, "name": long_name("Tester" if i == 0 else "Member%02d" % i, member_name_length)
+                                     if member_name_length > 12 else ("Tester" if i == 0 else "Member%02d" % i),
+                     "grade": 1 if i == 0 else 2 + i % 5, "job": i % 4, "level": 40 + i % 60, "offer": i * 37,
+                     "general": i % 3 == 1, "online": True} for i in range(members)],
+        "grades": [{"name": ("Leader", "Officer", "Veteran", "Member", "Recruit")[min(n - 1, 4)] + ("" if n < 5 else str(n)),
+                    "auth": (15, 7, 3, 1, 0)[min(n - 1, 4)] ^ (8 if n % 4 == 0 else 0)} for n in range(1, 16)],
+        "comments": [{"id": i + 1, "name": ("Tester", "Aldric", "Brenna", "Caius")[i % 4],
+                      "text": ("!" if i in (0, 3) else "") + (
+                          "The guild war against the Black Wolves starts tonight at nine." if i == 2
+                          else "Comment number %d" % (i + 1))} for i in range(12)],
+        "skills": dict(GUILD_SKILL_LEVELS),
+        "gp": (40, 100),
+        "enemies": list(enemies),
+        "skill_point": 2,
+        "marks": {7: (GUILD_MARK_ATLAS, 0)},
+    })
+    game.answer("guild", "GetGuildExperience", (12345, 54321))
+    game.answer("guild", "GetGuildMemberLevelAverage", 64)
+    game.answer("guild", "GetGuildExperienceSummary", 10000)
+    game.answer("guild", "HasGuildLand", True)
+    game.answer("skill", "GetSkillMaxLevel", 20)
+    game.modules["skill"].GetIconImageFileNameNew = (
+        lambda index, grade: "d:/ymir work/ui/skill/common/guild/%s.sub" % GUILD_SKILL_ICONS[index]
+        if index in GUILD_SKILL_ICONS else "")
+    game.answer("net", "GetGuildID", 7)
+    game.answer("chr", "RaceToJob", lambda race: race % 4)
+    game.modules["player"].GetSkillIndex = lambda slot: 152 + slot - 210 if 210 <= slot < 216 else 0
+    game.modules["uiScriptLocale"].GUILD_PATH = "locale/en/ui/guild/"
+    game.modules["uiScriptLocale"].WINDOWS_PATH = "locale/en/ui/windows/"
+
+
+def guild_models(foundation=False):
+    """{page key: the board's model} of the guild window with the fixtures'
+    guild, made by the controller itself in the Wave 4 test world
+    (tools/nui_w4_world.py): each page selected as its tab does, and the
+    member page again with line 4's grade list open ("MEMBER_OPEN")."""
+    import nui_w4_world as w4
+    name = long_name("Dragon Order Of The East", 24) if foundation else "Dragon Order"
+    enemies = tuple(long_name(e, 24) if e else "" for e in GUILD_ENEMIES) if foundation else GUILD_ENEMIES
+    members = TODAY.GUILD_MEMBER_MAX if foundation else 30
+    length = 22 if foundation else 12
+
+    def setup(game):
+        guild_state(game, name, enemies, members, length)
+        if foundation:
+            # A full guild: level 20 with the whole bonus, 32 + 2 x 19 + 18
+            # members (spec 2.4), so the info page reads 88 / 88.
+            game.w4["guild"]["level"] = 20
+            game.modules["guild"].GetGuildMemberCount = lambda: (members, TODAY.GUILD_MEMBER_MAX)
+
+    world = w4.World(True, setup=setup, social=True)
+    limits = world.m("nui_limits")
+    if foundation:
+        limits.use(limits.foundation())
+    try:
+        window = world.make("guild", "uiGuild", "GuildWindow", "nui_guild.GuildWindow")
+        models = {}
+        with world.game, w4.quiet():
+            window.Open()
+            for key in ("GUILD_INFO", "BOARD", "MEMBER", "BASE_INFO", "SKILL", "GRADE"):
+                window.SelectPage(key)
+                models[key] = dict(w4.board(window).model)
+                if key == "MEMBER":
+                    w4.press(window, "combo_press", 4, 0)
+                    models["MEMBER_OPEN"] = dict(w4.board(window).model)
+                    w4.press(window, "combo_press", 4, 0)
+        return models
+    finally:
+        limits.use(None)
+
+
+def guild_fixtures():
+    today = guild_models()
+    foundation = guild_models(True)
+    found = {("guild", ""): {"guild": today["GUILD_INFO"]}}
+    for key, variant in (("BOARD", "board"), ("MEMBER", "member"), ("MEMBER_OPEN", "member-open"),
+                         ("BASE_INFO", "base"), ("SKILL", "skill"), ("GRADE", "grade")):
+        found[("guild", variant)] = {"guild": today[key]}
+    found[("guild", "foundation")] = {"guild": foundation["GUILD_INFO"]}
+    found[("guild", "foundation-member")] = {"guild": foundation["MEMBER"]}
+    found[("guild-grade-name", "")] = {"guild_grade_name": {"max": TODAY.GUILD_GRADE_NAME_MAX_LEN}}
+    return found
+
+
 # --- the guild war dialogs and the mark lists (SOCIAL, spec 5.10.4, 5.11.4) ------------------------------
 
 def ui_text(key):
@@ -450,6 +548,7 @@ def social_fixtures():
     found = {}
     found.update(messenger_fixtures())
     found.update(whisper_fixtures())
+    found.update(guild_fixtures())
     found.update(guild_dialog_fixtures())
     return found
 

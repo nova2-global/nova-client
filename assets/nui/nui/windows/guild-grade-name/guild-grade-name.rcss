@@ -1,0 +1,19 @@
+/* The grade name dialog's modern look (P16 spec 5.9.5): the dialog kit's
+   look (components/dialog.rcss: the width, the centered field and footer):
+   the field, Cancel and OK. The scrim centers it. Classic (legacy's
+   170 x 90 board, the parameter slot under the field, the middle buttons at
+   the uiscript's places): skins/classic/windows/guild-grade-name.rcss. */
+
+.guild-grade-name button
+{
+	tab-index: none;
+	focus: none;
+}
+.guild-grade-name__slot
+{
+	display: block;
+}
+.guild-grade-name__label
+{
+	pointer-events: none;
+}

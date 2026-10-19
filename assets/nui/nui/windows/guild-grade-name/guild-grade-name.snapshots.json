@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the guild's grade name dialog (tools/check_nui_snapshots.py; P16 spec 5.9.5, 12): a modal on the scrim, its field empty (a field's text is never in the model); classic is legacy's 170 x 90 board with the field on the parameter slot art and the middle buttons. Its classic art is in assets/ETC.",
+	"cases": [
+		{"page": "guild-grade-name", "themes": "all", "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "guild-grade-name", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "640x360"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"}
+	]
+}

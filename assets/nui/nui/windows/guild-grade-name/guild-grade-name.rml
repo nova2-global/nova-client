@@ -1,0 +1,41 @@
+<rml>
+<head>
+	<!-- The guild's grade name dialog (uiguild.py ChangeGradeNameDialog,
+	     uiscript changegradenamedialog.py; P16 spec 5.9.5). While the guild
+	     flag is on, the NovaUI guild window makes
+	     nui_guild_grade_name.ChangeGradeNameDialog, a subclass of the legacy
+	     class on proxies: the grade it renames, the field cleared and focused
+	     at the open, OK and Enter (the window's OnChangeGradeName: an empty
+	     name becomes the default grade's, the packet), Cancel, the close
+	     button and Escape are legacy's code. A modal (D12) above the legacy UI
+	     layer, which the scrim centers. The field's limit is
+	     GUILD_GRADE_NAME_MAX_LEN; its text never enters the model. The
+	     buttons take no focus and act on a left mousedown. -->
+	<title>guild-grade-name</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="guild-grade-name.rcss"/>
+</head>
+<body template="nui" class="nui-scrim nui-fx guild-grade-name" data-model="guild_grade_name"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window nui-fx nui-dialog nui-anim guild-grade-name__window" id="guild-grade-name">
+		<div class="nui-window__titlebar guild-grade-name__titlebar">
+			<handle class="nui-window__handle guild-grade-name__handle" move_target="guild-grade-name">
+				<span class="nui-window__title guild-grade-name__title">@ui.GUILD_GRADE_CHANGE_GRADE_NAME</span>
+			</handle>
+			<button id="guild-grade-name-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim"
+			        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		</div>
+		<div class="nui-window__body guild-grade-name__body">
+			<div class="guild-grade-name__slot"><input id="guild-grade-name-field" type="text"
+				class="nui-input nui-dialog__field guild-grade-name__field" data-attr-maxlength="max"/></div>
+		</div>
+		<div class="nui-window__footer nui-dialog__footer guild-grade-name__footer">
+			<button id="guild-grade-name-cancel" class="nui-button nui-button--medium nui-anim guild-grade-name__button guild-grade-name__button--cancel"
+			        data-event-mousedown="cancel_press(ev.button)"><span class="guild-grade-name__label">@ui.CANCEL</span></button>
+			<button id="guild-grade-name-accept" class="nui-button nui-button--medium nui-button--primary nui-anim guild-grade-name__button guild-grade-name__button--accept"
+			        data-event-mousedown="accept_press(ev.button)"><span class="guild-grade-name__label">@ui.OK</span></button>
+		</div>
+	</div>
+</body>
+</rml>

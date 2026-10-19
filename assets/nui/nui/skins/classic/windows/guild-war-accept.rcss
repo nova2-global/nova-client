@@ -1,7 +1,7 @@
 /* Classic skin overlay of nui/windows/guild-war-accept/guild-war-accept.rml: the
    legacy guild war accept dialog (uiscript acceptguildwardialog.py) at 100%, 1dp
    to the legacy pixel: the stone board with its title bar, 230 x 130; the
-   enemy label at 15, 40, its slot bar at 80, 37 (130 x 18) with the name at
+   enemy label at 15, 40, its slot bar at 80, 37 (130 x 18, drawn 131 x 19) with the name at
    3, 3; the battle type's label at 15, 68 and its three buttons on the
    small art (43 x 21) at 80, 125 and 170, 65 (the declared one held down);
    OK at 49, 95 and Cancel at 120, 95 on the middle art. A type's hint is
@@ -45,14 +45,16 @@ body.skin-classic.guild-war-accept .guild-war__label
 }
 body.skin-classic.guild-war-accept .guild-war__row--enemy .guild-war__label { top: 40dp; }
 body.skin-classic.guild-war-accept .guild-war__row--type .guild-war__label { top: 68dp; }
+/* Legacy's slot bar (a CBar3D) draws its bottom and right lines at y + h
+   and x + w, so its 130 x 18 covers 131 x 19 px. */
 body.skin-classic.guild-war-accept .guild-war__slot
 {
 	position: absolute;
 	left: 80dp;
 	top: 37dp;
 	box-sizing: border-box;
-	width: 130dp;
-	height: 18dp;
+	width: 131dp;
+	height: 19dp;
 	border-width: 1dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
 	background-color: var(--classic-slot-fill);
@@ -73,8 +75,10 @@ body.skin-classic.guild-war-accept .guild-war__field
 	background-color: transparent;
 	line-height: 13dp;
 }
-/* Legacy's text line at 3, 3 of the slot bar; no padding (the modern
-   name's 6dp put it 8dp low, over the slot's bottom edge). */
+/* Legacy's text line at 3, 3 of the slot bar, one line that runs on past
+   the slot (the foundation's 24 characters reach the board's edge); no
+   padding (the modern name's 6dp put it 8dp low, over the slot's bottom
+   edge). */
 body.skin-classic.guild-war-accept .guild-war__name
 {
 	position: absolute;
@@ -83,6 +87,7 @@ body.skin-classic.guild-war-accept .guild-war__name
 	height: 15dp;
 	padding: 0;
 	line-height: 13dp;
+	white-space: nowrap;
 	overflow: visible;
 }
 body.skin-classic.guild-war-accept .guild-war__types

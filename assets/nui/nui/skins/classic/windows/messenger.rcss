@@ -193,8 +193,10 @@ body.skin-classic.messenger .messenger__button--add:active { decorator: image("d
 body.skin-classic.messenger .messenger__button--whisper:active { decorator: image("d:/ymir work/ui/game/windows/messenger_whisper_03.sub"); }
 body.skin-classic.messenger .messenger__button--remove:active { decorator: image("d:/ymir work/ui/game/windows/messenger_delete_03.sub"); }
 body.skin-classic.messenger .messenger__button--guild:active { decorator: image("d:/ymir work/ui/game/windows/messenger_guild_03.sub"); }
-body.skin-classic.messenger .messenger__button--whisper[disabled] { decorator: image("d:/ymir work/ui/game/windows/messenger_whisper_04.sub"); }
-body.skin-classic.messenger .messenger__button--remove[disabled] { decorator: image("d:/ymir work/ui/game/windows/messenger_delete_04.sub"); }
+/* Legacy's own disabled art, drawn as it is: not tinted again by the skin's
+   disabled button rule (classic.rcss), which would darken it to 55%. */
+body.skin-classic.messenger .messenger__button--whisper[disabled] { decorator: image("d:/ymir work/ui/game/windows/messenger_whisper_04.sub"); image-color: var(--classic-label-white); }
+body.skin-classic.messenger .messenger__button--remove[disabled] { decorator: image("d:/ymir work/ui/game/windows/messenger_delete_04.sub"); image-color: var(--classic-label-white); }
 body.skin-classic.messenger .messenger__tip
 {
 	bottom: auto;

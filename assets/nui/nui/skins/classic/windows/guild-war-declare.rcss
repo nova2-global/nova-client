@@ -4,7 +4,7 @@
    enemy label at 15, 40, its slot bar at 80, 37 (130 x 18) with the name at
    3, 3; the battle type's label at 15, 68 and its three buttons on the
    small art (43 x 21) at 80, 125 and 170, 65 (the declared one held down);
-   OK at 48, 95 and Cancel at 119, 95 on the middle art. A type's hint is
+   OK at 49, 95 and Cancel at 120, 95 on the middle art. A type's hint is
    legacy's thin board tooltip. */
 
 body.skin-classic.guild-war-declare .guild-war__window
@@ -57,24 +57,31 @@ body.skin-classic.guild-war-declare .guild-war__slot
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
 	background-color: var(--classic-slot-fill);
 }
+/* Legacy's edit line, 90 x 18 at 3, 3 of the slot bar. No margin: the
+   dialog kit's field class sets one (components/dialog.rcss), which put
+   the text 8dp low, over the slot's bottom edge. */
 body.skin-classic.guild-war-declare .guild-war__field
 {
 	position: absolute;
 	left: 2dp;
 	top: 2dp;
 	width: 90dp;
-	height: 15dp;
+	height: 18dp;
+	margin: 0;
 	padding: 0;
 	border-width: 0;
 	background-color: transparent;
 	line-height: 13dp;
 }
+/* Legacy's text line at 3, 3 of the slot bar; no padding (the modern
+   name's 6dp put it 8dp low, over the slot's bottom edge). */
 body.skin-classic.guild-war-declare .guild-war__name
 {
 	position: absolute;
 	left: 2dp;
 	top: 2dp;
 	height: 15dp;
+	padding: 0;
 	line-height: 13dp;
 	overflow: visible;
 }
@@ -133,5 +140,8 @@ body.skin-classic.guild-war-declare .guild-war__button
 	padding: 0;
 	color: var(--classic-button-text);
 }
-body.skin-classic.guild-war-declare .guild-war__button--accept { left: 48dp; }
-body.skin-classic.guild-war-declare .guild-war__button--cancel { left: 119dp; }
+/* Legacy's middle buttons centered on the board, 5 apart and 30 right
+   (-61 - 5 + 30 and 5 + 30): 49 and 120, where its window manager puts
+   them. */
+body.skin-classic.guild-war-declare .guild-war__button--accept { left: 49dp; }
+body.skin-classic.guild-war-declare .guild-war__button--cancel { left: 120dp; }

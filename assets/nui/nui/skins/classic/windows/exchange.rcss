@@ -31,6 +31,14 @@ body.skin-classic.exchange .exchange__handle, body.skin-classic.exchange .exchan
 {
 	pointer-events: auto;
 }
+/* Legacy's TitleBar puts its close button 3 from its right end
+   (ui.py TitleBar.SetWidth: width - 15 - 3, 3); an offset, so the title
+   keeps its place. */
+body.skin-classic.exchange .exchange__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
 body.skin-classic.exchange .exchange__body
 {
 	display: block;

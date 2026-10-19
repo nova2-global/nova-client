@@ -678,10 +678,18 @@ body.skin-classic.guild input.guild__member-scroll
 {
 	width: 17dp;
 }
+/* Legacy's ui.ScrollBar: its Bar3D slot 14 wide from the bar's left
+   edge, from 1 above the up button's end; its middle bar (MiddleBar: the
+   ScrollBar_Top, _Middle and _Bottom art, 10 x 12) 2 in from the slot's
+   left and 3 below its top (RmlUi places the bar from the slot's border
+   edge across, from its content edge down) (ui.py:2048-2160, as legacy's frames place
+   them). */
 body.skin-classic.guild .guild__member-scroll slidertrack
 {
-	width: 13dp;
-	margin-left: 2dp;
+	width: 12dp;
+	margin-left: 0;
+	margin-top: -1dp;
+	padding: 2dp 0;
 	border-radius: 0;
 	background-color: var(--classic-slot-fill);
 	border-width: 1dp;
@@ -689,11 +697,12 @@ body.skin-classic.guild .guild__member-scroll slidertrack
 }
 body.skin-classic.guild .guild__member-scroll sliderbar
 {
-	width: 17dp;
-	height: 9dp;
+	width: 10dp;
+	height: 12dp;
+	margin-left: 2dp;
 	border-radius: 0;
 	background-color: transparent;
-	decorator: image("d:/ymir work/ui/public/scrollbar_middle_button_01.sub" scale-none left top);
+	decorator: classic-thumb;
 }
 body.skin-classic.guild .guild__member-scroll sliderbar:hover, body.skin-classic.guild .guild__member-scroll sliderbar:active
 {
@@ -885,6 +894,20 @@ body.skin-classic.guild .guild__skills
 body.skin-classic.guild .guild__skills--passive { top: 46dp; }
 body.skin-classic.guild .guild__skills--active { top: 113dp; }
 body.skin-classic.guild .guild__skills--affect { top: 184dp; }
+/* A skill of level 0 (DisableCoverButton): legacy's cover button shows its
+   disable art over the icon, whatever the pointer does, and the cell has
+   no tint of its own. */
+body.skin-classic.guild .guild__skill.is-unavailable,
+body.skin-classic.guild .guild__skill.is-unavailable:hover
+{
+	background-color: transparent;
+}
+body.skin-classic.guild .guild__skill.is-unavailable .nui-slot__cover,
+body.skin-classic.guild .guild__skill.is-unavailable:hover .nui-slot__cover,
+body.skin-classic.guild .guild__skill.is-unavailable:active .nui-slot__cover
+{
+	decorator: image("d:/ymir work/ui/public/slot_cover_button_04.sub");
+}
 /* The "+" (btn_plus art, 13 x 13) at 1, 19 in its cell. */
 body.skin-classic.guild .guild__plus
 {

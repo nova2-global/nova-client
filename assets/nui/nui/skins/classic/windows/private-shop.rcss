@@ -25,6 +25,14 @@ body.skin-classic.pshop .pshop__handle, body.skin-classic.pshop .pshop__titlebar
 {
 	pointer-events: auto;
 }
+/* Legacy's TitleBar puts its close button 3 from its right end
+   (ui.py TitleBar.SetWidth: width - 15 - 3, 3); an offset, so the title
+   keeps its place. */
+body.skin-classic.pshop .pshop__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
 body.skin-classic.pshop .pshop__body
 {
 	display: block;

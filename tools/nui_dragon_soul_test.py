@@ -318,6 +318,47 @@ def press(window, event, *args):
     return result
 
 
+def compiled(file_name, class_name, names, world):
+    """A class with the methods `names` of a legacy module's class, compiled
+    from its own source over the world's modules (the legacy code, unchanged)."""
+    source = support.source_of(file_name, names, inside=class_name)
+    body = "\n".join("\t" + line if line else line for line in source.split("\n"))
+    namespace = dict(world.game.modules)
+    namespace.update(world.game.loaded)
+    exec(compile("class %s(object):\n%s\n" % (class_name, body), file_name, "exec"), namespace)
+    return namespace[class_name]
+
+
+# The Interface's dragon soul entry points (interfacemodule.py:1015-1081): the
+# keys, the server's packets and the kit's client-side refine call them.
+INTERFACE_DS = ("DragonSoulActivate", "DragonSoulDeactivate", "Highligt_Item", "ToggleDragonSoulWindow",
+                "ToggleDragonSoulWindowWithNoInfo", "FailDragonSoulRefine", "SucceedDragonSoulRefine",
+                "OpenDragonSoulRefineWindow", "CloseDragonSoulRefineWindow")
+# game.GameWindow's world drop (game.py OnMouseLeftButtonUp to
+# __SendDropItemPacket), as nui_inventory_test drives it.
+GAME_DROP = ("OnMouseLeftButtonUp", "__PutItem", "__PutMoney", "__DropMoney", "__DropItem", "RequestDropItem",
+             "__SendDropItemPacket")
+
+
+def interface_of(world, qualified=True):
+    """An Interface with interfacemodule.py's own dragon soul methods over the
+    world's windows; the qualification affect heard or not."""
+    interface = compiled("interfacemodule.py", "Interface", INTERFACE_DS, world)()
+    interface.wndDragonSoul, interface.wndDragonSoulRefine = world.ds, world.refine
+    interface.DRAGON_SOUL_IS_QUALIFIED = qualified
+    return interface
+
+
+def game_window(world):
+    """A GameWindow with game.py's own drop methods, the ground under the
+    pointer (no character picked)."""
+    window = compiled("game.py", "GameWindow", GAME_DROP, world)()
+    window.interface = types.SimpleNamespace(BUILD_OnMouseLeftButtonUp=lambda: False)
+    window.PickingCharacterIndex = 0
+    window.itemDropQuestionDialog = None
+    return window
+
+
 # Where a cell lives: the window, the slot window's attribute, the board's event prefix.
 PLACES = {"bag": ("ds", "wndItem", "bag"), "equip": ("ds", "wndEquip", "equip"),
           "cell": ("refine", "wndRefineSlot", "cell"), "result": ("refine", "wndResultSlot", "result")}
@@ -769,6 +810,36 @@ class Model(DragonSoulTest):
 # --- the dragon soul window's flows (P15 spec 5.5) ------------------------------------------------------------
 
 class Flows(DragonSoulTest):
+    def test_s1_the_interface_opens_it_for_a_qualified_tester_and_shows_the_popup_otherwise(self):
+        """S1 through interfacemodule.py's ToggleDragonSoulWindow (the O key,
+        the inventory's button): unqualified, the DRAGON_SOUL_UNQUALIFIED
+        popup and no window; qualified, the window; again, its Close."""
+        results = []
+        for world in self.worlds():
+            world.make()
+            mark = world.mark()
+            shown = []
+            with world.game, quiet():
+                interface_of(world, qualified=False).ToggleDragonSoulWindow()
+                shown.append((world.ds.IsShow(), world.game.loaded_documents()))
+                interface = interface_of(world)
+                interface.ToggleDragonSoulWindow()
+                shown.append((world.ds.IsShow(), world.game.loaded_documents()))
+                interface.ToggleDragonSoulWindow()
+                shown.append((world.ds.IsShow(), world.game.loaded_documents()))
+                interface.ToggleDragonSoulWindowWithNoInfo()
+                shown.append((world.ds.IsShow(), world.game.loaded_documents()))
+            results.append((world.effects_since(mark), [is_shown for is_shown, _ in shown], world))
+        (legacy, legacy_shown, _), (novaui, novaui_shown, nw) = results
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(novaui_shown, legacy_shown)
+        self.assertEqual(legacy_shown, [False, True, False, True])
+        locale = nw.game.modules["localeInfo"]
+        self.assertEqual([args[0] for name, args in legacy if name == "uiCommon.PopupDialog.Open"],
+                         [locale.DRAGON_SOUL_UNQUALIFIED])
+        self.assertEqual(nw.game.loaded_documents(), [DS_DOCUMENT])
+        self.assert_same_window(results[0][2], nw)
+
     def test_s2_kind_and_grade_send_nothing(self):
         def flow(world, input):
             input.kind(1)
@@ -938,6 +1009,24 @@ class Flows(DragonSoulTest):
         self.assertIn(("net.SendSafeboxCheckoutPacket", (7, DS, ds_pos(0, 3, 20))), calls)
         self.assertIn(("net.SendMallCheckoutPacket", (3, DS, ds_pos(0, 3, 21))), calls)
 
+    def test_s17_a_dragon_soul_released_over_the_world_asks_then_drops(self):
+        """S17: the board's pick, then game.py's own release over the ground
+        (its drop question for a dragon soul inventory attach); an accept
+        drops it, a cancel sends nothing; the attach ends either way."""
+        def flow(world, input):
+            ground = game_window(world)
+            input.press("bag", 0)
+            ground.OnMouseLeftButtonUp()
+            world.game.dialogs[-1].accept()
+            input.press("bag", 1)
+            ground.OnMouseLeftButtonUp()
+            world.game.dialogs[-1].cancel()
+        calls, _, nw = self.same(flow)
+        self.assertEqual([args for name, args in calls if name == "net.SendItemDropPacketNew"],
+                         [(DS, ds_pos(0, 3, 0), 1)])
+        self.assertEqual(len([1 for name, _ in calls if name == "uiCommon.QuestionDialog.Open"]), 2)
+        self.assertFalse(nw.mouse.isAttached())
+
     def test_s18_a_highlight_shows_on_its_page_until_hovered(self):
         legacy, novaui = self.worlds()
         for world in (legacy, novaui):
@@ -1075,6 +1164,49 @@ class RefineFlows(DragonSoulTest):
         calls, _, _ = self.refine_flow(flow)
         self.assertEqual(len([1 for name, _ in calls if name == "uiCommon.PopupDialog.Open"]), 2)
 
+    def test_r3_r6_the_refusals_and_a_missing_cell_in_every_mode(self):
+        """P15 spec 6.8, per mode: step, another step and a missing cell;
+        strength, a dragon soul at its strength maximum, an item that is no
+        refine stone and a missing stone; grade, another kind. Each popup is
+        legacy's, nothing is refined, a mode change puts the counts back.
+        (A page refresh while a placed item's count is 0 shows its cell
+        empty in both UIs, legacy's rule, so no flow presses such a cell.)"""
+        def setup(game):
+            stock(game)
+            # Antique step 0 at strength 4: dragon_soul_refine_settings' maximum.
+            game.item_limits[113040] = [(LIMITS["LIMIT_TIMER_BASED_ON_WEAR"], 0)]
+            game.give((DS, ds_pos(0, 3, 12)), 113040, 1, sockets=(3600, 0, 0))
+
+        def flow(world, input):
+            input.mode("step")
+            input.press("bag", 0, 1)            # step 0: four needed
+            input.press("bag", 3, 1)            # step 3: another step
+            input.do_refine()                   # one of four
+            input.mode("strength")              # the flush puts the diamond's count back
+            input.press("bag", 12, 1)           # at its strength maximum
+            input.press("bag", 4, 1)            # strength 1: the dragon soul cell
+            world.refine.AutoSetItem((INV, 11), 1)  # a weapon: no refine stone
+            input.do_refine()                   # the stone's cell is empty
+            input.mode("grade")
+            input.press("bag", 1, 1)            # a diamond sets the recipe
+            input.kind(1)
+            input.press("bag", 2)               # a ruby: another kind
+            input.press("cell", 1)
+        calls, lw, nw = self.refine_flow(flow, setup=setup)
+        locale = nw.game.modules["localeInfo"]
+        self.assertEqual([args[0] for name, args in calls if name == "uiCommon.PopupDialog.Open"],
+                         [locale.DRAGON_SOUL_INVALID_DRAGON_SOUL, locale.DRAGON_SOUL_NOT_ENOUGH_MATERIAL,
+                          locale.DRAGON_SOUL_CANNOT_REFINE_MORE, locale.DRAGON_SOUL_NOT_DRAGON_SOUL_REFINE_STONE,
+                          locale.DRAGON_SOUL_NOT_ENOUGH_MATERIAL, locale.DRAGON_SOUL_INVALID_DRAGON_SOUL])
+        self.assertNotIn("player.SendDragonSoulRefine", [name for name, _ in calls])
+        counts = [args for name, args in calls if name == "player.SetItemCount"]
+        self.assertEqual(counts, [(DS, ds_pos(0, 3, 0), 0), (DS, ds_pos(0, 3, 0), 1), (DS, ds_pos(0, 3, 4), 0),
+                                  (DS, ds_pos(0, 3, 4), 1), (DS, ds_pos(0, 3, 1), 0)])
+        cells = model(nw.refine)["cells"]
+        self.assertEqual([(c["kind"], c["ghost"], c["closed"]) for c in cells[:4]],
+                         [("item", False, False), ("icon", True, False), ("icon", True, False), ("", False, True)])
+        self.assertEqual(model(nw.refine)["fee"], "100.000 Yang")
+
     def test_r5_take_out_puts_the_count_back_and_resets_with_the_last_item(self):
         def flow(world, input):
             input.press("bag", 0, 1)
@@ -1146,6 +1278,48 @@ class RefineFlows(DragonSoulTest):
                                       ("player.SendDragonSoulRefine", (P["DRAGON_SOUL_REFINE_CLOSE"],))])
         self.assertFalse(nw.refine.IsShow())
         self.assertNotIn(DSR_DOCUMENT, nw.game.loaded_documents())
+
+    def test_r1_r7_r8_through_the_interface_s_entry_points(self):
+        """interfacemodule.py's own refine entry points, which the server's
+        packets reach and the kit's client-side refine calls (P15 spec 9.5):
+        a result while hidden does nothing; the open shows the dragon soul
+        window too; a success and a fail show their result; the close
+        flushes and sends the close; a second close does nothing."""
+        results = []
+        for world in self.worlds():
+            world.make()
+            mark = world.mark()
+            with world.game, quiet():
+                interface = interface_of(world)
+                interface.SucceedDragonSoulRefine(DS, ds_pos(0, 3, 8))
+                interface.OpenDragonSoulRefineWindow()
+                opened = (world.refine.IsShow(), world.ds.IsShow())
+                Input(world).grade(3)
+                Input(world).press("bag", 0, 1)
+                interface.SucceedDragonSoulRefine(DS, ds_pos(0, 3, 8))
+                Input(world).press("bag", 3, 1)
+                # The server's result names an item whose count the client
+                # keeps (a placed one reads 0 until the server's update).
+                interface.FailDragonSoulRefine(REFINE_FAIL, DS, ds_pos(0, 3, 2))
+            results.append((world, opened, mark))
+        (lw, legacy_opened, legacy_mark), (nw, novaui_opened, novaui_mark) = results
+        self.assertEqual(novaui_opened, legacy_opened)
+        self.assertEqual(legacy_opened, (True, True))
+        self.assert_same_refine(lw, nw)
+        self.assert_same_window(lw, nw)
+        result = model(nw.refine)["result"][0]
+        self.assertEqual((result["kind"], result["ref"]), ("item", ds_pos(0, 3, 2)))
+        for world in (lw, nw):
+            with world.game, quiet():
+                interface = interface_of(world)
+                interface.CloseDragonSoulRefineWindow()
+                interface.CloseDragonSoulRefineWindow()
+        legacy, novaui = lw.effects_since(legacy_mark), nw.effects_since(novaui_mark)
+        self.assertEqual(novaui, legacy)
+        self.assertEqual([args for name, args in legacy if name == "player.SendDragonSoulRefine"],
+                         [(P["DRAGON_SOUL_REFINE_CLOSE"],)])
+        self.assertFalse(nw.refine.IsShow())
+        self.assertEqual(nw.game.loaded_documents(), [DS_DOCUMENT])
 
     def test_r9_the_tooltips_of_a_placed_item_and_an_empty_cell(self):
         def flow(world, input):

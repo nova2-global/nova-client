@@ -126,6 +126,8 @@ DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
 PHASE_SCOPED = ("nui_dialog_kit", "nui_quest", "nui_tooltip")
 # Wave 4 (P16 spec 6.1): the whisper dialogs' kept drafts (nui_whisper.STATE).
 PHASE_SCOPED = PHASE_SCOPED + ("nui_whisper",)
+# Wave 4: the trade windows' leave-range watches (nui_facade.end_phase).
+PHASE_SCOPED = PHASE_SCOPED + ("nui_facade",)
 
 # The game phase's on-demand documents by window id (loaded at their first
 # show and unloaded at their hide or at the phase end: nui_hud.OnDemand, the

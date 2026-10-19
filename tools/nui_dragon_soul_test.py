@@ -1009,6 +1009,28 @@ class Flows(DragonSoulTest):
         self.assertIn(("net.SendSafeboxCheckoutPacket", (7, DS, ds_pos(0, 3, 20))), calls)
         self.assertIn(("net.SendMallCheckoutPacket", (3, DS, ds_pos(0, 3, 21))), calls)
 
+    def test_s16_from_the_shop_the_private_shop_and_the_safebox_s_money(self):
+        """S16's other rows: a shop item bought onto an empty cell, a private
+        shop builder's item handed to its INVENTORY callback, the safebox's
+        money withdrawn (SelectEmptySlot); each attach ends."""
+        def flow(world, input):
+            with world.game:
+                world.mouse.AttachObject(world.ds, P["SLOT_TYPE_SHOP"], 5, 113000, 1)
+            input.press("bag", 20)
+            with world.game:
+                world.mouse.AttachObject(world.ds, P["SLOT_TYPE_PRIVATE_SHOP"], 2, 113000, 1)
+                world.mouse.SetCallBack("INVENTORY", lambda: world.game.log.append(("mouse.callback.INVENTORY", ())))
+            input.press("bag", 21)
+            with world.game:
+                world.mouse.AttachObject(world.ds, P["SLOT_TYPE_SAFEBOX"], 0, P["ITEM_MONEY"], 500)
+            input.press("bag", 22)
+        calls, _, nw = self.same(flow)
+        self.assertIn(("net.SendShopBuyPacket", (5,)), calls)
+        self.assertIn(("mouse.callback.INVENTORY", ()), calls)
+        self.assertIn(("net.SendSafeboxWithdrawMoneyPacket", (500,)), calls)
+        self.assertIn(("snd.PlaySound", ("sound/ui/money.wav",)), calls)
+        self.assertFalse(nw.mouse.isAttached())
+
     def test_s17_a_dragon_soul_released_over_the_world_asks_then_drops(self):
         """S17: the board's pick, then game.py's own release over the ground
         (its drop question for a dragon soul inventory attach); an accept

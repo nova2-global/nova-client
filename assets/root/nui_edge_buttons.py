@@ -286,3 +286,22 @@ class EdgeButton(object):
 		event, args = self._event, self._args
 		if event:
 			event(*args)
+
+
+def quest_stack_right():
+	"""The right edge, in screen pixels, of the shown quest buttons' places
+	(each its column's 100dp), or 0 with none shown or no document: in the
+	modern looks the tiles and labels are opaque, so a window that opens at
+	the left edge keeps clear of them (P15 fix stage, I-1: the character
+	window)."""
+	board = _board
+	if board is None or not board._doc:
+		return 0
+	right = 0
+	for facade in list(_entries.values()):
+		if facade._side != "quest" or not facade.IsShow():
+			continue
+		box = board.element_box("edge-quest-%d" % facade._id)
+		if box:
+			right = max(right, box[0] + box[2])
+	return right

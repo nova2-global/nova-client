@@ -1904,6 +1904,29 @@ def tip_view(step):
     return view
 
 
+class EdgeQuestStackRight(EdgeWorlds):
+    """P15 fix stage (I-1): nui_edge_buttons.quest_stack_right(), the right
+    edge of the shown quest buttons' places, which the modern character
+    window opens clear of."""
+
+    def test_it_is_the_rightmost_shown_quest_place_and_0_without_one(self):
+        world = self.world(True)
+        edge = world.module("nui_edge_buttons")
+        self.assertEqual(edge.quest_stack_right(), 0, "no document yet")
+        with world, quiet():
+            world.interface.RecvQuest(1, "The Wolf Hunt")
+            world.interface.RecvQuest(2, "Highlight")
+        board = edge._board
+        ids = [e["id"] for e in board.get("quests")]
+        state = world.game.state
+        state.boxes[(edge.DOCUMENT, "edge-quest-%d" % ids[0])] = (20.0, 255.0, 100.0, 63.0)
+        state.boxes[(edge.DOCUMENT, "edge-quest-%d" % ids[1])] = (120.0, 255.0, 100.0, 63.0)
+        self.assertEqual(edge.quest_stack_right(), 220.0)
+        with world, quiet():
+            world.interface.HideAllQuestButton()
+        self.assertEqual(edge.quest_stack_right(), 0, "hidden buttons cover nothing")
+
+
 class NoticeDifferential(unittest.TestCase):
     def boards(self, kind):
         legacy, novaui = pair()

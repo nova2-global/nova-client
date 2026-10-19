@@ -33,7 +33,8 @@
 						<img class="edge__art edge__art--down" data-if="e.down != ''" data-attr-src="e.down"/>
 					</button>
 					<div class="edge__label" data-if="e.label_shown &amp;&amp; e.label != ''"
-						data-class-edge__label--left="e.align == 'left'" data-class-is-gm="e.gm"><span class="edge__text">{{ e.label }}</span></div>
+						data-class-edge__label--left="e.align == 'left'" data-class-is-gm="e.gm"><span class="edge__text"
+						data-attr-id="'edge-quest-text-' + e.id">{{ e.label }}</span></div>
 				</div>
 			</div>
 		</div>

@@ -1922,6 +1922,10 @@ class EdgeQuestStackRight(EdgeWorlds):
         state.boxes[(edge.DOCUMENT, "edge-quest-%d" % ids[0])] = (20.0, 255.0, 100.0, 63.0)
         state.boxes[(edge.DOCUMENT, "edge-quest-%d" % ids[1])] = (120.0, 255.0, 100.0, 63.0)
         self.assertEqual(edge.quest_stack_right(), 220.0)
+        # A label's text may run past its column (the left-aligned quest labels).
+        state.boxes[(edge.DOCUMENT, "edge-quest-text-%d" % ids[0])] = (16.0, 291.0, 152.0, 16.0)
+        state.boxes[(edge.DOCUMENT, "edge-quest-text-%d" % ids[1])] = (116.0, 291.0, 142.0, 16.0)
+        self.assertEqual(edge.quest_stack_right(), 258.0)
         with world, quiet():
             world.interface.HideAllQuestButton()
         self.assertEqual(edge.quest_stack_right(), 0, "hidden buttons cover nothing")

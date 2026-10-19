@@ -686,6 +686,7 @@ TOOLTIP_BUYPRICE	Preço: %s
 TOOLTIP_CAST_SPEED	Rapidez de Feitiço: +%d%%	SA
 TOOLTIP_CON	Vitalidade +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Bónus de disfarce %d	SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Mantém os bónus e as pedras do item.
 TOOLTIP_DEF_GRADE	Defesa: +%d	SA
 TOOLTIP_DEX	Destreza +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Terra	SNA
@@ -841,3 +842,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Não podes usar este Item enquanto tiveres uma Loj
 ITEM_GET	Recebido: %s	SA
 ITEM_GET_FROM_PARTY	Recebido: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Entregue: %s para %s	SAA
+MAINTENANCE_TIME_LEFT	Manutenção em:

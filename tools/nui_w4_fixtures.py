@@ -514,7 +514,7 @@ def war_hints():
 
 def war_declare(limits, war_type):
     return {"guild_war_declare": {"type": war_type, "type_select": True, "hints": war_hints(),
-                                  "max": limits.GUILD_NAME_MAX_LEN}}
+                                  "max": limits.GUILD_NAME_MAX_LEN, "types_on": [1]}}
 
 
 def war_accept(name, war_type):

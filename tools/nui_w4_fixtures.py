@@ -278,6 +278,7 @@ def equipment_view(limits, equipped, title_length=12):
         "table": LIMITS.view_equip_id(limits),
         "places": [{"index": slot.index, "name": slot.name, "shown": slot.group == "shown"} for slot in table],
         "cells": cells,
+        "equip_on": [1],
     }}
 
 

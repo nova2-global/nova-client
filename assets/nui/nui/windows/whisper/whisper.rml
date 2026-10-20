@@ -7,9 +7,13 @@
 	     proxies: sending, the insult check, the partner without a target,
 	     minimize and close (the Interface's edge buttons), the GM look, the
 	     links and the scroll are legacy's code. The document is instanced
-	     (one model per open dialog, whisper_<n>) and exists only while its
-	     dialog shows; a minimized dialog keeps its draft, size, place and
-	     scroll (nui_whisper.STATE). The lines stay in the C++ whisper store:
+	     (one model per open dialog, whisper_<n>); a closed or minimized
+	     dialog's document waits, hidden, for the next dialog in a pool of
+	     nui_whisper.POOL_BOUND (nui_hud.PooledBoard, P18): its feed key 0,
+	     so the lines element holds none, its scroll emptied (lines_on, a
+	     list of one entry while it shows; RmlUi repeats only an element
+	     with contents) and its fields empty. A minimized dialog keeps its draft,
+	     size, place and scroll (nui_whisper.STATE). The lines stay in the C++ whisper store:
 	     C++ publishes the window of them the box shows (feed
 	     whisper.<feed_key>.lines) and nui-chat-lines builds them in flow
 	     mode, wrapped at its width, the newest at its bottom, so no Python
@@ -50,7 +54,7 @@
 	<div class="nui-window__body whisper__body">
 		<nui-chat-lines id="whisper-lines" class="whisper__lines" view="whisper" mode="flow" step="15" data-attr-key="feed_key"
 		                data-event-nuilink="link(ev.link)" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
-		<div class="whisper__scroll-box"><input id="whisper-scroll" type="range" orientation="vertical" class="whisper__scroll"
+		<div class="whisper__scroll-box" data-for="w : lines_on"><input id="whisper-scroll" type="range" orientation="vertical" class="whisper__scroll"
 			min="0" max="1" step="0.01" data-attr-value="pos" data-event-change="scroll(ev.value)"/></div>
 	</div>
 	<div class="nui-window__footer whisper__edit">

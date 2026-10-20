@@ -119,6 +119,21 @@ class WhisperTest(unittest.TestCase):
             dialog.chatLine.SetText(dialog.chatLine.GetText() + text)
         return (dialog.chatLine.eventReturn if key == "enter" else dialog.chatLine.eventEscape)()
 
+    def waiting(self, world):
+        """The boards waiting in the whisper pool (P18)."""
+        return world.m("nui_whisper").POOL.boards()
+
+    def assert_one_empty_board_waits(self, world):
+        """P18: a dialog's board went to the pool, hidden and emptied, and is
+        the only document left."""
+        (board,) = self.waiting(world)
+        self.assertEqual(world.documents(), [DOCUMENT])
+        self.assertFalse(board.is_visible())
+        self.assertEqual((board.model["feed_key"], board.model["target"], board.model["lines_on"]), (0, "", []))
+        self.assertEqual((board.fields.get(INPUT, ""), board.fields.get(TARGET, "")), ("", ""))
+        self.assertIs(board._owner, world.m("nui_hud").NO_OWNER)
+        return board
+
     def run_both(self, flow):
         results = []
         for world in self.worlds():
@@ -295,7 +310,7 @@ class Flows(WhisperTest):
         self.assertIn(("chat.ClearWhisper", ("Alice",)), novaui)
         self.assertNotIn("Alice", world.m("nui_whisper").STATE)
         self.assertEqual(world.interface.dialogs, {})
-        self.assertNotIn(DOCUMENT, world.documents())
+        self.assert_one_empty_board_waits(world)
         self.assertEqual(world.game.calls("nuigame.WhisperDetach")[-1], ("nuigame.WhisperDetach", (1,)))
 
     def test_the_dialog_without_a_partner_takes_a_name(self):
@@ -345,7 +360,7 @@ class Flows(WhisperTest):
                 self.assertEqual(novaui, legacy)
                 self.assertIn(("chat.ClearWhisper", (0,)), novaui)
                 self.assertIsNone(world.interface.without)
-                self.assertNotIn(DOCUMENT, world.documents())
+                self.assert_one_empty_board_waits(world)
 
     def test_the_gm_look_shows_the_mark(self):
         world = self.world(True)
@@ -407,25 +422,38 @@ class Flows(WhisperTest):
         as soon as the load returns. That reaches the probe's board too,
         which nui_end() makes in the constructor, before the Interface's
         LoadDialog makes the scroll bar's proxy (the integration smoke's
-        SMK-N traceback). Neither the probe's echo nor a shown board's (the
-        kept position of a restored dialog) may raise or scroll."""
+        SMK-N traceback). Since P18 the range is also made again at each show
+        of a pooled board (its data-for wrapper, lines_on), and echoes the
+        position the dialog restores. Neither the probe's echo nor a shown
+        board's (the kept position of a restored dialog) may raise or
+        scroll."""
         runs = []
         for echo in (False, True):
             world = self.world(True)
             echoes, errors = [], []
             if echo:
-                board_class = world.m("nui_whisper")._WhisperBoard
+                module = world.m("nui_whisper")
+                board_class = module._WhisperBoard
                 board_init = board_class.__init__
+                restore = module.WhisperDialog._restore_board
 
-                def init(board, owner, model, board_init=board_init, echoes=echoes, errors=errors):
+                def fire_echo(board, pos, echoes=echoes, errors=errors):
+                    echoes.append(pos)
+                    try:
+                        board.fire("scroll", pos)
+                    except Exception as error:  # _nui logs a handler's error and goes on
+                        errors.append(error)
+
+                def init(board, owner, model, board_init=board_init):
                     board_init(board, owner, model)
                     if board._doc:
-                        echoes.append(model["pos"])
-                        try:
-                            board.fire("scroll", model["pos"])
-                        except Exception as error:  # _nui logs a handler's error and goes on
-                            errors.append(error)
+                        fire_echo(board, model["pos"])
+
+                def restore_board(dialog, board, restore=restore):
+                    restore(dialog, board)
+                    fire_echo(board, board.model["pos"])
                 board_class.__init__ = init
+                module.WhisperDialog._restore_board = restore_board
             mark = world.mark()
             with world.game, w4.quiet():
                 dialog = world.interface.OpenWhisperDialog("Alice")
@@ -435,7 +463,8 @@ class Flows(WhisperTest):
             runs.append((world.effects_since(mark, EFFECTS), echoes, errors))
         (plain, _, _), (echoed, echoes, errors) = runs
         self.assertEqual(errors, [])
-        self.assertEqual(echoes, [1.0, 1.0, 1.0, 0.4], "probe and show of the first dialog, then of the restored one")
+        self.assertEqual(echoes, [1.0, 1.0, 0.4], "the probe's load, the first dialog's show, the restored one's show "
+                                                  "(one board: the probe's, from the pool)")
         self.assertEqual(echoed, plain)
 
     def test_the_wheel_scrolls_three_lines_a_notch(self):
@@ -512,12 +541,17 @@ class Facade(WhisperTest):
         world = self.world(True, engine_4=False)
         self.assertIs(type(self.make(world)), world.m("uiWhisper").WhisperDialog)
 
-    def test_on_demand_and_the_0_by_0_window(self):
+    def test_the_probe_s_board_waits_for_the_first_show_and_the_0_by_0_window(self):
+        """P18: the probe's board is not destroyed; it waits, hidden, in the
+        pool for the show that follows, so a first open loads once."""
         world = self.world(True)
         window = self.make(world)
         with world.game, w4.quiet():
             window.LoadDialog()
-        self.assertNotIn(DOCUMENT, world.documents())
+        self.assertIsNone(w4.board(window))
+        self.assertEqual(len(self.waiting(world)), 1)
+        self.assertFalse(self.waiting(world)[0].is_visible())
+        self.assertEqual(world.documents(), [DOCUMENT])
         self.assertEqual(window.GetWidth(), 300, "the dialog's own size, as legacy reads it")
         legacy_width = world.m("ui").ScriptWindow.GetWidth(window)
         self.assertEqual(legacy_width, 0, "the legacy window stays 0 x 0")
@@ -543,6 +577,134 @@ class Facade(WhisperTest):
         line = ('nui_windows.make("whisper", uiWhisper.WhisperDialog, "nui_whisper.WhisperDialog", '
                 'self.MinimizeWhisperDialog, self.CloseWhisperDialog)')
         self.assertEqual(text.count(line), 2)
+
+
+class Pool(WhisperTest):
+    """P18 (Eddy: keep the slow-opening windows loaded, with no memory
+    growth): the dialogs' boards are pooled. A closed or minimized dialog's
+    board waits, hidden and emptied, for the next dialog; at most POOL_BOUND
+    wait; a waiting board never shows another conversation's text or draft;
+    the phase's end unloads them."""
+
+    def test_the_bound_is_four(self):
+        module = self.world(True).m("nui_whisper")
+        self.assertEqual(module.POOL_BOUND, 4)
+        self.assertEqual(module.POOL.bound, 4)
+
+    def test_a_closed_dialog_s_board_shows_the_next_partner_with_none_of_the_draft(self):
+        world = self.world(True)
+        with world.game, w4.quiet():
+            alice = world.interface.OpenWhisperDialog("Alice")
+            board = w4.board(alice)
+            board.insert_text(INPUT, "a secret for Alice")
+            w4.press(alice, "close_press", 0)
+            self.assert_one_empty_board_waits(world)
+            loads = world.m("nui_whisper").POOL.loads
+            bob = world.interface.OpenWhisperDialog("Bob")
+            mark = world.mark()
+            self.type_and(world, bob, "hi Bob", "enter")
+        self.assertIs(w4.board(bob), board, "the waiting board: no load")
+        self.assertEqual(world.m("nui_whisper").POOL.loads, loads)
+        self.assertEqual((board.model["target"], board.model["feed_key"], board.model["lines_on"]), ("Bob", 2, [1]))
+        self.assertEqual(board.get_value(INPUT), "", "sent; nothing of Alice's draft")
+        self.assertEqual(world.calls_since(mark, "net.SendWhisperPacket"), [("net.SendWhisperPacket", ("Bob", "hi Bob"))])
+        self.assertEqual(board.focused, INPUT, "Bob's input has the focus, as OpenWhisperDialog asks")
+
+    def test_a_minimized_draft_comes_back_from_the_state_not_from_a_board(self):
+        world = self.world(True)
+        with world.game, w4.quiet():
+            alice = world.interface.OpenWhisperDialog("Alice")
+            self.type_and(world, alice, "half for Alice", "escape")
+            board = self.assert_one_empty_board_waits(world)
+            bob = world.interface.OpenWhisperDialog("Bob")
+            self.assertIs(w4.board(bob), board)
+            self.assertEqual(board.get_value(INPUT), "", "Bob's dialog: none of Alice's draft")
+            alice = world.interface.ShowWhisperDialog("Alice")
+        alice_board = w4.board(alice)
+        self.assertIsNot(alice_board, board, "the pool was empty: Alice's board loads")
+        self.assertEqual(alice_board.get_value(INPUT), "half for Alice", "D8: the draft from the kept state")
+        self.assertEqual(board.get_value(INPUT), "")
+        self.assertEqual((alice_board.model["target"], board.model["target"]), ("Alice", "Bob"))
+
+    def test_the_partner_field_of_a_dialog_without_a_partner_starts_empty_on_a_pooled_board(self):
+        world = self.world(True)
+        with world.game, w4.quiet():
+            without = world.interface.OpenWhisperDialogWithoutTarget()
+            board = w4.board(without)
+            board.insert_text(TARGET, "Mallory")
+            board.key(TARGET, world.m("nui").KEY_ESCAPE)
+            self.assertIsNone(world.interface.without)
+            self.assert_one_empty_board_waits(world)
+            again = world.interface.OpenWhisperDialogWithoutTarget()
+        self.assertIs(w4.board(again), board)
+        self.assertEqual(board.get_value(TARGET), "")
+        self.assertEqual(board.model["editing_target"], True)
+
+    def test_the_gm_look_and_the_place_are_the_dialog_s_own(self):
+        world = self.world(True)
+        world.game.w4.setdefault("gm_names", set())
+        with world.game, w4.quiet():
+            alice = world.interface.OpenWhisperDialog("Alice")
+            alice.SetGameMasterLook()
+            board = w4.board(alice)
+            self.assertTrue(board.model["gm"])
+            w4.press(alice, "close_press", 0)
+            self.assertFalse(board.model["gm"])
+            bob = world.interface.OpenWhisperDialog("Bob")
+        self.assertIs(w4.board(bob), board)
+        self.assertFalse(board.model["gm"])
+        self.assertEqual(board.placement, ("position", 30.0, 30.0, (0.0, 0.0)), "Bob's cascade place")
+
+    def test_never_more_than_the_bound_wait_and_six_names_go_past_it(self):
+        """The memory soak's step: six partners at once (six documents), all
+        closed: four wait, two unload; then six names one after another, each
+        closed: the pool never holds more than four and loads nothing."""
+        world = self.world(True)
+        module = world.m("nui_whisper")
+        names = ["Name%d" % i for i in range(6)]
+        with world.game, w4.quiet():
+            dialogs = [world.interface.OpenWhisperDialog(name) for name in names]
+            self.assertEqual(len(world.documents()), 6)
+            for dialog in dialogs:
+                w4.press(dialog, "close_press", 0)
+            self.assertEqual(len(self.waiting(world)), 4)
+            self.assertEqual(len(world.documents()), 4, "the fifth and sixth closed boards unloaded")
+            loads = module.POOL.loads
+            for name in names:
+                dialog = world.interface.OpenWhisperDialog(name)
+                self.assertLessEqual(len(self.waiting(world)), 4)
+                self.type_and(world, dialog, "", "escape")
+        self.assertEqual(module.POOL.loads, loads, "every later open took a waiting board")
+        self.assertEqual(module.POOL.most, 4)
+        self.assertLessEqual(len(world.documents()), 4)
+        stats = world.m("nui_hud").pool_stats()["whisper"]
+        self.assertEqual((stats["bound"], stats["most"]), (4, 4))
+
+    def test_the_phase_end_unloads_the_waiting_boards(self):
+        world = self.world(True)
+        with world.game, w4.quiet():
+            for name in ("Alice", "Bob"):
+                dialog = world.interface.OpenWhisperDialog(name)
+            for name in ("Alice", "Bob"):
+                w4.press(world.interface.dialogs[name], "close_press", 0)
+            self.assertEqual(len(world.documents()), 2)
+            self.assertEqual(world.m("nui_windows").end_phase(), 2)
+        self.assertEqual(world.documents(), [])
+        self.assertEqual(self.waiting(world), [])
+
+    def test_a_waiting_board_s_events_reach_no_dialog(self):
+        world = self.world(True)
+        with world.game, w4.quiet():
+            alice = world.interface.OpenWhisperDialog("Alice")
+            board = w4.board(alice)
+            w4.press(alice, "close_press", 0)
+            mark = world.mark()
+            board.fire("scroll", 0.2)
+            board.fire("input_change", "x")
+            board.fire("close_press", 0)
+            board.fire("board_press", 0)
+            board.key(INPUT, world.m("nui").KEY_RETURN)
+        self.assertEqual(world.effects_since(mark, EFFECTS), [])
 
 
 if __name__ == "__main__":

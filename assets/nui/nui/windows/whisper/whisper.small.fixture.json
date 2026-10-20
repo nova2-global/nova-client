@@ -11,6 +11,9 @@
 		"height": 170.0,
 		"pos": 1.0,
 		"input_max": 99,
-		"target_max": 12
+		"target_max": 12,
+		"lines_on": [
+			1
+		]
 	}
 }

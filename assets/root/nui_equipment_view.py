@@ -19,9 +19,15 @@ binds its own model, equipment_view_<n>, so two views of two players can
 show at once. A second view of the same player replaces the first, as
 legacy's: the Interface drops the earlier dialog (equipmentDialogDict), whose
 legacy window leaves the screen when it is collected; its board goes at the
-new Open (nui_hud.take_over under the player's vid). The board exists only
-while its dialog shows; it draws below the legacy UI layer, as legacy's
-window lived in it."""
+new Open (nui_hud.take_over under the player's vid). The board draws below
+the legacy UI layer, as legacy's window lived in it.
+
+The Interface makes a new dialog for each view and drops it at its close,
+so a dialog cannot keep its board; the boards are pooled instead (P18:
+WAVE4.md measured 17.2 to 18.9 ms of UI work at its first open, a 60 fps
+frame or more): a closed view's board waits, hidden, in POOL, its places
+and cells gone (equip_on) and no dialog behind it (nui_hud.Pooled), and the
+next view takes it with no load. At most POOL_BOUND wait."""
 
 import ui
 import uiEquipmentDialog
@@ -34,11 +40,17 @@ import nui_proxies
 import nui_slots
 
 DOCUMENT = "nui/windows/equipment-view/equipment-view.rml"
+# P18: the boards that wait for the next view. Two: a player who compares
+# two players' equipment opens both views with no load again, while a
+# waiting board, emptied, keeps 11 elements (17 in cyberpunk).
+POOL_BOUND = 2
+POOL = nui_hud.BoardPool("equipment-view", POOL_BOUND)
 
 
-class _EquipmentViewBoard(nui_hud.RaisesOnPress, nui.Window):
-	"""An equipment view's document; its events go to its dialog. A press on
-	it raises the dialog, as legacy's window manager does."""
+class _EquipmentViewBoard(nui_hud.Pooled, nui_hud.RaisesOnPress, nui.Window):
+	"""An equipment view's document; its events go to its dialog (none while
+	it waits in POOL). A press on it raises the dialog, as legacy's window
+	manager does."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "equipment_view"
@@ -109,7 +121,22 @@ class EquipmentDialog(nui_facade.Facade, uiEquipmentDialog.EquipmentDialog):
 			"table": nui_limits.view_equip_id(limits),
 			"places": [{"index": slot.index, "name": slot.name, "shown": slot.group == "shown"} for slot in table],
 			"cells": [nui_slots.empty_cell(i) for i in range(len(table))],
+			# P18: the places and cells, a list of one entry while the board
+			# shows, none while it waits in POOL.
+			"equip_on": [1],
 		}
+
+	def nui_demand(self):
+		"""P18: the board comes from POOL and goes back to it."""
+		return nui_hud.PooledBoard(POOL, self._make_board, self._restore_board, self._keep_board,
+		                           self._empty_board, self._adopt_board)
+
+	def _adopt_board(self, board):
+		board.adopt(self)
+
+	def _empty_board(self, board):
+		"""Nothing of this player stays on a board that waits."""
+		board.set(equip_on=[], title="")
 
 	# --- the proxies' callbacks ---------------------------------------------------------
 

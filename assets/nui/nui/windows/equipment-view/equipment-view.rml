@@ -11,7 +11,10 @@
 	     in every skin: today's 11 (eqv--table-new), OLD's 16 at the foundation
 	     (eqv--table-old: the rings and the belt; its two costume entries do
 	     not show). The document is instanced (one model per open view,
-	     equipment_view_<n>) and exists only while its view shows. The body and
+	     equipment_view_<n>); a closed view's document waits, hidden, for the
+	     next view in a pool of nui_equipment_view.POOL_BOUND
+	     (nui_hud.PooledBoard, P18), its places and cells gone (equip_on, a
+	     list of one entry while it shows). The body and
 	     its controls take no focus; the close button acts on a left
 	     mousedown. It draws below the legacy UI layer, as legacy's window
 	     lived in it. A left or right press anywhere on it raises the window
@@ -32,7 +35,7 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body eqv__body">
-		<div id="equipment-view-equip" class="eqv-equip">
+		<div id="equipment-view-equip" class="eqv-equip" data-for="w : equip_on">
 			<div class="eqv-figure"><span class="eqv-figure__head"></span><span class="eqv-figure__body"></span><span
 				class="eqv-figure__arm eqv-figure__arm--left"></span><span class="eqv-figure__arm eqv-figure__arm--right"></span><span
 				class="eqv-figure__leg eqv-figure__leg--left"></span><span class="eqv-figure__leg eqv-figure__leg--right"></span></div>

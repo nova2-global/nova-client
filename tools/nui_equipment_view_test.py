@@ -69,6 +69,16 @@ class EquipmentViewTest(unittest.TestCase):
     def worlds(self):
         return [(nui_on, self.world(nui_on)) for nui_on in (False, True)]
 
+    def assert_one_empty_board_waits(self, world):
+        """P18: a closed view's board waits in the pool, hidden, emptied,
+        with no dialog behind it: the only document left."""
+        (board,) = world.m("nui_equipment_view").POOL.boards()
+        self.assertEqual(world.documents(), [DOCUMENT])
+        self.assertFalse(board.is_visible())
+        self.assertEqual((board.model["equip_on"], board.model["title"]), ([], ""))
+        self.assertIs(board._owner, world.m("nui_hud").NO_OWNER)
+        return board
+
 
 class Model(EquipmentViewTest):
     def test_the_board_shows_legacy_s_items_by_view_index_and_the_name(self):
@@ -157,7 +167,7 @@ class Flows(EquipmentViewTest):
                 self.assertEqual(novaui, legacy)
                 self.assertEqual((a_closed, b_closed), ([PARTNER], [PARTNER]))
                 self.assertFalse(b.IsShow())
-                self.assertNotIn(DOCUMENT, world.documents())
+                self.assert_one_empty_board_waits(world)
 
     def test_two_views_show_at_once_each_with_its_own_model(self):
         world = self.world(True)
@@ -199,7 +209,12 @@ class Flows(EquipmentViewTest):
         self.assertIsNone(first.demand)
         self.assertIsNotNone(w4.board(second))
         self.assertTrue(w4.board(second).is_visible())
-        self.assertEqual(world.documents().count(DOCUMENT), 1)
+        # P18: one shows; the other waits, hidden, in the pool (the second
+        # view's probe found none waiting, then the first view's board went).
+        shown = [window for window in world.game.state.windows if window._doc and window.DOCUMENT == DOCUMENT
+                 and window.visible]
+        self.assertEqual(shown, [w4.board(second)])
+        self.assertEqual(len(world.m("nui_equipment_view").POOL), 1)
         other, _, _ = self.open(world, OTHER)
         self.assertIsNotNone(w4.board(second), "another player's view takes no other's place")
         with world.game, w4.quiet():
@@ -244,11 +259,14 @@ class Facade(EquipmentViewTest):
         world = self.world(True, engine_4=False)
         self.assertIs(type(self.make(world)), world.m("uiEquipmentDialog").EquipmentDialog)
 
-    def test_on_demand_and_the_0_by_0_window(self):
+    def test_the_probe_s_board_waits_for_the_open_and_the_0_by_0_window(self):
         (_, legacy), (_, novaui) = self.worlds()
         a = self.make(legacy)
         b = self.make(novaui)
-        self.assertNotIn(DOCUMENT, novaui.documents())
+        # P18: the probe's board waits, hidden, in the pool for the open.
+        self.assertIsNone(w4.board(b))
+        self.assertEqual(novaui.documents(), [DOCUMENT])
+        self.assertEqual(len(novaui.m("nui_equipment_view").POOL), 1)
         self.assertEqual((b.GetWidth(), b.GetHeight()), (0, 0))
         self.assertEqual(b.flags, a.flags)
         self.assertIn("float", b.flags)
@@ -264,6 +282,77 @@ class Facade(EquipmentViewTest):
         text = w4.read(os.path.join(w4.ROOT, "interfacemodule.py"))
         self.assertIn('dlg = nui_windows.make("equipment-view", uiEquipmentDialog.EquipmentDialog, '
                       '"nui_equipment_view.EquipmentDialog")', text)
+
+
+class Pool(EquipmentViewTest):
+    """P18: the Interface makes a dialog per view and drops it at its close;
+    the closed view's board waits, emptied, in a pool of two for the next
+    view, which shows its own player with no load."""
+
+    def test_the_bound_is_two(self):
+        module = self.world(True).m("nui_equipment_view")
+        self.assertEqual((module.POOL_BOUND, module.POOL.bound), (2, 2))
+
+    def test_the_next_view_takes_the_waiting_board_and_shows_its_own_player(self):
+        world = self.world(True)
+        first, _, _ = self.open(world, PARTNER)
+        board = w4.board(first)
+        with world.game, w4.quiet():
+            first.Close()
+        self.assert_one_empty_board_waits(world)
+        pool = world.m("nui_equipment_view").POOL
+        loads = pool.loads
+        second, tooltip, closed = self.open(world, OTHER, items=((1, HELMET, 1),))
+        self.assertIs(w4.board(second), board, "no load: the waiting board")
+        self.assertEqual(pool.loads, loads)
+        self.assertEqual((board.model["title"], board.model["equip_on"]), ("Other", [1]))
+        vnums = second.slotWindow.vnums()
+        shown = [vnums[cell["index"]] for cell in board.model["cells"] if cell["kind"]]
+        self.assertEqual(shown, [HELMET], "the other player's items only")
+        with world.game, w4.quiet():
+            w4.press(second, "close_press", 0)
+        self.assertEqual(closed, [OTHER], "its close is the new view's")
+
+    def test_a_view_dropped_without_close_gives_its_board_back_when_collected(self):
+        import gc
+        world = self.world(True)
+        window, _, _ = self.open(world, PARTNER)
+        board = w4.board(window)
+        with world.game, w4.quiet():
+            window.Hide()
+        del window
+        gc.collect()
+        self.assertEqual(world.m("nui_equipment_view").POOL.boards(), [board])
+
+    def test_never_more_than_two_wait_and_the_phase_end_unloads_them(self):
+        world = self.world(True)
+        views = [self.open(world, vid)[0] for vid in (PARTNER, OTHER, 79)]
+        with world.game, w4.quiet():
+            for view in views:
+                view.Close()
+        pool = world.m("nui_equipment_view").POOL
+        self.assertEqual(len(pool), 2)
+        self.assertLessEqual(pool.most, 2)
+        self.assertEqual(world.documents().count(DOCUMENT), 2)
+        with world.game, w4.quiet():
+            world.m("nui_windows").end_phase()
+        self.assertNotIn(DOCUMENT, world.documents())
+
+    def test_a_waiting_board_s_events_reach_no_view(self):
+        world = self.world(True)
+        window, tooltip, closed = self.open(world)
+        board = w4.board(window)
+        with world.game, w4.quiet():
+            window.Close()
+            mark = world.mark()
+            calls = len(tooltip.calls)
+            board.fire("cell_over", 4)
+            board.fire("cell_out", 4)
+            board.fire("close_press", 0)
+            board.fire("board_press", 0)
+        self.assertEqual(world.effects_since(mark), [])
+        self.assertEqual(len(tooltip.calls), calls)
+        self.assertEqual(closed, [PARTNER])
 
 
 if __name__ == "__main__":

@@ -639,10 +639,11 @@ WAVE4_SOCIAL = ["messenger", "whisper", "guild", "guild-war-dialogs", "guild-mar
 
 
 class Wave4Flags(WindowsTest):
-    def test_every_wave4_window_defaults_to_legacy_appended_after_select_item(self):
+    def test_every_wave4_window_defaults_to_legacy_appended_after_the_wave3c_windows(self):
         ids = [window_id for window_id, _ in self.m.WINDOWS]
-        start = ids.index("select-item") + 1
-        self.assertEqual(ids[start:start + 11], WAVE4_TRADE + WAVE4_SOCIAL, "appended after select-item, in this order")
+        # P17: both waves appended after select-item; the merge keeps Wave 3c's first.
+        start = ids.index(WAVE3C[-1]) + 1
+        self.assertEqual(ids[start:start + 11], WAVE4_TRADE + WAVE4_SOCIAL, "appended after the Wave 3c windows, in this order")
         for window_id in WAVE4_TRADE + WAVE4_SOCIAL:
             self.assertIs(dict(self.m.WINDOWS)[window_id], False, window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
@@ -743,6 +744,25 @@ class Wave4Flags(WindowsTest):
             self.assertIsInstance(made, Legacy)
             self.assertEqual((made.args, made.kwargs), ((1,), {"kind": window_id}))
         self.assertNotIn("nui_never_imported", sys.modules)
+
+
+# --- Waves 3c and 4 merged (P17) ---
+
+class MergedWaves(WindowsTest):
+    def test_every_window_id_is_unique_and_no_group_shares_one(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertFalse(set(self.m.GROUPS) & set(ids))
+        for group, members in self.m.GROUPS.items():
+            self.assertTrue(set(members) <= set(ids), group)
+
+    def test_the_demo_string_with_every_group_fits_ui_nui_windows(self):
+        demo = "+wave1,+hud,+hud2,+sys,+rest,+items,+wave3c,+trade,+social"
+        self.assertLessEqual(len(demo), 200)
+        self.assertEqual(len(demo), 58)
+        self.setting.windows = demo
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
+                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE3C + WAVE4_TRADE + WAVE4_SOCIAL))
 
 
 if __name__ == "__main__":

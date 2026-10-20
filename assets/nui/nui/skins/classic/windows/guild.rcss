@@ -23,6 +23,17 @@ body.skin-classic.guild
 	height: 356dp;
 	min-width: 0;
 }
+/* Centered on a screen-sized frame (guild.rcss), by legacy's board size:
+   P18 centers the classic window too, where legacy's uiscript puts it at
+   the screen's corner. */
+@media (min-width: 640dp)
+{
+	body.skin-classic.guild
+	{
+		margin-left: -188dp;
+		margin-top: -178dp;
+	}
+}
 /* The bar's box is 32 tall over the page's top (the board page's refresh
    button at 5); only its 23 px art takes the pointer, as legacy's title
    bar: the handle and the close button. */

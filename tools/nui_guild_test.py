@@ -692,17 +692,46 @@ class Facade(GuildTest):
         self.assertEqual(world.calls_since(mark, "app.IsRTL"), [])
         self.assertIsNone(window.pageWindow["GUILD_INFO"].guildMoneySlot, "no guild money row left to right")
 
-    def test_on_demand_the_place_and_the_0_by_0_window(self):
+    def test_on_demand_centered_and_the_0_by_0_window(self):
         (a_world, a), (world, window) = [self.world(nui_on) for nui_on in (False, True)]
         self.assertNotIn(DOCUMENT, world.documents())
         self.open(a_world, a)
         self.open(world, window)
         self.assertIn(DOCUMENT, world.documents())
-        self.assertEqual(w4.board(window).placement, ("position", 0, 0, (0.0, 0.0)), "the corner, legacy's (D21)")
+        self.assertEqual(w4.board(window).placement, ("center",), "P18: centered, where legacy's is at the corner (D21)")
         self.assertEqual((window.GetWidth(), window.GetHeight()), (0, 0))
         self.assertIn("float", window.flags)
         self.assertEqual(window.flags, a.flags)
         self.assertNotIn(GRADE_DOCUMENT, world.documents())
+
+    def test_centered_at_the_first_open_and_a_dragged_place_kept_after_it(self):
+        """P18 (Eddy: "Make it centered"): the first open centers the board in
+        every look; a window the player left centered is centered again at
+        its next open; one dragged away opens where it was left, as the other
+        NovaUI windows do (nui_facade.Facade, PLACE "center")."""
+        world, window = self.world(True)
+        self.assertEqual(type(window).PLACE, "center")
+        boxes = world.game.state.boxes
+        self.open(world, window)
+        self.assertEqual(w4.board(window).placement, ("center",))
+        # At the screen's center (1600 x 900, the 480 x 470 board): left centered.
+        boxes[(DOCUMENT, "")] = (560.0, 215.0, 480.0, 470.0)
+        with world.game, w4.quiet():
+            window.Close()
+        self.assertNotIn(DOCUMENT, world.documents())
+        self.open(world, window)
+        self.assertEqual(w4.board(window).placement, ("center",), "left centered: centered again")
+        # Dragged away by its title: kept at the next open.
+        boxes[(DOCUMENT, "")] = (300.0, 120.0, 480.0, 470.0)
+        with world.game, w4.quiet():
+            window.Close()
+        self.open(world, window)
+        self.assertEqual(w4.board(window).placement, ("position", 300.0, 120.0, (0.0, 0.0)), "the dragged place")
+        # The kept place holds at a later open too.
+        with world.game, w4.quiet():
+            window.Close()
+        self.open(world, window)
+        self.assertEqual(w4.board(window).placement, ("position", 300.0, 120.0, (0.0, 0.0)))
 
     def test_destroy_discards_the_dialogs_it_made(self):
         world, window = self.world(True)

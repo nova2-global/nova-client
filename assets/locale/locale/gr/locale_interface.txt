@@ -29,6 +29,7 @@ CREATE_SHAPE	Σχήμα
 CREATE_SP	INT
 CREATE_WOMAN	Γυναίκα
 CUBE_INFO_TITLE	Εγχειρίδιο εξευγενισμού
+CUBE_RENEWAL_TITLE	Refinement
 CUBE_REQUIRE_MATERIAL	Απαιτούμενα υλικά
 CUBE_REQUIRE_MATERIAL_OR	ή
 CUBE_TITLE	Παράθυρο εξευγενισμού

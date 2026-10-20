@@ -1,4 +1,5 @@
 ACCEPT	موافق
+CUBE_RENEWAL_TITLE	Refinement
 alsoExportToCharset	
 ATTACH_METIN_INFO	هل ترغب في استخدام الحجر الشّبحي؟
 ATTACH_METIN_TITLE	استخدام الحجر الشّبحي

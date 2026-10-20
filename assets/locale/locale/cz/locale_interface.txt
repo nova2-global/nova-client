@@ -29,6 +29,7 @@ CREATE_SHAPE	Vzhled
 CREATE_SP	INT
 CREATE_WOMAN	Žena
 CUBE_INFO_TITLE	Příručka zušlechťování
+CUBE_RENEWAL_TITLE	Refinement
 CUBE_REQUIRE_MATERIAL	Požadované materiály
 CUBE_REQUIRE_MATERIAL_OR	nebo
 CUBE_TITLE	Okno zušlechťování

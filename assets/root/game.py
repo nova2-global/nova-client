@@ -1619,6 +1619,18 @@ class GameWindow(ui.ScriptWindow):
 	def Gift_Show(self):
 		self.interface.ShowGift()
 
+	# CUBE_RENEWAL
+	# cube_renewal (C++) has the recipes of the cube the server opened; the window
+	# took them in its BINARY_CUBE_RENEWAL_LOADING. The server closes the cube on
+	# death, on /reload c and when the player crafts from too far away.
+	def BINARY_CUBE_RENEWAL_OPEN(self):
+		if self.interface:
+			self.interface.BINARY_CUBE_RENEWAL_OPEN()
+
+	def BINARY_CUBE_RENEWAL_CLOSE(self):
+		if self.interface:
+			self.interface.BINARY_CUBE_RENEWAL_CLOSE()
+	# END_OF_CUBE_RENEWAL
 	
 	# Dragon Soul Stone	
 	def BINARY_Highlight_Item(self, inven_type, inven_pos):

@@ -59,6 +59,44 @@ CREATE_EXIST_SAME_NAME	Alguien ya está usando este nombre de personaje.
 CREATE_FAILURE	No puedes crear el personaje.
 CREATE_GM_NAME	GM
 CREATE_INPUT_NAME	Introducir el nombre.
+CUBE_CATEGORY_ADVANCED_PET_ITEMS	Objetos de mascota avanzada
+CUBE_CATEGORY_ARMORS	Armaduras
+CUBE_CATEGORY_AURA_BONUS	Aura Attributes
+CUBE_CATEGORY_AURA_LEVEL	Aura Leveling
+CUBE_CATEGORY_BELT	Belt
+CUBE_CATEGORY_BODY_COSTUME	Disfraz corporal
+CUBE_CATEGORY_BODY_EFFECT	Efecto corporal
+CUBE_CATEGORY_BRACELET	Brazalete
+CUBE_CATEGORY_CRAFTING_CORES	Núcleos de creación
+CUBE_CATEGORY_DISMANTLE_PLUS_COSTUME	Desmontar disfraz+
+CUBE_CATEGORY_DISMANTLE_PLUS_HAIR	Desmontar peinado+
+CUBE_CATEGORY_DISMANTLE_PLUS_PET	Desmontar mascota+
+CUBE_CATEGORY_DISMANTLE_PLUS_WEAPON	Desmontar arma+
+CUBE_CATEGORY_DISMANTLE_SPECIAL_COSTUME	Desmontar disfraz especial
+CUBE_CATEGORY_DISMANTLE_SPECIAL_HAIR	Desmontar peinado especial
+CUBE_CATEGORY_DISMANTLE_SPECIAL_PET	Desmontar mascota especial
+CUBE_CATEGORY_DISMANTLE_SPECIAL_WEAPON	Desmontar arma especial
+CUBE_CATEGORY_EARRINGS	Pendientes
+CUBE_CATEGORY_FACIAL_COSTUME	Disfraz facial
+CUBE_CATEGORY_HAIR_COSTUME	Disfraz de cabello
+CUBE_CATEGORY_HELMETS	Cascos
+CUBE_CATEGORY_MOUNT_COSTUME	Disfraz de montura
+CUBE_CATEGORY_MOUNT_SEAL	Sello de montura
+CUBE_CATEGORY_NECKLACE	Collar
+CUBE_CATEGORY_OTHERS	Otros
+CUBE_CATEGORY_PERMANENT_GEMS	Gemas permanentes
+CUBE_CATEGORY_PET_COSTUME	Disfraz de mascota
+CUBE_CATEGORY_PET_SEAL	Sello de mascota
+CUBE_CATEGORY_SANTAS_WORKSHOP	Taller de Santa
+CUBE_CATEGORY_SHIELD	Escudo
+CUBE_CATEGORY_SHOES	Zapatos
+CUBE_CATEGORY_SKIN_CONVERSION_TEMPORARY_OPTION	Conversión de aspecto (opción temporal)
+CUBE_CATEGORY_TEMPORARY_GEMS	Gemas temporales
+CUBE_CATEGORY_UPGRADE_MATERIALS	Materiales de mejora
+CUBE_CATEGORY_WEAPONS	Armas
+CUBE_CATEGORY_WEAPON_COSTUME	Disfraz de arma
+CUBE_CATEGORY_WEAPON_EFFECT	Efecto de arma
+CUBE_CATEGORY_WING_COSTUME	Disfraz de alas
 DAY	Días
 DO_YOU_BUY_ITEM1	¿Deseas comprar %s por %s?
 DO_YOU_BUY_ITEM2	¿Deseas comprar %s %s por %s?
@@ -209,6 +247,7 @@ HOW_MANY_ITEM_DO_YOU_DROP2	¿Deseas tirar %s %d?
 INPUT_PRIVATE_CODE_DIALOG_DESCRIPTION	Introduce aquí el código de borrado de los ajustes de tu cuenta.
 INPUT_PRIVATE_CODE_DIALOG_TITLE	Borrar personaje
 INVENTORY_REALLY_USE_ITEM	¿Deseas usar el objeto en este objeto?
+ITEM_HAS_RESTRICTED_BONUS	¡Atención! %s no se puede copiar.\n¿Deseas continuar?
 JOB_ASSASSIN	Ninja
 JOB_ASSASSIN0	Ninja aficionado
 JOB_ASSASSIN1	Poder de los Ninjas

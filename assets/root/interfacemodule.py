@@ -35,6 +35,7 @@ import uiRefine
 import uiEquipmentDialog
 import uiGameButton
 import uiTip
+import uiCubeRenewal
 import miniMap
 # ACCESSORY_REFINE_ADD_METIN_STONE
 import uiselectitem
@@ -65,6 +66,7 @@ class Interface(object):
 		# END_OF_ITEM_MALL
 
 		self.wndWeb = None
+		self.wndCubeRenewal = None
 		self.wndTaskBar = None
 		self.wndCharacter = None
 		self.wndInventory = None
@@ -263,6 +265,12 @@ class Interface(object):
 		self.wndWeb.LoadWindow()
 		self.wndWeb.Hide()
 
+	def __MakeCubeRenewalWindow(self):
+		self.wndCubeRenewal = uiCubeRenewal.CubeRenewalWindow()
+		self.wndCubeRenewal.LoadWindow()
+		self.wndCubeRenewal.BindInterface(self)
+		self.wndCubeRenewal.Hide()
+
 	# ACCESSORY_REFINE_ADD_METIN_STONE
 	def __MakeItemSelectWindow(self):
 		self.wndItemSelect = uiselectitem.SelectItemWindow()
@@ -283,6 +291,7 @@ class Interface(object):
 		self.__MakeHelpWindow()
 		self.__MakeTipBoard()
 		self.__MakeWebWindow()
+		self.__MakeCubeRenewalWindow()
 		
 		
 		# ACCESSORY_REFINE_ADD_METIN_STONE
@@ -303,6 +312,7 @@ class Interface(object):
 			self.wndDragonSoulRefine.SetItemToolTip(self.tooltipItem)
 
 		self.wndSafebox.SetItemToolTip(self.tooltipItem)
+		self.wndCubeRenewal.SetItemToolTip(self.tooltipItem)
 
 		# ITEM_MALL
 		self.wndMall.SetItemToolTip(self.tooltipItem)
@@ -410,6 +420,9 @@ class Interface(object):
 		if self.wndHelp:
 			self.wndHelp.Destroy()
 
+		if self.wndCubeRenewal:
+			self.wndCubeRenewal.Destroy()
+
 		if self.wndMessenger:
 			self.wndMessenger.Destroy()
 
@@ -482,6 +495,7 @@ class Interface(object):
 		del self.wndMall
 		del self.wndParty
 		del self.wndHelp
+		del self.wndCubeRenewal
 		del self.privateShopBuilder
 		del self.inputDialog
 		del self.wndChatLog
@@ -537,6 +551,8 @@ class Interface(object):
 			self.wndEnergyBar.RefreshStatus()
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoul.RefreshStatus()
+		if self.wndCubeRenewal:
+			self.wndCubeRenewal.Refresh()
 
 	def RefreshStamina(self):
 		self.wndTaskBar.RefreshStamina()
@@ -550,6 +566,8 @@ class Interface(object):
 		self.wndInventory.RefreshItemSlot()
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoul.RefreshItemSlot()
+		if self.wndCubeRenewal:
+			self.wndCubeRenewal.Refresh()
 
 	def RefreshCharacter(self): ## Refresh character face in Character page, full body in Inventory page, etc.
 		self.wndCharacter.RefreshCharacter()
@@ -1086,6 +1104,15 @@ class Interface(object):
 	    	
 	def CloseWbWindow(self):
 		self.wndWeb.Close()
+
+	# The server sent the cube's recipes (the window has them already) or closed the cube.
+	def BINARY_CUBE_RENEWAL_OPEN(self):
+		if self.wndCubeRenewal:
+			self.wndCubeRenewal.Open()
+
+	def BINARY_CUBE_RENEWAL_CLOSE(self):
+		if self.wndCubeRenewal:
+			self.wndCubeRenewal.BINARY_CUBE_RENEWAL_CLOSE()
 
 	def __HideWindows(self):
 		hideWindows = self.wndTaskBar,\

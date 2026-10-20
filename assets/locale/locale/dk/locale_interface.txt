@@ -29,6 +29,7 @@ CREATE_SHAPE	Udseende
 CREATE_SP	INT
 CREATE_WOMAN	Kvinde
 CUBE_INFO_TITLE	Forfinelses håndbog
+CUBE_RENEWAL_TITLE	Refinement
 CUBE_REQUIRE_MATERIAL	Nødvendige materialer
 CUBE_REQUIRE_MATERIAL_OR	eller
 CUBE_TITLE	Krydderikiste

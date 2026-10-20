@@ -1,0 +1,10 @@
+{
+	"$comment": "Golden cases of the maintenance countdown (tools/check_nui_snapshots.py; P18, NOVA-58), each at the countdown's own start (time 0, so the end is the time left): the default fixture's 125 seconds ('2 Minutes, 5 Sec') in every look at 100, 150 and 200% and the automatic scale (1600x900, 0.875); days: 93784 seconds, legacy's widest form ('1 Days, 2 Hours, 3 Minutes, 4 Sec'); seconds: the last 5 seconds; translucent: modern-dark and modern-light at 80% panel opacity over the synthetic backdrop; no-effects. Its classic art (the thin board, the close button) is in assets/ETC.",
+	"cases": [
+		{"page": "maintenance", "fixture": true, "roots": ["assets/ETC"], "time": 0, "themes": "all", "scales": [["100", "1", "360x130"], ["150", "1.5", "540x195"], ["200", "2", "720x260"], ["auto", "auto", "1600x900"]]},
+		{"page": "maintenance", "fixture": true, "roots": ["assets/ETC"], "time": 0, "variant": "days", "themes": "all", "scales": [["100", "1", "400x130"], ["200", "2", "800x260"]]},
+		{"page": "maintenance", "fixture": true, "roots": ["assets/ETC"], "time": 0, "variant": "seconds", "themes": "all", "scales": [["100", "1", "360x130"]]},
+		{"page": "maintenance", "fixture": true, "roots": ["assets/ETC"], "time": 0, "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "360x130"], ["200", "2", "720x260"]], "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"},
+		{"page": "maintenance", "fixture": true, "roots": ["assets/ETC"], "time": 0, "name": "no-effects", "themes": ["dark", "cyber"], "scales": [["100", "1", "360x130"]], "effects": "off"}
+	]
+}

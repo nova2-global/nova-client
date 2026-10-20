@@ -1,0 +1,53 @@
+/* The maintenance countdown's modern look: a board 36dp tall at the
+   top left, at legacy's (10, 70) in dp, as wide as its line: 12dp in, the
+   label in the danger color, 4dp, the time in the warning color (it keeps
+   its widest width while the countdown runs: hold-width), 4dp, the close
+   button, 12dp. Classic (legacy's thin board, its red label, its gold time
+   and its close art at legacy's places): skins/classic/windows/maintenance.rcss. */
+
+body.maintenance
+{
+	focus: none;
+	tab-index: none;
+}
+.maintenance__board
+{
+	position: absolute;
+	left: 10dp;
+	top: 70dp;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 36dp;
+	padding: 0 12dp;
+	box-sizing: border-box;
+}
+.maintenance__label, .maintenance__time
+{
+	white-space: nowrap;
+	font-size: var(--font-sm);
+	font-weight: bold;
+}
+.maintenance__label
+{
+	display: block;
+	flex: 0 0 auto;
+	color: var(--danger);
+}
+/* inline-block: hold-width keeps a min-width, which needs a box. */
+.maintenance__time
+{
+	display: inline-block;
+	flex: 0 0 auto;
+	margin-left: 4dp;
+	color: var(--warning);
+}
+.maintenance__close
+{
+	flex: 0 0 auto;
+	margin-left: 4dp;
+}
+.maintenance__close .nui-glyph
+{
+	pointer-events: none;
+}

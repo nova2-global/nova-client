@@ -14,7 +14,11 @@ is nuigame.WatchLeaveRange's watch (armed in OpenDialog, stopped in
 CloseDialog, rearmed after each exit packet as legacy resets its start);
 legacy's wndMgr.OnceIgnoreMouseLeftButtonUpEvent() in CloseDialog is left
 out (NovaUI acts on the press, so it would swallow the next legacy
-release). The board exists only while the window shows."""
+release). The board loads at the window's first show and is kept, hidden,
+after it, both grids emptied (nui_hud.KeptBoard, P18: WAVE4.md measured
+15.5 to 18.2 ms of UI work at its open, a 60 fps frame in cyberpunk, and a
+document load of 5.8 to 7.6 ms at every open); a refresh while hidden
+reaches the facade's state, which the next show sets."""
 
 import exchange
 import localeInfo
@@ -147,7 +151,20 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 			# P14b: the grids' is-attaching (nui_slots.LegacySlotEvents).
 			"owner_attaching": False,
 			"target_attaching": False,
+			# P18: both grids, a list of one entry while the board shows,
+			# none while it is kept hidden.
+			"grids_on": [1],
 		}
+
+	def nui_demand(self):
+		"""P18: the board is kept, hidden, after the first open (V-2b's
+		pattern): a later open loads nothing."""
+		return nui_hud.KeptBoard(self._make_board, self._restore_board, self._keep_board, self._empty_board)
+
+	def _empty_board(self, board):
+		"""The kept hidden board holds no cell (RmlUi updates every element
+		of a loaded document each frame); _restore_board sets them again."""
+		board.set(grids_on=[])
 
 	# --- the proxies' callbacks ---------------------------------------------------------
 

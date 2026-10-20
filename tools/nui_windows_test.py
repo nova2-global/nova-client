@@ -11,6 +11,10 @@ import nui_test_support as support  # noqa: E402
 WAVE1 = ["login", "dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"]
 WAVE2A = ["taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
           "edge-buttons", "tip-board", "big-board", "map-name"]
+# P18 (NOVA-58): the maintenance countdown joins the hud group, appended to
+# WINDOWS after Wave 4's windows.
+P18_HUD = ["maintenance"]
+HUD = WAVE2A + P18_HUD
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
 WAVE5A = ["quest", "guild-building", "web", "console"]
@@ -106,8 +110,8 @@ class Flags(WindowsTest):
 
     def test_hud2_names_the_seven_wave2b_windows_and_hud_keeps_its_twelve(self):
         self.assertEqual(self.m.GROUPS["hud2"], tuple(WAVE2B))
-        self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A), "+hud keeps meaning the Wave 2a windows")
-        self.assertEqual(len(self.m.GROUPS["hud"]), 12)
+        self.assertEqual(self.m.GROUPS["hud"], tuple(HUD), "+hud keeps meaning the Wave 2a windows (and P18's maintenance countdown)")
+        self.assertEqual(len(self.m.GROUPS["hud"]), 13)
         self.setting.windows = "+hud"
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2B), "+hud turns no Wave 2b window on")
         self.setting.windows = "+hud2,-atlas"
@@ -128,7 +132,7 @@ class Flags(WindowsTest):
                 self.assertIn(window_id, known)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + WAVE2A + WAVE2B))
+                         sorted(WAVE1[1:] + HUD + WAVE2B))
 
     def test_every_wave3a_window_defaults_to_legacy(self):
         earlier = WAVE1 + WAVE2A + WAVE2B + WAVE3A
@@ -167,7 +171,7 @@ class Flags(WindowsTest):
                 self.assertIn(window_id, known)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A))
 
     def test_every_wave5a_window_defaults_to_legacy(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A)],
@@ -205,7 +209,7 @@ class Flags(WindowsTest):
                 self.assertIn(window_id, known)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A))
 
     def test_every_wave3b_window_defaults_to_legacy(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B)],
@@ -235,14 +239,14 @@ class Flags(WindowsTest):
         self.assertEqual(len(demo), 35)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + WAVE3B))
 
     def test_a_group_turns_its_members_on_and_off_in_token_order(self):
-        self.assertEqual(self.m.GROUPS["hud"], tuple(WAVE2A))
+        self.assertEqual(self.m.GROUPS["hud"], tuple(HUD))
         self.assertEqual(self.m.GROUPS["wave1"], tuple(WAVE1[1:]), "login is in no group")
         self.setting.windows = "+hud,-target"
         on = self.m.overrides()
-        self.assertEqual(on, dict([(window_id, window_id != "target") for window_id in WAVE2A]))
+        self.assertEqual(on, dict([(window_id, window_id != "target") for window_id in HUD]))
         self.assertFalse(self.m.is_on("target"))
         self.assertTrue(self.m.is_on("taskbar"))
         self.assertEqual(self.m.use("taskbar"), (True, ""))
@@ -250,7 +254,7 @@ class Flags(WindowsTest):
         self.assertTrue(self.m.is_on("target"), "the later token wins")
         self.setting.windows = "+wave1,+hud,-hud"
         self.assertTrue(all(self.m.is_on(window_id) for window_id in WAVE1[1:]))
-        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2A))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in HUD))
         self.assertFalse(self.m.is_on("login"))
         self.reload(systemSetting=support.make_setting(flag=1, windows="+wave1"))
         self.assertTrue(self.m.is_on("login"), "UI_NUI_LOGIN 1 still means +login")
@@ -284,7 +288,7 @@ class Flags(WindowsTest):
             for window_id in members:
                 self.assertIn(window_id, known)
         self.setting.windows = demo
-        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on), sorted(WAVE1[1:] + WAVE2A))
+        self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on), sorted(WAVE1[1:] + HUD))
 
     def test_overrides_turn_windows_on_and_off(self):
         self.setting.windows = "+dialogs,+server-board,-select,+unknown-window"
@@ -622,7 +626,7 @@ class Wave3c(WindowsTest):
         self.assertEqual(len(demo), 43)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE3C))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE3C))
 
     def test_the_wave3c_boards_are_prewarmed_with_their_flags(self):
         for window_id in WAVE3C:
@@ -673,7 +677,7 @@ class Wave4Flags(WindowsTest):
         self.assertEqual(len(demo), 50)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE4_TRADE + WAVE4_SOCIAL))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE4_TRADE + WAVE4_SOCIAL))
 
     def test_the_wave4_documents_are_on_demand_and_prewarmed_with_their_flags(self):
         expected = [("exchange", ("exchange",)), ("shop", ("shop",)), ("private-shop", ("private-shop",)),
@@ -762,7 +766,38 @@ class MergedWaves(WindowsTest):
         self.assertEqual(len(demo), 58)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE3C + WAVE4_TRADE + WAVE4_SOCIAL))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + WAVE3B + WAVE3C + WAVE4_TRADE + WAVE4_SOCIAL))
+
+
+class Maintenance(WindowsTest):
+    """P18 (NOVA-58): the maintenance countdown is the id "maintenance", off
+    by default, in the hud group (no new group, so no demo string grows),
+    after Wave 4's windows; its document is prewarmed with the others."""
+
+    def test_the_id_is_off_by_default_last_and_in_the_hud_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertEqual(ids[-1], "maintenance")
+        self.assertIs(dict(self.m.WINDOWS)["maintenance"], False)
+        self.assertFalse(self.m.is_on("maintenance"))
+        self.assertEqual(self.m.use("maintenance"), (False, "flag off"))
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "maintenance" in members], ["hud"])
+        self.setting.windows = "+hud"
+        self.assertTrue(self.m.is_on("maintenance"))
+        self.setting.windows = "+hud,-maintenance"
+        self.assertFalse(self.m.is_on("maintenance"))
+        self.setting.windows = "+maintenance"
+        self.assertTrue(self.m.is_on("maintenance"))
+        self.assertFalse(self.m.is_on("tip-board"))
+
+    def test_the_demo_string_stays_58_of_200(self):
+        demo = "+wave1,+hud,+hud2,+sys,+rest,+items,+wave3c,+trade,+social"
+        self.assertEqual(len(demo), 58)
+        self.setting.windows = demo
+        self.assertTrue(self.m.is_on("maintenance"))
+
+    def test_the_document_is_prewarmed_with_the_on_demand_ones(self):
+        self.setting.windows = "+maintenance"
+        self.assertIn("nui/windows/maintenance/maintenance.rml", self.m.prewarm_documents())
 
 
 if __name__ == "__main__":

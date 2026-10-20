@@ -106,12 +106,14 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("guild", False),              # the guild window and its grade name dialog
 	("guild-war-dialogs", False),  # the guild war declare and accept dialogs
 	("guild-mark", False),         # the guild mark and symbol lists
+	# P18 (NOVA-58): the maintenance countdown, in the hud group.
+	("maintenance", False),        # the countdown to a scheduled server shutdown
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"wave1": ("dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"),
 	"hud": ("taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
-	        "edge-buttons", "tip-board", "big-board", "map-name"),
+	        "edge-buttons", "tip-board", "big-board", "map-name", "maintenance"),
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
@@ -176,6 +178,8 @@ ON_DEMAND_DOCUMENTS = (
 	("guild", ("guild", "guild-grade-name")),
 	("guild-war-dialogs", ("guild-war-declare", "guild-war-accept")),
 	("guild-mark", ("guild-mark",)),
+	# P18: the maintenance countdown, only while it shows.
+	("maintenance", ("maintenance",)),
 )
 GAME_PHASE_CLASS = "GameWindow"   # game.GameWindow, the game phase's window
 

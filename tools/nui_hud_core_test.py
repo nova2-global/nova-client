@@ -1204,6 +1204,8 @@ EXPECTED_SITES = {
                 ("make", "map-name", "uiMapNameShower.MapNameShower", "nui_map_name.MapNameShower"),
                 ("make", "affects", "uiAffectShower.AffectShower", "nui_affects.AffectShower"),
                 ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge"),
+                # P18 (NOVA-58): the maintenance countdown.
+                ("make", "maintenance", "uiMaintenance.MaintenanceWindow", "nui_maintenance.MaintenanceWindow"),
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
@@ -1451,7 +1453,8 @@ class Wiring(unittest.TestCase):
                   and isinstance(node.func, ast.Name) and node.func.id == "getattr"
                   and len(node.args) == 3 and ast.literal_eval(node.args[1]) == "NUI_FACADE"]
         self.assertEqual(sorted(guards), sorted(["getattr(shower, 'NUI_FACADE', False)", "getattr(self.mapNameShower, 'NUI_FACADE', False)",
-                                                 "getattr(self.playerGauge, 'NUI_FACADE', False)"]))
+                                                 "getattr(self.playerGauge, 'NUI_FACADE', False)",
+                                                 "getattr(self.wndMaintenance, 'NUI_FACADE', False)"]))
         source = read(os.path.join(ROOT, "game.py"))
         self.assertIn("if self.mapNameShower.IsShow() and not getattr(self.mapNameShower, \"NUI_FACADE\", False):\n"
                       "\t\t\tself.mapNameShower.Update()", source)

@@ -1,0 +1,49 @@
+/* Classic skin overlay of nui/windows/maintenance/maintenance.rml: legacy's
+   uimaintenance.MaintenanceWindow at 100%, 1dp to the legacy pixel. The thin
+   board (ui.ThinBoard) at (10, 70), 36 tall and as wide as its line; the
+   label (localeInfo.MAINTENANCE_TIME_LEFT, legacy's red 0xFFF35637) 12 in,
+   the time (legacy's gold 0xFFDBAD7B) 4 after it, both in legacy's text
+   font and centered on the board's height; the close button's art 15 by 15,
+   12 from the right edge and centered on the height ((36 - 15) // 2 = 10).
+   The board never narrows while open (legacy's __FitWidth; hold-width). */
+
+body.skin-classic.maintenance .maintenance__board
+{
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+}
+body.skin-classic.maintenance .maintenance__label
+{
+	color: var(--classic-maintenance-label);
+	font-weight: normal;
+}
+body.skin-classic.maintenance .maintenance__time
+{
+	color: var(--classic-maintenance-time);
+	font-weight: normal;
+}
+body.skin-classic.maintenance .maintenance__close
+{
+	align-self: flex-start;
+	width: 15dp;
+	height: 15dp;
+	margin-top: 10dp;
+	margin-bottom: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_01.sub" scale-none left top);
+}
+body.skin-classic.maintenance .maintenance__close:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_02.sub" scale-none left top);
+}
+body.skin-classic.maintenance .maintenance__close:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_03.sub" scale-none left top);
+}

@@ -379,4 +379,6 @@ body.skin-classic
 	--classic-gb-enough: #c2c2c2;
 	--classic-gb-short: #e67976;
 	--classic-skill-group-text: #ffe3ad;
+	--classic-maintenance-label: #f35637;
+	--classic-maintenance-time: #dbad7b;
 }

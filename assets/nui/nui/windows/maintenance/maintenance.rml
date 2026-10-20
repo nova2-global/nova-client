@@ -1,0 +1,38 @@
+<rml>
+<head>
+	<!-- The maintenance countdown (uimaintenance.py MaintenanceWindow, NOVA-58;
+	     P18): the time left until a scheduled server shutdown, at the top
+	     left (legacy's (10, 70)). game.py opens it with the seconds the server
+	     sends (shutdown_schedule) and closes it on a cancel
+	     (shutdown_cancel). While the maintenance flag is on (the hud group),
+	     game.py makes nui_maintenance.MaintenanceWindow (controller
+	     assets/root/nui_maintenance.py), a facade with the legacy class's
+	     name and methods. The time is a nui-countdown: legacy's format
+	     (RTSecondToDHMS), its count (round="up": the time left to the
+	     millisecond, rounded up, so 125 seconds show until a whole second has
+	     passed and 1 in the last one), its width that never narrows while
+	     open (hold-width), and countdownend, which hides the board at the
+	     end; no Python runs while it counts. The document exists only while
+	     the countdown shows (nui_hud.OnDemand). It draws above the legacy UI
+	     layer, so no HUD window at the top left (the affects) covers it, and
+	     each open brings it above the other NovaUI windows (legacy's
+	     SetTop). The body takes no pointer; the board takes a press (it
+	     raises the board) and its close button closes it. -->
+	<title>maintenance</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="maintenance.rcss"/>
+</head>
+<body template="nui" class="nui-overlay maintenance" data-model="maintenance">
+	<div id="maintenance" class="nui-board nui-fx nui-interactive maintenance__board"
+	     data-event-mousedown="board_press(ev.button)">
+		<span id="maintenance-label" class="maintenance__label">@game.MAINTENANCE_TIME_LEFT</span>
+		<nui-countdown id="maintenance-time" class="maintenance__time" format="dhms" round="up" hold-width="on"
+		               day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND"
+		               data-attr-end="end" data-event-countdownend="ended()"/>
+		<button id="maintenance-close" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim nui-has-tooltip maintenance__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-tooltip nui-anim maintenance__tip">@game.UI_CLOSE</span></button>
+	</div>
+</body>
+</rml>

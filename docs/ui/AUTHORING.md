@@ -48,6 +48,7 @@ Status: the runtime, the Direct3D 9 renderer, the CPU renderer behind `nuitool s
 - [Wave 3b dialogs](#wave-3b-dialogs)
 - [Wave 3c windows](#wave-3c-windows)
 - [Wave 4 windows](#wave-4-windows)
+- [The maintenance countdown](#the-maintenance-countdown)
 - [Window flags and the factory](#window-flags-and-the-factory)
 - [Rules](#rules)
 - [What the renderer draws](#what-the-renderer-draws)
@@ -846,6 +847,8 @@ What the color roles mean:
 | `--classic-gb-enough` | classic | `#c2c2c2` |
 | `--classic-gb-short` | classic | `#e67976` |
 | `--classic-skill-group-text` | classic | `#ffe3ad` |
+| `--classic-maintenance-label` | classic | `#f35637` |
+| `--classic-maintenance-time` | classic | `#dbad7b` |
 
 <!-- tokens:end -->
 
@@ -1327,6 +1330,18 @@ The guild's member page has a golden case with a grade list open (`guild-member-
 
 **Tests:** `tools/nui_messenger_test.py`, `nui_whisper_test.py`, `nui_guild_test.py` (the window and its grade name dialog) and `nui_guild_dialogs_test.py` (the war dialogs, the mark and symbol lists) drive every flow the same way, the legacy social windows from their real uiscripts (`tools/nui_w4_world.py`, `World(social=True)`).
 
+## The maintenance countdown
+
+The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in the `hud` group, `nui_maintenance.MaintenanceWindow`) replaces legacy's `uimaintenance.MaintenanceWindow`, a thin board at the top left that `game.py` makes before the preserved server commands run, opens with the seconds left of the server's `shutdown_schedule` (`OpenShutdownCountdown`) and closes on `shutdown_cancel` (`CloseShutdownCountdown`) and at the phase's end (where it now also `Destroy`s a NovaUI one).
+
+- **A facade** with legacy's name, constants (`POSITION`, `HEIGHT`, `PADDING`, `GAP`) and methods (`Open`, `Close`, `Show`, `Hide`, `IsShow`, `SetTop`, `Destroy`), as the [HUD windows](#hud-windows) are; it needs the Wave 2a engine (`nui_hud.has_engine()`). `Open(seconds)` hides it when no whole second is left, as legacy's, and otherwise writes the countdown's end once (`nui.now()` plus the seconds) and shows and raises it; a schedule brought forward moves the end of the shown countdown.
+- **No per-frame Python:** legacy redraws the time from its `OnUpdate` every frame and hides itself at the end. The time is a `nui-countdown format="dhms"` with legacy's unit words, `round="up"` (legacy's count: the time left to the millisecond, rounded up, so 125 seconds show until a whole second has passed and 1 in the last second), `hold-width` (the board never narrows while the countdown runs, as legacy's `__FitWidth`; a new end starts again) and `countdownend`, which hides the window. An exe whose countdown has no `round` or `hold-width` counts whole seconds down instead (one second sooner, nothing in the last second) and lets the board narrow.
+- **On demand:** the board exists only while the countdown shows (`nui_hud.OnDemand`); it is listed in `ON_DEMAND_DOCUMENTS` for the prewarm.
+- **Above the HUD at the top left:** legacy's window lived in the UI layer, which the NovaUI HUD windows there (the affects) draw below, so their document could cover a legacy countdown. The NovaUI countdown's document has no `nui-below-legacy-ui`: it draws above the legacy UI layer, as a legacy dialog the G5 stopgap raises, and each `Open` brings it above the other NovaUI windows (legacy's `SetTop`). A legacy window of the UI layer opened over it no longer covers it.
+- **Looks:** modern is a 36dp board at (10, 70) dp, the label in `--danger` and the time in `--warning`, a compact close button; classic is legacy's thin board at 100%, its red label and gold time (`--classic-maintenance-label`, `--classic-maintenance-time`) and its close art 12 from the right edge, 10 from the top. The body takes no pointer; a press on the board raises it, the close button closes it, and the next schedule opens it again.
+
+**Tests:** `tools/nui_maintenance_test.py` (legacy's window and the facade on one clock, driven by `game.py`'s own two handlers: the same time at every sampled instant by the countdown's rule, shown and hidden at the same calls and instants, the cancel, a schedule brought forward, no time left and a bad token, the close button; the facade's methods, `make()`'s fallbacks, the board only while it shows, the raise, the band, the element's attributes, the fixtures, the wiring). Goldens: `maintenance`, `-days`, `-seconds`, `-translucent`, `-no-effects`.
+
 ## Window flags and the factory
 
 `assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default; `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file. `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself.
@@ -1386,8 +1401,9 @@ The guild's member page has a golden case with a grade list open (`guild-member-
 | `guild` | the guild window and its grade name dialog | off |
 | `guild-war-dialogs` | the guild war declare and accept dialogs | off |
 | `guild-mark` | the guild mark and symbol lists | off |
+| `maintenance` | the maintenance countdown (NOVA-58, P18) | off |
 
-**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
+**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
 
 **Wave 4 groups:** `trade` for the six Wave 4 trade windows (`exchange` to `equipment-view`) and `social` for the five social ones (`messenger` to `guild-mark`). With them and `wave3c` the demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c,+trade,+social` (58 of its 200 characters).
 

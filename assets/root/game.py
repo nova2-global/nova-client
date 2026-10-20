@@ -117,7 +117,7 @@ class GameWindow(ui.ScriptWindow):
 		self.playerGauge.Hide()
 
 		# Before the preserved server commands below run.
-		self.wndMaintenance = uiMaintenance.MaintenanceWindow()
+		self.wndMaintenance = nui_windows.make("maintenance", uiMaintenance.MaintenanceWindow, "nui_maintenance.MaintenanceWindow")
 		
 		#wj 2014.1.2. ESC key prioritizes closing DropQuestionDialog. However, itemDropQuestionDialog not initially declared, causing ERROR, so declared and initialized in init.
 		self.itemDropQuestionDialog = None
@@ -295,6 +295,9 @@ class GameWindow(ui.ScriptWindow):
 
 		if self.wndMaintenance:
 			self.wndMaintenance.Close()
+			# The NovaUI countdown's parts go with it (P18); legacy only drops the reference.
+			if getattr(self.wndMaintenance, "NUI_FACADE", False):
+				self.wndMaintenance.Destroy()
 			self.wndMaintenance = None
 
 		if self.console:

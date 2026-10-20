@@ -1,0 +1,37 @@
+{
+	"guild_war_accept": {
+		"type": 2,
+		"type_select": true,
+		"hints": [
+			{
+				"label": "Field",
+				"title": "Field Battle",
+				"lines": [
+					"Location: Normal Map",
+					"Time: 30 Minutes",
+					"The highest result wins the war."
+				]
+			},
+			{
+				"label": "Arena",
+				"title": "Arena Battle",
+				"lines": [
+					"Location: Guild War Arena",
+					"Defeat all enemies to win.",
+					"Reward: The winner receives a Potion"
+				]
+			},
+			{
+				"label": "Flag",
+				"title": "Flag captured.",
+				"lines": [
+					"Location: Guild War Arena",
+					"Capture the flag of your enemy",
+					"and carry it to your base.",
+					"Reward: The winner receives a Potion"
+				]
+			}
+		],
+		"name": "Black Wolves Of The Nort"
+	}
+}

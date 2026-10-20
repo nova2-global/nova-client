@@ -72,6 +72,12 @@ Rules (docs/ui/AUTHORING.md has the full list):
   * A window lives until destroy(): the runtime holds its handlers, so
     dropping the last reference does not close it. Only one window per MODEL
     name can exist at a time.
+  * A class with INSTANCED = True may have many windows at once (the whisper
+    dialogs, the equipment views, the mark lists): each instance binds its
+    own model, MODEL + "_" + n, n counting from 1 and never reused in a
+    process, and loads its copy of DOCUMENT with _nui.LoadDocumentAs, which
+    binds the document's <body data-model> (MODEL) to that name. An exe
+    without LoadDocumentAs leaves such a window unavailable.
   * destroy() inside one of the window's own handlers (a close button) hides
     it at once; the document and model go by the end of the frame. From
     destroy() on, the document's own events (a mouseout as it hides, its
@@ -123,6 +129,15 @@ KEY_SPACE = getattr(_nui, "KEY_SPACE", 1)
 
 # Open windows by document id, so a re-load reaches the right on_reload().
 _windows = {}
+_instances = [0]   # the last instance number of an INSTANCED window
+
+
+def _next_instance():
+	"""The next instance number of an INSTANCED window: 1, 2, ..., never
+	reused in a process, so a destroyed window's model name is never bound
+	again while RmlUi may still hold it."""
+	_instances[0] += 1
+	return _instances[0]
 
 
 def is_available():
@@ -245,6 +260,7 @@ class Window(object):
 	MODEL = None      # data model name the document binds to, or None
 	MODAL = False     # show() as a modal document
 	FEEDS = {}        # model key -> C++ feed name the key follows (see nui.feed)
+	INSTANCED = False  # True: each instance binds its own model, MODEL + "_" + n
 
 	_doc = 0          # document id, 0 when there is none
 	_model = 0        # model id, 0 when there is none
@@ -278,6 +294,13 @@ class Window(object):
 		if self.FEEDS and not self.MODEL:
 			raise ValueError("%s has FEEDS but no MODEL" % cls.__name__)
 
+		if cls.INSTANCED:
+			# Wave 4 (P16 spec 4.4): the instance's own model name; without
+			# LoadDocumentAs the window stays unavailable.
+			if not self.MODEL or getattr(_nui, "LoadDocumentAs", None) is None:
+				return
+			self.MODEL = "%s_%d" % (cls.MODEL, _next_instance())
+
 		_prepare_runtime()
 		if self.MODEL:
 			model = _nui.CreateModel(self.MODEL, self.initial_model())
@@ -290,7 +313,7 @@ class Window(object):
 			for key, feed_name in self.FEEDS.items():
 				_nui.BindFeed(model, key, feed_name)
 
-		doc = _nui.LoadDocument(self.DOCUMENT)
+		doc = _nui.LoadDocumentAs(self.DOCUMENT, self.MODEL) if cls.INSTANCED else _nui.LoadDocument(self.DOCUMENT)
 		if not doc:
 			self._drop_model()
 			return

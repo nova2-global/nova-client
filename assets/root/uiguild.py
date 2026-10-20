@@ -19,6 +19,7 @@ import background
 import miniMap
 import chr
 import uiScriptLocale
+import nui_windows
 from _weakref import proxy
 
 DISABLE_GUILD_SKILL = False
@@ -981,10 +982,10 @@ class GuildWindow(ui.ScriptWindow):
 
 		self.largeMarkBox.AddFlag("not_pick")
 
-		self.markSelectDialog=uiUploadMark.MarkSelectDialog()
+		self.markSelectDialog=nui_windows.make("guild-mark", uiUploadMark.MarkSelectDialog, "nui_guild_mark.MarkSelectDialog")
 		self.markSelectDialog.SAFE_SetSelectEvent(self.__OnSelectMark)
 
-		self.symbolSelectDialog=uiUploadMark.SymbolSelectDialog()
+		self.symbolSelectDialog=nui_windows.make("guild-mark", uiUploadMark.SymbolSelectDialog, "nui_guild_mark.SymbolSelectDialog")
 		self.symbolSelectDialog.SAFE_SetSelectEvent(self.__OnSelectSymbol)
 
 
@@ -1685,7 +1686,7 @@ class GuildWindow(ui.ScriptWindow):
 			self.__PopupMessage(localeInfo.GUILD_NO_NOTICE_PERMISSION)
 
 	def __OnClickDeclareWarButton(self):
-		inputDialog = DeclareGuildWarDialog()		
+		inputDialog = nui_windows.make("guild-war-dialogs", DeclareGuildWarDialog, "nui_guild_war_declare.DeclareGuildWarDialog")		
 		inputDialog.Open()
 		self.inputDialog = inputDialog
 	

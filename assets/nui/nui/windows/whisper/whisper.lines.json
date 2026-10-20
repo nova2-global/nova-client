@@ -1,0 +1,125 @@
+[
+	{
+		"id": 0,
+		"type": 255,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "The player you want to whisper to is offline. Your message is kept.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 1,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Partnerabcde : Hi, are you still selling the sword?",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 2,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Tester : Yes, for two million.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 3,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Partnerabcde : That is a ",
+				"color": -1,
+				"link": ""
+			},
+			{
+				"text": "great price",
+				"color": 4294934528,
+				"link": ""
+			},
+			{
+				"text": " for it.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 4,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Tester : Here it is: ",
+				"color": -1,
+				"link": ""
+			},
+			{
+				"text": "[Long Sword+9] ",
+				"color": 4294043328,
+				"link": "item:13:0:0:0:0"
+			}
+		]
+	},
+	{
+		"id": 5,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Partnerabcde : I will come to the market in a few minutes, please wait for me near the general store in the first village.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 6,
+		"type": 5,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "[SA]Admin : Please keep your trades fair.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 7,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Tester : See you there.",
+				"color": -1,
+				"link": ""
+			}
+		]
+	},
+	{
+		"id": 8,
+		"type": 0,
+		"t": 0.1,
+		"runs": [
+			{
+				"text": "Partnerabcde : ok",
+				"color": -1,
+				"link": ""
+			}
+		]
+	}
+]

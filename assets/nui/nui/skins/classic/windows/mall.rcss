@@ -1,0 +1,72 @@
+/* Classic skin overlay of nui/windows/mall/mall.rml: the legacy item mall
+   storage (uiscript mallwindow.py, MallWindow.SetTableSize) at 100%, 1dp to
+   the legacy pixel: the stone board, 176 x 370 (82 + 32 x 9); the title bar
+   at 8, 7, 161 wide; the grid at 8, 35 on the slot base at the 32px pitch;
+   the large Close button centered, 37 above the bottom. */
+
+body.skin-classic.mall
+{
+	width: 176dp;
+	height: 370dp;
+	min-width: 0;
+}
+body.skin-classic.mall .mall__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 161dp;
+	margin: 0;
+	z-index: 1;
+	/* Its last 4dp lie over the grid's first row, which takes the pointer
+	   there (P14b: no dead zone); the handle and the close button take it. */
+	pointer-events: none;
+}
+body.skin-classic.mall .mall__handle, body.skin-classic.mall .mall__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end
+   (ui.py TitleBar.SetWidth: width - 15 - 3, 3); an offset, so the title
+   keeps its place. */
+body.skin-classic.mall .mall__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.mall .mall__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.mall .mall__grid
+{
+	position: absolute;
+	left: 8dp;
+	top: 35dp;
+}
+body.skin-classic.mall .mall__footer
+{
+	display: block;
+	padding: 0;
+}
+/* Legacy's large art (the classic default button, 88 x 21), its label
+   centered over it as legacy's text line. */
+body.skin-classic.mall .mall__button
+{
+	position: absolute;
+	left: 44dp;
+	top: 333dp;
+	width: 88dp;
+	min-width: 0;
+	padding: 0;
+	overflow: visible;
+}
+body.skin-classic.mall .mall__label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+}

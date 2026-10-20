@@ -1,0 +1,26 @@
+{
+	"guild_mark": {
+		"kind": "symbol",
+		"title": "Register Guild flag",
+		"files": [
+			{
+				"index": 0,
+				"name": "banner_blue.jpg",
+				"preview": ""
+			},
+			{
+				"index": 1,
+				"name": "banner_gold.jpg",
+				"preview": ""
+			},
+			{
+				"index": 2,
+				"name": "banner_red.jpg",
+				"preview": ""
+			}
+		],
+		"selected": 0,
+		"selected_row": 0,
+		"scroll": 0.0
+	}
+}

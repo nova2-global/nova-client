@@ -1,0 +1,868 @@
+/* The guild window's modern look (P16 spec 5.9.2): a 480 x 470dp window,
+   the page's name as its title, the shown page in the body and the six
+   tabs in a row at its bottom (the base page's disabled, as legacy's). The
+   info page is two cards (the guild's values with the offer; the mark, the
+   uploads, the enemies and the war declaration); the comments, the members
+   and the grades are tables of 22dp to 24dp rows; the skills three rows of
+   cells over the dragon power gauge. Controls hover with the surface's
+   hover color; checks are boxes that hold an accent mark. The controller
+   places it at the screen's corner (0, 0), legacy's place (D21); the
+   sheet's place frames it in its snapshots. Classic (legacy's 376 x 356
+   board, the locale's tab art, every place of the uiscripts and of
+   uiguild.py's page builders at 1dp per pixel): skins/classic/windows/guild.rcss. */
+
+body.guild
+{
+	display: flex;
+	flex-direction: column;
+	left: 16dp;
+	top: 16dp;
+	width: 480dp;
+	height: 470dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.guild button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The post button parks the focus when a legacy edit line takes wndMgr's
+   (a button takes no keys). */
+.guild .guild__post
+{
+	focus: auto;
+}
+.guild__titlebar
+{
+	flex: 0 0 auto;
+}
+.guild__body
+{
+	display: block;
+	position: relative;
+	flex: 1 1 0;
+	min-height: 0;
+	padding: 0;
+}
+.guild__page
+{
+	display: block;
+	position: absolute;
+	left: var(--space-3);
+	top: var(--space-3);
+	right: var(--space-3);
+	bottom: var(--space-3);
+}
+/* Labels on buttons take no pointer, so a press is the button's. */
+.guild__button-label, .guild__tab-label
+{
+	pointer-events: none;
+}
+
+/* --- Shared parts ---------------------------------------------------------------------- */
+
+.guild__card
+{
+	display: block;
+	box-sizing: border-box;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	padding: var(--space-3);
+	background-color: var(--surface-raised);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+.guild__bar
+{
+	display: block;
+	height: 20dp;
+	margin-bottom: var(--space-2);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+	line-height: 18dp;
+	white-space: nowrap;
+}
+.guild__bar-title
+{
+	font-size: var(--font-sm);
+	font-weight: bold;
+	color: var(--text-muted);
+}
+.guild__label
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 96dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__value
+{
+	display: block;
+	flex: 1 1 0;
+	min-width: 0;
+	color: var(--text);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 22dp;
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.guild__head-cell
+{
+	display: block;
+	flex: 0 0 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* A check: a 16dp box with an accent mark while checked. */
+.guild__check
+{
+	display: block;
+	position: relative;
+	width: 18dp;
+	height: 18dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+}
+.guild__check:hover
+{
+	border-color: var(--text-muted);
+}
+.guild__check-mark
+{
+	display: none;
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	width: 8dp;
+	height: 8dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--accent);
+	pointer-events: none;
+}
+.guild__check.is-checked .guild__check-mark
+{
+	display: block;
+}
+.guild__tip
+{
+	left: auto;
+	right: 0;
+	margin-right: 0;
+	margin-left: -320dp;
+}
+
+/* --- The info page --------------------------------------------------------------------- */
+
+.guild__card--values
+{
+	left: 0;
+	width: 236dp;
+}
+.guild__card--mark
+{
+	right: 0;
+	width: 212dp;
+}
+.guild__field
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 26dp;
+}
+.guild__value--level
+{
+	flex: 0 0 40dp;
+}
+.guild__offer
+{
+	flex: 0 0 auto;
+	height: 24dp;
+	padding: 0 var(--space-2);
+	line-height: 22dp;
+	font-size: var(--font-sm);
+}
+.guild__mark-slot
+{
+	display: block;
+	position: relative;
+	width: 50dp;
+	height: 38dp;
+	margin-bottom: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	background-color: var(--surface-sunken);
+}
+.guild__mark
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 48dp;
+	height: 36dp;
+}
+.guild__mark--nearest
+{
+	display: none;
+}
+.guild__mark-buttons
+{
+	display: block;
+	position: absolute;
+	left: 76dp;
+	top: 42dp;
+	right: var(--space-3);
+}
+.guild__upload
+{
+	display: block;
+	width: 100%;
+	height: 24dp;
+	margin-bottom: var(--space-1);
+	padding: 0 var(--space-2);
+	line-height: 22dp;
+	font-size: var(--font-sm);
+}
+.guild__enemies
+{
+	display: block;
+}
+.guild__enemy
+{
+	display: block;
+	height: 22dp;
+	line-height: 22dp;
+	color: var(--text);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__declare
+{
+	display: block;
+	position: absolute;
+	left: var(--space-3);
+	right: var(--space-3);
+	bottom: var(--space-3);
+	height: 28dp;
+	line-height: 26dp;
+}
+
+/* --- The board page -------------------------------------------------------------------- */
+
+.guild__head--board
+{
+	position: relative;
+}
+.guild__head-name
+{
+	display: block;
+	width: 118dp;
+	padding-left: 12dp;
+}
+.guild__head-text
+{
+	display: block;
+	flex: 1 1 0;
+}
+.guild__refresh
+{
+	position: absolute;
+	right: 0;
+	top: -2dp;
+	width: 24dp;
+	height: 24dp;
+}
+/* The refresh mark: an open ring with an arrow head (a box with three
+   borders, turned, and a triangle). */
+.guild__refresh-mark
+{
+	display: block;
+	position: absolute;
+	left: 6dp;
+	top: 6dp;
+	width: 12dp;
+	height: 12dp;
+	border-width: 2dp;
+	border-color: var(--text) var(--text) var(--text) transparent;
+	border-radius: 6dp;
+	pointer-events: none;
+}
+.guild__comments
+{
+	display: block;
+}
+.guild__comment
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: relative;
+	height: 22dp;
+	white-space: nowrap;
+}
+.guild__comment:hover
+{
+	background-color: var(--surface-hover);
+}
+.guild__notice
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 4dp;
+	height: 12dp;
+	margin: 0 4dp;
+	border-radius: 2dp;
+}
+.guild__comment.is-notice .guild__notice
+{
+	background-color: var(--accent);
+}
+.guild__comment-name
+{
+	display: block;
+	flex: 0 0 106dp;
+	color: var(--text);
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__comment-text
+{
+	display: block;
+	position: relative;
+	flex: 1 1 0;
+	min-width: 0;
+	color: var(--text);
+	overflow: hidden;
+}
+.guild__comment-full
+{
+	display: none;
+}
+/* A long comment shows its whole text on hover, over the row. */
+.guild__comment.is-long:hover .guild__comment-text
+{
+	overflow: visible;
+}
+.guild__comment.is-long:hover .guild__comment-short
+{
+	display: none;
+}
+.guild__comment.is-long:hover .guild__comment-full
+{
+	display: inline;
+	padding: 2dp var(--space-1);
+	background-color: var(--surface-raised);
+}
+/* The glyph on the 22dp row's middle (the button's own line box is 30dp). */
+.guild__delete
+{
+	flex: 0 0 auto;
+	width: 22dp;
+	height: 22dp;
+	line-height: 20dp;
+}
+.guild__delete .nui-glyph
+{
+	transform: scale(0.75);
+}
+.guild__post-row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: absolute;
+	left: var(--space-3);
+	right: var(--space-3);
+	bottom: var(--space-3);
+	height: 32dp;
+	gap: var(--space-2);
+}
+.guild__post-slot
+{
+	display: block;
+	flex: 1 1 0;
+	min-width: 0;
+}
+.guild__comment-field
+{
+	width: 100%;
+	focus: auto;
+}
+.guild__post
+{
+	flex: 0 0 auto;
+	width: 40dp;
+	padding: 0;
+}
+
+/* --- The member page ------------------------------------------------------------------- */
+
+.guild__head-cell--name, .guild__member-name { width: 116dp; padding-left: var(--space-1); }
+.guild__head-cell--grade, .guild__combo-box { width: 96dp; }
+.guild__head-cell--job, .guild__member-cell--job { width: 64dp; }
+.guild__head-cell--level, .guild__member-cell--level { width: 44dp; }
+.guild__head-cell--offer, .guild__member-cell--offer { width: 56dp; }
+.guild__head-cell--general { width: 46dp; }
+.guild__members
+{
+	display: block;
+	position: relative;
+	margin-right: 18dp;
+}
+.guild__member
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 24dp;
+	white-space: nowrap;
+}
+.guild__member:hover
+{
+	background-color: var(--surface-hover);
+}
+.guild__member-name, .guild__member-cell
+{
+	display: block;
+	flex: 0 0 auto;
+	color: var(--text);
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__combo-box
+{
+	display: block;
+	box-sizing: border-box;
+	position: relative;
+	flex: 0 0 auto;
+	height: 20dp;
+	padding-right: var(--space-2);
+}
+.guild__combo
+{
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	height: 20dp;
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+	color: var(--text-muted);
+	line-height: 18dp;
+	text-align: left;
+	overflow: hidden;
+}
+.guild__combo.is-enabled
+{
+	color: var(--text);
+}
+.guild__combo.is-enabled:hover
+{
+	background-color: var(--surface-hover);
+}
+.guild__combo.is-open
+{
+	border-color: var(--accent);
+}
+.guild__combo-text
+{
+	pointer-events: none;
+}
+/* The open list under its line's combo box (the lines 24dp apart, the
+   box 20dp tall in the middle of its line, 120dp in), over the lines below
+   it: one list for the window, placed by its line's class. */
+.guild__combo-list
+{
+	display: block;
+	position: absolute;
+	left: 120dp;
+	width: 86dp;
+	top: 24dp;
+	z-index: 10;
+	padding: 2dp 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-raised);
+}
+.guild__combo-list--0 { top: 24dp; }
+.guild__combo-list--1 { top: 48dp; }
+.guild__combo-list--2 { top: 72dp; }
+.guild__combo-list--3 { top: 96dp; }
+.guild__combo-list--4 { top: 120dp; }
+.guild__combo-list--5 { top: 144dp; }
+.guild__combo-list--6 { top: 168dp; }
+.guild__combo-list--7 { top: 192dp; }
+.guild__combo-list--8 { top: 216dp; }
+.guild__combo-list--9 { top: 240dp; }
+.guild__combo-list--10 { top: 264dp; }
+.guild__combo-list--11 { top: 288dp; }
+.guild__combo-list--12 { top: 312dp; }
+.guild__combo-item
+{
+	display: block;
+	height: 18dp;
+	padding: 0 var(--space-2);
+	line-height: 18dp;
+	color: var(--text);
+	overflow: hidden;
+}
+.guild__combo-item:hover
+{
+	background-color: var(--selection);
+}
+.guild__member-general
+{
+	margin-left: 14dp;
+}
+.guild__member-scroll-box
+{
+	position: absolute;
+	right: 0;
+	top: 28dp;
+	bottom: 0;
+	width: 12dp;
+}
+input.guild__member-scroll
+{
+	display: block;
+	width: 12dp;
+	height: 100%;
+	focus: none;
+}
+.guild__member-scroll slidertrack
+{
+	width: 4dp;
+	margin-left: 4dp;
+	border-radius: 2dp;
+	background-color: var(--surface-sunken);
+}
+.guild__member-scroll sliderbar
+{
+	width: 12dp;
+	height: 22dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+}
+.guild__member-scroll sliderbar:hover, .guild__member-scroll sliderbar:active
+{
+	background-color: var(--accent);
+}
+.guild__member-scroll sliderprogress
+{
+	display: none;
+}
+.guild__member-scroll sliderarrowdec, .guild__member-scroll sliderarrowinc
+{
+	width: 0;
+	height: 0;
+}
+
+/* --- The base page ------------------------------------------------------------------------ */
+
+.guild__base-name
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 26dp;
+	margin-bottom: var(--space-2);
+}
+.guild__resources
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-1);
+	margin-bottom: var(--space-3);
+}
+.guild__resource
+{
+	display: block;
+	width: 44dp;
+	text-align: center;
+}
+.guild__resource-name
+{
+	display: block;
+	font-size: var(--font-xs);
+	color: var(--text-muted);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__resource-value
+{
+	display: block;
+	height: 18dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	background-color: var(--surface-sunken);
+	line-height: 16dp;
+}
+.guild__basket
+{
+	display: block;
+	flex: 1 1 0;
+	padding: var(--space-1);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+}
+.guild__basket-line
+{
+	display: block;
+}
+.guild__head-cell--building { width: 92dp; padding-left: var(--space-1); }
+.guild__head-cell--rank { width: 44dp; }
+.guild__head-cell--operate { margin-left: auto; padding-right: var(--space-1); }
+.guild__building
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 24dp;
+	gap: var(--space-1);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.guild__building-name { display: block; width: 88dp; overflow: hidden; text-overflow: ellipsis; }
+.guild__building-grade { display: block; width: 40dp; overflow: hidden; text-overflow: ellipsis; }
+.guild__building-gem { display: block; width: 36dp; overflow: hidden; text-overflow: ellipsis; }
+.guild__building-power { margin-left: auto; }
+
+/* --- The skill page --------------------------------------------------------------------------- */
+
+.guild__bar--passive
+{
+	position: relative;
+}
+.guild__points
+{
+	display: block;
+	position: absolute;
+	right: 0;
+	top: 0;
+	min-width: 24dp;
+	height: 18dp;
+	padding: 0 var(--space-2);
+	border-radius: 9dp;
+	background-color: var(--accent);
+	color: var(--accent-text);
+	font-weight: bold;
+	text-align: center;
+}
+.guild__points-art
+{
+	display: none;
+}
+.guild__skills
+{
+	margin-bottom: var(--space-2);
+}
+/* A skill's "+": a small accent button at the cell's bottom left corner. */
+.guild__plus
+{
+	display: block;
+	position: absolute;
+	left: 1dp;
+	bottom: 1dp;
+	width: 16dp;
+	height: 16dp;
+	padding: 0;
+	border-radius: var(--radius-sm);
+	background-color: var(--accent);
+	z-index: 2;
+}
+.guild__plus .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
+	transform: scale(0.75);
+}
+.guild__plus:hover
+{
+	background-color: var(--accent-hover);
+}
+.guild__power
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 28dp;
+	gap: var(--space-2);
+}
+.guild__power-title
+{
+	display: block;
+	flex: 0 0 auto;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.guild__gauge-slot
+{
+	display: block;
+	flex: 1 1 0;
+}
+progress.guild__gp--legacy
+{
+	display: none;
+}
+.guild__power-value
+{
+	display: block;
+	flex: 0 0 auto;
+	min-width: 72dp;
+	color: var(--text);
+	text-align: center;
+}
+.guild__heal
+{
+	flex: 0 0 auto;
+	height: 26dp;
+	padding: 0 var(--space-2);
+	line-height: 24dp;
+	font-size: var(--font-sm);
+}
+
+/* --- The grade page ---------------------------------------------------------------------------- */
+
+.guild__head-cell--number, .guild__grade-number { width: 34dp; text-align: center; }
+.guild__head-cell--grade-name { width: 124dp; padding-left: var(--space-2); }
+.guild__head-cell--auth { width: 66dp; text-align: center; }
+.guild__grade
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 22dp;
+	white-space: nowrap;
+}
+.guild__grade-number
+{
+	display: block;
+	flex: 0 0 auto;
+	color: var(--text-muted);
+}
+.guild__grade-name
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 116dp;
+	height: 20dp;
+	margin: 0 4dp;
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	line-height: 18dp;
+	text-align: left;
+	overflow: hidden;
+}
+.guild__grade-name:hover
+{
+	background-color: var(--surface-hover);
+}
+.guild__auth
+{
+	flex: 0 0 auto;
+	margin: 0 24dp;
+}
+/* Grade 1 (the master's) is not editable: no hover, no press (legacy's
+   disabled slots and checks keep the pointer and ignore it). */
+.guild__grade.is-disabled .guild__grade-name,
+.guild__grade.is-disabled .guild__check
+{
+	opacity: 0.6;
+}
+.guild__grade.is-disabled .guild__grade-name:hover
+{
+	background-color: var(--surface-sunken);
+}
+.guild__grade.is-disabled .guild__check:hover
+{
+	border-color: var(--border);
+}
+
+/* --- The tabs ---------------------------------------------------------------------------- */
+
+.guild__tabs
+{
+	display: flex;
+	flex-direction: row;
+	flex: 0 0 auto;
+	height: 36dp;
+	padding: 0 var(--space-2) var(--space-2) var(--space-2);
+	gap: var(--space-1);
+}
+.guild__tab-art
+{
+	display: none;
+}
+.guild__tab
+{
+	display: block;
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 28dp;
+	padding: 0 2dp;
+	border-width: 0 0 2dp 0;
+	border-color: transparent;
+	background-color: transparent;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	line-height: 26dp;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__tab:hover
+{
+	background-color: var(--surface-hover);
+}
+.guild__tab.is-selected
+{
+	border-color: var(--accent);
+	color: var(--text);
+}
+/* The base page's tab: disabled, as legacy's (zero wide there). */
+.guild__tab[disabled]
+{
+	display: none;
+}

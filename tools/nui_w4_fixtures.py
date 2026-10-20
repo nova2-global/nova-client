@@ -1,0 +1,635 @@
+#!/usr/bin/env python3
+"""Writes the fixtures of the Wave 4 windows (P16 spec 5, 11.3): the
+exchange, the NPC shop, the private shop builder, the safebox and its two
+password dialogs, the mall and the equipment view (TRADE), at today's sizes
+and the foundation's, from nui_limits' counts and the tables below, as the
+controllers build their models (nui_slots' cells, the limits module's
+safebox pages and view table). SOCIAL adds its windows' rows to FIXTURES.
+
+    python3 tools/nui_w4_fixtures.py           write the fixtures
+    python3 tools/nui_w4_fixtures.py --check   write nothing; exit 1 when one is stale
+
+Each window's fixture is <name>.fixture.json (today), with the variants
+<name>.foundation.fixture.json and the ones the spec names. The windows'
+tests check that the controllers' models have the same keys and kinds."""
+import argparse
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
+import nui_w3b_fixtures as w3b  # noqa: E402
+
+REPO = w3b.REPO
+WINDOWS = w3b.WINDOWS
+LIMITS = w3b.LIMITS
+TODAY = w3b.TODAY
+FOUNDATION = w3b.FOUNDATION
+LOCALE_EN = os.path.join(REPO, "assets", "locale", "locale", "en")
+
+# player.SLOT_TYPE_* (tools/fixtures/module_constants.json).
+SLOT_TYPE_INVENTORY, SLOT_TYPE_SHOP, SLOT_TYPE_EXCHANGE_OWNER, SLOT_TYPE_EXCHANGE_TARGET = 1, 4, 5, 6
+SLOT_TYPE_SAFEBOX, SLOT_TYPE_PRIVATE_SHOP, SLOT_TYPE_MALL = 8, 9, 10
+
+empty_cell = w3b.empty_cell
+
+
+def game_text(key):
+    """The en locale_game.txt entry of `key`."""
+    return _read_table(os.path.join(LOCALE_EN, "locale_game.txt"))[key]
+
+
+def _read_table(path):
+    table = {}
+    with open(path, encoding="utf-8") as handle:
+        for line in handle.read().split("\n"):
+            parts = line.split("\t")
+            if len(parts) >= 2 and parts[0]:
+                table[parts[0]] = parts[1]
+    return table
+
+
+def name_of(length):
+    """A character name of `length` characters (today's 12, the
+    foundation's 22)."""
+    base = "Partner"
+    return (base + "abcdefghijklmnopqrstuvwxyz")[:length]
+
+
+def typed_cell(index, kind_type, ref, vnum, count=1, **states):
+    """A cell as a TypedSlotWindowProxy makes it from SetItemSlot(slot, vnum,
+    count): its slot type and ref, the count above 0 (legacy passes 0 for a
+    count of 1)."""
+    icon, w, h = w3b.ITEMS[vnum]
+    cell = empty_cell(index)
+    cell.update({"kind": "item", "type": kind_type, "ref": ref, "icon": icon, "w": w, "h": h,
+                 "count": str(count) if count > 1 else ""})
+    cell.update(states)
+    return cell
+
+
+def typed_grid(cols, rows, kind_type, items, ref=lambda index: index, length=None):
+    """The cells of a lean grid of cols x rows (or `length`) cells: items
+    {cell: (vnum, count)} with the slot type, then the cells they cover
+    (nui_slots.mark_covered: the owner's type and ref)."""
+    cells = [empty_cell(i) for i in range(length if length is not None else cols * rows)]
+    for index, (vnum, count) in items.items():
+        cells[index] = typed_cell(index, kind_type, ref(index), vnum, count)
+    for anchor, cell in enumerate(list(cells)):
+        if not cell["kind"]:
+            continue
+        for dy in range(1, cell["h"]):
+            below = anchor + dy * cols
+            if below >= len(cells):
+                continue
+            if cells[below]["kind"]:
+                raise ValueError("cell %d: the item at %d covers it" % (below, anchor))
+            covered = empty_cell(below)
+            covered.update({"type": cell["type"], "ref": cell["ref"], "covered": True})
+            cells[below] = covered
+    return cells
+
+
+def dotted(value):
+    """The exchange's inline money format (uiexchange.py:192-193): dots every
+    three digits, no unit."""
+    text = str(int(value))
+    head = len(text) % 3
+    parts = ([text[:head]] if head else []) + [text[i:i + 3] for i in range(head, len(text), 3)]
+    return ".".join(parts)
+
+
+# --- the exchange (spec 5.1.7) ---------------------------------------------------------------
+
+def with_targets(cells, targets):
+    """The drop footprint's states on cells (nui_slots.with_states)."""
+    for index, state in targets.items():
+        cells[index]["target"] = state
+    return cells
+
+
+def exchange(limits, owner, target, owner_money, target_money, name_length, owner_accept=False, target_accept=False,
+             accept_down=False, accept_enabled=True, attaching=False, owner_targets=None):
+    cols = limits.EXCHANGE_COLUMNS
+    n = limits.EXCHANGE_ITEM_MAX_NUM
+    rows = n // cols
+    return {"exchange": {
+        "title": game_text("EXCHANGE_TITLE") % name_of(name_length),
+        "cols": cols,
+        "owner_cells": with_targets(typed_grid(cols, rows, SLOT_TYPE_EXCHANGE_OWNER, owner), owner_targets or {}),
+        "target_cells": typed_grid(cols, rows, SLOT_TYPE_EXCHANGE_TARGET, target),
+        "owner_money": dotted(owner_money),
+        "target_money": dotted(target_money),
+        "owner_money_value": owner_money,
+        "target_money_value": target_money,
+        "owner_accept": owner_accept,
+        "target_accept": target_accept,
+        "accept_down": accept_down,
+        "accept_enabled": accept_enabled,
+        "owner_attaching": attaching,
+        "target_attaching": attaching,
+    }}
+
+
+EXCHANGE_OWNER = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 7: (27002, 3)}
+EXCHANGE_TARGET = {0: (3000, 1), 3: (10, 1), 1: (27003, 200), 2: (25040, 1), 6: (13000, 1)}
+EXCHANGE_OWNER_FOUNDATION = {0: (10, 1), 1: (3000, 1), 2: (27001, 2000), 3: (12200, 1), 7: (27002, 1999)}
+EXCHANGE_TARGET_FOUNDATION = {0: (3000, 1), 3: (10, 1), 1: (27003, 2000), 2: (25040, 1), 6: (13000, 1)}
+
+
+# --- the shop and the private shop builder (spec 5.2.6, 5.3.5) -----------------------------------
+
+SHOP_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 4: (27002, 1), 7: (13000, 1), 8: (25040, 1),
+              9: (27003, 50), 12: (14000, 1), 13: (15000, 1)}
+SHOP_ITEMS_FOUNDATION = dict(SHOP_ITEMS)
+SHOP_ITEMS_FOUNDATION.update({2: (27001, 2000), 9: (27003, 1999)})
+SHOP_TAB_NAMES = ("Weapons", "Armour", "Potions")
+
+
+def shop(limits, items, group="none", tab=0, down=(), mine=False, attaching=False):
+    """The shop's model as nui_shop's _on_tabs and _on_buttons build it: one
+    tab shows the buy and sell toggles; two or three show their group's
+    buttons (legacy hides the toggles); the player's own shop shows the
+    close-shop button only."""
+    cols, count = limits.SHOP_COLUMNS, limits.SHOP_SLOT_COUNT
+    shown = {"none": 0, "middle": 2, "small": 3}[group]
+    tabs = [{"index": i, "name": SHOP_TAB_NAMES[i] if i < shown else "", "down": i in down, "shown": i < shown}
+            for i in range(limits.SHOP_TAB_COUNT_MAX)]
+    toggles = group == "none" and not mine
+    return {"shop": {
+        "cells": typed_grid(cols, count // cols, SLOT_TYPE_SHOP, items, ref=lambda index: tab * count + index),
+        "cols": cols,
+        "attaching": attaching,
+        "tabs": tabs,
+        "tab": tab,
+        "tab_group": group,
+        "buy_shown": toggles,
+        "sell_shown": toggles,
+        "close_shop_shown": mine,
+        "buy_down": False,
+        "sell_down": False,
+    }}
+
+
+# Inventory positions of the builder's stock, by cell: (position, vnum, count).
+BUILDER_STOCK = {0: (4, 10, 1), 1: (7, 3000, 1), 2: (12, 27001, 200), 7: (13, 12200, 1), 8: (20, 27002, 3),
+                 9: (21, 13000, 1)}
+BUILDER_STOCK_FOUNDATION = dict(BUILDER_STOCK)
+BUILDER_STOCK_FOUNDATION.update({2: (12, 27001, 2000), 8: (20, 27002, 1999)})
+# A 32-character shop name (PRIVATE_SHOP_SIGN_MAX), shown cut past 25 as
+# legacy's Open cuts it: its first 22 characters and "...".
+BUILDER_TITLE = "Swords, armour and potions cheap"
+
+
+def private_shop(limits, stock, title=BUILDER_TITLE, attaching=False, targets=None):
+    cols, count = limits.SHOP_COLUMNS, limits.SHOP_SLOT_COUNT
+    items = dict((cell, (vnum, number)) for cell, (_, vnum, number) in stock.items())
+    positions = dict((cell, position) for cell, (position, _, _) in stock.items())
+    shown = title[:22] + "..." if len(title) > 25 else title
+    return {"private_shop": {
+        "title": shown,
+        "cells": with_targets(typed_grid(cols, count // cols, SLOT_TYPE_INVENTORY, items,
+                                         ref=lambda index: positions.get(index, 0)), targets or {}),
+        "cols": cols,
+        "attaching": attaching,
+    }}
+
+
+
+# --- the safebox, its password dialogs and the mall (spec 5.4.5, 5.5.5) -------------------------
+
+SAFEBOX_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 7: (27002, 3), 12: (13000, 1),
+                 30: (25040, 1), 44: (27003, 50)}
+SAFEBOX_ITEMS_FOUNDATION = dict(SAFEBOX_ITEMS)
+SAFEBOX_ITEMS_FOUNDATION.update({2: (27001, 2000), 44: (27003, 1999)})
+
+
+def pages_of(count):
+    """nui_limits.safebox_pages: "I", "II", ... one more "I" a page."""
+    return [{"index": i, "label": "I" * (i + 1)} for i in range(count)]
+
+
+def safebox(limits, items, page_count, page, attaching=False, targets=None):
+    """The safebox's model as nui_safebox builds it: the shown page's cells
+    (their ref the global position, page x SAFEBOX_PAGE_SIZE + cell), the
+    page buttons, the page down."""
+    cols, rows, size = limits.SAFEBOX_COLUMNS, limits.SAFEBOX_PAGE_ROWS, limits.SAFEBOX_PAGE_SIZE
+    return {"safebox": {
+        "cells": with_targets(typed_grid(cols, rows, SLOT_TYPE_SAFEBOX, items, ref=lambda index: page * size + index),
+                              targets or {}),
+        "cols": cols,
+        "pages": pages_of(page_count),
+        "page_count": page_count,
+        "page": page,
+        "attaching": attaching,
+    }}
+
+
+def safebox_password(title_key):
+    """The password dialog's model: the title the Interface sets
+    (localeInfo.PASSWORD_TITLE or MALL_PASSWORD_TITLE), the field's limit."""
+    return {"safebox_password": {"title": game_text(title_key), "max": TODAY.SAFEBOX_PASSWORD_MAX_LEN}}
+
+
+def change_password():
+    return {"change_password": {"max": TODAY.SAFEBOX_PASSWORD_MAX_LEN, "covered": False}}
+
+
+MALL_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 4: (27002, 3), 7: (13000, 1), 8: (25040, 1),
+              9: (27003, 50), 12: (14000, 1), 13: (15000, 1), 20: (10, 1), 24: (12200, 1)}
+MALL_ITEMS_FOUNDATION = dict(MALL_ITEMS)
+MALL_ITEMS_FOUNDATION.update({2: (27001, 2000), 9: (27003, 1999)})
+
+
+def mall(limits, items, attaching=False, targets=None):
+    """The mall's model: one page of SAFEBOX_PAGE_SIZE cells, their ref the
+    mall's cell (legacy's slot number)."""
+    cols, rows = limits.SAFEBOX_COLUMNS, limits.SAFEBOX_PAGE_ROWS
+    return {"mall": {
+        "cells": with_targets(typed_grid(cols, rows, SLOT_TYPE_MALL, items), targets or {}),
+        "cols": cols,
+        "attaching": attaching,
+    }}
+
+
+
+# --- the equipment view (spec 5.6.5) -------------------------------------------------------------------
+
+# By wear name: what the viewed player wears (unique2 empty, as the spec's
+# case); the foundation adds the rings and the belt, and two costume
+# entries that do not show.
+EQUIPPED = {"body": 11200, "head": 12200, "foots": 15000, "wrist": 14000, "weapon": 10, "neck": 16000, "ear": 17000,
+            "unique1": 72723, "arrow": 8000, "shield": 13000}
+EQUIPPED_FOUNDATION = dict(EQUIPPED, ring1=18000, ring2=70043, belt=73001, costume_body=11200, costume_hair=12200)
+
+
+def equipment_view(limits, equipped, title_length=12):
+    """The equipment view's model as nui_equipment_view builds it: the view
+    table's places (nui_limits.view_equip_table) and one cell per place, its
+    ref the view index (the slot window's slot number)."""
+    table = LIMITS.view_equip_table(limits)
+    cells = []
+    for i, slot in enumerate(table):
+        vnum = equipped.get(slot.name)
+        cell = typed_cell(i, SLOT_TYPE_INVENTORY, slot.index, vnum) if vnum else empty_cell(i)
+        cells.append(cell)
+    return {"equipment_view": {
+        "title": name_of(title_length),
+        "table": LIMITS.view_equip_id(limits),
+        "places": [{"index": slot.index, "name": slot.name, "shown": slot.group == "shown"} for slot in table],
+        "cells": cells,
+    }}
+
+
+# --- the messenger (SOCIAL, spec 5.7.7) ----------------------------------------------------------------
+
+FRIENDS = ("Aldric", "Brenna", "Caius", "Dagny", "Elowen", "Fenwick", "Galen", "Hesper", "Isolde", "Jorund",
+           "Kestrel", "Lunara", "Maelis")
+GUILD_MATES = ("Nyx", "Orrin", "Perrin", "Quilla")
+
+
+def long_name(base, length=22):
+    """A character name of `length` characters (the foundation's 22)."""
+    return (base + "xxxxxxxxxxxxxxxxxxxxxxxxx")[:length]
+
+
+def messenger_row(kind, name, online=False, open_=False, selected=False, love=-1):
+    """A row as nui_messenger.row_of makes it from legacy's item."""
+    return {"kind": kind, "name": name, "online": online, "open": kind == "group" and open_,
+            "selected": selected, "member": kind == "member", "love": love,
+            "hint": (game_text("AFF_LOVE_POINT") % love) if love >= 0 else ""}
+
+
+def messenger_group(name, members, online, open_=True, selected=None):
+    """Legacy's rows of one group (OnRefreshList): the group, then while open
+    its online members, then its offline ones (in their order), or the empty
+    line."""
+    rows = [messenger_row("group", name, open_=open_)]
+    if not open_:
+        return rows
+    if not members:
+        rows.append(messenger_row("empty", game_text("MESSENGER_EMPTY_LIST")))
+        return rows
+    ordered = [m for m in members if m in online] + [m for m in members if m not in online]
+    rows.extend(messenger_row("member", m, online=m in online, selected=m == selected) for m in ordered)
+    return rows
+
+
+def messenger(rows, whisper=False, remove=False, height=310.0):
+    return {"messenger": {"rows": rows, "whisper_enabled": whisper, "remove_enabled": remove, "height": height}}
+
+
+def messenger_fixtures():
+    friends_online = set(FRIENDS[i] for i in (1, 4, 6, 9, 12))
+    base = (messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, selected=FRIENDS[4])
+            + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2])))
+    many = tuple(long_name("Friend%02d" % i) for i in range(64))
+    lover = long_name("Lover")
+    foundation = ([messenger_row("group", game_text("MESSENGER_FAMILY"), open_=True),
+                   messenger_row("member", lover, love=87)]
+                  + messenger_group(game_text("MESSENGER_FRIEND"), many, set(many[::3]), selected=many[3])
+                  + messenger_group(game_text("MESSENGER_GUILD"), tuple(long_name(n) for n in GUILD_MATES),
+                                    set([long_name(GUILD_MATES[0])])))
+    empty = messenger_group(game_text("MESSENGER_FRIEND"), (), set()) + messenger_group(game_text("MESSENGER_GUILD"),
+                                                                                        (), set())
+    closed = (messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, open_=False)
+              + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2]), open_=False))
+    return {
+        ("messenger", ""): messenger(base, whisper=True, remove=True),
+        ("messenger", "foundation"): messenger(foundation, whisper=False, remove=True),
+        ("messenger", "empty"): messenger(empty),
+        ("messenger", "closed-groups"): messenger(closed, height=150.0),
+    }
+
+
+def fixtures():
+    found = trade_fixtures()
+    found.update(social_fixtures())
+    return found
+
+
+# --- the whisper (SOCIAL, spec 5.8.7) ---------------------------------------------------------------------
+
+GM_MARK = "/locale/common/effect/ymirred.tga"
+
+
+def whisper(target, editing=False, gm=False, width=300, height=200, key=1):
+    """A whisper dialog's model as nui_whisper builds it: the partner (or the
+    partner field and OK, without one), the GM look, the feed's key, the
+    size, the scroll at the end, the input's limit for the width (legacy's
+    int((w - 90) / 6) * 3 - 6) and the partner field's."""
+    return {"whisper": {
+        "target": target,
+        "editing_target": editing,
+        "accept_shown": editing,
+        "minimize_shown": not editing,
+        "gm": gm,
+        "gm_mark_src": GM_MARK,
+        "feed_key": 0 if editing else key,
+        "width": float(width),
+        "height": float(height),
+        "pos": 1.0,
+        "input_max": int((width - 90) / 6) * 3 - 6,
+        "target_max": TODAY.PLAYER_NAME_INPUT_MAX,
+    }}
+
+
+def whisper_fixtures():
+    return {
+        ("whisper", ""): whisper(name_of(12)),
+        ("whisper", "foundation"): whisper(long_name("Partner")),
+        ("whisper", "without-target"): whisper("", editing=True),
+        ("whisper", "gm"): whisper("[SA]Admin", gm=True),
+        ("whisper", "small"): whisper(name_of(12), height=170),
+    }
+
+
+# --- the guild window and its grade name dialog (SOCIAL, spec 5.9.8) ---------------------------------------
+
+GUILD_SKILL_ICONS = {152: "gaho", 153: "chukbok", 154: "seonghwi", 155: "gasok", 156: "bunno", 157: "jumunsul"}
+GUILD_SKILL_LEVELS = {210: 0, 211: 1, 212: 3, 213: 5, 214: 7, 215: 2}
+GUILD_MARK_ATLAS = "nui/windows/guild-war/fixture/marks.tga"
+GUILD_ENEMIES = ("Black Wolves", "", "Red Sun", "", "", "")
+
+
+def guild_state(game, name, enemies, members, member_name_length=12):
+    """The guild of the fixtures as the guild module answers it: the tester
+    (Tester) is the master, so the mark, symbol and war buttons show."""
+    g = game.w4["guild"]
+    g.update({
+        "id": 7, "name": name, "level": 15, "master": "Tester", "my_auth": 15, "money": 0,
+        "members": [{"pid": 1000 + i, "name": long_name("Tester" if i == 0 else "Member%02d" % i, member_name_length)
+                                     if member_name_length > 12 else ("Tester" if i == 0 else "Member%02d" % i),
+                     "grade": 1 if i == 0 else 2 + i % 5, "job": i % 4, "level": 40 + i % 60, "offer": i * 37,
+                     "general": i % 3 == 1, "online": True} for i in range(members)],
+        "grades": [{"name": ("Leader", "Officer", "Veteran", "Member", "Recruit")[min(n - 1, 4)] + ("" if n < 5 else str(n)),
+                    "auth": (15, 7, 3, 1, 0)[min(n - 1, 4)] ^ (8 if n % 4 == 0 else 0)} for n in range(1, 16)],
+        "comments": [{"id": i + 1, "name": ("Tester", "Aldric", "Brenna", "Caius")[i % 4],
+                      "text": ("!" if i in (0, 3) else "") + (
+                          "The guild war against the Black Wolves starts tonight at nine." if i == 2
+                          else "Comment number %d" % (i + 1))} for i in range(12)],
+        "skills": dict(GUILD_SKILL_LEVELS),
+        "gp": (40, 100),
+        "enemies": list(enemies),
+        "skill_point": 2,
+        "marks": {7: (GUILD_MARK_ATLAS, 0)},
+    })
+    game.answer("guild", "GetGuildExperience", (12345, 54321))
+    game.answer("guild", "GetGuildMemberLevelAverage", 64)
+    game.answer("guild", "GetGuildExperienceSummary", 10000)
+    game.answer("guild", "HasGuildLand", True)
+    game.answer("skill", "GetSkillMaxLevel", 20)
+    game.modules["skill"].GetIconImageFileNameNew = (
+        lambda index, grade: "d:/ymir work/ui/skill/common/guild/%s.sub" % GUILD_SKILL_ICONS[index]
+        if index in GUILD_SKILL_ICONS else "")
+    game.answer("net", "GetGuildID", 7)
+    game.answer("chr", "RaceToJob", lambda race: race % 4)
+    game.modules["player"].GetSkillIndex = lambda slot: 152 + slot - 210 if 210 <= slot < 216 else 0
+    game.modules["uiScriptLocale"].GUILD_PATH = "locale/en/ui/guild/"
+    game.modules["uiScriptLocale"].WINDOWS_PATH = "locale/en/ui/windows/"
+
+
+def guild_models(foundation=False):
+    """{page key: the board's model} of the guild window with the fixtures'
+    guild, made by the controller itself in the Wave 4 test world
+    (tools/nui_w4_world.py): each page selected as its tab does, and the
+    member page again with line 4's grade list open ("MEMBER_OPEN")."""
+    import nui_w4_world as w4
+    name = long_name("Dragon Order Of The East", 24) if foundation else "Dragon Order"
+    enemies = tuple(long_name(e, 24) if e else "" for e in GUILD_ENEMIES) if foundation else GUILD_ENEMIES
+    members = TODAY.GUILD_MEMBER_MAX if foundation else 30
+    length = 22 if foundation else 12
+
+    def setup(game):
+        guild_state(game, name, enemies, members, length)
+        if foundation:
+            # A full guild: level 20 with the whole bonus, 32 + 2 x 19 + 18
+            # members (spec 2.4), so the info page reads 88 / 88.
+            game.w4["guild"]["level"] = 20
+            game.modules["guild"].GetGuildMemberCount = lambda: (members, TODAY.GUILD_MEMBER_MAX)
+
+    world = w4.World(True, setup=setup, social=True)
+    limits = world.m("nui_limits")
+    if foundation:
+        limits.use(limits.foundation())
+    try:
+        window = world.make("guild", "uiGuild", "GuildWindow", "nui_guild.GuildWindow")
+        models = {}
+        with world.game, w4.quiet():
+            window.Open()
+            for key in ("GUILD_INFO", "BOARD", "MEMBER", "BASE_INFO", "SKILL", "GRADE"):
+                window.SelectPage(key)
+                models[key] = dict(w4.board(window).model)
+                if key == "MEMBER":
+                    w4.press(window, "combo_press", 4, 0)
+                    models["MEMBER_OPEN"] = dict(w4.board(window).model)
+                    w4.press(window, "combo_press", 4, 0)
+        return models
+    finally:
+        limits.use(None)
+
+
+def guild_fixtures():
+    today = guild_models()
+    foundation = guild_models(True)
+    found = {("guild", ""): {"guild": today["GUILD_INFO"]}}
+    for key, variant in (("BOARD", "board"), ("MEMBER", "member"), ("MEMBER_OPEN", "member-open"),
+                         ("BASE_INFO", "base"), ("SKILL", "skill"), ("GRADE", "grade")):
+        found[("guild", variant)] = {"guild": today[key]}
+    found[("guild", "foundation")] = {"guild": foundation["GUILD_INFO"]}
+    found[("guild", "foundation-member")] = {"guild": foundation["MEMBER"]}
+    found[("guild-grade-name", "")] = {"guild_grade_name": {"max": TODAY.GUILD_GRADE_NAME_MAX_LEN, "placed": False,
+                                                            "x": 0.0, "y": 0.0}}
+    # At legacy's place (D21), as the controller sets it 50 px under the pointer.
+    found[("guild-grade-name", "placed")] = {"guild_grade_name": {"max": TODAY.GUILD_GRADE_NAME_MAX_LEN, "placed": True,
+                                                                  "x": 60.0, "y": 140.0}}
+    return found
+
+
+# --- the guild war dialogs and the mark lists (SOCIAL, spec 5.10.4, 5.11.4) ------------------------------
+
+def ui_text(key):
+    """The en locale_interface.txt entry of `key` (uiScriptLocale)."""
+    return _read_table(os.path.join(LOCALE_EN, "locale_interface.txt"))[key]
+
+
+# The war types as nui_guild_war_declare.TYPES: the button's label, the
+# hint's title and its description lines (localeinfo.py:206-210).
+WAR_TYPES = (("GUILD_WAR_NORMAL", "GUILDWAR_NORMAL_TITLE",
+              ("GUILD_WAR_USE_NORMAL_MAP", "GUILD_WAR_LIMIT_30MIN", "GUILD_WAR_WIN_CHECK_SCORE")),
+             ("GUILD_WAR_WARP", "GUILDWAR_WARP_TITLE",
+              ("GUILD_WAR_USE_BATTLE_MAP", "GUILD_WAR_WIN_WIPE_OUT_GUILD", "GUILD_WAR_REWARD_POTION")),
+             ("GUILD_WAR_CTF", "GUILDWAR_CTF_TITLE",
+              ("GUILD_WAR_USE_BATTLE_MAP", "GUILD_WAR_WIN_TAKE_AWAY_FLAG1", "GUILD_WAR_WIN_TAKE_AWAY_FLAG2",
+               "GUILD_WAR_REWARD_POTION")))
+
+
+def war_hints():
+    return [{"label": ui_text(label), "title": game_text(title), "lines": [game_text(line) for line in lines]}
+            for label, title, lines in WAR_TYPES]
+
+
+def war_declare(limits, war_type):
+    return {"guild_war_declare": {"type": war_type, "type_select": True, "hints": war_hints(),
+                                  "max": limits.GUILD_NAME_MAX_LEN}}
+
+
+def war_accept(name, war_type):
+    return {"guild_war_accept": {"type": war_type, "type_select": True, "hints": war_hints(), "name": name}}
+
+
+MARK_FILES = ("castle.png", "dragon.tga", "flag.bmp", "lion.tga", "old_sign.jpeg", "rose.png", "sword.jpg", "wolf.tga")
+# The files the fixture's previews stand in for (16 x 12 marks).
+MARK_PREVIEWS = {"dragon.tga": "/nui/windows/guild-mark/fixture/mark1.png",
+                 "lion.tga": "/nui/windows/guild-mark/fixture/mark2.png",
+                 "wolf.tga": "/nui/windows/guild-mark/fixture/mark3.png"}
+SYMBOL_FILES = ("banner_blue.jpg", "banner_gold.jpg", "banner_red.jpg")
+
+
+def guild_mark(kind, files, selected=-1):
+    """A list's model as nui_guild_mark builds it: its window of rows from
+    the first, each its index, name and preview."""
+    title = ui_text("MARKLIST_TITLE") if kind == "mark" else game_text("SYMBOLLIST_TITLE")
+    rows = [{"index": i, "name": name, "preview": MARK_PREVIEWS.get(name, "") if kind == "mark" else ""}
+            for i, name in enumerate(files[:10])]
+    return {"guild_mark": {"kind": kind, "title": title, "files": rows, "selected": selected,
+                           "selected_row": selected if 0 <= selected < len(rows) else -1, "scroll": 0.0}}
+
+
+def guild_dialog_fixtures():
+    return {
+        ("guild-war-declare", ""): war_declare(TODAY, 1),
+        ("guild-war-declare", "foundation"): war_declare(FOUNDATION, 1),
+        ("guild-war-accept", ""): war_accept("Black Wolves", 2),
+        ("guild-war-accept", "foundation"): war_accept(long_name("Black Wolves Of The North", 24), 2),
+        ("guild-mark", ""): guild_mark("mark", MARK_FILES, 3),
+        ("guild-mark", "symbol"): guild_mark("symbol", SYMBOL_FILES, 0),
+        ("guild-mark", "empty"): guild_mark("mark", ()),
+    }
+
+
+def social_fixtures():
+    found = {}
+    found.update(messenger_fixtures())
+    found.update(whisper_fixtures())
+    found.update(guild_fixtures())
+    found.update(guild_dialog_fixtures())
+    return found
+
+
+def trade_fixtures():
+    return {
+        ("exchange", ""): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, target_accept=True),
+        ("exchange", "foundation"): exchange(FOUNDATION, EXCHANGE_OWNER_FOUNDATION, EXCHANGE_TARGET_FOUNDATION,
+                                             1999999999999, 1234, 22, target_accept=True),
+        ("exchange", "empty"): exchange(TODAY, {}, {}, 0, 0, 12),
+        ("exchange", "accepted"): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, owner_accept=True,
+                                           target_accept=True, accept_down=True, accept_enabled=False),
+        # A 1x2 sword attached over the owner's cell 6: its footprint on 6 and
+        # 10, every cell its own target (P14b, the hit test's sweep).
+        ("exchange", "attaching"): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, attaching=True,
+                                            owner_targets={6: "move", 10: "move"}),
+        ("shop", ""): shop(TODAY, SHOP_ITEMS),
+        ("shop", "foundation"): shop(FOUNDATION, SHOP_ITEMS_FOUNDATION),
+        ("shop", "tabs2"): shop(TODAY, SHOP_ITEMS, "middle", 0, down=(0,)),
+        # Legacy's three-tab open (D16): the small group shows, tab 1's items
+        # show, and the button down is the small group's first, from its
+        # Create at load (uishop.py:100, :199-204).
+        ("shop", "tabs3"): shop(TODAY, SHOP_ITEMS, "small", 1, down=(0,)),
+        ("shop", "mine"): shop(TODAY, SHOP_ITEMS, mine=True),
+        # An item attached over the grid: every cell its own target; the
+        # shop's SLOT_STYLE_NONE draws no footprint (P14b, the sweep).
+        ("shop", "attaching"): shop(TODAY, SHOP_ITEMS, attaching=True),
+        ("private-shop", ""): private_shop(TODAY, BUILDER_STOCK),
+        ("private-shop", "foundation"): private_shop(FOUNDATION, BUILDER_STOCK_FOUNDATION),
+        ("private-shop", "empty"): private_shop(TODAY, {}),
+        ("private-shop", "attaching"): private_shop(TODAY, BUILDER_STOCK, attaching=True, targets={17: "move", 22: "move"}),
+        # Three pages, page II shown (its cells' ref from 45).
+        ("safebox", ""): safebox(TODAY, SAFEBOX_ITEMS, 3, 1),
+        # The foundation's five pages ("I" to "IIIII"), the last shown.
+        ("safebox", "foundation"): safebox(FOUNDATION, SAFEBOX_ITEMS_FOUNDATION, 5, 4),
+        ("safebox", "one-page"): safebox(TODAY, SAFEBOX_ITEMS, 1, 0),
+        # A 1x2 sword attached over cell 17: its footprint on 17 and 22.
+        ("safebox", "attaching"): safebox(TODAY, SAFEBOX_ITEMS, 3, 1, attaching=True, targets={17: "move", 22: "move"}),
+        ("safebox-password", ""): safebox_password("PASSWORD_TITLE"),
+        ("safebox-password", "mall"): safebox_password("MALL_PASSWORD_TITLE"),
+        ("change-password", ""): change_password(),
+        ("mall", ""): mall(TODAY, MALL_ITEMS),
+        ("mall", "foundation"): mall(FOUNDATION, MALL_ITEMS_FOUNDATION),
+        ("mall", "empty"): mall(TODAY, {}),
+        ("mall", "attaching"): mall(TODAY, MALL_ITEMS, attaching=True, targets={17: "move", 22: "move"}),
+        ("equipment-view", ""): equipment_view(TODAY, EQUIPPED),
+        ("equipment-view", "foundation"): equipment_view(FOUNDATION, EQUIPPED_FOUNDATION, 22),
+        ("equipment-view", "empty"): equipment_view(TODAY, {}),
+    }
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
+    parser.add_argument("--check", action="store_true")
+    args = parser.parse_args(argv)
+    stale = []
+    for (window, variant), model in sorted(fixtures().items()):
+        path = w3b.path_of(window, variant)
+        text = w3b.text_of(model)
+        old = None
+        if os.path.isfile(path):
+            with open(path, encoding="utf-8") as handle:
+                old = handle.read()
+        if old == text:
+            continue
+        if args.check:
+            stale.append(os.path.relpath(path, REPO))
+            continue
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(text)
+        print("wrote %s" % os.path.relpath(path, REPO))
+    if stale:
+        print("stale: %s" % ", ".join(stale))
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

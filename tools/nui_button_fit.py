@@ -45,6 +45,9 @@ ID_WIDTHS = {"vkey-symbols": 45, "vkey-shift": 58, "vkey-space": 293, "vkey-ente
              # chat log's filters on the xsmall art (38dp, 48dp apart).
              "chat-mode": 41, "chat-log-mode": 41, "chat-log-all": 38}
 ID_WIDTHS.update({"chat-log-filter-%d" % i: 38 for i in range(6)})
+# Wave 4: the guild war dialogs' battle types on the small art (43dp), whose
+# labels legacy lets run past its caps.
+ID_WIDTHS["guild-war-type-<i>"] = 43
 CAP_GAP = 18
 
 # Buttons whose label is a binding the controller fills with a locale key:
@@ -59,6 +62,10 @@ BOUND = [
     # measures the first, these the other three.
     ("chat", "chat-mode", "large", "game", ("CHAT_PARTY", "CHAT_GUILD", "CHAT_SHOUT")),
     ("chat-log", "chat-log-mode", "large", "game", ("CHAT_PARTY", "CHAT_GUILD", "CHAT_SHOUT")),
+    # Wave 4: the guild war dialogs' battle types (nui_guild_war_declare.TYPES);
+    # the modern buttons are as wide as their labels.
+    ("guild-war-declare", "guild-war-type-<i>", "medium", "ui", ("GUILD_WAR_NORMAL", "GUILD_WAR_WARP", "GUILD_WAR_CTF")),
+    ("guild-war-accept", "guild-war-type-<i>", "medium", "ui", ("GUILD_WAR_NORMAL", "GUILD_WAR_WARP", "GUILD_WAR_CTF")),
 ]
 
 BUTTON = re.compile(r"<button\b([^>]*)>(.*?)</button>", re.S)

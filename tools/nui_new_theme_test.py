@@ -229,7 +229,10 @@ class GoldenPolicy(Scratch):
                    and not name.startswith(("skin-proof-", "select-busy-", "create-busy-", "taskbar-wide-",
                                             "energy-bar-hungry-", "energy-bar-empty-", "inventory-hover-",
                                             # Wave 3c's slot hover cases, as the inventory's.
-                                            "character-hover-", "dragon-soul-hover-", "dragon-soul-refine-hover-"))}
+                                            "character-hover-", "dragon-soul-hover-", "dragon-soul-refine-hover-",
+                                            # Wave 4 (P16): the trade windows' slot hover cases.
+                                            "exchange-hover-", "shop-hover-", "private-shop-hover-", "safebox-hover-",
+                                            "mall-hover-"))}
         self.assertEqual(added, classic)
 
     def test_a_theme_without_a_golden_entry_stops_the_checker(self):

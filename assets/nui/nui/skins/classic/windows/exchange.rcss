@@ -1,0 +1,158 @@
+/* Classic skin overlay of nui/windows/exchange/exchange.rml: the legacy
+   exchange (uiscript exchangedialog.py) at 100%, 1dp to the legacy pixel:
+   the stone board, 282 x 167; the title bar at 8, 8, 266 wide, its title
+   centered; the middle bar (middlebar.sub) at 139, 31; the partner's block
+   at 10, 33 and the player's at 144, 33, each its grid at 0, 0 on the slot
+   base at the 32px pitch, the amount on parameter_slot_02.sub at 0, 102
+   (right-aligned at 59, 2 down), the lamp (accept_button_off.sub, on when
+   that side accepted) at 62, 101; the player's accept toggle on the small
+   button art at 85, 101. A disabled toggle keeps its down art, as legacy's
+   (CButton::Disable with no disable visual changes nothing). */
+
+body.skin-classic.exchange
+{
+	width: 282dp;
+	height: 167dp;
+	min-width: 0;
+}
+body.skin-classic.exchange .exchange__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	width: 266dp;
+	margin: 0;
+	z-index: 1;
+	/* Its last 7dp lie over the grids' first row, which takes the pointer
+	   there (P14b: no dead zone); the handle and the close button take it. */
+	pointer-events: none;
+}
+body.skin-classic.exchange .exchange__handle, body.skin-classic.exchange .exchange__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end
+   (ui.py TitleBar.SetWidth: width - 15 - 3, 3); an offset, so the title
+   keeps its place. */
+body.skin-classic.exchange .exchange__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.exchange .exchange__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.exchange .exchange__divider
+{
+	position: absolute;
+	left: 139dp;
+	top: 31dp;
+	width: 4dp;
+	height: 129dp;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/middlebar.sub");
+}
+body.skin-classic.exchange .exchange__side
+{
+	display: block;
+	position: absolute;
+	top: 33dp;
+	width: 130dp;
+	height: 130dp;
+}
+body.skin-classic.exchange .exchange__side--target
+{
+	left: 10dp;
+}
+body.skin-classic.exchange .exchange__side--owner
+{
+	left: 144dp;
+}
+body.skin-classic.exchange .exchange__grid
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+body.skin-classic.exchange .exchange__row
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 101dp;
+	width: 130dp;
+	height: 21dp;
+}
+body.skin-classic.exchange .exchange__money
+{
+	position: absolute;
+	left: 0;
+	top: 1dp;
+	width: 61dp;
+	height: 18dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_02.sub");
+}
+body.skin-classic.exchange .exchange__money--owner:hover
+{
+	border-color: transparent;
+}
+body.skin-classic.exchange .exchange__amount
+{
+	position: absolute;
+	right: 2dp;
+	top: 2dp;
+	line-height: 14dp;
+	font-size: var(--font-md);
+}
+body.skin-classic.exchange .exchange__light
+{
+	position: absolute;
+	left: 62dp;
+	top: 0;
+	width: 20dp;
+	height: 20dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/accept_button_off.sub");
+}
+body.skin-classic.exchange .exchange__light.is-on
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/accept_button_on.sub");
+}
+/* The accept toggle: legacy's small button art (43 x 21) at 85, 101, its
+   label the legacy gray; its row only as wide, so it covers no other part. */
+body.skin-classic.exchange .exchange__row--accept
+{
+	left: 85dp;
+	width: 43dp;
+}
+body.skin-classic.exchange .exchange__accept
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 43dp;
+	min-width: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.exchange .exchange__accept:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.exchange .exchange__accept:active, body.skin-classic.exchange .exchange__accept.is-selected
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+body.skin-classic.exchange .exchange__accept[disabled]
+{
+	image-color: var(--classic-label-white);
+	color: var(--classic-button-text);
+}

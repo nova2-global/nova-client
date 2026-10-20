@@ -1155,7 +1155,11 @@ class SmallWindows(unittest.TestCase):
 # spec 6.6) are in their place in the file order; nui_chat_test.Wiring,
 # nui_sys_test.Wiring and nui_quest_test.Wiring check them in more detail.
 EXPECTED_SITES = {
-    "interfacemodule.py": [("make", "chat", "uiChat.ChatWindow", "nui_chat.ChatWindow"),
+    # Wave 4's sites (P16 spec 6.2) are in their place too; nui_windows_test.Wave4Flags
+    # checks their lines.
+    "interfacemodule.py": [("make", "messenger", "uiMessenger.MessengerWindow", "nui_messenger.MessengerWindow"),
+                           ("make", "guild", "uiGuild.GuildWindow", "nui_guild.GuildWindow"),
+                           ("make", "chat", "uiChat.ChatWindow", "nui_chat.ChatWindow"),
                            ("make", "taskbar", "uiTaskBar.TaskBar", "nui_taskbar.TaskBar"),
                            ("make", "expanded-taskbar", "uiTaskBar.ExpandedTaskBar", "nui_expanded_taskbar.ExpandedTaskBar"),
                            ("make", "energy-bar", "uiTaskBar.EnergyBar", "nui_energy_bar.EnergyBar"),
@@ -1167,13 +1171,20 @@ EXPECTED_SITES = {
                            ("make", "dragon-soul-refine", "uiDragonSoul.DragonSoulRefineWindow",
                             "nui_dragon_soul_refine.DragonSoulRefineWindow"),
                            ("make", "minimap", "uiMiniMap.MiniMap", "nui_minimap.MiniMap"),
+                           ("make", "safebox", "uiSafebox.SafeboxWindow", "nui_safebox.SafeboxWindow"),
+                           ("make", "mall", "uiSafebox.MallWindow", "nui_mall.MallWindow"),
                            ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
+                           ("make", "exchange", "uiExchange.ExchangeDialog", "nui_exchange.ExchangeDialog"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
+                           ("make", "shop", "uiShop.ShopDialog", "nui_shop.ShopDialog"),
                            ("make", "restart", "uiRestart.RestartDialog", "nui_restart.RestartDialog"),
                            ("make", "system-menu", "uiSystem.SystemDialog", "nui_system_menu.SystemDialog"),
+                           ("make", "safebox", "uiSafebox.PasswordDialog", "nui_safebox.PasswordDialog"),
                            ("make", "tooltips", "uiToolTip.HyperlinkItemToolTip", "nui_link_tooltip.HyperlinkItemToolTip"),
                            ("make", "tooltips", "uiToolTip.ItemToolTip", "nui_item_tooltip.ItemToolTip"),
                            ("make", "tooltips", "uiToolTip.SkillToolTip", "nui_skill_tooltip.SkillToolTip"),
+                           ("make", "private-shop", "uiPrivateShopBuilder.PrivateShopBuilder",
+                            "nui_private_shop.PrivateShopBuilder"),
                            ("make", "refine", "uiRefine.RefineDialogNew", "nui_refine.RefineDialogNew"),
                            ("make", "help", "uiHelp.HelpWindow", "nui_help.HelpWindow"),
                            ("make", "tip-board", "uiTip.TipBoard", "nui_tip_board.TipBoard"),
@@ -1183,13 +1194,17 @@ EXPECTED_SITES = {
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign"),
+                           ("make", "equipment-view", "uiEquipmentDialog.EquipmentDialog", "nui_equipment_view.EquipmentDialog"),
+                           ("make", "whisper", "uiWhisper.WhisperDialog", "nui_whisper.WhisperDialog"),
+                           ("make", "whisper", "uiWhisper.WhisperDialog", "nui_whisper.WhisperDialog"),
                            ("make", "guild-building", "uiGuild.BuildGuildBuildingWindow",
                             "nui_guild_building.BuildGuildBuildingWindow")],
     "game.py": [("make", "target", "uiTarget.TargetBoard", "nui_target.TargetBoard"),
                 ("make", "console", "consoleModule.ConsoleWindow", "nui_console.ConsoleWindow"),
                 ("make", "map-name", "uiMapNameShower.MapNameShower", "nui_map_name.MapNameShower"),
                 ("make", "affects", "uiAffectShower.AffectShower", "nui_affects.AffectShower"),
-                ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge")],
+                ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge"),
+                ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
     # Wave 3b (P14 spec 6.7): the inventory's dialogs, in the legacy class
@@ -1198,6 +1213,10 @@ EXPECTED_SITES = {
                        ("make", "attach-metin", "uiAttachMetin.AttachMetinDialog", "nui_attach_metin.AttachMetinDialog")],
     "nui_inventory.py": [("make", "refine", "uiRefine.RefineDialog", "nui_refine.RefineDialog"),
                          ("make", "attach-metin", "uiAttachMetin.AttachMetinDialog", "nui_attach_metin.AttachMetinDialog")],
+    # Wave 4 (P16 spec 6.2): the guild window's mark lists and its declare dialog.
+    "uiguild.py": [("make", "guild-mark", "uiUploadMark.MarkSelectDialog", "nui_guild_mark.MarkSelectDialog"),
+                   ("make", "guild-mark", "uiUploadMark.SymbolSelectDialog", "nui_guild_mark.SymbolSelectDialog"),
+                   ("make", "guild-war-dialogs", "DeclareGuildWarDialog", "nui_guild_war_declare.DeclareGuildWarDialog")],
 }
 
 

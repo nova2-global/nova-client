@@ -1,0 +1,39 @@
+/* The item mall storage's modern look (P16 spec 5.5.2): the safebox's
+   without pages: a lean 5 x 9 grid on the 44dp pitch and the close button
+   in the footer. The controller places it at legacy's (100, 20) at its
+   first show and keeps the place the player drags it to; the sheet's place
+   frames it in its snapshots. Classic (legacy's 176 x 370 board, the large
+   button at the uiscript's place): skins/classic/windows/mall.rcss. */
+
+body.mall
+{
+	left: 16dp;
+	top: 16dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.mall button
+{
+	tab-index: none;
+	focus: none;
+}
+.mall__body
+{
+	padding: var(--space-3);
+}
+.mall__label
+{
+	pointer-events: none;
+}
+.mall__footer
+{
+	justify-content: center;
+	padding: var(--space-3);
+}
+.mall__button
+{
+	flex: 1 1 0;
+	min-width: 0;
+	padding: 0 var(--space-2);
+}

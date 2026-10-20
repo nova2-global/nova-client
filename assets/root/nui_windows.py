@@ -1,7 +1,8 @@
 """Which windows run on NovaUI, and the factory that makes them.
 
 Each window has an id. Its default lives here (every Wave 1, 2a, 2b, 3a, 3b
-and 5a window is off: legacy) and config/metin2.cfg overrides it through
+and 5a window is off: legacy; so is every Wave 4 trade and social window,
+in the groups "trade" and "social") and config/metin2.cfg overrides it through
 UI_NUI_WINDOWS ("+id" on, "-id" off, comma-separated;
 systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud", "hud2",
 "sys", "rest", "items") in that string stands for each of its windows, in its
@@ -93,6 +94,18 @@ WINDOWS = (            # (id, default) in this order; the defaults stay False in
 	("character", False),          # the character window: status, skills, emotes, quests (Wave 3c)
 	("dragon-soul", False),        # the dragon soul inventory
 	("dragon-soul-refine", False), # the dragon soul refine window
+	# Wave 4 (P16 spec 6.1): the trade and social windows.
+	("exchange", False),           # the exchange (trade) window
+	("shop", False),               # the NPC shop and a player's shop view
+	("private-shop", False),       # the private shop builder
+	("safebox", False),            # the safebox, the password dialog it shares with the mall, the change password dialog
+	("mall", False),               # the item mall storage
+	("equipment-view", False),     # another player's equipment
+	("messenger", False),          # the messenger (friends)
+	("whisper", False),            # the whisper dialogs
+	("guild", False),              # the guild window and its grade name dialog
+	("guild-war-dialogs", False),  # the guild war declare and accept dialogs
+	("guild-mark", False),         # the guild mark and symbol lists
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
@@ -104,6 +117,8 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"rest": ("quest", "guild-building", "web", "console"),
 	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
+	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view"),
+	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"),
 }
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
@@ -113,6 +128,10 @@ DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
 # three tooltip documents), each with an end_phase() that unloads them; see
 # end_phase().
 PHASE_SCOPED = ("nui_dialog_kit", "nui_quest", "nui_tooltip")
+# Wave 4 (P16 spec 6.1): the whisper dialogs' kept drafts (nui_whisper.STATE).
+PHASE_SCOPED = PHASE_SCOPED + ("nui_whisper",)
+# Wave 4: the trade windows' leave-range watches (nui_facade.end_phase).
+PHASE_SCOPED = PHASE_SCOPED + ("nui_facade",)
 
 # The game phase's on-demand documents by window id (loaded at their first
 # show and unloaded at their hide or at the phase end: nui_hud.OnDemand, the
@@ -143,6 +162,20 @@ ON_DEMAND_DOCUMENTS = (
 	("character", ("character",)),
 	("dragon-soul", ("dragon-soul",)),
 	("dragon-soul-refine", ("dragon-soul-refine",)),
+	# Wave 4 (P16 spec 6.1): every trade and social document loads at its
+	# window's show and goes at its hide (the whisper, equipment view and
+	# mark list documents once per dialog, instanced).
+	("exchange", ("exchange",)),
+	("shop", ("shop",)),
+	("private-shop", ("private-shop",)),
+	("safebox", ("safebox", "safebox-password", "change-password")),
+	("mall", ("mall",)),
+	("equipment-view", ("equipment-view",)),
+	("messenger", ("messenger",)),
+	("whisper", ("whisper",)),
+	("guild", ("guild", "guild-grade-name")),
+	("guild-war-dialogs", ("guild-war-declare", "guild-war-accept")),
+	("guild-mark", ("guild-mark",)),
 )
 GAME_PHASE_CLASS = "GameWindow"   # game.GameWindow, the game phase's window
 

@@ -105,7 +105,7 @@ class Reading(LimitsTest):
                                  "MONEY_DIGITS", "INVENTORY_MONEY_DIGITS", "SKILL_LEVEL_MAX", "SKILL_GRADE_SAGE",
                                  "PLAYER_LEVEL_MAX", "CHARACTER_SLOT_COUNT", "WEAR_TABLE",
                                  # Wave 3c (P15 spec 3.2): proposed.
-                                 "EXP_DIGITS", "HP_DIGITS", "DRAGON_SOUL_STEP_COUNT"]))
+                                 "EXP_DIGITS", "HP_DIGITS", "DRAGON_SOUL_STEP_COUNT"] + list(WAVE4_PROPOSED)))
 
     def test_the_foundations_names_give_the_foundation(self):
         limits = self.m.read(foundation_modules(self.m))
@@ -264,6 +264,184 @@ class WearTables(LimitsTest):
                     self.assertIn("." + prefix + name, modern, "%s: %s has no modern place" % (window, name))
                     self.assertRegex(classic, r"\.%s[^{]*\.%s%s\b" % (re.escape(table_class), re.escape(prefix), re.escape(name)),
                                      "%s: %s has no classic place for %s" % (window, name, table_class))
+
+
+# --- Wave 4 (P16 spec 3) ----------------------------------------------------------------
+
+# The Wave 4 keys whose names the foundation wave's C2 was asked to expose:
+# today's exe falls back for them.
+WAVE4_PROPOSED = ("EXCHANGE_COLUMNS", "EXCHANGE_MONEY_DIGITS", "SHOP_TAB_COUNT_MAX", "SAFEBOX_PAGE_COUNT_MAX",
+                  "SAFEBOX_SLOT_COUNT_MAX", "SAFEBOX_PASSWORD_MAX_LEN", "WINDOW_BELT_INVENTORY", "VIEW_EQUIP_SLOT_NUM",
+                  "GUILD_NAME_MAX_LEN", "GUILD_GRADE_NAME_MAX_LEN", "GUILD_GRADE_COUNT", "GUILD_COMMENT_MAX_LEN",
+                  "PLAYER_NAME_SHOWN_MAX")
+# Every Wave 4 key and its fallback, today's and the foundation's values.
+WAVE4_KEYS = ("EXCHANGE_ITEM_MAX_NUM", "EXCHANGE_COLUMNS", "EXCHANGE_MONEY_DIGITS", "SHOP_SLOT_COUNT", "SHOP_COLUMNS",
+              "SHOP_TAB_COUNT_MAX", "PRIVATE_SHOP_SIGN_MAX", "SAFEBOX_COLUMNS", "SAFEBOX_PAGE_ROWS", "SAFEBOX_PAGE_SIZE",
+              "SAFEBOX_PAGE_COUNT_MAX", "SAFEBOX_SLOT_COUNT_MAX", "SAFEBOX_PASSWORD_MAX_LEN", "MALL_SLOT_COUNT",
+              "WINDOW_SAFEBOX", "WINDOW_MALL", "WINDOW_DRAGON_SOUL_INVENTORY", "WINDOW_BELT_INVENTORY", "WINDOW_GROUND",
+              "VIEW_EQUIP_SLOT_NUM", "GUILD_NAME_MAX_LEN", "GUILD_GRADE_NAME_MAX_LEN", "GUILD_GRADE_COUNT",
+              "GUILD_COMMENT_MAX_LEN", "GUILD_BOARD_LINES", "GUILD_MEMBER_LINES", "GUILD_MEMBER_MAX", "GUILD_ENEMY_SLOTS",
+              "GUILD_SKILL_ROW", "GUILD_BUILDING_ROWS", "GUILD_RESOURCE_COLUMNS", "PLAYER_NAME_INPUT_MAX",
+              "PLAYER_NAME_SHOWN_MAX")
+WAVE4_FOUNDATION = {"EXCHANGE_MONEY_DIGITS": 13, "SAFEBOX_PAGE_COUNT_MAX": 5, "SAFEBOX_SLOT_COUNT_MAX": 225,
+                    "WINDOW_BELT_INVENTORY": 7, "WINDOW_GROUND": 12, "VIEW_EQUIP_SLOT_NUM": 16, "GUILD_NAME_MAX_LEN": 24,
+                    "PLAYER_NAME_SHOWN_MAX": 22}
+
+_today_modules_3b, _foundation_modules_3b = today_modules, foundation_modules
+
+
+def today_modules():
+    """What today's exe exposes, the Wave 4 modules' constants included
+    (PythonExchangeModule.cpp, PythonShop.cpp, PythonSafeBox.cpp,
+    PythonGuild.cpp, PythonCharacterModule.cpp, PythonPlayerModule.cpp's
+    window enum), nothing proposed."""
+    modules = _today_modules_3b()
+    for name, value in (("SAFEBOX", 3), ("MALL", 4), ("DRAGON_SOUL_INVENTORY", 5), ("GROUND", 6)):
+        setattr(modules["player"], name, value)
+    modules["exchange"] = types.SimpleNamespace(EXCHANGE_ITEM_MAX_NUM=12)
+    modules["shop"] = types.SimpleNamespace(SHOP_SLOT_COUNT=40, SHOP_COIN_TYPE_GOLD=0, SHOP_COIN_TYPE_SECONDARY_COIN=1)
+    modules["safebox"] = types.SimpleNamespace(SAFEBOX_SLOT_X_COUNT=5, SAFEBOX_SLOT_Y_COUNT=9, SAFEBOX_PAGE_SIZE=45)
+    modules["guild"] = types.SimpleNamespace(ENEMY_GUILD_SLOT_MAX_COUNT=6)
+    modules["chr"] = types.SimpleNamespace(PLAYER_NAME_MAX_LEN=12)
+    return modules
+
+
+def foundation_modules(module):
+    """The foundation's names (P14 spec 3.2, 11) and Wave 4's (P16 spec 3.3,
+    13), with their targets."""
+    modules = _foundation_modules_3b(module)
+    for name, value in (("SAFEBOX", 3), ("MALL", 4), ("DRAGON_SOUL_INVENTORY", 5), ("BELT_INVENTORY", 7),
+                        ("GROUND", 12), ("VIEW_EQUIP_SLOT_NUM", 16)):
+        setattr(modules["player"], name, value)
+    modules["exchange"] = types.SimpleNamespace(EXCHANGE_ITEM_MAX_NUM=12, EXCHANGE_COLUMNS=4)
+    modules["shop"] = types.SimpleNamespace(SHOP_SLOT_COUNT=40, SHOP_TAB_COUNT_MAX=3)
+    modules["safebox"] = types.SimpleNamespace(SAFEBOX_SLOT_X_COUNT=5, SAFEBOX_SLOT_Y_COUNT=9, SAFEBOX_PAGE_SIZE=45,
+                                               SAFEBOX_PAGE_COUNT_MAX=5, SAFEBOX_MAX_NUM=225, SAFEBOX_PASSWORD_MAX_LEN=6)
+    modules["guild"] = types.SimpleNamespace(ENEMY_GUILD_SLOT_MAX_COUNT=6, GUILD_NAME_MAX_LEN=24, GUILD_GRADE_NAME_MAX_LEN=8,
+                                             GUILD_GRADE_COUNT=15, GUILD_COMMENT_MAX_LEN=50)
+    modules["chr"] = types.SimpleNamespace(PLAYER_NAME_MAX_LEN=12, PLAYER_NAME_SHOWN_MAX=22)
+    return modules
+
+
+class Wave4Keys(LimitsTest):
+    """P16 spec 3.1 and 3.2."""
+
+    def test_every_wave4_key_has_today_s_value_without_the_client(self):
+        limits = self.m.read({})
+        for key in WAVE4_KEYS:
+            self.assertIn(key, self.m.TODAY, key)
+            self.assertEqual(getattr(limits, key), self.m.TODAY[key], key)
+        self.assertEqual((limits.EXCHANGE_ITEM_MAX_NUM, limits.EXCHANGE_COLUMNS, limits.EXCHANGE_MONEY_DIGITS), (12, 4, 7))
+        self.assertEqual((limits.SAFEBOX_PAGE_SIZE, limits.SAFEBOX_PAGE_COUNT_MAX, limits.SAFEBOX_SLOT_COUNT_MAX), (45, 3, 135))
+        self.assertEqual((limits.WINDOW_SAFEBOX, limits.WINDOW_MALL, limits.WINDOW_DRAGON_SOUL_INVENTORY,
+                          limits.WINDOW_BELT_INVENTORY, limits.WINDOW_GROUND), (3, 4, 5, 7, 6),
+                         "the client's EWindows (GameType.h): GROUND 6, BELT_INVENTORY 7")
+
+    def test_the_foundation_s_wave4_values(self):
+        foundation = self.m.foundation()
+        for key in WAVE4_KEYS:
+            self.assertEqual(getattr(foundation, key), WAVE4_FOUNDATION.get(key, self.m.TODAY[key]), key)
+
+    def test_the_stand_ins_with_the_foundation_s_names_give_the_foundation_s_wave4_values(self):
+        limits = self.m.read(foundation_modules(self.m))
+        for key in WAVE4_KEYS:
+            self.assertEqual(getattr(limits, key), getattr(self.m.foundation(), key), key)
+        self.assertFalse([key for key in limits.fell_back if key in WAVE4_KEYS])
+
+    def test_every_wave4_key_falls_back_alone(self):
+        for key in WAVE4_KEYS:
+            names = self.m.NAMES.get(key)
+            if names is None:
+                continue
+            modules = foundation_modules(self.m)
+            for module_name, attribute in names:
+                if module_name in modules and hasattr(modules[module_name], attribute):
+                    delattr(modules[module_name], attribute)
+            limits = self.m.read(modules)
+            sharing = [k for k, n in self.m.NAMES.items() if k != key and set(n) <= set(names)]
+            self.assertIn(key, limits.fell_back, key)
+            self.assertEqual([k for k in limits.fell_back if k != key and k not in sharing], [], key)
+            self.assertEqual(getattr(limits, key), self.m.TODAY[key], key)
+
+    def test_a_missing_or_raising_wave4_module_falls_back_and_read_imports_them(self):
+        class Raising(object):
+            def __getattr__(self, name):
+                raise RuntimeError(name)
+        modules = today_modules()
+        modules["safebox"] = Raising()
+        del modules["exchange"]
+        limits = self.m.read(modules)
+        self.assertEqual((limits.SAFEBOX_PAGE_SIZE, limits.EXCHANGE_ITEM_MAX_NUM), (45, 12))
+        self.assertIn("SAFEBOX_PAGE_SIZE", limits.fell_back)
+        self.assertIn("EXCHANGE_ITEM_MAX_NUM", limits.fell_back)
+        self.assertEqual(self.m._IMPORTED_W4, ("exchange", "shop", "safebox", "guild", "chr"))
+        sys.modules["safebox"] = types.SimpleNamespace(SAFEBOX_PAGE_COUNT_MAX=5)
+        self.addCleanup(sys.modules.pop, "safebox", None)
+        self.assertEqual(self.m.read().SAFEBOX_PAGE_COUNT_MAX, 5, "read() finds a loaded Wave 4 module")
+
+    def test_the_window_keys(self):
+        self.assertEqual(self.m.WINDOW_KEYS_W4, ("WINDOW_SAFEBOX", "WINDOW_MALL", "WINDOW_DRAGON_SOUL_INVENTORY",
+                                                 "WINDOW_BELT_INVENTORY", "WINDOW_GROUND"))
+        for key in self.m.WINDOW_KEYS_W4:
+            self.assertIn(key, WAVE4_KEYS)
+
+
+class SafeboxPages(LimitsTest):
+    def test_legacy_s_rule_today_and_at_the_foundation(self):
+        today, foundation = self.m.read({}), self.m.foundation()
+        self.assertEqual(self.m.safebox_pages(27, today),
+                         [{"index": 0, "label": "I"}, {"index": 1, "label": "II"}, {"index": 2, "label": "III"}])
+        self.assertEqual([p["label"] for p in self.m.safebox_pages(45, foundation)], ["I", "II", "III", "IIII", "IIIII"])
+        self.assertEqual(self.m.safebox_pages(9, today), [{"index": 0, "label": "I"}])
+        self.assertEqual(self.m.safebox_pages(3, today), [{"index": 0, "label": "I"}], "at least one page")
+        self.assertEqual(len(self.m.safebox_pages(45, today)), 3, "today's cap of 3 (min(3, ...))")
+        self.assertEqual(len(self.m.safebox_pages(18, today)), 2)
+        self.m.use(foundation)
+        self.addCleanup(self.m.use, None)
+        self.assertEqual(len(self.m.safebox_pages(45)), 5, "current() by default")
+
+
+class ViewEquipTable(LimitsTest):
+    def test_today_s_eleven_wear_positions(self):
+        today = self.m.read({})
+        table = self.m.view_equip_table(today)
+        self.assertEqual([tuple(slot) for slot in table], [
+            (0, "body", "shown"), (1, "head", "shown"), (2, "foots", "shown"), (3, "wrist", "shown"), (4, "weapon", "shown"),
+            (5, "neck", "shown"), (6, "ear", "shown"), (7, "unique1", "shown"), (8, "unique2", "shown"),
+            (9, "arrow", "shown"), (10, "shield", "shown")])
+        self.assertEqual((table[4].index, table[4].name, table[4].group), (4, "weapon", "shown"))
+        wear = dict((slot.index, slot.name) for slot in self.m.wear_table(today))
+        self.assertEqual([slot.name for slot in table], [wear[i] for i in range(11)], "the wear table's names")
+        self.assertEqual(self.m.view_equip_id(today), "new")
+
+    def test_the_foundation_s_sixteen_in_old_s_position_list(self):
+        foundation = self.m.foundation()
+        table = self.m.view_equip_table(foundation)
+        self.assertEqual(len(table), 16)
+        self.assertEqual([slot.name for slot in table[:11]], [slot.name for slot in self.m.view_equip_table(self.m.read({}))])
+        self.assertEqual([tuple(slot) for slot in table[11:]], [
+            (11, "costume_body", "hidden"), (12, "costume_hair", "hidden"), (13, "ring1", "shown"),
+            (14, "ring2", "shown"), (15, "belt", "shown")])
+        self.assertEqual(self.m.view_equip_id(foundation), "old")
+        names = set(slot.name for slot in self.m.wear_table(foundation))
+        self.assertTrue(set(slot.name for slot in table) <= names, "every view name is a wear name")
+
+    def test_every_shown_view_name_has_a_place_class_in_every_skin_s_sheets(self):
+        """eqv-place--<name> for every shown slot of both tables in the modern
+        sheet and in the classic overlay (one rule per table class)."""
+        window = "equipment-view"
+        sheet = os.path.join(NUI, "windows", window, window + ".rcss")
+        if not os.path.isfile(sheet):
+            self.skipTest("the equipment view is not written yet")
+        modern = open(sheet, encoding="utf-8").read()
+        classic = open(os.path.join(NUI, "skins", "classic", "windows", window + ".rcss"), encoding="utf-8").read()
+        for table_class, limits in (("eqv--table-new", self.m.read({})), ("eqv--table-old", self.m.foundation())):
+            for slot in self.m.view_equip_table(limits):
+                if slot.group != "shown":
+                    continue
+                self.assertIn(".eqv-place--" + slot.name, modern, "%s has no modern place" % slot.name)
+                self.assertRegex(classic, r"\.%s[^{]*\.eqv-place--%s\b" % (re.escape(table_class), re.escape(slot.name)),
+                                 "%s has no classic place for %s" % (slot.name, table_class))
 
 
 if __name__ == "__main__":

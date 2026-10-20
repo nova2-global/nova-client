@@ -3767,3 +3767,473 @@ def minsec_text(seconds, minute="m", second="s", prefix="", over=None):
         text += "%d%s" % (s, second)
     return prefix + text
 
+
+
+# --- Wave 4 (P16 spec 11.3): the trade and social windows -------------------------------------------
+
+# The modules whose calls the Wave 4 differential tests compare (getters left
+# out, is_getter): the setters and senders legacy and NovaUI make.
+W4_COMPARED = ("player", "net", "mouse", "app", "shop", "safebox", "exchange", "messenger", "guild", "chat")
+
+# The client's constants the Wave 4 legacy modules read (PythonExchangeModule.cpp,
+# PythonShop.cpp, PythonSafeBox.cpp, PythonGuild.cpp, PythonCharacterModule.cpp,
+# PythonNetworkStreamModule.cpp).
+W4_EXCHANGE_CONSTANTS = {"EXCHANGE_ITEM_MAX_NUM": 12}
+W4_SHOP_CONSTANTS = {"SHOP_SLOT_COUNT": 40, "SHOP_COIN_TYPE_GOLD": 0, "SHOP_COIN_TYPE_SECONDARY_COIN": 1}
+W4_SAFEBOX_CONSTANTS = {"SAFEBOX_SLOT_X_COUNT": 5, "SAFEBOX_SLOT_Y_COUNT": 9, "SAFEBOX_PAGE_SIZE": 45}
+W4_GUILD_CONSTANTS = {"AUTH_ADD_MEMBER": 1, "AUTH_REMOVE_MEMBER": 2, "AUTH_NOTICE": 4, "AUTH_SKILL": 8,
+                      "ENEMY_GUILD_SLOT_MAX_COUNT": 6}
+W4_CHR_CONSTANTS = {"PLAYER_NAME_MAX_LEN": 12}
+W4_NET_CONSTANTS = {"ERROR_MARK_UPLOAD_NEED_RECONNECT": 6}
+W4_ITEM_FLAGS = ("ANTIFLAG_GIVE", "ANTIFLAG_MYSHOP", "ANTIFLAG_SELL")
+# The uiscript widget kinds the Wave 4 windows hold, as the stand-in ui makes
+# them (install_wave4_ui's loader; the rest are plain windows).
+W4_KINDS = ("editline", "scrollbar", "thin_scrollbar", "small_thin_scrollbar", "mark", "slotbar", "bar",
+            "horizontalbar")
+
+
+def w4_state():
+    """game.w4's empty state (P16 spec 11.3): what the Wave 4 getters answer.
+    Each item is None or {"vnum", "count", "sockets", "attrs"}; "position"
+    is the main character's (x, y, z); "vid" its vid; "npcs" the vids
+    chr.IsNPC answers True for; "names" vid -> name; "valuable" the
+    inventory positions player.IsValuableItem answers True for."""
+    return {
+        "exchange": {"self": [None] * 12, "target": [None] * 12, "self_elk": 0, "target_elk": 0,
+                     "self_accept": False, "target_accept": False, "target_name": "", "target_level": 0},
+        "shop": {"open": False, "private": False, "mine": False, "tabs": [{"name": "", "items": [None] * 40, "coin": 0}],
+                 "stock": {}, "prices": {}, "built": None},
+        "safebox": {"rows": 27, "items": {}, "money": 0, "mall_size": 0, "mall": {}},
+        "messenger": {"friends": {}, "guild": {}, "family": None},
+        "guild": {"id": 0, "name": "", "level": 0, "exp": 0, "master": "", "members": [], "grades": [],
+                  "comments": [], "skills": {}, "gp": (0, 0), "enemies": [""] * 6, "marks": {}},
+        "whisper": {},
+        "files": {"upload": []},
+        "images": {},
+        "leave_range": {},
+        "position": (0.0, 0.0, 0.0),
+        "vid": 1,
+        "npcs": set(),
+        "names": {},
+        "valuable": set(),
+        "instances": [],
+    }
+
+
+def _w4_item(entry, key, default=0):
+    return entry.get(key, default) if entry else default
+
+
+def install_wave4_ui(game):
+    """Adds to game (after install_wave2b_ui, install_wave3a_ui and
+    install_wave3b_ui) what the Wave 4 legacy windows use (P16 spec 11.3):
+    - game.w4 (w4_state()), which the getters below answer from;
+    - the modules exchange and safebox (new), and shop, chr, guild,
+      messenger, chat, net, app, grpText and player extended: every
+      function the Wave 4 legacy modules call (uiexchange, uishop,
+      uiprivateshopbuilder, uisafebox, uiequipmentdialog, uimessenger,
+      uiwhisper, uiguild, uiuploadmark), each recorded, a getter answering
+      from game.w4, a setter or sender answering 0; their constants are
+      the client's (W4_*_CONSTANTS, item's anti flags);
+    - nuigame.WatchLeaveRange, StopLeaveRange, LeaveRangeState (the watches
+      in game.w4["leave_range"]; leave_range(game, key) fires one),
+      WhisperAttach, WhisperDetach, WhisperState; _nui.LoadDocumentAs and
+      _nui.ReloadImage; the stand-in nui.Window's INSTANCED (MODEL + "_" +
+      n, game.w4["instances"]; without LoadDocumentAs the window stays
+      unavailable);
+    - ui.RadioButtonGroup (assets/root/ui.py's own), the uiCommon input and
+      money input dialogs, wndMgr.RefreshSlot, and a script loader that
+      also makes edit lines, scroll bars and mark boxes from the uiscripts
+      (W4_KINDS)."""
+    game.w4 = w4_state()
+    modules = game.modules
+    log = game.log
+    w4 = game.w4
+    known = module_constants()
+
+    # --- exchange and safebox --------------------------------------------------------
+    exchange = Recording("exchange", log, **W4_EXCHANGE_CONSTANTS)
+    for who, key in (("Self", "self"), ("Target", "target")):
+        define(exchange, "GetItemVnumFrom" + who, lambda i, key=key: _w4_item(w4["exchange"][key][i], "vnum"))
+        define(exchange, "GetItemCountFrom" + who, lambda i, key=key: _w4_item(w4["exchange"][key][i], "count"))
+        define(exchange, "GetItemMetinSocketFrom" + who,
+               lambda i, j, key=key: (list(_w4_item(w4["exchange"][key][i], "sockets", ())) + [0] * 8)[j])
+        define(exchange, "GetItemAttributeFrom" + who,
+               lambda i, j, key=key: (list(_w4_item(w4["exchange"][key][i], "attrs", ())) + [(0, 0)] * 8)[j])
+        define(exchange, "GetElkFrom" + who, lambda key=key: w4["exchange"][key + "_elk"])
+        define(exchange, "GetAcceptFrom" + who, lambda key=key: w4["exchange"][key + "_accept"])
+    define(exchange, "GetNameFromTarget", lambda: w4["exchange"]["target_name"])
+    define(exchange, "GetLevelFromTarget", lambda: w4["exchange"]["target_level"])
+    game.put("exchange", exchange)
+
+    safebox = Recording("safebox", log, **W4_SAFEBOX_CONSTANTS)
+    define(safebox, "GetItemID", lambda pos: _w4_item(w4["safebox"]["items"].get(pos), "vnum"))
+    define(safebox, "GetItemCount", lambda pos: _w4_item(w4["safebox"]["items"].get(pos), "count"))
+    define(safebox, "GetMoney", lambda: w4["safebox"]["money"])
+    define(safebox, "GetMallItemID", lambda pos: _w4_item(w4["safebox"]["mall"].get(pos), "vnum"))
+    define(safebox, "GetMallItemCount", lambda pos: _w4_item(w4["safebox"]["mall"].get(pos), "count"))
+    define(safebox, "GetMallSize", lambda: w4["safebox"]["mall_size"])
+    game.put("safebox", safebox)
+
+    # --- shop --------------------------------------------------------------------------
+    shop = modules["shop"]
+    for name, value in W4_SHOP_CONSTANTS.items():
+        setattr(shop, name, value)
+
+    def shop_item(pos):
+        tabs = w4["shop"]["tabs"]
+        tab, cell = divmod(int(pos), 40)
+        if not (0 <= tab < len(tabs)) or cell >= len(tabs[tab]["items"]):
+            return None
+        return tabs[tab]["items"][cell]
+
+    def shop_open(is_private, is_mine):
+        w4["shop"].update({"open": True, "private": bool(is_private), "mine": bool(is_mine)})
+
+    def shop_close():
+        w4["shop"]["open"] = False
+
+    def add_stock(window, pos, cell, price):
+        w4["shop"]["stock"][(window, pos)] = (cell, price)
+
+    def del_stock(window, pos):
+        w4["shop"]["stock"].pop((window, pos), None)
+
+    def clear_stock():
+        w4["shop"]["stock"].clear()
+
+    def build(title):
+        w4["shop"]["built"] = (title, dict(w4["shop"]["stock"]))
+
+    define(shop, "Open", shop_open)
+    define(shop, "Close", shop_close)
+    define(shop, "IsOpen", lambda: w4["shop"]["open"])
+    define(shop, "IsPrivateShop", lambda: w4["shop"]["private"])
+    define(shop, "IsMainPlayerPrivateShop", lambda: w4["shop"]["mine"])
+    define(shop, "GetTabCount", lambda: len(w4["shop"]["tabs"]))
+    define(shop, "GetTabName", lambda tab: w4["shop"]["tabs"][tab]["name"])
+    define(shop, "GetTabCoinType", lambda tab: w4["shop"]["tabs"][tab].get("coin", 0))
+    define(shop, "GetItemID", lambda pos: _w4_item(shop_item(pos), "vnum"))
+    define(shop, "GetItemCount", lambda pos: _w4_item(shop_item(pos), "count"))
+    define(shop, "GetItemPrice", lambda pos: _w4_item(shop_item(pos), "price"))
+    define(shop, "GetItemMetinSocket", lambda pos, j: (list(_w4_item(shop_item(pos), "sockets", ())) + [0] * 8)[j])
+    define(shop, "GetItemAttribute", lambda pos, j: (list(_w4_item(shop_item(pos), "attrs", ())) + [(0, 0)] * 8)[j])
+    define(shop, "AddPrivateShopItemStock", add_stock)
+    define(shop, "DelPrivateShopItemStock", del_stock)
+    define(shop, "ClearPrivateShopStock", clear_stock)
+    define(shop, "GetPrivateShopItemPrice", lambda window, pos: w4["shop"]["stock"].get((window, pos), (0, 0))[1])
+    define(shop, "BuildPrivateShop", build)
+
+    # --- player, chr, item, app, net, grpText, wndMgr ------------------------------------------
+    player = modules["player"]
+    for name in ("SAFEBOX", "MALL", "GROUND", "INVENTORY", "DRAGON_SOUL_INVENTORY", "RESERVED_WINDOW"):
+        if name in known.get("player", {}):
+            setattr(player, name, known["player"][name])
+    slot_to_window = {player.SLOT_TYPE_INVENTORY: player.INVENTORY,
+                      player.SLOT_TYPE_DRAGON_SOUL_INVENTORY: player.DRAGON_SOUL_INVENTORY}
+    define(player, "GetMainCharacterPosition", lambda: tuple(w4["position"]))
+    define(player, "GetMainCharacterIndex", lambda: w4["vid"])
+    define(player, "IsMainCharacterIndex", lambda vid: vid == w4["vid"])
+    define(player, "SlotTypeToInvenType", lambda slot_type: slot_to_window.get(slot_type, player.RESERVED_WINDOW))
+    define(player, "IsValuableItem", lambda *at: at[-1] in w4["valuable"])
+    define(player, "IsOpenPrivateShop", lambda: False)
+    define(player, "GetName", lambda: w4["names"].get(w4["vid"], "Tester"))
+    define(player, "GetMainCharacterName", lambda: w4["names"].get(w4["vid"], "Tester"))
+    define(player, "GetGuildID", lambda: w4["guild"]["id"])
+
+    chr_module = modules["chr"]
+    for name, value in W4_CHR_CONSTANTS.items():
+        setattr(chr_module, name, value)
+    define(chr_module, "IsNPC", lambda vid: vid in w4["npcs"])
+    define(chr_module, "GetNameByVID", lambda vid: w4["names"].get(vid, ""))
+
+    item = modules["item"]
+    for name in W4_ITEM_FLAGS:
+        setattr(item, name, known.get("item", {}).get(name, getattr(item, name, 0)))
+
+    app = modules["app"]
+
+    def set_cursor(cursor):
+        game.cursor = cursor
+    define(app, "SetCursor", set_cursor)
+    define(app, "GetFileList", lambda pattern: list(w4["files"].get(pattern.split("/", 1)[0], [])))
+    define(app, "GetImageInfo", lambda path: w4["images"].get(path, (False, 0, 0)))
+
+    net = modules["net"]
+    for name, value in W4_NET_CONSTANTS.items():
+        setattr(net, name, value)
+    define(net, "IsInsultIn", lambda text: False)
+
+    define(modules["grpText"], "GetSplitingTextLine", lambda text, limit, start: text[start:start + limit])
+    wndmgr = modules["wndMgr"]
+    wndmgr.RefreshSlot = recorded(log, "wndMgr.RefreshSlot", lambda handle: None)
+
+    # --- guild, messenger and the whisper store (the social windows) --------------------------
+    guild = modules["guild"]
+    for name, value in W4_GUILD_CONSTANTS.items():
+        setattr(guild, name, value)
+    g = lambda: w4["guild"]
+    define(guild, "IsGuildEnable", lambda: bool(g()["id"]))
+    define(guild, "GetGuildID", lambda: g()["id"])
+    define(guild, "GetGuildName", lambda *guild_id: g()["name"] if not guild_id else "guild %d" % guild_id[0])
+    define(guild, "GetGuildLevel", lambda: g()["level"])
+    define(guild, "GetGuildExperience", lambda: (g()["level"], g()["exp"]))
+    define(guild, "GetGuildMasterName", lambda: g()["master"])
+    define(guild, "GetGuildMemberCount", lambda: (len(g()["members"]), 32 + 2 * max(0, g()["level"] - 1)))
+    define(guild, "GetMemberCount", lambda: len(g()["members"]))
+    define(guild, "GetEnemyGuildName", lambda index: g()["enemies"][index])
+    define(guild, "GetGuildSkillPoint", lambda: g().get("skill_point", 0))
+    define(guild, "GetDragonPowerPoint", lambda: tuple(g()["gp"]))
+    define(guild, "GetGuildBoardCommentCount", lambda: len(g()["comments"]))
+    define(guild, "GetGuildBoardCommentData",
+           lambda i: (g()["comments"][i]["id"], g()["comments"][i]["name"], g()["comments"][i]["text"]))
+    define(guild, "GetGradeName", lambda n: (g()["grades"][n - 1]["name"] if 0 < n <= len(g()["grades"]) else ""))
+    define(guild, "GetGradeData", lambda n: ((g()["grades"][n - 1]["name"], g()["grades"][n - 1]["auth"])
+                                             if 0 < n <= len(g()["grades"]) else ("", 0)))
+    define(guild, "GetMemberData", lambda i: (lambda m: (m["pid"], m["name"], m["grade"], m["job"], m["level"],
+                                                         m["offer"], m["general"]))(g()["members"][i]))
+    define(guild, "MemberIndexToPID", lambda i: g()["members"][i]["pid"])
+    define(guild, "IsMember", lambda i: 0 <= i < len(g()["members"]))
+    define(guild, "IsMemberByName", lambda name: any(m["name"] == name for m in g()["members"]))
+    define(guild, "MainPlayerHasAuthority", lambda auth: bool(g().get("my_auth", 0) & auth))
+    define(guild, "GetSkillLevel", lambda slot: g()["skills"].get(slot, 0))
+    define(guild, "HasGuildLand", lambda: False)
+    define(guild, "GetGuildMoney", lambda: g().get("money", 0))
+
+    messenger = modules["messenger"]
+
+    def remove_friend(key):
+        w4["messenger"]["friends"].pop(key, None)
+    define(messenger, "RemoveFriend", remove_friend)
+
+    chat = modules["chat"]
+    whispers = w4["whisper"]
+
+    def create_whisper(name):
+        whispers.setdefault(name, [])
+
+    def clear_whisper(name):
+        whispers.pop(name, None)
+    define(chat, "CreateWhisper", create_whisper)
+    define(chat, "AppendWhisper", lambda kind, name, text: whispers.setdefault(name, []).append((kind, text)))
+    define(chat, "ClearWhisper", clear_whisper)
+    define(chat, "SetWhisperBoxSize", lambda name, width, height: None)
+    define(chat, "SetWhisperPosition", lambda name, pos: None)
+    define(chat, "RenderWhisper", lambda name, x, y: None)
+
+    # --- nuigame and _nui ----------------------------------------------------------------------
+    nuigame = modules["nuigame"]
+    watches = w4["leave_range"]
+    whisper_keys = {}
+
+    def watch(key, distance, callback, rearm=True):
+        x, y, _ = w4["position"]
+        watches[key] = {"armed": True, "fired": False, "start": [float(x), float(y)], "range": float(distance),
+                        "rearm": bool(rearm), "fires": 0, "callback": callback}
+        return True
+
+    def stop(key):
+        found = watches.pop(key, None)
+        return found is not None
+
+    def state(key):
+        found = watches.get(key)
+        if found is None:
+            return None
+        return dict((k, v) for k, v in found.items() if k != "callback")
+
+    def whisper_attach(name):
+        if not name:
+            return 0
+        if name not in whisper_keys:
+            whisper_keys[name] = len(whisper_keys) + 1
+        return whisper_keys[name]
+
+    def whisper_state(key):
+        for name, value in whisper_keys.items():
+            if value == key:
+                lines = whispers.get(name, [])
+                return {"name": name, "rows": 8, "total": len(lines), "end": len(lines) - 1, "pos": 1.0,
+                        "attached": True}
+        return None
+
+    if nuigame is not None:
+        define(nuigame, "WatchLeaveRange", watch)
+        define(nuigame, "StopLeaveRange", stop)
+        define(nuigame, "LeaveRangeState", state)
+        define(nuigame, "WhisperAttach", whisper_attach)
+        define(nuigame, "WhisperDetach", lambda key: None)
+        define(nuigame, "WhisperState", whisper_state)
+
+    nui = modules["nui"]
+    nui._nui.LoadDocumentAs = lambda path, model: True
+    nui._nui.ReloadImage = recorded(log, "_nui.ReloadImage", lambda path: 1)
+    window_class = nui.Window
+    base_init = window_class.__init__
+    window_class.INSTANCED = False
+
+    def init(self):
+        cls = type(self)
+        if not getattr(cls, "INSTANCED", False):
+            base_init(self)
+            return
+        if getattr(nui._nui, "LoadDocumentAs", None) is None:
+            self.MODEL = cls.MODEL
+            base_init(self)
+            self._doc = 0
+            self._model = 0
+            if self in game.state.windows:
+                game.state.windows.remove(self)
+            return
+        w4["instances"].append(cls.MODEL)
+        self.MODEL = "%s_%d" % (cls.MODEL, len(w4["instances"]))
+        base_init(self)
+    window_class.__init__ = init
+
+    # --- ui and the dialogs --------------------------------------------------------------------
+    ui = modules["ui"]
+    ui.RadioButtonGroup = _legacy_radio_button_group()
+
+    class InputDialog(LegacyDialog):
+        """uiCommon.InputDialog and MoneyInputDialog: its text is `text`
+        (the test types it), its value the money dialog's."""
+
+        def __init__(self, game_, module, kind):
+            LegacyDialog.__init__(self, game_, module, kind)
+            self.text = ""
+            self.max_length = None
+
+        def SetTitle(self, title):
+            self.title = title
+
+        def SetMaxLength(self, length):
+            self.max_length = length
+
+        def SetValue(self, value):
+            self.text = str(value)
+            self._log("SetValue", value)
+
+        def GetText(self):
+            return self.text
+
+    common = modules["uiCommon"]
+    common.InputDialog = lambda *args: InputDialog(game, "uiCommon", "InputDialog")
+    common.MoneyInputDialog = lambda *args: InputDialog(game, "uiCommon", "MoneyInputDialog")
+
+    # The social modules' own imports: playersettingmodule.py's guild skill
+    # lists (:50-51) and ui.ListBoxEx with its Item.
+    game.put("playerSettingModule", types.SimpleNamespace(PASSIVE_GUILD_SKILL_INDEX_LIST=(151,),
+                                                          ACTIVE_GUILD_SKILL_INDEX_LIST=(152, 153, 154, 155, 156, 157)))
+    window = ui.Window
+
+    class ListBoxEx(window):
+        class Item(window):
+            def __init__(self, layer="UI"):
+                window.__init__(self, layer)
+
+        def __init__(self, layer="UI"):
+            window.__init__(self, layer)
+            self.items = []
+            self.selected = None
+            self.scroll_bar = None
+
+        def SetScrollBar(self, bar):
+            self.scroll_bar = bar
+
+        def AppendItem(self, entry):
+            self.items.append(entry)
+
+        def RemoveAllItems(self):
+            self.items = []
+            self.selected = None
+
+        def IsEmpty(self):
+            return not self.items
+
+        def GetSelectedItem(self):
+            return self.selected
+
+        def SelectIndex(self, index):
+            self.selected = self.items[index] if 0 <= index < len(self.items) else None
+
+    ui.ListBoxEx = ListBoxEx
+
+    _install_wave4_loader(game)
+    return ui
+
+
+def _legacy_radio_button_group():
+    """ui.RadioButtonGroup as assets/root/ui.py defines it."""
+    import ast as ast_module
+    with open(os.path.join(ROOT, "ui.py"), encoding="utf-8", errors="replace") as handle:
+        tree = ast_module.parse(handle.read())
+    node = [n for n in tree.body if isinstance(n, ast_module.ClassDef) and n.name == "RadioButtonGroup"][0]
+    namespace = {}
+    exec(compile(ast_module.Module(body=[node], type_ignores=[]), "ui.py", "exec"), namespace)
+    return namespace["RadioButtonGroup"]
+
+
+def _install_wave4_loader(game):
+    """install_wave3b_ui's script loader, with the Wave 4 uiscripts' edit
+    lines, scroll bars, mark boxes and slot bars made as the stand-in ui's
+    widgets (W4_KINDS)."""
+    ui = game.modules["ui"]
+    base_loader = ui.PythonScriptLoader
+    kinds = {"editline": ui.EditLine, "scrollbar": ui.ScrollBar, "thin_scrollbar": ui.ThinScrollBar,
+             "small_thin_scrollbar": ui.SmallThinScrollBar, "mark": ui.MarkBox, "slotbar": ui.Window,
+             "bar": ui.Window, "horizontalbar": ui.Window}
+
+    def build(window, value):
+        for child in value.get("children", ()) or ():
+            kind = child.get("type")
+            if kind in kinds:
+                widget = kinds[kind]()
+                widget.name = child.get("name", "")
+                if "text" in child and hasattr(widget, "SetText"):
+                    widget.SetText(child["text"])
+                if "input_limit" in child and hasattr(widget, "SetMax"):
+                    widget.SetMax(child["input_limit"])
+                window.ElementDictionary[widget.name] = widget
+            build(window, child)
+
+    class PythonScriptLoader(base_loader):
+        def LoadScriptFile(self, window, path):
+            base_loader.LoadScriptFile(self, window, path)
+            build(window, read_uiscript(path))
+
+    ui.PythonScriptLoader = PythonScriptLoader
+
+
+def leave_range(game, key):
+    """A leave-range watch fires as NuiRangeWatch's Tick fires it (P16 spec
+    7.1): its callback runs once; with rearm the start moves to the
+    character's position now, without it the watch stays fired and silent.
+    False when no watch is armed under `key`, or it fired and does not
+    rearm."""
+    found = game.w4["leave_range"].get(key)
+    if found is None or (found["fired"] and not found["rearm"]):
+        return False
+    found["fires"] += 1
+    if found["rearm"]:
+        x, y, _ = game.w4["position"]
+        found["start"] = [float(x), float(y)]
+    else:
+        found["fired"] = True
+    found["callback"]()
+    return True
+
+
+def load_wave4_legacy(game, social=False):
+    """Loads the Wave 4 legacy modules over the stand-ins, under the names
+    interfacemodule.py imports them by: uiExchange, uiShop,
+    uiPrivateShopBuilder, uiSafebox, uiEquipmentDialog; with `social` also
+    uiUploadMark, uiGuild, uiMessenger and uiWhisper."""
+    names = [("uiExchange", "uiexchange.py"), ("uiShop", "uishop.py"), ("uiPrivateShopBuilder", "uiprivateshopbuilder.py"),
+             ("uiSafebox", "uisafebox.py"), ("uiEquipmentDialog", "uiequipmentdialog.py")]
+    if social:
+        names += [("uiUploadMark", "uiuploadmark.py"), ("uiGuild", "uiguild.py"), ("uiMessenger", "uimessenger.py"),
+                  ("uiWhisper", "uiwhisper.py")]
+    loaded = {}
+    for name, file_name in names:
+        loaded[name] = game.load(name, file_name)
+    return loaded

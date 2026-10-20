@@ -1,0 +1,69 @@
+/* Classic skin overlay of nui/windows/guild-grade-name/guild-grade-name.rml:
+   the legacy grade name dialog (uiscript changegradenamedialog.py) at 100%,
+   1dp to the legacy pixel: the stone board with its title bar, 170 x 90;
+   the field's parameter slot (61 x 18) centered at y 34, the field at 3, 3
+   in it, 60 x 18; OK at 19, 58 and Cancel at 90, 58 on the middle art,
+   their labels the legacy gray. */
+
+body.skin-classic.guild-grade-name .guild-grade-name__window
+{
+	width: 170dp;
+	height: 90dp;
+	min-width: 0;
+	max-width: none;
+}
+body.skin-classic.guild-grade-name .guild-grade-name__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 155dp;
+	margin: 0;
+	z-index: 1;
+}
+body.skin-classic.guild-grade-name .guild-grade-name__body
+{
+	display: block;
+	padding: 0;
+}
+/* Centered as legacy's window manager centers it: (170 - 61) / 2 rounds up
+   to 55 (the F4 capture's field sits at 58 = 55 + 3). */
+body.skin-classic.guild-grade-name .guild-grade-name__slot
+{
+	position: absolute;
+	left: 55dp;
+	top: 34dp;
+	width: 61dp;
+	height: 18dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_02.sub");
+}
+/* The edit line on the slot art: no box of its own. */
+body.skin-classic.guild-grade-name .guild-grade-name__field
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 60dp;
+	height: 18dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 13dp;
+}
+body.skin-classic.guild-grade-name .guild-grade-name__footer
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.guild-grade-name .guild-grade-name__button
+{
+	position: absolute;
+	top: 58dp;
+	width: 61dp;
+	min-width: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+}
+body.skin-classic.guild-grade-name .guild-grade-name__button--accept { left: 19dp; }
+body.skin-classic.guild-grade-name .guild-grade-name__button--cancel { left: 90dp; }

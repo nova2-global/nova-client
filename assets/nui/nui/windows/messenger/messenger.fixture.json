@@ -1,0 +1,199 @@
+{
+	"messenger": {
+		"rows": [
+			{
+				"kind": "group",
+				"name": "Friends",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Brenna",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Elowen",
+				"online": true,
+				"open": false,
+				"selected": true,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Galen",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Jorund",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Maelis",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Aldric",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Caius",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Dagny",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Fenwick",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Hesper",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Isolde",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Kestrel",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Lunara",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "group",
+				"name": "Guild",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Nyx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Orrin",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Perrin",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Quilla",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			}
+		],
+		"whisper_enabled": true,
+		"remove_enabled": true,
+		"height": 310.0
+	}
+}

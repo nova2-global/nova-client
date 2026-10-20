@@ -1,0 +1,225 @@
+/* A whisper dialog's modern look (P16 spec 5.8.2): a window as large as the
+   player made it (legacy's first 300 x 200, its least 300 x 170, the
+   bottom-right corner resizing it); the partner's name in the title bar
+   (or the partner field and OK, before a partner is chosen), a GM badge
+   for a game master, minimize and close; the lines in the body, wrapped at
+   its width, the newest at the bottom, the scroll range at the right; the
+   two-row input and Send in the footer. The Interface places each dialog
+   30dp further from the corner (legacy's cascade); the sheet's place frames
+   it in its snapshots. Classic (legacy's thin board, the name slot, the
+   button art and the dark edit bar at the uiscript's places):
+   skins/classic/windows/whisper.rcss. */
+
+body.whisper
+{
+	display: flex;
+	flex-direction: column;
+	left: 16dp;
+	top: 16dp;
+	width: 300dp;
+	height: 200dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.whisper button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The send button parks the focus when a legacy edit line takes wndMgr's
+   (it takes no keys). */
+.whisper .whisper__send
+{
+	focus: auto;
+}
+.whisper__titlebar
+{
+	flex: 0 0 auto;
+	gap: var(--space-1);
+}
+/* The partner field (before a partner is chosen) at the bar's left, as
+   legacy's name slot; the handle takes the rest of the bar. */
+.whisper__slot
+{
+	display: block;
+	flex: 0 0 150dp;
+	min-width: 0;
+}
+.whisper__target
+{
+	width: 100%;
+	height: 26dp;
+	line-height: 24dp;
+}
+.whisper__gm
+{
+	display: block;
+	position: relative;
+	flex: 0 0 auto;
+	width: 14dp;
+	height: 14dp;
+	margin: 0 var(--space-1);
+}
+.whisper__gm-mark
+{
+	display: none;
+}
+/* The GM badge: a diamond in the GM color. */
+.whisper__gm-badge
+{
+	display: block;
+	position: absolute;
+	left: 2dp;
+	top: 2dp;
+	width: 10dp;
+	height: 10dp;
+	background-color: var(--edge-gm);
+	transform: rotate(45deg);
+}
+.whisper__accept
+{
+	flex: 0 0 auto;
+	height: 26dp;
+	line-height: 24dp;
+}
+.whisper__accept-label, .whisper__send-label
+{
+	pointer-events: none;
+}
+.whisper__tip
+{
+	left: auto;
+	right: 0;
+	margin-right: 0;
+	margin-left: -320dp;
+}
+.whisper__body
+{
+	display: block;
+	position: relative;
+	flex: 1 1 0;
+	min-height: 0;
+	padding: 0;
+}
+/* The flow rules (ElementChatLines.h): a column that ends at the bottom and
+   clips the oldest line at its top; each line static and wrapped. The
+   chat colors are made for a dark ground, so the lines sit on the chat's
+   shade in every modern look, as the chat log's do. */
+.whisper__lines
+{
+	display: flex;
+	flex-direction: column-reverse;
+	position: absolute;
+	left: var(--space-2);
+	top: var(--space-2);
+	right: 24dp;
+	bottom: var(--space-2);
+	padding: 2dp var(--space-1);
+	border-radius: var(--radius-md);
+	background-color: var(--chat-edit-shade);
+	overflow: hidden;
+	clip: always;
+}
+.whisper__lines .nui-chat__line
+{
+	position: static;
+	height: auto;
+	white-space: normal;
+	flex-shrink: 0;
+	line-height: 15dp;
+	font-size: var(--font-sm);
+}
+.nui-chat__line--w0, .nui-chat__line--w1, .nui-chat__line--w2, .nui-chat__line--w3, .nui-chat__line--w4
+{
+	color: var(--chat-talking);
+}
+/* A game master's line: italic, in the chat's notice color, the one chat
+   color that reads on the shade in every modern look (--edge-gm is made
+   for the light tooltip chip in modern dark, where it reads at 3:1 here).
+   Classic keeps legacy's orange. */
+.nui-chat__line--w5
+{
+	color: var(--chat-notice);
+	font-style: italic;
+}
+.nui-chat__line--w255
+{
+	color: var(--chat-info);
+}
+.whisper__scroll-box
+{
+	position: absolute;
+	right: var(--space-1);
+	top: var(--space-2);
+	bottom: var(--space-2);
+	width: 12dp;
+}
+input.whisper__scroll
+{
+	display: block;
+	width: 12dp;
+	height: 100%;
+	focus: none;
+}
+.whisper__scroll slidertrack
+{
+	width: 4dp;
+	margin-left: 4dp;
+	border-radius: 2dp;
+	background-color: var(--surface-sunken);
+}
+.whisper__scroll sliderbar
+{
+	width: 12dp;
+	height: 22dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+}
+.whisper__scroll sliderbar:hover, .whisper__scroll sliderbar:active
+{
+	background-color: var(--accent);
+}
+.whisper__scroll sliderprogress
+{
+	display: none;
+}
+.whisper__scroll sliderarrowdec, .whisper__scroll sliderarrowinc
+{
+	width: 0;
+	height: 0;
+}
+/* The input over two rows, Send beside it. */
+.whisper__edit
+{
+	flex: 0 0 auto;
+	align-items: center;
+	padding: var(--space-2);
+}
+.whisper__input
+{
+	display: block;
+	flex: 1 1 0;
+	min-width: 0;
+	width: auto;
+	height: 40dp;
+	padding: 2dp var(--space-2);
+	line-height: 17dp;
+	white-space: pre-wrap;
+	focus: auto;
+}
+.whisper__target
+{
+	focus: auto;
+}
+.whisper__send
+{
+	flex: 0 0 auto;
+	padding: 0 var(--space-3);
+}
+.whisper__resize
+{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}

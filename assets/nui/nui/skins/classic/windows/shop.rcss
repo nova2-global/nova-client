@@ -1,0 +1,148 @@
+/* Classic skin overlay of nui/windows/shop/shop.rml: the legacy shop
+   (uiscript shopdialog.py) at 100%, 1dp to the legacy pixel: the stone
+   board, 184 x 328; the title bar at 8, 8, 169 wide; the grid at 12, 34 on
+   the slot base at the 32px pitch; at y 295 the buy and sell toggles (middle
+   art) at 21 and 104, or the two middle tabs at 21 and 104, or the three
+   small tabs at 21, 71 and 120, or the player's own shop's close button
+   (large art), centered. A tab's art follows its legacy button state
+   (is-down: legacy's RadioButton Down), not the tab shown. */
+
+body.skin-classic.shop
+{
+	width: 184dp;
+	height: 328dp;
+	min-width: 0;
+}
+body.skin-classic.shop .shop__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	width: 169dp;
+	margin: 0;
+	z-index: 1;
+	/* Its last 6dp lie over the grid's first row, which takes the pointer
+	   there (P14b: no dead zone); the handle and the close button take it. */
+	pointer-events: none;
+}
+body.skin-classic.shop .shop__handle, body.skin-classic.shop .shop__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end
+   (ui.py TitleBar.SetWidth: width - 15 - 3, 3); an offset, so the title
+   keeps its place. */
+body.skin-classic.shop .shop__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.shop .shop__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.shop .shop__grid
+{
+	position: absolute;
+	left: 12dp;
+	top: 34dp;
+}
+body.skin-classic.shop .shop__footer
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.shop .shop__buy, body.skin-classic.shop .shop__sell, body.skin-classic.shop .shop__close-shop
+{
+	position: absolute;
+	top: 295dp;
+}
+body.skin-classic.shop .shop__buy
+{
+	left: 21dp;
+	width: 61dp;
+}
+body.skin-classic.shop .shop__sell
+{
+	left: 104dp;
+	width: 61dp;
+}
+body.skin-classic.shop .shop__close-shop
+{
+	left: 48dp;
+	width: 88dp;
+	color: var(--classic-button-text);
+}
+body.skin-classic.shop .shop__tabs
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 295dp;
+	width: 184dp;
+	height: 21dp;
+	/* Only the tabs take the pointer: the row's box lies over nothing else. */
+	pointer-events: none;
+}
+body.skin-classic.shop .shop__tab-slot
+{
+	position: absolute;
+	top: 0;
+	width: 61dp;
+	height: 21dp;
+	pointer-events: auto;
+}
+body.skin-classic.shop .shop__tab-slot--0 { left: 21dp; }
+body.skin-classic.shop .shop__tab-slot--1 { left: 104dp; }
+body.skin-classic.shop.shop--tabs-small .shop__tab-slot { width: 43dp; }
+body.skin-classic.shop.shop--tabs-small .shop__tab-slot--1 { left: 71dp; }
+body.skin-classic.shop.shop--tabs-small .shop__tab-slot--2 { left: 120dp; }
+body.skin-classic.shop .shop__tab
+{
+	width: 100%;
+	min-width: 0;
+	padding: 0;
+	overflow: visible;
+}
+/* The tab's name centered over its art as legacy's text line is, a longer
+   one overflowing both ends ("Weapons" on the 43dp small art), never cut;
+   it takes no pointer, as legacy's text line takes none, so a press on the
+   overflow is the neighbor's. */
+body.skin-classic.shop .shop__tab-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	overflow: visible;
+	text-align: center;
+}
+body.skin-classic.shop .shop__tab.is-current
+{
+	background-color: transparent;
+	border-color: transparent;
+}
+/* The small tabs: legacy's small art; the middle ones keep the medium
+   button's middle art. The down art last, as legacy's pressed button keeps
+   it under the pointer. */
+body.skin-classic.shop.shop--tabs-small .shop__tab
+{
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.shop.shop--tabs-small .shop__tab:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.shop.shop--tabs-small .shop__tab:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+body.skin-classic.shop .shop__tab.is-down, body.skin-classic.shop .shop__tab.is-down:hover
+{
+	decorator: tiled-horizontal(classic-button-middle-03-l, classic-button-middle-03-c, classic-button-middle-03-r);
+}
+body.skin-classic.shop.shop--tabs-small .shop__tab.is-down, body.skin-classic.shop.shop--tabs-small .shop__tab.is-down:hover
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}

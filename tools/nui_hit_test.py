@@ -48,6 +48,23 @@ def hit_cases():
     return [case for case in check_nui_snapshots.cases(REPO) if not case[-1]]
 
 
+# P16: cases that show an open popup list on purpose (the guild window's grade
+# list, spec 5.9.2): a press on a control under the list lands on the list, as
+# on legacy's top-most list box. Case name prefix: the id prefixes of the
+# elements that may take those presses (the list and its items).
+OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",)}
+
+
+def covered_by_open_popup(name, taken):
+    """`taken` without the controls that only an open popup list of the case
+    `name` covers (OPEN_POPUPS)."""
+    for prefix, popups in OPEN_POPUPS.items():
+        if name.startswith(prefix):
+            return {control: takers for control, takers in taken.items()
+                    if not all(taker.startswith(popups) for taker in takers)}
+    return taken
+
+
 @unittest.skipUnless(NUITOOL, "set NUITOOL to a nuitool build (or put nuitool on PATH)")
 class PressesReachTheirControls(unittest.TestCase):
     @classmethod
@@ -104,6 +121,7 @@ class PressesReachTheirControls(unittest.TestCase):
                 taken = {control: [taker for taker in entry["taken"] if not own_slot_button(control, taker)]
                          for control, entry in hits.items()}
                 taken = dict((control, takers) for control, takers in taken.items() if takers)
+                taken = covered_by_open_popup(name, taken)
                 self.assertEqual(taken, {}, "presses on these controls reach the listed elements instead")
 
     def test_every_point_of_a_slot_grid_reaches_its_cell_or_its_item(self):

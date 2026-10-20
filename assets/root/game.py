@@ -1862,7 +1862,7 @@ class GameWindow(ui.ScriptWindow):
 		# END_OF_REMOVED_GUILD_BUG_FIX
 
 		import uiGuild
-		questionDialog = uiGuild.AcceptGuildWarDialog()
+		questionDialog = nui_windows.make("guild-war-dialogs", uiGuild.AcceptGuildWarDialog, "nui_guild_war_accept.AcceptGuildWarDialog")
 		questionDialog.SAFE_SetAcceptEvent(self.__GuildWar_OnAccept)
 		questionDialog.SAFE_SetCancelEvent(self.__GuildWar_OnDecline)
 		questionDialog.Open(guildName, warType)

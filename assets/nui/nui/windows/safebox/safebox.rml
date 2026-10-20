@@ -1,0 +1,64 @@
+<rml>
+<head>
+	<!-- The safebox (uisafebox.py SafeboxWindow, uiscript safeboxwindow.py;
+	     P16 spec 5.4). While the safebox flag is on, the Interface makes
+	     nui_safebox.SafeboxWindow (controller assets/root/nui_safebox.py), a
+	     subclass of the legacy class on proxies: storing, moving and taking
+	     items, money dropped on a cell, the pages and the close command are
+	     legacy's code. The grid shows the shown page's cells
+	     (SAFEBOX_PAGE_SIZE), the page buttons legacy's ("I", "II", ...: one
+	     more "I" a page, up to SAFEBOX_PAGE_COUNT_MAX), with no money row, as
+	     legacy (D17). A drop from the inventory reaches legacy's handlers
+	     through nui_slots.LegacySlotEvents. The document exists only while the
+	     window shows; the distance rule is the engine's
+	     (nuigame.WatchLeaveRange), so nothing runs per frame. The body and its
+	     controls take no focus; controls act on a left mousedown. It draws
+	     below the legacy UI layer, as legacy's window lived in it. A left or
+	     right press anywhere on it raises the window (board_press). -->
+	<title>safebox</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="safebox.rcss"/>
+</head>
+<body template="nui" id="safebox" class="nui-window nui-fx nui-anim nui-below-legacy-ui safebox" data-model="safebox"
+      data-event-mousedown="board_press(ev.button)"
+      data-class-safebox--pages-1="page_count == 1" data-class-safebox--pages-2="page_count == 2"
+      data-class-safebox--pages-3="page_count == 3" data-class-safebox--pages-small="page_count > 3">
+	<div class="nui-window__titlebar safebox__titlebar">
+		<handle class="nui-window__handle safebox__handle" move_target="#document">
+			<span class="nui-window__title safebox__title">@ui.SAFE_TITLE</span>
+		</handle>
+		<button id="safebox-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim safebox__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body safebox__body">
+		<div id="safebox-grid" class="nui-slot-grid nui-slot-grid--lean safebox__grid" data-class-is-attaching="attaching"
+		     data-class-nui-slot-grid--cols-5="cols == 5">
+			<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'safebox-cell-' + it_index"
+			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+			     data-class-is-picked="c.picked"
+			     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+			     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+			     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
+			     data-event-dblclick="cell_use(it_index)" data-event-mouseover="cell_over(it_index)"
+			     data-event-mouseout="cell_out(it_index)" data-event-nuidrop="cell_drop(it_index)">
+				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+			</div>
+		</div>
+		<div id="safebox-pages" class="safebox__pages">
+			<div class="safebox__page-slot" data-for="p : pages" data-attr-class="'safebox__page-slot safebox__page-slot--' + it_index">
+				<button class="nui-button nui-anim safebox__page" data-attr-id="'safebox-page-' + it_index"
+				        data-class-is-selected="it_index == page" data-event-mousedown="page_press(it_index, ev.button)"><span
+					class="safebox__page-label">{{ p.label }}</span></button>
+			</div>
+		</div>
+	</div>
+	<div class="nui-window__footer safebox__footer">
+		<button id="safebox-change-password" class="nui-button nui-anim safebox__button safebox__button--password"
+		        data-event-mousedown="change_password_press(ev.button)"><span class="safebox__label">@ui.SAFE_CHANGE_PASSWORD</span></button>
+		<button id="safebox-close" class="nui-button nui-anim safebox__button safebox__button--close"
+		        data-event-mousedown="close_press(ev.button)"><span class="safebox__label">@ui.CLOSE</span></button>
+	</div>
+</body>
+</rml>

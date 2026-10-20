@@ -1,0 +1,149 @@
+/* Classic skin overlay of nui/windows/safebox/safebox.rml: the legacy
+   safebox (uiscript safeboxwindow.py, SetTableSize) at 100%, 1dp to the
+   legacy pixel: the stone board, 176 x 418 (130 + 32 x 9); the title bar at
+   8, 7, 161 wide; the grid at 8, 35 on the slot base at the 32px pitch; the
+   page buttons (tab_button_middle, 52 x 19) centered 52 apart, their tops
+   85 above the board's bottom (legacy's -(n - 1) / 2 x 52 from the middle);
+   the large buttons centered, Change Password 58 and Close 37 above the
+   bottom. Four or five pages (the foundation's): OLD's small tab art,
+   32 x 19, 32 apart from x 7, as OLD's safebox places them (tune). */
+
+body.skin-classic.safebox
+{
+	width: 176dp;
+	height: 418dp;
+	min-width: 0;
+}
+body.skin-classic.safebox .safebox__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 161dp;
+	margin: 0;
+	z-index: 1;
+	/* Its last 4dp lie over the grid's first row, which takes the pointer
+	   there (P14b: no dead zone); the handle and the close button take it. */
+	pointer-events: none;
+}
+body.skin-classic.safebox .safebox__handle, body.skin-classic.safebox .safebox__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end
+   (ui.py TitleBar.SetWidth: width - 15 - 3, 3); an offset, so the title
+   keeps its place. */
+body.skin-classic.safebox .safebox__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.safebox .safebox__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.safebox .safebox__grid
+{
+	position: absolute;
+	left: 8dp;
+	top: 35dp;
+}
+
+/* --- The page buttons ------------------------------------------------------- */
+
+body.skin-classic.safebox .safebox__pages
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 333dp;
+	width: 176dp;
+	height: 19dp;
+	/* Only the buttons take the pointer: the row's box lies over nothing else. */
+	pointer-events: none;
+}
+body.skin-classic.safebox .safebox__page-slot
+{
+	position: absolute;
+	top: 0;
+	width: 52dp;
+	height: 19dp;
+	pointer-events: auto;
+}
+body.skin-classic.safebox.safebox--pages-1 .safebox__page-slot--0 { left: 62dp; }
+body.skin-classic.safebox.safebox--pages-2 .safebox__page-slot--0 { left: 36dp; }
+body.skin-classic.safebox.safebox--pages-2 .safebox__page-slot--1 { left: 88dp; }
+body.skin-classic.safebox.safebox--pages-3 .safebox__page-slot--0 { left: 10dp; }
+body.skin-classic.safebox.safebox--pages-3 .safebox__page-slot--1 { left: 62dp; }
+body.skin-classic.safebox.safebox--pages-3 .safebox__page-slot--2 { left: 114dp; }
+body.skin-classic.safebox.safebox--pages-small .safebox__page-slot { width: 32dp; }
+body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--0 { left: 7dp; }
+body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--1 { left: 39dp; }
+body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--2 { left: 71dp; }
+body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--3 { left: 103dp; }
+body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--4 { left: 135dp; }
+body.skin-classic.safebox .safebox__page
+{
+	width: 100%;
+	height: 19dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--text);
+	line-height: 19dp;
+	overflow: visible;
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_middle_01.sub");
+}
+body.skin-classic.safebox .safebox__page:hover
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_middle_02.sub");
+}
+body.skin-classic.safebox .safebox__page:active, body.skin-classic.safebox .safebox__page.is-selected
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_middle_03.sub");
+}
+body.skin-classic.safebox.safebox--pages-small .safebox__page
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_01.sub");
+}
+body.skin-classic.safebox.safebox--pages-small .safebox__page:hover
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_02.sub");
+}
+body.skin-classic.safebox.safebox--pages-small .safebox__page:active,
+body.skin-classic.safebox.safebox--pages-small .safebox__page.is-selected
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_03.sub");
+}
+
+/* --- The large buttons ----------------------------------------------------- */
+
+body.skin-classic.safebox .safebox__footer
+{
+	display: block;
+	padding: 0;
+}
+/* Legacy's large art (the classic default button, 88 x 21), its label
+   centered over it as legacy's text line, a longer one overflowing both
+   ends without taking the pointer. */
+body.skin-classic.safebox .safebox__button
+{
+	position: absolute;
+	left: 44dp;
+	width: 88dp;
+	min-width: 0;
+	padding: 0;
+	overflow: visible;
+}
+body.skin-classic.safebox .safebox__button--password { top: 360dp; }
+body.skin-classic.safebox .safebox__button--close { top: 381dp; }
+body.skin-classic.safebox .safebox__label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+}

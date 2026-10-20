@@ -1578,7 +1578,9 @@ class Wiring(unittest.TestCase):
                       '"nui_player_gauge.PlayerGauge", self)', source)
 
     def test_no_other_legacy_file_changes_its_windows(self):
-        for file_name in ("uichat.py", "uiminimap.py", "uiplayergauge.py", "uiprivateshopbuilder.py", "uiguild.py"):
+        # uiguild.py makes the Wave 4 guild dialogs through make() (P16 spec
+        # 6.2): nui_windows_test.Wave4Flags checks it holds nothing else.
+        for file_name in ("uichat.py", "uiminimap.py", "uiplayergauge.py", "uiprivateshopbuilder.py"):
             self.assertNotIn("nui_windows", read(os.path.join(ROOT, file_name)), file_name)
 
 

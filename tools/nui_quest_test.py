@@ -1288,7 +1288,9 @@ class Wiring(unittest.TestCase):
             self.assertEqual(sites, expected, file_name)
 
     def test_the_legacy_window_files_do_not_change(self):
-        for file_name in ("uiquest.py", "uiweb.py", "uiguild.py", "consolemodule.py"):
+        # uiguild.py makes the Wave 4 guild dialogs through make() (P16 spec
+        # 6.2): nui_windows_test.Wave4Flags checks it holds nothing else.
+        for file_name in ("uiquest.py", "uiweb.py", "consolemodule.py"):
             self.assertNotIn("nui_", read(os.path.join(ROOT, file_name)), file_name)
 
     def interface(self, windows, raising=()):

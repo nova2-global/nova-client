@@ -1121,7 +1121,8 @@ class FullProxyPush(SlotsTest):
 
 class AttachRightBinding(unittest.TestCase):
     """F-2's preparation (P15 spec 8.2, D16): every window whose cells reach
-    legacy handlers through LegacySlotEvents binds
+    legacy handlers through LegacySlotEvents, but the Wave 4 ones in F2_OPEN
+    (F-2 is open for them, P17), binds
     data-class-nui-attach-right="attach_right" on an ancestor of each cell
     that takes a press, and every fixture of its document carries the
     switch's value, so F-2's one commit (ATTACH_RIGHT) changes every grid

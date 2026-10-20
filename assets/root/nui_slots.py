@@ -1321,9 +1321,11 @@ class LegacySlotEvents(object):
 
 # F-2 (P15 spec 8.2): whether a right press on a cell while something is
 # attached reaches the cell's owner, as legacy's CSlotWindow sends its
-# unselect event whatever is attached. Every LegacySlotEvents grid binds
-# data-class-nui-attach-right="attach_right" from its window's state, which
-# copies this, so the host gives the press to the grid only while it holds.
+# unselect event whatever is attached. Every LegacySlotEvents grid but the
+# Wave 4 ones binds data-class-nui-attach-right="attach_right" from its
+# window's state, which copies this, so the host gives the press to the grid
+# only while it holds. F-2 is open for the Wave 4 grids (P17: the test's
+# AttachRightBinding.F2_OPEN), where the host still cancels the attach.
 # On since F-2's own commit (revert it for Wave 3b's rule: the host cancels
 # the attach and the press uses nothing).
 ATTACH_RIGHT = True

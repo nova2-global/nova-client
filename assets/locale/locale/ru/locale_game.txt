@@ -674,7 +674,6 @@ TOOLTIP_BUYPRICE	Цена: %s
 TOOLTIP_CAST_SPEED	Скорость заклинания +%d%%	SA
 TOOLTIP_CON	Здоровье +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Бонус костюма %d%%	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Сохраняет бонусы и камни предмета.
 TOOLTIP_DEF_GRADE	Защита +%d	SA
 TOOLTIP_DEX	Подвижность+%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Земля	SNA

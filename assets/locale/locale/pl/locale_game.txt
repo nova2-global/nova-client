@@ -674,7 +674,6 @@ TOOLTIP_BUYPRICE	Cena: %s
 TOOLTIP_CAST_SPEED	Szybkość Zaklęcia +%d%%	SA
 TOOLTIP_CON	Witalność +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Bonus kostiumu %d%% 	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Zachowuje bonusy i kamienie przedmiotu.
 TOOLTIP_DEF_GRADE	Obrona +%d	SA
 TOOLTIP_DEX	Zręczność +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Ziemia	SNA

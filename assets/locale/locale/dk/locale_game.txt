@@ -674,7 +674,6 @@ TOOLTIP_BUYPRICE	Pris: %s
 TOOLTIP_CAST_SPEED	Magihastighed +%d%%	SA
 TOOLTIP_CON	Vitalitet +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Kostume bonus %d%%	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Beholder genstandens bonusser og sten.
 TOOLTIP_DEF_GRADE	Forsvar +%d	SA
 TOOLTIP_DEX	Smidighed +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Jorden	SNA

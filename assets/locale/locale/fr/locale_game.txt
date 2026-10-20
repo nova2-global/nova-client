@@ -672,7 +672,6 @@ TOOLTIP_BUYPRICE	Prix : %s
 TOOLTIP_CAST_SPEED	Vitesse du sort +%d%%	SA
 TOOLTIP_CON	Vitalité +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Bonus costume %d%% 	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Conserve les bonus et les pierres de l'objet.
 TOOLTIP_DEF_GRADE	Défense +%d	SA
 TOOLTIP_DEX	Dextérité +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Terre	SNA

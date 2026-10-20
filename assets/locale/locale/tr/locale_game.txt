@@ -674,7 +674,6 @@ TOOLTIP_BUYPRICE	Fiyatı: %s
 TOOLTIP_CAST_SPEED	Büyü Hızı +%%%d	SA
 TOOLTIP_CON	Canlılık +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Kostüm bonusu %%%d	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Eşyanın bonuslarını ve taşlarını korur.
 TOOLTIP_DEF_GRADE	Savunma +%d	SA
 TOOLTIP_DEX	Çeviklik +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Dünya	SNA

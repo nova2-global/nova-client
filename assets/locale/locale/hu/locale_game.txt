@@ -672,7 +672,6 @@ TOOLTIP_BUYPRICE	Ár: %s
 TOOLTIP_CAST_SPEED	Varázssebesség +%d%%	SA
 TOOLTIP_CON	Életerő +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Jelmez bónusz %d%%	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Megtartja a tárgy bónuszait és köveit.
 TOOLTIP_DEF_GRADE	Védekezés +%d	SA
 TOOLTIP_DEX	Ügyesség +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Föld	SNA

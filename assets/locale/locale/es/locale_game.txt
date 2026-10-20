@@ -674,7 +674,6 @@ TOOLTIP_BUYPRICE	Precio: %s
 TOOLTIP_CAST_SPEED	Velocidad de Hechizo +%d%%	SA
 TOOLTIP_CON	Vitalidad +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Bonificación por atuendo %d%% 	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Conserva las bonificaciones y piedras del objeto.
 TOOLTIP_DEF_GRADE	Defensa +%d	SA
 TOOLTIP_DEX	Destreza +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Tierra	SNA

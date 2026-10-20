@@ -674,7 +674,6 @@ TOOLTIP_BUYPRICE	Prezzo: %s
 TOOLTIP_CAST_SPEED	Velocità della magia +%d%%	SA
 TOOLTIP_CON	Vitalità  +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Bonus costume %d%% 	SA
-TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Mantiene i bonus e le pietre dell'oggetto.
 TOOLTIP_DEF_GRADE	Difesa +%d	SA
 TOOLTIP_DEX	Destrezza +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Terra	SNA

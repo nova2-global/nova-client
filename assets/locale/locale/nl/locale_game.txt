@@ -674,6 +674,7 @@ TOOLTIP_BUYPRICE	Prijs: %s
 TOOLTIP_CAST_SPEED	Spreuk Snelheid: +%d%%	SA
 TOOLTIP_CON	Vitaliteit +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Kostuum bonus %d%%	 SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Behoudt de bonussen en stenen van het voorwerp.
 TOOLTIP_DEF_GRADE	Verdediging +%d	SA
 TOOLTIP_DEX	Behendigheid +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Aarde	SNA
@@ -829,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Je kunt voorwerpen niet gebruiken terwijl je priv√
 ITEM_GET	Ontvangen: %s	SA
 ITEM_GET_FROM_PARTY	Ontvangen: %s van %s	SAA
 ITEM_DELIVER_TO_PARTY	Afgeleverd: %s aan %s	SAA
+MAINTENANCE_TIME_LEFT	Onderhoud over:

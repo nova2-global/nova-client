@@ -672,6 +672,7 @@ TOOLTIP_BUYPRICE	Preis: %s
 TOOLTIP_CAST_SPEED	Zaubergeschwindigkeit +%d%%	SA
 TOOLTIP_CON	Vitalität +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Kostümbonus %d%%	SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Behält die Boni und Steine des Gegenstands.
 TOOLTIP_DEF_GRADE	Verteidigung +%d	SA
 TOOLTIP_DEX	Beweglichkeit +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Erde	SNA
@@ -827,3 +828,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Du kannst keine Gegenstände verwenden, solange du
 ITEM_GET	Erhalten: %s	SA
 ITEM_GET_FROM_PARTY	Erhalten: %s von %s	SAA
 ITEM_DELIVER_TO_PARTY	Geliefert: %s an %s	SAA
+MAINTENANCE_TIME_LEFT	Wartung in:

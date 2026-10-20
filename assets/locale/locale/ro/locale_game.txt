@@ -674,6 +674,7 @@ TOOLTIP_BUYPRICE	Preț: %s
 TOOLTIP_CAST_SPEED	Viteza farmecului +%d%%	SA
 TOOLTIP_CON	Vitalitate +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Bonus costum %d%%	SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Păstrează bonusurile și pietrele obiectului.
 TOOLTIP_DEF_GRADE	Apărare +%d	SA
 TOOLTIP_DEX	Dexteritate +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Pamant	SNA
@@ -829,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Nu poți folosi obiectul dacă ai deschis un magaz
 ITEM_GET	Primit: %s	SA
 ITEM_GET_FROM_PARTY	Primit: %s de la %s	SAA
 ITEM_DELIVER_TO_PARTY	Livrat: %s către %s	SAA
+MAINTENANCE_TIME_LEFT	Mentenanță în:

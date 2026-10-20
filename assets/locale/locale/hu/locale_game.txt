@@ -672,6 +672,7 @@ TOOLTIP_BUYPRICE	Ár: %s
 TOOLTIP_CAST_SPEED	Varázssebesség +%d%%	SA
 TOOLTIP_CON	Életerő +%d	SA
 TOOLTIP_COSTUME_ATTR_BONUS	Jelmez bónusz %d%%	SA
+TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES	Megtartja a tárgy bónuszait és köveit.
 TOOLTIP_DEF_GRADE	Védekezés +%d	SA
 TOOLTIP_DEX	Ügyesség +%d	SA
 TOOLTIP_DRAGON_SOUL_DECK1	Föld	SNA
@@ -829,3 +830,4 @@ USE_ITEM_FAILURE_PRIVATE_SHOP	Nem használhatsz tárgyakat, amíg nyitva van a p
 ITEM_GET	Kapott: %s	SA
 ITEM_GET_FROM_PARTY	Kapott: %s tőle: %s	SAA
 ITEM_DELIVER_TO_PARTY	Átadva: %s neki: %s	SAA
+MAINTENANCE_TIME_LEFT	Karbantartásig:

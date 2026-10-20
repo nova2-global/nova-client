@@ -33,6 +33,7 @@ import uiAffectShower
 import uiPlayerGauge
 import uiCharacter
 import uiTarget
+import uiMaintenance
 
 # PRIVATE_SHOP_PRICE_LIST
 import uiPrivateShopBuilder
@@ -81,6 +82,7 @@ class GameWindow(ui.ScriptWindow):
 		self.mapNameShower = None
 		self.affectShower = None
 		self.playerGauge = None
+		self.wndMaintenance = None
 
 		self.stream = stream
 		self.interface = interfaceModule.Interface()
@@ -105,6 +107,9 @@ class GameWindow(ui.ScriptWindow):
 
 		self.playerGauge = nui_windows.make("player-gauge", uiPlayerGauge.PlayerGauge, "nui_player_gauge.PlayerGauge", self)
 		self.playerGauge.Hide()
+
+		# Before the preserved server commands below run.
+		self.wndMaintenance = uiMaintenance.MaintenanceWindow()
 		
 		#wj 2014.1.2. ESC key prioritizes closing DropQuestionDialog. However, itemDropQuestionDialog not initially declared, causing ERROR, so declared and initialized in init.
 		self.itemDropQuestionDialog = None
@@ -284,6 +289,10 @@ class GameWindow(ui.ScriptWindow):
 				shower.Destroy()
 		self.mapNameShower = None
 		self.affectShower = None
+
+		if self.wndMaintenance:
+			self.wndMaintenance.Close()
+			self.wndMaintenance = None
 
 		if self.console:
 			self.console.BindGameClass(0)
@@ -1641,7 +1650,7 @@ class GameWindow(ui.ScriptWindow):
 			
 			i = 0
 			for cubeInfo in cubeInfoList:								
-				self.interface.wndCube.AddCubeResultItem(cubeInfo["vnum"], cubeInfo["count"])
+				self.interface.wndCube.AddCubeResultItem(cubeInfo["vnum"], cubeInfo["count"], cubeInfo.get("keeps", False))
 				
 				j = 0				
 				for materialList in cubeInfo["materialList"]:
@@ -1673,6 +1682,7 @@ class GameWindow(ui.ScriptWindow):
 
 	def BINARY_Cube_ResultList(self, npcVNUM, listText):
 		# ResultList Text Format: 72723,1/72725,1/72730.1/50001,5 - list separated by "/" character
+		# An optional third field, 72723,1,1, marks a result that keeps the bonuses and stones of its first material
 		#print listText
 		
 		if npcVNUM == 0:
@@ -1685,9 +1695,10 @@ class GameWindow(ui.ScriptWindow):
 				eachInfo	= eachInfoText.split(",")
 				itemVnum	= int(eachInfo[0])
 				itemCount	= int(eachInfo[1])
+				keeps		= 2 < len(eachInfo) and "1" == eachInfo[2]
 
-				self.cubeInformation[npcVNUM].append({"vnum": itemVnum, "count": itemCount})
-				self.interface.wndCube.AddCubeResultItem(itemVnum, itemCount)
+				self.cubeInformation[npcVNUM].append({"vnum": itemVnum, "count": itemCount, "keeps": keeps})
+				self.interface.wndCube.AddCubeResultItem(itemVnum, itemCount, keeps)
 			
 			resultCount = len(self.cubeInformation[npcVNUM])
 			requestCount = 7
@@ -1937,6 +1948,9 @@ class GameWindow(ui.ScriptWindow):
 			# PRIVATE_SHOP_PRICE_LIST
 			"MyShopPriceList"		: self.__PrivateShop_PriceList,
 			# END_OF_PRIVATE_SHOP_PRICE_LIST
+
+			"shutdown_schedule"		: self.OpenShutdownCountdown,
+			"shutdown_cancel"		: self.CloseShutdownCountdown,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()
@@ -1964,6 +1978,21 @@ class GameWindow(ui.ScriptWindow):
 		except RuntimeError as msg:
 			dbg.TraceError(msg)
 			return 0
+
+	# Server command shutdown_schedule <seconds left>: a shutdown was scheduled, or brought forward.
+	def OpenShutdownCountdown(self, secondsLeft):
+		try:
+			secondsLeft = int(secondsLeft)
+		except ValueError:
+			return
+
+		if self.wndMaintenance:
+			self.wndMaintenance.Open(secondsLeft)
+
+	# Server command shutdown_cancel: the scheduled shutdown was called off.
+	def CloseShutdownCountdown(self):
+		if self.wndMaintenance:
+			self.wndMaintenance.Close()
 
 	def PartyHealReady(self):
 		self.interface.PartyHealReady()

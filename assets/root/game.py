@@ -1642,7 +1642,8 @@ class GameWindow(ui.ScriptWindow):
 	
 	# Dragon Soul Stone	
 	def BINARY_Highlight_Item(self, inven_type, inven_pos):
-		self.interface.Highligt_Item(inven_type, inven_pos)
+		if self.interface:
+			self.interface.Highligt_Item(inven_type, inven_pos)
 	
 	def BINARY_DragonSoulGiveQuilification(self):
 		self.interface.DragonSoulGiveQuilification()

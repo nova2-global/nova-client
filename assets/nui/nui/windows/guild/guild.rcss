@@ -6,8 +6,10 @@
    and the grades are tables of 22dp to 24dp rows; the skills three rows of
    cells over the dragon power gauge. Controls hover with the surface's
    hover color; checks are boxes that hold an accent mark. The controller
-   places it at the screen's corner (0, 0), legacy's place (D21); the
-   sheet's place frames it in its snapshots. Classic (legacy's 376 x 356
+   centers it on the screen at its first open (P18; legacy's place, the
+   screen's corner, was D21) and keeps a dragged place after it; the sheet
+   centers it on any frame at least 640dp wide, as the client does, and the
+   page cases' 520dp crops keep it 16dp from their corner. Classic (legacy's 376 x 356
    board, the locale's tab art, every place of the uiscripts and of
    uiguild.py's page builders at 1dp per pixel): skins/classic/windows/guild.rcss. */
 
@@ -22,6 +24,19 @@ body.guild
 	min-width: 0;
 	focus: none;
 	tab-index: none;
+}
+/* The screen's center, as the controller's center() places it: the
+   runtime's placement takes the margins into account, so a placed or
+   dragged window stays where it is put. */
+@media (min-width: 640dp)
+{
+	body.guild
+	{
+		left: 50%;
+		top: 50%;
+		margin-left: -240dp;
+		margin-top: -235dp;
+	}
 }
 .guild button
 {

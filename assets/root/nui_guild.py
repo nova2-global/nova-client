@@ -23,8 +23,11 @@ handlers through nui_slots.LegacySlotEvents; legacy's slot windows draw
 themselves, so the refreshes that set them (RefreshGuildSkillPage,
 OnUseSkill) refresh the proxies after legacy's. The large mark is the
 downloaded atlas's region (nui_guild_war.mark_source), which the client
-reloads when the atlas downloads (_nui.ReloadImage, E4). The board exists
-only while the window shows and draws below the legacy UI layer; nothing
+reloads when the atlas downloads (_nui.ReloadImage, E4). The first open
+centers the window on the screen in every look (P18; legacy's uiscript puts
+it at the corner), and a later open keeps a place the player dragged it to.
+The board exists only while the window shows and draws below the legacy UI
+layer; nothing
 runs per frame (legacy's reflectors and combo boxes hover in OnRender and
 OnUpdate). A press in the comment field focuses it (the body takes no
 focus), and while the field has NovaUI's focus the window holds wndMgr's
@@ -287,6 +290,10 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 
 	KEY = KEY
 	BOARD = _GuildBoard
+	# P18 (Eddy, 2026-10-20: "Make it centered"): the first open centers it in
+	# every look, classic too, where legacy's uiscript puts it at the screen's
+	# corner (D21); a later open keeps the place the player dragged it to.
+	PLACE = "center"
 
 	def __init__(self):
 		self.focusProxy = None
@@ -305,11 +312,6 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		if proxy is not None:
 			proxy.destroy()
 		nui_facade.Facade.nui_discard(self)
-
-	def PLACE(self):
-		"""The uiscript's place, the screen's corner (D21): Open does not
-		center it."""
-		return (0, 0)
 
 	def nui_model(self):
 		limits = self._limits

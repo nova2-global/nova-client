@@ -482,20 +482,29 @@ class Window(object):
 
 	# --- text fields ------------------------------------------------------------
 
-	def set_value(self, element_id, text, caret="end"):
+	def set_value(self, element_id, text, caret="end", even_hidden=False):
 		"""Replaces the text of the text field with this id (an input that takes
 		text, or a textarea), cut to its maxlength, and sends one change event
 		(linebreak False) when the text changed, as typing would. `caret`
 		("end", "start", "keep" or a character index) places the caret, with no
 		selection, when the field has the focus; a field without the focus
 		keeps its own caret. False for an unknown or hidden element, or one
-		that takes no text."""
+		that takes no text. With even_hidden=True (P18) a field of a hidden
+		document, or one under a data-if that is off, takes the text too (a
+		pooled board emptied for its next window); an exe without it answers
+		as before, False for a hidden field."""
 		if not isinstance(text, str):
 			raise TypeError("nui.Window.set_value() takes str text, not %s" % type(text).__name__)
 		if not (caret in _CARETS or (isinstance(caret, int) and not isinstance(caret, bool) and caret >= 0)):
 			raise ValueError("nui.Window.set_value(): caret is one of %s or an index >= 0, not %r" % (", ".join(_CARETS), caret))
 		if not self._doc:
 			return False
+		if even_hidden:
+			try:
+				return bool(_nui.SetValue(self._doc, element_id, text, caret, True))
+			except TypeError:
+				# An exe before P18 takes four arguments: shown fields only.
+				pass
 		return bool(_nui.SetValue(self._doc, element_id, text, caret))
 
 	def insert_text(self, element_id, text):

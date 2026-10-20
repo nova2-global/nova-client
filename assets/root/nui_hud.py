@@ -597,6 +597,196 @@ class KeptBoard(OnDemand):
 		self._make = self._restore = self._keep = self._empty = None
 
 
+class _NoOwner(object):
+	"""The owner of a board that waits in a BoardPool (P18): every attribute
+	is itself and every call does nothing, so an event that still reaches a
+	waiting board (a binding's change as it is emptied) acts on no window."""
+
+	def __getattr__(self, name):
+		return self
+
+	def __call__(self, *args, **kwargs):
+		return None
+
+	def __bool__(self):
+		return False
+
+
+NO_OWNER = _NoOwner()
+
+
+class Pooled(object):
+	"""For a board a PooledBoard holds (P18), with RaisesOnPress's `_owner`:
+	adopt(owner) gives a waiting board its new window; release() takes the
+	window away (NO_OWNER), empties its text fields (FIELDS, hidden ones too:
+	set_value's even_hidden) and, while the board still shows, parks the
+	focus on PARK (a control that takes no keys), so a board that waits keeps
+	nothing a player typed, and the next show gives no field the focus legacy
+	did not ask for."""
+
+	FIELDS = ()
+	PARK = None
+
+	def adopt(self, owner):
+		self._owner = keep_weakly(owner)
+		self._raised = False
+
+	def release(self):
+		self._owner = NO_OWNER
+		self._raised = False
+		for field in self.FIELDS:
+			self.set_value(field, "", even_hidden=True)
+		if self.PARK and self.is_visible():
+			self.focus(self.PARK)
+
+
+# The pools by name, for pool_stats() and drain_pools().
+_pools = {}
+
+
+class BoardPool(object):
+	"""Hidden boards of one board class that wait for the next window of that
+	class (P18): a window made again at each open (the war declare dialog),
+	or one of several at once (the whisper dialogs, the equipment views),
+	takes a waiting board instead of loading its document. At most `bound`
+	boards wait; a board put back while the pool is full is destroyed.
+	drain() destroys the waiting boards (the phase's end, drain_pools())."""
+
+	def __init__(self, name, bound):
+		self.name = str(name)
+		self.bound = max(0, int(bound))
+		self._boards = []
+		self.loads = 0       # documents loaded for the pool's windows
+		self.reuses = 0      # shows that took a waiting board
+		self.most = 0        # the most boards that ever waited at once
+		_pools[self.name] = self
+
+	def __len__(self):
+		return len(self._boards)
+
+	def boards(self):
+		return list(self._boards)
+
+	def take(self):
+		"""The board that waited last, or None."""
+		while self._boards:
+			board = self._boards.pop()
+			if board._doc:
+				self.reuses += 1
+				return board
+		return None
+
+	def put(self, board):
+		"""True when the board waits; one over the bound is destroyed."""
+		if board is None:
+			return False
+		if any(waiting is board for waiting in self._boards):
+			return True
+		if not board._doc or len(self._boards) >= self.bound:
+			board.destroy()
+			return False
+		self._boards.append(board)
+		self.most = max(self.most, len(self._boards))
+		return True
+
+	def drain(self):
+		"""Destroys every waiting board; how many there were."""
+		boards, self._boards = self._boards, []
+		for board in boards:
+			board.destroy()
+		return len(boards)
+
+
+def drain_pools():
+	"""Every pool's waiting boards go (nui_facade.end_phase(), at each phase
+	change: RmlUi updates every loaded document each frame). How many."""
+	return sum(pool.drain() for pool in list(_pools.values()))
+
+
+def pool_stats():
+	"""{name: {"waiting", "bound", "most", "loads", "reuses"}} of every pool
+	(dev tools, the kit's memory runs, tests)."""
+	return dict((name, {"waiting": len(pool), "bound": pool.bound, "most": pool.most,
+	                    "loads": pool.loads, "reuses": pool.reuses})
+	            for name, pool in _pools.items())
+
+
+class PooledBoard(OnDemand):
+	"""OnDemand whose boards come from a BoardPool and go back to it (P18):
+	show() takes a waiting board (adopt(board), the window's, then
+	restore(board)) or makes one; hide() runs keep(board), empty(board)
+	(the window's lists, as KeptBoard's) and the board's own release(), hides
+	it and puts it back in the pool, where it waits for the next window of
+	its class. A hidden window holds no board, so the pool's bound counts
+	every hidden one. probe() makes no board while one waits, and a board it
+	makes waits in the pool for the show that follows, so a first open loads
+	the document once. destroy() (the window's Destroy, a facade collected)
+	is hide() for good. The callbacks are held weakly when they are bound
+	methods."""
+
+	def __init__(self, pool, make, restore=None, keep=None, empty=None, adopt=None):
+		OnDemand.__init__(self, make, restore, keep)
+		self._pool = pool
+		self._empty = _weak_fn(empty)
+		self._adopt = _weak_fn(adopt)
+
+	def pool(self):
+		return self._pool
+
+	def _new(self):
+		if self._make is None:
+			# Destroyed: the waiting boards are the next window's.
+			return None
+		board = self._pool.take()
+		if board is not None:
+			if self._adopt is not None:
+				self._adopt(board)
+			return board
+		board = OnDemand._new(self)
+		if board is not None and board._doc:
+			self._pool.loads += 1
+		return board
+
+	def probe(self):
+		if self._board is not None:
+			return bool(self._board._doc)
+		if self._make is None:
+			return False
+		if len(self._pool):
+			return True
+		board = OnDemand._new(self)
+		if board is None:
+			return False
+		if not board._doc:
+			board.destroy()
+			return False
+		self._pool.loads += 1
+		self._wait(board)
+		return True
+
+	def _wait(self, board):
+		release = getattr(board, "release", None)
+		if release is not None:
+			release()
+		board.hide()
+		self._pool.put(board)
+
+	def hide(self):
+		board = self._board
+		if board is None:
+			return
+		self._board = None
+		if self._keep is not None:
+			self._keep(board)
+		if self._empty is not None:
+			self._empty(board)
+		self._wait(board)
+
+	def destroy(self):
+		OnDemand.destroy(self)
+		self._empty = self._adopt = None
+
+
 # P15 fix stage (VF-1): the order of the boards below the legacy UI band.
 # Legacy's window manager keeps one order in the UI layer: SetTop moves a
 # window to the top, and Show only shows it where it stands

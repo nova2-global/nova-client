@@ -380,10 +380,10 @@ def make_nui(state):
             if event:
                 self.fire(event, self.fields.get(element_id, ""), linebreak)
 
-        def set_value(self, element_id, text, caret="end"):
+        def set_value(self, element_id, text, caret="end", even_hidden=False):
             if not isinstance(text, str):
                 raise TypeError(type(text).__name__)
-            if not self._doc or not self.visible:
+            if not self._doc or not (self.visible or even_hidden):
                 return False
             self.calls.append(("set_value", element_id, text, caret))
             limit = state.maxlength.get((self.DOCUMENT, element_id))

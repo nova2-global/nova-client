@@ -1129,9 +1129,17 @@ class AttachRightBinding(unittest.TestCase):
 
     ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "root"))
 
-    def windows(self):
+    # P17 merge: the Wave 4 grids, which do not bind the class (the equipment
+    # view's cells take no press at all). F-2 for them is open (P16's merge
+    # note: legacy's right press differs per grid), so the host still cancels
+    # an attach at their right press, as validated.
+    F2_OPEN = ("windows/equipment-view/equipment-view.rml", "windows/exchange/exchange.rml", "windows/guild/guild.rml",
+               "windows/mall/mall.rml", "windows/private-shop/private-shop.rml", "windows/safebox/safebox.rml",
+               "windows/shop/shop.rml")
+
+    def windows(self, f2_open=False):
         """{document path: controller} of the controllers that make a
-        LegacySlotEvents."""
+        LegacySlotEvents; F2_OPEN's documents only with f2_open."""
         import re
         found = {}
         for name in sorted(os.listdir(self.ROOT)):
@@ -1141,8 +1149,17 @@ class AttachRightBinding(unittest.TestCase):
             if "LegacySlotEvents(" not in source:
                 continue
             for document in re.findall(r'DOCUMENT = "nui/(windows/[a-z0-9-]+/[a-z0-9-]+\.rml)"', source):
-                found[os.path.join(NUI, document)] = name
+                if (document in self.F2_OPEN) == f2_open:
+                    found[os.path.join(NUI, document)] = name
         return found
+
+    def test_the_f2_open_grids_are_legacy_slot_events_windows_without_the_binding(self):
+        windows = self.windows(f2_open=True)
+        self.assertEqual(sorted(os.path.relpath(document, NUI) for document in windows), sorted(self.F2_OPEN))
+        for document, controller in windows.items():
+            cells, missing = self.unbound_cells(_read(document))
+            with self.subTest(document=os.path.relpath(document, NUI)):
+                self.assertEqual(len(missing), cells, "binding one means F-2 was decided: move it out of F2_OPEN")
 
     @staticmethod
     def unbound_cells(text):

@@ -97,6 +97,7 @@ CUBE_CATEGORY_WEAPONS	Broń
 CUBE_CATEGORY_WEAPON_COSTUME	Wizerunek broni
 CUBE_CATEGORY_WEAPON_EFFECT	Efekt broni
 CUBE_CATEGORY_WING_COSTUME	Kostium skrzydeł
+CUBE_RENEWAL_RANGED_CONFIRM	Do you want to create %s using %s?
 DAY	Dni
 DO_YOU_BUY_ITEM1	Czy chcesz kupić %s za %s?
 DO_YOU_BUY_ITEM2	Czy chcesz kupić %s %s za %s?

@@ -97,6 +97,7 @@ CUBE_CATEGORY_WEAPONS	Weapons
 CUBE_CATEGORY_WEAPON_COSTUME	Weapon Costume
 CUBE_CATEGORY_WEAPON_EFFECT	Weapon Effect
 CUBE_CATEGORY_WING_COSTUME	Wing Costume
+CUBE_RENEWAL_RANGED_CONFIRM	Do you want to create %s using %s?
 DAY	Дней
 DO_YOU_BUY_ITEM1	Хотите купить %s за %s?
 DO_YOU_BUY_ITEM2	Купить %s %s за %s?

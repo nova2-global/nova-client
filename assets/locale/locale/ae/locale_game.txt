@@ -38,6 +38,7 @@ CUBE_CATEGORY_WEAPONS	Weapons
 CUBE_CATEGORY_WEAPON_COSTUME	Weapon Costume
 CUBE_CATEGORY_WEAPON_EFFECT	Weapon Effect
 CUBE_CATEGORY_WING_COSTUME	Wing Costume
+CUBE_RENEWAL_RANGED_CONFIRM	Do you want to create %s using %s?
 ITEM_HAS_RESTRICTED_BONUS	Attention! %s cannot be copied!\nWould you like to continue?
 alsoExportToCharset	
 CANNOT_ATTACK_DEST_IN_SAFE	إن الخصم بعيد جداً.

@@ -29,7 +29,6 @@ CREATE_SHAPE	Forma
 CREATE_SP	INT
 CREATE_WOMAN	Mulher
 CUBE_INFO_TITLE	Manual de Refinamento
-CUBE_RENEWAL_TITLE	Aprimoramento
 CUBE_REQUIRE_MATERIAL	Materiais necessários
 CUBE_REQUIRE_MATERIAL_OR	ou
 CUBE_TITLE	Janela de Refinamento

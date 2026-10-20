@@ -292,7 +292,6 @@ class Interface(object):
 	def __MakeCubeRenewalWindow(self):
 		self.wndCubeRenewal = uiCubeRenewal.CubeRenewalWindow()
 		self.wndCubeRenewal.LoadWindow()
-		self.wndCubeRenewal.BindInterface(self)
 		self.wndCubeRenewal.Hide()
 
 	# ACCESSORY_REFINE_ADD_METIN_STONE
@@ -578,7 +577,7 @@ class Interface(object):
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoul.RefreshStatus()
 		if self.wndCubeRenewal:
-			self.wndCubeRenewal.Refresh()
+			self.wndCubeRenewal.RefreshCost()
 
 	def RefreshStamina(self):
 		self.wndTaskBar.RefreshStamina()

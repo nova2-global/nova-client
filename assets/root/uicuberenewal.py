@@ -9,9 +9,11 @@ import uiToolTip
 import cube_renewal
 
 ## Limits. The wire contract's values come from cube_renewal.
-SLOTS_PER_PAGE = 5						# material slots shown at once; materials 6 to 10 are on the next page
+SLOTS_PER_PAGE = 5						# material slots shown at once; materials 6 to 10 are on the next page.
+										# The uiscript lays out as many (its MATERIAL_SLOT_COUNT; LoadWindow checks).
 MATERIAL_MAX = cube_renewal.MATERIAL_MAX	# materials per recipe
 QUANTITY_MAX = cube_renewal.QUANTITY_MAX	# reward count x multiplier, at most (the server checks it too)
+MAX_DISTANCE = cube_renewal.MAX_DISTANCE	# the server's CUBE_MAX_DISTANCE: the window closes past it
 RESULT_SLOT = 0
 FIRST_MATERIAL_SLOT = 1
 RANGED_CYCLE_SECONDS = 1.5				# a ranged recipe's material slot shows the range's items in turn
@@ -235,17 +237,20 @@ class CubeRenewalWindow(ui.ScriptWindow):
 	"[N]" (how many the player can craft now) and the success chance. A recipe
 	shows its result and materials (five per page), what the player has of each,
 	the yang (and later gaya) cost and the quantity to craft; OK sends
-	cube_renewal.CubeRenewalMakeItem(index, multiplier). The server answers in the
-	chat and with item and gold updates, which reach Refresh() through the
-	interface's RefreshInventory and RefreshStatus.
+	cube_renewal.CubeRenewalMakeItem(index, multiplier) once the player said yes
+	to every question GetAcceptQuestions() has. The server answers in the chat
+	and with item and gold updates, which reach Refresh() through the
+	interface's RefreshInventory, and RefreshCost() through its RefreshStatus.
 
 	The methods under "Recipe data" only compute and return data from
 	cube_renewal, player and item and the window's state (the list, the
-	selection, the page, the open tree nodes); they touch no widget, so a
-	subclass with other widgets can use them as they are. Refresh() recomputes
-	what the inventory, the gold, the selection, the page and the quantity
-	change, RefreshList() lays the tree's rows out (LIST_ITEM_CLASS makes them),
-	and nothing runs per frame but the ranged recipe's 1.5 s timer.
+	selection, the page, the open tree nodes, where the cube opened); they touch
+	no widget, so a subclass with other widgets can use them as they are.
+	Refresh() recomputes what the inventory, the selection, the page and the
+	quantity change, RefreshCost() what the gold changes, RefreshList() lays the
+	tree's rows out (LIST_ITEM_CLASS makes them). Per frame, OnUpdate runs only
+	IsOutOfRange() (the window closes once the player walks away) and the ranged
+	recipe's 1.5 s timer.
 	"""
 
 	LIST_ITEM_CLASS = CubeRenewalListItem
@@ -253,9 +258,10 @@ class CubeRenewalWindow(ui.ScriptWindow):
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
 
-		self.interface = None
 		self.tooltipItem = None
 		self.questionDialog = None
+		self.pendingQuestions = []
+		self.openPosition = None
 
 		self.recipes = []
 		self.tree = []
@@ -311,6 +317,11 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			import exception
 			exception.Abort("CubeRenewalWindow.LoadWindow.BindObject")
 
+		# The paging and the data methods count on the uiscript's slots.
+		if pyScrLoader.ScriptDictionary.get("MATERIAL_SLOT_COUNT") != SLOTS_PER_PAGE:
+			import exception
+			exception.Abort("CubeRenewalWindow.LoadWindow.MaterialSlotCount")
+
 		self.button_ok.SetEvent(ui.__mem_func__(self.AcceptCube))
 		self.button_cancel.SetEvent(ui.__mem_func__(self.Close))
 		self.qty_sub_button.SetEvent(ui.__mem_func__(self.QtySubButton))
@@ -329,19 +340,18 @@ class CubeRenewalWindow(ui.ScriptWindow):
 		self.__ShowGemWidgets()
 		self.__ClearSelectionWidgets()
 
-	def BindInterface(self, interface):
-		self.interface = interface
-
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem
 
 	def Destroy(self):
-		cube_renewal.SetCubeRenewalHandler(None)
+		# Only while it is this window: the next game phase's window may have
+		# registered already (cube_renewal also lets go when the phase ends).
+		if cube_renewal.GetCubeRenewalHandler() is self:
+			cube_renewal.SetCubeRenewalHandler(None)
 		self.__CloseQuestionDialog()
 		self.__ClearRows()
 		self.ClearDictionary()
 
-		self.interface = None
 		self.tooltipItem = None
 		self.board = None
 		self.scrollBar = None
@@ -362,6 +372,33 @@ class CubeRenewalWindow(ui.ScriptWindow):
 	## Recipe data (no widgets)
 
 	def ReadRecipe(self, index, dates):
+		"""Recipe `index` from its cube_renewal.GetDates(index) tuple, as a dict:
+
+			"index"            int   its position in the server's list: what
+			                         CubeRenewalMakeItem takes
+			"reward_vnum"      int   the item it makes
+			"reward_count"     int   items one craft makes
+			"reward_stackable" bool  the reward stacks, so one request may craft
+			                         it more than once
+			"materials"        list  of (vnum, count) tuples, what one craft
+			                         takes, in the server's order; a material
+			                         whose vnum is 0 (unused) is dropped, so the
+			                         list has 0 to MATERIAL_MAX entries. In a
+			                         ranged recipe each is (first vnum, length)
+			                         instead: any one item of first ..
+			                         first + length - 1 (see "item_ranged")
+			"gold"             int   yang one craft costs
+			"percent"          int   the chance of a craft to succeed, 0-100
+			"category"         str   the server's category name, e.g. "ARMOR"
+			                         (GetCategoryKey maps the unknown ones)
+			"gem"              int   gaya one craft costs (0 until NOVA-10)
+			"allow_copy"       int   0 copies nothing; COPY_FROM_FIRST_MATERIAL
+			                         copies from the first material owned; any
+			                         other value is the vnum copied from (see
+			                         FindCopySourceCell)
+			"item_ranged"      bool  the materials are ranges, and a craft takes
+			                         one item of them: the first one owned
+		"""
 		materials = []
 		for i in range(MATERIAL_MAX):
 			field = DATES_FIRST_MATERIAL + DATES_MATERIAL_FIELDS * i
@@ -467,27 +504,65 @@ class CubeRenewalWindow(ui.ScriptWindow):
 	def GetRecipeName(self, recipe):
 		return RECIPE_NAME_FORMAT % (self.GetItemName(recipe["reward_vnum"]), recipe["percent"])
 
-	def GetRangedItemList(self, recipe):
-		itemList = []
+	# A ranged recipe's items are its ranges one after the other, in recipe
+	# order (up to MATERIAL_MAX ranges of up to 65535 items each): they are
+	# never listed, only counted, indexed and looked up.
+
+	# How many items a ranged recipe's ranges hold together.
+	def GetRangedLength(self, recipe):
+		return sum(length for (vnum, length) in recipe["materials"])
+
+	# The item at `position` of a ranged recipe's ranges, or 0 past their end.
+	def GetRangedVnum(self, recipe, position):
 		for (vnum, length) in recipe["materials"]:
-			itemList.extend(range(vnum, vnum + length))
+			if 0 <= position < length:
+				return vnum + position
 
-		return itemList
-
-	# The first item of a ranged recipe's ranges the player owns (the one the
-	# server takes), or 0.
-	def GetRangedOwnedVnum(self, recipe):
-		for vnum in self.GetRangedItemList(recipe):
-			if player.GetItemCountByVnum(vnum) > 0:
-				return vnum
+			position -= length
 
 		return 0
+
+	# The position of `vnum` in a ranged recipe's ranges (its first one), or -1
+	# when it is in none of them.
+	def GetRangedPosition(self, recipe, vnum):
+		position = 0
+		for (first, length) in recipe["materials"]:
+			if first <= vnum < first + length:
+				return position + vnum - first
+
+			position += length
+
+		return -1
+
+	# (cell, vnum, count) of every item in the inventory, lowest cell first.
+	def GetInventoryItems(self):
+		items = []
+		for cell in range(player.INVENTORY_PAGE_SIZE * player.INVENTORY_PAGE_COUNT):
+			vnum = player.GetItemIndex(cell)
+			if vnum:
+				items.append((cell, vnum, player.GetItemCount(cell)))
+
+		return items
+
+	# The item of a ranged recipe's ranges the server takes: the first one, in
+	# the ranges' order, the player owns; or 0.
+	def GetRangedOwnedVnum(self, recipe):
+		owned = None
+		for (cell, vnum, count) in self.GetInventoryItems():
+			position = self.GetRangedPosition(recipe, vnum)
+			if position >= 0 and (owned is None or position < owned[0]):
+				owned = (position, vnum)
+
+		if owned is None:
+			return 0
+
+		return owned[1]
 
 	# How many times the player's materials make the recipe (gold aside, as OLD).
 	# A ranged recipe takes one item of its ranges each time.
 	def GetCraftableCount(self, recipe):
 		if recipe["item_ranged"]:
-			return sum(player.GetItemCountByVnum(vnum) for vnum in self.GetRangedItemList(recipe))
+			return sum(count for (cell, vnum, count) in self.GetInventoryItems() if self.GetRangedPosition(recipe, vnum) >= 0)
 
 		counts = [player.GetItemCountByVnum(vnum) // count for (vnum, count) in recipe["materials"] if count > 0]
 		if not counts:
@@ -559,11 +634,11 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			return 0
 
 		if recipe["item_ranged"]:
-			itemList = self.GetRangedItemList(recipe)
-			if 0 != position or not itemList:
+			length = self.GetRangedLength(recipe)
+			if 0 != position or length <= 0:
 				return 0
 
-			return itemList[self.rangedIndex % len(itemList)]
+			return self.GetRangedVnum(recipe, self.rangedIndex % length)
 
 		materialIndex = self.pageIndex * SLOTS_PER_PAGE + position
 		if materialIndex >= len(recipe["materials"]):
@@ -587,45 +662,61 @@ class CubeRenewalWindow(ui.ScriptWindow):
 
 		return rows
 
-	# The inventory cell the server takes an item of this vnum from first, or -1.
+	# The inventory cell the server takes an item of this vnum from first (the
+	# lowest one holding it), or -1.
 	def FindInventoryCell(self, vnum):
+		# Unlike the server's FirstSpent it does not skip what the player's own private shop sells: the cube can't open with a shop up.
 		for cell in range(player.INVENTORY_PAGE_SIZE * player.INVENTORY_PAGE_COUNT):
 			if player.GetItemIndex(cell) == vnum:
 				return cell
 
 		return -1
 
-	# The cell whose bonuses and stones the reward gets, or -1, by the server's
-	# rule: allow_copy 1 copies from the first material (in recipe order) the
-	# player owns; allow_copy <vnum> copies from that item when it is a weapon or
-	# an armour of the reward's subtype.
+	# The cell whose bonuses and stones the reward gets, or -1: the server's
+	# TakeCopy. A ranged recipe copies from the item it takes
+	# (GetRangedOwnedVnum), and only when allow_copy is 1 or that item's vnum.
+	# Otherwise allow_copy 1 copies from the first material, in recipe order,
+	# the player owns, and allow_copy <vnum> from an item of that vnum. In
+	# every case the item is the lowest cell holding its vnum, and unless
+	# allow_copy is 1 it must be a weapon or an armour of the reward's subtype.
 	def FindCopySourceCell(self, recipe):
 		allowCopy = recipe["allow_copy"]
 		if not allowCopy:
 			return -1
 
-		if COPY_FROM_FIRST_MATERIAL == allowCopy:
+		if recipe["item_ranged"]:
+			sourceVnum = self.GetRangedOwnedVnum(recipe)
+			if not sourceVnum or allowCopy not in (COPY_FROM_FIRST_MATERIAL, sourceVnum):
+				return -1
+		elif COPY_FROM_FIRST_MATERIAL == allowCopy:
 			for (vnum, count) in recipe["materials"]:
 				cell = self.FindInventoryCell(vnum)
 				if cell >= 0:
 					return cell
 
 			return -1
+		else:
+			sourceVnum = allowCopy
 
-		cell = self.FindInventoryCell(allowCopy)
+		cell = self.FindInventoryCell(sourceVnum)
 		if cell < 0:
 			return -1
 
-		item.SelectItem(allowCopy)
-		if item.GetItemType() not in (item.ITEM_TYPE_WEAPON, item.ITEM_TYPE_ARMOR):
-			return -1
-
-		sourceSubType = item.GetItemSubType()
-		item.SelectItem(recipe["reward_vnum"])
-		if item.GetItemSubType() != sourceSubType:
+		if COPY_FROM_FIRST_MATERIAL != allowCopy and not self.IsCopySourceKind(sourceVnum, recipe["reward_vnum"]):
 			return -1
 
 		return cell
+
+	# allow_copy <vnum>'s condition on the item copied from: a weapon or an
+	# armour of the reward's subtype.
+	def IsCopySourceKind(self, sourceVnum, rewardVnum):
+		item.SelectItem(sourceVnum)
+		if item.GetItemType() not in (item.ITEM_TYPE_WEAPON, item.ITEM_TYPE_ARMOR):
+			return False
+
+		sourceSubType = item.GetItemSubType()
+		item.SelectItem(rewardVnum)
+		return item.GetItemSubType() == sourceSubType
 
 	def GetBlankItemData(self):
 		return ([0] * player.METIN_SOCKET_MAX_NUM, [(0, 0)] * player.ATTRIBUTE_SLOT_MAX_NUM)
@@ -696,6 +787,40 @@ class CubeRenewalWindow(ui.ScriptWindow):
 
 		return (vnum, data[0], data[1])
 
+	# The questions OK asks before it crafts, in order, each needing a yes: a
+	# bonus of the copy source the reward drops (ITEM_HAS_RESTRICTED_BONUS),
+	# then for a ranged recipe the item it takes (CUBE_RENEWAL_RANGED_CONFIRM).
+	# Empty: OK crafts at once.
+	def GetAcceptQuestions(self, recipe):
+		questions = []
+
+		restriction = self.GetRestrictedBonus(recipe)
+		if restriction:
+			questions.append(localeInfo.ITEM_HAS_RESTRICTED_BONUS % self.GetBonusName(*restriction))
+
+		if recipe["item_ranged"]:
+			ownedVnum = self.GetRangedOwnedVnum(recipe)
+			if ownedVnum:
+				questions.append(localeInfo.CUBE_RENEWAL_RANGED_CONFIRM % (self.GetItemName(recipe["reward_vnum"]), self.GetItemName(ownedVnum)))
+
+		return questions
+
+	def GetPlayerPosition(self):
+		(x, y, z) = player.GetMainCharacterPosition()
+		return (x, y)
+
+	# Whether the player walked away from where the cube opened: more than
+	# MAX_DISTANCE along either axis, as NEW's legacy cube window measured it. The
+	# server keeps the cube open (and the player's items locked) until it is
+	# told the window closed, and would refuse a craft from there anyway.
+	def IsOutOfRange(self):
+		if self.openPosition is None:
+			return False
+
+		(x, y) = self.GetPlayerPosition()
+		(openX, openY) = self.openPosition
+		return abs(x - openX) > MAX_DISTANCE or abs(y - openY) > MAX_DISTANCE
+
 	###############################################################################
 	## Server events
 
@@ -719,16 +844,18 @@ class CubeRenewalWindow(ui.ScriptWindow):
 		self.Refresh()
 
 	def Open(self):
+		self.openPosition = self.GetPlayerPosition()
 		self.Show()
 		self.SetTop()
 		self.Refresh()
 
-	# The player closes the cube: the server is told.
+	# The player closes the cube (or walked away from it): the server is told.
 	def Close(self):
 		cube_renewal.CubeRenewalClose()
 		self.__Hide()
 
-	# The server closed the cube (death, /reload c, walked away): nothing to send back.
+	# The server closed the cube (death, /reload c, a craft from too far away):
+	# nothing to send back.
 	def BINARY_CUBE_RENEWAL_CLOSE(self):
 		self.__Hide()
 
@@ -740,6 +867,7 @@ class CubeRenewalWindow(ui.ScriptWindow):
 		self.__CloseQuestionDialog()
 		self.__HideSlotToolTip()
 		self.__Unselect()
+		self.openPosition = None
 		self.Hide()
 
 	###############################################################################
@@ -912,8 +1040,8 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			if button.IsShow():
 				button.Flash()
 
-	# Recomputes everything the inventory, the gold, the selection, the page and
-	# the quantity change: each recipe's "[N]", the selected recipe's slots,
+	# Recomputes everything the inventory, the selection, the page and the
+	# quantity change: each recipe's "[N]", the selected recipe's slots,
 	# have/need counts and costs. Called on those events only, never per frame.
 	def Refresh(self):
 		if not self.IsShow():
@@ -946,7 +1074,23 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			text.SetPackedFontColor(ENOUGH_COLOR if enough else MISSING_COLOR)
 			text.Show()
 
-		(gold, gem) = self.GetCost(recipe, multiplier)
+		self.RefreshCost()
+
+		pageCount = self.GetMaterialPageCount(recipe)
+		self.__ShowIf(self.backButton, self.pageIndex > 0)
+		self.__ShowIf(self.nextButton, self.pageIndex + 1 < pageCount)
+
+	# The selected recipe's yang (and gaya) cost, red when the player cannot pay
+	# it: all a gold change touches (the interface's RefreshStatus).
+	def RefreshCost(self):
+		if not self.IsShow():
+			return
+
+		recipe = self.GetSelectedRecipe()
+		if not recipe:
+			return
+
+		(gold, gem) = self.GetCost(recipe, self.GetMultiplier(recipe, self.quantity))
 		self.yang_text.SetText(localeInfo.NumberToMoneyString(gold))
 		self.yang_text.SetPackedFontColor(COST_COLOR if self.HasEnoughGold(gold) else MISSING_COLOR)
 		self.yang_text.Show()
@@ -955,10 +1099,6 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			self.gem_text.SetText(NUMBER_FORMAT % gem)
 			self.gem_text.SetPackedFontColor(COST_COLOR if self.HasEnoughGem(gem) else MISSING_COLOR)
 			self.gem_text.Show()
-
-		pageCount = self.GetMaterialPageCount(recipe)
-		self.__ShowIf(self.backButton, self.pageIndex > 0)
-		self.__ShowIf(self.nextButton, self.pageIndex + 1 < pageCount)
 
 	def __ShowIf(self, widget, isShown):
 		if isShown:
@@ -996,6 +1136,10 @@ class CubeRenewalWindow(ui.ScriptWindow):
 			self.OverInItem(FIRST_MATERIAL_SLOT)
 
 	def OnUpdate(self):
+		if self.IsOutOfRange():
+			self.Close()
+			return
+
 		self.UpdateSelectedItemRange()
 
 	###############################################################################
@@ -1036,6 +1180,8 @@ class CubeRenewalWindow(ui.ScriptWindow):
 	###############################################################################
 	## Crafting
 
+	# OK: asks GetAcceptQuestions() one after the other, and crafts after the
+	# last yes (at once when there is none). A no ends it.
 	def AcceptCube(self):
 		recipe = self.GetSelectedRecipe()
 		if not recipe:
@@ -1043,19 +1189,19 @@ class CubeRenewalWindow(ui.ScriptWindow):
 
 		self.CheckInputFocus()
 
-		restriction = self.GetRestrictedBonus(recipe)
-		if restriction:
-			self.__OpenQuestionDialog(localeInfo.ITEM_HAS_RESTRICTED_BONUS % self.GetBonusName(*restriction))
+		self.__CloseQuestionDialog()
+		self.pendingQuestions = self.GetAcceptQuestions(recipe)
+		self.__AskNextQuestion()
+
+	# A yes: the next question, or the craft after the last one.
+	def __AskNextQuestion(self):
+		if not self.pendingQuestions:
+			self.AcceptCubeNoCheck()
 			return
 
-		if recipe["item_ranged"]:
-			ownedVnum = self.GetRangedOwnedVnum(recipe)
-			if ownedVnum:
-				self.__OpenQuestionDialog(localeInfo.DO_YOU_BUY_ITEM1 % (self.GetItemName(recipe["reward_vnum"]), self.GetItemName(ownedVnum)))
-				return
+		self.__OpenQuestionDialog(self.pendingQuestions.pop(0))
 
-		self.AcceptCubeNoCheck()
-
+	# Crafts the selected recipe without asking.
 	def AcceptCubeNoCheck(self):
 		self.__CloseQuestionDialog()
 
@@ -1066,16 +1212,19 @@ class CubeRenewalWindow(ui.ScriptWindow):
 		cube_renewal.CubeRenewalMakeItem(recipe["index"], self.GetMultiplier(recipe, self.quantity))
 
 	def __OpenQuestionDialog(self, text):
-		self.__CloseQuestionDialog()
+		if self.questionDialog:
+			self.questionDialog.Close()
 
 		questionDialog = uiCommon.QuestionDialog()
 		questionDialog.SetText(text)
-		questionDialog.SetAcceptEvent(ui.__mem_func__(self.AcceptCubeNoCheck))
+		questionDialog.SetAcceptEvent(ui.__mem_func__(self.__AskNextQuestion))
 		questionDialog.SetCancelEvent(ui.__mem_func__(self.__CloseQuestionDialog))
 		questionDialog.Open()
 		self.questionDialog = questionDialog
 
+	# Closes the open question, if any, and drops the ones after it.
 	def __CloseQuestionDialog(self):
+		self.pendingQuestions = []
 		if self.questionDialog:
 			self.questionDialog.Close()
 			self.questionDialog = None

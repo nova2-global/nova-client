@@ -219,12 +219,7 @@ class GameWindow(ui.ScriptWindow):
 			import exception
 			exception.Abort("GameWindow.Open")
 		# END_OF_START_GAME_ERROR_EXIT
-		
-		# Cache list of items that NPC can craft via cube system
-		# ex) cubeInformation[20383] = [ {"rewordVNUM": 72723, "rewordCount": 1, "materialInfo": "101,1&102,2", "price": 999 }, ... ]
-		self.cubeInformation = {}
-		self.currentCubeNPC = 0
-		
+
 	def Close(self):
 		self.Hide()
 
@@ -390,10 +385,6 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_H]			= lambda: self.__PressHKey()
 		onPressKeyDict[app.DIK_B]			= lambda: self.__PressBKey()
 		onPressKeyDict[app.DIK_F]			= lambda: self.__PressFKey()
-
-		# CUBE_TEST
-		#onPressKeyDict[app.DIK_K]			= lambda : self.interface.OpenCubeWindow()
-		# CUBE_TEST_END
 
 		self.onPressKeyDict = onPressKeyDict
 
@@ -1636,154 +1627,18 @@ class GameWindow(ui.ScriptWindow):
 	def Gift_Show(self):
 		self.interface.ShowGift()
 
-	# CUBE
-	def BINARY_Cube_Open(self, npcVNUM):
-		self.currentCubeNPC = npcVNUM
-		
-		self.interface.OpenCubeWindow()
+	# CUBE_RENEWAL
+	# cube_renewal (C++) has the recipes of the cube the server opened; the window
+	# took them in its BINARY_CUBE_RENEWAL_LOADING. The server closes the cube on
+	# death, on /reload c and when the player crafts from too far away.
+	def BINARY_CUBE_RENEWAL_OPEN(self):
+		if self.interface:
+			self.interface.BINARY_CUBE_RENEWAL_OPEN()
 
-		
-		if npcVNUM not in self.cubeInformation:
-			net.SendChatPacket("/cube r_info")
-		else:
-			cubeInfoList = self.cubeInformation[npcVNUM]
-			
-			i = 0
-			for cubeInfo in cubeInfoList:								
-				self.interface.wndCube.AddCubeResultItem(cubeInfo["vnum"], cubeInfo["count"], cubeInfo.get("keeps", False))
-				
-				j = 0				
-				for materialList in cubeInfo["materialList"]:
-					for materialInfo in materialList:
-						itemVnum, itemCount = materialInfo
-						self.interface.wndCube.AddMaterialInfo(i, j, itemVnum, itemCount)
-					j = j + 1						
-						
-				i = i + 1
-				
-			self.interface.wndCube.Refresh()
-
-	def BINARY_Cube_Close(self):
-		self.interface.CloseCubeWindow()
-
-	# Update required gold, expected product VNUM and count information
-	def BINARY_Cube_UpdateInfo(self, gold, itemVnum, count):
-		self.interface.UpdateCubeInfo(gold, itemVnum, count)
-		
-	def BINARY_Cube_Succeed(self, itemVnum, count):
-		print("Cube crafting successful")
-		self.interface.SucceedCubeWork(itemVnum, count)
-		pass
-
-	def BINARY_Cube_Failed(self):
-		print("Cube crafting failed")
-		self.interface.FailedCubeWork()
-		pass
-
-	def BINARY_Cube_ResultList(self, npcVNUM, listText):
-		# ResultList Text Format: 72723,1/72725,1/72730.1/50001,5 - list separated by "/" character
-		# An optional third field, 72723,1,1, marks a result that keeps the bonuses and stones of its first material
-		#print listText
-		
-		if npcVNUM == 0:
-			npcVNUM = self.currentCubeNPC
-		
-		self.cubeInformation[npcVNUM] = []
-		
-		try:
-			for eachInfoText in listText.split("/"):
-				eachInfo	= eachInfoText.split(",")
-				itemVnum	= int(eachInfo[0])
-				itemCount	= int(eachInfo[1])
-				keeps		= 2 < len(eachInfo) and "1" == eachInfo[2]
-
-				self.cubeInformation[npcVNUM].append({"vnum": itemVnum, "count": itemCount, "keeps": keeps})
-				self.interface.wndCube.AddCubeResultItem(itemVnum, itemCount, keeps)
-			
-			resultCount = len(self.cubeInformation[npcVNUM])
-			requestCount = 7
-			modCount = resultCount % requestCount
-			splitCount = resultCount // requestCount
-
-			for i in range(splitCount):
-				#print("/cube r_info %d %d" % (i * requestCount, requestCount))
-				net.SendChatPacket("/cube r_info %d %d" % (i * requestCount, requestCount))
-				
-			if 0 < modCount:
-				#print("/cube r_info %d %d" % (splitCount * requestCount, modCount))				
-				net.SendChatPacket("/cube r_info %d %d" % (splitCount * requestCount, modCount))
-
-		except RuntimeError as msg:
-			dbg.TraceError(msg)
-			return 0
-			
-		pass
-		
-	def BINARY_Cube_MaterialInfo(self, startIndex, listCount, listText):
-		# Material Text Format : 125,1|126,2|127,2|123,5&555,5&555,4/120000
-		try:
-			#print listText
-			
-			if 3 > len(listText):
-				dbg.TraceError("Wrong Cube Material Infomation")
-				return 0
-
-			
-			
-			eachResultList = listText.split("@")
-
-			cubeInfo = self.cubeInformation[self.currentCubeNPC]			
-			
-			itemIndex = 0
-			for eachResultText in eachResultList:
-				cubeInfo[startIndex + itemIndex]["materialList"] = [[], [], [], [], []]
-				materialList = cubeInfo[startIndex + itemIndex]["materialList"]
-				
-				gold = 0
-				splitResult = eachResultText.split("/")
-				if 1 < len(splitResult):
-					gold = int(splitResult[1])
-					
-				#print "splitResult : ", splitResult
-				eachMaterialList = splitResult[0].split("&")
-				
-				i = 0
-				for eachMaterialText in eachMaterialList:
-					complicatedList = eachMaterialText.split("|")
-					
-					if 0 < len(complicatedList):
-						for complicatedText in complicatedList:
-							(itemVnum, itemCount) = complicatedText.split(",")
-							itemVnum = int(itemVnum)
-							itemCount = int(itemCount)
-							self.interface.wndCube.AddMaterialInfo(itemIndex + startIndex, i, itemVnum, itemCount)
-							
-							materialList[i].append((itemVnum, itemCount))
-							
-					else:
-						itemVnum, itemCount = eachMaterialText.split(",")
-						itemVnum = int(itemVnum)
-						itemCount = int(itemCount)
-						self.interface.wndCube.AddMaterialInfo(itemIndex + startIndex, i, itemVnum, itemCount)
-						
-						materialList[i].append((itemVnum, itemCount))
-						
-					i = i + 1
-					
-					
-					
-				itemIndex = itemIndex + 1
-				
-			self.interface.wndCube.Refresh()
-			
-				
-		except RuntimeError as msg:
-			dbg.TraceError(msg)
-			return 0
-			
-		pass
-	
-	# END_OF_CUBE
+	def BINARY_CUBE_RENEWAL_CLOSE(self):
+		if self.interface:
+			self.interface.BINARY_CUBE_RENEWAL_CLOSE()
+	# END_OF_CUBE_RENEWAL
 	
 	# Dragon Soul Stone	
 	def BINARY_Highlight_Item(self, inven_type, inven_pos):

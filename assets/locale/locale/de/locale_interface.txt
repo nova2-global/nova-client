@@ -28,6 +28,7 @@ CREATE_SHAPE	Aussehen
 CREATE_SP	INT
 CREATE_WOMAN	Frau
 CUBE_INFO_TITLE	Veredelungshandbuch
+CUBE_RENEWAL_TITLE	Veredelung
 CUBE_REQUIRE_MATERIAL	Erforderliche Materialien
 CUBE_REQUIRE_MATERIAL_OR	oder
 CUBE_TITLE	Veredelungsfenster

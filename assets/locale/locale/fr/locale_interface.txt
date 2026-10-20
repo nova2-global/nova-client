@@ -28,6 +28,7 @@ CREATE_SHAPE	Forme
 CREATE_SP	PM
 CREATE_WOMAN	Femme
 CUBE_INFO_TITLE	Manuel de raffinage
+CUBE_RENEWAL_TITLE	Refinement
 CUBE_REQUIRE_MATERIAL	Matériaux nécessaires
 CUBE_REQUIRE_MATERIAL_OR	ou
 CUBE_TITLE	Fenêtre de raffinage

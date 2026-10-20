@@ -29,6 +29,7 @@ CREATE_SHAPE	Aspect
 CREATE_SP	INT
 CREATE_WOMAN	Femeie
 CUBE_INFO_TITLE	Manualul Imbunatatirii
+CUBE_RENEWAL_TITLE	Refinement
 CUBE_REQUIRE_MATERIAL	Materiale necesare
 CUBE_REQUIRE_MATERIAL_OR	sau
 CUBE_TITLE	Fereastra Rafinament

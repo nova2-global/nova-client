@@ -371,6 +371,9 @@ def whisper(target, editing=False, gm=False, width=300, height=200, key=1):
         "pos": 1.0,
         "input_max": int((width - 90) / 6) * 3 - 6,
         "target_max": TODAY.PLAYER_NAME_INPUT_MAX,
+        # P18: the lines and the scroll while the board shows (a pooled
+        # board's wrapper is empty while it waits).
+        "lines_on": [1],
     }}
 
 

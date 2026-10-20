@@ -29,7 +29,6 @@ CREATE_SHAPE	Aspetto
 CREATE_SP	INT
 CREATE_WOMAN	Donna
 CUBE_INFO_TITLE	Manuale della rifinitura
-CUBE_RENEWAL_TITLE	Refinement
 CUBE_REQUIRE_MATERIAL	Materiali necessari
 CUBE_REQUIRE_MATERIAL_OR	oppure
 CUBE_TITLE	Finestra del raffinamento

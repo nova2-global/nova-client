@@ -8,7 +8,6 @@ PUBLIC_PATH = "d:/ymir work/ui/public/"
 WINDOWS_PATH = "d:/ymir work/ui/game/windows/"
 BELT_PATH = "d:/ymir work/ui/game/belt_inventory/"
 
-BOARD_WIDTH = 336
 BOARD_HEIGHT = 488
 
 # The recipe tree: uiCubeRenewal places its rows in item_list_board and shows as
@@ -19,10 +18,11 @@ LIST_WIDTH = 292
 LIST_HEIGHT = 252
 SCROLL_BAR_X = LIST_X + LIST_WIDTH + 4
 
-# The result slot and five material slots, each three cells high, on one row.
+# The result slot and the material slots, each three cells high, on one row.
+# MATERIAL_SLOT_COUNT is uiCubeRenewal.SLOTS_PER_PAGE (its LoadWindow checks);
+# the row, its board and the window are as wide as the slots make them.
 ITEM_SLOT_X = 10
 ITEM_SLOT_Y = 294
-ITEM_SLOT_WIDTH = 316
 ITEM_SLOT_HEIGHT = 136
 SLOT_X = 25
 SLOT_Y = 13
@@ -36,6 +36,11 @@ SLOT_ROW_WIDTH = MATERIAL_SLOT_X + MATERIAL_SLOT_STEP * (MATERIAL_SLOT_COUNT - 1
 COUNT_TEXT_Y = 115
 COUNT_TEXT_WIDTH = 45
 PAGE_BUTTON_Y = SLOT_Y - 6
+PAGE_BUTTON_GAP = 2						# between the last slot and the next-page arrow
+PAGE_BUTTON_WIDTH = 10					# the belt inventory's arrows
+ITEM_SLOT_BORDER = 1
+ITEM_SLOT_WIDTH = SLOT_X + SLOT_ROW_WIDTH + PAGE_BUTTON_GAP + PAGE_BUTTON_WIDTH + ITEM_SLOT_BORDER
+BOARD_WIDTH = ITEM_SLOT_X + ITEM_SLOT_WIDTH + ITEM_SLOT_X
 
 # Yang and gaya cost, and the buttons.
 COST_Y = 434
@@ -98,7 +103,7 @@ window = {
 
 			"width" : BOARD_WIDTH,
 			"height" : BOARD_HEIGHT,
-			"title" : uiScriptLocale.CUBE_RENEWAL_TITLE,
+			"title" : uiScriptLocale.CUBE_TITLE,
 
 			"children" :
 			(
@@ -152,7 +157,7 @@ window = {
 						{
 							"name" : "back_button",
 							"type" : "button",
-							"x" : SLOT_X + CELL_SIZE + (MATERIAL_SLOT_X - CELL_SIZE - 10) // 2,
+							"x" : SLOT_X + CELL_SIZE + (MATERIAL_SLOT_X - CELL_SIZE - PAGE_BUTTON_WIDTH) // 2,
 							"y" : PAGE_BUTTON_Y,
 							"default_image" : BELT_PATH + "btn_expand_normal.tga",
 							"over_image" : BELT_PATH + "btn_expand_over.tga",
@@ -161,7 +166,7 @@ window = {
 						{
 							"name" : "next_button",
 							"type" : "button",
-							"x" : SLOT_X + SLOT_ROW_WIDTH + 2,
+							"x" : SLOT_X + SLOT_ROW_WIDTH + PAGE_BUTTON_GAP,
 							"y" : PAGE_BUTTON_Y,
 							"default_image" : BELT_PATH + "btn_minimize_normal.tga",
 							"over_image" : BELT_PATH + "btn_minimize_over.tga",

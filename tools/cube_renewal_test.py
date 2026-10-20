@@ -16,6 +16,7 @@ import os
 import sys
 import types
 import unittest
+import unittest.mock
 import warnings
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -279,6 +280,7 @@ class FakeScriptLoader(object):
 		path = os.path.join(UISCRIPT, fileName.replace("/", os.sep))
 		scope = {"SCREEN_WIDTH" : 1920, "SCREEN_HEIGHT" : 1080}
 		exec(compile(ReadText(path), path, "exec"), scope)
+		self.ScriptDictionary = scope
 		body = scope["window"]
 		window.ClearDictionary()
 		window.SetPosition(body["x"], body["y"])
@@ -310,6 +312,7 @@ class FakeScriptLoader(object):
 
 	def __init__(self):
 		self.root = None
+		self.ScriptDictionary = {}
 
 
 def MakeLoader():
@@ -350,6 +353,8 @@ class Game(object):
 		self.gold = 0
 		self.noCopy = set()		# (cell, attribute slot) the reward drops
 		self.selected = None
+		self.position = (25600.0, -38400.0, 0.0)
+		self.inventoryReads = 0		# player.GetItemIndex and GetItemCountByVnum calls
 
 
 GAME = Game()
@@ -397,8 +402,18 @@ def MakeModules():
 	player.INVENTORY_PAGE_COUNT = 2
 	player.METIN_SOCKET_MAX_NUM = METIN_SOCKET_MAX_NUM
 	player.ATTRIBUTE_SLOT_MAX_NUM = ATTRIBUTE_SLOT_MAX_NUM
-	player.GetItemCountByVnum = lambda vnum: sum(e["count"] for e in GAME.inventory.values() if e["vnum"] == vnum)
-	player.GetItemIndex = lambda cell: GAME.inventory.get(cell, {"vnum" : 0})["vnum"]
+	def GetItemCountByVnum(vnum):
+		GAME.inventoryReads += 1
+		return sum(e["count"] for e in GAME.inventory.values() if e["vnum"] == vnum)
+
+	def GetItemIndex(cell):
+		GAME.inventoryReads += 1
+		return GAME.inventory.get(cell, {"vnum" : 0})["vnum"]
+
+	player.GetItemCountByVnum = GetItemCountByVnum
+	player.GetItemIndex = GetItemIndex
+	player.GetItemCount = lambda cell: GAME.inventory.get(cell, {"count" : 0})["count"]
+	player.GetMainCharacterPosition = lambda: GAME.position
 	player.GetItemMetinSocket = lambda cell, i: GAME.inventory[cell]["sockets"][i] if cell in GAME.inventory else 0
 	player.GetItemAttribute = lambda cell, i: GAME.inventory[cell]["attrs"][i] if cell in GAME.inventory else (0, 0)
 	player.GetElk = lambda: GAME.gold
@@ -408,6 +423,7 @@ def MakeModules():
 	cube.MATERIAL_MAX = 10
 	cube.QUANTITY_MAX = 200
 	cube.CATEGORY_LEN = 32
+	cube.MAX_DISTANCE = 1000
 	cube.CountDates = lambda: len(GAME.recipes)
 
 	def GetDates(index):
@@ -418,6 +434,9 @@ def MakeModules():
 	def SetCubeRenewalHandler(handler):
 		GAME.handler = handler
 		GAME.handlerCalls.append(handler)
+
+	def GetCubeRenewalHandler():
+		return None if GAME.handler == "unset" else GAME.handler
 
 	def MakeItem(index, count):
 		GAME.made.append((index, count))
@@ -432,6 +451,7 @@ def MakeModules():
 
 	cube.GetDates = GetDates
 	cube.SetCubeRenewalHandler = SetCubeRenewalHandler
+	cube.GetCubeRenewalHandler = GetCubeRenewalHandler
 	cube.CubeRenewalMakeItem = MakeItem
 	cube.CubeRenewalClose = Close
 	cube.CanCopyAttribute = CanCopyAttribute
@@ -529,6 +549,15 @@ class FakeToolTip(object):
 		self.shown = None
 
 
+def IsolateModules(test):
+	"""Gives sys.modules back as it was when `test` ends: the fakes put there
+	must not reach the other tests of a one-process run of tools/*_test.py."""
+	patcher = unittest.mock.patch.dict(sys.modules)
+	patcher.start()
+	test.addCleanup(patcher.stop)
+
+
+# Call IsolateModules first: this puts the fakes in sys.modules.
 def LoadWindowModule():
 	sys.modules.update(MakeModules())
 	path = os.path.join(ROOT, "uicuberenewal.py")
@@ -578,6 +607,7 @@ class CubeRenewalTest(unittest.TestCase):
 	def setUp(self):
 		global GAME
 		GAME = Game()
+		IsolateModules(self)
 		self.cube = LoadWindowModule()
 		sys.modules["uiCommon"].QuestionDialog.opened = []
 
@@ -628,6 +658,64 @@ class CubeRenewalTest(unittest.TestCase):
 		window.LoadWindow()
 		window.Destroy()
 		self.assertIsNone(GAME.handler)
+
+	def test_destroy_lets_the_handler_go_only_while_it_is_this_window(self):
+		# game.py makes the next game phase's interface (and its window) before
+		# the last one's goes when the curtain has not finished fading.
+		old = self.cube.CubeRenewalWindow()
+		old.LoadWindow()
+		new = self.cube.CubeRenewalWindow()
+		new.LoadWindow()
+		self.assertIs(new, GAME.handler)
+
+		old.Destroy()
+		self.assertIs(new, GAME.handler)
+		self.assertEqual([old, new], GAME.handlerCalls)
+
+		new.Destroy()
+		self.assertIsNone(GAME.handler)
+
+		# cube_renewal let go when the game phase ended: nothing to clear.
+		window = self.cube.CubeRenewalWindow()
+		window.LoadWindow()
+		GAME.handler = None
+		calls = len(GAME.handlerCalls)
+		window.Destroy()
+		self.assertEqual(calls, len(GAME.handlerCalls))
+
+	def test_the_uiscript_must_lay_out_a_page_of_material_slots(self):
+		self.cube.SLOTS_PER_PAGE = 4
+		window = self.cube.CubeRenewalWindow()
+		with self.assertRaisesRegex(RuntimeError, "MaterialSlotCount"):
+			window.LoadWindow()
+
+	def test_the_rows_and_the_slots_fit_their_boards(self):
+		window = self.Open([])
+		listBoard = self.Child("item_list_board")
+		rowBottom = lambda row: self.cube.ROW_TOP + self.cube.ROW_STEP * row + self.cube.ROW_HEIGHT
+		self.assertLessEqual(rowBottom(window.visibleRowCount - 1), listBoard.GetHeight())
+		self.assertGreater(rowBottom(window.visibleRowCount), listBoard.GetHeight(), "one row more would fit")
+
+		scope = {"SCREEN_WIDTH" : 1920, "SCREEN_HEIGHT" : 1080}
+		path = os.path.join(UISCRIPT, "uiscript", "cuberenewalwindow.py")
+		exec(compile(ReadText(path), path, "exec"), scope)
+		self.assertEqual(self.cube.SLOTS_PER_PAGE, scope["MATERIAL_SLOT_COUNT"])
+		icons = self.Child("icons_items")
+		for (x, y, width, height) in icons.slotRects.values():
+			self.assertLessEqual(x + width, icons.GetWidth())
+			self.assertLessEqual(y + height, icons.GetHeight())
+		itemSlot = self.Child("item_slot")
+		self.assertLessEqual(icons.GetLocalPosition()[0] + icons.GetWidth(), itemSlot.GetWidth())
+		self.assertLessEqual(self.Child("next_button").GetLocalPosition()[0] + scope["PAGE_BUTTON_WIDTH"], itemSlot.GetWidth())
+		self.assertEqual(self.Child("board").GetWidth(), itemSlot.GetLocalPosition()[0] * 2 + itemSlot.GetWidth())
+
+	def test_read_recipe_documents_every_key_it_returns(self):
+		window = self.Open([])
+		recipe = window.ReadRecipe(3, Recipe(PEARL, materials=[(ORE, 2), (0, 0), (DEW, 1)]))
+		self.assertEqual([(ORE, 2), (DEW, 1)], recipe["materials"], "an unused material is dropped")
+		doc = self.cube.CubeRenewalWindow.ReadRecipe.__doc__
+		for key in recipe:
+			self.assertIn('"%s"' % key, doc)
 
 	def test_the_uiscript_has_every_widget_the_window_binds_and_its_slots(self):
 		window = self.Open([])
@@ -949,7 +1037,8 @@ class CubeRenewalTest(unittest.TestCase):
 	def test_a_ranged_recipe(self):
 		window = self.Open([Recipe(PEARL, count=2, materials=[(GEM, 3), (GEM + 7, 2)], ranged=True)])
 		recipe = window.recipes[0]
-		self.assertEqual([GEM, GEM + 1, GEM + 2, GEM + 7, GEM + 8], window.GetRangedItemList(recipe))
+		self.assertEqual(5, window.GetRangedLength(recipe))
+		self.assertEqual([GEM, GEM + 1, GEM + 2, GEM + 7, GEM + 8, 0], [window.GetRangedVnum(recipe, i) for i in range(6)])
 		window.SelectObject(0)
 		self.assertEqual({0 : (PEARL, 2), 1 : (GEM, 1)}, self.Child("icons_items").slots)
 		self.assertEqual(["0/1", None, None, None, None], self.Texts())
@@ -973,7 +1062,7 @@ class CubeRenewalTest(unittest.TestCase):
 
 		self.Child("button_ok").Click()
 		dialog = sys.modules["uiCommon"].QuestionDialog.opened[-1]
-		self.assertEqual("Do you want to buy Pearl for Gem %d?" % (GEM + 2), dialog.text)
+		self.assertEqual("Do you want to create Pearl using Gem %d?" % (GEM + 2), dialog.text)
 		dialog.accept()
 		self.assertEqual([(0, 1), (0, 1)], GAME.made)
 
@@ -990,6 +1079,195 @@ class CubeRenewalTest(unittest.TestCase):
 			GAME.time += 1.5
 			window.OnUpdate()
 		self.assertEqual((GEM, 1), self.Child("icons_items").slots[1])
+
+	def test_the_copy_source_is_the_lowest_cell_holding_the_vnum(self):
+		window = self.Open([
+			Recipe(SWORD6, materials=[(SWORD5, 1), (BLESS, 1)], allowCopy=SWORD5),
+			Recipe(ARMOR6, materials=[(ARMOR5, 1), (BLESS, 1)], allowCopy=1),
+		])
+		Own(30, SWORD5)
+		Own(4, SWORD5)
+		Own(17, SWORD5)
+		Own(21, ARMOR5)
+		Own(8, ARMOR5)
+		self.assertEqual(4, window.FindCopySourceCell(window.recipes[0]))
+		self.assertEqual(8, window.FindCopySourceCell(window.recipes[1]))
+
+	def test_a_ranged_recipe_copies_from_the_item_it_takes(self):
+		# The server's TakeCopy: from the item of the ranges the craft takes (the
+		# first one owned in the ranges' order), and only when allow_copy is 1 or
+		# that item's vnum; OLD's client looked for allow_copy's vnum in the
+		# inventory whatever the craft took.
+		ranges = [(SWORD5, 2), (ARMOR5, 2)]
+		window = self.Open([
+			Recipe(SWORD9, materials=ranges, ranged=True, allowCopy=1),
+			Recipe(SWORD9, materials=ranges, ranged=True, allowCopy=SWORD6),
+			Recipe(SWORD9, materials=ranges, ranged=True, allowCopy=ARMOR5),
+			Recipe(SHIELD, materials=ranges, ranged=True, allowCopy=SWORD6),
+			Recipe(PEARL, materials=[(GEM, 3)], ranged=True, allowCopy=1),
+		])
+		(fromTaken, fromSword6, fromArmour5, otherSubtype, anyKind) = window.recipes
+		for recipe in window.recipes:
+			self.assertEqual(-1, window.FindCopySourceCell(recipe), "nothing of the ranges")
+
+		Own(3, ARMOR5, sockets=[3, 3, 3])
+		Own(12, SWORD6, sockets=[12, 12, 12])
+		Own(9, SWORD6, sockets=[9, 9, 9])
+		self.assertEqual(SWORD6, window.GetRangedOwnedVnum(fromTaken), "the first range's item, not the lowest cell's")
+		self.assertEqual(9, window.FindCopySourceCell(fromTaken))
+		self.assertEqual(9, window.FindCopySourceCell(fromSword6))
+		self.assertEqual(-1, window.FindCopySourceCell(fromArmour5), "owned, but not what the craft takes")
+		self.assertEqual(-1, window.FindCopySourceCell(otherSubtype), "a weapon onto a shield")
+
+		window.SelectObject(0)
+		self.Child("icons_items").overIn(0)
+		self.assertEqual((SWORD9, [9, 9, 9], [(0, 0)] * 7), window.tooltipItem.shown)
+
+		del GAME.inventory[9]
+		del GAME.inventory[12]
+		self.assertEqual(3, window.FindCopySourceCell(fromTaken))
+		self.assertEqual(-1, window.FindCopySourceCell(fromSword6))
+		self.assertEqual(3, window.FindCopySourceCell(fromArmour5))
+
+		# allow_copy 1 takes whatever the craft takes, a gem too.
+		Own(5, GEM + 1)
+		self.assertEqual(5, window.FindCopySourceCell(anyKind))
+
+	def test_ok_asks_about_a_dropped_bonus_and_then_about_the_ranged_item(self):
+		window = self.Open([Recipe(SWORD9, materials=[(SWORD5, 2)], ranged=True, allowCopy=1)])
+		Own(2, SWORD6, attrs=[(72, 10), (0, 0), (0, 0), (0, 0), (0, 0), (72, 5), (0, 0)])
+		GAME.noCopy.add((2, 5))
+		window.SelectObject(0)
+		dropped = "Attention! Strong against Warriors +5% cannot be copied!\\nWould you like to continue?"
+		taken = "Do you want to create Sword+9 using Sword+6?"
+		self.assertEqual([dropped, taken], window.GetAcceptQuestions(window.recipes[0]))
+
+		opened = sys.modules["uiCommon"].QuestionDialog.opened
+		self.Child("button_ok").Click()
+		first = opened[-1]
+		self.assertEqual(dropped, first.text)
+		first.accept()
+		self.assertFalse(first.isOpen)
+		self.assertEqual([], GAME.made, "OLD crafted here, without naming the item it takes")
+		second = opened[-1]
+		self.assertEqual(taken, second.text)
+		self.assertTrue(second.isOpen)
+		second.accept()
+		self.assertFalse(second.isOpen)
+		self.assertEqual([(0, 1)], GAME.made)
+
+		# A no to either question crafts nothing, and the next OK starts over.
+		self.Child("button_ok").Click()
+		opened[-1].accept()
+		opened[-1].cancel()
+		self.assertEqual([(0, 1)], GAME.made)
+		self.assertEqual([], window.pendingQuestions)
+		self.Child("button_ok").Click()
+		self.assertEqual(dropped, opened[-1].text)
+		opened[-1].cancel()
+		self.assertEqual([(0, 1)], GAME.made)
+
+		# The ranged question alone when the reward keeps every bonus.
+		GAME.noCopy.clear()
+		self.assertEqual([taken], window.GetAcceptQuestions(window.recipes[0]))
+
+	def test_a_gold_change_refreshes_only_the_cost(self):
+		window = self.Open([Recipe(GEM, count=2, materials=[(ORE, 3)], gold=5000)])
+		Own(0, ORE, 3)
+		GAME.gold = 5000
+		window.SelectObject(0)
+		self.assertEqual("5000 Yang", self.Child("yang_text").text)
+		self.assertEqual(self.cube.COST_COLOR, self.Child("yang_text").color)
+		self.assertEqual("[2]", self.Row(2, 0).countText.text)
+
+		Own(1, ORE, 3)
+		GAME.gold = 4999
+		GAME.inventoryReads = 0
+		window.RefreshCost()
+		self.assertEqual(self.cube.MISSING_COLOR, self.Child("yang_text").color)
+		self.assertEqual(0, GAME.inventoryReads, "the inventory is not read")
+		self.assertEqual("3/3", window.materialTexts[0].text)
+		self.assertEqual("[2]", self.Row(2, 0).countText.text)
+
+		window.quantity = 4
+		GAME.gold = 10000
+		window.RefreshCost()
+		self.assertEqual("10000 Yang", self.Child("yang_text").text)
+		self.assertEqual(self.cube.COST_COLOR, self.Child("yang_text").color)
+
+		# Nothing selected, or the window hidden: nothing to show.
+		window.Close()
+		window.RefreshCost()
+		self.assertFalse(self.Child("yang_text").shown)
+		window.Open()
+		window.RefreshCost()
+		self.assertFalse(self.Child("yang_text").shown)
+
+	def test_a_ranged_recipe_s_ranges_are_never_listed(self):
+		# Two ranges of 65535 items, the most one holds, overlapping.
+		window = self.Open([Recipe(PEARL, materials=[(100000, 65535), (130000, 65535)], ranged=True)])
+		recipe = window.recipes[0]
+		self.assertEqual(131070, window.GetRangedLength(recipe))
+		self.assertEqual(100000, window.GetRangedVnum(recipe, 0))
+		self.assertEqual(165534, window.GetRangedVnum(recipe, 65534))
+		self.assertEqual(130000, window.GetRangedVnum(recipe, 65535))
+		self.assertEqual(0, window.GetRangedVnum(recipe, 131070))
+		self.assertEqual(40000, window.GetRangedPosition(recipe, 140000), "its place in the first range")
+		self.assertEqual(65535 + 60000, window.GetRangedPosition(recipe, 190000))
+		self.assertEqual(-1, window.GetRangedPosition(recipe, 99999))
+		self.assertEqual(-1, window.GetRangedPosition(recipe, 195535))
+
+		Own(7, 140000, 2)		# in both ranges: one item, counted once
+		Own(3, 190000, 1)		# the lowest cell, the last place
+		Own(9, 150000, 4)
+		player = sys.modules["player"]
+		cells = player.INVENTORY_PAGE_SIZE * player.INVENTORY_PAGE_COUNT
+		GAME.inventoryReads = 0
+		self.assertEqual(140000, window.GetRangedOwnedVnum(recipe))
+		self.assertEqual(7, window.GetCraftableCount(recipe))
+		self.assertEqual(2 * cells, GAME.inventoryReads, "one pass over the inventory each")
+
+		window.SelectObject(0)
+		GAME.inventoryReads = 0
+		window.Refresh()
+		self.assertLessEqual(GAME.inventoryReads, 2 * cells)
+		self.assertEqual("[7]", self.Row(2, 0).countText.text)
+		self.assertEqual("1/1", window.materialTexts[0].text)
+
+	## Walking away
+
+	def test_walking_away_from_where_the_cube_opened_closes_it_and_tells_the_server(self):
+		self.assertEqual(1000, self.cube.MAX_DISTANCE)
+		window = self.Open([Recipe(PEARL, materials=[(ORE, 1)])])
+		(x, y, z) = GAME.position
+		self.assertFalse(window.IsOutOfRange())
+
+		GAME.position = (x + 1000, y - 1000, z)
+		self.assertFalse(window.IsOutOfRange())
+		window.OnUpdate()
+		self.assertTrue(window.shown)
+		self.assertEqual(0, GAME.closes)
+
+		GAME.position = (x - 1001, y, z)
+		self.assertTrue(window.IsOutOfRange())
+		window.OnUpdate()
+		self.assertFalse(window.shown)
+		self.assertEqual(1, GAME.closes)
+		self.assertFalse(window.IsOutOfRange(), "a closed window is in no range")
+
+		# Opened again, it measures from there.
+		window.Open()
+		self.assertFalse(window.IsOutOfRange())
+		GAME.position = (x - 1001, y + 1001, z)
+		window.OnUpdate()
+		self.assertFalse(window.shown)
+		self.assertEqual(2, GAME.closes)
+
+		# The server closing it ends the watch too.
+		window.Open()
+		window.BINARY_CUBE_RENEWAL_CLOSE()
+		GAME.position = (x, y, z)
+		self.assertFalse(window.IsOutOfRange())
 
 	## Closing
 
@@ -1119,6 +1397,7 @@ class RealWidgetsTest(unittest.TestCase):
 	def setUp(self):
 		global GAME
 		GAME = Game()
+		IsolateModules(self)
 		modules = MakeModules()
 		for name in ("ime", "snd", "skill", "dbg", "guild", "chr"):
 			modules[name] = Permissive(name)
@@ -1161,7 +1440,6 @@ class RealWidgetsTest(unittest.TestCase):
 		import builtins
 		for name in self.addedBuiltins:
 			delattr(builtins, name)
-		sys.modules.pop("ui", None)
 
 	def test_the_window_runs_on_the_real_ui_module(self):
 		GAME.recipes = [Recipe(SWORD6, materials=[(SWORD5, 1), (ORE, 2)], gold=100, category="WEAPON", allowCopy=SWORD5)]
@@ -1245,7 +1523,12 @@ class WiringTest(unittest.TestCase):
 		self.assertIn("self.wndCubeRenewal.Open()", interface["BINARY_CUBE_RENEWAL_OPEN"])
 		self.assertIn("self.wndCubeRenewal.BINARY_CUBE_RENEWAL_CLOSE()", interface["BINARY_CUBE_RENEWAL_CLOSE"])
 		self.assertIn("self.wndCubeRenewal.Refresh()", interface["RefreshInventory"])
-		self.assertIn("self.wndCubeRenewal.Refresh()", interface["RefreshStatus"])
+		# A point change touches only the cost.
+		self.assertIn("self.wndCubeRenewal.RefreshCost()", interface["RefreshStatus"])
+		self.assertNotIn("self.wndCubeRenewal.Refresh()", interface["RefreshStatus"])
+		# Nothing in the window reads the interface (OLD's BindInterface fed the chest previewer only).
+		self.assertNotIn("wndCubeRenewal.BindInterface", ReadText(os.path.join(ROOT, "interfacemodule.py")))
+		self.assertNotIn("BindInterface", ReadText(os.path.join(ROOT, "uicuberenewal.py")))
 		self.assertIn("self.wndCubeRenewal.SetItemToolTip(self.tooltipItem)", interface["MakeInterface"])
 		self.assertIn("self.wndCubeRenewal.Destroy()", interface["Close"])
 
@@ -1262,6 +1545,9 @@ class WiringTest(unittest.TestCase):
 
 class LocaleTest(unittest.TestCase):
 
+	def setUp(self):
+		IsolateModules(self)
+
 	def test_every_locale_has_the_window_s_strings(self):
 		module = LoadWindowModule()
 		locales = [d for d in sorted(os.listdir(LOCALES)) if os.path.exists(os.path.join(LOCALES, d, "locale_game.txt"))]
@@ -1272,12 +1558,15 @@ class LocaleTest(unittest.TestCase):
 			for (category, key) in module.CATEGORIES:
 				self.assertTrue(game.get(key), "%s: %s" % (locale, key))
 			self.assertEqual(1, game["ITEM_HAS_RESTRICTED_BONUS"].count("%s"), locale)
-			self.assertEqual(2, game["DO_YOU_BUY_ITEM1"].count("%s"), locale)
-			self.assertTrue(interface.get("CUBE_RENEWAL_TITLE"), locale)
+			self.assertEqual(2, game["CUBE_RENEWAL_RANGED_CONFIRM"].count("%s"), locale)
+			self.assertEqual(2, game["CUBE_RENEWAL_RANGED_CONFIRM"].count("%"), locale)
+			# The title is the cube's, translated everywhere.
+			self.assertTrue(interface.get("CUBE_TITLE"), locale)
+			self.assertNotIn("CUBE_RENEWAL_TITLE", interface, locale)
 			self.assertNotIn("TOOLTIP_CUBE_KEEPS_BONUSES_AND_STONES", game, locale)
 
 	def test_old_s_translations_where_old_had_them(self):
-		self.assertEqual("Veredelung", ReadLocaleFile(os.path.join(LOCALES, "de", "locale_interface.txt"))["CUBE_RENEWAL_TITLE"])
+		self.assertEqual("Veredelungsfenster", ReadLocaleFile(os.path.join(LOCALES, "de", "locale_interface.txt"))["CUBE_TITLE"])
 		self.assertEqual("Waffen", ReadLocaleFile(os.path.join(LOCALES, "de", "locale_game.txt"))["CUBE_CATEGORY_WEAPONS"])
 		self.assertEqual("Belt", ReadLocaleFile(os.path.join(LOCALES, "de", "locale_game.txt"))["CUBE_CATEGORY_BELT"])
 		self.assertEqual("Weapons", ReadLocaleFile(os.path.join(LOCALES, "fr", "locale_game.txt"))["CUBE_CATEGORY_WEAPONS"])

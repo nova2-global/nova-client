@@ -29,7 +29,6 @@ CREATE_SHAPE	Wygląd
 CREATE_SP	INT
 CREATE_WOMAN	Kobieta
 CUBE_INFO_TITLE	Podręcznik Uszlachetnień
-CUBE_RENEWAL_TITLE	Uszlachetnianie
 CUBE_REQUIRE_MATERIAL	Wymagane materiały
 CUBE_REQUIRE_MATERIAL_OR	lub
 CUBE_TITLE	Okienko uszlachetniania

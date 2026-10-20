@@ -97,6 +97,7 @@ CUBE_CATEGORY_WEAPONS	Armas
 CUBE_CATEGORY_WEAPON_COSTUME	Traje de Arma
 CUBE_CATEGORY_WEAPON_EFFECT	Efeito de Arma
 CUBE_CATEGORY_WING_COSTUME	Traje de Asas
+CUBE_RENEWAL_RANGED_CONFIRM	Do you want to create %s using %s?
 DAY	Dias
 DO_YOU_BUY_ITEM1	Queres comprar %s por %s?
 DO_YOU_BUY_ITEM2	Queres comprar %s %s por %s?

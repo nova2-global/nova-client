@@ -96,6 +96,7 @@ CUBE_CATEGORY_WEAPONS	Waffen
 CUBE_CATEGORY_WEAPON_COSTUME	Waffenkostüm
 CUBE_CATEGORY_WEAPON_EFFECT	Waffeneffekt
 CUBE_CATEGORY_WING_COSTUME	Flügelkostüm
+CUBE_RENEWAL_RANGED_CONFIRM	Do you want to create %s using %s?
 DAY	T
 DO_YOU_BUY_ITEM1	Möchtest du %s für %s kaufen?
 DO_YOU_BUY_ITEM2	Möchtest du %s %s für %s kaufen?

@@ -1323,9 +1323,10 @@ def report(corpus):
 
 # --- the branch list (spec 5.8's coverage gate) ---------------------------------------------------------------
 
-# Methods with no rule in them, or none the client runs (spec 2.1's dead code).
+# Methods with no rule in them, or none the client runs (spec 2.1's dead code),
+# by (class, method, None); a method the class defines again is shadowed
+# without an entry (rule_lines).
 DEAD = {
-    ("ItemToolTip", "AppendTextLineTime", 634): "shadowed: the class defines AppendTextLineTime again at :2047",
     ("ItemToolTip", "_ItemToolTip__AppendAttackSpeedInfo", None): "no caller",
     ("ItemToolTip", "_ItemToolTip__AppendAttackGradeInfo", None): "no caller",
     ("SkillToolTip", "AppendMasterAffectDescription", None): "no caller",
@@ -1396,9 +1397,18 @@ def rule_lines(path=RULES):
             for node in top.body:
                 if isinstance(node, ast.FunctionDef):
                     units.append((top.name, _qualified(node, top.name), node))
+        # A method the class defines again further down is shadowed (P18: found
+        # by the definitions themselves, not a line number, so a change
+        # elsewhere in uitooltip.py moves nothing).
+        later = {}
+        for cls, name, node in units:
+            later[(cls, name)] = node
         for cls, name, node in units:
             label = "%s.%s" % (cls, name) if cls else name
-            reason = DEAD.get((cls, name, node.lineno)) or DEAD.get((cls, name, None))
+            reason = DEAD.get((cls, name, None))
+            last = later[(cls, name)]
+            if not reason and last is not node:
+                reason = "shadowed: the class defines %s again at :%d" % (node.name, last.lineno)
             for statement in ast.walk(node):
                 if not isinstance(statement, ast.stmt) or statement is node:
                     continue

@@ -622,6 +622,26 @@ def make_wndmgr(with_layers=True, mouse=(0, 0), screen=(1600, 900)):
     return wndmgr
 
 
+def find_lines(text, expected):
+    """Where the lines `expected` (each a line's text, stripped) stand in
+    `text`, found by their content in their order: each is the first line
+    after the previous one's that reads it; 1-based numbers, None for a line
+    not found there. A test that names legacy lines so finds them wherever a
+    change elsewhere in the file moved them (the cube renewal moves
+    interfacemodule.py's lines), and still fails when one is changed, gone or
+    out of its order."""
+    lines = [line.strip() for line in text.split("\n")]
+    found, at = [], 0
+    for line in expected:
+        try:
+            at = lines.index(line.strip(), at) + 1
+        except ValueError:
+            found.append(None)
+            continue
+        found.append(at)
+    return found
+
+
 def stub_module(name, **members):
     module = types.ModuleType(name)
     for key, value in members.items():

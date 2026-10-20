@@ -11,7 +11,10 @@
 	     keep the key. The field's limit is GUILD_NAME_MAX_LEN; its text never
 	     enters the model. Each type button shows its hint (the type's title
 	     and descriptions, legacy's tooltip) on hover. The buttons take no
-	     focus and act on a left mousedown. -->
+	     focus and act on a left mousedown. The document loads once: a closed
+	     dialog's board waits, hidden, for the next one (nui_hud.PooledBoard,
+	     P18), its type buttons gone (types_on, a list of one entry while it
+	     shows) and its field empty. -->
 	<title>guild-war-declare</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="guild-war-declare.rcss"/>
@@ -32,7 +35,7 @@
 				class="guild-war__slot"><input id="guild-war-name" type="text" class="nui-input nui-dialog__field guild-war__field"
 				data-attr-maxlength="max"/></div></div>
 			<div class="guild-war__row guild-war__row--type" data-if="type_select"><span class="guild-war__label">@ui.GUILD_WAR_BATTLE_TYPE</span><div
-				class="guild-war__types"><button class="nui-button nui-anim nui-has-tooltip guild-war__type" data-for="h, i : hints"
+				class="guild-war__types" data-for="w : types_on"><button class="nui-button nui-anim nui-has-tooltip guild-war__type" data-for="h, i : hints"
 				data-attr-id="'guild-war-type-' + i" data-class-guild-war__type--0="i == 0" data-class-guild-war__type--1="i == 1"
 				data-class-guild-war__type--2="i == 2" data-class-is-selected="i == type"
 				data-event-mousedown="type_press(i, ev.button)"><span class="guild-war__type-label">{{ h.label }}</span><span

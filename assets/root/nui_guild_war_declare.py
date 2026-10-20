@@ -14,7 +14,15 @@ button's hint in the document, from the same strings
 
 A modal (D12) above the legacy UI layer that the scrim centers
 (nui_facade.DialogFacade). The field's limit is GUILD_NAME_MAX_LEN (the
-uiscript's 12 today, 24 at the foundation); its text never enters the model."""
+uiscript's 12 today, 24 at the foundation); its text never enters the model.
+
+The guild window makes a new dialog at each press of its declare button, so
+the dialog cannot keep its board; its board waits instead, hidden, for the
+next dialog (P18: WAVE4.md measured 17 to 17.5 ms of UI work at its first
+open, a 60 fps frame): nui_hud.PooledBoard over POOL, one board, its type
+buttons gone (types_on), its field empty and no dialog behind it
+(nui_hud.Pooled). The next dialog takes it with no load and writes the
+field from its own proxy."""
 
 import constInfo
 import localeInfo
@@ -34,6 +42,9 @@ FIELD = "guild-war-name"
 TYPES = (("GUILD_WAR_NORMAL", "GUILDWAR_NORMAL_TITLE", "GUILDWAR_NORMAL_DESCLIST"),
          ("GUILD_WAR_WARP", "GUILDWAR_WARP_TITLE", "GUILDWAR_WARP_DESCLIST"),
          ("GUILD_WAR_CTF", "GUILDWAR_CTF_TITLE", "GUILDWAR_CTF_DESCLIST"))
+# P18: the board that waits for the next declare dialog. One: one dialog
+# shows at a time (the next press's dialog takes over the last one).
+POOL = nui_hud.BoardPool("guild-war-declare", 1)
 
 
 def type_hints():
@@ -137,10 +148,12 @@ class WarDialogBoard(nui_hud.RaisesOnPress, nui.Window):
 			self._owner.board.close()
 
 
-class _DeclareBoard(WarDialogBoard):
+class _DeclareBoard(nui_hud.Pooled, WarDialogBoard):
 	DOCUMENT = DOCUMENT
 	MODEL = "guild_war_declare"
 	FIELD_ID = FIELD
+	# nui_hud.Pooled: emptied before the board waits in POOL.
+	FIELDS = (FIELD,)
 
 
 class WarDialogMixin(object):
@@ -194,8 +207,32 @@ class DeclareGuildWarDialog(WarDialogMixin, nui_facade.DialogFacade, uiGuild.Dec
 			raise
 
 	def nui_model(self):
+		# types_on (P18): the type buttons, a list of one entry while the
+		# board shows, none while it waits in POOL.
 		return {"type": 0, "type_select": constInfo.GUILD_WAR_TYPE_SELECT_ENABLE != 0, "hints": type_hints(),
-		        "max": self._limits.GUILD_NAME_MAX_LEN}
+		        "max": self._limits.GUILD_NAME_MAX_LEN, "types_on": [1]}
+
+	def nui_demand(self):
+		"""P18: the board comes from POOL and goes back to it."""
+		return nui_hud.PooledBoard(POOL, self._make_board, self._restore_board, self._keep_board,
+		                           self._empty_board, self._adopt_board)
+
+	def _adopt_board(self, board):
+		board.adopt(self)
+
+	def _empty_board(self, board):
+		board.set(types_on=[])
+
+	def Show(self):
+		"""DialogFacade's, then the field written even when it is empty: a
+		board from POOL shows no earlier dialog's name (P18)."""
+		nui_facade.DialogFacade.Show(self)
+		board = self.nui_board()
+		if board is None:
+			return
+		for field in self._fields():
+			if not field.text:
+				board.set_value(field.field_id, "", caret="end", even_hidden=True)
 
 	def _fields(self):
 		field = getattr(self, "inputValue", None)

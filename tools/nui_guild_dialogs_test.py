@@ -63,6 +63,16 @@ class DeclareTest(unittest.TestCase):
         else:
             dialog.inputValue.SetText(text)
 
+    def assert_the_board_waits(self, world):
+        """P18: the closed dialog's board waits, hidden and emptied, in the
+        pool for the next dialog: the only declare document left."""
+        (board,) = world.m("nui_guild_war_declare").POOL.boards()
+        self.assertEqual(world.documents().count(DECLARE_DOCUMENT), 1)
+        self.assertFalse(board.is_visible())
+        self.assertEqual((board.model["types_on"], board.fields.get(FIELD, "")), ([], ""))
+        self.assertIs(board._owner, world.m("nui_hud").NO_OWNER)
+        return board
+
     def run_both(self, flow, setup=None):
         results = []
         for nui_on in (False, True):
@@ -125,7 +135,7 @@ class DeclareTest(unittest.TestCase):
                 self.assertEqual(novaui, legacy)
                 self.assertEqual(novaui, [("net.SendChatPacket", ("/war Black Wolves 2",))])
                 self.assertFalse(b.IsShow())
-                self.assertNotIn(DECLARE_DOCUMENT, world.documents())
+                self.assert_the_board_waits(world)
                 if how == "enter":
                     self.assertTrue(world.kept, "the field keeps Enter")
 
@@ -155,9 +165,44 @@ class DeclareTest(unittest.TestCase):
             with self.subTest(how=how):
                 self.assertEqual((novaui, legacy), ([], []))
                 self.assertFalse(b.IsShow())
-                self.assertNotIn(DECLARE_DOCUMENT, world.documents())
+                self.assert_the_board_waits(world)
                 if how == "escape":
                     self.assertTrue(world.kept, "the field keeps Escape")
+
+    def test_the_next_press_s_dialog_takes_the_waiting_board_with_none_of_the_last_name(self):
+        """P18: the guild window makes a new dialog at each press; the
+        canceled dialog's board waits and the next dialog shows it with no
+        load: its own type, an empty field with the focus, its own events."""
+        world, first = self.open(True)
+        board = w4.board(first)
+        with world.game, w4.quiet():
+            board.insert_text(FIELD, "Black Wolves")
+            w4.press(first, "type_press", 2, 0)
+            w4.press(first, "cancel_press", 0)
+            self.assert_the_board_waits(world)
+            pool = world.m("nui_guild_war_declare").POOL
+            loads = pool.loads
+            second = world.make("guild-war-dialogs", "uiGuild", "DeclareGuildWarDialog",
+                                "nui_guild_war_declare.DeclareGuildWarDialog")
+            second.Open()
+            self.assertIs(w4.board(second), board, "no load: the waiting board")
+            self.assertEqual(pool.loads, loads)
+            self.assertEqual(board.get_value(FIELD), "", "none of the last dialog's name")
+            self.assertEqual(board.focused, FIELD)
+            self.assertEqual((board.model["type"], board.model["types_on"]), (0, [1]), "the new dialog's own type")
+            mark = world.mark()
+            board.insert_text(FIELD, "Red Sun")
+            w4.press(second, "accept_press", 0)
+        self.assertEqual(world.effects_since(mark, EFFECTS), [("net.SendChatPacket", ("/war Red Sun 0",))])
+        self.assertLessEqual(pool.most, 1)
+
+    def test_the_phase_end_unloads_the_waiting_board(self):
+        world, dialog = self.open(True)
+        with world.game, w4.quiet():
+            w4.press(dialog, "cancel_press", 0)
+            self.assert_the_board_waits(world)
+            world.m("nui_windows").end_phase()
+        self.assertNotIn(DECLARE_DOCUMENT, world.documents())
 
     def test_the_name_never_enters_the_model(self):
         world, dialog = self.open(True)
@@ -596,12 +641,14 @@ class Facades(unittest.TestCase):
                     window = world.make(self.WINDOW_IDS[name], module, name, "%s.%s" % (novaui, name))
                     self.assertIs(type(window), getattr(world.m(module), name))
 
-    def test_the_documents_load_only_while_shown(self):
+    def test_the_documents_load_only_while_shown_the_declare_s_waiting_in_its_pool(self):
         world = world_of(True, upload_folder(MARK_FILES, MARK_IMAGES))
         declare = world.make("guild-war-dialogs", "uiGuild", "DeclareGuildWarDialog",
                              "nui_guild_war_declare.DeclareGuildWarDialog")
         mark = world.make("guild-mark", "uiUploadMark", "MarkSelectDialog", "nui_guild_mark.MarkSelectDialog")
-        self.assertNotIn(DECLARE_DOCUMENT, world.documents())
+        # P18: the declare dialog's probe board waits, hidden, for its open.
+        self.assertEqual(world.documents().count(DECLARE_DOCUMENT), 1)
+        self.assertIsNone(w4.board(declare))
         self.assertNotIn(MARK_DOCUMENT, world.documents())
         with world.game, w4.quiet():
             declare.Open()

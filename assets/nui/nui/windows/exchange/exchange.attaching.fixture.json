@@ -495,6 +495,9 @@
 		"accept_down": false,
 		"accept_enabled": true,
 		"owner_attaching": true,
-		"target_attaching": true
+		"target_attaching": true,
+		"grids_on": [
+			1
+		]
 	}
 }

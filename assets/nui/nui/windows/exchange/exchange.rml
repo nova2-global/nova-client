@@ -9,8 +9,10 @@
 	     (legacy's Refresh, the server's ITEM_ADD cell; never the drop
 	     target, D7): the partner on the left, the player on the right, as
 	     legacy. A drop from the inventory reaches legacy's handlers through
-	     nui_slots.LegacySlotEvents. The document exists only while the
-	     window shows (nui_hud.OnDemand); the distance rule is the engine's
+	     nui_slots.LegacySlotEvents. The document loads at the window's first
+	     show and is kept, hidden, after it (nui_hud.KeptBoard, P18): both
+	     grids are a list of one entry while it shows and none while it is
+	     kept hidden (grids_on). The distance rule is the engine's
 	     (nuigame.WatchLeaveRange), so nothing runs per frame. The body and
 	     its controls take no focus; controls act on a left mousedown. It
 	     draws below the legacy UI layer, as legacy's window lived in it. A
@@ -31,7 +33,8 @@
 	</div>
 	<div class="nui-window__body exchange__body">
 		<div class="exchange__side exchange__side--target">
-			<div id="exchange-target-grid" class="nui-slot-grid nui-slot-grid--lean exchange__grid" data-class-is-attaching="target_attaching"
+			<div id="exchange-target-grid" class="nui-slot-grid nui-slot-grid--lean exchange__grid" data-for="w : grids_on"
+			     data-class-is-attaching="target_attaching"
 			     data-class-nui-slot-grid--cols-4="cols == 4" data-class-nui-slot-grid--cols-6="cols == 6">
 				<div class="nui-slot nui-anim nui-fx" data-for="c : target_cells" data-attr-id="'exchange-target-' + it_index"
 				     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
@@ -53,7 +56,8 @@
 		</div>
 		<div class="exchange__divider"></div>
 		<div class="exchange__side exchange__side--owner">
-			<div id="exchange-owner-grid" class="nui-slot-grid nui-slot-grid--lean exchange__grid" data-class-is-attaching="owner_attaching"
+			<div id="exchange-owner-grid" class="nui-slot-grid nui-slot-grid--lean exchange__grid" data-for="w : grids_on"
+			     data-class-is-attaching="owner_attaching"
 			     data-class-nui-slot-grid--cols-4="cols == 4" data-class-nui-slot-grid--cols-6="cols == 6">
 				<div class="nui-slot nui-anim nui-fx" data-for="c : owner_cells" data-attr-id="'exchange-owner-' + it_index"
 				     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"

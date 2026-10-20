@@ -322,7 +322,7 @@ class Flows(ExchangeTest):
             window.CloseDialog()
         self.assertEqual(world.calls_since(mark, "nuigame.StopLeaveRange"), [("nuigame.StopLeaveRange", ("exchange",))])
         self.assertEqual(world.calls_since(mark, IGNORE), [])
-        self.assertNotIn(DOCUMENT, world.documents())
+        self.assertFalse(window.demand.kept().is_visible(), "P18: kept, hidden")
         legacy, legacy_window = self.world(False)
         self.open(legacy, legacy_window)
         mark = legacy.mark()
@@ -416,14 +416,41 @@ class Facade(ExchangeTest):
 
 
 class OnDemand(ExchangeTest):
-    def test_no_document_until_open_and_none_after_close(self):
+    def test_no_document_until_the_first_open_then_kept_hidden_with_no_cell(self):
+        """P18 (V-2b's pattern): nothing loads before the first open; the
+        close keeps the board loaded and hidden, both grids emptied; the
+        next open shows the same board with no load, at the place it was
+        left, with the cells legacy's refresh gave it while hidden."""
         world, window = self.world(True)
         self.assertNotIn(DOCUMENT, world.documents())
         self.open(world, window)
         self.assertIn(DOCUMENT, world.documents())
+        board = w4.board(window)
+        world.game.state.boxes[(DOCUMENT, "")] = (300.0, 120.0, 520.0, 400.0)
         with world.game, w4.quiet():
             window.CloseDialog()
-        self.assertNotIn(DOCUMENT, world.documents())
+        self.assertIsNone(w4.board(window))
+        self.assertIs(window.demand.kept(), board)
+        self.assertFalse(board.is_visible())
+        self.assertEqual(world.documents(), [DOCUMENT], "kept loaded")
+        self.assertEqual(board.model["grids_on"], [], "no cell while hidden")
+        world.game.w4["exchange"]["self"][5] = {"vnum": POTION, "count": 7}
+        with world.game, w4.quiet():
+            window.Refresh()
+        self.open(world, window)
+        self.assertIs(w4.board(window), board, "shown again, not made again")
+        self.assertEqual(board.model["grids_on"], [1])
+        self.assertEqual(self.board_cells(window, "owner_cells")[5], (POTION, "7"))
+        self.assertEqual(board.placement, ("position", 300.0, 120.0, (0.0, 0.0)), "the place it was dragged to")
+        self.assertEqual(world.documents(), [DOCUMENT])
+
+    def test_destroy_unloads_the_kept_board(self):
+        world, window = self.world(True)
+        self.open(world, window)
+        with world.game, w4.quiet():
+            window.CloseDialog()
+            window.Destroy()
+        self.assertEqual(world.documents(), [])
 
     def test_a_refresh_while_hidden_reaches_the_next_board(self):
         world, window = self.world(True)

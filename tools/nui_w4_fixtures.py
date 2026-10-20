@@ -128,6 +128,7 @@ def exchange(limits, owner, target, owner_money, target_money, name_length, owne
         "accept_enabled": accept_enabled,
         "owner_attaching": attaching,
         "target_attaching": attaching,
+        "grids_on": [1],
     }}
 
 

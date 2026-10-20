@@ -544,7 +544,10 @@ class Facade(unittest.TestCase):
 
 
 class Wiring(unittest.TestCase):
-    """The legacy lines of P14 spec 6.7, exactly."""
+    """The legacy lines of P14 spec 6.7, exactly, each file's in this order;
+    the number is the line each stood at when written (P18: they are found
+    by their content, so a change elsewhere in the file moves them and fails
+    nothing)."""
 
     LINES = {
         "interfacemodule.py": (
@@ -564,9 +567,26 @@ class Wiring(unittest.TestCase):
 
     def test_the_changed_lines_are_the_spec_s(self):
         for file_name, lines in self.LINES.items():
-            text = read(os.path.join(ROOT, file_name)).split("\n")
-            for number, line in lines:
-                self.assertEqual(text[number - 1].strip(), line, "%s:%d" % (file_name, number))
+            found = support.find_lines(read(os.path.join(ROOT, file_name)), [line for _, line in lines])
+            for (number, line), at in zip(lines, found):
+                self.assertIsNotNone(at, "%s (line %d when written), in order: %s" % (file_name, number, line))
+
+    def test_a_change_elsewhere_in_a_file_moves_the_lines_and_fails_nothing(self):
+        """P18: the cube renewal (nova-client#3) moves interfacemodule.py's
+        lines by a few; the lines are found by their content, in order. A
+        changed line, or two out of their order, is still found missing."""
+        for file_name, lines in self.LINES.items():
+            text = read(os.path.join(ROOT, file_name))
+            wanted = [line for _, line in lines]
+            rows = text.split("\n")
+            shifted = "\n".join(["# moved"] * 3 + rows[:150] + ["", "# a few more lines", "pass", ""] + rows[150:])
+            found = support.find_lines(shifted, wanted)
+            self.assertNotIn(None, found, file_name)
+            self.assertEqual(found, sorted(found), file_name)
+            changed = text.replace(wanted[-1], wanted[-1].replace("nui_windows.make(", "nui_windows.made("), 1)
+            self.assertIsNone(support.find_lines(changed, wanted)[-1], file_name)
+            if len(wanted) > 1:
+                self.assertIn(None, support.find_lines(text, list(reversed(wanted))), file_name)
 
     def test_the_novaui_inventory_makes_the_dialogs_through_the_same_calls(self):
         source = read(os.path.join(ROOT, "nui_inventory.py"))

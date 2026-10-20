@@ -138,6 +138,27 @@ class CoverageGate(unittest.TestCase):
         for line, why in branches["excluded"].items():
             self.assertRegex(why, r"\w+: \w", line)
 
+    def test_a_change_elsewhere_in_uitooltip_moves_the_exclusions_with_their_lines(self):
+        """P18: no exclusion names a line number. A uitooltip.py whose lines
+        moved (three lines more at its top) excludes the same statements
+        with the same reasons, three lines further down; the shadowed first
+        AppendTextLineTime is found by its second definition."""
+        import tempfile
+        source = read(corpus_tool.RULES)
+        live, excluded = corpus_tool.rule_lines(corpus_tool.RULES)
+        with tempfile.TemporaryDirectory() as work:
+            moved = os.path.join(work, "uitooltip.py")
+            with open(moved, "w", encoding="utf-8") as handle:
+                handle.write("# moved\n# by\n# three lines\n" + source)
+            moved_live, moved_excluded = corpus_tool.rule_lines(moved)
+        self.assertEqual(moved_live, dict((line + 3, label) for line, label in live.items()))
+        # A shadowed method's reason names where the class defines it again.
+        again = lambda why, shift: re.sub(r"again at :(\d+)", lambda m: "again at :%d" % (int(m.group(1)) + shift), why)
+        self.assertEqual(sorted(moved_excluded.values()), sorted(again(why, 3) for why in excluded.values()))
+        self.assertEqual(set(moved_excluded), set(line + 3 for line in excluded))
+        shadowed = [why for why in excluded.values() if "AppendTextLineTime: shadowed" in why]
+        self.assertTrue(shadowed and all(why.startswith("ItemToolTip.AppendTextLineTime: shadowed") for why in shadowed))
+
     def test_every_live_rule_line_runs(self):
         branches = json.loads(read(corpus_tool.BRANCHES))
         live = set(int(line) for line in branches["lines"])

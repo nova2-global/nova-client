@@ -1,0 +1,54 @@
+<rml>
+<head>
+	<!-- The private shop builder (uiprivateshopbuilder.py
+	     PrivateShopBuilder, uiscript privateshopbuilder.py; P16 spec 5.3).
+	     While the private-shop flag is on, the Interface makes
+	     nui_private_shop.PrivateShopBuilder (controller
+	     assets/root/nui_private_shop.py), a subclass of the legacy class on
+	     proxies: a drop opens the price input (the dialog kit's money input),
+	     a press on a stocked cell takes it out, OK builds the shop; the stock,
+	     the price list and the build packet are legacy's code. The name line
+	     shows the title legacy shows (cut past 25 characters); the grid the
+	     stocked items (40 cells). The shop's sign is the shop-signs window's
+	     (Wave 2b). The document exists only while the window shows. The body
+	     and its controls take no focus; controls act on a left mousedown. It
+	     draws below the legacy UI layer, as legacy's window lived in it. A left
+	     or right press anywhere on it raises the window (board_press). -->
+	<title>private-shop</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="private-shop.rcss"/>
+</head>
+<body template="nui" id="private-shop" class="nui-window nui-fx nui-anim nui-below-legacy-ui pshop" data-model="private_shop"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar pshop__titlebar">
+		<handle class="nui-window__handle pshop__handle" move_target="#document">
+			<span class="nui-window__title pshop__title">@ui.PRIVATE_SHOP_TITLE</span>
+		</handle>
+		<button id="private-shop-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim pshop__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body pshop__body">
+		<div id="private-shop-name" class="pshop__name"><span class="pshop__name-text">{{ title }}</span></div>
+		<div id="private-shop-grid" class="nui-slot-grid nui-slot-grid--lean pshop__grid" data-class-is-attaching="attaching"
+		     data-class-nui-slot-grid--cols-5="cols == 5" data-class-nui-slot-grid--cols-8="cols == 8">
+			<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'private-shop-cell-' + it_index"
+			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+			     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+			     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+			     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
+			     data-event-mouseover="cell_over(it_index)" data-event-mouseout="cell_out(it_index)"
+			     data-event-nuidrop="cell_drop(it_index)">
+				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+			</div>
+		</div>
+	</div>
+	<div class="nui-window__footer pshop__footer">
+		<button id="private-shop-ok" class="nui-button nui-button--primary nui-button--medium nui-anim pshop__ok"
+		        data-event-mousedown="ok_press(ev.button)">@ui.OK</button>
+		<button id="private-shop-close" class="nui-button nui-button--medium nui-anim pshop__close"
+		        data-event-mousedown="close_press(ev.button)">@ui.CLOSE</button>
+	</div>
+</body>
+</rml>

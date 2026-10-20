@@ -1,0 +1,66 @@
+/* Virtual keyboard: a body-level window, 564dp wide, centered and 46dp above
+   the bottom edge, as the legacy keyboard (uiscript loginwindow.py). The
+   login board rises above it (login.rcss) under the same 680dp threshold.
+   It is display: none below that, not hidden: ElementDocument::Show writes
+   visibility inline, which no style sheet outweighs. */
+body.virtual-keyboard
+{
+	width: 564dp;
+	left: 50%;
+	margin-left: -282dp;
+	bottom: 46dp;
+	min-width: 0dp;
+	box-sizing: border-box;
+	padding: var(--space-4) 44dp;
+	focus: none;
+	tab-index: none;
+}
+@media (max-height: 679dp)
+{
+	body.virtual-keyboard
+	{
+		display: none;
+	}
+}
+
+.virtual-keyboard__row
+{
+	gap: 4dp;
+	margin-bottom: 4dp;
+}
+.virtual-keyboard__row--indent
+{
+	padding-left: 20dp;
+}
+.virtual-keyboard__row--special
+{
+	margin-bottom: 0dp;
+}
+
+/* Keys never take the focus, so a press leaves the field's caret alone. */
+.virtual-keyboard__key
+{
+	focus: none;
+	tab-index: none;
+	width: 36dp;
+	height: 36dp;
+	padding: 0dp;
+	line-height: 34dp;
+}
+.virtual-keyboard__special
+{
+	width: auto;
+	min-width: 44dp;
+	padding: 0dp var(--space-2);
+	font-size: var(--font-sm);
+}
+.virtual-keyboard__space
+{
+	flex: 1 1 auto;
+}
+.virtual-keyboard__key.is-selected
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-text);
+}

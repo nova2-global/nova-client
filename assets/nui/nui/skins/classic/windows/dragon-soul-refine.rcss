@@ -1,0 +1,236 @@
+/* Classic skin overlay of nui/windows/dragon-soul-refine/dragon-soul-refine.rml:
+   the legacy refine window (uiscript dragonsoulrefinewindow.py,
+   uidragonsoul.py) at 100%, 1dp to the legacy pixel. The board is
+   287 x 232 at legacy's place (beside the dragon soul window's left edge,
+   the two tops level), with its picture (dragon_soul_refine_bg.tga) over
+   it; the title bar at (5, 7), 275 wide; the material cells at (15, 39),
+   5 x 3 on the 32 pitch over the picture's cells, a closed cell showing the
+   window's base art (cap.tga, 30 x 30, the slot's base image) and no
+   lock glyph; the result cells at (207, 39), 2 x 3; the mode toggles at
+   (36, 148), (118, 148) and (198, 148) with their art, the labels in
+   legacy's cream; the fee right-aligned 35 in from the right at y 180 over
+   the picture's coin bar; the refine button at (188, 200). The arrow and
+   the fee's coin glyph are the modern skins'. */
+
+body.skin-classic.dsr
+{
+	right: 473dp;
+	bottom: 310dp;
+	width: 287dp;
+	height: 232dp;
+	min-width: 0;
+}
+body.skin-classic.dsr.dsr--placed
+{
+	right: auto;
+	bottom: auto;
+}
+body.skin-classic.dsr .dsr-bg
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 287dp;
+	height: 232dp;
+	decorator: image("d:/ymir work/ui/dragonsoul/dragon_soul_refine_bg.tga");
+	pointer-events: none;
+}
+
+/* --- The frame ------------------------------------------------------------------- */
+
+body.skin-classic.dsr .dsr__titlebar
+{
+	position: absolute;
+	left: 5dp;
+	top: 7dp;
+	/* 272dp wide with the bar's 3dp right padding (classic.rcss): legacy's
+	   275, so the close button sits at 275 - 18, as ui.TitleBar puts it. */
+	width: 272dp;
+	margin: 0;
+	z-index: 1;
+}
+/* The title centered at x 140 of the bar, as the uiscript places it. */
+body.skin-classic.dsr .dsr__handle
+{
+	padding-left: 23dp;
+}
+body.skin-classic.dsr .dsr__body
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 287dp;
+	height: 232dp;
+	padding: 0;
+}
+
+/* --- The modes ----------------------------------------------------------------------- */
+
+/* The modes', the cells' and the foot's containers have no box of their own:
+   their parts are placed on the board, and a box over it would take their
+   presses. */
+
+body.skin-classic.dsr .dsr-modes
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+}
+body.skin-classic.dsr .dsr-mode-place
+{
+	display: block;
+	position: absolute;
+	top: 148dp;
+}
+body.skin-classic.dsr .dsr-mode-place--grade { left: 36dp; }
+body.skin-classic.dsr .dsr-mode-place--step { left: 118dp; }
+body.skin-classic.dsr .dsr-mode-place--strength { left: 198dp; }
+body.skin-classic.dsr .dsr-mode,
+body.skin-classic.dsr .dsr-mode:hover,
+body.skin-classic.dsr .dsr-mode:active,
+body.skin-classic.dsr .dsr-mode.is-selected
+{
+	position: relative;
+	flex: 0 0 auto;
+	width: 78dp;
+	height: 21dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--tip-title);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 21dp;
+	transform: none;
+	decorator: image("d:/ymir work/ui/dragonsoul/button_01.tga");
+}
+/* A label wider than its art overflows both ends, centered, as legacy's
+   text line does, and takes no pointer. */
+body.skin-classic.dsr .dsr-mode__label, body.skin-classic.dsr .dsr-refine__label
+{
+	position: absolute;
+	left: -30dp;
+	right: -30dp;
+	top: 0;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+body.skin-classic.dsr .dsr-mode:hover
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/button_02.tga");
+}
+body.skin-classic.dsr .dsr-mode:active, body.skin-classic.dsr .dsr-mode.is-selected
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/button_03.tga");
+}
+
+/* --- The cells ------------------------------------------------------------------------ */
+
+body.skin-classic.dsr .dsr-main
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.dsr .dsr-arrow
+{
+	display: none;
+}
+body.skin-classic.dsr .dsr-cells
+{
+	position: absolute;
+	left: 15dp;
+	top: 39dp;
+}
+body.skin-classic.dsr .dsr-result
+{
+	position: absolute;
+	left: 207dp;
+	top: 39dp;
+}
+/* The picture draws the cells' frames; a closed cell shows the grid's base
+   art at the slot's corner, as CSlotWindow::RenderSlotBaseImage does. */
+body.skin-classic.dsr .dsr-cell, body.skin-classic.dsr .dsr-result-cell
+{
+	decorator: none;
+}
+body.skin-classic.dsr .dsr-cell.is-closed, body.skin-classic.dsr .dsr-cell.is-closed:hover
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/cap.tga" scale-none left top);
+}
+
+/* --- The fee and the refine button ------------------------------------------------------- */
+
+body.skin-classic.dsr .dsr-foot
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.dsr .dsr-fee
+{
+	display: block;
+	position: absolute;
+	left: 35dp;
+	top: 180dp;
+	width: 217dp;
+	height: 14dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.dsr .dsr-fee__coin
+{
+	display: none;
+}
+body.skin-classic.dsr .dsr-fee__amount
+{
+	display: block;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.dsr .dsr-refine,
+body.skin-classic.dsr .dsr-refine:hover,
+body.skin-classic.dsr .dsr-refine:active
+{
+	position: absolute;
+	left: 188dp;
+	top: 200dp;
+	width: 88dp;
+	min-width: 0;
+	height: 21dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 21dp;
+	transform: none;
+	decorator: image("d:/ymir work/ui/dragonsoul/l_button01.tga");
+}
+body.skin-classic.dsr .dsr-refine:hover
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/l_button02.tga");
+}
+body.skin-classic.dsr .dsr-refine:active
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/l_button03.tga");
+}

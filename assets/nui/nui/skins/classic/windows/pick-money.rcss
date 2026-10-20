@@ -1,0 +1,31 @@
+/* Classic skin overlay of nui/windows/pick-money/pick-money.rml. The runtime
+   and nuitool apply it after the window's own sheet, pick-money.rcss, in every
+   theme; every rule starts with .skin-classic, so it acts only while a classic
+   theme is in use (docs/ui/AUTHORING.md, Skins). */
+
+/* The legacy pick money board (uiscript pickmoneydialog.py): 170dp wide, the
+   title bar, the field and the maximum beside it, the two middle buttons
+   10dp apart. */
+body.skin-classic.pick-money
+{
+	width: 170dp;
+	margin-left: -85dp;
+	margin-top: -45dp;
+}
+body.skin-classic.pick-money .nui-window__body
+{
+	padding: 6dp 12dp 0dp 12dp;
+}
+.skin-classic input.pick-money__field
+{
+	width: 60dp;
+}
+.skin-classic .pick-money__limit
+{
+	color: var(--text);
+}
+body.skin-classic.pick-money .nui-window__footer
+{
+	padding: 7dp 12dp 11dp 12dp;
+	gap: 10dp;
+}

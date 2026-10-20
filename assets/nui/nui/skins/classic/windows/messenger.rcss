@@ -1,0 +1,211 @@
+/* Classic skin overlay of nui/windows/messenger/messenger.rml: the legacy
+   messenger (uiscript messengerwindow.py, uimessenger.py) at 100%, 1dp to
+   the legacy pixel. The stone board, 170 wide and as tall as the player
+   made it (the model's height, 150 at least), its title bar at 8, 7 (155
+   wide); the rows from 40 down, 20 apart, a group's at x 20 and a member's
+   15 further (legacy's step), each the list art (16 wide: open or closed,
+   online or offline) with its name 20 in, the selection a dark blue bar
+   from 16 in over the name (legacy's OnRender, grp color 0, 0, 0.7, 0.7);
+   no hover look, as legacy; the rows clipped 53 above the bottom (legacy's
+   height limit), the scroll bar at 143, 40 down to 76 above the bottom
+   (legacy's page size), always laid out but shown only when the rows
+   overflow; the four buttons (21 x 18) centered 40 apart, their tops 30
+   above the bottom, on their art (up, over, down, disabled); the resize
+   edge legacy's 10 tall drag button along the bottom. */
+
+body.skin-classic.messenger
+{
+	display: block;
+	width: 170dp;
+	min-width: 0;
+}
+body.skin-classic.messenger .messenger__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 155dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+	/* Its lower part lies over the first row, which takes the pointer there. */
+	pointer-events: none;
+}
+body.skin-classic.messenger .messenger__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 155dp;
+	height: 23dp;
+	text-align: center;
+	pointer-events: auto;
+}
+body.skin-classic.messenger .messenger__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 137dp;
+	top: 3dp;
+	margin: 0;
+	pointer-events: auto;
+}
+body.skin-classic.messenger .messenger__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.messenger .messenger__list
+{
+	position: absolute;
+	left: 20dp;
+	top: 40dp;
+	bottom: 53dp;
+	width: 140dp;
+	overflow-y: auto;
+}
+/* Legacy's scroll bar is 234 tall at the first size, 17 more than the rows'
+   box: it reaches past the box's bottom (clip: 1 lets it out). */
+body.skin-classic.messenger .messenger__list scrollbarvertical
+{
+	margin-bottom: -17dp;
+	clip: 1;
+}
+body.skin-classic.messenger .messenger__list scrollbarvertical slidertrack,
+body.skin-classic.messenger .messenger__list scrollbarvertical sliderarrowdec,
+body.skin-classic.messenger .messenger__list scrollbarvertical sliderarrowinc,
+body.skin-classic.messenger .messenger__list scrollbarvertical sliderbar
+{
+	clip: 1;
+}
+/* A row: the mark, then the name as wide as its text, cut at the row's end
+   (before the scroll bar) when it is longer, so the bar stays under it. */
+body.skin-classic.messenger .messenger__line
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	height: 16dp;
+	padding: 0;
+	line-height: 16dp;
+	font-weight: normal;
+	color: var(--text);
+}
+body.skin-classic.messenger .messenger__line:hover,
+body.skin-classic.messenger .messenger__line.is-selected
+{
+	background-color: transparent;
+}
+body.skin-classic.messenger .messenger__line.is-member,
+body.skin-classic.messenger .messenger__line.is-empty
+{
+	padding-left: 15dp;
+}
+body.skin-classic.messenger .messenger__line.is-empty
+{
+	padding-left: 0;
+}
+body.skin-classic.messenger .messenger__mark,
+body.skin-classic.messenger .messenger__line.is-member .messenger__mark,
+body.skin-classic.messenger .messenger__line.is-group .messenger__mark
+{
+	display: block;
+	flex: 0 0 16dp;
+	width: 16dp;
+	height: 16dp;
+	margin: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	transform: none;
+}
+body.skin-classic.messenger .messenger__line.is-empty .messenger__mark
+{
+	display: block;
+}
+body.skin-classic.messenger .messenger__line.is-group .messenger__mark
+{
+	decorator: image("d:/ymir work/ui/game/windows/messenger_list_close.sub" scale-none left top);
+}
+body.skin-classic.messenger .messenger__line.is-group.is-open .messenger__mark
+{
+	decorator: image("d:/ymir work/ui/game/windows/messenger_list_open.sub" scale-none left top);
+}
+body.skin-classic.messenger .messenger__line.is-member .messenger__mark
+{
+	decorator: image("d:/ymir work/ui/game/windows/messenger_list_offline.sub" scale-none left top);
+}
+body.skin-classic.messenger .messenger__line.is-member.is-online .messenger__mark
+{
+	decorator: image("d:/ymir work/ui/game/windows/messenger_list_online.sub" scale-none left top);
+}
+/* The name 20 in (text line at 20, 2); the bar from 16 in, 4 past the text. */
+body.skin-classic.messenger .messenger__name
+{
+	display: block;
+	flex: 0 1 auto;
+	min-width: 0;
+	height: 16dp;
+	padding: 0 4dp 0 4dp;
+	overflow: hidden;
+	text-overflow: clip;
+}
+body.skin-classic.messenger .messenger__line.is-selected .messenger__name
+{
+	background-color: var(--classic-list-ex-select);
+}
+body.skin-classic.messenger .messenger__hint
+{
+	left: 20dp;
+}
+
+/* --- The buttons --------------------------------------------------------------------- */
+
+body.skin-classic.messenger .messenger__footer
+{
+	display: block;
+	height: 0;
+	padding: 0;
+}
+body.skin-classic.messenger .messenger__button
+{
+	position: absolute;
+	bottom: 12dp;
+	width: 21dp;
+	height: 18dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	opacity: 1;
+}
+body.skin-classic.messenger .messenger__button--add { left: 15dp; decorator: image("d:/ymir work/ui/game/windows/messenger_add_friend_01.sub"); }
+body.skin-classic.messenger .messenger__button--whisper { left: 55dp; decorator: image("d:/ymir work/ui/game/windows/messenger_whisper_01.sub"); }
+body.skin-classic.messenger .messenger__button--remove { left: 95dp; decorator: image("d:/ymir work/ui/game/windows/messenger_delete_01.sub"); }
+body.skin-classic.messenger .messenger__button--guild { left: 135dp; decorator: image("d:/ymir work/ui/game/windows/messenger_guild_01.sub"); }
+body.skin-classic.messenger .messenger__button--add:hover { decorator: image("d:/ymir work/ui/game/windows/messenger_add_friend_02.sub"); }
+body.skin-classic.messenger .messenger__button--whisper:hover { decorator: image("d:/ymir work/ui/game/windows/messenger_whisper_02.sub"); }
+body.skin-classic.messenger .messenger__button--remove:hover { decorator: image("d:/ymir work/ui/game/windows/messenger_delete_02.sub"); }
+body.skin-classic.messenger .messenger__button--guild:hover { decorator: image("d:/ymir work/ui/game/windows/messenger_guild_02.sub"); }
+body.skin-classic.messenger .messenger__button--add:active { decorator: image("d:/ymir work/ui/game/windows/messenger_add_friend_03.sub"); }
+body.skin-classic.messenger .messenger__button--whisper:active { decorator: image("d:/ymir work/ui/game/windows/messenger_whisper_03.sub"); }
+body.skin-classic.messenger .messenger__button--remove:active { decorator: image("d:/ymir work/ui/game/windows/messenger_delete_03.sub"); }
+body.skin-classic.messenger .messenger__button--guild:active { decorator: image("d:/ymir work/ui/game/windows/messenger_guild_03.sub"); }
+/* Legacy's own disabled art, drawn as it is: not tinted again by the skin's
+   disabled button rule (classic.rcss), which would darken it to 55%. */
+body.skin-classic.messenger .messenger__button--whisper[disabled] { decorator: image("d:/ymir work/ui/game/windows/messenger_whisper_04.sub"); image-color: var(--classic-label-white); }
+body.skin-classic.messenger .messenger__button--remove[disabled] { decorator: image("d:/ymir work/ui/game/windows/messenger_delete_04.sub"); image-color: var(--classic-label-white); }
+body.skin-classic.messenger .messenger__tip
+{
+	bottom: auto;
+	top: 35dp;
+	margin-bottom: 0;
+}
+
+/* Legacy's drag button: 10 tall along the bottom. */
+body.skin-classic.messenger .messenger__resize
+{
+	height: 10dp;
+}

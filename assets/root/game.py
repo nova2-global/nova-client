@@ -45,6 +45,7 @@ import localeInfo
 
 import playerSettingModule
 import interfaceModule
+import nui_windows
 
 import musicInfo
 import debugInfo
@@ -92,19 +93,19 @@ class GameWindow(ui.ScriptWindow):
 		self.curtain.speed = 0.03
 		self.curtain.Hide()
 
-		self.targetBoard = uiTarget.TargetBoard()
+		self.targetBoard = nui_windows.make("target", uiTarget.TargetBoard, "nui_target.TargetBoard")
 		self.targetBoard.SetWhisperEvent(ui.__mem_func__(self.interface.OpenWhisperDialog))
 		self.targetBoard.Hide()
 
-		self.console = consoleModule.ConsoleWindow()
+		self.console = nui_windows.make("console", consoleModule.ConsoleWindow, "nui_console.ConsoleWindow")
 		self.console.BindGameClass(self)
 		self.console.SetConsoleSize(wndMgr.GetScreenWidth(), 200)
 		self.console.Hide()
 
-		self.mapNameShower = uiMapNameShower.MapNameShower()
-		self.affectShower = uiAffectShower.AffectShower()
+		self.mapNameShower = nui_windows.make("map-name", uiMapNameShower.MapNameShower, "nui_map_name.MapNameShower")
+		self.affectShower = nui_windows.make("affects", uiAffectShower.AffectShower, "nui_affects.AffectShower")
 
-		self.playerGauge = uiPlayerGauge.PlayerGauge(self)
+		self.playerGauge = nui_windows.make("player-gauge", uiPlayerGauge.PlayerGauge, "nui_player_gauge.PlayerGauge", self)
 		self.playerGauge.Hide()
 
 		# Before the preserved server commands below run.
@@ -278,7 +279,14 @@ class GameWindow(ui.ScriptWindow):
 
 		self.ClearDictionary()
 
+		# The NovaUI gauge's document goes with it (P10 spec 5.8); legacy only drops the reference.
+		if getattr(self.playerGauge, "NUI_FACADE", False):
+			self.playerGauge.Destroy()
 		self.playerGauge = None
+		# The NovaUI showers' documents go with them (spec D26); legacy only drops the reference.
+		for shower in (self.mapNameShower, self.affectShower):
+			if getattr(shower, "NUI_FACADE", False):
+				shower.Destroy()
 		self.mapNameShower = None
 		self.affectShower = None
 
@@ -1477,7 +1485,7 @@ class GameWindow(ui.ScriptWindow):
 	def OnUpdate(self):	
 		app.UpdateGame()
 		
-		if self.mapNameShower.IsShow():
+		if self.mapNameShower.IsShow() and not getattr(self.mapNameShower, "NUI_FACADE", False):
 			self.mapNameShower.Update()
 
 		if self.isShowDebugInfo:
@@ -1865,7 +1873,7 @@ class GameWindow(ui.ScriptWindow):
 		# END_OF_REMOVED_GUILD_BUG_FIX
 
 		import uiGuild
-		questionDialog = uiGuild.AcceptGuildWarDialog()
+		questionDialog = nui_windows.make("guild-war-dialogs", uiGuild.AcceptGuildWarDialog, "nui_guild_war_accept.AcceptGuildWarDialog")
 		questionDialog.SAFE_SetAcceptEvent(self.__GuildWar_OnAccept)
 		questionDialog.SAFE_SetCancelEvent(self.__GuildWar_OnDecline)
 		questionDialog.Open(guildName, warType)

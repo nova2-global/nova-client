@@ -1,0 +1,70 @@
+<rml>
+<head>
+	<!-- Character create: replaces the legacy create board (uiscript
+	     createcharacterwindow.py) while the create flag is on (controller:
+	     assets/root/nui_create.py; CreateCharacterWindow subclasses
+	     introCreate.CreateCharacterWindow, which keeps the 3D characters,
+	     the name checks, the create timer and the packet). An overlay like
+	     the select screen: only the board and the arrows take the mouse.
+	     The job description is plain paragraphs that scroll (nui_desc_text);
+	     they come from the model through nui.plain_text. The name field
+	     reports every edit; Enter in it creates and Escape cancels, as the
+	     legacy edit line did. There is no stat allocation: the legacy board
+	     hides its + buttons (CREATE_STAT_POINT is 0). While a create is
+	     under way (busy) the field and the buttons are disabled. -->
+	<title>create</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="create.rcss"/>
+</head>
+<body template="nui" class="nui-overlay create" data-model="create">
+	<div id="create-board" class="nui-window nui-fx nui-interactive create-board">
+		<img class="create-job" data-attr-src="job_image" data-if="job_image != ''"/>
+		<div id="create-text" class="create-text">
+			<p class="create-text__paragraph" data-for="p : paragraphs">{{ p }}</p>
+		</div>
+		<div class="create-stats">
+			<div class="create-stat">
+				<span class="create-stat__label">@ui.CREATE_HP</span>
+				<progress id="create-gauge-hth" class="nui-gauge nui-gauge--red create-stat__gauge" direction="right" data-attr-value="gauge_hth"/>
+				<span class="create-value create-stat__value">{{ stat_hth }}</span>
+			</div>
+			<div class="create-stat">
+				<span class="create-stat__label">@ui.CREATE_SP</span>
+				<progress id="create-gauge-int" class="nui-gauge nui-gauge--pink create-stat__gauge" direction="right" data-attr-value="gauge_int"/>
+				<span class="create-value create-stat__value">{{ stat_int }}</span>
+			</div>
+			<div class="create-stat">
+				<span class="create-stat__label">@ui.CREATE_ATT_GRADE</span>
+				<progress id="create-gauge-str" class="nui-gauge nui-gauge--purple create-stat__gauge" direction="right" data-attr-value="gauge_str"/>
+				<span class="create-value create-stat__value">{{ stat_str }}</span>
+			</div>
+			<div class="create-stat">
+				<span class="create-stat__label">@ui.CREATE_DEX_GRADE</span>
+				<progress id="create-gauge-dex" class="nui-gauge nui-gauge--blue create-stat__gauge" direction="right" data-attr-value="gauge_dex"/>
+				<span class="create-value create-stat__value">{{ stat_dex }}</span>
+			</div>
+		</div>
+		<div class="create-row create-row--name">
+			<label class="create-label" for="create-name">@ui.CREATE_NAME</label>
+			<input id="create-name" type="text" class="nui-input create-name" maxlength="12"
+				data-attrif-disabled="busy" data-event-change="name_edit(ev.value, ev.linebreak)"/>
+		</div>
+		<div class="create-row">
+			<span class="create-label">@ui.CREATE_SEX</span>
+			<button id="create-man" class="nui-button nui-button--medium nui-anim create-choice" data-class-is-selected="gender == 0" data-attrif-disabled="busy" data-event-click="gender(0)">@ui.CREATE_MAN</button>
+			<button id="create-woman" class="nui-button nui-button--medium nui-anim create-choice" data-class-is-selected="gender == 1" data-attrif-disabled="busy" data-event-click="gender(1)">@ui.CREATE_WOMAN</button>
+		</div>
+		<div class="create-row">
+			<span class="create-label">@ui.CREATE_SHAPE</span>
+			<button id="create-shape-1" class="nui-button nui-button--medium nui-anim create-choice" data-class-is-selected="shape == 0" data-attrif-disabled="busy" data-event-click="shape(0)">1</button>
+			<button id="create-shape-2" class="nui-button nui-button--medium nui-anim create-choice" data-class-is-selected="shape == 1" data-attrif-disabled="busy" data-event-click="shape(1)">2</button>
+		</div>
+		<div class="nui-window__footer create-footer">
+			<button id="create-cancel" class="nui-button nui-anim create-button" data-attrif-disabled="busy" data-event-click="cancel()">@ui.CANCEL</button>
+			<button id="create-create" class="nui-button nui-button--primary nui-anim create-button" data-attrif-disabled="busy" data-event-click="create()">@ui.CREATE_CREATE</button>
+		</div>
+	</div>
+	<button id="create-left" class="nui-button nui-button--icon nui-anim nui-interactive create-arrow create-arrow--left" data-attrif-disabled="busy" data-event-click="left()">&#8249;</button>
+	<button id="create-right" class="nui-button nui-button--icon nui-anim nui-interactive create-arrow create-arrow--right" data-attrif-disabled="busy" data-event-click="right()">&#8250;</button>
+</body>
+</rml>

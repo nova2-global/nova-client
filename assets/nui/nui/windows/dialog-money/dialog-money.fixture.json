@@ -1,0 +1,7 @@
+{
+	"dialog_money": {
+		"title": "@game.PRIVATE_SHOP_INPUT_PRICE_DIALOG_TITLE",
+		"max": 9,
+		"money": "Sales Price: 1,000 Yang"
+	}
+}

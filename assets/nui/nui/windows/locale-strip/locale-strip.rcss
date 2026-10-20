@@ -1,0 +1,55 @@
+/* Locale flag strip: the full width of the screen, 20dp from the top and
+   35dp tall, as the legacy strip (uilocaleselector.py), with the flags
+   spread across it. The flags are the legacy 22x17 art
+   (d:/ymir work/ui/intro/login/server_flag_<code>.sub). */
+body.locale-strip
+{
+	left: 0dp;
+	top: 20dp;
+	width: 100%;
+	height: 35dp;
+	focus: none;
+	tab-index: none;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	box-sizing: border-box;
+	background-color: var(--surface);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+}
+/* Room for the selection line in every state, so it moves nothing. */
+/* A width of its own: as a flex item the hint's host would shrink to its
+   padding (RmlUi flex items have no content minimum). */
+.locale-strip__flag
+{
+	flex: 0 0 auto;
+	width: 22dp;
+	height: 17dp;
+	padding: 3dp 3dp 1dp 3dp;
+	border-bottom-width: 2dp;
+	border-bottom-color: transparent;
+}
+.locale-strip__flag:hover
+{
+	background-color: var(--surface-hover);
+}
+.locale-strip__flag.is-selected
+{
+	border-bottom-color: var(--accent);
+}
+.locale-strip__image
+{
+	display: block;
+	width: 22dp;
+	height: 17dp;
+}
+/* The strip is at the top of the screen: the hint opens below the flag. */
+.locale-strip .nui-tooltip
+{
+	bottom: auto;
+	top: 100%;
+	margin-top: var(--space-1);
+	margin-bottom: 0dp;
+}

@@ -1,0 +1,174 @@
+/* Button: <button class="nui-button nui-button--primary nui-anim">.
+   Variants: --primary, --secondary (default look), --ghost, --danger.
+   Sizes: --small, --medium (the dialog size; never --small for a text
+   label, which the classic small art fits only when short), --icon
+   (square). Disabled: the `disabled` attribute
+   (static, or data-attrif-disabled="expr"). <button> is a plain element in
+   RmlUi, so the attribute does nothing by itself; the rule below takes the
+   button out of pointer hit testing (pointer-events), the tab order and
+   Focus() (focus), and keeps Enter and Space from clicking it while it has
+   focus (tab-index). Enter and Space reach a focused button where NovaUI has
+   the keyboard (docs/ui/AUTHORING.md "Keyboard and modals"). A button
+   disabled while focused keeps its focus ring.
+   is-hover, is-active and is-focus force a state without the pointer or the
+   keyboard (gallery snapshots, data-driven highlights). is-selected marks a
+   choice that is on: a radio choice or a toggle that legacy draws as a
+   button held down (data-class-is-selected). */
+
+.nui-button
+{
+	display: inline-block;
+	box-sizing: border-box;
+	height: 32dp;
+	padding: 0 var(--space-4);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	line-height: 30dp;
+	text-align: center;
+	white-space: nowrap;
+	tab-index: auto;
+}
+.nui-button:hover, .nui-button.is-hover
+{
+	background-color: var(--surface-hover);
+}
+.nui-button:active, .nui-button.is-active
+{
+	background-color: var(--surface-sunken);
+	transform: translateY(1dp);
+}
+.nui-button:focus-visible, .nui-button.is-focus
+{
+	border-color: var(--focus-ring);
+}
+/* After the states it ties, so a selected choice keeps its look under the
+   pointer, as a legacy button held down does. */
+.nui-button.is-selected
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+	color: var(--text);
+}
+.nui-button[disabled], .nui-button:disabled
+{
+	opacity: 0.45;
+	pointer-events: none;
+	tab-index: none;
+	focus: none;
+}
+
+/* Hover and press fade (--dur-fast, --ease-out). */
+.nui-button.nui-anim
+{
+	transition: background-color border-color color 0.1s cubic-out;
+}
+
+.nui-button--primary
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-text);
+}
+.nui-button--primary:hover, .nui-button--primary.is-hover
+{
+	background-color: var(--accent-hover);
+	border-color: var(--accent-hover);
+}
+.nui-button--primary:active, .nui-button--primary.is-active
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+}
+
+.nui-button--danger
+{
+	background-color: var(--danger);
+	border-color: var(--danger);
+	color: var(--accent-text);
+}
+.nui-button--danger:hover, .nui-button--danger.is-hover
+{
+	background-color: var(--danger-hover);
+	border-color: var(--danger-hover);
+}
+.nui-button--danger:active, .nui-button--danger.is-active
+{
+	background-color: var(--danger);
+	border-color: var(--danger);
+}
+
+.nui-button--ghost
+{
+	background-color: transparent;
+	border-color: transparent;
+}
+.nui-button--ghost:hover, .nui-button--ghost.is-hover
+{
+	background-color: var(--surface-hover);
+	border-color: transparent;
+}
+.nui-button--ghost:active, .nui-button--ghost.is-active
+{
+	background-color: var(--surface-sunken);
+}
+
+/* Focus wins over the variant border colors (same specificity, later rule). */
+.nui-button--primary:focus-visible, .nui-button--danger:focus-visible, .nui-button--ghost:focus-visible,
+.nui-button--primary.is-focus, .nui-button--danger.is-focus, .nui-button--ghost.is-focus
+{
+	border-color: var(--focus-ring);
+}
+
+.nui-button--small
+{
+	height: 24dp;
+	padding: 0 var(--space-2);
+	font-size: var(--font-sm);
+	line-height: 22dp;
+}
+/* The dialog buttons: a minimum width, so short labels (OK, No) line up. In
+   classic this is the legacy middle art (61dp). */
+.nui-button--medium
+{
+	min-width: 80dp;
+}
+.nui-button--icon
+{
+	width: 32dp;
+	padding: 0;
+	font-size: var(--font-lg);
+}
+.nui-button--small.nui-button--icon
+{
+	width: 24dp;
+	font-size: var(--font-md);
+}
+/* A 20dp icon button for a compact title bar (the chat log's close): a
+   regular-weight glyph in muted ink that brightens under the pointer. Use it
+   with --ghost and without --icon. It has no border, so its glyph sits on the
+   same pixels at every scale (RmlUi rounds a 1dp border to 1 or 2 px, which
+   moves a 20dp line box by half a pixel at 150%); keyboard focus shows as the
+   hover fill instead of the ring. */
+.nui-button--icon-sm
+{
+	width: 20dp;
+	height: 20dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: var(--radius-sm);
+	color: var(--text-muted);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 20dp;
+}
+.nui-button--icon-sm:hover, .nui-button--icon-sm.is-hover,
+.nui-button--icon-sm:focus-visible, .nui-button--icon-sm.is-focus
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}

@@ -1,0 +1,55 @@
+/* Classic skin overlay of nui/windows/system-menu/system-menu.rml: the
+   legacy system menu (uiscript systemdialog.py) at 100%, 1dp to the legacy
+   pixel: the thin board, 200 x 288, centered by the facade, and the eight
+   XLarge_Button buttons (180 x 25: the default, over and down art) at x 10,
+   y 17, 57, 87, 117, 147, 177, 217 and 247. The mall button shows its over
+   art in every state and a gold label (0xffF8BF24), as legacy's. The art
+   is the legacy .sub files themselves (1x only). */
+
+body.skin-classic.system-menu
+{
+	width: 200dp;
+	height: 288dp;
+	min-width: 0;
+	decorator: classic-thinboard;
+}
+body.skin-classic.system-menu .system-menu__buttons
+{
+	display: block;
+	position: relative;
+	padding: 0;
+}
+body.skin-classic.system-menu .system-menu__button
+{
+	position: absolute;
+	left: 10dp;
+	width: 180dp;
+	height: 25dp;
+	margin: 0;
+	padding: 0;
+	line-height: 25dp;
+	decorator: image("d:/ymir work/ui/public/xlarge_button_01.sub");
+}
+body.skin-classic.system-menu .system-menu__button:hover
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_button_02.sub");
+}
+body.skin-classic.system-menu .system-menu__button:active
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_button_03.sub");
+}
+body.skin-classic.system-menu .system-menu__button--help { top: 17dp; }
+body.skin-classic.system-menu .system-menu__button--mall { top: 57dp; }
+body.skin-classic.system-menu .system-menu__button--system-options { top: 87dp; }
+body.skin-classic.system-menu .system-menu__button--game-options { top: 117dp; }
+body.skin-classic.system-menu .system-menu__button--change { top: 147dp; }
+body.skin-classic.system-menu .system-menu__button--logout { top: 177dp; }
+body.skin-classic.system-menu .system-menu__button--exit { top: 217dp; }
+body.skin-classic.system-menu .system-menu__button--cancel { top: 247dp; }
+body.skin-classic.system-menu .system-menu__button--mall,
+body.skin-classic.system-menu .system-menu__button--mall:hover,
+body.skin-classic.system-menu .system-menu__button--mall:active
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_button_02.sub");
+	color: var(--classic-mall-text);
+}

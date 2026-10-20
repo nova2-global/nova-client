@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the party (tools/check_nui_snapshots.py): three members (the leader, a member, one offline), and the menu variant with the menu open, heal ready and the role buttons of the second member; the art is under d:/ymir work/ (assets/ETC).",
+	"cases": [
+		{"page": "party", "themes": "all", "scales": [["100", "1", "480x480"], ["150", "1.5", "720x720"], ["200", "2", "960x960"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "party", "variant": "menu", "themes": "all", "scales": [["100", "1", "480x480"], ["150", "1.5", "720x720"], ["200", "2", "960x960"]], "fixture": true, "roots": ["assets/ETC"], "time": null}
+	]
+}

@@ -1,0 +1,28 @@
+/* Cyberpunk overlay of nui/windows/tip-board/tip-board.rml: the tip strip as
+   a neon chip with the holographic scan layer. The strip has no border, so
+   its hooks lie on its box. */
+
+body.skin-cyberpunk.tip-board .tip-board__bar > .nui-chrome--outline
+{
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	image-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.tip-board .tip-board__bar > .nui-chrome--scan
+{
+	display: block;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+@media (theme: reduced-effects)
+{
+	body.skin-cyberpunk.tip-board .tip-board__bar > .nui-chrome--scan
+	{
+		display: none;
+	}
+}

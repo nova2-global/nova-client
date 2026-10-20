@@ -1,0 +1,11 @@
+{
+	"$comment": "Golden cases of the quest curtain (tools/check_nui_snapshots.py) at 4:3, where legacy's letterbox bars are 90dp at 100%: the bars in; a black fade at its end (opaque); a white fade halfway through its 0.5s (--time 0.25, information) with no bars.",
+	"cases": [
+		{"page": "quest-curtain", "themes": "all", "scales": [["100", "1", "960x720"], ["150", "1.5", "1440x1080"], ["200", "2", "1920x1440"]],
+		 "fixture": true, "roots": [], "time": null},
+		{"page": "quest-curtain", "variant": "fade-black", "themes": "all", "scales": [["100", "1", "960x720"]],
+		 "fixture": true, "roots": [], "time": null},
+		{"page": "quest-curtain", "variant": "fade-white-half", "themes": "all", "scales": [["100", "1", "960x720"]],
+		 "fixture": true, "roots": [], "time": 0.25}
+	]
+}

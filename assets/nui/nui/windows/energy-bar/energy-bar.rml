@@ -1,0 +1,24 @@
+<rml>
+<head>
+	<!-- The energy bar (uiscript/energybar.py, uitaskbar.py EnergyBar): the
+	     energy crystal's state, full, hungry (under 15% of its two hours
+	     left) or empty, with the energy points as a hint. While the
+	     energy-bar flag is on, the Interface makes the facade
+	     nui_energy_bar.EnergyBar (controller assets/root/nui_energy_bar.py).
+	     The state follows the status refreshes and, as legacy, a hover: the
+	     hint host calls energy_over() once as the pointer enters it, where
+	     legacy checked the hover every frame. The classic art is in the
+	     metin2_patch_eu4 group (d:/ymir work/ui/pattern/energygauge/), a
+	     root for lint and snapshots. -->
+	<title>energy-bar</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="energy-bar.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui energy-bar" data-model="energy_bar">
+	<div id="energy-bar" class="energy-bar__base">
+		<div id="energy-gauge" class="energy-bar__gauge" data-class-is-full="state == 'full'"
+			data-class-is-hungry="state == 'hungry'" data-class-is-empty="state == 'empty'"></div>
+	</div>
+	<span id="energy-tip" class="nui-has-tooltip energy-bar__tip" data-event-mouseover="energy_over()"><span class="nui-tooltip nui-anim energy-bar__hint">{{ tip }}</span></span>
+</body>
+</rml>

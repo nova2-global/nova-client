@@ -1,0 +1,451 @@
+/* Classic skin overlay of nui/windows/taskbar/taskbar.rml: the legacy
+   taskbar (uiscript/taskbar.py, mousebuttonwindow.py,
+   rightmousebuttonwindow.py; uitaskbar.py) with its art at its positions, 1
+   dp to the legacy pixel at 100%. The bar is 37dp tall at the bottom edge;
+   x is from the screen's left (the gauges), from its center (the mouse
+   buttons and the quickslots, legacy SCREEN_WIDTH / 2 offsets) or from its
+   right (the window buttons). The runtime and nuitool apply it after the
+   window's own sheet, in every theme; every rule starts with .skin-classic.
+
+   The gauges show the first of the legacy seven fill frames, still: legacy
+   steps through them (an ani_image, 0.1 s a frame), but RmlUi 6.3 does not
+   animate fill-image, the property that cuts the art at the value ("Property
+   value does not support animations or transitions"), and spec D21's
+   fallback is frame 01. The art is 1x only (legacy files under
+   d:/ymir work/), filtered above 100%. */
+
+/* The legacy layout fits from 800dp: no narrow-screen shrink. */
+body.skin-classic.taskbar
+{
+	top: 0;
+	width: 100%;
+	height: 100%;
+	transform: none;
+}
+body.skin-classic.taskbar .taskbar-bar
+{
+	height: 37dp;
+	background-color: transparent;
+	border-width: 0;
+}
+body.skin-classic.taskbar .taskbar-base
+{
+	display: block;
+	position: absolute;
+	left: 263dp;
+	right: 0;
+	top: 0;
+	height: 37dp;
+	decorator: image("d:/ymir work/ui/pattern/taskbar_base.tga" repeat-x left top);
+}
+
+/* --- Gauges (Gauge_Board, its RampageGauge and HP/SP/ST boards) -------------------- */
+
+body.skin-classic.taskbar .taskbar-gauges
+{
+	left: 0;
+	top: -10dp;
+	width: 158dp;
+	height: 47dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/gauge.sub");
+}
+/* The item mall button: the legacy coin animation, its 16 frames (no 10)
+   at 0.1s each, as skin-provided frames on the button's frames part; the
+   button itself draws nothing and takes the size of its frames. */
+body.skin-classic.taskbar .taskbar-mall
+{
+	left: 8dp;
+	top: 4dp;
+	width: auto;
+	height: auto;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-mall:hover, body.skin-classic.taskbar .taskbar-mall:active
+{
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-mall__frames
+{
+	--frames-list: "d:/ymir work/ui/game/mall/00.sub, d:/ymir work/ui/game/mall/01.sub, d:/ymir work/ui/game/mall/02.sub, d:/ymir work/ui/game/mall/03.sub, d:/ymir work/ui/game/mall/04.sub, d:/ymir work/ui/game/mall/05.sub, d:/ymir work/ui/game/mall/06.sub, d:/ymir work/ui/game/mall/07.sub, d:/ymir work/ui/game/mall/08.sub, d:/ymir work/ui/game/mall/09.sub, d:/ymir work/ui/game/mall/11.sub, d:/ymir work/ui/game/mall/12.sub, d:/ymir work/ui/game/mall/13.sub, d:/ymir work/ui/game/mall/14.sub, d:/ymir work/ui/game/mall/15.sub, d:/ymir work/ui/game/mall/16.sub";
+}
+body.skin-classic.taskbar .taskbar-mall__beat
+{
+	display: none;
+}
+body.skin-classic.taskbar .taskbar-gauge-host
+{
+	left: 59dp;
+	width: 95dp;
+}
+body.skin-classic.taskbar .taskbar-gauge-host--hp
+{
+	top: 14dp;
+	height: 11dp;
+}
+body.skin-classic.taskbar .taskbar-gauge-host--sp
+{
+	top: 24dp;
+	height: 11dp;
+}
+body.skin-classic.taskbar .taskbar-gauge-host--st
+{
+	top: 38dp;
+	height: 6dp;
+}
+/* The gauge is the legacy fill art cut at the value (the ani_image's
+   SetPercentage): a progress fill-image, not the gauge component's bar. */
+body.skin-classic.taskbar progress.taskbar-gauge
+{
+	width: 95dp;
+	height: 11dp;
+	decorator: none;
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.taskbar progress.taskbar-gauge fill
+{
+	decorator: none;
+	margin: 0;
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.taskbar progress.taskbar-gauge--hp
+{
+	fill-image: "d:/ymir work/ui/pattern/hpgauge/01.tga";
+}
+body.skin-classic.taskbar progress.taskbar-gauge--sp
+{
+	fill-image: "d:/ymir work/ui/pattern/spgauge/01.tga";
+}
+body.skin-classic.taskbar progress.taskbar-gauge--st
+{
+	height: 6dp;
+	fill-image: "d:/ymir work/ui/pattern/stgauge/01.tga";
+}
+/* The recovery bars: 13dp tall under the 11dp gauge, as legacy. */
+body.skin-classic.taskbar progress.taskbar-recovery
+{
+	width: 95dp;
+	height: 13dp;
+	border-radius: 0;
+}
+body.skin-classic.taskbar progress.taskbar-recovery fill
+{
+	border-radius: 0;
+}
+
+/* --- EXP orbs (EXP_Gauge_Board) ------------------------------------------------------ */
+
+body.skin-classic.taskbar .taskbar-exp
+{
+	left: 158dp;
+	top: 0;
+	width: 105dp;
+	height: 37dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/exp_gauge.sub");
+}
+body.skin-classic.taskbar progress.taskbar-orb
+{
+	top: 9dp;
+	width: 19dp;
+	height: 19dp;
+	background-color: transparent;
+	border-radius: 0;
+	fill-image: "d:/ymir work/ui/game/taskbar/exp_gauge_point.sub";
+}
+body.skin-classic.taskbar progress.taskbar-orb fill
+{
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.taskbar .taskbar-orb--1 { left: 5dp; }
+body.skin-classic.taskbar .taskbar-orb--2 { left: 30dp; }
+body.skin-classic.taskbar .taskbar-orb--3 { left: 55dp; }
+body.skin-classic.taskbar .taskbar-orb--4 { left: 80dp; }
+
+/* --- Buttons: the legacy art, up, over and down --------------------------------------- */
+
+body.skin-classic.taskbar .taskbar-mode, body.skin-classic.taskbar .taskbar-window
+{
+	width: 32dp;
+	height: 32dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-mode:hover, body.skin-classic.taskbar .taskbar-window:hover,
+body.skin-classic.taskbar .taskbar-mode:active, body.skin-classic.taskbar .taskbar-window:active,
+body.skin-classic.taskbar .taskbar-mode.is-open
+{
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-mode--move { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_move_01.sub"); }
+body.skin-classic.taskbar .taskbar-mode--move:hover { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_move_02.sub"); }
+body.skin-classic.taskbar .taskbar-mode--move:active { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_move_03.sub"); }
+body.skin-classic.taskbar .taskbar-mode--attack { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_attack_01.sub"); }
+body.skin-classic.taskbar .taskbar-mode--attack:hover { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_attack_02.sub"); }
+body.skin-classic.taskbar .taskbar-mode--attack:active { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_attack_03.sub"); }
+body.skin-classic.taskbar .taskbar-mode--auto { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_auto_attack_01.sub"); }
+body.skin-classic.taskbar .taskbar-mode--auto:hover { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_auto_attack_02.sub"); }
+body.skin-classic.taskbar .taskbar-mode--auto:active { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_auto_attack_03.sub"); }
+body.skin-classic.taskbar .taskbar-mode--camera { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub"); }
+body.skin-classic.taskbar .taskbar-mode--camera:hover { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_02.sub"); }
+body.skin-classic.taskbar .taskbar-mode--camera:active { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_03.sub"); }
+body.skin-classic.taskbar .taskbar-mode--skill { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_skill_01.sub"); }
+body.skin-classic.taskbar .taskbar-mode--skill:hover { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_skill_02.sub"); }
+body.skin-classic.taskbar .taskbar-mode--skill:active { decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_skill_03.sub"); }
+
+/* LeftMouseButton at SCREEN_WIDTH / 2 - 128, RightMouseButton at
+   SCREEN_WIDTH / 2 + 205, both 3dp below the bar's top. */
+body.skin-classic.taskbar .taskbar-mode--left
+{
+	top: 3dp;
+	margin-left: -128dp;
+}
+body.skin-classic.taskbar .taskbar-mode--right, body.skin-classic.taskbar .taskbar-right-skill,
+body.skin-classic.taskbar .taskbar-camera
+{
+	top: 3dp;
+	margin-left: 205dp;
+}
+body.skin-classic.taskbar .taskbar-camera
+{
+	width: 32dp;
+	height: 32dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub");
+}
+
+body.skin-classic.taskbar .taskbar-window--character
+{
+	right: 112dp;
+	top: 3dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/character_button_01.sub");
+}
+body.skin-classic.taskbar .taskbar-window--character:hover { decorator: image("d:/ymir work/ui/game/taskbar/character_button_02.sub"); }
+body.skin-classic.taskbar .taskbar-window--character:active { decorator: image("d:/ymir work/ui/game/taskbar/character_button_03.sub"); }
+body.skin-classic.taskbar .taskbar-window--inventory
+{
+	right: 78dp;
+	top: 3dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/inventory_button_01.sub");
+}
+body.skin-classic.taskbar .taskbar-window--inventory:hover { decorator: image("d:/ymir work/ui/game/taskbar/inventory_button_02.sub"); }
+body.skin-classic.taskbar .taskbar-window--inventory:active { decorator: image("d:/ymir work/ui/game/taskbar/inventory_button_03.sub"); }
+body.skin-classic.taskbar .taskbar-window--messenger
+{
+	right: 44dp;
+	top: 3dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/community_button_01.sub");
+}
+body.skin-classic.taskbar .taskbar-window--messenger:hover { decorator: image("d:/ymir work/ui/game/taskbar/community_button_02.sub"); }
+body.skin-classic.taskbar .taskbar-window--messenger:active { decorator: image("d:/ymir work/ui/game/taskbar/community_button_03.sub"); }
+body.skin-classic.taskbar .taskbar-window--system
+{
+	right: 10dp;
+	top: 3dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/system_button_01.sub");
+}
+body.skin-classic.taskbar .taskbar-window--system:hover { decorator: image("d:/ymir work/ui/game/taskbar/system_button_02.sub"); }
+body.skin-classic.taskbar .taskbar-window--system:active { decorator: image("d:/ymir work/ui/game/taskbar/system_button_03.sub"); }
+
+/* --- Quickslots (quickslot_board at SCREEN_WIDTH / 2 - 86) -------------------------------- */
+
+body.skin-classic.taskbar .taskbar-quick
+{
+	top: 0;
+	margin-left: -86dp;
+	width: 283dp;
+	height: 37dp;
+}
+body.skin-classic.taskbar .taskbar-quick-grid
+{
+	top: 3dp;
+	width: 270dp;
+}
+/* quickslot 5 at 142 in the board, past the expand button. */
+body.skin-classic.taskbar .taskbar-quick-grid .nui-slot:nth-child(5)
+{
+	margin-left: 14dp;
+}
+body.skin-classic.taskbar .taskbar-expand
+{
+	left: 128dp;
+	top: 1dp;
+	width: 14dp;
+	height: 35dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/chat_button_01.sub");
+}
+body.skin-classic.taskbar .taskbar-expand:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/chat_button_02.sub");
+}
+body.skin-classic.taskbar .taskbar-expand:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/chat_button_03.sub");
+}
+/* The key labels: the legacy art at 3,3 in each cell. */
+body.skin-classic.taskbar .taskbar-key
+{
+	display: none;
+}
+body.skin-classic.taskbar .taskbar-key-art
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	z-index: 4;
+	width: 8dp;
+	height: 7dp;
+	pointer-events: none;
+}
+body.skin-classic.taskbar .taskbar-key-art--0 { decorator: image("d:/ymir work/ui/game/taskbar/1.sub" scale-none left top); }
+body.skin-classic.taskbar .taskbar-key-art--1 { decorator: image("d:/ymir work/ui/game/taskbar/2.sub" scale-none left top); }
+body.skin-classic.taskbar .taskbar-key-art--2 { decorator: image("d:/ymir work/ui/game/taskbar/3.sub" scale-none left top); }
+body.skin-classic.taskbar .taskbar-key-art--3 { decorator: image("d:/ymir work/ui/game/taskbar/4.sub" scale-none left top); }
+body.skin-classic.taskbar .taskbar-key-art--4 { decorator: image("d:/ymir work/ui/game/taskbar/f1.sub" scale-none left top); }
+body.skin-classic.taskbar .taskbar-key-art--5 { decorator: image("d:/ymir work/ui/game/taskbar/f2.sub" scale-none left top); }
+body.skin-classic.taskbar .taskbar-key-art--6 { decorator: image("d:/ymir work/ui/game/taskbar/f3.sub" scale-none left top); }
+body.skin-classic.taskbar .taskbar-key-art--7 { decorator: image("d:/ymir work/ui/game/taskbar/f4.sub" scale-none left top); }
+
+/* QuickSlotBoard at 272 in the board: the number box, the up and down
+   buttons and the page number art. */
+body.skin-classic.taskbar .taskbar-pager
+{
+	left: 272dp;
+	top: 0;
+	width: 11dp;
+	height: 37dp;
+}
+body.skin-classic.taskbar .taskbar-pager__board
+{
+	display: block;
+	position: absolute;
+	left: 1dp;
+	top: 15dp;
+	width: 9dp;
+	height: 8dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/quickslot_button_board.sub");
+}
+body.skin-classic.taskbar .taskbar-pager__up, body.skin-classic.taskbar .taskbar-pager__down
+{
+	left: 1dp;
+	width: 9dp;
+	height: 5dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-pager__up { top: 9dp; decorator: image("d:/ymir work/ui/game/taskbar/quickslot_upbutton_01.sub"); }
+body.skin-classic.taskbar .taskbar-pager__up:hover { background-color: transparent; decorator: image("d:/ymir work/ui/game/taskbar/quickslot_upbutton_02.sub"); }
+body.skin-classic.taskbar .taskbar-pager__up:active { background-color: transparent; decorator: image("d:/ymir work/ui/game/taskbar/quickslot_upbutton_03.sub"); }
+body.skin-classic.taskbar .taskbar-pager__down { top: 24dp; decorator: image("d:/ymir work/ui/game/taskbar/quickslot_downbutton_01.sub"); }
+body.skin-classic.taskbar .taskbar-pager__down:hover { background-color: transparent; decorator: image("d:/ymir work/ui/game/taskbar/quickslot_downbutton_02.sub"); }
+body.skin-classic.taskbar .taskbar-pager__down:active { background-color: transparent; decorator: image("d:/ymir work/ui/game/taskbar/quickslot_downbutton_03.sub"); }
+body.skin-classic.taskbar .taskbar-pager__page
+{
+	left: 3dp;
+	top: 15dp;
+	width: 5dp;
+	height: 7dp;
+	color: transparent;
+	font-size: 1dp;
+	line-height: 1dp;
+}
+body.skin-classic.taskbar .taskbar-pager__page--1 { decorator: image("d:/ymir work/ui/game/taskbar/1.sub"); }
+body.skin-classic.taskbar .taskbar-pager__page--2 { decorator: image("d:/ymir work/ui/game/taskbar/2.sub"); }
+body.skin-classic.taskbar .taskbar-pager__page--3 { decorator: image("d:/ymir work/ui/game/taskbar/3.sub"); }
+body.skin-classic.taskbar .taskbar-pager__page--4 { decorator: image("d:/ymir work/ui/game/taskbar/4.sub"); }
+
+/* --- Mode menus and the skill picker (above their buttons, 5dp up) ---------------------- */
+
+body.skin-classic.taskbar .taskbar-menu
+{
+	bottom: 39dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.taskbar .taskbar-menu--left
+{
+	margin-left: -128dp;
+	width: 32dp;
+	height: 96dp;
+}
+body.skin-classic.taskbar .taskbar-menu--left .taskbar-mode
+{
+	margin-bottom: 0;
+}
+body.skin-classic.taskbar .taskbar-menu--right
+{
+	margin-left: 173dp;
+	width: 64dp;
+	height: 32dp;
+	gap: 0;
+}
+body.skin-classic.taskbar .taskbar-picker
+{
+	margin-right: -237dp;
+	bottom: 72dp;
+	gap: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+
+/* --- Hints: outlined text, as the legacy text tooltips draw them ------------------------ */
+
+/* Legacy's TextToolTip lines have no color of their own; the client draws
+   that default text at #c7c7c7 (measured in game on the HP hint and on the
+   debug line, 199 at their brightest), the gray of the legacy button
+   labels, where --text is #dadada. */
+body.skin-classic.taskbar .nui-tooltip.taskbar-tip
+{
+	decorator: none;
+	padding: 0;
+	color: var(--classic-button-text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+/* The gauge and EXP hints (TextToolTip.OnRender) follow the pointer in
+   legacy, centered on it with their top 15 px above it; these sit where a
+   pointer in the middle of their board puts legacy's: centered on the
+   board, the glyphs' top where legacy's are (the line's top 15dp above the
+   board's middle, less a pixel for the line's leading). They draw above the
+   energy bar's art, as legacy's TOP_MOST text does, because the energy bar's
+   document is drawn below the legacy UI layer and this one above it. */
+body.skin-classic.taskbar .taskbar-gauge-host .nui-tooltip.taskbar-tip,
+body.skin-classic.taskbar .taskbar-exp .nui-tooltip.taskbar-tip
+{
+	bottom: auto;
+	margin-bottom: 0;
+	margin-right: 0;
+	width: 200dp;
+	text-align: center;
+}
+/* The 95dp gauges, 11dp tall (6dp for stamina). */
+body.skin-classic.taskbar .taskbar-gauge-host .nui-tooltip.taskbar-tip
+{
+	left: -53dp;
+	top: -10dp;
+}
+body.skin-classic.taskbar .taskbar-gauge-host--st .nui-tooltip.taskbar-tip
+{
+	top: -12dp;
+}
+/* The 105 x 37dp EXP board. */
+body.skin-classic.taskbar .taskbar-exp .nui-tooltip.taskbar-tip
+{
+	left: -48dp;
+	top: 3dp;
+}

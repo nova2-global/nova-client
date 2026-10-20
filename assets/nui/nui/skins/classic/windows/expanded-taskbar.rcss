@@ -1,0 +1,43 @@
+/* Classic skin overlay of nui/windows/expanded-taskbar/expanded-taskbar.rml:
+   the legacy ExpandTaskBar (uiscript/expandedtaskbar.py) at SCREEN_WIDTH / 2
+   - 5, SCREEN_HEIGHT - 74, 37 x 37, its DragonSoulButton at 0, 0 with the
+   legacy up, over and down art; the hint is the legacy button tooltip,
+   outlined text without a board. */
+
+body.skin-classic.expanded-taskbar .expanded-taskbar__board
+{
+	bottom: 37dp;
+	margin-left: -5dp;
+	width: 37dp;
+	height: 37dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.expanded-taskbar .expanded-taskbar__button
+{
+	width: 37dp;
+	height: 37dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/dragonsoul/dragonsoul_button_01.tga" scale-none left top);
+}
+body.skin-classic.expanded-taskbar .expanded-taskbar__button:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/dragonsoul/dragonsoul_button_02.tga" scale-none left top);
+}
+body.skin-classic.expanded-taskbar .expanded-taskbar__button:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/dragonsoul/dragonsoul_button_03.tga" scale-none left top);
+}
+body.skin-classic.expanded-taskbar .nui-tooltip.expanded-taskbar__tip
+{
+	decorator: none;
+	padding: 0;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

@@ -1,0 +1,36 @@
+{
+	"system_options": {
+		"sound_volume": 20,
+		"music_volume": 0,
+		"music_file": "another_way.mp3",
+		"camera": 1,
+		"fog": 2,
+		"tiling": 0,
+		"interface": true,
+		"themes": [
+			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},
+			{"id": "modern-light", "label": "@ui.THEME_MODERN_LIGHT"},
+			{"id": "classic", "label": "@ui.THEME_CLASSIC"},
+			{"id": "cyberpunk", "label": "@ui.THEME_CYBERPUNK"}
+		],
+		"theme": "classic",
+		"scales": [
+			{"id": "auto", "percent": 0, "label": "@ui.OPTION_UI_SCALE_AUTO"},
+			{"id": "75", "percent": 75, "label": "75%"},
+			{"id": "100", "percent": 100, "label": "100%"},
+			{"id": "125", "percent": 125, "label": "125%"},
+			{"id": "150", "percent": 150, "label": "150%"},
+			{"id": "175", "percent": 175, "label": "175%"},
+			{"id": "200", "percent": 200, "label": "200%"},
+			{"id": "custom", "percent": 110, "label": "110%"}
+		],
+		"scale": 110,
+		"auto_percent": 88,
+		"reduced_motion": true,
+		"reduced_effects": true,
+		"effects_available": true,
+		"color_slots": [],
+		"accent_hue": 0,
+		"colors_adjusted": false
+	}
+}

@@ -18,6 +18,7 @@ import localeInfo
 import constInfo
 import ime
 import wndMgr
+import nui_windows
 
 ITEM_FLAG_APPLICABLE = 1 << 14
 
@@ -350,11 +351,11 @@ class InventoryWindow(ui.ScriptWindow):
 		dlgPickMoney.Hide()
 
 		## RefineDialog
-		self.refineDialog = uiRefine.RefineDialog()
+		self.refineDialog = nui_windows.make("refine", uiRefine.RefineDialog, "nui_refine.RefineDialog")
 		self.refineDialog.Hide()
 
 		## AttachMetinDialog
-		self.attachMetinDialog = uiAttachMetin.AttachMetinDialog()
+		self.attachMetinDialog = nui_windows.make("attach-metin", uiAttachMetin.AttachMetinDialog, "nui_attach_metin.AttachMetinDialog")
 		self.attachMetinDialog.Hide()
 
 		## MoneySlot

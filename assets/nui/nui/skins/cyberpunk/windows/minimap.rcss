@@ -1,0 +1,84 @@
+/* Cyberpunk overlay of nui/windows/minimap/minimap.rml: the mockup's round
+   map in a thin neon ring with a soft glow, a ring of ticks just inside it,
+   violet round buttons on the ring and the place line on a neon plate. The
+   map view's rim fades into the disc under a gradient ring the frame draws
+   over it (reduced effects shows the rim hard). Not a mask: a mask costs
+   two layers on every frame the always shown map shows. The map image
+   itself is content and is never tinted. */
+
+/* The ring: a 1dp neon circle where the modern one has a 5dp band, so the
+   tick ring under it shows between the map and the ring. */
+body.skin-cyberpunk.minimap .minimap__frame
+{
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge);
+}
+/* The rim: the disc's color over the map's outer 8% (the map is 128dp in
+   the 136dp frame: 94.1% of its radius), then clear for the ticks. */
+body.skin-cyberpunk.minimap .minimap__frame.nui-board--ring
+{
+	decorator: radial-gradient(circle closest-side, transparent 86.6%, var(--surface-sunken) 94.1%, transparent 94.1%);
+}
+/* Its glow: the ring board's outline hook, a halo drawn by a gradient 6dp
+   outside the ring and a little inside it. */
+body.skin-cyberpunk.minimap .minimap__frame > .nui-chrome--outline
+{
+	display: block;
+	left: -7dp;
+	top: -7dp;
+	right: -7dp;
+	bottom: -7dp;
+	decorator: radial-gradient(circle closest-side, transparent 84%, var(--cyberpunk-glow) 91%, transparent 100%);
+}
+/* The backing disc shows only between the map (128dp) and the ring
+   (136dp): fine ticks around the map. */
+body.skin-cyberpunk.minimap .minimap__base
+{
+	background-color: var(--surface-sunken);
+	decorator: repeating-conic-gradient(var(--cyberpunk-edge-dim) 0deg, var(--cyberpunk-edge-dim) 2deg, transparent 2deg, transparent 10deg);
+}
+
+/* The buttons: dark round chips with a violet edge. */
+body.skin-cyberpunk.minimap .minimap__button, body.skin-cyberpunk.minimap .minimap__show
+{
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.minimap .minimap__button:hover, body.skin-cyberpunk.minimap .minimap__show:hover
+{
+	border-color: var(--accent);
+	background-color: var(--surface-hover);
+}
+body.skin-cyberpunk.minimap .minimap__button:active, body.skin-cyberpunk.minimap .minimap__show:active
+{
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.minimap .minimap__glyph
+{
+	color: var(--cyberpunk-title);
+}
+
+/* The place and channel line, and the observers, on a neon plate. */
+body.skin-cyberpunk.minimap .minimap__text
+{
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--surface);
+	color: var(--cyberpunk-title);
+	letter-spacing: 1dp;
+}
+
+/* Reduced effects: no halo and no rim (without effects their gradients
+   would draw one flat color over the map). */
+@media (theme: reduced-effects)
+{
+	body.skin-cyberpunk.minimap .minimap__frame > .nui-chrome--outline
+	{
+		display: none;
+	}
+	body.skin-cyberpunk.minimap .minimap__frame.nui-board--ring
+	{
+		decorator: none;
+	}
+}

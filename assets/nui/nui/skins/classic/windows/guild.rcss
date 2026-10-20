@@ -1,0 +1,1134 @@
+/* Classic skin overlay of nui/windows/guild/guild.rml: the legacy guild
+   window (uiscripts guildwindow.py and guildwindow_*page.py, uiguild.py's
+   __Make*Page) at 100%, 1dp to the legacy pixel. The stone board with its
+   title bar, 376 x 356; the tab strip at 0, 328 (376 x 37, 9 below the
+   board, as legacy's): the locale's art of the shown page under legacy's
+   invisible radio buttons (6, 78, 152, 226, 300; the base tab zero wide);
+   each page at 8, 30 (360 x 298), every part at its uiscript's or its
+   builder's place: the horizontal bars' art (left, tiled middle, right),
+   the parameter slots under the texts, the slot bars, the check boxes
+   (Parameter_Slot_00 or 01 with check_image centered), the reflectors'
+   hover and press veils (legacy's MouseReflector, 2 in from each side),
+   the combo boxes drawn by legacy's rule with their list 5 below, the
+   skill cells on the slot base with the "+" art at 1, 19 in a cell, the
+   dragon power's SP gauge art (its first frame, tiled to 173 at most, as
+   legacy's cut of its 95 px art), the large mark at 194, 35 drawn with
+   nearest sampling at 3x (legacy's mark box). Coordinates in comments are
+   the page's. */
+
+body.skin-classic.guild
+{
+	display: block;
+	width: 376dp;
+	height: 356dp;
+	min-width: 0;
+}
+/* The bar's box is 32 tall over the page's top (the board page's refresh
+   button at 5); only its 23 px art takes the pointer, as legacy's title
+   bar: the handle and the close button. */
+body.skin-classic.guild .guild__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 361dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.guild .guild__handle,
+body.skin-classic.guild .guild__titlebar .guild__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.guild .guild__body
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 376dp;
+	height: 356dp;
+}
+body.skin-classic.guild .guild__page
+{
+	left: 8dp;
+	top: 30dp;
+	right: auto;
+	bottom: auto;
+	width: 360dp;
+	height: 298dp;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+
+/* --- Shared parts ---------------------------------------------------------------------------- */
+
+body.skin-classic.guild .guild__card
+{
+	position: static;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+/* ui.HorizontalBar: the left and right caps (32 wide) and the middle art
+   tiled between them, 17 tall; the title at 8, 3. */
+body.skin-classic.guild .guild__bar
+{
+	position: absolute;
+	height: 17dp;
+	margin: 0;
+	padding: 0 32dp;
+	border-width: 0;
+	line-height: 14dp;
+	decorator: image("d:/ymir work/ui/pattern/horizontalbar_center.tga" repeat-x left top) content-box,
+	           image("d:/ymir work/ui/pattern/horizontalbar_left.tga" scale-none left top) padding-box,
+	           image("d:/ymir work/ui/pattern/horizontalbar_right.tga" scale-none right top) padding-box;
+}
+body.skin-classic.guild .guild__bar-title
+{
+	position: absolute;
+	left: 8dp;
+	top: 3dp;
+	font-size: var(--font-md);
+	font-weight: normal;
+	color: var(--text);
+}
+body.skin-classic.guild .guild__head
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 360dp;
+	height: 22dp;
+	border-width: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+body.skin-classic.guild .guild__head-cell
+{
+	position: absolute;
+	width: auto;
+	padding: 0;
+	overflow: visible;
+	text-align: left;
+}
+body.skin-classic.guild .guild__label
+{
+	position: absolute;
+	left: 0;
+	top: 2dp;
+	width: auto;
+	color: var(--text);
+	font-size: var(--font-md);
+	overflow: visible;
+}
+/* A value on its parameter slot, centered (all_align center). */
+body.skin-classic.guild .guild__value
+{
+	position: absolute;
+	top: 0;
+	height: 18dp;
+	line-height: 18dp;
+	text-align: center;
+	overflow: visible;
+}
+/* A check box: Parameter_Slot_01 (52 x 18; the members' Parameter_Slot_00,
+   39 x 18) with check_image (24 x 16) centered while checked. */
+body.skin-classic.guild .guild__check
+{
+	position: absolute;
+	width: 52dp;
+	height: 18dp;
+	margin: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_01.sub");
+}
+body.skin-classic.guild .guild__check:hover
+{
+	border-width: 0;
+}
+body.skin-classic.guild .guild__check-mark
+{
+	left: 14dp;
+	top: 1dp;
+	width: 24dp;
+	height: 16dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/check_image.sub");
+}
+body.skin-classic.guild .guild__member-general,
+body.skin-classic.guild .guild__building-power
+{
+	width: 39dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_00.sub");
+}
+body.skin-classic.guild .guild__member-general .guild__check-mark
+{
+	left: 7dp;
+}
+/* Legacy's MouseReflector: a veil 2 in from each side while hovered
+   (HALF_WHITE), brighter while pressed (WHITE); none on grade 1's. */
+body.skin-classic.guild .guild__check:hover,
+body.skin-classic.guild .guild__grade-name:hover
+{
+	decorator: image("d:/ymir work/ui/public/parameter_slot_01.sub"),
+	           linear-gradient(var(--classic-hover-white), var(--classic-hover-white)) content-box;
+	padding: 2dp;
+}
+body.skin-classic.guild .guild__check:active,
+body.skin-classic.guild .guild__grade-name:active
+{
+	decorator: image("d:/ymir work/ui/public/parameter_slot_01.sub"),
+	           linear-gradient(var(--classic-press-white), var(--classic-press-white)) content-box;
+	padding: 2dp;
+}
+body.skin-classic.guild .guild__member-general:hover
+{
+	decorator: image("d:/ymir work/ui/public/parameter_slot_00.sub"),
+	           linear-gradient(var(--classic-hover-white), var(--classic-hover-white)) content-box;
+}
+body.skin-classic.guild .guild__member-general:active
+{
+	decorator: image("d:/ymir work/ui/public/parameter_slot_00.sub"),
+	           linear-gradient(var(--classic-press-white), var(--classic-press-white)) content-box;
+}
+body.skin-classic.guild .guild__tip
+{
+	bottom: auto;
+	top: 22dp;
+}
+body.skin-classic.guild .guild__button-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+}
+
+/* --- The info page (guildwindow_guildinfopage.py) ------------------------------------------- */
+
+body.skin-classic.guild .guild__bar--values { left: 5dp; top: 10dp; width: 103dp; }
+body.skin-classic.guild .guild__bar--mark { left: 188dp; top: 10dp; width: 103dp; }
+body.skin-classic.guild .guild__bar--enemies { left: 188dp; top: 85dp; width: 103dp; }
+/* The label at 8 (the bar's 5 + 3), its slot 70 further, 2 above it. */
+body.skin-classic.guild .guild__field
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	width: 180dp;
+	height: 18dp;
+}
+body.skin-classic.guild .guild__field--name { top: 39dp; }
+body.skin-classic.guild .guild__field--master { top: 65dp; }
+body.skin-classic.guild .guild__field--level { top: 101dp; }
+body.skin-classic.guild .guild__field--cur-exp { top: 127dp; }
+body.skin-classic.guild .guild__field--last-exp { top: 153dp; }
+body.skin-classic.guild .guild__field--members { top: 179dp; }
+body.skin-classic.guild .guild__field--avg-level { top: 205dp; }
+body.skin-classic.guild .guild__value--wide
+{
+	left: 70dp;
+	width: 90dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
+}
+/* The level on a 45 x 17 slot bar. */
+body.skin-classic.guild .guild__value--level
+{
+	left: 70dp;
+	box-sizing: border-box;
+	width: 45dp;
+	height: 17dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+	line-height: 15dp;
+}
+body.skin-classic.guild .guild__value--avg
+{
+	left: 108dp;
+	width: 52dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_01.sub");
+}
+/* The offer button (127, 100) on the small art. */
+body.skin-classic.guild .guild__offer
+{
+	position: absolute;
+	left: 119dp;
+	top: -1dp;
+	width: 43dp;
+	height: 21dp;
+	min-width: 0;
+	padding: 0;
+	line-height: 21dp;
+	font-size: var(--font-md);
+	overflow: visible;
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.guild .guild__offer:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.guild .guild__offer:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+/* The large mark's slot bar (193, 34; 49 x 37), the mark at 1, 1 in it. */
+body.skin-classic.guild .guild__mark-slot
+{
+	position: absolute;
+	left: 193dp;
+	top: 34dp;
+	box-sizing: border-box;
+	width: 49dp;
+	height: 37dp;
+	margin: 0;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.guild .guild__mark
+{
+	display: none;
+}
+body.skin-classic.guild .guild__mark--nearest
+{
+	display: block;
+	left: 0;
+	top: 0;
+}
+body.skin-classic.guild .guild__mark-buttons
+{
+	left: 0;
+	top: 0;
+	right: auto;
+}
+/* Upload mark (260, 33) and symbol (260, 56) on the large art. */
+body.skin-classic.guild .guild__upload,
+body.skin-classic.guild .guild__declare,
+body.skin-classic.guild .guild__heal
+{
+	position: absolute;
+	width: 88dp;
+	height: 21dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	line-height: 21dp;
+	font-size: var(--font-md);
+	overflow: visible;
+}
+body.skin-classic.guild .guild__upload--mark { left: 260dp; top: 33dp; }
+body.skin-classic.guild .guild__upload--symbol { left: 260dp; top: 56dp; }
+body.skin-classic.guild .guild__declare { left: 265dp; top: 264dp; right: auto; bottom: auto; }
+/* The enemies: Parameter_Slot_04 (115 x 18) at 192, 112 and every 26 below. */
+body.skin-classic.guild .guild__enemies
+{
+	position: absolute;
+	left: 192dp;
+	top: 112dp;
+}
+body.skin-classic.guild .guild__enemy
+{
+	width: 115dp;
+	height: 18dp;
+	margin-bottom: 8dp;
+	line-height: 18dp;
+	text-align: center;
+	overflow: visible;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_04.sub");
+}
+
+/* --- The board page (guildwindow_boardpage.py, __MakeBoardPage) ------------------------------- */
+
+body.skin-classic.guild .guild__head-name,
+body.skin-classic.guild .guild__head-text
+{
+	position: absolute;
+	width: auto;
+	padding: 0;
+}
+body.skin-classic.guild .guild__head-name { left: 42dp; top: 8dp; }
+body.skin-classic.guild .guild__head-text { left: 212dp; top: 8dp; }
+/* The refresh button (337, 5; 20 x 18) on its art. */
+body.skin-classic.guild .guild__refresh
+{
+	left: 337dp;
+	top: 5dp;
+	right: auto;
+	width: 20dp;
+	height: 18dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/guild/refresh_button_01.sub");
+}
+body.skin-classic.guild .guild__refresh:hover
+{
+	decorator: image("d:/ymir work/ui/game/guild/refresh_button_02.sub");
+}
+body.skin-classic.guild .guild__refresh:active
+{
+	decorator: image("d:/ymir work/ui/game/guild/refresh_button_03.sub");
+}
+body.skin-classic.guild .guild__refresh-mark
+{
+	display: none;
+}
+/* Twelve lines from 25, 20 apart. */
+body.skin-classic.guild .guild__comments
+{
+	position: absolute;
+	left: 0;
+	top: 25dp;
+	width: 360dp;
+}
+body.skin-classic.guild .guild__comment
+{
+	display: block;
+	height: 20dp;
+}
+body.skin-classic.guild .guild__comment:hover
+{
+	background-color: transparent;
+}
+/* The notice mark (5, 3 in the line; 3 x 10). */
+body.skin-classic.guild .guild__notice
+{
+	position: absolute;
+	left: 5dp;
+	top: 3dp;
+	width: 3dp;
+	height: 10dp;
+	margin: 0;
+	border-radius: 0;
+}
+body.skin-classic.guild .guild__comment.is-notice .guild__notice
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/guild/notice_mark.sub");
+}
+/* The name on Parameter_Slot_03 (15; 90 x 18), centered. */
+body.skin-classic.guild .guild__comment-name
+{
+	position: absolute;
+	left: 15dp;
+	top: 0;
+	width: 90dp;
+	height: 18dp;
+	line-height: 18dp;
+	text-align: center;
+	overflow: visible;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
+}
+/* The comment on Parameter_Slot_06 (114; 220 x 18), its text at 2, 0. */
+body.skin-classic.guild .guild__comment-text
+{
+	position: absolute;
+	left: 114dp;
+	top: 0;
+	width: 220dp;
+	height: 18dp;
+	padding-left: 2dp;
+	line-height: 14dp;
+	overflow: visible;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_06.sub");
+}
+/* A long comment's whole text on hover, over a slot bar as wide as it
+   (legacy: 6 a character plus 5, 17 tall). */
+body.skin-classic.guild .guild__comment.is-long:hover .guild__comment-full
+{
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 17dp;
+	padding: 0 3dp 0 2dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+	white-space: nowrap;
+	z-index: 1;
+}
+/* The delete button (340, 3 in the line; 15 x 15) on the close art. */
+body.skin-classic.guild .guild__delete
+{
+	position: absolute;
+	left: 340dp;
+	top: 3dp;
+	width: 15dp;
+	height: 15dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_01.sub");
+}
+body.skin-classic.guild .guild__delete:hover
+{
+	decorator: image("d:/ymir work/ui/public/close_button_02.sub");
+}
+body.skin-classic.guild .guild__delete:active
+{
+	decorator: image("d:/ymir work/ui/public/close_button_03.sub");
+}
+/* The comment field's slot bar (15, 272; 315 x 18), the edit line at 2, 3,
+   and the post button (337, 273; 20 x 18): page places, here in the body. */
+body.skin-classic.guild .guild__post-row
+{
+	display: block;
+	left: 23dp;
+	top: 302dp;
+	right: auto;
+	bottom: auto;
+	width: 342dp;
+	height: 18dp;
+}
+body.skin-classic.guild .guild__post-slot
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	width: 315dp;
+	height: 18dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.guild input.guild__comment-field
+{
+	position: absolute;
+	left: 1dp;
+	top: 2dp;
+	width: 311dp;
+	height: 15dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 13dp;
+}
+body.skin-classic.guild .guild__post
+{
+	position: absolute;
+	left: 322dp;
+	top: 1dp;
+	width: 20dp;
+	height: 18dp;
+	min-width: 0;
+	padding: 0;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_01.sub");
+}
+body.skin-classic.guild .guild__post:hover
+{
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_02.sub");
+}
+body.skin-classic.guild .guild__post:active
+{
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_03.sub");
+}
+
+/* --- The member page (guildwindow_memberpage.py, __MakeMemberPage) --------------------------- */
+
+body.skin-classic.guild .guild__head-cell--name { left: 43dp; top: 8dp; }
+body.skin-classic.guild .guild__head-cell--grade { left: 119dp; top: 8dp; }
+body.skin-classic.guild .guild__head-cell--job { left: 177dp; top: 8dp; }
+body.skin-classic.guild .guild__head-cell--level { left: 217dp; top: 8dp; }
+body.skin-classic.guild .guild__head-cell--offer { left: 251dp; top: 8dp; }
+body.skin-classic.guild .guild__head-cell--general { left: 304dp; top: 8dp; }
+/* Line k at 28 + 20k. */
+body.skin-classic.guild .guild__members
+{
+	position: absolute;
+	left: 0;
+	top: 28dp;
+	width: 340dp;
+	margin: 0;
+}
+body.skin-classic.guild .guild__member
+{
+	display: block;
+	position: relative;
+	height: 20dp;
+}
+body.skin-classic.guild .guild__member:hover
+{
+	background-color: transparent;
+}
+body.skin-classic.guild .guild__member-name
+{
+	position: absolute;
+	left: 10dp;
+	top: 0;
+	width: 90dp;
+	height: 18dp;
+	padding: 0;
+	line-height: 18dp;
+	text-align: center;
+	overflow: visible;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
+}
+body.skin-classic.guild .guild__member-cell
+{
+	position: absolute;
+	top: 0;
+	width: 39dp;
+	height: 18dp;
+	line-height: 18dp;
+	text-align: center;
+	overflow: visible;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_00.sub");
+}
+body.skin-classic.guild .guild__member-cell--job { left: 170dp; }
+body.skin-classic.guild .guild__member-cell--level { left: 210dp; }
+body.skin-classic.guild .guild__member-cell--offer { left: 250dp; }
+body.skin-classic.guild .guild__member-general { left: 297dp; top: 0; margin: 0; }
+/* The combo box (101, -1 in the line; 61 x 18) drawn by legacy's rule: the
+   black fill, the dark top and left lines, the bright bottom and right ones;
+   its text centered; the hover veil while enabled. */
+body.skin-classic.guild .guild__combo-box
+{
+	position: absolute;
+	left: 101dp;
+	top: -1dp;
+	width: 61dp;
+	height: 18dp;
+	padding: 0;
+}
+body.skin-classic.guild .guild__combo
+{
+	height: 18dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	color: var(--text);
+	line-height: 16dp;
+	text-align: center;
+	overflow: visible;
+}
+body.skin-classic.guild .guild__combo.is-enabled:hover
+{
+	background-color: var(--classic-slot-fill);
+	decorator: linear-gradient(var(--classic-hover-white), var(--classic-hover-white)) content-box;
+	padding: 2dp 1dp 2dp 1dp;
+	line-height: 12dp;
+}
+body.skin-classic.guild .guild__combo.is-open
+{
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+/* The list (ui.ComboBox's ListBoxWithBoard, legacy's TOP_MOST list) 5 below
+   its line's box (101, 20k + 22 under the lines' top), as wide; 17 a line,
+   its text at 3; the hovered line's veil. */
+body.skin-classic.guild .guild__combo-list
+{
+	left: 101dp;
+	right: auto;
+	top: 22dp;
+	width: 61dp;
+	padding: 3dp 0;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.guild .guild__combo-list--0 { top: 22dp; }
+body.skin-classic.guild .guild__combo-list--1 { top: 42dp; }
+body.skin-classic.guild .guild__combo-list--2 { top: 62dp; }
+body.skin-classic.guild .guild__combo-list--3 { top: 82dp; }
+body.skin-classic.guild .guild__combo-list--4 { top: 102dp; }
+body.skin-classic.guild .guild__combo-list--5 { top: 122dp; }
+body.skin-classic.guild .guild__combo-list--6 { top: 142dp; }
+body.skin-classic.guild .guild__combo-list--7 { top: 162dp; }
+body.skin-classic.guild .guild__combo-list--8 { top: 182dp; }
+body.skin-classic.guild .guild__combo-list--9 { top: 202dp; }
+body.skin-classic.guild .guild__combo-list--10 { top: 222dp; }
+body.skin-classic.guild .guild__combo-list--11 { top: 242dp; }
+body.skin-classic.guild .guild__combo-list--12 { top: 262dp; }
+body.skin-classic.guild .guild__combo-item
+{
+	height: 17dp;
+	padding: 0;
+	line-height: 17dp;
+	color: var(--text);
+}
+body.skin-classic.guild .guild__combo-item:hover
+{
+	background-color: var(--classic-hover-white);
+}
+/* The scroll bar (341, 20; 270 tall), legacy's ui.ScrollBar art. */
+body.skin-classic.guild .guild__member-scroll-box
+{
+	left: 341dp;
+	top: 20dp;
+	right: auto;
+	bottom: auto;
+	width: 17dp;
+	height: 270dp;
+}
+body.skin-classic.guild input.guild__member-scroll
+{
+	width: 17dp;
+}
+/* Legacy's ui.ScrollBar: its Bar3D slot 14 wide from the bar's left
+   edge, from 1 above the up button's end; its middle bar (MiddleBar: the
+   ScrollBar_Top, _Middle and _Bottom art, 10 x 12) 2 in from the slot's
+   left and 3 below its top (RmlUi places the bar from the slot's border
+   edge across, from its content edge down) (ui.py:2048-2160, as legacy's frames place
+   them). */
+body.skin-classic.guild .guild__member-scroll slidertrack
+{
+	width: 12dp;
+	margin-left: 0;
+	margin-top: -1dp;
+	padding: 2dp 0;
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+body.skin-classic.guild .guild__member-scroll sliderbar
+{
+	width: 10dp;
+	height: 12dp;
+	margin-left: 2dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thumb;
+}
+body.skin-classic.guild .guild__member-scroll sliderbar:hover, body.skin-classic.guild .guild__member-scroll sliderbar:active
+{
+	background-color: transparent;
+}
+body.skin-classic.guild .guild__member-scroll sliderarrowdec
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_up_button_01.sub" scale-none left top);
+}
+body.skin-classic.guild .guild__member-scroll sliderarrowinc
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_down_button_01.sub" scale-none left top);
+}
+
+/* --- The base page (guildwindow_baseinfopage.py, __MakeBaseInfoPage) -------------------------- */
+
+body.skin-classic.guild .guild__base-name
+{
+	display: block;
+	position: absolute;
+	left: 90dp;
+	top: 3dp;
+	width: 195dp;
+	height: 24dp;
+	margin: 0;
+}
+body.skin-classic.guild .guild__base-name .guild__label { top: 7dp; }
+body.skin-classic.guild .guild__value--base
+{
+	left: 90dp;
+	box-sizing: border-box;
+	width: 105dp;
+	height: 24dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+	line-height: 22dp;
+}
+body.skin-classic.guild .guild__bar--resources { left: 11dp; top: 32dp; width: 273dp; text-align: center; }
+body.skin-classic.guild .guild__bar--buildings { left: 11dp; top: 95dp; width: 273dp; text-align: center; }
+body.skin-classic.guild .guild__bar--resources .guild__bar-title,
+body.skin-classic.guild .guild__bar--buildings .guild__bar-title
+{
+	left: 0;
+	right: 0;
+}
+body.skin-classic.guild .guild__resources
+{
+	display: block;
+	position: absolute;
+	left: 16dp;
+	top: 54dp;
+	width: 340dp;
+	height: 40dp;
+	margin: 0;
+}
+body.skin-classic.guild .guild__resource
+{
+	display: block;
+	float: left;
+	width: 27dp;
+	margin-right: 4dp;
+}
+body.skin-classic.guild .guild__resource-name
+{
+	height: 16dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	overflow: visible;
+}
+body.skin-classic.guild .guild__resource-value
+{
+	box-sizing: border-box;
+	height: 18dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.guild .guild__basket
+{
+	position: absolute;
+	left: 190dp;
+	top: -1dp;
+	width: 142dp;
+	height: 39dp;
+	padding: 5dp 0 0 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	color: var(--text);
+	font-size: var(--font-md);
+}
+body.skin-classic.guild .guild__head--base { top: 115dp; left: 11dp; }
+body.skin-classic.guild .guild__head-cell--building { left: 16dp; top: 0; }
+body.skin-classic.guild .guild__head-cell--rank { left: 89dp; top: 0; }
+body.skin-classic.guild .guild__head-cell--operate { left: 292dp; top: 0; margin: 0; }
+body.skin-classic.guild .guild__buildings
+{
+	position: absolute;
+	left: 15dp;
+	top: 130dp;
+}
+body.skin-classic.guild .guild__building
+{
+	display: block;
+	position: relative;
+	height: 20dp;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+body.skin-classic.guild .guild__building-name,
+body.skin-classic.guild .guild__building-grade,
+body.skin-classic.guild .guild__building-gem
+{
+	float: left;
+	box-sizing: border-box;
+	height: 17dp;
+	margin-right: 3dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+	line-height: 15dp;
+	text-align: center;
+	overflow: hidden;
+}
+body.skin-classic.guild .guild__building-name { width: 78dp; margin-right: 6dp; }
+body.skin-classic.guild .guild__building-grade { width: 26dp; margin-right: 6dp; }
+body.skin-classic.guild .guild__building-gem { width: 26dp; }
+body.skin-classic.guild .guild__building-power { left: 293dp; top: 0; margin: 0; }
+
+/* --- The skill page (guildwindow_guildskillpage.py) ------------------------------------------- */
+
+body.skin-classic.guild .guild__bar--passive { left: 20dp; top: 20dp; width: 256dp; }
+body.skin-classic.guild .guild__bar--active { left: 20dp; top: 87dp; width: 256dp; }
+body.skin-classic.guild .guild__bar--affect { left: 20dp; top: 154dp; width: 256dp; }
+body.skin-classic.guild .guild__bar--affect .guild__bar-title
+{
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+body.skin-classic.guild .guild__bar--passive .guild__bar-title,
+body.skin-classic.guild .guild__bar--active .guild__bar-title
+{
+	left: 7dp;
+	top: 2dp;
+}
+/* The points label (240, 2 in the bar: the locale's label_uppt art,
+   75 x 14) with the points centered at 61. */
+body.skin-classic.guild .guild__points
+{
+	left: 240dp;
+	top: 2dp;
+	right: auto;
+	width: 75dp;
+	height: 14dp;
+	min-width: 0;
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.guild .guild__points-art
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+body.skin-classic.guild .guild__points-value
+{
+	position: absolute;
+	left: 51dp;
+	top: 0;
+	width: 20dp;
+	text-align: center;
+}
+body.skin-classic.guild .guild__skills
+{
+	position: absolute;
+	left: 36dp;
+	margin: 0;
+}
+body.skin-classic.guild .guild__skills--passive { top: 46dp; }
+body.skin-classic.guild .guild__skills--active { top: 113dp; }
+body.skin-classic.guild .guild__skills--affect { top: 184dp; }
+/* A skill of level 0 (DisableCoverButton): legacy's cover button shows its
+   disable art over the icon, whatever the pointer does, and the cell has
+   no tint of its own. */
+body.skin-classic.guild .guild__skill.is-unavailable,
+body.skin-classic.guild .guild__skill.is-unavailable:hover
+{
+	background-color: transparent;
+}
+body.skin-classic.guild .guild__skill.is-unavailable .nui-slot__cover,
+body.skin-classic.guild .guild__skill.is-unavailable:hover .nui-slot__cover,
+body.skin-classic.guild .guild__skill.is-unavailable:active .nui-slot__cover
+{
+	decorator: image("d:/ymir work/ui/public/slot_cover_button_04.sub");
+}
+/* The "+" (btn_plus art, 13 x 13) at 1, 19 in its cell. */
+body.skin-classic.guild .guild__plus
+{
+	left: 1dp;
+	top: 19dp;
+	bottom: auto;
+	width: 13dp;
+	height: 13dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_up.sub");
+}
+body.skin-classic.guild .guild__plus:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_over.sub");
+}
+body.skin-classic.guild .guild__plus:active
+{
+	decorator: image("d:/ymir work/ui/game/windows/btn_plus_down.sub");
+}
+/* The power row's parts sit at the page's places, so its box is the whole
+   page: it takes no pointer (the skill cells under it take theirs), its
+   heal button does. */
+body.skin-classic.guild .guild__power
+{
+	display: block;
+	left: 0;
+	right: auto;
+	top: 0;
+	bottom: auto;
+	width: 360dp;
+	height: 298dp;
+	pointer-events: none;
+}
+body.skin-classic.guild .guild__power-title
+{
+	position: absolute;
+	left: 20dp;
+	top: 265dp;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+/* The gauge's slot art (65, 265; 180 x 13), the gauge from 69: legacy's
+   first SP frame tiled over what it fills of 173. */
+body.skin-classic.guild .guild__gauge-slot
+{
+	position: absolute;
+	left: 65dp;
+	top: 265dp;
+	width: 180dp;
+	height: 13dp;
+	decorator: image("d:/ymir work/ui/game/guild/gauge.sub");
+}
+body.skin-classic.guild progress.guild__gp--ratio
+{
+	display: none;
+}
+body.skin-classic.guild progress.guild__gp--legacy
+{
+	display: block;
+	position: absolute;
+	left: 4dp;
+	top: 0;
+	width: 173dp;
+	height: 11dp;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.guild progress.guild__gp--legacy fill
+{
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pattern/spgauge/01.tga" repeat-x left top);
+}
+/* The value on Parameter_Slot_03 (255, 254), centered. */
+body.skin-classic.guild .guild__power-value
+{
+	position: absolute;
+	left: 255dp;
+	top: 254dp;
+	width: 90dp;
+	min-width: 0;
+	height: 18dp;
+	line-height: 18dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
+}
+body.skin-classic.guild .guild__heal { left: 257dp; top: 275dp; pointer-events: auto; }
+
+/* --- The grade page (guildwindow_gradepage.py, __MakeGradePage) -------------------------------- */
+
+body.skin-classic.guild .guild__head-cell--number { left: 21dp; top: 5dp; width: auto; }
+body.skin-classic.guild .guild__head-cell--grade-name { left: 76dp; top: 5dp; }
+body.skin-classic.guild .guild__head-cell--auth-1 { left: 126dp; top: 5dp; width: auto; }
+body.skin-classic.guild .guild__head-cell--auth-2 { left: 183dp; top: 5dp; width: auto; }
+body.skin-classic.guild .guild__head-cell--auth-4 { left: 240dp; top: 5dp; width: auto; }
+body.skin-classic.guild .guild__head-cell--auth-8 { left: 297dp; top: 5dp; width: auto; }
+/* Row n at 22 + 18 (n - 1). */
+body.skin-classic.guild .guild__grades
+{
+	position: absolute;
+	left: 0;
+	top: 22dp;
+	width: 360dp;
+}
+body.skin-classic.guild .guild__grade
+{
+	display: block;
+	position: relative;
+	height: 18dp;
+}
+/* The number on Parameter_Slot_00 (14; 39 x 18), centered. */
+body.skin-classic.guild .guild__grade-number
+{
+	position: absolute;
+	left: 14dp;
+	top: 0;
+	width: 39dp;
+	height: 18dp;
+	line-height: 18dp;
+	color: var(--text);
+	decorator: image("d:/ymir work/ui/public/parameter_slot_00.sub");
+}
+/* The name on Parameter_Slot_02 (58; 61 x 18), centered: legacy's
+   EditableTextSlot. */
+body.skin-classic.guild .guild__grade-name
+{
+	position: absolute;
+	left: 58dp;
+	top: 0;
+	box-sizing: border-box;
+	width: 61dp;
+	height: 18dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	line-height: 18dp;
+	text-align: center;
+	overflow: visible;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_02.sub");
+}
+body.skin-classic.guild .guild__grade-name:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_02.sub"),
+	           linear-gradient(var(--classic-hover-white), var(--classic-hover-white)) content-box;
+	line-height: 14dp;
+}
+body.skin-classic.guild .guild__grade-name:active
+{
+	decorator: image("d:/ymir work/ui/public/parameter_slot_02.sub"),
+	           linear-gradient(var(--classic-press-white), var(--classic-press-white)) content-box;
+	line-height: 14dp;
+}
+body.skin-classic.guild .guild__auth { top: 0; margin: 0; }
+body.skin-classic.guild .guild__auth--1 { left: 124dp; }
+body.skin-classic.guild .guild__auth--2 { left: 181dp; }
+body.skin-classic.guild .guild__auth--4 { left: 238dp; }
+body.skin-classic.guild .guild__auth--8 { left: 295dp; }
+/* Grade 1's slots are disabled: no veil (legacy's reflector stays hidden). */
+body.skin-classic.guild .guild__grade.is-disabled .guild__grade-name,
+body.skin-classic.guild .guild__grade.is-disabled .guild__check
+{
+	opacity: 1;
+}
+body.skin-classic.guild .guild__grade.is-disabled .guild__grade-name:hover,
+body.skin-classic.guild .guild__grade.is-disabled .guild__grade-name:active
+{
+	padding: 0;
+	line-height: 18dp;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_02.sub");
+}
+body.skin-classic.guild .guild__grade.is-disabled .guild__check:hover,
+body.skin-classic.guild .guild__grade.is-disabled .guild__check:active
+{
+	padding: 0;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_01.sub");
+}
+
+/* --- The tabs ---------------------------------------------------------------------------------- */
+
+body.skin-classic.guild .guild__tabs
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 328dp;
+	width: 376dp;
+	height: 37dp;
+	padding: 0;
+}
+body.skin-classic.guild .guild__tab-art
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+/* Legacy's radio buttons have no art: the strip's art shows the tabs. */
+body.skin-classic.guild .guild__tab
+{
+	position: absolute;
+	top: 5dp;
+	height: 27dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.guild .guild__tab:hover, body.skin-classic.guild .guild__tab.is-selected
+{
+	background-color: transparent;
+}
+body.skin-classic.guild .guild__tab-label
+{
+	display: none;
+}
+body.skin-classic.guild .guild__tab--0 { left: 6dp; width: 70dp; }
+body.skin-classic.guild .guild__tab--1 { left: 78dp; width: 72dp; }
+body.skin-classic.guild .guild__tab--2 { left: 152dp; width: 72dp; }
+body.skin-classic.guild .guild__tab--3 { left: 226dp; width: 0; }
+body.skin-classic.guild .guild__tab--4 { left: 226dp; width: 72dp; }
+body.skin-classic.guild .guild__tab--5 { left: 300dp; width: 70dp; }

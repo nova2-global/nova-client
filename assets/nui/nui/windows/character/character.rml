@@ -1,0 +1,337 @@
+<rml>
+<head>
+	<!-- The character window (uicharacter.py CharacterWindow, uiscript
+	     characterwindow.py; P15 spec 4): the status, skill, emotion and
+	     quest tabs. While the character flag is on, the Interface makes
+	     nui_character.CharacterWindow (controller
+	     assets/root/nui_character.py), a subclass of the legacy class whose
+	     widgets are proxies: every flow, packet and rule is legacy's code,
+	     and this document shows what legacy's refreshes tell the proxies.
+	     It loads at the window's first show and is kept, hidden, after it
+	     (nui_hud.KeptBoard, P15 V-2b, every panel list empty then), and one
+	     tab's panel at a time (each panel_<tab> list holds one entry for the
+	     shown tab, none for the others), since RmlUi updates every element
+	     of a loaded document each frame. The grids' cells are the legacy
+	     slot windows' (the active skills in the uiscript's slot order, the
+	     support skills from 101, the solo and mutual emotions, the quest
+	     icons), their lengths from the limits module; their events reach the
+	     legacy handlers through nui_slots.LegacySlotEvents. A skill cell's
+	     plus button lies beside the cell, over its corner (legacy's
+	     CSlotButton). The quest clocks are nui-countdown runs (no Python per
+	     second). The status labels are text in the modern skins and the
+	     locale's label art in classic (art, from the controller). The body
+	     and its controls take no focus, so controls act on a left
+	     mousedown. It draws below the legacy UI layer, as legacy's window
+	     lived in it. A left or right press anywhere on it raises the window
+	     (board_press), as legacy's window manager raised the window under a
+	     press. -->
+	<title>character</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="character.rcss"/>
+</head>
+<body template="nui" id="character" class="nui-window nui-fx nui-anim nui-below-legacy-ui char" data-model="character"
+      data-event-mousedown="board_press(ev.button)" data-class-char--placed="placed" data-class-char--guild="has_guild"
+      data-class-char--status="tab == 'STATUS'" data-class-char--skill="tab == 'SKILL'"
+      data-class-char--emoticon="tab == 'EMOTICON'" data-class-char--quest="tab == 'QUEST'">
+	<div class="nui-window__titlebar char__titlebar">
+		<handle id="char-title" class="nui-window__handle char__handle" move_target="#document">
+			<span class="nui-window__title char__title" data-if="tab == 'STATUS'">@ui.CHARACTER_MAIN</span>
+			<span class="nui-window__title char__title" data-if="tab == 'SKILL'">@ui.CHARACTER_SKILL</span>
+			<span class="nui-window__title char__title" data-if="tab == 'EMOTICON'">@ui.CHARACTER_ACTION</span>
+			<span class="nui-window__title char__title" data-if="tab == 'QUEST'">@ui.CHARACTER_QUEST</span>
+		</handle>
+		<button id="char-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim char__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body char__body">
+
+		<!-- The status page (uiscript Character_Page). -->
+		<div class="char-panel char-panel--status" data-for="p : panel_status">
+			<div class="char-head">
+				<div id="char-face" class="char-face"><img class="char-face__image" data-if="face != ''" data-attr-src="face"/></div>
+				<div class="char-who">
+					<div id="char-name" class="char-name" data-event-mouseover="name_over()" data-event-mouseout="name_out()"><span
+						class="char-name__text">{{ name }}</span></div>
+					<div class="char-who__line">
+						<div id="char-level" class="char-chip char-chip--level"><img class="char-art char-art--level" data-attr-src="art.level"/><span
+							class="char-chip__label">@ui.CHARACTER_LEVEL</span><span id="char-value-level" class="char-chip__value">{{ level }}</span></div>
+						<div id="char-guild" class="char-guild" data-if="has_guild"><span class="char-guild__text">{{ guild }}</span></div>
+					</div>
+				</div>
+			</div>
+			<div class="char-progress">
+				<div id="char-exp" class="char-chip char-chip--exp"><img class="char-art char-art--exp" data-attr-src="art.cur_exp"/><span
+					class="char-chip__label">@ui.CHARACTER_EXP</span><span class="char-chip__value">{{ exp }}</span></div>
+				<div id="char-exp-rest" class="char-chip char-chip--rest"><img class="char-art char-art--rest" data-attr-src="art.last_exp"/><span
+					class="char-chip__label">@ui.CHARACTER_EXP_REST</span><span class="char-chip__value">{{ exp_rest }}</span></div>
+			</div>
+			<div class="char-divider char-divider--base">
+				<div class="char-bar"></div>
+				<img class="char-art char-art--std" data-attr-src="art.std"/>
+				<span class="char-divider__label">@ui.CHARACTER_BASE_STATS</span>
+				<div id="char-stat-points" class="char-points char-points--stat" data-if="stat_points_shown"><img
+					class="char-art char-art--uppt" data-attr-src="art.uppt"/><span class="char-points__label">@ui.CHARACTER_POINTS</span><span
+					class="char-points__value">{{ stat_points }}</span></div>
+			</div>
+			<div class="char-base">
+				<img class="char-art char-art--std1" data-attr-src="art.std_item1"/>
+				<img class="char-art char-art--std2" data-attr-src="art.std_item2"/>
+				<div class="char-stats">
+					<div class="char-stat char-stat--ht">
+						<span class="char-stat__label">@ui.CHARACTER_VIT</span>
+						<span id="char-value-ht" class="char-stat__value">{{ ht }}</span>
+						<div class="char-steps">
+							<button id="char-minus-ht" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_ht"
+							        data-event-mousedown="stat_minus('HTH', ev.button)" data-event-mouseover="stat_over('minus', 'HTH')"
+							        data-event-mouseout="stat_out('minus', 'HTH')"><span class="nui-glyph nui-glyph--minus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+							<button id="char-plus-ht" class="nui-button nui-button--icon nui-anim char-step char-step--plus" data-if="plus_ht"
+							        data-event-mousedown="stat_plus('HTH', ev.button)" data-event-mouseover="stat_over('plus', 'HTH')"
+							        data-event-mouseout="stat_out('plus', 'HTH')"><span class="nui-glyph nui-glyph--plus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+						</div>
+					</div>
+					<div class="char-stat char-stat--iq">
+						<span class="char-stat__label">@ui.CHARACTER_INT</span>
+						<span id="char-value-iq" class="char-stat__value">{{ iq }}</span>
+						<div class="char-steps">
+							<button id="char-minus-iq" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_iq"
+							        data-event-mousedown="stat_minus('INT', ev.button)" data-event-mouseover="stat_over('minus', 'INT')"
+							        data-event-mouseout="stat_out('minus', 'INT')"><span class="nui-glyph nui-glyph--minus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+							<button id="char-plus-iq" class="nui-button nui-button--icon nui-anim char-step char-step--plus" data-if="plus_iq"
+							        data-event-mousedown="stat_plus('INT', ev.button)" data-event-mouseover="stat_over('plus', 'INT')"
+							        data-event-mouseout="stat_out('plus', 'INT')"><span class="nui-glyph nui-glyph--plus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+						</div>
+					</div>
+					<div class="char-stat char-stat--st">
+						<span class="char-stat__label">@ui.CHARACTER_STR</span>
+						<span id="char-value-st" class="char-stat__value">{{ st }}</span>
+						<div class="char-steps">
+							<button id="char-minus-st" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_st"
+							        data-event-mousedown="stat_minus('STR', ev.button)" data-event-mouseover="stat_over('minus', 'STR')"
+							        data-event-mouseout="stat_out('minus', 'STR')"><span class="nui-glyph nui-glyph--minus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+							<button id="char-plus-st" class="nui-button nui-button--icon nui-anim char-step char-step--plus" data-if="plus_st"
+							        data-event-mousedown="stat_plus('STR', ev.button)" data-event-mouseover="stat_over('plus', 'STR')"
+							        data-event-mouseout="stat_out('plus', 'STR')"><span class="nui-glyph nui-glyph--plus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+						</div>
+					</div>
+					<div class="char-stat char-stat--dx">
+						<span class="char-stat__label">@ui.CHARACTER_DEX</span>
+						<span id="char-value-dx" class="char-stat__value">{{ dx }}</span>
+						<div class="char-steps">
+							<button id="char-minus-dx" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_dx"
+							        data-event-mousedown="stat_minus('DEX', ev.button)" data-event-mouseover="stat_over('minus', 'DEX')"
+							        data-event-mouseout="stat_out('minus', 'DEX')"><span class="nui-glyph nui-glyph--minus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+							<button id="char-plus-dx" class="nui-button nui-button--icon nui-anim char-step char-step--plus" data-if="plus_dx"
+							        data-event-mousedown="stat_plus('DEX', ev.button)" data-event-mouseover="stat_over('plus', 'DEX')"
+							        data-event-mouseout="stat_out('plus', 'DEX')"><span class="nui-glyph nui-glyph--plus"><span
+								class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+						</div>
+					</div>
+				</div>
+				<div class="char-stats char-stats--vital">
+					<div class="char-stat char-stat--hp"><span class="char-stat__label">@ui.CHARACTER_HP</span><span id="char-value-hp"
+						class="char-stat__value">{{ hp }}</span></div>
+					<div class="char-stat char-stat--sp"><span class="char-stat__label">@ui.CHARACTER_SP</span><span id="char-value-sp"
+						class="char-stat__value">{{ sp }}</span></div>
+					<div class="char-stat char-stat--att"><span class="char-stat__label">@ui.CHARACTER_ATT</span><span id="char-value-att"
+						class="char-stat__value">{{ att }}</span></div>
+					<div class="char-stat char-stat--def"><span class="char-stat__label">@ui.CHARACTER_DEF</span><span id="char-value-def"
+						class="char-stat__value">{{ def }}</span></div>
+				</div>
+			</div>
+			<div class="char-divider char-divider--extra">
+				<div class="char-bar"></div>
+				<img class="char-art char-art--ext" data-attr-src="art.ext"/>
+				<span class="char-divider__label">@ui.CHARACTER_EXTRA_STATS</span>
+			</div>
+			<div class="char-extra">
+				<img class="char-art char-art--ext1" data-attr-src="art.ext_item1"/>
+				<img class="char-art char-art--ext2" data-attr-src="art.ext_item2"/>
+				<div class="char-stats">
+					<div class="char-stat char-stat--mspd"><span class="char-stat__label">@ui.CHARACTER_MOVE_SPEED</span><span
+						id="char-value-mspd" class="char-stat__value">{{ mspd }}</span></div>
+					<div class="char-stat char-stat--aspd"><span class="char-stat__label">@ui.CHARACTER_ATTACK_SPEED</span><span
+						id="char-value-aspd" class="char-stat__value">{{ aspd }}</span></div>
+					<div class="char-stat char-stat--cspd"><span class="char-stat__label">@ui.CHARACTER_CAST_SPEED</span><span
+						id="char-value-cspd" class="char-stat__value">{{ cspd }}</span></div>
+				</div>
+				<div class="char-stats char-stats--magic">
+					<div class="char-stat char-stat--matt"><span class="char-stat__label">@ui.CHARACTER_MAGIC_ATT</span><span
+						id="char-value-matt" class="char-stat__value">{{ matt }}</span></div>
+					<div class="char-stat char-stat--mdef"><span class="char-stat__label">@ui.CHARACTER_MAGIC_DEF</span><span
+						id="char-value-mdef" class="char-stat__value">{{ mdef }}</span></div>
+					<div class="char-stat char-stat--er"><span class="char-stat__label">@ui.CHARACTER_EVASION</span><span
+						id="char-value-er" class="char-stat__value">{{ er }}</span></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- The skill page (uiscript Skill_Page). -->
+		<div class="char-panel char-panel--skill" data-for="p : panel_skill">
+			<div class="char-divider char-divider--groups">
+				<div class="char-bar"></div>
+				<div class="char-groups">
+					<button class="nui-button nui-anim char-group" data-for="g : groups" data-attr-id="'char-group-' + it_index"
+					        data-if="g.shown" data-class-char-group--col0="g.col == 0" data-class-char-group--col1="g.col == 1"
+					        data-class-char-group--col2="g.col == 2" data-class-is-selected="g.down"
+					        data-event-mousedown="group_press(it_index, ev.button)"><span
+						class="char-group__label">{{ g.label }}</span></button>
+					<span class="char-group-name" data-if="group_name_shown">{{ group_name }}</span>
+				</div>
+				<div id="char-active-points" class="char-points char-points--active"><img class="char-art char-art--uppt"
+					data-attr-src="art.uppt"/><span class="char-points__label">@ui.CHARACTER_POINTS</span><span
+					class="char-points__value">{{ active_points }}</span></div>
+			</div>
+			<div class="char-skills-board">
+				<div id="char-skills" class="nui-slot-grid char-skills" data-class-nui-attach-right="attach_right">
+					<div class="char-skill-place" data-for="c : skills" data-attr-class="'char-skill-place char-skill--' + c.slot">
+						<div class="nui-slot nui-anim char-skill" data-attr-id="'char-skill-' + c.slot"
+						     data-class-is-empty="c.kind == ''" data-class-is-unavailable="c.unavailable"
+						     data-event-mousedown="skill_press(it_index, ev.button)" data-event-mouseup="skill_release(it_index, ev.button)"
+						     data-event-dblclick="skill_use(it_index)" data-event-mouseover="skill_over(it_index)"
+						     data-event-mouseout="skill_out(it_index)" data-event-nuidrop="skill_drop(it_index)">
+							<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+							<div class="nui-slot__cover" data-if="c.cover"></div>
+							<nui-cooldown class="nui-slot__cooldown" data-if="c.cd_end > 0"
+								data-attr-start="c.cd_start" data-attr-end="c.cd_end"/>
+							<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
+							<span class="nui-slot__ring nui-anim nui-fx" data-if="c.active" data-class-is-on="c.active"></span>
+							<nui-frames class="nui-slot__finish" data-if="c.cd_end > 0" count="11"
+								delay="0.0333" loop="false" after="none" data-attr-start="c.cd_end"/>
+							<nui-frames class="nui-slot__flash nui-anim" data-if="c.cd_end > 0" count="11"
+								delay="0.0333" loop="false" after="none" data-attr-start="c.cd_end"/>
+							<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+						</div>
+						<div class="nui-slot-button nui-anim char-plus" data-if="c.button" data-attr-id="'char-skill-' + c.slot + '-plus'"
+						     data-event-mousedown="skill_plus(c.slot, ev.button)" data-event-mouseover="skill_over(it_index)"
+						     data-event-mouseout="skill_out(it_index)"><span class="nui-glyph nui-glyph--plus"><span
+							class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
+					</div>
+				</div>
+			</div>
+			<div class="char-divider char-divider--support">
+				<div class="char-bar"></div>
+				<span class="char-divider__label">@ui.SKILL_SUPPORT_TITLE</span>
+				<div class="char-points char-points--support" data-if="support_points_shown"><img class="char-art char-art--uppt"
+					data-attr-src="art.uppt"/><span class="char-points__label">@ui.CHARACTER_POINTS</span><span
+					class="char-points__value">{{ support_points }}</span></div>
+			</div>
+			<div id="char-support" class="nui-slot-grid char-support" data-class-nui-attach-right="attach_right"
+			     data-class-nui-slot-grid--cols-6="support_cols == 6">
+				<div class="char-support-place" data-for="c : support">
+					<div class="nui-slot nui-anim char-skill" data-attr-id="'char-support-' + c.slot"
+					     data-class-is-empty="c.kind == ''" data-class-is-unavailable="c.unavailable"
+					     data-event-mousedown="support_press(it_index, ev.button)" data-event-mouseup="support_release(it_index, ev.button)"
+					     data-event-dblclick="support_use(it_index)" data-event-mouseover="support_over(it_index)"
+					     data-event-mouseout="support_out(it_index)" data-event-nuidrop="support_drop(it_index)">
+						<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+						<div class="nui-slot__cover" data-if="c.cover"></div>
+						<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
+						<span class="nui-slot__ring nui-anim nui-fx" data-if="c.active" data-class-is-on="c.active"></span>
+						<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+					</div>
+					<div class="nui-slot-button nui-anim char-plus" data-if="c.button" data-attr-id="'char-support-' + c.slot + '-plus'"
+					     data-event-mousedown="skill_plus(c.slot, ev.button)" data-event-mouseover="support_over(it_index)"
+					     data-event-mouseout="support_out(it_index)"><span class="nui-glyph nui-glyph--plus"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- The emotion page (uiscript Emoticon_Page). -->
+		<div class="char-panel char-panel--emoticon" data-for="p : panel_emoticon">
+			<div class="char-divider char-divider--solo">
+				<div class="char-bar"></div>
+				<span class="char-divider__label">@ui.CHARACTER_NORMAL_ACTION</span>
+			</div>
+			<div id="char-solo" class="nui-slot-grid char-emotes char-emotes--solo"
+			     data-class-nui-attach-right="attach_right" data-class-nui-slot-grid--cols-6="emote_cols == 6">
+				<div class="nui-slot nui-anim char-emote" data-for="c : solo" data-attr-id="'char-solo-' + c.slot"
+				     data-class-is-empty="c.kind == ''"
+				     data-event-mousedown="solo_press(it_index, ev.button)" data-event-mouseup="solo_release(it_index, ev.button)"
+				     data-event-dblclick="solo_use(it_index)" data-event-mouseover="solo_over(it_index)"
+				     data-event-mouseout="solo_out(it_index)" data-event-nuidrop="solo_drop(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<div class="nui-slot__cover" data-if="c.cover"></div>
+				</div>
+			</div>
+			<div class="char-divider char-divider--dual">
+				<div class="char-bar"></div>
+				<span class="char-divider__label">@ui.CHARACTER_MUTUAL_ACTION</span>
+			</div>
+			<div id="char-dual" class="nui-slot-grid char-emotes char-emotes--dual"
+			     data-class-nui-attach-right="attach_right" data-class-nui-slot-grid--cols-6="emote_cols == 6">
+				<div class="nui-slot nui-anim char-emote" data-for="c : dual" data-attr-id="'char-dual-' + c.slot"
+				     data-class-is-empty="c.kind == ''"
+				     data-event-mousedown="dual_press(it_index, ev.button)" data-event-mouseup="dual_release(it_index, ev.button)"
+				     data-event-dblclick="dual_use(it_index)" data-event-mouseover="dual_over(it_index)"
+				     data-event-mouseout="dual_out(it_index)" data-event-nuidrop="dual_drop(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<div class="nui-slot__cover" data-if="c.cover"></div>
+				</div>
+			</div>
+		</div>
+
+		<!-- The quest page (uiscript Quest_Page). -->
+		<div class="char-panel char-panel--quest" data-for="p : panel_quest">
+			<div class="char-quests" data-event-mousescroll="quest_scroll(ev.wheel_delta_y)">
+				<div id="char-quest-cells" class="nui-slot-grid nui-slot-grid--cols-1 char-quest-cells" data-class-nui-attach-right="attach_right">
+					<div class="nui-slot nui-anim char-quest-cell" data-for="c : quest_cells" data-attr-id="'char-quest-' + it_index + '-icon'"
+					     data-class-is-empty="c.kind == ''" data-class-char-quest-cell--base="c.base"
+					     data-event-mousedown="quest_press(it_index, ev.button)" data-event-mouseover="quest_over(it_index)"
+					     data-event-mouseout="quest_out(it_index)">
+						<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					</div>
+				</div>
+				<div class="char-quest-rows">
+					<div class="char-quest" data-for="q : quests" data-attr-id="'char-quest-' + it_index" data-class-is-hidden="!q.shown">
+						<span class="char-quest__name">{{ q.name }}</span>
+						<span class="char-quest__clock" data-attr-id="'char-quest-' + it_index + '-clock'"><span
+							class="char-quest__clock-text" data-if="q.clock_end &lt;= 0">{{ q.clock_text }}</span><nui-countdown
+							class="char-quest__countdown" data-if="q.clock_end &gt; 0" format="minsec" minute="@game.QUEST_MIN"
+							second="@game.QUEST_SEC" over="@game.QUEST_TIMEOVER" data-attr-prefix="q.clock_prefix"
+							data-attr-end="q.clock_end"/></span>
+						<span class="char-quest__counter">{{ q.counter }}</span>
+					</div>
+				</div>
+				<div id="char-quest-scroll" class="char-quest-scroll" data-if="quest_scroll_shown">
+					<button id="char-quest-up" class="nui-button nui-button--ghost nui-button--icon nui-anim char-quest-scroll__up"
+					        data-event-mousedown="quest_scroll_press(-1, ev.button)"><span class="nui-glyph nui-glyph--chevron-up"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+					<progress class="nui-gauge nui-gauge--blue char-quest-scroll__track" direction="bottom"
+					          data-attr-value="quest_scroll_pos"/>
+					<!-- A thumb at the position down its rail, for a skin that draws one
+					     (classic: legacy's middle bar); the modern looks show the gauge. -->
+					<div class="char-quest-scroll__rail"><span class="char-quest-scroll__thumb"
+						data-style---char-quest-thumb="(quest_scroll_pos * 100) + '%'"></span></div>
+					<button id="char-quest-down" class="nui-button nui-button--ghost nui-button--icon nui-anim char-quest-scroll__down"
+					        data-event-mousedown="quest_scroll_press(1, ev.button)"><span class="nui-glyph nui-glyph--chevron-down"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- V-2b: the tab strip is a list of one entry while the board shows (tabs_on). -->
+	<div class="char-tabs" data-for="w : tabs_on">
+		<img class="char-art char-art--tab" data-if="tab == 'STATUS'" data-attr-src="art.tab_1"/>
+		<img class="char-art char-art--tab" data-if="tab == 'SKILL'" data-attr-src="art.tab_2"/>
+		<img class="char-art char-art--tab" data-if="tab == 'EMOTICON'" data-attr-src="art.tab_3"/>
+		<img class="char-art char-art--tab" data-if="tab == 'QUEST'" data-attr-src="art.tab_4"/>
+		<button id="char-tab-status" class="nui-button nui-anim char-tab char-tab--status" data-class-is-selected="tab == 'STATUS'"
+		        data-event-mousedown="tab_press('STATUS', ev.button)"><span class="char-tab__label">@ui.CHARACTER_MAIN</span></button>
+		<button id="char-tab-skill" class="nui-button nui-anim char-tab char-tab--skill" data-class-is-selected="tab == 'SKILL'"
+		        data-event-mousedown="tab_press('SKILL', ev.button)"><span class="char-tab__label">@ui.CHARACTER_SKILL</span></button>
+		<button id="char-tab-emoticon" class="nui-button nui-anim char-tab char-tab--emoticon" data-class-is-selected="tab == 'EMOTICON'"
+		        data-event-mousedown="tab_press('EMOTICON', ev.button)"><span class="char-tab__label">@ui.CHARACTER_ACTION</span></button>
+		<button id="char-tab-quest" class="nui-button nui-anim char-tab char-tab--quest" data-class-is-selected="tab == 'QUEST'"
+		        data-event-mousedown="tab_press('QUEST', ev.button)"><span class="char-tab__label">@ui.CHARACTER_QUEST</span></button>
+	</div>
+</body>
+</rml>

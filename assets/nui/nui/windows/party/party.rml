@@ -1,0 +1,75 @@
+<rml>
+<head>
+	<!-- The party (uiparty.py): one board per member (the role button, the
+	     name, the HP gauge and the nine party affect images, each with its
+	     tooltip), the role buttons a leader opens beside a member's board,
+	     and the menu below the boards (heal, break up or leave, the EXP
+	     distribution). While the party flag is on, the Interface makes the
+	     facade nui_party.PartyWindow (controller assets/root/nui_party.py).
+	     A press on a member's board targets the member; with an item
+	     attached, a press, a release or a drop from the legacy UI (nuidrop)
+	     starts an exchange. The board has nui-attach-right, so its right
+	     press reaches it with an item attached (legacy maps the right press
+	     to the left one) where the host would cancel the attach. Nothing
+	     takes the focus, so the buttons act on
+	     mousedown. The art is legacy art under d:/ymir work/ (assets/ETC). -->
+	<title>party</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="party.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui party" data-model="party">
+	<div id="party" class="party">
+		<div class="party__row" data-for="m : members">
+			<div class="party-member nui-tile nui-interactive nui-attach-right" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"
+				data-event-mousedown="member_press(m.pid, ev.button)" data-event-mouseup="member_release(m.pid, ev.button)"
+				data-event-nuidrop="member_drop(m.pid)">
+				<div class="party-member__state party-art-host"><span class="party-role__face" data-attr-data-state="m.state_name"></span></div>
+				<div class="party-member__bar"><span class="party-member__name">{{ m.name }}</span></div>
+				<progress class="nui-gauge nui-gauge--red party-member__hp" direction="right" data-if="m.linked" data-attr-value="m.hp"/>
+				<span class="party-affect party-affect--0 nui-has-tooltip" data-if="m.affects[0]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_experience.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[0] }}</span></span>
+				<span class="party-affect party-affect--1 nui-has-tooltip" data-if="m.affects[1]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_attackgrade.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[1] }}</span></span>
+				<span class="party-affect party-affect--2 nui-has-tooltip" data-if="m.affects[2]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_defencegrade.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[2] }}</span></span>
+				<span class="party-affect party-affect--3 nui-has-tooltip" data-if="m.affects[3]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_attackgrade.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[3] }}</span></span>
+				<span class="party-affect party-affect--4 nui-has-tooltip" data-if="m.affects[4]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_attackgrade.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[4] }}</span></span>
+				<span class="party-affect party-affect--5 nui-has-tooltip" data-if="m.affects[5]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_timebonus.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[5] }}</span></span>
+				<span class="party-affect party-affect--6 nui-has-tooltip" data-if="m.affects[6]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_regenbonus.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[6] }}</span></span>
+				<span class="party-affect party-affect--7 nui-has-tooltip" data-if="m.affects[7]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_increasearea_150.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[7] }}</span></span>
+				<span class="party-affect party-affect--8 nui-has-tooltip" data-if="m.affects[8]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_increasearea_200.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[8] }}</span></span>
+			</div>
+			<div class="party-roles nui-interactive" data-if="m.show_states" data-attr-id="'party-states-' + m.pid">
+				<button class="party-role party-art-host nui-has-tooltip" data-for="b : m.state_buttons"
+					data-event-mousedown="state_pick(m.pid, b.state, ev.button)"><span class="party-role__face" data-attr-data-state="b.state_name"></span><span
+					class="nui-tooltip nui-anim party-role__tip">{{ b.tip }}</span></button>
+				<button class="party-role party-art-host nui-has-tooltip" data-event-mousedown="expel(m.pid, ev.button)"><span
+					class="party-role__face" data-state="expel"></span><span class="nui-glyph nui-glyph--close party-role__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="nui-tooltip nui-anim party-role__tip">@game.TARGET_BUTTON_EXCLUDE</span></button>
+			</div>
+		</div>
+		<button id="party-menu-button" class="party__menu-button nui-interactive" data-class-is-open="menu_open"
+			data-event-mousedown="toggle_menu(ev.button)"><span class="party__menu-mark"></span></button>
+		<div id="party-menu" class="party-menu nui-board nui-fx nui-interactive" data-if="menu_open">
+			<div class="party-menu__buttons">
+				<button id="party-heal" class="party-menu__icon party-menu__icon--heal party-art-host nui-has-tooltip" data-if="heal_ready"
+					data-event-mousedown="heal(ev.button)"><span class="nui-glyph nui-glyph--heal party-menu__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+					<span class="nui-tooltip nui-anim party-menu__tip">@game.PARTY_HEAL_ALL_MEMBER</span>
+				</button>
+				<button id="party-break-up" class="party-menu__icon party-menu__icon--break-up party-art-host nui-has-tooltip" data-if="has_role &amp;&amp; is_leader"
+					data-event-mousedown="break_up(ev.button)"><span class="nui-glyph nui-glyph--minus party-menu__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+					<span class="nui-tooltip nui-anim party-menu__tip">@game.PARTY_BREAK_UP</span>
+				</button>
+				<button id="party-leave" class="party-menu__icon party-menu__icon--leave party-art-host nui-has-tooltip" data-if="has_role &amp;&amp; !is_leader"
+					data-event-mousedown="leave(ev.button)"><span class="nui-glyph nui-glyph--leave party-menu__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
+					<span class="nui-tooltip nui-anim party-menu__tip">@game.PARTY_LEAVE</span>
+				</button>
+			</div>
+			<span class="party-menu__title">@game.PARTY_EXP_DISTRIBUTION_MODE</span>
+			<div class="party-menu__modes">
+				<button id="party-mode-level" class="nui-button nui-anim party-menu__mode" data-class-is-active="distribution == 0"
+					data-event-mousedown="mode(0, ev.button)">@game.PARTY_EXP_DISTRIBUTION_MODE_LEVEL</button>
+				<button id="party-mode-parity" class="nui-button nui-anim party-menu__mode" data-class-is-active="distribution == 1"
+					data-event-mousedown="mode(1, ev.button)">@game.PARTY_EXP_DISTRIBUTION_MODE_PARITY</button>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

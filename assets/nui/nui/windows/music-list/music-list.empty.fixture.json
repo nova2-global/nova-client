@@ -1,0 +1,8 @@
+{
+	"music_list": {
+		"files": [
+			{"name": "@game.MUSIC_METIN2_DEFAULT_THEMA", "label": "@game.MUSIC_METIN2_DEFAULT_THEMA"}
+		],
+		"selected": -1
+	}
+}

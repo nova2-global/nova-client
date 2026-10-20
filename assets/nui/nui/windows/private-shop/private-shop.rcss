@@ -1,0 +1,53 @@
+/* The private shop builder's modern look (P16 spec 5.3.2): the shop's name
+   in a sunken field row above a lean 5 x 8 grid; OK (primary) and Close. The
+   controller centers it at each open, as legacy's Open does; the sheet's
+   place frames it in its snapshots. Classic (legacy's 184 x 354 board, the
+   name's slot bar, the grid and the middle buttons at the uiscript's
+   places): skins/classic/windows/private-shop.rcss. */
+
+body.pshop
+{
+	left: 16dp;
+	top: 16dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.pshop button
+{
+	tab-index: none;
+	focus: none;
+}
+.pshop__body
+{
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	padding: var(--space-3);
+}
+.pshop__name
+{
+	display: block;
+	box-sizing: border-box;
+	width: 216dp;
+	height: 28dp;
+	padding: 0 var(--space-2);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	overflow: hidden;
+}
+.pshop__name-text
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	line-height: 26dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pshop__footer
+{
+	justify-content: center;
+	padding: var(--space-3);
+}

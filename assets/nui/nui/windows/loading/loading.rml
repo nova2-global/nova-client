@@ -1,0 +1,26 @@
+<rml>
+<head>
+	<!-- Loading screen: replaces the legacy loading window (uiscript
+	     loadingwindow.py) while the loading flag is on (controller:
+	     assets/root/nui_loading.py, LoadingWindow subclasses
+	     introLoading.LoadingWindow, which keeps the load steps). Full screen
+	     and opaque; it never takes the mouse. The background is one of the
+	     legacy loading images, stretched as legacy stretches it; the emblem
+	     is the legacy ani_image sequence (24 frames, one per 60 Hz frame) as
+	     a nui-frames element; the gauge shows the load progress at once.
+	     The error line shows when a load step failed. No data events. -->
+	<title>loading</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="loading.rcss"/>
+</head>
+<body template="nui" class="nui-overlay loading" data-model="loading">
+	<img class="loading-background" data-attr-src="background" data-if="background != ''"/>
+	<div id="loading-board" class="loading-board">
+		<nui-frames id="loading-frames" class="loading-frames" count="24" delay="0.0167"/>
+		<span class="loading__track"></span><span class="loading__hole"></span>
+		<span id="loading-ring" class="loading__ring nui-anim"><span class="loading__dot"></span></span>
+		<progress id="loading-gauge" class="loading-gauge" direction="right" max="100" data-attr-value="progress"/>
+	</div>
+	<span id="loading-error" class="loading-error" data-if="error">@ui.LOAD_ERROR</span>
+</body>
+</rml>

@@ -1,0 +1,56 @@
+/* The expanded taskbar's modern look: a small panel above the modern
+   taskbar's expand button with one button and the dragon soul icon. Classic
+   (the legacy button art, 74dp above the bottom at the screen's center):
+   skins/classic/windows/expanded-taskbar.rcss. */
+
+body.expanded-taskbar
+{
+	focus: none;
+	tab-index: none;
+}
+.expanded-taskbar button
+{
+	focus: none;
+	tab-index: none;
+}
+.expanded-taskbar__board
+{
+	position: absolute;
+	left: 50%;
+	bottom: 52dp;
+	margin-left: -48dp;
+	width: 48dp;
+	height: 48dp;
+	padding: var(--space-1);
+	box-sizing: border-box;
+}
+.expanded-taskbar__button
+{
+	display: block;
+	box-sizing: border-box;
+	width: 38dp;
+	height: 38dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+}
+/* The dragon soul button: a chip with the gem glyph (components/glyph.rcss),
+   centered in the padding box; classic draws the legacy button art. */
+.expanded-taskbar__glyph
+{
+	position: absolute;
+	left: 10dp;
+	top: 10dp;
+	transform: scale(1.25);
+}
+.expanded-taskbar__button:hover
+{
+	background-color: var(--surface-hover);
+	border-color: var(--accent);
+}
+.expanded-taskbar__button:active
+{
+	background-color: var(--surface-sunken);
+}

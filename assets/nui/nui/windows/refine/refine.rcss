@@ -1,0 +1,73 @@
+/* The refine dialogs' modern look (P14 spec 6.4): a movable window at
+   legacy's place (the screen's right edge less 400, the top less than a
+   tenth down; the controller places it exactly at each open), the item's
+   cells beside its tooltip, the materials in rows under them, the lines
+   legacy shows, OK and Cancel. Classic (legacy's board sized from the
+   tooltip, the tooltip at 50, 38, the item 35 to its left, the materials
+   every 34 px on thin boards): skins/classic/windows/refine.rcss. */
+
+body.refine
+{
+	left: 100%;
+	margin-left: -400dp;
+	top: 62dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.refine button
+{
+	tab-index: none;
+}
+.refine__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: var(--space-3);
+}
+.refine__main
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.refine__item-column
+{
+	flex-shrink: 0;
+	margin-right: var(--space-3);
+}
+.refine__tip
+{
+	flex-shrink: 0;
+}
+.refine__materials
+{
+	display: block;
+}
+.refine__material
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-top: var(--space-2);
+}
+.refine__material-cell
+{
+	flex-shrink: 0;
+}
+.refine__material-text
+{
+	margin-left: var(--space-2);
+	white-space: nowrap;
+}
+.refine__line
+{
+	display: block;
+	margin-top: var(--space-2);
+	text-align: center;
+	white-space: nowrap;
+}
+.refine__footer
+{
+	justify-content: center;
+}

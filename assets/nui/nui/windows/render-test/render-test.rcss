@@ -1,0 +1,457 @@
+/* Render test layout: a grid of fixed cells, three a row, so a snapshot of
+   each cell lands on the same pixels at a given scale: two rows of effect
+   cells, then three rows of the drawing every page uses. Only tokens and
+   dp. */
+
+body.rt
+{
+	left: 16dp;
+	top: 16dp;
+	width: 912dp;
+	padding: var(--space-3);
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+}
+
+.rt-grid
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+}
+
+.rt-cell
+{
+	display: block;
+	box-sizing: border-box;
+	width: 288dp;
+	height: 172dp;
+	padding: var(--space-2);
+	background-color: var(--surface-raised);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+
+.rt-caption
+{
+	display: block;
+	margin-bottom: var(--space-2);
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	font-weight: bold;
+}
+
+.rt-row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-3);
+}
+.rt-row-tall
+{
+	height: 112dp;
+	justify-content: space-around;
+}
+
+/* Text */
+#rt-text p
+{
+	margin: 0;
+	white-space: nowrap;
+}
+.rt-xs { font-size: var(--font-xs); }
+.rt-sm { font-size: var(--font-sm); }
+.rt-md { font-size: var(--font-md); }
+.rt-lg { font-size: var(--font-lg); }
+.rt-xl { font-size: var(--font-xl); }
+
+/* Boxes */
+.rt-box
+{
+	display: block;
+	box-sizing: border-box;
+	width: 40dp;
+	height: 40dp;
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	font-size: var(--font-xs);
+	line-height: 40dp;
+	text-align: center;
+}
+
+/* Borders: a physical 1px hairline, then 1, 2 and 4dp, then four colors. */
+.rt-border-hair { border-width: 1px; border-color: var(--text); }
+.rt-border-1 { border-width: 1dp; border-color: var(--text); }
+.rt-border-2 { border-width: 2dp; border-color: var(--accent); }
+.rt-border-4 { border-width: 4dp; border-color: var(--danger); }
+.rt-border-sides
+{
+	border-width: 2dp 4dp 6dp 8dp;
+	border-top-color: var(--accent);
+	border-right-color: var(--success);
+	border-bottom-color: var(--warning);
+	border-left-color: var(--danger);
+}
+
+/* Radius */
+.rt-row-next
+{
+	margin-top: var(--space-3);
+}
+.rt-radius-sm { border-radius: var(--radius-sm); background-color: var(--accent); }
+.rt-radius-md { border-radius: var(--radius-md); background-color: var(--accent); }
+.rt-radius-lg { border-radius: var(--radius-lg); background-color: var(--accent); }
+.rt-radius-round { border-radius: 20dp; background-color: var(--success); }
+.rt-radius-border
+{
+	border-width: 3dp;
+	border-color: var(--warning);
+	border-radius: 12dp 0 12dp 0;
+	background-color: var(--surface-sunken);
+}
+
+/* Vertex-color gradients: RmlUi colors the background mesh's vertices, so
+   both renderers draw them without shaders; one follows a border radius. */
+.rt-gradient
+{
+	display: block;
+	width: 72dp;
+	height: 40dp;
+}
+.rt-gradient-across { decorator: horizontal-gradient(var(--accent) var(--danger)); }
+.rt-gradient-down { decorator: vertical-gradient(var(--success) var(--surface-sunken)); }
+.rt-gradient-round
+{
+	border-radius: var(--radius-lg);
+	decorator: horizontal-gradient(var(--warning) var(--accent));
+}
+
+/* Images: an existing legacy icon (straight-alpha TGA) through the image
+   decorator and through <img>. Decorator paths resolve against this sheet. */
+.rt-icon
+{
+	display: block;
+	width: 48dp;
+	height: 48dp;
+	background-color: var(--surface-sunken);
+}
+.rt-icon-decorator
+{
+	decorator: image(../../../icon/item/27001.tga);
+}
+.rt-icon-contain
+{
+	decorator: image(../../../icon/item/27001.tga contain);
+	image-color: var(--accent);
+}
+.rt-img
+{
+	display: block;
+	width: 32dp;
+	height: 32dp;
+}
+.rt-img-large
+{
+	width: 64dp;
+	height: 64dp;
+}
+/* repeat-x scales the texture coordinates across the strip and leaves them
+   in [0, 1] down it, so the renderers wrap horizontally and clamp vertically.
+   The strip is not a whole number of icons wide, so the last one is cut. */
+.rt-tiles
+{
+	display: block;
+	height: 32dp;
+	margin-top: var(--space-2);
+	background-color: var(--surface-sunken);
+	decorator: image(../../../icon/item/27001.tga repeat-x);
+}
+
+/* Transforms */
+.rt-rotate
+{
+	background-color: var(--accent);
+	color: var(--accent-text);
+	transform: rotate(15deg);
+}
+.rt-scale
+{
+	background-color: var(--success);
+	color: var(--accent-text);
+	transform: scale(1.25);
+}
+.rt-skew
+{
+	background-color: var(--warning);
+	color: var(--accent-text);
+	transform: skewX(-12deg);
+}
+
+/* Scissor clipping: a plain rectangle with overflow scroll. */
+.rt-scroller
+{
+	height: 112dp;
+	overflow-y: scroll;
+	background-color: var(--surface-sunken);
+}
+.rt-scroller p
+{
+	margin: 0;
+	padding: 0 var(--space-2);
+	font-size: var(--font-sm);
+	line-height: 1.5;
+}
+
+/* Animation: a block sliding along a track and a pulsing dot. Both are
+   nui-anim, so reduced motion stops them in their resting state. */
+.rt-track
+{
+	position: relative;
+	height: 24dp;
+	margin-bottom: var(--space-3);
+	background-color: var(--surface-sunken);
+	border-radius: var(--radius-sm);
+}
+.rt-mover
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 24dp;
+	height: 24dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--accent);
+}
+.rt-mover.nui-anim
+{
+	animation: 1.2s sine-in-out infinite alternate rt-slide;
+}
+@keyframes rt-slide
+{
+	from { transform: translateX(0dp); }
+	to { transform: translateX(240dp); }
+}
+.rt-pulse
+{
+	width: 32dp;
+	height: 32dp;
+	margin-left: 124dp;
+	border-radius: 16dp;
+	background-color: var(--danger);
+}
+.rt-pulse.nui-anim
+{
+	animation: 0.8s quadratic-in-out infinite alternate rt-pulse;
+}
+@keyframes rt-pulse
+{
+	from { opacity: 1; transform: scale(1); }
+	to { opacity: 0.3; transform: scale(0.6); }
+}
+
+/* Clip mask: a rotated element with overflow hidden cannot use the scissor,
+   and neither can rounded overflow; both need the stencil mask. The content
+   overflows on purpose so the clip really happens. */
+.rt-clip-rotated
+{
+	width: 96dp;
+	height: 64dp;
+	overflow: hidden;
+	transform: rotate(-20deg);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--accent);
+}
+.rt-clip-content
+{
+	width: 160dp;
+	padding: var(--space-1);
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+}
+.rt-clip-round
+{
+	width: 80dp;
+	height: 80dp;
+	overflow: hidden;
+	border-radius: 40dp;
+	background-color: var(--surface-sunken);
+}
+.rt-clip-fill
+{
+	width: 120dp;
+	height: 40dp;
+	margin-top: 40dp;
+	background-color: var(--warning);
+}
+
+/* Blending: translucent layers over each other, and element opacity. */
+.rt-stack
+{
+	position: relative;
+	width: 96dp;
+	height: 72dp;
+}
+.rt-layer
+{
+	position: absolute;
+	width: 56dp;
+	height: 48dp;
+	border-radius: var(--radius-sm);
+}
+.rt-layer-a { left: 0; top: 0; background-color: var(--accent); }
+.rt-layer-b { left: 24dp; top: 16dp; background-color: var(--danger); opacity: 0.6; }
+.rt-layer-scrim { left: 40dp; top: 24dp; background-color: var(--overlay-scrim); }
+.rt-opacity-75 { background-color: var(--accent); color: var(--accent-text); opacity: 0.75; }
+.rt-opacity-40 { background-color: var(--accent); color: var(--accent-text); opacity: 0.4; }
+
+/* --- Effect cells (P13) ------------------------------------------------------
+   One element per effect, with an id, so the live parity check and the
+   in-game bench can take them one at a time. Filters, backdrop filters and
+   masks sit in .nui-fx rules (lint NUI010), so reduced effects and a device
+   without effects show each element plain; box-shadow and the gradients stay
+   under reduced effects (drawn once). Without effects a gradient is one flat
+   color, and box-shadow, also in a .nui-fx rule, goes (base.rcss's
+   no-effects rule), so its panel draws plain instead of vanishing with the
+   shadow texture that holds its background and border. */
+.rt-row-fx
+{
+	height: 120dp;
+	justify-content: space-around;
+}
+.rt-fx-panel
+{
+	display: block;
+	box-sizing: border-box;
+	width: 96dp;
+	height: 72dp;
+	padding: var(--space-2);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+}
+.rt-fx-bar
+{
+	display: block;
+	height: 12dp;
+	margin-bottom: var(--space-2);
+	background-color: var(--accent);
+	border-radius: var(--radius-sm);
+}
+.rt-fx-blur-4.nui-fx { filter: blur(4dp); }
+.rt-fx-blur-16.nui-fx { filter: blur(16dp); }
+.rt-fx-drop-shadow.nui-fx { filter: drop-shadow(var(--accent) 0dp 4dp 8dp); }
+.rt-fx-box-shadow.nui-fx { box-shadow: 0dp 4dp 16dp var(--danger); }
+
+/* Gradients: three stops, three stops, six stops, and a repeating stripe. */
+.rt-fx-swatch
+{
+	display: block;
+	width: 56dp;
+	height: 56dp;
+	border-radius: var(--radius-md);
+}
+.rt-fx-linear { decorator: linear-gradient(90deg, var(--accent), var(--success), var(--warning)); }
+.rt-fx-radial { decorator: radial-gradient(circle, var(--warning), var(--danger), transparent); }
+.rt-fx-conic
+{
+	border-radius: 28dp;
+	decorator: conic-gradient(var(--accent), var(--success), var(--warning), var(--danger), var(--gauge-purple), var(--accent));
+}
+.rt-fx-repeating
+{
+	decorator: repeating-linear-gradient(45deg, var(--accent) 0dp, var(--accent) 4dp, transparent 4dp, transparent 10dp);
+	border-width: 1dp;
+	border-color: var(--border);
+}
+
+/* The backdrop blur: a panel without a background over a tiled icon and a
+   line of text, so what it blurs is the page drawn below it. */
+.rt-fx-scene
+{
+	position: relative;
+	height: 120dp;
+	background-color: var(--surface-sunken);
+	decorator: image(../../../icon/item/27001.tga repeat);
+}
+.rt-fx-scene__text
+{
+	margin: 0;
+	padding: var(--space-2);
+	color: var(--text);
+	font-size: var(--font-lg);
+	font-weight: bold;
+}
+.rt-fx-glass
+{
+	position: absolute;
+	left: 56dp;
+	top: 20dp;
+	width: 160dp;
+	height: 80dp;
+	border-width: 1dp;
+	border-color: var(--text);
+	border-radius: var(--radius-md);
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	text-align: center;
+	line-height: 80dp;
+}
+.rt-fx-glass.nui-fx { backdrop-filter: blur(8dp); }
+
+/* A radial mask; and a group of two overlapping boxes faded as one layer
+   (filter: opacity) beside the same group under the opacity property, where
+   each box fades alone and the overlap shows. */
+.rt-fx-masked.nui-fx { mask-image: radial-gradient(circle, var(--text) 45%, transparent 75%); }
+.rt-fx-group
+{
+	position: relative;
+	width: 64dp;
+	height: 64dp;
+}
+.rt-fx-group__a, .rt-fx-group__b
+{
+	position: absolute;
+	width: 40dp;
+	height: 40dp;
+	border-radius: var(--radius-sm);
+}
+.rt-fx-group__a { left: 0; top: 0; background-color: var(--accent); }
+.rt-fx-group__b { left: 24dp; top: 24dp; background-color: var(--danger); }
+.rt-fx-group-fade.nui-fx { filter: opacity(0.5); }
+.rt-fx-plain-fade { opacity: 0.5; }
+
+/* Color filters on the item icon, two rows of four: none, grayscale, sepia,
+   hue-rotate; invert, brightness, contrast, saturate. */
+.rt-fx-icons
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	gap: var(--space-3) var(--space-4);
+	padding: var(--space-2) var(--space-4);
+}
+.rt-fx-icon
+{
+	display: block;
+	width: 40dp;
+	height: 40dp;
+}
+.rt-fx-grayscale.nui-fx { filter: grayscale(1); }
+.rt-fx-sepia.nui-fx { filter: sepia(1); }
+.rt-fx-hue-rotate.nui-fx { filter: hue-rotate(120deg); }
+.rt-fx-invert.nui-fx { filter: invert(1); }
+.rt-fx-brightness.nui-fx { filter: brightness(1.6); }
+.rt-fx-contrast.nui-fx { filter: contrast(2); }
+.rt-fx-saturate.nui-fx { filter: saturate(3); }

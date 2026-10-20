@@ -1,0 +1,7 @@
+/* The money dialog (nui_dialog_money.py). The width, the field and the
+   footer come from components/dialog.rcss; the scrim centers it. The amount
+   line sits under the field. */
+.dialog-money__amount
+{
+	margin-top: var(--space-2);
+}

@@ -1,0 +1,34 @@
+{
+	"guild_building": {
+		"categories": [
+			{"label": "@game.GUILD_HEADQUARTER"},
+			{"label": "@game.GUILD_FACILITY"},
+			{"label": "@game.GUILD_OBJECT"}
+		],
+		"category": 0,
+		"buildings": [
+			{"label": "house(1)"},
+			{"label": "house(2)"},
+			{"label": "house(3)"}
+		],
+		"building": 0,
+		"price": "20.000.000 Yang",
+		"stone": "20all",
+		"log": "30all",
+		"plywood": "25all",
+		"price_short": false,
+		"stone_short": false,
+		"log_short": false,
+		"plywood_short": false,
+		"pos_x": "352950",
+		"pos_y": "887210",
+		"rot_x": 50,
+		"rot_y": 50,
+		"rot_z": 85,
+		"rot_x_on": false,
+		"rot_y_on": false,
+		"rot_z_on": true,
+		"positioning": false,
+		"preview": true
+	}
+}

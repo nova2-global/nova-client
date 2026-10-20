@@ -1,0 +1,65 @@
+<rml>
+<head>
+	<!-- The chat log (uichat.py ChatLogWindow): every line of chat set 1,
+	     the six filters (All, Normal, Party, Guild, Shout, Information,
+	     Notice), a scroll bar, a resize grip and its own chat input. While
+	     the chat-log flag is on, the Interface makes the facade
+	     nui_chat_log.ChatLogWindow (controller assets/root/nui_chat_log.py).
+	     C++ publishes the lines the log shows (feed chat.log.lines) and the
+	     lines element reports how many rows its height holds; the filters,
+	     the scroll and the size go to CPythonChat through the facade's
+	     legacy state calls. The body is the window (movable by its title
+	     row, resized by the grip, whose size in dp follows the scale); it
+	     never takes the focus but on its field, so the buttons act on
+	     mousedown and a press on them keeps the field's caret. Escape in the
+	     field closes the log; else Escape reaches it in its legacy place
+	     (nui_hud.EscapeProxy). A press on a link: the legacy item tooltip,
+	     or with left Alt a paste into the focused field. -->
+	<title>chat-log</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="chat-log.rcss"/>
+</head>
+<body id="chat-log" template="nui" class="nui-window nui-window--compact nui-fx nui-anim nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus chat-log"
+	data-model="chatlog" data-event-nuilink="link(ev.link)">
+	<div class="nui-window__titlebar chat-log__titlebar">
+		<handle class="nui-window__handle chat-log__handle" move_target="#document">
+			<span id="chat-log-title" class="nui-window__title chat-log__title">@game.CHAT_LOG_TITLE</span>
+		</handle>
+		<button id="chat-log-close" class="nui-button nui-button--ghost nui-button--icon-sm nui-window__close nui-anim nui-has-tooltip chat-log__close"
+			data-event-mousedown="close(ev.button)"><span class="chat-log__close-x">&#215;</span><span
+			class="nui-tooltip nui-anim chat-log__tip">@game.UI_CLOSE</span></button>
+	</div>
+	<div id="chat-log-filters" class="chat-log__filters">
+		<button id="chat-log-all" class="chat-log__filter chat-log__filter--all" data-class-is-on="all" data-event-mousedown="filter_all(ev.button)"><span class="chat-log__filter-label">@game.CHAT_ALL</span></button>
+		<button id="chat-log-filter-0" class="chat-log__filter chat-log__filter--0" data-class-is-on="filters[0]" data-event-mousedown="filter(0, ev.button)"><span class="chat-log__filter-label">@game.CHAT_NORMAL</span></button>
+		<button id="chat-log-filter-1" class="chat-log__filter chat-log__filter--1" data-class-is-on="filters[1]" data-event-mousedown="filter(1, ev.button)"><span class="chat-log__filter-label">@game.CHAT_PARTY</span></button>
+		<button id="chat-log-filter-2" class="chat-log__filter chat-log__filter--2" data-class-is-on="filters[2]" data-event-mousedown="filter(2, ev.button)"><span class="chat-log__filter-label">@game.CHAT_GUILD</span></button>
+		<button id="chat-log-filter-3" class="chat-log__filter chat-log__filter--3" data-class-is-on="filters[3]" data-event-mousedown="filter(3, ev.button)"><span class="chat-log__filter-label">@game.CHAT_SHOUT</span></button>
+		<button id="chat-log-filter-4" class="chat-log__filter chat-log__filter--4" data-class-is-on="filters[4]" data-event-mousedown="filter(4, ev.button)"><span class="chat-log__filter-label">@game.CHAT_INFORMATION</span></button>
+		<button id="chat-log-filter-5" class="chat-log__filter chat-log__filter--5" data-class-is-on="filters[5]" data-event-mousedown="filter(5, ev.button)"><span class="chat-log__filter-label">@game.CHAT_NOTICE</span></button>
+	</div>
+	<nui-chat-lines id="chat-log-lines" class="chat-log__lines" view="log" mode="log" step="15"
+		data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
+	<div class="chat-log__scroll-column"></div>
+	<div class="chat-log__scroll-box"><input id="chat-log-scroll" type="range" orientation="vertical" class="chat-log__scroll"
+		min="0" max="1" step="0.01" data-attr-value="end_pos" data-event-change="scroll(ev.value)"/></div>
+	<div id="chat-log-input-row" class="chat-log__input-row">
+		<button id="chat-log-mode" class="chat-log__mode" data-event-mousedown="mode(ev.button)"><span
+			data-if="chat_mode == 0">@game.CHAT_NORMAL</span><span
+			data-if="chat_mode == 3">@game.CHAT_PARTY</span><span
+			data-if="chat_mode == 4">@game.CHAT_GUILD</span><span
+			data-if="chat_mode == 6">@game.CHAT_SHOUT</span></button>
+		<div id="chat-log-field" class="chat-log__field">
+			<input id="chat-log-input" type="text" maxlength="512" class="nui-input chat-log__input"
+				data-event-change="changed(ev.value, ev.linebreak)"/>
+			<span id="chat-log-mark" class="chat-log__mark" data-if="mark != ''">{{ mark }}</span>
+		</div>
+		<span id="chat-log-send" class="chat-log__send nui-has-tooltip" data-event-mousedown="send(ev.button)"><span class="nui-glyph nui-glyph--send chat-log__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-tooltip nui-anim chat-log__tip">@game.CHAT_SEND_CHAT</span></span>
+	</div>
+	<nui-resize id="chat-log-resize" class="nui-resize--bottom-right chat-log__resize" edge="bottom-right" target="chat-log"
+		min-width="450" min-height="120" data-attr-width="log_width" data-attr-height="log_height"
+		data-event-resized="resized(ev.width, ev.height)"><div class="chat-log__grip chat-log__grip--1"></div><div
+		class="chat-log__grip chat-log__grip--2"></div><div class="chat-log__grip chat-log__grip--3"></div></nui-resize>
+</body>
+</rml>

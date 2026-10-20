@@ -1,0 +1,40 @@
+/* Classic skin overlay of nui/windows/restart/restart.rml: the legacy
+   restart dialog (uiscript restartdialog.py) at 100%, 1dp to the legacy
+   pixel: the thin board, 200 x 88, at 50, 50 (the uiscript's color values
+   on the board are not read by the legacy loader, so it is the plain thin
+   board), and the two XLarge_Button buttons (180 x 25: the default, over
+   and down art) at 10, 17 and 10, 47. */
+body.skin-classic.restart
+{
+	width: 200dp;
+	height: 88dp;
+	min-width: 0;
+	decorator: classic-thinboard;
+}
+body.skin-classic.restart .restart__buttons
+{
+	display: block;
+	position: relative;
+	padding: 0;
+}
+body.skin-classic.restart .restart__button
+{
+	position: absolute;
+	left: 10dp;
+	width: 180dp;
+	height: 25dp;
+	margin: 0;
+	padding: 0;
+	line-height: 25dp;
+	decorator: image("d:/ymir work/ui/public/xlarge_button_01.sub");
+}
+body.skin-classic.restart .restart__button:hover
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_button_02.sub");
+}
+body.skin-classic.restart .restart__button:active
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_button_03.sub");
+}
+body.skin-classic.restart .restart__button--here { top: 17dp; }
+body.skin-classic.restart .restart__button--town { top: 47dp; }

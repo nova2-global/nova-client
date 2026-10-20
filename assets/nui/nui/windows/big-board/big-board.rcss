@@ -1,0 +1,82 @@
+/* The big notice board's modern look: a 512 x 55 bar at the top center,
+   150dp from the top, black at 50% with a thin border, its text in the big
+   font and the legacy cream, centered in a two-line slot (46dp) and
+   wrapping within 500dp. A step slides the incoming notice in from below
+   and the outgoing one up, the slot's height in 0.27 s. Classic (the legacy
+   OX event frame around a square bar): skins/classic/windows/big-board.rcss. */
+
+body.big-board
+{
+	focus: none;
+	tab-index: none;
+}
+.big-board__bar
+{
+	position: absolute;
+	left: 50%;
+	top: 150dp;
+	margin-left: -256dp;
+	width: 512dp;
+	height: 55dp;
+	box-sizing: border-box;
+}
+/* The lines move by transform, which RmlUi does not count as overflow, so
+   the clip is forced. */
+.big-board__clip
+{
+	clip: always;
+	position: absolute;
+	left: 0;
+	top: 4dp;
+	width: 510dp;
+	height: 46dp;
+	overflow: hidden;
+}
+.big-line
+{
+	position: absolute;
+	left: 5dp;
+	top: 0;
+	width: 500dp;
+	height: 46dp;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+.big-line__text
+{
+	display: block;
+	max-width: 500dp;
+	color: var(--notice-text-big);
+	font-size: var(--font-notice-big);
+	line-height: 23dp;
+	text-align: center;
+}
+.big-line.is-back
+{
+	transform: translateY(-46dp);
+}
+.big-line.is-front.nui-anim
+{
+	animation: 0.27s cubic-out big-line-in;
+}
+.big-line.is-back.nui-anim
+{
+	animation: 0.27s cubic-out big-line-out;
+}
+@keyframes big-line-in
+{
+	from { transform: translateY(46dp); }
+	to { transform: translateY(0dp); }
+}
+@keyframes big-line-out
+{
+	from { transform: translateY(0dp); }
+	to { transform: translateY(-46dp); }
+}
+/* The frame is the classic look's alone. */
+.big-board__frame
+{
+	display: none;
+}

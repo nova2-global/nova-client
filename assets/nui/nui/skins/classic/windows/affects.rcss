@@ -1,0 +1,64 @@
+/* Classic skin overlay of nui/windows/affects/affects.rml: the legacy
+   tooltips. A clocked, mall or premium affect, the heart and the horse show
+   the legacy uiToolTip.ToolTip (the thin board from the classic component,
+   its text centered, the title in the legacy title color); a skill affect
+   without a duration and an unclocked affect show the legacy text line
+   instead: outlined text without a board, 40dp below the icon's top
+   (AffectImage.SetToolTipText(name, 0, 40)). */
+
+body.skin-classic.affects .affect__tip
+{
+	text-align: center;
+}
+body.skin-classic.affects .affect__title
+{
+	color: var(--notice-text-big);
+	font-weight: normal;
+}
+body.skin-classic.affects .affect__line
+{
+	color: var(--classic-tooltip-text);
+}
+body.skin-classic.affects .nui-tooltip.affect__tip--label
+{
+	margin-top: 14dp;
+	padding: 0;
+	decorator: none;
+	background-color: transparent;
+	text-align: left;
+}
+body.skin-classic.affects .affect__tip--label .affect__title
+{
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+/* At 100% and below, the icons point sampled, as legacy draws its scaled
+   affect icons (D3DTEXF_NONE): the nearest copy instead of the filtered one.
+   Legacy's SetScale(0.7) draws the 32 px icon as a 22.4 px quad, so pixel k
+   shows texel floor((k + 0.5) / 0.7) (measured in game: F-L frames against
+   the atlas). A 22.4dp box would be laid out at 22 px, a step of 32 / 22
+   that picks other texels; a 32dp image scaled by 0.7 from its top left
+   corner is not snapped, covers 22.4 px and picks legacy's texels
+   (nui_hud_test.ClassicAffectIcons). Above 100% the filtered one, as there
+   is no legacy picture to match. */
+@media (max-resolution: 1x)
+{
+	body.skin-classic.affects .affect__image
+	{
+		display: none;
+	}
+	body.skin-classic.affects .affect__image.affect__image--nearest
+	{
+		display: block;
+	}
+	body.skin-classic.affects .affect--small .affect__image.affect__image--nearest
+	{
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 32dp;
+		height: 32dp;
+		transform: scale(0.7);
+		transform-origin: left top;
+	}
+}

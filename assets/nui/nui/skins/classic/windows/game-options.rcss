@@ -1,0 +1,156 @@
+/* Classic skin overlay of nui/windows/game-options/game-options.rml: the
+   legacy game options (uiscript gameoptiondialog.py) at 100%, 1dp to the
+   legacy pixel. The stone board, 300 x 283, with its title bar at 8, 8
+   (284 wide; the title centered over the whole bar, the close button at
+   266, 3); the labels at x 30, y 42 + 25 per row; the choices from x 90,
+   middle art (61dp) 65 apart and the PvP choices small art (43dp) 45
+   apart, at y 40, 65, 90, 115 and 140 (the block toggles' two rows), 165,
+   190, 215 and 240. Labels are centered over their art as legacy's text
+   lines are, a wider one overflowing both ends. The choice in effect and a
+   blocked request show the down art. The PvP hints are legacy button
+   tooltips: outlined text above the button, without a board. */
+
+body.skin-classic.game-options
+{
+	width: 300dp;
+	height: 283dp;
+	min-width: 0;
+}
+/* z-index: the legacy rows below are positioned boxes placed from the
+   board's corner, later in the document, so without it they would sit above
+   the bar and take its close button's and handle's presses. */
+body.skin-classic.game-options .game-options__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	width: 284dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+}
+body.skin-classic.game-options .game-options__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 284dp;
+	height: 23dp;
+	line-height: 21dp;
+	text-align: center;
+}
+body.skin-classic.game-options .game-options__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 266dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.game-options .game-options__body
+{
+	position: relative;
+	height: 283dp;
+	padding: 0;
+}
+body.skin-classic.game-options .go-row,
+body.skin-classic.game-options .go-choices
+{
+	display: block;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.game-options .go-label
+{
+	position: absolute;
+	left: 30dp;
+	width: auto;
+	color: var(--text);
+	line-height: 14dp;
+	white-space: nowrap;
+}
+body.skin-classic.game-options .go-label--name-color { top: 42dp; }
+body.skin-classic.game-options .go-label--target-board { top: 67dp; }
+body.skin-classic.game-options .go-label--pk { top: 92dp; }
+body.skin-classic.game-options .go-label--block { top: 117dp; }
+body.skin-classic.game-options .go-label--view-chat { top: 167dp; }
+body.skin-classic.game-options .go-label--always-name { top: 192dp; }
+body.skin-classic.game-options .go-label--damage { top: 217dp; }
+body.skin-classic.game-options .go-label--sales { top: 242dp; }
+
+body.skin-classic.game-options .go-choice
+{
+	position: absolute;
+	width: 61dp;
+	min-width: 0;
+	height: 21dp;
+	margin: 0;
+	padding: 0;
+	line-height: 21dp;
+}
+body.skin-classic.game-options .go-row--block .go-choice
+{
+	width: 61dp;
+}
+/* The label centered over the art, a wider one overflowing both ends. It
+   takes no pointer, as legacy's text line takes none: the next choice's label
+   would otherwise take the presses on the right part of the choice before it. */
+body.skin-classic.game-options .go-choice__label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+	pointer-events: none;
+}
+body.skin-classic.game-options .go-choice--name-color-0 { left: 90dp; top: 40dp; }
+body.skin-classic.game-options .go-choice--name-color-1 { left: 155dp; top: 40dp; }
+body.skin-classic.game-options .go-choice--target-board-0 { left: 90dp; top: 65dp; }
+body.skin-classic.game-options .go-choice--target-board-1 { left: 155dp; top: 65dp; }
+body.skin-classic.game-options .go-choice--pk-0 { left: 90dp; top: 90dp; }
+body.skin-classic.game-options .go-choice--pk-1 { left: 135dp; top: 90dp; }
+body.skin-classic.game-options .go-choice--pk-4 { left: 180dp; top: 90dp; }
+body.skin-classic.game-options .go-choice--pk-2 { left: 225dp; top: 90dp; }
+body.skin-classic.game-options .go-choice--block-0 { left: 90dp; top: 115dp; }
+body.skin-classic.game-options .go-choice--block-1 { left: 155dp; top: 115dp; }
+body.skin-classic.game-options .go-choice--block-2 { left: 220dp; top: 115dp; }
+body.skin-classic.game-options .go-choice--block-3 { left: 90dp; top: 140dp; }
+body.skin-classic.game-options .go-choice--block-4 { left: 155dp; top: 140dp; }
+body.skin-classic.game-options .go-choice--block-5 { left: 220dp; top: 140dp; }
+body.skin-classic.game-options .go-choice--view-chat-1 { left: 90dp; top: 165dp; }
+body.skin-classic.game-options .go-choice--view-chat-0 { left: 155dp; top: 165dp; }
+body.skin-classic.game-options .go-choice--always-name-1 { left: 90dp; top: 190dp; }
+body.skin-classic.game-options .go-choice--always-name-0 { left: 155dp; top: 190dp; }
+body.skin-classic.game-options .go-choice--damage-1 { left: 90dp; top: 215dp; }
+body.skin-classic.game-options .go-choice--damage-0 { left: 155dp; top: 215dp; }
+body.skin-classic.game-options .go-choice--sales-1 { left: 90dp; top: 240dp; }
+body.skin-classic.game-options .go-choice--sales-0 { left: 155dp; top: 240dp; }
+
+/* The PvP choices on the small art; the choice in effect shows its down art,
+   under the pointer too. */
+body.skin-classic.game-options .go-choice--small
+{
+	width: 43dp;
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.game-options .go-choice--small:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.game-options .go-choice--small:active,
+body.skin-classic.game-options .go-choice--small.is-selected
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+
+body.skin-classic.game-options .nui-tooltip.go-tip
+{
+	decorator: none;
+	padding: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

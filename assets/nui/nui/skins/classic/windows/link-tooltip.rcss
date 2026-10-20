@@ -1,0 +1,94 @@
+/* Classic skin overlay of nui/windows/link-tooltip/link-tooltip.rml: legacy's link tooltip (uitooltip.py HyperlinkItemToolTip)
+   at 100%, 1dp to the legacy pixel. The board is the thin board
+   (classic.rcss, nui-board--tooltip), at least as wide as the rules made
+   legacy's (min_w, --tip-min-w) and 10 px taller than its lines, which
+   start 12 px from its top (ToolTip.toolTipHeight); the text's top sits a
+   pixel higher in a 17 px line than RmlUi centers it, so the board's
+   padding is 11 and 11. */
+
+body.skin-classic.nui-tip
+{
+	--tip-min-w: 190dp;
+	box-sizing: border-box;
+	min-width: var(--tip-min-w);
+	padding: 11dp 0 11dp 0;
+}
+
+/* --- the tooltip lines: legacy's (uitooltip.py ToolTip), the same in every
+   overlay of a document with the tooltip block (tools/nui_tooltip_test.py
+   checks it): 17 px a line, text outlined but where the rules leave it out
+   (AppendMetinWearInformation), left lines 10 px in; a socket row is the
+   legacy frame (36 x 36) at (9, -1) with the stone at (1, 1) in it and its lines at
+   x 50, 16 px apart then 18 (legacy lets a long one run past the board's
+   edge; here the board grows to hold it, 10 px to spare); a divider is legacy's two lines, 150 px wide,
+   3 px under the line above, 11 px in all, centered by its slot (an
+   inline block: auto margins would stretch a shrink-to-fit board). --- */
+.skin-classic .nui-tip__line
+{
+	line-height: 17dp;
+	padding: 0 10dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+.skin-classic .nui-tip__line--plain
+{
+	font-effect: none;
+}
+.skin-classic .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--title,
+.skin-classic .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--special
+{
+	font-weight: normal;
+}
+.skin-classic .nui-tip__rule
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 150dp;
+	height: 1dp;
+	margin: 3dp 0 6dp 0;
+	background-color: var(--tip-divider);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--tip-divider-shadow);
+}
+.skin-classic .nui-tip__socket
+{
+	display: block;
+	position: relative;
+	min-height: 35dp;
+	padding: 0 0 0 50dp;
+}
+.skin-classic .nui-tip__socket-frame
+{
+	position: absolute;
+	left: 9dp;
+	top: -1dp;
+	width: 36dp;
+	height: 36dp;
+	border-width: 0;
+	border-radius: 0;
+	decorator: image("d:/ymir work/ui/game/windows/metin_slot_silver.sub" scale-none left top);
+}
+.skin-classic .nui-tip__socket--gold .nui-tip__socket-frame
+{
+	decorator: image("d:/ymir work/ui/game/windows/metin_slot_gold.sub" scale-none left top);
+}
+.skin-classic .nui-tip__socket-icon
+{
+	position: absolute;
+	left: 1dp;
+	top: 1dp;
+}
+.skin-classic .nui-tip__socket-lines
+{
+	margin-left: 0;
+	padding: 2dp 0 1dp 0;
+}
+.skin-classic .nui-tip__socket-lines .nui-tip__line
+{
+	line-height: 16dp;
+	padding: 0 10dp 0 0;
+}
+.skin-classic .nui-tip__socket-lines > .nui-tip__slot:nth-child(n+3)
+{
+	margin-top: 2dp;
+}
+/* --- end of the tooltip lines --- */

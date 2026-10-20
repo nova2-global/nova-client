@@ -1,0 +1,10 @@
+{
+	"dialog_input": {
+		"title": "@game.INPUT_PRIVATE_CODE_DIALOG_TITLE",
+		"lines": [
+			"@game.INPUT_PRIVATE_CODE_DIALOG_DESCRIPTION"
+		],
+		"secret": true,
+		"max": 7
+	}
+}

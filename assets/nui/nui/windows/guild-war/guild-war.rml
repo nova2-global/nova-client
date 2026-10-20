@@ -1,0 +1,35 @@
+<rml>
+<head>
+	<!-- The guild war score boards (uiguild.py GuildWarScoreBoard): one board
+	     per war at the bottom left, each the two guilds' marks, names and
+	     scores (and their member counts once the server sends them). While
+	     the guild-war flag is on, the Interface makes one facade per war,
+	     nui_guild_war.GuildWarScoreBoard (controller
+	     assets/root/nui_guild_war.py), and every war is an entry of this one
+	     document. Legacy puts every board at the same place, so a second war
+	     hid the first; here they stack upward 4dp apart (spec D19). A mark is
+	     a 16 x 12 region of the guild mark atlas the client downloads
+	     (mark/<prefix>_<n>.tga), absent for a guild without one. A
+	     full-screen overlay that takes no pointer and no focus. The classic
+	     thin board art is under d:/ymir work/ (assets/ETC). Each repeated
+	     slot binds nothing: RmlUi updates a repeated element's own views with
+	     the data-for that removes it. -->
+	<title>guild-war</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="guild-war.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui guild-war" data-model="guild_war">
+	<div id="guild-war" class="guild-war__column">
+		<div class="guild-war__slot" data-for="b : boards">
+			<div class="nui-panel guild-war__board" data-attr-id="'guild-war-' + b.key" data-style---legacy-width="b.legacy_width">
+				<div class="guild-war__row-slot" data-for="row : b.rows">
+					<div class="guild-war__row">
+						<img class="guild-war__mark" data-if="row.src != ''" data-attr-src="row.src" data-attr-rect="row.rect"/>
+						<span class="guild-war__text">{{ row.text }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

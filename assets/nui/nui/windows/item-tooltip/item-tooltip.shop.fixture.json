@@ -1,0 +1,112 @@
+{
+	"item_tooltip": {
+		"lines": [
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Golden Cog Wheel",
+						"role": "title",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Trigger the hidden mechanism in the Isfet",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Stele.",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Price: 1.250 Yang",
+						"role": "price-low",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			}
+		],
+		"min_w": 280
+	}
+}

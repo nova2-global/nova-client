@@ -1,0 +1,75 @@
+/* Classic skin overlay of nui/windows/select-item/select-item.rml: the
+   legacy select item window (uiscript selectitemwindow.py, uiselectitem.py
+   SetTableSize) at 100%, 1dp to the legacy pixel: the stone board, 184 wide
+   and 76 + 32 per row tall (the grid's height plus 76), the title bar at 8, 7,
+   169 wide; the grid at 12, 34 on the slot base at the 32px pitch; the large
+   button 34 above the bottom, centered. */
+
+body.skin-classic.sel
+{
+	width: 184dp;
+	min-width: 0;
+}
+body.skin-classic.sel .sel__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 169dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+	/* Its last 5dp lie over the grid's first row, which takes the pointer
+	   there, as legacy's slot window over its title bar (P14b: no dead
+	   zone); the handle and the close button take it. */
+	pointer-events: none;
+}
+body.skin-classic.sel .sel__handle, body.skin-classic.sel .sel__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.sel .sel__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 23dp;
+	line-height: 21dp;
+	text-align: center;
+}
+body.skin-classic.sel .sel__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 151dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.sel .sel__body
+{
+	padding: 34dp 12dp 0 12dp;
+}
+/* The bottom: the board is the grid plus 76; the large button (88 x 21)
+   34 above the board's bottom, centered: 42 under the grid after its 13 of
+   gap and 21 of art. */
+body.skin-classic.sel .sel__footer
+{
+	display: block;
+	position: relative;
+	height: 42dp;
+	padding: 0;
+}
+body.skin-classic.sel .sel__close
+{
+	position: absolute;
+	left: 48dp;
+	top: 8dp;
+	width: 88dp;
+	min-width: 0;
+	height: 21dp;
+	padding: 0;
+	line-height: 21dp;
+}

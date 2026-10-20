@@ -1,0 +1,160 @@
+/* The dragon soul refine window's modern look (P15 spec 6.2): a 372dp
+   window opened where legacy opens it, beside the dragon soul window's left
+   edge with its top on that window's top (dragon-soul.rcss: 246dp from the
+   screen's right, 539dp tall above the 37dp strip; legacy: 287 left of the
+   dragon soul window, the two tops at H - 37 - 505):
+   - the three mode choices (grade, step, strength);
+   - the material cells, 5 x 3 on the 44dp pitch: a placed item, the
+     recipe's ghost at half alpha with no count (is-ghost), a closed cell at
+     or past the recipe's count, dimmed with the lock glyph (is-closed,
+     components/slot-grid.rcss); the arrow; the result cells, 2 x 3;
+   - the fee in a sunken bar with the coin, and the refine button.
+   Classic (legacy's 287 x 232 board with its picture, the closed cells'
+   cap and the buttons' art at 100%): skins/classic/windows/dragon-soul-refine.rcss. */
+
+body.dsr
+{
+	right: 620dp;
+	bottom: 301dp;
+	width: 372dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+/* Placed from Python (where the player left it). */
+body.dsr.dsr--placed
+{
+	right: auto;
+	bottom: auto;
+}
+.dsr button
+{
+	tab-index: none;
+}
+/* The board's picture is classic's. */
+.dsr-bg
+{
+	display: none;
+}
+.dsr__body
+{
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	height: 236dp;
+	padding: var(--space-3);
+}
+
+/* --- The modes ----------------------------------------------------------------------- */
+
+/* The three share the row by their labels (Greek's and Hungarian's step
+   label is 18 letters). */
+.dsr-modes
+{
+	display: flex;
+	flex-direction: row;
+	flex: 0 0 auto;
+	gap: var(--space-1);
+	width: 348dp;
+}
+.dsr-mode-place
+{
+	display: flex;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.dsr-mode
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 32dp;
+	padding: 0 var(--space-2);
+	font-size: var(--font-sm);
+	line-height: 30dp;
+	white-space: nowrap;
+}
+.dsr-mode__label, .dsr-refine__label
+{
+	pointer-events: none;
+}
+
+/* --- The cells ------------------------------------------------------------------------ */
+
+.dsr-main
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 0 0 auto;
+	gap: var(--space-3);
+	margin-top: 10dp;
+}
+.dsr-arrow
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 24dp;
+	height: 16dp;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.dsr-arrow .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+	margin: 0 -4dp;
+}
+
+/* --- The fee and the refine button ------------------------------------------------------- */
+
+.dsr-foot
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 0 0 auto;
+	gap: var(--space-2);
+	margin-top: 10dp;
+}
+.dsr-fee
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 auto;
+	min-width: 0;
+	box-sizing: border-box;
+	height: 32dp;
+	gap: var(--space-2);
+	padding: 0 var(--space-2);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+.dsr-fee__coin
+{
+	flex: 0 0 auto;
+}
+/* Up to DRAGON_SOUL_FEE_DIGITS (13 at the foundation) with the separators
+   and the unit: right-aligned, cut at the left only past that. */
+.dsr-fee__amount
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	text-align: right;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.dsr-refine
+{
+	flex: 0 0 auto;
+	min-width: 96dp;
+	height: 32dp;
+	padding: 0 var(--space-3);
+	font-size: var(--font-sm);
+	line-height: 30dp;
+}

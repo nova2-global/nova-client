@@ -1,6 +1,8 @@
 ##
 ## Interface
 ##
+import sys
+
 import constInfo
 import systemSetting
 import wndMgr
@@ -44,8 +46,10 @@ import uiScriptLocale
 
 import event
 import localeInfo
+import nui_windows
 
 IsQBHide = 0
+ItemMallTraced = False  # OpenItemMall writes its log line once per session
 class Interface(object):
 	CHARACTER_STATUS_TAB = 1
 	CHARACTER_SKILL_TAB = 2
@@ -60,10 +64,6 @@ class Interface(object):
 		# MR-11: Suppress quest button when quest dialog is open to prevent quest button flashing
 		self.questButtonSuppressed = False
 		# MR-11: -- END OF -- Suppress quest button when quest dialog is open to prevent quest button flashing
-
-		# ITEM_MALL
-		self.mallPageDlg = None
-		# END_OF_ITEM_MALL
 
 		self.wndWeb = None
 		self.wndTaskBar = None
@@ -100,17 +100,17 @@ class Interface(object):
 		self.wndUICurtain = wndUICurtain
 
 	def __MakeMessengerWindow(self):
-		self.wndMessenger = uiMessenger.MessengerWindow()
+		self.wndMessenger = nui_windows.make("messenger", uiMessenger.MessengerWindow, "nui_messenger.MessengerWindow")
 
 		from _weakref import proxy
 		self.wndMessenger.SetWhisperButtonEvent(lambda n,i=proxy(self):i.OpenWhisperDialog(n))
 		self.wndMessenger.SetGuildButtonEvent(ui.__mem_func__(self.ToggleGuildWindow))
 
 	def __MakeGuildWindow(self):
-		self.wndGuild = uiGuild.GuildWindow()
+		self.wndGuild = nui_windows.make("guild", uiGuild.GuildWindow, "nui_guild.GuildWindow")
 
 	def __MakeChatWindow(self):
-		wndChat = uiChat.ChatWindow()
+		wndChat = nui_windows.make("chat", uiChat.ChatWindow, "nui_chat.ChatWindow")
 		
 		wndChat.SetSize(wndChat.CHAT_WINDOW_WIDTH, 0)
 		wndChat.SetPosition(wndMgr.GetScreenWidth() // 2 - wndChat.CHAT_WINDOW_WIDTH // 2, wndMgr.GetScreenHeight() - wndChat.EDIT_LINE_HEIGHT - 37)
@@ -123,17 +123,32 @@ class Interface(object):
 		self.wndChat.SetSendWhisperEvent(ui.__mem_func__(self.OpenWhisperDialogWithoutTarget))
 		self.wndChat.SetOpenChatLogEvent(ui.__mem_func__(self.ToggleChatLogWindow))
 
+	def __PlaceChatAboveTaskBar(self):
+		wndChat = getattr(self, "wndChat", None)
+		if wndChat is None:
+			return
+		height = self.wndTaskBar.GetBarHeight()
+		wndChat.SetPosition(wndMgr.GetScreenWidth() // 2 - wndChat.CHAT_WINDOW_WIDTH // 2, wndMgr.GetScreenHeight() - wndChat.EDIT_LINE_HEIGHT - height)
+		wndChat.Refresh()
+
 	def __MakeTaskBar(self):
-		wndTaskBar = uiTaskBar.TaskBar()
+		wndTaskBar = nui_windows.make("taskbar", uiTaskBar.TaskBar, "nui_taskbar.TaskBar")
 		wndTaskBar.LoadWindow()
+		# The NovaUI gift box needs the NovaUI taskbar, which makes it (spec D17).
+		if not getattr(wndTaskBar, "NUI_FACADE", False) and nui_windows.is_on("gift-box"):
+			nui_windows.refuse("gift-box", "needs the NovaUI taskbar")
 		self.wndTaskBar = wndTaskBar
+		# The NovaUI bar is not legacy's 37 px: the legacy chat stays above it, also after a theme or scale change.
+		if getattr(wndTaskBar, "NUI_FACADE", False) and hasattr(wndTaskBar, "SetBarHeightEvent"):
+			wndTaskBar.SetBarHeightEvent(ui.__mem_func__(self.__PlaceChatAboveTaskBar))
+			self.__PlaceChatAboveTaskBar()
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_CHARACTER, ui.__mem_func__(self.ToggleCharacterWindowStatusPage))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_INVENTORY, ui.__mem_func__(self.ToggleInventoryWindow))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_MESSENGER, ui.__mem_func__(self.ToggleMessenger))
 		self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_SYSTEM, ui.__mem_func__(self.ToggleSystemDialog))
 		if uiTaskBar.TaskBar.IS_EXPANDED:
 			self.wndTaskBar.SetToggleButtonEvent(uiTaskBar.TaskBar.BUTTON_EXPAND, ui.__mem_func__(self.ToggleExpandedButton))
-			self.wndExpandedTaskBar = uiTaskBar.ExpandedTaskBar()
+			self.wndExpandedTaskBar = nui_windows.make("expanded-taskbar", uiTaskBar.ExpandedTaskBar, "nui_expanded_taskbar.ExpandedTaskBar")
 			self.wndExpandedTaskBar.LoadWindow()
 			self.wndExpandedTaskBar.SetToggleButtonEvent(uiTaskBar.ExpandedTaskBar.BUTTON_DRAGON_SOUL, ui.__mem_func__(self.ToggleDragonSoulWindow))
 
@@ -143,17 +158,17 @@ class Interface(object):
 		self.wndEnergyBar = None
 		import app
 		if app.ENABLE_ENERGY_SYSTEM:
-			wndEnergyBar = uiTaskBar.EnergyBar()
+			wndEnergyBar = nui_windows.make("energy-bar", uiTaskBar.EnergyBar, "nui_energy_bar.EnergyBar")
 			wndEnergyBar.LoadWindow()
 			self.wndEnergyBar = wndEnergyBar	
 
 	def __MakeParty(self):
-		wndParty = uiParty.PartyWindow()
+		wndParty = nui_windows.make("party", uiParty.PartyWindow, "nui_party.PartyWindow")
 		wndParty.Hide()
 		self.wndParty = wndParty
 
 	def __MakeGameButtonWindow(self):
-		wndGameButton = uiGameButton.GameButtonWindow()
+		wndGameButton = nui_windows.make("game-buttons", uiGameButton.GameButtonWindow, "nui_game_buttons.GameButtonWindow")
 		wndGameButton.SetTop()
 		wndGameButton.Show()
 		wndGameButton.SetButtonEvent("STATUS", ui.__mem_func__(self.__OnClickStatusPlusButton))
@@ -168,26 +183,29 @@ class Interface(object):
 		return True
 		
 	def __MakeWindows(self):
-		wndCharacter = uiCharacter.CharacterWindow()
-		wndInventory = uiInventory.InventoryWindow()
+		wndCharacter = nui_windows.make("character", uiCharacter.CharacterWindow, "nui_character.CharacterWindow")
+		wndInventory = nui_windows.make("inventory", uiInventory.InventoryWindow, "nui_inventory.InventoryWindow")
 		wndInventory.BindInterfaceClass(self)
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
-			wndDragonSoul = uiDragonSoul.DragonSoulWindow()	
+			wndDragonSoul = nui_windows.make("dragon-soul", uiDragonSoul.DragonSoulWindow, "nui_dragon_soul.DragonSoulWindow")	
 			wndDragonSoul.BindInterfaceClass(self)
-			wndDragonSoulRefine = uiDragonSoul.DragonSoulRefineWindow()
+			wndDragonSoulRefine = nui_windows.make("dragon-soul-refine", uiDragonSoul.DragonSoulRefineWindow, "nui_dragon_soul_refine.DragonSoulRefineWindow")
 		else:
 			wndDragonSoul = None
 			wndDragonSoulRefine = None
  
-		wndMiniMap = uiMiniMap.MiniMap()
-		wndSafebox = uiSafebox.SafeboxWindow()
+		wndMiniMap = nui_windows.make("minimap", uiMiniMap.MiniMap, "nui_minimap.MiniMap")
+		# The NovaUI atlas needs the NovaUI minimap, which makes it (P10 spec D16).
+		if not getattr(wndMiniMap, "NUI_FACADE", False) and nui_windows.is_on("atlas"):
+			nui_windows.refuse("atlas", "needs the NovaUI minimap")
+		wndSafebox = nui_windows.make("safebox", uiSafebox.SafeboxWindow, "nui_safebox.SafeboxWindow")
 		
 		# ITEM_MALL
-		wndMall = uiSafebox.MallWindow()
+		wndMall = nui_windows.make("mall", uiSafebox.MallWindow, "nui_mall.MallWindow")
 		self.wndMall = wndMall
 		# END_OF_ITEM_MALL
 
-		wndChatLog = uiChat.ChatLogWindow()
+		wndChatLog = nui_windows.make("chat-log", uiChat.ChatLogWindow, "nui_chat_log.ChatLogWindow")
 		wndChatLog.BindInterface(self)
 		
 		self.wndCharacter = wndCharacter
@@ -204,63 +222,69 @@ class Interface(object):
 			self.wndInventory.SetDragonSoulRefineWindow(self.wndDragonSoulRefine)
 
 	def __MakeDialogs(self):
-		self.dlgExchange = uiExchange.ExchangeDialog()
+		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
 		self.dlgExchange.LoadDialog()
 		self.dlgExchange.SetCenterPosition()
 		self.dlgExchange.Hide()
 
-		self.dlgPointReset = uiPointReset.PointResetDialog()
+		# The NovaUI point reset is the dialog kit's question: without the kit
+		# it is refused (P11 spec 4.2).
+		if nui_windows.is_on("point-reset") and not nui_windows.use("dialogs")[0]:
+			nui_windows.refuse("point-reset", "needs the NovaUI dialog kit")
+			self.dlgPointReset = uiPointReset.PointResetDialog()
+		else:
+			self.dlgPointReset = nui_windows.make("point-reset", uiPointReset.PointResetDialog, "nui_point_reset.PointResetDialog")
 		self.dlgPointReset.LoadDialog()
 		self.dlgPointReset.Hide()
 
-		self.dlgShop = uiShop.ShopDialog()
+		self.dlgShop = nui_windows.make("shop", uiShop.ShopDialog, "nui_shop.ShopDialog")
 		self.dlgShop.LoadDialog()
 		self.dlgShop.Hide()
 
-		self.dlgRestart = uiRestart.RestartDialog()
+		self.dlgRestart = nui_windows.make("restart", uiRestart.RestartDialog, "nui_restart.RestartDialog")
 		self.dlgRestart.LoadDialog()
 		self.dlgRestart.Hide()
 
-		self.dlgSystem = uiSystem.SystemDialog()
+		self.dlgSystem = nui_windows.make("system-menu", uiSystem.SystemDialog, "nui_system_menu.SystemDialog")
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
 
 		self.dlgSystem.Hide()
 
-		self.dlgPassword = uiSafebox.PasswordDialog()
+		self.dlgPassword = nui_windows.make("safebox", uiSafebox.PasswordDialog, "nui_safebox.PasswordDialog")
 		self.dlgPassword.Hide()
 
-		self.hyperlinkItemTooltip = uiToolTip.HyperlinkItemToolTip()
+		self.hyperlinkItemTooltip = nui_windows.make("tooltips", uiToolTip.HyperlinkItemToolTip, "nui_link_tooltip.HyperlinkItemToolTip")
 		self.hyperlinkItemTooltip.Hide()
 
-		self.tooltipItem = uiToolTip.ItemToolTip()
+		self.tooltipItem = nui_windows.make("tooltips", uiToolTip.ItemToolTip, "nui_item_tooltip.ItemToolTip")
 		self.tooltipItem.Hide()
 
-		self.tooltipSkill = uiToolTip.SkillToolTip()
+		self.tooltipSkill = nui_windows.make("tooltips", uiToolTip.SkillToolTip, "nui_skill_tooltip.SkillToolTip")
 		self.tooltipSkill.Hide()
 
-		self.privateShopBuilder = uiPrivateShopBuilder.PrivateShopBuilder()
+		self.privateShopBuilder = nui_windows.make("private-shop", uiPrivateShopBuilder.PrivateShopBuilder, "nui_private_shop.PrivateShopBuilder")
 		self.privateShopBuilder.Hide()
 
-		self.dlgRefineNew = uiRefine.RefineDialogNew()
+		self.dlgRefineNew = nui_windows.make("refine", uiRefine.RefineDialogNew, "nui_refine.RefineDialogNew")
 		self.dlgRefineNew.Hide()
 
 	def __MakeHelpWindow(self):
-		self.wndHelp = uiHelp.HelpWindow()
+		self.wndHelp = nui_windows.make("help", uiHelp.HelpWindow, "nui_help.HelpWindow")
 		self.wndHelp.LoadDialog()
 		self.wndHelp.SetCloseEvent(ui.__mem_func__(self.CloseHelpWindow))
 		self.wndHelp.Hide()
 
 	def __MakeTipBoard(self):
-		self.tipBoard = uiTip.TipBoard()
+		self.tipBoard = nui_windows.make("tip-board", uiTip.TipBoard, "nui_tip_board.TipBoard")
 		self.tipBoard.Hide()
 
-		self.bigBoard = uiTip.BigBoard()
+		self.bigBoard = nui_windows.make("big-board", uiTip.BigBoard, "nui_big_board.BigBoard")
 		self.bigBoard.Hide()
 
 	def __MakeWebWindow(self):
 		import uiWeb
-		self.wndWeb = uiWeb.WebWindow()
+		self.wndWeb = nui_windows.make("web", uiWeb.WebWindow, "nui_web.WebWindow")
 		self.wndWeb.LoadWindow()
 		self.wndWeb.Hide()
 
@@ -276,7 +300,7 @@ class Interface(object):
 
 	# ACCESSORY_REFINE_ADD_METIN_STONE
 	def __MakeItemSelectWindow(self):
-		self.wndItemSelect = uiselectitem.SelectItemWindow()
+		self.wndItemSelect = nui_windows.make("select-item", uiselectitem.SelectItemWindow, "nui_select_item.SelectItemWindow")
 		self.wndItemSelect.Hide()
 	# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
 				
@@ -449,11 +473,6 @@ class Interface(object):
 		if self.wndGameButton:
 			self.wndGameButton.Destroy()
 
-		# ITEM_MALL
-		if self.mallPageDlg:
-			self.mallPageDlg.Destroy()
-		# END_OF_ITEM_MALL
-
 		# ACCESSORY_REFINE_ADD_METIN_STONE
 		if self.wndItemSelect:
 			self.wndItemSelect.Destroy()
@@ -470,10 +489,6 @@ class Interface(object):
 			brd.Destroy()
 		for dlg in list(self.equipmentDialogDict.values()):
 			dlg.Destroy()
-
-		# ITEM_MALL
-		del self.mallPageDlg
-		# END_OF_ITEM_MALL
 
 		del self.wndGuild
 		del self.wndMessenger
@@ -511,13 +526,24 @@ class Interface(object):
 		del self.dlgRefineNew
 		del self.wndGuildBuilding
 		del self.wndGameButton
+		# The NovaUI boards' documents go with them (spec D26); legacy only drops the reference.
+		for board in (self.tipBoard, self.bigBoard):
+			if getattr(board, "NUI_FACADE", False):
+				board.Destroy()
 		del self.tipBoard
 		del self.bigBoard
 		del self.wndItemSelect
 
 		self.questButtonList = []
+		edge = sys.modules.get("nui_edge_buttons")
+		if edge is not None:
+			edge.close_all()
 		self.whisperButtonList = []
 		self.whisperDialogDict = {}
+		# The NovaUI shop signs share one document, which goes with the last sign.
+		signs = sys.modules.get("nui_shop_signs")
+		if signs is not None:
+			signs.close_all()
 		self.privateShopAdvertisementBoardDict = {}
 		self.guildScoreBoardDict = {}
 		self.equipmentDialogDict = {}
@@ -589,10 +615,17 @@ class Interface(object):
 		self.wndMall.RefreshMall()
 
 	def OpenItemMall(self):
-		if not self.mallPageDlg:
-			self.mallPageDlg = uiShop.MallPageDialog()
-
-		self.mallPageDlg.Open()
+		# The item_mall server command opens the item mall's web page, as the
+		# system menu's Mall button does (the server answers with its mall
+		# command). Legacy's mall page dialog (uishop.py) loaded a uiscript
+		# that does not exist, and the load failure exited the client.
+		global ItemMallTraced
+		if not ItemMallTraced:
+			ItemMallTraced = True
+			import dbg
+			dbg.Tracen("item_mall: opening the mall web page through /in_game_mall")
+		import net
+		net.SendChatPacket("/in_game_mall")
 	# END_OF_ITEM_MALL
 
 	def RefreshMessenger(self):
@@ -654,7 +687,7 @@ class Interface(object):
 
 		wnds = ()
 
-		q = uiQuest.QuestDialog(skin, idx)
+		q = nui_windows.make("quest", uiQuest.QuestDialog, "nui_quest.QuestDialog", skin, idx)
 		q.SetWindowName("QuestWindow" + str(idx))
 		q.Show()
 		if skin:
@@ -766,7 +799,7 @@ class Interface(object):
 	def OnStartGuildWar(self, guildSelf, guildOpp):
 		self.wndGuild.OnStartGuildWar(guildSelf, guildOpp)
 
-		guildWarScoreBoard = uiGuild.GuildWarScoreBoard()
+		guildWarScoreBoard = nui_windows.make("guild-war", uiGuild.GuildWarScoreBoard, "nui_guild_war.GuildWarScoreBoard")
 		guildWarScoreBoard.Open(guildSelf, guildOpp)
 		guildWarScoreBoard.Show()
 		self.guildScoreBoardDict[uiGuild.GetGVGKey(guildSelf, guildOpp)] = guildWarScoreBoard
@@ -1090,11 +1123,15 @@ class Interface(object):
 		self.BUILD_OpenWindow()
 
 	def OpenHelpWindow(self):
-		self.wndUICurtain.Show()
+		# The NovaUI help's scrim is its curtain: a TOP_MOST bar would draw
+		# above every NovaUI document.
+		if not getattr(self.wndHelp, "NUI_FACADE", False):
+			self.wndUICurtain.Show()
 		self.wndHelp.Open()
 
 	def CloseHelpWindow(self):
-		self.wndUICurtain.Hide()
+		if not getattr(self.wndHelp, "NUI_FACADE", False):
+			self.wndUICurtain.Hide()
 		self.wndHelp.Close()
 
 	def OpenWebWindow(self, url):
@@ -1239,7 +1276,7 @@ class Interface(object):
 
 	def AppearPrivateShop(self, vid, text):
 
-		board = uiPrivateShopBuilder.PrivateShopAdvertisementBoard()
+		board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopAdvertisementBoard, "nui_shop_signs.ShopSign")
 		board.Open(vid, text)
 
 		self.privateShopAdvertisementBoardDict[vid] = board
@@ -1256,7 +1293,7 @@ class Interface(object):
 	### Equipment ###
 
 	def OpenEquipmentDialog(self, vid):
-		dlg = uiEquipmentDialog.EquipmentDialog()
+		dlg = nui_windows.make("equipment-view", uiEquipmentDialog.EquipmentDialog, "nui_equipment_view.EquipmentDialog")
 		dlg.SetItemToolTip(self.tooltipItem)
 		dlg.SetCloseEvent(ui.__mem_func__(self.CloseEquipmentDialog))
 		dlg.Open(vid)
@@ -1420,7 +1457,7 @@ class Interface(object):
 	## Managed separately from WhisperDialogDict because it has no name
 	def OpenWhisperDialogWithoutTarget(self):
 		if not self.dlgWhisperWithoutTarget:
-			dlgWhisper = uiWhisper.WhisperDialog(self.MinimizeWhisperDialog, self.CloseWhisperDialog)
+			dlgWhisper = nui_windows.make("whisper", uiWhisper.WhisperDialog, "nui_whisper.WhisperDialog", self.MinimizeWhisperDialog, self.CloseWhisperDialog)
 			dlgWhisper.BindInterface(self)
 			dlgWhisper.LoadDialog()
 			dlgWhisper.OpenWithoutTarget(self.RegisterTemporaryWhisperDialog)
@@ -1558,7 +1595,7 @@ class Interface(object):
 
 	## Creates window
 	def __MakeWhisperDialog(self, name):
-		dlgWhisper = uiWhisper.WhisperDialog(self.MinimizeWhisperDialog, self.CloseWhisperDialog)
+		dlgWhisper = nui_windows.make("whisper", uiWhisper.WhisperDialog, "nui_whisper.WhisperDialog", self.MinimizeWhisperDialog, self.CloseWhisperDialog)
 		dlgWhisper.BindInterface(self)
 		dlgWhisper.LoadDialog()
 		dlgWhisper.SetPosition(self.windowOpenPosition*30,self.windowOpenPosition*30)
@@ -1625,7 +1662,8 @@ class Interface(object):
 	### Guild Building ###
 
 	def BUILD_OpenWindow(self):
-		self.wndGuildBuilding = uiGuild.BuildGuildBuildingWindow()
+		self.wndGuildBuilding = nui_windows.make("guild-building", uiGuild.BuildGuildBuildingWindow,
+		                                         "nui_guild_building.BuildGuildBuildingWindow")
 		self.wndGuildBuilding.Open()
 		self.wndGuildBuilding.wnds = self.__HideWindows()
 		self.wndGuildBuilding.SetCloseEvent(ui.__mem_func__(self.BUILD_CloseWindow))

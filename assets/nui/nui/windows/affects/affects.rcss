@@ -1,0 +1,74 @@
+/* The affect icons' modern look: a row of the legacy icons from the top left,
+   25dp apart, each at 70% of its art (the dragon soul decks at 100%), with
+   a modern tooltip that opens below the icon. Classic (the legacy thin board
+   tooltip and the outlined name under a skill affect):
+   skins/classic/windows/affects.rcss. */
+
+body.affects
+{
+	focus: none;
+	tab-index: none;
+}
+.affects__row
+{
+	position: absolute;
+	left: 10dp;
+	top: 10dp;
+	display: flex;
+	flex-direction: row;
+}
+/* The repeated slot around each icon (it binds nothing). */
+.affects__slot
+{
+	display: block;
+}
+/* The tooltip host: one cell of the row, the legacy IMAGE_STEP wide. */
+.affect
+{
+	display: block;
+	position: relative;
+	width: 25dp;
+	height: 26dp;
+}
+.affect__image
+{
+	display: block;
+	pointer-events: none;
+}
+/* The legacy SetScale(0.7, 0.7) of a 32dp icon. */
+.affect--small .affect__image
+{
+	width: 22.4dp;
+	height: 22.4dp;
+}
+/* The nearest-sampled copy of the icon: a skin may show it instead. */
+.affect__image--nearest
+{
+	display: none;
+}
+/* Below the icon, at its left edge; as wide as the text, up to 320dp. */
+.affect__tip
+{
+	top: 100%;
+	bottom: auto;
+	margin-top: var(--space-1);
+	margin-bottom: 0;
+	width: auto;
+	max-width: 320dp;
+}
+.affect__title
+{
+	display: block;
+	font-weight: bold;
+}
+/* A description wraps; the horse's lines are separate lines. */
+.affect__line
+{
+	display: block;
+	white-space: pre-line;
+}
+/* The remaining time stays on one line. */
+.affect__time
+{
+	white-space: nowrap;
+}

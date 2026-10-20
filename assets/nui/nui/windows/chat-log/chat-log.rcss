@@ -1,0 +1,287 @@
+/* The chat log's modern look: the window frame at 20, 20, 450 x 120dp at
+   least (the grip's drag sizes the body in dp), a compact title row, the
+   seven filter pills in a row under it, the lines on the chat's dark panel
+   from 46dp below the top to 29dp above the bottom with the scroll slider
+   beside them, and the input row at the bottom (the mode pill, the field,
+   the send art). The parts sit at fixed distances from the window's edges,
+   as legacy's do, so a resize moves them with the edges. Classic (the
+   legacy title art, the black 47% body, the xsmall filter buttons, the
+   small thin scroll bar and the grip's three lines):
+   skins/classic/windows/chat-log.rcss. */
+
+body.chat-log
+{
+	left: 20dp;
+	top: 20dp;
+	width: 450dp;
+	height: 120dp;
+	min-width: 450dp;
+	focus: none;
+	tab-index: none;
+}
+/* focus is inherited from the body; the field and the mode button take it
+   back (the facade moves the focus to the mode button, which takes no keys,
+   when a legacy edit line takes wndMgr's focus). */
+.chat-log button
+{
+	tab-index: none;
+}
+
+.chat-log__titlebar
+{
+	height: 24dp;
+	padding-left: var(--space-3);
+	padding-right: var(--space-1);
+}
+.chat-log__handle
+{
+	height: 24dp;
+	line-height: 24dp;
+}
+/* The close is the shared 20dp ghost close button (nui-button--icon-sm). */
+.chat-log__close
+{
+	display: block;
+	flex: 0 0 auto;
+}
+.chat-log__close-x
+{
+	pointer-events: none;
+}
+
+.chat-log__filters
+{
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	left: var(--space-2);
+	right: 20dp;
+	top: 25dp;
+	height: 19dp;
+}
+.chat-log__filter
+{
+	display: block;
+	flex: 0 1 auto;
+	box-sizing: border-box;
+	height: 18dp;
+	margin-right: var(--space-1);
+	padding: 0 6dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-raised);
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	line-height: 16dp;
+	white-space: nowrap;
+}
+.chat-log__filter:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.chat-log__filter.is-on
+{
+	border-color: var(--accent);
+	background-color: var(--accent);
+	color: var(--accent-text);
+}
+
+/* The lines' panel. The element reports floor(its height / 15) rows: 3 at
+   the smallest log, as many as legacy's 50 px of lines hold. */
+.chat-log__lines
+{
+	position: absolute;
+	left: 6dp;
+	right: 20dp;
+	top: 46dp;
+	bottom: 29dp;
+	border-radius: var(--radius-md);
+	background-color: var(--chat-edit-shade);
+}
+.chat-log__lines .nui-chat__line
+{
+	margin-left: 4dp;
+}
+.chat-log__scroll-column
+{
+	display: none;
+}
+
+/* A vertical slider: 0 (the oldest lines) at the top, 1 (the newest) at the
+   bottom, as legacy's scroll bar. An input keeps its own height against top
+   and bottom, so a box between them gives it one to fill. */
+.chat-log__scroll-box
+{
+	position: absolute;
+	right: 4dp;
+	top: 46dp;
+	bottom: 29dp;
+	width: 12dp;
+}
+input.chat-log__scroll
+{
+	display: block;
+	width: 12dp;
+	height: 100%;
+	focus: none;
+}
+.chat-log__scroll slidertrack
+{
+	width: 4dp;
+	margin-left: 4dp;
+	border-radius: 2dp;
+	background-color: var(--surface-sunken);
+}
+.chat-log__scroll sliderbar
+{
+	width: 12dp;
+	height: 22dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+}
+.chat-log__scroll sliderbar:hover, .chat-log__scroll sliderbar:active
+{
+	background-color: var(--accent);
+}
+.chat-log__scroll sliderprogress
+{
+	display: none;
+}
+.chat-log__scroll sliderarrowdec, .chat-log__scroll sliderarrowinc
+{
+	width: 0;
+	height: 0;
+}
+
+.chat-log__input-row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: absolute;
+	left: 6dp;
+	right: 20dp;
+	bottom: 3dp;
+	height: 24dp;
+}
+.chat-log__mode
+{
+	display: block;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	min-width: 40dp;
+	height: 19dp;
+	margin-right: var(--space-1);
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 10dp;
+	background-color: var(--surface-raised);
+	color: var(--text);
+	font-size: var(--font-xs);
+	line-height: 17dp;
+	text-align: center;
+	white-space: nowrap;
+	focus: auto;
+}
+.chat-log__mode:hover
+{
+	background-color: var(--surface-hover);
+}
+.chat-log__mode:active
+{
+	background-color: var(--surface-sunken);
+}
+.chat-log__field
+{
+	display: block;
+	flex: 1 1 auto;
+	position: relative;
+	height: 21dp;
+	margin-right: var(--space-1);
+}
+input.chat-log__input
+{
+	width: 100%;
+	height: 21dp;
+	font-size: var(--font-sm);
+	line-height: 19dp;
+	focus: auto;
+}
+.chat-log__mark
+{
+	display: block;
+	position: absolute;
+	left: 9dp;
+	top: 1dp;
+	color: var(--chat-mark);
+	font-size: var(--font-sm);
+	line-height: 19dp;
+	pointer-events: none;
+}
+.chat-log__send
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 24dp;
+	height: 21dp;
+	border-radius: var(--radius-sm);
+}
+/* The send glyph (components/glyph.rcss); classic draws the legacy art. */
+.chat-log__glyph
+{
+	position: absolute;
+	left: 4dp;
+	top: 3dp;
+}
+.chat-log__send:hover .chat-log__glyph
+{
+	--glyph-ink: var(--accent);
+}
+.chat-log__send:hover
+{
+	background-color: var(--surface-hover);
+}
+.chat-log__send:active
+{
+	background-color: var(--surface-sunken);
+}
+
+/* The grip: three diagonal lines in the bottom-right corner, as legacy
+   draws them (uichat.py:1136-1139); the handle takes the drag, the lines no
+   pointer. */
+.chat-log__resize
+{
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.chat-log__grip
+{
+	display: block;
+	position: absolute;
+	height: 1dp;
+	background-color: var(--text-muted);
+	transform: rotate(-45deg);
+	pointer-events: none;
+}
+.chat-log__grip--1
+{
+	left: 0.72dp;
+	top: 9dp;
+	width: 15.56dp;
+}
+.chat-log__grip--2
+{
+	left: 5.55dp;
+	top: 11dp;
+	width: 9.9dp;
+}
+.chat-log__grip--3
+{
+	left: 10.38dp;
+	top: 13dp;
+	width: 4.24dp;
+}

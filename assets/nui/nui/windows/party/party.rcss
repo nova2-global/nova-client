@@ -1,0 +1,292 @@
+/* The party's modern look: the member boards in a column at the top left
+   (10, 52), each a small tile with a role chip (a dot in the role's color;
+   the tooltip names the role), the name, a modern HP gauge and the party
+   affect icons; the role chips a leader opens to the right of a board; the
+   menu toggle under the boards and the menu below it, a board with the
+   heal, break up or leave glyph chips and the two EXP modes.
+   Classic (the legacy boards at the legacy positions, the stone menu
+   toggle, the thin board menu and the large buttons):
+   skins/classic/windows/party.rcss. */
+
+body.party
+{
+	focus: none;
+	tab-index: none;
+}
+.party button
+{
+	focus: none;
+	tab-index: none;
+}
+.party
+{
+	position: absolute;
+	left: 10dp;
+	top: 52dp;
+	width: 106dp;
+}
+/* One member: its board, 36dp tall, 38dp apart (PartyWindow arranges them). */
+.party__row
+{
+	display: block;
+	position: relative;
+	height: 36dp;
+	margin-bottom: 2dp;
+}
+
+/* --- Role chips and glyph chips ------------------------------------------------
+   A party-art-host is a member's role or one of the buttons. Its face holds
+   the role as data-state (the controller's state_name; on a child, since a
+   repeated element's own views may read a gone entry when its list
+   shrinks). Modern draws the face as a 12dp dot in the role's color, or a
+   glyph (components/glyph.rcss); classic draws the legacy button art on the
+   face instead (skins/classic/windows/party.rcss). */
+
+.party-art-host
+{
+	display: block;
+	position: absolute;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+.party-role__face
+{
+	display: block;
+	position: absolute;
+	left: 5dp;
+	top: 12dp;
+	width: 12dp;
+	height: 12dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+	pointer-events: none;
+}
+.party-role__face[data-state=leader] { background-color: var(--warning); }
+.party-role__face[data-state=attacker] { background-color: var(--danger); }
+.party-role__face[data-state=berserker] { background-color: var(--gauge-pink); }
+.party-role__face[data-state=tanker] { background-color: var(--accent); }
+.party-role__face[data-state=defender] { background-color: var(--success); }
+.party-role__face[data-state=buffer] { background-color: var(--gauge-purple); }
+.party-role__face[data-state=skill-master] { background-color: var(--gauge-blue); }
+/* The expel button shows its glyph; its face carries classic's art only. */
+.party-role__face[data-state=expel] { display: none; }
+/* The role buttons and the menu's buttons are chips: raised, with a border. */
+.party-role, .party-menu__icon
+{
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-raised);
+}
+.party-role .party-role__face
+{
+	left: 4dp;
+	top: 11dp;
+}
+.party-role:hover, .party-menu__icon:hover
+{
+	border-color: var(--accent);
+	background-color: var(--surface-hover);
+}
+.party-role:active, .party-menu__icon:active
+{
+	background-color: var(--surface-sunken);
+}
+.party-role:hover .nui-glyph, .party-menu__icon:hover .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.party-role__glyph
+{
+	position: absolute;
+	left: 2dp;
+	top: 9dp;
+}
+.party-menu__glyph
+{
+	position: absolute;
+	left: 7dp;
+	top: 7dp;
+	transform: scale(1.25);
+}
+
+/* --- A member's board ------------------------------------------------------------ */
+
+.party-member
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 106dp;
+	height: 36dp;
+	box-sizing: border-box;
+}
+.party-member__state
+{
+	left: -1dp;
+	top: -1dp;
+	width: 22dp;
+	height: 36dp;
+}
+.party-member__bar
+{
+	position: absolute;
+	left: 24dp;
+	top: 1dp;
+	right: 2dp;
+	height: 15dp;
+	pointer-events: none;
+}
+.party-member__name
+{
+	display: block;
+	color: var(--party-unlink);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 15dp;
+	white-space: nowrap;
+}
+.is-linked .party-member__name
+{
+	color: var(--party-link);
+}
+.party-member__hp
+{
+	position: absolute;
+	left: 24dp;
+	width: 78dp;
+	top: 17dp;
+	height: 4dp;
+	pointer-events: none;
+}
+/* The nine affect images at the legacy uiscript places (Buffer and Skill
+   master sit on Attacker and Defender, as partymemberinfoboard.py has them). */
+.party-affect
+{
+	position: absolute;
+	top: 23dp;
+	width: 12dp;
+	height: 12dp;
+}
+.party-affect--0 { left: 21dp; }
+.party-affect--1 { left: 33dp; }
+.party-affect--2 { left: 45dp; }
+.party-affect--3 { left: 33dp; }
+.party-affect--4 { left: 45dp; }
+.party-affect--5 { left: 57dp; }
+.party-affect--6 { left: 69dp; }
+.party-affect--7 { left: 81dp; }
+.party-affect--8 { left: 93dp; }
+.party-affect__image
+{
+	display: block;
+	pointer-events: none;
+}
+
+/* --- The role buttons a leader opens: 23dp apart, from 110dp right of the
+   board's left edge ----------------------------------------------------------- */
+
+.party-roles
+{
+	position: absolute;
+	left: 110dp;
+	top: 0;
+	height: 36dp;
+	display: flex;
+	flex-direction: row;
+}
+.party-role
+{
+	position: relative;
+	width: 22dp;
+	height: 36dp;
+	margin-right: 1dp;
+}
+
+/* --- The menu toggle and the menu ------------------------------------------------- */
+
+.party__menu-button
+{
+	display: block;
+	box-sizing: border-box;
+	width: 106dp;
+	height: 16dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-raised);
+	text-align: center;
+}
+.party__menu-button:hover
+{
+	background-color: var(--surface-hover);
+}
+/* The toggle's mark: a short accent bar that shows the menu below when open. */
+.party__menu-mark
+{
+	display: block;
+	width: 24dp;
+	height: 2dp;
+	margin: 6dp auto 0 auto;
+	border-radius: 1dp;
+	background-color: var(--text-muted);
+}
+.party__menu-button.is-open .party__menu-mark
+{
+	background-color: var(--accent);
+}
+.party-menu
+{
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	width: 168dp;
+	margin-top: 2dp;
+	padding: var(--space-2);
+}
+.party-menu__buttons
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	height: 32dp;
+}
+.party-menu__icon
+{
+	position: relative;
+	width: 32dp;
+	height: 32dp;
+	margin: 0 2dp;
+}
+.party-menu__title
+{
+	display: block;
+	margin: var(--space-2) 0 var(--space-1) 0;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	text-align: center;
+}
+.party-menu__modes
+{
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-1);
+}
+.party-menu__mode
+{
+	display: block;
+	height: 26dp;
+	line-height: 24dp;
+	padding: 0 var(--space-2);
+	font-size: var(--font-sm);
+}
+.party-menu__mode.is-active
+{
+	border-color: var(--accent);
+	color: var(--accent);
+	transform: none;
+}

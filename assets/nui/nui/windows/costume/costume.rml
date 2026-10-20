@@ -1,0 +1,47 @@
+<rml>
+<head>
+	<!-- The costume window (uiinventory.py CostumeWindow, uiscript
+	     costumewindow.py; P14 spec 6.2). The NovaUI inventory makes
+	     nui_costume.CostumeWindow (controller assets/root/nui_costume.py), a
+	     subclass of the legacy class whose slot window is a proxy over the
+	     costume group of the wear table (nui_limits), bound to the
+	     inventory's legacy handlers. Its cells are placed by name
+	     (cos-wear--<name>) in each skin's sheet; the companion block and its
+	     divider show only while the table has one (has_companion). It exists
+	     only while it shows, opens beside the inventory and moves alone
+	     after, and draws below the legacy UI layer. A left or right
+	     press anywhere on it raises the window (board_press), as legacy's
+	     window manager raised the window under a press. -->
+	<title>costume</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="costume.rcss"/>
+</head>
+<body template="nui" id="costume" class="nui-window nui-fx nui-anim nui-below-legacy-ui cos" data-model="costume" data-event-mousedown="board_press(ev.button)"
+      data-class-inv--table-new="table == 'new'" data-class-inv--table-old="table == 'old'"
+      data-class-cos--companion="has_companion">
+	<div class="nui-window__titlebar cos__titlebar">
+		<handle id="cos-title" class="nui-window__handle cos__handle" move_target="#document">
+			<span class="nui-window__title cos__title">@ui.COSTUME_WINDOW_TITLE</span>
+		</handle>
+		<button id="cos-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim cos__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body cos__body">
+		<div id="cos-grid" class="cos-grid" data-for="g : wear_on" data-class-nui-attach-right="attach_right">
+			<div class="cos-divider" data-if="has_companion"></div>
+			<div class="cos-wear-place" data-for="w : slots" data-attr-class="'cos-wear-place cos-wear--' + w.name">
+				<div class="nui-slot nui-anim cos-wear" data-attr-id="'cos-wear-' + w.name"
+				     data-class-is-empty="w.kind == ''" data-class-is-target="w.target == 'move'"
+				     data-class-is-blocked="w.target == 'blocked'"
+				     data-event-mousedown="cos_press(it_index, ev.button)" data-event-mouseup="cos_release(it_index, ev.button)"
+				     data-event-dblclick="cos_use(it_index)" data-event-mouseover="cos_over(it_index)"
+				     data-event-mouseout="cos_out(it_index)" data-event-nuidrop="cos_drop(it_index)">
+					<img class="nui-slot__icon" data-if="w.icon != ''" data-attr-src="w.icon"/>
+					<nui-number class="nui-slot__number" data-if="w.count != ''" data-attr-value="w.count"/>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

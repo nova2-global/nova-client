@@ -1,0 +1,59 @@
+/* Classic skin overlay of nui/windows/energy-bar/energy-bar.rml: the legacy
+   EnergyGauge_Board (uiscript/energybar.py: the window at SCREEN_HEIGHT -
+   55, the 68 x 40 base 10 above it, at x 0) with one of its three 46 x 17
+   gauges at 5, 8, and the 50 x 10 hint area of EnergyGauge_ToolTip at the
+   window's own place. */
+
+body.skin-classic.energy-bar .energy-bar__base
+{
+	left: 0;
+	bottom: 25dp;
+	width: 68dp;
+	height: 40dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pattern/energygauge/energygauge_base.tga");
+}
+body.skin-classic.energy-bar .energy-bar__gauge
+{
+	position: absolute;
+	left: 5dp;
+	top: 8dp;
+	width: 46dp;
+	height: 17dp;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.energy-bar .energy-bar__gauge.is-full
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pattern/energygauge/gauge_full.tga");
+}
+body.skin-classic.energy-bar .energy-bar__gauge.is-hungry
+{
+	width: 46dp;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pattern/energygauge/gauge_hungry.tga");
+}
+body.skin-classic.energy-bar .energy-bar__gauge.is-empty
+{
+	width: 46dp;
+	decorator: image("d:/ymir work/ui/pattern/energygauge/gauge_empty.tga");
+}
+body.skin-classic.energy-bar .energy-bar__tip
+{
+	left: 0;
+	bottom: 45dp;
+	width: 50dp;
+	height: 10dp;
+}
+/* The legacy hint is outlined text at the pointer, without a board. */
+body.skin-classic.energy-bar .nui-tooltip.energy-bar__hint
+{
+	decorator: none;
+	padding: 0;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

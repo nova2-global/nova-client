@@ -1,0 +1,75 @@
+{
+	"costume": {
+		"table": "new",
+		"slots": [
+			{
+				"index": 0,
+				"kind": "item",
+				"type": 1,
+				"ref": 109,
+				"icon": "/icon/item/41002.tga",
+				"count": "",
+				"w": 1,
+				"h": 2,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false,
+				"name": "costume_body"
+			},
+			{
+				"index": 1,
+				"kind": "item",
+				"type": 1,
+				"ref": 110,
+				"icon": "/icon/item/73001.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false,
+				"name": "costume_hair"
+			},
+			{
+				"index": 2,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false,
+				"name": "ring1"
+			}
+		],
+		"has_companion": false,
+		"attach_right": true,
+		"wear_on": [
+			1
+		]
+	}
+}

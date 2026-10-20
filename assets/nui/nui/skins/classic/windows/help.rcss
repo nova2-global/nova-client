@@ -1,0 +1,215 @@
+/* Classic skin overlay of nui/windows/help/help.rml: the legacy help
+   (uiscript helpwindow.py) over the whole screen, as legacy's TOP_MOST
+   window under the Interface's curtain (a 0x77000000 bar): no card, the
+   20 outlined lines at legacy's screen fractions (x 150/800 of the width,
+   y (50 + 20 i)/600 of the height), the close button (xlarge_thin_button,
+   57 x 30) at 55/800 and 55/600, and the 8 pointers: the stick image, its
+   top cut as legacy's rendering rect cuts it, on the legacy taskbar's
+   parts (from the left, the center, 396/800 of the width or the right; 7
+   to 22dp above the bottom), each with its labels at legacy's offsets,
+   centered on the stick but the first. */
+
+@spritesheet help-stick-sheet
+{
+	src: "d:/ymir work/ui/pattern/help_stick.tga";
+	resolution: 1x;
+	help-stick-0: 0px 0px 8px 100px;
+	help-stick-28: 0px 28px 8px 72px;
+	help-stick-30: 0px 30px 8px 70px;
+	help-stick-40: 0px 40px 8px 60px;
+	help-stick-50: 0px 50px 8px 50px;
+	help-stick-70: 0px 70px 8px 30px;
+}
+
+/* Legacy's curtain is a TOP_MOST bar made before the TOP_MOST taskbar
+   (interfacemodule.py __MakeUICurtain, then __MakeTaskBar), so the taskbar
+   draws over it at full brightness: its 37dp bar along the bottom, and the
+   rampage orb's dome, the only opaque part of the gauge board's 10dp above
+   the bar (taskbar.tga rows 0 to 9: x 6 to 47 at most); the rest of those
+   10dp is transparent art over the dimmed world. The curtain here is the
+   screen without the bar and the dome's 48dp; the scrim stays clear and
+   still takes every press. */
+body.skin-classic.help
+{
+	display: block;
+	background-color: transparent;
+}
+body.skin-classic.help .help__curtain
+{
+	display: block;
+	position: absolute;
+	background-color: var(--classic-help-curtain);
+}
+body.skin-classic.help .help__curtain--top
+{
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 47dp;
+}
+body.skin-classic.help .help__curtain--gauge
+{
+	left: 48dp;
+	right: 0;
+	bottom: 37dp;
+	height: 10dp;
+}
+body.skin-classic.help .help__card
+{
+	display: block;
+	box-sizing: content-box;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	max-height: none;
+	padding: 0;
+	decorator: none;
+	background-color: transparent;
+}
+body.skin-classic.help .help__heading
+{
+	display: none;
+}
+body.skin-classic.help .help__lines,
+body.skin-classic.help .help__column,
+body.skin-classic.help .help__sticks
+{
+	display: block;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	overflow: visible;
+}
+body.skin-classic.help .help__line
+{
+	position: absolute;
+	left: 18.75%;
+	width: auto;
+	padding: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 14dp;
+	white-space: nowrap;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.help .help__line--1 { top: 8.333%; }
+body.skin-classic.help .help__line--2 { top: 11.667%; }
+body.skin-classic.help .help__line--3 { top: 15.000%; }
+body.skin-classic.help .help__line--4 { top: 18.333%; }
+body.skin-classic.help .help__line--5 { top: 21.667%; }
+body.skin-classic.help .help__line--6 { top: 25.000%; }
+body.skin-classic.help .help__line--7 { top: 28.333%; }
+body.skin-classic.help .help__line--8 { top: 31.667%; }
+body.skin-classic.help .help__line--9 { top: 35.000%; }
+body.skin-classic.help .help__line--10 { top: 38.333%; }
+body.skin-classic.help .help__line--11 { top: 41.667%; }
+body.skin-classic.help .help__line--12 { top: 45.000%; }
+body.skin-classic.help .help__line--13 { top: 48.333%; }
+body.skin-classic.help .help__line--14 { top: 51.667%; }
+body.skin-classic.help .help__line--15 { top: 55.000%; }
+body.skin-classic.help .help__line--16 { top: 58.333%; }
+body.skin-classic.help .help__line--17 { top: 61.667%; }
+body.skin-classic.help .help__line--18 { top: 65.000%; }
+body.skin-classic.help .help__line--19 { top: 68.333%; }
+body.skin-classic.help .help__line--20 { top: 71.667%; }
+
+body.skin-classic.help .help-stick
+{
+	position: absolute;
+	width: 8dp;
+	padding: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+body.skin-classic.help .help-stick__art
+{
+	display: block;
+	width: 8dp;
+	height: 100%;
+}
+body.skin-classic.help .help-stick__label
+{
+	display: block;
+	position: absolute;
+	left: -96dp;
+	width: 200dp;
+	margin: 0;
+	line-height: 14dp;
+	text-align: center;
+	white-space: nowrap;
+}
+body.skin-classic.help .help-stick--1 { left: 22dp; bottom: 20dp; height: 100dp; }
+body.skin-classic.help .help-stick--1 .help-stick__art { decorator: image(help-stick-0); }
+body.skin-classic.help .help-stick--1 .help-stick__label--1 { top: -20dp; }
+body.skin-classic.help .help-stick--2 { left: 80dp; bottom: 22dp; height: 70dp; }
+body.skin-classic.help .help-stick--2 .help-stick__art { decorator: image(help-stick-30); }
+body.skin-classic.help .help-stick--2 .help-stick__label--1 { top: -18dp; }
+body.skin-classic.help .help-stick--3 { left: 120dp; bottom: 7dp; height: 60dp; }
+body.skin-classic.help .help-stick--3 .help-stick__art { decorator: image(help-stick-40); }
+body.skin-classic.help .help-stick--3 .help-stick__label--1 { top: -17dp; }
+body.skin-classic.help .help-stick--4 { left: 206dp; bottom: 16dp; height: 30dp; }
+body.skin-classic.help .help-stick--4 .help-stick__art { decorator: image(help-stick-70); }
+body.skin-classic.help .help-stick--4 .help-stick__label--1 { top: -19dp; }
+body.skin-classic.help .help-stick--5 { left: 50%; margin-left: -116dp; bottom: 16dp; height: 50dp; }
+body.skin-classic.help .help-stick--5 .help-stick__art { decorator: image(help-stick-50); }
+body.skin-classic.help .help-stick--5 .help-stick__label--1 { top: -18dp; }
+body.skin-classic.help .help-stick--6 { left: 50%; margin-left: 206dp; bottom: 16dp; height: 50dp; }
+body.skin-classic.help .help-stick--6 .help-stick__art { decorator: image(help-stick-50); }
+body.skin-classic.help .help-stick--6 .help-stick__label--1 { top: -18dp; }
+body.skin-classic.help .help-stick--7 { left: 49.5%; bottom: 16dp; height: 30dp; }
+body.skin-classic.help .help-stick--7 .help-stick__art { decorator: image(help-stick-70); }
+body.skin-classic.help .help-stick--7 .help-stick__label--1 { top: -19dp; }
+body.skin-classic.help .help-stick--8 { left: 100%; margin-left: -81dp; bottom: 16dp; height: 72dp; }
+body.skin-classic.help .help-stick--8 .help-stick__art { decorator: image(help-stick-28); }
+body.skin-classic.help .help-stick--8 .help-stick__label--1 { top: -48dp; }
+body.skin-classic.help .help-stick--8 .help-stick__label--2 { top: -33dp; }
+body.skin-classic.help .help-stick--8 .help-stick__label--3 { top: -18dp; }
+/* The first pointer's label is not centered: at -20, -20 of the stick. */
+body.skin-classic.help .help-stick--1 .help-stick__label
+{
+	left: -20dp;
+	width: auto;
+	text-align: left;
+}
+
+body.skin-classic.help .help__footer
+{
+	display: block;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+}
+body.skin-classic.help .help__close
+{
+	position: absolute;
+	left: 6.875%;
+	top: 9.167%;
+	width: 57dp;
+	min-width: 0;
+	height: 30dp;
+	padding: 0;
+	line-height: 30dp;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/public/xlarge_thin_button_01.sub");
+}
+body.skin-classic.help .help__close:hover
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_thin_button_02.sub");
+}
+body.skin-classic.help .help__close:active
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_thin_button_03.sub");
+}
+/* Centered over the art, overflowing it; it takes no pointer, so only the
+   button's art takes a press, as legacy's. */
+body.skin-classic.help .help__close-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+	pointer-events: none;
+}

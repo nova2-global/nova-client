@@ -1,0 +1,11 @@
+{
+	"theme_picker": {
+		"themes": [
+			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},
+			{"id": "modern-light", "label": "@ui.THEME_MODERN_LIGHT"},
+			{"id": "classic", "label": "@ui.THEME_CLASSIC"},
+			{"id": "cyberpunk", "label": "@ui.THEME_CYBERPUNK"}
+		],
+		"current": "modern-dark"
+	}
+}

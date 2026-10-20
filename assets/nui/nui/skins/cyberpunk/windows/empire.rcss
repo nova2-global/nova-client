@@ -1,0 +1,31 @@
+/* Cyberpunk overlay of nui/windows/empire/empire.rml: the scene's bands in
+   the holographic cyan and a faint grid between them. The atlas, the areas
+   and the flags are content and keep their pixels. */
+
+body.skin-cyberpunk.empire .empire-pattern
+{
+	decorator: repeating-linear-gradient(0deg, var(--cyberpunk-scan) 0dp, var(--cyberpunk-scan) 1dp, transparent 1dp, transparent 32dp),
+		repeating-linear-gradient(90deg, var(--cyberpunk-scan) 0dp, var(--cyberpunk-scan) 1dp, transparent 1dp, transparent 32dp);
+}
+body.skin-cyberpunk.empire .empire-line--top
+{
+	decorator: vertical-gradient(var(--cyberpunk-holo-a) transparent);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.empire .empire-line--bottom
+{
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	border-top-width: 1dp;
+	border-top-color: var(--cyberpunk-edge-dim);
+}
+
+/* Reduced effects: the plain scene (without effects the grid's gradients
+   would draw one flat tint). */
+@media (theme: reduced-effects)
+{
+	body.skin-cyberpunk.empire .empire-pattern
+	{
+		decorator: none;
+	}
+}

@@ -1,0 +1,33 @@
+<rml>
+<head>
+	<!-- The atlas, the large map (uiminimap.py AtlasWindow,
+	     uiscript/atlaswindow.py): the atlas image of the current map with its
+	     marks in a window frame, titled with the map's name. The NovaUI
+	     minimap makes it (nui_minimap.MiniMap) while the atlas flag is on:
+	     the facade nui_atlas.AtlasWindow (controller
+	     assets/root/nui_atlas.py). The image is a nui-view: C++ renders the
+	     legacy atlas (CPythonMiniMap::RenderAtlas, its marks and guild areas)
+	     into a render target each frame the view shows, at the atlas image's
+	     size, and the view's own label shows what lies under the pointer
+	     (with the guild's mark over a guild area), so no Python runs per
+	     frame. The body is the window, movable by its title row; it never
+	     takes the focus, so the close button acts on mousedown. Escape closes
+	     it in its legacy place in the Escape chain (nui_hud.EscapeProxy). -->
+	<title>atlas</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="atlas.rcss"/>
+</head>
+<body id="atlas" template="nui" class="nui-window nui-fx nui-anim nui-below-legacy-ui atlas" data-model="atlas">
+	<div class="nui-window__titlebar atlas__titlebar">
+		<handle class="nui-window__handle atlas__handle" move_target="#document">
+			<span id="atlas-title" class="nui-window__title atlas__title"><span
+				data-if="title == ''">@ui.ZONE_MAP</span><span data-if="title != ''">{{ title }}</span></span>
+		</handle>
+		<button id="atlas-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim nui-has-tooltip atlas__close"
+			data-event-mousedown="close(ev.button)">&#215;<span class="nui-tooltip nui-anim atlas__tip">@game.UI_CLOSE</span></button>
+	</div>
+	<div class="atlas__body">
+		<nui-view id="atlas-view" name="atlas" class="atlas__view nui-interactive"/>
+	</div>
+</body>
+</rml>

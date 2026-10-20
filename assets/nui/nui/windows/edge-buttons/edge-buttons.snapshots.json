@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the quest and whisper edge buttons (tools/check_nui_snapshots.py): two quest letters and three whisper buttons, one of them a game master's, on a 1280x720dp screen; many: twelve letters while the party shows (the quest column moved right), which wrap into a second column where the column ends (modern: 120dp above the bottom, classic: legacy's 75dp). The art is under d:/ymir work/ (assets/ETC) and in assets/season1 (the letters). At the snap's default --time 1 the flashing buttons are in their shown half.",
+	"cases": [
+		{"page": "edge-buttons", "themes": "all", "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]], "fixture": true, "roots": ["assets/ETC", "assets/season1"], "time": null},
+		{"page": "edge-buttons", "variant": "many", "themes": "all", "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]], "fixture": true, "roots": ["assets/ETC", "assets/season1"], "time": null}
+	]
+}

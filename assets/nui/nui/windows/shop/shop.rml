@@ -1,0 +1,65 @@
+<rml>
+<head>
+	<!-- The NPC shop and a player's shop view (uishop.py ShopDialog,
+	     uiscript shopdialog.py; P16 spec 5.2). While the shop flag is on,
+	     the Interface makes nui_shop.ShopDialog (controller
+	     assets/root/nui_shop.py), a subclass of the legacy class on proxies:
+	     the tabs, the buy and sell cursor modes, the attach to the inventory
+	     (its "INVENTORY" callback asks the buy question), selling a dropped
+	     item, the questions and the packets are legacy's code. The tabs are
+	     legacy's radio groups (2 or 3 buttons; one tab shows the buy and sell
+	     toggles instead), the close-shop button shows for the player's own
+	     shop. The document exists only while the window shows; the distance
+	     rule is the engine's (nuigame.WatchLeaveRange), so nothing runs per
+	     frame. The body and its controls take no focus; controls act on a left
+	     mousedown. It draws below the legacy UI layer, as legacy's window
+	     lived in it, and opens over the inventory (legacy's order). A left or
+	     right press anywhere on it raises the window (board_press). -->
+	<title>shop</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="shop.rcss"/>
+</head>
+<body template="nui" id="shop" class="nui-window nui-fx nui-anim nui-below-legacy-ui shop" data-model="shop"
+      data-event-mousedown="board_press(ev.button)"
+      data-class-shop--tabs-middle="tab_group == 'middle'" data-class-shop--tabs-small="tab_group == 'small'">
+	<div class="nui-window__titlebar shop__titlebar">
+		<handle class="nui-window__handle shop__handle" move_target="#document">
+			<span id="shop-title" class="nui-window__title shop__title">@ui.SHOP_TITLE</span>
+		</handle>
+		<button id="shop-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim shop__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body shop__body">
+		<div id="shop-grid" class="nui-slot-grid nui-slot-grid--lean shop__grid" data-class-is-attaching="attaching"
+		     data-class-nui-slot-grid--cols-5="cols == 5" data-class-nui-slot-grid--cols-8="cols == 8">
+			<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'shop-cell-' + it_index"
+			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+			     data-class-is-picked="c.picked"
+			     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+			     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
+			     data-event-mouseover="cell_over(it_index)" data-event-mouseout="cell_out(it_index)"
+			     data-event-nuidrop="cell_drop(it_index)">
+				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+			</div>
+		</div>
+	</div>
+	<div class="nui-window__footer shop__footer">
+		<div class="shop__tabs" data-if="tab_group != 'none'">
+			<div class="shop__tab-slot" data-for="t : tabs" data-if="t.shown" data-attr-class="'shop__tab-slot shop__tab-slot--' + t.index">
+				<button class="nui-button nui-button--medium nui-anim shop__tab"
+				        data-attr-id="'shop-tab-' + t.index" data-class-is-current="t.index == tab"
+				        data-class-is-down="t.down" data-event-mousedown="tab_press(t.index, ev.button)"><span
+					class="shop__tab-label">{{ t.name }}</span></button>
+			</div>
+		</div>
+		<button id="shop-buy" class="nui-button nui-button--medium nui-anim shop__buy" data-if="buy_shown"
+		        data-class-is-selected="buy_down" data-event-mousedown="buy_press(ev.button)">@ui.SHOP_BUY</button>
+		<button id="shop-sell" class="nui-button nui-button--medium nui-anim shop__sell" data-if="sell_shown"
+		        data-class-is-selected="sell_down" data-event-mousedown="sell_press(ev.button)">@ui.SHOP_SELL</button>
+		<button id="shop-close-shop" class="nui-button nui-button--danger nui-anim shop__close-shop" data-if="close_shop_shown"
+		        data-event-mousedown="close_shop_press(ev.button)">@ui.PRIVATE_SHOP_CLOSE_BUTTON</button>
+	</div>
+</body>
+</rml>

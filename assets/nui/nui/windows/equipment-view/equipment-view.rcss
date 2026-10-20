@@ -1,0 +1,124 @@
+/* The equipment view's modern look (P16 spec 5.6.2): the inventory's
+   equipment figure, a 5 x 4 layout of 40dp cells on the 44dp pitch over a
+   quiet silhouette, each place by its wear name (the view table's names
+   only; a name the table in use lacks has no element). The controller
+   centers it at its first show and keeps the place the player drags it to;
+   the sheet's place frames it in its snapshots. Classic (legacy's 180 x 230
+   board, the equipment base art, legacy's places for both tables):
+   skins/classic/windows/equipment-view.rcss. */
+
+body.eqv
+{
+	left: 16dp;
+	top: 16dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.eqv button
+{
+	tab-index: none;
+	focus: none;
+}
+.eqv__body
+{
+	padding: var(--space-3);
+}
+.eqv-equip
+{
+	position: relative;
+	width: 216dp;
+	height: 172dp;
+}
+/* The figure: a quiet silhouette behind the cells, as the inventory's. */
+.eqv-figure
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 216dp;
+	height: 172dp;
+	pointer-events: none;
+}
+.eqv-figure__head, .eqv-figure__body, .eqv-figure__arm, .eqv-figure__leg
+{
+	display: block;
+	position: absolute;
+	background-color: var(--surface-raised);
+}
+.eqv-figure__head
+{
+	left: 92dp;
+	top: 2dp;
+	width: 32dp;
+	height: 32dp;
+	border-radius: 9999dp;
+}
+.eqv-figure__body
+{
+	left: 80dp;
+	top: 30dp;
+	width: 56dp;
+	height: 80dp;
+	border-radius: var(--radius-lg);
+}
+.eqv-figure__arm
+{
+	top: 40dp;
+	width: 18dp;
+	height: 70dp;
+	border-radius: var(--radius-lg);
+}
+.eqv-figure__arm--left { left: 60dp; transform: rotate(12deg); }
+.eqv-figure__arm--right { left: 138dp; transform: rotate(-12deg); }
+.eqv-figure__leg
+{
+	top: 104dp;
+	width: 22dp;
+	height: 66dp;
+	border-radius: var(--radius-lg);
+}
+.eqv-figure__leg--left { left: 84dp; }
+.eqv-figure__leg--right { left: 110dp; }
+
+/* A cell's place, by the view slot's wear name: column c and row r on the
+   44dp pitch. The weapon is three cells tall, the armor two. */
+.eqv-place
+{
+	position: absolute;
+	width: 40dp;
+	height: 40dp;
+}
+.eqv-place.is-hidden
+{
+	display: none;
+}
+.eqv-place--weapon { left: 0; top: 0; height: 128dp; }
+.eqv-place--unique1 { left: 44dp; top: 0; }
+.eqv-place--head { left: 88dp; top: 0; }
+.eqv-place--arrow { left: 176dp; top: 0; }
+.eqv-place--ring1 { left: 44dp; top: 44dp; }
+.eqv-place--body { left: 88dp; top: 44dp; height: 84dp; }
+.eqv-place--ring2 { left: 132dp; top: 44dp; }
+.eqv-place--ear { left: 176dp; top: 44dp; }
+.eqv-place--wrist { left: 44dp; top: 88dp; }
+.eqv-place--shield { left: 132dp; top: 88dp; }
+.eqv-place--neck { left: 176dp; top: 88dp; }
+.eqv-place--unique2 { left: 44dp; top: 132dp; }
+.eqv-place--foots { left: 88dp; top: 132dp; }
+.eqv-place--belt { left: 132dp; top: 132dp; }
+.eqv-place--costume_body, .eqv-place--costume_hair { left: 0; top: 132dp; }
+/* The cell fills its place; the item's icon at its own size in the middle
+   (a 1x2 sword in the weapon's three cells too). */
+.eqv-cell
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+}
+.eqv-cell .nui-slot__icon
+{
+	height: auto;
+}

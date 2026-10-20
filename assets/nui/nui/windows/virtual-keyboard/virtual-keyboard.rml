@@ -1,0 +1,27 @@
+<rml>
+<head>
+	<!-- Virtual keyboard under the NovaUI login board (controller:
+	     assets/root/nui_virtual_keyboard.py; nui_login.py makes it with the
+	     board). Nothing in it takes the focus, so the login field keeps its
+	     caret while keys are pressed; RmlUi then sends no click, so the keys
+	     act on mousedown (left button only). 46 keys in rows of 12, 12, 11
+	     and 11, then Symbols, Shift, Space, Enter and Backspace. Labels come
+	     from the model through nui.plain_text. Hidden on screens under
+	     680dp, where the board and the keyboard do not fit together. -->
+	<title>virtual-keyboard</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="virtual-keyboard.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-fx virtual-keyboard" data-model="virtual_keyboard">
+	<div class="nui-row virtual-keyboard__row" data-for="row, row_index : rows" data-class-virtual-keyboard__row--indent="row_index >= 2">
+		<button class="nui-button virtual-keyboard__key" data-for="key : row" data-attr-id="'vkey-' + key.index" data-event-mousedown="press(key.index, ev.button)">{{ key.label }}</button>
+	</div>
+	<div class="nui-row virtual-keyboard__row virtual-keyboard__row--special">
+		<button id="vkey-symbols" class="nui-button virtual-keyboard__key virtual-keyboard__special virtual-keyboard__symbols" data-class-is-selected="mode == 'symbol'" data-event-mousedown="special('symbols', ev.button)">@ui.VKEY_SYMBOLS</button>
+		<button id="vkey-shift" class="nui-button virtual-keyboard__key virtual-keyboard__special virtual-keyboard__shift" data-class-is-selected="upper" data-event-mousedown="special('shift', ev.button)">@ui.VKEY_SHIFT</button>
+		<button id="vkey-space" class="nui-button virtual-keyboard__key virtual-keyboard__special virtual-keyboard__space" data-event-mousedown="special('space', ev.button)">@ui.VKEY_SPACE</button>
+		<button id="vkey-enter" class="nui-button virtual-keyboard__key virtual-keyboard__special virtual-keyboard__enter" data-event-mousedown="special('enter', ev.button)">@ui.VKEY_ENTER</button>
+		<button id="vkey-backspace" class="nui-button virtual-keyboard__key virtual-keyboard__special virtual-keyboard__backspace" data-event-mousedown="special('backspace', ev.button)">@ui.VKEY_BACKSPACE</button>
+	</div>
+</body>
+</rml>

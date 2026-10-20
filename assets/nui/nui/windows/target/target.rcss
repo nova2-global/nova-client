@@ -1,0 +1,96 @@
+/* The target board's modern look: a panel at the top center, 10dp from the
+   top, with the name, a monster's HP gauge and a close button in its head
+   and the relation buttons in a row below. Classic (the legacy thin board,
+   the outlined name, the legacy gauge and the small thin buttons 68dp
+   apart): skins/classic/windows/target.rcss. */
+
+body.target
+{
+	focus: none;
+	tab-index: none;
+}
+.target button
+{
+	focus: none;
+	tab-index: none;
+}
+/* A full-width row that centers the board, which is as wide as it needs. */
+.target__wrap
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 10dp;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.target-board
+{
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	min-width: 220dp;
+	padding: var(--space-2) var(--space-6) var(--space-2) var(--space-3);
+}
+.target-board__head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	height: 20dp;
+}
+.target-board--hp .target-board__head
+{
+	justify-content: flex-start;
+}
+.target-board__name
+{
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.target-board--hp .target-board__name
+{
+	flex: 1 1 auto;
+	margin-right: var(--space-3);
+}
+.target-board__hp
+{
+	width: 130dp;
+	flex: 0 0 auto;
+}
+.target-board__close
+{
+	position: absolute;
+	right: var(--space-1);
+	top: var(--space-1);
+	width: 24dp;
+	height: 24dp;
+	line-height: 22dp;
+	font-size: var(--font-md);
+}
+.target-board__buttons
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--space-1);
+	margin-top: var(--space-2);
+	margin-right: -18dp;
+}
+/* One button per slot (the slot hides the exchange button out of range). */
+.target-board__slot
+{
+	display: flex;
+}
+.target-board__button
+{
+	height: 26dp;
+	line-height: 24dp;
+	padding: 0 var(--space-3);
+	font-size: var(--font-sm);
+}

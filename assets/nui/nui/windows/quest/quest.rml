@@ -1,0 +1,68 @@
+<rml>
+<head>
+	<!-- The quest dialog (uiquest.py QuestDialog, uiscript questdialog.py):
+	     the NPC talk and quest letter pages the server's quest scripts send.
+	     While the quest flag is on, Interface.OpenQuestWindow makes the facade
+	     nui_quest.QuestDialog (controller assets/root/nui_quest.py) for every
+	     script packet, and each dialog with a skin gets this board. The C++
+	     quest interpreter publishes the text as quest.<set>.lines, which
+	     nui-quest-text builds as DOM text (never markup), and the page
+	     (choices, the button, input, images, size) as quest.<set>.page, which
+	     the board's page key follows; no Python runs while the text types.
+	     A modal: it takes every key and click, as legacy's lock window did,
+	     and draws no backdrop (--quest-scrim). Its controls take no focus and
+	     act on a left mousedown (the modal body keeps the focus, so Enter and
+	     the arrows reach legacy's key rules in the facade); the field takes
+	     the focus in input mode. The parts are named, so a skin restyles or
+	     re-places each from its folder: modern is a code-drawn card with the
+	     choices in a list, classic legacy's thin board with its bars. -->
+	<title>quest</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="quest.rcss"/>
+</head>
+<body template="nui" class="nui-scrim nui-fx quest" data-model="quest"
+	data-class-quest--cinema="skin == 5" data-class-quest--scroll="skin == 3"
+	data-class-quest--sized="page.size.width > 0" data-class-quest--input="page.input"
+	data-style---quest-board-width="page.size.width + 'dp'" data-style---quest-board-height="page.size.height + 'dp'">
+	<div id="quest-board" class="nui-window nui-fx nui-anim quest__board" data-class-nui-window--borderless="skin == 5"
+		data-class-has-portrait="page.images.left != ''" data-class-has-banner="page.images.top != ''"
+		data-class-has-background="page.images.background != ''">
+		<img id="quest-portrait" class="quest__portrait" data-if="page.images.left != ''" data-attr-src="page.images.left"/>
+		<img id="quest-banner" class="quest__banner" data-if="page.images.top != ''" data-attr-src="page.images.top"/>
+		<div class="quest__body">
+			<img id="quest-background" class="quest__background" data-if="page.images.background != ''" data-attr-src="page.images.background"/>
+			<div id="quest-images" class="quest__images">
+				<div class="quest__image" data-for="im : page.free_images" data-attr-id="'quest-image-' + it_index"
+					data-style---quest-x="im.x + 'dp'" data-style---quest-y="im.y + 'dp'"><img class="quest__image-art" data-attr-src="im.src"/></div>
+			</div>
+			<nui-quest-text id="quest-text" class="quest__text" data-attr-set="set_index"/>
+			<div class="quest__input" data-class-is-idle="!page.input">
+				<input id="quest-input" class="nui-input quest__field" type="text" maxlength="30"
+					data-event-change="field(ev.value, ev.linebreak)"/>
+			</div>
+			<div id="quest-choices" class="quest__choices" data-if="page.choices.size > 0">
+				<button class="nui-button nui-anim quest__choice" data-for="c : page.choices" data-attr-id="'quest-choice-' + it_index"
+					data-class-is-off-page="it_index &lt; choice_page * 8 || it_index &gt;= choice_page * 8 + 8"
+					data-class-is-hover="it_index == focus_index"
+					data-event-mousedown="choose(it_index, ev.button)"><nui-text class="quest__choice-label" links="off" data-attr-value="c.text"/></button>
+			</div>
+			<div class="quest__pager" data-if="page.pages &gt; 1">
+				<button id="quest-pager-prev" class="nui-button nui-button--medium nui-anim quest__pager-prev"
+					data-class-is-off="choice_page == 0" data-event-mousedown="pager(-1, ev.button)">@game.UI_PREVPAGE</button>
+				<button id="quest-pager-next" class="nui-button nui-button--medium nui-anim quest__pager-next"
+					data-class-is-off="choice_page &gt;= page.pages - 1" data-event-mousedown="pager(1, ev.button)">@game.UI_NEXTPAGE</button>
+			</div>
+		</div>
+		<div class="nui-window__footer quest__footer" data-if="page.button != ''">
+			<button id="quest-next" class="nui-button nui-button--primary nui-button--medium nui-anim quest__next"
+				data-class-is-hover="next_hover" data-event-mousedown="next(ev.button)" data-event-mouseout="next_out()">
+				<span class="quest__next-label" data-if="page.button == 'next'">@game.UI_NEXT</span>
+				<span class="quest__next-label" data-if="page.button == 'done'">@game.UI_OK</span>
+				<span class="quest__next-label" data-if="page.button == 'cancel'">@game.UI_CANCEL</span>
+			</button>
+		</div>
+	</div>
+	<img id="quest-title-card" class="nui-anim quest__title-card" data-if="page.images.title != ''"
+		data-attr-src="page.images.title" data-class-is-on="title_on" data-event-animationend="title_end()"/>
+</body>
+</rml>

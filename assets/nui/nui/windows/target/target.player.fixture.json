@@ -1,0 +1,39 @@
+{
+	"target": {
+		"name": "NuiW2B2",
+		"hp": 0.0,
+		"show_hp": false,
+		"buttons": [
+			{
+				"id": 0,
+				"label": "Whispering"
+			},
+			{
+				"id": 1,
+				"label": "Trading"
+			},
+			{
+				"id": 2,
+				"label": "Duel"
+			},
+			{
+				"id": 16,
+				"label": "Emotions"
+			},
+			{
+				"id": 9,
+				"label": "Guild Invitation"
+			},
+			{
+				"id": 5,
+				"label": "Friend"
+			},
+			{
+				"id": 6,
+				"label": "Group Invitation"
+			}
+		],
+		"exchange_at": 1,
+		"in_range": true
+	}
+}

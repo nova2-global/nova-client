@@ -1,0 +1,194 @@
+<rml>
+<head>
+	<!-- The taskbar: the HP, SP and stamina gauges, the EXP orbs, the item
+	     mall button, eight quickslots on four pages, the mouse-button mode
+	     buttons with their menus and the skill picker, the expand button and
+	     the four window buttons. While the taskbar flag is on, the Interface
+	     makes the facade nui_taskbar.TaskBar instead of uiTaskBar.TaskBar.
+	     The gauges, the EXP orbs, the quick page and the quickslots are fed
+	     from C++ (nui.Window.FEEDS), so nothing here runs Python per frame:
+	     the gauge and button hints open on :hover, and the slot cells call
+	     Python only on a press, a release, a drop and when the pointer
+	     enters or leaves them (for the legacy item and skill tooltips).
+	     The eight quickslots are one grid (one cell each: every cell is
+	     updated each frame, shown or not), with the gap of the expand
+	     button before the fifth. Nothing takes the focus, so the buttons
+	     act on mousedown. The
+	     classic layout (skins/classic/windows/taskbar.rcss) puts the legacy
+	     art at the legacy positions; its gauge, button and digit art is
+	     under d:/ymir work/, so lint and snapshots need the assets/ETC root. -->
+	<title>taskbar</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="taskbar.rcss"/>
+</head>
+<body template="nui" class="nui-overlay taskbar" data-model="taskbar">
+	<div id="taskbar" class="taskbar-bar nui-board nui-board--edge nui-fx nui-interactive">
+		<div class="taskbar-base"></div>
+
+		<div id="taskbar-gauges" class="taskbar-gauges">
+			<button id="mall-button" class="taskbar-mall" data-event-mousedown="mall_click(ev.button)"><nui-frames
+				class="taskbar-mall__frames" delay="0.1"/><span class="nui-glyph nui-glyph--shop taskbar-glyph"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-mall__beat"><nui-blink class="taskbar-mall__blink" period="4"><span
+				class="taskbar-mall__sheen nui-anim"></span></nui-blink></span></button>
+			<span id="gauge-hp-host" class="nui-has-tooltip taskbar-gauge-host taskbar-gauge-host--hp">
+				<progress id="gauge-hp-recovery" class="taskbar-recovery taskbar-recovery--hp" direction="right" data-attr-value="hp_recovery_ratio"/>
+				<progress id="gauge-hp" class="nui-gauge nui-gauge--red taskbar-gauge taskbar-gauge--hp" direction="right" data-attr-value="hp_ratio"/>
+				<span class="nui-tooltip nui-anim taskbar-tip"><span>@game.TASKBAR_HP</span> : {{ hp }} / {{ hp_max }}</span>
+			</span>
+			<span id="gauge-sp-host" class="nui-has-tooltip taskbar-gauge-host taskbar-gauge-host--sp">
+				<progress id="gauge-sp-recovery" class="taskbar-recovery taskbar-recovery--sp" direction="right" data-attr-value="sp_recovery_ratio"/>
+				<progress id="gauge-sp" class="nui-gauge nui-gauge--blue taskbar-gauge taskbar-gauge--sp" direction="right" data-attr-value="sp_ratio"/>
+				<span class="nui-tooltip nui-anim taskbar-tip"><span>@game.TASKBAR_SP</span> : {{ sp }} / {{ sp_max }}</span>
+			</span>
+			<span id="gauge-st-host" class="nui-has-tooltip taskbar-gauge-host taskbar-gauge-host--st">
+				<progress id="gauge-st" class="nui-gauge nui-gauge--purple taskbar-gauge taskbar-gauge--st" direction="right" data-attr-value="stamina_ratio"/>
+				<span class="nui-tooltip nui-anim taskbar-tip"><span>@game.TASKBAR_ST</span> : {{ stamina }} / {{ stamina_max }}</span>
+			</span>
+		</div>
+		<!-- Optional skin parts (P13 D21): an HP ring and the HP and SP values,
+		     which the modern and classic layouts hide (taskbar.rcss); a skin
+		     that lays the bar out as the cyberpunk mockup does shows them from
+		     its overlay. They read the gauges' feeds, so they add no Python. -->
+		<progress id="taskbar-hp-ring" class="taskbar-hp-ring" direction="clockwise" data-attr-value="hp_ratio"/>
+		<span id="taskbar-hp-value" class="taskbar-value taskbar-value--hp">{{ hp }}</span>
+		<span id="taskbar-sp-value" class="taskbar-value taskbar-value--sp">{{ sp }}</span>
+
+		<span id="exp-orbs" class="nui-has-tooltip taskbar-exp">
+			<progress id="exp-orb-1" class="taskbar-orb taskbar-orb--1" direction="top" data-attr-value="exp_orbs[0]"/>
+			<progress id="exp-orb-2" class="taskbar-orb taskbar-orb--2" direction="top" data-attr-value="exp_orbs[1]"/>
+			<progress id="exp-orb-3" class="taskbar-orb taskbar-orb--3" direction="top" data-attr-value="exp_orbs[2]"/>
+			<progress id="exp-orb-4" class="taskbar-orb taskbar-orb--4" direction="top" data-attr-value="exp_orbs[3]"/>
+			<span class="nui-tooltip nui-anim taskbar-tip"><span>@game.TASKBAR_EXP</span> : {{ exp_percent | format(2) }}%</span>
+		</span>
+
+		<button id="mouse-left" class="taskbar-mode taskbar-mode--left nui-has-tooltip"
+			data-class-taskbar-mode--move="left_mode == 'move'" data-class-taskbar-mode--attack="left_mode == 'attack'"
+			data-class-taskbar-mode--auto="left_mode == 'auto'" data-class-taskbar-mode--camera="left_mode == 'camera'"
+			data-class-taskbar-mode--skill="left_mode == 'skill'" data-class-is-open="left_open"
+			data-event-mousedown="toggle_mouse(0, ev.button)"><span class="nui-glyph taskbar-glyph" data-class-nui-glyph--mouse-move="left_mode == 'move'" data-class-nui-glyph--mouse-attack="left_mode == 'attack'"
+				data-class-nui-glyph--mouse-auto="left_mode == 'auto'" data-class-nui-glyph--mouse-camera="left_mode == 'camera'" data-class-nui-glyph--mouse-skill="left_mode == 'skill'"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip">{{ left_tip }}</span></button>
+
+		<div id="quick-slots" class="taskbar-quick">
+			<div id="quick-slot-grid" class="nui-slot-grid taskbar-quick-grid">
+				<div class="nui-slot nui-anim taskbar-cell" data-for="slot : quick_slots"
+					data-attr-id="'quick-slot-' + slot.index"
+					data-class-is-empty="slot.kind == ''"
+					data-class-is-disabled="slot.disabled" data-class-is-locked="slot.locked"
+					data-class-is-picked="slot.index == quick_picked"
+					data-class-is-selected="slot.index == quick_selected"
+					data-event-mousedown="slot_press('quick', slot.index, ev.button)"
+					data-event-mouseup="slot_release('quick', slot.index, ev.button)"
+					data-event-mouseover="slot_over('quick', slot.index)"
+					data-event-mouseout="slot_out('quick', slot.index)"
+					data-event-nuidrop="slot_drop('quick', slot.index)">
+					<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
+					<div class="nui-slot__cover" data-if="slot.cover"></div>
+					<div class="nui-slot__tint"></div>
+					<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
+						data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+					<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+					<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
+					<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
+						delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+					<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
+						delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+					<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
+					<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+					<span class="nui-slot__key taskbar-key">{{ slot.index >= 4 ? 'F' + (slot.index - 3) : slot.index + 1 }}</span>
+					<span class="taskbar-key-art" data-class-taskbar-key-art--0="slot.index == 0" data-class-taskbar-key-art--1="slot.index == 1"
+						data-class-taskbar-key-art--2="slot.index == 2" data-class-taskbar-key-art--3="slot.index == 3"
+						data-class-taskbar-key-art--4="slot.index == 4" data-class-taskbar-key-art--5="slot.index == 5"
+						data-class-taskbar-key-art--6="slot.index == 6" data-class-taskbar-key-art--7="slot.index == 7"></span>
+				</div>
+			</div>
+			<button id="btn-expand" class="taskbar-expand nui-has-tooltip" data-if="expandable"
+				data-event-mousedown="button('expand', ev.button)"><span class="nui-glyph nui-glyph--plus taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_EXPAND</span></button>
+			<div class="taskbar-pager">
+				<div class="taskbar-pager__board"></div>
+				<button id="quick-page-up" class="taskbar-pager__up nui-has-tooltip"
+					data-event-mousedown="page_up(ev.button)"><span class="nui-glyph nui-glyph--chevron-up taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_PREV_QUICKSLOT</span></button>
+				<span id="quick-page" class="taskbar-pager__page" data-class-taskbar-pager__page--1="quick_page == 0"
+					data-class-taskbar-pager__page--2="quick_page == 1" data-class-taskbar-pager__page--3="quick_page == 2"
+					data-class-taskbar-pager__page--4="quick_page == 3">{{ quick_page + 1 }}</span>
+				<button id="quick-page-down" class="taskbar-pager__down nui-has-tooltip"
+					data-event-mousedown="page_down(ev.button)"><span class="nui-glyph nui-glyph--chevron-down taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_NEXT_QUICKSLOT</span></button>
+			</div>
+		</div>
+
+		<button id="mouse-right" class="taskbar-mode taskbar-mode--right nui-has-tooltip" data-if="!right_skill_shown"
+			data-class-taskbar-mode--move="right_mode == 'move'" data-class-taskbar-mode--attack="right_mode == 'attack'"
+			data-class-taskbar-mode--auto="right_mode == 'auto'" data-class-taskbar-mode--camera="right_mode == 'camera'"
+			data-class-taskbar-mode--skill="right_mode == 'skill'" data-class-is-open="right_open"
+			data-event-mousedown="toggle_mouse(1, ev.button)"><span class="nui-glyph taskbar-glyph" data-class-nui-glyph--mouse-move="right_mode == 'move'" data-class-nui-glyph--mouse-attack="right_mode == 'attack'"
+				data-class-nui-glyph--mouse-auto="right_mode == 'auto'" data-class-nui-glyph--mouse-camera="right_mode == 'camera'" data-class-nui-glyph--mouse-skill="right_mode == 'skill'"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip">{{ right_tip }}</span></button>
+		<div id="mouse-right-skill" class="nui-slot-grid nui-slot-grid--cols-1 taskbar-right-skill" data-if="right_skill_shown">
+			<div class="nui-slot nui-anim taskbar-cell" data-for="slot : right_skill"
+				data-class-is-empty="slot.kind == ''"
+				data-event-mousedown="slot_press('right', slot.index, ev.button)"
+				data-event-mouseup="slot_release('right', slot.index, ev.button)"
+				data-event-mouseover="slot_over('right', slot.index)"
+				data-event-mouseout="slot_out('right', slot.index)"
+				data-event-nuidrop="slot_drop('right', slot.index)">
+				<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
+				<div class="nui-slot__cover" data-if="slot.cover"></div>
+				<div class="nui-slot__tint"></div>
+				<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
+					data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+				<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+				<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
+				<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
+					delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+				<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
+					delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+				<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
+				<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+			</div>
+		</div>
+
+		<button id="btn-character" class="taskbar-window taskbar-window--character nui-has-tooltip"
+			data-event-mousedown="button('character', ev.button)"><span class="nui-glyph nui-glyph--character taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_CHARACTER</span></button>
+		<button id="btn-inventory" class="taskbar-window taskbar-window--inventory nui-has-tooltip"
+			data-event-mousedown="button('inventory', ev.button)"><span class="nui-glyph nui-glyph--inventory taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_INVENTORY</span></button>
+		<button id="btn-messenger" class="taskbar-window taskbar-window--messenger nui-has-tooltip"
+			data-event-mousedown="button('messenger', ev.button)"><span class="nui-glyph nui-glyph--community taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_MESSENGER</span></button>
+		<button id="btn-system" class="taskbar-window taskbar-window--system nui-has-tooltip"
+			data-event-mousedown="button('system', ev.button)"><span class="nui-glyph nui-glyph--system taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_SYSTEM</span></button>
+
+		<div id="camera-image" class="taskbar-camera" data-if="mouse_image"><span class="nui-glyph nui-glyph--mouse-camera taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></div>
+	</div>
+
+	<div id="mouse-left-menu" class="taskbar-menu taskbar-menu--left nui-board nui-fx nui-interactive" data-if="left_open">
+		<button id="mouse-left-attack" class="taskbar-mode taskbar-mode--attack nui-has-tooltip"
+			data-event-mousedown="pick_mode(0, 2, ev.button)"><span class="nui-glyph nui-glyph--mouse-attack taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--side">@ui.MOUSEBUTTON_ATTACK</span></button>
+		<button id="mouse-left-auto" class="taskbar-mode taskbar-mode--auto nui-has-tooltip"
+			data-event-mousedown="pick_mode(0, 5, ev.button)"><span class="nui-glyph nui-glyph--mouse-auto taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--side">@ui.MOUSEBUTTON_AUTO_ATTACK</span></button>
+		<button id="mouse-left-camera" class="taskbar-mode taskbar-mode--camera nui-has-tooltip"
+			data-event-mousedown="pick_mode(0, 3, ev.button)"><span class="nui-glyph nui-glyph--mouse-camera taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--side">@ui.MOUSEBUTTON_CAMERA</span></button>
+	</div>
+	<div id="mouse-right-menu" class="taskbar-menu taskbar-menu--right nui-board nui-fx nui-interactive" data-if="right_open">
+		<button id="mouse-right-attack" class="taskbar-mode taskbar-mode--attack nui-has-tooltip"
+			data-event-mousedown="pick_mode(1, 2, ev.button)"><span class="nui-glyph nui-glyph--mouse-attack taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.MOUSEBUTTON_ATTACK</span></button>
+		<button id="mouse-right-camera" class="taskbar-mode taskbar-mode--camera nui-has-tooltip"
+			data-event-mousedown="pick_mode(1, 3, ev.button)"><span class="nui-glyph nui-glyph--mouse-camera taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.MOUSEBUTTON_CAMERA</span></button>
+	</div>
+	<div id="skill-picker" class="taskbar-picker nui-board nui-fx" data-if="right_open &amp;&amp; size(skill_rows) > 0">
+		<div class="nui-slot-grid taskbar-picker__row nui-interactive" data-for="row : skill_rows">
+			<div class="nui-slot nui-anim taskbar-cell" data-for="slot : row.slots"
+				data-attr-id="'skill-pick-' + slot.ref"
+				data-event-mousedown="pick_skill(slot.ref, ev.button)"
+				data-event-mouseover="pick_over(slot.ref)"
+				data-event-mouseout="pick_out()">
+				<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
+				<div class="nui-slot__cover" data-if="slot.cover"></div>
+				<div class="nui-slot__tint"></div>
+				<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
+					data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+				<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+				<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
+				<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
+				<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

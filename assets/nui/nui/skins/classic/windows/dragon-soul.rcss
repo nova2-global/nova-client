@@ -1,0 +1,309 @@
+/* Classic skin overlay of nui/windows/dragon-soul/dragon-soul.rml: the legacy
+   dragon soul window (uiscript dragonsoulwindow.py, uidragonsoul.py) at
+   100%, 1dp to the legacy pixel. The board is 287 x 505 at legacy's place
+   (10 left of the 176 wide inventory, 37 above the screen's bottom), with
+   its picture (dragon_soul_bg.tga, 287 x 525: legacy draws it past the
+   board's bottom, taking no pointer there) over it; the title bar at (8, 7),
+   271 wide; the six equipment slots on the picture's ring; the deck toggles
+   at (21, 230) and (234, 230) with their art; the kind strip at (10, 279),
+   the shown kind's tap art under six bare radio buttons 40 apart; the
+   kind's title at (18, 315); the five grade buttons at (16, 332), 51
+   apart; the bag at (15, 355), 8 x 4 on the 32 pitch over the picture's
+   cells (no slot art of its own); the activate toggle at (217, 492). The
+   code-drawn emblem, the gems and the kinds' hints are the modern skins'. */
+
+body.skin-classic.ds
+{
+	right: 186dp;
+	bottom: 37dp;
+	width: 287dp;
+	height: 505dp;
+	min-width: 0;
+}
+body.skin-classic.ds.ds--placed
+{
+	right: auto;
+	bottom: auto;
+}
+body.skin-classic.ds .ds-bg
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 287dp;
+	height: 525dp;
+	decorator: image("d:/ymir work/ui/dragonsoul/dragon_soul_bg.tga");
+	pointer-events: none;
+}
+
+/* --- The frame ------------------------------------------------------------------- */
+
+body.skin-classic.ds .ds__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	/* 268dp wide with the bar's 3dp right padding (classic.rcss): legacy's
+	   271, so the close button sits at 271 - 18, as ui.TitleBar puts it. */
+	width: 268dp;
+	margin: 0;
+	z-index: 1;
+}
+/* The title centered at x 130 of the bar, as the uiscript places it. */
+body.skin-classic.ds .ds__handle
+{
+	padding-left: 7dp;
+}
+body.skin-classic.ds .ds__body
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 287dp;
+	height: 505dp;
+	padding: 0;
+}
+
+/* --- The deck ------------------------------------------------------------------------ */
+
+body.skin-classic.ds .ds-deck
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 287dp;
+	height: 505dp;
+}
+body.skin-classic.ds .ds-emblem
+{
+	display: none;
+}
+body.skin-classic.ds .ds-equip-grid
+{
+	width: 287dp;
+	height: 280dp;
+}
+body.skin-classic.ds .ds-equip-place
+{
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.ds .ds-equip-place--0 { left: 128dp; top: 53dp; }
+body.skin-classic.ds .ds-equip-place--1 { left: 59dp; top: 93dp; }
+body.skin-classic.ds .ds-equip-place--2 { left: 59dp; top: 179dp; }
+body.skin-classic.ds .ds-equip-place--3 { left: 128dp; top: 219dp; }
+body.skin-classic.ds .ds-equip-place--4 { left: 194dp; top: 179dp; }
+body.skin-classic.ds .ds-equip-place--5 { left: 194dp; top: 93dp; }
+/* The picture draws the slots' frames. */
+body.skin-classic.ds .ds-equip, body.skin-classic.ds .ds-equip:hover,
+body.skin-classic.ds .ds-equip.is-active
+{
+	padding: 0;
+	border-width: 0;
+	decorator: none;
+}
+/* An item of the active deck: legacy's active effect over its icon. */
+body.skin-classic.ds .ds-equip .nui-slot__active
+{
+	display: inline-flex;
+	left: 0;
+	top: 0;
+}
+/* No box of its own: the deck toggles are placed on the board, and a box
+   over the ring would take the equipment slots' presses. */
+body.skin-classic.ds .ds-decks
+{
+	display: block;
+	left: 0;
+	top: 0;
+	bottom: auto;
+	width: 0;
+	height: 0;
+}
+body.skin-classic.ds .ds-deck-place
+{
+	position: absolute;
+}
+body.skin-classic.ds .ds-deck-place--0 { left: 21dp; top: 230dp; }
+body.skin-classic.ds .ds-deck-place--1 { left: 234dp; top: 230dp; }
+body.skin-classic.ds .ds-deck-button,
+body.skin-classic.ds .ds-deck-button:hover,
+body.skin-classic.ds .ds-deck-button:active,
+body.skin-classic.ds .ds-deck-button.is-selected
+{
+	width: 32dp;
+	height: 32dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	transform: none;
+}
+body.skin-classic.ds .ds-deck-button__label
+{
+	display: none;
+}
+body.skin-classic.ds .ds-deck-place--0 .ds-deck-button { decorator: image("d:/ymir work/ui/dragonsoul/deck1_1.tga"); }
+body.skin-classic.ds .ds-deck-place--0 .ds-deck-button:hover { decorator: image("d:/ymir work/ui/dragonsoul/deck1_2.tga"); }
+body.skin-classic.ds .ds-deck-place--0 .ds-deck-button:active,
+body.skin-classic.ds .ds-deck-place--0 .ds-deck-button.is-selected { decorator: image("d:/ymir work/ui/dragonsoul/deck1_3.tga"); }
+body.skin-classic.ds .ds-deck-place--1 .ds-deck-button { decorator: image("d:/ymir work/ui/dragonsoul/deck2_1.tga"); }
+body.skin-classic.ds .ds-deck-place--1 .ds-deck-button:hover { decorator: image("d:/ymir work/ui/dragonsoul/deck2_2.tga"); }
+body.skin-classic.ds .ds-deck-place--1 .ds-deck-button:active,
+body.skin-classic.ds .ds-deck-place--1 .ds-deck-button.is-selected { decorator: image("d:/ymir work/ui/dragonsoul/deck2_3.tga"); }
+/* The activate toggle (61 x 21), its label centered over the art. */
+body.skin-classic.ds .ds-activate,
+body.skin-classic.ds .ds-activate:hover,
+body.skin-classic.ds .ds-activate:active,
+body.skin-classic.ds .ds-activate.is-selected
+{
+	left: 217dp;
+	top: 492dp;
+	right: auto;
+	bottom: auto;
+	width: 61dp;
+	min-width: 0;
+	height: 21dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 21dp;
+	transform: none;
+	decorator: image("d:/ymir work/ui/dragonsoul/m_button01.tga");
+}
+body.skin-classic.ds .ds-activate:hover
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/m_button02.tga");
+}
+/* A label wider than its art overflows both ends, centered, as legacy's
+   text line does, and takes no pointer (it would take the neighbor's
+   presses). */
+body.skin-classic.ds .ds-activate__label, body.skin-classic.ds .ds-grade__label
+{
+	position: absolute;
+	left: -30dp;
+	right: -30dp;
+	top: 0;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+body.skin-classic.ds .ds-activate:active, body.skin-classic.ds .ds-activate.is-selected
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/m_button03.tga");
+}
+
+/* --- The kinds and the grades ------------------------------------------------------ */
+
+/* The strip: the shown kind's art (267 x 36) under the six radio buttons,
+   which have no art of their own (36 x 27 at x 2, 42, ... 202, y 2). */
+body.skin-classic.ds .ds-kinds
+{
+	position: absolute;
+	left: 10dp;
+	top: 279dp;
+	width: 267dp;
+	height: 30dp;
+	margin: 0;
+	padding: 2dp 0 0 2dp;
+	gap: 4dp;
+}
+body.skin-classic.ds .ds-kind-art
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 267dp;
+	height: 36dp;
+	pointer-events: none;
+}
+body.skin-classic.ds .ds-kind-art--0 { decorator: image("d:/ymir work/ui/dragonsoul/tap01.tga"); }
+body.skin-classic.ds .ds-kind-art--1 { decorator: image("d:/ymir work/ui/dragonsoul/tap02.tga"); }
+body.skin-classic.ds .ds-kind-art--2 { decorator: image("d:/ymir work/ui/dragonsoul/tap03.tga"); }
+body.skin-classic.ds .ds-kind-art--3 { decorator: image("d:/ymir work/ui/dragonsoul/tap04.tga"); }
+body.skin-classic.ds .ds-kind-art--4 { decorator: image("d:/ymir work/ui/dragonsoul/tap05.tga"); }
+body.skin-classic.ds .ds-kind-art--5 { decorator: image("d:/ymir work/ui/dragonsoul/tap06.tga"); }
+body.skin-classic.ds .ds-kind,
+body.skin-classic.ds .ds-kind:hover,
+body.skin-classic.ds .ds-kind:active,
+body.skin-classic.ds .ds-kind.is-selected
+{
+	flex: 0 0 auto;
+	width: 36dp;
+	height: 27dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	transform: none;
+	decorator: none;
+}
+body.skin-classic.ds .ds-gem, body.skin-classic.ds .ds-tip
+{
+	display: none;
+}
+body.skin-classic.ds .ds-kind-title
+{
+	position: absolute;
+	left: 18dp;
+	top: 315dp;
+	height: 14dp;
+	margin: 0;
+	color: var(--text-muted);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 14dp;
+}
+/* The grade buttons (50 x 18, s_button art), their labels in legacy's cream
+   (0xFFF1E6C0, the palette's title cream), centered. */
+body.skin-classic.ds .ds-grades
+{
+	position: absolute;
+	left: 16dp;
+	top: 332dp;
+	width: 254dp;
+	margin: 0;
+	gap: 1dp;
+}
+body.skin-classic.ds .ds-grade,
+body.skin-classic.ds .ds-grade:hover,
+body.skin-classic.ds .ds-grade:active,
+body.skin-classic.ds .ds-grade.is-selected
+{
+	position: relative;
+	flex: 0 0 auto;
+	width: 50dp;
+	height: 18dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--tip-title);
+	font-size: var(--font-md);
+	line-height: 18dp;
+	transform: none;
+	decorator: image("d:/ymir work/ui/dragonsoul/s_button01.tga");
+}
+body.skin-classic.ds .ds-grade:hover
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/s_button02.tga");
+}
+body.skin-classic.ds .ds-grade:active, body.skin-classic.ds .ds-grade.is-selected
+{
+	decorator: image("d:/ymir work/ui/dragonsoul/s_button03.tga");
+}
+
+/* --- The bag ------------------------------------------------------------------------ */
+
+/* The picture draws the cells' frames: no slot art. */
+body.skin-classic.ds .ds-bag
+{
+	position: absolute;
+	left: 15dp;
+	top: 355dp;
+	margin: 0;
+	decorator: none;
+}

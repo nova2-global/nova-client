@@ -1,0 +1,6 @@
+{
+	"$comment": "Golden cases of the game buttons (tools/check_nui_snapshots.py): the stat, skill and help buttons shown, on a 1280x720dp screen; the classic art is under d:/ymir work/ (assets/ETC).",
+	"cases": [
+		{"page": "game-buttons", "themes": "all", "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]], "fixture": true, "roots": ["assets/ETC"], "time": null}
+	]
+}

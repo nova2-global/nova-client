@@ -1,0 +1,36 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Please enter the name you want to have",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 38,
+		"total": 38,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	},
+	{
+		"id": 3,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	}
+]

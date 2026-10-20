@@ -13,6 +13,7 @@ import musicInfo
 
 import uiSelectMusic
 import background
+import nui_windows
 
 MUSIC_FILENAME_MAX_LEN = 25
 
@@ -254,3 +255,8 @@ class OptionDialog(ui.ScriptWindow):
 	def __NotifyChatLine(self, text):
 		chat.AppendChat(chat.CHAT_TYPE_INFO, text)
 		
+
+# The system menu (legacy or NovaUI) makes this window by this name: with the
+# system-options flag on, the NovaUI facade (P11 spec 6.8).
+LegacyOptionDialog = OptionDialog
+OptionDialog = nui_windows.factory("system-options", LegacyOptionDialog, "nui_system_options.OptionDialog")

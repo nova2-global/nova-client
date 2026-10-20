@@ -1,0 +1,6 @@
+{
+	"$comment": "Golden cases of the expanded taskbar (tools/check_nui_snapshots.py); the dragon soul button art is in the metin2_patch_ds group.",
+	"cases": [
+		{"page": "expanded-taskbar", "themes": "all", "scales": [["100", "1", "320x120"], ["150", "1.5", "480x180"], ["200", "2", "640x240"]], "fixture": true, "roots": ["assets/metin2_patch_ds"], "time": null}
+	]
+}

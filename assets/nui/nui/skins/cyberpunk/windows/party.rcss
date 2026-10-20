@@ -1,0 +1,19 @@
+/* Cyberpunk overlay of nui/windows/party/party.rml: the role and menu
+   buttons as neon chips; the members are tiles (the component) with their
+   role chips in their neon colors. */
+
+body.skin-cyberpunk.party .party-role, body.skin-cyberpunk.party .party-menu__icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.party .party-role:hover, body.skin-cyberpunk.party .party-menu__icon:hover
+{
+	border-color: var(--accent);
+	background-color: var(--surface-hover);
+}
+body.skin-cyberpunk.party .party-role:active, body.skin-cyberpunk.party .party-menu__icon:active
+{
+	background-color: var(--surface-sunken);
+}

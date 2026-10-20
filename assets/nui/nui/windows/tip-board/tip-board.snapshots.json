@@ -1,0 +1,6 @@
+{
+	"$comment": "Golden cases of the tip board (tools/check_nui_snapshots.py): the board with one notice in view.",
+	"cases": [
+		{"page": "tip-board", "themes": "all", "scales": [["100", "1", "960x160"], ["150", "1.5", "1440x240"], ["200", "2", "1920x320"]], "fixture": true, "roots": [], "time": null}
+	]
+}

@@ -308,3 +308,55 @@ WHISPER_REPORT
 WHISPER_SEND	Envoyer
 YES	Oui
 ZONE_MAP	Carte d'aperçu
+THEME_TITLE	Thème
+THEME_MODERN_DARK	Moderne sombre
+THEME_MODERN_LIGHT	Moderne clair
+THEME_CLASSIC	Classique
+VKEY_SHIFT	Maj
+VKEY_SPACE	Espace
+VKEY_BACKSPACE	Retour
+VKEY_ENTER	Entrée
+VKEY_SYMBOLS	@#!
+SELECT_SLOT_EMPTY	Emplacement libre
+OPTION_INTERFACE	Interface
+OPTION_UI_SCALE	Échelle
+OPTION_UI_SCALE_AUTO	Auto
+OPTION_UI_REDUCED_MOTION	Mouvements réduits
+POINT_RESET_QUESTION_1	Je peux réinitialiser tes points de statut et de compétence.
+POINT_RESET_QUESTION_2	Cela coûte 500 Yang. Dois-je les réinitialiser ?
+POINT_RESET_CONFIRM_1	Toute l'expérience de ton niveau actuel sera perdue.
+POINT_RESET_CONFIRM_2	Veux-tu vraiment les réinitialiser ?
+OPTION_UI_REDUCED_EFFECTS	Effets réduits
+OPTION_UI_EFFECTS_UNAVAILABLE	Indisponible avec cette carte graphique
+OPTION_UI_COLORS	Couleurs
+OPTION_UI_COLOR_ACCENT	Accent
+OPTION_UI_COLOR_PANEL	Panneaux
+OPTION_UI_COLOR_OPACITY	Opacité des panneaux
+OPTION_UI_COLOR_HIGHLIGHT	Mise en valeur
+OPTION_UI_COLOR_CUSTOM	Personnalisée
+OPTION_UI_COLORS_RESET	Réinitialiser les couleurs
+OPTION_UI_COLORS_ADJUSTED	Certaines couleurs de texte ont été ajustées pour rester lisibles.
+THEME_CYBERPUNK	Cyberpunk
+INVENTORY_PAGE_BUTTON_TOOLTIP_3	3e inventaire
+INVENTORY_PAGE_BUTTON_TOOLTIP_4	4e inventaire
+INVENTORY_PAGE_BUTTON_TOOLTIP_5	5e inventaire
+CHARACTER_LEVEL	Niveau
+CHARACTER_EXP	EXP
+CHARACTER_EXP_REST	EXP nécessaire
+CHARACTER_POINTS	Disponible
+CHARACTER_BASE_STATS	Statut du personnage
+CHARACTER_EXTRA_STATS	Attributs
+CHARACTER_VIT	VIT
+CHARACTER_INT	INT
+CHARACTER_STR	STR
+CHARACTER_DEX	DEX
+CHARACTER_HP	HP
+CHARACTER_SP	MP
+CHARACTER_ATT	Attaque
+CHARACTER_DEF	Défense
+CHARACTER_MOVE_SPEED	Rapidité de mouvement
+CHARACTER_ATTACK_SPEED	Rapidité d'attaque
+CHARACTER_CAST_SPEED	Rapidité de la magie
+CHARACTER_MAGIC_ATT	Attaque par magie
+CHARACTER_MAGIC_DEF	Défense par magie
+CHARACTER_EVASION	Evasion

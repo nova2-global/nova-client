@@ -1,0 +1,144 @@
+/* Character create: an overlay (nui-overlay) over the legacy background and
+   the 3D characters, like the select screen; only the board and the arrows
+   take the mouse (nui-interactive). Positions are the legacy screen
+   fractions and sizes the legacy pixels in dp (uiscript
+   createcharacterwindow.py): the board, 208dp wide, at 65/800 from the left
+   with its bottom where the legacy board's was (56/600 above the bottom
+   edge); the class-name art keeps its legacy offset from the board's top
+   (-27, -149); the arrows are the select screen's. In the modern skin each
+   picker's label stands above its two buttons, so long labels fit. */
+.create-board
+{
+	position: absolute;
+	left: 8.125%;
+	bottom: 9.33%;
+	width: 208dp;
+	min-width: 0dp;
+	box-sizing: border-box;
+}
+.create-job
+{
+	position: absolute;
+	left: -27dp;
+	top: -149dp;
+	pointer-events: none;
+}
+/* The modern board is about 480dp tall, so below 720dp of screen its top
+   is too close to the screen's top for the art 149dp above it, which would
+   be cut (2400x1350 at 200%: 675dp). There the art is left out, as D13
+   leaves out the keyboard. The classic board is short enough at any
+   height, so the classic overlay shows the art there too. */
+@media (max-height: 719dp)
+{
+	.create-job
+	{
+		display: none;
+	}
+}
+
+/* The description scrolls in a square box (the scissor clips it). */
+.create-text
+{
+	box-sizing: border-box;
+	height: 122dp;
+	margin: var(--space-3) var(--space-3) 0dp var(--space-3);
+	padding: var(--space-1) var(--space-2);
+	overflow-y: auto;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	font-size: var(--font-sm);
+}
+.create-text__paragraph
+{
+	margin-bottom: var(--space-2);
+}
+
+.create-stats
+{
+	padding: var(--space-2) var(--space-3) 0dp var(--space-3);
+}
+.create-stat
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	height: 20dp;
+}
+.create-stat__label
+{
+	flex: 0 0 auto;
+	min-width: 30dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.create-stat__gauge
+{
+	flex: 1 1 auto;
+}
+.create-value
+{
+	display: block;
+	white-space: nowrap;
+}
+.create-stat__value
+{
+	flex: 0 0 auto;
+	width: 24dp;
+	text-align: right;
+}
+
+.create-row
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-1) var(--space-2);
+	padding: var(--space-2) var(--space-3) 0dp var(--space-3);
+}
+.create-label
+{
+	display: block;
+	flex: 0 0 100%;
+	color: var(--text-muted);
+}
+.create-name
+{
+	flex: 1 1 auto;
+}
+.create-choice
+{
+	flex: 1 1 0dp;
+	min-width: 0dp;
+	padding: 0dp var(--space-1);
+}
+.create-choice.is-selected
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-text);
+}
+
+.create-footer
+{
+	justify-content: center;
+	margin-top: var(--space-3);
+}
+
+/* Modern arrows: icon buttons centered on the legacy dragon art (160 by 36),
+   at the select screen's places. */
+.create-arrow
+{
+	position: absolute;
+	top: 84.17%;
+	margin: 2dp 0dp 0dp 64dp;
+}
+.create-arrow--left
+{
+	left: 48%;
+}
+.create-arrow--right
+{
+	left: 69.75%;
+}

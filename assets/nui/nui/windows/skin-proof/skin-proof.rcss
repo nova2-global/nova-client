@@ -1,0 +1,6 @@
+/* The skin-proof page (skin-proof.rml): fixed geometry, the legacy layout
+   the validation compares with (tools/nui_classic_art.py legacy-ref). */
+body.proof { left: 40dp; top: 120dp; width: 280dp; height: 160dp; min-width: 0dp; }
+#proof-field { position: absolute; left: 24dp; top: 52dp; width: 90dp; }
+#proof-button { position: absolute; left: 24dp; top: 110dp; width: 88dp; }
+#proof-button-over { position: absolute; left: 136dp; top: 110dp; width: 88dp; }

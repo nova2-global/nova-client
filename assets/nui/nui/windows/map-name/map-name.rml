@@ -1,0 +1,28 @@
+<rml>
+<head>
+	<!-- The map name splash (uimapnameshower.py): the name art of the map the
+	     player entered at the top center, with the floor of the Demon Tower
+	     or the Devil's Catacomb beside it. While the map-name flag is on, the
+	     game window makes the facade nui_map_name.MapNameShower (controller
+	     assets/root/nui_map_name.py). The fade is a keyframe animation (a
+	     second's wait, the fade in, five seconds at 0.9, the fade out), which
+	     each ShowMapName starts again by switching the body between two
+	     animation classes; a format="none" nui-countdown hides the window at
+	     its end. Under reduced motion it shows at 0.9 until the timer hides
+	     it. The art is locale art (assets/locale). It takes no input. -->
+	<title>map-name</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="map-name.rcss"/>
+</head>
+<body template="nui" class="nui-overlay map-name nui-anim" data-model="map_name"
+	data-class-map-name--run-a="run == 'a'" data-class-map-name--run-b="run == 'b'">
+	<div class="map-name__row" data-class-map-name__row--tower="offset == 'tower'"
+		data-class-map-name__row--catacomb="offset == 'catacomb'">
+		<img id="map-name" class="map-name__image" data-if="image != ''" data-attr-src="image"/>
+	</div>
+	<div class="map-name__row map-name__row--floor" data-if="floor_image != ''">
+		<img id="map-floor" class="map-name__floor" data-attr-src="floor_image"/>
+	</div>
+	<nui-countdown id="map-name-timer" format="none" data-attr-end="hide_at" data-event-countdownend="done()"/>
+</body>
+</rml>

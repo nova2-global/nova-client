@@ -1,0 +1,126 @@
+{
+	"party": {
+		"members": [
+			{
+				"pid": 1001,
+				"vid": 5001,
+				"name": "NuiW2A2",
+				"linked": true,
+				"hp": 0.8,
+				"state": 1,
+				"state_art": "party_state_leader", "state_name": "leader",
+				"affects": [
+					true,
+					false,
+					false,
+					false,
+					false,
+					false,
+					true,
+					false,
+					false
+				],
+				"affect_tips": [
+					"Bonus EXP: 10%",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"Regeneration +5%",
+					"",
+					""
+				],
+				"show_states": false,
+				"state_buttons": []
+			},
+			{
+				"pid": 1002,
+				"vid": 5002,
+				"name": "NuiW2B2",
+				"linked": true,
+				"hp": 0.4,
+				"state": 2,
+				"state_art": "party_state_attacker", "state_name": "attacker",
+				"affects": [
+					false,
+					true,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false
+				],
+				"affect_tips": [
+					"",
+					"Attack value +3%",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					""
+				],
+				"show_states": true,
+				"state_buttons": [
+					{
+						"state": -1,
+						"art": "party_state_normal", "state_name": "normal",
+						"tip": "Withdraw settings."
+					},
+					{
+						"state": 6,
+						"art": "party_state_berserker", "state_name": "berserker",
+						"tip": "Constitute as Berserker."
+					},
+					{
+						"state": 3,
+						"art": "party_state_tanker", "state_name": "tanker",
+						"tip": "Constitute as Tanker."
+					}
+				]
+			},
+			{
+				"pid": 1003,
+				"vid": 0,
+				"name": "[Offline]",
+				"linked": false,
+				"hp": 0.0,
+				"state": 0,
+				"state_art": "party_state_normal", "state_name": "normal",
+				"affects": [
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false,
+					false
+				],
+				"affect_tips": [
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					"",
+					""
+				],
+				"show_states": false,
+				"state_buttons": []
+			}
+		],
+		"menu_open": true,
+		"is_leader": true,
+		"has_role": true,
+		"heal_ready": true,
+		"distribution": 0
+	}
+}

@@ -1,0 +1,7 @@
+{
+	"pick_money": {
+		"title": "@ui.PICK_MONEY_TITLE",
+		"max": 6,
+		"limit": " / 250"
+	}
+}

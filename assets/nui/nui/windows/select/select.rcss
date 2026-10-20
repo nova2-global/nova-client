@@ -1,0 +1,193 @@
+/* Character select: an overlay (nui-overlay) over the legacy background and
+   the 3D characters; only the board and the arrows take the mouse
+   (nui-interactive). Positions are the legacy screen fractions and sizes the
+   legacy pixels in dp (uiscript selectcharacterwindow.py): the board,
+   208dp wide, at 65/800 from the left with its bottom where the legacy
+   board's was (57/600 above the bottom edge), so a tall scale keeps its
+   buttons on the screen; the class-name art keeps its legacy offset from
+   the board's top (-27, -149); the arrows sit at (384/800, 505/600) and
+   (558/800, 505/600). The class-name art, the empire flag and (classic)
+   the arrows are legacy art in every theme. */
+.select-board
+{
+	position: absolute;
+	left: 8.125%;
+	bottom: 9.5%;
+	width: 208dp;
+	min-width: 0dp;
+	box-sizing: border-box;
+}
+.select-job
+{
+	position: absolute;
+	left: -27dp;
+	top: -149dp;
+	pointer-events: none;
+}
+/* The modern board is about 480dp tall, so below 720dp of screen its top
+   is too close to the screen's top for the art 149dp above it, which would
+   be cut (2400x1350 at 200%: 675dp). There the art is left out, as D13
+   leaves out the keyboard. The classic board is short enough at any
+   height, so the classic overlay shows the art there too. */
+@media (max-height: 719dp)
+{
+	.select-job
+	{
+		display: none;
+	}
+}
+
+.select-empire
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-3) var(--space-3) 0dp var(--space-3);
+}
+.select-empire__flag
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 64dp;
+	height: 39.5dp;
+}
+.select-flag
+{
+	display: block;
+	width: 64dp;
+	height: 39.5dp;
+}
+.select-empire__text
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-width: 0dp;
+}
+.select-empire__text .select-value
+{
+	white-space: normal;
+}
+.select-empire__name
+{
+	font-weight: bold;
+}
+.select-empire__guild
+{
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+
+.select-slots
+{
+	margin: var(--space-2) var(--space-3) 0dp var(--space-3);
+}
+.select-slot
+{
+	padding: var(--space-1) var(--space-2);
+}
+.select-slot .nui-list__label
+{
+	flex: 1 1 auto;
+}
+.select-slot .nui-list__meta
+{
+	flex: 0 0 auto;
+	color: var(--text-muted);
+}
+
+.select-info
+{
+	padding: var(--space-2) var(--space-3) 0dp var(--space-3);
+}
+.select-row
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	height: 20dp;
+}
+.select-label
+{
+	flex: 0 0 auto;
+	color: var(--text-muted);
+}
+.select-value
+{
+	display: block;
+	white-space: nowrap;
+}
+.select-row .select-value
+{
+	flex: 1 1 auto;
+	min-width: 0dp;
+	margin-left: var(--space-2);
+	text-align: right;
+}
+
+.select-stats
+{
+	padding: var(--space-1) var(--space-3) var(--space-3) var(--space-3);
+}
+.select-stat
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	height: 20dp;
+}
+.select-stat__label
+{
+	flex: 0 0 auto;
+	min-width: 30dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.select-stat__gauge
+{
+	flex: 1 1 auto;
+}
+.select-stat__value
+{
+	flex: 0 0 auto;
+	width: 28dp;
+	text-align: right;
+}
+
+.select-footer
+{
+	flex-direction: column;
+	align-items: stretch;
+	gap: var(--space-2);
+	padding: var(--space-3);
+}
+.select-footer__main, .select-footer__row
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-2);
+}
+.select-button
+{
+	flex: 1 1 0dp;
+	padding: 0dp var(--space-2);
+}
+
+/* Modern arrows: icon buttons centered on the legacy dragon art (160 by 36). */
+.select-arrow
+{
+	position: absolute;
+	top: 84.17%;
+	margin: 2dp 0dp 0dp 64dp;
+}
+.select-arrow--left
+{
+	left: 48%;
+}
+.select-arrow--right
+{
+	left: 69.75%;
+}

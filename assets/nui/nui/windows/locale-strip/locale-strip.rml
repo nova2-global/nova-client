@@ -1,0 +1,18 @@
+<rml>
+<head>
+	<!-- Locale flag strip at the top of the login screen: replaces the legacy
+	     strip (uilocaleselector.py) while the locale-strip flag is on
+	     (controller: assets/root/nui_locale_strip.py). One flag per locale,
+	     its native name as a hint; the flag of the locale in use is
+	     selected. Nothing in it takes the focus, so a login field keeps its
+	     caret; RmlUi then sends no click, so the flags act on mousedown. A
+	     flag is a button, so a press plays the legacy click sound (G11's
+	     mousedown rule for a button that takes no focus). -->
+	<title>locale-strip</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="locale-strip.rcss"/>
+</head>
+<body template="nui" class="locale-strip" data-model="locale_strip">
+	<button class="locale-strip__flag nui-has-tooltip" data-for="flag : flags" data-attr-id="'locale-flag-' + flag.code" data-class-is-selected="flag.code == current" data-event-mousedown="pick(flag.code, ev.button)"><img class="locale-strip__image" data-attr-src="flag.image"/><span class="nui-tooltip nui-anim">{{ flag.name }}</span></button>
+</body>
+</rml>

@@ -1,0 +1,329 @@
+{
+	"item_tooltip": {
+		"lines": [
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Wooden Bracelet+0",
+						"role": "title",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +1%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Max. Endurance +10",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "[ Wearable ]",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": " Warrior Ninja Sura Shaman",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "/icon/item/50623.tga",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Fossil Wood",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Attack Speed +1%",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Max. Endurance +1",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "/icon/item/50623.tga",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Fossil Wood",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Attack Speed +1%",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Max. Endurance +1",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Time Remaining: ",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							},
+							{
+								"k": "count",
+								"text": "",
+								"role": "positive",
+								"color": "",
+								"end": 5401.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			}
+		],
+		"min_w": 190
+	}
+}

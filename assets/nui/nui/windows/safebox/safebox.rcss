@@ -1,0 +1,71 @@
+/* The safebox's modern look (P16 spec 5.4.2): a lean 5 x 9 grid on the 44dp
+   pitch; under it one tab per page (the shown page selected, one share of
+   the row each); the change-password and close buttons stacked in the
+   footer; no money row (D17). The controller places it at legacy's (100, 20) at its
+   first show and keeps the place the player drags it to; the sheet's place
+   frames it in its snapshots. Classic (legacy's 176 x 418 board, the
+   middle tab art for the pages, the large buttons at the uiscript's places):
+   skins/classic/windows/safebox.rcss. */
+
+body.safebox
+{
+	left: 16dp;
+	top: 16dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.safebox button
+{
+	tab-index: none;
+	focus: none;
+}
+.safebox__body
+{
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	padding: var(--space-3);
+}
+.safebox__pages
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-1);
+	width: 216dp;
+}
+.safebox__page-slot
+{
+	display: block;
+	flex: 1 1 0;
+}
+.safebox__page
+{
+	display: block;
+	width: 100%;
+	min-width: 0;
+	height: 28dp;
+	padding: 0;
+	line-height: 26dp;
+}
+/* Labels take no pointer, so a press on one is its button's. */
+.safebox__page-label, .safebox__label
+{
+	pointer-events: none;
+}
+/* The two buttons stacked, as legacy's: Change Password over Close, each
+   the grid's width. */
+.safebox__footer
+{
+	flex-direction: column;
+	align-items: stretch;
+	gap: var(--space-2);
+	padding: var(--space-3);
+}
+.safebox__button
+{
+	display: block;
+	width: 216dp;
+	min-width: 0;
+	padding: 0 var(--space-2);
+}

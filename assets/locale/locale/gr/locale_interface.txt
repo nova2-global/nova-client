@@ -309,3 +309,55 @@ WHISPER_REPORT
 WHISPER_SEND	Αποστολή
 YES	Ναι
 ZONE_MAP	Μεγάλος Χάρτης
+THEME_TITLE	Θέμα
+THEME_MODERN_DARK	Μοντέρνο σκούρο
+THEME_MODERN_LIGHT	Μοντέρνο ανοιχτό
+THEME_CLASSIC	Κλασικό
+VKEY_SHIFT	Shift
+VKEY_SPACE	Κενό
+VKEY_BACKSPACE	Διαγραφή
+VKEY_ENTER	Enter
+VKEY_SYMBOLS	@#!
+SELECT_SLOT_EMPTY	Κενή θέση
+OPTION_INTERFACE	Διεπαφή
+OPTION_UI_SCALE	Κλίμακα
+OPTION_UI_SCALE_AUTO	Αυτόματο
+OPTION_UI_REDUCED_MOTION	Μειωμένη κίνηση
+POINT_RESET_QUESTION_1	Μπορώ να επαναφέρω τους πόντους κατάστασης και ικανοτήτων σου.
+POINT_RESET_QUESTION_2	Κοστίζει 500 Yang. Να τους επαναφέρω;
+POINT_RESET_CONFIRM_1	Όλη η εμπειρία του τρέχοντος επιπέδου σου θα χαθεί.
+POINT_RESET_CONFIRM_2	Θέλεις πραγματικά να τους επαναφέρεις;
+OPTION_UI_REDUCED_EFFECTS	Μειωμένα εφέ
+OPTION_UI_EFFECTS_UNAVAILABLE	Μη διαθέσιμο σε αυτή την κάρτα γραφικών
+OPTION_UI_COLORS	Χρώματα
+OPTION_UI_COLOR_ACCENT	Χρώμα έμφασης
+OPTION_UI_COLOR_PANEL	Πάνελ
+OPTION_UI_COLOR_OPACITY	Αδιαφάνεια πάνελ
+OPTION_UI_COLOR_HIGHLIGHT	Επισήμανση
+OPTION_UI_COLOR_CUSTOM	Προσαρμοσμένο
+OPTION_UI_COLORS_RESET	Επαναφορά χρωμάτων
+OPTION_UI_COLORS_ADJUSTED	Ορισμένα χρώματα κειμένου προσαρμόστηκαν ώστε να παραμένουν ευανάγνωστα.
+THEME_CYBERPUNK	Cyberpunk
+INVENTORY_PAGE_BUTTON_TOOLTIP_3	3. Κατάλογος
+INVENTORY_PAGE_BUTTON_TOOLTIP_4	4. Κατάλογος
+INVENTORY_PAGE_BUTTON_TOOLTIP_5	5. Κατάλογος
+CHARACTER_LEVEL	Επίπεδο
+CHARACTER_EXP	EXP
+CHARACTER_EXP_REST	Αναγκαία EXP
+CHARACTER_POINTS	Διαθέσιμα
+CHARACTER_BASE_STATS	Κατάσταση χαρακτήρα
+CHARACTER_EXTRA_STATS	Χαρακτηριστικά
+CHARACTER_VIT	VIT
+CHARACTER_INT	INT
+CHARACTER_STR	STR
+CHARACTER_DEX	DEX
+CHARACTER_HP	HP
+CHARACTER_SP	SP
+CHARACTER_ATT	Επίθεση
+CHARACTER_DEF	Άμυνα
+CHARACTER_MOVE_SPEED	Ταχύτητα
+CHARACTER_ATTACK_SPEED	Ταχύτητα επίθεσης
+CHARACTER_CAST_SPEED	Ταχύτητα μαγείας
+CHARACTER_MAGIC_ATT	Μαγική επίθεση
+CHARACTER_MAGIC_DEF	Μαγική άμυνα
+CHARACTER_EVASION	Διαφυγή

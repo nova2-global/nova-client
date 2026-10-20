@@ -1,0 +1,10 @@
+{
+	"game_buttons": {
+		"show_status": true,
+		"show_skill": true,
+		"show_quest": false,
+		"show_help": true,
+		"show_build": false,
+		"show_observer": false
+	}
+}

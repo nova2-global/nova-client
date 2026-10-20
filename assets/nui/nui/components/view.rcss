@@ -1,0 +1,36 @@
+/* Views (docs/ui/AUTHORING.md "Views"). The runtime registers nui-view: one
+   textured quad over its content box, drawn from a C++ view provider's
+   render target (the minimap, the atlas); its size is the provider's
+   natural size unless the sheet gives one.
+
+   <nui-view name="minimap" class="nui-interactive"/>
+   	hover="label" (the default) shows the provider's hover text in its own
+   	child, div.nui-view__label, right-aligned 5dp left of the pointer, its
+   	color the provider's; an image (a guild mark) shows first, in
+   	img.nui-view__mark. hover="none" shows none.
+
+   The label is text the game wrote, shown as written. It takes no pointer,
+   so it never covers the view's hover. Its z-index puts it above what the
+   window draws after the view (the minimap's frame ring and buttons), as
+   legacy's map tooltip is a window of its own above the minimap. */
+
+nui-view
+{
+	display: block;
+}
+.nui-view__label
+{
+	position: absolute;
+	z-index: 1;
+	white-space: nowrap;
+	font-size: var(--font-sm);
+	font-effect: outline(1dp var(--text-outline));
+	pointer-events: none;
+}
+.nui-view__mark
+{
+	display: inline-block;
+	width: 16dp;
+	height: 12dp;
+	margin-right: 2dp;
+}

@@ -1,0 +1,163 @@
+<rml>
+<head>
+	<!-- The system options (uisystemoption.py OptionDialog, uiscript
+	     systemoptiondialog.py) and the Interface section NovaUI adds: the
+	     theme, the UI scale, reduced motion, reduced effects and the player
+	     colors (the theme's color slots, a preview and a reset; the section
+	     shows only for a theme that offers slots). While the system-options flag
+	     is on, the system menu makes the facade
+	     nui_system_options.OptionDialog (controller
+	     assets/root/nui_system_options.py) through uiSystemOption's factory.
+	     The document exists only while the window shows (nui_hud.OnDemand);
+	     the facade fills the model from the getters at each show. The legacy
+	     rows keep legacy's order and calls: the sound and music sliders, the
+	     background music and its Change button (the music list), the camera
+	     distance, the fog and the tiling choices with Apply. The Interface
+	     section applies each choice at once and saves it (nui.set_theme,
+	     set_scale_percent, set_reduced_motion); the scale is a row of
+	     choices, not a slider, so the window does not rescale under a drag
+	     (P11 spec D12). The body and its controls take no focus: the buttons
+	     and the toggle act on a left mousedown (RmlUi makes no click in a
+	     document that takes no focus), the sliders on their change events;
+	     Escape reaches the window in its legacy place
+	     (nui_hud.EscapeProxy). The theme, scale, swatch and opacity choices
+	     are repeated in a bare wrapper, so their own bindings read the item
+	     from a child (the scale list shrinks when a custom percent goes). A
+	     swatch is a chip colored from the model (data-style---swatch). -->
+	<title>system-options</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="system-options.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-fx nui-anim system-options" data-model="system_options">
+	<div class="nui-window__titlebar system-options__titlebar">
+		<handle class="nui-window__handle system-options__handle" move_target="#document">
+			<span class="nui-window__title system-options__title">@ui.SYSTEMOPTION_TITLE</span>
+		</handle>
+		<button id="so-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)">&#215;</button>
+	</div>
+	<div class="nui-window__body system-options__body">
+		<div class="so-legacy">
+			<div class="so-row so-row--sound">
+				<span class="so-label so-label--sound">@ui.OPTION_SOUND</span>
+				<input id="so-sound" type="range" class="nui-slider so-slider so-slider--sound" min="0" max="100" step="1"
+					data-attr-value="sound_volume" data-event-change="sound(ev.value)"/>
+			</div>
+			<div class="so-row so-row--music">
+				<span class="so-label so-label--music">@ui.OPTION_MUSIC</span>
+				<input id="so-music" type="range" class="nui-slider so-slider so-slider--music" min="0" max="100" step="1"
+					data-attr-value="music_volume" data-event-change="music(ev.value)"/>
+			</div>
+			<div class="so-row so-row--bgm">
+				<button id="so-music-change" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-music-change" data-event-mousedown="act('change_music', ev.button)"><span class="so-choice__label">@ui.OPTION_MUSIC_CHANGE</span></button>
+				<span id="so-music-file" class="so-music-file">{{ music_file }}</span>
+			</div>
+			<div class="so-row so-row--camera">
+				<span class="so-label so-label--camera">@ui.OPTION_CAMERA_DISTANCE</span>
+				<div class="so-choices">
+					<button id="so-camera-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--camera-0" data-class-is-selected="camera == 0" data-event-mousedown="choose('camera', 0, ev.button)"><span class="so-choice__label">@ui.OPTION_CAMERA_DISTANCE_SHORT</span></button>
+					<button id="so-camera-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--camera-1" data-class-is-selected="camera == 1" data-event-mousedown="choose('camera', 1, ev.button)"><span class="so-choice__label">@ui.OPTION_CAMERA_DISTANCE_LONG</span></button>
+				</div>
+			</div>
+			<div class="so-row so-row--fog">
+				<span class="so-label so-label--fog">@ui.OPTION_FOG</span>
+				<div class="so-choices">
+					<button id="so-fog-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--fog-0" data-class-is-selected="fog == 0" data-event-mousedown="choose('fog', 0, ev.button)"><span class="so-choice__label">@ui.OPTION_FOG_DENSE</span></button>
+					<button id="so-fog-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--fog-1" data-class-is-selected="fog == 1" data-event-mousedown="choose('fog', 1, ev.button)"><span class="so-choice__label">@ui.OPTION_FOG_MIDDLE</span></button>
+					<button id="so-fog-2" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--fog-2" data-class-is-selected="fog == 2" data-event-mousedown="choose('fog', 2, ev.button)"><span class="so-choice__label">@ui.OPTION_FOG_LIGHT</span></button>
+				</div>
+			</div>
+			<div class="so-row so-row--tiling">
+				<span class="so-label so-label--tiling">@ui.OPTION_TILING</span>
+				<div class="so-choices">
+					<button id="so-tiling-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--tiling-0" data-class-is-selected="tiling == 0" data-event-mousedown="choose('tiling', 0, ev.button)"><span class="so-choice__label">@ui.OPTION_TILING_CPU</span></button>
+					<button id="so-tiling-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--tiling-1" data-class-is-selected="tiling == 1" data-event-mousedown="choose('tiling', 1, ev.button)"><span class="so-choice__label">@ui.OPTION_TILING_GPU</span></button>
+					<button id="so-tiling-apply" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-tiling-apply" data-event-mousedown="act('tiling_apply', ev.button)"><span class="so-choice__label">@ui.OPTION_TILING_APPLY</span></button>
+				</div>
+			</div>
+		</div>
+		<div id="so-interface" class="so-interface" data-if="interface">
+			<div class="so-heading">@ui.OPTION_INTERFACE</div>
+			<div class="so-row so-row--theme">
+				<span class="so-label so-label--theme">@ui.THEME_TITLE</span>
+				<div class="so-choices so-choices--wrap">
+					<span class="so-slot" data-for="t : themes"><button class="nui-button nui-button--medium nui-anim so-choice so-choice--theme"
+						data-attr-id="'so-theme-' + t.id" data-class-is-selected="t.id == theme" data-event-mousedown="choose_theme(t.id, ev.button)">{{ t.label }}</button></span>
+				</div>
+			</div>
+			<div class="so-row so-row--scale">
+				<span class="so-label so-label--scale">@ui.OPTION_UI_SCALE</span>
+				<div class="so-choices so-choices--wrap">
+					<span class="so-slot" data-for="s : scales"><button class="nui-button nui-anim so-choice so-choice--scale"
+						data-attr-id="'so-scale-' + s.id" data-class-is-selected="s.percent == scale" data-event-mousedown="choose_scale(s.percent, ev.button)">{{ s.label }}<span
+						class="so-auto-percent" data-if="s.id == 'auto'"> {{ auto_percent }}%</span></button></span>
+				</div>
+			</div>
+			<div class="so-row so-row--motion">
+				<!-- RmlUi makes no click in a document that takes no focus
+				     (Context::ProcessMouseButtonUp clicks only a focusable
+				     element), so this label cannot forward one to its checkbox:
+				     a left mousedown on it flips the setting, and the checkbox
+				     follows the model. -->
+				<label id="so-motion-toggle" class="nui-toggle so-motion" data-event-mousedown="flip_motion(ev.button)">
+					<input id="so-motion" type="checkbox" class="nui-toggle__input"
+						data-attrif-checked="reduced_motion" data-event-change="motion(ev.checked)"/>
+					<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+					<span class="nui-toggle__label">@ui.OPTION_UI_REDUCED_MOTION</span>
+				</label>
+			</div>
+			<div class="so-row so-row--effects">
+				<!-- On and disabled while the device draws no effects (the
+				     note says why); a press then does nothing. -->
+				<label id="so-effects-toggle" class="nui-toggle so-effects" data-event-mousedown="flip_effects(ev.button)">
+					<input id="so-effects" type="checkbox" class="nui-toggle__input"
+						data-attrif-checked="reduced_effects" data-attrif-disabled="!effects_available" data-event-change="effects(ev.checked)"/>
+					<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+					<span class="nui-toggle__label">@ui.OPTION_UI_REDUCED_EFFECTS</span>
+				</label>
+				<span id="so-effects-note" class="so-note" data-if="!effects_available">@ui.OPTION_UI_EFFECTS_UNAVAILABLE</span>
+			</div>
+			<div id="so-colors" class="so-colors" data-if="size(color_slots) > 0">
+				<div class="so-heading">@ui.OPTION_UI_COLORS</div>
+				<div class="so-color-slot" data-for="c : color_slots">
+					<div class="so-row so-row--color">
+						<span class="so-label">{{ c.label }}</span>
+						<div class="so-choices so-choices--wrap" data-if="c.kind == 'color'">
+							<span class="so-slot" data-for="w : c.swatches"><button class="so-swatch"
+								data-attr-id="'so-color-' + c.slot + '-' + w.index" data-style---swatch="w.color"
+								data-class-is-selected="w.color == c.value" data-event-mousedown="pick_color(c.slot, w.color, ev.button)"></button></span>
+						</div>
+						<div class="so-choices so-choices--wrap" data-if="c.kind == 'percent'">
+							<span class="so-slot" data-for="o : c.choices"><button class="nui-button nui-anim so-choice so-choice--scale"
+								data-attr-id="'so-color-' + c.slot + '-' + o.value" data-class-is-selected="o.value == c.value"
+								data-event-mousedown="pick_color(c.slot, o.value, ev.button)">{{ o.value }}%</button></span>
+						</div>
+					</div>
+					<div class="so-row so-row--hue" data-if="c.slot == 'accent'">
+						<span class="so-label">@ui.OPTION_UI_COLOR_CUSTOM</span>
+						<input id="so-color-accent-hue" type="range" class="nui-slider so-slider so-hue" min="0" max="359" step="1"
+							data-attr-value="accent_hue" data-event-change="hue(ev.value)" data-event-dragend="hue_done()"
+							data-event-mouseup="hue_done()"/>
+					</div>
+				</div>
+				<div class="so-row so-row--reset">
+					<button id="so-colors-reset" class="nui-button nui-button--medium nui-anim so-choice" data-event-mousedown="reset_colors(ev.button)"><span
+						class="so-choice__label">@ui.OPTION_UI_COLORS_RESET</span></button>
+					<span id="so-colors-note" class="so-note" data-if="colors_adjusted">@ui.OPTION_UI_COLORS_ADJUSTED</span>
+				</div>
+				<!-- The preview: each slot's tokens on a sample (the highlight's
+				     title, the panel's text, the accent's button and selected
+				     row). -->
+				<div id="so-colors-preview" class="nui-panel so-preview">
+					<span class="nui-text--highlight so-preview__title">@ui.OPTION_UI_COLOR_HIGHLIGHT</span>
+					<p class="so-preview__body">@ui.OPTION_UI_COLOR_PANEL</p>
+					<p class="so-preview__muted">@ui.OPTION_UI_COLOR_OPACITY</p>
+					<div class="so-preview__row">
+						<button class="nui-button nui-button--primary nui-anim so-preview__button">@ui.OK</button>
+						<div class="nui-list__item is-selected so-preview__item"><span class="nui-list__label">@ui.OPTION_UI_COLOR_ACCENT</span></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

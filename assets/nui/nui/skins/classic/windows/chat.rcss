@@ -1,0 +1,196 @@
+/* Classic skin overlay of nui/windows/chat/chat.rml: the legacy chat window
+   (uichat.py ChatWindow and its ChatInputSet) at 100%, 1dp to the legacy
+   pixel, relative to the 600dp block whose bottom is the taskbar's top.
+   Closed: the lines from 10dp in, the newest ending on that edge, on the
+   gradient bar 20dp taller than the lines (black, clear to 80%). Open: the
+   input row (25dp): the mode button's white round outline at 7, 2 (41 x 18,
+   thicker under the pointer, a white 30% fill pressed), the field's outline
+   at 53, 2 (465 x 18) around the field at 57, 5 (457 x 13), the yellow
+   outlined prefix mark one pixel left of the field's text, and the send,
+   whisper and log buttons at 525, 550 and 575 (the legacy art); above it
+   the sizing bar (the legacy rod art, 22dp) at the history's top and the
+   black 50% bar from 10dp below it, over which the lines stand. The hints
+   are legacy button tooltips: outlined text without a board. */
+
+/* The rod's three pieces as sprites (each its whole 64 x 32 file, the rod
+   in its top 22 rows), so the repeat box knows their size wherever the file
+   is not decoded (lint). */
+@spritesheet chat-bar-left-sheet
+{
+	src: "d:/ymir work/ui/pattern/chat_bar_left.tga";
+	resolution: 1x;
+	chat-bar-left: 0px 0px 64px 32px;
+}
+@spritesheet chat-bar-middle-sheet
+{
+	src: "d:/ymir work/ui/pattern/chat_bar_middle.tga";
+	resolution: 1x;
+	chat-bar-middle: 0px 0px 64px 32px;
+}
+@spritesheet chat-bar-right-sheet
+{
+	src: "d:/ymir work/ui/pattern/chat_bar_right.tga";
+	resolution: 1x;
+	chat-bar-right: 0px 0px 64px 32px;
+}
+@decorator chat-sizing-bar : nui-repeat-box
+{
+	left-image: chat-bar-left;
+	center-image: chat-bar-middle;
+	right-image: chat-bar-right;
+}
+
+body.skin-classic.chat .chat__block.is-open .chat__history
+{
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.chat .chat__resize
+{
+	height: 22dp;
+	decorator: chat-sizing-bar;
+}
+body.skin-classic.chat .chat__grip
+{
+	display: none;
+}
+body.skin-classic.chat .chat__block.is-open .chat__lines
+{
+	background-color: var(--chat-edit-shade);
+}
+
+body.skin-classic.chat .chat__input-row
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.chat .chat__mode
+{
+	position: absolute;
+	left: 7dp;
+	top: 2dp;
+	width: 41dp;
+	min-width: 0;
+	height: 18dp;
+	margin: 0;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--classic-label-white);
+	border-radius: 2dp;
+	background-color: transparent;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	line-height: 16dp;
+}
+body.skin-classic.chat .chat__mode:hover
+{
+	border-width: 2dp;
+	background-color: transparent;
+	line-height: 14dp;
+}
+body.skin-classic.chat .chat__mode:active
+{
+	border-width: 2dp;
+	background-color: var(--classic-chat-press);
+	line-height: 14dp;
+}
+body.skin-classic.chat .chat__field
+{
+	position: absolute;
+	left: 53dp;
+	top: 2dp;
+	box-sizing: border-box;
+	width: 465dp;
+	height: 18dp;
+	margin: 0;
+	border-width: 1dp;
+	border-color: var(--classic-label-white);
+	border-radius: 2dp;
+}
+body.skin-classic.chat input.chat__input
+{
+	position: absolute;
+	left: 3dp;
+	top: 2dp;
+	width: 457dp;
+	height: 13dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: none;
+	color: var(--classic-edit-text);
+	font-size: var(--font-md);
+	line-height: 13dp;
+}
+body.skin-classic.chat .chat__mark
+{
+	left: 2dp;
+	top: 2dp;
+	font-size: var(--font-md);
+	line-height: 13dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+
+body.skin-classic.chat .chat__button
+{
+	position: absolute;
+	top: 2dp;
+	width: 20dp;
+	height: 18dp;
+	margin: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.chat .chat__send
+{
+	left: 525dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__send:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_02.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__send:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_03.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__whisper
+{
+	left: 550dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_whisper_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__whisper:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_whisper_button_02.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__whisper:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_whisper_button_03.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__log-open
+{
+	left: 575dp;
+	decorator: image("d:/ymir work/ui/game/taskbar/open_chat_log_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__log-open:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/open_chat_log_button_02.sub" scale-none left top);
+}
+body.skin-classic.chat .chat__log-open:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/open_chat_log_button_03.sub" scale-none left top);
+}
+body.skin-classic.chat .nui-tooltip.chat__tip
+{
+	decorator: none;
+	padding: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

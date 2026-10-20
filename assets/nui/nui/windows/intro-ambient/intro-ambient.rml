@@ -1,0 +1,43 @@
+<rml>
+<head>
+	<!-- Intro ambience under the login board: embers rising from the bottom
+	     edge and a light sweep over the legacy Metin2 logo. It only draws:
+	     the body has pointer-events: none, so every click and the wheel reach
+	     the board or the legacy screen. nui_login.py opens it with the board
+	     (before showing the board, so the board stays on top and keeps the
+	     keyboard), hides it while a legacy popup is open and destroys it with
+	     the board. Under reduced motion nothing moves and nothing shows. -->
+	<title>intro-ambient</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="intro-ambient.rcss"/>
+</head>
+<body template="nui" class="intro-ambient">
+	<div class="intro-logo-sweep">
+		<div class="intro-logo-sweep__band nui-anim"><div class="intro-sweep-half"></div><div class="intro-sweep-half intro-sweep-half--out"></div></div>
+	</div>
+	<div class="intro-ember intro-ember--m intro-ember-1 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--l intro-ember-2 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--s intro-ember-3 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-4 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--s intro-ember-5 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--l intro-ember-6 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-7 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--s intro-ember-8 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-9 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--l intro-ember-10 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-11 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--s intro-ember-12 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-13 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--l intro-ember-14 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-15 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--s intro-ember-16 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-17 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--l intro-ember-18 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-19 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--s intro-ember-20 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-21 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--l intro-ember-22 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--m intro-ember-23 nui-anim"><div class="intro-ember__core"></div></div>
+	<div class="intro-ember intro-ember--s intro-ember-24 nui-anim"><div class="intro-ember__core"></div></div>
+</body>
+</rml>

@@ -1,0 +1,22 @@
+/* Classic skin overlay of nui/windows/dialog-input/dialog-input.rml. The
+   runtime and nuitool apply it after the window's own sheet,
+   dialog-input.rcss, in every theme; every rule starts with .skin-classic, so
+   it acts only while a classic theme is in use (docs/ui/AUTHORING.md, Skins). */
+
+/* The legacy input dialogs (uiscript inputdialog*.py): the title bar, the
+   description and the slot-bar field under it, the two middle buttons 10dp
+   apart, 11dp above the bottom edge. */
+body.skin-classic.dialog-input .nui-window__body
+{
+	padding: 6dp 16dp 0dp 16dp;
+}
+body.skin-classic.dialog-input .nui-dialog__field
+{
+	width: 120dp;
+	margin-top: 2dp;
+}
+body.skin-classic.dialog-input .nui-window__footer
+{
+	padding: 8dp 16dp 11dp 16dp;
+	gap: 10dp;
+}

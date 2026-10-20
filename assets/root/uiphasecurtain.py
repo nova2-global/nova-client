@@ -3,6 +3,10 @@ import ui
 import wndMgr
 import app
 
+# The fade follows the clock, not the frame rate.
+FRAME_SECONDS = 1.0 / 60.0   # speed is alpha per 1/60 s: 0.1 fades in ten 60 Hz frames, 1/6 s
+MAX_STEP_SECONDS = 0.05      # a longer frame (a phase being built) advances the fade by this much at most
+
 class PhaseCurtain(ui.Bar):
 
 	def __init__(self):
@@ -13,6 +17,7 @@ class PhaseCurtain(ui.Bar):
 		self.event = 0
 		self.args = -1
 		self.FadeInFlag = False
+		self.lastTime = 0.0
 		self.SetWindowName("PhaseCurtain")
 		self.AddFlag("float")
 
@@ -30,10 +35,12 @@ class PhaseCurtain(ui.Bar):
 		self.Show()
 		self.event = event
 		self.args = args
+		self.lastTime = app.GetTime()
 
 	def FadeIn(self):
 		self.event = 0
 		self.FadeInFlag = True
+		self.lastTime = app.GetTime()
 
 	def SetAlpha(self, alpha):
 		self.SetSize(wndMgr.GetScreenWidth(), wndMgr.GetScreenHeight())
@@ -43,9 +50,13 @@ class PhaseCurtain(ui.Bar):
 
 	def OnUpdate(self):
 
+		now = app.GetTime()
+		step = self.speed * min(max(now - self.lastTime, 0.0), MAX_STEP_SECONDS) / FRAME_SECONDS
+		self.lastTime = now
+
 		if 0 != self.event:
 
-			self.curAlpha += self.speed
+			self.curAlpha += step
 			if self.curAlpha >= 1.0:
 				self.curAlpha = 1.0
 
@@ -62,7 +73,7 @@ class PhaseCurtain(ui.Bar):
 
 		elif True == self.FadeInFlag:
 
-			self.curAlpha -= self.speed
+			self.curAlpha -= step
 			if self.curAlpha <= 0.0:
 				self.curAlpha = 0.0
 				self.eventFadeIn = 0

@@ -1,0 +1,8 @@
+{
+	"$comment": "Golden cases of the energy bar (tools/check_nui_snapshots.py): full in every theme, hungry and empty in classic, where the state has art of its own; the art is in the metin2_patch_eu4 group.",
+	"cases": [
+		{"page": "energy-bar", "themes": "all", "scales": [["100", "1", "240x120"], ["150", "1.5", "360x180"], ["200", "2", "480x240"]], "fixture": true, "roots": ["assets/metin2_patch_eu4"], "time": null},
+		{"page": "energy-bar", "variant": "hungry", "themes": ["classic"], "scales": [["100", "1", "240x120"], ["150", "1.5", "360x180"], ["200", "2", "480x240"]], "fixture": true, "roots": ["assets/metin2_patch_eu4"], "time": null},
+		{"page": "energy-bar", "variant": "empty", "themes": ["classic"], "scales": [["100", "1", "240x120"], ["150", "1.5", "360x180"], ["200", "2", "480x240"]], "fixture": true, "roots": ["assets/metin2_patch_eu4"], "time": null}
+	]
+}

@@ -1,0 +1,8 @@
+{
+	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py).",
+	"cases": [
+		{"page": "locale-strip", "themes": "all",
+		 "scales": [["100", "1", "1280x120"], ["150", "1.5", "1920x180"], ["200", "2", "2560x240"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null}
+	]
+}

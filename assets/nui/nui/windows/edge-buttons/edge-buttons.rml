@@ -1,0 +1,60 @@
+<rml>
+<head>
+	<!-- The quest and whisper edge buttons (interfacemodule.py, uiwhisper.py):
+	     the quest letters in a column at the left edge (moved right while the
+	     party shows), the whisper buttons at the right edge, each with its
+	     label below it. The Interface makes and arranges the buttons; with
+	     the edge-buttons flag on each one is the facade
+	     nui_edge_buttons.EdgeButton (controller
+	     assets/root/nui_edge_buttons.py), and all of them share this one
+	     document, in the legacy order. A new whisper or letter flashes: its
+	     art hides every other half second while the pointer is not over it,
+	     through a nui-blink element (a steady ring under reduced motion).
+	     Nothing takes the focus, so the buttons act on mousedown, and each
+	     press plays the click (legacy WhisperButton is a ui.Button). The art is
+	     legacy art (d:/ymir work/ in assets/ETC, the letters in assets/season1). -->
+	<title>edge-buttons</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="edge-buttons.rcss"/>
+</head>
+<body template="nui" class="nui-overlay edge-buttons" data-model="edge_buttons">
+	<!-- Each repeated slot binds nothing: RmlUi updates a repeated element's
+	     own views with the data-for that removes it, so when a button goes
+	     they could read an entry that is gone. -->
+	<div id="quest-stack" class="edge-stack edge-stack--quest" data-class-edge-stack--shift="quest_shift">
+		<div class="edge-stack__slot" data-for="e : quests">
+			<div class="edge edge--quest" data-attr-id="'edge-quest-' + e.id">
+				<div class="edge__inner" data-if="e.shown">
+					<button class="edge__button nui-interactive" data-event-mousedown="press('quest', e.id, ev.button)">
+						<nui-blink class="edge__blink" data-class-is-flashing="e.flashing" data-attr-period="e.flashing ? 1 : 0">
+							<img class="edge__art edge__art--up" data-if="e.up != ''" data-attr-src="e.up"/>
+						</nui-blink>
+						<img class="edge__art edge__art--over" data-if="e.over != ''" data-attr-src="e.over"/>
+						<img class="edge__art edge__art--down" data-if="e.down != ''" data-attr-src="e.down"/>
+					</button>
+					<div class="edge__label" data-if="e.label_shown &amp;&amp; e.label != ''"
+						data-class-edge__label--left="e.align == 'left'" data-class-is-gm="e.gm"><span class="edge__text"
+						data-attr-id="'edge-quest-text-' + e.id">{{ e.label }}</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="whisper-stack" class="edge-stack edge-stack--whisper">
+		<div class="edge-stack__slot" data-for="e : whispers">
+			<div class="edge edge--whisper" data-attr-id="'edge-whisper-' + e.id">
+				<div class="edge__inner" data-if="e.shown">
+					<button class="edge__button nui-interactive" data-event-mousedown="press('whisper', e.id, ev.button)">
+						<nui-blink class="edge__blink" data-class-is-flashing="e.flashing" data-attr-period="e.flashing ? 1 : 0">
+							<img class="edge__art edge__art--up" data-if="e.up != ''" data-attr-src="e.up"/>
+						</nui-blink>
+						<img class="edge__art edge__art--over" data-if="e.over != ''" data-attr-src="e.over"/>
+						<img class="edge__art edge__art--down" data-if="e.down != ''" data-attr-src="e.down"/>
+					</button>
+					<div class="edge__label" data-if="e.label_shown &amp;&amp; e.label != ''"
+						data-class-edge__label--left="e.align == 'left'" data-class-is-gm="e.gm"><span class="edge__text">{{ e.label }}</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

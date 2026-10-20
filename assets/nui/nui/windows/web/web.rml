@@ -1,0 +1,29 @@
+<rml>
+<head>
+	<!-- The web window (uiweb.py WebWindow, uiscript webwindow.py): the
+	     frame and title bar around the client's WebView2 page, the item
+	     mall. While the web flag is on, the Interface makes the facade
+	     nui_web.WebWindow (controller assets/root/nui_web.py), and the mall
+	     server command opens it. The page is a native window the client
+	     puts on the page area (web-page) and keeps there, and at the UI
+	     scale, from C++ (nuigame.WebPageFollow), so a drag of the title bar
+	     or a scale change moves it without Python. The page area shows its
+	     own background only until the page draws over it. The document
+	     exists only while the window shows (nui_hud.OnDemand). The body and
+	     the close button take no focus, so the button acts on a left
+	     mousedown; Escape closes the window in its legacy place
+	     (nui_hud.EscapeProxy). -->
+	<title>web</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="web.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-fx nui-anim web" data-model="web">
+	<div class="nui-window__titlebar web__titlebar">
+		<handle class="nui-window__handle web__handle" move_target="#document">
+			<span id="web-title" class="nui-window__title web__title">@ui.SYSTEM_MALL</span>
+		</handle>
+		<button id="web-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)">&#215;</button>
+	</div>
+	<div id="web-page" class="web__page"></div>
+</body>
+</rml>

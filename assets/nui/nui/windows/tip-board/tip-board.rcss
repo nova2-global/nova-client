@@ -1,0 +1,69 @@
+/* The tip board's modern look: a 370 x 20 bar of black at 50% with round
+   corners at the top center, 70dp from the top, its line in the notice cream
+   at 3, 5 inside a clip one line high. A step slides the incoming line in
+   from below and the outgoing one up, 17dp in 0.27 s (the legacy 17 px at a
+   pixel a frame). The clip starts 2dp below the bar's top, where the line's
+   ink does not reach, so the descenders of a line that went out leave no
+   marks on an emptied bar (legacy clips from the bar's top and leaves them).
+   Classic (the legacy black bar at 50%, white text, the legacy clip):
+   skins/classic/windows/tip-board.rcss. */
+
+body.tip-board
+{
+	focus: none;
+	tab-index: none;
+}
+.tip-board__bar
+{
+	position: absolute;
+	left: 50%;
+	top: 70dp;
+	margin-left: -185dp;
+	width: 370dp;
+	height: 20dp;
+}
+/* The lines move by transform, which RmlUi does not count as overflow, so
+   the clip is forced. */
+.tip-board__clip
+{
+	clip: always;
+	position: absolute;
+	left: 0;
+	top: 2dp;
+	width: 370dp;
+	height: 16dp;
+	overflow: hidden;
+}
+.tip-line
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 1dp;
+	color: var(--notice-text-big);
+	font-size: var(--font-sm);
+	line-height: 14dp;
+	white-space: nowrap;
+}
+.tip-line.is-back
+{
+	transform: translateY(-17dp);
+}
+.tip-line.is-front.nui-anim
+{
+	animation: 0.27s cubic-out tip-line-in;
+}
+.tip-line.is-back.nui-anim
+{
+	animation: 0.27s cubic-out tip-line-out;
+}
+@keyframes tip-line-in
+{
+	from { transform: translateY(17dp); }
+	to { transform: translateY(0dp); }
+}
+@keyframes tip-line-out
+{
+	from { transform: translateY(0dp); }
+	to { transform: translateY(-17dp); }
+}

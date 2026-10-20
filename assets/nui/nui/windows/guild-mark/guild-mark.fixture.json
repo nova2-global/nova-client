@@ -1,0 +1,51 @@
+{
+	"guild_mark": {
+		"kind": "mark",
+		"title": "Register Guild Sign",
+		"files": [
+			{
+				"index": 0,
+				"name": "castle.png",
+				"preview": ""
+			},
+			{
+				"index": 1,
+				"name": "dragon.tga",
+				"preview": "/nui/windows/guild-mark/fixture/mark1.png"
+			},
+			{
+				"index": 2,
+				"name": "flag.bmp",
+				"preview": ""
+			},
+			{
+				"index": 3,
+				"name": "lion.tga",
+				"preview": "/nui/windows/guild-mark/fixture/mark2.png"
+			},
+			{
+				"index": 4,
+				"name": "old_sign.jpeg",
+				"preview": ""
+			},
+			{
+				"index": 5,
+				"name": "rose.png",
+				"preview": ""
+			},
+			{
+				"index": 6,
+				"name": "sword.jpg",
+				"preview": ""
+			},
+			{
+				"index": 7,
+				"name": "wolf.tga",
+				"preview": "/nui/windows/guild-mark/fixture/mark3.png"
+			}
+		],
+		"selected": 3,
+		"selected_row": 3,
+		"scroll": 0.0
+	}
+}

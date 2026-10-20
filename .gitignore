@@ -79,3 +79,6 @@ ErrorLog.txt
 
 # per-machine publisher settings (see assets/pack.cfg)
 assets/pack.local.cfg
+
+# tools/check_nui_snapshots.py leaves its output here after a mismatch
+/.snapshot-check-*/

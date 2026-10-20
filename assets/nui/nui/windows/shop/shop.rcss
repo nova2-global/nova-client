@@ -1,0 +1,80 @@
+/* The shop's modern look (P16 spec 5.2.2): a lean 5 x 8 grid; under it the
+   tabs (the shown tab selected, one share of the width each) or the buy and
+   sell toggles (selected while their cursor mode is on), and the danger
+   close-shop button of the player's own shop. The controller places it at
+   legacy's (W - 400, 10) at its first show and keeps the place the player
+   drags it to; the sheet's place frames it in its snapshots. Classic
+   (legacy's 184 x 328 board, its buttons' art at the uiscript's places; a
+   tab's art follows its button state, so a three-tab shop opens with no tab
+   down, as legacy): skins/classic/windows/shop.rcss. */
+
+body.shop
+{
+	left: 16dp;
+	top: 16dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.shop button
+{
+	tab-index: none;
+	focus: none;
+}
+.shop__body
+{
+	padding: var(--space-3);
+}
+.shop__footer
+{
+	justify-content: center;
+	padding: var(--space-3);
+}
+.shop__tabs
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-2);
+	width: 216dp;
+}
+.shop__tab-slot
+{
+	display: block;
+	flex: 1 1 0;
+}
+.shop__tab
+{
+	display: block;
+	width: 100%;
+	min-width: 0;
+	padding: 0 2dp;
+	overflow: hidden;
+}
+/* The shop's tab name (the server's, up to three in the 216dp row): the
+   small size, cut with an ellipsis if it is still too long; it takes no
+   pointer, so a press on it is the tab's. */
+.shop__tab-label
+{
+	display: block;
+	font-size: var(--font-sm);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	pointer-events: none;
+}
+/* The tab whose items show (is-current, the shop's tabIdx), as a selected
+   choice. is-down is legacy's button state, which classic draws (a three-tab
+   shop opens on its second tab with no button down, legacy's own state). */
+.shop__tab.is-current
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+}
+.shop__buy, .shop__sell
+{
+	flex: 1 1 0;
+}
+.shop__close-shop
+{
+	flex: 1 1 auto;
+}

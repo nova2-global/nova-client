@@ -1,0 +1,47 @@
+/* Dialog: the shared look of the dialog kit (assets/root/nui_dialog_kit.py),
+   a .nui-window div inside a modal <body class="nui-scrim">:
+   <div class="nui-window nui-dialog nui-anim" id="...">
+       <div class="nui-window__body"><p class="nui-dialog__text">...</p></div>
+       <div class="nui-window__footer nui-dialog__footer">buttons</div>
+   </div>
+   Widths come from here, not from the caller: a long message wraps inside
+   the maximum width. .nui-dialog__field is a text input centered under the
+   text; .nui-dialog__text--warning marks a warning line. The footer centers its buttons (secondary first, primary last). */
+
+.nui-dialog
+{
+	min-width: 280dp;
+	max-width: 420dp;
+}
+.nui-dialog__text
+{
+	display: block;
+	margin: 0;
+	text-align: center;
+	white-space: normal;
+}
+/* A warning line (QuestionDialog2.SetWarningLine): the point reset's
+   confirmation, which legacy draws in red. */
+.nui-dialog__text--warning
+{
+	color: var(--danger);
+}
+/* Centered by the body's text-align, not by auto margins: RmlUi sizes a
+   shrink-to-fit box with an auto-margin child to its maximum width. */
+.nui-dialog .nui-window__body
+{
+	text-align: center;
+}
+.nui-dialog__field
+{
+	display: inline-block;
+	width: 160dp;
+	margin-top: var(--space-2);
+	text-align: left;
+}
+/* The footer component is a flex row at the end; a dialog centers it. */
+.nui-dialog__footer
+{
+	justify-content: center;
+	gap: var(--space-2);
+}

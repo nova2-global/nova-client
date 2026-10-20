@@ -1,0 +1,44 @@
+<rml>
+<head>
+	<!-- Login board: replaces the legacy connect and login boards while
+	     UI_NUI_LOGIN is 1 (controller: assets/root/nui_login.py). Not modal,
+	     so the legacy locale strip stays usable. The password stays out of
+	     the model: its field reports every edit through change (ev.value).
+	     The body class nui-escape-keeps-focus keeps the caret in a field on
+	     Escape, as a legacy EditLine does. The login-r1..r4 rows and the
+	     Connect sheen carry the intro motion (login.rcss "Intro motion").
+	     keyboard is true while the NovaUI virtual keyboard comes with the
+	     board: the board then rises above it (login--keyboard). -->
+	<title>login</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="login.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-fx nui-anim nui-escape-keeps-focus login" data-model="login" data-class-login--keyboard="keyboard">
+	<div class="nui-window__body nui-stack nui-anim" data-class-login-shake="error != ''">
+		<div class="nui-row login-server login-r1 nui-anim">
+			<span class="nui-grow login-server__name">{{ server }}</span>
+			<button id="login-choose" class="nui-button nui-button--small nui-anim login-button"
+				data-event-click="choose_server()">@ui.LOGIN_SELECT_BUTTON</button>
+		</div>
+		<div class="nui-field login-r2 nui-anim">
+			<label class="nui-field__label" for="login-user">@ui.LOGIN_ID</label>
+			<input id="login-user" type="text" class="nui-input nui-anim login-input" maxlength="19" autofocus="autofocus"
+				data-attr-value="user"
+				data-class-nui-input--invalid="error_on == 'user'"
+				data-event-change="user_edit(ev.value, ev.linebreak)"/>
+		</div>
+		<div class="nui-field login-r3 nui-anim">
+			<label class="nui-field__label" for="login-password">@ui.LOGIN_PASSWORD</label>
+			<input id="login-password" type="password" class="nui-input nui-anim login-input" maxlength="16"
+				data-class-nui-input--invalid="error_on == 'password'"
+				data-event-change="password_edit(ev.value, ev.linebreak)"/>
+		</div>
+		<span class="nui-field__error login-error nui-anim" data-visible="error != ''" data-class-login-error--in="error != ''">{{ error }}</span>
+	</div>
+	<div class="nui-window__footer login-r4 nui-anim">
+		<button id="login-exit" class="nui-button nui-anim login-button" data-event-click="exit()">@ui.LOGIN_EXIT</button>
+		<button id="login-connect" class="nui-button nui-button--primary nui-anim login-button login-connect"
+			data-event-click="submit()">@ui.LOGIN_CONNECT<span class="login-sheen nui-anim"><span class="login-sheen__half"></span><span class="login-sheen__half login-sheen__half--out"></span></span></button>
+	</div>
+</body>
+</rml>

@@ -1,0 +1,16 @@
+{
+	"whisper": {
+		"target": "",
+		"editing_target": true,
+		"accept_shown": true,
+		"minimize_shown": false,
+		"gm": false,
+		"gm_mark_src": "/locale/common/effect/ymirred.tga",
+		"feed_key": 0,
+		"width": 300.0,
+		"height": 200.0,
+		"pos": 1.0,
+		"input_max": 99,
+		"target_max": 12
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"$comment": "The content images a modern window or component file may name (P13 spec D11; docs/ui/AUTHORING.md \"Code-drawn by default\"). Every other image those files name would be chrome art, which belongs in nui/skins/<skin>/: lint NUI016 and tools/nui_skins_test.py check both ways (every reference listed, every entry named). A path is a store path (a d:/ymir work/ path as legacy writes it, or a / path from the store root) or a pattern with * and %d. Content that comes from data (item and skill icons, quest pictures, guild marks, the locale flags, the loading picture) names no literal path and needs no entry. The runtime never reads this file.",
+	"content": [
+		{"path": "/nui/components/img/solid.tga", "kind": "technical",
+		 "why": "the cooldown sweep's white fill, cut to the remaining time and tinted by image-color (components/clock.rcss)"},
+		{"path": "d:/ymir work/ui/intro/empire/atlas.sub", "kind": "map",
+		 "why": "the empire select's continent map"},
+		{"path": "d:/ymir work/ui/intro/empire/empirearea_*.sub", "kind": "map",
+		 "why": "the three empires' areas lit on the continent map"},
+		{"path": "d:/ymir work/ui/intro/empire/empireareaflag_*.sub", "kind": "flag",
+		 "why": "the three empires' flags on their areas of the map"},
+		{"path": "d:/ymir work/ui/game/windows/party_affect_*.sub", "kind": "party-bonus-icon",
+		 "why": "the nine party bonus icons of a member's board, as the affect icons are"},
+		{"path": "/icon/item/27001.tga", "kind": "test-page",
+		 "why": "the render test page's image cells draw one item icon"}
+	]
+}

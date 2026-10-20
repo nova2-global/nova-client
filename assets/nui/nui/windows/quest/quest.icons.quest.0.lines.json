@@ -1,0 +1,76 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "Three rewards:",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 14,
+		"total": 14,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "icons",
+		"align": "center",
+		"icons": [
+			{
+				"vnum": 27001,
+				"src": "/icon/item/27001.tga",
+				"title": "Red Potion (S)",
+				"desc": [
+					"Restores 100 HP."
+				],
+				"caption": "Red Potion (S)",
+				"index": 0,
+				"total": 3
+			},
+			{
+				"vnum": 27002,
+				"src": "/icon/item/27002.tga",
+				"title": "Red Potion (M)",
+				"desc": [
+					"Restores 200 HP."
+				],
+				"caption": "Red Potion (M)",
+				"index": 1,
+				"total": 3
+			},
+			{
+				"vnum": 27003,
+				"src": "/icon/item/27003.tga",
+				"title": "Red Potion (L)",
+				"desc": [
+					"Restores 350 HP."
+				],
+				"caption": "Red Potion (L)",
+				"index": 2,
+				"total": 3
+			}
+		]
+	},
+	{
+		"id": 3,
+		"kind": "icons",
+		"align": "center",
+		"icons": [
+			{
+				"vnum": 50001,
+				"src": "/icon/item/50001.tga",
+				"title": "Treasure Box",
+				"desc": [
+					"A box that holds a reward."
+				],
+				"caption": "",
+				"index": 0,
+				"total": 1
+			}
+		]
+	}
+]

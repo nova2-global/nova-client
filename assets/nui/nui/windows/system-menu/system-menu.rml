@@ -1,0 +1,29 @@
+<rml>
+<head>
+	<!-- The system menu (uisystem.py SystemDialog, uiscript systemdialog.py):
+	     Escape in game, the taskbar's system button and the exit key open it.
+	     While the system-menu flag is on, the Interface makes the facade
+	     nui_system_menu.SystemDialog (controller assets/root/nui_system_menu.py).
+	     The document exists only while the menu shows (nui_hud.OnDemand). It
+	     has no title bar, as legacy's thin board has none; the facade
+	     centers it. Its body and buttons take no focus, so the buttons act on
+	     a left mousedown and a press never takes the focus from an open chat
+	     field; Escape and the exit key reach the menu in its legacy place
+	     (nui_hud.EscapeProxy). Each button closes the menu first, as legacy's. -->
+	<title>system-menu</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="system-menu.rcss"/>
+</head>
+<body template="nui" class="nui-window nui-fx nui-anim system-menu" data-model="system_menu">
+	<div class="system-menu__buttons">
+		<button id="system-menu-help" class="nui-button nui-anim system-menu__button system-menu__button--help" data-event-mousedown="act('help', ev.button)">@ui.SYSTEM_HELP</button>
+		<button id="system-menu-mall" class="nui-button nui-anim system-menu__button system-menu__button--mall system-menu__button--group" data-if="show_mall" data-event-mousedown="act('mall', ev.button)">@ui.SYSTEM_MALL</button>
+		<button id="system-menu-system-options" class="nui-button nui-anim system-menu__button system-menu__button--system-options" data-event-mousedown="act('system_options', ev.button)">@ui.SYSTEMOPTION_TITLE</button>
+		<button id="system-menu-game-options" class="nui-button nui-anim system-menu__button system-menu__button--game-options" data-event-mousedown="act('game_options', ev.button)">@ui.GAMEOPTION_TITLE</button>
+		<button id="system-menu-change" class="nui-button nui-anim system-menu__button system-menu__button--change" data-event-mousedown="act('change', ev.button)">@ui.SYSTEM_CHANGE</button>
+		<button id="system-menu-logout" class="nui-button nui-anim system-menu__button system-menu__button--logout" data-event-mousedown="act('logout', ev.button)">@ui.SYSTEM_LOGOUT</button>
+		<button id="system-menu-exit" class="nui-button nui-anim system-menu__button system-menu__button--exit system-menu__button--group" data-event-mousedown="act('exit', ev.button)">@ui.SYSTEM_EXIT</button>
+		<button id="system-menu-cancel" class="nui-button nui-anim system-menu__button system-menu__button--cancel" data-event-mousedown="act('cancel', ev.button)">@ui.CANCEL</button>
+	</div>
+</body>
+</rml>

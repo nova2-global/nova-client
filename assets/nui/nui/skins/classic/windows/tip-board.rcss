@@ -1,0 +1,20 @@
+/* Classic skin overlay of nui/windows/tip-board/tip-board.rml: the legacy
+   TipBoard, a 370 x 20 bar of black at 50% at the top center, 70dp from the
+   top, its text white at 3, 5 and clipped 18dp high (uitip.py). */
+
+body.skin-classic.tip-board .tip-board__bar
+{
+	border-radius: 0;
+}
+/* The legacy clip, from the bar's top 18dp down (SetClipRect y, y + 18). */
+body.skin-classic.tip-board .tip-board__clip
+{
+	top: 0;
+	height: 18dp;
+}
+body.skin-classic.tip-board .tip-line
+{
+	top: 4dp;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+}

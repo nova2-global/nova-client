@@ -1,0 +1,412 @@
+/* Classic skin overlay of nui/windows/quest/quest.rml: legacy's quest dialog
+   at legacy's places at 100% (uiquest.py, uiscript questdialog.py). The
+   thin board, 350 x 300 (or WINDOW_SIZE's, --quest-board-width and
+   --quest-board-height), centered on the screen as legacy centers its
+   800 x 450 window and the board in it. The text at (20, 20) of the board,
+   16dp a line (the classic quest text rules in classic.rcss). Legacy's
+   translucent bars, drawn in code (BarButton, uiquest.py:196-229): the
+   answers 200 x 26, centered, 32dp apart, eight to a page, the first 25dp
+   below the last finished line; the Next button 100 x 26, 21dp below it
+   (the interpreter's MakeNextButton spacing); the page buttons 52 x 26
+   left and right of the board's middle. Skin 3: the scroll's background
+   whole, black-text bars side by side, the text 100dp lower. The pictures
+   at legacy's places: the portrait at the window's top left with the board
+   moved right of it, the banner above a shorter board, a background
+   centered on the board in place of its art, the free images at their x
+   and y. Cinema: no board, the text at (50, H - 44). */
+
+body.skin-classic.quest
+{
+	--quest-board-width: 350dp;
+	--quest-board-height: 300dp;
+	--quest-x: 0dp;
+	--quest-y: 0dp;
+}
+
+/* The board by its top left from the screen's middle: legacy centers its
+   800 x 450 window on the screen and the 350 x 300 board in it, a picture
+   command moves the board, and a later SetSize keeps its top left
+   (CWindow::SetSize does not center again, PythonWindow.cpp:303-310). */
+body.skin-classic.quest .quest__board
+{
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	z-index: 0;
+	width: 350dp;
+	height: 300dp;
+	margin: -150dp 0 0 -175dp;
+	min-width: 0;
+	max-width: none;
+	max-height: none;
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+}
+body.skin-classic.quest.quest--sized .quest__board
+{
+	width: var(--quest-board-width);
+	height: var(--quest-board-height);
+}
+/* The text area: legacy's text column, the board's width minus 40. */
+body.skin-classic.quest .quest__body
+{
+	position: static;
+	z-index: auto;
+	min-height: 0;
+	padding: 20dp 20dp 0 20dp;
+	overflow: visible;
+}
+
+/* Legacy keeps the open empty line of a page without text (a menu), and
+   places the answers after it (its 16dp pitch, classic.rcss). */
+body.skin-classic.quest .quest__text .nui-quest__line.is-empty:only-child
+{
+	min-height: 16dp;
+	line-height: 16dp;
+}
+
+/* The answers: the first 25dp below the last finished line, which is 11dp
+   above the end of the interpreter's open line. */
+body.skin-classic.quest .quest__choices
+{
+	display: block;
+	max-height: none;
+	margin-top: -11dp;
+	overflow: visible;
+}
+body.skin-classic.quest .quest__choice
+{
+	display: block;
+	width: 200dp;
+	height: 26dp;
+	min-height: 0;
+	margin: 0 auto 6dp auto;
+	padding: 0;
+	decorator: none;
+	background-color: var(--classic-quest-bar);
+	border-width: 0;
+	border-radius: 0;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	line-height: 26dp;
+	text-align: center;
+	white-space: nowrap;
+	transform: none;
+}
+body.skin-classic.quest .quest__choice:hover, body.skin-classic.quest .quest__choice.is-hover
+{
+	decorator: none;
+	background-color: var(--classic-quest-bar-over);
+	border-color: transparent;
+	transform: none;
+}
+body.skin-classic.quest .quest__choice:active, body.skin-classic.quest .quest__choice.is-active
+{
+	decorator: none;
+	background-color: var(--classic-quest-bar-down);
+	border-color: transparent;
+	transform: none;
+}
+body.skin-classic.quest .quest__choice.is-off-page
+{
+	display: none;
+}
+
+/* The page buttons beside the board's middle (uiquest.py:494-502). */
+body.skin-classic.quest .quest__pager
+{
+	display: block;
+}
+body.skin-classic.quest .quest__pager-prev, body.skin-classic.quest .quest__pager-next
+{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 52dp;
+	height: 26dp;
+	min-width: 0;
+	margin-top: -16dp;
+	padding: 0;
+	decorator: none;
+	background-color: var(--classic-quest-bar);
+	border-width: 0;
+	border-radius: 0;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	line-height: 26dp;
+	white-space: nowrap;
+	transform: none;
+}
+body.skin-classic.quest .quest__pager-prev
+{
+	margin-left: -164dp;
+}
+body.skin-classic.quest .quest__pager-next
+{
+	margin-left: 112dp;
+}
+body.skin-classic.quest .quest__pager-prev:hover, body.skin-classic.quest .quest__pager-next:hover
+{
+	decorator: none;
+	background-color: var(--classic-quest-bar-over);
+	transform: none;
+}
+body.skin-classic.quest .quest__pager-prev:active, body.skin-classic.quest .quest__pager-next:active
+{
+	decorator: none;
+	background-color: var(--classic-quest-bar-down);
+	transform: none;
+}
+body.skin-classic.quest .quest__pager-prev.is-off, body.skin-classic.quest .quest__pager-next.is-off
+{
+	display: none;
+}
+
+/* The Next button: 21dp below the last finished line (15dp above the end
+   of the open line), centered. */
+body.skin-classic.quest .quest__footer
+{
+	display: block;
+	margin-top: -15dp;
+	padding: 0;
+	border-width: 0;
+}
+body.skin-classic.quest .quest__next
+{
+	display: block;
+	width: 100dp;
+	height: 26dp;
+	min-width: 0;
+	margin: 0 auto;
+	padding: 0;
+	decorator: none;
+	background-color: var(--classic-quest-bar);
+	border-width: 0;
+	border-radius: 0;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	line-height: 26dp;
+	transform: none;
+}
+body.skin-classic.quest .quest__next:hover, body.skin-classic.quest .quest__next.is-hover
+{
+	decorator: none;
+	background-color: var(--classic-quest-bar-over);
+	border-color: transparent;
+	transform: none;
+}
+body.skin-classic.quest .quest__next:active, body.skin-classic.quest .quest__next.is-active
+{
+	decorator: none;
+	background-color: var(--classic-quest-bar-down);
+	border-color: transparent;
+	transform: none;
+}
+
+/* Input: legacy's 200 x 18 slot bar, 15dp below the line INPUT ended (47dp
+   for the name scroll), the done button 35dp below that. */
+body.skin-classic.quest .quest__input
+{
+	margin-top: 0;
+}
+body.skin-classic.quest .quest__field
+{
+	width: 200dp;
+	height: 18dp;
+	margin: -21dp auto 0 auto;
+}
+body.skin-classic.quest.quest--input .quest__footer
+{
+	margin-top: 17dp;
+}
+
+/* Skin 3, the scroll (uiquest.py:508-514, :881-926): legacy hides the board's
+   art behind its 256 x 333 background, moves the board 190dp left of the
+   middle and the text 100dp down; the answers are black-text bars side by
+   side. */
+body.skin-classic.quest.quest--scroll .quest__board.has-background
+{
+	width: 256dp;
+	height: 333dp;
+	margin-left: -318dp;
+	margin-top: -167dp;
+}
+body.skin-classic.quest.quest--scroll .quest__board.has-background .quest__body
+{
+	padding-top: 120dp;
+}
+body.skin-classic.quest.quest--scroll .quest__choices
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 218dp;
+	margin-left: auto;
+	margin-right: auto;
+}
+body.skin-classic.quest.quest--scroll .quest__choice
+{
+	width: 106dp;
+	margin: 0 6dp 6dp 0;
+	background-color: var(--classic-quest-scroll-bar);
+	color: var(--classic-key-text);
+}
+body.skin-classic.quest.quest--scroll .quest__choice:hover, body.skin-classic.quest.quest--scroll .quest__choice.is-hover
+{
+	background-color: var(--classic-quest-scroll-bar-over);
+}
+body.skin-classic.quest.quest--scroll .quest__choice:active, body.skin-classic.quest.quest--scroll .quest__choice.is-active
+{
+	background-color: var(--classic-quest-scroll-bar-down);
+}
+
+/* The pictures at legacy's places (uiquest.py:731-926), each at its own
+   size: legacy's ExpandedImageBox.SetSize sets the window, not the drawn
+   size, so a 256 x 256 board picture draws whole (its art the top left
+   220 x 151). In the order a script sends them (LEFTIMAGE, TOPIMAGE,
+   BGIMAGE, IMAGE, WINDOW_SIZE):
+   - the portrait at the 800 x 450 window's top left, the board moved 160
+     right of its middle;
+   - the banner at (the board's x, 10) of the window, the board below it,
+     420 - 256 tall (every banner is 256 tall);
+   - the background (BGIMAGE, here level_bg's 256 x 512) centers the board
+     at 350 x 512 again and hides its frame, the picture centered in it;
+   - the free images at their x and y in the board. */
+body.skin-classic.quest .quest__board.has-portrait
+{
+	margin-left: -15dp;
+}
+body.skin-classic.quest .quest__board.has-banner
+{
+	margin-top: 126dp;
+	height: 164dp;
+}
+body.skin-classic.quest .quest__board.has-background
+{
+	margin-left: -175dp;
+	margin-top: -256dp;
+	height: 512dp;
+	decorator: none;
+}
+body.skin-classic.quest.quest--sized .quest__board.has-banner,
+body.skin-classic.quest.quest--sized .quest__board.has-background
+{
+	height: var(--quest-board-height);
+}
+body.skin-classic.quest .quest__background
+{
+	z-index: -2;
+	left: 47dp;
+	top: 0dp;
+	width: auto;
+	height: auto;
+	transform: none;
+	opacity: 1;
+}
+/* At its own size, from the board's top left: the art is the top 331 rows
+   of its 256 x 512 texture. */
+body.skin-classic.quest.quest--scroll .quest__background
+{
+	left: 0;
+	top: 0;
+	width: 256dp;
+	height: 512dp;
+	transform: none;
+}
+/* Legacy's stacking: the board and its own pictures (the background, the
+   free images, z-index -2), then the portrait and the banner (the dialog's
+   children made after the board, -1), then the text and the buttons (a
+   TOP_MOST window, and bars the text never covers). */
+body.skin-classic.quest .quest__portrait
+{
+	z-index: -1;
+	right: auto;
+	left: -385dp;
+	top: -75dp;
+	width: auto;
+	height: auto;
+	margin-right: 0;
+}
+body.skin-classic.quest .quest__board.has-banner .quest__portrait
+{
+	top: -351dp;
+}
+body.skin-classic.quest .quest__board.has-background .quest__portrait
+{
+	left: -225dp;
+	top: 31dp;
+}
+body.skin-classic.quest .quest__banner
+{
+	position: absolute;
+	z-index: -1;
+	left: -225dp;
+	top: -341dp;
+	width: auto;
+	height: auto;
+	max-width: none;
+	margin: 0;
+}
+body.skin-classic.quest .quest__board.has-background .quest__banner
+{
+	left: -225dp;
+	top: 41dp;
+}
+body.skin-classic.quest .quest__board.has-background.has-portrait .quest__banner
+{
+	left: -65dp;
+}
+body.skin-classic.quest .quest__images
+{
+	display: block;
+}
+body.skin-classic.quest .quest__image
+{
+	display: block;
+	position: absolute;
+	z-index: -2;
+	left: var(--quest-x);
+	top: var(--quest-y);
+	width: auto;
+	margin: 0;
+}
+body.skin-classic.quest .quest__image-art
+{
+	width: auto;
+	height: auto;
+}
+
+/* Cinema (skin 5): no board; the text at (50, H - 44), left-aligned. */
+body.skin-classic.quest.quest--cinema
+{
+	display: block;
+}
+body.skin-classic.quest.quest--cinema .quest__board
+{
+	position: absolute;
+	left: 50dp;
+	top: 100%;
+	width: 700dp;
+	height: auto;
+	margin: -44dp 0 0 0;
+	decorator: none;
+}
+body.skin-classic.quest.quest--cinema .quest__body
+{
+	padding: 0;
+}
+body.skin-classic.quest.quest--cinema .nui-quest__line
+{
+	text-align: left;
+}
+body.skin-classic.quest.quest--cinema .nui-quest__line--center
+{
+	text-align: center;
+}
+body.skin-classic.quest.quest--cinema .quest__footer
+{
+	display: none;
+}

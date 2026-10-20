@@ -1,0 +1,92 @@
+/* List with selection:
+   <div class="nui-list">
+       <div class="nui-list__viewport">
+           <div class="nui-list__item nui-anim" data-for="row : rows"
+                data-class-is-selected="row.id == selected"
+                data-event-click="select(row.id)">{{ row.name }}</div>
+       </div>
+   </div>
+   The rounded frame (.nui-list) does not clip; the square viewport inside
+   it scrolls. An element that clips with a border-radius needs the stencil
+   clip mask on every frame, a square one only the scissor. The frame's
+   padding (4dp) is more than its inner radius (3dp), so rows never reach the
+   rounded corners. Give the viewport a height (or max-height) in the
+   window's sheet to scroll: .my-list .nui-list__viewport { height: ...; }.
+   The `disabled` attribute takes a row out of hit testing, the tab order and
+   Enter/Space, like a disabled button. Enter and Space select the row that
+   has the keyboard focus (see docs/ui/AUTHORING.md "Keyboard and modals").
+   is-hover and is-focus force a state without the pointer or the keyboard. */
+
+.nui-list
+{
+	display: block;
+	padding: var(--space-1);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+
+.nui-list__viewport
+{
+	display: block;
+	overflow-y: auto;
+}
+
+.nui-list__item
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-2);
+	padding: var(--space-2) var(--space-3);
+	/* The left edge is the selection stripe; the focus ring uses all four, so
+	   they are reserved here and focus does not move the row. RmlUi paints the
+	   background inside the border, so a transparent edge shows the list. */
+	border-width: 1dp 1dp 1dp 2dp;
+	border-color: transparent;
+	border-radius: var(--radius-sm);
+	color: var(--text);
+	tab-index: auto;
+}
+.nui-list__item:hover, .nui-list__item.is-hover
+{
+	background-color: var(--surface-hover);
+}
+.nui-list__item.is-selected
+{
+	background-color: var(--selection);
+	border-left-color: var(--accent);
+}
+/* After is-selected: both weigh the same, so the later rule wins. */
+.nui-list__item:focus-visible, .nui-list__item.is-focus
+{
+	border-color: var(--focus-ring);
+}
+/* A focused selected row keeps its stripe (the heavier selector). */
+.nui-list__item.is-selected:focus-visible, .nui-list__item.is-selected.is-focus
+{
+	border-left-color: var(--accent);
+}
+.nui-list__item[disabled]
+{
+	color: var(--text-muted);
+	pointer-events: none;
+	tab-index: none;
+	focus: none;
+}
+/* Hover fade (--dur-fast, --ease-out). */
+.nui-list__item.nui-anim
+{
+	transition: background-color border-color 0.1s cubic-out;
+}
+
+.nui-list__label
+{
+	flex: 1 1 auto;
+}
+.nui-list__meta
+{
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}

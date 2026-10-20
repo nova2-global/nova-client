@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the chat log (tools/check_nui_snapshots.py): every filter on and ten lines of every type at the smallest size; Party alone with its lines and the types the filters never hide. The lines come from the feed stand-ins, as C++ publishes them.",
+	"cases": [
+		{"page": "chat-log", "themes": "all", "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"chat.log.lines": "nui/windows/chat-log/chat-log.chat.log.lines.json"}},
+		{"page": "chat-log", "variant": "party", "themes": "all", "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"chat.log.lines": "nui/windows/chat-log/chat-log.party.chat.log.lines.json"}}
+	]
+}

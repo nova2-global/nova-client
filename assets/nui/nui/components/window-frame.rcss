@@ -1,0 +1,247 @@
+/* The shared window chrome (docs/ui/AUTHORING.md "Chrome"): every window's
+   frame, title bar, close button and footer, and the HUD's boards and tiles,
+   take their look from this sheet and the skins, never from the window's own
+   sheet, which sets only layout on them (size, margins, padding, position
+   and offsets, display, flex and alignment, overflow, z-index, a placement
+   transform; lint NUI017). A look no variant has gets a new variant here,
+   named for its role, never for a window.
+
+   Window frame: title bar with a drag handle and a close button, body, footer.
+   Put .nui-window on <body> (the document is the window; the handle moves
+   #document) or on a <div> inside a full-screen modal <body class="nui-scrim">
+   (the handle then names the div's id in move_target). A handle moves its
+   target by writing left and top, which a static box ignores, so this sheet
+   makes the modal div position: relative: the scrim keeps it centered and
+   the drag offsets it from there. The window's own sheet sets width and
+   height, and position only for a body-level window; a modal div must not
+   get a position or left/top of its own. Every element with nui-window or
+   nui-board, and every body.nui-scrim, also carries nui-fx, so a skin may
+   give it a filter, a backdrop filter or a mask that reduced effects can
+   switch off (base.rcss). */
+
+.nui-window
+{
+	display: block;
+	min-width: 240dp;
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+}
+/* Translucent panels (docs/ui/AUTHORING.md "Player colors"): the opacity
+   slot sets --panel-backdrop; boards and tiles stay unblurred (they are
+   always loaded, and a backdrop blur costs a layer every frame). With the
+   token at none (the default, and opacity 100) no layer exists. */
+.nui-window.nui-fx
+{
+	backdrop-filter: var(--panel-backdrop);
+}
+/* A band across the screen: no side borders and no corners, one line along
+   its bottom (the console). */
+.nui-window--band
+{
+	min-width: 0;
+	border-width: 0 0 1dp 0;
+	border-radius: 0;
+	background-color: var(--surface-band);
+}
+/* A frame without its border (the quest board's cinema skin). */
+.nui-window--borderless
+{
+	border-width: 0;
+}
+
+/* Rises 4dp over 0.2s each time the window is shown: the runtime puts
+   nui-shown on the <body> in Show and takes it off in Hide, and the second
+   selector covers the window div inside a modal scrim body. It does not
+   fade: RmlUi 6.3 bakes the inherited opacity into every element's vertex
+   colors, so fading the window would rebuild every mesh in it on each frame
+   of the fade, and a child with its own opacity (an open tooltip, a
+   disabled control) would not fade anyway. A transform rebuilds nothing.
+   Values mirror --dur-med and --ease-out: motion values are written out, not
+   var(), see docs/ui/AUTHORING.md "Motion". */
+.nui-window.nui-shown.nui-anim,
+.nui-shown .nui-window.nui-anim
+{
+	animation: 0.2s cubic-out nui-window-open;
+}
+
+@keyframes nui-window-open
+{
+	from
+	{
+		transform: translateY(4dp);
+	}
+	to
+	{
+		transform: translateY(0dp);
+	}
+}
+
+.nui-window__titlebar
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 36dp;
+	padding-left: var(--space-3);
+	padding-right: var(--space-1);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+}
+
+.nui-window__handle
+{
+	display: block;
+	flex: 1 1 auto;
+	height: 36dp;
+	line-height: 36dp;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.nui-window__title
+{
+	font-size: var(--font-md);
+	font-weight: bold;
+	color: var(--text);
+}
+/* A compact frame's title bar holds a smaller title (the chat log's 24dp
+   row); the window sets the bar's height. */
+.nui-window--compact .nui-window__title
+{
+	font-size: var(--font-sm);
+}
+
+.nui-window__body
+{
+	display: block;
+	padding: var(--space-4);
+}
+
+.nui-window__footer
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	gap: var(--space-2);
+	padding: var(--space-3) var(--space-4);
+	border-top-width: 1dp;
+	border-top-color: var(--border);
+}
+
+/* Full-screen modal backdrop; put the .nui-window div inside it. It takes the
+   mouse on purpose, so nothing behind the dialog can be clicked. Pair it
+   with MODAL = True in the controller: the modal takes the keyboard (and
+   every click beside the dialog) while the scrim draws the backdrop. */
+body.nui-scrim
+{
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: var(--overlay-scrim);
+}
+/* Not absolute: the flex scrim would stop centering it. With left and top at
+   auto, relative is the centered spot until the handle moves it. */
+body.nui-scrim .nui-window
+{
+	position: relative;
+}
+
+/* Boards: the HUD's framed parts that are not windows (a target board, a
+   menu, a notice bar, the minimap's ring). A board gets the chrome hooks a
+   theme asks for, as a frame does, so never put nui-board inside a data-for
+   (a list row is a tile). This sheet gives a board no position: a skin with
+   hooks makes static boards relative in its own sheet, since positioning
+   changes the painting order. */
+.nui-board
+{
+	display: block;
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+/* A bar along the screen's edge: one line on its top side, no corners (the
+   taskbar). */
+.nui-board--edge
+{
+	border-width: 1dp 0 0 0;
+	border-radius: 0;
+}
+/* A notice board: the notice fill inside the board's border (the big
+   notice). */
+.nui-board--notice
+{
+	background-color: var(--notice-bar);
+}
+/* A notice strip: the notice fill, no border, small corners (the tip line). */
+.nui-board--strip
+{
+	background-color: var(--notice-bar);
+	border-width: 0;
+	border-radius: var(--radius-sm);
+}
+/* A round ring around something drawn under it (the minimap's map). RmlUi
+   scales radii that do not fit down until they do, measured against the
+   padding box (CSS measures the border box), so 9999dp rounds a box of any
+   size as far as RmlUi can: the outer edge keeps flat sides twice the
+   border's width (10dp on the 136dp minimap, where it draws exactly what
+   68dp drew). A true circle at a small size is a borderless disc. */
+.nui-board--ring
+{
+	background-color: transparent;
+	border-width: 5dp;
+	border-radius: 9999dp;
+}
+/* A filled disc, used alone without nui-board (so it gets no hooks): the
+   backing under a ring. */
+.nui-board--disc
+{
+	background-color: var(--surface);
+	border-width: 0;
+	border-radius: 9999dp;
+}
+/* A tooltip board: the item, skill and link tooltips (P14 spec 5.7), on
+   the item tooltips' own panel color (--tip-bg, a raised panel that the
+   --tip-* role colors are checked against), with a static shadow. It sizes
+   itself to its lines. */
+.nui-board--tooltip
+{
+	background-color: var(--tip-bg);
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	padding: 8dp 12dp;
+}
+.nui-board--tooltip.nui-fx
+{
+	box-shadow: 0 2dp 8dp var(--overlay-scrim);
+}
+/* A tile: a small framed item of a list or a group (a party member's row).
+   Tiles never get hooks. */
+.nui-tile
+{
+	background-color: var(--surface);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+}
+
+/* Chrome hooks (docs/ui/AUTHORING.md "Chrome"): decorative parts the runtime
+   puts as the first children of every static frame and board, and of every
+   title bar, while a theme that asks for them in nui/theme/themes.json
+   ("chrome") is in use: <div class="nui-chrome nui-chrome--<part> nui-anim
+   nui-fx">. Hidden until a skin shows one, and never in hit testing. A theme
+   without "chrome" leaves documents without any, so they cost nothing. The
+   class is the runtime's: markup never names it (lint NUI017). */
+.nui-chrome
+{
+	display: none;
+	position: absolute;
+	pointer-events: none;
+}

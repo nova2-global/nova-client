@@ -1,0 +1,729 @@
+{
+	"messenger": {
+		"rows": [
+			{
+				"kind": "group",
+				"name": "Family",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Loverxxxxxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": 87,
+				"hint": "Love points: 87%"
+			},
+			{
+				"kind": "group",
+				"name": "Friends",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend00xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend03xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": true,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend06xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend09xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend12xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend15xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend18xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend21xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend24xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend27xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend30xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend33xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend36xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend39xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend42xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend45xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend48xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend51xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend54xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend57xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend60xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend63xxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend01xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend02xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend04xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend05xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend07xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend08xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend10xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend11xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend13xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend14xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend16xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend17xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend19xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend20xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend22xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend23xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend25xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend26xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend28xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend29xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend31xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend32xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend34xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend35xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend37xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend38xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend40xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend41xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend43xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend44xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend46xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend47xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend49xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend50xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend52xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend53xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend55xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend56xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend58xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend59xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend61xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Friend62xxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "group",
+				"name": "Guild",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Nyxxxxxxxxxxxxxxxxxxxx",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Orrinxxxxxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Perrinxxxxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "member",
+				"name": "Quillaxxxxxxxxxxxxxxxx",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": ""
+			}
+		],
+		"whisper_enabled": false,
+		"remove_enabled": true,
+		"height": 310.0
+	}
+}

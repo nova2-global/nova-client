@@ -1,0 +1,12 @@
+{
+	"virtual_keyboard": {
+		"rows": [
+			[{"index": 1, "label": "["}, {"index": 2, "label": "1"}, {"index": 3, "label": "2"}, {"index": 4, "label": "3"}, {"index": 5, "label": "4"}, {"index": 6, "label": "5"}, {"index": 7, "label": "6"}, {"index": 8, "label": "7"}, {"index": 9, "label": "8"}, {"index": 10, "label": "9"}, {"index": 11, "label": "0"}, {"index": 12, "label": "]"}],
+			[{"index": 13, "label": "/"}, {"index": 14, "label": "q"}, {"index": 15, "label": "w"}, {"index": 16, "label": "e"}, {"index": 17, "label": "r"}, {"index": 18, "label": "t"}, {"index": 19, "label": "y"}, {"index": 20, "label": "u"}, {"index": 21, "label": "i"}, {"index": 22, "label": "o"}, {"index": 23, "label": "p"}, {"index": 24, "label": "\\"}],
+			[{"index": 25, "label": "="}, {"index": 26, "label": "a"}, {"index": 27, "label": "s"}, {"index": 28, "label": "d"}, {"index": 29, "label": "f"}, {"index": 30, "label": "g"}, {"index": 31, "label": "h"}, {"index": 32, "label": "j"}, {"index": 33, "label": "k"}, {"index": 34, "label": "l"}, {"index": 35, "label": ";"}],
+			[{"index": 36, "label": "`"}, {"index": 37, "label": "'"}, {"index": 38, "label": "z"}, {"index": 39, "label": "x"}, {"index": 40, "label": "c"}, {"index": 41, "label": "v"}, {"index": 42, "label": "b"}, {"index": 43, "label": "n"}, {"index": 44, "label": "m"}, {"index": 45, "label": "."}, {"index": 46, "label": ","}]
+		],
+		"mode": "alphabet",
+		"upper": false
+	}
+}

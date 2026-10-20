@@ -1,0 +1,15 @@
+{
+	"$comment": "Golden cases of the private shop builder (tools/check_nui_snapshots.py; P16 spec 5.3.5, 12): a 32-character name shown cut as legacy cuts it (22 characters and ...), six stocked items of three sizes and a 200 stack (foundation: 2000 stacks); empty: no stock; attaching: a 1x2 item's footprint over cells 17 and 22, every cell its own target (P14b); translucent: modern-dark and modern-light at 80% panel opacity over the synthetic backdrop; hover (P14b): RmlUi's pointer on the glaive's anchor cell, on the gap below it and on its last covered cell (classic: no hover look). Its classic art is in assets/ETC.",
+	"cases": [
+		{"page": "private-shop", "themes": "all", "scales": [["100", "1", "280x520"], ["150", "1.5", "420x780"], ["200", "2", "560x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "private-shop", "variant": "foundation", "themes": "all", "scales": [["100", "1", "280x520"], ["150", "1.5", "420x780"], ["200", "2", "560x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "private-shop", "variant": "empty", "themes": "all", "scales": [["100", "1", "280x520"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "private-shop", "variant": "attaching", "themes": "all", "scales": [["100", "1", "280x520"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "private-shop", "name": "translucent", "themes": ["dark", "light"], "scales": [["100", "1", "280x520"], ["150", "1.5", "420x780"], ["200", "2", "560x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "colors": "opacity=80", "backdrop": "docs/ui/snapshots/backdrop.png"},
+		{"page": "private-shop", "name": "hover-anchor", "themes": ["dark", "cyber"], "scales": [["100", "1", "280x520"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [93, 122]},
+		{"page": "private-shop", "name": "hover-gap", "themes": ["dark", "cyber"], "scales": [["100", "1", "280x520"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [93, 144]},
+		{"page": "private-shop", "name": "hover-covered", "themes": ["dark", "cyber"], "scales": [["100", "1", "280x520"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [93, 210]},
+		{"page": "private-shop", "name": "hover-anchor", "themes": ["classic"], "scales": [["100", "1", "280x520"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [76, 92]},
+		{"page": "private-shop", "name": "hover-covered", "themes": ["classic"], "scales": [["100", "1", "280x520"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [76, 156]}
+	]
+}

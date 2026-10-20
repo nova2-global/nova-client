@@ -1,0 +1,13 @@
+{
+	"game_options": {
+		"name_color": 1,
+		"target_board": 0,
+		"pk_mode": 2,
+		"block": 41,
+		"blocked": [true, false, false, true, false, true],
+		"view_chat": false,
+		"always_show_name": false,
+		"show_damage": true,
+		"sales_text": false
+	}
+}

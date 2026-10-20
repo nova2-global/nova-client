@@ -1,0 +1,96 @@
+/* Classic skin overlay of nui/windows/equipment-view/equipment-view.rml:
+   the legacy equipment view (uiscript equipmentdialog.py) at 100%, 1dp to
+   the legacy pixel: the stone board with its title bar, 180 x 230; the
+   equipment base art (equipment_bg_without_ring.tga, 155 x 187) centered,
+   9 below the middle (13, 30), which draws every slot's frame; each place
+   at the slot window's (3, 3) plus its uiscript slot's x, y, as the
+   inventory's (skins/classic/windows/inventory.rcss): today's under
+   eqv--table-new; OLD's 16 under eqv--table-old on today's art, the rings
+   at 2, 106 and 75, 106 and the belt at 39, 106 (OLD's dialog; OLD's
+   pvp_advanced art is not in NEW's assets). No hover look, as legacy. */
+
+body.skin-classic.eqv
+{
+	width: 180dp;
+	height: 230dp;
+	min-width: 0;
+}
+body.skin-classic.eqv .eqv__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.eqv .eqv-equip
+{
+	position: absolute;
+	left: 13dp;
+	top: 30dp;
+	width: 155dp;
+	height: 187dp;
+	decorator: image("d:/ymir work/ui/equipment_bg_without_ring.tga" scale-none left top);
+}
+body.skin-classic.eqv .eqv-figure
+{
+	display: none;
+}
+/* A cell: the place's size, no base and no hover look (the base art draws
+   the frames), the icon at the slot's corner. */
+body.skin-classic.eqv .eqv-place
+{
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.eqv .eqv-cell,
+body.skin-classic.eqv .eqv-cell:hover
+{
+	display: block;
+	width: 100%;
+	height: 100%;
+	decorator: none;
+}
+body.skin-classic.eqv .eqv-place--weapon { left: 6dp; top: 6dp; height: 96dp; }
+body.skin-classic.eqv .eqv-place--body { left: 42dp; top: 40dp; height: 64dp; }
+body.skin-classic.eqv .eqv-place--head { left: 42dp; top: 5dp; }
+body.skin-classic.eqv .eqv-place--foots { left: 42dp; top: 148dp; }
+body.skin-classic.eqv .eqv-place--wrist { left: 78dp; top: 70dp; }
+body.skin-classic.eqv .eqv-place--neck { left: 117dp; top: 70dp; }
+body.skin-classic.eqv .eqv-place--ear { left: 117dp; top: 38dp; }
+body.skin-classic.eqv .eqv-place--unique1 { left: 5dp; top: 148dp; }
+body.skin-classic.eqv .eqv-place--unique2 { left: 78dp; top: 148dp; }
+body.skin-classic.eqv .eqv-place--arrow { left: 117dp; top: 5dp; }
+body.skin-classic.eqv .eqv-place--shield { left: 78dp; top: 38dp; }
+body.skin-classic.eqv .eqv-place--ring1 { left: 5dp; top: 109dp; }
+body.skin-classic.eqv .eqv-place--ring2 { left: 78dp; top: 109dp; }
+body.skin-classic.eqv .eqv-place--belt { left: 42dp; top: 109dp; }
+
+/* No dead zone between two places (P14b): each cell's hit box reaches half
+   the gap to the place beside it (nui-hit-outset: top, right, bottom,
+   left), where the places stand 8dp apart or less; nothing draws
+   differently. Today's table has no belt or rings, so the armor and the
+   shoes have no neighbor between them; OLD's has both. tools/nui_hit_test.py
+   sweeps them. */
+body.skin-classic.eqv.eqv--table-new .eqv-place--weapon > .eqv-cell { nui-hit-outset: 0 2dp 0 0; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--head > .eqv-cell { nui-hit-outset: 0 0 1.5dp 2dp; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--body > .eqv-cell { nui-hit-outset: 1.5dp 2dp 0 2dp; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--foots > .eqv-cell { nui-hit-outset: 0 2dp 0 2.5dp; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--wrist > .eqv-cell { nui-hit-outset: 0 3.5dp 0 2dp; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--shield > .eqv-cell { nui-hit-outset: 0 3.5dp 0 2dp; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--neck > .eqv-cell { nui-hit-outset: 0 0 0 3.5dp; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--ear > .eqv-cell { nui-hit-outset: 0.5dp 0 0 3.5dp; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--arrow > .eqv-cell { nui-hit-outset: 0 0 0.5dp 0; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--unique1 > .eqv-cell { nui-hit-outset: 0 2.5dp 0 0; }
+body.skin-classic.eqv.eqv--table-new .eqv-place--unique2 > .eqv-cell { nui-hit-outset: 0 0 0 2dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--weapon > .eqv-cell { nui-hit-outset: 0 2dp 3.5dp 0; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--head > .eqv-cell { nui-hit-outset: 0 0 1.5dp 2dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--body > .eqv-cell { nui-hit-outset: 1.5dp 2dp 2.5dp 2dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--foots > .eqv-cell { nui-hit-outset: 3.5dp 2dp 0 2.5dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--wrist > .eqv-cell { nui-hit-outset: 0 3.5dp 3.5dp 2dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--shield > .eqv-cell { nui-hit-outset: 0 3.5dp 0 2dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--neck > .eqv-cell { nui-hit-outset: 0 0 0 3.5dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--ear > .eqv-cell { nui-hit-outset: 0.5dp 0 0 3.5dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--arrow > .eqv-cell { nui-hit-outset: 0 0 0.5dp 0; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--unique1 > .eqv-cell { nui-hit-outset: 3.5dp 2.5dp 0 0; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--unique2 > .eqv-cell { nui-hit-outset: 3.5dp 0 0 2dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--ring1 > .eqv-cell { nui-hit-outset: 3.5dp 2.5dp 3.5dp 0; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--ring2 > .eqv-cell { nui-hit-outset: 3.5dp 0 3.5dp 2dp; }
+body.skin-classic.eqv.eqv--table-old .eqv-place--belt > .eqv-cell { nui-hit-outset: 2.5dp 2dp 3.5dp 2.5dp; }

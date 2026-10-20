@@ -1,0 +1,24 @@
+{
+	"locale_strip": {
+		"flags": [
+			{"code": "ae", "name": "Arabic", "image": "d:/ymir work/ui/intro/login/server_flag_ae.sub"},
+			{"code": "br", "name": "Português Brasileiro", "image": "d:/ymir work/ui/intro/login/server_flag_br.sub"},
+			{"code": "en", "name": "English", "image": "d:/ymir work/ui/intro/login/server_flag_en.sub"},
+			{"code": "cz", "name": "Čeština", "image": "d:/ymir work/ui/intro/login/server_flag_cz.sub"},
+			{"code": "de", "name": "Deutsch", "image": "d:/ymir work/ui/intro/login/server_flag_de.sub"},
+			{"code": "dk", "name": "Dansk", "image": "d:/ymir work/ui/intro/login/server_flag_dk.sub"},
+			{"code": "es", "name": "Español", "image": "d:/ymir work/ui/intro/login/server_flag_es.sub"},
+			{"code": "fr", "name": "Français", "image": "d:/ymir work/ui/intro/login/server_flag_fr.sub"},
+			{"code": "gr", "name": "Ελληνικά", "image": "d:/ymir work/ui/intro/login/server_flag_gr.sub"},
+			{"code": "hu", "name": "Magyar", "image": "d:/ymir work/ui/intro/login/server_flag_hu.sub"},
+			{"code": "it", "name": "Italiano", "image": "d:/ymir work/ui/intro/login/server_flag_it.sub"},
+			{"code": "nl", "name": "Nederlands", "image": "d:/ymir work/ui/intro/login/server_flag_nl.sub"},
+			{"code": "pl", "name": "Polski", "image": "d:/ymir work/ui/intro/login/server_flag_pl.sub"},
+			{"code": "pt", "name": "Português", "image": "d:/ymir work/ui/intro/login/server_flag_pt.sub"},
+			{"code": "ro", "name": "Română", "image": "d:/ymir work/ui/intro/login/server_flag_ro.sub"},
+			{"code": "ru", "name": "Русский", "image": "d:/ymir work/ui/intro/login/server_flag_ru.sub"},
+			{"code": "tr", "name": "Türkçe", "image": "d:/ymir work/ui/intro/login/server_flag_tr.sub"}
+		],
+		"current": "en"
+	}
+}

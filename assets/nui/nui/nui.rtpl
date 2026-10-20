@@ -1,0 +1,52 @@
+<template name="nui">
+<head>
+	<!-- Style bundle for NovaUI documents. RCSS has no @import, so documents
+	     get the tokens, base styles and every component sheet from here: link
+	     this file as a template in the document head and put template="nui" on
+	     the body. The body below is empty on purpose, so the document's own
+	     children stay direct children of its body. Paths are relative to this
+	     file. RmlUi 6.3 needs the template tag to be the first thing in the
+	     file: text before it can hide the tag from the template reader. -->
+	<link type="text/rcss" href="theme/tokens.rcss"/>
+	<link type="text/rcss" href="base.rcss"/>
+	<!-- The tooltip host rule sets display on any element; the component sheets
+	     after it must win that tie with their own display. -->
+	<link type="text/rcss" href="components/tooltip.rcss"/>
+	<link type="text/rcss" href="components/panel.rcss"/>
+	<link type="text/rcss" href="components/window-frame.rcss"/>
+	<link type="text/rcss" href="components/button.rcss"/>
+	<link type="text/rcss" href="components/glyph.rcss"/>
+	<link type="text/rcss" href="components/badge.rcss"/>
+	<link type="text/rcss" href="components/input.rcss"/>
+	<link type="text/rcss" href="components/toggle.rcss"/>
+	<link type="text/rcss" href="components/slider.rcss"/>
+	<link type="text/rcss" href="components/list.rcss"/>
+	<link type="text/rcss" href="components/tabs.rcss"/>
+	<link type="text/rcss" href="components/slot-grid.rcss"/>
+	<link type="text/rcss" href="components/frames.rcss"/>
+	<link type="text/rcss" href="components/clock.rcss"/>
+	<link type="text/rcss" href="components/number.rcss"/>
+	<link type="text/rcss" href="components/text.rcss"/>
+	<link type="text/rcss" href="components/chat.rcss"/>
+	<link type="text/rcss" href="components/view.rcss"/>
+	<link type="text/rcss" href="components/anchor.rcss"/>
+	<link type="text/rcss" href="components/resize.rcss"/>
+	<link type="text/rcss" href="components/gauge.rcss"/>
+	<link type="text/rcss" href="components/dialog.rcss"/>
+	<link type="text/rcss" href="components/quest-text.rcss"/>
+	<!-- Layout helpers last: they are combined with component classes on one
+	     element and must win ties (same specificity, later sheet). -->
+	<link type="text/rcss" href="components/layout.rcss"/>
+	<!-- Skins: every document links every skin; each skin's rules are scoped
+	     under its body class (skin-<name>), which nui/theme/themes.json puts on
+	     the body, so they apply only while a theme of that skin is in use.
+	     Sprite sheets first. -->
+	<link type="text/rcss" href="skins/classic/classic-sprites.rcss"/>
+	<link type="text/rcss" href="skins/classic/classic.rcss"/>
+	<link type="text/rcss" href="skins/cyberpunk/cyberpunk-tokens.rcss"/>
+	<link type="text/rcss" href="skins/cyberpunk/cyberpunk-sprites.rcss"/>
+	<link type="text/rcss" href="skins/cyberpunk/cyberpunk.rcss"/>
+</head>
+<body>
+</body>
+</template>

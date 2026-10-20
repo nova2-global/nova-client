@@ -1,0 +1,36 @@
+/* Panel: a raised or sunken group inside a window. */
+
+.nui-panel
+{
+	display: block;
+	padding: var(--space-3);
+	background-color: var(--surface-raised);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+}
+.nui-panel--sunken
+{
+	background-color: var(--surface-sunken);
+}
+.nui-panel--flat
+{
+	background-color: transparent;
+}
+.nui-panel__title
+{
+	display: block;
+	margin-bottom: var(--space-2);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	color: var(--text-muted);
+}
+
+.nui-divider
+{
+	display: block;
+	height: 0;
+	margin: var(--space-2) 0;
+	border-top-width: 1dp;
+	border-top-color: var(--border);
+}

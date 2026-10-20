@@ -1,0 +1,9 @@
+{
+	"tip_board": {
+		"shown": true,
+		"line_a": "",
+		"line_b": "The server restarts in 10 minutes.",
+		"front": "b",
+		"next_at": 0.0
+	}
+}

@@ -1,0 +1,232 @@
+/* The chat's modern look. The body is the 600dp block; the facade puts its
+   bottom center on the taskbar's top. Closed: the lines (the newest five,
+   for 5 s) on the view shade right above that edge. Open: the input row,
+   25dp, and above it the history panel, as tall as history_height (the
+   sizing bar's drag), with a grip at its top; the lines fill the panel from
+   10dp below its top, so a 138dp history holds 8 lines, as legacy's does.
+   The row lays out its parts in a flex row (a pill for the mode, the field,
+   the three art buttons), so a long mode name does not cover the field.
+   The chat's backdrop and line colors stay dark in every modern palette:
+   the colors of tags (item links, notices) come from game data made for a
+   dark backdrop. Classic (the legacy pieces at their legacy places):
+   skins/classic/windows/chat.rcss. */
+
+/* The facade places the body (set_position, its bottom center on the
+   taskbar's top), which writes left and top; the sheet's own place uses
+   left and top as well (a bottom would stretch the body once top is set)
+   and frames the window in its 960 x 320dp snapshots. */
+body.chat
+{
+	left: 50%;
+	top: 258dp;
+	width: 600dp;
+	margin-left: -300dp;
+	focus: none;
+	tab-index: none;
+	pointer-events: none;
+}
+/* focus is inherited, so the body's none keeps every part from taking the
+   focus; the field and the mode button take it back (the facade moves the
+   focus to the mode button, which takes no keys, when a legacy edit line
+   takes wndMgr's focus). Nothing is in the tab order. */
+.chat button
+{
+	tab-index: none;
+}
+
+.chat__block
+{
+	position: relative;
+	width: 600dp;
+}
+
+/* The history sits on the input row (or, closed, on the block's bottom
+   edge): its bottom stays put while the sizing bar's drag changes its
+   height, so it grows upward. Its height is the resize handle's, inline. */
+.chat__history
+{
+	position: absolute;
+	left: 0;
+	bottom: 100%;
+	width: 600dp;
+	height: 138dp;
+}
+.chat__block.is-open .chat__history
+{
+	border-radius: var(--radius-md) var(--radius-md) 0 0;
+	background-color: var(--chat-edit-shade);
+}
+
+/* The sizing bar, drawn over the oldest line, as legacy's. */
+.chat__resize
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 600dp;
+	z-index: 1;
+}
+.chat__block.is-open .chat__resize
+{
+	display: block;
+}
+.chat__grip
+{
+	display: block;
+	width: 48dp;
+	height: 3dp;
+	margin: 2dp auto 0 auto;
+	border-radius: 2dp;
+	background-color: var(--chat-talking);
+	opacity: 0.45;
+	pointer-events: none;
+}
+
+/* The lines element places each line by its bottom offset and sets its own
+   height while closed; open, its box is the panel below the first 10dp. */
+.chat__lines
+{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 600dp;
+	pointer-events: none;
+}
+.chat__lines .nui-chat__line
+{
+	margin-left: 10dp;
+}
+.chat__lines.has-lines
+{
+	decorator: vertical-gradient(var(--chat-view-shade-top) var(--chat-view-shade-bottom));
+}
+.chat__block.is-quiet .chat__lines
+{
+	visibility: hidden;
+}
+.chat__block.is-open .chat__lines
+{
+	top: 10dp;
+	pointer-events: auto;
+	decorator: none;
+}
+
+/* The input row stays in the layout while closed, 0dp tall and clipped, so
+   its field can take the focus in the call that opens the chat. The clip is
+   forced: RmlUi clips only content that overflows, and an absolutely placed
+   part (the classic layout) does not count. */
+.chat__input-row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: relative;
+	box-sizing: border-box;
+	width: 600dp;
+	height: 0;
+	padding: 0 var(--space-1);
+	overflow: hidden;
+	clip: always;
+}
+.chat__block.is-open .chat__input-row
+{
+	height: 25dp;
+	overflow: visible;
+	clip: auto;
+	background-color: var(--chat-edit-shade);
+}
+
+.chat__mode
+{
+	display: block;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	min-width: 40dp;
+	height: 19dp;
+	margin-right: var(--space-1);
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 10dp;
+	background-color: var(--surface-raised);
+	color: var(--text);
+	font-size: var(--font-xs);
+	line-height: 17dp;
+	text-align: center;
+	white-space: nowrap;
+	focus: auto;
+}
+.chat__mode:hover
+{
+	background-color: var(--surface-hover);
+}
+.chat__mode:active
+{
+	background-color: var(--surface-sunken);
+}
+
+.chat__field
+{
+	display: block;
+	flex: 1 1 auto;
+	position: relative;
+	height: 21dp;
+	margin-right: var(--space-1);
+}
+input.chat__input
+{
+	width: 100%;
+	height: 21dp;
+	font-size: var(--font-sm);
+	line-height: 19dp;
+	focus: auto;
+}
+/* The prefix mark over the field's first character (# party, % guild,
+   ! shout), in the mark color: the same glyph at the same place, so it
+   covers the field's own. The field's text starts after its 1dp border and
+   8dp padding. */
+.chat__mark
+{
+	display: block;
+	position: absolute;
+	left: 9dp;
+	top: 1dp;
+	color: var(--chat-mark);
+	font-size: var(--font-sm);
+	line-height: 19dp;
+	pointer-events: none;
+}
+
+.chat__button
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 24dp;
+	height: 21dp;
+	margin-left: 2dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: var(--radius-sm);
+	background-color: transparent;
+}
+.chat__button:hover
+{
+	background-color: var(--surface-hover);
+}
+.chat__button:active
+{
+	background-color: var(--surface-sunken);
+}
+/* The send, whisper and log buttons draw a glyph (components/glyph.rcss);
+   classic draws the legacy button art instead (its overlay). */
+.chat__glyph
+{
+	position: absolute;
+	left: 4dp;
+	top: 3dp;
+}
+.chat__button:hover .chat__glyph
+{
+	--glyph-ink: var(--accent);
+}

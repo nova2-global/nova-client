@@ -1,0 +1,88 @@
+/* The game buttons' modern look: a round accent button with a plus and its
+   label in a pill beside it, at the legacy anchors (the left buttons from
+   the screen's left, the right ones from its right, all from its bottom),
+   raised 12dp for the modern taskbar, which is 11dp taller than legacy's.
+   The pill sits right of a left button and left of a right one, not under
+   it as legacy's see-through text does: under the button it would cover the
+   taskbar's gauge and button hints, which open just above the bar, and a
+   long label (pt, pl) grows away from the screen's edge. Classic (the
+   legacy plus art and white labels at the legacy places):
+   skins/classic/windows/game-buttons.rcss. */
+
+body.game-buttons
+{
+	focus: none;
+	tab-index: none;
+}
+.game-buttons button
+{
+	focus: none;
+	tab-index: none;
+}
+.game-button
+{
+	display: block;
+	position: absolute;
+	width: 36dp;
+	height: 36dp;
+}
+/* help 182 and status 112 above the bottom at the left (legacy 170 and 100);
+   tasks, the observer end and the guild building 182, and skills 112, above
+   it at the right. */
+.game-button--help { left: 48dp; bottom: 146dp; }
+.game-button--status { left: 66dp; bottom: 76dp; }
+.game-button--quest, .game-button--observer, .game-button--build { right: 48dp; bottom: 146dp; }
+.game-button--skill { right: 48dp; bottom: 76dp; }
+
+.game-button__plus
+{
+	display: block;
+	box-sizing: border-box;
+	width: 36dp;
+	height: 36dp;
+	padding: 0;
+	border-width: 2dp;
+	border-color: var(--accent-hover);
+	border-radius: 18dp;
+	background-color: var(--accent);
+	color: var(--accent-text);
+	font-size: var(--font-xl);
+	font-weight: bold;
+	line-height: 30dp;
+	text-align: center;
+}
+.game-button__plus:hover
+{
+	background-color: var(--accent-hover);
+}
+.game-button__plus:active
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+}
+.game-button__label
+{
+	display: block;
+	position: absolute;
+	left: 42dp;
+	width: 200dp;
+	top: 9dp;
+	text-align: left;
+	pointer-events: none;
+}
+.game-button--quest .game-button__label, .game-button--observer .game-button__label,
+.game-button--build .game-button__label, .game-button--skill .game-button__label
+{
+	left: auto;
+	right: 42dp;
+	text-align: right;
+}
+.game-button__text
+{
+	padding: 1dp 6dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: var(--font-sm);
+	font-weight: bold;
+}

@@ -1,0 +1,29 @@
+/* Digits: <nui-number value="m1"/> draws its value with a skin's digit art,
+   the legacy CNumberLine glyphs (0.sub to 9.sub, m, g, p, colon, slash,
+   percent, plus, questionmark), one <img class="nui-number__glyph"> per
+   character in a row with no gaps, from the glyph folder the skin names in
+   --number-path (classic: d:/ymir work/ui/game/taskbar/, 1x only, so its
+   documents need the assets/ETC root); `path` in markup names a folder
+   itself. Without a folder (the modern look) the value is text: one
+   <span class="nui-number__text"> (docs/ui/AUTHORING.md "Digit art"). */
+
+nui-number
+{
+	display: inline-flex;
+	flex-direction: row;
+	vertical-align: top;
+}
+
+.nui-number__glyph
+{
+	display: block;
+}
+.nui-number__text
+{
+	display: block;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 1;
+	font-effect: outline(1dp var(--surface-sunken));
+}

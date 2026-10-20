@@ -1,0 +1,29 @@
+/* Resize handles (docs/ui/AUTHORING.md "Resize handles"). The runtime
+   registers nui-resize: a drag on it sets the size of the element its
+   target names, in dp, so the size follows a scale change, and sends
+   resized (ev.width, ev.height, in dp) once at the drag's end. No Python
+   runs during the drag.
+
+   <nui-resize class="nui-resize--top" edge="top" target="chat-history" min-height="25"
+   	data-attr-height="history_height" data-event-resized="resized(ev.height)"/>
+   	edge="top" grows the target upward from its bottom edge;
+   	edge="bottom-right" grows its width and height with the drag.
+
+   A handle needs pointer events in a document that has none (an overlay,
+   the chat's body): give it nui-interactive. The host shows no resize
+   cursor over it. */
+
+nui-resize
+{
+	display: block;
+	drag: drag;
+}
+.nui-resize--top
+{
+	height: 8dp;
+}
+.nui-resize--bottom-right
+{
+	width: 16dp;
+	height: 16dp;
+}

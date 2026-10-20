@@ -1,0 +1,12 @@
+{
+	"chat": {
+		"open": false,
+		"shown": true,
+		"chat_mode": 3,
+		"mark": "",
+		"history_height": 138.0,
+		"view_chat": false,
+		"lines_mode": "view",
+		"draft": ""
+	}
+}

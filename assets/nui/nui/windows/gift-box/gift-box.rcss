@@ -1,0 +1,34 @@
+/* The gift icon's modern place: above the modern taskbar's left end, over
+   the item mall button that opens the gift, a 32dp chip with the gift glyph
+   in the accent (components/glyph.rcss) just above the energy bar, so it
+   covers neither that bar nor the status button's label. Classic (the
+   legacy 63 x 74 art at the legacy place, as skin-provided frames):
+   skins/classic/windows/gift-box.rcss. */
+
+body.gift-box
+{
+	focus: none;
+}
+.gift-box__icon
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	bottom: 64dp;
+	box-sizing: border-box;
+	width: 32dp;
+	height: 32dp;
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+	pointer-events: none;
+}
+.gift-box__glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 7dp;
+	top: 7dp;
+	transform: scale(1.25);
+}

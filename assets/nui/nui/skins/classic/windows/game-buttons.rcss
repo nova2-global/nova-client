@@ -1,0 +1,59 @@
+/* Classic skin overlay of nui/windows/game-buttons/game-buttons.rml: the
+   legacy GameWindow buttons (uiscript/gamewindow.py), 32 x 32 btn_bigplus
+   art with its over and down states and a white label centered 16, 40
+   under each: help at 50, SCREEN_HEIGHT - 170; status at 68,
+   SCREEN_HEIGHT - 100; tasks, the observer end and the guild building at
+   SCREEN_WIDTH - 82, SCREEN_HEIGHT - 170; skills at SCREEN_WIDTH - 82,
+   SCREEN_HEIGHT - 100. */
+
+body.skin-classic.game-buttons .game-button
+{
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.game-buttons .game-button--help { left: 50dp; bottom: 138dp; }
+body.skin-classic.game-buttons .game-button--status { left: 68dp; bottom: 68dp; }
+body.skin-classic.game-buttons .game-button--quest,
+body.skin-classic.game-buttons .game-button--observer,
+body.skin-classic.game-buttons .game-button--build { right: 50dp; bottom: 138dp; }
+body.skin-classic.game-buttons .game-button--skill { right: 50dp; bottom: 68dp; }
+
+body.skin-classic.game-buttons .game-button__plus
+{
+	width: 32dp;
+	height: 32dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: transparent;
+	font-size: 1dp;
+	line-height: 1dp;
+	decorator: image("d:/ymir work/ui/game/windows/btn_bigplus_up.sub");
+}
+body.skin-classic.game-buttons .game-button__plus:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_bigplus_over.sub");
+}
+body.skin-classic.game-buttons .game-button__plus:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/btn_bigplus_down.sub");
+}
+/* The label's center 16dp right of the button's left, its top 40dp below the
+   button's top; legacy text, white, without a board. */
+body.skin-classic.game-buttons .game-button__label
+{
+	left: -84dp;
+	right: auto;
+	top: 40dp;
+	text-align: center;
+}
+body.skin-classic.game-buttons .game-button__text
+{
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-label-white);
+	font-weight: normal;
+}

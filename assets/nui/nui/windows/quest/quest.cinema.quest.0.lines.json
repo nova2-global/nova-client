@@ -1,0 +1,27 @@
+[
+	{
+		"id": 1,
+		"kind": "text",
+		"align": "left",
+		"runs": [
+			{
+				"text": "The ship left at dawn.",
+				"role": "text",
+				"color": 4294967295,
+				"name": ""
+			}
+		],
+		"shown": 22,
+		"total": 22,
+		"wraps": []
+	},
+	{
+		"id": 2,
+		"kind": "text",
+		"align": "left",
+		"runs": [],
+		"shown": 0,
+		"total": 0,
+		"wraps": []
+	}
+]

@@ -1,0 +1,100 @@
+/* Tabs on the native RmlUi tabset, which switches panels on click without any
+   Python and marks the active tab and panel :selected.
+
+   <tabset class="nui-tabs nui-tabs--3">
+       <tab>@ui.A</tab><panel>...</panel>
+       <tab>@ui.B</tab><panel>...</panel>
+       <tab>@ui.C</tab><panel>...</panel>
+       <tab class="nui-tabs__indicator nui-anim"></tab>
+   </tabset>
+
+   The indicator is one more <tab> after the real ones (a tabset only accepts
+   tab and panel children). It ignores the mouse and slides under the selected
+   tab: nui-tabs--N (2..6) sizes it to 1/N, so the real tabs share the width
+   equally.
+
+   Tabs are in the tab order: Tab moves between them, and Enter or Space
+   selects one (the click reaches the tabset), where NovaUI has the keyboard:
+   in a modal, or after a Tab out of a text field (docs/ui/AUTHORING.md
+   "Keyboard and modals"). is-hover and is-focus force a state without the
+   pointer or the keyboard. */
+
+.nui-tabs
+{
+	display: block;
+}
+.nui-tabs tabs
+{
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+}
+.nui-tabs tab
+{
+	display: block;
+	flex: 1 1 0;
+	padding: var(--space-2) var(--space-3);
+	/* Reserved for the focus ring, so focus does not move the label. */
+	border-width: 1dp;
+	border-color: transparent;
+	color: var(--text-muted);
+	font-weight: bold;
+	text-align: center;
+	white-space: nowrap;
+	tab-index: auto;
+}
+.nui-tabs tab:hover, .nui-tabs tab.is-hover
+{
+	color: var(--text);
+	background-color: var(--surface-hover);
+}
+.nui-tabs tab:selected
+{
+	color: var(--accent);
+	background-color: transparent;
+}
+.nui-tabs tab:focus-visible, .nui-tabs tab.is-focus
+{
+	border-color: var(--focus-ring);
+}
+.nui-tabs panels
+{
+	display: block;
+	padding-top: var(--space-3);
+}
+
+.nui-tabs tab.nui-tabs__indicator
+{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 50%;
+	height: 2dp;
+	padding: 0;
+	/* translateX(N * 100%) moves it by its own width, which has to stay one
+	   tab: no border. It is not a tab to focus either. */
+	border-width: 0;
+	background-color: var(--accent);
+	pointer-events: none;
+	tab-index: none;
+	transform: translateX(0%);
+}
+/* Slide (--dur-med, --ease-out). */
+.nui-tabs__indicator.nui-anim
+{
+	transition: transform 0.2s cubic-out;
+}
+
+.nui-tabs--3 tab.nui-tabs__indicator { width: 33.333%; }
+.nui-tabs--4 tab.nui-tabs__indicator { width: 25%; }
+.nui-tabs--5 tab.nui-tabs__indicator { width: 20%; }
+.nui-tabs--6 tab.nui-tabs__indicator { width: 16.667%; }
+
+/* Translate percentages are of the indicator's own width, i.e. one tab. */
+.nui-tabs tab:nth-child(2):selected ~ tab.nui-tabs__indicator { transform: translateX(100%); }
+.nui-tabs tab:nth-child(3):selected ~ tab.nui-tabs__indicator { transform: translateX(200%); }
+.nui-tabs tab:nth-child(4):selected ~ tab.nui-tabs__indicator { transform: translateX(300%); }
+.nui-tabs tab:nth-child(5):selected ~ tab.nui-tabs__indicator { transform: translateX(400%); }
+.nui-tabs tab:nth-child(6):selected ~ tab.nui-tabs__indicator { transform: translateX(500%); }

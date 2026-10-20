@@ -1,0 +1,14 @@
+{
+	"$comment": "Golden cases of the render test page (tools/check_nui_snapshots.py), in the two modern palettes: every feature the renderers draw, the effect cells first (P13). no-effects is a device without effects (nuitool snap --no-effects: no filter, mask, backdrop blur or shadow, each gradient one flat color, and an element with a box-shadow loses its background and border, which RmlUi draws into the shadow's texture); reduced-effects is the player's setting (filters, masks and the backdrop blur off; the shadow and the gradients stay).",
+	"cases": [
+		{"page": "render-test", "themes": ["dark", "light"],
+		 "scales": [["100", "1", "960x960"], ["150", "1.5", "1440x1440"], ["200", "2", "1920x1920"]],
+		 "fixture": false, "roots": [], "time": null},
+		{"page": "render-test", "name": "no-effects", "themes": ["dark", "light"],
+		 "scales": [["100", "1", "960x960"]],
+		 "fixture": false, "roots": [], "time": null, "effects": "off"},
+		{"page": "render-test", "name": "reduced-effects", "themes": ["dark"],
+		 "scales": [["100", "1", "960x960"]],
+		 "fixture": false, "roots": [], "time": null, "effects": "reduced"}
+	]
+}

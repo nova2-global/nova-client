@@ -1,0 +1,85 @@
+<rml>
+<head>
+	<!-- The exchange (uiexchange.py ExchangeDialog, uiscript
+	     exchangedialog.py; P16 spec 5.1). While the exchange flag is on, the
+	     Interface makes nui_exchange.ExchangeDialog (controller
+	     assets/root/nui_exchange.py), a subclass of the legacy class on
+	     proxies: the drop, the money, the accept and the exit packets are
+	     legacy's code. Both grids show only what CPythonExchange holds
+	     (legacy's Refresh, the server's ITEM_ADD cell; never the drop
+	     target, D7): the partner on the left, the player on the right, as
+	     legacy. A drop from the inventory reaches legacy's handlers through
+	     nui_slots.LegacySlotEvents. The document exists only while the
+	     window shows (nui_hud.OnDemand); the distance rule is the engine's
+	     (nuigame.WatchLeaveRange), so nothing runs per frame. The body and
+	     its controls take no focus; controls act on a left mousedown. It
+	     draws below the legacy UI layer, as legacy's window lived in it. A
+	     left or right press anywhere on it raises the window (board_press). -->
+	<title>exchange</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="exchange.rcss"/>
+</head>
+<body template="nui" id="exchange" class="nui-window nui-fx nui-anim nui-below-legacy-ui exchange" data-model="exchange"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar exchange__titlebar">
+		<handle class="nui-window__handle exchange__handle" move_target="#document">
+			<span id="exchange-title" class="nui-window__title exchange__title">{{ title }}</span>
+		</handle>
+		<button id="exchange-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim exchange__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body exchange__body">
+		<div class="exchange__side exchange__side--target">
+			<div id="exchange-target-grid" class="nui-slot-grid nui-slot-grid--lean exchange__grid" data-class-is-attaching="target_attaching"
+			     data-class-nui-slot-grid--cols-4="cols == 4" data-class-nui-slot-grid--cols-6="cols == 6">
+				<div class="nui-slot nui-anim nui-fx" data-for="c : target_cells" data-attr-id="'exchange-target-' + it_index"
+				     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+				     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+				     data-event-mousedown="target_press(it_index, ev.button)" data-event-mouseover="target_over(it_index)"
+				     data-event-mouseout="target_out(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				</div>
+			</div>
+			<div class="exchange__row">
+				<div id="exchange-target-money" class="exchange__money">
+					<span class="nui-glyph nui-glyph--coin exchange__coin"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+					<span class="exchange__amount">{{ target_money }}</span>
+				</div>
+				<span id="exchange-target-light" class="exchange__light" data-class-is-on="target_accept"></span>
+			</div>
+		</div>
+		<div class="exchange__divider"></div>
+		<div class="exchange__side exchange__side--owner">
+			<div id="exchange-owner-grid" class="nui-slot-grid nui-slot-grid--lean exchange__grid" data-class-is-attaching="owner_attaching"
+			     data-class-nui-slot-grid--cols-4="cols == 4" data-class-nui-slot-grid--cols-6="cols == 6">
+				<div class="nui-slot nui-anim nui-fx" data-for="c : owner_cells" data-attr-id="'exchange-owner-' + it_index"
+				     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+				     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+				     data-event-mousedown="owner_press(it_index, ev.button)" data-event-mouseup="owner_release(it_index, ev.button)"
+				     data-event-mouseover="owner_over(it_index)" data-event-mouseout="owner_out(it_index)"
+				     data-event-nuidrop="owner_drop(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				</div>
+			</div>
+			<div class="exchange__row">
+				<button id="exchange-owner-money" class="exchange__money exchange__money--owner"
+				        data-event-mousedown="money_press(ev.button)">
+					<span class="nui-glyph nui-glyph--coin exchange__coin"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+					<span class="exchange__amount">{{ owner_money }}</span>
+				</button>
+				<span id="exchange-owner-light" class="exchange__light" data-class-is-on="owner_accept"></span>
+			</div>
+			<div class="exchange__row exchange__row--accept">
+				<button id="exchange-accept" class="nui-button nui-button--primary nui-button--medium nui-anim exchange__accept"
+				        data-class-is-selected="accept_down" data-attrif-disabled="!accept_enabled"
+				        data-event-mousedown="accept_press(ev.button)">@ui.EXCHANGE_ACCEPT</button>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

@@ -1,0 +1,349 @@
+/* Classic skin overlay of nui/windows/guild-building/guild-building.rml:
+   the legacy guild building window (uiscript buildguildbuildingwindow.py)
+   at 100%, 1dp to the legacy pixel. The stone board with its title bar,
+   465 x 240 at (10, H - 290); every part placed from the board's corner as
+   the uiscript places it (the right part sits in a window at x 110):
+   - the category heading centered at 65, 33, the category list on a slot
+     bar at 15, 50 (100 x 80), its rows 17 high and centered, as legacy's
+     list box draws them;
+   - the building heading centered at 185, 33 and its list on a slot bar
+     at 125, 50 (120 x 172), with the scroll bar inside its right edge;
+   - the cost labels centered at 30 (y 143, 163, 183, 203) and their values
+     centered on 60 x 17 slot bars at 55 (y 139 to 199), in legacy's gray,
+     or its red when short (classic-gb-enough, classic-gb-short);
+   - the position heading centered at 360, 33, X and Y centered at 260
+     (y 53, 73) with their values on the 90 x 18 parameter slot at 283
+     (y 50, 70), Change on the big button art (53 x 39) at 390, 50;
+   - the orientation heading centered at 360, 95, X, Y and Z centered at
+     260 (y 115, 135, 155) and the sliders at 268 on the slider bar art
+     (175 x 12, its 53 wide cursor; a slider legacy disables has no
+     cursor);
+   - Preview on the large art (88 x 21) at 310, 180 (down while preview is
+     on), Accept and Cancel on the small art (43 x 21) at 310 and 355, 205.
+   A button's label is centered over its art and takes no pointer, as
+   legacy's text line. */
+
+body.skin-classic.guild-building
+{
+	display: block;
+	width: 465dp;
+	height: 240dp;
+	min-width: 0;
+}
+/* z-index: the parts below are positioned boxes placed from the board's
+   corner, later in the document; without it they would take the title
+   bar's presses. */
+body.skin-classic.guild-building .guild-building__titlebar
+{
+	position: relative;
+	z-index: 1;
+}
+
+/* Every section and the footer is a box of no height at the board's
+   corner, so each part inside is placed from it. */
+body.skin-classic.guild-building .guild-building__body,
+body.skin-classic.guild-building .guild-building__footer
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 465dp;
+	height: 0;
+	padding: 0;
+	border-width: 0;
+}
+body.skin-classic.guild-building .guild-building__categories,
+body.skin-classic.guild-building .guild-building__buildings,
+body.skin-classic.guild-building .guild-building__costs,
+body.skin-classic.guild-building .guild-building__position,
+body.skin-classic.guild-building .guild-building__rotation
+{
+	left: 0;
+	top: 0;
+	width: 465dp;
+	height: 0;
+}
+body.skin-classic.guild-building .guild-building__coord,
+body.skin-classic.guild-building .guild-building__axis-row
+{
+	display: block;
+	width: 0;
+	height: 0;
+	margin: 0;
+}
+
+/* The headings and labels: white text lines centered on their legacy x.
+   Like legacy's text lines they take no pointer, so one that reaches over
+   a list never takes its presses. */
+body.skin-classic.guild-building .guild-building__heading,
+body.skin-classic.guild-building .guild-building__label,
+body.skin-classic.guild-building .guild-building__axis
+{
+	position: absolute;
+	width: 120dp;
+	pointer-events: none;
+	height: 14dp;
+	margin: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 14dp;
+	text-align: center;
+	overflow: visible;
+}
+body.skin-classic.guild-building .guild-building__heading--categories { left: 5dp; top: 33dp; }
+body.skin-classic.guild-building .guild-building__heading--buildings { left: 125dp; top: 33dp; }
+body.skin-classic.guild-building .guild-building__heading--position { left: 300dp; top: 33dp; }
+body.skin-classic.guild-building .guild-building__heading--rotation { left: 300dp; top: 95dp; }
+/* A cost label is placed from its row, the value's slot bar at 55: its
+   center 25dp left of the bar, 4dp lower (the uiscript puts the bar at
+   (25, -4) of the label). */
+body.skin-classic.guild-building .guild-building__label
+{
+	left: -85dp;
+	top: 3dp;
+}
+body.skin-classic.guild-building .guild-building__axis
+{
+	left: 250dp;
+	width: 20dp;
+}
+body.skin-classic.guild-building .guild-building__axis--pos-x { top: 53dp; }
+body.skin-classic.guild-building .guild-building__axis--pos-y { top: 73dp; }
+body.skin-classic.guild-building .guild-building__axis--rot-x { top: 115dp; }
+body.skin-classic.guild-building .guild-building__axis--rot-y { top: 135dp; }
+body.skin-classic.guild-building .guild-building__axis--rot-z { top: 155dp; }
+
+/* The two lists on their slot bars (Bar3D): rows 17 high from 1dp inside
+   the bar, the highlight 2dp in from the left edge and 3dp narrower than the
+   list box (ui.ListBox.OnRender), the text centered. */
+body.skin-classic.guild-building .guild-building__list
+{
+	position: absolute;
+	padding: 1dp 0 0 0;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+body.skin-classic.guild-building .guild-building__list--categories
+{
+	left: 15dp;
+	top: 50dp;
+	width: 98dp;
+	height: 78dp;
+}
+body.skin-classic.guild-building .guild-building__list--buildings
+{
+	left: 125dp;
+	top: 50dp;
+	width: 118dp;
+	height: 170dp;
+}
+body.skin-classic.guild-building .guild-building__viewport--categories
+{
+	height: 77dp;
+}
+body.skin-classic.guild-building .guild-building__viewport--buildings
+{
+	height: 169dp;
+}
+/* Legacy never sizes the building list's middle bar to the page (uiguild.py
+   calls no SetMiddleBarSize), so its thumb stays the 12 px square
+   ui.ScrollBar makes. */
+body.skin-classic.guild-building .guild-building__viewport--buildings scrollbarvertical sliderbar
+{
+	max-height: 12dp;
+}
+body.skin-classic.guild-building .guild-building__row
+{
+	display: block;
+	height: 17dp;
+	margin-left: 1dp;
+	margin-right: 0;
+	padding: 0;
+	border-width: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 17dp;
+	text-align: center;
+}
+
+/* Each cost row is its value's slot bar (60 x 17) at 55; the value is
+   centered on it and overflows both ends, as legacy's centered text line
+   does (the price), in legacy's gray, or its red when short. */
+body.skin-classic.guild-building .guild-building__cost
+{
+	display: block;
+	position: absolute;
+	left: 55dp;
+	width: 58dp;
+	height: 15dp;
+	margin: 0;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+body.skin-classic.guild-building .guild-building__cost--price { top: 139dp; }
+body.skin-classic.guild-building .guild-building__cost--stone { top: 159dp; }
+body.skin-classic.guild-building .guild-building__cost--log { top: 179dp; }
+body.skin-classic.guild-building .guild-building__cost--plywood { top: 199dp; }
+body.skin-classic.guild-building .guild-building__value
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	height: 15dp;
+	pointer-events: none;
+	color: var(--classic-gb-enough);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 15dp;
+	text-align: center;
+}
+body.skin-classic.guild-building .guild-building__value.is-short
+{
+	color: var(--classic-gb-short);
+}
+
+/* X and Y on the parameter slot art. */
+body.skin-classic.guild-building .guild-building__coord-value
+{
+	position: absolute;
+	left: 283dp;
+	width: 90dp;
+	height: 18dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 18dp;
+	text-align: center;
+}
+body.skin-classic.guild-building .guild-building__coord-value--x { top: 50dp; }
+body.skin-classic.guild-building .guild-building__coord-value--y { top: 70dp; }
+
+/* The buttons on legacy's art, each label centered over it. */
+body.skin-classic.guild-building .guild-building__change,
+body.skin-classic.guild-building .guild-building__preview,
+body.skin-classic.guild-building .guild-building__accept,
+body.skin-classic.guild-building .guild-building__cancel
+{
+	position: absolute;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+}
+body.skin-classic.guild-building .guild-building__button-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+	pointer-events: none;
+}
+body.skin-classic.guild-building .guild-building__change
+{
+	left: 390dp;
+	right: auto;
+	top: 50dp;
+	width: 53dp;
+	height: 39dp;
+	line-height: 39dp;
+	decorator: image("d:/ymir work/ui/public/big_button_01.sub");
+}
+body.skin-classic.guild-building .guild-building__change .guild-building__button-label
+{
+	line-height: 39dp;
+}
+body.skin-classic.guild-building .guild-building__change:hover
+{
+	decorator: image("d:/ymir work/ui/public/big_button_02.sub");
+}
+body.skin-classic.guild-building .guild-building__change:active,
+body.skin-classic.guild-building .guild-building__change.is-selected
+{
+	decorator: image("d:/ymir work/ui/public/big_button_03.sub");
+}
+body.skin-classic.guild-building .guild-building__preview
+{
+	left: 310dp;
+	top: 180dp;
+	width: 88dp;
+	decorator: tiled-horizontal(classic-button-large-01-l, classic-button-large-01-c, classic-button-large-01-r);
+}
+body.skin-classic.guild-building .guild-building__preview:hover
+{
+	decorator: tiled-horizontal(classic-button-large-02-l, classic-button-large-02-c, classic-button-large-02-r);
+}
+body.skin-classic.guild-building .guild-building__preview:active,
+body.skin-classic.guild-building .guild-building__preview.is-selected
+{
+	decorator: tiled-horizontal(classic-button-large-03-l, classic-button-large-03-c, classic-button-large-03-r);
+}
+body.skin-classic.guild-building .guild-building__accept,
+body.skin-classic.guild-building .guild-building__cancel
+{
+	top: 205dp;
+	width: 43dp;
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.guild-building .guild-building__accept { left: 310dp; }
+body.skin-classic.guild-building .guild-building__cancel { left: 355dp; }
+body.skin-classic.guild-building .guild-building__accept:hover,
+body.skin-classic.guild-building .guild-building__cancel:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.guild-building .guild-building__accept:active,
+body.skin-classic.guild-building .guild-building__cancel:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+
+/* The sliders: the slider bar art and its cursor, no fill (legacy draws
+   none); the cursor travels 175 - 53 = 122dp, as legacy's. A slider legacy
+   disables hides its cursor (ui.SliderBar.Disable). */
+body.skin-classic.guild-building .guild-building__slider
+{
+	position: absolute;
+	left: 268dp;
+	width: 175dp;
+	height: 12dp;
+	opacity: 1;
+}
+body.skin-classic.guild-building .guild-building__slider--x { top: 115dp; }
+body.skin-classic.guild-building .guild-building__slider--y { top: 135dp; }
+body.skin-classic.guild-building .guild-building__slider--z { top: 155dp; }
+body.skin-classic.guild-building .guild-building__slider slidertrack
+{
+	margin-top: 0;
+	height: 12dp;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar.sub");
+}
+body.skin-classic.guild-building .guild-building__slider sliderprogress
+{
+	background-color: transparent;
+}
+body.skin-classic.guild-building .guild-building__slider sliderbar,
+body.skin-classic.guild-building .guild-building__slider sliderbar:hover,
+body.skin-classic.guild-building .guild-building__slider sliderbar:active
+{
+	margin-top: 0;
+	width: 53dp;
+	height: 12dp;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar_cursor.sub");
+	background-color: transparent;
+}
+body.skin-classic.guild-building .guild-building__slider[disabled] sliderbar
+{
+	visibility: hidden;
+}

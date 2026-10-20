@@ -1,0 +1,139 @@
+/* Classic skin overlay of nui/windows/virtual-keyboard/virtual-keyboard.rml.
+   The runtime and nuitool apply it after the window's own sheet,
+   virtual-keyboard.rcss, in every theme; every rule starts with .skin-classic,
+   so it acts only while a classic theme is in use (docs/ui/AUTHORING.md,
+   Skins). */
+
+/* The legacy thin board, 564 by 254, and the legacy key art
+   (d:/ymir work/ui/intro/login/vkey/): character keys 41dp wide every 40dp
+   from 40dp, rows at 24, 63, 104 and 144dp (the last two from 60dp), and
+   the special keys at 186dp with their own art, which carries their icons,
+   so their labels are transparent. The over art on hover, the down art
+   while pressed and while a toggle is down. Character labels are black in
+   the large size, as the legacy keys. */
+body.skin-classic.virtual-keyboard
+{
+	height: 254dp;
+	padding: 24dp 0dp 0dp 40dp;
+	decorator: classic-thinboard;
+}
+.skin-classic .virtual-keyboard__row
+{
+	gap: 0dp;
+	margin-bottom: 0dp;
+}
+.skin-classic .virtual-keyboard__row--indent
+{
+	padding-left: 20dp;
+}
+/* The rows start 39, 41, 40 and 42dp apart: one weight, in row order. */
+.skin-classic .virtual-keyboard__row + .virtual-keyboard__row
+{
+	margin-top: -1dp;
+}
+.skin-classic .virtual-keyboard__row + .virtual-keyboard__row--indent
+{
+	margin-top: 1dp;
+}
+.skin-classic .virtual-keyboard__row--indent + .virtual-keyboard__row--indent
+{
+	margin-top: 0dp;
+}
+.skin-classic .virtual-keyboard__row + .virtual-keyboard__row--special
+{
+	margin-top: 2dp;
+}
+.skin-classic .virtual-keyboard__key
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_normal.tga");
+	width: 41dp;
+	height: 40dp;
+	margin-right: -1dp;
+	line-height: 40dp;
+	color: var(--classic-key-text);
+	font-size: var(--font-lg);
+}
+.skin-classic .virtual-keyboard__key:hover
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_normal_over.tga");
+}
+.skin-classic .virtual-keyboard__key:active
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_normal_dn.tga");
+}
+.skin-classic .virtual-keyboard__special
+{
+	min-width: 0dp;
+	margin-right: 1dp;
+	padding: 0dp;
+	color: transparent;
+}
+.skin-classic .virtual-keyboard__symbols
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_at.tga");
+	width: 45dp;
+}
+.skin-classic .virtual-keyboard__symbols:hover
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_at_over.tga");
+}
+.skin-classic .virtual-keyboard__shift
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_shift.tga");
+	width: 58dp;
+}
+.skin-classic .virtual-keyboard__shift:hover
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_shift_over.tga");
+}
+.skin-classic .virtual-keyboard__space
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_space.tga");
+	width: 293dp;
+	flex: 0 0 auto;
+}
+.skin-classic .virtual-keyboard__space:hover
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_space_over.tga");
+}
+.skin-classic .virtual-keyboard__space:active
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_space_dn.tga");
+}
+.skin-classic .virtual-keyboard__enter
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_enter.tga");
+	width: 58dp;
+}
+.skin-classic .virtual-keyboard__enter:hover
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_enter_over.tga");
+}
+.skin-classic .virtual-keyboard__enter:active
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_enter_dn.tga");
+}
+.skin-classic .virtual-keyboard__backspace
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_backspace.tga");
+	width: 45dp;
+}
+.skin-classic .virtual-keyboard__backspace:hover
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_backspace_over.tga");
+}
+.skin-classic .virtual-keyboard__backspace:active
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_backspace_dn.tga");
+}
+/* Last, over hover: a toggle that is down, and a press, show the down art. */
+.skin-classic .virtual-keyboard__symbols:active, .skin-classic .virtual-keyboard__symbols.is-selected
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_at_dn.tga");
+	background-color: transparent;
+}
+.skin-classic .virtual-keyboard__shift:active, .skin-classic .virtual-keyboard__shift.is-selected
+{
+	decorator: image("d:/ymir work/ui/intro/login/vkey/key_shift_dn.tga");
+	background-color: transparent;
+}

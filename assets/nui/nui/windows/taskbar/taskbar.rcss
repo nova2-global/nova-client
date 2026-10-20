@@ -1,0 +1,523 @@
+/* The taskbar's modern layout: one bar along the bottom edge, the gauges and
+   the EXP orbs at its left, the mouse-button modes and the quickslots in its
+   middle, the window buttons at its right; the mode menus and the skill
+   picker above the mode buttons. The classic layout is in
+   skins/classic/windows/taskbar.rcss. Positions are anchored as legacy
+   anchors them: the middle group from the screen's center, the window
+   buttons from its right edge. The buttons are code-drawn chips with glyphs
+   (components/glyph.rcss); the legacy button art is classic's, in its
+   overlay. */
+
+body.taskbar
+{
+	focus: none;
+	tab-index: none;
+}
+.taskbar button
+{
+	focus: none;
+	tab-index: none;
+}
+
+.taskbar-bar
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 48dp;
+}
+.taskbar-base
+{
+	display: none;
+}
+
+/* --- Gauges, the mall button and the EXP orbs --------------------------------- */
+
+.taskbar-gauges
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 212dp;
+	height: 47dp;
+}
+/* The item mall button: a chip with the shop glyph, and a sheen that
+   sweeps across it once every 4s (a thin accent bar moved by transform; it
+   rests invisible, so reduced motion leaves the plain chip). Classic draws
+   the legacy coin animation in its frames part instead, and hides the
+   sheen's host, which stops its clock too. The sweep is a 0.72s animation
+   that the nui-blink clock starts at each of its off halves, so between
+   two sweeps nothing restyles: an endless animation on an always shown HUD
+   part set its properties (and rebuilt its quad for the opacity) on every
+   frame. */
+.taskbar-mall
+{
+	left: 4dp;
+	top: 4dp;
+}
+/* A gold coin, in the warning color, also under the pointer. */
+.taskbar-mall .taskbar-glyph, .taskbar-mall:hover .taskbar-glyph
+{
+	--glyph-ink: var(--warning);
+}
+.taskbar-mall__sheen
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 3dp;
+	height: 32dp;
+	border-radius: 1dp;
+	background-color: var(--accent);
+	opacity: 0;
+	pointer-events: none;
+}
+.taskbar-mall__beat, .taskbar-mall__blink
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+}
+nui-blink.nui-blink-off .taskbar-mall__sheen.nui-anim
+{
+	animation: 0.72s linear-in-out taskbar-mall-sheen;
+}
+@keyframes taskbar-mall-sheen
+{
+	0% { transform: translateX(0dp); opacity: 0; }
+	22% { transform: translateX(4dp); opacity: 0.6; }
+	100% { transform: translateX(29dp); opacity: 0; }
+}
+.taskbar-gauge-host
+{
+	display: block;
+	position: absolute;
+	left: 52dp;
+	width: 150dp;
+	pointer-events: auto;
+}
+.taskbar-gauge-host--hp
+{
+	top: 8dp;
+	height: 10dp;
+}
+.taskbar-gauge-host--sp
+{
+	top: 21dp;
+	height: 10dp;
+}
+.taskbar-gauge-host--st
+{
+	top: 34dp;
+	height: 6dp;
+}
+progress.taskbar-gauge
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 150dp;
+	height: 10dp;
+}
+progress.taskbar-gauge--st
+{
+	height: 6dp;
+}
+/* The recovery to come: a lighter bar under the gauge, as long as the HP or
+   SP the regeneration will reach. */
+progress.taskbar-recovery
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 150dp;
+	height: 10dp;
+	border-radius: 3dp;
+	background-color: var(--gauge-track);
+}
+progress.taskbar-recovery fill
+{
+	border-radius: 3dp;
+}
+progress.taskbar-recovery--hp fill
+{
+	background-color: var(--hp-recovery);
+}
+progress.taskbar-recovery--sp fill
+{
+	background-color: var(--sp-recovery);
+}
+/* HP and SP draw over their recovery bar, which holds the track. */
+progress.taskbar-gauge--hp.nui-gauge, progress.taskbar-gauge--sp.nui-gauge
+{
+	background-color: transparent;
+}
+
+.taskbar-exp
+{
+	display: block;
+	position: absolute;
+	left: 212dp;
+	top: 9dp;
+	width: 56dp;
+	height: 30dp;
+	pointer-events: auto;
+}
+progress.taskbar-orb
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 11dp;
+	height: 30dp;
+	background-color: var(--gauge-track);
+	border-radius: 3dp;
+}
+progress.taskbar-orb fill
+{
+	background-color: var(--accent);
+	border-radius: 3dp;
+}
+.taskbar-orb--1 { left: 0; }
+.taskbar-orb--2 { left: 15dp; }
+.taskbar-orb--3 { left: 30dp; }
+.taskbar-orb--4 { left: 45dp; }
+
+/* The optional skin parts (P13 D21): hidden here and in classic; a skin's
+   overlay gives them a display and a place. */
+.taskbar-hp-ring, .taskbar-value
+{
+	display: none;
+}
+
+/* --- Buttons: chips with glyphs ------------------------------------------------ */
+
+.taskbar-mall, .taskbar-mode, .taskbar-window, .taskbar-expand, .taskbar-pager__up, .taskbar-pager__down
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+	pointer-events: auto;
+}
+.taskbar-mall, .taskbar-mode, .taskbar-window
+{
+	width: 40dp;
+	height: 40dp;
+}
+.taskbar-mall:hover, .taskbar-mode:hover, .taskbar-window:hover, .taskbar-expand:hover, .taskbar-pager__up:hover, .taskbar-pager__down:hover
+{
+	background-color: var(--surface-hover);
+	border-color: var(--accent);
+}
+.taskbar-mall:active, .taskbar-mode:active, .taskbar-window:active, .taskbar-expand:active, .taskbar-pager__up:active, .taskbar-pager__down:active,
+.taskbar-mode.is-open
+{
+	background-color: var(--surface-sunken);
+}
+
+/* Each button's glyph, centered in the button's padding box (the mode
+   buttons switch their glyph's shape with their mode), in the accent under
+   the pointer. */
+.taskbar-glyph
+{
+	position: absolute;
+	left: 11dp;
+	top: 11dp;
+	transform: scale(1.25);
+}
+.taskbar-mall:hover .taskbar-glyph, .taskbar-mode:hover .taskbar-glyph, .taskbar-window:hover .taskbar-glyph, .taskbar-expand:hover .taskbar-glyph,
+.taskbar-pager__up:hover .taskbar-glyph, .taskbar-pager__down:hover .taskbar-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.taskbar-expand .taskbar-glyph
+{
+	left: 3dp;
+}
+/* The page buttons are 12dp tall: the chevron's ink, the middle of its
+   16dp box, on the middle of their 10dp padding box. */
+.taskbar-pager__up .taskbar-glyph, .taskbar-pager__down .taskbar-glyph
+{
+	left: 3dp;
+	top: -3dp;
+	transform: none;
+}
+
+.taskbar-mode--left
+{
+	left: 50%;
+	top: 4dp;
+	margin-left: -262dp;
+}
+.taskbar-mode--right
+{
+	left: 50%;
+	top: 4dp;
+	margin-left: 222dp;
+}
+.taskbar-right-skill
+{
+	position: absolute;
+	left: 50%;
+	top: 4dp;
+	margin-left: 222dp;
+}
+
+.taskbar-window--character
+{
+	right: 140dp;
+	top: 4dp;
+}
+.taskbar-window--inventory
+{
+	right: 96dp;
+	top: 4dp;
+}
+.taskbar-window--messenger
+{
+	right: 52dp;
+	top: 4dp;
+}
+.taskbar-window--system
+{
+	right: 8dp;
+	top: 4dp;
+}
+
+/* The camera mode image while the quick camera key is held, over the right
+   mode button. */
+.taskbar-camera
+{
+	position: absolute;
+	left: 50%;
+	top: 4dp;
+	margin-left: 222dp;
+	width: 40dp;
+	height: 40dp;
+	border-radius: var(--radius-md);
+	background-color: var(--surface-raised);
+}
+
+/* --- Quickslots ------------------------------------------------------------------ */
+
+.taskbar-quick
+{
+	position: absolute;
+	left: 50%;
+	top: 4dp;
+	margin-left: -214dp;
+	width: 428dp;
+	height: 40dp;
+}
+/* Eight 40dp cells 4dp apart, the fifth 28dp further right: the gap the
+   expand button sits in (cells 1 to 4 end at 172dp, 5 to 8 start at 204dp). */
+.taskbar-quick-grid
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 376dp;
+	flex-wrap: nowrap;
+	pointer-events: auto;
+}
+.taskbar-quick-grid .nui-slot:nth-child(5)
+{
+	margin-left: 28dp;
+}
+.taskbar-expand
+{
+	left: 176dp;
+	top: 0;
+	width: 24dp;
+	height: 40dp;
+}
+.taskbar-key
+{
+	padding: 0 2dp;
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 12dp;
+}
+.taskbar-key-art
+{
+	display: none;
+}
+
+.taskbar-pager
+{
+	position: absolute;
+	left: 380dp;
+	top: 0;
+	width: 24dp;
+	height: 40dp;
+}
+.taskbar-pager__board
+{
+	display: none;
+}
+.taskbar-pager__up, .taskbar-pager__down
+{
+	left: 0;
+	width: 24dp;
+	height: 12dp;
+}
+.taskbar-pager__up
+{
+	top: 0;
+}
+.taskbar-pager__down
+{
+	top: 28dp;
+}
+.taskbar-pager__page
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 12dp;
+	width: 24dp;
+	height: 16dp;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 16dp;
+	text-align: center;
+	pointer-events: none;
+}
+
+/* --- Tooltips -------------------------------------------------------------------- */
+
+.taskbar-tip
+{
+	pointer-events: none;
+}
+/* Near the screen's right edge (the inventory, messenger and system
+   buttons): the hint grows to the left. */
+.taskbar-tip--end
+{
+	left: auto;
+	right: 0;
+	margin-right: 0;
+	margin-left: -320dp;
+}
+/* The left mode menu's hints, left of their buttons. */
+.taskbar-tip--side
+{
+	left: auto;
+	right: 100%;
+	bottom: auto;
+	top: 10dp;
+	margin-bottom: 0;
+	margin-right: var(--space-1);
+	margin-left: -320dp;
+}
+
+/* --- Mode menus and the skill picker --------------------------------------------- */
+
+.taskbar-menu
+{
+	position: absolute;
+	bottom: 52dp;
+	padding: var(--space-1);
+}
+.taskbar-menu .taskbar-mode
+{
+	position: relative;
+	margin: 0;
+}
+.taskbar-menu--left
+{
+	left: 50%;
+	margin-left: -267dp;
+	width: 50dp;
+	height: 130dp;
+}
+.taskbar-menu--left .taskbar-mode
+{
+	display: block;
+	margin-bottom: var(--space-1);
+}
+.taskbar-menu--right
+{
+	left: 50%;
+	margin-left: 173dp;
+	width: 94dp;
+	height: 50dp;
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-1);
+}
+/* One panel above the right menu: the first category's row at the bottom,
+   each row's first skill at its right, as legacy lays the picker out. */
+/* 4dp above the right menu, whose box is 60dp tall from 52dp up (50dp,
+   its padding and its border). */
+.taskbar-picker
+{
+	position: absolute;
+	right: 50%;
+	margin-right: -262dp;
+	bottom: 116dp;
+	display: flex;
+	flex-direction: column-reverse;
+	align-items: flex-end;
+	gap: var(--space-1);
+	padding: var(--space-1);
+}
+.taskbar-picker__row
+{
+	flex-direction: row-reverse;
+}
+
+/* --- Narrow screens ----------------------------------------------------------------
+   The bar needs 1060dp: the gauges and the EXP orbs end at 268dp, and the
+   middle group starts 262dp left of the center. On a narrower screen (a
+   1280 wide one at 150%, 1024 at 100%) the whole document shrinks about its
+   bottom-left corner, in steps, until the bar fits again; the document grows
+   by the inverse, so its center and right anchors stay on the screen's, and
+   the menus and the picker shrink with their buttons. Classic fits from
+   800dp and resets this (skins/classic/windows/taskbar.rcss). The last step
+   (60%) fits from 636dp; below that the parts touch again. */
+@media (max-width: 1059dp)
+{
+	body.taskbar { top: -5.2632%; width: 105.2632%; height: 105.2632%; transform-origin: 0% 100%; transform: scale(0.95); }
+}
+@media (max-width: 1006dp)
+{
+	body.taskbar { top: -11.1111%; width: 111.1111%; height: 111.1111%; transform: scale(0.9); }
+}
+@media (max-width: 953dp)
+{
+	body.taskbar { top: -17.6471%; width: 117.6471%; height: 117.6471%; transform: scale(0.85); }
+}
+@media (max-width: 900dp)
+{
+	body.taskbar { top: -25%; width: 125%; height: 125%; transform: scale(0.8); }
+}
+@media (max-width: 847dp)
+{
+	body.taskbar { top: -33.3333%; width: 133.3333%; height: 133.3333%; transform: scale(0.75); }
+}
+@media (max-width: 794dp)
+{
+	body.taskbar { top: -42.8571%; width: 142.8571%; height: 142.8571%; transform: scale(0.7); }
+}
+@media (max-width: 741dp)
+{
+	body.taskbar { top: -53.8462%; width: 153.8462%; height: 153.8462%; transform: scale(0.65); }
+}
+@media (max-width: 688dp)
+{
+	body.taskbar { top: -66.6667%; width: 166.6667%; height: 166.6667%; transform: scale(0.6); }
+}

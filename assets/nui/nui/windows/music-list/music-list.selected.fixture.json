@@ -1,0 +1,35 @@
+{
+	"music_list": {
+		"files": [
+			{
+				"name": "@game.MUSIC_METIN2_DEFAULT_THEMA",
+				"label": "@game.MUSIC_METIN2_DEFAULT_THEMA"
+			},
+			{
+				"name": "a_rhapsody_of_war.mp3",
+				"label": "a_rhapsody_of_war.mp"
+			},
+			{
+				"name": "another_way.mp3",
+				"label": "another_way.mp3"
+			},
+			{
+				"name": "back_to_back.mp3",
+				"label": "back_to_back.mp3"
+			},
+			{
+				"name": "blacksea.mp3",
+				"label": "blacksea.mp3"
+			},
+			{
+				"name": "catacomb_of_devil.mp3",
+				"label": "catacomb_of_devil.mp"
+			},
+			{
+				"name": "characterselect.mp3",
+				"label": "characterselect.mp3"
+			}
+		],
+		"selected": 2
+	}
+}

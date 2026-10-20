@@ -1,0 +1,24 @@
+/* Pick money (nui_pick_money.py): a body-level window, not modal. The
+   controller places it above the mouse (nui.Window.set_position); until
+   then the sheet centers it, so a snapshot without a placement shows it. */
+body.pick-money
+{
+	width: 240dp;
+	left: 50%;
+	top: 50%;
+	margin-left: -120dp;
+	margin-top: -64dp;
+}
+.pick-money__row
+{
+	justify-content: center;
+}
+input.pick-money__field
+{
+	width: 96dp;
+}
+.pick-money__limit
+{
+	color: var(--text-muted);
+	white-space: nowrap;
+}

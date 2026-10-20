@@ -1,0 +1,20 @@
+<rml>
+<head>
+	<!-- The gift icon (uiscript/giftbox.py, uitaskbar.py GiftBox): the
+	     present the item mall shows while a gift waits. Only the NovaUI
+	     taskbar makes it, while the gift-box flag is on (controller:
+	     assets/root/nui_gift_box.py); it shows on C++ Gift_Show and hides
+	     when the player opens the mall. It takes no input, as legacy. Modern
+	     draws a chip with the gift glyph; classic draws the legacy present
+	     art, a frame its overlay gives the frames part, in the
+	     metin2_patch_etc group (d:/ymir work/ui/pattern/giftbox/), a root for
+	     lint and snapshots. -->
+	<title>gift-box</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="gift-box.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui gift-box">
+	<span id="gift-box" class="gift-box__icon"><nui-frames class="gift-box__frames"/><span class="nui-glyph nui-glyph--gift gift-box__glyph"><span
+		class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+</body>
+</rml>

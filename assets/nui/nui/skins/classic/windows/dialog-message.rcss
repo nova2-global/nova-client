@@ -1,0 +1,16 @@
+/* Classic skin overlay of nui/windows/dialog-message/dialog-message.rml, which
+   has no sheet of its own: the runtime and nuitool apply it after the
+   document's sheets, in every theme; every rule starts with .skin-classic, so
+   it acts only while a classic theme is in use (docs/ui/AUTHORING.md, Skins). */
+
+/* The legacy popup (uiscript popupdialog.py): the stone board with the
+   message centered about 38dp below its top and the middle button 63dp
+   below it, 21dp above the bottom edge. */
+body.skin-classic.dialog-message .nui-window__body
+{
+	padding: 31dp 16dp 0dp 16dp;
+}
+body.skin-classic.dialog-message .nui-window__footer
+{
+	padding: 12dp 16dp 21dp 16dp;
+}

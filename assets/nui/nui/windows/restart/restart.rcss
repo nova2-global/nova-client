@@ -1,0 +1,28 @@
+/* The restart dialog's modern look: two buttons at legacy's place (50, 50),
+   in both skins. Classic (the thin board, 200 x 88, with the xlarge button
+   art): skins/classic/windows/restart.rcss. */
+body.restart
+{
+	left: 50dp;
+	top: 50dp;
+	width: 220dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.restart button
+{
+	tab-index: none;
+}
+.restart__buttons
+{
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+	padding: var(--space-4);
+}
+.restart__button
+{
+	display: block;
+	width: 100%;
+}

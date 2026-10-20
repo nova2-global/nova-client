@@ -1,0 +1,660 @@
+/* Slot grid v2: square cells for items, skills and emotions, fed by the slot
+   model of assets/root/nui_slots.py (docs/ui/AUTHORING.md "Slot grids").
+   Two kinds of grid share the cell: the full cell, with every part (the
+   taskbar's quick slots, the skill pickers, the inventory's wear cells,
+   which list only the parts they show), and the lean grid of the item
+   windows (the bag page, the belt, select item; P14 spec 4.2).
+
+   A full cell, every part (the window's event names; the grid's name first):
+
+   <div class="nui-slot-grid nui-slot-grid--cols-4" id="quick-slots">
+   	<div class="nui-slot nui-anim" data-for="slot : quick_slots"
+   	     data-class-is-empty="slot.kind == ''"
+   	     data-class-is-disabled="slot.disabled" data-class-is-locked="slot.locked"
+   	     data-class-is-picked="slot.index == quick_picked"
+   	     data-class-is-selected="slot.index == quick_selected"
+   	     data-event-mousedown="slot_press('quick', slot.index, ev.button)"
+   	     data-event-mouseup="slot_release('quick', slot.index, ev.button)"
+   	     data-event-mouseover="slot_over('quick', slot.index)"
+   	     data-event-mouseout="slot_out('quick', slot.index)"
+   	     data-event-nuidrop="slot_drop('quick', slot.index)">
+   		<img class="nui-slot__icon" data-if="slot.icon != ''" data-attr-src="slot.icon"/>
+   		<div class="nui-slot__cover" data-if="slot.cover"></div>
+   		<div class="nui-slot__tint"></div>
+   		<nui-cooldown class="nui-slot__cooldown" data-if="slot.cd_end > 0"
+   			data-attr-start="slot.cd_start" data-attr-end="slot.cd_end"/>
+   		<nui-frames class="nui-slot__active" data-if="slot.active" count="13" delay="0.0667"/>
+   		<span class="nui-slot__ring nui-anim nui-fx" data-if="slot.active" data-class-is-on="slot.active"></span>
+   		<nui-frames class="nui-slot__finish" data-if="slot.cd_end > 0" count="11"
+   			delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+   		<nui-frames class="nui-slot__flash nui-anim" data-if="slot.cd_end > 0" count="11"
+   			delay="0.0333" loop="false" after="none" data-attr-start="slot.cd_end"/>
+   		<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
+   		<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
+   	</div>
+   </div>
+
+   States: is-empty, is-disabled (the legacy red tint), is-locked (the legacy
+   black tint; the controller refuses a pick), is-picked (drawn only in a grid
+   with nui-slot-grid--pick, as legacy's SLOT_STYLE_PICK_UP), is-selected,
+   is-target (a drop footprint cell that the attached item can move to),
+   is-blocked (one it cannot), is-usable and is-unusable (use mode: the
+   item under an attached refine scroll or stone, P14 spec 4.4),
+   is-unavailable (the belt's cells beyond its grade), :hover and is-hover.
+   A disabled, locked or unavailable cell keeps its pointer events, as legacy
+   cells take clicks. nui-slot--h2, --h3, --w2 and --w3 size a single cell
+   that holds a taller or wider item (a wear cell).
+   Every part ignores the pointer, so the cell is always the event target and
+   moving over its icon sends no mouseout.
+
+   The parts draw in the legacy order (CSlotWindow::OnRender): the pick and
+   selection tint under the icon, then the icon, the disabled tint, the
+   cooldown sweep, the cover, the count, the finish effect, the active effect
+   and the locked tint on top. The cell is a stacking context (z-index 0), so
+   a negative z-index draws above its background and under the icon.
+
+   A lean grid (nui-slot-grid--lean): the grid draws every resting cell base
+   with one decorator (nui-cells, one mesh and one draw for the whole grid),
+   a cell draws nothing at rest, and its markup holds only the parts its
+   content can show. Its list is fixed-length (cols x rows cells that never
+   change while the document lives), so the repeated cell may read its own
+   entry. An item larger than one cell draws from its anchor cell (its top
+   cell) over the cells it covers, which stay hit targets (nui_slots
+   item_cells, owner_index):
+
+   <div class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5" id="inv-bag">
+   	<div class="nui-slot nui-anim nui-fx" data-for="c : bag" data-attr-id="'inv-bag-' + it_index"
+   	     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+   	     data-class-is-picked="c.picked" data-class-is-active="c.active"
+   	     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+   	     data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
+   	     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+   	     data-event-mousedown="bag_press(it_index, ev.button)" ...>
+   		<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+   		<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+   	</div>
+   </div>
+
+   The grid is the stacking context (position relative, z-index 0) and a cell
+   is positioned without a z-index, so every cell's background paints before
+   every part, and a tall item's icon draws above the cells it covers; the
+   parts take the legacy order by z-index: icon 1, disabled tint 2,
+   cooldown 3, cover 4, count 5, finish 6, active 7, locked tint 8, sign 9.
+   nui-slot__number is the lean grid's one count part: nui-number draws its
+   text as the count badge in the modern skins and the legacy digits in
+   classic. A lean cell's active state is the cell itself (a 2dp accent
+   border and a static glow, no motion).
+
+   No dead zones, hover per item (P14b): a cell's hit box reaches half the
+   gap to its neighbors (nui-hit-outset, Core/ElementHitOutset.h: the
+   pointer sees a div larger than it draws), so the pointer anywhere in a
+   grid is over exactly one cell and the drawn cells stay as they were. In
+   a lean grid at rest, an anchor's box is its item's whole area, gaps
+   included (the negative margin keeps the rows), and the cells it covers
+   take no pointer: the pointer anywhere over an item is over its anchor,
+   so :hover lights the item as one shape and the tooltip stays up while
+   the pointer crosses the item's gaps. While something is attached (the
+   grid's is-attaching, which the window sets through nui_slots'
+   LegacySlotEvents), every cell is its own target again, so the drop
+   footprint follows the cell under the pointer as legacy's does. A grid
+   whose cells can hold a multi-cell item binds is-attaching
+   (docs/ui/AUTHORING.md "Slot grids").
+
+   Modern: 40dp cells 4dp apart (a 44dp pitch), the 32dp icon 4dp inside.
+   The active ring has a static glow (a box-shadow, drawn once), and the
+   finish effect is a burst: a radial gradient that scales by transform while
+   it plays. Classic (skins/classic/classic.rcss): the legacy 32dp pitch with
+   the slot base art (tiled by the lean grid), the legacy tints and cover
+   art, the legacy digits and the legacy effect frames. */
+
+.nui-slot-grid
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: var(--space-1);
+}
+/* n cells of 40dp and n - 1 gaps of 4dp: the cells wrap into n columns. */
+.nui-slot-grid--cols-1 { width: 40dp; }
+.nui-slot-grid--cols-2 { width: 84dp; }
+.nui-slot-grid--cols-3 { width: 128dp; }
+.nui-slot-grid--cols-4 { width: 172dp; }
+.nui-slot-grid--cols-5 { width: 216dp; }
+.nui-slot-grid--cols-6 { width: 260dp; }
+.nui-slot-grid--cols-7 { width: 304dp; }
+.nui-slot-grid--cols-8 { width: 348dp; }
+.nui-slot-grid--cols-9 { width: 392dp; }
+.nui-slot-grid--cols-10 { width: 436dp; }
+
+.nui-slot
+{
+	display: block;
+	position: relative;
+	z-index: 0;
+	box-sizing: border-box;
+	width: 40dp;
+	height: 40dp;
+	padding: 3dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	/* Half the 4dp gap on every side: the cells' hit boxes tile the grid. */
+	nui-hit-outset: 2dp;
+}
+.nui-slot:hover, .nui-slot.is-hover
+{
+	background-color: var(--surface-hover);
+	border-color: var(--accent);
+}
+.nui-slot.is-selected
+{
+	border-color: var(--accent);
+}
+/* The drop footprint (P14 spec 4.4): the cells an attached item would
+   cover, white in legacy where it can move, red where it cannot; in use
+   mode the target item, yellow where the attached item can be used on it,
+   red where it cannot. */
+.nui-slot.is-target
+{
+	background-color: var(--slot-target);
+	border-color: var(--accent);
+}
+.nui-slot.is-blocked
+{
+	background-color: var(--slot-blocked);
+	border-color: var(--danger);
+}
+.nui-slot.is-usable
+{
+	background-color: var(--slot-usable);
+	border-color: var(--warning);
+}
+.nui-slot.is-unusable
+{
+	background-color: var(--slot-unusable);
+	border-color: var(--danger);
+}
+/* A cell beyond the belt's grade: dimmed, with no hover look; it still
+   takes the pointer (the server refuses a drop there). */
+.nui-slot.is-unavailable, .nui-slot.is-unavailable:hover
+{
+	background-color: var(--slot-unavailable);
+	border-color: var(--border);
+}
+/* Hover fade (--dur-fast, --ease-out). */
+.nui-slot.nui-anim
+{
+	transition: background-color border-color 0.1s cubic-out;
+}
+/* A single cell that holds a taller or wider item (a wear cell): its span
+   in 44dp steps. */
+.nui-slot--h2 { height: 84dp; }
+.nui-slot--h3 { height: 128dp; }
+.nui-slot--w2 { width: 84dp; }
+.nui-slot--w3 { width: 128dp; }
+
+.nui-slot__icon
+{
+	display: block;
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+/* A taller item's icon at its own size (32 x 64 or 32 x 96dp), centered in
+   the item's area: 10dp or 16dp from its top. */
+.nui-slot--h2 > .nui-slot__icon, .nui-slot--h3 > .nui-slot__icon
+{
+	position: absolute;
+	left: 3dp;
+	height: auto;
+}
+.nui-slot--h2 > .nui-slot__icon { top: 9dp; }
+.nui-slot--h3 > .nui-slot__icon { top: 15dp; }
+
+/* Skills and emotions: a 1dp ring inside the icon. */
+.nui-slot__cover
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	z-index: 3;
+	box-sizing: border-box;
+	width: 32dp;
+	height: 32dp;
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: var(--radius-sm);
+	pointer-events: none;
+}
+
+/* The tints of the disabled, locked, picked and selected states, over the
+   whole cell inside its border. */
+.nui-slot__tint
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+}
+.nui-slot.is-disabled .nui-slot__tint
+{
+	z-index: 1;
+	background-color: var(--slot-disabled);
+}
+.nui-slot-grid--pick .nui-slot.is-picked .nui-slot__tint
+{
+	z-index: -1;
+	background-color: var(--slot-picked);
+}
+.nui-slot.is-locked .nui-slot__tint
+{
+	z-index: 7;
+	background-color: var(--slot-locked);
+}
+
+/* The cooldown sweep over the icon (components/clock.rcss draws it). */
+.nui-slot__cooldown
+{
+	left: 3dp;
+	top: 3dp;
+	right: auto;
+	bottom: auto;
+	z-index: 2;
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+
+/* The two effects: an active skill or item, and the end of a cooldown.
+   __active and __finish keep the legacy timing (13 frames of 1/15 s looped,
+   11 of 1/30 s once from the cooldown's end) and take their frames from the
+   skin (--frames-pattern, P13 spec 4.6): classic gives them the legacy
+   additive art (skins/classic/classic.rcss). Without art they run their
+   clock and draw nothing. The modern look is code (P14 spec D3): __ring, a
+   2dp accent ring inside the cell with a static glow that breathes while
+   the slot is active, and __flash, a clock of its own (no art) that bursts
+   at the cooldown's end (is-playing): an accent radial gradient scaling up
+   by transform, hidden otherwise. Classic hides both. Under reduced motion
+   the ring holds still and neither the finish effect nor the burst shows. */
+.nui-slot__active, .nui-slot__finish
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	pointer-events: none;
+}
+.nui-slot__finish
+{
+	z-index: 5;
+}
+.nui-slot__active
+{
+	z-index: 6;
+}
+@media (theme: reduced-motion)
+{
+	.nui-slot__finish, .nui-slot__flash
+	{
+		display: none;
+	}
+}
+.nui-slot__ring
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 6;
+	border-width: 2dp;
+	border-color: var(--accent);
+	border-radius: var(--radius-sm);
+	pointer-events: none;
+}
+/* No glow on the ring: a box-shadow on the breathing ring made RmlUi compile
+   its meshes again on every frame of the motion (about 4 a frame) and cost
+   the idle HUD as much in classic, where the ring is hidden but its
+   animation runs (P14 fix stage, NuiHudBench). The lean cell's static glow
+   below stays. */
+/* The ring breathes in to 0.88 of the slot and back in 0.8s, endlessly,
+   only while the slot is active (is-on, bound to the same value as its
+   data-if): RmlUi advances an element's animation on every update even
+   while it is hidden, so an animation on every cell's ring cost the idle
+   HUD each frame. By transform, not opacity: an opacity change rebuilds the
+   ring's mesh on every frame of the motion, a transform nothing (an active
+   auto potion pulses for as long as it is on). At rest (reduced motion) the
+   ring shows whole. */
+.nui-slot__ring.is-on.nui-anim
+{
+	animation: 0.8s sine-in-out infinite nui-slot-ring;
+}
+@keyframes nui-slot-ring
+{
+	0% { transform: scale(1); }
+	50% { transform: scale(0.88); }
+	100% { transform: scale(1); }
+}
+.nui-slot__flash
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 5;
+	transform: scale(0);
+	pointer-events: none;
+}
+/* The burst's 11 frames of 1/30 s: from 0.6 of the cell to 1.15, by
+   transform only (an opacity change would make the gradient again on every
+   frame). At rest and at is-done it has no decorator and is scaled to
+   nothing, not hidden, since a hidden nui-frames runs no clock and would
+   never play: RmlUi draws a decorator whatever the element's transform, so
+   a gradient at rest would cost a draw every frame for as long as the slot
+   keeps its cooldown's end (the quickslot feed keeps it until a rebuild).
+   The gradient is made once per burst. */
+.nui-slot__flash.is-playing
+{
+	decorator: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+	transform: scale(1.15);
+}
+.nui-slot__flash.is-playing.nui-anim
+{
+	animation: 0.37s cubic-out nui-slot-burst;
+}
+@keyframes nui-slot-burst
+{
+	from { transform: scale(0.6); }
+	to { transform: scale(1.15); }
+}
+
+.nui-slot__count
+{
+	position: absolute;
+	right: 1dp;
+	bottom: 1dp;
+	z-index: 4;
+	padding: 0 3dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 14dp;
+	pointer-events: none;
+}
+/* The legacy digit art (components/number.rcss); classic shows it instead
+   of the count. */
+.nui-slot__digits
+{
+	display: none;
+	position: absolute;
+	right: 4dp;
+	bottom: 3dp;
+	z-index: 4;
+	pointer-events: none;
+}
+/* The one count part of a lean grid and of a wear cell: nui-number's text
+   as the count badge in the modern skins, the legacy digits in classic (its
+   --number-path, skins/classic/classic.rcss). At the bottom right of the
+   item, so a taller item's count sits under its lower cell. */
+.nui-slot__number
+{
+	position: absolute;
+	right: 1dp;
+	bottom: 1dp;
+	z-index: 4;
+	pointer-events: none;
+}
+.nui-slot__number .nui-number__text
+{
+	padding: 0 3dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: var(--font-xs);
+	line-height: 14dp;
+	font-effect: none;
+}
+/* A window's key label in a cell (the taskbar's 1 to 4, F1 to F4); the
+   window styles it. */
+.nui-slot__key
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	z-index: 4;
+	pointer-events: none;
+}
+/* The requirement sign (CSlotWindow's sign image, at -7, +10 of the slot): a
+   7dp accent triangle drawn by borders. No 3b window shows it; the gallery
+   does. */
+.nui-slot__sign
+{
+	position: absolute;
+	left: -7dp;
+	top: 10dp;
+	z-index: 8;
+	width: 0;
+	height: 0;
+	border-width: 4dp 0 4dp 7dp;
+	border-color: transparent transparent transparent var(--accent);
+	pointer-events: none;
+}
+
+/* --- The lean grid (P14 spec 4.2) --------------------------------------------- */
+
+/* One decorator draws every resting cell base: cells of 40dp, 4dp apart, as
+   a standalone .nui-slot draws its own background and border. */
+.nui-slot-grid--lean
+{
+	position: relative;
+	z-index: 0;
+	decorator: nui-cells(40dp 4dp var(--radius-sm) var(--surface-sunken) var(--border) 1dp);
+}
+/* A lean cell draws nothing at rest (a transparent background and border
+   make no geometry); it is positioned without a z-index, so the grid is its
+   parts' stacking context. */
+.nui-slot-grid--lean > .nui-slot
+{
+	z-index: auto;
+	background-color: transparent;
+	border-color: transparent;
+}
+.nui-slot-grid--lean > .nui-slot:hover, .nui-slot-grid--lean > .nui-slot.is-hover
+{
+	background-color: var(--surface-hover);
+	border-color: var(--accent);
+}
+.nui-slot-grid--lean > .nui-slot.is-picked
+{
+	background-color: var(--slot-picked);
+	border-color: var(--accent);
+}
+.nui-slot-grid--lean > .nui-slot.is-target
+{
+	background-color: var(--slot-target);
+	border-color: var(--accent);
+}
+.nui-slot-grid--lean > .nui-slot.is-blocked
+{
+	background-color: var(--slot-blocked);
+	border-color: var(--danger);
+}
+.nui-slot-grid--lean > .nui-slot.is-usable
+{
+	background-color: var(--slot-usable);
+	border-color: var(--warning);
+}
+.nui-slot-grid--lean > .nui-slot.is-unusable
+{
+	background-color: var(--slot-unusable);
+	border-color: var(--danger);
+}
+.nui-slot-grid--lean > .nui-slot.is-unavailable, .nui-slot-grid--lean > .nui-slot.is-unavailable:hover
+{
+	background-color: var(--slot-unavailable);
+	border-color: var(--border);
+}
+/* An active item (an auto potion that is on): the cell itself, a 2dp
+   accent border and the static glow; no motion, which would move its icon. */
+.nui-slot-grid--lean > .nui-slot.is-active
+{
+	border-width: 2dp;
+	border-color: var(--accent);
+}
+/* Only lean cells carry is-active and nui-fx together; a lighter selector
+   than base.rcss's no-effects rule, which takes the shadow off. */
+.nui-slot.is-active.nui-fx
+{
+	box-shadow: 0 0 6dp var(--accent-glow);
+}
+/* The parts in the grid's stacking context, in the legacy order. */
+.nui-slot-grid--lean .nui-slot__icon
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	z-index: 1;
+}
+.nui-slot-grid--lean .nui-slot.is-active .nui-slot__icon
+{
+	left: 2dp;
+	top: 2dp;
+}
+.nui-slot-grid--lean .nui-slot__number { z-index: 5; }
+/* The bag's active part is the legacy effect's frames, which only classic
+   shows (its art); the modern skins show the cell's own look above, and a
+   hidden nui-frames builds no frames and runs no clock. */
+.nui-slot-grid--lean .nui-slot__active
+{
+	display: none;
+	z-index: 7;
+}
+.nui-slot-grid--lean .nui-slot__sign { z-index: 9; }
+/* An anchor cell's item at its own size, centered in the item's area: a
+   1x2 item's 64dp icon in 84dp, a 1x3 item's 96dp in 128dp; its count at
+   the bottom right of that area. At rest the anchor's box is that area
+   (P14b): the negative margin gives the row back its 44dp, so the box
+   reaches over the cells the item covers, which take no pointer; the
+   pointer anywhere over the item is over the anchor, and its hover look is
+   one shape. */
+.nui-slot-grid--lean > .nui-slot--h2 { height: 84dp; margin-bottom: -44dp; }
+.nui-slot-grid--lean > .nui-slot--h3 { height: 128dp; margin-bottom: -88dp; }
+.nui-slot-grid--lean > .nui-slot.is-covered
+{
+	pointer-events: none;
+}
+.nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__icon { top: 9dp; }
+.nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__icon { top: 15dp; }
+/* A wider item (no legacy item is; Wave 4's grids may hold one): its icon
+   at its own width, centered across its columns. */
+.nui-slot-grid--lean > .nui-slot--w2 { width: 84dp; margin-right: -44dp; }
+.nui-slot-grid--lean > .nui-slot--w3 { width: 128dp; margin-right: -88dp; }
+.nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__icon, .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__icon
+{
+	width: auto;
+	height: auto;
+}
+.nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__icon { left: 9dp; }
+.nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__icon { left: 15dp; }
+/* While something is attached (is-attaching): every cell is one cell again
+   and takes the pointer, so the footprint and the drop follow the cell
+   under the pointer (P14 spec 4.4); the count keeps its place. */
+.nui-slot-grid--lean.is-attaching > .nui-slot--h2, .nui-slot-grid--lean.is-attaching > .nui-slot--h3
+{
+	height: 40dp;
+	margin-bottom: 0;
+}
+.nui-slot-grid--lean.is-attaching > .nui-slot--w2, .nui-slot-grid--lean.is-attaching > .nui-slot--w3
+{
+	width: 40dp;
+	margin-right: 0;
+}
+.nui-slot-grid--lean.is-attaching > .nui-slot.is-covered
+{
+	pointer-events: auto;
+}
+.nui-slot-grid--lean.is-attaching > .nui-slot--w2 > .nui-slot__number { right: -43dp; }
+.nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -87dp; }
+.nui-slot-grid--lean.is-attaching > .nui-slot--h2 > .nui-slot__number { bottom: -43dp; }
+.nui-slot-grid--lean.is-attaching > .nui-slot--h3 > .nui-slot__number { bottom: -87dp; }
+
+/* --- Wave 3c (P15) ------------------------------------------------------------- */
+
+/* A skill cell's plus button (CSlotWindow::AppendSlotButton: a CSlotButton
+   at the slot's x + 1, y + 19, shown per slot; P15 spec 4.2). It is a div
+   beside the cell in the cell's place, over the cell's lower left corner,
+   never inside the cell: a press on it must not reach the cell, and a data
+   event cannot stop its propagation. It takes the pointer, so the hit
+   test's sweep counts its points as the button's (nuitool snap --sweep
+   reports -3 for them), and the window binds its hover to the cell's
+   tooltip, as legacy's button calls the slot window's OnOverInItem. Modern:
+   a 16dp accent square with the plus glyph in the accent's text color;
+   classic: legacy's btn_plus art (skins/classic/classic.rcss).
+
+   <div class="char-skill-place" data-for="c : skills">
+   	<div class="nui-slot nui-anim" ...>...</div>
+   	<div class="nui-slot-button nui-anim" data-if="c.button"
+   	     data-event-mousedown="skill_plus(c.slot, ev.button)"><span
+   		class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span
+   		class="nui-glyph__b"></span></span></div>
+   </div> */
+.nui-slot-button
+{
+	display: block;
+	position: absolute;
+	left: 1dp;
+	bottom: 1dp;
+	z-index: 10;
+	box-sizing: border-box;
+	width: 16dp;
+	height: 16dp;
+	background-color: var(--accent);
+	border-radius: var(--radius-sm);
+}
+/* The glyph fills the button, off the text line (a 16dp inline box on a
+   line of the inherited font would sit lower). */
+.nui-slot-button .nui-glyph
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	--glyph-ink: var(--accent-text);
+}
+.nui-slot-button:hover
+{
+	background-color: var(--accent-hover);
+}
+.nui-slot-button.nui-anim
+{
+	transition: background-color 0.1s cubic-out;
+}
+
+/* The refine window's cells (P15 spec 6.2). is-closed: a cell at or past
+   the recipe's lock index (legacy shows its base image, the closed look):
+   dimmed, with no hover look, a lock glyph in the middle (the window's
+   markup). is-ghost: the recipe's reference icon at half its alpha
+   (legacy's SetSlot with a diffuse of 0.5), no count. */
+.nui-slot.is-closed, .nui-slot.is-closed:hover,
+.nui-slot-grid--lean > .nui-slot.is-closed, .nui-slot-grid--lean > .nui-slot.is-closed:hover
+{
+	background-color: var(--slot-unavailable);
+	border-color: var(--border);
+}
+.nui-slot.is-closed .nui-glyph--lock
+{
+	position: absolute;
+	left: 11dp;
+	top: 11dp;
+	--glyph-ink: var(--text-muted);
+}
+.nui-slot.is-ghost .nui-slot__icon
+{
+	opacity: 0.5;
+}

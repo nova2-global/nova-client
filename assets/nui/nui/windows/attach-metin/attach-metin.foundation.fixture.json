@@ -1,0 +1,515 @@
+{
+	"attach_metin": {
+		"metin_icon": "/icon/item/28000.tga",
+		"old_lines": [
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Sword+0",
+						"role": "special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Value 13 - 15",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Magical Attack Value 15 - 19",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +22%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Max. HP +1500",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength +12",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +10%",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "[ Wearable ]",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": " Warrior Ninja Sura",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			}
+		],
+		"old_min_w": 227,
+		"new_lines": [
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Sword+0",
+						"role": "special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Value 13 - 15",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Magical Attack Value 15 - 19",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +22%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Max. HP +1500",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength +12",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Attack Speed +10%",
+						"role": "positive-special",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "[ Wearable ]",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": " Warrior Ninja Sura",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "/icon/item/28000.tga",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Stone of Penetration+0",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					},
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "1% Chance for piercing Hits",
+								"role": "positive",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "silver",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			},
+			{
+				"t": "socket",
+				"gap": 5,
+				"rule": false,
+				"align": "left",
+				"outline": true,
+				"runs": [],
+				"src": "",
+				"ih": 0,
+				"frame": "gold",
+				"icon": "",
+				"sub": [
+					{
+						"t": "line",
+						"gap": 0,
+						"rule": false,
+						"align": "left",
+						"outline": true,
+						"runs": [
+							{
+								"k": "text",
+								"text": "Empty",
+								"role": "normal",
+								"color": "",
+								"end": 0.0
+							}
+						],
+						"src": "",
+						"ih": 0,
+						"frame": "",
+						"icon": "",
+						"sub": []
+					}
+				]
+			}
+		],
+		"new_min_w": 227
+	}
+}

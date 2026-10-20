@@ -1,0 +1,20 @@
+/* Cyberpunk overlay of nui/windows/theme-picker/theme-picker.rml. RmlUi 6.3
+   sizes an absolute child by its top and bottom against an auto-height flex
+   container's unsized box (FlexFormattingContext.cpp), so the board's
+   outline hook would be cut to its top in the modern flex row: here the
+   board is a line of inline boxes. */
+
+body.skin-cyberpunk.picker
+{
+	display: block;
+	white-space: nowrap;
+}
+body.skin-cyberpunk.picker .picker__button
+{
+	margin-left: var(--space-1);
+	vertical-align: middle;
+}
+body.skin-cyberpunk.picker .picker__label
+{
+	vertical-align: middle;
+}

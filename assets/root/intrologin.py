@@ -12,16 +12,16 @@ import ServerStateChecker
 import localeInfo
 import constInfo
 import uiCommon
-import time
 import serverCommandParser
 import ime
 import uiScriptLocale
 import debugInfo
+import nui_login
+import nui_server_board
 
 # Multi-language hot-reload system
 from uilocaleselector import LocaleSelector
 
-LOGIN_DELAY_SEC = 0.0
 SKIP_LOGIN_PHASE = False
 SKIP_LOGIN_PHASE_SUPPORT_CHANNEL = False
 FULL_BACK_IMAGE = False
@@ -42,17 +42,6 @@ def Suffle(src):
 	else:
 		return src
 
-def IsLoginDelay():
-	global LOGIN_DELAY_SEC
-	if LOGIN_DELAY_SEC > 0.0:
-		return True
-	else:
-		return False
-
-def GetLoginDelay():
-	global LOGIN_DELAY_SEC
-	return LOGIN_DELAY_SEC
-
 app.SetGuildMarkPath("test")
 
 ###############################################################################
@@ -61,71 +50,6 @@ app.SetGuildMarkPath("test")
 # - uilocaleselector.py (UI component)
 # - uilocalechange.py (hot-reload manager)
 ###############################################################################
-
-class ConnectingDialog(ui.ScriptWindow):
-
-	def __init__(self):
-		ui.ScriptWindow.__init__(self)
-		self.__LoadDialog()
-		self.eventTimeOver = lambda *arg: None
-		self.eventExit = lambda *arg: None
-
-	def __del__(self):
-		ui.ScriptWindow.__del__(self)
-
-	def __LoadDialog(self):
-		try:
-			PythonScriptLoader = ui.PythonScriptLoader()
-			PythonScriptLoader.LoadScriptFile(self, "UIScript/ConnectingDialog.py")
-
-			self.board = self.GetChild("board")
-			self.message = self.GetChild("message")
-			self.countdownMessage = self.GetChild("countdown_message")
-
-		except:
-			import exception
-			exception.Abort("ConnectingDialog.LoadDialog.BindObject")
-
-	def Open(self, waitTime):
-		curTime = time.clock()
-		self.endTime = curTime + waitTime
-
-		self.Lock()
-		self.SetCenterPosition()
-		self.SetTop()
-		self.Show()		
-
-	def Close(self):
-		self.Unlock()
-		self.Hide()
-
-	def Destroy(self):
-		self.Hide()
-		self.ClearDictionary()
-
-	def SetText(self, text):
-		self.message.SetText(text)
-
-	def SetCountDownMessage(self, waitTime):
-		self.countdownMessage.SetText("%.0f%s" % (waitTime, localeInfo.SECOND))
-
-	def SAFE_SetTimeOverEvent(self, event):
-		self.eventTimeOver = ui.__mem_func__(event)
-
-	def SAFE_SetExitEvent(self, event):
-		self.eventExit = ui.__mem_func__(event)
-
-	def OnUpdate(self):
-		lastTime = max(0, self.endTime - time.clock())
-		if 0 == lastTime:
-			self.Close()
-			self.eventTimeOver()
-		else:
-			self.SetCountDownMessage(self.endTime - time.clock())
-
-	def OnPressExitKey(self):
-		#self.eventExit()
-		return True
 
 class LoginWindow(ui.ScriptWindow):
 	def __init__(self, stream):
@@ -136,9 +60,7 @@ class LoginWindow(ui.ScriptWindow):
 
 		self.lastLoginTime = 0
 		self.inputDialog = None
-		self.connectingDialog = None
 		self.stream=stream
-		self.isNowCountDown=False
 		self.isStartError=False
 
 		self.xServerBoard = 0
@@ -153,6 +75,11 @@ class LoginWindow(ui.ScriptWindow):
 
 		# Multi-language hot-reload system
 		self.localeSelector = None
+
+		# NovaUI login board (nui_login.py), made in Open() while UI_NUI_LOGIN is on.
+		self.nuiBoard = None
+		# NovaUI server and channel board (nui_server_board.py), made in Open().
+		self.nuiServerBoard = None
 
 	def __del__(self):
 		net.ClearPhaseWindow(net.PHASE_WINDOW_LOGIN, self)
@@ -201,6 +128,12 @@ class LoginWindow(ui.ScriptWindow):
 			dbg.TraceError("SelectCharacterWindow.Open - __LoadScript Error")
 			return
 
+		# NovaUI board when UI_NUI_LOGIN is on; None keeps the legacy boards.
+		self.nuiBoard = nui_login.open_board(self,
+			ui.__mem_func__(self.__OnClickSelectConnectButton),
+			ui.__mem_func__(self.__OnClickExitButton))
+		self.nuiServerBoard = nui_server_board.open_board(self, ui.__mem_func__(self.__OnClickSelectServerButton), ui.__mem_func__(self.__OnClickExitButton))
+
 		# Changed .xml -> .py because pack.Get does not allow .xml extension
 		self.__LoadLoginInfo("loginInfo.py")
 		
@@ -248,10 +181,9 @@ class LoginWindow(ui.ScriptWindow):
 		app.ShowCursor()
 
 	def Close(self):
-
-		if self.connectingDialog:
-			self.connectingDialog.Close()
-		self.connectingDialog = None
+		# First: the popupWindow.Close() below runs callbacks that would show it.
+		nui_login.close_board(self)
+		nui_server_board.close_board(self)
 
 		ServerStateChecker.Initialize(self)
 
@@ -274,7 +206,6 @@ class LoginWindow(ui.ScriptWindow):
 		self.idEditLine = None
 		self.pwdEditLine = None
 		self.inputDialog = None
-		self.connectingDialog = None
 		self.loadingImage = None
 
 		if self.localeSelector:
@@ -348,28 +279,20 @@ class LoginWindow(ui.ScriptWindow):
 		app.Exit()
 
 	def SetIDEditLineFocus(self):
+		if nui_login.focus_field(self, "user"):
+			return
 		if self.idEditLine != None:
 			self.idEditLine.SetFocus()
 
 	def SetPasswordEditLineFocus(self):
+		if nui_login.focus_field(self, "password"):
+			return
 		if self.pwdEditLine != None:
 			self.pwdEditLine.SetFocus()
 
-	def OnEndCountDown(self):
-		self.isNowCountDown = False
-		self.timeOutMsg = False
-		self.OnConnectFailure()
-
 	def OnConnectFailure(self):
 
-		if self.isNowCountDown:
-			return
-
 		snd.PlaySound("sound/ui/loginfail.wav")
-
-		if self.connectingDialog:
-			self.connectingDialog.Close()
-		self.connectingDialog = None
 
 		if app.loggined:
 			self.PopupNotifyMessage(localeInfo.LOGIN_CONNECT_FAILURE, self.__ExitGame)
@@ -379,19 +302,13 @@ class LoginWindow(ui.ScriptWindow):
 			self.PopupNotifyMessage(localeInfo.LOGIN_CONNECT_FAILURE, self.SetPasswordEditLineFocus)
 
 	def OnHandShake(self):
-		if not IsLoginDelay():
-			snd.PlaySound("sound/ui/loginok.wav")
-			self.PopupDisplayMessage(localeInfo.LOGIN_CONNECT_SUCCESS)
+		snd.PlaySound("sound/ui/loginok.wav")
+		self.PopupDisplayMessage(localeInfo.LOGIN_CONNECT_SUCCESS)
 
 	def OnLoginStart(self):
-		if not IsLoginDelay():
-			self.PopupDisplayMessage(localeInfo.LOGIN_PROCESSING)
+		self.PopupDisplayMessage(localeInfo.LOGIN_PROCESSING)
 
 	def OnLoginFailure(self, error):
-		if self.connectingDialog:
-			self.connectingDialog.Close()
-		self.connectingDialog = None
-
 		try:
 			loginFailureMsg = self.loginFailureMsgDict[error]
 		except KeyError:
@@ -409,18 +326,10 @@ class LoginWindow(ui.ScriptWindow):
 		snd.PlaySound("sound/ui/loginfail.wav")
 
 	def __DisconnectAndInputID(self):
-		if self.connectingDialog:
-			self.connectingDialog.Close()
-		self.connectingDialog = None
-
 		self.SetIDEditLineFocus()
 		net.Disconnect()
 
 	def __DisconnectAndInputPassword(self):
-		if self.connectingDialog:
-			self.connectingDialog.Close()
-		self.connectingDialog = None
-
 		self.SetPasswordEditLineFocus()
 		net.Disconnect()
 
@@ -568,17 +477,9 @@ class LoginWindow(ui.ScriptWindow):
 				
 	def Connect(self, id, pwd):
 
-		if IsLoginDelay():
-			loginDelay = GetLoginDelay()
-			self.connectingDialog = ConnectingDialog()
-			self.connectingDialog.Open(loginDelay)
-			self.connectingDialog.SAFE_SetTimeOverEvent(self.OnEndCountDown)
-			self.connectingDialog.SAFE_SetExitEvent(self.OnPressExitKey)
-			self.isNowCountDown = True
-
-		else:
-			self.stream.popupWindow.Close()
-			self.stream.popupWindow.Open(localeInfo.LOGIN_CONNETING, self.SetPasswordEditLineFocus, localeInfo.UI_CANCEL)
+		self.stream.popupWindow.Close()
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(localeInfo.LOGIN_CONNETING, nui_login.after_popup(self, self.SetPasswordEditLineFocus), localeInfo.UI_CANCEL)
 
 		self.stream.SetLoginInfo(id, pwd)
 		self.stream.Connect()
@@ -618,9 +519,15 @@ class LoginWindow(ui.ScriptWindow):
 			dbg.TraceError("RTL/LTR direction changed, reloading UI script...")
 
 			# Save current state before Close() destroys references
-			wasOnLoginBoard = self.connectBoard and self.connectBoard.IsShow()
-			savedId = self.idEditLine.GetText() if self.idEditLine else ""
-			savedPwd = self.pwdEditLine.GetText() if self.pwdEditLine else ""
+			wasOnLoginBoard = nui_login.on_login_board(self)
+			if wasOnLoginBoard is None:
+				wasOnLoginBoard = self.connectBoard and self.connectBoard.IsShow()
+			typed = nui_login.typed_values(self)
+			if typed:
+				savedId, savedPwd = typed
+			else:
+				savedId = self.idEditLine.GetText() if self.idEditLine else ""
+				savedPwd = self.pwdEditLine.GetText() if self.pwdEditLine else ""
 
 			# Rebuild popup dialog for new direction
 			self.stream.popupWindow.Destroy()
@@ -633,10 +540,12 @@ class LoginWindow(ui.ScriptWindow):
 			# Restore the board the user was on
 			if wasOnLoginBoard:
 				self.__OpenLoginBoard()
-				if savedId:
-					self.idEditLine.SetText(savedId)
-				if savedPwd:
-					self.pwdEditLine.SetText(savedPwd)
+				# The NovaUI board takes the ID only; the legacy lines take both.
+				if not nui_login.restore_typed(self, savedId):
+					if savedId:
+						self.idEditLine.SetText(savedId)
+					if savedPwd:
+						self.pwdEditLine.SetText(savedPwd)
 			else:
 				self.__RefreshServerList()
 				self.__OpenServerBoard()
@@ -705,6 +614,7 @@ class LoginWindow(ui.ScriptWindow):
 			self.localeSelector.SetLocaleChangedEvent(ui.__mem_func__(self.__OnLocaleChanged))
 			self.localeSelector.Show()
 			self.localeSelector.SetTop()
+			nui_login.place_picker(self)
 
 		except Exception as e:
 			dbg.TraceError("LoginWindow.__RefreshLocaleUI failed: %s" % str(e))
@@ -712,6 +622,7 @@ class LoginWindow(ui.ScriptWindow):
 	def __SetServerInfo(self, name):
 		net.SetServerInfo(name.strip())
 		self.serverInfo.SetText(name)
+		nui_login.set_server(self, name)
 
 	def __LoadLoginInfo(self, loginInfoFileName):
 		# This should not work in production
@@ -752,6 +663,7 @@ class LoginWindow(ui.ScriptWindow):
 
 				net.SetServerInfo(addr+":"+str(port))
 				self.serverInfo.SetText("K:"+addr+":"+str(port))
+				nui_login.set_server(self, "K:"+addr+":"+str(port))
 
 			slot=loginInfo.get("slot", 0)
 			isAutoLogin=loginInfo.get("auto", 0)
@@ -784,14 +696,16 @@ class LoginWindow(ui.ScriptWindow):
 		
 	def PopupDisplayMessage(self, msg):
 		self.stream.popupWindow.Close()
-		self.stream.popupWindow.Open(msg)
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(msg, nui_login.after_popup(self, 0))
 
 	def PopupNotifyMessage(self, msg, func=0):
 		if not func:
 			func=self.EmptyFunc
 
 		self.stream.popupWindow.Close()
-		self.stream.popupWindow.Open(msg, func, localeInfo.UI_OK)
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(msg, nui_login.after_popup(self, func), localeInfo.UI_OK)
 
 	def __OnCloseInputDialog(self):
 		if self.inputDialog:
@@ -871,6 +785,9 @@ class LoginWindow(ui.ScriptWindow):
 		if self.virtualKeyboard:
 			self.virtualKeyboard.Hide()
 
+		nui_login.leave_login_board(self)
+		nui_server_board.enter(self)
+
 		if app.loggined and not SKIP_LOGIN_PHASE_SUPPORT_CHANNEL:
 			self.serverList.SelectItem(self.loginnedServer-1)
 			self.channelList.SelectItem(self.loginnedChannel-1)
@@ -883,6 +800,10 @@ class LoginWindow(ui.ScriptWindow):
 
 		self.serverBoard.SetPosition(self.xServerBoard, wndMgr.GetScreenHeight())
 		self.serverBoard.Hide()
+		nui_server_board.leave(self)
+
+		if nui_login.enter_login_board(self):
+			return  # NovaUI: the legacy boards, the keyboard and the EditLine focus stay off
 
 		if self.virtualKeyboard:
 			self.virtualKeyboard.Show()
@@ -944,6 +865,7 @@ class LoginWindow(ui.ScriptWindow):
 			self.serverList.InsertItem(id, "  %02d. %s" % (int(server_id), name))
 			visible_index += 1
 		# END_OF_SEVER_LIST_BUG_FIX
+		nui_server_board.refresh_servers(self)
 
 	def __OnSelectServer(self):
 		self.__OnCloseInputDialog()
@@ -989,6 +911,7 @@ class LoginWindow(ui.ScriptWindow):
 			self.channelList.InsertItem(channelID, " %s %s" % (channelName, channelState))
 
 		self.channelList.SelectItem(bakChannelID-1)
+		nui_server_board.refresh_channels(self)
 
 	def __GetChannelName(self, regionID, selServerID, selChannelID):
 		try:
@@ -1133,4 +1056,5 @@ class LoginWindow(ui.ScriptWindow):
 	
 	def SameLogin_OpenUI(self):
 		self.stream.popupWindow.Close()
-		self.stream.popupWindow.Open(localeInfo.LOGIN_FAILURE_SAMELOGIN, 0, localeInfo.UI_OK)
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(localeInfo.LOGIN_FAILURE_SAMELOGIN, nui_login.after_popup(self, 0), localeInfo.UI_OK)

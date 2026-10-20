@@ -1,0 +1,9 @@
+{
+	"$comment": "Golden cases of the shop signs (tools/check_nui_snapshots.py): four signs, one the player's own and one name with a color tag, at the points the --anchor stand-ins give their four characters; own-only: the game option that hides the other players' signs (system.show_sales_text false). The classic thin board art is under d:/ymir work/ (assets/ETC).",
+	"cases": [
+		{"page": "shop-signs", "themes": "all", "scales": [["100", "1", "960x320"], ["150", "1.5", "1440x480"], ["200", "2", "1920x640"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		 "anchors": {"11": [150, 90], "12": [420, 70], "13": [640, 200], "14": [820, 120]}},
+		{"page": "shop-signs", "variant": "own-only", "themes": "all", "scales": [["100", "1", "960x320"], ["150", "1.5", "1440x480"], ["200", "2", "1920x640"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		 "anchors": {"11": [150, 90], "12": [420, 70], "13": [640, 200], "14": [820, 120]}}
+	]
+}

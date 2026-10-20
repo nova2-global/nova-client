@@ -1,0 +1,71 @@
+<rml>
+<head>
+	<!-- The messenger, the friend list (uimessenger.py MessengerWindow,
+	     uiscript messengerwindow.py; P16 spec 5.7). While the messenger flag
+	     is on, the Interface makes nui_messenger.MessengerWindow (controller
+	     assets/root/nui_messenger.py), a subclass of the legacy class on
+	     proxies: legacy's group and member items stay its data (hidden legacy
+	     windows that never show), so the groups, the online state, the
+	     selection, the buttons' rules, add, whisper, remove, the guild button
+	     and the C++ handler's calls are legacy's code. The rows are legacy's
+	     list in order (the family group and the lover first, then each group
+	     and, while open, its online then offline members, or the empty
+	     line); every row shows and the list scrolls by pixel (D18). A left
+	     press selects a row (a group opens or closes), a double click on an
+	     online member whispers. The lover's row shows its love points on
+	     hover. The bottom edge resizes the height (legacy's at least 150).
+	     The rows' own bindings read only the index and top-level keys (the
+	     list shrinks); each row's look sits on a child. The document exists
+	     only while the window shows; nothing runs per frame. The body and its
+	     controls take no focus; controls act on a left mousedown. It draws
+	     below the legacy UI layer, as legacy's window lived in it. A left or
+	     right press anywhere on it raises the window (board_press). -->
+	<title>messenger</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="messenger.rcss"/>
+</head>
+<body template="nui" id="messenger" class="nui-window nui-fx nui-anim nui-below-legacy-ui messenger" data-model="messenger"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar messenger__titlebar">
+		<handle class="nui-window__handle messenger__handle" move_target="#document">
+			<span class="nui-window__title messenger__title">@ui.MESSENGER_TITLE</span>
+		</handle>
+		<button id="messenger-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim messenger__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body messenger__body">
+		<div id="messenger-list" class="messenger__list">
+			<div class="messenger__row" data-for="r : rows" data-attr-id="'messenger-row-' + it_index"
+			     data-event-mousedown="row_press(it_index, ev.button)" data-event-dblclick="row_dblclick(it_index)">
+				<div class="messenger__line" data-class-is-group="r.kind == 'group'" data-class-is-member="r.member"
+				     data-class-is-empty="r.kind == 'empty'" data-class-is-online="r.online" data-class-is-open="r.open"
+				     data-class-is-selected="r.selected" data-class-nui-has-tooltip="r.love &gt;= 0"><span
+					class="messenger__mark"></span><span class="messenger__name"><nui-text class="messenger__text" links="off"
+					data-attr-value="r.name"/></span><span class="nui-tooltip nui-anim messenger__hint" data-if="r.love &gt;= 0">{{ r.hint }}</span></div>
+			</div>
+		</div>
+	</div>
+	<div class="nui-window__footer messenger__footer">
+		<button id="messenger-add" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--add"
+		        data-event-mousedown="add_press(ev.button)"><span class="nui-glyph nui-glyph--plus"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_ADD_FRIEND</span></button>
+		<button id="messenger-whisper" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--whisper"
+		        data-attrif-disabled="!whisper_enabled" data-event-mousedown="whisper_press(ev.button)"><span
+			class="nui-glyph nui-glyph--whisper"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
+			class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_WHISPER</span></button>
+		<button id="messenger-remove" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--remove"
+		        data-attrif-disabled="!remove_enabled" data-event-mousedown="remove_press(ev.button)"><span
+			class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_DELETE_FRIEND</span></button>
+		<button id="messenger-guild" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--guild"
+		        data-event-mousedown="guild_press(ev.button)"><span class="nui-glyph nui-glyph--community"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
+			class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_OPEN_GUILD</span></button>
+	</div>
+	<nui-resize id="messenger-resize" class="messenger__resize" edge="bottom-right" target="messenger"
+	            min-width="170" max-width="170" min-height="150" data-attr-height="height"
+	            data-event-resized="resized(ev.height)"/>
+</body>
+</rml>

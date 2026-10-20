@@ -1,0 +1,29 @@
+{
+	"$comment": "Golden cases of the quest dialog (tools/check_nui_snapshots.py): OX page 1 typed to its end with the Next button, in every theme at 100, 150 and 200%; at 100% the page halfway through typing, the NPC menu, the teleporter's question, ten answers on two pages, input mode, item icons, every text role, the script pictures, the scroll (skin 3), cinema (skin 5) and the confirm wait. The lines come from feed stand-ins, as the quest interpreter's sink publishes them.",
+	"cases": [
+		{"page": "quest", "themes": "all", "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.quest.0.lines.json"}},
+		{"page": "quest", "variant": "typing", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.typing.quest.0.lines.json"}},
+		{"page": "quest", "variant": "menu", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.menu.quest.0.lines.json"}},
+		{"page": "quest", "variant": "question", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.question.quest.0.lines.json"}},
+		{"page": "quest", "variant": "many", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.many.quest.0.lines.json"}},
+		{"page": "quest", "variant": "input", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.input.quest.0.lines.json"}},
+		{"page": "quest", "variant": "icons", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.icons.quest.0.lines.json"}},
+		{"page": "quest", "variant": "colors", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.colors.quest.0.lines.json"}},
+		{"page": "quest", "variant": "images", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.images.quest.0.lines.json"}},
+		{"page": "quest", "variant": "scroll", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.scroll.quest.0.lines.json"}},
+		{"page": "quest", "variant": "cinema", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.cinema.quest.0.lines.json"}},
+		{"page": "quest", "variant": "confirm", "themes": "all", "scales": [["100", "1", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null, "feeds": {"quest.0.lines": "nui/windows/quest/quest.confirm.quest.0.lines.json"}}
+	]
+}

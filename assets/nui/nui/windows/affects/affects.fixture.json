@@ -1,0 +1,20 @@
+{
+	"affects": {
+		"icons": [
+			{"key": -11, "kind": "horse", "image": "d:/ymir work/ui/pattern/horsestate/31.dds", "small": true,
+			 "title": "", "line": "Battle Horse\nFull", "end": 0.0, "clocked": false, "label": false},
+			{"key": 14, "kind": "affect", "image": "d:/ymir work/ui/skill/warrior/jeongwi_03.sub", "small": true,
+			 "title": "Berserk", "line": "", "end": 0.0, "clocked": true, "label": true},
+			{"key": 11, "kind": "affect", "image": "d:/ymir work/ui/skill/common/affect/Increase_Move_Speed.sub", "small": true,
+			 "title": "Moving speed raised", "line": "", "end": 3726.0, "clocked": true, "label": false},
+			{"key": 500, "kind": "affect", "image": "d:/ymir work/ui/skill/common/affect/exp_bonus.sub", "small": true,
+			 "title": "Increases gaining EXP by 50%", "line": "", "end": 0.0, "clocked": false, "label": true},
+			{"key": 511, "kind": "affect", "image": "d:/ymir work/ui/skill/common/affect/gold_premium.sub", "small": true,
+			 "title": "Medal of the Dragon", "line": "No experience points will be lost if your character is revived at the place of his death.",
+			 "end": 0.0, "clocked": true, "label": false},
+			{"key": 541, "kind": "affect", "image": "d:/ymir work/ui/dragonsoul/buff_ds_sky1.tga", "small": false,
+			 "title": "Earth", "line": "", "end": 86461.0, "clocked": true, "label": false}
+		],
+		"open_key": -1
+	}
+}

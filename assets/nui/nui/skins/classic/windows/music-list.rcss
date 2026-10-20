@@ -1,0 +1,155 @@
+/* Classic skin overlay of nui/windows/music-list/music-list.rml: the
+   legacy music list (uiscript musiclistwindow.py, uiselectmusic.py) at
+   100%, 1dp to the legacy pixel. The stone board, 170 x 300, with its title
+   bar at 8, 7 (155 wide; the title centered over the whole bar, the close
+   button at 137, 3); the list box (ui.ListBoxEx) at 15, 50: ten rows 20dp
+   apart, each a text line whose selection is a dark blue bar as wide as
+   its text plus 4dp (legacy draws no hover); the scroll bar at 143, 40,
+   220 tall with a 12dp cursor, always shown, as legacy's; OK, Cancel and Refresh on the small
+   art (43dp) at 15, 60 and 115, y 265, their labels centered over the art
+   as legacy draws them, wider labels overflowing it. */
+
+body.skin-classic.music-list
+{
+	width: 170dp;
+	height: 300dp;
+	min-width: 0;
+}
+/* z-index: the legacy rows below are positioned boxes placed from the
+   board's corner, later in the document, so without it they would sit above
+   the bar and take its close button's and handle's presses. */
+body.skin-classic.music-list .music-list__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 155dp;
+	height: 32dp;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+}
+body.skin-classic.music-list .music-list__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 155dp;
+	height: 23dp;
+	text-align: center;
+}
+body.skin-classic.music-list .music-list__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 137dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.music-list .music-list__body
+{
+	padding: 0;
+}
+/* The rows' box is legacy's list box: ten rows from 50 to 250, so no
+   eleventh row shows in part. Legacy's scroll bar is its own window, 220
+   tall from 40: the viewport's scroll bar reaches 10dp past it at both ends
+   (clip: 1 lets its parts out of the viewport's clip), and its cursor keeps
+   legacy's fixed 12dp (ui.ScrollBar's middle bar; the music list never sizes
+   it to the page). */
+body.skin-classic.music-list .music-list__list
+{
+	position: absolute;
+	left: 15dp;
+	top: 50dp;
+	width: 143dp;
+	height: 200dp;
+	padding: 0;
+}
+body.skin-classic.music-list .music-list__viewport
+{
+	height: 200dp;
+	overflow-y: scroll;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical
+{
+	margin-top: -10dp;
+	margin-bottom: -10dp;
+	clip: 1;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical slidertrack,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowdec,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowinc,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderbar
+{
+	clip: 1;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderbar
+{
+	height: 12dp;
+}
+body.skin-classic.music-list .music-list__item
+{
+	display: block;
+	height: 20dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	line-height: 16dp;
+}
+body.skin-classic.music-list .music-list__item:hover,
+body.skin-classic.music-list .music-list__item.is-selected
+{
+	background-color: transparent;
+}
+body.skin-classic.music-list .music-list__label
+{
+	display: inline-block;
+	height: 16dp;
+	padding: 0 4dp 0 0;
+	color: var(--text);
+}
+body.skin-classic.music-list .music-list__item.is-selected .music-list__label
+{
+	background-color: var(--classic-list-ex-select);
+}
+
+body.skin-classic.music-list .music-list__footer
+{
+	display: block;
+	height: 0;
+	padding: 0;
+}
+body.skin-classic.music-list .music-list__button
+{
+	position: absolute;
+	top: 265dp;
+	width: 43dp;
+	min-width: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.music-list .music-list__button:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.music-list .music-list__button:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+/* The label centered over the art, a wider one overflowing both ends. It
+   takes no pointer, as legacy's text line takes none: the next button's label
+   would otherwise take the presses on the right part of the button before it. */
+body.skin-classic.music-list .music-list__button-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+	pointer-events: none;
+}
+body.skin-classic.music-list .music-list__button--ok { left: 15dp; }
+body.skin-classic.music-list .music-list__button--cancel { left: 60dp; }
+body.skin-classic.music-list .music-list__button--refresh { left: 115dp; }

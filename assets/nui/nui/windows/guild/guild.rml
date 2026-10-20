@@ -1,0 +1,255 @@
+<rml>
+<head>
+	<!-- The guild window and its six pages (uiguild.py GuildWindow, uiscripts
+	     guildwindow.py and guildwindow_*page.py; P16 spec 5.9). While the
+	     guild flag is on, the Interface makes nui_guild.GuildWindow
+	     (controller assets/root/nui_guild.py), a subclass of the legacy class
+	     on proxies: the pages' refreshes, the tabs, the offer, the mark and
+	     symbol lists, the war declaration, the comments, the member grades and
+	     general flags, the skills, the dragon power heal, the grade names and
+	     authorities, Escape and the close are legacy's code. Only the shown
+	     page is built (D9: each page is a data-for over a one-entry list); the
+	     base page's tab stays disabled, as legacy's (its page exists for the
+	     goldens and the kit). Names and comments other players wrote show
+	     through nui-text, never as markup. A grade combo box opens its list
+	     under its row, one at a time (D11). The skill cells reach legacy's
+	     handlers through nui_slots.LegacySlotEvents. The document exists only
+	     while the window shows; nothing runs per frame (the reflectors and the
+	     combo's hover are :hover and :active). The body takes no focus, so a
+	     press in the comment field focuses it itself (comment_press), and the
+	     field types like a legacy edit line (nui-field-passes-hotkeys,
+	     nui-field-keeps-focus; the window holds wndMgr's focus meanwhile);
+	     controls act on a left mousedown. It draws below the legacy UI layer,
+	     as legacy's window lived in it. A left or right press anywhere on it
+	     raises the window (board_press). -->
+	<title>guild</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="guild.rcss"/>
+</head>
+<body template="nui" id="guild" class="nui-window nui-fx nui-anim nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus guild" data-model="guild"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar guild__titlebar">
+		<handle class="nui-window__handle guild__handle" move_target="#document">
+			<span class="nui-window__title guild__title">{{ title }}</span>
+		</handle>
+		<button id="guild-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim guild__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body guild__body">
+
+		<!-- The guild's information (guildwindow_guildinfopage.py). -->
+		<div class="guild__page guild__page--info" data-for="p : page_info">
+			<div class="guild__card guild__card--values">
+				<div class="guild__bar guild__bar--values"><span class="guild__bar-title">@ui.GUILD_INFO</span></div>
+				<div class="guild__field guild__field--name"><span class="guild__label">@ui.GUILD_INFO_NAME</span><span
+					id="guild-info-name" class="guild__value guild__value--wide"><nui-text links="off" data-attr-value="info.name"/></span></div>
+				<div class="guild__field guild__field--master"><span class="guild__label">@ui.GUILD_INFO_MASTER</span><span
+					id="guild-info-master" class="guild__value guild__value--wide"><nui-text links="off" data-attr-value="info.master"/></span></div>
+				<div class="guild__field guild__field--level"><span class="guild__label">@ui.GUILD_INFO_LEVEL</span><span
+					id="guild-info-level" class="guild__value guild__value--level">{{ info.level }}</span><button id="guild-offer"
+					class="nui-button nui-anim guild__offer" data-event-mousedown="offer_press(ev.button)"><span
+					class="guild__button-label">@ui.GUILD_INFO_OFFER_EXP</span></button></div>
+				<div class="guild__field guild__field--cur-exp"><span class="guild__label">@ui.GUILD_INFO_CUR_EXP</span><span
+					id="guild-info-cur-exp" class="guild__value guild__value--wide">{{ info.cur_exp }}</span></div>
+				<div class="guild__field guild__field--last-exp"><span class="guild__label">@ui.GUILD_INFO_REST_EXP</span><span
+					id="guild-info-last-exp" class="guild__value guild__value--wide">{{ info.last_exp }}</span></div>
+				<div class="guild__field guild__field--members"><span class="guild__label">@ui.GUILD_INFO_MEMBER_NUM</span><span
+					id="guild-info-members" class="guild__value guild__value--wide">{{ info.members }}</span></div>
+				<div class="guild__field guild__field--avg-level"><span class="guild__label">@ui.GUILD_INFO_MEMBER_AVG_LEVEL</span><span
+					id="guild-info-avg-level" class="guild__value guild__value--avg">{{ info.avg_level }}</span></div>
+			</div>
+			<div class="guild__card guild__card--mark">
+				<div class="guild__bar guild__bar--mark"><span class="guild__bar-title">@ui.GUILD_MARK</span></div>
+				<div class="guild__mark-slot"><img id="guild-mark" class="guild__mark" data-if="mark_src != ''"
+					data-attr-src="mark_src" data-attr-rect="mark_rect"/><img class="guild__mark guild__mark--nearest"
+					data-if="mark_src != ''" data-attr-src="mark_src + '#nui-nearest'" data-attr-rect="mark_rect"/></div>
+				<div class="guild__mark-buttons">
+					<button id="guild-upload-mark" class="nui-button nui-anim guild__upload guild__upload--mark" data-if="upload_mark_shown"
+					        data-event-mousedown="upload_mark_press(ev.button)"><span class="guild__button-label">@ui.GUILD_INFO_UPLOAD_MARK</span></button>
+					<button id="guild-upload-symbol" class="nui-button nui-anim guild__upload guild__upload--symbol" data-if="upload_symbol_shown"
+					        data-event-mousedown="upload_symbol_press(ev.button)"><span class="guild__button-label">@ui.GUILD_INFO_UPLOAD_SYMBOL</span></button>
+				</div>
+				<div class="guild__bar guild__bar--enemies"><span class="guild__bar-title">@ui.GUILD_INFO_ENEMY_GUILD</span></div>
+				<div class="guild__enemies">
+					<div class="guild__enemy" data-for="e, i : enemies" data-attr-id="'guild-enemy-' + i"><nui-text
+						links="off" data-attr-value="e"/></div>
+				</div>
+				<button id="guild-declare" class="nui-button nui-anim guild__declare" data-if="declare_shown"
+				        data-event-mousedown="declare_press(ev.button)"><span class="guild__button-label">@ui.GUILD_INFO_DECALRE_WAR</span></button>
+			</div>
+		</div>
+
+		<!-- The comments (guildwindow_boardpage.py, uiguild.py __MakeBoardPage). -->
+		<div class="guild__page guild__page--board" data-for="p : page_board">
+			<div class="guild__head guild__head--board"><span class="guild__head-name">@ui.GUILD_BOARD_ID</span><span
+				class="guild__head-text">@ui.GUILD_BOARD_TEXT</span><button id="guild-refresh"
+				class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip guild__refresh"
+				data-event-mousedown="refresh_press(ev.button)"><span class="guild__refresh-mark"></span><span
+				class="nui-tooltip nui-anim guild__tip">@ui.GUILD_BOARD_REFRESH</span></button></div>
+			<div class="guild__comments">
+				<div class="guild__comment" data-for="c, i : comments" data-attr-id="'guild-comment-' + i"
+				     data-class-is-notice="c.notice" data-class-is-long="c.long"><span class="guild__notice"></span><span
+					class="guild__comment-name"><nui-text links="off" data-attr-value="c.name"/></span><span
+					class="guild__comment-text"><nui-text class="guild__comment-short" links="off" data-attr-value="c.short"/><nui-text
+					class="guild__comment-full" links="off" data-attr-value="c.full"/></span><button
+					class="nui-button nui-button--ghost nui-button--icon nui-anim guild__delete" data-attr-id="'guild-comment-delete-' + i"
+					data-event-mousedown="delete_press(i, ev.button)"><span class="nui-glyph nui-glyph--close"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button></div>
+			</div>
+		</div>
+
+		<!-- The members (guildwindow_memberpage.py, __MakeMemberPage): legacy's
+		     13-line window over the member list (D18). -->
+		<div class="guild__page guild__page--member" data-for="p : page_member">
+			<div class="guild__head guild__head--member"><span class="guild__head-cell guild__head-cell--name">@ui.GUILD_MEMBER_NAME</span><span
+				class="guild__head-cell guild__head-cell--grade">@ui.GUILD_MEMBER_RANK</span><span
+				class="guild__head-cell guild__head-cell--job">@ui.GUILD_MEMBER_JOB</span><span
+				class="guild__head-cell guild__head-cell--level">@ui.GUILD_MEMBER_LEVEL</span><span
+				class="guild__head-cell guild__head-cell--offer">@ui.GUILD_MEMBER_SPECIFIC_GRAVITY</span><span
+				class="guild__head-cell guild__head-cell--general">@ui.GUILD_MEMBER_KNIGHT</span></div>
+			<div class="guild__members" data-event-mousescroll="member_wheel(ev.wheel_delta_y)">
+				<div class="guild__member" data-for="m, i : members" data-attr-id="'guild-member-' + i">
+					<span class="guild__member-name"><nui-text links="off" data-attr-value="m.name"/></span>
+					<div class="guild__combo-box"><button class="guild__combo" data-attr-id="'guild-member-combo-' + i"
+						data-class-is-enabled="m.combo_enabled" data-class-is-open="combo_line == i"
+						data-event-mousedown="combo_press(i, ev.button)"><span class="guild__combo-text"><nui-text links="off"
+						data-attr-value="m.grade"/></span></button></div>
+					<span class="guild__member-cell guild__member-cell--job">{{ m.job }}</span>
+					<span class="guild__member-cell guild__member-cell--level">{{ m.level }}</span>
+					<span class="guild__member-cell guild__member-cell--offer">{{ m.offer }}</span>
+					<button class="guild__check guild__member-general" data-attr-id="'guild-member-general-' + i"
+						data-class-is-checked="m.general" data-event-mousedown="general_press(i, ev.button)"><span
+						class="guild__check-mark"></span></button>
+				</div>
+				<!-- The open grade list (D11: one for the window), under its line's
+				     combo box (guild__combo-list--<line>), over the lines below. -->
+				<div id="guild-combo-list" data-if="combo_line &gt;= 0"
+				     data-attr-class="'guild__combo-list guild__combo-list--' + combo_line"><div class="guild__combo-item"
+					data-for="g : combo_items" data-attr-id="'guild-combo-item-' + g.grade"
+					data-event-mousedown="combo_pick(g.grade, ev.button)"><nui-text links="off" data-attr-value="g.name"/></div></div>
+			</div>
+			<div class="guild__member-scroll-box" data-if="member_scroll_shown"><input id="guild-member-scroll" type="range"
+				orientation="vertical" class="guild__member-scroll" min="0" max="1" step="0.01"
+				data-attr-value="member_scroll" data-event-change="member_scroll(ev.value)"/></div>
+		</div>
+
+		<!-- The base's information (guildwindow_baseinfopage.py,
+		     __MakeBaseInfoPage): legacy's placeholders; its tab is disabled. -->
+		<div class="guild__page guild__page--base" data-for="p : page_base">
+			<div class="guild__base-name"><span class="guild__label">@ui.GUILD_BASENAME</span><span
+				class="guild__value guild__value--base">@ui.GUILD_BASENAME</span></div>
+			<div class="guild__bar guild__bar--resources"><span class="guild__bar-title">@ui.GUILD_RESOURCE_INFO</span></div>
+			<div class="guild__resources">
+				<div class="guild__resource" data-for="r : base_columns" data-attr-id="'guild-resource-' + it_index"><span
+					class="guild__resource-name">{{ r.name }}</span><span class="guild__resource-value">0</span></div>
+				<div class="guild__basket"><span class="guild__basket-line">@ui.GUILD_DROP_RESOURCE1</span><span class="guild__basket-line">@ui.GUILD_DROP_RESOURCE2</span></div>
+			</div>
+			<div class="guild__bar guild__bar--buildings"><span class="guild__bar-title">@ui.GUILD_BUILDING_INFO</span></div>
+			<div class="guild__head guild__head--base"><span class="guild__head-cell guild__head-cell--building">@ui.GUILD_BUILDING_NAME</span><span
+				class="guild__head-cell guild__head-cell--rank">@ui.GUILD_BUILDING_GRADE</span><span
+				class="guild__head-cell guild__head-cell--operate">@ui.GUILD_BUILDING_OPERATE</span></div>
+			<div class="guild__buildings">
+				<div class="guild__building" data-for="b : base_rows"><span class="guild__building-name">@game.GUILD_BUILDING_NAME</span><span
+					class="guild__building-grade">@game.GUILD_BUILDING_GRADE</span><span class="guild__building-gem"
+					data-for="r : base_columns">@game.GUILD_GEM</span><span class="guild__check guild__building-power"></span></div>
+			</div>
+		</div>
+
+		<!-- The guild's skills (guildwindow_guildskillpage.py, __MakeSkillPage):
+		     the passive row and the affect grid stay empty, as legacy's. -->
+		<div class="guild__page guild__page--skill" data-for="p : page_skill">
+			<div class="guild__bar guild__bar--passive"><span class="guild__bar-title">@ui.GUILD_SKILL_PASSIVE</span><span
+				class="guild__points"><img class="guild__points-art" data-attr-src="points_art"/><span
+				class="guild__points-value">{{ skill_point }}</span></span></div>
+			<div id="guild-skill-passive" class="nui-slot-grid nui-slot-grid--lean guild__skills guild__skills--passive"
+			     data-class-nui-slot-grid--cols-9="skill_cols == 9">
+				<div class="nui-slot nui-anim guild__skill" data-for="c : passive_cells" data-attr-id="'guild-skill-passive-' + it_index"
+				     data-class-is-empty="c.kind == ''" data-event-mouseover="passive_over(it_index)" data-event-mouseout="passive_out(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+				</div>
+			</div>
+			<div class="guild__bar guild__bar--active"><span class="guild__bar-title">@ui.GUILD_SKILL_ACTIVE</span></div>
+			<div id="guild-skill-active" class="nui-slot-grid nui-slot-grid--lean guild__skills guild__skills--active"
+			     data-class-nui-slot-grid--cols-9="skill_cols == 9">
+				<div class="nui-slot nui-anim guild__skill" data-for="c : active_cells" data-attr-id="'guild-skill-active-' + it_index"
+				     data-class-is-empty="c.kind == ''" data-class-is-unavailable="c.unavailable"
+				     data-event-mousedown="active_press(it_index, ev.button)" data-event-mouseup="active_release(it_index, ev.button)"
+				     data-event-mouseover="active_over(it_index)" data-event-mouseout="active_out(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<div class="nui-slot__cover" data-if="c.cover"></div>
+					<nui-cooldown class="nui-slot__cooldown" data-if="c.cd_end > 0" data-attr-start="c.cd_start" data-attr-end="c.cd_end"/>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+					<button class="guild__plus" data-if="active_plus[it_index]" data-attr-id="'guild-skill-plus-' + it_index"
+					        data-event-mousedown="plus_press(it_index, ev.button)"><span class="nui-glyph nui-glyph--plus"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				</div>
+			</div>
+			<div class="guild__bar guild__bar--affect"><span class="guild__bar-title">@ui.GUILD_SKILL_STATE</span></div>
+			<div id="guild-skill-affect" class="nui-slot-grid nui-slot-grid--lean guild__skills guild__skills--affect"
+			     data-class-nui-slot-grid--cols-9="skill_cols == 9">
+				<div class="nui-slot nui-anim guild__skill" data-for="c : affect_cells" data-attr-id="'guild-skill-affect-' + it_index"
+				     data-class-is-empty="c.kind == ''" data-event-mouseover="affect_over(it_index)" data-event-mouseout="affect_out(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+				</div>
+			</div>
+			<div class="guild__power">
+				<span class="guild__power-title">@ui.GUILD_SKILL_POWER</span>
+				<div class="guild__gauge-slot"><progress id="guild-gp" class="nui-gauge nui-gauge--blue guild__gp guild__gp--ratio"
+					data-attr-value="gp_ratio"/><progress class="nui-gauge guild__gp guild__gp--legacy" data-attr-value="gp_legacy"/></div>
+				<span class="guild__power-value">{{ gp_text }}</span>
+				<button id="guild-heal" class="nui-button nui-anim guild__heal" data-event-mousedown="heal_press(ev.button)"><span
+					class="guild__button-label">@ui.GUILD_SKIlL_HEAL_GSP</span></button>
+			</div>
+		</div>
+
+		<!-- The grades and their rights (guildwindow_gradepage.py,
+		     __MakeGradePage): grade 1 (the master's) is not editable. -->
+		<div class="guild__page guild__page--grade" data-for="p : page_grade">
+			<div class="guild__head guild__head--grade"><span class="guild__head-cell guild__head-cell--number">@ui.GUILD_GRADE_NUM</span><span
+				class="guild__head-cell guild__head-cell--grade-name">@ui.GUILD_GRADE_RANK</span><span
+				class="guild__head-cell guild__head-cell--auth guild__head-cell--auth-1">@ui.GUILD_GRADE_PERMISSION_JOIN</span><span
+				class="guild__head-cell guild__head-cell--auth guild__head-cell--auth-2">@ui.GUILD_GRADE_PERMISSION_DELETE</span><span
+				class="guild__head-cell guild__head-cell--auth guild__head-cell--auth-4">@ui.GUILD_GRADE_PERMISSION_NOTICE</span><span
+				class="guild__head-cell guild__head-cell--auth guild__head-cell--auth-8">@ui.GUILD_GRADE_PERMISSION_SKILL</span></div>
+			<div class="guild__grades">
+				<div class="guild__grade" data-for="g : grades" data-class-is-disabled="!g.enabled">
+					<span class="guild__grade-number">{{ g.number }}</span>
+					<button class="guild__grade-name" data-attr-id="'guild-grade-name-' + g.number"
+					        data-event-mousedown="grade_name_press(g.number, ev.button)"><nui-text links="off" data-attr-value="g.name"/></button>
+					<button class="guild__check guild__auth guild__auth--1" data-attr-id="'guild-grade-auth-' + g.number + '-1'"
+					        data-class-is-checked="g.add" data-event-mousedown="auth_press(g.number, 1, ev.button)"><span class="guild__check-mark"></span></button>
+					<button class="guild__check guild__auth guild__auth--2" data-attr-id="'guild-grade-auth-' + g.number + '-2'"
+					        data-class-is-checked="g.remove" data-event-mousedown="auth_press(g.number, 2, ev.button)"><span class="guild__check-mark"></span></button>
+					<button class="guild__check guild__auth guild__auth--4" data-attr-id="'guild-grade-auth-' + g.number + '-4'"
+					        data-class-is-checked="g.notice" data-event-mousedown="auth_press(g.number, 4, ev.button)"><span class="guild__check-mark"></span></button>
+					<button class="guild__check guild__auth guild__auth--8" data-attr-id="'guild-grade-auth-' + g.number + '-8'"
+					        data-class-is-checked="g.skill" data-event-mousedown="auth_press(g.number, 8, ev.button)"><span class="guild__check-mark"></span></button>
+				</div>
+			</div>
+		</div>
+		<!-- The comment field and its post button: always in the document (the
+		     field's key handler is registered once), shown with the board page. -->
+		<div class="guild__post-row" data-if="page == 'BOARD'">
+			<div class="guild__post-slot"><input id="guild-comment" type="text" class="nui-input guild__comment-field"
+				data-attr-maxlength="comment_max" data-event-change="comment_change(ev.value, ev.linebreak)"
+				data-event-mousedown="comment_press(ev.button)"/></div>
+			<button id="guild-post" class="nui-button nui-anim nui-has-tooltip guild__post" data-event-mousedown="post_press(ev.button)"><span
+				class="nui-glyph nui-glyph--send"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+				class="nui-tooltip nui-anim guild__tip">@ui.GUILD_GRADE_WRITE</span></button>
+		</div>
+	</div>
+
+	<!-- The tabs: legacy's radio buttons over the locale's tab art of the shown
+	     page (classic), or a tab row (modern). -->
+	<div class="guild__tabs">
+		<img class="guild__tab-art" data-if="tab_art != ''" data-attr-src="tab_art"/>
+		<button class="guild__tab" data-for="t, i : tabs" data-attr-id="'guild-tab-' + i"
+		        data-class-guild__tab--0="i == 0" data-class-guild__tab--1="i == 1" data-class-guild__tab--2="i == 2"
+		        data-class-guild__tab--3="i == 3" data-class-guild__tab--4="i == 4" data-class-guild__tab--5="i == 5"
+		        data-class-is-selected="t.shown"
+		        data-attrif-disabled="!t.enabled" data-event-mousedown="tab_press(i, ev.button)"><span
+			class="guild__tab-label">{{ t.label }}</span></button>
+	</div>
+</body>
+</rml>

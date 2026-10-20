@@ -1,0 +1,39 @@
+/* Text with the legacy color and link tags (docs/ui/AUTHORING.md "Text with
+   tags and links"). The runtime registers nui-text; it builds one span per
+   run from its value, through RmlUi's DOM calls, so the text is shown as
+   written: never parsed as markup, translated or data-bound.
+
+   <nui-text data-attr-value="sign.text"/>
+   	a run with a color tag gets an inline color; a link run (links="on",
+   	the default) is a span.nui-link with data-link, and a left press on it
+   	sends nuilink (ev.link) to the element and its ancestors.
+   <nui-text links="off" data-attr-value="name"/>
+   	link runs show as plain runs in their color.
+
+   The chat lines element (chat.rcss) builds its lines' runs the same way. A
+   link takes the pointer in a document that otherwise does not (an overlay,
+   the chat's body). The modern skins underline a hovered link; the color
+   is the run's own, as legacy draws it. */
+
+nui-text
+{
+	display: inline;
+}
+.nui-text__run
+{
+}
+.nui-link
+{
+	pointer-events: auto;
+}
+.nui-link:hover
+{
+	text-decoration: underline;
+}
+
+/* The player's highlight color (the highlight color slot, docs/ui/AUTHORING.md
+   "Player colors"): text that should follow it takes this class. */
+.nui-text--highlight
+{
+	color: var(--highlight);
+}

@@ -1,0 +1,11 @@
+/* Cyberpunk overlay of nui/windows/gift-box/gift-box.rml: the gift button as
+   a violet neon chip. */
+
+body.skin-cyberpunk.gift-box .gift-box__icon
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-alt);
+}

@@ -1,0 +1,205 @@
+/* Classic skin overlay of nui/windows/party/party.rml: the legacy
+   PartyWindow at 10, 52. Each PartyMemberInfoBoard (partymemberinfoboard.py)
+   is 106 x 36, 38dp apart: the role button at 0, 0, the 84 x 17 name bar
+   (black, the name at 3, 2 in the legacy link or unlink gray) at 22, 0, the
+   84dp legacy gauge at 22, 17 and the affect images at y 24. The menu
+   toggle (Party_Menu_Open / Close, 111 x 20) is centered under the boards,
+   and the PartyMenu, a 106 x 140 thin board, 2dp below it: its buttons at
+   y 15, 37dp apart and centered, the distribution title centered at y 70,
+   the two large mode buttons at y 85 and 110. */
+
+body.skin-classic.party .party-member
+{
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.party .party-member__state
+{
+	left: 0;
+	top: 0;
+}
+body.skin-classic.party .party-member__bar
+{
+	left: 22dp;
+	top: 0;
+	right: auto;
+	width: 84dp;
+	height: 17dp;
+	background-color: var(--notice-bar);
+}
+body.skin-classic.party .party-member__name
+{
+	padding: 2dp 0 0 3dp;
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.party .party-member__hp
+{
+	left: 22dp;
+	width: 84dp;
+	top: 17dp;
+	height: 8dp;
+}
+body.skin-classic.party .party-affect
+{
+	top: 24dp;
+}
+body.skin-classic.party .party-affect--0 { left: 22dp; }
+body.skin-classic.party .party-affect--1 { left: 34dp; }
+body.skin-classic.party .party-affect--2 { left: 46dp; }
+body.skin-classic.party .party-affect--3 { left: 34dp; }
+body.skin-classic.party .party-affect--4 { left: 46dp; }
+body.skin-classic.party .party-affect--5 { left: 58dp; }
+body.skin-classic.party .party-affect--6 { left: 70dp; }
+body.skin-classic.party .party-affect--7 { left: 82dp; }
+body.skin-classic.party .party-affect--8 { left: 94dp; }
+
+body.skin-classic.party .party__menu-button
+{
+	width: 111dp;
+	height: 20dp;
+	margin-left: -2dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_open_01.sub");
+}
+body.skin-classic.party .party__menu-button:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_open_02.sub");
+}
+body.skin-classic.party .party__menu-button:active
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_open_03.sub");
+}
+body.skin-classic.party .party__menu-button.is-open
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_close_01.sub");
+}
+body.skin-classic.party .party__menu-button.is-open:hover
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_close_02.sub");
+}
+body.skin-classic.party .party__menu-button.is-open:active
+{
+	decorator: image("d:/ymir work/ui/game/windows/party_menu_close_03.sub");
+}
+body.skin-classic.party .party__menu-mark
+{
+	display: none;
+}
+body.skin-classic.party .party-menu
+{
+	width: 106dp;
+	height: 140dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.party .party-menu__buttons
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 15dp;
+}
+body.skin-classic.party .party-menu__icon
+{
+	margin: 0 2dp 0 3dp;
+}
+body.skin-classic.party .party-menu__title
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 63dp;
+	margin: 0;
+	color: var(--text);
+	font-weight: normal;
+	font-size: var(--font-md);
+	line-height: 14dp;
+}
+body.skin-classic.party .party-menu__modes
+{
+	position: absolute;
+	left: 9dp;
+	top: 85dp;
+	gap: 4dp;
+}
+body.skin-classic.party .party-menu__mode
+{
+	width: 88dp;
+	height: 21dp;
+	line-height: 21dp;
+	padding: 0;
+	font-size: var(--font-md);
+	border-width: 0;
+	color: var(--classic-button-text);
+}
+
+/* The legacy role art of a member's board and of the role buttons a leader
+   opens (PartyMemberInfoBoard's state buttons), by role (data-state): the
+   default art, the over art under the pointer and the down art while
+   pressed; the menu's heal, break up and leave buttons the same. The modern
+   role chips and glyphs do not show here. */
+body.skin-classic.party .party-role__face
+{
+	left: 0;
+	top: 0;
+	width: 22dp;
+	height: 36dp;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.party .party-role__face[data-state=expel]
+{
+	display: block;
+}
+body.skin-classic.party .party-art-host, body.skin-classic.party .party-art-host:hover, body.skin-classic.party .party-art-host:active
+{
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.party .party-art-host .party-role__face[data-state=leader] { decorator: image("d:/ymir work/ui/game/windows/party_state_leader_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=leader] { decorator: image("d:/ymir work/ui/game/windows/party_state_leader_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=leader] { decorator: image("d:/ymir work/ui/game/windows/party_state_leader_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=attacker] { decorator: image("d:/ymir work/ui/game/windows/party_state_attacker_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=attacker] { decorator: image("d:/ymir work/ui/game/windows/party_state_attacker_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=attacker] { decorator: image("d:/ymir work/ui/game/windows/party_state_attacker_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=berserker] { decorator: image("d:/ymir work/ui/game/windows/party_state_berserker_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=berserker] { decorator: image("d:/ymir work/ui/game/windows/party_state_berserker_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=berserker] { decorator: image("d:/ymir work/ui/game/windows/party_state_berserker_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=tanker] { decorator: image("d:/ymir work/ui/game/windows/party_state_tanker_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=tanker] { decorator: image("d:/ymir work/ui/game/windows/party_state_tanker_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=tanker] { decorator: image("d:/ymir work/ui/game/windows/party_state_tanker_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=defender] { decorator: image("d:/ymir work/ui/game/windows/party_state_defender_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=defender] { decorator: image("d:/ymir work/ui/game/windows/party_state_defender_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=defender] { decorator: image("d:/ymir work/ui/game/windows/party_state_defender_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=buffer] { decorator: image("d:/ymir work/ui/game/windows/party_state_buffer_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=buffer] { decorator: image("d:/ymir work/ui/game/windows/party_state_buffer_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=buffer] { decorator: image("d:/ymir work/ui/game/windows/party_state_buffer_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=skill-master] { decorator: image("d:/ymir work/ui/game/windows/party_state_skill_master_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=skill-master] { decorator: image("d:/ymir work/ui/game/windows/party_state_skill_master_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=skill-master] { decorator: image("d:/ymir work/ui/game/windows/party_state_skill_master_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=normal] { decorator: image("d:/ymir work/ui/game/windows/party_state_normal_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=normal] { decorator: image("d:/ymir work/ui/game/windows/party_state_normal_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=normal] { decorator: image("d:/ymir work/ui/game/windows/party_state_normal_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=warp] { decorator: image("d:/ymir work/ui/game/windows/party_skill_warp_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=warp] { decorator: image("d:/ymir work/ui/game/windows/party_skill_warp_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=warp] { decorator: image("d:/ymir work/ui/game/windows/party_skill_warp_03.sub" scale-none left top); }
+body.skin-classic.party .party-art-host .party-role__face[data-state=expel] { decorator: image("d:/ymir work/ui/game/windows/party_expel_01.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:hover .party-role__face[data-state=expel] { decorator: image("d:/ymir work/ui/game/windows/party_expel_02.sub" scale-none left top); }
+body.skin-classic.party .party-art-host:active .party-role__face[data-state=expel] { decorator: image("d:/ymir work/ui/game/windows/party_expel_03.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--heal { decorator: image("d:/ymir work/ui/game/windows/party_skill_heal_01.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--heal:hover { decorator: image("d:/ymir work/ui/game/windows/party_skill_heal_02.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--heal:active { decorator: image("d:/ymir work/ui/game/windows/party_skill_heal_03.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--break-up { decorator: image("d:/ymir work/ui/game/windows/party_disband_01.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--break-up:hover { decorator: image("d:/ymir work/ui/game/windows/party_disband_02.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--break-up:active { decorator: image("d:/ymir work/ui/game/windows/party_disband_03.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--leave { decorator: image("d:/ymir work/ui/game/windows/party_exit_01.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--leave:hover { decorator: image("d:/ymir work/ui/game/windows/party_exit_02.sub" scale-none left top); }
+body.skin-classic.party .party-menu__icon--leave:active { decorator: image("d:/ymir work/ui/game/windows/party_exit_03.sub" scale-none left top); }

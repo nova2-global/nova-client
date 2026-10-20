@@ -1,0 +1,24 @@
+<rml>
+<head>
+	<!-- The player's HP gauge over the head (uiplayergauge.py PlayerGauge): a
+	     100dp gauge centered under the main character's name tail, 5dp below
+	     it (17dp lower while a chat bubble shows), shown below half HP and
+	     while the left Alt key shows the names. While the player-gauge flag
+	     is on, the game window makes the facade
+	     nui_player_gauge.PlayerGauge (controller
+	     assets/root/nui_player_gauge.py). The anchor places itself each frame
+	     from the name tail C++ placed (textTail.GetPosition, IsChat) and the
+	     value follows the player.hp_ratio feed, where legacy positioned the
+	     gauge from Python every frame. A full-screen overlay that takes no
+	     pointer and no focus. The classic gauge art is under d:/ymir work/
+	     (assets/ETC). -->
+	<title>player-gauge</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="player-gauge.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui player-gauge" data-model="player_gauge">
+	<nui-anchor id="player-gauge-anchor" class="player-gauge__anchor" mode="tail" align-x="0.5" align-y="0" offset-y="5"
+		chat-offset-y="17" data-attr-vid="vid" data-if="shown"><progress id="player-gauge"
+		class="nui-gauge nui-gauge--red player-gauge__gauge" direction="right" data-attr-value="hp_ratio"/></nui-anchor>
+</body>
+</rml>

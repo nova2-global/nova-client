@@ -1,0 +1,31 @@
+/* Frame animation: <nui-frames frames="a.sub, b.sub" delay="0.1"/> or
+   <nui-frames pattern="d:/ymir work/ui/x/%02d.sub" count="24" delay="0.05"/>.
+   Frame art is chrome, so a modern window or component names none: a skin
+   gives it through --frames-list or --frames-pattern (with --frames-count,
+   --frames-first, --frames-delay) on the element, and without any source
+   the element runs its clock with no frames, setting is-playing and
+   is-done for a code-drawn look (P13 spec 4.6; classic's art is in
+   skins/classic/). Content frames (an item's own animation) may stay in
+   markup.
+   The NovaUI runtime registers the element: it makes one <img> per frame and
+   shows one at a time from the clock, so a frame switch rebuilds no mesh;
+   reduced motion holds the `rest` frame. The first frame stays in the flow
+   and sizes the element; the others are stacked on it, which needs a
+   positioned box (docs/ui/AUTHORING.md "Frame animations").
+   Measured in RmlUi 6.3 (nuitool --boxes, 70x74dp frames): an inline flex
+   box with block frames takes frame 0's size exactly, where an inline-block
+   adds the line's descent below an inline image and is 0 wide around a
+   block one. vertical-align: top keeps it on the line's top instead of
+   13.4dp low on the baseline, so a line holding it is exactly as tall. */
+
+nui-frames
+{
+	display: inline-flex;
+	position: relative;
+	vertical-align: top;
+}
+
+.nui-frames__frame
+{
+	display: block;
+}

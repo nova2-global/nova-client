@@ -1,0 +1,41 @@
+/* Intro theme picker (theme-picker.rml): under the legacy flag strip, which
+   never scales (legacy-strip-bottom is in px), and away from the login board
+   (bottom center) and the locale dialog (center). Nothing in it takes the
+   focus. */
+body.picker
+{
+	left: 16dp;
+	top: var(--legacy-strip-bottom);
+	focus: none;
+	tab-index: none;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: var(--space-1);
+	padding: var(--space-1) var(--space-2);
+}
+.picker__label
+{
+	margin-right: var(--space-1);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.picker__button
+{
+	focus: none;
+}
+/* Kept clear of the boards and the keyboard (nui.Window.keep_clear_of): while
+   it overlaps one that is shown, it is hidden. Not display: none, whose zero
+   size would end the overlap and bring it back on the next update. */
+body.picker.nui-overlapping
+{
+	opacity: 0;
+	pointer-events: none;
+}
+/* The theme in use has the primary look, hovered or pressed too. */
+body.picker .picker__button.is-selected
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-text);
+}

@@ -1,0 +1,22 @@
+/* World anchors (docs/ui/AUTHORING.md "World anchors"). The runtime
+   registers nui-anchor: each frame it places itself on a character's screen
+   point (data-attr-vid) by its left and top offset, which moves it without a
+   layout or a new mesh, and it stays hidden while the character is not on
+   the screen or its own box is not laid out yet.
+
+   <nui-anchor mode="project" height="220" data-attr-vid="sign.vid"/>
+   	the character's position raised by height, projected; mode="tail" is
+   	its name tail. align-x and align-y pick the point of its own box that
+   	sits there (0.5, 0.5: the center); offset-x, offset-y and chat-offset-y
+   	add dp.
+
+   Its offsets are screen pixels: put it in a body.nui-overlay, whose box is
+   the screen. */
+
+nui-anchor
+{
+	position: absolute;
+	display: block;
+	left: 0;
+	top: 0;
+}

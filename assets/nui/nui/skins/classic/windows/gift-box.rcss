@@ -1,0 +1,20 @@
+/* Classic skin overlay of nui/windows/gift-box/gift-box.rml: the legacy
+   GiftBox_Icon (uiscript/giftbox.py), its window at SCREEN_HEIGHT - 45 and
+   the 63 x 74 icon 90 above that, at x 5: its top 135dp above the screen's
+   bottom, its bottom 61dp above it. */
+
+body.skin-classic.gift-box .gift-box__icon
+{
+	left: 5dp;
+	bottom: 61dp;
+	width: auto;
+	height: auto;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+/* The legacy present as one skin-provided frame (an <img> at its own size). */
+body.skin-classic.gift-box .gift-box__frames
+{
+	--frames-list: "d:/ymir work/ui/pattern/giftbox/present_for_fruends_icon.tga";
+}

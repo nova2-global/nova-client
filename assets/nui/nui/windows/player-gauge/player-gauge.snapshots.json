@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the player gauge (tools/check_nui_snapshots.py): the gauge at 42% under character 1's name tail, which the --anchor stand-in puts at (160, 120) dp. The classic gauge art is under d:/ymir work/ (assets/ETC).",
+	"cases": [
+		{"page": "player-gauge", "themes": "all", "scales": [["100", "1", "320x200"], ["150", "1.5", "480x300"], ["200", "2", "640x400"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		 "anchors": {"1": [160, 120]}}
+	]
+}

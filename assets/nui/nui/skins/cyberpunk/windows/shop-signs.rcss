@@ -1,0 +1,13 @@
+/* Cyberpunk overlay of nui/windows/shop-signs/shop-signs.rml: each private
+   shop's sign a neon plate, violet edged, the shop's name in the gold of
+   names. */
+
+body.skin-cyberpunk.shop-signs .shop-sign
+{
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--surface);
+}
+body.skin-cyberpunk.shop-signs .shop-sign__text
+{
+	color: var(--cyberpunk-name);
+}

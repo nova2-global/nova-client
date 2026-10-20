@@ -1,0 +1,358 @@
+/* Classic skin overlay of nui/windows/chat-log/chat-log.rml: the legacy
+   ChatLogWindow (uichat.py:842-1170) at 100%, 1dp to the legacy pixel. The
+   body is black at 47% with a darker edge, under the title art (the
+   chatlogwindow_titlebar pieces, 32dp blocks, 45dp of art) with the title
+   at 20, 6 and the close button 5dp from the right at 5; the All radio at
+   13, 24 and the six filter toggles at 61 + 48i, 24 on the xsmall art (the
+   down art while on); the lines from 10dp in, 45dp below the top to 25dp
+   above the bottom; the small thin scroll bar at the right, 45dp from the
+   top to 12dp above the bottom, on its 47% column; the input row (the mode
+   button's round outline, the field's outline, the send button) 25dp above
+   the bottom; and the grip's three lines in #989898. The hints are legacy
+   button tooltips: outlined text without a board. */
+
+/* The title art's three pieces as sprites (each its whole 32 x 64 file, the
+   art in its top 45 rows), so the repeat box knows their size wherever the
+   file is not decoded (lint). */
+@spritesheet chat-log-title-left-sheet
+{
+	src: "d:/ymir work/ui/pattern/chatlogwindow_titlebar_left.tga";
+	resolution: 1x;
+	chat-log-title-left: 0px 0px 32px 64px;
+}
+@spritesheet chat-log-title-middle-sheet
+{
+	src: "d:/ymir work/ui/pattern/chatlogwindow_titlebar_middle.tga";
+	resolution: 1x;
+	chat-log-title-middle: 0px 0px 32px 64px;
+}
+@spritesheet chat-log-title-right-sheet
+{
+	src: "d:/ymir work/ui/pattern/chatlogwindow_titlebar_right.tga";
+	resolution: 1x;
+	chat-log-title-right: 0px 0px 32px 64px;
+}
+@decorator chat-log-titlebar : nui-repeat-box
+{
+	left-image: chat-log-title-left;
+	center-image: chat-log-title-middle;
+	right-image: chat-log-title-right;
+}
+
+/* No border: the parts keep legacy's coordinates from the window's corner
+   (legacy's two 1 px boxes at 47% darken the edge; left out). */
+body.skin-classic.chat-log
+{
+	decorator: none;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--classic-chat-log-fill);
+}
+body.skin-classic.chat-log .chat-log__titlebar
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 45dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	decorator: chat-log-titlebar;
+}
+body.skin-classic.chat-log .chat-log__handle
+{
+	position: absolute;
+	left: 0;
+	right: 25dp;
+	top: 0;
+	height: 24dp;
+	line-height: 24dp;
+	text-align: left;
+}
+body.skin-classic.chat-log .chat-log__title
+{
+	position: absolute;
+	left: 19dp;
+	top: 5dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 14dp;
+}
+/* The legacy close art at legacy's place; it is the shared close button, so
+   the classic close rule's 3dp socket margin is taken back. */
+body.skin-classic.chat-log .chat-log__close
+{
+	position: absolute;
+	right: 5dp;
+	top: 5dp;
+	width: 15dp;
+	height: 15dp;
+	margin: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__close:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_02.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__close:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_03.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__close-x
+{
+	visibility: hidden;
+}
+
+body.skin-classic.chat-log .chat-log__filters
+{
+	display: block;
+	left: 0;
+	right: 0;
+	top: 24dp;
+}
+body.skin-classic.chat-log .chat-log__filter
+{
+	position: absolute;
+	top: 0;
+	width: 38dp;
+	height: 19dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_01.sub" scale-none left top);
+	color: var(--classic-button-text);
+	font-size: var(--font-md);
+	line-height: 19dp;
+	text-align: center;
+}
+body.skin-classic.chat-log .chat-log__filter:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_02.sub" scale-none left top);
+	color: var(--classic-button-text);
+}
+body.skin-classic.chat-log .chat-log__filter.is-on, body.skin-classic.chat-log .chat-log__filter:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_03.sub" scale-none left top);
+	color: var(--classic-button-text);
+}
+/* Legacy centers each label on its button and lets a long one run past
+   both ends ("Announcement" over "Info", ui.Button's centered text line): a
+   label box much wider than the button, centered on it, that takes no
+   pointer. */
+body.skin-classic.chat-log .chat-log__filter-label
+{
+	position: absolute;
+	left: -100dp;
+	right: -100dp;
+	top: 0;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+body.skin-classic.chat-log .chat-log__filter--all { left: 13dp; }
+body.skin-classic.chat-log .chat-log__filter--0 { left: 61dp; }
+body.skin-classic.chat-log .chat-log__filter--1 { left: 109dp; }
+body.skin-classic.chat-log .chat-log__filter--2 { left: 157dp; }
+body.skin-classic.chat-log .chat-log__filter--3 { left: 205dp; }
+body.skin-classic.chat-log .chat-log__filter--4 { left: 253dp; }
+body.skin-classic.chat-log .chat-log__filter--5 { left: 301dp; }
+
+body.skin-classic.chat-log .chat-log__lines
+{
+	left: 0;
+	right: 15dp;
+	top: 45dp;
+	bottom: 25dp;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.chat-log .chat-log__lines .nui-chat__line
+{
+	margin-left: 10dp;
+}
+body.skin-classic.chat-log .chat-log__scroll-column
+{
+	display: block;
+	position: absolute;
+	right: 2dp;
+	top: 45dp;
+	bottom: 0;
+	width: 13dp;
+	background-color: var(--classic-chat-log-fill);
+}
+body.skin-classic.chat-log .chat-log__scroll-box
+{
+	right: 2dp;
+	top: 45dp;
+	bottom: 12dp;
+	width: 13dp;
+}
+body.skin-classic.chat-log input.chat-log__scroll
+{
+	width: 13dp;
+}
+body.skin-classic.chat-log .chat-log__scroll slidertrack
+{
+	width: 13dp;
+	margin-left: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.chat-log .chat-log__scroll sliderbar
+{
+	width: 13dp;
+	height: 18dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_middle_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__scroll sliderbar:hover, body.skin-classic.chat-log .chat-log__scroll sliderbar:active
+{
+	background-color: transparent;
+}
+body.skin-classic.chat-log .chat-log__scroll sliderarrowdec
+{
+	width: 13dp;
+	height: 13dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_up_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__scroll sliderarrowdec:hover
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_up_button_02.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__scroll sliderarrowdec:active
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_up_button_03.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__scroll sliderarrowinc
+{
+	width: 13dp;
+	height: 13dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_down_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__scroll sliderarrowinc:hover
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_down_button_02.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__scroll sliderarrowinc:active
+{
+	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_down_button_03.sub" scale-none left top);
+}
+
+body.skin-classic.chat-log .chat-log__input-row
+{
+	display: block;
+	left: 0;
+	right: 20dp;
+	bottom: 0;
+	height: 25dp;
+}
+body.skin-classic.chat-log .chat-log__mode
+{
+	position: absolute;
+	left: 7dp;
+	top: 2dp;
+	width: 41dp;
+	min-width: 0;
+	height: 18dp;
+	margin: 0;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--classic-label-white);
+	border-radius: 2dp;
+	background-color: transparent;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	line-height: 16dp;
+}
+body.skin-classic.chat-log .chat-log__mode:hover
+{
+	border-width: 2dp;
+	background-color: transparent;
+	line-height: 14dp;
+}
+body.skin-classic.chat-log .chat-log__mode:active
+{
+	border-width: 2dp;
+	background-color: var(--classic-chat-press);
+	line-height: 14dp;
+}
+/* The field's outline (465 x 18 at the smallest log): the field is the row
+   width minus 93, at 57, 5 of the row; the outline 4 left and 3 above it. */
+body.skin-classic.chat-log .chat-log__field
+{
+	position: absolute;
+	left: 53dp;
+	right: 32dp;
+	top: 2dp;
+	box-sizing: border-box;
+	height: 18dp;
+	margin: 0;
+	padding: 2dp 3dp 0 3dp;
+	border-width: 1dp;
+	border-color: var(--classic-label-white);
+	border-radius: 2dp;
+}
+body.skin-classic.chat-log input.chat-log__input
+{
+	width: 100%;
+	height: 13dp;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: none;
+	color: var(--classic-edit-text);
+	font-size: var(--font-md);
+	line-height: 13dp;
+}
+body.skin-classic.chat-log .chat-log__mark
+{
+	left: 2dp;
+	top: 2dp;
+	font-size: var(--font-md);
+	line-height: 13dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.chat-log .chat-log__send
+{
+	position: absolute;
+	right: 5dp;
+	top: 2dp;
+	width: 20dp;
+	height: 18dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_01.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__send:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_02.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__send:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_03.sub" scale-none left top);
+}
+body.skin-classic.chat-log .chat-log__grip
+{
+	background-color: var(--classic-chat-grip);
+}
+body.skin-classic.chat-log .nui-tooltip.chat-log__tip
+{
+	decorator: none;
+	padding: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

@@ -1,0 +1,49 @@
+{
+	"messenger": {
+		"rows": [
+			{
+				"kind": "group",
+				"name": "Friends",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "empty",
+				"name": "Empty",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "group",
+				"name": "Guild",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			},
+			{
+				"kind": "empty",
+				"name": "Empty",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": ""
+			}
+		],
+		"whisper_enabled": false,
+		"remove_enabled": false,
+		"height": 310.0
+	}
+}

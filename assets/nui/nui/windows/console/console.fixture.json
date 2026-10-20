@@ -1,0 +1,16 @@
+{
+	"console": {
+		"lines": [
+			{"id": 1, "text": "Current path is D:\\Ymir Work\\"},
+			{"id": 2, "text": ">> perfinfo"},
+			{"id": 3, "text": "Actor: 12 (Instance 12, Visible 9)"},
+			{"id": 4, "text": "Item: 4"},
+			{"id": 5, "text": "Effect: 38 (Instance 38, Visible 21)"},
+			{"id": 6, "text": "TextTail: 15 (Chat 2)"},
+			{"id": 7, "text": ">> pwd"},
+			{"id": 8, "text": "Current path is D:\\Ymir Work\\"}
+		],
+		"width": "1280.00",
+		"height": "200.00"
+	}
+}

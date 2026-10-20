@@ -1,0 +1,12 @@
+{
+	"chat": {
+		"open": true,
+		"shown": true,
+		"chat_mode": 3,
+		"mark": "#",
+		"history_height": 138.0,
+		"view_chat": true,
+		"lines_mode": "edit",
+		"draft": "#nuiw2b meet at the well"
+	}
+}

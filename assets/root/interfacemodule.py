@@ -35,7 +35,6 @@ import uiRefine
 import uiEquipmentDialog
 import uiGameButton
 import uiTip
-import uiCube
 import miniMap
 # ACCESSORY_REFINE_ADD_METIN_STONE
 import uiselectitem
@@ -264,16 +263,6 @@ class Interface(object):
 		self.wndWeb.LoadWindow()
 		self.wndWeb.Hide()
 
-	def __MakeCubeWindow(self):
-		self.wndCube = uiCube.CubeWindow()
-		self.wndCube.LoadWindow()
-		self.wndCube.Hide()
-
-	def __MakeCubeResultWindow(self):
-		self.wndCubeResult = uiCube.CubeResultWindow()
-		self.wndCubeResult.LoadWindow()
-		self.wndCubeResult.Hide()
-
 	# ACCESSORY_REFINE_ADD_METIN_STONE
 	def __MakeItemSelectWindow(self):
 		self.wndItemSelect = uiselectitem.SelectItemWindow()
@@ -294,8 +283,6 @@ class Interface(object):
 		self.__MakeHelpWindow()
 		self.__MakeTipBoard()
 		self.__MakeWebWindow()
-		self.__MakeCubeWindow()
-		self.__MakeCubeResultWindow()
 		
 		
 		# ACCESSORY_REFINE_ADD_METIN_STONE
@@ -316,8 +303,6 @@ class Interface(object):
 			self.wndDragonSoulRefine.SetItemToolTip(self.tooltipItem)
 
 		self.wndSafebox.SetItemToolTip(self.tooltipItem)
-		self.wndCube.SetItemToolTip(self.tooltipItem)
-		self.wndCubeResult.SetItemToolTip(self.tooltipItem)
 
 		# ITEM_MALL
 		self.wndMall.SetItemToolTip(self.tooltipItem)
@@ -425,12 +410,6 @@ class Interface(object):
 		if self.wndHelp:
 			self.wndHelp.Destroy()
 
-		if self.wndCube:
-			self.wndCube.Destroy()
-			
-		if self.wndCubeResult:
-			self.wndCubeResult.Destroy()
-
 		if self.wndMessenger:
 			self.wndMessenger.Destroy()
 
@@ -503,8 +482,6 @@ class Interface(object):
 		del self.wndMall
 		del self.wndParty
 		del self.wndHelp
-		del self.wndCube
-		del self.wndCubeResult
 		del self.privateShopBuilder
 		del self.inputDialog
 		del self.wndChatLog
@@ -1110,32 +1087,6 @@ class Interface(object):
 	def CloseWbWindow(self):
 		self.wndWeb.Close()
 
-	def OpenCubeWindow(self):
-		self.wndCube.Open()
-
-		if FALSE == self.wndInventory.IsShow():
-			self.wndInventory.Show()
-
-	def UpdateCubeInfo(self, gold, itemVnum, count):
-		self.wndCube.UpdateInfo(gold, itemVnum, count)
-
-	def CloseCubeWindow(self):
-		self.wndCube.Close()
-
-	def FailedCubeWork(self):
-		self.wndCube.Refresh()
-
-	def SucceedCubeWork(self, itemVnum, count):
-		self.wndCube.Clear()
-
-		print(("Cube crafting successful! [%d:%d]" % (itemVnum, count)))
-
-		if 0: # Skip showing result message
-			self.wndCubeResult.SetPosition(*self.wndCube.GetGlobalPosition())
-			self.wndCubeResult.SetCubeResultItem(itemVnum, count)
-			self.wndCubeResult.Open()
-			self.wndCubeResult.SetTop()
-
 	def __HideWindows(self):
 		hideWindows = self.wndTaskBar,\
 						self.wndCharacter,\
@@ -1731,7 +1682,6 @@ if __name__ == "__main__":
 			self.interface.MakeInterface()
 			self.interface.ShowDefaultWindows()
 			self.interface.RefreshInventory()
-			#self.interface.OpenCubeWindow()
 
 		def __del__(self):
 			ui.Window.__del__(self)

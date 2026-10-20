@@ -444,10 +444,6 @@ class ViewEquipTable(LimitsTest):
                                  "%s has no classic place for %s" % (slot.name, table_class))
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 # --- Wave 3c (P15) ---
 
 UISCRIPT = os.path.join(REPO, "assets", "uiscript", "uiscript")
@@ -600,3 +596,7 @@ class Wave3c(LimitsTest):
         loaded = types.SimpleNamespace(**namespace)
         self.assertEqual(self.m.read({"dragon_soul_refine_settings": loaded}).DRAGON_SOUL_STRENGTH_MAX,
                          self.m.TODAY["DRAGON_SOUL_STRENGTH_MAX"], "the shipped table's largest entry is today's")
+
+
+if __name__ == "__main__":
+    unittest.main()

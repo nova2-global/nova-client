@@ -110,10 +110,6 @@ class Question(ProxiesTest):
         self.assertIsNone(question.dialog)
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 # --- Wave 3c (P15) ---
 
 class WindowAndToggle(ProxiesTest):
@@ -199,3 +195,7 @@ class SafeEventsAndHover(ProxiesTest):
         image.fire("MOUSE_OVER_IN")
         image.fire("MOUSE_OVER_OUT")
         self.assertEqual(owner.seen, ["in"])
+
+
+if __name__ == "__main__":
+    unittest.main()

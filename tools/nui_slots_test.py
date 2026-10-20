@@ -816,10 +816,6 @@ class SharedHitLayout(unittest.TestCase):
         self.assertEqual(found, [])
 
 
-if __name__ == "__main__":
-    unittest.main()
-
-
 # --- Wave 3c (P15) ---
 
 class _Limits(object):
@@ -1374,3 +1370,6 @@ class LeakFree(SlotsTest):
         self.assertEqual(len(made), 2)
         self.assertEqual(sorted(freed), sorted(made), "each freed once")
 
+
+if __name__ == "__main__":
+    unittest.main()

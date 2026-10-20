@@ -1206,8 +1206,10 @@ class GameWindow(ui.ScriptWindow):
 	def StopRight(self):
 		player.SetSingleDIKKeyState(app.DIK_RIGHT, False)
 
+	# Z and `: every item around the player at once, through the pickup filter
+	# of the game options (OLD's PICK_ITEMS_AROUND, NOVA-50).
 	def PickUpItem(self):
-		player.PickCloseItem()
+		player.PickAroundItems()
 
 	###############################################################################################
 	###############################################################################################

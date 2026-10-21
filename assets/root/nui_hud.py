@@ -362,15 +362,22 @@ class LayoutCalls(object):
 
 def moved_place(board):
 	"""The board's top left in dp when the player moved it away from the
-	screen's center (a handle drag), else None: a window that was centered
-	is centered again at its next show. For OnDemand's keep()."""
+	place the runtime centers it at (a handle drag), else None: a window
+	that was centered is centered again at its next show. For OnDemand's
+	keep(). The centered place is the runtime's (NuiRuntime's Center
+	placement): a board wider or taller than the screen sits at 0 on that
+	axis, so a board too tall for the screen at a large scale still counts
+	as centered."""
 	box = board.element_box("")
 	if not box:
 		return None
 	import wndMgr
 	x, y, width, height = box
-	if (abs(x + width / 2.0 - wndMgr.GetScreenWidth() / 2.0) <= 2
-	        and abs(y + height / 2.0 - wndMgr.GetScreenHeight() / 2.0) <= 2):
+	screen_width = wndMgr.GetScreenWidth()
+	screen_height = wndMgr.GetScreenHeight()
+	center_x = 0.0 if width > screen_width else (screen_width - width) / 2.0
+	center_y = 0.0 if height > screen_height else (screen_height - height) / 2.0
+	if abs(x - center_x) <= 2 and abs(y - center_y) <= 2:
 		return None
 	s = nui.get_scale() or 1.0
 	return (x / s, y / s)

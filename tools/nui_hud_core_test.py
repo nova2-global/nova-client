@@ -161,6 +161,35 @@ class HudHelpers(unittest.TestCase):
         self.hud.forget("x", second)
         self.assertIsNone(self.hud.current("x"))
 
+    def test_moved_place_takes_the_runtime_s_centered_place_as_not_moved(self):
+        """P18 review: the runtime's Center placement puts a board wider or
+        taller than the screen at 0 on that axis, so such a board left where
+        Center put it is not a drag (the guild window, 470dp tall, at 200% on
+        1600 x 900)."""
+        nui = self.world.game.modules["nui"]
+        wnd = self.world.game.modules["wndMgr"]
+        wnd.GetScreenWidth = lambda: 1600
+        wnd.GetScreenHeight = lambda: 900
+
+        class Board(object):
+            def __init__(self, box):
+                self.box = box
+
+            def element_box(self, element_id):
+                return self.box
+
+        place = self.hud.moved_place
+        nui.set_scale_percent(100)
+        self.assertIsNone(place(Board((560.0, 215.0, 480.0, 470.0))), "centered")
+        self.assertIsNone(place(Board((561.5, 213.0, 480.0, 470.0))), "within 2 px of it")
+        self.assertEqual(place(Board((300.0, 120.0, 480.0, 470.0))), (300.0, 120.0), "dragged: its place in dp")
+        self.assertIsNone(place(Board(None)), "no box: nothing kept")
+        nui.set_scale_percent(200)
+        self.assertIsNone(place(Board((320.0, 0.0, 960.0, 940.0))), "taller than the screen: Center's y is 0")
+        self.assertIsNone(place(Board((0.0, 0.0, 1700.0, 940.0))), "wider and taller: Center's place is 0, 0")
+        self.assertEqual(place(Board((320.0, 40.0, 960.0, 940.0))), (160.0, 20.0), "moved down from it: in dp")
+        self.assertEqual(place(Board((100.0, 0.0, 960.0, 940.0))), (50.0, 0.0), "moved left from it")
+
     def test_an_escape_proxy_is_a_zero_size_ui_window_that_runs_its_action_and_keeps_escape(self):
         ran = []
 

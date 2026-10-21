@@ -733,6 +733,36 @@ class Facade(GuildTest):
         self.open(world, window)
         self.assertEqual(w4.board(window).placement, ("position", 300.0, 120.0, (0.0, 0.0)))
 
+    def test_left_centered_where_it_does_not_fit_it_is_centered_again_after_a_scale_change(self):
+        """P18 review: at 200% on 1600 x 900 the 470dp board is 940 px tall,
+        so the runtime's Center puts it at y 0. Closed there without a drag,
+        it is still a centered window: after a switch to 100% it opens
+        centered, not at the old place in dp."""
+        world, window = self.world(True)
+        nui = world.game.modules["nui"]
+        boxes = world.game.state.boxes
+        with world.game:
+            nui.set_scale_percent(200)
+        self.open(world, window)
+        self.assertEqual(w4.board(window).placement, ("center",))
+        boxes[(DOCUMENT, "")] = (320.0, 0.0, 960.0, 940.0)
+        with world.game, w4.quiet():
+            window.Close()
+            nui.set_scale_percent(100)
+        self.open(world, window)
+        self.assertEqual(w4.board(window).placement, ("center",), "not ('position', 160.0, 0.0, ...)")
+        # Dragged at 200%: that place is kept, in dp, at 100% too.
+        with world.game, w4.quiet():
+            window.Close()
+            nui.set_scale_percent(200)
+        self.open(world, window)
+        boxes[(DOCUMENT, "")] = (320.0, 40.0, 960.0, 940.0)
+        with world.game, w4.quiet():
+            window.Close()
+            nui.set_scale_percent(100)
+        self.open(world, window)
+        self.assertEqual(w4.board(window).placement, ("position", 160.0, 20.0, (0.0, 0.0)))
+
     def test_destroy_discards_the_dialogs_it_made(self):
         world, window = self.world(True)
         self.open(world, window)

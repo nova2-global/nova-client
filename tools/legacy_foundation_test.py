@@ -120,25 +120,27 @@ class LegacyWorld(object):
 		return self.game.loaded[name]
 
 
+def make_inventory(world):
+	"""The legacy inventory (Interface.__MakeWindows' wndInventory), shown."""
+	module = world.load("uiInventory", "uiinventory.py")
+	module.print = lambda *args, **kwargs: None
+	with world, quiet():
+		window = module.InventoryWindow()
+		window.BindInterfaceClass(world.game.interface)
+		window.SetItemToolTip(world.game.modules["uiToolTip"].ItemToolTip())
+		window.Show()
+	return window
+
+
 class InventoryPages(unittest.TestCase):
 	"""Five inventory pages (NOVA-97): one tab per page in the legacy
 	inventory (uiinventory.py), the uiscript's five tabs, and the scans that
 	cover every page."""
 
-	def make_inventory(self, world):
-		module = world.load("uiInventory", "uiinventory.py")
-		module.print = lambda *args, **kwargs: None
-		with world, quiet():
-			window = module.InventoryWindow()
-			window.BindInterfaceClass(world.game.interface)
-			window.SetItemToolTip(world.game.modules["uiToolTip"].ItemToolTip())
-			window.Show()
-		return window
-
 	def test_the_inventory_binds_one_tab_per_page_and_shows_the_pressed_page(self):
 		world = LegacyWorld()
 		world.game.give(4 * PAGE_SIZE + 3, 27001, 7)
-		window = self.make_inventory(world)
+		window = make_inventory(world)
 		self.assertEqual(["Inventory_Tab_%02d" % (page + 1) for page in range(PAGE_COUNT)],
 		                 [tab.name for tab in window.inventoryTab])
 		self.assertTrue(window.inventoryTab[0].down)
@@ -226,6 +228,88 @@ class InventoryPages(unittest.TestCase):
 			window.LoadWindow()
 			window.RefreshSlot()
 		self.assertEqual(dict(enumerate(stones)), window.inventorySlotPosDict)
+
+
+
+class WearOrder(unittest.TestCase):
+	"""The equipment, costume and view-equip windows on OLD's 40-slot wear
+	order (NOVA-97): the rings and the belt in the equipment window (wear
+	28-30), the costume window's body and hair only (the other costume
+	cells hold unported features), and the view's 16 entries."""
+
+	CUT_EQUIPMENT = list(range(EQUIPMENT_START, EQUIPMENT_START + 11)) + [
+		EQUIPMENT_START + WEAR_RING1, EQUIPMENT_START + WEAR_RING2, EQUIPMENT_START + WEAR_BELT]
+
+	def test_the_equipment_window_holds_the_rings_and_the_belt_and_no_sash(self):
+		for path in (os.path.join(UISCRIPT, "inventorywindow.py"),
+		             os.path.join(LOCALES, "ae", "ui", "inventorywindow.py")):
+			with self.subTest(path=path):
+				world = LegacyWorld()
+				with world:
+					window = read_uiscript(path)["window"]
+				base = child(window, "Equipment_Base")
+				self.assertEqual("d:/ymir work/ui/equipment_bg_with_ring.tga", base["image"])
+				slots = dict((slot["index"], (slot["x"], slot["y"])) for slot in child(window, "EquipmentSlot")["slot"])
+				self.assertEqual(sorted(self.CUT_EQUIPMENT), sorted(slots))
+				# The ring boxes of the with-ring art, either side of the belt.
+				self.assertEqual((2, 106), slots[EQUIPMENT_START + WEAR_RING1])
+				self.assertEqual((75, 106), slots[EQUIPMENT_START + WEAR_RING2])
+				self.assertEqual((39, 106), slots[EQUIPMENT_START + WEAR_BELT])
+
+	def test_the_with_ring_art_is_packed(self):
+		groups = read(os.path.join(REPO, "assets", "groups.txt"))
+		self.assertIn("metin2_patch_dss_box", groups.split())
+		self.assertTrue(os.path.isfile(os.path.join(REPO, "assets", "metin2_patch_dss_box", "ymir work", "ui",
+		                                            "equipment_bg_with_ring.tga")))
+
+	def test_the_costume_window_shows_the_body_and_the_hair_only(self):
+		world = LegacyWorld()
+		with world:
+			window = read_uiscript(os.path.join(UISCRIPT, "costumewindow.py"))["window"]
+		indices = [slot["index"] for slot in child(window, "CostumeSlot")["slot"]]
+		self.assertEqual([EQUIPMENT_START + 19, EQUIPMENT_START + 20], indices)
+
+	def test_the_inventory_refreshes_the_rings_and_the_belt_and_the_costume_window_its_two(self):
+		world = LegacyWorld()
+		RING, BELT, BODY, HAIR, SASH = 70001, 18000, 41001, 45001, 85001
+		world.game.give(EQUIPMENT_START + WEAR_RING1, RING)
+		world.game.give(EQUIPMENT_START + WEAR_RING2, RING)
+		world.game.give(EQUIPMENT_START + WEAR_BELT, BELT)
+		world.game.give(EQUIPMENT_START + 19, BODY)
+		world.game.give(EQUIPMENT_START + 20, HAIR)
+		world.game.give(EQUIPMENT_START + 21, SASH)
+		window = make_inventory(world)
+		equipment = dict((index, slot["vnum"]) for index, slot in window.wndEquip.slots.items() if slot["vnum"])
+		self.assertEqual({EQUIPMENT_START + WEAR_RING1: RING, EQUIPMENT_START + WEAR_RING2: RING,
+		                  EQUIPMENT_START + WEAR_BELT: BELT}, equipment)
+		with world, quiet():
+			window.ClickCostumeButton()
+		costume = dict((index, slot["vnum"]) for index, slot in window.wndCostume.wndEquip.slots.items() if slot["vnum"])
+		self.assertEqual({EQUIPMENT_START + 19: BODY, EQUIPMENT_START + 20: HAIR}, costume)
+
+	def test_the_view_dialog_places_olds_sixteen_entries(self):
+		world = LegacyWorld()
+		with world:
+			window = read_uiscript(os.path.join(UISCRIPT, "equipmentdialog.py"))["window"]
+		self.assertEqual("d:/ymir work/ui/equipment_bg_with_ring.tga", child(window, "EquipmentBaseImage")["image"])
+		slots = dict((slot["index"], (slot["x"], slot["y"])) for slot in child(window, "EquipmentSlot")["slot"])
+		# OLD uiscript/equipmentdialog.py:16-31: 0-10, the rings 13 and 14 and
+		# the belt 15 (the costume body and hair, 11 and 12, are not shown).
+		self.assertEqual(list(range(11)) + [13, 14, 15], sorted(slots))
+		self.assertEqual({13: (2, 106), 14: (75, 106), 15: (39, 106)}, dict((i, slots[i]) for i in (13, 14, 15)))
+
+	def test_the_legacy_view_dialog_shows_the_rings_and_the_belt_by_view_index(self):
+		import nui_w4_world as w4
+		world = w4.World(False)
+		RING, BELT = 70001, 18000
+		window = world.make("equipment-view", "uiEquipmentDialog", "EquipmentDialog",
+		                    "nui_equipment_view.EquipmentDialog")
+		with world.game, quiet():
+			window.Open(77)
+			for index, vnum in ((13, RING), (14, RING), (15, BELT), (23, BELT)):
+				window.SetEquipmentDialogItem(index, vnum, 1)
+		shown = dict((index, slot["vnum"]) for index, slot in window.slotWindow.slots.items() if slot["vnum"])
+		self.assertEqual({13: RING, 14: RING, 15: BELT}, shown)
 
 
 if __name__ == "__main__":

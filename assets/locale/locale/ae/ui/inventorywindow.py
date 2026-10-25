@@ -58,8 +58,7 @@ window = {
 					"x" : 10,
 					"y" : 33,
 
-					# "image" : "d:/ymir work/ui/equipment_bg_with_ring.tga",
-					"image" : "d:/ymir work/ui/equipment_bg_without_ring.tga",
+					"image" : "d:/ymir work/ui/equipment_bg_with_ring.tga",
 
 					"children" :
 					(
@@ -86,11 +85,10 @@ window = {
 										{"index":EQUIPMENT_START_INDEX+8, "x":75, "y":145, "width":32, "height":32},
 										{"index":EQUIPMENT_START_INDEX+9, "x":114, "y":2, "width":32, "height":32},
 										{"index":EQUIPMENT_START_INDEX+10, "x":75, "y":35, "width":32, "height":32},
-										## New Ring 1
-										# {"index":item.EQUIPMENT_RING1, "x":2, "y":106, "width":32, "height":32},
-										## New Ring 2
-										# {"index":item.EQUIPMENT_RING2, "x":75, "y":106, "width":32, "height":32},
-										## New Belt
+										## OLD's rings and belt (wear 28-30; OLD uiscript/newinventorywindow.py:118-121). OLD also shows
+										## the costume sash (wear 21) here; the sash is not ported, so its slot stays hidden.
+										{"index":item.EQUIPMENT_RING1, "x":2, "y":106, "width":32, "height":32},
+										{"index":item.EQUIPMENT_RING2, "x":75, "y":106, "width":32, "height":32},
 										{"index":item.EQUIPMENT_BELT, "x":39, "y":106, "width":32, "height":32},
 									),
 						},

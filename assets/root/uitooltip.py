@@ -1847,25 +1847,25 @@ class ItemToolTip(ToolTip):
 		cur = min(metinSlot[0], ACCESSORY_SOCKET_MAX_SIZE)
 		end = min(metinSlot[1], ACCESSORY_SOCKET_MAX_SIZE)
 
-		affectType1, affectValue1 = item.GetAffect(0)
-		affectList1=[0, max(1, affectValue1 * 10 // 100), max(2, affectValue1 * 20 // 100), max(3, affectValue1 * 40 // 100)]
-
-		affectType2, affectValue2 = item.GetAffect(1)
-		affectList2 = [0, max(1, affectValue2 * 10 // 100), max(2, affectValue2 * 20 // 100), max(3, affectValue2 * 40 // 100)]
+		# A jewel raises every apply of the accessory, as OLD's seven do (OLD
+		# uiToolTip.py:2507-2555), by 10, 20 and 40 % for the first to third.
+		affectLists = []
+		for i in range(item.ITEM_APPLY_MAX_NUM):
+			affectType, affectValue = item.GetAffect(i)
+			affectLists.append((affectType, [0, max(1, affectValue * 10 // 100), max(2, affectValue * 20 // 100), max(3, affectValue * 40 // 100)]))
 
 		mtrlPos = 0
 		mtrlList = [mtrlVnum] * cur + [player.METIN_SOCKET_TYPE_SILVER] * (end-cur)
 
 		for mtrl in mtrlList:
-			affectString1 = self.__GetAffectString(affectType1, affectList1[mtrlPos + 1] - affectList1[mtrlPos])			
-			affectString2 = self.__GetAffectString(affectType2, affectList2[mtrlPos + 1] - affectList2[mtrlPos])
+			affectStrings = [self.__GetAffectString(affectType, affectList[mtrlPos + 1] - affectList[mtrlPos]) for affectType, affectList in affectLists]
 
 			leftTime = 0
 
 			if cur == mtrlPos + 1:
 				leftTime = metinSlot[2]
 
-			self.__AppendMetinSlotInfo_AppendMetinSocketData(mtrlPos, mtrl, affectString1, affectString2, leftTime)
+			self.__AppendMetinSlotInfo_AppendMetinSocketData(mtrlPos, mtrl, affectStrings[0], affectStrings[1], leftTime, affectStrings[2:])
 
 			mtrlPos += 1
 
@@ -1888,7 +1888,7 @@ class ItemToolTip(ToolTip):
 
 		return 1
 
-	def __AppendMetinSlotInfo_AppendMetinSocketData(self, index, metinSlotData, custumAffectString="", custumAffectString2="", leftTime=0):
+	def __AppendMetinSlotInfo_AppendMetinSocketData(self, index, metinSlotData, custumAffectString="", custumAffectString2="", leftTime=0, custumAffectStrings=()):
 
 		slotType = self.GetMetinSocketType(metinSlotData)
 		itemIndex = self.GetMetinItemIndex(metinSlotData)
@@ -1974,7 +1974,11 @@ class ItemToolTip(ToolTip):
 			
 			self.childrenList.append(affectTextLine)			
 
-			if custumAffectString2:
+			# The second affect line and an accessory's further ones (OLD's
+			# custumAffectString3 to 7, uiToolTip.py:2689-2747), a line each.
+			for extraAffectString in (custumAffectString2,) + tuple(custumAffectStrings):
+				if not extraAffectString:
+					continue
 				affectTextLine = ui.TextLine()
 				affectTextLine.SetParent(self)
 				affectTextLine.SetFontName(self.defFontName)
@@ -1983,7 +1987,7 @@ class ItemToolTip(ToolTip):
 				affectTextLine.SetOutline()
 				affectTextLine.SetFeather()
 				affectTextLine.Show()
-				affectTextLine.SetText(custumAffectString2)
+				affectTextLine.SetText(extraAffectString)
 				self.childrenList.append(affectTextLine)
 				self.toolTipHeight += 16 + 2
 
@@ -2160,9 +2164,12 @@ class HyperlinkItemToolTip(ItemToolTip):
 		if tokens and len(tokens) >= minTokenCount and len(tokens) <= maxTokenCount:
 			head, vnum, flag = tokens[:3]
 			itemVnum = int(vnum, 16)
-			metinSlot = [int(metin, 16) for metin in tokens[3:6]]
+			# One token per socket, METIN_SOCKET_MAX_NUM of them (4 since the
+			# foundation cut: tokens[3:7], OLD uiToolTip.py:3055), then the attributes.
+			socketEnd = 3 + player.METIN_SOCKET_MAX_NUM
+			metinSlot = [int(metin, 16) for metin in tokens[3:socketEnd]]
 
-			rests = tokens[6:]
+			rests = tokens[socketEnd:]
 			if rests:
 				attrSlot = []
 

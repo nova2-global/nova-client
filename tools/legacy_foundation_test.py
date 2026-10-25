@@ -586,5 +586,79 @@ class MoneyMode(unittest.TestCase):
 		self.assertEqual(["SetMoneyMode", "SetNumberMode"], ime.modes)
 
 
+def tooltip_world(items, sizes="foundation"):
+	"""nui_tooltip_corpus's legacy side: uitooltip.py alone over the corpus
+	stand-ins, with `items` as the corpus rows; "foundation" gives the rules
+	the cut's 4 sockets and 7 applies."""
+	import nui_tooltip_corpus as corpus_tool
+	data = {"items": dict((str(vnum), row) for vnum, row in items.items()), "skills": {}, "mobs": {}}
+	return corpus_tool, corpus_tool.TipWorld(data, recorder=False, sizes=sizes)
+
+
+def tooltip_texts(corpus_tool, world, case):
+	"""The text rows the legacy tooltip shows for a case (its tips' stand-in
+	rows), and the error a rule raised (None)."""
+	base = {"sockets": [0, 0, 0, 0], "attrs": [], "player": {"level": 150, "race": 0}, "clock": 1700000000}
+	base.update(case)
+	with world:
+		tips, error = corpus_tool.run_case(world, base)
+		rows = [row for tip in tips for row in corpus_tool.stand_in_rows(tip)]
+	return [row[1] for row in rows if row[0] == "text"], error
+
+
+ITEM_BASE = {"size": [1, 1], "antiflags": 0, "flags": 0, "wear": 0, "limits": [[1, 0], [0, 0]],
+             "values": [0] * 6, "price": {"buy": 100, "sell": 20}, "desc": "", "summary": ""}
+
+
+class TooltipSockets(unittest.TestCase):
+	"""Four sockets in the legacy tooltips (NOVA-97): an accessory's jewels
+	raise all of its applies (OLD's seven), and item links carry four
+	socket tokens before the attributes."""
+
+	BRACELET = dict(ITEM_BASE, name="Bracelet", type=2, subtype=3, wear=8,
+	                applies=[["APPLY_MAX_HP", 1000], ["APPLY_ATT_SPEED", 10], ["APPLY_MOV_SPEED", 20],
+	                         ["APPLY_CRITICAL_PCT", 5]], icon="icon/item/14000.tga")
+	SWORD = dict(ITEM_BASE, name="Sword+0", type=1, subtype=0, size=[1, 2], wear=16,
+	             applies=[["APPLY_ATT_SPEED", 22]], values=[0, 0, 15, 19, 13, 15], icon="icon/item/00010.tga")
+	STONE = dict(ITEM_BASE, name="Stone of Penetration+0", type=10, subtype=0, wear=16,
+	             applies=[["APPLY_PENETRATE_PCT", 1]], icon="icon/item/28000.tga")
+
+	def test_an_accessory_jewel_raises_every_apply(self):
+		corpus_tool, world = tooltip_world({14000: self.BRACELET})
+		locale = world.game.modules["localeInfo"]
+		# Two jewels of three: the first and second jewel's share of each apply
+		# (10 % and 20 % - 10 %, at least 1, 2 - 1).
+		texts, error = tooltip_texts(corpus_tool, world, {"context": "AddItemData", "vnum": 14000,
+		                                                    "sockets": [2, 3, 0, 0]})
+		self.assertIsNone(error)
+		for jewel in ((100, 1, 2, 1), (100, 1, 2, 1)):
+			for line in (locale.TOOLTIP_MAX_HP(jewel[0]), locale.TOOLTIP_ATT_SPEED(jewel[1]),
+			             locale.TOOLTIP_MOV_SPEED(jewel[2]), locale.TOOLTIP_APPLY_CRITICAL_PCT(jewel[3])):
+				self.assertIn(line, texts)
+		self.assertEqual(2, texts.count(locale.TOOLTIP_APPLY_CRITICAL_PCT(1)), "both jewels' lines")
+		self.assertEqual(2, texts.count(locale.TOOLTIP_MOV_SPEED(2)))
+
+	def test_an_accessory_of_two_applies_keeps_its_two_lines(self):
+		bracelet = dict(self.BRACELET, applies=[["APPLY_MAX_HP", 1000], ["APPLY_ATT_SPEED", 10]])
+		corpus_tool, world = tooltip_world({14000: bracelet}, sizes="today")
+		locale = world.game.modules["localeInfo"]
+		texts, error = tooltip_texts(corpus_tool, world, {"context": "AddItemData", "vnum": 14000,
+		                                                    "sockets": [1, 3, 0]})
+		self.assertIsNone(error)
+		self.assertEqual(1, texts.count(locale.TOOLTIP_MAX_HP(100)))
+		self.assertEqual(1, texts.count(locale.TOOLTIP_ATT_SPEED(1)))
+
+	def test_a_link_reads_four_sockets_then_the_attributes(self):
+		corpus_tool, world = tooltip_world({10: self.SWORD, 28030: self.STONE})
+		locale = world.game.modules["localeInfo"]
+		# item:vnum:flag:socket0..socket3:attribute type:value (hex but the value).
+		link = "item:a:1:%x:1:1:1:1:1500" % 28030
+		texts, error = tooltip_texts(corpus_tool, world, {"context": "SetHyperlinkItem", "vnum": 10, "link": link})
+		self.assertIsNone(error)
+		self.assertIn("Stone of Penetration+0", texts)
+		self.assertEqual(3, texts.count(locale.TOOLTIP_SOCKET_EMPTY), "three silver sockets after the stone")
+		self.assertIn(locale.TOOLTIP_MAX_HP(1500), texts, "the attribute after the fourth socket")
+
+
 if __name__ == "__main__":
 	unittest.main()

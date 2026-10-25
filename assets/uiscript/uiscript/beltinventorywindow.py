@@ -1,8 +1,6 @@
 import uiScriptLocale
 import item
 
-EQUIPMENT_START_INDEX = 90
-
 window = {
 	"name" : "BeltInventoryWindow",
 

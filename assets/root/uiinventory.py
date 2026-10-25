@@ -306,9 +306,10 @@ class InventoryWindow(ui.ScriptWindow):
 			self.DSSButton = self.GetChild2("DSSButton")
 			self.costumeButton = self.GetChild2("CostumeButton")
 			
+			# One tab per inventory page (OLD uiInventory.py:884-889: five).
 			self.inventoryTab = []
-			self.inventoryTab.append(self.GetChild("Inventory_Tab_01"))
-			self.inventoryTab.append(self.GetChild("Inventory_Tab_02"))
+			for page in range(player.INVENTORY_PAGE_COUNT):
+				self.inventoryTab.append(self.GetChild("Inventory_Tab_%02d" % (page + 1)))
 
 			self.equipmentTab = []
 			self.equipmentTab.append(self.GetChild("Equipment_Tab_01"))
@@ -361,8 +362,8 @@ class InventoryWindow(ui.ScriptWindow):
 		## MoneySlot
 		self.wndMoneySlot.SetEvent(ui.__mem_func__(self.OpenPickMoneyDialog))
 
-		self.inventoryTab[0].SetEvent(lambda arg=0: self.SetInventoryPage(arg))
-		self.inventoryTab[1].SetEvent(lambda arg=1: self.SetInventoryPage(arg))
+		for page, tab in enumerate(self.inventoryTab):
+			tab.SetEvent(lambda arg=page: self.SetInventoryPage(arg))
 		self.inventoryTab[0].Down()
 
 		self.equipmentTab[0].SetEvent(lambda arg=0: self.SetEquipmentPage(arg))
@@ -458,7 +459,11 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def SetInventoryPage(self, page):
 		self.inventoryPageIndex = page
-		self.inventoryTab[1-page].SetUp()
+		# The page's tab is down and every other tab up (the two-tab rule
+		# "1 - page" cannot hold five pages).
+		for index, tab in enumerate(self.inventoryTab):
+			if index != page:
+				tab.SetUp()
 		self.RefreshBagSlotWindow()
 
 	def SetEquipmentPage(self, page):

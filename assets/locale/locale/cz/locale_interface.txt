@@ -366,3 +366,5 @@ CHARACTER_CAST_SPEED	Rychlost kouzel
 CHARACTER_MAGIC_ATT	Útok magií
 CHARACTER_MAGIC_DEF	Obrana magií
 CHARACTER_EVASION	Hodnota vyhnutí
+BLOCK_PLAYER	Zablokovat Hráče
+UNBLOCK_PLAYER	Odblokovat Hráče

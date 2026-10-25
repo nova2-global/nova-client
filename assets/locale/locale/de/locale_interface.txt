@@ -364,3 +364,5 @@ CHARACTER_CAST_SPEED	Zaubergeschw.
 CHARACTER_MAGIC_ATT	Magie-Angriff
 CHARACTER_MAGIC_DEF	Magie-Verteidigung
 CHARACTER_EVASION	Ausweichwert
+BLOCK_PLAYER	Spieler Blockieren
+UNBLOCK_PLAYER	Spieler Entsperren

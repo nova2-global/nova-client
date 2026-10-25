@@ -887,3 +887,9 @@ TOOLTIP_APPLY_RESIST_HUMAN	Widerstand gegen Halbmenschen %d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master
 MESSENGER_HELPER	Helfer
 MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blockieren
+TARGET_BUTTON_UNBLOCK	Entblocken
+BLOCK_PLAYER_TITLE	Spieler blockieren
+UNBLOCK_PLAYER_DIALOG	Möchtest du %s entblocken?
+BLOCKED_PLAYERS_TITLE	Blockierte Spieler
+WHISPER_ERROR_BLOCK_YOU	Du kannst nicht mit %s schreiben, da diese Person dich blockiert hat.

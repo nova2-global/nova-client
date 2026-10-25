@@ -889,3 +889,9 @@ TOOLTIP_APPLY_RESIST_HUMAN	Weerstand tegen Halfmensen %d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfecte Master
 MESSENGER_HELPER	Helper
 MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blokkeren
+TARGET_BUTTON_UNBLOCK	Deblokkeer
+BLOCK_PLAYER_TITLE	Blokkeer Speler
+UNBLOCK_PLAYER_DIALOG	Wil je %s deblokkeren?
+BLOCKED_PLAYERS_TITLE	Geblokkeerde Spelers
+WHISPER_ERROR_BLOCK_YOU	Je kan niet schrijven naar %s omdat hij jou heeft geblokkeerd.

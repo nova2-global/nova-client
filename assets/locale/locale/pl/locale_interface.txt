@@ -366,3 +366,5 @@ CHARACTER_CAST_SPEED	Szybkość magii
 CHARACTER_MAGIC_ATT	Obrażenia magiczne
 CHARACTER_MAGIC_DEF	Obrona magiczna
 CHARACTER_EVASION	Uniki
+BLOCK_PLAYER	Zablokuj Gracza
+UNBLOCK_PLAYER	Udblokuj Gracza

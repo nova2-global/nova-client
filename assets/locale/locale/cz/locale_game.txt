@@ -889,3 +889,9 @@ TOOLTIP_APPLY_RESIST_HUMAN	Odolnost proti pololidem %d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Super Dokonalý Mistr
 MESSENGER_HELPER	Pomocník
 MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blokovat
+TARGET_BUTTON_UNBLOCK	Odblokovat
+BLOCK_PLAYER_TITLE	Zablokovat hráče
+UNBLOCK_PLAYER_DIALOG	Chceš odblokovat %s?
+BLOCKED_PLAYERS_TITLE	Blokovaní hráči
+WHISPER_ERROR_BLOCK_YOU	Nemůžeš napsat %s protože si tě zablokovat.

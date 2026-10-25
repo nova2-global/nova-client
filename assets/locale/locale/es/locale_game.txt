@@ -889,3 +889,9 @@ TOOLTIP_APPLY_RESIST_HUMAN	Resistencia contra mediohumanos %d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master
 MESSENGER_HELPER	Ayudante
 MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Bloquear
+TARGET_BUTTON_UNBLOCK	Unblock
+BLOCK_PLAYER_TITLE	Bloquear jugador
+UNBLOCK_PLAYER_DIALOG	Do you want to unblock %s?
+BLOCKED_PLAYERS_TITLE	Jugadores bloqueados
+WHISPER_ERROR_BLOCK_YOU	You can't write to %s because they blocked you.

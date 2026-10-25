@@ -147,6 +147,24 @@ window = {
 					"down_image" : "d:/ymir work/ui/public/close_button_03.sub",
 				},
 
+				## The block list (NOVA-47): OLD's block icon (x 280 - 80, y 8) is
+				## art NEW does not have; NEW's small text button, wider, starts
+				## further left (WhisperDialog.SetWhisperDialogSize places it).
+				{
+					"name" : "blockbutton",
+					"type" : "button",
+
+					"x" : 280 - 86,
+					"y" : 8,
+
+					"tooltip_text" : uiScriptLocale.BLOCK_PLAYER,
+					"text" : uiScriptLocale.BLOCK_PLAYER,
+
+					"default_image" : "d:/ymir work/ui/public/small_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/small_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/small_button_03.sub",
+				},
+
 				## ScrollBar
 				{
 					"name" : "scrollbar",

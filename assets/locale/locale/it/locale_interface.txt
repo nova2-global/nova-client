@@ -366,3 +366,5 @@ CHARACTER_CAST_SPEED	Velocità magia
 CHARACTER_MAGIC_ATT	Attacco magia
 CHARACTER_MAGIC_DEF	Difesa magia
 CHARACTER_EVASION	Valore elusione
+BLOCK_PLAYER	Blocca giocatore
+UNBLOCK_PLAYER	Sblocca giocatore

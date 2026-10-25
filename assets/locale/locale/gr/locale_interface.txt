@@ -366,3 +366,5 @@ CHARACTER_CAST_SPEED	Ταχύτητα μαγείας
 CHARACTER_MAGIC_ATT	Μαγική επίθεση
 CHARACTER_MAGIC_DEF	Μαγική άμυνα
 CHARACTER_EVASION	Διαφυγή
+BLOCK_PLAYER	Αποκλεισμός Παίκτη
+UNBLOCK_PLAYER	 Επαναφορά Αποκλεισμού Παίκτη

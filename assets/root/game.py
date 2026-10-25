@@ -890,6 +890,12 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.RecvWhisper(name)
 
 	def OnRecvWhisperError(self, mode, name, line):
+		# The target blocked the sender (NOVA-47): said in the whisper and no
+		# more, as OLD (game.py:1448-1458).
+		if mode == chat.WHISPER_TYPE_SENDER_IS_BLOCKED:
+			chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, localeInfo.WHISPER_ERROR_BLOCK_YOU % (name))
+			return
+
 		if mode in localeInfo.WHISPER_ERROR:
 			chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, localeInfo.WHISPER_ERROR[mode](name))
 		else:

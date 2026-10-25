@@ -889,3 +889,9 @@ TOOLTIP_APPLY_RESIST_HUMAN	Odporność na Ludzi %d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfekcyjny Mistrz
 MESSENGER_HELPER	Pomocnik
 MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Zablokuj
+TARGET_BUTTON_UNBLOCK	Odblokuj
+BLOCK_PLAYER_TITLE	Zablokuj gracza
+UNBLOCK_PLAYER_DIALOG	Czy chcesz odblokować %s?
+BLOCKED_PLAYERS_TITLE	Zablokowani gracze
+WHISPER_ERROR_BLOCK_YOU	Nie możesz pisać do %s, ponieważ zablokował(a) Cię.

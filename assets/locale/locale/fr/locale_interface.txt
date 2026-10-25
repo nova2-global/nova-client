@@ -365,3 +365,5 @@ CHARACTER_CAST_SPEED	Rapidité de la magie
 CHARACTER_MAGIC_ATT	Attaque par magie
 CHARACTER_MAGIC_DEF	Défense par magie
 CHARACTER_EVASION	Evasion
+BLOCK_PLAYER	Bloquer le joueur
+UNBLOCK_PLAYER	Débloquer le joueur

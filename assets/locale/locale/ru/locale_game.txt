@@ -889,3 +889,9 @@ TOOLTIP_APPLY_RESIST_HUMAN	Сопротивляемость полулюдям%d
 SKILL_GRADE_NAME_SAGE_MASTER	%s Супер идеальный мастер
 MESSENGER_HELPER	Помощник
 MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Блокировать
+TARGET_BUTTON_UNBLOCK	Разблокировать
+BLOCK_PLAYER_TITLE	Заблокировать игрока
+UNBLOCK_PLAYER_DIALOG	Вы хотите разблокировать %s?
+BLOCKED_PLAYERS_TITLE	Заблокированные игроки
+WHISPER_ERROR_BLOCK_YOU	Вы не можете написать %s потому что он вас заблокировал.

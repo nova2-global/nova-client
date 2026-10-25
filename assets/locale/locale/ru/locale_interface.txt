@@ -366,3 +366,5 @@ CHARACTER_CAST_SPEED	Скор. заклинаний
 CHARACTER_MAGIC_ATT	Магич. атака
 CHARACTER_MAGIC_DEF	Магич. защита
 CHARACTER_EVASION	Уклонение
+BLOCK_PLAYER	Блокировать игрока
+UNBLOCK_PLAYER	Разблокировать игрока

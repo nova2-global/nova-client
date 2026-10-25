@@ -889,3 +889,9 @@ TOOLTIP_APPLY_RESIST_HUMAN	Resistenza ai Mezziuomini %d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Maestro Super Perfetto
 MESSENGER_HELPER	Aiuto
 MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blocca
+TARGET_BUTTON_UNBLOCK	Sbloccare
+BLOCK_PLAYER_TITLE	Blocca giocatore
+UNBLOCK_PLAYER_DIALOG	Vuoi sbloccare %s?
+BLOCKED_PLAYERS_TITLE	Giocatori bloccati
+WHISPER_ERROR_BLOCK_YOU	Non puoi scrivere a %s perché ti ha bloccato.

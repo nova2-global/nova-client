@@ -366,3 +366,5 @@ CHARACTER_CAST_SPEED	Tryllehastighed
 CHARACTER_MAGIC_ATT	Magisk angreb
 CHARACTER_MAGIC_DEF	Magisk forsvar
 CHARACTER_EVASION	Undvigeværdi
+BLOCK_PLAYER	Blok Spiller
+UNBLOCK_PLAYER	Fjern blokering af spilleren

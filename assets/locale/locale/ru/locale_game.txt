@@ -887,3 +887,5 @@ TOOLTIP_APPLY_ENCHANT_DARK	Сила тьмы +%d%%	SA
 TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Сильный против элементалов +%d%%	SA
 TOOLTIP_APPLY_RESIST_HUMAN	Сопротивляемость полулюдям%d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Супер идеальный мастер
+MESSENGER_HELPER	Помощник
+MESSENGER_TEAMLER	Team

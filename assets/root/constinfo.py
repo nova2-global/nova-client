@@ -248,3 +248,16 @@ def IS_AUTO_POTION_SP(itemVnum):
 				
 	return 0
 
+
+# The language flags (NOVA-30/46, NOVA-48): OLD's 32 x 32 flags at
+# locale/common/ui/flag/32/<code>.tga, shown by the messenger's staff rosters
+# and the whisper dialog. A code with no file here shows no flag.
+LANGUAGE_FLAG_PATH = "locale/common/ui/flag/32/%s.tga"
+LANGUAGE_FLAG_CODES = ("ae", "cz", "de", "dk", "en", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+
+# The flag image of a language code ("en"), or "" when there is none.
+def GET_LANGUAGE_FLAG(code):
+	code = str(code).strip().lower()
+	if code in LANGUAGE_FLAG_CODES:
+		return LANGUAGE_FLAG_PATH % code
+	return ""

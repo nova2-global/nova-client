@@ -12,6 +12,17 @@ from _weakref import proxy
 
 FRIEND = 0
 GUILD = 1
+# The staff rosters (NOVA-46, NOVA-30): the C++ handler's group indices
+# (PythonMessenger.h, OLD's numbers). Under NovaUI the window holds Friend and
+# Guild only, so every method that takes a group index returns when the index
+# has no group.
+HELPER = 2
+TEAMLER = 3
+
+# The width of one language flag in a member row: OLD's 32 x 32 flags at half
+# size, plus a gap.
+FLAG_SCALE = 0.5
+FLAG_STEP = 18
 
 class MessengerItem(ui.Window):
 
@@ -124,6 +135,9 @@ class MessengerMemberItem(MessengerItem):
 		MessengerItem.__init__(self, getParentEvent)
 		self.key = None
 		self.state = self.STATE_OFFLINE
+		# The roster languages (NOVA-30/46) and their flag images.
+		self.languages = ""
+		self.flagImageList = []
 		self.Offline()
 
 	@property
@@ -132,6 +146,48 @@ class MessengerMemberItem(MessengerItem):
 
 	def GetStepWidth(self):
 		return 15
+
+	def SetName(self, name):
+		MessengerItem.SetName(self, name)
+		self.__PlaceFlags()
+
+	# One flag per space-separated language code ("en pt", OLD's data) after
+	# the name. OLD put them in the text as |E~/<code>.tga|e tags, which this
+	# client's text engine does not read; a code with no flag file shows none.
+	def SetLanguages(self, languages):
+		self.languages = languages or ""
+
+		for flag in self.flagImageList:
+			flag.Hide()
+		self.flagImageList = []
+
+		for code in self.languages.split():
+			path = constInfo.GET_LANGUAGE_FLAG(code)
+			if not path:
+				continue
+			flag = ui.ExpandedImageBox()
+			flag.AddFlag("not_pick")
+			flag.SetParent(self)
+			flag.LoadImage(path)
+			flag.SetScale(FLAG_SCALE, FLAG_SCALE)
+			flag.Show()
+			self.flagImageList.append(flag)
+
+		self.__PlaceFlags()
+
+	def GetLanguages(self):
+		return self.languages
+
+	def __PlaceFlags(self):
+		if not self.flagImageList:
+			return
+
+		x = 20 + 6*len(self.name) + 4
+		for flag in self.flagImageList:
+			flag.SetPosition(x, 0)
+			x += FLAG_STEP
+
+		self.SetSize(x, 16)
 
 	def SetKey(self, key):
 		self.key = key
@@ -237,6 +293,25 @@ class MessengerFriendItem(MessengerMemberItem):
 		net.SendMessengerRemovePacket(self.key, self.name)
 		return True
 
+# The staff rosters (NOVA-46, NOVA-30): the server manages them (GM commands
+# only, as OLD's client and server disagreed on the remove packets), so a
+# player can whisper a staff member and never remove one.
+class MessengerHelperItem(MessengerMemberItem):
+
+	def __init__(self, getParentEvent):
+		MessengerMemberItem.__init__(self, getParentEvent)
+
+	def CanRemove(self):
+		return False
+
+class MessengerTeamlerItem(MessengerMemberItem):
+
+	def __init__(self, getParentEvent):
+		MessengerMemberItem.__init__(self, getParentEvent)
+
+	def CanRemove(self):
+		return False
+
 class MessengerGuildItem(MessengerMemberItem):
 
 	def __init__(self, getParentEvent):
@@ -290,6 +365,26 @@ class MessengerGuildGroup(MessengerGroupItem):
 
 	def AppendMember(self, key, name):
 		item = MessengerGuildItem(self.getParentEvent)
+		return MessengerGroupItem.AppendMember(self, item, key, name)
+
+class MessengerHelperGroup(MessengerGroupItem):
+
+	def __init__(self, getParentEvent):
+		MessengerGroupItem.__init__(self, getParentEvent)
+		self.SetName(localeInfo.MESSENGER_HELPER)
+
+	def AppendMember(self, key, name):
+		item = MessengerHelperItem(self.getParentEvent)
+		return MessengerGroupItem.AppendMember(self, item, key, name)
+
+class MessengerTeamlerGroup(MessengerGroupItem):
+
+	def __init__(self, getParentEvent):
+		MessengerGroupItem.__init__(self, getParentEvent)
+		self.SetName(localeInfo.MESSENGER_TEAMLER)
+
+	def AppendMember(self, key, name):
+		item = MessengerTeamlerItem(self.getParentEvent)
 		return MessengerGroupItem.AppendMember(self, item, key, name)
 
 class MessengerFamilyGroup(MessengerGroupItem):
@@ -491,6 +586,17 @@ class MessengerWindow(ui.ScriptWindow):
 		member.Show()
 		self.groupList.append(member)
 
+		# OLD's order: Friend, Guild, Helper, Team (OLD uiMessenger.py:664-680).
+		member = MessengerHelperGroup(ui.__mem_func__(self.GetSelf))
+		member.Open()
+		member.Show()
+		self.groupList.append(member)
+
+		member = MessengerTeamlerGroup(ui.__mem_func__(self.GetSelf))
+		member.Open()
+		member.Show()
+		self.groupList.append(member)
+
 	def __AddFamilyGroup(self):
 		member = MessengerFamilyGroup(ui.__mem_func__(self.GetSelf))
 		member.Open()
@@ -637,8 +743,17 @@ class MessengerWindow(ui.ScriptWindow):
 		self.OnRefreshList()
 
 	## EventHandler
+	# The group the C++ handler means by `groupIndex`, or None when this window
+	# has none there (NovaUI's holds Friend and Guild only).
+	def __GetGroup(self, groupIndex):
+		if 0 <= groupIndex < len(self.groupList):
+			return self.groupList[groupIndex]
+		return None
+
 	def __AddList(self, groupIndex, key, name):
-		group = self.groupList[groupIndex]
+		group = self.__GetGroup(groupIndex)
+		if not group:
+			return None
 		member = group.FindMember(key)
 		if not member:
 			member = group.AppendMember(key, name)
@@ -646,7 +761,9 @@ class MessengerWindow(ui.ScriptWindow):
 		return member
 
 	def OnRemoveList(self, groupIndex, key):
-		group = self.groupList[groupIndex]
+		group = self.__GetGroup(groupIndex)
+		if not group:
+			return
 
 		member = group.FindMember(key)
 
@@ -666,27 +783,51 @@ class MessengerWindow(ui.ScriptWindow):
 
 		self.OnRefreshList()
 
+	# A group emptied at once: the guild list, or a staff roster before the
+	# server's list fills it again (NOVA-30/46). The rows go off the screen
+	# with it, and a selected one takes the buttons with it, as OnRemoveList.
 	def OnRemoveAllList(self, groupIndex):
-		group = self.groupList[groupIndex]
+		group = self.__GetGroup(groupIndex)
+		if not group:
+			return
+		if self.selectedItem and self.selectedItem in group.memberList:
+			self.selectedItem.UnSelect()
+			self.selectedItem = None
+			self.whisperButton.Disable()
+			self.removeButton.Disable()
+		list(map(ui.Window.Hide, group.memberList))
 		group.ClearMember()
 		self.OnRefreshList()
 
 	def OnLogin(self, groupIndex, key, name=None):
 		if not name:
 			name = key
-		group = self.groupList[groupIndex]
 		member = self.__AddList(groupIndex, key, name)
+		if not member:
+			return
 		member.SetName(name)
 		member.Online()
 		self.OnRefreshList()
 
 	def OnLogout(self, groupIndex, key, name=None):
-		group = self.groupList[groupIndex]
-		member = self.__AddList(groupIndex, key, name)
 		if not name:
 			name = key
+		member = self.__AddList(groupIndex, key, name)
+		if not member:
+			return
 		member.SetName(name)
 		member.Offline()
+		self.OnRefreshList()
+
+	# A roster entry's languages (NOVA-30/46), after its OnLogin/OnLogout.
+	def SetLanguagesFlags(self, groupIndex, key, languages):
+		group = self.__GetGroup(groupIndex)
+		if not group:
+			return
+		member = group.FindMember(key)
+		if not member:
+			return
+		member.SetLanguages(languages)
 		self.OnRefreshList()
 
 	def OnAddLover(self, name, lovePoint):

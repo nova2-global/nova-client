@@ -887,3 +887,5 @@ TOOLTIP_APPLY_ENCHANT_DARK	Puterea Întunecată +%d%%	SA
 TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Tare impotriva elementelor +%d%%	SA
 TOOLTIP_APPLY_RESIST_HUMAN	Rezistenţă vs Semi-Oameni %d%%	SA
 SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master
+MESSENGER_HELPER	Helper
+MESSENGER_TEAMLER	Team

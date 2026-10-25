@@ -30,9 +30,7 @@ FACE_IMAGE_DICT = {
 	playerSettingModule.RACE_SHAMAN_M	: "icon/face/shaman_m.tga",
 	playerSettingModule.RACE_SHAMAN_W	: "icon/face/shaman_w.tga",
 }
-def unsigned32(n):
-	return n & 0xFFFFFFFF
-	
+
 class CharacterWindow(ui.ScriptWindow):
 
 	ACTIVE_PAGE_SLOT_COUNT = 8
@@ -496,8 +494,9 @@ class CharacterWindow(ui.ScriptWindow):
 
 		try:
 			self.GetChild("Level_Value").SetText(str(player.GetStatus(player.LEVEL)))
-			self.GetChild("Exp_Value").SetText(str(unsigned32(player.GetEXP())))
-			self.GetChild("RestExp_Value").SetText(str(unsigned32(player.GetStatus(player.NEXT_EXP)) - unsigned32(player.GetStatus(player.EXP))))
+			# 64-bit exp (NOVA-96): the getters hand Python the whole value.
+			self.GetChild("Exp_Value").SetText(str(player.GetEXP()))
+			self.GetChild("RestExp_Value").SetText(str(player.GetStatus(player.NEXT_EXP) - player.GetStatus(player.EXP)))
 			self.GetChild("HP_Value").SetText(str(player.GetStatus(player.HP)) + '/' + str(player.GetStatus(player.MAX_HP)))
 			self.GetChild("SP_Value").SetText(str(player.GetStatus(player.SP)) + '/' + str(player.GetStatus(player.MAX_SP)))
 

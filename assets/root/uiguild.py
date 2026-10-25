@@ -42,8 +42,6 @@ def GetGVGKey(srcGuildID, dstGuildID):
 	minID = min(srcGuildID, dstGuildID)
 	maxID = max(srcGuildID, dstGuildID)
 	return minID*1000 + maxID
-def unsigned32(n):
-	return n & 0xFFFFFFFF
 	
 class DeclareGuildWarDialog(ui.ScriptWindow):
 
@@ -1705,7 +1703,8 @@ class GuildWindow(ui.ScriptWindow):
 
 	def __OnClickOfferButton(self):
 
-		curEXP = unsigned32(player.GetStatus(player.EXP))
+		# 64-bit exp (NOVA-96). The offer input keeps OLD's 9 digits (Q19: decided 2026-10-25).
+		curEXP = player.GetStatus(player.EXP)
 
 		if curEXP <= 100:
 			self.__PopupMessage(localeInfo.GUILD_SHORT_EXP);
@@ -1748,7 +1747,11 @@ class GuildWindow(ui.ScriptWindow):
 		net.SendGuildWithdrawMoneyPacket(money)
 
 	def OnOffer(self, exp):
-		net.SendGuildOfferPacket(exp)
+		# The offer input's 9 digits (Q19: decided 2026-10-25) bound the amount
+		# too: OLD's k/m/b (uiPickMoney.ConvertTextToMoney) names more in 9
+		# characters, and net.SendGuildOfferPacket reads a 32-bit int, which
+		# OLD wrapped (OLD PythonNetworkStreamModule.cpp:2086).
+		net.SendGuildOfferPacket(min(exp, 10 ** 9 - 1))
 
 	## Board
 	def OnPostComment(self):

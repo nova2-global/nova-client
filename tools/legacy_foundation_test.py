@@ -312,5 +312,279 @@ class WearOrder(unittest.TestCase):
 		self.assertEqual({13: RING, 14: RING, 15: BELT}, shown)
 
 
+
+class Money64(unittest.TestCase):
+	"""64-bit gold and exp in the legacy UI (NOVA-96): the 32-bit exp masks
+	gone, OLD's k/m/b amounts, OLD's digits per money input (Q13: decided
+	2026-10-25) from the client's constants."""
+
+	EXP = 2 ** 40 + 12345          # past 32 bits, as level 150's exp is
+	NEXT_EXP = 2 ** 41
+
+	def test_the_character_window_shows_the_whole_exp(self):
+		import nui_character_test as character
+		world = character.World(False)
+		P = character.P
+		world.game.status.update({P["EXP"]: self.EXP, P["NEXT_EXP"]: self.NEXT_EXP})
+		world.game.exp = self.EXP
+		window = world.open()
+		self.assertEqual(str(self.EXP), window.GetChild("Exp_Value").GetText())
+		self.assertEqual(str(self.NEXT_EXP - self.EXP), window.GetChild("RestExp_Value").GetText())
+
+	def test_the_taskbar_gauge_gets_the_whole_exp(self):
+		game = support.Game()
+		game.modules["systemSetting"].GetUINuiWindows = lambda: ""
+		game.load_standard()
+		with quiet():
+			module = game.load("uiTaskBar", "uitaskbar.py")
+		player = game.modules["player"]
+		game.status.update({player.EXP: self.EXP, player.NEXT_EXP: self.NEXT_EXP})
+		got = []
+		bar = types.SimpleNamespace(RefreshStamina=lambda: None, SetHP=lambda *args: None, SetSP=lambda *args: None,
+		                            SetExperience=lambda cur, nxt: got.append((cur, nxt)))
+		with game:
+			module.TaskBar.RefreshStatus(bar)
+		self.assertEqual([(self.EXP, self.NEXT_EXP)], got)
+		self.assertFalse(hasattr(module, "unsigned32"))
+
+	def test_the_guild_exp_offer_opens_with_the_whole_exp_and_keeps_nine_digits(self):
+		import nui_w4_world as w4
+		import nui_guild_test as guild_test
+		exp = self.EXP
+
+		def setup(game):
+			guild_test.guild(game)
+			game.modules["player"].GetStatus = lambda kind: exp
+		world = w4.World(False, setup=setup, social=True)
+		window = world.make("guild", "uiGuild", "GuildWindow", "nui_guild.GuildWindow")
+		with world.game, quiet():
+			window.SetSkillToolTip(support.ToolTip("skill"))
+			if window.CanOpen():
+				window.Open()
+			window.pageWindow["GUILD_INFO"].GetChild("OfferButton").click()
+		offers = [dialog for dialog in world.game.dialogs if dialog._name == "uiPickMoney.PickMoneyDialog" and dialog.is_open]
+		self.assertEqual(1, len(offers))
+		self.assertEqual((exp, 100), offers[0].opened)
+		self.assertEqual(9, offers[0].max, "OLD's 9 digits (Q19: decided 2026-10-25)")
+		self.assertNotIn("unsigned32", read(os.path.join(ROOT, "uiguild.py")))
+
+	def test_the_guild_exp_offer_sends_at_most_nine_digits(self):
+		"""The offer's 9 digits (Q19) bound the amount too: OLD's k/m/b names
+		more in 9 characters ("3b" is 3000000000, under the whole exp the
+		dialog opens with), and net.SendGuildOfferPacket reads a 32-bit int,
+		so OLD sent 4294967295 for it. The guild window's OnOffer, which the
+		NovaUI guild window inherits, sends at most 999999999."""
+		import nui_w4_world as w4
+		import nui_guild_test as guild_test
+		exp = 50 * 10 ** 9
+
+		def setup(game):
+			guild_test.guild(game)
+			game.modules["player"].GetStatus = lambda kind: exp
+		for nui_on in (False, True):
+			with self.subTest(nui_on=nui_on):
+				world = w4.World(nui_on, setup=setup, social=True)
+				window = world.make("guild", "uiGuild", "GuildWindow", "nui_guild.GuildWindow")
+				with world.game, quiet():
+					window.SetSkillToolTip(support.ToolTip("skill"))
+					if window.CanOpen():
+						window.Open()
+					if nui_on:
+						w4.press(window, "offer_press", 0)
+					else:
+						window.pageWindow["GUILD_INFO"].GetChild("OfferButton").click()
+				offers = [dialog for dialog in world.game.dialogs
+				          if dialog._name == "uiPickMoney.PickMoneyDialog" and dialog.is_open]
+				self.assertEqual((exp, 100), offers[-1].opened)
+				mark = world.mark()
+				with world.game, quiet():
+					for amount in (1234, 10 ** 9 - 1, 10 ** 9, 3 * 10 ** 9, exp):
+						offers[-1].accept(amount)
+				self.assertEqual([1234] + [10 ** 9 - 1] * 4,
+				                 [args[0] for name, args in world.game.log[mark:] if name == "net.SendGuildOfferPacket"])
+
+	def test_a_money_string_holds_thirteen_digits(self):
+		locale = support.locale_info("en")
+		self.assertEqual("2.000.000.000.000 Yang", locale.NumberToMoneyString(2000000000000))
+
+	def dialog_modules(self, **player):
+		"""uicommon.py and uipickmoney.py over the dialog kit's stand-ins
+		(nui_dialogs_test's), every NovaUI window off."""
+		base = support.support
+		stub = base.stub_module
+		state = base.NuiState()
+		modules = base.Modules(
+			nui=base.make_nui(state), dbg=base.make_dbg(), systemSetting=base.make_setting(flag=0, windows=""),
+			wndMgr=base.make_wndmgr(mouse=(800, 600)), ui=base.make_legacy_ui(),
+			localeInfo=base.LocaleInfo(MONEY_INPUT_DIALOG_SELLPRICE="Sales Price: ", NumberToMoneyString=base.number_to_money),
+			app=stub("app", IsRTL=lambda: False, GetTime=lambda: 0.0), ime=stub("ime", SetCursorPosition=lambda n: None),
+			uiScriptLocale=stub("uiScriptLocale", LOCALE_UISCRIPT_PATH="locale/"),
+			exception=stub("exception", Abort=lambda message: self.fail(message)), player=stub("player", **player))
+		self.addCleanup(modules.restore)
+		modules.load("nui_windows")
+		return modules
+
+	def test_olds_k_m_b_amounts(self):
+		module = self.dialog_modules().load("uiPickMoney", "uipickmoney.py")
+		convert = module.ConvertTextToMoney
+		cases = {"": 0, "abc": 0, "0": 0, "7": 7, "1234567": 1234567, "5k": 5000, "5K": 5000, "3m": 3000000,
+		         "3kk": 3000000, "2b": 2000000000, "2B": 2000000000, "2000b": 2000000000000, "1kkk": 1000000000,
+		         "12k5": 12000}
+		self.assertEqual(cases, dict((text, convert(text)) for text in cases))
+
+	def test_the_pick_money_dialog_accepts_k_m_b_up_to_its_maximum(self):
+		module = self.dialog_modules().load("uiPickMoney", "uipickmoney.py")
+		for text, maximum, expected in (("5k", 10 ** 6, [5000]), ("2m", 10 ** 6, [10 ** 6]), ("40", 100, [40]),
+		                                ("abc", 100, []), ("0", 100, []), ("", 100, [])):
+			with self.subTest(text=text):
+				got = []
+				dialog = module.PickMoneyDialog()
+				dialog.LoadDialog()
+				dialog.SetAcceptEvent(lambda money: got.append(money))
+				dialog.Open(maximum)
+				dialog.pickValueEditLine.SetText(text)
+				dialog.OnAccept()
+				self.assertEqual(expected, got)
+				self.assertFalse(dialog.IsShow())
+		self.assertIs(module.LegacyPickMoneyDialog, type(dialog), "the factory block makes the legacy class")
+
+	def test_the_money_input_dialog_takes_the_money_digits(self):
+		modules = self.dialog_modules(MONEY_DIGITS=13)
+		module = modules.load("uiCommon", "uicommon.py")
+		dialog = module.MoneyInputDialog()
+		self.assertEqual([("SetMax", 13)], [call for call in dialog.inputValue.calls if call[0] == "SetMax"])
+		dialog.inputValue.calls[:] = []
+		dialog.SetMaxLength(20)
+		dialog.SetMaxLength(6)
+		self.assertEqual([("SetMax", 13), ("SetMax", 6)], [call for call in dialog.inputValue.calls if call[0] == "SetMax"])
+		world = LegacyWorld()
+		world.game.modules["player"].MONEY_DIGITS = 13
+		with world:
+			namespace = read_uiscript(os.path.join(UISCRIPT, "moneyinputdialog.py"))
+		self.assertEqual(13, child(namespace["window"], "InputValue")["input_limit"])
+
+	def test_the_inventory_pick_money_takes_the_inventory_digits(self):
+		for digits in (7, 9):
+			with self.subTest(digits=digits):
+				world = LegacyWorld()
+				world.game.modules["player"].INVENTORY_MONEY_DIGITS = digits
+				world.game.elk = 2000000000000
+				window = make_inventory(world)
+				with world, quiet():
+					window.OpenPickMoneyDialog()
+				self.assertEqual((2000000000000,), window.dlgPickMoney.opened)
+				self.assertEqual(digits, window.dlgPickMoney.max)
+
+	def test_the_exchange_money_takes_the_exchange_digits(self):
+		import nui_w4_world as w4
+		world = w4.World(False)
+		world.game.modules["player"].EXCHANGE_MONEY_DIGITS = 12
+		window = world.make("exchange", "uiExchange", "ExchangeDialog", "nui_exchange.ExchangeDialog")
+		with world.game, quiet():
+			window.LoadDialog()
+		self.assertEqual(12, window.dlgPickMoney.max)
+
+
+class AnyCall(types.ModuleType):
+	"""A C++ module stand-in whose every function does nothing and returns 0."""
+
+	def __getattr__(self, name):
+		if name.startswith("__"):
+			raise AttributeError(name)
+		return lambda *args, **kwargs: 0
+
+
+class RecordingIme(AnyCall):
+	"""ime, recording the input mode calls. Without `money` it lacks
+	SetMoneyMode, as the client does until it exports OLD's money mode."""
+
+	MODES = ("SetMoneyMode", "SetNumberMode", "SetStringMode")
+
+	def __init__(self, money):
+		AnyCall.__init__(self, "ime")
+		self.money = money
+		self.modes = []
+
+	def __getattr__(self, name):
+		if name == "SetMoneyMode" and not self.money:
+			raise AttributeError(name)
+		if name in self.MODES:
+			return lambda: self.modes.append(name)
+		return AnyCall.__getattr__(self, name)
+
+
+class MoneyMode(unittest.TestCase):
+	"""The pick money dialog's edit line takes OLD's k/m/b amounts: the
+	uiscript's "only_number" 2 is OLD's money mode, which the client's own
+	ui.py turns into ime.SetMoneyMode on focus (OLD ui.py:1842-1843,
+	1890-1893, 9507-9511), and a client without that export keeps today's
+	digits."""
+
+	def real_ui(self, ime):
+		"""assets/root/ui.py itself, over do-nothing C++ modules and `ime`."""
+		import builtins
+		import importlib.util
+		from unittest import mock
+		patcher = mock.patch.dict(sys.modules)
+		patcher.start()
+		self.addCleanup(patcher.stop)
+		for name in ("app", "grp", "snd", "wndMgr", "item", "skill", "localeInfo", "dbg", "guild", "uiScriptLocale"):
+			sys.modules[name] = AnyCall(name)
+		sys.modules["ime"] = ime
+		for name, value in (("TRUE", True), ("FALSE", False)):
+			if not hasattr(builtins, name):
+				setattr(builtins, name, value)
+				self.addCleanup(delattr, builtins, name)
+		spec = importlib.util.spec_from_file_location("ui", os.path.join(ROOT, "ui.py"))
+		module = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(module)
+		return module
+
+	def focused_mode(self, money, only_number):
+		"""The ime modes the pick money uiscript's edit line sets on focus,
+		with its "only_number" replaced by `only_number` (None: no key)."""
+		ime = RecordingIme(money)
+		ui = self.real_ui(ime)
+		value = dict(child(read_uiscript(os.path.join(UISCRIPT, "pickmoneydialog.py"))["window"], "money_value"))
+		if only_number is None:
+			del value["only_number"]
+		else:
+			value["only_number"] = only_number
+		window = ui.EditLine()
+		with quiet():
+			self.assertTrue(ui.PythonScriptLoader().LoadElementEditLine(window, value, ui.Window()))
+		window.OnSetFocus()
+		return ime.modes
+
+	def test_the_pick_money_uiscript_asks_for_olds_money_mode(self):
+		self.real_ui(RecordingIme(True))
+		value = child(read_uiscript(os.path.join(UISCRIPT, "pickmoneydialog.py"))["window"], "money_value")
+		self.assertEqual(2, value["only_number"])
+
+	def test_the_money_mode_lets_the_amount_letters_through(self):
+		self.assertEqual(["SetMoneyMode"], self.focused_mode(True, 2))
+
+	def test_a_client_without_the_money_mode_takes_digits(self):
+		self.assertEqual(["SetNumberMode"], self.focused_mode(False, 2))
+
+	def test_the_other_edit_lines_keep_their_modes(self):
+		for money in (True, False):
+			with self.subTest(money=money):
+				self.assertEqual(["SetNumberMode"], self.focused_mode(money, 1))
+				self.assertEqual(["SetStringMode"], self.focused_mode(money, 0))
+				self.assertEqual(["SetStringMode"], self.focused_mode(money, None))
+
+	def test_the_last_mode_set_is_the_one_used(self):
+		ime = RecordingIme(True)
+		ui = self.real_ui(ime)
+		window = ui.EditLine()
+		window.SetMax(7)
+		window.SetMoneyMode()
+		window.OnSetFocus()
+		window.SetNumberMode()
+		window.OnSetFocus()
+		self.assertEqual(["SetMoneyMode", "SetNumberMode"], ime.modes)
+
+
 if __name__ == "__main__":
 	unittest.main()

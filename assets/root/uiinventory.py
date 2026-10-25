@@ -532,7 +532,9 @@ class InventoryWindow(ui.ScriptWindow):
 			self.dlgPickMoney.SetTitleName(localeInfo.PICK_MONEY_TITLE)
 			self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickMoney))
 			self.dlgPickMoney.Open(curMoney)
-			self.dlgPickMoney.SetMax(7) # Fixed inventory 990000 limit bug
+			# Fixed inventory 990000 limit bug; OLD keeps 7 digits here (OLD uiInventory.py:1302;
+			# Q13: decided 2026-10-25).
+			self.dlgPickMoney.SetMax(player.INVENTORY_MONEY_DIGITS)
 
 	def OnPickMoney(self, money):
 		mouseModule.mouseController.AttachMoney(self, player.SLOT_TYPE_INVENTORY, money)

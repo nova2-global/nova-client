@@ -870,3 +870,19 @@ ITEM_GET	Ricevuto: %s	SA
 ITEM_GET_FROM_PARTY	Ricevuto: %s da %s	SAA
 ITEM_DELIVER_TO_PARTY	Consegnato: %s a %s	SAA
 MAINTENANCE_TIME_LEFT	Manutenzione tra:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Resistenza contro l'attacco sanguinante + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Attacco sanguinante + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Forte contro lican + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Possibilità di difesa dai lican %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Difesa artigli +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Resistenza Anti Magic +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Forte contro Boss +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Forte contro Metin +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Forza del fulmine +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Forza del fuoco +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Forza del ghiaccio +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Forza del vento +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Forza della terra +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Forza dell'oscurità +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Forte contro gli Elementali +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Resistenza ai Mezziuomini %d%%	SA

@@ -870,3 +870,19 @@ ITEM_GET	Získáno: %s	SA
 ITEM_GET_FROM_PARTY	Získáno: %s od %s	SAA
 ITEM_DELIVER_TO_PARTY	Doručeno: %s pro %s	SAA
 MAINTENANCE_TIME_LEFT	Údržba za:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Odolnost proti krvácivým útokům + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Krvácivý útok + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Silný proti Lycanům + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Obrana proti útokům Lycanů %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Obrana drápem +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Odolnost proti magii +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Silný proti Bossům +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Silný proti Kamenům +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Síle blesku +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Síla ohně +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Síla ledu +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Síla větru +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Síla Země +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Síla temnoty +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Odolnost proti pololidem %d%%	SA

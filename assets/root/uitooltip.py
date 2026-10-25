@@ -1,3 +1,4 @@
+import re
 import dbg
 import player
 import item
@@ -25,6 +26,48 @@ DESC_MAX_WIDTH = 280
 
 def chop(n):
 	return round(n - 0.5, 1)
+
+# An apply text's trailing value: a sign, the leading "%" of the Turkish texts
+# ("+%7"; OLD's pattern left it with the words, "+% 7"), digits, a "%".
+_AFFECT_VALUE_SUFFIX = re.compile(r"^(.*?)([+\-]?%?\d+(?:\.\d+)?%?)\s*$")
+
+def FuseAffectTexts(affectTexts):
+	"""OLD's fused apply text (OLD localeInfo.py:921-999), for the applies
+	that are two in one (108, strong against undead and devils): every
+	text formatted with the value; when each line ends in the same value, one
+	line of the shared words with the differing ones joined by " & ", then
+	the value ("Strong against Undead & Devils +10%"); else the lines joined
+	by " / "."""
+	def fused(affectValue):
+		parts = []
+		for affectText in affectTexts:
+			parts += [line.strip() for line in affectText(affectValue).splitlines() if line.strip()]
+		if len(parts) < 2:
+			return "".join(parts)
+
+		matches = [_AFFECT_VALUE_SUFFIX.match(part) for part in parts]
+		if not all(matches) or len(set(match.group(2) for match in matches)) != 1:
+			return " / ".join(parts)
+
+		texts = [match.group(1).rstrip() for match in matches]
+		shortest = min(len(text) for text in texts)
+		prefixLength = 0
+		while prefixLength < shortest and len(set(text[prefixLength] for text in texts)) == 1:
+			prefixLength += 1
+		# OLD let the shared end overlap the shared start (two equal texts
+		# came out twice); here it stops where the start ends.
+		suffixLength = 0
+		while suffixLength < shortest - prefixLength and len(set(text[-1 - suffixLength] for text in texts)) == 1:
+			suffixLength += 1
+
+		middles = []
+		for text in texts:
+			middle = text[prefixLength:len(text) - suffixLength].strip()
+			if middle and middle not in middles:
+				middles.append(middle)
+		words = (texts[0][:prefixLength].rstrip(), " & ".join(middles), texts[0][len(texts[0]) - suffixLength:].lstrip())
+		return ((" ".join(word for word in words if word).strip() or texts[0]) + " " + matches[0].group(2)).strip()
+	return fused
 
 def SplitDescriptionByPixelWidth(desc, maxWidthPx, fontName):
 	"""
@@ -473,6 +516,34 @@ class ItemToolTip(ToolTip):
 		item.APPLY_ANTI_CRITICAL_PCT : localeInfo.TOOLTIP_ANTI_CRITICAL_PCT,
 		item.APPLY_ANTI_PENETRATE_PCT : localeInfo.TOOLTIP_ANTI_PENETRATE_PCT,
 	}
+
+	# OLD's applies 92-108 (OLD localeInfo.py:583-607), under OLD's Python
+	# names, which the client exports from the foundation cut on (OLD
+	# PythonItemModule.cpp:913-918, 1272, 1322-1334). An apply the client does
+	# not export (an exe before the cut) keeps the UNKNOWN_TYPE line.
+	for _applyName, _affectText in (
+		("APPLY_BLEEDING_REDUCE", localeInfo.TOOLTIP_APPLY_BLEEDING_REDUCE),
+		("APPLY_BLEEDING_PCT", localeInfo.TOOLTIP_APPLY_BLEEDING_PCT),
+		("APPLY_ATTBONUS_WOLFMAN", localeInfo.TOOLTIP_APPLY_ATTBONUS_WOLFMAN),
+		("APPLY_RESIST_WOLFMAN", localeInfo.TOOLTIP_APPLY_RESIST_WOLFMAN),
+		("APPLY_RESIST_CLAW", localeInfo.TOOLTIP_APPLY_RESIST_CLAW),
+		("APPLY_ANTI_RESIST_MAGIC", localeInfo.TOOLTIP_ANTI_RESIST_MAGIC),
+		("APPLY_ATTBONUS_BOSS", localeInfo.TOOLTIP_APPLY_ATTBONUS_BOSS),
+		("APPLY_ATTBONUS_METIN_STONE", localeInfo.TOOLTIP_APPLY_ATTBONUS_METIN_STONE),
+		("APPLY_ENCHANT_ELECT", localeInfo.TOOLTIP_APPLY_ENCHANT_ELECT),
+		("APPLY_ENCHANT_FIRE", localeInfo.TOOLTIP_APPLY_ENCHANT_FIRE),
+		("APPLY_ENCHANT_ICE", localeInfo.TOOLTIP_APPLY_ENCHANT_ICE),
+		("APPLY_ENCHANT_WIND", localeInfo.TOOLTIP_APPLY_ENCHANT_WIND),
+		("APPLY_ENCHANT_EARTH", localeInfo.TOOLTIP_APPLY_ENCHANT_EARTH),
+		("APPLY_ENCHANT_DARK", localeInfo.TOOLTIP_APPLY_ENCHANT_DARK),
+		("APPLY_ATTBONUS_ELEMENTAL", localeInfo.TOOLTIP_APPLY_ATTBONUS_ELEMENTAL),
+		("APPLY_ANTI_HUMAN", localeInfo.TOOLTIP_APPLY_RESIST_HUMAN),
+		("APPLY_ATTBONUS_UNDEAD_DEVIL",
+		 FuseAffectTexts((localeInfo.TOOLTIP_APPLY_ATTBONUS_UNDEAD, localeInfo.TOOLTIP_APPLY_ATTBONUS_DEVIL))),
+	):
+		if isinstance(getattr(item, _applyName, None), int):
+			AFFECT_DICT[getattr(item, _applyName)] = _affectText
+	del _applyName, _affectText
 
 	ATTRIBUTE_NEED_WIDTH = {
 		23 : 230,

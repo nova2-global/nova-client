@@ -870,3 +870,19 @@ ITEM_GET	Ελήφθη: %s	SA
 ITEM_GET_FROM_PARTY	Ελήφθη: %s από %s	SAA
 ITEM_DELIVER_TO_PARTY	Παραδόθηκε: %s σε %s	SAA
 MAINTENANCE_TIME_LEFT	Συντήρηση σε:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Αντίσταση σε επιθέσεις αιμορραγίας + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Επίθεση αιμορραγίας + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Δύναμη ενάντια σε Λυκανούς + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Πιθανότητα άμυνας ενάντια σε Λυκανούς + %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Άμυνα νυχιών + %d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Δυνατό Ενάντια σε Αρχηγούς +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Δυνατό Ενάντια σε Πέτρες +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Δύναμη αστραπών +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Δύναμη φωτιάς +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Δύναμη πάγου +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Δύναμη ανέμου +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Δύναμη γης +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Δύναμη σκότους +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Δυνατό ενάντια σε Στοιχειακά +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Αντίσταση σε Ημιανθρώπους %d%%	SA

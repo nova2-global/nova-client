@@ -868,3 +868,19 @@ ITEM_GET	Erhalten: %s	SA
 ITEM_GET_FROM_PARTY	Erhalten: %s von %s	SAA
 ITEM_DELIVER_TO_PARTY	Geliefert: %s an %s	SAA
 MAINTENANCE_TIME_LEFT	Wartung in:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Widerstand gegen Blutungsangriff + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Blutungsangriff + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Stark gegen Lykaner + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Abwehrchance gegen Lykaner %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Krallenverteidigung + %d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Magiebruch +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Stark gegen Bosse +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Stark gegen Metins +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Kraft der Blitze +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Kraft des Feuers +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Kraft des Wasser +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Kraft des Windes +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Kraft der Erde +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Kraft der Dunkelheit +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Stark gegen Elemente +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Widerstand gegen Halbmenschen %d%%	SA

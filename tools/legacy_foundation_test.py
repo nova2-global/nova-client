@@ -660,5 +660,129 @@ class TooltipSockets(unittest.TestCase):
 		self.assertIn(locale.TOOLTIP_MAX_HP(1500), texts, "the attribute after the fourth socket")
 
 
+
+# OLD's applies 92-108 by OLD's Python names (OLD PythonItemModule.cpp), as
+# the client exports them from the cut on (stageB/contract.md: APPLY 92-108).
+OLD_APPLIES = {
+	"APPLY_BLEEDING_REDUCE": 92, "APPLY_BLEEDING_PCT": 93, "APPLY_ATTBONUS_WOLFMAN": 94, "APPLY_RESIST_WOLFMAN": 95,
+	"APPLY_RESIST_CLAW": 96, "APPLY_ANTI_RESIST_MAGIC": 97, "APPLY_ATTBONUS_BOSS": 98, "APPLY_ATTBONUS_METIN_STONE": 99,
+	"APPLY_ENCHANT_ELECT": 100, "APPLY_ENCHANT_FIRE": 101, "APPLY_ENCHANT_ICE": 102, "APPLY_ENCHANT_WIND": 103,
+	"APPLY_ENCHANT_EARTH": 104, "APPLY_ENCHANT_DARK": 105, "APPLY_ATTBONUS_ELEMENTAL": 106, "APPLY_ANTI_HUMAN": 107,
+	"APPLY_ATTBONUS_UNDEAD_DEVIL": 108,
+}
+APPLY_TEXTS = {
+	92: "TOOLTIP_APPLY_BLEEDING_REDUCE", 93: "TOOLTIP_APPLY_BLEEDING_PCT", 94: "TOOLTIP_APPLY_ATTBONUS_WOLFMAN",
+	95: "TOOLTIP_APPLY_RESIST_WOLFMAN", 96: "TOOLTIP_APPLY_RESIST_CLAW", 97: "TOOLTIP_ANTI_RESIST_MAGIC",
+	98: "TOOLTIP_APPLY_ATTBONUS_BOSS", 99: "TOOLTIP_APPLY_ATTBONUS_METIN_STONE", 100: "TOOLTIP_APPLY_ENCHANT_ELECT",
+	101: "TOOLTIP_APPLY_ENCHANT_FIRE", 102: "TOOLTIP_APPLY_ENCHANT_ICE", 103: "TOOLTIP_APPLY_ENCHANT_WIND",
+	104: "TOOLTIP_APPLY_ENCHANT_EARTH", 105: "TOOLTIP_APPLY_ENCHANT_DARK", 106: "TOOLTIP_APPLY_ATTBONUS_ELEMENTAL",
+	107: "TOOLTIP_APPLY_RESIST_HUMAN",
+}
+
+
+def read_locale(locale, name="locale_game.txt"):
+	"""{key: (text, type)} of a locale file."""
+	keys = {}
+	for line in read(os.path.join(LOCALES, locale, name)).split("\n"):
+		tokens = line.split("\t")
+		if len(tokens) >= 2 and tokens[0]:
+			keys[tokens[0]] = (tokens[1], tokens[2].strip() if len(tokens) > 2 else "")
+	return keys
+
+
+def locales():
+	return sorted(name for name in os.listdir(LOCALES) if os.path.isfile(os.path.join(LOCALES, name, "locale_game.txt")))
+
+
+class TooltipApplies(unittest.TestCase):
+	"""OLD's applies 92-108 in the legacy tooltip's affect table (NOVA-98)
+	and their texts in every locale."""
+
+	SWORD = TooltipSockets.SWORD
+
+	def world(self, names):
+		corpus_tool, world = tooltip_world({10: self.SWORD})
+		item = world.game.modules["item"]
+		for name, value in names.items():
+			setattr(item, name, value)
+		with quiet():
+			world.game.load("uiToolTip", "uitooltip.py")
+		return corpus_tool, world
+
+	def test_every_apply_from_92_to_107_shows_olds_text(self):
+		corpus_tool, world = self.world(OLD_APPLIES)
+		locale = world.game.modules["localeInfo"]
+		with world:
+			table = world.m("uiToolTip").ItemToolTip.AFFECT_DICT
+		for apply, key in APPLY_TEXTS.items():
+			self.assertEqual(getattr(locale, key)(12), table[apply](12), key)
+
+	def test_a_name_that_is_no_number_adds_no_apply(self):
+		"""The stand-in item module answers a function for a name it does not
+		define, as no client does: only an int constant makes an entry."""
+		corpus_tool, world = self.world({})
+		with world:
+			table = world.m("uiToolTip").ItemToolTip.AFFECT_DICT
+		self.assertEqual([], [key for key in table if not isinstance(key, int)])
+		self.assertNotIn(98, table)
+		self.assertNotIn(108, table)
+
+	def test_an_apply_the_client_does_not_export_keeps_the_unknown_line(self):
+		corpus_tool, world = self.world({})
+		world.game.modules["item"].lack(*OLD_APPLIES)
+		with quiet():
+			world.game.load("uiToolTip", "uitooltip.py")
+		sword = dict(self.SWORD, applies=[[98, 10]])
+		world.data.items[10] = sword
+		texts, error = tooltip_texts(corpus_tool, world, {"context": "AddItemData", "vnum": 10})
+		self.assertIsNone(error)
+		self.assertIn("UNKNOWN_TYPE[98] 10", texts)
+
+	def test_a_tooltip_shows_the_new_applies_and_the_fused_undead_and_devil(self):
+		corpus_tool, world = self.world(OLD_APPLIES)
+		world.data.items[10] = dict(self.SWORD, applies=[[98, 10], [108, 15], [93, 4]])
+		texts, error = tooltip_texts(corpus_tool, world, {"context": "AddItemData", "vnum": 10})
+		self.assertIsNone(error)
+		self.assertIn("Strong against Bosses +10%", texts)
+		self.assertIn("Strong against Undead & Devils +15%", texts)
+		self.assertIn("Chance to bleed +4%", texts)
+
+	def test_the_fused_text_follows_olds_rule(self):
+		corpus_tool, world = tooltip_world({10: self.SWORD})
+		fuse = world.m("uiToolTip").FuseAffectTexts
+		fmt = lambda text: (lambda value: text % value)
+		self.assertEqual("Stark gegen Untote & Teufel +7%",
+		                 fuse((fmt("Stark gegen Untote +%d%%"), fmt("Stark gegen Teufel +%d%%")))(7))
+		self.assertEqual("Ölülere & Şeytanlara karşı güçlü +%7",
+		                 fuse((fmt("Ölülere karşı güçlü +%%%d"), fmt("Şeytanlara karşı güçlü +%%%d")))(7))
+		# Different values, or a line without one: the lines joined.
+		self.assertEqual("A +1 / B +2", fuse((lambda v: "A +1", lambda v: "B +2"))(0))
+		self.assertEqual("A / B", fuse((lambda v: "A", lambda v: "B"))(0))
+		# One line, or none.
+		self.assertEqual("A +3", fuse((lambda v: "A +%d" % v, lambda v: ""))(3))
+		self.assertEqual("", fuse((lambda v: "",))(3))
+		# Equal texts come out once (OLD doubled them).
+		self.assertEqual("Same +5", fuse((fmt("Same +%d"), fmt("Same +%d")))(5))
+		# Two bare values: the value alone, as OLD's strip gives it.
+		self.assertEqual("+5", fuse((fmt("+%d"), fmt("+%d")))(5))
+
+	def test_every_locale_has_every_new_apply_text_formatting_one_value(self):
+		for locale in locales():
+			keys = read_locale(locale)
+			for key in APPLY_TEXTS.values():
+				with self.subTest(locale=locale, key=key):
+					self.assertIn(key, keys)
+					text, kind = keys[key]
+					self.assertEqual("SA", kind)
+					self.assertIn("10", text % 10)
+					# OLD's it and pt typed the type into the text ("+%d%% SA").
+					self.assertFalse(text.endswith(" SA"))
+		self.assertEqual("Strong against Bosses +%d%%", read_locale("en")["TOOLTIP_APPLY_ATTBONUS_BOSS"][0])
+		self.assertEqual("Stark gegen Bosse +%d%%", read_locale("de")["TOOLTIP_APPLY_ATTBONUS_BOSS"][0], "OLD's de")
+		# OLD has no br: Brazil takes OLD's Portuguese.
+		self.assertEqual("Forte contra Bosses +%d%%", read_locale("br")["TOOLTIP_APPLY_ATTBONUS_BOSS"][0])
+		self.assertEqual("Resistenza Anti Magic +%d%%", read_locale("it")["TOOLTIP_ANTI_RESIST_MAGIC"][0])
+
+
 if __name__ == "__main__":
 	unittest.main()

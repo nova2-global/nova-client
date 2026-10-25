@@ -870,3 +870,19 @@ ITEM_GET	Ontvangen: %s	SA
 ITEM_GET_FROM_PARTY	Ontvangen: %s van %s	SAA
 ITEM_DELIVER_TO_PARTY	Afgeleverd: %s aan %s	SAA
 MAINTENANCE_TIME_LEFT	Onderhoud over:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Weerstand tegen Bloedingsaanvallen + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Bloedingsaanval + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Sterk tegen Lycanen + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Verdedigingskans tegen Lycaan Aanvallen + %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Klauwverdediging +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magie Weerstand +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Sterk tegen Bazen +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Sterk tegen Metins +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Kracht van Bliksem +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Kracht van Vuur +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Kracht van IJs +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Kracht van de Wind +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Kracht van Aarde +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Kracht van Duisternis +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Sterk tegen Elementairen +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Weerstand tegen Halfmensen %d%%	SA

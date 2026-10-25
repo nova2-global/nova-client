@@ -870,3 +870,19 @@ ITEM_GET	Reçu: %s	SA
 ITEM_GET_FROM_PARTY	Reçu: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Livré: %s à %s	SAA
 MAINTENANCE_TIME_LEFT	Maintenance dans:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Résistance contre les attaques saignantes + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Attaque saignante + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Force contre les Lycans + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Chance de parer les Lycans %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Défense contre les griffes +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Fort contre les Patrons +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Fort contre les Pierres +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Pouvoir de la foudre +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Pouvoir du feu +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Pouvoir de la glace +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Pouvoir du vent +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Pouvoir de la terre +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Pouvoir des ténèbres +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Fort contre les demi-humains %d %%	SA

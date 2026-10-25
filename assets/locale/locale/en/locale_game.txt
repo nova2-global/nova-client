@@ -870,3 +870,19 @@ ITEM_GET	Received: %s	SA
 ITEM_GET_FROM_PARTY	Received: %s from %s	SAA
 ITEM_DELIVER_TO_PARTY	Delivered: %s to %s	SAA
 MAINTENANCE_TIME_LEFT	Maintenance in:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Bleeding Resistance + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Chance to bleed +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Strong against Lycan +%d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Lycan Resistance %s%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Claw Resistance %d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Strong against Bosses +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Strong against Stones +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Strong against Lightning +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Strong against Fire +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Strong against Water +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Strong against Wind +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Strong against Earth +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Strong against Dark +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Resistance to Half Humans %d%%	SA

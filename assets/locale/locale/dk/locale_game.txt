@@ -870,3 +870,19 @@ ITEM_GET	Modtaget: %s	SA
 ITEM_GET_FROM_PARTY	Modtaget: %s fra %s	SAA
 ITEM_DELIVER_TO_PARTY	Leveret: %s til %s	SAA
 MAINTENANCE_TIME_LEFT	Vedligeholdelse om:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Modstand imod blødnings angreb + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Blødnings angreb + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Stærk imod Lycans + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Forsvars chance mod Lycan angreb %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Klo Forsvar +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Stærk Mod Bosser +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Stærk Mod Sten +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Lynets Kraft +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Ildens Kraft +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Vand Kraft +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Vindens Kraft +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Jordens Kraft +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Mørkets Kraft +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Modstand imod Halv Mennesker %d%%	SA

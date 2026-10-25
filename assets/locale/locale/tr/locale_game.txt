@@ -870,3 +870,19 @@ ITEM_GET	Alındı: %s	SA
 ITEM_GET_FROM_PARTY	Alındı: %s şundan: %s	SAA
 ITEM_DELIVER_TO_PARTY	Teslim edildi: %s şuna: %s	SAA
 MAINTENANCE_TIME_LEFT	Bakıma kalan süre:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Kanama saldırılarında direnç +%%%d	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Kanama Saldırısı +%%%d	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Lycanlar'a karşı güçlü + %%%d	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Lycanlar'a karşı savunma şansı +%%%d	SA
+TOOLTIP_APPLY_RESIST_CLAW	Pençe savunması +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Patronlara Karsi Güçlü +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Metinlere Karsi Güçlü +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Şimşeklerin gücü +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Ateşin gücü +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Buzun gücü +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Rüzgarın gücü +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Toprağın gücü +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Karanlığın gücü +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Elementlere Karşı Güçlü +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Yarı insanlara karşı direnç %d%%	SA

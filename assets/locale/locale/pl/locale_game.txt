@@ -870,3 +870,19 @@ ITEM_GET	Otrzymano: %s	SA
 ITEM_GET_FROM_PARTY	Otrzymano: %s od %s	SAA
 ITEM_DELIVER_TO_PARTY	Dostarczono: %s do %s	SAA
 MAINTENANCE_TIME_LEFT	Przerwa techniczna za:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Odporność na Atak Krwawienia + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Atak krwawienia + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Silny przeciwko Likanom + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Odporność na Atak Likanów + %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Odporność na Szpony +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Antymagia +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Silny przeciwko Bossom +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Silny przeciwko Kamieniom +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Siła Błyskawic +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Siła Ognia +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Siła Lodu +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Siła Wiatru +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Siła Ziemi +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Siła Mroku +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Silny przeciwko Żywiołakom +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Odporność na Ludzi %d%%	SA

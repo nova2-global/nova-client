@@ -870,3 +870,19 @@ ITEM_GET	Kapott: %s	SA
 ITEM_GET_FROM_PARTY	Kapott: %s tőle: %s	SAA
 ITEM_DELIVER_TO_PARTY	Átadva: %s neki: %s	SAA
 MAINTENANCE_TIME_LEFT	Karbantartásig:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Vérző támadás elleni ellenállás + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Vérző támadás + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Vérfarkasok elleni erő + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Védekezési esély vérfarkas-támadás ellen %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Karom védelem +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Varázs ellenállás +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Főnökökkel szembeni erő +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Metinekkel szembeni erő +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Villám ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Tűz ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Jég ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Szél ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Föld ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Sötétség ereje +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Félemberek elleni védelem %d%%	SA

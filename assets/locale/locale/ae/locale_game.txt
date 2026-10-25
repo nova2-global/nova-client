@@ -962,3 +962,19 @@ ITEM_GET	تم الحصول على: %s	SA
 ITEM_GET_FROM_PARTY	تم الحصول على: %s من %s	SAA
 ITEM_DELIVER_TO_PARTY	تم التسليم: %s إلى %s	SAA
 MAINTENANCE_TIME_LEFT	الصيانة خلال:
+TOOLTIP_APPLY_BLEEDING_REDUCE	مقاومة ضد الهجوم المُنزف + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	هجوم مُنزف + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	قوي ضد اللّيكانر + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	فرص الدفاع ضد هجوم اللّيكانر %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	دفاع مخلبي +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Strong against Bosses +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Strong against Stones +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	قوة البرق +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	قوة النار +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	قوة الجليد +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	قوة الرياح +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	قوة الأرض +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	قوة الظلام +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	مقاومة نصف البشر %d%%	SA

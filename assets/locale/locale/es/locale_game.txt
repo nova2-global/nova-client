@@ -870,3 +870,19 @@ ITEM_GET	Recibido: %s	SA
 ITEM_GET_FROM_PARTY	Recibido: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Entregado: %s a %s	SAA
 MAINTENANCE_TIME_LEFT	Mantenimiento en:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Resistencia contra ataque de sangrado + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Ataque de sangrado + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Fuerza contra Lícanos + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Probabilidad de defensa contra Lícanos %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Defensa contra garra +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Strong against Bosses +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Strong against Stones +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Poder del relámpago +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Poder del fuego +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Poder del hielo +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Poder del viento +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Poder de la tierra +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Poder de la oscuridad +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Fuerte contra Elementales +% d %%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Resistencia contra mediohumanos %d%%	SA

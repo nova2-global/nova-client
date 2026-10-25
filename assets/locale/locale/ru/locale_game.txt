@@ -870,3 +870,19 @@ ITEM_GET	Получено: %s	SA
 ITEM_GET_FROM_PARTY	Получено: %s от %s	SAA
 ITEM_DELIVER_TO_PARTY	Доставлено: %s для %s	SAA
 MAINTENANCE_TIME_LEFT	Технические работы через:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Сопротивление кровотечению + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Вызвать кровотечение + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Сила против ликана + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Шанс отразить атаку ликана %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Защита от когтей + %d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Сопротивление магии +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Сила против Боссов +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Сила против Метинов +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Сила молний +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Сила огня +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Сила льда +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Сила ветра +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Сила земли +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Сила тьмы +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Сильный против элементалов +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Сопротивляемость полулюдям%d%%	SA

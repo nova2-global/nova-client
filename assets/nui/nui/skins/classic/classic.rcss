@@ -872,42 +872,52 @@
 .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w2 > .nui-slot__number { right: -28dp; }
 .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -60dp; }
 
+/* The legacy slider (ui.SliderBar): the sliderbar art, 175 x 12, as the
+   track and its 53 x 12 cursor as the thumb, the same art at rest, over and
+   down, and no fill; the cursor travels 175 - 53 = 122dp. Legacy sizes the
+   slider to its art, so the classic slider is 175dp wide wherever it is; a
+   disabled one hides its cursor (ui.SliderBar.Disable). The system options
+   and guild building overlays place theirs at the legacy offsets. */
+.skin-classic .nui-slider
+{
+	width: 175dp;
+	height: 12dp;
+}
+.skin-classic .nui-slider:disabled
+{
+	opacity: 1;
+}
 .skin-classic .nui-slider slidertrack
 {
-	margin-top: 7dp;
-	height: 4dp;
-	border-radius: 0;
-	background-color: var(--classic-slot-fill);
-	border-width: 1dp;
-	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
-}
-/* RmlUi places the progress at the track's border edge plus its own margin,
-   with the track's content height: the margin puts it inside the borders. */
-.skin-classic .nui-slider sliderprogress
-{
-	margin: 1dp 0 0 1dp;
-	border-radius: 0;
-	background-color: var(--accent);
-}
-.skin-classic .nui-slider sliderbar
-{
-	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
-	width: 12dp;
-	height: 16dp;
+	margin-top: 0;
+	height: 12dp;
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar.sub");
 }
-.skin-classic .nui-slider sliderbar:hover, .skin-classic .nui-slider.is-hover sliderbar,
-.skin-classic .nui-slider:focus-visible sliderbar, .skin-classic .nui-slider.is-focus sliderbar
+.skin-classic .nui-slider sliderprogress
 {
-	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+	margin: 0;
+	border-radius: 0;
 	background-color: transparent;
 }
+.skin-classic .nui-slider sliderbar,
+.skin-classic .nui-slider sliderbar:hover, .skin-classic .nui-slider.is-hover sliderbar,
+.skin-classic .nui-slider:focus-visible sliderbar, .skin-classic .nui-slider.is-focus sliderbar,
 .skin-classic .nui-slider sliderbar:active, .skin-classic .nui-slider.is-active sliderbar
 {
-	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+	margin-top: 0;
+	width: 53dp;
+	height: 12dp;
+	border-width: 0;
+	border-radius: 0;
 	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar_cursor.sub");
+}
+.skin-classic .nui-slider:disabled sliderbar
+{
+	visibility: hidden;
 }
 
 /* --- Tagged text, views and resize handles (Wave 2b) ------------------------------ */

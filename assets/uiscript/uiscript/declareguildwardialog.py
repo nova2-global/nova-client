@@ -1,4 +1,5 @@
 import uiScriptLocale
+import guild
 
 window = {
 	"name" : "InputDialog",
@@ -58,7 +59,9 @@ window = {
 							"width" : 90,
 							"height" : 18,
 
-							"input_limit" : 12,
+							# The enemy guild's name: up to 24 characters since the foundation
+							# cut (the client's guild.GUILD_NAME_MAX_LEN, as AskGuildName).
+							"input_limit" : guild.GUILD_NAME_MAX_LEN,
 						},
 					),
 				},

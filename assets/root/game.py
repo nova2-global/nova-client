@@ -712,6 +712,9 @@ class GameWindow(ui.ScriptWindow):
 
 		guildNameBoard = uiCommon.InputDialog()
 		guildNameBoard.SetTitle(localeInfo.GUILD_NAME)
+		# Guild names of up to 24 characters since the foundation cut (the
+		# client's guild.GUILD_NAME_MAX_LEN); the dialog's own limit is 12.
+		guildNameBoard.SetMaxLength(guild.GUILD_NAME_MAX_LEN)
 		guildNameBoard.SetAcceptEvent(ui.__mem_func__(self.ConfirmGuildName))
 		guildNameBoard.SetCancelEvent(ui.__mem_func__(self.CancelGuildName))
 		guildNameBoard.Open()

@@ -967,6 +967,72 @@ class SageGrade(unittest.TestCase):
 
 
 
+class GuildNames(unittest.TestCase):
+	"""Guild names of 24 characters (NOVA-97): the guild name dialog takes
+	the client's guild.GUILD_NAME_MAX_LEN, where the shared input dialog's
+	uiscript stops at 12 (uiscript/inputdialog.py; OLD's at 21, its server at
+	24)."""
+
+	class Dialog(object):
+		def __init__(self):
+			self.calls = []
+
+		def __getattr__(self, name):
+			return lambda *args: self.calls.append((name,) + args)
+
+	def ask(self, guild_name_max_len):
+		source = support.source_of("game.py", ("AskGuildName",), inside="GameWindow")
+		body = "\n".join("\t" + line if line else line for line in source.split("\n"))
+		dialogs = []
+
+		def make():
+			dialogs.append(self.Dialog())
+			return dialogs[-1]
+		namespace = {
+			"uiCommon": types.SimpleNamespace(InputDialog=make),
+			"localeInfo": types.SimpleNamespace(GUILD_NAME="Guild name"),
+			"guild": types.SimpleNamespace(GUILD_NAME_MAX_LEN=guild_name_max_len),
+			"ui": types.SimpleNamespace(__mem_func__=lambda method: method),
+		}
+		exec(compile("class GameWindow(object):\n%s\n\tConfirmGuildName = CancelGuildName = None\n" % body,
+		             "game.py", "exec"), namespace)
+		window = namespace["GameWindow"]()
+		window.AskGuildName()
+		self.assertIs(dialogs[0], window.guildNameBoard)
+		return dialogs[0].calls
+
+	def test_the_guild_name_dialog_takes_the_guild_name_length(self):
+		calls = self.ask(24)
+		self.assertIn(("SetMaxLength", 24), calls)
+		self.assertLess(calls.index(("SetMaxLength", 24)), calls.index(("Open",)), "before it opens")
+		self.assertEqual([("SetMaxLength", 12)], [call for call in self.ask(12) if call[0] == "SetMaxLength"])
+
+	def test_the_shared_input_dialog_keeps_its_twelve(self):
+		world = LegacyWorld()
+		with world:
+			window = read_uiscript(os.path.join(UISCRIPT, "inputdialog.py"))["window"]
+		self.assertEqual(12, child(window, "InputValue")["input_limit"])
+
+	def test_the_war_declaration_takes_the_guild_name_length(self):
+		"""The legacy declare-war dialog (the guild window's declare button
+		with NovaUI's guild-war-dialogs off) is where the enemy guild's name
+		is typed: its uiscript stopped at 12, so no war could be declared on
+		a guild named past 12 characters (OLD's dialog takes 32)."""
+		import nui_w4_world as w4
+		for length in (24, 30):
+			with self.subTest(length=length):
+				world = w4.World(False, social=True)
+				world.game.modules["guild"].GUILD_NAME_MAX_LEN = length
+				dialog = world.make("guild-war-dialogs", "uiGuild", "DeclareGuildWarDialog",
+				                    "nui_guild_war_declare.DeclareGuildWarDialog")
+				self.assertEqual("DeclareGuildWarDialog", type(dialog).__name__)
+				self.assertEqual(length, dialog.inputValue.max)
+				with world:
+					window = read_uiscript(os.path.join(UISCRIPT, "declareguildwardialog.py"))["window"]
+				self.assertEqual(length, child(window, "InputValue")["input_limit"])
+
+
+
 class FiveCharacters(unittest.TestCase):
 	"""Five characters per account (NOVA-97): the select window's fifth place
 	on the turntable, its hotkey and its instance (introselect.py, which

@@ -369,3 +369,4 @@ BLOCK_PLAYER	Játékos tiltás
 UNBLOCK_PLAYER	Játékos feloldás
 GUILD_WAR_ENEMY_NUMBER	Max. tagok
 GUILD_WAR_MAX_SCORE	Végeredmény
+SYSTEM_MOVE_CHANNEL	Csatorna váltás

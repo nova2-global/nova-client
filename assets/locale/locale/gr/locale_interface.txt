@@ -370,3 +370,4 @@ BLOCK_PLAYER	Αποκλεισμός Παίκτη
 UNBLOCK_PLAYER	 Επαναφορά Αποκλεισμού Παίκτη
 GUILD_WAR_ENEMY_NUMBER	Μέγιστα μέλη
 GUILD_WAR_MAX_SCORE	Τελικό σκορ
+SYSTEM_MOVE_CHANNEL	Αλλαγή Καναλίου

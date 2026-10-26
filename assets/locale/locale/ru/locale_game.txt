@@ -897,3 +897,7 @@ BLOCKED_PLAYERS_TITLE	Заблокированные игроки
 WHISPER_ERROR_BLOCK_YOU	Вы не можете написать %s потому что он вас заблокировал.
 GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
 GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	Каналы
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Отмена
+CHANNEL	Канал

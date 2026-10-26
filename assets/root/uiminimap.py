@@ -380,7 +380,14 @@ class MiniMap(ui.ScriptWindow):
 			self.observerCount.Hide()
 
 		self.observerCount.SetText(localeInfo.MINIMAP_OBSERVER_COUNT % observerCount)
-		
+
+	# The server line again from net.GetServerInfo(): game.py calls it when a
+	# channel change renamed the channel there (NOVA-49). Before the first
+	# Show the line is not loaded yet, and that Show reads the text itself.
+	def RefreshServerInfo(self):
+		if self.serverInfo:
+			self.serverInfo.SetText(net.GetServerInfo())
+
 	def OnUpdate(self):
 		(x, y, z) = player.GetMainCharacterPosition()
 		miniMap.Update(x, y)

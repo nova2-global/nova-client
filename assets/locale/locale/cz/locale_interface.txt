@@ -370,3 +370,4 @@ BLOCK_PLAYER	Zablokovat Hráče
 UNBLOCK_PLAYER	Odblokovat Hráče
 GUILD_WAR_ENEMY_NUMBER	Max. Členů
 GUILD_WAR_MAX_SCORE	Konečné skore
+SYSTEM_MOVE_CHANNEL	Změnit kanál

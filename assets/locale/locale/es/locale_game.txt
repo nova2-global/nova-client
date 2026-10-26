@@ -897,3 +897,7 @@ BLOCKED_PLAYERS_TITLE	Jugadores bloqueados
 WHISPER_ERROR_BLOCK_YOU	You can't write to %s because they blocked you.
 GUILD_WAR_MAX_MEMBERS	Límite de jugadores de tu gremio: %d.
 GUILD_WAR_MAX_SCORE	La guerra termina con %d muertes.
+MOVE_CHANNEL_TITLE	Selección de canal
+MOVE_CHANNEL_SELECT	Aceptar
+MOVE_CHANNEL_CANCEL	Cancelar
+CHANNEL	Canal

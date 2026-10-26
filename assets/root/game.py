@@ -74,9 +74,14 @@ class GameWindow(ui.ScriptWindow):
 		self.quickSlotPageIndex = 0
 		self.lastPKModeSendedTime = 0
 		self.pressNumber = None
+		# The change-channel quick switch (NOVA-49): while X is held, 1-4 ask
+		# for that channel instead of using a quickslot.
+		self.channelSwitchMode = False
 		# Whisper details (NOVA-48): when each open whisper dialog's target was
 		# last asked about.
 		self.whisperDetailsAskTime = {}
+		# The channel the server info text was last checked against (NOVA-49).
+		self.shownChannel = 0
 
 		self.guildWarQuestionDialog = None
 		self.interface = None
@@ -383,6 +388,7 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_L]			= lambda: self.interface.ToggleChatLogWindow()
 		onPressKeyDict[app.DIK_COMMA]		= lambda: self.ShowConsole()		# "`" key
 		onPressKeyDict[app.DIK_LSHIFT]		= lambda: self.__SetQuickPageMode()
+		onPressKeyDict[app.DIK_X]			= lambda: self.__SetChannelSwitchMode(True)
 
 		onPressKeyDict[app.DIK_J]			= lambda: self.__PressJKey()
 		onPressKeyDict[app.DIK_H]			= lambda: self.__PressHKey()
@@ -417,6 +423,7 @@ class GameWindow(ui.ScriptWindow):
 		onClickKeyDict[app.DIK_LALT] = lambda: self.HideName()
 		onClickKeyDict[app.DIK_LCONTROL] = lambda: self.HideMouseImage()
 		onClickKeyDict[app.DIK_LSHIFT] = lambda: self.__SetQuickSlotMode()
+		onClickKeyDict[app.DIK_X] = lambda: self.__SetChannelSwitchMode(False)
 
 		#if constInfo.PVPMODE_ACCELKEY_ENABLE:
 		#	onClickKeyDict[app.DIK_B] = lambda: self.ChangePKMode()
@@ -447,6 +454,13 @@ class GameWindow(ui.ScriptWindow):
 					chrmgr.SetEmoticon(-1,int(num)-1)
 					net.SendEmoticon(int(num)-1)
 		else:
+			# Hold X and press 1-4 to move to that channel (NOVA-49, OLD's
+			# default quick switch, game.py:1881-1890); the server checks the
+			# move.
+			if self.channelSwitchMode:
+				if num >= 1 and num <= 4:
+					net.SendChatPacket("/ch %d" % num)
+				return
 			if num >= 1 and num <= 4:
 				self.pressNumber(num-1)
 
@@ -516,6 +530,12 @@ class GameWindow(ui.ScriptWindow):
 
 	def __SetQuickPageMode(self):
 		self.pressNumber=ui.__mem_func__(self.__SelectQuickPage)
+
+	# X pressed (True) or released (False): the channel quick switch (NOVA-49).
+	# OLD's X also jumped and flew (OnXIn); that is not ported. NEW has no
+	# key-binding table, so the key is fixed (OLD's rebindable slot 77).
+	def __SetChannelSwitchMode(self, isOn):
+		self.channelSwitchMode = isOn
 
 	def __PressQuickSlot(self, localSlotIndex):
 		if app.IsRTL():
@@ -1502,6 +1522,7 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.BUILD_OnUpdate()
 
 		self.__AskWhisperDetails()
+		self.__RefreshChannelInfo()
 
 	## Whisper details (NOVA-48): every open whisper dialog with a target asks
 	## at once and then every two seconds whether its target is online. OLD
@@ -1535,6 +1556,25 @@ class GameWindow(ui.ScriptWindow):
 		if not dialog:
 			return
 		dialog.SetTargetDetails(online, language)
+
+	## The channel shown (NOVA-49): intrologin names the login channel in the
+	## server info text; after a channel change the new core's GC::CHANNEL
+	## (net.GetChannelNum) arrives after this window opened, so the text is
+	## checked here and set again when it names another channel. OLD did this
+	## through its SetChannel quest command (game.py:3013, 3300-3310).
+	def __RefreshChannelInfo(self):
+		channel = net.GetChannelNum()
+		if channel <= 0 or channel == self.shownChannel:
+			return
+		self.shownChannel = channel
+
+		text = constInfo.GET_CHANNEL_SERVER_INFO(channel)
+		if not text or text == net.GetServerInfo():
+			return
+		net.SetServerInfo(text)
+		refreshServerInfo = getattr(self.interface.wndMiniMap, "RefreshServerInfo", None)
+		if refreshServerInfo:
+			refreshServerInfo()
 
 	def UpdateDebugInfo(self):
 		#

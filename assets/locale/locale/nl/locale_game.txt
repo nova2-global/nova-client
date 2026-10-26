@@ -897,3 +897,7 @@ BLOCKED_PLAYERS_TITLE	Geblokkeerde Spelers
 WHISPER_ERROR_BLOCK_YOU	Je kan niet schrijven naar %s omdat hij jou heeft geblokkeerd.
 GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
 GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	Kanalen
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Annuleren
+CHANNEL	Kanaal

@@ -897,3 +897,7 @@ BLOCKED_PLAYERS_TITLE	Zablokowani gracze
 WHISPER_ERROR_BLOCK_YOU	Nie możesz pisać do %s, ponieważ zablokował(a) Cię.
 GUILD_WAR_MAX_MEMBERS	Limit graczy z twojej gildii: %d.
 GUILD_WAR_MAX_SCORE	Wojna zakończy się przy %d zabójstwach.
+MOVE_CHANNEL_TITLE	Kanały
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Anuluj
+CHANNEL	Kanał

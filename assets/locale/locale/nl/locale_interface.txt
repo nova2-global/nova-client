@@ -369,3 +369,4 @@ BLOCK_PLAYER	Blokkeer Speler
 UNBLOCK_PLAYER	Deblokkeer Speler
 GUILD_WAR_ENEMY_NUMBER	Max. Leden
 GUILD_WAR_MAX_SCORE	Eindscore
+SYSTEM_MOVE_CHANNEL	Kanaal veranderen

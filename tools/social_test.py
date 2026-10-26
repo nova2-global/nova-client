@@ -19,6 +19,8 @@ legacy classes), and driven as the C++ handlers drive them:
 - the guild war's member cap and end score (NOVA-90): the declare dialog's
   two inputs and the commands it sends (4 and 2 arguments), the accept
   dialog's two lines, game.py's 4-argument callback;
+- change channel (NOVA-49): the system menu's button, MoveChannelDialog,
+  the X + 1-4 quick switch, the channel in the server info text;
 - every new locale key in all 17 locales, OLD's text where OLD's locale has
   it and English otherwise."""
 import os
@@ -32,6 +34,8 @@ import nui_hud_test as hud  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
 import nui_whisper_test as whisper_test  # noqa: E402
 import nui_guild_dialogs_test as guild_test  # noqa: E402
+import nui_sys_test as sys_test  # noqa: E402
+import nui_world_test as world_test  # noqa: E402
 
 ROOT = support.ROOT
 ASSETS = os.path.normpath(os.path.join(ROOT, ".."))
@@ -53,6 +57,9 @@ BLOCK_KEYS = {"game": {"TARGET_BUTTON_BLOCK": "Block", "TARGET_BUTTON_UNBLOCK": 
 WAR_KEYS = {"game": {"GUILD_WAR_MAX_MEMBERS": "Players Limit from your guild: %d.",
                      "GUILD_WAR_MAX_SCORE": "The war will end at %d Kills."},
             "interface": {"GUILD_WAR_ENEMY_NUMBER": "Max. Members", "GUILD_WAR_MAX_SCORE": "End Score"}}
+CHANNEL_KEYS = {"game": {"MOVE_CHANNEL_TITLE": "Channels", "MOVE_CHANNEL_SELECT": "OK", "MOVE_CHANNEL_CANCEL": "Cancel",
+                         "CHANNEL": "Channel"},
+                "interface": {"SYSTEM_MOVE_CHANNEL": "Change Channel"}}
 # OLD texts not taken, English instead: ro's GUILD_WAR_MAX_SCORE "Scorul
 # final" has no %d, and OLD's accept dialog formatted a score into it (a
 # TypeError).
@@ -572,7 +579,7 @@ class LanguageFlags(unittest.TestCase):
 
 
 class Locales(unittest.TestCase):
-    KEYS = (ROSTER_KEYS, BLOCK_KEYS, WAR_KEYS)
+    KEYS = (ROSTER_KEYS, BLOCK_KEYS, WAR_KEYS, CHANNEL_KEYS)
 
     def test_every_locale_has_every_new_key_olds_text_or_english(self):
         locales = [name for name in sorted(os.listdir(LOCALES))
@@ -762,9 +769,58 @@ class GameWhisperDetails(unittest.TestCase):
         window.BINARY_WhisperDetails("Pest", 0, "")
         self.assertEqual(seen, [(1, "en")])
 
-    def test_on_update_runs_the_poll(self):
-        source = support.source_of("game.py", ("OnUpdate",), inside="GameWindow")
-        self.assertIn("self.__AskWhisperDetails()", source)
+    def test_on_update_runs_the_poll_and_the_channel_check(self):
+        log = []
+        net = support.Recording("net", log)
+        app = support.Recording("app", log)
+        app.__dict__["_answers"]["GetTime"] = 10.0
+        net.__dict__["_answers"]["GetChannelNum"] = 3
+        net.__dict__["_answers"]["GetServerInfo"] = "Metin2, CH1"
+        constInfo = types.SimpleNamespace(GET_CHANNEL_SERVER_INFO=lambda channel: "Metin2, CH%d" % channel)
+        cls = compiled("game.py", "GameWindow", ("OnUpdate",) + self.NAMES + ("__RefreshChannelInfo",),
+                       {"net": net, "app": app, "constInfo": constInfo})
+        window = cls()
+        window.mapNameShower = types.SimpleNamespace(IsShow=lambda: False)
+        window.isShowDebugInfo = False
+        window.enableXMasBoom = False
+        window.whisperDetailsAskTime = {}
+        window.shownChannel = 0
+        window.interface = types.SimpleNamespace(whisperDialogDict={"Pest": object()},
+                                                 BUILD_OnUpdate=lambda: log.append(("BUILD_OnUpdate", ())),
+                                                 wndMiniMap=types.SimpleNamespace())
+        window.OnUpdate()
+        calls = [entry for entry in log if entry[0] in ("BUILD_OnUpdate", "net.SendWhisperDetailsPacket",
+                                                        "net.SetServerInfo")]
+        self.assertEqual(calls, [("BUILD_OnUpdate", ()), ("net.SendWhisperDetailsPacket", ("Pest",)),
+                                 ("net.SetServerInfo", ("Metin2, CH3",))])
+
+
+class GameWindowState(unittest.TestCase):
+    def test_a_new_game_window_is_out_of_channel_mode_has_asked_nothing_and_shows_no_channel_yet(self):
+        from unittest import mock
+        names = ("interfaceModule", "uiPhaseCurtain", "nui_windows", "uiTarget", "consoleModule", "wndMgr",
+                 "uiMapNameShower", "uiAffectShower", "uiPlayerGauge", "uiMaintenance", "net", "player")
+        namespace = dict((name, mock.MagicMock()) for name in names)
+        namespace["ui"] = types.SimpleNamespace(ScriptWindow=mock.MagicMock(), __mem_func__=lambda function: function)
+        cls = compiled("game.py", "GameWindow", ("__init__",), namespace)
+
+        class Window(cls):
+            def SetWindowName(self, name):
+                pass
+
+            def _GameWindow__SetQuickSlotMode(self):
+                pass
+
+            def _GameWindow__ServerCommand_Build(self):
+                pass
+
+            def _GameWindow__ProcessPreservedServerCommand(self):
+                pass
+
+        window = Window(stream=None)
+        self.assertIs(window.channelSwitchMode, False)
+        self.assertEqual(window.whisperDetailsAskTime, {})
+        self.assertEqual(window.shownChannel, 0)
 
 
 # --- the guild war's member cap and end score (NOVA-90) ---------------------------------------------
@@ -950,6 +1006,371 @@ class GameWarDeclare(unittest.TestCase):
         window.BINARY_GuildWar_OnRecvDeclare(901, 2, 64, 250)
         self.assertEqual(self.opened, [])
 
+
+# --- change channel (NOVA-49) ----------------------------------------------------------------------
+
+class Keys(types.ModuleType):
+    """app with a stable number for every DIK_ name and the pressed keys."""
+
+    def __init__(self):
+        types.ModuleType.__init__(self, "app")
+        self.pressed = set()
+
+    def __getattr__(self, name):
+        if name.startswith(("DIK_", "CAMERA_")):
+            value = 1000 + len(self.__dict__)
+            setattr(self, name, value)
+            return value
+        raise AttributeError(name)
+
+    def IsPressed(self, key):
+        return key in self.pressed
+
+
+class ChannelQuickSwitch(unittest.TestCase):
+    def window(self):
+        self.log = []
+        self.app = Keys()
+        net = support.Recording("net", self.log)
+        chrmgr = support.Recording("chrmgr", self.log)
+        player = support.Recording("player", self.log)
+        cls = compiled("game.py", "GameWindow", ("__BuildKeyDict", "__SetChannelSwitchMode", "__PressNumKey",
+                                                 "__SetQuickSlotMode", "__SetQuickPageMode", "__SelectQuickPage",
+                                                 "__PressQuickSlot"),
+                       {"app": self.app, "net": net, "chrmgr": chrmgr, "player": player,
+                        "ui": types.SimpleNamespace(__mem_func__=lambda f: f)})
+        window = cls()
+        window.channelSwitchMode = False
+        self.slots = []
+        window.pressNumber = self.slots.append
+        window._GameWindow__BuildKeyDict()
+        return window
+
+    def sent(self):
+        return [args[0] for name, args in self.log if name == "net.SendChatPacket"]
+
+    def test_x_held_turns_1_to_4_into_channel_moves(self):
+        window = self.window()
+        window.onPressKeyDict[self.app.DIK_X]()
+        self.assertTrue(window.channelSwitchMode)
+        for key, number in ((self.app.DIK_1, 1), (self.app.DIK_4, 4), (self.app.DIK_5, 5)):
+            window.onPressKeyDict[key]()
+        self.assertEqual(self.sent(), ["/ch 1", "/ch 4"], "only 1-4, as OLD")
+        self.assertEqual(self.slots, [], "no quickslot while X is held")
+
+        window.onClickKeyDict[self.app.DIK_X]()
+        self.assertFalse(window.channelSwitchMode)
+        window.onPressKeyDict[self.app.DIK_2]()
+        self.assertEqual(self.slots, [1], "released, 2 is the quickslot again")
+        self.assertEqual(self.sent(), ["/ch 1", "/ch 4"])
+
+    def test_ctrl_keeps_the_emoticons_while_x_is_held(self):
+        window = self.window()
+        window.onPressKeyDict[self.app.DIK_X]()
+        self.app.pressed.add(self.app.DIK_LCONTROL)
+        window.onPressKeyDict[self.app.DIK_3]()
+        self.assertEqual(self.sent(), [])
+
+    def test_shift_does_not_end_the_channel_mode(self):
+        window = self.window()
+        window.onPressKeyDict[self.app.DIK_X]()
+        window.onPressKeyDict[self.app.DIK_LSHIFT]()
+        window.onClickKeyDict[self.app.DIK_LSHIFT]()
+        window.onPressKeyDict[self.app.DIK_2]()
+        self.assertEqual(self.sent(), ["/ch 2"])
+
+
+class LoginServer(unittest.TestCase):
+    def setUp(self):
+        self.game = support.Game()
+        self.game.load_standard()
+        self.game.load("serverInfo", "serverinfo.py")
+        self.game.put("localeInfo", support.locale_info("en"))
+        self.const = self.game.loaded["constInfo"]
+        self.text = ["Metin2, CH1"]
+        self.game.answer("net", "GetServerInfo", lambda: self.text[0])
+
+    def call(self, name, *args):
+        with self.game:
+            return getattr(self.const, name)(*args)
+
+    def test_the_server_info_text_names_the_login_server(self):
+        self.assertEqual(self.call("GET_LOGIN_SERVER"), (0, 1))
+        self.assertEqual(self.call("GET_LOGIN_SERVER_CHANNELS"), [1, 2, 3, 4])
+        self.text[0] = "Test, CH2"
+        self.assertEqual(self.call("GET_LOGIN_SERVER"), (0, 2))
+        self.assertEqual(self.call("GET_LOGIN_SERVER_CHANNELS"), [1, 2])
+
+    def test_a_channel_is_named_as_intrologin_names_it(self):
+        self.assertEqual(self.call("GET_CHANNEL_SERVER_INFO", 3), "Metin2, CH3")
+        self.assertEqual(self.call("GET_CHANNEL_SERVER_INFO", 7), "Metin2, Channel 7", "CHANNEL_NORMAL without a name")
+
+    def test_a_direct_login_by_address_has_no_login_server(self):
+        for text in ("127.0.0.1:13000", "Nowhere, CH1", ""):
+            self.text[0] = text
+            with self.subTest(text=text):
+                self.assertIsNone(self.call("GET_LOGIN_SERVER"))
+                self.assertEqual(self.call("GET_LOGIN_SERVER_CHANNELS"), [])
+                self.assertEqual(self.call("GET_CHANNEL_SERVER_INFO", 2), "")
+
+
+class ChannelInfo(unittest.TestCase):
+    def window(self, channel, text="Metin2, CH1", minimap=True):
+        self.game = support.Game()
+        self.game.load_standard()
+        self.game.load("serverInfo", "serverinfo.py")
+        self.game.put("localeInfo", support.locale_info("en"))
+        self.state = {"channel": channel, "text": text}
+        self.game.answer("net", "GetChannelNum", lambda: self.state["channel"])
+        self.game.answer("net", "GetServerInfo", lambda: self.state["text"])
+        self.game.answer("net", "SetServerInfo", lambda text: self.state.__setitem__("text", text))
+        self.refreshed = []
+        cls = compiled("game.py", "GameWindow", ("__RefreshChannelInfo",),
+                       {"net": self.game.modules["net"], "constInfo": self.game.loaded["constInfo"]})
+        window = cls()
+        window.shownChannel = 0
+        wndMiniMap = types.SimpleNamespace()
+        if minimap:
+            wndMiniMap.RefreshServerInfo = lambda: self.refreshed.append(self.state["text"])
+        window.interface = types.SimpleNamespace(wndMiniMap=wndMiniMap)
+        return window
+
+    def refresh(self, window):
+        with self.game:
+            window._GameWindow__RefreshChannelInfo()
+
+    def test_the_login_channel_leaves_the_text_alone(self):
+        window = self.window(1)
+        self.refresh(window)
+        self.assertEqual(self.state["text"], "Metin2, CH1")
+        self.assertEqual(self.refreshed, [])
+
+    def test_a_new_cores_channel_renames_the_text_and_refreshes_the_minimap(self):
+        window = self.window(1)
+        self.refresh(window)
+        self.state["channel"] = 3
+        self.refresh(window)
+        self.assertEqual(self.state["text"], "Metin2, CH3")
+        self.assertEqual(self.refreshed, ["Metin2, CH3"])
+        self.refresh(window)
+        self.assertEqual(self.refreshed, ["Metin2, CH3"], "once per change")
+
+    def test_no_channel_yet_or_no_login_server_changes_nothing(self):
+        window = self.window(0)
+        self.refresh(window)
+        self.assertEqual((self.state["text"], self.refreshed), ("Metin2, CH1", []))
+        window = self.window(2, text="127.0.0.1:13000")
+        self.refresh(window)
+        self.assertEqual((self.state["text"], self.refreshed), ("127.0.0.1:13000", []))
+
+    def test_a_minimap_without_the_refresh_still_gets_the_text(self):
+        # NovaUI's minimap today (MinimapLine below): game.py must not raise,
+        # and the text is set for the next reader.
+        window = self.window(2, minimap=False)
+        self.refresh(window)
+        self.assertEqual(self.state["text"], "Metin2, CH2")
+
+    def test_the_legacy_minimap_reads_the_text_again(self):
+        log = []
+        net = support.Recording("net", log)
+        net.__dict__["_answers"]["GetServerInfo"] = "Metin2, CH2"
+        cls = compiled("uiminimap.py", "MiniMap", ("RefreshServerInfo",), {"net": net})
+        minimap = cls()
+        minimap.serverInfo = None
+        minimap.RefreshServerInfo()
+        texts = []
+        minimap.serverInfo = types.SimpleNamespace(SetText=texts.append)
+        minimap.RefreshServerInfo()
+        self.assertEqual(texts, ["Metin2, CH2"])
+
+
+class MinimapLine(unittest.TestCase):
+    """The minimap's server line after a channel change, in both UIs: the
+    window shows (reading "Metin2, CH1", the login text), then the new core's
+    GC::CHANNEL says 3 and game.py's OnUpdate runs __RefreshChannelInfo.
+
+    NovaUI's minimap (nui_minimap.MiniMap) reads net.GetServerInfo() once, in
+    its first Show, and has no RefreshServerInfo, so its line keeps the login
+    channel. The method is the UI session's to add (C3 edits no nui_*.py; the
+    handoff names it): `self._set(server_info=nui.plain_text(
+    net.GetServerInfo()))`. game.py already calls it through getattr. Once it
+    exists the expected failure turns into an unexpected success: drop the
+    decorator."""
+
+    def line_after_a_channel_change(self, nui_on):
+        state = {"text": "Metin2, CH1", "channel": 1}
+
+        def setup(game):
+            game.answer("net", "GetServerInfo", lambda: state["text"])
+            game.answer("net", "SetServerInfo", lambda text: state.__setitem__("text", text))
+            game.answer("net", "GetChannelNum", lambda: state["channel"])
+        world = world_test.World(nui_on, setup=setup)
+        world.game.load("serverInfo", "serverinfo.py")
+        with world, world_test.quiet():
+            minimap = world.nui_windows.make("minimap", world.module("uiMiniMap").MiniMap, "nui_minimap.MiniMap")
+            self.assertEqual(type(minimap).__module__, "nui_minimap" if nui_on else "uiMiniMap")
+            minimap.Show()
+            cls = compiled("game.py", "GameWindow", ("__RefreshChannelInfo",),
+                           {"net": world.game.modules["net"], "constInfo": world.game.loaded["constInfo"]})
+            window = cls()
+            window.shownChannel = 0
+            window.interface = types.SimpleNamespace(wndMiniMap=minimap)
+            window._GameWindow__RefreshChannelInfo()
+            state["channel"] = 3
+            window._GameWindow__RefreshChannelInfo()
+        self.assertEqual(state["text"], "Metin2, CH3")
+        if nui_on:
+            return minimap.board.model["server_info"]
+        return minimap.serverInfo.GetText()
+
+    def test_the_legacy_minimap_names_the_new_channel(self):
+        self.assertEqual(self.line_after_a_channel_change(False), "Metin2, CH3")
+
+    @unittest.expectedFailure
+    def test_novaui_s_minimap_names_the_new_channel(self):
+        self.assertEqual(self.line_after_a_channel_change(True), "Metin2, CH3")
+
+
+class MoveChannel(unittest.TestCase):
+    def world(self, text="Metin2, CH2", channel=2):
+        world = sys_test.World(False)
+        world.game.load("serverInfo", "serverinfo.py")
+        world.game.answer("net", "GetServerInfo", lambda: text)
+        world.game.answer("net", "GetChannelNum", lambda: channel)
+        return world
+
+    def open(self, world):
+        menu = world.make_menu()
+        with world.game, sys_test.quiet():
+            menu.OpenDialog()
+            button = menu.GetChild("movechannel_button")
+            button.event(*button.eventArgs)
+        return menu, menu.moveChannelDlg
+
+    def test_the_menu_button_closes_the_menu_and_opens_the_dialog(self):
+        world = self.world()
+        menu, dialog = self.open(world)
+        self.assertFalse(menu.IsShow())
+        self.assertIsNotNone(dialog)
+        self.assertTrue(dialog.IsShow())
+
+    def test_a_button_per_channel_with_the_current_one_down_and_disabled(self):
+        world = self.world()
+        menu, dialog = self.open(world)
+        locale = world.game.modules["localeInfo"]
+        self.assertEqual(dialog.channelNumberList, [1, 2, 3, 4])
+        self.assertEqual([button.text for button in dialog.channelButtonList],
+                         ["%s %d" % (locale.CHANNEL, n) for n in (1, 2, 3, 4)])
+        self.assertEqual([enabled(button) for button in dialog.channelButtonList], [True, False, True, True])
+
+    def test_select_then_ok_asks_for_that_channel(self):
+        world = self.world()
+        menu, dialog = self.open(world)
+        mark = world.mark()
+        with world.game, sys_test.quiet():
+            button = dialog.channelButtonList[2]
+            button.event(*button.eventArgs)
+            self.assertEqual([enabled(b) for b in dialog.channelButtonList], [True, True, False, True])
+            dialog.acceptButton.event(*dialog.acceptButton.eventArgs)
+        self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendChatPacket"],
+                         [("net.SendChatPacket", ("/ch 3",))])
+        self.assertFalse(dialog.IsShow())
+
+    def test_ok_on_the_current_channel_sends_nothing_and_cancel_closes(self):
+        world = self.world()
+        menu, dialog = self.open(world)
+        mark = world.mark()
+        with world.game, sys_test.quiet():
+            dialog.acceptButton.event(*dialog.acceptButton.eventArgs)
+            self.assertTrue(dialog.IsShow(), "OLD stayed open")
+            dialog.cancelButton.event(*dialog.cancelButton.eventArgs)
+        self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendChatPacket"], [])
+        self.assertFalse(dialog.IsShow())
+
+    def test_a_login_without_a_known_server_lists_no_channel(self):
+        world = self.world(text="127.0.0.1:13000", channel=1)
+        menu, dialog = self.open(world)
+        self.assertEqual(dialog.channelButtonList, [])
+        mark = world.mark()
+        with world.game, sys_test.quiet():
+            dialog.Accept()
+        self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendChatPacket"], [])
+
+    def test_another_login_server_rebuilds_the_channel_buttons(self):
+        text = ["Metin2, CH2"]
+        world = sys_test.World(False)
+        world.game.load("serverInfo", "serverinfo.py")
+        world.game.answer("net", "GetServerInfo", lambda: text[0])
+        world.game.answer("net", "GetChannelNum", lambda: 2)
+        menu, dialog = self.open(world)
+        old = list(dialog.channelButtonList)
+        self.assertEqual(len(old), 4)
+        text[0] = "Test, CH2"
+        with world.game, sys_test.quiet():
+            dialog.Close()
+            dialog.Open()
+        self.assertTrue(all(not button.IsShow() for button in old), "the old server's buttons are gone")
+        self.assertEqual(dialog.channelNumberList, [1, 2])
+        self.assertEqual([enabled(button) for button in dialog.channelButtonList], [True, False])
+
+    def test_escape_closes_the_dialog(self):
+        world = self.world()
+        menu, dialog = self.open(world)
+        with world.game, sys_test.quiet():
+            self.assertTrue(dialog.OnPressEscapeKey())
+        self.assertFalse(dialog.IsShow())
+
+    def test_a_missing_uiscript_or_child_aborts_as_the_other_dialogs_do(self):
+        from unittest import mock
+        world = self.world()
+        uisystem = world.m("uiSystem")
+
+        class BrokenLoader(object):
+            def LoadScriptFile(self, window, path):
+                raise IOError(path)
+
+        mark = world.mark()
+        # exception.Abort ends the client; the stand-in only records it.
+        with world.game, sys_test.quiet(), mock.patch.object(uisystem.ui, "PythonScriptLoader", BrokenLoader):
+            uisystem.MoveChannelDialog()
+        aborts = [args for name, args in world.game.log[mark:] if name == "exception.Abort"]
+        self.assertEqual(aborts[:2], [("MoveChannelDialog.__LoadDialog.LoadScript",),
+                                      ("MoveChannelDialog.__LoadDialog.BindObject",)])
+
+    def test_the_dialog_is_made_once_and_destroyed_with_the_menu(self):
+        world = self.world()
+        menu, dialog = self.open(world)
+        with world.game, sys_test.quiet():
+            button = menu.GetChild("movechannel_button")
+            button.event(*button.eventArgs)
+            self.assertIs(menu.moveChannelDlg, dialog)
+            menu.Destroy()
+        self.assertIsNone(menu.moveChannelDlg)
+        self.assertEqual(dialog.channelButtonList, [])
+
+    def test_the_system_menu_grows_by_olds_row(self):
+        window = uiscript("systemdialog.py")
+        self.assertEqual(window["height"], 318)
+        board = children(window)["board"]
+        self.assertEqual(board["height"], 318)
+        rows = [child for child in board["children"]]
+        names = [row["name"] for row in rows]
+        self.assertEqual(names.index("movechannel_button"), names.index("game_option_button") + 1)
+        self.assertEqual(names.index("change_button"), names.index("movechannel_button") + 1)
+        move = rows[names.index("movechannel_button")]
+        self.assertEqual(move["text"], "SYSTEM_MOVE_CHANNEL")
+        ys = [row["y"] for row in rows]
+        self.assertEqual(ys, sorted(ys))
+        self.assertTrue(all(b - a >= 30 for a, b in zip(ys, ys[1:])))
+        self.assertLessEqual(ys[-1] + 25, window["height"])
+
+    def test_the_dialog_uiscript_names_what_the_dialog_binds(self):
+        window = uiscript("movechanneldialog.py")
+        board = children(window)["MoveChannelBoard"]
+        kids = children(window, "MoveChannelBoard")
+        self.assertEqual(kids["BlackBoard"]["type"], "thinboard")
+        self.assertEqual(kids["MoveChannelTitle"]["type"], "titlebar")
+        self.assertEqual(board["width"], 190)
 
 
 if __name__ == "__main__":

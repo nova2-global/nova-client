@@ -370,3 +370,4 @@ BLOCK_PLAYER	Zablokuj Gracza
 UNBLOCK_PLAYER	Udblokuj Gracza
 GUILD_WAR_ENEMY_NUMBER	Maks. członków
 GUILD_WAR_MAX_SCORE	Końcowy wynik
+SYSTEM_MOVE_CHANNEL	Zmień kanał

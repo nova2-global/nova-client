@@ -368,3 +368,4 @@ BLOCK_PLAYER	Spieler Blockieren
 UNBLOCK_PLAYER	Spieler Entsperren
 GUILD_WAR_ENEMY_NUMBER	Max. Mitglieder
 GUILD_WAR_MAX_SCORE	Endstand
+SYSTEM_MOVE_CHANNEL	Kanal Ändern

@@ -80,6 +80,30 @@ window = {
 					"image" : LOCALE_PATH_COMMON + "/effect/ymirred.tga",
 				},
 
+				## Whisper details (NOVA-48): the target's online state and its
+				## language flag, at OLD's places (OLD whisperdialog.py:84-103);
+				## hidden until the server answers (uiwhisper SetTargetDetails).
+				{
+					"name" : "online",
+					"type" : "image",
+					"style" : ("attach",),
+
+					"x" : 142,
+					"y" : 12,
+
+					"image" : "d:/ymir work/ui/game/windows/messenger_list_online.sub",
+				},
+				{
+					"name" : "flag",
+					"type" : "image",
+					"style" : ("attach",),
+
+					"x" : 160,
+					"y" : 8,
+
+					"image" : "locale/common/ui/flag/32/en.tga",
+				},
+
 				## Button
 				{
 					"name" : "ignorebutton",

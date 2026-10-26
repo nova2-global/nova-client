@@ -74,6 +74,9 @@ class GameWindow(ui.ScriptWindow):
 		self.quickSlotPageIndex = 0
 		self.lastPKModeSendedTime = 0
 		self.pressNumber = None
+		# Whisper details (NOVA-48): when each open whisper dialog's target was
+		# last asked about.
+		self.whisperDetailsAskTime = {}
 
 		self.guildWarQuestionDialog = None
 		self.interface = None
@@ -1497,8 +1500,42 @@ class GameWindow(ui.ScriptWindow):
 			self.__XMasBoom_Update()
 
 		self.interface.BUILD_OnUpdate()
-		
-		
+
+		self.__AskWhisperDetails()
+
+	## Whisper details (NOVA-48): every open whisper dialog with a target asks
+	## at once and then every two seconds whether its target is online. OLD
+	## polled from each dialog and asked for the name "0" without a target;
+	## the dialog without a target is not in whisperDialogDict.
+	WHISPER_DETAILS_INTERVAL = 2.0
+
+	def __AskWhisperDetails(self):
+		dialogs = self.interface.whisperDialogDict
+		asked = self.whisperDetailsAskTime
+		for name in list(asked):
+			if name not in dialogs:
+				del asked[name]
+		if not dialogs:
+			return
+
+		now = app.GetTime()
+		for name in list(dialogs):
+			if not isinstance(name, str) or not name:
+				continue
+			if name in asked and now - asked[name] < self.WHISPER_DETAILS_INTERVAL:
+				continue
+			asked[name] = now
+			net.SendWhisperDetailsPacket(name)
+
+	# The server's answer: the open dialog to that name shows it.
+	def BINARY_WhisperDetails(self, name, online, language):
+		if not self.interface:
+			return
+		dialog = self.interface.whisperDialogDict.get(name)
+		if not dialog:
+			return
+		dialog.SetTargetDetails(online, language)
+
 	def UpdateDebugInfo(self):
 		#
 		# Output character coordinates and FPS

@@ -13,10 +13,14 @@ legacy classes), and driven as the C++ handlers drive them:
 - the block list (NOVA-47): the messenger's Blocked Players group, its block
   and unblock buttons and dialogs, the whisper dialog's block button, the
   target board's Block/Unblock, and game.py's answer to whisper type 7;
+- whisper details (NOVA-48): the whisper dialog's online icon and flag,
+  AcceptTarget's request, game.py's poll (every two seconds per open dialog
+  with a target) and its BINARY_WhisperDetails;
 - every new locale key in all 17 locales, OLD's text where OLD's locale has
   it and English otherwise."""
 import os
 import sys
+import types
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -575,6 +579,169 @@ class Locales(unittest.TestCase):
                                 self.assertEqual(entries[key], old.get(key) or text)
                             if locale == "en":
                                 self.assertEqual(entries[key], text)
+
+
+
+
+# --- whisper details (NOVA-48) ---------------------------------------------------------------------
+
+class WhisperDetails(unittest.TestCase):
+    ONLINE = "d:/ymir work/ui/game/windows/messenger_list_online.sub"
+    OFFLINE = "d:/ymir work/ui/game/windows/messenger_list_offline.sub"
+
+    def open(self, nui_on, name="Pest"):
+        world = w4.World(nui_on, social=True)
+        world.interface = whisper_test.Interface(world)
+        with world.game, w4.quiet():
+            dialog = world.interface.OpenWhisperDialog(name)
+        return world, dialog
+
+    def details(self, world, dialog, online, language):
+        with world.game, w4.quiet():
+            dialog.SetTargetDetails(online, language)
+
+    def test_neither_icon_shows_before_the_first_answer(self):
+        world, dialog = self.open(False)
+        self.assertFalse(dialog.online.IsShow())
+        self.assertFalse(dialog.flag.IsShow())
+
+    def test_an_online_target_shows_the_online_icon_and_its_flag(self):
+        world, dialog = self.open(False)
+        self.details(world, dialog, 1, "pt")
+        self.assertEqual(dialog.online.image, self.ONLINE)
+        self.assertTrue(dialog.online.IsShow())
+        self.assertEqual(dialog.flag.image, "locale/common/ui/flag/32/pt.tga")
+        self.assertTrue(dialog.flag.IsShow())
+        for language in ("", "xx"):
+            with self.subTest(language=language):
+                self.details(world, dialog, 1, language)
+                self.assertTrue(dialog.online.IsShow())
+                self.assertFalse(dialog.flag.IsShow(), "no language (until NOVA-51) or no flag file: no flag")
+
+    def test_an_offline_target_shows_the_offline_icon_and_no_flag(self):
+        world, dialog = self.open(False)
+        self.details(world, dialog, 1, "en")
+        self.details(world, dialog, 0, "en")
+        self.assertEqual(dialog.online.image, self.OFFLINE)
+        self.assertTrue(dialog.online.IsShow())
+        self.assertFalse(dialog.flag.IsShow())
+
+    def test_a_reopened_dialog_forgets_the_last_answer(self):
+        world, dialog = self.open(False)
+        self.details(world, dialog, 1, "en")
+        with world.game, w4.quiet():
+            dialog.OpenWithoutTarget(lambda name: None)
+        self.assertFalse(dialog.online.IsShow())
+        self.assertFalse(dialog.flag.IsShow())
+        self.details(world, dialog, 1, "en")
+        with world.game, w4.quiet():
+            dialog.OpenWithTarget("Other")
+        self.assertFalse(dialog.online.IsShow())
+
+    def test_accepting_a_typed_target_asks_for_its_details_once(self):
+        world = w4.World(False, social=True)
+        world.interface = whisper_test.Interface(world)
+        with world.game, w4.quiet():
+            dialog = world.interface.OpenWhisperDialogWithoutTarget()
+        mark = world.mark()
+        with world.game, w4.quiet():
+            dialog.titleNameEdit.SetText("Pest")
+            dialog.AcceptTarget()
+        self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendWhisperDetailsPacket"],
+                         [("net.SendWhisperDetailsPacket", ("Pest",))])
+        self.assertIs(world.interface.dialogs["Pest"], dialog)
+
+        with world.game, w4.quiet():
+            dialog = world.interface.OpenWhisperDialogWithoutTarget()
+        mark = world.mark()
+        with world.game, w4.quiet():
+            dialog.titleNameEdit.SetText("")
+            dialog.AcceptTarget()
+        self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendWhisperDetailsPacket"], [],
+                         "no name: the dialog closes and asks nothing")
+
+    def test_under_novaui_the_dialog_has_neither_icon_and_nothing_raises(self):
+        world, dialog = self.open(True)
+        self.assertIsNone(dialog.online)
+        self.assertIsNone(dialog.flag)
+        self.details(world, dialog, 1, "en")
+        self.details(world, dialog, 0, "")
+        with world.game, w4.quiet():
+            dialog.OpenWithoutTarget(lambda name: None)
+            dialog.OpenWithTarget("Pest")
+
+    def test_the_uiscript_puts_both_icons_at_olds_places(self):
+        kids = children(uiscript("whisperdialog.py"), "board")
+        self.assertEqual((kids["online"]["type"], kids["online"]["x"], kids["online"]["y"]), ("image", 142, 12))
+        self.assertEqual(kids["online"]["image"], self.ONLINE)
+        self.assertEqual((kids["flag"]["type"], kids["flag"]["x"], kids["flag"]["y"]), ("image", 160, 8))
+        self.assertLessEqual(kids["flag"]["x"] + 32, kids["blockbutton"]["x"], "the flag ends before the block button")
+
+
+class GameWhisperDetails(unittest.TestCase):
+    NAMES = ("__AskWhisperDetails", "BINARY_WhisperDetails", "WHISPER_DETAILS_INTERVAL")
+
+    def window(self, dialogs):
+        self.log = []
+        self.now = [10.0]
+        net = support.Recording("net", self.log)
+        app = support.Recording("app", self.log)
+        app.__dict__["_answers"]["GetTime"] = lambda: self.now[0]
+        cls = compiled("game.py", "GameWindow", self.NAMES, {"net": net, "app": app})
+        window = cls()
+        window.interface = types.SimpleNamespace(whisperDialogDict=dialogs)
+        window.whisperDetailsAskTime = {}
+        return window
+
+    def asked(self):
+        names = [args[0] for name, args in self.log if name == "net.SendWhisperDetailsPacket"]
+        del self.log[:]
+        return names
+
+    def tick(self, window, now):
+        self.now[0] = now
+        window._GameWindow__AskWhisperDetails()
+        return self.asked()
+
+    def test_each_open_dialog_with_a_target_is_asked_at_once_and_every_two_seconds(self):
+        dialogs = {"Pest": object(), "Troll": object()}
+        window = self.window(dialogs)
+        self.assertEqual(window.WHISPER_DETAILS_INTERVAL, 2.0)
+        self.assertEqual(sorted(self.tick(window, 10.0)), ["Pest", "Troll"])
+        self.assertEqual(self.tick(window, 11.9), [])
+        self.assertEqual(sorted(self.tick(window, 12.0)), ["Pest", "Troll"])
+
+        dialogs["New"] = object()
+        self.assertEqual(self.tick(window, 12.5), ["New"], "a newly opened dialog is asked at once")
+
+        del dialogs["Troll"]
+        self.assertEqual(self.tick(window, 13.0), [])
+        self.assertNotIn("Troll", window.whisperDetailsAskTime, "a closed dialog's time is dropped")
+        self.assertEqual(self.tick(window, 14.0), ["Pest"])
+
+    def test_target_less_entries_are_skipped_and_no_dialog_asks_nothing(self):
+        window = self.window({0: object(), "": object()})
+        self.assertEqual(self.tick(window, 10.0), [])
+        window = self.window({})
+        window.whisperDetailsAskTime["Gone"] = 1.0
+        self.assertEqual(self.tick(window, 10.0), [])
+        self.assertEqual(window.whisperDetailsAskTime, {})
+
+    def test_the_answer_reaches_the_open_dialog_to_that_name(self):
+        seen = []
+        dialog = types.SimpleNamespace(SetTargetDetails=lambda online, language: seen.append((online, language)))
+        window = self.window({"Pest": dialog})
+        window.BINARY_WhisperDetails("Pest", 1, "en")
+        window.BINARY_WhisperDetails("Nobody", 1, "en")
+        self.assertEqual(seen, [(1, "en")])
+        window.interface = None
+        window.BINARY_WhisperDetails("Pest", 0, "")
+        self.assertEqual(seen, [(1, "en")])
+
+    def test_on_update_runs_the_poll(self):
+        source = support.source_of("game.py", ("OnUpdate",), inside="GameWindow")
+        self.assertIn("self.__AskWhisperDetails()", source)
+
 
 
 if __name__ == "__main__":

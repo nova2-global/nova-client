@@ -2,18 +2,20 @@
 
 The cut's item_proto and mob_proto are OLD's, so the client needs OLD's
 lines for the vnums NEW's text files lack. This module reads those files the
-way NEW's client does, adds OLD's lines and never changes one of NEW's; each
-file's test (tools/<file>_test.py) checks the result against
-tools/fixtures/old_content.json.
+way NEW's client does and adds OLD's lines. It changes none of NEW's, except
+the name of a mob the cut brings that NEW named for another model
+(merge_npclist). Each file's test (tools/<file>_test.py) checks the result
+against tools/fixtures/old_content.json.
 
 	python3 tools/old_content.py item_list OLD_ITEM_LIST CUT_ITEM_PROTO
-	python3 tools/old_content.py npclist OLD_NPCLIST_PY CUT_MOB_PROTO
+	python3 tools/old_content.py npclist OLD_NPCLIST_PY CUT_MOB_PROTO PRE_CUT_MOB_PROTO
 	python3 tools/old_content.py itemdesc OLD_LOCALE_ROOT CUT_ITEM_PROTO
 
 OLD_ITEM_LIST is old/client_pack/source/locale/common/item_list.txt and
 CUT_ITEM_PROTO int-rt's share/conf/item_proto.txt; OLD_NPCLIST_PY is
-old/client_pack/source/root/NpcList.py and CUT_MOB_PROTO int-rt's
-share/conf/mob_proto.txt; OLD_LOCALE_ROOT is old/client_pack/source/locale.
+old/client_pack/source/root/NpcList.py, CUT_MOB_PROTO int-rt's
+share/conf/mob_proto.txt and PRE_CUT_MOB_PROTO the same file at a6d52a5^;
+OLD_LOCALE_ROOT is old/client_pack/source/locale.
 Each command rewrites its files (from NEW's own
 lines, also on a second run) and sets the file's fixture entry.
 """
@@ -282,10 +284,13 @@ def race_paths(race):
 def mob_shows(vnum, names, folders, files):
 	"""Whether CRaceManager::__LoadRaceData finds the mob's .msm:
 	<path><folder>/<name>.msm, the folder being the name's folder line or the
-	name itself."""
+	name itself; for a name starting with '#' (LOAD_LOCAL_RESOURCE), the rest
+	of the name is a path and the file <path>shape.msm."""
 	name = names.get(vnum)
 	if not name:
 		return False
+	if name.startswith("#"):
+		return store_name(name[1:] + "shape.msm") in files
 	folder = folders.get(name, name)
 	return any(store_name("%s%s/%s.msm" % (path, folder, name)) in files for path in race_paths(vnum))
 
@@ -294,32 +299,87 @@ def cut_mob_vnums(text):
 	return set(int(row.split("\t")[0]) for row in text.split("\n")[1:] if row.split("\t")[0].strip().isdigit())
 
 
-def merge_npclist(new_data, old_text, mob_vnums, files):
+def _first_rows(rows):
+	"""{vnum: index of its first name line}: the line chrmgr keeps."""
+	first = {}
+	for number, row in enumerate(rows):
+		head = row.split("\t")[0]
+		if head and int(head) and int(head) not in first:
+			first[int(head)] = number
+	return first
+
+
+def _rename(rows, vnum, was, name):
+	"""The vnum's first name line with ``name`` for ``was``, the rest of the
+	line (NEW's trailing tab or none) kept."""
+	number = _first_rows(rows)[vnum]
+	tokens = rows[number].split("\t")
+	if tokens[1].strip() != was:
+		raise ValueError("line %d names %r, not %r" % (number + 1, tokens[1], was))
+	tokens[1] = name
+	rows[number] = "\t".join(tokens)
+
+
+def npclist_news(text, entry):
+	"""NEW's own npclist from a merged one: its first ``new_lines`` lines, with
+	NEW's name put back where OLD's replaced it (``renamed``)."""
+	rows = text.split("\n")[:entry["new_lines"]]
+	for vnum, new_name, old_name in entry.get("renamed", []):
+		_rename(rows, vnum, old_name, new_name)
+	return "".join(row + "\n" for row in rows)
+
+
+def merge_npclist(new_data, old_text, mob_vnums, files, pre_vnums):
 	"""NEW's npclist with, after its last line, OLD's folder lines for the
-	names OLD's added mobs use that NEW has no folder for (in OLD's order)
-	and OLD's name lines for the cut's mobs NEW names none for (in vnum
-	order). A name with no model in the store costs CRaceManager five failed
-	lookups and syserr lines per spawn, and the mob stays unseen as today,
-	so those lines are added too. Returns (bytes, report)."""
+	names OLD's added or renamed mobs use that NEW has no folder for (in
+	OLD's order) and OLD's name lines for the cut's mobs NEW names none for
+	(in vnum order). A name with no model in the store costs CRaceManager
+	five failed lookups and syserr lines per spawn, and the mob stays unseen
+	as today, so those lines are added too.
+
+	A mob the cut brings (in ``mob_vnums``, not in ``pre_vnums``, NEW's
+	pre-cut mob_proto) that NEW's list names otherwise than OLD's takes OLD's
+	name on NEW's line when the store has the model OLD's name finds: NEW
+	named those vnums for mobs its proto never had, and the cut's mob there
+	is OLD's. Where the store lacks OLD's model, NEW's name stays, so a mob
+	that shows keeps showing; a rerun after an import switches it. Returns
+	(bytes, report)."""
 	text = new_data.decode("ascii")
 	new_names, new_folders = npclist_entries(text)
 	old_names, old_folders, folder_order = old_npclist(old_text)
 	added_names = [vnum for vnum in sorted(old_names) if vnum in mob_vnums and vnum not in new_names]
-	used = set(old_names[vnum] for vnum in added_names)
-	added_folders = []
-	for name in folder_order:
-		if name in used and name not in new_folders and name not in added_folders:
-			added_folders.append(name)
+	candidates = [vnum for vnum in sorted(new_names) if vnum in mob_vnums and vnum not in pre_vnums
+		and vnum in old_names and old_names[vnum] != new_names[vnum]]
+
+	def folder_lines(vnums):
+		used = set(old_names[vnum] for vnum in vnums)
+		out = []
+		for name in folder_order:
+			if name in used and name not in new_folders and name not in out:
+				out.append(name)
+		return out
+
+	folders = dict(new_folders)
+	folders.update((name, old_folders[name]) for name in folder_lines(added_names + candidates))
+	renamed = [vnum for vnum in candidates if mob_shows(vnum, {vnum: old_names[vnum]}, folders, files)]
+	added_folders = folder_lines(added_names + renamed)
+	rows = text.split("\n")
+	for vnum in renamed:
+		_rename(rows, vnum, new_names[vnum], old_names[vnum])
 	lines = ["0\t%s\t%s\n" % (name, old_folders[name]) for name in added_folders]
 	lines += ["%d\t%s\t\n" % (vnum, old_names[vnum]) for vnum in added_names]
-	body = text + "".join(lines)
+	body = "\n".join(rows) + "".join(lines)
 	names, folders = npclist_entries(body)
+	new_mobs = sorted(set(mob_vnums) - set(pre_vnums))
 	report = {
 		"new_lines": len(text.splitlines()),
 		"new_sha1": hashlib.sha1(text.encode("ascii")).hexdigest(),
 		"names": ranges(added_names),
 		"folders": added_folders,
 		"shown": sum(1 for vnum in added_names if mob_shows(vnum, names, folders, files)),
+		"renamed": [[vnum, new_names[vnum], old_names[vnum]] for vnum in renamed],
+		"cut_new_mobs": ranges(new_mobs),
+		"cut_new_mobs_shown": sum(1 for vnum in new_mobs if mob_shows(vnum, names, folders, files)),
 	}
 	return body.encode("ascii"), report
 
@@ -432,7 +492,14 @@ def news_part(data, name):
 	entry = load_fixture().get(name)
 	if not entry:
 		return data
-	head = "".join(line + "\n" for line in data.decode("ascii").split("\n")[:entry["new_lines"]])
+	text = data.decode("ascii")
+	if name == "npclist":
+		try:
+			head = npclist_news(text, entry)
+		except (KeyError, ValueError):
+			return data
+	else:
+		head = "".join(line + "\n" for line in text.split("\n")[:entry["new_lines"]])
 	if hashlib.sha1(head.encode("ascii")).hexdigest() == entry["new_sha1"]:
 		return head.encode("ascii")
 	return data
@@ -455,19 +522,23 @@ def _main(argv):
 		print("added %d, withheld %d, NEW's line kept for %d vnums whose lines differ: %s" % (
 			len(report["added"]), withheld, len(differ), ranges(differ)))
 		return 0
-	if len(argv) == 3 and argv[0] == "npclist":
+	if len(argv) == 4 and argv[0] == "npclist":
 		with open(argv[1], encoding="ascii") as handle:
 			old_text = handle.read()
 		with open(argv[2], encoding="utf-8", errors="replace") as handle:
 			mob_vnums = cut_mob_vnums(handle.read())
+		with open(argv[3], encoding="utf-8", errors="replace") as handle:
+			pre_vnums = cut_mob_vnums(handle.read())
 		with open(NPCLIST, "rb") as handle:
 			new_data = news_part(handle.read(), "npclist")
-		data, report = merge_npclist(new_data, old_text, mob_vnums, published_files())
+		data, report = merge_npclist(new_data, old_text, mob_vnums, published_files(), pre_vnums)
 		with open(NPCLIST, "wb") as handle:
 			handle.write(data)
 		save_fixture("npclist", report)
-		print("added %d name lines and %d folder lines; %d of the added mobs have a model the store has" % (
-			len(parse_ranges(report["names"])), len(report["folders"]), report["shown"]))
+		print("added %d name lines and %d folder lines; %d of the added mobs have a model the store has; "
+			"OLD's name replaces NEW's for %d; %d of the cut's %d new mobs show" % (
+				len(parse_ranges(report["names"])), len(report["folders"]), report["shown"], len(report["renamed"]),
+				report["cut_new_mobs_shown"], len(parse_ranges(report["cut_new_mobs"]))))
 		return 0
 	if len(argv) == 3 and argv[0] == "itemdesc":
 		old_root, cut_proto = argv[1:]

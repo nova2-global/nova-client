@@ -990,5 +990,44 @@ class FiveCharacters(unittest.TestCase):
 		self.assertEqual({}, world.chr_state.instances)
 
 
+
+class SafeboxPages(unittest.TestCase):
+	"""Five safebox pages (NOVA-97; Q4: decided 2026-10-25): the legacy
+	safebox caps its pages at the client's safebox.SAFEBOX_PAGE_COUNT_MAX
+	(OLD uiSafebox.py:389 caps at 5), and more page tabs than three take
+	OLD's small tabs so they fit the board."""
+
+	MIDDLE = "d:/ymir work/ui/game/windows/tab_button_middle_%02d.sub"
+	SMALL = "d:/ymir work/ui/game/windows/tab_button_small_%02d.sub"
+
+	def tabs(self, size, page_count_max=5):
+		import nui_w4_world as w4
+		world = w4.World(False)
+		world.game.modules["safebox"].SAFEBOX_PAGE_COUNT_MAX = page_count_max
+		window = world.make("safebox", "uiSafebox", "SafeboxWindow", "nui_safebox.SafeboxWindow")
+		with world.game, quiet():
+			window.SetTableSize(size)
+		return window, [(button.text, button.visuals["up"], button.visuals["down"],
+		                 [call[1:] for call in button.calls if call[0] == "SetPosition"][-1])
+		                for button in window.pageButtonList]
+
+	def test_five_pages_take_five_small_tabs_that_fit_the_board(self):
+		window, tabs = self.tabs(5 * 9)
+		self.assertEqual([("I", self.SMALL % 1, self.SMALL % 3, (-64, 85)), ("II", self.SMALL % 1, self.SMALL % 3, (-32, 85)),
+		                  ("III", self.SMALL % 1, self.SMALL % 3, (0, 85)), ("IV", self.SMALL % 1, self.SMALL % 3, (32, 85)),
+		                  ("V", self.SMALL % 1, self.SMALL % 3, (64, 85))], tabs)
+		self.assertLessEqual(32 * 5, window.BOX_WIDTH)
+
+	def test_three_pages_keep_the_middle_tabs(self):
+		window, tabs = self.tabs(3 * 9)
+		self.assertEqual([("I", self.MIDDLE % 1, self.MIDDLE % 3, (-52, 85)), ("II", self.MIDDLE % 1, self.MIDDLE % 3, (0, 85)),
+		                  ("III", self.MIDDLE % 1, self.MIDDLE % 3, (52, 85))], tabs)
+
+	def test_the_pages_stop_at_the_clients_maximum(self):
+		self.assertEqual(5, len(self.tabs(6 * 9)[1]), "OLD's six premium pages overran its 225 cells (Q4)")
+		self.assertEqual(4, len(self.tabs(6 * 9, page_count_max=4)[1]), "the client's constant, not a literal")
+		self.assertEqual(1, len(self.tabs(3)[1]), "the loader's SetTableSize(3) before the server's size")
+
+
 if __name__ == "__main__":
 	unittest.main()

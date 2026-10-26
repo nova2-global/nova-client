@@ -195,6 +195,9 @@ class ChangePasswordDialog(ui.ScriptWindow):
 		self.newPassword.SetFocus()
 		self.dlgMessage.Hide()
 
+# The page tabs' names (the safebox has at most safebox.SAFEBOX_PAGE_COUNT_MAX pages, 5).
+PAGE_NAMES = ("I", "II", "III", "IV", "V")
+
 class SafeboxWindow(ui.ScriptWindow):
 
 	BOX_WIDTH = 176
@@ -320,27 +323,31 @@ class SafeboxWindow(ui.ScriptWindow):
 		self.curPageIndex = 0
 		self.pageButtonList = []
 
-		text = "I"
-		pos = -int(float(pageCount-1) / 2 * 52)
+		# Three middle tabs fit the board. More pages (five since the
+		# foundation cut) take OLD's small tabs, 32 px apart, named in roman
+		# numerals (OLD uiSafebox.py:346-366).
+		step, art = 52, "d:/ymir work/ui/game/windows/tab_button_middle_%02d.sub"
+		if step * pageCount > self.BOX_WIDTH:
+			step, art = 32, "d:/ymir work/ui/game/windows/tab_button_small_%02d.sub"
+		pos = -int(float(pageCount-1) / 2 * step)
 
 		for i in range(pageCount):
 			button = ui.RadioButton()
 
 			button.SetParent(self)
-			button.SetUpVisual("d:/ymir work/ui/game/windows/tab_button_middle_01.sub")
-			button.SetOverVisual("d:/ymir work/ui/game/windows/tab_button_middle_02.sub")
-			button.SetDownVisual("d:/ymir work/ui/game/windows/tab_button_middle_03.sub")
+			button.SetUpVisual(art % 1)
+			button.SetOverVisual(art % 2)
+			button.SetDownVisual(art % 3)
 			button.SetWindowHorizontalAlignCenter()
 			button.SetWindowVerticalAlignBottom()
 			button.SetPosition(pos, 85)
-			button.SetText(text)
+			button.SetText(PAGE_NAMES[i])
 			button.SetEvent(lambda arg=i: self.SelectPage(arg))
 			button.Show()
 
 			self.pageButtonList.append(button)
 
-			pos += 52
-			text += "I"
+			pos += step
 
 		self.pageButtonList[0].Down()
 
@@ -360,7 +367,8 @@ class SafeboxWindow(ui.ScriptWindow):
 	def SetTableSize(self, size):
 
 		pageCount = max(1, size // safebox.SAFEBOX_SLOT_Y_COUNT)
-		pageCount = min(3, pageCount)
+		# OLD's 5 pages (OLD uiSafebox.py:389), the client's safebox constant.
+		pageCount = min(safebox.SAFEBOX_PAGE_COUNT_MAX, pageCount)
 		size = safebox.SAFEBOX_SLOT_Y_COUNT
 
 		self.__MakePageButton(pageCount)

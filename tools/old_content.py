@@ -8,11 +8,13 @@ tools/fixtures/old_content.json.
 
 	python3 tools/old_content.py item_list OLD_ITEM_LIST CUT_ITEM_PROTO
 	python3 tools/old_content.py npclist OLD_NPCLIST_PY CUT_MOB_PROTO
+	python3 tools/old_content.py itemdesc OLD_LOCALE_ROOT CUT_ITEM_PROTO
 
 OLD_ITEM_LIST is old/client_pack/source/locale/common/item_list.txt and
 CUT_ITEM_PROTO int-rt's share/conf/item_proto.txt; OLD_NPCLIST_PY is
 old/client_pack/source/root/NpcList.py and CUT_MOB_PROTO int-rt's
-share/conf/mob_proto.txt. Each command rewrites its file (from NEW's own
+share/conf/mob_proto.txt; OLD_LOCALE_ROOT is old/client_pack/source/locale.
+Each command rewrites its files (from NEW's own
 lines, also on a second run) and sets the file's fixture entry.
 """
 import hashlib
@@ -322,6 +324,67 @@ def merge_npclist(new_data, old_text, mob_vnums, files):
 	return body.encode("ascii"), report
 
 
+LOCALES = os.path.join(ASSETS, "locale", "locale")
+# The OLD locale each of NEW's locales takes its itemdesc lines from: OLD has
+# no br, and NEW's br is its pt with its own spellings.
+ITEMDESC_SOURCE = {"br": "pt"}
+
+
+def itemdesc_path(locale):
+	return os.path.join(LOCALES, locale, "itemdesc.txt")
+
+
+def itemdesc_locales():
+	return sorted(name for name in os.listdir(LOCALES) if os.path.isfile(itemdesc_path(name)))
+
+
+def bind_lines(data):
+	"""CMemoryTextFileLoader::Bind on bytes, its DBCS rule included: a byte
+	of 0x80 or more takes the next byte with it, even a line break."""
+	sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+	import race_msm
+	return race_msm.split_lines(data)
+
+
+def itemdesc_lines(data):
+	"""CItemManager::LoadItemDesc: {vnum: line} (SplitLineByTab, atoi of the
+	first column, a later line for a vnum replacing an earlier one)."""
+	lines = {}
+	for line in bind_lines(data):
+		if line:
+			lines[atoi(line.split(b"\t")[0].decode("latin-1"))] = line
+	return lines
+
+
+def merge_itemdesc(new_data, old_data, cut_vnums):
+	"""NEW's itemdesc with, after its last line and in vnum order, OLD's
+	line (its last for the vnum, as the loader keeps) for each vnum of the
+	cut's item_proto NEW's file has no line for. Lines for other vnums would
+	be skipped by the loader (it only describes items it knows). Returns
+	(bytes, report)."""
+	if new_data and not new_data.endswith(b"\n"):
+		raise ValueError("NEW's file does not end with a line break")
+	# Every vnum NEW's file has a line for, also one the loader cannot see
+	# because the line before it swallows its break (ru 41349 and 41350).
+	new = set(atoi(line.split(b"\t")[0].decode("latin-1")) for line in new_data.split(b"\n") if line.strip())
+	old = {}
+	for line in old_data.split(b"\n"):
+		if line.strip():
+			old[atoi(line.split(b"\t")[0].decode("latin-1"))] = line.rstrip(b"\r")
+	added = [vnum for vnum in sorted(old) if vnum in cut_vnums and vnum not in new]
+	block = b"".join(old[vnum] + b"\n" for vnum in added)
+	block.decode("utf-8")
+	body = new_data + block
+	if bind_lines(body) != bind_lines(new_data)[:-1] + [old[vnum] for vnum in added] + [b""]:
+		raise ValueError("the loader would not read the added lines one by one")
+	report = {
+		"new_lines": new_data.count(b"\n"),
+		"new_sha1": hashlib.sha1(new_data).hexdigest(),
+		"added": ranges(added),
+	}
+	return body, report
+
+
 def ranges(vnums):
 	"""1, 2, 3, 7 -> "1-3, 7"."""
 	out, run = [], []
@@ -405,6 +468,29 @@ def _main(argv):
 		save_fixture("npclist", report)
 		print("added %d name lines and %d folder lines; %d of the added mobs have a model the store has" % (
 			len(parse_ranges(report["names"])), len(report["folders"]), report["shown"]))
+		return 0
+	if len(argv) == 3 and argv[0] == "itemdesc":
+		old_root, cut_proto = argv[1:]
+		with open(cut_proto, encoding="utf-8", errors="replace") as handle:
+			cut_vnums = cut_item_vnums(handle.read())
+		entry = {}
+		for locale in itemdesc_locales():
+			source = ITEMDESC_SOURCE.get(locale, locale)
+			with open(os.path.join(old_root, source, "itemdesc.txt"), "rb") as handle:
+				old_data = handle.read()
+			with open(itemdesc_path(locale), "rb") as handle:
+				new_data = handle.read()
+			previous = load_fixture().get("itemdesc", {}).get(locale) if os.path.exists(FIXTURE) else None
+			if previous:
+				head = b"".join(line + b"\n" for line in new_data.split(b"\n")[:previous["new_lines"]])
+				if hashlib.sha1(head).hexdigest() == previous["new_sha1"]:
+					new_data = head
+			data, report = merge_itemdesc(new_data, old_data, cut_vnums)
+			with open(itemdesc_path(locale), "wb") as handle:
+				handle.write(data)
+			entry[locale] = report
+			print("%s (from OLD's %s): added %d" % (locale, source, len(parse_ranges(report["added"]))))
+		save_fixture("itemdesc", entry)
 		return 0
 	sys.stderr.write(__doc__)
 	return 2

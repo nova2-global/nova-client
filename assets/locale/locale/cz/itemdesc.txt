@@ -2628,3 +2628,1112 @@
 90011	Kmen	Stavební materiál pro cechovní budovu
 90012	Překližka	Stavební materiál pro cechovní budovu
 90013		
+300	Čepel Zvěrokruhu+0	
+301	Čepel Zvěrokruhu+1	
+302	Čepel Zvěrokruhu+2	
+303	Čepel Zvěrokruhu+3	
+304	Čepel Zvěrokruhu+4	
+305	Čepel Zvěrokruhu+5	
+306	Čepel Zvěrokruhu+6	
+307	Čepel Zvěrokruhu+7	
+308	Čepel Zvěrokruhu+8	
+309	Čepel Zvěrokruhu+9	
+310	Meč Zvěrokruhu+0	
+311	Meč Zvěrokruhu+1	
+312	Meč Zvěrokruhu+2	
+313	Meč Zvěrokruhu+3	
+314	Meč Zvěrokruhu+4	
+315	Meč Zvěrokruhu+5	
+316	Meč Zvěrokruhu+6	
+317	Meč Zvěrokruhu+7	
+318	Meč Zvěrokruhu+8	
+319	Meč Zvěrokruhu+9	
+1180	Dýka Zvěrokruhu+0	
+1181	Dýka Zvěrokruhu+1	
+1182	Dýka Zvěrokruhu+2	
+1183	Dýka Zvěrokruhu+3	
+1184	Dýka Zvěrokruhu+4	
+1185	Dýka Zvěrokruhu+5	
+1186	Dýka Zvěrokruhu+6	
+1187	Dýka Zvěrokruhu+7	
+1188	Dýka Zvěrokruhu+8	
+1189	Dýka Zvěrokruhu+9	
+2200	Luk Zvěrokruhu+0	
+2201	Luk Zvěrokruhu+1	
+2202	Luk Zvěrokruhu+2	
+2203	Luk Zvěrokruhu+3	
+2204	Luk Zvěrokruhu+4	
+2205	Luk Zvěrokruhu+5	
+2206	Luk Zvěrokruhu+6	
+2207	Luk Zvěrokruhu+7	
+2208	Luk Zvěrokruhu+8	
+2209	Luk Zvěrokruhu+9	
+3220	Halapartna Zvěrokruhu+0	
+3221	Halapartna Zvěrokruhu+1	
+3222	Halapartna Zvěrokruhu+2	
+3223	Halapartna Zvěrokruhu+3	
+3224	Halapartna Zvěrokruhu+4	
+3225	Halapartna Zvěrokruhu+5	
+3226	Halapartna Zvěrokruhu+6	
+3227	Halapartna Zvěrokruhu+7	
+3228	Halapartna Zvěrokruhu+8	
+3229	Halapartna Zvěrokruhu+9	
+5160	Zvon Zvěrokruhu+0	
+5161	Zvon Zvěrokruhu+1	
+5162	Zvon Zvěrokruhu+2	
+5163	Zvon Zvěrokruhu+3	
+5164	Zvon Zvěrokruhu+4	
+5165	Zvon Zvěrokruhu+5	
+5166	Zvon Zvěrokruhu+6	
+5167	Zvon Zvěrokruhu+7	
+5168	Zvon Zvěrokruhu+8	
+5169	Zvon Zvěrokruhu+9	
+6120	Pařát Zvěrokruhu+0	
+6121	Pařát Zvěrokruhu+1	
+6122	Pařát Zvěrokruhu+2	
+6123	Pařát Zvěrokruhu+3	
+6124	Pařát Zvěrokruhu+4	
+6125	Pařát Zvěrokruhu+5	
+6126	Pařát Zvěrokruhu+6	
+6127	Pařát Zvěrokruhu+7	
+6128	Pařát Zvěrokruhu+8	
+6129	Pařát Zvěrokruhu+9	
+7300	Vějíř Zvěrokruhu+0	
+7301	Vějíř Zvěrokruhu+1	
+7302	Vějíř Zvěrokruhu+2	
+7303	Vějíř Zvěrokruhu+3	
+7304	Vějíř Zvěrokruhu+4	
+7305	Vějíř Zvěrokruhu+5	
+7306	Vějíř Zvěrokruhu+6	
+7307	Vějíř Zvěrokruhu+7	
+7308	Vějíř Zvěrokruhu+8	
+7309	Vějíř Zvěrokruhu+9	
+9506	Meč+3	
+9507	Dýka+3	
+9508	Vějíř+3	
+9509	Ocelová pochodeň +3	
+9600	Talisman ohně+0	
+9601	Talisman ohně+1	
+9602	Talisman ohně+2	
+9603	Talisman ohně+3	
+9604	Talisman ohně+4	
+9605	Talisman ohně+5	
+9606	Talisman ohně+6	
+9607	Talisman ohně+7	
+9608	Talisman ohně+8	
+9609	Talisman ohně+9	
+9610	Talisman ohně+10	
+9611	Talisman ohně+11	
+9612	Talisman ohně+12	
+9613	Talisman ohně+13	
+9614	Talisman ohně+14	
+9615	Talisman ohně+15	
+9616	Talisman ohně+16	
+9617	Talisman ohně+17	
+9618	Talisman ohně+18	
+9619	Talisman ohně+19	
+12690	Ocelová dračí helma +0	
+12691	Ocelová dračí helma +1	
+12692	Ocelová dračí helma +2	
+12693	Ocelová dračí helma +3	
+12694	Ocelová dračí helma +4	
+12695	Ocelová dračí helma +5	
+12696	Ocelová dračí helma +6	
+12697	Ocelová dračí helma +7	
+12698	Ocelová dračí helma +8	
+12699	Ocelová dračí helma +9	
+12700	Dračí kápě +0	
+12701	Dračí kápě +1	
+12702	Dračí kápě +2	
+12703	Dračí kápě +3	
+12704	Dračí kápě +4	
+12705	Dračí kápě +5	
+12706	Dračí kápě +6	
+12707	Dračí kápě +7	
+12708	Dračí kápě +8	
+12709	Dračí kápě +9	
+12710	Helma z dračích šupin +0	
+12711	Helma z dračích šupin +1	
+12712	Helma z dračích šupin +2	
+12713	Helma z dračích šupin +3	
+12714	Helma z dračích šupin +4	
+12715	Helma z dračích šupin +5	
+12716	Helma z dračích šupin +6	
+12717	Helma z dračích šupin +7	
+12718	Helma z dračích šupin +8	
+12719	Helma z dračích šupin +9	
+12720	Dračí klobouk +0	
+12721	Dračí klobouk +1	
+12722	Dračí klobouk +2	
+12723	Dračí klobouk +3	
+12724	Dračí klobouk +4	
+12725	Dračí klobouk +5	
+12726	Dračí klobouk +6	
+12727	Dračí klobouk +7	
+12728	Dračí klobouk +8	
+12729	Dračí klobouk +9	
+15440	Ohnivé boty +0	
+15441	Ohnivé boty +1	
+15442	Ohnivé boty +2	
+15443	Ohnivé boty +3	
+15444	Ohnivé boty +4	
+15445	Ohnivé boty +5	
+15446	Ohnivé boty +6	
+15447	Ohnivé boty +7	
+15448	Ohnivé boty +8	
+15449	Ohnivé boty +9	
+15450	Boty oceánu +0	
+15451	Boty oceánu +1	
+15452	Boty oceánu +2	
+15453	Boty oceánu +3	
+15454	Boty oceánu +4	
+15455	Boty oceánu +5	
+15456	Boty oceánu +6	
+15457	Boty oceánu +7	
+15458	Boty oceánu +8	
+15459	Boty oceánu +9	
+19000	Kámen Rudého plamene	Zlepšuje bonusy tvého opasku.
+19290	Brnění Zvěrokruhu+0	
+19291	Brnění Zvěrokruhu+1	
+19292	Brnění Zvěrokruhu+2	
+19293	Brnění Zvěrokruhu+3	
+19294	Brnění Zvěrokruhu+4	
+19295	Brnění Zvěrokruhu+5	
+19296	Brnění Zvěrokruhu+6	
+19297	Brnění Zvěrokruhu+7	
+19298	Brnění Zvěrokruhu+8	
+19299	Brnění Zvěrokruhu+9	
+19490	Oblek Zvěrokruhu+0	
+19491	Oblek Zvěrokruhu+1	
+19492	Oblek Zvěrokruhu+2	
+19493	Oblek Zvěrokruhu+3	
+19494	Oblek Zvěrokruhu+4	
+19495	Oblek Zvěrokruhu+5	
+19496	Oblek Zvěrokruhu+6	
+19497	Oblek Zvěrokruhu+7	
+19498	Oblek Zvěrokruhu+8	
+19499	Oblek Zvěrokruhu+9	
+19690	Pancíř zvěrokruhu+0	
+19691	Pancíř zvěrokruhu+1	
+19692	Pancíř zvěrokruhu+2	
+19693	Pancíř zvěrokruhu+3	
+19694	Pancíř zvěrokruhu+4	
+19695	Pancíř zvěrokruhu+5	
+19696	Pancíř zvěrokruhu+6	
+19697	Pancíř zvěrokruhu+7	
+19698	Pancíř zvěrokruhu+8	
+19699	Pancíř zvěrokruhu+9	
+19890	Šaty Zvěrokruhu+0	
+19891	Šaty Zvěrokruhu+1	
+19892	Šaty Zvěrokruhu+2	
+19893	Šaty Zvěrokruhu+3	
+19894	Šaty Zvěrokruhu+4	
+19895	Šaty Zvěrokruhu+5	
+19896	Šaty Zvěrokruhu+6	
+19897	Šaty Zvěrokruhu+7	
+19898	Šaty Zvěrokruhu+8	
+19899	Šaty Zvěrokruhu+9	
+20760	Brnění Jitřenky +0	
+20761	Brnění Jitřenky +1	
+20762	Brnění Jitřenky +2	
+20763	Brnění Jitřenky +3	
+20764	Brnění Jitřenky +4	
+20765	Brnění Jitřenky +5	
+20766	Brnění Jitřenky +6	
+20767	Brnění Jitřenky +7	
+20768	Brnění Jitřenky +8	
+20769	Brnění Jitřenky +9	
+20770	Oblek léčky +0	
+20771	Oblek léčky +1	
+20772	Oblek léčky +2	
+20773	Oblek léčky +3	
+20774	Oblek léčky +4	
+20775	Oblek léčky +5	
+20776	Oblek léčky +6	
+20777	Oblek léčky +7	
+20778	Oblek léčky +8	
+20779	Oblek léčky +9	
+20780	Pancíř Ďáblova drápu +0	
+20781	Pancíř Ďáblova drápu +1	
+20782	Pancíř Ďáblova drápu +2	
+20783	Pancíř Ďáblova drápu +3	
+20784	Pancíř Ďáblova drápu +4	
+20785	Pancíř Ďáblova drápu +5	
+20786	Pancíř Ďáblova drápu +6	
+20787	Pancíř Ďáblova drápu +7	
+20788	Pancíř Ďáblova drápu +8	
+20789	Pancíř Ďáblova drápu +9	
+20790	Šaty víry +0	
+20791	Šaty víry +1	
+20792	Šaty víry +2	
+20793	Šaty víry +3	
+20794	Šaty víry +4	
+20795	Šaty víry +5	
+20796	Šaty víry +6	
+20797	Šaty víry +7	
+20798	Šaty víry +8	
+20799	Šaty víry +9	
+20800	Brnění stínů +0	
+20801	Brnění stínů +1	
+20802	Brnění stínů +2	
+20803	Brnění stínů +3	
+20804	Brnění stínů +4	
+20805	Brnění stínů +5	
+20806	Brnění stínů +6	
+20807	Brnění stínů +7	
+20808	Brnění stínů +8	
+20809	Brnění stínů +9	
+20810	Brnění záře magmy +0	
+20811	Brnění záře magmy +1	
+20812	Brnění záře magmy +2	
+20813	Brnění záře magmy +3	
+20814	Brnění záře magmy +4	
+20815	Brnění záře magmy +5	
+20816	Brnění záře magmy +6	
+20817	Brnění záře magmy +7	
+20818	Brnění záře magmy +8	
+20819	Brnění záře magmy +9	
+20820	Oblek krvavého měsíce +0	
+20821	Oblek krvavého měsíce +1	
+20822	Oblek krvavého měsíce +2	
+20823	Oblek krvavého měsíce +3	
+20824	Oblek krvavého měsíce +4	
+20825	Oblek krvavého měsíce +5	
+20826	Oblek krvavého měsíce +6	
+20827	Oblek krvavého měsíce +7	
+20828	Oblek krvavého měsíce +8	
+20829	Oblek krvavého měsíce +9	
+20830	Brnění jezdce z pekla +0	
+20831	Brnění jezdce z pekla +1	
+20832	Brnění jezdce z pekla +2	
+20833	Brnění jezdce z pekla +3	
+20834	Brnění jezdce z pekla +4	
+20835	Brnění jezdce z pekla +5	
+20836	Brnění jezdce z pekla +6	
+20837	Brnění jezdce z pekla +7	
+20838	Brnění jezdce z pekla +8	
+20839	Brnění jezdce z pekla +9	
+20840	Ohnivé šaty +0	
+20841	Ohnivé šaty +1	
+20842	Ohnivé šaty +2	
+20843	Ohnivé šaty +3	
+20844	Ohnivé šaty +4	
+20845	Ohnivé šaty +5	
+20846	Ohnivé šaty +6	
+20847	Ohnivé šaty +7	
+20848	Ohnivé šaty +8	
+20849	Ohnivé šaty +9	
+20850	Ornamentální brnění +0	
+20851	Ornamentální brnění +1	
+20852	Ornamentální brnění +2	
+20853	Ornamentální brnění +3	
+20854	Ornamentální brnění +4	
+20855	Ornamentální brnění +5	
+20856	Ornamentální brnění +6	
+20857	Ornamentální brnění +7	
+20858	Ornamentální brnění +8	
+20859	Ornamentální brnění +9	
+20860	Kosticové brnění +0	
+20861	Kosticové brnění +1	
+20862	Kosticové brnění +2	
+20863	Kosticové brnění +3	
+20864	Kosticové brnění +4	
+20865	Kosticové brnění +5	
+20866	Kosticové brnění +6	
+20867	Kosticové brnění +7	
+20868	Kosticové brnění +8	
+20869	Kosticové brnění +9	
+20870	Oblek přeměny +0	
+20871	Oblek přeměny +1	
+20872	Oblek přeměny +2	
+20873	Oblek přeměny +3	
+20874	Oblek přeměny +4	
+20875	Oblek přeměny +5	
+20876	Oblek přeměny +6	
+20877	Oblek přeměny +7	
+20878	Oblek přeměny +8	
+20879	Oblek přeměny +9	
+20880	Brnění lucerny ducha +0	
+20881	Brnění lucerny ducha +1	
+20882	Brnění lucerny ducha +2	
+20883	Brnění lucerny ducha +3	
+20884	Brnění lucerny ducha +4	
+20885	Brnění lucerny ducha +5	
+20886	Brnění lucerny ducha +6	
+20887	Brnění lucerny ducha +7	
+20888	Brnění lucerny ducha +8	
+20889	Brnění lucerny ducha +9	
+20890	Šaty harmonie +0	
+20891	Šaty harmonie +1	
+20892	Šaty harmonie +2	
+20893	Šaty harmonie +3	
+20894	Šaty harmonie +4	
+20895	Šaty harmonie +5	
+20896	Šaty harmonie +6	
+20897	Šaty harmonie +7	
+20898	Šaty harmonie +8	
+20899	Šaty harmonie +9	
+20900	Brnění kamene Měsíce +0	
+20901	Brnění kamene Měsíce +1	
+20902	Brnění kamene Měsíce +2	
+20903	Brnění kamene Měsíce +3	
+20904	Brnění kamene Měsíce +4	
+20905	Brnění kamene Měsíce +5	
+20906	Brnění kamene Měsíce +6	
+20907	Brnění kamene Měsíce +7	
+20908	Brnění kamene Měsíce +8	
+20909	Brnění kamene Měsíce +9	
+20910	Brnění spadu +0	
+20911	Brnění spadu +1	
+20912	Brnění spadu +2	
+20913	Brnění spadu +3	
+20914	Brnění spadu +4	
+20915	Brnění spadu +5	
+20916	Brnění spadu +6	
+20917	Brnění spadu +7	
+20918	Brnění spadu +8	
+20919	Brnění spadu +9	
+20920	Oblek noci mrtvých +0	
+20921	Oblek noci mrtvých +1	
+20922	Oblek noci mrtvých +2	
+20923	Oblek noci mrtvých +3	
+20924	Oblek noci mrtvých +4	
+20925	Oblek noci mrtvých +5	
+20926	Oblek noci mrtvých +6	
+20927	Oblek noci mrtvých +7	
+20928	Oblek noci mrtvých +8	
+20929	Oblek noci mrtvých +9	
+20930	Brnění černého ohně +0	
+20931	Brnění černého ohně +1	
+20932	Brnění černého ohně +2	
+20933	Brnění černého ohně +3	
+20934	Brnění černého ohně +4	
+20935	Brnění černého ohně +5	
+20936	Brnění černého ohně +6	
+20937	Brnění černého ohně +7	
+20938	Brnění černého ohně +8	
+20939	Brnění černého ohně +9	
+20940	Šaty Měsíce +0	
+20941	Šaty Měsíce +1	
+20942	Šaty Měsíce +2	
+20943	Šaty Měsíce +3	
+20944	Šaty Měsíce +4	
+20945	Šaty Měsíce +5	
+20946	Šaty Měsíce +6	
+20947	Šaty Měsíce +7	
+20948	Šaty Měsíce +8	
+20949	Šaty Měsíce +9	
+20950	Onyxové brnění +0	
+20951	Onyxové brnění +1	
+20952	Onyxové brnění +2	
+20953	Onyxové brnění +3	
+20954	Onyxové brnění +4	
+20955	Onyxové brnění +5	
+20956	Onyxové brnění +6	
+20957	Onyxové brnění +7	
+20958	Onyxové brnění +8	
+20959	Onyxové brnění +9	
+21200	Popruh Zvěrokruhu+0	
+21201	Popruh Zvěrokruhu+1	
+21202	Popruh Zvěrokruhu+2	
+21203	Popruh Zvěrokruhu+3	
+21204	Popruh Zvěrokruhu+4	
+21205	Popruh Zvěrokruhu+5	
+21206	Popruh Zvěrokruhu+6	
+21207	Popruh Zvěrokruhu+7	
+21208	Popruh Zvěrokruhu+8	
+21209	Popruh Zvěrokruhu+9	
+25043	Magický kámen	Tento kámen zvyšuje úspěšnost při vylepšování předmětu. A co je nejlepší, předmět není při neúspěchu vylepšení zničen nebo není snížena jeho úroveň. S predmetem nemužete obchodovat.
+25099	Pergamen proti kamenu ducha		Odebere všechny kameny ducha z předmětu, ale nechá v něm odštěpky.
+27125	Válečný lektvar	Mocný lektvar, který zvýší tvé body obrany a útoku a přidá ti +50 000 bodů života (pouze v bitevní zóně).
+28044	Antimagický kámen +0	
+28045	Antimagický kámen +0	
+28144	Antimagický kámen +1	
+28145	Antimagický kámen +1	
+28244	Antimagický kámen +2	
+28245	Antimagický kámen +2	
+28344	Antimagický kámen +3	
+28345	Antimagický kámen +3	
+28444	Antimagický kámen +4	
+28445	Antimagický kámen +4	
+30334	Poukaz na pokrývku hlavy	Klikni na poukaz pravým tlačítkem a získáš skvělou pokrývku hlavy.
+30338	Poukaz na pokr. hlavy+	Klikni na poukaz pravým tlačítkem a získáš skvělou pokrývku hlavy, která ti přidá alespoň jeden náhodný bonus.
+30341	Prsten dračího ohně	Obklopuje tě aura intenzivní energie. Tento prsten, ukovaný v žáru dračího plamene, je schopen zničit sochy v doupěti Meley.
+30600	Šicí vzor	
+30601	Design brnění	
+30602	Modré barvivo	
+30603	Červené barvivo	
+30604	Šedé barvivo	
+30605	Zlaté listy	
+30606	Stříbrné listy	
+30607	Měděnné listy	
+30608	Ocelové listy	
+30609	Bronzové listy	
+30610	Mithril	
+30611	Težké popruhy	
+30612	Stabilní šňůry	
+30613	Kámen Dryád	Zahalený v zeleném lesku tento tajemný kámen obaluje duši Dryády, ducha stromu. Dryády znají tajná slova, která ti poskytnou přístup do jeskyně Ereba.
+30614	Černé barvivo	
+30615	Bílé barvivo	
+30616	Oxid titaničitý	Tento křišťál ve tvaru hranolu se používá pro zušlechtění části výbavy.
+30617	Ornament	Tento tajemný třpytivý drahokam se používá pro zušlechtění části výbavy.
+30618	Kámen Měsíce	Uvnitř tohoto drahokamu ve tvaru slzy je zapouzdřena jiskra měsíčního světla. Používá se pro zušlechtění výbavy.
+30619	Zlaté barvivo	
+30620	Roh červeného draka	Dračí rohy jsou jedním z nejtvrdších známých materiálů.
+30621	Šupina červeného draka	Dračí šupiny jsou jedním z nejtvrdších známých materiálů.
+30622	Design brnění: helma	Tento předmět je vyžadován výrobu helem.
+30623	Kniha pravdy	Těžká kniha, jejíž nápis vypadá, že září. Používá se pro zušlechtění výbavy.
+30624	Duše pravdy	Dobrá duše, navždy zavřená v křišťálové kouli. Používá se pro zušlechtění výbavy.
+30625	Padparadscha	Krystaly Padparadscha jsou vzácné a velmi nádherné červené safíry. Používá se pro zušlechtění výbavy.
+30626	Kyanit	Modrý drahokam, vytěžený z dolů Hory Sohan. Používá se pro zušlechtění výbavy.
+30627	Božské ovoce	Sladce chutnající ovoce ze zahrady Dračího boha. Používá se pro zušlechtění výbavy.
+30628	Božský květ	Svatá květina ze zahrady Dračího boha. Používá se pro zušlechtění výbavy.
+30629	Elixír bohů	Tato láhev obsahuje tajemnou zářící tekutinu. Používá se pro zušlechtění výbavy.
+30630	Dračí křídla	Použij křídla Alteranského draka pro zušlechtění výbavy.
+30639	Tajemný střep	Použij střepy pro vytvoření návrhů v Obchodě Yutnori. Přetáhni desku Yutnori na stůl pro otevření okna Zušlechtění.
+30640	Halloweenský design (m)	Vzor pro výrobu Halloweenské truhly (m).
+30641	Design Halow. klob. (m)	Vzor pro výrobu Truhly s Halloweenským kloboukem (m).
+30642	Design Strašid. mazlíka	Vzor pro výrobu Truhly se Strašidelným mazlíkem.
+30643	Design Str. jezd. zvíř.	Vzor pro výrobu Truhly Strašidelného jezdeckého zvířete.
+30644	Design Šperkovnice.	Vzor pro výrobu Šperkovnice.
+30645	Design mazlíka	Vzor pro výrobu Truhly mazlíka.
+30646	Design Šerpy	Vzor pro výrobu Truhly Šerpy.
+30647	Design Zdobené truhly	Vzor pro výrobu Zdobené truhly.
+30648	Design Knihy zvířete	Vzor pro výrobu Truhly Knihy zvířete.
+30649	Design Zubaté truhly+	Vzor pro výrobu Zubaté truhly+.
+30650	Design Cor Draconis	Vzor pro výrobu Truhly Cor Draconis.
+30651	Design Gaya	Vzor pro výrobu Truhly Gaya.
+30652	Design Tajemství	Vzor pro výrobu Truhly tajemství.
+30653	Design Rubínové truhly	Vzor pro výrobu Rubínové truhly.
+30654	Halloweenský design (ž)	Vzor pro výrobu Halloweenské truhly (ž).
+30655	Design Halow. klob. (ž)	Vzor pro výrobu Truhly s Halloweenským kloboukem (ž).
+34000	Solar Blast	Vzácný materiál, který se používá k vylepšení vašeho vybavení, tento předmět je velmi vzácný.
+34001	Magical Orb	Magical Orb je drahý kámen, který se používá k vylepšení vašeho vybavení.
+34002	Fire Horn	Původně patřící Razadorovi, tento materiál se používá k výrobě nebo vylepšení vašeho vybavení.
+34003	Ice Horn	Původně patřící Nemerovi, tento materiál se používá k výrobě nebo vylepšení vašeho vybavení..
+34004	Red Amulet	Okouzlující a drahý amulet. Převážně používán k vylepšování.
+34005	Green Amulet	Okouzlující a drahý amulet. Převážně používán k vylepšování.
+34006	Blue Amulet	Okouzlující a drahý amulet. Převážně používán k vylepšování.
+34007	Rock Of Darkness	Drahý kámen, který skrývá temné síly.
+34008	Rock Of Gore	Drahý kámen, který skrývá mocné síly.
+34009	Rock Of Poison	Drahý kámen, který skrývá jedovaté síly.
+34010	Poison Marble	Jedovatý materiál, který se dělá vaše vybavení více odolné.
+34011	Red Rock	Velmi vzácný kámen, který se používá k vylepšení vašeho vybavení.
+34012	Azure Stone	Velmi speciální kámen, používán pouze k vylepšení Azurového vybavení.
+34013	Rainbow Vial	Obsahuje duhovou tekutinu. Je používán k vylepšení.
+34014	Red Crystal Shards	Kousek krystalu, který se používá ke kombinaci s ostatními krystaly.
+34015	Green Crystal Shards	Kousek krystalu, který se používá ke kombinaci s ostatními krystaly.
+34016	Blue Crystal Shards	Kousek krystalu, který se používá ke kombinaci s ostatními krystaly.
+34017	Multi-Crystal Fragment	Kus šperku používaný k vylepšení předmětů.
+34018	Duratus Gem	Používán při vylepšování předmětů, dá se získat z Durata.
+34019	Fear Gem	Používán při vylepšování předmětů, dá se získat z Fear Dragon.
+34020	Treasure Gem	Používán při vylepšování předmětů, dá se získat z Treasure Stone.
+34021	UPP1	Speciální kámen používaný k vylepšování vašeho vybavení.
+34022	UPP2	Speciální kámen používaný k vylepšování vašeho vybavení.
+34023	Red Wing Feather	Kousek peří používaný k výrobě křídel.
+34024	Green Wing Feather	Kousek peří používaný k výrobě křídel.
+34025	Blue Wing Feather	Kousek peří používaný k výrobě křídel.
+34026	Wing Feather Set	Kousek peří používaný k výrobě křídel.
+34027	Almighty Dragon Soul	Duše Všemocného draka, používá se ke třídění vašeho vybavení.
+34028	Duratus Soul	Duše Durata, používá se ke třídění vašeho vybavení.
+34029	Fear Soul	Fear Soul, používá se ke třídění vašeho vybavení.
+34030	Treasure Soul	Treasure soul, používá se ke třídění vašeho vybavení.
+34031	Halloween Soul	Halloween, používá se ke třídění vašeho vybavení.
+34032	Zlatě vyřezaný kámen	Starověký kámen používaný k mnoha důležitým předmětům.
+34033	Žeton kamenu zbraně		Žeton používaný Jeon Seonem pro vylepšení kamenů ducha ve zbraních.
+34034	Žeton kamenu brnění		Žeton používaný Jeon Seonem pro vylepšení kamenů ducha v brněních.
+34035	Mazel Portál	Vír, který otevře vstup k Mazel Bossovi.
+34036	Drahokam bitvy	Mocný drahokam používaný pro vylepšování vybavení.
+34037	Červená okouzlující kostka	Speciální červená kostka používaná pro vylepšování vybavení.
+34038	Zelená okouzlující kostka	Speciální zelená kostka používaná pro vylepšování vybavení.
+34039	Modrá okouzlující kostka	Speciální modrá kostka používaná pro vylepšování vybavení.
+34040	Srdce Mazela	Srdce Mazela, klíč k velké síle.
+34041	Těleso bitvy	Používané k vylepšování vybavení.
+34042	Barevná kostka	Tato velkolepá kostka je vyrobena ze sil všech kostek, obsahuje obrovskou sílu.
+34052	Dýňové lízátko	 Dýňové lízátko vyrobené ze speciálních ingrediencí ti zaručí | +15% silný proti příšerám | +15% silný proti bossům | +15% silný proti kamenům metin
+34067		
+34068		
+34092	Truhla kostek	Obsahuje všechny druhy Okouzlujících kostek.
+34256	Nephritový Kristal	Drahocenný typ ktystalu který patří jen nefritským tritonům.	Může být použito pro Biologův výzkum.
+34257	Mapa Mantikor	Mapa která tě může dovést k pokladům mantikor.	Může být použito pro Biologův výzkum.
+34258	Houba Chrliče	Nejcennější typ houby pro chrliče.	Může být použito pro Biologův výzkum.
+34259	Lemuří Prach	Pozůstatky z lemurů.	Může být použito pro Biologův výzkum.
+34260	Klíč Duratuse	Klíč který může být nalezen v tělě Duratuse, výzkumníci do teď neví proč.	Může být použito pro Biologův výzkum.
+34261	Esence Strachu	Esence kterou drak strachu používá na rozšíření strachu ve svém dungeonu.	Může být použito pro Biologův výzkum.
+34262	Mazlova Medaile	Medaile která přináší pýchu Mazla.	Může být použito pro Biologův výzkum.
+34263	Kámen Duše Tritona	Legendární kámen, který obsahuje duši Tritonské rodiny.
+34264	Kámen Duše Mantikory	Legendární kámen, který obsahuje duši Mantikoří rodiny.
+34265	Kámen Duše Chrliče	Legendární kámen, který obsahuje duši rodiny Chrliče
+34266	Kámen Duše Lemura	Legendární kámen, který obsahuje duši Lemuří rodiny.
+34267	Kámen Duše Duratuse	Legendární kámen, který obsahuje duši Duturatuse.
+34268	Kámen Duše Strachu	Legendární kámen, který obsahuje duši Draka Strachu.
+34269	Kámen duše Mazla	Legendární kámen, který obsahuje duši Mazla.
+34270	Bedna začátečníka	Velice nápomocná bedna obsahující dočasné předměty z Itemshopu která pomáhá začátečníkům dohnat obsah serveru.
+34500	Feather Chest	Truhla plná barevného peří.
+34501	Shards Chest	Truhla obsahuje barevné střípky.
+35100	Seon-Pyeongs Rest Scroll	Dovoluje ti resetovat tvé odměny z questu Seon-Pyeong level 92 a 94.
+35101	Svitek Změny Pohlaví	Speciální svitek na změnu pohlaví kostýmu.
+39063	Obnovit Gaya tržiště.	Obnoví Gaya tržiště dříve než za standardních 5 hodin a odhalí nové předměty.
+39064	Rozšíření Gaya tržiště	Rozšiřuje Gaya tržiště otevřením extra místa pro nabídky předmětů, začíná prvním místem v druhé řadě.
+39065		
+39066		
+40101	Zubatá čepel	Vzhled zbraně, který přemění tvůj meč v Halloweenskou motorovou pilu.
+40102	Zubatá dýka	Vzhled zbraně, který přemění tvou dýku v Halloweenskou motorovou pilu.
+40103	Zubatý luk	Vzhled zbraně, který přemění tvůj luk v Halloweenskou dvojitou motorovou pilu.
+40104	Zubatá halapartna	Vzhled zbraně, který přemění tvůj dvouruční meč na Halloweenskou řetězovou halapartnu.
+40105	Zubatý zvon	Vzhled zbraně, který přemění tvůj zvon v Halloweenskou řetězovou palici.
+40106	Zubatý vějíř	Vzhled zbraně, který přemění tvůj vějíř v Halloweenský řetězový vějíř.
+40107	Zubaté drápy	Vzhled zbraně, který přemění tvé drápy v Halloweenské motorové pily.
+40108	Zubatá čepel+	Vzhled zbraně, který přemění tvůj meč v Halloweenskou motorovou pilu. Poskytne ti alespoň jeden bonus.
+40109	Zubatá dýka+	Vzhled zbraně, který přemění tvou dýku v Halloweenskou motorovou pilu. Poskytne ti alespoň jeden bonus.
+40110	Zubatý luk+	Vzhled zbraně, který přemění tvůj luk v Halloweenskou dvojitou motorovou pilu. Poskytne ti alespoň jeden bonus.
+40111	Zubatá halapartna+	Vzhled zbraně, který přemění tvůj dvouruční meč na Halloweenskou řetězovou halapartnu. Poskytne ti alespoň jeden bonus.
+40112	Zubatý zvon+	Vzhled zbraně, který přemění tvůj zvon v Halloweenskou řetězovou palici. Poskytne ti alespoň jeden bonus.
+40113	Zubatý vějíř+	Vzhled zbraně, který přemění tvůj vějíř v Halloweenský řetězový vějíř. Poskytne ti alespoň jeden bonus.
+40114	Zubaté drápy+	Vzhled zbraně, který přemění tvé drápy v Halloweenské motorové pily. Poskytne ti alespoň jeden bonus.
+40115	Meč z cukrové hůlky	Vzhled zbraně, který na Vánoce přemění tvůj meč na cukrovou hůlku.
+40116	Dýka z cukrové hůlky	Vzhled zbraně, který na Vánoce přemění tvou dýku na cukrovou hůlku.
+40117	Elfí luk	Vzhled zbraně, který na Vánoce přemění tvůj luk na Elfí luk.
+40118	Perníková halapartna	Vzhled zbraně, který na Vánoce ozdobí tvou dvouruční zbraň perníkem.
+40119	Zvon z cukrové hůlky	Vzhled zbraně, který na Vánoce přemění tvůj zvon na cukrovou hůlku.
+40120	Sněhulákův vějíř	Vzhled zbraně, který na Vánoce ozdobí tvůj vějíř sněhulákem.
+40121	Rudolfovy drápy	Vzhled zbraně, který na Vánoce ozdobí tvé drápy sobem.
+40122	Meč z cukrové hůlky+	Vzhled zbraně, který na Vánoce přemění tvůj meč na cukrovou hůlku. Poskytuje alespoň jeden náhodný bonus.
+40123	Dýka z cukrové hůlky+	Vzhled zbraně, který na Vánoce přemění tvou dýku na cukrovou hůlku. Poskytuje alespoň jeden náhodný bonus.
+40124	Elfí luk+	Vzhled zbraně, který na Vánoce přemění tvůj luk na Elfí luk. Poskytuje alespoň jeden náhodný bonus.
+40125	Perníková halapartna+	Vzhled zbraně, který na Vánoce ozdobí tvou dvouruční zbraň perníkem. Poskytuje alespoň jeden náhodný bonus.
+40126	Zvon z cukrové hůlky+	Vzhled zbraně, který na Vánoce přemění tvůj zvon na cukrovou hůlku. Poskytuje alespoň jeden náhodný bonus.
+40127	Sněhulákův vějíř+	Vzhled zbraně, který na Vánoce ozdobí tvůj vějíř sněhulákem. Poskytuje alespoň jeden náhodný bonus.
+40128	Rudolfovy drápy+	Vzhled zbraně, který na Vánoce ozdobí tvé drápy sobem. Poskytuje alespoň jeden náhodný bonus.
+40129	Aquarianská čepel	Vzhled zbraně, který obaluje čepel tvrdou vrstvou duhové vody.
+40130	Aquarianská dýka	Vzhled zbraně, který obaluje dýku tvrdou vrstvou duhové vody.
+40131	Aquarianský luk	Vzhled zbraně, který obaluje luk tvrdou vrstvou duhové vody.
+40132	Aquarianská halapartna	Vzhled zbraně, který obaluje dvojruční meč tvrdou vrstvou duhové vody.
+40133	Aquarianský zvon	Vzhled zbraně, který obaluje zvon tvrdou vrstvou duhové vody.
+40134	Aquarianský vějíř	Vzhled zbraně, který obaluje vějíř tvrdou vrstvou duhové vody.
+40135	Aquarianské drápy	Vzhled zbraně, který obaluje drápy tvrdou vrstvou duhové vody.
+40136	Aquarianská čepel+	Vzhled zbraně, který obaluje čepel tvrdou vrstvou duhové vody. Poskytuje alespoň jeden náhodný bonus.
+40137	Aquarianská dýka+	Vzhled zbraně, který obaluje dýku tvrdou vrstvou duhové vody. Poskytuje alespoň jeden náhodný bonus.
+40138	Aquarianský luk+	Vzhled zbraně, který obaluje luk tvrdou vrstvou duhové vody. Poskytuje alespoň jeden náhodný bonus.
+40139	Aquarianská halapartna+	Vzhled zbraně, který obaluje dvojruční meč tvrdou vrstvou duhové vody. Poskytuje alespoň jeden náhodný bonus.
+40140	Aquarianský zvon+	Vzhled zbraně, který obaluje zvon tvrdou vrstvou duhové vody. Poskytuje alespoň jeden náhodný bonus.
+40141	Aquarianský vějíř+	Vzhled zbraně, který obaluje vějíř tvrdou vrstvou duhové vody. Poskytuje alespoň jeden náhodný bonus.
+40142	Aquarianské drápy+	Vzhled zbraně, který obaluje drápy tvrdou vrstvou duhové vody. Poskytuje alespoň jeden náhodný bonus.
+41458	Róba Fénixe	Elegantní dlouhá mužská róba v asijském stylu s výšivkou Fénixe.
+41459	Róba kobry	Elegantní dlouhá mužská róba v asijském stylu s výšivkou kobry.
+41462	Dračí qipao (rudé)	Tradiční rudé ženské šaty v asijském stylu s výšivkou zlatého draka.
+41463	Dračí qipao (bílé)	Tradiční bílé ženské šaty v asijském stylu s výšivkou rudého draka.
+41466	Róba Fénixe+	Elegantní dlouhá mužská róba v asijském stylu s výšivkou Fénixe. Poskytuje alespoň jeden náhodný bonus.
+41467	Róba kobry+	Elegantní dlouhá mužská róba v asijském stylu s výšivkou kobry. Poskytuje alespoň jeden náhodný bonus.
+41470	Dračí qipao+ (rudé)	Tradiční rudé ženské šaty v asijském stylu s výšivkou zlatého draka. Poskytuje alespoň jeden náhodný bonus.
+41471	Dračí qipao+ (bílé)	Tradiční bílé ženské šaty v asijském stylu s výšivkou rudého draka. Poskytuje alespoň jeden náhodný bonus.
+41488	Kostým faraona (červený)	Choď jako Egypťan v ozdobném červeném mužském kostýmu faraona.
+41489	Kostým faraona (modrý)	Choď jako Egypťan v ozdobném světle modrém mužském kostýmu faraona.
+41490	Anděl Uriel (bílý)	Elegantní ženský kostým s křídly nevinného anděla.
+41491	Anděl Uriel (červený)	Grandiózní ženský kostým s ohnivými červenými andělskými křídly.
+41492	Kostým faraona+(červený)	Choď jako Egypťan v ozdobném červeném mužském kostýmu faraona. Poskytuje alespoň jeden náhodný bonus.
+41493	Kostým faraona+ (modrý)	Choď jako Egypťan v ozdobném světle modrém mužském kostýmu faraona. Poskytuje alespoň jeden náhodný bonus.
+41494	Anděl Uriel+ (bílý)	Elegantní ženský kostým s křídly nevinného anděla. Poskytuje alespoň jeden náhodný bonus.
+41495	Anděl Uriel+ (červený)	Grandiózní ženský kostým s ohnivými červenými andělskými křídly. Poskytuje alespoň jeden náhodný bonus.
+41512	Kostým s tesáky	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech.
+41513	Kostým s tesáky	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech.
+41514	Kostým s tesáky	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech.
+41515	Kostým s tesáky	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech.
+41516	Kostým s tesáky+	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech. Poskytne ti alespoň jeden náhodný bonus.
+41517	Kostým s tesáky+	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech. Poskytne ti alespoň jeden náhodný bonus.
+41518	Kostým s tesáky+	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech. Poskytne ti alespoň jeden náhodný bonus.
+41519	Kostým s tesáky+	Démonicky vypadají Halloweenský kostým, který tvému nepříteli způsobí mrazení v zádech. Poskytne ti alespoň jeden náhodný bonus.
+41520	Červená zimní róba	Zimní oděv z červené plsti. Neobchodovatelný.
+41521	Modrá zimní róba	Zimní oděv z modré plsti. Neobchodovatelný.
+41522	Červená zimní róba+	Zimní oděv z červené plsti. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41523	Modrá zimní róba+	Zimní oděv z modré plsti. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41524	Červené zimní šaty	Zimní šaty z červené plsti. Neobchodovatelné.
+41525	Modré zimní šaty	Zimní šaty z modré plsti. Neobchodovatelné.
+41526	Červené zimní šaty+	Zimní šaty z červené plsti. Poskytují alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41527	Modré zimní šaty+	Zimní šaty z modré plsti. Poskytují alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41528	Princ pouště (červený)	Oblek válečníka, vyrobený z červené látky, určen pro vůdce.
+41529	Princ pouště (modrý)	Oblek válečníka, vyrobený z modré látky, určen pro vůdce.
+41530	Princezna pouště (červ.)	Oblek válečnice, vyrobený z červené látky, určen pro vůdkyně.
+41531	Princezna pouště (modrá)	Oblek válečnice, vyrobený z modré látky, určen pro vůdkyně.
+41532	Princ pouště+ (červený)	Oblek válečníka, vyrobený z červené látky, určen pro vůdce. Poskytuje alespoň jeden náhodný bonus.
+41533	Princ pouště+ (modrý)	Oblek válečníka, vyrobený z modré látky, určen pro vůdce. Poskytuje alespoň jeden náhodný bonus.
+41534	Princezna pouště+ (čer.)	Oblek válečnice, vyrobený z červené látky, určen pro vůdkyně. Poskytuje alespoň jeden náhodný bonus.
+41535	Princezna pouště+ (mod.)	Oblek válečnice, vyrobený z modré látky, určen pro vůdkyně. Poskytuje alespoň jeden náhodný bonus.
+41540	Zaječí kostým (bílý)	Králičí kostým pro muže vyrobený z bílé plyše. Neobchodovatelné.
+41541	Zaječí kostým (tm. růž.)	Králičí kostým pro muže vyrobený z tmavě růžové plyše. Neobchodovatelné.
+41542	Zaječí kostým (nám.mod.)	Zaječí kostým pro ženy vyrobený z námořnicky modré plyše. Neobchodovatelné.
+41543	Zaječí kostým (fialový)	Zaječí kostým pro ženy vyrobený z fialové plyše. Neobchodovatelné.
+41544	Zaječí kostým+ (bílý)	Králičí kostým pro muže vyrobený z bílé plyše. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41545	Zaječí kostým+(tm. růž.)	Králičí kostým pro muže vyrobený z tmavě růžové plyše. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41546	Zaječí kostým+(nám.mod.)	Zaječí kostým pro ženy vyrobený z námořnicky modré plyše. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41547	Zaječí kostým+ (fialový)	Zaječí kostým pro ženy vyrobený z fialové plyše. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41560	Krvavý upír (šedivý)	Brnění opravdového Krvavého upíra vyzařuje auru nezranitelnosti. S předmětem nelze obchodovat.
+41561	Krvavý upír (červený)	Brnění opravdového Krvavého upíra vyzařuje auru nezranitelnosti. S předmětem nelze obchodovat.
+41562	Krvavá lamia (šedivá)	Brnění válečnické Krvavé lamie vyzařuje auru nezranitelnosti. S předmětem nelze obchodovat.
+41563	Krvavá lamia (červená)	Brnění válečnické Krvavé lamie vyzařuje auru nezranitelnosti. S předmětem nelze obchodovat.
+41564	Krvavý upír+ (šedivý)	Brnění opravdového Krvavého upíra ti zaručí sílu superčlověka. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41565	Krvavý upír+ (červený)	Brnění opravdového Krvavého upíra ti zaručí sílu superčlověka. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41566	Krvavá lamia+ (šedivá)	Brnění válečnické Krvavé lamie ti zaručí sílu superčlověka. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41567	Krvavá lamia+ (červená)	Brnění válečnické Krvavé lamie ti zaručí sílu superčlověka. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41568	Rudá slavnostní róba (m)	Rudá slavnostní róba s bílým lemem.
+41569	Zelená slavn. róba (m)	Zelená slavnostní róba s bílým lemem.
+41570	Rudá slavnostní róba (ž)	Rudá slavnostní róba s bílým lemem.
+41571	Zelená slavn. róba (ž)	Zelená slavnostní róba s bílým lemem.
+41572	Rudá slavnostní róba+(m)	Rudá slavnostní róba s bílým lemem. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+41573	Zelená slavn. róba+ (m)	Zelená slavnostní róba s bílým lemem. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+41574	Rudá slavnostní róba+(ž)	Rudá slavnostní róba s bílým lemem. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+41575	Zelená slavn. róba+ (ž)	Zelená slavnostní róba s bílým lemem. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+41576	Zlaté O-Yoroi (m)	Zlatá uniforma japonského generála.
+41577	Stříbrné O-Yoroi (m)	Stříbrná uniforma japonského generála.
+41578	Zlaté O-Yoroi (ž)	Zlatá uniforma japonského generála.
+41579	Stříbrné O-Yoroi (ž)	Stříbrná uniforma japonského generála.
+41580	Zlaté O-Yoroi+ (m)	Zlatá uniforma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+41581	Stříbrné O-Yoroi+ (m)	Stříbrná uniforma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+41582	Zlaté O-Yoroi+ (ž)	Zlatá uniforma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+41583	Stříbrné O-Yoroi+ (ž)	Stříbrná uniforma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+41584	Brnění samuraje (modré)	Modré brnění ve stylu zkušeného šóguna.
+41585	Brnění samuraje (červ.)	Červené brnění ve stylu zkušeného šóguna.
+41586	Brnění samuraje (modré)	Modré brnění ve stylu šógunky.
+41587	Brnění samuraje (červ.)	Červené brnění ve stylu šógunky.
+41588	Brnění samuraje+ (modré)	Modré brnění ve stylu zkušeného šóguna. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41589	Brnění samuraje+ (červ.)	Červené brnění ve stylu zkušeného šóguna. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41590	Brnění samuraje+ (modré)	Modré brnění ve stylu šógunky. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41591	Brnění samuraje+ (červ.)	Červené brnění ve stylu šógunky. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41592	Postroj děsu (zlatý)	Plamenný pekelný pancíř, dokonalý pro šíření teroru.
+41593	Postroj děsu (modrý)	Modře žhnoucí pekelný pancíř, dokonalý pro šíření teroru.
+41594	Postroj děsu (zlatý)	Plamenný pekelný pancíř, dokonalý pro šíření teroru.
+41595	Postroj děsu (modrý)	Modře žhnoucí pekelný pancíř, dokonalý pro šíření teroru.
+41596	Postroj děsu+(zlatý)	Plamenný pekelný pancíř, dokonalý pro šíření teroru. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41597	Postroj děsu+(modrý)	Modře žhnoucí pekelný pancíř, dokonalý pro šíření teroru. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41598	Postroj děsu+(zlatý)	Plamenný pekelný pancíř, dokonalý pro šíření teroru. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41599	Postroj děsu+(modrý)	Modře žhnoucí pekelný pancíř, dokonalý pro šíření teroru. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41600	Steampunk. výbava (čern)	Futuristická výbava pro mužské bojovníky dneška.
+41601	Steampunk. výbava (červ)	Futuristická výbava pro mužské bojovníky dneška.
+41602	Steampunk. šaty (černé)	Futuristický kostým pro ženské bojovnice dneška.
+41603	Steampunk. šaty (červ.)	Futuristický kostým pro ženské bojovnice dneška.
+41604	Steampunk. výbava+(čern)	Futuristická výbava pro mužské bojovníky dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41605	Steampunk. výbava+(červ)	Futuristická výbava pro mužské bojovníky dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41606	Steampunk. šaty+(černé)	Futuristická výbava pro ženské bojovnice dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41607	Steampunk. šaty+(červ.)	Futuristická výbava pro ženské bojovnice dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+41608	Zaječí kostým (modrý)	Pohádkový oblek v bílých a fialových odstínech s modrými šortkami.
+41609	Zaječí kostým (modroz.)	Pohádkový oblek v bílých a modrozelených odstínech se šedými šortkami.
+41610	Zaječí šaty (modré)	Pohádkové šaty s volánky v modré a fialové barvě.
+41611	Zaječí šaty (šedé)	Pohádkové šaty s volánky v šedé a modrozelené barvě.
+41612	Zaječí kostým+ (modrý)	Pohádkový oblek v bílých a fialových odstínech s modrými šortkami. Poskytuje alespoň jeden náhodný bonus.
+41613	Zaječí kostým+ (modroz.)	Pohádkový oblek v bílých a modrozelených odstínech se šedými šortkami. Poskytuje alespoň jeden náhodný bonus.
+41614	Zaječí šaty+ (modré)	Pohádkové šaty s volánky v modré a fialové barvě. Poskytuje alespoň jeden náhodný bonus.
+41615	Zaječí šaty+ (šedé)	Pohádkové šaty s volánky v šedé a modrozelené barvě. Poskytuje alespoň jeden náhodný bonus.
+41630	Brnění Avalonu (stříb.)	Stříbrné brnění, které v dávných dobách patřilo rytířské dynastii.
+41631	Brnění Avalonu (červené)	Červené brnění, které v dávných dobách patřilo rytířské dynastii.
+41632	Brnění Avalonu (stříb.)	Stříbrné brnění, které v dávných dobách patřilo rytířské dynastii.
+41633	Brnění Avalonu (červené)	Červené brnění, které v dávných dobách patřilo rytířské dynastii.
+41634	Brnění Avalonu+ (stříb.)	Třpytivé brnění, které v dávných dobách patřilo rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+41635	Brnění Avalonu+(červené)	Třpytivé brnění, které v dávných dobách patřilo rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+41636	Brnění Avalonu+ (stříb.)	Třpytivé brnění, které v dávných dobách patřilo rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+41637	Brnění Avalonu+(červené)	Třpytivé brnění, které v dávných dobách patřilo rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+41638	Sada pro MS - KSA (M)	Fotbalová sada pro mistrovství světa v saudsko arabských národních barvách.
+41639	Sada pro MS - KSA (Ž)	Fotbalová sada pro mistrovství světa v saudsko arabských národních barvách.
+41640	Sada pro MS - KSA+ (M)	Fotbalová sada pro mistrovství světa v saudsko arabských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41641	Sada pro MS - KSA+ (Ž)	Fotbalová sada pro mistrovství světa v saudsko arabských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41642	Sada pro MS - DEN (M)	Fotbalová sada pro mistrovství světa v dánských národních barvách.
+41643	Sada pro MS - DEN (Ž)	Fotbalová sada pro mistrovství světa v dánských národních barvách.
+41644	Sada pro MS - DEN+ (M)	Fotbalová sada pro mistrovství světa v dánských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41645	Sada pro MS - DEN+ (Ž)	Fotbalová sada pro mistrovství světa v dánských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41646	Sada pro MS - SVK (M)	Fotbalová sada pro mistrovství světa v slovenských národních barvách.
+41647	Sada pro MS - SVK (Ž)	Fotbalová sada pro mistrovství světa v slovenských národních barvách.
+41648	Sada pro MS - SVK+ (M)	Fotbalová sada pro mistrovství světa v slovenských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41649	Sada pro MS - SVK+ (Ž)	Fotbalová sada pro mistrovství světa v slovenských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41650	Sada pro MS - TUR (M)	Fotbalová sada pro mistrovství světa v tureckých národních barvách.
+41651	Sada pro MS - TUR (Ž)	Fotbalová sada pro mistrovství světa v tureckých národních barvách.
+41652	Sada pro MS - TUR+ (M)	Fotbalová sada pro mistrovství světa v tureckých národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41653	Sada pro MS - TUR+ (Ž)	Fotbalová sada pro mistrovství světa v tureckých národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41654	Sada pro MS - HUN (M)	Fotbalová sada pro mistrovství světa v maďarských národních barvách.
+41655	Sada pro MS - HUN (Ž)	Fotbalová sada pro mistrovství světa v maďarských národních barvách.
+41656	Sada pro MS - HUN+ (M)	Fotbalová sada pro mistrovství světa v maďarských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41657	Sada pro MS - HUN+ (Ž)	Fotbalová sada pro mistrovství světa v maďarských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41658	Sada pro MS - ROU (m)	Fotbalová sada pro mistrovství světa v rumunských národních barvách.
+41659	Sada pro MS - ROU (ž)	Fotbalová sada pro mistrovství světa v rumunských národních barvách.
+41660	Sada pro MS - ROU+ (m)	Fotbalová sada pro mistrovství světa v rumunských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41661	Sada pro MS - ROU+ (ž)	Fotbalová sada pro mistrovství světa v rumunských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41662	Sada pro MS - POL (M)	Fotbalová sada pro mistrovství světa v polských národních barvách.
+41663	Sada pro MS - POL (Ž)	Fotbalová sada pro mistrovství světa v polských národních barvách.
+41664	Sada pro MS - POL+ (M)	Fotbalová sada pro mistrovství světa v polských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41665	Sada pro MS - POL+ (Ž)	Fotbalová sada pro mistrovství světa v polských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41666	Sada pro MS - BRA (M)	Fotbalová sada pro mistrovství světa v brazilských národních barvách.
+41667	Sada pro MS - BRA (Ž)	Fotbalová sada pro mistrovství světa v brazilských národních barvách.
+41668	Sada pro MS - BRA+ (M)	Fotbalová sada pro mistrovství světa v brazilských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41669	Sada pro MS - BRA+ (Ž)	Fotbalová sada pro mistrovství světa v brazilských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+41670	Kostým hnědého vlka (m)	Tento hnědý kožený kostým probudí vlka v každém muži.
+41671	Kostým šedého vlka (m)	Tento šedý kožený kostým probudí vlka v každém muži.
+41672	Kostým hnědého vlka (ž)	Tento hnědý kožený kostým probudí vlka v každé ženě.
+41673	Kostým šedého vlka (ž)	Tento šedý kožený kostým probudí vlka v každé ženě.
+41674	Kostým hnědého vlka+ (m)	Tento hnědý kožený kostým probudí vlka v každém muži. Poskytuje alespoň jeden náhodný bonus.
+41675	Kostým šedého vlka+ (m)	Tento šedý kožený kostým probudí vlka v každém muži. Poskytuje alespoň jeden náhodný bonus.
+41676	Kostým hnědého vlka+ (ž)	Tento hnědý kožený kostým probudí vlka v každé ženě. Poskytuje alespoň jeden náhodný bonus.
+41677	Kostým šedého vlka+ (ž)	Tento šedý kožený kostým probudí vlka v každé ženě. Poskytuje alespoň jeden náhodný bonus.
+45108	Rýžový klobouk	Tradiční asijský mužský klobouk vytvořený z neloupané slámy.
+45110	Odango	Asijský zdobný účes se dvěma drdoly.
+45114	Rýžový klobouk+	Tradiční asijský mužský klobouk vytvořený z neloupané slámy. Poskytuje alespoň jeden náhodný bonus.
+45116	Odango+	Asijský zdobný účes se dvěma drdoly. Poskytuje alespoň jeden náhodný bonus.
+45182	Pernatá čelenka (červ.)	Ostentativní červená pernatá čelenka pro muže. Perfektní pro čas karnevalu!
+45183	Pernatá čelenka (modrá)	Ostentativní světle modrá pernatá čelenka pro muže. Perfektní pro čas karnevalu!
+45184	Fénixova tiára (bílá)	Elegantní lesklá pokrývka hlavy pro ženy.
+45185	Fénixova tiára (červená)	Elegantní lesklá pokrývka hlavy pro ženy.
+45186	Pernatá čelenka+(červ.)	Ostentativní červená pernatá čelenka pro muže. Perfektní pro čas karnevalu! Poskytuje alespoň jeden náhodný bonus.
+45187	Pernatá čelenka+(modrá)	Ostentativní světle modrá pernatá čelenka pro muže. Perfektní pro čas karnevalu! Poskytuje alespoň jeden náhodný bonus.
+45188	Fénixova tiára+ (bílá)	Elegantní lesklá pokrývka hlavy pro ženy. Poskytuje alespoň jeden náhodný bonus.
+45189	Fénixova tiára+(červená)	Elegantní lesklá pokrývka hlavy pro ženy. Poskytuje alespoň jeden náhodný bonus.
+45206	Helma s tesáky	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života.
+45207	Helma s tesáky	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života.
+45208	Helma s tesáky	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života.
+45209	Helma s tesáky	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života.
+45210	Helma s tesáky+	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života. Poskytne ti alespoň jeden náhodný bonus.
+45211	Helma s tesáky+	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života. Poskytne ti alespoň jeden náhodný bonus.
+45212	Helma s tesáky+	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života. Poskytne ti alespoň jeden náhodný bonus.
+45213	Helma s tesáky+	Hrůzostrašná Halloweenská helma, který z tvého nepřítele vyrazí poslední jiskru života. Poskytne ti alespoň jeden náhodný bonus.
+45214	Santova červená čepice	Červená plstěná čepice s bílou bambulí. Neobchodovatelné.
+45215	Santova modrá čepice	Modrá plstěná čepice s bílou bambulí. Neobchodovatelné.
+45216	Santova červená kapuce	Červená plstěná čepice s bílou bambulí. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45217	Santova modrá kapuce	Modrá plstěná čepice s bílou bambulí. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45218	Santova červená čepice+	Červená plstěná kapuce s bílou bambulí. Neobchodovatelné.
+45219	Santova modrá čepice+	Modrá plstěná kapuce s bílou bambulí. Neobchodovatelné.
+45220	Santova červená kapuce+	Červená plstěná kapuce s bílou bambulí. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45221	Santova modrá kapuce+	Modrá plstěná kapuce s bílou bambulí. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45222	Zaječí uši (bílé)	Bílý klobouk s králičíma ušima pro muže. Neobchodovatelné.
+45223	Zaječí uši (tm. růžové)	Tmavě růžový klobouk s králičíma ušima pro muže. Neobchodovatelné.
+45224	Zaječí uši (nám. modř)	Zaječí uši pro ženy v námořní modři. Neobchodovatelné.
+45225	Zaječí uši (fialové)	Fialové zaječí uši pro ženy. Neobchodovatelné.
+45226	Zaječí uši+ (bílé)	Bílý klobouk s králičíma ušima pro muže. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45227	Zaječí uši+ (tm. růž.)	Tmavě růžový klobouk s králičíma ušima pro muže. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45228	Zaječí uši+ (nám. modř)	Zaječí uši pro ženy v námořní modři. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45229	Zaječí uši+ (fialové)	Fialové zaječí uši pro ženy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45234	Modrý turban	Skvěle padnoucí modrý turban, vyrobený z odolného materiálu speciálně pro válečníky.
+45235	Červený turban	Skvěle padnoucí červený turban, vyrobený z odolného materiálu speciálně pro válečníky.
+45236	Hnědý šátek	Hnědý šátek vyrobený z lehkého materiálu - perfektní pro válečnice.
+45237	Zelený šátek	Zelený šátek vyrobený z lehkého materiálu - perfektní pro válečnice.
+45238	Modrý turban+	Skvěle padnoucí modrý turban, vyrobený z odolného materiálu speciálně pro válečníky. Poskytuje alespoň jeden náhodný bonus.
+45239	Červený turban+	Skvěle padnoucí červený turban, vyrobený z odolného materiálu speciálně pro válečníky. Poskytuje alespoň jeden náhodný bonus.
+45240	Hnědý šátek+	Hnědý šátek vyrobený z lehkého materiálu - perfektní pro válečnice. Poskytuje alespoň jeden náhodný bonus.
+45241	Zelené šátek+	Zelený šátek vyrobený z lehkého materiálu - perfektní pro válečnice. Poskytuje alespoň jeden náhodný bonus.
+45250	Helma Krv. upíra (šed.)	Přílba opravdového Krvavého upíra. S předmětem nelze obchodovat.
+45251	Helma Krv. upíra (červ.)	Přílba opravdového Krvavého upíra. S předmětem nelze obchodovat.
+45252	Helma Krv. lamie (šed.)	Přílba válečnické Krvavé lamie. S předmětem nelze obchodovat.
+45253	Helma Krv. lamie (červ.)	Přílba válečnické Krvavé lamie. S předmětem nelze obchodovat.
+45254	Helma Krv. upíra+ (šed.)	Přílba opravdového Krvavého upíra. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45255	Helma Krv. upíra+ (čer.)	Přílba opravdového Krvavého upíra. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45256	Helma Krv. lamie+ (šed.)	Přílba válečnické Krvavé lamie. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45257	Helma Krv. lamie+ (čer.)	Přílba válečnické Krvavé lamie. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45258	Vánoční kapuce (rudá)	Rudá slavnostní kapuce s bílým lemem.
+45259	Vánoční kapuce (zelená)	Zelená slavnostní kapuce s bílým lemem.
+45260	Vánoční baret (rudý)	Rudý vánoční baret s bílou bambulí.
+45261	Vánoční baret (zelený)	Zelený vánoční baret s bílou bambulí.
+45262	Vánoční kapuce+ (rudá)	Rudá slavnostní kapuce s bílým lemem. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+45263	Vánoční kapuce+ (zelená)	Zelená slavnostní kapuce s bílým lemem. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+45264	Vánoční baret+ (rudý)	Rudý vánoční baret s bílou bambulí. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+45265	Vánoční baret+ (zelený)	Zelený vánoční baret s bílou bambulí. Předmět ti poskytne alespoň jeden náhodný bonus a lze s ním obchodovat.
+45266	Zlaté Kabuto (m)	Zlatá helma japonského generála.
+45267	Stříbrné Kabuto (m)	Stříbrná helma japonského generála.
+45268	Zlaté Kabuto (ž)	Zlatá helma japonského generála.
+45269	Stříbrné Kabuto (ž)	Stříbrná helma japonského generála.
+45270	Zlaté Kabuto+ (m)	Zlatá helma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+45271	Stříbrné Kabuto+ (m)	Stříbrná helma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+45272	Zlaté Kabuto+ (ž)	Zlatá helma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+45273	Stříbrné Kabuto+ (ž)	Stříbrná helma japonského generála. Poskytuje alespoň jeden náhodný bonus.
+45274	Samurajský účes (zlatý)	Účes v samurajském stylu se zlatou sponou pro muže.
+45275	Samurajský účes (stříb.)	Účes v samurajském stylu se stříbrnou sponou pro muže.
+45276	Samurajský účes (zlatý)	Účes v samurajském stylu se zlatou sponou pro ženy.
+45277	Samurajský účes (stříb.)	Účes v samurajském stylu se stříbrnou sponou pro ženy.
+45278	Samurajský účes+(zlatý)	Účes v samurajském stylu se zlatou sponou pro muže. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45279	Samurajský účes+(stříb.)	Účes v samurajském stylu se stříbrnou sponou pro muže. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45280	Samurajský účes+(zlatý)	Účes v samurajském stylu se zlatou sponou pro ženy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45281	Samurajský účes+(stříb.)	Účes v samurajském stylu se stříbrnou sponou pro ženy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45282	Postroj děsu (zlatý)	Zlatá přílba s ďábelskými rohy.
+45283	Rohy děsu (modré)	Modrá přílba s ďábelskými rohy.
+45284	Postroj děsu (zlatý)	Zlatá přílba s ďábelskými rohy.
+45285	Rohy děsu (modré)	Modrá přílba s ďábelskými rohy.
+45286	Postroj děsu+(zlatý)	Zlatá přílba s ďábelskými rohy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45287	Rohy děsu+(modré)	Modrá přílba s ďábelskými rohy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45288	Postroj děsu+(zlatý)	Zlatá přílba s ďábelskými rohy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45289	Rohy děsu+(modré)	Modrá přílba s ďábelskými rohy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45290	Steampunk. čapka (čern)	Futuristická pokrývka hlavy pro mužské bojovníky dneška.
+45291	Steampunk. čapka (červ)	Futuristická pokrývka hlavy pro mužské bojovníky dneška.
+45292	Steampunk. čapka (čern)	Futuristická pokrývka hlavy pro ženské bojovnice dneška.
+45293	Steampunk. čapka (červ)	Futuristická pokrývka hlavy pro ženské bojovnice dneška.
+45294	Steampunk. čapka+(čern)	Futuristická pokrývka hlavy pro mužské bojovníky dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45295	Steampunk. čapka+(červ)	Futuristická pokrývka hlavy pro mužské bojovníky dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45296	Steampunk. čapka+(čern)	Futuristická pokrývka hlavy pro ženské bojovnice dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45297	Steampunk. čapka+(červ)	Futuristická pokrývka hlavy pro ženské bojovnice dneška. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45298	Pernatý klobouk (modrý)	Modrý klobouk s perličkovým podbradníkem a červeným bažantím peřím.
+45299	Pernatý klobouk (šedý)	Šedý klobouk s perličkovým podbradníkem a modrozeleným bažantím peřím.
+45300	Zaječí klobouk (modrý)	Modrá pokrývka hlavy ozdobená tyrkysovým drahokamem.
+45301	Zaječí klobouk (šedý)	Šedá pokrývka hlavy ozdobená fialovým drahokamem.
+45302	Pernatý klobouk+ (modrý)	Modrý klobouk s perličkovým podbradníkem a červeným bažantím peřím. Poskytuje alespoň jeden náhodný bonus.
+45303	Pernatý klobouk+ (šedý)	Šedý klobouk s perličkovým podbradníkem a modrozeleným bažantím peřím. Poskytuje alespoň jeden náhodný bonus.
+45304	Zaječí klobouk+ (modrý)	Modrá pokrývka hlavy ozdobená tyrkysovým drahokamem. Poskytuje alespoň jeden náhodný bonus.
+45305	Zaječí klobouk+ (šedý)	Šedá pokrývka hlavy ozdobená fialovým drahokamem. Poskytuje alespoň jeden náhodný bonus.
+45314	Koruna Zvěrokruhu	Majestátní pokrývka hlavy.
+45315	Koruna Zvěrokruhu	Majestátní pokrývka hlavy.
+45316	Koruna Zvěrokruhu+	Majestátní pokrývka hlavy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45317	Koruna Zvěrokruhu+	Majestátní pokrývka hlavy. Poskytuje alespoň jeden náhodný bonus. S předmětem lze obchodovat.
+45320	Přílba Avalonu (stříb.)	Stříbrná přílba, které v dávných dobách patřila rytířské dynastii.
+45321	Přílba Avalonu (červená)	Červená přílba, které v dávných dobách patřila rytířské dynastii.
+45322	Přílba Avalonu (stříb.)	Stříbrná přílba, které v dávných dobách patřila rytířské dynastii.
+45323	Přílba Avalonu (červená)	Červená přílba, které v dávných dobách patřila rytířské dynastii.
+45324	Přílba Avalonu+ (stříb.)	Stříbrná přílba, které v dávných dobách patřila rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+45325	Přílba Avalonu+(červená)	Červená přílba, které v dávných dobách patřila rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+45326	Přílba Avalonu+ (stříb.)	Stříbrná přílba, které v dávných dobách patřila rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+45327	Přílba Avalonu+(červená)	Červená přílba, které v dávných dobách patřila rytířské dynastii. Poskytuje alespoň jeden náhodný bonus.
+45328	Klobouk medvěda (m)	Plyšová pokrývka hlavy s medvědí tváří.
+45329	Klobouk tygra (m)	Plyšová pokrývka hlavy s tygří tváří.
+45330	Klobouk medvěda (ž)	Plyšová pokrývka hlavy s medvědí tváří.
+45331	Klobouk tygra (ž)	Plyšová pokrývka hlavy s tygří tváří.
+45332	Klobouk medvěda+ (m)	Plyšová pokrývka hlavy, poskytující alespoň jeden náhodný bonus.
+45333	Klobouk tygra+ (m)	Plyšová pokrývka hlavy, poskytující alespoň jeden náhodný bonus.
+45334	Klobouk medvěda+ (ž)	Plyšová pokrývka hlavy, poskytující alespoň jeden náhodný bonus.
+45335	Klobouk tygra+ (ž)	Plyšová pokrývka hlavy, poskytující alespoň jeden náhodný bonus.
+45336	Klobouk hnědého vlka (m)	Propracovaná pánská pokrývky hlavy z vlčí kožešiny.
+45337	Klobouk šedého vlka (m)	Propracovaná pánská pokrývky hlavy z vlčí kožešiny.
+45338	Klobouk hnědého vlka (ž)	Propracovaná ženská pokrývky hlavy z vlčí kožešiny.
+45339	Klobouk šedého vlka (ž)	Propracovaná ženská pokrývky hlavy z vlčí kožešiny.
+45340	Klobouk hnědého vlka+(m)	Propracovaná pánská pokrývky hlavy z vlčí kožešiny. Poskytuje alespoň jeden náhodný bonus.
+45341	Klobouk šedého vlka+ (m)	Propracovaná pánská pokrývky hlavy z vlčí kožešiny. Poskytuje alespoň jeden náhodný bonus.
+45342	Klobouk hnědého vlka+(ž)	Propracovaná ženská pokrývky hlavy z vlčí kožešiny. Poskytuje alespoň jeden náhodný bonus.
+45343	Klobouk šedého vlka+ (ž)	Propracovaná ženská pokrývky hlavy z vlčí kožešiny. Poskytuje alespoň jeden náhodný bonus.
+45344	Stuha DEN (Ž)	Dlouhé vlasy s copánky a stuhou v dánských národních barvách.
+45345	Stuha HUN (Ž)	Dlouhé vlasy s copánky a stuhou v maďarských národních barvách.
+45346	Stuha POL (Ž)	Dlouhé vlasy s copánky a stuhou v polských národních barvách.
+45347	Stuha KSA+ (Ž)	Dlouhé vlasy s copánky a stuhou v saudsko arabských národních barvách.
+45348	Stuha SVK+ (Ž)	Dlouhé vlasy s copánky a stuhou v slovenských národních barvách.
+45349	Stuha TUR (Ž)	Dlouhé vlasy s copánky a stuhou v tureckých národních barvách.
+45350	Stuha DEN+ (Ž)	Dlouhé vlasy s copánky a stuhou v dánských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+45351	Stuha HUN+ (Ž)	Dlouhé vlasy s copánky a stuhou v maďarských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+45352	Stuha POL+ (Ž)	Dlouhé vlasy s copánky a stuhou v polských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+45353	Stuha KSA+ (Ž)	Dlouhé vlasy s copánky a stuhou v saudsko arabských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+45354	Stuha SVK+ (Ž)	Dlouhé vlasy s copánky a stuhou v slovenských národních barvách. Poskytuje alespoň jeden náhodný bonus.
+45355	Stuha TUR+ (Ž)	Dlouhé vlasy s copánky a stuhou v tureckých národních barvách. Poskytuje alespoň jeden náhodný bonus.
+50208	Silver Premium Scroll	Slouží k aktivaci vašeho Silver Premium účtu nebo k prodloužení jeho času.
+50209	Gold Premium Scroll	Slouží k aktivaci vašeho Gold Premium účtu nebo k prodloužení jeho času.
+50210	Platinum Premium Scroll	Slouží k aktivaci vašeho Platinum Premium účtu nebo k prodloužení jeho času..
+50266	Truhla  Jotun Thryma	Truhla Jotun Thryma. Soudě podle její váhy musí obsahovat něco hodně cenného.
+50267	Zlatá Okey truhla	Získej ve hře Okey více než 400 bodů, abys vyhrál tuto cenu.
+50270	Truhla královny Meley	Tato truhla byla nalezena v doupěti dračí královny Meley. Obsahuje skutečně drahocenný poklad. S předmětem lze obchodovat.
+50271	Truhla dračího strážce	Tato truhla obsahuje poklady nespočtu dračích strážců, poklady, o kterých se věřilo, že již byly navždy ztraceny. S předmětem lze obchodovat.
+50272	Zlatá truhla Rozparovače	Zlatá odměna za tvé hrdinské skutky během zabíjení bossů.
+50285	Železná Truhla bit. zóny	Truhla s cenným obsahem.
+50286	Zlatá Truhla bit. zóny	Truhla s cenným obsahem.
+50287	Polní truhla 1	Truhla obsahující užitečnou výbavu.
+50288	Polní truhla 2	Truhla obsahující užitečnou výbavu.
+50289	Reinkarnace	Reinkarnace tě oživí okamžitě, bez čekání.
+50290	Dřevěná Truhla bit. zóny	Truhla s cenným obsahem.
+50323	Truhla Knihy ochrany	Tato truhla obsahuje náhodnou knihu pro učení se schopností ochrany.
+50324	Truhla Knihy zesílení	Tato truhla obsahuje náhodnou knihu pro učení se schopností zesílení.
+50500	Přidat zásuvku brnění	Otevře 4. socket pro kámen v brnění.
+50501	Přidat zásuvku zbraně	Otevře 4. socket pro kámen ve zbrani.
+50514	Manuál zesílení	Tato kniha ti umožní studovat jednu z devíti schopností zesílení. Schopnost vhodná pro tebe ti bude vybrána.
+50515	Manuál ochrany	Tato kniha ti umožní studovat jednu z devíti schopností ochrany. Schopnost vhodná pro tebe ti bude vybrána.
+50516	Ochrana před Smrští meče	Tato kniha tě naučí snížit poškození způsobené Smršti meče.
+50517	Ochrana před Léčkou	Tato kniha tě naučí snížit poškození způsobené Léčkou.
+50518	Ochrana před Ránou prst	Tato kniha tě naučí snížit poškození způsobené Ránou prstem.
+50519	Ochr. před Stř. na draky	Tato kniha tě naučí snížit poškození způsobené Střílením na draky.
+50520	Ochrana před Průrazem	Tato kniha tě naučí snížit poškození způsobené Ránou ducha.
+50521	Ochrana před Ohni. šípem	Tato kniha tě naučí snížit poškození způsobené Ohnivým šípem.
+50522	Ochrana před Tem. ránou	Tato kniha tě naučí snížit poškození způsobené Temnou ránou.
+50523	Och. před Voláním blesku	Tato kniha tě naučí snížit poškození způsobené Voláním blesku.
+50524	Ochr. před Vlčím dechem	Tato kniha tě naučí snížit poškození způsobené Vlčím dechem.
+50525	Kámen duše+	Legendární kámen, který se používá ke zvýšení velmistrovských schopností ochrany a zesílení. Kámen zmizí po použití.
+50560	Zesílení Smršti meče	Tato kniha tě naučí zesílení Smršti meče.
+50561	Zesílení Léčky	Tato kniha tě naučí zesílení Léčky.
+50562	Zesílení Rány prstem	Tato kniha tě naučí zesílení Rány prstem.
+50563	Zesílení Stříl. na draky	Tato kniha tě naučí zesílení Střílení na draky.
+50564	Zesílení Rány ducha	Tato kniha tě naučí zesílení Průrazu.
+50565	Zesílení Ohnivého šípu	Tato kniha tě naučí zesílení Ohnivého šípu.
+50566	Zesílení Temné rány	Tato kniha tě naučí zesílení Temné rány.
+50567	Zesílení Volání blesku	Tato kniha tě naučí zesílení Volání blesku.
+50568	Zesílení Vlčího dechu	Tato kniha tě naučí zesílení Vlčího dechu.
+50569	Legendary Soul Stone	Tento kámen ukrývá mocného ducha, který dokáže posílit vaše schopnosti na Perfektní.
+50570	Legendary Soul Stone	Tento kámen ukrývá mocného ducha, který dokáže posílit vaše schopnosti z Perfektních na Legendární.
+50571	Legendary Soul Stone	Tento kámen ukrývá mocného ducha, který dokáže posílit vaše schopnosti z Perfektních na Legendární.
+50620	Azure ruda	Z této rudy lze v cechovní peci vyrobit Azure.
+50640	Azure	Modrý drahokam s unikátním povrchem. Lze jej použít pro výrobu cenného šperku.
+50926	Blýskavý kámen	Sbírej Blýskavé kameny a dej je Gaya obchodníkovi, který je rozřeže na cenné Gaya.
+51723	Fosilní dřevo	Vzácné dřevo. Lze jej zapracovat do dřevěných šperků.
+51724	Měd'	Používá se někdy k výrobě bronzu a mincí. Je možné jí obohatit měděné šperky.
+51725	Stříbro	Třpytivý kov, který se používá k výrobě šperků. Lze jej přidat ke stříbrným šperkům.
+51726	Zlato	Zlatý kov, který se používá k výrobě šperků. Lze jej zapracovat do zlatého šperku.
+51727	Nefrit	Jeden z vzácných minerálů. Lze jej zasadit do nefritových šperků.
+51728	Ebenové dřevo	Nejlehčí a nejtvrdší dřevo ze všech. Lze jej zapracovat do šperků z ebenového dřeva.
+51729	Perla	Používá se k výrobě šperků. Lze ji zasadit do perlových šperků.
+51730	Bílé zlato	Zlato, které vypadá jako stříbro, ale je tvrdší. Lze jej zapracovat do šperků  z bílého zlata.
+51731	Křišťál	Také známý pod názvem horský křišťál nebo křemen. Lze jej zapracovat do šperků z křišťálu.
+51732	Ametyst	Fialový křemen. Lze jej zapracovat do šperku z ametystu.
+51733	Nebeské slzy	Krystalizovaný déšť z nebe. Lze jej zapracovat do šperku z nebeských slz.
+51734	Krystal duše	Krystal, čistý jak duše sama. Lze jej použít při výrobě předmětů.
+51735	Rubín	Červený drahokam s unikátním povrchem. Lze jej použít pro výrobu cenného šperku.
+51736	Granát	Oranžový drahokam s unikátním povrchem. Lze jej použít pro výrobu cenného šperku.
+51737	Smaragd	Zelený drahokam s unikátním povrchem. Lze jej použít pro výrobu cenného šperku.
+51738	Safír	Modrý drahokam s unikátním povrchem. Lze jej použít pro výrobu cenného šperku.
+51740	Azure	Modrý drahokam s unikátním povrchem. Lze jej použít pro výrobu cenného šperku.
+55001	Proteinová tyčinka	Nakrm svého vyčerpaného mazlíka s proteinovou tyčinkou a on se kompletně občerství. Pokud ji použiješ na mrtvého mazlíka, pak bude oživen a obnoven na 50 %.
+55002	Přepravní bedna	Pokud dáš mazlíka do této bedny, lze s ním po dobu 30 dnů obchodovat.
+55003	Kniha mladého zvířete	Použitím následujících předmětů můžeš vylepšit tvého mazlíka na další úroveň (divoký): 10x Kniha mladého zvířete, 10x Pytlík s pavouč. vajíčky, 10x Bílá stuha do vlasů+, 10x Shuriken, 10x Ozdobná vlásnička, 5x Černá uniforma+, 5x Kus ledu+
+55004	Kniha divokého zvířete	Použitím následujících předmětů můžeš vylepšit tvého mazlíka na další úroveň (odvážný): 10x Kniha divokého zvířete, 2x Krvavě rudá perla, 10x Krém na pleť, 10x Kožešina Yetiho+, 10x Šperk, 10x Klubko, 5x Kniha klateb+
+55005	Kniha odvážného zvířete	Použitím následujících předmětů můžeš vylepšit tvého mazlíka na další úroveň (hrdinný): 10x Kniha odvážného zvířete, 10x Neznámý lék+, 2x Bílá perla, 2x Modrá perla, 10x Upomínka na démona+, 10x Zub orka+, 5x Modrý opasek
+55006		
+55008	Pergamen jména mazlíka	Stačí přetáhnout pergamen na mazlíka a dát mu jméno dle tvého výběru.
+55009	Truhla knihy zvířete	Obsahuje náhodnou knihu schopností zvířete.
+55010	Kniha nestvůr	Po naučení této dovednosti tvůj mazlíček zvýší tvé poškození proti nestvůrám.
+55011	Kniha kamenů Metin	Po naučení této dovednosti tvůj mazlíček zvýší tvé poškození proti kamenům Metin.
+55012	Kniha bossů	Po naučení této dovednosti tvůj mazlíček zvýší tvé poškození proti bossům.
+55013	Kniha života	Po naučení této dovednosti tvůj mazlíček zvýší tvé maximální HP.
+55014	Kniha jedu	Po naučení této dovednosti tvůj mazlíček dá tvým útokům šanci otrávit nepřítele.
+55015	Kniha proti kritickému zásahu	Po naučení této dovednosti tvůj mazlíček sníží šanci obdržet kritické zásahy.
+55016	Kniha proti průrazu	Po naučení této dovednosti tvůj mazlíček sníží šanci obdržet průrazné zásahy.
+55017	Kniha ohně	Po naučení této dovednosti tvůj mazlíček zvýší sílu proti elementu ohně.
+55018	Kniha ledu	Po naučení této dovednosti tvůj mazlíček zvýší sílu proti elementu ledu.
+55019	Kniha země	Po naučení této dovednosti tvůj mazlíček zvýší sílu proti elementu země.
+55020	Kniha větru	Po naučení této dovednosti tvůj mazlíček zvýší sílu proti elementu větru.
+55021	Kniha regenerace	Po naučení této dovednosti tvůj mazlíček postupně obnovuje tvé HP.
+55022	Kniha úskoku před šípy	Po naučení této dovednosti tvůj mazlíček zvýší tvou šanci vyhnout se útokům šípy.
+55023	Kniha dropu předmětů	Po naučení této dovednosti tvůj mazlíček zvýší míru dropu předmětů.
+55024	Kniha útočníka	Po naučení této dovednosti tvůj mazlíček zvýší tvou celkovou útočnou hodnotu.
+55025	Kniha berserkera (H)	Po naučení této dovednosti tvůj mazlíček zvýší tvé magické/melee poškození.
+55026	Kniha poškození dovedností (H)	Po naučení této dovednosti tvůj mazlíček zvýší poškození tvých dovedností.
+55027	Kniha odolnosti vůči dovednostem (H)	Po naučení této dovednosti tvůj mazlíček zvýší tvou odolnost vůči poškození dovedností.
+55028	Kniha průměrného poškození (H)	Po naučení této dovednosti tvůj mazlíček zvýší tvé průměrné poškození.
+55029	Kniha proti pololidem (H)	Po naučení této dovednosti tvůj mazlíček zvýší tvou odolnost proti pololidem.
+55030	Kniha elementů (H)	Po naučení této dovednosti tvůj mazlíček zvýší tvé elementální poškození.
+55401	Opičí vejce	Pokud chceš, aby se tvůj mazlík vylíhl, klikni na vejce pravým tlačítkem.
+55402	Pavoučí vejce	Pokud chceš, aby se tvůj mazlík vylíhl, klikni na vejce pravým tlačítkem.
+55403	Razadorovo vejce	Pokud chceš, aby se tvůj mazlík vylíhl, klikni na vejce pravým tlačítkem.
+55404	Nemerovo vejce	Pokud chceš, aby se tvůj mazlík vylíhl, klikni na vejce pravým tlačítkem.
+55405	Vejce modrého draka	Když budeš chtít, aby se ti vylíhnul mazlík, klikni na vejce pravým tlačítkem.
+55406	Vejce červeného draka	Když budeš chtít, aby se ti vylíhnul mazlík, klikni na vejce pravým tlačítkem.
+55407	Vejce Mini Azraela	Když budeš chtít, aby se ti vylíhl mazlík, klikni na vejce pravým tlačítkem.
+55408	Vejce T Mini Exekutora	Když budeš chtít, aby se ti vylíhl mazlík, klikni na vejce pravým tlačítkem.
+55409	Vejce Baby Baashida	Když budeš chtít, aby se ti vylíhl mazlík, klikni na vejce pravým tlačítkem.
+55410	Vejce Nessie	Když budeš chtít, aby se ti vylíhl mazlík, klikni na vejce pravým tlačítkem.
+55701	Mini opička	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55702	Mini pavouk	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55703	Mini Razador	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55704	Mini Nemere	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55705	Dragonette	Klikni pravým tlačítkem pro přivolání mazlíka, poté zmáčkni 'P' na klávesnici pro zobrazení jeho rozhraní.
+55706	Mini Meley	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55707	Mini Azrael	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55708	Tlustý Mini Exekutor	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55709	Baby Baashido	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+55710	Nessie	Klikni pravým tlačítkem pro přivolání mazlíka, poté použij klávesu 'P' pro zobrazení jeho informací.
+56000	Appaloosa	Pečeť vyvolá Appaloosu. Přidává svému jezdci +10 % rychlost pohybu.
+69544	Nova Token	Používán k zakoupení speciálních kostýmů během eventů.
+71000	Svitek snadného tréninku	Tento předmět ti umožní kompletně odebrat schopnosti ochrany a zesílení. Nové schopnosti se můžeš naučit použitím Manuálů ochrany či zesílení.
+71112	Svitek resetu Biologa	Zresetuj si biologa s možností výběru jiných odměn.
+71165	Polární dravec	Tuto pečeť můžeš použít pro přivolání agresivního Polárního predátora. Zvýší rychlost tvého pohybu o 60.
+71189	Začarovat předmět+	Odstraní bonusy jednoho z tvých předmětů a přidá nové. Uvidíš náhled nových bonusů a můžeš se rozhodnout, zda je budeš akceptovat.
+71190	Dýňová truhla	Tuto Dýňovou truhlu získáš pouze při dosažení velmi zvláštních úspěchů.
+71191	Pytel se sladkostmi	Dýně Sam ti osladí noc obsahem tohoto pytle. Otevři jej a připrav se na překvapení.
+71192	Hrom	Tuto pečeť můžeš použít pro přivolání soba Donnera. Zvyšuje rychlost tvého pohybu o 20 a zisk zkušeností o 30 %.
+71193	Blitzen	Tuto pečeť můžeš použít pro přivolání soba Blitzena. Zvyšuje rychlost tvého pohybu o 20 a zisk zkušeností o 30 %.
+71194	Zlatá Okey bedna	Obdržíš 5 sad karet, přičemž každá sada obsahuje 24 Okey karet (celkem 120). Po ukončení akce nemůžeš další karty již získat.
+71195	Stříbrná Okey bedna	Obdržíš 1 sadu karet, která obsahuje 24 Okey karet. Po ukončení akce nemůžeš další karty již získat.
+71196	Bronzová Okey bedna	Obdržíš 6 Okey karet. Po ukončení akce nemůžeš další karty již získat.
+71197	Nugget (modrý)	Tuto pečeť můžeš použít pro přivolání Nuggeta, obrovského bojového kohoutka. Přidá ti +15 % síly proti monstrům a zvýší zisk zkušeností o 30 %.
+71198	Muffin (růžový)	Tuto pečeť můžeš použít pro přivolání Muffina, hrozivého bojového kuřete. Přidá ti +15 % síly proti monstrům a zvýší zisk zkušeností o 30 %.
+71220		
+71235	Kerberos (zlatý)	Tuto pečeť můžeš použít pro vyvolání tvého tříhlavého pekelného psa.
+71236	Kerberos (stříbrný)	Tuto pečeť můžeš použít pro vyvolání tvého tříhlavého pekelného psa.
+71237	Divočák	Kouzlo této pečetě přivolá mocného ducha zvířete, který tě rychle přenese na místo, které si vybereš.
+71238	Vlk	Kouzlo této pečetě přivolá mocného ducha zvířete, který tě rychle přenese na místo, které si vybereš.
+71239	Tygr	Kouzlo této pečetě přivolá mocného ducha zvířete, který tě rychle přenese na místo, které si vybereš.
+71240	Lev	Kouzlo této pečetě přivolá mocného ducha zvířete, který tě rychle přenese na místo, které si vybereš.
+71241	Jezdecký lístek	Použij tuto kartu pro jízdu na poníkovi po dobu 10 minut.
+71394	Phoenix	Létající mount	 Použij Shift pro vzlétnutí a X pro slétnutí.
+71395	Phoenix	Létající mount	 Použij Shift pro vzlétnutí a X pro slétnutí.
+72325	Odvolání proměny	Vrátí proměnu předmětu.
+72326	Odvolání proměny	Vrátí proměnu předmětu a vrátit zboží.
+72709	Náušnice z tygří kosti	Tvoje hodnota útoku bude zvýšena o 200 bodů na 20 hodin (čas se počítá, pouze když se předmět používá).
+72710	Náušnice z dračí kosti	Tvoje hodnota obrany bude zvýšena o 300 bodů na 20 hodin (čas se počítá, pouze když se předmět používá).
+72711	Náramek z tygří kosti	Poškození za schopnosti bude zvýšeno o 30 bodů na 20 hodin (čas se počítá, pouze když se předmět používá).
+72712	Náramek z dračí kosti	Hodnota obrany proti útoku schopnostmi bude zvýšena o 30 bodů na 20 hodin (čas se počítá, pouze když se předmět používá).
+72800	Kámen žíly rubínové slz	Umožní žíle rubínové slz, aby se zjevila vedle tvojí postavy.
+72801	Kámen žíly granátové slz	Umožní žíle granátové slz, aby se zjevila vedle tvojí postavy.
+72802	Kámen žíly smaragdové slz	Umožní žíle smaragdové slz, aby se zjevila vedle tvojí postavy.
+72803	Kámen žíly safírové slz	Umožní žíle safírové slz, aby se zjevila vedle tvojí postavy.
+72804	Kámen žíly Turmalínové slz	Umožní žíle Turmalínové slz, aby se zjevila vedle tvojí postavy.
+76191	Zelené kouzlo spasitele		Dovolí vylepšit 1-5 bonus dle tvé volby.
+76192	Modré kouzlo spasitele		Dovolí vylepšit 6-7 bonus dle tvé volby.
+79505	Karta Okey sady	Jakmile nasbíráš 24 karet Okey sady, automaticky obdržíš Sadu Okey karet.
+79506	Sada Okey karet	S touto sadou můžeš zahájit hru Okey. Sada bude po zahájení hry automaticky odebrána z tvého inventáře.
+80018	NC kupón (6000)	Kupón v hodnotě 6000 NC. S předmětem lze obchodovat.
+85001	Šerpa lorda (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85002	Šerpa lorda (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85003	Šerpa lorda (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85004	Šerpa lorda (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85005	Šerpa mistra (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85006	Šerpa mistra (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85007	Šerpa mistra (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85008	Šerpa mistra (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85009	Certifikát změny	Kompletně odstraní bonusy z tvé šerpě a s nimi i absorbovaný předmět.
+85010	Certifikát změny+	Odstraní bonusy ze šerpy a vrátí ti absorbovaný předmět.
+85011	Šerpa vládce (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85012	Šerpa vládce (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85013	Šerpa vládce (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85014	Šerpa vládce (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85015	Královská šerpa (obyč.)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85016	Královská šerpa (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85017	Královská šerpa (nobl.)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85018	Královská šerpa (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85021	Výroční šerpa (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85022	Výroční šerpa (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85023	Výroční šerpa (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+85024	Výroční šerpa (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86001	Šerpa Zi (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86002	Šerpa Zi (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86003	Šerpa Zi (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86004	Šerpa Zi (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86005	Šerpa Chou (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86006	Šerpa Chou (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86007	Šerpa Chou (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86008	Šerpa Chou (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86011	Šerpa Yin (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86012	Šerpa Yin (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86013	Šerpa Yin (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86014	Šerpa Yin (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86015	Šerpa Mao (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86016	Šerpa Mao (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86017	Šerpa Mao (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86018	Šerpa Mao (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86021	Šerpa Chen (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86022	Šerpa Chen (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86023	Šerpa Chen (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86024	Šerpa Chen (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86025	Šerpa Si (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86026	Šerpa Si (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86027	Šerpa Si (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86028	Šerpa Si (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86031	Šerpa Wu (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86032	Šerpa Wu (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86033	Šerpa Wu (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86034	Šerpa Wu (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86035	Šerpa Wei (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86036	Šerpa Wei (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86037	Šerpa Wei (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86038	Šerpa Wei (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86041	Šerpa Shen (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86042	Šerpa Shen (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86043	Šerpa Shen (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86044	Šerpa Shen (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86045	Šerpa You (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86046	Šerpa You (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86047	Šerpa You (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86048	Šerpa You (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86051	Šerpa Xu (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86052	Šerpa Xu (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86053	Šerpa Xu (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86054	Šerpa Xu (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86055	Šerpa Hai (obyčejná)	Tato šerpa bere 1 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86056	Šerpa Hai (jemná)	Tato šerpa bere 5 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86057	Šerpa Hai (noblesní)	Tato šerpa bere 10 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+86058	Šerpa Hai (uživ.)	Tato šerpa bere 11~25 % bonusů ze zbraně nebo brnění, které použiješ pro absorpci.
+91010	Buffi	Automaticky posílí tvého hrdinu kouzly Dračího Šamana.
+91021	Healer	Automaticky posílí tvého hrdinu kouzly Šamana Léčitele.
+91050	Biologistova bedna I	Pokryje všechny mise biologa od levelu 30 do levelu 94.
+91051	Biologistova bedna II	Pokryje všechny mise biologa od levelu 100 do levelu 130.

@@ -2406,3 +2406,1213 @@
 90011	Törzs	Építőanyag a Céhépülethez.
 90012	Furnérlemez	Építőanyag a Céhépülethez.
 90013		
+300	Zodiákus penge+0	
+301	Zodiákus penge+1	
+302	Zodiákus penge+2	
+303	Zodiákus penge+3	
+304	Zodiákus penge+4	
+305	Zodiákus penge+5	
+306	Zodiákus penge+6	
+307	Zodiákus penge+7	
+308	Zodiákus penge+8	
+309	Zodiákus penge+9	
+310	Zodiákus kard+0	
+311	Zodiákus kard+1	
+312	Zodiákus kard+2	
+313	Zodiákus kard+3	
+314	Zodiákus kard+4	
+315	Zodiákus kard+5	
+316	Zodiákus kard+6	
+317	Zodiákus kard+7	
+318	Zodiákus kard+8	
+319	Zodiákus kard+9	
+1180	Zodiákus tőr+0	
+1181	Zodiákus tőr+1	
+1182	Zodiákus tőr+2	
+1183	Zodiákus tőr+3	
+1184	Zodiákus tőr+4	
+1185	Zodiákus tőr+5	
+1186	Zodiákus tőr+6	
+1187	Zodiákus tőr+7	
+1188	Zodiákus tőr+8	
+1189	Zodiákus tőr+9	
+2200	Zodiákus íj+0	
+2201	Zodiákus íj+1	
+2202	Zodiákus íj+2	
+2203	Zodiákus íj+3	
+2204	Zodiákus íj+4	
+2205	Zodiákus íj+5	
+2206	Zodiákus íj+6	
+2207	Zodiákus íj+7	
+2208	Zodiákus íj+8	
+2209	Zodiákus íj+9	
+3220	Zodiákus glefe+0	
+3221	Zodiákus glefe+1	
+3222	Zodiákus glefe+2	
+3223	Zodiákus glefe+3	
+3224	Zodiákus glefe+4	
+3225	Zodiákus glefe+5	
+3226	Zodiákus glefe+6	
+3227	Zodiákus glefe+7	
+3228	Zodiákus glefe+8	
+3229	Zodiákus glefe+9	
+5160	Zodiákus harang+0	
+5161	Zodiákus harang+1	
+5162	Zodiákus harang+2	
+5163	Zodiákus harang+3	
+5164	Zodiákus harang+4	
+5165	Zodiákus harang+5	
+5166	Zodiákus harang+6	
+5167	Zodiákus harang+7	
+5168	Zodiákus harang+8	
+5169	Zodiákus harang+9	
+6120	Zodiákus karom+0	
+6121	Zodiákus karom+1	
+6122	Zodiákus karom+2	
+6123	Zodiákus karom+3	
+6124	Zodiákus karom+4	
+6125	Zodiákus karom+5	
+6126	Zodiákus karom+6	
+6127	Zodiákus karom+7	
+6128	Zodiákus karom+8	
+6129	Zodiákus karom+9	
+7300	Zodiákus legyező+0	
+7301	Zodiákus legyező+1	
+7302	Zodiákus legyező+2	
+7303	Zodiákus legyező+3	
+7304	Zodiákus legyező+4	
+7305	Zodiákus legyező+5	
+7306	Zodiákus legyező+6	
+7307	Zodiákus legyező+7	
+7308	Zodiákus legyező+8	
+7309	Zodiákus legyező+9	
+9506	Kard+3	
+9507	Tőr+3	
+9508	Legyező+3	
+9509	Acél fáklya+3	
+9600	Tűz talizmán+0	
+9601	Tűz talizmán+1	
+9602	Tűz talizmán+2	
+9603	Tűz talizmán+3	
+9604	Tűz talizmán+4	
+9605	Tűz talizmán+5	
+9606	Tűz talizmán+6	
+9607	Tűz talizmán+7	
+9608	Tűz talizmán+8	
+9609	Tűz talizmán+9	
+9610	Tűz talizmán+10	
+9611	Tűz talizmán+11	
+9612	Tűz talizmán+12	
+9613	Tűz talizmán+13	
+9614	Tűz talizmán+14	
+9615	Tűz talizmán+15	
+9616	Tűz talizmán+16	
+9617	Tűz talizmán+17	
+9618	Tűz talizmán+18	
+9619	Tűz talizmán+19	
+12690	Sárkányacél-sisak +0	
+12691	Sárkányacél-sisak +1	
+12692	Sárkányacél-sisak +2	
+12693	Sárkányacél-sisak +3	
+12694	Sárkányacél-sisak +4	
+12695	Sárkányacél-sisak +5	
+12696	Sárkányacél-sisak +6	
+12697	Sárkányacél-sisak +7	
+12698	Sárkányacél-sisak +8	
+12699	Sárkányacél-sisak +9	
+12700	Sárkánycsuklya +0	
+12701	Sárkánycsuklya +1	
+12702	Sárkánycsuklya +2	
+12703	Sárkánycsuklya +3	
+12704	Sárkánycsuklya +4	
+12705	Sárkánycsuklya +5	
+12706	Sárkánycsuklya +6	
+12707	Sárkánycsuklya +7	
+12708	Sárkánycsuklya +8	
+12709	Sárkánycsuklya +9	
+12710	Sárkánypikkely-sisak +0	
+12711	Sárkánypikkely-sisak +1	
+12712	Sárkánypikkely-sisak +2	
+12713	Sárkánypikkely-sisak +3	
+12714	Sárkánypikkely-sisak +4	
+12715	Sárkánypikkely-sisak +5	
+12716	Sárkánypikkely-sisak +6	
+12717	Sárkánypikkely-sisak +7	
+12718	Sárkánypikkely-sisak +8	
+12719	Sárkánypikkely-sisak +9	
+12720	Sárkánykalap +0	
+12721	Sárkánykalap +1	
+12722	Sárkánykalap +2	
+12723	Sárkánykalap +3	
+12724	Sárkánykalap +4	
+12725	Sárkánykalap +5	
+12726	Sárkánykalap +6	
+12727	Sárkánykalap +7	
+12728	Sárkánykalap +8	
+12729	Sárkánykalap +9	
+15440	Tűzcipő+0	
+15441	Tűzcipő+1	
+15442	Tűzcipő+2	
+15443	Tűzcipő+3	
+15444	Tűzcipő+4	
+15445	Tűzcipő+5	
+15446	Tűzcipő+6	
+15447	Tűzcipő+7	
+15448	Tűzcipő+8	
+15449	Tűzcipő+9	
+15450	Óceán cipő+0	
+15451	Óceán cipő+1	
+15452	Óceán cipő+2	
+15453	Óceán cipő+3	
+15454	Óceán cipő+4	
+15455	Óceán cipő+5	
+15456	Óceán cipő+6	
+15457	Óceán cipő+7	
+15458	Óceán cipő+8	
+15459	Óceán cipő+9	
+19000	Tűzvörös kő	Megerősíti öved bónuszait.
+19290	Zodiákus páncél+0	
+19291	Zodiákus páncél+1	
+19292	Zodiákus páncél+2	
+19293	Zodiákus páncél+3	
+19294	Zodiákus páncél+4	
+19295	Zodiákus páncél+5	
+19296	Zodiákus páncél+6	
+19297	Zodiákus páncél+7	
+19298	Zodiákus páncél+8	
+19299	Zodiákus páncél+9	
+19490	Zodiákus öltözék+0	
+19491	Zodiákus öltözék+1	
+19492	Zodiákus öltözék+2	
+19493	Zodiákus öltözék+3	
+19494	Zodiákus öltözék+4	
+19495	Zodiákus öltözék+5	
+19496	Zodiákus öltözék+6	
+19497	Zodiákus öltözék+7	
+19498	Zodiákus öltözék+8	
+19499	Zodiákus öltözék+9	
+19690	Zodiákus lemezvért+0	
+19691	Zodiákus lemezvért+1	
+19692	Zodiákus lemezvért+2	
+19693	Zodiákus lemezvért+3	
+19694	Zodiákus lemezvért+4	
+19695	Zodiákus lemezvért+5	
+19696	Zodiákus lemezvért+6	
+19697	Zodiákus lemezvért+7	
+19698	Zodiákus lemezvért+8	
+19699	Zodiákus lemezvért+9	
+19890	Zodiákus ruha+0	
+19891	Zodiákus ruha+1	
+19892	Zodiákus ruha+2	
+19893	Zodiákus ruha+3	
+19894	Zodiákus ruha+4	
+19895	Zodiákus ruha+5	
+19896	Zodiákus ruha+6	
+19897	Zodiákus ruha+7	
+19898	Zodiákus ruha+8	
+19899	Zodiákus ruha+9	
+20760	Auróra vért+0	
+20761	Auróra vért+1	
+20762	Auróra vért+2	
+20763	Auróra vért+3	
+20764	Auróra vért+4	
+20765	Auróra vért+5	
+20766	Auróra vért+6	
+20767	Auróra vért+7	
+20768	Auróra vért+8	
+20769	Auróra vért+9	
+20770	Leshely öltözék+0	
+20771	Leshely öltözék+1	
+20772	Leshely öltözék+2	
+20773	Leshely öltözék+3	
+20774	Leshely öltözék+4	
+20775	Leshely öltözék+5	
+20776	Leshely öltözék+6	
+20777	Leshely öltözék+7	
+20778	Leshely öltözék+8	
+20779	Leshely öltözék+9	
+20780	Ördögkarom vért+0	
+20781	Ördögkarom vért+1	
+20782	Ördögkarom vért+2	
+20783	Ördögkarom vért+3	
+20784	Ördögkarom vért+4	
+20785	Ördögkarom vért+5	
+20786	Ördögkarom vért+6	
+20787	Ördögkarom vért+7	
+20788	Ördögkarom vért+8	
+20789	Ördögkarom vért+9	
+20790	Bizalom ruhája+0	
+20791	Bizalom ruhája+1	
+20792	Bizalom ruhája+2	
+20793	Bizalom ruhája+3	
+20794	Bizalom ruhája+4	
+20795	Bizalom ruhája+5	
+20796	Bizalom ruhája+6	
+20797	Bizalom ruhája+7	
+20798	Bizalom ruhája+8	
+20799	Bizalom ruhája+9	
+20800	Árnyékharcos vért+0	
+20801	Árnyékharcos vért+1	
+20802	Árnyékharcos vért+2	
+20803	Árnyékharcos vért+3	
+20804	Árnyékharcos vért+4	
+20805	Árnyékharcos vért+5	
+20806	Árnyékharcos vért+6	
+20807	Árnyékharcos vért+7	
+20808	Árnyékharcos vért+8	
+20809	Árnyékharcos vért+9	
+20810	Izzó magma vért+0	
+20811	Izzó magma vért+1	
+20812	Izzó magma vért+2	
+20813	Izzó magma vért+3	
+20814	Izzó magma vért+4	
+20815	Izzó magma vért+5	
+20816	Izzó magma vért+6	
+20817	Izzó magma vért+7	
+20818	Izzó magma vért+8	
+20819	Izzó magma vért+9	
+20820	Vérhold öltöny+0	
+20821	Vérhold öltöny+1	
+20822	Vérhold öltöny+2	
+20823	Vérhold öltöny+3	
+20824	Vérhold öltöny+4	
+20825	Vérhold öltöny+5	
+20826	Vérhold öltöny+6	
+20827	Vérhold öltöny+7	
+20828	Vérhold öltöny+8	
+20829	Vérhold öltöny+9	
+20830	Pokollovas vért+0	
+20831	Pokollovas vért+1	
+20832	Pokollovas vért+2	
+20833	Pokollovas vért+3	
+20834	Pokollovas vért+4	
+20835	Pokollovas vért+5	
+20836	Pokollovas vért+6	
+20837	Pokollovas vért+7	
+20838	Pokollovas vért+8	
+20839	Pokollovas vért+9	
+20840	Tűzruha+0	
+20841	Tűzruha+1	
+20842	Tűzruha+2	
+20843	Tűzruha+3	
+20844	Tűzruha+4	
+20845	Tűzruha+5	
+20846	Tűzruha+6	
+20847	Tűzruha+7	
+20848	Tűzruha+8	
+20849	Tűzruha+9	
+20850	Achát lemezvért+0	
+20851	Achát lemezvért+1	
+20852	Achát lemezvért+2	
+20853	Achát lemezvért+3	
+20854	Achát lemezvért+4	
+20855	Achát lemezvért+5	
+20856	Achát lemezvért+6	
+20857	Achát lemezvért+7	
+20858	Achát lemezvért+8	
+20859	Achát lemezvért+9	
+20860	Halcsont vért+0	
+20861	Halcsont vért+1	
+20862	Halcsont vért+2	
+20863	Halcsont vért+3	
+20864	Halcsont vért+4	
+20865	Halcsont vért+5	
+20866	Halcsont vért+6	
+20867	Halcsont vért+7	
+20868	Halcsont vért+8	
+20869	Halcsont vért+9	
+20870	Metamorfózis öltöny+0	
+20871	Metamorfózis öltöny+1	
+20872	Metamorfózis öltöny+2	
+20873	Metamorfózis öltöny+3	
+20874	Metamorfózis öltöny+4	
+20875	Metamorfózis öltöny+5	
+20876	Metamorfózis öltöny+6	
+20877	Metamorfózis öltöny+7	
+20878	Metamorfózis öltöny+8	
+20879	Metamorfózis öltöny+9	
+20880	Szellemlámpás vért+0	
+20881	Szellemlámpás vért+1	
+20882	Szellemlámpás vért+2	
+20883	Szellemlámpás vért+3	
+20884	Szellemlámpás vért+4	
+20885	Szellemlámpás vért+5	
+20886	Szellemlámpás vért+6	
+20887	Szellemlámpás vért+7	
+20888	Szellemlámpás vért+8	
+20889	Szellemlámpás vért+9	
+20890	Harmónia ruhája+0	
+20891	Harmónia ruhája+1	
+20892	Harmónia ruhája+2	
+20893	Harmónia ruhája+3	
+20894	Harmónia ruhája+4	
+20895	Harmónia ruhája+5	
+20896	Harmónia ruhája+6	
+20897	Harmónia ruhája+7	
+20898	Harmónia ruhája+8	
+20899	Harmónia ruhája+9	
+20900	Holdkő lemezvért+0	
+20901	Holdkő lemezvért+1	
+20902	Holdkő lemezvért+2	
+20903	Holdkő lemezvért+3	
+20904	Holdkő lemezvért+4	
+20905	Holdkő lemezvért+5	
+20906	Holdkő lemezvért+6	
+20907	Holdkő lemezvért+7	
+20908	Holdkő lemezvért+8	
+20909	Holdkő lemezvért+9	
+20910	Hamueső vért+0	
+20911	Hamueső vért+1	
+20912	Hamueső vért+2	
+20913	Hamueső vért+3	
+20914	Hamueső vért+4	
+20915	Hamueső vért+5	
+20916	Hamueső vért+6	
+20917	Hamueső vért+7	
+20918	Hamueső vért+8	
+20919	Hamueső vért+9	
+20920	Halál éjszakája öltöny+0	
+20921	Halál éjszakája öltöny+1	
+20922	Halál éjszakája öltöny+2	
+20923	Halál éjszakája öltöny+3	
+20924	Halál éjszakája öltöny+4	
+20925	Halál éjszakája öltöny+5	
+20926	Halál éjszakája öltöny+6	
+20927	Halál éjszakája öltöny+7	
+20928	Halál éjszakája öltöny+8	
+20929	Halál éjszakája öltöny+9	
+20930	Fekete tűz vért+0	
+20931	Fekete tűz vért+1	
+20932	Fekete tűz vért+2	
+20933	Fekete tűz vért+3	
+20934	Fekete tűz vért+4	
+20935	Fekete tűz vért+5	
+20936	Fekete tűz vért+6	
+20937	Fekete tűz vért+7	
+20938	Fekete tűz vért+8	
+20939	Fekete tűz vért+9	
+20940	Holdruha+0	
+20941	Holdruha+1	
+20942	Holdruha+2	
+20943	Holdruha+3	
+20944	Holdruha+4	
+20945	Holdruha+5	
+20946	Holdruha+6	
+20947	Holdruha+7	
+20948	Holdruha+8	
+20949	Holdruha+9	
+20950	Ónix lemezvért+0	
+20951	Ónix lemezvért+1	
+20952	Ónix lemezvért+2	
+20953	Ónix lemezvért+3	
+20954	Ónix lemezvért+4	
+20955	Ónix lemezvért+5	
+20956	Ónix lemezvért+6	
+20957	Ónix lemezvért+7	
+20958	Ónix lemezvért+8	
+20959	Ónix lemezvért+9	
+21200	Zodiákus fegyverzet+0	
+21201	Zodiákus fegyverzet+1	
+21202	Zodiákus fegyverzet+2	
+21203	Zodiákus fegyverzet+3	
+21204	Zodiákus fegyverzet+4	
+21205	Zodiákus fegyverzet+5	
+21206	Zodiákus fegyverzet+6	
+21207	Zodiákus fegyverzet+7	
+21208	Zodiákus fegyverzet+8	
+21209	Zodiákus fegyverzet+9	
+21550	Sárkányszarv-sisak +0	
+21551	Sárkányszarv-sisak +1	
+21552	Sárkányszarv-sisak +2	
+21553	Sárkányszarv-sisak +3	
+21554	Sárkányszarv-sisak +4	
+21555	Sárkányszarv-sisak +5	
+21556	Sárkányszarv-sisak +6	
+21557	Sárkányszarv-sisak +7	
+21558	Sárkányszarv-sisak +8	
+21559	Sárkányszarv-sisak +9	
+21991		
+21992		
+21993		
+25043	Mágikus kő	Ez a kő biztosítja a tárgyfejlesztés legnagyobb sikerének esélyét. Ezen felül a tárgy nem semmisül meg és vissza sem törik. Ez a tárgy nem átadható.
+25099	Szellem kő varázs	tekercs Varázs tekercs ami engedélyezi az általad választott kő kivételét
+27125	Harci ital	Erőteljes bájital, mely megnöveli támadó és védelmi pontjaid és megerősít +50.000 életerővel (csak a Harci övezetben).
+28044	Mágia elleni kő+0	
+28045	Mágia elleni kő+0	
+28144	Mágia elleni kő+1	
+28145	Mágia elleni kő+1	
+28244	Mágia elleni kő+2	
+28245	Mágia elleni kő+2	
+28344	Mágia elleni kő+3	
+28345	Mágia elleni kő+3	
+28444	Mágia elleni kő+4	
+28445	Mágia elleni kő+4	
+30334	Fejdísz utalvány	Jobb kattintás az utalványon, hogy hátborzongató fejdíszhez juss.
+30338	Fejdísz utalvány+	Jobb kattintás az utalványon, hogy hátborzongató fejdíszhez juss, mely legalább egy véletlenszerű bónuszt biztosít.
+30341	Sárkánytűz-gyűrű	Intenzív energia aurája vesz körül. Sárkány tüzében kovácsolva, ez a gyűrű egy pillanat alatt megsemmisíti a szobrokat Meley barlangjában.
+30600	Hímzésminta	
+30601	Páncélterv	
+30602	Kék festék	
+30603	Piros festék	
+30604	Szürke festék	
+30605	Aranylemezek	
+30606	Ezüstlemezek	
+30607	Rézlemezek	
+30608	Acéllemezek	
+30609	Bronzlemezek	
+30610	Mithril	
+30611	Kemény szíjak	
+30612	Masszív zsinórok	
+30613	Tündérek köve	Zöldesen csillogó ködbe burkolózva ez a titokzatos kő magába zárja egy tündér lelkét, egy fa szellemet. A tündérek ismerik a titkos szavakat, melyek hozzáférést biztosítanak számodra az Erebos kazamatába.
+30614	Fekete festék	
+30615	Fehér festék	
+30616	Titán-dioxid	Ezt a prizmaszerű kristályt felszerelések nemesítéséhez használják.
+30617	Achát	Ezt a misztikus, csillogó drágakövet felszerelések nemesítéséhez használják.
+30618	Holdkő	Ebbe a könnycsepp alakú ékszerbe csapdába ejtették a holdfényt. Felszerelések nemesítéséhez használják.
+30619	Fémes aranyfesték	
+30620	Vörös sárkány-szarv	A Sárkányszarvak a legkeményebb ismert anyagok egyikéből készültek.
+30621	Vörös sárkány-pikkely	A Sárkánypikkely a legkeményebb ismert anyagok között van.
+30622	Páncélterv: Sisak	Ez a tárgy sisakok készítéséhez szükséges.
+30623	Az igazság könyve	Egy vaskos kötet, amin fénylik a felirat. Felszerelések nemesítéséhez használják.
+30624	Az igazság lelke	Egy jó lélek, örökre egy kristálygömbbe zárva. Felszerelések nemesítéséhez használják.
+30625	Padparadscha	A padparadscha kristályok ritka és szinte tökéletes vörös zafírok. Felszerelések nemesítéséhez használják.
+30626	Kianit	Egy kék drágakő a Sohan-hegység bányáiból. Felszerelések nemesítéséhez használják.
+30627	Istenek gyümölcse	Édes, ízletes gyümölcs a Sárkányisten kertjéből. Felszerelések nemesítéséhez használják.
+30628	Isteni virág	Egy isteni virág a Sárkányisten kertjéből. Felszerelések nemesítéséhez használják.
+30629	Isteni elixír	Ez az üveg misztikusan fénylő folyadékot tartalmaz. Felszerelések nemesítéséhez használják.
+30630	Sárkányszárny	Egy Alteran sárkány szárnya. Felszerelésed fejlesztéséhez használhatod.
+30639	Misztikus töredék	Használj töredékeket a Yut Nori boltban található tervek elkészítéséhez. Húzz egy Yut Nori táblát az asztalra a fejlesztés-ablak megnyitásához.
+30640	Halloween terv (f)	Terv egy Halloween Láda (f) készítéséhez.
+30641	Halloween sapka terv (f)	Terv egy Halloween sapka láda (f) készítéséhez.
+30642	Kísérteties kedvenc terv	Terv egy Kísérteties kedvenc láda készítéséhez.
+30643	Kísérteties hátas terv	Terv egy Kísérteties hátas láda készítéséhez.
+30644	Ékszer terv.	Terv egy Ékszeres doboz készítéséhez.
+30645	Házikedvenc terv	Terv egy Házikedvenc láda készítéséhez.
+30646	Pánt terv	Terv egy Pánt doboz készítéséhez.
+30647	Díszítés terv	Terv egy Díszláda készítéséhez.
+30648	Házikedvenc-könyv terv	Terv egy Házikedvenc-könyv láda készítéséhez.
+30649	Tépőfog terv+	Terv egy Tépőfog láda+ készítéséhez.
+30650	Cor Draconis terv	Terv egy Cor Draconis láda készítéséhez.
+30651	Gaya terv	Terv egy Gaya láda készítéséhez.
+30652	Rejtélyes terv	Terv egy Rejtélyek ládája készítéséhez.
+30653	Rubin láda terv	Terv egy Rubin láda elkészítéséhez.
+30654	Halloween terv (n)	Terv egy Halloween Láda (n) készítéséhez.
+30655	Halloween sapka terv (n)	Terv egy Halloween sapka láda (n) készítéséhez.
+34000	Napsugárzás	Nagyra becsűlt fejelsztő tárgy.
+34001	Mágikus Gömb	Ez egy drága kő, tárgy fejlesztéshez
+34002	Tűz szarv	Razadorhoz tartozó, tárgy fejlesztéshez használatos
+34003	Jég szarv	Nemere-hez tartozó, tárgy fejlesztéshez használatos
+34004	Piros Amulet	Csábitó és drága amulett, fejlesztéshez használatos
+34005	Zöld Amulet	Csábitó és drága amulett, fejlesztéshez használatos
+34006	Kék Amulet	Csábitó és drága amulett, fejlesztéshez használatos
+34007	Sötétség kő	Egy drága kő, sötét erőt tartalmaz
+34008	Vér kő	Egy drága kő, nagy erőket rejteget
+34009	Méreg kő	Egy drága kő, mérgező erőket tartalmaz
+34010	Méreg márvány	Mérgező anyag ami a tárgyad tartósításához használatos
+34011	Piros Kő	Egy becses kő ami a tárgyad fejlesztéséhez használatos
+34012	Azúr Kő	Egy speciális kő ami csak azúr tárgyak fejlesztésére hasznos
+34013	Szivárvány Fiola	Egy erős szivárvány színű fojadékot tartalmaz. Tárgy fejlesztésre használatos
+34014	Piros Kristály	Darab Egy kristály darab amit más kristályokkal kell össze illeszteni
+34015	Zöld Kristály	Darab Egy kristály darab amit más kristályokkal kell össze illeszteni
+34016	Kék Kristály	Darab Egy kristály darab amit más kristályokkal kell össze illeszteni
+34017	Multi Kristály	Darab Egy drágakő darab tárgy fejlesztéshez
+34018	Duratus Kő	Tárgy fejlesztéshez használatos, Duratusból dobható
+34019	Félelem Kő	Tárgy fejlesztéshez használatos, Fear Futamból dobható
+34020	Kincs Kő	Tárgy fejlesztéshez használatos, Kincses ládából dobható
+34021	UPP1 Speciális kő	tárgy fejlesztéshez
+34022	UPP2 Speciális kő	tárgy fejlesztéshez
+34023	Piros Szárny Toll	Egy toll szárny kraftoláshoz
+34024	Zöld Szárny Toll	Egy toll szárny kraftoláshoz
+34025	Kék Szárny Toll Egy	Toll, szárny kraftoláshoz
+34026	Szárny Toll Szett	Egy toll szárny kraftoláshoz
+34027	Mindanható sárkány lélek	Mindenható sárkány lélek, tárgy katekorizáláshoz használatos
+34028	Duratus Lélek Duratus lélek	tárgy katekorizáláshoz használatos
+34029	Félelem Lélek Félelem lélek	tárgy katekorizáláshoz használatos
+34030	Kincs Lélek Félelem lélek	tárgy katekorizáláshoz használato
+34031	Halloween Lélek Halloween lélek,	tárgy katekorizáláshoz használatos
+34032	Gold Carved Stone	Arany mintázott Kő Ősi kő csodálatos erőkkel, sok hasznos dologra használható
+34033	Weapon Stone Token	Fegyver kő token Jeon Seon álltal kért token hogy fejlessze a fegyver lélek köved 
+34034	Armour Stone Token	Vért Kő token Jeon Seon álltal kért token hogy fejlessze a vért lélek köved
+34035	Mazel Portal	Mazel Portál Örvény mely kinyitja az utat a Mazel főnökhöz
+34036	Battle Gem	Harc Kő  Erős kő ami a tárgyad fejlesztéséhez használatos
+34037	Red Charming Cube	Piros Sárm kő Speciális piros kocka tárgy fejlesztéshez
+34038	Green Charming Cube	Zöld Sárm kő Speciális zöld kocka tárgy fejlesztéshez
+34039	Blue Charming Cube	Blue Sárm kő Speciális kék kocka tárgy fejlesztéshez
+34040	Mazel Heart	Mazel Szív A Mazel boss szíve, a kulcs a szuper erőhöz
+34041	Battle Orb	Csata Gömb Tárgy fejlesztéshez való ami szuper erőket ad
+34042	Multi Cube	Multi Kő Ez a csodás kő, több erős kő formálásából keletkezett
+34067		
+34068		
+34092	Charming Cube Chest	Sárm Kő Láda Mindenféle sárm köveket tartalmaz
+34500	Toll Láda	Egy láda tele színes tollakkal
+34501	Töredék Láda	Színes töredékek találhatóak ebben a ládában
+35100	Seon-Pyeongs Visszaállító	tekercse Meg engedi hogy visszaállítsd a 92 és 94-es szinten lévő küldetésed
+39044	Tapasztalat gyűrű (1h)	60 percre megnöveli az összegyűjthető tapasztalat mennyiségét 50%-kal. Ez a tárgy átadható.
+39045	Vérfarkas-láda (nagy)	Hasznos tárgyakat tartalmazó nagy felszereléscsomag vérfarkasok számára.
+39063	Gaya piac frissítő	Frissíti a Gaya piacot az alap 5 óra letelte előtt, és új értékes tárgyakat fed fel.
+39064	Gaya piac bővítő	Bővíti a Gaya piacot egy további hellyel a tárgyak számára, kezdve a második sor első helyével.
+39065		
+39066		
+40101	Tépőfog-penge	Fegyver-kinézet, mely Halloween idejére átalakítja kardod láncfűrésszé.
+40102	Tépőfog-tőr	Fegyver-kinézet, mely Halloween idejére átalakítja tőröd láncfűrésszé.
+40103	Tépőfog-íj	Fegyver-kinézet, mely Halloween idejére átalakítja íjad láncfűrésszé.
+40104	Tépőfog-glefe	Fegyver-kinézet, mely Halloween idejére átalakítja kétkezes kardod sarki láncfűrésszé.
+40105	Tépőfog-harang	Fegyver-kinézet, mely Halloween idejére átalakítja harangod láncfűrész buzogánnyá.
+40106	Tépőfog-legyező	Fegyver-kinézet, mely Halloween idejére átalakítja legyeződ láncfűrész legyezővé.
+40107	Tépőfog-karmok	Fegyver-kinézet, mely Halloween idejére átalakítja karmaid két hasznos láncfűrésszé.
+40108	Tépőfog-penge+	Fegyver-kinézet, mely Halloween idejére átalakítja kardod láncfűrésszé. Legalább egy véletlenszerű bónuszt biztosít.
+40109	Tépőfog-tőr+	Fegyver-kinézet, mely Halloween idejére átalakítja tőröd láncfűrésszé. Legalább egy véletlenszerű bónuszt biztosít.
+40110	Tépőfog-íj+	Fegyver-kinézet, mely Halloween idejére átalakítja íjad dupla láncfűrésszé. Legalább egy véletlenszerű bónuszt biztosít.
+40111	Tépőfog-glefe+	Fegyver-kinézet, mely Halloween idejére átalakítja kétkezes kardod sarki láncfűrésszé. Legalább egy véletlenszerű bónuszt biztosít.
+40112	Tépőfog-harang+	Fegyver-kinézet, mely Halloween idejére átalakítja harangod láncfűrész buzogánnyá. Legalább egy véletlenszerű bónuszt biztosít.
+40113	Tépőfog-legyező+	Fegyver-kinézet, mely Halloween idejére átalakítja legyeződ láncfűrész legyezővé. Legalább egy véletlenszerű bónuszt biztosít.
+40114	Tépőfog-karmok+	Fegyver-kinézet, mely Halloween idejére átalakítja karmaid két hasznos láncfűrésszé. Legalább egy véletlenszerű bónuszt biztosít.
+40115	Cukorpálca-penge	Fegyver-kinézet, mely cukorpálcává alakítja kardod Karácsonyra.
+40116	Cukorpálca-tőr	Fegyver-kinézet, mely cukorpálcává alakítja tőröd Karácsonyra.
+40117	Elf íj	Fegyver-kinézet, mely Elf íjjá alakítja íjad Karácsonyra.
+40118	Mézeskalács-glefe	Fegyver-kinézet, mely feldíszíti mézeskaláccsal kétkezes kardod Karácsonyra.
+40119	Cukorpálca-harang	Fegyver-kinézet, mely cukorpálcává alakítja harangod Karácsonyra.
+40120	Fagyos legyező	Fegyver-kinézet, mely feldíszíti legyeződ Frosty-val, a hóemberrel Karácsonyra.
+40121	Rudolf-karom	Fegyver-kinézet, mely feldíszíti karmaid egy rénszarvassal Karácsonyra.
+40122	Cukorpálca-penge+	Fegyver-kinézet, mely cukorpálcává alakítja kardod Karácsonyra. Legalább egy véletlenszerű bónuszt biztosít.
+40123	Cukorpálca-tőr+	Fegyver-kinézet, mely cukorpálcává alakítja tőröd Karácsonyra. Legalább egy véletlenszerű bónuszt biztosít.
+40124	Elf íj+	Fegyver-kinézet, mely Elf íjjá alakítja íjad Karácsonyra. Legalább egy véletlenszerű bónuszt biztosít.
+40125	Mézeskalács-glefe+	Fegyver-kinézet, mely feldíszíti mézeskaláccsal kétkezes kardod Karácsonyra. Legalább egy véletlenszerű bónuszt biztosít.
+40126	Cukorpálca-harang+	Fegyver-kinézet, mely cukorpálcává alakítja harangod Karácsonyra. Legalább egy véletlenszerű bónuszt biztosít.
+40127	Fagyos legyező+	Fegyver-kinézet, mely feldíszíti legyeződ Frosty-val, a hóemberrel Karácsonyra. Legalább egy véletlenszerű bónuszt biztosít.
+40128	Rudolf-karom+	Fegyver-kinézet, mely feldíszíti karmaid egy rénszarvassal Karácsonyra. Legalább egy véletlenszerű bónuszt biztosít.
+40129	Aqua-penge	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be pengédet.
+40130	Aqua-tőr	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be tőrödet.
+40131	Aqua-íj	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be íjadat.
+40132	Aqua-glefe	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be kétkezes fegyvered.
+40133	Aqua-harang	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be harangodat.
+40134	Aqua-legyező	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be legyeződet.
+40135	Aqua-karom	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be karmodat.
+40136	Aqua-penge+	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be pengédet. Legalább egy véletlenszerű bónuszt biztosít.
+40137	Aqua-tőr+	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be tőrödet. Legalább egy véletlenszerű bónuszt biztosít.
+40138	Aqua-íj+	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be íjadat. Legalább egy véletlenszerű bónuszt biztosít.
+40139	Aqua-glefe+	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be kétkezes fegyvered. Legalább egy véletlenszerű bónuszt biztosít.
+40140	Aqua-harang+	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be harangodat. Legalább egy véletlenszerű bónuszt biztosít.
+40141	Aqua-legyező+	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be legyeződet. Legalább egy véletlenszerű bónuszt biztosít.
+40142	Aqua-karom+	Egy fegyver-kinézet, ami vastag, irizáló vízréteggel borítja be karmodat. Legalább egy véletlenszerű bónuszt biztosít.
+41458	Főnix talár	Férfiaknak készült elegáns, ázsiai stílusú hosszú talár, melyet főnix hímzés díszít.
+41459	Kobra talár	Férfiaknak készült elegáns, ázsiai stílusú hosszú talár, melyet kobra hímzés díszít.
+41462	Sárkány cheongsam (v.)	Nőknek készült tradicionális ázsiai stílusú vörös ruha, melyet arany sárkány hímzés díszít.
+41463	Sárkány cheongsam (f.)	Nőknek készült tradicionális ázsiai stílusú fehér ruha, melyet vörös sárkány hímzés díszít.
+41466	Főnix talár+	Férfiaknak készült elegáns, ázsiai stílusú hosszú talár, melyet főnix hímzés díszít. Legalább egy véletlenszerű bónuszt biztosít.
+41467	Kobra talár+	Férfiaknak készült elegáns, ázsiai stílusú hosszú talár, melyet kobra hímzés díszít. Legalább egy véletlenszerű bónuszt biztosít.
+41470	Sárkány cheongsam+ (v.)	Nőknek készült tradicionális ázsiai stílusú vörös ruha, melyet arany sárkány hímzés díszít. Legalább egy véletlenszerű bónuszt biztosít.
+41471	Sárkány cheongsam+ (f.)	Nőknek készült tradicionális ázsiai stílusú fehér ruha, melyet vörös sárkány hímzés díszít. Legalább egy véletlenszerű bónuszt biztosít.
+41472	Zombi öltöny	Véres ruha, rothadó hús, kiálló csontok - tökéletes megjelenés minden zombi számára.
+41473	Zombi ruha	Véres ruha, rothadó hús, kiálló csontok - tökéletes megjelenés minden zombihölgy számára.
+41474	Zombi öltöny+	Véres ruha, rothadó hús, kiálló csontok - tökéletes megjelenés minden zombi számára. Legalább egy véletlenszerű bónuszt biztosít.
+41475	Zombi ruha+	Véres ruha, rothadó hús, kiálló csontok - tökéletes megjelenés minden zombihölgy számára. Legalább egy véletlenszerű bónuszt biztosít.
+41476	Boszorkánymester öltöny	Titokzatos fekete öltözék, tökéletes egy boszorkánymester számára.
+41477	Boszorkányruha	Ez a titokzatos fekete ruha a kis boszorkányok tökéletes jelmeze.
+41478	Boszorkánymester öltöny+	Titokzatos fekete öltözék, tökéletes egy boszorkánymester számára. Legalább egy véletlenszerű bónuszt biztosít.
+41479	Boszorkányruha+	Ez a titokzatos fekete ruha a kis boszorkányok tökéletes jelmeze. Legalább egy véletlenszerű bónuszt biztosít.
+41480	Fagyos Mikulás-jelmez	Hóember jelmez piros bársony Télapó-öltözékkel. Nem adható át.
+41481	Hóember-jelmez	Hóember jelmez fehér bársonyból. Nem adható át.
+41482	Karácsonyi ruha (fehér)	Fehér mini ruha harisnyával és kiegészítőkkel. Nem adható át.
+41483	Karácsonyi ruha (piros)	Piros mini ruha harisnyával és kiegészítőkkel. Nem adható át.
+41484	Fagyos Mikulás-jelmez+	Hóember jelmez piros bársony Télapó-öltözékkel. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+41485	Hóember-jelmez+	Hóember jelmez fehér bársonyból. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+41486	Karácsonyi ruha+ (fehér)	Fehér mini ruha harisnyával és kiegészítőkkel. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+41487	Karácsonyi ruha+ (piros)	Piros mini ruha harisnyával és kiegészítőkkel. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+41488	Fáraó öltözék (vörös)	Sétálj, mint egy egyiptomi ebben a férfiaknak készült vörös Fáraó öltözékben.
+41489	Fáraó öltözék (kék)	Sétálj, mint egy egyiptomi ebben a férfiaknak készült világoskék Fáraó öltözékben.
+41490	Uriél angyal (fehér)	Nőknek készült elegáns öltözék fehér angyalszárnyakkal.
+41491	Uriél angyal (vörös)	Nőknek készült grandiózus öltözék tűzvörös angyalszárnyakkal.
+41492	Fáraó öltözék+ (vörös)	Sétálj, mint egy egyiptomi ebben a férfiaknak készült vörös Fáraó öltözékben. Legalább egy véletlenszerű bónuszt biztosít.
+41493	Fáraó öltözék+ (kék)	Sétálj, mint egy egyiptomi ebben a férfiaknak készült világoskék Fáraó öltözékben. Legalább egy véletlenszerű bónuszt biztosít.
+41494	Uriél angyal+ (fehér)	Nőknek készült elegáns öltözék fehér angyalszárnyakkal. Legalább egy véletlenszerű bónuszt biztosít.
+41495	Uriél angyal+ (vörös)	Nőknek készült grandiózus öltözék tűzvörös angyalszárnyakkal. Legalább egy véletlenszerű bónuszt biztosít.
+41496	Sivatagi herceg (barna)	Vezérhez illő, barna szövetből készült harcos-ruha.
+41497	Sivatagi herceg (fehér)	Vezérhez illő, fehér szövetből készült harcos-ruha.
+41498	Sivatagi hercegnő(barna)	Női vezérhez illő, barna szövetből készült harcos-ruha.
+41499	Sivatagi hercegnő(fehér)	Női vezérhez illő, fehér szövetből készült harcos-ruha.
+41500	Sivatagi herceg+ (barna)	Vezérhez illő, barna szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41501	Sivatagi herceg+ (fehér)	Vezérhez illő, fehér szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41502	Siv. hercegnő+ (barna)	Női vezérhez illő, barna szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41503	Siv. hercegnő+ (fehér)	Női vezérhez illő, fehér szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41504	Nyuszi jelmez (szürke)	Ölelni valóan puha, szürke szőrme öltözék, jellege alapján: nyuszi jelmez. Nem adható át.
+41505	Nyuszi jelmez (barna)	Ölelni valóan puha, barna szőrme öltözék, jellege alapján: nyuszi jelmez. Nem adható át.
+41506	Húsvéti ruha (színes)	Vidám, tarka húsvéti ruha mutatós díszítéssel. Nem adható át.
+41507	Húsvéti ruha (vil. kék)	Világoskék húsvéti ruha aprólékos díszítéssel. Nem adható át.
+41508	Nyuszi jelmez+ (szürke)	Ölelni valóan puha, szürke szőrme öltözék, jellege alapján: nyuszi jelmez. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41509	Nyuszi jelmez+ (barna)	Ölelni valóan puha, barna szőrme öltözék, jellege alapján: nyuszi jelmez. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41510	Húsvéti ruha+ (színes)	Vidám, tarka húsvéti ruha mutatós díszítéssel. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41511	Húsvéti ruha+ (vil. kék)	Világoskék húsvéti ruha aprólékos díszítéssel. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41512	Fogas jelmez	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén.
+41513	Fogas jelmez	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén.
+41514	Fogas jelmez	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén.
+41515	Fogas jelmez	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén.
+41516	Fogas jelmez+	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén. Legalább egy véletlenszerű bónuszt biztosít.
+41517	Fogas jelmez+	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén. Legalább egy véletlenszerű bónuszt biztosít.
+41518	Fogas jelmez+	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén. Legalább egy véletlenszerű bónuszt biztosít.
+41519	Fogas jelmez+	Démoni kinézetű Halloween jelmez, melytől borzongás fut végig ellenfeled gerincén. Legalább egy véletlenszerű bónuszt biztosít.
+41520	Vörös Tél köntös	Vörös nemezből készült téli ruha. Nem adható át.
+41521	Kék Tél köntös	Kék nemezből készült téli ruha. Nem adható át.
+41522	Vörös Tél köntös+	Vörös nemezből készült téli ruha. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41523	Kék Tél köntös+	Kék nemezből készült téli ruha. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41524	Vörös Tél ruha	Vörös nemezből készült téli női ruha. Nem adható át.
+41525	Kék Tél ruha	Kék nemezből készült téli női ruha. Nem adható át.
+41526	Vörös Tél ruha+	Vörös nemezből készült téli női ruha. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41527	Kék Tél ruha+	Kék nemezből készült téli női ruha. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41528	Sivatagi herceg (vörös)	Vezérhez illő, vörös szövetből készült harcos-ruha.
+41529	Sivatagi herceg (kék)	Vezérhez illő, kék szövetből készült harcos-ruha.
+41530	Siv. hercegnő (vörös)	Női vezérhez illő, vörös szövetből készült harcos-ruha.
+41531	Sivatagi hercegnő (kék)	Női vezérhez illő, kék szövetből készült harcos-ruha.
+41532	Sivatagi herceg+ (vörös)	Vezérhez illő, vörös szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41533	Sivatagi herceg+ (kék)	Vezérhez illő, kék szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41534	Siv. hercegnő+ (vörös)	Női vezérhez illő, vörös szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41535	Siv. hercegnő+ (kék)	Női vezérhez illő, kék szövetből készült harcos-ruha. Legalább egy véletlenszerű bónuszt biztosít.
+41540	Nyuszi jelmez (fehér)	Fehér színű plüssből készült nyúl jelmez férfiaknak. Nem adható át.
+41541	Nyuszi jelmez (rózsasz.)	Rózsaszín plüssből készült nyúl jelmez férfiaknak. Nem adható át.
+41542	Nyuszi jelmez (sötétkék)	Sötétkék plüssből készült nyuszi jelmez nők részére. Nem adható át.
+41543	Nyuszi jelmez (magenta)	Magenta színű plüssből készült nyuszi jelmez nők részére. Nem adható át.
+41544	Nyuszi jelmez+ (fehér)	Fehér színű plüssből készült nyúl jelmez férfiaknak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41545	Nyuszi jelmez+(rózsasz.)	Rózsaszín plüssből készült nyúl jelmez férfiaknak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41546	Nyuszi jelmez+(sötétkék)	Sötétkék plüssből készült nyuszi jelmez nők részére. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41547	Nyuszi jelmez+ (magenta)	Magenta színű plüssből készült nyuszi jelmez nők részére. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41560	Vér-vámpír (Szürke)	A valódi Vér-vámpír páncélja a legyőzhetetlenség auráját sugározza. Ez a tárgy nem adható át.
+41561	Vér-vámpír (Vörös)	A valódi Vér-vámpír páncélja a legyőzhetetlenség auráját sugározza. Ez a tárgy nem adható át.
+41562	Vér-Lamia (Szürke)	A harcos-szerű Vér-Lamia páncélja a legyőzhetetlenség auráját sugározza. Ez a tárgy nem adható át.
+41563	Vér-Lamia (Vörös)	A harcos-szerű Vér-Lamia páncélja a legyőzhetetlenség auráját sugározza. Ez a tárgy nem adható át.
+41564	Vér-vámpír+ (Szürke)	A valódi Vér-vámpír páncélja emberfeletti erőt biztosít számodra. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41565	Vér-vámpír+ (Vörös)	A valódi Vér-vámpír páncélja emberfeletti erőt biztosít számodra. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41566	Vér-Lamia+ (Szürke)	A harcos-szerű Vér-Lamia páncélja emberfeletti erőt biztosít számodra. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41567	Vér-Lamia+ (Vörös)	A harcos-szerű Vér-Lamia páncélja emberfeletti erőt biztosít számodra. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+41568	Piros ünnepi köpeny (f)	Piros ünnepi köpeny fehér szegéllyel.
+41569	Zöld ünnepi köpeny (f)	Zöld ünnepi köpeny fehér szegéllyel.
+41570	Piros ünnepi köpeny (n)	Piros ünnepi köpeny fehér szegéllyel.
+41571	Zöld ünnepi köpeny (n)	Zöld ünnepi köpeny fehér szegéllyel.
+41572	Piros ünnepi köpeny+ (f)	Piros ünnepi köpeny fehér szegéllyel. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+41573	Zöld ünnepi köpeny+ (f)	Zöld ünnepi köpeny fehér szegéllyel. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+41574	Piros ünnepi köpeny+ (n)	Piros ünnepi köpeny fehér szegéllyel. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+41575	Zöld ünnepi köpeny+ (n)	Zöld ünnepi köpeny fehér szegéllyel. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+41576	Arany O-Yoroi (f)	Egy japán tábornok arany színű egyenruhája.
+41577	Ezüst O-Yoroi (f)	Egy japán tábornok ezüst színű egyenruhája.
+41578	Arany O-Yoroi (n)	Egy japán tábornok arany színű egyenruhája.
+41579	Ezüst O-Yoroi (n)	Egy japán tábornok ezüst színű egyenruhája.
+41580	Arany O-Yoroi+ (f)	Egy japán tábornok arany színű egyenruhája. Legalább egy véletlenszerű bónuszt biztosít.
+41581	Ezüst O-Yoroi+ (f)	Egy japán tábornok ezüst színű egyenruhája. Legalább egy véletlenszerű bónuszt biztosít.
+41582	Arany O-Yoroi+ (n)	Egy japán tábornok arany színű egyenruhája. Legalább egy véletlenszerű bónuszt biztosít.
+41583	Ezüst O-Yoroi+ (n)	Egy japán tábornok ezüst színű egyenruhája. Legalább egy véletlenszerű bónuszt biztosít.
+41584	Szamuráj vért (kék)	Egy tapasztalt sógunhoz illő kék páncél.
+41585	Szamuráj vért (vörös)	Egy tapasztalt sógunhoz illő vörös páncél.
+41586	Szamuráj vért (kék)	Egy női sógunhoz illő kék páncél.
+41587	Szamuráj vért (vörös)	Egy női sógunhoz illő vörös páncél.
+41588	Szamuráj vért+ (kék)	Egy tapasztalt sógunhoz illő kék páncél. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41589	Szamuráj vért+ (vörös)	Egy tapasztalt sógunhoz illő vörös páncél. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41590	Szamuráj vért+ (kék)	Egy női sógunhoz illő kék páncél. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41591	Szamuráj vért+ (vörös)	Egy női sógunhoz illő vörös páncél. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41592	Rémület páncélja (arany)	Lángoló, pokoli páncél. Tökéletesen alkalmas rémisztgetésre.
+41593	Rémület páncélja (kék)	Ragyogó, pokoli, kék páncél. Tökéletesen alkalmas rémisztgetésre.
+41594	Rémület páncélja (arany)	Lángoló, pokoli páncél. Tökéletesen alkalmas rémisztgetésre.
+41595	Rémület páncélja (kék)	Ragyogó, pokoli, kék páncél. Tökéletesen alkalmas rémisztgetésre.
+41596	Rémület páncélja+(arany)	Lángoló, pokoli páncél. Tökéletesen alkalmas rémisztgetésre. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41597	Rémület páncélja+(kék)	Ragyogó, pokoli, kék páncél. Tökéletesen alkalmas rémisztgetésre. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41598	Rémület páncélja+(arany)	Lángoló, pokoli páncél. Tökéletesen alkalmas rémisztgetésre. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41599	Rémület páncélja+(kék)	Ragyogó, pokoli, kék páncél. Tökéletesen alkalmas rémisztgetésre. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41600	Steampunk jelmez (fek.)	Futurisztikus öltözék a jelen férfi harcosainak.
+41601	Steampunk jelmez (vörös)	Futurisztikus öltözék a jelen férfi harcosainak.
+41602	Steampunk ruha (fekete)	Futurisztikus viselet a jelen női harcosainak.
+41603	Steampunk ruha (vörös)	Futurisztikus viselet a jelen női harcosainak.
+41604	Steampunk jelmez+ (fek.)	Futurisztikus öltözék a jelen férfi harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41605	Steampunk jelmez+ (vör.)	Futurisztikus öltözék a jelen férfi harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41606	Steampunk ruha+ (fekete)	Futurisztikus öltözék a jelen női harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41607	Steampunk ruha+ (vörös)	Futurisztikus öltözék a jelen női harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+41608	Sungura öltözék (kék)	Mesébe illő öltözék fehér és lila árnyalatokkal és kék színű buggyos térdnadrággal.
+41609	Sungura öltözék (zöld)	Mesébe illő öltözék fehér és zöldeskék árnyalatokkal és szürke színű buggyos térdnadrággal.
+41610	Sungura ruha (kék)	Mesébe illő fodros ruha kékben és lilában pompázva.
+41611	Sungura ruha (szürke)	Mesébe illő fodros ruha szürkében és zöldeskékben pompázva.
+41612	Sungura öltözék+ (kék)	Mesébe illő öltözék fehér és lila árnyalatokkal és kék színű buggyos térdnadrággal. Legalább egy véletlenszerű bónuszt biztosít.
+41613	Sungura öltözék+ (zöld)	Mesébe illő öltözék fehér és zöldeskék árnyalatokkal és szürke színű buggyos térdnadrággal. Legalább egy véletlenszerű bónuszt biztosít.
+41614	Sungura ruha+ (kék)	Mesébe illő fodros ruha kékben és lilában pompázva. Legalább egy véletlenszerű bónuszt biztosít.
+41615	Sungura ruha+ (szürke)	Mesébe illő fodros ruha szürkében és zöldeskékben pompázva. Legalább egy véletlenszerű bónuszt biztosít.
+41630	Avaloni páncél (ezüst)	Ezüst páncélzat, mely valamikor régen egy lovagrendhez tartozott.
+41631	Avaloni páncél (vörös)	Vörös páncélzat, mely valamikor régen egy lovagrendhez tartozott.
+41632	Avaloni páncél (ezüst)	Ezüst páncélzat, mely valamikor régen egy lovagrendhez tartozott.
+41633	Avaloni páncél (vörös)	Vörös páncélzat, mely valamikor régen egy lovagrendhez tartozott.
+41634	Avaloni páncél+ (ezüst)	Csillogó páncélzat, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+41635	Avaloni páncél+ (vörös)	Csillogó páncélzat, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+41636	Avaloni páncél+ (ezüst)	Csillogó páncélzat, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+41637	Avaloni páncél+ (vörös)	Csillogó páncélzat, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+41638	KSA VB-mez (f)	Világbajnoksági labdarúgó mez a szaúd-arábiai nemzeti színekben.
+41639	KSA VB-mez (n)	Világbajnoksági labdarúgó mez a szaúd-arábiai nemzeti színekben.
+41640	KSA VB-mez+ (f)	Világbajnoksági labdarúgó mez a szaúd-arábiai nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41641	KSA VB-mez+ (n)	Világbajnoksági labdarúgó mez a szaúd-arábiai nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41642	DEN VB-mez (f)	Világbajnoksági labdarúgó mez dán nemzeti színekben.
+41643	DEN VB-mez (n)	Világbajnoksági labdarúgó mez dán nemzeti színekben.
+41644	DEN VB-mez+ (f)	Világbajnoksági labdarúgó mez dán nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41645	DEN VB-mez+ (n)	Világbajnoksági labdarúgó mez dán nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41646	SVK VB-mez (f)	Világbajnoksági labdarúgó mez szlovák nemzeti színekben.
+41647	SVK VB-mez (n)	Világbajnoksági labdarúgó mez szlovák nemzeti színekben.
+41648	SVK VB-mez+ (f)	Világbajnoksági labdarúgó mez szlovák nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41649	SVK VB-mez+ (n)	Világbajnoksági labdarúgó mez szlovák nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41650	TUR VB-mez (f)	Világbajnoksági labdarúgó mez török nemzeti színekben.
+41651	TUR VB-mez (n)	Világbajnoksági labdarúgó mez török nemzeti színekben.
+41652	TUR VB-mez+ (f)	Világbajnoksági labdarúgó mez török nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41653	TUR VB-mez+ (n)	Világbajnoksági labdarúgó mez török nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41654	HUN VB-mez (f)	Világbajnoksági labdarúgó mez magyar nemzeti színekben.
+41655	HUN VB-mez (n)	Világbajnoksági labdarúgó mez magyar nemzeti színekben.
+41656	HUN VB-mez+ (f)	Világbajnoksági labdarúgó mez magyar nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41657	HUN VB-mez+ (n)	Világbajnoksági labdarúgó mez magyar nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41658	ROU VB-mez (f)	Világbajnoksági labdarúgó mez román nemzeti színekben.
+41659	ROU VB-mez (n)	Világbajnoksági labdarúgó mez román nemzeti színekben.
+41660	ROU VB-mez+ (f)	Világbajnoksági labdarúgó mez román nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41661	ROU VB-mez+ (n)	Világbajnoksági labdarúgó mez román nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41662	POL VB-mez (f)	Világbajnoksági labdarúgó mez lengyel nemzeti színekben.
+41663	POL VB-mez (n)	Világbajnoksági labdarúgó mez lengyel nemzeti színekben.
+41664	POL VB-mez+ (f)	Világbajnoksági labdarúgó mez lengyel nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41665	POL VB-mez+ (n)	Világbajnoksági labdarúgó mez lengyel nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41666	BRA VB-mez (f)	Világbajnoksági labdarúgó mez a brazil nemzeti színekben.
+41667	BRA VB-mez (n)	Világbajnoksági labdarúgó mez a brazil nemzeti színekben.
+41668	BRA VB-mez+ (f)	Világbajnoksági labdarúgó mez a brazil nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41669	BRA VB-mez+ (n)	Világbajnoksági labdarúgó mez a brazil nemzeti színekben. Legalább egy véletlenszerű bónuszt biztosít.
+41670	Barna farkas öltözék (f)	Ez a barna öltözék felébreszti a farkast minden férfiben.
+41671	Szürkefarkas öltözék (f)	Ez a szürke öltözék felébreszti a farkast minden férfiben.
+41672	Barna farkas öltözék (n)	Ez a barna öltözék felébreszti a farkast minden nőben.
+41673	Szürkefarkas öltözék (n)	Ez a szürke öltözék felébreszti a farkast minden nőben.
+41674	Barna farkas öltözék+(f)	Ez a barna öltözék felébreszti a farkast minden férfiben. Legalább egy véletlenszerű bónuszt biztosít.
+41675	Szürkefarkas öltözék+(f)	Ez a szürke öltözék felébreszti a farkast minden férfiben. Legalább egy véletlenszerű bónuszt biztosít.
+41676	Barna farkas öltözék+(n)	Ez a barna öltözék felébreszti a farkast minden nőben. Legalább egy véletlenszerű bónuszt biztosít.
+41677	Szürkefarkas öltözék+(n)	Ez a szürke öltözék felébreszti a farkast minden nőben. Legalább egy véletlenszerű bónuszt biztosít.
+45108	Rizs kalap	Hagyományos, szalmából készült ázsiai kalap férfiaknak.
+45110	Odango	Egy feltűzött ázsiai hajstílus dupla konttyal.
+45114	Rizs kalap+	Hagyományos, szalmából készült ázsiai kalap férfiaknak. Legalább egy véletlenszerű bónuszt biztosít.
+45116	Odango+	Egy feltűzött ázsiai hajstílus dupla konttyal. Legalább egy véletlenszerű bónuszt biztosít.
+45170	Zombi tökmaszk	Hatalmas tökmaszk formájú halloween-i jelmez.
+45171	Boszorkánykalap	Boszorkányok és boszorkánymesterek által viselt csúcsos kalap széles karimával.
+45172	Zombi tökmaszk+	Hatalmas tökmaszk formájú halloween-i jelmez. Legalább egy véletlenszerű bónuszt biztosít.
+45173	Boszorkánykalap+	Boszorkányok és boszorkánymesterek által viselt csúcsos kalap széles karimával. Legalább egy véletlenszerű bónuszt biztosít.
+45174	Hóember-maszk	Hóember-maszk elegáns fekete szatén cilinderrel. Nem adható át.
+45175	Fagyos Mikulás-maszk	Hóember-maszk piros bársony karácsonyi süveggel és fehér szőrmés peremmel. Nem adható át.
+45176	Bojtos sapka (fehér)	Fehér bársonyból készült karácsonyi süveg fehér szőrme szegéllyel és piros bojttal. Nem adható át.
+45177	Bojtos sapka (piros)	Piros bársonyból készült karácsonyi süveg fehér szőrme szegéllyel és fehér bojttal. Nem adható át.
+45178	Hóember-maszk+	Hóember-maszk elegáns fekete szatén cilinderrel. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+45179	Fagyos Mikulás-maszk+	Hóember-maszk piros bársony karácsonyi süveggel és fehér szőrmés peremmel. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+45180	Bojtos sapka+ (fehér)	Fehér bársonyból készült karácsonyi süveg fehér szőrme szegéllyel és piros bojttal. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+45181	Bojtos sapka+ (piros)	Piros bársonyból készült karácsonyi süveg fehér szőrme szegéllyel és fehér bojttal. Legalább egy véletlenszerű bónuszt biztosít. Átadható.
+45182	Tollas fejdísz (vörös)	Egy hivalkodó vörös tollas fejdísz férfiaknak. Álarcosbálra tökéletes!
+45183	Tollas fejdísz (kék)	Egy hivalkodó világoskék tollas fejdísz férfiaknak. Álarcosbálra tökéletes!
+45184	Főnix tiara (fehér)	Egy elegáns, horgas fém fejdísz nők részére.
+45185	Főnix tiara (vörös)	Egy elegáns, horgas fém fejdísz nők részére.
+45186	Tollas fejdísz+ (vörös)	Egy hivalkodó vörös tollas fejdísz férfiaknak. Álarcosbálra tökéletes! Legalább egy véletlenszerű bónuszt biztosít.
+45187	Tollas fejdísz+ (kék)	Egy hivalkodó világoskék tollas fejdísz férfiaknak. Álarcosbálra tökéletes! Legalább egy véletlenszerű bónuszt biztosít.
+45188	Főnix tiara+ (fehér)	Egy elegáns, horgas fém fejdísz nők részére. Legalább egy véletlenszerű bónuszt biztosít.
+45189	Főnix tiara+ (vörös)	Egy elegáns, horgas fém fejdísz nők részére. Legalább egy véletlenszerű bónuszt biztosít.
+45190	Nyuszifül (szürke)	Puha szürke szőrmesapka nyuszifülekkel. Nem adható át.
+45191	Nyuszifül (barna)	Puha barna szőrmesapka nyuszifülekkel. Nem adható át.
+45192	Húsvéti fejdísz (színes)	Gyönyörű, szivárványszínű húsvéti fejdísz divatkedvelő harcos hölgyek számára. Nem adható át.
+45193	Húsvéti fejdísz (v. kék)	Üde világoskék húsvéti fejdísz divatkedvelő harcos hölgyek számára. Nem adható át.
+45194	Nyuszifül+ (szürke)	Puha szürke szőrmesapka nyuszifülekkel. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45195	Nyuszifül+ (barna)	Puha barna szőrmesapka nyuszifülekkel. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45196	Húsvéti fejdísz+(színes)	Gyönyörű, szivárványszínű húsvéti fejdísz divatkedvelő harcos hölgyek számára. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45197	Húsvéti fejdísz+(v. kék)	Üde világoskék húsvéti fejdísz divatkedvelő harcos hölgyek számára. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45198	Barna turbán	Tartós, barna anyagból készült nemes turbán, harcosok számára.
+45199	Fehér turbán	Tartós, fehér anyagból készült nemes turbán, harcosok számára.
+45200	Barna fejkendő	Barna, könnyű anyagból készült fejkendő, tökéletes női harcosok számára.
+45201	Fehér fejkendő	Fehér, könnyű anyagból készült fejkendő, tökéletes női harcosok számára.
+45202	Barna turbán+	Tartós, barna anyagból készült nemes turbán, harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45203	Fehér turbán+	Tartós, fehér anyagból készült nemes turbán, harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45204	Barna fejkendő+	Barna, könnyű anyagból készült fejkendő, tökéletes női harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45205	Fehér fejkendő+	Fehér, könnyű anyagból készült fejkendő, tökéletes női harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45206	Fogas sisak	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére.
+45207	Fogas sisak	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére.v
+45208	Fogas sisak	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére.
+45209	Fogas sisak	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére.
+45210	Fogas sisak+	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére. Legalább egy véletlenszerű bónuszt biztosít.
+45211	Fogas sisak+	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére. Legalább egy véletlenszerű bónuszt biztosít.
+45212	Fogas sisak+	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére. Legalább egy véletlenszerű bónuszt biztosít.
+45213	Fogas sisak+	Vérfagyasztó sisak Halloweenre, melynek láttán félelem és rettegés ül ellenfeleid szívére. Legalább egy véletlenszerű bónuszt biztosít.
+45214	Piros Mikulás-sapka	Piros nemez fejfedő fehér bojttal. Nem adható át.
+45215	Kék Mikulás-sapka	Kék nemez fejfedő fehér bojttal. Nem adható át.
+45216	Piros Mikulás-csuklya	Piros nemez fejfedő fehér bojttal. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45217	Kék Mikulás-csuklya	Kék nemez fejfedő fehér bojttal. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45218	Piros Mikulás-sapka+	Piros nemez csuklya fehér bojttal. Nem adható át.
+45219	Kék Mikulás-sapka+	Kék nemez csuklya fehér bojttal. Nem adható át.
+45220	Piros Mikulás-csuklya+	Piros nemez csuklya fehér bojttal. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45221	Kék Mikulás-csuklya+	Kék nemez csuklya fehér bojttal. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45222	Nyuszifül (fehér)	Fehér színű sapka nyúlfüllel férfiaknak. Nem adható át.
+45223	Nyuszifül (rózsaszín)	Rózsaszín sapka nyúlfüllel férfiaknak. Nem adható át.
+45224	Nyuszifül (sötétkék)	Sötétkék nyuszifül nők részére. Nem adható át.
+45225	Nyuszifül (magenta)	Magenta színű nyuszifül nők részére. Nem adható át.
+45226	Nyuszifül+ (fehér)	Fehér színű sapka nyúlfüllel férfiaknak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45227	Nyuszifül+ (rózsaszín)	Rózsaszín sapka nyúlfüllel férfiaknak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45228	Nyuszifül+ (sötétkék)	Sötétkék nyuszifül nők részére. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45229	Nyuszifül+ (magenta)	Magenta színű nyuszifül nők részére. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45234	Kék turbán	Tartós, kék anyagból készült nemes turbán, harcosok számára.
+45235	Vörös turbán	Tartós, vörös anyagból készült nemes turbán, harcosok számára.
+45236	Barna fejkendő	Barna, könnyű anyagból készült fejkendő, tökéletes női harcosok számára.
+45237	Zöld fejkendő	Zöld, könnyű anyagból készült fejkendő, tökéletes női harcosok számára.
+45238	Kék turbán+	Tartós, kék anyagból készült nemes turbán, harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45239	Vörös turbán+	Tartós, vörös anyagból készült nemes turbán, harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45240	Barna fejkendő+	Barna, könnyű anyagból készült fejkendő, tökéletes női harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45241	Zöld fejkendő+	Zöld, könnyű anyagból készült fejkendő, tökéletes női harcosok számára. Legalább egy véletlenszerű bónuszt biztosít.
+45250	Vér-vámpír sisak (Szü.)	A valódi Vér-vámpír sisakja. Ez a tárgy nem adható át.
+45251	Vér-vámpír sisak (Vör.)	A valódi Vér-vámpír sisakja. Ez a tárgy nem adható át.
+45252	Vér-Lamia sisak (Szü.)	A harcos-szerű Vér-Lamia sisakja. Ez a tárgy nem adható át.
+45253	Vér-Lamia sisak (Vör.)	A harcos-szerű Vér-Lamia sisakja. Ez a tárgy nem adható át.
+45254	Vér-vámpír sisak+ (Szü.)	A valódi Vér-vámpír sisakja. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45255	Vér-vámpír sisak+ (Vör.)	A valódi Vér-vámpír sisakja. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45256	Vér-Lamia sisak+ (Szü.)	A harcos-szerű Vér-Lamia sisakja. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45257	Vér-Lamia sisak+ (Vör.)	A harcos-szerű Vér-Lamia sisakja. Legalább egy véletlenszerű bónuszt biztosít. A tárgy átadható.
+45258	Kar. csuklya (piros)	Piros ünnepi csuklya fehér szegéllyel.
+45259	Kar. csuklya (zöld)	Zöld ünnepi csuklya fehér szegéllyel.
+45260	Kar. barett (piros)	Piros karácsonyi barett fehér bojttal.
+45261	Karácsonyi barett (zöld)	Zöld karácsonyi barett fehér bojttal.
+45262	Kar. csuklya+ (piros)	Piros ünnepi csuklya fehér szegéllyel. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+45263	Kar. csuklya+ (zöld)	Zöld ünnepi csuklya fehér szegéllyel. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+45264	Kar. barett+ (piros)	Piros karácsonyi barett fehér bojttal. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+45265	Kar. barett+ (zöld)	Zöld karácsonyi barett fehér bojttal. A tárgy legalább egy véletlenszerű bónuszt biztosít és átadható.
+45266	Arany Kabuto (f)	Egy japán tábornok arany színű sisakja.
+45267	Ezüst Kabuto (f)	Egy japán tábornok ezüst színű sisakja.
+45268	Arany Kabuto (n)	Egy japán tábornok arany színű sisakja.
+45269	Ezüst Kabuto (n)	Egy japán tábornok ezüst színű sisakja.
+45270	Arany Kabuto+ (f)	Egy japán tábornok arany színű sisakja. Legalább egy véletlenszerű bónuszt biztosít.
+45271	Ezüst Kabuto+ (f)	Egy japán tábornok ezüst színű sisakja. Legalább egy véletlenszerű bónuszt biztosít.
+45272	Arany Kabuto+ (n)	Egy japán tábornok arany színű sisakja. Legalább egy véletlenszerű bónuszt biztosít.
+45273	Ezüst Kabuto+ (n)	Egy japán tábornok ezüst színű sisakja. Legalább egy véletlenszerű bónuszt biztosít.
+45274	Szamuráj konty (arany)	Szamuráj stílusban kontyba font haj arany csattal férfi karaktereknek.
+45275	Szamuráj konty (ezüst)	Szamuráj stílusban kontyba font haj ezüst csattal férfi karaktereknek.
+45276	Szamuráj konty (arany)	Szamuráj stílusban kontyba font haj arany csattal női karaktereknek.
+45277	Szamuráj konty (ezüst)	Szamuráj stílusban kontyba font haj ezüst csattal női karaktereknek.
+45278	Szamuráj konty+ (arany)	Szamuráj stílusban kontyba font haj arany csattal férfi karaktereknek. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45279	Szamuráj konty+ (ezüst)	Szamuráj stílusban kontyba font haj ezüst csattal férfi karaktereknek. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45280	Szamuráj konty+ (arany)	Szamuráj stílusban kontyba font haj arany csattal női karaktereknek. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45281	Szamuráj konty+ (ezüst)	Szamuráj stílusban kontyba font haj ezüst csattal női karaktereknek. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45282	Rémület szarvai (arany)	Arany sisak ördögszarvakkal.
+45283	Rémület szarvai (kék)	Kék sisak ördögszarvakkal.
+45284	Rémület szarvai (arany)	Arany sisak ördögszarvakkal.
+45285	Rémület szarvai (kék)	Kék sisak ördögszarvakkal.
+45286	Rémület szarvai+ (arany)	Arany sisak ördögszarvakkal. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45287	Rémület szarvai+ (kék)	Kék sisak ördögszarvakkal. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45288	Rémület szarvai+ (arany)	Arany sisak ördögszarvakkal. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45289	Rémület szarvai+ (kék)	Kék sisak ördögszarvakkal. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45290	Steampunk kalap (fekete)	Futurisztikus fejfedő a jelen férfi harcosainak.
+45291	Steampunk kalap (vörös)	Futurisztikus fejfedő a jelen férfi harcosainak.
+45292	Steampunk kalap (fekete)	Futurisztikus fejfedő a jelen női harcosainak.
+45293	Steampunk kalap (vörös)	Futurisztikus fejfedő a jelen női harcosainak.
+45294	Steampunk kalap+ (fek.)	Futurisztikus fejfedő a jelen férfi harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45295	Steampunk kalap+ (vörös)	Futurisztikus fejfedő a jelen férfi harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45296	Steampunk kalap+ (fek.)	Futurisztikus fejfedő a jelen női harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45297	Steampunk kalap+ (vörös)	Futurisztikus fejfedő a jelen női harcosainak. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45298	Tollas kalap (kék)	Egy kék kalap gyöngyből készült állpánttal és vörös fácántollal.
+45299	Tollas kalap (szürke)	Egy szürke kalap gyöngyből készült állpánttal és zöldeskék fácántollal.
+45300	Sungura kalap (kék)	Divatos kék fejfedő türkiz drágakővel.
+45301	Sungura kalap (szürke)	Divatos szürke fejfedő lila drágakővel.
+45302	Tollas kalap+ (kék)	Egy kék kalap gyöngyből készült állpánttal és vörös fácántollal. Legalább egy véletlenszerű bónuszt biztosít.
+45303	Tollas kalap+ (szürke)	Egy szürke kalap gyöngyből készült állpánttal és zöldeskék fácántollal. Legalább egy véletlenszerű bónuszt biztosít.
+45304	Sungura kalap+ (kék)	Divatos kék fejfedő türkiz drágakővel. Legalább egy véletlenszerű bónuszt biztosít.
+45305	Sungura kalap+ (szürke)	Divatos szürke fejfedő lila drágakővel. Legalább egy véletlenszerű bónuszt biztosít.
+45314	Zodiákus korona	Lenyűgöző fejdísz.
+45315	Zodiákus korona	Lenyűgöző fejdísz.
+45316	Zodiákus korona+	Lenyűgöző fejdísz. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45317	Zodiákus korona+	Lenyűgöző fejdísz. Legalább egy véletlenszerű bónuszt biztosít. Ez a tárgy átadható.
+45320	Avaloni sisak (ezüst)	Ezüst sisak, mely valamikor régen egy lovagrendhez tartozott.
+45321	Avaloni sisak (vörös)	Vörös sisak, mely valamikor régen egy lovagrendhez tartozott.
+45322	Avaloni sisak (ezüst)	Ezüst sisak, mely valamikor régen egy lovagrendhez tartozott.
+45323	Avaloni sisak (vörös)	Vörös sisak, mely valamikor régen egy lovagrendhez tartozott.
+45324	Avaloni sisak+ (ezüst)	Ezüst sisak, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+45325	Avaloni sisak+ (vörös)	Vörös sisak, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+45326	Avaloni sisak+ (ezüst)	Ezüst sisak, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+45327	Avaloni sisak+ (vörös)	Vörös sisak, mely valamikor régen egy lovagrendhez tartozott. Legalább egy véletlenszerű bónuszt biztosít.
+45328	Medve sapka (f)	Imádnivaló medve fej kinézetű sapka.
+45329	Tigris sapka (f)	Imádnivaló tigris fej kinézetű sapka.
+45330	Medve sapka (n)	Imádnivaló medve fej kinézetű sapka.
+45331	Tigris sapka (n)	Imádnivaló tigris fej kinézetű sapka.
+45332	Medve sapka+ (f)	Ez az aranyos fejfedő legalább egy véletlenszerű bónuszt biztosít számodra.
+45333	Tigris sapka+ (f)	Ez az aranyos fejfedő legalább egy véletlenszerű bónuszt biztosít számodra.
+45334	Medve sapka+ (n)	Ez az aranyos fejfedő legalább egy véletlenszerű bónuszt biztosít számodra.
+45335	Tigris sapka+ (n)	Ez az aranyos fejfedő legalább egy véletlenszerű bónuszt biztosít számodra.
+45336	Barna farkas sapka (f)	Farkasszőrből készült, valósághű férfi fejfedő.
+45337	Szürkefarkas sapka (f)	Farkasszőrből készült, valósághű férfi fejfedő.
+45338	Barna farkas sapka (n)	Farkasszőrből készült, valósághű női fejfedő.
+45339	Szürkefarkas sapka (n)	Farkasszőrből készült, valósághű női fejfedő.
+45340	Barna farkas sapka+ (f)	Farkasszőrből készült, valósághű férfi fejfedő. Legalább egy véletlenszerű bónuszt biztosít.
+45341	Szürkefarkas sapka+ (f)	Farkasszőrből készült, valósághű férfi fejfedő. Legalább egy véletlenszerű bónuszt biztosít.
+45342	Barna farkas sapka+ (n)	Farkasszőrből készült, valósághű női fejfedő. Legalább egy véletlenszerű bónuszt biztosít.
+45343	Szürkefarkas sapka+ (n)	Farkasszőrből készült, valósághű női fejfedő. Legalább egy véletlenszerű bónuszt biztosít.
+45344	DEN Hajpánt (n)	Hosszú, befont haj, és hajpánt a dán nemzeti színekkel.
+45345	HUN Hajpánt (n)	Hosszú, befont haj, és hajpánt a magyar nemzeti színekkel.
+45346	POL Hajpánt (n)	Hosszú, befont haj, és hajpánt a lengyel nemzeti színekkel.
+45347	KSA Hajpánt (n)	Hosszú, befont haj, és hajpánt a szaúd-arábiai nemzeti színekkel.
+45348	SVK Hajpánt (n)	Hosszú, befont haj, és hajpánt a szlovák nemzeti színekkel.
+45349	TUR Hajpánt (n)	Hosszú, befont haj, és hajpánt a török nemzeti színekkel.
+45350	DEN Hajpánt+ (n)	Hosszú, befont haj, és hajpánt a dán nemzeti színekkel. Legalább egy véletlenszerű bónuszt biztosít.
+45351	HUN Hajpánt+ (n)	Hosszú, befont haj, és hajpánt a magyar nemzeti színekkel. Legalább egy véletlenszerű bónuszt biztosít.
+45352	POL Hajpánt+ (n)	Hosszú, befont haj, és hajpánt a lengyel nemzeti színekkel. Legalább egy véletlenszerű bónuszt biztosít.
+45353	KSA Hajpánt+ (n)	Hosszú, befont haj, és hajpánt a szaúd-arábiai nemzeti színekkel. Legalább egy véletlenszerű bónuszt biztosít.
+45354	SVK Hajpánt+ (n)	Hosszú, befont haj, és hajpánt a szlovák nemzeti színekkel. Legalább egy véletlenszerű bónuszt biztosít.
+45355	TUR Hajpánt+ (n)	Hosszú, befont haj, és hajpánt a török nemzeti színekkel. Legalább egy véletlenszerű bónuszt biztosít.
+50208	Ezüst Prémium Tekercs	Aktiválja a prémium tagságod, vagy növeli az idejét 
+50209	Arany Prémium Tekercs	Aktiválja a prémium tagságod, vagy növeli az idejét
+50210	Platinum Prémium Tekercs	Aktiválja a prémium tagságod, vagy növeli az idejét
+50266	Jotun Thrym ládája	Jotun Thrym ládája. A nehéz lakat alapján valami értékeset kell tartalmaznia.
+50267	Arany Okey láda	E díj megnyeréséhez érj el 400 vagy több pontot az okey játékban.
+50270	Meley királynő ládája	Ez a láda a Sárkánykirálynő Meley barlangjából származik. Egy valóban csodálatos kincset tartalmaz. Ez a tárgy átadható.
+50271	Sárkányfigyelő-láda	Ez a láda a számtalan sárkányfigyelő kincseit tartalmazza, melyeket évszázadok óta elveszettnek hittek. Ez a tárgy átadható.
+50272	Arany Főszörny-kasz.láda	Arany jutalom a főszörny-kaszáláson véghezvitt hősies tetteidért.
+50285	Vas Harci övezet-láda	Láda, értékes tartalommal.
+50286	Arany Harci övezet-láda	Láda, értékes tartalommal.
+50287	Harcmező doboz 1	Hasznos felszerelést tartalmazó doboz.
+50288	Harcmező doboz 2	Hasznos felszerelést tartalmazó doboz.
+50289	Újraélesztő	Az Újraélesztő késedelem nélkül, azonnal újraéleszt.
+50290	Fa Harci övezet-láda	Láda, értékes tartalommal.
+50323	Elhárító könyv láda	Ez a láda egy véletlenszerű készségkönyvet tartalmaz elhárító készségek tanulásához.
+50324	Fokozó könyv láda	Ez a láda egy véletlenszerű készségkönyvet tartalmaz fokozó készségek tanulásához.
+50514	Fokozó kézikönyv	Ez a szövegkönyv lehetővé teszi a kilenc fokozó készség egyikének megtanulását. A számodra megfelelő készség lesz kiválasztva.
+50515	Elhárító kézikönyv	Ez a szövegkönyv lehetővé teszi a kilenc elhárító készség közüli választást. Dönts bölcsen!
+50516	Forgó kard elhárítás	E könyv tanít meg a Forgó kard okozta sérülés csökkentésének képességére.
+50517	Leshely elhárítás	E könyv tanít meg a Leshely okozta sérülés csökkentésének képességére.
+50518	Ujjcsapás elhárítás	E könyv tanít meg az Ujjcsapás okozta sérülés csökkentésének képességére.
+50519	Sárkány lövés elhárítás	E könyv tanít meg a Sárkány lövés okozta sérülés csökkentésének képességére.
+50520	Áthatolás elhárítás	E könyv tanít meg az Áthatolás okozta sérülés csökkentésének képességére.
+50521	Tűznyíl elhárítás	E könyv tanít meg a Tűznyíl okozta sérülés csökkentésének képességére.
+50522	Sötét csapás elhárítás	E könyv tanít meg a Sötét csapás okozta sérülés csökkentésének képességére.
+50523	Villám köny. elhárítás	E könyv tanít meg a Villám könyörgés okozta sérülés csökkentésének képességére.
+50524	Farkaslehelet elhárítás	E könyv tanít meg a Farkaslehelet okozta sérülés csökkentésének képességére.
+50525	Lélekkő+	Ez a mesés kő nagymesteri fokozó és elhárító készségeid fejlesztésére használható. A kő eltűnik használat után.
+50560	Forgó kard fokozás	E könyv tanít meg a Forgó kard megerősítésének képességére.
+50561	Leshely fokozás	E könyv tanít meg a Leshely megerősítésének képességére.
+50562	Ujjcsapás fokozás	E könyv tanít meg az Ujjcsapás megerősítésének képességére.
+50563	Sárkány lövés fokozás	E könyv tanít meg a Sárkány lövés megerősítésének képességére.
+50564	Áthatolás fokozás	E könyv tanít meg az Áthatolás megerősítésének képességére.
+50565	Tűznyíl fokozás	E könyv tanít meg a Tűznyíl megerősítésének képességére.
+50566	Sötét csapás fokozás	E könyv tanít meg a Sötét csapás megerősítésének képességére.
+50567	Villám könyörgés fokozás	E könyv tanít meg a Villám könyörgés megerősítésének képességére.
+50568	Farkaslehelet fokozás	E könyv tanít meg a Farkaslehelet megerősítésének képességére.
+50569	Legendás lélek kő	Ez a kő egy erős lelket hordoz ami meg erősíti a Perfect Grand Master képességed
+50570	Legendás lélek kő	Ez a kő egy erős lelket hordoz ami meg erősíti a Perfect képességed Legendás képességgé
+50571	Legendás lélek kő	Ez a kő egy erős lelket hordoz ami meg erősíti a Perfect képességed Legendás képességgé
+50619	Turmalin érc	A Céhkohó használatával Turmalint készíthetsz ebből az ércből.
+50620	Azure érc	Céhkohó használatával Azure készíthetsz ebből az ércből.
+50639	Turmalin	Ez a mágikus drágakő a szivárvány minden színében pompázik. Kiegészítők előállításához használható.
+50640	Azure	Egyedi kinézetű kék drágakő. Felhasználható különböző értékes ékszerek készítéséhez.
+50926	Fénylő kődarab	Gyűjts Fénylő kődarabokat és add a Gaya kereskedőnek, hogy értékes Gaya készüljön belőle.
+51723	Megkövesedett fa	Értékes fa, mely stabilitást nyújthat ékszereknek.
+51724	Réz	Képlékeny nemesfém, mely ékszerek és érmék készítésére használható. Bronz előállításához is szükséges.
+51725	Ezüst	Csillogó fém, amit ékszerek készítéséhez használnak. Az ezüst dísztárgyakhoz adható.
+51726	Arany	Fém, amely ékszerek készítésére használható. Arany dísztárgyakhoz adható.
+51727	Jáde	Több mint 5000 éve használt értékes ásvány. Kiegészítőkhöz és ékszerekhez adható.
+51728	Ébenfa	Ez a fekete, kemény fa a legértékesebb valamennyi fűrészáru közül. Kiegészítőkhöz és ékszerekhez adható.
+51729	Gyöngy	Ékszerek készítésére használják. Kiegészítőkhöz és ékszerekhez adható.
+51730	Fehérarany	Kemény, fehér arany-ötvözet, melyet gyakran használnak ékszerekhez.
+51731	Kristály	Különböző színekben található, megkristályosodott kvarcból készült kemény kő. Gyakran használják ékszerekhez.
+51732	Ametiszt	Népszerű kvarc a lila különböző árnyalataiban. Gyakran készítenek belőle ékszert.
+51733	Mennyei könny	Kikristályosodott esőcseppek. Ékszerek készítésére használható.
+51734	Lélekkristály	Egy kristály, mely tiszta, mint a lélek. Kiegészítők megalkotásához használatos.
+51735	Rubin	Egyedi kinézetű vörös drágakő. Felhasználható különböző értékes ékszerek készítéséhez.
+51736	Gránát	Egyedi kinézetű narancssárga drágakő. Felhasználható különböző értékes ékszerek készítéséhez.
+51737	Smaragd	Egyedi kinézetű zöld drágakő. Felhasználható különböző értékes ékszerek készítéséhez.
+51738	Zafír	Egyedi kinézetű kék drágakő. Felhasználható különböző értékes ékszerek készítéséhez.
+51740	Azure	Egyedi kinézetű kék drágakő. Felhasználható különböző értékes ékszerek készítéséhez.
+55001	Protein Snack	Adj kifáradt házikedvencednek egy ízletes Protein Snack-et és teljesen magához tér. Etesd meg ezzel a halott házikedvenced és az újraéled, valamint visszanyeri ereje 50%-át.
+55002	Szállító doboz	Amikor elhelyezed házikedvenced a Szállító dobozban, az 30 napra átadhatóvá válik.
+55003	Fiatal házikedvenc-könyv	Az alábbi tárgyak használatával házikedvenced a következő szintre emelheted (Vad kedvenc): 10x Fiatal házikedvenc-könyv, 10x Póktojászsák, 10x Fehér hajszalag+, 10x Shiriken, 10x Dísz hajtű, 5x Fekete egyenruha+, 5x Jégdarab+
+55004	Vad házikedvenc-könyv	Az alábbi tárgyak használatával házikedvenced a következő szintre emelheted (Szelídített kedvenc): 10x Vad házikedvenc-könyv, 2x Vérvörös Gyöngy, 10x Arckrém, 10x Jetibunda+, 10x Dísztárgy, 10x Gombolyag, 5x Átokkönyv+
+55005	Szelíd házikedvenc-könyv	Az alábbi tárgyak használatával házikedvenced a következő szintre emelheted (Hősies kedvenc): 10x Szelíd házikedvenc-könyv, 10x Ismeretlen gyógyszer+, 2x Fehér Gyöngy, 2x Kék Gyöngy, 10x Démoni Emléktárgy+, 10x Orkfog+, 5x Kék öv
+55006		
+55008	Kedvencnév-tekercs	Nevének megváltoztatásához húzd rá a tekercset házikedvencedre.
+55009	Házikedvenc-könyv láda	Egy véletlenszerűen kiválasztott házikedvenc készségkönyvet tartalmaz.
+55010	Ellenállás (Harcos)	E készség megtanulása után házikedvenced megnöveli a Harcos támadásokkal szembeni ellenállásod.
+55011	Ellenállás (Sura)	E készség megtanulása után házikedvenced megnöveli a Sura támadásokkal szembeni ellenállásod.
+55012	Ellenállás (Nindzsa)	E készség megtanulása után házikedvenced megnöveli a Nindzsa támadásokkal szembeni ellenállásod.
+55013	Ellenállás (Sámán)	E készség megtanulása után házikedvenced megnöveli a Sámán támadásokkal szembeni ellenállásod.
+55014	Ellenállás (Vérfarkas)	E készség megtanulása után házikedvenced megnöveli a Vérfarkas támadásokkal szembeni ellenállásod.
+55015	Vad harcos könyve	E készség megtanulása után házikedvenced megnöveli támadóerőd értékét.
+55016	Ellenmágia könyve	E készség megtanulása után házikedvenced biztosítja annak képességét, hogy csökkentsd ellenfeled mágia ellenállását.
+55017	Sietség könyve	E készség megtanulása után házikedvenced csökkenti készségeid várakozási idejét.
+55018	Átütés könyve	E készség megtanulása után házikedvenced megnöveli esélyed átütő találatokra.
+55019	Helyreállítás könyve	E készség megtanulása után házikedvenced helyreállítja TP-d, amint az 20% alá esik. A helyreállítás mértéke a házikedvenc szintjétől és készségeitől függ.
+55020	Vámpirizmus könyve	E készség megtanulása után házikedvenced lehetővé teszi, hogy TP-t szívj el az ellenségtől.
+55021	Spiritualizmus könyve	E készség megtanulása után házikedvenced lehetővé teszi, hogy MP-t szívj el az ellenségtől.
+55022	Bástya könyve	E készség megtanulása után házikedvenced lehetővé teszi, hogy blokkold a fizikai sérülést.
+55023	Tükrözés könyve	E készség megtanulása után házikedvenced lehetővé teszi, hogy visszatükrözd a kapott sebzést az ellenségre.
+55024	Yang-dobás könyve	E készség megtanulása után házikedvenced megnöveli a Yang-dobási rátát.
+55025	Hatótáv könyve	E készség megtanulása után házikedvenced megnöveli íjad hatótávolságát.
+55026	Legyőzhetetlenség könyve	E készség megtanulása után házikedvenced esélyt ad arra, hogy ideiglenesen legyőzhetetlenné válj.
+55027	Csodaszer könyve	E készség megtanulása után házikedvenced el tudja távolítani a vérzés, lassítás és mérgezés hatásokat.
+55028	Jutalomfalat	Etesd meg kis kedvenced ezzel a jutalomfalattal a kedvenc-vezérlőfelületen. Tárgy EXP-t kap, mely szükséges a fejlődéséhez.
+55029	Házikedvenc megújító	Házikedvenced összes készségének törléséhez nyisd meg a házikedvenc ablakot, majd kattints jobb egérgombbal a tárgyra.
+55030	Házikedvenc visszaállító	Házikedvenced egy készségének törléséhez nyisd meg a házikedvenc ablakot, majd húzd rá a tárgyat a törlendő készségre.
+55401	Majomtojás	Amikor szeretnéd, hogy kikeljen házikedvenced, kattints jobb egérgombbal a tojásra.
+55402	Póktojás	Amikor szeretnéd, hogy kikeljen házikedvenced, kattints jobb egérgombbal a tojásra.
+55403	Razador tojása	Amikor szeretnéd, hogy kikeljen házikedvenced, kattints jobb egérgombbal a tojásra.
+55404	Nemere tojása	Amikor szeretnéd, hogy kikeljen házikedvenced, kattints jobb egérgombbal a tojásra.
+55405	Kék sárkánytojás	Ha ki akarod kelteni házikedvenced, jobb gombbal kattints a tojáson.
+55406	Vörös sárkánytojás	Ha ki akarod kelteni házikedvenced, jobb gombbal kattints a tojáson.
+55407	Mini Azrael-tojás	Ha ki akarod kelteni házikedvenced, jobb gombbal kattints a tojáson.
+55408	Dagi Minihóhér-tojás	Ha ki akarod kelteni házikedvenced, jobb gombbal kattints a tojáson.
+55409	Kis Baashido tojás	Ha ki akarod kelteni házikedvenced, jobb gombbal kattints a tojáson.
+55410	Nessie tojás	Ha ki akarod kelteni házikedvenced, jobb gombbal kattints a tojáson.
+55701	Kismajom	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted "P" billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55702	Mini pók	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted "P" billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55703	Mini Razador	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted "P" billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55704	Mini Nemere	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted "P" billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55705	Kis sárkány	Jobb gombos kattintással hívd elő kedvenced, majd nyomd meg billentyűzeteden a "P"-t a házikedvenc-felület megnyitásához.
+55706	Mini Meley	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted 'P' billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55707	Mini Azrael	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted 'P' billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55708	Dagi Minihóhér	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted 'P' billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55709	Kis Baashido	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted 'P' billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+55710	Nessie	Jobb kattintás idézi meg házikedvenced, majd billentyűzeted 'P' billentyűjének megnyomása hozza elő a kedvenc-vezérlőfelületet.
+56000	Appaloosa	A pecsét megidézi jól nevelt Appaloosa-dat. Lovaglójának +10 mozgási sebességet biztosít.
+69544	Nova Token	Speciális kozmetikumok vásárlására használatos
+70065	Öltözékbónusz-átvivő	Átviszi egyik öltözék bónuszait a másikra. Az átvitel megsemmisíti az egyik öltözéket.
+71000	Tanváltás tekercse	E tárgy lehetővé teszi, hogy teljesen eltávolítsd fokozó és elhárító készségeidet. Új készségeket tanulhatsz Elhárító és Fokozó kézikönyvek használatával.
+71165	Sarki ragadozó	Ezzel a pecséttel idézheted meg harcias Sarki ragadozódat. Megnöveli mozgási sebességedet 60-nal.
+71182	Muffin (barna)	E pecsét használatával idézheted meg Muffint, a dermesztő harci csibét. Megnöveli mozgási sebességedet 20-szal.
+71183	Nugget (barna)	E pecsét használatával idézheted meg Nuggetet, a hatalmas harci kiskakast. Megnöveli mozgási sebességedet 20-szal.
+71184	Muffin (kék)	E pecsét használatával idézheted meg Muffint, a dermesztő harci csibét. Megnöveli mozgási sebességedet 20-szal.
+71185	Nugget (kék)	E pecsét használatával idézheted meg Nuggetet, a hatalmas harci kiskakast. Megnöveli mozgási sebességedet 20-szal.
+71186	Muffin (zöld)	E pecsét használatával idézheted meg Muffint, a dermesztő harci csibét. Megnöveli mozgási sebességedet 20-szal.
+71187	Nugget (zöld)	E pecsét használatával idézheted meg Nuggetet, a hatalmas harci kiskakast. Megnöveli mozgási sebességedet 20-szal.
+71188	Mágikus nyalóka	A titkos összetevőkből készült nyalóka ad neked: | +50% tapasztalati pont | +30% mágikus sebzés | +20 támadósebesség | +20 varázssebesség | +10% maximum TP | +10% maximum MP
+71189	Megbűvölő tárgy+	Eltávolítja a bónuszokat tárgyaid egyikéből és újakat ad hozzá. Előnézetben láthatod majd az új bónuszokat és utána eldöntheted, el akarod-e fogadni a látottakat.
+71190	Sütőtök láda	Ezt a Sütőtök ládát csak nagyon különleges eredményekért kapod meg.
+71191	Cukros zacskó	Sütőtök Sam eme zacskó tartalmával megédesíti éjszakád. Nyisd ki és készülj fel egy meglepetésre!
+71192	Ágas	Ezzel a pecséttel tudod megidézni Ágas rénszarvasod. Megnöveli mozgási sebességedet 20-szal és tapasztalat szerzésedet 30%-kal.
+71193	Blitzen	Ezzel a pecséttel tudod megidézni Villám rénszarvasod. Megnöveli mozgási sebességedet 20-szal és tapasztalat szerzésedet 30%-kal.
+71194	Arany Okey doboz	5 pakli, paklinként 24 Okey gyűjthető kártyát tartalmazó kártyaszettet fogsz kapni (összesen 120 kártyát). Ha véget ér az esemény, többé már nem kapsz kártyákat.
+71195	Ezüst Okey doboz	1 pakli, 24 Okey gyűjthető kártyát tartalmazó kártyaszettet fogsz kapni. Ha véget ér az esemény, többé már nem kapsz kártyákat.
+71196	Bronz Okey doboz	6 darab Okey gyűjthető kártyát fogsz kapni. Ha véget ér az esemény, többé már nem kapsz kártyákat.
+71197	Nugget (sötétkék)	E pecsét használatával idézheted meg Nuggetet, a hatalmas harci kiskakast. Biztosít neked +15% szörnyek elleni erőt és megnöveli tapasztalat szerzésedet 30%-kal.
+71198	Muffin (rózsaszín)	E pecsét használatával idézheted meg Muffint, a dermesztő harci csibét. Biztosít neked +15% szörnyek elleni erőt és megnöveli tapasztalat szerzésedet 30%-kal.
+71220		
+71235	Kerberosz (arany)	Ezzel a pecséttel tudod megidézni a félelmetes, háromfejű pokolkutyád.
+71236	Kerberosz (ezüst)	Ezzel a pecséttel tudod megidézni a félelmetes, háromfejű pokolkutyád.
+71237	Vadkan	A pecsét mágiája megidéz egy hatalmas állat szellemet, amivel pillanatok alatt a célodhoz érhetsz.
+71238	Farkas	A pecsét mágiája megidéz egy hatalmas állat szellemet, amivel pillanatok alatt a célodhoz érhetsz.
+71239	Tigris	A pecsét mágiája megidéz egy hatalmas állat szellemet, amivel pillanatok alatt a célodhoz érhetsz.
+71240	Oroszlán	A pecsét mágiája megidéz egy hatalmas állat szellemet, amivel pillanatok alatt a célodhoz érhetsz.
+71241	Lovaglójegy	Ha felszereled ezt a jegyet, lovagolhatsz egy Pónin 10 percen át.
+72325	Átalakítás visszafordító	Visszafordítja egy tárgy átalakítását.
+72326	Átalakítás visszafordító	Visszafordítja egy tárgy átalakítását és térítse vissza a tételt.
+72709	Tigriscsont fülbevaló	Megnöveli a támadóértéked 200 ponttal 20 órán keresztül (csak akkor telik az idő, ha a tárgy fel van szerelve).
+72710	Sárkánycsont fülbevaló	Megnöveli a védelmi értéked 300 ponttal 20 órán keresztül (csak akkor telik az idő, ha a tárgy fel van szerelve).
+72711	Tigriscsont karkötő	30 ponttal növeli készségeid sebzését 20 órán át (az idő csak akkor telik, amikor viselik a tárgyat).
+72712	Sárkánycsont karkötő	A készségekkel szembeni védelmed megemelkedik 30 ponttal 20 órán át (az idő csak akkor telik, amikor viselik a tárgyat).
+72800	Mennyei Rubin kő	Egy mennyei Rubin eret jelenít meg karaktered mellett.
+72801	Mennyei Gránát-ér kő	Egy mennyei Gránát eret jelenít meg karaktered mellett.
+72802	Mennyei Smaragd-ér kő	Egy mennyei Smaragd eret jelenít meg karaktered mellett.
+72803	Mennyei Zafír-ér kő	Egy mennyei Zafír eret jelenít meg karaktered mellett.
+72804	Mennyei Turmalin-ér kő	Egy mennyei Turmalin eret jelenít meg karaktered mellett.
+74521	Divatos frizura (szürke)	Frizura, mely egyedi kinézetet ad.
+74522	Fejkendő	Rövid haj fejkendő alatt.
+74523	Hosszú haj (szőke)	Csillogó, szőke haj, mely magára vonja a figyelmet.
+74524	Divatos frizura (arany)	Divatos arany színű frizura, hajszalaggal.
+74525	Fejkendő (fekete)	Rövid, kócos frizura fejpánttal féken tartva.
+74526	Hosszú haj (rubinvörös)	Csodálatos rubinvörös haj.
+74527	Lófarok (vörös)	Copfba fogott hosszú haj.
+74528	Vállig érő haj (vízkék)	Visszafogott frizura kék fejkendővel.
+74529	Rövid haj (barna)	Frizura, amely fenyegető kinézetet kölcsönöz.
+74530	Lófarok (vörös)	Hosszú, copfba fogott vörös haj - igen kedvelt női frizura.
+74531	Vállig érő haj (fekete)	Elegáns, divatos megjelenésű frizura.
+74532	Rövid haj (szürke)	Rövid frizura, amely fenyegető kinézetet kölcsönöz.
+74533	Sportos frizura (fekete)	Rövid, katonai kinézetet kölcsönző frizura.
+74534	Karizma-frizura (szőke)	Frizura, mely kihangsúlyozza az egyéniséget.
+74535	Hosszú copf (pink)	Fonott, régi stílusú frizura, mely a gazdagok szimbóluma volt.
+74536	Sportos frizura (lila)	Extravagánsan rövid frizura.
+74537	Karizma-frizura (szőke)	Karizmatikus frizura hosszú hajjal.
+74538	Hosszú copf (fenséges)	Fonott, régi stílusú frizura, mely a gazdagok szimbóluma volt
+74539	Elegáns frizura (lila)	Elegáns frizura hátrakötött hajjal.
+74540	Félhosszú haj (sötét)	Elegáns sámán frizura.
+74541	Régimódi frizura (fehér)	Hosszú, hagyományos módon viselt haj.
+74542	Elegáns frizura (vörös)	Pillangós hajtűvel feltűzött elegáns frizura.
+74543	Félhosszú haj (fehér)	Elegáns, egyenes haj.
+74544	Régimódi frizura(fekete)	Nőies frizura hosszú, lépcsőzetesen vágott hajjal.
+74545	Törzsi fonatok (vörös)	Törzsi tagságot jelző vörös fa gyöngyökkel díszített hajfonatok.
+74546	Törzsi fonatok (sárga)	Törzsi tagságot jelző sárga fa gyöngyökkel díszített hajfonatok.
+74547	Törzsi fonatok (kék)	Törzsi tagságot jelző kék fa gyöngyökkel díszített hajfonatok.
+74548	Törzsi fonatok (lila)	Törzsi tagságot jelző lila fa gyöngyökkel díszített hajfonatok.
+74549	Törzsi fonatok (zöld)	Törzsi tagságot jelző zöld fa gyöngyökkel díszített hajfonatok.
+74550	Vérfarkas korona (arany)	Díszes fejfedő hagyományoknak megfelelő hajékszerekkel.
+74551	Vérfarkas korona(fekete)	Díszes fejfedő hagyományoknak megfelelő hajékszerekkel.
+74552	Vérfarkas korona (vörös)	Díszes fejfedő hagyományoknak megfelelő hajékszerekkel.
+74553	Vérfarkas korona (kék)	Díszes fejfedő hagyományoknak megfelelő hajékszerekkel.
+74554	Vérfarkas korona (fehér)	Díszes fejfedő hagyományoknak megfelelő hajékszerekkel.
+74555	Farkascsuklya (arany)	Bonyolult fej- és halántékpáncél hagyományos hajékszerrel.
+74556	Farkascsuklya (fekete)	Bonyolult fej- és halántékpáncél hagyományos hajékszerrel.
+74557	Farkascsuklya (vörös)	Bonyolult fej- és halántékpáncél hagyományos hajékszerrel.
+74558	Farkascsuklya (kék)	Bonyolult fej- és halántékpáncél hagyományos hajékszerrel.
+74559	Farkascsuklya (zöld)	Bonyolult fej- és halántékpáncél hagyományos hajékszerrel.
+76191	Zöld Megmentő	varázs Engedélyezi az 1-5 opt kiválasztását
+76192	Kék Ritka Varázs	Engedélyezi a 6-7 opt kiválasztását
+79501	Íjász tegez	Tegez, mely 24 órára kifogyhatatlan nyíl-utánpótlást jelent. A távoli lövések nem okoznak kisebb kárt.
+79502	Íjász tegez	Tegez, mely 7 napra kifogyhatatlan nyíl-utánpótlást jelent. A távoli lövések nem okoznak kisebb kárt.
+79503	Íjász tegez	Tegez, mely kifogyhatatlan nyíl-utánpótlást jelent. A távoli lövések nem okoznak kisebb kárt.
+79504	Íjász tegez	Tegez, mely kifogyhatatlan nyíl-utánpótlást jelent. A távoli lövések nem okoznak kisebb kárt.
+79505	Okey gyűjthető kártya	Amint összegyűjtesz 24 Okey gyűjthető kártyát, automatikusan kapsz egy Okey kártyaszettet.
+79506	Okey kártyaszett	Ezzel a kártyaszettel tudod elkezdeni az Okey játékot. A játék elindítása után a kártyaszett automatikusan eltávolításra kerül leltáradból.
+80018	SÉ utalvány (6000)	6000 Sárkányérme értékű utalvány. A tárgy átadható.
+80019	SÉ utalvány (12000)	12000 Sárkányérme értékű utalvány. A tárgy átadható.
+85001	Lord pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+85002	Lord pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+85003	Lord pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+85004	Lord pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+85005	Mesterpánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+85006	Mesterpánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+85007	Mesterpánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+85008	Mesterpánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+85011	Szuverén pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+85012	Szuverén pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+85013	Szuverén pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+85014	Szuverén pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+85015	Királyi pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+85016	Királyi pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+85017	Királyi pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+85018	Királyi pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+85021	Évfordulós pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+85022	Évfordulós pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+85023	Évfordulós pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+85024	Évfordulós pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86001	Zi pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86002	Zi pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86003	Zi pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86004	Zi pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86005	Chou pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86006	Chou pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86007	Chou pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86008	Chou pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86011	Yin pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86012	Yin pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86013	Yin pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86014	Yin pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86015	Mao pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86016	Mao pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86017	Mao pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86018	Mao pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86021	Chen pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86022	Chen pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86023	Chen pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86024	Chen pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86025	Si pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86026	Si pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86027	Si pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86028	Si pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86031	Wu pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86032	Wu pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86033	Wu pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86034	Wu pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86035	Wei pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86036	Wei pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86037	Wei pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86038	Wei pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86041	Shen pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86042	Shen pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86043	Shen pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86044	Shen pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86045	You pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86046	You pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86047	You pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86048	You pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86051	Xu pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86052	Xu pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86053	Xu pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86054	Xu pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.
+86055	Hai pánt (alap)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 1%-át veszi át.
+86056	Hai pánt (finom)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 5%-át veszi át.
+86057	Hai pánt (nemes)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 10%-át veszi át.
+86058	Hai pánt (egyedi)	Ez a pánt az abszorbeálásra használt fegyver vagy páncél bónuszainak 11~25%-át veszi át.

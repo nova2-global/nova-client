@@ -2628,3 +2628,1027 @@
 90011	Træstamme	Byggemateriale til Ordens-bygninger
 90012	Krydsfinér	Byggemateriale til Ordens-bygninger
 90013		
+300	Zodiac Klinge+0	
+301	Zodiac Klinge+1	
+302	Zodiac Klinge+2	
+303	Zodiac Klinge+3	
+304	Zodiac Klinge+4	
+305	Zodiac Klinge+5	
+306	Zodiac Klinge+6	
+307	Zodiac Klinge+7	
+308	Zodiac Klinge+8	
+309	Zodiac Klinge+9	
+310	Zodiac Sværd+0	
+311	Zodiac Sværd+1	
+312	Zodiac Sværd+2	
+313	Zodiac Sværd+3	
+314	Zodiac Sværd+4	
+315	Zodiac Sværd+5	
+316	Zodiac Sværd+6	
+317	Zodiac Sværd+7	
+318	Zodiac Sværd+8	
+319	Zodiac Sværd+9	
+1180	Zodiac Dolk+0	
+1181	Zodiac Dolk+1	
+1182	Zodiac Dolk+2	
+1183	Zodiac Dolk+3	
+1184	Zodiac Dolk+4	
+1185	Zodiac Dolk+5	
+1186	Zodiac Dolk+6	
+1187	Zodiac Dolk+7	
+1188	Zodiac Dolk+8	
+1189	Zodiac Dolk+9	
+2200	Zodiac Bue+0	
+2201	Zodiac Bue+1	
+2202	Zodiac Bue+2	
+2203	Zodiac Bue+3	
+2204	Zodiac Bue+4	
+2205	Zodiac Bue+5	
+2206	Zodiac Bue+6	
+2207	Zodiac Bue+7	
+2208	Zodiac Bue+8	
+2209	Zodiac Bue+9	
+3220	Zodiac Langspyd+0	
+3221	Zodiac Langspyd+1	
+3222	Zodiac Langspyd+2	
+3223	Zodiac Langspyd+3	
+3224	Zodiac Langspyd+4	
+3225	Zodiac Langspyd+5	
+3226	Zodiac Langspyd+6	
+3227	Zodiac Langspyd+7	
+3228	Zodiac Langspyd+8	
+3229	Zodiac Langspyd+9	
+5160	Zodiac Klokke+0	
+5161	Zodiac Klokke+1	
+5162	Zodiac Klokke+2	
+5163	Zodiac Klokke+3	
+5164	Zodiac Klokke+4	
+5165	Zodiac Klokke+5	
+5166	Zodiac Klokke+6	
+5167	Zodiac Klokke+7	
+5168	Zodiac Klokke+8	
+5169	Zodiac Klokke+9	
+6120	Zodiac Klo+0	
+6121	Zodiac Klo+1	
+6122	Zodiac Klo+2	
+6123	Zodiac Klo+3	
+6124	Zodiac Klo+4	
+6125	Zodiac Klo+5	
+6126	Zodiac Klo+6	
+6127	Zodiac Klo+7	
+6128	Zodiac Klo+8	
+6129	Zodiac Klo+9	
+7300	Zodiac Vifte+0	
+7301	Zodiac Vifte+1	
+7302	Zodiac Vifte+2	
+7303	Zodiac Vifte+3	
+7304	Zodiac Vifte+4	
+7305	Zodiac Vifte+5	
+7306	Zodiac Vifte+6	
+7307	Zodiac Vifte+7	
+7308	Zodiac Vifte+8	
+7309	Zodiac Vifte+9	
+9506	Sværd +3	
+9507	Dolk +3	
+9508	Vifter +3	
+9509	Stålfakkel +3	
+9600	Ild Talisman+0	
+9601	Ild Talisman+1	
+9602	Ild Talisman+2	
+9603	Ild Talisman+3	
+9604	Ild Talisman+4	
+9605	Ild Talisman+5	
+9606	Ild Talisman+6	
+9607	Ild Talisman+7	
+9608	Ild Talisman+8	
+9609	Ild Talisman+9	
+9610	Ild Talisman+10	
+9611	Ild Talisman+11	
+9612	Ild Talisman+12	
+9613	Ild Talisman+13	
+9614	Ild Talisman+14	
+9615	Ild Talisman+15	
+9616	Ild Talisman+16	
+9617	Ild Talisman+17	
+9618	Ild Talisman+18	
+9619	Ild Talisman+19	
+12690	Dragestål Hjelm +0	
+12691	Dragestål Hjelm +1	
+12692	Dragestål Hjelm +2	
+12693	Dragestål Hjelm +3	
+12694	Dragestål Hjelm +4	
+12695	Dragestål Hjelm +5	
+12696	Dragestål Hjelm +6	
+12697	Dragestål Hjelm +7	
+12698	Dragestål Hjelm +8	
+12699	Dragestål Hjelm +9	
+12700	Drage Hætte +0	
+12701	Drage Hætte +1	
+12702	Drage Hætte +2	
+12703	Drage Hætte +3	
+12704	Drage Hætte +4	
+12705	Drage Hætte +5	
+12706	Drage Hætte +6	
+12707	Drage Hætte +7	
+12708	Drage Hætte +8	
+12709	Drage Hætte +9	
+12710	Drageskæl Hjelm +0	
+12711	Drageskæl Hjelm +1	
+12712	Drageskæl Hjelm +2	
+12713	Drageskæl Hjelm +3	
+12714	Drageskæl Hjelm +4	
+12715	Drageskæl Hjelm +5	
+12716	Drageskæl Hjelm +6	
+12717	Drageskæl Hjelm +7	
+12718	Drageskæl Hjelm +8	
+12719	Drageskæl Hjelm +9	
+12720	Drage Hat +0	
+12721	Drage Hat +1	
+12722	Drage Hat +2	
+12723	Drage Hat +3	
+12724	Drage Hat +4	
+12725	Drage Hat +5	
+12726	Drage Hat +6	
+12727	Drage Hat +7	
+12728	Drage Hat +8	
+12729	Drage Hat +9	
+15440	Ildsko+0	
+15441	Ildsko+1	
+15442	Ildsko+2	
+15443	Ildsko+3	
+15444	Ildsko+4	
+15445	Ildsko+5	
+15446	Ildsko+6	
+15447	Ildsko+7	
+15448	Ildsko+8	
+15449	Ildsko+9	
+15450	Vandsko+0	
+15451	Vandsko+1	
+15452	Vandsko+2	
+15453	Vandsko+3	
+15454	Vandsko+4	
+15455	Vandsko+5	
+15456	Vandsko+6	
+15457	Vandsko+7	
+15458	Vandsko+8	
+15459	Vandsko+9	
+19290	Zodiac Rustning+0	
+19291	Zodiac Rustning+1	
+19292	Zodiac Rustning+2	
+19293	Zodiac Rustning+3	
+19294	Zodiac Rustning+4	
+19295	Zodiac Rustning+5	
+19296	Zodiac Rustning+6	
+19297	Zodiac Rustning+7	
+19298	Zodiac Rustning+8	
+19299	Zodiac Rustning+9	
+19490	Zodiac Dragt+0	
+19491	Zodiac Dragt+1	
+19492	Zodiac Dragt+2	
+19493	Zodiac Dragt+3	
+19494	Zodiac Dragt+4	
+19495	Zodiac Dragt+5	
+19496	Zodiac Dragt+6	
+19497	Zodiac Dragt+7	
+19498	Zodiac Dragt+8	
+19499	Zodiac Dragt+9	
+19690	Zodiac Pladerustning+0	
+19691	Zodiac Pladerustning+1	
+19692	Zodiac Pladerustning+2	
+19693	Zodiac Pladerustning+3	
+19694	Zodiac Pladerustning+4	
+19695	Zodiac Pladerustning+5	
+19696	Zodiac Pladerustning+6	
+19697	Zodiac Pladerustning+7	
+19698	Zodiac Pladerustning+8	
+19699	Zodiac Pladerustning+9	
+19890	Zodiac Klædning+0	
+19891	Zodiac Klædning+1	
+19892	Zodiac Klædning+2	
+19893	Zodiac Klædning+3	
+19894	Zodiac Klædning+4	
+19895	Zodiac Klædning+5	
+19896	Zodiac Klædning+6	
+19897	Zodiac Klædning+7	
+19898	Zodiac Klædning+8	
+19899	Zodiac Klædning+9	
+20760	Aurora rustning+0	
+20761	Aurora rustning+1	
+20762	Aurora rustning+2	
+20763	Aurora rustning+3	
+20764	Aurora rustning+4	
+20765	Aurora rustning+5	
+20766	Aurora rustning+6	
+20767	Aurora rustning+7	
+20768	Aurora rustning+8	
+20769	Aurora rustning+9	
+20770	Bagholdsdragt+0	
+20771	Bagholdsdragt+1	
+20772	Bagholdsdragt+2	
+20773	Bagholdsdragt+3	
+20774	Bagholdsdragt+4	
+20775	Bagholdsdragt+5	
+20776	Bagholdsdragt+6	
+20777	Bagholdsdragt+7	
+20778	Bagholdsdragt+8	
+20779	Bagholdsdragt+9	
+20780	Djævelklør rustning+0	
+20781	Djævelklør rustning+1	
+20782	Djævelklør rustning+2	
+20783	Djævelklør rustning+3	
+20784	Djævelklør rustning+4	
+20785	Djævelklør rustning+5	
+20786	Djævelklør rustning+6	
+20787	Djævelklør rustning+7	
+20788	Djævelklør rustning+8	
+20789	Djævelklør rustning+9	
+20790	Tøj af tro+0	
+20791	Tøj af tro+1	
+20792	Tøj af tro+2	
+20793	Tøj af tro+3	
+20794	Tøj af tro+4	
+20795	Tøj af tro+5	
+20796	Tøj af tro+6	
+20797	Tøj af tro+7	
+20798	Tøj af tro+8	
+20799	Tøj af tro+9	
+20800	Skygge kriger rustning+0	
+20801	Skygge kriger rustning+1	
+20802	Skygge kriger rustning+2	
+20803	Skygge kriger rustning+3	
+20804	Skygge kriger rustning+4	
+20805	Skygge kriger rustning+5	
+20806	Skygge kriger rustning+6	
+20807	Skygge kriger rustning+7	
+20808	Skygge kriger rustning+8	
+20809	Skygge kriger rustning+9	
+20810	Magmaglød rustning+0	
+20811	Magmaglød rustning+1	
+20812	Magmaglød rustning+2	
+20813	Magmaglød rustning+3	
+20814	Magmaglød rustning+4	
+20815	Magmaglød rustning+5	
+20816	Magmaglød rustning+6	
+20817	Magmaglød rustning+7	
+20818	Magmaglød rustning+8	
+20819	Magmaglød rustning+9	
+20820	Blodrød månesæt+0	
+20821	Blodrød månesæt+1	
+20822	Blodrød månesæt+2	
+20823	Blodrød månesæt+3	
+20824	Blodrød månesæt+4	
+20825	Blodrød månesæt+5	
+20826	Blodrød månesæt+6	
+20827	Blodrød månesæt+7	
+20828	Blodrød månesæt+8	
+20829	Blodrød månesæt+9	
+20830	Hellrider rustning+0	
+20831	Hellrider rustning+1	
+20832	Hellrider rustning+2	
+20833	Hellrider rustning+3	
+20834	Hellrider rustning+4	
+20835	Hellrider rustning+5	
+20836	Hellrider rustning+6	
+20837	Hellrider rustning+7	
+20838	Hellrider rustning+8	
+20839	Hellrider rustning+9	
+20840	Ildtøj+0	
+20841	Ildtøj+1	
+20842	Ildtøj+2	
+20843	Ildtøj+3	
+20844	Ildtøj+4	
+20845	Ildtøj+5	
+20846	Ildtøj+6	
+20847	Ildtøj+7	
+20848	Ildtøj+8	
+20849	Ildtøj+9	
+20850	Agat pladerustning+0	
+20851	Agat pladerustning+1	
+20852	Agat pladerustning+2	
+20853	Agat pladerustning+3	
+20854	Agat pladerustning+4	
+20855	Agat pladerustning+5	
+20856	Agat pladerustning+6	
+20857	Agat pladerustning+7	
+20858	Agat pladerustning+8	
+20859	Agat pladerustning+9	
+20860	Hvalben rustning+0	
+20861	Hvalben rustning+1	
+20862	Hvalben rustning+2	
+20863	Hvalben rustning+3	
+20864	Hvalben rustning+4	
+20865	Hvalben rustning+5	
+20866	Hvalben rustning+6	
+20867	Hvalben rustning+7	
+20868	Hvalben rustning+8	
+20869	Hvalben rustning+9	
+20870	Metamorfose sæt+0	
+20871	Metamorfose sæt+1	
+20872	Metamorfose sæt+2	
+20873	Metamorfose sæt+3	
+20874	Metamorfose sæt+4	
+20875	Metamorfose sæt+5	
+20876	Metamorfose sæt+6	
+20877	Metamorfose sæt+7	
+20878	Metamorfose sæt+8	
+20879	Metamorfose sæt+9	
+20880	Spøgelselampe rustning+0	
+20881	Spøgelselampe rustning+1	
+20882	Spøgelselampe rustning+2	
+20883	Spøgelselampe rustning+3	
+20884	Spøgelselampe rustning+4	
+20885	Spøgelselampe rustning+5	
+20886	Spøgelselampe rustning+6	
+20887	Spøgelselampe rustning+7	
+20888	Spøgelselampe rustning+8	
+20889	Spøgelselampe rustning+9	
+20890	Harmoni tøj+0	
+20891	Harmoni tøj+1	
+20892	Harmoni tøj+2	
+20893	Harmoni tøj+3	
+20894	Harmoni tøj+4	
+20895	Harmoni tøj+5	
+20896	Harmoni tøj+6	
+20897	Harmoni tøj+7	
+20898	Harmoni tøj+8	
+20899	Harmoni tøj+9	
+20900	Månesten pladerustning+0	
+20901	Månesten pladerustning+1	
+20902	Månesten pladerustning+2	
+20903	Månesten pladerustning+3	
+20904	Månesten pladerustning+4	
+20905	Månesten pladerustning+5	
+20906	Månesten pladerustning+6	
+20907	Månesten pladerustning+7	
+20908	Månesten pladerustning+8	
+20909	Månesten pladerustning+9	
+20910	Fallout rustning+0	
+20911	Fallout rustning+1	
+20912	Fallout rustning+2	
+20913	Fallout rustning+3	
+20914	Fallout rustning+4	
+20915	Fallout rustning+5	
+20916	Fallout rustning+6	
+20917	Fallout rustning+7	
+20918	Fallout rustning+8	
+20919	Fallout rustning+9	
+20920	Dødens nat sæt+0	
+20921	Dødens nat sæt+1	
+20922	Dødens nat sæt+2	
+20923	Dødens nat sæt+3	
+20924	Dødens nat sæt+4	
+20925	Dødens nat sæt+5	
+20926	Dødens nat sæt+6	
+20927	Dødens nat sæt+7	
+20928	Dødens nat sæt+8	
+20929	Dødens nat sæt+9	
+20930	Sort ildrustning+0	
+20931	Sort ildrustning+1	
+20932	Sort ildrustning+2	
+20933	Sort ildrustning+3	
+20934	Sort ildrustning+4	
+20935	Sort ildrustning+5	
+20936	Sort ildrustning+6	
+20937	Sort ildrustning+7	
+20938	Sort ildrustning+8	
+20939	Sort ildrustning+9	
+20940	Månetøj+0	
+20941	Månetøj+1	
+20942	Månetøj+2	
+20943	Månetøj+3	
+20944	Månetøj+4	
+20945	Månetøj+5	
+20946	Månetøj+6	
+20947	Månetøj+7	
+20948	Månetøj+8	
+20949	Månetøj+9	
+20950	Onyks pladerustning+0	
+20951	Onyks pladerustning+1	
+20952	Onyks pladerustning+2	
+20953	Onyks pladerustning+3	
+20954	Onyks pladerustning+4	
+20955	Onyks pladerustning+5	
+20956	Onyks pladerustning+6	
+20957	Onyks pladerustning+7	
+20958	Onyks pladerustning+8	
+20959	Onyks pladerustning+9	
+21200	Zodiac Seletøj+0	
+21201	Zodiac Seletøj+1	
+21202	Zodiac Seletøj+2	
+21203	Zodiac Seletøj+3	
+21204	Zodiac Seletøj+4	
+21205	Zodiac Seletøj+5	
+21206	Zodiac Seletøj+6	
+21207	Zodiac Seletøj+7	
+21208	Zodiac Seletøj+8	
+21209	Zodiac Seletøj+9	
+25043	Magisk sten	Denne sten garanterer en største succes rate for forbedring. Oven i dette, vil elementet ikke blive ødelagt eller nedgraderet.  Disse genstande er ikke omsættelige.
+27125	Kamp Eliksir	En magtfuld eliksir som øger dine angreb- og forsvars point og udruster dig med +50.000 livspoint (kun i Kamp Zonen).
+28044	Anti-magisk sten+0	
+28045	Anti-magisk sten+0	
+28144	Anti-magisk sten+1	
+28145	Anti-magisk sten+1	
+28244	Anti-magisk sten+2	
+28245	Anti-magisk sten+2	
+28344	Anti-magisk sten+3	
+28345	Anti-magisk sten+3	
+28444	Anti-magisk sten+4	
+28445	Anti-magisk sten+4	
+30334	Hovedbeklædning Kupon	Højre-klik på kuponen for at modtage en monstastisk hovedbeklædning.
+30338	Hovedbeklædning Kupon+	Højre-klik på kuponen for at modtage en monstastisk hovedbeklædning, der giver dig mindst en tilfældig bonus.
+30341	Drageilds Ring	En aura af intens energi omslutter dig. Smedet i en drages flammer; denne ring vil ødelægge statuerne i Meleys Grotte i et spiltsekund.
+30600	Symønster	
+30601	Rustning design	
+30602	Blå farve	
+30603	Rød farve	
+30604	Grå farve	
+30605	Guldplader	
+30606	Sølvplader	
+30607	Kobberplader	
+30608	Stålplader	
+30609	Bronceplader	
+30610	Mithril	
+30611	Solide stropper	
+30612	Robuste snore	
+30613	Dryadernes Sten	Omgivet af et grønt skær, denne mystiske sten indeholder sjælen fra en Dryade, en træ ånd. Dryaderne kender de hemmelige ord, som vil give dig adgang til Erebus grotten.
+30614	Sort farve	
+30615	Hvid farve	
+30616	Titandioxid	Denne prismatiske krystal bruges til raffinering af et stykke udstyr.
+30617	Agat	Denne mystiske skinnende ædelsten bruges til raffinering af et stykke udstyr.
+30618	Månesten	En gnist af måneskin er indkapslet i denne dråbeformede juvel. Bruges til raffinering af et stykke udstyr.
+30619	Metallisk Guldfarve	
+30620	Rød Drage Horn	Drage horn er lavet af et af de hårdeste kendte materialer.
+30621	Rød Drage Skæl	Drage skæl er blandt de hårdeste kendte materialer.
+30622	Rustning Design: Hjelm	Denne genstand er nødvendigt til at fremstille hjelme.
+30623	Sandhedens Bog	En tung bog med en indskrift, der ser ud til at lyse. Bruges til raffinering af et stykke udstyr.
+30624	Sandhedens Sjæl	En god sjæl, fanget for evigt i en krystal kugle. Bruges til raffinering af et stykke udstyr.
+30625	Padparadscha	Padparadscha krystaller er sjældne og yderst udsøgte røde safirer. Bruges til raffinering af et stykke udstyr.
+30626	Kyanit	En blå ædelsten udvundet fra Bjerg Sohans miner. Bruges til raffinering af et stykke udstyr.
+30627	Gudernes Frugt	Sød smagfuld frugt fra Dragegudens have. Bruges til raffinering af et stykke udstyr.
+30628	Guddommelig Blomst	En hellig blomst fra Dragegudens have. Bruges til raffinering af et stykke udstyr.
+30629	Gudernes Eliksir	Denne flaske indeholder en mystisk glødende væske. Bruges til raffinering af et stykke udstyr.
+30630	Drage Vinger	Brug vingerne fra en Alteran drage for at raffinere dit udstyr.
+30639		
+30640		
+30641		
+30642		
+30643		
+30644		
+30645		
+30646		
+30647		
+30648		
+30649		
+30650		
+30651		
+30652		
+30653		
+30654		
+30655		
+34014	Rød Krystal	Et stykke af en krystal brugt til at samle other krystaller
+34067		
+34068		
+39063	Opdater Gaya Marked	Opdater Gaya Markedet før den almindelige 5-timers timer og afslør nye værdifulde genstande.
+39064	Gaya Marked Udvidelse	Udvider Gaya Markedet, åbner op for et ekstra felt til genstands tilbud, starter med det første felt i den anden række.
+39065		
+39066		
+40101	Savtand Klinge	Et våben-skin der transformerer dit sværd til en kædesav til Halloween.
+40102	Savtand Daggert	Et våben-skin der transformerer din daggert til en kædesav til Halloween.
+40103	Savtand Bue	Et våben-skin der transformerer din bue til en dobbelt kædesav til Halloween.
+40104	Savtand Glavind	Et våben-skin der transformerer dit tohåndsværd til et kædesavs spyd til Halloween.
+40105	Savtand Klokke	Et våben-skin der transformerer din klokke til en kædesavs kølle til Halloween.
+40106	Savtand Vifte	Et våben-skin der transformerer din vifte til en kædesavs vifte til Halloween.
+40107	Savtand Kløer	Et våben-skin der transformerer dine kløer til to praktiske kædesave til Halloween.
+40108	Savtand Klinge+	Et våben-skin der transformerer dit sværd til en kædesav til Halloween. Giver dig mindst en tilfældig bonus.
+40109	Savtand Daggert+	Et våben-skin der transformerer din daggert til en kædesav til Halloween. Giver dig mindst en tilfældig bonus.
+40110	Savtand Bue+	Et våben-skin der transformerer din bue til en dobbelt kædesav til Halloween. Giver dig mindst en tilfældig bonus.
+40111	Savtand Glavind+	Et våben-skin der transformerer dit tohåndsværd til et kædesavs spyd til Halloween. Giver dig mindst en tilfældig bonus.
+40112	Savtand Klokke+	Et våben-skin der transformerer din klokke til en kædesavs kølle til Halloween. Giver dig mindst en tilfældig bonus.
+40113	Savtand Vifte+	Et våben-skin der transformerer din vifte til en kædesavs vifte til Halloween. Giver dig mindst en tilfældig bonus.
+40114	Savtand Kløer+	Et våben-skin der transformerer dine kløer til to praktiske kædesave til Halloween. Giver dig mindst en tilfældig bonus.
+40115	Julestok Sværd	Et våben-skin som transformerer dit sværd til en julestok til julen.
+40116	Julestok Daggert	Et våben-skin som transformerer din daggert til en julestok til julen.
+40117	Elver Bue	Et våben-skin som transformerer din bue til en Elver bue til julen.
+40118	Honningkage Glavind	Et våben-skin som pryder dit to-hånds våben med honningkage til julen.
+40119	Julestok Klokke	Et våben-skin som transformerer din klokke til en julestok til julen.
+40120	Frysende Vifte	Et våben-skin som transformerer din vifte til en snemand til julen.
+40121	Rudolf Kløer	Et våben-skin som pryder dine kløer med et rensdyr til julen.
+40122	Julestok Sværd+	Et våben-skin som transformerer dit sværd til en julestok til julen. Giver dig mindst en tilfældig bonus.
+40123	Julestok Daggert+	Et våben-skin som transformerer din daggert til en julestok til julen. Giver dig mindst en tilfældig bonus.
+40124	Elver Bue+	Et våben-skin som transformerer din bue til en Elver bue til julen. Giver dig mindst en tilfældig bonus.
+40125	Honningkage Glavind+	Et våben-skin som pryder dit to-hånds våben med honningkage til julen. Giver dig mindst en tilfældig bonus.
+40126	Julestok Klokke+	Et våben-skin som transformerer din klokke til en julestok til julen. Giver dig mindst en tilfældig bonus.
+40127	Frysende Vifte+	Et våben-skin som transformerer din vifte til en snemand til julen. Giver dig mindst en tilfældig bonus.
+40128	Rudolf Kløer+	Et våben-skin som pryder dine kløer med et rensdyr til julen. Giver dig mindst en tilfældig bonus.
+40129	Vandmandens Blad	Et våben-skin som dækker dit blad i et lag af hårdt, iriserende vand.
+40130	Vandmandens Dolk	Et våben-skin som dækker din dolk i et lag af hårdt, iriserende vand.
+40131	Vandmandens Bue	Et våben-skin som dækker din bue i et lag af hårdt, iriserende vand.
+40132	Vandmandens Glavind	Et våben-skin som dækker dit to-hånds sværd i et lag af hårdt, iriserende vand.
+40133	Vandmandens Klokke	Et våben-skin som dækker din klokke i et lag af hårdt, iriserende vand.
+40134	Vandmandens Vifte	Et våben-skin som dækker din vifte i et lag af hårdt, iriserende vand.
+40135	Vandmandens Kløer	Et våben-skin som dækker dine kløer i et lag af hårdt, iriserende vand.
+40136	Vandmandens Blad+	Et våben-skin som dækker dit blad i et lag af hårdt, iriserende vand. Giver dig mindst en tilfældig bonus.
+40137	Vandmandens Dolk+	Et våben-skin som dækker din dolk i et lag af hårdt, iriserende vand. Giver dig mindst en tilfældig bonus.
+40138	Vandmandens Bue+	Et våben-skin som dækker din bue i et lag af hårdt, iriserende vand. Giver dig mindst en tilfældig bonus.
+40139	Vandmandens Glavind+	Et våben-skin som dækker dit to-hånds sværd i et lag af hårdt, iriserende vand. Giver dig mindst en tilfældig bonus.
+40140	Vandmandens Klokke+	Et våben-skin som dækker din klokke i et lag af hårdt, iriserende vand. Giver dig mindst en tilfældig bonus.
+40141	Vandmandens Vifte+	Et våben-skin som dækker din vifte i et lag af hårdt, iriserende vand. Giver dig mindst en tilfældig bonus.
+40142	Vandmandens Kløer+	Et våben-skin som dækker dine kløer i et lag af hårdt, iriserende vand. Giver dig mindst en tilfældig bonus.
+41458	Fønisk Klædning	En lang elegant Asiatisk klædning med føniks broderi til mænd.
+41459	Kobra Klædning	En lang elegant Asiatisk klædning med kobra broderi til mænd.
+41462	Drage Cheongsam (Rød)	En traditionel rød Asiatisk kjole med et detaljeret gyldent drage broderi til kvinder.
+41463	Drage Cheongsam (Hvid)	En traditionel rød Asiatisk kjole med et detaljeret rødt drage broderi til kvinder.
+41466	Fønisk Klædning+	En lang elegant Asiatisk klædning med føniks broderi til mænd. Giver dig mindst en tilfældig bonus.
+41467	Kobra Klædning+	En lang elegant Asiatisk klædning med kobra broderi til mænd. Giver dig mindst en tilfældig bonus.
+41470	Drage Cheongsam+ (Rød)	En traditionel rød Asiatisk kjole med et detaljeret gyldent drage broderi til kvinder. Giver dig mindst en tilfældig bonus.
+41471	Drage Cheongsam+ (Hvid)	En traditionel rød Asiatisk kjole med et detaljeret rødt drage broderi til kvinder. Giver dig mindst en tilfældig bonus.
+41488	Farao Kostume (Rød)	Gå som en Egypter med den dekorative røde Farao Kostume til mænd.
+41489	Farao Kostume (Blå)	Gå som en Egypter med den dekorative lyseblå Farao Kostume til mænd.
+41490	Engel Uriel (Hvid)	Elegant kostume med uskyldige hvide engle vinger til kvinder.
+41491	Engel Uriel (Rød)	Storslået kostume med ildrøde engle vinger til kvinder.
+41492	Farao Kostume+ (Rød)	Gå som en Egypter med den dekorative røde Farao Kostume til mænd. Giver dig mindst en tilfældig bonus.
+41493	Farao Kostume+ (Blå)	Gå som en Egypter med den dekorative lyseblå Farao Kostume til mænd. Giver dig mindst en tilfældig bonus.
+41494	Engel Uriel+ (Hvid)	Elegant kostume med uskyldige hvide engle vinger til kvinder. Giver dig mindst en tilfældig bonus.
+41495	Engel Uriel+ (Rød)	Storslået kostume med ildrøde engle vinger til kvinder. Giver dig mindst en tilfældig bonus.
+41512	Hugtand Kostume	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg.
+41513	Hugtand Kostume	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg.
+41514	Hugtand Kostume	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg.
+41515	Hugtand Kostume	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg.
+41516	Hugtand Kostume+	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg. Giver dig mindst en tilfældig bonus.
+41517	Hugtand Kostume+	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg. Giver dig mindst en tilfældig bonus.
+41518	Hugtand Kostume+	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg. Giver dig mindst en tilfældig bonus.
+41519	Hugtand Kostume+	Et dæmonisk-lignende Halloween kostume, der vil sende kuldegysninger ned af dine fjenders ryg. Giver dig mindst en tilfældig bonus.
+41520	Rød Vinter Kåbe	Vinter beklædning lavet af rød filt. Kan ikke handles.
+41521	Blå Vinter Kåbe	Vinter beklædning lavet af blå filt. Kan ikke handles.
+41522	Rød Vinter Kåbe+	Vinter beklædning lavet af rød filt. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+41523	Blå Vinter Kåbe+	Vinter beklædning lavet af blå filt. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+41524	Rød Vinter Kjole	Vinter kjole lavet af rød filt. Kan ikke handles.
+41525	Blå Vinter Kjole	Vinter kjole lavet af blå filt. Kan ikke handles.
+41526	Rød Vinter Kjole+	Vinter kjole lavet af rød filt. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+41527	Blå Vinter Kjole+	Vinter kjole lavet af blå filt. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+41528	Ørken Prins (Rød)	En krigers klædning, fremstillet af rødt stof, og passende til en leder.
+41529	Ørken Prins (Blå)	En krigers klædning, fremstillet af blåt stof, og passende til en leder.
+41530	Ørken Prinsesse (Rød)	En krigers klædning, fremstillet af rødt stof, og passende til en kvindelig leder.
+41531	Ørken Prinsesse (Blå)	En krigers klædning, fremstillet af blåt stof, og passende til en kvindelig leder.
+41532	Ørken Prins+ (Rød)	En krigers klædning, fremstillet af rødt stof, og passende til en leder. Giver dig mindst en tilfældig bonus.
+41533	Ørken Prins+ (Blå)	En krigers klædning, fremstillet af blåt stof, og passende til en leder. Giver dig mindst en tilfældig bonus.
+41534	Ørken Prinsesse+ (Rød)	En krigers klædning, fremstillet af rødt stof, og passende til en kvindelig leder. Giver dig mindst en tilfældig bonus.
+41535	Ørken Prins+ (Blå)	En krigers klædning, fremstillet af blåt stof, og passende til en kvindelig leder. Giver dig mindst en tilfældig bonus.
+41540	Kanin kostume (Hvid)	Hare kostume til mænd lavet af hvid-farvet plys. Kan ikke handles.
+41541	Kanin kostume (Rosa)	Hare kostume til mænd lavet af rosa-farvet plys. Kan ikke handles.
+41542	Kanin kostume(Marineblå)	Kanin kostume til kvinder lavet af marineblåt plys. Kan ikke handles.
+41543	Kanin kostume (Magenta)	Kanin kostume til kvinder lavet af magenta plys. Kan ikke handles.
+41544	Kanin kostume+ (Hvid)	Hare kostume til mænd lavet af hvid-farvet plys. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+41545	Kanin kostume+ (Rosa)	Hare kostume til mænd lavet af rosa-farvet plys. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+41546	Kaninkostume+(Marineblå)	Kanin kostume til kvinder lavet af marineblåt plys. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+41547	Kanin kostume+ (Magenta)	Kanin kostume til kvinder lavet af magenta plys. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+41560	Blod Vampyr (Grå)	Rustningen fra en ægte Blod Vampyr udstråler en udødelig aura. Denne genstand kan ikke handles.
+41561	Blod Vampyr (Rød)	Rustningen fra en ægte Blod Vampyr udstråler en udødelig aura. Denne genstand kan ikke handles.
+41562	Blod Lamia (Grå)	Rustningen fra en kriger-lignende Blod Lamia udstråler en udødelig aura. Denne genstand kan ikke handles.
+41563	Blod Lamia (Rød)	Rustningen fra en kriger-lignende Blod Lamia udstråler en udødelig aura. Denne genstand kan ikke handles.
+41564	Blod Vampyr+ (Grå)	Rustningen fra en ægte Blod Vampyr giver dig overmenneskelig styrke. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+41565	Blod Vampyr+ (Rød)	Rustningen fra en ægte Blod Vampyr giver dig overmenneskelig styrke. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+41566	Blod Lamia+ (Grå)	Rustningen fra en kriger-lignende Blod Lamia giver dig overmenneskelig styrke. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+41567	Blod Lamia+ (Rød)	Rustningen fra en kriger-lignende Blod Lamia giver dig overmenneskelig styrke. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+41568	Rød Festlig Kåbe (m)	En rød festlig kåbe med en hvid kant.
+41569	Grøn Festlig Kåbe (m)	En grøn festlig kåbe med en hvid kant.
+41570	Rød Festlig Kåbe (k)	En rød festlig kåbe med en hvid kant.
+41571	Grøn Festlig Kåbe (k)	En grøn festlig kåbe med en hvid kant.
+41572	Rød Festlig Kåbe+ (m)	En rød festlig kåbe med en hvid kant. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+41573	Grøn Festlig Kåbe+ (m)	En grøn festlig kåbe med en hvid kant. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+41574	Rød Festlig Kåbe+ (k)	En rød festlig kåbe med en hvid kant. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+41575	Grøn Festlig Kåbe+ (k)	En grøn festlig kåbe med en hvid kant. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+41576	Gylden O-Yoroi (m)	Den gyldne uniform af en Japansk general.
+41577	Sølv O-Yoroi (m)	Sølv uniform af en Japansk general.
+41578	Gylden O-Yoroi (k)	Den gyldne uniform af en Japansk general.
+41579	Sølv O-Yoroi (k)	Sølv uniform af en Japansk general.
+41580	Gylden O-Yoroi+ (m)	Den gyldne uniform af en Japansk general. Giver dig mindst en tilfældig bonus.
+41581	Sølv O-Yoroi+ (m)	Sølv uniform af en Japansk general. Giver dig mindst en tilfældig bonus.
+41582	Gylden O-Yoroi+ (k)	Den gyldne uniform af en Japansk general. Giver dig mindst en tilfældig bonus.
+41583	Sølv O-Yoroi+ (k)	Sølv uniform af en Japansk general. Giver dig mindst en tilfældig bonus.
+41584	Samurai Rustning (Blå)	Blå rustning i samme stil som en erfaren shogun.
+41585	Samurai Rustning (Rød)	Rød rustning i samme stil som en erfaren shogun.
+41586	Samurai Rustning (Blå)	Blå rustning i samme stil som en kvindelig shogun.
+41587	Samurai Rustning (Rød)	Rød rustning i samme stil som en kvindelig shogun.
+41588	Samurai Rustning+ (Blå)	Blå rustning i samme stil som en erfaren shogun. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41589	Samurai Rustning+ (Rød)	Rød rustning i samme stil som en erfaren shogun. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41590	Samurai Rustning+ (Blå)	Blå rustning i samme stil som en kvindelig shogun. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41591	Samurai Rustning+ (Rød)	Rød rustning i samme stil som en kvindelig shogun. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41592	Rædslens Seletøj (Guld)	Flammende infernalsk rustning, perfekt til at indgyde terror.
+41593	Rædslens Seletøj (Blå)	Glødende blå infernalsk rustning, perfekt til at indgyde terror.
+41594	Rædslens Seletøj (Guld)	Flammende infernalsk rustning, perfekt til at indgyde terror.
+41595	Rædslens Seletøj (Blå)	Glødende blå infernalsk rustning, perfekt til at indgyde terror.
+41596	Rædslens Seletøj+(Guld)	Flammende infernalsk rustning, perfekt til at indgyde terror. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41597	Rædslens Seletøj+(Blå)	Glødende blå infernalsk rustning, perfekt til at indgyde terror. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41598	Rædslens Seletøj+(Guld)	Flammende infernalsk rustning, perfekt til at indgyde terror. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41599	Rædslens Seletøj+(Blå)	Glødende blå infernalsk rustning, perfekt til at indgyde terror. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41600	Steampunk Udstyr (Sort)	Fremtidens udstyr til mandlige krigere fra det nuværende.
+41601	Steampunk Udstyr (Rød)	Fremtidens udstyr til mandlige krigere fra det nuværende.
+41602	Steampunk Kjole (Sort)	Fremtidens tøj til kvindelige krigere fra det nuværende.
+41603	Steampunk Kjole (Rød)	Fremtidens tøj til kvindelige krigere fra det nuværende.
+41604	Steampunk Udstyr+ (Sort)	Fremtidens udstyr til mandlige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41605	Steampunk Udstyr+ (Rød)	Fremtidens udstyr til mandlige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41606	Steampunk Kjole+ (Sort)	Fremtidens udstyr til kvindelige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41607	Steampunk Kjole+ (Rød)	Fremtidens udstyr til kvindelige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+41608	Sungura Påklædning (Blå)	Et eventyrs påklædning i hvide og lilla nuancer med blå knæbukser.
+41609	Sungura Påklæ. (Blågrøn)	Et eventyrs påklædning i hvide og blågrønne nuancer med grå knæbukser.
+41610	Sungura Kjole (Blå)	Et eventyrs differentieret boble kjole i blå og lilla.
+41611	Sungura Kjole (Grå)	Et eventyrs differentieret boble kjole i grå og blågrøn.
+41612	Sungura Påklædni.+ (Blå)	Et eventyrs påklædning i hvide og lilla nuancer med blå knæbukser. Giver dig mindst en tilfældig bonus.
+41613	Sungura Påkl.+ (Blågrøn)	Et eventyrs påklædning i hvide og blågrønne nuancer med grå knæbukser. Giver dig mindst en tilfældig bonus.
+41614	Sungura Kjole+ (Blå)	Et eventyrs differentieret boble kjole i blå og lilla. Giver dig mindst en tilfældig bonus.
+41615	Sungura Kjole+ (Grå)	Et eventyrs differentieret boble kjole i grå og blågrøn. Giver dig mindst en tilfældig bonus.
+41630	Avelon Rustning (Sølv)	Sølv dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden.
+41631	Avelon Rustning (Rød)	Rød dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden.
+41632	Avelon Rustning (Sølv)	Sølv dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden.
+41633	Avelon Rustning (Rød)	Rød dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden.
+41634	Avelon Rustning+ (Sølv)	Glimtende dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+41635	Avelon Rustning+ (Rød)	Glimtende dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+41636	Avelon Rustning+ (Sølv)	Glimtende dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+41637	Avelon Rustning+ (Rød)	Glimtende dragt ud af rustning der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+41638	KSA VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Saudi Arabiske nationale farver.
+41639	KSA VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Saudi Arabiske nationale farver.
+41640	KSA VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Saudi Arabiske nationale farver. Giver dig mindst en tilfældig bonus.
+41641	KSA VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Saudi Arabiske nationale farver. Giver dig mindst en tilfældig bonus.
+41642	DEN VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Danske nationale farver.
+41643	DEN VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Danske nationale farver.
+41644	DEN VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Danske nationale farver. Giver dig mindst en tilfældig bonus.
+41645	DEN VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Danske nationale farver. Giver dig mindst en tilfældig bonus.
+41646	SVK VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Slovakiske nationale farver.
+41647	SVK VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Slovakiske nationale farver.
+41648	SVK VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Slovakiske nationale farver. Giver dig mindst en tilfældig bonus.
+41649	SVK VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Slovakiske nationale farver. Giver dig mindst en tilfældig bonus.
+41650	TUR VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Tyrkiske nationale farver.
+41651	TUR VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Tyrkiske nationale farver.
+41652	TUR VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Tyrkiske nationale farver. Giver dig mindst en tilfældig bonus.
+41653	TUR VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Tyrkiske nationale farver. Giver dig mindst en tilfældig bonus.
+41654	HUN VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Ungarske nationale farver.
+41655	HUN VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Ungarske nationale farver.
+41656	HUN VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Ungarske nationale farver. Giver dig mindst en tilfældig bonus.
+41657	HUN VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Ungarske nationale farver. Giver dig mindst en tilfældig bonus.
+41658	ROU VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Rumænske nationale farver.
+41659	ROU VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Rumænske nationale farver.
+41660	ROU VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Rumænske nationale farver. Giver dig mindst en tilfældig bonus.
+41661	ROU VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Rumænske nationale farver. Giver dig mindst en tilfældig bonus.
+41662	POL VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Polske nationale farver.
+41663	POL VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Polske nationale farver.
+41664	POL VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Polske nationale farver. Giver dig mindst en tilfældig bonus.
+41665	POL VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Polske nationale farver. Giver dig mindst en tilfældig bonus.
+41666	BRA VM Sæt (m)	Verdensmesterskabs fodboldsæt i de Brasilianske nationale farver.
+41667	BRA VM Sæt (k)	Verdensmesterskabs fodboldsæt i de Brasilianske nationale farver.
+41668	BRA VM Sæt+ (m)	Verdensmesterskabs fodboldsæt i de Brasilianske nationale farver. Giver dig mindst en tilfældig bonus.
+41669	BRA VM Sæt+ (k)	Verdensmesterskabs fodboldsæt i de Brasilianske nationale farver. Giver dig mindst en tilfældig bonus.
+41670		
+41671		
+41672		
+41673		
+41674		
+41675		
+41676		
+41677		
+45108	Ris Hat	En traditionel Asiatisk hat lavet af uafskallet halm til mænd.
+45110	Odango	En Asiatisk op hæftet frisure med dobbelt boller.
+45114	Ris Hat+	En traditionel Asiatisk hat lavet af uafskallet halm til mænd. Giver dig mindst en tilfældig bonus.
+45116	Odango+	En Asiatisk op hæftet frisure med dobbelt boller. Giver dig mindst en tilfældig bonus.
+45182	Fjer Hovedklæde (Rød)	En pralende rød fjer hovedklæde til mænd. Perfekt til karneval tid!
+45183	Fjer Hovedklæde (Blå)	En pralende lyseblå fjer hovedklæde til mænd. Perfekt til karneval tid!
+45184	Føniks Tiara (Hvid)	En elegant metallisk ørnehjelm til kvinder.
+45185	Føniks Tiara (Rød)	En elegant metallisk ørnehjelm til kvinder.
+45186	Fjer Hovedklæde+ (Rød)	En pralende rød fjer hovedklæde til mænd. Perfekt til karneval tid! Giver dig mindst en tilfældig bonus.
+45187	Fjer Hovedklæde+ (Blå)	En pralende lyseblå fjer hovedklæde til mænd. Perfekt til karneval tid! Giver dig mindst en tilfældig bonus.
+45188	Føniks Tiara+ (Hvid)	En elegant metallisk ørnehjelm til kvinder. Giver dig mindst en tilfældig bonus.
+45189	Føniks Tiara+ (Rød)	En elegant metallisk ørnehjelm til kvinder. Giver dig mindst en tilfældig bonus.
+45206	Hugtand Hjelm	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender.
+45207	Hugtand Hjelm	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender.
+45208	Hugtand Hjelm	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender.
+45209	Hugtand Hjelm	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender.
+45210	Hugtand Hjelm+	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender. Giver dig mindst en tilfældig bonus.
+45211	Hugtand Hjelm+	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender. Giver dig mindst en tilfældig bonus.
+45212	Hugtand Hjelm+	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender. Giver dig mindst en tilfældig bonus.
+45213	Hugtand Hjelm+	En blod-uhyggelig hjelm til Halloween, der vil skræmme det levende dagslys ud af dine fjender. Giver dig mindst en tilfældig bonus.
+45214	Rød Nissehue	Rød filt hat med en hvid knop. Kan ikke handles.
+45215	Blå Nissehue	blå filt hat med en hvid knop. Kan ikke handles.
+45216	Rød Julemandshætte	Rød filt hat med en hvid knop. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+45217	Blå Julemandshætte	Blå filt hat med en hvid knop. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+45218	Rød Nissehue+	Rød filt hætte med en hvid knop. Kan ikke handles.
+45219	Blå Nissehue+	Blå filt hætte med en hvid knop. Kan ikke handles.
+45220	Rød Julemandshætte+	Rød filt hætte med en hvid knop. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+45221	Blå Julemandshætte+	Blå filt hætte med en hvid knop. Giver dig mindst en tilfældig bonus. Genstanden kan handles.
+45222	Kanin Ører (Hvide)	Hvid farvet hat med hare ører til mænd. Kan ikke handles.
+45223	Kanin Ører (Rosa)	Rosa-farvet hat med hare ører til mænd. Kan ikke handles.
+45224	Kanin Ører(Marineblå)	Marineblå-farvet kanin ører til kvinder. Kan ikke handles.
+45225	Kanin Ører (Magenta)	Magenta-farvet kanin ører til kvinder. Kan ikke handles.
+45226	Kanin Ører+ (Hvide)	Hvid farvet hat med hare ører til mænd. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+45227	Kanin Ører+ (Rosa)	Rosa-farvet hat med hare ører til mænd. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+45228	Kanin Ører+ (Marineblå)	Marineblå-farvet kanin ører til kvinder. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+45229	Kanin Ører+ (Magenta)	Magenta-farvet kanin ører til kvinder. Giver dig mindst en tilfældig bonus. Denne genstand kan handles.
+45234	Blå Turban	En galant blå turban, lavet af et materiale stærkt nok til krigere.
+45235	Rød Turban	En galant rød turban, lavet af et materiale stærkt nok til krigere.
+45236	Brunt Tørklæde	Et brunt tørklæde lavet af et let materiale, perfekt til kvindelige krigere.
+45237	Grønt Tørklæde	Et grønt tørklæde lavet af et let materiale, perfekt til kvindelige krigere.
+45238	Blå Turban+	En galant blå turban, lavet af et materiale stærkt nok til krigere. Giver dig mindst en tilfældig bonus.
+45239	Rød Turban+	En galant rød turban, lavet af et materiale stærkt nok til krigere. Giver dig mindst en tilfældig bonus.
+45240	Brunt Tørklæde+	Et brunt tørklæde lavet af et let materiale, perfekt til kvindelige krigere. Giver dig mindst en tilfældig bonus.
+45241	Grønt Tørklæde+	Et grønt tørklæde lavet af et let materiale, perfekt til kvindelige krigere. Giver dig mindst en tilfældig bonus.
+45250	Blod Vampyr Hjelm (Grå)	Hjelmen af en ægte Blod Vampyr. Denne genstand kan ikke handles.
+45251	Blod Vampyr Hjelm (Rød)	Hjelmen af en ægte Blod Vampyr. Denne genstand kan ikke handles.
+45252	Blod Lamia Hjelm (Grå)	Hjelmen af en kriger-lignende Blod Lamia. Denne genstand kan ikke handles.
+45253	Blod Lamia Hjelm (Rød)	Hjelmen af en kriger-lignende Blod Lamia. Denne genstand kan ikke handles.
+45254	Blod Vampyr Hjelm+ (G)	Hjelmen af en ægte Blod Vampyr. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+45255	Blod Vampyr Hjelm+ (R)	Hjelmen af en ægte Blod Vampyr. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+45256	Blod Lamia Hjelm+ (Grå)	Hjelmen af en kriger-lignende Blod Lamia. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+45257	Blod Lamia Hjelm+ (Rød)	Hjelmen af en kriger-lignende Blod Lamia. Giver dig mindst én tilfældig bonus. Genstanden kan handles.
+45258	Jule Hætte (Rød)	En rød festlig hætte med en hvid kant.
+45259	Jule Hætte (Grøn)	En grøn festlig hætte med en hvid kant.
+45260	Jule Baret (Rød)	En rød Jule baret med en hvid knop.
+45261	Jule Baret (Grøn)	En grøn Jule baret med en hvid knop.
+45262	Jule Hætte+ (Rød)	En rød festlig hætte med en hvid kant. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+45263	Jule Hætte+ (Grøn)	En grøn festlig hætte med en hvid kant. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+45264	Jule Baret+ (Rød)	En rød Jule baret med en hvid knop. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+45265	Jule Baret+ (Grøn)	En grøn Jule baret med en hvid knop. Genstanden giver dig mindst en tilfældig bonus og den er handelbar.
+45266	Gylden Kabuto (m)	Den gyldne hjelm af en Japansk general.
+45267	Sølv Kabuto (m)	Sølv hjelm af en Japansk general.
+45268	Gylden Kabuto (k)	Den gyldne hjelm af en Japansk general.
+45269	Sølv Kabuto (k)	Sølv hjelm af en Japansk general.
+45270	Gylden Kabuto+ (m)	Den gyldne hjelm af en Japansk general. Giver dig mindst en tilfældig bonus.
+45271	Sølv Kabuto+ (m)	Sølv hjelm af en Japansk general. Giver dig mindst en tilfældig bonus.
+45272	Gylden Kabuto+ (k)	Den gyldne hjelm af en Japansk general. Giver dig mindst en tilfældig bonus.
+45273	Sølv Kabuto+ (k)	Sølv hjelm af en Japansk general. Giver dig mindst en tilfældig bonus.
+45274	Samurai Bolle (Guld)	Samurai-stilet hår bolle med en gylden lås til mandlige karakterer.
+45275	Samurai Bolle (Sølv)	Samurai-stilet hår bolle med en sølv lås til mandlige karakterer.
+45276	Samurai Bolle (Guld)	Samurai-stilet hår bolle med en gylden lås til kvindelige karakterer.
+45277	Samurai Bolle (Sølv)	Samurai-stilet hår bolle med en sølv lås til kvindelige karakterer.
+45278	Samurai Bolle+ (Guld)	Samurai-stilet hår bolle med en gylden lås til mandlige karakterer. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45279	Samurai Bolle+ (Sølv)	Samurai-stilet hår bolle med en sølv lås til mandlige karakterer. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45280	Samurai Bolle+ (Guld)	Samurai-stilet hår bolle med en gylden lås til kvindelige karakterer. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45281	Samurai Bolle+ (Sølv)	Samurai-stilet hår bolle med en sølv lås til kvindelige karakterer. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45282	Rædslens Horn (Guld)	Guld hjelm med djævle horn.
+45283	Rædslens Horn (Blå)	Blå hjelm med djævle horn.
+45284	Rædslens Horn (Guld)	Guld hjelm med djævle horn.
+45285	Rædslens Horn (Blå)	Blå hjelm med djævle horn.
+45286	Rædslens Horn+ (Guld)	Guld hjelm med djævle horn. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45287	Rædslens Horn+ (Blå)	Blå hjelm med djævle horn. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45288	Rædslens Horn+ (Guld)	Guld hjelm med djævle horn. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45289	Rædslens Horn+ (Blå)	Blå hjelm med djævle horn. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45290	Steampunk Hat (Sort)	Fremtidens hovedbeklædning til mandlige krigere fra det nuværende.
+45291	Steampunk Hat (Rød)	Fremtidens hovedbeklædning til mandlige krigere fra det nuværende.
+45292	Steampunk Hat (Sort)	Fremtidens hovedbeklædning til kvindelige krigere fra det nuværende.
+45293	Steampunk Hat (Rød)	Fremtidens hovedbeklædning til kvindelige krigere fra det nuværende.
+45294	Steampunk Hat+ (Sort)	Fremtidens hovedbeklædning til mandlige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45295	Steampunk Hat+ (Rød)	Fremtidens hovedbeklædning til mandlige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45296	Steampunk Hat+ (Sort)	Fremtidens hovedbeklædning til kvindelige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45297	Steampunk Hat+ (Rød)	Fremtidens hovedbeklædning til kvindelige krigere fra det nuværende. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45298	Fjerede Hat (Blå)	En blå hat med en perle hagerem og en rød fasan fjer.
+45299	Fjerede Hat (Grå)	En grå hat med en perle hagerem og en blågrøn fasan fjer.
+45300	Sungura Dæksel (Blå)	Blå hovedbeklædning besat med en turkis ædelsten.
+45301	Sungura Dæksel (Grå)	Grå hovedbeklædning besat med en lilla ædelsten.
+45302	Fjerede Hat+ (Blå)	En blå hat med en perle hagerem og en rød fasan fjer. Giver dig mindst en tilfældig bonus.
+45303	Fjerede Hat+ (Grå)	En grå hat med en perle hagerem og en blågrøn fasan fjer. Giver dig mindst en tilfældig bonus.
+45304	Sungura Dæksel+ (Blå)	Blå hovedbeklædning besat med en turkis ædelsten. Giver dig mindst en tilfældig bonus.
+45305	Sungura Dæksel+ (Grå)	Grå hovedbeklædning besat med en lilla ædelsten. Giver dig mindst en tilfældig bonus.
+45314	Zodiac Krone	Majestætisk hovedbeklædning.
+45315	Zodiac Krone	Majestætisk hovedbeklædning.
+45316	Zodiac Krone+	Majestætisk hovedbeklædning. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45317	Zodiac Krone+	Majestætisk hovedbeklædning. Giver dig mindst en tilfældig bonus. Denne genstand er handelbar.
+45320	Avelon Hjelm (Sølv)	Sølv hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden.
+45321	Avelon Hjelm (Rød)	Rød hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden.
+45322	Avelon Hjelm (Sølv)	Sølv hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden.
+45323	Avelon Hjelm (Rød)	Rød hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden.
+45324	Avelon Hjelm+ (Sølv)	Sølv hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+45325	Avelon Hjelm+ (Rød)	Rød hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+45326	Avelon Hjelm+ (Sølv)	Sølv hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+45327	Avelon Hjelm+ (Rød)	Rød hjelm der engang tilhørte en ridderlig dynasti en gang for længe siden. Giver dig mindst en tilfældig bonus.
+45328	Bjørne Hat (m)	Dejlig hovedbeklædning med et bjørne ansigt.
+45329	Tiger Hat (m)	Dejlig hovedbeklædning med et tiger ansigt.
+45330	Bjørne Hat (k)	Dejlig hovedbeklædning med et bjørne ansigt.
+45331	Tiger Hat (k)	Dejlig hovedbeklædning med et tiger ansigt.
+45332	Bjørne Hat+ (m)	Denne dejlige hovedbeklædning giver dig mindst en tilfældig bonus.
+45333	Tiger Hat+ (m)	Denne dejlige hovedbeklædning giver dig mindst en tilfældig bonus.
+45334	Bjørne Hat+ (k)	Denne dejlige hovedbeklædning giver dig mindst en tilfældig bonus.
+45335	Tiger Hat+ (k)	Denne dejlige hovedbeklædning giver dig mindst en tilfældig bonus.
+45336		
+45337		
+45338		
+45339		
+45340		
+45341		
+45342		
+45343		
+45344	Hårbånd DEN (k)	Langt hår med fletninger og en hårbånd i de Danske nationale farver.
+45345	Hårbånd HUN (k)	Langt hår med fletninger og en hårbånd i de Ungarske nationale farver.
+45346	Hårbånd POL (k)	Langt hår med fletninger og en hårbånd i de Polske nationale farver.
+45347	Hårbånd KSA (k)	Langt hår med fletninger og en hårbånd i de Saudi Arabiske nationale farver.
+45348	Hårbånd SVK (k)	Langt hår med fletninger og en hårbånd i de Slovakiske nationale farver.
+45349	Hårbånd TUR (k)	Langt hår med fletninger og en hårbånd i de Tyrkiske nationale farver.
+45350	Hårbånd DEN+ (k)	Langt hår med fletninger og en hårbånd i de Danske nationale farver. Giver dig mindst en tilfældig bonus.
+45351	Hårbånd HUN+ (k)	Langt hår med fletninger og en hårbånd i de Ungarske nationale farver. Giver dig mindst en tilfældig bonus.
+45352	Hårbånd POL+ (k)	Langt hår med fletninger og en hårbånd i de Polske nationale farver. Giver dig mindst en tilfældig bonus.
+45353	Hårbånd KSA+ (k)	Langt hår med fletninger og en hårbånd i de Saudi Arabiske nationale farver. Giver dig mindst en tilfældig bonus.
+45354	Hårbånd SVK+ (k)	Langt hår med fletninger og en hårbånd i de Slovakiske nationale farver. Giver dig mindst en tilfældig bonus.
+45355	Hårbånd TUR+ (k)	Langt hår med fletninger og en hårbånd i de Tyrkiske nationale farver. Giver dig mindst en tilfældig bonus.
+50266	Jotun Thrym kiste	Jotun Thryms kiste. Baseret på hvor tung den ser ud, må den indeholde noget meget værdifuldt.
+50267	Gylden Okey Kiste	Optjen 400 eller flere point i et spil okey for at vinde denne præmie.
+50270	Dronning Meleys Kiste	Denne kiste var reddet ud af Drage Dronningen Meleys grotte. Den indeholder en virkelig storslået skat. Denne genstand kan handles.
+50271	Drage Vogter Kiste	Denne kiste indeholder skatte fra utallige dragevogtere, skatte som der i århundreder mentes tabt. Denne genstand kan handles.
+50272	Gylden Høstm. Boss Kiste	Gylden belønning for dine heltegerninger i boss høsten.
+50285	Jern Kamp Zone Kiste	En kiste med værdifuldt indhold.
+50286	Gylden Kamp Zone Kiste	En kiste med værdifuldt indhold.
+50287	Felt Boks 1	En boks der indeholder brugbart udstyr.
+50288	Felt Boks 2	En boks der indeholder brugbart udstyr.
+50289	Reinkarnation	Reinkarnation genopliver dig på stedet uden forsinkelse.
+50290	Træ Kamp Zone Kiste	En kiste med værdifuldt indhold.
+50323	Beskyttelsesbog kiste	Denne kiste indeholder en tilfældig færdighedsbog, som bruges til at lære beskyttelsesfærdigheder.
+50324	Boost bog kiste	Denne kiste indeholder en tilfældig færdighedsbog, som bruges til at lære boost færdigheder.
+50514	Boost manual	Denne tekstbog giver dig mulighed for at studere en af de ni boost færdigheder. Den færdighed som er velegnet for dig, vil blive valgt.
+50515	Beskyttelsesmanual	Denne tekstbog giver dig mulighed for at vælge blandt ni beskyttelsesfærdigheder. Vælg med omhu!
+50516	Sværdhvirvel beskyttelse	Denne bog lærer dig evnen til at reducere skader som er påført af Sværd-hvirvel.
+50517	Baghold beskyttelse	Denne bog lærer dig evnen til at reducere skader som er påført af Bagholdsangreb.
+50518	Fingerangreb beskyttelse	Denne bog lærer dig evnen til at reducere skader som er påført af Fingerangreb.
+50519	Drageskydning beskytte	Denne bog lærer dig evnen til at reducere skader som er påført af Drageskydning.
+50520	Åndeslag beskyttelse	Denne bog lærer dig evnen til at reducere skader som er påført af Åndeslag.
+50521	Ildpil beskyttelse	Denne bog lærer dig evnen til at reducere skader som er påført af Ildpil.
+50522	Mørke stød beskyttelse	Denne bog lærer dig evnen til at reducere skader som er påført af Det mørke stød.
+50523	Lynbesværgelse beskytte	Denne bog lærer dig evnen til at reducere skader som er påført af Lynbesværgelse.
+50524	Ulvens ånde beskyttelse	Denne bog lærer dig evnen til at reducere skader som er påført af Ulvens ånde.
+50525	Sjælesten+	Den legendariske sten bruges til at øge stor-mester-færdighederne, inden for boost og beskyttelsesfærdigheder. Den forsvinder efter brug.
+50560	Sværd-hvirvel boost	Denne bog lærer dig evnen til at styrke Sværd-hvirvel.
+50561	Bagholdsangreb boost	Denne bog lærer dig evnen til at styrke Bagholdsangreb.
+50562	Fingerangreb boost	Denne bog lærer dig evnen til at styrke Fingerangreb.
+50563	Drageskydning boost	Denne bog lærer dig evnen til at styrke Drageskydning.
+50564	Åndeslag boost	Denne bog lærer dig evnen til at styrke Åndeslag.
+50565	Ildpil boost	Denne bog lærer dig evnen til at styrke Ildpil.
+50566	Det mørke stød boost	Denne bog lærer dig evnen til at styrke Det mørke stød.
+50567	Lynbesværgelse boost	Denne bog lærer dig evnen til at styrke Lynbesværgelse.
+50568	Ulvens ånde boost	Denne bog lærer dig evnen til at styrke Ulvens ånde.
+50620	Azure malm	Ved hjælp af en Ordens Alkymist, kan du producere Azure ud af denne malm.
+50640	Azure	Blå ædelsten med en unik afpudsning. Kan forarbejdes til et værdifuldt smykke.
+50926	Glimmersten	Indsaml Glimmersten og få Gaya Købmanden til at skære dem om til værdifulde Gaya.
+51723	Fossiltræ	Værdifuldt træ. | Det kan sammensættes med andet trætilbehør.
+51724	Kobber	Bliver af og til brugt til at fremstille bronze og mønter. | Kan tilføjes på kobber-smykker.
+51725	Sølv	Et skinnende metal, som benyttes til at fremstille smykker. | Kan benyttes som vedhæng på sølvsmykker.
+51726	Guld	Guld benyttes til at lave smykker. | Kan benyttes som vedhæng på guldsmykker.
+51727	Jade	Et af de værdifulde miniraler | Kan benyttes som vedhæng på Jadesmykker.
+51728	Ibentræ	Det stærkeste og letteste træ alle alle sorter | Kan benyttes som vedhæng på Ibentræsmykker.
+51729	Perle	Benyttes til at lave smykker.| Kan benyttes som vedhæng på Perlesmykker.
+51730	Hvidguld	Guld som ligner Sølv, men er hårdere.| Kan benyttes som vedhæng på Hvidguldssmykker.
+51731	Krystal	Er også kaldet Bjergkrystal eller Quartz | Kan benyttes som vedhæng på Krystalsmykker.
+51732	Ametyst	En violet Quartz | Kan benyttes som vedhæng på Ametystsmykker.
+51733	Himmeltåre	Krystalliseret regn fra paradis. | Kan benyttes som vedhæng på Himmeltåresmykker.
+51734	Sjæle krystal	En krystal, så ren som sjælen. Kan bruges til at lave tilbehør.
+51735	Rubin	Rød ædelsten med en unik afpudsning. Kan forarbejdes til et værdifuldt smykke.
+51736	Granat	Orange ædelsten med en unik afpudsning. Kan forarbejdes til et værdifuldt smykke.
+51737	Smaragd	Grøn ædelsten med en unik afpudsning. Kan forarbejdes til et værdifuldt smykke.
+51738	Safir	Blå ædelsten med en unik afpudsning. Kan forarbejdes til et værdifuldt smykke.
+51740	Azure	Blå ædelsten med en unik afpudsning. Kan forarbejdes til et værdifuldt smykke.
+55001	Protein Snack	Giv dit udmattede kæledyr en lækker Protein Snack og den vil blive helt restitueret. Giv det til et dødt kæledyr, og det vil blive genoplivet og restitueret til 50%.
+55002	Transportkasse	Når du placerer dit kæledyr i Transportkassen, er den omsættelig i 30 dage.
+55003	Ung kæledyrsbog	Ved at bruge de følgende dele kan du fremme dit kæledyr til næste level (Vildt kæledyr): 10x Unge kæledyrsbøger, 10x Edderkoppe æggesæk, 10x Hvide hårbånd +, 10x Shuriken, 10x Dekorative hårnåle, 5x Sorte uniformer +, 5+ Isstykker +
+55004	Vild kæledyrsbog	Ved at bruge de følgende dele, kan du fremme dit kæledyr til næste level (Tapper kæledyr): 10x Vilde kæledyrsbøger, 2x Blodrøde perler, 10x Ansigtscremer, 10x Yetiskind+, 10x Smykker, 10x Garnnøgler, 5x Forbandelsesbøger+
+55005	Tapper kæledyrsbog	Ved at bruge de følgende dele, kan du fremme dit kæledyr til næste level (Helte kæledyr): 10x Tapper kæledyrsbøger, 10x Ukendt medicin +, 2x Hvide perler, 2x Blå perler, 10x Dæmon-minder +, 10x Orktand +, 5x Blåt bælte
+55006		
+55008	Kæledyrs Navn Dokument	Træk dokumentet over dit kæledyr og skift dets navn.
+55009	Kæledyrsbog kiste	Indeholder en tilfældigt valgt kæledyrs færdighedsbog.
+55010	Monsterbog	Når dit kæledyr lærer denne færdighed, øger det din skade mod monstre.
+55011	Metinstenbog	Når dit kæledyr lærer denne færdighed, øger det din skade mod Metin-sten.
+55012	Bossbog	Når dit kæledyr lærer denne færdighed, øger det din skade mod bosser.
+55013	Livsbog	Når dit kæledyr lærer denne færdighed, øger det din maksimale HP.
+55014	Giftbog	Når dit kæledyr lærer denne færdighed, giver det dine angreb en chance for at forgifte fjenden.
+55015	Anti-Krit bog	Når dit kæledyr lærer denne færdighed, reducerer det chancen for at modtage kritiske træf.
+55016	Anti-Gennemtrængning bog	Når dit kæledyr lærer denne færdighed, reducerer det chancen for at modtage gennemtrængende angreb.
+55017	Ildbog	Når dit kæledyr lærer denne færdighed, øger det din kraft mod ild-elementet.
+55018	Isbog	Når dit kæledyr lærer denne færdighed, øger det din kraft mod is-elementet.
+55019	Jordbog	Når dit kæledyr lærer denne færdighed, øger det din kraft mod jord-elementet.
+55020	Vindbog	Når dit kæledyr lærer denne færdighed, øger det din kraft mod vind-elementet.
+55021	Regenerationsbog	Når dit kæledyr lærer denne færdighed, gendanner det gradvist dit HP over tid.
+55022	Pileundvigelsesbog	Når dit kæledyr lærer denne færdighed, øger det din chance for at undvige pileangreb.
+55023	Genstandsfaldbog	Når dit kæledyr lærer denne færdighed, øger det din drop-rate for genstande.
+55024	Angriberbog	Når dit kæledyr lærer denne færdighed, øger det din samlede angrebsværdi.
+55025	Bersærkerbog (H)	Når dit kæledyr lærer denne færdighed, øger det din magiske/nærkampsskade.
+55026	Færdighedsskadebog (H)	Når dit kæledyr lærer denne færdighed, øger det skaden fra dine færdigheder.
+55027	Modstand mod færdighedsskade bog (H)	Når dit kæledyr lærer denne færdighed, øger det din modstand mod færdighedsskader.
+55028	Gennemsnitlig skadebog (H)	Når dit kæledyr lærer denne færdighed, øger det din gennemsnitlige skade.
+55029	Halvmenneske modstand bog (H)	Når dit kæledyr lærer denne færdighed, øger det din modstand mod halvmennesker.
+55030	Elementbog (H)	Når dit kæledyr lærer denne færdighed, øger det din elementære skade.
+55401	Abe æg	Når du ønsker at udklække dit kæledyr, skal du højre-klikke på ægget.
+55402	Edderkoppe æg	Når du ønsker at udklække dit kæledyr, skal du højre-klikke på ægget.
+55403	Razadors æg	Når du ønsker at udklække dit kæledyr, skal du højre-klikke på ægget.
+55404	Nemeres æg	Når du ønsker at udklække dit kæledyr, skal du højre-klikke på ægget.
+55405	Blå Drageæg	Når du vil have dit kæledyr til at udklække, højreklik da på ægget.
+55406	Rød Drageæg	Når du vil have dit kæledyr til at udklække, højreklik da på ægget.
+55407	Mini Azrael's Æg	Når du vil have dit kæledyr til at udklække, højre-klik på ægget.
+55408	Fed Mini Bobestyrer Æg	Når du vil have dit kæledyr til at udklække, højre-klik på ægget.
+55409	Baby Baashidos Æg	Når du vil have dit kæledyr til at udklække, højre-klik på ægget.
+55410	Nessie Æg	Når du vil have dit kæledyr til at udklække, højre-klik på ægget.
+55701	Lille abe	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at kalde dit kæledyrs brugerflade frem.
+55702	Lille edderkop	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at kalde dit kæledyrs brugerflade frem.
+55703	Lille Razador	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at kalde dit kæledyrs brugerflade frem.
+55704	Lille Nemere	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at kalde dit kæledyrs brugerflade frem.
+55705	Dragenette	Højreklik for at tilkalde dit kæledyr, tryk derefter på "P" på dit tastatur for at åbne Kæledyr statussiden.
+55706	Mini Meley	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at kalde dit kæledyrs brugerflade frem.
+55707	Mini Azrael	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at få dit kæledyrs brugerflade frem.
+55708	Fed Mini Bobestyrer	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at få dit kæledyrs brugerflade frem.
+55709	Baby Baashido	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at få dit kæledyrs brugerflade frem.
+55710	Nessie	Højre-klik for at tilkalde dit kæledyr, herefter trykker du på 'P' på dit tastatur for at få dit kæledyrs brugerflade frem.
+56000	Appaloosa	Dette segl tilkalder din godmodige Appaloosa. Den giver sin rytter +10 bevægelseshastighed.
+71000	Dok. Flydende Træning	Denne genstand giver dig mulighed for helt at fjerne dine boost og beskyttelsesfærdigheder. Du kan lære nye færdigheder ved at benytte Beskyttelses- og Boost manualerne.
+71165	Polar Rovdyr	Du kan bruge dette segl til at tilkalde din aggressive Polære Rovdyr. Den øger din bevægelseshastighed med 60.
+71189	Fortrylle genstand+	Fjerner bonussen fra en af dine genstande og tilføjer en ny. Du vil se en preview af de nye bonusser, hvorefter du kan beslutte om du ønsker at acceptere de viste bonusser.
+71190	Græskar Kiste	Du vil kun modtage denne Græskar Kiste for meget specielle præstationer.
+71191	Slikpose	Sam Græskar vil søde din nat med indholdet af denne pose. Åben den og gør dig klar på en overraskelse!
+71192	Torden	Du kan bruge dette segl til at tilkalde dit rensdyr Donner. Den øger din bevægelseshastighed med 20 og erfaring med 30%.
+71193	Lyn	Du kan bruge dette segl til at tilkalde dit rensdyr Blitzen. Den øger din bevægelseshastighed med 20 og erfaring med 30%.
+71194	Gylden Okey Boks	Du modtager 5 kort set, hver af dem indeholder 24 Okey Samlekort (120 i alt). Du kan ikke modtage flere kort så snart dette event er slut.
+71195	Sølv Okey Boks	Du modtager 1 kort set, der indeholder 24 Okey Samlekort. Du kan ikke modtage flere kort så snart dette event er slut.
+71196	Bronze Okey Boks	Du modtager 6 Okey Samlekort. Du kan ikke modtage flere kort så snart dette event er slut.
+71197	Nugget (marineblå)	Du kan bruge dette segl til at tilkalde Nugget, den kolossale kamp hanekylling. Den giver dig +15% styrke imod monstre og øger erfaring med 30%.
+71198	Muffin (lyserød)	Du kan bruge dette segl til at tilkalde Muffin, den kølige kamp kylling. Den giver dig +15% styrke imod monstre og øger erfaring med 30%.
+71220		
+71235		
+71236		
+71237		
+71238		
+71239		
+71240		
+71241		
+72325	Transmut. Tilbageførsel	Tilbagefører transmutationen af en genstand.
+72326	Transmut. Tilbageførsel	Tilbagefører transmutationen af en genstand og refunderer varen.
+72709	Tigerknogleørering	Din angrebsværdi vil blive øget med 200 point i 20 timer (tiden tæller kun ned imens genstanden er udstyret).
+72710	Drageknogleørering	Din forsvarsværdi vil blive øget med 300 point i 20 timer (tiden tæller kun ned imens genstanden er udstyret).
+72711	Tigerknoglearmbånd	Skaden som dine færdigheder påfører vil blive forøget med 30 point i 20 timer (tiden tæller kun ned imens at genstanden bliver båret).
+72712	Drageknoglearmbånd	Dit forsvar imod færdigheder vil blive forøget med 30 point i 20 timer (tiden tæller kun ned imens at genstanden bliver båret).
+72800	Dokument: Rubin åre	En Rubin åre oprettes ved siden af din karakter.
+72801	Dokument: Granat åre	En Granat åre oprettes ved siden af din karakter.
+72802	Dokument: Smaragd åre	En Smaragd åre oprettes ved siden af din karakter.
+72803	Dokument: Safir åre	En Safir åre oprettes ved siden af din karakter.
+72804	Dokument: Tourmaline ravåre	En Tourmaline ravåre oprettes ved siden af din karakter.
+79505	Okey Samlekort	Så snart du sætter 24 Okey Samlekort sammen, modtager du automatisk et Okey Kortsæt.
+79506	Okey Kortsæt	Du kan starte et spil okey med dette kortsæt. Kortsættet vil automatisk blive fjernet fra dit inventar efter du har startet spillet.
+80018	NC Gavekort (6000)	Værdi af gavekort 6000 Nova mønter. Genstand kan handles.
+85001	Lord bånd(basis)	Dette bælte tager 1% af bonusserene fra våben eller rustning som du bruger til absorbering.
+85002	Lord bælte (fin)	Dette bælte tager 5% af bonusserene fra våben eller rustning som du bruger til absorbering.
+85003	Lord bælte (nobel)	Dette bælte tager 10% af bonusrene fra våben eller rustning som du bruger til absorbering.
+85004	Lord bælte (tilpasset)	Dette bælte tager 11~25% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85005	Mester bånd (basis)	Dette bånd tager 1% af bonusrene fra våben eller rustning som du bruger til absorbering.
+85006	Mester bånd (fin)	Dette bånd tager 5% af bonusrene fra våben eller rustning som du bruger til absorbering.
+85007	Mester bånd (nobel)	Dette bånd tager 10% af bonusrene fra våben eller rustning som du bruger til absorbering.
+85008	Mester bånd (tilpasset)	Dette bånd tager 11~25% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85011	Sovereign bånd (basis)	Dette bånd tager 1% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85012	Sovereign bånd (fint)	Dette bånd tager 5% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85013	Sovereign bånd (nobelt)	Dette bånd tager 10% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85014	Sovereign bånd (tilpas)	Dette bånd tager 11~25% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85015	Royal bånd (basis)	Dette bånd tager 1% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85016	Royal bånd (fint)	Dette bånd tager 5% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85017	Royal bånd (nobelt)	Dette bånd tager 10% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85018	Royal bånd (tilpas)	Dette bånd tager 11~25% af bonusserne fra det våben eller rustning som du bruger til absorbering.
+85021	Jubilæums Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+85022	Jubilæums Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+85023	Jubilæums Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+85024	Jubilæums Skærf (brug.)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86001	Zi Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86002	Zi Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86003	Zi Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86004	Zi Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86005	Chou Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86006	Chou Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86007	Chou Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86008	Chou Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86011	Yin Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86012	Yin Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86013	Yin Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86014	Yin Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86015	Mao Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86016	Mao Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86017	Mao Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86018	Mao Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86021	Chen Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86022	Chen Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86023	Chen Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86024	Chen Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86025	Si Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86026	Si Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86027	Si Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86028	Si Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86031	Wu Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86032	Wu Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86033	Wu Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86034	Wu Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86035	Wei Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86036	Wei Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86037	Wei Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86038	Wei Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86041	Shen Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86042	Shen Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86043	Shen Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86044	Shen Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86045	You Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86046	You Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86047	You Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86048	You Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86051	Xu Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86052	Xu Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86053	Xu Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86054	Xu Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86055	Hai Skærf (basis)	Denne skærf tager 1% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86056	Hai Skærf (fin)	Denne skærf tager 5% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86057	Hai Skærf (nobel)	Denne skærf tager 10% af bonusserne fra våben eller rustning som du bruger til absorbering.
+86058	Hai Skærf (tilpasset)	Denne skærf tager 11-25% af bonusserne fra våben eller rustning som du bruger til absorbering.

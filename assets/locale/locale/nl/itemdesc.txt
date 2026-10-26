@@ -2628,3 +2628,1220 @@
 90011	Stam	Bouwmateriaal voor een Gilde Gebouw
 90012	Triplex	Bouwmateriaal voor een Gilde Gebouw
 90013		
+300	Zodiac Mes+0	
+301	Zodiac Mes+1	
+302	Zodiac Mes+2	
+303	Zodiac Mes+3	
+304	Zodiac Mes+4	
+305	Zodiac Mes+5	
+306	Zodiac Mes+6	
+307	Zodiac Mes+7	
+308	Zodiac Mes+8	
+309	Zodiac Mes+9	
+310	Zodiac Zwaard+0	
+311	Zodiac Zwaard+1	
+312	Zodiac Zwaard+2	
+313	Zodiac Zwaard+3	
+314	Zodiac Zwaard+4	
+315	Zodiac Zwaard+5	
+316	Zodiac Zwaard+6	
+317	Zodiac Zwaard+7	
+318	Zodiac Zwaard+8	
+319	Zodiac Zwaard+9	
+1180	Zodiac Dolk+0	
+1181	Zodiac Dolk+1	
+1182	Zodiac Dolk+2	
+1183	Zodiac Dolk+3	
+1184	Zodiac Dolk+4	
+1185	Zodiac Dolk+5	
+1186	Zodiac Dolk+6	
+1187	Zodiac Dolk+7	
+1188	Zodiac Dolk+8	
+1189	Zodiac Dolk+9	
+2200	Zodiac Boog+0	
+2201	Zodiac Boog+1	
+2202	Zodiac Boog+2	
+2203	Zodiac Boog+3	
+2204	Zodiac Boog+4	
+2205	Zodiac Boog+5	
+2206	Zodiac Boog+6	
+2207	Zodiac Boog+7	
+2208	Zodiac Boog+8	
+2209	Zodiac Boog+9	
+3220	Zodiac Lans+0	
+3221	Zodiac Lans+1	
+3222	Zodiac Lans+2	
+3223	Zodiac Lans+3	
+3224	Zodiac Lans+4	
+3225	Zodiac Lans+5	
+3226	Zodiac Lans+6	
+3227	Zodiac Lans+7	
+3228	Zodiac Lans+8	
+3229	Zodiac Lans+9	
+5160	Zodiac Bel+0	
+5161	Zodiac Bel+1	
+5162	Zodiac Bel+2	
+5163	Zodiac Bel+3	
+5164	Zodiac Bel+4	
+5165	Zodiac Bel+5	
+5166	Zodiac Bel+6	
+5167	Zodiac Bel+7	
+5168	Zodiac Bel+8	
+5169	Zodiac Bel+9	
+6120	Zodiac Klauw+0	
+6121	Zodiac Klauw+1	
+6122	Zodiac Klauw+2	
+6123	Zodiac Klauw+3	
+6124	Zodiac Klauw+4	
+6125	Zodiac Klauw+5	
+6126	Zodiac Klauw+6	
+6127	Zodiac Klauw+7	
+6128	Zodiac Klauw+8	
+6129	Zodiac Klauw+9	
+7300	Zodiac Waaier+0	
+7301	Zodiac Waaier+1	
+7302	Zodiac Waaier+2	
+7303	Zodiac Waaier+3	
+7304	Zodiac Waaier+4	
+7305	Zodiac Waaier+5	
+7306	Zodiac Waaier+6	
+7307	Zodiac Waaier+7	
+7308	Zodiac Waaier+8	
+7309	Zodiac Waaier+9	
+9506	Zwaard+3	
+9507	Dolk+3	
+9508	Waaier+3	
+9509	Stalen Fakkel+3	
+9600	Vuur Talisman+0	
+9601	Vuur Talisman+1	
+9602	Vuur Talisman+2	
+9603	Vuur Talisman+3	
+9604	Vuur Talisman+4	
+9605	Vuur Talisman+5	
+9606	Vuur Talisman+6	
+9607	Vuur Talisman+7	
+9608	Vuur Talisman+8	
+9609	Vuur Talisman+9	
+9610	Vuur Talisman+10	
+9611	Vuur Talisman+11	
+9612	Vuur Talisman+12	
+9613	Vuur Talisman+13	
+9614	Vuur Talisman+14	
+9615	Vuur Talisman+15	
+9616	Vuur Talisman+16	
+9617	Vuur Talisman+17	
+9618	Vuur Talisman+18	
+9619	Vuur Talisman+19	
+12690	Draken Staal Helm +0	
+12691	Draken Staal Helm +1	
+12692	Draken Staal Helm +2	
+12693	Draken Staal Helm +3	
+12694	Draken Staal Helm +4	
+12695	Draken Staal Helm +5	
+12696	Draken Staal Helm +6	
+12697	Draken Staal Helm +7	
+12698	Draken Staal Helm +8	
+12699	Draken Staal Helm +9	
+12700	Draken Kap +0	
+12701	Draken Kap +1	
+12702	Draken Kap +2	
+12703	Draken Kap +3	
+12704	Draken Kap +4	
+12705	Draken Kap +5	
+12706	Draken Kap +6	
+12707	Draken Kap +7	
+12708	Draken Kap +8	
+12709	Draken Kap +9	
+12710	Drakenschub Helm +0	
+12711	Drakenschub Helm +1	
+12712	Drakenschub Helm +2	
+12713	Drakenschub Helm +3	
+12714	Drakenschub Helm +4	
+12715	Drakenschub Helm +5	
+12716	Drakenschub Helm +6	
+12717	Drakenschub Helm +7	
+12718	Drakenschub Helm +8	
+12719	Drakenschub Helm +9	
+12720	Draken Hoed +0	
+12721	Draken Hoed +1	
+12722	Draken Hoed +2	
+12723	Draken Hoed +3	
+12724	Draken Hoed +4	
+12725	Draken Hoed +5	
+12726	Draken Hoed +6	
+12727	Draken Hoed +7	
+12728	Draken Hoed +8	
+12729	Draken Hoed +9	
+15440	Vuurschoenen+0	
+15441	Vuurschoenen+1	
+15442	Vuurschoenen+2	
+15443	Vuurschoenen+3	
+15444	Vuurschoenen+4	
+15445	Vuurschoenen+5	
+15446	Vuurschoenen+6	
+15447	Vuurschoenen+7	
+15448	Vuurschoenen+8	
+15449	Vuurschoenen+9	
+15450	Oceaanschoenen+0	
+15451	Oceaanschoenen+1	
+15452	Oceaanschoenen+2	
+15453	Oceaanschoenen+3	
+15454	Oceaanschoenen+4	
+15455	Oceaanschoenen+5	
+15456	Oceaanschoenen+6	
+15457	Oceaanschoenen+7	
+15458	Oceaanschoenen+8	
+15459	Oceaanschoenen+9	
+19000	Rode Vlam Steen	Verbetert de bonussen van je riem.
+19290	Zodiac Pantser+0	
+19291	Zodiac Pantser+1	
+19292	Zodiac Pantser+2	
+19293	Zodiac Pantser+3	
+19294	Zodiac Pantser+4	
+19295	Zodiac Pantser+5	
+19296	Zodiac Pantser+6	
+19297	Zodiac Pantser+7	
+19298	Zodiac Pantser+8	
+19299	Zodiac Pantser+9	
+19490	Zodiac Pak+0	
+19491	Zodiac Pak+1	
+19492	Zodiac Pak+2	
+19493	Zodiac Pak+3	
+19494	Zodiac Pak+4	
+19495	Zodiac Pak+5	
+19496	Zodiac Pak+6	
+19497	Zodiac Pak+7	
+19498	Zodiac Pak+8	
+19499	Zodiac Pak+9	
+19690	Zodiac Plaatpantser+0	
+19691	Zodiac Plaatpantser+1	
+19692	Zodiac Plaatpantser+2	
+19693	Zodiac Plaatpantser+3	
+19694	Zodiac Plaatpantser+4	
+19695	Zodiac Plaatpantser+5	
+19696	Zodiac Plaatpantser+6	
+19697	Zodiac Plaatpantser+7	
+19698	Zodiac Plaatpantser+8	
+19699	Zodiac Plaatpantser+9	
+19890	Zodiac Kleding+0	
+19891	Zodiac Kleding+1	
+19892	Zodiac Kleding+2	
+19893	Zodiac Kleding+3	
+19894	Zodiac Kleding+4	
+19895	Zodiac Kleding+5	
+19896	Zodiac Kleding+6	
+19897	Zodiac Kleding+7	
+19898	Zodiac Kleding+8	
+19899	Zodiac Kleding+9	
+20760	Aurora Pantser+0	
+20761	Aurora Pantser+1	
+20762	Aurora Pantser+2	
+20763	Aurora Pantser+3	
+20764	Aurora Pantser+4	
+20765	Aurora Pantser+5	
+20766	Aurora Pantser+6	
+20767	Aurora Pantser+7	
+20768	Aurora Pantser+8	
+20769	Aurora Pantser+9	
+20770	Hinderlaag Pak+0	
+20771	Hinderlaag Pak+1	
+20772	Hinderlaag Pak+2	
+20773	Hinderlaag Pak+3	
+20774	Hinderlaag Pak+4	
+20775	Hinderlaag Pak+5	
+20776	Hinderlaag Pak+6	
+20777	Hinderlaag Pak+7	
+20778	Hinderlaag Pak+8	
+20779	Hinderlaag Pak+9	
+20780	Duivelsklauwen Pantser+0	
+20781	Duivelsklauwen Pantser+1	
+20782	Duivelsklauwen Pantser+2	
+20783	Duivelsklauwen Pantser+3	
+20784	Duivelsklauwen Pantser+4	
+20785	Duivelsklauwen Pantser+5	
+20786	Duivelsklauwen Pantser+6	
+20787	Duivelsklauwen Pantser+7	
+20788	Duivelsklauwen Pantser+8	
+20789	Duivelsklauwen Pantser+9	
+20790	Kleding der Geloof+0	
+20791	Kleding der Geloof+1	
+20792	Kleding der Geloof+2	
+20793	Kleding der Geloof+3	
+20794	Kleding der Geloof+4	
+20795	Kleding der Geloof+5	
+20796	Kleding der Geloof+6	
+20797	Kleding der Geloof+7	
+20798	Kleding der Geloof+8	
+20799	Kleding der Geloof+9	
+20800	Schaduwkrijger Pantser+0	
+20801	Schaduwkrijger Pantser+1	
+20802	Schaduwkrijger Pantser+2	
+20803	Schaduwkrijger Pantser+3	
+20804	Schaduwkrijger Pantser+4	
+20805	Schaduwkrijger Pantser+5	
+20806	Schaduwkrijger Pantser+6	
+20807	Schaduwkrijger Pantser+7	
+20808	Schaduwkrijger Pantser+8	
+20809	Schaduwkrijger Pantser+9	
+20810	Magmagloed Pantser+0	
+20811	Magmagloed Pantser+1	
+20812	Magmagloed Pantser+2	
+20813	Magmagloed Pantser+3	
+20814	Magmagloed Pantser+4	
+20815	Magmagloed Pantser+5	
+20816	Magmagloed Pantser+6	
+20817	Magmagloed Pantser+7	
+20818	Magmagloed Pantser+8	
+20819	Magmagloed Pantser+9	
+20820	Bloedmaan Pak+0	
+20821	Bloedmaan Pak+1	
+20822	Bloedmaan Pak+2	
+20823	Bloedmaan Pak+3	
+20824	Bloedmaan Pak+4	
+20825	Bloedmaan Pak+5	
+20826	Bloedmaan Pak+6	
+20827	Bloedmaan Pak+7	
+20828	Bloedmaan Pak+8	
+20829	Bloedmaan Pak+9	
+20830	Helrijder Pantser+0	
+20831	Helrijder Pantser+1	
+20832	Helrijder Pantser+2	
+20833	Helrijder Pantser+3	
+20834	Helrijder Pantser+4	
+20835	Helrijder Pantser+5	
+20836	Helrijder Pantser+6	
+20837	Helrijder Pantser+7	
+20838	Helrijder Pantser+8	
+20839	Helrijder Pantser+9	
+20840	Vuurkleding+0	
+20841	Vuurkleding+1	
+20842	Vuurkleding+2	
+20843	Vuurkleding+3	
+20844	Vuurkleding+4	
+20845	Vuurkleding+5	
+20846	Vuurkleding+6	
+20847	Vuurkleding+7	
+20848	Vuurkleding+8	
+20849	Vuurkleding+9	
+20850	Agaat Plaatpantser+0	
+20851	Agaat Plaatpantser+1	
+20852	Agaat Plaatpantser+2	
+20853	Agaat Plaatpantser+3	
+20854	Agaat Plaatpantser+4	
+20855	Agaat Plaatpantser+5	
+20856	Agaat Plaatpantser+6	
+20857	Agaat Plaatpantser+7	
+20858	Agaat Plaatpantser+8	
+20859	Agaat Plaatpantser+9	
+20860	Walvisbeen Pantser+0	
+20861	Walvisbeen Pantser+1	
+20862	Walvisbeen Pantser+2	
+20863	Walvisbeen Pantser+3	
+20864	Walvisbeen Pantser+4	
+20865	Walvisbeen Pantser+5	
+20866	Walvisbeen Pantser+6	
+20867	Walvisbeen Pantser+7	
+20868	Walvisbeen Pantser+8	
+20869	Walvisbeen Pantser+9	
+20870	Metamorfose Pak+0	
+20871	Metamorfose Pak+1	
+20872	Metamorfose Pak+2	
+20873	Metamorfose Pak+3	
+20874	Metamorfose Pak+4	
+20875	Metamorfose Pak+5	
+20876	Metamorfose Pak+6	
+20877	Metamorfose Pak+7	
+20878	Metamorfose Pak+8	
+20879	Metamorfose Pak+9	
+20880	Geestlantaarn Pantser+0	
+20881	Geestlantaarn Pantser+1	
+20882	Geestlantaarn Pantser+2	
+20883	Geestlantaarn Pantser+3	
+20884	Geestlantaarn Pantser+4	
+20885	Geestlantaarn Pantser+5	
+20886	Geestlantaarn Pantser+6	
+20887	Geestlantaarn Pantser+7	
+20888	Geestlantaarn Pantser+8	
+20889	Geestlantaarn Pantser+9	
+20890	Kleding der Harmonie+0	
+20891	Kleding der Harmonie+1	
+20892	Kleding der Harmonie+2	
+20893	Kleding der Harmonie+3	
+20894	Kleding der Harmonie+4	
+20895	Kleding der Harmonie+5	
+20896	Kleding der Harmonie+6	
+20897	Kleding der Harmonie+7	
+20898	Kleding der Harmonie+8	
+20899	Kleding der Harmonie+9	
+20900	Maansteen Plaatpantser+0	
+20901	Maansteen Plaatpantser+1	
+20902	Maansteen Plaatpantser+2	
+20903	Maansteen Plaatpantser+3	
+20904	Maansteen Plaatpantser+4	
+20905	Maansteen Plaatpantser+5	
+20906	Maansteen Plaatpantser+6	
+20907	Maansteen Plaatpantser+7	
+20908	Maansteen Plaatpantser+8	
+20909	Maansteen Plaatpantser+9	
+20910	Asregen Pantser+0	
+20911	Asregen Pantser+1	
+20912	Asregen Pantser+2	
+20913	Asregen Pantser+3	
+20914	Asregen Pantser+4	
+20915	Asregen Pantser+5	
+20916	Asregen Pantser+6	
+20917	Asregen Pantser+7	
+20918	Asregen Pantser+8	
+20919	Asregen Pantser+9	
+20920	Dodennacht Pak+0	
+20921	Dodennacht Pak+1	
+20922	Dodennacht Pak+2	
+20923	Dodennacht Pak+3	
+20924	Dodennacht Pak+4	
+20925	Dodennacht Pak+5	
+20926	Dodennacht Pak+6	
+20927	Dodennacht Pak+7	
+20928	Dodennacht Pak+8	
+20929	Dodennacht Pak+9	
+20930	Zwartvuur Pantser+0	
+20931	Zwartvuur Pantser+1	
+20932	Zwartvuur Pantser+2	
+20933	Zwartvuur Pantser+3	
+20934	Zwartvuur Pantser+4	
+20935	Zwartvuur Pantser+5	
+20936	Zwartvuur Pantser+6	
+20937	Zwartvuur Pantser+7	
+20938	Zwartvuur Pantser+8	
+20939	Zwartvuur Pantser+9	
+20940	Maankleding+0	
+20941	Maankleding+1	
+20942	Maankleding+2	
+20943	Maankleding+3	
+20944	Maankleding+4	
+20945	Maankleding+5	
+20946	Maankleding+6	
+20947	Maankleding+7	
+20948	Maankleding+8	
+20949	Maankleding+9	
+20950	Onyx Plaatpantser+0	
+20951	Onyx Plaatpantser+1	
+20952	Onyx Plaatpantser+2	
+20953	Onyx Plaatpantser+3	
+20954	Onyx Plaatpantser+4	
+20955	Onyx Plaatpantser+5	
+20956	Onyx Plaatpantser+6	
+20957	Onyx Plaatpantser+7	
+20958	Onyx Plaatpantser+8	
+20959	Onyx Plaatpantser+9	
+21200	Zodiac Harnas+0	
+21201	Zodiac Harnas+1	
+21202	Zodiac Harnas+2	
+21203	Zodiac Harnas+3	
+21204	Zodiac Harnas+4	
+21205	Zodiac Harnas+5	
+21206	Zodiac Harnas+6	
+21207	Zodiac Harnas+7	
+21208	Zodiac Harnas+8	
+21209	Zodiac Harnas+9	
+25043	Magische Steen	Deze steen garandeert het grootste succes in item verbetering. Bovendien zal het item niet vernietigd of gedegradeerd worden. Dit item is niet verhandelbaar.
+25099	Spirit Stone Magic Scroll	Een magische rol die wordt gebruikt om een steen naar keuze uit je uitrusting te halen.
+27125	Gevechtsdrankje	Een krachtig drankje dat je aanvals- en verdedigingspunten verhoogt en je voorziet van +50.000 levenspunten (alleen in de Strijd Zone).
+28044	Anti-Magie Steen+0	
+28045	Anti-Magie Steen+0	
+28144	Anti-Magie Steen+1	
+28145	Anti-Magie Steen+1	
+28244	Anti-Magie Steen+2	
+28245	Anti-Magie Steen+2	
+28344	Anti-Magie Steen+3	
+28345	Anti-Magie Steen+3	
+28444	Anti-Magie Steen+4	
+28445	Anti-Magie Steen+4	
+30334	Hoofdwaar Voucher	Klik met de rechtermuisknop op de voucher voor wat griezeltastische hoofdwaar.
+30338	Hoofdwaar Voucher+	Klik met de rechtermuisknop op de voucher voor wat griezeltastische hoofdwaar die je van minstens één willekeurige bonus voorziet.
+30341	Drakenvuur Ring	Je bent omgeven door een aura van intense energie. Gesmeed in de vlammen van een draak, zal deze ring de beelden in Meley's Hol in een oogwenk vernietigen.
+30600	Naaipatroon	
+30601	Pantserontwerp	
+30602	Blauwe Verfstof	
+30603	Rode Verfstof	
+30604	Grijze Verfstof	
+30605	Gouden Platen	
+30606	Zilveren Platen	
+30607	Koperen Platen	
+30608	Stalen Platen	
+30609	Bronzen Platen	
+30610	Mithril	
+30611	Stugge Riemen	
+30612	Sterke Koorden	
+30613	Steen van de Dryaden	Gehuld in een groene glinster omhult deze mysterieuze steen de ziel van een dryade, een boomgeest. De dryaden kennen de geheime woorden die je toegang geven tot de Erebus-kerker.
+30614	Zwarte Verfstof	
+30615	Witte Verfstof	
+30616	Titanium Dioxide	Dit prismatische kristal wordt gebruikt voor het upgraden van een uitrustingsstuk.
+30617	Agaat	Deze mysterieuze, glimmende edelsteen wordt gebruikt voor het upgraden van een uitrustingsstuk.
+30618	Maansteen	Een vleugje maanlicht is opgesloten in dit traanvormig juweel. Gebruikt voor het upgraden van een uitrustingsstuk.
+30619	Goud-metallic Verfstof	
+30620	Rode Drakenhoorn	Drakenhoorns bestaan uit de hardst bekende materialen.
+30621	Rode Drakenschub	Drakenschubben horen tot de hardst bekende materialen.
+30622	Pantserontwerp: Helm	Dit item is nodig om helmen te maken.
+30623	Boek der Waarheid	Een zwaar boek met een inscriptie die lijkt te gloeien. Gebruikt voor het upgraden van een uitrustingsstuk.
+30624	Ziel der Waarheid	Een goede ziel, voor eeuwig opgesloten in een kristallen bol. Gebruikt voor het upgraden van een uitrustingsstuk.
+30625	Padparadscha	Padparadschakristallen zijn zeldzame en uiterst volmaakte, rode saffieren. Gebruikt voor het upgraden van een uitrustingsstuk.
+30626	Kyaniet	Een blauwe edelsteen uit de mijnen van Berg Sohan. Gebruikt voor het upgraden van een uitrustingsstuk.
+30627	Fruit van de Goden	Zoetsmakend fruit uit de tuin van de Draken God. Gebruikt voor het upgraden van een uitrustingsstuk.
+30628	Goddelijke Bloei	Een heilige bloem uit de tuin van de Draken God. Gebruikt voor het upgraden van een uitrustingsstuk.
+30629	Elixer van de Goden	Deze fles bevat een mysterieus gloeiende vloeistof. Gebruikt voor het upgraden van een uitrustingsstuk.
+30630	Draken Vleugels	Gebruik de vleugels van een Alteraanse draak om je uitrusting te verbeteren.
+30639	Mysterieuze Scherf	Gebruik scherven om ontwerpen uit de Yut Nori Shop te creëren. Sleep een Yut Nori Bord naar de tafel om het Verbeteringsscherm te openen.
+30640	Halloween Ontwerp (m)	Ontwerp om een Halloween Kist te maken (m).
+30641	Halloween Hoed Ontw. (m)	Ontwerp om een Halloween Hoed Kist te maken (m).
+30642	Spookhuisdier Ontwerp	Ontwerp om een Spookhuisdier Kist te maken.
+30643	Spookrijdier Ontwerp	Ontwerp om een Spookrijdier Kist te maken.
+30644	Juwelen Ontwerp	Ontwerp om een Juwelen Kist te maken.
+30645	Huisdier Ontwerp	Ontwerp om een Huisdier Kist te maken.
+30646	Gordel Ontwerp	Ontwerp om een Gordel Doos te maken.
+30647	Ornament Ontwerp	Ontwerp om een Ornament Kist te maken.
+30648	Huisdieren Boek Ontwerp	Ontwerp om een Huisdieren Boek Kist te maken.
+30649	Zaagtand Ontwerp+	Ontwerp om een Zaagtand Kist+ te maken.
+30650	Cor Draconis Ontwerp	Ontwerp om een Cor Draconis Kist te maken.
+30651	Gaya Ontwerp	Ontwerp om een Gaya Kist te maken.
+30652	Mysterie Ontwerp	Ontwerp om een Kist der Mysteries te maken.
+30653	Robijn Kist Ontwerp	Ontwerp om een Robijn Kist te maken.
+30654	Halloween Kist (f)	Ontwerp om een Halloween Kist te maken (f).
+30655	Halloween Hoed Kist (f)	Ontwerp om een Halloween Hoed Kist te maken (f).
+34000	Solar Blast	Zeldzaam materiaal dat wordt gebruikt om uw uitrusting te upgraden, dit item wordt zeer gewaardeerd.
+34001	Magical Orb	Magische Bol is een kostbare steen die wordt gebruikt om je uitrusting te verbeteren.
+34002	Fire Horn	Oorspronkelijk is het eigendom van Razador, Dit materiaal wordt gebruikt om uw uitrusting te maken of te upgraden.
+34003	Ice Horn	Oorspronkelijk is eigendom van Nemeres, Dit materiaal wordt gebruikt om uw uitrusting te maken of te upgraden.
+34004	Red Amulet	Een Charmant en duur amulet. Meestal gebruikt voor upgrades.
+34005	Green Amulet	Een Charmant en duur amulet. Meestal gebruikt voor upgrades.
+34006	Blue Amulet	Een Charmant en duur amulet. Meestal gebruikt voor upgrades.
+34007	Rock Of Darkness	Een zeer kostbare rots met duistere krachten.
+34008	Rock Of Gore	Een zeer kostbare rots die krachtige vaardigheden bevat.
+34009	Rock Of Poison	Een zeer kostbare rots met giftige krachten.
+34010	Poison Marble	Giftig materiaal dat wordt gebruikt om uw items duurzamer te maken.
+34011	Red Rock	Een zeer kostbare steen die wordt gebruikt om uw uitrusting te verbeteren.
+34012	Azure Stone	Een speciale steen die alleen wordt gebruikt voor het upgraden van azuurblauwe items.
+34013	Rainbow Vial	Bevat een krachtige regenboogvloeistof. Het is een upgrade materiaal.
+34014	Red Crystal Shards	Een stuk kristal dat wordt gebruikt om te combineren met andere kirstallen.
+34015	Green Crystal Shards	Een stuk kristal dat wordt gebruikt om te combineren met andere kirstallen.
+34016	Blue Crystal Shards	Een stuk kristal dat wordt gebruikt om te combineren met andere kirstallen.
+34017	Multi-Crystal Fragment	Een siaraad dat wordt gebruikt om uw items te upgraden.
+34018	Duratus Gem	Wordt gebruikt als upgrade item, je kan het vinden in Duratus.
+34019	Fear Gem	Wordt gebruikt als upgrade item, je kan het vinden van de Angst Draak.
+34020	Treasure Gem	Wordt gebruikt als upgrade item, je kan het vinden in Schat Steen.
+34021	UPP1	Speciale steen die wordt gebruikt om je uitrusting te upgraden.
+34022	UPP2	Speciale steen die wordt gebruikt om je uitrusting te upgraden.
+34023	Red Wing Feather	Een stuk veer dat wordt gebruikt voor het maken van vleugels.
+34024	Green Wing Feather	Een stuk veer dat wordt gebruikt voor het maken van vleugels.
+34025	Blue Wing Feather	Een stuk veer dat wordt gebruikt voor het maken van vleugels.
+34026	Wing Feather Set	Een stuk veer dat wordt gebruikt voor het maken van vleugels.
+34027	Almighty Dragon Soul	Ziel van de Almachtige Draak, wordt gebruikt om uw uitrusting te verbeteren.
+34028	Duratus Soul	Duratus ziel, wordt gebruikt om uw uitrusting te verbeteren.
+34029	Fear Soul	Schattenziel, wordt gebruikt om uw uitrusting te verbeteren.
+34030	Treasure Soul	Ziel van Vrees, wordt gebruikt om uw uitrusting te verbeteren.
+34031	Halloween Soul	Halloween Ziel, used to categorize your equipment.
+34032	Gold Carved Stone	Oude steen met geweldige krachten, gebruikt voor veel nuttige items.
+34033	Weapon Stone Token	Token vereist door Jeon Seon voor het upgraden van je Wapen geest-stenen.
+34034	Armour Stone Token	Token vereist door Jeon Seon voor het upgraden van je Body spirit-stenen.
+34035	Mazel Portal	Whirlpool die het portaal opent voor de baas van Mazel.
+34036	Battle Gem	Krachtige edelsteen die wordt gebruikt om uw uitrusting te verbeteren.
+34037	Red Charming Cube	Speciale rode kubus die wordt gebruikt om je uitrusting te upgraden.
+34038	Green Charming Cube	Speciale groene kubus die wordt gebruikt om je uitrusting te upgraden.
+34039	Blue Charming Cube	Speciale blauwe kubus die wordt gebruikt om je uitrusting te upgraden.
+34040	Mazel Heart	Het hart van de Mazel Baas, de sleutel tot superkracht.
+34041	Battle Orb	Wordt gebruikt voor het upgraden van je uitrusting die je superkrachten geeft voor de strijd.
+34042	Multi Cube	Deze prachtige kubus wordt gevormd door krachten van kubussen die een ongelooflijke innerlijke kracht vormen.
+34052	Pumpkin Lolly	De Pompoen lolly, gemaakt uit geheime ingrediënten, ze geeft je:  | +15% Sterk Tegen Monsters | +15% Sterk Tegen Metin stenen | +15% Sterk Tegen Bazen
+34067		
+34068		
+34092	Charming Cube Een Kist die allerlei verschillende soorten charmante kubussen bevat.
+34100	Kan in de schatkist geworpen worden in ruil voor een uniek kostuum.
+34184	Elemental Talisman	De meest krachtige Talisman die er ooit was, één dat in vrede is met al de elementen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34185	Armor Enhancement Scroll	Een geschrift dat nodig is om pantsers te verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34186	Weapon Enhancement Scroll	Een geschrift dat nodig is om wapens te verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34187	Accessory Enhancement Scroll	Een geschrift dat nodig is om accessoires te verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34188	Belt Enhancement Scroll	Een geschrift dat je toelaat om je PvM Riemen Te Verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34189	Ring Enhancement Scroll	Een geschrift dat je toelaat om je PvM Ringen Te Verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34190	Fire Pearl	Een parel uit de diepten van de hel met een geringe rode schijn. Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34191	Water Pearl	Een parel uit de diepten van de oceaan met een geringe blauwe schijn. Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34192	Earth Pearl	Een parel uit de diepten van de aarde met een geringe gele schijn.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34193	Wind Pearl	Een parel uit de hoogten van de lucht met een geringe witte schijn. Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34194	Ancient Red Cloth	Een Doek dat werd gemaakt van het gewaad van de oude bewaker van de Ghidorah.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34195	Ancient Blue Cloth	Een Doek dat werd gemaakt van het gewaad van de oude bewaker van de Hydra.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34196	Ancient Green Cloth	Een Doek dat werd gemaakt van het gewaad van de oude bewaker van de Sfinx.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.  
+34197	Ancient Yellow Cloth	Een Doek dat werd gemaakt van het gewaad van de oude Heerser van de Witte Toren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.  
+34198	Fire Power Shard	Een scherf dat zo krachtig is dat het het Element van Vuur kan bevatten in zijn kern.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34199	Water Power Shard	Een scherf dat zo krachtig is dat het het Element van Water kan bevatten in zijn kern.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34200	Earth Power Shard	Een scherf dat zo krachtig is dat het het Element van Aarde kan bevatten in zijn kern.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34201	Wind Power Shard	Een scherf dat zo krachtig is dat het het Element van Wind kan bevatten in zijn kern.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34202	Fire Crystal	Een kristal dat ooit toebehoorde tot de heerser van het element vuur.	Wordt gebruikt om de Elementaire Uitrustingen de Goddelijke Uitrusting Te Verbeteren. 
+34203	Water Crystal	Een kristal dat ooit toebehoorde tot de heerser van het element water.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34204	Earth Crystal	Een kristal dat ooit toebehoorde tot de heerser van het element aarde.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34205	Wind Crystal	Een kristal dat ooit toebehoorde tot de heerser van het element wind.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34206	Fire Totem	Een symbool dat ooit werd gebruik door de vuur natie.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34207	Water Totem	Een symbool dat ooit werd gebruikt door de water natie.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34208	Earth Totem	Een symbool dat ooit werd gebruikt door de aarde natie.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34209	Wind Totem	Een symbool dat ooit werd gebruikt door de wind natie.	Wordt gebruikt om de de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34210	Eternal Flames	Vlammen van een plek zo ver van de hel dat ze eeuwig zijn geworden.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34211	Ghidorah's Heart	Het Hart van een wezen dat zo machtig is dat het de bekwaamheid heeft om Lucifer zelf te verslagen. 	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34212	Hydra Power Orb	Een Orb dat de kracht heeft van een oud monster dat weer is opgedoken.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren. 
+34213	Hydra Summoning Tablet	Deze tablet vanuit de dieptes van de oceaan bevat oude opschriften om het driekoppig monster op te roepen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34214	Ancient Map	De opschriften van zo'n oude wezens dat je naar je dood zouden kunnen leiden.
+34215	Wisdom book	Door de wijsheid van de oude goden bevat dit boek de informatie over de meest krachtige wezens op Nova.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34216	Tear of the Lord Adenoid	Een traan met de kracht van de god van de wind dat de ruwste emoties kan onderdrukken.	Wordt gebruikt om de de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34217	White Tower Ruler's Key	Deze sleutel laat iedereen om de kamers van de Heerser Adenoid te bereiken en hem proberen te verslagen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34218	Fire Treasure Chest	Een kist dat de meest machtige Materialen bevat om uitrustingen te verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34219	Water Treasure Chest	Een kist dat de meest machtige Materialen bevat om uitrustingen te verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34220	Earth Treasure Chest	Een kist dat de meest machtige Materialen bevat om uitrustingen te verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34221	Wind Treasure Chest	Een kist dat de meest machtige Materialen bevat om uitrustingen te verbeteren.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34222	Alchemy Ancient Stone	Steen van de oude wezens van het mythische bos dat nog bedrukt kan worden met de kennis van het bos.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34223	Arcane Ancient Stone	Steen van de oude wezens van het mythische bos dat nog bedrukt kan worden met de kennis van het bos.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34224	Vindicius Ancient Stone	Steen van de oude wezens van het mythische bos dat nog bedrukt kan worden met de kennis van het bos.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34225	Alchemy Theory Book	Een boek dat gevonden kan worden in de mist van het mythische bos met informatie van de oude wezens.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34226	Arcane Theory Book	Een boek dat gevonden kan worden in de mist van het mythische bos met informatie van de oude wezens.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34227	Vindicius Theory Book	Een boek dat gevonden kan worden in de mist van het mythische bos met informatie van de oude wezens.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34228	Alchemy Soul Skull	De schedel van een oud wezen, wanneer het gebruikt wordt met andere elementen van het mythisch bos kunnen nieuwe verbeteringen gemaakt worden.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34229	Arcane Soul Skull	De schedel van een oud wezen, wanneer het gebruikt wordt met andere elementen van het mythisch bos kunnen nieuwe verbeteringen gemaakt worden.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34230	Vindicius Soul Skull	De schedel van een oud wezen, wanneer het gebruikt wordt met andere elementen van het mythisch bos kunnen nieuwe verbeteringen gemaakt worden.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34231	Tempestus Soul Skull	De schedel van een oud wezen, wanneer het gebruikt wordt met andere elementen van het mythisch bos kunnen nieuwe verbeteringen gemaakt worden.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34232	Tempestus Theory Book	Een boek dat gevonden kan worden in de mist van het mythische bos met informatie van de oude wezens.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34233	Tempestus Ancient Stone	Steen van de oude wezens van het mythische bos dat nog bedrukt kan worden met de kennis van het bos.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34234	Empty Ticket	Een blanco basis ticket, gebruikt als toegangsbewijs dat een mysterieuze kaart bevat tot de elementaire kerkers.
+34235	Holy Fire Stone	Een speciale steen dat de passage naar Ghidorahs Nest reflecteert.
+34236	Holy Water Stone	Een speciale steen dat de passage naar Hydra reflecteert.
+34237	Holy Wind Stone	Een speciale steen dat de passage naar de Witte Toren reflecteert.
+34238	Holy Earth Stone	Een speciale steen dat de passage naar de Oude Piramide reflecteert.
+34239	Ghidorah's Nest Ticket	Wordt gebruikt om de toegangspoort te passeren naar Ghidorahs Nest.
+34240	Ship Defence Ticket	Wordt gebruikt om de toegangspoort te passeren naar Bescherm Het Schip.
+34241	White Tower Ticket	Wordt gebruikt om de toegangspoort te passeren naar de Witte Toren.
+34242	Ancient Pyramid Ticket	Wordt gebruikt om de toegangspoort te passeren naar de Oude Piramide.
+34243	Elemental Pearl	Een krachtige parel gemaakt uit alle elementen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34244	Elemental Totem	Een krachtige totem gemaakt uit alle elementen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34245	Elemental Ancient Cloth	Een mythisch doek gemaakt uit alle elementen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34246	Elemental Power Shard	Een scherf met een speciale kracht gemaakt uit alle elementen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34247	Elemental Crystal	Een krachtig kristal gemaakt uit alle elementen.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34248	Elemental Ancient Stone	Een Steen uit de oude tijden gemaakt door de gecombineerde krachten van alle naties uit het mythische bos.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34249	Elemental Theory Book	Een Boek uit de oude tijden gemaakt door de gecombineerde krachten van alle naties uit het mythische bos.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34250	Elemental Soul Skull	Een Schedel uit de oude tijden gemaakt door de gecombineerde krachten van alle naties uit het mythische bos.	Wordt gebruikt om de Elementaire Uitrusting en de Goddelijke Uitrusting Te Verbeteren.
+34256	Kristal van Nefriet	Een schitterend type kristal dat enkel toebehoort aan de tritons van nefriet.	Kan gebruikt worden voor onderzoeken van de bioloog.
+34257	Manticore Kaart	Deze kaart leidt je naar de manticores schat.	Kan gebruikt worden voor onderzoeken van de bioloog.
+34258	Gargoyles Zwammen	Het meest waardevolle type van zwammen voor gargoyles.	Kan gebruikt worden voor onderzoeken van de bioloog.
+34259	Lemures Poeder	De overblijfselen van Lemures.	Kan gebruikt worden voor onderzoeken van de bioloog.
+34260	Duratus Sleutel	Een sleutel die gevonden kan worden in het lichaam van Duratus, ondezoekers moeten nog uitzoeken waarom.	Kan gebruikt worden voor onderzoeken van de bioloog.
+34261	Extract van Vrees	Het extract dat de vrees draak gebruikt om angst te verspreiden in zijn kerker.	Kan gebruikt worden voor onderzoeken van de bioloog.
+34262	Mazel Medaille	Het medaille dat Mazel trots geeft.	Kan gebruikt worden voor onderzoeken van de bioloog.
+34263	Tritons Zielensteen	Een legendarische steen, het bevat de zielskern van de Triton familie.
+34264	Manticores Zielensteen	Een legendarische steen, het bevat de zielskern van de Manticore familie.
+34265	Gargoyles Zielensteen	Een legendarische steen, het bevat de zielskern van de Gargoyle familie.
+34266	Lemures Zielensteen	Een legendarische steen, het bevat de zielskern van de Lemure familie.
+34267	Duratus Zielensteen	Een legendarische steen, het bevat de ziel van een Duratus.
+34268	Vrees Zielensteen	Een legendarische steen, het bevat de ziel van een Vrees Draak.
+34269	Mazels Zielensteen	Een legendarische steen, het bevat de ziel van een Mazel Baas.
+34270	Beginners Kist	Een zeer handige kist dat tijdelijke itemshop kostuums bevat dat nieuwe spelers helpt om de server content in te halen.
+34500	Feather Chest	Een kist vol veelkleurige veren.
+34501	Shards Chest	In deze kist zijn kleurrijke scherven te vinden.
+35100	Seon-Pyeongs Rest Scroll	Hiermee kunt u uw level 92 en 94 Seon-Pyeongs Missies beloningen resetten.
+35101	Geslachtsverandering Geschrift	Een speciaal geschrift dat je toelaat om het geslacht van je kostuum te veranderen.
+39063	Ververs Gaya Markt	Ververs de Gaya Markt voor de standaard 5-uurs timer afloopt en onthul nieuwe, waardevolle items.
+39064	Gaya Markt Uitbreiding	Breidt de Gaya Markt uit zodat er een extra plaats vrijkomt voor item-aanbiedingen, beginnend met de eerste plaats in de tweede rij.
+39065		
+39066		
+40101	Zaagtand Zwaard	Een wapen-skin die je zwaard in een kettingzaag verandert voor Halloween.
+40102	Zaagtand Dolk	Een wapen-skin die je dolk in een kettingzaag verandert voor Halloween.
+40103	Zaagtand Boog	Een wapen-skin die je boog in een dubbele kettingzaag verandert voor Halloween.
+40104	Zaagtand Lans	Een wapen-skin die je tweehandszwaard in een kettingzaaglans verandert voor Halloween.
+40105	Zaagtand Bel	Een wapen-skin die je bel in een kettingzaagknots verandert voor Halloween.
+40106	Zaagtand Waaier	Een wapen-skin die je waaier in een kettingzaagwaaier verandert voor Halloween.
+40107	Zaagtand Klauwen	Een wapen-skin die je klauwen in twee handige kettingzagen verandert voor Halloween.
+40108	Zaagtand Zwaard+	Een wapen-skin die je zwaard in een kettingzaag verandert voor Halloween. Geeft je minstens één willekeurige bonus.
+40109	Zaagtand Dolk+	Een wapen-skin die je dolk in een kettingzaag verandert voor Halloween. Geeft je minstens één willekeurige bonus.
+40110	Zaagtand Boog+	Een wapen-skin die je boog in een dubbele kettingzaag verandert voor Halloween. Geeft je minstens één willekeurige bonus.
+40111	Zaagtand Lans+	Een wapen-skin die je tweehandszwaard in een kettingzaaglans verandert voor Halloween. Geeft je minstens één willekeurige bonus.
+40112	Zaagtand Bel+	Een wapen-skin die je bel in een kettingzaagknots verandert voor Halloween. Geeft je minstens één willekeurige bonus.
+40113	Zaagtand Bel+	Een wapen-skin die je waaier in een kettingzaagwaaier verandert voor Halloween. Geeft je minstens één willekeurige bonus.
+40114	Zaagtand Klauwen+	Een wapen-skin die je klauwen in twee handige kettingzagen verandert voor Halloween. Geeft je minstens één willekeurige bonus.
+40115	Zuurstok Zwaard	Een wapen-skin die je zwaard transformeert in een zuurstok voor Kerstmis.
+40116	Zuurstok Dolk	Een wapen-skin die je dolk transformeert in een zuurstok voor Kerstmis.
+40117	Elven Boog	Een wapen-skin die je boog transformeert in een elvenboog voor Kerstmis.
+40118	Peperkoek Lans	Een wapen-skin die je tweehandswapen omhult in peperkoek voor Kerstmis.
+40119	Zuurstok Bel	Een wapen-skin die je bel transformeert in een zuurstok voor Kerstmis.
+40120	Frosty Waaier	Een wapen-skin die je waaier decoreert met een sneeuwman voor Kerstmis.
+40121	Rudolf Klauwen	Een wapen-skin die je klauwen decoreert met een rendier voor Kerstmis.
+40122	Zuurstok Zwaard+	Een wapen-skin die je zwaard transformeert in een zuurstok voor Kerstmis. Geeft je minstens één willekeurige bonus.
+40123	Zuurstok Dolk+	Een wapen-skin die je dolk transformeert in een zuurstok voor Kerstmis. Geeft je minstens één willekeurige bonus.
+40124	Elven Boog+	Een wapen-skin die je boog transformeert in een elvenboog voor Kerstmis. Geeft je minstens één willekeurige bonus.
+40125	Peperkoek Lans+	Een wapen-skin die je tweehandswapen omhult in peperkoek voor Kerstmis. Geeft je minstens één willekeurige bonus.
+40126	Zuurstok Bel+	Een wapen-skin die je bel transformeert in een zuurstok voor Kerstmis. Geeft je minstens één willekeurige bonus.
+40127	Frosty Waaier+	Een wapen-skin die je waaier decoreert met een sneeuwman voor Kerstmis. Geeft je minstens één willekeurige bonus.
+40128	Rudolf Klauwen+	Een wapen-skin die je klauwen decoreert met een rendier voor Kerstmis. Geeft je minstens één willekeurige bonus.
+40129	Aquariaans Zwaard	Een wapen-skin die jouw zwaard omhult in een laag van hard, regenboogkleurig water.
+40130	Aquariaanse Dolk	Een wapen-skin die jouw dolk omhult in een laag van hard, regenboogkleurig water.
+40131	Aquariaanse Boog	Een wapen-skin die jouw boog omhult in een laag van hard, regenboogkleurig water.
+40132	Aquariaanse Lans	Een wapen-skin die jouw tweehandszwaard omhult in een laag van hard, regenboogkleurig water.
+40133	Aquariaanse Bel	Een wapen-skin die jouw bel omhult in een laag van hard, regenboogkleurig water.
+40134	Aquariaanse Waaier	Een wapen-skin die jouw waaier omhult in een laag van hard, regenboogkleurig water.
+40135	Aquariaanse Klauwen	Een wapen-skin die jouw klauwen omhult in een laag van hard, regenboogkleurig water.
+40136	Aquariaans Zwaard+	Een wapen-skin die jouw zwaard omhult in een laag van hard, regenboogkleurig water. Geeft je minstens één willekeurige bonus.
+40137	Aquariaanse Dolk+	Een wapen-skin die jouw dolk omhult in een laag van hard, regenboogkleurig water. Geeft je minstens één willekeurige bonus.
+40138	Aquariaanse Boog+	Een wapen-skin die jouw boog omhult in een laag van hard, regenboogkleurig water. Geeft je minstens één willekeurige bonus.
+40139	Aquariaanse Lans+	Een wapen-skin die jouw tweehandszwaard omhult in een laag van hard, regenboogkleurig water. Geeft je minstens één willekeurige bonus.
+40140	Aquariaanse Bel+	Een wapen-skin die jouw bel omhult in een laag van hard, regenboogkleurig water. Geeft je minstens één willekeurige bonus.
+40141	Aquariaanse Waaier+	Een wapen-skin die jouw waaier omhult in een laag van hard, regenboogkleurig water. Geeft je minstens één willekeurige bonus.
+40142	Aquariaanse Klauwen+	Een wapen-skin die jouw klauwen omhult in een laag van hard, regenboogkleurig water. Geeft je minstens één willekeurige bonus.
+41458	Feniks Gewaad	Een lang, elegant gewaad in Aziatische stijl met een feniksborduurwerk, voor mannen.
+41459	Cobra Gewaad	Een lang, elegant gewaad in Aziatische stijl met een cobraborduurwerk, voor mannen.
+41462	Draken Cheongsam (Rood)	Een rode, tradionele, Aziatische jurk met zeer precies geborduurde gouden draak, voor vrouwen.
+41463	Draken Cheongsam (Wit)	Een witte, tradionele, Aziatische jurk met zeer precies geborduurde rode draak, voor vrouwen.
+41466	Feniks Gewaad+	Een lang, elegant gewaad in Aziatische stijl met een feniksborduurwerk, voor mannen. Geeft je minstens één willekeurige bonus.
+41467	Cobra Gewaad+	Een lang, elegant gewaad in Aziatische stijl met een cobraborduurwerk, voor mannen. Geeft je minstens één willekeurige bonus.
+41470	Draken Cheongsam+ (Rood)	Een rode, tradionele, Aziatische jurk met zeer precies geborduurde gouden draak, voor vrouwen. Geeft je minstens één willekeurige bonus.
+41471	Draken Cheongsam+ (Wit)	Een witte, tradionele, Aziatische jurk met zeer precies geborduurde rode draak, voor vrouwen. Geeft je minstens één willekeurige bonus.
+41488	Farao Kostuum (Rood)	Loop als een Egyptenaar met het decoratieve, rode Farao Kostuum voor mannen.
+41489	Farao Kostuum (Blauw)	Loop als een Egyptenaar met het decoratieve, lichtblauwe Farao Kostuum voor mannen.
+41490	Engel Uriel (Wit)	Elegant kostuum met witte, onschuldige engelenvleugels voor vrouwen.
+41491	Engel Uriel (Rood)	Elegant kostuum met vurige, rode engelenvleugels voor vrouwen.
+41492	Farao Kostuum+ (Rood)	Loop als een Egyptenaar met het decoratieve, rode Farao Kostuum voor mannen. Geeft je minstens één willekeurige bonus.
+41493	Farao Kostuum+ (Blauw)	Loop als een Egyptenaar met het decoratieve, lichtblauwe Farao Kostuum voor mannen. Geeft je minstens één willekeurige bonus.
+41494	Engel Uriel+ (Wit)	Elegant kostuum met witte, onschuldige engelenvleugels voor vrouwen. Geeft je minstens één willekeurige bonus.
+41495	Engel Uriel+ (Rood)	Elegant kostuum met vurige, rode engelenvleugels voor vrouwen. Geeft je minstens één willekeurige bonus.
+41512	Hoektand Kostuum	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen.
+41513	Hoektand Kostuum	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen.
+41514	Hoektand Kostuum	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen.
+41515	Hoektand Kostuum	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen.
+41516	Hoektand Kostuum+	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen. Geeft je minstens één willekeurige bonus.
+41517	Hoektand Kostuum+	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen. Geeft je minstens één willekeurige bonus.
+41518	Hoektand Kostuum+	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen. Geeft je minstens één willekeurige bonus.
+41519	Hoektand Kostuum+	Een demonisch uitziend Halloween-kostuum dat de rillingen langs je vijand's ruggengraat doet kruipen. Geeft je minstens één willekeurige bonus.
+41520	Rood Wintergewaad	Winterkledij gemaakt van rood vilt. Niet verhandelbaar.
+41521	Blauw Wintergewaad	Winterkledij gemaakt van blauw vilt. Niet verhandelbaar.
+41522	Rood Wintergewaad+	Winterkledij gemaakt van rood vilt. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41523	Blauw Wintergewaad+	Winterkledij gemaakt van blauw vilt. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41524	Rode Winterjurk	Winterjurk gemaakt van rood vilt. Niet verhandelbaar.
+41525	Blauwe Winterjurk	Winterjurk gemaakt van blauw vilt. Niet verhandelbaar.
+41526	Rode Winterjurk+	Winterjurk gemaakt van rood vilt. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41527	Blauwe Winterjurk+	Winterjurk gemaakt van blauw vilt. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41528	Woestijnprins (Rood)	Een krijgersgewaad, gemaakt van rode stof en dat uitstekend past bij een leider.
+41529	Woestijnprins (Blauw)	Een krijgersgewaad, gemaakt van blauwe stof en dat uitstekend past bij een leider.
+41530	Woestijnprinses (Rood)	Een krijgersgewaad, gemaakt van rode stof en dat uitstekend past bij een vrouwelijke leider.
+41531	Woestijnprinses (Blauw)	Een krijgersgewaad, gemaakt van blauwe stof en dat uitstekend past bij een vrouwelijke leider.
+41532	Woestijnprins+ (Rood)	Een krijgersgewaad, gemaakt van rode stof en dat uitstekend past bij een leider. Geeft je minstens één willekeurige bonus.
+41533	Woestijnprins+ (Blauw)	Een krijgersgewaad, gemaakt van blauwe stof en dat uitstekend past bij een leider. Geeft je minstens één willekeurige bonus.
+41534	Woestijnprinses+ (Rood)	Een krijgersgewaad, gemaakt van rode stof en dat uitstekend past bij een vrouwelijke leider. Geeft je minstens één willekeurige bonus.
+41535	Woestijnprinses+ (Blauw)	Een krijgersgewaad, gemaakt van blauwe stof en dat uitstekend past bij een vrouwelijke leider. Geeft je minstens één willekeurige bonus.
+41540	Konijnen Kostuum (Wit)	Konijnenkostuum voor mannen gemaakt van wit pluche. Niet verhandelbaar.
+41541	Konijnen Kostuum (Roze)	Konijnenkostuum voor mannen gemaakt van roze pluche. Niet verhandelbaar.
+41542	Konijnen Kostuum (Mar.)	Konijnenkostuum voor vrouwen gemaakt van marineblauw pluche. Niet verhandelbaar.
+41543	Konijnen Kostuum (Mag.)	Konijnenkostuum voor vrouwen gemaakt van magenta pluche. Niet verhandelbaar.
+41544	Konijnen Kostuum+ (Wit)	Konijnenkostuum voor mannen gemaakt van wit pluche. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41545	Konijnen Kostuum+ (Roze)	Konijnenkostuum voor mannen gemaakt van roze pluche. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41546	Konijnen Kostuum+ (Mar.)	Konijnenkostuum voor vrouwen gemaakt van marineblauw pluche. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41547	Konijnen Kostuum+ (Mag.)	Konijnenkostuum voor vrouwen gemaakt van magenta pluche. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41560	Bloed Vampier (Grijs)	Het pantser van een ware Bloed Vampier straalt een aura van onoverwinnelijkheid uit. Dit item is niet verhandelbaar.
+41561	Bloed Vampier (Rood)	Het pantser van een ware Bloed Vampier straalt een aura van onoverwinnelijkheid uit. Dit item is niet verhandelbaar.
+41562	Bloed Lamia (Grijs)	Het pantser van een krijger-achtige Bloed Lamia straalt een aura van onoverwinnelijkheid uit. Dit item is niet verhandelbaar.
+41563	Bloed Lamia (Rood)	Het pantser van een krijger-achtige Bloed Lamia straalt een aura van onoverwinnelijkheid uit. Dit item is niet verhandelbaar.
+41564	Bloed Vampier+ (Grijs)	Het pantser van een ware Bloed Vampier geeft je bovenmenselijke kracht. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41565	Bloed Vampier+ (Rood)	Het pantser van een ware Bloed Vampier geeft je bovenmenselijke kracht. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41566	Bloed Lamia+ (Grijs)	Het pantser van een krijger-achtige Bloed Lamia geeft je bovenmenselijke kracht. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41567	Bloed Lamia+ (Rood)	Het pantser van een krijger-achtige Bloed Lamia geeft je bovenmenselijke kracht. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+41568	Rood Feest Gewaad (m)	Een rood feestgewaad met een witte zoom.
+41569	Groen Feest Gewaad (m)	Een groen feestgewaad met een witte zoom.
+41570	Rood Feest Gewaad (v)	Een rood feestgewaad met een witte zoom.
+41571	Groen Feest Gewaad (v)	Een groen feestgewaad met een witte zoom.
+41572	Rood Feest Gewaad+ (m)	Een rood feestgewaad met een witte zoom. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+41573	Groen Feest Gewaad+ (m)	Een groen feestgewaad met een witte zoom. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+41574	Rood Feest Gewaad+ (v)	Een rood feestgewaad met een witte zoom. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+41575	Groen Feest Gewaad+ (v)	Een groen feestgewaad met een witte zoom. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+41576	Gouden O-Yoroi (M)	Het gouden uniform van een Japanse generaal.
+41577	Zilveren O-Yoroi (M)	Het zilveren uniform van een Japanse generaal.
+41578	Gouden O-Yoroi (V)	Het gouden uniform van een Japanse generaal.
+41579	Zilveren O-Yoroi (V)	Het zilveren uniform van een Japanse generaal.
+41580	Gouden O-Yoroi+ (M)	Het gouden uniform van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+41581	Zilveren O-Yoroi+ (M)	Het zilveren uniform van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+41582	Gouden O-Yoroi+ (V)	Het gouden uniform van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+41583	Zilveren O-Yoroi+ (V)	Het zilveren uniform van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+41584	Samoerai Pantser (Blauw)	Blauw pantser in de stijl van een ervaren shogun.
+41585	Samoerai Pantser (Rood)	Rood pantser in de stijl van een ervaren shogun.
+41586	Samoerai Pantser (Blauw)	Blauw pantser in de stijl van een vrouwelijke shogun.
+41587	Samoerai Pantser (Rood)	Rood pantser in de stijl van een vrouwelijke shogun.
+41588	Samoerai Pantser+ (Bl.)	Blauw pantser in de stijl van een ervaren shogun. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41589	Samoerai Pantser+ (Rood)	Rood pantser in de stijl van een ervaren shogun. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41590	Samoerai Pantser+ (Bl.)	Blauw pantser in de stijl van een vrouwelijke shogun. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41591	Samoerai Pantser+ (Rood)	Rood pantser in de stijl van een vrouwelijke shogun. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41592	Horror Harnas (Goud)	Brandend, hels pantser; perfect om angst aan te jagen.
+41593	Horror Harnas (Blauw)	Blauwgloeiend, hels pantser; perfect om angst aan te jagen.
+41594	Horror Harnas (Goud)	Brandend, hels pantser; perfect om angst aan te jagen.
+41595	Horror Harnas (Blauw)	Blauwgloeiend, hels pantser; perfect om angst aan te jagen.
+41596	Horror Harnas+ (Goud)	Brandend, hels pantser; perfect om angst aan te jagen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41597	Horror Harnas+ (Blauw)	Blauwgloeiend, hels pantser; perfect om angst aan te jagen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41598	Horror Harnas+ (Goud)	Brandend, hels pantser; perfect om angst aan te jagen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41599	Horror Harnas+ (Blauw)	Blauwgloeiend, hels pantser; perfect om angst aan te jagen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41600	Steampunk Uitr. (Zwart)	Futuristische uitrusting voor mannelijke krijgers uit het heden.
+41601	Steampunt Uitr. (Rood)	Futuristische uitrusting voor mannelijke krijgers uit het heden.
+41602	Steampunk Jurk (Zwart)	Futuristische uitrusting voor vrouwelijke krijgers uit het heden.
+41603	Steampunt Jurk (Rood)	Futuristische uitrusting voor vrouwelijke krijgers uit het heden.
+41604	Steampunk Uitr.+ (Zwart)	Futuristische uitrusting voor mannelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41605	Steampunk Uitr.+ (Rood)	Futuristische uitrusting voor mannelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41606	Steampunk Jurk+ (Zwart)	Futuristische uitrusting voor vrouwelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41607	Steampunt Jurk+ (Rood)	Futuristische uitrusting voor vrouwelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+41608	Sungura Outfit (Blauw)	Een sprookjesoutfit met witte en paarse tinten en een blauwe plofbroek.
+41609	Sungura Outfit (Gr. Bl.)	Een sprookjesoutfit met witte en groenblauwe tinten en een grijze plofbroek.
+41610	Sungura Jurk (Blauw)	Een sprookjesachtige gelaagde bubbeljurk in het blauw en paars.
+41611	Sungura Jurk (Grijs)	Een sprookjesachtige gelaagde bubbeljurk in het grijs en groenblauw.
+41612	Sungura Outfit+ (Blauw)	Een sprookjesoutfit met witte en paarse tinten en een blauwe plofbroek. Geeft je minstens één willekeurige bonus.
+41613	Sungura Outfit+ (Gr.Bl.)	Een sprookjesoutfit met witte en groenblauwe tinten en een grijze plofbroek. Geeft je minstens één willekeurige bonus.
+41614	Sungura Jurk+ (Blauw)	Een sprookjesachtige gelaagde bubbeljurk in het blauw en paars. Geeft je minstens één willekeurige bonus.
+41615	Sungura Jurk+ (Grijs)	Een sprookjesachtige gelaagde bubbeljurk in het grijs en groenblauw. Geeft je minstens één willekeurige bonus.
+41630	Avalon Pantser (Zilver)	Zilveren pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+41631	Avalon Pantser (Rood)	Rood pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+41632	Avalon Pantser (Zilver)	Zilveren pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+41633	Avalon Pantser (Rood)	Rood pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+41634	Avalon Pantser+ (Zilver)	Glimmend pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+41635	Avalon Pantser+ (Rood)	Glimmend pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+41636	Avalon Pantser+ (Zilver)	Glimmend pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+41637	Avalon Pantser+ (Rood)	Glimmend pantserstuk dat ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+41638	KSA Wereldbekerset (M)	Wereldbekerset in de nationale kleuren van Saoedi-Arabië.
+41639	KSA Wereldbekerset (V)	Wereldbekerset in de nationale kleuren van Saoedi-Arabië.
+41640	KSA Wereldbekerset+ (M)	Wereldbekerset in de nationale kleuren van Saoedi-Arabië. Geeft je minstens één willekeurige bonus.
+41641	KSA Wereldbekerset+ (V)	Wereldbekerset in de nationale kleuren van Saoedi-Arabië. Geeft je minstens één willekeurige bonus.
+41642	DEN Wereldbekerset (M)	Wereldbekerset in de nationale kleuren van Denemarken.
+41643	DEN Wereldbekerset (V)	Wereldbekerset in de nationale kleuren van Denemarken.
+41644	DEN Wereldbekerset+ (M)	Wereldbekerset in de nationale kleuren van Denemarken. Geeft je minstens één willekeurige bonus.
+41645	DEN Wereldbekerset+ (V)	Wereldbekerset in de nationale kleuren van Denemarken. Geeft je minstens één willekeurige bonus.
+41646	SVK Wereldbeker Set (M)	Wereldbekerset in de nationale kleuren van Slowakije.
+41647	SVK Wereldbekerset (V)	Wereldbekerset in de nationale kleuren van Slowakije.
+41648	SVK Wereldbekerset+ (M)	Wereldbekerset in de nationale kleuren van Slowakije. Geeft je minstens één willekeurige bonus.
+41649	SVK Wereldbekerset+ (V)	Wereldbekerset in de nationale kleuren van Slowakije. Geeft je minstens één willekeurige bonus.
+41650	TUR Wereldbeker Set (M)	Wereldbekerset in de nationale kleuren van Turkije.
+41651	TUR Wereldbekerset (V)	Wereldbekerset in de nationale kleuren van Turkije.
+41652	TUR Wereldbekerset+ (M)	Wereldbekerset in de nationale kleuren van Turkije. Geeft je minstens één willekeurige bonus.
+41653	TUR Wereldbekerset+ (V)	Wereldbekerset in de nationale kleuren van Turkije. Geeft je minstens één willekeurige bonus.
+41654	HUN Wereldbekerset (M)	Wereldbekerset in de nationale kleuren van Hongarije.
+41655	HUN Wereldbekerset (V)	Wereldbekerset in de nationale kleuren van Hongarije.
+41656	HUN Wereldbekerset+ (M)	Wereldbekerset in de nationale kleuren van Hongarije. Geeft je minstens één willekeurige bonus.
+41657	HUN Wereldbekerset+ (V)	Wereldbekerset in de nationale kleuren van Hongarije. Geeft je minstens één willekeurige bonus.
+41658	ROU Wereldbekerset (M)	Wereldbekerset in de nationale kleuren van Roemenië.
+41659	ROU Wereldbekerset (V)	Wereldbekerset in de nationale kleuren van Roemenië.
+41660	ROU Wereldbekerset+ (M)	Wereldbekerset in de nationale kleuren van Roemenië. Geeft je minstens één willekeurige bonus.
+41661	ROU Wereldbekerset+ (V)	Wereldbekerset in de nationale kleuren van Roemenië. Geeft je minstens één willekeurige bonus.
+41662	POL Wereldbekerset (M)	Wereldbekerset in de nationale kleuren van Polen.
+41663	POL Wereldbekerset (V)	Wereldbekerset in de nationale kleuren van Polen.
+41664	POL Wereldbekerset+ (M)	Wereldbekerset in de nationale kleuren van Polen. Geeft je minstens één willekeurige bonus.
+41665	POL Wereldbekerset+ (V)	Wereldbekerset in de nationale kleuren van Polen. Geeft je minstens één willekeurige bonus.
+41666	BRA Wereldbekerset (M)	Wereldbeker set in de nationale kleuren van Brazilië.
+41667	BRA Wereldbekerset (V)	Wereldbeker set in de nationale kleuren van Brazilië.
+41668	BRA Wereldbekerset+ (M)	Wereldbeker set in de nationale kleuren van Brazilië. Geeft je minstens één willekeurige bonus.
+41669	BRA Wereldbekerset+ (V)	Wereldbeker set in de nationale kleuren van Brazilië. Geeft je minstens één willekeurige bonus.
+41670	Bruine Wolf Kostuum (m)	Deze outfit van bruine vacht doet de wolf in elke man ontwaken.
+41671	Grijze Wolf Kostuum (m)	Deze outfit van grijze vacht doet de wolf in elke man ontwaken.
+41672	Bruine Wolf Kostuum (f)	Deze outfit van bruine vacht doet de wolf in elke vrouw ontwaken.
+41673	Grijze Wolf Kostuum (f)	Deze outfit van grijze vacht doet de wolf in elke vrouw ontwaken.
+41674	Bruine Wolf Kostuum+ (m)	Deze outfit van bruine vacht doet de wolf in elke man ontwaken. Geeft je minstens één willekeurige bonus.
+41675	Grijze Wolf Kostuum+ (m)	Deze outfit van grijze vacht doet de wolf in elke man ontwaken. Geeft je minstens één willekeurige bonus.
+41676	Bruine Wolf Kostuum+ (f)	Deze outfit van bruine vacht doet de wolf in elke vrouw ontwaken. Geeft je minstens één willekeurige bonus.
+41677	Grijze Wolf Kostuum+ (f)	Deze outfit van grijze vacht doet de wolf in elke vrouw ontwaken. Geeft je minstens één willekeurige bonus.
+45108	Rijst Hoed	Een traditionele, Aziatische hoed voor mannen gemaakt van rijstveldstro.
+45110	Odango	Een Aziatische haarstijl met opgestoken, dubbele knotjes.
+45114	Rijst Hoed+	Een traditionele, Aziatische hoed voor mannen gemaakt van rijstveldstro. Geeft je minstens één willekeurige bonus.
+45116	Odango+	Een Aziatische haarstijl met opgestoken, dubbele knotjes. Geeft je minstens één willekeurige bonus.
+45182	Veren Hoofdtooi (Rood)	Een opzichtige, rode, gevederde hoofdtooi voor mannen. Perfect voor de carnavalstijd!
+45183	Veren Hoofdtooi (Blauw)	Een opzichtige, lichtblauwe, gevederde hoofdtooi voor mannen. Perfect voor de carnavalstijd!
+45184	Feniks Tiara (Wit)	Een elegant arendsachtig, metalen hoofdstuk voor vrouwen.
+45185	Feniks Tiara (Rood)	Een elegant arendsachtig, metalen hoofdstuk voor vrouwen.
+45186	Veren Hoofdtooi+ (Rood)	Een opzichtige, rode, gevederde hoofdtooi voor mannen. Perfect voor de carnavalstijd! Geeft je minstens één willekeurige bonus.
+45187	Veren Hoofdtooi+ (Blauw)	Een opzichtige, lichtblauwe, gevederde hoofdtooi voor mannen. Perfect voor de carnavalstijd! Geeft je minstens één willekeurige bonus.
+45188	Feniks Tiara+ (Wit)	Een elegant arendsachtig, metalen hoofdstuk voor vrouwen. Geeft je minstens één willekeurige bonus.
+45189	Feniks Tiara+ (Rood)	Een elegant arendsachtig, metalen hoofdstuk voor vrouwen. Geeft je minstens één willekeurige bonus.
+45206	Hoektand Helm	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt.
+45207	Hoektand Helm	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt.
+45208	Hoektand Helm	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt.
+45209	Hoektand Helm	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt.
+45210	Hoektand Helm+	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt. Geeft je minstens één willekeurige bonus.
+45211	Hoektand Helm+	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt. Geeft je minstens één willekeurige bonus.
+45212	Hoektand Helm+	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt. Geeft je minstens één willekeurige bonus.
+45213	Hoektand Helm+	Een bloedstollende helm voor Halloween die je vijanden de stuipen op het lijf jaagt. Geeft je minstens één willekeurige bonus.
+45214	Rode Kerstmuts	Rode viltmuts met een witte bol. Niet verhandelbaar.
+45215	Blauwe Kerstmuts	Blauwe viltmuts met een witte bol. Niet verhandelbaar.
+45216	Rode Kerstkap	Rode viltmuts met een witte bol. Geeft minstens één willekeurige bonus. Item is verhandelbaar.
+45217	Blauwe Kerstkap	Blauwe viltmuts met een witte bol. Geeft minstens één willekeurige bonus. Item is verhandelbaar.
+45218	Rode Kerstmuts+	Rode viltkap met een witte bol. Niet verhandelbaar.
+45219	Blauwe Kerstmuts+	Blauwe viltkap met een witte bol. Niet verhandelbaar.
+45220	Rode Kerstkap+	Rode viltkap met een witte bol. Geeft minstens één willekeurige bonus. Item is verhandelbaar.
+45221	Blauwe Kerstkap+	Blauwe viltkap met een witte bol. Geeft minstens één willekeurige bonus. Item is verhandelbaar.
+45222	Konijnenoren (Wit)	Witgekleurde hoed met konijnenoren voor mannen. Niet verhandelbaar.
+45223	Konijnenoren (Roze)	Rozegekleurde hoed met konijnenoren voor mannen. Niet verhandelbaar.
+45224	Konijnenoren (Mar.)	Marineblauwkleurige konijnenoren voor vrouwen. Niet verhandelbaar.
+45225	Konijnenoren (Mag.)	Magentakleurige konijnenoren voor vrouwen. Niet verhandelbaar.
+45226	Konijnenoren+ (Wit)	Witgekleurde hoed met konijnenoren voor mannen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45227	Konijnenoren+ (Roze)	Rozegekleurde hoed met konijnenoren voor mannen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45228	Konijnenoren+ (Mar.)	Marineblauwkleurige konijnenoren voor vrouwen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45229	Konijnenoren+ (Mag.)	Magentakleurige konijnenoren voor vrouwen. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45234	Blauwe Tulband	Een galante blauwe tulband, gemaakt van materiaal sterk genoeg voor krijgers.
+45235	Rode Tulband	Een galante rode tulband, gemaakt van materiaal sterk genoeg voor krijgers.
+45236	Bruine Hoofddoek	Een bruine hoofddoek gemaakt van licht materiaal, perfect voor vrouwelijke krijgers.
+45237	Groene Hoofddoek	Een groene hoofddoek gemaakt van licht materiaal, perfect voor vrouwelijke krijgers.
+45238	Blauwe Tulband+	Een galante blauwe tulband, gemaakt van materiaal sterk genoeg voor krijgers. Geeft je minstens één willekeurige bonus.
+45239	Rode Tulband+	Een galante rode tulband, gemaakt van materiaal sterk genoeg voor krijgers. Geeft je minstens één willekeurige bonus.
+45240	Bruine Hoofddoek+	Een bruine hoofddoek gemaakt van licht materiaal, perfect voor vrouwelijke krijgers. Geeft je minstens één willekeurige bonus.
+45241	Groene Hoofddoek+	Een groene hoofddoek gemaakt van licht materiaal, perfect voor vrouwelijke krijgers. Geeft je minstens één willekeurige bonus.
+45250	Bloed Vampier Helm (Gr.)	De helm van een ware Bloed Vampier. Dit item is niet verhandelbaar.
+45251	Bloed Vampier Helm (Rd)	De helm van een ware Bloed Vampier. Dit item is niet verhandelbaar.
+45252	Bloed Lamia Helm (Grijs)	De helm van een krijger-achtige Bloed Lamia. Dit item is niet verhandelbaar.
+45253	Bloed Lamia Helm (Rood)	De helm van een krijger-achtige Bloed Lamia. Dit item is niet verhandelbaar.
+45254	Bloed Vampier Helm+ (Gr)	De helm van een ware Bloed Vampier. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+45255	Bloed Vampier Helm+ (Rd)	De helm van een ware Bloed Vampier. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+45256	Bloed Lamia Helm+ (Gr)	De helm van een krijger-achtige Bloed Lamia. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+45257	Bloed Lamia Helm+ (Rood)	De helm van een krijger-achtige Bloed Lamia. Geeft je minstens één willekeurige bonus. Item is verhandelbaar.
+45258	Kerst Kap (Rood)	Een rode feestkap met een witte zoom.
+45259	Kerst Kap (Groen)	Een groene feestkap met een witte zoom.
+45260	Kerst Baret (Rood)	Een rode kerstbaret met een witte bol.
+45261	Kerst Baret (Groen)	Een groene kerstbaret met een witte bol.
+45262	Kerst Kap+ (Rood)	Een rode feestkap met een witte zoom. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+45263	Kerst Kap+ (Groen)	Een groene feestkap met een witte zoom. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+45264	Kerst Baret+ (Rood)	Een rode kerstbaret met een witte bol. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+45265	Kerst Baret+ (Groen)	Een groene kerstbaret met een witte bol. Dit item geeft je minimaal één willekeurige bonus en is verhandelbaar.
+45266	Gouden Kabuto (M)	De gouden helm van een Japanse generaal.
+45267	Zilveren Kabuto (M)	De zilveren helm van een Japanse generaal.
+45268	Gouden Kabuto (V)	De gouden helm van een Japanse generaal.
+45269	Zilveren Kabuto (V)	De zilveren helm van een Japanse generaal.
+45270	Gouden Kabuto+ (M)	De gouden helm van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+45271	Zilveren Kabuto+ (M)	De zilveren helm van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+45272	Gouden Kabuto+ (V)	De gouden helm van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+45273	Zilveren Kabuto+ (V)	De zilveren helm van een Japanse generaal. Geeft je minstens één willekeurige bonus.
+45274	Samoerai Knot (Goud)	Samoerai-stijl haarknot met een gouden klem voor mannelijke karakters.
+45275	Samoerai Knot (Zilver)	Samoerai-stijl haarknot met een zilveren klem voor mannelijke karakters.
+45276	Samoerai Knot (Goud)	Samoerai-stijl haarknot met een gouden klem voor vrouwelijke karakters.
+45277	Samoerai Knot (Zilver)	Samoerai-stijl haarknot met een zilveren klem voor vrouwelijke karakters.
+45278	Samoerai Knot+ (Goud)	Samoerai-stijl haarknot met een gouden klem voor mannelijke karakters. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45279	Samoerai Knot+ (Zilver)	Samoerai-stijl haarknot met een zilveren klem voor mannelijke karakters. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45280	Samoerai Knot+ (Goud)	Samoerai-stijl haarknot met een gouden klem voor vrouwelijke karakters. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45281	Samoerai Knot+ (Zilver)	Samoerai-stijl haarknot met een zilveren klem voor vrouwelijke karakters. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45282	Horror Hoorns (Goud)	Gouden helm met duivelshoorns.
+45283	Horror Hoorns (Blauw)	Blauwe helm met duivelshoorns.
+45284	Horror Hoorns (Goud)	Gouden helm met duivelshoorns.
+45285	Horror Hoorns (Blauw)	Blauwe helm met duivelshoorns.
+45286	Horror Hoorns+ (Goud)	Gouden helm met duivelshoorns. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45287	Horror Hoorns+ (Blauw)	Blauwe helm met duivelshoorns. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45288	Horror Hoorns+ (Goud)	Gouden helm met duivelshoorns. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45289	Horror Hoorns+ (Blauw)	Blauwe helm met duivelshoorns. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45290	Steampunk Hoed (Zwart)	Futuristisch hoofddeksel voor mannelijke krijgers uit het heden.
+45291	Steampunk Hoed (Rood)	Futuristisch hoofddeksel voor mannelijke krijgers uit het heden.
+45292	Steampunk Hoed (Zwart)	Futuristisch hoofddeksel voor vrouwelijke krijgers uit het heden.
+45293	Steampunk Hoed (Rood)	Futuristisch hoofddeksel voor vrouwelijke krijgers uit het heden.
+45294	Steampunk Hoed+ (Zwart)	Futuristisch hoofddeksel voor mannelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45295	Steampunk Hoed+ (Rood)	Futuristisch hoofddeksel voor mannelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45296	Steampunk Hoed+ (Zwart)	Futuristisch hoofddeksel voor vrouwelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45297	Steampunk Hoed+ (Rood)	Futuristisch hoofddeksel voor vrouwelijke krijgers uit het heden. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45298	Gevederde Hoed (Blauw)	Een blauwe hoed met een rode fazantenveer en een met parels ingelegde kinband.
+45299	Gevederde Hoed (Grijs)	Een grijze hoed met een groenblauwe fazantenveer en een met parels ingelegde kinband.
+45300	Sungura Cloche (Blauw)	Blauw hoofddeksel ingelegd met een turquoise edelsteen.
+45301	Sungura Cloche (Grijs)	Grijs hoofddeksel ingelegd met een paarse edelsteen.
+45302	Gevederde Hoed+ (Blauw)	Een blauwe hoed met een rode fazantenveer en een met parels ingelegde kinband. Geeft je minstens één willekeurige bonus.
+45303	Gevederde Hoed+ (Grijs)	Een grijze hoed met een groenblauwe fazantenveer en een met parels ingelegde kinband. Geeft je minstens één willekeurige bonus.
+45304	Sungura Cloche+ (Blauw)	Blauw hoofddeksel ingelegd met een turquoise edelsteen. Geeft je minstens één willekeurige bonus.
+45305	Sungura Cloche+ (Grijs)	Grijs hoofddeksel ingelegd met een paarse edelsteen. Geeft je minstens één willekeurige bonus.
+45314	Zodiac Kroon	Majestueus hoofddeksel.
+45315	Zodiac Kroon	Majestueus hoofddeksel.
+45316	Zodiac Kroon+	Majestueus hoofddeksel. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45317	Zodiac Kroon+	Majestueus hoofddeksel. Geeft je minstens één willekeurige bonus. Dit item is verhandelbaar.
+45320	Avalon Helm (Zilver)	Zilveren helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+45321	Avalon Helm (Rood)	Rode helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+45322	Avalon Helm (Zilver)	Zilveren helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+45323	Avalon Helm (Rood)	Rode helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden.
+45324	Avalon Helm+ (Zilver)	Zilveren helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+45325	Avalon Helm+ (Rood)	Rode helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+45326	Avalon Helm+ (Zilver)	Zilveren helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+45327	Avalon Helm+ (Rood)	Rode helm die ooit thuishoorde in een ridderlijke dynastie uit lang vervlogen tijden. Geeft je minstens één willekeurige bonus.
+45328	Beren Muts (M)	Aaibaar hoofddeksel met een berengezicht.
+45329	Tijger Muts (M)	Aaibaar hoofddeksel met een tijgergezicht.
+45330	Beren Muts (V)	Aaibaar hoofddeksel met een berengezicht.
+45331	Tijger Muts (V)	Aaibaar hoofddeksel met een tijgergezicht.
+45332	Beren Muts+ (M)	Dit aaibare hoofddeksel geeft je minstens één willekeurige bonus.
+45333	Tijger Muts+ (M)	Dit aaibare hoofddeksel geeft je minstens één willekeurige bonus.
+45334	Beren Muts+ (V)	Dit aaibare hoofddeksel geeft je minstens één willekeurige bonus.
+45335	Tijger Muts+ (V)	Dit aaibare hoofddeksel geeft je minstens één willekeurige bonus.
+45336	Bruine Wolvenhoed (m)	Uitgebreide hoofduitrusting voor mannen gemaakt van wolvenvacht.
+45337	Grijze Wolvenhoed (m)	Uitgebreide hoofduitrusting voor mannen gemaakt van wolvenvacht.
+45338	Bruine Wolvenhoed (f)	Uitgebreide hoofduitrusting voor vrouwen gemaakt van wolvenvacht.
+45339	Grijze Wolvenhoed (f)	Uitgebreide hoofduitrusting voor vrouwen gemaakt van wolvenvacht.
+45340	Bruine Wolvenhoed+ (m)	Uitgebreide hoofduitrusting voor mannen gemaakt van wolvenvacht. Geeft je minstens één willekeurige bonus.
+45341	Grijze Wolvenhoed+ (m)	Uitgebreide hoofduitrusting voor mannen gemaakt van wolvenvacht. Geeft je minstens één willekeurige bonus.
+45342	Bruine Wolvenhoed+ (f)	Uitgebreide hoofduitrusting voor vrouwen gemaakt van wolvenvacht. Geeft je minstens één willekeurige bonus.
+45343	Bruine Wolvenhoed+ (f)	Uitgebreide hoofduitrusting voor vrouwen gemaakt van wolvenvacht. Geeft je minstens één willekeurige bonus.
+45344	Haarband DEN (V)	Lang haar met vlechten en een haarband in de Deense nationale kleuren.
+45345	Haarband HUN (V)	Lang haar met vlechten en een haarband in de Hongaarse nationale kleuren.
+45346	Haarband POL (V)	Lang haar met vlechten en een haarband in de Poolse nationale kleuren.
+45347	Haarband KSA (V)	Lang haar met vlechten en een haarband in de Saoedi-Arabische nationale kleuren.
+45348	Haarband SVK (V)	Lang haar met vlechten en een haarband in de Slowaakse nationale kleuren.
+45349	Haarband TUR (V)	Lang haar met vlechten en een haarband in de Turkse nationale kleuren.
+45350	Haarband DEN+ (V)	Lang haar met vlechten en een haarband in de Deense nationale kleuren. Geeft je minstens één willekeurige bonus.
+45351	Haarband HUN+ (V)	Lang haar met vlechten en een haarband in de Hongaarse nationale kleuren. Geeft je minstens één willekeurige bonus.
+45352	Haarband POL+ (V)	Lang haar met vlechten en een haarband in de Poolse nationale kleuren. Geeft je minstens één willekeurige bonus.
+45353	Haarband KSA+ (V)	Lang haar met vlechten en een haarband in de Saoedi-Arabische nationale kleuren. Geeft je minstens één willekeurige bonus.
+45354	Haarband SVK+ (V)	Lang haar met vlechten en een haarband in de Slowaakse nationale kleuren. Geeft je minstens één willekeurige bonus.
+45355	Haarband TUR+ (V)	Lang haar met vlechten en een haarband in de Turkse nationale kleuren. Geeft je minstens één willekeurige bonus.
+50208	Silver Premium Scroll	Wordt gebruikt om uw Zilver Premie-lidmaatschap te activeren of de tijd te verlengen.
+50209	Gold Premium Scroll	Wordt gebruikt om uw Gouden Premie-lidmaatschap te activeren of de tijd te verlengen.
+50210	Platinum Premium Scroll	Gebruikt om uw Platina Premie-lidmaatschap te activeren of de tijd te verlengen.
+50266	Jotun Thrym Kist	De kist van Jotun Thrym. Het enorm zware slot dat erop zit, duidt mogelijk op een waardevolle inhoud.
+50267	Gouden Okey Kist	Verdien 400 punten of meer met een potje Okey om deze prijs te winnen.
+50270	Koningin Meley's Kist	Deze kist is meegebracht uit het hol van de Drakenkoningin Meley. Hij bevat een werkelijk overweldigende schat. Dit item is verhandelbaar.
+50271	Draken Kijker Kist	Deze kist bevat de schatten van talloze drakenkijkers, schatten waarvan eeuwenlang gedacht werd dat ze verloren waren gegaan. Dit item is verhandelbaar.
+50272	Gouden Bazensl. Kist	Gouden beloning voor jouw heldhaftige daden tijdens het bazenslachten.
+50285	IJzeren Strijd Zone Kist	Een kist met waardevolle inhoud.
+50286	Gouden Strijd Zone Kist	Een kist met waardevolle inhoud.
+50287	Veld Doos 1	Een doos die nuttige uitrusting bevat.
+50288	Veld Doos 2	Een doos die nuttige uitrusting bevat.
+50289	Reïncarnatie	Reïncarnatie wekt je per direct en zonder vertraging weer tot leven.
+50290	Houten Strijd Zone Kist	Een kist met waardevolle inhoud.
+50323	Beschermingsboek Kist	Deze kist bevat een willekeurig vaardigheden boek om Beschermingsvaardigheden te leren.
+50324	Boost-boek Kist	Deze kist bevat een willekeurig vaardigheden boek om Boost-vaardigheden te leren.
+50500	Armor Socket Enhancer	Opent een vierde opening in je pantser.
+50501	Weapon Socket Enhancer	Opent een vierde opening in je wapen.
+50514	Boost Handleiding	Deze handleiding maakt het mogelijk om één van de negen boost-vaardigheden te bestuderen. Een geschikte vaardigheid wordt voor jou gekozen.
+50515	Bescherming Handleiding	Deze handleiding maakt het mogelijk om uit negen beschermingsvaardigheden te kiezen. Kies verstandig!
+50516	Zwaard Wervel Besch.	Dit boek leert je de nodige technieken om de schade toegebracht door Zwaard Wervel te verminderen.
+50517	Hinderlaag Bescherming	Dit boek leert je de nodige technieken om de schade toegebracht door Hinderlaag te verminderen.
+50518	Vinger Slag Bescherming	Dit boek leert je de nodige technieken om de schade toegebracht door Vinger Slag te verminderen.
+50519	Schietende Draak Besch.	Dit boek leert je de nodige technieken om de schade toegebracht door Schietende Draak te verminderen.
+50520	Geest Slag Bescherming	Dit boek leert je de nodige technieken om de schade toegebracht door Geest Slag te verminderen.
+50521	Vuur Pijl Bescherming	Dit boek leert je de nodige technieken om de schade toegebracht door Vuur Pijl te verminderen.
+50522	Donker Slag Bescherming	Dit boek leert je de nodige technieken om de schade toegebracht door Donker Slag te verminderen.
+50523	Ontbied Bliksem Besch.	Dit boek leert je de nodige technieken om de schade toegebracht door Ontbied Bliksem te verminderen.
+50524	Wolvenadem Bescherming	Dit boek leert je de nodige technieken om de schade toegebracht door Wolvenadem te verminderen.
+50525	Zielensteen+	Deze legendarische steen kan gebruikt worden om jouw oppermeesterschap in de boost- en beschermingskunsten nóg verder te versterken. Hij verdwijnt na gebruik.
+50560	Zwaard Wervel Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Zwaard Wervel kan versterken.
+50561	Hinderlaag Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Hinderlaag kan versterken.
+50562	Vinger Slag Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Vinger Slag kan versterken.
+50563	Schietende Draak Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Schietende Draak kan versterken.
+50564	Geest Slag Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Geest Slag kan versterken.
+50565	Vuur Pijl Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Vuur Pijl kan versterken.
+50566	Donker Slag Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Donker Slag kan versterken.
+50567	Ontbied Bliksem Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Ontbied Bliksem kan versterken.
+50568	Wolvenadem Boost	Met de kennis in dit boek leer jij hoe je de vaardigheid Wolvenadem kan versterken.
+50569	Legendary Soul Stone	Deze steen verbergt een krachtige geest die in staat is om je Perfecte Grootmeester-vaardigheden te versterken.
+50570	Legendary Soul Stone	Deze steen verbergt een krachtige geest die je Perfect Skill aan kracht kan versterken tot legendarische vaardigheden.
+50571	Legendary Soul Stone	Deze steen verbergt een krachtige geest die je Perfect Skill aan kracht kan versterken tot legendarische vaardigheden.
+50620	Azure Ore	Met gebruik van de Gilde Smelter kan je een Azuren Edelsteen uit deze Azuren Erts maken.
+50640	Azure	Blauwe edelsteen met een unieke bewerking. Kan verwerkt worden tot een waardevol sierraad.
+50926	Glimmerstone	Verzamel Fonkelstenen en laat de Gaya Handelaar ze snijden tot waardevolle Gaya.
+51723	Fossiele Hout	Een waardevolle stuk Hout | Kan in Hout Accessoires gezet worden.
+51724	Koper	Wordt soms gebruikt om brons en munten te maken. | Kan in Koper Accessoires gezet worden.
+51725	Zilver	Een glimmend metaal dat gebruikt wordt om juwelen te maken. | Kan in Zilver Accessoires gezet worden.
+51726	Goud	Goud metaal gebruikt om juwelen te maken. | Kan in Goud Accessoires gezet worden.
+51727	Jade	Een van de waardevolle mineralen | Kan in Jade Accessoires gezet worden.
+51728	Ebbenhout	De lichtste en sterkste hout van alles.| Kan in Ebbenhout Accessoires gezet worden.
+51729	Parel	Gebruikt om juwelen mee te maken. | Kan in Parel Accessoires gezet worden.
+51730	Witgoud	Goud dat eruit ziet als zilver, maar sterker is. | Kan in Witgoud Accessoires gezet worden.
+51731	Kristal	Wordt ook wel Rots Kristal of Kwarts genoemd| Kan in Kristal Accessoires gezet worden.
+51732	Amethist	Een paarse Kwarts| Kan in Amethist Accessoires gezet worden.
+51733	Hemelse Traan	Gekristalliseerde regen uit de hemel. | Kan in Hemelse Traan Accessoires gezet worden.
+51734	Zielkristal	Een kristal zo puur als de ziel. Kan gebruikt worden bij het maken van accessoires .
+51735	Robijn	Rode edelsteen met een unieke bewerking. Kan verwerkt worden tot een waardevol sierraad.
+51736	Granaat	Oranje edelsteen met een unieke bewerking. Kan verwerkt worden tot een waardevol sierraad.
+51737	Smaragd	Groene edelsteen met een unieke bewerking. Kan verwerkt worden tot een waardevol sierraad.
+51738	Saffier	Blauwe edelsteen met een unieke bewerking. Kan verwerkt worden tot een waardevol sierraad.
+51740	Azure	Blauwe edelsteen met een unieke bewerking. Kan verwerkt worden tot een waardevol sierraad.
+55001	Proteïne Snack	Voed je uitgeputte huisdier met een heerlijke Proteïne Snack en hij zal volledig herstellen. Voed het aan een dood huisdier en hij zal herleven en herteld worden tot 50%.
+55002	Transporteer Doos	Wanneer je je huisdier in de Transporteer Doos stopt, wordt hij 30 dagen verhandelbaar.
+55003	Jonge Huisdieren Boek	Door de volgende items te gebruiken kun je jouw huisdier promoveren tot het volgende level (Wild Huisdier): 10x Jonge Huisdieren Boek, 10x Spinnenbroedzak, 10x Witte Haardband+, 10x Shiriken, 10x Decoratieve Haarspeld, 5x Zwart Uniform+ en 5x Stuk IJs+
+55004	Wilde Huisdieren Boek	Door de volgende items te gebruiken kun je jouw huisdier promoveren tot het volgende level (Moedig Huisdier): 10x Wilde Huisdieren Boek, 2x Bloedrode Parel, 10x Gezichtscrême, 10x Yet Vacht+, 10x Ornament, 10x Bal en 5x Vloeken Boek+
+55005	Moedige Huisdieren Boek	Door de volgende items te gebruiken kun je jouw huisdier promoveren tot het volgende level (Heroïsch Huisdier): 10x Moedige Huisdieren Boek, 10x Onbekend Medicijn+, 2x Witte Parel, 2x Blauwe Parel, 10x Demonen Aandenken+, 10x Ork Tand+ en 5x Blauwe Riem
+55006		
+55008	Huisdier Naam Geschrift	Sleep het geschrift over je huisdier om zijn/haar naam te veranderen.
+55009	Huisdieren Boek Kist	Bevat een willekeurig gekozen huisdieren vaardigheden boek.
+55010	Monsterboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je schade tegen monsters.
+55011	Metinstenenboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je schade tegen Metin-stenen.
+55012	Bazenboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je schade tegen bazen.
+55013	Levensboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je maximale HP.
+55014	Vergifboek	Nadat je huisdier deze vaardigheid heeft geleerd, geeft het je aanvallen een kans om de vijand te vergiftigen.
+55015	Anti-Crit Boek	Nadat je huisdier deze vaardigheid heeft geleerd, vermindert het de kans om kritieke treffers te ontvangen.
+55016	Anti-Doordring Boek	Nadat je huisdier deze vaardigheid heeft geleerd, vermindert het de kans om doordringende treffers te ontvangen.
+55017	Vuurboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je kracht tegen het vuur-element.
+55018	IJsboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je kracht tegen het ijs-element.
+55019	Aardeboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je kracht tegen het aarde-element.
+55020	Windboek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je kracht tegen het wind-element.
+55021	Regeneratieboek	Nadat je huisdier deze vaardigheid heeft geleerd, herstelt het geleidelijk je HP in de loop van de tijd.
+55022	Pijlenontwijk Boek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je kans om pijlaanvallen te ontwijken.
+55023	Item Drop Boek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je droprate van items.
+55024	Aanvaller Boek	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je totale aanvalwaarde.
+55025	Berserker Boek (H)	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je magische/nabijgevechts-schade.
+55026	Vaardigheidsschade Boek (H)	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het de schade van je vaardigheden.
+55027	Vaardigheidsweerstand Boek (H)	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je weerstand tegen vaardigheidsschade.
+55028	Gemiddelde Schade Boek (H)	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je gemiddelde schade.
+55029	Halfmens Weerstand Boek (H)	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je weerstand tegen halfmensen.
+55030	Elementenboek (H)	Nadat je huisdier deze vaardigheid heeft geleerd, verhoogt het je elementaire schade.
+55260	Fire Infusion [I]	Een Oud Infuus van Vuur in zijn eenvoudigste stadium.	Kan verbeterd worden.
+55261	Water Infusion [I]	Een Oud Infuus van Water in zijn eenvoudigste stadium.	Kan verbeterd worden.
+55262	Earth Infusion [I]	Een Oud Infuus van Aarde in zijn eenvoudigste stadium.	Kan verbeterd worden.
+55263	Wind Infusion [I]	Een Oud Infuus van Wind in zijn eenvoudigste stadium.	Kan verbeterd worden.
+55264	Dark Infusion [I]	Een Oud Infuus van Duisternis in zijn eenvoudigste stadium.	Kan verbeterd worden.
+55265	Light Infusion [I]	Een Oud Infuus van Licht in zijn eenvoudigste stadium.	Kan verbeterd worden.
+55270	Fire Infusion [II]	Een Zeldzaam Infuus van Vuur dat omgezet kan worden in iets meer.	Kan verbeterd worden.
+55271	Water Infusion [II]	Een Zeldzaam Infuus van Water dat omgezet kan worden in iets meer.	Kan verbeterd worden.
+55272	Earth Infusion [II]	Een Zeldzaam Infuus van Aarde dat omgezet kan worden in iets meer.	Kan verbeterd worden.
+55273	Wind Infusion [II]	Een Zeldzaam Infuus van Wind dat omgezet kan worden in iets meer.	Kan verbeterd worden.
+55274	Dark Infusion [II]	Een Zeldzaam Infuus van Duisternis dat omgezet kan worden in iets meer.	Kan verbeterd worden.
+55275	Light Infusion [II]	Een Zeldzaam Infuus van Licht dat omgezet kan worden in iets meer. 	Kan verbeterd worden.
+55280	Fire Infusion [III]	Een Uitstekend Infuus van Vuur, geperfectioneerd om gebruikt te worden.	Kan verbeterd worden.
+55281	Water Infusion [III]	Een Uitstekend Infuus van Water, geperfectioneerd om gebruikt te worden.	Kan verbeterd worden.
+55282	Earth Infusion [III]	Een Uitstekend Infuus van Aarde, geperfectioneerd om gebruikt te worden.	Kan verbeterd worden.
+55283	Wind Infusion [III]	Een Uitstekend Infuus van Wind, geperfectioneerd om gebruikt te worden	Kan verbeterd worden.
+55284	Dark Infusion [III]	Een Uitstekend Infuus van Duisternis, geperfectioneerd om gebruikt te worden.	Kan verbeterd worden.
+55285	Light Infusion [III]	Een Uitstekend Infuus van Licht, geperfectioneerd om gebruikt te worden.	Kan verbeterd worden.
+55290	Fire Infusion [IV]	Een Legendarisch Infuus van Vuur met een kans om groots te zijn.	Kan verbeterd worden.
+55291	Water Infusion [IV]	Een Legendarisch Infuus van Water met een kans om groots te zijn.	Kan verbeterd worden.
+55292	Earth Infusion [IV]	Een Legendarisch Infuus van Aarde met een kans om groots te zijn.	Kan verbeterd worden.
+55293	Wind Infusion [IV]	Een Legendarisch Infuus van Wind met een kans om groots te zijn.	Kan verbeterd worden.
+55294	Dark Infusion [IV]	Een Legendarich Infuus van Duisternis met een kans om groots te zijn.	Kan verbeterd worden.
+55295	Light Infusion [IV]	Een Legendarisch Infuus van Licht met een kans om groots te zijn.	Kan verbeterd worden.
+55300	Fire Infusion [V]	Het Mythische Infuus van Vuur in zijn beste stadium.
+55301	Water Infusion [V]	Het Mythische Infuus van Water in zijn beste stadium.
+55302	Earth Infusion [V]	Het Mythische Infuus van Aarde in zijn beste stadium.
+55303	Wind Infusion [V]	Het Mythische Infuus van Wind in zijn beste stadium.
+55304	Dark Infusion [V]	Het Mythische Infuus van Duisternis in zijn beste stadium.
+55305	Light Infusion [V]	Het Mythische Infuus van Licht in zijn beste stadium.
+55401	Apenei	Klik met de rechtermuisknop op het ei als je wil dat het uitkomt.
+55402	Spinnenei	Klik met de rechtermuisknop op het ei als je wil dat het uitkomt.
+55403	Razador's Ei	Klik met de rechtermuisknop op het ei als je wil dat het uitkomt.
+55404	Nemere's Ei	Klik met de rechtermuisknop op het ei als je wil dat het uitkomt.
+55405	Blauw Draken Ei	Klik met je rechtermuisknop op het ei als je jouw huisdier uit wil laten komen.
+55406	Rood Draken Ei	Klik met je rechtermuisknop op het ei als je jouw huisdier uit wil laten komen.
+55407	AzraelMini Azrael's Ei	Klik met je rechtermuisknop op het ei als je jouw huisdier uit wil laten komen.
+55408	Dikke Minibeul Ei	Klik met je rechtermuisknop op het ei als je jouw huisdier uit wil laten komen.
+55409	Baby Baahshido's Ei	Klik met je rechtermuisknop op het ei als je jouw huisdier uit wil laten komen.
+55410	Nessie Ei	Klik met je rechtermuisknop op het ei als je jouw huisdier uit wil laten komen.
+55701	Mini Aapje	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55702	Mini Spin	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55703	Mini Razador	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55704	Mini Nemere	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55705	Dragonette	Klik met de rechtermuisknop op je huisdier, druk vervolgens op de P-toets op je toetsenbord om het huisdierenmenu op te roepen.
+55706	Mini Meley	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55707	Mini Azrael	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55708	Dikke Minibeul	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55709	Baby Baashido	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+55710	Nessie	Klik met de rechtermuisknop om je huisdier op te roepen, druk daarna op 'P' op je toetsenbord om het huisdierenmenu te tonen.
+56000	Appaloosa	Dit zegel roept jouw goedaardige Appaloosa op. Het geeft zijn berijder +10 bewegingssnelheid.
+69544	Nova Token	Wordt gebruikt om speciale cosmetica te kopen tijdens evenementen.
+71000	Gesch. van Vl. Training	Dit voorwerp maakt het mogelijk om boost- en beschermingsvaardigheden volledig te verwijderen. Je kunt nieuwe vaardigheden leren door gebruik te maken van Boost- of Beschermingshandleidingen.
+71112	Bioloog Reset Geschrift	Stelt al je bioloog missies opnieuw in met de mogelijkheid om je beloningen opnieuw te selecteren.
+71165	Poolroofdier	Je kunt dit zegel gebruiken om je Poolroofdier op te roepen. Het verhoogt je bewegingssnelheid met 60.
+71189	Betover Voorwerp+	Verwijdert de bonussen van één van je items en voegt nieuwe toe. Je krijgt een voorproefje te zien van de nieuwe bonussen en daarna kun je beslissen of je de weergegeven bonussen wil accepteren.
+71190	Pompoen Kist	Je ontvangt deze Pompoen Kist alleen voor hele speciale prestaties.
+71191	Zak Snoep	Sam Pumpkin zal je nacht verzoeten met de inhoud van deze zak. Open 'm en maak je op voor een verrassing!
+71192	Donder	Je kunt dit zegel gebruiken om je rendier Donner op te roepen. Het verhoogt je bewegingssnelheid met 20 en ervaringsopname met 30%.
+71193	Blitzen	Je kunt dit zegel gebruiken om je rendier Blitzen op te roepen. Het verhoogt je bewegingssnelheid met 20 en ervaringsopname met 30%.
+71194	Gouden Okey Doos	Je ontvangt 5 kaartensets die elk uit 24 Okey Verzamelkaarten bestaan (120 in totaal). Je kunt geen kaarten meer ontvangen als het evenement afgelopen is.
+71195	Zilveren Okey Doos	Je ontvangt 1 kaartenset van 24 Okey Verzamelkaarten. Je kunt geen kaarten meer ontvangen als het evenement afgelopen is.
+71196	Bronzen Okey Doos	Je ontvangt 6 Okey Verzamelkaarten. Je kunt geen kaarten meer ontvangen als het evenement afgelopen is.
+71197	Nugget (marineblauw)	Je kunt dit zegel gebruiken om Nugget op te roepen, de kolossale gevechtshaan. Het geeft je +15% kracht tegen monsters en verhoogt ervaringsopname met 30%.
+71198	Muffin (roze)	Je kunt dit zegel gebruiken om Muffin op te roepen, de gevreesde gevechtskip. Het geeft je +15% kracht tegen monsters en verhoogt ervaringsopname met 30%.
+71220		
+71235	Cerberus (Goud)	Je kunt dit zegel gebruiken om jouw angstaanjagende driekoppige hellehond op te roepen.
+71236	Cerberus (Zilver)	Je kunt dit zegel gebruiken om jouw angstaanjagende driekoppige hellehond op te roepen.
+71237	Wild Zwijn	De magie van dit zegel roept een machtige dierengeest op die je snel naar een bestemming van jouw keuze zal voeren.
+71238	Wolf	De magie van dit zegel roept een machtige dierengeest op die je snel naar een bestemming van jouw keuze zal voeren.
+71239	Tijger	De magie van dit zegel roept een machtige dierengeest op die je snel naar een bestemming van jouw keuze zal voeren.
+71240	Leeuw	De magie van dit zegel roept een machtige dierengeest op die je snel naar een bestemming van jouw keuze zal voeren.
+71241	Paardrijkaartje	Draag deze kaart om 10 minuten lang een Pony te berijden.
+71394	Feniks	Dit is een vliegend rijdier	 Gebruik de Shift Toets om omhoog te gaan en de X toets om omlaag te gaan.
+71395	Feniks	Dit is een vliegend rijdier	 Gebruik de Shift Toets om omhoog te gaan en de X toets om omlaag te gaan.
+72325	Transmutatie Omkering	Keert de transmutatie om van een item.
+72326	Transmutatie Omkering	Keert de transmutatie om van een item en het artikel terugbetalen.
+72709	Tijger Bot Oorbellen	Jouw aanvalswaarde wordt verhoogd met 200 punten gedurende 20 uur (tijd telt alleen af zolang het item gedragen wordt).
+72710	Draken Bot Oorbellen	Jouw verdedigingswaarde wordt verhoogd met 300 punten gedurende 20 uur (tijd telt alleen af zolang het item gedragen wordt).
+72711	Tijger Bot Armband	De schade die jouw vaardigheden toebrengen wordt verhoogd met 30 punten gedurende 20 uur (tijd telt alleen af zolang het item gedragen wordt).
+72712	Draken Bot Armband	Je verdedigingen tegen vaardigheden worden verhoogd met 30 punten gedurende 20 uur (tijd telt alleen af zolang het item gedragen wordt).
+72800	Steen der Robijn 	Maakt een Robijn Traan Ader vlakbij je karakter.
+72801	Steen der Graniet	Maakt een Graniet Traan Ader vlakbij je karakter.
+72802	Steen der Smaragd	Maakt een Smaragd Traan Ader vlakbij je karakter.
+72803	Steen der Saffier	Maakt een Saffier Traan Ader vlakbij je karakter.
+72804	Steen der Toermalijn	Maakt een Toermalijn Traan Ader vlakbij je karakter.
+76191	Green Savior Spell	Hiermee kunt u 1-5 bonussen naar keuze kiezen.
+76192	Blue Rare Spell	Hiermee kunt u 6-7 bonussen naar keuze kiezen.
+79505	Okey Verzamelkaart	Zodra je 24 Okey Verzamelkaarten opgestapeld hebt, ontvang je automatisch een Okey Kaartenset.
+79506	Okey Kaartenset	Met deze kaartenset kun je een potje Okey spelen. De kaartenset wordt automatisch uit je inventaris verwijderd na het starten van het spel.
+80018	NC Coupon (6000)	Coupon ter waarde van 6000 Draken Munten. Item is verhandelbaar.
+85001	Heersergordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85002	Heersergordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85003	Heersergordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85004	Heersergordel (aangep.)	Deze gordel haalt 11~25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85005	Meestergordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85006	Meestergordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85007	Meestergordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85008	Meestergordel (aangep.)	Deze gordel haalt 11~25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85009	Certificate of Reversal	Verwijder de bonussen en het item volledig van je schoudergordel.
+85010	Certificate of Reversal+	Verwijdert de bonussen en geeft het item terug dat geabsorbeerd werd.
+85011	Heersergordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85012	Heersergordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85013	Heersergordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85014	Heersergordel (aangep.)	Deze gordel haalt 11~25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85015	Konink. Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85016	Konink. Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85017	Konink. Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85018	Konink. Gordel (aangep.)	Deze gordel haalt 11~25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85021	Jubileumgordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85022	Jubileumgordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85023	Jubileumgordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+85024	Jubileumgordel (aangep.)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86001	Zi Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86002	Zi Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86003	Zi Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86004	Zi Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86005	Chou Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86006	Chou Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86007	Chou Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86008	Chou Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86011	Yin Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86012	Yin Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86013	Yin Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86014	Yin Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86015	Mao Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86016	Mao Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86017	Mao Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86018	Mao Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86021	Chen Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86022	Chen Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86023	Chen Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86024	Chen Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86025	Si Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86026	Si Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86027	Si Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86028	Si Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86031	Wu Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86032	Wu Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86033	Wu Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86034	Wu Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86035	Wei Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86036	Wei Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86037	Wei Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86038	Wei Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86041	Shen Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86042	Shen Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86043	Shen Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86044	Shen Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86045	You Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86046	You Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86047	You Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86048	You Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86051	Xu Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86052	Xu Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86053	Xu Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86054	Xu Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86055	Hai Gordel (basis)	Deze gordel haalt 1% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86056	Hai Gordel (fijn)	Deze gordel haalt 5% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86057	Hai Gordel (nobel)	Deze gordel haalt 10% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+86058	Hai Gordel (aangepast)	Deze gordel haalt 11-25% van de bonussen van het wapen of pantser dat je gebruikt voor absorptie.
+91010	Buffi	Versterkt je karakter automatisch met de Buffs van Draken Sjamaan.
+91011	Buffi	Versterkt je karakter automatisch met de Buffs van Draken Sjamaan.
+91012	Buffi	Versterkt je karakter automatisch met de Buffs van Draken Sjamaan.
+91013	Buffi	Versterkt je karakter automatisch met de Buffs van Draken Sjamaan.
+91014	Buffi	Versterkt je karakter automatisch met de Buffs van Draken Sjamaan.
+91015	Buffi	Versterkt je karakter automatisch met de Buffs van Draken Sjamaan.
+91016	Healer	Versterkt je karakter automatisch met de Buffs van Helende Sjamaan.
+91017	Healer	Versterkt je karakter automatisch met de Buffs van Helende Sjamaan.
+91018	Healer	Versterkt je karakter automatisch met de Buffs van Helende Sjamaan.
+91019	Healer	Versterkt je karakter automatisch met de Buffs van Helende Sjamaan.
+91020	Healer	Versterkt je karakter automatisch met de Buffs van Helende Sjamaan.
+91021	Healer	Versterkt je karakter automatisch met de Buffs van Helende Sjamaan.
+91050	Bioloog Kist I	Onthult alle bioloog missies van level 30 tot level 94.
+91051	Bioloog Kist II	Onthult alle bioloog missies van level 100 tot level 130.

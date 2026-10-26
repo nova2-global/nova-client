@@ -2628,3 +2628,1245 @@
 90011	Buştean	Metariale de constructii pentru Cladirea Breslei.
 90012	Placaj	Material de constructii pentru Cladirea Breslei.
 90013		
+300	Lamă Zodiac+0	
+301	Lamă Zodiac+1	
+302	Lamă Zodiac+2	
+303	Lamă Zodiac+3	
+304	Lamă Zodiac+4	
+305	Lamă Zodiac+5	
+306	Lamă Zodiac+6	
+307	Lamă Zodiac+7	
+308	Lamă Zodiac+8	
+309	Lamă Zodiac+9	
+310	Sabie Zodiac+0	
+311	Sabie Zodiac+1	
+312	Sabie Zodiac+2	
+313	Sabie Zodiac+3	
+314	Sabie Zodiac+4	
+315	Sabie Zodiac+5	
+316	Sabie Zodiac+6	
+317	Sabie Zodiac+7	
+318	Sabie Zodiac+8	
+319	Sabie Zodiac+9	
+1180	Pumnal Zodiac+0	
+1181	Pumnal Zodiac+1	
+1182	Pumnal Zodiac+2	
+1183	Pumnal Zodiac+3	
+1184	Pumnal Zodiac+4	
+1185	Pumnal Zodiac+5	
+1186	Pumnal Zodiac+6	
+1187	Pumnal Zodiac+7	
+1188	Pumnal Zodiac+8	
+1189	Pumnal Zodiac+9	
+2200	Arc Zodiac+0	
+2201	Arc Zodiac+1	
+2202	Arc Zodiac+2	
+2203	Arc Zodiac+3	
+2204	Arc Zodiac+4	
+2205	Arc Zodiac+5	
+2206	Arc Zodiac+6	
+2207	Arc Zodiac+7	
+2208	Arc Zodiac+8	
+2209	Arc Zodiac+9	
+3220	Glaive Zodiac+0	
+3221	Glaive Zodiac+1	
+3222	Glaive Zodiac+2	
+3223	Glaive Zodiac+3	
+3224	Glaive Zodiac+4	
+3225	Glaive Zodiac+5	
+3226	Glaive Zodiac+6	
+3227	Glaive Zodiac+7	
+3228	Glaive Zodiac+8	
+3229	Glaive Zodiac+9	
+5160	Clopot Zodiac+0	
+5161	Clopot Zodiac+1	
+5162	Clopot Zodiac+2	
+5163	Clopot Zodiac+3	
+5164	Clopot Zodiac+4	
+5165	Clopot Zodiac+5	
+5166	Clopot Zodiac+6	
+5167	Clopot Zodiac+7	
+5168	Clopot Zodiac+8	
+5169	Clopot Zodiac+9	
+6120	Gheară Zodiac+0	
+6121	Gheară Zodiac+1	
+6122	Gheară Zodiac+2	
+6123	Gheară Zodiac+3	
+6124	Gheară Zodiac+4	
+6125	Gheară Zodiac+5	
+6126	Gheară Zodiac+6	
+6127	Gheară Zodiac+7	
+6128	Gheară Zodiac+8	
+6129	Gheară Zodiac+9	
+7300	Evantai Zodiac+0	
+7301	Evantai Zodiac+1	
+7302	Evantai Zodiac+2	
+7303	Evantai Zodiac+3	
+7304	Evantai Zodiac+4	
+7305	Evantai Zodiac+5	
+7306	Evantai Zodiac+6	
+7307	Evantai Zodiac+7	
+7308	Evantai Zodiac+8	
+7309	Evantai Zodiac+9	
+9506	Sabie+3	
+9507	Pumnal+3	
+9508	Evantai+3	
+9509	Torţă de Oţel+3	
+9600	Talisman Foc+0	
+9601	Talisman Foc+1	
+9602	Talisman Foc+2	
+9603	Talisman Foc+3	
+9604	Talisman Foc+4	
+9605	Talisman Foc+5	
+9606	Talisman Foc+6	
+9607	Talisman Foc+7	
+9608	Talisman Foc+8	
+9609	Talisman Foc+9	
+9610	Talisman Foc+10	
+9611	Talisman Foc+11	
+9612	Talisman Foc+12	
+9613	Talisman Foc+13	
+9614	Talisman Foc+14	
+9615	Talisman Foc+15	
+9616	Talisman Foc+16	
+9617	Talisman Foc+17	
+9618	Talisman Foc+18	
+9619	Talisman Foc+19	
+12690	Coif Oţel Dragon +0	
+12691	Coif Oţel Dragon +1	
+12692	Coif Oţel Dragon +2	
+12693	Coif Oţel Dragon +3	
+12694	Coif Oţel Dragon +4	
+12695	Coif Oţel Dragon +5	
+12696	Coif Oţel Dragon +6	
+12697	Coif Oţel Dragon +7	
+12698	Coif Oţel Dragon +8	
+12699	Coif Oţel Dragon +9	
+12700	Glugă Dragon +0	
+12701	Glugă Dragon +1	
+12702	Glugă Dragon +2	
+12703	Glugă Dragon +3	
+12704	Glugă Dragon +4	
+12705	Glugă Dragon +5	
+12706	Glugă Dragon +6	
+12707	Glugă Dragon +7	
+12708	Glugă Dragon +8	
+12709	Glugă Dragon +9	
+12710	Coif Solzi Dragon +0	
+12711	Coif Solzi Dragon +1	
+12712	Coif Solzi Dragon +2	
+12713	Coif Solzi Dragon +3	
+12714	Coif Solzi Dragon +4	
+12715	Coif Solzi Dragon +5	
+12716	Coif Solzi Dragon +6	
+12717	Coif Solzi Dragon +7	
+12718	Coif Solzi Dragon +8	
+12719	Coif Solzi Dragon +9	
+12720	Pălărie Dragon +0	
+12721	Pălărie Dragon +1	
+12722	Pălărie Dragon +2	
+12723	Pălărie Dragon +3	
+12724	Pălărie Dragon +4	
+12725	Pălărie Dragon +5	
+12726	Pălărie Dragon +6	
+12727	Pălărie Dragon +7	
+12728	Pălărie Dragon +8	
+12729	Pălărie Dragon +9	
+15440	Papuci de Foc+0	
+15441	Papuci de Foc+1	
+15442	Papuci de Foc+2	
+15443	Papuci de Foc+3	
+15444	Papuci de Foc+4	
+15445	Papuci de Foc+5	
+15446	Papuci de Foc+6	
+15447	Papuci de Foc+7	
+15448	Papuci de Foc+8	
+15449	Papuci de Foc+9	
+15450	Papuci de Apă+0	
+15451	Papuci de Apă+1	
+15452	Papuci de Apă+2	
+15453	Papuci de Apă+3	
+15454	Papuci de Apă+4	
+15455	Papuci de Apă+5	
+15456	Papuci de Apă+6	
+15457	Papuci de Apă+7	
+15458	Papuci de Apă+8	
+15459	Papuci de Apă+9	
+19000	Piatra Flacara Rosie	Imbunatateste bonusurile curelei tale.
+19290	Armură Zodiac+0	
+19291	Armură Zodiac+1	
+19292	Armură Zodiac+2	
+19293	Armură Zodiac+3	
+19294	Armură Zodiac+4	
+19295	Armură Zodiac+5	
+19296	Armură Zodiac+6	
+19297	Armură Zodiac+7	
+19298	Armură Zodiac+8	
+19299	Armură Zodiac+9	
+19490	Costum Zodiac+0	
+19491	Costum Zodiac+1	
+19492	Costum Zodiac+2	
+19493	Costum Zodiac+3	
+19494	Costum Zodiac+4	
+19495	Costum Zodiac+5	
+19496	Costum Zodiac+6	
+19497	Costum Zodiac+7	
+19498	Costum Zodiac+8	
+19499	Costum Zodiac+9	
+19690	Platoşă Zodiac+0	
+19691	Platoşă Zodiac+1	
+19692	Platoşă Zodiac+2	
+19693	Platoşă Zodiac+3	
+19694	Platoşă Zodiac+4	
+19695	Platoşă Zodiac+5	
+19696	Platoşă Zodiac+6	
+19697	Platoşă Zodiac+7	
+19698	Platoşă Zodiac+8	
+19699	Platoşă Zodiac+9	
+19890	Haină Zodiac+0	
+19891	Haină Zodiac+1	
+19892	Haină Zodiac+2	
+19893	Haină Zodiac+3	
+19894	Haină Zodiac+4	
+19895	Haină Zodiac+5	
+19896	Haină Zodiac+6	
+19897	Haină Zodiac+7	
+19898	Haină Zodiac+8	
+19899	Haină Zodiac+9	
+20760	Armură Aurora+0	
+20761	Armură Aurora+1	
+20762	Armură Aurora+2	
+20763	Armură Aurora+3	
+20764	Armură Aurora+4	
+20765	Armură Aurora+5	
+20766	Armură Aurora+6	
+20767	Armură Aurora+7	
+20768	Armură Aurora+8	
+20769	Armură Aurora+9	
+20770	Costum Ambuscadă+0	
+20771	Costum Ambuscadă+1	
+20772	Costum Ambuscadă+2	
+20773	Costum Ambuscadă+3	
+20774	Costum Ambuscadă+4	
+20775	Costum Ambuscadă+5	
+20776	Costum Ambuscadă+6	
+20777	Costum Ambuscadă+7	
+20778	Costum Ambuscadă+8	
+20779	Costum Ambuscadă+9	
+20780	Armură Demonică+0	
+20781	Armură Demonică+1	
+20782	Armură Demonică+2	
+20783	Armură Demonică+3	
+20784	Armură Demonică+4	
+20785	Armură Demonică+5	
+20786	Armură Demonică+6	
+20787	Armură Demonică+7	
+20788	Armură Demonică+8	
+20789	Armură Demonică+9	
+20790	Haina Trufiei+0	
+20791	Haina Trufiei+1	
+20792	Haina Trufiei+2	
+20793	Haina Trufiei+3	
+20794	Haina Trufiei+4	
+20795	Haina Trufiei+5	
+20796	Haina Trufiei+6	
+20797	Haina Trufiei+7	
+20798	Haina Trufiei+8	
+20799	Haina Trufiei+9	
+20800	Armură Erou Întunecat+0	
+20801	Armură Erou Întunecat+1	
+20802	Armură Erou Întunecat+2	
+20803	Armură Erou Întunecat+3	
+20804	Armură Erou Întunecat+4	
+20805	Armură Erou Întunecat+5	
+20806	Armură Erou Întunecat+6	
+20807	Armură Erou Întunecat+7	
+20808	Armură Erou Întunecat+8	
+20809	Armură Erou Întunecat+9	
+20810	Armură Lavă Lucioasă+0	
+20811	Armură Lavă Lucioasă+1	
+20812	Armură Lavă Lucioasă+2	
+20813	Armură Lavă Lucioasă+3	
+20814	Armură Lavă Lucioasă+4	
+20815	Armură Lavă Lucioasă+5	
+20816	Armură Lavă Lucioasă+6	
+20817	Armură Lavă Lucioasă+7	
+20818	Armură Lavă Lucioasă+8	
+20819	Armură Lavă Lucioasă+9	
+20820	Costum Lună Roşie+0	
+20821	Costum Lună Roşie+1	
+20822	Costum Lună Roşie+2	
+20823	Costum Lună Roşie+3	
+20824	Costum Lună Roşie+4	
+20825	Costum Lună Roşie+5	
+20826	Costum Lună Roşie+6	
+20827	Costum Lună Roşie+7	
+20828	Costum Lună Roşie+8	
+20829	Costum Lună Roşie+9	
+20830	Armură Focul Iadului+0	
+20831	Armură Focul Iadului+1	
+20832	Armură Focul Iadului+2	
+20833	Armură Focul Iadului+3	
+20834	Armură Focul Iadului+4	
+20835	Armură Focul Iadului+5	
+20836	Armură Focul Iadului+6	
+20837	Armură Focul Iadului+7	
+20838	Armură Focul Iadului+8	
+20839	Armură Focul Iadului+9	
+20840	Haină Înflăcărată+0	
+20841	Haină Înflăcărată+1	
+20842	Haină Înflăcărată+2	
+20843	Haină Înflăcărată+3	
+20844	Haină Înflăcărată+4	
+20845	Haină Înflăcărată+5	
+20846	Haină Înflăcărată+6	
+20847	Haină Înflăcărată+7	
+20848	Haină Înflăcărată+8	
+20849	Haină Înflăcărată+9	
+20850	Armură din Agate+0	
+20851	Armură din Agate+1	
+20852	Armură din Agate+2	
+20853	Armură din Agate+3	
+20854	Armură din Agate+4	
+20855	Armură din Agate+5	
+20856	Armură din Agate+6	
+20857	Armură din Agate+7	
+20858	Armură din Agate+8	
+20859	Armură din Agate+9	
+20860	Armură de Oase+0	
+20861	Armură de Oase+1	
+20862	Armură de Oase+2	
+20863	Armură de Oase+3	
+20864	Armură de Oase+4	
+20865	Armură de Oase+5	
+20866	Armură de Oase+6	
+20867	Armură de Oase+7	
+20868	Armură de Oase+8	
+20869	Armură de Oase+9	
+20870	Costum Metamorfoză+0	
+20871	Costum Metamorfoză+1	
+20872	Costum Metamorfoză+2	
+20873	Costum Metamorfoză+3	
+20874	Costum Metamorfoză+4	
+20875	Costum Metamorfoză+5	
+20876	Costum Metamorfoză+6	
+20877	Costum Metamorfoză+7	
+20878	Costum Metamorfoză+8	
+20879	Costum Metamorfoză+9	
+20880	Armură Luminoasă+0	
+20881	Armură Luminoasă+1	
+20882	Armură Luminoasă+2	
+20883	Armură Luminoasă+3	
+20884	Armură Luminoasă+4	
+20885	Armură Luminoasă+5	
+20886	Armură Luminoasă+6	
+20887	Armură Luminoasă+7	
+20888	Armură Luminoasă+8	
+20889	Armură Luminoasă+9	
+20890	Haina Armoniei+0	
+20891	Haina Armoniei+1	
+20892	Haina Armoniei+2	
+20893	Haina Armoniei+3	
+20894	Haina Armoniei+4	
+20895	Haina Armoniei+5	
+20896	Haina Armoniei+6	
+20897	Haina Armoniei+7	
+20898	Haina Armoniei+8	
+20899	Haina Armoniei+9	
+20900	Armură Piatra Lunii+0	
+20901	Armură Piatra Lunii+1	
+20902	Armură Piatra Lunii+2	
+20903	Armură Piatra Lunii+3	
+20904	Armură Piatra Lunii+4	
+20905	Armură Piatra Lunii+5	
+20906	Armură Piatra Lunii+6	
+20907	Armură Piatra Lunii+7	
+20908	Armură Piatra Lunii+8	
+20909	Armură Piatra Lunii+9	
+20910	Armură Miraculoasă+0	
+20911	Armură Miraculoasă+1	
+20912	Armură Miraculoasă+2	
+20913	Armură Miraculoasă+3	
+20914	Armură Miraculoasă+4	
+20915	Armură Miraculoasă+5	
+20916	Armură Miraculoasă+6	
+20917	Armură Miraculoasă+7	
+20918	Armură Miraculoasă+8	
+20919	Armură Miraculoasă+9	
+20920	Costum Noapte Albastră+0	
+20921	Costum Noapte Albastră+1	
+20922	Costum Noapte Albastră+2	
+20923	Costum Noapte Albastră+3	
+20924	Costum Noapte Albastră+4	
+20925	Costum Noapte Albastră+5	
+20926	Costum Noapte Albastră+6	
+20927	Costum Noapte Albastră+7	
+20928	Costum Noapte Albastră+8	
+20929	Costum Noapte Albastră+9	
+20930	Armură Foc Negru+0	
+20931	Armură Foc Negru+1	
+20932	Armură Foc Negru+2	
+20933	Armură Foc Negru+3	
+20934	Armură Foc Negru+4	
+20935	Armură Foc Negru+5	
+20936	Armură Foc Negru+6	
+20937	Armură Foc Negru+7	
+20938	Armură Foc Negru+8	
+20939	Armură Foc Negru+9	
+20940	Haina Lunii+0	
+20941	Haina Lunii+1	
+20942	Haina Lunii+2	
+20943	Haina Lunii+3	
+20944	Haina Lunii+4	
+20945	Haina Lunii+5	
+20946	Haina Lunii+6	
+20947	Haina Lunii+7	
+20948	Haina Lunii+8	
+20949	Haina Lunii+9	
+20950	Armură Onix+0	
+20951	Armură Onix+1	
+20952	Armură Onix+2	
+20953	Armură Onix+3	
+20954	Armură Onix+4	
+20955	Armură Onix+5	
+20956	Armură Onix+6	
+20957	Armură Onix+7	
+20958	Armură Onix+8	
+20959	Armură Onix+9	
+21200	Chingă Zodiac+0	
+21201	Chingă Zodiac+1	
+21202	Chingă Zodiac+2	
+21203	Chingă Zodiac+3	
+21204	Chingă Zodiac+4	
+21205	Chingă Zodiac+5	
+21206	Chingă Zodiac+6	
+21207	Chingă Zodiac+7	
+21208	Chingă Zodiac+8	
+21209	Chingă Zodiac+9	
+25043	Piatra Magica	Aceasta piatra iti garanteaza succesul in imbunatatirea obiectului. Pe langa asta, obiectul nu va fi nici distrus si nici decazut. Obiectul se nu poate negocia.
+25099	Spirit Stone Magic Scroll	.Un pergament magic care îți permite să extragi o piatră a alegerii tale din echipament.
+27125	Licoare de Luptă	O licoare puternică ce creşte punctele de atac şi apărare şi îţi oferă +50,000 puncte de lovitură (doar în Zonă de Război).
+28044	Piatra Anti-Magie+0	
+28045	Piatra Anti-Magie+0	
+28144	Piatra Anti-Magie+1	
+28145	Piatra Anti-Magie+1	
+28244	Piatra Anti-Magie+2	
+28245	Piatra Anti-Magie+2	
+28344	Piatra Anti-Magie+3	
+28345	Piatra Anti-Magie+3	
+28444	Piatra Anti-Magie+4	
+28445	Piatra Anti-Magie+4	
+30334	Voucher Coafură	Dreapta mouse pe voucher pentru a obţine o coafură îngrozitor de frumoasă.
+30338	Voucher Coafură+	Dreapta mouse pe voucher pentru a primi o coafură îngrozitor de frumoasă ce îţi oferă cel puţin un bonus aleatoriu.
+30341	Inel Focul Dragonului	O aură cu o energie intensă te învăluie. Forjat în flăcările unui dragon, acest inel va distruge instant statuia din Adăpostul lui Meley.
+30600	Model Cusut	
+30601	Design Armură	
+30602	Vopsea Albastră	
+30603	Vopsea Roşie	
+30604	Vopsea Gri	
+30605	Foi de Aur	
+30606	Foi de Argint	
+30607	Foi de Cupru	
+30608	Foi de Oţel	
+30609	Foi de Bronz	
+30610	Mithril	
+30611	Curele Dure	
+30612	Frânghii Rezistente	
+30613	Piatra Driadelor	Învăluită de o strălucire verde, această piatră misterioasă îmbracă sufletul unei driade, un spirit copac. Driadele cunosc cuvintele secrete pentru a putea avea acces la temniţa Erebus.
+30614	Vopsea Neagră	
+30615	Vopsea Albă	
+30616	Dioxid de Titan	Acest cristal prismatic este folosit pentru rafinarea unei piese din echipament.
+30617	Agate	Piatra preţioasă strălucitoare este folosită pentru rafinarea unei piese din echipament.
+30618	Piatra Lunii	O scânteie din lumina lunii este prinsă în această bijuterie în formă de lacrimă. Folosită pentru rafinarea unei piese din echipament.
+30619	Vopsea Auriu Metalizat	
+30620	Corn Dragon Roşu	Coarnele Dragonului sunt facute din cele mai dure materiale.
+30621	Solzi Dragon Roşu	Solzii de dragon sunt cunoscuţi ca fiind printre cele mai dure materiale.
+30622	Design Armură: Coif	Acest obiect este necesar pentru rafinare.
+30623	Cartea Adevărului	O carte groasă cu o inscripţie ce pare că străluceşte. Folosit pentru rafinarea unei piese din echipament.
+30624	Sufletul Adevărului	Un suflet bun, prins pentru totdeauna într-un glob de cristal. Folosit pentru rafinarea unei piese din echipament.
+30625	Padparadscha	Cristalele Padparadscha sunt safire roşii, rare şi extrem de rafinate. Folosit pentru rafinarea unei piese din echipament.
+30626	Cianit	O piatră preţioasă albastră extrasă din minele Muntelui Sohan. Folosit pentru rafinarea unei piese din echipament.
+30627	Fructul Zeului	Fruct foarte dulce din grădina Zeul Dragon. Folosit pentru rafinarea unei piese din echipament.
+30628	Floare Divină	O floare sfântă din grădina Zeul Dragon. Folosit pentru rafinarea unei piese din echipament.
+30629	Elixirul Zeului	Această sticlă conţine un lichid strălucitor misterios. Folosit pentru rafinarea unei piese din echipament.
+30630	Aripi de Dragon	Foloseşte aripile unui dragon Alteran pentru a rafina echipamentul.
+30639	Fragment Misterios	Foloseşte fragmentele pentru ornament din Magazinul Yut Nori. Trage o Tablă Yut Nori pe masă pentru a deschide Fereastra Rafinament.
+30640	Ornament Halloween (m)	Ornament pentru realizarea unui Cufăr de Halloween (m).
+30641	Orn Pălărie Halloween(m)	Ornament pentru realizarea unui Cufăr Pălărie de Halloween (m).
+30642	Ornam Însoţitor Bântuit	Ornament pentru realizarea unui Cufăr Însoţitor Bântuit.
+30643	Ornament Mount Bântuit	Ornament pentru realizarea unui Cufăr Mount Bântuit.
+30644	Ornament Bijuterii	Ornament pentru realizarea unui Cufăr de Bijuterii.
+30645	Ornament Însoţitor	Ornament pentru realizarea unui Cufăr Însoţitor.
+30646	Ornament Eşarfă	Ornament pentru realizarea unui Cufăr Eşarfă.
+30647	Orn Obiect de Bijuterie	Ornament pentru realizarea unui Cufăr Obiect de Bijuterie.
+30648	Ornament Carte Însoţitor	Ornament pentru realizarea unui Cufăr Carte Însoţitor.
+30649	Ornament cu Dinţi+	Ornament pentru realizarea unui Cufăr cu Dinţi+.
+30650	Ornament Cor Draconis	Ornament pentru realizarea unui Cufăr Cor Draconis.
+30651	Ornament Gaya	Ornament pentru realizarea unui Cufăr Gaya.
+30652	Ornament Misterios	Ornament pentru realizarea unui Cufăr Misterios.
+30653	Ornament Cufăr Rubin	Ornament pentru realizarea unui Cufăr Rubin.
+30654	Ornament Halloween (f)	Ornament pentru realizarea unui Cufăr de Halloween (f).
+30655	Orn Pălărie Halloween(f)	Ornament pentru realizarea unui Cufăr Pălărie de Halloween (f).
+34000	Solar Blast	Un material rar și valoros folosit pentru îmbunătățirea echipamentului.
+34001	Magical Orb	O piatră foarte prețioasă folosită pentru îmbunătățirea echipamentului.
+34002	Fire Horn	O coarnă care aparținea cândva lui Razador, folosită pentru a fauri sau a îmbunătăți echipamentul.
+34003	Ice Horn	O coarnă care aparținea cândva lui Nemere, folosită pentru a fauri sau a îmbunătăți echipamentul.
+34004	Red Amulet	O amuletă fermecătoare și scumpă, folosită pentru îmbunătățirea echipamentul.
+34005	Green Amulet	O amuletă fermecătoare și scumpă, folosită pentru îmbunătățirea echipamentul.
+34006	Blue Amulet	O amuletă fermecătoare și scumpă, folosită pentru îmbunătățirea echipamentul.
+34007	Rock Of Darkness	O piatră valoroasă cu abilități întunecate.
+34008	Rock Of Gore	O piatră valoroasă cu abilități puternice.
+34009	Rock Of Poison	O piatră valoroasă cu abilități otrăvitoare.
+34010	Poison Marble	Material folosit pentru a-ti face echipamentul mai durabil.
+34011	Red Rock	O piatră foarte valoroasă folosită pentru îmbunătăți echipamentul.
+34012	Azure Stone	O piatră specială folosită pentru a îmbunătăți echipamente Azur.
+34013	Rainbow Vial	Un material de îmbunătățire cu un lichid puternic de curcubeu.
+34014	Red Crystal Shards	O bucată de cristal care se poate combina cu alte cristale.
+34015	Green Crystal Shards	O bucată de cristal care se poate combina cu alte cristale.
+34016	Blue Crystal Shards	O bucată de cristal care se poate combina cu alte cristale.
+34017	Multi-Crystal Fragment	O bijuterie folosită pentru a-ți îmbunătăți echipamentul.
+34018	Duratus Gem	Un material obținut de la Duratus, folosit pentru îmbunătățirea echipamentului.
+34019	Fear Gem	Un material obținut de la Dragonul Fricii, folosit pentru îmbunătățirea echipamentului.
+34020	Treasure Gem	Un material obținut de la Piatra Comorilor, folosit pentru îmbunătățirea echipamentului.
+34021	UPP1	O piatră specială folosită pentru îmbunătățirea echipamentului.
+34022	UPP2	O piatră specială folosită pentru îmbunătățirea echipamentului.
+34023	Red Wing Feather	O bucată de pană folosită pentru a fauri aripi.
+34024	Green Wing Feather	O bucată de pană folosită pentru a fauri aripi.
+34025	Blue Wing Feather	O bucată de pană folosită pentru a fauri aripi.
+34026	Wing Feather Set	O bucată de pană folosită pentru a fauri aripi.
+34027	Almighty Dragon Soul	Sufletul Atotputernicului Dragon, folosit pentru a fauri aripi.
+34028	Duratus Soul	Sufletul lui Duratus, folosit pentru a fauri aripi.
+34029	Fear Soul	Sufletul Dragonului Fricii, folosit pentru a fauri aripi.
+34030	Treasure Soul	Sufletul Pietrei Comorilor, folosit pentru a fauri aripi.
+34031	Halloween Soul	Sufletul Halloweenului, folosit pentru a fauri aripi.
+34032	Gold Carved Stone	O piatră antică foarte folositoare cu puteri formidabile.
+34033	Weapon Stone Token	Un token necesar lui Jeon Seon pentru îmbunătățirea pietrelor sufletului a armelor.
+34034	Armour Stone Token	Un token necesar lui Jeon Seon pentru îmbunătățirea pietrelor sufletului a armurilor.
+34035	Mazel Portal	O cheie răsucită care deschide portalul spre bosul Mazel.
+34036	Battle Gem	O bijuterie puternică folosită pentru îmbunătățirea echipamentului.
+34037	Red Charming Cube	Un cub roșu special folosit pentru îmbunătățirea echipamentului.
+34038	Green Charming Cube	Un cub verde special folosit pentru îmbunătățirea echipamentului.
+34039	Blue Charming Cube	Un cub albastru special folosit pentru îmbunătățirea echipamentului.
+34040	Mazel Heart	Inima bosului Mazel este cheia pentru super putere.
+34041	Battle Orb	O sferă care oferă abilitați puternice în luptă, folosită pentru îmbunătățirea echipamentului.
+34042	Multi Cube	Un cub magnific cu o putere interioară incredibilă, făcut din cele trei cuburi colorate.
+34052	Pumpkin Lolly	Acadea dovleac facuta din ingrediente secrete care va ofera | +15% Tare impotriva monstrilor | +15% Tare impotriva liderilor | +15% Tare impotriva pietrelor metin 
+34053	Pumpkin	Alot of materials and goodies could be inside this little pumpkin.
+34067		
+34068		
+34070	Cufar de Craciun	Un cufar cu multe bunatati.
+34071	Cufar Costum Craciun(m)	Contine  costume temporare pentru  barbati cu bonusuri. | Acest obiect va fi sters dupa ce Santa va dispare.
+34072	Cufar Costum Craciun(m)+	Contine  costume permanente pentru barbati.
+34073	Cufar Costum Craciun(f)	Contine  costume temporare pentru  femei cu bonusuri. | Acest obiect va fi sters dupa ce Santa va dispare.
+34074	Cufar Costum Craciun(f)+	Contine c costume permanente pentru barbati.
+34075	Cufar Frizuri Craciun(m)	Contine  frizuri temporare pentru barbati. | Acest obiect va fi sters dupa ce Santa va dispare.
+34076	Cufar Frizuri Craciun(m)+	Contine  frizuri permanente pentru barbati.
+34077	Cufar Frizuri Craciun(f)	Contine  frizuri temporare pentru femei. | Acest obiect va fi sters dupa ce Santa va dispare.
+34078	Cufar Frizuri Craciun(f)+	Contine  frizuri permanente pentru femei.
+34080	Cufar Animale de Companie Craciun	Contine animale de companie cu bonusuri.| Acest obiect va fi sters dupa ce Santa va dispare.
+34081	Cufar Arme Craciun	Contine Contine costume pentru arma temporare cu bonusuri. | Acest obiect va fi sters dupa ce Santa va dispare.
+34082	Cufar Arme Craciun+	Contine costume pentru arma permanente.
+34083	Cufar de Aur Craciun	Un cufar foarte special.
+34084	Cheie de Aur Craciun	Folositor pentru a deschide Cufar de Aur Craciun.
+34085	Soseata Albastra Craciun	O soseata pentru a îndemâna iteme.
+34086	Soseata Verde Craciun	O soseata pentru a îndemâna iteme.
+34087	Soseata Rosie Craciun	O soseata pentru a îndemâna iteme.
+34088	Soseata Galbena Craciun	O soseata pentru a îndemâna iteme.
+34089	Inimioara de Ciocolata	Gustoasa inimioara de ciocolata de craciun.
+34090	Banut de Craciun	Banut special care se poate gasi la evenimentul de Craciun.
+34091	Accesoriu Auriu	Rar accesoriu folosit pentru a îndemâna iteme .
+34092	Charming Cube Chest	Conține cuburi fermecătoare colorate.
+34184	Elemental Talisman	Cel mai puternic talisman care a existat vreodata, unul care este in pace cu toate elementele.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34185	Armor Enhancement Scroll	Un pergament care este folosit pentru a imbunatati armura.	Folosit la imbunatatirea echipamentului elemental si divin.
+34186	Weapon Enhancement Scroll	Un pergament care este folosit pentru a imbunatati arma.	Folosit la imbunatatirea echipamentului elemental si divin.
+34187	Accessory Enhancement Scroll	Un pergament care este folosit pentru a imbunatati accesoriile.	Folosit la imbunatatirea echipamentului elemental si divin.
+34188	Belt Enhancement Scroll	Un pergament care permite imbunatatirea ulterioara a curelelor pvm.	Folosit pentru imbunatatirea curelelor pvm.
+34189	Ring Enhancement Scroll	Un pergament care permite imbunatatirea ulterioara a inelelor pvm.	Folosit pentru imbunatatirea inelelor pvm.
+34190	Fire Pearl	O perla din adancul iadului cu o stralucire usoara de rosu.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34191	Water Pearl	O perla din adancul oceanului cu o stralucire usoara de albastru.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34192	Earth Pearl	O perla din adancul pamantului cu o stralucire usoara de galben.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34193	Wind Pearl	O perla din inaltul cerului cu o stralucire usoara de alb.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34194	Ancient Red Cloth	O panza care a fost confectionata din vechea roba de gardian al Ghirodei.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34195	Ancient Blue Cloth	O panza care a fost confectionata din vechea roba de gardian al Hydrei.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34196	Ancient Green Cloth	O panza care a fost confectionata din vechea roba de gardian al Sfinxului.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34197	Ancient Yellow Cloth	O panza care a fost confectionata din vechea roba de gardian al Conducatorului Turnului Alb.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34198	Fire Power Shard	Un ciob atat de puternic incat poate contine Elementul de Foc in nucleul sau.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34199	Water Power Shard	Un ciob atat de puternic incat poate contine Elementul de Apa in nucleul sau.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34200	Earth Power Shard	Un ciob atat de puternic incat poate contine Elementul de Pamant in nucleul sau.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34201	Wind Power Shard	Un ciob atat de puternic incat poate contine Elementul de Vant in nucleul sau.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34202	Fire Crystal	Un cristal care a apartinut candva conducatorului elementului de foc.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34203	Water Crystal	Un cristal care a apartinut candva conducatorului elementului de apa.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34204	Earth Crystal	Un cristal care a apartinut candva conducatorului elementului de pamant.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34205	Wind Crystal	Un cristal care a apartinut candva conducatorului elementului de vant.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34206	Fire Totem	Un simbol folosit in trecut de natiunea focului.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34207	Water Totem	Un simbol folosit in trecut de natiunea apei.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34208	Earth Totem	Un simbol folosit in trecut de natiunea pamantului.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34209	Wind Totem	Un simbol folosit in trecut de natiunea vantului.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34210	Eternal Flames	Flacara dintr-un loc atat de indepartat al iadului incat a devenit eterna.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34211	Ghidorah's Heart	Inima unei fiinte atat de puternice incat are capacitatea de a-l infrange pe insusi Lucifer.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34212	Hydra Power Orb	Un glob care are puterea unui vechi monstru antic care tocmai a reaparut.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34213	Hydra Summoning Tablet	Din adancurile oceanului, aceasta tableta contine scripturi vechi pentru a invoca monstrul cu trei capete.	Folosita pentru imbunatatirea echipamentului elemental si divin. 
+34214	Ancient Map	Transcrieri de la fiinte stravechi care te pot conduce catre moarte.	Folosita pentru imbunatatirea echipamentului elemental si divin. 
+34215	Wisdom book	Cu intelepciunea vechilor zei aceasta carte contine esenta celor mai puternice fiinte de pe Nova.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34216	Tear of the Lord Adenoid	O lacrima care contine puterea zeului vantului ce poate suprima cea mai dura emotie.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34217	White Tower Ruler's Key	Aceasta cheie permite oricui sa ajunga in camerele Lordului Adenoid pentru a incerca sa-l invinga.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34218	Fire Treasure Chest	Un cufar care contine cele mai puternice materiale pentru imbunatatirea echipamentelor.
+34219	Water Treasure Chest	Un cufar care contine cele mai puternice materiale pentru imbunatatirea echipamentelor.
+34220	Earth Treasure Chest	Un cufar care contine cele mai puternice materiale pentru imbunatatirea echipamentelor.
+34221	Wind Treasure Chest	Un cufar care contine cele mai puternice materiale pentru imbunatatirea echipamentelor.
+34222	Alchemy Ancient Stone	Piatra obtinuta de la fiintele antice ale padurii mitice pe care pot fi intiparite cunostintele padurii.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34223	Arcane Ancient Stone	Piatra antica arcana   Piatra obtinuta de la fiintele antice ale padurii mitice pe care pot fi intiparite cunostintele padurii.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34224	Vindicius Ancient Stone	Piatra obtinuta de la fiintele antice ale padurii mitice pe care pot fi intiparite cunostintele padurii.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34225	Alchemy Theory Book	Carte care poate fi gasita in ceata padurii mitice continand informatii despre cele stravechi.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34226	Arcane Theory Book	Carte care poate fi gasita in ceata padurii mitice continand informatii despre cele stravechi.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34227	Vindicius Theory Book	Carte care poate fi gasita in ceata padurii mitice continand informatii despre cele stravechi.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34228	Alchemy Soul Skull	Craniul unui batran, cand este utilizat cu alte elemente ale padurii mitice pot fi aduse noi imbunatatiri.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34229	Arcane Soul Skull	Craniul unui batran, cand este utilizat cu alte elemente ale padurii mitice pot fi aduse noi imbunatatiri.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34230	Vindicius Soul Skull	Craniul unui batran, cand este utilizat cu alte elemente ale padurii mitice pot fi aduse noi imbunatatiri.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34231	Tempestus Soul Skull	Craniul unui batran, cand este utilizat cu alte elemente ale padurii mitice pot fi aduse noi imbunatatiri.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34232	Tempestus Theory Book	Carte care poate fi gasita in ceata padurii mitice continand informatii despre cele stravechi.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34233	Tempestus Ancient Stone	Piatra obtinuta de la fiintele antice ale padurii mitice pe care pot fi intiparite cunostintele padurii.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34234	Empty Ticket	Un tichet de baza gol folosit pentru a pastra o trecere misterioasa a hartii catre temnitele elementale.
+34235	Holy Fire Stone	O piatra speciala care reflecta trecerea catre Cuibul Ghirodei.
+34236	Holy Water Stone	O piatra speciala care reflecta trecerea catre Hydra.
+34237	Holy Wind Stone	O piatra speciala care reflecta trecerea catre Turnul Alb.
+34238	Holy Earth Stone	O piatra speciala care reflecta trecerea catre Piramida Antica.
+34239	Ghidorah's Nest Ticket	Folosit pentru a trece de usile Cuibului Ghidorei.
+34240	Ship Defence Ticket	Folosit pentru a trece de usile navei.
+34241	White Tower Ticket	Folosit pentru a trece de usile Turnului Alb.
+34242	Ancient Pyramid Ticket	Folosit pentru a trece de usile Piramidei Antice.
+34243	Elemental Pearl	O perla puternica care cuprinde toate elementele.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34244	Elemental Totem	Un totem puternic care cuprinde toate elementele.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34245	Elemental Ancient Cloth	O panza mitica faurita din toate elementele.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34246	Elemental Power Shard	Un ciob special care cuprinde toate elementele.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34247	Elemental Crystal	Un cristal puternic care cuprinde toate elementele.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34248	Elemental Ancient Stone	O piatra din vremuri stravechi creata prin fuziunea tuturor natiunilor din padurea mitica.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34249	Elemental Theory Book	O carte din vremuri stravechi creata prin fuziunea tuturor natiunilor din padurea mitica.	Folosita pentru imbunatatirea echipamentului elemental si divin.
+34250	Elemental Soul Skull	Un craniu din vremuri stravechi creata prin fuziunea tuturor natiunilor din padurea mitica.	Folosit pentru imbunatatirea echipamentului elemental si divin.
+34256	Cristal Nephrite	Un tip de cristal pretios care apartine tritonilor.	Poate fi folosit pentru cercetarea biologului.
+34257	Harta Manticore	O harta speciala ce te conduce catre comoara manticorelor.	Poate fi folosit pentru cercetarea biologului.
+34258	Ciuperca Gargoyle	Cel mai apreciat tip de ciuperca pentru gargoyle.	Poate fi folosit pentru cercetarea biologului.
+34259	Praf Lemures	Ramasitele lemuresilor.	Poate fi folosit pentru cercetarea biologului.
+34260	Cheie Duratus	O cheie ce poate fi gasita in corpul lui Duratus iar cercetatorii inca nu au aflat de ce.	Poate fi folosit pentru cercetarea biologului.
+34261	Esenta Fricii	Esenta pe care dragonul fricii o foloseste pentru a imprastia frica in interiorul temnitei sale.	Poate fi folosit pentru cercetarea biologului.
+34262	Medalie Mazel	Medalie care aduce mandrie lui Mazel.	Poate fi folosit pentru cercetarea biologului.
+34263	Piatra Suflet Triton	O piatra legendara ce contine nucleul sufletului familiei Tritonilor.
+34264	Piatra Suflet Manticore	O piatra legendara ce contine nucleul sufletului familiei Manticorelor.
+34265	Piatra Suflet Gargoyle	O piatra legendara ce contine nucleul sufletului familiei Gargoyle.
+34266	Piatra Suflet Lemures	O piatra legendara ce contine nucleul sufletului familiei Lemures.
+34267	Piatra Suflet Duratus	O piatra legendara ce contine nucleul sufletului Duratus.
+34268	Piatra Suflet Frica	O piatra legendara ce contine nucleul sufletului Dragonului Fricii.
+34269	Piatra Suflet Mazel	O piatra legendara ce contine nucleul sufletului Mazel.
+34270	Cufarul incepatorilor	Un cufar foarte util care contine obiecte temporare din itemshop ce ii ajuta pe jucatorii noi sa avanseze.
+34500	Feather Chest	Un cufăr cu pene multicolore.
+34501	Shards Chest	Un cufăr cu bucăți de cristal multicolore.
+35100	Seon-Pyeongs Rest Scroll	Un pergament care îți permite să resetezi misiunile lui Seon-Pyeong de level 92 și 94.
+35101	Tichet schimbare gen	Un tichet special care va permite sa schimbati sexul costumelor dumneavoastra.
+39063	Actualizează Piaţă Gaya	Actualizează Piaţa Gaya înainte de timpul standard de 5 ore şi găseşte obiecte noi.
+39064	Extinde Piaţa Gaya	Extinde Piaţa Gaya, deschide un loc suplimentar pentru a oferta obiecte, începând cu primul loc din al doilea rând.
+39065		
+39066		
+40101	Lamă cu Dinţi	Acest accesoriu pentru armă îţi va transforma sabia intr-o drujbă de Halloween.
+40102	Pumnal cu Dinţi	Acest accesoriu pentru armă îţi va transforma pumnalul într-o drujbă de Halloween.
+40103	Arc cu Dinţi	Acest accesoriu pentru armă îţi va transforma arcul într-o drujbă de Halloween.
+40104	Spadă cu Dinţi	Acest accesoriu pentru armă îţi va transforma spada într-o drujbă de Halloween.
+40105	Clopot cu Dinţi	Acest accesoriu pentru armă îţi va transforma clopotul într-o drujbă de Halloween.
+40106	Evantai cu Dinţi	Acest accesoriu pentru armă îţi va transforma evantaiul într-o drujbă de Halloween.
+40107	Gheară cu Dinţi	Acest accesoriu pentru armă îţi va transforma gheara într-o drujbă de Halloween.
+40108	Lamă cu Dinţi+	Acest accesoriu pentru armă îţi va transforma sabia într-o drujbă de Halloween. Îţi ofera cel puţin un bonus aleatoriu.
+40109	Pumnal cu Dinţi+	Acest accesoriu pentru armă îţi va transforma pumnalul într-o drujbă de Halloween. Îţi ofera cel puţin un bonus aleatoriu.
+40110	Arc cu Dinţi+	Acest accesoriu pentru armă îţi va transforma arcul într-o drujbă de Halloween. Îţi ofera cel puţin un bonus aleatoriu.
+40111	Spadă cu Dinţi+	Acest accesoriu pentru armă îţi va transforma spada într-o drujbă de Halloween. Îţi ofera cel puţin un bonus aleatoriu.
+40112	Clopot cu Dinţi+	Acest accesoriu pentru armă îţi va transforma clopotul într-o drujbă de Halloween. Îţi ofera cel puţin un bonus aleatoriu.
+40113	Evantai cu Dinţi+	Acest accesoriu pentru armă îţi va transforma evantaiul într-o drujbă de Halloween. Îţi ofera cel puţin un bonus aleatoriu.
+40114	Gheară cu Dinţi+	Acest accesoriu pentru armă îţi va transforma gheara într-o drujbă de Halloween. Îţi ofera cel puţin un bonus aleatoriu.
+40115	Sabie Acadea	Un accesoriu de armă ce transformă sabia ta într-o acadea de Crăciun.
+40116	Pumnal Acadea	Un accesoriu de armă ce transformă pumnalul tău într-o acadea de Crăciun.
+40117	Arc Acadea	Un accesoriu de armă ce transformă arcul tău într-o acadea ren de Crăciun.
+40118	Glaive Acadea	Un accesoriu de armă ce transformă glaivele într-o turta dulce de Crăciun.
+40119	Clopot Acadea	Un accesoriu de armă ce transformă clopotul tău într-o acadea de Crăciun.
+40120	Evantai Acadea	Un accesoriu de armă ce transformă evantaiul tău într-o acadea de Crăciun.
+40121	Gheara Rudlof	Un accesoriu de armă ce transformă gheara ta într-un ren de Crăciun.
+40122	Sabie Acadea+	Un accesoriu de armă ce transformă sabia ta într-o acadea de Crăciun. Îţi oferă cel puţin un bonus aleatoriu.
+40123	Pumnal Acadea+	Un accesoriu de armă ce transformă pumnalul tău într-o acadea de Crăciun. Îţi oferă cel puţin un bonus aleatoriu.
+40124	Arc Acadea+	Un accesoriu de armă ce transformă arcul tău într-o acadea ren de Crăciun. Îţi oferă cel puţin un bonus aleatoriu.
+40125	Glaive Acadea+	Un accesoriu de armă ce transformă glaivele într-o turta dulce de Crăciun. Îţi oferă cel puţin un bonus aleatoriu.
+40126	Clopot Acadea+	Un accesoriu de armă ce transformă clopotul tău într-o acadea de Crăciun. Îţi oferă cel puţin un bonus aleatoriu.
+40127	Evantai Acadea+	Un accesoriu de armă ce transformă evantaiul tău într-o acadea de Crăciun. Îţi oferă cel puţin un bonus aleatoriu.
+40128	Gheara Acadea+	Un accesoriu de armă ce transformă gheara ta într-un ren de Crăciun. Îţi oferă cel puţin un bonus aleatoriu.
+40129	Lamă Aquarian	Accesoriu de armă care îţi conturează lama cu un strat de apă dură şi strălucitoare.
+40130	Pumnal Aquarian	Accesoriu de armă care îţi conturează pumnalul cu un strat de apă dură şi strălucitoare.
+40131	Arc Aquarian	Accesoriu de armă care îţi conturează arcul cu un strat de apă dură şi strălucitoare.
+40132	Glaive Aquarian	Accesoriu de armă care îţi conturează sabia două mâini cu un strat de apă dură şi strălucitoare.
+40133	Clopot Aquarian	Accesoriu de armă care îţi conturează clopotul cu un strat de apă dură şi strălucitoare.
+40134	Evantai Aquarian	Accesoriu de armă care îţi conturează evantaiul cu un strat de apă dură şi strălucitoare.
+40135	Gheare Aquarian	Accesoriu de armă care îţi conturează ghearele cu un strat de apă dură şi strălucitoare.
+40136	Lamă Aquarian+	Accesoriu de armă care îţi conturează lama cu un strat de apă dură şi strălucitoare. Îţi oferă cel puţin un bonus aleatoriu.
+40137	Pumnal Aquarian+	Accesoriu de armă care îţi conturează pumnalul cu un strat de apă dură şi strălucitoare. Îţi oferă cel puţin un bonus aleatoriu.
+40138	Arc Aquarian+	Accesoriu de armă care îţi conturează arcul cu un strat de apă dură şi strălucitoare. Îţi oferă cel puţin un bonus aleatoriu.
+40139	Glaive Aquarian+	Accesoriu de armă care îţi conturează sabia două mâini cu un strat de apă dură şi strălucitoare. Îţi oferă cel puţin un bonus aleatoriu.
+40140	Clopot Aquarian+	Accesoriu de armă care îţi conturează clopotul cu un strat de apă dură şi strălucitoare. Îţi oferă cel puţin un bonus aleatoriu.
+40141	Evantai Aquarian+	Accesoriu de armă care îţi conturează evantaiul cu un strat de apă dură şi strălucitoare. Îţi oferă cel puţin un bonus aleatoriu.
+40142	Gheare Aquarian+	Accesoriu de armă care îţi conturează ghearele cu un strat de apă dură şi strălucitoare. Îţi oferă cel puţin un bonus aleatoriu.
+41458	Robă Pheonix	Robă elegantă şi lungă, în stil asiatic, cu broderie phoenix, bărbătească.
+41459	Robă Cobra	Robă elegantă şi lungă, în stil asiatic, cu broderie cobra, bărbătească.
+41462	Cheongsam Dragon (Roşu)	Rochie roşie tradiţional asiatică, brodată cu un dragon auriu, de damă.
+41463	Cheongsam Dragon (Albă)	Rochie roşie tradiţional asiatică, brodată cu un dragon roşu, de damă.
+41466	Robă Pheonix+	Robă elegantă şi lungă, în stil asiatic, cu broderie phoenix, bărbătească. Îţi oferă cel puţin un bonus aleatoriu.
+41467	Robă Cobra+	Robă elegantă şi lungă, în stil asiatic, cu broderie cobra, bărbătească. Îţi oferă cel puţin un bonus aleatoriu.
+41470	Cheongsam Dragon+ (Roşu)	Rochie roşie tradiţional asiatică, brodată cu un dragon auriu, de damă. Îţi oferă cel puţin un bonus aleatoriu.
+41471	Cheongsam Dragon+ (Albă)	Rochie roşie tradiţional asiatică, brodată cu un dragon roşu, de damă. Îţi oferă cel puţin un bonus aleatoriu.
+41488	Costum Faraon (Roşu)	Faci parte din Egipt cu acest tradiţional Costum Faraon roşu, bărbătesc.
+41489	Costum Faraon (Bleu)	Faci parte din Egipt cu acest tradiţional Costum Faraon bleu, bărbătesc.
+41490	Îngerul Uriel (Alb)	Costum elegant, desenat cu aripi albe de înger, de damă.
+41491	Îngerul Uriel (Roşu)	Costum magnific, desenat cu aripi roşii de înger, de damă.
+41492	Costum Faraon+ (Roşu)	Faci parte din Egipt cu acest tradiţional Costum Faraon roşu, bărbătesc. Îţi oferă cel puţin un bonus aleatoriu.
+41493	Costum Faraon+ (Bleu)	Faci parte din Egipt cu acest tradiţional Costum Faraon bleu, bărbătesc. Îţi oferă cel puţin un bonus aleatoriu.
+41494	Îngerul Uriel+ (Alb)	Costum elegant, desenat cu aripi albe de înger, de damă. Îţi oferă cel puţin un bonus aleatoriu.
+41495	Îngerul Uriel+ (Roşu)	Costum magnific, desenat cu aripi roşii de înger, de damă. Îţi oferă cel puţin un bonus aleatoriu.
+41512	Costum cu Dinţi	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării.
+41513	Costum cu Dinţi	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării.
+41514	Costum cu Dinţi	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării.
+41515	Costum cu Dinţi	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării.
+41516	Costum cu Dinţi+	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării. Îţi oferă cel puţin un bonus aleatoriu.
+41517	Costum cu Dinţi+	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării. Îţi oferă cel puţin un bonus aleatoriu.
+41518	Costum cu Dinţi+	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării. Îţi oferă cel puţin un bonus aleatoriu.
+41519	Costum cu Dinţi+	La vederea acestui costum unic cu aspect demonic inamicii vor avea fiori pe şira spinării. Îţi oferă cel puţin un bonus aleatoriu.
+41520	Robă Roşie	Îmbrăcăminte de iarnă confecţionată din material roşu moale. Nu se poate negocia.
+41521	Robă Albastră	Îmbrăcăminte de iarnă confecţionată din material albastru moale. Nu se poate negocia.
+41522	Robă Roşie+	Îmbrăcăminte de iarnă confecţionată din material roşu moale. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+41523	Robă Albastră+	Îmbrăcăminte de iarnă confecţionată din material albastru moale. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+41524	Rochie Roşie	Rochie de iarnă confecţionată din material roşu moale. Nu se poate negocia.
+41525	Rochie Albastră	Rochie de iarnă confecţionată din material albastru moale. Nu se poate negocia.
+41526	Rochie Roşie+	Rochie de iarnă confecţionată din material roşu moale. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+41527	Rochie Albastră+	Rochie de iarnă confecţionată din material albastru moale. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+41528	Prinţ Deşert (Roşu)	Îmbrăcăminte pentru războinici, confecţionată din material roşu, potrivit pentru barbaţii lider.
+41529	Prinţ Deşert (Albastru)	Îmbrăcăminte pentru războinici, confecţionată din material albastru, potrivit pentru barbaţii lider.
+41530	Prinţesă Deşert (Roşu)	Îmbrăcăminte pentru războinici, confecţionată din material roşu, potrivit pentru femeile lider.
+41531	Prinţesă Deşert (Albast)	Îmbrăcăminte pentru războinici, confecţionată din material albastru, potrivit pentru femeile lider.
+41532	Prinţ Deşert+ (Roşu)	Îmbrăcăminte pentru războinici, confecţionată din material roşu, potrivit pentru barbaţii lider. Îţi oferă cel puţin un bonus aleatoriu.
+41533	Prinţ Deşert+ (Albastru)	Îmbrăcăminte pentru războinici, confecţionată din material albastru, potrivit pentru barbaţii lider. Îţi oferă cel puţin un bonus aleatoriu.
+41534	Prinţesă Deşert+ (Roşu)	Îmbrăcăminte pentru războinici, confecţionată din material roşu, potrivit pentru femeile lider. Îţi oferă cel puţin un bonus aleatoriu.
+41535	Prinţesă Deşert+ (Albas)	Îmbrăcăminte pentru războinici, confecţionată din material albastru, potrivit pentru femeile lider. Îţi oferă cel puţin un bonus aleatoriu.
+41540	Costum de Iepure (Alb)	Costum de Iepure, bărbătesc, confecţionat din pluş alb. Nu se poate negocia.
+41541	Costum de Iepure (Roz)	Costum de Iepure, bărbătesc, confecţionat din pluş roz. Nu se poate negocia.
+41542	Costum de Iepure (Bleum)	Costum de Iepure, de damă, confecţionat din pluş bleumarin. Nu se poate negocia.
+41543	Costum de Iepure (Fucs)	Costum de Iepure, de damă, confecţionat din pluş fucsia. Nu se poate negocia.
+41544	Costum de Iepure+ (Alb)	Costum de Iepure, bărbătesc, confecţionat din pluş alb. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41545	Costum de Iepure+ (Roz)	Costum de Iepure, bărbătesc, confecţionat din pluş roz. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41546	Costum de Iepure+ (Bleu)	Costum de Iepure, de damă, confecţionat din pluş bleumarin. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41547	Costum de Iepure+ (Fucs)	Costum de Iepure, de damă, confecţionat din pluş fucsia. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41560	Vampir Sângeros (gri)	Armura unui Vampir Sângeros adevarat radiază o aură de invincibilitate. Acest obiect nu se poate negocia.
+41561	Vampir Sângeros (roşu)	Armura unui Vampir Sângeros adevarat radiază o aură de invincibilitate. Acest obiect nu se poate negocia.
+41562	Lamia Sângeros (gri)	Armura unui războinic Lamia Sângeros radiază o aură de invincibilitate. Acest obiect nu se poate negocia.
+41563	Lamia Sângeros (roşu)	Armura unui războinic Lamia Sângeros radiază o aură de invincibilitate. Acest obiect nu se poate negocia.
+41564	Vampir Sângeros+ (gri)	Armura unui Vampir Sângeros adevarat oferă putere supranaturală. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41565	Vampir Sângeros+ (roşu)	Armura unui Vampir Sângeros adevarat oferă putere supranaturală. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41566	Lamia Sângeros+ (gri)	Armura unui războinic Lamia Sângeros oferă putere supranaturală. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41567	Lamia Sângeros+ (roşu)	Armura unui războinic Lamia Sângeros oferă putere supranaturală. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41568	Robă Festivă Roşie (m)	Robă festivă rosie cu margine albă.
+41569	Robă Festivă Verde (m)	Robă festivă verde cu margine albă.
+41570	Robă Festivă Roşie (f)	Robă festivă rosie cu margine albă.
+41571	Robă Festivă Verde (f)	Robă festivă verde cu margine albă.
+41572	Robă Festivă Roşie+ (m)	Robă festivă rosie cu margine albă. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+41573	Robă Festivă Verde+ (m)	Robă festivă verde cu margine albă. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+41574	Robă Festivă Roşie+ (f)	Robă festivă rosie cu margine albă. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+41575	Robă Festivă Verde+ (f)	Robă festivă verde cu margine albă. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+41576	O-Yoroi Auriu (m)	Uniforma aurie a unui general japonez.
+41577	O-Yoroi Argintiu (m)	Uniforma argintie a unui general japonez.
+41578	O-Yoroi Auriu (f)	Uniforma aurie a unui general japonez.
+41579	O-Yoroi Argintiu (f)	Uniforma argintie a unui general japonez.
+41580	O-Yoroi Auriu+ (m)	Uniforma aurie a unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+41581	O-Yoroi Argintiu+ (m)	Uniforma argintie a unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+41582	O-Yoroi Auriu+ (f)	Uniforma aurie a unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+41583	O-Yoroi Argintiu+ (f)	Uniforma argintie a unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+41584	Armură Samurai(Albastră)	Armură albastră în stilul unui shogun experimentat.
+41585	Armură Samurai (Roşie)	Armură roşie în stilul unui shogun experimentat.
+41586	Armură Samurai(Albastră)	Armură albastră în stilul unei femei shogun.
+41587	Armură Samurai (Roşie)	Armură roşie în stilul unei femei shogun.
+41588	Armură Samurai+(Albastr)	Armură albastră în stilul unui shogun experimentat. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41589	Armură Samurai+ (Roşie)	Armură roşie în stilul unui shogun experimentat. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41590	Armură Samurai+(Albastr)	Armură albastră în stilul unei femei shogun. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41591	Armură Samurai+ (Roşie)	Armură roşie în stilul unei femei shogun. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41592	Chinga Terorii (Auriu)	Armură infernală învăpăiată, perfectă pentru a produce teroare.
+41593	Chinga Terorii(Albastru)	Armură infernală albastră, perfectă pentru a produce teroare.
+41594	Chinga Terorii (Auriu)	Armură infernală învăpăiată, perfectă pentru a produce teroare.
+41595	Chinga Terorii(Albastru)	Armură infernală albastră, perfectă pentru a produce teroare.
+41596	Chinga Terorii+(Auriu)	Armură infernală învăpăiată, perfectă pentru a produce teroare. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41597	Chinga Terorii+(Albast.)	Armură infernală albastră, perfectă pentru a produce teroare. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41598	Chinga Terorii+(Auriu)	Armură infernală învăpăiată, perfectă pentru a produce teroare. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41599	Chinga Terorii+(Albast.)	Armură infernală albastră, perfectă pentru a produce teroare. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41600	Echip. Steampunk (Negru)	Echipament futuristic pentru luptătorii moderni.
+41601	Echip. Steampunk (Roşu)	Echipament futuristic pentru luptătorii moderni.
+41602	Rochie Steampunk(Neagră)	Echipament futuristic pentru luptătoarele moderne.
+41603	Rochie Steampunk (Roşie)	Echipament futuristic pentru luptătoarele moderne.
+41604	Echip. Steampunk+(Negru)	Echipament futuristic pentru luptătorii moderni. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41605	Echip. Steampunk+(Roşu)	Echipament futuristic pentru luptătorii moderni. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41606	Rochie Steampunk+(Neagr)	Echipament futuristic pentru luptătoarele moderne. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41607	Rochie Steampunk+(Roşie)	Echipament futuristic pentru luptătoarele moderne. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+41608	Costum Sungura(Albastru)	Un costum de basm în nuanţe albe şi violet, cu pantaloni albaştri.
+41609	Costum Sungura (Turcoaz)	Un costum de basm în nuanţe albe şi turcoaz, cu pantaloni gri.
+41610	Rochie Sungura(Albastră)	O rochie de basm, uşoară ca un balon, în nuanţe de albastru şi violet.
+41611	Rochie Sungura (Gri)	O rochie de basm, uşoară ca un balon, în nuanţe de gri şi turcoaz.
+41612	Costum Sungura+(Albastr)	Un costum de basm în nuanţe albe şi violet, cu pantaloni albaştri. Îţi oferă cel puţin un bonus aleatoriu.
+41613	Costum Sungura+(Turcoaz)	Un costum de basm în nuanţe albe şi turcoaz, cu pantaloni gri. Îţi oferă cel puţin un bonus aleatoriu.
+41614	Rochie Sungura+(Albastr)	O rochie de basm, uşoară ca un balon, în nuanţe de albastru şi violet. Îţi oferă cel puţin un bonus aleatoriu.
+41615	Rochie Sungura+ (Gri)	O rochie de basm, uşoară ca un balon, în nuanţe de gri şi turcoaz. Îţi oferă cel puţin un bonus aleatoriu.
+41630	Armură Avalon (Argint)	Costum din argint tip armură care aparţinea unei dinastii vechi de cavaleri.
+41631	Armură Avalon (Roşie)	Costum roşu tip armură care aparţinea unei dinastii vechi de cavaleri.
+41632	Armură Avalon (Argint)	Costum din argint tip armură care aparţinea unei dinastii vechi de cavaleri.
+41633	Armură Avalon (Roşie)	Costum roşu tip armură care aparţinea unei dinastii vechi de cavaleri.
+41634	Armură Avalon+ (Argint)	Costum strălucitor tip armură care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+41635	Armură Avalon+ (Roşie)	Costum strălucitor tip armură care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+41636	Armură Avalon+ (Argint)	Costum strălucitor tip armură care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+41637	Armură Avalon+ (Roşie)	Costum strălucitor tip armură care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+41638	KSA World Cup Kit (m)	Kit de fotbal de la World Cup în culorile naţionale ale Arabiei Saudite.
+41639	KSA World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale Arabiei Saudite.
+41640	KSA World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Arabiei Saudite. Îţi oferă cel puţin un bonus aleatoriu.
+41641	KSA World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale Arabiei Saudite. Îţi oferă cel puţin un bonus aleatoriu.
+41642	DEN World Cup Kit (m)	Kit de fotbal de la World Cup în culorile naţionale ale Danemarcei.
+41643	DEN World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale Danemarcei.
+41644	DEN World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Danemarcei. Îţi oferă cel puţin un bonus aleatoriu.
+41645	DEN World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale Danemarcei. Îţi oferă cel puţin un bonus aleatoriu.
+41646	SVK World Cup Kit (m)	Kit de fotbal de la World Cup în culorile naţionale ale Slovaciei.
+41647	SVK World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale Slovaciei.
+41648	SVK World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Slovaciei. Îţi oferă cel puţin un bonus aleatoriu.
+41649	SVK World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale Slovaciei. Îţi oferă cel puţin un bonus aleatoriu.
+41650	TUR World Cup Kit (m)	Kit de fotbal de la World Cup în culorile naţionale ale Turciei.
+41651	TUR World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale Turciei.
+41652	TUR World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Turciei. Îţi oferă cel puţin un bonus aleatoriu.
+41653	TUR World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale Turciei. Îţi oferă cel puţin un bonus aleatoriu.
+41654	HUN World Cup Kit (m)	Kit de fotbal de la World Cup în culorile naţionale ale Ungariei.
+41655	HUN World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale Ungariei.
+41656	HUN World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Ungariei. Îţi oferă cel puţin un bonus aleatoriu.
+41657	HUN World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale Ungariei. Îţi oferă cel puţin un bonus aleatoriu.
+41658	ROU World Cup Kit (m)	Kit de fotbal de la World Cup în culorile naţionale ale României.
+41659	ROU World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale României.
+41660	ROU World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale României. Îţi oferă cel puţin un bonus aleatoriu.
+41661	ROU World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale României. Îţi oferă cel puţin un bonus aleatoriu.
+41662	POL World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Poloniei.
+41663	POL World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale Poloniei.
+41664	POL World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Poloniei. Îţi oferă cel puţin un bonus aleatoriu.
+41665	POL World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale Poloniei. Îţi oferă cel puţin un bonus aleatoriu.
+41666	BRA World Cup Kit (m)	Kit de fotbal de la World Cup în culorile naţionale ale Braziliei.
+41667	BRA World Cup Kit (f)	Kit de fotbal de la World Cup în culorile naţionale ale Braziliei.
+41668	BRA World Cup Kit+ (m)	Kit de fotbal de la World Cup în culorile naţionale ale Braziliei. Îţi oferă cel puţin un bonus aleatoriu.
+41669	BRA World Cup Kit+ (f)	Kit de fotbal de la World Cup în culorile naţionale ale Braziliei. Îţi oferă cel puţin un bonus aleatoriu.
+41670	Costum Lup Maro (m)	Această îmbrăcăminte din blană maro trezeşte lupul din fiecare bărbat.
+41671	Costum Lup Gri (m)	Această îmbrăcăminte din blană gri trezeşte lupul din fiecare bărbat.
+41672	Costum Lup Maro (f)	Această îmbrăcăminte din blană maro trezeşte lupul din fiecare femeie.
+41673	Costum Lup Gri (f)	Această îmbrăcăminte din blană gri trezeşte lupul din fiecare femeie.
+41674	Costum Lup Maro+ (m)	Această îmbrăcăminte din blană maro trezeşte lupul din fiecare bărbat. Îţi oferă cel puţin un bonus aleatoriu.
+41675	Costum Lup Gri+ (m)	Această îmbrăcăminte din blană gri trezeşte lupul din fiecare bărbat. Îţi oferă cel puţin un bonus aleatoriu.
+41676	Costum Lup Maro+ (f)	Această îmbrăcăminte din blană maro trezeşte lupul din fiecare femeie. Îţi oferă cel puţin un bonus aleatoriu.
+41677	Costum Lup Gri+ (f)	Această îmbrăcăminte din blană gri trezeşte lupul din fiecare femeie. Îţi oferă cel puţin un bonus aleatoriu.
+45108	Pălărie Paie	Pălărie tradiţional asiatică confecţionată din paie, bărbătească.
+45110	Odango	Coafură asiatică, cu părul prins în ambele părţi.
+45114	Pălărie Paie+	Pălărie tradiţional asiatică confecţionată din paie, bărbătească. Îţi oferă cel puţin un bonus aleatoriu.
+45116	Odango+	Coafură asiatică, cu părul prins în ambele părţi. Îţi oferă cel puţin un bonus aleatoriu.
+45182	Frizură cu Pene (Roşie)	Frizură provocatoare cu pene roşii, bărbătească. Perfectă pentru carnaval!
+45183	Frizură cu Pene (Bleu)	Frizură provocatoare cu pene bleu, bărbătească. Perfectă pentru carnaval!
+45184	Tiara Phoenix (Albă)	Accesoriu elegant confecţionat din metal, de damă.
+45185	Tiara Phoenix (Roşie)	Accesoriu elegant confecţionat din metal, de damă.
+45186	Frizură cu Pene+ (Roşie)	Frizură provocatoare cu pene roşii, bărbătească. Perfectă pentru carnaval! Îţi oferă cel puţin un bonus aleatoriu.
+45187	Frizură cu Pene+ (Bleu)	Frizură provocatoare cu pene bleu, bărbătească. Perfectă pentru carnaval! Îţi oferă cel puţin un bonus aleatoriu.
+45188	Tiara Phoenix+ (Albă)	Accesoriu elegant confecţionat din metal, de damă. Îţi oferă cel puţin un bonus aleatoriu.
+45189	Tiara Phoenix (Roşie)	Accesoriu elegant confecţionat din metal, de damă. Îţi oferă cel puţin un bonus aleatoriu.
+45206	Coif cu Dinţi	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween.
+45207	Coif cu Dinţi	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween.
+45208	Coif cu Dinţi	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween.
+45209	Coif cu Dinţi	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween.
+45210	Coif cu Dinţi+	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween. Îţi oferă cel puţin un bonus aleatoriu.
+45211	Coif cu Dinţi+	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween. Îţi oferă cel puţin un bonus aleatoriu.
+45212	Coif cu Dinţi+	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween. Îţi oferă cel puţin un bonus aleatoriu.
+45213	Coif cu Dinţi+	Zilele par mai scurte pentru inamicii tăi la vederea acestui coif sângeros pentru Halloween. Îţi oferă cel puţin un bonus aleatoriu.
+45214	Pălărie Roşie Santa	Pălărie roşie moale cu un ciucure alb. Nu se poate negocia.
+45215	Pălărie Albastră Santa	Pălărie albastră moale cu un ciucure alb. Nu se poate negocia.
+45216	Scufie Roşie Santa	Pălărie roşie moale cu un ciucure alb. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+45217	Scufie Albastră Santa	Pălărie albastră moale cu un ciucure alb. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+45218	Pălărie Roşie Santa+	Scufie roşie moale cu un ciucure alb. Nu se poate negocia.
+45219	Pălărie Albastră Santa+	Scufie albastră moale cu un ciucure alb. Nu se poate negocia.
+45220	Scufie Roşie Santa+	Scufie roşie moale cu un ciucure alb. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+45221	Scufie Albastră Santa+	Scufie albastră moale cu un ciucure alb. Îţi oferă cel puţin un bonus aleatoriu. Se poate negocia.
+45222	Urechi de Iepure (Alb)	Pălărie albă, bărbătească, cu urechi de iepure. Nu se poate negocia.
+45223	Urechi de Iepure (Roz)	Pălărie roz, bărbătească, cu urechi de iepure. Nu se poate negocia.
+45224	Urechi de Iepure (Bleum)	Urechi de iepure, culoare bleumarin, de damă. Nu se poate negocia.
+45225	Urechi de Iepure (Fucs)	Urechi de iepure, culoare fucsia, de damă. Nu se poate negocia.
+45226	Urechi de Iepure+ (Alb)	Pălărie albă, bărbătească, cu urechi de iepure. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45227	Urechi de Iepure+ (Roz)	Pălărie roz, bărbătească, cu urechi de iepure. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45228	Urechi de Iepure+ (Bleu)	Urechi de iepure, culoare bleumarin, de damă. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45229	Urechi de Iepure+ (Fucs)	Urechi de iepure, culoare fucsia, de damă. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45234	Turban Albastru	Un turban de culoare albastră, elegant, din material rezistent, pentru războinici.
+45235	Turban Roşu	Un turban de culoare roşie, elegant, din material rezistent, pentru războinici.
+45236	Văl Maro	Un văl de culoare maro, din material uşor, perfect pentru femeile războinic.
+45237	Văl Verde	Un văl de culoare verde, din material uşor, perfect pentru femeile războinic.
+45238	Turban Albastru+	Un turban de culoare albastră, elegant, din material rezistent, pentru războinici. Îţi oferă cel puţin un bonus aleatoriu.
+45239	Turban Roşu+	Un turban de culoare roşie, elegant, din material rezistent, pentru războinici. Îţi oferă cel puţin un bonus aleatoriu.
+45240	Văl Maro+	Un văl de culoare maro, din material uşor, perfect pentru femeile războinic. Îţi oferă cel puţin un bonus aleatoriu.
+45241	Văl Verde+	Un văl de culoare verde, din material uşor, perfect pentru femeile războinic. Îţi oferă cel puţin un bonus aleatoriu.
+45250	Coif Vampir Sânger.(gri)	Coiful unui Vampir Sângeros adevarat. Acest obiect nu se poate negocia.
+45251	Coif Vampir Sânger.(roş)	Coiful unui Vampir Sângeros adevarat. Acest obiect nu se poate negocia.
+45252	Coif Lamia Sânger. (gri)	Coiful unui războinic Lamia Sângeros. Acest obiect nu se poate negocia.
+45253	Coif Lamia Sânger.(roşu)	Coiful unui războinic Lamia Sângeros. Acest obiect nu se poate negocia.
+45254	Coif Vampir Sânger+(gri)	Coiful unui Vampir Sângeros adevarat. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45255	Coif Vampir Sânger+(roş)	Coiful unui Vampir Sângeros adevarat. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45256	Coif Lamia Sânger+(gri)	Coiful unui războinic Lamia Sângeros. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45257	Coif Lamia Sânger+(roşu)	Coiful unui războinic Lamia Sângeros. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45258	Glugă Crăciun (roşu)	Glugă festivă roşie cu margine albă.
+45259	Glugă Crăciun (verde)	Glugă festivă verde cu margine albă.
+45260	Beretă Crăciun (roşu)	Beretă roşie de Crăciun cu ciucure alb.
+45261	Beretă Crăciun (verde)	Beretă verde de Crăciun cu ciucure alb.
+45262	Glugă Crăciun+ (roşu)	Glugă festivă roşie cu margine albă. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+45263	Glugă Crăciun+ (verde)	Glugă festivă verde cu margine albă. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+45264	Beretă Crăciun+ (roşu)	Beretă roşie de Crăciun cu ciucure alb. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+45265	Beretă Crăciun+ (verde)	Beretă verde de Crăciun cu ciucure alb. Obiectul îţi oferă cel puţin un bonus aleatoriu şi se poate negocia.
+45266	Kabuto Auriu (m)	Coif auriu al unui general japonez.
+45267	Kabuto Argintiu (m)	Coif argintiu al unui general japonez.
+45268	Kabuto Auriu (f)	Coif auriu al unui general japonez.
+45269	Kabuto Argintiu (f)	Coif argintiu al unui general japonez.
+45270	Kabuto Auriu+ (m)	Coif auriu al unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+45271	Kabuto Argintiu+ (m)	Coif argintiu al unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+45272	Kabuto Auriu+ (f)	Coif auriu al unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+45273	Kabuto Argintiu+ (f)	Coif argintiu al unui general japonez. Îţi oferă cel puţin un bonus aleatoriu.
+45274	Coc Samurai (Auriu)	Coc în stil samurai cu agrafă aurie pentru caractere masculine.
+45275	Coc Samurai (Argintiu)	Coc în stil samurai cu agrafă argintie pentru caractere masculine.
+45276	Coc Samurai (Auriu)	Coc în stil samurai cu agrafă aurie pentru caractere feminine.
+45277	Coc Samurai (Argintiu)	Coc în stil samurai cu agrafă argintie pentru caractere feminine.
+45278	Coc Samurai+ (Auriu)	Coc în stil samurai cu agrafă aurie pentru caractere masculine. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45279	Coc Samurai+ (Argintiu)	Coc în stil samurai cu agrafă argintie pentru caractere masculine. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45280	Coc Samurai+ (Auriu)	Coc în stil samurai cu agrafă aurie pentru caractere feminine. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45281	Coc Samurai+ (Argintiu)	Coc în stil samurai cu agrafă argintie pentru caractere feminine. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45282	Coiful Terorii (Auriu)	Coif auriu cu coarne de diavol.
+45283	Coiful Terorii (Albast.)	Coif albastru cu coarne de diavol.
+45284	Coiful Terorii (Auriu)	Coif auriu cu coarne de diavol.
+45285	Coiful Terorii (Albast.)	Coif albastru cu coarne de diavol.
+45286	Coiful Terorii+(Auriu)	Coif auriu cu coarne de diavol. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45287	Coiful Terorii+(Albast.)	Coif albastru cu coarne de diavol. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45288	Coiful Terorii+(Auriu)	Coif auriu cu coarne de diavol. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45289	Coiful Terorii+(Albast.)	Coif albastru cu coarne de diavol. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45290	Pălărie Steampunk(Neagr)	Acoperământ futuristic pentru luptătorii moderni.
+45291	Pălărie Steampunk(Roşie)	Acoperământ futuristic pentru luptătorii moderni.
+45292	Pălărie Steampunk(Neagr)	Acoperământ futuristic pentru luptătoarele moderne.
+45293	Pălărie Steampunk(Roşie)	Acoperământ futuristic pentru luptătoarele moderne.
+45294	Pălărie Steampunk+(Neag)	Acoperământ futuristic pentru luptătorii moderni. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45295	Pălărie Steampunk+(Roş.)	Acoperământ futuristic pentru luptătorii moderni. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45296	Pălărie Steampunk+(Neag)	Acoperământ futuristic pentru luptătoarele moderne. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45297	Pălărie Steampunk+(Roş.)	Acoperământ futuristic pentru luptătoarele moderne. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45298	Pălărie cu Pene (Bleu)	Pălărie albastră, cu o cureluşă perlată şi o pană roşie de fazan.
+45299	Pălărie cu Pene (Gri)	Pălărie gri, cu o cureluşă perlată şi o pană turcoaz de fazan.
+45300	Cloş Sungura (Albastru)	Pălărie albastră accesorizată cu o piatră preţioasă turcoaz.
+45301	Cloş Sungura (Gri)	Pălărie gri accesorizată cu o piatră preţioasă violet.
+45302	Pălărie cu Pene+ (Bleu)	Pălărie albastră, cu o cureluşă perlată şi o pană roşie de fazan. Îţi oferă cel puţin un bonus aleatoriu.
+45303	Pălărie cu Pene+ (Gri)	Pălărie gri, cu o cureluşă perlată şi o pană turcoaz de fazan. Îţi oferă cel puţin un bonus aleatoriu.
+45304	Cloş Sungura+ (Albastru)	Pălărie albastră accesorizată cu o piatră preţioasă turcoaz. Îţi oferă cel puţin un bonus aleatoriu.
+45305	Cloş Sungura+ (Gri)	Pălărie gri accesorizată cu o piatră preţioasă violet. Îţi oferă cel puţin un bonus aleatoriu.
+45314	Coroană Zodiac	Coroană magnifică.
+45315	Coroană Zodiac	Coroană magnifică.
+45316	Coroană Zodiac+	Coroană magnifică. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45317	Coroană Zodiac+	Coroană magnifică. Îţi oferă cel puţin un bonus aleatoriu. Obiectul se poate negocia.
+45320	Coif Avalon (Argint)	Coif din argint care aparţinea unei dinastii vechi de cavaleri.
+45321	Coif Avalon (Roşu)	Coif roşu care aparţinea unei dinastii vechi de cavaleri.
+45322	Coif Avalon (Argint)	Coif din argint care aparţinea unei dinastii vechi de cavaleri.
+45323	Coif Avalon (Roşu)	Coif roşu care aparţinea unei dinastii vechi de cavaleri.
+45324	Coif Avalon+ (Argint)	Coif din argint care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+45325	Coif Avalon+ (Roşu)	Coif roşu care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+45326	Coif Avalon+ (Argint)	Coif din argint care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+45327	Coif Avalon+ (Roşu)	Coif roşu care aparţinea unei dinastii vechi de cavaleri. Îţi oferă cel puţin un bonus aleatoriu.
+45328	Pălărie Urs (m)	Pălărie încântătoare cu faţă de urs.
+45329	Pălărie Tigru (m)	Pălărie încântătoare cu faţă de tigru.
+45330	Pălărie Urs (f)	Pălărie încântătoare cu faţă de urs.
+45331	Pălărie Tigru (f)	Pălărie încântătoare cu faţă de tigru.
+45332	Pălărie Urs+ (m)	Această pălărie încântătoare îţi oferă cel puţin un bonus aleatoriu.
+45333	Pălărie Tigru+ (m)	Această pălărie încântătoare îţi oferă cel puţin un bonus aleatoriu.
+45334	Pălărie Urs+ (f)	Această pălărie încântătoare îţi oferă cel puţin un bonus aleatoriu.
+45335	Pălărie Tigru+ (f)	Această pălărie încântătoare îţi oferă cel puţin un bonus aleatoriu.
+45336	Pălărie Blană Maro (m)	Pălărie bărbătească, elegantă, fabricată din blană de lup.
+45337	Pălărie Blană Gri (m)	Pălărie bărbătească, elegantă, fabricată din blană de lup.
+45338	Pălărie Blană Maro (f)	Pălărie de damă, elegantă, fabricată din blană de lup.
+45339	Pălărie Blană Gri (f)	Pălărie de damă, elegantă, fabricată din blană de lup.
+45340	Pălărie Blană Maro+ (m)	Pălărie bărbătească, elegantă, fabricată din blană de lup. Îţi oferă cel puţin un bonus aleatoriu.
+45341	Pălărie Blană Gri+ (m)	Pălărie bărbătească, elegantă, fabricată din blană de lup. Îţi oferă cel puţin un bonus aleatoriu.
+45342	Pălărie Blană Maro+ (f)	Pălărie de damă, elegantă, fabricată din blană de lup. Îţi oferă cel puţin un bonus aleatoriu.
+45343	Pălărie Blană Gri+ (f)	Pălărie de damă, elegantă, fabricată din blană de lup. Îţi oferă cel puţin un bonus aleatoriu.
+45344	Bandană DEN (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Danemarcei.
+45345	Bandană HUN (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Ungariei.
+45346	Bandană POL (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Poloniei.
+45347	Bandană KSA (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Arabiei Saudite.
+45348	Bandană SVK (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Slovaciei.
+45349	Bandană TUR (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Turciei.
+45350	Bandană DEN+ (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Danemarcei. Îţi oferă cel puţin un bonus aleatoriu.
+45351	Bandană HUN+ (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Ungariei. Îţi oferă cel puţin un bonus aleatoriu.
+45352	Bandană POL+ (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Poloniei. Îţi oferă cel puţin un bonus aleatoriu.
+45353	Bandană KSA+ (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Arabiei Saudite. Îţi oferă cel puţin un bonus aleatoriu.
+45354	Bandană SVK+ (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Slovaciei. Îţi oferă cel puţin un bonus aleatoriu.
+45355	Bandană TUR+ (f)	Păr lung cu împletituri şi o bandană în culorile naţionale ale Turciei. Îţi oferă cel puţin un bonus aleatoriu.
+50208	Silver Premium Scroll	Acest pergamont este folosit pentru a activa sau a prelungi durata Abonării Premium de Argint.
+50209	Gold Premium Scroll	Acest pergamont este folosit pentru a activa sau a prelungi durata Abonării Premium de Aur.
+50210	Platinum Premium Scroll	Acest pergamont este folosit pentru a activa sau a prelungi durata Abonării Premium de Platină.
+50221	Small IS Package (Stones)	Conținutul acestei cutii: (Valoare: 10.5k Coins = 15% reducere) - 1x "Green Savior Spell" \n - 1x Biologist Chest I \n - |~ff82ff7d|H|h1x White Rex (30% Stones Mount)\n [exclusiv: Doar în pachetele IS]\n - |~ff82ff7d|H|h1x Bruce (15% Stones Pet)\n [exclusiv: Doar în pachetele IS]
+50222	Small IS Package (Boss)	Conținutul acestei cutii: (Valoare: 10.5k Coins = 15% reducere) - 1x "Green Savior Spell" \n - 1x Biologist Chest I \n - |~ff82ff7d|H|h1x Black Rex (30% Boss Mount)\n [exclusiv: Doar în pachetele IS]\n - |~ff82ff7d|H|h1x Wayne (15% Boss Pet)\n [exclusiv: Doar în pachetele IS]
+50223	Medium IS Package (Stones)	Conținutul acestei cutii: (Valoare: 25.5k Coins = 21% reducere) - 1x "Green Savior Spell" \n - 1x Biologist Chest I \n - |~ff82ff7d|H|h1x Black Rex (30% Boss Mount)\n [exclusiv: Doar în pachetele IS] - |~ff82ff7d|H|h1x Wayne (15% Boss Pet)\n [exclusiv: Doar în pachetele IS]\n - |~ff82ff7d|H|h1x White Rex (30% Stones Mount)\n [exclusiv: Doar în pachetele IS]\n - |~ff82ff7d|H|h1x Bruce (15% Stones Pet)\n [exclusiv: Doar în pachetele IS]\n - Dragon Buffi\n - Attack Buffi\n - 2x Buffi Booster (Int +200)\n - Silver Premium Scroll
+50224	Big IS Package	Conținutul acestei cutii: (Valoare: 52.5k Coins = 24% reducere) - 2x "Green Savior Spell" \n - 1x Biologist Chest I \n - |~ff82ff7d|H|h1x Ice Phoenix (30% Boss Mount)\n [montura zburătoare exclusivă: Doar în pachetul IS de 100€] - |~ff82ff7d|H|h1x Wayne (15% Boss Pet)\n [exclusiv: Numai în pachetele IS]\n - |~ff82ff7d|H|h1x Fire Rex (30% Stones Mount)\n [exclusivitate: Numai în pachetul IS de 100 €]\n - |~ff82ff7d|H|h1x Bruce (15% Stones Pet)\n [exclusiv: Doar în pachetele IS]\n - Dragon Buffi\n - Attack Buffi\n - 2x Buffi Booster (Int +200)\n - Golden Premium Scroll\n - 1x Biologist Chest II\n - 3x Golden Shiva Token\n - 1x Pet-Name Changer\n - 1x Mount-Name Changer\n - 1x Buffi Name-Changer\n - |~ff82ff7d|H|h1x Blue Rex (30% Monster Mount)\n [exclusiv: Doar în pachetul 100€ IS]\n - |~ff82ff7d|H|h1x Costum de războinic al deșertului negru\n [exclusiv: Doar în pachetul 100€ IS]\n - |~ff82ff7d|H|h1x Maimuță galbenă (PvP Pet)\n [exclusiv: Doar în pachetul 100€ IS]
+50266	Cufăr Jotun Thrym	Cufărul Jotun Thrym. Judecând după aspectul incuietorii, ceva valoros se ascunde înăuntru.
+50267	Cufăr Auriu Okey	Obţine 400 sau mai multe puncte în jocul okey pentru a câştiga acest premiu.
+50270	Cufăr Regina Meley	Acest cufăr a fost recuperat din adăpostul Reginei Dragon Meley. Conţine o comoară valoroasă. Obiectul se poate negocia.
+50271	Cufăr Gardă Dragon	Acest cufăr conţine comorile magnifice ale gărzilor dragon care timp de secole s-au crezut pierdute. Obiectul se poate negocia.
+50272	Cufăr Aur Spintecător	Recompensă de aur pentru faptele tale eroice la spintecarea şefului.
+50285	Cufăr Fier Zonă Război	Un cufăr cu un conţinut valoros.
+50286	Cufăr Aur Zonă Război	Un cufăr cu un conţinut valoros.
+50287	Câmp Cutie 1	O cutie ce conţine echipament folositor.
+50288	Câmp Cutie 2	O cutie ce conţine echipament folositor.
+50289	Reîncarnare	Reîncarnarea imediată are loc fără întârziere.
+50290	Cufăr Lemn Zonă Război	Un cufăr cu un conţinut valoros.
+50323	Cufăr Cărti Respingere	Acest cufăr conţine o carte de abilităţi pentru respingere aleasă aleatoriu.
+50324	Cufăr Cărţi Ajutor	Acest cufăr conţine o carte de abilităţi pentru ajutor aleasă aleatoriu.
+50500	Armor Socket Enhancer	Deschide un al patrulea slot de piatra pentru armura ta.
+50501	Weapon Socket Enhancer	Deschide un al patrulea slot de piatra pentru arma ta.
+50514	Manual Ajutor	Cuprinsul cărţii te ajută să studiezi una dintre cele nouă abilităţi pentru ajutor. Va fi aleasă abilitatea potrivită pentru tine.
+50515	Manual Respingere	Cuprinsul cărţii te ajută să alegi dintre cele nouă abilităţi pentru respingere. Alege înţelept!
+50516	Respingere Vârtej Sabiei	Această carte te învaţă abilitatea de a reduce daunele cauzate de Vârtejul Sabiei.
+50517	Respingere Ambuscadă	Această carte te învaţă abilitatea de a reduce daunele cauzate de Ambuscadă.
+50518	Respingere Lov. Deget	Această carte te învaţă abilitatea de a reduce daunele cauzate de Lovitura Degetului.
+50519	Respingere Arunc. Dragon	Această carte te învaţă abilitatea de a reduce daunele cauzate de Aruncarea Dragonului.
+50520	Respingere Atacul Spirit	Această carte te învaţă abilitatea de a reduce daunele cauzate de Atacul Spiritului.
+50521	Respingere Sageată Foc	Această carte te învaţă abilitatea de a reduce daunele cauzate de Săgeata de Foc.
+50522	Respingere Lov. Întunec.	Această carte te învaţă abilitatea de a reduce daunele cauzate de Lovitura Întunecată.
+50523	Respingere Chem. Fulger.	Această carte te învaţă abilitatea de a reduce daunele cauzate de Chemarea Fulgerului.
+50524	Respingere Suf. Lupului	Această carte te învaţă abilitatea de a reduce daunele cauzate de Suflul Lupului.
+50525	Piatra Sufletului+	Piatra legendară care creşte abilităţile de mare maestru la ajutor si respingere. Piatra dispare după folosire.
+50560	Ajutor Vârtejul Sabiei	Această carte te învaţă abilitatea de a îmbunătăţi Vârtejul Sabiei.
+50561	Ajutor Ambuscadă	Această carte te învaţă abilitatea de a îmbunătăţi Ambuscada.
+50562	Ajutor Lovit. Degetului	Această carte te învaţă abilitatea de a îmbunătăţi Lovitura Degetului.
+50563	Ajutor Arunc. Dragonului	Această carte te învaţă abilitatea de a îmbunătăţi Aruncarea Dragonului.
+50564	Ajutor Atacul Spiritului	Această carte te învaţă abilitatea de a îmbunătăţi Atacul Spiritului.
+50565	Ajutor Săgeata de Foc	Această carte te învaţă abilitatea de a îmbunătăţi Săgeata de Foc.
+50566	Ajutor Lovit. Întunecată	Această carte te învaţă abilitatea de a îmbunătăţi Lovitura Întunecată.
+50567	Ajutor Chem. Fulgerului	Această carte te învaţă abilitatea de a îmbunătăţi Chemarea Fulgerului.
+50568	Ajutor Suflul Lupului	Această carte te învaţă abilitatea de a îmbunătăţi Suflul Lupului.
+50569	Legendary Soul Stone	Această piatră ascunde un spirit puternic care e capabil să-ți întăreasca abilitățile Perfect Grand Master.
+50570	Legendary Soul Stone	Această piatră ascunde un spirit puternic care e capabil să-ți întăreasca abilitățile Perfect în Legendare.
+50571	Legendary Soul Stone	Această piatră ascunde un spirit puternic care e capabil să-ți întăreasca abilitățile Perfect în Legendare.
+50620	Minereu Azure	Folosind Topitoria Breslei, poti fabrica Azure din acest minereu.
+50640	Azure	Piatra pretioasa albastra cu o finisare unica. Poate fi transformata intr-o bijuterie valoroasa.
+50926	Pietre Lucioase	Colectează Pietre Lucioase iar Negustorul Gaya le va tăia în Gaya valoroase.
+51723	Lemn Fosila	Lemn valoros. Poate fi adaugat obiectelor de bijuterie.
+51724	Cupru	Metal pretios ce poate fi folosit la fabricarea bijuteriilor si monedelor. Poate fi folosit si pentru productia bronzului.
+51725	Argint	Metal lucios folosit la producerea bijuteriilor. Poate fi adaugat obiectelor de bijuterie din argint.
+51726	Aur	Metal auriu folosit la producerea bijuteriilor. Poate fi adaugat obiectelor de bijuterie din aur.
+51727	Jad	Unul din mineralele valoroase folosite de peste 5000 de ani. Poate fi adaugat obiectelor de bijuterie din jad.
+51728	Ebonita	Acest negru si greu material de lemn este unul dintre cele mai valoroase. Poate fi adaugat acesoriilor si bijuteriilor.
+51729	Perla	Folosite la producerea obiectelor de bijuterie. Poate fi adaugat obiectelor de bijuterie.
+51730	Aur Alb	Un metal greu şi alb asemănător cu aurul, folosit la fabricarea bijuteriilor.
+51731	Cristal	Piatra din cuart cristalin ce poate fi gasita in diferite culori. Folosita de obicei pentru bijuterii.
+51732	Ametist	Cuart obisnuit gasit deseori in nuante purpurii. Folosit adesea la fabricarea bijuteriilor.
+51733	Lacrima cerului	Ploaie din cer cristalizată. Poate fi adăugată obiectelor de bijuterie din lacrima cerului.
+51734	Cristal Spirit	Un cristal, pur ca un suflet. Poate fi folosit la fabricarea accesoriilor.
+51735	Rubin	Piatra pretioasa rosie cu o finisare unica. Poate fi transformata intr-o bijuterie valoroasa.
+51736	Granat	Piatra pretioasa portocalie cu o finisare unica. Poate fi transformata intr-o bijuterie valoroasa.
+51737	Smarald	Piatra pretioasa verde cu o finisare unica. Poate fi transformata intr-o bijuterie valoroasa.
+51738	Safir	Piatra pretioasa albastra cu o finisare unica. Poate fi transformata intr-o bijuterie valoroasa.
+51740	Azure	Piatra pretioasa albastra cu o finisare unica. Poate fi transformata intr-o bijuterie valoroasa.
+55001	Biscuit cu Proteine	Hraneste-ti animalutul extenuat cu acest deliciu si va fi regenerat la maxim. Ofera-i asa ceva unui animalut mort si se va intoarce la viata, cu restaurare 50%.
+55002	Cutie de Transport	Cand insotitorul se afla in Cutia de Transport, se poate negocia timp de 30 de zile.
+55003	Carte Însoţitor Tânăr	Foloseste urmatoarele obiecte pentru a putea evolua insotitorul la urmatorul nivel (Insotitor Salbatic): 10x Carte Insotitor Tanar, 10x Sac Oua de Paianjen, 10x Banderola Alba+, 10x Shiriken, 10x Ac Decorativ de Par, 5x Uniforma Neagra+, 5x Bucata de Gheata+
+55004	Carte Însoţitor Sălbatic	Foloseste urmatoarele obiecte pentru a putea evolua insotitorul la urmatorul nivel (Insotitor Curajos): 10x Carte Insotitor Salbatic, 2x Perla Visinie, 10x Crema de Fata, 10x Blana de Yeti+, 10x Obiect de Bijuterie, 10x Ghem, 5x Cartea Blestemelor+
+55005	Carte Insotitor Curajos	Foloseste urmatoarele obiecte pentru a putea evolua insotitorul la urmatorul nivel (Insotitor Eroic): 10x Carte Insotitor Curajos, 10x Leac necunoscut+, 2x Perla Alba, 2x Perla Albastra, 10x Amintire de Demon+, 10x Dinte de Ork+, 5x Curea Albastra
+55006		
+55008	Pergament Nume Însoţitor	Trage pergamentul peste însoţitor pentru a-i schimba numele.
+55009	Cufăr Carte Insoţitor	Conţine o carte de abilităţi aleasă aleatoriu.
+55010	Cartea Monștrilor	După ce învață această abilitate, animalul tău de companie îți mărește daunele împotriva monștrilor.
+55011	Cartea Pietrelor Metin	După ce învață această abilitate, animalul tău de companie îți mărește daunele împotriva Pietrelor Metin.
+55012	Cartea Șefilor	După ce învață această abilitate, animalul tău de companie îți mărește daunele împotriva șefilor.
+55013	Cartea Vieții	După ce învață această abilitate, animalul tău de companie îți mărește HP-ul maxim.
+55014	Cartea Otrăvii	După ce învață această abilitate, animalul tău de companie oferă atacurilor tale șansa de a otrăvi inamicul.
+55015	Cartea Anti-Critic	După ce învață această abilitate, animalul tău de companie reduce șansa de a primi lovituri critice.
+55016	Cartea Anti-Perforare	După ce învață această abilitate, animalul tău de companie reduce șansa de a primi lovituri perforante.
+55017	Cartea Focului	După ce învață această abilitate, animalul tău de companie îți mărește puterea împotriva elementului foc.
+55018	Cartea Gheții	După ce învață această abilitate, animalul tău de companie îți mărește puterea împotriva elementului gheață.
+55019	Cartea Pământului	După ce învață această abilitate, animalul tău de companie îți mărește puterea împotriva elementului pământ.
+55020	Cartea Vântului	După ce învață această abilitate, animalul tău de companie îți mărește puterea împotriva elementului vânt.
+55021	Cartea Regenerării	După ce învață această abilitate, animalul tău de companie îți regenerează treptat HP-ul în timp.
+55022	Cartea Eschivă Săgeți	După ce învață această abilitate, animalul tău de companie îți mărește șansa de a evita atacurile cu săgeți.
+55023	Cartea Dropului de Obiecte	După ce învață această abilitate, animalul tău de companie îți mărește rata de drop a obiectelor.
+55024	Cartea Atacantului	După ce învață această abilitate, animalul tău de companie îți mărește valoarea totală de atac.
+55025	Cartea Berserker (H)	După ce învață această abilitate, animalul tău de companie îți mărește daunele magice/corp la corp.
+55026	Cartea Daunelor Abilităților (H)	După ce învață această abilitate, animalul tău de companie îți mărește daunele abilităților.
+55027	Cartea Rezistență la Abilități (H)	După ce învață această abilitate, animalul tău de companie îți mărește rezistența la daunele provocate de abilități.
+55028	Cartea Daunelor Medii (H)	După ce învață această abilitate, animalul tău de companie îți mărește daunele medii.
+55029	Cartea Anti-Semiumani (H)	După ce învață această abilitate, animalul tău de companie îți mărește rezistența împotriva semiumanilor.
+55030	Cartea Elementelor (H)	După ce învață această abilitate, animalul tău de companie îți mărește daunele elementale.
+55260	Fire Infusion [I]	O infuzie de foc in stadiu incipient.	Poate fi imbunatatit.
+55261	Water Infusion [I]	O infuzie de apa in stadiu incipient.	Poate fi imbunatatit.
+55262	Earth Infusion [I]	O infuzie de pamant in stadiu incipient.	Poate fi imbunatatit.
+55263	Wind Infusion [I]	O infuzie de vant in stadiu incipient.	Poate fi imbunatatit.
+55264	Dark Infusion [I]	O infuzie de intuneric in stadiu incipient.	Poate fi imbunatatit.
+55265	Light Infusion [I]	O Infuzie de lumina in stadiu incipient.	Poate fi imbunatatit.
+55270	Fire Infusion [II]	O infuzie de foc rara ce poate fi transformata in ceva mai mult.	Poate fi imbunatatit.
+55271	Water Infusion [II]	O infuzie de apa rara ce poate fi transformata in ceva mai mult.	Poate fi imbunatatit.
+55272	Earth Infusion [II]	O infuzie de pamant rara ce poate fi transformata in ceva mai mult.	Poate fi imbunatatit.
+55273	Wind Infusion [II]	O infuzie de vant rara ce poate fi transformata in ceva mai mult.	Poate fi imbunatatit.
+55274	Dark Infusion [II]	O infuzie de intuneric rara ce poate fi transformata in ceva mai mult.	Poate fi imbunatatit.
+55275	Light Infusion [II]	O infuzie de lumina rara ce poate fi transformata in ceva mai mult.	Poate fi imbunatatit.
+55280	Fire Infusion [III]	O infuzie de foc excelenta perfectionata pentru a deveni utilizabila.	Poate fi imbunatatit.
+55281	Water Infusion [III]	O infuzie de apa excelenta perfectionata pentru a deveni utilizabila.	Poate fi imbunatatit.
+55282	Earth Infusion [III]	O infuzie de pamant excelenta perfectionata pentru a deveni utilizabila.	Poate fi imbunatatit.
+55283	Wind Infusion [III]	O infuzie de vant excelenta perfectionata pentru a deveni utilizabila.	Poate fi imbunatatit.
+55284	Dark Infusion [III]	O infuzie de intuneric excelenta perfectionata pentru a deveni utilizabila.	Poate fi imbunatatit.
+55285	Light Infusion [III]	O infuzie de lumina excelenta perfectionata pentru a deveni utilizabila.	Poate fi imbunatatit.
+55290	Fire Infusion [IV]	O infuzie de foc legendara cu o sansa mare de a deveni grozava.	Poate fi imbunatatit.
+55291	Water Infusion [IV]	O infuzie de apa legendara cu o sansa mare de a deveni grozava.	Poate fi imbunatatit.
+55292	Earth Infusion [IV]	O infuzie de pamant legendara cu o sansa mare de a deveni grozava.	Poate fi imbunatatit.
+55293	Wind Infusion [IV]	O infuzie de vant legendara cu o sansa mare de a deveni grozava.	Poate fi imbunatatit.
+55294	Dark Infusion [IV]	O infuzie de intuneric legendara cu o sansa mare de a deveni grozava.	Poate fi imbunatatit.
+55295	Light Infusion [IV]	O infuzie de lumina legendara cu o sansa mare de a deveni grozava.	Poate fi imbunatatit.
+55300	Fire Infusion [V]	Infuzie mitica de foc in stadiu final.
+55301	Water Infusion [V]	Infuzie mitica de apa in stadiu final.
+55302	Earth Infusion [V]	Infuzie mitica de pamant in stadiu final.
+55303	Wind Infusion [V]	Infuzie mitica de vant in stadiu final.
+55304	Dark Infusion [V]	Infuzie mitica de intuneric in stadiu final.
+55305	Light Infusion [V]	Infuzie mitica de lumina in stadiu final.
+55401	Ou de Maimuta	Cand vrei ca insotitorul sa iasa din cuibar, click dreapta pe ou.
+55402	Ou de Paianjen	Cand vrei ca insotitorul sa iasa din cuibar, click dreapta pe ou.
+55403	Ou Razador	Cand vrei ca insotitorul sa iasa din cuibar, click dreapta pe ou.
+55404	Ou Nemere	Cand vrei ca insotitorul sa iasa din cuibar, click dreapta pe ou.
+55405	Ou Dragon Albastru	Când doreşti ca însoţitorul tău să eclozeze, apasă dreapta mouse pe ou.
+55406	Ou Dragon Roşu	Când doreşti ca însoţitorul tău să eclozeze, apasă dreapta mouse pe ou.
+55407	Ou Mini Azrael	Când doreşti ca însoţitorul tău să eclozeze, apasă dreapta mouse pe ou.
+55408	Ou Mini Executor Gras	Când doreşti ca însoţitorul tău să eclozeze, apasă dreapta mouse pe ou.
+55409	Ou Micul Baashido	Când doreşti ca însoţitorul tău să eclozeze, apasă dreapta mouse pe ou.
+55410	Ou Nessie	Când doreşti ca însoţitorul tău să eclozeze, apasă dreapta mouse pe ou.
+55701	Maimuta Mica	Click dreapta sa chemi insotitorul, apoi apasa "P" pe tastatura sa deschizi interfata insotitorului.
+55702	Paianjen Mic	Click dreapta sa chemi insotitorul, apoi apasa "P" pe tastatura sa deschizi interfata insotitorului.
+55703	Razador Mic	Click dreapta sa chemi insotitorul, apoi apasa "P" pe tastatura sa deschizi interfata insotitorului.
+55704	Nemere Mic	Click dreapta sa chemi insotitorul, apoi apasa "P" pe tastatura sa deschizi interfata insotitorului.
+55705	Dragonette	Dreapta mouse pentru a-ţi chema insoţitorul, apoi apasă "P" pe tastatură să deschizi vederea generală.
+55706	Meley Mic	Click dreapta să chemi însoţitorul, apoi apasă "P" pe tastatură să deschizi interfaţa însoţitorului.
+55707	Mini Azrael	Click dreapta să chemi însoţitorul, apoi apasă "P" pe tastatură să deschizi interfaţa însoţitorului.
+55708	Mini Executor Gras	Click dreapta să chemi însoţitorul, apoi apasă "P" pe tastatură să deschizi interfaţa însoţitorului.
+55709	Micul Baashido	Click dreapta să chemi însoţitorul, apoi apasă "P" pe tastatură să deschizi interfaţa însoţitorului.
+55710	Nessie	Click dreapta să chemi însoţitorul, apoi apasă "P" pe tastatură să deschizi interfaţa însoţitorului.
+56000	Appaloosa	Sigiliul îl cheamă pe blajinul Appaloosa. Acesta oferă călăreţului său +10 viteză de mişcare.
+69544	Nova Token	Folosit pentru a cumpăra înfățișări speciale în timpul unui eveniment.
+71000	Pergament Deştept	Acest obiect te ajută să elimini complet abilităţile de ajutor şi respingere. Poţi învăţa abilităţi noi folosind Manualele de Respingere şi Ajutor.
+71112	Pergament resetare biolog	Resetati toate misiunile biologului cu posibilitatea de a va reselecta toate recompensele.
+71165	Predator Polar	Poţi folosi acest sigiliu pentru a-l chema pe agresivul Predator Polar. Creşte viteza de mişcare cu 60.
+71189	Vrajeste Obiectul+	Acest obiect scoate bonusurile de pe un obiect şi adaugă altele noi. Noile bonusuri îţi vor fi arătate înainte şi te poţi decide dacă să le păstrezi sau nu.
+71190	Cufăr Dovleac	Vei primi Cufărul Dovleac doar la îndeplinirea misiunilor speciale.
+71191	Pungă cu Bomboane	Dovleacul Sam îţi va îndulci noaptea cu boamboanele din această punga. Deschide-o şi vei avea o surpriză!
+71192	Tunetul	Poţi folosi acest sigiliu pentru a chema renul Donner. Creşte viteza de mişcare cu 20 şi experienţa colectată cu 30%.
+71193	Blitzen	Poţi folosi acest sigiliu pentru a chema renul Blitzen. Creşte viteza de mişcare cu 20 şi experienţa colectată cu 30%.
+71194	Cutie Aurie Okey	Vei primi 5 seturi de carduri şi fiecare conţine 24 Carduri Colectibile Okey (120 în total). Nu poţi primi mai multe carduri dacă evenimentul a luat sfârşit.
+71195	Cutie Argintie Okey	Vei primi 1 set de carduri ce conţine 24 Carduri Colectibile Okey. Nu poţi primi mai multe carduri dacă evenimentul a luat sfârşit.
+71196	Cutie Bronz Okey	Vei primi 6 Carduri Colectibile Okey. Nu poţi primi mai multe carduri dacă evenimentul a luat sfârşit.
+71197	Nugget (bleumarin)	Poţi folosi acest sigiliu pentru a-l chema pe Nugget, cocosul luptător şi nervos. Acesta îţi oferă +15% putere împotriva monştrilor şi îţi măreşte experienţa colectată cu 30%.
+71198	Muffin (roz)	Poţi folosi acest sigiliu pentru a-l chema pe Muffin, puiul luptător şi invincibil. Acesta îţi oferă +15% putere împotriva monştrilor şi îţi măreşte experienţa colectată cu 30%.
+71220		
+71235	Cerberus (Aur)	Poţi folosi acest sigiliu pentru a-l chema pe Câinele Iadului cu trei capete.
+71236	Cerberus (Argint)	Poţi folosi acest sigiliu pentru a-l chema pe Câinele Iadului cu trei capete.
+71237	Mistreţ	Magia acestui sigiliu va invoca spiritul unui animal puternic care te va purta la destinaţia dorită.
+71238	Lup	Magia acestui sigiliu va invoca spiritul unui animal puternic care te va purta la destinaţia dorită.
+71239	Tigru	Magia acestui sigiliu va invoca spiritul unui animal puternic care te va purta la destinaţia dorită.
+71240	Leu	Magia acestui sigiliu va invoca spiritul unui animal puternic care te va purta la destinaţia dorită.
+71241	Tichet de Călărie	Foloseşte acest bilet pentru a călări un Ponei timp de 10 minute.
+71394	Phoenix Acesta este un mount zburator.	 Foloseste tasta SHIFT pentru a urca si tasta X pentru a cobora.
+71395	Phoenix Acesta este un mount zburator.	 Foloseste tasta SHIFT pentru a urca si tasta X pentru a cobora.
+72325	Inversează Transformarea	Inversează transformarea unui obiect.
+72326	Inversează Transformarea	Inversează transformarea unui obiect și rambursează articolul.
+72709	Cercel Os de Tigru	Valoarea atacului tău va creşte cu 200 de puncte pentru 20 ore (timpul se scurge doar dacă obiectul este echipat).
+72710	Cercel Os de Dragon	Valoarea apărării tale va creşte cu 300 de puncte pentru 20 ore (timpul se scurge doar dacă obiectul este echipat).
+72711	Bratara Os de Tigru	Daunele cauzate de abilităţile tale vor fi crescute cu 30 puncte pentru 20 ore (timpul se scurge doar dacă obiectul este purtat).
+72712	Bratara din os de Dragon	Apărarea contra abilităţilor va fi crescută cu 30 puncte pentru 20 ore (timpul se scurge doar dacă obiectul este purtat).
+72800	Piatra de Rubin	Lângă caracterul tău apare o sursă de Rubin.
+72801	Piatra de Granat	Lângă caracterul tău apare o sursă de Granat.
+72802	Piatra de Smarald	Lângă caracterul tău apare o sursă de Smarald.
+72803	Piatra de Safir	Lângă caracterul tău apare o sursă de Safir.
+72804	Piatra de Turmalina	Lângă caracterul tău apare o sursă de Turmalina.
+76191	Green Savior Spell	Îți permite să alegi bonusurile preferate 1-5.
+76192	Blue Rare Spell	Îți permite să alegi bonusurile preferate 6-7.
+79505	Card Colecţie Okey	Dacă ai adunat 24 de Carduri de Colecţie Okey, vei primi automat un Set de Carduri Okey.
+79506	Set Carduri Okey	Poţi începe un joc okey cu acest set de carduri. Setul de carduri va fi înlăturat în mod automat din inventarul tău după începerea jocului.
+80018	NC Voucher (6000)	Voucher in valoare de 6000 de Monede Dragon. Obiectul se poate negocia.
+85001	Esarfa Lord (normala)	Aceasta esarfa obtine 1% din bonusurile de pe arme sau armuri folosite la absorbtie.
+85002	Esarfa Lord (fina)	Aceasta esarfa obtine 5% din bonusurile de pe arme sau armuri folosite la absorbtie.
+85003	Esarfa Lord (nobila)	Aceasta esarfa obtine 10% din bonusurile de pe arme sau armuri folosite la absorbtie.
+85004	Esarfa Lord (avansata)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85005	Esarfa Master (normala)	Aceasta esarfa obtine 1% din bonusurile de pe arme sau armuri folosite la absorbtie.
+85006	Esarfa Master (fina)	Aceasta esarfa obtine 5% din bonusurile de pe arme sau armuri folosite la absorbtie.
+85007	Esarfa Master (nobila)	Aceasta esarfa obtine 10% din bonusurile de pe arme sau armuri folosite la absorbtie.
+85008	Esarfa Master (avansata)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85009	Certificate of Reversal	Eliminati in totalitate bonusurile si itemul absorbit pe esarfa.
+85010	Certificate of Reversal+	Inlatura bonusurile si iti ofera inapoi itemul care a fost absorbit pe esarfa.
+85011	Eşarfă Suveran (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85012	Eşarfă Suveran (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85013	Eşarfă Suveran (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85014	Eşarfă Suveran (avansat)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85015	Eşarfă Roială (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85016	Eşarfă Roială (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85017	Eşarfă Roială (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85018	Eşarfă Roială (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85021	Eşarfă Aniversară(norm.)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85022	Eşarfă Aniversară(fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85023	Eşarfă Aniversară(nobil)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+85024	Eşarfă Aniversară(pers.)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86001	Eşarfă Zi (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86002	Eşarfă Zi (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86003	Eşarfă Zi (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86004	Eşarfă Zi (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86005	Eşarfă Chou (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86006	Eşarfă Chou (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86007	Eşarfă Chou (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86008	Eşarfă Chou (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86011	Eşarfă Yin (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86012	Eşarfă Yin (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86013	Eşarfă Yin (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86014	Eşarfă Yin (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86015	Eşarfă Mao (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86016	Eşarfă Mao (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86017	Eşarfă Mao (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86018	Eşarfă Mao (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86021	Eşarfă Chen (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86022	Eşarfă Chen (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86023	Eşarfă Chen (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86024	Eşarfă Chen (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86025	Eşarfă Si (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86026	Eşarfă Si (fin[)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86027	Eşarfă Si (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86028	Eşarfă Si (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86031	Eşarfă Wu (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86032	Eşarfă Wu (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86033	Eşarfă Wu (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86034	Eşarfă Wu (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86035	Eşarfă Wei (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86036	Eşarfă Wei (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86037	Eşarfă Wei (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86038	Eşarfă Wei (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86041	Eşarfă Shen (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86042	Eşarfă Shen (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86043	Eşarfă Shen (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86044	Eşarfă Shen (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86045	Eşarfă You (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86046	Eşarfă You (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86047	Eşarfă You (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86048	Eşarfă You (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86051	Eşarfă Xu (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86052	Eşarfă Xu (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86053	Eşarfă Xu (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86054	Eşarfă Xu (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86055	Eşarfă Hai (normală)	Această eşarfă obţine 1% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86056	Eşarfă Hai (fină)	Această eşarfă obţine 5% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86057	Eşarfă Hai (nobilă)	Această eşarfă obţine 10% din bonusurile de pe arme sau armuri folosite la absorbţie.
+86058	Eşarfă Hai (avansată)	Această eşarfă obţine 11~25% din bonusurile de pe arme sau armuri folosite la absorbţie.
+91010	Buffi	Iti confera automat Buff-urile Samanului Dragon.
+91011	Buffi	Iti confera automat Buff-urile Samanului Dragon.
+91012	Buffi	Iti confera automat Buff-urile Samanului Dragon.
+91013	Buffi	Iti confera automat Buff-urile Samanului Dragon.
+91014	Buffi	Iti confera automat Buff-urile Samanului Dragon.
+91015	Buffi	Iti confera automat Buff-urile Samanului Dragon.
+91016	Healer	Iti confera automat Buff-urile Samanului Leac.
+91017	Healer	Iti confera automat Buff-urile Samanului Leac.
+91018	Healer	Iti confera automat Buff-urile Samanului Leac.
+91019	Healer	Iti confera automat Buff-urile Samanului Leac.
+91020	Healer	Iti confera automat Buff-urile Samanului Leac.
+91021	Healer	Iti confera automat Buff-urile Samanului Leac.
+91050	Cufarul Biologului I	Acopera toate misiunile biologului de la lv 30 la lv 94.
+91051	Cufarul Biologului II	Acopera toate misiunile biologului de la lv 100 la lv 130.

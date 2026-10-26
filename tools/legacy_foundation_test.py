@@ -941,5 +941,54 @@ class SageGrade(unittest.TestCase):
 		self.assertEqual("%s Super mestre perfeito", read_locale("br")["SKILL_GRADE_NAME_SAGE_MASTER"][0], "OLD's pt")
 
 
+
+class FiveCharacters(unittest.TestCase):
+	"""Five characters per account (NOVA-97): the select window's fifth place
+	on the turntable, its hotkey and its instance (introselect.py, which
+	nui_select subclasses), over nui_phase_test's stand-ins."""
+
+	DIK_5 = 6
+
+	def world(self):
+		import nui_phase_test as phase
+		slots = phase.account({"ID": 101, "NAME": "Kalinka", "RACE": 1}, None, None,
+		                      {"ID": 104, "NAME": "Borak"}, {"ID": 105, "NAME": "Fifth", "RACE": 2, "LEVEL": 150})
+		world = phase.World(slots=slots, stream_slot=0, nui_on=False)
+		with world, quiet():
+			window = world.legacy["introSelect"].SelectCharacterWindow(world.stream)
+			window.Open()
+		return world, window
+
+	def test_five_places_72_degrees_apart_from_the_selected_one(self):
+		world, window = self.world()
+		self.assertEqual(5, window.SLOT_COUNT)
+		self.assertEqual(5, len(window.SLOT_ROTATION))
+		self.assertEqual(135.0, window.SLOT_ROTATION[0], "the selected character keeps the turntable's front")
+		for first, second in zip(window.SLOT_ROTATION, window.SLOT_ROTATION[1:] + window.SLOT_ROTATION[:1]):
+			self.assertEqual(72.0, (second - first) % 360.0)
+
+	def test_the_fifth_character_is_made_and_selected_by_its_key(self):
+		world, window = self.world()
+		self.assertEqual({0: 1, 3: 0, 4: 2}, world.chr_state.instances, "Refresh makes every slot's character")
+		with world, quiet():
+			window.OnKeyDown(self.DIK_5)
+		self.assertEqual(4, window.GetSlotIndex())
+		self.assertEqual(4, world.chr_state.selected)
+		self.assertEqual(135.0, window.destRotation[4], "the selected one turns to the front")
+		with world, quiet():
+			window.OnKeyDown(self.DIK_5 - 1)
+		self.assertEqual(3, window.GetSlotIndex(), "key 4 still selects the fourth")
+		with world, quiet():
+			window.IncreaseSlotIndex()
+			window.IncreaseSlotIndex()
+		self.assertEqual(0, window.GetSlotIndex(), "right past the fifth comes back to the first")
+
+	def test_close_deletes_all_five_instances(self):
+		world, window = self.world()
+		with world, quiet():
+			window.Close()
+		self.assertEqual({}, world.chr_state.instances)
+
+
 if __name__ == "__main__":
 	unittest.main()

@@ -896,6 +896,31 @@ class SageGrade(unittest.TestCase):
 		self.assertIn(24, page.store.get(1, {}))
 		self.assertEqual((10.0, 40.0), character.legacy_skill_cells(window, "Skill_Active_Slot")[24][5])
 
+	def riding_icons(self, setup):
+		"""The riding skill's icons on the support page."""
+		character, world, window, counts = self.character(setup)
+		cells = character.legacy_skill_cells(window, "Skill_ETC_Slot")
+		return [cell[1] for cell in cells.values() if cell[1] and "/130_" in cell[1]]
+
+	def test_the_riding_icon_follows_the_horse_with_the_sage_grade(self):
+		"""The client clamps the riding skill's icon grade (level - 1) to its
+		last grade icon, the fourth with the sage grade, which no riding art
+		fills (riding_01 to _03): the icon follows OLD's horses instead."""
+		for (grade, level), icon in (((0, 1), 1), ((0, 10), 1), ((0, 11), 2), ((0, 19), 2), ((1, 1), 3), ((1, 10), 3),
+		                             ((2, 3), 3), ((3, 1), 3)):
+			def setup(game, grade=grade, level=level):
+				sage_warrior(game)
+				game.skill_by_index[130] = {"grade": grade, "level": level}
+			with self.subTest(grade=grade, level=level):
+				self.assertEqual([self.ICON % (130, icon)], self.riding_icons(setup))
+
+	def test_without_the_sage_grade_the_riding_icon_stays_todays(self):
+		import nui_character_test as character
+		for (grade, level), icon in (((0, 1), 1), ((0, 2), 2), ((0, 5), 3), ((1, 5), 3)):
+			with self.subTest(grade=grade, level=level):
+				self.assertEqual([self.ICON % (130, icon)],
+				                 self.riding_icons(lambda game: character.warrior(game, riding=(grade, level))))
+
 	def sage_tooltip(self, grade, level, sage=True):
 		import json
 		import nui_tooltip_corpus as corpus_tool

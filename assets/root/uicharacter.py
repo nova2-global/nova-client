@@ -799,6 +799,7 @@ class CharacterWindow(ui.ScriptWindow):
 
 			## Horse riding skill exception handling
 			if player.SKILL_INDEX_RIDING == skillIndex:
+				ridingIconGrade = self.__GetRidingIconGrade(skillGrade, skillLevel)
 				if 1 == skillGrade:
 					skillLevel += 19
 				elif 2 == skillGrade:
@@ -806,7 +807,10 @@ class CharacterWindow(ui.ScriptWindow):
 				elif 3 == skillGrade:
 					skillLevel = 40
 
-				skillPage.SetSkillSlotNew(slotIndex, skillIndex, max(skillLevel - 1, 0), skillLevel)
+				if ridingIconGrade is None:
+					ridingIconGrade = max(skillLevel - 1, 0)
+
+				skillPage.SetSkillSlotNew(slotIndex, skillIndex, ridingIconGrade, skillLevel)
 				skillPage.SetSlotCount(slotIndex, skillLevel)
 
 			## ACTIVE
@@ -1328,6 +1332,20 @@ class CharacterWindow(ui.ScriptWindow):
 		# OLD's sage grade (ENABLE_SKILLS_LEVEL_OVER_P, live in OLD's client):
 		# skill levels to 50, the fifth grade, from the foundation cut on.
 		return isinstance(getattr(player, "SKILL_GRADE_SAGE_MASTER", None), int)
+
+	def __GetRidingIconGrade(self, skillGrade, skillLevel):
+		# The riding skill's icon. Today it is the level - 1, which the client
+		# clamps to the last grade icon. The sage grade gives the client a
+		# fourth grade icon that no riding art fills (riding_01 to _03), so
+		# the icon follows the horse, as OLD's does (uiCharacter.py:1033-1052):
+		# the first to level 10, the second from 11, the third from the master
+		# grade on. OLD gave grades 2 and 3 the first icon again: not carried
+		# over. None: today's icon.
+		if not self.__HasSageGrade():
+			return None
+		if skillGrade >= 1:
+			return 2
+		return 1 if skillLevel >= 11 else 0
 
 	def __GetRealSkillSlot(self, skillGrade, skillSlot):
 		# The uiscript has three grade columns: normal, master, then grand and

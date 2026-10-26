@@ -893,3 +893,5 @@ BLOCK_PLAYER_TITLE	Spieler blockieren
 UNBLOCK_PLAYER_DIALOG	Möchtest du %s entblocken?
 BLOCKED_PLAYERS_TITLE	Blockierte Spieler
 WHISPER_ERROR_BLOCK_YOU	Du kannst nicht mit %s schreiben, da diese Person dich blockiert hat.
+GUILD_WAR_MAX_MEMBERS	Maximale Mitgliederzahl deiner Gilde: %d.
+GUILD_WAR_MAX_SCORE	Der Krieg endet bei %d Kills.

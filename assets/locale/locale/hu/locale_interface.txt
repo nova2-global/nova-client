@@ -367,3 +367,5 @@ CHARACTER_MAGIC_DEF	Mágia védekezés
 CHARACTER_EVASION	Kitérés
 BLOCK_PLAYER	Játékos tiltás
 UNBLOCK_PLAYER	Játékos feloldás
+GUILD_WAR_ENEMY_NUMBER	Max. tagok
+GUILD_WAR_MAX_SCORE	Végeredmény

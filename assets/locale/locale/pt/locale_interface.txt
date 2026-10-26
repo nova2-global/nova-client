@@ -368,3 +368,5 @@ CHARACTER_MAGIC_DEF	Magia defensiva
 CHARACTER_EVASION	Evasão
 BLOCK_PLAYER	Bloquear Jogador
 UNBLOCK_PLAYER	Desbloquear Jogador
+GUILD_WAR_ENEMY_NUMBER	Maximo de Membros
+GUILD_WAR_MAX_SCORE	Pontuação Final

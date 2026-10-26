@@ -1736,11 +1736,13 @@ class GameWindow(ui.ScriptWindow):
 	def BINARY_GuildWar_OnSendDeclare(self, guildID):
 		pass
 
-	def BINARY_GuildWar_OnRecvDeclare(self, guildID, warType):
+	# The member cap and end score the declaring guild chose (NOVA-90, OLD
+	# game.py:2854-2908).
+	def BINARY_GuildWar_OnRecvDeclare(self, guildID, warType, maxMemberCount=0, endScore=0):
 		mainCharacterName = player.GetMainCharacterName()
 		masterName = guild.GetGuildMasterName()
 		if mainCharacterName == masterName:
-			self.__GuildWar_OpenAskDialog(guildID, warType)
+			self.__GuildWar_OpenAskDialog(guildID, warType, maxMemberCount, endScore)
 
 	def BINARY_GuildWar_OnRecvPoint(self, gainGuildID, opponentGuildID, point):
 		self.interface.OnRecvGuildWarPoint(gainGuildID, opponentGuildID, point)	
@@ -1767,7 +1769,7 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.UpdateMemberCount(guildID1, memberCount1, guildID2, memberCount2)
 		self.interface.wndMiniMap.UpdateObserverCount(observerCount)
 
-	def __GuildWar_OpenAskDialog(self, guildID, warType):
+	def __GuildWar_OpenAskDialog(self, guildID, warType, maxMemberCount=0, endScore=0):
 
 		guildName = guild.GetGuildName(guildID)
 
@@ -1780,7 +1782,7 @@ class GameWindow(ui.ScriptWindow):
 		questionDialog = nui_windows.make("guild-war-dialogs", uiGuild.AcceptGuildWarDialog, "nui_guild_war_accept.AcceptGuildWarDialog")
 		questionDialog.SAFE_SetAcceptEvent(self.__GuildWar_OnAccept)
 		questionDialog.SAFE_SetCancelEvent(self.__GuildWar_OnDecline)
-		questionDialog.Open(guildName, warType)
+		questionDialog.Open(guildName, warType, maxMemberCount, endScore)
 
 		self.guildWarQuestionDialog = questionDialog
 

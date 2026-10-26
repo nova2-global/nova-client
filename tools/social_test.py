@@ -16,6 +16,9 @@ legacy classes), and driven as the C++ handlers drive them:
 - whisper details (NOVA-48): the whisper dialog's online icon and flag,
   AcceptTarget's request, game.py's poll (every two seconds per open dialog
   with a target) and its BINARY_WhisperDetails;
+- the guild war's member cap and end score (NOVA-90): the declare dialog's
+  two inputs and the commands it sends (4 and 2 arguments), the accept
+  dialog's two lines, game.py's 4-argument callback;
 - every new locale key in all 17 locales, OLD's text where OLD's locale has
   it and English otherwise."""
 import os
@@ -28,6 +31,7 @@ import nui_game_support as support  # noqa: E402
 import nui_hud_test as hud  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
 import nui_whisper_test as whisper_test  # noqa: E402
+import nui_guild_dialogs_test as guild_test  # noqa: E402
 
 ROOT = support.ROOT
 ASSETS = os.path.normpath(os.path.join(ROOT, ".."))
@@ -46,6 +50,13 @@ BLOCK_KEYS = {"game": {"TARGET_BUTTON_BLOCK": "Block", "TARGET_BUTTON_UNBLOCK": 
                        "BLOCKED_PLAYERS_TITLE": "Blocked Players",
                        "WHISPER_ERROR_BLOCK_YOU": "You can't write to %s because they blocked you."},
               "interface": {"BLOCK_PLAYER": "Block Player", "UNBLOCK_PLAYER": "Unblock Player"}}
+WAR_KEYS = {"game": {"GUILD_WAR_MAX_MEMBERS": "Players Limit from your guild: %d.",
+                     "GUILD_WAR_MAX_SCORE": "The war will end at %d Kills."},
+            "interface": {"GUILD_WAR_ENEMY_NUMBER": "Max. Members", "GUILD_WAR_MAX_SCORE": "End Score"}}
+# OLD texts not taken, English instead: ro's GUILD_WAR_MAX_SCORE "Scorul
+# final" has no %d, and OLD's accept dialog formatted a score into it (a
+# TypeError).
+NOT_OLD = {("ro", "game", "GUILD_WAR_MAX_SCORE")}
 
 
 def read(path):
@@ -85,12 +96,15 @@ def compiled(file_name, class_name, names, namespace=None):
 
 
 def uiscript(name):
-    """A uiscript's window dictionary, its strings their keys."""
+    """A uiscript's window dictionary, its strings their keys. The declare
+    dialog's uiscript imports guild for the enemy name's length (the client's
+    guild.GUILD_NAME_MAX_LEN, 24 since the foundation cut)."""
     names = {"SCREEN_WIDTH": 1600, "SCREEN_HEIGHT": 900, "PLAYER_NAME_MAX_LEN": 12, "LOCALE_PATH": "locale/en",
              "LOCALE_PATH_COMMON": "locale/common"}
     from unittest import mock
     with mock.patch.dict(sys.modules, {"uiScriptLocale": support.support.LocaleInfo(),
-                                       "localeInfo": support.support.LocaleInfo()}):
+                                       "localeInfo": support.support.LocaleInfo(),
+                                       "guild": types.SimpleNamespace(GUILD_NAME_MAX_LEN=24)}):
         path = os.path.join(UISCRIPTS, name)
         exec(compile(read(path), path, "exec"), names)
     return names["window"]
@@ -558,7 +572,7 @@ class LanguageFlags(unittest.TestCase):
 
 
 class Locales(unittest.TestCase):
-    KEYS = (ROSTER_KEYS, BLOCK_KEYS)
+    KEYS = (ROSTER_KEYS, BLOCK_KEYS, WAR_KEYS)
 
     def test_every_locale_has_every_new_key_olds_text_or_english(self):
         locales = [name for name in sorted(os.listdir(LOCALES))
@@ -576,11 +590,21 @@ class Locales(unittest.TestCase):
                         with self.subTest(locale=locale, key=key):
                             self.assertTrue(entries.get(key, "").strip())
                             if os.path.isdir(OLD_LOCALES):
-                                self.assertEqual(entries[key], old.get(key) or text)
+                                taken = None if (locale, kind, key) in NOT_OLD else old.get(key)
+                                self.assertEqual(entries[key], taken or text)
                             if locale == "en":
                                 self.assertEqual(entries[key], text)
 
-
+    def test_the_war_lines_take_one_number_in_every_locale(self):
+        for locale in sorted(os.listdir(LOCALES)):
+            path = os.path.join(LOCALES, locale, "locale_game.txt")
+            if not os.path.isfile(path):
+                continue
+            entries = locale_entries(path)
+            for key in WAR_KEYS["game"]:
+                with self.subTest(locale=locale, key=key):
+                    self.assertEqual(entries[key].count("%d"), 1)
+                    self.assertIn("32", entries[key] % 32)
 
 
 # --- whisper details (NOVA-48) ---------------------------------------------------------------------
@@ -741,6 +765,190 @@ class GameWhisperDetails(unittest.TestCase):
     def test_on_update_runs_the_poll(self):
         source = support.source_of("game.py", ("OnUpdate",), inside="GameWindow")
         self.assertIn("self.__AskWhisperDetails()", source)
+
+
+# --- the guild war's member cap and end score (NOVA-90) ---------------------------------------------
+
+class DeclareWarLimits(unittest.TestCase):
+    def open(self, nui_on):
+        world = guild_test.world_of(nui_on)
+        dialog = world.make("guild-war-dialogs", "uiGuild", "DeclareGuildWarDialog",
+                            "nui_guild_war_declare.DeclareGuildWarDialog")
+        with world.game, w4.quiet():
+            dialog.Open()
+        return world, dialog
+
+    def ok(self, world, dialog, name="Black Wolves", members=None, score=None, war_type=2):
+        with world.game, w4.quiet():
+            dialog.inputValue.SetText(name)
+            dialog.typeButtonList[war_type].click() if not world.nui_on else None
+            if members is not None:
+                dialog.memberCountInput.SetText(members)
+            if score is not None:
+                dialog.endScoreInput.SetText(score)
+            mark = world.mark()
+            dialog.acceptButton.click()
+        return [e for e in world.effects_since(mark) if e[0] == "net.SendChatPacket"]
+
+    def test_open_fills_both_number_inputs_with_olds_32(self):
+        world, dialog = self.open(False)
+        for field in (dialog.memberCountInput, dialog.endScoreInput):
+            self.assertEqual(field.GetText(), "32")
+        source = support.source_of("uiguild.py", ("Open",), inside="DeclareGuildWarDialog")
+        self.assertIn("warLimitInput.SetNumberMode()", source)
+
+    def test_both_numbers_go_with_the_declaration(self):
+        world, dialog = self.open(False)
+        self.assertEqual(self.ok(world, dialog, members="40", score="100"),
+                         [("net.SendChatPacket", ("/war Black Wolves 2 40 100",))])
+        self.assertFalse(dialog.IsShow())
+
+    def test_without_both_numbers_the_two_argument_command_goes(self):
+        for members, score in (("", "100"), ("40", ""), ("4x", "100")):
+            world, dialog = self.open(False)
+            with self.subTest(members=members, score=score):
+                self.assertEqual(self.ok(world, dialog, members=members, score=score),
+                                 [("net.SendChatPacket", ("/war Black Wolves 2",))])
+
+    def test_an_empty_name_still_sends_nothing(self):
+        world, dialog = self.open(False)
+        self.assertEqual(self.ok(world, dialog, name=""), [])
+        self.assertTrue(dialog.IsShow())
+
+    def test_close_forgets_the_inputs(self):
+        world, dialog = self.open(False)
+        with world.game, w4.quiet():
+            dialog.Close()
+        self.assertIsNone(dialog.memberCountInput)
+        self.assertIsNone(dialog.endScoreInput)
+        self.assertEqual(dialog.GetWarLimits(), (None, None))
+
+    def test_under_novaui_there_are_no_inputs_and_the_two_argument_command_goes(self):
+        world, dialog = self.open(True)
+        self.assertIsNone(dialog.memberCountInput)
+        self.assertIsNone(dialog.endScoreInput)
+        self.assertEqual(dialog.GetWarLimits(), (None, None))
+        with world.game, w4.quiet():
+            w4.board(dialog).insert_text(guild_test.FIELD, "Black Wolves")
+            w4.press(dialog, "type_press", 2, 0)
+            mark = world.mark()
+            w4.press(dialog, "accept_press", 0)
+        self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendChatPacket"],
+                         [("net.SendChatPacket", ("/war Black Wolves 2",))])
+
+    def test_the_uiscript_has_olds_two_rows(self):
+        window = uiscript("declareguildwardialog.py")
+        self.assertEqual((window["width"], window["height"]), (230, 170))
+        board = children(window)["Board"]
+        self.assertEqual((board["width"], board["height"]), (230, 170))
+        kids = children(window, "Board")
+        self.assertEqual(kids["InputMemberCount"]["text"], "GUILD_WAR_ENEMY_NUMBER")
+        self.assertEqual(kids["InputScoreCount"]["text"], "GUILD_WAR_MAX_SCORE")
+        for slot, field in (("MemberCountInput", "MemberInputValue"), ("EndScoreInput", "EndScoreInputValue")):
+            entry = children(window, "Board", slot)[field]
+            self.assertEqual((entry["type"], entry["input_limit"]), ("editline", 3))
+        # The enemy guild's name keeps the guild name length beside the new rows.
+        self.assertEqual(children(window, "Board", "InputSlot")["InputValue"]["input_limit"], 24)
+        self.assertEqual((kids["MemberCountInput"]["x"], kids["MemberCountInput"]["y"]), (85, 67))
+        self.assertEqual((kids["EndScoreInput"]["x"], kids["EndScoreInput"]["y"]), (180, 67))
+        self.assertEqual(kids["GameType"]["y"], 100)
+        self.assertEqual((kids["AcceptButton"]["y"], kids["CancelButton"]["y"]), (130, 130))
+
+
+class AcceptWarLimits(unittest.TestCase):
+    def open(self, nui_on, *args):
+        world = guild_test.world_of(nui_on)
+        dialog = world.make("guild-war-dialogs", "uiGuild", "AcceptGuildWarDialog",
+                            "nui_guild_war_accept.AcceptGuildWarDialog")
+        with world.game, w4.quiet():
+            dialog.Open("Black Wolves", 2, *args)
+        return world, dialog
+
+    def test_both_limits_show_each_guilds_half_of_the_cap_and_the_score(self):
+        world, dialog = self.open(False, 64, 250)
+        self.assertEqual(dialog.membersCountText.GetText(), "Players Limit from your guild: 32.")
+        self.assertEqual(dialog.endScoreText.GetText(), "The war will end at 250 Kills.")
+        self.assertTrue(dialog.membersCountText.IsShow())
+        self.assertTrue(dialog.endScoreText.IsShow())
+
+    def test_without_limits_neither_line_shows(self):
+        for args in ((), (0, 0)):
+            world, dialog = self.open(False, *args)
+            with self.subTest(args=args):
+                self.assertFalse(dialog.membersCountText.IsShow())
+                self.assertFalse(dialog.endScoreText.IsShow())
+        world, dialog = self.open(False, 0, 100)
+        self.assertFalse(dialog.membersCountText.IsShow())
+        self.assertTrue(dialog.endScoreText.IsShow())
+
+    def test_under_novaui_both_lines_are_missing_and_open_takes_four_arguments(self):
+        world, dialog = self.open(True, 64, 250)
+        self.assertIsNone(dialog.membersCountText)
+        self.assertIsNone(dialog.endScoreText)
+        self.assertEqual(dialog.GetGuildName(), "Black Wolves")
+
+    def test_close_forgets_the_lines(self):
+        world, dialog = self.open(False, 64, 250)
+        with world.game, w4.quiet():
+            dialog.Close()
+        self.assertIsNone(dialog.membersCountText)
+        self.assertIsNone(dialog.endScoreText)
+
+    def test_the_uiscript_grows_as_olds(self):
+        window = uiscript("acceptguildwardialog.py")
+        self.assertEqual((window["width"], window["height"]), (230, 175))
+        kids = children(window, "Board")
+        self.assertEqual((kids["MembersCount"]["x"], kids["MembersCount"]["y"]), (15, 65))
+        self.assertEqual((kids["EndScore"]["x"], kids["EndScore"]["y"]), (15, 90))
+        self.assertEqual(kids["GameType"]["y"], 120)
+        self.assertEqual((kids["AcceptButton"]["y"], kids["CancelButton"]["y"]), (150, 150))
+
+
+class GameWarDeclare(unittest.TestCase):
+    def window(self, master=True):
+        self.log = []
+        self.opened = []
+        player = support.Recording("player", self.log)
+        player.__dict__["_answers"]["GetMainCharacterName"] = "Boss"
+        guild = support.Recording("guild", self.log)
+        guild.__dict__["_answers"]["GetGuildMasterName"] = "Boss" if master else "Someone"
+        guild.__dict__["_answers"]["GetGuildName"] = lambda guild_id: "Rivals"
+        opened = self.opened
+
+        class Dialog(object):
+            def SAFE_SetAcceptEvent(self, event):
+                pass
+
+            def SAFE_SetCancelEvent(self, event):
+                pass
+
+            def Open(self, *args):
+                opened.append(args)
+        nui_windows = types.SimpleNamespace(make=lambda *args: Dialog())
+        ui_guild = types.ModuleType("uiGuild")
+        ui_guild.AcceptGuildWarDialog = Dialog
+        cls = compiled("game.py", "GameWindow", ("BINARY_GuildWar_OnRecvDeclare", "__GuildWar_OpenAskDialog"),
+                       {"player": player, "guild": guild, "nui_windows": nui_windows})
+        cls._GameWindow__GuildWar_OnAccept = lambda self: 1
+        cls._GameWindow__GuildWar_OnDecline = lambda self: 1
+        sys.modules["uiGuild"] = ui_guild
+        self.addCleanup(sys.modules.pop, "uiGuild", None)
+        return cls()
+
+    def test_the_master_gets_the_dialog_with_the_cap_and_score(self):
+        window = self.window()
+        window.BINARY_GuildWar_OnRecvDeclare(901, 2, 64, 250)
+        self.assertEqual(self.opened, [("Rivals", 2, 64, 250)])
+
+    def test_two_arguments_still_work_with_no_limits(self):
+        window = self.window()
+        window.BINARY_GuildWar_OnRecvDeclare(901, 1)
+        self.assertEqual(self.opened, [("Rivals", 1, 0, 0)])
+
+    def test_others_get_nothing(self):
+        window = self.window(master=False)
+        window.BINARY_GuildWar_OnRecvDeclare(901, 2, 64, 250)
+        self.assertEqual(self.opened, [])
 
 
 

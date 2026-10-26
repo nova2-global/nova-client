@@ -9,7 +9,7 @@ window = {
 	"style" : ("movable", "float",),
 
 	"width" : 230,
-	"height" : 130,
+	"height" : 175,
 
 	"children" :
 	(
@@ -21,7 +21,7 @@ window = {
 			"y" : 0,
 
 			"width" : 230,
-			"height" : 130,
+			"height" : 175,
 
 			"title" : uiScriptLocale.GUILD_WAR_ACCEPT,
 
@@ -61,9 +61,30 @@ window = {
 						},
 					),
 				},
+				## The declaring guild's member cap and end score (NOVA-90), OLD's
+				## lines (OLD acceptguildwardialog.py:68-84); uiguild fills them,
+				## each shown only when the server sent a value.
+				{
+					"name" : "MembersCount",
+					"type" : "text",
+
+					"x" : 15,
+					"y" : 65,
+
+					"text" : "",
+				},
+				{
+					"name" : "EndScore",
+					"type" : "text",
+
+					"x" : 15,
+					"y" : 65+25,
+
+					"text" : "",
+				},
 				## Input Slot
 				{
-					"name" : "GameType", "x" : 15, "y" : 65, "width" : 65+45*4, "height" : 20,
+					"name" : "GameType", "x" : 15, "y" : 90+30, "width" : 65+45*4, "height" : 20,
 					
 					"children" :
 					(
@@ -115,7 +136,7 @@ window = {
 					"type" : "button",
 
 					"x" : - 61 - 5 + 30,
-					"y" : 95,
+					"y" : 120+30,
 					"horizontal_align" : "center",
 
 					"text" : uiScriptLocale.OK,
@@ -129,7 +150,7 @@ window = {
 					"type" : "button",
 
 					"x" : 5 + 30,
-					"y" : 95,
+					"y" : 120+30,
 					"horizontal_align" : "center",
 
 					"text" : uiScriptLocale.CANCEL,

@@ -368,3 +368,5 @@ CHARACTER_MAGIC_DEF	Magisk forsvar
 CHARACTER_EVASION	Undvigeværdi
 BLOCK_PLAYER	Blok Spiller
 UNBLOCK_PLAYER	Fjern blokering af spilleren
+GUILD_WAR_ENEMY_NUMBER	Max. Members
+GUILD_WAR_MAX_SCORE	End Score

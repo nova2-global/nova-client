@@ -7,11 +7,13 @@ file's test (tools/<file>_test.py) checks the result against
 tools/fixtures/old_content.json.
 
 	python3 tools/old_content.py item_list OLD_ITEM_LIST CUT_ITEM_PROTO
+	python3 tools/old_content.py npclist OLD_NPCLIST_PY CUT_MOB_PROTO
 
 OLD_ITEM_LIST is old/client_pack/source/locale/common/item_list.txt and
-CUT_ITEM_PROTO int-rt's share/conf/item_proto.txt. The command rewrites
-assets/locale/locale/common/item_list.txt (from NEW's own lines, also on a
-second run) and sets the file's fixture entry.
+CUT_ITEM_PROTO int-rt's share/conf/item_proto.txt; OLD_NPCLIST_PY is
+old/client_pack/source/root/NpcList.py and CUT_MOB_PROTO int-rt's
+share/conf/mob_proto.txt. Each command rewrites its file (from NEW's own
+lines, also on a second run) and sets the file's fixture entry.
 """
 import hashlib
 import json
@@ -203,6 +205,123 @@ def merge_item_list(new_data, old_data, cut_vnums, files):
 	return body.encode("ascii"), report
 
 
+NPCLIST = os.path.join(ASSETS, "root", "npclist.txt")
+
+
+def npclist_entries(text):
+	"""playersettingmodule.__LoadGameNPC: ({vnum: name}, {name: folder}), the
+	first line for a vnum or a name winning as chrmgr's map inserts do. A
+	line it would abort on raises ValueError."""
+	names, folders = {}, {}
+	if text and not text.endswith("\n"):
+		raise ValueError("the last line has no line break, and line[:-1] would cut its last letter")
+	for number, line in enumerate(text.split("\n")[:-1], 1):
+		tokens = line.split("\t")
+		if not tokens[0]:
+			continue
+		vnum = int(tokens[0])
+		if vnum:
+			if len(tokens) < 2:
+				raise ValueError("line %d: a name line without a name" % number)
+			names.setdefault(vnum, tokens[1].strip())
+		else:
+			if len(tokens) < 3:
+				raise ValueError("line %d: a folder line without a folder" % number)
+			folders.setdefault(tokens[1].strip(), tokens[2].strip())
+	return names, folders
+
+
+def old_npclist(text):
+	"""OLD's NpcList.py, which OLD's live client runs (playerSettingModule,
+	outside a test server): its chrmgr.RegisterRaceName and
+	RegisterRaceSrcName calls, the first one for a vnum or name winning.
+	Returns (names, folders, folder names in file order). Some folders hold
+	a single backslash (plechito_halloween2020\\...), which Python keeps as
+	it is; a string an escape would change raises ValueError."""
+	import re
+	names, folders, order = {}, {}, []
+
+	def literal(raw):
+		if "\\" in raw and re.search(r"\\[\\'\"abfnrtv0-7xNuU\n]", raw):
+			raise ValueError("an escape in NpcList.py: %r" % raw)
+		return raw
+
+	for line in text.split("\n"):
+		match = re.match(r"\s*chrmgr\.RegisterRaceSrcName\(\s*'([^']*)'\s*,\s*'([^']*)'\s*\)\s*$", line)
+		if match:
+			name = literal(match.group(1))
+			folders.setdefault(name, literal(match.group(2)))
+			order.append(name)
+			continue
+		match = re.match(r"\s*chrmgr\.RegisterRaceName\(\s*(\d+)\s*,\s*'([^']*)'\s*\)\s*$", line)
+		if match:
+			names.setdefault(int(match.group(1)), literal(match.group(2)))
+			continue
+		if line.strip() and line.strip() != "import chrmgr":
+			raise ValueError("a line of NpcList.py this reader does not know: %r" % line)
+	return names, folders, order
+
+
+def race_paths(race):
+	"""CRaceManager's __GetRaceResourcePathes (src/GameLib/RaceManager.cpp):
+	the folders a mob's model is looked for in, in order."""
+	monster = ["d:/ymir work/monster/", "d:/ymir work/monster2/"]
+	npc = ["d:/ymir work/npc/", "d:/ymir work/npc2/"]
+	guild = ["d:/ymir work/guild/"]
+	if 14000 <= race < 15000 or race == 20043:
+		return guild + npc + monster
+	if race > 9000:
+		return (npc[::-1] if race >= 30000 else npc) + monster + guild
+	if race in (8507, 8510) or (2000 < race <= 8000) or 1400 <= race <= 1700:
+		return monster[::-1] + npc + guild
+	return monster + npc + guild
+
+
+def mob_shows(vnum, names, folders, files):
+	"""Whether CRaceManager::__LoadRaceData finds the mob's .msm:
+	<path><folder>/<name>.msm, the folder being the name's folder line or the
+	name itself."""
+	name = names.get(vnum)
+	if not name:
+		return False
+	folder = folders.get(name, name)
+	return any(store_name("%s%s/%s.msm" % (path, folder, name)) in files for path in race_paths(vnum))
+
+
+def cut_mob_vnums(text):
+	return set(int(row.split("\t")[0]) for row in text.split("\n")[1:] if row.split("\t")[0].strip().isdigit())
+
+
+def merge_npclist(new_data, old_text, mob_vnums, files):
+	"""NEW's npclist with, after its last line, OLD's folder lines for the
+	names OLD's added mobs use that NEW has no folder for (in OLD's order)
+	and OLD's name lines for the cut's mobs NEW names none for (in vnum
+	order). A name with no model in the store costs CRaceManager five failed
+	lookups and syserr lines per spawn, and the mob stays unseen as today,
+	so those lines are added too. Returns (bytes, report)."""
+	text = new_data.decode("ascii")
+	new_names, new_folders = npclist_entries(text)
+	old_names, old_folders, folder_order = old_npclist(old_text)
+	added_names = [vnum for vnum in sorted(old_names) if vnum in mob_vnums and vnum not in new_names]
+	used = set(old_names[vnum] for vnum in added_names)
+	added_folders = []
+	for name in folder_order:
+		if name in used and name not in new_folders and name not in added_folders:
+			added_folders.append(name)
+	lines = ["0\t%s\t%s\n" % (name, old_folders[name]) for name in added_folders]
+	lines += ["%d\t%s\t\n" % (vnum, old_names[vnum]) for vnum in added_names]
+	body = text + "".join(lines)
+	names, folders = npclist_entries(body)
+	report = {
+		"new_lines": len(text.splitlines()),
+		"new_sha1": hashlib.sha1(text.encode("ascii")).hexdigest(),
+		"names": ranges(added_names),
+		"folders": added_folders,
+		"shown": sum(1 for vnum in added_names if mob_shows(vnum, names, folders, files)),
+	}
+	return body.encode("ascii"), report
+
+
 def ranges(vnums):
 	"""1, 2, 3, 7 -> "1-3, 7"."""
 	out, run = [], []
@@ -216,6 +335,15 @@ def ranges(vnums):
 	if run:
 		out.append(str(run[0]) if len(run) == 1 else "%d-%d" % (run[0], run[-1]))
 	return ", ".join(out)
+
+
+def parse_ranges(text):
+	""""1-3, 7" -> [1, 2, 3, 7]."""
+	vnums = []
+	for part in filter(None, (piece.strip() for piece in text.split(","))):
+		first, _, last = part.partition("-")
+		vnums.extend(range(int(first), int(last or first) + 1))
+	return vnums
 
 
 def load_fixture():
@@ -263,6 +391,20 @@ def _main(argv):
 		save_fixture("item_list", report)
 		print("added %d, withheld %d, NEW's line kept for %d vnums whose lines differ: %s" % (
 			len(report["added"]), withheld, len(differ), ranges(differ)))
+		return 0
+	if len(argv) == 3 and argv[0] == "npclist":
+		with open(argv[1], encoding="ascii") as handle:
+			old_text = handle.read()
+		with open(argv[2], encoding="utf-8", errors="replace") as handle:
+			mob_vnums = cut_mob_vnums(handle.read())
+		with open(NPCLIST, "rb") as handle:
+			new_data = news_part(handle.read(), "npclist")
+		data, report = merge_npclist(new_data, old_text, mob_vnums, published_files())
+		with open(NPCLIST, "wb") as handle:
+			handle.write(data)
+		save_fixture("npclist", report)
+		print("added %d name lines and %d folder lines; %d of the added mobs have a model the store has" % (
+			len(parse_ranges(report["names"])), len(report["folders"]), report["shown"]))
 		return 0
 	sys.stderr.write(__doc__)
 	return 2

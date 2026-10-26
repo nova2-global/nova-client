@@ -1120,5 +1120,97 @@ class SafeboxPages(unittest.TestCase):
 		self.assertEqual(1, len(self.tabs(3)[1]), "the loader's SetTableSize(3) before the server's size")
 
 
+def run_localeinfo(locale):
+	"""The namespace of assets/root/localeinfo.py run whole, as the client
+	imports it: locale_game.txt through pack_open, then _RebuildDerivedData.
+	`paths["locale"]` is what app.GetLocalePath answers, so a test can switch
+	the language and call LoadLocaleData as app.ReloadLocale does."""
+	paths = {"locale": os.path.join(LOCALES, locale)}
+	errors = []
+	app = types.ModuleType("app")
+	app.GetLocalePath = lambda: paths["locale"]
+	app.GetLocalePathCommon = lambda: os.path.join(LOCALES, "common")
+	app.LoadLocaleData = lambda path: True
+
+	def abort():
+		raise AssertionError("localeinfo.py called app.Abort: %r" % errors)
+	app.Abort = abort
+	dbg = types.ModuleType("dbg")
+	dbg.LogBox = dbg.TraceError = lambda *args: errors.append(args)
+	# pack_open hands back the packed file's text; localeinfo.py never closes it.
+	namespace = {"__name__": "localeInfo", "pack_open": lambda name, mode="r": io.StringIO(read(name))}
+	saved = dict((name, sys.modules.get(name)) for name in ("app", "dbg"))
+	sys.modules.update(app=app, dbg=dbg)
+	try:
+		exec(compile(read(os.path.join(ROOT, "localeinfo.py")), "localeinfo.py", "exec"), namespace)
+	finally:
+		for name, module in saved.items():
+			if module is None:
+				sys.modules.pop(name, None)
+			else:
+				sys.modules[name] = module
+	return namespace, paths, errors
+
+
+class QuickSlotRefusal(unittest.TestCase):
+	"""The quick slot refusal (NOVA-97): the client refuses a quick slot for
+	an item cell outside the inventory pages (0-224), such as a belt or
+	equipment cell, since the slot's one-byte position can't hold it as the
+	server reads it (PythonPlayer.cpp CanQuickSlotAddress), and posts
+	BINARY_AppendNotifyMessage("QUICKSLOT_REGISTER_DISABLE_ITEM") to the game
+	window. game.py shows only the keys localeInfo.NOTIFY_MESSAGE has, so
+	without the entry the refusal was silent."""
+
+	# Every key the client posts to BINARY_AppendNotifyMessage
+	# (PythonNetworkStreamPhaseGameItem.cpp and PythonPlayer.cpp), with the
+	# locale_game.txt entry it shows.
+	POSTED = {
+		"CANNOT_EQUIP_SHOP": "CANNOT_EQUIP_IN_SHOP",
+		"CANNOT_EQUIP_EXCHANGE": "CANNOT_EQUIP_IN_EXCHANGE",
+		"QUICKSLOT_REGISTER_DISABLE_ITEM": "QUICKSLOT_REGISTER_DISABLE_ITEM",
+	}
+
+	def notify(self, locale_namespace, key):
+		"""The chat lines game.py's GameWindow.BINARY_AppendNotifyMessage
+		appends for `key`."""
+		source = support.source_of("game.py", ("BINARY_AppendNotifyMessage",), inside="GameWindow")
+		body = "\n".join("\t" + line if line else line for line in source.split("\n"))
+		locale_info = types.ModuleType("localeInfo")
+		locale_info.__dict__.update(locale_namespace)
+		lines = []
+		namespace = {
+			"localeInfo": locale_info,
+			"chat": types.SimpleNamespace(CHAT_TYPE_INFO=1, AppendChat=lambda kind, text: lines.append((kind, text))),
+		}
+		exec(compile("class GameWindow(object):\n%s\n" % body, "game.py", "exec"), namespace)
+		namespace["GameWindow"]().BINARY_AppendNotifyMessage(key)
+		return lines
+
+	def test_every_locale_shows_its_own_refusal_line(self):
+		for locale in locales():
+			with self.subTest(locale=locale):
+				namespace, _, errors = run_localeinfo(locale)
+				self.assertEqual([], errors)
+				text = read_locale(locale)["QUICKSLOT_REGISTER_DISABLE_ITEM"][0]
+				self.assertTrue(text.strip())
+				self.assertEqual([(1, text)], self.notify(namespace, "QUICKSLOT_REGISTER_DISABLE_ITEM"))
+
+	def test_every_key_the_client_posts_shows_a_line(self):
+		namespace, _, _ = run_localeinfo("en")
+		for key, entry in self.POSTED.items():
+			with self.subTest(key=key):
+				self.assertEqual([(1, read_locale("en")[entry][0])], self.notify(namespace, key))
+		self.assertEqual([], self.notify(namespace, "NO_SUCH_NOTIFY"), "legacy's guard for a key it has no line for")
+
+	def test_a_language_change_keeps_the_line(self):
+		"""app.ReloadLocale calls localeInfo.LoadLocaleData, which rebuilds
+		NOTIFY_MESSAGE from the new locale's strings."""
+		namespace, paths, errors = run_localeinfo("en")
+		paths["locale"] = os.path.join(LOCALES, "de")
+		self.assertTrue(namespace["LoadLocaleData"](), errors)
+		self.assertEqual([(1, read_locale("de")["QUICKSLOT_REGISTER_DISABLE_ITEM"][0])],
+		                 self.notify(namespace, "QUICKSLOT_REGISTER_DISABLE_ITEM"))
+
+
 if __name__ == "__main__":
 	unittest.main()

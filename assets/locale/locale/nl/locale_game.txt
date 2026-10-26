@@ -886,3 +886,4 @@ TOOLTIP_APPLY_ENCHANT_EARTH	Kracht van Aarde +%d%%	SA
 TOOLTIP_APPLY_ENCHANT_DARK	Kracht van Duisternis +%d%%	SA
 TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Sterk tegen Elementairen +%d%%	SA
 TOOLTIP_APPLY_RESIST_HUMAN	Weerstand tegen Halfmensen %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfecte Master

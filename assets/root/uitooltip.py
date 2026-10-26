@@ -2308,6 +2308,10 @@ class SkillToolTip(ToolTip):
 			player.SKILL_GRADE_GRAND_MASTER : localeInfo.SKILL_GRADE_NAME_GRAND_MASTER,
 			player.SKILL_GRADE_PERFECT_MASTER : localeInfo.SKILL_GRADE_NAME_PERFECT_MASTER,
 		}
+		# OLD's sage grade (uiToolTip.py:3132-3133), from the foundation cut on.
+		sageGrade = getattr(player, "SKILL_GRADE_SAGE_MASTER", None)
+		if isinstance(sageGrade, int):
+			SkillToolTip.SKILL_GRADE_NAME[sageGrade] = localeInfo.SKILL_GRADE_NAME_SAGE_MASTER
 		SkillToolTip.AFFECT_NAME_DICT = {
 			"HP" : localeInfo.TOOLTIP_SKILL_AFFECT_ATT_POWER,
 			"ATT_GRADE" : localeInfo.TOOLTIP_SKILL_AFFECT_ATT_GRADE,
@@ -2554,6 +2558,11 @@ class SkillToolTip(ToolTip):
 
 		self.skillMaxLevelStartDict = { 0 : 17, 1 : 7, 2 : 10, }
 		self.skillMaxLevelEndDict = { 0 : 20, 1 : 10, 2 : 10, }
+		# The perfect master grade runs P1 to P10 before the sage grade (OLD
+		# uiToolTip.py:3383-3385); without the sage grade it is the last and
+		# shows no level, so the entry changes nothing there.
+		self.skillMaxLevelStartDict[player.SKILL_GRADE_PERFECT_MASTER] = 10
+		self.skillMaxLevelEndDict[player.SKILL_GRADE_PERFECT_MASTER] = 10
 
 		skillLevelUpPoint = 1
 		realSkillGrade = player.GetSkillGrade(slotIndex)

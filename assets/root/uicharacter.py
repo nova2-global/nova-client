@@ -630,14 +630,16 @@ class CharacterWindow(ui.ScriptWindow):
 
 		## ACTIVE
 		if skill.SKILL_TYPE_ACTIVE == skillType:
+			# The column of the skill's grade shows the whole tooltip, any other
+			# the name of its lowest grade (OLD uiCharacter.py:917-933 with the
+			# sage grade; before it, the grand and perfect master's column).
 			overInSkillGrade = self.__GetSkillGradeFromSlot(slotNumber)
+			columnGrades = self.__GetSkillGradesOfColumn(overInSkillGrade) or [overInSkillGrade]
 
-			if overInSkillGrade == skill.SKILL_GRADE_COUNT-1 and skillGrade == skill.SKILL_GRADE_COUNT:
+			if skillGrade in columnGrades:
 				self.toolTipSkill.SetSkillNew(srcSlotIndex, skillIndex, skillGrade, skillLevel)
-			elif overInSkillGrade == skillGrade:
-				self.toolTipSkill.SetSkillNew(srcSlotIndex, skillIndex, overInSkillGrade, skillLevel)
 			else:
-				self.toolTipSkill.SetSkillOnlyName(srcSlotIndex, skillIndex, overInSkillGrade)
+				self.toolTipSkill.SetSkillOnlyName(srcSlotIndex, skillIndex, columnGrades[0])
 
 		else:
 			self.toolTipSkill.SetSkillNew(srcSlotIndex, skillIndex, skillGrade, skillLevel)
@@ -809,13 +811,21 @@ class CharacterWindow(ui.ScriptWindow):
 
 			## ACTIVE
 			elif skill.SKILL_TYPE_ACTIVE == skillType:
+				gradeSlotIndex = self.__GetRealSkillSlot(skillGrade, slotIndex)
 				for j in range(skill.SKILL_GRADE_COUNT):
 					realSlotIndex = self.__GetRealSkillSlot(j, slotIndex)
+
+					# With the sage grade two grades share a column (OLD
+					# uiCharacter.py:1055-1058): the skill's own grade draws its
+					# column, the other grade of that column leaves it alone.
+					lastGradeInLastColumn = (skillGrade == skill.SKILL_GRADE_COUNT) and j == (skill.SKILL_GRADE_COUNT - 1)
+					if realSlotIndex == gradeSlotIndex and j != skillGrade and not lastGradeInLastColumn:
+						continue
 
 					skillPage.SetSkillSlotNew(realSlotIndex, skillIndex, j, skillLevel)
 					skillPage.SetCoverButton(realSlotIndex)
 
-					if (skillGrade == skill.SKILL_GRADE_COUNT) and j == (skill.SKILL_GRADE_COUNT - 1):
+					if lastGradeInLastColumn:
 						skillPage.SetSlotCountNew(realSlotIndex, skillGrade, skillLevel)
 					elif (not self.__CanUseSkillNow()) or (skillGrade != j):
 						skillPage.SetSlotCount(realSlotIndex, 0)
@@ -833,7 +843,7 @@ class CharacterWindow(ui.ScriptWindow):
 
 					# Check if this is the active slot
 					# Grade 3 appears in slot 2, so check both conditions
-					isActiveSlot = (skillGrade == j) or ((skillGrade == skill.SKILL_GRADE_COUNT) and j == (skill.SKILL_GRADE_COUNT - 1))
+					isActiveSlot = (skillGrade == j) or lastGradeInLastColumn
 					
 					if player.IsSkillActive(slotIndex) and isActiveSlot:
 						skillPage.ActivateSlot(realSlotIndex)
@@ -1314,8 +1324,27 @@ class CharacterWindow(ui.ScriptWindow):
 		self.canUseHorseSkill = self.__CanUseHorseSkill()
 		return ret
 
+	def __HasSageGrade(self):
+		# OLD's sage grade (ENABLE_SKILLS_LEVEL_OVER_P, live in OLD's client):
+		# skill levels to 50, the fifth grade, from the foundation cut on.
+		return isinstance(getattr(player, "SKILL_GRADE_SAGE_MASTER", None), int)
+
 	def __GetRealSkillSlot(self, skillGrade, skillSlot):
-		return skillSlot + min(skill.SKILL_GRADE_COUNT-1, skillGrade)*skill.SKILL_GRADE_STEP_COUNT
+		# The uiscript has three grade columns: normal, master, then grand and
+		# perfect master. With the sage grade they are OLD's (uiCharacter.py:
+		# 1529-1537): normal, then master and grand master, then perfect master
+		# and sage.
+		lastColumn = skill.SKILL_GRADE_COUNT - 1
+		if self.__HasSageGrade():
+			lastColumn -= 1
+			if skillGrade == player.SKILL_GRADE_GRAND_MASTER:
+				skillGrade = player.SKILL_GRADE_MASTER
+		return skillSlot + min(lastColumn, skillGrade)*skill.SKILL_GRADE_STEP_COUNT
+
+	def __GetSkillGradesOfColumn(self, column):
+		"""The grades a grade column shows, lowest first."""
+		return [grade for grade in range(skill.SKILL_GRADE_COUNT + 1)
+		        if self.__GetRealSkillSlot(grade, 0) // skill.SKILL_GRADE_STEP_COUNT == column]
 
 	def __GetETCSkillRealSlotIndex(self, skillSlot):
 		if skillSlot > 100:

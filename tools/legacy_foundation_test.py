@@ -784,5 +784,162 @@ class TooltipApplies(unittest.TestCase):
 		self.assertEqual("Resistenza Anti Magic +%d%%", read_locale("it")["TOOLTIP_ANTI_RESIST_MAGIC"][0])
 
 
+
+def sage_warrior(game):
+	"""nui_character_test's warrior at the cut: OLD's five skill grades
+	(skill.SKILL_GRADE_COUNT 4 and player.SKILL_GRADE_SAGE_MASTER, C1's),
+	skill 2 a sage, 5 a perfect master at P7."""
+	import nui_character_test as character
+	character.warrior(game)
+	game.modules["skill"].SKILL_GRADE_COUNT = 4
+	player = game.modules["player"]
+	for grade, name in enumerate(("NORMAL", "MASTER", "GRAND_MASTER", "PERFECT_MASTER", "SAGE_MASTER")):
+		setattr(player, "SKILL_GRADE_" + name, grade)
+	game.skill_by_index[2] = {"grade": 4, "level": 1}
+	game.skill_by_index[5] = {"grade": 3, "level": 7}
+
+
+class RecordingSkillToolTip(object):
+	"""A skill tooltip that records the calls the character window makes."""
+
+	def __init__(self):
+		self.calls = []
+
+	def __getattr__(self, name):
+		return lambda *args: self.calls.append((name,) + args)
+
+
+class SageGrade(unittest.TestCase):
+	"""Skill level 50 with OLD's sage grade (NOVA-97): the character window's
+	three grade columns as OLD lays them out with the sage grade (normal,
+	master and grand master, perfect master and sage), the skill tooltip's
+	P1 to P10 and the sage grade's name in every locale."""
+
+	ICON = "d:/ymir work/ui/skill/test/%d_%02d.sub"
+
+	def character(self, setup):
+		import nui_character_test as character
+		world = character.World(False, setup=setup)
+		window = world.open("SKILL")
+		page = window.GetChild("Skill_Active_Slot")
+		counts = []
+		setSlotCountNew = page.SetSlotCountNew
+
+		def record(index, grade, level):
+			counts.append((index, grade, level))
+			setSlotCountNew(index, grade, level)
+		page.SetSlotCountNew = record
+		with world.game, quiet():
+			window.RefreshSkill()
+		return character, world, window, counts
+
+	def test_the_grades_take_olds_three_columns(self):
+		character, world, window, counts = self.character(sage_warrior)
+		cells = character.legacy_skill_cells(window, "Skill_Active_Slot")
+		shown = dict((slot, (cell[1], cell[2], cell[4])) for slot, cell in cells.items())
+		icon = self.ICON
+		self.assertEqual({
+			# skill 1, normal level 1: the next columns show the grand and perfect master's icons, closed.
+			1: (icon % (1, 1), "1", False), 21: (icon % (1, 3), "", True), 41: (icon % (1, 4), "", True),
+			# skill 2, the sage grade: the third column.
+			2: (icon % (2, 1), "", True), 22: (icon % (2, 3), "", True), 42: (icon % (2, 4), "", False),
+			# skill 3, master 5, and skill 4, grand master 9: the second column.
+			3: (icon % (3, 1), "", True), 23: (icon % (3, 2), "m5", False), 43: (icon % (3, 4), "", True),
+			4: (icon % (4, 1), "", True), 24: (icon % (4, 3), "g9", False), 44: (icon % (4, 4), "", True),
+			# skill 5, perfect master 7: the third column.
+			5: (icon % (5, 1), "", True), 25: (icon % (5, 3), "", True), 45: (icon % (5, 4), "p", False),
+		}, shown)
+		self.assertIn((42, 4, 1), counts, "the sage grade's count")
+		self.assertIn((45, 3, 7), counts, "P7")
+		self.assertIn((24, 2, 9), counts)
+		self.assertFalse([index for index, grade, level in counts if index >= 60], "no fourth column")
+
+	def test_the_tooltip_follows_the_columns(self):
+		character, world, window, counts = self.character(sage_warrior)
+		window.toolTipSkill = tip = RecordingSkillToolTip()
+		with world.game, quiet():
+			for slot in (1, 21, 41, 2, 22, 42, 23, 43, 24, 44, 25, 45):
+				window.OverInItem(slot)
+		self.assertEqual([
+			("SetSkillNew", 1, 1, 0, 1), ("SetSkillOnlyName", 1, 1, 1), ("SetSkillOnlyName", 1, 1, 3),
+			("SetSkillOnlyName", 2, 2, 0), ("SetSkillOnlyName", 2, 2, 1), ("SetSkillNew", 2, 2, 4, 1),
+			("SetSkillNew", 3, 3, 1, 5), ("SetSkillOnlyName", 3, 3, 3),
+			("SetSkillNew", 4, 4, 2, 9), ("SetSkillOnlyName", 4, 4, 3),
+			("SetSkillOnlyName", 5, 5, 1), ("SetSkillNew", 5, 5, 3, 7),
+		], tip.calls)
+
+	def test_without_the_sage_grade_the_columns_stay_todays(self):
+		import nui_character_test as character
+		character_module, world, window, counts = self.character(character.warrior)
+		cells = character_module.legacy_skill_cells(window, "Skill_Active_Slot")
+		self.assertEqual((self.ICON % (3, 2), "m5"), cells[23][1:3])
+		self.assertEqual((self.ICON % (4, 3), "g9"), cells[44][1:3], "the grand master in the third column")
+		self.assertEqual((self.ICON % (5, 3), "p"), cells[45][1:3], "the perfect master too")
+		window.toolTipSkill = tip = RecordingSkillToolTip()
+		with world.game, quiet():
+			for slot in (24, 44, 45, 25, 99):
+				window.OverInItem(slot)
+		self.assertEqual([("SetSkillOnlyName", 4, 4, 1), ("SetSkillNew", 4, 4, 2, 9), ("SetSkillNew", 5, 5, 3, 1),
+		                  ("SetSkillOnlyName", 5, 5, 1), ("SetSkillOnlyName", 19, 0, 4)], tip.calls)
+
+	def test_a_grand_masters_cooldown_survives_a_refresh(self):
+		"""The grand master shares the master's column: drawing that column for
+		the master grade would move the cooldown onto itself and lose it."""
+		character, world, window, counts = self.character(sage_warrior)
+		page = window.GetChild("Skill_Active_Slot")
+		with world.game, quiet():
+			world.game.state.now = 10.0
+			window.OnUseSkill(4, 30.0)
+			world.game.skills[4]["cool"] = (30.0, 0.0)
+			world.game.state.now = 12.0
+			window.RefreshSkill()
+		self.assertIn(24, page.store.get(1, {}))
+		self.assertEqual((10.0, 40.0), character.legacy_skill_cells(window, "Skill_Active_Slot")[24][5])
+
+	def sage_tooltip(self, grade, level, sage=True):
+		import json
+		import nui_tooltip_corpus as corpus_tool
+		corpus = json.loads(read(os.path.join(REPO, "tools", "fixtures", "tooltip_corpus.json")))
+		world = corpus_tool.TipWorld({"items": {}, "skills": {"1": corpus["skills"]["1"]}, "mobs": {}},
+		                             recorder=False, sizes="foundation")
+		if sage:
+			world.game.modules["skill"].SKILL_GRADE_COUNT = 4
+			world.game.modules["player"].SKILL_GRADE_SAGE_MASTER = 4
+		with quiet():
+			world.game.load("uiToolTip", "uitooltip.py")
+		texts, error = tooltip_texts(corpus_tool, world, {"context": "SetSkillNew", "vnum": 1, "skill": {
+			"vnum": 1, "slot": 1, "grade": grade, "level": level, "efficient": 0.5, "next": 0.6}})
+		self.assertIsNone(error)
+		return world, texts
+
+	def test_the_perfect_master_counts_p1_to_p10(self):
+		world, texts = self.sage_tooltip(3, 7)
+		locale = world.game.modules["localeInfo"]
+		self.assertIn(locale.TOOLTIP_SKILL_LEVEL % 7, texts)
+		self.assertIn(locale.TOOLTIP_NEXT_SKILL_LEVEL_1 % (8, 10), texts, "OLD's ten perfect master levels")
+		world, texts = self.sage_tooltip(3, 10)
+		self.assertIn(locale.TOOLTIP_SKILL_LEVEL_MASTER % 10, texts)
+		self.assertFalse([text for text in texts if text.startswith(locale.TOOLTIP_NEXT_SKILL_LEVEL_1.split("%")[0])])
+
+	def test_the_sage_grade_has_its_name_and_no_level(self):
+		world, texts = self.sage_tooltip(4, 1)
+		locale = world.game.modules["localeInfo"]
+		self.assertIn("Three-Way Cut Super Perfect Master", texts)
+		self.assertEqual(locale.SKILL_GRADE_NAME_SAGE_MASTER, world.m("uiToolTip").SkillToolTip.SKILL_GRADE_NAME[4])
+		self.assertFalse([text for text in texts if text.startswith(locale.TOOLTIP_SKILL_LEVEL.split("%")[0])])
+		world, texts = self.sage_tooltip(3, 1, sage=False)
+		self.assertNotIn(4, world.m("uiToolTip").SkillToolTip.SKILL_GRADE_NAME, "no sage grade before the cut")
+
+	def test_every_locale_names_the_sage_grade(self):
+		for locale in locales():
+			with self.subTest(locale=locale):
+				text, kind = read_locale(locale)["SKILL_GRADE_NAME_SAGE_MASTER"]
+				self.assertEqual("", kind)
+				self.assertIn("Skill", text % "Skill")
+		self.assertEqual("%s Super Perfect Master", read_locale("en")["SKILL_GRADE_NAME_SAGE_MASTER"][0], "OLD's")
+		self.assertEqual("%s Super Perfekcyjny Mistrz", read_locale("pl")["SKILL_GRADE_NAME_SAGE_MASTER"][0], "OLD's")
+		self.assertEqual("%s Super mestre perfeito", read_locale("br")["SKILL_GRADE_NAME_SAGE_MASTER"][0], "OLD's pt")
+
+
 if __name__ == "__main__":
 	unittest.main()

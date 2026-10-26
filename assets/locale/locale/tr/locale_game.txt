@@ -886,3 +886,4 @@ TOOLTIP_APPLY_ENCHANT_EARTH	Toprağın gücü +%d%%	SA
 TOOLTIP_APPLY_ENCHANT_DARK	Karanlığın gücü +%d%%	SA
 TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Elementlere Karşı Güçlü +%d%%	SA
 TOOLTIP_APPLY_RESIST_HUMAN	Yarı insanlara karşı direnç %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master

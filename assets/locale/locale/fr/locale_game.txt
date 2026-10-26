@@ -886,3 +886,4 @@ TOOLTIP_APPLY_ENCHANT_EARTH	Pouvoir de la terre +%d%%	SA
 TOOLTIP_APPLY_ENCHANT_DARK	Pouvoir des ténèbres +%d%%	SA
 TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
 TOOLTIP_APPLY_RESIST_HUMAN	Fort contre les demi-humains %d %%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master

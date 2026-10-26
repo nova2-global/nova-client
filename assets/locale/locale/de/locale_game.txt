@@ -884,3 +884,4 @@ TOOLTIP_APPLY_ENCHANT_EARTH	Kraft der Erde +%d%%	SA
 TOOLTIP_APPLY_ENCHANT_DARK	Kraft der Dunkelheit +%d%%	SA
 TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Stark gegen Elemente +%d%%	SA
 TOOLTIP_APPLY_RESIST_HUMAN	Widerstand gegen Halbmenschen %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master

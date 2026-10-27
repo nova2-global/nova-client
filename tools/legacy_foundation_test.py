@@ -1583,6 +1583,25 @@ class SkillMotions(unittest.TestCase):
 		self.assertGreater(len(registered), 900)
 		self.assertEqual([], sorted(name for name in registered if name.lower() not in files))
 
+	def test_every_race_registers_each_skill_at_every_grade(self):
+		"""CPythonSkill gives grade g of a skill the motion index
+		base + g * SKILL_GRADEGAP (PythonSkill.cpp RegisterSkillDesc), so each
+		skill slot a race loads at grade 0 needs one motion at every grade up
+		to SKILL_EFFECT_COUNT. OLD's shaman loop takes the sage grade too
+		(SHAMY_LIST (1, 2, 3, 4) with ENABLE_SKILLS_LEVEL_OVER_P,
+		playerSettingModule.py:1926-1929); NEW's stopped at (1, 2, 3)."""
+		race = RaceMotions(self)
+		gap, grades = CUT_SKILL["SKILL_GRADEGAP"], CUT_SKILL["SKILL_EFFECT_COUNT"]
+		self.assertEqual(8, len(race.folders))
+		for number, folder in sorted(race.folders.items()):
+			slots = [index - MOTION_SKILL for index in range(MOTION_SKILL + 1, MOTION_SKILL + gap)
+			         if race.general(number, index)]
+			self.assertGreaterEqual(len(slots), 10, folder)
+			for grade in range(grades):
+				with self.subTest(race=folder, grade=grade):
+					self.assertEqual([], [slot for slot in slots
+					                      if len(race.general(number, MOTION_SKILL + grade * gap + slot)) != 1])
+
 
 if __name__ == "__main__":
 	unittest.main()

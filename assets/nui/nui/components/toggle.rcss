@@ -41,11 +41,11 @@
 	display: block;
 	position: relative;
 	box-sizing: border-box;
-	width: 34dp;
-	height: 20dp;
+	width: 30dp;
+	height: 18dp;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: 10dp;
+	border-radius: 9999dp;
 	background-color: var(--surface-sunken);
 }
 .nui-toggle__knob
@@ -53,10 +53,10 @@
 	display: block;
 	position: absolute;
 	left: 3dp;
-	top: 3dp;
+	top: 2dp;
 	width: 12dp;
 	height: 12dp;
-	border-radius: 6dp;
+	border-radius: 9999dp;
 	background-color: var(--text-muted);
 	transform: translateX(0dp);
 }
@@ -72,7 +72,7 @@
 .nui-toggle__input:checked + .nui-toggle__track .nui-toggle__knob
 {
 	background-color: var(--accent-text);
-	transform: translateX(14dp);
+	transform: translateX(12dp);
 }
 /* After the checked rules: both weigh the same, so a checked toggle shows the
    ring too. */

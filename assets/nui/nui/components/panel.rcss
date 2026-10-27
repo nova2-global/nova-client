@@ -7,7 +7,7 @@
 	background-color: var(--surface-raised);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
+	border-radius: 10dp;
 }
 .nui-panel--sunken
 {

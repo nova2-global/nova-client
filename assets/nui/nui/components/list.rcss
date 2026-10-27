@@ -20,11 +20,11 @@
 .nui-list
 {
 	display: block;
-	padding: var(--space-1);
-	background-color: var(--surface-sunken);
-	border-width: 1dp;
+	padding: 0;
+	background-color: transparent;
+	border-width: 0;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
+	border-radius: 0;
 }
 
 .nui-list__viewport
@@ -39,13 +39,15 @@
 	flex-direction: row;
 	align-items: center;
 	gap: var(--space-2);
-	padding: var(--space-2) var(--space-3);
+	box-sizing: border-box;
+	min-height: 24dp;
+	padding: 0 8dp;
 	/* The left edge is the selection stripe; the focus ring uses all four, so
 	   they are reserved here and focus does not move the row. RmlUi paints the
 	   background inside the border, so a transparent edge shows the list. */
-	border-width: 1dp 1dp 1dp 2dp;
+	border-width: 1dp;
 	border-color: transparent;
-	border-radius: var(--radius-sm);
+	border-radius: 6dp;
 	color: var(--text);
 	tab-index: auto;
 }
@@ -56,7 +58,9 @@
 .nui-list__item.is-selected
 {
 	background-color: var(--selection);
-	border-left-color: var(--accent);
+	border-color: transparent;
+	color: var(--accent);
+	font-weight: bold;
 }
 /* After is-selected: both weigh the same, so the later rule wins. */
 .nui-list__item:focus-visible, .nui-list__item.is-focus

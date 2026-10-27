@@ -28,8 +28,10 @@
 	/* RmlUi caps an absolutely positioned box's shrink-to-fit width at the
 	   host's width; the negative margin widens that limit without moving it. */
 	margin-right: -320dp;
-	padding: var(--space-1) var(--space-2);
-	border-radius: var(--radius-sm);
+	padding: 5dp 9dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
 	background-color: var(--tooltip-bg);
 	color: var(--text-inverse);
 	font-size: var(--font-sm);

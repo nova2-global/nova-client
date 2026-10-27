@@ -302,7 +302,8 @@ class PlayerColors(unittest.TestCase):
         document = json.loads(rendered)
         self.assertEqual(document["version"], 1)
         self.assertEqual(document["themes"], {"modern-dark": "dark", "modern-light": "light"}, "classic offers none")
-        self.assertEqual(document["pairs"], [[fg, bg, minimum] for fg, bg, minimum, _ in t.CONTRAST_PAIRS])
+        self.assertEqual(document["pairs"], [[fg, bg, minimum] for fg, bg, minimum, _ in t.CONTRAST_PAIRS if bg not in t.OVERLAY_PLATES],
+                         "every pair but the overlay plates', which the runtime never recolors")
         self.assertEqual((document["palettes"]["dark"]["tone"], document["palettes"]["light"]["tone"]), ("dark", "light"))
         self.assertEqual(set(document["palettes"]["dark"]["tokens"]), set(tokens["dark"]))
 

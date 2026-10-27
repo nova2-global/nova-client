@@ -106,6 +106,14 @@ RMLUI_TWEENS = {
 # (foreground, background, minimum ratio, what the pair is used for).
 # 4.5 is WCAG AA for normal-size text; 3.0 is the AA minimum for UI component
 # boundaries and focus indicators.
+# The modern palettes' overlay plates (the item and hint tooltips): the legacy
+# thin board's translucent black over the game world, the same in every
+# theme. Their text pairs are checked here composited over the scene, and stay
+# out of colors.json: the runtime's resolve checks a translucent background
+# against both a black and a white backdrop, which an overlay over the world
+# never has, so it would recolor tooltip text on any overlay change.
+OVERLAY_PLATES = ("tip-bg", "tooltip-bg")
+
 CONTRAST_PAIRS = (
     ("text", "surface", 4.5, "body text"),
     ("text", "surface-raised", 4.5, "text on panels"),
@@ -121,10 +129,8 @@ CONTRAST_PAIRS = (
     ("accent", "surface-raised", 4.5, "accent text on panels"),
     ("accent-text", "accent", 4.5, "primary button label"),
     ("accent-text", "accent-hover", 4.5, "hovered primary button label"),
-    ("accent-text", "danger", 4.5, "danger button and badge label"),
-    ("accent-text", "danger-hover", 4.5, "hovered danger button label"),
-    ("accent-text", "success", 4.5, "success badge label"),
-    ("accent-text", "warning", 4.5, "warning badge label"),
+    # Modern status controls use the status hue as text on a soft role fill;
+    # accent-text is reserved for the solid accent button.
     ("danger", "surface", 4.5, "error text"),
     ("danger", "surface-raised", 4.5, "error text on panels"),
     ("warning", "surface-raised", 4.5, "warning text on panels"),
@@ -217,12 +223,27 @@ def relative_luminance(color):
 
 
 def contrast_ratio(fg, bg):
-    """WCAG contrast of fg drawn over bg; translucent colors are composited first."""
+    """WCAG contrast of fg drawn over an opaque bg."""
     if bg[3] < 1.0:
         raise TokenError("a contrast background must be opaque")
     fg = composite(fg, bg)
     lighter, darker = sorted((relative_luminance(fg), relative_luminance(bg)), reverse=True)
     return (lighter + 0.05) / (darker + 0.05)
+
+
+def pair_contrast(colors, fg_name, bg_name):
+    """Contrast for a token pair on the surface where that role is drawn.
+
+    The modern selection and tooltip plates are deliberately translucent.
+    Selection is painted inside a panel; tooltip plates are HUD overlays on
+    the scene. Composite those backgrounds before applying the same WCAG
+    ratio and threshold as every opaque pair.
+    """
+    fg, bg = parse_color(colors[fg_name]), parse_color(colors[bg_name])
+    if bg[3] < 1.0:
+        backdrop_name = "surface" if bg_name == "selection" else "scene"
+        bg = composite(bg, parse_color(colors[backdrop_name]))
+    return contrast_ratio(fg, bg)
 
 
 # --- themes.json -------------------------------------------------------------
@@ -592,7 +613,7 @@ def render_colors(tokens, themes, comment=None, palettes=None, pairs=None, theme
     those palettes. One entry per line, so a change reads as a line."""
     slots = tokens.get(SLOTS, {})
     names = [p for p in (palettes if palettes is not None else palette_order(themes)) if p in slots]
-    pairs = pairs if pairs is not None else [[fg, bg, minimum] for fg, bg, minimum, _ in CONTRAST_PAIRS]
+    pairs = pairs if pairs is not None else [[fg, bg, minimum] for fg, bg, minimum, _ in CONTRAST_PAIRS if bg not in OVERLAY_PLATES]
     theme_map = [(theme[0], theme_class(theme, "theme-")) for theme in themes
                  if theme_class(theme, "theme-") in names and (theme_ids is None or theme[0] in theme_ids)]
     dump = lambda value: json.dumps(value, ensure_ascii=False)
@@ -710,7 +731,7 @@ def skin_contrast_report(skin, doc):
     for palette in doc["palettes"]:
         colors = skin_colors(doc, palette)
         for fg, bg, minimum, purpose in pairs:
-            report.append((palette, fg, bg, contrast_ratio(parse_color(colors[fg]), parse_color(colors[bg])), minimum, purpose))
+            report.append((palette, fg, bg, pair_contrast(colors, fg, bg), minimum, purpose))
     return report
 
 
@@ -745,7 +766,7 @@ def contrast_report(tokens, themes):
     for palette in main_palettes(tokens, themes):
         colors = tokens[palette]
         for fg, bg, minimum, purpose in CONTRAST_PAIRS:
-            ratio = contrast_ratio(parse_color(colors[fg]), parse_color(colors[bg]))
+            ratio = pair_contrast(colors, fg, bg)
             report.append((palette, fg, bg, ratio, minimum, purpose))
     return report
 

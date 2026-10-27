@@ -145,6 +145,10 @@
 	border-radius: 0;
 	min-width: 64dp;
 }
+.skin-classic.nui-window.nui-fx, .skin-classic .nui-window.nui-fx
+{
+	box-shadow: none;
+}
 
 /* The legacy title bar (BoardWithTitleBar): at (8, 7) of the board, the board
    width minus 15 wide, 23 px of bar on 32 px of art whose last 9 px are
@@ -166,8 +170,13 @@
 }
 .skin-classic .nui-window__title
 {
+	font-size: var(--font-md);
 	font-weight: normal;
 	color: var(--text);
+}
+.skin-classic .nui-window__body
+{
+	padding: var(--space-4);
 }
 
 /* The close button sits on the bar's socket at (width - 18, 3), 15 by 15, and
@@ -206,6 +215,20 @@
 .skin-classic .nui-window__footer
 {
 	border-top-width: 0;
+}
+
+/* Modern's larger board and tile corners do not leak into legacy HUD parts. */
+.skin-classic.nui-board, .skin-classic .nui-board
+{
+	border-radius: var(--radius-md);
+}
+.skin-classic .nui-board--strip
+{
+	border-radius: var(--radius-sm);
+}
+.skin-classic .nui-tile
+{
+	border-radius: var(--radius-sm);
 }
 
 /* A tooltip board: the legacy thin board (ui.ThinBoard, the item, skill and
@@ -257,6 +280,35 @@
 .skin-classic .nui-panel__title
 {
 	color: var(--text);
+}
+
+/* Neutral and status badges keep the pre-modern-refresh legacy geometry. */
+.skin-classic .nui-badge
+{
+	padding: 0 var(--space-2);
+	border-radius: 9dp;
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.skin-classic .nui-badge--accent
+{
+	background-color: var(--accent);
+	color: var(--accent-text);
+}
+.skin-classic .nui-badge--danger
+{
+	background-color: var(--danger);
+	color: var(--accent-text);
+}
+.skin-classic .nui-badge--warning
+{
+	background-color: var(--warning);
+	color: var(--accent-text);
+}
+.skin-classic .nui-badge--success
+{
+	background-color: var(--success);
+	color: var(--accent-text);
 }
 
 /* The server board's separator: a light line over a dark one. */
@@ -550,11 +602,23 @@
 {
 	background-color: transparent;
 }
+.skin-classic scrollbarhorizontal
+{
+	height: 10dp;
+}
+.skin-classic scrollbarhorizontal sliderbar
+{
+	margin-top: 2dp;
+	height: 6dp;
+	border-radius: 3dp;
+	background-color: var(--border);
+}
 
 /* --- List: the legacy list box highlights ------------------------------------------ */
 
 .skin-classic .nui-list
 {
+	padding: var(--space-1);
 	background-color: transparent;
 	border-width: 0;
 	border-radius: 0;
@@ -562,6 +626,8 @@
 /* Legacy rows are 17 px: a 15dp line between the 1dp edges. */
 .skin-classic .nui-list__item
 {
+	box-sizing: content-box;
+	min-height: 0;
 	border-radius: 0;
 	border-left-width: 1dp;
 	padding: 0 var(--space-1);
@@ -575,6 +641,8 @@
 {
 	background-color: var(--classic-select);
 	border-left-color: transparent;
+	color: var(--text);
+	font-weight: normal;
 }
 .skin-classic .nui-list__item:focus-visible, .skin-classic .nui-list__item.is-focus
 {
@@ -588,9 +656,35 @@
 
 /* --- Tabs, tooltip, slots, slider ----------------------------------------------------- */
 
+.skin-classic .nui-tabs tabs
+{
+	gap: 0;
+	padding: 0;
+	border-width: 0 0 1dp 0;
+	border-radius: 0;
+	background-color: transparent;
+}
 .skin-classic .nui-tabs tab
 {
+	height: auto;
+	padding: var(--space-2) var(--space-3);
+	border-radius: 0;
+	line-height: 1.4;
 	font-weight: normal;
+}
+.skin-classic .nui-tabs tab:selected
+{
+	color: var(--accent);
+	background-color: transparent;
+	border-color: transparent;
+}
+.skin-classic .nui-tabs tab.nui-tabs__indicator
+{
+	display: block;
+	height: 2dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
 }
 
 /* A thin board at least 32dp tall, so its 16dp corners never shrink. */
@@ -598,6 +692,7 @@
 {
 	decorator: classic-thinboard;
 	background-color: transparent;
+	border-width: 0;
 	border-radius: 0;
 	color: var(--classic-tooltip-text);
 	padding: 8dp 10dp;

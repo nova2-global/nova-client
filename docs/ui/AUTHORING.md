@@ -233,8 +233,8 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 | Window frame | `<body class="nui-window nui-fx nui-anim">` with `nui-window__titlebar`, `nui-window__handle` (a `<handle move_target="#document">`), `nui-window__title`, `nui-window__close`, `nui-window__body`, `nui-window__footer` | `--band` (a band across the screen), `--borderless`, `--compact` (a smaller title); see [Chrome](#chrome), which also has the HUD's boards and tiles. Every frame carries `nui-fx` (NUI017). Rises 4dp each time the window is shown. For a modal dialog, use `<body class="nui-scrim nui-fx">` with a `div.nui-window.nui-fx` inside, set `MODAL = True` in the controller, and point the handle at the div's id: `move_target="my-dialog"` (a plain id, no `#`). The modal takes the keyboard and every click beside the dialog; the scrim draws the backdrop. A scrim without `MODAL` blocks clicks but gets no keys; `MODAL` on a plain `body.nui-window` blocks the world with nothing on screen to show it. The scrim centers the div, and the component makes it `position: relative` so the drag can offset it; the dialog's sheet sets only its width and height, never `position`, `left` or `top`. |
 | Button | `<button class="nui-button nui-button--primary nui-anim">` | `--primary`, `--secondary` (the default look), `--ghost`, `--danger`; sizes `--small`, `--medium` (the dialogs' size: a minimum width, the legacy middle art in classic), `--icon`, `--icon-sm` (the 20dp ghost icon button of a compact title bar: the chat log's close). A new window never puts a text label on `--small`: the classic small art fits only short labels (`tools/nui_button_fit.py` reports it); a window that needs legacy's small art for a choice sets it in its classic overlay. `:hover`, `:active`, `:focus-visible`; `is-selected` for a choice that is on, a radio choice or a toggle legacy draws as a button held down (`data-class-is-selected`): the selection color and an accent border in modern, the down art of the small, middle and large buttons in classic, under the pointer too. Enter and Space press a focused button where NovaUI has the keyboard ([Keyboard and modals](#keyboard-and-modals)). The `disabled` attribute takes the button out of pointer hit testing, the tab order and Enter/Space (see [RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter)). |
 | Panel | `<div class="nui-panel">` with an optional `nui-panel__title` | `--sunken`, `--flat`. `nui-divider` is a 1dp rule. |
-| Tabs | native `<tabset class="nui-tabs nui-tabs--3">` with `<tab>` and `<panel>` pairs and a last `<tab class="nui-tabs__indicator nui-anim">` | `nui-tabs--2` to `--6` must match the number of real tabs. Tabs switch without Python; the selected tab and panel get `:selected`. Tabs are in the tab order: where NovaUI has the keyboard, Tab moves between them, Enter or Space selects one, and `:focus-visible` rings the focused tab. |
-| List | `<div class="nui-list">` around a `<div class="nui-list__viewport">` that holds the rows `<div class="nui-list__item nui-anim">`, parts `nui-list__label`, `nui-list__meta` | `is-selected`, `:hover`, `:focus-visible` (a ring on every edge; a selected row keeps its accent stripe). Enter or Space selects the focused row where NovaUI has the keyboard. The `disabled` attribute takes a row out of hit testing, the tab order and Enter/Space. Give the viewport a height in the window sheet to scroll (`.my-list .nui-list__viewport { height: 200dp; }`): the rounded frame does not clip, the square viewport does, so the list clips with the scissor alone (see [What the renderer draws](#what-the-renderer-draws)). |
+| Tabs | native `<tabset class="nui-tabs nui-tabs--3">` with `<tab>` and `<panel>` pairs and a last `<tab class="nui-tabs__indicator nui-anim">` | `nui-tabs--2` to `--6` must match the number of real tabs. Modern draws a 3dp-padded segmented well and a raised selected tab; its indicator is hidden. Tabs switch without Python; the selected tab and panel get `:selected`. Tabs are in the tab order: where NovaUI has the keyboard, Tab moves between them, Enter or Space selects one, and `:focus-visible` rings the focused tab. |
+| List | `<div class="nui-list">` around a `<div class="nui-list__viewport">` that holds the rows `<div class="nui-list__item nui-anim">`, parts `nui-list__label`, `nui-list__meta` | `is-selected`, `:hover`, `:focus-visible` (a ring on every edge). Modern has a frameless list of 24dp-minimum rows: hover uses `surface-hover`; selection uses the soft accent fill and accent text. Enter or Space selects the focused row where NovaUI has the keyboard. The `disabled` attribute takes a row out of hit testing, the tab order and Enter/Space. Give the viewport a height in the window sheet to scroll (`.my-list .nui-list__viewport { height: 200dp; }`); the square viewport clips with the scissor alone (see [What the renderer draws](#what-the-renderer-draws)). |
 | Slot grid | `<div class="nui-slot-grid">` with `<div class="nui-slot nui-anim">` cells and their parts `__icon`, `__cover`, `__tint`, `__cooldown`, `__active`, `__finish`, `__ring`, `__flash`, `__count`, `__digits`, `__number`, `__sign`, `__key` | 40dp cells for 32dp icons (the legacy 32dp pitch in classic). `--cols-1` to `--cols-10`, `--pick`, `--lean` (one decorator draws every resting cell; cells hold only `__icon` and `__number`); cells `--h2`, `--h3`, `--w2`, `--w3`; `is-empty`, `is-covered`, `is-disabled`, `is-locked`, `is-picked`, `is-selected`, `is-active` (a lean cell), `is-target`, `is-blocked`, `is-usable`, `is-unusable`, `is-unavailable`, `:hover`, `is-hover`. See [Slot grids](#slot-grids). |
 | Slider | `<input type="range" class="nui-slider" min max step value>` | `:hover` and `:active` on the thumb, `:focus-visible`; `disabled` attribute. The arrow keys move a focused slider where NovaUI has the keyboard. RmlUi builds the track, fill and thumb; the component centers them in the 20dp input, so give `.nui-slider` no padding or border. |
 | Toggle | `<label class="nui-toggle">` around `<input type="checkbox" class="nui-toggle__input">`, `nui-toggle__track`, `nui-toggle__knob`, `nui-toggle__label` | `checked` and `disabled` attributes. The label forwards clicks to the hidden checkbox, in a document that takes focus: a document whose body has `focus: none` gets no click at all, so such a window flips the toggle on a left `mousedown` on the label ([RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter); the system options' reduced motion). The checkbox stays in the tab order: where NovaUI has the keyboard, Tab reaches the toggle, Space flips it, and `:focus-visible` rings the track. |
@@ -267,18 +267,18 @@ Every window's frame, title bar, close button and footer, and every framed part 
 
 | Class | For | Look (modern) |
 |---|---|---|
-| `nui-window` | a window: on `<body>`, or on a div inside `body.nui-scrim` | `surface`, a 1dp `border`, `radius-lg` |
+| `nui-window` | a window: on `<body>`, or on a div inside `body.nui-scrim` | `surface`, a 1dp `border`, 12dp corners and a static two-stage shadow in `.nui-fx`; a 36dp title bar and 13dp bold title |
 | `nui-window--band` | a band across the screen (the console) | no side borders and no corners, one line along its bottom, `surface-band` |
 | `nui-window--borderless` | a frame without its border (the quest board's cinema skin) | |
 | `nui-window--compact` | a frame with a short title bar (the chat log) | the title at `font-sm` |
-| `nui-board` | a framed part of the HUD that is not a window: a target board, a menu, a pager, a notice bar, the minimap's ring | `surface`, a 1dp `border`, `radius-md` |
+| `nui-board` | a framed part of the HUD that is not a window: a target board, a menu, a pager, a notice bar, the minimap's ring | `surface`, a 1dp `border`, 12dp corners |
 | `nui-board--edge` | a bar along the screen's edge (the taskbar) | one line on its top side, no corners |
 | `nui-board--notice` | a notice board (the big notice) | `notice-bar` inside the board's border |
-| `nui-board--strip` | a notice strip (the tip line) | `notice-bar`, no border, `radius-sm` |
+| `nui-board--strip` | a notice strip (the tip line) | `notice-bar`, no border, 6dp corners |
 | `nui-board--ring` | a round ring around what is drawn under it (the minimap's map) | transparent, a 5dp border, round |
 | `nui-board--disc` | a filled disc, used alone without `nui-board` (the minimap's backing) | `surface`, round |
-| `nui-board--tooltip` | an item, skill or link tooltip (Wave 3b) | `tip-bg`, a 1dp `border`, `radius-md`, padding 8dp 12dp, a static shadow (in `.nui-fx`); classic: the legacy thin board; cyberpunk: its panel on `tip-bg` |
-| `nui-tile` | a framed item of a list or a group (a party member) | `surface`, a 1dp `border`, `radius-sm` |
+| `nui-board--tooltip` | an item, skill or link tooltip (Wave 3b) | the shared 51% black `tip-bg`, a 1dp `border`, 12dp corners, padding 12dp 14dp 14dp and a static shadow (in `.nui-fx`); classic: the legacy thin board; cyberpunk: its panel on `tip-bg` |
+| `nui-tile` | a framed item of a list or a group (a party member) | `surface`, a 1dp `border`, 7dp corners |
 | `nui-button--icon-sm` (`button.rcss`) | the close button of a compact title bar | the ghost icon button at 20dp |
 
 - **Layout stays with the window.** A window's own sheet may set on a frame part only its size, minimum and maximum sizes, margins, padding, `position` and offsets, `display`, the flex and alignment properties, `overflow`, `z-index` and a placement `transform`. A frame part is an element with one of the classes above or a `nui-window__*` part, and any class that shares an element with one of them in the window's markup. Its look (background, border colors, widths and styles, radii, decorators, shadows, filters, `image-color`, the title's color, font and transform) is the component's and the skins' (lint NUI017). A look that no variant has gets a new variant in the component, named for its role, never for a window. Classic draws a window's legacy board from the window's own class in its overlay (`.skin-classic .target-board`), which outweighs the component.
@@ -342,7 +342,7 @@ Without art an element runs its clock in timer mode and carries `is-playing` and
 
 `<progress class="nui-gauge nui-gauge--blue" direction="right" data-attr-value="sp"/>`, with a value from 0 to 1 (`max` defaults to 1). RmlUi sizes the inner `<fill>` from the value; bind it with `data-attr-value`, since an inline style is NUI009.
 
-- **Modern:** a 6dp track in `--gauge-track` with a fill in `--gauge-red`, `--gauge-pink`, `--gauge-purple` or `--gauge-blue` (every palette defines the five).
+- **Modern:** a fully rounded 6dp track in `--gauge-track`; its red (HP), blue (SP), orange (stamina) or gold (EXP) fill uses a vertical light-to-role gradient. Native `<progress>` exposes only its track and fill, so the mockup's separate recovery tail, moving sheen, ticks and centered text remain window parts where a window already has them; the stock gauge does not invent children.
 - **Classic:** the legacy gauge (`ui.Gauge`): the slot art with its two caps, 8dp tall, and the colored bar inset 12dp from both ends. The art comes from the legacy pattern folder (`d:/ymir work/ui/pattern/gauge_*.tga`) and is 1x only: it is not in the classic sprite sheets, so it is filtered above 100%. Its rules and decorators are in `skins/classic/classic.rcss`. Lint and snapshots of a document with a gauge need the `assets/ETC` root.
 - **No easing:** a gauge shows a new value at once. The legacy gauges eased toward it every frame, which is per-frame Python.
 
@@ -431,6 +431,7 @@ A lean grid's cell has four keys more (`nui_slots.CELL_KEYS`): `covered` (bool: 
 - **Every part ignores the pointer**, so the cell is always the event target and moving over its icon sends no `mouseout`.
 - **The parts draw in the legacy order** (`CSlotWindow::OnRender`): the pick and selection tint under the icon, then the icon, the disabled tint, the sweep, the cover, the count, the finish effect, the active effect and the locked tint on top. The cell is a stacking context (`z-index: 0`), so the negative z-index of the pick tint draws above its background and under the icon.
 - **States:** `is-empty`, `is-disabled`, `is-locked`, `is-picked` (drawn only in a grid with `nui-slot-grid--pick`, legacy `SLOT_STYLE_PICK_UP`; the quickslots have none), `is-selected`, the footprint's `is-target`, `is-blocked`, `is-usable` and `is-unusable`, `is-unavailable`, `:hover` and `is-hover`. A disabled, locked or unavailable cell keeps its pointer events, as legacy cells take clicks. `nui-slot--h2`, `--h3`, `--w2` and `--w3` size a single cell that holds a taller or wider item (a wear cell; 44dp steps, 32dp in classic). `nui-slot__sign` is the requirement triangle at the cell's right edge.
+- **Modern cell look:** 7dp corners on the cell, icon cover and active ring. Hover uses the raised hover fill and accent edge; selection adds the soft accent fill; target, blocked, usable and unavailable states keep their role fills and edges. The 40dp cell and 44dp pitch stay unchanged so every existing slot window and its hit outsets keep their geometry.
 - **The effects:** the modern look is code (P14 spec D3): `__ring`, a 2dp accent ring that breathes by transform while `is-on`, and `__flash`, a burst (an accent radial gradient scaled by transform) at the cooldown's end. The ring has no glow: a `box-shadow` on an element that moves makes RmlUi compile its meshes again on every frame of the motion (about four a frame for the taskbar, also in classic, where the ring is hidden but its animation runs). The flash is scaled to nothing at rest, not hidden, since a hidden `nui-frames` runs no clock, and it has its gradient only while `is-playing`: RmlUi draws a decorator whatever the element's transform, so a gradient at rest would cost a draw on every frame. `__active` and `__finish` keep the legacy timing and take their frames from the skin (`--frames-pattern`; classic gives them the legacy additive art, see [Additive images](#additive-images)); without art they draw nothing. Classic hides the ring and draws no flash. **Reduced motion** holds the ring still and hides the finish effect and the burst.
 
 **A lean grid.** The grid (`nui-slot-grid--lean`) draws every resting cell base with one `nui-cells` decorator (one mesh and one draw for the whole grid), a cell draws nothing at rest, and its markup holds only the parts its content can show: three elements per cell, five with a count, and the bag's cells one more, the active part (`nuitool snap --stats` counts them; the inventory's bag page is 182 elements empty, 186 typical and 272 with every cell a stack, 317 in classic, whose digits are one element each, and whose active cell's 13 frames are 13 more while it is active):
@@ -668,14 +669,14 @@ python tools/nui_tokens.py           # writes tokens.rcss and the table below, p
 python tools/nui_tokens.py --check   # writes nothing; exit 1 when an output is stale or a ratio fails
 ```
 
-The script checks WCAG 2.x contrast in every palette for every text color a component draws on each background it uses, at 4.5:1 (body text, muted text on panels, hovered and selected rows, labels on accent and status fills, tooltip text, status text), and for the focus ring and the accent fill of the slider and the checked toggle at 3:1. It fails when any pair is below its minimum; the pairs are listed in `CONTRAST_PAIRS` in `tools/nui_tokens.py`. `--border` is deliberately subtle in the modern palettes (1.4 to 1.8:1 on the surfaces) and is not checked, both as a border and as the scrollbar thumb; controls are recognizable by their fill.
+The script checks WCAG 2.x contrast in every palette for every text color a component draws on each background it uses, at 4.5:1 (body text, muted text on panels, hovered and selected rows, labels on the accent fill, tooltip text and status text), and for the focus ring and the accent fill of the slider and the checked toggle at 3:1. It fails when any pair is below its minimum; the pairs are listed in `CONTRAST_PAIRS` in `tools/nui_tokens.py`. `--border` is deliberately subtle in the modern palettes and is not checked as a text contrast; controls are recognizable by their fill, and scrollbars use `surface-hover` with `text-muted` on hover.
 
 What the color roles mean:
 
 - `--surface` is the window background, `--surface-raised` panels and secondary buttons, `--surface-sunken` inputs, slots and tracks, `--surface-hover` hovered rows and buttons, `--selection` selected rows and selected text.
-- `--text` is body text, `--text-muted` secondary text and placeholders. `--text-inverse` is text on `--tooltip-bg`, the inverse surface used by tooltips and slot counts (light in the dark theme, dark in the light theme; classic keeps the legacy dark tooltip with light text).
-- `--accent` fills primary buttons, the checked toggle, the slider fill and the tab indicator, and colors the selected tab label. `--accent-text` is text on `--accent`, `--accent-hover`, `--danger`, `--danger-hover`, `--success` and `--warning` fills.
-- `--danger`, `--warning` and `--success` work both as text on surfaces and as fills.
+- `--text` is body text, `--text-muted` secondary text and placeholders. `--text-inverse` is light text on the shared dark `--tooltip-bg`, used by hint tooltips and slot counts in both modern palettes; classic keeps its legacy tooltip text.
+- `--accent` fills primary buttons, the checked toggle and the slider fill. `--accent-text` is text on the solid accent button. Selected tabs use raised surface and body text; selected rows and accent badges use the translucent `--selection` fill with accent ink.
+- `--danger`, `--warning` and `--success` are status ink on surfaces and on their soft role fills.
 - `--focus-ring` is the keyboard focus border. `--overlay-scrim` is the translucent modal backdrop.
 - `--surface-band` is the translucent fill of a band across the screen (`nui-window--band`, the console).
 - `--scene` and `--scene-band` are the full-screen backdrop of a phase window and its top and bottom bands (the empire select). They stay dark in every palette, light included, since the art on them (the continent map, the flags) is made for a dark backdrop.
@@ -686,28 +687,28 @@ What the color roles mean:
 
 | Token | Dark | Light | Classic |
 |---|---|---|---|
-| `--surface` | `#1a1d23` | `#f3f4f6` | `#1b1918` |
-| `--surface-raised` | `#232830` | `#ffffff` | `#23201e` |
-| `--surface-sunken` | `#121418` | `#e7e9ed` | `#000000` |
-| `--surface-hover` | `#2c323c` | `#e3e6eb` | `#494746` |
-| `--surface-band` | `#121418d9` | `#f3f4f6e6` | `#00000080` |
-| `--scene` | `#121418` | `#1d2128` | `#000000` |
-| `--scene-band` | `#1a1d23` | `#2a2f37` | `#1b1918` |
-| `--border` | `#3b424e` | `#c3c8d1` | `#777777` |
-| `--text` | `#e7eaf0` | `#1a1d23` | `#dadada` |
-| `--text-muted` | `#a4acba` | `#525a67` | `#c2c2c2` |
-| `--text-inverse` | `#16191e` | `#f3f4f6` | `#dadada` |
-| `--accent` | `#8ab4f8` | `#1a5fc4` | `#ffc800` |
-| `--accent-hover` | `#a8c7fa` | `#154ea3` | `#ffd84d` |
-| `--accent-text` | `#0c1a30` | `#ffffff` | `#000000` |
-| `--danger` | `#f28b82` | `#b3261e` | `#ff4d4d` |
-| `--danger-hover` | `#f6aea9` | `#8c1d18` | `#ff7a7a` |
-| `--warning` | `#f6c75a` | `#8a5300` | `#ffb96d` |
-| `--success` | `#7fd29a` | `#1e7a3c` | `#8ab98e` |
-| `--focus-ring` | `#f2f5f9` | `#111317` | `#f2e7c1` |
-| `--selection` | `#2a3a55` | `#d6e4fb` | `#131237` |
+| `--surface` | `#15171c` | `#f8f8fb` | `#1b1918` |
+| `--surface-raised` | `#262a32` | `#ffffff` | `#23201e` |
+| `--surface-sunken` | `#0d0f12` | `#ebecef` | `#000000` |
+| `--surface-hover` | `#2e333c` | `#f1f1f5` | `#494746` |
+| `--surface-band` | `#15171cdb` | `#f8f8fbea` | `#00000080` |
+| `--scene` | `#0d0f12` | `#15171c` | `#000000` |
+| `--scene-band` | `#15171c` | `#262a32` | `#1b1918` |
+| `--border` | `#ffffff16` | `#1416201a` | `#777777` |
+| `--text` | `#eceef2` | `#15171c` | `#dadada` |
+| `--text-muted` | `#a2a7b3` | `#545a66` | `#c2c2c2` |
+| `--text-inverse` | `#eceef2` | `#eceef2` | `#dadada` |
+| `--accent` | `#a594ff` | `#5a45e6` | `#ffc800` |
+| `--accent-hover` | `#c0b6ff` | `#4733cf` | `#ffd84d` |
+| `--accent-text` | `#140f33` | `#ffffff` | `#000000` |
+| `--danger` | `#ff6f6a` | `#c4322b` | `#ff4d4d` |
+| `--danger-hover` | `#ff918d` | `#a92923` | `#ff7a7a` |
+| `--warning` | `#f5c060` | `#9a6200` | `#ffb96d` |
+| `--success` | `#6fd49a` | `#1e874a` | `#8ab98e` |
+| `--focus-ring` | `#c0b6ff` | `#5a45e6` | `#f2e7c1` |
+| `--selection` | `#2c2b40` | `#e7e4f9` | `#131237` |
 | `--overlay-scrim` | `#000000a6` | `#0000007a` | `#00000080` |
-| `--tooltip-bg` | `#e7eaf0` | `#2a2f37` | `#0d0c0b` |
+| `--tooltip-bg` | `#00000082` | `#00000082` | `#0d0c0b` |
 | `--ember` | `#ffb24ff2` | `#ffb24ff2` | `#ffb24ff2` |
 | `--ember-hot` | `#fff3cff7` | `#fff3cff7` | `#fff3cff7` |
 | `--ember-glow` | `#ff9e3a47` | `#ff9e3a47` | `#ff9e3a47` |
@@ -715,75 +716,75 @@ What the color roles mean:
 | `--sheen-clear` | `#ffffff00` | `#ffffff00` | `#ffffff00` |
 | `--sweep` | `#fff6dc8c` | `#fff6dc8c` | `#fff6dc8c` |
 | `--sweep-clear` | `#fff4d600` | `#fff4d600` | `#fff4d600` |
-| `--gauge-track` | `#121418` | `#d5d9e0` | `#242424` |
-| `--gauge-red` | `#f28b82` | `#b3261e` | `#bc5353` |
-| `--gauge-pink` | `#f48fb1` | `#b0306f` | `#bc5296` |
-| `--gauge-purple` | `#c58af9` | `#7438c4` | `#8052bc` |
-| `--gauge-blue` | `#8ab4f8` | `#1a5fc4` | `#5283bc` |
+| `--gauge-track` | `#08090c` | `#d9dbe1` | `#242424` |
+| `--gauge-red` | `#e5414d` | `#e0353d` | `#bc5353` |
+| `--gauge-pink` | `#f5c060` | `#d79c19` | `#bc5296` |
+| `--gauge-purple` | `#e9a23b` | `#d98e1d` | `#8052bc` |
+| `--gauge-blue` | `#3f86f2` | `#2f6fe0` | `#5283bc` |
 | `--cooldown-shade` | `#00000080` | `#00000080` | `#00000080` |
-| `--slot-disabled` | `#f28b8259` | `#b3261e47` | `#ff00004d` |
-| `--slot-locked` | `#0000008c` | `#1a1d2366` | `#00000080` |
-| `--slot-picked` | `#8ab4f859` | `#1a5fc440` | `#ffffff80` |
+| `--slot-disabled` | `#ff6f6a38` | `#c4322b38` | `#ff00004d` |
+| `--slot-locked` | `#0000008c` | `#15171c66` | `#00000080` |
+| `--slot-picked` | `#a594ff38` | `#5a45e638` | `#ffffff80` |
 | `--notice-bar` | `#00000080` | `#00000080` | `#00000080` |
 | `--notice-text-big` | `#f2e7c1` | `#f2e7c1` | `#f2e7c1` |
-| `--edge-gm` | `#9a5a00` | `#ffb547` | `#ffa200` |
-| `--party-link` | `#e7eaf0` | `#1a1d23` | `#c2c2c2` |
+| `--edge-gm` | `#b9791c` | `#ffb547` | `#ffa200` |
+| `--party-link` | `#eceef2` | `#15171c` | `#c2c2c2` |
 | `--party-unlink` | `#7f8794` | `#7a828f` | `#808080` |
-| `--hp-recovery` | `#f28b8255` | `#b3261e40` | `#ff000055` |
-| `--sp-recovery` | `#8ab4f855` | `#1a5fc440` | `#0000ff55` |
-| `--chat-talking` | `#e7eaf0` | `#e7eaf0` | `#ffffff` |
+| `--hp-recovery` | `#e5414d52` | `#e0353d40` | `#ff000055` |
+| `--sp-recovery` | `#3f86f252` | `#2f6fe040` | `#0000ff55` |
+| `--chat-talking` | `#eceef2` | `#e7eaf0` | `#ffffff` |
 | `--chat-info` | `#ffb4b4` | `#ffb4b4` | `#ffc8c8` |
 | `--chat-notice` | `#f6d79a` | `#f6d79a` | `#ffe6ba` |
 | `--chat-party` | `#5fe3d4` | `#5fe3d4` | `#00ffe4` |
 | `--chat-guild` | `#e6ea7a` | `#e6ea7a` | `#fdff7c` |
 | `--chat-command` | `#9fe6c3` | `#9fe6c3` | `#a7ffd4` |
 | `--chat-shout` | `#9fe6c3` | `#9fe6c3` | `#a7ffd4` |
-| `--chat-whisper` | `#7fd29a` | `#7fd29a` | `#4ae14a` |
+| `--chat-whisper` | `#6fd49a` | `#7fd29a` | `#4ae14a` |
 | `--chat-big-notice` | `#f6d79a` | `#f6d79a` | `#ffe6ba` |
-| `--chat-view-shade-top` | `#12141800` | `#12141800` | `#00000000` |
-| `--chat-view-shade-bottom` | `#121418cc` | `#121418cc` | `#000000cc` |
-| `--chat-edit-shade` | `#1a1d23d9` | `#1a1d23d9` | `#00000080` |
-| `--chat-mark` | `#f6c75a` | `#8a5300` | `#ffff00` |
+| `--chat-view-shade-top` | `#0d0f1200` | `#12141800` | `#00000000` |
+| `--chat-view-shade-bottom` | `#0d0f12cc` | `#121418cc` | `#000000cc` |
+| `--chat-edit-shade` | `#15171cdb` | `#1a1d23d9` | `#00000080` |
+| `--chat-mark` | `#f5c060` | `#9a6200` | `#ffff00` |
 | `--text-outline` | `#000000` | `#000000` | `#000000` |
-| `--quest-text` | `#e7eaf0` | `#1a1d23` | `#ffffff` |
-| `--quest-body` | `#c4c9d2` | `#3b414b` | `#c4c4c4` |
-| `--quest-title` | `#f2d39b` | `#7a4a06` | `#ffe6ba` |
-| `--highlight` | `#f2d39b` | `#7a4a06` | `#ffe6ba` |
+| `--quest-text` | `#eceef2` | `#15171c` | `#ffffff` |
+| `--quest-body` | `#c7cbd4` | `#3b414b` | `#c4c4c4` |
+| `--quest-title` | `#f2d39b` | `#8a5a00` | `#ffe6ba` |
+| `--highlight` | `#f2d39b` | `#8a5a00` | `#ffe6ba` |
 | `--quest-reward` | `#f5b5bc` | `#9b2c48` | `#ffc8c8` |
 | `--quest-item` | `#ff7a72` | `#b3261e` | `#ff3333` |
 | `--quest-scrim` | `#00000000` | `#00000000` | `#00000000` |
 | `--letterbox` | `#000000` | `#000000` | `#000000` |
 | `--fade-black` | `#000000` | `#000000` | `#000000` |
 | `--fade-white` | `#ffffff` | `#ffffff` | `#ffffff` |
-| `--console-bg` | `#121418d9` | `#f3f4f6e6` | `#00000080` |
-| `--console-field` | `#121418` | `#e7e9ed` | `#000000` |
-| `--console-text` | `#e7eaf0` | `#1a1d23` | `#ffffff` |
-| `--console-grip` | `#3b424e` | `#c3c8d1` | `#ffffff` |
-| `--web-page` | `#121418` | `#e7e9ed` | `#000000` |
-| `--slot-target` | `#8ab4f84d` | `#1a5fc433` | `#ffffff80` |
-| `--slot-blocked` | `#f28b8259` | `#b3261e40` | `#ff000080` |
-| `--slot-usable` | `#f6c75a59` | `#e0a80066` | `#ffff0080` |
-| `--slot-unusable` | `#f28b8259` | `#b3261e40` | `#ff000080` |
-| `--slot-unavailable` | `#000000a6` | `#1a1d2340` | `#00000080` |
-| `--accent-glow` | `#8ab4f866` | `#1a5fc44d` | `#ffc80066` |
-| `--tip-bg` | `#20242c` | `#ffffff` | `#0d0c0b` |
-| `--tip-title` | `#f1e6c0` | `#1a1d23` | `#f1e6c0` |
-| `--tip-special` | `#f2d39b` | `#7a4a06` | `#ffc700` |
-| `--tip-normal` | `#c4c9d2` | `#3b414b` | `#c1c1c1` |
-| `--tip-price` | `#ffb96d` | `#8a5300` | `#ffb96d` |
-| `--tip-price-middle` | `#d8d8d8` | `#525a67` | `#d8d8d8` |
-| `--tip-price-low` | `#b2b2b2` | `#6b7280` | `#b2b2b2` |
-| `--tip-negative` | `#f28b82` | `#b3261e` | `#e57875` |
-| `--tip-positive` | `#89b88d` | `#1e7a3c` | `#89b88d` |
-| `--tip-positive-special` | `#b0dfb4` | `#14532d` | `#b0dfb4` |
-| `--tip-positive-rare` | `#e1fae1` | `#0f5f5a` | `#e1fae1` |
-| `--tip-condition` | `#beb47d` | `#6e6420` | `#beb47d` |
-| `--tip-level-up` | `#8ec292` | `#2e7d32` | `#8ec292` |
-| `--tip-skill-point` | `#9a9cdb` | `#4a4cb0` | `#9a9cdb` |
-| `--tip-divider` | `#3b424e` | `#c3c8d1` | `#555555` |
-| `--tip-divider-shadow` | `#000000` | `#e7e9ed` | `#000000` |
-| `--tip-socket-silver` | `#a4acba` | `#7a828f` | `#c1c1c1` |
-| `--tip-socket-gold` | `#f6c75a` | `#8a5300` | `#ffc700` |
+| `--console-bg` | `#15171cdb` | `#f8f8fbea` | `#00000080` |
+| `--console-field` | `#0d0f12` | `#ebecef` | `#000000` |
+| `--console-text` | `#eceef2` | `#15171c` | `#ffffff` |
+| `--console-grip` | `#ffffff29` | `#14162033` | `#ffffff` |
+| `--web-page` | `#0d0f12` | `#ebecef` | `#000000` |
+| `--slot-target` | `#a594ff4d` | `#5a45e633` | `#ffffff80` |
+| `--slot-blocked` | `#ff6f6a59` | `#c4322b40` | `#ff000080` |
+| `--slot-usable` | `#f5c06059` | `#d79c1966` | `#ffff0080` |
+| `--slot-unusable` | `#ff6f6a59` | `#c4322b40` | `#ff000080` |
+| `--slot-unavailable` | `#000000a6` | `#15171c40` | `#00000080` |
+| `--accent-glow` | `#a594ff8c` | `#5a45e64d` | `#ffc80066` |
+| `--tip-bg` | `#00000082` | `#00000082` | `#0d0c0b` |
+| `--tip-title` | `#f2d39b` | `#f2d39b` | `#f1e6c0` |
+| `--tip-special` | `#a8e6bf` | `#a8e6bf` | `#ffc700` |
+| `--tip-normal` | `#d5d9e1` | `#d5d9e1` | `#c1c1c1` |
+| `--tip-price` | `#f5c060` | `#f5c060` | `#ffb96d` |
+| `--tip-price-middle` | `#d8d8d8` | `#d8d8d8` | `#d8d8d8` |
+| `--tip-price-low` | `#b2b2b2` | `#b2b2b2` | `#b2b2b2` |
+| `--tip-negative` | `#ff8b86` | `#ff8b86` | `#e57875` |
+| `--tip-positive` | `#79d39c` | `#79d39c` | `#89b88d` |
+| `--tip-positive-special` | `#a8e6bf` | `#a8e6bf` | `#b0dfb4` |
+| `--tip-positive-rare` | `#d9f7e4` | `#d9f7e4` | `#e1fae1` |
+| `--tip-condition` | `#e5d493` | `#e5d493` | `#beb47d` |
+| `--tip-level-up` | `#86dbaa` | `#86dbaa` | `#8ec292` |
+| `--tip-skill-point` | `#b8afff` | `#b8afff` | `#9a9cdb` |
+| `--tip-divider` | `#ffffff29` | `#ffffff29` | `#555555` |
+| `--tip-divider-shadow` | `#000000` | `#000000` | `#000000` |
+| `--tip-socket-silver` | `#b8bec9` | `#b8bec9` | `#c1c1c1` |
+| `--tip-socket-gold` | `#e3b45a` | `#e3b45a` | `#ffc700` |
 
 | Token | Shared value |
 |---|---|
@@ -799,8 +800,8 @@ What the color roles mean:
 | `--radius-lg` | `8dp` |
 | `--panel-backdrop` | `none` |
 | `--font-xs` | `11dp` |
-| `--font-sm` | `12dp` |
-| `--font-md` | `14dp` |
+| `--font-sm` | `11dp` |
+| `--font-md` | `12dp` |
 | `--font-lg` | `16dp` |
 | `--font-xl` | `20dp` |
 | `--dur-fast` | `0.1s` |
@@ -860,17 +861,18 @@ Durations and easings are listed for reference: RCSS cannot read them through `v
 
 ## Player colors
 
-Players change a few colors of the theme in use, live, from the Interface section of the system options: the accent, the panel color, the panel opacity and the text highlight. Every other token stays the skin's. The modern themes and cyberpunk offer the four slots; classic offers none, since it is legacy art, which no token tints.
+Players change a few colors of the theme in use, live, from the Interface section of the system options: the accent, the panel color, the panel opacity, the tooltip overlay opacity and the text highlight. Every other token stays the skin's. The modern themes offer all five slots, cyberpunk offers the original four, and classic offers none, since it is legacy art, which no token tints.
 
 | Slot | Kind | What it sets, in order |
 |---|---|---|
 | `accent` | a color | `accent`; `accent-hover` (the color mixed with white by 0.2 in a dark palette, with black in a light one); `accent-text` (whichever of the palette's `accent-text` and `text` reads better on the new accent); `selection` (mixed with `surface` by 0.72); a skin may add its own (cyberpunk's edge and glow tokens) |
 | `panel` | a color | `surface`; `surface-raised`, `surface-sunken`, `surface-hover`, `surface-band` and `border`, each the new color plus the palette's own difference to `surface` |
 | `opacity` | a percent, 50 to 100 in steps of 5 | the alpha of the five surfaces; below 100 also `panel-backdrop`, the palette's backdrop (`blur(6dp)` in modern) |
+| `overlay` | a percent, 30 to 100, default 51 | the alpha of `tip-bg` and `tooltip-bg`; storage uses one-percent steps because the runtime requires the default to lie on the declared step, while System Options exposes the 5%-cadence choices plus exact 51 |
 | `highlight` | a color | `highlight`, `quest-title`, `notice-text-big`, `chat-notice`, `chat-big-notice` (in light the last three mixed with white by 0.65, since they sit on dark backdrops in every theme) |
 
 - **The data.** `tokens.json`'s `slots` section holds each palette's slots, swatches (the default first) and rules: `value` (the slot's color), `mix` (with a color or a token, by `t`), `alpha` (the token's color with the slot's alpha), `delta` (the slot's color plus the palette's difference between the token and `ref`) and `pick` (the candidate token that reads best on `on`). `tools/nui_tokens.py` writes them, with every color of each palette and the contrast pairs, into `nui/theme/colors.json` (a skin keeping its own palettes: `nui/skins/<skin>/colors.json`), which the runtime reads at start. `tools/nui_palette.py` is the reference of the resolve: it and the runtime's `Core/Palette.cpp` agree to the byte on the vectors in `tools/fixtures/palette_cases.json` (`python3 -B -m unittest nui_palette_test` in `tools/`).
-- **Contrast holds.** After the rules, every contrast pair one of whose colors changed is checked; a text color below its minimum moves toward white (in a dark palette) or black (in a light one) in 64 steps until it reaches it. Over a translucent background, the lower of its ratios over black and over white counts. If a pair still fails while the opacity is below 100, the opacity rises by 5 and the resolve starts again; a pair that fails even then takes white or black, and the runtime logs it once. `python tools/nui_tokens.py --check` fails when a swatch alone, or a swatch at opacity 50, leaves a pair failed.
+- **Contrast holds.** After the rules, every contrast pair one of whose colors changed is checked; a text color below its minimum moves toward white (in a dark palette) or black (in a light one) in 64 steps until it reaches it. A translucent selection is composited over `surface`; a translucent tooltip plate is composited over the dark `scene`, matching where those roles draw, before applying the same threshold. If a pair still fails while the panel opacity is below 100, that opacity rises by 5 and the resolve starts again; a pair that fails even then takes white or black, and the runtime logs it once. `python tools/nui_tokens.py --check` fails when a swatch alone, or a swatch at opacity 50, leaves a pair failed.
 - **Applied live.** The runtime puts the resolved tokens on every document's `<body>` as inline custom properties, so every `var()` user restyles at the next update, with no reload. A theme switch swaps them in the same call, and a document loaded later gets them before its first update. Overrides are per theme, so an accent chosen for cyberpunk never reaches modern-light, and are saved in one config line, `UI_COLORS modern-dark:accent=#c58af9,opacity=80;modern-light:highlight=#9fefff` (at most 960 bytes). A slot set to its default is no override.
 - **What content does to follow them: tokens only.** A color written into a sheet (which lint refuses outside `nui/theme/` anyway), baked into art, or derived by hand in a window's sheet (a darker accent of its own) does not follow. Text that wants the player's highlight takes `--highlight` or `nui-text--highlight`. Art that should take the accent is white with alpha, tinted with `image-color: var(--accent)`.
 - **Translucent panels.** Below 100% opacity the surfaces are translucent, and the window frames blur what is behind them: `window-frame.rcss` gives every `.nui-window.nui-fx` `backdrop-filter: var(--panel-backdrop)`, which is `none` by default, so no layer exists then. Boards and tiles stay unblurred: they are always loaded, and a backdrop blur costs a layer every frame ([What effects cost](#what-effects-cost)). Reduced effects drops the blur and keeps the translucency; opacity 100 removes both. Text on a window's own surfaces stays readable over any world by the contrast rule above.
@@ -878,11 +880,11 @@ Players change a few colors of the theme in use, live, from the Interface sectio
 **Python** (`assets/root/nui.py`):
 
 - `nui.get_color_slots()`: the slots of the theme in use, each `{"slot", "kind" ("color" or "percent"), "label" (a locale key), "default", "value", "swatches", "min", "max", "step"}`; `[]` for classic, and without NovaUI.
-- `nui.set_color(slot, value)`: `"#rrggbb"` for a color slot, a whole percent (an int or a string) for `opacity`. It applies at once, saves `UI_COLORS`, runs every open window's `on_colors_changed(slot)` and returns `{"ok", "value", "adjusted", "failed", "opacity"}`: `adjusted` names the colors the contrast rule changed (and `opacity` when it raised it), `failed` the pairs that took white or black. `ValueError` for a slot the theme does not offer or a malformed value.
+- `nui.set_color(slot, value)`: `"#rrggbb"` for a color slot, a whole percent (an int or a string) for `opacity` or `overlay`. It applies at once, saves `UI_COLORS`, runs every open window's `on_colors_changed(slot)` and returns `{"ok", "value", "adjusted", "failed", "opacity"}`: `adjusted` names the colors the contrast rule changed (and panel `opacity` when it raised it), `failed` the pairs that took white or black. `ValueError` for a slot the theme does not offer or a malformed value.
 - `nui.reset_colors(all_themes=False)` removes the theme in use's overrides (every theme's with `True`), then runs `on_colors_changed(None)`; `nui.get_colors()` is the theme in use's overrides.
 - `nui.Window.on_colors_changed(slot)`: the documents show the new colors already; override it to refill model values that show colors (the Interface section's swatches).
 
-**The Interface section** (`system-options`, `assets/root/nui_system_options.py`): after reduced motion, the reduced effects toggle (`so-effects-toggle`, on and locked with a note where the device has no effects; [Reduced effects](#reduced-effects)), then, while the theme offers slots (`so-colors`): a row of swatches per color slot (`so-color-<slot>-<i>`, the default first, the one in use `is-selected`), a hue slider for the accent (`so-color-accent-hue`, the hue with the default accent's saturation and value), the opacity choices (`so-color-opacity-<value>`: 100, 90, 80, 70 and 60, a row of buttons rather than a slider, so no drag restyles every frame), the reset (`so-colors-reset`), a note when the contrast rule adjusted a color (`so-colors-note`) and a preview card drawn by the same tokens (`so-colors-preview`). A swatch is a chip colored from data by `data-style---swatch="w.color"` with `background-color: var(--swatch)` (NUI009's one exception).
+**The Interface section** (`system-options`, `assets/root/nui_system_options.py`): after reduced motion, the reduced effects toggle (`so-effects-toggle`, on and locked with a note where the device has no effects; [Reduced effects](#reduced-effects)), then, while the theme offers slots (`so-colors`): a row of swatches per color slot (`so-color-<slot>-<i>`, the default first, the one in use `is-selected`), a hue slider for the accent (`so-color-accent-hue`, the hue with the default accent's saturation and value), the panel opacity choices (`so-color-opacity-<value>`: 100, 90, 80, 70 and 60) and overlay opacity choices (`so-color-overlay-<value>`: 100, 75, 51, 40 and 30), both rows of buttons rather than sliders, the reset (`so-colors-reset`), a note when the contrast rule adjusted a color (`so-colors-note`) and a preview card drawn by the same tokens (`so-colors-preview`). A swatch is a chip colored from data by `data-style---swatch="w.color"` with `background-color: var(--swatch)` (NUI009's one exception).
 
 `nuitool snap --colors accent=#c58af9,opacity=80` snaps with overrides for the theme of the run, and a golden case takes them as `"colors"` ([Golden case files](#golden-case-files)).
 

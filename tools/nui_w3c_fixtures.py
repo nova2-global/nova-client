@@ -57,6 +57,7 @@ QUEST_DEFAULT_ICON = "/season1/icon/scroll_open.tga"
 # locale_game.txt (en): the plain entries a fixture shows as legacy's code makes them.
 UNLIMITED = "No time limit."
 GROUP_NAMES = ("Body", "Mental", "Riding")
+JOB_LABEL = "Warrior · Body"
 
 
 def empty_cell(index):
@@ -171,6 +172,8 @@ def character(limits, tab, values=None, guild=True, skill_rows=None, support_row
         "name": "Kalinka",
         "guild": "Nova Riders" if guild else "",
         "has_guild": bool(guild),
+        # The modern looks' class chip (nui_character.job_label): the warrior, group 1.
+        "job": JOB_LABEL,
         "level": "99", "exp": "2147483647", "exp_rest": "1234567890", "hp": "99999/99999", "sp": "99999/99999",
         "st": "90", "dx": "90", "ht": "90", "iq": "90", "att": "999-999", "def": "999", "matt": "999-999", "mdef": "999",
         "aspd": "999", "mspd": "999", "cspd": "999", "er": "999",

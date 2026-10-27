@@ -1,9 +1,10 @@
-/* The belt's modern look (P14 spec 6.3): a board beside the inventory with
-   a lean 4 x 4 grid and a minimize chevron on its left; collapsed, a 16dp
-   tab with the expand chevron. The controller docks it (place_next_to),
-   so its place here only frames it in its snapshots. Classic (legacy's
-   expand and minimize art and the stone board; no title):
-   skins/classic/windows/belt-inventory.rcss. */
+/* The belt's modern look (P14 spec 6.3; the stage 1 design, WBelt board):
+   a board beside the inventory with a lean 4 x 4 grid and, on its left, the
+   minimize chevron in a well as tall as the grid; the cells beyond the
+   belt's grade are striped; collapsed, a 16dp tab with the expand chevron.
+   The controller docks it (place_next_to), so its place here only frames
+   it in its snapshots. Classic (legacy's expand and minimize art and the
+   stone board; no title): skins/classic/windows/belt-inventory.rcss. */
 
 body.belt
 {
@@ -45,4 +46,30 @@ body.belt.belt--expanded
 .belt__expand, .belt__minimize
 {
 	position: relative;
+}
+/* Expanded, the minimize chevron sits in a well beside the whole grid. */
+.belt__minimize
+{
+	width: 22dp;
+	height: 172dp;
+	margin-top: 0;
+	background-color: var(--surface-sunken);
+	border-color: var(--border);
+	border-radius: 9dp;
+}
+.belt__minimize:hover
+{
+	background-color: var(--surface-hover);
+	border-color: var(--border);
+}
+.belt__minimize .nui-glyph
+{
+	left: 2dp;
+	top: 77dp;
+}
+/* A cell beyond the belt's grade: the component's dimmed cell, striped. */
+.belt__grid > .nui-slot.is-unavailable,
+.belt__grid > .nui-slot.is-unavailable:hover
+{
+	decorator: repeating-linear-gradient(135deg, transparent 0dp, transparent 5dp, var(--border) 5dp, var(--border) 10dp);
 }

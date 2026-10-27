@@ -73,6 +73,22 @@ ART = (("tab_1", "tab_1.sub"), ("tab_2", "tab_2.sub"), ("tab_3", "tab_3.sub"), (
        ("ext_item2", "label_ext_item2.sub"))
 
 
+# The class chip of the modern looks: chr.RaceToJob's job (playerSettingModule
+# JOB_WARRIOR to JOB_SHAMAN) and the localeInfo key of its name.
+JOB_NAMES = {0: "JOB_WARRIOR", 1: "JOB_ASSASSIN", 2: "JOB_SURA", 3: "JOB_SHAMAN"}
+
+
+def job_label(job, group, group_names):
+	"""The class chip's text: the job's name and, with a skill group, the
+	group's name as legacy names it (SKILL_GROUP_NAME_DICT), joined by a
+	middle dot ("Warrior · Body"); "" for a job without a name."""
+	name = getattr(localeInfo, JOB_NAMES.get(job, ""), "") if job in JOB_NAMES else ""
+	if not name:
+		return ""
+	group_name = group_names.get(job, {}).get(group, "") if group else ""
+	return nui.plain_text(name + (" · " + group_name if group_name else ""))
+
+
 def art_of(windows_path):
 	"""{key: store path} of ART in a locale's windows folder
 	(uiScriptLocale.WINDOWS_PATH, "locale/en/ui/windows/"), rooted."""
@@ -371,7 +387,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			"placed": False,
 			"art": art_of(uiScriptLocale.WINDOWS_PATH),
 			"attach_right": bool(nui_slots.ATTACH_RIGHT),
-			"face": "", "name": "", "guild": "", "has_guild": False,
+			"face": "", "name": "", "guild": "", "has_guild": False, "job": "",
 			"stat_points": "", "stat_points_shown": False,
 			"groups": [{"index": i, "label": GROUP_LABELS[i], "shown": True, "down": False, "col": i} for i in range(3)],
 			"group_name": "", "group_name_shown": True,
@@ -477,6 +493,14 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		image = self.faceImage if getattr(self, "faceImage", None) is not None else None
 		face = nui_slots.icon_source(image.image) if image is not None and image.IsShow() and image.image else ""
 		self._set(face=face)
+
+	def _CharacterWindow__SetJobText(self, mainJob, subJob):
+		"""Legacy's (RefreshCharacter's job and skill group; it shows nothing),
+		and the modern looks' class chip: the job, and the group from level
+		5 on, as legacy's rule takes the group then."""
+		uiCharacter.CharacterWindow._CharacterWindow__SetJobText(self, mainJob, subJob)
+		group = subJob if player.GetStatus(player.LEVEL) >= 5 else 0
+		self._set(job=job_label(mainJob, group, self.SKILL_GROUP_NAME_DICT))
 
 	def _on_stat_points(self, text):
 		self._set(stat_points=nui.plain_text(text))

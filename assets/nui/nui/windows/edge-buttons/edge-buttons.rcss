@@ -83,12 +83,13 @@ body.edge-buttons
 	height: 36dp;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--surface);
+	border-radius: 7dp;
+	background-color: var(--surface-sunken);
 }
 .edge__button:hover
 {
 	background-color: var(--surface-hover);
+	border-color: var(--accent);
 }
 .edge__blink
 {
@@ -171,8 +172,10 @@ body.edge-buttons
 }
 .edge__text
 {
-	padding: 1dp 6dp;
-	border-radius: var(--radius-sm);
+	padding: 1dp 7dp;
+	border-width: 1dp;
+	border-color: var(--tip-divider);
+	border-radius: 6dp;
 	background-color: var(--tooltip-bg);
 	color: var(--text-inverse);
 	font-size: var(--font-sm);

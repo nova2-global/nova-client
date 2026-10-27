@@ -1,15 +1,16 @@
 /* The chat's modern look. The body is the 600dp block; the facade puts its
    bottom center on the taskbar's top. Closed: the lines (the newest five,
    for 5 s) on the view shade right above that edge. Open: the input row,
-   25dp, and above it the history panel, as tall as history_height (the
+   34dp, and above it the history panel, as tall as history_height (the
    sizing bar's drag), with a grip at its top; the lines fill the panel from
    10dp below its top, so a 138dp history holds 8 lines, as legacy's does.
    The row lays out its parts in a flex row (a pill for the mode, the field,
-   the three art buttons), so a long mode name does not cover the field.
-   The chat's backdrop and line colors stay dark in every modern palette:
-   the colors of tags (item links, notices) come from game data made for a
-   dark backdrop. Classic (the legacy pieces at their legacy places):
-   skins/classic/windows/chat.rcss. */
+   the three glyph buttons), so a long mode name does not cover the field.
+   The chat's backdrop (the shared overlay) and line colors stay dark in
+   every modern palette: the colors of tags (item links, notices) come from
+   game data made for a dark backdrop; the input row takes the panel color
+   (the mockup's Chat board). Classic (the legacy pieces at their legacy
+   places): skins/classic/windows/chat.rcss. */
 
 /* The facade places the body (set_position, its bottom center on the
    taskbar's top), which writes left and top; the sheet's own place uses
@@ -51,10 +52,13 @@ body.chat
 	width: 600dp;
 	height: 138dp;
 }
+/* Open: the history on the shared overlay (the tooltip translucency, the
+   player's overlay opacity), clear at its top and full from a fifth down,
+   with round top corners. */
 .chat__block.is-open .chat__history
 {
-	border-radius: var(--radius-md) var(--radius-md) 0 0;
-	background-color: var(--chat-edit-shade);
+	border-radius: 12dp 12dp 0 0;
+	decorator: linear-gradient(180deg, var(--chat-view-shade-top) 0%, var(--tooltip-bg) 22%, var(--tooltip-bg) 100%);
 }
 
 /* The sizing bar, drawn over the oldest line, as legacy's. */
@@ -74,9 +78,9 @@ body.chat
 .chat__grip
 {
 	display: block;
-	width: 48dp;
-	height: 3dp;
-	margin: 2dp auto 0 auto;
+	width: 44dp;
+	height: 4dp;
+	margin: 4dp auto 0 auto;
 	border-radius: 2dp;
 	background-color: var(--chat-talking);
 	opacity: 0.45;
@@ -95,7 +99,19 @@ body.chat
 }
 .chat__lines .nui-chat__line
 {
-	margin-left: 10dp;
+	margin-left: 12dp;
+	font-size: var(--font-md);
+	font-effect: shadow(0dp 1dp var(--text-outline));
+}
+/* An item link: a chip of the link color's family around the run, whose
+   text keeps the color its tag gives it. */
+.chat__lines .nui-link
+{
+	padding: 0 4dp;
+	border-width: 1dp;
+	border-color: var(--gauge-blue);
+	border-radius: 4dp;
+	background-color: var(--sp-recovery);
 }
 .chat__lines.has-lines
 {
@@ -129,12 +145,17 @@ body.chat
 	overflow: hidden;
 	clip: always;
 }
+/* Open: a 34dp row on the panel color under a line, round at its bottom;
+   the mode pill, the field and the three buttons 24dp tall. */
 .chat__block.is-open .chat__input-row
 {
-	height: 25dp;
+	height: 34dp;
 	overflow: visible;
 	clip: auto;
-	background-color: var(--chat-edit-shade);
+	border-width: 1dp 0 0 0;
+	border-color: var(--border);
+	border-radius: 0 0 12dp 12dp;
+	background-color: var(--surface);
 }
 
 .chat__mode
@@ -142,17 +163,18 @@ body.chat
 	display: block;
 	flex: 0 0 auto;
 	box-sizing: border-box;
-	min-width: 40dp;
-	height: 19dp;
-	margin-right: var(--space-1);
-	padding: 0 var(--space-2);
+	min-width: 48dp;
+	height: 24dp;
+	margin-right: 6dp;
+	padding: 0 10dp;
 	border-width: 1dp;
 	border-color: var(--accent);
-	border-radius: 10dp;
-	background-color: var(--surface-raised);
-	color: var(--text);
-	font-size: var(--font-xs);
-	line-height: 17dp;
+	border-radius: 7dp;
+	background-color: var(--selection);
+	color: var(--accent);
+	font-size: var(--font-md);
+	font-weight: bold;
+	line-height: 22dp;
 	text-align: center;
 	white-space: nowrap;
 	focus: auto;
@@ -171,15 +193,15 @@ body.chat
 	display: block;
 	flex: 1 1 auto;
 	position: relative;
-	height: 21dp;
-	margin-right: var(--space-1);
+	height: 24dp;
+	margin-right: 6dp;
 }
 input.chat__input
 {
 	width: 100%;
-	height: 21dp;
-	font-size: var(--font-sm);
-	line-height: 19dp;
+	height: 24dp;
+	font-size: var(--font-md);
+	line-height: 22dp;
 	focus: auto;
 }
 /* The prefix mark over the field's first character (# party, % guild,
@@ -193,8 +215,8 @@ input.chat__input
 	left: 9dp;
 	top: 1dp;
 	color: var(--chat-mark);
-	font-size: var(--font-sm);
-	line-height: 19dp;
+	font-size: var(--font-md);
+	line-height: 22dp;
 	pointer-events: none;
 }
 
@@ -202,12 +224,12 @@ input.chat__input
 {
 	display: block;
 	flex: 0 0 auto;
-	width: 24dp;
-	height: 21dp;
+	width: 26dp;
+	height: 24dp;
 	margin-left: 2dp;
 	padding: 0;
 	border-width: 0;
-	border-radius: var(--radius-sm);
+	border-radius: 7dp;
 	background-color: transparent;
 }
 .chat__button:hover
@@ -223,8 +245,13 @@ input.chat__input
 .chat__glyph
 {
 	position: absolute;
-	left: 4dp;
-	top: 3dp;
+	left: 5dp;
+	top: 4dp;
+	--glyph-ink: var(--text-muted);
+}
+.chat__send .chat__glyph
+{
+	--glyph-ink: var(--accent);
 }
 .chat__button:hover .chat__glyph
 {

@@ -1,9 +1,14 @@
-/* The costume window's modern look (P14 spec 6.2): a movable window beside
-   the inventory, its cells on the 44dp pitch by the wear slot's name
-   (nui_limits' costume group): the costume hair and body side by side, in
-   both tables since the cut (NOVA-97: legacy's costume window holds those
-   two; the other names keep places, should a table show them again, and
-   so does a companion's block, in rows 4 to 6 under a divider).
+/* The costume window's modern look (P14 spec 6.2; the stage 1 design,
+   WCostume board): a movable window beside the inventory. Today's cells,
+   the costume hair and body (legacy's costume window holds those two since
+   the cut, NOVA-97), stand on a stage around a figure (an image the
+   controller passes, male or female by the race) on a small rune circle
+   that turns the other way to the inventory's, over a diamond mesh and a
+   soft accent halo, with the two empty frames legacy's costume art paints
+   on its left. The foundation's cells keep the 44dp pitch by the wear
+   slot's name (nui_limits' costume group; the other names keep places,
+   should a table show them again, and so does a companion's block, in
+   rows 4 to 6 under a divider).
    Classic (legacy's 140 x 180 board with costume_bg.jpg):
    skins/classic/windows/costume.rcss. */
 
@@ -33,6 +38,168 @@ body.cos.cos--companion .cos-grid
 {
 	height: 304dp;
 }
+/* Today's stage: the well under a diamond mesh (thin lines 45 degrees
+   either way); the halo is the light. Its places are from its padding box. */
+body.cos.inv--table-new .cos-grid
+{
+	box-sizing: border-box;
+	width: 176dp;
+	height: 210dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+	decorator: repeating-linear-gradient(45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 11.3dp),
+	           repeating-linear-gradient(-45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 11.3dp);
+}
+
+/* --- The stage's art (today's table only) ----------------------------------- */
+
+.cos-stage
+{
+	display: none;
+}
+body.cos.inv--table-new .cos-stage
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 174dp;
+	height: 208dp;
+	pointer-events: none;
+}
+.cos-stage__halo, .cos-stage__rune, .cos-stage__figure, .cos-stage__frame
+{
+	display: block;
+	position: absolute;
+	pointer-events: none;
+}
+.cos-stage__halo
+{
+	left: 33dp;
+	top: 15dp;
+	width: 126dp;
+	height: 180dp;
+	decorator: radial-gradient(50% 50% at 50% 50%, var(--slot-target) 0%, transparent 72%);
+}
+/* A device without effects draws a gradient as its middle color: the halo
+   would be a flat box. */
+@media (theme: no-effects)
+{
+	.cos-stage__halo
+	{
+		display: none;
+	}
+}
+/* The figure, 180dp tall, centered on the stage's middle line, its feet on
+   the rune circle. */
+.cos-stage__figure
+{
+	left: 0;
+	top: 12dp;
+	width: 172dp;
+	height: 180dp;
+	text-align: center;
+}
+.cos-stage__image
+{
+	height: 180dp;
+	opacity: 0.7;
+}
+/* The rune circle: rings and a hexagram on a 112dp disc laid back in
+   perspective; it turns once in 34s, the other way to the inventory's. */
+.cos-stage__rune
+{
+	left: 30dp;
+	top: 131dp;
+	width: 112dp;
+	height: 112dp;
+	transform: perspective(240dp) rotateX(74deg);
+}
+.cos-stage__spin
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 112dp;
+	height: 112dp;
+}
+.cos-stage__spin.nui-anim
+{
+	animation: 34s linear-in-out infinite cos-rune-turn;
+}
+@keyframes cos-rune-turn
+{
+	from { transform: rotate(0deg); }
+	to { transform: rotate(-360deg); }
+}
+.cos-stage__ring, .cos-stage__chord
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+}
+.cos-stage__ring
+{
+	border-color: var(--accent-glow);
+	border-radius: 9999dp;
+}
+.cos-stage__ring--outer
+{
+	left: 3dp;
+	top: 3dp;
+	width: 106dp;
+	height: 106dp;
+	border-width: 2dp;
+}
+.cos-stage__ring--glow
+{
+	left: 10dp;
+	top: 10dp;
+	width: 92dp;
+	height: 92dp;
+	border-width: 1.5dp;
+	border-color: var(--accent);
+}
+.cos-stage__ring--inner
+{
+	left: 20dp;
+	top: 20dp;
+	width: 72dp;
+	height: 72dp;
+	border-width: 1.5dp;
+}
+/* The hexagram: six chords of the inner ring, each 18dp from the middle. */
+.cos-stage__chord
+{
+	left: 25dp;
+	top: 55.5dp;
+	width: 62dp;
+	height: 1.5dp;
+	background-color: var(--accent-glow);
+}
+.cos-stage__chord--a { transform: rotate(0deg) translateY(18dp); }
+.cos-stage__chord--b { transform: rotate(60deg) translateY(18dp); }
+.cos-stage__chord--c { transform: rotate(120deg) translateY(18dp); }
+.cos-stage__chord--d { transform: rotate(180deg) translateY(18dp); }
+.cos-stage__chord--e { transform: rotate(240deg) translateY(18dp); }
+.cos-stage__chord--f { transform: rotate(300deg) translateY(18dp); }
+/* The empty frames on the left, as legacy's costume art paints them: an
+   empty cell's look, but they hold nothing and take no pointer. */
+.cos-stage__frame
+{
+	left: 13dp;
+	width: 40dp;
+	box-sizing: border-box;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 7dp;
+}
+.cos-stage__frame--a { top: 27dp; height: 80dp; }
+.cos-stage__frame--b { top: 120dp; height: 40dp; }
 .cos-divider
 {
 	position: absolute;
@@ -52,6 +219,11 @@ body.cos.cos--companion .cos-grid
 	height: 40dp;
 }
 .cos-wear--costume_body, .cos-wear--buffi_costume_body { height: 84dp; }
+/* Today's places: the hair and the body on the stage's right, the third
+   at the figure's feet. */
+body.cos.inv--table-new .cos-wear--costume_hair { left: 117dp; top: 23dp; }
+body.cos.inv--table-new .cos-wear--costume_body { left: 117dp; top: 88dp; height: 80dp; }
+body.cos.inv--table-new .cos-wear--ring1 { left: 65dp; top: 152dp; }
 .cos-wear--costume_weapon, .cos-wear--buffi_costume_weapon { height: 128dp; }
 .cos-wear--costume_hair { left: 0; top: 0; }
 .cos-wear--costume_body { left: 44dp; top: 0; }

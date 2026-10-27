@@ -12,10 +12,12 @@
 	     show in a phase and kept, hidden and empty, until the phase ends; the
 	     runtime places it at the pointer, and a remaining time is a
 	     nui-countdown run, so no Python runs per frame. The block is
-	     components/item-tip.rcss's; the board is nui-board--tooltip. -->
+	     components/item-tip.rcss's, its modern sizes skill-tooltip.rcss's;
+	     the board is nui-board--tooltip. -->
 	<title>skill-tooltip</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="../../components/item-tip.rcss"/>
+	<link type="text/rcss" href="skill-tooltip.rcss"/>
 </head>
 <body template="nui" id="skill-tooltip" class="nui-board nui-board--tooltip nui-fx nui-tip" data-model="skill_tooltip"
       data-style---tip-min-w="min_w + 'dp'">

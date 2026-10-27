@@ -19,21 +19,29 @@
 </head>
 <body template="nui" class="nui-overlay nui-below-legacy-ui minimap" data-model="minimap">
 	<div id="minimap" class="minimap__window" data-if="shown &amp;&amp; open">
+		<!-- The modern bezel: a steel ring with ticks around the map and a red
+		     north mark on it (classic draws the legacy frame art instead). -->
+		<div class="minimap__steel nui-fx"></div>
+		<div class="minimap__ticks"></div>
 		<div class="minimap__base nui-board--disc"></div>
 		<nui-view id="minimap-view" name="minimap" class="minimap__view nui-fx nui-interactive"/>
 		<div id="minimap-frame" class="minimap__frame nui-board nui-board--ring nui-fx"></div>
+		<div class="minimap__north"></div>
 		<span id="minimap-atlas" class="minimap__button minimap__button--atlas nui-interactive nui-has-tooltip"
 			data-event-mousedown="atlas(ev.button)"><span class="minimap__glyph">M</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="has_atlas">@game.MINIMAP_SHOW_AREAMAP</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="!has_atlas">@game.MINIMAP_CAN_NOT_SHOW_AREAMAP</span></span>
 		<span id="minimap-hide" class="minimap__button minimap__button--hide nui-interactive nui-has-tooltip"
-			data-event-mousedown="hide_map(ev.button)"><span class="minimap__glyph">&#215;</span><span
+			data-event-mousedown="hide_map(ev.button)"><span class="nui-glyph nui-glyph--close minimap__icon"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip">@game.UI_CLOSE</span></span>
 		<span id="minimap-scale-down" class="minimap__button minimap__button--down nui-interactive nui-has-tooltip"
-			data-event-mousedown="scale_down(ev.button)"><span class="minimap__glyph">&#8722;</span><span
+			data-event-mousedown="scale_down(ev.button)"><span class="nui-glyph nui-glyph--minus minimap__icon"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip">@game.MINIMAP_DEC_SCALE</span></span>
 		<span id="minimap-scale-up" class="minimap__button minimap__button--up nui-interactive nui-has-tooltip"
-			data-event-mousedown="scale_up(ev.button)"><span class="minimap__glyph">+</span><span
+			data-event-mousedown="scale_up(ev.button)"><span class="nui-glyph nui-glyph--plus minimap__icon"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip">@game.MINIMAP_INC_SCALE</span></span>
 		<div id="minimap-server" class="minimap__line minimap__line--server" data-if="server_info != ''"><span
 			class="minimap__text">{{ server_info }}</span></div>

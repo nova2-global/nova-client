@@ -17,15 +17,33 @@
 </head>
 <body template="nui" class="nui-overlay nui-below-legacy-ui target" data-model="target">
 	<div class="target__wrap">
-		<div id="target-board" class="target-board nui-board nui-fx nui-interactive" data-class-target-board--hp="show_hp"
+		<div id="target-board" class="target-board nui-board nui-board--tooltip nui-fx nui-interactive" data-class-target-board--hp="show_hp" data-class-target-board--level="level > 0"
 			data-class-target-board--buttons="size(buttons) > 0">
 			<div class="target-board__head">
+				<!-- The modern head: a monster's level in a badge, its name with
+				     its grade, its HP in percent; the HP bar below the head.
+				     Classic shows legacy's whole name (level and grade in front)
+				     and the legacy gauge beside it instead. -->
+				<span id="target-level" class="target-board__badge" data-if="level > 0"><span
+					class="target-board__level">{{ level }}</span></span>
 				<span id="target-name" class="target-board__name">{{ name }}</span>
+				<span id="target-title" class="target-board__title">{{ title }}</span>
+				<span id="target-percent" class="target-board__pct" data-if="show_hp">{{ hp * 100 | format(0) }}%</span>
 				<progress id="target-hp" class="nui-gauge nui-gauge--red target-board__hp" direction="right"
 					data-if="show_hp" data-attr-value="hp"/>
 			</div>
 			<button id="target-close" class="nui-button nui-button--ghost nui-button--icon nui-anim target-board__close"
-				data-event-mousedown="close(ev.button)">&#215;</button>
+				data-event-mousedown="close(ev.button)"><span class="nui-glyph nui-glyph--close target-board__glyph"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			<!-- The HP bar: the gauge with its damage chip, a sheen that crosses
+			     the fill once every 4s, the empty part drawn over the sheen, and
+			     ticks at every tenth. -->
+			<div id="target-bar" class="target-board__bar" data-if="show_hp">
+				<progress id="target-hp-bar" class="nui-gauge nui-gauge--red target-board__gauge" direction="right" data-attr-value="hp"/>
+				<nui-blink class="target-board__sheen-clock" period="4"><span class="target-board__sheen nui-anim"></span></nui-blink>
+				<progress class="target-board__cover" direction="left" data-attr-value="1 - hp"/>
+				<span class="target-board__ticks"></span>
+			</div>
 			<!-- The repeated slot reads only its index and top-level keys: RmlUi
 			     updates a repeated element's own views with the data-for that
 			     removes it, so when the list shrinks they could read an entry

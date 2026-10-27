@@ -29,6 +29,8 @@
 				data-event-mouseover="icon_over(icon.key)">
 				<img class="affect__image" data-if="icon.image != ''" data-attr-src="icon.image"/>
 				<img class="affect__image affect__image--nearest" data-if="icon.image != ''" data-attr-src="icon.image + '#nui-nearest'"/>
+				<span class="affect__ring nui-fx" data-class-affect__ring--clocked="icon.clocked &amp;&amp; icon.end > 0"></span>
+				<span class="affect__clock" data-if="icon.clocked &amp;&amp; icon.end > 0"><nui-countdown format="hms" data-attr-end="icon.end"/></span>
 				<span class="nui-tooltip nui-tooltip--wrap nui-anim affect__tip"
 					data-if="icon.title != '' || icon.line != '' || icon.end > 0"
 					data-class-affect__tip--label="icon.label" data-class-is-open="icon.key == open_key">

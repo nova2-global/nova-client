@@ -1,8 +1,12 @@
-/* The target board's modern look: a panel at the top center, 10dp from the
-   top, with the name, a monster's HP gauge and a close button in its head
-   and the relation buttons in a row below. Classic (the legacy thin board,
-   the outlined name, the legacy gauge and the small thin buttons 68dp
-   apart): skins/classic/windows/target.rcss. */
+/* The target board's modern look (the mockup's Target board): the shared
+   overlay board (nui-board--tooltip, the tooltips' translucent black, dark
+   in both palettes) at the top center, 10dp from the top. A monster's head
+   holds its level in a ring, its name with its grade, its HP in percent and
+   the close button, over a 12dp HP bar with the damage chip, a sheen and
+   ticks; another character's board holds its name and the relation buttons
+   in a row below. Classic (the legacy thin board, the outlined whole name,
+   the legacy gauge and the small thin buttons 68dp apart):
+   skins/classic/windows/target.rcss. */
 
 body.target
 {
@@ -33,6 +37,12 @@ body.target
 	min-width: 220dp;
 	padding: var(--space-2) var(--space-6) var(--space-2) var(--space-3);
 }
+/* A monster with its HP: the mockup's 320dp board, the head and the bar. */
+.target-board--hp
+{
+	width: 320dp;
+	padding: 8dp 8dp 10dp 10dp;
+}
 .target-board__head
 {
 	display: flex;
@@ -41,24 +51,65 @@ body.target
 	justify-content: center;
 	height: 20dp;
 }
-.target-board--hp .target-board__head
+.target-board--hp .target-board__head, .target-board--level .target-board__head
 {
 	justify-content: flex-start;
+	height: 30dp;
 }
+/* Legacy's whole name is classic's; the modern head shows the title. */
 .target-board__name
 {
-	color: var(--text);
-	font-size: var(--font-md);
+	display: none;
+}
+.target-board__title
+{
+	color: var(--text-inverse);
+	font-size: 13dp;
 	font-weight: bold;
 	white-space: nowrap;
+	font-effect: shadow(0dp 1dp var(--text-outline));
 }
-.target-board--hp .target-board__name
+.target-board--hp .target-board__title
 {
 	flex: 1 1 auto;
-	margin-right: var(--space-3);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-right: var(--space-2);
 }
-.target-board__hp
+/* The level badge: a ring in the danger color holding the level. */
+.target-board__badge
 {
+	display: block;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 30dp;
+	height: 30dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--danger);
+	border-radius: 9999dp;
+	background-color: var(--slot-disabled);
+	text-align: center;
+}
+.target-board__level
+{
+	color: var(--tip-negative);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 28dp;
+}
+.target-board__pct
+{
+	flex: 0 0 auto;
+	margin-right: 28dp;
+	color: var(--tip-normal);
+	font-size: var(--font-sm);
+	font-weight: bold;
+}
+/* The legacy gauge in the head is classic's; the modern bar is below. */
+progress.target-board__hp
+{
+	display: none;
 	width: 130dp;
 	flex: 0 0 auto;
 }
@@ -72,6 +123,110 @@ body.target
 	line-height: 22dp;
 	font-size: var(--font-md);
 }
+.target-board--hp .target-board__close
+{
+	top: 11dp;
+}
+.target-board__glyph
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	transform: scale(0.8);
+	--glyph-ink: var(--tip-normal);
+}
+.target-board__close:hover .target-board__glyph
+{
+	--glyph-ink: var(--text-inverse);
+}
+
+/* The HP bar: 12dp, full width under the head. */
+.target-board__bar
+{
+	display: block;
+	position: relative;
+	height: 12dp;
+	margin-top: 7dp;
+}
+progress.target-board__gauge, progress.target-board__cover, .target-board__sheen-clock, .target-board__ticks
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+/* The track stays dark in both palettes, on the dark overlay board. */
+progress.target-board__gauge
+{
+	background-color: var(--cooldown-shade);
+}
+/* The damage chip: a light cap on the fill's leading edge. */
+progress.target-board__gauge fill
+{
+	border-right-width: 2dp;
+	border-color: var(--chat-info);
+}
+progress.target-board__cover
+{
+	background-color: transparent;
+}
+progress.target-board__cover fill
+{
+	border-radius: 9999dp;
+	background-color: var(--scene);
+}
+/* The sheen crosses the bar once every 4s (the taskbar's HP sheen): by
+   transform only, scaled to nothing at rest and at its ends; its gradient
+   exists only while it moves. */
+.target-board__sheen-clock
+{
+	pointer-events: none;
+}
+.target-board__sheen
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 2dp;
+	bottom: 2dp;
+	width: 100%;
+	transform-origin: 10% 50%;
+	transform: scaleX(0);
+	pointer-events: none;
+}
+nui-blink.nui-blink-off .target-board__sheen
+{
+	decorator: linear-gradient(90deg, var(--sheen-clear) 0%, var(--sheen) 10%, var(--sheen-clear) 20%, var(--sheen-clear) 100%);
+}
+nui-blink.nui-blink-off .target-board__sheen.nui-anim
+{
+	animation: 1.7s cubic-in-out target-sheen;
+}
+/* Reduced motion: no sheen, and no clock toggling its gradient. */
+@media (theme: reduced-motion)
+{
+	.target-board__sheen-clock
+	{
+		display: none;
+	}
+}
+@keyframes target-sheen
+{
+	0% { transform: translateX(0%) scaleX(0); }
+	12% { transform: translateX(8%) scaleX(1); }
+	88% { transform: translateX(72%) scaleX(1); }
+	100% { transform: translateX(80%) scaleX(0); }
+}
+/* Ticks at every tenth (nine; 30dp apart on the 300dp bar). */
+.target-board__ticks
+{
+	width: 90%;
+	decorator: repeating-linear-gradient(90deg, transparent 0%, transparent 10.4%, var(--cooldown-shade) 10.4%, var(--cooldown-shade) 11.11%);
+	pointer-events: none;
+}
+
 .target-board__buttons
 {
 	display: flex;

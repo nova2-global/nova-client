@@ -109,7 +109,7 @@ PAGES = [
 ]
 STAND_IN_NAME_RE = re.compile(r"[a-z][a-z0-9_.-]*")
 SKINS = os.path.join("assets", "nui", "nui", "skins")
-CASE_KEYS = {"$comment", "page", "themes", "scales", "fixture", "roots", "time", "variant", "name", "feeds", "views", "anchors",
+CASE_KEYS = {"$comment", "page", "themes", "except", "scales", "fixture", "roots", "time", "variant", "name", "feeds", "views", "anchors",
              "colors", "backdrop", "effects", "reduced_motion", "switch_from", "pointer", "hover"}
 CASE_NAME_RE = re.compile(r"[a-z][a-z0-9-]*")
 COLOR_SLOT_VALUE = r"[a-z][a-z0-9-]*=(#[0-9a-fA-F]{6}|[0-9]{1,3})"
@@ -229,12 +229,17 @@ def golden_themes(root=None):
     return themes
 
 
-def case_themes(themes, listed, where):
+def case_themes(themes, listed, where, excluded=None):
     """The short names a case's `themes` value stands for: "all" (every
-    shipped theme) or a list of short names."""
+    shipped theme, less the short names `excluded` lists: a case that covers
+    every theme but one skin, whose own case has another frame) or a list of
+    short names."""
     names = [theme["name"] for theme in themes]
+    excluded = tuple(excluded or ())
+    if any(name not in names for name in excluded) or (excluded and listed != "all"):
+        raise ValueError("%s: except lists short names among %s, with themes \"all\"" % (where, ", ".join(names)))
     if listed == "all":
-        return tuple(theme["name"] for theme in themes if not theme["experimental"])
+        return tuple(theme["name"] for theme in themes if not theme["experimental"] and theme["name"] not in excluded)
     listed = tuple(listed) if isinstance(listed, (list, tuple)) else ()
     if not listed or any(name not in names for name in listed):
         raise ValueError("%s: themes are \"all\" or among %s" % (where, ", ".join(names)))
@@ -270,7 +275,7 @@ def window_pages(root=None, themes=None):
                 raise ValueError("%s: page must be the folder name %r" % (where, own_folder))
             if own_folder is None and (not isinstance(folder, str) or not os.path.isfile(os.path.join(root, WINDOWS, folder, folder + ".rml"))):
                 raise ValueError("%s: a skin's case names a window folder of assets/nui/nui/windows" % where)
-            listed = case_themes(themes, case.get("themes"), where)
+            listed = case_themes(themes, case.get("themes"), where, case.get("except"))
             scales = [tuple(row) for row in case.get("scales", ())]
             if not scales or any(len(row) != 3 or not all(isinstance(item, str) for item in row) for row in scales):
                 raise ValueError("%s: scales are [percent, --scale, --size] rows of strings" % where)

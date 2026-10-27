@@ -92,3 +92,15 @@ body.skin-classic.nui-tip
 	margin-top: 2dp;
 }
 /* --- end of the tooltip lines --- */
+
+/* The modern sizes (skill-tooltip.rcss) stay modern's: legacy's font size
+   and line height, the name's too. */
+.skin-classic .nui-tip__body
+{
+	font-size: var(--font-sm);
+}
+.skin-classic .nui-tip__body > .nui-tip__slot:first-child .nui-tip__line
+{
+	font-size: var(--font-sm);
+	line-height: 17dp;
+}

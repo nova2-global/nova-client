@@ -15,27 +15,27 @@
 </head>
 <body template="nui" class="nui-overlay nui-below-legacy-ui game-buttons" data-model="game_buttons">
 	<div id="game-help" class="game-button game-button--help nui-interactive" data-if="show_help">
-		<button class="game-button__plus" data-event-mousedown="press('HELP', ev.button)">+</button>
+		<button class="game-button__plus nui-fx" data-event-mousedown="press('HELP', ev.button)"><span class="nui-glyph nui-glyph--plus game-button__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<span class="game-button__label"><span class="game-button__text">@ui.GAME_HELP</span></span>
 	</div>
 	<div id="game-status" class="game-button game-button--status nui-interactive" data-if="show_status">
-		<button class="game-button__plus" data-event-mousedown="press('STATUS', ev.button)">+</button>
+		<button class="game-button__plus nui-fx" data-event-mousedown="press('STATUS', ev.button)"><span class="nui-glyph nui-glyph--plus game-button__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<span class="game-button__label"><span class="game-button__text">@ui.GAME_STAT_UP</span></span>
 	</div>
 	<div id="game-quest" class="game-button game-button--quest nui-interactive" data-if="show_quest">
-		<button class="game-button__plus" data-event-mousedown="press('QUEST', ev.button)">+</button>
+		<button class="game-button__plus nui-fx" data-event-mousedown="press('QUEST', ev.button)"><span class="nui-glyph nui-glyph--plus game-button__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<span class="game-button__label"><span class="game-button__text">@ui.GAME_QUEST</span></span>
 	</div>
 	<div id="game-exit-observer" class="game-button game-button--observer nui-interactive" data-if="show_observer">
-		<button class="game-button__plus" data-event-mousedown="press('EXIT_OBSERVER', ev.button)">+</button>
+		<button class="game-button__plus nui-fx" data-event-mousedown="press('EXIT_OBSERVER', ev.button)"><span class="nui-glyph nui-glyph--plus game-button__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<span class="game-button__label"><span class="game-button__text">@ui.GAME_EXIT_OBSERVER</span></span>
 	</div>
 	<div id="game-build" class="game-button game-button--build nui-interactive" data-if="show_build">
-		<button class="game-button__plus" data-event-mousedown="press('BUILD', ev.button)">+</button>
+		<button class="game-button__plus nui-fx" data-event-mousedown="press('BUILD', ev.button)"><span class="nui-glyph nui-glyph--plus game-button__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<span class="game-button__label"><span class="game-button__text">@ui.GUILD_BUILDING_TITLE</span></span>
 	</div>
 	<div id="game-skill" class="game-button game-button--skill nui-interactive" data-if="show_skill">
-		<button class="game-button__plus" data-event-mousedown="press('SKILL', ev.button)">+</button>
+		<button class="game-button__plus nui-fx" data-event-mousedown="press('SKILL', ev.button)"><span class="nui-glyph nui-glyph--plus game-button__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<span class="game-button__label"><span class="game-button__text">@ui.GAME_SKILL_UP</span></span>
 	</div>
 </body>

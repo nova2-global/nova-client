@@ -78,7 +78,12 @@ class AtlasWindow(ui.ScriptWindow):
 		ui.ScriptWindow.__del__(self)
 
 	def SetMapName(self, mapName):
-		self.board.SetTitleName(localeInfo.MINIMAP_ZONE_NAME_DICT[mapName])
+		# A map the dict has no name for keeps the title it has, as OLD's
+		# try/except did, so that MiniMap.SetMapName still shows or hides
+		# the minimap.
+		mapTitle = localeInfo.MINIMAP_ZONE_NAME_DICT.get(mapName)
+		if mapTitle is not None:
+			self.board.SetTitleName(mapTitle)
 
 	def LoadWindow(self):
 		try:

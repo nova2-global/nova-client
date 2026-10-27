@@ -336,6 +336,28 @@ def _RebuildDerivedData():
 		'metin2_map_skipia_dungeon_02': 		MAP_SKIPIA_DUNGEON_02,
 		'metin2_map_skipia_dungeon_boss': 		MAP_SKIPIA_DUNGEON_BOSS,
 		'metin2_map_skipia_dungeon_boss2': 		MAP_SKIPIA_DUNGEON_BOSS_2,
+		# NOVA-90: the guild war, kingdom battle and castle maps the server
+		# runs, by their atlasinfo.txt names, with the names OLD's locales
+		# have for them (OLD's dict left them out).
+		'metin2_map_t1': 						MAP_T1,
+		'metin2_map_t2': 						MAP_T2,
+		'metin2_map_t3': 						MAP_T3,
+		'metin2_map_t4': 						MAP_T4,
+		'season1/metin2_map_sungzi': 			MAP_SUNGZI,
+		'season1/metin2_map_sungzi_flame_hill_01': MAP_SUNGZI_FLAME_HILL_01,
+		'season1/metin2_map_sungzi_flame_hill_02': MAP_SUNGZI_FLAME_HILL_02,
+		'season1/metin2_map_sungzi_flame_hill_03': MAP_SUNGZI_FLAME_HILL_03,
+		'season1/metin2_map_sungzi_snow': 		MAP_SUNGZI_SNOW,
+		'season1/metin2_map_sungzi_snow_pass01': MAP_SUNGZI_SNOW_PASS01,
+		'season1/metin2_map_sungzi_snow_pass02': MAP_SUNGZI_SNOW_PASS02,
+		'season1/metin2_map_sungzi_snow_pass03': MAP_SUNGZI_SNOW_PASS03,
+		'season1/metin2_map_sungzi_desert_01': 	MAP_SUNGZI_DESERT_01,
+		'season1/metin2_map_sungzi_desert_hill_01': MAP_SUNGZI_DESERT_HILL_01,
+		'season1/metin2_map_sungzi_desert_hill_02': MAP_SUNGZI_DESERT_HILL_02,
+		'season1/metin2_map_sungzi_desert_hill_03': MAP_SUNGZI_DESERT_HILL_03,
+		'season2/metin2_map_empirewar01': 		MAP_EMPIREWAR01,
+		'season2/metin2_map_empirewar02': 		MAP_EMPIREWAR02,
+		'season2/metin2_map_empirewar03': 		MAP_EMPIREWAR03,
 	}
 	# MR-11: -- END OF -- Complete map name list
 

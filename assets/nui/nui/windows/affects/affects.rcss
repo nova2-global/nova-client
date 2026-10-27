@@ -1,8 +1,8 @@
-/* The affect icons' modern look: a row of the legacy icons from the top left,
-   25dp apart, each at 70% of its art (the dragon soul decks at 100%), with
-   a modern tooltip that opens below the icon. Classic (the legacy thin board
-   tooltip and the outlined name under a skill affect):
-   skins/classic/windows/affects.rcss. */
+/* The affect icons' modern look (the mockup's Affects board): a row of the
+   legacy icons from the top left, each framed, with the time left under a
+   timed one and a modern tooltip that opens below. Classic (the legacy
+   step and scale, the legacy thin board tooltip and the outlined name under
+   a skill affect): skins/classic/windows/affects.rcss. */
 
 body.affects
 {
@@ -22,36 +22,88 @@ body.affects
 {
 	display: block;
 }
-/* The tooltip host: one cell of the row, the legacy IMAGE_STEP wide. */
+/* The tooltip host: one cell of the row, 32dp apart (legacy's IMAGE_STEP
+   is 25; classic keeps it), framed: the icon at 24dp inside a gold ring
+   with rounded corners and a soft shadow, the ring green on an affect that
+   counts down, with its time left in a pill under it (a nui-countdown,
+   which formats once a second while it shows). */
 .affect
 {
 	display: block;
 	position: relative;
-	width: 25dp;
-	height: 26dp;
+	width: 32dp;
+	height: 28dp;
 }
 .affect__image
 {
 	display: block;
+	width: 24dp;
+	height: 24dp;
+	margin: 2dp;
 	pointer-events: none;
 }
-/* The legacy SetScale(0.7, 0.7) of a 32dp icon. */
 .affect--small .affect__image
 {
-	width: 22.4dp;
-	height: 22.4dp;
+	width: 24dp;
+	height: 24dp;
 }
 /* The nearest-sampled copy of the icon: a skin may show it instead. */
 .affect__image--nearest
 {
 	display: none;
 }
-/* Below the icon, at its left edge; as wide as the text, up to 320dp. */
+/* The frame over the icon's edge: 2dp wide, its corners covering the
+   square icon's. */
+.affect__ring
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 28dp;
+	height: 28dp;
+	box-sizing: border-box;
+	border-width: 2dp;
+	border-color: var(--tip-socket-gold);
+	border-radius: 7dp;
+	pointer-events: none;
+}
+.affect__ring--clocked
+{
+	border-color: var(--tip-positive);
+}
+.affect__ring.nui-fx
+{
+	box-shadow: 0 0 0 1dp var(--cooldown-shade), 0 2dp 6dp var(--cooldown-shade);
+}
+.affect__clock
+{
+	display: block;
+	position: absolute;
+	left: -6dp;
+	top: 31dp;
+	width: 40dp;
+	text-align: center;
+	pointer-events: none;
+}
+.affect__clock nui-countdown
+{
+	padding: 0 3dp;
+	border-radius: 4dp;
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: 9dp;
+	font-weight: bold;
+	line-height: 13dp;
+	white-space: nowrap;
+}
+/* Below the icon and its time, at its left edge; as wide as the text, up
+   to 320dp. */
 .affect__tip
 {
 	top: 100%;
 	bottom: auto;
-	margin-top: var(--space-1);
+	margin-top: 20dp;
 	margin-bottom: 0;
 	width: auto;
 	max-width: 320dp;

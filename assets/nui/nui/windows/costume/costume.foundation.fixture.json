@@ -49,6 +49,7 @@
 		"attach_right": true,
 		"wear_on": [
 			1
-		]
+		],
+		"figure": "/nui/figures/costume-male.png"
 	}
 }

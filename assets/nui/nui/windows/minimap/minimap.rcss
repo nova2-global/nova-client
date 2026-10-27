@@ -1,10 +1,11 @@
-/* The minimap's modern look: a round map at the top right, 12dp from the
-   edges: the view (128dp) on a dark disc inside a ring, the round icon
-   buttons on the ring (the atlas top left, close top right, zoom out and in
-   at the bottom right, as the legacy frame places them), and the server and
-   observer lines under it on small pills, so they read over the world in
-   both palettes. The ring is a border with a radius and no clip: it covers
-   the edge of the legacy terrain's round filter (128dp across). Closed, a
+/* The minimap's modern look: a round map at the top right: the view (128dp)
+   on a dark disc inside a ring, in a steel bezel with ticks and a north
+   mark, the round dark buttons on the bezel (the atlas top left, close top
+   right, zoom out and in at the bottom right, as the legacy frame places
+   them), and the server and observer lines under it on pills, so they read
+   over the world in both palettes. The ring is a border with a radius and
+   no clip: it covers the edge of the legacy terrain's round filter (128dp
+   across). Closed, a
    36dp button with the legacy map thumbnail. Classic (the legacy frame art
    at W - 136, 0 with its buttons at the legacy places):
    skins/classic/windows/minimap.rcss. */
@@ -18,18 +19,47 @@ body.minimap
 .minimap__window
 {
 	position: absolute;
-	right: 12dp;
-	top: 12dp;
+	right: 17dp;
+	top: 17dp;
 	width: 136dp;
 	height: 136dp;
 }
+/* The steel ring: a conic gradient of light and dark steel, the same in
+   both palettes, on a disc 10dp wider than the map's, so a 5dp band of it
+   shows around the bezel; its ticks every 15 degrees on that band. */
+.minimap__steel, .minimap__ticks
+{
+	display: block;
+	position: absolute;
+	left: -5dp;
+	top: -5dp;
+	width: 146dp;
+	height: 146dp;
+	border-radius: 9999dp;
+	pointer-events: none;
+}
+.minimap__steel
+{
+	decorator: conic-gradient(from 210deg, var(--party-unlink) 0%, var(--chat-talking) 15%, var(--party-unlink) 32%, var(--tip-socket-silver) 50%, var(--party-unlink) 68%, var(--tip-normal) 85%, var(--party-unlink) 100%);
+}
+.minimap__steel.nui-fx
+{
+	box-shadow: 0 2dp 6dp var(--cooldown-shade);
+}
+.minimap__ticks
+{
+	decorator: repeating-conic-gradient(var(--cooldown-shade) 0deg, var(--cooldown-shade) 1.2deg, transparent 1.2deg, transparent 15deg);
+}
+/* The bezel: the disc and the ring board 2dp inside the window, so the
+   ring's 5dp border lies over the map's edge and the steel starts 2dp past
+   the map. */
 .minimap__base
 {
 	position: absolute;
-	left: 0;
-	top: 0;
-	width: 136dp;
-	height: 136dp;
+	left: 2dp;
+	top: 2dp;
+	width: 132dp;
+	height: 132dp;
 }
 .minimap__view
 {
@@ -42,50 +72,77 @@ body.minimap
 .minimap__frame
 {
 	position: absolute;
-	left: 0;
-	top: 0;
-	width: 136dp;
-	height: 136dp;
+	left: 2dp;
+	top: 2dp;
+	width: 132dp;
+	height: 132dp;
 	box-sizing: border-box;
 }
+/* North: a small red triangle on the ring's top. */
+.minimap__north
+{
+	display: block;
+	position: absolute;
+	left: 64dp;
+	top: -6dp;
+	width: 0;
+	height: 0;
+	border-width: 0 4dp 7dp 4dp;
+	border-color: transparent transparent var(--danger) transparent;
+	pointer-events: none;
+}
 
-/* The buttons: 22dp discs on the ring; the glyph takes no pointer, so the
-   button is the hover and press target. */
+/* The buttons: 24dp dark discs with a steel rim on the ring, the same in
+   both palettes; the glyph takes no pointer, so the button is the hover and
+   press target. */
 .minimap__button
 {
 	display: block;
 	position: absolute;
-	width: 22dp;
-	height: 22dp;
+	width: 24dp;
+	height: 24dp;
 	box-sizing: border-box;
 	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: 11dp;
-	background-color: var(--surface-raised);
-	color: var(--text);
+	border-color: var(--tip-socket-silver);
+	border-radius: 12dp;
+	background-color: var(--scene);
+	decorator: radial-gradient(circle at 50% 35%, var(--scene-band) 0%, var(--scene) 100%);
+	color: var(--text-inverse);
 	text-align: center;
 }
 .minimap__button:hover
 {
 	border-color: var(--accent);
-	background-color: var(--surface-hover);
 }
 .minimap__button:active
 {
-	background-color: var(--surface-sunken);
+	background-color: var(--scene);
+	decorator: none;
 }
 .minimap__glyph
 {
 	display: block;
 	font-size: var(--font-md);
 	font-weight: bold;
-	line-height: 20dp;
+	line-height: 22dp;
 	pointer-events: none;
+}
+.minimap__icon
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	transform: scale(0.8);
+	--glyph-ink: var(--text-inverse);
+}
+.minimap__button:hover .minimap__icon
+{
+	--glyph-ink: var(--accent-hover);
 }
 .minimap__button--atlas
 {
-	left: 9dp;
-	top: 9dp;
+	left: 8dp;
+	top: 8dp;
 }
 .minimap__button--atlas .minimap__glyph
 {
@@ -93,18 +150,18 @@ body.minimap
 }
 .minimap__button--hide
 {
-	left: 105dp;
-	top: 9dp;
+	left: 104dp;
+	top: 8dp;
 }
 .minimap__button--down
 {
-	left: 112dp;
-	top: 92dp;
+	left: 115dp;
+	top: 91dp;
 }
 .minimap__button--up
 {
-	left: 94dp;
-	top: 112dp;
+	left: 95dp;
+	top: 113dp;
 }
 
 /* The hints open left of their button, vertically centered, inside the
@@ -121,7 +178,7 @@ body.minimap
 	margin-left: -320dp;
 }
 
-/* The server and observer lines: centered under the map, each a pill. */
+/* The server and observer lines: centered under the ring, each a pill. */
 .minimap__line
 {
 	display: flex;
@@ -134,25 +191,29 @@ body.minimap
 }
 .minimap__line--server
 {
-	top: 142dp;
+	top: 151dp;
 }
 .minimap__line--observers
 {
-	top: 164dp;
+	top: 175dp;
 }
 .minimap__text
 {
 	display: block;
-	padding: 1dp var(--space-2);
-	border-radius: var(--radius-md);
+	padding: 1dp 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9999dp;
 	background-color: var(--surface);
 	color: var(--text);
 	font-size: var(--font-xs);
-	line-height: 16dp;
+	font-weight: bold;
+	line-height: 17dp;
 	white-space: nowrap;
 }
 
-/* Closed: the show button alone, where the map's top right corner was. */
+/* Closed: the show button alone, where the map's top right corner was: a
+   dark disc like the map's buttons. */
 .minimap__closed
 {
 	position: absolute;
@@ -171,9 +232,10 @@ body.minimap
 	height: 36dp;
 	box-sizing: border-box;
 	border-width: 1dp;
-	border-color: var(--border);
+	border-color: var(--tip-socket-silver);
 	border-radius: 9999dp;
-	background-color: var(--surface-raised);
+	background-color: var(--scene);
+	decorator: radial-gradient(circle at 50% 35%, var(--scene-band) 0%, var(--scene) 100%);
 }
 /* The open button: a round chip with the plus glyph (components/glyph.rcss);
    classic draws the legacy open art (its overlay). */
@@ -182,17 +244,17 @@ body.minimap
 	position: absolute;
 	left: 9dp;
 	top: 9dp;
+	--glyph-ink: var(--text-inverse);
 }
 .minimap__show:hover .minimap__show-glyph
 {
-	--glyph-ink: var(--accent);
+	--glyph-ink: var(--accent-hover);
 }
 .minimap__show:hover
 {
 	border-color: var(--accent);
-	background-color: var(--surface-hover);
 }
 .minimap__show:active
 {
-	background-color: var(--surface-sunken);
+	decorator: none;
 }

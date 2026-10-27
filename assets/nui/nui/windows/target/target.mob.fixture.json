@@ -1,6 +1,8 @@
 {
 	"target": {
 		"name": "Lv.23 (Boss) Wild Dog Leader",
+		"title": "(Boss) Wild Dog Leader",
+		"level": 23,
 		"hp": 0.62,
 		"show_hp": true,
 		"buttons": [],

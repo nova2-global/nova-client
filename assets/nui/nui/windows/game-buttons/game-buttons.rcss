@@ -37,6 +37,7 @@ body.game-buttons
 .game-button__plus
 {
 	display: block;
+	position: relative;
 	box-sizing: border-box;
 	width: 36dp;
 	height: 36dp;
@@ -45,20 +46,31 @@ body.game-buttons
 	border-color: var(--accent-hover);
 	border-radius: 18dp;
 	background-color: var(--accent);
-	color: var(--accent-text);
-	font-size: var(--font-xl);
-	font-weight: bold;
-	line-height: 30dp;
-	text-align: center;
+	decorator: radial-gradient(circle at 50% 30%, var(--accent-hover) 0%, var(--accent) 70%, var(--accent) 100%);
+}
+.game-button__plus.nui-fx
+{
+	box-shadow: 0 0 10dp var(--accent-glow);
 }
 .game-button__plus:hover
 {
 	background-color: var(--accent-hover);
+	decorator: none;
 }
 .game-button__plus:active
 {
 	background-color: var(--accent);
 	border-color: var(--accent);
+	decorator: none;
+}
+/* The plus, in the accent's text color, centered. */
+.game-button__glyph
+{
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+	transform: scale(1.25);
+	--glyph-ink: var(--accent-text);
 }
 .game-button__label
 {
@@ -79,8 +91,10 @@ body.game-buttons
 }
 .game-button__text
 {
-	padding: 1dp 6dp;
-	border-radius: var(--radius-sm);
+	padding: 2dp 8dp;
+	border-width: 1dp;
+	border-color: var(--tip-divider);
+	border-radius: 6dp;
 	background-color: var(--tooltip-bg);
 	color: var(--text-inverse);
 	font-size: var(--font-sm);

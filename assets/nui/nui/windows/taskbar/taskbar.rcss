@@ -1,12 +1,18 @@
-/* The taskbar's modern layout: one bar along the bottom edge, the gauges and
-   the EXP orbs at its left, the mouse-button modes and the quickslots in its
-   middle, the window buttons at its right; the mode menus and the skill
-   picker above the mode buttons. The classic layout is in
-   skins/classic/windows/taskbar.rcss. Positions are anchored as legacy
-   anchors them: the middle group from the screen's center, the window
-   buttons from its right edge. The buttons are code-drawn chips with glyphs
-   (components/glyph.rcss); the legacy button art is classic's, in its
-   overlay. */
+/* The taskbar's modern layout (the mockup's Taskbar board): one bar along
+   the bottom edge; at its left the mall coin, the HP, SP and stamina gauges
+   (the HP's damage chip, recovery tail, sheen and ticks, the SP's flowing
+   stripes, the stamina's segments, names and values) and the four liquid
+   EXP orbs in a well; in its middle, in a well of their own, the
+   mouse-button modes and the quickslots (key and grade pills, the cooldown's
+   seconds, the active slot's aura); the window buttons with their hotkeys
+   at its right; the mode menus and the skill picker above the mode
+   buttons. The classic layout is in skins/classic/windows/taskbar.rcss.
+   Positions are anchored as legacy anchors them: the middle group from the
+   screen's center, the window buttons from its right edge. The buttons are
+   code-drawn with glyphs (components/glyph.rcss); the legacy button art is
+   classic's, in its overlay. Motion: the SP flow runs endlessly by
+   transform; the aura only while a quickslot is active; the HP sheen and
+   the coin's glint are short runs a nui-blink clock starts. */
 
 body.taskbar
 {
@@ -34,43 +40,63 @@ body.taskbar
 
 /* --- Gauges, the mall button and the EXP orbs --------------------------------- */
 
+/* The left group fits the 264dp the narrow-screen steps leave it below
+   1250dp (the coin, 120dp vitals and the four orbs); from 1250dp up it takes
+   the mockup's room (164dp vitals and the EXP percent beside the orbs), at
+   the end of this sheet. */
 .taskbar-gauges
 {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 212dp;
+	width: 268dp;
 	height: 47dp;
 }
-/* The item mall button: a chip with the shop glyph, and a sheen that
-   sweeps across it once every 4s (a thin accent bar moved by transform; it
-   rests invisible, so reduced motion leaves the plain chip). Classic draws
-   the legacy coin animation in its frames part instead, and hides the
-   sheen's host, which stops its clock too. The sweep is a 0.72s animation
-   that the nui-blink clock starts at each of its off halves, so between
-   two sweeps nothing restyles: an endless animation on an always shown HUD
-   part set its properties (and rebuilt its quad for the opacity) on every
-   frame. */
+/* The item mall button: a gold coin with the shop glyph engraved in it, a
+   warm glow, and a glint that crosses it once every 4s (a light bar moved
+   by transform; it rests invisible, so reduced motion leaves the plain
+   coin). The coin's colors are the same in both palettes, as the mockup's.
+   Classic draws the legacy coin animation in its frames part instead, and
+   hides the glint's host, which stops its clock too. The glint is a 0.72s
+   animation that the nui-blink clock starts at each of its off halves, so
+   between two glints nothing restyles. */
 .taskbar-mall
 {
-	left: 4dp;
-	top: 4dp;
+	left: 5dp;
+	top: 6dp;
+	width: 36dp;
+	height: 36dp;
+	border-width: 1dp;
+	border-color: var(--tip-socket-gold);
+	border-radius: 9999dp;
+	background-color: var(--tip-price);
+	decorator: radial-gradient(circle at 50% 30%, var(--ember-hot) 0%, var(--tip-price) 45%, var(--tip-socket-gold) 100%);
 }
-/* A gold coin, in the warning color, also under the pointer. */
+.taskbar-mall.nui-fx
+{
+	box-shadow: 0 0 0 1dp var(--cooldown-shade), 0 0 12dp var(--ember-glow), inset 0 -3dp 5dp var(--cooldown-shade);
+}
+.taskbar-mall:hover, .taskbar-mall:active
+{
+	border-color: var(--ember-hot);
+	background-color: var(--tip-price);
+}
 .taskbar-mall .taskbar-glyph, .taskbar-mall:hover .taskbar-glyph
 {
-	--glyph-ink: var(--warning);
+	left: 9dp;
+	top: 9dp;
+	--glyph-ink: var(--scene);
 }
 .taskbar-mall__sheen
 {
 	display: block;
 	position: absolute;
-	left: 3dp;
-	top: 3dp;
-	width: 3dp;
-	height: 32dp;
-	border-radius: 1dp;
-	background-color: var(--accent);
+	left: 6dp;
+	top: 5dp;
+	width: 5dp;
+	height: 24dp;
+	border-radius: 3dp;
+	background-color: var(--ember-hot);
 	opacity: 0;
 	pointer-events: none;
 }
@@ -90,60 +116,55 @@ nui-blink.nui-blink-off .taskbar-mall__sheen.nui-anim
 }
 @keyframes taskbar-mall-sheen
 {
-	0% { transform: translateX(0dp); opacity: 0; }
-	22% { transform: translateX(4dp); opacity: 0.6; }
-	100% { transform: translateX(29dp); opacity: 0; }
+	0% { transform: translateX(0dp) rotate(20deg); opacity: 0; }
+	22% { transform: translateX(4dp) rotate(20deg); opacity: 0.8; }
+	100% { transform: translateX(20dp) rotate(20deg); opacity: 0; }
 }
+
+/* The vitals: HP, SP and stamina, stacked, each a gauge host 120dp wide. */
 .taskbar-gauge-host
 {
 	display: block;
 	position: absolute;
-	left: 52dp;
-	width: 150dp;
+	left: 48dp;
+	width: 120dp;
 	pointer-events: auto;
 }
 .taskbar-gauge-host--hp
 {
-	top: 8dp;
-	height: 10dp;
+	top: 7dp;
+	height: 13dp;
 }
 .taskbar-gauge-host--sp
 {
-	top: 21dp;
+	top: 23dp;
 	height: 10dp;
 }
 .taskbar-gauge-host--st
 {
-	top: 34dp;
-	height: 6dp;
+	top: 36dp;
+	height: 5dp;
 }
-progress.taskbar-gauge
+/* Every layer of a gauge fills its host. */
+progress.taskbar-gauge, progress.taskbar-recovery, progress.taskbar-cover,
+.taskbar-sheen-clock, .taskbar-flow-clip, .taskbar-ticks, .taskbar-segments
 {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 150dp;
-	height: 10dp;
+	width: 100%;
+	height: 100%;
 }
-progress.taskbar-gauge--st
-{
-	height: 6dp;
-}
-/* The recovery to come: a lighter bar under the gauge, as long as the HP or
-   SP the regeneration will reach. */
+/* The track and the recovery to come: a lighter tail under the gauge, as
+   long as the HP or SP the regeneration will reach. */
 progress.taskbar-recovery
 {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 150dp;
-	height: 10dp;
-	border-radius: 3dp;
+	border-radius: 9999dp;
 	background-color: var(--gauge-track);
 }
 progress.taskbar-recovery fill
 {
-	border-radius: 3dp;
+	border-radius: 9999dp;
 }
 progress.taskbar-recovery--hp fill
 {
@@ -158,42 +179,251 @@ progress.taskbar-gauge--hp.nui-gauge, progress.taskbar-gauge--sp.nui-gauge
 {
 	background-color: transparent;
 }
-
-.taskbar-exp
+/* The damage chip: a light cap that trails the HP fill's leading edge (the
+   fill's right border, outside the part the value sizes). */
+progress.taskbar-gauge--hp fill
+{
+	border-right-width: 2dp;
+	border-color: var(--chat-info);
+}
+/* The empty part of a gauge, drawn again over the moving light (the sheen,
+   the flow) from the right edge to the fill or the recovery tail, whichever
+   is longer, so the light shows on the fill alone. */
+progress.taskbar-cover
+{
+	background-color: transparent;
+}
+progress.taskbar-cover fill
+{
+	border-radius: 9999dp;
+	background-color: var(--gauge-track);
+}
+/* The HP sheen: a light band that crosses the bar once every 4s, scaled to
+   nothing at its ends and at rest (so reduced motion shows the plain bar),
+   by transform only; the band is as wide as the bar, its light in its first
+   fifth, so the move is a share of the bar's width. Its gradient exists only
+   in the blink's off half, while it moves. */
+.taskbar-sheen-clock
+{
+	display: block;
+	pointer-events: none;
+}
+.taskbar-sheen
 {
 	display: block;
 	position: absolute;
-	left: 212dp;
-	top: 9dp;
-	width: 56dp;
-	height: 30dp;
-	pointer-events: auto;
+	left: 0;
+	top: 2dp;
+	bottom: 2dp;
+	width: 100%;
+	transform-origin: 10% 50%;
+	transform: scaleX(0);
+	pointer-events: none;
 }
-progress.taskbar-orb
+nui-blink.nui-blink-off .taskbar-sheen
+{
+	decorator: linear-gradient(90deg, var(--sheen-clear) 0%, var(--sheen) 10%, var(--sheen-clear) 20%, var(--sheen-clear) 100%);
+}
+nui-blink.nui-blink-off .taskbar-sheen.nui-anim
+{
+	animation: 1.7s cubic-in-out taskbar-sheen;
+}
+/* Reduced motion: no sheen, and no clock toggling its gradient. */
+@media (theme: reduced-motion)
+{
+	.taskbar-sheen-clock
+	{
+		display: none;
+	}
+}
+@keyframes taskbar-sheen
+{
+	0% { transform: translateX(0%) scaleX(0); }
+	12% { transform: translateX(8%) scaleX(1); }
+	88% { transform: translateX(72%) scaleX(1); }
+	100% { transform: translateX(80%) scaleX(0); }
+}
+/* The SP flow: light stripes that drift right along the fill, endlessly, by
+   transform only (one stripe period, 13.24dp, per 1.2s), in a square clip
+   (a scissor, no stencil; forced, since RmlUi counts neither a transform
+   nor an absolute box as overflow). At rest (reduced motion) they stand
+   still. */
+.taskbar-flow-clip
+{
+	display: block;
+	overflow: hidden;
+	clip: always;
+	pointer-events: none;
+}
+.taskbar-flow
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: -14dp;
+	bottom: 0;
+	decorator: repeating-linear-gradient(115deg, var(--tip-divider) 0dp, var(--tip-divider) 4dp, transparent 4dp, transparent 12dp);
+	pointer-events: none;
+}
+.taskbar-flow.nui-anim
+{
+	animation: 1.2s linear-in-out infinite taskbar-flow;
+}
+@keyframes taskbar-flow
+{
+	from { transform: translateX(-13.24dp); }
+	to { transform: translateX(0dp); }
+}
+/* The HP ticks, every tenth of the bar (nine, none at the ends). */
+.taskbar-ticks
+{
+	display: block;
+	width: 90%;
+	decorator: repeating-linear-gradient(90deg, transparent 0%, transparent 10.4%, var(--cooldown-shade) 10.4%, var(--cooldown-shade) 11.11%);
+	pointer-events: none;
+}
+/* Stamina in twenty segments: gaps of the bar's own surface over the fill
+   and the track. */
+.taskbar-segments
+{
+	display: block;
+	decorator: repeating-linear-gradient(90deg, transparent 0%, transparent 4.1%, var(--surface) 4.1%, var(--surface) 5%);
+	pointer-events: none;
+}
+/* The gauge's name at its left and its value in its middle, light text
+   outlined so it reads on the fill and on the track in both palettes. */
+.taskbar-gauge-label, .taskbar-gauge-value
 {
 	display: block;
 	position: absolute;
 	top: 0;
-	width: 11dp;
-	height: 30dp;
-	background-color: var(--gauge-track);
-	border-radius: 3dp;
+	height: 100%;
+	color: var(--text-inverse);
+	font-weight: bold;
+	white-space: nowrap;
+	font-effect: outline(1dp var(--text-outline));
+	pointer-events: none;
 }
-progress.taskbar-orb fill
+.taskbar-gauge-label
 {
-	background-color: var(--accent);
-	border-radius: 3dp;
+	left: 6dp;
+	font-size: 8dp;
 }
-.taskbar-orb--1 { left: 0; }
-.taskbar-orb--2 { left: 15dp; }
-.taskbar-orb--3 { left: 30dp; }
-.taskbar-orb--4 { left: 45dp; }
+.taskbar-gauge-value
+{
+	left: 0;
+	right: 0;
+	font-size: 9dp;
+	text-align: center;
+}
+.taskbar-gauge-host--hp .taskbar-gauge-label, .taskbar-gauge-host--hp .taskbar-gauge-value
+{
+	line-height: 13dp;
+}
+.taskbar-gauge-host--sp .taskbar-gauge-label, .taskbar-gauge-host--sp .taskbar-gauge-value
+{
+	line-height: 10dp;
+}
+
+/* The EXP orbs: four glass orbs in a pill well, each filled from the
+   bottom with gold liquid (its quarter of the level), a gold rim and a
+   gloss over it; a full orb glows. The orb is the glass element alone: its
+   liquid is a gradient with a hard stop at the level (the custom property
+   --orb-level, from the feed, data-style---orb-level), drawn in the round
+   box, so the surface is level at any height; the gradient is made again
+   only when the level changes. The progress elements are classic's (the
+   legacy point art cut at the value); the modern skins hide them. */
+.taskbar-exp
+{
+	display: block;
+	position: absolute;
+	left: 172dp;
+	top: 8dp;
+	width: 92dp;
+	height: 32dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9999dp;
+	background-color: var(--surface-sunken);
+	pointer-events: auto;
+}
+progress.taskbar-orb
+{
+	display: none;
+	position: absolute;
+}
+.taskbar-orb-glass
+{
+	--orb-level: 0%;
+	display: block;
+	position: absolute;
+	top: 6dp;
+	width: 18dp;
+	height: 18dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--edge-gm);
+	border-radius: 9999dp;
+	background-color: var(--gauge-track);
+	decorator: radial-gradient(circle at 38% 26%, var(--sheen) 0%, var(--sheen-clear) 38%),
+		linear-gradient(0deg, var(--edge-gm) 0%, var(--gauge-pink) var(--orb-level), var(--sheen-clear) var(--orb-level), var(--sheen-clear) 100%);
+	pointer-events: none;
+}
+.taskbar-orb-glass.is-full
+{
+	border-color: var(--ember-hot);
+}
+.taskbar-orb-glass.is-full.nui-fx
+{
+	box-shadow: 0 0 7dp var(--ember-glow);
+}
+.taskbar-orb--1 { left: 5dp; }
+.taskbar-orb--2 { left: 26dp; }
+.taskbar-orb--3 { left: 47dp; }
+.taskbar-orb--4 { left: 68dp; }
+/* The EXP percent beside the orbs, where there is room (below). */
+.taskbar-exp__pct
+{
+	display: none;
+	position: absolute;
+	left: 92dp;
+	top: 0;
+	color: var(--gauge-pink);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 30dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
 
 /* The optional skin parts (P13 D21): hidden here and in classic; a skin's
    overlay gives them a display and a place. */
 .taskbar-hp-ring, .taskbar-value
 {
 	display: none;
+}
+
+/* --- The middle group's well ------------------------------------------------------ */
+
+/* A rounded well behind the mouse-button modes and the quickslots, 4dp past
+   them on each side (the EXP well ends 2dp short of it at 1060dp). */
+.taskbar-center
+{
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 1dp;
+	margin-left: -266dp;
+	width: 532dp;
+	height: 46dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 12dp;
+	decorator: vertical-gradient(var(--surface-raised) var(--surface-sunken));
+	pointer-events: none;
 }
 
 /* --- Buttons: chips with glyphs ------------------------------------------------ */
@@ -204,26 +434,47 @@ progress.taskbar-orb fill
 	position: absolute;
 	box-sizing: border-box;
 	padding: 0;
-	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--surface-raised);
 	pointer-events: auto;
 }
-.taskbar-mall, .taskbar-mode, .taskbar-window
+.taskbar-mode, .taskbar-window, .taskbar-expand, .taskbar-pager__up, .taskbar-pager__down
+{
+	border-width: 1dp;
+	border-color: transparent;
+	border-radius: 7dp;
+	background-color: transparent;
+}
+.taskbar-mode, .taskbar-window
 {
 	width: 40dp;
 	height: 40dp;
 }
-.taskbar-mall:hover, .taskbar-mode:hover, .taskbar-window:hover, .taskbar-expand:hover, .taskbar-pager__up:hover, .taskbar-pager__down:hover
+/* The mouse-button modes: a cell like a quickslot's, with the mouse and its
+   button in the top left corner. */
+.taskbar-mode
+{
+	border-color: var(--border);
+	background-color: var(--surface-sunken);
+}
+.taskbar-mode:hover, .taskbar-expand:hover
 {
 	background-color: var(--surface-hover);
 	border-color: var(--accent);
 }
-.taskbar-mall:active, .taskbar-mode:active, .taskbar-window:active, .taskbar-expand:active, .taskbar-pager__up:active, .taskbar-pager__down:active,
-.taskbar-mode.is-open
+.taskbar-mode:active, .taskbar-mode.is-open, .taskbar-expand:active
 {
-	background-color: var(--surface-sunken);
+	background-color: var(--selection);
+	border-color: var(--accent);
+}
+/* The window buttons: no chip at rest; a soft accent light under the
+   pointer, a deeper one pressed. */
+.taskbar-window:hover
+{
+	decorator: radial-gradient(circle at 50% 65%, var(--accent-glow) 0%, transparent 70%);
+}
+.taskbar-window:active
+{
+	background-color: var(--selection);
+	decorator: none;
 }
 
 /* Each button's glyph, centered in the button's padding box (the mode
@@ -236,14 +487,40 @@ progress.taskbar-orb fill
 	top: 11dp;
 	transform: scale(1.25);
 }
-.taskbar-mall:hover .taskbar-glyph, .taskbar-mode:hover .taskbar-glyph, .taskbar-window:hover .taskbar-glyph, .taskbar-expand:hover .taskbar-glyph,
+.taskbar-mode:hover .taskbar-glyph, .taskbar-window:hover .taskbar-glyph, .taskbar-expand:hover .taskbar-glyph,
 .taskbar-pager__up:hover .taskbar-glyph, .taskbar-pager__down:hover .taskbar-glyph
 {
 	--glyph-ink: var(--accent);
 }
+/* The window buttons' glyphs are larger, over their hotkey. */
+.taskbar-window .taskbar-glyph
+{
+	top: 7dp;
+	transform: scale(1.4);
+}
+.taskbar-hotkey
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 1dp;
+	color: var(--text-muted);
+	font-size: 8dp;
+	font-weight: bold;
+	line-height: 9dp;
+	text-align: center;
+	pointer-events: none;
+}
+.taskbar-window:hover .taskbar-hotkey
+{
+	color: var(--text);
+}
 .taskbar-expand .taskbar-glyph
 {
 	left: 3dp;
+	transform: none;
+	--glyph-ink: var(--text-muted);
 }
 /* The page buttons are 12dp tall: the chevron's ink, the middle of its
    16dp box, on the middle of their 10dp padding box. */
@@ -252,6 +529,45 @@ progress.taskbar-orb fill
 	left: 3dp;
 	top: -3dp;
 	transform: none;
+	--glyph-ink: var(--text-muted);
+}
+
+/* The mouse in a mode cell: a small rounded body with its left or right
+   button in the accent. */
+.taskbar-mouse
+{
+	display: block;
+	position: absolute;
+	left: 2dp;
+	top: 2dp;
+	z-index: 4;
+	box-sizing: border-box;
+	width: 9dp;
+	height: 12dp;
+	border-width: 1dp;
+	border-color: var(--text-muted);
+	border-radius: 5dp;
+	background-color: var(--tooltip-bg);
+	pointer-events: none;
+}
+.taskbar-mouse__button
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 3dp;
+	height: 5dp;
+	background-color: var(--accent);
+}
+.taskbar-mouse--left .taskbar-mouse__button
+{
+	left: 0;
+	border-radius: 4dp 0 0 0;
+}
+.taskbar-mouse--right .taskbar-mouse__button
+{
+	right: 0;
+	border-radius: 0 4dp 0 0;
 }
 
 .taskbar-mode--left
@@ -305,8 +621,11 @@ progress.taskbar-orb fill
 	margin-left: 222dp;
 	width: 40dp;
 	height: 40dp;
-	border-radius: var(--radius-md);
-	background-color: var(--surface-raised);
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 7dp;
+	background-color: var(--selection);
 }
 
 /* --- Quickslots ------------------------------------------------------------------ */
@@ -341,18 +660,108 @@ progress.taskbar-orb fill
 	top: 0;
 	width: 24dp;
 	height: 40dp;
+	border-color: var(--border);
 }
+/* The key in a pill at the cell's top left. */
 .taskbar-key
 {
-	padding: 0 2dp;
-	color: var(--text-muted);
-	font-size: var(--font-xs);
+	left: 2dp;
+	top: 2dp;
+	padding: 0 3dp;
+	border-radius: 4dp;
+	background-color: var(--tooltip-bg);
+	color: var(--text-inverse);
+	font-size: 8dp;
 	font-weight: bold;
-	line-height: 12dp;
+	line-height: 11dp;
 }
 .taskbar-key-art
 {
 	display: none;
+}
+/* The count or skill level in a pill at the bottom right; a skill's grade
+   (the legacy label: m1 to m10, g1 to g10, p) in its grade's color. */
+.taskbar-cell .taskbar-count
+{
+	right: 2dp;
+	bottom: 2dp;
+	padding: 0 3dp;
+	border-radius: 4dp;
+	font-size: 9dp;
+	line-height: 12dp;
+}
+.taskbar-cell .taskbar-count--m
+{
+	background-color: var(--tip-positive);
+	color: var(--scene);
+}
+.taskbar-cell .taskbar-count--g
+{
+	background-color: var(--gauge-blue);
+	color: var(--text-inverse);
+}
+.taskbar-cell .taskbar-count--p
+{
+	background-color: var(--tip-socket-gold);
+	color: var(--scene);
+}
+/* The seconds of a cooldown, over its sweep. */
+.taskbar-cool
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	z-index: 4;
+	color: var(--text-inverse);
+	font-size: 13dp;
+	font-weight: bold;
+	line-height: 32dp;
+	text-align: center;
+	font-effect: outline(1dp var(--text-outline));
+	pointer-events: none;
+}
+/* An active quickslot: the accent edge and the component's static glow,
+   and the aura, a spark that runs along the cell's edge, round in 2.2s,
+   endlessly while the slot is active (by transform; it rests at the top
+   left corner under reduced motion). It stands in for the component's
+   breathing ring, which this grid does not show (nor run). */
+.taskbar-quick-grid .nui-slot.is-active
+{
+	border-color: var(--accent);
+}
+.taskbar-quick-grid .nui-slot__ring
+{
+	display: none;
+}
+.taskbar-quick-grid .nui-slot__ring.is-on.nui-anim
+{
+	animation: none;
+}
+.taskbar-aura
+{
+	display: block;
+	position: absolute;
+	left: -6dp;
+	top: -6dp;
+	z-index: 6;
+	width: 12dp;
+	height: 12dp;
+	decorator: radial-gradient(circle, var(--text-inverse) 0%, var(--accent) 30%, transparent 70%);
+	pointer-events: none;
+}
+.taskbar-aura.is-on.nui-anim
+{
+	animation: 2.2s linear-in-out infinite taskbar-aura;
+}
+@keyframes taskbar-aura
+{
+	0% { transform: translate(0dp, 0dp); }
+	25% { transform: translate(38dp, 0dp); }
+	50% { transform: translate(38dp, 38dp); }
+	75% { transform: translate(0dp, 38dp); }
+	100% { transform: translate(0dp, 0dp); }
 }
 
 .taskbar-pager
@@ -390,7 +799,7 @@ progress.taskbar-orb fill
 	width: 24dp;
 	height: 16dp;
 	color: var(--text);
-	font-size: var(--font-sm);
+	font-size: var(--font-md);
 	font-weight: bold;
 	line-height: 16dp;
 	text-align: center;
@@ -478,6 +887,29 @@ progress.taskbar-orb fill
 .taskbar-picker__row
 {
 	flex-direction: row-reverse;
+}
+
+/* --- Wide screens ------------------------------------------------------------------
+   From 1250dp the left group takes the mockup's room: it ends at 352dp, 7dp
+   short of the middle group's well, which starts 266dp left of the center. The
+   coin grows to 38dp, the vitals to 160dp, and the EXP well holds the
+   percent beside the orbs. */
+@media (min-width: 1250dp)
+{
+	.taskbar-gauges { width: 352dp; }
+	.taskbar-mall { left: 6dp; top: 5dp; width: 38dp; height: 38dp; }
+	.taskbar-mall .taskbar-glyph, .taskbar-mall:hover .taskbar-glyph { left: 10dp; top: 10dp; }
+	.taskbar-mall__sheen { left: 7dp; top: 6dp; }
+	.taskbar-gauge-host { left: 52dp; width: 160dp; }
+	.taskbar-gauge-host--hp { top: 6dp; height: 14dp; }
+	.taskbar-gauge-host--sp { top: 23dp; height: 11dp; }
+	.taskbar-gauge-host--st { top: 37dp; height: 5dp; }
+	.taskbar-gauge-label { font-size: 9dp; }
+	.taskbar-gauge-value { font-size: 10dp; }
+	.taskbar-gauge-host--hp .taskbar-gauge-label, .taskbar-gauge-host--hp .taskbar-gauge-value { line-height: 14dp; }
+	.taskbar-gauge-host--sp .taskbar-gauge-label, .taskbar-gauge-host--sp .taskbar-gauge-value { line-height: 11dp; }
+	.taskbar-exp { left: 220dp; width: 132dp; }
+	.taskbar-exp__pct { display: block; }
 }
 
 /* --- Narrow screens ----------------------------------------------------------------

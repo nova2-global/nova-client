@@ -1744,5 +1744,110 @@ class LeanCells(unittest.TestCase):
         self.assertRegex(template, r'<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>')
 
 
+class ModernDoll(unittest.TestCase):
+    """The modern skin's paper doll and shortcut rail (skins stage 1): the
+    figure a function of the race, the stats row as the character window
+    sums it, the rail's entries, presses and kept board."""
+
+    def test_the_figures_by_race_follow_playersettingmodule(self):
+        text = read(os.path.join(ROOT, "playersettingmodule.py"))
+        races = dict((name, int(value)) for name, value in re.findall(r"^(RACE_\w+)\s*=\s*(\d+)", text, re.M))
+        self.assertEqual(sorted(races.values()), list(range(8)))
+        world = World(True)
+        inventory, costume = world.m("nui_inventory"), world.m("nui_costume")
+        for name, race in races.items():
+            self.assertEqual(inventory.figure_for_race(race), inventory.FIGURE_KNIGHT, name)
+            wanted = costume.FIGURE_FEMALE if name.endswith("_W") else costume.FIGURE_MALE
+            self.assertEqual(costume.figure_for_race(race), wanted, name)
+        store = os.path.normpath(os.path.join(WINDOWS, "..", ".."))
+        for path in (inventory.FIGURE_KNIGHT, costume.FIGURE_MALE, costume.FIGURE_FEMALE):
+            self.assertTrue(os.path.isfile(os.path.join(store, path.lstrip("/"))), path)
+
+    def test_the_costume_figure_is_the_race_s(self):
+        world = World(True)
+        world.game.modules["player"].GetRace = lambda: 3
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.ClickCostumeButton()
+        self.assertEqual(board(window.wndCostume).model["figure"], world.m("nui_costume").FIGURE_FEMALE)
+        self.assertEqual(board(window).model["figure"], world.m("nui_inventory").FIGURE_KNIGHT)
+
+    def test_the_stats_row_sums_as_the_character_window(self):
+        world = World(True)
+        player = world.game.modules["player"]
+        constants = dict(support.WAVE3C_PLAYER_CONSTANTS)
+        for name in ("ATT_MIN", "ATT_MAX", "ATT_BONUS", "ATTACKER_BONUS", "DEF_GRADE", "DEF_BONUS", "MAG_ATT",
+                     "MIN_MAGIC_WEP", "MAX_MAGIC_WEP"):
+            setattr(player, name, constants[name])
+        world.game.status.update({constants["ATT_MIN"]: 900, constants["ATT_MAX"]: 1000, constants["ATT_BONUS"]: 100,
+                                  constants["ATTACKER_BONUS"]: 48, constants["DEF_GRADE"]: 600, constants["DEF_BONUS"]: 42,
+                                  constants["MAG_ATT"]: 200, constants["MIN_MAGIC_WEP"]: 36, constants["MAX_MAGIC_WEP"]: 52})
+        window = world.make_inventory()
+        defence = 642 if world.m("constInfo").ADD_DEF_BONUS_ENABLE else 600
+        model = board(window).model
+        self.assertEqual((model["stat_attack"], model["stat_defence"], model["stat_magic"]), ("1048-1148", str(defence), "236-252"))
+        world.game.status[constants["ATT_MAX"]] = 900
+        with world.game:
+            window.RefreshStatus()
+        self.assertEqual(board(window).model["stat_attack"], "1048", "one value when the minimum is the maximum")
+
+    def test_a_registered_shortcut_shows_on_the_rail_and_a_left_press_calls_it(self):
+        world = World(True)
+        module = world.m("nui_inventory")
+        window = world.make_inventory()
+        self.assertEqual(board(window).model["rail"], [], "no entry, no rail")
+        pressed = []
+        with world.game:
+            module.register_shortcut("offline_shop", "shop", "@ui.PRIVATE_SHOP_TITLE", lambda: pressed.append("shop"))
+            module.register_shortcut("guide", "log", "@ui.GAME_HELP", lambda: pressed.append("guide"), enabled=False)
+        self.assertEqual(board(window).model["rail"], [
+            {"id": "offline_shop", "glyph": "shop", "tip": "@ui.PRIVATE_SHOP_TITLE", "enabled": True},
+            {"id": "guide", "glyph": "log", "tip": "@ui.GAME_HELP", "enabled": False}])
+        with world.game:
+            press(window, "rail_press", "offline_shop", 0)
+            press(window, "rail_press", "offline_shop", 1)
+            press(window, "rail_press", "guide", 0)
+        self.assertEqual(pressed, ["shop"], "a right press and a disabled entry call nothing")
+        with world.game:
+            module.set_shortcut_enabled("guide", True)
+            press(window, "rail_press", "guide", 0)
+            module.register_shortcut("offline_shop", "gift", "@ui.CHARACTER_QUEST", lambda: pressed.append("events"))
+            press(window, "rail_press", "offline_shop", 0)
+            module.unregister_shortcut("guide")
+        self.assertEqual(pressed, ["shop", "guide", "events"])
+        self.assertEqual(board(window).model["rail"], [
+            {"id": "offline_shop", "glyph": "gift", "tip": "@ui.CHARACTER_QUEST", "enabled": True}], "replaced in place")
+
+    def test_an_entry_names_a_glyph_and_a_locale_key(self):
+        module = World(True).m("nui_inventory")
+        for entry_id, glyph, tip, callback in (("2shop", "shop", "@ui.OK", len), ("shop", "sword", "@ui.OK", len),
+                                               ("shop", "shop", "Offline shop", len), ("shop", "shop", "@ui.OK", None)):
+            with self.subTest(entry=(entry_id, glyph, tip)):
+                with self.assertRaises(ValueError):
+                    module.register_shortcut(entry_id, glyph, tip, callback)
+        self.assertEqual(module.shortcuts(), [])
+
+    def test_the_kept_board_holds_no_rail_and_the_costume_opens_beyond_it(self):
+        world = World(True)
+        module = world.m("nui_inventory")
+        with world.game:
+            module.register_shortcut("events", "gift", "@ui.CHARACTER_QUEST", lambda: None)
+        window = world.make_inventory()
+        self.assertEqual(len(board(window).model["rail"]), 1)
+        state = world.game.state
+        state.boxes = getattr(state, "boxes", {})
+        scale = module.nui.get_scale() or 1.0
+        state.boxes[(board(window).DOCUMENT, "")] = [1200.0 * scale, 150.0 * scale, 236.0 * scale, 817.0 * scale]
+        with world.game, quiet():
+            window.ClickCostumeButton()
+        self.assertEqual(board(window.wndCostume).placement, ("position", 1201.0 - module.RAIL_REACH_DP, 150.0, (1.0, 0.0)))
+        with world.game, quiet():
+            window.Hide()
+        self.assertEqual(window.demand.kept().model["rail"], [])
+        with world.game, quiet():
+            window.Show()
+        self.assertEqual([entry["id"] for entry in board(window).model["rail"]], ["events"])
+
+
 if __name__ == "__main__":
     unittest.main()

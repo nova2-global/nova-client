@@ -9,15 +9,23 @@
 	     the proxies. It exists only while the inventory shows
 	     (nui_hud.OnDemand). The wear cells are the equipment group of the
 	     wear table (nui_limits), placed by name (inv-wear--<name>) in each
-	     skin's sheet; the bag is a lean slot grid of INVENTORY_PAGE_SIZE
+	     skin's sheet, at the legacy places (EquipmentSlot) over the paper
+	     doll: the figure (an image whose path the controller passes, by the
+	     race), the lattice, the light and the rune circle under the feet,
+	     all code but the figure; the costume, dragon soul and item shop
+	     buttons stand in the equipment where legacy puts them. Under it the
+	     stats row (attack, defence, magic attack, as the character window
+	     counts them); the bag is a lean slot grid of INVENTORY_PAGE_SIZE
 	     cells, one page at a time; the page tabs, the bag's columns and the
-	     money's digits come from the limits module too. Cell events reach the
-	     legacy handlers through nui_slots.LegacySlotEvents (pick and place
-	     through the legacy mouse controller). The body and its controls take
-	     no focus, so controls act on a left mousedown. It draws below the
-	     legacy UI layer (nui-below-legacy-ui), as legacy's window lived in
-	     it, so the shop, exchange and safebox windows opened over it cover
-	     it; the belt docks to inv-belt-dock. A left or right
+	     money's digits come from the limits module too. The shortcut rail
+	     (rail: the entries nui_inventory.register_shortcut adds; none by
+	     default, and then no rail) docks on the window's left edge. Cell
+	     events reach the legacy handlers through nui_slots.LegacySlotEvents
+	     (pick and place through the legacy mouse controller). The body and
+	     its controls take no focus, so controls act on a left mousedown. It
+	     draws below the legacy UI layer (nui-below-legacy-ui), as legacy's
+	     window lived in it, so the shop, exchange and safebox windows opened
+	     over it cover it; the belt docks to inv-belt-dock. A left or right
 	     press anywhere on it raises the window (board_press), as legacy's
 	     window manager raised the window under a press. -->
 	<title>inventory</title>
@@ -31,25 +39,41 @@
 		<handle id="inv-title" class="nui-window__handle inv__handle" move_target="#document">
 			<span class="nui-window__title inv__title">@ui.INVENTORY_TITLE</span>
 		</handle>
-		<button id="inv-costume" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip inv-button inv-button--costume"
-		        data-if="has_costume" data-event-mousedown="costume_press(ev.button)"><span class="nui-glyph nui-glyph--character"><span
-			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim inv-tip">@ui.COSTUME_TITLE</span></button>
-		<button id="inv-dss" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip inv-button inv-button--dss"
-		        data-if="has_dss" data-class-is-active="dss_active" data-event-mousedown="dss_press(ev.button)"><span class="nui-glyph nui-glyph--gem"><span
-			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><nui-frames class="inv-button__effect" data-if="dss_active"
-			count="13" delay="0.0667"/><span class="nui-tooltip nui-anim inv-tip">@ui.TASKBAR_DRAGON_SOUL</span></button>
-		<button id="inv-mall" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip inv-button inv-button--mall"
-		        data-if="has_mall" data-event-mousedown="mall_press(ev.button)"><span class="nui-glyph nui-glyph--shop"><span
-			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim inv-tip">@ui.MALL_TITLE</span></button>
 		<button id="inv-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim inv__close"
 		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
+	<!-- The shortcut rail: one button per registered entry (rail), on the
+	     window's left edge; empty, it is not drawn. The kept board's list
+	     is empty while it hides. -->
+	<div class="nui-board nui-fx inv-rail" data-class-is-empty="size(rail) == 0">
+		<span class="inv-rail__grip"></span>
+		<button class="nui-button nui-anim nui-has-tooltip inv-rail__button" data-for="e : rail"
+		        data-attr-id="'inv-rail-' + e.id" data-attrif-disabled="!e.enabled"
+		        data-event-mousedown="rail_press(e.id, ev.button)"><span class="nui-glyph inv-rail__glyph"
+			data-attr-class="'nui-glyph inv-rail__glyph nui-glyph--' + e.glyph"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
+			class="nui-tooltip nui-anim inv-tip inv-rail__tip">{{ e.tip }}</span></button>
+	</div>
 	<div class="nui-window__body inv__body">
 		<div id="inv-equip" class="inv-equip" data-class-nui-attach-right="attach_right">
-			<div class="inv-figure"><span class="inv-figure__head"></span><span class="inv-figure__body"></span><span
-				class="inv-figure__arm inv-figure__arm--left"></span><span class="inv-figure__arm inv-figure__arm--right"></span><span
-				class="inv-figure__leg inv-figure__leg--left"></span><span class="inv-figure__leg inv-figure__leg--right"></span></div>
+			<!-- The paper doll's art: the light, the rune circle, the figure
+			     and the corner brackets; it goes with the wear places while the
+			     kept board hides (wear_on), so its rune stops turning. -->
+			<div class="inv-doll" data-for="g : wear_on">
+				<div class="inv-doll__light"></div>
+				<div class="inv-doll__rune"><div class="inv-doll__spin nui-anim"><span
+					class="inv-doll__ring inv-doll__ring--outer"></span><span class="inv-doll__ring inv-doll__ring--glow"></span><span
+					class="inv-doll__ring inv-doll__ring--inner"></span><span class="inv-doll__tick inv-doll__tick--a"></span><span
+					class="inv-doll__tick inv-doll__tick--b"></span><span class="inv-doll__tick inv-doll__tick--c"></span><span
+					class="inv-doll__tick inv-doll__tick--d"></span><span class="inv-doll__chord inv-doll__chord--a"></span><span
+					class="inv-doll__chord inv-doll__chord--b"></span><span class="inv-doll__chord inv-doll__chord--c"></span><span
+					class="inv-doll__chord inv-doll__chord--d"></span><span class="inv-doll__chord inv-doll__chord--e"></span><span
+					class="inv-doll__chord inv-doll__chord--f"></span></div></div>
+				<img class="inv-doll__figure" data-if="figure != ''" data-attr-src="figure"/>
+				<span class="inv-doll__corner inv-doll__corner--tl"></span><span class="inv-doll__corner inv-doll__corner--tr"></span><span
+					class="inv-doll__corner inv-doll__corner--bl"></span><span class="inv-doll__corner inv-doll__corner--br"></span>
+			</div>
 			<!-- V-2: the wear places go while the kept board hides (wear_on is [] then). -->
 			<div class="inv-wear-places" data-for="g : wear_on">
 				<div class="inv-wear-place" data-for="w : wear" data-attr-class="'inv-wear-place inv-wear--' + w.name">
@@ -64,7 +88,28 @@
 					</div>
 				</div>
 			</div>
+			<!-- The costume, dragon soul and item shop buttons, where legacy's
+			     equipment base holds them. -->
+			<button id="inv-costume" class="nui-button nui-anim nui-has-tooltip inv-button inv-button--costume"
+			        data-if="has_costume" data-event-mousedown="costume_press(ev.button)"><span class="nui-glyph nui-glyph--character"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim inv-tip">@ui.COSTUME_TITLE</span></button>
+			<button id="inv-dss" class="nui-button nui-anim nui-has-tooltip inv-button inv-button--dss"
+			        data-if="has_dss" data-class-is-on="dss_active" data-event-mousedown="dss_press(ev.button)"><span class="nui-glyph nui-glyph--gem"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><nui-frames class="inv-button__effect" data-if="dss_active"
+				count="13" delay="0.0667"/><span class="nui-tooltip nui-anim inv-tip">@ui.TASKBAR_DRAGON_SOUL</span></button>
+			<button id="inv-mall" class="nui-button nui-anim nui-has-tooltip inv-button inv-button--mall"
+			        data-if="has_mall" data-event-mousedown="mall_press(ev.button)"><span class="nui-glyph nui-glyph--shop"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim inv-tip">@ui.MALL_TITLE</span></button>
 			<div id="inv-belt-dock" class="inv-belt-dock"></div>
+		</div>
+		<!-- Attack, defence and magic attack (the character window's sums). -->
+		<div class="inv-stats">
+			<span class="inv-stat"><span class="inv-stat__icon inv-stat__icon--attack"><span class="inv-stat__a"></span><span
+				class="inv-stat__b"></span></span><span class="inv-stat__value">{{ stat_attack }}</span></span>
+			<span class="inv-stat"><span class="inv-stat__icon inv-stat__icon--defence"><span class="inv-stat__a"></span><span
+				class="inv-stat__b"></span></span><span class="inv-stat__value">{{ stat_defence }}</span></span>
+			<span class="inv-stat"><span class="inv-stat__icon inv-stat__icon--magic"><span class="inv-stat__a"></span><span
+				class="inv-stat__b"></span></span><span class="inv-stat__value">{{ stat_magic }}</span></span>
 		</div>
 		<div id="inv-tabs" class="inv-tabs" data-for="g : tabs_on">
 			<button class="nui-button nui-anim nui-has-tooltip inv-tab" data-for="p : pages" data-attr-id="'inv-tab-' + it_index"

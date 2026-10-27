@@ -13,7 +13,10 @@
    (parameter_slot_05.sub, 130 x 18) 28 above the bottom, centered 8 right
    of the middle (31, 537), its icon 18 left of it and the amount
    right-aligned 3 in from its right. The dragon soul button's active
-   effect is legacy's slot active frames over it. */
+   effect is legacy's slot active frames over it. The
+   modern paper doll's art and stats row are not drawn; the shortcut rail,
+   while it has entries, is a stone board of legacy slot cells on the
+   board's left edge. */
 
 body.skin-classic.inv
 {
@@ -39,8 +42,7 @@ body.skin-classic.inv .inv__titlebar
 	   there (P14b: no dead zone); its own controls take it. */
 	pointer-events: none;
 }
-body.skin-classic.inv .inv__handle, body.skin-classic.inv .inv__titlebar .nui-window__close,
-body.skin-classic.inv .inv__titlebar .inv-button
+body.skin-classic.inv .inv__handle, body.skin-classic.inv .inv__titlebar .nui-window__close
 {
 	pointer-events: auto;
 }
@@ -64,68 +66,68 @@ body.skin-classic.inv .inv__titlebar .nui-window__close
 }
 
 /* The costume, dragon soul and mall buttons: legacy's art at their places
-   on the equipment base (Equipment_Base + their uiscript offsets), placed
-   from the title bar's corner. */
-body.skin-classic.inv .inv__titlebar .inv-button
+   on the equipment base (their uiscript offsets on Equipment_Base). */
+body.skin-classic.inv .inv-equip .inv-button
 {
 	position: absolute;
 	margin: 0;
 	padding: 0;
 	border-width: 0;
+	border-radius: 0;
 	background-color: transparent;
 }
-body.skin-classic.inv .inv__titlebar .inv-button--costume
+body.skin-classic.inv .inv-equip .inv-button--costume
 {
-	left: 80dp;
-	top: 31dp;
+	left: 78dp;
+	top: 5dp;
 	width: 32dp;
 	height: 32dp;
 	decorator: image("d:/ymir work/ui/game/costume_button_01.tga");
 }
-body.skin-classic.inv .inv__titlebar .inv-button--costume:hover
+body.skin-classic.inv .inv-equip .inv-button--costume:hover
 {
 	decorator: image("d:/ymir work/ui/game/costume_button_02.tga");
 	background-color: transparent;
 }
-body.skin-classic.inv .inv__titlebar .inv-button--costume:active
+body.skin-classic.inv .inv-equip .inv-button--costume:active
 {
 	decorator: image("d:/ymir work/ui/game/costume_button_03.tga");
 	background-color: transparent;
 }
-body.skin-classic.inv .inv__titlebar .inv-button--dss,
-body.skin-classic.inv .inv__titlebar .inv-button--dss.is-active
+body.skin-classic.inv .inv-equip .inv-button--dss,
+body.skin-classic.inv .inv-equip .inv-button--dss.is-on
 {
-	left: 116dp;
-	top: 133dp;
+	left: 114dp;
+	top: 107dp;
 	width: 38dp;
 	height: 34dp;
 	decorator: image("d:/ymir work/ui/dragonsoul/dss_inventory_button_01.tga");
 	background-color: transparent;
 }
-body.skin-classic.inv .inv__titlebar .inv-button--dss:hover
+body.skin-classic.inv .inv-equip .inv-button--dss:hover
 {
 	decorator: image("d:/ymir work/ui/dragonsoul/dss_inventory_button_02.tga");
 	background-color: transparent;
 }
-body.skin-classic.inv .inv__titlebar .inv-button--dss:active
+body.skin-classic.inv .inv-equip .inv-button--dss:active
 {
 	decorator: image("d:/ymir work/ui/dragonsoul/dss_inventory_button_03.tga");
 	background-color: transparent;
 }
-body.skin-classic.inv .inv__titlebar .inv-button--mall
+body.skin-classic.inv .inv-equip .inv-button--mall
 {
-	left: 120dp;
-	top: 174dp;
+	left: 118dp;
+	top: 148dp;
 	width: 32dp;
 	height: 32dp;
 	decorator: image("d:/ymir work/ui/game/taskbar/mall_button_01.tga");
 }
-body.skin-classic.inv .inv__titlebar .inv-button--mall:hover
+body.skin-classic.inv .inv-equip .inv-button--mall:hover
 {
 	decorator: image("d:/ymir work/ui/game/taskbar/mall_button_02.tga");
 	background-color: transparent;
 }
-body.skin-classic.inv .inv__titlebar .inv-button--mall:active
+body.skin-classic.inv .inv-equip .inv-button--mall:active
 {
 	decorator: image("d:/ymir work/ui/game/taskbar/mall_button_03.tga");
 	background-color: transparent;
@@ -158,9 +160,14 @@ body.skin-classic.inv .inv-equip
 	top: 33dp;
 	width: 155dp;
 	height: 187dp;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 	decorator: image("d:/ymir work/ui/equipment_bg_with_ring.tga" scale-none left top);
 }
-body.skin-classic.inv .inv-figure
+/* The modern paper doll's art and stats row: legacy has neither. */
+body.skin-classic.inv .inv-doll,
+body.skin-classic.inv .inv-stats
 {
 	display: none;
 }
@@ -252,6 +259,10 @@ body.skin-classic.inv .inv-tabs
 	top: 224dp;
 	width: 160dp;
 	gap: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.inv .inv-tab,
 body.skin-classic.inv .inv-tab:hover,
@@ -303,8 +314,63 @@ body.skin-classic.inv .inv-money:hover
 	decorator: image("d:/ymir work/ui/game/windows/money_icon.sub" scale-none left bottom),
 	           image("d:/ymir work/ui/public/parameter_slot_05.sub" scale-none right top);
 }
-body.skin-classic.inv .inv-money__amount
+body.skin-classic.inv .inv-money__amount,
+body.skin-classic.inv .inv-money:hover .inv-money__amount
 {
+	height: 18dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	color: var(--text);
+	font-weight: normal;
 	line-height: 18dp;
+}
+
+/* --- The shortcut rail --------------------------------------------------------- */
+
+/* While it has entries: the stone board on the board's left edge, under
+   its title bar, holding one legacy slot cell per entry at the 32px pitch
+   with the entry's glyph in the legacy text color. */
+body.skin-classic.inv .inv-rail
+{
+	top: 33dp;
+	margin-right: 8dp;
+	padding: 8dp;
+	gap: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-board;
+}
+body.skin-classic.inv .inv-rail__grip
+{
+	display: none;
+}
+body.skin-classic.inv .inv-rail__button,
+body.skin-classic.inv .inv-rail__button:hover,
+body.skin-classic.inv .inv-rail__button:active
+{
+	width: 32dp;
+	height: 32dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	line-height: 32dp;
+	transform: none;
+	decorator: image("d:/ymir work/ui/public/slot_base.sub");
+}
+body.skin-classic.inv .inv-rail__glyph
+{
+	display: inline-block;
+	--glyph-ink: var(--text);
+}
+body.skin-classic.inv .inv-rail__button:hover .inv-rail__glyph
+{
+	--glyph-ink: var(--highlight);
+}
+body.skin-classic.inv .inv-rail__button[disabled] .inv-rail__glyph
+{
+	opacity: 0.5;
 }

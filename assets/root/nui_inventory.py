@@ -20,9 +20,19 @@ show. The cell events reach the legacy handlers through
 nui_slots.LegacySlotEvents, with CSlotWindow's and CGridSlotWindow's rules
 (the owner of a covered cell, the drop target, the footprint's states). The
 costume and belt windows are nui_costume and nui_belt_inventory. Every count
-comes from nui_limits.current()."""
+comes from nui_limits.current().
+
+The modern skin's paper doll shows a figure, an image whose path the model
+carries (figure_for_race: the race's figure, today the knight for every
+race), and a stats row (attack, defence, magic attack, as the character
+window sums them, refreshed with legacy's RefreshStatus). The shortcut rail
+on the window's left edge shows the entries features register here
+(register_shortcut): an id, a glyph, a tooltip key and an enabled flag
+each; a press on one calls its callback. With none registered there is no
+rail."""
 
 import app
+import constInfo
 import player
 import ui
 import uiAttachMetin
@@ -40,6 +50,106 @@ import nui_windows
 
 DOCUMENT = "nui/windows/inventory/inventory.rml"
 KEY = "inventory"
+
+# The paper doll's figures (content images, nui/figures/; the controller
+# passes the path, so no markup names it).
+FIGURE_KNIGHT = "/nui/figures/knight.png"
+
+
+def figure_for_race(race):
+	"""The paper doll's figure for a race (playerSettingModule's RACE_*, 0 to
+	7). Every race shows the knight today; a race's own figure (a female
+	one) goes here when it exists."""
+	return FIGURE_KNIGHT
+
+
+# --- The shortcut rail ------------------------------------------------------------
+# Entries in registration order ({"id", "glyph", "tip", "enabled"}, the
+# board's rail model) and their callbacks. Module state, so a feature may
+# register before the inventory exists; the shown inventory follows each
+# change.
+
+# The glyph names components/glyph.rcss draws.
+GLYPHS = ("close", "plus", "minus", "chevron-up", "chevron-down", "chevron-left", "chevron-right", "send", "log",
+          "chat", "whisper", "character", "inventory", "community", "system", "map", "gift", "gem", "shop", "heal",
+          "leave", "mouse-move", "mouse-attack", "mouse-auto", "mouse-camera", "mouse-skill", "home", "coin", "lock")
+# The rail's reach left of the window, in dp (its board and the gap to the
+# window), which the costume window keeps clear while the rail shows.
+RAIL_REACH_DP = 56.0
+
+_shortcuts = []
+_shortcut_callbacks = {}
+
+
+def _is_name(text):
+	return (bool(text) and text[0].isalpha() and all(c.isalnum() or c == "_" for c in text)
+	        and all(ord(c) < 128 for c in text))
+
+
+def register_shortcut(entry_id, glyph, tip, callback, enabled=True):
+	"""Adds the rail's entry entry_id (letters, digits and _, starting with a
+	letter), or replaces it in place: a button with the glyph (one of
+	GLYPHS) and the tooltip tip (a locale key, "@ui.KEY" or "@game.KEY"),
+	pressable while enabled. A left press on it calls callback()."""
+	if not _is_name(entry_id):
+		raise ValueError("shortcut id %r: letters, digits and _, starting with a letter" % (entry_id,))
+	if glyph not in GLYPHS:
+		raise ValueError("shortcut %s: no glyph %r" % (entry_id, glyph))
+	if not (tip.startswith("@ui.") or tip.startswith("@game.")) or not _is_name(tip.split(".", 1)[1]):
+		raise ValueError("shortcut %s: the tooltip is a locale key (@ui.KEY or @game.KEY), not %r" % (entry_id, tip))
+	if not callable(callback):
+		raise ValueError("shortcut %s: the callback is not callable" % entry_id)
+	entry = {"id": entry_id, "glyph": glyph, "tip": tip, "enabled": bool(enabled)}
+	for index, old in enumerate(_shortcuts):
+		if old["id"] == entry_id:
+			_shortcuts[index] = entry
+			break
+	else:
+		_shortcuts.append(entry)
+	_shortcut_callbacks[entry_id] = callback
+	_publish_shortcuts()
+
+
+def unregister_shortcut(entry_id):
+	"""Takes the entry off the rail (nothing when it is not there)."""
+	_shortcuts[:] = [entry for entry in _shortcuts if entry["id"] != entry_id]
+	_shortcut_callbacks.pop(entry_id, None)
+	_publish_shortcuts()
+
+
+def set_shortcut_enabled(entry_id, enabled):
+	"""Enables or disables the entry (a disabled button takes no press)."""
+	for entry in _shortcuts:
+		if entry["id"] == entry_id:
+			entry["enabled"] = bool(enabled)
+	_publish_shortcuts()
+
+
+def shortcuts():
+	"""The registered entries, in rail order (copies)."""
+	return [dict(entry) for entry in _shortcuts]
+
+
+def press_shortcut(entry_id):
+	"""What a left press on the entry does: its callback, while it is
+	registered and enabled. True when it ran."""
+	for entry in _shortcuts:
+		if entry["id"] == entry_id and entry["enabled"]:
+			_shortcut_callbacks[entry_id]()
+			return True
+	return False
+
+
+def _publish_shortcuts():
+	window = nui_hud.current(KEY)
+	refresh = getattr(window, "_refresh_rail", None)
+	if refresh is not None:
+		refresh()
+
+
+def _span(low, high):
+	"""A minimum and a maximum as the character window writes them."""
+	return "%d" % low if low == high else "%d-%d" % (low, high)
 
 
 class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -151,6 +261,12 @@ class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner.Close()
 
+	@nui.on("rail_press")
+	def on_rail_press(self, entry_id, button):
+		self.raise_for(button)
+		if button == 0:
+			press_shortcut(str(entry_id))
+
 
 class InventoryWindow(uiInventory.InventoryWindow):
 	"""uiInventory.InventoryWindow on NovaUI (Interface.wndInventory)."""
@@ -225,6 +341,11 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			# V-2: the wear places, the tabs and the bag, each a list of one
 			# entry while the board shows and none while it is kept hidden.
 			"wear_on": [1], "tabs_on": [1], "bag_on": [1],
+			# The paper doll's figure, the stats row (RefreshStatus) and the
+			# shortcut rail.
+			"figure": figure_for_race(player.GetRace()),
+			"stat_attack": "", "stat_defence": "", "stat_magic": "",
+			"rail": shortcuts(),
 		}
 
 	def _set(self, **values):
@@ -253,10 +374,22 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		board.set(placed=True)
 
 	def _empty_board(self, board):
-		"""V-2: the hidden kept board holds no wear place, tab or bag cell
-		(RmlUi updates every element of a loaded document each frame);
-		_restore_board sets the lists again at the next show."""
-		board.set(wear_on=[], tabs_on=[], bag_on=[])
+		"""V-2: the hidden kept board holds no wear place, tab, bag cell or
+		rail entry (RmlUi updates every element of a loaded document each
+		frame); _restore_board sets the lists again at the next show."""
+		board.set(wear_on=[], tabs_on=[], bag_on=[], rail=[])
+
+	def _refresh_rail(self):
+		"""The registered shortcuts, to the board while it shows (a kept
+		board takes them at its next show)."""
+		self._state["rail"] = shortcuts()
+		if self.demand is not None and self.demand.is_shown():
+			self.demand.board().set(rail=self._state["rail"])
+
+	def rail_reach(self):
+		"""How far the shortcut rail reaches left of the window, in dp (0
+		without one): the costume window opens beyond it."""
+		return RAIL_REACH_DP if self._state["rail"] else 0.0
 
 	def _keep_board(self, board):
 		box = board.element_box("")
@@ -449,6 +582,10 @@ class InventoryWindow(uiInventory.InventoryWindow):
 	# --- what NovaUI changes (P14 spec 6.1's table) ------------------------------------
 
 	def Show(self):
+		# The figure of the race shown now (the main actor's, set by then).
+		figure = figure_for_race(player.GetRace())
+		if figure != self._state["figure"]:
+			self._set(figure=figure)
 		# The board first, so the belt and the costume, which legacy's Show
 		# opens again, are placed beside a shown board. A board made here is
 		# placed in the next update, so until legacy's Show returns its
@@ -498,6 +635,24 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		"""The equipment tabs stay hidden, as legacy hides them."""
 		self.equipmentPageIndex = page
 		self.RefreshEquipSlotWindow()
+
+	def RefreshStatus(self):
+		"""Legacy's (the money), then the stats row: attack, defence and
+		magic attack as the character window sums them
+		(uicharacter.py __GetTotalAtkText and its neighbors)."""
+		uiInventory.InventoryWindow.RefreshStatus(self)
+		status = player.GetStatus
+		bonus = status(player.ATT_BONUS) + status(player.ATTACKER_BONUS)
+		attack = _span(status(player.ATT_MIN) + bonus, status(player.ATT_MAX) + bonus)
+		defence = status(player.DEF_GRADE)
+		if constInfo.ADD_DEF_BONUS_ENABLE:
+			defence += status(player.DEF_BONUS)
+		magic = status(player.MAG_ATT)
+		magic = _span(magic + status(player.MIN_MAGIC_WEP), magic + status(player.MAX_MAGIC_WEP))
+		stats = {"stat_attack": attack, "stat_defence": "%d" % defence, "stat_magic": magic}
+		changed = dict((key, value) for key, value in stats.items() if self._state.get(key) != value)
+		if changed:
+			self._set(**changed)
 
 	def UseDSSButtonEffect(self, enable):
 		"""The dragon soul button's active look (legacy lays a slot window

@@ -9,9 +9,10 @@ pages).
     python3 tools/nui_w3b_fixtures.py --check   write nothing; exit 1 when one is stale
 
 Each window's fixture is <name>.fixture.json (today), with the variants
-<name>.foundation.fixture.json and the ones the spec names (inventory
-empty, belt collapsed). nui_inventory_test checks that the controllers'
-models have the same keys and kinds."""
+<name>.foundation.fixture.json, the ones the spec names (inventory empty,
+belt collapsed) and the ones the modern skin adds (inventory rail, costume
+female). nui_inventory_test checks that the controllers' models have the
+same keys and kinds."""
 import argparse
 import importlib.util
 import json
@@ -173,9 +174,29 @@ def inventory(limits, page, wear, bag, money, **rest):
         "attach_right": ATTACH_RIGHT,
         # P15 V-2: the kept board's lists, shown.
         "wear_on": [1], "tabs_on": [1], "bag_on": [1],
+        # Stage 1 (modern skin): the paper doll's figure for the race (a
+        # warrior's), the stats row as the character window counts them and
+        # the shortcut rail's entries (none registered).
+        "figure": FIGURE_KNIGHT,
+        "stat_attack": "1048-1166", "stat_defence": "642", "stat_magic": "236-252",
+        "rail": [],
     }
     model.update(rest)
     return {"inventory": model}
+
+
+FIGURE_KNIGHT = "/nui/figures/knight.png"
+FIGURE_COSTUME = {"male": "/nui/figures/costume-male.png", "female": "/nui/figures/costume-female.png"}
+
+# A rail of five sample entries (nui_inventory.register_shortcut), one of
+# them disabled.
+SAMPLE_RAIL = [
+    {"id": "offline_shop", "glyph": "shop", "tip": "@ui.PRIVATE_SHOP_TITLE", "enabled": True},
+    {"id": "ranking", "glyph": "community", "tip": "@ui.GUILD_GRADE_RANK", "enabled": True},
+    {"id": "events", "glyph": "gift", "tip": "@ui.CHARACTER_QUEST", "enabled": True},
+    {"id": "alchemy", "glyph": "gem", "tip": "@ui.TASKBAR_DRAGON_SOUL", "enabled": False},
+    {"id": "guide", "glyph": "log", "tip": "@ui.GAME_HELP", "enabled": True},
+]
 
 
 def today_bag(cols, rows, start):
@@ -200,11 +221,13 @@ def foundation_bag(cols, rows, start):
         25: (12200, 1, {}), 33: (11200, 1, {}), 42: (25040, 1, {}), 44: (28030, 2, {})})
 
 
-def costume(limits, filled):
+def costume(limits, filled, gender="male"):
     slots = wear_cells(limits, "costume", filled)
     return {"costume": {"table": limits.WEAR_TABLE_ID, "slots": slots,
                         "has_companion": any(cell["name"].startswith("buffi_") for cell in slots),
-                        "attach_right": ATTACH_RIGHT, "wear_on": [1]}}
+                        "attach_right": ATTACH_RIGHT, "wear_on": [1],
+                        # Stage 1: the figure for the character's gender.
+                        "figure": FIGURE_COSTUME[gender]}}
 
 
 def belt(limits, available, items, expanded=True):
@@ -238,7 +261,9 @@ def fixtures():
         ("inventory", "foundation"): inventory(FOUNDATION, 2, FOUNDATION_WEAR, foundation_bag, 2000000000000),
         ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}), 0),
         ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),
+        ("inventory", "rail"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL),
         ("costume", ""): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}),
+        ("costume", "female"): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}, gender="female"),
         # The costume body and hair alone, as legacy's costume window since
         # NOVA-97 (the cut's other costume cells are not ported).
         ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001}),

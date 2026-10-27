@@ -7,7 +7,8 @@
    costume body and hair at their uiscript places, no slot base (the art
    has the frames). The window holds those two alone: its third slot
    (ring1's before the cut) went with the rings to the inventory, and the
-   cut's other costume cells are not ported. */
+   cut's other costume cells are not ported. The modern
+   stage's figure, rune circle and frames are not drawn. */
 
 body.skin-classic.cos
 {
@@ -53,6 +54,8 @@ body.skin-classic.cos .cos__body
 	padding: 0;
 }
 body.skin-classic.cos .cos-grid,
+body.skin-classic.cos.inv--table-new .cos-grid,
+body.skin-classic.cos.inv--table-old .cos-grid,
 body.skin-classic.cos.cos--companion .cos-grid
 {
 	position: absolute;
@@ -60,9 +63,13 @@ body.skin-classic.cos.cos--companion .cos-grid
 	top: 38dp;
 	width: 113dp;
 	height: 129dp;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 	decorator: image("d:/ymir work/ui/costume/costume_bg.jpg" scale-none left top);
 }
-body.skin-classic.cos .cos-divider
+body.skin-classic.cos .cos-divider,
+body.skin-classic.cos.inv--table-new .cos-stage
 {
 	display: none;
 }

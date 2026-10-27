@@ -7,8 +7,26 @@
    buttons 68dp apart at y 33, centered (legacy makes it 75dp per button,
    at least 150). The close button is 30dp from the right edge, y 13. */
 
+/* Legacy's whole name and the legacy gauge in the head; none of the modern
+   head's badge, title and percent, nor its HP bar. */
+body.skin-classic.target .target-board__name
+{
+	display: inline;
+}
+body.skin-classic.target progress.target-board__hp
+{
+	display: block;
+}
+body.skin-classic.target .target-board__badge,
+body.skin-classic.target .target-board__title,
+body.skin-classic.target .target-board__pct,
+body.skin-classic.target .target-board__bar
+{
+	display: none;
+}
 body.skin-classic.target .target-board
 {
+	width: auto;
 	min-width: 250dp;
 	height: 40dp;
 	padding: 0;

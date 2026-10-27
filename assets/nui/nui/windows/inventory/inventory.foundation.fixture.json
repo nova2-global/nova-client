@@ -1245,6 +1245,11 @@
 		],
 		"bag_on": [
 			1
-		]
+		],
+		"figure": "/nui/figures/knight.png",
+		"stat_attack": "1048-1166",
+		"stat_defence": "642",
+		"stat_magic": "236-252",
+		"rail": []
 	}
 }

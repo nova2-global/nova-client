@@ -1570,6 +1570,19 @@ class SkillMotions(unittest.TestCase):
 						self.assertEqual([folder + "skill/" + self.GUILD_MOTIONS[skill]],
 						                 race.general(number, MOTION_SKILL + int(index)))
 
+	def test_every_motion_the_race_loaders_register_is_in_the_content(self):
+		"""CRaceData::RegisterMotionData logs an error and registers nothing
+		for a file the client can't open. The cut's sage grade asked for 64
+		<skill>_5.msa that NEW's content lacked (L1-D1: 64 syserr lines at
+		every login, 32 per race model). Until the art import (H5) brings
+		OLD's, each is NEW's own effective <skill>_4.msa."""
+		import old_content
+		files = old_content.published_files()
+		race = RaceMotions(self)
+		registered = set(name for motions in race.motions.values() for name, _ in motions)
+		self.assertGreater(len(registered), 900)
+		self.assertEqual([], sorted(name for name in registered if name.lower() not in files))
+
 
 if __name__ == "__main__":
 	unittest.main()

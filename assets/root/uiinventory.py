@@ -22,6 +22,23 @@ import nui_windows
 
 ITEM_FLAG_APPLICABLE = 1 << 14
 
+# The money slot (uiscript Money_Slot: parameter_slot_05, 130 px, the text
+# right-aligned 3 px from its right edge) holds a purse of up to 11 digits
+# with its unit, "99.999.999.999 Yang" (120 px in Tahoma 12). 12 digits with
+# the unit reach the slot's left edge and the cut's GOLD_MAX (2e12) runs 11 px
+# past it, under the coin icon; from 12 digits the slot shows the amount alone
+# (2.000.000.000.000 is 107 px), and the coin icon says it is yang.
+MONEY_SLOT_UNIT_LIMIT = 10 ** 11
+
+
+def MoneySlotText(money):
+	"""The money slot's text: localeInfo.NumberToMoneyString while the unit
+	fits, then the amount with the same points and no unit."""
+	if money < MONEY_SLOT_UNIT_LIMIT:
+		return localeInfo.NumberToMoneyString(money)
+	return "{:,}".format(money).replace(",", ".")
+
+
 class CostumeWindow(ui.ScriptWindow):
 
 	def __init__(self, wndInventory):
@@ -632,7 +649,7 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def RefreshStatus(self):
 		money = player.GetElk()
-		self.wndMoney.SetText(localeInfo.NumberToMoneyString(money))
+		self.wndMoney.SetText(MoneySlotText(money))
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem

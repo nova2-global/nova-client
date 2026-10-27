@@ -485,6 +485,73 @@ class Money64(unittest.TestCase):
 		self.assertEqual(12, window.dlgPickMoney.max)
 
 
+# Tahoma at 12 px (UI_DEF_FONT in every locale) as the client lays it out:
+# FreeType's hinted advances, which GrpFontTexture.cpp rounds up, and what
+# the live frames measure (S3-money: "5.352.360.737 Yang" is 113 px wide,
+# "999.999.999.999 Yang" 127 px).
+TAHOMA_12 = dict([(digit, 7) for digit in "0123456789"] + [(".", 4), (" ", 4), ("Y", 7), ("a", 6), ("n", 7), ("g", 7)])
+
+
+def sub_image_width(path):
+	"""The width of a .sub image the uiscripts name as "d:/ymir work/...",
+	from the file in the asset groups."""
+	import glob
+	found = glob.glob(os.path.join(REPO, "assets", "*", path.replace("d:/", "", 1)))
+	values = dict(line.split(None, 1) for line in read(found[0]).split("\n") if " " in line.strip())
+	return int(values["right"]) - int(values["left"])
+
+
+class MoneySlot(unittest.TestCase):
+	"""The legacy inventory's money slot holds the cut's purses (GOLD_MAX
+	2,000,000,000,000, NOVA-96). The slot is parameter_slot_05 with the text
+	right-aligned 3 px from its right edge; with its unit, a 13-digit purse
+	is 138 px wide in the slot's 130, so its first digit ran under the coin
+	icon left of the slot (live run RUN-A-D2: "999.999.999.999 Yang" shown
+	for 1,999,999,999,999)."""
+
+	GOLD_MAX = 2000000000000
+
+	def slot(self, path):
+		"""(the slot's width, the text's offset from its right edge)."""
+		world = LegacyWorld()
+		with world:
+			window = read_uiscript(path)["window"]
+		slot, text = child(window, "Money_Slot"), child(window, "Money")
+		self.assertEqual("right", text["horizontal_align"])
+		self.assertEqual("right", text["text_horizontal_align"])
+		return sub_image_width(slot["default_image"]), text["x"]
+
+	def shown(self, amounts):
+		"""The money text the legacy inventory shows for each amount."""
+		world = LegacyWorld()
+		window = make_inventory(world)
+		texts = []
+		for amount in amounts:
+			world.game.elk = amount
+			with world, quiet():
+				window.RefreshStatus()
+			texts.append(window.wndMoney.GetText())
+		return texts
+
+	def test_every_purse_fits_the_slot_with_the_right_margin_on_the_left_too(self):
+		amounts = [10 ** digits - 1 for digits in range(1, 14)] + [10 ** 11, self.GOLD_MAX]
+		texts = self.shown(amounts)
+		for path in (os.path.join(UISCRIPT, "inventorywindow.py"), os.path.join(LOCALES, "ae", "ui", "inventorywindow.py")):
+			width, margin = self.slot(path)
+			self.assertEqual((130, 3), (width, margin))
+			for amount, text in zip(amounts, texts):
+				with self.subTest(path=path, amount=amount):
+					self.assertLessEqual(margin + sum(TAHOMA_12[c] for c in text) + margin, width, text)
+					self.assertEqual(str(amount), text.split(" ")[0].replace(".", ""), "the whole amount")
+
+	def test_the_unit_stays_while_it_fits(self):
+		locale = support.locale_info("en")
+		amounts = [0, 7, 1234567, 4300000000, 99999999999]
+		self.assertEqual([locale.NumberToMoneyString(amount) for amount in amounts], self.shown(amounts))
+		self.assertEqual(["100.000.000.000", "1.999.999.999.999", "2.000.000.000.000"],
+		                 self.shown([10 ** 11, 1999999999999, self.GOLD_MAX]))
+
+
 class AnyCall(types.ModuleType):
 	"""A C++ module stand-in whose every function does nothing and returns 0."""
 

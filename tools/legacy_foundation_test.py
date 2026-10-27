@@ -660,6 +660,60 @@ class TooltipSockets(unittest.TestCase):
 		self.assertIn(locale.TOOLTIP_MAX_HP(1500), texts, "the attribute after the fourth socket")
 
 
+class TooltipSocketValues(unittest.TestCase):
+	"""An item tooltip with no description widens itself for the stone lines
+	its sockets hold (uitooltip.py __CalculateToolTipWidth). Only a weapon's
+	and an armour's sockets hold stones, as __AppendMetinSlotInfo shows them;
+	1 and 2 are empty sockets, an accessory's sockets count its jewels, a dew
+	keeps its apply, value and time there and a timed costume its end time.
+	The client logs "Cannot find item by <value>" for item.SelectItem of a
+	value that is no item (PythonItemModule.cpp itemSelectItem), and a value
+	that happens to be one measured that item's apply instead (live run
+	RUN-B-D2: a dew 50821 with 15 12 600, OLD's costume 41324 with its end
+	time 1793672524)."""
+
+	SWORD = TooltipSockets.SWORD
+	STONE = TooltipSockets.STONE
+	# Values the dew's sockets hold that are items too: they must not count.
+	OTHER = dict(ITEM_BASE, name="Sword+5", type=1, subtype=0, wear=16, applies=[["APPLY_ATT_SPEED", 22]])
+	DEW = dict(ITEM_BASE, name="Red Dew", type=27, subtype=0, icon="icon/item/50821.tga")
+	COSTUME = dict(ITEM_BASE, name="Crescent Warrior", type=28, subtype=0, wear=1,
+	               limits=[[8, 604800], [0, 0]], icon="icon/item/41324.tga")
+	BRACELET = dict(TooltipSockets.BRACELET, applies=[["APPLY_MAX_HP", 1000]])
+	ITEMS = {10: SWORD, 12: OTHER, 15: OTHER, 28030: STONE, 50821: DEW, 41324: COSTUME, 14000: BRACELET}
+
+	def run_tooltip(self, vnum, sockets, items=None):
+		"""(the item.SelectItem vnums of one AddItemData, the tooltip)."""
+		corpus_tool, world = tooltip_world(self.ITEMS if items is None else items)
+		mark = len(world.game.log)
+		base = {"context": "AddItemData", "vnum": vnum, "sockets": sockets, "attrs": [],
+		        "player": {"level": 150, "race": 0}, "clock": 1700000000}
+		with world:
+			tips, error = corpus_tool.run_case(world, base)
+		self.assertIsNone(error)
+		return [args[0] for name, args in world.game.log[mark:] if name == "item.SelectItem"], tips[0]
+
+	def test_no_socket_value_of_an_item_without_stones_is_selected(self):
+		for vnum, sockets in ((50821, [15, 12, 600, 0]), (50821, [17, 5, 7, 0]), (41324, [1793672524, 2, 0, 0]),
+		                      (14000, [2, 3, 0, 0])):
+			with self.subTest(vnum=vnum, sockets=sockets):
+				selected, tip = self.run_tooltip(vnum, sockets)
+				self.assertEqual([], [value for value in selected if value in sockets], selected)
+				# The same tooltip where no socket value is an item.
+				items = dict((key, row) for key, row in self.ITEMS.items() if key not in sockets or key == vnum)
+				_, alone = self.run_tooltip(vnum, sockets, items)
+				self.assertEqual(alone.toolTipWidth, tip.toolTipWidth, "no other item's apply widened it")
+
+	def test_a_weapon_counts_its_stone_and_not_its_empty_sockets(self):
+		selected, tip = self.run_tooltip(10, [28030, 1, 2, 0])
+		self.assertIn(28030, selected)
+		self.assertNotIn(1, selected)
+		self.assertNotIn(2, selected)
+		self.assertGreater(tip.toolTipWidth, tip.TOOL_TIP_WIDTH, "the stone's line widens it")
+		_, alone = self.run_tooltip(10, [28030, 0, 0, 0])
+		self.assertEqual(alone.toolTipWidth, tip.toolTipWidth, "by the stone alone")
+
+
 
 # OLD's applies 92-108 by OLD's Python names (OLD PythonItemModule.cpp), as
 # the client exports them from the cut on (stageB/contract.md: APPLY 92-108).

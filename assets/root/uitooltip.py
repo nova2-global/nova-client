@@ -1607,8 +1607,17 @@ class ItemToolTip(ToolTip):
 
 		metinSocket = self.metinSlot
 		if metinSocket:
+			# Only the stones count (AddItemData has selected the item): an
+			# empty socket is 1 or 2, and an item without stone sockets keeps
+			# other values in them (a dew its apply, value and time, a timed
+			# item its end time, an accessory its jewel counts). Selected as an
+			# item, such a value logged "Cannot find item by <value>" or
+			# measured whatever item had that number.
+			if not self.__HoldsStones(item.GetItemType(), item.GetItemSubType()):
+				metinSocket = ()
+
 			for socketIndex in metinSocket:
-				if socketIndex:
+				if self.GetMetinItemIndex(socketIndex):
 					item.SelectItem(socketIndex)
 
 					affectType, affectValue = item.GetAffect(0)
@@ -1911,6 +1920,14 @@ class ItemToolTip(ToolTip):
 			return 0
 
 		return number
+
+	def __HoldsStones(self, itemType, itemSubType):
+		"""Whether the item's sockets hold metin stones: a weapon's and an
+		armour's, the items AddItemData shows __AppendMetinSlotInfo for, but
+		not an accessory's, whose sockets count its jewels."""
+		if item.ITEM_TYPE_WEAPON == itemType:
+			return True
+		return item.ITEM_TYPE_ARMOR == itemType and itemSubType not in (item.ARMOR_WRIST, item.ARMOR_NECK, item.ARMOR_EAR)
 
 	def __AppendAccessoryMetinSlotInfo(self, metinSlot, mtrlVnum):		
 		ACCESSORY_SOCKET_MAX_SIZE = 3		

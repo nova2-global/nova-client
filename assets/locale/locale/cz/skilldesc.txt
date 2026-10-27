@@ -21,12 +21,12 @@
 139	HORSE	Hnutí síly			Napadej z koně všechny nepřátele (od Lv. 55).	Jezdecké schopnosti				ATTACK_SKILL|HORSE_SKILL|WEAPON_LIMITATION	SWORD|TWO_HANDED|DAGGER|DOUBLE_SWORD|BOW|FAN|BELL	splash	123	1							
 140	HORSE	Smršť šípů			Vystřeluj z koně šípy na nepřátele (od Lv. 50)	Jezdecké schopnosti				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	121	1	5						
 151	GUILD	Dračí oka			Zvýší maximální dračí duch.					PASSIVE		yongan					Max. zvýšení dračího ducha +%.0f	k * 1400			
-152	GUILD	Krev boha draků			Dočasně zvýší tvé maximální ZB.	Pouze válka cechů				ONLY_FOR_GUILD_WAR		gaho	101	1			Max. ZB +%.0f%%	k * 20			
-153	GUILD	Požehnání bohem draků			Dočasně zvýší tvé MB.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		chukbok	102	1			Max. MB +%.0f%%	k * 20			
-154	GUILD	Svatá výzbroj			Zlepší dočasně obranu všech členů cechu.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		seonghwi	103	1			Zlepšení obrany +%.1f%%	k * 10			
-155	GUILD	Zrychlení			Dočasně zvýší tvou rychlost pohybu a útoku.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		gasok	104	1			Zvýšení rychlosti útoků a pohybů +%.1f	k * 30			
-156	GUILD	Hněv boha draků			Zvyš dočasně šanci na kritický úder všech členů cechu.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		bunno	105	1			Zvýšení šance na kritický úder +%.0f%%	k * 50			
-157	GUILD	Pomoc ke kouzlu			Sníží dočasně čas obnovení pro všechny členy cechu.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		jumunsul	106	1			Zvýšení rychlosti kouzel +%.0f%%	k * 50			
+152	GUILD	Krev boha draků			Dočasně zvýší tvé maximální ZB.	Pouze válka cechů				ONLY_FOR_GUILD_WAR		gaho	107	1			Max. ZB +%.0f%%	k * 20			
+153	GUILD	Požehnání bohem draků			Dočasně zvýší tvé MB.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		chukbok	108	1			Max. MB +%.0f%%	k * 20			
+154	GUILD	Svatá výzbroj			Zlepší dočasně obranu všech členů cechu.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		seonghwi	109	1			Zlepšení obrany +%.1f%%	k * 10			
+155	GUILD	Zrychlení			Dočasně zvýší tvou rychlost pohybu a útoku.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		gasok	110	1			Zvýšení rychlosti útoků a pohybů +%.1f	k * 30			
+156	GUILD	Hněv boha draků			Zvyš dočasně šanci na kritický úder všech členů cechu.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		bunno	111	1			Zvýšení šance na kritický úder +%.0f%%	k * 50			
+157	GUILD	Pomoc ke kouzlu			Sníží dočasně čas obnovení pro všechny členy cechu.	Pouze ve válce cechů				ONLY_FOR_GUILD_WAR		jumunsul	112	1			Zvýšení rychlosti kouzel +%.0f%%	k * 50			
 16	WARRIOR	Průraz	Tlaková vlna	Útok Tsunami	Napadáš nepřítele frontálně.	Čelní prorážecí útok				ATTACK_SKILL|CAN_CHANGE_DIRECTION|NEED_TARGET|WEAPON_LIMITATION	SWORD|TWO_HANDED	gigongcham	16	4			Hodnota útoku %.0f-%.0f	2.3*MinATK + (MinATK*4 + 4*STR + CON)*SkillPoint	2.3*MaxATK + (MaxATK*4 + 4*STR + CON)*SkillPoint		
 17	WARRIOR	Prudká rána	Prudká tygří rána	Prudká dračí rána	Napadáš nepřítele frontálně	Prorážecí útok	Útok na vícero cílů			ATTACK_SKILL|CAN_CHANGE_DIRECTION|WEAPON_LIMITATION	SWORD|TWO_HANDED	gyeoksan	17	4			Hodnota útoku %.0f-%.0f	2.3*MinATK + (3*MinATK + 4*STR + 3*CON)*SkillPoint	2.3*MaxATK + (3*MaxATK + 4*STR + 3*CON)*SkillPoint		
 18	WARRIOR	Dupnutí	Dupnutí lva	Dupnutí nosorožce	Poval několik nepřátel	Prorážecí útok	Šance na bezvědomí			ATTACK_SKILL|STANDING_SKILL		daejin	18	4			Hodnota útoku %.0f-%.0f	2*MinATK + (2*MinATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	2*MaxATK + (2*MaxATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	Šance na bezvědomí: %.0f%%	(100 + 1000*SkillPoint/6)/10

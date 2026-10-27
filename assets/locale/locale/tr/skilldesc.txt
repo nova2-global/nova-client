@@ -21,12 +21,12 @@
 139	HORSE	Güç Dalgası			Tüm düşmanlara at üzerinden saldır.	Binicilik Becerisi				ATTACK_SKILL|HORSE_SKILL|WEAPON_LIMITATION	SWORD|TWO_HANDED|DAGGER|DOUBLE_SWORD|BOW|FAN|BELL	splash	123	1	 						
 140	HORSE	Ok Sağanağı			Düşmanlara at üzerinden ok at.	Binicilik Becerisi				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	121	1	5	 					
 151	GUILD	Ejderha Gözleri			Maksimum Ejderha hayaletini arttırır.					PASSIVE		yongan					Maks. Ejderha hayaleti yükseltimi +%.0f	k * 1400	 		
-152	GUILD	Ejderha Tanrısı Kanı			Belli bir süre boyunca maks. HP artışı sağlar.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		gaho	101	1			Maka. HP +%.0f%%	k * 20	 		
-153	GUILD	Ejderha Tanrısı Kutsaması			Belli bir süre boyunca maks. SP artışı sağlar.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		chukbok	102	1			Maks. SP +%.0f%%	k * 20	 		
-154	GUILD	Kutsal Zırh			Belli bir süre boyunca savunmanı arttır.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		seonghwi	103	1			Savunma +%.1f%%	k * 10	 		
-155	GUILD	Hızlandırma			Belli bir süre boyunca saldırı ve hareket hızını arttırır.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		gasok	104	1			Saldırı ve hareket hızı +%.1f	k * 30	 		
-156	GUILD	Ejderha Tanrısı Öfkesi			Belli bir süre boyunca kritik vuruş şansını artır.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		bunno	105	1			Kritik vuruş şansı +%.0f%%	k * 50	 		
-157	GUILD	Büyü Desteği			Belli bir süre boyunca becerilerinin yüklenme süresini azalt.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		jumunsul	106	1			Yüklenme süresi -%.0f%%	k * 50	 		
+152	GUILD	Ejderha Tanrısı Kanı			Belli bir süre boyunca maks. HP artışı sağlar.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		gaho	107	1			Maka. HP +%.0f%%	k * 20	 		
+153	GUILD	Ejderha Tanrısı Kutsaması			Belli bir süre boyunca maks. SP artışı sağlar.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		chukbok	108	1			Maks. SP +%.0f%%	k * 20	 		
+154	GUILD	Kutsal Zırh			Belli bir süre boyunca savunmanı arttır.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		seonghwi	109	1			Savunma +%.1f%%	k * 10	 		
+155	GUILD	Hızlandırma			Belli bir süre boyunca saldırı ve hareket hızını arttırır.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		gasok	110	1			Saldırı ve hareket hızı +%.1f	k * 30	 		
+156	GUILD	Ejderha Tanrısı Öfkesi			Belli bir süre boyunca kritik vuruş şansını artır.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		bunno	111	1			Kritik vuruş şansı +%.0f%%	k * 50	 		
+157	GUILD	Büyü Desteği			Belli bir süre boyunca becerilerinin yüklenme süresini azalt.	Sadece Lonca Savaşında				ONLY_FOR_GUILD_WAR		jumunsul	112	1			Yüklenme süresi -%.0f%%	k * 50	 		
 16	WARRIOR	Ruh Vuruşu	Şok Dalgası	Tsunami-saldırısı	Düşmana doğrudan saldırı.	Önden Sıçrama Saldırısı				ATTACK_SKILL|CAN_CHANGE_DIRECTION|NEED_TARGET|WEAPON_LIMITATION	SWORD|TWO_HANDED	gigongcham	16	4			Saldırı Gücü %.0f-%.0f	2.3*MinATK + (MinATK*4 + 4*GÜÇ + CON)*SkillPoint	2.3*MaxATK + (MaxATK*4 + 4*GÜÇ + CON)*SkillPoint	 	
 17	WARRIOR	Şiddetli Vuruş	Kaplan vuruşu	Ejderha Vuruşu	Düşmana doğrudan saldırı.	Güçlü Sıçrama Saldırısı	Çoklu Hedefe Saldırı			ATTACK_SKILL|CAN_CHANGE_DIRECTION|WEAPON_LIMITATION	SWORD|TWO_HANDED	gyeoksan	17	4			Saldırı Gücü %.0f-%.0f	2.3*MinATK + (3*MinATK + 4*GÜÇ + 3*CON)*SkillPoint	2.3*MaxATK + (3*MaxATK + 4*GÜÇ + 3*CON)*SkillPoint	 	
 18	WARRIOR	Güçlü Vuruş	Aslan Vuruşu	Rhino Vuruşu	Birden çok düşmanı uzaklaştıran vuruş.	Güçlü Sıçrama Saldırısı	Bayılma olasılığı			ATTACK_SKILL|STANDING_SKILL		daejin	18	4			Saldırı Gücü %.0f-%.0f	2*MinATK + (2*MinATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	2*MaxATK + (2*MaxATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	Bayılma şansı: %.0f%%	(100 + 1000*SkillPoint/6)/10

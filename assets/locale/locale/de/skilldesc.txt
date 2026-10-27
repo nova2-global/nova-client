@@ -21,12 +21,12 @@
 139	HORSE	Kraftwelle			Attackiere alle Feinde vom Pferd aus. (ab Lv.55) 	Reiterliches Können				ATTACK_SKILL|HORSE_SKILL|WEAPON_LIMITATION	SWORD|TWO_HANDED|DAGGER|DOUBLE_SWORD|BOW|FAN|BELL	splash	123	1							
 140	HORSE	Pfeilhagel			Verschieße Pfeile, während du reitest. (ab Lv.50)	Reiterliches Können				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	121	1	5						
 151	GUILD	Drachenaugen			Erhöhe den maximalen Drachengeist.					PASSIVE		yongan					Max. Drachengeisterhöhung +%.0f	k * 1400			
-152	GUILD	Blut des Drachengotts			Erhöhe eine Zeit lang deine max. TP.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		gaho	101	1			Max. TP +%.0f%%	k * 20			
-153	GUILD	Segnung des Drachengotts			Erhöhe eine Zeit lang deine max. MP.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		chukbok	102	1			Max. MP +%.0f%%	k * 20			
-154	GUILD	Heilige Rüstung			Verbessere eine Zeit lang deine Verteidigung.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		seonghwi	103	1			Verteidigung +%.1f%%	k * 10			
-155	GUILD	Beschleunigung			Erhöhe eine Zeit lang deine Angriffs- und Bewegungsgeschwindigkeit.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		gasok	104	1			Angriffs- und Bewegungsgeschw. +%.1f	k * 30			
-156	GUILD	Wut des Drachengottes			Vergrößere eine Zeit lang deine Chance auf einen kritischen Treffer.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		bunno	105	1			Chance auf kritischen Treffer +%.0f%%	k * 50			
-157	GUILD	Zauberhilfe			Verringere eine Zeit lang die Aufladezeit deiner Fertigkeiten.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		jumunsul	106	1			Aufladezeit -%.0f%%	k * 50			
+152	GUILD	Blut des Drachengotts			Erhöhe eine Zeit lang deine max. TP.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		gaho	107	1			Max. TP +%.0f%%	k * 20			
+153	GUILD	Segnung des Drachengotts			Erhöhe eine Zeit lang deine max. MP.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		chukbok	108	1			Max. MP +%.0f%%	k * 20			
+154	GUILD	Heilige Rüstung			Verbessere eine Zeit lang deine Verteidigung.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		seonghwi	109	1			Verteidigung +%.1f%%	k * 10			
+155	GUILD	Beschleunigung			Erhöhe eine Zeit lang deine Angriffs- und Bewegungsgeschwindigkeit.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		gasok	110	1			Angriffs- und Bewegungsgeschw. +%.1f	k * 30			
+156	GUILD	Wut des Drachengottes			Vergrößere eine Zeit lang deine Chance auf einen kritischen Treffer.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		bunno	111	1			Chance auf kritischen Treffer +%.0f%%	k * 50			
+157	GUILD	Zauberhilfe			Verringere eine Zeit lang die Aufladezeit deiner Fertigkeiten.	Nur Gildenkrieg				ONLY_FOR_GUILD_WAR		jumunsul	112	1			Aufladezeit -%.0f%%	k * 50			
 16	WARRIOR	Durchschlag	Druckwelle	Tsunami-Angriff	Du greifst die Feinde frontal an.	Frontaler Durchschlag-Angriff				ATTACK_SKILL|CAN_CHANGE_DIRECTION|NEED_TARGET|WEAPON_LIMITATION	SWORD|TWO_HANDED	gigongcham	16	4			Angriffswert %.0f-%.0f	2.3*MinATK + (MinATK*4 + 4*STR + CON)*SkillPoint	2.3*MaxATK + (MaxATK*4 + 4*STR + CON)*SkillPoint		
 17	WARRIOR	Heftiges Schlagen	Heftiger Tigerschlag	Heftiger Drachenschlag	Du greifst die Feinde frontal an.	Durchschlag-Angriff	Angriff auf mehrere Ziele			ATTACK_SKILL|CAN_CHANGE_DIRECTION|WEAPON_LIMITATION	SWORD|TWO_HANDED	gyeoksan	17	4			Angriffswert %.0f-%.0f	2.3*MinATK + (3*MinATK + 4*STR + 3*CON)*SkillPoint	2.3*MaxATK + (3*MaxATK + 4*STR + 3*CON)*SkillPoint		
 18	WARRIOR	Stampfer	Löwenstampfer	Rhinozerosstampfer	Wirf mehrere Feinde um. 	Durchschlag-Angriff	Ohnmachtschance			ATTACK_SKILL|STANDING_SKILL		daejin	18	4			Angriffswert %.0f-%.0f	2*MinATK + (2*MinATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	2*MaxATK + (2*MaxATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	Ohnmachtschance %.0f%%	(100 + 1000*SkillPoint/6)/10

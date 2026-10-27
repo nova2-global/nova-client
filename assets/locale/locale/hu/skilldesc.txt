@@ -21,12 +21,12 @@
 139	HORSE	Erő hullám			Támadj meg minden ellenséget lóról. (55. szinttől)	Lovagló tudás				ATTACK_SKILL|HORSE_SKILL|WEAPON_LIMITATION	SWORD|TWO_HANDED|DAGGER|DOUBLE_SWORD|BOW|FAN|BELL	splash	123	1							
 140	HORSE	Nyílzápor			Nyilazz lóról az elleségre. (50.szinttől)	Lovas tudás				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	121	1	5						
 151	GUILD	Sárkányszem			Növeld a maximális sárkány szellemet.					PASSIVE		yongan					Max. sárkány szellem növelés +%.0f	k * 1400			
-152	GUILD	A Sárkányisten vére			Emeld meg egy időre az összes céhtárs TP-jét	Csak céh csata				ONLY_FOR_GUILD_WAR		gaho	101	1			Max. TP növelés +%.0f%%	k * 20			
-153	GUILD	A Sárkányisten áldása			Növeld meg minden céhtag MP-jét egy időre.	Csak céh csta				ONLY_FOR_GUILD_WAR		chukbok	102	1			Max. MP növekedés+%.0f%%	k * 20			
-154	GUILD	Szent felszerelés			Egy időre fokozza minden céhtag védelmét	Csak céh csata				ONLY_FOR_GUILD_WAR		seonghwi	103	1			Verteidigungsverbesserung +%.1f%%	k * 10			
-155	GUILD	Gyorsulás			Növeld meg egy időre minden céhtag számára a támadó- és mozgási sebességet.	Csak céh csata				ONLY_FOR_GUILD_WAR		gasok	104	1			Támadó- és mozgási sebesség növekedés +%.1f	k * 30			
-156	GUILD	A Sárkányisten dühe			Növeld meg egy időre minden céhtag fontos esélyét.	Csak céh csata				ONLY_FOR_GUILD_WAR		bunno	105	1			Fontos esély növekedés +%.0f%%	k * 50			
-157	GUILD	Varázs segély			Csökkentsd egy időre minden céhtag feltöltési idejét.	Csak céh csata				ONLY_FOR_GUILD_WAR		jumunsul	106	1			Varázsló sebesség növekedés +%.0f%%	k * 50			
+152	GUILD	A Sárkányisten vére			Emeld meg egy időre az összes céhtárs TP-jét	Csak céh csata				ONLY_FOR_GUILD_WAR		gaho	107	1			Max. TP növelés +%.0f%%	k * 20			
+153	GUILD	A Sárkányisten áldása			Növeld meg minden céhtag MP-jét egy időre.	Csak céh csta				ONLY_FOR_GUILD_WAR		chukbok	108	1			Max. MP növekedés+%.0f%%	k * 20			
+154	GUILD	Szent felszerelés			Egy időre fokozza minden céhtag védelmét	Csak céh csata				ONLY_FOR_GUILD_WAR		seonghwi	109	1			Verteidigungsverbesserung +%.1f%%	k * 10			
+155	GUILD	Gyorsulás			Növeld meg egy időre minden céhtag számára a támadó- és mozgási sebességet.	Csak céh csata				ONLY_FOR_GUILD_WAR		gasok	110	1			Támadó- és mozgási sebesség növekedés +%.1f	k * 30			
+156	GUILD	A Sárkányisten dühe			Növeld meg egy időre minden céhtag fontos esélyét.	Csak céh csata				ONLY_FOR_GUILD_WAR		bunno	111	1			Fontos esély növekedés +%.0f%%	k * 50			
+157	GUILD	Varázs segély			Csökkentsd egy időre minden céhtag feltöltési idejét.	Csak céh csata				ONLY_FOR_GUILD_WAR		jumunsul	112	1			Varázsló sebesség növekedés +%.0f%%	k * 50			
 16	WARRIOR	Áthatolás	Nyomás hullám	Cunami támadás	Szemből támadsz az ellenségre.	Frontális átütő támadás				ATTACK_SKILL|CAN_CHANGE_DIRECTION|NEED_TARGET|WEAPON_LIMITATION	SWORD|TWO_HANDED	gigongcham	16	4			Támadó erő %.0f-%.0f	2.3*MinATK + (MinATK*4 + 4*STR + CON)*SkillPoint	2.3*MaxATK + (MaxATK*4 + 4*STR + CON)*SkillPoint		
 17	WARRIOR	Heves csapás	Heves tigris csapás	Heves sárkány csapás	Frontálisan támadsz az ellenségre	Átütő támadás	Támadás több cél ellen			ATTACK_SKILL|CAN_CHANGE_DIRECTION|WEAPON_LIMITATION	SWORD|TWO_HANDED	gyeoksan	17	4			Támadó erő %.0f-%.0f	2.3*MinATK + (3*MinATK + 4*STR + 3*CON)*SkillPoint	2.3*MaxATK + (3*MaxATK + 4*STR + 3*CON)*SkillPoint		
 18	WARRIOR	Dübörgés	Oroszlán dübörgés	Orrszarvú dübörgés	Teríts le több ellenséget.	Átütő támadás	Ájulás esély			ATTACK_SKILL|STANDING_SKILL		daejin	18	4			Támadó érték %.0f-%.0f	2*MinATK + (2*MinATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	2*MaxATK + (2*MaxATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	Ájulás esély: %.0f%%	(100 + 1000*SkillPoint/6)/10

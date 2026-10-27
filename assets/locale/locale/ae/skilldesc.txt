@@ -21,12 +21,12 @@
 139	HORSE	قوة الموجة			هاجم الأعداء من على حصانك. (من مستوى 55)	إتقان ركوب الخيل				ATTACK_SKILL|HORSE_SKILL|WEAPON_LIMITATION	SWORD|TWO_HANDED|DAGGER|DOUBLE_SWORD|BOW|FAN|BELL|CLAW	splash	123	1								
 140	HORSE	سهام منهمرة			أرمِ بالسهام على الأعداء من على الحصان (إبتداء من مستوى 50)	المقدرة على ركوب الخيل				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	121	1	5							
 151	GUILD	عيون التنين			يزيد من القوة القصوى لشبح التنين.					PASSIVE		yongan					زيادة قوة شبح التنين. +%.0f	k * 1400				
-152	GUILD	دم التنين الأسطوري			يزيد من نقاط حياتك القصوى	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		gaho	101	1			نقاط الحياة القصوى +%.0f%%	k * 20				
-153	GUILD	بركة التنين الأسطوري			ارفع نقاط أسلوبك القصوى لمدة محدودة	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		chukbok	102	1			نقاط الأسلوب القصوى +%.0f%%	k * 20				
-154	GUILD	درع مقدس			حسِّن من قوتك الدفاعية لمدة محدودة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		seonghwi	103	1			الدفاع +%.1f%%	k * 10				
-155	GUILD	زيادة السرعة			ارفع من سرعة هجومك وتحركك لمدة محدودة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		gasok	104	1			سرعة الهجوم و التحرك. +%.1f	k * 15				
-156	GUILD	غضب التنين الأسطوري			الرفع في فرص تحقيقك لضربات حرجة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		bunno	105	1			زيادة فرص الضربات الحرجة +%.0f%%	k * 50				
-157	GUILD	مساعدة السحر			تُخفض من مدة تحميل مهاراتك لمدة معينة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		jumunsul	106	1			مدة التحميل -%.0f%%	k * 50				
+152	GUILD	دم التنين الأسطوري			يزيد من نقاط حياتك القصوى	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		gaho	107	1			نقاط الحياة القصوى +%.0f%%	k * 20				
+153	GUILD	بركة التنين الأسطوري			ارفع نقاط أسلوبك القصوى لمدة محدودة	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		chukbok	108	1			نقاط الأسلوب القصوى +%.0f%%	k * 20				
+154	GUILD	درع مقدس			حسِّن من قوتك الدفاعية لمدة محدودة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		seonghwi	109	1			الدفاع +%.1f%%	k * 10				
+155	GUILD	زيادة السرعة			ارفع من سرعة هجومك وتحركك لمدة محدودة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		gasok	110	1			سرعة الهجوم و التحرك. +%.1f	k * 15				
+156	GUILD	غضب التنين الأسطوري			الرفع في فرص تحقيقك لضربات حرجة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		bunno	111	1			زيادة فرص الضربات الحرجة +%.0f%%	k * 50				
+157	GUILD	مساعدة السحر			تُخفض من مدة تحميل مهاراتك لمدة معينة.	حرب الرابطة فقط				ONLY_FOR_GUILD_WAR		jumunsul	112	1			مدة التحميل -%.0f%%	k * 50				
 16	WARRIOR	ضربة خارقة	ضغط موجي	هجوم تسونامي	هاجم الأعداء من الأمام.	هجوم جسدي عن قرب	هجوم بتأثير أمامي	إسقاط الخصم	يمكن تقويتها عبر القوة، الحيوية	ATTACK_SKILL|CAN_CHANGE_DIRECTION|NEED_TARGET|WEAPON_LIMITATION|IGNORE_BLOCK	SWORD|TWO_HANDED	gigongcham	16	4			قيمة الهجوم %.0f-%.0f	2.3*MinATK + (MinATK*4 + 4*STR + CON)*SkillPoint	2.3*MaxATK + (MaxATK*4 + 4*STR + CON)*SkillPoint			
 17	WARRIOR	ضرب مبرح	ضرب نمر مبرح	ضرب تنين مبرح	هاجم الأعداء من الأمام.	هجوم جسدي عن قرب	هجوم بتأثير أمامي	يمكن تقويتها عبر القوة، الحيوية		ATTACK_SKILL|CAN_CHANGE_DIRECTION|WEAPON_LIMITATION|IGNORE_BLOCK	SWORD|TWO_HANDED	gyeoksan	17	4			قيمة الهجوم %.0f-%.0f	2.3*MinATK + (3*MinATK + 4*STR + 3*CON)*SkillPoint	2.3*MaxATK + (3*MaxATK + 4*STR + 3*CON)*SkillPoint			
 18	WARRIOR	مهرول	مهرول الأسد	مهرول وحيد القرن	إرمي العديد من الأعداء.	هجوم جسدي عن قرب	تأثير على مساحة	فرصة الإغماء	يمكن تقويتها عبر القوة، الحيوية، المناورة	ATTACK_SKILL|STANDING_SKILL|IGNORE_BLOCK		daejin	18	4			قيمة الهجوم %.0f-%.0f	2*MinATK + (2*MinATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	2*MaxATK + (2*MaxATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	فرصة الإغماء: %.0f%%	(100 + 1000*SkillPoint/6)/10	

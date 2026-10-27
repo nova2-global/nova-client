@@ -21,12 +21,12 @@
 139	HORSE	Styrkens bølge			Angriber alle fjender fra hesten.(mindst Lvl.55) 	Evnen				ATTACK_SKILL|HORSE_SKILL|WEAPON_LIMITATION	SWORD|TWO_HANDED|DAGGER|DOUBLE_SWORD|BOW|FAN|BELL	splash	123	1							
 140	HORSE	Pileregn			Skyd med pil fra hesten. (mindst Lvl. 50)	Evnen				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	121	1	5						
 151	GUILD	Drageøje			Forøger den maksimale drageånd.					PASSIVE		yongan					Max. drageånds forøgelse +%.0f	k * 1400			
-152	GUILD	Dragegudens blod			Forøger i kort tid Ordensmedlemmernes maksimale HP.	Kun Ordens-krig				ONLY_FOR_GUILD_WAR		gaho	101	1			Max. HP +%.0f%%	k * 20			
-153	GUILD	Dragegudens velsignelse			Forøger i kort tid Ordensmedlemmernes maksimale MP.	Kun Ordens-krig				ONLY_FOR_GUILD_WAR		chukbok	102	1			Maksimale MP +%.0f%%	k * 20			
-154	GUILD	Hellig rustning			Forbedrer for kort tid Ordensmedlemmernes forsvar.	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		seonghwi	103	1			Forsvar +%.1f%%	k * 10			
-155	GUILD	Acceleration			Forøger i kort tid Ordensmedlemmernes angrebs- og bevægelseshastighed.	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		gasok	104	1			Angrebs og bevægelseshastighed +%.1f	k * 30			
-156	GUILD	Dragegudens vrede			Forøger i kort tid gruppemedlemmernes chance for at slå et kritisk hit.	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		bunno	105	1			Kritisk hit chance +%.0f%%	k * 50			
-157	GUILD	Magihjælp			Sænker nedkølingstiden i en periode. 	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		jumunsul	106	1			Nedkølingstid -%.0f%%	k * 50			
+152	GUILD	Dragegudens blod			Forøger i kort tid Ordensmedlemmernes maksimale HP.	Kun Ordens-krig				ONLY_FOR_GUILD_WAR		gaho	107	1			Max. HP +%.0f%%	k * 20			
+153	GUILD	Dragegudens velsignelse			Forøger i kort tid Ordensmedlemmernes maksimale MP.	Kun Ordens-krig				ONLY_FOR_GUILD_WAR		chukbok	108	1			Maksimale MP +%.0f%%	k * 20			
+154	GUILD	Hellig rustning			Forbedrer for kort tid Ordensmedlemmernes forsvar.	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		seonghwi	109	1			Forsvar +%.1f%%	k * 10			
+155	GUILD	Acceleration			Forøger i kort tid Ordensmedlemmernes angrebs- og bevægelseshastighed.	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		gasok	110	1			Angrebs og bevægelseshastighed +%.1f	k * 30			
+156	GUILD	Dragegudens vrede			Forøger i kort tid gruppemedlemmernes chance for at slå et kritisk hit.	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		bunno	111	1			Kritisk hit chance +%.0f%%	k * 50			
+157	GUILD	Magihjælp			Sænker nedkølingstiden i en periode. 	Kun Ordenskrig				ONLY_FOR_GUILD_WAR		jumunsul	112	1			Nedkølingstid -%.0f%%	k * 50			
 16	WARRIOR	Gennemgående slag	Trykbølge	Tsunami-angreb	Du angriber fjenden frontalt.	Frontalt angreb				ATTACK_SKILL|CAN_CHANGE_DIRECTION|NEED_TARGET|WEAPON_LIMITATION	SWORD|TWO_HANDED	gigongcham	16	4			Angrebsværdi %.0f-%.0f	2.3*MinATK + (MinATK*4 + 4*STR + CON)*SkillPoint	2.3*MaxATK + (MaxATK*4 + 4*STR + CON)*SkillPoint		
 17	WARRIOR	Voldsomme stød	Voldsomme tigerstød	Voldsomme dragestød	Du angriber fjenden frontalt	Gennembruds angreb	Angreb på flere fjender			ATTACK_SKILL|CAN_CHANGE_DIRECTION|WEAPON_LIMITATION	SWORD|TWO_HANDED	gyeoksan	17	4			Angrebsværdi %.0f-%.0f	2.3*MinATK + (3*MinATK + 4*STR + 3*CON)*SkillPoint	2.3*MaxATK + (3*MaxATK + 4*STR + 3*CON)*SkillPoint		
 18	WARRIOR	Trampning	Løvens trampning	Rhinoceros trampning	Stød mod flere fjender	Gennembruds-angreb	Sandsynlighed for besvimelse			ATTACK_SKILL|STANDING_SKILL		daejin	18	4			Angrebsstyrke %.0f-%.0f	2*MinATK + (2*MinATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	2*MaxATK + (2*MaxATK + 2*DEX + 2*CON + 4*STR)*SkillPoint	Sandsynlighed for besvimelses %.0f%%	(100 + 1000*SkillPoint/6)/10

@@ -9,8 +9,10 @@ exports from the cut on). Run from tools/:
 The NovaUI windows subclass these legacy classes; tools/nui_*_test.py test
 those. This file tests what the cut changes in the legacy code itself.
 """
+import collections
 import contextlib
 import io
+import itertools
 import os
 import re
 import sys
@@ -1427,6 +1429,146 @@ class QuickSlotRefusal(unittest.TestCase):
 		self.assertTrue(namespace["LoadLocaleData"](), errors)
 		self.assertEqual([(1, read_locale("de")["QUICKSLOT_REGISTER_DISABLE_ITEM"][0])],
 		                 self.notify(namespace, "QUICKSLOT_REGISTER_DISABLE_ITEM"))
+
+
+# The cut's skill constants (nova-client-src src/UserInterface/PythonSkill.h:145-147,
+# 8fbd777): OLD's sage grade is a fifth effect grade, its motions 25 indices above
+# the perfect master's. chr.MOTION_SKILL is CRaceMotionData::NAME_SKILL
+# (src/GameLib/RaceMotionData.h:98); every other motion name lies below it.
+CUT_SKILL = {"SKILL_EFFECT_COUNT": 5, "SKILL_GRADEGAP": 25}
+MOTION_SKILL = 50
+
+
+class Numbered(AnyCall):
+	"""A C++ module stand-in whose every upper-case name is a constant of its
+	own, numbered from 1 in the order the code asks (the motion modes apart),
+	and every other name a function that does nothing."""
+
+	def __init__(self, name):
+		AnyCall.__init__(self, name)
+		self._numbers = (itertools.count(1), itertools.count(1))
+
+	def __getattr__(self, name):
+		if name.isupper() and not name.startswith("__"):
+			value = next(self._numbers[name.startswith("MOTION_MODE_")])
+			setattr(self, name, value)
+			return value
+		return AnyCall.__getattr__(self, name)
+
+
+class RaceMotions(object):
+	"""What assets/root/playersettingmodule.py's four race loaders
+	(LoadGameData "WARRIOR", "ASSASSIN", "SURA" and "SHAMAN") register, the
+	module run whole over stand-ins of the C++ modules with the cut's skill
+	constants, for the length of `test`:
+	- .motions[(race, mode, index)]: [file, weight] in the order chrmgr got
+	  them, the file as chrmgr names it (SetPathName's folder and the name),
+	  the weight as RegisterCacheMotionData or SetMotionRandomWeight set it;
+	- .folders[race]: the race's folder ("d:/ymir work/pc2/shaman/");
+	- .chr: the chr stand-in, with the constants the module used."""
+
+	RACE_LOADERS = ("WARRIOR", "ASSASSIN", "SURA", "SHAMAN")
+	C_MODULES = ("chr", "chrmgr", "skill", "net", "item", "player", "effect", "constInfo", "localeInfo", "emotion", "app")
+
+	def __init__(self, test, skill_constants=CUT_SKILL):
+		from unittest import mock
+		patcher = mock.patch.dict(sys.modules)
+		patcher.start()
+		test.addCleanup(patcher.stop)
+		modules = dict((name, Numbered(name)) for name in self.C_MODULES)
+		modules["chr"].MOTION_SKILL = MOTION_SKILL
+		for name, value in skill_constants.items():
+			setattr(modules["skill"], name, value)
+		self.motions = collections.OrderedDict()
+		self.folders = {}
+		state = {"race": None, "folder": ""}
+		chrmgr = modules["chrmgr"]
+
+		def select(race):
+			state["race"] = race
+
+		def folder(path):
+			state["folder"] = path
+			if path.endswith("/skill/"):
+				self.folders[state["race"]] = path[:-len("skill/")]
+
+		def register(mode, index, name, weight=0):
+			self.motions.setdefault((state["race"], mode, index), []).append([state["folder"] + name, weight])
+
+		def set_weight(mode, index, sub, weight):
+			self.motions[(state["race"], mode, index)][sub][1] = weight
+		chrmgr.SelectRace, chrmgr.SetPathName = select, folder
+		chrmgr.RegisterCacheMotionData = chrmgr.RegisterMotionData = register
+		chrmgr.SetMotionRandomWeight = set_weight
+		sys.modules.update(modules)
+		self.chr = modules["chr"]
+		namespace = {"__name__": "playerSettingModule"}
+		path = os.path.join(ROOT, "playersettingmodule.py")
+		exec(compile(read(path), path, "exec"), namespace)
+		with quiet():
+			for name in self.RACE_LOADERS:
+				namespace["LoadGameData"](name)
+		below = dict((name, value) for name, value in vars(self.chr).items()
+		             if name.startswith("MOTION_") and not name.startswith("MOTION_MODE_") and name != "MOTION_SKILL")
+		test.assertTrue(below and max(below.values()) < MOTION_SKILL, below)
+
+	def general(self, race, index):
+		"""The files registered at `index` of `race`'s general motion mode."""
+		return [name for name, _ in self.motions.get((race, self.chr.MOTION_MODE_GENERAL, index), ())]
+
+
+def skilldesc_rows(locale):
+	"""The tab-separated fields of a locale's skilldesc.txt, a row per line
+	with a skill number (CPythonSkill::RegisterSkillDesc keeps the empty
+	fields: DESC_TOKEN_TYPE_* index them)."""
+	rows = []
+	for line in read(os.path.join(LOCALES, locale, "skilldesc.txt")).split("\n"):
+		fields = line.split("\t")
+		if fields[0].strip().isdigit():
+			rows.append(fields)
+	return rows
+
+
+SKILLDESC_JOB, SKILLDESC_MOTION_INDEX, SKILLDESC_MOTION_GRADES = 1, 13, 14
+
+
+class SkillMotions(unittest.TestCase):
+	"""The skill motions playersettingmodule.py registers for the four races
+	at the cut's five skill grades (NOVA-97; the sage grade of OLD,
+	L1-D1 of the stage B live run)."""
+
+	# The guild skills' motions (playersettingmodule.py GUILD_SKILL_*), by
+	# the skill that casts each.
+	GUILD_MOTIONS = {152: "guild_yongsinuipi.msa", 153: "guild_yongsinuichukbok.msa", 154: "guild_seonghwigap.msa",
+	                 155: "guild_gasokhwa.msa", 156: "guild_yongsinuibunno.msa", 157: "guild_jumunsul.msa"}
+
+	def test_an_index_with_several_motions_shares_them_out(self):
+		"""CActorInstance::GetRandomMotionKey shares an index's motions out by
+		their weights; with none (RegisterCacheMotionData's default 0) the
+		first one registered always plays. The sage grade's slots 1-6 are
+		MOTION_SKILL+101..106, where NEW kept the guild skills' motions, so
+		once the sage motions load, Blood of Dragon God would cast a warrior's
+		Three-Way Cut. OLD moved the guild skills to 107-112
+		(playerSettingModule.py:62-67)."""
+		race = RaceMotions(self)
+		unshared = dict((key, motions) for key, motions in race.motions.items()
+		                if len(motions) > 1 and sum(weight for _, weight in motions) != 100)
+		self.assertEqual({}, unshared)
+
+	def test_every_locales_guild_skills_cast_the_guild_motions(self):
+		"""skilldesc.txt's motion index (CPythonSkill: NAME_SKILL plus it) of
+		each guild skill is where every race registers that skill's motion,
+		alone."""
+		race = RaceMotions(self)
+		for locale in locales():
+			cast = dict((int(row[0]), row[SKILLDESC_MOTION_INDEX]) for row in skilldesc_rows(locale)
+			            if row[SKILLDESC_JOB] == "GUILD" and int(row[0]) in self.GUILD_MOTIONS)
+			self.assertEqual(sorted(self.GUILD_MOTIONS), sorted(cast), locale)
+			for skill, index in sorted(cast.items()):
+				for number, folder in sorted(race.folders.items()):
+					with self.subTest(locale=locale, skill=skill, race=number):
+						self.assertEqual([folder + "skill/" + self.GUILD_MOTIONS[skill]],
+						                 race.general(number, MOTION_SKILL + int(index)))
 
 
 if __name__ == "__main__":

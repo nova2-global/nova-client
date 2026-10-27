@@ -901,3 +901,9 @@ MOVE_CHANNEL_TITLE	Kanalen
 MOVE_CHANNEL_SELECT	OK
 MOVE_CHANNEL_CANCEL	Annuleren
 CHANNEL	Kanaal
+ADD_4TH_STONE_ALREADY_ADDED	You have already unlocked the 4th slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	You must have at least 3 attached stones.
+ADD_4TH_STONE_ONLY_ARMOR	This scroll only works for Armours.
+ADD_4TH_STONE_ONLY_WEAPON	This scroll only works for Weapons.
+ADD_4TH_STONE_NOT_POSSIBLE	You cannot use this scroll on this item.
+ADD_4TH_STONE_ADD_QUESTION	Do you wish to open a space for a 4th socket?

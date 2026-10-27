@@ -901,3 +901,9 @@ MOVE_CHANNEL_TITLE	CH-URI
 MOVE_CHANNEL_SELECT	OK
 MOVE_CHANNEL_CANCEL	Sterge
 CHANNEL	Canal
+ADD_4TH_STONE_ALREADY_ADDED	Ai deblocat deja slotul 4.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Trebuie sa ai deja 3 pietre atasate.
+ADD_4TH_STONE_ONLY_ARMOR	Merge doar pe Armuri.
+ADD_4TH_STONE_ONLY_WEAPON	Merge doar pe Arme.
+ADD_4TH_STONE_NOT_POSSIBLE	Nu poti folosii acest scroll per acest item.
+ADD_4TH_STONE_ADD_QUESTION	Doriti sa deschideti un spatiu pentru a 4 piatra?

@@ -901,3 +901,9 @@ MOVE_CHANNEL_TITLE	Selección de canal
 MOVE_CHANNEL_SELECT	Aceptar
 MOVE_CHANNEL_CANCEL	Cancelar
 CHANNEL	Canal
+ADD_4TH_STONE_ALREADY_ADDED	Ya has desbloqueado el cuarto hueco.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Debes tener al menos 3 piedras incrustadas.
+ADD_4TH_STONE_ONLY_ARMOR	Este pergamino solo funciona en armaduras.
+ADD_4TH_STONE_ONLY_WEAPON	Este pergamino solo funciona en armas.
+ADD_4TH_STONE_NOT_POSSIBLE	No puedes usar este pergamino en este objeto.
+ADD_4TH_STONE_ADD_QUESTION	¿Deseas abrir un espacio para un cuarto hueco?

@@ -901,3 +901,9 @@ MOVE_CHANNEL_TITLE	Каналы
 MOVE_CHANNEL_SELECT	OK
 MOVE_CHANNEL_CANCEL	Отмена
 CHANNEL	Канал
+ADD_4TH_STONE_ALREADY_ADDED	Вы еще не разблокировали 4-ый слот.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Вы должны иметь, как минимум 3 прикрепленных камня.
+ADD_4TH_STONE_ONLY_ARMOR	Этот свиток работает только с Броней.
+ADD_4TH_STONE_ONLY_WEAPON	Этот свиток работает только с Оружием.
+ADD_4TH_STONE_NOT_POSSIBLE	Вы не можете использовать этот свиток на этот предмет.
+ADD_4TH_STONE_ADD_QUESTION	Вы желаете открыть отверстие под 4 камень?

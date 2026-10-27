@@ -901,3 +901,9 @@ MOVE_CHANNEL_TITLE	Cannaux
 MOVE_CHANNEL_SELECT	OK
 MOVE_CHANNEL_CANCEL	Annuler
 CHANNEL	Canal
+ADD_4TH_STONE_ALREADY_ADDED	Vous avez déjà déverrouillé le 4ème emplacement.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Vous devez avoir au moins 3 pierres attachées.
+ADD_4TH_STONE_ONLY_ARMOR	Ce parchemin ne fonctionne que pour les armures.
+ADD_4TH_STONE_ONLY_WEAPON	Ce parchemin ne fonctionne que pour les armes.
+ADD_4TH_STONE_NOT_POSSIBLE	Vous ne pouvez pas utiliser ce parchemin sur cet élément.
+ADD_4TH_STONE_ADD_QUESTION	Souhaitez-vous ouvrir un espace pour un 4ème emplacement?

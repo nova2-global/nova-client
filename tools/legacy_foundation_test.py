@@ -1431,6 +1431,183 @@ class QuickSlotRefusal(unittest.TestCase):
 		                 self.notify(namespace, "QUICKSLOT_REGISTER_DISABLE_ITEM"))
 
 
+class FourthSocket(unittest.TestCase):
+	"""OLD's fourth socket in the legacy inventory (NOVA-97; RUN-B-D1 of the
+	stage B live run, where dropping 50501 on a blade only moved it): 50500
+	opens an armour's fourth socket, 50501 a weapon's. Dropped on the item,
+	it asks first (ADD_4TH_STONE_ADD_QUESTION) and sends the use-to-item
+	packet on Yes, or says in the chat why it can't; picked up, it lights the
+	items it can open (OLD uiInventory.py:1909, 1935, 2044-2070, 2202,
+	2255-2257). The client half (item.IsSocketScroll, player.CanAdd4thStone,
+	GetSocketCount and GetItemTypeBySlot, stageB/live/P2-api.md) is stood in
+	by its rules: CanAdd4thStone wants a weapon or armour whose socket 3 is
+	still 0 and the enhancer made for it (value0 1 armour, 2 weapon), and
+	leaves the target's data selected; it counts no stones, the server
+	does."""
+
+	USE_4TH_SOCKET = 34
+	ARMOUR_ENHANCER, WEAPON_ENHANCER, BLADE, ARMOUR, POTION = 50500, 50501, 300, 12010, 27001
+	ODD_ENHANCER = 50599  # this test's: an enhancer whose value0 names neither kind
+	SCROLL, WEAPON_CELL, ARMOUR_CELL, POTION_CELL = 0, 1, 2, 3
+	STONES = [28030, 28031, 28032, 0]
+	KEYS = ("ADD_4TH_STONE_ALREADY_ADDED", "ADD_4TH_STONE_NOT_ENOUGH_STONES", "ADD_4TH_STONE_ONLY_ARMOR",
+	        "ADD_4TH_STONE_ONLY_WEAPON", "ADD_4TH_STONE_NOT_POSSIBLE", "ADD_4TH_STONE_ADD_QUESTION")
+
+	def setUp(self):
+		world = self.world = LegacyWorld()
+		game = self.game = world.game
+		item, player = game.modules["item"], game.modules["player"]
+		item.USE_4TH_SOCKET = self.USE_4TH_SOCKET
+		use, weapon, armour = item.ITEM_TYPE_USE, item.ITEM_TYPE_WEAPON, item.ITEM_TYPE_ARMOR
+		# vnum: (type, sub type, value0)
+		self.kinds = {self.ARMOUR_ENHANCER: (use, self.USE_4TH_SOCKET, 1), self.WEAPON_ENHANCER: (use, self.USE_4TH_SOCKET, 2),
+		              self.ODD_ENHANCER: (use, self.USE_4TH_SOCKET, 0),
+		              self.BLADE: (weapon, 0, 0), self.ARMOUR: (armour, 0, 0), self.POTION: (use, 0, 0)}
+		kind = lambda vnum: self.kinds.get(vnum, (0, 0, 0))
+		at = lambda cell: game._item_at(cell)
+		sockets = lambda cell: (at(cell)["sockets"] + [0, 0, 0, 0])[:4]
+
+		def can_add(scroll, *target):
+			cell = target[-1]
+			item.selected[0] = at(cell)["vnum"]
+			scroll_type, sub_type, value0 = kind(scroll)
+			target_type = kind(at(cell)["vnum"])[0]
+			if (scroll_type, sub_type) != (use, self.USE_4TH_SOCKET) or target_type not in (weapon, armour):
+				return player.DETACH_METIN_CANT
+			if sockets(cell)[3] != 0:
+				return player.DETACH_METIN_CANT
+			return player.DETACH_METIN_OK if (value0, target_type) in ((1, armour), (2, weapon)) else player.DETACH_METIN_CANT
+
+		support.define(item, "IsSocketScroll", lambda vnum: kind(vnum)[:2] == (use, self.USE_4TH_SOCKET))
+		support.define(item, "GetItemSubType", lambda: kind(item.selected[0])[1])
+		support.define(item, "GetValue", lambda index: kind(item.selected[0])[2] if index == 0 else 0)
+		support.define(player, "CanAdd4thStone", can_add)
+		support.define(player, "GetSocketCount", lambda cell, *window: len([s for s in sockets(cell) if s]))
+		support.define(player, "GetItemTypeBySlot", lambda *cell: kind(at(cell[-1])["vnum"])[0])
+		support.define(player, "GetItemMetinSocket", lambda *args: sockets(args[-2])[args[-1]])
+		game.give(self.SCROLL, self.WEAPON_ENHANCER, 3)
+		game.give(self.WEAPON_CELL, self.BLADE, 1, self.STONES)
+		game.give(self.ARMOUR_CELL, self.ARMOUR, 1, self.STONES)
+		game.give(self.POTION_CELL, self.POTION, 5)
+		self.window = make_inventory(world)
+		del game.log[:]
+
+	def drop(self, scroll, target):
+		"""The enhancer `scroll` (in cell SCROLL) dropped on cell `target`:
+		(the dialogs it opened, the chat lines, the packets)."""
+		self.game.give(self.SCROLL, scroll, 3)
+		opened = len(self.game.dialogs)
+		with self.world, quiet():
+			self.window._InventoryWindow__DropSrcItemToDestItemInInventory(scroll, self.SCROLL, target)
+		chat = [args for name, args in self.game.calls("chat.AppendChat")]
+		packets = self.game.calls("net.SendItem")
+		return self.game.dialogs[opened:], chat, packets
+
+	def text(self, key):
+		return read_locale("en")[key][0]
+
+	def test_dropped_on_its_kind_with_three_stones_it_asks_and_sends_the_use_on_yes(self):
+		for scroll, target in ((self.WEAPON_ENHANCER, self.WEAPON_CELL), (self.ARMOUR_ENHANCER, self.ARMOUR_CELL)):
+			with self.subTest(scroll=scroll):
+				del self.game.log[:]
+				dialogs, chat, packets = self.drop(scroll, target)
+				self.assertEqual([], chat)
+				self.assertEqual([], packets, "nothing goes out before the answer")
+				self.assertEqual(1, len(dialogs))
+				dialog = dialogs[0]
+				self.assertEqual("uiCommon.QuestionDialog", dialog._name)
+				self.assertEqual([self.text("ADD_4TH_STONE_ADD_QUESTION")], dialog.texts)
+				self.assertTrue(dialog.is_open)
+				with self.world, quiet():
+					dialog.accept_event()
+				self.assertEqual([("net.SendItemUseToItemPacket", (self.SCROLL, target))], self.game.calls("net.SendItem"))
+				self.assertFalse(dialog.is_open)
+				self.assertIsNone(self.window.questionDialog)
+
+	def test_no_closes_the_question_and_sends_nothing(self):
+		dialogs, _, _ = self.drop(self.WEAPON_ENHANCER, self.WEAPON_CELL)
+		with self.world, quiet():
+			dialogs[0].cancel_event()
+		self.assertFalse(dialogs[0].is_open)
+		self.assertEqual([], self.game.calls("net.SendItem"))
+
+	def test_a_refusal_names_its_reason_and_sends_nothing(self):
+		game = self.game
+		chat_type = game.modules["chat"].CHAT_TYPE_INFO
+		cases = [
+			# the armour's enhancer on a weapon, and the reverse
+			("ADD_4TH_STONE_ONLY_ARMOR", self.ARMOUR_ENHANCER, self.WEAPON_CELL, self.STONES),
+			("ADD_4TH_STONE_ONLY_WEAPON", self.WEAPON_ENHANCER, self.ARMOUR_CELL, self.STONES),
+			# OLD asks for the stones first when the answer is no anyway
+			("ADD_4TH_STONE_NOT_ENOUGH_STONES", self.ARMOUR_ENHANCER, self.WEAPON_CELL, [28030, 28031, 0, 0]),
+			# open already (the server sets 1), or holding its stone
+			("ADD_4TH_STONE_ALREADY_ADDED", self.WEAPON_ENHANCER, self.WEAPON_CELL, [28030, 28031, 28032, 1]),
+			("ADD_4TH_STONE_ALREADY_ADDED", self.WEAPON_ENHANCER, self.WEAPON_CELL, [28030, 28031, 28032, 28012]),
+			# neither a weapon nor an armour: OLD asks for the stones first
+			("ADD_4TH_STONE_NOT_ENOUGH_STONES", self.WEAPON_ENHANCER, self.POTION_CELL, [0, 0, 0, 0]),
+			# an enhancer made for neither (value0 0)
+			("ADD_4TH_STONE_NOT_POSSIBLE", self.ODD_ENHANCER, self.WEAPON_CELL, self.STONES),
+		]
+		for key, scroll, target, sockets in cases:
+			with self.subTest(key=key, sockets=sockets):
+				target_vnum = game._item_at(target)["vnum"]
+				game.give(target, target_vnum, 1, sockets)
+				del game.log[:]
+				dialogs, chat, packets = self.drop(scroll, target)
+				self.assertEqual([(chat_type, self.text(key))], chat)
+				self.assertEqual([], dialogs)
+				self.assertEqual([], packets)
+
+	def test_fewer_stones_are_the_servers_to_refuse(self):
+		"""CanAdd4thStone counts no stones (OLD's either): the question opens
+		and the server answers MUST_HAVE_3_ATTACHED_STONES, keeping the
+		enhancer."""
+		self.game.give(self.WEAPON_CELL, self.BLADE, 1, [28030, 0, 0, 0])
+		dialogs, chat, _ = self.drop(self.WEAPON_ENHANCER, self.WEAPON_CELL)
+		self.assertEqual([], chat)
+		self.assertEqual([self.text("ADD_4TH_STONE_ADD_QUESTION")], dialogs[0].texts)
+
+	def test_picked_up_it_lights_only_the_items_it_can_open(self):
+		window = self.window
+		self.assertTrue(window._InventoryWindow__IsUsableItemToItem(self.WEAPON_ENHANCER, self.SCROLL))
+		can_use = window._InventoryWindow__CanUseSrcItemToDstItem
+		with self.world:
+			self.assertTrue(can_use(self.WEAPON_ENHANCER, self.SCROLL, self.WEAPON_CELL))
+			self.assertFalse(can_use(self.WEAPON_ENHANCER, self.SCROLL, self.ARMOUR_CELL))
+			self.assertFalse(can_use(self.WEAPON_ENHANCER, self.SCROLL, self.POTION_CELL))
+			self.game.give(self.WEAPON_CELL, self.BLADE, 1, [28030, 28031, 28032, 28012])
+			self.assertFalse(can_use(self.WEAPON_ENHANCER, self.SCROLL, self.WEAPON_CELL), "open already")
+			self.assertFalse(can_use(self.WEAPON_ENHANCER, self.SCROLL, self.SCROLL), "itself")
+
+	def test_another_use_item_still_moves(self):
+		_, chat, packets = self.drop(self.POTION, self.WEAPON_CELL)
+		self.assertEqual([("net.SendItemMovePacket", (self.SCROLL, self.WEAPON_CELL, 0))], packets)
+
+	def test_every_locale_has_the_strings_olds_text_where_old_has_them(self):
+		"""OLD's locale_game.txt where OLD's locale has the key (br from OLD's
+		pt; a later line wins, as in OLD's loader: de's second set), English
+		otherwise (ae, cz, hu and nl lack them in OLD)."""
+		old_root = os.path.join(REPO, "..", "..", "..", "old", "client_pack", "source", "locale")
+		for locale in locales():
+			with self.subTest(locale=locale):
+				keys = read_locale(locale)
+				for key in self.KEYS:
+					self.assertTrue(keys[key][0].strip(), key)
+					self.assertEqual("", keys[key][1], key)
+				if not os.path.isdir(old_root):
+					continue
+				source = "pt" if locale == "br" else locale
+				old = {}
+				path = os.path.join(old_root, source, "locale_game.txt")
+				if os.path.isfile(path):
+					for line in read(path).split("\n"):
+						tokens = line.rstrip("\r").split("\t")
+						if tokens[0] in self.KEYS:
+							old[tokens[0]] = tokens[1].strip()
+				for key in self.KEYS:
+					self.assertEqual(old.get(key, read_locale("en")[key][0]), keys[key][0], key)
+
+
 # The cut's skill constants (nova-client-src src/UserInterface/PythonSkill.h:145-147,
 # 8fbd777): OLD's sage grade is a fifth effect grade, its motions 25 indices above
 # the perfect master's. chr.MOTION_SKILL is CRaceMotionData::NAME_SKILL

@@ -899,3 +899,9 @@ MOVE_CHANNEL_TITLE	Kanäle
 MOVE_CHANNEL_SELECT	OK
 MOVE_CHANNEL_CANCEL	Abbrechen
 CHANNEL	Channel
+ADD_4TH_STONE_ALREADY_ADDED	Sie haben den 4. Slot bereits freigeschaltet.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Sie müssen mindestens 3 Steine angebracht haben.
+ADD_4TH_STONE_ONLY_ARMOR	Diese Schriftrolle funktioniert nur für Rüstungen.
+ADD_4TH_STONE_ONLY_WEAPON	Diese Schriftrolle funktioniert nur für Waffen.
+ADD_4TH_STONE_NOT_POSSIBLE	Sie können diese Schriftrolle nicht für dieses Item verwenden.
+ADD_4TH_STONE_ADD_QUESTION	Möchten Sie einen Platz für den 4. Slot öffnen?

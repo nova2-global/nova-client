@@ -901,3 +901,9 @@ MOVE_CHANNEL_TITLE	Kanaler
 MOVE_CHANNEL_SELECT	OK
 MOVE_CHANNEL_CANCEL	Afslut
 CHANNEL	Kanal
+ADD_4TH_STONE_ALREADY_ADDED	Du har allerede låst det 4. slot op.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Du skal have mindst 3 fastlagte sten.
+ADD_4TH_STONE_ONLY_ARMOR	Denne rulle fungerer kun til rustninger.
+ADD_4TH_STONE_ONLY_WEAPON	Denne rulle fungerer kun til våben.
+ADD_4TH_STONE_NOT_POSSIBLE	Du kan ikke bruge denne rulle på dette genstand.
+ADD_4TH_STONE_ADD_QUESTION	Ønsker du at åbne en plads til en 4. stik?

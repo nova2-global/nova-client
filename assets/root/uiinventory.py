@@ -795,6 +795,9 @@ class InventoryWindow(ui.ScriptWindow):
 		elif item.IsDetachScroll(srcItemVID):
 			self.DetachMetinFromItem(srcItemSlotPos, dstItemSlotPos)
 
+		elif item.IsSocketScroll(srcItemVID):
+			self.OpenSocketOnItem(srcItemSlotPos, dstItemSlotPos)
+
 		elif item.IsKey(srcItemVID):
 			self.__SendUseItemToItemPacket(srcItemSlotPos, dstItemSlotPos)			
 
@@ -906,6 +909,33 @@ class InventoryWindow(ui.ScriptWindow):
 
 		self.refineDialog.Open(scrollSlotPos, targetSlotPos)
 
+	def OpenSocketOnItem(self, scrollSlotPos, targetSlotPos):
+		## OLD's fourth socket (50500 armour, 50501 weapon; OLD uiInventory.py:2044-2070):
+		## the server opens it on an item with 3 stones and says why it refuses
+		scrollIndex = player.GetItemIndex(scrollSlotPos)
+		if not player.CanAdd4thStone(scrollIndex, targetSlotPos):
+			item.SelectItem(scrollIndex)
+			if item.GetItemSubType() == item.USE_4TH_SOCKET:
+				if player.GetSocketCount(targetSlotPos) < 3:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_NOT_ENOUGH_STONES)
+				elif item.GetValue(0) == 1 and player.GetItemTypeBySlot(targetSlotPos) != item.ITEM_TYPE_ARMOR:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_ONLY_ARMOR)
+				elif item.GetValue(0) == 2 and player.GetItemTypeBySlot(targetSlotPos) != item.ITEM_TYPE_WEAPON:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_ONLY_WEAPON)
+				elif player.GetItemMetinSocket(player.INVENTORY, targetSlotPos, 3) != 0:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_ALREADY_ADDED)
+				else:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_NOT_POSSIBLE)
+				return
+
+		self.questionDialog = uiCommon.QuestionDialog()
+		self.questionDialog.SetText(localeInfo.ADD_4TH_STONE_ADD_QUESTION)
+		self.questionDialog.SetAcceptEvent(ui.__mem_func__(self.OnDetachMetinFromItem))
+		self.questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
+		self.questionDialog.Open()
+		self.questionDialog.sourcePos = scrollSlotPos
+		self.questionDialog.targetPos = targetSlotPos
+
 	def DetachMetinFromItem(self, scrollSlotPos, targetSlotPos):
 		scrollIndex = player.GetItemIndex(scrollSlotPos)
 		targetIndex = player.GetItemIndex(targetSlotPos)
@@ -983,6 +1013,8 @@ class InventoryWindow(ui.ScriptWindow):
 			return True
 		elif item.IsDetachScroll(srcItemVNum):
 			return True
+		elif item.IsSocketScroll(srcItemVNum):
+			return True
 		elif item.IsKey(srcItemVNum):
 			return True
 		elif (player.GetItemFlags(srcSlotPos) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:
@@ -1007,6 +1039,9 @@ class InventoryWindow(ui.ScriptWindow):
 				return True
 		elif item.IsDetachScroll(srcItemVNum):
 			if player.DETACH_METIN_OK == player.CanDetach(srcItemVNum, dstSlotPos):
+				return True
+		elif item.IsSocketScroll(srcItemVNum):
+			if player.DETACH_METIN_OK == player.CanAdd4thStone(srcItemVNum, dstSlotPos):
 				return True
 		elif item.IsKey(srcItemVNum):
 			if player.CanUnlock(srcItemVNum, dstSlotPos):

@@ -901,3 +901,9 @@ MOVE_CHANNEL_TITLE	Kanały
 MOVE_CHANNEL_SELECT	OK
 MOVE_CHANNEL_CANCEL	Anuluj
 CHANNEL	Kanał
+ADD_4TH_STONE_ALREADY_ADDED	Już odblokowałeś czwarty slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Musisz mieć przynajmniej trzy kamienie wsadzone.
+ADD_4TH_STONE_ONLY_ARMOR	Ten zwój działa tylko dla Zbroji.
+ADD_4TH_STONE_ONLY_WEAPON	Ten zwój działa tylko dla Broni.
+ADD_4TH_STONE_NOT_POSSIBLE	Nie możesz użyć tego zwoji na tym przedmiotcie.
+ADD_4TH_STONE_ADD_QUESTION	Czy chcesz otworzyć miejsce na czwarte gniazdo?

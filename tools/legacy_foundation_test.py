@@ -1602,6 +1602,31 @@ class SkillMotions(unittest.TestCase):
 					self.assertEqual([], [slot for slot in slots
 					                      if len(race.general(number, MOTION_SKILL + grade * gap + slot)) != 1])
 
+	def test_every_grade_of_a_skill_casts_its_own_motion(self):
+		"""CPythonSkill::RegisterSkillDesc gives grades 0 to n-1 of a skill
+		base + g * SKILL_GRADEGAP, n being skilldesc.txt's motion grade count,
+		and every grade from n on the base motion (grade 0's). With NEW's 4,
+		the sage grade cast the normal grade's motion, never its _5; OLD's
+		skilldesc.txt says 5 for each of these skills."""
+		race = RaceMotions(self)
+		gap, grades = CUT_SKILL["SKILL_GRADEGAP"], CUT_SKILL["SKILL_EFFECT_COUNT"]
+		suffix = [""] + ["_%d" % (grade + 1) for grade in range(1, grades)]
+		for locale in locales():
+			rows = [row for row in skilldesc_rows(locale) if row[SKILLDESC_JOB] in ("WARRIOR", "ASSASSIN", "SURA", "SHAMAN")
+			        and row[SKILLDESC_MOTION_GRADES].strip() not in ("", "1")]
+			self.assertEqual(44, len(rows), locale)
+			for row in rows:
+				count, base = int(row[SKILLDESC_MOTION_GRADES]), int(row[SKILLDESC_MOTION_INDEX])
+				for number, folder in sorted(race.folders.items()):
+					if "/%s/" % row[SKILLDESC_JOB].lower() not in folder:
+						continue
+					cast = [base + grade * gap if grade < count else base for grade in range(grades)]
+					files = [race.general(number, MOTION_SKILL + index) for index in cast]
+					with self.subTest(locale=locale, skill=row[0], race=folder):
+						self.assertTrue(all(len(names) == 1 for names in files), files)
+						self.assertEqual(suffix, [re.sub(r"^[a-z]+(?:_target)?(_\d)?\.msa$", r"\1", names[0].rsplit("/", 1)[1])
+						                          for names in files])
+
 
 if __name__ == "__main__":
 	unittest.main()

@@ -580,6 +580,27 @@ class RecordingIme(AnyCall):
 		return AnyCall.__getattr__(self, name)
 
 
+def load_real_ui(test, **modules):
+	"""assets/root/ui.py itself, over do-nothing C++ modules (AnyCall) but
+	`modules`, for the length of `test`."""
+	import builtins
+	import importlib.util
+	from unittest import mock
+	patcher = mock.patch.dict(sys.modules)
+	patcher.start()
+	test.addCleanup(patcher.stop)
+	for name in ("app", "grp", "snd", "wndMgr", "item", "skill", "localeInfo", "dbg", "guild", "uiScriptLocale", "ime"):
+		sys.modules[name] = modules.get(name) or AnyCall(name)
+	for name, value in (("TRUE", True), ("FALSE", False)):
+		if not hasattr(builtins, name):
+			setattr(builtins, name, value)
+			test.addCleanup(delattr, builtins, name)
+	spec = importlib.util.spec_from_file_location("ui", os.path.join(ROOT, "ui.py"))
+	module = importlib.util.module_from_spec(spec)
+	spec.loader.exec_module(module)
+	return module
+
+
 class MoneyMode(unittest.TestCase):
 	"""The pick money dialog's edit line takes OLD's k/m/b amounts: the
 	uiscript's "only_number" 2 is OLD's money mode, which the client's own
@@ -589,23 +610,7 @@ class MoneyMode(unittest.TestCase):
 
 	def real_ui(self, ime):
 		"""assets/root/ui.py itself, over do-nothing C++ modules and `ime`."""
-		import builtins
-		import importlib.util
-		from unittest import mock
-		patcher = mock.patch.dict(sys.modules)
-		patcher.start()
-		self.addCleanup(patcher.stop)
-		for name in ("app", "grp", "snd", "wndMgr", "item", "skill", "localeInfo", "dbg", "guild", "uiScriptLocale"):
-			sys.modules[name] = AnyCall(name)
-		sys.modules["ime"] = ime
-		for name, value in (("TRUE", True), ("FALSE", False)):
-			if not hasattr(builtins, name):
-				setattr(builtins, name, value)
-				self.addCleanup(delattr, builtins, name)
-		spec = importlib.util.spec_from_file_location("ui", os.path.join(ROOT, "ui.py"))
-		module = importlib.util.module_from_spec(spec)
-		spec.loader.exec_module(module)
-		return module
+		return load_real_ui(self, ime=ime)
 
 	def focused_mode(self, money, only_number):
 		"""The ime modes the pick money uiscript's edit line sets on focus,
@@ -651,6 +656,97 @@ class MoneyMode(unittest.TestCase):
 		window.SetNumberMode()
 		window.OnSetFocus()
 		self.assertEqual(["SetMoneyMode", "SetNumberMode"], ime.modes)
+
+
+class LaidOutText(AnyCall):
+	"""wndMgr's text lines as CTextLine and CGraphicTextInstance keep them
+	(PythonWindow.cpp, GrpTextInstance.cpp): SetFontName only changes the
+	font; SetText lays the text out in the font set then, but only a text
+	that differs from the one the line holds (SetValue keeps an equal one);
+	GetTextSize is the laid-out width. A digit is 7 px in Tahoma 12 and 8 px
+	in Tahoma 14, as the client lays them out (frame S4-exp 023: the
+	11-digit "40000000000" is 88 px wide in the LARGE font)."""
+
+	DIGIT = {"Tahoma:12": 7, "Tahoma:14": 8}
+
+	def __init__(self):
+		AnyCall.__init__(self, "wndMgr")
+		self.lines = {}
+
+	def RegisterTextLine(self, window, layer):
+		handle = len(self.lines) + 1
+		self.lines[handle] = {"font": None, "text": "", "laid_font": None, "width": 0}
+		return handle
+
+	def SetFontName(self, handle, name):
+		self.lines[handle]["font"] = name
+
+	def SetText(self, handle, text):
+		line = self.lines[handle]
+		if text != line["text"]:
+			line.update(text=text, laid_font=line["font"], width=self.DIGIT[line["font"]] * len(text))
+
+	def GetText(self, handle):
+		return self.lines[handle]["text"]
+
+	def GetTextSize(self, handle):
+		return (self.lines[handle]["width"], 14)
+
+
+class ExpLabels(unittest.TestCase):
+	"""The character window's EXP and Necessary EXP values (NOVA-96): a
+	LARGE-font text centred on a 90-px label, sized for the uiscript's
+	11-digit placeholder. Levels 140-150 need 100,000,000,000 to
+	200,000,000,000 exp, 12 digits, 96 px in the LARGE font: they ran past
+	their labels into each other (live run RUN-A-D3)."""
+
+	LABELS = (("Exp_Value", "Exp_Slot"), ("RestExp_Value", "RestExp_Slot"))
+	FONTS = {"UI_DEF_FONT": "Tahoma:12", "UI_DEF_FONT_LARGE": "Tahoma:14"}
+
+	def labels(self, path):
+		"""[(the value's uiscript dict, the label art's width)]."""
+		world = LegacyWorld()
+		world.game.modules["uiScriptLocale"].WINDOWS_PATH = "d:/locale/en/ui/windows/"
+		with world:
+			window = read_uiscript(path)["window"]
+		return [(child(window, value), sub_image_width(child(window, art)["image"])) for value, art in self.LABELS]
+
+	def loaded(self, value):
+		"""(the wndMgr stand-in, the line) of a value loaded by the real
+		ui.py's PythonScriptLoader, as the legacy window loads it."""
+		wnd = LaidOutText()
+		locale = AnyCall("localeInfo")
+		for name, font in self.FONTS.items():
+			setattr(locale, name, font)
+		ui = load_real_ui(self, wndMgr=wnd, localeInfo=locale)
+		line = ui.TextLine()
+		with quiet():
+			self.assertTrue(ui.PythonScriptLoader().LoadElementText(line, value, ui.Window()))
+		return wnd, line
+
+	def test_a_value_stays_inside_its_label(self):
+		for path in (os.path.join(UISCRIPT, "characterwindow.py"), os.path.join(LOCALES, "ae", "ui", "characterwindow.py")):
+			for value, art_width in self.labels(path):
+				wnd, line = self.loaded(value)
+				for text in ("12345678901", "99999999999", "100000000000", "199999999999", "200000000000"):
+					with self.subTest(path=path, value=value["name"], text=text):
+						line.SetText(text)
+						laid = wnd.lines[line.hWnd]
+						self.assertEqual((text, laid["font"]), (laid["text"], laid["laid_font"]), "laid out in its font")
+						self.assertGreaterEqual(value["x"] - laid["width"] / 2, 0)
+						self.assertLessEqual(value["x"] + laid["width"] / 2, art_width)
+
+	def test_up_to_eleven_digits_keep_the_large_font(self):
+		value, _ = self.labels(os.path.join(UISCRIPT, "characterwindow.py"))[0]
+		wnd, line = self.loaded(value)
+		for text, font in (("12345678901", "Tahoma:14"), ("150000000000", "Tahoma:12"), ("150000000000", "Tahoma:12"),
+		                   ("40000000000", "Tahoma:14"), ("", "Tahoma:14"), ("199999999999", "Tahoma:12")):
+			with self.subTest(text=text):
+				line.SetText(text)
+				laid = wnd.lines[line.hWnd]
+				self.assertEqual((text, font), (laid["text"], laid["laid_font"]))
+				self.assertEqual(font, laid["font"])
+		self.assertEqual("Tahoma:14", line.fontName, "the line's own font stays the LARGE one")
 
 
 def tooltip_world(items, sizes="foundation"):

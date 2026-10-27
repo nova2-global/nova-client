@@ -47,6 +47,10 @@
 	decorator: ninepatch(cyberpunk-panel, cyberpunk-panel-inner) border-box;
 	image-color: var(--surface);
 }
+.skin-cyberpunk.nui-window.nui-fx, .skin-cyberpunk .nui-window.nui-fx
+{
+	box-shadow: none;
+}
 .skin-cyberpunk .nui-window
 {
 	z-index: 0;
@@ -213,6 +217,10 @@
 .skin-cyberpunk .nui-window__footer
 {
 	border-top-color: var(--cyberpunk-edge-dim);
+}
+.skin-cyberpunk .nui-window__body
+{
+	padding: 10dp 12dp 12dp;
 }
 
 /* --- Boards and tiles -------------------------------------------------------------
@@ -495,6 +503,8 @@
    gradient from the accent to the violet. */
 .skin-cyberpunk .nui-toggle__track
 {
+	width: 34dp;
+	height: 20dp;
 	border-color: var(--cyberpunk-edge-dim);
 	border-radius: 0;
 	background-color: var(--surface-sunken);
@@ -570,15 +580,23 @@
    the chips' outlines would not meet, so the filled chip marks the choice. */
 .skin-cyberpunk .nui-tabs tabs
 {
+	gap: 0;
+	padding: 0 0 var(--space-1) 0;
+	border-width: 0 0 1dp 0;
 	border-bottom-color: var(--cyberpunk-edge-dim);
-	padding-bottom: var(--space-1);
+	border-radius: 0;
+	background-color: transparent;
 }
 .skin-cyberpunk .nui-tabs tab
 {
+	height: auto;
+	padding: var(--space-2) var(--space-3);
 	border-color: transparent;
+	border-radius: 0;
 	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--cyberpunk-edge-dim);
 	color: var(--text-muted);
+	line-height: 1.4;
 	letter-spacing: 1dp;
 }
 .skin-cyberpunk .nui-tabs tab:hover, .skin-cyberpunk .nui-tabs tab.is-hover
@@ -609,6 +627,9 @@
 
 .skin-cyberpunk .nui-list
 {
+	padding: var(--space-1);
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
 	border-color: var(--cyberpunk-edge-dim);
 	border-radius: 0;
 }
@@ -616,12 +637,18 @@
 {
 	border-radius: 0;
 }
+.skin-cyberpunk .nui-list__item.is-selected
+{
+	color: var(--text);
+	font-weight: normal;
+}
 
 /* --- Slot grid: dark cells with a dim neon edge --------------------------------------
    Hover lights the edge and a soft holographic glow under the icon (one
    gradient draw); the icons themselves are never tinted. */
 .skin-cyberpunk .nui-slot
 {
+	border-radius: 0;
 	border-color: var(--cyberpunk-edge-dim);
 }
 .skin-cyberpunk .nui-slot:hover, .skin-cyberpunk .nui-slot.is-hover

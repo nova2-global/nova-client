@@ -338,6 +338,7 @@ OPTION_UI_COLORS	Colores
 OPTION_UI_COLOR_ACCENT	Color de acento
 OPTION_UI_COLOR_PANEL	Paneles
 OPTION_UI_COLOR_OPACITY	Opacidad de los paneles
+OPTION_UI_COLOR_OVERLAY	Opacidad de la superposición
 OPTION_UI_COLOR_HIGHLIGHT	Resaltado
 OPTION_UI_COLOR_CUSTOM	Personalizado
 OPTION_UI_COLORS_RESET	Restablecer colores

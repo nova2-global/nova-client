@@ -20,7 +20,7 @@ one more choice; nui.set_scale_percent), reduced motion
 (nui.set_reduced_motion), reduced effects (nui.set_reduced_effects; on and
 locked while the device draws no effects) and the player colors of the theme
 in use (P13 spec 5.6: its color slots' swatches, the accent's hue slider,
-the panel opacity choices, a reset and a preview; nui.set_color,
+the panel and overlay opacity choices, a reset and a preview; nui.set_color,
 nui.reset_colors), each applied at once and saved by nui.py. The colors rows
 show only for a theme that offers slots (not classic).
 
@@ -62,7 +62,10 @@ DOCUMENT = "nui/windows/system-options/system-options.rml"
 MUSIC_FILENAME_MAX_LEN = 25   # uisystemoption.py:17
 FILE_NAME_LEN = 20            # uiselectmusic.py:6
 SCALE_CHOICES = (75, 100, 125, 150, 175, 200)
-OPACITY_CHOICES = (100, 90, 80, 70, 60)   # a row of choices, not a slider: no repaint storm under a drag
+PERCENT_CHOICES = {
+	"opacity": (100, 90, 80, 70, 60),
+	"overlay": (100, 75, 51, 40, 30),
+}   # rows of choices, not sliders: no repaint storm under a drag
 
 
 def _plain(text):
@@ -243,7 +246,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 	def color_rows(slots):
 		"""The theme's color slots (nui.get_color_slots) as the Interface rows
 		show them: a color slot's swatches (the default first, as the palette
-		lists them), a percent slot's choices (OPACITY_CHOICES within its
+		lists them), a percent slot's curated choices within its
 		range), the label as a locale key, the value in use as text."""
 		rows = []
 		for slot in slots:
@@ -253,7 +256,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 			if slot["kind"] == "color":
 				row["swatches"] = [{"index": i, "color": str(color)} for i, color in enumerate(slot.get("swatches", ()))]
 			else:
-				row["choices"] = [{"value": str(p)} for p in OPACITY_CHOICES if int(slot["min"]) <= p <= int(slot["max"])]
+				choices = PERCENT_CHOICES.get(str(slot["slot"]), ())
+				row["choices"] = [{"value": str(p)} for p in choices if int(slot["min"]) <= p <= int(slot["max"])]
 			rows.append(row)
 		return rows
 

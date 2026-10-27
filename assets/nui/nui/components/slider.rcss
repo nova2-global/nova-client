@@ -35,19 +35,20 @@
 }
 .nui-slider sliderbar
 {
-	margin-top: 2dp;
+	margin-top: 3dp;
 	box-sizing: border-box;
-	width: 16dp;
-	height: 16dp;
-	border-width: 2dp;
-	border-color: var(--accent);
-	border-radius: 8dp;
-	background-color: var(--surface-raised);
+	width: 14dp;
+	height: 14dp;
+	border-width: 1dp;
+	border-color: transparent;
+	border-radius: 9999dp;
+	background-color: var(--text-inverse);
 }
 .nui-slider sliderbar:hover, .nui-slider sliderbar:active,
 .nui-slider.is-hover sliderbar, .nui-slider.is-active sliderbar
 {
-	background-color: var(--accent);
+	background-color: var(--text-inverse);
+	border-color: var(--accent);
 }
 .nui-slider:focus-visible sliderbar, .nui-slider.is-focus sliderbar
 {

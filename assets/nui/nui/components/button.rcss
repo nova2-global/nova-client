@@ -19,16 +19,16 @@
 {
 	display: inline-block;
 	box-sizing: border-box;
-	height: 32dp;
-	padding: 0 var(--space-4);
+	height: 28dp;
+	padding: 0 12dp;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
+	border-radius: 8dp;
 	background-color: var(--surface-raised);
 	color: var(--text);
 	font-size: var(--font-md);
 	font-weight: bold;
-	line-height: 30dp;
+	line-height: 26dp;
 	text-align: center;
 	white-space: nowrap;
 	tab-index: auto;
@@ -87,18 +87,18 @@
 
 .nui-button--danger
 {
-	background-color: var(--danger);
-	border-color: var(--danger);
-	color: var(--accent-text);
+	background-color: var(--slot-disabled);
+	border-color: transparent;
+	color: var(--danger);
 }
 .nui-button--danger:hover, .nui-button--danger.is-hover
 {
-	background-color: var(--danger-hover);
-	border-color: var(--danger-hover);
+	background-color: var(--slot-blocked);
+	border-color: transparent;
 }
 .nui-button--danger:active, .nui-button--danger.is-active
 {
-	background-color: var(--danger);
+	background-color: var(--slot-disabled);
 	border-color: var(--danger);
 }
 
@@ -106,11 +106,13 @@
 {
 	background-color: transparent;
 	border-color: transparent;
+	color: var(--text-muted);
 }
 .nui-button--ghost:hover, .nui-button--ghost.is-hover
 {
 	background-color: var(--surface-hover);
 	border-color: transparent;
+	color: var(--text);
 }
 .nui-button--ghost:active, .nui-button--ghost.is-active
 {
@@ -126,10 +128,11 @@
 
 .nui-button--small
 {
-	height: 24dp;
-	padding: 0 var(--space-2);
+	height: 22dp;
+	padding: 0 8dp;
+	border-radius: 6dp;
 	font-size: var(--font-sm);
-	line-height: 22dp;
+	line-height: 20dp;
 }
 /* The dialog buttons: a minimum width, so short labels (OK, No) line up. In
    classic this is the legacy middle art (61dp). */
@@ -139,13 +142,16 @@
 }
 .nui-button--icon
 {
-	width: 32dp;
+	width: 20dp;
+	height: 20dp;
 	padding: 0;
+	border-radius: 6dp;
 	font-size: var(--font-lg);
+	line-height: 18dp;
 }
 .nui-button--small.nui-button--icon
 {
-	width: 24dp;
+	width: 20dp;
 	font-size: var(--font-md);
 }
 /* A 20dp icon button for a compact title bar (the chat log's close): a
@@ -160,7 +166,7 @@
 	height: 20dp;
 	padding: 0;
 	border-width: 0;
-	border-radius: var(--radius-sm);
+	border-radius: 6dp;
 	color: var(--text-muted);
 	font-size: var(--font-md);
 	font-weight: normal;

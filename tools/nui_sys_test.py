@@ -895,14 +895,18 @@ class InterfaceSection(unittest.TestCase):
         rows = self.model()["color_slots"]
         self.assertEqual([(row["slot"], row["kind"], row["label"]) for row in rows],
                          [("accent", "color", "@ui.OPTION_UI_COLOR_ACCENT"), ("panel", "color", "@ui.OPTION_UI_COLOR_PANEL"),
-                          ("opacity", "percent", "@ui.OPTION_UI_COLOR_OPACITY"), ("highlight", "color", "@ui.OPTION_UI_COLOR_HIGHLIGHT")])
+                          ("opacity", "percent", "@ui.OPTION_UI_COLOR_OPACITY"),
+                          ("overlay", "percent", "@ui.OPTION_UI_COLOR_OVERLAY"),
+                          ("highlight", "color", "@ui.OPTION_UI_COLOR_HIGHLIGHT")])
         accent = rows[0]
-        self.assertEqual(accent["value"], "#8ab4f8")
-        self.assertEqual(accent["swatches"][0], {"index": 0, "color": "#8ab4f8"}, "the default first")
+        self.assertEqual(accent["value"], "#a594ff")
+        self.assertEqual(accent["swatches"][0], {"index": 0, "color": "#a594ff"}, "the default first")
         self.assertEqual(len(accent["swatches"]), 8)
         self.assertEqual([choice["value"] for choice in rows[2]["choices"]], ["100", "90", "80", "70", "60"])
         self.assertEqual(rows[2]["value"], "100")
-        self.assertEqual(self.model()["accent_hue"], 217)
+        self.assertEqual([choice["value"] for choice in rows[3]["choices"]], ["100", "75", "51", "40", "30"])
+        self.assertEqual(rows[3]["value"], "51")
+        self.assertEqual(self.model()["accent_hue"], 250)
         self.assertIs(self.model()["colors_adjusted"], False)
 
     def test_a_swatch_and_an_opacity_choice_set_the_slot_and_the_rows_follow(self):
@@ -920,11 +924,11 @@ class InterfaceSection(unittest.TestCase):
         self.assertIn("nui_system_options: nui.set_color()", self.world.game.dbg.errors[-1])
 
     def test_the_hue_slider_keeps_the_default_accents_saturation_and_value_and_its_echo_does_nothing(self):
-        board(self.options).fire("hue", 217)
+        board(self.options).fire("hue", 250)
         self.assertEqual(self.state.appearance, [], "the model's own value coming back")
         board(self.options).fire("hue", 120)
-        self.assertEqual(self.state.appearance, [("set_color", "accent", "#8af88a", "unsaved")],
-                         "#8ab4f8's saturation and value at 120 degrees")
+        self.assertEqual(self.state.appearance, [("set_color", "accent", "#94ff94", "unsaved")],
+                         "#a594ff's saturation and value at 120 degrees")
         self.assertEqual(self.model()["accent_hue"], 120)
 
     def test_the_hue_slider_applies_each_step_of_a_drag_and_saves_once_when_it_ends(self):
@@ -932,7 +936,7 @@ class InterfaceSection(unittest.TestCase):
         # rewrites metin2.cfg (the review's finding), so only the end saves.
         for hue in (100, 110, 120):
             board(self.options).fire("hue", hue)
-        self.assertEqual(self.state.appearance, [("set_color", "accent", color, "unsaved") for color in ("#aff88a", "#9cf88a", "#8af88a")])
+        self.assertEqual(self.state.appearance, [("set_color", "accent", color, "unsaved") for color in ("#b8ff94", "#a6ff94", "#94ff94")])
         board(self.options).fire("hue_done")
         self.assertEqual(self.state.appearance[-1], ("save_colors",))
         board(self.options).fire("hue_done")
@@ -957,8 +961,8 @@ class InterfaceSection(unittest.TestCase):
         self.assertEqual(self.model()["color_slots"], [], "classic offers no color slots")
         board(self.options).fire("choose_theme", "modern-light", 0)
         rows = self.model()["color_slots"]
-        self.assertEqual(rows[0]["value"], "#1a5fc4", "the light palette's own accent and swatches")
-        self.assertEqual(rows[0]["swatches"][0]["color"], "#1a5fc4")
+        self.assertEqual(rows[0]["value"], "#5a45e6", "the light palette's own accent and swatches")
+        self.assertEqual(rows[0]["swatches"][0]["color"], "#5a45e6")
 
 
 # --- the game options (spec 6.4) ---------------------------------------------------------------

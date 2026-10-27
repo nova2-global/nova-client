@@ -21,7 +21,7 @@
 139	HORSE	Fala Mocy			Atakuj wszystkich wrogów z siodła. (od poz. 55)	Umiejętność Jeździecka				ATTACK_SKILL|HORSE_SKILL|WEAPON_LIMITATION	SWORD|TWO_HANDED|DAGGER|DOUBLE_SWORD|BOW|FAN|BELL	splash	123	1	 						
 140	HORSE	Grad Strzał			Posyłaj strzały z siodła. (od p. 50)	Umiejętność jeździecka				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	121	1	5	 					
 151	GUILD	Smocze Oczy			Zwiększa maksimum Ducha Smoka					PASSIVE		yongan					Maksymalny Duch Smoka +%.0f	k * 1400	 		
-152	GUILD	Krew Boga Smoków			Zwiększ na pewien czas maks. ilość swoich PŻ.	Tylko Wojna gildii				ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|WEAPON_LIMITATION	BOW	wildattack	107	1	5	 	Maks. PŻ +%.0f%%	k * 20			
+152	GUILD	Krew Boga Smoków			Zwiększ na pewien czas maks. ilość swoich PŻ.	Tylko Wojna gildii				ONLY_FOR_GUILD_WAR		gaho	107	1			Maks. PŻ +%.0f%%	k * 20			
 153	GUILD	Błogosławieństwo Boga Smoków			Zwiększ na pewien czas maks. ilość swoich PE.	Tylko wojna gildii				ONLY_FOR_GUILD_WAR		chukbok	108	1			Maks. PE +%.0f%%	k * 20	 		
 154	GUILD	Święta Zbroja			Zwiększ na pewien czas swoją obronę.	Tylko wojna gildii				ONLY_FOR_GUILD_WAR		seonghwi	109	1			Obrona +%.1f%%	k * 10	 		
 155	GUILD	Akceleracja			Zwiększa przez określony czas szybkość ataku i szybkość ruchu	Tylko wojna gildii				ONLY_FOR_GUILD_WAR		gasok	110	1			Szybkość ataku i ruchu zwiększona +%.1f	k * 30	 		

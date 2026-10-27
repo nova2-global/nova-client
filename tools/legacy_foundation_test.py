@@ -1805,5 +1805,50 @@ class SkillMotions(unittest.TestCase):
 						                          for names in files])
 
 
+class GuildSkillDesc(unittest.TestCase):
+	"""skilldesc.txt's guild skills, 152-157 (NOVA-97; P2-D4 of the stage B
+	live run): pl's line 152 (Krew Boga Smoków, Blood of Dragon God) carried
+	horse skill 140's columns, so the client read it as a bow attack on
+	horseback (ATTACK_SKILL|FAN_RANGE|NEED_TARGET|HORSE_SKILL|
+	WEAPON_LIMITATION, BOW, five targets) with the wildattack icon."""
+
+	# The columns CPythonSkill::RegisterSkillDesc reads as data, not text
+	# (DESC_TOKEN_TYPE_*, src/UserInterface/PythonSkill.h:54-70). The affect
+	# formulas after them drift between locales on their own (P2-D5) and are
+	# left out; the motion index is SkillMotions' too.
+	DATA_COLUMNS = ((1, "job"), (10, "attribute"), (11, "weapon"), (12, "icon"), (13, "motion index"),
+	                (14, "motion grades"), (15, "target count"), (16, "motion loop count"))
+	GUILD_SKILLS = range(152, 158)
+
+	def data(self, rows):
+		by_skill = dict((int(row[0]), row) for row in rows)
+		return dict((skill, dict((name, by_skill[skill][column]) for column, name in self.DATA_COLUMNS))
+		            for skill in self.GUILD_SKILLS)
+
+	def test_every_locales_guild_skills_have_ens_data_columns(self):
+		"""And OLD's, in every locale OLD has (OLD's pl among them)."""
+		en = self.data(skilldesc_rows("en"))
+		self.assertEqual({"job": "GUILD", "attribute": "ONLY_FOR_GUILD_WAR", "weapon": "", "icon": "gaho",
+		                  "motion index": "107", "motion grades": "1", "target count": "", "motion loop count": ""},
+		                 en[152])
+		for locale in locales():
+			data = self.data(skilldesc_rows(locale))
+			for skill in self.GUILD_SKILLS:
+				with self.subTest(locale=locale, skill=skill):
+					self.assertEqual(en[skill], data[skill])
+		old_root = os.path.join(REPO, "..", "..", "..", "old", "client_pack", "source", "locale")
+		if not os.path.isdir(old_root):
+			return
+		for locale in sorted(os.listdir(old_root)):
+			path = os.path.join(old_root, locale, "skilldesc.txt")
+			if not os.path.isfile(path):
+				continue
+			with open(path, encoding="utf-8", errors="replace") as handle:
+				rows = [line.rstrip("\r").split("\t") for line in handle.read().split("\n")]
+			data = self.data(row for row in rows if row[0].strip().isdigit())
+			with self.subTest(old=locale):
+				self.assertEqual(en, data)
+
+
 if __name__ == "__main__":
 	unittest.main()

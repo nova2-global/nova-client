@@ -1,9 +1,69 @@
-/* The input dialog (nui_dialog_input.py). The width, the centered text, the
-   field and the footer come from components/dialog.rcss; the scrim centers
-   it. The descriptions sit close above the field. */
+/* The input dialog (nui_dialog_input.py; the reviewed design, board
+   WDialogs). The width, the centered text, the field and the footer come
+   from components/dialog.rcss; the scrim centers it. Its title glyph, a
+   field with its caret, on the accent's soft tile; the descriptions sit
+   close above the wider field. */
+.dialog-input .nui-dialog
+{
+	min-width: 360dp;
+}
+.dialog-input__icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin: -2dp var(--space-2) 0 0;
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 16dp;
+	vertical-align: middle;
+}
+.dialog-input__glyph
+{
+	--glyph-ink: var(--accent);
+	display: block;
+}
+.dialog-input__glyph .nui-glyph__a
+{
+	left: 1dp;
+	top: 3dp;
+	width: 14dp;
+	height: 10dp;
+	border-width: 2dp;
+	border-radius: 2dp;
+}
+.dialog-input__glyph .nui-glyph__b
+{
+	left: 4dp;
+	top: 6dp;
+	width: 2dp;
+	height: 4dp;
+	background-color: var(--glyph-ink);
+}
+.dialog-input .nui-window__body
+{
+	padding: var(--space-3) 18dp var(--space-2) 18dp;
+}
 .dialog-input .nui-dialog__text
 {
 	margin-bottom: var(--space-1);
+}
+.dialog-input .nui-dialog__field
+{
+	width: 210dp;
+}
+.dialog-input .nui-dialog__footer
+{
+	gap: 10dp;
+	padding: 12dp 18dp 15dp 18dp;
+}
+.dialog-input .nui-dialog__footer .nui-button
+{
+	min-width: 82dp;
 }
 
 /* The field of the other type (dialog-input.rml): it takes no room, no

@@ -1024,11 +1024,17 @@ class Fixtures(unittest.TestCase):
         self.assertEqual({c.get("variant") for c in cases["minimap"]}, {None, "closed", "observers"})
         self.assertEqual({c.get("variant") for c in cases["shop-signs"]}, {None, "own-only"})
         self.assertEqual({c.get("variant") for c in cases["guild-war"]}, {None, "two"})
-        frames = {"minimap": "320x240", "atlas": "640x400", "player-gauge": "320x200", "shop-signs": "960x320",
+        frames = {"minimap": "320x240", "atlas": "640x480", "player-gauge": "320x200", "shop-signs": "960x320",
                   "guild-war": "480x200"}
+        # The modern and cyberpunk atlas frames are taller than classic's, so the window's shadow stays inside them.
+        classic_frames = {"atlas": "640x400"}
         for window, window_cases in cases.items():
             for case in window_cases:
+                if window in classic_frames and case["themes"] == ["classic"]:
+                    self.assertEqual(case["scales"][0][2], classic_frames[window], window)
+                    continue
                 self.assertEqual(case["themes"], "all", window)
+                self.assertEqual(case.get("except"), ["classic"] if window in classic_frames else None, window)
                 self.assertEqual([row[:2] for row in case["scales"]], [["100", "1"], ["150", "1.5"], ["200", "2"]], window)
                 self.assertEqual(case["scales"][0][2], frames[window], window)
         for case in cases["minimap"]:

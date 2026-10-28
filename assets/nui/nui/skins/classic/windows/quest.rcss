@@ -38,6 +38,7 @@ body.skin-classic.quest .quest__board
 	height: 300dp;
 	margin: -150dp 0 0 -175dp;
 	min-width: 0;
+	min-height: 0;
 	max-width: none;
 	max-height: none;
 	decorator: classic-thinboard;
@@ -50,6 +51,12 @@ body.skin-classic.quest.quest--sized .quest__board
 	width: var(--quest-board-width);
 	height: var(--quest-board-height);
 }
+/* The modern card's corner brackets and top sheen are not legacy's. */
+body.skin-classic.quest .quest__corner,
+body.skin-classic.quest .quest__sheen
+{
+	display: none;
+}
 /* The text area: legacy's text column, the board's width minus 40. */
 body.skin-classic.quest .quest__body
 {
@@ -60,6 +67,18 @@ body.skin-classic.quest .quest__body
 	overflow: visible;
 }
 
+/* Legacy's text in the default font on its 16dp pitch (classic.rcss's
+   rule, which the modern scroll's rule outweighs), the speaker's run in its
+   color only. */
+body.skin-classic.quest .quest__text
+{
+	--quest-line: 16dp;
+	font-size: var(--font-md);
+}
+body.skin-classic.quest .quest__text .nui-quest__run--title
+{
+	font-weight: normal;
+}
 /* Legacy keeps the open empty line of a page without text (a menu), and
    places the answers after it (its 16dp pitch, classic.rcss). */
 body.skin-classic.quest .quest__text .nui-quest__line.is-empty:only-child
@@ -80,6 +99,7 @@ body.skin-classic.quest .quest__choices
 body.skin-classic.quest .quest__choice
 {
 	display: block;
+	max-width: none;
 	width: 200dp;
 	height: 26dp;
 	min-height: 0;
@@ -171,8 +191,11 @@ body.skin-classic.quest .quest__footer
 {
 	display: block;
 	margin-top: -15dp;
+	position: static;
+	z-index: auto;
 	padding: 0;
 	border-width: 0;
+	text-align: left;
 }
 body.skin-classic.quest .quest__next
 {
@@ -214,6 +237,7 @@ body.skin-classic.quest .quest__input
 }
 body.skin-classic.quest .quest__field
 {
+	max-width: none;
 	width: 200dp;
 	height: 18dp;
 	margin: -21dp auto 0 auto;

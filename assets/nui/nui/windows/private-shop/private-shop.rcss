@@ -1,5 +1,7 @@
-/* The private shop builder's modern look (P16 spec 5.3.2): the shop's name
-   in a sunken field row above a lean 5 x 8 grid; OK (primary) and Close. The
+/* The private shop builder's modern look (P16 spec 5.3.2; the reviewed
+   mockup WPrivateShop): the bag emblem before the title; the shop's name,
+   bold, in a sunken field ringed in the focus color above a lean 5 x 8 grid
+   in raised wells; OK (primary) and Close sharing the row under it. The
    controller centers it at each open, as legacy's Open does; the sheet's
    place frames it in its snapshots. Classic (legacy's 184 x 354 board, the
    name's slot bar, the grid and the middle buttons at the uiscript's
@@ -9,6 +11,7 @@ body.pshop
 {
 	left: 16dp;
 	top: 16dp;
+	width: 242dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -18,36 +21,72 @@ body.pshop
 	tab-index: none;
 	focus: none;
 }
+/* The title's emblem: an accent chip with the bag glyph. */
+.pshop__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.pshop__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
 .pshop__body
 {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-2);
-	padding: var(--space-3);
+	padding: 10dp 12dp 12dp;
 }
+/* The name as legacy cuts it past 25 characters, in a field ringed in the
+   focus color (legacy's edit line has the focus while the builder is open). */
 .pshop__name
 {
 	display: block;
 	box-sizing: border-box;
-	width: 216dp;
 	height: 28dp;
-	padding: 0 var(--space-2);
+	margin-bottom: var(--space-2);
+	padding: 0 9dp;
 	background-color: var(--surface-sunken);
 	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-color: var(--focus-ring);
+	border-radius: 7dp;
 	overflow: hidden;
 }
 .pshop__name-text
 {
 	color: var(--text);
-	font-size: var(--font-sm);
+	font-size: var(--font-md);
+	font-weight: bold;
 	line-height: 26dp;
 	white-space: nowrap;
 	pointer-events: none;
 }
+.pshop__grid
+{
+	align-self: center;
+	decorator: nui-cells(40dp 4dp 7dp var(--surface-hover) var(--border) 1dp);
+}
 .pshop__footer
 {
-	justify-content: center;
-	padding: var(--space-3);
+	display: flex;
+	flex-direction: row;
+	margin-top: var(--space-3);
+	gap: 10dp;
+}
+.pshop__ok, .pshop__close
+{
+	flex: 1 1 0;
+	min-width: 0;
 }

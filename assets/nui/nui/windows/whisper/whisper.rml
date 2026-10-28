@@ -61,17 +61,23 @@
 			class="nui-tooltip nui-anim whisper__tip">@ui.CLOSE</span></button>
 	</div>
 	<div class="nui-window__body whisper__body">
+		<!-- The overlay well behind the lines (the rounded look on a box that
+		     does not clip; the lines clip square inside it). -->
+		<div class="whisper__well"></div>
 		<nui-chat-lines id="whisper-lines" class="whisper__lines" view="whisper" mode="flow" step="15" data-attr-key="feed_key"
 		                data-event-nuilink="link(ev.link)" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
 		<div class="whisper__scroll-box" data-for="w : lines_on"><input id="whisper-scroll" type="range" orientation="vertical" class="whisper__scroll"
 			min="0" max="1" step="0.01" data-attr-value="pos" data-event-change="scroll(ev.value)"/></div>
 	</div>
 	<div class="nui-window__footer whisper__edit">
-		<textarea id="whisper-input" class="nui-input whisper__input" rows="2" data-attr-maxlength="input_max"
-		          data-event-change="input_change(ev.value)" data-event-mousedown="input_press(ev.button)"></textarea>
-		<button id="whisper-send" class="nui-button nui-anim whisper__send" data-event-mousedown="send_press(ev.button)"><span
-			class="whisper__send-label">@ui.WHISPER_SEND</span></button>
+		<div class="whisper__compose">
+			<textarea id="whisper-input" class="nui-input whisper__input" rows="2" data-attr-maxlength="input_max"
+			          data-event-change="input_change(ev.value)" data-event-mousedown="input_press(ev.button)"></textarea>
+			<button id="whisper-send" class="nui-button nui-anim whisper__send" data-event-mousedown="send_press(ev.button)"><span
+				class="whisper__send-label">@ui.WHISPER_SEND</span></button>
+		</div>
 	</div>
+	<span class="whisper__grip"></span>
 	<nui-resize id="whisper-resize" class="nui-resize--bottom-right whisper__resize" edge="bottom-right" target="whisper"
 	            min-width="300" min-height="170" data-attr-width="width" data-attr-height="height"
 	            data-event-resized="resized(ev.width, ev.height)"/>

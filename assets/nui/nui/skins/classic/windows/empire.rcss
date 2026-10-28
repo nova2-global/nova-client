@@ -21,6 +21,7 @@ body.skin-classic.empire
 .skin-classic .empire-shade
 {
 	decorator: image("d:/ymir work/ui/intro/select/background_alpha.sub" fill);
+	opacity: 1;
 }
 .skin-classic .empire-line, .skin-classic .empire-line--top, .skin-classic .empire-line--bottom
 {
@@ -28,22 +29,38 @@ body.skin-classic.empire
 }
 .skin-classic .nui-window.empire-board
 {
+	width: 208dp;
 	decorator: classic-thinboard;
 	padding: 17dp 0dp 16dp 0dp;
 }
 .skin-classic .empire-flag-bar
 {
+	width: 159dp;
+	height: 119dp;
+	border-width: 0dp;
 	margin: 0dp 0dp 0dp 24dp;
 	background-color: var(--classic-slot-fill);
 	border-radius: 0dp;
 }
 .skin-classic .empire-name
 {
+	font-size: var(--font-md);
 	margin: 2dp 10dp 3dp 10dp;
 	font-weight: normal;
 }
+/* The modern well around the description is not legacy's. */
+.skin-classic .empire-well
+{
+	padding: 0dp;
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
+}
 .skin-classic .empire-text
 {
+	height: 122dp;
+	border-width: 1dp;
+	color: var(--text);
 	width: 189dp;
 	margin: 0dp 0dp 0dp 10dp;
 	padding: 6dp 7dp;
@@ -60,6 +77,7 @@ body.skin-classic.empire
 }
 .skin-classic .empire-button
 {
+	flex: 0 1 auto;
 	min-width: 88dp;
 	padding: 0dp;
 }

@@ -249,7 +249,16 @@ body.skin-classic.whisper .whisper__lines
 }
 body.skin-classic.whisper .whisper__lines .nui-chat__line
 {
+	padding-top: 0;
 	font-size: var(--font-md);
+	line-height: 15dp;
+	font-effect: none;
+}
+/* Modern's overlay well and corner grip do not show here. */
+body.skin-classic.whisper .whisper__well,
+body.skin-classic.whisper .whisper__grip
+{
+	display: none;
 }
 /* Legacy's GM line color (1.0, 0.632, 0.0), 1/255 from --edge-gm. */
 body.skin-classic.whisper .whisper__lines .nui-chat__line--w5
@@ -338,6 +347,16 @@ body.skin-classic.whisper .whisper__edit
 	height: 50dp;
 	padding: 5dp 67dp 5dp 5dp;
 	background-color: var(--classic-chat-log-fill);
+}
+/* Modern's compose box draws nothing here: the edit line and Send sit in
+   the bar as legacy places them. */
+body.skin-classic.whisper .whisper__compose
+{
+	display: block;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.whisper textarea.whisper__input
 {

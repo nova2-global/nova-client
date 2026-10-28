@@ -24,6 +24,8 @@
       data-event-mousedown="board_press(ev.button)" data-class-guild-mark--symbol="kind == 'symbol'">
 	<div class="nui-window__titlebar guild-mark__titlebar">
 		<handle class="nui-window__handle guild-mark__handle" move_target="#document">
+			<span class="guild-mark__title-icon"><span class="nui-glyph nui-glyph--community"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 			<span class="nui-window__title guild-mark__title">{{ title }}</span>
 		</handle>
 		<button id="guild-mark-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim"

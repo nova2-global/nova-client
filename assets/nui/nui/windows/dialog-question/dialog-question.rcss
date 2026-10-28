@@ -1,0 +1,28 @@
+/* The question dialog (nui_dialog_question.py; the reviewed design, board
+   WDialogs): the dialog kit's look (components/dialog.rcss), the lines
+   centered with room around them, then Yes before No, as legacy's (accept
+   at x -40 and cancel at +40 of the center), where the kit's footer puts
+   the primary button last. The scrim centers it. Classic:
+   skins/classic/windows/dialog-question.rcss. */
+.dialog-question .nui-dialog
+{
+	min-width: 330dp;
+}
+.dialog-question .nui-window__body
+{
+	padding: 22dp 18dp 6dp 18dp;
+}
+.dialog-question .nui-dialog__text
+{
+	line-height: 18dp;
+}
+.dialog-question .nui-dialog__footer
+{
+	flex-direction: row-reverse;
+	gap: 10dp;
+	padding: 12dp 18dp 15dp 18dp;
+}
+.dialog-question .nui-dialog__footer .nui-button
+{
+	min-width: 82dp;
+}

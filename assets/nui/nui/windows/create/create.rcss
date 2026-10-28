@@ -1,20 +1,29 @@
 /* Character create: an overlay (nui-overlay) over the legacy background and
    the 3D characters, like the select screen; only the board and the arrows
    take the mouse (nui-interactive). Positions are the legacy screen
-   fractions and sizes the legacy pixels in dp (uiscript
-   createcharacterwindow.py): the board, 208dp wide, at 65/800 from the left
-   with its bottom where the legacy board's was (56/600 above the bottom
-   edge); the class-name art keeps its legacy offset from the board's top
-   (-27, -149); the arrows are the select screen's. In the modern skin each
-   picker's label stands above its two buttons, so long labels fit. */
+   fractions (uiscript createcharacterwindow.py): the board at 65/800 from
+   the left with its bottom where the legacy board's was (56/600 above the
+   bottom edge); the class-name art keeps its legacy offset from the
+   board's top (-27, -149); the arrows are the select screen's, 160 by 36.
+
+   Modern (the reviewed design, stage 1): a 290dp panel with the legacy rows
+   in their legacy order: the job description in a rounded well (the box
+   inside it scrolls and stays square, so the scissor alone clips it); the
+   four stat bars; the name field with its person pictogram under its
+   label; gender and shape with their label in a column on the left and
+   their two choices (the chosen one filled with the accent); Cancel and
+   Create, as wide as each other. The arrows are the select screen's
+   blades. Classic (legacy's thin board, its boxes and art at 100%):
+   skins/classic/windows/create.rcss. */
 .create-board
 {
 	position: absolute;
 	left: 8.125%;
 	bottom: 9.33%;
-	width: 208dp;
+	width: 290dp;
 	min-width: 0dp;
 	box-sizing: border-box;
+	padding: 12dp 12dp 0dp 12dp;
 }
 .create-job
 {
@@ -23,11 +32,11 @@
 	top: -149dp;
 	pointer-events: none;
 }
-/* The modern board is about 480dp tall, so below 720dp of screen its top
-   is too close to the screen's top for the art 149dp above it, which would
-   be cut (2400x1350 at 200%: 675dp). There the art is left out, as D13
-   leaves out the keyboard. The classic board is short enough at any
-   height, so the classic overlay shows the art there too. */
+/* Below 720dp of screen the modern board's top is too close to the
+   screen's top for the art 149dp above it, which would be cut (2400x1350
+   at 200%: 675dp). There the art is left out, as D13 leaves out the
+   keyboard. The classic board is short enough at any height, so the
+   classic overlay shows the art there too. */
 @media (max-height: 719dp)
 {
 	.create-job
@@ -36,17 +45,24 @@
 	}
 }
 
+/* --- The description ------------------------------------------------------------------ */
+
+.create-well
+{
+	padding: 8dp 4dp 8dp 10dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+}
 /* The description scrolls in a square box (the scissor clips it). */
 .create-text
 {
 	box-sizing: border-box;
-	height: 122dp;
-	margin: var(--space-3) var(--space-3) 0dp var(--space-3);
-	padding: var(--space-1) var(--space-2);
+	height: 112dp;
+	padding: 0dp 8dp 0dp 0dp;
 	overflow-y: auto;
-	background-color: var(--surface-sunken);
-	border-width: 1dp;
-	border-color: var(--border);
+	color: var(--text-muted);
 	font-size: var(--font-sm);
 }
 .create-text__paragraph
@@ -54,28 +70,41 @@
 	margin-bottom: var(--space-2);
 }
 
+/* --- The stat bars ----------------------------------------------------------------------- */
+
 .create-stats
 {
-	padding: var(--space-2) var(--space-3) 0dp var(--space-3);
+	display: flex;
+	flex-direction: column;
+	gap: 6dp;
+	padding: 12dp 0dp 0dp 0dp;
 }
 .create-stat
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: var(--space-2);
-	height: 20dp;
+	gap: 9dp;
+	height: 14dp;
 }
 .create-stat__label
 {
 	flex: 0 0 auto;
 	min-width: 30dp;
 	color: var(--text-muted);
-	font-size: var(--font-sm);
+	font-size: 10dp;
+	font-weight: bold;
 }
 .create-stat__gauge
 {
 	flex: 1 1 auto;
+	height: 8dp;
+}
+/* INT in the SP blue, as the design's bars (the gauge's pink is gold). */
+progress.create-stat__gauge--sp fill
+{
+	background-color: var(--gauge-blue);
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-blue) 24%, var(--gauge-blue) 100%);
 }
 .create-value
 {
@@ -89,23 +118,53 @@
 	text-align: right;
 }
 
+/* --- Name, gender and shape --------------------------------------------------------------- */
+
 .create-row
 {
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
-	gap: var(--space-1) var(--space-2);
-	padding: var(--space-2) var(--space-3) 0dp var(--space-3);
+	align-items: center;
+	gap: 8dp;
+	padding: 8dp 0dp 0dp 0dp;
+}
+.create-row--name
+{
+	flex-direction: column;
+	align-items: stretch;
+	gap: 4dp;
+	padding-top: 12dp;
 }
 .create-label
 {
 	display: block;
-	flex: 0 0 100%;
+	flex: 0 0 auto;
+	min-width: 62dp;
 	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+/* The field and its pictogram, as on the login card. */
+.create-control
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: relative;
 }
 .create-name
 {
 	flex: 1 1 auto;
+	height: 34dp;
+	padding-left: 32dp;
+	line-height: 32dp;
+}
+.create-icon
+{
+	position: absolute;
+	left: 10dp;
+	top: 9dp;
+	--glyph-ink: var(--text-muted);
+	pointer-events: none;
 }
 .create-choice
 {
@@ -120,19 +179,41 @@
 	color: var(--accent-text);
 }
 
+/* --- Cancel and Create ----------------------------------------------------------------------- */
+
 .create-footer
 {
-	justify-content: center;
-	margin-top: var(--space-3);
+	gap: 8dp;
+	margin: 14dp -12dp 0dp -12dp;
+	padding: 12dp;
+}
+.create-button
+{
+	flex: 1 1 0dp;
+}
+.create-action
+{
+	height: 34dp;
+	line-height: 32dp;
 }
 
-/* Modern arrows: icon buttons centered on the legacy dragon art (160 by 36),
-   at the select screen's places. */
+/* --- The rotate arrows: the select screen's blades ------------------------------------------- */
+
 .create-arrow
 {
 	position: absolute;
 	top: 84.17%;
-	margin: 2dp 0dp 0dp 64dp;
+	width: 160dp;
+	height: 36dp;
+	margin: 0dp;
+	padding: 0dp;
+	background-color: transparent;
+	border-color: transparent;
+	color: transparent;
+}
+.create-arrow:hover, .create-arrow:active
+{
+	background-color: transparent;
 }
 .create-arrow--left
 {
@@ -141,4 +222,70 @@
 .create-arrow--right
 {
 	left: 69.75%;
+}
+.create-blade, .create-tip
+{
+	display: block;
+	position: absolute;
+	pointer-events: none;
+}
+.create-blade
+{
+	top: 12dp;
+	width: 0dp;
+	height: 0dp;
+	border-width: 12dp 0dp 0dp 124dp;
+	border-color: var(--scene) transparent transparent transparent;
+	transform-origin: 124dp 0dp;
+}
+.create-blade--edge
+{
+	top: 11dp;
+	border-width: 14dp 0dp 0dp 128dp;
+	border-color: var(--sheen) transparent transparent transparent;
+	transform-origin: 128dp 1dp;
+}
+.create-arrow--left .create-blade
+{
+	left: 16dp;
+	transform: rotate(-9deg);
+}
+.create-arrow--left .create-blade--edge
+{
+	left: 12dp;
+}
+.create-arrow--right .create-blade
+{
+	left: -104dp;
+	transform: scaleX(-1) rotate(-9deg);
+}
+.create-arrow--right .create-blade--edge
+{
+	left: -108dp;
+}
+.create-tip
+{
+	top: 24dp;
+	width: 18dp;
+	height: 2dp;
+	border-radius: 1dp;
+	background-color: var(--text-inverse);
+}
+.create-arrow--left .create-tip
+{
+	left: 14dp;
+	transform-origin: 1dp 1dp;
+}
+.create-arrow--left .create-tip--a { transform: rotate(-38deg); }
+.create-arrow--left .create-tip--b { transform: rotate(6deg); }
+.create-arrow--right .create-tip
+{
+	left: 128dp;
+	transform-origin: 17dp 1dp;
+}
+.create-arrow--right .create-tip--a { transform: rotate(38deg); }
+.create-arrow--right .create-tip--b { transform: rotate(-6deg); }
+.create-arrow:hover .create-tip
+{
+	background-color: var(--accent);
 }

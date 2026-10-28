@@ -1,17 +1,21 @@
-/* The guild window's modern look (P16 spec 5.9.2): a 480 x 470dp window,
-   the page's name as its title, the shown page in the body and the six
-   tabs in a row at its bottom (the base page's disabled, as legacy's). The
-   info page is two cards (the guild's values with the offer; the mark, the
-   uploads, the enemies and the war declaration); the comments, the members
-   and the grades are tables of 22dp to 24dp rows; the skills three rows of
-   cells over the dragon power gauge. Controls hover with the surface's
-   hover color; checks are boxes that hold an accent mark. The controller
+/* The guild window's modern look (P16 spec 5.9.2; the skins stage's
+   WGuild* boards): a 500 x 500dp window, a page icon, the page's name and
+   the window's key as its title, the shown page in the body and the six
+   tabs in a well at its bottom (the base page's disabled, as legacy's),
+   their labels on two lines where they need it, never cut. The info page
+   is two cards (the guild's values with the offer; the mark, the uploads,
+   the enemies and the war declaration), each under a title bar with a
+   rule after its title; the comments, the members and the grades are
+   tables of rows with wells for their values; the skills three cards of
+   cells over the dragon power. Controls hover with the surface's hover
+   color; checks are wells that hold an accent check mark. The controller
    centers it on the screen at its first open (P18; legacy's place, the
    screen's corner, was D21) and keeps a dragged place after it; the sheet
-   centers it on any frame at least 640dp wide, as the client does, and the
-   page cases' 520dp crops keep it 16dp from their corner. Classic (legacy's 376 x 356
-   board, the locale's tab art, every place of the uiscripts and of
-   uiguild.py's page builders at 1dp per pixel): skins/classic/windows/guild.rcss. */
+   centers it on any frame at least 640dp wide, as the client does, and
+   puts it 16dp from the corner of a smaller one. Classic (legacy's
+   376 x 356 board, the locale's tab art, every place of the uiscripts and
+   of uiguild.py's page builders at 1dp per pixel):
+   skins/classic/windows/guild.rcss. */
 
 body.guild
 {
@@ -19,8 +23,8 @@ body.guild
 	flex-direction: column;
 	left: 16dp;
 	top: 16dp;
-	width: 480dp;
-	height: 470dp;
+	width: 500dp;
+	height: 500dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -34,8 +38,8 @@ body.guild
 	{
 		left: 50%;
 		top: 50%;
-		margin-left: -240dp;
-		margin-top: -235dp;
+		margin-left: -250dp;
+		margin-top: -250dp;
 	}
 }
 .guild button
@@ -53,6 +57,59 @@ body.guild
 {
 	flex: 0 0 auto;
 }
+.guild__handle
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+/* The page's icon: a glyph in an accent tile. */
+.guild__title-icon
+{
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 8dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+}
+.guild__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.guild__title
+{
+	display: block;
+	flex: 0 1 auto;
+	min-width: 0;
+	overflow: hidden;
+}
+/* The window's key (legacy's G), as a key cap. */
+.guild__title-key
+{
+	display: block;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	min-width: 16dp;
+	height: 16dp;
+	margin-left: 8dp;
+	padding: 0 3dp;
+	border-width: 1dp 1dp 2dp 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+	color: var(--text-muted);
+	font-size: 10dp;
+	font-weight: bold;
+	line-height: 13dp;
+	text-align: center;
+}
 .guild__body
 {
 	display: block;
@@ -66,9 +123,9 @@ body.guild
 	display: block;
 	position: absolute;
 	left: var(--space-3);
-	top: var(--space-3);
+	top: 10dp;
 	right: var(--space-3);
-	bottom: var(--space-3);
+	bottom: 10dp;
 }
 /* Labels on buttons take no pointer, so a press is the button's. */
 .guild__button-label, .guild__tab-label
@@ -78,45 +135,69 @@ body.guild
 
 /* --- Shared parts ---------------------------------------------------------------------- */
 
-.guild__card
+/* A card: a raised panel under a title bar. */
+.guild__card, .guild__skill-panel
 {
 	display: block;
 	box-sizing: border-box;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	padding: var(--space-3);
+	padding: 0;
 	background-color: var(--surface-raised);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
+	border-radius: 9dp;
 }
+.guild__card
+{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+}
+/* A card's title bar: the title, then a rule to the bar's end. */
 .guild__bar
 {
-	display: block;
-	height: 20dp;
-	margin-bottom: var(--space-2);
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+	height: 28dp;
+	margin: 0;
+	padding: 0 10dp;
 	border-bottom-width: 1dp;
 	border-bottom-color: var(--border);
-	line-height: 18dp;
+	border-radius: 8dp 8dp 0 0;
+	decorator: linear-gradient(180deg, var(--surface-hover) 0%, var(--surface-raised) 100%);
 	white-space: nowrap;
 }
 .guild__bar-title
 {
+	display: block;
+	flex: 0 1 auto;
+	min-width: 0;
+	overflow: hidden;
 	font-size: var(--font-sm);
 	font-weight: bold;
 	color: var(--text-muted);
+	letter-spacing: 0.4dp;
 }
+.guild__bar-line
+{
+	display: block;
+	flex: 1 1 0;
+	height: 1dp;
+	margin-left: 9dp;
+	background-color: var(--border);
+}
+/* A value's label: two lines where a locale needs them (de
+   "Durchschnittliches Level"), never cut. */
 .guild__label
 {
 	display: block;
 	flex: 0 0 auto;
-	width: 96dp;
+	width: 100dp;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	line-height: 12dp;
+	white-space: normal;
 }
 .guild__value
 {
@@ -128,36 +209,56 @@ body.guild
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/* A value's well. */
+.guild__field .guild__value, .guild__value--base
+{
+	box-sizing: border-box;
+	height: 26dp;
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-sunken);
+	font-weight: bold;
+	line-height: 24dp;
+	text-align: center;
+}
+/* A table's head: small bold muted labels over a rule, on two lines
+   where a locale needs them and never cut (the board's capitals would not
+   fit the columns in every locale). */
 .guild__head
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 22dp;
+	box-sizing: border-box;
+	height: 30dp;
 	border-bottom-width: 1dp;
 	border-bottom-color: var(--border);
 	color: var(--text-muted);
-	font-size: var(--font-sm);
-	white-space: nowrap;
+	font-size: 10dp;
+	font-weight: bold;
+	line-height: 11dp;
 }
 .guild__head-cell
 {
 	display: block;
 	flex: 0 0 auto;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	box-sizing: border-box;
+	white-space: normal;
 }
-/* A check: a 16dp box with an accent mark while checked. */
+/* A check: an 18dp well that holds an accent check mark while checked. */
 .guild__check
 {
 	display: block;
 	position: relative;
+	box-sizing: border-box;
 	width: 18dp;
 	height: 18dp;
 	padding: 0;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-radius: 5dp;
 	background-color: var(--surface-sunken);
 }
 .guild__check:hover
@@ -168,12 +269,13 @@ body.guild
 {
 	display: none;
 	position: absolute;
-	left: 4dp;
-	top: 4dp;
+	left: 3dp;
+	top: 3dp;
 	width: 8dp;
-	height: 8dp;
-	border-radius: var(--radius-sm);
-	background-color: var(--accent);
+	height: 4dp;
+	border-width: 0 0 2dp 2dp;
+	border-color: var(--accent);
+	transform: rotate(-45deg);
 	pointer-events: none;
 }
 .guild__check.is-checked .guild__check-mark
@@ -193,12 +295,12 @@ body.guild
 .guild__card--values
 {
 	left: 0;
-	width: 236dp;
+	width: 242dp;
 }
 .guild__card--mark
 {
 	right: 0;
-	width: 212dp;
+	width: 224dp;
 }
 .guild__field
 {
@@ -206,82 +308,140 @@ body.guild
 	flex-direction: row;
 	align-items: center;
 	height: 26dp;
+	margin: 0 10dp 7dp;
 }
-.guild__value--level
+.guild__field--name { margin-top: 10dp; }
+.guild__field .guild__label
 {
-	flex: 0 0 40dp;
+	margin-right: 7dp;
 }
 .guild__offer
 {
 	flex: 0 0 auto;
-	height: 24dp;
-	padding: 0 var(--space-2);
-	line-height: 22dp;
+	min-width: 55dp;
+	height: 22dp;
+	margin-left: 7dp;
+	padding: 0 7dp;
+	border-radius: 6dp;
 	font-size: var(--font-sm);
+	line-height: 20dp;
 }
+/* The mark in its frame: a well with an accent ring 5dp in. */
 .guild__mark-slot
 {
 	display: block;
-	position: relative;
-	width: 50dp;
-	height: 38dp;
-	margin-bottom: var(--space-2);
+	position: absolute;
+	left: 10dp;
+	top: 38dp;
+	box-sizing: border-box;
+	width: 72dp;
+	height: 58dp;
 	border-width: 1dp;
 	border-color: var(--border);
+	border-radius: 10dp;
 	background-color: var(--surface-sunken);
 }
 .guild__mark
 {
 	display: block;
 	position: absolute;
-	left: 0;
-	top: 0;
-	width: 48dp;
-	height: 36dp;
+	left: 3dp;
+	top: 4dp;
+	width: 64dp;
+	height: 48dp;
 }
 .guild__mark--nearest
 {
 	display: none;
 }
+.guild__mark-ring
+{
+	display: block;
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	right: 4dp;
+	bottom: 4dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	pointer-events: none;
+}
 .guild__mark-buttons
 {
 	display: block;
 	position: absolute;
-	left: 76dp;
-	top: 42dp;
-	right: var(--space-3);
+	left: 92dp;
+	top: 41dp;
+	right: 10dp;
 }
+/* 10dp: the widest label (dk "Upload Ordenssymbol") fits. */
 .guild__upload
 {
 	display: block;
 	width: 100%;
-	height: 24dp;
-	margin-bottom: var(--space-1);
-	padding: 0 var(--space-2);
-	line-height: 22dp;
-	font-size: var(--font-sm);
+	height: 22dp;
+	margin-bottom: 7dp;
+	padding: 0 var(--space-1);
+	border-radius: 6dp;
+	font-size: 10dp;
+	line-height: 20dp;
+}
+.guild__bar--enemies
+{
+	position: absolute;
+	left: 0;
+	top: 106dp;
+	right: 0;
+	border-radius: 0;
 }
 .guild__enemies
 {
 	display: block;
+	position: absolute;
+	left: 10dp;
+	top: 142dp;
+	right: 10dp;
 }
+/* An enemy: a well with a danger diamond before the name. */
 .guild__enemy
 {
 	display: block;
-	height: 22dp;
-	line-height: 22dp;
+	position: relative;
+	box-sizing: border-box;
+	height: 28dp;
+	margin-bottom: 6dp;
+	padding: 0 var(--space-2) 0 22dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-sunken);
+	line-height: 26dp;
 	color: var(--text);
+	font-weight: bold;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+.guild__enemy-mark
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 10dp;
+	width: 5dp;
+	height: 5dp;
+	background-color: var(--danger);
+	opacity: 0.75;
+	transform: rotate(45deg);
 }
 .guild__declare
 {
 	display: block;
 	position: absolute;
-	left: var(--space-3);
-	right: var(--space-3);
-	bottom: var(--space-3);
+	left: auto;
+	right: 10dp;
+	bottom: 10dp;
 	height: 28dp;
 	line-height: 26dp;
 }
@@ -295,8 +455,8 @@ body.guild
 .guild__head-name
 {
 	display: block;
-	width: 118dp;
-	padding-left: 12dp;
+	width: 154dp;
+	padding-left: 24dp;
 }
 .guild__head-text
 {
@@ -307,23 +467,23 @@ body.guild
 {
 	position: absolute;
 	right: 0;
-	top: -2dp;
+	top: 3dp;
 	width: 24dp;
 	height: 24dp;
 }
-/* The refresh mark: an open ring with an arrow head (a box with three
-   borders, turned, and a triangle). */
+/* The refresh mark: an open accent ring (a box with three borders). */
 .guild__refresh-mark
 {
 	display: block;
 	position: absolute;
-	left: 6dp;
-	top: 6dp;
-	width: 12dp;
-	height: 12dp;
+	left: 5dp;
+	top: 5dp;
+	width: 10dp;
+	height: 10dp;
 	border-width: 2dp;
-	border-color: var(--text) var(--text) var(--text) transparent;
-	border-radius: 6dp;
+	border-color: var(--accent) var(--accent) var(--accent) transparent;
+	border-radius: 7dp;
+	transform: rotate(45deg);
 	pointer-events: none;
 }
 .guild__comments
@@ -336,30 +496,66 @@ body.guild
 	flex-direction: row;
 	align-items: center;
 	position: relative;
-	height: 22dp;
+	box-sizing: border-box;
+	height: 26dp;
+	margin-bottom: 2dp;
+	padding: 0 2dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-raised);
 	white-space: nowrap;
 }
 .guild__comment:hover
 {
 	background-color: var(--surface-hover);
 }
+/* A notice: a warning edge, a warm tint and its "!". */
+.guild__comment.is-notice
+{
+	border-left-width: 3dp;
+	border-left-color: var(--warning);
+}
+.guild__notice-tint
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 0 5dp 5dp 0;
+	background-color: var(--warning);
+	opacity: 0.1;
+	pointer-events: none;
+}
+.guild__comment.is-notice .guild__notice-tint
+{
+	display: block;
+}
 .guild__notice
 {
 	display: block;
 	flex: 0 0 auto;
-	width: 4dp;
-	height: 12dp;
-	margin: 0 4dp;
-	border-radius: 2dp;
+	width: 16dp;
+	height: 14dp;
+	margin-right: 6dp;
+	color: transparent;
+	font-weight: bold;
+	line-height: 14dp;
+	text-align: center;
 }
 .guild__comment.is-notice .guild__notice
 {
-	background-color: var(--accent);
+	margin-left: -2dp;
+	color: var(--warning);
 }
 .guild__comment-name
 {
 	display: block;
-	flex: 0 0 106dp;
+	flex: 0 0 124dp;
+	margin-right: 6dp;
+	font-weight: bold;
 	color: var(--text);
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -392,13 +588,17 @@ body.guild
 	padding: 2dp var(--space-1);
 	background-color: var(--surface-raised);
 }
-/* The glyph on the 22dp row's middle (the button's own line box is 30dp). */
+/* The delete button: a 22dp well with the close glyph. */
 .guild__delete
 {
 	flex: 0 0 auto;
 	width: 22dp;
 	height: 22dp;
+	margin-left: 6dp;
+	border-radius: 5dp;
 	line-height: 20dp;
+	background-color: var(--surface-sunken);
+	border-color: var(--border);
 }
 .guild__delete .nui-glyph
 {
@@ -412,15 +612,15 @@ body.guild
 	position: absolute;
 	left: var(--space-3);
 	right: var(--space-3);
-	bottom: var(--space-3);
-	height: 32dp;
-	gap: var(--space-2);
+	bottom: 10dp;
+	height: 28dp;
 }
 .guild__post-slot
 {
 	display: block;
 	flex: 1 1 0;
 	min-width: 0;
+	margin-right: 7dp;
 }
 .guild__comment-field
 {
@@ -430,30 +630,50 @@ body.guild
 .guild__post
 {
 	flex: 0 0 auto;
-	width: 40dp;
+	width: 30dp;
+	height: 28dp;
 	padding: 0;
+}
+.guild__post .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
 }
 
 /* --- The member page ------------------------------------------------------------------- */
 
-.guild__head-cell--name, .guild__member-name { width: 116dp; padding-left: var(--space-1); }
-.guild__head-cell--grade, .guild__combo-box { width: 96dp; }
-.guild__head-cell--job, .guild__member-cell--job { width: 64dp; }
-.guild__head-cell--level, .guild__member-cell--level { width: 44dp; }
-.guild__head-cell--offer, .guild__member-cell--offer { width: 56dp; }
-.guild__head-cell--general { width: 46dp; }
+/* The columns: name, grade, job, level, offer and general, 5dp apart. */
+.guild__head--member
+{
+	margin-right: 10dp;
+	padding: 0 12dp 0 8dp;
+}
+.guild__head-cell--name, .guild__member-name { width: 126dp; }
+.guild__head-cell--grade, .guild__combo-box { width: 82dp; margin-left: 5dp; }
+.guild__head-cell--job, .guild__member-cell--job { width: 65dp; margin-left: 5dp; text-align: center; }
+.guild__head-cell--level, .guild__member-cell--level { width: 41dp; margin-left: 5dp; text-align: center; }
+.guild__head-cell--offer, .guild__member-cell--offer { width: 59dp; margin-left: 5dp; text-align: center; }
+.guild__head-cell--general { width: 47dp; margin-left: 5dp; text-align: center; }
+.guild__head-cell--grade { text-align: center; }
 .guild__members
 {
 	display: block;
 	position: relative;
-	margin-right: 18dp;
+	margin-right: 10dp;
+	padding-top: 4dp;
 }
 .guild__member
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 24dp;
+	box-sizing: border-box;
+	height: 26dp;
+	margin-bottom: 2dp;
+	padding: 0 12dp 0 7dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-raised);
 	white-space: nowrap;
 }
 .guild__member:hover
@@ -464,6 +684,7 @@ body.guild
 {
 	display: block;
 	flex: 0 0 auto;
+	box-sizing: border-box;
 	color: var(--text);
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -475,7 +696,7 @@ body.guild
 	position: relative;
 	flex: 0 0 auto;
 	height: 20dp;
-	padding-right: var(--space-2);
+	padding-right: 0;
 }
 .guild__combo
 {
@@ -483,14 +704,14 @@ body.guild
 	box-sizing: border-box;
 	width: 100%;
 	height: 20dp;
-	padding: 0 var(--space-2);
+	padding: 0 var(--space-1);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-radius: 5dp;
 	background-color: var(--surface-sunken);
 	color: var(--text-muted);
 	line-height: 18dp;
-	text-align: left;
+	text-align: center;
 	overflow: hidden;
 }
 .guild__combo.is-enabled
@@ -509,36 +730,37 @@ body.guild
 {
 	pointer-events: none;
 }
-/* The open list under its line's combo box (the lines 24dp apart, the
-   box 20dp tall in the middle of its line, 120dp in), over the lines below
-   it: one list for the window, placed by its line's class. */
+/* The open list under its line's combo box (the lines 28dp apart from
+   4dp down, the box 20dp tall in the middle of its 26dp line, 138dp in),
+   over the lines below it: one list for the window, placed by its line's
+   class. */
 .guild__combo-list
 {
 	display: block;
 	position: absolute;
-	left: 120dp;
-	width: 86dp;
-	top: 24dp;
+	left: 138dp;
+	width: 82dp;
+	top: 28dp;
 	z-index: 10;
 	padding: 2dp 0;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-radius: 5dp;
 	background-color: var(--surface-raised);
 }
-.guild__combo-list--0 { top: 24dp; }
-.guild__combo-list--1 { top: 48dp; }
-.guild__combo-list--2 { top: 72dp; }
-.guild__combo-list--3 { top: 96dp; }
-.guild__combo-list--4 { top: 120dp; }
-.guild__combo-list--5 { top: 144dp; }
-.guild__combo-list--6 { top: 168dp; }
-.guild__combo-list--7 { top: 192dp; }
-.guild__combo-list--8 { top: 216dp; }
-.guild__combo-list--9 { top: 240dp; }
-.guild__combo-list--10 { top: 264dp; }
-.guild__combo-list--11 { top: 288dp; }
-.guild__combo-list--12 { top: 312dp; }
+.guild__combo-list--0 { top: 28dp; }
+.guild__combo-list--1 { top: 56dp; }
+.guild__combo-list--2 { top: 84dp; }
+.guild__combo-list--3 { top: 112dp; }
+.guild__combo-list--4 { top: 140dp; }
+.guild__combo-list--5 { top: 168dp; }
+.guild__combo-list--6 { top: 196dp; }
+.guild__combo-list--7 { top: 224dp; }
+.guild__combo-list--8 { top: 252dp; }
+.guild__combo-list--9 { top: 280dp; }
+.guild__combo-list--10 { top: 308dp; }
+.guild__combo-list--11 { top: 336dp; }
+.guild__combo-list--12 { top: 364dp; }
 .guild__combo-item
 {
 	display: block;
@@ -554,35 +776,35 @@ body.guild
 }
 .guild__member-general
 {
-	margin-left: 14dp;
+	margin-left: 19dp;
 }
 .guild__member-scroll-box
 {
 	position: absolute;
 	right: 0;
-	top: 28dp;
-	bottom: 0;
-	width: 12dp;
+	top: 34dp;
+	bottom: 2dp;
+	width: 8dp;
 }
 input.guild__member-scroll
 {
 	display: block;
-	width: 12dp;
+	width: 8dp;
 	height: 100%;
 	focus: none;
 }
 .guild__member-scroll slidertrack
 {
-	width: 4dp;
-	margin-left: 4dp;
+	width: 2dp;
+	margin-left: 3dp;
 	border-radius: 2dp;
-	background-color: var(--surface-sunken);
+	background-color: var(--border);
 }
 .guild__member-scroll sliderbar
 {
-	width: 12dp;
-	height: 22dp;
-	border-radius: 6dp;
+	width: 8dp;
+	height: 84dp;
+	border-radius: 4dp;
 	background-color: var(--text-muted);
 }
 .guild__member-scroll sliderbar:hover, .guild__member-scroll sliderbar:active
@@ -606,95 +828,178 @@ input.guild__member-scroll
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 26dp;
-	margin-bottom: var(--space-2);
+	height: 36dp;
+	margin: 0 68dp 8dp;
+}
+.guild__base-name .guild__label
+{
+	width: 110dp;
+	margin-right: 8dp;
+	font-size: var(--font-md);
+	font-weight: bold;
+}
+.guild__bar--resources, .guild__bar--buildings
+{
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp 9dp 0 0;
 }
 .guild__resources
 {
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
-	gap: var(--space-1);
-	margin-bottom: var(--space-3);
+	box-sizing: border-box;
+	height: 69dp;
+	margin-bottom: 8dp;
+	padding: 7dp;
+	border-width: 0 1dp 1dp 1dp;
+	border-color: var(--border);
+	border-radius: 0 0 9dp 9dp;
+	background-color: var(--surface-raised);
 }
 .guild__resource
 {
 	display: block;
-	width: 44dp;
+	flex: 1 1 0;
+	min-width: 0;
+	margin-right: 5dp;
 	text-align: center;
 }
+/* A resource's name: two lines where a locale needs them, never cut. */
 .guild__resource-name
 {
 	display: block;
-	font-size: var(--font-xs);
+	height: 20dp;
+	font-size: 9dp;
+	line-height: 10dp;
 	color: var(--text-muted);
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	white-space: normal;
 }
 .guild__resource-value
 {
 	display: block;
-	height: 18dp;
+	box-sizing: border-box;
+	height: 24dp;
 	border-width: 1dp;
 	border-color: var(--border);
+	border-radius: 5dp;
 	background-color: var(--surface-sunken);
-	line-height: 16dp;
+	font-weight: bold;
+	line-height: 22dp;
 }
 .guild__basket
 {
-	display: block;
-	flex: 1 1 0;
-	padding: var(--space-1);
-	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-sm);
-	color: var(--text-muted);
-	font-size: var(--font-sm);
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	flex: 1.5 1 0;
+	min-width: 0;
+	border-width: 0;
+	color: var(--accent);
+	font-size: 10dp;
+	font-weight: bold;
 	text-align: center;
+	text-transform: uppercase;
 }
 .guild__basket-line
 {
 	display: block;
 }
-.guild__head-cell--building { width: 92dp; padding-left: var(--space-1); }
-.guild__head-cell--rank { width: 44dp; }
+.guild__head--base
+{
+	box-sizing: border-box;
+	height: 28dp;
+	padding: 0 7dp;
+	background-color: var(--surface-raised);
+	border-width: 0 1dp 1dp;
+	border-color: var(--border);
+}
+.guild__head-cell--building { width: 104dp; padding-left: var(--space-1); }
+.guild__head-cell--rank { width: 46dp; }
 .guild__head-cell--operate { margin-left: auto; padding-right: var(--space-1); }
+.guild__buildings
+{
+	display: block;
+	padding: 3dp 7dp 4dp;
+	border-width: 0 1dp 1dp;
+	border-color: var(--border);
+	border-radius: 0 0 9dp 9dp;
+	background-color: var(--surface-raised);
+}
 .guild__building
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 24dp;
-	gap: var(--space-1);
+	box-sizing: border-box;
+	height: 25dp;
+	margin-bottom: 2dp;
+	padding: 1dp 0;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
 	white-space: nowrap;
 }
-.guild__building-name { display: block; width: 88dp; overflow: hidden; text-overflow: ellipsis; }
-.guild__building-grade { display: block; width: 40dp; overflow: hidden; text-overflow: ellipsis; }
-.guild__building-gem { display: block; width: 36dp; overflow: hidden; text-overflow: ellipsis; }
-.guild__building-power { margin-left: auto; }
+.guild__building-name, .guild__building-grade, .guild__building-gem
+{
+	display: block;
+	box-sizing: border-box;
+	height: 23dp;
+	margin-right: 4dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+	background-color: var(--surface-sunken);
+	line-height: 21dp;
+	text-align: center;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.guild__building-name { width: 108dp; text-align: left; padding-left: 6dp; }
+.guild__building-grade { width: 38dp; }
+.guild__building-gem { width: 37dp; }
+.guild__building-power { margin-left: auto; margin-right: 8dp; }
 
 /* --- The skill page --------------------------------------------------------------------------- */
 
+/* Three cards of cells (the grid of nine centered in each) and the dragon
+   power's card at the page's bottom. */
+.guild__skill-panel
+{
+	height: 100dp;
+	margin-bottom: 7dp;
+}
+.guild__skill-panel--affect
+{
+	height: 124dp;
+}
+.guild__bar--passive, .guild__bar--active, .guild__bar--affect
+{
+	height: 26dp;
+}
 .guild__bar--passive
 {
 	position: relative;
 }
+/* The skill points: a badge at the passive bar's end, apart from its
+   title (legacy's "available" art is the classic look's). */
 .guild__points
 {
 	display: block;
 	position: absolute;
-	right: 0;
-	top: 0;
-	min-width: 24dp;
-	height: 18dp;
-	padding: 0 var(--space-2);
+	right: 10dp;
+	top: 4dp;
+	box-sizing: border-box;
+	min-width: 22dp;
+	height: 17dp;
+	padding: 0 7dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
 	border-radius: 9dp;
-	background-color: var(--accent);
-	color: var(--accent-text);
+	background-color: var(--selection);
+	color: var(--accent);
+	font-size: var(--font-sm);
 	font-weight: bold;
+	line-height: 15dp;
 	text-align: center;
 }
 .guild__points-art
@@ -703,30 +1008,31 @@ input.guild__member-scroll
 }
 .guild__skills
 {
-	margin-bottom: var(--space-2);
+	margin: 7dp auto 0;
 }
-/* A skill's "+": a small accent button at the cell's bottom left corner. */
+/* A skill's "+": a small button at the cell's bottom left corner. */
 .guild__plus
 {
 	display: block;
 	position: absolute;
 	left: 1dp;
 	bottom: 1dp;
-	width: 16dp;
-	height: 16dp;
+	width: 15dp;
+	height: 15dp;
 	padding: 0;
-	border-radius: var(--radius-sm);
-	background-color: var(--accent);
+	border-radius: 4dp;
+	background-color: var(--slot-locked);
+	line-height: 15dp;
 	z-index: 2;
 }
 .guild__plus .nui-glyph
 {
-	--glyph-ink: var(--accent-text);
+	--glyph-ink: var(--warning);
 	transform: scale(0.75);
 }
 .guild__plus:hover
 {
-	background-color: var(--accent-hover);
+	background-color: var(--surface-hover);
 }
 .guild__power
 {
@@ -737,20 +1043,32 @@ input.guild__member-scroll
 	left: 0;
 	right: 0;
 	bottom: 0;
-	height: 28dp;
-	gap: var(--space-2);
+	box-sizing: border-box;
+	height: 52dp;
+	padding: 0 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-raised);
 }
 .guild__power-title
 {
 	display: block;
 	flex: 0 0 auto;
+	margin-right: 10dp;
 	color: var(--text-muted);
-	font-size: var(--font-sm);
+	font-weight: bold;
 }
 .guild__gauge-slot
 {
 	display: block;
 	flex: 1 1 0;
+	min-width: 0;
+}
+progress.guild__gp--ratio
+{
+	width: 100%;
+	height: 8dp;
 }
 progress.guild__gp--legacy
 {
@@ -760,53 +1078,75 @@ progress.guild__gp--legacy
 {
 	display: block;
 	flex: 0 0 auto;
-	min-width: 72dp;
+	min-width: 68dp;
+	margin: 0 8dp 0 12dp;
 	color: var(--text);
+	font-size: 13dp;
 	text-align: center;
 }
 .guild__heal
 {
 	flex: 0 0 auto;
-	height: 26dp;
-	padding: 0 var(--space-2);
-	line-height: 24dp;
-	font-size: var(--font-sm);
+	height: 28dp;
+	padding: 0 var(--space-3);
+	line-height: 26dp;
 }
 
 /* --- The grade page ---------------------------------------------------------------------------- */
 
-.guild__head-cell--number, .guild__grade-number { width: 34dp; text-align: center; }
-.guild__head-cell--grade-name { width: 124dp; padding-left: var(--space-2); }
-.guild__head-cell--auth { width: 66dp; text-align: center; }
+/* The columns: the number (40dp), the name (100dp) and the four rights
+   (70dp each, their checks in the middle), 7dp apart. */
+.guild__head--grade
+{
+	height: 29dp;
+	padding: 0 7dp;
+}
+.guild__head-cell--number, .guild__grade-number { width: 40dp; text-align: center; }
+.guild__head-cell--grade-name { width: 100dp; margin-left: 7dp; text-align: center; }
+.guild__head-cell--auth { width: 70dp; margin-left: 7dp; text-align: center; }
+.guild__grades
+{
+	display: block;
+	padding: 4dp 7dp 0;
+}
 .guild__grade
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 22dp;
+	height: 23dp;
+	margin-bottom: 2dp;
 	white-space: nowrap;
 }
 .guild__grade-number
 {
 	display: block;
 	flex: 0 0 auto;
+	box-sizing: border-box;
+	height: 21dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+	background-color: var(--surface-sunken);
 	color: var(--text-muted);
+	line-height: 19dp;
 }
 .guild__grade-name
 {
 	display: block;
 	flex: 0 0 auto;
-	width: 116dp;
-	height: 20dp;
-	margin: 0 4dp;
-	padding: 0 var(--space-2);
+	box-sizing: border-box;
+	width: 100dp;
+	height: 21dp;
+	margin: 0 0 0 7dp;
+	padding: 0 var(--space-1);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-radius: 5dp;
 	background-color: var(--surface-sunken);
 	color: var(--text);
-	line-height: 18dp;
-	text-align: left;
+	line-height: 19dp;
+	text-align: center;
 	overflow: hidden;
 }
 .guild__grade-name:hover
@@ -816,14 +1156,18 @@ progress.guild__gp--legacy
 .guild__auth
 {
 	flex: 0 0 auto;
-	margin: 0 24dp;
+	margin-left: 59dp;
+}
+.guild__auth--1
+{
+	margin-left: 33dp;
 }
 /* Grade 1 (the master's) is not editable: no hover, no press (legacy's
    disabled slots and checks keep the pointer and ignore it). */
 .guild__grade.is-disabled .guild__grade-name,
 .guild__grade.is-disabled .guild__check
 {
-	opacity: 0.6;
+	opacity: 0.55;
 }
 .guild__grade.is-disabled .guild__grade-name:hover
 {
@@ -836,14 +1180,25 @@ progress.guild__gp--legacy
 
 /* --- The tabs ---------------------------------------------------------------------------- */
 
+/* A segmented well of five tabs, each as wide as its label and an even
+   share of the room left. A label longer than 108dp (the longest one-word
+   label of the 17 locales, de "Gildeninformationen", fits) takes two lines,
+   and when the row is still full (French, Spanish) every tab gives up room
+   in proportion and its label wraps again; none is cut. The board's equal
+   tabs with 60dp labels would cut the German and Danish one-word labels. */
 .guild__tabs
 {
 	display: flex;
 	flex-direction: row;
+	box-sizing: border-box;
 	flex: 0 0 auto;
-	height: 36dp;
-	padding: 0 var(--space-2) var(--space-2) var(--space-2);
-	gap: var(--space-1);
+	height: 30dp;
+	margin: 0 var(--space-3) var(--space-3);
+	padding: 2dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
 }
 .guild__tab-art
 {
@@ -851,30 +1206,43 @@ progress.guild__gp--legacy
 }
 .guild__tab
 {
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
 	flex: 1 1 auto;
 	min-width: 0;
-	height: 28dp;
-	padding: 0 2dp;
-	border-width: 0 0 2dp 0;
+	height: 24dp;
+	padding: 0 3dp;
+	border-width: 1dp;
 	border-color: transparent;
+	border-radius: 6dp;
 	background-color: transparent;
 	color: var(--text-muted);
-	font-size: var(--font-sm);
-	line-height: 26dp;
+	font-size: 10dp;
+	font-weight: bold;
+	line-height: 10dp;
 	text-align: center;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	white-space: normal;
 }
 .guild__tab:hover
 {
 	background-color: var(--surface-hover);
+	color: var(--text);
 }
 .guild__tab.is-selected
 {
-	border-color: var(--accent);
+	border-color: var(--border);
+	background-color: var(--surface-raised);
 	color: var(--text);
+}
+.guild__tab-label
+{
+	display: block;
+	flex: 0 1 auto;
+	min-width: 0;
+	max-width: 108dp;
+	white-space: normal;
 }
 /* The base page's tab: disabled, as legacy's (zero wide there). */
 .guild__tab[disabled]

@@ -159,3 +159,26 @@ body.skin-classic.game-options .nui-tooltip.go-tip
 	color: var(--text);
 	font-effect: outline(1dp var(--classic-text-outline));
 }
+
+/* Pins against the modern sheet (the reviewed design's look, which classic
+   does not take): no title glyph, no row cells, the labels at their legacy
+   places, the selected choice's label in the button text color. */
+body.skin-classic.game-options .game-options__icon
+{
+	display: none;
+}
+body.skin-classic.game-options .go-row
+{
+	min-height: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.game-options .go-label
+{
+	margin: 0;
+}
+body.skin-classic.game-options .go-choice.is-selected
+{
+	color: var(--classic-button-text);
+}

@@ -1,13 +1,18 @@
 /* The atlas's modern look: the window frame left of the modern minimap, its
    top right 160dp from the screen's right edge and 12dp from the top, the
-   map image (the view at the atlas image's size, 256dp for most maps) in a
-   padded body, the title in the title row. The window's width and height
-   follow the view's: RmlUi counts an inline-level replaced box in a
-   window's shrink-to-fit width, and not a block-level one, so the view is
-   an inline-block on the line's top. Classic (the stone board with the legacy title bar,
-   the view at 7, 30, the frame 15dp wider and 38dp taller than the image,
-   its left edge 402dp left of the screen's right edge):
-   skins/classic/windows/atlas.rcss. */
+   title row with the map chip, and the map image (the view at the atlas
+   image's size, 256dp for most maps) in a well: a 1dp rim, a faint grid of
+   32dp cells and a vignette over the map, in one box that takes no
+   pointer, so the view keeps its hover. Nothing clips the view: it makes
+   itself the containing block of its hover label (ElementView), and a
+   clipping well would cut the label at the map's edge, so the rim keeps
+   small corners (radius-sm) that the square map fills. The window's width
+   and height follow the view's: RmlUi counts an inline-level replaced box
+   in a window's shrink-to-fit width, and not a block-level one, so the
+   well and the view are inline-blocks on the line's top. Classic (the
+   stone board with the legacy title bar, the view at 7, 30, the frame 15dp
+   wider and 38dp taller than the image, its left edge 402dp left of the
+   screen's right edge): skins/classic/windows/atlas.rcss. */
 
 /* No window minimum: 18 of the 37 atlas images are narrower than the
    frame's 240dp allows (171 px for Pyungmoo, metin2_map_c1), which left an
@@ -26,15 +31,59 @@ body.atlas
 	tab-index: none;
 	focus: none;
 }
+/* The map chip left of the title. */
+.atlas__title-icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+	text-align: center;
+	vertical-align: middle;
+}
+.atlas__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
 .atlas__body
 {
 	display: block;
-	padding: var(--space-2);
+	padding: 10dp var(--space-4) var(--space-4);
+}
+.atlas__map
+{
+	display: inline-block;
+	position: relative;
+	vertical-align: top;
+	background-color: var(--surface-sunken);
 }
 .atlas__view
 {
 	display: inline-block;
 	vertical-align: top;
+}
+/* Over the map: the grid, the vignette and the rim. */
+.atlas__grid
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	decorator: repeating-linear-gradient(90deg, transparent 0dp, transparent 31dp, var(--border) 31dp, var(--border) 32dp),
+	           repeating-linear-gradient(0deg, transparent 0dp, transparent 31dp, var(--border) 31dp, var(--border) 32dp),
+	           radial-gradient(circle at 50% 50%, transparent 58%, var(--cooldown-shade) 130%);
+	pointer-events: none;
 }
 /* The hint opens left of the close button, inside the window. */
 .atlas__tip

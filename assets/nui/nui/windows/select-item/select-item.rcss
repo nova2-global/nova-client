@@ -1,6 +1,7 @@
-/* Select item's modern look (P14 spec 6.6): a movable window at legacy's
-   place (100, 20), a lean grid of 5 columns and the rows legacy computes,
-   the close button. Classic (legacy's 184-wide board, 76 + 32 per row tall,
+/* Select item's modern look (P14 spec 6.6, restyled to the reviewed
+   design): a 260dp movable window at legacy's place (100, 20), a lean grid
+   of 5 columns and the rows legacy computes in a sunken well, the close
+   button. Classic (legacy's 184-wide board, 76 + 32 per row tall,
    the grid at 12, 34, the large button at the bottom):
    skins/classic/windows/select-item.rcss. */
 
@@ -8,6 +9,7 @@ body.sel
 {
 	left: 100dp;
 	top: 20dp;
+	width: 260dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -16,11 +18,48 @@ body.sel
 {
 	tab-index: none;
 }
+/* The title's icon chip. */
+.sel-title-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 6dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+}
+.sel-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.8);
+}
 .sel__body
 {
 	padding: var(--space-3);
 }
+/* The grid's well: the grid and 4dp around it. */
+.sel__grid-well
+{
+	box-sizing: border-box;
+	width: 226dp;
+	margin: 0 auto;
+	padding: 4dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+}
 .sel__footer
 {
 	justify-content: center;
+}
+.sel__close
+{
+	min-width: 132dp;
 }

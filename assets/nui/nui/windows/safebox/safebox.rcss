@@ -1,16 +1,19 @@
-/* The safebox's modern look (P16 spec 5.4.2): a lean 5 x 9 grid on the 44dp
-   pitch; under it one tab per page (the shown page selected, one share of
-   the row each); the change-password and close buttons stacked in the
-   footer; no money row (D17). The controller places it at legacy's (100, 20) at its
-   first show and keeps the place the player drags it to; the sheet's place
-   frames it in its snapshots. Classic (legacy's 176 x 418 board, the
-   middle tab art for the pages, the large buttons at the uiscript's places):
-   skins/classic/windows/safebox.rcss. */
+/* The safebox's modern look (P16 spec 5.4.2; the reviewed mockup WSafebox):
+   the chest emblem before the title; a lean 5 x 9 grid in raised wells on
+   the 44dp pitch; under it the pages as a segmented well (the shown page
+   raised, one share of the row each, as the tabs component draws its row);
+   the change-password and close (primary) buttons stacked under it, each the
+   row's width; no money row (D17). The controller places it at legacy's
+   (100, 20) at its first show and keeps the place the player drags it to;
+   the sheet's place frames it in its snapshots. Classic (legacy's 176 x 418
+   board, the middle tab art for the pages, the large buttons at the
+   uiscript's places): skins/classic/windows/safebox.rcss. */
 
 body.safebox
 {
 	left: 16dp;
 	top: 16dp;
+	width: 242dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -20,33 +23,112 @@ body.safebox
 	tab-index: none;
 	focus: none;
 }
+/* The title's emblem: an accent chip with a chest (its lid, its body and
+   the lock's plate). */
+.safebox__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.safebox__emblem-lid, .safebox__emblem-chest, .safebox__emblem-lock
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+}
+.safebox__emblem-lid
+{
+	left: 4dp;
+	top: 4dp;
+	width: 14dp;
+	height: 6dp;
+	border-width: 2dp 2dp 0 2dp;
+	border-color: var(--accent);
+	border-radius: 3dp 3dp 0 0;
+}
+.safebox__emblem-chest
+{
+	left: 4dp;
+	top: 10dp;
+	width: 14dp;
+	height: 8dp;
+	border-radius: 0 0 2dp 2dp;
+	background-color: var(--accent);
+}
+.safebox__emblem-lock
+{
+	left: 9dp;
+	top: 9dp;
+	width: 4dp;
+	height: 5dp;
+	border-radius: 1dp;
+	background-color: var(--selection);
+}
 .safebox__body
 {
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-2);
-	padding: var(--space-3);
+	padding: 10dp 12dp 12dp;
 }
+.safebox__grid
+{
+	align-self: center;
+	decorator: nui-cells(40dp 4dp 7dp var(--surface-hover) var(--border) 1dp);
+}
+/* The pages (legacy's "I", "II", ...) as a segmented well: muted labels,
+   the shown page raised. */
 .safebox__pages
 {
 	display: flex;
 	flex-direction: row;
-	gap: var(--space-1);
-	width: 216dp;
+	box-sizing: border-box;
+	height: 32dp;
+	margin-top: var(--space-2);
+	padding: 3dp;
+	gap: 2dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
 }
 .safebox__page-slot
 {
 	display: block;
 	flex: 1 1 0;
+	min-width: 0;
 }
-.safebox__page
+.safebox__pages .safebox__page
 {
 	display: block;
 	width: 100%;
 	min-width: 0;
-	height: 28dp;
+	height: 24dp;
 	padding: 0;
-	line-height: 26dp;
+	border-color: transparent;
+	border-radius: 6dp;
+	background-color: transparent;
+	color: var(--text-muted);
+	line-height: 22dp;
+}
+.safebox__pages .safebox__page:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.safebox__pages .safebox__page.is-selected
+{
+	background-color: var(--surface-raised);
+	border-color: var(--border);
+	color: var(--text);
 }
 /* Labels take no pointer, so a press on one is its button's. */
 .safebox__page-label, .safebox__label
@@ -54,18 +136,18 @@ body.safebox
 	pointer-events: none;
 }
 /* The two buttons stacked, as legacy's: Change Password over Close, each
-   the grid's width. */
+   the row's width. */
 .safebox__footer
 {
+	display: flex;
 	flex-direction: column;
 	align-items: stretch;
+	margin-top: var(--space-3);
 	gap: var(--space-2);
-	padding: var(--space-3);
 }
 .safebox__button
 {
 	display: block;
-	width: 216dp;
 	min-width: 0;
 	padding: 0 var(--space-2);
 }

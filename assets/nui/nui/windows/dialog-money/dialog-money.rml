@@ -13,6 +13,8 @@
 	<div class="nui-window nui-fx nui-dialog nui-anim" id="dialog-money">
 		<div class="nui-window__titlebar">
 			<handle class="nui-window__handle" move_target="dialog-money">
+				<span class="dialog-money__icon"><span class="nui-glyph nui-glyph--coin"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span></span></span>
 				<span class="nui-window__title">{{ title }}</span>
 			</handle>
 			<button id="dialog-money-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-click="cancel()">&#215;</button>

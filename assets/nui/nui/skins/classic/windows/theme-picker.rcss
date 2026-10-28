@@ -16,7 +16,10 @@ body.skin-classic.picker
 }
 .skin-classic .picker__label
 {
+	padding: 0dp;
+	margin-right: var(--space-1);
 	color: var(--text);
+	font-weight: normal;
 }
 /* The labels are localized (D15): a long one widens the button, and the
    9dp of padding (the medium button's) keep its text off the 6dp caps. */

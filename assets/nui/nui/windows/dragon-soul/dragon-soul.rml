@@ -12,11 +12,12 @@
 	     grades_on, bag_on) while it shows and none while it is kept hidden.
 	     The deck's six equipment cells stand around the emblem in legacy's
 	     order (sub 0 at the top, then counterclockwise), each in its place
-	     (ds-equip-place--<sub>); the deck choices and the activate toggle
-	     sit under the ring. The kind strip, the kind's title and the grade
-	     choices choose the bag page, a lean slot grid of
-	     DRAGON_SOUL_PAGE_SIZE cells; every count comes from the limits
-	     module. Cell events reach the legacy handlers through
+	     (ds-equip-place--<sub>), on a code-drawn sigil that turns slowly;
+	     the deck choices sit at the altar's lower corners. The kind strip,
+	     the kind's title and the grade choices choose the bag page, a lean
+	     slot grid of DRAGON_SOUL_PAGE_SIZE cells; the activate toggle sits
+	     under the bag, at legacy's lower right. Every count comes from the
+	     limits module. Cell events reach the legacy handlers through
 	     nui_slots.LegacySlotEvents (pick and place through the legacy mouse
 	     controller). The body and its controls take no focus, so controls
 	     act on a left mousedown. It draws below the legacy UI layer, as
@@ -33,6 +34,8 @@
       data-event-mousedown="board_press(ev.button)" data-class-ds--placed="placed" data-class-ds--active="activated">
 	<div class="ds-bg"></div>
 	<div class="nui-window__titlebar ds__titlebar">
+		<span class="ds-title-icon"><span class="nui-glyph nui-glyph--gem"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span></span></span>
 		<handle id="ds-title" class="nui-window__handle ds__handle" move_target="#document">
 			<span class="nui-window__title ds__title">@ui.DRAGONSOUL_TITLE</span>
 		</handle>
@@ -41,10 +44,19 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body ds__body">
-		<!-- The deck: the equipment cells on the emblem's ring, the deck
-		     choices and the activate toggle. -->
+		<!-- The deck: the equipment cells on the emblem's ring (an active
+		     deck's worn cells breathe), the deck choices. -->
 		<div class="ds-deck" data-for="w : deck_on">
-			<div class="ds-emblem"><span class="ds-emblem__ring"></span><span class="ds-emblem__core"></span><span
+			<div class="ds-emblem"><span class="ds-emblem__glow"></span><span class="ds-emblem__spin nui-anim"><span
+				class="ds-emblem__ring ds-emblem__ring--outer"></span><span
+				class="ds-emblem__ring ds-emblem__ring--middle"></span><span
+				class="ds-emblem__ring ds-emblem__ring--inner"></span><span
+				class="ds-emblem__line ds-emblem__line--1"></span><span
+				class="ds-emblem__line ds-emblem__line--2"></span><span
+				class="ds-emblem__line ds-emblem__line--3"></span><span
+				class="ds-emblem__line ds-emblem__line--4"></span><span
+				class="ds-emblem__line ds-emblem__line--5"></span><span
+				class="ds-emblem__line ds-emblem__line--6"></span></span><span class="ds-emblem__core"></span><span
 				class="ds-emblem__gem"></span></div>
 			<div id="ds-equip" class="nui-slot-grid ds-equip-grid" data-class-nui-attach-right="attach_right">
 				<div class="ds-equip-place" data-for="c : equip" data-attr-class="'ds-equip-place ds-equip-place--' + c.sub">
@@ -58,6 +70,7 @@
 						<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
 						<div class="nui-slot__tint" data-if="c.disabled"></div>
 						<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
+						<span class="ds-equip__pulse nui-anim" data-if="c.active" data-class-is-on="c.active"></span>
 					</div>
 				</div>
 			</div>
@@ -68,8 +81,6 @@
 						class="ds-deck-button__label">{{ d.label }}</span></button>
 				</div>
 			</div>
-			<button id="ds-activate" class="nui-button nui-anim ds-activate" data-class-is-selected="activated"
-			        data-event-mousedown="activate_press(ev.button)"><span class="ds-activate__label">@ui.DRAGONSOUL_ACTIVATE</span></button>
 		</div>
 		<!-- The kinds: one choice per kind (its gem; its name as a hint), the
 		     shown kind's name, the grade choices. -->
@@ -102,6 +113,8 @@
 				<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
 			</div>
 		</div>
+		<button id="ds-activate" class="nui-button nui-button--primary nui-anim ds-activate" data-class-is-selected="activated"
+		        data-event-mousedown="activate_press(ev.button)"><span class="ds-activate__label">@ui.DRAGONSOUL_ACTIVATE</span></button>
 	</div>
 </body>
 </rml>

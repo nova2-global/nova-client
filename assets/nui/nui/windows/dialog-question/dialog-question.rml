@@ -8,8 +8,8 @@
 	     nui-escape-passes-key-down lets the legacy key handlers see the key
 	     too, as under a legacy question: the game window ends its item drop
 	     question and the inventory lock there. The look is
-	     components/dialog.rcss's, so the window has no sheet of its own (RmlUi
-	     refuses a sheet without rules). warn_line is the row a
+	     components/dialog.rcss's; dialog-question.rcss sets its spacing and
+	     puts Yes before No, as legacy's. warn_line is the row a
 	     QuestionDialog2.SetWarningLine marks (the point reset's
 	     confirmation), -1 for none; its class reads only the index and a
 	     top-level key, as a row of a list that can shrink must. The dialog
@@ -17,6 +17,7 @@
 	     legacy board a skin may follow. -->
 	<title>dialog-question</title>
 	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dialog-question.rcss"/>
 </head>
 <body template="nui" class="nui-scrim nui-fx nui-escape-passes-key-down dialog-question" data-model="dialog_question">
 	<div class="nui-window nui-fx nui-dialog nui-anim" id="dialog-question" data-class-dialog-question--two="size(lines) == 2">

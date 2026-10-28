@@ -23,9 +23,16 @@
 			<div class="party-member nui-tile nui-interactive nui-attach-right" data-attr-id="'party-member-' + m.pid" data-class-is-linked="m.linked"
 				data-event-mousedown="member_press(m.pid, ev.button)" data-event-mouseup="member_release(m.pid, ev.button)"
 				data-event-nuidrop="member_drop(m.pid)">
-				<div class="party-member__state party-art-host"><span class="party-role__face" data-attr-data-state="m.state_name"></span></div>
-				<div class="party-member__bar"><span class="party-member__name">{{ m.name }}</span></div>
+				<div class="party-member__state party-art-host" data-attr-data-state="m.state_name"><span class="party-role__face" data-attr-data-state="m.state_name"></span></div>
+				<div class="party-member__bar"><span class="party-member__name">{{ m.name }}</span><span class="party-member__pct"
+					data-if="m.linked">{{ m.hp * 100 | format(0) }}%</span></div>
 				<progress class="nui-gauge nui-gauge--red party-member__hp" direction="right" data-if="m.linked" data-attr-value="m.hp"/>
+				<!-- The modern looks: a sheen that crosses the HP fill once every
+				     4s (the target's), the empty part drawn over it, and ticks at
+				     every tenth. -->
+				<nui-blink class="party-member__sheen-clock" period="4" data-if="m.linked"><span class="party-member__sheen nui-anim"></span></nui-blink>
+				<progress class="party-member__cover" direction="left" data-if="m.linked" data-attr-value="1 - m.hp"/>
+				<span class="party-member__ticks" data-if="m.linked"></span>
 				<span class="party-affect party-affect--0 nui-has-tooltip" data-if="m.affects[0]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_experience.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[0] }}</span></span>
 				<span class="party-affect party-affect--1 nui-has-tooltip" data-if="m.affects[1]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_attackgrade.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[1] }}</span></span>
 				<span class="party-affect party-affect--2 nui-has-tooltip" data-if="m.affects[2]"><img class="party-affect__image" src="d:/ymir work/ui/game/windows/party_affect_defencegrade.sub"/><span class="nui-tooltip nui-anim party-affect__tip">{{ m.affect_tips[2] }}</span></span>
@@ -46,7 +53,8 @@
 			</div>
 		</div>
 		<button id="party-menu-button" class="party__menu-button nui-interactive" data-class-is-open="menu_open"
-			data-event-mousedown="toggle_menu(ev.button)"><span class="party__menu-mark"></span></button>
+			data-event-mousedown="toggle_menu(ev.button)"><span class="party__menu-mark"></span><span
+			class="nui-glyph nui-glyph--chevron-down party__menu-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<div id="party-menu" class="party-menu nui-board nui-fx nui-interactive" data-if="menu_open">
 			<div class="party-menu__buttons">
 				<button id="party-heal" class="party-menu__icon party-menu__icon--heal party-art-host nui-has-tooltip" data-if="heal_ready"

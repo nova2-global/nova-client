@@ -12,9 +12,14 @@ body.skin-classic.pick-money
 	margin-left: -85dp;
 	margin-top: -45dp;
 }
+body.skin-classic.pick-money .pick-money__title-icon
+{
+	display: none;
+}
 body.skin-classic.pick-money .nui-window__body
 {
-	padding: 6dp 12dp 0dp 12dp;
+	display: block;
+	padding: 6dp 12dp 11dp 12dp;
 }
 .skin-classic input.pick-money__field
 {
@@ -24,8 +29,16 @@ body.skin-classic.pick-money .nui-window__body
 {
 	color: var(--text);
 }
-body.skin-classic.pick-money .nui-window__footer
+body.skin-classic.pick-money .pick-money__row
 {
-	padding: 7dp 12dp 11dp 12dp;
+	gap: var(--space-2);
+}
+body.skin-classic.pick-money .pick-money__actions
+{
+	margin-top: 7dp;
 	gap: 10dp;
+}
+body.skin-classic.pick-money .pick-money__action
+{
+	flex: 0 0 auto;
 }

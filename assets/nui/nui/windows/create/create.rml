@@ -11,7 +11,11 @@
 	     reports every edit; Enter in it creates and Escape cancels, as the
 	     legacy edit line did. There is no stat allocation: the legacy board
 	     hides its + buttons (CREATE_STAT_POINT is 0). While a create is
-	     under way (busy) the field and the buttons are disabled. -->
+	     under way (busy) the field and the buttons are disabled. Modern
+	     puts the description in a rounded well (create-well) around the
+	     square box that scrolls, a person pictogram in the name field, and
+	     the select screen's blades on the rotate arrows; classic hides
+	     them and draws the legacy art. -->
 	<title>create</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="create.rcss"/>
@@ -19,8 +23,10 @@
 <body template="nui" class="nui-overlay create" data-model="create">
 	<div id="create-board" class="nui-window nui-fx nui-interactive create-board">
 		<img class="create-job" data-attr-src="job_image" data-if="job_image != ''"/>
-		<div id="create-text" class="create-text">
-			<p class="create-text__paragraph" data-for="p : paragraphs">{{ p }}</p>
+		<div class="create-well">
+			<div id="create-text" class="create-text">
+				<p class="create-text__paragraph" data-for="p : paragraphs">{{ p }}</p>
+			</div>
 		</div>
 		<div class="create-stats">
 			<div class="create-stat">
@@ -30,7 +36,7 @@
 			</div>
 			<div class="create-stat">
 				<span class="create-stat__label">@ui.CREATE_SP</span>
-				<progress id="create-gauge-int" class="nui-gauge nui-gauge--pink create-stat__gauge" direction="right" data-attr-value="gauge_int"/>
+				<progress id="create-gauge-int" class="nui-gauge nui-gauge--pink create-stat__gauge create-stat__gauge--sp" direction="right" data-attr-value="gauge_int"/>
 				<span class="create-value create-stat__value">{{ stat_int }}</span>
 			</div>
 			<div class="create-stat">
@@ -46,8 +52,11 @@
 		</div>
 		<div class="create-row create-row--name">
 			<label class="create-label" for="create-name">@ui.CREATE_NAME</label>
-			<input id="create-name" type="text" class="nui-input create-name" maxlength="12"
-				data-attrif-disabled="busy" data-event-change="name_edit(ev.value, ev.linebreak)"/>
+			<div class="create-control">
+				<input id="create-name" type="text" class="nui-input create-name" maxlength="12"
+					data-attrif-disabled="busy" data-event-change="name_edit(ev.value, ev.linebreak)"/>
+				<span class="nui-glyph nui-glyph--character create-icon"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+			</div>
 		</div>
 		<div class="create-row">
 			<span class="create-label">@ui.CREATE_SEX</span>
@@ -60,11 +69,11 @@
 			<button id="create-shape-2" class="nui-button nui-button--medium nui-anim create-choice" data-class-is-selected="shape == 1" data-attrif-disabled="busy" data-event-click="shape(1)">2</button>
 		</div>
 		<div class="nui-window__footer create-footer">
-			<button id="create-cancel" class="nui-button nui-anim create-button" data-attrif-disabled="busy" data-event-click="cancel()">@ui.CANCEL</button>
-			<button id="create-create" class="nui-button nui-button--primary nui-anim create-button" data-attrif-disabled="busy" data-event-click="create()">@ui.CREATE_CREATE</button>
+			<button id="create-cancel" class="nui-button nui-anim create-button create-action" data-attrif-disabled="busy" data-event-click="cancel()">@ui.CANCEL</button>
+			<button id="create-create" class="nui-button nui-button--primary nui-anim create-button create-action" data-attrif-disabled="busy" data-event-click="create()">@ui.CREATE_CREATE</button>
 		</div>
 	</div>
-	<button id="create-left" class="nui-button nui-button--icon nui-anim nui-interactive create-arrow create-arrow--left" data-attrif-disabled="busy" data-event-click="left()">&#8249;</button>
-	<button id="create-right" class="nui-button nui-button--icon nui-anim nui-interactive create-arrow create-arrow--right" data-attrif-disabled="busy" data-event-click="right()">&#8250;</button>
+	<button id="create-left" class="nui-button nui-button--icon nui-anim nui-interactive create-arrow create-arrow--left" data-attrif-disabled="busy" data-event-click="left()">&#8249;<span class="create-blade create-blade--edge"></span><span class="create-blade"></span><span class="create-tip create-tip--a"></span><span class="create-tip create-tip--b"></span></button>
+	<button id="create-right" class="nui-button nui-button--icon nui-anim nui-interactive create-arrow create-arrow--right" data-attrif-disabled="busy" data-event-click="right()">&#8250;<span class="create-blade create-blade--edge"></span><span class="create-blade"></span><span class="create-tip create-tip--a"></span><span class="create-tip create-tip--b"></span></button>
 </body>
 </rml>

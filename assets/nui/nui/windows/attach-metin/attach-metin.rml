@@ -21,6 +21,8 @@
 </head>
 <body template="nui" id="attach-metin" class="nui-window nui-fx nui-anim attach" data-model="attach_metin" data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar attach__titlebar">
+		<span class="attach-title-icon"><span class="nui-glyph nui-glyph--gem"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span></span></span>
 		<handle class="nui-window__handle attach__handle" move_target="#document">
 			<span class="nui-window__title attach__title">@ui.ATTACH_METIN_TITLE</span>
 		</handle>
@@ -68,7 +70,9 @@
 			</div>
 			<div class="attach__middle">
 				<span class="attach__arrow"><span class="nui-glyph nui-glyph--chevron-right"><span
-					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span></span></span>
 				<span class="attach__stone"><img class="attach__stone-icon" data-if="metin_icon != ''" data-attr-src="metin_icon"/></span>
 			</div>
 			<div class="nui-board nui-board--tooltip nui-fx nui-tip attach__tip attach__tip--new" data-style---tip-min-w="new_min_w + 'dp'">

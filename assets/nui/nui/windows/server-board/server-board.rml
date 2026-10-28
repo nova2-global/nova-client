@@ -39,8 +39,8 @@
 				</div>
 			</div>
 			<div class="server-board__buttons">
-				<button id="server-board-ok" class="nui-button nui-button--primary nui-anim server-board__button" data-event-click="confirm()">@ui.OK</button>
-				<button id="server-board-exit" class="nui-button nui-anim server-board__button" data-event-click="leave()">{{ exit_label }}</button>
+				<button id="server-board-ok" class="nui-button nui-button--primary nui-anim server-board__button server-board__action" data-event-click="confirm()">@ui.OK</button>
+				<button id="server-board-exit" class="nui-button nui-anim server-board__button server-board__action" data-event-click="leave()">{{ exit_label }}</button>
 			</div>
 		</div>
 	</div>

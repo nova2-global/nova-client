@@ -37,6 +37,9 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body messenger__body">
+		<!-- The well holds the rounded look; the list inside it clips square
+		     (a rounded clip would need the stencil mask every frame). -->
+		<div class="messenger__well">
 		<div id="messenger-list" class="messenger__list">
 			<div class="messenger__row" data-for="r : rows" data-attr-id="'messenger-row-' + it_index"
 			     data-event-mousedown="row_press(it_index, ev.button)" data-event-dblclick="row_dblclick(it_index)">
@@ -59,22 +62,25 @@
 	</div>
 	<div class="nui-window__footer messenger__footer">
 		<button id="messenger-add" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--add"
-		        data-event-mousedown="add_press(ev.button)"><span class="nui-glyph nui-glyph--plus"><span
+		        data-event-mousedown="add_press(ev.button)"><span class="nui-glyph nui-glyph--character messenger__glyph"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-glyph nui-glyph--plus messenger__badge"><span
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_ADD_FRIEND</span></button>
 		<button id="messenger-whisper" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--whisper"
 		        data-attrif-disabled="!whisper_enabled" data-event-mousedown="whisper_press(ev.button)"><span
-			class="nui-glyph nui-glyph--whisper"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
+			class="nui-glyph nui-glyph--whisper messenger__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
 			class="nui-glyph__c"></span></span><span class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_WHISPER</span></button>
 		<button id="messenger-remove" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--remove"
 		        data-attrif-disabled="!remove_enabled" data-event-mousedown="remove_press(ev.button)"><span
-			class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-glyph nui-glyph--character messenger__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-glyph nui-glyph--minus messenger__badge"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_DELETE_FRIEND</span></button>
 		<button id="messenger-guild" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip messenger__button messenger__button--guild"
-		        data-event-mousedown="guild_press(ev.button)"><span class="nui-glyph nui-glyph--community"><span
-			class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
+		        data-event-mousedown="guild_press(ev.button)"><span class="nui-glyph nui-glyph--home messenger__glyph"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim messenger__tip">@ui.MESSENGER_OPEN_GUILD</span></button>
 	</div>
+	<span class="messenger__grip"></span>
 	<nui-resize id="messenger-resize" class="messenger__resize" edge="bottom-right" target="messenger"
 	            min-width="170" max-width="170" min-height="150" data-attr-height="height"
 	            data-event-resized="resized(ev.height)"/>

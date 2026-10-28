@@ -13,6 +13,10 @@ body.skin-classic.shop
 	height: 328dp;
 	min-width: 0;
 }
+body.skin-classic.shop .shop__title-icon
+{
+	display: none;
+}
 body.skin-classic.shop .shop__titlebar
 {
 	position: absolute;
@@ -62,6 +66,7 @@ body.skin-classic.shop .shop__buy
 {
 	left: 21dp;
 	width: 61dp;
+	color: var(--classic-button-text);
 }
 body.skin-classic.shop .shop__sell
 {
@@ -82,6 +87,10 @@ body.skin-classic.shop .shop__tabs
 	top: 295dp;
 	width: 184dp;
 	height: 21dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	/* Only the tabs take the pointer: the row's box lies over nothing else. */
 	pointer-events: none;
 }
@@ -102,8 +111,17 @@ body.skin-classic.shop .shop__tab
 {
 	width: 100%;
 	min-width: 0;
+	height: 21dp;
 	padding: 0;
+	border-radius: 0;
+	color: var(--classic-button-text);
+	line-height: 21dp;
 	overflow: visible;
+}
+body.skin-classic.shop .shop__tab:hover
+{
+	background-color: transparent;
+	color: var(--classic-button-text);
 }
 /* The tab's name centered over its art as legacy's text line is, a longer
    one overflowing both ends ("Weapons" on the 43dp small art), never cut;
@@ -122,6 +140,7 @@ body.skin-classic.shop .shop__tab.is-current
 {
 	background-color: transparent;
 	border-color: transparent;
+	color: var(--classic-button-text);
 }
 /* The small tabs: legacy's small art; the middle ones keep the medium
    button's middle art. The down art last, as legacy's pressed button keeps

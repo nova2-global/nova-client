@@ -55,10 +55,12 @@
 				class="guild-war__hint-line" data-for="line : h.lines">{{ line }}</span></span></button></div></div>
 		</div>
 		<div class="nui-window__footer nui-dialog__footer guild-war__footer">
-			<button id="guild-war-accept-cancel" class="nui-button nui-button--medium nui-anim guild-war__button guild-war__button--cancel"
-			        data-event-mousedown="cancel_press(ev.button)"><span class="guild-war__button-label">@ui.CANCEL</span></button>
+			<!-- OK first, then Cancel: legacy's order (OK at 49, Cancel at 120),
+			     which the reviewed design keeps. -->
 			<button id="guild-war-accept-ok" class="nui-button nui-button--medium nui-button--primary nui-anim guild-war__button guild-war__button--accept"
 			        data-event-mousedown="accept_press(ev.button)"><span class="guild-war__button-label">@ui.OK</span></button>
+			<button id="guild-war-accept-cancel" class="nui-button nui-button--medium nui-anim guild-war__button guild-war__button--cancel"
+			        data-event-mousedown="cancel_press(ev.button)"><span class="guild-war__button-label">@ui.CANCEL</span></button>
 		</div>
 	</div>
 </body>

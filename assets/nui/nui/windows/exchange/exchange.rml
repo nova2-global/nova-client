@@ -25,6 +25,9 @@
       data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar exchange__titlebar">
 		<handle class="nui-window__handle exchange__handle" move_target="#document">
+			<span class="exchange__title-icon"><span class="exchange__arrow exchange__arrow--out"><span
+				class="exchange__arrow-head"></span></span><span class="exchange__arrow exchange__arrow--in"><span
+				class="exchange__arrow-head"></span></span></span>
 			<span id="exchange-title" class="nui-window__title exchange__title">{{ title }}</span>
 		</handle>
 		<button id="exchange-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim exchange__close"
@@ -51,7 +54,8 @@
 					<span class="nui-glyph nui-glyph--coin exchange__coin"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
 					<span class="exchange__amount">{{ target_money }}</span>
 				</div>
-				<span id="exchange-target-light" class="exchange__light" data-class-is-on="target_accept"></span>
+				<span id="exchange-target-light" class="exchange__light" data-class-is-on="target_accept"><span
+					class="exchange__light-ring"></span><span class="exchange__light-core nui-fx"></span></span>
 			</div>
 		</div>
 		<div class="exchange__divider"></div>
@@ -76,7 +80,8 @@
 					<span class="nui-glyph nui-glyph--coin exchange__coin"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
 					<span class="exchange__amount">{{ owner_money }}</span>
 				</button>
-				<span id="exchange-owner-light" class="exchange__light" data-class-is-on="owner_accept"></span>
+				<span id="exchange-owner-light" class="exchange__light" data-class-is-on="owner_accept"><span
+					class="exchange__light-ring"></span><span class="exchange__light-core nui-fx"></span></span>
 			</div>
 			<div class="exchange__row exchange__row--accept">
 				<button id="exchange-accept" class="nui-button nui-button--primary nui-button--medium nui-anim exchange__accept"

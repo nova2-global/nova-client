@@ -1,0 +1,24 @@
+/* The message dialog (nui_dialog_message.py; the reviewed design, board
+   WDialogs): the dialog kit's look (components/dialog.rcss), the lines
+   centered with room around them and the button under them. The scrim
+   centers it. Classic: skins/classic/windows/dialog-message.rcss. */
+.dialog-message .nui-dialog
+{
+	min-width: 310dp;
+}
+.dialog-message .nui-window__body
+{
+	padding: 22dp 18dp 6dp 18dp;
+}
+.dialog-message .nui-dialog__text
+{
+	line-height: 18dp;
+}
+.dialog-message .nui-dialog__footer
+{
+	padding: 12dp 18dp 15dp 18dp;
+}
+.dialog-message .nui-dialog__footer .nui-button
+{
+	min-width: 82dp;
+}

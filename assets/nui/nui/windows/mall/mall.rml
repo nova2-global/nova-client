@@ -21,6 +21,8 @@
       data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar mall__titlebar">
 		<handle class="nui-window__handle mall__handle" move_target="#document">
+			<span class="mall__title-icon"><span class="nui-glyph nui-glyph--gift"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 			<span class="nui-window__title mall__title">@ui.MALL_TITLE</span>
 		</handle>
 		<button id="mall-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim mall__close-x"
@@ -42,10 +44,10 @@
 				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 			</div>
 		</div>
-	</div>
-	<div class="nui-window__footer mall__footer">
-		<button id="mall-close" class="nui-button nui-anim mall__button"
-		        data-event-mousedown="close_press(ev.button)"><span class="mall__label">@ui.CLOSE</span></button>
+		<div class="mall__footer">
+			<button id="mall-close" class="nui-button nui-button--primary nui-anim mall__button"
+			        data-event-mousedown="close_press(ev.button)"><span class="mall__label">@ui.CLOSE</span></button>
+		</div>
 	</div>
 </body>
 </rml>

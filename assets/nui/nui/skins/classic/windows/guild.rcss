@@ -23,6 +23,19 @@ body.skin-classic.guild
 	height: 356dp;
 	min-width: 0;
 }
+body.skin-classic.guild .guild__handle
+{
+	display: block;
+}
+body.skin-classic.guild .guild__title-icon,
+body.skin-classic.guild .guild__title-key,
+body.skin-classic.guild .guild__bar-line,
+body.skin-classic.guild .guild__mark-ring,
+body.skin-classic.guild .guild__enemy-mark,
+body.skin-classic.guild .guild__comment.is-notice .guild__notice-tint
+{
+	display: none;
+}
 /* Centered on a screen-sized frame (guild.rcss), by legacy's board size:
    P18 centers the classic window too, where legacy's uiscript puts it at
    the screen's corner. */
@@ -74,22 +87,31 @@ body.skin-classic.guild .guild__page
 
 /* --- Shared parts ---------------------------------------------------------------------------- */
 
-body.skin-classic.guild .guild__card
+body.skin-classic.guild .guild__card,
+body.skin-classic.guild .guild__skill-panel
 {
 	position: static;
+	height: auto;
+	margin: 0;
 	padding: 0;
 	border-width: 0;
+	border-radius: 0;
 	background-color: transparent;
+	overflow: visible;
 }
 /* ui.HorizontalBar: the left and right caps (32 wide) and the middle art
    tiled between them, 17 tall; the title at 8, 3. */
 body.skin-classic.guild .guild__bar
 {
+	display: block;
 	position: absolute;
+	box-sizing: content-box;
 	height: 17dp;
 	margin: 0;
 	padding: 0 32dp;
 	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	line-height: 14dp;
 	decorator: image("d:/ymir work/ui/pattern/horizontalbar_center.tga" repeat-x left top) content-box,
 	           image("d:/ymir work/ui/pattern/horizontalbar_left.tga" scale-none left top) padding-box,
@@ -100,9 +122,11 @@ body.skin-classic.guild .guild__bar-title
 	position: absolute;
 	left: 8dp;
 	top: 3dp;
+	overflow: visible;
 	font-size: var(--font-md);
 	font-weight: normal;
 	color: var(--text);
+	letter-spacing: 0;
 }
 body.skin-classic.guild .guild__head
 {
@@ -112,14 +136,23 @@ body.skin-classic.guild .guild__head
 	top: 0;
 	width: 360dp;
 	height: 22dp;
+	margin: 0;
+	padding: 0;
 	border-width: 0;
+	background-color: transparent;
 	color: var(--text);
 	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 1.4;
+	text-transform: none;
+	letter-spacing: 0;
+	white-space: nowrap;
 }
 body.skin-classic.guild .guild__head-cell
 {
 	position: absolute;
 	width: auto;
+	margin: 0;
 	padding: 0;
 	overflow: visible;
 	text-align: left;
@@ -130,8 +163,12 @@ body.skin-classic.guild .guild__label
 	left: 0;
 	top: 2dp;
 	width: auto;
+	margin: 0;
+	font-weight: normal;
 	color: var(--text);
 	font-size: var(--font-md);
+	line-height: 1.4;
+	white-space: nowrap;
 	overflow: visible;
 }
 /* A value on its parameter slot, centered (all_align center). */
@@ -140,6 +177,11 @@ body.skin-classic.guild .guild__value
 	position: absolute;
 	top: 0;
 	height: 18dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	font-weight: normal;
 	line-height: 18dp;
 	text-align: center;
 	overflow: visible;
@@ -167,7 +209,9 @@ body.skin-classic.guild .guild__check-mark
 	top: 1dp;
 	width: 24dp;
 	height: 16dp;
+	border-width: 0;
 	border-radius: 0;
+	transform: none;
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/public/check_image.sub");
 }
@@ -234,6 +278,8 @@ body.skin-classic.guild .guild__field
 	left: 8dp;
 	width: 180dp;
 	height: 18dp;
+	margin: 0;
+	gap: 0;
 }
 body.skin-classic.guild .guild__field--name { top: 39dp; }
 body.skin-classic.guild .guild__field--master { top: 65dp; }
@@ -275,6 +321,7 @@ body.skin-classic.guild .guild__offer
 	width: 43dp;
 	height: 21dp;
 	min-width: 0;
+	margin: 0;
 	padding: 0;
 	line-height: 21dp;
 	font-size: var(--font-md);
@@ -301,11 +348,15 @@ body.skin-classic.guild .guild__mark-slot
 	margin: 0;
 	border-width: 1dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
 	background-color: var(--classic-slot-fill);
 }
 body.skin-classic.guild .guild__mark
 {
 	display: none;
+	width: 48dp;
+	height: 36dp;
+	border-radius: 0;
 }
 body.skin-classic.guild .guild__mark--nearest
 {
@@ -337,6 +388,7 @@ body.skin-classic.guild .guild__heal
 body.skin-classic.guild .guild__upload--mark { left: 260dp; top: 33dp; }
 body.skin-classic.guild .guild__upload--symbol { left: 260dp; top: 56dp; }
 body.skin-classic.guild .guild__declare { left: 265dp; top: 264dp; right: auto; bottom: auto; }
+body.skin-classic.guild .guild__declare { color: var(--classic-button-text); }
 /* The enemies: Parameter_Slot_04 (115 x 18) at 192, 112 and every 26 below. */
 body.skin-classic.guild .guild__enemies
 {
@@ -349,7 +401,12 @@ body.skin-classic.guild .guild__enemy
 	width: 115dp;
 	height: 18dp;
 	margin-bottom: 8dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	line-height: 18dp;
+	font-weight: normal;
 	text-align: center;
 	overflow: visible;
 	decorator: image("d:/ymir work/ui/public/parameter_slot_04.sub");
@@ -404,6 +461,16 @@ body.skin-classic.guild .guild__comment
 {
 	display: block;
 	height: 20dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.guild .guild__comment.is-notice
+{
+	border-width: 0;
+	background-color: transparent;
 }
 body.skin-classic.guild .guild__comment:hover
 {
@@ -419,6 +486,8 @@ body.skin-classic.guild .guild__notice
 	height: 10dp;
 	margin: 0;
 	border-radius: 0;
+	color: transparent;
+	font-size: 0;
 }
 body.skin-classic.guild .guild__comment.is-notice .guild__notice
 {
@@ -433,6 +502,7 @@ body.skin-classic.guild .guild__comment-name
 	top: 0;
 	width: 90dp;
 	height: 18dp;
+	font-weight: normal;
 	line-height: 18dp;
 	text-align: center;
 	overflow: visible;
@@ -476,6 +546,7 @@ body.skin-classic.guild .guild__delete
 	width: 15dp;
 	height: 15dp;
 	min-width: 0;
+	margin: 0;
 	padding: 0;
 	border-width: 0;
 	background-color: transparent;
@@ -561,12 +632,18 @@ body.skin-classic.guild .guild__members
 	top: 28dp;
 	width: 340dp;
 	margin: 0;
+	padding: 0;
 }
 body.skin-classic.guild .guild__member
 {
 	display: block;
 	position: relative;
 	height: 20dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.guild .guild__member:hover
 {
@@ -589,6 +666,7 @@ body.skin-classic.guild .guild__member-cell
 {
 	position: absolute;
 	top: 0;
+	margin: 0;
 	width: 39dp;
 	height: 18dp;
 	line-height: 18dp;
@@ -610,6 +688,7 @@ body.skin-classic.guild .guild__combo-box
 	top: -1dp;
 	width: 61dp;
 	height: 18dp;
+	margin: 0;
 	padding: 0;
 }
 body.skin-classic.guild .guild__combo
@@ -773,6 +852,10 @@ body.skin-classic.guild .guild__resources
 	width: 340dp;
 	height: 40dp;
 	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.guild .guild__resource
 {
@@ -786,6 +869,8 @@ body.skin-classic.guild .guild__resource-name
 	height: 16dp;
 	color: var(--text);
 	font-size: var(--font-md);
+	line-height: 1.4;
+	white-space: nowrap;
 	overflow: visible;
 }
 body.skin-classic.guild .guild__resource-value
@@ -793,10 +878,14 @@ body.skin-classic.guild .guild__resource-value
 	box-sizing: border-box;
 	height: 18dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
 	background-color: var(--classic-slot-fill);
+	font-weight: normal;
+	line-height: 16dp;
 }
 body.skin-classic.guild .guild__basket
 {
+	display: block;
 	position: absolute;
 	left: 190dp;
 	top: -1dp;
@@ -808,6 +897,8 @@ body.skin-classic.guild .guild__basket
 	background-color: var(--classic-slot-fill);
 	color: var(--text);
 	font-size: var(--font-md);
+	font-weight: normal;
+	text-transform: none;
 }
 body.skin-classic.guild .guild__head--base { top: 115dp; left: 11dp; }
 body.skin-classic.guild .guild__head-cell--building { left: 16dp; top: 0; }
@@ -818,12 +909,19 @@ body.skin-classic.guild .guild__buildings
 	position: absolute;
 	left: 15dp;
 	top: 130dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.guild .guild__building
 {
 	display: block;
 	position: relative;
 	height: 20dp;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
 	color: var(--text);
 	font-size: var(--font-md);
 }
@@ -837,7 +935,10 @@ body.skin-classic.guild .guild__building-gem
 	margin-right: 3dp;
 	border-width: 1dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
 	background-color: var(--classic-slot-fill);
+	padding: 0;
+	font-weight: normal;
 	line-height: 15dp;
 	text-align: center;
 	overflow: hidden;
@@ -875,11 +976,14 @@ body.skin-classic.guild .guild__points
 	height: 14dp;
 	min-width: 0;
 	padding: 0;
+	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
 	color: var(--text);
+	font-size: var(--font-md);
 	font-weight: normal;
 	line-height: 14dp;
+	text-align: left;
 }
 body.skin-classic.guild .guild__points-art
 {
@@ -900,7 +1004,12 @@ body.skin-classic.guild .guild__skills
 {
 	position: absolute;
 	left: 36dp;
+	height: auto;
 	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.guild .guild__skills--passive { top: 46dp; }
 body.skin-classic.guild .guild__skills--active { top: 113dp; }
@@ -952,6 +1061,10 @@ body.skin-classic.guild .guild__power
 	bottom: auto;
 	width: 360dp;
 	height: 298dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	pointer-events: none;
 }
 body.skin-classic.guild .guild__power-title
@@ -959,8 +1072,10 @@ body.skin-classic.guild .guild__power-title
 	position: absolute;
 	left: 20dp;
 	top: 265dp;
+	margin: 0;
 	color: var(--text);
 	font-size: var(--font-md);
+	font-weight: normal;
 }
 /* The gauge's slot art (65, 265; 180 x 13), the gauge from 69: legacy's
    first SP frame tiled over what it fills of 173. */
@@ -1002,6 +1117,8 @@ body.skin-classic.guild .guild__power-value
 	top: 254dp;
 	width: 90dp;
 	min-width: 0;
+	margin: 0;
+	font-size: var(--font-md);
 	height: 18dp;
 	line-height: 18dp;
 	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
@@ -1023,12 +1140,14 @@ body.skin-classic.guild .guild__grades
 	left: 0;
 	top: 22dp;
 	width: 360dp;
+	padding: 0;
 }
 body.skin-classic.guild .guild__grade
 {
 	display: block;
 	position: relative;
 	height: 18dp;
+	margin: 0;
 }
 /* The number on Parameter_Slot_00 (14; 39 x 18), centered. */
 body.skin-classic.guild .guild__grade-number
@@ -1038,8 +1157,12 @@ body.skin-classic.guild .guild__grade-number
 	top: 0;
 	width: 39dp;
 	height: 18dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	line-height: 18dp;
 	color: var(--text);
+	font-weight: normal;
 	decorator: image("d:/ymir work/ui/public/parameter_slot_00.sub");
 }
 /* The name on Parameter_Slot_02 (58; 61 x 18), centered: legacy's
@@ -1057,6 +1180,7 @@ body.skin-classic.guild .guild__grade-name
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
+	font-weight: normal;
 	line-height: 18dp;
 	text-align: center;
 	overflow: visible;
@@ -1110,7 +1234,12 @@ body.skin-classic.guild .guild__tabs
 	top: 328dp;
 	width: 376dp;
 	height: 37dp;
+	margin: 0;
 	padding: 0;
+	gap: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.guild .guild__tab-art
 {

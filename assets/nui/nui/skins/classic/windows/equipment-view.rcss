@@ -17,6 +17,10 @@ body.skin-classic.eqv
 	height: 230dp;
 	min-width: 0;
 }
+body.skin-classic.eqv .eqv-title-icon
+{
+	display: none;
+}
 body.skin-classic.eqv .eqv__body
 {
 	display: block;
@@ -29,9 +33,13 @@ body.skin-classic.eqv .eqv-equip
 	top: 30dp;
 	width: 155dp;
 	height: 187dp;
+	overflow: visible;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 	decorator: image("d:/ymir work/ui/equipment_bg_with_ring.tga" scale-none left top);
 }
-body.skin-classic.eqv .eqv-figure
+body.skin-classic.eqv .eqv-light, body.skin-classic.eqv .eqv-figure
 {
 	display: none;
 }

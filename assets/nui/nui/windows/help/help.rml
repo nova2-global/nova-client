@@ -13,9 +13,10 @@
 	     fractions, the 8 pointers on the legacy taskbar's parts, and the two
 	     curtain parts that dim everything but the taskbar, as legacy's
 	     curtain lies under the TOP_MOST taskbar. Modern is a
-	     centered card: the lines in two columns, the pointers' texts as a
-	     list, no pointers (P11 spec D14: the modern taskbar is laid out
-	     otherwise). -->
+	     centered card (the reviewed design, board WHelp): the lines in two
+	     columns, each on a cell with its bullet, the pointers' texts as a
+	     grid of tiles, each with its glyph, no pointers (P11 spec D14: the
+	     modern taskbar is laid out otherwise). -->
 	<title>help</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="help.rcss"/>
@@ -24,42 +25,43 @@
 	<div class="help__curtain help__curtain--top"></div>
 	<div class="help__curtain help__curtain--gauge"></div>
 	<div id="help" class="nui-window nui-fx nui-anim help__card">
-		<p class="help__heading">@ui.SYSTEM_HELP</p>
+		<p class="help__heading"><span class="help__icon"><span class="nui-glyph help__glyph"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span></span></span>@ui.SYSTEM_HELP</p>
 		<div class="help__lines">
 			<div class="help__column">
-				<p id="help-line-1" class="help__line help__line--1">@ui.HELP_MOVE_KEY</p>
-				<p id="help-line-2" class="help__line help__line--2">@ui.HELP_CONTROL_CAMERA_BY_RIGHTBUTTON</p>
-				<p id="help-line-3" class="help__line help__line--3">@ui.HELP_CONTROL_CAMERA_BY_MIDDLEBUTTON</p>
-				<p id="help-line-4" class="help__line help__line--4">@ui.HELP_SHOW_ALL_NAME</p>
-				<p id="help-line-5" class="help__line help__line--5">@ui.HELP_OPEN_CHAT</p>
-				<p id="help-line-6" class="help__line help__line--6">@ui.HELP_OPEN_WHISPER</p>
-				<p id="help-line-7" class="help__line help__line--7">@ui.HELP_ATTACK_KEY</p>
-				<p id="help-line-8" class="help__line help__line--8">@ui.HELP_OPEN_CHARACTER</p>
-				<p id="help-line-9" class="help__line help__line--9">@ui.HELP_OPEN_SKILL</p>
-				<p id="help-line-10" class="help__line help__line--10">@ui.HELP_OPEN_QUEST</p>
+				<p id="help-line-1" class="help__line help__line--1"><span class="help__bullet"></span>@ui.HELP_MOVE_KEY</p>
+				<p id="help-line-2" class="help__line help__line--2"><span class="help__bullet"></span>@ui.HELP_CONTROL_CAMERA_BY_RIGHTBUTTON</p>
+				<p id="help-line-3" class="help__line help__line--3"><span class="help__bullet"></span>@ui.HELP_CONTROL_CAMERA_BY_MIDDLEBUTTON</p>
+				<p id="help-line-4" class="help__line help__line--4"><span class="help__bullet"></span>@ui.HELP_SHOW_ALL_NAME</p>
+				<p id="help-line-5" class="help__line help__line--5"><span class="help__bullet"></span>@ui.HELP_OPEN_CHAT</p>
+				<p id="help-line-6" class="help__line help__line--6"><span class="help__bullet"></span>@ui.HELP_OPEN_WHISPER</p>
+				<p id="help-line-7" class="help__line help__line--7"><span class="help__bullet"></span>@ui.HELP_ATTACK_KEY</p>
+				<p id="help-line-8" class="help__line help__line--8"><span class="help__bullet"></span>@ui.HELP_OPEN_CHARACTER</p>
+				<p id="help-line-9" class="help__line help__line--9"><span class="help__bullet"></span>@ui.HELP_OPEN_SKILL</p>
+				<p id="help-line-10" class="help__line help__line--10"><span class="help__bullet"></span>@ui.HELP_OPEN_QUEST</p>
 			</div>
 			<div class="help__column">
-				<p id="help-line-11" class="help__line help__line--11">@ui.HELP_OPEN_INVENTORY</p>
-				<p id="help-line-12" class="help__line help__line--12">@ui.HELP_OPEN_LOG</p>
-				<p id="help-line-13" class="help__line help__line--13">@ui.HELP_OPEN_ZONEMAP</p>
-				<p id="help-line-14" class="help__line help__line--14">@ui.HELP_OPEN_MINIMAP</p>
-				<p id="help-line-15" class="help__line help__line--15">@ui.HELP_CHANGE_PK_MODE</p>
-				<p id="help-line-16" class="help__line help__line--16">@ui.HELP_PICK_ITEM</p>
-				<p id="help-line-17" class="help__line help__line--17">@ui.HELP_SCREEN_CAPTURE</p>
-				<p id="help-line-18" class="help__line help__line--18">@ui.HELP_GUILD_WINDOW</p>
-				<p id="help-line-19" class="help__line help__line--19">@ui.HELP_MESSENGER_WINDOW</p>
-				<p id="help-line-20" class="help__line help__line--20">@ui.HELP_HELP</p>
+				<p id="help-line-11" class="help__line help__line--11"><span class="help__bullet"></span>@ui.HELP_OPEN_INVENTORY</p>
+				<p id="help-line-12" class="help__line help__line--12"><span class="help__bullet"></span>@ui.HELP_OPEN_LOG</p>
+				<p id="help-line-13" class="help__line help__line--13"><span class="help__bullet"></span>@ui.HELP_OPEN_ZONEMAP</p>
+				<p id="help-line-14" class="help__line help__line--14"><span class="help__bullet"></span>@ui.HELP_OPEN_MINIMAP</p>
+				<p id="help-line-15" class="help__line help__line--15"><span class="help__bullet"></span>@ui.HELP_CHANGE_PK_MODE</p>
+				<p id="help-line-16" class="help__line help__line--16"><span class="help__bullet"></span>@ui.HELP_PICK_ITEM</p>
+				<p id="help-line-17" class="help__line help__line--17"><span class="help__bullet"></span>@ui.HELP_SCREEN_CAPTURE</p>
+				<p id="help-line-18" class="help__line help__line--18"><span class="help__bullet"></span>@ui.HELP_GUILD_WINDOW</p>
+				<p id="help-line-19" class="help__line help__line--19"><span class="help__bullet"></span>@ui.HELP_MESSENGER_WINDOW</p>
+				<p id="help-line-20" class="help__line help__line--20"><span class="help__bullet"></span>@ui.HELP_HELP</p>
 			</div>
 		</div>
 		<div class="help__sticks">
-			<div id="help-stick-1" class="help-stick help-stick--1"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_FURY</span></div>
-			<div id="help-stick-2" class="help-stick help-stick--2"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_HP</span></div>
-			<div id="help-stick-3" class="help-stick help-stick--3"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_SP</span></div>
-			<div id="help-stick-4" class="help-stick help-stick--4"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_EXP</span></div>
-			<div id="help-stick-5" class="help-stick help-stick--5"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_MOUSE_LEFT</span></div>
-			<div id="help-stick-6" class="help-stick help-stick--6"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_MOUSE_RIGHT</span></div>
-			<div id="help-stick-7" class="help-stick help-stick--7"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_QUICKSLOT</span></div>
-			<div id="help-stick-8" class="help-stick help-stick--8"><div class="help-stick__art"></div><span class="help-stick__label help-stick__label--1">@ui.HELP_SYSTEM_BUTTON</span><span class="help-stick__label help-stick__label--2">@ui.HELP_CHARACTER_BUTTON1</span><span class="help-stick__label help-stick__label--3">@ui.HELP_CHARACTER_BUTTON2</span></div>
+			<div id="help-stick-1" class="help-stick help-stick--1"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--shop help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_FURY</span></div>
+			<div id="help-stick-2" class="help-stick help-stick--2"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--heal help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_HP</span></div>
+			<div id="help-stick-3" class="help-stick help-stick--3"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--gem help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_SP</span></div>
+			<div id="help-stick-4" class="help-stick help-stick--4"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--chevron-up help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_EXP</span></div>
+			<div id="help-stick-5" class="help-stick help-stick--5"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--mouse-move help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_MOUSE_LEFT</span></div>
+			<div id="help-stick-6" class="help-stick help-stick--6"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--mouse-skill help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_MOUSE_RIGHT</span></div>
+			<div id="help-stick-7" class="help-stick help-stick--7"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--inventory help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_QUICKSLOT</span></div>
+			<div id="help-stick-8" class="help-stick help-stick--8"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--system help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_SYSTEM_BUTTON</span><span class="help-stick__label help-stick__label--2">@ui.HELP_CHARACTER_BUTTON1</span><span class="help-stick__label help-stick__label--3">@ui.HELP_CHARACTER_BUTTON2</span></div>
 		</div>
 		<div class="nui-window__footer help__footer">
 			<button id="help-close" class="nui-button nui-button--medium nui-button--primary nui-anim help__close" data-event-mousedown="act('close', ev.button)"><span class="help__close-label">@ui.CLOSE</span></button>

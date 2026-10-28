@@ -15,7 +15,7 @@ body.locale-strip
 	align-items: center;
 	justify-content: space-around;
 	box-sizing: border-box;
-	background-color: var(--surface);
+	background-color: var(--surface-band);
 	border-bottom-width: 1dp;
 	border-bottom-color: var(--border);
 }
@@ -30,13 +30,18 @@ body.locale-strip
 	padding: 3dp 3dp 1dp 3dp;
 	border-bottom-width: 2dp;
 	border-bottom-color: transparent;
+	border-radius: 6dp;
 }
+/* Modern (the login screen's look, stage 1): a translucent band; a flag
+   under the pointer on a hover chip, the locale in use on the selection
+   chip with the accent line under it. */
 .locale-strip__flag:hover
 {
 	background-color: var(--surface-hover);
 }
 .locale-strip__flag.is-selected
 {
+	background-color: var(--selection);
 	border-bottom-color: var(--accent);
 }
 .locale-strip__image

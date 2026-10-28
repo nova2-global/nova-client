@@ -9,7 +9,11 @@
 	     through, and only the board and the arrows take the mouse. The
 	     slot list is new: one row per slot, with its character's name and
 	     level. Names come from the model through nui.plain_text. While a
-	     start is under way (busy) every button is disabled. -->
+	     start is under way (busy) every button is disabled. Modern adds
+	     code-drawn details: each slot's number and a mark on a slot that
+	     holds a character, the play mark on Start, and the rotate arrows
+	     as blades with their arrowheads (classic draws the legacy dragon
+	     art there and hides the rest). -->
 	<title>select</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="select.rcss"/>
@@ -31,7 +35,8 @@
 				<div class="nui-list__item nui-anim select-slot" data-for="s : slots"
 					data-attr-id="'select-slot-' + s.index"
 					data-class-is-selected="s.index == slot"
-					data-event-click="pick_slot(s.index)"><span class="nui-list__label">{{ s.label }}</span><span class="nui-list__meta" data-if="s.level > 0">{{ s.level }}</span></div>
+					data-class-select-slot--empty="s.level <= 0"
+					data-event-click="pick_slot(s.index)"><span class="select-slot__index">0{{ s.index + 1 }}</span><span class="nui-list__label">{{ s.label }}</span><span class="nui-list__meta" data-if="s.level > 0"><span class="select-slot__dot"></span><span class="select-slot__level">{{ s.level }}</span></span></div>
 			</div>
 		</div>
 		<div class="select-info">
@@ -56,7 +61,7 @@
 			</div>
 			<div class="select-stat">
 				<span class="select-stat__label">@ui.SELECT_SP</span>
-				<progress id="select-gauge-int" class="nui-gauge nui-gauge--pink select-stat__gauge" direction="right" data-attr-value="gauge_int"/>
+				<progress id="select-gauge-int" class="nui-gauge nui-gauge--pink select-stat__gauge select-stat__gauge--sp" direction="right" data-attr-value="gauge_int"/>
 				<span class="select-value select-stat__value">{{ stat_int }}</span>
 			</div>
 			<div class="select-stat">
@@ -72,16 +77,16 @@
 		</div>
 		<div class="nui-window__footer select-footer">
 			<div class="select-footer__main">
-				<button id="select-start" class="nui-button nui-button--primary nui-anim select-button select-button--main" data-if="occupied" data-attrif-disabled="busy" data-event-click="start()">@ui.SELECT_SELECT</button>
+				<button id="select-start" class="nui-button nui-button--primary nui-anim select-button select-button--main" data-if="occupied" data-attrif-disabled="busy" data-event-click="start()"><span class="select-play"></span>@ui.SELECT_SELECT</button>
 				<button id="select-create" class="nui-button nui-button--primary nui-anim select-button select-button--main" data-if="!occupied" data-attrif-disabled="busy" data-event-click="create()">@ui.SELECT_CREATE</button>
 			</div>
 			<div class="select-footer__row">
-				<button id="select-delete" class="nui-button nui-anim select-button" data-if="occupied" data-attrif-disabled="busy" data-event-click="remove()">@ui.SELECT_DELETE</button>
+				<button id="select-delete" class="nui-button nui-button--danger nui-anim select-button" data-if="occupied" data-attrif-disabled="busy" data-event-click="remove()">@ui.SELECT_DELETE</button>
 				<button id="select-exit" class="nui-button nui-anim select-button" data-attrif-disabled="busy" data-event-click="leave()">@ui.SELECT_EXIT</button>
 			</div>
 		</div>
 	</div>
-	<button id="select-left" class="nui-button nui-button--icon nui-anim nui-interactive select-arrow select-arrow--left" data-attrif-disabled="busy" data-event-click="left()">&#8249;</button>
-	<button id="select-right" class="nui-button nui-button--icon nui-anim nui-interactive select-arrow select-arrow--right" data-attrif-disabled="busy" data-event-click="right()">&#8250;</button>
+	<button id="select-left" class="nui-button nui-button--icon nui-anim nui-interactive select-arrow select-arrow--left" data-attrif-disabled="busy" data-event-click="left()">&#8249;<span class="select-blade select-blade--edge"></span><span class="select-blade"></span><span class="select-tip select-tip--a"></span><span class="select-tip select-tip--b"></span></button>
+	<button id="select-right" class="nui-button nui-button--icon nui-anim nui-interactive select-arrow select-arrow--right" data-attrif-disabled="busy" data-event-click="right()">&#8250;<span class="select-blade select-blade--edge"></span><span class="select-blade"></span><span class="select-tip select-tip--a"></span><span class="select-tip select-tip--b"></span></button>
 </body>
 </rml>

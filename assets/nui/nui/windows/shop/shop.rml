@@ -24,6 +24,8 @@
       data-class-shop--tabs-middle="tab_group == 'middle'" data-class-shop--tabs-small="tab_group == 'small'">
 	<div class="nui-window__titlebar shop__titlebar">
 		<handle class="nui-window__handle shop__handle" move_target="#document">
+			<span class="shop__title-icon"><span class="shop__emblem-awning"></span><span
+				class="shop__emblem-wall"></span><span class="shop__emblem-door"></span></span>
 			<span id="shop-title" class="nui-window__title shop__title">@ui.SHOP_TITLE</span>
 		</handle>
 		<button id="shop-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim shop__close-x"
@@ -44,22 +46,22 @@
 				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 			</div>
 		</div>
-	</div>
-	<div class="nui-window__footer shop__footer">
-		<div class="shop__tabs" data-if="tab_group != 'none'">
-			<div class="shop__tab-slot" data-for="t : tabs" data-if="t.shown" data-attr-class="'shop__tab-slot shop__tab-slot--' + t.index">
-				<button class="nui-button nui-button--medium nui-anim shop__tab"
-				        data-attr-id="'shop-tab-' + t.index" data-class-is-current="t.index == tab"
-				        data-class-is-down="t.down" data-event-mousedown="tab_press(t.index, ev.button)"><span
-					class="shop__tab-label">{{ t.name }}</span></button>
+		<div class="shop__footer">
+			<div class="shop__tabs" data-if="tab_group != 'none'">
+				<div class="shop__tab-slot" data-for="t : tabs" data-if="t.shown" data-attr-class="'shop__tab-slot shop__tab-slot--' + t.index">
+					<button class="nui-button nui-button--medium nui-anim shop__tab"
+					        data-attr-id="'shop-tab-' + t.index" data-class-is-current="t.index == tab"
+					        data-class-is-down="t.down" data-event-mousedown="tab_press(t.index, ev.button)"><span
+						class="shop__tab-label">{{ t.name }}</span></button>
+				</div>
 			</div>
+			<button id="shop-buy" class="nui-button nui-button--medium nui-button--primary nui-anim shop__buy" data-if="buy_shown"
+			        data-class-is-selected="buy_down" data-event-mousedown="buy_press(ev.button)">@ui.SHOP_BUY</button>
+			<button id="shop-sell" class="nui-button nui-button--medium nui-anim shop__sell" data-if="sell_shown"
+			        data-class-is-selected="sell_down" data-event-mousedown="sell_press(ev.button)">@ui.SHOP_SELL</button>
+			<button id="shop-close-shop" class="nui-button nui-button--danger nui-anim shop__close-shop" data-if="close_shop_shown"
+			        data-event-mousedown="close_shop_press(ev.button)">@ui.PRIVATE_SHOP_CLOSE_BUTTON</button>
 		</div>
-		<button id="shop-buy" class="nui-button nui-button--medium nui-anim shop__buy" data-if="buy_shown"
-		        data-class-is-selected="buy_down" data-event-mousedown="buy_press(ev.button)">@ui.SHOP_BUY</button>
-		<button id="shop-sell" class="nui-button nui-button--medium nui-anim shop__sell" data-if="sell_shown"
-		        data-class-is-selected="sell_down" data-event-mousedown="sell_press(ev.button)">@ui.SHOP_SELL</button>
-		<button id="shop-close-shop" class="nui-button nui-button--danger nui-anim shop__close-shop" data-if="close_shop_shown"
-		        data-event-mousedown="close_shop_press(ev.button)">@ui.PRIVATE_SHOP_CLOSE_BUTTON</button>
 	</div>
 </body>
 </rml>

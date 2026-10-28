@@ -23,11 +23,23 @@
    radio buttons do. The arrows are the legacy dragon art. */
 .skin-classic .nui-window.create-board
 {
+	width: 208dp;
 	decorator: classic-thinboard;
 	padding: 10dp 0dp 14dp 0dp;
 }
+/* The modern well around the description is not legacy's. */
+.skin-classic .create-well
+{
+	padding: 0dp;
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
+}
 .skin-classic .create-text
 {
+	height: 122dp;
+	border-width: 1dp;
+	color: var(--text);
 	width: 189dp;
 	margin: 0dp 0dp 0dp 8dp;
 	padding: 6dp 7dp;
@@ -37,6 +49,7 @@
 }
 .skin-classic .create-stats
 {
+	display: block;
 	padding: 4dp 0dp 0dp 15dp;
 }
 .skin-classic .create-stat
@@ -47,6 +60,7 @@
 }
 .skin-classic .create-stat__label
 {
+	font-weight: normal;
 	min-width: 30dp;
 	padding-right: 2dp;
 	box-sizing: border-box;
@@ -83,10 +97,12 @@
 }
 .skin-classic .create-row--name
 {
+	flex-direction: row;
 	margin-top: 8dp;
 }
 .skin-classic .create-label
 {
+	font-size: var(--font-md);
 	flex: 0 1 auto;
 	width: 70dp;
 	min-width: 0dp;
@@ -128,8 +144,14 @@
 }
 .skin-classic .create-button
 {
+	flex: 0 1 auto;
 	min-width: 88dp;
 	padding: 0dp;
+}
+/* The modern blades on the arrows are not legacy's. */
+.skin-classic .create-blade, .skin-classic .create-tip
+{
+	display: none;
 }
 /* The legacy Create label is gray, as every legacy button label. */
 .skin-classic .create-button.nui-button--primary

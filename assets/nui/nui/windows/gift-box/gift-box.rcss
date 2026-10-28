@@ -1,8 +1,9 @@
-/* The gift icon's modern place: above the modern taskbar's left end, over
-   the item mall button that opens the gift, a 32dp chip with the gift glyph
-   in the accent (components/glyph.rcss) just above the energy bar, so it
-   covers neither that bar nor the status button's label. Classic (the
-   legacy 63 x 74 art at the legacy place, as skin-provided frames):
+/* The gift icon's modern look (the reviewed mockup WGiftBox): above the
+   modern taskbar's left end, over the item mall button that opens the gift,
+   a 52dp chip holding a raised 38dp well with a present drawn in code (a bow
+   of two loops, the lid, the box and its ribbon, in the accent) and a spark
+   at its corner in the warning color; no motion. Classic (the legacy
+   63 x 74 art at the legacy place, as skin-provided frames):
    skins/classic/windows/gift-box.rcss. */
 
 body.gift-box
@@ -16,19 +17,98 @@ body.gift-box
 	left: 8dp;
 	bottom: 64dp;
 	box-sizing: border-box;
-	width: 32dp;
-	height: 32dp;
+	width: 52dp;
+	height: 52dp;
 	border-width: 1dp;
-	border-color: var(--accent);
-	border-radius: var(--radius-md);
-	background-color: var(--surface-raised);
+	border-color: var(--border);
+	border-radius: 12dp;
+	background-color: var(--surface);
 	pointer-events: none;
 }
-.gift-box__glyph
+.gift-box__well
 {
-	--glyph-ink: var(--accent);
+	display: block;
 	position: absolute;
-	left: 7dp;
-	top: 7dp;
-	transform: scale(1.25);
+	left: 6dp;
+	top: 6dp;
+	box-sizing: border-box;
+	width: 38dp;
+	height: 38dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 10dp;
+	background-color: var(--surface-raised);
+}
+.gift-box__bow, .gift-box__lid, .gift-box__box, .gift-box__ribbon
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+}
+.gift-box__bow
+{
+	top: 6dp;
+	width: 8dp;
+	height: 6dp;
+	border-width: 2dp;
+	border-color: var(--accent-hover);
+	border-radius: 4dp 4dp 1dp 1dp;
+}
+.gift-box__bow--l
+{
+	left: 10dp;
+}
+.gift-box__bow--r
+{
+	left: 18dp;
+}
+.gift-box__lid
+{
+	left: 6dp;
+	top: 12dp;
+	width: 24dp;
+	height: 5dp;
+	border-radius: 2dp;
+	background-color: var(--accent);
+}
+.gift-box__box
+{
+	left: 8dp;
+	top: 18dp;
+	width: 20dp;
+	height: 11dp;
+	border-radius: 0 0 2dp 2dp;
+	background-color: var(--accent);
+}
+.gift-box__ribbon
+{
+	left: 16dp;
+	top: 12dp;
+	width: 4dp;
+	height: 17dp;
+	background-color: var(--accent-hover);
+}
+.gift-box__spark
+{
+	display: block;
+	position: absolute;
+	right: -1dp;
+	top: -2dp;
+	width: 10dp;
+	height: 10dp;
+}
+.gift-box__spark-v, .gift-box__spark-h
+{
+	display: block;
+	position: absolute;
+	left: 4dp;
+	top: 1dp;
+	width: 2dp;
+	height: 8dp;
+	border-radius: 1dp;
+	background-color: var(--warning);
+}
+.gift-box__spark-h
+{
+	transform: rotate(90deg);
 }

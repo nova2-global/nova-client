@@ -24,6 +24,8 @@
 <body template="nui" id="refine" class="nui-window nui-fx nui-anim refine" data-model="refine" data-event-mousedown="board_press(ev.button)"
       data-class-refine--old="variant == 'old'" data-style---tip-min-w="min_w + 'dp'">
 	<div class="nui-window__titlebar refine__titlebar">
+		<span class="refine-title-icon"><span class="nui-glyph nui-glyph--gem"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span></span></span>
 		<handle class="nui-window__handle refine__handle" move_target="#document">
 			<span class="nui-window__title refine__title">@ui.REFINE_TTILE</span>
 		</handle>

@@ -250,3 +250,61 @@ body.skin-classic.system-options .so-note
 	color: var(--text);
 	line-height: 14dp;
 }
+
+/* Pins against the modern sheet (the reviewed design's look, which classic
+   does not take): no title glyph, no volume percent, no rule after a
+   heading, legacy's plain headings and wrapping theme choices, the toggles'
+   labels after their boxes, the selected choice's label in the button text color,
+   and no cell under the volume rows. */
+body.skin-classic.system-options .system-options__icon,
+body.skin-classic.system-options .so-value,
+body.skin-classic.system-options .so-heading__rule
+{
+	display: none;
+}
+body.skin-classic.system-options .so-legacy .so-row--sound,
+body.skin-classic.system-options .so-legacy .so-row--music
+{
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.system-options .so-heading
+{
+	display: block;
+	font-size: var(--font-md);
+}
+body.skin-classic.system-options .so-heading__text
+{
+	display: inline;
+	margin: 0;
+}
+body.skin-classic.system-options .so-row--theme .so-choices
+{
+	flex-wrap: wrap;
+}
+body.skin-classic.system-options .so-row--theme .so-slot
+{
+	flex: 0 0 auto;
+}
+body.skin-classic.system-options .so-choice--theme
+{
+	width: auto;
+}
+body.skin-classic.system-options .so-choice.is-selected,
+body.skin-classic.system-options .so-choice--scale.is-selected .so-auto-percent
+{
+	color: var(--classic-button-text);
+}
+body.skin-classic.system-options .so-motion,
+body.skin-classic.system-options .so-effects
+{
+	flex-direction: row;
+	justify-content: flex-start;
+	gap: var(--space-2);
+}
+body.skin-classic.system-options .so-motion .nui-toggle__label,
+body.skin-classic.system-options .so-effects .nui-toggle__label
+{
+	width: auto;
+}

@@ -71,6 +71,11 @@ body.skin-classic.chat-log .chat-log__handle
 	line-height: 24dp;
 	text-align: left;
 }
+/* The modern chat chip is not legacy's. */
+body.skin-classic.chat-log .chat-log__title-icon
+{
+	display: none;
+}
 body.skin-classic.chat-log .chat-log__title
 {
 	position: absolute;
@@ -173,6 +178,7 @@ body.skin-classic.chat-log .chat-log__lines
 	right: 15dp;
 	top: 45dp;
 	bottom: 25dp;
+	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
 }
@@ -212,6 +218,7 @@ body.skin-classic.chat-log .chat-log__scroll sliderbar
 {
 	width: 13dp;
 	height: 18dp;
+	margin-left: 0;
 	border-radius: 0;
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/public/scrollbar_small_thin_middle_button_01.sub" scale-none left top);
@@ -273,12 +280,14 @@ body.skin-classic.chat-log .chat-log__mode
 	background-color: transparent;
 	color: var(--classic-label-white);
 	font-size: var(--font-md);
+	font-weight: normal;
 	line-height: 16dp;
 }
 body.skin-classic.chat-log .chat-log__mode:hover
 {
 	border-width: 2dp;
 	background-color: transparent;
+	color: var(--classic-label-white);
 	line-height: 14dp;
 }
 body.skin-classic.chat-log .chat-log__mode:active
@@ -328,8 +337,10 @@ body.skin-classic.chat-log .chat-log__send
 	position: absolute;
 	right: 5dp;
 	top: 2dp;
+	box-sizing: content-box;
 	width: 20dp;
 	height: 18dp;
+	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/game/taskbar/send_chat_button_01.sub" scale-none left top);

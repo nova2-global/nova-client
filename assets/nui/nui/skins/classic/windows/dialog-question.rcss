@@ -47,3 +47,15 @@ body.skin-classic.dialog-question .dialog-question--two .nui-window__footer
 {
 	padding: 11dp 0 16dp 0;
 }
+
+/* Pins against the modern sheet (dialog-question.rcss: the reviewed
+   design's spacing, which classic does not take): the body's line height
+   and the middle art's width. */
+body.skin-classic.dialog-question .nui-dialog__text
+{
+	line-height: 1.4;
+}
+body.skin-classic.dialog-question .nui-dialog__footer .nui-button
+{
+	min-width: 61dp;
+}

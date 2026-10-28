@@ -1,12 +1,15 @@
-/* The messenger's modern look (P16 spec 5.7.2): a narrow window of
-   legacy's width (170dp, its height the player's, 150dp at least), the
-   rows in a list that scrolls by pixel, the block and unblock buttons
-   under it (NOVA-47; side by side, a long label wraps), four icon buttons
-   with their hints in the footer. A group row shows a chevron (down while
-   open), a member row a dot (--success online, --text-muted offline) 15dp
-   further in, as legacy's step, and a roster member's language flags after
-   its name (16dp, legacy's half size); the selected row the selection
-   color. The lover's row shows its love points on hover. The controller places it at legacy's
+/* The messenger's modern look (P16 spec 5.7.2; the reviewed WMessenger
+   board of stage 1): a narrow window of legacy's width (170dp, its height
+   the player's, 150dp at least). The rows sit in a rounded well that
+   scrolls by pixel: a group row is a faint band with a chevron (down while
+   open); a member row 12dp further in shows a person (head and bust) with
+   a presence dot while online, dimmed while offline, and a roster member's
+   language flags after its name (16dp, legacy's half size); the selected
+   row the selection fill with an accent edge. The block and unblock
+   buttons under the well (NOVA-47; side by side, a long label wraps). Four
+   raised action tiles in the footer, each glyph with its badge (add and
+   remove a friend), their hints centered above them; the grip along the
+   bottom edge. The lover's row shows its love points on hover. The controller places it at legacy's
    (W - 200, H - 450) at its first show and keeps the place the player
    drags it to; the sheet's place frames it in its snapshots. Classic
    (legacy's board, the list art, the selection bar from 16dp in, the
@@ -39,7 +42,21 @@ body.messenger
 	flex-direction: column;
 	flex: 1 1 0;
 	min-height: 0;
-	padding: var(--space-1) 0;
+	padding: var(--space-2) var(--space-2) 0 var(--space-2);
+}
+/* The well: the rounded look on a box that does not clip; the list inside
+   it clips square, with the scissor alone. */
+.messenger__well
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-height: 0;
+	padding: 3dp 2dp 3dp 3dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+	background-color: var(--surface-sunken);
 }
 .messenger__list
 {
@@ -48,21 +65,21 @@ body.messenger
 	min-height: 0;
 	overflow-y: auto;
 }
-/* A row is legacy's 20dp step; the mark and the name sit on one line. */
 .messenger__row
 {
 	display: block;
-	height: 20dp;
 }
+/* A member row 26dp, a group row 28dp; the mark, the name, one line. */
 .messenger__line
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	position: relative;
-	height: 20dp;
-	padding-left: var(--space-2);
-	padding-right: var(--space-2);
+	height: 26dp;
+	margin-right: var(--space-1);
+	padding: 0 6dp 0 9dp;
+	border-radius: 6dp;
 	line-height: 20dp;
 	white-space: nowrap;
 	color: var(--text);
@@ -71,33 +88,58 @@ body.messenger
 {
 	background-color: var(--surface-hover);
 }
+/* The selected row: the selection fill, an accent edge on its left, the
+   name in bold. */
 .messenger__line.is-selected
 {
+	padding-left: 6dp;
+	border-left-width: 3dp;
+	border-color: var(--accent);
 	background-color: var(--selection);
 }
 .messenger__line.is-member
 {
-	padding-left: 23dp;
+	padding-left: 15dp;
+}
+.messenger__line.is-member.is-selected
+{
+	padding-left: 12dp;
 }
 .messenger__line.is-empty
 {
-	padding-left: 23dp;
+	padding-left: 15dp;
 	color: var(--text-muted);
 }
 .messenger__line.is-group
 {
+	height: 28dp;
+	margin-bottom: 1dp;
 	font-weight: bold;
+	color: var(--text-muted);
+	background-color: var(--surface);
 }
-.messenger__line.is-member.is-online
+.messenger__line.is-group:hover
 {
-	color: var(--text);
+	background-color: var(--surface-hover);
 }
 .messenger__line.is-member
 {
 	color: var(--text-muted);
 }
-/* The mark: a 6dp dot for a member, a chevron for a group (a box with two
-   borders, turned), none for the empty line. */
+.messenger__line.is-member.is-online, .messenger__line.is-selected
+{
+	color: var(--text);
+}
+.messenger__line.is-selected .messenger__name
+{
+	font-weight: bold;
+}
+
+/* --- The mark ------------------------------------------------------------------------
+   A member's person, drawn by gradients on the one element: the head, the
+   bust, and the presence dot at its top right while online; dimmed while
+   offline. A group's chevron (a box with two borders, turned). None on the
+   empty line. */
 .messenger__mark
 {
 	display: block;
@@ -112,23 +154,25 @@ body.messenger
 }
 .messenger__line.is-member .messenger__mark
 {
-	width: 6dp;
-	height: 6dp;
-	margin-left: 3dp;
-	margin-right: 7dp;
-	border-radius: 3dp;
-	background-color: var(--text-muted);
+	width: 16dp;
+	height: 16dp;
+	margin: 0 7dp 0 0;
+	decorator: radial-gradient(circle 3.5dp at 7dp 4.5dp, var(--text-muted) 80%, transparent 100%),
+	           radial-gradient(ellipse 7dp 5.5dp at 7dp 16dp, var(--text-muted) 88%, transparent 100%);
+	opacity: 0.6;
 }
 .messenger__line.is-member.is-online .messenger__mark
 {
-	background-color: var(--success);
+	decorator: radial-gradient(circle 3.5dp at 7dp 4.5dp, var(--text) 80%, transparent 100%),
+	           radial-gradient(ellipse 7dp 5.5dp at 7dp 16dp, var(--text) 88%, transparent 100%),
+	           radial-gradient(circle 3dp at 13.5dp 3dp, var(--success) 75%, transparent 100%);
+	opacity: 1;
 }
 .messenger__line.is-group .messenger__mark
 {
 	width: 6dp;
 	height: 6dp;
-	margin-left: 2dp;
-	margin-right: 8dp;
+	margin: 0 9dp 2dp 3dp;
 	border-width: 0 2dp 2dp 0;
 	border-color: var(--text-muted);
 	transform: rotate(-45deg);
@@ -201,26 +245,78 @@ body.messenger
 	text-align: center;
 	pointer-events: none;
 }
-/* The four buttons centered in one row: add, whisper, remove, guild. */
+
+/* --- The footer: four raised tiles in one row (add, whisper, remove, guild) ----------- */
+
 .messenger__footer
 {
 	flex: 0 0 auto;
-	justify-content: center;
-	gap: var(--space-1);
-	padding: var(--space-2);
+	justify-content: space-between;
+	align-items: center;
+	padding: 6dp var(--space-2) 11dp var(--space-2);
 }
+.messenger__button
+{
+	width: 34dp;
+	height: 30dp;
+	line-height: 28dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-raised);
+}
+.messenger__button:hover
+{
+	border-color: var(--accent);
+	background-color: var(--selection);
+}
+.messenger__button:active
+{
+	background-color: var(--surface-sunken);
+}
+.messenger__button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.messenger__glyph
+{
+	transform: scale(1.2);
+}
+/* The add and remove badges: a small accent plus or minus at the person's
+   lower right. */
+.messenger__badge
+{
+	position: absolute;
+	right: 2dp;
+	bottom: 4dp;
+	transform: scale(0.6);
+}
+.messenger__button .messenger__badge, .messenger__button:hover .messenger__badge
+{
+	--glyph-ink: var(--accent);
+}
+/* A hint centered over its tile. */
 .messenger__tip
 {
-	left: -40dp;
+	left: 50%;
+	margin-bottom: 6dp;
+	transform: translateX(-50%);
 }
-.messenger__button--guild .messenger__tip
+
+/* --- The bottom edge: a drag on it sets the height (the width stays); the
+   grip is its mark. -------------------------------------------------------------------- */
+
+.messenger__grip
 {
-	left: auto;
-	right: 0;
-	margin-right: 0;
-	margin-left: -320dp;
+	display: block;
+	position: absolute;
+	left: 12dp;
+	right: 12dp;
+	bottom: 4dp;
+	height: 3dp;
+	border-radius: 2dp;
+	background-color: var(--console-grip);
+	pointer-events: none;
 }
-/* The bottom edge: a drag on it sets the height (the width stays). */
 .messenger__resize
 {
 	position: absolute;

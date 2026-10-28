@@ -1,9 +1,13 @@
 {
-	"$comment": "Golden cases of the game options (tools/check_nui_snapshots.py): the defaults (normal names, the target board shown, peace, nothing blocked, the four flags on, the pickup filter's potions off); blocked: block mode 0b101001 (trade, whisper, party request), PK free, view chat off, the kingdom name color, no target board, names limited, shop names hidden, the pickup filter's special and potions on (NOVA-50).",
+	"$comment": "Golden cases of the game options (tools/check_nui_snapshots.py): the defaults (normal names, the target board shown, peace, nothing blocked, the four flags on, the pickup filter's potions off); blocked: block mode 0b101001 (trade, whisper, party request), PK free, view chat off, the kingdom name color, no target board, names limited, shop names hidden, the pickup filter's special and potions on (NOVA-50). The modern frames leave room for the window's shadow (a shadow the frame's edge cuts stretches the window's background); classic keeps its own frames.",
 	"cases": [
-		{"page": "game-options", "themes": "all", "scales": [["100", "1", "480x480"], ["150", "1.5", "720x720"], ["200", "2", "960x960"]],
+		{"page": "game-options", "themes": "all", "except": ["classic"], "scales": [["100", "1", "560x560"], ["150", "1.5", "840x840"], ["200", "2", "1120x1120"]],
 		 "fixture": true, "roots": ["assets/ETC"], "time": null},
-		{"page": "game-options", "variant": "blocked", "themes": "all", "scales": [["100", "1", "480x480"], ["150", "1.5", "720x720"], ["200", "2", "960x960"]],
+		{"page": "game-options", "themes": ["classic"], "scales": [["100", "1", "480x480"], ["150", "1.5", "720x720"], ["200", "2", "960x960"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "game-options", "variant": "blocked", "themes": "all", "except": ["classic"], "scales": [["100", "1", "560x560"], ["150", "1.5", "840x840"], ["200", "2", "1120x1120"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "game-options", "variant": "blocked", "themes": ["classic"], "scales": [["100", "1", "480x480"], ["150", "1.5", "720x720"], ["200", "2", "960x960"]],
 		 "fixture": true, "roots": ["assets/ETC"], "time": null}
 	]
 }

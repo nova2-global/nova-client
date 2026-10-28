@@ -14,3 +14,15 @@ body.skin-classic.dialog-message .nui-window__footer
 {
 	padding: 12dp 16dp 21dp 16dp;
 }
+
+/* Pins against the modern sheet (dialog-message.rcss: the reviewed
+   design's spacing, which classic does not take): the body's line height
+   and the middle art's width. */
+body.skin-classic.dialog-message .nui-dialog__text
+{
+	line-height: 1.4;
+}
+body.skin-classic.dialog-message .nui-dialog__footer .nui-button
+{
+	min-width: 61dp;
+}

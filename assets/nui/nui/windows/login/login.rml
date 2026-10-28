@@ -8,7 +8,10 @@
 	     Escape, as a legacy EditLine does. The login-r1..r4 rows and the
 	     Connect sheen carry the intro motion (login.rcss "Intro motion").
 	     keyboard is true while the NovaUI virtual keyboard comes with the
-	     board: the board then rises above it (login--keyboard). -->
+	     board: the board then rises above it (login--keyboard). Each field
+	     sits in a login-control with its pictogram (a person, a lock),
+	     drawn in code over the field's left padding; the pictograms and the
+	     chevron on Choose take no pointer, and classic hides them. -->
 	<title>login</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="login.rcss"/>
@@ -18,26 +21,33 @@
 		<div class="nui-row login-server login-r1 nui-anim">
 			<span class="nui-grow login-server__name">{{ server }}</span>
 			<button id="login-choose" class="nui-button nui-button--small nui-anim login-button"
-				data-event-click="choose_server()">@ui.LOGIN_SELECT_BUTTON</button>
+				data-event-click="choose_server()">@ui.LOGIN_SELECT_BUTTON<span class="nui-glyph nui-glyph--chevron-down login-chevron"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		</div>
 		<div class="nui-field login-r2 nui-anim">
 			<label class="nui-field__label" for="login-user">@ui.LOGIN_ID</label>
-			<input id="login-user" type="text" class="nui-input nui-anim login-input" maxlength="19" autofocus="autofocus"
-				data-attr-value="user"
-				data-class-nui-input--invalid="error_on == 'user'"
-				data-event-change="user_edit(ev.value, ev.linebreak)"/>
+			<div class="login-control">
+				<input id="login-user" type="text" class="nui-input nui-anim login-input" maxlength="19" autofocus="autofocus"
+					data-attr-value="user"
+					data-class-nui-input--invalid="error_on == 'user'"
+					data-event-change="user_edit(ev.value, ev.linebreak)"/>
+				<span class="nui-glyph nui-glyph--character login-icon"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+			</div>
 		</div>
 		<div class="nui-field login-r3 nui-anim">
 			<label class="nui-field__label" for="login-password">@ui.LOGIN_PASSWORD</label>
-			<input id="login-password" type="password" class="nui-input nui-anim login-input" maxlength="16"
-				data-class-nui-input--invalid="error_on == 'password'"
-				data-event-change="password_edit(ev.value, ev.linebreak)"/>
+			<div class="login-control">
+				<input id="login-password" type="password" class="nui-input nui-anim login-input" maxlength="16"
+					data-class-nui-input--invalid="error_on == 'password'"
+					data-event-change="password_edit(ev.value, ev.linebreak)"/>
+				<span class="login-icon login-lock"><span class="login-lock__shackle"></span><span class="login-lock__body"></span></span>
+			</div>
 		</div>
 		<span class="nui-field__error login-error nui-anim" data-visible="error != ''" data-class-login-error--in="error != ''">{{ error }}</span>
 	</div>
 	<div class="nui-window__footer login-r4 nui-anim">
-		<button id="login-exit" class="nui-button nui-anim login-button" data-event-click="exit()">@ui.LOGIN_EXIT</button>
-		<button id="login-connect" class="nui-button nui-button--primary nui-anim login-button login-connect"
+		<button id="login-exit" class="nui-button nui-anim login-button login-action" data-event-click="exit()">@ui.LOGIN_EXIT</button>
+		<button id="login-connect" class="nui-button nui-button--primary nui-anim login-button login-action login-connect"
 			data-event-click="submit()">@ui.LOGIN_CONNECT<span class="login-sheen nui-anim"><span class="login-sheen__half"></span><span class="login-sheen__half login-sheen__half--out"></span></span></button>
 	</div>
 </body>

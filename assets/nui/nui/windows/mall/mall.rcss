@@ -1,14 +1,17 @@
-/* The item mall storage's modern look (P16 spec 5.5.2): the safebox's
-   without pages: a lean 5 x 9 grid on the 44dp pitch and the close button
-   in the footer. The controller places it at legacy's (100, 20) at its
-   first show and keeps the place the player drags it to; the sheet's place
-   frames it in its snapshots. Classic (legacy's 176 x 370 board, the large
-   button at the uiscript's place): skins/classic/windows/mall.rcss. */
+/* The item mall storage's modern look (P16 spec 5.5.2; the reviewed mockup
+   WMall): the gift emblem before the title; the safebox's without pages: a
+   lean 5 x 9 grid in raised wells on the 44dp pitch and the close button
+   (primary) the row's width under it. The controller places it at legacy's
+   (100, 20) at its first show and keeps the place the player drags it to;
+   the sheet's place frames it in its snapshots. Classic (legacy's 176 x 370
+   board, the large button at the uiscript's place):
+   skins/classic/windows/mall.rcss. */
 
 body.mall
 {
 	left: 16dp;
 	top: 16dp;
+	width: 242dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -18,9 +21,38 @@ body.mall
 	tab-index: none;
 	focus: none;
 }
+/* The title's emblem: an accent chip with the gift glyph. */
+.mall__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.mall__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
 .mall__body
 {
-	padding: var(--space-3);
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 12dp 12dp;
+}
+.mall__grid
+{
+	align-self: center;
+	decorator: nui-cells(40dp 4dp 7dp var(--surface-hover) var(--border) 1dp);
 }
 .mall__label
 {
@@ -28,8 +60,9 @@ body.mall
 }
 .mall__footer
 {
-	justify-content: center;
-	padding: var(--space-3);
+	display: flex;
+	flex-direction: row;
+	margin-top: 14dp;
 }
 .mall__button
 {

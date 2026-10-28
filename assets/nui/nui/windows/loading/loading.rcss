@@ -22,6 +22,9 @@ body.loading
 	height: 100%;
 }
 
+/* Modern: the legacy box as the gauge panel (a board), the emblem's ring
+   centered on its left, the gauge after it and the progress in percent at
+   its right end. */
 .loading-board
 {
 	position: absolute;
@@ -30,6 +33,7 @@ body.loading
 	width: 400dp;
 	height: 80dp;
 	margin-left: -200dp;
+	box-sizing: border-box;
 }
 
 /* The engine's contract for nui-frames (Core/ElementFrames.h): an inline
@@ -59,7 +63,7 @@ body.loading
 .loading__track, .loading__ring
 {
 	left: 15dp;
-	top: 17dp;
+	top: 19dp;
 	width: 40dp;
 	height: 40dp;
 }
@@ -71,7 +75,7 @@ body.loading
 .loading__hole
 {
 	left: 21dp;
-	top: 23dp;
+	top: 25dp;
 	width: 28dp;
 	height: 28dp;
 	border-radius: 14dp;
@@ -98,24 +102,50 @@ body.loading
 	to { transform: rotate(360deg); }
 }
 
-/* Modern: a track and a fill in tokens, on the middle line of the legacy
-   gauge's box. */
+/* Modern: the design's EXP bar: a sunken track and a gold fill with a
+   light top, with marks at its quarters (the legacy gauge's segments). */
 progress.loading-gauge
 {
 	position: absolute;
 	left: 70dp;
-	top: 36dp;
-	width: 336dp;
-	height: 8dp;
+	top: 34dp;
+	width: 262dp;
+	height: 10dp;
 	background-color: var(--gauge-track);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: 4dp;
+	border-radius: 5dp;
 }
 progress.loading-gauge fill
 {
-	background-color: var(--accent);
-	border-radius: 3dp;
+	background-color: var(--gauge-pink);
+	border-radius: 4dp;
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-pink) 35%, var(--gauge-purple) 100%);
+}
+.loading__tick
+{
+	display: block;
+	position: absolute;
+	top: 35dp;
+	width: 1dp;
+	height: 8dp;
+	background-color: var(--cooldown-shade);
+	pointer-events: none;
+}
+.loading__tick--1 { left: 135dp; }
+.loading__tick--2 { left: 200dp; }
+.loading__tick--3 { left: 266dp; }
+.loading__pct
+{
+	position: absolute;
+	left: 340dp;
+	top: 30dp;
+	width: 46dp;
+	color: var(--accent);
+	font-size: 13dp;
+	font-weight: bold;
+	line-height: 18dp;
+	text-align: right;
 }
 
 .loading-error

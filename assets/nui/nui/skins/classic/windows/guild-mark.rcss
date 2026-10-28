@@ -15,6 +15,14 @@ body.skin-classic.guild-mark
 	height: 300dp;
 	min-width: 0;
 }
+body.skin-classic.guild-mark .guild-mark__handle
+{
+	display: block;
+}
+body.skin-classic.guild-mark .guild-mark__title-icon
+{
+	display: none;
+}
 body.skin-classic.guild-mark .guild-mark__titlebar
 {
 	display: block;
@@ -56,6 +64,9 @@ body.skin-classic.guild-mark .guild-mark__list
 	width: 125dp;
 	height: 200dp;
 	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.guild-mark .guild-mark__viewport
 {

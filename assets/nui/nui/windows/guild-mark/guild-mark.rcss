@@ -10,10 +10,42 @@ body.guild-mark
 {
 	left: 10dp;
 	top: 12dp;
-	width: 280dp;
+	width: 240dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
+}
+.guild-mark__handle
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+/* The list's icon: a glyph in an accent tile, as the guild window's. */
+.guild-mark__title-icon
+{
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 8dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+}
+.guild-mark__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.guild-mark__title
+{
+	display: block;
+	overflow: hidden;
 }
 .guild-mark button, .guild-mark .nui-list__item
 {
@@ -23,36 +55,56 @@ body.guild-mark
 .guild-mark__body
 {
 	position: relative;
-	padding: var(--space-3) 28dp var(--space-3) var(--space-3);
+	padding: var(--space-2) var(--space-3) 0;
+}
+/* The ten rows legacy's list shows (ListBoxEx.viewItemCount), 30dp each,
+   in a well with the scroll range at its right. */
+.guild-mark__list
+{
+	box-sizing: border-box;
+	height: 318dp;
+	padding: var(--space-2) 16dp var(--space-2) var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
 }
 .guild-mark .guild-mark__viewport
 {
-	height: 260dp;
+	height: 300dp;
 	overflow-y: hidden;
 }
 .guild-mark__row
 {
-	height: 26dp;
+	height: 30dp;
 	padding-top: 0;
 	padding-bottom: 0;
-	line-height: 26dp;
+	line-height: 30dp;
 }
+/* A mark's name after its preview's place, so every name starts in one
+   column (legacy's 20 in); a symbol has no preview. */
 .guild-mark__line
 {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+	display: block;
+	position: relative;
 	flex: 1 1 auto;
-	height: 26dp;
+	min-width: 0;
+	height: 30dp;
+	padding-left: 25dp;
 	white-space: nowrap;
+}
+.guild-mark--symbol .guild-mark__line
+{
+	padding-left: 0;
 }
 .guild-mark__preview
 {
 	display: block;
-	flex: 0 0 auto;
+	position: absolute;
+	left: 0;
+	top: 9dp;
 	width: 16dp;
 	height: 12dp;
-	margin-right: var(--space-2);
 }
 .guild-mark__name
 {
@@ -63,29 +115,29 @@ body.guild-mark
 .guild-mark__scroll-box
 {
 	position: absolute;
-	right: var(--space-2);
-	top: var(--space-3);
-	bottom: var(--space-3);
-	width: 12dp;
+	right: 16dp;
+	top: 16dp;
+	bottom: var(--space-2);
+	width: 8dp;
 }
 input.guild-mark__scroll
 {
 	display: block;
-	width: 12dp;
+	width: 8dp;
 	height: 100%;
 	focus: none;
 }
 .guild-mark__scroll slidertrack
 {
-	width: 4dp;
-	margin-left: 4dp;
+	width: 2dp;
+	margin-left: 3dp;
 	border-radius: 2dp;
 	background-color: var(--surface-sunken);
 }
 .guild-mark__scroll sliderbar
 {
-	width: 12dp;
-	height: 22dp;
+	width: 8dp;
+	height: 94dp;
 	border-radius: 6dp;
 	background-color: var(--text-muted);
 }
@@ -102,15 +154,25 @@ input.guild-mark__scroll
 	width: 0;
 	height: 0;
 }
+/* OK, Cancel and Refresh across the footer, each as wide as its label and
+   a share of the room left (OK a double share, as the board's): the
+   widest locale's three (de) fit one row; a longer one would wrap. */
 .guild-mark__footer
 {
 	justify-content: center;
 	flex-wrap: wrap;
+	gap: 7dp;
+	padding: 10dp var(--space-3) var(--space-3);
 }
 .guild-mark__button
 {
-	min-width: 64dp;
-	padding: 0 var(--space-2);
+	flex: 1 1 auto;
+	min-width: 0;
+	padding: 0 7dp;
+}
+.guild-mark__button--ok
+{
+	flex-grow: 2;
 }
 .guild-mark__button-label
 {

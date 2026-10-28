@@ -31,6 +31,8 @@
 <body template="nui" class="nui-window nui-fx nui-anim system-options" data-model="system_options">
 	<div class="nui-window__titlebar system-options__titlebar">
 		<handle class="nui-window__handle system-options__handle" move_target="#document">
+			<span class="system-options__icon"><span class="nui-glyph nui-glyph--system"><span class="nui-glyph__a"></span><span
+				class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 			<span class="nui-window__title system-options__title">@ui.SYSTEMOPTION_TITLE</span>
 		</handle>
 		<button id="so-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)">&#215;</button>
@@ -41,11 +43,13 @@
 				<span class="so-label so-label--sound">@ui.OPTION_SOUND</span>
 				<input id="so-sound" type="range" class="nui-slider so-slider so-slider--sound" min="0" max="100" step="1"
 					data-attr-value="sound_volume" data-event-change="sound(ev.value)"/>
+				<span id="so-sound-value" class="so-value">{{ sound_volume }}%</span>
 			</div>
 			<div class="so-row so-row--music">
 				<span class="so-label so-label--music">@ui.OPTION_MUSIC</span>
 				<input id="so-music" type="range" class="nui-slider so-slider so-slider--music" min="0" max="100" step="1"
 					data-attr-value="music_volume" data-event-change="music(ev.value)"/>
+				<span id="so-music-value" class="so-value">{{ music_volume }}%</span>
 			</div>
 			<div class="so-row so-row--bgm">
 				<button id="so-music-change" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-music-change" data-event-mousedown="act('change_music', ev.button)"><span class="so-choice__label">@ui.OPTION_MUSIC_CHANGE</span></button>
@@ -76,7 +80,7 @@
 			</div>
 		</div>
 		<div id="so-interface" class="so-interface" data-if="interface">
-			<div class="so-heading">@ui.OPTION_INTERFACE</div>
+			<div class="so-heading"><span class="so-heading__text">@ui.OPTION_INTERFACE</span><span class="so-heading__rule"></span></div>
 			<div class="so-row so-row--theme">
 				<span class="so-label so-label--theme">@ui.THEME_TITLE</span>
 				<div class="so-choices so-choices--wrap">
@@ -117,9 +121,9 @@
 				<span id="so-effects-note" class="so-note" data-if="!effects_available">@ui.OPTION_UI_EFFECTS_UNAVAILABLE</span>
 			</div>
 			<div id="so-colors" class="so-colors" data-if="size(color_slots) > 0">
-				<div class="so-heading">@ui.OPTION_UI_COLORS</div>
+				<div class="so-heading"><span class="so-heading__text">@ui.OPTION_UI_COLORS</span><span class="so-heading__rule"></span></div>
 				<div class="so-color-slot" data-for="c : color_slots">
-					<div class="so-row so-row--color">
+					<div class="so-row so-row--color" data-class-so-row--overlay="c.slot == 'overlay'">
 						<span class="so-label">{{ c.label }}</span>
 						<div class="so-choices so-choices--wrap" data-if="c.kind == 'color'">
 							<span class="so-slot" data-for="w : c.swatches"><button class="so-swatch"

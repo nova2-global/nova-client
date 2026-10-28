@@ -1,9 +1,11 @@
-/* Attach metin stone's modern look (P14 spec 6.5): a movable window at
-   legacy's place (the screen's top left corner), the item's tooltip as it
-   is and with the stone side by side, the stone between them under an
-   arrow, the question, Yes and No. Classic (legacy's board, 15 + old + 45 +
-   new + 15 wide, the tooltips at y 38, the arrow and the stone's slot in
-   the 45 between them): skins/classic/windows/attach-metin.rcss. */
+/* Attach metin stone's modern look (P14 spec 6.5, restyled to the reviewed
+   design): a movable window at legacy's place (the screen's top left
+   corner), 700dp wide: the item's tooltip as it is and with the stone side
+   by side, 288dp each or as wide as legacy makes them, as tall as the
+   taller; between them the double arrow and the stone in its accent cell;
+   the question, Yes and No. Classic (legacy's board, 15 + old + 45 + new +
+   15 wide, the tooltips at y 38, the arrow and the stone's slot in the 45
+   between them): skins/classic/windows/attach-metin.rcss. */
 
 body.attach
 {
@@ -17,53 +19,85 @@ body.attach
 {
 	tab-index: none;
 }
+/* The title's icon chip. */
+.attach-title-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 6dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+}
+.attach-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.8);
+}
 .attach__body
 {
 	display: block;
 	padding: var(--space-3);
 }
-/* Both tooltips as wide as legacy makes them (the old one takes the new
-   one's width), side by side from the top; the stone in the middle. */
+/* The two tooltips side by side, as tall as the taller; legacy's width
+   (the old one takes the new one's) where it is wider than 288dp. */
 .attach__tips
 {
 	display: flex;
 	flex-direction: row;
-	align-items: flex-start;
+	align-items: stretch;
+	gap: var(--space-3);
 }
 .attach__tip
 {
 	--tip-min-w: 190dp;
-	flex-shrink: 0;
+	flex: 0 0 auto;
 	box-sizing: border-box;
+	width: 288dp;
 	min-width: var(--tip-min-w);
+	padding: 14dp;
 }
+/* The arrow and the stone, level with the tooltips' upper lines. */
 .attach__middle
 {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	align-self: center;
-	flex-shrink: 0;
-	width: 45dp;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 74dp;
+	padding-top: 116dp;
 }
 .attach__arrow
 {
-	display: block;
-	margin-bottom: var(--space-2);
+	display: flex;
+	flex-direction: row;
+	margin-bottom: 18dp;
 }
 .attach__arrow .nui-glyph
 {
 	--glyph-ink: var(--accent);
-	transform: scale(1.5);
+	margin: 0 -3dp;
+	transform: scale(1.6);
 }
 .attach__stone
 {
-	display: block;
-	width: 32dp;
-	height: 32dp;
-	border-width: 2dp;
-	border-color: var(--tip-socket-silver);
-	border-radius: 18dp;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 48dp;
+	height: 48dp;
+	background-color: var(--selection);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 9dp;
 }
 .attach__stone-icon
 {
@@ -74,10 +108,15 @@ body.attach
 .attach__question
 {
 	display: block;
-	margin-top: var(--space-3);
+	margin-top: 14dp;
+	font-size: 13dp;
 	text-align: center;
 }
 .attach__footer
 {
 	justify-content: center;
+}
+.attach__accept, .attach__cancel
+{
+	min-width: 116dp;
 }

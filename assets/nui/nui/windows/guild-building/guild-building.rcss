@@ -12,10 +12,40 @@ body.guild-building
 {
 	left: 10dp;
 	bottom: 50dp;
-	width: 580dp;
+	width: 630dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
+}
+.guild-building__handle
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.guild-building__title-icon
+{
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	width: 22dp;
+	height: 22dp;
+	margin-right: 7dp;
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 6dp;
+	background-color: var(--selection);
+}
+.guild-building__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.75);
+}
+.guild-building__title
+{
+	display: block;
+	overflow: hidden;
 }
 .guild-building button
 {
@@ -25,7 +55,7 @@ body.guild-building
 .guild-building__body
 {
 	position: relative;
-	height: 208dp;
+	height: 241dp;
 	padding: 0;
 }
 
@@ -37,11 +67,11 @@ body.guild-building
 {
 	position: absolute;
 }
-.guild-building__categories { left: 14dp; top: 12dp; width: 168dp; }
-.guild-building__costs { left: 14dp; top: 126dp; width: 168dp; }
-.guild-building__buildings { left: 196dp; top: 12dp; width: 176dp; height: 184dp; }
-.guild-building__position { left: 386dp; top: 12dp; width: 180dp; }
-.guild-building__rotation { left: 386dp; top: 96dp; width: 180dp; }
+.guild-building__categories { left: 12dp; top: 12dp; width: 148dp; }
+.guild-building__costs { left: 12dp; top: 126dp; width: 148dp; }
+.guild-building__buildings { left: 170dp; top: 12dp; width: 164dp; height: 209dp; }
+.guild-building__position { left: 344dp; top: 12dp; width: 274dp; }
+.guild-building__rotation { left: 344dp; top: 110dp; width: 274dp; }
 
 .guild-building__heading
 {
@@ -49,12 +79,11 @@ body.guild-building
 	height: 18dp;
 	margin-bottom: 4dp;
 	color: var(--text-muted);
-	font-size: var(--font-sm);
+	font-size: 10dp;
 	font-weight: bold;
 	line-height: 18dp;
+	text-align: center;
 	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
 }
 
 /* The lists: compact rows (24dp), the categories' three in full, the
@@ -64,25 +93,43 @@ body.guild-building
 .guild-building__row
 {
 	box-sizing: border-box;
-	height: 24dp;
+	height: 25dp;
 	padding: 2dp var(--space-2);
 	line-height: 18dp;
 	font-size: var(--font-md);
+	text-align: center;
 	white-space: nowrap;
+}
+.guild-building__list
+{
+	box-sizing: border-box;
+	padding: 5dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+}
+/* The selected row: the list's selection with a 3dp accent edge. */
+.guild-building__row.is-selected
+{
+	border-left-width: 3dp;
+	border-left-color: var(--accent);
+	color: var(--text);
 }
 .guild-building__row-label
 {
+	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 .guild-building__viewport--categories
 {
-	height: 72dp;
+	height: 79dp;
 	overflow-y: hidden;
 }
 .guild-building__viewport--buildings
 {
-	height: 144dp;
+	height: 175dp;
 }
 
 /* The costs: a label and its value on one row each. */
@@ -91,13 +138,18 @@ body.guild-building
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 18dp;
-	line-height: 18dp;
+	height: 23dp;
+	margin-bottom: 4dp;
+	line-height: 23dp;
 }
+/* At least 46dp, so the values line up; a longer label (br "Compensado")
+   pushes its own value. */
 .guild-building__label
 {
 	display: block;
-	flex: 1 1 auto;
+	flex: 0 0 auto;
+	min-width: 46dp;
+	margin-right: 4dp;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
 	white-space: nowrap;
@@ -105,11 +157,23 @@ body.guild-building
 .guild-building__value
 {
 	display: block;
-	flex: 0 0 auto;
+	box-sizing: border-box;
+	flex: 1 1 auto;
+	min-width: 0;
+	height: 23dp;
+	padding: 0 5dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+	background-color: var(--surface-sunken);
 	color: var(--text);
-	font-size: var(--font-md);
+	font-size: var(--font-sm);
 	font-weight: bold;
+	line-height: 21dp;
+	text-align: center;
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .guild-building__value.is-short
 {
@@ -123,15 +187,15 @@ body.guild-building
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	width: 86dp;
-	height: 22dp;
-	margin-bottom: 4dp;
+	width: 191dp;
+	height: 25dp;
+	margin-bottom: 5dp;
 }
 .guild-building__axis
 {
 	display: block;
 	flex: 0 0 auto;
-	width: 14dp;
+	width: 18dp;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
 	font-weight: bold;
@@ -140,7 +204,7 @@ body.guild-building
 {
 	display: block;
 	flex: 1 1 auto;
-	height: 22dp;
+	height: 24dp;
 	padding: 0 var(--space-2);
 	border-width: 1dp;
 	border-color: var(--border);
@@ -148,20 +212,22 @@ body.guild-building
 	background-color: var(--surface-sunken);
 	color: var(--text);
 	font-size: var(--font-sm);
-	line-height: 20dp;
-	text-align: right;
+	font-weight: bold;
+	line-height: 22dp;
+	text-align: center;
 	white-space: nowrap;
 }
-/* 86dp: the widest label of the 17 locales (de "Wechseln") with its
-   padding. */
+/* A tall button beside both coordinates, at least 75dp wide; the widest
+   label of the 17 locales (de "Wechseln") fits it. */
 .guild-building__change
 {
 	position: absolute;
 	right: 0;
 	top: 22dp;
-	width: 86dp;
-	min-width: 0;
+	min-width: 75dp;
+	height: 55dp;
 	padding: 0 var(--space-2);
+	line-height: 53dp;
 }
 
 /* The rotation: one row per axis, the slider filling it. */
@@ -170,25 +236,36 @@ body.guild-building
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: 24dp;
+	height: 25dp;
+	gap: 7dp;
 }
 .guild-building__slider
 {
 	flex: 1 1 auto;
-	width: 160dp;
+	width: 211dp;
+}
+.guild-building__slider-value
+{
+	display: block;
+	flex: 0 0 31dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: right;
 }
 
 /* Preview at the left of the footer, Accept and Cancel at its right. */
 .guild-building__footer
 {
 	align-items: center;
+	justify-content: flex-end;
+	padding: 10dp var(--space-3) var(--space-3);
 }
 .guild-building__preview
 {
-	margin-right: auto;
+	margin-right: 0;
 }
 .guild-building__accept,
 .guild-building__cancel
 {
-	min-width: 88dp;
+	min-width: 72dp;
 }

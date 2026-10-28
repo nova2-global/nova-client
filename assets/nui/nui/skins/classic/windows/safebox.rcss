@@ -15,6 +15,10 @@ body.skin-classic.safebox
 	height: 418dp;
 	min-width: 0;
 }
+body.skin-classic.safebox .safebox__title-icon
+{
+	display: none;
+}
 body.skin-classic.safebox .safebox__titlebar
 {
 	position: absolute;
@@ -61,6 +65,12 @@ body.skin-classic.safebox .safebox__pages
 	top: 333dp;
 	width: 176dp;
 	height: 19dp;
+	margin: 0;
+	padding: 0;
+	gap: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	/* Only the buttons take the pointer: the row's box lies over nothing else. */
 	pointer-events: none;
 }
@@ -95,6 +105,7 @@ body.skin-classic.safebox .safebox__page
 	min-width: 0;
 	padding: 0;
 	border-width: 0;
+	border-radius: 0;
 	background-color: transparent;
 	color: var(--text);
 	line-height: 19dp;
@@ -128,6 +139,9 @@ body.skin-classic.safebox.safebox--pages-small .safebox__page.is-selected
 body.skin-classic.safebox .safebox__footer
 {
 	display: block;
+	width: auto;
+	margin: 0;
+	gap: 0;
 	padding: 0;
 }
 /* Legacy's large art (the classic default button, 88 x 21), its label
@@ -141,6 +155,7 @@ body.skin-classic.safebox .safebox__button
 	min-width: 0;
 	padding: 0;
 	overflow: visible;
+	color: var(--classic-button-text);
 }
 body.skin-classic.safebox .safebox__button--password { top: 360dp; }
 body.skin-classic.safebox .safebox__button--close { top: 381dp; }

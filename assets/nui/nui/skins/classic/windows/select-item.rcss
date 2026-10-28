@@ -10,6 +10,10 @@ body.skin-classic.sel
 	width: 184dp;
 	min-width: 0;
 }
+body.skin-classic.sel .sel-title-icon
+{
+	display: none;
+}
 body.skin-classic.sel .sel__titlebar
 {
 	display: block;
@@ -51,6 +55,15 @@ body.skin-classic.sel .sel__titlebar .nui-window__close
 body.skin-classic.sel .sel__body
 {
 	padding: 34dp 12dp 0 12dp;
+}
+body.skin-classic.sel .sel__grid-well
+{
+	width: auto;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 }
 /* The bottom: the board is the grid plus 76; the large button (88 x 21)
    34 above the board's bottom, centered: 42 under the grid after its 13 of

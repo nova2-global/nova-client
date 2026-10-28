@@ -1,9 +1,12 @@
-/* The shop signs' modern look: each sign a small panel (the panel
-   component) 22dp tall, its name on one line with 10dp on each side,
-   centered on the shop's point (the anchor's default alignment). Its width
-   follows the drawn name, where legacy computes len(name) * 6 + 20. Classic
-   (the thin board, 32dp tall as legacy's ThinBoard makes it at least):
-   skins/classic/windows/shop-signs.rcss. */
+/* The shop signs' modern look: each sign the panel component's shape (its
+   1dp edge and rounded corners) on the shared overlay fill, as every label
+   over the world (--tooltip-bg, the 51% black, with --text-inverse), so the
+   name and its legacy color tags read the same over any ground in both
+   palettes; 26dp tall, its name bold on one line with 10dp on each side,
+   centered on the shop's point (the anchor's default alignment); the accent
+   edge under the pointer. Its width follows the drawn name, where legacy
+   computes len(name) * 6 + 20. Classic (the thin board, 32dp tall as
+   legacy's ThinBoard makes it at least): skins/classic/windows/shop-signs.rcss. */
 
 body.shop-signs
 {
@@ -17,14 +20,17 @@ body.shop-signs
 .nui-panel.shop-sign
 {
 	display: block;
-	height: 22dp;
+	min-width: 40dp;
+	height: 26dp;
 	box-sizing: border-box;
 	padding: 0 10dp;
+	background-color: var(--tooltip-bg);
 	font-size: var(--font-sm);
-	line-height: 20dp;
+	font-weight: bold;
+	line-height: 24dp;
 	white-space: nowrap;
 	text-align: center;
-	color: var(--text);
+	color: var(--text-inverse);
 }
 .nui-panel.shop-sign:hover
 {

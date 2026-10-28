@@ -20,6 +20,8 @@
 <body template="nui" class="nui-window nui-fx nui-anim game-options" data-model="game_options">
 	<div class="nui-window__titlebar game-options__titlebar">
 		<handle class="nui-window__handle game-options__handle" move_target="#document">
+			<span class="game-options__icon"><span class="nui-glyph game-options__glyph"><span class="nui-glyph__a"></span><span
+				class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 			<span class="nui-window__title game-options__title">@ui.GAMEOPTION_TITLE</span>
 		</handle>
 		<button id="go-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="close(ev.button)">&#215;</button>

@@ -30,6 +30,20 @@ body.skin-classic.login
 .skin-classic .login-server
 {
 	height: 30dp;
+	padding: 0dp;
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
+}
+/* The modern pictograms and the chevron on Choose are not legacy's; each
+   field stands alone on its line, as before them. */
+.skin-classic .login-icon
+{
+	display: none;
+}
+.skin-classic .login-control
+{
+	display: block;
 }
 .skin-classic.login .login-r2
 {
@@ -91,6 +105,7 @@ body.skin-classic.login
 {
 	display: none;
 	min-height: 0dp;
+	margin-top: var(--space-1);
 	text-align: center;
 	font-effect: outline(1dp var(--classic-text-outline));
 }
@@ -109,6 +124,7 @@ body.skin-classic.login
 {
 	min-width: 88dp;
 	padding: 0;
+	flex: 0 1 auto;
 }
 /* The legacy Connect label is gray. Both this and the classic --primary rule
    weigh 200,000, and this sheet comes after classic.rcss. */

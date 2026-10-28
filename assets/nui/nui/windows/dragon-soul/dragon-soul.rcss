@@ -1,19 +1,22 @@
-/* The dragon soul inventory's modern look (P15 spec 5.2): a 372dp window
-   beside the inventory above the taskbar (legacy's place: legacy opens it
-   10 left of its 176 wide inventory, 37 above the screen's bottom; the
-   modern inventory is 236dp wide, so this one keeps 246dp from the right),
-   in three parts:
-   - the deck: the six equipment cells on a code-drawn emblem's ring in
-     legacy's order (sub 0 at the top, then counterclockwise), the deck
-     choices (I, II) at its lower left, the activate toggle at its lower
-     right; while the deck is active the ring and the gem take the accent
-     and every active cell its accent border;
-   - the kinds: one choice per kind, a gem in the kind's color with its
-     name as a hint, the shown kind's name under them, the grade choices;
-   - the bag: the page as a lean slot grid of 8 x 44dp columns.
-   The body keeps one height (the refine window opens beside it with its top
-   on this one's: dragon-soul-refine.rcss) but in Russian, whose grades take
-   two rows.
+/* The dragon soul inventory's modern look (P15 spec 5.2, restyled to the
+   reviewed design): a 390dp window beside the inventory above the taskbar
+   (legacy's place: legacy opens it 10 left of its 176 wide inventory, 37
+   above the screen's bottom; the modern inventory is 236dp wide, so this
+   one keeps 246dp from the right), in legacy's order from the top:
+   - the altar: a sunken well with a soft accent light, a code-drawn sigil
+     (three rings and a hexagram) that turns once in 32s, the core's
+     diamond and its gem; the six equipment cells on it in legacy's order
+     (sub 0 at the top, then counterclockwise), the deck choices I and II at
+     its lower corners. While the deck is active the sigil and the gem take
+     the accent and each worn cell its accent border, glow and a breathing
+     inner ring;
+   - the kinds: one tab per kind, a cut gem in the kind's color with its
+     name as a hint; the shown kind's name; the grade choices as a
+     segmented well (Russian's wrap to a second row);
+   - the bag: the page as a lean slot grid of 8 x 44dp columns;
+   - the activate toggle at the lower right, as legacy's.
+   The window is 694dp tall but in Russian (the refine window's top is level
+   with this one's: dragon-soul-refine.rcss).
    Classic (legacy's 287 x 505 board with its picture, the kind strip's art
    and every button's at 100%): skins/classic/windows/dragon-soul.rcss. */
 
@@ -21,7 +24,7 @@ body.ds
 {
 	right: 246dp;
 	bottom: 37dp;
-	width: 372dp;
+	width: 390dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -42,79 +45,155 @@ body.ds.ds--placed
 {
 	display: none;
 }
-/* 500dp tall (the refine window's top is level with this one's), more
-   only where the grades wrap. */
+/* The title's icon chip. */
+.ds-title-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 6dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+}
+.ds-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.8);
+}
 .ds__body
 {
 	display: flex;
 	flex-direction: column;
 	box-sizing: border-box;
-	min-height: 500dp;
 	padding: var(--space-3);
 }
 
-/* --- The deck ------------------------------------------------------------------------ */
+/* --- The altar ------------------------------------------------------------------- */
 
-/* The ring: a 76dp radius around the emblem's middle (174, 96), the cells'
-   middles on it at 60 degree steps. */
 .ds-deck
 {
 	position: relative;
 	flex: 0 0 auto;
-	width: 348dp;
-	height: 192dp;
+	box-sizing: border-box;
+	width: 366dp;
+	height: 302dp;
+	overflow: hidden;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 12dp;
 }
+/* The sigil's box, 286dp square, centered on the altar 3dp from its top. */
 .ds-emblem
 {
 	position: absolute;
-	left: 98dp;
-	top: 20dp;
-	width: 152dp;
-	height: 152dp;
+	left: 39dp;
+	top: 2dp;
+	width: 286dp;
+	height: 286dp;
 	pointer-events: none;
 }
-.ds-emblem__ring, .ds-emblem__core, .ds-emblem__gem
+.ds-emblem__glow, .ds-emblem__spin, .ds-emblem__ring, .ds-emblem__line, .ds-emblem__core, .ds-emblem__gem
 {
 	display: block;
 	position: absolute;
 	box-sizing: border-box;
+	pointer-events: none;
 }
-.ds-emblem__ring
+/* The soft accent light behind the sigil. A device without effects draws a
+   gradient as its middle color: the light would be a flat disc. */
+.ds-emblem__glow
 {
 	left: 0;
 	top: 0;
-	width: 152dp;
-	height: 152dp;
+	width: 286dp;
+	height: 286dp;
+	decorator: radial-gradient(50% 50% at 50% 50%, var(--selection) 0%, transparent 100%);
+}
+@media (theme: no-effects)
+{
+	.ds-emblem__glow
+	{
+		display: none;
+	}
+}
+/* The turning part: the rings and the hexagram, once in 32s (by transform,
+   which rebuilds nothing; reduced motion holds it still). It exists only
+   while the board shows (the deck's list is emptied while it is kept). */
+.ds-emblem__spin
+{
+	left: 0;
+	top: 0;
+	width: 286dp;
+	height: 286dp;
+}
+.ds-emblem__spin.nui-anim
+{
+	animation: 32s linear-in-out infinite ds-sigil-turn;
+}
+@keyframes ds-sigil-turn
+{
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+.ds-emblem__ring
+{
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: 76dp;
+	border-radius: 9999dp;
 }
+.ds-emblem__ring--outer { left: 13dp; top: 13dp; width: 260dp; height: 260dp; }
+.ds-emblem__ring--middle { left: 31dp; top: 31dp; width: 224dp; height: 224dp; }
+.ds-emblem__ring--inner { left: 59dp; top: 59dp; width: 168dp; height: 168dp; }
+/* The hexagram: two triangles with their corners 121dp from the middle,
+   each side 210dp long, centered on its own middle and turned. */
+.ds-emblem__line
+{
+	width: 210dp;
+	height: 1dp;
+	background-color: var(--border);
+}
+.ds-emblem__line--1 { left: 38dp; top: 203dp; }
+.ds-emblem__line--2 { left: -14.5dp; top: 112dp; transform: rotate(-60deg); }
+.ds-emblem__line--3 { left: 90.5dp; top: 112dp; transform: rotate(60deg); }
+.ds-emblem__line--4 { left: 38dp; top: 82dp; }
+.ds-emblem__line--5 { left: -14.5dp; top: 172.5dp; transform: rotate(60deg); }
+.ds-emblem__line--6 { left: 90.5dp; top: 172.5dp; transform: rotate(-60deg); }
+/* The core: a diamond inside the inner ring, and the gem in its middle. */
 .ds-emblem__core
 {
-	left: 44dp;
-	top: 44dp;
-	width: 64dp;
-	height: 64dp;
-	background-color: var(--surface-sunken);
+	left: 57dp;
+	top: 57dp;
+	width: 172dp;
+	height: 172dp;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: 32dp;
+	transform: rotate(45deg);
 }
 .ds-emblem__gem
 {
-	left: 66dp;
-	top: 66dp;
+	left: 133dp;
+	top: 133dp;
 	width: 20dp;
 	height: 20dp;
-	background-color: var(--text-muted);
+	background-color: var(--border);
 	border-radius: var(--radius-sm);
 	transform: rotate(45deg);
 }
-/* Active: the ring and the gem in the accent (a static look; the cells'
-   own active look is their border). */
-.ds--active .ds-emblem__ring, .ds--active .ds-emblem__core
+/* Active: the sigil and the gem in the accent. */
+.ds--active .ds-emblem__ring
 {
-	border-color: var(--accent);
+	border-color: var(--accent-glow);
+}
+.ds--active .ds-emblem__line
+{
+	background-color: var(--accent-glow);
 }
 .ds--active .ds-emblem__gem
 {
@@ -127,28 +206,60 @@ body.ds.ds--placed
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 348dp;
-	height: 192dp;
+	width: 364dp;
+	height: 300dp;
 }
 .ds-equip-place
 {
 	position: absolute;
-	width: 40dp;
-	height: 40dp;
+	width: 48dp;
+	height: 48dp;
 }
-.ds-equip-place--0 { left: 154dp; top: 0; }
-.ds-equip-place--1 { left: 88dp; top: 38dp; }
-.ds-equip-place--2 { left: 88dp; top: 114dp; }
-.ds-equip-place--3 { left: 154dp; top: 152dp; }
-.ds-equip-place--4 { left: 220dp; top: 114dp; }
-.ds-equip-place--5 { left: 220dp; top: 38dp; }
-/* An item of the active deck: the lean cell's active look (a 2dp accent
-   border and the component's static glow), the icon where it was. */
+.ds-equip-place--0 { left: 158dp; top: 9dp; }
+.ds-equip-place--1 { left: 62dp; top: 64dp; }
+.ds-equip-place--2 { left: 62dp; top: 176dp; }
+.ds-equip-place--3 { left: 158dp; top: 231dp; }
+.ds-equip-place--4 { left: 255dp; top: 176dp; }
+.ds-equip-place--5 { left: 255dp; top: 64dp; }
+/* A worn cell: 48dp with the icon in its middle, rounder than a bag cell. */
+.ds-equip
+{
+	width: 48dp;
+	height: 48dp;
+	padding: 7dp;
+	border-radius: 11dp;
+}
+/* An item of the active deck: an accent border and the component's static
+   glow, the icon where it was. */
 .ds-equip.is-active
 {
-	padding: 2dp;
-	border-width: 2dp;
 	border-color: var(--accent);
+}
+/* Its inner ring breathes in to 0.9 of the cell and back in 2.6s, only
+   while the cell is active (is-on, bound with its data-if), by transform. */
+.ds-equip__pulse
+{
+	display: block;
+	position: absolute;
+	left: 2dp;
+	top: 2dp;
+	right: 2dp;
+	bottom: 2dp;
+	z-index: 6;
+	border-width: 2dp;
+	border-color: var(--accent-glow);
+	border-radius: 9dp;
+	pointer-events: none;
+}
+.ds-equip__pulse.is-on.nui-anim
+{
+	animation: 2.6s sine-in-out infinite ds-pulse;
+}
+@keyframes ds-pulse
+{
+	0% { transform: scale(1); }
+	50% { transform: scale(0.9); }
+	100% { transform: scale(1); }
 }
 /* The legacy active effect's frames are classic's (a hidden nui-frames
    builds no frames and runs no clock). */
@@ -156,36 +267,42 @@ body.ds.ds--placed
 {
 	display: none;
 }
+/* The deck choices: 42dp squares at the altar's lower corners. */
 .ds-decks
 {
 	position: absolute;
 	left: 0;
-	bottom: 0;
-	display: flex;
-	flex-direction: row;
-	gap: var(--space-1);
+	top: 0;
+	width: 364dp;
+	height: 300dp;
+	pointer-events: none;
 }
+.ds-deck-place
+{
+	position: absolute;
+	bottom: 8dp;
+	width: 42dp;
+	height: 42dp;
+	pointer-events: auto;
+}
+.ds-deck-place--0 { left: 9dp; }
+.ds-deck-place--1 { right: 9dp; }
 .ds-deck-button
 {
-	width: 36dp;
-	height: 28dp;
+	width: 42dp;
+	height: 42dp;
 	padding: 0;
-	font-size: var(--font-sm);
-	line-height: 26dp;
+	border-radius: 10dp;
+	font-size: var(--font-lg);
+	line-height: 40dp;
+}
+.ds-deck-button.is-selected
+{
+	color: var(--accent);
 }
 .ds-deck-button__label, .ds-activate__label
 {
 	pointer-events: none;
-}
-.ds-activate
-{
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	height: 28dp;
-	padding: 0 var(--space-3);
-	font-size: var(--font-sm);
-	line-height: 26dp;
 }
 
 /* --- The kinds and the grades ------------------------------------------------------ */
@@ -196,42 +313,60 @@ body.ds.ds--placed
 	flex-direction: row;
 	flex: 0 0 auto;
 	gap: var(--space-1);
-	width: 348dp;
-	margin-top: 10dp;
+	width: 366dp;
+	margin-top: var(--space-2);
 }
+/* A kind's tab: a sunken tile, the shown kind's raised in the selection. */
 .ds-kind
 {
+	position: relative;
 	flex: 1 1 0;
 	min-width: 0;
-	height: 32dp;
+	height: 38dp;
 	padding: 0;
-	line-height: 30dp;
+	line-height: 36dp;
 }
-/* A kind's gem: a 10dp square turned on its corner, in the kind's color. */
+.ds-kinds .ds-kind
+{
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+}
+.ds-kinds .ds-kind:hover
+{
+	background-color: var(--surface-hover);
+}
+.ds-kinds .ds-kind.is-selected
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+}
+/* The kind's gem: a cut stone in the kind's color, lit from its top. */
 .ds-gem
 {
-	display: inline-block;
-	position: relative;
-	width: 16dp;
-	height: 16dp;
-	vertical-align: middle;
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 24dp;
+	height: 24dp;
+	margin: -12dp 0 0 -12dp;
 	pointer-events: none;
 }
 .ds-gem__face
 {
 	display: block;
 	position: absolute;
-	left: 3dp;
-	top: 3dp;
-	width: 10dp;
-	height: 10dp;
-	border-radius: 1dp;
+	left: 3.5dp;
+	top: 3.5dp;
+	width: 17dp;
+	height: 17dp;
+	border-radius: 2dp;
 	background-color: var(--text-muted);
+	decorator: linear-gradient(135deg, var(--sheen) 0%, var(--sheen-clear) 60%);
 	transform: rotate(45deg);
 }
-/* The six kinds as legacy's strip colors them: diamond, ruby, jade,
-   sapphire, garnet, onyx. */
-.ds-gem--0 .ds-gem__face { background-color: var(--text); }
+.ds-gem--0 .ds-gem__face { background-color: var(--tip-socket-silver); }
 .ds-gem--1 .ds-gem__face { background-color: var(--gauge-red); }
 .ds-gem--2 .ds-gem__face { background-color: var(--success); }
 .ds-gem--3 .ds-gem__face { background-color: var(--gauge-blue); }
@@ -246,8 +381,8 @@ body.ds.ds--placed
 	display: block;
 	flex: 0 0 auto;
 	height: 20dp;
-	margin-top: 6dp;
-	color: var(--text);
+	margin: var(--space-2) 2dp 6dp 2dp;
+	color: var(--highlight);
 	font-size: var(--font-md);
 	font-weight: bold;
 	line-height: 20dp;
@@ -255,40 +390,66 @@ body.ds.ds--placed
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-/* The grades share the row by their labels, at the extra small size and the
-   regular weight, 2dp apart with 2dp inside. Every locale's five fit one
-   row but Russian's (377dp of words, Noto Sans at 11dp), which wraps to a
-   second row and makes the window 30dp taller, so the words stay whole. */
+/* The grades: a segmented well, the grade shown raised. */
 .ds-grades
 {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 	flex: 0 0 auto;
+	box-sizing: border-box;
 	gap: 2dp;
-	width: 348dp;
-	margin-top: 6dp;
+	width: 366dp;
+	padding: 3dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
 }
 .ds-grade
 {
 	flex: 1 1 auto;
 	min-width: 0;
-	height: 28dp;
+	height: 24dp;
 	padding: 0 2dp;
 	font-size: var(--font-xs);
-	font-weight: normal;
-	line-height: 26dp;
+	line-height: 22dp;
 	white-space: nowrap;
+}
+.ds-grades .ds-grade
+{
+	border-color: transparent;
+	border-radius: 6dp;
+	background-color: transparent;
+	color: var(--text-muted);
+}
+.ds-grades .ds-grade:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.ds-grades .ds-grade.is-selected
+{
+	background-color: var(--surface-raised);
+	border-color: var(--border);
+	color: var(--text);
 }
 .ds-grade__label
 {
 	pointer-events: none;
 }
 
-/* --- The bag ------------------------------------------------------------------------ */
+/* --- The bag and the activate toggle ------------------------------------------------- */
 
 .ds-bag
 {
 	flex: 0 0 auto;
-	margin-top: 10dp;
+	align-self: center;
+	margin-top: var(--space-2);
+}
+.ds-activate
+{
+	align-self: flex-end;
+	min-width: 108dp;
+	margin-top: var(--space-2);
 }

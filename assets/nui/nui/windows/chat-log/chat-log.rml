@@ -23,10 +23,13 @@
 	data-model="chatlog" data-event-nuilink="link(ev.link)">
 	<div class="nui-window__titlebar chat-log__titlebar">
 		<handle class="nui-window__handle chat-log__handle" move_target="#document">
+			<span class="chat-log__title-icon"><span class="nui-glyph nui-glyph--chat"><span class="nui-glyph__a"></span><span
+				class="nui-glyph__b"></span></span></span>
 			<span id="chat-log-title" class="nui-window__title chat-log__title">@game.CHAT_LOG_TITLE</span>
 		</handle>
 		<button id="chat-log-close" class="nui-button nui-button--ghost nui-button--icon-sm nui-window__close nui-anim nui-has-tooltip chat-log__close"
-			data-event-mousedown="close(ev.button)"><span class="chat-log__close-x">&#215;</span><span
+			data-event-mousedown="close(ev.button)"><span class="nui-glyph nui-glyph--close chat-log__close-x"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim chat-log__tip">@game.UI_CLOSE</span></button>
 	</div>
 	<div id="chat-log-filters" class="chat-log__filters">

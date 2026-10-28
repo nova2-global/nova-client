@@ -43,6 +43,7 @@ body.skin-classic.guild-war-accept .guild-war__label
 	left: 15dp;
 	color: var(--text);
 	font-size: var(--font-md);
+	font-weight: normal;
 }
 body.skin-classic.guild-war-accept .guild-war__row--enemy .guild-war__label { top: 40dp; }
 body.skin-classic.guild-war-accept .guild-war__row--type .guild-war__label { top: 123dp; }
@@ -68,7 +69,16 @@ body.skin-classic.guild-war-accept .guild-war__slot
 	height: 19dp;
 	border-width: 1dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
 	background-color: var(--classic-slot-fill);
+	display: block;
+	min-height: 0;
+	padding: 0;
+}
+/* Modern's crest does not show here. */
+body.skin-classic.guild-war-accept .guild-war__crest
+{
+	display: none;
 }
 /* Legacy's edit line, 90 x 18 at 3, 3 of the slot bar. No margin: the
    dialog kit's field class sets one (components/dialog.rcss), which put
@@ -92,6 +102,7 @@ body.skin-classic.guild-war-accept .guild-war__field
    edge). */
 body.skin-classic.guild-war-accept .guild-war__name
 {
+	font-weight: normal;
 	position: absolute;
 	left: 2dp;
 	top: 2dp;
@@ -123,6 +134,11 @@ body.skin-classic.guild-war-accept .guild-war__type:active,
 body.skin-classic.guild-war-accept .guild-war__type.is-selected
 {
 	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+/* The legacy label color on the held-down choice too (modern inks it). */
+body.skin-classic.guild-war-accept .guild-war__type.is-selected
+{
+	color: var(--classic-button-text);
 }
 body.skin-classic.guild-war-accept .guild-war__type--0 { left: 80dp; }
 body.skin-classic.guild-war-accept .guild-war__type--1 { left: 125dp; }

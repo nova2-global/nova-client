@@ -26,6 +26,8 @@
       data-class-safebox--pages-4="page_count == 4" data-class-safebox--pages-5="page_count == 5">
 	<div class="nui-window__titlebar safebox__titlebar">
 		<handle class="nui-window__handle safebox__handle" move_target="#document">
+			<span class="safebox__title-icon"><span class="safebox__emblem-lid"></span><span
+				class="safebox__emblem-chest"></span><span class="safebox__emblem-lock"></span></span>
 			<span class="nui-window__title safebox__title">@ui.SAFE_TITLE</span>
 		</handle>
 		<button id="safebox-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim safebox__close-x"
@@ -54,12 +56,12 @@
 					class="safebox__page-label">{{ p.label }}</span></button>
 			</div>
 		</div>
-	</div>
-	<div class="nui-window__footer safebox__footer">
-		<button id="safebox-change-password" class="nui-button nui-anim safebox__button safebox__button--password"
-		        data-event-mousedown="change_password_press(ev.button)"><span class="safebox__label">@ui.SAFE_CHANGE_PASSWORD</span></button>
-		<button id="safebox-close" class="nui-button nui-anim safebox__button safebox__button--close"
-		        data-event-mousedown="close_press(ev.button)"><span class="safebox__label">@ui.CLOSE</span></button>
+		<div class="safebox__footer">
+			<button id="safebox-change-password" class="nui-button nui-anim safebox__button safebox__button--password"
+			        data-event-mousedown="change_password_press(ev.button)"><span class="safebox__label">@ui.SAFE_CHANGE_PASSWORD</span></button>
+			<button id="safebox-close" class="nui-button nui-button--primary nui-anim safebox__button safebox__button--close"
+			        data-event-mousedown="close_press(ev.button)"><span class="safebox__label">@ui.CLOSE</span></button>
+		</div>
 	</div>
 </body>
 </rml>

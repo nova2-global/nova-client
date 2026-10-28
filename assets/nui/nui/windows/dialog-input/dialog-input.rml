@@ -18,6 +18,8 @@
 	<div class="nui-window nui-fx nui-dialog nui-anim" id="dialog-input">
 		<div class="nui-window__titlebar">
 			<handle class="nui-window__handle" move_target="dialog-input">
+				<span class="dialog-input__icon"><span class="nui-glyph dialog-input__glyph"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span></span></span>
 				<span class="nui-window__title">{{ title }}</span>
 			</handle>
 			<button id="dialog-input-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-click="cancel()">&#215;</button>

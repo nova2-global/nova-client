@@ -24,6 +24,7 @@
    (160 by 36), without a label. */
 .skin-classic .nui-window.select-board
 {
+	width: 208dp;
 	decorator: classic-thinboard;
 	padding: 0dp 0dp 13dp 0dp;
 }
@@ -72,9 +73,61 @@
 	overflow: visible;
 	text-overflow: clip;
 }
+/* The modern wells, cells and details are not legacy's: classic keeps
+   its rows plain (the stock list rows, the slot boxes below). */
+.skin-classic .select-empire
+{
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
+}
+.skin-classic .select-empire__text
+{
+	gap: 0dp;
+}
+.skin-classic .select-empire__name
+{
+	font-size: var(--font-md);
+}
 .skin-classic .select-slots
 {
 	margin: 6dp 10dp 0dp 10dp;
+}
+.skin-classic .select-slots .nui-list__viewport
+{
+	display: block;
+	gap: 0dp;
+}
+.skin-classic .select-slot, .skin-classic .select-slot.is-selected
+{
+	gap: var(--space-2);
+	padding: 0 var(--space-1);
+	border-width: 1dp;
+	border-color: transparent;
+}
+.skin-classic .select-slot
+{
+	background-color: transparent;
+}
+.skin-classic .select-slot__index, .skin-classic .select-slot__dot,
+.skin-classic .select-play, .skin-classic .select-blade, .skin-classic .select-tip
+{
+	display: none;
+}
+.skin-classic .select-slot .nui-list__label, .skin-classic .select-slot--empty .nui-list__label
+{
+	color: var(--text);
+	font-weight: normal;
+	text-align: left;
+}
+.skin-classic .select-slot .nui-list__meta
+{
+	display: block;
+	gap: 0dp;
+}
+.skin-classic .select-info, .skin-classic .select-stats
+{
+	display: block;
 }
 .skin-classic .select-info
 {
@@ -88,9 +141,14 @@
 	justify-content: flex-start;
 	width: 173dp;
 	height: 26dp;
+	padding: 0dp;
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
 }
 .skin-classic .select-label
 {
+	font-size: var(--font-md);
 	min-width: 43dp;
 	padding-right: 2dp;
 	box-sizing: border-box;
@@ -102,6 +160,7 @@
 }
 .skin-classic .select-row .select-value
 {
+	font-weight: normal;
 	flex: 1 1 auto;
 	min-width: 40dp;
 	margin-left: auto;
@@ -129,6 +188,7 @@
 }
 .skin-classic .select-stat__label
 {
+	font-weight: normal;
 	min-width: 30dp;
 	padding-right: 2dp;
 	box-sizing: border-box;
@@ -172,8 +232,13 @@
 {
 	color: var(--classic-button-text);
 }
-/* The classic disabled label (classic.rcss), which the rule above ties and
-   follows. */
+/* Delete is the danger button in modern; legacy's label is gray. */
+.skin-classic .select-button.nui-button--danger
+{
+	color: var(--classic-button-text);
+}
+/* The classic disabled label (classic.rcss), which the rules above tie and
+   follow. */
 .skin-classic .select-button[disabled]
 {
 	color: var(--classic-disabled-text);

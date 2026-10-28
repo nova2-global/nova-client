@@ -9,9 +9,17 @@
 {
 	--frames-pattern: "d:/ymir work/ui/intro/loading/%02d.sub";
 }
-.skin-classic .loading__track, .skin-classic .loading__hole, .skin-classic .loading__ring
+.skin-classic .loading__track, .skin-classic .loading__hole, .skin-classic .loading__ring,
+.skin-classic .loading__tick, .skin-classic .loading__pct
 {
 	display: none;
+}
+/* The legacy box holds the emblem and the gauge with no panel of its own. */
+.skin-classic .nui-board.loading-board
+{
+	background-color: transparent;
+	border-width: 0dp;
+	border-radius: 0dp;
 }
 
 /* The legacy gauge: the empty art, and the full art as the fill image, which
@@ -20,6 +28,7 @@
 .skin-classic progress.loading-gauge
 {
 	top: 25dp;
+	width: 336dp;
 	height: 30dp;
 	decorator: image("d:/ymir work/ui/intro/loading/gauge_empty.sub");
 	fill-image: "d:/ymir work/ui/intro/loading/gauge_full.sub";
@@ -29,6 +38,7 @@
 }
 .skin-classic progress.loading-gauge fill
 {
+	decorator: none;
 	background-color: transparent;
 	border-radius: 0dp;
 }

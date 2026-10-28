@@ -44,6 +44,7 @@ body.skin-classic.guild-war-declare .guild-war__label
 	left: 15dp;
 	color: var(--text);
 	font-size: var(--font-md);
+	font-weight: normal;
 }
 body.skin-classic.guild-war-declare .guild-war__row--enemy .guild-war__label { top: 40dp; }
 body.skin-classic.guild-war-declare .guild-war__row--type .guild-war__label { top: 103dp; }
@@ -136,6 +137,11 @@ body.skin-classic.guild-war-declare .guild-war__type:active,
 body.skin-classic.guild-war-declare .guild-war__type.is-selected
 {
 	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+/* The legacy label color on the held-down choice too (modern inks it). */
+body.skin-classic.guild-war-declare .guild-war__type.is-selected
+{
+	color: var(--classic-button-text);
 }
 body.skin-classic.guild-war-declare .guild-war__type--0 { left: 80dp; }
 body.skin-classic.guild-war-declare .guild-war__type--1 { left: 125dp; }

@@ -1,11 +1,16 @@
-/* The system options' modern look: a movable window, the legacy rows as
-   label and control rows in legacy's order, then the Interface section
-   under its heading. Choices are buttons; the one in effect is selected
-   (is-selected). The facade centers the body. Classic (the legacy board at
-   legacy's places, the Interface section under it on legacy art):
+/* The system options' modern look (the reviewed design, board
+   WSystemOptions): a movable window with its title glyph, the legacy rows as
+   label and control rows in legacy's order (the two volume rows on sunken
+   cells with their percent, the choices filling the row), then the
+   Interface section under its rule: the theme and scale choices under their
+   labels, the two toggles in the label column's place, and the color slots,
+   the overlay opacity row set apart on the accent's soft fill. Choices are
+   buttons; the one in effect is selected (is-selected) and takes the accent
+   ink. The facade centers the body. Classic (the legacy board at legacy's
+   places, the Interface section under it on legacy art):
    skins/classic/windows/system-options.rcss. */
 
-/* The sheet's own place frames the window in its 560 x 600dp snapshots;
+/* The sheet's own place frames the window in its 560 x 1100dp snapshots;
    the facade's center() replaces it in the client. The window is never
    taller than the screen (about 500dp: 999 px at 200% on a 900 px screen):
    the title bar stays and the rows scroll. 99vh leaves room for the border
@@ -14,7 +19,7 @@ body.system-options
 {
 	left: 30dp;
 	top: 12dp;
-	width: 500dp;
+	width: 440dp;
 	max-height: 99vh;
 	display: flex;
 	flex-direction: column;
@@ -30,6 +35,28 @@ body.system-options
 	flex: 0 0 auto;
 }
 
+/* The title glyph on the accent's soft tile. */
+.system-options__icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin: -2dp var(--space-2) 0 0;
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 16dp;
+	vertical-align: middle;
+}
+.system-options__icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	display: block;
+}
+
 .system-options__body
 {
 	flex: 1 1 auto;
@@ -43,7 +70,7 @@ body.system-options
 	flex-direction: row;
 	align-items: center;
 	min-height: 32dp;
-	margin-top: var(--space-2);
+	margin-top: 6dp;
 }
 .so-row:first-child
 {
@@ -53,21 +80,44 @@ body.system-options
 {
 	display: block;
 	flex: 0 0 auto;
-	width: 120dp;
+	width: 108dp;
+	margin-right: 10dp;
 	color: var(--text-muted);
 	font-size: var(--font-md);
 }
+
+/* The volume rows: raised cells (the slider's track is the sunken color),
+   the slider filling the row and its value after it. */
+.so-row--sound, .so-row--music
+{
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+	background-color: var(--surface-raised);
+}
 .so-slider
 {
-	width: 260dp;
+	flex: 1 1 auto;
+	width: 150dp;
 }
+.so-value
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 40dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: right;
+}
+
 .so-choices
 {
 	display: flex;
 	flex-direction: row;
 	flex: 1 1 auto;
 	align-items: center;
-	gap: var(--space-1);
+	gap: 6dp;
 }
 .so-choices--wrap
 {
@@ -80,26 +130,49 @@ body.system-options
 .so-choice
 {
 	display: block;
+	height: 26dp;
 	padding: 0 var(--space-3);
+	font-size: var(--font-sm);
+	line-height: 24dp;
 }
-.so-tiling-apply
+/* The legacy choices share their row evenly, Apply keeps its own width. */
+.so-legacy .so-choice
 {
-	margin-left: var(--space-2);
+	flex: 1 1 0;
+	min-width: 54dp;
+}
+.so-legacy .so-tiling-apply
+{
+	flex: 0 0 auto;
+	min-width: 70dp;
+}
+.so-choice.is-selected
+{
+	color: var(--accent);
+}
+/* The music's Change sits in the label column. */
+.so-legacy .so-music-change
+{
+	flex: 0 0 auto;
+	min-width: 0;
+	margin-right: var(--space-4);
 }
 .so-music-file
 {
 	display: block;
-	margin-left: var(--space-3);
+	flex: 1 1 auto;
 	color: var(--text);
 	font-size: var(--font-md);
 	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* The scale choices are short labels ("75%"), in a tighter button. */
 .so-choice--scale
 {
+	min-width: 48dp;
 	padding: 0 var(--space-2);
-	min-width: 52dp;
 }
 .so-auto-percent
 {
@@ -108,45 +181,88 @@ body.system-options
 }
 .so-choice--scale.is-selected .so-auto-percent
 {
-	color: var(--text);
+	color: var(--accent);
 }
 
 .so-interface
 {
 	display: block;
-	margin-top: var(--space-4);
-	padding-top: var(--space-3);
+	margin-top: var(--space-3);
+	padding-top: 10dp;
 	border-top-width: 1dp;
 	border-top-color: var(--border);
 }
+/* A section heading: small bold muted text, then a rule to the row's end.
+   Not uppercase: RmlUi's text-transform maps ASCII letters only, which
+   left "OBERFLäCHE". */
 .so-heading
 {
-	display: block;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	margin-bottom: var(--space-1);
-	color: var(--text);
-	font-size: var(--font-md);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
 	font-weight: bold;
 }
-.so-row--motion
+.so-heading__text
 {
-	min-height: 28dp;
+	display: block;
+	flex: 0 0 auto;
+	margin-right: var(--space-2);
 }
-.so-motion
+.so-heading__rule
 {
-	color: var(--text);
-	font-size: var(--font-md);
+	display: block;
+	flex: 1 1 auto;
+	height: 1dp;
+	background-color: var(--border);
 }
 
-/* Reduced effects: as reduced motion, with the note beside it while the
-   device draws no effects. */
-.so-row--effects
+/* The theme and the scale: the choices under their label, the four themes
+   sharing one row. */
+.so-row--theme, .so-row--scale
+{
+	flex-direction: column;
+	align-items: stretch;
+}
+.so-row--theme .so-label, .so-row--scale .so-label
+{
+	width: auto;
+	margin: 0 0 var(--space-1) 0;
+}
+.so-row--theme .so-choices
+{
+	flex-wrap: nowrap;
+}
+.so-row--theme .so-slot
+{
+	flex: 1 1 0;
+}
+.so-choice--theme
+{
+	width: 100%;
+	min-width: 0;
+	padding: 0 var(--space-1);
+}
+
+/* The toggles: their label in the label column, the switch after it. */
+.so-row--motion, .so-row--effects
 {
 	min-height: 28dp;
 }
-.so-effects
+.so-motion, .so-effects
 {
-	color: var(--text);
+	flex-direction: row-reverse;
+	justify-content: flex-end;
+	gap: 10dp;
+	color: var(--text-muted);
 	font-size: var(--font-md);
+}
+.so-motion .nui-toggle__label, .so-effects .nui-toggle__label
+{
+	display: block;
+	width: 108dp;
 }
 .so-note
 {
@@ -157,7 +273,7 @@ body.system-options
 	font-size: var(--font-sm);
 }
 
-/* The player colors: one row per color slot (20dp swatches, or the opacity
+/* The player colors: one row per color slot (22dp swatches, or the opacity
    choices), the accent's hue slider, the reset with its note, and the
    preview card. A swatch takes its color from the model through --swatch. */
 .so-colors
@@ -179,7 +295,7 @@ body.system-options
 	padding: 0;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-radius: 6dp;
 	background-color: var(--swatch);
 }
 .so-swatch:hover
@@ -190,6 +306,22 @@ body.system-options
 {
 	border-width: 2dp;
 	border-color: var(--text);
+}
+/* The overlay opacity (the tooltips' and hints' plate) stands apart, as the
+   design's row does: the accent's soft fill and edge. */
+.so-row--overlay
+{
+	margin-top: var(--space-2);
+	padding: 4dp 0 4dp 9dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 9dp;
+	background-color: var(--selection);
+}
+.so-row--overlay .so-label
+{
+	width: 98dp;
+	color: var(--text);
 }
 .so-row--hue
 {

@@ -22,6 +22,8 @@
       data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar pshop__titlebar">
 		<handle class="nui-window__handle pshop__handle" move_target="#document">
+			<span class="pshop__title-icon"><span class="nui-glyph nui-glyph--inventory"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 			<span class="nui-window__title pshop__title">@ui.PRIVATE_SHOP_TITLE</span>
 		</handle>
 		<button id="private-shop-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim pshop__close-x"
@@ -43,12 +45,12 @@
 				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 			</div>
 		</div>
-	</div>
-	<div class="nui-window__footer pshop__footer">
-		<button id="private-shop-ok" class="nui-button nui-button--primary nui-button--medium nui-anim pshop__ok"
-		        data-event-mousedown="ok_press(ev.button)">@ui.OK</button>
-		<button id="private-shop-close" class="nui-button nui-button--medium nui-anim pshop__close"
-		        data-event-mousedown="close_press(ev.button)">@ui.CLOSE</button>
+		<div class="pshop__footer">
+			<button id="private-shop-ok" class="nui-button nui-button--primary nui-button--medium nui-anim pshop__ok"
+			        data-event-mousedown="ok_press(ev.button)">@ui.OK</button>
+			<button id="private-shop-close" class="nui-button nui-button--medium nui-anim pshop__close"
+			        data-event-mousedown="close_press(ev.button)">@ui.CLOSE</button>
+		</div>
 	</div>
 </body>
 </rml>

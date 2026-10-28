@@ -1,17 +1,20 @@
-/* The exchange's modern look (P16 spec 5.1.2): two columns, the partner left
-   and the player right as legacy, each a lean grid on the 44dp pitch over a
-   money pill (the coin glyph) and a lamp (a 10dp circle, lit when that side
-   accepted); the accept button under the player's column; a 1dp rule
-   between the columns. The controller centers it at its first show and
-   keeps the place the player drags it to; the sheet's place frames it in
-   its snapshots. Classic (legacy's 282 x 167 board, the middle bar, the
-   parameter slot art under each amount, the lamps' art and the small
-   button): skins/classic/windows/exchange.rcss. */
+/* The exchange's modern look (P16 spec 5.1.2; the reviewed mockup WExchange):
+   two columns, the partner left and the player right as legacy, each a lean
+   grid on the 44dp pitch in raised wells over a money pill (the coin glyph,
+   the amount bold at its right) and a lamp (a ring in a 28dp well, its core
+   lit and glowing in the success color when that side accepted); the accept
+   button under the player's column; an accent-ended rule between the
+   columns; the trade emblem (two arrows) before the title. The controller
+   centers it at its first show and keeps the place the player drags it to;
+   the sheet's place frames it in its snapshots. Classic (legacy's 282 x 167
+   board, the middle bar, the parameter slot art under each amount, the
+   lamps' art and the small button): skins/classic/windows/exchange.rcss. */
 
 body.exchange
 {
 	left: 16dp;
 	top: 16dp;
+	width: 400dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -21,25 +24,86 @@ body.exchange
 	tab-index: none;
 	focus: none;
 }
+/* The title's emblem: an accent chip with two arrows passing each other. */
+.exchange__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.exchange__arrow
+{
+	display: block;
+	position: absolute;
+	width: 11dp;
+	height: 2dp;
+	background-color: var(--accent);
+}
+.exchange__arrow--out
+{
+	left: 4dp;
+	top: 6dp;
+}
+.exchange__arrow--in
+{
+	right: 4dp;
+	bottom: 6dp;
+}
+.exchange__arrow-head
+{
+	display: block;
+	position: absolute;
+	top: -2dp;
+	width: 0;
+	height: 0;
+}
+.exchange__arrow--out .exchange__arrow-head
+{
+	right: -3dp;
+	border-width: 3dp 0 3dp 4dp;
+	border-color: transparent transparent transparent var(--accent);
+}
+.exchange__arrow--in .exchange__arrow-head
+{
+	left: -3dp;
+	border-width: 3dp 4dp 3dp 0;
+	border-color: transparent var(--accent) transparent transparent;
+}
 .exchange__body
 {
 	display: flex;
 	flex-direction: row;
-	align-items: flex-start;
+	align-items: stretch;
 	gap: var(--space-3);
-	padding: var(--space-3);
+	padding: 10dp 12dp 12dp;
 }
 .exchange__side
 {
 	display: flex;
+	flex: 0 0 176dp;
 	flex-direction: column;
 	gap: var(--space-2);
+	min-width: 0;
+}
+/* The trade grids' wells: the raised fill under every resting cell (one
+   decorator for the grid, as the component's). */
+.exchange__grid
+{
+	decorator: nui-cells(40dp 4dp 7dp var(--surface-hover) var(--border) 1dp);
 }
 .exchange__divider
 {
-	align-self: stretch;
+	flex: 0 0 1dp;
 	width: 1dp;
-	background-color: var(--border);
+	decorator: linear-gradient(180deg, transparent 0%, var(--accent-glow) 15%, var(--border) 50%, var(--accent-glow) 85%, transparent 100%);
 }
 .exchange__row
 {
@@ -49,7 +113,7 @@ body.exchange
 	gap: var(--space-2);
 	height: 28dp;
 }
-/* The amount: legacy's dotted text, right-aligned in a sunken pill; the
+/* The amount: legacy's dotted text, bold at the right of a sunken pill; the
    player's is a button that opens the money input. */
 .exchange__money
 {
@@ -59,11 +123,11 @@ body.exchange
 	flex: 1 1 auto;
 	box-sizing: border-box;
 	height: 28dp;
-	padding: 0 var(--space-2);
+	padding: 0 9dp;
 	background-color: var(--surface-sunken);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-radius: 7dp;
 }
 .exchange__money--owner:hover
 {
@@ -77,24 +141,60 @@ body.exchange
 {
 	flex: 1 1 auto;
 	color: var(--text);
-	font-size: var(--font-sm);
+	font-size: var(--font-md);
+	font-weight: bold;
 	text-align: right;
 	white-space: nowrap;
 	pointer-events: none;
 }
-/* The lamp: off muted, on the success color; a state, no motion. */
+/* The lamp: a ring in a sunken well, its core muted, or the success color
+   with a static glow while that side accepted; a state, no motion. */
 .exchange__light
 {
 	display: block;
+	position: relative;
 	flex: 0 0 auto;
-	width: 10dp;
-	height: 10dp;
-	border-radius: 5dp;
-	background-color: var(--text-muted);
+	box-sizing: border-box;
+	width: 28dp;
+	height: 28dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
 }
-.exchange__light.is-on
+.exchange__light-ring
+{
+	display: block;
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	box-sizing: border-box;
+	width: 18dp;
+	height: 18dp;
+	border-width: 1dp;
+	border-color: var(--surface-hover);
+	border-radius: 9dp;
+	pointer-events: none;
+}
+.exchange__light-core
+{
+	display: block;
+	position: absolute;
+	left: 7dp;
+	top: 7dp;
+	width: 12dp;
+	height: 12dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+	pointer-events: none;
+}
+.exchange__light.is-on .exchange__light-core
 {
 	background-color: var(--success);
+}
+.is-on > .exchange__light-core.nui-fx
+{
+	box-shadow: 0 0 10dp 2dp var(--success);
 }
 /* The accept button under the player's column, at its right. */
 .exchange__row--accept
@@ -104,4 +204,5 @@ body.exchange
 .exchange__accept
 {
 	flex: 0 0 auto;
+	min-width: 92dp;
 }

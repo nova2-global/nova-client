@@ -1,7 +1,8 @@
 import uiScriptLocale
 import item
 
-EQUIPMENT_START_INDEX = 90
+# The equipment cells start at the body's, wear 0 (225 since the foundation cut, 90 before).
+EQUIPMENT_START_INDEX = item.EQUIPMENT_BODY
 
 window = {
 	"name" : "InventoryWindow",
@@ -57,8 +58,7 @@ window = {
 					"x" : 10,
 					"y" : 33,
 
-					# "image" : "d:/ymir work/ui/equipment_bg_with_ring.tga",
-					"image" : "d:/ymir work/ui/equipment_bg_without_ring.tga",
+					"image" : "d:/ymir work/ui/equipment_bg_with_ring.tga",
 
 					"children" :
 					(
@@ -85,11 +85,10 @@ window = {
 										{"index":EQUIPMENT_START_INDEX+8, "x":75, "y":145, "width":32, "height":32},
 										{"index":EQUIPMENT_START_INDEX+9, "x":114, "y":2, "width":32, "height":32},
 										{"index":EQUIPMENT_START_INDEX+10, "x":75, "y":35, "width":32, "height":32},
-										## »ő ąÝÁö1
-										# {"index":item.EQUIPMENT_RING1, "x":2, "y":106, "width":32, "height":32},
-										## »ő ąÝÁö2
-										# {"index":item.EQUIPMENT_RING2, "x":75, "y":106, "width":32, "height":32},
-										## »ő ş§Ć®
+										## OLD's rings and belt (wear 28-30; OLD uiscript/newinventorywindow.py:118-121). OLD also shows
+										## the costume sash (wear 21) here; the sash is not ported, so its slot stays hidden.
+										{"index":item.EQUIPMENT_RING1, "x":2, "y":106, "width":32, "height":32},
+										{"index":item.EQUIPMENT_RING2, "x":75, "y":106, "width":32, "height":32},
 										{"index":item.EQUIPMENT_BELT, "x":39, "y":106, "width":32, "height":32},
 									),
 						},
@@ -191,16 +190,18 @@ window = {
 					),
 				},
 
+				## One tab per inventory page, five as OLD (OLD uiscript/newinventorywindow.py:216-359);
+				## OLD's NewUI tab art is not in NEW's assets, so the five use NEW's small tabs.
 				{
 					"name" : "Inventory_Tab_01",
 					"type" : "radio_button",
 
-					"x" : 10,
+					"x" : 8 + 32 * 0,
 					"y" : 33 + 191,
 
-					"default_image" : "d:/ymir work/ui/game/windows/tab_button_large_01.sub",
-					"over_image" : "d:/ymir work/ui/game/windows/tab_button_large_02.sub",
-					"down_image" : "d:/ymir work/ui/game/windows/tab_button_large_03.sub",
+					"default_image" : "d:/ymir work/ui/game/windows/tab_button_small_01.sub",
+					"over_image" : "d:/ymir work/ui/game/windows/tab_button_small_02.sub",
+					"down_image" : "d:/ymir work/ui/game/windows/tab_button_small_03.sub",
 					"tooltip_text" : uiScriptLocale.INVENTORY_PAGE_BUTTON_TOOLTIP_1,
 
 					"children" :
@@ -222,12 +223,12 @@ window = {
 					"name" : "Inventory_Tab_02",
 					"type" : "radio_button",
 
-					"x" : 10 + 78,
+					"x" : 8 + 32 * 1,
 					"y" : 33 + 191,
 
-					"default_image" : "d:/ymir work/ui/game/windows/tab_button_large_01.sub",
-					"over_image" : "d:/ymir work/ui/game/windows/tab_button_large_02.sub",
-					"down_image" : "d:/ymir work/ui/game/windows/tab_button_large_03.sub",
+					"default_image" : "d:/ymir work/ui/game/windows/tab_button_small_01.sub",
+					"over_image" : "d:/ymir work/ui/game/windows/tab_button_small_02.sub",
+					"down_image" : "d:/ymir work/ui/game/windows/tab_button_small_03.sub",
 					"tooltip_text" : uiScriptLocale.INVENTORY_PAGE_BUTTON_TOOLTIP_2,
 
 					"children" :
@@ -242,6 +243,87 @@ window = {
 							"all_align" : "center",
 
 							"text" : "II",
+						},
+					),
+				},
+				{
+					"name" : "Inventory_Tab_03",
+					"type" : "radio_button",
+
+					"x" : 8 + 32 * 2,
+					"y" : 33 + 191,
+
+					"default_image" : "d:/ymir work/ui/game/windows/tab_button_small_01.sub",
+					"over_image" : "d:/ymir work/ui/game/windows/tab_button_small_02.sub",
+					"down_image" : "d:/ymir work/ui/game/windows/tab_button_small_03.sub",
+					"tooltip_text" : uiScriptLocale.INVENTORY_PAGE_BUTTON_TOOLTIP_3,
+
+					"children" :
+					(
+						{
+							"name" : "Inventory_Tab_03_Print",
+							"type" : "text",
+
+							"x" : 0,
+							"y" : 0,
+
+							"all_align" : "center",
+
+							"text" : "III",
+						},
+					),
+				},
+				{
+					"name" : "Inventory_Tab_04",
+					"type" : "radio_button",
+
+					"x" : 8 + 32 * 3,
+					"y" : 33 + 191,
+
+					"default_image" : "d:/ymir work/ui/game/windows/tab_button_small_01.sub",
+					"over_image" : "d:/ymir work/ui/game/windows/tab_button_small_02.sub",
+					"down_image" : "d:/ymir work/ui/game/windows/tab_button_small_03.sub",
+					"tooltip_text" : uiScriptLocale.INVENTORY_PAGE_BUTTON_TOOLTIP_4,
+
+					"children" :
+					(
+						{
+							"name" : "Inventory_Tab_04_Print",
+							"type" : "text",
+
+							"x" : 0,
+							"y" : 0,
+
+							"all_align" : "center",
+
+							"text" : "IV",
+						},
+					),
+				},
+				{
+					"name" : "Inventory_Tab_05",
+					"type" : "radio_button",
+
+					"x" : 8 + 32 * 4,
+					"y" : 33 + 191,
+
+					"default_image" : "d:/ymir work/ui/game/windows/tab_button_small_01.sub",
+					"over_image" : "d:/ymir work/ui/game/windows/tab_button_small_02.sub",
+					"down_image" : "d:/ymir work/ui/game/windows/tab_button_small_03.sub",
+					"tooltip_text" : uiScriptLocale.INVENTORY_PAGE_BUTTON_TOOLTIP_5,
+
+					"children" :
+					(
+						{
+							"name" : "Inventory_Tab_05_Print",
+							"type" : "text",
+
+							"x" : 0,
+							"y" : 0,
+
+							"all_align" : "center",
+
+							"text" : "V",
 						},
 					),
 				},

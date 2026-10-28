@@ -2241,3 +2241,1351 @@
 90011	Tronc	Matériel de construction pour les bâtiments de Guilde
 90012	Contreplaqué	Matériel de construction pour les bâtiments de Guilde
 90013		
+300	Lame du zodiaque+0	
+301	Lame du zodiaque+1	
+302	Lame du zodiaque+2	
+303	Lame du zodiaque+3	
+304	Lame du zodiaque+4	
+305	Lame du zodiaque+5	
+306	Lame du zodiaque+6	
+307	Lame du zodiaque+7	
+308	Lame du zodiaque+8	
+309	Lame du zodiaque+9	
+310	Épée du zodiaque+0	
+311	Épée du zodiaque+1	
+312	Épée du zodiaque+2	
+313	Épée du zodiaque+3	
+314	Épée du zodiaque+4	
+315	Épée du zodiaque+5	
+316	Épée du zodiaque+6	
+317	Épée du zodiaque+7	
+318	Épée du zodiaque+8	
+319	Épée du zodiaque+9	
+1180	Dague du zodiaque+0	
+1181	Dague du zodiaque+1	
+1182	Dague du zodiaque+2	
+1183	Dague du zodiaque+3	
+1184	Dague du zodiaque+4	
+1185	Dague du zodiaque+5	
+1186	Dague du zodiaque+6	
+1187	Dague du zodiaque+7	
+1188	Dague du zodiaque+8	
+1189	Dague du zodiaque+9	
+2200	Arc du zodiaque+0	
+2201	Arc du zodiaque+1	
+2202	Arc du zodiaque+2	
+2203	Arc du zodiaque+3	
+2204	Arc du zodiaque+4	
+2205	Arc du zodiaque+5	
+2206	Arc du zodiaque+6	
+2207	Arc du zodiaque+7	
+2208	Arc du zodiaque+8	
+2209	Arc du zodiaque+9	
+3220	Glaive du zodiaque+0	
+3221	Glaive du zodiaque+1	
+3222	Glaive du zodiaque+2	
+3223	Glaive du zodiaque+3	
+3224	Glaive du zodiaque+4	
+3225	Glaive du zodiaque+5	
+3226	Glaive du zodiaque+6	
+3227	Glaive du zodiaque+7	
+3228	Glaive du zodiaque+8	
+3229	Glaive du zodiaque+9	
+5160	Cloche du zodiaque+0	
+5161	Cloche du zodiaque+1	
+5162	Cloche du zodiaque+2	
+5163	Cloche du zodiaque+3	
+5164	Cloche du zodiaque+4	
+5165	Cloche du zodiaque+5	
+5166	Cloche du zodiaque+6	
+5167	Cloche du zodiaque+7	
+5168	Cloche du zodiaque+8	
+5169	Cloche du zodiaque+9	
+6120	Griffe du zodiaque+0	
+6121	Griffe du zodiaque+1	
+6122	Griffe du zodiaque+2	
+6123	Griffe du zodiaque+3	
+6124	Griffe du zodiaque+4	
+6125	Griffe du zodiaque+5	
+6126	Griffe du zodiaque+6	
+6127	Griffe du zodiaque+7	
+6128	Griffe du zodiaque+8	
+6129	Griffe du zodiaque+9	
+7300	Éventail du zodiaque+0	
+7301	Éventail du zodiaque+1	
+7302	Éventail du zodiaque+2	
+7303	Éventail du zodiaque+3	
+7304	Éventail du zodiaque+4	
+7305	Éventail du zodiaque+5	
+7306	Éventail du zodiaque+6	
+7307	Éventail du zodiaque+7	
+7308	Éventail du zodiaque+8	
+7309	Éventail du zodiaque+9	
+9506	Épée+3	
+9507	Dague+3	
+9508	Éventail+3	
+9509	Flambeau d'acier+3	
+9600	Talisman du feu+0	
+9601	Talisman du feu+1	
+9602	Talisman du feu+2	
+9603	Talisman du feu+3	
+9604	Talisman du feu+4	
+9605	Talisman du feu+5	
+9606	Talisman du feu+6	
+9607	Talisman du feu+7	
+9608	Talisman du feu+8	
+9609	Talisman du feu+9	
+9610	Talisman du feu+10	
+9611	Talisman du feu+11	
+9612	Talisman du feu+12	
+9613	Talisman du feu+13	
+9614	Talisman du feu+14	
+9615	Talisman du feu+15	
+9616	Talisman du feu+16	
+9617	Talisman du feu+17	
+9618	Talisman du feu+18	
+9619	Talisman du feu+19	
+12690	Casque d'acier-dragon +0	
+12691	Casque d'acier-dragon +1	
+12692	Casque d'acier-dragon +2	
+12693	Casque d'acier-dragon +3	
+12694	Casque d'acier-dragon +4	
+12695	Casque d'acier-dragon +5	
+12696	Casque d'acier-dragon +6	
+12697	Casque d'acier-dragon +7	
+12698	Casque d'acier-dragon +8	
+12699	Casque d'acier-dragon +9	
+12700	Capuche de dragon +0	
+12701	Capuche de dragon +1	
+12702	Capuche de dragon +2	
+12703	Capuche de dragon +3	
+12704	Capuche de dragon +4	
+12705	Capuche de dragon +5	
+12706	Capuche de dragon +6	
+12707	Capuche de dragon +7	
+12708	Capuche de dragon +8	
+12709	Capuche de dragon +9	
+12710	Casque-dragon blindé +0	
+12711	Casque-dragon blindé +1	
+12712	Casque-dragon blindé +2	
+12713	Casque-dragon blindé +3	
+12714	Casque-dragon blindé +4	
+12715	Casque-dragon blindé +5	
+12716	Casque-dragon blindé +6	
+12717	Casque-dragon blindé +7	
+12718	Casque-dragon blindé +8	
+12719	Casque-dragon blindé +9	
+12720	Coiffe de dragon +0	
+12721	Coiffe de dragon +1	
+12722	Coiffe de dragon +2	
+12723	Coiffe de dragon +3	
+12724	Coiffe de dragon +4	
+12725	Coiffe de dragon +5	
+12726	Coiffe de dragon +6	
+12727	Coiffe de dragon +7	
+12728	Coiffe de dragon +8	
+12729	Coiffe de dragon +9	
+15440	Chaussures de feu +0	
+15441	Chaussures de feu +1	
+15442	Chaussures de feu +2	
+15443	Chaussures de feu +3	
+15444	Chaussures de feu +4	
+15445	Chaussures de feu +5	
+15446	Chaussures de feu +6	
+15447	Chaussures de feu +7	
+15448	Chaussures de feu +8	
+15449	Chaussures de feu +9	
+15450	Chaussures d'océan +0	
+15451	Chaussures d'océan +1	
+15452	Chaussures d'océan +2	
+15453	Chaussures d'océan +3	
+15454	Chaussures d'océan +4	
+15455	Chaussures d'océan +5	
+15456	Chaussures d'océan +6	
+15457	Chaussures d'océan +7	
+15458	Chaussures d'océan +8	
+15459	Chaussures d'océan +9	
+19000	Pierre à flammes rouges	Renforce les bonus de votre ceinture.
+19290	Armure du zodiaque+0	
+19291	Armure du zodiaque+1	
+19292	Armure du zodiaque+2	
+19293	Armure du zodiaque+3	
+19294	Armure du zodiaque+4	
+19295	Armure du zodiaque+5	
+19296	Armure du zodiaque+6	
+19297	Armure du zodiaque+7	
+19298	Armure du zodiaque+8	
+19299	Armure du zodiaque+9	
+19490	Costume du zodiaque+0	
+19491	Costume du zodiaque+1	
+19492	Costume du zodiaque+2	
+19493	Costume du zodiaque+3	
+19494	Costume du zodiaque+4	
+19495	Costume du zodiaque+5	
+19496	Costume du zodiaque+6	
+19497	Costume du zodiaque+7	
+19498	Costume du zodiaque+8	
+19499	Costume du zodiaque+9	
+19690	Harnois du zodiaque+0	
+19691	Harnois du zodiaque+1	
+19692	Harnois du zodiaque+2	
+19693	Harnois du zodiaque+3	
+19694	Harnois du zodiaque+4	
+19695	Harnois du zodiaque+5	
+19696	Harnois du zodiaque+6	
+19697	Harnois du zodiaque+7	
+19698	Harnois du zodiaque+8	
+19699	Harnois du zodiaque+9	
+19890	Vêtement du zodiaque+0	
+19891	Vêtement du zodiaque+1	
+19892	Vêtement du zodiaque+2	
+19893	Vêtement du zodiaque+3	
+19894	Vêtement du zodiaque+4	
+19895	Vêtement du zodiaque+5	
+19896	Vêtement du zodiaque+6	
+19897	Vêtement du zodiaque+7	
+19898	Vêtement du zodiaque+8	
+19899	Vêtement du zodiaque+9	
+20760	Armure d'aurore +0	
+20761	Armure d'aurore +1	
+20762	Armure d'aurore +2	
+20763	Armure d'aurore +3	
+20764	Armure d'aurore +4	
+20765	Armure d'aurore +5	
+20766	Armure d'aurore +6	
+20767	Armure d'aurore +7	
+20768	Armure d'aurore +8	
+20769	Armure d'aurore +9	
+20770	Costume d'embuscade +0	
+20771	Costume d'embuscade +1	
+20772	Costume d'embuscade +2	
+20773	Costume d'embuscade +3	
+20774	Costume d'embuscade +4	
+20775	Costume d'embuscade +5	
+20776	Costume d'embuscade +6	
+20777	Costume d'embuscade +7	
+20778	Costume d'embuscade +8	
+20779	Costume d'embuscade +9	
+20780	Armure griffe de démon+0	
+20781	Armure griffe de démon+1	
+20782	Armure griffe de démon+2	
+20783	Armure griffe de démon+3	
+20784	Armure griffe de démon+4	
+20785	Armure griffe de démon+0	
+20786	Armure griffe de démon+6	
+20787	Armure griffe de démon+7	
+20788	Armure griffe de démon+8	
+20789	Armure griffe de démon+9	
+20790	Vêtement de la foi +0	
+20791	Vêtement de la foi +1	
+20792	Vêtement de la foi +2	
+20793	Vêtement de la foi +3	
+20794	Vêtement de la foi +4	
+20795	Vêtement de la foi +5	
+20796	Vêtement de la foi +6	
+20797	Vêtement de la foi +7	
+20798	Vêtement de la foi +8	
+20799	Vêtement de la foi +9	
+20800	Armu. guer. de l'omb. +0	
+20801	Armu. guer. de l'omb. +1	
+20802	Armu. guer. de l'omb. +2	
+20803	Armu. guer. de l'omb. +3	
+20804	Armu. guer. de l'omb. +4	
+20805	Armu. guer. de l'omb. +5	
+20806	Armu. guer. de l'omb. +6	
+20807	Armu. guer. de l'omb. +7	
+20808	Armu. guer. de l'omb. +8	
+20809	Armu. guer. de l'omb. +9	
+20810	Armure de magma +0	
+20811	Armure de magma +1	
+20812	Armure de magma +2	
+20813	Armure de magma +3	
+20814	Armure de magma +4	
+20815	Armure de magma +5	
+20816	Armure de magma +6	
+20817	Armure de magma +7	
+20818	Armure de magma +8	
+20819	Armure de magma +9	
+20820	Costume de lune rouge +0	
+20821	Costume de lune rouge +1	
+20822	Costume de lune rouge +2	
+20823	Costume de lune rouge +3	
+20824	Costume de lune rouge +4	
+20825	Costume de lune rouge +5	
+20826	Costume de lune rouge +6	
+20827	Costume de lune rouge +7	
+20828	Costume de lune rouge +8	
+20829	Costume de lune rouge +9	
+20830	Armure infernale +0	
+20831	Armure infernale +1	
+20832	Armure infernale +2	
+20833	Armure infernale +3	
+20834	Armure infernale +4	
+20835	Armure infernale +5	
+20836	Armure infernale +6	
+20837	Armure infernale +7	
+20838	Armure infernale +8	
+20839	Armure infernale +9	
+20840	Vêtement du feu +0	
+20841	Vêtement du feu +1	
+20842	Vêtement du feu +2	
+20843	Vêtement du feu +3	
+20844	Vêtement du feu +4	
+20845	Vêtement du feu +5	
+20846	Vêtement du feu +6	
+20847	Vêtement du feu +7	
+20848	Vêtement du feu +8	
+20849	Vêtement du feu +9	
+20850	Armure d'agate +0	
+20851	Armure d'agate +1	
+20852	Armure d'agate +2	
+20853	Armure d'agate +3	
+20854	Armure d'agate +4	
+20855	Armure d'agate +5	
+20856	Armure d'agate +6	
+20857	Armure d'agate +7	
+20858	Armure d'agate +8	
+20859	Armure d'agate +9	
+20860	Armure os de baleine +0	
+20861	Armure os de baleine +1	
+20862	Armure os de baleine +2	
+20863	Armure os de baleine +3	
+20864	Armure os de baleine +4	
+20865	Armure os de baleine +5	
+20866	Armure os de baleine +6	
+20867	Armure os de baleine +7	
+20868	Armure os de baleine +8	
+20869	Armure os de baleine +9	
+20870	Vêtement métamorphe +0	
+20871	Vêtement métamorphe +1	
+20872	Vêtement métamorphe +2	
+20873	Vêtement métamorphe +3	
+20874	Vêtement métamorphe +4	
+20875	Vêtement métamorphe +5	
+20876	Vêtement métamorphe +6	
+20877	Vêtement métamorphe +7	
+20878	Vêtement métamorphe +8	
+20879	Vêtement métamorphe +9	
+20880	Armure de feu follet +0	
+20881	Armure de feu follet +1	
+20882	Armure de feu follet +2	
+20883	Armure de feu follet +3	
+20884	Armure de feu follet +4	
+20885	Armure de feu follet +5	
+20886	Armure de feu follet +6	
+20887	Armure de feu follet +7	
+20888	Armure de feu follet +8	
+20889	Armure de feu follet +9	
+20890	Vêtement d'harmonie +0	
+20891	Vêtement d'harmonie +1	
+20892	Vêtement d'harmonie +2	
+20893	Vêtement d'harmonie +3	
+20894	Vêtement d'harmonie +4	
+20895	Vêtement d'harmonie +5	
+20896	Vêtement d'harmonie +6	
+20897	Vêtement d'harmonie +7	
+20898	Vêtement d'harmonie +8	
+20899	Vêtement d'harmonie +9	
+20900	Armure pierre de lune +0	
+20901	Armure pierre de lune +1	
+20902	Armure pierre de lune +2	
+20903	Armure pierre de lune +3	
+20904	Armure pierre de lune +4	
+20905	Armure pierre de lune +5	
+20906	Armure pierre de lune +6	
+20907	Armure pierre de lune +7	
+20908	Armure pierre de lune +8	
+20909	Armure pierre de lune +9	
+20910	Armu. pluie de cendr. +0	
+20911	Armu. pluie de cendr. +1	
+20912	Armu. pluie de cendr. +2	
+20913	Armu. pluie de cendr. +3	
+20914	Armu. pluie de cendr. +4	
+20915	Armu. pluie de cendr. +5	
+20916	Armu. pluie de cendr. +6	
+20917	Armu. pluie de cendr. +7	
+20918	Armu. pluie de cendr. +8	
+20919	Armu. pluie de cendr. +9	
+20920	Pyjama mortel +0	
+20921	Pyjama mortel +1	
+20922	Pyjama mortel +2	
+20923	Pyjama mortel +3	
+20924	Pyjama mortel +4	
+20925	Pyjama mortel +5	
+20926	Pyjama mortel +6	
+20927	Pyjama mortel +7	
+20928	Pyjama mortel +8	
+20929	Pyjama mortel +9	
+20930	Armure du feu noir +0	
+20931	Armure du feu noir +1	
+20932	Armure du feu noir +2	
+20933	Armure du feu noir +3	
+20934	Armure du feu noir +4	
+20935	Armure du feu noir +5	
+20936	Armure du feu noir +6	
+20937	Armure du feu noir +7	
+20938	Armure du feu noir +8	
+20939	Armure du feu noir +9	
+20940	Vêtement de lune +0	
+20941	Vêtement de lune +1	
+20942	Vêtement de lune +2	
+20943	Vêtement de lune +3	
+20944	Vêtement de lune +4	
+20945	Vêtement de lune +5	
+20946	Vêtement de lune +6	
+20947	Vêtement de lune +7	
+20948	Vêtement de lune +8	
+20949	Vêtement de lune +9	
+20950	Armure d'onyx +0	
+20951	Armure d'onyx +1	
+20952	Armure d'onyx +2	
+20953	Armure d'onyx +3	
+20954	Armure d'onyx +4	
+20955	Armure d'onyx +5	
+20956	Armure d'onyx +6	
+20957	Armure d'onyx +7	
+20958	Armure d'onyx +8	
+20959	Armure d'onyx +9	
+21200	Cuirasse du zodiaque+0	
+21201	Cuirasse du zodiaque+1	
+21202	Cuirasse du zodiaque+2	
+21203	Cuirasse du zodiaque+3	
+21204	Cuirasse du zodiaque+4	
+21205	Cuirasse du zodiaque+5	
+21206	Cuirasse du zodiaque+6	
+21207	Cuirasse du zodiaque+7	
+21208	Cuirasse du zodiaque+8	
+21209	Cuirasse du zodiaque+9	
+21550	Casque-dragon à corne +0	
+21551	Casque-dragon à corne +1	
+21552	Casque-dragon à corne +2	
+21553	Casque-dragon à corne +3	
+21554	Casque-dragon à corne +4	
+21555	Casque-dragon à corne +5	
+21556	Casque-dragon à corne +6	
+21557	Casque-dragon à corne +7	
+21558	Casque-dragon à corne +8	
+21559	Casque-dragon à corne +9	
+21991		
+21992		
+21993		
+25043	Pierre magique	Cette pierre assure les meilleurs chances d'améliorer un objet. De plus, l'objet ne pourra être ni abîmé ni détruit. Cet objet n'est pas échangeable.
+25099	Parchemin magique de pierre	d'esprit Un parchemin magique utilisé pour extraire une pierre de votre choix de votre équipement.
+27125	Potion de bataille	Une potion puissante qui augmente vos points d'attaque et de défense et vous octroie +50 000 points de vie (réservée à la Zone de combat).
+28044	Pierre anti-magie+0	
+28045	Pierre anti-magie+0	
+28144	Pierre anti-magie+1	
+28145	Pierre anti-magie+1	
+28244	Pierre anti-magie+2	
+28245	Pierre anti-magie+2	
+28344	Pierre anti-magie+3	
+28345	Pierre anti-magie+3	
+28444	Pierre anti-magie+4	
+28445	Pierre anti-magie+4	
+30331	Clé gelée	La clé est froide comme la glace et permet d'ouvrir l'entrée du troisième étage de l'Observatoire de Nemere. Seuls les Chamanes peuvent l'utiliser.
+30332	Étoile du Nord	Une pierre de sigil taillée dans la glace. Elle ouvre l'entrée du sixième étage de l'Observatoire de Nemere.
+30333	Clé du Cristal de glace	Cette Clé de glace ouvre l'entrée du neuvième étage de l'Observatoire de Nemere.
+30334	Bon pour couvre-chef	Un clic droit sur le bon permet d'obtenir un couvre-chef qui vous fera de belles frayeurs.
+30338	Bon pour couvre-chef+	Un clic droit sur le bon permet d'obtenir un couvre-chef qui vous fera de belles frayeurs. Vous confère au moins un bonus déterminé au hasard.
+30341	Anneau de feu du dragon	Une aura pleine d'énergie vous entoure. Cet anneau forgé dans le feu du dragon détruira facilement les statues dans le Repaire de Meley.
+30600	Patron	
+30601	Plan d'armure	
+30602	Teinture bleue	
+30603	Teinture rouge	
+30604	Teinture grise	
+30605	Plates d'or	
+30606	Plates d'argent	
+30607	Plates de cuivre	
+30608	Plates d'acier	
+30609	Plates de bronze	
+30610	Mithril	
+30611	Sangles massives	
+30612	Cordons solides	
+30613	Pierre des Dryades	Cette étrange pierre qui brille d'un éclat vert recèle l'âme d'une Dryade, un esprit des arbres. La Dryade connaît les mots secrets qui vous permettront d'atteindre l'Érèbe.
+30614	Teinture noire	
+30615	Teinture blanche	
+30616	Dioxyde de titane	Le cristal prismatique sert au raffinage d'un objet d'équipement.
+30617	Agate	La gemme précieuse aux éclats mystérieux sert au raffinage d'un objet d'équipement.
+30618	Pierre de lune	La gemme en forme de goutte renferme un éclat de lune. L'objet sert au raffinage d'un objet d'équipement.
+30619	Teinture or métallisé	
+30620	Corne de dragon rouge	Les cornes de dragon sont constituées de l'un des matériaux les plus résistants.
+30621	Écaille de dragon rouge	Les écailles de dragon comptent parmi les matériaux les plus résistants.
+30622	Plan d'armure : casque	Cet objet est utilisé pour fabriquer des casques.
+30623	Livre de la vérité	Ce puissant volume porte des inscriptions qui semblent scintiller. L'objet sert au raffinage d'un objet d'équipement.
+30624	Âme de la vérité	Cette bonne âme est enfermée pour l'éternité dans une boule de cristal. L'objet sert au raffinage d'un objet d'équipement.
+30625	Padparadscha	On nomme padparadscha les saphirs rouges rares et extrêmement précieux. L'objet sert au raffinage d'un objet d'équipement.
+30626	Kyanite	Cette pierre précieuse bleutée a été obtenue dans les mines du Mont Sohan. L'objet sert au raffinage d'un objet d'équipement.
+30627	Fruit des dieux	Voici un fruit sucré du jardin du dieu dragon. L'objet sert au raffinage d'un objet d'équipement.
+30628	Fleur divine	Voici une fleur sacrée du jardin du dieu dragon. L'objet sert au raffinage d'un objet d'équipement.
+30629	Élixir des dieux	Cette bouteille contient un liquide brillant mystérieusement. L'objet sert au raffinage d'un objet d'équipement.
+30630	Ailes de dragon	Les ailes d'un dragon altera permettent de raffiner un objet d'équipement.
+30639	Fragment énigmatique	Avec les fragments, concevez des plans du magasin de Yutnori. Pour ce faire, ouvrez la fenêtre de raffinage en faisant glisser un plateau de Yutnori sur la table.
+30640	Plan Halloween (h)	Plan servant à fabriquer une caisse d'Halloween (h)
+30641	Plan chapeau Halloween h	Plan servant à fabriquer une caisse de chapeau d'Halloween (h)
+30642	Plan familier épouvante	Plan servant à fabriquer une caisse de familier d'épouvante
+30643	Plan monture d'épouvante	Plan servant à fabriquer une caisse de monture d'épouvante
+30644	Plan à bijoux	Plan servant à fabriquer une boîte à bijoux
+30645	Plan de familier	Plan servant à fabriquer une caisse de familier
+30646	Plan d'étoles	Plan servant à fabriquer une boîte à étoles
+30647	Plan d'ornement	Plan servant à fabriquer une caisse d'ornements
+30648	Plan livre de familier	Plan servant à fabriquer une boîte à livre de familier
+30649	Plan cranté+	Plan servant à fabriquer une caisse crantée+
+30650	Plan Cor Draconis	Plan servant à fabriquer une caisse Cor Draconis
+30651	Plan Gaya	Plan servant à fabriquer une caisse Gaya
+30652	Plan mystères	Plan servant à fabriquer une caisse aux mystères
+30653	Plan de caisse rubis	Plan servant à fabriquer une caisse rubis
+30654	Plan Halloween (f)	Plan servant à fabriquer une caisse d'Halloween (f)
+30655	Plan chapeau Halloween f	Plan servant à fabriquer une caisse de chapeau d'Halloween (f)
+34000	Explosion solaire	rare de souffle solaire utilisé pour améliorer votre équipement, cet objet est très apprécié.
+34001	L'orbe magique	est une pierre précieuse utilisée pour améliorer votre équipement.
+34002	Corne de Feu	appartient à l'origine à Razador, ce matériau est utilisé pour fabriquer ou améliorer votre équipement.
+34003	Corne de glace	appartient à l'origine à Nemeres, ce matériau est utilisé pour fabriquer ou améliorer votre équipement.
+34004	Amulette rouge	Une amulette charmante et chère. Utilisé principalement pour la mise à niveau.
+34005	Amulette verte	Une amulette charmante et chère. Utilisé principalement pour la mise à niveau.
+34006	Amulette bleue	Une amulette charmante et chère. Utilisé principalement pour la mise à niveau.
+34007	Rocher des ténèbres	Un rocher très précieux contenant des pouvoirs d'obscurité.
+34008	Rocher de sang	Un rocher très précieux qui contient de puissantes capacités.
+34009	Rocher de poison	Un rocher très précieux contenant des pouvoirs toxiques.
+34010	Marbre empoisonné	Matériau toxique utilisé pour rendre votre équipement plus durable.
+34011	Rocher Rouge	Une roche très précieuse utilisée pour valoriser votre équipement.
+34012	Pierre azur	Une pierre spéciale qui est utilisée uniquement pour la mise à niveau des équipements azur.
+34013	Flacon arc-en-ciel	Contenant un puissant liquide arc-en-ciel. C'est un matériau de mise à niveau.
+34014	Éclats de cristal rouge	Un morceau de cristal utilisé pour se combiner avec d'autres cristaux.
+34015	Éclats de cristal vert	Un morceau de cristal utilisé pour se combiner avec d'autres cristaux.
+34016	Éclats de cristal bleu	Un morceau de cristal utilisé pour se combiner avec d'autres cristaux.
+34017	Fragment multi-cristal	Un bijou utilisé pour améliorer vos objets.
+34018	Gemme Duratus	Utilisé comme élément de mise à niveau, il peut être supprimé par Duratus.
+34019	Gemme de peur	Utilisé comme élément de mise à niveau, il peut être supprimé par le Dragon de peur.
+34020	Gemme de trésor	Utilisé comme objet d'amélioration, il peut être déposé depuis la pierre de trésor.
+34021	UPP1	Pierre spéciale utilisée pour améliorer votre équipement.
+34022	UPP2	Pierre spéciale utilisée pour améliorer votre équipement.
+34023	Plume d'aile rouge	Un morceau de plume utilisé pour la fabrication des ailes.
+34024	Plume d'aile verte	Un morceau de plume utilisé pour la fabrication des ailes.
+34025	Plume d'aile bleue	Un morceau de plume utilisé pour la fabrication des ailes.
+34026	Ensemble de plumes d'aile	Un morceau de plume utilisé pour la fabrication des ailes.
+34027	Âme de dragon tout-puissant	utilisé pour catégoriser votre équipement.
+34028	Âme Duratus	utilisé pour classer votre équipement.
+34029	Âme de peur	utilisé pour classer votre équipement.
+34030	Âme au trésor	utilisé pour classer votre équipement.
+34031	Âme d'Halloween	utilisé pour classer votre équipement.
+34032	Pierre sculptée en or Pierre	ancienne avec des pouvoirs merveilleux, utilisée pour de nombreux objets utiles.
+34033	Jeton de pierre d'arme	requis par Jeon Seon pour améliorer vos pierres d'esprit d'armes.
+34034	Jeton de pierre d'armure	requis par Jeon Seon pour améliorer vos pierres d'esprit corporel.
+34035	Tourbillon du portail Mazel	qui ouvre le portail vers le boss Mazel.
+34036	Gemme de bataille Gemme puissante	utilisée pour améliorer vos équipements.
+34037	Cube de charme rouge	Cube rouge spécial utilisé pour la mise à niveau de vos équipements.
+34038	Cube de charme vert	Cube vert spécial utilisé pour la mise à niveau de vos équipements.
+34039	Cube de charme bleu	Cube bleu spécial utilisé pour la mise à niveau de vos équipements.
+34040	Coeur de Mazel	Le cœur du Mazel Boss, la clé de la super force.
+34041	Orbe de combat	Utilisé pour améliorer votre équipement qui vous octroie des super pouvoirs pour la bataille.
+34042	Multi Cube	Ce magnifique cube est formé par les forces de cubes formant une incroyable puissance intérieure.
+34052	Sucette de Citrouille	La Sucette de Citrouille fait avec des ingredients secrets qui te donnent  | +15% Force contre les Monstres | +15% Force contre les Monstres | +15% Force contre les Bosses
+34067		
+34068		
+34092	Coffre de cubes de charme	Contient tous les différents types de cubes de charme.
+34500	Coffre en plumes	Un coffre plein de plumes multicolores.
+34501	Coffre d'éclats	Des éclats colorés se trouvent dans ce coffre.
+35100	Parchemin de repos Seon-Pyeongs	Vous permet de réinitialiser vos récompenses de niveau 92 et 94 pour les missions Seon-Pyeongs.
+39044	Anneau d'expérience (1h)	Augmente l'expérience reçue de 50% pendant 60 minutes. Cet objet est échangeable.
+39045	Coffre des Lycans (g)	Gros paquet d'équipement contenant des objets utiles pour les Lycans
+39063	Réinit. bourse aux Gayas	Réinitialisez la bourse aux Gayas avant la fin du délai de 5 heures pour redistribuer de nouveaux objets précieux sur-le-champ.
+39064	Ext. bourse aux Gayas	Agrandissez la bourse aux Gayas d'un emplacement supplémentaire pour objet précieux.
+39065		
+39066		
+40101	Lame crantée	Une apparence d'arme qui transforme votre épée en tronçonneuse pour Halloween.
+40102	Dague crantée	Une apparence d'arme qui transforme votre dague en tronçonneuse pour Halloween.
+40103	Arc cranté	Une apparence d'arme qui transforme votre arc en double tronçonneuse pour Halloween.
+40104	Glaive cranté	Une apparence d'arme qui transforme votre épée à deux mains en tronçonneuse droite pour Halloween.
+40105	Gong cranté	Une apparence d'arme qui transforme votre gong en masse crantée pour Halloween.
+40106	Éventail cranté	Une apparence d'arme qui transforme votre éventail en éventail cranté pour Halloween.
+40107	Griffes crantées	Une apparence d'arme qui transforme vos griffes en deux tronçonneuses maniables pour Halloween.
+40108	Lame crantée+	Une apparence d'arme qui transforme votre épée en tronçonneuse pour Halloween. Vous confère au moins un bonus déterminé au hasard.
+40109	Dague crantée+	Une apparence d'arme qui transforme votre dague en tronçonneuse pour Halloween. Vous confère au moins un bonus déterminé au hasard.
+40110	Arc cranté+	Une apparence d'arme qui transforme votre épée à deux mains en tronçonneuse droite pour Halloween. Vous confère au moins un bonus déterminé au hasard.
+40111	Glaive cranté+	Une apparence d'arme qui transforme votre épée à deux mains en tronçonneuse droite pour Halloween. Vous confère au moins un bonus déterminé au hasard.
+40112	Gong cranté+	Une apparence d'arme qui transforme votre gong en masse crantée pour Halloween. Vous confère au moins un bonus déterminé au hasard.
+40113	Éventail cranté+	Une apparence d'arme qui transforme votre éventail en éventail cranté pour Halloween. Vous confère au moins un bonus déterminé au hasard.
+40114	Griffes crantées+	Une apparence d'arme qui transforme vos griffes en deux tronçonneuses maniables pour Halloween. Vous confère au moins un bonus déterminé au hasard.
+40115	Lame canne de Noël	Une apparence d'arme qui transforme votre épée en sucre d'orge pour Noël.
+40116	Dague canne de Noël	Une apparence d'arme qui transforme votre dague en sucre d'orge pour Noël.
+40117	Arc elfique	Une apparence d'arme qui transforme votre arc en Arc elfique pour Noël.
+40118	Glaive pain d'épice	Une apparence d'arme qui décore votre arme à deux mains de pain d'épice pour Noël.
+40119	Gong canne de Noël	Une apparence d'arme qui transforme votre gong en sucre d'orge pour Noël.
+40120	Éventail glacé	Une apparence d'arme qui décore votre éventail d'un bonhomme de neige pour Noël.
+40121	Griffes Rodolphe	Une apparence d'arme qui décore vos griffes d'un renne pour Noël.
+40122	Lame canne de Noël+	Une apparence d'arme qui transforme votre épée en sucre d'orge pour Noël. Vous confère au moins un bonus déterminé au hasard.
+40123	Dague canne de Noël+	Une apparence d'arme qui transforme votre dague en sucre d'orge pour Noël. Vous confère au moins un bonus déterminé au hasard.
+40124	Arc elfique+	Une apparence d'arme qui transforme votre arc en Arc elfique pour Noël. Vous confère au moins un bonus déterminé au hasard.
+40125	Glaive pain d'épice+	Une apparence d'arme qui décore votre arme à deux mains de pain d'épice pour Noël. Vous confère au moins un bonus déterminé au hasard.
+40126	Gong canne de Noël+	Une apparence d'arme qui transforme votre gong en sucre d'orge pour Noël. Vous confère au moins un bonus déterminé au hasard.
+40127	Éventail glacé+	Une apparence d'arme qui décore votre éventail d'un bonhomme de neige pour Noël. Vous confère au moins un bonus déterminé au hasard.
+40128	Griffes Rodolphe+	Une apparence d'arme qui décore vos griffes d'un renne pour Noël. Vous confère au moins un bonus déterminé au hasard.
+40129	Lame d'Aquarus	Cette apparence d'arme recouvre votre épée d'une eau bleue iridescente solidifiée.
+40130	Dague d'Aquarus	Cette apparence d'arme recouvre votre dague d'une eau bleue iridescente solidifiée.
+40131	Arc d'Aquarus	Cette apparence d'arme recouvre votre arc d'une eau bleue iridescente solidifiée.
+40132	Glaive d'Aquarus	Cette apparence d'arme recouvre votre espadon d'une eau bleue iridescente solidifiée.
+40133	Gong d'Aquarus	Cette apparence d'arme recouvre votre gong d'une eau bleue iridescente solidifiée.
+40134	Éventail d'Aquarus	Cette apparence d'arme recouvre votre éventail d'une eau bleue iridescente solidifiée.
+40135	Griffes d'Aquarus	Cette apparence d'arme recouvre vos griffes d'une eau bleue iridescente solidifiée.
+40136	Lame d'Aquarus+	Cette apparence d'arme recouvre votre épée d'une eau bleue iridescente solidifiée. Vous obtenez au moins un bonus aléatoire.
+40137	Dague d'Aquarus+	Cette apparence d'arme recouvre votre dague d'une eau bleue iridescente solidifiée. Vous obtenez au moins un bonus aléatoire.
+40138	Arc d'Aquarus+	Cette apparence d'arme recouvre votre arc d'une eau bleue iridescente solidifiée. Vous obtenez au moins un bonus aléatoire.
+40139	Glaive d'Aquarus+	Cette apparence d'arme recouvre votre espadon d'une eau bleue iridescente solidifiée. Vous obtenez au moins un bonus aléatoire.
+40140	Gong d'Aquarus+	Cette apparence d'arme recouvre votre gong d'une eau bleue iridescente solidifiée. Vous obtenez au moins un bonus aléatoire.
+40141	Éventail d'Aquarus+	Cette apparence d'arme recouvre votre éventail d'une eau bleue iridescente solidifiée. Vous obtenez au moins un bonus aléatoire.
+40142	Griffes d'Aquarus+	Cette apparence d'arme recouvre vos griffes d'une eau bleue iridescente solidifiée. Vous obtenez au moins un bonus aléatoire.
+41328	Maillot Mondial ALG (m)	Une tenue de football aux couleurs de l'équipe nationale d'Algérie
+41329	Maillot Mondial ALG (f)	Une tenue de football aux couleurs de l'équipe nationale d'Algérie
+41330	Maillot Mondial ARG (m)	Jeu de maillot du Mondial aux couleurs de l'Argentine
+41331	Maillot Mondial ARG (f)	Jeu de maillot du Mondial aux couleurs de l'Argentine
+41332	Maillot Mondial AUS (m)	Une tenue de football aux couleurs de l'équipe nationale d'Australie
+41333	Maillot Mondial AUS (f)	Une tenue de football aux couleurs de l'équipe nationale d'Australie
+41334	Maillot Mondial BEL (m)	Jeu de maillot du Mondial aux couleurs de la Belgique
+41335	Maillot Mondial BEL (f)	Jeu de maillot du Mondial aux couleurs de la Belgique
+41336	Maillot Mondial BIH (m)	Une tenue de football aux couleurs de l'équipe nationale de Bosnie-Herzégovine
+41337	Maillot Mondial BIH (f)	Une tenue de football aux couleurs de l'équipe nationale de Bosnie-Herzégovine
+41338	Maillot Mondial BRA (m)	Jeu de maillot du Mondial aux couleurs du Brésil
+41339	Maillot Mondial BRA (f)	Jeu de maillot du Mondial aux couleurs du Brésil
+41340	Maillot Mondial CMR (m)	Une tenue de football aux couleurs de l'équipe nationale du Cameroun
+41341	Maillot Mondial CMR (f)	Une tenue de football aux couleurs de l'équipe nationale du Cameroun
+41342	Maillot Mondial CHI (m)	Une tenue de football aux couleurs de l'équipe nationale du Chili
+41343	Maillot Mondial CHI (f)	Une tenue de football aux couleurs de l'équipe nationale du Chili
+41344	Maillot Mondial COL (m)	Une tenue de football aux couleurs de l'équipe nationale de Colombie
+41345	Maillot Mondial COL (f)	Une tenue de football aux couleurs de l'équipe nationale de Colombie
+41346	Maillot Mondial CRC (m)	Une tenue de football aux couleurs de l'équipe nationale du Costa Rica
+41347	Maillot Mondial CRC (f)	Une tenue de football aux couleurs de l'équipe nationale du Costa Rica
+41348	Maillot Mondial CIV (m)	Une tenue de football aux couleurs de l'équipe nationale de Côte-d'Ivoire
+41349	Maillot Mondial CIV (f)	Une tenue de football aux couleurs de l'équipe nationale de Côte-d'Ivoire
+41350	Maillot Mondial CRO (m)	Une tenue de football aux couleurs de l'équipe nationale de Croatie
+41351	Maillot Mondial CRO (f)	Une tenue de football aux couleurs de l'équipe nationale de Croatie
+41352	Maillot Mondial ECU (m)	Une tenue de football aux couleurs de l'équipe nationale d'Équateur
+41353	Maillot Mondial ECU (f)	Une tenue de football aux couleurs de l'équipe nationale d'Équateur
+41354	Maillot Mondial ENG (m)	Jeu de maillot du Mondial aux couleurs de l'Angleterre
+41355	Maillot Mondial ENG (f)	Jeu de maillot du Mondial aux couleurs de l'Angleterre
+41356	Maillot Mondial FRA (m)	Jeu de maillot du Mondial aux couleurs de la France
+41357	Maillot Mondial FRA (f)	Jeu de maillot du Mondial aux couleurs de la France
+41358	Maillot Mondial GER (m)	Jeu de maillot du Mondial aux couleurs de l'Allemagne
+41359	Maillot Mondial GER (f)	Jeu de maillot du Mondial aux couleurs de l'Allemagne
+41360	Maillot Mondial GHA (m)	Une tenue de football aux couleurs de l'équipe nationale du Ghana
+41361	Maillot Mondial GHA (f)	Une tenue de football aux couleurs de l'équipe nationale du Ghana
+41362	Maillot Mondial GRE (m)	Jeu de maillot du Mondial aux couleurs de la Grèce
+41363	Maillot Mondial GRE (f)	Jeu de maillot du Mondial aux couleurs de la Grèce
+41364	Maillot Mondial HON (m)	Une tenue de football aux couleurs de l'équipe nationale du Honduras
+41365	Maillot Mondial HON (f)	Une tenue de football aux couleurs de l'équipe nationale du Honduras
+41366	Maillot Mondial IRN (m)	Une tenue de football aux couleurs de l'équipe nationale d'Iran
+41367	Maillot Mondial IRN (f)	Une tenue de football aux couleurs de l'équipe nationale d'Iran
+41368	Maillot Mondial ITA (m)	Jeu de maillot du Mondial aux couleurs de l'Italie
+41369	Maillot Mondial ITA (f)	Jeu de maillot du Mondial aux couleurs de l'Italie
+41370	Maillot Mondial JPN (m)	Une tenue de football aux couleurs de l'équipe nationale du Japon
+41371	Maillot Mondial JPN (f)	Une tenue de football aux couleurs de l'équipe nationale du Japon
+41372	Maillot Mondial KOR (m)	Jeu de maillot du Mondial aux couleurs de la Corée
+41373	Maillot Mondial KOR (f)	Jeu de maillot du Mondial aux couleurs de la Corée
+41374	Maillot Mondial MEX (m)	Jeu de maillot du Mondial aux couleurs du Mexique
+41375	Maillot Mondial MEX (f)	Jeu de maillot du Mondial aux couleurs du Mexique
+41376	Maillot Mondial NED (m)	Jeu de maillot du Mondial aux couleurs des Pays-Bas
+41377	Maillot Mondial NED (f)	Jeu de maillot du Mondial aux couleurs des Pays-Bas
+41378	Maillot Mondial NGA (m)	Une tenue de football aux couleurs de l'équipe nationale du Nigéria
+41379	Maillot Mondial NGA (f)	Une tenue de football aux couleurs de l'équipe nationale du Nigéria
+41380	Maillot Mondial POR (m)	Jeu de maillot du Mondial aux couleurs du Portugal
+41381	Maillot Mondial POR (f)	Jeu de maillot du Mondial aux couleurs du Portugal
+41382	Maillot Mondial RUS (m)	Jeu de maillot du Mondial aux couleurs de la Russie
+41383	Maillot Mondial RUS (f)	Jeu de maillot du Mondial aux couleurs de la Russie
+41384	Maillot Mondial ESP (m)	Jeu de maillot du Mondial aux couleurs de l'Espagne
+41385	Maillot Mondial ESP (f)	Jeu de maillot du Mondial aux couleurs de l'Espagne
+41386	Maillot Mondial SUI (m)	Jeu de maillot du Mondial aux couleurs de la Suisse
+41387	Maillot Mondial SUI (f)	Jeu de maillot du Mondial aux couleurs de la Suisse
+41388	Maillot Mondial URU (m)	Une tenue de football aux couleurs de l'équipe nationale d'Uruguay
+41389	Maillot Mondial URU (f)	Une tenue de football aux couleurs de l'équipe nationale d'Uruguay
+41390	Maillot Mondial USA (m)	Jeu de maillot du Mondial aux couleurs des États-Unis
+41391	Maillot Mondial USA (f)	Jeu de maillot du Mondial aux couleurs des États-Unis
+41392	M. Mondial ALG (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Algérie. Vous confère au moins un bonus aléatoire.
+41393	M. Mondial ALG (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Algérie. Vous confère au moins un bonus aléatoire.
+41394	M. Mondial ARG (m/bonus)	Jeu de maillot du Mondial aux couleurs de l'Argentine. Vous confère au moins un bonus aléatoire.
+41395	M. Mondial ARG (f/bonus)	Jeu de maillot du Mondial aux couleurs de l'Argentine. Vous confère au moins un bonus aléatoire.
+41396	M. Mondial AUS (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Australie. Vous confère au moins un bonus aléatoire.
+41397	M. Mondial AUS (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Australie. Vous confère au moins un bonus aléatoire.
+41398	M. Mondial BEL (m/bonus)	Jeu de maillot du Mondial aux couleurs de la Belgique. Vous confère au moins un bonus aléatoire.
+41399	M. Mondial BEL (f/bonus)	Jeu de maillot du Mondial aux couleurs de la Belgique. Vous confère au moins un bonus aléatoire.
+41400	M. Mondial BIH (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Bosnie-Herzégovine. Vous confère au moins un bonus aléatoire.
+41401	M. Mondial BIH (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Bosnie-Herzégovine. Vous confère au moins un bonus aléatoire.
+41402	M. Mondial BRA (m/bonus)	Jeu de maillot du Mondial aux couleurs du Brésil. Vous confère au moins un bonus aléatoire.
+41403	M. Mondial BRA (f/bonus)	Jeu de maillot du Mondial aux couleurs du Brésil. Vous confère au moins un bonus aléatoire.
+41404	M. Mondial CMR (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Cameroun. Vous confère au moins un bonus aléatoire.
+41405	M. Mondial CMR (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Cameroun. Vous confère au moins un bonus aléatoire.
+41406	M. Mondial CHI (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Chili. Vous confère au moins un bonus aléatoire.
+41407	M. Mondial CHI (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Chili. Vous confère au moins un bonus aléatoire.
+41408	M. Mondial COL (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Colombie. Vous confère au moins un bonus aléatoire.
+41409	M. Mondial COL (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Colombie. Vous confère au moins un bonus aléatoire.
+41410	M. Mondial CRC (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Costa Rica. Vous confère au moins un bonus aléatoire.
+41411	M. Mondial CRC (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Costa Rica. Vous confère au moins un bonus aléatoire.
+41412	M. Mondial CIV (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Côte d'Ivoire. Vous confère au moins un bonus aléatoire.
+41413	M. Mondial CIV (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Côte d'Ivoire. Vous confère au moins un bonus aléatoire.
+41414	M. Mondial CRO (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Croatie. Vous confère au moins un bonus aléatoire.
+41415	M. Mondial CRO (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale de Croatie. Vous confère au moins un bonus aléatoire.
+41416	M. Mondial ECU (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Équateur. Vous confère au moins un bonus aléatoire.
+41417	M. Mondial ECU (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Équateur. Vous confère au moins un bonus aléatoire.
+41418	M. Mondial ENG (m/bonus)	Jeu de maillot du Mondial aux couleurs de l'Angleterre. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41419	M. Mondial ENG (f/bonus)	Jeu de maillot du Mondial aux couleurs de l'Angleterre. Vous confère au moins un bonus aléatoire.
+41420	M. Mondial FRA (m/bonus)	Jeu de maillot du Mondial aux couleurs de la France. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41421	M. Mondial FRA (f/bonus)	Jeu de maillot du Mondial aux couleurs de la France. Vous confère au moins un bonus aléatoire.
+41422	M. Mondial GER (m/bonus)	Jeu de maillot du Mondial aux couleurs de l'Allemagne. Vous confère au moins un bonus aléatoire.
+41423	M. Mondial GER (f/bonus)	Jeu de maillot du Mondial aux couleurs de l'Allemagne. Vous confère au moins un bonus aléatoire.
+41424	M. Mondial GHA (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Ghana. Vous confère au moins un bonus aléatoire.
+41425	M. Mondial GHA (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Ghana. Vous confère au moins un bonus aléatoire.
+41426	M. Mondial GRE (m/bonus)	Jeu de maillot du Mondial aux couleurs de la Grèce. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41427	M. Mondial GRE (f/bonus)	Jeu de maillot du Mondial aux couleurs de la Grèce. Vous confère au moins un bonus aléatoire.
+41428	M. Mondial HON (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Honduras. Vous confère au moins un bonus aléatoire.
+41429	M. Mondial HON (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Honduras. Vous confère au moins un bonus aléatoire.
+41430	M. Mondial IRN (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Iran. Vous confère au moins un bonus aléatoire.
+41431	M. Mondial IRN (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Iran. Vous confère au moins un bonus aléatoire.
+41432	M. Mondial ITA (m/bonus)	Jeu de maillot du Mondial aux couleurs de l'Italie. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41433	M. Mondial ITA (f/bonus)	Jeu de maillot du Mondial aux couleurs de l'Italie. Vous confère au moins un bonus aléatoire.
+41434	M. Mondial JPN (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Japon. Vous confère au moins un bonus aléatoire.
+41435	M. Mondial JPN (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Japon. Vous confère au moins un bonus aléatoire.
+41436	M. Mondial KOR (m/bonus)	Jeu de maillot du Mondial aux couleurs de la Corée. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41437	M. Mondial KOR (f/bonus)	Jeu de maillot du Mondial aux couleurs de la Corée. Vous confère au moins un bonus aléatoire.
+41438	M. Mondial MEX (m/bonus)	Jeu de maillot du Mondial aux couleurs du Mexique. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41439	M. Mondial MEX (f/bonus)	Jeu de maillot du Mondial aux couleurs du Mexique. Vous confère au moins un bonus aléatoire.
+41440	M. Mondial NED (m/bonus)	Jeu de maillot du Mondial aux couleurs des Pays-Bas. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41441	M. Mondial NED (f/bonus)	Jeu de maillot du Mondial aux couleurs des Pays-Bas. Vous confère au moins un bonus aléatoire.
+41442	M. Mondial NGA (m/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Nigeria. Vous confère au moins un bonus aléatoire.
+41443	M. Mondial NGA (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale du Nigeria. Vous confère au moins un bonus aléatoire.
+41444	M. Mondial POR (m/bonus)	Jeu de maillot du Mondial aux couleurs du Portugal. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41445	M. Mondial POR (f/bonus)	Jeu de maillot du Mondial aux couleurs du Portugal. Vous confère au moins un bonus aléatoire.
+41446	M. Mondial RUS (m/bonus)	Jeu de maillot du Mondial aux couleurs de la Russie. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41447	M. Mondial RUS (f/bonus)	Jeu de maillot du Mondial aux couleurs de la Russie. Vous confère au moins un bonus aléatoire.
+41448	M. Mondial ESP (m/bonus)	Jeu de maillot du Mondial aux couleurs de l'Espagne. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41449	M. Mondial ESP (f/bonus)	Jeu de maillot du Mondial aux couleurs de l'Espagne. Vous confère au moins un bonus aléatoire.
+41450	M. Mondial SUI (m/bonus)	Jeu de maillot du Mondial aux couleurs de la Suisse. Vous confère au moins un bonus aléatoire.
+41451	M. Mondial SUI (f/bonus)	Jeu de maillot du Mondial aux couleurs de la Suisse. Vous confère au moins un bonus aléatoire.
+41452	M. Mondial URU (m/bonus)	Une tenue  de football aux couleurs de l'équipe nationale d'Uruguay. Vous confère au moins un bonus aléatoire.
+41453	M. Mondial URU (f/bonus)	Une tenue de football aux couleurs de l'équipe nationale d'Uruguay. Vous confère au moins un bonus aléatoire.
+41454	M. Mondial USA (m/bonus)	Jeu de maillot du Mondial aux couleurs des États-Unis. Vous confère au minimum un bonus aléatoire. L'objet est échangeable.
+41455	M. Mondial USA (f/bonus)	Jeu de maillot du Mondial aux couleurs des États-Unis. Vous confère au moins un bonus aléatoire.
+41458	Soutane de phénix	Cette tenue de style asiatique longue et élégante pour homme est brodée d'un phénix.
+41459	Soutane de cobra	Cette tenue de style asiatique longue et élégante pour homme est brodée d'un cobra.
+41462	Qipao au dragon (rouge)	Cette robe asiatique traditionnelle pour femme de couleur rouge est ornée d'une broderie fine de dragon doré.
+41463	Qipao au dragon (blanc)	Cette robe asiatique traditionnelle pour femme de couleur blanche est ornée d'une broderie fine de dragon rouge.
+41466	Soutane de phénix+	Cette tenue de style asiatique longue et élégante pour homme est brodée d'un phénix. Cet objet vous attribue au moins un bonus aléatoire.
+41467	Soutane de cobra+	Cette tenue de style asiatique longue et élégante pour homme est brodée d'un cobra. Cet objet vous attribue au moins un bonus aléatoire.
+41470	Qipao au dragon+ (rouge)	Cette robe asiatique traditionnelle pour femme de couleur rouge est ornée d'une broderie fine de dragon doré. Cet objet vous attribue au moins un bonus aléatoire.
+41471	Qipao au dragon+ (blanc)	Cette robe asiatique traditionnelle pour femme de couleur blanche est ornée d'une broderie fine de dragon rouge. Cet objet vous attribue au moins un bonus aléatoire.
+41472	Costume de zombie	Avec un vêtement maculé de sang, une peau putréfiée et des os à nu, vous voilà un zombie.
+41473	Robe de zombie	Avec une robe maculée de sang, une peau putréfiée et des os à nu, vous voilà une mariée zombie.
+41474	Costume de zombie+	Avec un vêtement maculé de sang, une peau putréfiée et des os à nu, vous voilà un zombie. Vous confère au moins un bonus déterminé au hasard.
+41475	Robe de zombie+	Avec un vêtement maculé de sang, une peau putréfiée et des os à nu, vous voilà une mariée zombie. Vous confère au moins un bonus déterminé au hasard.
+41476	Costume de sorcier	Un costume noir, mystique, parfait pour un sorcier.
+41477	Robe de sorcière	Cette robe noire, mystique, fait un parfait costume de sorcière.
+41478	Costume de sorcier+	Un costume noir, mystique, parfait pour un sorcier. Vous confère au moins un bonus déterminé au hasard.
+41479	Robe de sorcière+	Cette robe noire, mystique, fait un parfait costume de sorcière. Vous confère au moins un bonus déterminé au hasard.
+41480	Tenue Frosty Noël	Tenue de bonhomme de neige avec costume de Père Noël en velours rouge. Non échangeable.
+41481	Tenue bonhomme de neige	Tenue de bonhomme de neige en velours blanc. Non échangeable.
+41482	Robe de Noël (blanc)	Mini robe blanche avec collants et accessoires. Non échangeable.
+41483	Robe de Noël (rouge)	Mini robe rouge avec collants et accessoires. Non échangeable.
+41484	Tenue Père Noël-Frosty+	Tenue de bonhomme de neige avec costume de Père Noël en velours rouge. Confère au moins un bonus aléatoire. L'objet est échangeable.
+41485	Tenue bonhomme neige+	Tenue de bonhomme de neige en velours blanc. Confère au moins un bonus aléatoire. L'objet est échangeable.
+41486	Robe de Noël+ (blanc)	Mini robe blanche avec collants et accessoires. Confère au moins un bonus aléatoire. L'objet est échangeable.
+41487	Robe de Noël+ (rouge)	Mini robe rouge avec collants et accessoires. Confère au moins un bonus aléatoire. L'objet est échangeable.
+41488	Habit pharaon rouge	Marchez comme un Égyptien avec le costume de pharaon pour homme aux ornements rouges.
+41489	Habit pharaon turquoise	Marchez comme un Égyptien avec le costume de pharaon pour homme aux ornements turquoise.
+41490	Ange d'Uriel (blanc)	C'est un costume élégant aux ailes d'ange d'un blanc immaculé pour femme.
+41491	Ange d'Uriel (rouge)	C'est un costume passionnant aux ailes d'ange ardentes pour femme.
+41492	Habit pharaon+ rouge	Marchez comme un Égyptien avec le costume de pharaon pour homme aux ornements rouges. Cet objet vous attribue au moins un bonus aléatoire.
+41493	Habit pharaon+ turquoise	Marchez comme un Égyptien avec le costume de pharaon pour homme aux ornements turquoise. Cet objet vous attribue au moins un bonus aléatoire.
+41494	Ange d'Uriel+ (blanc)	C'est un costume élégant aux ailes d'ange d'un blanc immaculé pour femme. Cet objet vous attribue au moins un bonus aléatoire.
+41495	Ange d'Uriel+ (rouge)	C'est un costume passionnant aux ailes d'ange ardentes pour femme. Cet objet vous attribue au moins un bonus aléatoire.
+41496	Roi du désert (brun)	Une tenue guerrière en étoffe brune, faite pour commander.
+41497	Roi du désert (blanc)	Une tenue guerrière en étoffe blanche, faite pour commander.
+41498	Reine du désert (brun)	Une tenue guerrière en étoffe brune, faite pour commander.
+41499	Reine du désert (blanc)	Une tenue guerrière en étoffe blanche, faite pour commander.
+41500	Roi du désert+ (brun)	Une tenue guerrière en étoffe brune, faite pour commander. Elle vous donne droit à au moins un bonus déterminé au hasard.
+41501	Roi du désert+ (blanc)	Une tenue guerrière en étoffe blanche, faite pour commander. Elle vous donne droit à au moins un bonus déterminé au hasard.
+41502	Reine du désert+ (brun)	Une tenue guerrière en étoffe brune, faite pour commander. Elle vous donne droit à au moins un bonus déterminé au hasard.
+41503	Reine du désert+ (blanc)	Une tenue guerrière en étoffe blanche, faite pour commander. Elle vous donne droit à au moins un bonus déterminé au hasard.
+41504	Costume de lapin (gris)	Costume en douce fourrure grise, modèle lapin. Non échangeable.
+41505	Costume de lapin (brun)	Costume en douce fourrure brune, modèle lapin. Non échangeable.
+41506	Robe de Pâques (coloré)	Robe de Pâques colorée et radieuse avec ornement adorable. Non échangeable.
+41507	Robe de Pâques (bleuté)	Robe de Pâques bleutée avec ornement détaillé. Non échangeable.
+41508	Costume de lapin+ (gris)	Costume en douce fourrure grise, modèle lapin. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41509	Costume de lapin+ (brun)	Costume en douce fourrure brune, modèle lapin. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41510	Robe de Pâques+ (coloré)	Robe de Pâques colorée et radieuse avec ornement adorable. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41511	Robe de Pâques+ (bleuté)	Robe de Pâques bleutée avec ornement détaillé. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41512	Costume à crocs	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires.
+41513	Costume à crocs	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires.
+41514	Costume à crocs	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires.
+41515	Costume à crocs	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires.
+41516	Costume à crocs+	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+41517	Costume à crocs+	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+41518	Costume à crocs+	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+41519	Costume à crocs+	Un costume d'Halloween démoniaque fait pour terroriser vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+41520	Costume d'hiver rouge	Costume d'hiver en feutre rouge. Non échangeable.
+41521	Costume d'hiver bleu	Costume d'hiver en feutre bleu. Non échangeable.
+41522	Costume d'hiver rouge+	Costume d'hiver en feutre rouge. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+41523	Costume d'hiver bleu+	Costume d'hiver en feutre bleu. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+41524	Robe d'hiver rouge	Robe d'hiver en feutre rouge. Non échangeable.
+41525	Robe d'hiver bleue	Robe d'hiver en feutre bleu. Non échangeable.
+41526	Robe d'hiver rouge+	Robe d'hiver en feutre rouge. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+41527	Robe d'hiver bleue+	Robe d'hiver en feutre bleu. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+41528	Prince du désert (rouge)	Une tenue guerrière en étoffe rouge, faite pour commander.
+41529	Prince du désert (bleu)	Une tenue guerrière en étoffe bleue, faite pour commander.
+41530	Reine du désert (rouge)	Une tenue guerrière en étoffe rouge, faite pour commander.
+41531	Reine du désert (bleue)	Une tenue guerrière en étoffe bleue, faite pour commander.
+41532	Prince du désert+ (rou.)	Une tenue guerrière en étoffe rouge, faite pour commander. Vous confère au moins un bonus déterminé au hasard.
+41533	Prince du désert+ (bleu)	Une tenue guerrière en étoffe bleue, faite pour commander. Vous confère au moins un bonus déterminé au hasard.
+41534	Reine du désert+ (rouge)	Une tenue guerrière en étoffe rouge, faite pour commander. Vous confère au moins un bonus déterminé au hasard.
+41535	Reine du désert+ (bleue)	Une tenue guerrière en étoffe bleue, faite pour commander. Vous confère au moins un bonus déterminé au hasard.
+41540	Costume de lapin (blanc)	Costume de lapin en peluche blanc pour lui. Cet objet n'est pas échangeable.
+41541	Costume de lapin (rose)	Costume de lapin en peluche rose pour lui. Cet objet n'est pas échangeable.
+41542	Costume de hase (bleu m)	Costume de lapin en peluche bleu marine pour elle. Cet objet n'est pas échangeable.
+41543	Costume de hase(magenta)	Costume de lapin en peluche magenta pour elle. Cet objet n'est pas échangeable.
+41544	Costume de lapin+(blanc)	Costume de lapin en peluche blanc pour lui. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+41545	Costume de lapin+(rose)	Costume de lapin en peluche rose pour lui. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+41546	Costume de hase+(bleu m)	Costume de lapin en peluche bleu marine pour elle. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+41547	Costume de hase+(magen.)	Costume de lapin en peluche magenta pour elle. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+41560	Vampiro (gris)	Grâce à l'armure de vampiro, vous aurez l'air d'un guerrier invincible aux yeux de vos ennemis. Cet objet n'est pas échangeable.
+41561	Vampiro (rouge)	Grâce à l'armure de vampiro, vous aurez l'air d'un guerrier invincible aux yeux de vos ennemis. Cet objet n'est pas échangeable.
+41562	Vampira (gris)	Grâce à l'armure de Vampira, vous aurez l'air d'une guerrière invincible aux yeux de vos ennemis. Cet objet n'est pas échangeable.
+41563	Vampira (rouge)	Grâce à l'armure de Vampira, vous aurez l'air d'une guerrière invincible aux yeux de vos ennemis. Cet objet n'est pas échangeable.
+41564	Vampiro+ (gris)	L'armure de vampiro vous confère des pouvoirs surhumains. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41565	Vampiro+ (rouge)	L'armure de vampiro vous confère des pouvoirs surhumains. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41566	Vampira+ (gris)	L'armure de la guerrière Vampira vous confère des pouvoirs surhumains. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41567	Vampira+ (rouge)	L'armure de la guerrière Vampira vous confère des pouvoirs surhumains. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41568	Tenue de fête rouge (h)	Une tenue de fête rouge à ourlet blanc.
+41569	Tenue de fête verte (h)	Une tenue de fête verte à ourlet blanc.
+41570	Tenue de fête rouge (f)	Une tenue de fête rouge à ourlet blanc.
+41571	Tenue de fête verte (f)	Une tenue de fête verte à ourlet blanc.
+41572	Tenue de fête rouge+ (h)	Une tenue de fête rouge à ourlet blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+41573	Tenue de fête verte+ (h)	Une tenue de fête verte à ourlet blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+41574	Tenue de fête rouge+ (f)	Une tenue de fête rouge à ourlet blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+41575	Tenue de fête verte+ (f)	Une tenue de fête verte à ourlet blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+41576	Oyoroi doré (m)	C'est l'uniforme doré d'un général de l'armée japonaise.
+41577	Oyoroi argenté (m)	C'est l'uniforme argenté d'un général de l'armée japonaise.
+41578	Oyoroi doré (f)	C'est l'uniforme doré d'une générale de l'armée japonaise.
+41579	Oyoroi argenté (f)	C'est l'uniforme argenté d'une générale de l'armée japonaise.
+41580	Oyoroi doré+ (m)	C'est l'uniforme doré d'un général de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+41581	Oyoroi argenté+ (m)	C'est l'uniforme argenté d'un général de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+41582	Oyoroi doré+ (f)	C'est l'uniforme doré d'une générale de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+41583	Oyoroi argenté+ (f)	C'est l'uniforme argenté d'une générale de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+41584	Armure samouraï (bleue)	Armure bleue dans le style d'un shogun expérimenté.
+41585	Armure samouraï (rouge)	Armure rouge dans le style d'un shogun expérimenté.
+41586	Armure samouraï (bleue)	Armure bleue dans le style d'un shogun féminin
+41587	Armure samouraï (rouge)	Armure rouge d'un shogun féminin
+41588	Armure samouraï+ (bleue)	Voici une armure bleue dans le style d'un shogun expérimenté. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41589	Armure samouraï+ (rouge)	Voici une armure rouge dans le style d'un shogun expérimenté. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41590	Armure samouraï+ (bleue)	Voici une armure bleue dans le style d'un shogun féminin. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41591	Armure samouraï+ (rouge)	Voici une armure rouge dans le style d'un shogun féminin. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41592	Cuirasse d'horreur (j)	Cette armure infernale enflammée suscite la peur et l'effroi.
+41593	Cuirasse d'horreur (b)	Cette armure infernale d'un bleu éclatant suscite la peur et l'effroi.
+41594	Cuirasse d'horreur (j)	Cette armure infernale enflammée suscite la peur et l'effroi.
+41595	Cuirasse d'horreur (b)	Cette armure infernale d'un bleu éclatant suscite la peur et l'effroi.
+41596	Cuirasse d'horreur+ (j)	Cette armure infernale enflammée suscite la peur et l'effroi. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41597	Cuirasse d'horreur+(b)	Cette armure infernale d'un bleu éclatant suscite la peur et l'effroi. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41598	Cuirasse d'horreur+ (j)	Cette armure infernale enflammée suscite la peur et l'effroi. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41599	Cuirasse d'horreur+(b)	Cette armure infernale d'un bleu éclatant suscite la peur et l'effroi. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+41600	Uniforme steampunk noir	Voici une tenue futuriste pour les combattants d'ici et maintenant.
+41601	Uniforme steampunk rouge	Voici une tenue futuriste pour les combattants d'ici et maintenant.
+41602	Robe steampunk (noire)	Voici une tenue futuriste pour les combattantes d'ici et maintenant.
+41603	Robe Steampunk (rouge)	Voici une tenue futuriste pour les combattantes d'ici et maintenant.
+41604	Uniforme steampunk+ noir	Voici une tenue futuriste pour les combattants d'ici et maintenant. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41605	Uniforme steamp.+ rouge	Voici une tenue futuriste pour les combattants d'ici et maintenant. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41606	Robe steampunk+ (noire)	Voici une tenue futuriste pour les combattantes d'ici et maintenant. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41607	Robe steampunk+ (rouge)	Voici une tenue futuriste pour les combattantes d'ici et maintenant. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+41608	Toge sungura (bleu)	Fabuleux costume blanc et violet avec sarouel bleu
+41609	Toge sungura (pétrole)	Fabuleux costume blanc et pétrole avec sarouel gris
+41610	Robe sungura (bleu)	Fabuleuse robe ballon bleu et violet
+41611	Robe sungura (gris)	Fabuleuse robe ballon gris pétrole
+41612	Toge sungura+ (bleu)	C'est un fabuleux costume blanc et violet avec sarouel bleu. Cet objet vous confère au moins un bonus déterminé au hasard.
+41613	Toge sungura+ (pétrole)	C'est un fabuleux costume blanc et pétrole avec sarouel gris. Cet objet vous confère au moins un bonus déterminé au hasard.
+41614	Robe sungura+ (bleu)	C'est une fabuleuse robe ballon bleu et violet. Cet objet vous confère au moins un bonus déterminé au hasard.
+41615	Robe sungura+ (gris)	C'est une fabuleuse robe ballon gris et pétrole. Cet objet vous confère au moins un bonus déterminé au hasard.
+41630	Armure d'Avalonie (arg.)	Cuirasse argentée d'une noble dynastie de chevaliers venue d'un passé lointain
+41631	Armure d'Avalonie (rou.)	Cuirasse rouge d'une noble dynastie de chevaliers venue d'un passé lointain
+41632	Armure d'Avalonie (arg.)	Cuirasse argentée d'une noble dynastie de chevaliers venue d'un passé lointain
+41633	Armure d'Avalonie (rou.)	Cuirasse rouge d'une noble dynastie de chevaliers venue d'un passé lointain
+41634	Armure d'Avalonie+ (arg)	Voici la cuirasse irisée d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+41635	Armure d'Avalonie+ (rou)	Voici la cuirasse irisée d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+41636	Armure d'Avalonie+ (arg)	Voici la cuirasse irisée d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+41637	Armure d'Avalonie+ (rou)	Voici la cuirasse irisée d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+41638	Maillot Mondial KSA (m)	Cette tenue de football est aux couleurs de l'équipe nationale d'Arabie saoudite.
+41639	Maillot Mondial KSA (f)	Cette tenue de football est aux couleurs de l'équipe nationale d'Arabie saoudite.
+41640	Maillot Mondial KSA+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale d'Arabie saoudite. Vous obtenez au moins un bonus aléatoire.
+41641	Maillot Mondial KSA+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale d'Arabie saoudite. Vous obtenez au moins un bonus aléatoire.
+41642	Maillot Mondial DEN (m)	Cette tenue de football est aux couleurs de l'équipe nationale du Danemark.
+41643	Maillot Mondial DEN (f)	Cette tenue de football est aux couleurs de l'équipe nationale du Danemark.
+41644	Maillot Mondial DEN+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale du Danemark. Vous obtenez au moins un bonus aléatoire.
+41645	Maillot Mondial DEN+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale du Danemark. Vous obtenez au moins un bonus aléatoire.
+41646	Maillot Mondial SVK (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Slovaquie.
+41647	Maillot Mondial SVK (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Slovaquie.
+41648	Maillot Mondial SVK+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Slovaquie. Vous obtenez au moins un bonus aléatoire.
+41649	Maillot Mondial SVK+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Slovaquie. Vous obtenez au moins un bonus aléatoire.
+41650	Maillot Mondial TUR (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Turquie.
+41651	Maillot Mondial TUR (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Turquie.
+41652	Maillot Mondial TUR+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Turquie. Vous obtenez au moins un bonus aléatoire.
+41653	Maillot Mondial TUR+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Turquie. Vous obtenez au moins un bonus aléatoire.
+41654	Maillot Mondial HUN (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Hongrie.
+41655	Maillot Mondial HUN (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Hongrie.
+41656	Maillot Mondial HUN+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Hongrie. Vous obtenez au moins un bonus aléatoire.
+41657	Maillot Mondial HUN+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Hongrie. Vous obtenez au moins un bonus aléatoire.
+41658	Maillot Mondial ROU (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Roumanie.
+41659	Maillot Mondial ROU (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Roumanie.
+41660	Maillot Mondial ROU+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Roumanie. Vous obtenez au moins un bonus aléatoire.
+41661	Maillot Mondial ROU+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Roumanie. Vous obtenez au moins un bonus aléatoire.
+41662	Maillot Mondial POL (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Pologne.
+41663	Maillot Mondial POL (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Pologne.
+41664	Maillot Mondial POL+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale de Pologne. Vous obtenez au moins un bonus aléatoire.
+41665	Maillot Mondial POL+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale de Pologne. Vous obtenez au moins un bonus aléatoire.
+41666	Maillot Mondial BRA (m)	Cette tenue de football est aux couleurs de l'équipe nationale du Brésil.
+41667	Maillot Mondial BRA (f)	Cette tenue de football est aux couleurs de l'équipe nationale du Brésil.
+41668	Maillot Mondial BRA+ (m)	Cette tenue de football est aux couleurs de l'équipe nationale du Brésil. Vous obtenez au moins un bonus aléatoire.
+41669	Maillot Mondial BRA+ (f)	Cette tenue de football est aux couleurs de l'équipe nationale du Brésil. Vous obtenez au moins un bonus aléatoire.
+41670	Tenue de loup brun (h)	Cette tenue au pelage brun éveille le loup qui sommeille en tout homme.
+41671	Tenue de loup gris (h)	Cette tenue au pelage gris éveille le loup qui sommeille en tout homme.
+41672	Tenue de loup brun (f)	Cette tenue au pelage brun éveille le loup qui sommeille en toute femme.
+41673	Tenue de loup gris (f)	Cette tenue au pelage gris éveille le loup qui sommeille en toute femme.
+41674	Tenue de loup brun+ (h)	Cette tenue au pelage brun éveille le loup qui sommeille en tout homme. Cet objet vous confère au moins un bonus déterminé au hasard.
+41675	Tenue de loup gris+ (h)	Cette tenue au pelage gris éveille le loup qui sommeille en tout homme. Cet objet vous confère au moins un bonus déterminé au hasard.
+41676	Tenue de loup brun+ (f)	Cette tenue au pelage brun éveille le loup qui sommeille en toute femme. Cet objet vous confère au moins un bonus déterminé au hasard.
+41677	Tenue de loup gris+ (f)	Cette tenue au pelage gris éveille le loup qui sommeille en toute femme. Cet objet vous confère au moins un bonus déterminé au hasard.
+45108	Chapeau chinois	C'est un chapeau traditionnel asiatique en paille de riz pour homme.
+45110	Chignon d'Asie	C'est un chignon asiatique double.
+45114	Chapeau chinois+	C'est un chapeau traditionnel asiatique en paille de riz pour homme. Cet objet vous attribue au moins un bonus aléatoire.
+45116	Chignon d'Asie+	C'est un chignon asiatique double. Cet objet vous attribue au moins un bonus aléatoire.
+45170	Masque citrouille zombie	Masque monstrueux en forme de citrouille pour halloween.
+45171	Chapeau de sorcière	Chapeau pointu à large bord comme en portent sorciers et sorcières.
+45172	Masque citr. zombie+	Masque monstrueux en forme de citrouille pour halloween. Vous confère au moins un bonus déterminé au hasard.
+45173	Chapeau de sorcière+	Chapeau pointu à large bord comme en portent sorciers et sorcières. Vous confère au moins un bonus déterminé au hasard.
+45174	Masque bonhomme de neige	Masque de bonhomme de neige avec joli haut-de-forme en satin noir-mat. Non échangeable.
+45175	Masque Frosty Noël	Masque de bonhomme de neige avec bonnet de Père Noël en velours rouge et tissu peluche blanc. Non échangeable.
+45176	Bonnet à pompon (blanc)	Bonnet de Noël en velours blanc avec tissu peluche blanc et pompon rouge. Non échangeable.
+45177	Bonnet à pompon (rouge)	Bonnet de Noël en velours rouge avec tissu peluche blanc et pompon blanc. Non échangeable.
+45178	Masque bonhomme neige+	Masque de bonhomme de neige avec joli haut-de-forme en satin noir-mat. Confère au moins un bonus supplémentaire. L'objet est échangeable.
+45179	Masque Frosty Noël+	Masque de bonhomme de neige avec bonnet de Père Noël en velours rouge et tissu peluche blanc. Confère au moins un bonus supplémentaire. L'objet est échangeable.
+45180	Bonnet à pompon+ (blanc)	Bonnet de Noël en velours blanc avec tissu peluche blanc et pompon rouge. Confère au moins un bonus aléatoire. L'objet est échangeable.
+45181	Bonnet à pompon+ (rouge)	Bonnet de Noël en velours rouge avec tissu peluche blanc et pompon blanc. Confère au moins un bonus aléatoire. L'objet est échangeable.
+45182	Coiffe à plumes (rouge)	C'est un chapeau à plumes rouge mondain pour homme amateur de carnaval.
+45183	Coiffe à plumes (turq.)	C'est un chapeau à plumes turquoise mondain pour homme amateur de carnaval.
+45184	Tiare du phénix (blanc)	C'est une coiffe métallique élégante aux allures d'oiseau pour femme.
+45185	Tiare du phénix (rouge)	C'est une coiffe métallique élégante aux allures d'oiseau pour femme.
+45186	Coiffe à plumes+ (rouge)	C'est un chapeau à plumes rouge mondain pour homme amateur de carnaval. Cet objet vous attribue au moins un bonus aléatoire.
+45187	Coiffe à plumes+ (turq.)	C'est un chapeau à plumes turquoise mondain pour homme amateur de carnaval. Cet objet vous attribue au moins un bonus aléatoire.
+45188	Tiare du phénix+ (blanc)	C'est une coiffe métallique élégante aux allures d'oiseau pour femme. Cet objet vous attribue au moins un bonus aléatoire.
+45189	Tiare du phénix+ (rouge)	C'est une coiffe métallique élégante aux allures d'oiseau pour femme. Cet objet vous attribue au moins un bonus aléatoire.
+45190	Oreilles de lapin (gris)	Bonnet avec oreilles de lapin en douce fourrure grise. Non échangeable.
+45191	Oreilles de lapin (brun)	Bonnet avec oreilles de lapin en douce fourrure brune. Non échangeable.
+45192	Parure pascale (coloré)	Parure pascale colorée et chatoyante pour guerrière à la mode. Non échangeable.
+45193	Parure pascale (bleuté)	Parure pascale bleutée et radieuse pour guerrière à la mode. Non échangeable.
+45194	Oreilles de lapin+(gris)	Bonnet avec oreilles de lapin en douce fourrure grise. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45195	Oreilles de lapin+(brun)	Bonnet avec oreilles de lapin en douce fourrure brune. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45196	Parure pascale+ (coloré)	Parure pascale colorée et chatoyante pour guerrière à la mode. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45197	Parure pascale+ (bleuté)	Parure pascale bleutée et radieuse pour guerrière à la mode. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45198	Turban brun	Un noble turban brun, fait de tissu résistant pour guerrier.
+45199	Turban blanc	Un noble turban blanc, fait de tissu résistant pour guerrier.
+45200	Voile brun	Un voile brun en tissu léger pour guerrière.
+45201	Voile blanc	Un voile blanc en tissu léger pour guerrière.
+45202	Turban brun+	Un noble turban brun, fait de tissu résistant pour guerrier. Il vous donne droit à au moins un bonus déterminé au hasard.
+45203	Turban blanc+	Un noble turban blanc, fait de tissu résistant pour guerrier. Il vous donne droit à au moins un bonus déterminé au hasard.
+45204	Voile brun+	Un voile brun en tissu léger pour guerrière. Il vous donne droit à au moins un bonus déterminé au hasard.
+45205	Voile blanc+	Un voile blanc en tissu léger pour guerrière. Il vous donne droit à au moins un bonus déterminé au hasard.
+45206	Casque à crocs	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires.
+45207	Casque à crocs	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires.
+45208	Casque à crocs	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires.
+45209	Casque à crocs	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires.
+45210	Casque à crocs+	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+45211	Casque à crocs+	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+45212	Casque à crocs+	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+45213	Casque à crocs+	Un casque d'Halloween terrifiant fait pour tourmenter vos adversaires. Vous confère au moins un bonus déterminé au hasard.
+45214	Bonnet à pompon rouge	Bonnet en feutre rouge avec pompon blanc. Non échangeable.
+45215	Bonnet à pompon bleu	Bonnet en feutre bleu avec pompon blanc. Non échangeable.
+45216	Capuche à pompon rouge	Bonnet en feutre rouge avec pompon blanc. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+45217	Capuche à pompon bleue	Bonnet en feutre bleu avec pompon blanc. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+45218	Bonnet à pompon rouge+	Capuche en feutre rouge avec pompon blanc. Non échangeable.
+45219	Bonnet à pompon bleu+	Capuche en feutre bleu avec pompon blanc. Non échangeable.
+45220	Capuche à pompon rouge+	Capuche en feutre rouge avec pompon blanc. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+45221	Capuche à pompon bleue+	Capuche en feutre bleu avec pompon blanc. Vous confère au moins un bonus déterminé au hasard. L'objet est échangeable.
+45222	Oreilles de lapin(blanc)	Bonnet blanc avec oreilles de lapin pour lui. Cet objet n'est pas échangeable.
+45223	Oreilles de lapin (rose)	Bonnet rose avec oreilles de lapin pour lui. Cet objet n'est pas échangeable.
+45224	Oreilles de hase(bleu m)	Oreilles de lapin bleu marine pour elle. Cet objet n'est pas échangeable.
+45225	Oreilles de hase(magen.)	Oreilles de lapin bleu magenta pour elle. Cet objet n'est pas échangeable.
+45226	Oreilles de lapin+(bla.)	Bonnet blanc avec oreilles de lapin pour lui. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+45227	Oreilles de lapin+(rose)	Bonnet rose avec oreilles de lapin pour lui. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+45228	Oreilles de hase+(bl. m)	Oreilles de lapin bleu marine pour elle. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+45229	Oreilles de hase+(magen)	Oreilles de lapin bleu magenta pour elle. Vous confère au minimum un bonus aléatoire. Cet objet est échangeable.
+45234	Turban bleu	Un noble Turban bleu, fait de tissu résistant pour guerrier.
+45235	Turban rouge	Un noble Turban rouge, fait de tissu résistant pour guerrier.
+45236	Voile brun	Un Voile brun en tissu léger pour guerrière.
+45237	Voile vert	Un Voile vert en tissu léger pour guerrière.
+45238	Turban bleu+	Un noble Turban bleu, fait de tissu résistant pour guerrier. Vous confère au moins un bonus déterminé au hasard.
+45239	Turban rouge+	Un noble Turban rouge, fait de tissu résistant pour guerrier. Vous confère au moins un bonus déterminé au hasard.
+45240	Voile brun+	Un Voile brun en tissu léger pour guerrière. Vous confère au moins un bonus déterminé au hasard.
+45241	Voile vert+	Un Voile vert en tissu léger pour guerrière. Vous confère au moins un bonus déterminé au hasard.
+45250	Casque vampiro (gris)	Il s'agit du casque d'un vampiro. Cet objet n'est pas échangeable.
+45251	Casque vampiro (rouge)	Il s'agit du casque d'un vampiro. Cet objet n'est pas échangeable.
+45252	Casque Vampira (gris)	Casque de la guerrière Vampira. Cet objet n'est pas échangeable.
+45253	Casque Vampira (rouge)	Casque de la guerrière Vampira. Cet objet n'est pas échangeable.
+45254	Casque vampiro+ (gris)	Il s'agit du casque d'un vampiro. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45255	Casque vampiro+ (rouge)	Il s'agit du casque d'un vampiro. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45256	Casque Vampira+ (gris)	Casque de la guerrière Vampira. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45257	Casque Vampira+ (rouge)	Casque de la guerrière Vampira. Vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45258	Capuche de Noël (rouge)	Une capuche de Noël rouge à ourlet blanc.
+45259	Capuche de Noël (vert)	Une capuche de Noël verte à ourlet blanc.
+45260	Béret de Noël (rouge)	Un béret de Noël rouge à pompon blanc.
+45261	Béret de Noël (vert)	Un béret de Noël vert à pompon blanc.
+45262	Capuche de Noël+ (rouge)	Une capuche de Noël rouge à ourlet blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+45263	Capuche de Noël+ (vert)	Une capuche de Noël verte à ourlet blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+45264	Béret de Noël+ (rouge)	Un béret de Noël rouge à pompon blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+45265	Béret de Noël+ (vert)	Un béret de Noël vert à pompon blanc. Cet objet vous confère au moins un bonus déterminé au hasard et est échangeable.
+45266	Kabuto doré (m)	C'est le casque doré d'un général de l'armée japonaise.
+45267	Kabuto argenté (m)	C'est le casque argenté d'un général de l'armée japonaise.
+45268	Kabuto doré (f)	C'est le casque doré d'une générale de l'armée japonaise.
+45269	Kabuto argenté (f)	C'est le casque argenté d'une générale de l'armée japonaise.
+45270	Kabuto doré+ (m)	C'est le casque doré d'un général de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+45271	Kabuto argenté+ (m)	C'est le casque argenté d'un général de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+45272	Kabuto doré+ (f)	C'est le casque doré d'une générale de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+45273	Kabuto argenté+ (f)	C'est le casque argenté d'une générale de l'armée japonaise. Vous obtenez au moins un bonus aléatoire.
+45274	Chignon samouraï (or)	Chignon à barrette dorée dans un style de samouraï masculin
+45275	Chignon samouraï argent	Chignon à barrette argentée dans un style de samouraï masculin
+45276	Chignon samouraï (or)	Chignon à barrette dorée dans un style de samouraï féminin
+45277	Chignon samouraï argent	Chignon à barrette argentée dans un style de samouraï féminin
+45278	Chignon samouraï+ (or)	Chignon à barrette dorée dans un style de samouraï masculin. Elle vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45279	Chignon samouraï+ argent	Voici un chignon à barrette argentée dans un style de samouraï masculin. Il vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45280	Chignon samouraï+ (or)	Voici un chignon à barrette dorée dans un style de samouraï féminin. Il vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45281	Chignon samouraï+ argent	Voici un chignon à barrette argentée dans un style de samouraï féminin. Il vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45282	Cornes d'horreur (j)	Casque doré doté des cornes du diable
+45283	Cornes d'horreur (b)	Casque bleu doté des cornes du diable
+45284	Cornes d'horreur (j)	Casque doré doté des cornes du diable
+45285	Cornes d'horreur (b)	Casque bleu doté des cornes du diable
+45286	Cornes d'horreur+ (j)	C'est un casque doré doté des cornes du diable. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45287	Cornes d'horreur+ (b)	C'est un casque bleu doté des cornes du diable. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45288	Cornes d'horreur+ (j)	C'est un casque doré doté des cornes du diable. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45289	Cornes d'horreur+ (b)	C'est un casque bleu doté des cornes du diable. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45290	Chapeau steampunk (noir)	Haut-de-forme futuriste pour les combattants d'ici et maintenant
+45291	Chapeau steampunk rouge	Haut-de-forme futuriste pour les combattants d'ici et maintenant
+45292	Chapeau steampunk (noir)	Haut-de-forme futuriste pour les combattantes d'ici et maintenant
+45293	Chapeau steampunk rouge	Haut-de-forme futuriste pour les combattantes d'ici et maintenant
+45294	Chapeau steampunk+ noir	Voici un haut-de-forme futuriste pour les combattants d'ici et maintenant. Il vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45295	Chapeau steampunk+ rouge	Voici un haut-de-forme futuriste pour les combattants d'ici et maintenant. Il vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45296	Chapeau steampunk+ noir	Voici un haut-de-forme futuriste pour les combattantes d'ici et maintenant. Il vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45297	Chapeau steampunk+ rouge	Voici un haut-de-forme futuriste pour les combattantes d'ici et maintenant. Il vous attribue au moins un bonus aléatoire. Cet objet est échangeable.
+45298	Chapeau à plume (bleu)	Chapeau bleu avec harnais en perles et plume de faisan rouge
+45299	Chapeau à plume (gris)	Chapeau gris avec harnais en perles et plume de faisan couleur pétrole
+45300	Toque sungura (bleu)	Coiffe bleue sertie d'une gemme turquoise
+45301	Toque sungura (gris)	Coiffe grise sertie d'une gemme violette
+45302	Chapeau à plume+ (bleu)	C'est un chapeau bleu avec harnais en perles et plume de faisan rouge. Cet objet vous confère au moins un bonus déterminé au hasard.
+45303	Chapeau à plume+ (gris)	C'est un chapeau gris avec harnais en perles et plume de faisan couleur pétrole. Cet objet vous confère au moins un bonus déterminé au hasard.
+45304	Toque sungura+ (bleu)	C'est une coiffe bleue sertie d'une gemme turquoise. Cet objet vous confère au moins un bonus déterminé au hasard.
+45305	Toque sungura+ (gris)	C'est une coiffe grise sertie d'une gemme violette. Cet objet vous confère au moins un bonus déterminé au hasard.
+45314	Couronne du zodiaque	Couvre-chef majestueux
+45315	Couronne du zodiaque	Couvre-chef majestueux
+45316	Couronne du zodiaque+	C'est un couvre-chef majestueux. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45317	Couronne du zodiaque+	C'est un couvre-chef majestueux. Cet objet vous confère au moins un bonus déterminé au hasard. Cet objet est échangeable.
+45320	Casque d'Avalonie (arg.)	Casque argenté d'une noble dynastie de chevaliers venue d'un passé lointain
+45321	Casque d'Avalonie (rou.)	Casque rouge d'une noble dynastie de chevaliers venue d'un passé lointain
+45322	Casque d'Avalonie (arg.)	Casque argenté d'une noble dynastie de chevaliers venue d'un passé lointain
+45323	Casque d'Avalonie (rou.)	Casque rouge d'une noble dynastie de chevaliers venue d'un passé lointain
+45324	Casque d'Avalonie+ (arg)	Voici le casque argenté d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+45325	Casque d'Avalonie+ (rou)	Voici le casque rouge d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+45326	Casque d'Avalonie+ (arg)	Voici le casque argenté d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+45327	Casque d'Avalonie+ (rou)	Voici le casque rouge d'une noble dynastie de chevaliers venue d'un passé lointain. Cet objet vous confère au moins un bonus déterminé au hasard.
+45328	Bonnet d'ourson (h)	Adorable couvre-chef à tête d'ourson
+45329	Bonnet de tigre (h)	Adorable couvre-chef à tête de tigre
+45330	Bonnet d'ourson (f)	Adorable couvre-chef à tête d'ourson
+45331	Bonnet de tigre (f)	Adorable couvre-chef à tête de tigre
+45332	Bonnet d'ourson+ (h)	Cet adorable couvre-chef vous confère au moins un bonus déterminé au hasard.
+45333	Bonnet de tigre+ (h)	Cet adorable couvre-chef vous confère au moins un bonus déterminé au hasard.
+45334	Bonnet d'ourson+ (f)	Cet adorable couvre-chef vous confère au moins un bonus déterminé au hasard.
+45335	Bonnet de tigre+ (f)	Cet adorable couvre-chef vous confère au moins un bonus déterminé au hasard.
+45336	Capuche de loup brun (h)	Une splendide capuche en pelage de loup pour homme.
+45337	Capuche de loup gris (h)	Une splendide capuche en pelage de loup pour homme.
+45338	Capuche de loup brun (f)	Une splendide capuche en pelage de loup pour femme.
+45339	Capuche de loup gris (f)	Une splendide capuche en pelage de loup pour femme.
+45340	Capuche loup brun+ (h)	Une splendide capuche en pelage de loup pour homme. Cet objet vous confère au moins un bonus déterminé au hasard.
+45341	Capuche loup gris+ (h)	Une splendide capuche en pelage de loup pour homme. Cet objet vous confère au moins un bonus déterminé au hasard.
+45342	Capuche loup brun+ (f)	Une splendide capuche en pelage de loup pour femme. Cet objet vous confère au moins un bonus déterminé au hasard.
+45343	Capuche loup gris+ (f)	Une splendide capuche en pelage de loup pour femme. Cet objet vous confère au moins un bonus déterminé au hasard.
+45344	Bandeau Mondial DEN (f)	Ces cheveux longs noués arborent un bandeau aux couleurs du Danemark.
+45345	Bandeau Mondial HUN (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Hongrie.
+45346	Bandeau Mondial POL (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Pologne.
+45347	Bandeau Mondial KSA (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de l'Arabie saoudite.
+45348	Bandeau Mondial SVK (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Slovaquie.
+45349	Bandeau Mondial TUR (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Turquie.
+45350	Bandeau Mondial DEN+ (f)	Ces cheveux longs noués arborent un bandeau aux couleurs du Danemark. Vous obtenez au moins un bonus aléatoire.
+45351	Bandeau Mondial HUN+ (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Hongrie. Vous obtenez au moins un bonus aléatoire.
+45352	Bandeau Mondial POL+ (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Pologne. Vous obtenez au moins un bonus aléatoire.
+45353	Bandeau Mondial KSA+ (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de l'Arabie saoudite. Vous obtenez au moins un bonus aléatoire.
+45354	Bandeau Mondial SVK+ (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Slovaquie. Vous obtenez au moins un bonus aléatoire.
+45355	Bandeau Mondial TUR+ (f)	Ces cheveux longs noués arborent un bandeau aux couleurs de la Turquie. Vous obtenez au moins un bonus aléatoire.
+50208	Parchemin en Argent Prime	Utilisé pour activer votre abonnement Argent Prime ou augmenter sa durée.
+50209	Parchemin en Or Prime	Utilisé pour activer votre abonnement Or Prime ou augmenter sa durée.
+50210	Parchemin en Platine Prime	Utilisé pour activer votre abonnement Platine Prime ou augmenter sa durée.
+50266	Coffre de Jotun Thrym	Le Coffre de Jotun Thrym. Son cadenas massif indique la présence d'un objet précieux.
+50267	Coffre doré Okey	Collectez 400 points ou plus dans une partie Okey pour obtenir ce prix.
+50270	Coffre de la reine Meley	Ce coffre a été découvert dans le Repaire de Meley, reine des dragons. Il contient un trésor véritablement royal. Cet objet est échangeable.
+50271	Coffre des gardes du dr.	Ce coffre contient quelques trésors rares ayant appartenu aux gardes du dragons. On les croyait perdus depuis des siècles. Cet objet est échangeable.
+50272	Coffre chass. boss or	Récompense en or pour vos faits d'armes dans la chasse au boss
+50285	Coffre de Zone en acier	Un coffre au contenu précieux.
+50286	Coffre de Zone en or	Un coffre au contenu précieux.
+50287	Caisse du front 1	Une caisse contenant de l'équipement utile.
+50288	Caisse du front 2	Une caisse contenant de l'équipement utile.
+50289	Réincarnation	La Réincarnation vous ressuscite sur le champ et sans attente.
+50290	Coffre de Zone en bois	Un coffre au contenu précieux.
+50323	Coffre : livr. de parade	Ce coffre contient un livre de compétence aléatoire pour apprendre des compétences de parade.
+50324	Coffre : livre de bonus	Ce coffre contient un livre de compétence aléatoire pour apprendre des compétences de bonus.
+50500	Réhausseur d'Emplacement d'Armure	Ouvre un quatrième emplacement dans ta armure.
+50501	Réhausseur d'Emplacement d'Arme	Ouvre un quatrième emplacement dans ta arme.
+50514	Livre de bonus	Ce livre vous permet d'apprendre une des neuf compétences de bonus. C'est la compétence la plus adaptée à votre personnage qui sera choisie.
+50515	Livre de parade	Ce livre vous permet de choisir parmi neuf compétences de parade. Réfléchissez bien !
+50516	Parade Moulinet à l'épée	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Moulinet à l'épée.
+50517	Parade Embuscade	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Embuscade.
+50518	Parade Toucher brûlant	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Toucher brûlant.
+50519	Parade Dragon chassant	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Dragon chassant.
+50520	Parade Att. de l'esprit	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Esquive.
+50521	Parade Flèche de feu	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Flèche de feu.
+50522	Parade Att. des Ténèbres	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Attaque des Ténèbres.
+50523	Parade Inv. de foudre	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Invocation de foudre.
+50524	Parade Souffle de loup	Ce livre vous permet d'apprendre une compétence qui diminue les dégâts causés par Souffle de loup.
+50525	Pierre d'âme+	Cette pierre légendaire sert à augmenter les compétences de Grand Maître de vos compétences de bonus et de parade. La pierre disparaît après utilisation.
+50560	Bonus Moulinet à l'épée	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Moulinet à l'épée.
+50561	Bonus Embuscade	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Embuscade.
+50562	Bonus Toucher brûlant	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Toucher brûlant.
+50563	Bonus Dragon chassant	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Dragon chassant.
+50564	Bonus Att. de l'esprit	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Attaque de l'esprit.
+50565	Bonus Flèche de feu	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Flèche de feu.
+50566	Bonus Att. des Ténèbres	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Attaque des Ténèbres.
+50567	Bonus Inv. de foudre	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Invocation de foudre.
+50568	Bonus Souffle de loup	Ce livre vous permet d'apprendre une compétence qui apporte un bonus à Souffle de loup.
+50569	Pierre d'âme légendaire	Cette pierre cache un esprit puissant capable de renforcer vos compétences de parfaits grands maîtres.
+50570	Pierre d'âme légendaire	Cette pierre cache un esprit puissant qui est capable de renforcer votre compétence parfaite directement en compétences légendaires.
+50571	Pierre d'âme légendaire	Cette pierre cache un esprit puissant qui est capable de renforcer votre compétence parfaite directement en compétences légendaires.
+50619	Minerai de tourmaline	Peut être utilisé pour obtenir une tourmaline au moyen d'un four de Guilde.
+50620	Minerai de Azure	Avec le four de la guilde, vous pouvez fabriquer un Azure à partir de ce minerai.
+50639	Tourmaline	Cette gemme envoûtante scintille de toutes les couleurs de l'arc-en-ciel. Peut être utilisée pour fabriquer des bijoux.
+50640	Azure	Pierre précieuse bleue taillée d'une façon unique. Peut-être utilisée pour fabriquer un bijou de valeur.
+50926	Gemme précieuse	Collectez des gemmes précieuses et faites-les tailler par le marchand de Gayas pour obtenir de précieux Gayas.
+51723	Bois fossile	Un bois de valeur. | Il peut être lié sur un objet de bois.
+51724	Cuivre	Parfois utilisé pour faire des bronzes ou des pièces. | Peut être lié à un objet en cuivre.
+51725	Argent	Un métal précieux blanc et brillant utilisé en joaillerie.
+51726	Or	Un métal doré utilisé en joaillerie.
+51727	Jade	Une matière très précieuse. Il peut être lié à un objet de jade.
+51728	Pierre d'ébène	De couleur noire et d'une dureté extraordinaire, ce bois est l'un de plus précieux. Il est souvent utilisé en joaillerie.
+51729	Perle	Utilisé pour faire des bijoux.| Il peut être lié à un objet en perles.
+51730	Or blanc	De l'or aussi solide que de l'argent.
+51731	Cristal	Également appelé cristal de roche ou quartz.| Il peut être lié à un objet de cristal.
+51732	Améthyste	Un quartz violet.
+51733	Larme céleste	La pluie du ciel cristallisée.| Il peut être lié à un objet en larme céleste.
+51734	Cristal d'âme	Un cristal aussi pur qu'une âme. Peut être utilisé pour fabriquer des bijoux.
+51735	Rubis	Pierre précieuse rouge taillée d'une façon unique. Peut-être utilisée pour fabriquer un bijou de valeur.
+51736	Grenat	Pierre précieuse orange taillée d'une façon unique. Peut-être utilisée pour fabriquer un bijou de valeur.
+51737	Émeraude	Pierre précieuse verte taillée d'une façon unique. Peut-être utilisée pour fabriquer un bijou de valeur.
+51738	Saphir	Pierre précieuse bleue taillée d'une façon unique. Peut-être utilisée pour fabriquer un bijou de valeur.
+51740	Azure	Pierre précieuse bleue taillée d'une façon unique. Peut-être utilisée pour fabriquer un bijou de valeur.
+55001	Fortifiant	Nourrissez votre familier épuisé avec ce délicieux fortifiant. Il se remettra complètement. Si vous donnez cette nourriture à un familier mort, il retrouvera 50 % de sa vitalité.
+55002	Sac de transport	Si vous déposez votre familier dans le sac de transport, il est échangeable pendant 30 jours.
+55003	Livre de jeune familier	Avec les objets suivants, vous pouvez faire passer votre familier au niveau supérieur (familier sauvage) : 10x Livre de jeune familier, 10x Poche d'œuf d'araignée, 10x Natte de ruban blanc+, 10x Shuriken, 10x Épingle de cheveux déco, 5x Uniforme noir usé+, 5x  	 Morceau de glace+.
+55004	Livre de famil. sauvage	Avec les objets suivants, vous pouvez faire passer votre familier au niveau supérieur (familier vaillant) : 10x Livre de familier sauvage, 2x Perle de sang, 10x Crème de visage, 10x Fourrure de Yéti+, 10x Ornement, 10x Pelote, 5x Livre maudit+.
+55005	Livre de famil. vaillant	Avec les objets suivants, vous pouvez faire passer votre familier au niveau supérieur (entraînement héroïque) : 10x Livre de familier vaillant, 10x Médicament inconnu+, 2x Perle blanche, 2x Perle bleue, 10x Souvenir de Démon+, 10x Dent d'orc+, 5x Lanière bleue.
+55006		
+55008	P. des noms de familiers	Déposez le parchemin sur votre familier pour le renommer.
+55009	Malle livres de familier	Contient un livre de compétence de familier choisi au hasard.
+55010	Livre des Monstres	Après avoir appris cette compétence, votre familier augmente vos dégâts contre les monstres.
+55011	Livre des Pierres Metin	Après avoir appris cette compétence, votre familier augmente vos dégâts contre les Pierres Metin.
+55012	Livre des Boss	Après avoir appris cette compétence, votre familier augmente vos dégâts contre les boss.
+55013	Livre de Vie	Après avoir appris cette compétence, votre familier augmente vos PV maximum.
+55014	Livre du Poison	Après avoir appris cette compétence, votre familier donne à vos attaques une chance d’empoisonner l’ennemi.
+55015	Livre Anti-Critique	Après avoir appris cette compétence, votre familier réduit les chances de recevoir des coups critiques.
+55016	Livre Anti-Pénétration	Après avoir appris cette compétence, votre familier réduit les chances de recevoir des coups perçants.
+55017	Livre du Feu	Après avoir appris cette compétence, votre familier augmente votre puissance contre l’élément feu.
+55018	Livre de Glace	Après avoir appris cette compétence, votre familier augmente votre puissance contre l’élément glace.
+55019	Livre de Terre	Après avoir appris cette compétence, votre familier augmente votre puissance contre l’élément terre.
+55020	Livre du Vent	Après avoir appris cette compétence, votre familier augmente votre puissance contre l’élément vent.
+55021	Livre de Régénération	Après avoir appris cette compétence, votre familier restaure progressivement vos PV au fil du temps.
+55022	Livre d’Esquive des Flèches	Après avoir appris cette compétence, votre familier augmente vos chances d’esquiver les attaques à l’arc.
+55023	Livre du Butin	Après avoir appris cette compétence, votre familier augmente votre taux de drop d’objets.
+55024	Livre de l’Attaquant	Après avoir appris cette compétence, votre familier augmente votre valeur d’attaque globale.
+55025	Livre du Berserker (H)	Après avoir appris cette compétence, votre familier augmente vos dégâts magiques/corps à corps.
+55026	Livre des Dégâts de Compétence (H)	Après avoir appris cette compétence, votre familier augmente les dégâts de vos compétences.
+55027	Livre de Résistance aux Compétences (H)	Après avoir appris cette compétence, votre familier augmente votre résistance aux dégâts des compétences.
+55028	Livre des Dégâts Moyens (H)	Après avoir appris cette compétence, votre familier augmente vos dégâts moyens.
+55029	Livre Anti-Démi-Humains (H)	Après avoir appris cette compétence, votre familier augmente votre résistance contre les demi-humains.
+55030	Livre Élémentaire (H)	Après avoir appris cette compétence, votre familier augmente vos dégâts élémentaires.
+55401	Œuf de singe	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55402	Œuf d'araignée	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55403	Œuf de Razador	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55404	Œuf de Nemere	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55405	Œuf de dragon bleu	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55406	Œuf de dragon rouge	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55407	Œuf de mini-Azraël	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55408	Œuf minibourreau ventru	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55409	Œuf de bébé Baashido	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55410	Œuf de Nessie	Pour faire éclore le familier, faites un clic droit sur l'œuf.
+55701	Petit singe	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55702	Petite araignée	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55703	Petit Razador	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55704	Petit Nemere	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55705	Petit dragon	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55706	Petite Meley	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55707	Mini-Azraël	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55708	Minibourreau ventru	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55709	Bébé Baashido	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+55710	Nessie	Appelez votre familier avec un clic droit. Appuyez alors sur la touche « p » pour charger l'interface du familier.
+56000	Appaloosa	Ce sceau vous permet d'appeler votre docile poney appaloosa. Lorsque vous le chevauchez, il vous confère +10 de vitesse de déplacement.
+69544	Jeton Nova	Utilisé pour acheter des produits cosmétiques spéciaux lors d'événements.
+70065	Transfert de bonus	Transfère les bonus d'un costume à un autre. Un des costumes est détruit.
+71000	Parch. de modif. d'entr.	Cet objet vous permet de supprimer complètement vos compétences de bonus et de parade. Les livres (parade et bonus) vous permettent de les apprendre à nouveau.
+71165	Prédateur polaire	Ce sceau vous permet d'appeler votre prédateur polaire belliqueux. Cet animal augmente votre vitesse de déplacement de 60.
+71176	Panthère noire	Ce sceau vous permet d'appeler votre panthère noire mystérieuse. Cet animal augmente votre vitesse de déplacement de 30.
+71177	Léopard	Ce sceau vous permet d'appeler votre courageux léopard. Cet animal augmente votre vitesse de déplacement de 30.
+71182	Muffin (brun)	Avec ce sceau, vous appelez Muffin, le redoutable poussin batailleur. Cet animal augmente votre vitesse de déplacement de 20.
+71183	Nugget (brun)	Avec ce sceau, vous appelez Nugget, le terrible poussin batailleur. Cet animal augmente votre vitesse de déplacement de 20.
+71184	Muffin (bleu)	Avec ce sceau, vous appelez Muffin, le redoutable poussin batailleur. Cet animal augmente votre vitesse de déplacement de 20.
+71185	Nugget (bleu)	Avec ce sceau, vous appelez Nugget, le terrible poussin batailleur. Cet animal augmente votre vitesse de déplacement de 20.
+71186	Muffin (vert)	Avec ce sceau, vous appelez Muffin, le redoutable poussin batailleur. Cet animal augmente votre vitesse de déplacement de 20.
+71187	Nugget (vert)	Avec ce sceau, vous appelez Nugget, le terrible poussin batailleur. Cet animal augmente votre vitesse de déplacement de 20.
+71188	Sucette magique	La sucette aux ingrédients secrets vous confère | +50 % de points d'expérience | +30 % de dégâts magiques | +20 % de vitesse d'attaque | +20 % de vitesse de sort | +10 % de PV maximums | +10 % de PM maximums
+71189	Objet enchanté+	Retire les bonus d'un de vos objets et en ajoute de nouveaux. Les nouveaux bonus sont affichés et vous pouvez choisir de les sélectionner ou non.
+71190	Boîte à citrouilles	Obtenez cette Boîte à citrouilles pour des performances exceptionnelles.
+71191	Sachet de bonbons	Sam Citrouille vous offre ce Sachet de bonbons au contenu délicieux. Ouvrez-le et laissez-vous surprendre !
+71192	Tonnerre	Ce sceau appelle votre renne, Tonnerre. Cet animal augmente votre vitesse de déplacement de 20 et le gain d'expérience de 30 %.
+71193	Éclair	Ce sceau appelle votre renne, Éclair. Cet animal augmente votre vitesse de déplacement de 20 et le gain d'expérience de 30 %.
+71194	Boîte dorée Okey	Vous obtenez 5 sets de cartes composés de 24 cartes à collecter Okey chacun (120 en tout). Vous ne pourrez plus obtenir de cartes quand l'évènement sera terminé.
+71195	Boîte argentée Okey	Vous obtenez un set de cartes composé de 24 cartes à collecter Okey. Vous ne pourrez plus obtenir de cartes quand l'évènement sera terminé.
+71196	Boîte de bronze Okey	Vous obtenez 6 cartes à collecter Okey. Vous ne pourrez plus obtenir de cartes quand l'évènement sera terminé.
+71197	Nugget (bleu marine)	Avec ce sceau, vous appelez Nugget, le terrible poussin batailleur. Cet animal vous confère +15 % de force contre les monstres et augmente le gain d'expérience de 30 %.
+71198	Muffin (rose)	Avec ce sceau, vous appelez Muffin, le redoutable poussin batailleur. Cet animal vous confère +15 % de force contre les monstres et augmente le gain d'expérience de 30 %.
+71220		
+71235	Cerbère (or)	Grâce à ce sceau, vous pourrez invoquer votre propre redoutable chien tricéphale des enfers.
+71236	Cerbère (argent)	Grâce à ce sceau, vous pourrez invoquer votre propre redoutable chien tricéphale des enfers.
+71237	Sanglier	Ce sceau magique appellera l'esprit d'un puissant animal qui vous amènera rapidement à l'endroit de votre choix.
+71238	Loup	Ce sceau magique appellera l'esprit d'un puissant animal qui vous amènera rapidement à l'endroit de votre choix.
+71239	Tigre	Ce sceau magique appellera l'esprit d'un puissant animal qui vous amènera rapidement à l'endroit de votre choix.
+71240	Lion	Ce sceau magique appellera l'esprit d'un puissant animal qui vous amènera rapidement à l'endroit de votre choix.
+71241	Ticket d'équitation	Équipez ce ticket pour chevaucher un poney pendant 10 minutes.
+72325	Antéprojection	Annule les projections pratiquées sur vos objets.
+72326	Antéprojection	Annule les projections pratiquées sur vos objets et rembourser l'article.
+72709	Boucles en os de tigre	Votre valeur d'attaque est augmentée de 200 points pendant 20 heures (le temps n'est décompté que lorsque l'objet est porté).
+72710	Boucles en os de dragon	Votre valeur de défense est augmentée de 300 points pendant 20 heures (le temps n'est décompté que lorsque l'objet est porté).
+72711	Bracelet os de Tigre	Les dégâts infligés avec vos compétences augmentent de 30 points pendant 20 heures (le temps n'est décompté que lorsque l'objet est porté).
+72712	Bracelet os de Dragon	Votre défense contre les compétences augmente de 30 points pendant 20 heures (le temps n'est décompté que lorsque l'objet est porté).
+72800	Parch. - Rubis	Une veine de Rubis apparaît à côté de votre personnage.
+72801	Parch. - Grenat	Une veine de Grenat apparaît à côté de votre personnage.
+72802	Parch. - émeraude	Une veine de l'émeraude apparaît à côté de votre personnage.
+72803	Parch. - Saphir	Une veine Saphir apparaît à côté de votre personnage.
+72804	Parch. - Tourmaline	Une veine de Tourmaline apparaît à côté de votre personnage.
+74521	Coupe à la mode (gris)	Une coiffure qui vous donnera une allure frappante.
+74522	Bandeau	Une coupe courte, maintenue par un bandeau.
+74523	Cheveux longs (blond)	Une coiffure impressionnante avec de magnifiques cheveux blonds.
+74524	Coupe à la mode (or)	Une coupe dans un nuance dorée en vogue, les cheveux retenus par un bandeau.
+74525	Bandeau (noir)	Une coupe ébouriffée, maintenue en place par un bandeau.
+74526	Cheveux longs (rubis)	De magnifiques cheveux rouge rubis.
+74527	Queue de cheval (rouge)	De longs cheveux formant une tresse.
+74528	Coupe aux épaules (aqua)	Une coiffure décente avec un bandeau bleu.
+74529	Coupe courte (brun)	Une coupe courte pratique qui donne un air sinistre.
+74530	Queue de cheval (rouge)	De longs cheveux rouges formant une tresse, une coiffure très appréciée des femmes.
+74531	Coupe aux épaules (noir)	Une coiffure originale et insolente.
+74532	Coupe courte (gris)	Une coupe courte pratique qui a quelque chose de menaçant.
+74533	Coupe sportive (noir)	Une coupe courte donnant un style militaire.
+74534	Coupe respectable (bld)	Une coiffure qui fait ressortir votre personnalité.
+74535	Longue natte (rose)	Une natte à l'ancienne, autrefois symbole de richesse.
+74536	Coupe sportive (violet)	Une coupe courte extravagante.
+74537	Coupe respectable (bld)	Une coiffure charismatique pour cheveux longs.
+74538	Longue natte (royal)	Une natte à l'ancienne, autrefois symbole de richesse.
+74539	Coiffure noble (violet)	Une coiffure élégante, cheveux attachés en arrière.
+74540	Cheveux mi-longs (foncé)	Une coiffure élégante de chamane.
+74541	Coiffure tradi. (blanc)	Des cheveux longs coiffés traditionnellement.
+74542	Coiffure noble (rouge)	Un chignon élégant retenu par une épingle à cheveux en forme de papillon.
+74543	Cheveux mi-longs (blanc)	Une coiffure élégante, aux cheveux lisses.
+74544	Coiffure tradi. (noir)	Une coupe féminine avec de longs cheveux dégradés.
+74545	Tresses tribales (rouge)	Des tresses ornées de perles de bois rouges qui marquent l'appartenance à une tribu.
+74546	Tresses tribales (jaune)	Des tresses ornées de perles de bois jaunes qui marquent l'appartenance à une tribu.
+74547	Tresses tribales (bleu)	Des tresses ornées de perles de bois bleues qui marquent l'appartenance à une tribu.
+74548	Tresses tribales (viol.)	Des tresses ornées de perles de bois violettes qui marquent l'appartenance à une tribu.
+74549	Tresses tribales (vert)	Des tresses ornées de perles de bois vertes qui marquent l'appartenance à une tribu.
+74550	Parure frontale (or)	Protection frontale décorée avec parure traditionnelle assortie
+74551	Parure frontale (noire)	Protection frontale décorée avec parure traditionnelle assortie
+74552	Parure frontale (rouge)	Protection frontale décorée avec parure traditionnelle assortie
+74553	Parure frontale (bleu)	Protection frontale décorée avec parure traditionnelle assortie
+74554	Parure frontale(blanche)	Protection frontale décorée avec parure traditionnelle assortie
+74555	Parure frontale (or)	Protection frontale finement ouvragée avec plaques au niveau des tempes et parure traditionnelle assortie.
+74556	Parure frontale (noire)	Protection frontale finement ouvragée avec plaques au niveau des tempes et parure traditionnelle assortie
+74557	Parure frontale (rouge)	Protection frontale finement ouvragée avec plaques au niveau des tempes et parure traditionnelle assortie
+74558	Parure frontale (bleu)	Protection frontale finement ouvragée avec plaques au niveau des tempes et parure traditionnelle assortie
+74559	Parure frontale (verte)	Protection frontale finement ouvragée avec plaques au niveau des tempes et parure traditionnelle assortie
+76191	Sort de sauveur vert	Vous permet de choisir entre 1 et 5 bonus maximum de votre choix.
+76192	Sort rare bleu Vous	permet de choisir entre 6 et 7 bonus maximum de votre choix.
+79501	Carquois de flèches	Un carquois avec lequel vous disposez d'un stock de flèches inépuisable pendant 24 heures. Les dégâts infligés ne sont pas réduits par la distance de tir.
+79502	Carquois de flèches	Un carquois avec lequel vous disposez d'un stock de flèches inépuisable pendant 7 jours. Les dégâts infligés ne sont pas réduits par la distance de tir.
+79503	Carquois de flèches	Un carquois avec lequel vous disposez d'un stock de flèches inépuisable pour combattre. Les dégâts infligés ne sont pas réduits par la distance de tir.
+79504	Carquois de flèches	Un carquois avec lequel vous disposez d'un stock de flèches inépuisable pour combattre. Les dégâts infligés ne sont pas réduits par la distance de tir.
+79505	Carte à collecter Okey	Avec 24 Cartes à collecter Okey, vous obtenez automatiquement un Set de cartes Okey.
+79506	Set de cartes Okey	Avec ce Set de cartes, vous pouvez lancer une partie Okey. Le Set de cartes sera automatiquement supprimé de votre inventaire après le début du jeu.
+80018	Bon de DC (6000)	Bon d'une valeur de 6000 Monnaies du Nova. L'objet est échangeable.
+80019	Bon de DC (12000)	Bon d'une valeur de 12000 Monnaies du Nova. L'objet est échangeable.
+85001	Étole d'expert (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85002	Étole d'expert (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85003	Étole d'expert (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85004	Étole d'expert (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85005	Étole de maître (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85006	Étole de maître (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85007	Étole de maître (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85008	Étole de maître (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85009	Certificat de Renversement	Enlève complétement les bonus et l'objet de ton étole.
+85010	Certificat de Renversement+	Enlève complétement les bonus et te redonne l'objet de ton étole.
+85011	Étole de prince (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85012	Étole de prince (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85013	Étole de prince (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85014	Étole de prince (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85015	Étole de roi (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85016	Étole de roi (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85017	Étole de roi (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85018	Étole de roi (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85021	Étole anniv. simple	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85022	Étole anniversaire fine	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85023	Étole anniversaire noble	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+85024	Étole anniversaire rare	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86001	Étole de Zi (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86002	Étole de Zi (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86003	Étole de Zi (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86004	Étole de Zi (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86005	Étole de Chou (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86006	Étole de Chou (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86007	Étole de Chou (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86008	Étole de Chou (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86011	Étole de Yin (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86012	Étole de Yin (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86013	Étole de Yin (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86014	Étole de Yin (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86015	Étole de Mao (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86016	Étole de Mao (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86017	Étole de Mao (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86018	Étole de Mao (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86021	Étole de Chen (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86022	Étole de Chen (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86023	Étole de Chen (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86024	Étole de Chen (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86025	Étole de Si (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86026	Étole de Si (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86027	Étole de Si (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86028	Étole de Si (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86031	Étole de Wu (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86032	Étole de Wu (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86033	Étole de Wu (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86034	Étole de Wu (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86035	Étole de Wei (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86036	Étole de Wei (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86037	Étole de Wei (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86038	Étole de Wei (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86041	Étole de Shen (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86042	Étole de Shen (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86043	Étole de Shen (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86044	Étole de Shen (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86045	Étole de Yu (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86046	Étole de Yu (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86047	Étole de Yu (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86048	Étole de Yu (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86051	Étole de Xu (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86052	Étole de Xu (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86053	Étole de Xu (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86054	Étole de Xu (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86055	Étole de Hai (simple)	Cette étole absorbe 1 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86056	Étole de Hai (fine)	Cette étole absorbe 5 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86057	Étole de Hai (noble)	Cette étole absorbe 10 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.
+86058	Étole de Hai (rare)	Cette étole absorbe 11 à 25 % des bonus de l'arme ou de l'armure à laquelle vous avez recours.

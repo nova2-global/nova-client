@@ -36,7 +36,7 @@ window = {
 					"horizontal_align" : "center",
 					"vertical_align" : "center",
 
-					"image" : "d:/ymir work/ui/equipment_bg_without_ring.tga",
+					"image" : "d:/ymir work/ui/equipment_bg_with_ring.tga",
 
 					"children" :
 					(
@@ -63,12 +63,12 @@ window = {
 										{"index":8, "x":75, "y":145, "width":32, "height":32},
 										{"index":9, "x":114, "y":2, "width":32, "height":32},
 										{"index":10, "x":75, "y":35, "width":32, "height":32},
-										## 새 반지1
-										##{"index":21, "x":2, "y":106, "width":32, "height":32},
-										## 새 반지2
-										##{"index":22, "x":75, "y":106, "width":32, "height":32},
-										## 새 벨트
-										{"index":23, "x":39, "y":106, "width":32, "height":32},
+										## The view packet's 16 entries (OLD char.cpp:8695-8697): body .. shield (0-10), the costume
+										## body and hair (11, 12, not shown, as OLD), the rings and the belt (13-15; OLD
+										## uiscript/equipmentdialog.py:29-31).
+										{"index":13, "x":2, "y":106, "width":32, "height":32},
+										{"index":14, "x":75, "y":106, "width":32, "height":32},
+										{"index":15, "x":39, "y":106, "width":32, "height":32},
 									),
 						},
 

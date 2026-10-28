@@ -870,3 +870,40 @@ ITEM_GET	Ricevuto: %s	SA
 ITEM_GET_FROM_PARTY	Ricevuto: %s da %s	SAA
 ITEM_DELIVER_TO_PARTY	Consegnato: %s a %s	SAA
 MAINTENANCE_TIME_LEFT	Manutenzione tra:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Resistenza contro l'attacco sanguinante + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Attacco sanguinante + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Forte contro lican + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Possibilità di difesa dai lican %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Difesa artigli +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Resistenza Anti Magic +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Forte contro Boss +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Forte contro Metin +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Forza del fulmine +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Forza del fuoco +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Forza del ghiaccio +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Forza del vento +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Forza della terra +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Forza dell'oscurità +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Forte contro gli Elementali +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Resistenza ai Mezziuomini %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Maestro Super Perfetto
+MESSENGER_HELPER	Aiuto
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blocca
+TARGET_BUTTON_UNBLOCK	Sbloccare
+BLOCK_PLAYER_TITLE	Blocca giocatore
+UNBLOCK_PLAYER_DIALOG	Vuoi sbloccare %s?
+BLOCKED_PLAYERS_TITLE	Giocatori bloccati
+WHISPER_ERROR_BLOCK_YOU	Non puoi scrivere a %s perché ti ha bloccato.
+GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
+GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	Canali
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Cancella
+CHANNEL	Canale
+ADD_4TH_STONE_ALREADY_ADDED	Hai già sbloccato il quarto slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Devi avere almeno 3 pietre incastonate.
+ADD_4TH_STONE_ONLY_ARMOR	Questa pergamena funziona solo sulle armature.
+ADD_4TH_STONE_ONLY_WEAPON	Questa pergamena funziona solo sulle armi.
+ADD_4TH_STONE_NOT_POSSIBLE	Non puoi usare la pergamena su questo oggetto.
+ADD_4TH_STONE_ADD_QUESTION	Desideri aprire il quarto spazio per incastonare?

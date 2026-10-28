@@ -870,3 +870,40 @@ ITEM_GET	Primit: %s	SA
 ITEM_GET_FROM_PARTY	Primit: %s de la %s	SAA
 ITEM_DELIVER_TO_PARTY	Livrat: %s către %s	SAA
 MAINTENANCE_TIME_LEFT	Mentenanță în:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Rezistenta impotriva atacului sangeros + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Atac sangeros + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Puternic impotriva Lycanilor + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Sansa de aparare impotriva atacului Lycan %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Apărare Gheară +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Rezistenta impotriva magiei +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Tare impotriva bossilor +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Tare impotriva pietrelor +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Puterea Fulgerului +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Puterea Focului +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Puterea Gheţii +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Puterea Vântului +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Puterea Pământului +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Puterea Întunecată +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Tare impotriva elementelor +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Rezistenţă vs Semi-Oameni %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master
+MESSENGER_HELPER	Helper
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blochează
+TARGET_BUTTON_UNBLOCK	Deblocheaza
+BLOCK_PLAYER_TITLE	Blocheaza Jucator
+UNBLOCK_PLAYER_DIALOG	Vrei sa-l deblochezi pe %s?
+BLOCKED_PLAYERS_TITLE	Jucatori Blocati
+WHISPER_ERROR_BLOCK_YOU	Nu-i poti scrie lui %s deoarece acesta te-a blocat.
+GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
+GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	CH-URI
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Sterge
+CHANNEL	Canal
+ADD_4TH_STONE_ALREADY_ADDED	Ai deblocat deja slotul 4.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Trebuie sa ai deja 3 pietre atasate.
+ADD_4TH_STONE_ONLY_ARMOR	Merge doar pe Armuri.
+ADD_4TH_STONE_ONLY_WEAPON	Merge doar pe Arme.
+ADD_4TH_STONE_NOT_POSSIBLE	Nu poti folosii acest scroll per acest item.
+ADD_4TH_STONE_ADD_QUESTION	Doriti sa deschideti un spatiu pentru a 4 piatra?

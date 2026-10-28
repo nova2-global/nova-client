@@ -395,7 +395,9 @@ class MoneyInputDialog(ui.ScriptWindow):
 
 		self.moneyHeaderText = localeInfo.MONEY_INPUT_DIALOG_SELLPRICE
 		self.__CreateDialog()
-		self.SetMaxLength(9)
+		# OLD's 13 digits for 64-bit gold (OLD uiCommon.py:664; Q13: decided 2026-10-25).
+		import player
+		self.SetMaxLength(player.MONEY_DIGITS)
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -438,7 +440,8 @@ class MoneyInputDialog(ui.ScriptWindow):
 		self.inputValue.SetFocus()
 
 	def SetMaxLength(self, length):
-		length = min(9, length)
+		import player
+		length = min(player.MONEY_DIGITS, length)
 		self.inputValue.SetMax(length)
 
 	def SetMoneyHeaderText(self, text):

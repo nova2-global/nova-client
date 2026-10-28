@@ -366,3 +366,8 @@ CHARACTER_CAST_SPEED	Ταχύτητα μαγείας
 CHARACTER_MAGIC_ATT	Μαγική επίθεση
 CHARACTER_MAGIC_DEF	Μαγική άμυνα
 CHARACTER_EVASION	Διαφυγή
+BLOCK_PLAYER	Αποκλεισμός Παίκτη
+UNBLOCK_PLAYER	 Επαναφορά Αποκλεισμού Παίκτη
+GUILD_WAR_ENEMY_NUMBER	Μέγιστα μέλη
+GUILD_WAR_MAX_SCORE	Τελικό σκορ
+SYSTEM_MOVE_CHANNEL	Αλλαγή Καναλίου

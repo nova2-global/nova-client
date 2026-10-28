@@ -32,6 +32,9 @@ class TargetBoard(ui.ThinBoard):
 	BTN_BUILDING_DESTROY = 15
 	BTN_EMOTION_ALLOW = 16
 	BTN_VOTE_BLOCK_CHAT = 17
+	# The block list (NOVA-47): one of the two shows for another player.
+	BTN_BLOCK = 18
+	BTN_UNBLOCK = 19
 
 	# (buttonId, localeInfo attribute name) — text resolved at __init__ time
 	BUTTON_CONFIG = (
@@ -53,6 +56,8 @@ class TargetBoard(ui.ThinBoard):
 		(BTN_BUILDING_DESTROY, "TARGET_BUTTON_BUILDING_DESTROY"),
 		(BTN_EMOTION_ALLOW, "TARGET_BUTTON_EMOTION_ALLOW"),
 		(BTN_VOTE_BLOCK_CHAT, "VOTE_BLOCK_CHAT"),
+		(BTN_BLOCK, "TARGET_BUTTON_BLOCK"),
+		(BTN_UNBLOCK, "TARGET_BUTTON_UNBLOCK"),
 	)
 
 	GRADE_NAME = {}
@@ -144,6 +149,8 @@ class TargetBoard(ui.ThinBoard):
 		self.buttonDict[self.BTN_EMOTION_ALLOW].SAFE_SetEvent(self.__OnEmotionAllow)
 
 		self.buttonDict[self.BTN_VOTE_BLOCK_CHAT].SetEvent(ui.__mem_func__(self.__OnVoteBlockChat))
+		self.buttonDict[self.BTN_BLOCK].SetEvent(ui.__mem_func__(self.OnBlockPlayer))
+		self.buttonDict[self.BTN_UNBLOCK].SetEvent(ui.__mem_func__(self.OnUnblockPlayer))
 
 		self.name = name
 		self.hpGauge = hpGauge
@@ -362,6 +369,22 @@ class TargetBoard(ui.ThinBoard):
 	def OnAppendToMessenger(self):
 		net.SendMessengerAddByVIDPacket(self.vid)
 
+	# The block list (NOVA-47, OLD uiTarget.py:1450-1464): the change is sent
+	# and the other button shows at once.
+	def OnBlockPlayer(self):
+		net.SendBlockAddPacket(self.nameString)
+
+		self.__HideButton(self.BTN_BLOCK)
+		self.__ShowButton(self.BTN_UNBLOCK)
+		self.__ArrangeButtonPosition()
+
+	def OnUnblockPlayer(self):
+		net.SendBlockRemovePacket(self.nameString)
+
+		self.__HideButton(self.BTN_UNBLOCK)
+		self.__ShowButton(self.BTN_BLOCK)
+		self.__ArrangeButtonPosition()
+
 	def OnPartyInvite(self):
 		net.SendPartyInvitePacket(self.vid)
 
@@ -498,6 +521,14 @@ class TargetBoard(ui.ThinBoard):
 				self.__HideButton(self.BTN_INVITE_PARTY)
 				self.__HideButton(self.BTN_FRIEND)
 				self.__HideButton(self.BTN_FIGHT)
+
+		# Block or Unblock for another player, never for staff ("[GM]..."), as
+		# OLD (uiTarget.py:1569-1575).
+		if self.nameString and not str(self.nameString).startswith("["):
+			if messenger.IsBlocked(self.nameString):
+				self.__ShowButton(self.BTN_UNBLOCK)
+			else:
+				self.__ShowButton(self.BTN_BLOCK)
 
 		distance = player.GetCharacterDistance(self.vid)
 		if distance > self.EXCHANGE_LIMIT_RANGE:

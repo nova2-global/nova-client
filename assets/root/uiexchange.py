@@ -54,7 +54,8 @@ class ExchangeDialog(ui.ScriptWindow):
 		dlgPickMoney.LoadDialog()
 		dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickMoney))
 		dlgPickMoney.SetTitleName(localeInfo.EXCHANGE_MONEY)
-		dlgPickMoney.SetMax(7)
+		# OLD's 12 digits for the exchange's money (OLD uiExchange.py:114-116; Q13: decided 2026-10-25).
+		dlgPickMoney.SetMax(player.EXCHANGE_MONEY_DIGITS)
 		dlgPickMoney.Hide()
 		self.dlgPickMoney = dlgPickMoney
 

@@ -22,6 +22,23 @@ import nui_windows
 
 ITEM_FLAG_APPLICABLE = 1 << 14
 
+# The money slot (uiscript Money_Slot: parameter_slot_05, 130 px, the text
+# right-aligned 3 px from its right edge) holds a purse of up to 11 digits
+# with its unit, "99.999.999.999 Yang" (120 px in Tahoma 12). 12 digits with
+# the unit reach the slot's left edge and the cut's GOLD_MAX (2e12) runs 11 px
+# past it, under the coin icon; from 12 digits the slot shows the amount alone
+# (2.000.000.000.000 is 107 px), and the coin icon says it is yang.
+MONEY_SLOT_UNIT_LIMIT = 10 ** 11
+
+
+def MoneySlotText(money):
+	"""The money slot's text: localeInfo.NumberToMoneyString while the unit
+	fits, then the amount with the same points and no unit."""
+	if money < MONEY_SLOT_UNIT_LIMIT:
+		return localeInfo.NumberToMoneyString(money)
+	return "{:,}".format(money).replace(",", ".")
+
+
 class CostumeWindow(ui.ScriptWindow):
 
 	def __init__(self, wndInventory):
@@ -306,9 +323,10 @@ class InventoryWindow(ui.ScriptWindow):
 			self.DSSButton = self.GetChild2("DSSButton")
 			self.costumeButton = self.GetChild2("CostumeButton")
 			
+			# One tab per inventory page (OLD uiInventory.py:884-889: five).
 			self.inventoryTab = []
-			self.inventoryTab.append(self.GetChild("Inventory_Tab_01"))
-			self.inventoryTab.append(self.GetChild("Inventory_Tab_02"))
+			for page in range(player.INVENTORY_PAGE_COUNT):
+				self.inventoryTab.append(self.GetChild("Inventory_Tab_%02d" % (page + 1)))
 
 			self.equipmentTab = []
 			self.equipmentTab.append(self.GetChild("Equipment_Tab_01"))
@@ -361,8 +379,8 @@ class InventoryWindow(ui.ScriptWindow):
 		## MoneySlot
 		self.wndMoneySlot.SetEvent(ui.__mem_func__(self.OpenPickMoneyDialog))
 
-		self.inventoryTab[0].SetEvent(lambda arg=0: self.SetInventoryPage(arg))
-		self.inventoryTab[1].SetEvent(lambda arg=1: self.SetInventoryPage(arg))
+		for page, tab in enumerate(self.inventoryTab):
+			tab.SetEvent(lambda arg=page: self.SetInventoryPage(arg))
 		self.inventoryTab[0].Down()
 
 		self.equipmentTab[0].SetEvent(lambda arg=0: self.SetEquipmentPage(arg))
@@ -458,7 +476,11 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def SetInventoryPage(self, page):
 		self.inventoryPageIndex = page
-		self.inventoryTab[1-page].SetUp()
+		# The page's tab is down and every other tab up (the two-tab rule
+		# "1 - page" cannot hold five pages).
+		for index, tab in enumerate(self.inventoryTab):
+			if index != page:
+				tab.SetUp()
 		self.RefreshBagSlotWindow()
 
 	def SetEquipmentPage(self, page):
@@ -527,7 +549,9 @@ class InventoryWindow(ui.ScriptWindow):
 			self.dlgPickMoney.SetTitleName(localeInfo.PICK_MONEY_TITLE)
 			self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickMoney))
 			self.dlgPickMoney.Open(curMoney)
-			self.dlgPickMoney.SetMax(7) # Fixed inventory 990000 limit bug
+			# Fixed inventory 990000 limit bug; OLD keeps 7 digits here (OLD uiInventory.py:1302;
+			# Q13: decided 2026-10-25).
+			self.dlgPickMoney.SetMax(player.INVENTORY_MONEY_DIGITS)
 
 	def OnPickMoney(self, money):
 		mouseModule.mouseController.AttachMoney(self, player.SLOT_TYPE_INVENTORY, money)
@@ -625,7 +649,7 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def RefreshStatus(self):
 		money = player.GetElk()
-		self.wndMoney.SetText(localeInfo.NumberToMoneyString(money))
+		self.wndMoney.SetText(MoneySlotText(money))
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem
@@ -771,6 +795,9 @@ class InventoryWindow(ui.ScriptWindow):
 		elif item.IsDetachScroll(srcItemVID):
 			self.DetachMetinFromItem(srcItemSlotPos, dstItemSlotPos)
 
+		elif item.IsSocketScroll(srcItemVID):
+			self.OpenSocketOnItem(srcItemSlotPos, dstItemSlotPos)
+
 		elif item.IsKey(srcItemVID):
 			self.__SendUseItemToItemPacket(srcItemSlotPos, dstItemSlotPos)			
 
@@ -882,6 +909,33 @@ class InventoryWindow(ui.ScriptWindow):
 
 		self.refineDialog.Open(scrollSlotPos, targetSlotPos)
 
+	def OpenSocketOnItem(self, scrollSlotPos, targetSlotPos):
+		## OLD's fourth socket (50500 armour, 50501 weapon; OLD uiInventory.py:2044-2070):
+		## the server opens it on an item with 3 stones and says why it refuses
+		scrollIndex = player.GetItemIndex(scrollSlotPos)
+		if not player.CanAdd4thStone(scrollIndex, targetSlotPos):
+			item.SelectItem(scrollIndex)
+			if item.GetItemSubType() == item.USE_4TH_SOCKET:
+				if player.GetSocketCount(targetSlotPos) < 3:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_NOT_ENOUGH_STONES)
+				elif item.GetValue(0) == 1 and player.GetItemTypeBySlot(targetSlotPos) != item.ITEM_TYPE_ARMOR:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_ONLY_ARMOR)
+				elif item.GetValue(0) == 2 and player.GetItemTypeBySlot(targetSlotPos) != item.ITEM_TYPE_WEAPON:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_ONLY_WEAPON)
+				elif player.GetItemMetinSocket(player.INVENTORY, targetSlotPos, 3) != 0:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_ALREADY_ADDED)
+				else:
+					chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.ADD_4TH_STONE_NOT_POSSIBLE)
+				return
+
+		self.questionDialog = uiCommon.QuestionDialog()
+		self.questionDialog.SetText(localeInfo.ADD_4TH_STONE_ADD_QUESTION)
+		self.questionDialog.SetAcceptEvent(ui.__mem_func__(self.OnDetachMetinFromItem))
+		self.questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
+		self.questionDialog.Open()
+		self.questionDialog.sourcePos = scrollSlotPos
+		self.questionDialog.targetPos = targetSlotPos
+
 	def DetachMetinFromItem(self, scrollSlotPos, targetSlotPos):
 		scrollIndex = player.GetItemIndex(scrollSlotPos)
 		targetIndex = player.GetItemIndex(targetSlotPos)
@@ -959,6 +1013,8 @@ class InventoryWindow(ui.ScriptWindow):
 			return True
 		elif item.IsDetachScroll(srcItemVNum):
 			return True
+		elif item.IsSocketScroll(srcItemVNum):
+			return True
 		elif item.IsKey(srcItemVNum):
 			return True
 		elif (player.GetItemFlags(srcSlotPos) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:
@@ -983,6 +1039,9 @@ class InventoryWindow(ui.ScriptWindow):
 				return True
 		elif item.IsDetachScroll(srcItemVNum):
 			if player.DETACH_METIN_OK == player.CanDetach(srcItemVNum, dstSlotPos):
+				return True
+		elif item.IsSocketScroll(srcItemVNum):
+			if player.DETACH_METIN_OK == player.CanAdd4thStone(srcItemVNum, dstSlotPos):
 				return True
 		elif item.IsKey(srcItemVNum):
 			if player.CanUnlock(srcItemVNum, dstSlotPos):

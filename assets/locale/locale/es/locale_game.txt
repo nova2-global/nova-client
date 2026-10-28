@@ -870,3 +870,40 @@ ITEM_GET	Recibido: %s	SA
 ITEM_GET_FROM_PARTY	Recibido: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Entregado: %s a %s	SAA
 MAINTENANCE_TIME_LEFT	Mantenimiento en:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Resistencia contra ataque de sangrado + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Ataque de sangrado + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Fuerza contra Lícanos + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Probabilidad de defensa contra Lícanos %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Defensa contra garra +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magic Resistance +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Strong against Bosses +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Strong against Stones +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Poder del relámpago +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Poder del fuego +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Poder del hielo +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Poder del viento +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Poder de la tierra +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Poder de la oscuridad +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Fuerte contra Elementales +% d %%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Resistencia contra mediohumanos %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master
+MESSENGER_HELPER	Ayudante
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Bloquear
+TARGET_BUTTON_UNBLOCK	Unblock
+BLOCK_PLAYER_TITLE	Bloquear jugador
+UNBLOCK_PLAYER_DIALOG	Do you want to unblock %s?
+BLOCKED_PLAYERS_TITLE	Jugadores bloqueados
+WHISPER_ERROR_BLOCK_YOU	You can't write to %s because they blocked you.
+GUILD_WAR_MAX_MEMBERS	Límite de jugadores de tu gremio: %d.
+GUILD_WAR_MAX_SCORE	La guerra termina con %d muertes.
+MOVE_CHANNEL_TITLE	Selección de canal
+MOVE_CHANNEL_SELECT	Aceptar
+MOVE_CHANNEL_CANCEL	Cancelar
+CHANNEL	Canal
+ADD_4TH_STONE_ALREADY_ADDED	Ya has desbloqueado el cuarto hueco.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Debes tener al menos 3 piedras incrustadas.
+ADD_4TH_STONE_ONLY_ARMOR	Este pergamino solo funciona en armaduras.
+ADD_4TH_STONE_ONLY_WEAPON	Este pergamino solo funciona en armas.
+ADD_4TH_STONE_NOT_POSSIBLE	No puedes usar este pergamino en este objeto.
+ADD_4TH_STONE_ADD_QUESTION	¿Deseas abrir un espacio para un cuarto hueco?

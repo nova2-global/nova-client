@@ -2628,3 +2628,1143 @@
 90011	Pień	Materiał budowlany do budowy budynku gildii
 90012	Dykta	Materiał budowlany do budowy budynku gildii.
 90013		
+300	Ostrze Zodiaku+0	
+301	Ostrze Zodiaku+1	
+302	Ostrze Zodiaku+2	
+303	Ostrze Zodiaku+3	
+304	Ostrze Zodiaku+4	
+305	Ostrze Zodiaku+5	
+306	Ostrze Zodiaku+6	
+307	Ostrze Zodiaku+7	
+308	Ostrze Zodiaku+8	
+309	Ostrze Zodiaku+9	
+310	Miecz Zodiaku+0	
+311	Miecz Zodiaku+1	
+312	Miecz Zodiaku+2	
+313	Miecz Zodiaku+3	
+314	Miecz Zodiaku+4	
+315	Miecz Zodiaku+5	
+316	Miecz Zodiaku+6	
+317	Miecz Zodiaku+7	
+318	Miecz Zodiaku+8	
+319	Miecz Zodiaku+9	
+1180	Sztylet Zodiaku+0	
+1181	Sztylet Zodiaku+1	
+1182	Sztylet Zodiaku+2	
+1183	Sztylet Zodiaku+3	
+1184	Sztylet Zodiaku+4	
+1185	Sztylet Zodiaku+5	
+1186	Sztylet Zodiaku+6	
+1187	Sztylet Zodiaku+7	
+1188	Sztylet Zodiaku+8	
+1189	Sztylet Zodiaku+9	
+2200	Łuk Zodiaku+0	
+2201	Łuk Zodiaku+1	
+2202	Łuk Zodiaku+2	
+2203	Łuk Zodiaku+3	
+2204	Łuk Zodiaku+4	
+2205	Łuk Zodiaku+5	
+2206	Łuk Zodiaku+6	
+2207	Łuk Zodiaku+7	
+2208	Łuk Zodiaku+8	
+2209	Łuk Zodiaku+9	
+3220	Glewia Zodiaku+0	
+3221	Glewia Zodiaku+1	
+3222	Glewia Zodiaku+2	
+3223	Glewia Zodiaku+3	
+3224	Glewia Zodiaku+4	
+3225	Glewia Zodiaku+5	
+3226	Glewia Zodiaku+6	
+3227	Glewia Zodiaku+7	
+3228	Glewia Zodiaku+8	
+3229	Glewia Zodiaku+9	
+5160	Dzwon Zodiaku+0	
+5161	Dzwon Zodiaku+1	
+5162	Dzwon Zodiaku+2	
+5163	Dzwon Zodiaku+3	
+5164	Dzwon Zodiaku+4	
+5165	Dzwon Zodiaku+5	
+5166	Dzwon Zodiaku+6	
+5167	Dzwon Zodiaku+7	
+5168	Dzwon Zodiaku+8	
+5169	Dzwon Zodiaku+9	
+6120	Szpon Zodiaku+0	
+6121	Szpon Zodiaku+1	
+6122	Szpon Zodiaku+2	
+6123	Szpon Zodiaku+3	
+6124	Szpon Zodiaku+4	
+6125	Szpon Zodiaku+5	
+6126	Szpon Zodiaku+6	
+6127	Szpon Zodiaku+7	
+6128	Szpon Zodiaku+8	
+6129	Szpon Zodiaku+9	
+7300	Wachlarz Zodiaku+0	
+7301	Wachlarz Zodiaku+1	
+7302	Wachlarz Zodiaku+2	
+7303	Wachlarz Zodiaku+3	
+7304	Wachlarz Zodiaku+4	
+7305	Wachlarz Zodiaku+5	
+7306	Wachlarz Zodiaku+6	
+7307	Wachlarz Zodiaku+7	
+7308	Wachlarz Zodiaku+8	
+7309	Wachlarz Zodiaku+9	
+9506	Miecz+3	
+9507	Sztylet+3	
+9508	Wachlarz+3	
+9509	Stalowa Pochodnia+3	
+9600	Talizman Ognia+0	
+9601	Talizman Ognia+1	
+9602	Talizman Ognia+2	
+9603	Talizman Ognia+3	
+9604	Talizman Ognia+4	
+9605	Talizman Ognia+5	
+9606	Talizman Ognia+6	
+9607	Talizman Ognia+7	
+9608	Talizman Ognia+8	
+9609	Talizman Ognia+9	
+9610	Talizman Ognia+10	
+9611	Talizman Ognia+11	
+9612	Talizman Ognia+12	
+9613	Talizman Ognia+13	
+9614	Talizman Ognia+14	
+9615	Talizman Ognia+15	
+9616	Talizman Ognia+16	
+9617	Talizman Ognia+17	
+9618	Talizman Ognia+18	
+9619	Talizman Ognia+19	
+12690	Stalowy Hełm Smoków +0	
+12691	Stalowy Hełm Smoków +1	
+12692	Stalowy Hełm Smoków +2	
+12693	Stalowy Hełm Smoków +3	
+12694	Stalowy Hełm Smoków +4	
+12695	Stalowy Hełm Smoków +5	
+12696	Stalowy Hełm Smoków +6	
+12697	Stalowy Hełm Smoków +7	
+12698	Stalowy Hełm Smoków +8	
+12699	Stalowy Hełm Smoków +9	
+12700	Smoczy Kaptur +0	
+12701	Smoczy Kaptur +1	
+12702	Smoczy Kaptur +2	
+12703	Smoczy Kaptur +3	
+12704	Smoczy Kaptur +4	
+12705	Smoczy Kaptur +5	
+12706	Smoczy Kaptur +6	
+12707	Smoczy Kaptur +7	
+12708	Smoczy Kaptur +8	
+12709	Smoczy Kaptur +9	
+12710	Pancerny Hełm Smoków +0	
+12711	Pancerny Hełm Smoków +1	
+12712	Pancerny Hełm Smoków +2	
+12713	Pancerny Hełm Smoków +3	
+12714	Pancerny Hełm Smoków +4	
+12715	Pancerny Hełm Smoków +5	
+12716	Pancerny Hełm Smoków +6	
+12717	Pancerny Hełm Smoków +7	
+12718	Pancerny Hełm Smoków +8	
+12719	Pancerny Hełm Smoków +9	
+12720	Smoczy Kapelusz +0	
+12721	Smoczy Kapelusz +1	
+12722	Smoczy Kapelusz +2	
+12723	Smoczy Kapelusz +3	
+12724	Smoczy Kapelusz +4	
+12725	Smoczy Kapelusz +5	
+12726	Smoczy Kapelusz +6	
+12727	Smoczy Kapelusz +7	
+12728	Smoczy Kapelusz +8	
+12729	Smoczy Kapelusz +9	
+15440	Ogniste Buty+0	
+15441	Ogniste Buty+1	
+15442	Ogniste Buty+2	
+15443	Ogniste Buty+3	
+15444	Ogniste Buty+4	
+15445	Ogniste Buty+5	
+15446	Ogniste Buty+6	
+15447	Ogniste Buty+7	
+15448	Ogniste Buty+8	
+15449	Ogniste Buty+9	
+15450	Buty Oceanu+0	
+15451	Buty Oceanu+1	
+15452	Buty Oceanu+2	
+15453	Buty Oceanu+3	
+15454	Buty Oceanu+4	
+15455	Buty Oceanu+5	
+15456	Buty Oceanu+6	
+15457	Buty Oceanu+7	
+15458	Buty Oceanu+8	
+15459	Buty Oceanu+9	
+19000	Kamień Czerw. Płomienia	Zwiększa bonusy twojego pasa.
+19290	Zbroja Zodiaku+0	
+19291	Zbroja Zodiaku+1	
+19292	Zbroja Zodiaku+2	
+19293	Zbroja Zodiaku+3	
+19294	Zbroja Zodiaku+4	
+19295	Zbroja Zodiaku+5	
+19296	Zbroja Zodiaku+6	
+19297	Zbroja Zodiaku+7	
+19298	Zbroja Zodiaku+8	
+19299	Zbroja Zodiaku+9	
+19490	Ubranie Zodiaku+0	
+19491	Ubranie Zodiaku+1	
+19492	Ubranie Zodiaku+2	
+19493	Ubranie Zodiaku+3	
+19494	Ubranie Zodiaku+4	
+19495	Ubranie Zodiaku+5	
+19496	Ubranie Zodiaku+6	
+19497	Ubranie Zodiaku+7	
+19498	Ubranie Zodiaku+8	
+19499	Ubranie Zodiaku+9	
+19690	Zbroja Płytowa Zodiaku+0	
+19691	Zbroja Płytowa Zodiaku+1	
+19692	Zbroja Płytowa Zodiaku+2	
+19693	Zbroja Płytowa Zodiaku+3	
+19694	Zbroja Płytowa Zodiaku+4	
+19695	Zbroja Płytowa Zodiaku+5	
+19696	Zbroja Płytowa Zodiaku+6	
+19697	Zbroja Płytowa Zodiaku+7	
+19698	Zbroja Płytowa Zodiaku+8	
+19699	Zbroja Płytowa Zodiaku+9	
+19890	Szata Zodiaku+0	
+19891	Szata Zodiaku+1	
+19892	Szata Zodiaku+2	
+19893	Szata Zodiaku+3	
+19894	Szata Zodiaku+4	
+19895	Szata Zodiaku+5	
+19896	Szata Zodiaku+6	
+19897	Szata Zodiaku+7	
+19898	Szata Zodiaku+8	
+19899	Szata Zodiaku+9	
+20760	Polarny Pancerz+0	
+20761	Polarny Pancerz+1	
+20762	Polarny Pancerz+2	
+20763	Polarny Pancerz+3	
+20764	Polarny Pancerz+4	
+20765	Polarny Pancerz+5	
+20766	Polarny Pancerz+6	
+20767	Polarny Pancerz+7	
+20768	Polarny Pancerz+8	
+20769	Polarny Pancerz+9	
+20770	Ubranie Zasadzki+0	
+20771	Ubranie Zasadzki+1	
+20772	Ubranie Zasadzki+2	
+20773	Ubranie Zasadzki+3	
+20774	Ubranie Zasadzki+4	
+20775	Ubranie Zasadzki+5	
+20776	Ubranie Zasadzki+6	
+20777	Ubranie Zasadzki+7	
+20778	Ubranie Zasadzki+8	
+20779	Ubranie Zasadzki+9	
+20780	Diabelski Pancerz+0	
+20781	Diabelski Pancerz+1	
+20782	Diabelski Pancerz+2	
+20783	Diabelski Pancerz+3	
+20784	Diabelski Pancerz+4	
+20785	Diabelski Pancerz+5	
+20786	Diabelski Pancerz+6	
+20787	Diabelski Pancerz+7	
+20788	Diabelski Pancerz+8	
+20789	Diabelski Pancerz+9	
+20790	Szata Wiary+0	
+20791	Szata Wiary+1	
+20792	Szata Wiary+2	
+20793	Szata Wiary+3	
+20794	Szata Wiary+4	
+20795	Szata Wiary+5	
+20796	Szata Wiary+6	
+20797	Szata Wiary+7	
+20798	Szata Wiary+8	
+20799	Szata Wiary+9	
+20800	Panc. Mrocz. Wojownika+0	
+20801	Panc. Mrocz. Wojownika+1	
+20802	Panc. Mrocz. Wojownika+2	
+20803	Panc. Mrocz. Wojownika+3	
+20804	Panc. Mrocz. Wojownika+4	
+20805	Panc. Mrocz. Wojownika+5	
+20806	Panc. Mrocz. Wojownika+6	
+20807	Panc. Mrocz. Wojownika+7	
+20808	Panc. Mrocz. Wojownika+8	
+20809	Panc. Mrocz. Wojownika+9	
+20810	Pancerz Magmy+0	
+20811	Pancerz Magmy+1	
+20812	Pancerz Magmy+2	
+20813	Pancerz Magmy+3	
+20814	Pancerz Magmy+4	
+20815	Pancerz Magmy+5	
+20816	Pancerz Magmy+6	
+20817	Pancerz Magmy+7	
+20818	Pancerz Magmy+8	
+20819	Pancerz Magmy+9	
+20820	Ubr. Krwaw. Księżyca+0	
+20821	Ubr. Krwaw. Księżyca+1	
+20822	Ubr. Krwaw. Księżyca+2	
+20823	Ubr. Krwaw. Księżyca+3	
+20824	Ubr. Krwaw. Księżyca+4	
+20825	Ubr. Krwaw. Księżyca+5	
+20826	Ubr. Krwaw. Księżyca+6	
+20827	Ubr. Krwaw. Księżyca+7	
+20828	Ubr. Krwaw. Księżyca+8	
+20829	Ubr. Krwaw. Księżyca+9	
+20830	Piekielny Pancerz+0	
+20831	Piekielny Pancerz+1	
+20832	Piekielny Pancerz+2	
+20833	Piekielny Pancerz+3	
+20834	Piekielny Pancerz+4	
+20835	Piekielny Pancerz+5	
+20836	Piekielny Pancerz+6	
+20837	Piekielny Pancerz+7	
+20838	Piekielny Pancerz+8	
+20839	Piekielny Pancerz+9	
+20840	Szata Ognia+0	
+20841	Szata Ognia+1	
+20842	Szata Ognia+2	
+20843	Szata Ognia+3	
+20844	Szata Ognia+4	
+20845	Szata Ognia+5	
+20846	Szata Ognia+6	
+20847	Szata Ognia+7	
+20848	Szata Ognia+8	
+20849	Szata Ognia+9	
+20850	Agatowy Pancerz+0	
+20851	Agatowy Pancerz+1	
+20852	Agatowy Pancerz+2	
+20853	Agatowy Pancerz+3	
+20854	Agatowy Pancerz+4	
+20855	Agatowy Pancerz+5	
+20856	Agatowy Pancerz+6	
+20857	Agatowy Pancerz+7	
+20858	Agatowy Pancerz+8	
+20859	Agatowy Pancerz+9	
+20860	Wielorybi Pancerz+0	
+20861	Wielorybi Pancerz+1	
+20862	Wielorybi Pancerz+2	
+20863	Wielorybi Pancerz+3	
+20864	Wielorybi Pancerz+4	
+20865	Wielorybi Pancerz+5	
+20866	Wielorybi Pancerz+6	
+20867	Wielorybi Pancerz+7	
+20868	Wielorybi Pancerz+8	
+20869	Wielorybi Pancerz+9	
+20870	Ubranie Morfa+0	
+20871	Ubranie Morfa+1	
+20872	Ubranie Morfa+2	
+20873	Ubranie Morfa+3	
+20874	Ubranie Morfa+4	
+20875	Ubranie Morfa+5	
+20876	Ubranie Morfa+6	
+20877	Ubranie Morfa+7	
+20878	Ubranie Morfa+8	
+20879	Ubranie Morfa+9	
+20880	Panc. Błędnego Ognika+0	
+20881	Panc. Błędnego Ognika+1	
+20882	Panc. Błędnego Ognika+2	
+20883	Panc. Błędnego Ognika+3	
+20884	Panc. Błędnego Ognika+4	
+20885	Panc. Błędnego Ognika+5	
+20886	Panc. Błędnego Ognika+6	
+20887	Panc. Błędnego Ognika+7	
+20888	Panc. Błędnego Ognika+8	
+20889	Panc. Błędnego Ognika+9	
+20890	Szata Harmonii+0	
+20891	Szata Harmonii+1	
+20892	Szata Harmonii+2	
+20893	Szata Harmonii+3	
+20894	Szata Harmonii+4	
+20895	Szata Harmonii+5	
+20896	Szata Harmonii+6	
+20897	Szata Harmonii+7	
+20898	Szata Harmonii+8	
+20899	Szata Harmonii+9	
+20900	Księżycowy Pancerz+0	
+20901	Księżycowy Pancerz+1	
+20902	Księżycowy Pancerz+2	
+20903	Księżycowy Pancerz+3	
+20904	Księżycowy Pancerz+4	
+20905	Księżycowy Pancerz+5	
+20906	Księżycowy Pancerz+6	
+20907	Księżycowy Pancerz+7	
+20908	Księżycowy Pancerz+8	
+20909	Księżycowy Pancerz+9	
+20910	Panc. Deszczu Popiołu+0	
+20911	Panc. Deszczu Popiołu+1	
+20912	Panc. Deszczu Popiołu+2	
+20913	Panc. Deszczu Popiołu+3	
+20914	Panc. Deszczu Popiołu+4	
+20915	Panc. Deszczu Popiołu+5	
+20916	Panc. Deszczu Popiołu+6	
+20917	Panc. Deszczu Popiołu+7	
+20918	Panc. Deszczu Popiołu+8	
+20919	Panc. Deszczu Popiołu+9	
+20920	Ubr. Śmiertelnej Nocy+0	
+20921	Ubr. Śmiertelnej Nocy+1	
+20922	Ubr. Śmiertelnej Nocy+2	
+20923	Ubr. Śmiertelnej Nocy+3	
+20924	Ubr. Śmiertelnej Nocy+4	
+20925	Ubr. Śmiertelnej Nocy+5	
+20926	Ubr. Śmiertelnej Nocy+6	
+20927	Ubr. Śmiertelnej Nocy+7	
+20928	Ubr. Śmiertelnej Nocy+8	
+20929	Ubr. Śmiertelnej Nocy+9	
+20930	Pancerz Czarnego Ognia+0	
+20931	Pancerz Czarnego Ognia+1	
+20932	Pancerz Czarnego Ognia+2	
+20933	Pancerz Czarnego Ognia+3	
+20934	Pancerz Czarnego Ognia+4	
+20935	Pancerz Czarnego Ognia+5	
+20936	Pancerz Czarnego Ognia+6	
+20937	Pancerz Czarnego Ognia+7	
+20938	Pancerz Czarnego Ognia+8	
+20939	Pancerz Czarnego Ognia+9	
+20940	Szata Księżyca+0	
+20941	Szata Księżyca+1	
+20942	Szata Księżyca+2	
+20943	Szata Księżyca+3	
+20944	Szata Księżyca+4	
+20945	Szata Księżyca+5	
+20946	Szata Księżyca+6	
+20947	Szata Księżyca+7	
+20948	Szata Księżyca+8	
+20949	Szata Księżyca+9	
+20950	Onyksowy Pancerz+0	
+20951	Onyksowy Pancerz+1	
+20952	Onyksowy Pancerz+2	
+20953	Onyksowy Pancerz+3	
+20954	Onyksowy Pancerz+4	
+20955	Onyksowy Pancerz+5	
+20956	Onyksowy Pancerz+6	
+20957	Onyksowy Pancerz+7	
+20958	Onyksowy Pancerz+8	
+20959	Onyksowy Pancerz+9	
+21200	Pancerz Zodiaku+0	
+21201	Pancerz Zodiaku+1	
+21202	Pancerz Zodiaku+2	
+21203	Pancerz Zodiaku+3	
+21204	Pancerz Zodiaku+4	
+21205	Pancerz Zodiaku+5	
+21206	Pancerz Zodiaku+6	
+21207	Pancerz Zodiaku+7	
+21208	Pancerz Zodiaku+8	
+21209	Pancerz Zodiaku+9	
+25043	Magiczny Kamień	Kamień ten daje ci największą szansę podczas ulepszania przedmiotów. Przedmiot ten nie możesz zostać zniszczony ani pogorszony. Przedmiot ten nie jest zdatny do handlu.
+27125	Mikstura Pojedynku	Potężna mikstura, która zwiększa twoje punkty ataku i obrony i daje ci 50 000 pkt życia (tylko w Strefie Walki).
+28044	Kamień Antymagii+0	
+28045	Kamień Antymagii+0	
+28144	Kamień Antymagii+1	
+28145	Kamień Antymagii+1	
+28244	Kamień Antymagii+2	
+28245	Kamień Antymagii+2	
+28344	Kamień Antymagii+3	
+28345	Kamień Antymagii+3	
+28444	Kamień Antymagii+4	
+28445	Kamień Antymagii+4	
+30334	Bon na nakrycie głowy	Kliknij prawym przyciskiem myszki na bon, aby otrzymać upiornie piękne nakrycie głowy.
+30338	Bon na nakrycie głowy+	Kliknij prawym przyciskiem myszki na bon, aby otrzymać upiornie piękne nakrycie głowy, które daje ci min. jeden losowy bonu.
+30341	Pierścień Smoczego Ognia	Otacza cię aura przepełniona energią. Pierścień wykuty ze smoczego ognia zniszczy w mgnieniu oka statuy w Schronieniu Meley.
+30600	Wzór Kroju	
+30601	Plan Zbroi	
+30602	Niebieski Barwnik	
+30603	Czerwony Barwnik	
+30604	Szary Barwnik	
+30605	Złote Płyty	
+30606	Srebrne Płyty	
+30607	Miedziane Płyty	
+30608	Stalowe Płyty	
+30609	Brązowe Płyty	
+30610	Mithril	
+30611	Ciężkie Pasy	
+30612	Stabilne Sznury	
+30613	Kamień Driad	W tym tajemniczym zielonkawym kamieniu jest zamknięta dusz driady, drzewnego duszka. Driada ta zna zaklęte słowa, które umożliwią ci wstęp do Erebu.
+30614	Czarny Barwnik	
+30615	Biały Barwnik	
+30616	Dwutlenek Tytanu	Ten pryzmatyczny kryształ służy do uszlachetnienia przedmiotu wyposażenia.
+30617	Agat	Ten tajemniczo połyskujący kamyk służy do uszlachetnienia przedmiotu wyposażenia.
+30618	Kamień Księżycowy	Ten szlachetny kamień w kształcie łzy zawiera w sobie iskierkę światła księżyca. Służy do uszlachetnienia przedmiotu wyposażenia.
+30619	Barwnik złoty metalik	
+30620	Czerwony Smoczy Róg	Smocze rogi wykonane są z najtrwalszego surowca.
+30621	Czerwona Smocza Łuska	Smocze Łuski należą do najtwardszych znanych materiałów.
+30622	Plan Zbroi: Hełm	Ten przedmiot jest używany do wyrobu hełmów.
+30623	Księga Prawdy	Litery na tej potężnej cegle wydają się emanować blaskiem. Służy do uszlachetnienia przedmiotu wyposażenia.
+30624	Dusza Prawdy	Ta dobra dusza jest na wieki uwięziona w szklanej kuli. Służy do uszlachetnienia przedmiotu wyposażenia.
+30625	Padparadża	Mianem "padparadża" określa się rzadkie i wyjątkowo cenne czerwone szafiry. Służy do uszlachetnienia przedmiotu wyposażenia.
+30626	Cyjanit	Ten niebieskawy klejnot został wydobyty w kopalniach Góry Sohan. Służy do uszlachetnienia przedmiotu wyposażenia.
+30627	Owoc Bogów	Ten słodki owoc pochodzi z ogrodu Boga Smoków. Służy do uszlachetnienia przedmiotu wyposażenia.
+30628	Boski Kwiat	Ten święty kwiat pochodzi z ogrodu Boga Smoków. Służy do uszlachetnienia przedmiotu wyposażenia.
+30629	Eliksir Bogów	Ta butelka zawiera tajemniczo lśniącą ciecz. Służy do uszlachetnienia przedmiotu wyposażenia.
+30630	Skrzydła Smoka	Używając skrzydeł smoka Alterana możesz uszlachetnić przedmiot wyposażenia.
+30639	Tajemniczy Odłamek	Wykonaj za pomocą odłamków plany ze sklepu Yutnori. Aby otworzyć okno uszlachetniania, przeciągnij na stół planszę Yutnori.
+30640	Plan Halloween (m)	Plan wykonania halloweenowej skrzynki (m)
+30641	Plan Upiorny Kapelusz(m)	Plan wykonania skrzynki na upiorny kapelusz (m)
+30642	Plan Upiorny Zwierzak	Plan wykonania skrzynki na upiornego zwierzaka
+30643	Plan Wierzchowiec Upiór	Plan wykonania skrzynki na wierzchowca upiora
+30644	Plan Biżuterii	Plan wykonania szkatuły na biżuterię.
+30645	Plan Zwierzak	Plan wykonania skrzynki na zwierzaka
+30646	Plan Szarfy	Plan wykonania pudła na szarfy
+30647	Plan Ozdoby	Plan wykonania skrzynki na ozdoby
+30648	Plan Księga Zwierza	Plan wykonania skrzynki na Księgę Zwierza
+30649	Plan Broni Tarczowej	Plan wykonania skrzynki na broń tarczową+
+30650	Plan Cor Draconis	Plan wykonania skrzynki na Cor Draconis
+30651	Plan Gaya	Plan wykonania skrzynki na Gaya
+30652	Plan Tajemnic	Plan wykonania skrzynki tajemnic
+30653	Plan Skrzynka na Rubiny	Plan wykonania skrzynki na rubiny
+30654	Plan Halloween (k)	Plan wykonania halloweenowej skrzynki (k)
+30655	Plan Upiorny Kapelusz(k)	Plan wykonania skrzynki na upiorny kapelusz (k)
+34067		
+34068		
+34184	Elemental Talisman	Najpotężniejszy talizman, jaki kiedykolwiek istniał, taki, który jest w pokoju ze wszystkimi żywiołami. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34185	Armor Enhancement Scroll	Zwój potrzebny do ulepszenia zbroi. Używany do ulepszania żywiołów i boskiego ulepszania.
+34186	Weapon Enhancement Scroll	Zwój potrzebny do ulepszenia broni. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34187	Accessory Enhancement Scroll	Zwój potrzebny do ulepszenia akcesoriów. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34188	Belt Enhancement Scroll	Zwój pozwalający na dalsze ulepszanie pasów pvm. Używany do ulepszania pasa PvM.
+34189	Ring Enhancement Scroll	Zwój, który pozwala na dalsze ulepszanie pierścieni Pvm. Używany do ulepszania pierścienia PvM.
+34190	Fire Pearl	Perła z piekielnych czeluści z lekkim połyskiem czerwieni. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34191	Water Pearl	Perła z głębin oceanu z lekkim połyskiem błękitu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34192	Earth Pearl	Perła z głębi ziemi z lekkim połyskiem żółci. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34193	Wind Pearl	Perła z wyżyn nieba z lekkim połyskiem bieli. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34194	Ancient Red Cloth	Tkanina wykonana ze starożytnej szaty Strażnika Ghidorah. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34195	Ancient Blue Cloth	Tkanina wykonana ze starożytnej szaty Strażnika Hydry. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34196	Ancient Green Cloth  Płótno,które zostało wykonane ze starożytnej Szaty Strażnika Sfinksa. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34197	Ancient Yellow Cloth	Tkanina wykonana z szaty starożytnego władcy Białej Wieży. Używany do ulepszania żywiołów i boskiego wyposażenia.
+34198	Fire Power Shard	Odłamek tak potężny, że może zawierać Element Ognia w swoim rdzeniu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34199	Water Power Shard	Odłamek tak potężny, że może zawierać Element Wody w swoim rdzeniu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34200	Earth Power Shard	Odłamek tak potężny, że może zawierać Element Ziemi w swoim jądrze. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34201	Wind Power Shard	Odłamek tak potężny, że może zawierać Element Wiatru w swoim rdzeniu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34202	Fire Crystal	Kryształ należący niegdyś do władcy żywiołu ognia. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34203	Water Crystal	Kryształ należący niegdyś do władcy żywiołu wody. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34204	Earth Crystal	Kryształ, który kiedyś należał do władcy żywiołu ziemi. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34205	Wind Crystal	Kryształ, który kiedyś należał do władcy żywiołu wiatru. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34206	Fire Totem	Symbol, który kiedyś był używany przez naród ognia. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34207	Water Totem	Symbol, który kiedyś był używany przez naród wody. Używany do ulepszania żywiołów i boskiego wyposażenia.
+34208	Earth Totem	Symbol, który kiedyś był używany przez naród ziemi. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34209	Wind Totem	Symbol, który kiedyś był używany przez naród wiatru. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34210	Eternal Flames	Płomienie z miejsca tak odległego od piekła, że ​​stało się wieczne. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34211	Ghidorah's Heart	Serce istoty tak potężnej, że jest w stanie pokonać samego Lucyfera. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34212	Hydra Power Orb	Kula, która ma moc starego starożytnego potwora, który właśnie się pojawił. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34213	Hydra Summoning Tablet	Z głębi oceanu ta tabliczka zawiera stare wersety do przywołania trójgłowego potwora. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34214	Ancient Map	 Pisma święte z takich starożytnych istot, które mogą doprowadzić cię do śmierci. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34215	Wisdom book	Dzięki mądrości starych bogów ta księga zawiera treść najpotężniejszych istot na Nova. Używany do ulepszania żywiołów i boskiego wyposażenia.
+34216	Tear of the Lord Adenoid	Łza z mocą boga wiatru, która może stłumić najsurowsze emocje. Używany do ulepszania żywiołów i boskiego wyposażenia.
+34217	White Tower Ruler's Key	Klucz, który pozwala każdemu dotrzeć do komnat Lorda Adenoida, aby spróbować go pokonać. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34218	Fire Treasure Chest	Skrzynia zawierająca najpotężniejsze materiały do ​​ulepszania wyposażenia.
+34219	Water Treasure Chest	Skrzynia zawierająca najpotężniejsze materiały do ​​ulepszania wyposażenia.
+34220	Earth Treasure Chest	Skrzynia zawierająca najpotężniejsze materiały do ​​ulepszania wyposażenia.
+34221	Wind Treasure Chest	Skrzynia zawierająca najpotężniejsze materiały do ​​ulepszania wyposażenia.
+34222	Alchemy Ancient Stone	Kamień ze starożytnych istot z mitycznego lasu, na którym wciąż można odcisnąć ślad wiedzy lasu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34223	Arcane Ancient Stone	Kamień ze starożytnych istot z mitycznego lasu, na którym wciąż można odcisnąć ślad wiedzy lasu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34224	Vindicius Ancient Stone	Kamień ze starożytnych istot z mitycznego lasu, na którym wciąż można odcisnąć ślad wiedzy lasu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34225	Alchemy Theory Book	Księga, którą można znaleźć we mgle mitycznego lasu z informacjami o dawnych. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34226	Arcane Theory Book	Księga, którą można znaleźć we mgle mitycznego lasu z informacjami o dawnych. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34227	Vindicius Theory Book	Księga, którą można znaleźć we mgle mitycznego lasu z informacjami o dawnych. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34228	Alchemy Soul Skull	Czaszka starego, w połączeniu z innymi elementami mitycznego lasu, można wprowadzić nowe ulepszenia. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34229	Arcane Soul Skull	Czaszka starego, w połączeniu z innymi elementami mitycznego lasu, można wprowadzić nowe ulepszenia. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34230	Vindicius Soul Skull	Czaszka starego, w połączeniu z innymi elementami mitycznego lasu, można wprowadzić nowe ulepszenia. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34231	Tempestus Soul Skull	Czaszka starego, w połączeniu z innymi elementami mitycznego lasu, można wprowadzić nowe ulepszenia. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34232	Tempestus Theory Book	Księga, którą można znaleźć we mgle mitycznego lasu z informacjami o dawnych. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34233	Tempestus Ancient Stone	Kamień ze starożytnych istot z mitycznego lasu, na którym wciąż można odcisnąć ślad wiedzy lasu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34234	Empty Ticket	  Pusty bilet do bazy, używany do przechowywania tajemniczej przepustki na mapę do lochów żywiołów.
+34235	Holy Fire Stone	  Specjalny kamień, który odbija przełęcz do Ghidorah's Nest.
+34236	Holy Water Stone	Specjalny kamień, który odbija przepustkę do Hydry.
+34237	Holy Wind Stone	  Specjalny kamień, który odbija przełęcz do Białej Wieży.
+34238	Holy Earth Stone	Specjalny kamień, który odzwierciedla przejście do Starożytnej Piramidy.
+34239	Ghidorah's Nest Ticket	Służy do przekraczania drzwi do Ghidorah's Nest.
+34240	Ship Defence Ticket	Służy do przekraczania drzwi do Obrony Statków.
+34241	White Tower Ticket	Służy do przekraczania drzwi do Białej Wieży.
+34242	Ancient Pyramid Ticket	Służy do przekraczania drzwi do starożytnej piramidy.
+34243	Elemental Pearl	Potężna perła wykonana ze wszystkich elementów. Używany do ulepszania Elementów i Boskiego Ekwipunku.
+34244	Elemental Totem	Potężny totem złożony ze wszystkich elementów. Używany do ulepszania Elementów i Boskiego Ekwipunku.
+34245	Elemental Ancient Cloth	Mityczna tkanina wykonana ze wszystkich elementów. Używany do ulepszania Elementów i Boskiego Ekwipunku.
+34246	Elemental Power Shard	Specjalny odłamek mocy złożony ze wszystkich elementów. Używany do ulepszania Elementów i Boskiego Ekwipunku.
+34247	Elemental Crystal	Potężny kryształ stworzony ze wszystkich elementów. Używany do ulepszania Elementów i Boskiego Ekwipunku.
+34248	Elemental Ancient Stone	Kamień z czasów starożytnych stworzony połączoną siłą wszystkich narodów mitycznego lasu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34249	Elemental Theory Book	Księga z czasów starożytnych stworzona połączoną siłą wszystkich narodów mitycznego lasu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34250	Elemental Soul Skull	Czaszka z czasów starożytnych stworzona połączona siłą wszystkich narodów mitycznego lasu. Używany do ulepszania wyposażenia żywiołów i boskich przedmiotów.
+34256	Kryształ nefrytu Cenny rodzaj kryształu, który należy tylko do trytonów nefrytu. Może być wykorzystywany do badań przez biologów.
+34257	Manticore Map a map that leads to the manticore vault. Can be used for research by biologists.
+34258	Grzyb gargulcowy Najbardziej ceniony rodzaj grzyba dla gargulców.	Może być wykorzystywany do badań przez biologów.
+34259	Pył pozostałości po lemurach.	Może być wykorzystywany do badań przez biologów.
+34260	Klucz Duratusa Klucz, który można znaleźć wewnątrz ciała Duratusa, naukowcy jeszcze nie ustalili dlaczego.	Może być używany do badania biologów.
+34261	Esencja Strachu Esencja, której smok strachu używa do szerzenia strachu w swoich lochach.	Może być używana do badania biologów.
+34262	Medal Mazel Medal, który przynosi chlubę Mazelowi.	Może być wykorzystywany do badań przez biologów.
+34263	Kamień Duszy Trytona Legendarny kamień, zawiera rdzeń duszy rodziny Trytona.
+34264	Kamień Duszy Manticore Legendarny kamień, zawiera rdzeń duszy rodziny Manticore.
+34265	Kamień Duszy Gargulca Legendarny kamień, zawiera rdzeń duszy rodziny gargulców.
+34266	Kamień Duszy Lemure Legendarny kamień, zawiera rdzeń duszy rodziny Lemure.
+34267	Kamień Duszy Duratus Legendarny kamień, zawiera duszę Duratusa.
+34268	Kamień Duszy Strachu Legendarny kamień, zawiera duszę Smoka Strachu.
+34269	Kamień Duszy Mazel Legendarny kamień, zawiera duszę Mazel Boss.
+34270	Skrzynia dla początkujących Bardzo przydatna skrzynia zawierająca tymczasowe przedmioty z item store, aby pomóc nowym graczom nadrobić zaległości w zawartości serwera.
+35101	Zwój zmiany płci Specjalny zwój, który pozwala na zmianę płci kostiumów.
+39063	Reset Sklepu Gaya	Resetuj Sklep Gaya jeszcze przed upływem 5 godzin i sprawdź nowe cenne przedmioty.
+39064	Rozszerzenie Sklepu Gaya	Dodaj do Sklepu Gaya kolejny slot na cenne oferty przedmiotów, rozpoczynając od pierwszego slotu w drugim rzędzie z lewej.
+39065		
+39066		
+40101	Tarczowe Ostrze	Ten wizerunek zamieni twój miecz na Halloween w piłę tarczową!
+40102	Tarczowy Sztylet	Ten wizerunek zamieni twój sztylet na Halloween w piłę tarczową!
+40103	Tarczowy Łuk	Ten wizerunek zamieni twój łuk na Halloween w piłę tarczową!
+40104	Traczowa Glewia	Ten wizerunek zamieni twój oburęczny miecz na Halloween w piłę tarczową!
+40105	Tarczowy Dzwon	Ten wizerunek zamieni twój dzwon na Halloween w piłę tarczową!
+40106	Tarczowy Wachlarz	Ten wizerunek zamieni twój wachlarz na Halloween w piłę tarczową!
+40107	Tarczowe Szpony	Ten wizerunek zamieni twoje szpony na Halloween w piły tarczowe!
+40108	Tarczowe Ostrze+	Ten wizerunek zamieni twój miecz na Halloween w piłę tarczową! Daje ci min. jeden losowy bonus.
+40109	Tarczowy Sztylet+	Ten wizerunek zamieni twój sztylet na Halloween w piłę tarczową! Daje ci min. jeden losowy bonus.
+40110	Tarczowy Łuk+	Ten wizerunek zamieni twój łuk na Halloween w piłę tarczową! Daje ci min. jeden losowy bonus.
+40111	Tarczowa Glewia+	Ten wizerunek zamieni twój oburęczny miecz na Halloween w piłę tarczową! Daje ci min. jeden losowy bonus.
+40112	Tarczowy Dzwon+	Ten wizerunek zamieni twój dzwon na Halloween w piłę tarczową! Daje ci min. jeden losowy bonus.
+40113	Tarczowy Wachlarz+	Ten wizerunek zamieni twój wachlarz na Halloween w piłę tarczową! Daje ci min. jeden losowy bonus.
+40114	Tarczowe Szpony+	Ten wizerunek zamieni twoje szpony na Halloween w piły tarczowe! Daje ci min. jeden losowy bonus.
+40115	Cukrowe Ostrze	Ten wizerunek przemieni twój miecz na Święta w słodką laskę cukrową.
+40116	Cukrowy Sztylet	Ten wizerunek przemieni twój sztylet na Święta w słodką laskę cukrową.
+40117	Elfi Łuk	Ten wizerunek przemieni twój łuk na Święta w elfi łuk.
+40118	Piernikowa Glewia	Ten wizerunek przemieni twoją oburęczną broń na Święta w piernik.
+40119	Cukrowy Dzwon	Ten wizerunek przemieni twój dzwon na Święta w słodką laskę cukrową.
+40120	Mroźny Wachlarz	Ten wizerunek przemieni twój wachlarz na Święta w bałwanka.
+40121	Pazury Rudolfa	Ten wizerunek przemieni szpony na Święta w renifery.
+40122	Cukrowe Ostrze+	Ten wizerunek przemieni twój miecz na Święta w słodką laskę cukrową. Daje ci min. jeden losowy bonus.
+40123	Cukrowy Sztylet+	Ten wizerunek przemieni twój sztylet na Święta w słodką laskę cukrową. Daje ci min. jeden losowy bonus.
+40124	Elfi Łuk+	Ten wizerunek przemieni twój łuk na Święta w elfi łuk. Daje ci min. jeden losowy bonus.
+40125	Piernikowa Glewia+	Ten wizerunek przemieni twoją oburęczną broń na Święta w piernik. Daje ci min. jeden losowy bonus.
+40126	Cukrowy Dzwon+	Ten wizerunek przemieni twój dzwon na Święta w słodką laskę cukrową. Daje ci min. jeden losowy bonus.
+40127	Mroźny Wachlarz+	Ten wizerunek przemieni twój wachlarz na Święta w bałwanka. Daje ci min. jeden losowy bonus.
+40128	Pazury Rudolfa+	Ten wizerunek przemieni szpony na Święta w renifery. Daje ci min. jeden losowy bonus.
+40129	Ostrze Wodnika	Wizerunek broni, który otula twój miecz wytrzymałą, opalizującą na niebiesko wodą.
+40130	Sztylet Wodnika	Wizerunek broni, który otula twój sztylet wytrzymałą, opalizującą na niebiesko wodą.
+40131	Łuk Wodnika	Wizerunek broni, który otula twój łuk wytrzymałą, opalizującą na niebiesko wodą.
+40132	Glewia Wodnika	Wizerunek broni, który otula twój miecz dwuręczny wytrzymałą, opalizującą na niebiesko wodą.
+40133	Dzwon Wodnika	Wizerunek broni, który otula twój dzwon wytrzymałą, opalizującą na niebiesko wodą.
+40134	Wachlarz Wodnika	Wizerunek broni, który otula twój wachlarz wytrzymałą, opalizującą na niebiesko wodą.
+40135	Szpony Wodnika	Wizerunek broni, który otula twoje szpony wytrzymałą, opalizującą na niebiesko wodą.
+40136	Ostrze Wodnika+	Wizerunek broni, który otula twój miecz wytrzymałą, opalizującą na niebiesko wodą. Daje ci min. jeden losowy bonus.
+40137	Sztylet Wodnika+	Wizerunek broni, który otula twój sztylet wytrzymałą, opalizującą na niebiesko wodą. Daje ci min. jeden losowy bonus.
+40138	Łuk Wodnika+	Wizerunek broni, który otula twój łuk wytrzymałą, opalizującą na niebiesko wodą. Daje ci min. jeden losowy bonus.
+40139	Glewia Wodnika+	Wizerunek broni, który otula twój miecz dwuręczny wytrzymałą, opalizującą na niebiesko wodą. Daje ci min. jeden losowy bonus.
+40140	Dzwon Wodnika+	Wizerunek broni, który otula twój dzwon wytrzymałą, opalizującą na niebiesko wodą. Daje ci min. jeden losowy bonus.
+40141	Wachlarz Wodnika+	Wizerunek broni, który otula twój wachlarz wytrzymałą, opalizującą na niebiesko wodą. Daje ci min. jeden losowy bonus.
+40142	Szpony Wodnika+	Wizerunek broni, który otula twoje szpony wytrzymałą, opalizującą na niebiesko wodą. Daje ci min. jeden losowy bonus.
+41458	Toga Feniksa	Elegancka długa szata w stylu azjatyckim z haftem w kształcie Feniksa dla mężczyzn.
+41459	Toga Kobry	Elegancka długa szata w stylu azjatyckim z haftem w kształcie kobry dla mężczyzn.
+41462	Sukienka Qipao (czerw.)	Tradycyjna azjatycka sukienka w kolorze czerwonym z wyrafinowanym złotym haftem w kształcie smoka dla kobiet.
+41463	Sukienka Qipao (biała)	Tradycyjna azjatycka sukienka w kolorze białym z wyrafinowanym czerwonym haftem w kształcie smoka dla kobiet.
+41466	Toga Feniksa+	Elegancka długa szata w stylu azjatyckim z haftem w kształcie Feniksa dla mężczyzn. Daje ci min. jeden losowy bonus.
+41467	Toga Kobry+	Elegancka długa szata w stylu azjatyckim z haftem w kształcie kobry dla mężczyzn. Daje ci min. jeden losowy bonus.
+41470	Sukienka Qipao+ (czerw.)	Tradycyjna azjatycka sukienka w kolorze czerwonym z wyrafinowanym złotym haftem w kształcie smoka dla kobiet. Daje ci min. jeden losowy bonus.
+41471	Sukienka Qipao+ (biała)	Tradycyjna azjatycka sukienka w kolorze białym z wyrafinowanym czerwonym haftem w kształcie smoka dla kobiet. Daje ci min. jeden losowy bonus.
+41488	Kostium Faraona (czerw.)	Zostań Egipcjaninem w czerwonym stroju faraona dla mężczyzn.
+41489	Kostium Faraona (turkus)	Zostań Egipcjaninem w turkusowym stroju faraona dla mężczyzn.
+41490	Anioł Uriela (biały)	Elegancki kostium z niewinnymi białymi skrzydełkami anioła dla kobiet.
+41491	Anioł Uriela (czerw.)	Ekscytujący kostium z ognistymi skrzydełkami anioła dla kobiet.
+41492	Kostium Faraona+(czerw.)	Zostań Egipcjaninem w czerwonym stroju faraona dla mężczyzn. Daje ci min. jeden losowy bonus.
+41493	Kostium Faraona+(turkus)	Zostań Egipcjaninem w turkusowym stroju faraona dla mężczyzn. Daje ci min. jeden losowy bonus.
+41494	Anioł Uriela+ (biały)	Elegancki kostium z niewinnymi białymi skrzydełkami anioła dla kobiet. Daje ci min. jeden losowy bonus.
+41495	Anioł Uriela+ (czerw.)	Ekscytujący kostium z ognistymi skrzydełkami anioła dla kobiet. Daje ci min. jeden losowy bonus.
+41512	Zębaty Hełm	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta.
+41513	Zębaty Kostium	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta.
+41514	Zębaty Kostium	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta.
+41515	Zębaty Kostium	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta.
+41516	Zębaty Kostium+	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta. Daje ci min. jeden losowy bonus.
+41517	Zębaty Kostium+	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta. Daje ci min. jeden losowy bonus.
+41518	Zębaty Kostium+	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta. Daje ci min. jeden losowy bonus.
+41519	Zębaty Kostium+	Ten demoniczny kostium na Halloween wzbudzi strach i grozę w sercach twego oponenta. Daje ci min. jeden losowy bonus.
+41520	Czerwona Szata Zimy	Zimowa szata z czerwonego filcu, niezdatna do handlu.
+41521	Niebieska Szata Zimy	Zimowa szata z niebieskiego filcu, niezdatna do handlu.
+41522	Czerwona Szata Zimy+	Zimowa szata z czerwonego filcu, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41523	Niebieska Szata Zimy+	Zimowa szata z niebieskiego filcu, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41524	Czerwona Suknia Zimy	Zimowa suknia z czerwonego filcu, niezdatna do handlu.
+41525	Niebieska Suknia Zimy	Zimowa suknia z niebieskiego filcu, niezdatna do handlu.
+41526	Czerwona Suknia Zimy+	Zimowa suknia z czerwonego filcu, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41527	Niebieska Suknia Zimy+	Zimowa suknia z niebieskiego filcu, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41528	Pustynny Książę (czerw.)	Szaty wojownika z czerwonego materiału - jak ulał dla przywódców!
+41529	Pustynny Książę (nieb.)	Szaty wojownika z niebieskiego materiału - jak ulał dla przywódców!
+41530	P. Księżniczka (czerw.)	Szaty wojownika z czerwonego materiału - jak ulał dla przywódców!
+41531	P. Księżniczka (nieb.)	Szaty wojownika z niebieskiego materiału - jak ulał dla przywódców!
+41532	Pustynny Książę+(czerw.)	Szaty wojownika z czerwonego materiału - jak ulał dla przywódców! Daje przynajmniej jeden losowy bonus.
+41533	Pustynny Książę+ (nieb.)	Szaty wojownika z niebieskiego materiału - jak ulał dla przywódców! Daje przynajmniej jeden losowy bonus.
+41534	P. Księżniczka+ (czerw.)	Szaty wojownika z czerwonego materiału - jak ulał dla przywódców! Daje przynajmniej jeden losowy bonus.
+41535	P. Księżniczka+ (nieb.)	Szaty wojownika z niebieskiego materiału - jak ulał dla przywódców! Daje przynajmniej jeden losowy bonus.
+41540	Kostium Zająca (biały)	Kostium zająca z białego pluszu dla niego. Niezdatna do handlu.
+41541	Kostium Zająca (różowy)	Kostium zająca z różowego pluszu dla niego. Niezdatna do handlu.
+41542	Kostium Zajączka (gran.)	Kostium zająca z granatowego pluszu dla niej. Niezdatna do handlu.
+41543	Kostium Zającz. (fuksja)	Pluszowy kostium zająca w kolorze fuksji dla niej. Niezdatna do handlu.
+41544	Kostium Zająca+ (biały)	Kostium zająca z białego pluszu dla niego. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41545	Kostium Zająca+ (różowy)	Kostium zająca z różowego pluszu dla niego. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41546	Kostium Zającz.+ (gran.)	Kostium zająca z granatowego pluszu dla niej. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41547	Kostium Zającz.+(fuksja)	Pluszowy kostium zająca w kolorze fuksji dla niej. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41560	Wampir (szary)	W zbroi prawdziwego wampira wyglądasz na niezwyciężonego. Przedmiot jest niezdatny do handlu.
+41561	Wampir (czerwony)	W zbroi prawdziwego wampira wyglądasz na niezwyciężonego. Przedmiot jest niezdatny do handlu.
+41562	Wampirzyca (szary)	W zbroi wojowniczej wampirzycy wyglądasz na niezwyciężoną. Przedmiot jest niezdatny do handlu.
+41563	Wampirzyca (czerwony)	W zbroi wojowniczej wampirzycy wyglądasz na niezwyciężoną. Przedmiot jest niezdatny do handlu.
+41564	Wampir+ (szary)	Zbroja prawdziwego wampira obdarzy cię nadludzką siłą. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+41565	Wampir+ (czerwony)	Zbroja prawdziwego wampira obdarzy cię nadludzką siłą. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+41566	Wampirzyca+ (szary)	Zbroja wojowniczej wampirzycy obdarzy cię nadludzką siłą. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+41567	Wampirzyca+ (czerwony)	Zbroja wojowniczej wampirzycy obdarzy cię nadludzką siłą. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+41568	Czerw. Galowy Strój (m)	Czerwony galowy strój z białym obszyciem.
+41569	Zielony Galowy Strój (m)	Zielony galowy strój z białym obszyciem.
+41570	Czerw. Galowy Strój (k)	Czerwony galowy strój z białym obszyciem.
+41571	Zielony Galowy Strój (k)	Zielony galowy strój z białym obszyciem.
+41572	Czerw. Galowy Strój+ (m)	Czerwony galowy strój z białym obszyciem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+41573	Zielony Galowy Strój+(m)	Zielony galowy strój z białym obszyciem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+41574	Czerw. Galowy Strój+ (k)	Czerwony galowy strój z białym obszyciem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+41575	Zielony Galowy Strój+(k)	Zielony galowy strój z białym obszyciem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+41576	Złoty Oyoroi (m)	Złoty mundur japońskiego generała
+41577	Srebrny Oyoroi (m)	Srebrny mundur japońskiego generała
+41578	Złoty Oyoroi (k)	Złoty mundur japońskiej generał.
+41579	Srebrny Oyoroi (k)	Srebrny mundur japońskiej generał.
+41580	Złoty Oyoroi+ (m)	Złoty mundur japońskiego generała. Daje ci min. jeden losowy bonus.
+41581	Srebrny Oyoroi+ (m)	Srebrny mundur japońskiego generała. Daje ci min. jeden losowy bonus.
+41582	Złoty Oyoroi+ (k)	Złoty mundur japońskiej generał. Daje ci min. jeden losowy bonus.
+41583	Srebrny Oyoroi+ (k)	Srebrny mundur japońskiej generał. Daje ci min. jeden losowy bonus.
+41584	Zbroja Samuraja (nieb.)	Niebieska zbroja w stylu doświadczonego szoguna
+41585	Zbroja Samuraja (czerw.)	Czerwona zbroja w stylu doświadczonego szoguna
+41586	Zbroja Samuraja (nieb.)	Niebieska zbroja w stylu szogunki
+41587	Zbroja Samuraja (czerw.)	Czerwona zbroja szogunki
+41588	Zbroja Samuraja+ (nieb.)	Niebieska zbroja w stylu doświadczonego szoguna. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41589	Zbroja Samuraja+ (czer.)	Czerwona zbroja w stylu doświadczonego szoguna. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41590	Zbroja Samuraja+ (nieb.)	Niebieska zbroja w stylu szogunki. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41591	Zbroja Samuraja+ (czer.)	Czerwona zbroja w stylu szogunki. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41592	Pancerz Horroru (złoty)	Do czerwoności rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie
+41593	Pancerz Horroru (nieb.)	Do niebieskości rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie
+41594	Pancerz Horroru (złoty)	Do czerwoności rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie
+41595	Pancerz Horroru (nieb.)	Do niebieskości rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie
+41596	Pancerz Horroru+ (złoty)	Do czerwoności rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41597	Pancerz Horroru+ (nieb.)	Do niebieskości rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41598	Pancerz Horroru+ (złoty)	Do czerwoności rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41599	Pancerz Horroru+ (nieb.)	Do niebieskości rozżarzona zbroja piekielna, rozprzestrzeniająca strach i przerażenie. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41600	Steamp. Uniform (czarny)	Futurystyczny strój dla wojownika teraźniejszości
+41601	Steamp. Uniform (czerw.)	Futurystyczny strój dla wojownika teraźniejszości
+41602	Steamp. Strój (czarny)	Futurystyczny strój dla wojowniczki teraźniejszości
+41603	Steamp. Strój (czerw.)	Futurystyczny strój dla wojowniczki teraźniejszości
+41604	Steamp. Uniform+ (czar.)	Futurystyczny strój dla wojownika teraźniejszości. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41605	Steamp. Uniform+(czerw.)	Futurystyczny strój dla wojownika teraźniejszości. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41606	Steamp. Strój+ (czarny)	Futurystyczny strój dla wojowniczki teraźniejszości Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41607	Steamp. Strój+ (czerw.)	Futurystyczny strój dla wojowniczki teraźniejszości Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+41608	Szata Sungura (nieb.)	Bajeczne ubranie w kolorze biało-fioletowym z niebieskimi spodniami typu pumpy
+41609	Szata Sungura (morski)	Bajeczne ubranie w kolorze białym i morski z szarymi spodniami typu pumpy
+41610	Sukienka Sungura (nieb.)	Bajeczna sukienka bombka w kolorze niebiesko-fioletowym
+41611	Sukienka Sungura (szara)	Bajeczna sukienka bombka w kolorze szaro-morskim
+41612	Szata Sungura+ (nieb.)	Bajeczne ubranie w kolorze biało-fioletowym z niebieskimi spodniami typu pumpy. Daje ci min. jeden losowy bonus.
+41613	Szata Sungura+ (morski)	Bajeczne ubranie w kolorze białym i morski z szarymi spodniami typu pumpy. Daje ci min. jeden losowy bonus.
+41614	Sukienka Sungura+(nieb.)	Bajeczna sukienka bombka w kolorze niebiesko-fioletowym. Daje ci min. jeden losowy bonus.
+41615	Sukienka Sungura+(szar.)	Bajeczna sukienka bombka w kolorze szaro-morskim. Daje ci min. jeden losowy bonus.
+41630	Zbroja Avalonu (srebr.)	Srebrny pancerz szlachetnego rodu rycerzy pradawnych czasów
+41631	Zbroja Avalonu (czerw.)	Czerwony pancerz szlachetnego rodu rycerzy pradawnych czasów
+41632	Zbroja Avalonu (srebr.)	Srebrny pancerz szlachetnego rodu rycerzy pradawnych czasów
+41633	Zbroja Avalonu (czerw.)	Czerwony pancerz szlachetnego rodu rycerzy pradawnych czasów
+41634	Zbroja Avalonu+ (srebr.)	Połyskujący pancerz szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+41635	Zbroja Avalonu+ (czerw.)	Połyskujący pancerz szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+41636	Zbroja Avalonu+ (srebr.)	Połyskujący pancerz szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+41637	Zbroja Avalonu+ (czerw.)	Połyskujący pancerz szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+41638	Koszulka MŚ KSA (m)	Strój na mundial w stylu reprezentacji Arabii Saudyjskiej
+41639	Koszulka MŚ KSA (k)	Strój na mundial w stylu reprezentacji Arabii Saudyjskiej
+41640	Koszulka MŚ KSA (m)	Strój na mundial w stylu reprezentacji Arabii Saudyjskiej. Daje ci min. jeden losowy bonus.
+41641	Koszulka MŚ KSA (k)	Strój na mundial w stylu reprezentacji Arabii Saudyjskiej. Daje ci min. jeden losowy bonus.
+41642	Koszulka MŚ DEN (m)	Strój na mundial w stylu reprezentacji Danii
+41643	Koszulka MŚ DEN (k)	Strój na mundial w stylu reprezentacji Danii
+41644	Koszulka MŚ DEN+ (m)	Strój na mundial w stylu reprezentacji Danii. Daje ci min. jeden losowy bonus.
+41645	Koszulka MŚ DEN+ (k)	Strój na mundial w stylu reprezentacji Danii. Daje ci min. jeden losowy bonus.
+41646	Koszulka MŚ SVK (m)	Strój na mundial w stylu reprezentacji Słowacji
+41647	Koszulka MŚ SVK (k)	Strój na mundial w stylu reprezentacji Słowacji
+41648	Koszulka MŚ SVK+ (m)	Strój na mundial w stylu reprezentacji Słowacji. Daje ci min. jeden losowy bonus.
+41649	Koszulka MŚ SVK+ (k)	Strój na mundial w stylu reprezentacji Słowacji. Daje ci min. jeden losowy bonus.
+41650	Koszulka MŚ TUR (m)	Strój na mundial w stylu reprezentacji Turcji
+41651	Koszulka MŚ TUR (k)	Strój na mundial w stylu reprezentacji Turcji
+41652	Koszulka MŚ TUR+ (m)	Strój na mundial w stylu reprezentacji Turcji. Daje ci min. jeden losowy bonus.
+41653	Koszulka MŚ TUR+ (k)	Strój na mundial w stylu reprezentacji Turcji. Daje ci min. jeden losowy bonus.
+41654	Koszulka MŚ HUN (m)	Strój na mundial w stylu reprezentacji Węgier
+41655	Koszulka MŚ HUN (k)	Strój na mundial w stylu reprezentacji Węgier
+41656	Koszulka MŚ HUN+ (m)	Strój na mundial w stylu reprezentacji Węgier. Daje ci min. jeden losowy bonus.
+41657	Koszulka MŚ HUN+ (k)	Strój na mundial w stylu reprezentacji Węgier. Daje ci min. jeden losowy bonus.
+41658	Koszulka MŚ ROU (m)	Strój na mundial w stylu reprezentacji Rumunii
+41659	Koszulka MŚ ROU (k)	Strój na mundial w stylu reprezentacji Rumunii
+41660	Koszulka MŚ ROU+ (m)	Strój na mundial w stylu reprezentacji Rumunii. Daje ci min. jeden losowy bonus.
+41661	Koszulka MŚ ROU+ (k)	Strój na mundial w stylu reprezentacji Rumunii. Daje ci min. jeden losowy bonus.
+41662	Koszulka MŚ POL (m)	Strój na mundial w stylu reprezentacji Polski
+41663	Koszulka MŚ POL (k)	Strój na mundial w stylu reprezentacji Polski
+41664	Koszulka MŚ POL+ (m)	Strój na mundial w stylu reprezentacji Polski. Daje ci min. jeden losowy bonus.
+41665	Koszulka MŚ POL+ (k)	Strój na mundial w stylu reprezentacji Polski. Daje ci min. jeden losowy bonus.
+41666	Koszulka MŚ BRA (m)	Strój na mundial w stylu reprezentacji Brazylii
+41667	Koszulka MŚ BRA (k)	Strój na mundial w stylu reprezentacji Brazylii
+41668	Koszulka MŚ BRA+ (m)	Strój na mundial w stylu reprezentacji Brazylii. Daje ci min. jeden losowy bonus.
+41669	Koszulka MŚ BRA+ (k)	Strój na mundial w stylu reprezentacji Brazylii. Daje ci min. jeden losowy bonus.
+41670	Brązowa Wilcza Szata (m)	Ta szata z brązowego futra rozbudzi wilka w każdym mężczyźnie.
+41671	Szara Wilcza Szata (m)	Ta szata z szarego futra rozbudzi wilka w każdym mężczyźnie.
+41672	Brązowa Wilcza Szata (k)	Ta szata z brązowego futra rozbudzi wilka w każdej kobiecie.
+41673	Szara Wilcza Szata (k)	Ta szata z szarego futra rozbudzi wilka w każdej kobiecie.
+41674	Brązowa Wilcza Szata+(m)	Ta szata z brązowego futra rozbudzi wilka w każdym mężczyźnie. Daje ci min. jeden losowy bonus.
+41675	Szara Wilcza Szata+(m)	Ta szata z szarego futra rozbudzi wilka w każdym mężczyźnie. Daje ci min. jeden losowy bonus.
+41676	Brązowa Wilcza Szata+(k)	Ta szata z brązowego futra rozbudzi wilka w każdej kobiecie. Daje ci min. jeden losowy bonus.
+41677	Szara Wilcza Szata+(k)	Ta szata z szarego futra rozbudzi wilka w każdej kobiecie. Daje ci min. jeden losowy bonus.
+45108	Kapelusz Stożkowy	Tradycyjny azjatycki kapelusz ze słomy ryżowej dla mężczyzn.
+45110	Azjatycki Kok	Azjatycka fryzura z podwójnym kokiem.
+45114	Kapelusz Stożkowy+	Tradycyjny azjatycki kapelusz ze słomy ryżowej dla mężczyzn. Daje ci min. jeden losowy bonus.
+45116	Azjatycki Kok+	Azjatycka fryzura z podwójnym kokiem. Daje ci min. jeden losowy bonus.
+45182	Ozdoba z Piór (czerw.)	Czerwona ozdoba na głowę z piór dla mężczyzn. W sam raz na karnawał!
+45183	Ozdoba z Piór (turkus)	Turkusowa ozdoba na głowę z piór dla mężczyzn. W sam raz na karnawał!
+45184	Tiara Feniksa (biała)	Elegancka metalowa ozdoba na głowę dla kobiet.
+45185	Tiara Feniksa (czerw.)	Elegancka metalowa ozdoba na głowę dla kobiet.
+45186	Ozdoba z Piór+ (czerw.)	Czerwona ozdoba na głowę z piór dla mężczyzn. W sam raz na karnawał! Daje ci min. jeden losowy bonus.
+45187	Ozdoba z Piór+ (turkus)	Turkusowa ozdoba na głowę z piór dla mężczyzn. W sam raz na karnawał! Daje ci min. jeden losowy bonus.
+45188	Tiara Feniksa+ (biała)	Elegancka metalowa ozdoba na głowę dla kobiet. Daje ci min. jeden losowy bonus.
+45189	Tiara Feniksa+ (czerw.)	Elegancka metalowa ozdoba na głowę dla kobiet. Daje ci min. jeden losowy bonus.
+45206	Zębaty Hełm	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku.
+45207	Zębaty Hełm	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku.
+45208	Zębaty Hełm	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku.
+45209	Zębaty Hełm	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku.
+45210	Zębaty Hełm+	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku. Daje ci min. jeden losowy bonus.
+45211	Zębaty Hełm+	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku. Daje ci min. jeden losowy bonus.
+45212	Zębaty Hełm+	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku. Daje ci min. jeden losowy bonus.
+45213	Zębaty Hełm+	Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku. Daje ci min. jeden losowy bonus.Ten upiorny hełm na Halloween wzbudzi lęk w każdym przeciwniku. Daje ci min. jeden losowy bonus.
+45214	Czer. Czapka z Pomp.	Czerwona czapka z białym pomponem, niezdatna do handlu.
+45215	Nieb. Czapka z Pom.	Niebieska czapka z białym pomponem, niezdatna do handlu.
+45216	Czer. Kaptur z Pom.	Czerwona czapka z białym pomponem, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45217	Nieb. Kaptur z Pom.	Niebieska czapka z białym pomponem, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45218	Czer. Czapka z Pomp.+	Czerwony kaptur z białym pomponem, niezdatny do handlu.
+45219	Nieb. Czapka z Pom.+	Niebieski kaptur z białym pomponem, niezdatny do handlu.
+45220	Czer. Kaptur z Pom.+	Czerwony kaptur z białym pomponem, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45221	Nieb. Kaptur z Pom.+	Niebieski kaptur z białym pomponem, daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45222	Uszy Zająca (białe)	Biała czapka z uszami zająca dla niego. Niezdatna do handlu.
+45223	Uszy Zająca (różowe)	Różowa czapka z uszami zająca dla niego. Niezdatna do handlu.
+45224	Uszy Zajączka (granat.)	Granatowe uszy zajączka dla niej. Niezdatna do handlu.
+45225	Uszy Zajączka (fuksja)	Uszy zająca w kolorze fuksji dla niej. Niezdatna do handlu.
+45226	Uszy Zająca+ (białe)	Biała czapka z uszami zająca dla niego. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45227	Uszy Zająca+ (różowe)	Różowa czapka z uszami zająca dla niego. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45228	Uszy Zajączka+ (granat.)	Granatowe uszy zajączka dla niej. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45229	Uszy Zajączka+ (fuksja)	Uszy zająca w kolorze fuksji dla niej. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45234	Niebieski Turban	Elegancki, niebieski turban z wytrzymałego materiału - w sam raz dla wojowników.
+45235	Czerwony Turban	Elegancki, czerwony turban z wytrzymałego materiału - w sam raz dla wojowników.
+45236	Brązowa Chusta	Brązowa chusta na głowę z lekkiego materiału - w sam raz dla wojowniczek.
+45237	Zielona Chusta	Zielona chusta na głowę z lekkiego materiału - w sam raz dla wojowniczek.
+45238	Niebieski Turban+	Elegancki, niebieski turban z wytrzymałego materiału - w sam raz dla wojowników. Daje przynajmniej jeden losowy bonus.
+45239	Czerwony Turban+	Elegancki, czerwony turban z wytrzymałego materiału - w sam raz dla wojowników. Daje przynajmniej jeden losowy bonus.
+45240	Brązowa Chusta+	Brązowa chusta na głowę z lekkiego materiału - w sam raz dla wojowniczek. Daje przynajmniej jeden losowy bonus.
+45241	Zielona Chusta+	Zielona chusta na głowę z lekkiego materiału - w sam raz dla wojowniczek. Daje przynajmniej jeden losowy bonus.
+45250	Hełm Wampira (szary)	Hełm prawdziwego wampira. Przedmiot jest niezdatny do handlu.
+45251	Hełm Wampira (czerwony)	Hełm prawdziwego wampira. Przedmiot jest niezdatny do handlu.
+45252	Hełm Wampirzycy (szary)	Hełm wojowniczej wampirzycy. Przedmiot jest niezdatny do handlu.
+45253	Hełm Wampirzycy (czer.)	Hełm wojowniczej wampirzycy. Przedmiot jest niezdatny do handlu.
+45254	Hełm Wampira+ (szary)	Hełm prawdziwego wampira. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+45255	Hełm Wampira+ (czerwony)	Hełm prawdziwego wampira. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+45256	Hełm Wampirzycy+ (szary)	Hełm wojowniczej wampirzycy. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+45257	Hełm Wampirzycy+ (czer.)	Hełm wojowniczej wampirzycy. Daje ci min. jeden losowy bonus. Przedmiot zdatny do handlu.
+45258	Świąt. Kaptur (czerwony)	Czerwony świąteczny kaptur z białym obszyciem.
+45259	Świąt. Kaptur (zielony)	Zielony świąteczny kaptur z białym obszyciem.
+45260	Świąteczny Beret (czer.)	Czerwony świąteczny beret z białym pomponem.
+45261	Świąteczny Beret (ziel.)	Zielony świąteczny beret z białym pomponem.
+45262	Świąt. Kaptur+ (czer.)	Czerwony świąteczny kaptur z białym obszyciem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+45263	Świąt. Kaptur+ (ziel.)	Zielony świąteczny kaptur z białym obszyciem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+45264	Świąt. Beret+ (czerwony)	Czerwony świąteczny beret z białym pomponem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+45265	Świąt. Beret+ (zielony)	Zielony świąteczny beret z białym pomponem. Przedmiot daje ci co najmniej jeden losowy bonus i jest zdatny do handlu.
+45266	Złoty Kabuto (m)	Złoty hełm japońskiego generała
+45267	Srebrny Kabuto (m)	Srebrny hełm japońskiego generała
+45268	Złoty Kabuto (k)	Złoty hełm japońskiej generał.
+45269	Srebrny Kabuto (k)	Srebrny hełm japońskiej generał.
+45270	Złoty Kabuto+ (m)	Złoty hełm japońskiego generała. Daje ci min. jeden losowy bonus.
+45271	Srebrny Kabuto+ (m)	Srebrny hełm japońskiego generała. Daje ci min. jeden losowy bonus.
+45272	Złoty Kabuto+ (k)	Złoty hełm japońskiej generał. Daje ci min. jeden losowy bonus.
+45273	Srebrny Kabuto+ (k)	Srebrny hełm japońskiej generał. Daje ci min. jeden losowy bonus.
+45274	Kok Samuraja (złoty)	Kok ze złotą spinką w stylu samurajów dla niego
+45275	Kok Samuraja (srebrny)	Kok ze srebrną spinką w stylu samurajów dla niego
+45276	Kok Samuraja (złoty)	Kok ze złotą spinką w stylu samurajów dla niej
+45277	Kok Samuraja (srebrny)	Kok ze srebrną spinką w stylu samurajów dla niej
+45278	Kok Samuraja+ (złoty)	Kok ze złotą spinką w stylu samurajów dla niego. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45279	Kok Samuraja+ (srebrny)	Kok ze srebrną spinką w stylu samurajów dla niego. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45280	Kok Samuraja+ (złoty)	Kok ze złotą spinką w stylu samurajów dla niej. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45281	Kok Samuraja+ (srebrny)	Kok ze srebrną spinką w stylu samurajów dla niej. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45282	Rogi Horroru (złote)	Złoty hełm z diablimi rogami
+45283	Rogi Horroru (nieb.)	Niebieski hełm z diablimi rogami
+45284	Rogi Horroru (złote)	Złoty hełm z diablimi rogami
+45285	Rogi Horroru (nieb.)	Niebieski hełm z diablimi rogami
+45286	Rogi Horroru+ (złote)	Złoty hełm z diablimi rogami. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45287	Rogi Horroru+ (nieb.)	Niebieski hełm z diablimi rogami. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45288	Rogi Horroru+ (złote)	Złoty hełm z diablimi rogami. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45289	Rogi Horroru+ (nieb.)	Niebieski hełm z diablimi rogami. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45290	Steamp. Cylinder (czar.)	Futurystyczne nakrycie głowy dla wojownika teraźniejszości
+45291	Steamp. Cylinder (czerw)	Futurystyczne nakrycie głowy dla wojownika teraźniejszości
+45292	Steamp. Cylinder (czar.)	Futurystyczne nakrycie głowy dla wojowniczki teraźniejszości
+45293	Steamp. Cylinder (czerw)	Futurystyczne nakrycie głowy dla wojowniczki teraźniejszości
+45294	Steamp. Cylinder+(czar.)	Futurystyczne nakrycie głowy dla wojownika teraźniejszości. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45295	Steamp. Cylinder+(czerw)	Futurystyczne nakrycie głowy dla wojownika teraźniejszości. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45296	Steamp. Cylinder+(czar.)	Futurystyczne nakrycie głowy dla wojowniczki teraźniejszości. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45297	Steamp. Cylinder+(czerw)	Futurystyczne nakrycie głowy dla wojowniczki teraźniejszości. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45298	Kapelusz z Piórem(nieb.)	Niebieski kapelusz z podpinką wysadzaną perełkami i czerwonym piórem bażanta
+45299	Kapelusz z Piórem(szar.)	Szary kapelusz z podpinką wysadzaną perełkami i piórem bażanta w kolorze morskim
+45300	Toczek Sungura (nieb.)	Niebieskie nakrycie głowy z turkusowym klejnotem
+45301	Toczek Sungura (szary)	Szare nakrycie głowy z fioletowym klejnotem
+45302	Kapelusz z Piórem+(nieb)	Niebieski kapelusz z podpinką wysadzaną perełkami i czerwonym piórem bażanta. Daje ci min. jeden losowy bonus.
+45303	Kapelusz z Piórem+(szar)	Szary kapelusz z podpinką wysadzaną perełkami i piórem bażanta w kolorze morskim. Daje ci min. jeden losowy bonus.
+45304	Toczek Sungura+ (nieb.)	Niebieskie nakrycie głowy z turkusowym klejnotem. Daje ci min. jeden losowy bonus.
+45305	Toczek Sungura+ (szary)	Szare nakrycie głowy z fioletowym klejnotem. Daje ci min. jeden losowy bonus.
+45314	Korona Zodiaku	Majestatyczna ozdoba na głowę.
+45315	Korona Zodiaku	Majestatyczna ozdoba na głowę.
+45316	Korona Zodiaku+	Majestatyczna ozdoba na głowę. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45317	Korona Zodiaku+	Majestatyczna ozdoba na głowę. Daje ci min. jeden losowy bonus. Przedmiot ten jest zdatny do handlu.
+45320	Hełm Avalonu (srebrny)	Srebrny hełm szlachetnego rodu rycerzy pradawnych czasów
+45321	Hełm Avalonu (czerwony)	Czerwony hełm szlachetnego rodu rycerzy pradawnych czasów
+45322	Hełm Avalonu (srebrny)	Srebrny hełm szlachetnego rodu rycerzy pradawnych czasów
+45323	Hełm Avalonu (czerwony)	Czerwony hełm szlachetnego rodu rycerzy pradawnych czasów
+45324	Hełm Avalonu+ (srebrny)	Srebrny hełm szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+45325	Hełm Avalonu+ (czerwony)	Czerwony hełm szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+45326	Hełm Avalonu+ (srebrny)	Srebrny hełm szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+45327	Hełm Avalonu+ (czerwony)	Czerwony hełm szlachetnego rodu rycerzy pradawnych czasów. Daje ci min. jeden losowy bonus.
+45328	Czapka Niedźwiadka (m)	Mięciutkie nakrycie głowy z twarzą niedźwiadka
+45329	Czapka Tygryska (m)	Mięciutkie nakrycie głowy z twarzą tygryska
+45330	Czapka Niedźwiadka (k)	Mięciutkie nakrycie głowy z twarzą niedźwiadka
+45331	Czapka Tygryska (k)	Mięciutkie nakrycie głowy z twarzą tygryska
+45332	Czapka Niedźwiadka+ (m)	To mięciutkie nakrycie głowy daje ci min. jeden losowy bonus.
+45333	Czapka Tygryska+ (m)	To mięciutkie nakrycie głowy daje ci min. jeden losowy bonus.
+45334	Czapka Niedźwiadka+ (k)	To mięciutkie nakrycie głowy daje ci min. jeden losowy bonus.
+45335	Czapka Tygryska+ (k)	To mięciutkie nakrycie głowy daje ci min. jeden losowy bonus.
+45336	Brązowa Czapka Wilka (m)	Wytworne nakrycie głowy wykonane z futra wilka dla mężczyzny.
+45337	Szara Czapka Wilka (m)	Wytworne nakrycie głowy wykonane z futra wilka dla mężczyzny.
+45338	Brązowa Czapka Wilka (k)	Wytworne nakrycie głowy wykonane z futra wilka dla kobiety.
+45339	Szara Czapka Wilka (k)	Wytworne nakrycie głowy wykonane z futra wilka dla kobiety.
+45340	Brązowa Czapka Wilka+(m)	Wytworne nakrycie głowy wykonane z futra wilka dla mężczyzny. Daje ci min. jeden losowy bonus.
+45341	Szara Czapka Wilka+ (m)	Wytworne nakrycie głowy wykonane z futra wilka dla mężczyzny. Daje ci min. jeden losowy bonus.
+45342	Brązowa Czapka Wilka+(k)	Wytworne nakrycie głowy wykonane z futra wilka dla kobiety. Daje ci min. jeden losowy bonus.
+45343	Szara Czapka Wilka+ (k)	Wytworne nakrycie głowy wykonane z futra wilka dla kobiety. Daje ci min. jeden losowy bonus.
+45344	Opaska DEN (k)	Długie włosy z warkoczami i opaską w barwach narodowych Danii
+45345	Opaska HUN (k)	Długie włosy z warkoczami i opaską w barwach narodowych Węgier
+45346	Opaska POL (k)	Długie włosy z warkoczami i opaską w barwach narodowych Polski
+45347	Opaska KSA (k)	Długie włosy z warkoczami i opaską w barwach narodowych Arabii Saudyjskiej
+45348	Opaska SVK (k)	Długie włosy z warkoczami i opaską w barwach narodowych Słowacji
+45349	Opaska TUR (k)	Długie włosy z warkoczami i opaską w barwach narodowych Turcji
+45350	Opaska DEN+ (k)	Długie włosy z warkoczami i opaską w barwach narodowych Danii. Daje ci min. jeden losowy bonus.
+45351	Opaska HUN+ (k)	Długie włosy z warkoczami i opaską w barwach narodowych Węgier. Daje ci min. jeden losowy bonus.
+45352	Opaska POL+ (k)	Długie włosy z warkoczami i opaską w barwach narodowych Polski. Daje ci min. jeden losowy bonus.
+45353	Opaska KSA (k)	Długie włosy z warkoczami i opaską w barwach narodowych Arabii Saudyjskiej. Daje ci min. jeden losowy bonus.
+45354	Opaska SVK+ (k)	Długie włosy z warkoczami i opaską w barwach narodowych Słowacji. Daje ci min. jeden losowy bonus.
+45355	Opaska TUR+ (k)	Długie włosy z warkoczami i opaską w barwach narodowych Turcji. Daje ci min. jeden losowy bonus.
+50221	Small IS Package (Stones)	 Zawartość pudełka: (Wartość: 10,5 tys. monet = 15% zniżki) - 1x "Zaklęcie Zielonego Zbawiciela" \n - 1x Skrzynia Biologa I \n - |~ff82ff7d|H|h1x White Rex (30% Stones Mount) \n [ekskluzywnie: tylko w pakietach IS]\n - |~ff82ff7d|H|h1x Bruce (15% Stones Pet) \n [ekskluzywnie: tylko w pakietach IS].
+50222	Small IS Package (Boss)	Zawartość pudełka: (Wartość: 10,5 tys. monet = 15% zniżki) - 1x "Zaklęcie Zielonego Zbawiciela" \n - 1x Skrzynia Biologa I \n - |~ff82ff7d|H|h1x Czarny Rex (30% wierzchowiec bossa) \n [ekskluzywnie: tylko w pakietach ze sklepu z przedmiotami]\n - |~ff82ff7d|H|h1x Wayne (15% zwierzak bossa) \n [ekskluzywnie: tylko w pakietach ze sklepu z przedmiotami]
+50223	Medium IS Package (Stones)	Zawartość pudełka: (Wartość: 25.5k Monet = 21% zniżki) - 1x "Green Savior Spell" \n - 1x Biologist Chest I \n - |~ff82ff7d|H|h1x Black Rex (30% Boss Mount) \n [ekskluzywnie: tylko w pakietach IS] - |~ff82ff7d|H|h1x Wayne (15% Boss Pet) \n [ekskluzywnie: Tylko w pakietach sklepu z przedmiotami]\n - |~ff82ff7d|H|h1x White Rex (30% Stones Mount)\n [ekskluzywnie: Tylko w pakietach sklepu z przedmiotami]\n - |~ff82ff7d|H|h1x Bruce (15% Stones Pet)\n [ekskluzywnie: Tylko w pakietach sklepu z przedmiotami]\n - Dragon Buffi\n - Attack Buffi\n - 2x Buffi Booster (Int +200)\n - Silver Premium Scroll
+50224	Big IS Package	Zawartość pudełka: (Wartość: 52.5k Monet = 24% zniżki) - 2x "Green Savior Spell" \n - 1x Biologist Chest I \n - |~ff82ff7d|H|h1x Ice Phoenix (30% Boss Mount) \n [ekskluzywny latający wierzchowiec: tylko w pakiecie IS za 100€] - |~ff82ff7d|H|h1x Wayne (15% Boss Pet) \n [ekskluzywny: Tylko w pakietach IS]\n - |~ff82ff7d|H|h1x Fire Rex (30% Stones Mount)\n [ekskluzywny latający wierzchowiec: Tylko w pakiecie IS za 100 €]\n - |~ff82ff7d|H|h1x Bruce (15% Stones Pet)\n [ekskluzywny: Tylko w pakietach IS]\n - Dragon Buffi\n - Attack Buffi\n - 2x Buffi Booster (Int +200)\n - Golden Premium Scroll\n - 1x Biologist Chest II\n - 3x Golden Shiva Token\n - 1x Pet-Name Changer\n - 1x Mount-Name Changer\n - 1x Buffi Name-Changer\n - |~ff82ff7d|H|h1x Blue Rex (30% Monster Mount)\n [ekskluzywnie: Tylko w pakiecie IS za 100€]\n - |~ff82ff7d|H|h1x Kostium Wojownika Czarnej Pustyni\n [ekskluzywnie: Tylko w pakiecie IS za 100€]\n - |~ff82ff7d|H|h1x Żółta Małpa (Zwierzak PvP)\n [ekskluzywnie: Tylko w pakiecie IS za 100€]
+50266	Skrzynia Jotuna Thryma	Skrzynia Jotuna Thryma - jej ciężka kłódka wróży cenną zawartość.
+50267	Złota Skrzynia Okey	Zdobądź min. 400 pkt w jednej rundzie Okey, aby otrzymać tę nagrodę.
+50270	Skrzynia Królowej Meley	Ta skrzynia została wydobyta ze Schronienia Królowej Smoków Meley. Znajduje się w niej prawdziwy królewski skarb. Przedmiot ten jest zdatny do handlu.
+50271	Skrzynia Sm. Strażników	Skrzynia ta zawiera kilka rzadkich, zaginionych od wieków skarbów licznych smoczych strażników. Przedmiot ten jest zdatny do handlu.
+50272	Zł. Skrzy. Łowcy Bossów	Nagroda ze złota za twoje bohaterskie czyny podczas łowów bossów
+50285	Żel. Skrzy. Strefy Walki	Skrzynia z drogocenną zawartością.
+50286	Zł. Skrzy. Strefy Walki	Skrzynia z drogocenną zawartością.
+50287	Skrzynka Polowa 1	Skrzynka z przydatnym wyposażeniem.
+50288	Skrzynia Polowa 2	Skrzynka z przydatnym wyposażeniem.
+50289	Reinkarnacja	Reinkarnacja wskrzesi cię natychmiast i bez czasu oczekiwania.
+50290	Dre. Skrzy. Strefy Walki	Skrzynia z drogocenną zawartością.
+50323	Skrzynia Ksiąg: Riposta	Skrzynia ta zawiera losową księgę umiejętności do nauki riposty.
+50324	Skrzynia Ksiąg: Dopalacz	Skrzynia ta zawiera losową księgę umiejętności do nauki dopalacza.
+50514	Podręcznik: Dopalacz	Ta księga umiejętności umożliwia ci opanowanie jednego z dziewięciu dopalaczy. Zostanie wybrana umiejętność pasująca do twojej postaci.
+50515	Podręcznik: Riposta	Księga ta umożliwia ci wybór spośród dziewięciu ripost. Wybieraj mądrze!
+50516	Riposta: Wir Miecza	Księga ta uczy cię umiejętności redukującej obrażenia od Wiru Miecza.
+50517	Riposta: Zasadzka	Księga ta uczy cię umiejętności redukującej obrażenia od Zasadzki.
+50518	Riposta: Uderz. Palcem	Księga ta uczy cię umiejętności redukującej obrażenia od Uderzenia Palcem.
+50519	Riposta: Strzel. Smok	Księga ta uczy cię umiejętności redukującej obrażenia od Strzelającego Smoka.
+50520	Riposta: Duchowe Uderz.	Księga ta uczy cię umiejętności redukującej obrażenia od Duchowego Uderzenia.
+50521	Riposta: Ognista Strzała	Księga ta uczy cię umiejętności redukującej obrażenia od Ognistej Strzały.
+50522	Riposta: Mroczne Uderz.	Księga ta uczy cię umiejętności redukującej obrażenia od Mrocznego Uderzenia.
+50523	Riposta: Przyw. Błysk.	Księga ta uczy cię umiejętności redukującej obrażenia od Przywołania Błyskawicy.
+50524	Riposta: Wilczy Dech	Księga ta uczy cię umiejętności redukującej obrażenia od Wilczego Tchu.
+50525	Kamień Duchowy+	Ten legendarny kamień służy do ulepszenia mistrzowskich umiejętności dopalaczy i ripost. Kamień zniknie po użyciu.
+50560	Dopalacz: Wir Miecza	Księga ta uczy cię umiejętności wzmacniającej Wir Miecza.
+50561	Dopalacz: Zasadzka	Księga ta uczy cię umiejętności wzmacniającej Zasadzkę.
+50562	Dopalacz: Uderz. Palcem	Księga ta uczy cię umiejętności wzmacniającej Uderzenie Palcem.
+50563	Dopalacz: Strzel. Smok	Księga ta uczy cię umiejętności wzmacniającej Strzelającego Smoka.
+50564	Dopalacz: Duchowe Uderz.	Księga ta uczy cię umiejętności wzmacniającej Duchowe Uderzenie.
+50565	Dopalacz: Ogni. Strzała	Księga ta uczy cię umiejętności wzmacniającej Ognistą Strzałę.
+50566	Dopalacz: Mroczne Uderz.	Księga ta uczy cię umiejętności wzmacniającej Mroczne Uderzenie.
+50567	Dopalacz: Przyw. Błysk.	Księga ta uczy cię umiejętności wzmacniającej Przywołanie Błyskawicy.
+50568	Dopalacz: Wilczy Dech	Księga ta uczy cię umiejętności wzmacniającej Wilczy Dech.
+50620	Ruda Azure	Używając pieca gildii można wyprodukować z tej Rudy Azure.
+50640	Azure	Zielony kamień szlachetny o nadzwyczajnym szlifie. Można go przerobić na drogocenną ozdobę.
+50926	Kamyki	Zbieraj Kamyki i daj je Handlarzowi Gaya, by uszlachetnił je w drogocenne Gaya.
+51723	Skamieniałe Drewno	Wartościowe drewno obdarzające wysoką stabilnością przedmioty biżuterii.
+51724	Miedź	Dający się znakomicie formować szlachetny metal, z którego można wykonywać biżuterię lub monety. Używany jest ponadto do produkcji Brązu.
+51725	Srebro	Błyszczący metal szlachetny, wykorzystywany do produkcji biżuterii.
+51726	Złoto	Ciepło połyskujący metal szlachetny. Był jednym z pierwszych metali używanych przez człowieka. Jeszcze do dzisiaj jest cenionym metalem używanym do wyrobu biżuterii.
+51727	Jadeit	Cenny minerał, używany przez człowieka już ponad 5000 lat. Często wykorzystywany do wyrobu biżuterii.
+51728	Ebonit	Czarne, bardzo twarde drewno, należące do jednego z najcenniejszych gatunków drewna. Często używane do produkcji biżuterii.
+51729	Perła	Łagodnie połyskująca piękność z masy perłowej. Często używana jako ozdoba w biżuterii.
+51730	Białe Złoto	Stabilny, biało zabarwiony stop złota. Nad wyraz lubiany i często używany do wyrobu biżuterii.
+51731	Kryształ	Nadzwyczaj twarde kamienie z krystalicznego kwarcu. Występują w różnych kolorach. Często używane do produkcji biżuterii.
+51732	Ametyst	Popularny kwarc, występujący w różnych odcieniach fioletu. Bardzo ceniony w wyrobie biżuterii.
+51733	Niebiańskie Łzy	Skrystalizowany deszcz niebios. Niebiańskie Łzy mogą być przymocowane do akcesoriów z Niebiańskich Łez.
+51734	Kryształ Duszy	Kryształ tak czysty jak niewinna dusza. Można go użyć do produkcji ozdób.
+51735	Rubin	Czerwony kamień szlachetny o nadzwyczajnym szlifie. Można go przerobić na drogocenną ozdobę.
+51736	Granat	Czerwony kamień szlachetny o nadzwyczajnym szlifie. Można go przerobić na drogocenną ozdobę.
+51737	Szmaragd	Zielony kamień szlachetny o nadzwyczajnym szlifie. Można go przerobić na drogocenną ozdobę.
+51738	Szafir	Zielony kamień szlachetny o nadzwyczajnym szlifie. Można go przerobić na drogocenną ozdobę.
+51740	Azure	Zielony kamień szlachetny o nadzwyczajnym szlifie. Można go przerobić na drogocenną ozdobę.
+55001	Odżywka	Nakarm swojego zwierzaka pyszną odżywką proteinową, a od razu zregeneruje siły. Jeśli nakarmisz nią martwego zwierzaka, to odnowi siły w 50%.
+55002	Klatka Transport.	Wsadź swojego zwierzak do klatki transportowej, a stanie się on na 30 dni zdatny do handlu.
+55003	Księga Młodego Zwierza	Za pomocą następujących przedmiotów możesz podnieść poziom swojego zwierzaka (dziki zwierzak): 10x Księga Młodego Zwierza, 10x Worek Z Pajęczymi Jajami , 10x Biała Wstęga+, 10x Shuriken, 10x Ozdobna Spinka Do Włosów, 5x Czarny Uniform+, 5x Kawałek Lodu+.
+55004	Księga Dzikiego Zwierza	Za pomocą następujących przedmiotów możesz podnieść poziom swojego zwierzaka (dzielny zwierzak): 10x Księga Dzikiego Zwierza, 2x Krwawa Perła, 10x Krem Do Twarzy, 10x Futro Yeti, 10x Ornament, 10x Kłąb, 5x Księga Klątw+.
+55005	Księga Dzielnego Zwierza	Za pomocą następujących przedmiotów możesz podnieść poziom swojego zwierzaka (bohaterski trening): 10x Księga Dzielnego Zwierza, 10x Nieznane Lekarstwo+, 2x Biała Perła, 2x Niebieska Perła, 10x Pamiątka Po Demonie+, 10x Ząb Orka+, 5x Niebieski Rzemyk.
+55006		
+55008	Pergamin Nazwy Zwierzaka	Przeciągnij pergamin na swojego zwierzaka, aby zmienić jego nazwę.
+55009	Skrzynia Ksiąg Zwierza	Zawiera losowo wybraną Księgę Zwierza.
+55010	Księga Potworów	Po nauczeniu się tej umiejętności twój pupil zwiększa twoje obrażenia przeciwko potworom.
+55011	Księga Kamieni Metin	Po nauczeniu się tej umiejętności twój pupil zwiększa twoje obrażenia przeciwko Kamieniom Metin.
+55012	Księga Bossów	Po nauczeniu się tej umiejętności twój pupil zwiększa twoje obrażenia przeciwko bossom.
+55013	Księga Życia	Po nauczeniu się tej umiejętności twój pupil zwiększa twoje maksymalne HP.
+55014	Księga Trucizny	Po nauczeniu się tej umiejętności twój pupil daje twoim atakom szansę na zatrucie wroga.
+55015	Księga Anty-Krytyka	Po nauczeniu się tej umiejętności twój pupil zmniejsza szansę otrzymania ciosów krytycznych.
+55016	Księga Anty-Przeszycia	Po nauczeniu się tej umiejętności twój pupil zmniejsza szansę otrzymania ciosów przeszywających.
+55017	Księga Ognia	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją siłę przeciwko żywiołowi ognia.
+55018	Księga Lodu	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją siłę przeciwko żywiołowi lodu.
+55019	Księga Ziemi	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją siłę przeciwko żywiołowi ziemi.
+55020	Księga Wiatru	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją siłę przeciwko żywiołowi wiatru.
+55021	Księga Regeneracji	Po nauczeniu się tej umiejętności twój pupil stopniowo odnawia twoje HP z czasem.
+55022	Księga Uniku Strzał	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją szansę na uniknięcie ataków strzałami.
+55023	Księga Dropu Przedmiotów	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją szansę na drop przedmiotów.
+55024	Księga Atakującego	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją całkowitą wartość ataku.
+55025	Księga Berserkera (H)	Po nauczeniu się tej umiejętności twój pupil zwiększa twoje obrażenia magiczne i fizyczne.
+55026	Księga Obrażeń Umiejętności (H)	Po nauczeniu się tej umiejętności twój pupil zwiększa obrażenia twoich umiejętności.
+55027	Księga Odporności na Umiejętności (H)	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją odporność na obrażenia umiejętności.
+55028	Księga Średnich Obrażeń (H)	Po nauczeniu się tej umiejętności twój pupil zwiększa twoje średnie obrażenia.
+55029	Księga Odporności na Półludzi (H)	Po nauczeniu się tej umiejętności twój pupil zwiększa twoją odporność przeciwko półludziom.
+55030	Księga Żywiołów (H)	Po nauczeniu się tej umiejętności twój pupil zwiększa twoje obrażenia żywiołowe.
+55260	Fire Infusion [I]	Starożytny Napar Ognia na najłatwiejszym etapie. Można ulepszyć
+55261	Water Infusion [I]	Antyczny Napar Wodny na najłatwiejszym etapie. Można ulepszyć
+55262	Earth Infusion [I]	Infuzja Starożytnej Ziemi na najłatwiejszym etapie. Można ulepszyć
+55263	Wind Infusion [I]	Antyczny Napar Wiatru na najłatwiejszym etapie. Można ulepszyć
+55264	Dark Infusion [I]	Starożytna Ciemna Infuzja na najłatwiejszej scenie. Można ulepszyć
+55265	Light Infusion [I]	Starożytna Infuzja Światła na najłatwiejszej scenie. Można ulepszyć
+55270	Fire Infusion [II]	Rzadki Napar Ognia, który można zmienić w coś więcej. Można ulepszyć
+55271	Water Infusion [II]	Rzadki napar wodny, który można zmienić w coś więcej. Można ulepszyć
+55272	Earth Infusion [II]	Napar z ziem rzadkich, który można zmienić w coś więcej. Można poprawićd
+55273	Wind Infusion [II]	Rzadki Napar Wiatru, który można zmienić w coś więcej. Można ulepszyć
+55280	Fire Infusion [III]	Doskonały Napar Ognia udoskonalony, by nadawał się do użytku. Można ulepszyć
+55281	Water Infusion [III]	Doskonały napar wodny udoskonalony, aby nadawał się do użytku. Można ulepszyć
+55282	Earth Infusion [III]	Doskonały Napar Ziemi do perfekcji, aby nadawał się do użytku. Można ulepszyć
+55283	Wind Infusion [III]	Doskonały napar wiatru udoskonalony, aby nadawał się do użytku. Można ulepszyć
+55290	Fire Infusion [IV]	Legendarna Infuzja Ognia, która ma szansę być świetna. Można ulepszyć
+55291	Water Infusion [IV]	Legendarny napar wodny, który ma szansę być świetny. Można ulepszyć
+55292	Earth Infusion [IV]	Legendarna Infuzja Ziemi, która ma szansę być świetna. Można ulepszyć
+55293	Wind Infusion [IV]	Legendarna Infuzja Wiatru, która ma szansę być świetna. Można ulepszyć
+55294	Dark Infusion [IV]	Legendarna mroczna infuzja, która ma szansę być świetna. Można ulepszyć
+55295	Light Infusion [IV]	Legendarna infuzja światła, która ma szansę być świetna. Można ulepszyć
+55300	Fire Infusion [V]	Mityczny Napar Ognia w najlepszym wydaniu.
+55301	Water Infusion [V]	Mityczny Napar Wodny w najlepszym wydaniu.
+55302	Earth Infusion [V]	Mistyczny Napar Ziemny w najlepszym wydaniu.
+55303	Wind Infusion [V]	Mistyczny Napar Wodny  w najlepszym wydaniu.
+55401	Jajo Małpiszona	Kliknij prawym przyciskiem myszki na to jajo, aby wykluć z niego zwierzaka.
+55402	Jajo Pająka	Kliknij prawym przyciskiem myszki na to jajo, aby wykluć z niego zwierzaka.
+55403	Jajo Razadora	Kliknij prawym przyciskiem myszki na to jajo, aby wykluć z niego zwierzaka.
+55404	Jajo Nemere	Kliknij prawym przyciskiem myszki na to jajo, aby wykluć z niego zwierzaka.
+55405	Niebieskie Jajo Smoka	Kliknij prawym przyciskiem myszki na jajo, by wykluć zwierzaka.
+55406	Czerwone Jajo Smoka	Kliknij prawym przyciskiem myszki na jajo, by wykluć zwierzaka.
+55407	Jajo Mini-Azraela	Kliknij prawym przyciskiem myszki na jajo, by wykluć zwierzaka.
+55408	Jajo Grubego Mini Kata	Kliknij prawym przyciskiem myszki na jajo, by wykluć zwierzaka.
+55409	Jajo Baashidośa	Kliknij prawym przyciskiem myszki na jajo, by wykluć zwierzaka.
+55410	Jajo Nessie	Kliknij prawym przyciskiem myszki na jajo, by wykluć zwierzaka.
+55701	Mały Małpiszon	Przywołaj swojego zwierzaka za pomocą PPM. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55702	Mały Pająk	Przywołaj swojego zwierzaka za pomocą PPM. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55703	Mały Razador	Przywołaj swojego zwierzaka za pomocą PPM. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55704	Mały Nemere	Przywołaj swojego zwierzaka za pomocą PPM. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55705	Mały Smok	Przyzwij swojego zwierzaka prawym przyciskiem myszki. Naciśnij następnie klawisz "P", aby wyświetlić IU zwierzaka.
+55706	Mała Meley	Przyzwij swojego zwierzaka prawym przyciskiem myszki. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55707	Mini Azrael	Przywołaj swojego zwierzaka prawym przyciskiem myszki. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55708	Gruby Mini Kat	Przywołaj swojego zwierzaka prawym przyciskiem myszki. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55709	Baashidoś	Przyzwij swojego zwierzaka prawym przyciskiem myszki. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+55710	Nessie	Przywołaj swojego zwierzaka prawym przyciskiem myszki. Następnie naciśnij klawisz "P", aby wyświetlić interfejs zwierzaka.
+56000	Appaloosa	Pieczęć ta przywołuje twojego łagodnego kucyka Appaloosa. Obdarza swoich jeźdźców +10 szybkością ruchu.
+71000	Zwój Zmiany Treningu	Przedmiot ten umożliwia usunięcie wszystkich ripost i dopalaczy. Za pomocą ksiąg umiejętności (riposta i dopalacz) możesz nauczyć się ich ponownie.
+71112	Reset Biologa Reset wszystkich misji Biologa z możliwością ponownego wyboru wszystkich nagród.
+71165	Polarny Drapieżnik	Za pomocą tej pieczęci możesz przywołać wojowniczego polarnego drapieżnika. Zwiększa szybkość ruchu o 60.
+71189	Zaczarowanie przedmiotu+	Usuwa wszystkie bonusy z twojego jednego przedmiotu, po czym dodaje nowe. Przed zastosowaniem nowe bonusy zostaną Ci ukazane, a Ty możesz wybrać, czy na pewno chcesz przejąć tę zmianę.
+71190	Dyniowa Skrzynia	Taką skrzynię otrzymuje się za wyjątkowe zasługi.
+71191	Torba Słodyczy	Zawartość taj torby osłodzi ci niejedną noc. Otwórz ją i ciesz się niespodzianką!
+71192	Profesorek	Za pomocą tej pieczęci możesz przywołać swojego zwierzaka "Profesorka". Zwiększa szybkość ruchu 20 i otrzymywane punkty doświadczenia o 30%.
+71193	Błyskawiczny	Za pomocą tej pieczęci możesz przywołać swojego zwierzaka "Błyskawicznego". Zwiększa szybkość ruchu 20 i otrzymywane punkty doświadczenia o 30%.
+71194	Złote Pudło Okey	Otrzymujesz 5 zestawów kart. Każdy zestaw zawiera 24 kart kolekcjonerskich Okey (łącznie 120 kart). Po zakończeniu eventu zdobycie tych kart nie będzie możliwe.
+71195	Srebrne Pudło Okey	Otrzymujesz jeden zestaw kart z 24 kartami kolekcjonerskimi Okey. Po zakończeniu eventu zdobycie tych kart nie będzie możliwe.
+71196	Brązowe Pudło Okey	Otrzymujesz 6 kart kolekcjonerskich Okey. Po zakończeniu eventu zdobycie tych kart nie będzie możliwe.
+71197	Nugget (granatowy)	Za pomocą tej pieczęci możesz przywołać Nuggeta, strasznego bojowego kurczaczka. Daje ci bonus w postaci +15% do siły w walce z potworami i zwiększa otrzymywane punkty doświadczenia o 30%.
+71198	Muffin (różowy)	Za pomocą tej pieczęci możesz przywołać Muffina, groźnego bojowego kurczaczka. Daje ci bonus w postaci +15% do siły w walce z potworami i zwiększa otrzymywane punkty doświadczenia o 30%.
+71220		
+71235	Cerber (złoty)	Za pomocą tej pieczęci przywołujesz swojego straszliwego trzygłowego piekielnego psa.
+71236	Cerber (srebrny)	Za pomocą tej pieczęci przywołujesz swojego straszliwego trzygłowego piekielnego psa.
+71237	Dzik	Czar pieczęci wzywa potężnego ducha zwierząt, który przeniesie cię szybko do miejsca twojego wyboru.
+71238	Wilk	Czar pieczęci wzywa potężnego ducha zwierząt, który przeniesie cię szybko do miejsca twojego wyboru.
+71239	Tygrys	Czar pieczęci wzywa potężnego ducha zwierząt, który przeniesie cię szybko do miejsca twojego wyboru.
+71240	Lew	Czar pieczęci wzywa potężnego ducha zwierząt, który przeniesie cię szybko do miejsca twojego wyboru.
+71241	Bilet na Jazdę Konną	Wyposaż tę kartę, by przejechać się na kucyku przez 10 minut.
+71394	Phoenix To jest latający wierzchowiec Użyj klawisza Shift, aby przejść w górę i X, aby przejść w dół.
+71395	Phoenix Jest to latający wierzchowiec. Użyj klawisza Shift, aby wznieść się w górę i klawisza X, aby zejść w dół.
+72325	Anulacja Transmutacji	Anuluje transmutację przedmiotu.
+72326	Anulacja Transmutacji	Anuluje transmutację przedmiotu i zwróć przedmiot.
+72709	Kolczyk z kości tygrysa	Siła ataku wzrasta na 20 godziny o 200 punktów (czas upływa, tylko gdy przedmiot jest założony).
+72710	Kolczyk z kości smoka	Siła obrony wzrasta na 20 godziny o 300 punktów (czas upływa, tylko gdy przedmiot jest założony).
+72711	Brans. z kości tygrysa	Obrażenia twoich umiejętności wzrastają na 20 godziny o 30 punktów (czas upływa, tylko gdy przedmiot jest założony).
+72712	Brans. z kości smoka	Twoja obrona przeciwko umiejętnościom wzrasta na 20 godziny o 30 punktów (czas upływa, tylko gdy przedmiot jest założony).
+72800	Zwój Przyw. - Ż.N. Łez	Przyzywa Żyła Rubinu Łez blisko postaci.
+72801	Zwój Przyw. - Ż.N. Łez	Przyzywa Żyła Granatu Łez blisko postaci.
+72802	Zwój Przyw. - Ż.N. Łez	Przyzywa Żyła Szmaragdu Łez blisko postaci.
+72803	Zwój Przyw. - Ż.N. Łez	Przyzywa Żyła Szafiru Łez blisko postaci.
+72804	Zwój Przyw. - Ż.N. Łez	Przyzywa Żyła Rudy Turmalinu Łez blisko postaci.
+79505	Karta Kolek. Okey	Gdy uzbierasz 24 karty kolekcjonerskie Okey, otrzymasz automatycznie zestaw kart Okey.
+79506	Zestaw Kart Okey	Za pomocą tego zestawu kart możesz rozpocząć rundę Okey. Po zaczęciu gry zestaw zostanie automatycznie usunięty z twojego ekwipunku.
+80018	Kupon NC (6000)	Kupon o wartości 6000 Smoczych Monet. Przedmiot ten jest zdatny do handlu.
+85001	Szarfa Władcy (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+85002	Szarfa Władcy (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+85003	Szarfa Władcy (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+85004	Szarfa Władcy (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+85005	Szarfa Mistrza (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+85006	Szarfa Mistrza (dostoj.)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+85007	Szarfa Mistrza (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+85008	Szarfa Mistrza (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+85011	Szarfa Księcia (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+85012	Szarfa Księcia (dost.)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+85013	Szarfa Księcia (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+85014	Szarfa Księcia (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+85015	Szarfa Króla (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+85016	Szarfa Króla (dost.)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+85017	Szarfa Króla (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+85018	Szarfa Króla (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+85021	Szarfa Jubile. (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+85022	Szarfa Jubile. (dostoj.)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+85023	Szarfa Jubile. (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+85024	Szarfa Jubile. (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86001	Szarfa Zi (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86002	Szarfa Zi (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86003	Szarfa Zi (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86004	Szarfa Zi (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86005	Szarfa Chou (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86006	Szarfa Chou (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86007	Szarfa Chou (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86008	Szarfa Chou (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86011	Szarfa Yin (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86012	Szarfa Yin (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86013	Szarfa Yin (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86014	Szarfa Yin (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86015	Szarfa Mao (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86016	Szarfa Mao (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86017	Szarfa Mao (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86018	Szarfa Mao (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86021	Szarfa Chen (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86022	Szarfa Chen (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86023	Szarfa Chen (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86024	Szarfa Chen (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86025	Szarfa Si (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86026	Szarfa Si (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86027	Szarfa Si (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86028	Szarfa Si (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86031	Szarfa Wu (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86032	Szarfa Wu (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86033	Szarfa Wu (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86034	Szarfa Wu (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86035	Szarfa Wei (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86036	Szarfa Wei (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86037	Szarfa Wei (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86038	Szarfa Wei (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86041	Szarfa Shen (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86042	Szarfa Shen (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86043	Szarfa Shen (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86044	Szarfa Shen (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86045	Szarfa Yu (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86046	Szarfa Yu (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86047	Szarfa Yu (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86048	Szarfa Yu (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86051	Szarfa Xu (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86052	Szarfa Xu (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86053	Szarfa Xu (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86054	Szarfa Xu (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+86055	Szarfa Hai (prosta)	Szarfa ta absorbuje 1% bonusów wykorzystanej w tym celu broni lub zbroi.
+86056	Szarfa Hai (dostojna)	Szarfa ta absorbuje 5% bonusów wykorzystanej w tym celu broni lub zbroi.
+86057	Szarfa Hai (zacna)	Szarfa ta absorbuje 10% bonusów wykorzystanej w tym celu broni lub zbroi.
+86058	Szarfa Hai (unikat.)	Szarfa ta absorbuje 11~25% bonusów wykorzystanej w tym celu broni lub zbroi.
+91050	Skrzynia Biologa I Zawiera wszystkie przedmioty z misji Biologa od poziomu 30 do poziomu 94.
+91051	Skrzynia Biologa II Zawiera wszystkie przedmioty z misji Biologa od poziomu 100 do poziomu 130.

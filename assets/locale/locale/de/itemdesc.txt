@@ -2406,3 +2406,1385 @@
 90011	Stamm	Baumaterial für Gildengebäude
 90012	Sperrholz	Baumaterial für Gildengebäude
 90013	Button-Abbild	
+300	Zodiakklinge+0	
+301	Zodiakklinge+1	
+302	Zodiakklinge+2	
+303	Zodiakklinge+3	
+304	Zodiakklinge+4	
+305	Zodiakklinge+5	
+306	Zodiakklinge+6	
+307	Zodiakklinge+7	
+308	Zodiakklinge+8	
+309	Zodiakklinge+9	
+310	Zodiakschwert+0	
+311	Zodiakschwert+1	
+312	Zodiakschwert+2	
+313	Zodiakschwert+3	
+314	Zodiakschwert+4	
+315	Zodiakschwert+5	
+316	Zodiakschwert+6	
+317	Zodiakschwert+7	
+318	Zodiakschwert+8	
+319	Zodiakschwert+9	
+1180	Zodiakdolch+0	
+1181	Zodiakdolch+1	
+1182	Zodiakdolch+2	
+1183	Zodiakdolch+3	
+1184	Zodiakdolch+4	
+1185	Zodiakdolch+5	
+1186	Zodiakdolch+6	
+1187	Zodiakdolch+7	
+1188	Zodiakdolch+8	
+1189	Zodiakdolch+9	
+2200	Zodiakbogen+0	
+2201	Zodiakbogen+1	
+2202	Zodiakbogen+2	
+2203	Zodiakbogen+3	
+2204	Zodiakbogen+4	
+2205	Zodiakbogen+5	
+2206	Zodiakbogen+6	
+2207	Zodiakbogen+7	
+2208	Zodiakbogen+8	
+2209	Zodiakbogen+9	
+3220	Zodiakglefe+0	
+3221	Zodiakglefe+1	
+3222	Zodiakglefe+2	
+3223	Zodiakglefe+3	
+3224	Zodiakglefe+4	
+3225	Zodiakglefe+5	
+3226	Zodiakglefe+6	
+3227	Zodiakglefe+7	
+3228	Zodiakglefe+8	
+3229	Zodiakglefe+9	
+5160	Zodiakglocke+0	
+5161	Zodiakglocke+1	
+5162	Zodiakglocke+2	
+5163	Zodiakglocke+3	
+5164	Zodiakglocke+4	
+5165	Zodiakglocke+5	
+5166	Zodiakglocke+6	
+5167	Zodiakglocke+7	
+5168	Zodiakglocke+8	
+5169	Zodiakglocke+9	
+6120	Zodiakklaue+0	
+6121	Zodiakklaue+1	
+6122	Zodiakklaue+2	
+6123	Zodiakklaue+3	
+6124	Zodiakklaue+4	
+6125	Zodiakklaue+5	
+6126	Zodiakklaue+6	
+6127	Zodiakklaue+7	
+6128	Zodiakklaue+8	
+6129	Zodiakklaue+9	
+7300	Zodiakfächer+0	
+7301	Zodiakfächer+1	
+7302	Zodiakfächer+2	
+7303	Zodiakfächer+3	
+7304	Zodiakfächer+4	
+7305	Zodiakfächer+5	
+7306	Zodiakfächer+6	
+7307	Zodiakfächer+7	
+7308	Zodiakfächer+8	
+7309	Zodiakfächer+9	
+9506	Schwert+3	
+9507	Dolch+3	
+9508	Fächer+3	
+9509	Stahlfackel+3	
+9600	Feuertalisman+0	
+9601	Feuertalisman+1	
+9602	Feuertalisman+2	
+9603	Feuertalisman+3	
+9604	Feuertalisman+4	
+9605	Feuertalisman+5	
+9606	Feuertalisman+6	
+9607	Feuertalisman+7	
+9608	Feuertalisman+8	
+9609	Feuertalisman+9	
+9610	Feuertalisman+10	
+9611	Feuertalisman+11	
+9612	Feuertalisman+12	
+9613	Feuertalisman+13	
+9614	Feuertalisman+14	
+9615	Feuertalisman+15	
+9616	Feuertalisman+16	
+9617	Feuertalisman+17	
+9618	Feuertalisman+18	
+9619	Feuertalisman+19	
+12690	Drachenstahlhelm +0	
+12691	Drachenstahlhelm +1	
+12692	Drachenstahlhelm +2	
+12693	Drachenstahlhelm +3	
+12694	Drachenstahlhelm +4	
+12695	Drachenstahlhelm +5	
+12696	Drachenstahlhelm +6	
+12697	Drachenstahlhelm +7	
+12698	Drachenstahlhelm +8	
+12699	Drachenstahlhelm +9	
+12700	Drachenkapuze +0	
+12701	Drachenkapuze +1	
+12702	Drachenkapuze +2	
+12703	Drachenkapuze +3	
+12704	Drachenkapuze +4	
+12705	Drachenkapuze +5	
+12706	Drachenkapuze +6	
+12707	Drachenkapuze +7	
+12708	Drachenkapuze +8	
+12709	Drachenkapuze +9	
+12710	Drachenpanzerhelm +0	
+12711	Drachenpanzerhelm +1	
+12712	Drachenpanzerhelm +2	
+12713	Drachenpanzerhelm +3	
+12714	Drachenpanzerhelm +4	
+12715	Drachenpanzerhelm +5	
+12716	Drachenpanzerhelm +6	
+12717	Drachenpanzerhelm +7	
+12718	Drachenpanzerhelm +8	
+12719	Drachenpanzerhelm +9	
+12720	Drachenhut +0	
+12721	Drachenhut +1	
+12722	Drachenhut +2	
+12723	Drachenhut +3	
+12724	Drachenhut +4	
+12725	Drachenhut +5	
+12726	Drachenhut +6	
+12727	Drachenhut +7	
+12728	Drachenhut +8	
+12729	Drachenhut +9	
+15440	Feuerschuhe+0	
+15441	Feuerschuhe+1	
+15442	Feuerschuhe+2	
+15443	Feuerschuhe+3	
+15444	Feuerschuhe+4	
+15445	Feuerschuhe+5	
+15446	Feuerschuhe+6	
+15447	Feuerschuhe+7	
+15448	Feuerschuhe+8	
+15449	Feuerschuhe+9	
+15450	Ozeanschuhe+0	
+15451	Ozeanschuhe+1	
+15452	Ozeanschuhe+2	
+15453	Ozeanschuhe+3	
+15454	Ozeanschuhe+4	
+15455	Ozeanschuhe+5	
+15456	Ozeanschuhe+6	
+15457	Ozeanschuhe+7	
+15458	Ozeanschuhe+8	
+15459	Ozeanschuhe+9	
+19000	Rotflammenstein	Verstärkt die Boni deines Gürtels.
+19290	Zodiakrüstung+0	
+19291	Zodiakrüstung+1	
+19292	Zodiakrüstung+2	
+19293	Zodiakrüstung+3	
+19294	Zodiakrüstung+4	
+19295	Zodiakrüstung+5	
+19296	Zodiakrüstung+6	
+19297	Zodiakrüstung+7	
+19298	Zodiakrüstung+8	
+19299	Zodiakrüstung+9	
+19490	Zodiakanzug+0	
+19491	Zodiakanzug+1	
+19492	Zodiakanzug+2	
+19493	Zodiakanzug+3	
+19494	Zodiakanzug+4	
+19495	Zodiakanzug+5	
+19496	Zodiakanzug+6	
+19497	Zodiakanzug+7	
+19498	Zodiakanzug+8	
+19499	Zodiakanzug+9	
+19690	Zodiakplattenpanzer+0	
+19691	Zodiakplattenpanzer+1	
+19692	Zodiakplattenpanzer+2	
+19693	Zodiakplattenpanzer+3	
+19694	Zodiakplattenpanzer+4	
+19695	Zodiakplattenpanzer+5	
+19696	Zodiakplattenpanzer+6	
+19697	Zodiakplattenpanzer+7	
+19698	Zodiakplattenpanzer+8	
+19699	Zodiakplattenpanzer+9	
+19890	Zodiakkleidung+0	
+19891	Zodiakkleidung+1	
+19892	Zodiakkleidung+2	
+19893	Zodiakkleidung+3	
+19894	Zodiakkleidung+4	
+19895	Zodiakkleidung+5	
+19896	Zodiakkleidung+6	
+19897	Zodiakkleidung+7	
+19898	Zodiakkleidung+8	
+19899	Zodiakkleidung+9	
+20760	Polarlichtpanzer+0	
+20761	Polarlichtpanzer+1	
+20762	Polarlichtpanzer+2	
+20763	Polarlichtpanzer+3	
+20764	Polarlichtpanzer+4	
+20765	Polarlichtpanzer+5	
+20766	Polarlichtpanzer+6	
+20767	Polarlichtpanzer+7	
+20768	Polarlichtpanzer+8	
+20769	Polarlichtpanzer+9	
+20770	Anzug des Hinterhalts+0	
+20771	Anzug des Hinterhalts+1	
+20772	Anzug des Hinterhalts+2	
+20773	Anzug des Hinterhalts+3	
+20774	Anzug des Hinterhalts+4	
+20775	Anzug des Hinterhalts+5	
+20776	Anzug des Hinterhalts+6	
+20777	Anzug des Hinterhalts+7	
+20778	Anzug des Hinterhalts+8	
+20779	Anzug des Hinterhalts+9	
+20780	Teufelskrallenpanzer+0	
+20781	Teufelskrallenpanzer+1	
+20782	Teufelskrallenpanzer+2	
+20783	Teufelskrallenpanzer+3	
+20784	Teufelskrallenpanzer+4	
+20785	Teufelskrallenpanzer+5	
+20786	Teufelskrallenpanzer+6	
+20787	Teufelskrallenpanzer+7	
+20788	Teufelskrallenpanzer+8	
+20789	Teufelskrallenpanzer+9	
+20790	Kleidung des Glaubens+0	
+20791	Kleidung des Glaubens+1	
+20792	Kleidung des Glaubens+2	
+20793	Kleidung des Glaubens+3	
+20794	Kleidung des Glaubens+4	
+20795	Kleidung des Glaubens+5	
+20796	Kleidung des Glaubens+6	
+20797	Kleidung des Glaubens+7	
+20798	Kleidung des Glaubens+8	
+20799	Kleidung des Glaubens+9	
+20800	Schattenkämpferpanzer+0	
+20801	Schattenkämpferpanzer+1	
+20802	Schattenkämpferpanzer+2	
+20803	Schattenkämpferpanzer+3	
+20804	Schattenkämpferpanzer+4	
+20805	Schattenkämpferpanzer+5	
+20806	Schattenkämpferpanzer+6	
+20807	Schattenkämpferpanzer+7	
+20808	Schattenkämpferpanzer+8	
+20809	Schattenkämpferpanzer+9	
+20810	Magmaglutpanzer+0	
+20811	Magmaglutpanzer+1	
+20812	Magmaglutpanzer+2	
+20813	Magmaglutpanzer+3	
+20814	Magmaglutpanzer+4	
+20815	Magmaglutpanzer+5	
+20816	Magmaglutpanzer+6	
+20817	Magmaglutpanzer+7	
+20818	Magmaglutpanzer+8	
+20819	Magmaglutpanzer+9	
+20820	Blutmondanzug+0	
+20821	Blutmondanzug+1	
+20822	Blutmondanzug+2	
+20823	Blutmondanzug+3	
+20824	Blutmondanzug+4	
+20825	Blutmondanzug+5	
+20826	Blutmondanzug+6	
+20827	Blutmondanzug+7	
+20828	Blutmondanzug+8	
+20829	Blutmondanzug+9	
+20830	Höllenrittpanzer+0	
+20831	Höllenrittpanzer+1	
+20832	Höllenrittpanzer+2	
+20833	Höllenrittpanzer+3	
+20834	Höllenrittpanzer+4	
+20835	Höllenrittpanzer+5	
+20836	Höllenrittpanzer+6	
+20837	Höllenrittpanzer+7	
+20838	Höllenrittpanzer+8	
+20839	Höllenrittpanzer+9	
+20840	Kleidung des Feuers+0	
+20841	Kleidung des Feuers+1	
+20842	Kleidung des Feuers+2	
+20843	Kleidung des Feuers+3	
+20844	Kleidung des Feuers+4	
+20845	Kleidung des Feuers+5	
+20846	Kleidung des Feuers+6	
+20847	Kleidung des Feuers+7	
+20848	Kleidung des Feuers+8	
+20849	Kleidung des Feuers+9	
+20850	Achatplattenpanzer+0	
+20851	Achatplattenpanzer+1	
+20852	Achatplattenpanzer+2	
+20853	Achatplattenpanzer+3	
+20854	Achatplattenpanzer+4	
+20855	Achatplattenpanzer+5	
+20856	Achatplattenpanzer+6	
+20857	Achatplattenpanzer+7	
+20858	Achatplattenpanzer+8	
+20859	Achatplattenpanzer+9	
+20860	Walknochenpanzer+0	
+20861	Walknochenpanzer+1	
+20862	Walknochenpanzer+2	
+20863	Walknochenpanzer+3	
+20864	Walknochenpanzer+4	
+20865	Walknochenpanzer+5	
+20866	Walknochenpanzer+6	
+20867	Walknochenpanzer+7	
+20868	Walknochenpanzer+8	
+20869	Walknochenpanzer+9	
+20870	Verwandlungsanzug+0	
+20871	Verwandlungsanzug+1	
+20872	Verwandlungsanzug+2	
+20873	Verwandlungsanzug+3	
+20874	Verwandlungsanzug+4	
+20875	Verwandlungsanzug+5	
+20876	Verwandlungsanzug+6	
+20877	Verwandlungsanzug+7	
+20878	Verwandlungsanzug+8	
+20879	Verwandlungsanzug+9	
+20880	Irrlichterpanzer+0	
+20881	Irrlichterpanzer+1	
+20882	Irrlichterpanzer+2	
+20883	Irrlichterpanzer+3	
+20884	Irrlichterpanzer+4	
+20885	Irrlichterpanzer+5	
+20886	Irrlichterpanzer+6	
+20887	Irrlichterpanzer+7	
+20888	Irrlichterpanzer+8	
+20889	Irrlichterpanzer+9	
+20890	Kleidung der Harmonie+0	
+20891	Kleidung der Harmonie+1	
+20892	Kleidung der Harmonie+2	
+20893	Kleidung der Harmonie+3	
+20894	Kleidung der Harmonie+4	
+20895	Kleidung der Harmonie+5	
+20896	Kleidung der Harmonie+6	
+20897	Kleidung der Harmonie+7	
+20898	Kleidung der Harmonie+8	
+20899	Kleidung der Harmonie+9	
+20900	Mondsteinplattenpanzer+0	
+20901	Mondsteinplattenpanzer+1	
+20902	Mondsteinplattenpanzer+2	
+20903	Mondsteinplattenpanzer+3	
+20904	Mondsteinplattenpanzer+4	
+20905	Mondsteinplattenpanzer+5	
+20906	Mondsteinplattenpanzer+6	
+20907	Mondsteinplattenpanzer+7	
+20908	Mondsteinplattenpanzer+8	
+20909	Mondsteinplattenpanzer+9	
+20910	Ascheregenpanzer+0	
+20911	Ascheregenpanzer+1	
+20912	Ascheregenpanzer+2	
+20913	Ascheregenpanzer+3	
+20914	Ascheregenpanzer+4	
+20915	Ascheregenpanzer+5	
+20916	Ascheregenpanzer+6	
+20917	Ascheregenpanzer+7	
+20918	Ascheregenpanzer+8	
+20919	Ascheregenpanzer+9	
+20920	Todesnachtanzug+0	
+20921	Todesnachtanzug+1	
+20922	Todesnachtanzug+2	
+20923	Todesnachtanzug+3	
+20924	Todesnachtanzug+4	
+20925	Todesnachtanzug+5	
+20926	Todesnachtanzug+6	
+20927	Todesnachtanzug+7	
+20928	Todesnachtanzug+8	
+20929	Todesnachtanzug+9	
+20930	Schwarzfeuerpanzer+0	
+20931	Schwarzfeuerpanzer+1	
+20932	Schwarzfeuerpanzer+2	
+20933	Schwarzfeuerpanzer+3	
+20934	Schwarzfeuerpanzer+4	
+20935	Schwarzfeuerpanzer+5	
+20936	Schwarzfeuerpanzer+6	
+20937	Schwarzfeuerpanzer+7	
+20938	Schwarzfeuerpanzer+8	
+20939	Schwarzfeuerpanzer+9	
+20940	Kleidung des Mondes+0	
+20941	Kleidung des Mondes+1	
+20942	Kleidung des Mondes+2	
+20943	Kleidung des Mondes+3	
+20944	Kleidung des Mondes+4	
+20945	Kleidung des Mondes+5	
+20946	Kleidung des Mondes+6	
+20947	Kleidung des Mondes+7	
+20948	Kleidung des Mondes+8	
+20949	Kleidung des Mondes+9	
+20950	Onyxplattenpanzer+0	
+20951	Onyxplattenpanzer+1	
+20952	Onyxplattenpanzer+2	
+20953	Onyxplattenpanzer+3	
+20954	Onyxplattenpanzer+4	
+20955	Onyxplattenpanzer+5	
+20956	Onyxplattenpanzer+6	
+20957	Onyxplattenpanzer+7	
+20958	Onyxplattenpanzer+8	
+20959	Onyxplattenpanzer+9	
+21200	Zodiakharnisch+0	
+21201	Zodiakharnisch+1	
+21202	Zodiakharnisch+2	
+21203	Zodiakharnisch+3	
+21204	Zodiakharnisch+4	
+21205	Zodiakharnisch+5	
+21206	Zodiakharnisch+6	
+21207	Zodiakharnisch+7	
+21208	Zodiakharnisch+8	
+21209	Zodiakharnisch+9	
+21550	Drachenhornhelm +0	
+21551	Drachenhornhelm +1	
+21552	Drachenhornhelm +2	
+21553	Drachenhornhelm +3	
+21554	Drachenhornhelm +4	
+21555	Drachenhornhelm +5	
+21556	Drachenhornhelm +6	
+21557	Drachenhornhelm +7	
+21558	Drachenhornhelm +8	
+21559	Drachenhornhelm +9	
+21991	Waffe lv 60 Wolfman	Waffe lv 60 Wolfman
+21992	Waffe lv 60 Wolfman	Waffe lv 60 Wolfman
+21993	Waffe lv 60 Wolfman	Waffe lv 60 Wolfman
+25043	Magischer Stein	Dieser Stein gewährt die größte Erfolgschance bei der Itemverbesserung. Der Gegenstand kann außerdem weder zerstört noch verschlechtert werden. Dieses Item ist nicht handelbar.
+25099	Spirit Stone Magic Scroll	Eine magische Schriftrolle, die es dir ermöglich einen Geisstein deiner Wahl zu entfernen.
+27125	Gefechtstrank	Ein mächtiger Trank, der deine Angriffs- und Verteidigungspunkte erhöht und dir +50000 Trefferpunkte beschert (nur in der Kampfzone).
+28044	Magiebruch-Stein+0	
+28045	Magiebruch-Stein+0	
+28144	Magiebruch-Stein+1	
+28145	Magiebruch-Stein+1	
+28244	Magiebruch-Stein+2	
+28245	Magiebruch-Stein+2	
+28344	Magiebruch-Stein+3	
+28345	Magiebruch-Stein+3	
+28444	Magiebruch-Stein+4	
+28445	Magiebruch-Stein+4	
+30334	Bon für Kopfbedeckung	Klicke mit der rechten Maustaste auf den Bon, um eine schaurig-schöne Kopfbedeckung zu erhalten.
+30338	Bon für Kopfbedeckung+	Klicke mit der rechten Maustaste auf den Bon, um eine schaurig-schöne Kopfbedeckung zu erhalten, die dir mindestens einen zufälligen Bonus verleiht.
+30341	Drachenfeuerring	Eine energiegeladene Aura umgibt dich. Dieser aus Drachenfeuer geschmiedete Ring wird die Statuen in Meleys Hort im Nu zerstören.
+30600	Schnittmuster	
+30601	Rüstungsplan	
+30602	blauer Farbstoff	
+30603	roter Farbstoff	
+30604	Grauer Farbstoff	
+30605	Goldplatten	
+30606	Silberplatten	
+30607	Kupferplatten	
+30608	Stahlplatten	
+30609	Bronzeplatten	
+30610	Mithril	
+30611	Schwere Gurte	
+30612	Stabile Schnüre	
+30613	Stein der Dryaden	In diesem geheimnisvoll grün-schimmernden Stein ist die Seele einer Dryade, eines Baumgeistes, eingeschlossen. Die Dryade kennt die geheimen Worte, die dir den Zutritt zum Erebos ermöglichen.
+30614	schwarzer Farbstoff	
+30615	weißer Farbstoff	
+30616	Titandioxid	Der prismatische Kristall dient zur Veredelung eines Ausrüstungsgegenstandes.
+30617	Achat	Der geheimnisvoll schimmernder Schmuckstein dient zur Veredelung eines Ausrüstungsgegenstandes.
+30618	Mondstein	Der tropfenförmige Edelstein hält einen Funken Mondlicht in sich gefangen. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30619	goldmetallic Farbstoff	
+30620	Rotes Drachenhorn	Drachenhörner bestehen aus einem der härtesten bekannten Rohstoffe.
+30621	Rote Drachenschuppe	Drachenschuppen gehören zu den härtesten bekannten Materialien.
+30622	Rüstungsplan: Helm	Dieser Gegenstand wird für die Herstellung von Helmen benötigt.
+30623	Buch der Wahrheit	Mächtiger Wälzer, dessen Inschrift zu leuchten scheint. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30624	Seele der Wahrheit	Eine gute Seele, für die Ewigkeit gefangen in einer Glaskugel. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30625	Padparadscha	Padparadscha werden seltene und äußerst kostbare rote Saphire genannt. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30626	Kyanit	Bläulicher Edelstein, der aus den Mienen Berg Sohans gewonnen wurde. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30627	Frucht der Götter	Süßschmeckende Frucht aus dem Garten des Drachengottes. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30628	Gottesblume	Heilige Blume aus dem Garten des Drachengottes. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30629	Elixier der Götter	Die Flasche enthält eine geheimnisvoll leuchtende Flüssigkeit. Dient zur Veredelung eines Ausrüstungsgegenstandes.
+30630	Drachenschwingen	Mit den Flügeln eines Alteradrachen lässt sich ein Ausrüstungsgegenstand veredeln.
+30639	Rätselsplitter	Baue mit den Splittern die Entwürfe aus dem Yutnori-Laden. Um das Veredelungsfenster hierfür zu öffnen, ziehe ein Yutnori-Brett auf den Tisch.
+30640	Halloween-Entwurf (m)	Entwurf zum Fertigen einer Halloweenkiste (m)
+30641	Halloweenhut-Entwurf (m)	Entwurf zum Fertigen einer Halloweenhutkiste (m)
+30642	Gruselpet-Entwurf	Entwurf zum Fertigen einer Gruselpet-Kiste
+30643	Gruselmount-Entwurf	Entwurf zum Fertigen einer Gruselmount-Kiste
+30644	Schmuck-Entwurf	Entwurf zum Fertigen einer Schmuckschatulle
+30645	Pet-Entwurf	Entwurf zum Fertigen einer Petkiste
+30646	Bänder-Entwurf	Entwurf zum Fertigen einer Bänderbox
+30647	Ornament-Entwurf	Entwurf zum Fertigen einer Ornamentkiste
+30648	Pet-Buch-Entwurf	Entwurf zum Fertigen einer Pet-Buch-Kiste
+30649	Risserzahn-Entwurf+	Entwurf zum Fertigen einer Risserzahnkiste+
+30650	Cor Draconis-Entwurf	Entwurf zum Fertigen einer Cor Draconis-Kiste
+30651	Gaya-Entwurf	Entwurf zum Fertigen einer Gayakiste
+30652	Mysterien-Entwurf	Entwurf zum Fertigen einer Kiste der Mysterien
+30653	Rubinkisten-Entwurf	Entwurf zum Fertigen einer Rubinkiste
+30654	Halloween-Entwurf (w)	Entwurf zum Fertigen einer Halloweenkiste (w)
+30655	Halloweenhut-Entwurf (w)	Entwurf zum Fertigen einer Halloweenhutkiste (w)
+34000	Solar Blast	Ein seltenes Material, das benötigt wird um dein Equipment zu stärken. Es ist von großem Wert.
+34001	Magical Orb	Die magische Kugel ist ein wertvoller Stein, welcher benötigt wird um dein Equipment zu verbessern.
+34002	Fire Horn	Gehörte urpsünglich dem Razador, wird benötigt um dein Equipment zu craften oder zu verbessern.
+34003	Ice Horn	Gehörte urpsünglich dem Nemere, wird benötigt um dein Equipment zu craften oder zu verbessern.
+34004	Red Amulet	Ein bezauberndes und teures Amulett. Wir größtenteils zum verbessern benötigt.
+34005	Green Amulet	Ein bezauberndes und teures Amulett. Wir größtenteils zum verbessern benötigt.
+34006	Blue Amulet	Ein bezauberndes und teures Amulett. Wir größtenteils zum verbessern benötigt.
+34007	Rock Of Darkness	Ein wertvoller Stein mit dunklen Mächten.
+34008	Rock Of Gore	Ein wertvoller Stein, welcher mächtige Fähigkeiten besitzt.
+34009	Rock Of Poison	Ein wertvoller Stein mit giftigen Mächten.
+34010	Poison Marble	Gifitges material, das benötigt wird um dein Equipment stabiler zu machen.
+34011	Red Rock	Ein wertvoller Stein, der benötigt wird um dein Eupiment zu upgraden.
+34012	Azure Stone	Ein spezieller Stein der nur zum upgraden des Azur-Equipments benötigt wird.
+34013	Rainbow Vial	Beinhaltet eine mächtige Regenbogen-Flüssigkeit, welches zum uprgaden deines Equipments benötigt wird.
+34014	Red Crystal Shards	Ein Stück Kristall, welches mit anderen kombinierbar ist.
+34015	Green Crystal Shards	Ein Stück Kristall, welches mit anderen kombinierbar ist.
+34016	Blue Crystal Shards	Ein Stück Kristall, welches mit anderen kombinierbar ist.
+34017	Multi-Crystal Fragment	Ein Juwel, welcher benötigt wird um dein Equipment zu upgraden.
+34018	Duratus Gem	Wird zum upgraden benötigt und kann von Duratus gedroppt werden.
+34019	Fear Gem	Wird zum upgraden benötigt und kann vom Furcht-Darchen gedroppt werden.
+34020	Treasure Gem	Wird zum upgraden benötigt und kann vom Metin des Schatzes gedroppt werden.
+34021	UPP1	Ein spezieller Stein der für das upgraden deines Equipments benötigt wird.
+34022	UPP2	Ein spezieller Stein der für das upgraden deines Equipments benötigt wird.
+34023	Red Wing Feather	Ein Stück Feder, welches benötigt wird zum Flügel herzustellen.
+34024	Green Wing Feather	Ein Stück Feder, welches benötigt wird zum Flügel herzustellen.
+34025	Blue Wing Feather	Ein Stück Feder, welches benötigt wird zum Flügel herzustellen.
+34026	Wing Feather Set	Ein Stück Feder, welches benötigt wird zum Flügel herzustellen.
+34027	Almighty Dragon Soul	Seele des allmächtigen Drachen, wird gebraucht um dein Equipment zu verbessern.
+34028	Duratus Soul	Duratus Seele, wird gebraucht um dein Equipment zu verbessern.
+34029	Fear Soul	Furcht Juwel, wird gebraucht um dein Equipment zu verbessern.
+34030	Treasure Soul	Schatzedelstein, wird gebraucht um dein Equipment zu verbessern.
+34031	Halloween Soul	Halloween Seele, wird gebraucht um dein Equipment zu verbessern.
+34032	Gold Carved Stone	Ein Antiker mit mächtigen Kräften , wird für viele Items benötigt
+34033	Weapon Stone Token	Ein token der von Jeon Seon benötigt wird um Geiststeine für deine Waffe zu verbessern.
+34034	Armour Stone Token	Ein token der von Jeon Seon benötigt wird um Geiststeine für deine Rüstung zu verbessern.
+34035	Mazel Portal	Öffnet dir das Portal zum Mazel-Boss.
+34036	Battle Gem	Ein mächtiger Stein, der benötigt wird um dein Equipment zu verbessern.
+34037	Red Charming Cube	Ein spezieller roter Würfel, welcher benötigt wird um dein Equipment zu verbessern.
+34038	Green Charming Cube	Ein spezieller grüner Würfel, welcher benötigt wird um dein Equipment zu verbessern.
+34039	Blue Charming Cube	Ein spezieller blauer Würfel, welcher benötigt wird um dein Equipment zu verbessern.
+34040	Mazel Heart	Das Herz vom Mazel-Boss, der Schlüssel zu einer besonderen Stärke.
+34041	Battle Orb	Wird benötigt um dein Equipment zu upgraden, welches dir Superkräfte für deinen Kampf verleiht.
+34042	Multi Cube	Dieser Würfel wird von Kräften aus Würfeln anderen Würfeln zusammengefügt, die eine unglaubliche innere Kraft bilden.
+34052	Kürbis Lolli	Dieser Kürbis Lolli, hergestellt aus geheimen Zutaten gewährt dir: | +15% Stark gegen Monster | +15% Stark gegen Boses | +15% Stark gegen Metins
+34053	Kürbis	Dieser Kürbis ist voller Leckereien und nützlichen Materialien.
+34054	Halloween Waffen Truhe	Beinhaltet verschiedene temporäre Halloween Waffenskins mit Boni.
+34055	Halloween Weapon Chest+	Beinhaltet verschiedene permanente Halloween Waffenskins.
+34056	Halloween Kostüm Truhe(m)	Beinhaltet verschiedene temporäre  männliche Halloween Kostüme mit Boni.
+34057	Halloween Kostüm Truhet(f)	Beinhaltet verschiedene temporäre  weibliche Halloween Kostüme mit Boni.
+34058	Halloween Kostüm Truhe(m)+	Beinhaltet verschiedene permanente  männliche Halloween Kostüme.
+34059	Halloween Kostüm Truhe(f)+	Beinhaltet verschiedene permanente  weibliche Halloween Kostüme.
+34060	Halloween-Hut-Truhe(m)	Beinhaltet  temporäre  männliche Halloween Frisuren mit Boni.
+34061	Halloween-Hut-Truhe(f)	Beinhaltet  temporäre  weibliche Halloween Frisuren mit Boni.
+34062	Halloween-Hut-Truhe(m)+	Beinhaltet  permanente  männliche Halloween Frisuren.
+34063	Halloween-Hut-Truhe(f)+	Beinhaltet  permanente  weibliche Halloween Frisuren.
+34064	Halloween Haustier Truhe	Beinhaltet temporäre Haustiere mit verstärkten Boni.
+34065	Halloween Reittier Truhe	Beinhaltet temporäre Reittiere mit verstärkten Boni.
+34067	Roter Jiangshi+	Der gefrorene Geist möchte bis in alle Ewigkeit dein unheimlicher Begleiter sein.
+34068	Blauer Jiangshi+	Der gefrorene Geist möchte bis in alle Ewigkeit dein unheimlicher Begleiter sein.
+34070	Weihnachtstruhe	Eine Weihnachtstruhe mit vielen tollen Sachen. 
+34071	Weihnachts-Kostümtruhe(m)	Beinhaltet verschiedenste, temporäre Weihnachtskostüme mit Boni für männliche Charaktäre. Wenn Santa verschwindet wird dieses Item entfernt werden.
+34072	Weihnachts-Kostümtruhe(m)+	Beinhaltet permanente, männliche Weihnachtskostüme.
+34073	Weihnachts-Kostümtruhe(f)	Beinhaltet verschiedenste, temporäre Weihnachtskostüme mit Boni für weibliche Charaktäre. Wenn Santa verschwindet wird dieses Item entfernt werden.
+34074	Weihnachts-Kostümtruhe(f)+	Beinhaltet permanente, weibliche Weihnachtskostüme.
+34075	Weihnachts-Frisurtruhe(m)	Beinhaltet verschiedenste, temporäre Weihnachtsfrisuren mit Boni für männliche Charaktäre. Wenn Santa verschwindet wird dieses Item entfernt werden.	
+34076	Weihnachts-Frisurtruhe(m)+	Beinhaltet permanente, männliche Weihnachtsfrisuren. 
+34077	Weihnachts-Frisurtruhe(f)	Beinhaltet verschiedenste, temporäre Weihnachtsfrisuren mit Boni für weibliche Charaktäre. Wenn Santa verschwindet wird dieses Item entfernt werden.
+34078	Weihnachts-Frisurtruhe(f)+	Beinhaltet permanente, weibliche Weihnachtsfrisuren.
+34080	Weihnachts-Haustiertruhe	Beinhaltet temporärere Haustiere mit speziellen Boni. Wenn Santa verschwindet wird dieses Item entfernt werden.
+34081	Weihnachts-Waffentruhe	Beinhaltet verschiedenste, temporäre Weihnachts-Waffenskins mit Boni. Wenn Santa verschwindet wird dieses Item entfernt werden. 
+34082	Weihnachts-Waffentruhe+	Beinhaltet permanente Weihnachts-Waffenskins. 
+34083	Goldene Weihnachtstruhe	Eine sehr spezielle Weihnachtstruhe. 
+34084	Goldener Weihnachtsschlüssel	Zum öffnen der Goldenen Weihnachtstruhe.
+34085	Blauer Weihnachtsstrumpf	Weihnachtsstrumpf zum craften von Items. 
+34086	Grüner Weihnachtsstrumpf	Weihnachtsstrumpf zum craften von Items.
+34087	Roter Weihnachtsstrumpf	Weihnachtsstrumpf zum craften von Items.
+34088	Gelber Weihnachtsstrumpf	Weihnachtsstrumpf zum craften von Items.
+34089	Schokoladenherz	Leckere Schokolade, welche zum Weihnachtsevent verteilt wird. 
+34090	Weihnachts-Marke	Eine spezielle Weihnachtsmarke, welche nur zur Weihnachtszeit gefunden werden kann. 
+34091	Goldenes Accessoire	Seltenes Zubehörteil um deine Items zu craften.
+34092	Charming Cube Eine Kiste die verschiedene Arten von Würfeln in sich verbirgt.
+34184	Elemental Talisman	Der mächtigste Talisman, den es je gegeben hat. Er ist mit allen Elementen im Frieden.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34185	Armor Enhancement Scroll	Eine Schriftrolle, die benötigt wird um deine Rüstung zu verbessern.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34186	Weapon Enhancement Scroll	Eine Schriftrolle, die benötigt wird um deine Waffe zu verbessern.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34187	Accessory Enhancement Scroll	Eine Schriftrolle, die benötigt wird um dein Zubehör zu verbessern.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34188	Belt Enhancement Scroll	Eine Schriftrolle, die das weitere verbessern deiner PvM-Gürtel ermöglicht.	Wird benötigt, um deine PvM-Gürtel zu verbessern.
+34189	Ring Enhancement Scroll	Eine Schriftrolle, die das weitere verbessern deiner PvM-Ringe ermöglicht.	Wird benötigt, um deine PvM-Ringe zu verbessern.
+34190	Fire Pearl	Eine Perle aus den Tiefen der Hölle mit einem leichten roten Schimmer.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34191	Water Pearl	Eine Perle aus den Tiefen des Meeres mit einem leichten blauen Schimmer.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34192	Earth Pearl	Eine Perle aus den Tiefen der Erde mit einem leichten gelben Schimmer.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34193	Wind Pearl	Eine Perle aus den Höhen der Lüfte mit einem leichten weißen Schimmer.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34194	Ancient Red Cloth	Ein Tuch, das aus der antiken Wächterrobe von Ghidorah gemacht wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34195	Ancient Blue Cloth	Ein Tuch, das aus der antiken Wächterrobe der Hydra gemacht wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34196	Ancient Green Cloth	Antikes grünes Tuch	Ein Tuch, das aus der antiken Wächterrobe der Sphinx gemacht wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34197	Ancient Yellow Cloth	Ein Tuch, das aus der Wächterrobe des Weißen Turms gemacht wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34198	Fire Power Shard	Eine Scherbe, die so mächtig ist, dass sie das Element des Feuers in ihrem Kern enthalten kann.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34199	Water Power Shard	Eine Scherbe, die so mächtig ist, dass sie das Element des Wassers in ihrem Kern enthalten kann.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34200	Earth Power Shard	Eine Scherbe, die so mächtig ist, dass sie das Element der Erde in ihrem Kern enthalten kann.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34201	Wind Power Shard	Eine Scherbe, die so mächtig ist, dass sie das Element des Windes in ihrem Kern enthalten kann.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34202	Fire Crystal	Ein Kristall, der einst dem Herrscher des Feuerelements gehörte.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34203	Water Crystal	Ein Kristall, der einst dem Herrscher des Wasserelements gehörte.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34204	Earth Crystal	Ein Kristall, der einst dem Herrscher des Erdelements gehörte.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34205	Wind Crystal	Ein Kristall, der einst dem Herrscher des Windelements gehörte.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34206	Fire Totem	Ein Symbol, das einst von der Feuernation verwendet wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern..
+34207	Water Totem	Ein Symbol, das einst von der Wassernation verwendet wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34208	Earth Totem	Ein Symbol, das einst von der Erdnation verwendet wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34209	Wind Totem	Ein Symbol, das einst von der Windnation verwendet wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34210	Eternal Flames	Flammen von einem Ort, der so weit entfernt ist, dass er ewig geworden ist.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34211	Ghidorah's Heart	Das Herz eines Wesens, das so mächtig ist, dass es die Fährigkeit hat selbst Luzifer zu besiegen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34212	Hydra Power Orb	Eine Kugel, die die Kraft eines alten, antiken Monsters in sich trägt.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern..
+34213	Hydra Summoning Tablet	Eine Tafel aus den Tiefen des Ozeans versehrt mit einer alten Schrift, welche das dreiköpfige Monster beschwört.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34214	Ancient Map	Heilige Schriften von solch alten Wesen, dass diese dich in deinen Tod führen könnten.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34215	Wisdom book	Mit der Weisheit der alten Götter enthält dieses Buch Informationen über die mächtigsten Wesen auf Nova.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34216	Tear of the Lord Adenoid	Eine Träne mit der Kraft des Windgottes, welche die härtesten Gefühle unterdrücken kann.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34217	White Tower Ruler's Key	Der Schlüssel, mit dem jeder die Kammern des Lord Adenoid betreten kann, um den Versuch zu starten ihn zu töten.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34218	Fire Treasure Chest	Eine Truhe mit den mächtigsten Materialien, die zur Verbesserung deiner Ausrüstung benötigt werden.
+34219	Water Treasure Chest	Eine Truhe mit den mächtigsten Materialien, die zur Verbesserung deiner Ausrüstung benötigt werden.
+34220	Earth Treasure Chest	Eine Truhe mit den mächtigsten Materialien, die zur Verbesserung deiner Ausrüstung benötigt werden.
+34221	Wind Treasure Chest	Eine Truhe mit den mächtigsten Materialien, die zur Verbesserung deiner Ausrüstung benötigt werden.
+34222	Alchemy Ancient Stone	Ein Stein von den alten Wesen des mythischen Waldes, der mit ihrem Wissen geprägt ist.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34223	Arcane Ancient Stone	Ein Stein von den alten Wesen des mythischen Waldes, der mit ihrem Wissen geprägt ist.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34224	Vindicius Ancient Stone	Ein Stein von den alten Wesen des mythischen Waldes, der mit ihrem Wissen geprägt ist.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34225	Alchemy Theory Book	Ein Buch, welches im Nebel des mythischen Waldes gefunden werden kann. Es enthält Informationen über die alten Wesen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern
+34226	Arcane Theory Book	Ein Buch, welches im Nebel des mythischen Waldes gefunden werden kann. Es enthält Informationen über die alten Wesen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34227	Vindicius Theory Book	Ein Buch, welches im Nebel des mythischen Waldes gefunden werden kann. Es enthält Informationen über die alten Wesen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34228	Alchemy Soul Skull	Der Schädel eines alten Wesens. Wenn er mit anderen Elementen des mythischen Waldes kombiniert wird, können neue Verbesserungen vorgenommen werden.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34229	Arcane Soul Skull	Der Schädel eines alten Wesens. Wenn er mit anderen Elementen des mythischen Waldes kombiniert wird, können neue Verbesserungen vorgenommen werden.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34230	Vindicius Soul Skull	Der Schädel eines alten Wesens. Wenn er mit anderen Elementen des mythischen Waldes kombiniert wird, können neue Verbesserungen vorgenommen werden.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34231	Tempestus Soul Skull	Der Schädel eines alten Wesens. Wenn er mit anderen Elementen des mythischen Waldes kombiniert wird, können neue Verbesserungen vorgenommen werden.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34232	Tempestus Theory Book	Ein Buch, welches im Nebel des mythischen Waldes gefunden werden kann. Es enthält Informationen über die alten Wesen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34233	Tempestus Ancient Stone	Ein Stein von den alten Wesen des mythischen Waldes, der mit ihrem Wissen geprägt ist.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34234	Empty Ticket	Ein leeres Basisticket mit einer mysteriösen Karte, welche Informationen über die Elementar-Dungeons beinhaltet.
+34235	Holy Fire Stone	Ein besonderer Stein, der den Pass zu Ghidorahs Nest widerspiegelt
+34236	Holy Water Stone	Ein besonderer Stein, der den Pass zur Hydra widerspiegelt.
+34237	Holy Wind Stone	Ein besonderer Stein, der den Pass zum Weißen Turm widerspiegelt.
+34238	Holy Earth Stone	Ein besonderer Stein, der den Pass zur Antiken Pyramide widerspiegelt.
+34239	Ghidorah's Nest Ticket	Wird benötigt, um die Türen zu Ghidorah's Nest zu öffnen.
+34240	Ship Defence Ticket	Wird benötigt, um die Türen der Schiffsverteidigung zu öffnen.
+34241	White Tower Ticket	Wird benötigt, um die Türen des weißen Turms zu öffne.
+34242	Ancient Pyramid Ticket	Wird benötigt, um die Türen zur antiken Pyramide zu öffnen.
+34243	Elemental Pearl	Eine mächtige Perle, bestehend aus allen Elementen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34244	Elemental Totem	Ein mächtiger Totem, bestehend aus allen Elementen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34245	Elemental Ancient Cloth	Ein mythisches Tuch, bestehend aus allen Elementen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34246	Elemental Power Shard	Eine spezielle Scherbe, bestehend aus allen Elementen.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34247	Elemental Crystal	Ein mächtiger Kristall, bestehend aus allen Elementen	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34248	Elemental Ancient Stone	Ein Stein aus der Antike, der mit der vereinten Kraft aller Nationen des mythischen Waldes geschaffen wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34249	Elemental Theory Book	Ein Buch aus der Antike, der mit der vereinten Kraft aller Nationen des mythischen Waldes geschaffen wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34250	Elemental Soul Skull	Ein Schädel aus der Antike, der mit der vereinten Kraft aller Nationen des mythischen Waldes geschaffen wurde.	Wird benötigt, um deine Elementar- und Göttliche Ausrüstung zu verbessern.
+34256	Nephrit-Kristall	Eine kostbare Kristallart, die nur zu den Tritonen von Nephrit gehört.	Wird für die Forschung des Biologen benötigt.
+34257	Mantikor-Karte	Diese Karte führt zu den Schätzen der Mantikor.	Wird für die Forschung des Biologen benötigt.
+34258	Gargoyle-Pilz	Die wertvollste Pilzart für Gargoyles.	Wird für die Forschung des Biologen benötigt.
+34259	Lemuren-Staub	Die Überreste von den Lemuren.	Wird für die Forschung des Biologen benötigt.
+34260	Duratus-Schlüssl	Ein Schlüssel, welcher im Inneren von Duratus gefunden werden kann.	Wird für die Forschung des Biologen benötigt.
+34261	Furcht-Essenz	Die Essenz, welche der Furcht-Drache nutzt um Angst in seinem Dungeon zu verbreiten.	Wird für die Forschung des Biologen benötigt.
+34262	Mazel-Medaille	Eine Medaille, welche Mazel stolz macht.	Wird für die Forschung des Biologen benötigt.
+34263	Triton-Seelenstein	Ein legendärer Stein, welcher die Seelen von Tritons Familie in sich trägt.
+34264	Mantikor-Seelenstein	Ein legendärer Stein, welcher die Seelen von Mantikors Familie in sich trägt.
+34265	Gargoyl-Seelenstein	Ein legendärer Stein, welcher die Seelen von Gargoyles Familie in sich trägt.
+34266	Lemuren-Seelenstein	Ein legendärer Stein, welcher die Seelen von der Familie der Lemuren in sich trägt.
+34267	Duratus-Seelenstein	Ein legendärer Stein, welcher die Seele von Duratus in sich trägt.
+34268	Furcht-Seelenstein	Ein legendärer Stein, welcher die Seele des Furcht-Drachens in sich trägt.
+34269	Mazel-Seelenstein	Ein legendärer Stein, welcher die Seele von Mazel in sich trägt.
+34270	Anfänger-Truhe	Eine sehr nützliche Kiste mit temporären Itemshop-Artikeln, die neuen Spielern dabei hilft, die Serverinhalte aufzuholen.
+34500	Feather Chest	Eine Kiste voll mit Federn in verschiedenen Farben.
+34501	Shards Chest	Eine Kiste voll mit Splittern in verschiedenen Farben.
+35100	Seon-Pyeongs Rest Scroll	Gibt dir die Möglichkeit die Level 92 und 94 Quest von Seon-Pyeong zurückzusetzen.
+35101	Rolle der Geschlechtsänderung	Eine spezielle Rolle, welche es dir erlaubt das Geschlecht deines Kostüms zu ändern.
+39044	Golden Experience Ring	Erhöht das Sammeln von Erfahrung 60 Minuten lang um 50%. Dieses Item ist handelbar.
+39045	Truhe der Lykaner (G)	Großes Ausstattungspaket mit nützlichen Gegenständen für Lykaner
+39063	Gayahandel zurücksetzen	Setzt den Gayahandel vor dem Ablauf von 5 Stunden zurück und schüttet sofort neue wertvolle Items aus.
+39064	Gayahandelerweiterung	Erweitert den Gayahandel, beginnend vom ersten Feld der zweiten Reihe links, um einen weiteren Platz für ein wertvolles Itemangebot.
+39065	Gaya-Lagertruhe 1	Truhe zum Lagern von Gaya
+39066	Gaya-Lagertruhe 2	Truhe zum Lagern von Gaya
+40101	Risserzahn-Klinge	Ein Waffenskin, das dein Schwert zu Halloween in eine Kettensäge verwandelt.
+40102	Risserzahn-Dolch	Ein Waffenskin, das deinen Dolch zu Halloween in eine Kettensäge verwandelt.
+40103	Risserzahn-Bogen	Ein Waffenskin, das deinen Bogen zu Halloween in eine doppelte Kettensäge verwandelt.
+40104	Risserzahn-Glefe	Ein Waffenskin, das dein Zweihandschwert zu Halloween in eine Stabkettensäge verwandelt.
+40105	Risserzahn-Glocke	Ein Waffenskin, das deine Glocke zu Halloween in einen Kettensägen-Morgenstern verwandelt.
+40106	Risserzahn-Fächer	Ein Waffenskin, das deinen Fächer zu Halloween in einen Kettensägenfächer verwandelt.
+40107	Risserzahn-Krallen	Ein Waffenskin, das deine Krallen zu Halloween in zwei handliche Kettensägen verwandelt.
+40108	Risserzahn-Klinge+	Ein Waffenskin, das dein Schwert zu Halloween in eine Kettensäge verwandelt. Verleiht dir mind. einen zufälligen Bonus.
+40109	Risserzahn-Dolch+	Ein Waffenskin, das deinen Dolch zu Halloween in eine Kettensäge verwandelt. Verleiht dir mind. einen zufälligen Bonus.
+40110	Risserzahn-Bogen+	Ein Waffenskin, das deinen Bogen zu Halloween in eine doppelte Kettensäge verwandelt. Verleiht dir mind. einen zufälligen Bonus.
+40111	Risserzahn-Glefe+	Ein Waffenskin, das dein Zweihandschwert zu Halloween in eine Stabkettensäge verwandelt. Verleiht dir mind. einen zufälligen Bonus.
+40112	Risserzahn-Glocke+	Ein Waffenskin, das deine Glocke zu Halloween in einen Kettensägen-Morgenstern verwandelt. Verleiht dir mind. einen zufälligen Bonus.
+40113	Risserzahn-Fächer+	Ein Waffenskin, das deinen Fächer zu Halloween in einen Kettensägenfächer verwandelt. Verleiht dir mind. einen zufälligen Bonus.
+40114	Risserzahn-Krallen+	Ein Waffenskin, das deine Krallen zu Halloween in zwei handliche Kettensägen verwandelt. Verleiht dir mind. einen zufälligen Bonus.
+40115	Zuckerstangen-Klinge	Ein Waffenskin, das dein Schwert zu Weihnachten in eine süße Zuckerstange verwandelt.
+40116	Zuckerstangen-Dolch	Ein Waffenskin, das deinen Dolch zu Weihnachten in eine süße Zuckerstange verwandelt.
+40117	Elfenbogen	Ein Waffenskin, das deinen Bogen zu Weihnachten in einen Elfenbogen verwandelt.
+40118	Lebkuchen-Glefe	Ein Waffenskin, das deine Zweihandwaffe zu Weihnachten mit einem Lebkuchen schmückt.
+40119	Zuckerstangen-Glocke	Ein Waffenskin, das deine Glocke zu Weihnachten in eine süße Zuckerstange verwandelt.
+40120	Frostie-Fächer	Ein Waffenskin, das deinen Fächer zu Weihnachten mit einem Schneemann schmückt.
+40121	Rudolph-Krallen	Ein Waffenskin, das deine Krallen zu Weihnachten mit einem Rentier schmückt.
+40122	Zuckerstangen-Klinge+	Ein Waffenskin, das dein Schwert zu Weihnachten in eine süße Zuckerstange verwandelt. Verleiht dir mindestens einen zufälligen Bonus.
+40123	Zuckerstangen-Dolch+	Ein Waffenskin, das deinen Dolch zu Weihnachten in eine süße Zuckerstange verwandelt. Verleiht dir mindestens einen zufälligen Bonus.
+40124	Elfenbogen+	Ein Waffenskin, das deinen Bogen zu Weihnachten in einen Elfenbogen verwandelt. Verleiht dir mindestens einen zufälligen Bonus.
+40125	Lebkuchen-Glefe+	Ein Waffenskin, das deine Zweihandwaffe zu Weihnachten mit einem Lebkuchen schmückt. Verleiht dir mindestens einen zufälligen Bonus.
+40126	Zuckerstangen-Glocke+	Ein Waffenskin, das deine Glocke zu Weihnachten in eine süße Zuckerstange verwandelt. Verleiht dir mindestens einen zufälligen Bonus.
+40127	Frostie-Fächer+	Ein Waffenskin, das deinen Fächer zu Weihnachten mit einem Schneemann schmückt. Verleiht dir mindestens einen zufälligen Bonus.
+40128	Rudolph-Krallen+	Ein Waffenskin, das deine Krallen zu Weihnachten mit einem Rentier schmückt. Verleiht dir mindestens einen zufälligen Bonus.
+40129	Aquarusklinge	Waffenskin, der dein Schwert mit solidem, irisierend blauem Wasser umhüllt
+40130	Aquarusdolch	Waffenskin, der deinen Dolch mit solidem, irisierend blauem Wasser umhüllt
+40131	Aquarusbogen	Waffenskin, der deinen Bogen mit solidem, irisierend blauem Wasser umhüllt
+40132	Aquarusglefe	Waffenskin, der deinen Zweihänder mit solidem, irisierend blauem Wasser umhüllt
+40133	Aquarusglocke	Waffenskin, der deine Glocke mit solidem, irisierend blauem Wasser umhüllt
+40134	Aquarusfächer	Waffenskin, der deinen Fächer mit solidem, irisierend blauem Wasser umhüllt
+40135	Aquaruskrallen	Waffenskin, der deine Krallen mit solidem, irisierend blauem Wasser umhüllt
+40136	Aquarusklinge+	Waffenskin, der dein Schwert mit solidem, irisierend blauem Wasser umhüllt. Verleiht dir mind. einen zufälligen Bonus.
+40137	Aquarusdolch+	Waffenskin, der deinen Dolch mit solidem, irisierend blauem Wasser umhüllt. Verleiht dir mind. einen zufälligen Bonus.
+40138	Aquarusbogen+	Waffenskin, der deinen Bogen mit solidem, irisierend blauem Wasser umhüllt. Verleiht dir mind. einen zufälligen Bonus.
+40139	Aquarusglefe+	Waffenskin, der deinen Zweihänder mit solidem, irisierend blauem Wasser umhüllt. Verleiht dir mind. einen zufälligen Bonus.
+40140	Aquarusglocke+	Waffenskin, der deine Glocke mit solidem, irisierend blauem Wasser umhüllt. Verleiht dir mind. einen zufälligen Bonus.
+40141	Aquarusfächer+	Waffenskin, der deinen Fächer mit solidem, irisierend blauem Wasser umhüllt. Verleiht dir mind. einen zufälligen Bonus.
+40142	Aquaruskrallen+	Waffenskin, der deine Krallen mit solidem, irisierend blauem Wasser umhüllt. Verleiht dir mind. einen zufälligen Bonus.
+41458	Phönixsoutane	Elegantes langes Gewand im asiatischen Stil mit Phönixstickerei für Männer.
+41459	Kobrasoutane	Elegantes langes Gewand im asiatischen Stil mit Kobrastickerei für Männer.
+41462	Drachenqipao (rot)	Traditionelles asiatisches Kleid in rot mit aufwendiger goldener Drachenstickerei für Frauen.
+41463	Drachenqipao (weiß)	Traditionelles asiatisches Kleid in weiß mit aufwendiger roter Drachenstickerei für Frauen.
+41466	Phönixsoutane+	Elegantes langes Gewand im asiatischen Stil mit Phönixstickerei für Männer. Verleiht dir mindestens einen zufälligen Bonus.
+41467	Kobrasoutane+	Elegantes langes Gewand im asiatischen Stil mit Kobrastickerei für Männer. Verleiht dir mindestens einen zufälligen Bonus.
+41470	Drachenqipao+ (rot)	Traditionelles asiatisches Kleid in rot mit aufwendiger goldener Drachenstickerei für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+41471	Drachenqipao+ (weiß)	Traditionelles asiatisches Kleid in weiß mit aufwendiger roter Drachenstickerei für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+41472	Zombieanzug	Blutverschmierte Kleidung, verfaulte Haut und offenliegende Knochen machen dich zum Zombie.
+41473	Zombiekleid	Blutverschmiertes Kleid, verfaulte Haut und offenliegende Knochen machen dich zur Zombiebraut.
+41474	Zombieanzug+	Blutverschmierte Kleidung, verfaulte Haut und offenliegende Knochen machen dich zum Zombie. Verleiht dir mindestens einen zufälligen Bonus.
+41475	Zombiekleid+	Blutverschmiertes Kleid, verfaulte Haut und offenliegende Knochen machen dich zur Zombiebraut. Verleiht dir mindestens einen zufälligen Bonus.
+41476	Zaubereranzug	Schwarzer, mystischer Anzug, perfekt für einen Zauberer geeignet.
+41477	Hexenkleid	Das schwarze, mystische Kleid eignet sich perfekt als Hexenkostüm.
+41478	Zaubereranzug+	Schwarzer, mystischer Anzug, perfekt für einen Zauberer geeignet. Verleiht dir mindestens einen zufälligen Bonus.
+41479	Hexenkleid+	Das schwarze, mystische Kleid eignet sich perfekt als Hexenkostüm. Verleiht dir mindestens einen zufälligen Bonus.
+41480	Santa Frostie-Kostüm	Schneemannkostüm mit Weihnachtsmann-Anzug aus rotem Samt. Nicht handelbar.
+41481	Schneemannkostüm	Schneemannkostüm aus weißem Samt. Nicht handelbar.
+41482	Weihnachtl. Kleid (weiß)	Weißes Minikleid mit Strümpfen und Zubehör. Nicht handelbar.
+41483	Weihnachtl. Kleid (rot)	Rotes Minikleid mit Strümpfen und Zubehör. Nicht handelbar.
+41484	Santa Frostie-Kostüm+	Schneemannkostüm mit Weihnachtsmann-Anzug aus rotem Samt. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41485	Schneemannkostüm+	Schneemannkostüm aus weißem Samt. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41486	Weihnachtl. Kleid+(weiß)	Weißes Minikleid mit Strümpfen und Zubehör. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41487	Weihnachtl. Kleid+ (rot)	Rotes Minikleid mit Strümpfen und Zubehör. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41488	Pharaokostüm (rot)	Gehn wie ein Ägypter mit dem rot verzierten Pharaonenkostüm für Männer.
+41489	Pharaokostüm (türkis)	Gehn wie ein Ägypter mit dem türkis verzierten Pharaonenkostüm für Männer.
+41490	Uriels Engel (weiß)	Elegantes Kostüm mit unschuldsweißen Engelsflügeln für Frauen.
+41491	Uriels Engel (rot)	Aufregendes Kostüm mit feurigen Engelsflügeln für Frauen.
+41492	Pharaokostüm+ (rot)	Gehn wie ein Ägypter mit dem rot verzierten Pharaonenkostüm für Männer. Verleiht dir mindestens einen zufälligen Bonus.
+41493	Pharaokostüm+ (türkis)	Gehn wie ein Ägypter mit dem türkis verzierten Pharaonenkostüm für Männer. Verleiht dir mindestens einen zufälligen Bonus.
+41494	Uriels Engel+ (weiß)	Elegantes Kostüm mit unschuldsweißen Engelsflügeln für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+41495	Uriels Engel+ (rot)	Aufregendes Kostüm mit feurigen Engelsflügeln für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+41496	Wüstenprinz (braun)	Ein Kriegergewand aus braunem Stoff, für Anführer gemacht.
+41497	Wüstenprinz (weiß)	Ein Kriegergewand aus weißem Stoff, für Anführer gemacht.
+41498	Wüstenprinzessin (braun)	Ein Kriegergewand aus braunem Stoff, für Anführerinnen gemacht.
+41499	Wüstenprinzessin (weiß)	Ein Kriegergewand aus weißem Stoff, für Anführerinnen gemacht.
+41500	Wüstenprinz+ (braun)	Ein Kriegergewand aus braunem Stoff, für Anführer gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41501	Wüstenprinz+ (weiß)	Ein Kriegergewand aus weißem Stoff, für Anführer gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41502	Wüstenprinzessin+(braun)	Ein Kriegergewand aus braunem Stoff, für Anführerinnen gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41503	Wüstenprinzessin+(weiß)	Ein Kriegergewand aus weißem Stoff, für Anführerinnen gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41504	Hasenkostüm (grau)	Kostüm aus kuschelig weichem grauem Fell, Ausführung: Hase. Nicht handelbar.
+41505	Hasenkostüm (braun)	Kostüm aus kuschelig weichem braunem Fell, Ausführung: Hase. Nicht handelbar.
+41506	Osterkleid (bunt)	Fröhlich buntes Osterkleid mit liebevoller Bemalung. Nicht handelbar.
+41507	Osterkleid (hellblau)	Hellblaues Osterkleid mit detailreicher Bemalung. Nicht handelbar.
+41508	Hasenkostüm+ (grau)	Kostüm aus kuschelig weichem grauem Fell, Ausführung: Hase. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41509	Hasenkostüm+ (braun)	Kostüm aus kuschelig weichem braunem Fell, Ausführung: Hase. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41510	Osterkleid+ (bunt)	Fröhlich buntes Osterkleid mit liebevoller Bemalung. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41511	Osterkleid+ (hellblau)	Hellblaues Osterkleid mit detailreicher Bemalung. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41512	Fangzahn-Kostüm	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt.
+41513	Fangzahn-Kostüm	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt.
+41514	Fangzahn-Kostüm	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt.
+41515	Fangzahn-Kostüm	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt.
+41516	Fangzahn-Kostüm+	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt. Verleiht dir mind. einen zufälligen Bonus.
+41517	Fangzahn-Kostüm+	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt. Verleiht dir mind. einen zufälligen Bonus.
+41518	Fangzahn-Kostüm+	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt. Verleiht dir mind. einen zufälligen Bonus.
+41519	Fangzahn-Kostüm+	Ein dämonisch anmutendes Halloweenkostüm, das deine Gegner in Angst und Schrecken versetzt. Verleiht dir mind. einen zufälligen Bonus.
+41520	Rotes Wintergewand	Wintergewand aus rotem Filz. Nicht handelbar.
+41521	Blaues Wintergewand	Wintergewand aus blauem Filz. Nicht handelbar.
+41522	Rotes Wintergewand+	Wintergewand aus rotem Filz. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41523	Blaues Wintergewand+	Wintergewand aus blauem Filz. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41524	Rotes Winterkleid	Winterkleid aus rotem Filz. Nicht handelbar.
+41525	Blaues Winterkleid	Winterkleid aus blauem Filz. Nicht handelbar.
+41526	Rotes Winterkleid+	Winterkleid aus rotem Filz. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41527	Blaues Winterkleid+	Winterkleid aus blauem Filz. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41528	Wüstenprinz (rot)	Ein Kriegergewand aus rotem Stoff, für Anführer gemacht.
+41529	Wüstenprinz (blau)	Ein Kriegergewand aus blauem Stoff, für Anführer gemacht.
+41530	Wüstenprinzessin (rot)	Ein Kriegergewand aus rotem Stoff, für Anführerinnen gemacht.
+41531	Wüstenprinzessin (blau)	Ein Kriegergewand aus blauem Stoff, für Anführerinnen gemacht.
+41532	Wüstenprinz+ (rot)	Ein Kriegergewand aus rotem Stoff, für Anführer gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41533	Wüstenprinz+ (blau)	Ein Kriegergewand aus blauem Stoff, für Anführer gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41534	Wüstenprinzessin+ (rot)	Ein Kriegergewand aus rotem Stoff, für Anführerinnen gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41535	Wüstenprinzessin+ (blau)	Ein Kriegergewand aus blauem Stoff, für Anführerinnen gemacht. Verleiht dir mindestens einen zufälligen Bonus.
+41540	Hasenkostüm (weiß)	Hasenkostüm aus weißem Plüsch für ihn. Nicht handelbar.
+41541	Hasenkostüm (rosa)	Hasenkostüm aus rosa Plüsch für ihn. Nicht handelbar.
+41542	Häschenkostüm (marine)	Hasenkostüm aus marinefarbenem Plüsch für sie. Nicht handelbar.
+41543	Häschenkostüm (magenta)	Hasenkostüm aus magentafarbenem Plüsch für sie. Nicht handelbar.
+41544	Hasenkostüm+ (weiß)	Hasenkostüm aus weißem Plüsch für ihn. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+41545	Hasenkostüm+ (rosa)	Hasenkostüm aus rosa Plüsch für ihn. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+41546	Häschenkostüm+ (marine)	Hasenkostüm aus marinefarbenem Plüsch für sie. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+41547	Häschenkostüm+ (magenta)	Hasenkostüm aus magentafarbenem Plüsch für sie. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+41560	Vampirkrieger (grau)	Die Rüstung eines wahren Vampirkriegers lässt dich unbezwingbar aussehen. Item ist nicht handelbar.
+41561	Vampirkrieger (rot)	Die Rüstung eines wahren Vampirkriegers lässt dich unbezwingbar aussehen. Item ist nicht handelbar.
+41562	Vamp (grau)	Die Rüstung eines kriegerischen Vamps lässt dich unbezwingbar aussehen. Item ist nicht handelbar.
+41563	Vamp (rot)	Die Rüstung eines kriegerischen Vamps lässt dich unbezwingbar aussehen. Item ist nicht handelbar.
+41564	Vampirkrieger+ (grau)	Die Rüstung eines wahren Vampirkriegers verschafft dir unmenschliche Kraft. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41565	Vampirkrieger+ (rot)	Die Rüstung eines wahren Vampirkriegers verschafft dir unmenschliche Kraft. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41566	Vamp+ (grau)	Die Rüstung eines kriegerischen Vamps verschafft dir unmenschliche Kraft. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41567	Vamp+ (rot)	Die Rüstung eines kriegerischen Vamps verschafft dir unmenschliche Kraft. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+41568	Rotes Festgewand (m)	Ein rotes Festgewand mit weißem Saum.
+41569	Grünes Festgewand (m)	Ein grünes Festgewand mit weißem Saum.
+41570	Rotes Festgewand (w)	Ein rotes Festgewand mit weißem Saum.
+41571	Grünes Festgewand (w)	Ein grünes Festgewand mit weißem Saum.
+41572	Rotes Festgewand+ (m)	Ein rotes Festgewand mit weißem Saum. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+41573	Grünes Festgewand+ (m)	Ein grünes Festgewand mit weißem Saum. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+41574	Rotes Festgewand+ (w)	Ein rotes Festgewand mit weißem Saum. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+41575	Grünes Festgewand+ (w)	Ein grünes Festgewand mit weißem Saum. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+41576	Goldener Oyoroi (m)	Goldene Uniform eines japanischen Generals
+41577	Silberner Oyoroi (m)	Silberne Uniform eines japanischen Generals
+41578	Goldener Oyoroi (w)	Goldene Uniform einer japanischen Generalin
+41579	Silberner Oyoroi (w)	Silberne Uniform einer japanischen Generalin
+41580	Goldener Oyoroi+ (m)	Goldene Uniform eines japanischen Generals. Verleiht dir mind. einen zufälligen Bonus.
+41581	Silberner Oyoroi+ (m)	Silberne Uniform eines japanischen Generals. Verleiht dir mind. einen zufälligen Bonus.
+41582	Goldener Oyoroi+ (w)	Goldene Uniform einer japanischen Generalin. Verleiht dir mind. einen zufälligen Bonus.
+41583	Silberner Oyoroi+ (w)	Silberne Uniform einer japanischen Generalin. Verleiht dir mind. einen zufälligen Bonus.
+41584	Samurai-Rüstung (blau)	Blaue Rüstung im Stil eines erfahrenen Shogun
+41585	Samurai-Rüstung (rot)	Rote Rüstung im Stil eines erfahrenen Shogun
+41586	Samurai-Rüstung (blau)	Blaue Rüstung im Stil einer weiblichen Shogun
+41587	Samurai-Rüstung (rot)	Rote Rüstung einer weiblichen Shogun
+41588	Samurai-Rüstung+ (blau)	Blaue Rüstung im Stil eines erfahrenen Shogun. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41589	Samurai-Rüstung+ (rot)	Rote Rüstung im Stil eines erfahrenen Shogun. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41590	Samurai-Rüstung+ (blau)	Blaue Rüstung im Stil einer weiblichen Shogun. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41591	Samurai-Rüstung+ (rot)	Rote Rüstung im Stil einer weiblichen Shogun. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41592	Harnisch des Horrors (g)	Flammende Höllenrüstung, um Angst und Schrecken zu verbreiten
+41593	Harnisch des Horrors (b)	Blau glühende Höllenrüstung, um Angst und Schrecken zu verbreiten
+41594	Harnisch des Horrors (g)	Flammende Höllenrüstung, um Angst und Schrecken zu verbreiten
+41595	Harnisch des Horrors (b)	Blau glühende Höllenrüstung, um Angst und Schrecken zu verbreiten
+41596	Harnisch des Horrors+(g)	Flammende Höllenrüstung, um Angst und Schrecken zu verbreiten. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41597	Harnisch des Horrors+(b)	Blau glühende Höllenrüstung, um Angst und Schrecken zu verbreiten. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41598	Harnisch des Horrors+(g)	Flammende Höllenrüstung, um Angst und Schrecken zu verbreiten. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41599	Harnisch des Horrors+(b)	Blau glühende Höllenrüstung, um Angst und Schrecken zu verbreiten. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41600	Steampunk-Uniform (sw)	Futuristisches Outfit für den Kämpfer im Hier und Jetzt
+41601	Steampunk-Uniform (rot)	Futuristisches Outfit für den Kämpfer im Hier und Jetzt
+41602	Steampunk-Dress (sw)	Futuristisches Outfit für die Kämpferin im Hier und Jetzt
+41603	Steampunk-Dress (rot)	Futuristisches Outfit für die Kämpferin im Hier und Jetzt
+41604	Steampunk-Uniform+ (sw)	Futuristisches Outfit für den Kämpfer im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41605	Steampunk-Uniform+ (rot)	Futuristisches Outfit für den Kämpfer im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41606	Steampunk-Dress+ (sw)	Futuristisches Outfit für die Kämpferin im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41607	Steampunk-Dress+ (rot)	Futuristisches Outfit für die Kämpferin im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+41608	Sungura-Ornat (blau)	Märchenhafter Anzug in weiß-violett mit blauer Pumphose
+41609	Sungura-Ornat (petrol)	Märchenhafter Anzug in weiß-petrol mit grauer Pumphose
+41610	Sungura-Kleid (blau)	Märchenhaftes Ballonkleid in blau-violett
+41611	Sungura-Kleid (grau)	Märchenhaftes Ballonkleid in grau-petrol
+41612	Sungura-Ornat+ (blau)	Märchenhafter Anzug in weiß-violett mit blauer Pumphose. Verleiht dir mindestens einen zufälligen Bonus.
+41613	Sungura-Ornat+ (petrol)	Märchenhafter Anzug in weiß-petrol mit grauer Pumphose. Verleiht dir mindestens einen zufälligen Bonus.
+41614	Sungura-Kleid+ (blau)	Märchenhaftes Ballonkleid in blau-violett. Verleiht dir mindestens einen zufälligen Bonus.
+41615	Sungura-Kleid+ (grau)	Märchenhaftes Ballonkleid in grau-petrol. Verleiht dir mindestens einen zufälligen Bonus.
+41630	Avalonierrüstung (sil.)	Silberner Harnisch eines edlen Rittergeschlechts ferner Zeiten
+41631	Avalonierrüstung (rot)	Roter Harnisch eines edlen Rittergeschlechts ferner Zeiten
+41632	Avalonierrüstung (sil.)	Silberner Harnisch eines edlen Rittergeschlechts ferner Zeiten
+41633	Avalonierrüstung (rot)	Roter Harnisch eines edlen Rittergeschlechts ferner Zeiten
+41634	Avalonierrüstung+ (sil.)	Irisierender Harnisch eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+41635	Avalonierrüstung+ (rot)	Irisierender Harnisch eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+41636	Avalonierrüstung+ (sil.)	Irisierender Harnisch eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+41637	Avalonierrüstung+ (rot)	Irisierender Harnisch eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+41638	WM-Trikot KSA (m)	WM-Trikotsatz im Stil der saudi-arabischen Fußballnationalmannschaft
+41639	WM-Trikot KSA (w)	WM-Trikotsatz im Stil der saudi-arabischen Fußballnationalmannschaft
+41640	WM-Trikot KSA+ (m)	WM-Trikotsatz im Stil der saudi-arabischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41641	WM-Trikot KSA+ (w)	WM-Trikotsatz im Stil der saudi-arabischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41642	WM-Trikot DEN (m)	WM-Trikotsatz im Stil der dänischen Fußballnationalmannschaft
+41643	WM-Trikot DEN (w)	WM-Trikotsatz im Stil der dänischen Fußballnationalmannschaft
+41644	WM-Trikot DEN+ (m)	WM-Trikotsatz im Stil der dänischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41645	WM-Trikot DEN+ (w)	WM-Trikotsatz im Stil der dänischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41646	WM-Trikot SVK (m)	WM-Trikotsatz im Stil der slowakischen Fußballnationalmannschaft
+41647	WM-Trikot SVK (w)	WM-Trikotsatz im Stil der slowakischen Fußballnationalmannschaft
+41648	WM-Trikot SVK+ (m)	WM-Trikotsatz im Stil der slowakischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41649	WM-Trikot SVK+ (w)	WM-Trikotsatz im Stil der slowakischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41650	WM-Trikot TUR (m)	WM-Trikotsatz im Stil der türkischen Fußballnationalmannschaft
+41651	WM-Trikot TUR (w)	WM-Trikotsatz im Stil der türkischen Fußballnationalmannschaft
+41652	WM-Trikot TUR+ (m)	WM-Trikotsatz im Stil der türkischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41653	WM-Trikot TUR+ (w)	WM-Trikotsatz im Stil der türkischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41654	WM-Trikot HUN (m)	WM-Trikotsatz im Stil der ungarischen Fußballnationalmannschaft
+41655	WM-Trikot HUN (w)	WM-Trikotsatz im Stil der ungarischen Fußballnationalmannschaft
+41656	WM-Trikot HUN+ (m)	WM-Trikotsatz im Stil der ungarischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41657	WM-Trikot HUN+ (w)	WM-Trikotsatz im Stil der ungarischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41658	WM-Trikot ROU (m)	WM-Trikotsatz im Stil der rumänischen Fußballnationalmannschaft
+41659	WM-Trikot ROU (w)	WM-Trikotsatz im Stil der rumänischen Fußballnationalmannschaft
+41660	WM-Trikot ROU+ (m)	WM-Trikotsatz im Stil der rumänischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41661	WM-Trikot ROU+ (w)	WM-Trikotsatz im Stil der rumänischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41662	WM-Trikot POL (m)	WM-Trikotsatz im Stil der polnischen Fußballnationalmannschaft
+41663	WM-Trikot POL (w)	WM-Trikotsatz im Stil der polnischen Fußballnationalmannschaft
+41664	WM-Trikot POL+ (m)	WM-Trikotsatz im Stil der polnischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41665	WM-Trikot POL+ (w)	WM-Trikotsatz im Stil der polnischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41666	WM-Trikot BRA (m)	WM-Trikotsatz im Stil der brasilianischen Fußballnationalmannschaft
+41667	WM-Trikot BRA (w)	WM-Trikotsatz im Stil der brasilianischen Fußballnationalmannschaft
+41668	WM-Trikot BRA+ (m)	WM-Trikotsatz im Stil der brasilianischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41669	WM-Trikot BRA+ (w)	WM-Trikotsatz im Stil der brasilianischen Fußballnationalmannschaft. Verleiht dir mind. einen zufälligen Bonus.
+41670	Braunes Wolfsgewand (m)	Dieses Gewand aus braunen Fellen erweckt den Wolf in jedem Mann.
+41671	Graues Wolfsgewand (m)	Dieses Gewand aus grauen Fellen erweckt den Wolf in jedem Mann.
+41672	Braunes Wolfsgewand (w)	Dieses Gewand aus braunen Fellen erweckt den Wolf in jeder Frau.
+41673	Graues Wolfsgewand (w)	Dieses Gewand aus grauen Fellen erweckt den Wolf in jeder Frau.
+41674	Braunes Wolfsgewand+ (m)	Dieses Gewand aus braunen Fellen erweckt den Wolf in jedem Mann. Verleiht dir mindestens einen zufälligen Bonus.
+41675	Graues Wolfsgewand+ (m)	Dieses Gewand aus grauen Fellen erweckt den Wolf in jedem Mann. Verleiht dir mindestens einen zufälligen Bonus.
+41676	Braunes Wolfsgewand+ (w)	Dieses Gewand aus braunen Fellen erweckt den Wolf in jeder Frau. Verleiht dir mindestens einen zufälligen Bonus.
+41677	Graues Wolfsgewand+ (w)	Dieses Gewand aus grauen Fellen erweckt den Wolf in jeder Frau. Verleiht dir mindestens einen zufälligen Bonus.
+45108	Kegelhut	Traditioneller asiatischer Hut aus Reisstroh für Männer.
+45110	Asiadutt	Asiatische Hochsteckfrisur mit doppeltem Dutt.
+45114	Kegelhut+	Traditioneller asiatischer Hut aus Reisstroh für Männer. Verleiht dir mindestens einen zufälligen Bonus.
+45116	Asiadutt+	Asiatische Hochsteckfrisur mit doppeltem Dutt. Verleiht dir mindestens einen zufälligen Bonus.
+45170	Zombiekürbismaske	Monsterhafte Kürbismaske als Halloweenverkleidung
+45171	Hexenhut	Spitzhut mit breiter Krempe, der von Hexen oder Zauberern getragen wird.
+45172	Zombiekürbismaske+	Monsterhafte Kürbismaske als Halloweenverkleidung. Verleiht dir mindestens einen zufälligen Bonus.
+45173	Hexenhut+	Spitzhut mit breiter Krempe, der von Hexen oder Zauberern getragen wird. Verleiht dir mindestens einen zufälligen Bonus.
+45174	Schneemannmaske	Schneemannmaske mit schönem Zylinder aus mattschwarzem Satin. Nicht handelbar.
+45175	Santa Frostie-Maske	Schneemannmaske mit Weihnachtsmütze aus rotem Samt mit weißem Plüsch. Nicht handelbar.
+45176	Bommelmütze (weiß)	Weihnachtsmütze aus weißem Samt mit weißem Plüsch und rotem Bommel. Nicht handelbar.
+45177	Bommelmütze (rot)	Weihnachtsmütze aus rotem Samt mit weißem Plüsch und weißem Bommel. Nicht handelbar.
+45178	Schneemannmaske+	Schneemannmaske mit schönem Zylinder aus mattschwarzem Satin. Verleiht dir mind. einen zusätzlichen Bonus. Item ist handelbar.
+45179	Santa Frostie-Maske+	Schneemannmaske mit Weihnachtsmütze aus rotem Samt mit weißem Plüsch. Verleiht dir mind. einen zusätzlichen Bonus. Item ist handelbar.
+45180	Bommelmütze+ (weiß)	Weihnachtsmütze aus weißem Samt mit weißem Plüsch und rotem Bommel. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45181	Bommelmütze+ (rot)	Weihnachtsmütze aus rotem Samt mit weißem Plüsch und weißem Bommel. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45182	Federkopfschmuck (rot)	Mondänes rotes Kopfgefieder für karnevalsbegeisterte Männer.
+45183	Federkopfschmuck (tk)	Mondänes türkises Kopfgefieder für karnevalsbegeisterte Männer.
+45184	Phönixtiara (weiß)	Eleganter vogelähnlicher Kopfschmuck aus Metall für Frauen.
+45185	Phönixtiara (rot)	Eleganter vogelähnlicher Kopfschmuck aus Metall für Frauen.
+45186	Federkopfschmuck+ (rot)	Mondänes rotes Kopfgefieder für karnevalsbegeisterte Männer. Verleiht dir mindestens einen zufälligen Bonus.
+45187	Federkopfschmuck+ (tk)	Mondänes türkises Kopfgefieder für karnevalsbegeisterte Männer. Verleiht dir mindestens einen zufälligen Bonus.
+45188	Phönixtiara+ (weiß)	Eleganter vogelähnlicher Kopfschmuck aus Metall für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+45189	Phönixtiara+ (rot)	Eleganter vogelähnlicher Kopfschmuck aus Metall für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+45190	Hasenohren (grau)	Mütze mit Hasenohren aus weichem, grauem Fell. Nicht handelbar.
+45191	Hasenohren (braun)	Mütze mit Hasenohren aus weichem, braunem Fell. Nicht handelbar.
+45192	Osterkopfschmuck (bunt)	Bunt schillernder Osterkopfschmuck für die modebewusste Kämpferin. Nicht handelbar.
+45193	Osterkopfschmuck (blau)	Fröhlicher hellblauer Osterkopfschmuck für die modebewusste Kämpferin. Nicht handelbar.
+45194	Hasenohren+ (grau)	Mütze mit Hasenohren aus weichem, grauem Fell. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45195	Hasenohren+ (braun)	Mütze mit Hasenohren aus weichem, braunem Fell. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45196	Osterkopfschmuck+ (bunt)	Bunt schillernder Osterkopfschmuck für die modebewusste Kämpferin. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45197	Osterkopfschmuck+ (blau)	Fröhlicher hellblauer Osterkopfschmuck für die modebewusste Kämpferin. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45198	Brauner Turban	Ein edler, brauner Turban aus widerstandsfähigem Stoff für den Kämpfer.
+45199	Weißer Turban	Ein edler, weißer Turban aus widerstandsfähigem Stoff für den Kämpfer.
+45200	Braunes Kopftuch	Ein braunes Kopftuch aus leichtem Stoff für die Kämpferin.
+45201	Weißes Kopftuch	Ein weißes Kopftuch aus leichtem Stoff für die Kämpferin.
+45202	Brauner Turban+	Ein edler, brauner Turban aus widerstandsfähigem Stoff für den Kämpfer. Verleiht dir mindestens einen zufälligen Bonus.
+45203	Weißer Turban+	Ein edler, weißer Turban aus widerstandsfähigem Stoff für den Kämpfer. Verleiht dir mindestens einen zufälligen Bonus.
+45204	Braunes Kopftuch+	Ein braunes Kopftuch aus leichtem Stoff für die Kämpferin. Verleiht dir mindestens einen zufälligen Bonus.
+45205	Weißes Kopftuch+	Ein weißes Kopftuch aus leichtem Stoff für die Kämpferin. Verleiht dir mindestens einen zufälligen Bonus.
+45206	Fangzahn-Helm	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird.
+45207	Fangzahn-Helm	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird.
+45208	Fangzahn-Helm	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird.
+45209	Fangzahn-Helm	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird.
+45210	Fangzahn-Helm+	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird. Verleiht dir mind. einen zufälligen Bonus.
+45211	Fangzahn-Helm+	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird. Verleiht dir mind. einen zufälligen Bonus.
+45212	Fangzahn-Helm+	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird. Verleiht dir mind. einen zufälligen Bonus.
+45213	Fangzahn-Helm+	Ein grauenerregender Helm zu Halloween, bei dem deinen Gegnern Angst und Bange wird. Verleiht dir mind. einen zufälligen Bonus.
+45214	Rote Bommelmütze	Rote Filzmütze mit weißem Bommel. Nicht handelbar.
+45215	Blaue Bommelmütze	Blaue Filzmütze mit weißem Bommel. Nicht handelbar.
+45216	Rote Bommelkapuze	Rote Filzkapuze mit weißem Bommel. Nicht handelbar.
+45217	Blaue Bommelkapuze	Blaue Filzkapuze mit weißem Bommel. Nicht handelbar.
+45218	Rote Bommelmütze+	Rote Filzmütze mit weißem Bommel. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45219	Blaue Bommelmütze+	Blaue Filzmütze mit weißem Bommel. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45220	Rote Bommelkapuze+	Rote Filzkapuze mit weißem Bommel. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45221	Blaue Bommelkapuze+	Blaue Filzkapuze mit weißem Bommel. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45222	Hasenohren (weiß)	Weiße Mütze mit Hasenohren für ihn. Nicht handelbar.
+45223	Hasenohren (rosa)	Rosa Mütze mit Hasenohren für ihn. Nicht handelbar.
+45224	Häschenohren (marine)	Marinefarbene Hasenohren für sie. Nicht handelbar.
+45225	Häschenohren (magenta)	Magentafarbene Hasenohren für sie. Nicht handelbar.
+45226	Hasenohren+ (weiß)	Weiße Mütze mit Hasenohren für ihn. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+45227	Hasenohren+ (rosa)	Rosa Mütze mit Hasenohren für ihn. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+45228	Häschenohren+ (marine)	Marinefarbene Hasenohren für sie. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+45229	Häschenohren+ (magenta)	Magentafarbene Hasenohren für sie. Verleiht dir mind. einen zufälligen Bonus. Dieses Item ist handelbar.
+45234	Blauer Turban	Ein edler, blauer Turban aus widerstandsfähigem Stoff für den Kämpfer.
+45235	Roter Turban	Ein edler, roter Turban aus widerstandsfähigem Stoff für den Kämpfer.
+45236	Braunes Kopftuch	Ein braunes Kopftuch aus leichtem Stoff für die Kämpferin.
+45237	Grünes Kopftuch	Ein grünes Kopftuch aus leichtem Stoff für die Kämpferin.
+45238	Blauer Turban+	Ein edler, blauer Turban aus widerstandsfähigem Stoff für den Kämpfer. Verleiht dir mindestens einen zufälligen Bonus.
+45239	Roter Turban+	Ein edler, roter Turban aus widerstandsfähigem Stoff für den Kämpfer. Verleiht dir mindestens einen zufälligen Bonus.
+45240	Braunes Kopftuch+	Ein braunes Kopftuch aus leichtem Stoff für die Kämpferin. Verleiht dir mindestens einen zufälligen Bonus.
+45241	Grünes Kopftuch+	Ein grünes Kopftuch aus leichtem Stoff für die Kämpferin. Verleiht dir mindestens einen zufälligen Bonus.
+45250	Vampirkriegerhelm (gr.)	Helm eines wahren Vampirkriegers. Item ist nicht handelbar.
+45251	Vampirkriegerhelm (rot)	Helm eines wahren Vampirkriegers. Item ist nicht handelbar.
+45252	Vamphelm (grau)	Helm eines kriegerischen Vamps. Item ist nicht handelbar.
+45253	Vamphelm (rot)	Helm eines kriegerischen Vamps. Item ist nicht handelbar.
+45254	Vampirkriegerhelm+ (gr.)	Helm eines wahren Vampirkriegers. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45255	Vampirkriegerhelm+ (rot)	Helm eines wahren Vampirkriegers. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45256	Vamphelm+ (grau)	Helm eines kriegerischen Vamps. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45257	Vamphelm+ (rot)	Helm eines kriegerischen Vamps. Verleiht dir mind. einen zufälligen Bonus. Item ist handelbar.
+45258	Weihnachtskapuze (rot)	Rote Weihnachtskapuze mit weißem Saum.
+45259	Weihnachtskapuze (grün)	Grüne Weihnachtskapuze mit weißem Saum.
+45260	Weihnachtsbarett (rot)	Rotes Weihnachtsbarett mit weißem Bommel.
+45261	Weihnachtsbarett (grün)	Grünes Weihnachtsbarett mit weißem Bommel.
+45262	Weihnachtskapuze+ (rot)	Rote Weihnachtskapuze mit weißem Saum. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+45263	Weihnachtskapuze+ (grün)	Grüne Weihnachtskapuze mit weißem Saum. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+45264	Weihnachtsbarett+ (rot)	Rotes Weihnachtsbarett mit weißem Bommel. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+45265	Weihnachtsbarett+ (grün)	Grünes Weihnachtsbarett mit weißem Bommel. Der Gegenstand verleiht dir mindestens einen zufälligen Bonus und ist handelbar.
+45266	Goldener Kabuto (m)	Goldener Helm eines japanischen Generals
+45267	Silberner Kabuto (m)	Silberner Helm eines japanischen Generals
+45268	Goldener Kabuto (w)	Goldener Helm einer japanischen Generalin
+45269	Silberner Kabuto (w)	Silberner Helm einer japanischen Generalin
+45270	Goldener Kabuto+ (m)	Goldener Helm eines japanischen Generals. Verleiht dir mind. einen zufälligen Bonus.
+45271	Silberner Kabuto+ (m)	Silberner Helm eines japanischen Generals. Verleiht dir mind. einen zufälligen Bonus.
+45272	Goldener Kabuto+ (w)	Goldener Helm einer japanischen Generalin. Verleiht dir mind. einen zufälligen Bonus.
+45273	Silberner Kabuto+ (w)	Silberner Helm einer japanischen Generalin. Verleiht dir mind. einen zufälligen Bonus.
+45274	Samurai-Knoten (gold)	Haarknoten mit goldener Spange im Stil der Samurai für ihn
+45275	Samurai-Knoten (silber)	Haarknoten mit silberner Spange im Stil der Samurai für ihn
+45276	Samurai-Knoten (gold)	Haarknoten mit goldener Spange im Stil der Samurai für sie
+45277	Samurai-Knoten (silber)	Haarknoten mit silberner Spange im Stil der Samurai für sie
+45278	Samurai-Knoten+ (gold)	Haarknoten mit goldener Spange im Stil der Samurai für ihn. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45279	Samurai-Knoten+ (silber)	Haarknoten mit silberner Spange im Stil der Samurai für ihn. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45280	Samurai-Knoten+ (gold)	Haarknoten mit goldener Spange im Stil der Samurai für sie. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45281	Samurai-Knoten+ (silber)	Haarknoten mit silberner Spange im Stil der Samurai für sie. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45282	Hörner des Horrors (g)	Goldener Helm mit Teufelshörnern
+45283	Hörner des Horrors (b)	Blauer Helm mit Teufelshörnern
+45284	Hörner des Horrors (g)	Goldener Helm mit Teufelshörnern
+45285	Hörner des Horrors (b)	Blauer Helm mit Teufelshörnern
+45286	Hörner des Horrors+ (g)	Goldener Helm mit Teufelshörnern. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45287	Hörner des Horrors+ (b)	Blauer Helm mit Teufelshörnern. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45288	Hörner des Horrors+ (g)	Goldener Helm mit Teufelshörnern. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45289	Hörner des Horrors+ (b)	Blauer Helm mit Teufelshörnern. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45290	Steampunk-Zylinder (sw)	Futuristische Kopfbedeckung für den Kämpfer im Hier und Jetzt
+45291	Steampunk-Zylinder (rot)	Futuristische Kopfbedeckung für den Kämpfer im Hier und Jetzt
+45292	Steampunk-Zylinder (sw)	Futuristische Kopfbedeckung für die Kämpferin im Hier und Jetzt
+45293	Steampunk-Zylinder (rot)	Futuristische Kopfbedeckung für die Kämpferin im Hier und Jetzt
+45294	Steampunk-Zylinder+ (sw)	Futuristische Kopfbedeckung für den Kämpfer im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45295	Steampunk-Zylinder+(rot)	Futuristische Kopfbedeckung für den Kämpfer im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45296	Steampunk-Zylinder+ (sw)	Futuristische Kopfbedeckung für die Kämpferin im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45297	Steampunk-Zylinder+(rot)	Futuristische Kopfbedeckung für die Kämpferin im Hier und Jetzt. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45298	Federhut (blau)	Blauer Hut mit Perlenkinngurt und roter Fasanenfeder
+45299	Federhut (grau)	Grauer Hut mit Perlenkinngurt und petrolfarbener Fasanenfeder
+45300	Sungura-Toque (blau)	Blaue Kopfbedeckung mit türkisfarbenem Edelstein
+45301	Sungura-Toque (grau)	Graue Kopfbedeckung mit violettem Edelstein
+45302	Federhut+ (blau)	Blauer Hut mit Perlenkinngurt und roter Fasanenfeder. Verleiht dir mindestens einen zufälligen Bonus.
+45303	Federhut+ (grau)	Grauer Hut mit Perlenkinngurt und petrolfarbener Fasanenfeder. Verleiht dir mindestens einen zufälligen Bonus.
+45304	Sungura-Toque+ (blau)	Blaue Kopfbedeckung mit türkisfarbenem Edelstein. Verleiht dir mindestens einen zufälligen Bonus.
+45305	Sungura-Toque+ (grau)	Graue Kopfbedeckung mit violettem Edelstein. Verleiht dir mindestens einen zufälligen Bonus.
+45314	Zodiak-Krone	Majestetischer Kopfschmuck
+45315	Zodiak-Krone	Majestetischer Kopfschmuck
+45316	Zodiak-Krone+	Majestetischer Kopfschmuck. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45317	Zodiak-Krone+	Majestetischer Kopfschmuck. Verleiht dir mindestens einen zufälligen Bonus. Dieses Item ist handelbar.
+45320	Avalonierhelm (silber)	Silberner Helm eines edlen Rittergeschlechts ferner Zeiten
+45321	Avalonierhelm (rot)	Roter Helm eines edlen Rittergeschlechts ferner Zeiten
+45322	Avalonierhelm (silber)	Silberner Helm eines edlen Rittergeschlechts ferner Zeiten
+45323	Avalonierhelm (rot)	Roter Helm eines edlen Rittergeschlechts ferner Zeiten
+45324	Avalonierhelm+ (silber)	Silberner Helm eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+45325	Avalonierhelm+ (rot)	Roter Helm eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+45326	Avalonierhelm+ (silber)	Silberner Helm eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+45327	Avalonierhelm+ (rot)	Roter Helm eines edlen Rittergeschlechts ferner Zeiten. Verleiht dir mindestens einen zufälligen Bonus.
+45328	Bärchenmütze (m)	Kuschelige Kopfbedeckung mit Bärchengesicht
+45329	Tigermütze (m)	Kuschelige Kopfbedeckung mit Tigergesicht
+45330	Bärchenmütze (w)	Kuschelige Kopfbedeckung mit Bärchengesicht
+45331	Tigermütze (w)	Kuschelige Kopfbedeckung mit Tigergesicht
+45332	Bärchenmütze+ (m)	Die kuschelige Kopfbedeckung verleiht dir mindestens einen zufälligen Bonus.
+45333	Tigermütze+ (m)	Die kuschelige Kopfbedeckung verleiht dir mindestens einen zufälligen Bonus.
+45334	Bärchenmütze+ (w)	Die kuschelige Kopfbedeckung verleiht dir mindestens einen zufälligen Bonus.
+45335	Tigermütze+ (w)	Die kuschelige Kopfbedeckung verleiht dir mindestens einen zufälligen Bonus.
+45336	Braune Wolfskappe (m)	Eine aufwendige Kappe aus Wolfsfell für Männer.
+45337	Graue Wolfskappe (m)	Eine aufwendige Kappe aus Wolfsfell für Männer.
+45338	Braune Wolfskappe (w)	Eine aufwendige Kappe aus Wolfsfell für Frauen.
+45339	Graue Wolfskappe (w)	Eine aufwendige Kappe aus Wolfsfell für Frauen.
+45340	Braune Wolfskappe+ (m)	Eine aufwendige Kappe aus Wolfsfell für Männer. Verleiht dir mindestens einen zufälligen Bonus.
+45341	Graue Wolfskappe+ (m)	Eine aufwendige Kappe aus Wolfsfell für Männer. Verleiht dir mindestens einen zufälligen Bonus.
+45342	Braune Wolfskappe+ (w)	Eine aufwendige Kappe aus Wolfsfell für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+45343	Graue Wolfskappe+ (w)	Eine aufwendige Kappe aus Wolfsfell für Frauen. Verleiht dir mindestens einen zufälligen Bonus.
+45344	Haarband DEN (w)	Lange Haare mit Zöpfen und Haarband in den dänischen Nationalfarben
+45345	Haarband HUN (w)	Lange Haare mit Zöpfen und Haarband in den ungarischen Nationalfarben
+45346	Haarband POL (w)	Lange Haare mit Zöpfen und Haarband in den polnischen Nationalfarben
+45347	Haarband KSA (w)	Lange Haare mit Zöpfen und Haarband in den saudi-arabischen Nationalfarben
+45348	Haarband SVK (w)	Lange Haare mit Zöpfen und Haarband in den slowakischen Nationalfarben
+45349	Haarband TUR (w)	Lange Haare mit Zöpfen und Haarband in den türkischen Nationalfarben
+45350	Haarband DEN+ (w)	Lange Haare mit Zöpfen und Haarband in den dänischen Nationalfarben. Verleiht dir mind. einen zufälligen Bonus.
+45351	Haarband HUN+ (w)	Lange Haare mit Zöpfen und Haarband in den ungarischen Nationalfarben. Verleiht dir mind. einen zufälligen Bonus.
+45352	Haarband POL+ (w)	Lange Haare mit Zöpfen und Haarband in den polnischen Nationalfarben. Verleiht dir mind. einen zufälligen Bonus.
+45353	Haarband KSA+ (w)	Lange Haare mit Zöpfen und Haarband in den saudi-arabischen Nationalfarben. Verleiht dir mind. einen zufälligen Bonus.
+45354	Haarband SVK+ (w)	Lange Haare mit Zöpfen und Haarband in den slowakischen Nationalfarben. Verleiht dir mind. einen zufälligen Bonus.
+45355	Haarband TUR+ (w)	Lange Haare mit Zöpfen und Haarband in den türkischen Nationalfarben. Verleiht dir mind. einen zufälligen Bonus.
+50208	Silver Premium Scroll	Wird benötigt um die Silber Premium Mitlgiedschafr zu aktivieren oder zu verlänger.
+50209	Gold Premium Scroll	Wird benötigt um die Gold Premium Mitlgiedschafr zu aktivieren oder zu verlänger.
+50210	Platinum Premium Scroll	Wird benötigt um die Platin Premium Mitlgiedschafr zu aktivieren oder zu verlänger.
+50221	Small IS Package (Stones)		Du bekommst den gesamten Inhalt dieser Truhe sobald du sie öffnest
+50222	Small IS Package (Boss)		Du bekommst den gesamten Inhalt dieser Truhe sobald du sie öffnest
+50223	Medium IS Package (Stones)		Du bekommst den gesamten Inhalt dieser Truhe sobald du sie öffnest
+50224	Big IS Package		Du bekommst den gesamten Inhalt dieser Truhe sobald du sie öffnest
+50266	Jotun Thrym-Truhe	Die Truhe von Jotun Thrym. Das schwere Schloss weist darauf hin, dass sie etwas Wertvolles enthalten muss.
+50267	Goldene Okey-Truhe	Erreiche 400 oder mehr Punkte in einer Okey-Runde, um diesen Preis zu erhalten.
+50270	Truhe der Königin Meley	Diese Truhe wurde aus dem Hort der Drachenkönigin Meley geborgen. Sie birgt einen wahrhaft königlichen Schatz. Dieses Item ist handelbar.
+50271	Truhe der Drachenwächter	Diese Truhe enthält einige seltene, seit Jahrhunderten verschollen geglaubte Schätze der unzähligen Drachenwächter. Dieses Item ist handelbar.
+50272	Goldene Bossjäger-Truhe	Goldene Belohnung für deine Heldentaten bei der Bossjagd
+50285	Eiserne Kampfzonentruhe	Eine Truhe mit wertvollem Inhalt.
+50286	Goldene Kampfzonentruhe	Eine Truhe mit wertvollem Inhalt.
+50287	Feldkiste 1	Eine Kiste mit nützlicher Ausrüstung.
+50288	Feldkiste 2	Eine Kiste mit nützlicher Ausrüstung.
+50289	Reinkarnation	Reinkarnation belebt dich sofort und ohne Wartezeit wieder.
+50290	Hölzerne Kampfzonentruhe	Eine Truhe mit wertvollem Inhalt.
+50323	Büchertruhe Konter	Diese Truhe enthält ein zufälliges Fertigkeitsbuch zum Erlernen von Konterfertigkeiten.
+50324	Büchertruhe Boost	Diese Truhe enthält ein zufälliges Fertigkeitsbuch zum Erlernen von Boostfertigkeiten.
+50500	Armor Socket Enhancer	Öffnet einen vierten Stein-Steckplatz in deiner Rüstung.
+50501	Weapon Socket Enhancer	Öffnet einen vierten Stein-Steckplatz in deiner Waffe.
+50514	Lehrbuch Boost	Dieses Lehrbuch ermöglicht dir die Lehre von einer der neun Boostfertigkeiten. Die für dich passende Fertigkeit wird ausgewählt.
+50515	Lehrbuch Konter	Dieses Lehrbuch ermöglicht dir die Auswahl zwischen neun Konterfertigkeiten. Wähle mit Bedacht!
+50516	Schwertwirbel-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch Schwertwirbel zu verringern.
+50517	Hinterhalt-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch Hinterhalt zu verringern.
+50518	Fingerschlag-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch Fingerschlag zu verringern.
+50519	Drachenschießen-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch Drachenschießen zu verringern.
+50520	Durchschlag-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden von Durchschlag zu verringern.
+50521	Feuerpfeil-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch Feuerpfeil zu verringern.
+50522	Dunkler Schlag-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch Dunkler Schlag zu verringern.
+50523	Blitz beschwören-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch Blitz heraufbeschwören zu verringern.
+50524	Atem des Wolfes-Konter	Dieses Buch lehrt dich die Fertigkeit, den Schaden durch den Atem des Wolfes zu verringern.
+50525	Seelenstein+	Dieser sagenumwobene Stein dient dazu, die Großmeisterfertigkeiten von Boost- und Konterfertigkeiten zu erhöhen. Der Stein verschwindet nach dem Benutzen.
+50560	Schwertwirbel-Boost	Dieses Buch lehrt dich die Fertigkeit, Schwertwirbel zu verstärken.
+50561	Hinterhalt-Boost	Dieses Buch lehrt dich die Fertigkeit, Hinterhalt zu verstärken.
+50562	Fingerschlag-Boost	Dieses Buch lehrt dich die Fertigkeit, Fingerschlag zu verstärken.
+50563	Drachenschießen-Boost	Dieses Buch lehrt dich die Fertigkeit, Drachenschießen zu verstärken.
+50564	Durchschlag-Boost	Dieses Buch lehrt dich die Fertigkeit, Durchschlag zu verstärken.
+50565	Feuerpfeil-Boost	Dieses Buch lehrt dich die Fertigkeit, Feuerpfeil zu verstärken.
+50566	Dunkler Schlag-Boost	Dieses Buch lehrt dich die Fertigkeit, Dunkler Schlag zu verstärken.
+50567	Blitz beschwören-Boost	Dieses Buch lehrt dich die Fertigkeit, Blitz heraufbeschwören zu verstärken.
+50568	Atem des Wolfes-Boost	Dieses Buch lehrt dich die Fertigkeit, den Atem des Wolfes zu verstärken.
+50569	Legendary Soul Stone	Dieser Stein besitzt eine mysteriöse Macht,welche es möglich macht deinen perfekten Skill weiter zu stärken.
+50570	Legendary Soul Stone	Dieser Stein besitzt eine mysteriöse Macht,welche es möglich macht deinen perfekten Skill direkt in einen legendären zu verwandeln.
+50571	Legendary Soul Stone	Dieser Stein besitzt eine mysteriöse Macht,welche es möglich macht deinen perfekten Skill direkt in einen legendären zu verwandeln.
+50619	Turmalinerz	Durch Verwendung des Gildenofens kann aus diesem Erz ein Turmalin hergestellt werden.
+50639	Turmalin	Der bezaubernde Edelstein schimmert in allen Farben des Regenbogens. Kann zur Schmuckherstellung verwendet werden.
+50640	Azure	Blauer Edelstein mit einzigartigem Schliff. Kann zu einem kostbaren Schmuckstück verarbeitet werden.
+50926	Glimmerstone	Sammle Schmucksteine und lasse sie vom Gaya-Händler in wertvolles Gaya umwandeln.
+51723	Fossilholz	Ein wertvolles Holz, das Schmuckgegenständen eine hohe Stabilität verleihen kann.
+51724	Kupfer	Ein gut formbares Edelmetall, aus dem Schmuck erstellt oder Münzen geprägt werden können. Es wird zudem für die Bronzeherstellung benötigt.
+51725	Silber	Ein hell schimmerndes Edelmetall, das zur Herstellung von Schmuckgegenständen verwendet wird.
+51726	Gold	Das warm schimmernde, edle Metall zählt zu den ersten, die von Menschen verarbeitet wurden. Noch heute ist es bei der Schmuckherstellung beliebt.
+51727	Jade	Ein wertvolles Mineral, das bereits seit über 5000 Jahren genutzt wird. Es ist bei der Schmuckerstellung sehr beliebt.
+51728	Ebenholz	Das schwarze, sehr harte Holz gehört zu den wertvollsten Holzarten. Es wird oftmals bei der Schmuckherstellung verwendet.
+51729	Perle	Eine sanft schillernde Schönheit aus Perlmutt, oftmals die Zierde von Schmuckgegenständen.
+51730	Weißgold	Eine stabile, weiß getönte Goldlegierung, die bei der Herstellung von Schmuckgegenständen äußerst beliebt ist.
+51731	Kristall	Sehr harte Steine aus kristallinem Quarz, die in unterschiedlichen Farben auftreten können. Sie werden oft zur Schmuckherstellung verwendet.
+51732	Amethyst	Ein beliebter Quarz, der in unterschiedlichen Violetttönen auftreten kann. Er ist in der Schmuckherstellung äußerst beliebt.
+51733	Himmelsträne	Zu kleinen Kristallen erstarrte Regentropfen. Sie können bei der Schmuckherstellung verwendet werden.
+51734	Seelenkristall	Ein Kristall, so rein wie die Seele selbst. Kann zur Schmuckherstellung verwendet werden.
+51735	Rubin	Roter Edelstein mit einzigartigem Schliff. Kann zu einem kostbaren Schmuckstück verarbeitet werden.
+51736	Granat	Oranger Edelstein mit einzigartigem Schliff. Kann zu einem kostbaren Schmuckstück verarbeitet werden.
+51737	Smaragd	Grüner Edelstein mit einzigartigem Schliff. Kann zu einem kostbaren Schmuckstück verarbeitet werden.
+51738	Saphir	Blauer Edelstein mit einzigartigem Schliff. Kann zu einem kostbaren Schmuckstück verarbeitet werden.
+51740	Azure	Blauer Edelstein mit einzigartigem Schliff. Kann zu einem kostbaren Schmuckstück verarbeitet werden.
+55001	Protein-Happen	Füttere dein erschöpftes Pet mit den leckeren Protein-Happen. Es wird sich vollständig erholen. Verfütterst du die wiederbelebende Nahrung an ein totes Pet, wird dieses zu 50% wieder aufleben.
+55002	Transportbox	Wenn du dein Pet in die Transportbox legst, ist es für 30 Tage handelbar.
+55003	Junges Pet-Buch	Mithilfe der folgenden Gegenstände kannst du dein Pet auf die nächste Stufe (Wildes Pet) heben: 10x Junges Pet-Buch, 10x Spinnen-Eiersack , 10x Weißes Haarband+, 10x Shuriken, 10x Schmückende Haarnadel, 5x Schwarze Uniform+, 5x Eisstück+.
+55004	Wildes Pet-Buch	Mithilfe der folgenden Gegenstände kannst du dein Pet auf die nächste Stufe (Tapferes Pet) heben: 10x Wildes Pet-Buch, 2x Blutrote Perle, 10x Gesichtscreme, 10x Yetifell+, 10x Schmuckgegenstand, 10x Knäuel, 5x Fluchsammlung+.
+55005	Tapferes Pet-Buch	Mithilfe der folgenden Gegenstände kannst du dein Pet auf die nächste Stufe (Heldentraining) heben: 10x Tapferes Pet-Buch, 10x Unbekannte Medizin+, 2x Weiße Perle, 2x Blaue Perle, 10x Dämonenandenken+, 10x Orkzahn+, 5x Blauer Riemen.
+55006	Pet Revertus	Öffne das Pet-Fenster und ziehe das Token auf die Fertigkeit, die du entfernen möchtest.
+55008	Pergament der Pet-Namen	Ziehe das Pergament auf dein Pet, um den Namen deines Pets zu ändern.
+55009	Pet-Bücherkiste	Enthält ein zufällig ausgewähltes Pet-Fertigkeitsbuch.
+55010	Monsterbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen Schaden gegen Monster.
+55011	Metinsteinbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen Schaden gegen Metinsteine.
+55012	Bossbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen Schaden gegen Bosse.
+55013	Lebensbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es dein maximales HP.
+55014	Giftbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, verleiht es deinen Angriffen die Chance, den Gegner zu vergiften.
+55015	Anti-Krit-Buch	Nachdem dein Haustier diese Fähigkeit erlernt hat, verringert es die Chance, kritische Treffer zu erhalten.
+55016	Anti-Durchschlag-Buch	Nachdem dein Haustier diese Fähigkeit erlernt hat, verringert es die Chance, durchdringende Treffer zu erhalten.
+55017	Feuerbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deine Stärke gegen das Feuerelement.
+55018	Eisbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deine Stärke gegen das Eiselement.
+55019	Erdbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deine Stärke gegen das Erdelement.
+55020	Windbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deine Stärke gegen das Windelement.
+55021	Regenerationsbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, stellt es dein HP allmählich im Laufe der Zeit wieder her.
+55022	Pfeilausweich-Buch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deine Chance, Pfeilangriffen auszuweichen.
+55023	Item-Drop-Buch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deine Item-Droprate.
+55024	Angreiferbuch	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen gesamten Angriffswert.
+55025	Berserkerbuch (H)	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen Magie-/Nahkampfschaden.
+55026	Fertigkeitsschaden-Buch (H)	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es den Schaden deiner Fertigkeiten.
+55027	Fertigkeitswiderstands-Buch (H)	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen Widerstand gegen Fertigkeitsschaden.
+55028	Durchschnittsschaden-Buch (H)	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen durchschnittlichen Schaden.
+55029	Halbmenschen-Buch (H)	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen Widerstand gegen Halbmenschen.
+55030	Elementar-Buch (H)	Nachdem dein Haustier diese Fähigkeit erlernt hat, erhöht es deinen Elementarschaden.
+55260	Fire Infusion [I]	Eine antike Feuer-Infusion auf der niedrigsten Stufe.	Kann verbessert werden
+55261	Water Infusion [I]	Eine antike Wasser-Infusion auf der niedrigsten Stufe.	Kann verbessert werden
+55262	Earth Infusion [I]	Eine antike Erd-Infusion auf der niedrigsten Stufe.	Kann verbessert werden
+55263	Wind Infusion [I]	Eine antike Wind-Infusion auf der niedrigsten Stufe.	Kann verbessert werden
+55264	Dark Infusion [I]	Eine antike Dunkelheits-Infusion auf der niedrigsten Stufe.	Kann verbessert werden
+55265	Light Infusion [I]	Eine antike Blitz-Infusion auf der niedrigsten Stufe.	Kann verbessert werden
+55270	Fire Infusion [II]	Eine rare Feuer-Infusion, die weiterentwickelt werden kann.	Kann verbessert werden
+55271	Water Infusion [II]	Eine rare Wasser-Infusion, die weiterentwickelt werden kann.	Kann verbessert werden
+55272	Earth Infusion [II]	Eine rare Erd-Infusion, die weiterentwickelt werden kann.	Kann verbessert werden
+55273	Wind Infusion [II]	Eine rare Wind-Infusion, die weiterentwickelt werden kann.	Kann verbessert werden
+55274	Dark Infusion [II]	Eine rare Dunkelheits-Infusion, die weiterentwickelt werden kann.	Kann verbessert werden
+55275	Light Infusion [II]	Eine rare Blitz-Infusion, die weiterentwickelt werden kann.	Kann verbessert werden
+55280	Fire Infusion [III]	Eine exzellente Feuer-Infusion, welche für ihre Verwendung perfektioniert wurde.	Kann verbessert werden
+55281	Water Infusion [III]	Eine exzellente Wasser-Infusion, welche für ihre Verwendung perfektioniert wurde.	Kann verbessert werden
+55282	Earth Infusion [III]	Eine exzellente Erd-Infusion, welche für ihre Verwendung perfektioniert wurde.	Kann verbessert werden
+55283	Wind Infusion [III]	Eine exzellente Wind-Infusion, welche für ihre Verwendung perfektioniert wurde.	Kann verbessert werden
+55284	Dark Infusion [III]	Eine exzellente Dunkelheits-Infusion, welche für ihre Verwendung perfektioniert wurde.	Kann verbessert werden
+55285	Light Infusion [III]	Eine exzellente Blitz-Infusion, welche für ihre Verwendung perfektioniert wurde.	Kann verbessert werden
+55290	Fire Infusion [IV]	Eine legendäre Feuer-Infusin mit der Chance, großartig zu sein.	Kann verbessert werden
+55291	Water Infusion [IV]	Eine legendäre Wasser-Infusin mit der Chance, großartig zu sein.	Kann verbessert werden
+55292	Earth Infusion [IV]	Eine legendäre Erd-Infusin mit der Chance, großartig zu sein.	Kann verbessert werden
+55293	Wind Infusion [IV]	Eine legendäre Wind-Infusin mit der Chance, großartig zu sein.	Kann verbessert werden
+55294	Dark Infusion [IV]	Eine legendäre Dunkelheits-Infusin mit der Chance, großartig zu sein.	Kann verbessert werden
+55295	Light Infusion [IV]	Eine legendäre Blitz-Infusin mit der Chance, großartig zu sein.	Kann verbessert werden
+55300	Fire Infusion [V]	Die mtyhische Feuer-Infusion auf ihrer höchsten Stufe
+55301	Water Infusion [V]	Die mtyhische Wasser-Infusion ihrer der höchsten Stufe.
+55302	Earth Infusion [V]	Die mtyhische Erd-Infusion auf ihrer höchsten Stufe.
+55303	Wind Infusion [V]	Die mtyhische Wind-Infusion auf ihrer höchsten Stufe.
+55304	Dark Infusion [V]	Die mtyhische Dunkelheits-Infusion auf ihrer höchsten Stufe.
+55305	Light Infusion [V]	Die mtyhische Blitz-Infusion auf ihrer höchsten Stufe.
+55401	Affenei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55402	Spinnenei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55403	Ei des Razador	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55404	Ei des Nemere	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55405	Blaues Drachenei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55406	Rotes Drachenei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55407	Azraelchens Ei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55408	Moppelhenkerchen-Ei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55409	Baby-Baashidos Ei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55410	Nessie-Ei	Wenn du dein Pet schlüpfen lassen möchtest, klicke mit der rechten Maustaste auf das Ei.
+55701	Kleiner Affe	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55702	Kleine Spinne	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55703	Kleiner Razador	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55704	Kleiner Nemere	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55705	Kleiner Drache	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die Taste "P", um die UI für dein Pet aufzurufen.
+55706	Kleine Meley	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55707	Azraelchen	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55708	Moppelhenkerchen	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55709	Baby Baashido	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+55710	Nessie	Rufe dein Pet mit einem rechten Mausklick. Drücke dann die "P"-Taste, um die UI für dein Pet aufzurufen.
+56000	Appaloosa	Das Siegel ruft dein gutmütiges Appaloosa-Pony herbei. Seinem Reiter verleiht es +10 Bewegungsgeschwindigkeit.
+69544	Nova Token	Wird benötigt um spezielle Kostüme während eines Events zu kaufen.
+70065	Kostümbonitransfer	Überträgt die Boni von einem Kostüm auf ein anderes. Dabei wird eines der Kostüme zerstört.
+71000	Rolle des Lehrwandels	Dieser Gegenstand ermöglicht es dir, deine Boost- und Konterfertigkeiten vollständig zu entfernen. Mithilfe der Lehrbücher (Konter und Boost) kannst du sie neu erlernen.
+71112	Biologen Quest-Zurücksetzen	Setze alle deine Biologen-Missionen zurück, um die Belohnungen neu auswählen zu können.
+71165	Polarprädator	Mit diesem Siegel rufst du deinen kampflustigen Polarprädator herbei.
+71182	Muffin (braun)	Mit diesem Siegel rufst du Muffin, das gefürchtete Kampfhühnchen, herbei.
+71183	Nugget (braun)	Mit diesem Siegel rufst du Nugget, das schreckliche Kampfhähnchen, herbei.
+71184	Muffin (blau)	Mit diesem Siegel rufst du Muffin, das gefürchtete Kampfhühnchen, herbei.
+71185	Nugget (blau)	Mit diesem Siegel rufst du Nugget, das schreckliche Kampfhähnchen, herbei.
+71186	Muffin (grün)	Mit diesem Siegel rufst du Muffin, das gefürchtete Kampfhühnchen, herbei.
+71187	Nugget (grün)	Mit diesem Siegel rufst du Nugget, das schreckliche Kampfhähnchen, herbei.
+71188	Lolli der Magie	Der Lolli aus geheimen Zutaten verleiht dir | +50% Erfahrungspunkte | +30% magischen Schaden | +20 Angriffsgeschwindigkeit | +20 Zaubergeschwindigkeit | +10% Maximum-HP | +10% Maximum-MP
+71189	Gegenstand verzaubern+	Entfernt die Boni eines deiner Gegenstände und fügt neue hinzu. Die neuen Boni werden dir vorher angezeigt. Du kannst dann wählen, ob du die angezeigten Boni möchtest.
+71190	Kürbiskiste	Diese Kürbiskiste erhältst du nur für ganz besondere Leistungen.
+71191	Süßigkeiten-Tüte	Mit dem Inhalt dieser Tüte versüßt dir Sam Pumpkin die Nacht. Öffne sie und lass dich überraschen!
+71192	Donner	Mit diesem Siegel rufst du dein Rentier Donner herbei. Es erhöht deine Bewegungsgeschwindigkeit um 20 und das Sammeln von Erfahrung um 30%.
+71193	Blitzen	Mit diesem Siegel rufst du dein Rentier Blitzen herbei. Es erhöht deine Bewegungsgeschwindigkeit um 20 und das Sammeln von Erfahrung um 30%.
+71194	Goldene Okey-Box	Du erhältst 5 Kartensets mit jeweils 24 Okey-Sammelkarten (insgesamt 120). Wenn das Event beendet ist, kannst du keine Karten mehr erhalten.
+71195	Silberne Okey-Box	Du erhältst ein Kartenset mit 24 Okey-Sammelkarten. Wenn das Event beendet ist, kannst du keine Karten mehr erhalten.
+71196	Bronzene Okey-Box	Du erhältst 6 Okey-Sammelkarten. Wenn das Event beendet ist, kannst du keine Karten mehr erhalten.
+71197	Nugget (marine)	Mit diesem Siegel rufst du Nugget, das schreckliche Kampfhähnchen, herbei. Es verleiht dir +15% Stark gegen Monster und erhöht das Sammeln von Erfahrung um 30%.
+71198	Muffin (rosa)	Mit diesem Siegel rufst du Muffin, das gefürchtete Kampfhühnchen, herbei. Es verleiht dir +15% Stark gegen Monster und erhöht das Sammeln von Erfahrung um 30%.
+71220	Kyzaghans Pferd	Mit diesem Siegel kannst du Kyzaghans Pferd nutzen. 5 Prozent mehr Erfahrung, Max. TP +1500 und +20 Bewegungsgeschwindigkeit sind dir gewiss.
+71235	Zerberus (gold)	Mit diesem Siegel rufst du deinen gefürchteten dreiköpfigen Höllenhund herbei.
+71236	Zerberus (silber)	Mit diesem Siegel rufst du deinen gefürchteten dreiköpfigen Höllenhund herbei.
+71237	Keiler	Der Zauber des Siegels ruft einen mächtigen Tiergeist, der dich schnell an den Ort deiner Wahl trägt.
+71238	Wolf	Der Zauber des Siegels ruft einen mächtigen Tiergeist, der dich schnell an den Ort deiner Wahl trägt.
+71239	Tiger	Der Zauber des Siegels ruft einen mächtigen Tiergeist, der dich schnell an den Ort deiner Wahl trägt.
+71240	Löwe	Der Zauber des Siegels ruft einen mächtigen Tiergeist, der dich schnell an den Ort deiner Wahl trägt.
+71241	Reitkarte	Rüste die Karte aus, um 10 Minuten lang ein Pony zu reiten.
+71394	Phoenix	Das ist ein fliegendes Reittier	Benutze Shift um hoch, und X um runter zu fliegen.
+71395	Phoenix	Das ist ein fliegendes Reittier	Benutze Shift um hoch, und X um runter zu fliegen.
+72325	Projektions-Zurücknahme	Macht die Projektion auf Gegenstände rückgängig.
+72326	Projektions-Zurücknahme	Macht die Projektion auf Gegenstände rückgängig und den Artikel zurückerstatten.
+72709	Tigerknochenohrring	Dein Angriffswert wird für 20 Stunden um 200 Punkte erhöht (Zeit läuft nur ab, wenn das Item angelegt ist).
+72710	Drachenknochenohrring	Dein Verteidigungswert wird für 20 Stunden um 300 Punkte erhöht (Zeit läuft nur ab, wenn das Item angelegt ist).
+72711	Tigerknochenarmband	Der Schaden deiner Fertigkeiten wird für 20 Stunden um 30 Punkte erhöht (Zeit läuft nur ab, wenn das Item angelegt ist).
+72712	Drachenknochenarmband	Deine Abwehr gegen Fertigkeiten wird für 20 Stunden um 30 Punkte erhöht (Zeit läuft nur ab, wenn das Item angelegt ist).
+72800	Stein der Rubinader	Lässt eine Rubinader neben deinem Charakter erscheinen.
+72801	Stein der Granatader	Lässt eine Granatader neben deinem Charakter erscheinen.
+72802	Stein der Smaragdader	Lässt eine Smaragdader neben deinem Charakter erscheinen.
+72803	Stein der Saphirader	Lässt eine Saphirader neben deinem Charakter erscheinen.
+72804	Stein der Turmalinerzader	Lässt eine Turmalinerzader neben deinem Charakter erscheinen.
+74521	Modische Frisur (grau)	Eine Frisur, die dir ein markantes Äußeres verleiht
+74522	Stirntuch	Kurzes Haar, das von einem Stirntuch gebändigt wird.
+74523	Lange Haare (blond)	Eine beeindruckende Frisur mit prachtvollem, blondem Haar.
+74524	Modische Frisur (gold)	Modisches goldbraunes, von einem Band geziertes Haar.
+74525	Stirntuch (schwarz)	Eine zerzaust wirkende Frisur, durch ein Stirntuch im Zaum gehalten
+74526	Lange Haare (rubinrot)	Prachtvolles, rubinrotes Haar
+74527	Pferdeschwanz (rot)	Langes Haar, das zu einem Zopf gebunden ist.
+74528	Schulterlanges Haar/aqua	Eine dezente Frisur mit einem blauen Stirntuch
+74529	Kurzhaarfrisur (braun)	Eine praktische Kurzhaarfrisur, die ein düsteres Äußeres verleiht.
+74530	Pferdeschwanz (rot)	Langes rotes, zu einem Zopf gebundenes Haar - eine unter Frauen sehr beliebte Frisur
+74531	Schulterlanges Haar/schw	Eine freche, ausgefallene Frisur
+74532	Kurzhaarfrisur (grau)	Eine praktische Kurzhaarfrisur, die etwas Bedrohliches vermittelt.
+74533	Sportliche Frisur (schw)	Eine militärisch wirkende Kurzhaarfrisur
+74534	Charisma-Frisur (blond)	Eine Frisur, die deinen individuellen Charakter unterstreicht.
+74535	Langer Zopf (pink)	Zopf im alten Stil, der einst ein Symbol der Reichen war.
+74536	Sportliche Frisur (lila)	Eine extravagante Kurzhaarfrisur
+74537	Charisma-Frisur (blond)	Eine charismatische Frisur mit langem Haar
+74538	Langer Zopf (royal)	Zopf im alten Stil, der einst ein Symbol der Reichen war.
+74539	Edle Frisur (violett)	Eine edel wirkende Frisur mit zurückgehaltenem Haar
+74540	Halblanges Haar (dunkel)	Eine elegante Schamanenfrisur
+74541	Alte Haartracht (weiß)	Langes Haar, auf traditionelle Art getragen.
+74542	Edle Frisur (rot)	Eine mit einer Schmetterlings-Haarnadel elegant geschmückte Hochsteckfrisur
+74543	Halblanges Haar (weiß)	Elegant getragenes, glattes Haar
+74544	Alte Haartracht(schwarz)	Eine feminine Frisur mit langem, stufig geschnittenem Haar
+74545	Stammeszöpfe (rot)	Mit roten Holzperlen verzierte Zöpfe, die die Stammeszugehörigkeit markieren.
+74546	Stammeszöpfe (gelb)	Mit gelben Holzperlen verzierte Zöpfe, die die Stammeszugehörigkeit markieren.
+74547	Stammeszöpfe (blau)	Mit blauen Holzperlen verzierte Zöpfe, die die Stammeszugehörigkeit markieren.
+74548	Stammeszöpfe (violett)	Mit violetten Holzperlen verzierte Zöpfe, die die Stammeszugehörigkeit markieren.
+74549	Stammeszöpfe (grün)	Mit grünen Holzperlen verzierte Zöpfe, die die Stammeszugehörigkeit markieren.
+74550	Stirnschutz (gold)	Verzierter Kopfschutz mit passendem traditionellem Haarschmuck.
+74551	Stirnschutz (schwarz)	Verzierter Kopfschutz mit passendem traditionellem Haarschmuck.
+74552	Stirnschutz (rot)	Verzierter Kopfschutz mit passendem traditionellem Haarschmuck.
+74553	Stirnschutz (blau)	Verzierter Kopfschutz mit passendem traditionellem Haarschmuck.
+74554	Stirnschutz (weiß)	Verzierter Kopfschutz mit passendem traditionellem Haarschmuck.
+74555	Kopfschutz (gold)	Aufwändig gearbeiteter Kopf- und Schläfenschutz mit traditionellem Haarschmuck.
+74556	Kopfschutz (schwarz)	Aufwändig gearbeiteter Kopf- und Schläfenschutz mit traditionellem Haarschmuck.
+74557	Kopfschutz (rot)	Aufwändig gearbeiteter Kopf- und Schläfenschutz mit traditionellem Haarschmuck.
+74558	Kopfschutz (blau)	Aufwändig gearbeiteter Kopf- und Schläfenschutz mit traditionellem Haarschmuck.
+74559	Kopfschutz (grün)	Aufwändig gearbeiteter Kopf- und Schläfenschutz mit traditionellem Haarschmuck.
+76191	Green Savior Spell	Erlaubt es dir die ersten 5 Bonis auf maximaler Stufe auszuwählen.
+76192	Blue Rare Spell	Erlaubt es dir die den 6. und 6. Bonus auf maximaler Stufe auszuwählen.
+79501	Pfeilköcher	Ein Köcher, der dich 24 Stunden lang mit unendlich vielen Pfeilen versorgt. Schaden nimmt auch bei Distanzschüssen nicht ab.
+79502	Pfeilköcher	Ein Köcher, der dich 7 Tage lang mit unendlich vielen Pfeilen versorgt. Schaden nimmt auch bei Distanzschüssen nicht ab.
+79503	Pfeilköcher	Ein Köcher, der dich mit unendlich vielen Pfeilen für den Kampf versorgt. Schaden nimmt auch bei Distanzschüssen nicht ab.
+79504	Pfeilköcher	Ein Köcher, der dich mit unendlich vielen Pfeilen für den Kampf versorgt. Schaden nimmt auch bei Distanzschüssen nicht ab.
+79505	Okey-Sammelkarte	Wenn du 24 Okey-Sammelkarten stapelst, erhältst du automatisch ein Okey-Kartenset.
+79506	Okey-Kartenset	Mit diesem Kartenset kannst du eine Okey-Runde starten. Das Kartenset wird nach Spielstart automatisch aus deinem Inventar entfernt.
+80018	NC-Gutschein (6000)	Gutschein im Wert von 6000 Nova-Münzen. Item ist handelbar.
+80019	NC-Gutschein (12000)	Gutschein im Wert von 12000 Nova-Münzen. Item ist handelbar.
+85001	Herrscherband (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85002	Herrscherband (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85003	Herrscherband (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85004	Herrscherband (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85005	Meisterband (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85006	Meisterband (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85007	Meisterband (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85008	Meisterband (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85009	Certificate of Reversal	Entfernt die Bonis und das aktuelle Item aus deinem Schulterband.
+85010	Certificate of Reversal+	Entfernt die Bonis sowie das Item von deinem Schulterband, welches du jedoch zurückbekommst.
+85011	Fürstenband (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85012	Fürstenband (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85013	Fürstenband (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85014	Fürstenband (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85015	Königsband (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85016	Königsband (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85017	Königsband (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85018	Königsband (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85021	Jubiläumsband (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85022	Jubiläumsband (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85023	Jubiläumsband (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+85024	Jubiläumsband (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86001	Band des Zi (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86002	Band des Zi (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86003	Band des Zi (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86004	Band des Zi (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86005	Band des Chou (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86006	Band des Chou (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86007	Band des Chou (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86008	Band des Chou (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86011	Band des Yin (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86012	Band des Yin (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86013	Band des Yin (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86014	Band des Yin (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86015	Band der Mao (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86016	Band der Mao (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86017	Band der Mao (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86018	Band der Mao (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86021	Band des Chen (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86022	Band des Chen (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86023	Band des Chen (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86024	Band des Chen (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86025	Band der Si (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86026	Band der Si (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86027	Band der Si (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86028	Band der Si (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86031	Band des Wu (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86032	Band des Wu (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86033	Band des Wu (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86034	Band des Wu (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86035	Band des Wei (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86036	Band des Wei (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86037	Band des Wei (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86038	Band des Wei (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86041	Band des Shen (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86042	Band des Shen (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86043	Band des Shen (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86044	Band des Shen (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86045	Band des Yu (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86046	Band des Yu (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86047	Band des Yu (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86048	Band des Yu (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86051	Band des Xu (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86052	Band des Xu (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86053	Band des Xu (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86054	Band des Xu (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86055	Band des Hai (einfach)	Dieses Band nimmt 1% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86056	Band des Hai (fein)	Dieses Band nimmt 5% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86057	Band des Hai (edel)	Dieses Band nimmt 10% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+86058	Band des Hai (maßgef.)	Dieses Band nimmt 11~25% der Boni von der Waffe oder Rüstung auf, die du dafür einsetzt.
+91010	Buffi	Bufft deinen Charakter automatisch mit Drachen-Buffs.
+91011	Buffi	Bufft deinen Charakter automatisch mit Drachen-Buffs.
+91012	Buffi	Bufft deinen Charakter automatisch mit Drachen-Buffs.
+91013	Buffi	Bufft deinen Charakter automatisch mit Drachen-Buffs.
+91014	Buffi	Bufft deinen Charakter automatisch mit Drachen-Buffs.
+91015	Buffi	Bufft deinen Charakter automatisch mit Drachen-Buffs.
+91016	Healer	Bufft deinen Charakter automatisch mit Heil-Buffs
+91017	Healer	Bufft deinen Charakter automatisch mit Heil-Buffs
+91018	Healer	Bufft deinen Charakter automatisch mit Heil-Buffs
+91019	Healer	Bufft deinen Charakter automatisch mit Heil-Buffs
+91020	Healer	Bufft deinen Charakter automatisch mit Heil-Buffs
+91021	Healer	Bufft deinen Charakter automatisch mit Heil-Buffs
+91050	Truhe des Bilogen I	Enthält alle Biologen-Missionen von Level 30 bis 94.
+91051	Truhe des Bilogen II	Enthält alle Biologen-Missionen von Level 100 bis 130.

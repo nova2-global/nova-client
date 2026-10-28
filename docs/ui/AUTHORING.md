@@ -862,7 +862,7 @@ Durations and easings are listed for reference: RCSS cannot read them through `v
 
 ## Player colors
 
-Players change a few colors of the theme in use, live, from the Interface section of the system options: the accent, the panel color, the panel opacity, the tooltip overlay opacity and the text highlight. Every other token stays the skin's. The modern themes offer all five slots, cyberpunk offers the original four, and classic offers none, since it is legacy art, which no token tints.
+Players change a few colors of the theme in use, live, from the Interface section of the system options: the accent, the panel color, the panel opacity, the tooltip overlay opacity and the text highlight. Every other token stays the skin's. The modern themes and cyberpunk offer all five slots, and classic offers none, since it is legacy art, which no token tints.
 
 | Slot | Kind | What it sets, in order |
 |---|---|---|

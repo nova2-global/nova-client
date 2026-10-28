@@ -697,7 +697,10 @@ def render_skin_colors(skin, doc, themes):
         return None
     merged = {name: skin_colors(doc, name) for name in doc["palettes"]}
     merged[SLOTS] = slots
-    pairs = [[fg, bg, minimum] for fg, bg, minimum, _ in CONTRAST_PAIRS] + [list(pair) for pair in doc.get("pairs", [])]
+    # As for the theme's palettes, the overlay plates' pairs stay build-time
+    # checks: the runtime pass would read their translucent background alone.
+    pairs = ([[fg, bg, minimum] for fg, bg, minimum, _ in CONTRAST_PAIRS if bg not in OVERLAY_PLATES]
+             + [list(pair) for pair in doc.get("pairs", []) if pair[1] not in OVERLAY_PLATES])
     comment = ("Generated from nui/skins/%s/tokens.json by %s. Do not edit by hand. The %s skin's palettes that offer "
                "player colors (docs/ui/AUTHORING.md \"Player colors\")." % (skin, COMMAND, skin))
     return render_colors(merged, themes, comment=comment, palettes=list(doc["palettes"]), pairs=pairs,

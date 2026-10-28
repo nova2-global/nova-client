@@ -5,8 +5,15 @@ body.skin-cyberpunk.game-buttons .game-button__plus
 {
 	border-color: var(--accent);
 	background-color: var(--surface-sunken);
+	decorator: none;
 	color: var(--accent);
 	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+/* The plus in the accent on the dark disc (modern inks it in the accent's
+   text color on its accent disc). */
+body.skin-cyberpunk.game-buttons .game-button__glyph
+{
+	--glyph-ink: var(--accent);
 }
 body.skin-cyberpunk.game-buttons .game-button__plus:hover
 {

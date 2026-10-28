@@ -1025,9 +1025,10 @@ class Fixtures(unittest.TestCase):
         self.assertEqual({c.get("variant") for c in cases["shop-signs"]}, {None, "own-only"})
         self.assertEqual({c.get("variant") for c in cases["guild-war"]}, {None, "two"})
         frames = {"minimap": "320x240", "atlas": "640x480", "player-gauge": "320x200", "shop-signs": "960x320",
-                  "guild-war": "480x200"}
-        # The modern and cyberpunk atlas frames are taller than classic's, so the window's shadow stays inside them.
-        classic_frames = {"atlas": "640x400"}
+                  "guild-war": "480x260"}
+        # The modern and cyberpunk frames of these are taller than classic's: the atlas's
+        # holds the window's shadow, the guild war's two boards of 26dp rows.
+        classic_frames = {"atlas": "640x400", "guild-war": "480x200"}
         for window, window_cases in cases.items():
             for case in window_cases:
                 if window in classic_frames and case["themes"] == ["classic"]:

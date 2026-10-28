@@ -157,8 +157,9 @@ body.whisper
 	min-height: 0;
 	padding: 0;
 }
-/* The overlay well: the shared dark tooltip ground (tooltip-bg) with a
-   light rim, rounded on a box that does not clip. */
+/* The overlay well: the chat's dark ground (--chat-edit-shade, dark in
+   both modern palettes, as the chat log's) with a light rim, rounded on a
+   box that does not clip. */
 .whisper__well
 {
 	display: block;
@@ -170,7 +171,7 @@ body.whisper
 	border-width: 1dp;
 	border-color: var(--tip-divider);
 	border-radius: var(--radius-lg);
-	background-color: var(--tooltip-bg);
+	background-color: var(--chat-edit-shade);
 }
 /* The flow rules (ElementChatLines.h): a column that ends at the bottom and
    clips the oldest line at its top (square, inside the well); each line
@@ -308,7 +309,10 @@ input.whisper__scroll
 {
 	border-color: var(--accent);
 }
-/* The corner's grip: three short diagonal strokes. */
+/* The corner's grip: three short diagonal strokes. A device without
+   effects draws a gradient as the color halfway between its first and last
+   stops (Core/EffectMath.h), so the clear stops at 0% and 100% put that
+   halfway point at 50%, between the strokes: no grip there. */
 .whisper__grip
 {
 	display: block;
@@ -317,7 +321,7 @@ input.whisper__scroll
 	bottom: 3dp;
 	width: 10dp;
 	height: 10dp;
-	decorator: linear-gradient(135deg, transparent 47%, var(--text-muted) 47%, var(--text-muted) 55%, transparent 55%, transparent 67%, var(--text-muted) 67%, var(--text-muted) 75%, transparent 75%, transparent 87%, var(--text-muted) 87%, var(--text-muted) 95%, transparent 95%);
+	decorator: linear-gradient(135deg, transparent 0%, transparent 55%, var(--text-muted) 55%, var(--text-muted) 63%, transparent 63%, transparent 71%, var(--text-muted) 71%, var(--text-muted) 79%, transparent 79%, transparent 87%, var(--text-muted) 87%, var(--text-muted) 95%, transparent 95%, transparent 100%);
 	pointer-events: none;
 }
 .whisper__resize

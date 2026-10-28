@@ -170,13 +170,16 @@ body.edge-buttons
 	width: 200dp;
 	text-align: left;
 }
+/* The overlay's dark plate, opaque (the scene's color, which the overlay
+   text colors are checked on): a quest label longer than its 100dp column
+   runs under the next column's label, which must cover it. */
 .edge__text
 {
 	padding: 1dp 7dp;
 	border-width: 1dp;
 	border-color: var(--tip-divider);
 	border-radius: 6dp;
-	background-color: var(--tooltip-bg);
+	background-color: var(--scene);
 	color: var(--text-inverse);
 	font-size: var(--font-sm);
 	white-space: nowrap;

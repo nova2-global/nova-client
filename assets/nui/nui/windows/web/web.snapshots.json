@@ -1,7 +1,9 @@
 {
 	"$comment": "Golden cases of the web window (tools/check_nui_snapshots.py): the frame, its title bar and the page area before the native page draws over it, in every theme at 100, 150 and 200%.",
 	"cases": [
-		{"page": "web", "themes": "all", "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]],
+		{"page": "web", "themes": "all", "except": ["classic"], "scales": [["100", "1", "1280x740"], ["150", "1.5", "1920x1110"], ["200", "2", "2560x1480"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "web", "themes": ["classic"], "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]],
 		 "fixture": true, "roots": ["assets/ETC"], "time": null}
 	]
 }

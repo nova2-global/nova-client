@@ -46,6 +46,13 @@
 	border-radius: 0;
 	background-color: var(--surface-band);
 }
+/* No shadow: RmlUi draws a box-shadow into a texture clipped to the screen,
+   so on a band as wide as the screen the clipped texture would stretch the
+   band's background. */
+.nui-window--band.nui-fx
+{
+	box-shadow: none;
+}
 /* A frame without its border (the quest board's cinema skin). */
 .nui-window--borderless
 {
@@ -229,6 +236,13 @@ body.nui-scrim .nui-window
 .nui-board--tooltip.nui-fx
 {
 	box-shadow: 0 8dp 22dp var(--overlay-scrim);
+}
+/* A tooltip board inside a window (the refine and attach dialogs' item
+   tooltips): opaque, on the scene's color, so the tooltip colors (checked
+   on the overlay over the scene) read on a light panel too. */
+.nui-board--tooltip.nui-board--inset
+{
+	background-color: var(--scene);
 }
 /* A tile: a small framed item of a list or a group (a party member's row).
    Tiles never get hooks. */

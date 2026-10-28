@@ -107,6 +107,13 @@ body.skin-cyberpunk.taskbar .taskbar-mall
 	left: 50dp;
 	image-color: var(--cyberpunk-edge-alt);
 }
+/* The coin's shop glyph in the warning ink on the dark chip (modern
+   engraves it in the scene's color on its gold coin, which the chip
+   replaces). */
+body.skin-cyberpunk.taskbar .taskbar-mall .taskbar-glyph, body.skin-cyberpunk.taskbar .taskbar-mall:hover .taskbar-glyph
+{
+	--glyph-ink: var(--warning);
+}
 body.skin-cyberpunk.taskbar .taskbar-mall__sheen
 {
 	background-color: var(--cyberpunk-edge-alt);

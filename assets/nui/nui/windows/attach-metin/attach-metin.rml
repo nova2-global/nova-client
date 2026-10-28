@@ -32,7 +32,7 @@
 	</div>
 	<div class="nui-window__body attach__body">
 		<div class="attach__tips">
-			<div class="nui-board nui-board--tooltip nui-fx nui-tip attach__tip attach__tip--old" data-style---tip-min-w="old_min_w + 'dp'">
+			<div class="nui-board nui-board--tooltip nui-board--inset nui-fx nui-tip attach__tip attach__tip--old" data-style---tip-min-w="old_min_w + 'dp'">
 				<div id="attach-old" class="nui-tip__body">
 					<div class="nui-tip__slot" data-for="l : old_lines">
 						<div class="nui-tip__rule" data-if="l.rule"></div>
@@ -75,7 +75,7 @@
 					class="nui-glyph__b"></span></span></span>
 				<span class="attach__stone"><img class="attach__stone-icon" data-if="metin_icon != ''" data-attr-src="metin_icon"/></span>
 			</div>
-			<div class="nui-board nui-board--tooltip nui-fx nui-tip attach__tip attach__tip--new" data-style---tip-min-w="new_min_w + 'dp'">
+			<div class="nui-board nui-board--tooltip nui-board--inset nui-fx nui-tip attach__tip attach__tip--new" data-style---tip-min-w="new_min_w + 'dp'">
 				<div id="attach-new" class="nui-tip__body">
 					<div class="nui-tip__slot" data-for="l : new_lines">
 						<div class="nui-tip__rule" data-if="l.rule"></div>

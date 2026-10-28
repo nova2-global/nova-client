@@ -41,7 +41,7 @@
 					<img class="nui-slot__icon refine__item-icon" data-if="item_icon != ''" data-attr-src="item_icon"/>
 				</div>
 			</div>
-			<div id="refine-tip" class="nui-board nui-board--tooltip nui-fx nui-tip refine__tip">
+			<div id="refine-tip" class="nui-board nui-board--tooltip nui-board--inset nui-fx nui-tip refine__tip">
 				<div id="tip-body" class="nui-tip__body">
 					<div class="nui-tip__slot" data-for="l : lines">
 						<div class="nui-tip__rule" data-if="l.rule"></div>

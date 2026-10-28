@@ -113,10 +113,12 @@ def stand_ins_only(arguments):
 def snap_cases():
     """(page, document, fixture path or None, --scale, --size, groups, --time,
     stand-in arguments) for every golden page at its first scale, the
-    variants left out."""
+    variants left out. A page's case for the modern looks comes before its
+    classic-only one, whose frame holds no modern window's shadow."""
     out, seen = [], set()
-    for page, document, fixture_path, _themes, scales, extra, time, stand_ins in (
-            check_nui_snapshots.PAGES + check_nui_snapshots.window_pages(REPO)):
+    pages = check_nui_snapshots.PAGES + check_nui_snapshots.window_pages(REPO)
+    pages = sorted(pages, key=lambda entry: tuple(entry[3]) == ("classic",))
+    for page, document, fixture_path, _themes, scales, extra, time, stand_ins in pages:
         if page in seen or not os.path.isfile(os.path.join(REPO, "assets", "nui", document)):
             continue
         seen.add(page)

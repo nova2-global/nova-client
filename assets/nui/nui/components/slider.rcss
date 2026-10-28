@@ -40,7 +40,7 @@
 	width: 14dp;
 	height: 14dp;
 	border-width: 1dp;
-	border-color: transparent;
+	border-color: var(--overlay-scrim);
 	border-radius: 9999dp;
 	background-color: var(--text-inverse);
 }

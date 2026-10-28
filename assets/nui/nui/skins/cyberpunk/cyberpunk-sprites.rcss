@@ -10,16 +10,26 @@
 	src: cyberpunk-1x.png;
 	resolution: 1x;
 	cyberpunk-panel: 2px 2px 48px 48px;
-	cyberpunk-panel-inner: 14px 14px 24px 24px;
+	cyberpunk-panel-inner: 16px 16px 20px 20px;
 	cyberpunk-panel-edge: 54px 2px 64px 64px;
-	cyberpunk-panel-edge-inner: 78px 26px 16px 16px;
+	cyberpunk-panel-edge-inner: 80px 28px 12px 12px;
 	cyberpunk-chip-solid: 122px 2px 24px 24px;
-	cyberpunk-chip-solid-inner: 129px 9px 10px 10px;
+	cyberpunk-chip-solid-inner: 131px 11px 6px 6px;
 	cyberpunk-chip: 150px 2px 24px 24px;
-	cyberpunk-chip-inner: 157px 9px 10px 10px;
+	cyberpunk-chip-inner: 159px 11px 6px 6px;
 	cyberpunk-chip-edge: 178px 2px 24px 24px;
-	cyberpunk-chip-edge-inner: 185px 9px 10px 10px;
-	cyberpunk-ring: 206px 2px 40px 40px;
+	cyberpunk-chip-edge-inner: 187px 11px 6px 6px;
+	cyberpunk-board: 206px 2px 24px 24px;
+	cyberpunk-board-inner: 214px 10px 8px 8px;
+	cyberpunk-board-edge: 2px 70px 24px 24px;
+	cyberpunk-board-edge-inner: 10px 78px 8px 8px;
+	cyberpunk-skew: 30px 70px 16px 16px;
+	cyberpunk-skew-inner: 36px 76px 4px 4px;
+	cyberpunk-skew-edge: 50px 70px 16px 16px;
+	cyberpunk-skew-edge-inner: 56px 76px 4px 4px;
+	cyberpunk-knob: 70px 70px 12px 12px;
+	cyberpunk-knob-inner: 73px 73px 6px 6px;
+	cyberpunk-ring: 86px 70px 40px 40px;
 }
 
 @media (min-resolution: 1.125x)
@@ -29,15 +39,25 @@
 		src: cyberpunk-2x.png;
 		resolution: 2x;
 		cyberpunk-panel: 4px 4px 96px 96px;
-		cyberpunk-panel-inner: 28px 28px 48px 48px;
+		cyberpunk-panel-inner: 32px 32px 40px 40px;
 		cyberpunk-panel-edge: 108px 4px 128px 128px;
-		cyberpunk-panel-edge-inner: 156px 52px 32px 32px;
+		cyberpunk-panel-edge-inner: 160px 56px 24px 24px;
 		cyberpunk-chip-solid: 244px 4px 48px 48px;
-		cyberpunk-chip-solid-inner: 258px 18px 20px 20px;
+		cyberpunk-chip-solid-inner: 262px 22px 12px 12px;
 		cyberpunk-chip: 300px 4px 48px 48px;
-		cyberpunk-chip-inner: 314px 18px 20px 20px;
+		cyberpunk-chip-inner: 318px 22px 12px 12px;
 		cyberpunk-chip-edge: 356px 4px 48px 48px;
-		cyberpunk-chip-edge-inner: 370px 18px 20px 20px;
-		cyberpunk-ring: 412px 4px 80px 80px;
+		cyberpunk-chip-edge-inner: 374px 22px 12px 12px;
+		cyberpunk-board: 412px 4px 48px 48px;
+		cyberpunk-board-inner: 428px 20px 16px 16px;
+		cyberpunk-board-edge: 4px 140px 48px 48px;
+		cyberpunk-board-edge-inner: 20px 156px 16px 16px;
+		cyberpunk-skew: 60px 140px 32px 32px;
+		cyberpunk-skew-inner: 72px 152px 8px 8px;
+		cyberpunk-skew-edge: 100px 140px 32px 32px;
+		cyberpunk-skew-edge-inner: 112px 152px 8px 8px;
+		cyberpunk-knob: 140px 140px 24px 24px;
+		cyberpunk-knob-inner: 146px 146px 12px 12px;
+		cyberpunk-ring: 172px 140px 80px 80px;
 	}
 }

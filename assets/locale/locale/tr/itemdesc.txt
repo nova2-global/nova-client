@@ -2628,3 +2628,1201 @@
 90011	Gövde	Lonca binaları için inşaat malzemesi
 90012	Kontrplak	Lonca binaları için inşaat malzemesi
 90013		
+300	Zodyak Bıçak+0	
+301	Zodyak Bıçak+1	
+302	Zodyak Bıçak+2	
+303	Zodyak Bıçak+3	
+304	Zodyak Bıçak+4	
+305	Zodyak Bıçak+5	
+306	Zodyak Bıçak+6	
+307	Zodyak Bıçak+7	
+308	Zodyak Bıçak+8	
+309	Zodyak Bıçak+9	
+310	Zodyak Kılıç+0	
+311	Zodyak Kılıç+1	
+312	Zodyak Kılıç+2	
+313	Zodyak Kılıç+3	
+314	Zodyak Kılıç+4	
+315	Zodyak Kılıç+5	
+316	Zodyak Kılıç+6	
+317	Zodyak Kılıç+7	
+318	Zodyak Kılıç+8	
+319	Zodyak Kılıç+9	
+1180	Zodyak Hançeri+0	
+1181	Zodyak Hançeri+1	
+1182	Zodyak Hançeri+2	
+1183	Zodyak Hançeri+3	
+1184	Zodyak Hançeri+4	
+1185	Zodyak Hançeri+5	
+1186	Zodyak Hançeri+6	
+1187	Zodyak Hançeri+7	
+1188	Zodyak Hançeri+8	
+1189	Zodyak Hançeri+9	
+2200	Zodyak Yay+0	
+2201	Zodyak Yay+1	
+2202	Zodyak Yay+2	
+2203	Zodyak Yay+3	
+2204	Zodyak Yay+4	
+2205	Zodyak Yay+5	
+2206	Zodyak Yay+6	
+2207	Zodyak Yay+7	
+2208	Zodyak Yay+8	
+2209	Zodyak Yay+9	
+3220	Zodyak Orağı+0	
+3221	Zodyak Orağı+1	
+3222	Zodyak Orağı+2	
+3223	Zodyak Orağı+3	
+3224	Zodyak Orağı+4	
+3225	Zodyak Orağı+5	
+3226	Zodyak Orağı+6	
+3227	Zodyak Orağı+7	
+3228	Zodyak Orağı+8	
+3229	Zodyak Orağı+9	
+5160	Zodyak Çanı+0	
+5161	Zodyak Çanı+1	
+5162	Zodyak Çanı+2	
+5163	Zodyak Çanı+3	
+5164	Zodyak Çanı+4	
+5165	Zodyak Çanı+5	
+5166	Zodyak Çanı+6	
+5167	Zodyak Çanı+7	
+5168	Zodyak Çanı+8	
+5169	Zodyak Çanı+9	
+6120	Zodyak Pençe+0	
+6121	Zodyak Pençe+1	
+6122	Zodyak Pençe+2	
+6123	Zodyak Pençe+3	
+6124	Zodyak Pençe+4	
+6125	Zodyak Pençe+5	
+6126	Zodyak Pençe+6	
+6127	Zodyak Pençe+7	
+6128	Zodyak Pençe+8	
+6129	Zodyak Pençe+9	
+7300	Zodiak Yelpaze+0	
+7301	Zodiak Yelpaze+1	
+7302	Zodiak Yelpaze+2	
+7303	Zodiak Yelpaze+3	
+7304	Zodiak Yelpaze+4	
+7305	Zodiak Yelpaze+5	
+7306	Zodiak Yelpaze+6	
+7307	Zodiak Yelpaze+7	
+7308	Zodiak Yelpaze+8	
+7309	Zodiak Yelpaze+9	
+9506	Kılıç+3	
+9507	Hançer+3	
+9508	Yelpaze+3	
+9509	Çelik Meşale +3	
+9600	Ateş Tılsımı+0	
+9601	Ateş Tılsımı+1	
+9602	Ateş Tılsımı+2	
+9603	Ateş Tılsımı+3	
+9604	Ateş Tılsımı+4	
+9605	Ateş Tılsımı+5	
+9606	Ateş Tılsımı+6	
+9607	Ateş Tılsımı+7	
+9608	Ateş Tılsımı+8	
+9609	Ateş Tılsımı+9	
+9610	Ateş Tılsımı+10	
+9611	Ateş Tılsımı+11	
+9612	Ateş Tılsımı+12	
+9613	Ateş Tılsımı+13	
+9614	Ateş Tılsımı+14	
+9615	Ateş Tılsımı+15	
+9616	Ateş Tılsımı+16	
+9617	Ateş Tılsımı+17	
+9618	Ateş Tılsımı+18	
+9619	Ateş Tılsımı+19	
+12690	Ejderha Çeliği Kaskı +0	
+12691	Ejderha Çeliği Kaskı +1	
+12692	Ejderha Çeliği Kaskı +2	
+12693	Ejderha Çeliği Kaskı +3	
+12694	Ejderha Çeliği Kaskı +4	
+12695	Ejderha Çeliği Kaskı +5	
+12696	Ejderha Çeliği Kaskı +6	
+12697	Ejderha Çeliği Kaskı +7	
+12698	Ejderha Çeliği Kaskı +8	
+12699	Ejderha Çeliği Kaskı +9	
+12700	Ejderha Kapüşonu +0	
+12701	Ejderha Kapüşonu +1	
+12702	Ejderha Kapüşonu +2	
+12703	Ejderha Kapüşonu +3	
+12704	Ejderha Kapüşonu +4	
+12705	Ejderha Kapüşonu +5	
+12706	Ejderha Kapüşonu +6	
+12707	Ejderha Kapüşonu +7	
+12708	Ejderha Kapüşonu +8	
+12709	Ejderha Kapüşonu +9	
+12710	Ejderha Zırhı Kaskı +0	
+12711	Ejderha Zırhı Kaskı +1	
+12712	Ejderha Zırhı Kaskı +2	
+12713	Ejderha Zırhı Kaskı +3	
+12714	Ejderha Zırhı Kaskı +4	
+12715	Ejderha Zırhı Kaskı +5	
+12716	Ejderha Zırhı Kaskı +6	
+12717	Ejderha Zırhı Kaskı +7	
+12718	Ejderha Zırhı Kaskı +8	
+12719	Ejderha Zırhı Kaskı +9	
+12720	Ejderha Şapkası +0	
+12721	Ejderha Şapkası +1	
+12722	Ejderha Şapkası +2	
+12723	Ejderha Şapkası +3	
+12724	Ejderha Şapkası +4	
+12725	Ejderha Şapkası +5	
+12726	Ejderha Şapkası +6	
+12727	Ejderha Şapkası +7	
+12728	Ejderha Şapkası +8	
+12729	Ejderha Şapkası +9	
+15440	Ateş Ayakkabısı+0	
+15441	Ateş Ayakkabısı+1	
+15442	Ateş Ayakkabısı+2	
+15443	Ateş Ayakkabısı+3	
+15444	Ateş Ayakkabısı+4	
+15445	Ateş Ayakkabısı+5	
+15446	Ateş Ayakkabısı+6	
+15447	Ateş Ayakkabısı+7	
+15448	Ateş Ayakkabısı+8	
+15449	Ateş Ayakkabısı+9	
+15450	Okyanus Ayakkabısı+0	
+15451	Okyanus Ayakkabısı+1	
+15452	Okyanus Ayakkabısı+2	
+15453	Okyanus Ayakkabısı+3	
+15454	Okyanus Ayakkabısı+4	
+15455	Okyanus Ayakkabısı+5	
+15456	Okyanus Ayakkabısı+6	
+15457	Okyanus Ayakkabısı+7	
+15458	Okyanus Ayakkabısı+8	
+15459	Okyanus Ayakkabısı+9	
+19000	Kızıl Alev Taşı	Kemerinin bonuslarını güçlendirir.
+19290	Zodyak Zırhı+0	
+19291	Zodyak Zırhı+1	
+19292	Zodyak Zırhı+2	
+19293	Zodyak Zırhı+3	
+19294	Zodyak Zırhı+4	
+19295	Zodyak Zırhı+5	
+19296	Zodyak Zırhı+6	
+19297	Zodyak Zırhı+7	
+19298	Zodyak Zırhı+8	
+19299	Zodyak Zırhı+9	
+19490	Zodyak Kıyafeti+0	
+19491	Zodyak Kıyafeti+1	
+19492	Zodyak Kıyafeti+2	
+19493	Zodyak Kıyafeti+3	
+19494	Zodyak Kıyafeti+4	
+19495	Zodyak Kıyafeti+5	
+19496	Zodyak Kıyafeti+6	
+19497	Zodyak Kıyafeti+7	
+19498	Zodyak Kıyafeti+8	
+19499	Zodyak Kıyafeti+9	
+19690	Zodyak Plaka Zırh+0	
+19691	Zodyak Plaka Zırh+1	
+19692	Zodyak Plaka Zırh+2	
+19693	Zodyak Plaka Zırh+3	
+19694	Zodyak Plaka Zırh+4	
+19695	Zodyak Plaka Zırh+5	
+19696	Zodyak Plaka Zırh+6	
+19697	Zodyak Plaka Zırh+7	
+19698	Zodyak Plaka Zırh+8	
+19699	Zodyak Plaka Zırh+9	
+19890	Zodiak Kıyafet+0	
+19891	Zodiak Kıyafet+1	
+19892	Zodiak Kıyafet+2	
+19893	Zodiak Kıyafet+3	
+19894	Zodiak Kıyafet+4	
+19895	Zodiak Kıyafet+5	
+19896	Zodiak Kıyafet+6	
+19897	Zodiak Kıyafet+7	
+19898	Zodiak Kıyafet+8	
+19899	Zodiak Kıyafet+9	
+20760	Kutup Işığı Zırhı+0	
+20761	Kutup Işığı Zırhı+1	
+20762	Kutup Işığı Zırhı+2	
+20763	Kutup Işığı Zırhı+3	
+20764	Kutup Işığı Zırhı+4	
+20765	Kutup Işığı Zırhı+5	
+20766	Kutup Işığı Zırhı+6	
+20767	Kutup Işığı Zırhı+7	
+20768	Kutup Işığı Zırhı+8	
+20769	Kutup Işığı Zırhı+9	
+20770	Suikast Kıyafeti+0	
+20771	Suikast Kıyafeti+1	
+20772	Suikast Kıyafeti+2	
+20773	Suikast Kıyafeti+3	
+20774	Suikast Kıyafeti+4	
+20775	Suikast Kıyafeti+5	
+20776	Suikast Kıyafeti+6	
+20777	Suikast Kıyafeti+7	
+20778	Suikast Kıyafeti+8	
+20779	Suikast Kıyafeti+9	
+20780	Şeytan Pençesi Zırhı+0	
+20781	Şeytan Pençesi Zırhı+1	
+20782	Şeytan Pençesi Zırhı+2	
+20783	Şeytan Pençesi Zırhı+3	
+20784	Şeytan Pençesi Zırhı+4	
+20785	Şeytan Pençesi Zırhı+5	
+20786	Şeytan Pençesi Zırhı+6	
+20787	Şeytan Pençesi Zırhı+7	
+20788	Şeytan Pençesi Zırhı+8	
+20789	Şeytan Pençesi Zırhı+9	
+20790	İnanç Kıyafeti+0	
+20791	İnanç Kıyafeti+1	
+20792	İnanç Kıyafeti+2	
+20793	İnanç Kıyafeti+3	
+20794	İnanç Kıyafeti+4	
+20795	İnanç Kıyafeti+5	
+20796	İnanç Kıyafeti+6	
+20797	İnanç Kıyafeti+7	
+20798	İnanç Kıyafeti+8	
+20799	İnanç Kıyafeti+9	
+20800	Gölge Savaşçısı Zırhı+0	
+20801	Gölge Savaşçısı Zırhı+1	
+20802	Gölge Savaşçısı Zırhı+2	
+20803	Gölge Savaşçısı Zırhı+3	
+20804	Gölge Savaşçısı Zırhı+4	
+20805	Gölge Savaşçısı Zırhı+5	
+20806	Gölge Savaşçısı Zırhı+6	
+20807	Gölge Savaşçısı Zırhı+7	
+20808	Gölge Savaşçısı Zırhı+8	
+20809	Gölge Savaşçısı Zırhı+9	
+20810	Magma Koru Zırhı+0	
+20811	Magma Koru Zırhı+1	
+20812	Magma Koru Zırhı+2	
+20813	Magma Koru Zırhı+3	
+20814	Magma Koru Zırhı+4	
+20815	Magma Koru Zırhı+5	
+20816	Magma Koru Zırhı+6	
+20817	Magma Koru Zırhı+7	
+20818	Magma Koru Zırhı+8	
+20819	Magma Koru Zırhı+9	
+20820	Kanlı Ay Kıyafeti+0	
+20821	Kanlı Ay Kıyafeti+1	
+20822	Kanlı Ay Kıyafeti+2	
+20823	Kanlı Ay Kıyafeti+3	
+20824	Kanlı Ay Kıyafeti+4	
+20825	Kanlı Ay Kıyafeti+5	
+20826	Kanlı Ay Kıyafeti+6	
+20827	Kanlı Ay Kıyafeti+7	
+20828	Kanlı Ay Kıyafeti+8	
+20829	Kanlı Ay Kıyafeti+9	
+20830	Cehennem Koşucu Zırhı+0	
+20831	Cehennem Koşucu Zırhı+1	
+20832	Cehennem Koşucu Zırhı+2	
+20833	Cehennem Koşucu Zırhı+3	
+20834	Cehennem Koşucu Zırhı+4	
+20835	Cehennem Koşucu Zırhı+5	
+20836	Cehennem Koşucu Zırhı+6	
+20837	Cehennem Koşucu Zırhı+7	
+20838	Cehennem Koşucu Zırhı+8	
+20839	Cehennem Koşucu Zırhı+9	
+20840	Ateş Kıyafeti+0	
+20841	Ateş Kıyafeti+1	
+20842	Ateş Kıyafeti+2	
+20843	Ateş Kıyafeti+3	
+20844	Ateş Kıyafeti+4	
+20845	Ateş Kıyafeti+5	
+20846	Ateş Kıyafeti+6	
+20847	Ateş Kıyafeti+7	
+20848	Ateş Kıyafeti+8	
+20849	Ateş Kıyafeti+9	
+20850	Akik Plaka Zırhı+0	
+20851	Akik Plaka Zırhı+1	
+20852	Akik Plaka Zırhı+2	
+20853	Akik Plaka Zırhı+3	
+20854	Akik Plaka Zırhı+4	
+20855	Akik Plaka Zırhı+5	
+20856	Akik Plaka Zırhı+6	
+20857	Akik Plaka Zırhı+7	
+20858	Akik Plaka Zırhı+8	
+20859	Akik Plaka Zırhı+9	
+20860	Balina Kemiği Zırhı+0	
+20861	Balina Kemiği Zırhı+1	
+20862	Balina Kemiği Zırhı+2	
+20863	Balina Kemiği Zırhı+3	
+20864	Balina Kemiği Zırhı+4	
+20865	Balina Kemiği Zırhı+5	
+20866	Balina Kemiği Zırhı+6	
+20867	Balina Kemiği Zırhı+7	
+20868	Balina Kemiği Zırhı+8	
+20869	Balina Kemiği Zırhı+9	
+20870	Dönüşüm Kıyafeti+0	
+20871	Dönüşüm Kıyafeti+1	
+20872	Dönüşüm Kıyafeti+2	
+20873	Dönüşüm Kıyafeti+3	
+20874	Dönüşüm Kıyafeti+4	
+20875	Dönüşüm Kıyafeti+5	
+20876	Dönüşüm Kıyafeti+6	
+20877	Dönüşüm Kıyafeti+7	
+20878	Dönüşüm Kıyafeti+8	
+20879	Dönüşüm Kıyafeti+9	
+20880	Yanıltıcı Işık Zırhı+0	
+20881	Yanıltıcı Işık Zırhı+1	
+20882	Yanıltıcı Işık Zırhı+2	
+20883	Yanıltıcı Işık Zırhı+3	
+20884	Yanıltıcı Işık Zırhı+4	
+20885	Yanıltıcı Işık Zırhı+5	
+20886	Yanıltıcı Işık Zırhı+6	
+20887	Yanıltıcı Işık Zırhı+7	
+20888	Yanıltıcı Işık Zırhı+8	
+20889	Yanıltıcı Işık Zırhı+9	
+20890	Ahenk Kıyafeti+0	
+20891	Ahenk Kıyafeti+1	
+20892	Ahenk Kıyafeti+2	
+20893	Ahenk Kıyafeti+3	
+20894	Ahenk Kıyafeti+4	
+20895	Ahenk Kıyafeti+5	
+20896	Ahenk Kıyafeti+6	
+20897	Ahenk Kıyafeti+7	
+20898	Ahenk Kıyafeti+8	
+20899	Ahenk Kıyafeti+9	
+20900	Ay Taşı Plaka Zırhı+0	
+20901	Ay Taşı Plaka Zırhı+1	
+20902	Ay Taşı Plaka Zırhı+2	
+20903	Ay Taşı Plaka Zırhı+3	
+20904	Ay Taşı Plaka Zırhı+4	
+20905	Ay Taşı Plaka Zırhı+5	
+20906	Ay Taşı Plaka Zırhı+6	
+20907	Ay Taşı Plaka Zırhı+7	
+20908	Ay Taşı Plaka Zırhı+8	
+20909	Ay Taşı Plaka Zırhı+9	
+20910	Kül Yağmuru Zırhı+0	
+20911	Kül Yağmuru Zırhı+1	
+20912	Kül Yağmuru Zırhı+2	
+20913	Kül Yağmuru Zırhı+3	
+20914	Kül Yağmuru Zırhı+4	
+20915	Kül Yağmuru Zırhı+5	
+20916	Kül Yağmuru Zırhı+6	
+20917	Kül Yağmuru Zırhı+7	
+20918	Kül Yağmuru Zırhı+8	
+20919	Kül Yağmuru Zırhı+9	
+20920	Ölüm Gecesi Kıyafeti+0	
+20921	Ölüm Gecesi Kıyafeti+1	
+20922	Ölüm Gecesi Kıyafeti+2	
+20923	Ölüm Gecesi Kıyafeti+3	
+20924	Ölüm Gecesi Kıyafeti+4	
+20925	Ölüm Gecesi Kıyafeti+5	
+20926	Ölüm Gecesi Kıyafeti+6	
+20927	Ölüm Gecesi Kıyafeti+7	
+20928	Ölüm Gecesi Kıyafeti+8	
+20929	Ölüm Gecesi Kıyafeti+9	
+20930	Kara Ateş Zırhı+0	
+20931	Kara Ateş Zırhı+1	
+20932	Kara Ateş Zırhı+2	
+20933	Kara Ateş Zırhı+3	
+20934	Kara Ateş Zırhı+4	
+20935	Kara Ateş Zırhı+5	
+20936	Kara Ateş Zırhı+6	
+20937	Kara Ateş Zırhı+7	
+20938	Kara Ateş Zırhı+8	
+20939	Kara Ateş Zırhı+9	
+20940	Ay Kıyafeti+0	
+20941	Ay Kıyafeti+1	
+20942	Ay Kıyafeti+2	
+20943	Ay Kıyafeti+3	
+20944	Ay Kıyafeti+4	
+20945	Ay Kıyafeti+5	
+20946	Ay Kıyafeti+6	
+20947	Ay Kıyafeti+7	
+20948	Ay Kıyafeti+8	
+20949	Ay Kıyafeti+9	
+20950	Oniks Plaka Zırhı+0	
+20951	Oniks Plaka Zırhı+1	
+20952	Oniks Plaka Zırhı+2	
+20953	Oniks Plaka Zırhı+3	
+20954	Oniks Plaka Zırhı+4	
+20955	Oniks Plaka Zırhı+5	
+20956	Oniks Plaka Zırhı+6	
+20957	Oniks Plaka Zırhı+7	
+20958	Oniks Plaka Zırhı+8	
+20959	Oniks Plaka Zırhı+9	
+21200	Zodyak Başlık+0	
+21201	Zodyak Başlık+1	
+21202	Zodyak Başlık+2	
+21203	Zodyak Başlık+3	
+21204	Zodyak Başlık+4	
+21205	Zodyak Başlık+5	
+21206	Zodyak Başlık+6	
+21207	Zodyak Başlık+7	
+21208	Zodyak Başlık+8	
+21209	Zodyak Başlık+9	
+25043	Büyülü Metal	Bu taş, eşya yükseltmede başarı şansını yükseltir. Ayrıca, ne yok edilebilir ne de değeri düşürülebilir. Bu eşyanın ticareti yok.
+25099	Spirit Stone Magic Scroll	Ekipmandan istediğiniz taşı ayırmanızı sağlayan büyülü bir parşömen.
+27125	Muharebe İksiri	Saldırı ve savunma puanlarını artıran ve sana +50.000 hayat puanı kazandıran güçlü bir iksir (sadece Savaş Bölgesi'nde).
+28044	Büyü Bozma Taşı+0	
+28045	Büyü Bozma Taşı+0	
+28144	Büyü Bozma Taşı+1	
+28145	Büyü Bozma Taşı+1	
+28244	Büyü Bozma Taşı+2	
+28245	Büyü Bozma Taşı+2	
+28344	Büyü Bozma Taşı+3	
+28345	Büyü Bozma Taşı+3	
+28444	Büyü Bozma Taşı+4	
+28445	Büyü Bozma Taşı+4	
+30334	Başlık Fişi	Korkunç güzel bu başlığı almak için sağ fare tuşuyla fişe tıkla.
+30338	Başlık Fişi+	Sana en az bir tesadüfi bonus veren korkunç güzel bu başlığı almak için sağ fare tuşuyla fişe tıkla.
+30341	Ejderha Ateşi Yüzüğü	Enerji yüklü bir ışıltı seni sarıyor. Ejderha ateşiyle oluşturulan bu yüzük Meley'in İni'ndeki heykelleri anında imha eder.
+30600	Kesim Örneği	
+30601	Zırh Planı	
+30602	mavi boya	
+30603	kırmızı boya	
+30604	gri boya	
+30605	Altın Plakalar	
+30606	Gümüş Plakalar	
+30607	Bakır Plakalar	
+30608	Çelik Plakalar	
+30609	Tunç Plakalar	
+30610	Mitril	
+30611	Ağır Kemerler	
+30612	Sağlam İpler	
+30613	Orman Perisi Taşı	Gizemle ışıldayan bu yeşil taşta ağaç ruhu olan bir Orman Perisi'nin ruhu kilitlidir. Orman Perisi Erebos'a giriş yapılabilmesini sağlayan gizli sözleri biliyor.
+30614	siyah boya	
+30615	beyaz boya	
+30616	Titandiyoksit	Prizmatik kristal ekipman nesnesinin arındırılmasına yarar.
+30617	Akik	Gizemli ışıldayan süs taşı ekipman nesnesinin arındırılmasına yarar.
+30618	Ay Taşı	Damla şeklindeki değerli taş bir kıvılcım ay ışığını içinde taşır. Bir ekipman nesnesinin arındırılmasına yarar.
+30619	altın metalik boya	
+30620	Kırmızı Ejderha Boynuzu	Ejderha Boynuzları bilinen en sert ham maddelerin birinden oluşur.
+30621	Kırmızı Ejderha Pulu	Ejderha pulları bilinen en şiddetli malzemeler arasında yer alıyor.
+30622	Zırh Planı: Kask	Bu nesne kask yapımında kullanılır.
+30623	Hakikat Kitabı	İçindeki yazıların ışıldadığı güçlü kitap. Bir ekipman nesnesinin arındırılmasına yarar.
+30624	Hakikat Ruhu	Sonsuza dek cam küreye hapsolmuş iyi bir ruh. Bir ekipman nesnesinin arındırılmasına yarar.
+30625	Padparadscha	Nadir ve çok değerli kırmızı safirlere padparadscha denir. Bir ekipman nesnesinin arındırılmasına yarar.
+30626	Kyanit	Sohan Dağı madenlerinden elde edilen mavimsi bir değerli taş. Bir ekipman nesnesinin arındırılmasına yarar.
+30627	Tanrıların Meyvesi	Ejderha Tanrısı'nın bahçesinden toplanmış tatlı bir meyve. Bir ekipman nesnesinin arındırılmasına yarar.
+30628	Tanrı Çiçeği	Ejderha Tanrısı'nın bahçesinden toplanmış kutsal bir çiçek. Bir ekipman nesnesinin arındırılmasına yarar.
+30629	Tanrıların Özütü	Şişe gizemli parlak bir sıvı içeriyor. Bir ekipman nesnesinin arındırılmasına yarar.
+30630	Ejderha kanatları	Bir Altera Ejderhası'nın kanatlarıyla bir ekipman nesnesi arındırabilirsin.
+30639	Bulmaca parçaları	Parçalarla Yutnori Marketi'nden taslakları inşa et. Bunun için bir arındırma paneli açmak için bir Yutnori tahtasını masaya çek.
+30640	Cad. Bayr. tasarımı (e)	Cadılar Bayramı sandığı (e) hazırlamak için taslak
+30641	Cad. Bayr. şpk. tsr. (e)	Cadılar Bayramı şapkası sandığı (e) hazırlamak için taslak
+30642	Ürpertici pet tasarımı	Ürpertici pet sandığı hazırlamak için taslak
+30643	Ürprtc. bnk. snd. tsr.	Ürpertici binek sandığı hazırlamak için taslak
+30644	Mücevher taslağı	Mücevher kutusu hazırlamak için taslak
+30645	Pet taslağı	Yakut sandığı hazırlamak için taslak
+30646	Kuşak taslağı	Kuşak sandığı hazırlamak için taslak
+30647	Süs tasarımı	Süs sandığı hazırlamak için taslak
+30648	Pet kitabı taslağı	Pet kitabı sandığı hazırlamak için taslak
+30649	Kesici diş taslağı+	Kesici diş sandığı+ hazırlamak için taslak
+30650	Cor Draconis taslağı	Cor Draconis sandığı hazırlamak için taslak
+30651	Gaya tasarımı	Gaya sandığı hazırlamak için taslak
+30652	Sırlar tasarımı	Sırlar sandığı hazırlamak için taslak
+30653	Yakut sandığı taslağı	Yakut sandığı hazırlamak için taslak
+30654	Cad. Bayr. tasarımı (k)	Cadılar Bayramı sandığı (k) hazırlamak için taslak
+30655	Cad. Bayr. şpk. tsr. (k)	Cadılar Bayramı şapkası sandığı (k) hazırlamak için taslak
+34000	Solar Blast	Ekipman gelişiminde kullanılan nadir bir materyal, oldukça değerlidir.
+34001	Magical Orb	Büyülü küre ekipman gelişiminde kullanılan değerli bir taştır.
+34002	Fire Horn	Aslen Razador'a aittir, Bu materyal ile ekipman üretebilir yada geliştirebilirsiniz.
+34003	Ice Horn	Aslen Nemere'ye aittir, Bu materyal ile ekipman üretebilir yada geliştirebilirsiniz.
+34004	Red Amulet	Çekici ve pahalı bir tılsım. Çoğunlukla yükseltmelerde kullanılır.
+34005	Green Amulet	Çekici ve pahalı bir tılsım. Çoğunlukla yükseltmelerde kullanılır.
+34006	Blue Amulet	Çekici ve pahalı bir tılsım. Çoğunlukla yükseltmelerde kullanılır.
+34007	Rock Of Darkness	Karanlığın güçlerini barındıran çok kıymetli bir taş.
+34008	Rock Of Gore	Güçlü beceriler barındıran çok kıymetli bir taş.
+34009	Rock Of Poison	Zehirli güçler barındıran çok kıymetli bir taş.
+34010	Poison Marble	Ekipmanların dayanıklılığını arttırmak için kullanılan zehirli bir materyal.
+34011	Red Rock	Ekipmanları geliştirmek için kullanılan çok kıymetli bir taş.
+34012	Azure Stone	Azure ekipmanları geliştirmekte kullanılan özel bir taş.
+34013	Rainbow Vial	içinde çok güçlü bir gökkuşağı özü bulunduran bir materyal, ekipman gelişiminde kullanılır.
+34014	Red Crystal Shards	Diğer kristallerin birleşiminde kullanılan ufak bir kristal parçası.
+34015	Green Crystal Shards	Diğer kristallerin birleşiminde kullanılan ufak bir kristal parçası.
+34016	Blue Crystal Shards	Diğer kristallerin birleşiminde kullanılan ufak bir kristal parçası.
+34017	Multi-Crystal Fragment	Ekipman gelişiminde kullanılan bir mücevher.
+34018	Duratus Gem	Ekipman yüksletiminde kullanılır, Duratus'tan düşürebilirsin.
+34019	Fear Gem	Ekipman yüksletiminde kullanılır, Korku ejderi'nden düşürebilirsin.
+34020	Treasure Gem	Ekipman yüksletiminde kullanılır, Hazine metininden düşürebilirsin.
+34021	UPP1	Ekipman gelişiminde kullanılan özel bir taş.
+34022	UPP2	Ekipman gelişiminde kullanılan özel bir taş.
+34023	Red Wing Feather	Kanat üretiminde kullanılan bir tüy parçası.
+34024	Green Wing Feather	Kanat üretiminde kullanılan bir tüy parçası.
+34025	Blue Wing Feather	Kanat üretiminde kullanılan bir tüy parçası.
+34026	Wing Feather Set	Kanat üretiminde kullanılan bir tüy parçası.
+34027	Almighty Dragon Soul	Kudretli ejderha'nın ruhu.
+34028	Duratus Soul	Duratus'un ruhu.
+34029	Fear Soul	Korku ejderhası'nın ruhu.
+34030	Treasure Soul	Hazine metini'nin ruhu.
+34031	Halloween Soul	Cadılar bayramı ruhu.
+34032	Gold Carved Stone	İnanılmaz güçleri olan antik bir taş, birçok eşyada kullanılır.
+34033	Weapon Stone Token	Silah taşı geliştirmekte kullanılan bir materyal.
+34034	Armour Stone Token	Zırh taşı geliştirmekte kullanılan bir materyal.
+34035	Mazel Portal	Mazel patronuna geçit açan portal.
+34036	Battle Gem	Ekipman gelişminde kullanılan güçlü bir cevher.
+34037	Red Charming Cube	Özel kırmızı bir küp, ekipman gelişminde kullanılır.
+34038	Green Charming Cube	Özel yeşil bir küp, ekipman gelişminde kullanılır.
+34039	Blue Charming Cube	Özel mavi bir küp, ekipman gelişminde kullanılır.
+34040	Mazel Heart	Mazel patronu'nun kalbi, üst seviye güçler için gereklidir.
+34041	Battle Orb	Ekipman gelişminde kullanılır.
+34042	Multi Cube	Bu Muhteşem küp, inanılmaz bir iç güç oluşturan küplerin kuvvetlerinden oluşur.
+34052	Pumpkin Lolly	İçeriği sır olan balkabağı lolipopu size şu özellikleri sağlar | +15% Canavarlara Karşı Güç | +15% Patronlara Karşı Güç | +15% Metintaşlarına Karşı Güç 
+34067		
+34068		
+34092	Charming Cube Chest	Her çeşit büyüleyici küpten barındırır.
+34184	Elemental Talisman	tüm elementler ile barış içinde, var olan en güçlü tılsım.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34185	Armor Enhancement Scroll	Zırh geliştirmede gerekli bir parşömen.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34186	Weapon Enhancement Scroll	Silah geliştirmede gerekli bir parşömen.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34187	Accessory Enhancement Scroll	Aksesuar gelişiminde gerekli bir parşömen.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34188	Belt Enhancement Scroll	PvM kemerleri için daha fazla yükseltmeye izin veren bir parşömen.	PvM kemer gelişiminde kullanılır.
+34189	Ring Enhancement Scroll	PvM yüzükleri için daha fazla yükseltmeye izin veren bir parşömen.	PvM yüzük gelişiminde kullanılır.
+34190	Fire Pearl	Cehennemin derinliklerinden, hafif kırmızı parıltıya sahip bir inci.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34191	Water Pearl	Okyanusun derinliklerinden, hafif mavi parıltıya sahip bir inci.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34192	Earth Pearl	Toprağın derinliklerinden, hafif sarı parıltıya sahip bir inci.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34193	Wind Pearl	Göklerin yüksekliklerinden, hafif beyaz parıltıya sahip bir inci.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34194	Ancient Red Cloth	Kadim Ghidorah Muhafızı'nın cübbesinden yapılmış bir kumaş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34195	Ancient Blue Cloth	Kadim Hidra Muhafızı'nın cübbesinden yapılmış bir kumaş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34196	Ancient Green Cloth	Kadim Sfenks Muhafızı'nın cübbesinden yapılmış bir kumaş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34197	Ancient Yellow Cloth	Kadim Beyaz Kule Muhafızı'nın cübbesinden yapılmış bir kumaş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34198	Fire Power Shard	Ateş Elementini içinde bulundurabilecek kadar güçlü bir parça.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34199	Water Power Shard	Su Elementini içinde bulundurabilecek kadar güçlü bir parça.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34200	Earth Power Shard	Toprak Elementini içinde bulundurabilecek kadar güçlü bir parça.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34201	Wind Power Shard	Rüzgar Elementini içinde bulundurabilecek kadar güçlü bir parça.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34202	Fire Crystal	Bir zamanlar ateş elementinin hükümdarına ait olan bir kristal.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34203	Water Crystal	Bir zamanlar su elementinin hükümdarına ait olan bir kristal.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34204	Earth Crystal	Bir zamanlar toprak elementinin hükümdarına ait olan bir kristal.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34205	Wind Crystal	Bir zamanlar rüzgar elementinin hükümdarına ait olan bir kristal.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34206	Fire Totem	Bir zamanlar ateş ulusunun kullandığı bir sembol.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34207	Water Totem	Bir zamanlar su ulusunun kullandığı bir sembol.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34208	Earth Totem	Bir zamanlar toprak ulusunun kullandığı bir sembol.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34209	Wind Totem	Bir zamanlar rüzgar ulusunun kullandığı bir sembol.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34210	Eternal Flames	Cehennemin derinliklerinden gelen sonsuz alevler.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34211	Ghidorah's Heart	Lucifer'ın kendisini yenebilecek kadar güçlü bir varlığın kalbi.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34212	Hydra Power Orb	Yeniden ortaya çıkmış eski antik bir canavarın gücüne sahip küre.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34213	Hydra Summoning Tablet	Okyanusun derinliklerinden bir tablet, üç başlı canavarı çağırmak için eski yazılar içeriyor.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34214	Ancient Map	Sizi ölümünüze götürebilecek kadar eski varlıkların kutsal yazıları.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34215	Wisdom book	Eski tanrıların bilgeliğiyle bu kitap, Nova'daki en güçlü varlıkların içeriğine sahiptir.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34216	Tear of the Lord Adenoid	En sert duyguları bastırabilen rüzgar tanrısının gücüne sahip göz yaşı.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34217	White Tower Ruler's Key	Herkes Lord Adenoid'in odasına ulaşmasına ve onu yenmneyi denemesine izin veren anahtar.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34218	Fire Treasure Chest	Ekipmanları yükseltmek için en güçlü Malzemeleri içeren bir sandık.
+34219	Water Treasure Chest	Ekipmanları yükseltmek için en güçlü Malzemeleri içeren bir sandık.
+34220	Earth Treasure Chest	Ekipmanları yükseltmek için en güçlü Malzemeleri içeren bir sandık.
+34221	Wind Treasure Chest	Ekipmanları yükseltmek için en güçlü Malzemeleri içeren bir sandık.
+34222	Alchemy Ancient Stone	Efsanevi ormanın eski varlıklarından kalan ve ormanın bilgisiyle damgalanmış taş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34223	Arcane Ancient Stone	Efsanevi ormanın eski varlıklarından kalan ve ormanın bilgisiyle damgalanmış taş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34224	Vindicius Ancient Stone	Efsanevi ormanın eski varlıklarından kalan ve ormanın bilgisiyle damgalanmış taş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34225	Alchemy Theory Book	Efsanevi ormanın sisli bölgelerinde bulunabilen eskilere ait bilgileren içeren kitap.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34226	Arcane Theory Book	Efsanevi ormanın sisli bölgelerinde bulunabilen eskilere ait bilgileren içeren kitap.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34227	Vindicius Theory Book	Efsanevi ormanın sisli bölgelerinde bulunabilen eskilere ait bilgileren içeren kitap.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34228	Alchemy Soul Skull	Eskilerden birine ait kafa tası, efsanevi ormanın diğer unsurları ile birlikte kullanıldığında yeni iyileştirmeler yapılabilir.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34229	Arcane Soul Skull	Eskilerden birine ait kafa tası, efsanevi ormanın diğer unsurları ile birlikte kullanıldığında yeni iyileştirmeler yapılabilir.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34230	Vindicius Soul Skull	Eskilerden birine ait kafa tası, efsanevi ormanın diğer unsurları ile birlikte kullanıldığında yeni iyileştirmeler yapılabilir.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34231	Tempestus Soul Skull	Eskilerden birine ait kafa tası, efsanevi ormanın diğer unsurları ile birlikte kullanıldığında yeni iyileştirmeler yapılabilir.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34232	Tempestus Theory Book	Efsanevi ormanın sisli bölgelerinde bulunabilen eskilere ait bilgileren içeren kitap.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34233	Tempestus Ancient Stone	Efsanevi ormanın eski varlıklarından kalan ve ormanın bilgisiyle damgalanmış taş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34234	Empty Ticket	Boş bir ana bilet, element haritalarıyla birleştirmeye yarar.
+34235	Holy Fire Stone	Ghidorah Yuvası'na geçişi yansıtan özel bir taş.
+34236	Holy Water Stone	Hidra'ya geçişi yansıtan özel bir taş.
+34237	Holy Wind Stone	Beyaz Kule'ye geçişi yansıtan özel bir taş.
+34238	Holy Earth Stone	Antik Piramit'e geçişi yansıtan özel bir taş.
+34239	Ghidorah's Nest Ticket	Ghidorah'ın Yuvasının kapılarını açar.
+34240	Ship Defence Ticket	Gemi Savunması'nın kapılarını açar.
+34241	White Tower Ticket	Beyaz Kule'nin kapılarını açar.
+34242	Ancient Pyramid Ticket	Antik Piramit'in kapılarını açar.
+34243	Elemental Pearl	Tüm elementlerin birleşiminden üretilmiş güçlü bir inci.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34244	Elemental Totem	Tüm elementlerin birleşiminden üretilmiş güçlü bir totem.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34245	Elemental Ancient Cloth	Tüm elementlerin birleşiminden üretilmiş efsanevi bir kumaş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34246	Elemental Power Shard	Tüm elementlerin birleşiminden üretilmiş bir güç parçası.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34247	Elemental Crystal	Tüm elementlerin birleşiminden üretilmiş bir kristal.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34248	Elemental Ancient Stone	Efsanevi ormanın tüm uluslarının birleşik gücüyle yaratılmış eski zamanlardan bir Taş.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34249	Elemental Theory Book	Efsanevi ormanın tüm uluslarının birleşik gücüyle yaratılmış eski zamanlardan bir Kitap.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34250	Elemental Soul Skull	Efsanevi ormanın tüm uluslarının birleşik gücüyle yaratılmış eski zamanlardan bir Kafa Tası.	Element ve Kutsal Ekipman gelişiminde kullanılır.
+34500	Feather Chest	Rengarenk tüylerle dolu bir sandık.
+34501	Shards Chest	Rengarenk kristal parçalarını barındıran bir sandık.
+35100	Seon-Pyeongs Rest Scroll	Bu parşömen ile Seon-Pyeong'ın verdiği 92 ve 94 görevlerini sıfırlayabilrisiniz.
+39063	Gaya mağazasını sıfırla	Gaya mağazasını 5 saat dolmadan sıfırlar ve hemen yeni, değerli eşyalar kazandırır.
+39064	Gaya Mağazasını Genişlet	Değerli bir eşya seçeneği için soldan ikinci sıranın ilk bölümünden başlayarak Gaya mağazasını genişletir.
+39065		
+39066		
+40101	Kesici Diş Bıçağı	Cadılar Bayramı'nda kılıcını zincirli testereye dönüştüren bir silah görünümü.
+40102	Kesici Diş Hançeri	Cadılar Bayramı'nda hançerini zincirli testereye dönüştüren bir silah görünümü.
+40103	Kesici Diş Yayı	Cadılar Bayramı'nda yayını çift taraflı zincirli testereye dönüştüren bir silah görünümü.
+40104	Kesici Diş Mızrağı	Cadılar Bayramı'nda çift el kılıcını değnekli zincirli testereye dönüştüren bir silah görünümü.
+40105	Kesici Diş Çanı	Cadılar Bayramı'nda çanını zincirli testere gürzüne dönüştüren bir silah görünümü.
+40106	Kesici Diş Yelpazesi	Cadılar Bayramı'nda yelpazeni zincirli testere yelpazesine dönüştüren bir silah görünümü.
+40107	Kesici Diş Pençesi	Cadılar Bayramı'nda pençelerini zincirli el testeresine dönüştüren bir silah görünümü.
+40108	Kesici Diş Bıçağı+	Cadılar Bayramı'nda kılıcını zincirli testereye dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40109	Kesici Diş Hançeri+	Cadılar Bayramı'nda hançerini zincirli testereye dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40110	Kesici Diş Yayı+	Cadılar Bayramı'nda yayını çift taraflı zincirli testereye dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40111	Kesici Diş Mızrağı+	Cadılar Bayramı'nda çift el kılıcını değnekli zincirli testereye dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40112	Kesici Diş Çanı+	Cadılar Bayramı'nda çanını zincirli testere gürzüne dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40113	Kesici Diş Yelpazesi+	Cadılar Bayramı'nda yelpazeni zincirli testere yelpazesine dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40114	Kesici Diş Pençeleri+	Cadılar Bayramı'nda pençelerini zincirli el testeresine dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40115	Şeker Çubuğu Bıçağı	Kılıcını noelde tatlı bir şeker çubuğuna dönüştüren bir silah görünümü.
+40116	Şeker Çubuğu Hançeri	Hançerini noelde tatlı bir şeker çubuğuna dönüştüren bir silah görünümü.
+40117	Elf Yayı	Yayını noelde elf yayına dönüştüren bir silah görünümü.
+40118	Kurabiye Geniş Mızrağı	Çift el silahını noelde kurabiyeyle süsleyen bir silah görünümü.
+40119	Şeker Çubuğu Çanı	Çanını noelde tatlı bir şeker çubuğuna dönüştüren bir silah görünümü.
+40120	Buz Yelpazesi	Yelpazeni noelde kardan adamla süsleyen bir silah görünümü.
+40121	Rudolph Pençeleri	Pençelerini noelde ren geyiğiyle süsleyen bir silah görünümü.
+40122	Şeker Çubuğu Bıçağı+	Kılıcını noelde tatlı bir şeker çubuğuna dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40123	Şeker Çubuğu Hançeri+	Hançerini noelde tatlı bir şeker çubuğuna dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40124	Elf Yayı+	Yayını noelde elf yayına dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40125	Kurabiye Geniş Mızrağı+	Çift el silahını noelde kurabiyeyle süsleyen bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40126	Şeker Çubuğu Çanı+	Çanını noelde tatlı bir şeker çubuğuna dönüştüren bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40127	Buz Yelpazesi+	Yelpazeni noelde kardan adamla süsleyen bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40128	Rudolph Pençeleri+	Pençelerini noelde ren geyiğiyle süsleyen bir silah görünümü. Sana en az bir tesadüfi bonus verir.
+40129	Aquarus bıçağı	Kılıcını sağlam ve yanar döner mavi suyla kaplayan silah görünümü.
+40130	Aquarus hançeri	Hançerini sağlam ve yanar döner mavi suyla kaplayan silah görünümü.
+40131	Aquarus yayı	Yayını sağlam ve yanar döner mavi suyla kaplayan silah görünümü.
+40132	Aquarus glaive	İki elli kılıcını sağlam ve yanar döner mavi suyla kaplayan silah görünümü.
+40133	Aquarus çanı	Çanını sağlam ve yanar döner mavi suyla kaplayan silah görünümü.
+40134	Aquarus yeplazesi	Yelpazeni sağlam ve yanar döner mavi suyla kaplayan silah görünümü.
+40135	Aquarus pençeleri	Pençelerini sağlam ve yanar döner mavi suyla kaplayan silah görünümü.
+40136	Aquarus bıçağı+	Kılıcını sağlam ve yanar döner mavi suyla kaplayan silah görünümü Sana en az bir tane rastgele bonus kazandırır.
+40137	Aquarus hançeri+	Hançerini sağlam ve yanar döner mavi suyla kaplayan silah görünümü Sana en az bir tane rastgele bonus kazandırır.
+40138	Aquarus yayı+	Yayını sağlam ve yanar döner mavi suyla kaplayan silah görünümü Sana en az bir tane rastgele bonus kazandırır.
+40139	Aquarus glaive+	İki elli kılıcını sağlam ve yanar döner mavi suyla kaplayan silah görünümü Sana en az bir tane rastgele bonus kazandırır.
+40140	Aquarus çanı+	Çanını sağlam ve yanar döner mavi suyla kaplayan silah görünümü Sana en az bir tane rastgele bonus kazandırır.
+40141	Aquarus yeplazesi+	Yelpazeni sağlam ve yanar döner mavi suyla kaplayan silah görünümü Sana en az bir tane rastgele bonus kazandırır.
+40142	Aquarus pençeleri+	Pençelerini sağlam ve yanar döner mavi suyla kaplayan silah görünümü Sana en az bir tane rastgele bonus kazandırır.
+41458	Anka kuşu cübbesi	Erkekler için Asya stilinde, anka kuşu işlemeli, zarif ve uzun bir kaftan.
+41459	Kobra cübbesi	Erkekler için Asya stilinde, kobra işlemeli, zarif ve uzun bir kaftan.
+41462	Ejderha qipao (kırmızı)	Kadınlar için kırmızı, ince, altın ejderha işlemeli geleneksel Asya elbisesi.
+41463	Ejderha qipao (beyaz)	Kadınlar için beyaz, ince, kırmızı ejderha işlemeli geleneksel Asya elbisesi.
+41466	Anka kuşu cübbesi+	Erkekler için Asya stilinde, anka kuşu işlemeli, zarif ve uzun bir kaftan. Sana en az bir rastgele bonus verir.
+41467	Kobra cübbesi+	Erkekler için Asya stilinde, kobra işlemeli, zarif ve uzun bir kaftan. Sana en az bir rastgele bonus verir.
+41470	Ejderha qipao+ (kırmızı)	Kadınlar için kırmızı, ince, altın ejderha işlemeli geleneksel Asya elbisesi. Sana en az bir rastgele bonus verir.
+41471	Ejderha qipao+ (beyaz)	Kadınlar için beyaz, ince, kırmızı ejderha işlemeli geleneksel Asya elbisesi. Sana en az bir rastgele bonus verir.
+41488	Firavun kostümü (kırm.)	Erkekler için kırmızı işlemeli firavun kostümüyle Mısır'lıya dönüş.
+41489	Firavun kostümü (turku.)	Erkekler için turkuvaz işlemeli firavun kostümüyle Mısır'lıya dönüş.
+41490	Uriel'in meleği (beyaz)	Kadınlar için zarif, masumiyet simgesi beyaz melek kanatları.
+41491	Uriel'in meleği (kırm.)	Kadınlar için ilginç, ateşli melek kanatları.
+41492	Firavun kostümü+ (kırm.)	Erkekler için kırmızı işlemeli firavun kostümüyle Mısır'lıya dönüş. Sana en az bir rastgele bonus verir.
+41493	Firavun kostümü+ (turk.)	Erkekler için turkuvaz işlemeli firavun kostümüyle Mısır'lıya dönüş. Sana en az bir rastgele bonus verir.
+41494	Uriel'in meleği+ (beyaz)	Kadınlar için zarif, masumiyet simgesi beyaz melek kanatları. Sana en az bir rastgele bonus verir.
+41495	Uriel'in meleği+ (kırm.)	Kadınlar için ilginç, ateşli melek kanatları. Sana en az bir rastgele bonus verir.
+41512	Azıdişi Kostümü	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü.
+41513	Azıdişi Kostümü	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü.
+41514	Azıdişi Kostümü	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü.
+41515	Azıdişi Kostümü	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü.
+41516	Azıdişi Kostümü+	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü. Sana en az bir tesadüfi bonus verir.
+41517	Azıdişi Kostümü+	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü. Sana en az bir tesadüfi bonus verir.
+41518	Azıdişi Kostümü+	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü. Sana en az bir tesadüfi bonus verir.
+41519	Azıdişi Kostümü+	Rakiplerinin ödünü koparan, şeytani bir Cadılar Bayramı kostümü. Sana en az bir tesadüfi bonus verir.
+41520	Kırmızı Kış Giysisi	Kırmızı keçeden oluşan bir kış giysisi. Ticareti yok.
+41521	Mavi Kış Giysisi	Mavi keçeden oluşan bir kış giysisi. Ticareti yok.
+41522	Kırmızı Kış Giysisi+	Kırmızı keçeden oluşan bir kış giysisi. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+41523	Mavi Kış Giysisi+	Mavi keçeden oluşan bir kış giysisi. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+41524	Kırmızı Kış Elbisesi	Kırmızı keçeden oluşan bir kış elbisesi. Ticareti yok.
+41525	Mavi Kış Elbisesi	Mavi keçeden oluşan bir kış elbisesi. Ticareti yok.
+41526	Kırmızı Kış Elbisesi+	Kırmızı keçeden oluşan bir kış elbisesi. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+41527	Mavi Kış Elbisesi+	Mavi keçeden oluşan bir kış elbisesi. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+41528	Çöl Prensi (kırmızı)	Liderler için kırmızı kumaştan yapılan bir savaşçı kaftanı.
+41529	Çöl Prensi (mavi)	Liderler için mavi kumaştan yapılan bir savaşçı kaftanı.
+41530	Çöl Prensesi (kırmızı)	Kadın liderler için kırmızı kumaştan yapılan bir savaşçı kaftanı.
+41531	Çöl Prensesi (mavi)	Kadın liderler için mavi kumaştan yapılan bir savaşçı kaftanı.
+41532	Çöl Prensi+ (kırmızı)	Liderler için kırmızı kumaştan yapılan bir savaşçı kaftanı. Sana rastgele en az bir bonus verir.
+41533	Çöl Prensi+ (mavi)	Liderler için mavi kumaştan yapılan bir savaşçı kaftanı. Sana rastgele en az bir bonus verir.
+41534	Çöl Prensesi+ (kırmızı)	Kadın liderler için kırmızı kumaştan yapılan bir savaşçı kaftanı. Sana rastgele en az bir bonus verir.
+41535	Çöl Prensesi+ (mavi)	Kadın liderler için mavi kumaştan yapılan bir savaşçı kaftanı. Sana rastgele en az bir bonus verir.
+41540	Tavşan Kostümü (beyaz)	Baylara özel beyaz pelüşten tavşan kostümü. Ticareti yok.
+41541	Tavşan Kostümü (pembe)	Baylara özel pembe pelüşten tavşan kostümü. Ticareti yok.
+41542	Tavşan Kostümü(lacivert)	Bayanlara özel lacivert pelüşten tavşan kostümü. Ticareti yok.
+41543	Tavşan Kostümü (fuşya)	Bayanlara özel fuşya pelüşten tavşan kostümü. Ticareti yok.
+41544	Tavşan Kostümü+ (beyaz)	Baylara özel beyaz pelüşten tavşan kostümü. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41545	Tavşan Kostümü+ (pembe)	Baylara özel pembe pelüşten tavşan kostümü. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41546	TavşanKostümü+(lacivert)	Bayanlara özel lacivert pelüşten tavşan kostümü. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41547	TavşanKostümü+(fuşya)	Bayanlara özel fuşya pelüşten tavşan kostümü. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41560	Vampir Savaşçısı (gri)	Gerçek bir Vampir Savaşçısı zırhıyla yenilmez görünürsün. Bu eşyanın ticareti yok.
+41561	VampirSavaşçısı(kırmızı)	Gerçek bir Vampir Savaşçısı zırhıyla yenilmez görünürsün. Bu eşyanın ticareti yok.
+41562	Vamp (gri)	Savaşçı Vamp zırhıyla yenilmez görünürsün. Bu eşyanın ticareti yok.
+41563	Vamp (kırmızı)	Savaşçı Vamp zırhıyla yenilmez görünürsün. Bu eşyanın ticareti yok.
+41564	Vampir Savaşçısı+ (gri)	Gerçek bir Vampir Savaşçısı zırhı sana olağanüstü bir güç kazandırır. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41565	VampirSavaşçısı+(krmz)	Gerçek bir Vampir Savaşçısı zırhı sana olağanüstü bir güç kazandırır. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41566	Vamp+ (gri)	Savaşçı Vamp zırhı sana olağanüstü bir güç kazandırır. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41567	Vamp+ (kırmızı)	Savaşçı Vamp zırhı sana olağanüstü bir güç kazandırır. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+41568	Kırmızı Esvap (e)	Kenarları beyaz olan kırmızı esvap.
+41569	Yeşil Esvap (e)	Kenarları beyaz olan yeşil esvap.
+41570	Kırmızı Esvap (k)	Kenarları beyaz olan kırmızı esvap.
+41571	Yeşil Esvap (k)	Kenarları beyaz olan yeşil esvap.
+41572	Kırmızı Esvap+ (e)	Kenarları beyaz olan kırmızı esvap. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+41573	Yeşil Esvap+ (e)	Kenarları beyaz olan yeşil esvap. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+41574	Kırmızı Esvap+ (k)	Kenarları beyaz olan kırmızı esvap. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+41575	Yeşil Esvap+ (k)	Kenarları beyaz olan yeşil esvap. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+41576	Altın Oyoroi (e)	Bir Japon generalinin altın üniforması.
+41577	Gümüş Oyoroi (e)	Bir Japon generalinin gümüş üniforması.
+41578	Altın Oyoroi (k)	Bir Japon kadın generalinin altın üniforması.
+41579	Gümüş Oyoroi (k)	Bir Japon kadın generalinin gümüş üniforması.
+41580	Altın Oyoroi+ (e)	Bir Japon generalinin altın üniforması. Sana en az bir tane rastgele bonus kazandırır.
+41581	Gümüş Oyoroi+ (e)	Bir Japon generalinin gümüş üniforması. Sana en az bir tane rastgele bonus kazandırır.
+41582	Altın Oyoroi+ (k)	Bir Japon kadın generalinin altın üniforması. Sana en az bir tane rastgele bonus kazandırır.
+41583	Gümüş Oyoroi+ (k)	Bir Japon kadın generalinin gümüş üniforması. Sana en az bir tane rastgele bonus kazandırır.
+41584	Samuray Zırhı (mavi)	Tecrübeli Shogun tarzında mavi zırh
+41585	Samuray Zırhı (kırmızı)	Tecrübeli Shogun tarzında kırmızı zırh
+41586	Samuray Zırhı (mavi)	Dişi Shogun'un tarzında mavi zırh
+41587	Samuray Zırhı (kırmızı)	Dişi Shogun'un kırmızı zırhı.
+41588	Samuray Zırhı+ (mavi)	Tecrübeli Shogun tarzında mavi zırh. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41589	Samuray Zırhı+ (kırmızı)	Tecrübeli Shogun tarzında kırmızı zırh. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41590	Samuray Zırhı+ (mavi)	Dişi Shogun'un mavi zırhı Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41591	Samuray Zırhı+ (kırmızı)	Dişi Shogun'un kırmızı zırhı Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41592	Dehşet Miğferi (a)	Korku ve dehşet saçmak için alevli cehennem zırhı.
+41593	Dehşet Miğferi (m)	Korku ve dehşet saçmak için mavi alevli cehennem zırhı.
+41594	Dehşet Miğferi (a)	Korku ve dehşet saçmak için alevli cehennem zırhı.
+41595	Dehşet Miğferi (m)	Korku ve dehşet saçmak için mavi alevli cehennem zırhı.
+41596	Dehşet Miğferi+(a)	Korku ve dehşet saçmak için alevli cehennem zırhı. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41597	Dehşet Miğferi+(m)	Korku ve dehşet saçmak için mavi alevli cehennem zırhı. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41598	Dehşet Miğferi+(a)	Korku ve dehşet saçmak için alevli cehennem zırhı. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41599	Dehşet Miğferi+(m)	Korku ve dehşet saçmak için mavi alevli cehennem zırhı. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41600	Steampunk üniforma (sb)	Şimdilerin Savaşçısı için fütüristik bir kıyafet
+41601	Steampunk üniforma (kır)	Şimdilerin Savaşçısı için fütüristik bir kıyafet
+41602	Steampunk elbisesi (sb)	Şimdilerin dişi Savaşçısı için fütüristik bir kıyafet
+41603	Steampunk elbisesi (kır)	Şimdilerin dişi Savaşçısı için fütüristik bir kıyafet
+41604	Steampunk üniforma+ (sb)	Şimdilerin Savaşçısı için fütüristik bir kıyafet. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41605	Steampunk üniforma+ (kr)	Şimdilerin Savaşçısı için fütüristik bir kıyafet. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41606	Steampunk elbisesi+ (sb)	Şimdilerin dişi Savaşçısı için fütüristik bir kıyafet. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41607	Steampunk elbisesi+ (kr)	Şimdilerin dişi Savaşçısı için fütüristik bir kıyafet. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+41608	Tavşan cübbesi (mavi)	Mavi şalvarlı, beyaz-mor renginde, masalsı bir giysi
+41609	Tavşan cübbesi (petrol)	Gri şalvarlı, beyaz-petrol renginde, masalsı bir giysi
+41610	Tavşan elbisesi (mavi)	Beyaz-mor renginde, masalsı bir balon elbise
+41611	Tavşan elbisesi (gri)	Gri-petrol renginde, masalsı bir balon elbise
+41612	Tavşan cübbesi+ (mavi)	Mavi şalvarlı, beyaz-mor renginde, masalsı bir giysi. Sana en az bir rastgele bonus verir.
+41613	Tavşan cübbesi+ (petrol)	Gri şalvarlı, beyaz-petrol renginde, masalsı bir giysi. Sana en az bir rastgele bonus verir.
+41614	Tavşan elbisesi+ (mavi)	Beyaz-mor renginde, masalsı bir balon elbise. Sana en az bir rastgele bonus verir.
+41615	Tavşan elbisesi+ (gri)	Gri-petrol renginde, masalsı bir balon elbise. Sana en az bir rastgele bonus verir.
+41630	Avalon Zırhı (gümüş)	Eski zamanlara ait asil bir şövalye soyununun gümüş renkli miğferi
+41631	Avalon Zırhı (kırmızı)	Eski zamanlara ait asil bir şövalye soyununun kırmızı renkli miğferi
+41632	Avalon Zırhı (gümüş)	Eski zamanlara ait asil bir şövalye soyununun gümüş renkli miğferi
+41633	Avalon Zırhı (kırmızı)	Eski zamanlara ait asil bir şövalye soyununun kırmızı renkli miğferi
+41634	Avalon Zırhı+ (gümüş)	Eski zamanlara ait asil bir şövalye soyununun rengarenk miğferi. Sana en az bir rastgele bonus verir.
+41635	Avalon Zırhı+ (kırmızı)	Eski zamanlara ait asil bir şövalye soyununun rengarenk miğferi. Sana en az bir rastgele bonus verir.
+41636	Avalon Zırhı+ (gümüş)	Eski zamanlara ait asil bir şövalye soyununun rengarenk miğferi. Sana en az bir rastgele bonus verir.
+41637	Avalon Zırhı+ (kırmızı)	Eski zamanlara ait asil bir şövalye soyununun rengarenk miğferi. Sana en az bir rastgele bonus verir.
+41638	DŞ Forması KSA (e)	Suudi Arabistan milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41639	DŞ Forması KSA (k)	Suudi Arabistan milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41640	DŞ Forması KSA+ (e)	Suudi Arabistan milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41641	DŞ Forması KSA+ (k)	Suudi Arabistan milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41642	DŞ Forması DEN (e)	Danimarka milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41643	DŞ Forması DEN (k)	Danimarka milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41644	DŞ Forması DEN+ (e)	Danimarka milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41645	DŞ Forması DEN+ (k)	Danimarka milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41646	DŞ Forması SVK (e)	Slovakya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41647	DŞ Forması SVK (k)	Slovakya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41648	DŞ Forması SVK+ (e)	Slovakya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41649	DŞ Forması SVK+ (k)	Slovakya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41650	DŞ Forması TUR (e)	Türkiye milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41651	DŞ Forması TUR (k)	Türkiye milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41652	DŞ Forması TUR+ (e)	Türkiye milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41653	DŞ Forması TUR+ (k)	Türkiye milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41654	DŞ Forması HUN (e)	Macaristan milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41655	DŞ Forması HUN (k)	Macaristan milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41656	DŞ Forması HUN+ (e)	Macaristan milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41657	DŞ Forması HUN+ (k)	Macaristan milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41658	DŞ Forması ROU (e)	Romanya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41659	DŞ Forması ROU (k)	Romanya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41660	DŞ Forması ROU+ (e)	Romanya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41661	DŞ Forması ROU+ (k)	Romanya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41662	DŞ Forması POL (e)	Polonya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41663	DŞ Forması POL (k)	Polonya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41664	DŞ Forması COL+ (e)	Polonya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41665	DŞ Forması POL+ (k)	Polonya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41666	DŞ Forması BRA (e)	Brezilya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41667	DŞ Forması BRA (k)	Brezilya milli futbol takımının renginde Dünya Şampiyonluğu forması.
+41668	DŞ Forması BRA+ (e)	Brezilya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41669	DŞ Forması BRA+ (k)	Brezilya milli futbol takımının renginde Dünya Şampiyonluğu forması. Sana en az bir tane rastgele bonus kazandırır.
+41670	Kahve. kurt giysisi (e)	Kahverengi postlardan hazırlanan bu giysi, her erkeğin içindeki kurdu uyandırır.
+41671	Gri kurt giysisi (e)	Gri postlardan hazırlanan bu giysi, her erkeğin içindeki kurdu uyandırır.
+41672	Kahve. kurt giysisi (k)	Kahverengi postlardan hazırlanan bu giysi, her kadının içindeki kurdu uyandırır.
+41673	Gri kurt giysisi (k)	Gri postlardan hazırlanan bu giysi, her kadının içindeki kurdu uyandırır.
+41674	Kahve. kurt giysisi+ (e)	Kahverengi postlardan hazırlanan bu giysi, her erkeğin içindeki kurdu uyandırır. Sana en az bir rastgele bonus verir.
+41675	Gri kurt giysisi+ (e)	Gri postlardan hazırlanan bu giysi, her erkeğin içindeki kurdu uyandırır. Sana en az bir rastgele bonus verir.
+41676	Kahve. kurt giysisi+ (k)	Kahverengi postlardan hazırlanan bu giysi, her kadının içindeki kurdu uyandırır. Sana en az bir rastgele bonus verir.
+41677	Gri kurt giysisi+ (k)	Gri postlardan hazırlanan bu giysi, her kadının içindeki kurdu uyandırır. Sana en az bir rastgele bonus verir.
+45108	Koni şapka	Erkekler için pirinç samanından yapılma geleneksel Asya şapkası.
+45110	Asya topuzu	Çift topuzlu Asya saç modeli.
+45114	Koni şapka+	Erkekler için pirinç samanından yapılma geleneksel Asya şapkası. Sana en az bir rastgele bonus verir.
+45116	Asya topuzu+	Çift topuzlu Asya saç modeli. Sana en az bir rastgele bonus verir.
+45182	Tüylü baş takı (kırmızı)	Karnaval sever erkekler için kırmızı, monden tüylü başlık.
+45183	Tüylü baş takı (turk.)	Karnaval sever erkekler için turkuvaz, monden tüylü başlık.
+45184	Anka kuşu tacı (beyaz)	Kadınlar için metalden yapılmış, zarif, kuşa benzeyen bir baş süsü.
+45185	Anka kuşu tacı (kırmızı)	Kadınlar için metalden yapılmış, zarif, kuşa benzeyen bir baş süsü.
+45186	Tüylü baş takısı+ (kırm)	Karnaval sever erkekler için kırmızı, monden tüylü başlık. Sana en az bir rastgele bonus verir.
+45187	Tüylü baş takı+ (turk.)	Karnaval sever erkekler için turkuvaz, monden tüylü başlık. Sana en az bir rastgele bonus verir.
+45188	Anka kuşu tacı+ (beyaz)	Kadınlar için metalden yapılmış, zarif, kuşa benzeyen bir baş süsü. Sana en az bir rastgele bonus verir.
+45189	Anka kuşu tacı+ (kırm)	Kadınlar için metalden yapılmış, zarif, kuşa benzeyen bir baş süsü. Sana en az bir rastgele bonus verir.
+45206	Azıdişi Kaskı	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask.
+45207	Azıdişi Kaskı	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask.
+45208	Azıdişi Kaskı	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask.
+45209	Azıdişi Kaskı	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask.
+45210	Azıdişi Kaskı+	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask. Sana en az bir tesadüfi bonus verir.
+45211	Azıdişi Kaskı+	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask. Sana en az bir tesadüfi bonus verir.
+45212	Azıdişi Kaskı+	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask. Sana en az bir tesadüfi bonus verir.
+45213	Azıdişi Kaskı+	Cadılar Bayramı için rakiplerini korkudan titreten ürkütücü bir kask. Sana en az bir tesadüfi bonus verir.
+45214	Kırmızı Ponponlu Şapka	Beyaz ponponlu kırmızı keçe şapka. Ticareti yok.
+45215	Mavi Ponponlu Şapka	Beyaz ponponlu mavi keçe şapka. Ticareti yok.
+45216	Kırmızı Ponponlu Kapüşon	Beyaz ponponlu kırmızı keçe şapka. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+45217	Mavi Ponponlu Kapüşon	Beyaz ponponlu mavi keçe şapka. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+45218	Kırmızı Ponponlu Şapka+	Beyaz ponponlu kırmızı keçe kapüşon. Ticareti yok.
+45219	Mavi Ponponlu Şapka+	Beyaz ponponlu mavi keçe kapüşon. Ticareti yok.
+45220	Kırmızı Ponpon Kapüşon+	Beyaz ponponlu kırmızı keçe kapüşon. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+45221	Mavi Ponponlu Kapüşon+	Beyaz ponponlu kırmızı keçe kapüşon. Sana en az bir tesadüfi bonus verir. Eşyanın ticareti var.
+45222	Tavşan Kulakları (beyaz)	Baylara özel tavşan kulaklı beyaz şapka. Ticareti yok.
+45223	Tavşan Kulakları (pembe)	Baylara özel tavşan kulaklı pembe şapka. Ticareti yok.
+45224	Tavşan Kulakları (lcvrt)	Bayanlara özel lacivert tavşan kulakları. Ticareti yok.
+45225	Tavşan Kulakları (fuşya)	Bayanlara özel fuşya tavşan kulakları. Ticareti yok.
+45226	Tavşan Kulakları+(beyaz)	Baylara özel tavşan kulaklı beyaz şapka. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45227	Tavşan Kulakları+(pembe)	Baylara özel tavşan kulaklı pembe şapka. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45228	Tavşan Kulakları+(lcvrt)	Bayanlara özel lacivert tavşan kulakları. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45229	Tavşan Kulakları+(fuşya)	Bayanlara özel fuşya tavşan kulakları. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45234	Mavi Kavuk	Savaşçılar için dayanıklı bir kumaştan üretilen zarif, mavi bir kavuk.
+45235	Kırmızı Kavuk	Savaşçılar için dayanıklı bir kumaştan üretilen zarif, kırmızı bir kavuk.
+45236	Kahverengi Başlık	Dişi savaşçılar için hafif bir kumaştan üretilen kahverengi bir başlık.
+45237	Yeşil Başlık	Dişi savaşçılar için hafif bir kumaştan üretilen yeşil bir başlık.
+45238	Mavi Kavuk+	Savaşçılar için dayanıklı bir kumaştan üretilen zarif, mavi bir kavuk. Sana rastgele en az bir bonus verir.
+45239	Kırmızı Kavuk+	Savaşçılar için dayanıklı bir kumaştan üretilen zarif, kırmızı bir kavuk. Sana rastgele en az bir bonus verir.
+45240	Kahverengi Başlık+	Dişi savaşçılar için hafif bir kumaştan üretilen kahverengi bir başlık. Sana rastgele en az bir bonus verir.
+45241	Yeşil Başlık+	Dişi savaşçılar için hafif bir kumaştan üretilen yeşil bir başlık. Sana rastgele en az bir bonus verir.
+45250	VampirSavaşçısıBşl.(gr.)	Gerçek bir Vampir Savaşçısı başlığı. Bu eşyanın ticareti yok.
+45251	VampirSavaşçısı(kırmızı)	Gerçek bir Vampir Savaşçısı başlığı. Bu eşyanın ticareti yok.
+45252	Vamp Başlığı (gri)	Savaşçı Vamp başlığı. Bu eşyanın ticareti yok.
+45253	Vamp Başlığı (kırmızı)	Savaşçı Vamp başlığı. Bu eşyanın ticareti yok.
+45254	VampirSavaşçısıBşl+(gr.)	Gerçek bir Vampir Savaşçısı başlığı. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45255	VampirSavaşçısı+(krmz)	Gerçek bir Vampir Savaşçısı başlığı. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45256	Vamp Başlığı+ (gri)	Savaşçı Vamp başlığı. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45257	Vamo Başlığı+ (kırmızı)	Savaşçı Vamp başlığı. Sana en az bir tane rastgele bonus kazandırır. Bu eşyanın ticareti var.
+45258	Yılbaşı Kapüşonu (kırm.)	Kenarları beyaz olan kırmızı yılbaşı kapüşonu.
+45259	Yılbaşı Kapüşonu (yeşil)	Kenarları beyaz olan yeşil yılbaşı kapüşonu.
+45260	Yılbaşı Beresi (kırmızı)	Beyaz ponponlu kırmızı yılbaşı beresi.
+45261	Yılbaşı Beresi (yeşil)	Beyaz ponponlu yeşil yılbaşı beresi.
+45262	Yılbaşı Kapüşonu+(krmz.)	Kenarları beyaz olan kırmızı yılbaşı kapüşonu. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+45263	Yılbaşı Kapüşonu+(yeşil)	Kenarları beyaz olan yeşil yılbaşı kapüşonu. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+45264	Yılbaşı Beresi+(kırmızı)	Beyaz ponponlu kırmızı yılbaşı beresi. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+45265	Yılbaşı Beresi+ (yeşil)	Beyaz ponponlu yeşil yılbaşı beresi. Sana rastgele en az bir bonus veren ve ticareti olan bir eşya.
+45266	Altın Kabuto (e)	Bir Japon generalinin altın kaskı.
+45267	Gümüş Kabuto (e)	Bir Japon generalinin gümüş kaskı.
+45268	Altın Kabuto (k)	Bir Japon kadın generalinin altın kaskı.
+45269	Gümüş Kabuto (k)	Bir Japon kadın generalinin gümüş kaskı.
+45270	Altın Kabuto+ (e)	Bir Japon generalinin altın kaskı. Sana en az bir tane rastgele bonus kazandırır.
+45271	Gümüş Kabuto+ (e)	Bir Japon generalinin gümüş kaskı. Sana en az bir tane rastgele bonus kazandırır.
+45272	Altın Kabuto+ (k)	Bir Japon kadın generalinin altın kaskı. Sana en az bir tane rastgele bonus kazandırır.
+45273	Gümüş Kabuto+ (k)	Bir Japon kadın generalinin gümüş kaskı. Sana en az bir tane rastgele bonus kazandırır.
+45274	Samuray düğümü (altın)	Erkekler için Samuray tarzı altın tokalı bir saç düğümü.
+45275	Samuray düğümü (gümüş)	Erkekler için Samuray tarzı gümüş tokalı bir saç düğümü.
+45276	Samuray düğümü (altın)	Kadınlar için Samuray tarzı altın tokalı bir saç düğümü.
+45277	Samuray düğümü (gümüş)	Kadınlar için Samuray tarzı gümüş tokalı bir saç düğümü.
+45278	Samuray düğümü+ (altın)	Erkekler için Samuray tarzı altın tokalı bir saç düğümü. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45279	Samuray düğümü+ (gümüş)	Erkekler için Samuray tarzı gümüş tokalı bir saç düğümü. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45280	Samuray düğümü+ (altın)	Kadınlar için Samuray tarzı altın tokalı bir saç düğümü. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45281	Samuray düğümü+ (gümüş)	Kadınlar için Samuray tarzı gümüş tokalı bir saç düğümü. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45282	Dehşet Boynuzları (a)	Şeytan boynuzlu altın başlık
+45283	Dehşet Boynuzları (m)	Şeytan boynuzlu mavi başlık
+45284	Dehşet Boynuzları (a)	Şeytan boynuzlu altın başlık
+45285	Dehşet Boynuzları (m)	Şeytan boynuzlu mavi başlık
+45286	Dehşet Boynuzları+ (a)	Şeytan boynuzlu altın başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45287	Dehşet Boynuzları+ (m)	Şeytan boynuzlu mavi başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45288	Dehşet Boynuzları+ (a)	Şeytan boynuzlu altın başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45289	Dehşet Boynuzları+ (m)	Şeytan boynuzlu mavi başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45290	Steampunk silindir (sb)	Şimdilerin Savaşçısı için fütüristik bir başlık
+45291	Steampunk silindir (kır)	Şimdilerin Savaşçısı için fütüristik bir başlık
+45292	Steampunk silindir (sb)	Şimdilerin dişi Savaşçısı için fütüristik bir başlık
+45293	Steampunk silindir (kır)	Şimdilerin dişi Savaşçısı için fütüristik bir başlık
+45294	Steampunk silindir+ (sb)	Şimdilerin Savaşçısı için fütüristik bir başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45295	Steampunk silindir+ (kr)	Şimdilerin Savaşçısı için fütüristik bir başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45296	Steampunk silindir+ (sb)	Şimdilerin dişi Savaşçısı için fütüristik bir başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45297	Steampunk silindir+ (kr)	Şimdilerin dişi Savaşçısı için fütüristik bir başlık. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45298	Tüylü şapka (mavi)	İnci çenesi kemerli ve kırmızı sülün tüylü mavi şapka
+45299	Tüylü şapka (gri)	İnci çenesi kemerli ve petrol renginde sülün tüylü gri şapka
+45300	Tavşan miğferi (mavi)	Turkuaz renginde değerli taşlı mavi başlık
+45301	Tavşan miğferi (gri)	Mor değerli taşlı gri başlık
+45302	Tüylü şapka+ (mavi)	İnci çenesi kemerli ve kırmızı sülün tüylü mavi şapka. Sana en az bir rastgele bonus verir.
+45303	Tüylü şapka+ (gri)	İnci çenesi kemerli ve petrol renginde sülün tüylü gri şapka. Sana en az bir rastgele bonus verir.
+45304	Tavşan miğferi+ (mavi)	Turkuaz renginde değerli taşlı mavi başlık. Sana en az bir rastgele bonus verir.
+45305	Tavşan miğferi+ (gri)	Mor değerli taşlı gri başlık. Sana en az bir rastgele bonus verir.
+45314	Zodyak Tacı	Heybetli Baş Süsü.
+45315	Zodyak Tacı	Heybetli Baş Süsü.
+45316	Zodyak Tacı+	Heybetli Baş Süsü. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45317	Zodyak Tacı+	Heybetli Baş Süsü. Sana en az bir rastgele bonus verir. Bu eşyanın ticareti yapılabilir.
+45320	Avalon Başlığı (gümüş)	Eski zamanlara ait asil bir şövalye soyununun rengarenk başlığı.
+45321	Avalon Başlığı (kırmızı)	Eski zamanlara ait asil bir şövalye soyununun kırmızı başlığı.
+45322	Avalon Başlığı (gümüş)	Eski zamanlara ait asil bir şövalye soyununun rengarenk başlığı.
+45323	Avalon Başlığı (kırmızı)	Eski zamanlara ait asil bir şövalye soyununun kırmızı başlığı.
+45324	Avalon Başlığı+ (gümüş)	Eski zamanlara ait asil bir şövalye soyununun rengarenk başlığı. Sana en az bir rastgele bonus verir.
+45325	Avalon Başlığı+ (kırm.)	Eski zamanlara ait asil bir şövalye soyununun kırmızı başlığı. Sana en az bir rastgele bonus verir.
+45326	Avalon Başlığı+ (gümüş)	Eski zamanlara ait asil bir şövalye soyununun rengarenk başlığı. Sana en az bir rastgele bonus verir.
+45327	Avalon Başlığı+ (kırm.)	Eski zamanlara ait asil bir şövalye soyununun kırmızı başlığı. Sana en az bir rastgele bonus verir.
+45328	Ayıcık şapkası (e)	Ayıcık yüzlü yumuşacık başlık
+45329	Kaplan şapkası (e)	Kaplan yüzlü yumuşacık başlık
+45330	Ayıcık şapkası (k)	Ayıcık yüzlü yumuşacık başlık
+45331	Kaplan şapkası (k)	Kaplan yüzlü yumuşacık başlık
+45332	Ayıcık şapkası+ (e)	Bu yumuşacık şapka sana en az bir rastgele bonus kazandırır.
+45333	Kaplan şapkası+ (e)	Bu yumuşacık şapka sana en az bir rastgele bonus kazandırır.
+45334	Ayıcık şapkası+ (k)	Bu yumuşacık şapka sana en az bir rastgele bonus kazandırır.
+45335	Kaplan şapkası+ (k)	Bu yumuşacık şapka sana en az bir rastgele bonus kazandırır.
+45336	Kahve. kurt şapkası (e)	Erkek için özenle hazırlanmış bir kurt postu şapkası.
+45337	Gri kurt şapkası (e)	Erkek için özenle hazırlanmış bir kurt postu şapkası.
+45338	Kahve. kurt şapkası (k)	Kadın için özenle hazırlanmış bir kurt postu şapkası.
+45339	Gri kurt şapkası (k)	Kadın için özenle hazırlanmış bir kurt postu şapkası.
+45340	Kahve. kurt şapkası+ (e)	Erkek için özenle hazırlanmış bir kurt postu şapkası. Sana en az bir rastgele bonus verir.
+45341	Gri kurt şapkası+ (e)	Erkek için özenle hazırlanmış bir kurt postu şapkası. Sana en az bir rastgele bonus verir.
+45342	Kahve. kurt şapkası+ (k)	Kadın için özenle hazırlanmış bir kurt postu şapkası. Sana en az bir rastgele bonus verir.
+45343	Gri kurt şapkası+ (k)	Kadın için özenle hazırlanmış bir kurt postu şapkası. Sana en az bir rastgele bonus verir.
+45344	Saç bandı DEN (k)	Danimarka'nın ulusal renklerinde örgülü ve saç bantlı uzun saçlar.
+45345	Saç bandı HUN (k)	Macaristan'ın ulusal renklerinde örgülü ve saç bantlı uzun saçlar.
+45346	Saç bandı POL (k)	Polonya'nın ulusal renklerinde örgülü ve saç bantlı uzun saçlar.
+45347	Saç bandı KSA (k)	Suudi Arabistan'ın ulusal renklerinde örgülü ve saç bantlı uzun saçlar.
+45348	Saç bandı SVK (k)	Slovakya'nın ulusal renklerinde örgülü ve saç bantlı uzun saçlar.
+45349	Saç bandı TUR (k)	Türkiye'nin ulusal renklerinde örgülü ve saç bantlı uzun saçlar.
+45350	Saç bandı DEN+ (k)	Danimarka'nın ulusal renklerinde örgülü ve saç bantlı uzun saçlar. Sana en az bir tane rastgele bonus kazandırır.
+45351	Saç bandı HUN+ (k)	Macaristan'ın ulusal renklerinde örgülü ve saç bantlı uzun saçlar. Sana en az bir tane rastgele bonus kazandırır.
+45352	Saç bandı POL+ (k)	Polonya'nın ulusal renklerinde örgülü ve saç bantlı uzun saçlar. Sana en az bir tane rastgele bonus kazandırır.
+45353	Saç bandı KSA+ (k)	Suudi Arabistan'ın ulusal renklerinde örgülü ve saç bantlı uzun saçlar. Sana en az bir tane rastgele bonus kazandırır.
+45354	Saç bandı SVK+ (k)	Slovakya'nın ulusal renklerinde örgülü ve saç bantlı uzun saçlar. Sana en az bir tane rastgele bonus kazandırır.
+45355	Saç bandı TUR+ (k)	Türkiye'nin ulusal renklerinde örgülü ve saç bantlı uzun saçlar. Sana en az bir tane rastgele bonus kazandırır.
+50208	Silver Premium Scroll	gümüş premium üyeliğini etkinleştirmek veya süresini uzatmak için kullanılır.
+50209	Gold Premium Scroll	altın premium üyeliğini etkinleştirmek veya süresini uzatmak için kullanılır.
+50210	Platinum Premium Scroll	platin premium üyeliğini etkinleştirmek veya süresini uzatmak için kullanılır.
+50221	Small IS Package (Stones)	Bu Kutunun İçeriği: (Değer: 10.5k Sikke = %15 indirim) - 1x "Yeşil Kurtarıcı Büyüsü" \n - 1x Biyolog Sandığı I \n - |~ff82ff7d|H|h1x Beyaz Rex (%30 Taşlı Binek)\n [özel: Sadece IS paketlerinde]\n - |~ff82ff7d|H|h1x Bruce (%15 Taşlı Evcil Hayvan)\n [özel: Sadece IS paketlerinde]
+50222	Small IS Package (Boss)	Bu Kutunun İçeriği: (Değer: 10,5 bin Sikke = %15 indirim) - 1x "Yeşil Kurtarıcı Büyüsü" \n - 1x Biyolog Sandığı I \n - |~ff82ff7d|H|h1x Black Rex (%30 Boss Dağı)\n [özel: Sadece IS paketlerinde]\n - |~ff82ff7d|H|h1x Wayne (%15 Boss Pet)\n [özel: Sadece IS paketlerinde]
+50223	Medium IS Package (Stones)	 Bu Kutunun İçeriği: (Değer: 25.5k Sikke = %21 indirim) - 1x "Yeşil Kurtarıcı Büyüsü" \n - 1x Biyolog Sandığı I \n - |~ff82ff7d|H|h1x Siyah Rex (%30 Boss Bineği)\n [özel: Yalnızca IS paketlerinde] - |~ff82ff7d|H|h1x Wayne (%15 Boss Pet)\n [özel: Sadece İtemshop paketlerinde]\n - |~ff82ff7d|H|h1x Beyaz Rex (%30 Taş Binek)\n [özel: Sadece İtemshop paketlerinde]\n - |~ff82ff7d|H|h1x Bruce (%15 Taş Evcil Hayvan)\n [özel: Sadece İtemshop paketlerinde]\n - Ejderha Buffi\n - Saldırı Buffi\n - 2x Buffi Güçlendirici (Int +200)\n - Gümüş Premium Parşömen
+50224	Big IS Package	Bu Kutunun İçeriği: (Değer: 52.5k Sikke = %24 indirim) - 2x "Yeşil Kurtarıcı Büyüsü" \n - 1x Biyolog Sandığı I \n - |~ff82ff7d|H|h1x Buz Anka Kuşu (%30 Boss Bineği)\n [özel uçan binek: Sadece 100€ IS paketinde] - |~ff82ff7d|H|h1x Wayne (%15 Boss Pet)\n [özel: Sadece IS paketlerinde]\n - |~ff82ff7d|H|h1x Fire Rex (%30 Taş Binek)\n [özel uçan binek: Sadece 100 € IS paketinde]\n - |~ff82ff7d|H|h1x Bruce (%15 Taş Pet)\n [özel: Sadece IS paketlerinde]\n - Dragon Buffi\n - Attack Buffi\n - 2x Buffi Booster (Int +200)\n - Golden Premium Scroll\n - 1x Biologist Chest II\n - 3x Golden Shiva Token\n - 1x Pet-Name Changer\n - 1x Mount-Name Changer\n - 1x Buffi Name-Changer\n - |~ff82ff7d|H|h1x Blue Rex (30% Monster Mount)\n [exclusive: Sadece 100€ IS paketinde]\n - |~ff82ff7d|H|h1x Kara Çöl Savaşçısı Kostümü\n [özel: Sadece 100€ IS paketinde]\n - |~ff82ff7d|H|h1x Sarı Maymun (PvP Evcil Hayvan)\n [özel: Sadece 100€ IS paketinde]
+50266	Jotun Thrym Sandığı	Jotun Thrym sandığı. Ağır kilidi içinde değerli bir şey bulunduğunu gösterir.
+50267	Altın Okey Sandığı	Bu ödülü almak için bir okey turunda 400 veya daha fazla puan topla.
+50270	Kraliçe Meley'in Sandığı	Bu sandık Kraliçe Meley'in ininde bulundu. Gerçek bir kraliyet hazine içerr. Bu eşyanın ticareti var.
+50271	Ejderha Bekçisi Sandığı	Bu sandık sayısız ejderha bekçisinin birkaç nadir ve yüzyıllardan beri kaybolduğu sanılan hazineleri içerir. Bu eşyanın ticareti var.
+50272	Altın Patron Avcısı San.	Patron avındaki kahramanlıkların için altın ödül
+50285	Demirden Savaş Blg. San.	Değerli bir içeriğe sahip bir sandık.
+50286	Altından Savaş Blg. San.	Değerli bir içeriğe sahip bir sandık.
+50287	Alan Sandığı 1	Kullanışlı ekipman içeren bir sandık.
+50288	Alan Sandığı 2	Kullanışlı ekipman içeren bir sandık.
+50289	Reenkarnasyon	Reenkarnasyon seni anında ve bekleme süresi olmadan yeniden canlandırır.
+50290	Ahşaptan Savaş Blg. San.	Değerli bir içeriğe sahip bir sandık.
+50323	Kitap Sandığı Misilleme	Bu sandık misilleme becerilerinin öğrenilmesini sağlayan rastgele bir beceri kitabı içerir.
+50324	Kitap Sandığ Güçlendirme	Bu sandık güçlendirme becerilerinin öğrenilmesini sağlayan rastgele bir beceri kitabı içerir.
+50500	Armor Socket Enhancer	Zırhınızda dördüncü taş yuvasını açar.
+50501	Weapon Socket Enhancer	Silahınızda dördüncü taş yuvasını açar.
+50514	Ders Kitabı Güçlendirme	Bu ders kitabı dokuz güçlendirme becerisinden birini öğrenmeni sağlar. Sana uygun olan beceri seçilir.
+50515	Ders Kitabı Misilleme	Bu ders kitabı dokuz misilleme becerisinden birini tercih edebilmeni sağlar. Seçimini akıllıca yap!
+50516	Kılıç Çevirme Misilleme	Bu kitap sana kılıç çevirmeyle hasarını düşürmeyi öğretir.
+50517	Suikast Misillemesi	Bu kitap sana suikastle hasarını düşürmeyi öğretir.
+50518	Parmak Darbesi Misilleme	Bu kitap sana parmak darbesiyle hasarını düşürmeyi öğretir.
+50519	Ejderha Atışı Misilleme	Bu kitap sana ejderha atışıyla hasarını düşürmeyi öğretir.
+50520	Ruh Vuruşu Misillemesi	Bu kitap sana ruh vuruşuyla hasarını düşürmeyi öğretir.
+50521	Ateşli Ok Misillemesi	Bu kitap sana ateşli okla hasarını düşürmeyi öğretir.
+50522	Karanlık Vuruş Misilleme	Bu kitap sana karanlık vuruşla hasarını düşürmeyi öğretir.
+50523	Şimşek Çağırma Misilleme	Bu kitap sana şimşek çağırmayla hasarını düşürmeyi öğretir.
+50524	Kurt Nefesi Misillemesi	Bu kitap sana kurt nefesiyle hasarını düşürmeyi öğretir.
+50525	Ruh Taşı+	Bu efsanevi taş güçlendirme ve misilleme becerilerinin Grandmaster becerilerini artırır. Taş kullanıldıktan sonra yok olur.
+50560	Kılıç Çevirme Güçlendir.	Bu kitap sana kılıç çevirmeyi güçlendirme becerisini öğretir.
+50561	Suikast Güçlendirmesi	Bu kitap sana suikasti güçlendirme becerisini öğretir.
+50562	Parmak Darbesi Güçlendir	Bu kitap sana parmak darbesini güçlendirme becerisini öğretir.
+50563	Ejderha Atışı Güçlendirm	Bu kitap sana ejderha atışı güçlendirme becerisini öğretir.
+50564	Ruh Vuruşu Güçlendirmesi	Bu kitap sana ruh vuruşu güçlendirme becerisini öğretir.
+50565	Ateşli Ok Güçlendirmesi	Bu kitap sana ateş okunu güçlendirme becerisini öğretir.
+50566	Karanlık Vuruş Güçlendir	Bu kitap sana karanlık vuruşun güçlendirme becerisini öğretir.
+50567	Şimşek Çağırma Güçlendir	Bu kitap sana şimşek çağırma güçlendirme becerisini öğretir.
+50568	Kurt Nefesi Güçlendirme	Bu kitap sana kurt nefesi güçlendirme becerisini öğretir.
+50569	Legendary Soul Stone	Bu taşın içinde saklanan güçlü ruh senin Perfect Grand Master becerilerini geliştirebilir.
+50570	Legendary Soul Stone	Bu taşın içinde saklanan efsanevi ruh senin Perfect becerilerini tek seferde Efsanevi yapabilir.
+50571	Legendary Soul Stone	Bu taşın içinde saklanan efsanevi ruh senin Perfect becerilerini tek seferde Efsanevi yapabilir.
+50640	Azure	Özenle yontulmuş bir mavi cevher. Değerli bir takı haline getirilebilir.
+50926	Glimmerstone	Gaya tüccarından topladığınız glimmerstone'ları değerli gayaya dönüştürebilirsiniz.
+51723	Fosil Ağaç Gövdesi	Aksesuarlara dayanıklılık kazandıran değerli bir odun.
+51724	Bakır	Bazen bronz ve bozuk para yapımında kullanılır | Bakır aksesuarlara eklenebilir.
+51725	Gümüş	Mücevher yapımında kullanılan parlak bir soy metal.
+51726	Altın	Mücevher yapımında kullanılır. | Altın aksesuarlara eklenebilir.
+51727	YeşimTaşı	5000 yılı aşkın süredir kullanılan değerli bir mineral. Mücevher yapımında hala kullanılır.
+51728	Abanoz	Tüm odunların en parlak ve güçlüsü.| Abanoz aksesuarlara eklenebilir.
+51729	İnci	Sedeften üretilen, zarif şekilde parıldayan, mücevherlerin mücevheridir.
+51730	Beyaz Altın	Dayanıklı, beyazlaştırılmış bu altın mücevher yapımında sevilerek kullanılır.
+51731	Kristal	Farklı renklerde olabilen kristal kuvars. Mücevher yapımında sıkça kullanılır.
+51732	Ametist	Mor kuartz.| Ametist aksesuarlara eklenebilir.
+51733	Cennetin Gözyaşı	Cennetten kristalleşmiş yağmur | Cennetin gözü aksesuarlara eklenebilir.
+51734	Ruh Kristali	Bu kristal ruh kadar saf. Mücevher üretiminde kullanılabilir.
+51735	Yakut	Özenle yontulmuş bir kırmızı cevher. Değerli bir takı haline getirilebilir.
+51736	Grena	Özenle yontulmuş turuncu bir cevher. Değerli bir takı haline getirilebilir.
+51737	Zümrüt	Özenle yontulmuş bir yeşil cevher. Değerli bir takı haline getirilebilir.
+51738	Safir	Özenle yontulmuş bir mavi cevher. Değerli bir takı haline getirilebilir.
+51740	Azure	Özenle yontulmuş bir mavi cevher. Değerli bir takı haline getirilebilir.
+55001	Protein Lokması	Yorgun petini lezzetli protein lokmaları ile beslersen tamamen yenilenecektir. Yeniden canlandıran besinle ölü bir peti beslersen %50 oranla dirilir.
+55002	Nakliye Kutusu	Petini nakliye kutusuna koyarsan 30 gün boyunca ticareti yapılır hale gelir.
+55003	Genç Pet Kitabı	Şu eşyaların yardımı ile petini bir sonraki seviyeye (Yabani Pet) yükseltebilirsin: 10x Genç Pet Kitabı, 10x Örümcek Yumurta Kesesi, 10x B. Domuzkuyruğu Kurdele+, 10x Shiriken, 10x Süslü Saç Tokası, 5x Siyah Üniforma+, 5x Buz Parçası+.
+55004	Yabani Pet Kitabı	Şu eşyaların yardımı ile petini bir sonraki seviyeye (Cesur Pet) yükseltebilirsin: 10x Yabani Pet Kitabı, 2x Kankırmızı İnci, 10x Yüz Kremi, 10x Yeti Postu+, 10x Süs Eşyası, 10x Çile, 5x Lanet Kitabı+.
+55005	Cesur Pet Kitabı	Şu eşyaların yardımı ile petini bir sonraki seviyeye (Kahraman Eğitimi) yükseltebilirsin: 10x Cesur Pet Kitabı, 10 Bilinmeyen İlaç+, 2x Beyaz İnci, 2x Mavi İnci, 10x Şeytan Hatırası+, 10x Ork Dişi+, 5x Mavi Kemer.
+55006		
+55008	Pet İsmi Parşömeni	Petinin ismini değiştirmek için parşömeni petinin üzerine çek.
+55009	Pet Kitabı Sandığı	Rastgele seçilmiş bir pet beceri kitabı içerir.
+55010	Canavar Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın canavarlara karşı hasarını artırır.
+55011	Metin Taşları Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın Metin Taşlarına karşı hasarını artırır.
+55012	Bosslar Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın bosslara karşı hasarını artırır.
+55013	Yaşam Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın maksimum HP’ni artırır.
+55014	Zehir Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın saldırılarına düşmanı zehirleme şansı verir.
+55015	Anti-Kritik Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın kritik darbe alma ihtimalini azaltır.
+55016	Anti-Delici Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın delici darbe alma ihtimalini azaltır.
+55017	Ateş Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın ateş elementine karşı gücünü artırır.
+55018	Buz Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın buz elementine karşı gücünü artırır.
+55019	Toprak Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın toprak elementine karşı gücünü artırır.
+55020	Rüzgar Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın rüzgar elementine karşı gücünü artırır.
+55021	Yenilenme Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın zamanla HP’ni kademeli olarak yeniler.
+55022	Ok Kaçınma Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın ok saldırılarından kaçma şansını artırır.
+55023	Eşya Düşürme Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın eşya düşürme oranını artırır.
+55024	Saldırgan Kitabı	Bu yeteneği öğrendikten sonra evcil hayvanın toplam saldırı değerini artırır.
+55025	Berserker Kitabı (H)	Bu yeteneği öğrendikten sonra evcil hayvanın büyü/yakın dövüş hasarını artırır.
+55026	Beceri Hasarı Kitabı (H)	Bu yeteneği öğrendikten sonra evcil hayvanın becerilerinin hasarını artırır.
+55027	Beceri Direnci Kitabı (H)	Bu yeteneği öğrendikten sonra evcil hayvanın beceri hasarına direncini artırır.
+55028	Ortalama Hasar Kitabı (H)	Bu yeteneği öğrendikten sonra evcil hayvanın ortalama hasarını artırır.
+55029	Yarı İnsan Direnci Kitabı (H)	Bu yeteneği öğrendikten sonra evcil hayvanın yarı insanlara karşı direncini artırır.
+55030	Element Kitabı (H)	Bu yeteneği öğrendikten sonra evcil hayvanın element hasarını artırır.
+55260	Fire Infusion [I]	İlk aşamasındaki Kadim Ateş İnfüzyonu.	Geliştirilebilir
+55261	Water Infusion [I]	İlk aşamasındaki Kadim Su İnfüzyonu.	Geliştirilebilir
+55262	Earth Infusion [I]	İlk aşamasındaki Kadim Toprak İnfüzyonu.	Geliştirilebilir
+55263	Wind Infusion [I]	İlk aşamasındaki Kadim Rüzgar İnfüzyonu.	Geliştirilebilir
+55264	Dark Infusion [I]	İlk aşamasındaki Kadim Karanlık İnfüzyonu.	Geliştirilebilir
+55265	Light Infusion [I]	İlk aşamasındaki Kadim Işık İnfüzyonu.	Geliştirilebilir
+55270	Fire Infusion [II]	Daha iyi hale getirebilir Nadir bir Ateş İnfüzyonu.	Geliştirilebilir
+55271	Water Infusion [II]	Daha iyi hale getirebilir Nadir bir Su İnfüzyonu.	Geliştirilebilir
+55272	Earth Infusion [II]	Daha iyi hale getirebilir Nadir bir Toprak İnfüzyonu.	Geliştirilebilir
+55273	Wind Infusion [II]	Daha iyi hale getirebilir Nadir bir Rüzgar İnfüzyonu.	Geliştirilebilir
+55274	Dark Infusion [II]	Daha iyi hale getirebilir Nadir bir Karanlık İnfüzyonu.	Geliştirilebilir
+55275	Light Infusion [II]	Daha iyi hale getirebilir Nadir bir Işık İnfüzyonu.	Geliştirilebilir
+55280	Fire Infusion [III]	Kullanılabilir olmak için mükemmelleştirilmiş bir Ateş İnfüzyonu.	Geliştirilebilir
+55281	Water Infusion [III]	Kullanılabilir olmak için mükemmelleştirilmiş bir Su İnfüzyonu.	Geliştirilebilir
+55282	Earth Infusion [III]	Kullanılabilir olmak için mükemmelleştirilmiş bir Toprak İnfüzyonu.	Geliştirilebilir
+55283	Wind Infusion [III]	Kullanılabilir olmak için mükemmelleştirilmiş bir Rüzgar İnfüzyonu.	Geliştirilebilir
+55284	Dark Infusion [III]	Kullanılabilir olmak için mükemmelleştirilmiş bir Karanlık İnfüzyonu.	Geliştirilebilir
+55285	Light Infusion [III]	Kullanılabilir olmak için mükemmelleştirilmiş bir Işık İnfüzyonu.	Geliştirilebilir
+55290	Fire Infusion [IV]	Harika olma şansı olan Efsanevi Ateş İnfüzyonu.	Geliştirilebilir
+55291	Water Infusion [IV]	Harika olma şansı olan Efsanevi Su İnfüzyonu.	Geliştirilebilir
+55292	Earth Infusion [IV]	Harika olma şansı olan Efsanevi Toprak İnfüzyonu.	Geliştirilebilir
+55293	Wind Infusion [IV]	Harika olma şansı olan Efsanevi Rüzgar İnfüzyonu.	Geliştirilebilir
+55294	Dark Infusion [IV]	Harika olma şansı olan Efsanevi Karanlık İnfüzyonu.	Geliştirilebilir
+55295	Light Infusion [IV]	Harika olma şansı olan Efsanevi Işık İnfüzyonu.	Geliştirilebilir
+55300	Fire Infusion [V]	Efsanevi Ateş İnfüzyonu'nun en iyi hali.
+55301	Water Infusion [V]	Efsanevi Su İnfüzyonu'nun en iyi hali.
+55302	Earth Infusion [V]	Efsanevi Toprak İnfüzyonu'nun en iyi hali.
+55303	Wind Infusion [V]	Efsanevi Rüzgar İnfüzyonu'nun en iyi hali.
+55304	Dark Infusion [V]	Efsanevi Karanlık İnfüzyonu'nun en iyi hali.
+55305	Light Infusion [V]	Efsanevi Işık İnfüzyonu'nun en iyi hali.
+55401	Maymun Yumurtası	Petinin yumurtadan çıkmasını istiyorsan sağ fare tuşu ile yumurtayı tıkla.
+55402	Örümcek Yumurtası	Petinin yumurtadan çıkmasını istiyorsan sağ fare tuşu ile yumurtayı tıkla.
+55403	Razadör Yumurtası	Petinin yumurtadan çıkmasını istiyorsan sağ fare tuşu ile yumurtayı tıkla.
+55404	Nemere Yumurtası	Petinin yumurtadan çıkmasını istiyorsan sağ fare tuşu ile yumurtayı tıkla.
+55405	Mavi Ejderha Yumurtası	Petini kuluçkadan çıkarmak istersen farenin sağ tuşuyla yumurtaya tıkla.
+55406	Kızıl Ejderha Yumurtası	Petini kuluçkadan çıkarmak istersen farenin sağ tuşuyla yumurtaya tıkla.
+55407	Azrailcik yumurtası	Petini kuluçkadan çıkarmak istersen farenin sağ tuşuyla yumurtaya tıkla.
+55408	Tombk cellatck yumurtası	Petini kuluçkadan çıkarmak istersen farenin sağ tuşuyla yumurtaya tıkla.
+55409	Baashido Yavrusu Yumurt.	Petini kuluçkadan çıkarmak istersen farenin sağ tuşuyla yumurtaya tıkla.
+55410	Nessie yumurtası	Petini kuluçkadan çıkarmak istersen, farenin sağ tuşuyla yumurtaya tıkla.
+55701	Küçük Maymun	Petini sağ fare tuşu ile çağır ve ardından P tuşu ile pet kullanıcı ara birimini görüntüle.
+55702	Küçük Örümcek	Petini sağ fare tuşu ile çağır ve ardından P tuşu ile pet kullanıcı ara birimini görüntüle.
+55703	Küçük Razadör	Petini sağ fare tuşu ile çağır ve ardından P tuşu ile pet kullanıcı ara birimini görüntüle.
+55704	Küçük Nemere	Petini sağ fare tuşu ile çağır ve ardından P tuşu ile pet kullanıcı ara birimini görüntüle.
+55705	Küçük Ejderha	Petini farenin sağ tuşuna tıklayarak çağır. Sonra "P" tuşuna basarak petinin kullanıcı arayüzünü görüntüle.
+55706	Küçük Meley	Petini farenin sağ tuşuna tıklayarak çağır. Sonra "P" tuşuna basarak petinin kullanıcı arayüzünü görüntüle.
+55707	Azrailcik	Petini farenin sağ tuşuna tıklayarak çağır. Sonra "P" tuşuna basarak petinin kullanıcı arayüzünü görüntüle.
+55708	Tombik cellatcık	Petini farenin sağ tuşuna tıklayarak çağır. Sonra "P" tuşuna basarak petinin kullanıcı arayüzünü görüntüle.
+55709	Baashido Yavrusu	Petini farenin sağ tuşuna tıklayarak çağır. Sonra "P" tuşuna basarak petinin kullanıcı arayüzünü görüntüle.
+55710	Nessie	Petini farenin sağ tuşuna tıklayarak çağır. Sonra "P" tuşuna basarak petinin kullanıcı arayüzünü görüntüle.
+56000	Appaloosa	Bu mühürle iyi huylu Appaloosa midillini çağırabilirsin. Binicisine +10 hareket hızı kazandırır.
+69544	Nova Token	Etkinliklerdeki özel kozmetikleri almakta kullanılır.
+71000	Eğitim Dönüşüm Parşömeni	Bu nesne güçlendirme ve misilleme becerilerini tamamen silmeni sağlar. Ders kitaplarıyla (misilleme ve güçlendirme) bunları yeniden öğrenebilirsin.
+71165	Kutup predatörü	Savaşsever Kutup Predatörü'nü yanına çağıran bir mühür. Hareket hızını 60 artırır.
+71189	Efsun Nesnesi+	Eşyalarından birindeki bonusları siler ve yeni bir bonus ekler. Yeni bonuslar sana öncesinde gösterilir ve ardından görüntülenen bonusları isteyip istemediğini belirlersin.
+71190	Bal Kabağı Kutusu	Bu bal kabağı kutusunu sadece çok özel başarılar karşılığında elde edersin.
+71191	Şekerleme Poşeti	Sam Pumpkin bu poşetin içeriğiyle geceni tatlandıracak. Aç ve sürprizlere hazır ol!
+71192	Gürleme	Gümbürtü isimli ren geyiğini yanına çağıran bir mühür. Hareket hızını 20, tecrübe toplamayı %30 artırır.
+71193	Şimşek	Şimşek isimli ren geyiğini yanına çağıran bir mühür. Hareket hızını 20, tecrübe toplamayı %30 artırır.
+71194	Altın Okey Kutusu	24 okey toplama kartı içeren (toplam 120) 5 kart setine sahip olursun. Etkinlik sona erince artık kart elde edemezsin.
+71195	Gümüş Okey Kutusu	24 okey toplama kartı içeren bir kart seti alırsın. Etkinlik sona erince artık kart elde edemezsin.
+71196	Bronz Okey Kutusu	6 okey toplama kartı elde edersin. Etkinlik sona erince artık kart elde edemezsin.
+71197	Nugget (lacivert)	Korkunç savaş tavuğu Nugget'i yanına çağıran bir mühür. Sana +%15 canavarlara karşı güç sağlar ve tecrübe toplamayı %30 artırır.
+71198	Muffin (pembe)	Korku salan savaş tavuğu Muffin'i yanına çağıran bir mühür. Sana +%15 canavarlara karşı güç sağlar ve tecrübe toplamayı %30 artırır.
+71220	Kizaghan'ın Atı	Bu mühürle Kizaghan'ın atını kullanabilirsin. Yüzde 5 daha fazla tecrübeyi, maks. HP +1500 ve +20 hareket hızını garantiledin.
+71235	Kerberos (altın)	Bu mühürle ürkütücü üç başlı cehennem köpeğini çağırırsın.
+71236	Kerberos (gümüş)	Bu mühürle ürkütücü üç başlı cehennem köpeğini çağırırsın.
+71237	Yaban domuzu	Mührün büyüsü, seni hızlıca istediğin yere götürecek, güçlü bir hayvanın ruhunu çağırır.
+71238	Kurt	Mührün büyüsü, seni hızlıca istediğin yere götürecek, güçlü bir hayvanın ruhunu çağırır.
+71239	Kaplan	Mührün büyüsü, seni hızlıca istediğin yere götürecek, güçlü bir hayvanın ruhunu çağırır.
+71240	Aslan	Mührün büyüsü, seni hızlıca istediğin yere götürecek, güçlü bir hayvanın ruhunu çağırır.
+71241	Binicilik bileti	10 dakika boyunca bir midilliye binmek için kartı donat.
+72325	Yansıtmayı Geri Alma	Nesnelerin yansıtmasını sıfırlar.
+72326	Yansıtmayı Geri Alma	Nesnelerin yansıtmasını sıfırlar ve öğeyi iade edin.
+72709	Kaplan Kemiği Küpesi	Saldırı değerini 20 saatliğine 200 puan artırır (süresi ancak eşya kuşanıldığında başlar).
+72710	Ejder Kemiği Küpesi	Savunma değerini 20 saatliğine 300 puan artırır (süresi ancak eşya kuşanıldığında başlar).
+72711	Kaplan Kemiği Bilezik	Becerilerin verdiği hasarı 20 saatliğine 30 puan artırır (süresi ancak eşya kuşanıldığında başlar).
+72712	Ejder Kemiği Bilezik	Becerilere karşı savunmayı 20 saatliğine 30 puan artırır (süresi ancak eşya kuşanıldığında başlar).
+72800	Kağıt-Yakut Damarı	Karakterin yanına cennetin göz yaşları Yakut damarı çağırır.
+72801	Kağıt-Grena Damarı	Karakterin yanına cennetin göz yaşları Grena damarı çağırır.
+72802	Kağıt-Zümrüt Damarı	Karakterin yanına cennetin göz yaşları Zümrüt damarı çağırır.
+72803	Kağıt-Safir Damarı	Karakterin yanına cennetin göz yaşları Safir damarı çağırır.
+72804	Kağıt-Turmalin Maden Damarı	Karakterin yanına cennetin göz yaşları Turmalin damarı çağırır.
+76191	Green Savior Spell	İstediğiniz 1-5 bonusları seçmenizi sağlar, bonuslar en yüksek oranda gelir.
+76192	Blue Rare Spell	İstediğiniz 6-7 bonusları seçmenizi sağlar, bonuslar en yüksek oranda gelir.
+79505	Okey Koleksiyon Kartı	24 okey koleksiyon kartı toplarsan otomatik olarak bir okey kart seti elde edersin.
+79506	Okey Kart Seti	Bu kart setiyle bir okey turu başlatabilirsin. Kart seti oyun başlangıcından sonra otomatik olarak envanterinden silinir.
+80018	NC kuponu (6000)	6000 Ejderha Parası değerinde kupon. Bu eşyanın ticareti var.
+85001	Hakim Kuşağı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+85002	Hakim Kuşağı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+85003	Hakim Kuşağı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+85004	Hakim Kuşağı(kişiye öz.)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+85005	Usta Kuşağı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+85006	Usta Kuşağı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+85007	Usta Kuşağı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+85008	Usta Kuşağı (kişiye öz.)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+85009	Certificate of Reversal	Kuşağınızdaki bonusları ve eşyayı tamamen yok eder.
+85010	Certificate of Reversal+	Kuşağınızdaki bonusları siler ve emdirilen eşyayı geri verir.
+85011	Bey Kuşağı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+85012	Bey Kuşağı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+85013	Bey Kuşağı (soylu)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+85014	Bey Kuşağı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+85015	Kral Kuşağı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+85016	Kral Kuşağı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+85017	Kral Kuşağı (soylu)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+85018	Kral Kuşağı (kişiye öze)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+85021	Yıldönümü kuşağı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+85022	Yıldönümü kuşağı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+85023	Yıl dönümü kuşağı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+85024	Yıldön. kuşağı (kiş. ö.)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86001	Zi Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86002	Zi Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86003	Zi Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86004	Zi Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86005	Chou Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86006	Chou Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86007	Chou Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86008	Chou Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86011	Yin Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86012	Yin Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86013	Yin Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86014	Yin Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86015	Mao Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86016	Mao Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86017	Mao Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86018	Mao Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86021	Chen Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86022	Chen Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86023	Chen Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86024	Chen Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86025	Si Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86026	Si Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86027	Si Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86028	Si Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86031	Wu Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86032	Wu Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86033	Wu Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86034	Wu Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86035	Wei Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86036	Wei Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86037	Wei Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86038	Wei Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86041	Shen Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86042	Shen Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86043	Shen Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86044	Shen Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86045	Yu Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86046	Yu Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86047	Yu Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86048	Yu Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86051	Xu Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86052	Xu Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86053	Xu Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86054	Xu Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+86055	Hai Bandı (basit)	Bu kuşak kullandığın silah veya zırha ait bonusun %1'ini emer.
+86056	Hai Bandı (zarif)	Bu kuşak kullandığın silah veya zırha ait bonusun %5'ini emer.
+86057	Hai Bandı (asil)	Bu kuşak kullandığın silah veya zırha ait bonusun %10'unu emer.
+86058	Hai Bandı (kişiye özel)	Bu kuşak kullandığın silah veya zırha ait bonusun %11~25'ini emer.
+91010	Buffi	Karakterinizi otomatik olarak ejderha gücü şamanı becerileriyle kutsar.
+91011	Buffi	Karakterinizi otomatik olarak ejderha gücü şamanı becerileriyle kutsar.
+91012	Buffi	Karakterinizi otomatik olarak ejderha gücü şamanı becerileriyle kutsar.
+91013	Buffi	Karakterinizi otomatik olarak ejderha gücü şamanı becerileriyle kutsar.
+91014	Buffi	Karakterinizi otomatik olarak ejderha gücü şamanı becerileriyle kutsar.
+91015	Buffi	Karakterinizi otomatik olarak ejderha gücü şamanı becerileriyle kutsar.
+91016	Healer	Karakterinizi otomatik olarak iyileştirme şamanı becerileriyle kutsar.
+91017	Healer	Karakterinizi otomatik olarak iyileştirme şamanı becerileriyle kutsar.
+91018	Healer	Karakterinizi otomatik olarak iyileştirme şamanı becerileriyle kutsar.
+91019	Healer	Karakterinizi otomatik olarak iyileştirme şamanı becerileriyle kutsar.
+91020	Healer	Karakterinizi otomatik olarak iyileştirme şamanı becerileriyle kutsar.
+91021	Healer	Karakterinizi otomatik olarak iyileştirme şamanı becerileriyle kutsar.

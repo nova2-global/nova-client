@@ -870,3 +870,40 @@ ITEM_GET	Kapott: %s	SA
 ITEM_GET_FROM_PARTY	Kapott: %s tőle: %s	SAA
 ITEM_DELIVER_TO_PARTY	Átadva: %s neki: %s	SAA
 MAINTENANCE_TIME_LEFT	Karbantartásig:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Vérző támadás elleni ellenállás + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Vérző támadás + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Vérfarkasok elleni erő + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Védekezési esély vérfarkas-támadás ellen %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Karom védelem +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Varázs ellenállás +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Főnökökkel szembeni erő +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Metinekkel szembeni erő +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Villám ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Tűz ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Jég ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Szél ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Föld ereje +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Sötétség ereje +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Félemberek elleni védelem %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Szuper tökéletes mester
+MESSENGER_HELPER	Segítő
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blokkol
+TARGET_BUTTON_UNBLOCK	Feldoldás
+BLOCK_PLAYER_TITLE	Tiltott játékos
+UNBLOCK_PLAYER_DIALOG	Fel szeretné oldani %s?
+BLOCKED_PLAYERS_TITLE	Tiltott játékos
+WHISPER_ERROR_BLOCK_YOU	Nem küldhetsz üzenetet %s számára mert le tiltotta önt
+GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
+GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	Csatornák
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Mégse
+CHANNEL	Csatorna
+ADD_4TH_STONE_ALREADY_ADDED	You have already unlocked the 4th slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	You must have at least 3 attached stones.
+ADD_4TH_STONE_ONLY_ARMOR	This scroll only works for Armours.
+ADD_4TH_STONE_ONLY_WEAPON	This scroll only works for Weapons.
+ADD_4TH_STONE_NOT_POSSIBLE	You cannot use this scroll on this item.
+ADD_4TH_STONE_ADD_QUESTION	Do you wish to open a space for a 4th socket?

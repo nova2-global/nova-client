@@ -74,6 +74,14 @@ class GameWindow(ui.ScriptWindow):
 		self.quickSlotPageIndex = 0
 		self.lastPKModeSendedTime = 0
 		self.pressNumber = None
+		# The change-channel quick switch (NOVA-49): while X is held, 1-4 ask
+		# for that channel instead of using a quickslot.
+		self.channelSwitchMode = False
+		# Whisper details (NOVA-48): when each open whisper dialog's target was
+		# last asked about.
+		self.whisperDetailsAskTime = {}
+		# The channel the server info text was last checked against (NOVA-49).
+		self.shownChannel = 0
 
 		self.guildWarQuestionDialog = None
 		self.interface = None
@@ -380,6 +388,7 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_L]			= lambda: self.interface.ToggleChatLogWindow()
 		onPressKeyDict[app.DIK_COMMA]		= lambda: self.ShowConsole()		# "`" key
 		onPressKeyDict[app.DIK_LSHIFT]		= lambda: self.__SetQuickPageMode()
+		onPressKeyDict[app.DIK_X]			= lambda: self.__SetChannelSwitchMode(True)
 
 		onPressKeyDict[app.DIK_J]			= lambda: self.__PressJKey()
 		onPressKeyDict[app.DIK_H]			= lambda: self.__PressHKey()
@@ -414,6 +423,7 @@ class GameWindow(ui.ScriptWindow):
 		onClickKeyDict[app.DIK_LALT] = lambda: self.HideName()
 		onClickKeyDict[app.DIK_LCONTROL] = lambda: self.HideMouseImage()
 		onClickKeyDict[app.DIK_LSHIFT] = lambda: self.__SetQuickSlotMode()
+		onClickKeyDict[app.DIK_X] = lambda: self.__SetChannelSwitchMode(False)
 
 		#if constInfo.PVPMODE_ACCELKEY_ENABLE:
 		#	onClickKeyDict[app.DIK_B] = lambda: self.ChangePKMode()
@@ -444,6 +454,13 @@ class GameWindow(ui.ScriptWindow):
 					chrmgr.SetEmoticon(-1,int(num)-1)
 					net.SendEmoticon(int(num)-1)
 		else:
+			# Hold X and press 1-4 to move to that channel (NOVA-49, OLD's
+			# default quick switch, game.py:1881-1890); the server checks the
+			# move.
+			if self.channelSwitchMode:
+				if num >= 1 and num <= 4:
+					net.SendChatPacket("/ch %d" % num)
+				return
 			if num >= 1 and num <= 4:
 				self.pressNumber(num-1)
 
@@ -513,6 +530,12 @@ class GameWindow(ui.ScriptWindow):
 
 	def __SetQuickPageMode(self):
 		self.pressNumber=ui.__mem_func__(self.__SelectQuickPage)
+
+	# X pressed (True) or released (False): the channel quick switch (NOVA-49).
+	# OLD's X also jumped and flew (OnXIn); that is not ported. NEW has no
+	# key-binding table, so the key is fixed (OLD's rebindable slot 77).
+	def __SetChannelSwitchMode(self, isOn):
+		self.channelSwitchMode = isOn
 
 	def __PressQuickSlot(self, localSlotIndex):
 		if app.IsRTL():
@@ -712,6 +735,9 @@ class GameWindow(ui.ScriptWindow):
 
 		guildNameBoard = uiCommon.InputDialog()
 		guildNameBoard.SetTitle(localeInfo.GUILD_NAME)
+		# Guild names of up to 24 characters since the foundation cut (the
+		# client's guild.GUILD_NAME_MAX_LEN); the dialog's own limit is 12.
+		guildNameBoard.SetMaxLength(guild.GUILD_NAME_MAX_LEN)
 		guildNameBoard.SetAcceptEvent(ui.__mem_func__(self.ConfirmGuildName))
 		guildNameBoard.SetCancelEvent(ui.__mem_func__(self.CancelGuildName))
 		guildNameBoard.Open()
@@ -887,6 +913,12 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.RecvWhisper(name)
 
 	def OnRecvWhisperError(self, mode, name, line):
+		# The target blocked the sender (NOVA-47): said in the whisper and no
+		# more, as OLD (game.py:1448-1458).
+		if mode == chat.WHISPER_TYPE_SENDER_IS_BLOCKED:
+			chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, localeInfo.WHISPER_ERROR_BLOCK_YOU % (name))
+			return
+
 		if mode in localeInfo.WHISPER_ERROR:
 			chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, localeInfo.WHISPER_ERROR[mode](name))
 		else:
@@ -1488,8 +1520,62 @@ class GameWindow(ui.ScriptWindow):
 			self.__XMasBoom_Update()
 
 		self.interface.BUILD_OnUpdate()
-		
-		
+
+		self.__AskWhisperDetails()
+		self.__RefreshChannelInfo()
+
+	## Whisper details (NOVA-48): every open whisper dialog with a target asks
+	## at once and then every two seconds whether its target is online. OLD
+	## polled from each dialog and asked for the name "0" without a target;
+	## the dialog without a target is not in whisperDialogDict.
+	WHISPER_DETAILS_INTERVAL = 2.0
+
+	def __AskWhisperDetails(self):
+		dialogs = self.interface.whisperDialogDict
+		asked = self.whisperDetailsAskTime
+		for name in list(asked):
+			if name not in dialogs:
+				del asked[name]
+		if not dialogs:
+			return
+
+		now = app.GetTime()
+		for name in list(dialogs):
+			if not isinstance(name, str) or not name:
+				continue
+			if name in asked and now - asked[name] < self.WHISPER_DETAILS_INTERVAL:
+				continue
+			asked[name] = now
+			net.SendWhisperDetailsPacket(name)
+
+	# The server's answer: the open dialog to that name shows it.
+	def BINARY_WhisperDetails(self, name, online, language):
+		if not self.interface:
+			return
+		dialog = self.interface.whisperDialogDict.get(name)
+		if not dialog:
+			return
+		dialog.SetTargetDetails(online, language)
+
+	## The channel shown (NOVA-49): intrologin names the login channel in the
+	## server info text; after a channel change the new core's GC::CHANNEL
+	## (net.GetChannelNum) arrives after this window opened, so the text is
+	## checked here and set again when it names another channel. OLD did this
+	## through its SetChannel quest command (game.py:3013, 3300-3310).
+	def __RefreshChannelInfo(self):
+		channel = net.GetChannelNum()
+		if channel <= 0 or channel == self.shownChannel:
+			return
+		self.shownChannel = channel
+
+		text = constInfo.GET_CHANNEL_SERVER_INFO(channel)
+		if not text or text == net.GetServerInfo():
+			return
+		net.SetServerInfo(text)
+		refreshServerInfo = getattr(self.interface.wndMiniMap, "RefreshServerInfo", None)
+		if refreshServerInfo:
+			refreshServerInfo()
+
 	def UpdateDebugInfo(self):
 		#
 		# Output character coordinates and FPS
@@ -1690,11 +1776,13 @@ class GameWindow(ui.ScriptWindow):
 	def BINARY_GuildWar_OnSendDeclare(self, guildID):
 		pass
 
-	def BINARY_GuildWar_OnRecvDeclare(self, guildID, warType):
+	# The member cap and end score the declaring guild chose (NOVA-90, OLD
+	# game.py:2854-2908).
+	def BINARY_GuildWar_OnRecvDeclare(self, guildID, warType, maxMemberCount=0, endScore=0):
 		mainCharacterName = player.GetMainCharacterName()
 		masterName = guild.GetGuildMasterName()
 		if mainCharacterName == masterName:
-			self.__GuildWar_OpenAskDialog(guildID, warType)
+			self.__GuildWar_OpenAskDialog(guildID, warType, maxMemberCount, endScore)
 
 	def BINARY_GuildWar_OnRecvPoint(self, gainGuildID, opponentGuildID, point):
 		self.interface.OnRecvGuildWarPoint(gainGuildID, opponentGuildID, point)	
@@ -1721,7 +1809,7 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.UpdateMemberCount(guildID1, memberCount1, guildID2, memberCount2)
 		self.interface.wndMiniMap.UpdateObserverCount(observerCount)
 
-	def __GuildWar_OpenAskDialog(self, guildID, warType):
+	def __GuildWar_OpenAskDialog(self, guildID, warType, maxMemberCount=0, endScore=0):
 
 		guildName = guild.GetGuildName(guildID)
 
@@ -1734,7 +1822,7 @@ class GameWindow(ui.ScriptWindow):
 		questionDialog = nui_windows.make("guild-war-dialogs", uiGuild.AcceptGuildWarDialog, "nui_guild_war_accept.AcceptGuildWarDialog")
 		questionDialog.SAFE_SetAcceptEvent(self.__GuildWar_OnAccept)
 		questionDialog.SAFE_SetCancelEvent(self.__GuildWar_OnDecline)
-		questionDialog.Open(guildName, warType)
+		questionDialog.Open(guildName, warType, maxMemberCount, endScore)
 
 		self.guildWarQuestionDialog = questionDialog
 

@@ -1,8 +1,27 @@
+import re
 import wndMgr
 import ui
 import ime
 import app
 import nui_windows
+
+# OLD's amounts with a k, m or b suffix (OLD constInfo.py:574-585, read by
+# uiPickMoney.py:122): "5k" is 5000, "3m" and "3kk" 3000000, "2b"
+# 2000000000; a suffix's letter repeats its power. Plain digits are the number.
+MONEY_SUFFIX_POWERS = {"k": 10 ** 3, "m": 10 ** 6, "b": 10 ** 9}
+_MONEY_PATTERN = re.compile(r"(\d+)(%s)?" % "|".join("%s+" % suffix for suffix in MONEY_SUFFIX_POWERS), re.I)
+
+def ConvertTextToMoney(text):
+	"""The amount the text names, 0 when it holds no digits. OLD looked the
+	suffix up as typed, so an upper-case one ("5K") raised KeyError; any case
+	works here."""
+	match = _MONEY_PATTERN.search(text)
+	if not match:
+		return 0
+	digits, suffix = match.groups()
+	if not suffix:
+		return int(digits)
+	return int(digits) * MONEY_SUFFIX_POWERS[suffix[0].lower()] ** len(suffix)
 
 class PickMoneyDialog(ui.ScriptWindow):
 	def __init__(self):
@@ -94,10 +113,9 @@ class PickMoneyDialog(ui.ScriptWindow):
 
 		text = self.pickValueEditLine.GetText()
 
-		if len(text) > 0 and text.isdigit():
+		if len(text) > 0:
 
-			money = int(text)
-			money = min(money, self.maxValue)
+			money = min(ConvertTextToMoney(text), self.maxValue)
 
 			if money > 0:
 				if self.eventAccept:

@@ -42,15 +42,20 @@ def GetGVGKey(srcGuildID, dstGuildID):
 	minID = min(srcGuildID, dstGuildID)
 	maxID = max(srcGuildID, dstGuildID)
 	return minID*1000 + maxID
-def unsigned32(n):
-	return n & 0xFFFFFFFF
 	
 class DeclareGuildWarDialog(ui.ScriptWindow):
+
+	# The member cap and end score each input starts with (OLD's "32").
+	WAR_LIMIT_DEFAULT = "32"
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
 
 		self.type=0
+		# The war's member cap and end score (NOVA-90): None until the
+		# uiscript binds them, and under NovaUI, whose loader does not.
+		self.memberCountInput = None
+		self.endScoreInput = None
 		self.__CreateDialog()
 
 	def __del__(self):
@@ -60,6 +65,13 @@ class DeclareGuildWarDialog(ui.ScriptWindow):
 		self.inputValue.SetFocus()
 		self.SetCenterPosition()
 		self.SetTop()
+
+		# OLD uiGuild.py:412-416: number inputs, 32 each.
+		for warLimitInput in (self.memberCountInput, self.endScoreInput):
+			if warLimitInput:
+				warLimitInput.SetNumberMode()
+				warLimitInput.SetText(self.WAR_LIMIT_DEFAULT)
+
 		self.Show()
 
 	def Close(self):
@@ -69,6 +81,8 @@ class DeclareGuildWarDialog(ui.ScriptWindow):
 		self.cancelButton = None
 		self.inputSlot = None
 		self.inputValue = None
+		self.memberCountInput = None
+		self.endScoreInput = None
 		self.Hide()
 
 	def __CreateDialog(self):
@@ -94,6 +108,8 @@ class DeclareGuildWarDialog(ui.ScriptWindow):
 			self.cancelButton = getObject("CancelButton")
 			self.inputSlot = getObject("InputSlot")
 			self.inputValue = getObject("InputValue")
+			self.memberCountInput = getObject("MemberInputValue")
+			self.endScoreInput = getObject("EndScoreInputValue")
 
 			gameType=getObject("GameType")
 
@@ -124,10 +140,29 @@ class DeclareGuildWarDialog(ui.ScriptWindow):
 		if ""==text:
 			return
 
-		net.SendChatPacket("/war %s %d" % (text, type))
+		# With the member cap and end score when both inputs hold a number
+		# (NOVA-90, OLD uiGuild.py:487-493); without them the server takes its
+		# defaults. OLD sent nothing at all, and still closed, when an input
+		# was empty.
+		(memberCount, endScore) = self.GetWarLimits()
+		if memberCount is not None:
+			net.SendChatPacket("/war %s %d %s %s" % (text, type, memberCount, endScore))
+		else:
+			net.SendChatPacket("/war %s %d" % (text, type))
 		self.Close()
 
 		return 1
+
+	# The member cap and end score the inputs hold, or (None, None) when an
+	# input is missing (NovaUI) or holds no number.
+	def GetWarLimits(self):
+		if not self.memberCountInput or not self.endScoreInput:
+			return (None, None)
+		memberCount = self.memberCountInput.GetText().strip()
+		endScore = self.endScoreInput.GetText().strip()
+		if not memberCount.isdigit() or not endScore.isdigit():
+			return (None, None)
+		return (memberCount, endScore)
 
 	def __OnCancel(self):
 		self.Close()
@@ -217,20 +252,40 @@ class AcceptGuildWarDialog(ui.ScriptWindow):
 		ui.ScriptWindow.__init__(self)
 
 		self.type=0
+		# The declaring guild's member cap and end score (NOVA-90): None
+		# until the uiscript binds them, and under NovaUI, whose loader does
+		# not.
+		self.membersCountText = None
+		self.endScoreText = None
 		self.__CreateDialog()
 
 	def __del__(self):
 		print("---------------------------------------------------------------------------- DELETE AcceptGuildWarDialog")
 		ui.ScriptWindow.__del__(self)
 
-	def Open(self, guildName, warType):
+	def Open(self, guildName, warType, maxMemberCount=0, endScore=0):
 		self.guildName=guildName
 		self.warType=warType
 		self.__ClickSelectedTypeRadioButton()
 		self.inputValue.SetText(guildName)
+		# OLD uiGuild.py:592-602: the cap counts both guilds' members, so each
+		# guild brings half of it.
+		self.__SetWarLimitText(self.membersCountText, maxMemberCount, localeInfo.GUILD_WAR_MAX_MEMBERS, int(maxMemberCount) // 2)
+		self.__SetWarLimitText(self.endScoreText, endScore, localeInfo.GUILD_WAR_MAX_SCORE, int(endScore))
 		self.SetCenterPosition()
 		self.SetTop()
 		self.Show()
+
+	# One of the war's limits, shown only when the server sent one.
+	def __SetWarLimitText(self, textLine, value, text, shown):
+		if not textLine:
+			return
+		if int(value) > 0:
+			textLine.SetText(text % shown)
+			textLine.Show()
+		else:
+			textLine.SetText("")
+			textLine.Hide()
 
 	def GetGuildName(self):
 		return self.guildName
@@ -242,6 +297,8 @@ class AcceptGuildWarDialog(ui.ScriptWindow):
 		self.cancelButton = None
 		self.inputSlot = None
 		self.inputValue = None
+		self.membersCountText = None
+		self.endScoreText = None
 		self.Hide()
 
 	def __ClickSelectedTypeRadioButton(self):
@@ -269,6 +326,8 @@ class AcceptGuildWarDialog(ui.ScriptWindow):
 			self.cancelButton = getObject("CancelButton")
 			self.inputSlot = getObject("InputSlot")
 			self.inputValue = getObject("InputValue")
+			self.membersCountText = getObject("MembersCount")
+			self.endScoreText = getObject("EndScore")
 
 			gameType=getObject("GameType")
 
@@ -1705,7 +1764,8 @@ class GuildWindow(ui.ScriptWindow):
 
 	def __OnClickOfferButton(self):
 
-		curEXP = unsigned32(player.GetStatus(player.EXP))
+		# 64-bit exp (NOVA-96). The offer input keeps OLD's 9 digits (Q19: decided 2026-10-25).
+		curEXP = player.GetStatus(player.EXP)
 
 		if curEXP <= 100:
 			self.__PopupMessage(localeInfo.GUILD_SHORT_EXP);
@@ -1748,7 +1808,11 @@ class GuildWindow(ui.ScriptWindow):
 		net.SendGuildWithdrawMoneyPacket(money)
 
 	def OnOffer(self, exp):
-		net.SendGuildOfferPacket(exp)
+		# The offer input's 9 digits (Q19: decided 2026-10-25) bound the amount
+		# too: OLD's k/m/b (uiPickMoney.ConvertTextToMoney) names more in 9
+		# characters, and net.SendGuildOfferPacket reads a 32-bit int, which
+		# OLD wrapped (OLD PythonNetworkStreamModule.cpp:2086).
+		net.SendGuildOfferPacket(min(exp, 10 ** 9 - 1))
 
 	## Board
 	def OnPostComment(self):

@@ -1,4 +1,5 @@
 import uiScriptLocale
+import guild
 
 window = {
 	"name" : "InputDialog",
@@ -9,7 +10,7 @@ window = {
 	"style" : ("movable", "float",),
 
 	"width" : 230,
-	"height" : 130,
+	"height" : 170,
 
 	"children" :
 	(
@@ -21,7 +22,7 @@ window = {
 			"y" : 0,
 
 			"width" : 230,
-			"height" : 130,
+			"height" : 170,
 
 			"title" : uiScriptLocale.GUILD_WAR_DECLARE,
 
@@ -58,13 +59,86 @@ window = {
 							"width" : 90,
 							"height" : 18,
 
-							"input_limit" : 12,
+							# The enemy guild's name: up to 24 characters since the foundation
+							# cut (the client's guild.GUILD_NAME_MAX_LEN, as AskGuildName).
+							"input_limit" : guild.GUILD_NAME_MAX_LEN,
+						},
+					),
+				},
+				## The war's member cap and end score (NOVA-90), OLD's rows
+				## (OLD declareguildwardialog.py:70-133); uiguild sends them with
+				## the declaration.
+				{
+					"name" : "InputMemberCount",
+					"type" : "text",
+
+					"x" : 15,
+					"y" : 70,
+
+					"text" : uiScriptLocale.GUILD_WAR_ENEMY_NUMBER,
+				},
+				{
+					"name" : "MemberCountInput",
+					"type" : "slotbar",
+
+					"x" : 85,
+					"y" : 67,
+					"width" : 28,
+					"height" : 18,
+
+					"children" :
+					(
+						{
+							"name" : "MemberInputValue",
+							"type" : "editline",
+
+							"x" : 3,
+							"y" : 3,
+
+							"width" : 30,
+							"height" : 18,
+
+							"input_limit" : 3,
+						},
+					),
+				},
+				{
+					"name" : "InputScoreCount",
+					"type" : "text",
+
+					"x" : 122,
+					"y" : 70,
+
+					"text" : uiScriptLocale.GUILD_WAR_MAX_SCORE,
+				},
+				{
+					"name" : "EndScoreInput",
+					"type" : "slotbar",
+
+					"x" : 180,
+					"y" : 67,
+					"width" : 30,
+					"height" : 18,
+
+					"children" :
+					(
+						{
+							"name" : "EndScoreInputValue",
+							"type" : "editline",
+
+							"x" : 3,
+							"y" : 3,
+
+							"width" : 28,
+							"height" : 18,
+
+							"input_limit" : 3,
 						},
 					),
 				},
 				## Input Slot
 				{
-					"name" : "GameType", "x" : 15, "y" : 65, "width" : 65+45*4, "height" : 20,
+					"name" : "GameType", "x" : 15, "y" : 100, "width" : 65+45*4, "height" : 20,
 					
 					"children" :
 					(
@@ -116,7 +190,7 @@ window = {
 					"type" : "button",
 
 					"x" : - 61 - 5 + 30,
-					"y" : 95,
+					"y" : 130,
 					"horizontal_align" : "center",
 
 					"text" : uiScriptLocale.OK,
@@ -130,7 +204,7 @@ window = {
 					"type" : "button",
 
 					"x" : 5 + 30,
-					"y" : 95,
+					"y" : 130,
 					"horizontal_align" : "center",
 
 					"text" : uiScriptLocale.CANCEL,

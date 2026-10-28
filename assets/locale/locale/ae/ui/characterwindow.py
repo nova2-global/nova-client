@@ -282,13 +282,15 @@ window = {
 									),
 								},
 
+								## EXP and Necessary EXP: 88 px is the 11-digit placeholder in the LARGE font, inside
+								## the 90-px labels; a wider value (12 digits from level 140, NOVA-96) takes the default font.
 								## EXP
 								{
 									"name":"Status_CurExp", "type":"window", "x":53, "y":30, "width":87, "height":42,
 									"children" :
 									(
 										{ "name":"Exp_Slot", "type":"image", "x":0, "y":0, "image":LOCALE_PATH+"label_cur_exp.sub" },
-										{ "name":"Exp_Value", "type":"text", "x":46, "y":19, "fontsize":"LARGE", "text":"12345678901", "r":1.0, "g":1.0, "b":1.0, "a":1.0, "text_horizontal_align":"center" },									),
+										{ "name":"Exp_Value", "type":"text", "x":46, "y":19, "fontsize":"LARGE", "fit_width":88, "text":"12345678901", "r":1.0, "g":1.0, "b":1.0, "a":1.0, "text_horizontal_align":"center" },									),
 								},
 
 								## REXP
@@ -297,7 +299,7 @@ window = {
 									"children" :
 									(
 										{ "name":"RestExp_Slot", "type":"image", "x":0, "y":0, "image":LOCALE_PATH+"label_last_exp.sub" },
-										{ "name":"RestExp_Value", "type":"text", "x":46, "y":19, "fontsize":"LARGE", "text":"12345678901", "r":1.0, "g":1.0, "b":1.0, "a":1.0, "text_horizontal_align":"center" },
+										{ "name":"RestExp_Value", "type":"text", "x":46, "y":19, "fontsize":"LARGE", "fit_width":88, "text":"12345678901", "r":1.0, "g":1.0, "b":1.0, "a":1.0, "text_horizontal_align":"center" },
 									),
 								},
 							),

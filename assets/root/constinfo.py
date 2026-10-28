@@ -248,3 +248,63 @@ def IS_AUTO_POTION_SP(itemVnum):
 				
 	return 0
 
+
+# The language flags (NOVA-30/46, NOVA-48): OLD's 32 x 32 flags at
+# locale/common/ui/flag/32/<code>.tga, shown by the messenger's staff rosters
+# and the whisper dialog. A code with no file here shows no flag.
+LANGUAGE_FLAG_PATH = "locale/common/ui/flag/32/%s.tga"
+LANGUAGE_FLAG_CODES = ("ae", "cz", "de", "dk", "en", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+
+# The flag image of a language code ("en"), or "" when there is none.
+def GET_LANGUAGE_FLAG(code):
+	code = str(code).strip().lower()
+	if code in LANGUAGE_FLAG_CODES:
+		return LANGUAGE_FLAG_PATH % code
+	return ""
+
+# Change channel (NOVA-49): the server the player logged in through, found
+# again from the server info text intrologin sets at login, "<server>,
+# <channel>" (net.SetServerInfo). (regionID, serverID) of serverInfo's
+# REGION_DICT, or None when the text names no server there (a direct login by
+# address). The modules are imported here, not at the top: this module loads
+# before them.
+def GET_LOGIN_SERVER():
+	import net
+	import serverInfo
+	text = net.GetServerInfo().strip()
+	if ", " not in text:
+		return None
+	serverName = text.rsplit(", ", 1)[0]
+	for regionID in sorted(serverInfo.REGION_DICT):
+		regionDict = serverInfo.REGION_DICT[regionID]
+		for serverID in sorted(regionDict):
+			if regionDict[serverID].get("name") == serverName:
+				return (regionID, serverID)
+	return None
+
+# The channel numbers of the login server, in order (empty without one).
+def GET_LOGIN_SERVER_CHANNELS():
+	import serverInfo
+	server = GET_LOGIN_SERVER()
+	if not server:
+		return []
+	(regionID, serverID) = server
+	return sorted(serverInfo.REGION_DICT[regionID][serverID].get("channel", {}))
+
+# The server info text for channel `channel` of the login server, named as
+# intrologin names a channel (its "name", else CHANNEL_NORMAL); "" without a
+# login server.
+def GET_CHANNEL_SERVER_INFO(channel):
+	import serverInfo
+	import localeInfo
+	server = GET_LOGIN_SERVER()
+	if not server:
+		return ""
+	(regionID, serverID) = server
+	serverDict = serverInfo.REGION_DICT[regionID][serverID]
+	channelDict = serverDict.get("channel", {}).get(channel)
+	if channelDict and channelDict.get("name"):
+		channelName = channelDict["name"]
+	else:
+		channelName = localeInfo.CHANNEL_NORMAL % channel
+	return "%s, %s" % (serverDict["name"], channelName)

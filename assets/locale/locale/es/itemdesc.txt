@@ -2628,3 +2628,1208 @@
 90011	Tronco	Material de construcción para los edificios del gremio
 90012	Chapeado	Material de construcción para los edificios del gremio
 90013		
+300	Hoja de zodíaco+0	
+301	Hoja de zodíaco+1	
+302	Hoja de zodíaco+2	
+303	Hoja de zodíaco+3	
+304	Hoja de zodíaco+4	
+305	Hoja de zodíaco+5	
+306	Hoja de zodíaco+6	
+307	Hoja de zodíaco+7	
+308	Hoja de zodíaco+8	
+309	Hoja de zodíaco+9	
+310	Espada de zodíaco+0	
+311	Espada de zodíaco+1	
+312	Espada de zodíaco+2	
+313	Espada de zodíaco+3	
+314	Espada de zodíaco+4	
+315	Espada de zodíaco+5	
+316	Espada de zodíaco+6	
+317	Espada de zodíaco+7	
+318	Espada de zodíaco+8	
+319	Espada de zodíaco+9	
+1180	Daga de zodíaco+0	
+1181	Daga de zodíaco+1	
+1182	Daga de zodíaco+2	
+1183	Daga de zodíaco+3	
+1184	Daga de zodíaco+4	
+1185	Daga de zodíaco+5	
+1186	Daga de zodíaco+6	
+1187	Daga de zodíaco+7	
+1188	Daga de zodíaco+8	
+1189	Daga de zodíaco+9	
+2200	Arco de zodíaco+0	
+2201	Arco de zodíaco+1	
+2202	Arco de zodíaco+2	
+2203	Arco de zodíaco+3	
+2204	Arco de zodíaco+4	
+2205	Arco de zodíaco+5	
+2206	Arco de zodíaco+6	
+2207	Arco de zodíaco+7	
+2208	Arco de zodíaco+8	
+2209	Arco de zodíaco+9	
+3220	Archa de zodíaco+0	
+3221	Archa de zodíaco+1	
+3222	Archa de zodíaco+2	
+3223	Archa de zodíaco+3	
+3224	Archa de zodíaco+4	
+3225	Archa de zodíaco+5	
+3226	Archa de zodíaco+6	
+3227	Archa de zodíaco+7	
+3228	Archa de zodíaco+8	
+3229	Archa de zodíaco+9	
+5160	Campana de zodíaco+0	
+5161	Campana de zodíaco+1	
+5162	Campana de zodíaco+2	
+5163	Campana de zodíaco+3	
+5164	Campana de zodíaco+4	
+5165	Campana de zodíaco+5	
+5166	Campana de zodíaco+6	
+5167	Campana de zodíaco+7	
+5168	Campana de zodíaco+8	
+5169	Campana de zodíaco+9	
+6120	Garra de zodíaco+0	
+6121	Garra de zodíaco+1	
+6122	Garra de zodíaco+2	
+6123	Garra de zodíaco+3	
+6124	Garra de zodíaco+4	
+6125	Garra de zodíaco+5	
+6126	Garra de zodíaco+6	
+6127	Garra de zodíaco+7	
+6128	Garra de zodíaco+8	
+6129	Garra de zodíaco+9	
+7300	Abanico de zodíaco+0	
+7301	Abanico de zodíaco+1	
+7302	Abanico de zodíaco+2	
+7303	Abanico de zodíaco+3	
+7304	Abanico de zodíaco+4	
+7305	Abanico de zodíaco+5	
+7306	Abanico de zodíaco+6	
+7307	Abanico de zodíaco+7	
+7308	Abanico de zodíaco+8	
+7309	Abanico de zodíaco+9	
+9506	Espada+3	
+9507	Daga+3	
+9508	Abanico+3	
+9509	Antorcha de acero+3	
+9600	Talismán fuego+0	
+9601	Talismán fuego+1	
+9602	Talismán fuego+2	
+9603	Talismán fuego+3	
+9604	Talismán fuego+4	
+9605	Talismán fuego+5	
+9606	Talismán fuego+6	
+9607	Talismán fuego+7	
+9608	Talismán fuego+8	
+9609	Talismán fuego+9	
+9610	Talismán fuego+10	
+9611	Talismán fuego+11	
+9612	Talismán fuego+12	
+9613	Talismán fuego+13	
+9614	Talismán fuego+14	
+9615	Talismán fuego+15	
+9616	Talismán fuego+16	
+9617	Talismán fuego+17	
+9618	Talismán fuego+18	
+9619	Talismán fuego+19	
+12690	Casco acero de dragón +0	
+12691	Casco acero de dragón +1	
+12692	Casco acero de dragón +2	
+12693	Casco acero de dragón +3	
+12694	Casco acero de dragón +4	
+12695	Casco acero de dragón +5	
+12696	Casco acero de dragón +6	
+12697	Casco acero de dragón +7	
+12698	Casco acero de dragón +8	
+12699	Casco acero de dragón +9	
+12700	Capucha de dragón +0	
+12701	Capucha de dragón +1	
+12702	Capucha de dragón +2	
+12703	Capucha de dragón +3	
+12704	Capucha de dragón +4	
+12705	Capucha de dragón +5	
+12706	Capucha de dragón +6	
+12707	Capucha de dragón +7	
+12708	Capucha de dragón +8	
+12709	Capucha de dragón +9	
+12710	Casco blindado dragón +0	
+12711	Casco blindado dragón +1	
+12712	Casco blindado dragón +2	
+12713	Casco blindado dragón +3	
+12714	Casco blindado dragón +4	
+12715	Casco blindado dragón +5	
+12716	Casco blindado dragón +6	
+12717	Casco blindado dragón +7	
+12718	Casco blindado dragón +8	
+12719	Casco blindado dragón +9	
+12720	Gorro de dragón +0	
+12721	Gorro de dragón +1	
+12722	Gorro de dragón +2	
+12723	Gorro de dragón +3	
+12724	Gorro de dragón +4	
+12725	Gorro de dragón +5	
+12726	Gorro de dragón +6	
+12727	Gorro de dragón +7	
+12728	Gorro de dragón +8	
+12729	Gorro de dragón +9	
+15440	Zapatos píricos+0	
+15441	Zapatos píricos+1	
+15442	Zapatos píricos+2	
+15443	Zapatos píricos+3	
+15444	Zapatos píricos+4	
+15445	Zapatos píricos+5	
+15446	Zapatos píricos+6	
+15447	Zapatos píricos+7	
+15448	Zapatos píricos+8	
+15449	Zapatos píricos+9	
+15450	Zapatos oceánicos+0	
+15451	Zapatos oceánicos+1	
+15452	Zapatos oceánicos+2	
+15453	Zapatos oceánicos+3	
+15454	Zapatos oceánicos+4	
+15455	Zapatos oceánicos+5	
+15456	Zapatos oceánicos+6	
+15457	Zapatos oceánicos+7	
+15458	Zapatos oceánicos+8	
+15459	Zapatos oceánicos+9	
+19000	Piedra roja en llamas	Refuerza las bonificaciones de tu cinturón.
+19290	Armadura de zodíaco+0	
+19291	Armadura de zodíaco+1	
+19292	Armadura de zodíaco+2	
+19293	Armadura de zodíaco+3	
+19294	Armadura de zodíaco+4	
+19295	Armadura de zodíaco+5	
+19296	Armadura de zodíaco+6	
+19297	Armadura de zodíaco+7	
+19298	Armadura de zodíaco+8	
+19299	Armadura de zodíaco+9	
+19490	Traje de zodíaco+0	
+19491	Traje de zodíaco+1	
+19492	Traje de zodíaco+2	
+19493	Traje de zodíaco+3	
+19494	Traje de zodíaco+4	
+19495	Traje de zodíaco+5	
+19496	Traje de zodíaco+6	
+19497	Traje de zodíaco+7	
+19498	Traje de zodíaco+8	
+19499	Traje de zodíaco+9	
+19690	Arm. placas de zodíaco+0	
+19691	Arm. placas de zodíaco+1	
+19692	Arm. placas de zodíaco+2	
+19693	Arm. placas de zodíaco+3	
+19694	Arm. placas de zodíaco+4	
+19695	Arm. placas de zodíaco+5	
+19696	Arm. placas de zodíaco+6	
+19697	Arm. placas de zodíaco+7	
+19698	Arm. placas de zodíaco+8	
+19699	Arm. placas de zodíaco+9	
+19890	Ropaje de zodíaco+0	
+19891	Ropaje de zodíaco+1	
+19892	Ropaje de zodíaco+2	
+19893	Ropaje de zodíaco+3	
+19894	Ropaje de zodíaco+4	
+19895	Ropaje de zodíaco+5	
+19896	Ropaje de zodíaco+6	
+19897	Ropaje de zodíaco+7	
+19898	Ropaje de zodíaco+8	
+19899	Ropaje de zodíaco+9	
+20760	Armadura aurora+0	
+20761	Armadura aurora+1	
+20762	Armadura aurora+2	
+20763	Armadura aurora+3	
+20764	Armadura aurora+4	
+20765	Armadura aurora+5	
+20766	Armadura aurora+6	
+20767	Armadura aurora+7	
+20768	Armadura aurora+8	
+20769	Armadura aurora+9	
+20770	Traje de emboscada+0	
+20771	Traje de emboscada+1	
+20772	Traje de emboscada+2	
+20773	Traje de emboscada+3	
+20774	Traje de emboscada+4	
+20775	Traje de emboscada+5	
+20776	Traje de emboscada+6	
+20777	Traje de emboscada+7	
+20778	Traje de emboscada+8	
+20779	Traje de emboscada+9	
+20780	Armad. garra de diablo+0	
+20781	Armad. garra de diablo+1	
+20782	Armad. garra de diablo+2	
+20783	Armad. garra de diablo+3	
+20784	Armad. garra de diablo+4	
+20785	Armad. garra de diablo+5	
+20786	Armad. garra de diablo+6	
+20787	Armad. garra de diablo+7	
+20788	Armad. garra de diablo+8	
+20789	Armad. garra de diablo+9	
+20790	Ropaje de la fe+0	
+20791	Ropaje de la fe+1	
+20792	Ropaje de la fe+2	
+20793	Ropaje de la fe+3	
+20794	Ropaje de la fe+4	
+20795	Ropaje de la fe+5	
+20796	Ropaje de la fe+6	
+20797	Ropaje de la fe+7	
+20798	Ropaje de la fe+8	
+20799	Ropaje de la fe+9	
+20800	Armad. guerrero sombra+0	
+20801	Armad. guerrero sombra+1	
+20802	Armad. guerrero sombra+2	
+20803	Armad. guerrero sombra+3	
+20804	Armad. guerrero sombra+4	
+20805	Armad. guerrero sombra+5	
+20806	Armad. guerrero sombra+6	
+20807	Armad. guerrero sombra+7	
+20808	Armad. guerrero sombra+8	
+20809	Armad. guerrero sombra+9	
+20810	Armadura magmática+0	
+20811	Armadura magmática+1	
+20812	Armadura magmática+2	
+20813	Armadura magmática+3	
+20814	Armadura magmática+4	
+20815	Armadura magmática+5	
+20816	Armadura magmática+6	
+20817	Armadura magmática+7	
+20818	Armadura magmática+8	
+20819	Armadura magmática+9	
+20820	Traje luna sangrienta+0	
+20821	Traje luna sangrienta+1	
+20822	Traje luna sangrienta+2	
+20823	Traje luna sangrienta+3	
+20824	Traje luna sangrienta+4	
+20825	Traje luna sangrienta+5	
+20826	Traje luna sangrienta+6	
+20827	Traje luna sangrienta+7	
+20828	Traje luna sangrienta+8	
+20829	Traje luna sangrienta+9	
+20830	Armad. jinete infernal+0	
+20831	Armad. jinete infernal+1	
+20832	Armad. jinete infernal+2	
+20833	Armad. jinete infernal+3	
+20834	Armad. jinete infernal+4	
+20835	Armad. jinete infernal+5	
+20836	Armad. jinete infernal+6	
+20837	Armad. jinete infernal+7	
+20838	Armad. jinete infernal+8	
+20839	Armad. jinete infernal+9	
+20840	Ropaje del fuego+0	
+20841	Ropaje del fuego+1	
+20842	Ropaje del fuego+2	
+20843	Ropaje del fuego+3	
+20844	Ropaje del fuego+4	
+20845	Ropaje del fuego+5	
+20846	Ropaje del fuego+6	
+20847	Ropaje del fuego+7	
+20848	Ropaje del fuego+8	
+20849	Ropaje del fuego+9	
+20850	Armadura placas ágata+0	
+20851	Armadura placas ágata+1	
+20852	Armadura placas ágata+2	
+20853	Armadura placas ágata+3	
+20854	Armadura placas ágata+4	
+20855	Armadura placas ágata+5	
+20856	Armadura placas ágata+6	
+20857	Armadura placas ágata+7	
+20858	Armadura placas ágata+8	
+20859	Armadura placas ágata+9	
+20860	Armadura hueso ballena+0	
+20861	Armadura hueso ballena+1	
+20862	Armadura hueso ballena+2	
+20863	Armadura hueso ballena+3	
+20864	Armadura hueso ballena+4	
+20865	Armadura hueso ballena+5	
+20866	Armadura hueso ballena+6	
+20867	Armadura hueso ballena+7	
+20868	Armadura hueso ballena+8	
+20869	Armadura hueso ballena+9	
+20870	Traje metamórfico+0	
+20871	Traje metamórfico+1	
+20872	Traje metamórfico+2	
+20873	Traje metamórfico+3	
+20874	Traje metamórfico+4	
+20875	Traje metamórfico+5	
+20876	Traje metamórfico+6	
+20877	Traje metamórfico+7	
+20878	Traje metamórfico+8	
+20879	Traje metamórfico+9	
+20880	Armadura fuego fatuo+0	
+20881	Armadura fuego fatuo+1	
+20882	Armadura fuego fatuo+2	
+20883	Armadura fuego fatuo+3	
+20884	Armadura fuego fatuo+4	
+20885	Armadura fuego fatuo+5	
+20886	Armadura fuego fatuo+6	
+20887	Armadura fuego fatuo+7	
+20888	Armadura fuego fatuo+8	
+20889	Armadura fuego fatuo+9	
+20890	Ropaje de la armonía+0	
+20891	Ropaje de la armonía+1	
+20892	Ropaje de la armonía+2	
+20893	Ropaje de la armonía+3	
+20894	Ropaje de la armonía+4	
+20895	Ropaje de la armonía+5	
+20896	Ropaje de la armonía+6	
+20897	Ropaje de la armonía+7	
+20898	Ropaje de la armonía+8	
+20899	Ropaje de la armonía+9	
+20900	Armad. placas adularia+0	
+20901	Armad. placas adularia+1	
+20902	Armad. placas adularia+2	
+20903	Armad. placas adularia+3	
+20904	Armad. placas adularia+4	
+20905	Armad. placas adularia+5	
+20906	Armad. placas adularia+6	
+20907	Armad. placas adularia+7	
+20908	Armad. placas adularia+8	
+20909	Armad. placas adularia+9	
+20910	Armad. placas adularia+0	
+20911	Armad. placas adularia+1	
+20912	Armad. placas adularia+2	
+20913	Armad. placas adularia+3	
+20914	Armad. placas adularia+4	
+20915	Armad. placas adularia+5	
+20916	Armad. placas adularia+6	
+20917	Armad. placas adularia+7	
+20918	Armad. placas adularia+8	
+20919	Armad. placas adularia+9	
+20920	Traje noche mortal+0	
+20921	Traje noche mortal+1	
+20922	Traje noche mortal+2	
+20923	Traje noche mortal+3	
+20924	Traje noche mortal+4	
+20925	Traje noche mortal+5	
+20926	Traje noche mortal+6	
+20927	Traje noche mortal+7	
+20928	Traje noche mortal+8	
+20929	Traje noche mortal+9	
+20930	Armadura fuego negro+0	
+20931	Armadura fuego negro+1	
+20932	Armadura fuego negro+2	
+20933	Armadura fuego negro+3	
+20934	Armadura fuego negro+4	
+20935	Armadura fuego negro+5	
+20936	Armadura fuego negro+6	
+20937	Armadura fuego negro+7	
+20938	Armadura fuego negro+8	
+20939	Armadura fuego negro+9	
+20940	Ropaje de la luna+0	
+20941	Ropaje de la luna+1	
+20942	Ropaje de la luna+2	
+20943	Ropaje de la luna+3	
+20944	Ropaje de la luna+4	
+20945	Ropaje de la luna+5	
+20946	Ropaje de la luna+6	
+20947	Ropaje de la luna+7	
+20948	Ropaje de la luna+8	
+20949	Ropaje de la luna+9	
+20950	Armadura placas ónice+0	
+20951	Armadura placas ónice+1	
+20952	Armadura placas ónice+2	
+20953	Armadura placas ónice+3	
+20954	Armadura placas ónice+4	
+20955	Armadura placas ónice+5	
+20956	Armadura placas ónice+6	
+20957	Armadura placas ónice+7	
+20958	Armadura placas ónice+8	
+20959	Armadura placas ónice+9	
+21200	Arnés de zodíaco+0	
+21201	Arnés de zodíaco+1	
+21202	Arnés de zodíaco+2	
+21203	Arnés de zodíaco+3	
+21204	Arnés de zodíaco+4	
+21205	Arnés de zodíaco+5	
+21206	Arnés de zodíaco+6	
+21207	Arnés de zodíaco+7	
+21208	Arnés de zodíaco+8	
+21209	Arnés de zodíaco+9	
+25043	Piedra Mágica	Esta piedra te proporciona la mayor probabilidad de éxito al mejorar objetos. Además, el objeto no puede resultar destruido ni empeorado. Este objeto no es comerciable.
+27125	Poción de batalla	Una poción potente que aumenta tus puntos de ataque y defensa y te confiere 50 000 puntos de vida (solo en la zona de combate).
+28044	Piedra rompemagia+0	
+28045	Piedra rompemagia+0	
+28144	Piedra rompemagia+1	
+28145	Piedra rompemagia+1	
+28244	Piedra rompemagia+2	
+28245	Piedra rompemagia+2	
+28344	Piedra rompemagia+3	
+28345	Piedra rompemagia+3	
+28444	Piedra rompemagia+4	
+28445	Piedra rompemagia+4	
+30334	Vale accesorio cabeza	Haz clic sobre el vale con el botón derecho del ratón para obtener un accesorio para la cabeza aterradoramente chulo.
+30338	Vale accesorio cabeza+	Haz clic sobre el vale con el botón derecho del ratón para obtener un accesorio para la cabeza aterradoramente chulo que te otorgará como mínimo una bonificación aleatoria.
+30341	Anillo ígneo de dragón	Un aura de energía te rodea. Este anillo forjado con fuego de dragón destruirá las estatuas del refugio de Meley en un abrir y cerrar de ojos.
+30600	Patrón	
+30601	Diseño de armadura	
+30602	Tinte azul	
+30603	Tinte rojo	
+30604	Tinte gris	
+30605	Placas de oro	
+30606	Placas de plata	
+30607	Placas de cobre	
+30608	Placas de acero	
+30609	Placas de bronce	
+30610	Mitrilo	
+30611	Bandas resistentes	
+30612	Cordones sólidos	
+30613	Piedra de la dríada	Esta misteriosa piedra que emite un brillo verdoso contiene el alma de una dríada, un espíritu arbóreo. La dríada conoce las palabras secretas que permiten acceder al Érebo.
+30614	Tinte negro	
+30615	Tinte blanco	
+30616	Dióxido de titanio	El cristal prismático sirve para refinar objetos de equipamiento.
+30617	Ágata	La misteriosa gema brillante sirve para refinar objetos de equipamiento.
+30618	Adularia	Esta gema en forma de gota encierra luz de luna resplandeciente. Sirve para refinar un objeto de equipamiento.
+30619	Tinte dorado metalizado	
+30620	Cuerno rojo de dragón	Los cuernos de dragón están hechos de uno de los materiales más duros que se conocen.
+30621	Escama roja de dragón	Las escamas de dragón están entre los materiales más duros que se conocen.
+30622	Diseño armadura: casco	Este objeto es necesario para la fabricación de cascos.
+30623	Libro de la sabiduría	Enorme tomo, cuyas inscripciones parecen brillar. Sirve para refinar un objeto de equipamiento.
+30624	Alma de la sabiduría	Un alma bondadosa, cautiva para toda la eternidad en una bola de cristal. Sirve para refinar un objeto de equipamiento.
+30625	Padparadscha	Padparadscha es el nombre que reciben unos zafiros poco comunes y extremadamente valiosos. Sirve para refinar un objeto de equipamiento.
+30626	Cianita	Gema azulada extraída de las minas del Monte Sohan. Sirve para refinar un objeto de equipamiento.
+30627	Fruto de los dioses	Fruto dulce del jardín del Dios Dragón. Sirve para refinar un objeto de equipamiento.
+30628	Flor divina	Flor sagrada del jardín del Dios Dragón. Sirve para refinar un objeto de equipamiento.
+30629	Elixir de los dioses	Esta botella contiene un misterioso líquido brillante. Sirve para refinar un objeto de equipamiento.
+30630	Alas de dragón	Las alas de dragón cambiante permiten refinar un objeto de equipamiento.
+30639	Esquirla enigmática	Fabrica los diseños de la Tienda de Iutnori a partir de las esquirlas. Para abrir la Ventana de refinamiento, arrastra un tablero de Iutnori a la mesa.
+30640	Diseño de Halloween (m)	Diseño para fabricar una Caja de Halloween (m)
+30641	Dis. somb. Halloween (m)	Diseño para fabricar una Sombrerera de Halloween (m)
+30642	Diseño mascota terroríf.	Diseño para fabricar una Caja de mascota terrorífica
+30643	Diseño montura terroríf.	Diseño para fabricar una Caja de montura terrorífica
+30644	Diseño de joya	Diseño para fabricar un Cofre de joyas
+30645	Diseño de mascota	Diseño para fabricar una Caja de mascotas
+30646	Diseño de estola	Diseño para fabricar una Caja de estolas
+30647	Diseño de adorno	Diseño para fabricar una Caja de adornos
+30648	Diseño de manual mascota	Diseño para fabricar una Caja de manuales mascota
+30649	Diseño dentado+	Diseño para fabricar una Caja dentada+
+30650	Diseño de cor draconis	Diseño para fabricar una Caja de cor draconis
+30651	Diseño de Gaya	Diseño para fabricar una Caja de Gaya
+30652	Caja de misterio	Diseño para fabricar una Caja de misterios
+30653	Diseño de caja de rubíes	Diseño para fabricar una Caja de rubíes
+30654	Diseño de Halloween (f)	Diseño para fabricar una Caja de Halloween (f)
+30655	Dis. somb. Halloween (f)	Diseño para fabricar una Sombrerera de Halloween (f)
+34000	Explosión solar	Material raro que se utiliza para mejorar su equipo, este artículo es muy valorado.
+34001	Magical Orb	Magical Orb es una piedra preciosa que se utiliza para mejorar su equipo.
+34002	Fire Horn	Originalmente pertenece a Razador, este material se utiliza para fabricar o actualizar su equipo.
+34003	Ice Horn	Originalmente pertenece a Nemeres, este material se utiliza para crear o mejorar su equipo.
+34004	Amuleto rojo	Un amuleto encantador y caro. Se utiliza principalmente para actualizar.
+34005	Amuleto verde	Un amuleto encantador y caro. Se utiliza principalmente para actualizar.
+34006	Amuleto azul	Un amuleto encantador y caro. Se utiliza principalmente para actualizar.
+34007	Rock Of Darkness	Una roca muy preciosa que contiene poderes de oscuridad.
+34008	Rock Of Gore	Una roca muy preciosa que contiene poderosas habilidades.
+34009	Rock Of Poison	Una roca muy preciosa que contiene poderes venenosos.
+34010	Posion Venenosa	Material venenoso que se utiliza para hacer que su equipo sea más duradero.
+34011	Red Rock	Una piedra muy preciosa que se utiliza para mejorar su equipo.
+34012	Piedra Azur	Una piedra especial que se usa solo para actualizar equipos azules.
+34013	Vial Arcoíris	Contiene un poderoso líquido arcoíris. Es un material de mejora.
+34014	Fragmentos de Cristal Rojo	Una pieza de cristal que se usa para combinar con otros cristales.
+34015	Fragmentos de Cristal Verde	Una pieza de cristal que se usa para combinar con otros cristales.
+34016	Fragmentos de Cristal Azul	Una pieza de cristal que se usa para combinar con otros cristales.
+34017	Multi-Crystal Fragmento	Una joya que se utiliza para mejorar tus artículos.
+34018	Gema Duratus	Usado como un elemento de mejora, se puede Obtener de Duratus.
+34019	Fear Gem	Usado como un elemento de mejora, se puede Obtener de Fear Dragon.
+34020	Treasure Gem	Se utiliza como elemento de mejora y se puede Obtener de Metin Treasure.
+34021	UPP1	Piedra especial utilizada para mejorar su equipo.
+34022	UPP2	Piedra especial utilizada para mejorar tu equipo.
+34023	Pluma de ala Roja	Un trozo de pluma que se utiliza para la elaboración de alas.
+34024	Pluma de ala Verde	Un trozo de pluma que se utiliza para la elaboración de alas.
+34025	Pluma de ala Azul	Un trozo de pluma que se utiliza para la elaboración de alas.
+34026	Wing Feather Set	Un trozo de pluma que se utiliza para la elaboración de alas.
+34027	Almighty Dragon Soul	Alma del Dragón Todopoderoso, utilizada para categorizar tu equipo.
+34028	Duratus Soul	Duratus Soul, utilizado para categorizar su equipo.
+34029	Fear Soul	Fear Soul, utilizado para categorizar su equipo.
+34030	Treasure Soul	Treasure Soul, utilizado para categorizar su equipo.
+34031	Halloween Soul	Halloween Soul, utilizado para categorizar su equipo.
+34067		
+34068		
+34070	Cofre Navidad	Un cofre navideño lleno de golosinas.
+34071	Cofre de Traje Navidad(m)	Contiene trajes navideños temporales con bonificaciones para hombres . | Este objeto desaparecerá cuando Santa lo haga.
+34072	Cofre de Traje Navidad(m)+	Contiene trajes navideños permanentes para hombres.
+34073	Cofre de Traje Navidad(f)	Contiene trajes navideños temporales con bonificaciones para mujeres. | Este objeto desaparecerá cuando Santa lo haga.
+34074	Cofre de Traje Navidad(f)+	Contiene trajes navideños permanentes para mujeres.
+34075	Cofre de Sombrero Navidad(m)	Contiene peinados navideños temporales con bonificaciones para hombres . | Este objeto desaparecerá cuando Santa lo haga.
+34076	Cofre de Sombrero Navidad(m)+	Contiene peinados navideños permanentes para hombres.
+34077	Cofre de Sombrero Navidad(f)	Contiene peinados navideños temporales con bonificaciones para mujeres. | Este objeto desaparecerá cuando Santa lo haga.
+34078	Cofre de Sombrero Navidad(f)+	Contiene peinados navideños permanentes para mujeres.
+34080	Cofre de mascota Navidad	Contiene mascotas temporales con bonificaciones especiales.| Este objeto desaparecerá cuando Santa lo haga.
+34081	Cofre de Arma Navidad	Contiene atuendos de armas navideñas temporales con bonificaciones especiales. | Este objeto desaparecerá cuando Santa lo haga.
+34082	Cofre de Arma Navidad+	Contiene atuendos de armas navideñas permanentes.
+34083	Cofre Dorado Navidad	Un cofre navideño muy especial.
+34084	Llave dorada Navidad	Se utiliza para abrir Cofre Dorado Navidad.
+34085	Media Azul Navideña	Media navideña la cual se utiliza para crear objetos.
+34086	Media Verde Navideña	Media navideña la cual se utiliza para crear objetos.
+34087	Media Roja Navideña	Media navideña la cual se utiliza para crear objetos.
+34088	Media Amarilla Navideña	Media navideña la cual se utiliza para crear objetos.
+34089	Corazón de Chocolate	Delicioso chocolate que se regala en navidad.
+34090	Token de Navidad	Token de Navidad que solo se puede encontrar en Navidad.
+34091	Accesorio Dorado	Accesorio raro utilizado para crear objetos.
+34184	Elemental Talisman	El talismán más poderoso que jamás haya existido, uno que está en paz con todos los elementos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34185	Armor Enhancement Scroll	Un pergamino que se necesita para actualizar las armaduras.	Se utiliza para mejorar el equipamiento elemental y divino.
+34186	Weapon Enhancement Scroll	Un pergamino que se necesita para mejorar las armas.	Se utiliza para mejorar el equipamiento elemental y divino.
+34187	Accessory Enhancement Scroll	Un pergamino que se necesita para actualizar los accesorios.	Se utiliza para mejorar el equipamiento elemental y divino.
+34188	Belt Enhancement Scroll	Un pergamino que permite mejorar aún más los cinturones pvm.	Se utiliza para mejorar el cinturón PvM.
+34189	Ring Enhancement Scroll	Un pergamino que permite una mayor mejora de los anillos pvm.	Se utiliza para la mejora de anillo PvM.
+34190	Fire Pearl	Una perla de las profundidades del infierno con un ligero brillo rojo.	Se utiliza para mejorar el equipamiento elemental y divino.
+34191	Water Pearl	Una perla de las profundidades del océano con un ligero brillo de azul.	Se utiliza para mejorar el equipamiento elemental y divino.
+34192	Earth Pearl	Una perla de las profundidades de la tierra con un ligero brillo amarillo.	Se utiliza para mejorar el equipamiento elemental y divino.
+34193	Wind Pearl	Una perla de las alturas de los cielos con un ligero brillo de blanco.	Se utiliza para mejorar el equipamiento elemental y divino.
+34194	Ancient Red Cloth	Paño que se confeccionó con la túnica de guardián de la antigua Ghidorah.	Se utiliza para mejorar el equipamiento elemental y divino.
+34195	Ancient Blue Cloth	Paño que se hizo con la túnica de guardián de la antigua Hydra.	Se utiliza para mejorar el equipamiento elemental y divino.
+34196	Ancient Green Cloth	Paño que se fabricó con la túnica de guardián de la antigua Sphyinx.	Se utiliza para mejorar el equipamiento elemental y divino.
+34197	Ancient Yellow Cloth	Una tela que se hizo con la túnica del antiguo Gobernante de la Torre Blanca.	Se utiliza para mejorar el equipamiento elemental y divino.
+34198	Fire Power Shard	Un fragmento tan poderoso que puede contener el Elemento de Fuego en su núcleo.	Se utiliza para mejorar el equipamiento elemental y divino.
+34199	Water Power Shard	Un fragmento tan poderoso que puede contener el elemento agua en su núcleo.	Se utiliza para mejorar el equipamiento elemental y divino.
+34200	Earth Power Shard	Un fragmento tan poderoso que puede contener el Elemento de la Tierra en su núcleo.	Se utiliza para mejorar el equipamiento elemental y divino.
+34201	Wind Power Shard	Un fragmento tan poderoso que puede contener el Elemento del viento en su núcleo.	Se utiliza para mejorar el equipamiento elemental y divino.
+34202	Fire Crystal	Un cristal que perteneció al regente del elemento fuego.	Se utiliza para mejorar el equipamiento elemental y divino.
+34203	Water Crystal	Un cristal que perteneció al regente del elemento agua.	Se utiliza para mejorar el equipamiento elemental y divino.
+34204	Earth Crystal	Un cristal que perteneció al gobernante del elemento tierra.	Se utiliza para mejorar el equipamiento elemental y divino.
+34205	Wind Crystal	Un cristal que una vez perteneció al gobernante del elemento viento.	Se utiliza para mejorar el equipamiento elemental y divino.
+34206	Fire Totem	Un símbolo que alguna vez fue utilizado por la nación del fuego.	Se utiliza para mejorar el equipamiento elemental y divino.
+34207	Water Totem	Un símbolo que alguna vez fue utilizado por la nación del agua.	Se utiliza para mejorar el equipamiento elemental y divino.
+34208	Earth Totem	Un símbolo que una vez fue utilizado por la nación de la tierra.	Se utiliza para mejorar el equipamiento elemental y divino.
+34209	Wind Totem	Un símbolo que alguna vez fue utilizado por la nación del viento.	Se utiliza para mejorar el equipamiento elemental y divino.
+34210	Eternal Flames	Llamas de un lugar tan lejos del infierno que se ha vuelto eterno.	Se utiliza para mejorar el equipamiento elemental y divino.
+34211	Ghidorah's Heart	El corazón de un ser tan poderoso que tiene la capacidad de derrotar al mismo Lucifer.	Se utiliza para mejorar el equipamiento elemental y divino.
+34212	Hydra Power Orb	Un orbe que tiene el poder de un antiguo monstruo antiguo que acaba de resurgir.	Se utiliza para mejorar el equipamiento elemental y divino.
+34213	Hydra Summoning Tablet	Desde las profundidades del océano, esta tablilla contiene escrituras antiguas para convocar al monstruo de tres cabezas.	Se utiliza para mejorar el equipamiento elemental y divino.
+34214	Ancient Map	Las escrituras de seres tan antiguos que pueden llevarte a tu desaparición.	Se utiliza para mejorar el equipamiento elemental y divino.
+34215	Wisdom book	Con la sabiduría de los dioses antiguos, este libro tiene el contenido de los seres más poderosos de Nova.	Se utiliza para mejorar el equipamiento elemental y divino.
+34216	Tear of the Lord Adenoid	Una lágrima con el poder del dios del viento que puede suprimir las emociones más duras.	Se utiliza para mejorar el equipamiento elemental y divino.
+34217	White Tower Ruler's Key	La llave que permite a cualquiera llegar a las cámaras del Lord Adenoid para tratar de derrotarlo.	Se utiliza para mejorar el equipamiento elemental y divino.
+34218	Fire Treasure Chest	Un cofre que contiene los materiales más poderosos para mejorar los equipos.
+34219	Water Treasure Chest	Un cofre que contiene los materiales más poderosos para mejorar los equipos.
+34220	Earth Treasure Chest	Un cofre que contiene los materiales más poderosos para mejorar los equipos.
+34221	Wind Treasure Chest	Un cofre que contiene los materiales más poderosos para mejorar los equipos.
+34222	Alchemy Ancient Stone	Piedra de los seres ancestrales del bosque mítico que aún puede estar impresa con el conocimiento del bosque.	Se utiliza para mejorar el equipamiento elemental y divino.
+34223	Arcane Ancient Stone	Piedra de los seres ancestrales del bosque mítico que aún puede estar impresa con el conocimiento del bosque.	Se utiliza para mejorar el equipamiento elemental y divino.
+34224	Vindicius Ancient Stone	Piedra de los seres ancestrales del bosque mítico que aún puede estar impresa con el conocimiento del bosque.	Se utiliza para mejorar el equipamiento elemental y divino.
+34225	Alchemy Theory Book	Libro que se puede encontrar en la niebla del mítico bosque con información de los antiguos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34226	Arcane Theory Book	Libro que se puede encontrar en la niebla del mítico bosque con información de los antiguos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34227	Vindicius Theory Book	Libro que se puede encontrar en la niebla del mítico bosque con información de los antiguos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34228	Alchemy Soul Skull	La calavera de uno antiguo, cuando se utiliza con otros elementos del bosque mítico, se pueden realizar nuevas mejoras.	Se utiliza para mejorar el equipamiento elemental y divino.
+34229	Arcane Soul Skull	La calavera de uno antiguo, cuando se utiliza con otros elementos del bosque mítico, se pueden realizar nuevas mejoras.	Se utiliza para mejorar el equipamiento elemental y divino.
+34230	Vindicius Soul Skull	El cráneo de uno antiguo, cuando se utiliza con otros elementos del bosque mítico, se pueden realizar nuevas mejoras.	Se utiliza para mejorar el equipamiento elemental y divino.
+34231	Tempestus Soul Skull	El cráneo de uno antiguo, cuando se utiliza con otros elementos del bosque mítico, se pueden realizar nuevas mejoras.	Se utiliza para mejorar el equipamiento elemental y divino.
+34232	Tempestus Theory Book	Libro que se puede encontrar en la bruma del mítico bosque con información de los antiguos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34233	Tempestus Ancient Stone	Piedra de los seres ancestrales del bosque mítico que aún puede estar impresa con el conocimiento del bosque.	Se utiliza para mejorar el equipamiento elemental y divino.
+34234	Empty Ticket	Un boleto base en blanco, que se usa para contener un misterioso pase de mapa a mazmorras elementales.
+34235	Holy Fire Stone	Una piedra especial que refleja el paso al Nido de Ghidorah.
+34236	Holy Water Stone	Una piedra especial que refleja el paso a Hydra.
+34237	Holy Wind Stone	Una piedra especial que refleja el paso a la Torre Blanca.
+34238	Holy Earth Stone	Una piedra especial que refleja el paso a la Pirámide Antigua.
+34239	Ghidorah's Nest Ticket	Se usa para cruzar las puertas del Nido de Ghidorah.
+34240	Ship Defence Ticket	Se utiliza para cruzar las puertas de Defensa de barcos
+34241	White Tower Ticket	Se usa para cruzar las puertas de la Torre Blanca.
+34242	Ancient Pyramid Ticket	Se utiliza para cruzar las puertas de la pirámide antigua.
+34243	Elemental Pearl	Una perla poderosa hecha de todos los elementos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34244	Elemental Totem	Un tótem poderoso hecho de todos los elementos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34245	Elemental Ancient Cloth	Una tela mítica hecha de todos los elementos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34246	Elemental Power Shard	Un fragmento de poder especial hecho de todos los elementos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34247	Elemental Crystal	Un cristal poderoso hecho de todos los elementos.	Se utiliza para mejorar el equipamiento elemental y divino.
+34248	Elemental Ancient Stone	Una piedra de la antigüedad creada con la fuerza combinada de todas las naciones del mítico bosque.	Se utiliza para mejorar el equipamiento elemental y divino.
+34249	Elemental Theory Book	Un libro de la antigüedad creado con la fuerza combinada de todas las naciones del mítico bosque.	Se utiliza para mejorar el equipamiento elemental y divino.
+34250	Elemental Soul Skull	Una calavera de la antigüedad creada con la fuerza combinada de todas las naciones del mítico bosque.	Se utiliza para mejorar el equipamiento elemental y divino.
+34256	Cristal de nefrita	Un tipo de cristal precioso que pertenece únicamente a los tritones de nefrita.	Puede utilizarse para investigaciones de biólogos.
+34257	Mapa de las mantícoras	El mapa que te lleva al tesoro de las mantícoras.	Puede utilizarse para investigaciones de biólogos.
+34258	Hongo de las gárgolas	El tipo de hongo más apreciado para las gárgolas.	Puede utilizarse para investigaciones de biólogos.
+34259	Polvo de lémures	Los restos de lémures.	Puede utilizarse para investigaciones de biólogos.
+34260	Llave Duratus	Una llave que se puede encontrar dentro del cuerpo de Duratus, los investigadores aún no han descubierto por qué.	Puede utilizarse para investigaciones de biólogos.
+34261	Esencia de miedo	La esencia que usa el dragón del miedo para esparcir el miedo dentro de su mazmorra.	Puede utilizarse para investigaciones de biólogos.
+34262	Medalla Mazel	La medalla que enorgullece a Mazel. Puede utilizarse para investigaciones de biólogos.
+34263	Triton Soul Stone	Una piedra legendaria, contiene el núcleo del alma de la familia Tritons.
+34264	Piedra del alma de Manticore	Una piedra legendaria que contiene el núcleo del alma de la familia Manticore.
+34265	Gargoyle Soul Stone	Una piedra legendaria, contiene el núcleo del alma de la familia Gargoyle.
+34266	Lemure Soul Stone	Una piedra legendaria, contiene el núcleo del alma de la familia Lemure.
+34267	Duratus Soul Stone	Una piedra legendaria, contiene el alma de un Duratus.
+34268	Fear Soul Stone	Una piedra legendaria, contiene el alma de un Fear Dragon.
+34269	Mazel Soul Stone	Una piedra legendaria, contiene el alma de Mazel Boss.
+34270	Cofre para principiantes	Un cofre muy útil que contiene elementos temporales de la tienda de artículos que ayuda a los nuevos jugadores a ponerse al día con el contenido del servidor.
+34500	Cofre de Plumas	Un cofre lleno de plumas multicolores.
+34501	Cofre de fragmentos	En este cofre se pueden encontrar fragmentos de colores.
+35100	Pergamino de Reinicio Seon-Pyeong	Te permite restablecer tus recompensas de las misiones de Seon-Pyeong de nivel 92 y 94.
+35101	Pergamino de cambio de género	Un pergamino especial que te permite cambiar el género de tus disfraces.
+39063	Restaurar Mercado Gaya	Restablece el Mercado de Gaya antes de que alcance su caducidad de 5 horas para que vuelva a ofrecer valiosos objetos nuevos inmediatamente.
+39064	Ampliación Mercado Gaya	Añade un espacio al Mercado de Gaya para una valiosa oferta de objeto empezando por el primer campo de la segunda fila a la izquierda.
+39065		
+39066		
+40101	Espada dentada	Un aspecto para tu arma que transforma tu espada en una motosierra para Halloween.
+40102	Daga dentada	Un aspecto para tu arma que transforma tu daga en una motosierra para Halloween.
+40103	Arco dentado	Un aspecto para tu arma que transforma tu arco en una motosierra doble para Halloween.
+40104	Guja dentada	Un aspecto para tu arma que transforma tu espada a dos manos en un bastón con sierra de cadena para Halloween.
+40105	Campana dentada	Un aspecto para tu arma que transforma tu campana en un mangual con sierra de cadena para Halloween.
+40106	Abanico dentado	Un aspecto para tu arma que transforma tu abanico en un abanico con sierra de cadena para Halloween.
+40107	Garras dentadas	Un aspecto para tu arma que transforma tus garras en dos motosierras para Halloween.
+40108	Espada dentada+	Un aspecto para tu arma que transforma tu espada en una motosierra para Halloween. Te otorga como mínimo una bonificación aleatoria.
+40109	Daga dentada+	Un aspecto para tu arma que transforma tu daga en una motosierra para Halloween. Te otorga como mínimo una bonificación aleatoria.
+40110	Arco dentado+	Un aspecto para tu arma que transforma tu arco en una motosierra doble para Halloween. Te otorga como mínimo una bonificación aleatoria.
+40111	Guja dentada+	Un aspecto para tu arma que transforma tu espada a dos manos en un bastón con sierra de cadena para Halloween. Te otorga como mínimo una bonificación aleatoria.
+40112	Campana dentada+	Un aspecto para tu arma que transforma tu campana en un mangual con sierra de cadena para Halloween. Te otorga como mínimo una bonificación aleatoria.
+40113	Abanico dentado+	Un aspecto para tu arma que transforma tu abanico en un abanico con sierra de cadena para Halloween. Te otorga como mínimo una bonificación aleatoria.
+40114	Garras dentadas+	Un aspecto para tu arma que transforma tus garras en dos motosierras para Halloween. Te otorga como mínimo una bonificación aleatoria.
+40115	Espada abeto decorado	Un aspecto para arma que convierte tu espada en un abeto navideño.
+40116	Daga con acebo	Un aspecto para arma que decora tu daga con un ramillete de acebo ideal para la Navidad.
+40117	Arco de elfo	Un aspecto para arma que da a tu arco un aire élfico ideal para la Navidad.
+40118	Guja de jengibre	Un aspecto para arma que añade a tu arma a dos manos un sabor ideal para la Navidad.
+40119	Campana de caramelo	Un aspecto para arma que convierte tu campana en un dulce bastón de caramelo ideal para la Navidad.
+40120	Abanico de Frostie	Un aspecto para arma que adorna tu abanico con un muñeco de nieve ideal para la Navidad.
+40121	Garras de Rudolf	Un aspecto para arma que adorna tus garras con un reno ideal para la Navidad.
+40122	Espada abeto decorado+	Un aspecto para arma que convierte tu espada en un abeto navideño. Te otorga al menos una bonificación aleatoria.
+40123	Daga con acebo+	Un aspecto para arma que decora tu daga con un ramillete de acebo ideal para la Navidad. Te otorga al menos una bonificación aleatoria.
+40124	Arco de elfo+	Un aspecto para arma que da a tu arco un aire élfico ideal para la Navidad. Te otorga al menos una bonificación aleatoria.
+40125	Guja de jengibre+	Un aspecto para arma que añade a tu arma a dos manos un sabor ideal para la Navidad. Te otorga al menos una bonificación aleatoria.
+40126	Campana de caramelo+	Un aspecto para arma que convierte tu campana en un dulce bastón de caramelo ideal para la Navidad. Te otorga al menos una bonificación aleatoria.
+40127	Abanico de Frostie+	Un aspecto para arma que adorna tu abanico con un muñeco de nieve ideal para la Navidad. Te otorga al menos una bonificación aleatoria.
+40128	Garras de Rudolf+	Un aspecto para arma que adorna tus garras con un reno ideal para la Navidad. Te otorga al menos una bonificación aleatoria.
+40129	Espada de Acuarus	Aspecto para arma que recubre tu espada con agua sólida de color azul irisado
+40130	Daga de Acuarus	Aspecto para arma que recubre tu daga con agua sólida de color azul irisado
+40131	Arco de Acuarus	Aspecto para arma que recubre tu arco con agua sólida de color azul irisado
+40132	Guja de Acuarus	Aspecto para arma que recubre tu guja con agua sólida de color azul irisado
+40133	Campana de Acuarus	Aspecto para arma que recubre tu campana con agua sólida de color azul irisado
+40134	Abanico de Acuarus	Aspecto para arma que recubre tu abanico con agua sólida de color azul irisado
+40135	Garras de Acuarus	Aspecto para arma que recubre tus garras con agua sólida de color azul irisado
+40136	Espada de Acuarus+	Aspecto para arma que recubre tu espada con agua sólida de color azul irisado. Te otorga como mínimo una bonificación aleatoria.
+40137	Daga de Acuarus+	Aspecto para arma que recubre tu daga con agua sólida de color azul irisado. Te otorga como mínimo una bonificación aleatoria.
+40138	Arco de Acuarus+	Aspecto para arma que recubre tu arco con agua sólida de color azul irisado. Te otorga como mínimo una bonificación aleatoria.
+40139	Guja de Acuarus+	Aspecto para arma que recubre tu guja con agua sólida de color azul irisado Te otorga como mínimo una bonificación aleatoria.
+40140	Campana de Acuarus+	Aspecto para arma que recubre tu campana con agua sólida de color azul irisado. Te otorga como mínimo una bonificación aleatoria.
+40141	Abanico de Acuarus+	Aspecto para arma que recubre tu abanico con agua sólida de color azul irisado. Te otorga como mínimo una bonificación aleatoria.
+40142	Garras de Acuarus+	Aspecto para arma que recubre tus garras con agua sólida de color azul irisado. Te otorga como mínimo una bonificación aleatoria.
+41458	Sotana de fénix	Elegante atuendo largo en estilo asiático con bordado de fénix para hombre.
+41459	Sotana de cobra	Elegante atuendo largo en estilo asiático con bordado de cobra para hombre.
+41462	Qipao de dragón (rojo)	Vestido tradicional asiático en color rojo con intrincado bordado dorado para mujer.
+41463	Qipao de dragón (blanco)	Vestido tradicional asiático en color blanco con intrincado bordado rojo para mujer.
+41466	Sotana de fénix+	Elegante atuendo largo en estilo asiático con bordado de fénix para hombre. Te otorga al menos una bonificación aleatoria.
+41467	Sotana de cobra+	Elegante atuendo largo en estilo asiático con bordado de cobra para hombre. Te otorga al menos una bonificación aleatoria.
+41470	Qipao de dragón+ (rojo)	Vestido tradicional asiático en color rojo con intrincado bordado dorado para mujer. Te otorga al menos una bonificación aleatoria.
+41471	Qipao de dragón+ (blan.)	Vestido tradicional asiático en color blanco con intrincado bordado rojo para mujer. Te otorga al menos una bonificación aleatoria.
+41488	Disfraz de faraón (rojo)	Para lucir como un egipcio: el Disfraz de faraón con adornos rojos para hombre.
+41489	Disfraz faraón (turq.)	Para lucir como un egipcio: el Disfraz de faraón con adornos turquesa para hombre.
+41490	Ángel de Uriel (blanco)	Elegante disfraz con puras y blancas alas de ángel para mujer.
+41491	Ángel de Uriel (rojo)	Emocionante disfraz con fogosas alas de ángel para mujer.
+41492	Disfraz faraón+ (rojo)	Para lucir como un egipcio: el Disfraz de faraón con adornos rojos para hombre. Te otorga al menos una bonificación aleatoria.
+41493	Disfraz faraón+ (turq.)	Para lucir como un egipcio: el Disfraz de faraón con adornos turquesa para hombre. Te otorga al menos una bonificación aleatoria.
+41494	Ángel de Uriel+ (blanco)	Elegante disfraz con puras y blancas alas de ángel para mujer. Te otorga al menos una bonificación aleatoria.
+41495	Ángel de Uriel+ (rojo)	Emocionante disfraz con fogosas alas de ángel para mujer. Te otorga al menos una bonificación aleatoria.
+41512	Atuendo dentado	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios.
+41513	Atuendo dentado	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios.
+41514	Atuendo dentado	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios.
+41515	Atuendo dentado	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios.
+41516	Atuendo dentado+	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+41517	Atuendo dentado+	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+41518	Atuendo dentado+	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+41519	Atuendo dentado+	Un disfraz de Halloween con un aire demoníaco que aterrará a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+41520	Ropaje invernal rojo	Atuendo de invierno de fieltro rojo. No es comerciable.
+41521	Ropaje invernal azul	Atuendo de invierno de fieltro azul. No es comerciable.
+41522	Ropaje invernal rojo+	Atuendo de invierno de fieltro rojo. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41523	Ropaje invernal azul+	Atuendo de invierno de fieltro azul. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41524	Vestido invernal rojo	Vestido de invierno de fieltro rojo. No es comerciable.
+41525	Vestido invernal azul	Vestido de invierno de fieltro azul. No es comerciable.
+41526	Vestido invernal rojo+	Vestido de invierno de fieltro rojo. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41527	Vestido invernal azul+	Vestido de invierno de fieltro azul. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41528	Príncipe del des. (rojo)	Un atuendo de guerrero hecho en telas rojas, ideal para líderes.
+41529	Príncipe del des. (azul)	Un atuendo de guerrero hecho en telas azules, ideal para líderes.
+41530	Princesa del des. (rojo)	Un atuendo de guerrera hecho en telas rojas, ideal para líderes.
+41531	Princesa del des. (azul)	Un atuendo de guerrera hecho en telas azules, ideal para líderes.
+41532	Príncipe des.+ (rojo)	Un atuendo de guerrero hecho en telas rojas, ideal para líderes. Te otorga al menos una bonificación aleatoria.
+41533	Príncipe des.+ (azul)	Un atuendo de guerrero hecho en telas azules, ideal para líderes. Te otorga al menos una bonificación aleatoria.
+41534	Princesa des.+ (rojo)	Un atuendo de guerrera hecho en telas rojas, ideal para líderes. Te otorga al menos una bonificación aleatoria.
+41535	Princesa del des. (azul)	Un atuendo de guerrera hecho en telas azules, ideal para líderes. Te otorga al menos una bonificación aleatoria.
+41540	Atuendo conejo (blanco)	Atuendo de conejo para hombre de peluche de color blanco. No es comerciable.
+41541	Atuendo conejo (rosa)	Atuendo de conejo para hombre de peluche de color rosa. No es comerciable.
+41542	Atuendo conejito (az. m.)	Atuendo de conejo para mujer de peluche de color azul marino. No es comerciable.
+41543	Atuendo conejito (mage.)	Atuendo de conejo para mujer de peluche de color magenta. No es comerciable.
+41544	Atuendo conejo+ (blanco)	Atuendo de conejo para hombre de peluche de color blanco. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+41545	Atuendo conejo+ (rosa)	Atuendo de conejo para hombre de peluche de color rosa. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+41546	Atuendo conejito+(az.m.)	Atuendo de conejo para mujer de peluche de color azul marino. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+41547	Atuendo conejito+ (mag.)	Atuendo de conejo para mujer de peluche de color magenta. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+41560	Guerrero vampiro (gris)	Con la armadura de un auténtico guerrero vampiro te verás invencible. El objeto no es comerciable.
+41561	Guerrero vampiro (rojo)	Con la armadura de un auténtico guerrero vampiro te verás invencible. El objeto no es comerciable.
+41562	Vampiresa (gris)	Con la armadura de una vampiresa guerrera te verás invencible. El objeto no es comerciable.
+41563	Vampiresa (rojo)	Con la armadura de una vampiresa guerrera te verás invencible. El objeto no es comerciable.
+41564	Guerrero vampiro+ (gris)	Con la armadura de un auténtico guerrero vampiro gozarás de una fuerza monstruosa. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+41565	Guerrero vampiro+ (rojo)	Con la armadura de un auténtico guerrero vampiro gozarás de una fuerza monstruosa. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+41566	Vampiresa+ (gris)	Con la armadura de una vampiresa guerrera gozarás de una fuerza monstruosa. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+41567	Vampiresa+ (rojo)	Con la armadura de una vampiresa guerrera gozarás de una fuerza monstruosa. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+41568	Traje festivo rojo (m)	Una vestimenta festiva roja con dobladillo blanco.
+41569	Traje festivo verde (m)	Una vestimenta festiva verde con dobladillo blanco.
+41570	Traje festivo rojo (f)	Una vestimenta festiva roja con dobladillo blanco.
+41571	Traje festivo verde (f)	Una vestimenta festiva verde con dobladillo blanco.
+41572	Traje festivo rojo+ (m)	Una vestimenta festiva roja con dobladillo blanco. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+41573	Traje festivo verde+ (m)	Una vestimenta festiva verde con dobladillo blanco. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+41574	Traje festivo rojo+ (f)	Una vestimenta festiva roja con dobladillo blanco. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+41575	Traje festivo verde+ (f)	Una vestimenta festiva verde con dobladillo blanco. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+41576	Oyoroi dorado (m)	Uniforme dorado de un general japonés
+41577	Oyoroi plateado (m)	Uniforme plateado de un general japonés
+41578	Oyoroi dorado (f)	Uniforme dorado de una general japonesa
+41579	Oyoroi plateado (f)	Uniforme plateado de una general japonesa
+41580	Oyoroi dorado+ (m)	Uniforme dorado de un general japonés. Te otorga como mínimo una bonificación aleatoria.
+41581	Oyoroi plateado+ (m)	Uniforme plateado de un general japonés. Te otorga como mínimo una bonificación aleatoria.
+41582	Oyoroi dorado+ (f)	Uniforme dorado de una general japonesa. Te otorga como mínimo una bonificación aleatoria.
+41583	Oyoroi plateado+ (f)	Uniforme plateado de una general japonesa. Te otorga como mínimo una bonificación aleatoria.
+41584	Armadura samurái (azul)	Armadura azul al estilo de un sogún experimentado
+41585	Armadura samurái (rojo)	Armadura roja al estilo de un sogún experimentado
+41586	Armadura samurái (azul)	Armadura azul al estilo de una mujer sogún
+41587	Armadura samurái (rojo)	Armadura roja de mujer sogún
+41588	Armadura samurái+ (azul)	Armadura azul al estilo de un sogún experimentado Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41589	Armadura samurái+ (rojo)	Armadura roja al estilo de un sogún experimentado Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41590	Armadura samurái+ (azul)	Armadura azul al estilo de una mujer sogún Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41591	Armadura samurái+ (rojo)	Armadura roja al estilo de una mujer sogún Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41592	Arnés del horror+ (oro)	Armadura infernal llameante que siembra el caos y el terror.
+41593	Arnés del horror (az)	Armadura infernal de brillo azul que siembra el caos y el terror.
+41594	Arnés del horror+ (oro)	Armadura infernal llameante que siembra el caos y el terror.
+41595	Arnés del horror (az)	Armadura infernal de brillo azul que siembra el caos y el terror.
+41596	Arnés del horror+ (oro)	Armadura infernal llameante que siembra el caos y el terror. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41597	Arnés del horror+ (az)	Armadura infernal de brillo azul que siembra el caos y el terror. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41598	Arnés del horror+ (oro)	Armadura infernal llameante que siembra el caos y el terror. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41599	Arnés del horror+ (az)	Armadura infernal de brillo azul que siembra el caos y el terror. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41600	Uniforme steampunk (neg)	Atuendo futurista para el guerrero del aquí y ahora
+41601	Uniforme steampunk (roj)	Atuendo futurista para el guerrero del aquí y ahora
+41602	Vestido steampunk (neg)	Atuendo futurista para la guerrera del aquí y ahora
+41603	Vestido steampunk (rojo)	Atuendo futurista para la guerrera del aquí y ahora
+41604	Unif. steampunk+ (negro)	Atuendo futurista para el guerrero del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41605	Unif. steampunk+ (rojo)	Atuendo futurista para el guerrero del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41606	Vestido steampunk+ (neg)	Atuendo futurista para la guerrera del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41607	Vestido steampunk+ (roj)	Atuendo futurista para la guerrera del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+41608	Adorno sungura (azul)	Un traje fabuloso en blanco y violeta con pantalones bombachos azules
+41609	Adorno sungura (verde)	Un traje fabuloso en blanco y verde petróleo con pantalones bombachos grises
+41610	Traje sungura (azul)	Un vestido globo fabuloso en azul y violeta
+41611	Traje sungura (gris)	Un vestido globo fabuloso en gris y verde petróleo
+41612	Adorno sungura+ (azul)	Un traje fabuloso en blanco y violeta con pantalones bombachos azules. Te otorga al menos una bonificación aleatoria.
+41613	Adorno sungura+ (verde)	Un traje fabuloso en blanco y verde petróleo con pantalones bombachos grises. Te otorga al menos una bonificación aleatoria.
+41614	Traje sungura+ (azul)	Un vestido globo fabuloso en azul y violeta. Te otorga al menos una bonificación aleatoria.
+41615	Traje sungura+ (gris)	Un vestido globo fabuloso en gris y verde petróleo. Te otorga al menos una bonificación aleatoria.
+41630	Peto avaloniano (plata)	Un arnés plateado de un antiguo clan de caballeros noble
+41631	Peto avaloniano (rojo)	Un arnés rojo de un antiguo clan de caballeros noble
+41632	Peto avaloniano (plata)	Un arnés plateado de un antiguo clan de caballeros noble
+41633	Peto avaloniano (rojo)	Un arnés rojo de un antiguo clan de caballeros noble
+41634	Peto avaloniano+ (plata)	Un arnés irisado de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+41635	Peto avaloniano+ (rojo)	Un arnés irisado de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+41636	Peto avaloniano+ (plata)	Un arnés irisado de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+41637	Peto avaloniano+ (rojo)	Un arnés irisado de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+41638	Camiseta KSA (m)	La camiseta del mundial de la selección de fútbol de Arabia Saudita
+41639	Camiseta KSA (f)	La camiseta del mundial de la selección de fútbol de Arabia Saudita
+41640	Camiseta KSA+ (m)	La camiseta del mundial de la selección de fútbol de Arabia Saudita. Te otorga como mínimo una bonificación aleatoria.
+41641	Camiseta KSA+ (f)	La camiseta del mundial de la selección de fútbol de Arabia Saudita. Te otorga como mínimo una bonificación aleatoria.
+41642	Camiseta DEN (m)	La camiseta del mundial de la selección de fútbol de Dinamarca
+41643	Camiseta DEN (f)	La camiseta del mundial de la selección de fútbol de Dinamarca
+41644	Camiseta DEN+ (m)	La camiseta del mundial de la selección de fútbol de Dinamarca. Te otorga como mínimo una bonificación aleatoria.
+41645	Camiseta DEN+ (f)	La camiseta del mundial de la selección de fútbol de Dinamarca. Te otorga como mínimo una bonificación aleatoria.
+41646	Camiseta SVK (m)	La camiseta del mundial de la selección de fútbol de Eslovaquia
+41647	Camiseta SVK (f)	La camiseta del mundial de la selección de fútbol de Eslovaquia
+41648	Camiseta SVK+ (m)	La camiseta del mundial de la selección de fútbol de Eslovaquia. Te otorga como mínimo una bonificación aleatoria.
+41649	Camiseta SVK+ (f)	La camiseta del mundial de la selección de fútbol de Eslovaquia. Te otorga como mínimo una bonificación aleatoria.
+41650	Camiseta TUR (m)	La camiseta del mundial de la selección de fútbol de Turquía
+41651	Camiseta TUR (f)	La camiseta del mundial de la selección de fútbol de Turquía
+41652	Camiseta TUR+ (m)	La camiseta del mundial de la selección de fútbol de Turquía. Te otorga como mínimo una bonificación aleatoria.
+41653	Camiseta TUR+ (f)	La camiseta del mundial de la selección de fútbol de Turquía. Te otorga como mínimo una bonificación aleatoria.
+41654	Camiseta HUN (m)	La camiseta del mundial de la selección de fútbol de Hungría
+41655	Camiseta HUN (f)	La camiseta del mundial de la selección de fútbol de Hungría
+41656	Camiseta HUN+ (m)	La camiseta del mundial de la selección de fútbol de Hungría. Te otorga como mínimo una bonificación aleatoria.
+41657	Camiseta HUN+ (f)	La camiseta del mundial de la selección de fútbol de Hungría. Te otorga como mínimo una bonificación aleatoria.
+41658	Camiseta ROU (m)	La camiseta del mundial de la selección de fútbol de Rumanía
+41659	Camiseta ROU (f)	La camiseta del mundial de la selección de fútbol de Rumanía
+41660	Camiseta ROU+ (m)	La camiseta del mundial de la selección de fútbol de Rumanía. Te otorga como mínimo una bonificación aleatoria.
+41661	Camiseta ROU+ (f)	La camiseta del mundial de la selección de fútbol de Rumanía. Te otorga como mínimo una bonificación aleatoria.
+41662	Camiseta POL (m)	La camiseta del mundial de la selección de fútbol de Polonia
+41663	Camiseta POL (f)	La camiseta del mundial de la selección de fútbol de Polonia
+41664	Camiseta POL+ (m)	La camiseta del mundial de la selección de fútbol de Polonia. Te otorga como mínimo una bonificación aleatoria.
+41665	Camiseta POL+ (f)	La camiseta del mundial de la selección de fútbol de Polonia. Te otorga como mínimo una bonificación aleatoria.
+41666	Camiseta BRA (m)	La camiseta del mundial de la selección de fútbol de Brasil.
+41667	Camiseta BRA (f)	La camiseta del mundial de la selección de fútbol de Brasil.
+41668	Camiseta BRA+ (m)	La camiseta del mundial de la selección de fútbol de Brasil. Te otorga como mínimo una bonificación aleatoria.
+41669	Camiseta BRA+ (f)	La camiseta del mundial de la selección de fútbol de Brasil. Te otorga como mínimo una bonificación aleatoria.
+41670	Atuendo lobo marrón (m)	Esta vestimenta de piel marrón despierta al lobo que hay dentro de cualquier hombre.
+41671	Atuendo lobo gris (m)	Esta vestimenta de piel gris despierta al lobo que hay dentro de cualquier hombre.
+41672	Atuendo lobo marrón (f)	Esta vestimenta de piel marrón despierta al lobo que hay dentro de cualquier mujer.
+41673	Atuendo lobo gris (f)	Esta vestimenta de piel gris despierta al lobo que hay dentro de cualquier mujer.
+41674	Atuendo lobo marrón (m)+	Esta vestimenta de piel marrón despierta al lobo que hay dentro de cualquier hombre. Te otorga al menos una bonificación aleatoria.
+41675	Atuendo lobo gris (m)+	Esta vestimenta de piel gris despierta al lobo que hay dentro de cualquier hombre. Te otorga al menos una bonificación aleatoria.
+41676	Atuendo lobo marrón (f)+	Esta vestimenta de piel marrón despierta al lobo que hay dentro de cualquier mujer. Te otorga al menos una bonificación aleatoria.
+41677	Atuendo lobo gris (f)+	Esta vestimenta de piel gris despierta al lobo que hay dentro de cualquier mujer. Te otorga al menos una bonificación aleatoria.
+45108	Sombrero vietnamita	Gorro tradicional asiático de paja de arroz para hombre.
+45110	Moño asiático	Recogido asiático con doble moño
+45114	Sombrero vietnamita+	Gorro tradicional asiático de paja de arroz para hombre. Te otorga al menos una bonificación aleatoria.
+45116	Moño asiático+	Recogido asiático con doble moño Te otorga al menos una bonificación aleatoria.
+45182	Plum. ador. cabeza (ro)	Fino plumaje rojo para la cabeza para hombres apasionados por el carnaval.
+45183	Plum. ador. cabeza (tur)	Fino plumaje turquesa para la cabeza para hombres apasionados por el carnaval.
+45184	Tiara de fénix (blanca)	Elegante adorno de metal para la cabeza en forma de pájaro para mujer.
+45185	Tiara de fénix (roja)	Elegante adorno de metal para la cabeza en forma de pájaro para mujer.
+45186	Plum. ador. cabeza+ (ro)	Fino plumaje rojo para la cabeza para hombres apasionados por el carnaval. Te otorga al menos una bonificación aleatoria.
+45187	Plum. ador. cabeza+ (tu)	Fino plumaje turquesa para la cabeza para hombres apasionados por el carnaval. Te otorga al menos una bonificación aleatoria.
+45188	Tiara de fénix+ (blanca)	Elegante adorno de metal para la cabeza en forma de pájaro para mujer. Te otorga al menos una bonificación aleatoria.
+45189	Tiara de fénix+ (roja)	Elegante adorno de metal para la cabeza en forma de pájaro para mujer. Te otorga al menos una bonificación aleatoria.
+45206	Casco dentado	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios.
+45207	Casco dentado	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios.
+45208	Casco dentado	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios.
+45209	Casco dentado	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios.
+45210	Casco dentado+	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+45211	Casco dentado+	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+45212	Casco dentado+	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+45213	Casco dentado+	Un espantoso casco de Halloween que paralizará de miedo a tus adversarios. Te otorga como mínimo una bonificación aleatoria.
+45214	Gorro con borla rojo	Gorro de fieltro rojo con borla blanca. No es comerciable.
+45215	Gorro con borla azul	Gorro de fieltro azul con borla blanca. No es comerciable.
+45216	Capucha con borla roja	Gorro de fieltro rojo con borla blanca. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45217	Capucha con borla azul	Gorro de fieltro azul con borla blanca. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45218	Gorro con borla rojo+	Capucha de fieltro rojo con borla blanca. No es comerciable.
+45219	Gorro con borla azul+	Capucha de fieltro azul con borla blanca. No es comerciable.
+45220	Capucha con borla roja+	Capucha de fieltro rojo con borla blanca. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45221	Capucha con borla azul+	Capucha de fieltro azul con borla blanca. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45222	Orejas conejo (blanco)	Gorro blanco para hombre con orejas de conejo. No es comerciable.
+45223	Orejas conejo (rosa)	Gorro rosa para hombre con orejas de conejo. No es comerciable.
+45224	Orejas conejito (az. m.)	Orejas de conejo azul marino para mujer. No es comerciable.
+45225	Orejas conejito (mage.)	Orejas de conejo magenta para mujer. No es comerciable.
+45226	Orejas conejo+ (blanco)	Gorro blanco para hombre con orejas de conejo. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+45227	Orejas conejo+ (rosa)	Gorro rosa para hombre con orejas de conejo. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+45228	Orejas conejito+(az. m.)	Orejas de conejo azul marino para mujer. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+45229	Orejas conejito+ (mage.)	Orejas de conejo magenta para mujer. Te otorga como mínimo una bonificación aleatoria. Este objeto es comerciable.
+45234	Turbante azul	Un noble turbante azul de tela resistente para luchadores.
+45235	Turbante rojo	Un noble turbante rojo de tela resistente para luchadores.
+45236	Pañuelo marrón	Pañuelo marrón de tejido ligero para luchadoras.
+45237	Pañuelo verde	Pañuelo verde de tejido ligero para luchadoras.
+45238	Turbante azul+	Un noble turbante azul de tela resistente para luchadores. Te otorga al menos una bonificación aleatoria.
+45239	Turbante rojo+	Un noble turbante rojo de tela resistente para luchadores. Te otorga al menos una bonificación aleatoria.
+45240	Pañuelo marrón+	Pañuelo marrón de tejido ligero para luchadoras. Te otorga al menos una bonificación aleatoria.
+45241	Pañuelo verde+	Pañuelo verde de tejido ligero para luchadoras. Te otorga al menos una bonificación aleatoria.
+45250	Casco gue. vamp. (gris)	El casco de un auténtico guerrero vampiro. El objeto no es comerciable.
+45251	Casco gue. vamp. (rojo)	El casco de un auténtico guerrero vampiro. El objeto no es comerciable.
+45252	Casco vampiresa (gris)	El casco de una vampiresa guerrera. El objeto no es comerciable.
+45253	Casco vampiresa (rojo)	El casco de una vampiresa guerrera. El objeto no es comerciable.
+45254	Casco gue. vamp.+ (gris)	El casco de un auténtico guerrero vampiro. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+45255	Casco gue. vamp.+ (rojo)	El casco de un auténtico guerrero vampiro. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+45256	Casco vampiresa+ (gris)	El casco de una vampiresa guerrera. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+45257	Casco vampiresa+ (rojo)	El casco de una vampiresa guerrera. Te otorga como mínimo una bonificación aleatoria. El objeto es comerciable.
+45258	Capucha navideña (rojo)	Capucha navideña roja con dobladillo blanco.
+45259	Capucha navideña (verde)	Capucha navideña verde con dobladillo blanco.
+45260	Gorro navideño (rojo)	Gorro navideño rojo con borla blanca.
+45261	Gorro navideño (verde)	Gorro navideño verde con borla blanca.
+45262	Capucha navideña+ (rojo)	Capucha navideña roja con dobladillo blanco. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+45263	Capucha navideña+ (ver.)	Capucha navideña verde con dobladillo blanco. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+45264	Gorro navideño+ (rojo)	Gorro navideño rojo con borla blanca. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+45265	Gorro navideño+ (verde)	Gorro navideño verde con borla blanca. Te otorga como mínimo una bonificación aleatoria y es comerciable.
+45266	Kabuto dorado (m)	Casco dorado de un general japonés
+45267	Kabuto plateado (m)	Casco plateado de un general japonés
+45268	Kabuto dorado (f)	Casco dorado de una general japonesa
+45269	Kabuto plateado (f)	Casco plateado de una general japonesa
+45270	Kabuto dorado+ (m)	Casco dorado de un general japonés. Te otorga como mínimo una bonificación aleatoria.
+45271	Kabuto plateado+ (m)	Casco plateado de un general japonés. Te otorga como mínimo una bonificación aleatoria.
+45272	Kabuto dorado+ (f)	Casco dorado de una general japonesa. Te otorga como mínimo una bonificación aleatoria.
+45273	Kabuto plateado+ (f)	Casco plateado de una general japonesa. Te otorga como mínimo una bonificación aleatoria.
+45274	Moño de samurái (dorado)	Moño con horquilla dorada en estilo samurái para él
+45275	Moño de samurái (plata)	Moño con horquilla plateada en estilo samurái para él
+45276	Moño de samurái (dorado)	Moño con horquilla dorada en estilo samurái para ella
+45277	Moño de samurái (plata)	Moño con horquilla plateada en estilo samurái para ella
+45278	Moño de samurái+ (dorad)	Moño con horquilla dorada en estilo samurái para él Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45279	Moño de samurái+ (plata)	Moño con horquilla plateada en estilo samurái para él Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45280	Moño de samurái+ (dorad)	Moño con horquilla dorada en estilo samurái para ella Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45281	Moño de samurái+ (plata)	Moño con horquilla plateada en estilo samurái para ella Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45282	Cuernos del horror (oro)	Un yelmo dorado con cuernos de demonio.
+45283	Cuernos del horror (az)	Un yelmo azul con cuernos de demonio.
+45284	Cuernos del horror (oro)	Un yelmo dorado con cuernos de demonio.
+45285	Cuernos del horror (az)	Un yelmo azul con cuernos de demonio.
+45286	Cuernos del horror+(oro)	Un yelmo dorado con cuernos de demonio. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45287	Cuernos del horror+ (az)	Un yelmo azul con cuernos de demonio. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45288	Cuernos del horror+(oro)	Un yelmo dorado con cuernos de demonio. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45289	Cuernos del horror+ (az)	Un yelmo azul con cuernos de demonio. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45290	S. de copa steamp. (neg)	Sombrero futurista para el guerrero del aquí y ahora
+45291	S. de copa steamp. (roj)	Sombrero futurista para el guerrero del aquí y ahora
+45292	S. de copa steamp. (neg)	Sombrero futurista para la guerrera del aquí y ahora
+45293	S. de copa steamp. (roj)	Sombrero futurista para la guerrera del aquí y ahora
+45294	S. de copa steamp+ (neg)	Sombrero futurista para el guerrero del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45295	S. de copa steamp+ (roj)	Sombrero futurista para el guerrero del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45296	S. de copa steamp+ (neg)	Sombrero futurista para la guerrera del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45297	S. de copa steamp+ (roj)	Sombrero futurista para la guerrera del aquí y ahora Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45298	Sombrero pluma (azul)	Un sombrero azul con sujeción de perlas y una pluma de faisán roja
+45299	Sombrero pluma (gris)	Un sombrero gris con sujeción de perlas y una pluma de faisán verde petróleo
+45300	Gorro sungura (azul)	Accesorio para la cabeza azul con una gema de color turquesa
+45301	Gorro sungura (gris)	Accesorio para la cabeza gris con una gema de color violeta
+45302	Sombrero pluma+ (azul)	Un sombrero azul con sujeción de perlas y una pluma de faisán roja. Te otorga al menos una bonificación aleatoria.
+45303	Sombrero pluma+ (gris)	Un sombrero gris con sujeción de perlas y una pluma de faisán verde petróleo. Te otorga al menos una bonificación aleatoria.
+45304	Gorro sungura+ (azul)	Accesorio para la cabeza azul con una gema de color turquesa. Te otorga al menos una bonificación aleatoria.
+45305	Gorro sungura+ (gris)	Accesorio para la cabeza gris con una gema de color violeta. Te otorga al menos una bonificación aleatoria.
+45314	Corona de zodíaco	Tocado majestuoso.
+45315	Corona de zodíaco	Tocado majestuoso.
+45316	Corona de zodíaco+	Tocado majestuoso. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45317	Corona de zodíaco+	Tocado majestuoso. Te otorga al menos una bonificación aleatoria. Este objeto es comerciable.
+45320	Yelmo avaloniano (plata)	Un arnés irisado de un antiguo clan de caballeros noble.
+45321	Yelmo avaloniano (rojo)	El yelmo rojo de un antiguo clan de caballeros noble.
+45322	Yelmo avaloniano (plata)	Un arnés irisado de un antiguo clan de caballeros noble.
+45323	Yelmo avaloniano (rojo)	El yelmo rojo de un antiguo clan de caballeros noble.
+45324	Yelmo avaloniano+ (plt)	Un yelmo plateado de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+45325	Yelmo avaloniano+ (rojo)	El yelmo rojo de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+45326	Yelmo avaloniano+ (plt)	Un yelmo plateado de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+45327	Yelmo avaloniano+ (rojo)	El yelmo rojo de un antiguo clan de caballeros noble. Te otorga al menos una bonificación aleatoria.
+45328	Gorro de osito (m)	Accesorio para la cabeza de material suave en forma de cara de osito
+45329	Gorro de tigre (m)	Accesorio para la cabeza de material suave en forma de cara de tigre
+45330	Gorro de osito (f)	Accesorio para la cabeza de material suave en forma de cara de osito
+45331	Gorro de tigre (f)	Accesorio para la cabeza de material suave en forma de cara de tigre
+45332	Gorro de osito+ (m)	Este accesorio para la cabeza tan suave te otorga al menos una bonificación aleatoria.
+45333	Gorro de tigre+ (m)	Este accesorio para la cabeza tan suave te otorga al menos una bonificación aleatoria.
+45334	Gorro de osito+ (f)	Este accesorio para la cabeza tan suave te otorga al menos una bonificación aleatoria.
+45335	Gorro de tigre+ (f)	Este accesorio para la cabeza tan suave te otorga al menos una bonificación aleatoria.
+45336	Gorro lobo marrón (m)	Un gorro de piel de lobo muy elaborado para hombre.
+45337	Gorro lobo gris (m)	Un gorro de piel de lobo muy elaborado para hombre.
+45338	Gorro lobo marrón (f)	Un gorro de piel de lobo muy elaborado para mujer.
+45339	Gorro lobo gris (f)	Un gorro de piel de lobo muy elaborado para mujer.
+45340	Gorro lobo marrón (m)+	Un gorro de piel de lobo muy elaborado para hombre. Te otorga al menos una bonificación aleatoria.
+45341	Gorro lobo gris (m)+	Un gorro de piel de lobo muy elaborado para hombre. Te otorga al menos una bonificación aleatoria.
+45342	Gorro lobo marrón (f)+	Un gorro de piel de lobo muy elaborado para mujer. Te otorga al menos una bonificación aleatoria.
+45343	Gorro lobo gris (f)+	Un gorro de piel de lobo muy elaborado para mujer. Te otorga al menos una bonificación aleatoria.
+45344	Cinta DEN (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Dinamarca
+45345	Cinta HUN (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Hungría
+45346	Cinta POL (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Polonia
+45347	Cinta KSA (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Arabia Saudita
+45348	Cinta SVK (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Eslovaquia
+45349	Cinta TUR (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Turquía
+45350	Cinta DEN+ (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Dinamarca. Te otorga como mínimo una bonificación aleatoria.
+45351	Cinta HUN+ (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Hungría. Te otorga como mínimo una bonificación aleatoria.
+45352	Cinta POL+ (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Polonia. Te otorga como mínimo una bonificación aleatoria.
+45353	Cinta KSA+ (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Arabia Saudita. Te otorga como mínimo una bonificación aleatoria.
+45354	Cinta SVK+ (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Eslovaquia. Te otorga como mínimo una bonificación aleatoria.
+45355	Cinta TUR+ (f)	Pelo largo con trenzas y cinta de pelo con los colores nacionales de Turquía. Te otorga como mínimo una bonificación aleatoria.
+50208	Pergamino Silver Premium	Se utiliza para activar su membresía Silver Premium o aumentar su tiempo.
+50209	Pergamino Gold Premium	Se utiliza para activar su membresía Golden Premium o aumentar su tiempo.
+50210	Pergamino Platinum Premium	Se utiliza para activar su membresía Platinum Premium o aumentar su tiempo.
+50266	Baúl de Jotun Thrym	El baúl de Jotun Thrym. Con un candado tan robusto, debe de contener algo muy valioso.
+50267	Baúl okey de oro	Para ganar este premio, consigue 400 o más puntos en una ronda okey.
+50270	Baúl de la reina Meley	Este baúl se sacó del refugio de la reina dragona Meley. Alberga un tesoro auténticamente real. Este objeto es comerciable.
+50271	Baúl guardianes dragón	Este baúl contiene tesoros extraordinarios de los incontables guardianes del dragón que se creían desaparecidos desde hace siglos. Este objeto es comerciable.
+50272	Cofre del cazajefes de oro	Recompensa de oro por tus heroicas hazañas en el Cazajefes.
+50285	Baúl zona combate hierro	Un baúl con contenido valioso.
+50286	Baúl zona combate oro	Un baúl con contenido valioso.
+50287	Caja de campo 1	Un baúl con equipamiento útil.
+50288	Caja de campo 2	Un baúl con equipamiento útil.
+50289	Reencarnación	Con la reencarnación resucitas de inmediato y sin tiempo de espera.
+50290	Baúl zona combate madera	Un baúl con contenido valioso.
+50323	Baúl libros contraataque	El baúl contiene un Manual de habilidad aleatorio para aprender habilidades de contraataque.
+50324	Baúl libros potenciación	El baúl contiene un Manual de habilidad aleatorio para aprender habilidades de refuerzo y potenciación.
+50514	Libro de potenciación	Este libro de texto te permite aprender una de las nueve habilidades de refuerzo. Se elegirá la habilidad que más te conviene.
+50515	Libro de contraataque	Este libro de texto te permite escoger una de las nueve habilidades de contraataque. ¡Piénsatelo bien!
+50516	Contra. a giro de espada	Este libro te enseña la habilidad para disminuir el daño por giro de espada.
+50517	Contraataque a emboscada	Este libro te enseña la habilidad para disminuir el daño por emboscada.
+50518	Contra. a golpe de dedo	Este libro te enseña la habilidad para disminuir el daño por golpe de dedo.
+50519	Contra. a disparo dragón	Este libro te enseña la habilidad para disminuir el daño por disparo de dragón.
+50520	Contra. a pulso espirit.	Este libro te enseña la habilidad para disminuir el daño por pulso espiritual.
+50521	Contra. a flecha fuego	Este libro te enseña la habilidad para disminuir el daño por flecha de fuego.
+50522	Contra. a golpe oscuro	Este libro te enseña la habilidad para disminuir el daño por golpe oscuro.
+50523	Contra. a llam. relámp.	Este libro te enseña la habilidad para disminuir el daño por llamada del relámpago.
+50524	Contra. a aliento lobo	Este libro te enseña la habilidad para disminuir el daño por aliento del lobo.
+50525	Piedra alma+	Una piedra legendaria usada para mejorar tus habilidades de Gran Maestro de refuerzo y contraataque. Desaparece después de su uso.
+50560	Poten. de giro de espada	Este libro te enseña la habilidad para reforzar giro de espada.
+50561	Poten. de emboscada	Este libro te enseña la habilidad para reforzar emboscada.
+50562	Poten. de golpe de dedo	Este libro te enseña la habilidad para reforzar golpe de dedo.
+50563	Poten. de disparo dragón	Este libro te enseña la habilidad para reforzar disparo de dragón.
+50564	Poten. de pulso espirit.	Este libro te enseña la habilidad para reforzar pulso espiritual.
+50565	Poten. de flecha fuego	Este libro te enseña la habilidad para reforzar flecha de fuego.
+50566	Poten. de golpe oscuro	Este libro te enseña la habilidad para reforzar golpe oscuro.
+50567	Poten. de llam. relámp.	Este libro te enseña la habilidad para reforzar llamada del relámpago.
+50568	Poten. de aliento lobo	Este libro te enseña la habilidad para reforzar aliento del lobo.
+50569	Piedra del alma legendaria	Esta piedra esconde un espíritu poderoso que es capaz de fortalecer tus habilidades de Perfect Grand Masters.
+50570	Piedra del alma legendaria	Esta piedra esconde un espíritu poderoso que es capaz de fortalecer tu habilidad perfecta directamente en habilidades legendarias.
+50571	Piedra del alma legendaria	Esta piedra esconde un espíritu poderoso que es capaz de fortalecer tu habilidad perfecta directamente en habilidades legendarias.
+50620	Mena de Azure	Puedes utilizar el horno del gremio para extraer un Azure de este mineral.
+50640	Azure	Piedra preciosa azul con un filo excepcional. Puede trabajarse para fabricar una valiosa joya.
+50926	Glimmerstone	Recoge Glimmerstones y haz que el Gaya Merchant las corte en un valioso Gaya.
+51723	Madera Fósil	Una madera valiosa que puede añadirse en accesorios de madera.
+51724	Cobre	Usado a menudo para hacer monedas y bronce. Puede ser añadido en accesorios de cobre.
+51725	Plata	Metal brillante usado para hacer joyería. Puede ser añadido en accesorios de plata.
+51726	Oro	Metal dorado usado para hacer joyería. Puede ser añadido en accesorios de oro.
+51727	Jade	Un mineral valioso que ha sido usado durante unos 5000 años.  Puede ser añadido en accesorios y joyería.
+51728	Ébano	La madera más fuerte y ligera de todas. Puede ser añadido en accesorios y joyería.
+51729	Perla	Usada para hacer joyería. Puede ser añadido en accesorios y joyería.
+51730	Oro Blanco	Una dura y blanca aleación de oro que se usa a menudo para joyería.
+51731	Cristal	Una piedra dura hecha de cuarzo cristalino que puede ser encontrada con diferentes colores. Usada a menudo para joyería.
+51732	Amatista	Un cuarzo popular que puede ser encontrado en diferentes tonalidades de púrpura. Es a menudo usado para hacer joyería.
+51733	Lágrima de Cielo	Lluvia cristalizada del cielo. Puede ser usado para hacer joyería.
+51734	Cristal del alma	Un cristal puro como la propia alma. Puede utilizarse para fabricar joyas.
+51735	Rubí	Piedra preciosa roja con un filo excepcional. Puede trabajarse para fabricar una valiosa joya.
+51736	Granate	Piedra preciosa naranja con un filo excepcional. Puede trabajarse para fabricar una valiosa joya.
+51737	Esmeralda	Piedra preciosa verde con un filo excepcional. Puede trabajarse para fabricar una valiosa joya.
+51738	Zafiro	Piedra preciosa azul con un filo excepcional. Puede trabajarse para fabricar una valiosa joya.
+51740	Azure	Piedra preciosa azul con un filo excepcional. Puede trabajarse para fabricar una valiosa joya.
+55001	Complemento proteico	Si tu mascota está agotada, aliméntala con este delicioso complemento de proteínas y se recuperará por completo. Si se lo das a una mascota muerta, resucitará con un 50% de su energía.
+55002	Trasportín	Al dejar a tu mascota en el Trasportín, pasa a ser comerciable durante 30 días.
+55003	Manual mascota joven	Estos objetos ayudarán a tu mascota a evolucionar a la siguiente etapa (Mascota salvaje): 10 Manuales mascota joven, 10 Sacos de Huevos de Araña, 10 Coleteros Blancos+, 10 Shuriken, 10 Horquillas ornamentales, 5 Uniformes Negros+, 5 Trozos de Hielo+.
+55004	Manual mascota salvaje	Estos objetos ayudarán a tu mascota a evolucionar a la siguiente etapa (Mascota valerosa): 10 Manuales mascota salvaje, 2 Perlas rojas, 10 Cremas Faciales, 10 Pieles de Yeti+, 10 Ornamentaciones, 10 Madejas, 5 Libros Maldición+.
+55005	Manual mascota valerosa	Estos objetos ayudarán a tu mascota a evolucionar a la siguiente etapa (Mascota heroica): 10 Manuales mascota valerosa, 10 Medicinas Desconocidas+, 2 Perlas Blancas, 2 Perlas Azules, 10 Recuerdos del Demonio+, 10 Dientes de Orco+, 5 Cinturones azules.
+55006		
+55008	Perg. nombre de mascota	Arrastra el pergamino sobre tu mascota para cambiar su nombre.
+55009	Cofre manual mascota	Contiene un manual de habilidad de mascota aleatorio.
+55010	Libro de monstruos	Tras aprender esta habilidad, tu mascota aumenta tu daño contra monstruos.
+55011	Libro de piedras Metin	Tras aprender esta habilidad, tu mascota aumenta tu daño contra piedras Metin.
+55012	Libro de jefes	Tras aprender esta habilidad, tu mascota aumenta tu daño contra jefes.
+55013	Libro de vida	Tras aprender esta habilidad, tu mascota aumenta tu HP máximo.
+55014	Libro de veneno	Tras aprender esta habilidad, tu mascota da a tus ataques la posibilidad de envenenar al enemigo.
+55015	Libro anti-crítico	Tras aprender esta habilidad, tu mascota reduce la probabilidad de recibir golpes críticos.
+55016	Libro anti-penetración	Tras aprender esta habilidad, tu mascota reduce la probabilidad de recibir golpes penetrantes.
+55017	Libro de fuego	Tras aprender esta habilidad, tu mascota aumenta tu poder contra el elemento fuego.
+55018	Libro de hielo	Tras aprender esta habilidad, tu mascota aumenta tu poder contra el elemento hielo.
+55019	Libro de tierra	Tras aprender esta habilidad, tu mascota aumenta tu poder contra el elemento tierra.
+55020	Libro de viento	Tras aprender esta habilidad, tu mascota aumenta tu poder contra el elemento viento.
+55021	Libro de regeneración	Tras aprender esta habilidad, tu mascota restaura gradualmente tu HP con el tiempo.
+55022	Libro de esquiva de flechas	Tras aprender esta habilidad, tu mascota aumenta tu probabilidad de esquivar ataques con flechas.
+55023	Libro de caída de objetos	Tras aprender esta habilidad, tu mascota aumenta tu tasa de caída de objetos.
+55024	Libro del atacante	Tras aprender esta habilidad, tu mascota aumenta tu valor total de ataque.
+55025	Libro del berserker (H)	Tras aprender esta habilidad, tu mascota aumenta tu daño mágico/de combate.
+55026	Libro de daño de habilidades (H)	Tras aprender esta habilidad, tu mascota aumenta el daño de tus habilidades.
+55027	Libro de resistencia a habilidades (H)	Tras aprender esta habilidad, tu mascota aumenta tu resistencia al daño de habilidades.
+55028	Libro de daño medio (H)	Tras aprender esta habilidad, tu mascota aumenta tu daño medio.
+55029	Libro anti-semihumanos (H)	Tras aprender esta habilidad, tu mascota aumenta tu resistencia contra semi-humanos.
+55030	Libro elemental (H)	Tras aprender esta habilidad, tu mascota aumenta tu daño elemental.
+55260	Fire Infusion [I]	Una infusión de fuego ancestral en su etapa más fácil.	Puede ser mejorado
+55261	Water Infusion [I]	Una infusión de agua antigua en su etapa más temprana. Puede ser mejorado
+55262	Earth Infusion [I]	Una infusión de tierra antigua en su etapa más fácil.	Puede ser mejorado
+55263	Wind Infusion [I]	Una infusión de viento ancestral en su etapa más fácil.	Puede ser mejorado
+55264	Dark Infusion [I]	Una infusión oscura antigua en su etapa más fácil.	Puede ser mejorado
+55265	Light Infusion [I]	Una infusión de luz antigua en su etapa más fácil.	Puede ser mejorado
+55270	Fire Infusion [II]	Una infusión de fuego raro que se puede convertir en algo más.	Puede ser mejorado
+55271	Water Infusion [II]	Una infusión de agua poco común que se puede convertir en algo más. Puede ser mejorado
+55272	Earth Infusion [II]	Una infusión de tierras raras que se puede convertir en algo más.	Puede ser mejorado
+55273	Wind Infusion [II]	Una infusión de viento poco común que se puede convertir en algo más.	Puede ser mejorado
+55274	Dark Infusion [II]	Una infusión oscura rara que se puede convertir en algo más.	Puede ser mejorado
+55275	Light Infusion [II]	Una infusión de luz rara que se puede convertir en algo más.	Puede ser mejorado
+55280	Fire Infusion [III]	Una infusión de fuego excelente perfeccionada-> para que sea utilizable.	Puede ser mejorado
+55281	Water Infusion [III]	Una excelente infusión de agua perfeccionada para que sea utilizable. Puede ser mejorado
+55282	Earth Infusion [III]	Una infusión de tierra excelente perfeccionada-> para que sea utilizable.	Puede ser mejorado
+55283	Wind Infusion [III]	Una infusión de viento excelente perfeccionada-> para que sea utilizable.	Puede ser mejorado
+55284	Dark Infusion [III]	Una excelente infusión oscura perfeccionada-> para que sea utilizable.	Puede ser mejorado
+55285	Light Infusion [III]	Una excelente infusión ligera perfeccionada-> para que sea utilizable.	Puede ser mejorado
+55290	Fire Infusion [IV]	Una infusión de fuego legendaria-> con posibilidades de ser genial.	Puede ser mejorado
+55291	Water Infusion [IV]	Una infusión de agua legendaria con posibilidades de ser genial. Puede ser mejorado
+55292	Earth Infusion [IV]	Una infusión de tierra legendaria-> con posibilidades de ser genial.	Puede ser mejorado
+55293	Wind Infusion [IV]	Una infusión de viento legendaria-> con posibilidades de ser genial.	Puede ser mejorado
+55294	Dark Infusion [IV]	Una infusión oscura legendaria-> con posibilidades de ser genial.	Puede ser mejorado
+55295	Light Infusion [IV]	Una infusión de luz legendaria-> con posibilidades de ser genial.	Puede ser mejorado
+55300	Fire Infusion [V]	En su mejor etapa.
+55301	Water Infusion [V]	En su mejor etapa.
+55302	Earth Infusion [V]	En su mejor etapa.
+55303	Wind Infusion [V]	En su mejor etapa.
+55304	Dark Infusion [V]	En su mejor etapa.
+55305	Light Infusion [V]	La infusión de luz mítica-> en su mejor etapa.
+55401	Huevo de mono	Haz clic con el botón derecho del ratón sobre el huevo para que eclosione y salga tu mascota.
+55402	Huevo de araña	Haz clic con el botón derecho del ratón sobre el huevo para que eclosione y salga tu mascota.
+55403	Huevo de Arrador	Haz clic con el botón derecho del ratón sobre el huevo para que eclosione y salga tu mascota.
+55404	Huevo de Nemere	Haz clic con el botón derecho del ratón sobre el huevo para que eclosione y salga tu mascota.
+55405	Huevo de dragón azul	Haz clic con el botón secundario del ratón sobre el huevo para que eclosione y salga tu mascota.
+55406	Huevo de dragón rojo	Haz clic con el botón secundario del ratón sobre el huevo para que eclosione y salga tu mascota.
+55407	Huevo de Azraelito	Haz clic con el botón secundario del ratón sobre el huevo para que eclosione y salga tu mascota.
+55408	Huevo de Verduguito	Haz clic con el botón secundario del ratón sobre el huevo para que eclosione y salga tu mascota.
+55409	Huevo de Beeshido bebé	Haz clic con el botón secundario del ratón sobre el huevo para que eclosione y salga tu mascota.
+55410	Huevo de Nessie	Haz clic con el botón secundario del ratón sobre el huevo para que eclosione y salga tu mascota.
+55701	Minimono	Haz clic con el botón derecho del ratón para llamar a tu mascota. Pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55702	Miniaraña	Haz clic con el botón derecho del ratón para llamar a tu mascota. Pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55703	Miniarrador	Haz clic con el botón derecho del ratón para llamar a tu mascota. Pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55704	Mininemere	Haz clic con el botón derecho del ratón para llamar a tu mascota. Pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55705	Minidragón	Llama a tu mascota con un clic derecho. Pulsa la tecla "P" para abrir su ventana.
+55706	Minimeley	Llama a tu mascota con un clic secundario. Después pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55707	Azraelito	Llama a tu mascota con un clic secundario. Después pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55708	Verduguito	Llama a tu mascota con un clic secundario. Después pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55709	Beeshido bebé	Llama a tu mascota con un clic secundario. Después pulsa la tecla "P" para abrir el cuadro de tu mascota.
+55710	Nessie	Llama a tu mascota con un clic secundario. Después pulsa la tecla "P" para abrir el cuadro de tu mascota.
+56000	Appaloosa	Este sello invoca a tu bondadoso pony Appaloosa. Confiere a su jinete +10 de velocidad de movimiento.
+69544	Nova Token	Se usa para comprar cosméticos especiales durante eventos.
+71000	Perg. de reinstrucción	Este objeto te permite eliminar por completo tus habilidades de refuerzo y contraataque. Puedes volver a aprenderlas con los libros de texto (potenciación y contraataque).
+71112	Biologist Reset Scroll	Reinicia todas tus misiones de biólogo con la posibilidad de volver a seleccionar todas tus recompensas.
+71165	Depredador polar	Con este sello puedes invocar a tu belicoso Depredador polar. Aumenta tu velocidad de movimiento en 60.
+71189	Objeto Encantado+	Elimina las bonificaciones de uno de tus objetos y añade otras nuevas. Las bonificaciones nuevas se mostrarán previamente para que decidas si te interesan.
+71190	Caja de calabaza	Una Caja de calabaza solo se consigue después de haber prestado un servicio excepcional.
+71191	Bolsa de chucherías	Sam Calabaza te endulzará la noche con el contenido de esta bolsa. ¡Ábrela y déjate sorprender!
+71192	Trueno	Con este sello puedes invocar a Trueno, tu reno fiel. Aumenta tu velocidad de movimiento en 20 y la ganancia de experiencia en un 30%.
+71193	Relámpago	Con este sello puedes invocar a Relámpago, tu reno fiel. Aumenta tu velocidad de movimiento en 20 y la ganancia de experiencia en un 30%.
+71194	Caja okey de oro	Recibes 5 sets de cartas con 24 cartas okey cada uno (120 en total). No podrás conservarlas una vez finalizado el evento.
+71195	Caja okey de plata	Recibes un set de cartas con 24 cartas okey. No podrás conservarlas una vez finalizado el evento.
+71196	Caja okey de bronce	Recibes 6 cartas okey. No podrás conservarlas una vez finalizado el evento.
+71197	Nugget (azul marino)	Con este sello puedes invocar a Nugget, el enorme pollo de combate. Otorga un +15% de fuerza contra monstruos e incrementa la ganancia de experiencia en un 30%.
+71198	Muffin (rosa)	Con este sello puedes invocar a Muffin, el temible pollo de combate. Otorga un +15% de fuerza contra monstruos e incrementa la ganancia de experiencia en un 30%.
+71220		
+71235	Cerbero (oro)	Con este sello puedes invocar al temible perro infernal de tres cabezas.
+71236	Cerbero (plata)	Con este sello puedes invocar al temible perro infernal de tres cabezas.
+71237	Jabalí	La magia del sello invoca a un espíritu poderoso de un animal que te llevará rápidamente al lugar de tu elección.
+71238	Lobo	La magia del sello invoca a un espíritu poderoso de un animal que te llevará rápidamente al lugar de tu elección.
+71239	Tigre	La magia del sello invoca a un espíritu poderoso de un animal que te llevará rápidamente al lugar de tu elección.
+71240	León	La magia del sello invoca a un espíritu poderoso de un animal que te llevará rápidamente al lugar de tu elección.
+71241	Tique de monta	Equipa el tique para poder montar un poni durante 10 minutos.
+71394	Phoenix	Esta es una montura voladora.	Usa la tecla Mayús para subir y la tecla X para bajar.
+71395	Phoenix	Esta es una montura voladora.	Usa la tecla Mayús para subir y la tecla X para bajar.
+72325	Antitransfiguración	Anula la transfiguración de objetos.
+72326	Antitransfiguración	Anula la transfiguración de objetos y reembolsar el artículo.
+72709	Pendientes Hueso Tigre	Aumenta tu valor de ataque en 200 puntos durante 20 horas (el tiempo solo avanza mientras el objeto esté equipado).
+72710	Pendientes Hueso Dragón	Aumenta tu valor de defensa en 300 puntos durante 20 horas (el tiempo solo avanza mientras el objeto esté equipado).
+72711	Brazalete Hueso Tigre	El daño causado por tus habilidades aumenta 30 puntos durante 20 horas (el tiempo solo avanza mientras el objeto esté equipado).
+72712	Brazalete Hueso Dragón	Tu defensa ante habilidades aumenta 30 puntos durante 20 horas (el tiempo solo avanza mientras el objeto esté equipado).
+72800	Piedra de Veta de Rubí	Crea una veta de lágrimas de Rubí cerca de tu personaje.
+72801	Piedra de Veta de Granate	Crea una veta de lágrimas de Granate cerca de tu personaje.
+72802	Piedra de Veta de Esmeralda	Crea una veta de lágrimas de Esmeralda cerca de tu personaje.
+72803	Piedra de Veta de Zafiro	Crea una veta de lágrimas de Zafiro cerca de tu personaje.
+72804	Piedra de Veta de Turmalina	Crea una veta de lágrimas de Turmalina cerca de tu personaje.
+79505	Carta okey coleccionable	Al reunir 24 Cartas okey coleccionables obtienes automáticamente un Set de cartas okey.
+79506	Set de cartas okey	El set de cartas te permite iniciar una ronda okey y se eliminará de tu inventario automáticamente al comenzar el juego.
+80018	Cupón de NC (6000)	Cupón por valor de 6000 Monedas Nova. Este objeto es comerciable.
+85001	Estola señorial (simple)	La Estola absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+85002	Estola señorial (eleg.)	La Estola absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+85003	Estola señorial (noble)	La Estola absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+85004	Estola señorial (pers.)	La Estola absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+85005	Estola magistral (simp.)	La Estola absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+85006	Estola magistral (eleg.)	La Estola absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+85007	Estola magistral (noble)	La Estola absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+85008	Estola magistral (pers.)	La Estola absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+85011	Estola dinástica (simp.)	La Estola absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+85012	Estola dinástica (eleg.)	La Estola absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+85013	Estola dinástica (noble)	La Estola absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+85014	Estola dinástica (pers.)	La Estola absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+85015	Estola real (simple)	La Estola absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+85016	Estola real (elegante)	La Estola absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+85017	Estola real (noble)	La Estola absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+85018	Estola real (pers.)	La Estola absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+85021	Estola aniversario (sim)	La Estola absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+85022	Estola aniversario (ele)	La Estola absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+85023	Estola aniversario (nob)	La Estola absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+85024	Estola aniversario (per)	La Estola absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86001	Cinta del Zi (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86002	Cinta del Zi (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86003	Cinta del Zi (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86004	Cinta del Zi (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86005	Cinta del Chou (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86006	Cinta del Chou(elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86007	Cinta del Chou (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86008	Cinta del Chou (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86011	Cinta del Yin (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86012	Cinta del Yin (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86013	Cinta del Yin (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86014	Cinta del Yin (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86015	Cinta del Mao (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86016	Cinta del Mao (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86017	Cinta del Mao (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86018	Cinta del Mao (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86021	Cinta del Chen (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86022	Cinta del Chen(elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86023	Cinta del Chen (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86024	Cinta del Chen (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86025	Cinta del Si (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86026	Cinta del Si (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86027	Cinta del Si (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86028	Cinta del Si (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86031	Cinta del Wu (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86032	Cinta del Wu (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86033	Cinta del Wu (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86034	Cinta del Wu (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86035	Cinta del Wei (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86036	Cinta del Wei (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86037	Cinta del Wei (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86038	Cinta del Wei (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86041	Cinta del Shen (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86042	Cinta del Shen(elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86043	Cinta del Shen (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86044	Cinta del Shen (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86045	Cinta del Yu (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86046	Cinta del Yu (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86047	Cinta del Yu (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86048	Cinta del Yu (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86051	Cinta del Xu (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86052	Cinta del Xu (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86053	Cinta del Xu (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86054	Cinta del Xu (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+86055	Cinta del Hai (simple)	Esta cinta absorbe un 1% de las bonificaciones del arma o armadura que selecciones para ello.
+86056	Cinta del Hai (elegante)	Esta cinta absorbe un 5% de las bonificaciones del arma o armadura que selecciones para ello.
+86057	Cinta del Hai (noble)	Esta cinta absorbe un 10% de las bonificaciones del arma o armadura que selecciones para ello.
+86058	Cinta del Hai (pers.)	Esta cinta absorbe entre un 11% y un 25% de las bonificaciones del arma o armadura que selecciones para ello.
+91050	Cofre de biólogo I	Cubre todas las misiones de biólogo desde el nivel 30 hasta el nivel 94.
+91051	Cofre de biólogo II	Cubre todas las misiones de biólogo desde el nivel 100 hasta el nivel 130.

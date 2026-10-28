@@ -871,3 +871,40 @@ ITEM_GET_FROM_PARTY	Recebido: %s de %s	SAA
 ITEM_DELIVER_TO_PARTY	Entregue: %s para %s	SAA
 USE_ITEM_FAILURE_PRIVATE_SHOP	Não é possível utilizar o item enquanto a Loja Particular estiver aberta.	
 MAINTENANCE_TIME_LEFT	Manutenção em:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Resistência a ataques de sangramento + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Ataque de sangramento + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Forte contra Lycans + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Probabilidade de defesa contra ataques de Lycans %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Defesa contra Garras +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Resistencia Anti Magica +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Forte contra Bosses +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Forte contra Metins +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Poder dos Raios +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Poder do Fogo +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Poder do Gelo +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Poder do Vento +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Poder da Terra +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Poder das Trevas +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Forte contra Elementais +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Resistência a Semi-Humanos %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super mestre perfeito
+MESSENGER_HELPER	Helper
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Block
+TARGET_BUTTON_UNBLOCK	Unblock
+BLOCK_PLAYER_TITLE	Block Player
+UNBLOCK_PLAYER_DIALOG	Do you want to unblock %s?
+BLOCKED_PLAYERS_TITLE	Blocked Players
+WHISPER_ERROR_BLOCK_YOU	You can't write to %s because they blocked you.
+GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
+GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	Channels
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Cancel
+CHANNEL	Channel
+ADD_4TH_STONE_ALREADY_ADDED	Já desbloqueaste o 4º Slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Tens que ter pelo menos 3 pedras inseridas.
+ADD_4TH_STONE_ONLY_ARMOR	Este pergaminho só funciona em armaduras.
+ADD_4TH_STONE_ONLY_WEAPON	Este pergaminho só funciona em armas.
+ADD_4TH_STONE_NOT_POSSIBLE	Não podes pôr este pergaminho neste item.
+ADD_4TH_STONE_ADD_QUESTION	Desejas abrir o 4º slot?

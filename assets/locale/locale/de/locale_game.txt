@@ -868,3 +868,40 @@ ITEM_GET	Erhalten: %s	SA
 ITEM_GET_FROM_PARTY	Erhalten: %s von %s	SAA
 ITEM_DELIVER_TO_PARTY	Geliefert: %s an %s	SAA
 MAINTENANCE_TIME_LEFT	Wartung in:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Widerstand gegen Blutungsangriff + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Blutungsangriff + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Stark gegen Lykaner + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Abwehrchance gegen Lykaner %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Krallenverteidigung + %d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Magiebruch +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Stark gegen Bosse +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Stark gegen Metins +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Kraft der Blitze +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Kraft des Feuers +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Kraft des Wasser +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Kraft des Windes +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Kraft der Erde +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Kraft der Dunkelheit +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Stark gegen Elemente +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Widerstand gegen Halbmenschen %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfect Master
+MESSENGER_HELPER	Helfer
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blockieren
+TARGET_BUTTON_UNBLOCK	Entblocken
+BLOCK_PLAYER_TITLE	Spieler blockieren
+UNBLOCK_PLAYER_DIALOG	Möchtest du %s entblocken?
+BLOCKED_PLAYERS_TITLE	Blockierte Spieler
+WHISPER_ERROR_BLOCK_YOU	Du kannst nicht mit %s schreiben, da diese Person dich blockiert hat.
+GUILD_WAR_MAX_MEMBERS	Maximale Mitgliederzahl deiner Gilde: %d.
+GUILD_WAR_MAX_SCORE	Der Krieg endet bei %d Kills.
+MOVE_CHANNEL_TITLE	Kanäle
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Abbrechen
+CHANNEL	Channel
+ADD_4TH_STONE_ALREADY_ADDED	Sie haben den 4. Slot bereits freigeschaltet.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Sie müssen mindestens 3 Steine angebracht haben.
+ADD_4TH_STONE_ONLY_ARMOR	Diese Schriftrolle funktioniert nur für Rüstungen.
+ADD_4TH_STONE_ONLY_WEAPON	Diese Schriftrolle funktioniert nur für Waffen.
+ADD_4TH_STONE_NOT_POSSIBLE	Sie können diese Schriftrolle nicht für dieses Item verwenden.
+ADD_4TH_STONE_ADD_QUESTION	Möchten Sie einen Platz für den 4. Slot öffnen?

@@ -73,7 +73,9 @@ window = {
 							"slot" : (
 										{"index":COSTUME_START_INDEX+0, "x":61, "y":45, "width":32, "height":64},
 										{"index":COSTUME_START_INDEX+1, "x":61, "y": 8, "width":32, "height":32},
-										{"index":COSTUME_START_INDEX+2, "x":5, "y":145, "width":32, "height":32},
+										## The other costume cells (wear 21-27, OLD uiscript/newcostumewindow.py:63-83)
+										## hold features that are not ported: their slots stay hidden. OLD shows wear 21,
+										## the costume sash, in the equipment window.
 									),
 						},
 					),

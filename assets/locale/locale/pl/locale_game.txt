@@ -870,3 +870,40 @@ ITEM_GET	Otrzymano: %s	SA
 ITEM_GET_FROM_PARTY	Otrzymano: %s od %s	SAA
 ITEM_DELIVER_TO_PARTY	Dostarczono: %s do %s	SAA
 MAINTENANCE_TIME_LEFT	Przerwa techniczna za:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Odporność na Atak Krwawienia + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Atak krwawienia + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Silny przeciwko Likanom + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Odporność na Atak Likanów + %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Odporność na Szpony +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Antymagia +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Silny przeciwko Bossom +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Silny przeciwko Kamieniom +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Siła Błyskawic +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Siła Ognia +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Siła Lodu +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Siła Wiatru +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Siła Ziemi +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Siła Mroku +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Silny przeciwko Żywiołakom +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Odporność na Ludzi %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfekcyjny Mistrz
+MESSENGER_HELPER	Pomocnik
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Zablokuj
+TARGET_BUTTON_UNBLOCK	Odblokuj
+BLOCK_PLAYER_TITLE	Zablokuj gracza
+UNBLOCK_PLAYER_DIALOG	Czy chcesz odblokować %s?
+BLOCKED_PLAYERS_TITLE	Zablokowani gracze
+WHISPER_ERROR_BLOCK_YOU	Nie możesz pisać do %s, ponieważ zablokował(a) Cię.
+GUILD_WAR_MAX_MEMBERS	Limit graczy z twojej gildii: %d.
+GUILD_WAR_MAX_SCORE	Wojna zakończy się przy %d zabójstwach.
+MOVE_CHANNEL_TITLE	Kanały
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Anuluj
+CHANNEL	Kanał
+ADD_4TH_STONE_ALREADY_ADDED	Już odblokowałeś czwarty slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	Musisz mieć przynajmniej trzy kamienie wsadzone.
+ADD_4TH_STONE_ONLY_ARMOR	Ten zwój działa tylko dla Zbroji.
+ADD_4TH_STONE_ONLY_WEAPON	Ten zwój działa tylko dla Broni.
+ADD_4TH_STONE_NOT_POSSIBLE	Nie możesz użyć tego zwoji na tym przedmiotcie.
+ADD_4TH_STONE_ADD_QUESTION	Czy chcesz otworzyć miejsce na czwarte gniazdo?

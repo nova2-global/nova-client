@@ -1,3 +1,4 @@
+import re
 import dbg
 import player
 import item
@@ -25,6 +26,48 @@ DESC_MAX_WIDTH = 280
 
 def chop(n):
 	return round(n - 0.5, 1)
+
+# An apply text's trailing value: a sign, the leading "%" of the Turkish texts
+# ("+%7"; OLD's pattern left it with the words, "+% 7"), digits, a "%".
+_AFFECT_VALUE_SUFFIX = re.compile(r"^(.*?)([+\-]?%?\d+(?:\.\d+)?%?)\s*$")
+
+def FuseAffectTexts(affectTexts):
+	"""OLD's fused apply text (OLD localeInfo.py:921-999), for the applies
+	that are two in one (108, strong against undead and devils): every
+	text formatted with the value; when each line ends in the same value, one
+	line of the shared words with the differing ones joined by " & ", then
+	the value ("Strong against Undead & Devils +10%"); else the lines joined
+	by " / "."""
+	def fused(affectValue):
+		parts = []
+		for affectText in affectTexts:
+			parts += [line.strip() for line in affectText(affectValue).splitlines() if line.strip()]
+		if len(parts) < 2:
+			return "".join(parts)
+
+		matches = [_AFFECT_VALUE_SUFFIX.match(part) for part in parts]
+		if not all(matches) or len(set(match.group(2) for match in matches)) != 1:
+			return " / ".join(parts)
+
+		texts = [match.group(1).rstrip() for match in matches]
+		shortest = min(len(text) for text in texts)
+		prefixLength = 0
+		while prefixLength < shortest and len(set(text[prefixLength] for text in texts)) == 1:
+			prefixLength += 1
+		# OLD let the shared end overlap the shared start (two equal texts
+		# came out twice); here it stops where the start ends.
+		suffixLength = 0
+		while suffixLength < shortest - prefixLength and len(set(text[-1 - suffixLength] for text in texts)) == 1:
+			suffixLength += 1
+
+		middles = []
+		for text in texts:
+			middle = text[prefixLength:len(text) - suffixLength].strip()
+			if middle and middle not in middles:
+				middles.append(middle)
+		words = (texts[0][:prefixLength].rstrip(), " & ".join(middles), texts[0][len(texts[0]) - suffixLength:].lstrip())
+		return ((" ".join(word for word in words if word).strip() or texts[0]) + " " + matches[0].group(2)).strip()
+	return fused
 
 def SplitDescriptionByPixelWidth(desc, maxWidthPx, fontName):
 	"""
@@ -473,6 +516,34 @@ class ItemToolTip(ToolTip):
 		item.APPLY_ANTI_CRITICAL_PCT : localeInfo.TOOLTIP_ANTI_CRITICAL_PCT,
 		item.APPLY_ANTI_PENETRATE_PCT : localeInfo.TOOLTIP_ANTI_PENETRATE_PCT,
 	}
+
+	# OLD's applies 92-108 (OLD localeInfo.py:583-607), under OLD's Python
+	# names, which the client exports from the foundation cut on (OLD
+	# PythonItemModule.cpp:913-918, 1272, 1322-1334). An apply the client does
+	# not export (an exe before the cut) keeps the UNKNOWN_TYPE line.
+	for _applyName, _affectText in (
+		("APPLY_BLEEDING_REDUCE", localeInfo.TOOLTIP_APPLY_BLEEDING_REDUCE),
+		("APPLY_BLEEDING_PCT", localeInfo.TOOLTIP_APPLY_BLEEDING_PCT),
+		("APPLY_ATTBONUS_WOLFMAN", localeInfo.TOOLTIP_APPLY_ATTBONUS_WOLFMAN),
+		("APPLY_RESIST_WOLFMAN", localeInfo.TOOLTIP_APPLY_RESIST_WOLFMAN),
+		("APPLY_RESIST_CLAW", localeInfo.TOOLTIP_APPLY_RESIST_CLAW),
+		("APPLY_ANTI_RESIST_MAGIC", localeInfo.TOOLTIP_ANTI_RESIST_MAGIC),
+		("APPLY_ATTBONUS_BOSS", localeInfo.TOOLTIP_APPLY_ATTBONUS_BOSS),
+		("APPLY_ATTBONUS_METIN_STONE", localeInfo.TOOLTIP_APPLY_ATTBONUS_METIN_STONE),
+		("APPLY_ENCHANT_ELECT", localeInfo.TOOLTIP_APPLY_ENCHANT_ELECT),
+		("APPLY_ENCHANT_FIRE", localeInfo.TOOLTIP_APPLY_ENCHANT_FIRE),
+		("APPLY_ENCHANT_ICE", localeInfo.TOOLTIP_APPLY_ENCHANT_ICE),
+		("APPLY_ENCHANT_WIND", localeInfo.TOOLTIP_APPLY_ENCHANT_WIND),
+		("APPLY_ENCHANT_EARTH", localeInfo.TOOLTIP_APPLY_ENCHANT_EARTH),
+		("APPLY_ENCHANT_DARK", localeInfo.TOOLTIP_APPLY_ENCHANT_DARK),
+		("APPLY_ATTBONUS_ELEMENTAL", localeInfo.TOOLTIP_APPLY_ATTBONUS_ELEMENTAL),
+		("APPLY_ANTI_HUMAN", localeInfo.TOOLTIP_APPLY_RESIST_HUMAN),
+		("APPLY_ATTBONUS_UNDEAD_DEVIL",
+		 FuseAffectTexts((localeInfo.TOOLTIP_APPLY_ATTBONUS_UNDEAD, localeInfo.TOOLTIP_APPLY_ATTBONUS_DEVIL))),
+	):
+		if isinstance(getattr(item, _applyName, None), int):
+			AFFECT_DICT[getattr(item, _applyName)] = _affectText
+	del _applyName, _affectText
 
 	ATTRIBUTE_NEED_WIDTH = {
 		23 : 230,
@@ -1536,8 +1607,17 @@ class ItemToolTip(ToolTip):
 
 		metinSocket = self.metinSlot
 		if metinSocket:
+			# Only the stones count (AddItemData has selected the item): an
+			# empty socket is 1 or 2, and an item without stone sockets keeps
+			# other values in them (a dew its apply, value and time, a timed
+			# item its end time, an accessory its jewel counts). Selected as an
+			# item, such a value logged "Cannot find item by <value>" or
+			# measured whatever item had that number.
+			if not self.__HoldsStones(item.GetItemType(), item.GetItemSubType()):
+				metinSocket = ()
+
 			for socketIndex in metinSocket:
-				if socketIndex:
+				if self.GetMetinItemIndex(socketIndex):
 					item.SelectItem(socketIndex)
 
 					affectType, affectValue = item.GetAffect(0)
@@ -1841,31 +1921,39 @@ class ItemToolTip(ToolTip):
 
 		return number
 
+	def __HoldsStones(self, itemType, itemSubType):
+		"""Whether the item's sockets hold metin stones: a weapon's and an
+		armour's, the items AddItemData shows __AppendMetinSlotInfo for, but
+		not an accessory's, whose sockets count its jewels."""
+		if item.ITEM_TYPE_WEAPON == itemType:
+			return True
+		return item.ITEM_TYPE_ARMOR == itemType and itemSubType not in (item.ARMOR_WRIST, item.ARMOR_NECK, item.ARMOR_EAR)
+
 	def __AppendAccessoryMetinSlotInfo(self, metinSlot, mtrlVnum):		
 		ACCESSORY_SOCKET_MAX_SIZE = 3		
 
 		cur = min(metinSlot[0], ACCESSORY_SOCKET_MAX_SIZE)
 		end = min(metinSlot[1], ACCESSORY_SOCKET_MAX_SIZE)
 
-		affectType1, affectValue1 = item.GetAffect(0)
-		affectList1=[0, max(1, affectValue1 * 10 // 100), max(2, affectValue1 * 20 // 100), max(3, affectValue1 * 40 // 100)]
-
-		affectType2, affectValue2 = item.GetAffect(1)
-		affectList2 = [0, max(1, affectValue2 * 10 // 100), max(2, affectValue2 * 20 // 100), max(3, affectValue2 * 40 // 100)]
+		# A jewel raises every apply of the accessory, as OLD's seven do (OLD
+		# uiToolTip.py:2507-2555), by 10, 20 and 40 % for the first to third.
+		affectLists = []
+		for i in range(item.ITEM_APPLY_MAX_NUM):
+			affectType, affectValue = item.GetAffect(i)
+			affectLists.append((affectType, [0, max(1, affectValue * 10 // 100), max(2, affectValue * 20 // 100), max(3, affectValue * 40 // 100)]))
 
 		mtrlPos = 0
 		mtrlList = [mtrlVnum] * cur + [player.METIN_SOCKET_TYPE_SILVER] * (end-cur)
 
 		for mtrl in mtrlList:
-			affectString1 = self.__GetAffectString(affectType1, affectList1[mtrlPos + 1] - affectList1[mtrlPos])			
-			affectString2 = self.__GetAffectString(affectType2, affectList2[mtrlPos + 1] - affectList2[mtrlPos])
+			affectStrings = [self.__GetAffectString(affectType, affectList[mtrlPos + 1] - affectList[mtrlPos]) for affectType, affectList in affectLists]
 
 			leftTime = 0
 
 			if cur == mtrlPos + 1:
 				leftTime = metinSlot[2]
 
-			self.__AppendMetinSlotInfo_AppendMetinSocketData(mtrlPos, mtrl, affectString1, affectString2, leftTime)
+			self.__AppendMetinSlotInfo_AppendMetinSocketData(mtrlPos, mtrl, affectStrings[0], affectStrings[1], leftTime, affectStrings[2:])
 
 			mtrlPos += 1
 
@@ -1888,7 +1976,7 @@ class ItemToolTip(ToolTip):
 
 		return 1
 
-	def __AppendMetinSlotInfo_AppendMetinSocketData(self, index, metinSlotData, custumAffectString="", custumAffectString2="", leftTime=0):
+	def __AppendMetinSlotInfo_AppendMetinSocketData(self, index, metinSlotData, custumAffectString="", custumAffectString2="", leftTime=0, custumAffectStrings=()):
 
 		slotType = self.GetMetinSocketType(metinSlotData)
 		itemIndex = self.GetMetinItemIndex(metinSlotData)
@@ -1974,7 +2062,11 @@ class ItemToolTip(ToolTip):
 			
 			self.childrenList.append(affectTextLine)			
 
-			if custumAffectString2:
+			# The second affect line and an accessory's further ones (OLD's
+			# custumAffectString3 to 7, uiToolTip.py:2689-2747), a line each.
+			for extraAffectString in (custumAffectString2,) + tuple(custumAffectStrings):
+				if not extraAffectString:
+					continue
 				affectTextLine = ui.TextLine()
 				affectTextLine.SetParent(self)
 				affectTextLine.SetFontName(self.defFontName)
@@ -1983,7 +2075,7 @@ class ItemToolTip(ToolTip):
 				affectTextLine.SetOutline()
 				affectTextLine.SetFeather()
 				affectTextLine.Show()
-				affectTextLine.SetText(custumAffectString2)
+				affectTextLine.SetText(extraAffectString)
 				self.childrenList.append(affectTextLine)
 				self.toolTipHeight += 16 + 2
 
@@ -2160,9 +2252,12 @@ class HyperlinkItemToolTip(ItemToolTip):
 		if tokens and len(tokens) >= minTokenCount and len(tokens) <= maxTokenCount:
 			head, vnum, flag = tokens[:3]
 			itemVnum = int(vnum, 16)
-			metinSlot = [int(metin, 16) for metin in tokens[3:6]]
+			# One token per socket, METIN_SOCKET_MAX_NUM of them (4 since the
+			# foundation cut: tokens[3:7], OLD uiToolTip.py:3055), then the attributes.
+			socketEnd = 3 + player.METIN_SOCKET_MAX_NUM
+			metinSlot = [int(metin, 16) for metin in tokens[3:socketEnd]]
 
-			rests = tokens[6:]
+			rests = tokens[socketEnd:]
 			if rests:
 				attrSlot = []
 
@@ -2230,6 +2325,10 @@ class SkillToolTip(ToolTip):
 			player.SKILL_GRADE_GRAND_MASTER : localeInfo.SKILL_GRADE_NAME_GRAND_MASTER,
 			player.SKILL_GRADE_PERFECT_MASTER : localeInfo.SKILL_GRADE_NAME_PERFECT_MASTER,
 		}
+		# OLD's sage grade (uiToolTip.py:3132-3133), from the foundation cut on.
+		sageGrade = getattr(player, "SKILL_GRADE_SAGE_MASTER", None)
+		if isinstance(sageGrade, int):
+			SkillToolTip.SKILL_GRADE_NAME[sageGrade] = localeInfo.SKILL_GRADE_NAME_SAGE_MASTER
 		SkillToolTip.AFFECT_NAME_DICT = {
 			"HP" : localeInfo.TOOLTIP_SKILL_AFFECT_ATT_POWER,
 			"ATT_GRADE" : localeInfo.TOOLTIP_SKILL_AFFECT_ATT_GRADE,
@@ -2476,6 +2575,11 @@ class SkillToolTip(ToolTip):
 
 		self.skillMaxLevelStartDict = { 0 : 17, 1 : 7, 2 : 10, }
 		self.skillMaxLevelEndDict = { 0 : 20, 1 : 10, 2 : 10, }
+		# The perfect master grade runs P1 to P10 before the sage grade (OLD
+		# uiToolTip.py:3383-3385); without the sage grade it is the last and
+		# shows no level, so the entry changes nothing there.
+		self.skillMaxLevelStartDict[player.SKILL_GRADE_PERFECT_MASTER] = 10
+		self.skillMaxLevelEndDict[player.SKILL_GRADE_PERFECT_MASTER] = 10
 
 		skillLevelUpPoint = 1
 		realSkillGrade = player.GetSkillGrade(slotIndex)

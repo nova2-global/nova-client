@@ -22,6 +22,9 @@ SELECT_COLOR = grp.GenerateColor(0.0, 0.0, 0.5, 0.3)
 WHITE_COLOR = grp.GenerateColor(1.0, 1.0, 1.0, 0.5)
 HALF_WHITE_COLOR = grp.GenerateColor(1.0, 1.0, 1.0, 0.2)
 
+# An edit line's "only_number" 2 in a uiscript (OLD ui.py:9507-9511): money mode.
+EDIT_LINE_MONEY_MODE = 2
+
 createToolTipWindowDict = {}
 def RegisterCandidateWindowClass(candidateWindowClass):
 	EditLine.candidateWindowClassDict=candidateWindowClass
@@ -440,6 +443,11 @@ class CandidateListBox(ListBoxEx):
 
 
 class TextLine(Window):
+	# SetFitWidth: a text wider than fitWidth px in the line's font is laid
+	# out in fitFontName instead; 0 fits nothing.
+	fitWidth = 0
+	fitFontName = ""
+
 	def __init__(self):
 		Window.__init__(self)
 		self.max = 0
@@ -546,7 +554,29 @@ class TextLine(Window):
 	def SetPackedFontColor(self, color):
 		wndMgr.SetFontColor(self.hWnd, color)
 
+	def SetFitWidth(self, width, fontName):
+		"""Lays out a text wider than `width` px in the line's font in
+		`fontName` instead, so a long value stays inside the art it is
+		centred on (the uiscript key "fit_width")."""
+		self.fitWidth = width
+		self.fitFontName = fontName
+
+	def __SetFitText(self, text):
+		# A line lays its text out again only when the text changes
+		# (CGraphicTextInstance::SetValue keeps an equal one), not when its
+		# font does, so each font is tried on a cleared line.
+		for fontName in (self.fontName, self.fitFontName):
+			wndMgr.SetFontName(self.hWnd, fontName)
+			wndMgr.SetText(self.hWnd, "")
+			wndMgr.SetText(self.hWnd, text)
+			if wndMgr.GetTextSize(self.hWnd)[0] <= self.fitWidth:
+				return
+
 	def SetText(self, text):
+		if self.fitWidth:
+			self.__SetFitText(text or "")
+			return
+
 		# MR-15: Multiline dialog messages
 		for line in self.extraLines:
 			line.Hide()
@@ -689,6 +719,11 @@ class EditLine(TextLine):
 	def SetNumberMode(self):
 		self.numberMode = True
 
+	# OLD's money mode (OLD ui.py:1842-1843): digits and the k/m/b letters of
+	# an amount, which uipickmoney.ConvertTextToMoney reads.
+	def SetMoneyMode(self):
+		self.numberMode = EDIT_LINE_MONEY_MODE
+
 	#def AddExceptKey(self, key):
 	#	ime.AddExceptKey(key)
 
@@ -722,7 +757,11 @@ class EditLine(TextLine):
 		ime.SetMax(self.max)
 		ime.SetUserMax(self.userMax)
 		ime.SetCursorPosition(-1)
-		if self.numberMode:
+		if self.numberMode == EDIT_LINE_MONEY_MODE:
+			# The client's ime.SetMoneyMode lets k, m and b through (OLD
+			# EterLib/IME.cpp:1178-1180); a client without it takes digits.
+			getattr(ime, "SetMoneyMode", ime.SetNumberMode)()
+		elif self.numberMode:
 			ime.SetNumberMode()
 		else:
 			ime.SetStringMode()
@@ -3405,6 +3444,8 @@ class PythonScriptLoader(object):
 		if "outline" in value:
 			if value["outline"]:
 				window.SetOutline()
+		if "fit_width" in value:
+			window.SetFitWidth(int(value["fit_width"]), localeInfo.UI_DEF_FONT)
 		if True == ("text" in value):
 			window.SetText(value["text"])
 
@@ -3422,7 +3463,9 @@ class PythonScriptLoader(object):
 		if "secret_flag" in value:
 			window.SetSecret(value["secret_flag"])
 		if "only_number" in value:
-			if value["only_number"]:
+			if value["only_number"] == EDIT_LINE_MONEY_MODE:
+				window.SetMoneyMode()
+			elif value["only_number"]:
 				window.SetNumberMode()
 		if "enable_ime" in value:
 			window.SetIMEFlag(value["enable_ime"])

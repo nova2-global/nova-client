@@ -80,6 +80,30 @@ window = {
 					"image" : LOCALE_PATH_COMMON + "/effect/ymirred.tga",
 				},
 
+				## Whisper details (NOVA-48): the target's online state and its
+				## language flag, at OLD's places (OLD whisperdialog.py:84-103);
+				## hidden until the server answers (uiwhisper SetTargetDetails).
+				{
+					"name" : "online",
+					"type" : "image",
+					"style" : ("attach",),
+
+					"x" : 142,
+					"y" : 12,
+
+					"image" : "d:/ymir work/ui/game/windows/messenger_list_online.sub",
+				},
+				{
+					"name" : "flag",
+					"type" : "image",
+					"style" : ("attach",),
+
+					"x" : 160,
+					"y" : 8,
+
+					"image" : "locale/common/ui/flag/32/en.tga",
+				},
+
 				## Button
 				{
 					"name" : "ignorebutton",
@@ -145,6 +169,24 @@ window = {
 					"default_image" : "d:/ymir work/ui/public/close_button_01.sub",
 					"over_image" : "d:/ymir work/ui/public/close_button_02.sub",
 					"down_image" : "d:/ymir work/ui/public/close_button_03.sub",
+				},
+
+				## The block list (NOVA-47): OLD's block icon (x 280 - 80, y 8) is
+				## art NEW does not have; NEW's small text button, wider, starts
+				## further left (WhisperDialog.SetWhisperDialogSize places it).
+				{
+					"name" : "blockbutton",
+					"type" : "button",
+
+					"x" : 280 - 86,
+					"y" : 8,
+
+					"tooltip_text" : uiScriptLocale.BLOCK_PLAYER,
+					"text" : uiScriptLocale.BLOCK_PLAYER,
+
+					"default_image" : "d:/ymir work/ui/public/small_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/small_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/small_button_03.sub",
 				},
 
 				## ScrollBar

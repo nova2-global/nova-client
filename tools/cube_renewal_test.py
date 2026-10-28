@@ -896,6 +896,33 @@ class CubeRenewalTest(unittest.TestCase):
 
 	## Quantity
 
+	def test_the_foundation_cut_s_cap_of_2000_reaches_the_quantity_box(self):
+		# The contract raises the wire's CUBE_QUANTITY_MAX to 2000, ITEM_MAX_COUNT
+		# (Q1: decided 2026-10-25), and cube_renewal.QUANTITY_MAX follows it.
+		sys.modules.update(MakeModules())
+		sys.modules["cube_renewal"].QUANTITY_MAX = 2000
+		spec = importlib.util.spec_from_file_location("uiCubeRenewal", os.path.join(ROOT, "uicuberenewal.py"))
+		self.cube = importlib.util.module_from_spec(spec)
+		spec.loader.exec_module(self.cube)
+		self.assertEqual(2000, self.cube.QUANTITY_MAX)
+
+		window = self.Open([
+			Recipe(GEM, count=3, materials=[(ORE, 2)]),
+			Recipe(GEM + 1, count=1, stackable=True, materials=[(ORE, 1)]),
+		])
+		self.assertEqual(1998, window.ClampQuantity(window.recipes[0], 2000))
+		self.assertEqual(1998, window.ClampQuantity(window.recipes[0], 9999))
+		self.assertEqual(2000, window.ClampQuantity(window.recipes[1], 5000))
+		self.assertEqual(201, window.ClampQuantity(window.recipes[0], 201), "200 is no longer the cap")
+
+		qty = self.Child("result_qty")
+		self.assertGreaterEqual(qty.inputLimit, len(str(self.cube.QUANTITY_MAX)), "the box holds 2000")
+		Own(0, ORE, 5000)
+		window.SelectObject(1)
+		qty.Type("2000")
+		qty.eventReturn()
+		self.assertEqual("2000", qty.text)
+
 	def test_quantity_is_clamped_to_multiples_of_the_reward_count_up_to_200(self):
 		window = self.Open([
 			Recipe(GEM, count=3, materials=[(ORE, 2)]),

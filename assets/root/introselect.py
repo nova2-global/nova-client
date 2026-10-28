@@ -44,8 +44,11 @@ class SelectCharacterWindow(ui.Window):
 	# SLOT4
 	#SLOT_ROTATION = ( 140.0, 260.0, 20.0 )	
 	#SLOT_COUNT = 3
-	SLOT_ROTATION = [135.0, 225.0, 315.0, 45.0]
-	SLOT_COUNT = 4
+	# Five characters per account since the foundation cut (OLD's
+	# PLAYER_PER_ACCOUNT 5): five places on the turntable, 72 degrees apart,
+	# the selected one still at 135.
+	SLOT_ROTATION = [135.0, 207.0, 279.0, 351.0, 63.0]
+	SLOT_COUNT = 5
 	CHARACTER_TYPE_COUNT = 4
 
 	EMPIRE_NAME = {}  # populated by _RebuildLocaleStrings()
@@ -206,10 +209,8 @@ class SelectCharacterWindow(ui.Window):
 		self.privateInputBoard = None
 		self.nameInputBoard = None
 
-		chr.DeleteInstance(0)
-		chr.DeleteInstance(1)
-		chr.DeleteInstance(2)
-		chr.DeleteInstance(3)
+		for index in range(self.SLOT_COUNT):
+			chr.DeleteInstance(index)
 
 		self.Hide()
 		self.KillFocus()
@@ -229,9 +230,7 @@ class SelectCharacterWindow(ui.Window):
 		if not self.isLoad:
 			return
 
-		# SLOT4
-		indexArray = (3, 2, 1, 0)
-		for index in indexArray:
+		for index in reversed(range(self.SLOT_COUNT)):
 			id=net.GetAccountCharacterSlotDataInteger(index, net.ACCOUNT_CHARACTER_SLOT_ID)
 			race=net.GetAccountCharacterSlotDataInteger(index, net.ACCOUNT_CHARACTER_SLOT_RACE)
 			form=net.GetAccountCharacterSlotDataInteger(index, net.ACCOUNT_CHARACTER_SLOT_FORM)
@@ -686,6 +685,8 @@ class SelectCharacterWindow(ui.Window):
 			self.SelectSlot(2)
 		if 5 == key:
 			self.SelectSlot(3)
+		if 6 == key:
+			self.SelectSlot(4)
 
 		if 28 == key:
 

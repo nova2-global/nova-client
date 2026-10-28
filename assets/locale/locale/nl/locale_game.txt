@@ -870,3 +870,40 @@ ITEM_GET	Ontvangen: %s	SA
 ITEM_GET_FROM_PARTY	Ontvangen: %s van %s	SAA
 ITEM_DELIVER_TO_PARTY	Afgeleverd: %s aan %s	SAA
 MAINTENANCE_TIME_LEFT	Onderhoud over:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Weerstand tegen Bloedingsaanvallen + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Bloedingsaanval + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Sterk tegen Lycanen + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Verdedigingskans tegen Lycaan Aanvallen + %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Klauwverdediging +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Anti Magie Weerstand +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Sterk tegen Bazen +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Sterk tegen Metins +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Kracht van Bliksem +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Kracht van Vuur +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Kracht van IJs +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Kracht van de Wind +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Kracht van Aarde +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Kracht van Duisternis +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Sterk tegen Elementairen +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Weerstand tegen Halfmensen %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Perfecte Master
+MESSENGER_HELPER	Helper
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blokkeren
+TARGET_BUTTON_UNBLOCK	Deblokkeer
+BLOCK_PLAYER_TITLE	Blokkeer Speler
+UNBLOCK_PLAYER_DIALOG	Wil je %s deblokkeren?
+BLOCKED_PLAYERS_TITLE	Geblokkeerde Spelers
+WHISPER_ERROR_BLOCK_YOU	Je kan niet schrijven naar %s omdat hij jou heeft geblokkeerd.
+GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
+GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	Kanalen
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Annuleren
+CHANNEL	Kanaal
+ADD_4TH_STONE_ALREADY_ADDED	You have already unlocked the 4th slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	You must have at least 3 attached stones.
+ADD_4TH_STONE_ONLY_ARMOR	This scroll only works for Armours.
+ADD_4TH_STONE_ONLY_WEAPON	This scroll only works for Weapons.
+ADD_4TH_STONE_NOT_POSSIBLE	You cannot use this scroll on this item.
+ADD_4TH_STONE_ADD_QUESTION	Do you wish to open a space for a 4th socket?

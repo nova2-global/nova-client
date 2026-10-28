@@ -40,9 +40,6 @@ def LoadMouseButtonSettings():
 	MOUSE_SETTINGS[0] = int(tokens[0])
 	MOUSE_SETTINGS[1] = int(tokens[1])
 
-def unsigned32(n):
-	return n & 0xFFFFFFFF
-
 #-------------------Giftbox Begin------------------------------
 
 class GiftBox(ui.ScriptWindow):
@@ -661,8 +658,9 @@ class TaskBar(ui.ScriptWindow):
 		maxHP = player.GetStatus(player.MAX_HP)
 		curSP = player.GetStatus(player.SP)
 		maxSP = player.GetStatus(player.MAX_SP)
-		curEXP = unsigned32(player.GetStatus(player.EXP))
-		nextEXP = unsigned32(player.GetStatus(player.NEXT_EXP))
+		# 64-bit exp (NOVA-96): the getters hand Python the whole value.
+		curEXP = player.GetStatus(player.EXP)
+		nextEXP = player.GetStatus(player.NEXT_EXP)
 		recoveryHP = player.GetStatus(player.HP_RECOVERY)
 		recoverySP = player.GetStatus(player.SP_RECOVERY)
 		

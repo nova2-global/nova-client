@@ -870,3 +870,40 @@ ITEM_GET	Získáno: %s	SA
 ITEM_GET_FROM_PARTY	Získáno: %s od %s	SAA
 ITEM_DELIVER_TO_PARTY	Doručeno: %s pro %s	SAA
 MAINTENANCE_TIME_LEFT	Údržba za:
+TOOLTIP_APPLY_BLEEDING_REDUCE	Odolnost proti krvácivým útokům + %d%%	SA
+TOOLTIP_APPLY_BLEEDING_PCT	Krvácivý útok + %d%%	SA
+TOOLTIP_APPLY_ATTBONUS_WOLFMAN	Silný proti Lycanům + %d%%	SA
+TOOLTIP_APPLY_RESIST_WOLFMAN	Obrana proti útokům Lycanů %d%%	SA
+TOOLTIP_APPLY_RESIST_CLAW	Obrana drápem +%d%%	SA
+TOOLTIP_ANTI_RESIST_MAGIC	Odolnost proti magii +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_BOSS	Silný proti Bossům +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_METIN_STONE	Silný proti Kamenům +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ELECT	Síle blesku +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_FIRE	Síla ohně +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_ICE	Síla ledu +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_WIND	Síla větru +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_EARTH	Síla Země +%d%%	SA
+TOOLTIP_APPLY_ENCHANT_DARK	Síla temnoty +%d%%	SA
+TOOLTIP_APPLY_ATTBONUS_ELEMENTAL	Strong against Elementals +%d%%	SA
+TOOLTIP_APPLY_RESIST_HUMAN	Odolnost proti pololidem %d%%	SA
+SKILL_GRADE_NAME_SAGE_MASTER	%s Super Dokonalý Mistr
+MESSENGER_HELPER	Pomocník
+MESSENGER_TEAMLER	Team
+TARGET_BUTTON_BLOCK	Blokovat
+TARGET_BUTTON_UNBLOCK	Odblokovat
+BLOCK_PLAYER_TITLE	Zablokovat hráče
+UNBLOCK_PLAYER_DIALOG	Chceš odblokovat %s?
+BLOCKED_PLAYERS_TITLE	Blokovaní hráči
+WHISPER_ERROR_BLOCK_YOU	Nemůžeš napsat %s protože si tě zablokovat.
+GUILD_WAR_MAX_MEMBERS	Players Limit from your guild: %d.
+GUILD_WAR_MAX_SCORE	The war will end at %d Kills.
+MOVE_CHANNEL_TITLE	Kanály
+MOVE_CHANNEL_SELECT	OK
+MOVE_CHANNEL_CANCEL	Storno
+CHANNEL	Kanál
+ADD_4TH_STONE_ALREADY_ADDED	You have already unlocked the 4th slot.
+ADD_4TH_STONE_NOT_ENOUGH_STONES	You must have at least 3 attached stones.
+ADD_4TH_STONE_ONLY_ARMOR	This scroll only works for Armours.
+ADD_4TH_STONE_ONLY_WEAPON	This scroll only works for Weapons.
+ADD_4TH_STONE_NOT_POSSIBLE	You cannot use this scroll on this item.
+ADD_4TH_STONE_ADD_QUESTION	Do you wish to open a space for a 4th socket?

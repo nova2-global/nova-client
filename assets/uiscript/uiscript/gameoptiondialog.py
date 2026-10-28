@@ -20,7 +20,7 @@ window = {
 	"y" : 0,
 
 	"width" : 300,
-	"height" : 25*11+8,
+	"height" : 25*13+8,
 
 	"children" :
 	(
@@ -32,7 +32,7 @@ window = {
 			"y" : 0,
 
 			"width" : 300,
-			"height" : 25*11+8,
+			"height" : 25*13+8,
 
 			"children" :
 			(
@@ -433,7 +433,70 @@ window = {
 					"default_image" : ROOT_PATH + "middle_button_01.sub",
 					"over_image" : ROOT_PATH + "middle_button_02.sub",
 					"down_image" : ROOT_PATH + "middle_button_03.sub",
-				},				
+				},
+
+				## Pickup filter: what Z and ` pick up (player.PickAroundItems, NOVA-50)
+				{
+					"name" : "pickup_filter",
+					"type" : "text",
+
+					"x" : LINE_LABEL_X,
+					"y" : 265+2,
+
+					"text" : uiScriptLocale.OPTION_PICKUP_FILTER,
+				},
+				{
+					"name" : "pickup_equipment_button",
+					"type" : "toggle_button",
+
+					"x" : LINE_DATA_X+MIDDLE_BUTTON_WIDTH*0,
+					"y" : 265,
+
+					"text" : uiScriptLocale.OPTION_PICKUP_EQUIPMENT,
+
+					"default_image" : ROOT_PATH + "middle_button_01.sub",
+					"over_image" : ROOT_PATH + "middle_button_02.sub",
+					"down_image" : ROOT_PATH + "middle_button_03.sub",
+				},
+				{
+					"name" : "pickup_special_button",
+					"type" : "toggle_button",
+
+					"x" : LINE_DATA_X+MIDDLE_BUTTON_WIDTH*1,
+					"y" : 265,
+
+					"text" : uiScriptLocale.OPTION_PICKUP_SPECIAL,
+
+					"default_image" : ROOT_PATH + "middle_button_01.sub",
+					"over_image" : ROOT_PATH + "middle_button_02.sub",
+					"down_image" : ROOT_PATH + "middle_button_03.sub",
+				},
+				{
+					"name" : "pickup_potions_button",
+					"type" : "toggle_button",
+
+					"x" : LINE_DATA_X+MIDDLE_BUTTON_WIDTH*0,
+					"y" : 290,
+
+					"text" : uiScriptLocale.OPTION_PICKUP_POTIONS,
+
+					"default_image" : ROOT_PATH + "middle_button_01.sub",
+					"over_image" : ROOT_PATH + "middle_button_02.sub",
+					"down_image" : ROOT_PATH + "middle_button_03.sub",
+				},
+				{
+					"name" : "pickup_others_button",
+					"type" : "toggle_button",
+
+					"x" : LINE_DATA_X+MIDDLE_BUTTON_WIDTH*1,
+					"y" : 290,
+
+					"text" : uiScriptLocale.OPTION_PICKUP_OTHERS,
+
+					"default_image" : ROOT_PATH + "middle_button_01.sub",
+					"over_image" : ROOT_PATH + "middle_button_02.sub",
+					"down_image" : ROOT_PATH + "middle_button_03.sub",
+				},
 			),
 		},
 	),

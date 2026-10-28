@@ -644,6 +644,8 @@ class Facade(DragonSoulTest):
         self.assertEqual(type(refine).__module__, "nui_dragon_soul_refine")
         self.assertFalse([name for name, args in world.game.log if name.startswith("exception.")])
 
+    # The legacy lines, in this order, with the line each stood at when
+    # written (P18: found by their content).
     WIRING = (
         (190, 'wndDragonSoul = nui_windows.make("dragon-soul", uiDragonSoul.DragonSoulWindow, '
               '"nui_dragon_soul.DragonSoulWindow")'),
@@ -652,9 +654,10 @@ class Facade(DragonSoulTest):
     )
 
     def test_the_interface_makes_them_through_make(self):
-        text = read(os.path.join(ROOT, "interfacemodule.py")).split("\n")
-        for number, line in self.WIRING:
-            self.assertEqual(text[number - 1].strip(), line, "interfacemodule.py:%d" % number)
+        text = read(os.path.join(ROOT, "interfacemodule.py"))
+        found = support.find_lines(text, [line for _, line in self.WIRING])
+        for (number, line), at in zip(self.WIRING, found):
+            self.assertIsNotNone(at, "interfacemodule.py (line %d when written), in order: %s" % (number, line))
         world = World(True)
         for name in ("nui_dragon_soul.DragonSoulWindow", "nui_dragon_soul_refine.DragonSoulRefineWindow"):
             module, cls = name.split(".")

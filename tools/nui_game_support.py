@@ -68,6 +68,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_test_support as support  # noqa: E402
 
 ROOT = support.ROOT
+find_lines = support.find_lines
 
 GETTER_PREFIXES = ("Get", "Is", "Has", "Can", "LocalQuickSlotIndexTo", "Find")
 # Modules whose calls the differential tests compare.

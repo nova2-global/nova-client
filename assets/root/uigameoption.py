@@ -25,6 +25,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.RefreshAlwaysShowName()
 		self.RefreshShowDamage()
 		self.RefreshShowSalesText()
+		self.RefreshPickupFilter()
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -40,6 +41,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.alwaysShowNameButtonList = []
 		self.showDamageButtonList = []
 		self.showsalesTextButtonList = []
+		self.pickupFilterButtonList = []
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -81,6 +83,12 @@ class OptionDialog(ui.ScriptWindow):
 			self.showDamageButtonList.append(GetObject("show_damage_off_button"))
 			self.showsalesTextButtonList.append(GetObject("salestext_on_button"))
 			self.showsalesTextButtonList.append(GetObject("salestext_off_button"))
+			# The pickup filter's categories, in systemSetting.PICKUP_FILTER_*'s
+			# order: equipment, special, potions, others.
+			self.pickupFilterButtonList.append(GetObject("pickup_equipment_button"))
+			self.pickupFilterButtonList.append(GetObject("pickup_special_button"))
+			self.pickupFilterButtonList.append(GetObject("pickup_potions_button"))
+			self.pickupFilterButtonList.append(GetObject("pickup_others_button"))
 
 		except:
 			import exception
@@ -131,6 +139,16 @@ class OptionDialog(ui.ScriptWindow):
 		
 		self.showsalesTextButtonList[0].SAFE_SetEvent(self.__OnClickSalesTextOnButton)
 		self.showsalesTextButtonList[1].SAFE_SetEvent(self.__OnClickSalesTextOffButton)		
+
+		self.pickupFilterButtonList[0].SetToggleUpEvent(self.__OnClickPickupEquipmentButton)
+		self.pickupFilterButtonList[1].SetToggleUpEvent(self.__OnClickPickupSpecialButton)
+		self.pickupFilterButtonList[2].SetToggleUpEvent(self.__OnClickPickupPotionsButton)
+		self.pickupFilterButtonList[3].SetToggleUpEvent(self.__OnClickPickupOthersButton)
+
+		self.pickupFilterButtonList[0].SetToggleDownEvent(self.__OnClickPickupEquipmentButton)
+		self.pickupFilterButtonList[1].SetToggleDownEvent(self.__OnClickPickupSpecialButton)
+		self.pickupFilterButtonList[2].SetToggleDownEvent(self.__OnClickPickupPotionsButton)
+		self.pickupFilterButtonList[3].SetToggleDownEvent(self.__OnClickPickupOthersButton)
 
 		self.__ClickRadioButton(self.nameColorModeButtonList, constInfo.GET_CHRNAME_COLOR_INDEX())
 		self.__ClickRadioButton(self.viewTargetBoardButtonList, constInfo.GET_VIEW_OTHER_EMPIRE_PLAYER_TARGET_BOARD())
@@ -243,6 +261,25 @@ class OptionDialog(ui.ScriptWindow):
 		systemSetting.SetShowSalesTextFlag(False)
 		self.RefreshShowSalesText()		
 		
+	# The pickup filter (player.PickAroundItems, NOVA-50): a press flips its
+	# category as OLD's settings window did (uiGameOption.py:1185-1186); the
+	# client saves it to metin2.cfg with the other settings.
+	def __TogglePickupFilter(self, index):
+		systemSetting.SetPickupFilter(index, not systemSetting.GetPickupFilter(index))
+		self.RefreshPickupFilter()
+
+	def __OnClickPickupEquipmentButton(self):
+		self.__TogglePickupFilter(0)
+
+	def __OnClickPickupSpecialButton(self):
+		self.__TogglePickupFilter(1)
+
+	def __OnClickPickupPotionsButton(self):
+		self.__TogglePickupFilter(2)
+
+	def __OnClickPickupOthersButton(self):
+		self.__TogglePickupFilter(3)
+
 	def __CheckPvPProtectedLevelPlayer(self):	
 		if player.GetStatus(player.LEVEL)<constInfo.PVPMODE_PROTECTED_LEVEL:
 			self.__SetPeacePKMode()
@@ -357,6 +394,14 @@ class OptionDialog(ui.ScriptWindow):
 		else:
 			self.showsalesTextButtonList[0].SetUp()
 			self.showsalesTextButtonList[1].Down()
+
+	# A category's button is down while the filter picks it up.
+	def RefreshPickupFilter(self):
+		for i in range(len(self.pickupFilterButtonList)):
+			if systemSetting.GetPickupFilter(i):
+				self.pickupFilterButtonList[i].Down()
+			else:
+				self.pickupFilterButtonList[i].SetUp()
 
 	def OnBlockMode(self, mode):
 		global blockMode

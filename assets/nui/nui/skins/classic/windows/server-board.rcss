@@ -18,6 +18,7 @@ body.skin-classic.server-board
 {
 	height: 23dp;
 	padding-top: 11dp;
+	padding-bottom: 0dp;
 	line-height: 15dp;
 	font-weight: normal;
 }
@@ -35,6 +36,7 @@ body.skin-classic.server-board
 }
 .skin-classic .server-board__servers
 {
+	width: 232dp;
 	margin-top: 2dp;
 }
 .skin-classic .server-board__split

@@ -1,6 +1,6 @@
-/* Cyberpunk skin: neon edges on deep navy panels, cut corners, holographic
-   tints and moving frame accents, after the third column of the skins
-   mockup (README.md next to this file). Every document links this sheet
+/* Cyberpunk skin: neon lines on deep violet-black panels, cut corners, a
+   magenta second accent and an acid third, after the reviewed skins mockup
+   (stage 2; README.md next to this file). Every document links this sheet
    through nui/nui.rtpl, and every rule starts with .skin-cyberpunk, the
    body class of the cyberpunk theme (nui/theme/themes.json), so nothing
    here applies in a theme of another skin.
@@ -8,31 +8,37 @@
    Selector scheme (docs/ui/AUTHORING.md "Skins" and "Classic skin"): a rule
    takes the exact modern selector it overrides with .skin-cyberpunk in front,
    so it outweighs that rule by one class; components that can be the
-   <body> itself list .skin-cyberpunk.x too. Motion only on the chrome hooks
-   the theme asks for (outline, corner-tl, corner-br, edge-top, scan,
-   accent), transform and opacity only, values written out, every selector
-   under 600,000 (lint NUI011), and only on hooks that show: RmlUi advances
-   an element's animation on every update even while it is hidden, so the
+   <body> itself list .skin-cyberpunk.x too. Layout stays the modern one to
+   the pixel, but where the mockup's cyberpunk layout differs (the toggle's
+   slanted track, the underlined tabs). Motion only on the chrome hooks the
+   theme asks for (outline, corner-tl, corner-br, edge-top, scan, accent),
+   transform and opacity only, values written out, every selector under
+   600,000 (lint NUI011), and only on hooks that show: RmlUi advances an
+   element's animation on every update even while it is hidden, so the
    motion rules name the window frame (or, in an overlay, the one board that
    shows the hook), not every hook. A board that is a document's <body>
    keeps the frame's hooks (the hide rules below name a board inside one).
    Filters, backdrop filters and masks only in .nui-fx rules (NUI010).
    Colors from the palette and the skin's tokens, lengths in dp.
 
-   The only art is the six white sprites of cyberpunk-sprites.rcss (the cut
-   corner fills and outlines, and the taskbar's HP ring; art.json), drawn as
-   ninepatch decorators (the ring as a fill-image) and tinted by image-color
-   from tokens, so they follow the player's colors.
+   The only art is the white sprites of cyberpunk-sprites.rcss (the cut
+   corner fills and outlines, the toggle's slanted track and knob, and the
+   taskbar's HP ring; art.json), drawn as ninepatch decorators (the ring as
+   a fill-image) and tinted by image-color from tokens, so they follow the
+   player's colors. One element has one image-color, so a chip's fill and
+   edge share their tint: the fill sprite's alpha is baked (chip 0.2, skew
+   0.15), and a state changes the tint's alpha (the dim line at rest, the
+   edge on hover, the solid accent pressed).
    No box-shadow: each one is a render target texture made the first time
    its element shows (a hitch on the device), and a device without effects
    would drop its element's background with it; glows are baked into the
    outline art or drawn as gradients. No text-transform: RmlUi 6.3 upper-cases
    ASCII letters only (ElementText.cpp), which would mix cases in most
-   locales. Item icons, skill icons and every other content image are never
-   tinted. */
+   locales; the mockup's tracked capitals are tracked mixed case here. Item
+   icons, skill icons and every other content image are never tinted. */
 
 /* --- Window frame: the cut-corner panel ------------------------------------------
-   The fill is the panel sprite (10dp cuts at the top left and bottom right)
+   The fill is the panel sprite (12dp cuts at the top right and bottom left)
    tinted with the panel color, so the player's panel color and opacity
    reach it. The frame keeps the modern 1dp border, transparent, so every
    window keeps its modern layout to the pixel; the fill covers the border
@@ -46,6 +52,10 @@
 	border-radius: 0;
 	decorator: ninepatch(cyberpunk-panel, cyberpunk-panel-inner) border-box;
 	image-color: var(--surface);
+}
+.skin-cyberpunk.nui-window.nui-fx, .skin-cyberpunk .nui-window.nui-fx
+{
+	box-shadow: none;
 }
 .skin-cyberpunk .nui-window
 {
@@ -67,7 +77,7 @@
    them. Their containing block is their frame's padding box, inside the
    frame's 1dp border. */
 
-/* The neon outline: the panel's edge with its glow baked in, 6dp of glow
+/* The neon outline: the panel's edge with a soft glow baked in, 6dp of glow
    outside the frame and 6dp inside, under the content. */
 .skin-cyberpunk .nui-chrome--outline
 {
@@ -81,30 +91,32 @@
 	image-color: var(--cyberpunk-edge);
 }
 
-/* The two cut corners: a violet bar along each cut, pulsing from full to
-   0.55 opacity and back, the second half a cycle after the first, on window
-   frames and on a document that is a board itself (the theme picker; other
-   boards hide them, and the taskbar's overlay shows and moves its own).
-   Each is a 16dp bar turned -45 degrees about its middle, which is the
-   middle of the 10dp cut (5dp in from the border box's corner). At rest
-   (reduced motion) both show whole. */
+/* The two square corners: a 14dp bracket, magenta at the top left and in
+   the accent at the bottom right, 3dp outside the frame, each pulsing from
+   full to 0.55 opacity and back, the second half a cycle after the first,
+   on window frames and on a document that is a board itself (the theme
+   picker, the belt; other boards hide them, and the taskbar's overlay shows
+   and moves its own). At rest (reduced motion) both show whole. */
 .skin-cyberpunk .nui-chrome--corner-tl, .skin-cyberpunk .nui-chrome--corner-br
 {
 	display: block;
-	width: 16dp;
-	height: 2dp;
-	background-color: var(--cyberpunk-edge-alt);
-	transform: rotate(-45deg);
+	box-sizing: border-box;
+	width: 14dp;
+	height: 14dp;
 }
 .skin-cyberpunk .nui-chrome--corner-tl
 {
 	left: -4dp;
-	top: 3dp;
+	top: -4dp;
+	border-width: 2dp 0 0 2dp;
+	border-color: var(--cyberpunk-edge-alt);
 }
 .skin-cyberpunk .nui-chrome--corner-br
 {
 	right: -4dp;
-	bottom: 3dp;
+	bottom: -4dp;
+	border-width: 0 2dp 2dp 0;
+	border-color: var(--accent);
 }
 .skin-cyberpunk.nui-window > .nui-chrome--corner-tl.nui-anim, .skin-cyberpunk .nui-window > .nui-chrome--corner-tl.nui-anim,
 .skin-cyberpunk.nui-board > .nui-chrome--corner-tl.nui-anim
@@ -123,23 +135,24 @@
 	100% { opacity: 1; }
 }
 
-/* A light that runs along the top edge of a window frame every 6s: a bar
-   as wide as the frame whose first 12% holds a neon streak, moved by
-   transform from just left of the frame to its right end. The streak grows
-   from nothing at the start and shrinks to nothing at the end (scaleX about
-   its own middle) instead of fading: an opacity change regenerates the
+/* The top edge's tab: a 44dp neon bar on the frame's top edge, 18dp from
+   its left end, which every 6s runs along the edge toward the right end,
+   shrinking to nothing as it goes, and grows back in place. The hook is as
+   wide as the frame and draws the tab with a gradient, so a translate in
+   percent moves it by the frame's width; it shrinks (scaleX about the
+   tab's middle) instead of fading: an opacity change regenerates the
    gradient decorator, its shader and mesh, on every frame, a transform
-   nothing. It rests at no width, so reduced motion shows the plain edge. */
+   nothing. At rest (reduced motion) the tab stays in place, whole. */
 .skin-cyberpunk .nui-chrome--edge-top
 {
 	display: block;
 	left: -1dp;
 	right: -1dp;
-	top: -1dp;
-	height: 2dp;
-	decorator: linear-gradient(90deg, transparent 0%, var(--cyberpunk-edge) 6%, transparent 12%);
-	transform-origin: 6% 50%;
-	transform: translateX(-12%) scaleX(0);
+	top: -2dp;
+	height: 3dp;
+	decorator: linear-gradient(90deg, transparent 17dp, var(--accent) 18dp, var(--accent) 61dp, transparent 62dp);
+	transform-origin: 40dp 50%;
+	transform: translateX(0%) scaleX(1);
 }
 .skin-cyberpunk.nui-window > .nui-chrome--edge-top.nui-anim, .skin-cyberpunk .nui-window > .nui-chrome--edge-top.nui-anim,
 .skin-cyberpunk.nui-board > .nui-chrome--edge-top.nui-anim
@@ -148,16 +161,16 @@
 }
 @keyframes cyberpunk-sweep
 {
-	0% { transform: translateX(-12%) scaleX(0); }
-	4% { transform: translateX(-3%) scaleX(1); }
-	40% { transform: translateX(79%) scaleX(1); }
-	44% { transform: translateX(88%) scaleX(0); }
-	100% { transform: translateX(88%) scaleX(0); }
+	0% { transform: translateX(0%) scaleX(1); }
+	55% { transform: translateX(0%) scaleX(1); }
+	80% { transform: translateX(78%) scaleX(0); }
+	81% { transform: translateX(0%) scaleX(0); }
+	100% { transform: translateX(0%) scaleX(1); }
 }
 
-/* The holographic layer under the content: fine scan lines over a cyan to
-   violet sheen across the diagonal, fading out toward the two cut corners
-   so the cuts stay clear. */
+/* The holographic layer under the content: fine scan lines over a faint
+   sheen, cyan in the top left corner and magenta in the bottom right one,
+   clear between them, so the two cut corners stay clear. */
 .skin-cyberpunk .nui-chrome--scan
 {
 	display: block;
@@ -167,23 +180,23 @@
 	bottom: -1dp;
 	z-index: -1;
 	decorator: repeating-linear-gradient(180deg, var(--cyberpunk-scan) 0dp, var(--cyberpunk-scan) 1dp, transparent 1dp, transparent 3dp),
-		linear-gradient(135deg, transparent 0%, var(--cyberpunk-holo-a) 14%, transparent 42%, transparent 58%, var(--cyberpunk-holo-b) 86%, transparent 100%);
+		linear-gradient(135deg, var(--cyberpunk-holo-a) 0%, transparent 16%, transparent 84%, var(--cyberpunk-holo-b) 100%);
 }
 
-/* The title bar's accent: a short violet bar on the bar's bottom line under
-   the title's start, its glow a gradient across its 6dp. */
+/* The title bar's accent: a short magenta bar on the bar's bottom line
+   under the title's start, its glow a gradient across its 6dp. */
 .skin-cyberpunk .nui-chrome--accent
 {
 	display: block;
-	left: 10dp;
+	left: 12dp;
 	bottom: -3dp;
-	width: 32dp;
+	width: 28dp;
 	height: 6dp;
 	decorator: linear-gradient(180deg, transparent 0%, var(--cyberpunk-glow-alt) 30%, var(--cyberpunk-edge-alt) 42%, var(--cyberpunk-edge-alt) 58%, var(--cyberpunk-glow-alt) 70%, transparent 100%);
 }
 
 /* A band has no cut corners and no outline: its scan layer and its edge
-   light only. */
+   tab only. */
 .skin-cyberpunk.nui-window--band > .nui-chrome--outline, .skin-cyberpunk .nui-window--band > .nui-chrome--outline,
 .skin-cyberpunk.nui-window--band > .nui-chrome--corner-tl, .skin-cyberpunk .nui-window--band > .nui-chrome--corner-tl,
 .skin-cyberpunk.nui-window--band > .nui-chrome--corner-br, .skin-cyberpunk .nui-window--band > .nui-chrome--corner-br
@@ -197,36 +210,52 @@
 	animation: none;
 }
 
-/* --- Title bar, close button, footer ---------------------------------------------- */
+/* --- Title bar, close button, footer ----------------------------------------------
+   The modern bar (36dp) and body padding; the title a size smaller than
+   modern's, tracked 0.5dp (so a long translated title takes the modern
+   width) and lit, the bar's line the dim cyan line, no line above the
+   footer. */
 
 .skin-cyberpunk .nui-window__titlebar
 {
 	position: relative;
-	border-bottom-color: var(--cyberpunk-edge-dim);
+	border-bottom-color: var(--border);
 }
 .skin-cyberpunk .nui-window__title
 {
 	color: var(--cyberpunk-title);
-	letter-spacing: 1dp;
+	font-size: 12dp;
+	letter-spacing: 0.5dp;
 	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+.skin-cyberpunk .nui-window--compact .nui-window__title
+{
+	font-size: var(--font-sm);
+	letter-spacing: 0.5dp;
 }
 .skin-cyberpunk .nui-window__footer
 {
-	border-top-color: var(--cyberpunk-edge-dim);
+	border-top-color: transparent;
 }
 
 /* --- Boards and tiles -------------------------------------------------------------
-   A board is a small framed part of the HUD: the chip fill (5dp cuts),
-   tinted with the panel color, and its outline hook as the chip's 1dp neon
-   edge. Boards are always loaded, so they show only the static outline by
-   default; a window's overlay may show more on its boards. */
+   A board is a small framed part of the HUD: the board fill (6dp cuts at
+   the top left and bottom right), tinted with the panel color, and its
+   outline hook as the board's 1dp neon edge. Boards are always loaded, so
+   they show only the static outline by default; a window's overlay may
+   show more on its boards. A board that is a document's <body> (the theme
+   picker, the belt, the item tooltips) is drawn as a window frame. */
 .skin-cyberpunk.nui-board, .skin-cyberpunk .nui-board
 {
 	background-color: transparent;
 	border-color: transparent;
 	border-radius: 0;
-	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	decorator: ninepatch(cyberpunk-board, cyberpunk-board-inner) border-box;
 	image-color: var(--surface);
+}
+.skin-cyberpunk.nui-board
+{
+	decorator: ninepatch(cyberpunk-panel, cyberpunk-panel-inner) border-box;
 }
 .skin-cyberpunk .nui-board
 {
@@ -238,7 +267,7 @@
 	top: -1dp;
 	right: -1dp;
 	bottom: -1dp;
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
 	image-color: var(--cyberpunk-edge-dim);
 }
 .skin-cyberpunk .nui-board > .nui-chrome--corner-tl, .skin-cyberpunk .nui-board > .nui-chrome--corner-br,
@@ -250,15 +279,58 @@
 {
 	image-color: var(--notice-bar);
 }
-/* A tooltip board: the chip in the tooltips' panel color, with no shadow
-   (the chip's outline is its edge). */
+/* A tooltip board (the item, skill and link tooltips, and the refine and
+   attach dialogs' item boards): the frame's cut shape on the shared overlay
+   black (tip-bg, the player's overlay slot), the frame's neon outline, no
+   shadow, and an acid bar down the top of its left edge. An inset board
+   (inside a window) is opaque on the scene's color. */
 .skin-cyberpunk.nui-board--tooltip, .skin-cyberpunk .nui-board--tooltip
 {
+	decorator: ninepatch(cyberpunk-panel, cyberpunk-panel-inner) border-box;
 	image-color: var(--tip-bg);
 }
 .skin-cyberpunk.nui-board--tooltip.nui-fx, .skin-cyberpunk .nui-board--tooltip.nui-fx
 {
 	box-shadow: none;
+}
+/* An inset board sits in its window's flow, unpositioned; positioned, it
+   holds its hooks (an unpositioned board's hooks would frame the window). */
+.skin-cyberpunk .nui-board--tooltip.nui-board--inset
+{
+	position: relative;
+	image-color: var(--scene);
+}
+.skin-cyberpunk .nui-board--tooltip > .nui-chrome--outline
+{
+	left: -7dp;
+	top: -7dp;
+	right: -7dp;
+	bottom: -7dp;
+	decorator: ninepatch(cyberpunk-panel-edge, cyberpunk-panel-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge);
+}
+.skin-cyberpunk.nui-board--tooltip > .nui-chrome--edge-top, .skin-cyberpunk .nui-board--tooltip > .nui-chrome--edge-top
+{
+	display: block;
+	left: -1dp;
+	top: -1dp;
+	right: auto;
+	width: 3dp;
+	height: 36dp;
+	decorator: none;
+	background-color: var(--cyberpunk-acid);
+	transform: none;
+}
+.skin-cyberpunk.nui-board--tooltip > .nui-chrome--corner-tl, .skin-cyberpunk.nui-board--tooltip > .nui-chrome--corner-br,
+.skin-cyberpunk.nui-board--tooltip > .nui-chrome--scan
+{
+	display: none;
+}
+/* A tooltip's hooks do not move (the frame rules' weight, later). */
+.skin-cyberpunk.nui-board--tooltip > .nui-chrome--corner-tl.nui-anim, .skin-cyberpunk.nui-board--tooltip > .nui-chrome--corner-br.nui-anim,
+.skin-cyberpunk.nui-board--tooltip > .nui-chrome--edge-top.nui-anim
+{
+	animation: none;
 }
 /* The ring and the disc are drawn by the minimap's overlay. */
 .skin-cyberpunk .nui-board--ring
@@ -274,11 +346,14 @@
 .skin-cyberpunk .nui-tile
 {
 	background-color: var(--surface-raised);
-	border-color: var(--cyberpunk-edge-dim);
-	border-radius: var(--radius-sm);
+	border-color: var(--border);
+	border-radius: 0;
 }
 
-/* --- Panel, divider, badge ------------------------------------------------------- */
+/* --- Panel, divider, badge -------------------------------------------------------
+   Square panels: raised on the violet raised surface with the brighter cyan
+   line, sunken in the well with the dim line, flat with a magenta line.
+   Badges are acid tags. */
 
 .skin-cyberpunk .nui-panel
 {
@@ -288,10 +363,12 @@
 .skin-cyberpunk .nui-panel--sunken
 {
 	background-color: var(--surface-sunken);
+	border-color: var(--border);
 }
 .skin-cyberpunk .nui-panel--flat
 {
 	background-color: transparent;
+	border-color: var(--cyberpunk-glow-alt);
 }
 .skin-cyberpunk .nui-panel__title
 {
@@ -300,43 +377,76 @@
 }
 .skin-cyberpunk .nui-divider
 {
-	border-top-color: var(--cyberpunk-edge-dim);
+	border-top-color: var(--border);
 }
+/* The modern 18dp height, its edge inside it. */
 .skin-cyberpunk .nui-badge
 {
-	border-radius: var(--radius-md);
+	height: 16dp;
+	padding: 0 6dp;
+	border-width: 1dp;
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+	color: var(--cyberpunk-acid);
+	font-weight: normal;
+	line-height: 16dp;
+	letter-spacing: 0.5dp;
+}
+.skin-cyberpunk .nui-badge--accent
+{
+	background-color: var(--cyberpunk-acid-soft);
+	color: var(--cyberpunk-acid);
+}
+.skin-cyberpunk .nui-badge--danger
+{
+	background-color: var(--cyberpunk-acid-soft);
+	color: var(--danger);
+}
+.skin-cyberpunk .nui-badge--warning
+{
+	background-color: var(--cyberpunk-acid-soft);
+	color: var(--warning);
+}
+.skin-cyberpunk .nui-badge--success
+{
+	background-color: var(--cyberpunk-acid-soft);
+	color: var(--success);
 }
 
-/* --- Buttons: chips with a neon edge ----------------------------------------------
-   Rest: the chip's 1dp edge in the dim neon, no fill. Hover and focus: the
-   30% chip fill under a full edge, both in the accent (one image-color tints
-   both sprites). Press and selected: the fill. Primary and danger keep the
-   30% fill at rest. The modern 1dp border stays, transparent, so sizes are
-   the modern ones. Rule order as classic's: the base and variants, then the
+/* --- Buttons: chips cut at the bottom right ---------------------------------------
+   The chip's fill (0.2) and its 1dp edge share one tint. Rest: the dim
+   cyan line (the fill a faint 0.09). Hover: the brighter edge, white label.
+   Press: the full accent. Keyboard focus: the acid edge alone. A selected
+   choice: acid, fill, edge and label. Primary: the solid accent chip;
+   danger: the magenta chip; ghost: no chip until hovered. The modern 1dp
+   border stays, transparent, so sizes are the modern ones; labels are
+   tracked 0.5dp (1dp ran long translations past the fixed-width choice
+   rows of the system options). Rule order as classic's: the base and variants, then the
    states, each group after the one it must win against. */
 .skin-cyberpunk .nui-button
 {
 	background-color: transparent;
 	border-color: transparent;
 	border-radius: 0;
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--cyberpunk-edge-dim);
 	color: var(--text);
+	letter-spacing: 0.5dp;
 }
 .skin-cyberpunk .nui-button--primary
 {
 	background-color: transparent;
 	border-color: transparent;
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
 	image-color: var(--accent);
-	color: var(--text);
+	color: var(--accent-text);
 }
 .skin-cyberpunk .nui-button--danger
 {
 	background-color: transparent;
 	border-color: transparent;
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--danger);
+	image-color: var(--cyberpunk-glow-alt);
 	color: var(--text);
 }
 .skin-cyberpunk .nui-button--ghost
@@ -344,20 +454,24 @@
 	background-color: transparent;
 	border-color: transparent;
 	decorator: none;
+	color: var(--text-muted);
+}
+.skin-cyberpunk .nui-button[disabled], .skin-cyberpunk .nui-button:disabled
+{
+	opacity: 0.35;
 }
 
 .skin-cyberpunk .nui-button:hover, .skin-cyberpunk .nui-button.is-hover
 {
 	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--accent);
+	image-color: var(--cyberpunk-edge);
+	color: var(--cyberpunk-title);
 }
 .skin-cyberpunk .nui-button:active, .skin-cyberpunk .nui-button.is-active
 {
 	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
 	image-color: var(--accent);
-	color: var(--accent-text);
+	color: var(--cyberpunk-title);
 }
 .skin-cyberpunk .nui-button:focus-visible, .skin-cyberpunk .nui-button.is-focus
 {
@@ -370,54 +484,109 @@
 	background-color: transparent;
 	border-color: transparent;
 	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--accent);
-	color: var(--text);
+	image-color: var(--cyberpunk-acid);
+	color: var(--cyberpunk-acid);
 }
-.skin-cyberpunk .nui-button--primary:hover, .skin-cyberpunk .nui-button--primary.is-hover,
+.skin-cyberpunk .nui-button--primary:hover, .skin-cyberpunk .nui-button--primary.is-hover
+{
+	border-color: transparent;
+	image-color: var(--accent-hover);
+	color: var(--accent-text);
+}
 .skin-cyberpunk .nui-button--primary:active, .skin-cyberpunk .nui-button--primary.is-active
 {
-	background-color: transparent;
 	border-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
 	image-color: var(--accent);
 	color: var(--accent-text);
 }
-.skin-cyberpunk .nui-button--danger:hover, .skin-cyberpunk .nui-button--danger.is-hover,
+.skin-cyberpunk .nui-button--danger:hover, .skin-cyberpunk .nui-button--danger.is-hover
+{
+	border-color: transparent;
+	image-color: var(--cyberpunk-edge-alt);
+	color: var(--cyberpunk-title);
+}
 .skin-cyberpunk .nui-button--danger:active, .skin-cyberpunk .nui-button--danger.is-active
 {
-	background-color: transparent;
 	border-color: transparent;
 	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
-	image-color: var(--danger);
+	image-color: var(--cyberpunk-edge-alt);
 	color: var(--accent-text);
 }
 .skin-cyberpunk .nui-button--ghost:hover, .skin-cyberpunk .nui-button--ghost.is-hover
 {
-	background-color: transparent;
 	border-color: transparent;
 	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box;
-	image-color: var(--accent);
+	image-color: var(--cyberpunk-edge);
+	color: var(--cyberpunk-title);
 }
 .skin-cyberpunk .nui-button--ghost:active, .skin-cyberpunk .nui-button--ghost.is-active
 {
-	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box;
+	image-color: var(--accent);
+	color: var(--cyberpunk-title);
+}
+/* Focus over the variants (the modern rule of the same name): primary the
+   solid chip with an acid notch in its cut (the background, which only the
+   cut leaves uncovered; a dialog's default button has the focus when it
+   opens), the others the acid edge. */
+.skin-cyberpunk .nui-button--primary:focus-visible, .skin-cyberpunk .nui-button--primary.is-focus
+{
+	border-color: transparent;
+	background-color: var(--focus-ring);
 	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
 	image-color: var(--accent);
 	color: var(--accent-text);
 }
-/* Focus over the variants (the modern rule of the same name). */
-.skin-cyberpunk .nui-button--primary:focus-visible, .skin-cyberpunk .nui-button--danger:focus-visible, .skin-cyberpunk .nui-button--ghost:focus-visible,
-.skin-cyberpunk .nui-button--primary.is-focus, .skin-cyberpunk .nui-button--danger.is-focus, .skin-cyberpunk .nui-button--ghost.is-focus
+.skin-cyberpunk .nui-button--danger:focus-visible, .skin-cyberpunk .nui-button--ghost:focus-visible,
+.skin-cyberpunk .nui-button--danger.is-focus, .skin-cyberpunk .nui-button--ghost.is-focus
 {
 	border-color: transparent;
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--focus-ring);
-	color: var(--text);
+}
+/* Icon buttons: square boxes with the glyph in the accent, untracked (the
+   mockup's icon buttons are not cut). After the states, which they tie. */
+.skin-cyberpunk .nui-button--icon
+{
+	decorator: none;
+	border-color: var(--cyberpunk-edge-dim);
+	color: var(--accent);
+	font-size: var(--font-lg);
+	letter-spacing: 0;
+}
+.skin-cyberpunk .nui-button--small.nui-button--icon
+{
+	font-size: var(--font-md);
+}
+.skin-cyberpunk .nui-button--icon:hover, .skin-cyberpunk .nui-button--icon.is-hover
+{
+	decorator: none;
+	border-color: var(--cyberpunk-edge);
+	background-color: var(--cyberpunk-holo-a);
+	color: var(--accent-hover);
+}
+.skin-cyberpunk .nui-button--icon:active, .skin-cyberpunk .nui-button--icon.is-active
+{
+	decorator: none;
+	border-color: var(--accent);
+	background-color: var(--selection);
+	color: var(--accent-hover);
+}
+.skin-cyberpunk .nui-button--icon:focus-visible, .skin-cyberpunk .nui-button--icon.is-focus
+{
+	decorator: none;
+	border-color: var(--focus-ring);
+}
+.skin-cyberpunk .nui-button--ghost.nui-button--icon
+{
+	border-color: transparent;
 }
 /* The compact title bar's close (the chat log): the glyph in the accent. */
 .skin-cyberpunk .nui-button--icon-sm
 {
+	decorator: none;
 	color: var(--accent);
+	letter-spacing: 0;
 }
 .skin-cyberpunk .nui-button--icon-sm:hover, .skin-cyberpunk .nui-button--icon-sm.is-hover,
 .skin-cyberpunk .nui-button--icon-sm:focus-visible, .skin-cyberpunk .nui-button--icon-sm.is-focus
@@ -428,304 +597,363 @@
 	color: var(--accent-hover);
 }
 
-/* A window's close: a small neon chip with the cross in the accent, as the
-   mockup's title bars show it. The title bar ancestor keeps each rule one
-   class above the button rules of the same state. */
+/* A window's close: the modern 24dp ghost, its cross muted, magenta under
+   the pointer, as the mockup's title bars show it. The title bar ancestor
+   keeps each rule one class above the button rules of the same state. */
 .skin-cyberpunk .nui-window__titlebar .nui-window__close
 {
-	width: 26dp;
-	height: 26dp;
-	line-height: 24dp;
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--cyberpunk-edge-dim);
-	color: var(--accent);
+	border-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
 	font-weight: normal;
 }
-.skin-cyberpunk .nui-window__titlebar .nui-window__close:hover, .skin-cyberpunk .nui-window__titlebar .nui-window__close.is-hover,
-.skin-cyberpunk .nui-window__titlebar .nui-window__close:focus-visible, .skin-cyberpunk .nui-window__titlebar .nui-window__close.is-focus
+.skin-cyberpunk .nui-window__titlebar .nui-window__close:hover, .skin-cyberpunk .nui-window__titlebar .nui-window__close.is-hover
 {
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--accent);
-	color: var(--accent-hover);
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box;
+	image-color: var(--cyberpunk-edge-alt);
+	color: var(--cyberpunk-edge-alt);
 }
 .skin-cyberpunk .nui-window__titlebar .nui-window__close:active, .skin-cyberpunk .nui-window__titlebar .nui-window__close.is-active
 {
+	border-color: transparent;
+	background-color: transparent;
 	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
-	image-color: var(--accent);
+	image-color: var(--cyberpunk-edge-alt);
 	color: var(--accent-text);
 }
-/* The compact close keeps its 20dp size. */
-.skin-cyberpunk .nui-window__titlebar .nui-button--icon-sm.nui-window__close
+.skin-cyberpunk .nui-window__titlebar .nui-window__close:focus-visible, .skin-cyberpunk .nui-window__titlebar .nui-window__close.is-focus
 {
-	width: 20dp;
-	height: 20dp;
-	line-height: 20dp;
+	border-color: var(--focus-ring);
 	decorator: none;
 }
+/* A close drawn as the close glyph: the same inks. */
+.skin-cyberpunk .nui-window__close .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+}
+.skin-cyberpunk .nui-window__close:hover .nui-glyph, .skin-cyberpunk .nui-window__close.is-hover .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+.skin-cyberpunk .nui-window__close:active .nui-glyph, .skin-cyberpunk .nui-window__close.is-active .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
+}
 
-/* --- Text input: a sunken field with a neon edge -------------------------------- */
+/* --- Text input: a dark well, a dim line and a brighter underline ----------- */
 
 .skin-cyberpunk .nui-input
 {
 	background-color: var(--surface-sunken);
-	border-color: var(--cyberpunk-edge-dim);
+	border-color: var(--border);
+	border-bottom-color: var(--cyberpunk-edge);
 }
 .skin-cyberpunk .nui-input:hover, .skin-cyberpunk .nui-input.is-hover
 {
-	border-color: var(--accent);
+	border-color: var(--cyberpunk-edge-dim);
+	border-bottom-color: var(--cyberpunk-edge);
 }
 .skin-cyberpunk .nui-input:focus, .skin-cyberpunk .nui-input.is-focus
 {
-	border-color: var(--accent);
-	background-color: var(--surface-raised);
+	border-color: var(--cyberpunk-edge-dim);
+	border-bottom-color: var(--accent);
 }
 .skin-cyberpunk .nui-input--invalid, .skin-cyberpunk .nui-input--invalid:hover
 {
 	border-color: var(--danger);
 }
-.skin-cyberpunk .nui-field__label
+.skin-cyberpunk .nui-field__label, .skin-cyberpunk .nui-field__error
 {
-	color: var(--text-muted);
 	letter-spacing: 1dp;
 }
 
-/* --- Toggle: a square track with a diamond knob --------------------------------------
-   The knob keeps the modern slide (its transition moves transform) and is
-   turned 45 degrees in both states; the checked track fills with the neon
-   gradient from the accent to the violet. */
+/* --- Toggle: a slanted track and knob --------------------------------------------
+   The mockup's 32 x 14dp track and 10 x 8dp knob, both slanted (cut at the
+   top left and bottom right). Off: the dim line and a muted knob; on: the
+   accent's soft fill and line, the knob in the accent at the right end. The
+   knob keeps the modern slide (its transition moves transform). */
 .skin-cyberpunk .nui-toggle__track
 {
-	border-color: var(--cyberpunk-edge-dim);
+	width: 32dp;
+	height: 14dp;
+	border-color: transparent;
 	border-radius: 0;
-	background-color: var(--surface-sunken);
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-skew-edge, cyberpunk-skew-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
 }
 .skin-cyberpunk .nui-toggle__knob
 {
-	left: 4dp;
-	top: 4dp;
+	left: 3dp;
+	top: 2dp;
 	width: 10dp;
-	height: 10dp;
+	height: 8dp;
 	border-radius: 0;
-	background-color: var(--text-muted);
-	transform: translateX(0dp) rotate(45deg);
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-knob, cyberpunk-knob-inner);
+	image-color: var(--text-muted);
+	transform: translateX(0dp);
 }
 .skin-cyberpunk .nui-toggle:hover .nui-toggle__track, .skin-cyberpunk .nui-toggle.is-hover .nui-toggle__track
 {
-	border-color: var(--accent);
+	border-color: transparent;
+	image-color: var(--cyberpunk-edge);
 }
 .skin-cyberpunk .nui-toggle__input:checked + .nui-toggle__track
 {
-	border-color: var(--accent);
-	background-color: var(--accent);
-	decorator: linear-gradient(90deg, var(--accent), var(--cyberpunk-edge-alt));
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-skew, cyberpunk-skew-inner) border-box, ninepatch(cyberpunk-skew-edge, cyberpunk-skew-edge-inner) border-box;
+	image-color: var(--accent);
 }
 .skin-cyberpunk .nui-toggle__input:checked + .nui-toggle__track .nui-toggle__knob
 {
-	background-color: var(--accent-text);
-	transform: translateX(14dp) rotate(45deg);
+	background-color: transparent;
+	image-color: var(--accent);
+	transform: translateX(14dp);
 }
 .skin-cyberpunk .nui-toggle__input:focus-visible + .nui-toggle__track, .skin-cyberpunk .nui-toggle.is-focus .nui-toggle__track
 {
-	border-color: var(--focus-ring);
+	border-color: transparent;
+	image-color: var(--focus-ring);
+}
+.skin-cyberpunk .nui-toggle__input:disabled + .nui-toggle__track, .skin-cyberpunk .nui-toggle__input:disabled + .nui-toggle__track + .nui-toggle__label
+{
+	opacity: 0.35;
 }
 
-/* --- Slider: a thin neon track, a gradient fill and a diamond thumb ------------- */
+/* --- Slider: a thin neon track, a magenta-to-cyan fill and a bar thumb ----------
+   The fill is a vertex gradient (every device draws it); the thumb is the
+   mockup's 6 x 16dp white bar inside a 2dp halo (a border, not a shadow). */
 
 .skin-cyberpunk .nui-slider slidertrack
 {
-	margin-top: 9dp;
-	height: 2dp;
+	margin-top: 8dp;
+	height: 3dp;
 	border-radius: 0;
-	background-color: var(--cyberpunk-edge-dim);
+	background-color: var(--cyberpunk-holo-a);
 }
 .skin-cyberpunk .nui-slider sliderprogress
 {
 	border-radius: 0;
 	background-color: var(--accent);
-	decorator: linear-gradient(90deg, var(--accent), var(--cyberpunk-edge-alt));
+	decorator: horizontal-gradient(var(--cyberpunk-edge-alt) var(--accent));
 }
 .skin-cyberpunk .nui-slider sliderbar
 {
-	margin-top: 4dp;
-	width: 12dp;
-	height: 12dp;
-	border-width: 1dp;
-	border-color: var(--accent);
+	margin-top: 0;
+	width: 10dp;
+	height: 20dp;
+	border-width: 2dp;
+	border-color: var(--cyberpunk-glow);
 	border-radius: 0;
-	background-color: var(--surface-sunken);
-	transform: rotate(45deg);
+	background-color: var(--cyberpunk-title);
 }
-.skin-cyberpunk .nui-slider sliderbar:hover, .skin-cyberpunk .nui-slider sliderbar:active,
-.skin-cyberpunk .nui-slider.is-hover sliderbar, .skin-cyberpunk .nui-slider.is-active sliderbar
+.skin-cyberpunk .nui-slider sliderbar:hover, .skin-cyberpunk .nui-slider.is-hover sliderbar
 {
-	background-color: var(--accent);
+	background-color: var(--cyberpunk-title);
+	border-color: var(--cyberpunk-edge);
+}
+.skin-cyberpunk .nui-slider sliderbar:active, .skin-cyberpunk .nui-slider.is-active sliderbar
+{
+	background-color: var(--cyberpunk-acid);
+	border-color: var(--cyberpunk-acid-line);
 }
 .skin-cyberpunk .nui-slider:focus-visible sliderbar, .skin-cyberpunk .nui-slider.is-focus sliderbar
 {
 	border-color: var(--focus-ring);
 }
+.skin-cyberpunk .nui-slider:disabled
+{
+	opacity: 0.35;
+}
 
-/* --- Tabs: a row of chips, the selected one filled --------------------------------
-   The modern indicator slides under the selected tab by its own width, which
-   the chips' outlines would not meet, so the filled chip marks the choice. */
+/* --- Tabs: tracked labels over one line, the selected one underlined -------------
+   The mockup's underlined tabs on the modern 32dp: a 5dp gap above 26dp
+   tabs and the row's dim line. The selected tab lights its label, lifts a
+   soft cyan from the line (a vertex gradient) and takes a magenta
+   underline; the indicator, hidden in modern, is that 2dp underline and
+   slides with the modern motion where the tabset has one. */
 .skin-cyberpunk .nui-tabs tabs
 {
-	border-bottom-color: var(--cyberpunk-edge-dim);
-	padding-bottom: var(--space-1);
+	gap: 0;
+	padding: 5dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
 }
 .skin-cyberpunk .nui-tabs tab
 {
-	border-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--cyberpunk-edge-dim);
+	height: 26dp;
+	border-radius: 0;
 	color: var(--text-muted);
+	line-height: 24dp;
 	letter-spacing: 1dp;
 }
 .skin-cyberpunk .nui-tabs tab:hover, .skin-cyberpunk .nui-tabs tab.is-hover
 {
-	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--accent);
 	color: var(--text);
+	background-color: transparent;
 }
 .skin-cyberpunk .nui-tabs tab:selected
 {
+	color: var(--cyberpunk-title);
 	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
-	image-color: var(--accent);
-	color: var(--accent-text);
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
 }
 .skin-cyberpunk .nui-tabs tab:focus-visible, .skin-cyberpunk .nui-tabs tab.is-focus
 {
-	border-color: transparent;
-	image-color: var(--focus-ring);
+	border-color: var(--focus-ring);
 }
 .skin-cyberpunk .nui-tabs tab.nui-tabs__indicator
 {
-	visibility: hidden;
+	display: block;
+	bottom: -1dp;
+	height: 2dp;
+	padding: 0;
+	border-width: 0;
+	background-color: var(--cyberpunk-edge-alt);
+	decorator: none;
+	font-effect: none;
+	line-height: 0;
 }
 
-/* --- List ------------------------------------------------------------------------------ */
+/* --- List: square rows, the selected one marked in magenta ------------------------ */
 
-.skin-cyberpunk .nui-list
-{
-	border-color: var(--cyberpunk-edge-dim);
-	border-radius: 0;
-}
 .skin-cyberpunk .nui-list__item
 {
 	border-radius: 0;
 }
+.skin-cyberpunk .nui-list__item.is-selected
+{
+	border-color: transparent;
+	border-left-color: var(--cyberpunk-edge-alt);
+	color: var(--cyberpunk-title);
+}
+.skin-cyberpunk .nui-list__item:focus-visible, .skin-cyberpunk .nui-list__item.is-focus
+{
+	border-color: var(--focus-ring);
+}
+.skin-cyberpunk .nui-list__item.is-selected:focus-visible, .skin-cyberpunk .nui-list__item.is-selected.is-focus
+{
+	border-left-color: var(--cyberpunk-edge-alt);
+}
+.skin-cyberpunk .nui-list__meta
+{
+	letter-spacing: 1dp;
+}
 
-/* --- Slot grid: dark cells with a dim neon edge --------------------------------------
-   Hover lights the edge and a soft holographic glow under the icon (one
-   gradient draw); the icons themselves are never tinted. */
+/* --- Slot grid: square cells with a faint cyan fill and line ----------------------
+   Hover the accent's soft fill and line, selected magenta, an active item
+   acid; counts in acid. The icons themselves are never tinted. */
 .skin-cyberpunk .nui-slot
 {
-	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+	border-color: var(--border);
 }
 .skin-cyberpunk .nui-slot:hover, .skin-cyberpunk .nui-slot.is-hover
 {
-	background-color: var(--surface-sunken);
+	background-color: var(--selection);
 	border-color: var(--accent);
-	decorator: radial-gradient(circle, var(--cyberpunk-holo-a), transparent 70%);
 }
 .skin-cyberpunk .nui-slot.is-selected
 {
-	border-color: var(--accent);
+	background-color: var(--cyberpunk-holo-b);
+	border-color: var(--cyberpunk-edge-alt);
 }
-.skin-cyberpunk .nui-slot.is-target
+.skin-cyberpunk .nui-slot__cover, .skin-cyberpunk .nui-slot__ring
 {
-	background-color: var(--slot-target);
-	border-color: var(--accent);
+	border-radius: 0;
 }
 .skin-cyberpunk .nui-slot__count, .skin-cyberpunk .nui-slot__number .nui-number__text
 {
 	border-radius: 0;
+	color: var(--cyberpunk-acid);
 }
-/* The lean grid (P14 spec 4.2): its bases with the dim neon edge, in one
-   draw; a lean cell draws nothing at rest, and the hover above lights it. */
+/* The lean grid (P14 spec 4.2): its bases square with the faint fill and
+   line, in one draw; a lean cell draws nothing at rest, and the states
+   below light it. */
 .skin-cyberpunk .nui-slot-grid--lean
 {
-	decorator: nui-cells(40dp 4dp var(--radius-sm) var(--surface-sunken) var(--cyberpunk-edge-dim) 1dp);
+	decorator: nui-cells(40dp 4dp 0dp var(--cyberpunk-cell) var(--border) 1dp);
 }
 .skin-cyberpunk .nui-slot-grid--lean > .nui-slot
 {
+	background-color: transparent;
 	border-color: transparent;
 }
-/* After the rule above, which they outweigh: each state's edge. */
-.skin-cyberpunk .nui-slot-grid--lean > .nui-slot:hover, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-hover,
-.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-picked, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-target,
-.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active
+/* After the rule above, which they outweigh: each state's fill and edge. */
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot:hover, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-hover
 {
+	background-color: var(--selection);
 	border-color: var(--accent);
 }
-.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-blocked, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unusable
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-picked
 {
-	border-color: var(--danger);
+	background-color: var(--slot-picked);
+	border-color: var(--accent);
 }
-.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-usable
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-target
 {
-	border-color: var(--warning);
+	background-color: var(--slot-target);
+	border-color: var(--accent);
+}
+.skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-active
+{
+	border-color: var(--cyberpunk-acid);
 }
 .skin-cyberpunk .nui-slot.is-unavailable, .skin-cyberpunk .nui-slot.is-unavailable:hover,
 .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unavailable, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-unavailable:hover
 {
 	background-color: var(--slot-unavailable);
-	border-color: var(--cyberpunk-edge-dim);
-	decorator: none;
+	border-color: var(--border);
 }
 
-/* --- Gauges: a crisp track, fills that brighten toward their end ---------------------
-   Vertex color gradients (horizontal-gradient), so no shader is needed and
-   every device draws them the same. */
+/* --- Gauges: square, segmented, lit from the top ----------------------------------
+   The fill's color with a white sheen fading down (a vertex gradient, which
+   every device draws) under dark segment gaps every 8dp (a repeating
+   gradient whose first and last stops are clear, so a device without
+   effects draws none; RmlUi does not keep the order of two stops at one
+   position, so no two stops share one). The first decorator draws on top. */
 .skin-cyberpunk progress.nui-gauge
 {
 	border-radius: 0;
-	background-color: var(--surface-sunken);
+	background-color: var(--gauge-track);
 }
 .skin-cyberpunk progress.nui-gauge fill
 {
 	border-radius: 0;
-	decorator: horizontal-gradient(var(--gauge-red) var(--danger-hover));
-}
-.skin-cyberpunk progress.nui-gauge--pink fill
-{
-	decorator: horizontal-gradient(var(--gauge-pink) var(--danger-hover));
-}
-.skin-cyberpunk progress.nui-gauge--purple fill
-{
-	decorator: horizontal-gradient(var(--gauge-purple) var(--focus-ring));
-}
-.skin-cyberpunk progress.nui-gauge--blue fill
-{
-	decorator: horizontal-gradient(var(--gauge-blue) var(--accent));
+	decorator: repeating-linear-gradient(90deg, transparent 0dp, transparent 6.9dp, var(--surface-sunken) 7dp, var(--surface-sunken) 7.9dp, transparent 8dp),
+		vertical-gradient(var(--sheen) var(--sheen-clear));
 }
 
-/* --- Tooltip: the dark plate with a neon edge ------------------------------------- */
+/* --- Tooltip: the shared overlay black with a neon line ---------------------------- */
 
 .skin-cyberpunk .nui-tooltip
 {
-	border-width: 1dp;
-	border-color: var(--accent);
-	border-radius: var(--radius-sm);
+	border-color: var(--cyberpunk-edge);
+	border-radius: 0;
 	background-color: var(--tooltip-bg);
-	color: var(--text);
+	color: var(--text-inverse);
+	font-effect: shadow(0dp 1dp var(--text-outline));
 }
 
 /* --- Scrollbars: a thin neon thumb --------------------------------------------------- */
 
 .skin-cyberpunk scrollbarvertical sliderbar
 {
-	margin-left: 3dp;
-	width: 4dp;
 	border-radius: 0;
 	background-color: var(--cyberpunk-edge-dim);
 }
 .skin-cyberpunk scrollbarhorizontal sliderbar
 {
-	margin-top: 3dp;
-	height: 4dp;
 	border-radius: 0;
 	background-color: var(--cyberpunk-edge-dim);
 }
@@ -755,16 +983,25 @@ body.skin-cyberpunk.nui-scrim.nui-fx
 }
 
 /* --- Reduced effects ----------------------------------------------------------------
-   The look a device without effects also shows: no scan layer and no edge
-   sweep (gradients would draw one flat color there), and the title accent
-   as a plain bar. */
+   The look a device without effects also shows: no scan layer (gradients
+   would draw one flat color there), the edge tab and the title accent as
+   plain bars, the tab resting. */
 @media (theme: reduced-effects)
 {
-	.skin-cyberpunk .nui-chrome--scan, .skin-cyberpunk .nui-chrome--edge-top
+	.skin-cyberpunk .nui-chrome--scan
 	{
 		display: none;
 	}
-	/* Hidden, so its motion stops too (the frame rule's weight, later). */
+	.skin-cyberpunk .nui-chrome--edge-top
+	{
+		left: 17dp;
+		right: auto;
+		width: 44dp;
+		decorator: none;
+		background-color: var(--accent);
+		transform: none;
+	}
+	/* Plain, so it rests (the frame rule's weight, later). */
 	.skin-cyberpunk.nui-window > .nui-chrome--edge-top.nui-anim, .skin-cyberpunk .nui-window > .nui-chrome--edge-top.nui-anim,
 	.skin-cyberpunk.nui-board > .nui-chrome--edge-top.nui-anim
 	{
@@ -791,9 +1028,10 @@ body.skin-cyberpunk.nui-scrim.nui-fx
 {
 	--glyph-ink: var(--accent-text);
 }
-/* The refine's closed cell: no holographic hover. */
+/* The refine's closed cell: no hover light. */
 .skin-cyberpunk .nui-slot.is-closed:hover, .skin-cyberpunk .nui-slot-grid--lean > .nui-slot.is-closed:hover
 {
-	border-color: var(--cyberpunk-edge-dim);
+	background-color: var(--slot-unavailable);
+	border-color: var(--border);
 	decorator: none;
 }

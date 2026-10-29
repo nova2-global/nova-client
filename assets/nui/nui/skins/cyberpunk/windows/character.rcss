@@ -1,0 +1,281 @@
+/* Cyberpunk overlay of nui/windows/character/character.rml, after the
+   mockup's Character, WCharSkills, WCharEmotions and WCharMissions boards
+   (skins-stage2/ref/): the modern layout to the dp, every page.
+   - Status: the face's ring acid with an acid glow, the level on an acid
+     tag; the name tracked and lit; the class chip an acid tag, the guild's
+     a square chip on the dim line; the level and EXP well square with an
+     acid edge on its left (2dp, its padding 1dp less), the labels tracked,
+     the level acid; the headings in the accent, tracked; the points an
+     acid tag; the stat cards square wells, the base and vital cards with a
+     brighter top line, the extra cards with a cyan left line; the base
+     stats' labels in the accent.
+   - Skills: the group choices the skin's underlined tabs on the modern
+     32dp (a lone group's name the lit tab); the active grid's well square
+     with a magenta left edge, the split a magenta line, the reached steps
+     acid; the plus buttons acid.
+   - Emotions: the headings magenta bars fading to the right with a 2dp
+     magenta left edge (the label 2dp nearer, so it keeps its place).
+   - Quests: the chevrons muted, the scroll rail a square neon rail and its
+     thumb a square from the accent to magenta.
+   - The page tabs at the bottom: the skin's underlined tabs on the modern
+     32dp, tracked 0.5dp (the four Greek labels take 274dp of the 316dp). */
+
+/* --- Shared: headings and the points ------------------------------------------ */
+
+body.skin-cyberpunk.char .char-divider__label
+{
+	color: var(--accent);
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.char .char-points
+{
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+}
+body.skin-cyberpunk.char .char-points__label, body.skin-cyberpunk.char .char-points__value
+{
+	color: var(--cyberpunk-acid);
+	font-weight: normal;
+	line-height: 16dp;
+	letter-spacing: 0.5dp;
+}
+
+/* --- Status: the face, the name and the chips ---------------------------------- */
+
+/* Under the no-effects rule's weight (base.rcss), which takes it off. */
+.skin-cyberpunk .char-face.nui-fx
+{
+	box-shadow: 0 0 10dp var(--cyberpunk-acid-line);
+}
+body.skin-cyberpunk.char .char-face__level
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid);
+	font-weight: normal;
+}
+body.skin-cyberpunk.char .char-name
+{
+	letter-spacing: 1dp;
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.char .char-tag, body.skin-cyberpunk.char .char-guild
+{
+	border-radius: 0;
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.char .char-tag--job
+{
+	color: var(--cyberpunk-acid);
+	background-color: var(--cyberpunk-acid-soft);
+	border-color: var(--cyberpunk-acid-line);
+}
+body.skin-cyberpunk.char .char-guild
+{
+	background-color: var(--cyberpunk-cell);
+}
+
+/* The level, EXP and remaining EXP: a square well, an acid edge. */
+body.skin-cyberpunk.char .char-progress
+{
+	padding-left: 9dp;
+	border-left-width: 2dp;
+	border-left-color: var(--cyberpunk-acid);
+	border-radius: 0;
+}
+body.skin-cyberpunk.char .char-chip__label
+{
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.char .char-chip__value
+{
+	color: var(--cyberpunk-title);
+	font-weight: normal;
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.char .char-chip--level .char-chip__value
+{
+	color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.char .char-exp__ticks
+{
+	border-radius: 0;
+}
+
+/* --- Status: the stat cards ---------------------------------------------------- */
+
+body.skin-cyberpunk.char .char-stat
+{
+	border-radius: 0;
+	border-top-color: var(--cyberpunk-edge-dim);
+	decorator: none;
+}
+body.skin-cyberpunk.char .char-stats--base .char-stat__label
+{
+	color: var(--accent);
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.char .char-stats--base .char-stat__value
+{
+	color: var(--cyberpunk-title);
+	font-weight: normal;
+}
+body.skin-cyberpunk.char .char-extra .char-stat
+{
+	border-top-color: var(--border);
+	border-left-color: var(--cyberpunk-edge-dim);
+}
+
+/* --- Skills ------------------------------------------------------------------------- */
+
+/* The group choices: the skin's underlined tabs, 5dp above 26dp tabs and
+   the row's line (the modern strip's 32dp). */
+body.skin-cyberpunk.char .char-groups
+{
+	gap: 0;
+	padding: 5dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.char .char-groups .char-group
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-radius: 0;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	line-height: 24dp;
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.char .char-groups .char-group:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.char .char-groups .char-group.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+/* A lone group's name: the lit tab. */
+body.skin-cyberpunk.char .char-group-name
+{
+	box-sizing: border-box;
+	border-width: 0 0 2dp 0;
+	border-color: var(--cyberpunk-edge-alt);
+	border-radius: 0;
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	line-height: 22dp;
+	letter-spacing: 1dp;
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.char .char-skills-board
+{
+	border-left-color: var(--cyberpunk-edge-alt);
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.char .char-skills-split
+{
+	opacity: 0.8;
+	decorator: linear-gradient(180deg, transparent 0%, var(--cyberpunk-edge-alt) 15%, var(--cyberpunk-edge-alt) 85%, transparent 100%);
+}
+body.skin-cyberpunk.char .char-step-arrow
+{
+	border-color: transparent transparent transparent var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.char .char-step-arrow.is-reached
+{
+	border-color: transparent transparent transparent var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.char .char-plus
+{
+	background-color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.char .char-plus:hover
+{
+	background-color: var(--cyberpunk-title);
+}
+
+/* --- Emotions: magenta heading bars ------------------------------------------- */
+
+body.skin-cyberpunk.char .char-divider--solo, body.skin-cyberpunk.char .char-divider--dual
+{
+	padding-left: 6dp;
+	border-left-width: 2dp;
+	border-left-color: var(--cyberpunk-edge-alt);
+	border-radius: 0;
+	decorator: horizontal-gradient(var(--cyberpunk-holo-b) transparent);
+}
+
+/* --- Quests: muted chevrons, a neon rail ------------------------------------- */
+
+body.skin-cyberpunk.char .char-quest__chev
+{
+	--glyph-ink: var(--text-muted);
+}
+body.skin-cyberpunk.char .char-quest-scroll__rail
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.char .char-quest-scroll__thumb
+{
+	border-radius: 0;
+	decorator: vertical-gradient(var(--accent) var(--cyberpunk-edge-alt));
+}
+
+/* --- The page tabs: the skin's underlined tabs ---------------------------------
+   The modern strip's 32dp: 5dp above 26dp tabs and the row's line. */
+
+body.skin-cyberpunk.char .char-tabs
+{
+	gap: 0;
+	padding: 5dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.char .char-tabs .char-tab
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-radius: 0;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	line-height: 24dp;
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.char .char-tabs .char-tab:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.char .char-tabs .char-tab.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

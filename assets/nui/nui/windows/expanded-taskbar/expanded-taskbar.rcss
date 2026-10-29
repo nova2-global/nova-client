@@ -33,8 +33,8 @@ body.expanded-taskbar
 	padding: 0;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--surface-raised);
+	border-radius: 7dp;
+	background-color: var(--surface-sunken);
 }
 /* The dragon soul button: a chip with the gem glyph (components/glyph.rcss),
    centered in the padding box; classic draws the legacy button art. */
@@ -50,7 +50,12 @@ body.expanded-taskbar
 	background-color: var(--surface-hover);
 	border-color: var(--accent);
 }
+.expanded-taskbar__button:hover .expanded-taskbar__glyph
+{
+	--glyph-ink: var(--accent);
+}
 .expanded-taskbar__button:active
 {
-	background-color: var(--surface-sunken);
+	background-color: var(--selection);
+	border-color: var(--accent);
 }

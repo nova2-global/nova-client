@@ -65,6 +65,10 @@ body.skin-classic.ds .ds__body
 	height: 505dp;
 	padding: 0;
 }
+body.skin-classic.ds .ds-title-icon
+{
+	display: none;
+}
 
 /* --- The deck ------------------------------------------------------------------------ */
 
@@ -75,6 +79,11 @@ body.skin-classic.ds .ds-deck
 	top: 0;
 	width: 287dp;
 	height: 505dp;
+	overflow: visible;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+	decorator: none;
 }
 body.skin-classic.ds .ds-emblem
 {
@@ -103,6 +112,12 @@ body.skin-classic.ds .ds-equip.is-active
 	padding: 0;
 	border-width: 0;
 	decorator: none;
+}
+/* An item of the active deck: legacy's active effect over its icon (the
+   modern skins' breathing ring is theirs). */
+body.skin-classic.ds .ds-equip__pulse
+{
+	display: none;
 }
 /* An item of the active deck: legacy's active effect over its icon. */
 body.skin-classic.ds .ds-equip .nui-slot__active
@@ -158,6 +173,7 @@ body.skin-classic.ds .ds-activate:hover,
 body.skin-classic.ds .ds-activate:active,
 body.skin-classic.ds .ds-activate.is-selected
 {
+	position: absolute;
 	left: 217dp;
 	top: 492dp;
 	right: auto;
@@ -165,6 +181,7 @@ body.skin-classic.ds .ds-activate.is-selected
 	width: 61dp;
 	min-width: 0;
 	height: 21dp;
+	margin: 0;
 	padding: 0;
 	border-width: 0;
 	background-color: transparent;
@@ -267,7 +284,11 @@ body.skin-classic.ds .ds-grades
 	top: 332dp;
 	width: 254dp;
 	margin: 0;
+	padding: 0;
 	gap: 1dp;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 }
 body.skin-classic.ds .ds-grade,
 body.skin-classic.ds .ds-grade:hover,
@@ -283,6 +304,7 @@ body.skin-classic.ds .ds-grade.is-selected
 	background-color: transparent;
 	color: var(--tip-title);
 	font-size: var(--font-md);
+	font-weight: normal;
 	line-height: 18dp;
 	transform: none;
 	decorator: image("d:/ymir work/ui/dragonsoul/s_button01.tga");

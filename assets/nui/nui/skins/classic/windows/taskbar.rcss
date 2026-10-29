@@ -39,6 +39,29 @@ body.skin-classic.taskbar .taskbar-base
 	decorator: image("d:/ymir work/ui/pattern/taskbar_base.tga" repeat-x left top);
 }
 
+/* The modern parts legacy has no art for (the middle group's well, the
+   gauges' sheen, flow, empty-part covers, ticks, segments, names and
+   values, the orbs' glass and the EXP percent, the mode buttons' mouse, the
+   quickslots' aura and cooldown seconds, the window buttons' hotkeys) do
+   not show. */
+body.skin-classic.taskbar .taskbar-center,
+body.skin-classic.taskbar .taskbar-sheen-clock,
+body.skin-classic.taskbar progress.taskbar-cover,
+body.skin-classic.taskbar .taskbar-flow-clip,
+body.skin-classic.taskbar .taskbar-ticks,
+body.skin-classic.taskbar .taskbar-segments,
+body.skin-classic.taskbar .taskbar-gauge-label,
+body.skin-classic.taskbar .taskbar-gauge-value,
+body.skin-classic.taskbar .taskbar-orb-glass,
+body.skin-classic.taskbar .taskbar-exp__pct,
+body.skin-classic.taskbar .taskbar-mouse,
+body.skin-classic.taskbar .taskbar-aura,
+body.skin-classic.taskbar .taskbar-cool,
+body.skin-classic.taskbar .taskbar-hotkey
+{
+	display: none;
+}
+
 /* --- Gauges (Gauge_Board, its RampageGauge and HP/SP/ST boards) -------------------- */
 
 body.skin-classic.taskbar .taskbar-gauges
@@ -61,6 +84,8 @@ body.skin-classic.taskbar .taskbar-mall
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
+	decorator: none;
+	box-shadow: none;
 }
 body.skin-classic.taskbar .taskbar-mall:hover, body.skin-classic.taskbar .taskbar-mall:active
 {
@@ -108,6 +133,7 @@ body.skin-classic.taskbar progress.taskbar-gauge fill
 {
 	decorator: none;
 	margin: 0;
+	border-width: 0;
 	background-color: transparent;
 	border-radius: 0;
 }
@@ -144,10 +170,14 @@ body.skin-classic.taskbar .taskbar-exp
 	top: 0;
 	width: 105dp;
 	height: 37dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	decorator: image("d:/ymir work/ui/game/taskbar/exp_gauge.sub");
 }
 body.skin-classic.taskbar progress.taskbar-orb
 {
+	display: block;
 	top: 9dp;
 	width: 19dp;
 	height: 19dp;
@@ -159,6 +189,7 @@ body.skin-classic.taskbar progress.taskbar-orb fill
 {
 	background-color: transparent;
 	border-radius: 0;
+	decorator: none;
 }
 body.skin-classic.taskbar .taskbar-orb--1 { left: 5dp; }
 body.skin-classic.taskbar .taskbar-orb--2 { left: 30dp; }
@@ -214,6 +245,7 @@ body.skin-classic.taskbar .taskbar-camera
 {
 	width: 32dp;
 	height: 32dp;
+	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/game/taskbar/mouse_button_camera_01.sub");

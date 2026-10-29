@@ -1,5 +1,6 @@
-/* The player gauge's modern look: the modern red gauge, 100dp wide, on a
-   dark rim so it reads over the world in both palettes. The anchor is the
+/* The player gauge's modern look: the modern red gauge, 100dp wide and 7dp
+   tall, its track and rim dark in both palettes so it reads over the world,
+   with the taskbar's damage chip on its fill's leading edge. The anchor is the
    gauge's own box, so its center sits on the name tail's x and its top 5dp
    below the tail (uiplayergauge.py:25-31). Classic (legacy's gauge art, 8dp
    tall): skins/classic/windows/player-gauge.rcss. */
@@ -16,8 +17,14 @@ body.player-gauge
 progress.player-gauge__gauge
 {
 	width: 100dp;
-	height: 6dp;
+	height: 7dp;
 	box-sizing: border-box;
 	border-width: 1dp;
-	border-color: var(--surface-sunken);
+	border-color: var(--scene);
+	background-color: var(--scene);
+}
+progress.player-gauge__gauge fill
+{
+	border-right-width: 2dp;
+	border-color: var(--chat-info);
 }

@@ -9,7 +9,9 @@ windows) and once with the social flags on (NovaUI's facades over the same
 legacy classes), and driven as the C++ handlers drive them:
 - the messenger's staff rosters (NOVA-30, NOVA-46): the Helper and Team
   groups at the C++ indices 2 and 3, their rows, the language flags, a list
-  that empties a group, and the indices a NovaUI window has no group for;
+  that empties a group, and the same groups in NovaUI's window, which
+  follows legacy's since the NovaUI catch-up (nui_messenger_test compares
+  the two row for row);
 - the block list (NOVA-47): the messenger's Blocked Players group, its block
   and unblock buttons and dialogs, the whisper dialog's block button, the
   target board's Block/Unblock, and game.py's answer to whisper type 7;
@@ -239,15 +241,26 @@ class Rosters(MessengerWorld):
         self.assertLess(names.index("[SM]Lucius"), names.index("Team"))
         self.assertLess(names.index("Team"), names.index("[GM]Nova"))
 
-    def test_under_novaui_the_roster_calls_find_no_group_and_change_nothing(self):
+    def test_under_novaui_the_roster_calls_reach_legacy_s_groups(self):
+        """NovaUI's window holds legacy's five groups since the NovaUI
+        catch-up (it held Friend and Guild alone before, and every roster
+        call found no group): each call runs legacy's code on them."""
         world, window = self.world(True)
-        self.assertEqual(len(window.groupList), 2, "NovaUI's window holds Friend and Guild")
+        messenger = world.m("uiMessenger")
+        self.assertEqual(len(window.groupList), 5, "NovaUI's window holds legacy's groups")
+        self.assertIsInstance(window.groupList[HELPER], messenger.MessengerHelperGroup)
+        self.assertIsInstance(window.groupList[TEAMLER], messenger.MessengerTeamlerGroup)
         for name, args in (("OnLogin", (HELPER, "[SM]Lucius")), ("OnLogout", (TEAMLER, "[GM]Nova")),
-                           ("SetLanguagesFlags", (HELPER, "[SM]Lucius", "en")), ("OnRemoveAllList", (TEAMLER,)),
-                           ("OnRemoveList", (HELPER, "[SM]Lucius")), ("OnLogin", (4, "Pest"))):
+                           ("SetLanguagesFlags", (HELPER, "[SM]Lucius", "en"))):
             with self.subTest(call=name, args=args):
                 self.call(world, window, name, *args)
-        self.assertEqual([len(group.memberList) for group in window.groupList], [0, 0])
+        self.assertEqual(self.names(window.groupList[HELPER]), ["[SM]Lucius"])
+        self.assertEqual(window.groupList[HELPER].FindMember("[SM]Lucius").GetLanguages(), "en")
+        for name, args in (("OnRemoveAllList", (TEAMLER,)), ("OnRemoveList", (HELPER, "[SM]Lucius")),
+                           ("OnLogin", (4, "Pest"))):
+            with self.subTest(call=name, args=args):
+                self.call(world, window, name, *args)
+        self.assertEqual([len(group.memberList) for group in window.groupList], [0, 0, 0, 0, 1])
 
 
 class BlockedGroup(MessengerWorld):
@@ -386,16 +399,20 @@ class BlockedGroup(MessengerWorld):
         self.assertTrue(all(block["y"] - 21 >= icon["y"] for icon in icons))
         self.assertEqual(block["y"] - icons[0]["y"], 25)
 
-    def test_under_novaui_the_block_calls_find_no_group_or_button(self):
+    def test_under_novaui_the_block_calls_reach_the_group_and_the_buttons(self):
+        """NovaUI's window has legacy's Blocked Players group and block and
+        unblock buttons since the NovaUI catch-up (proxies; it had neither
+        before): the C++ handler's calls run legacy's code on them."""
         world, window = self.world(True)
         self.blocked(world, ["Pest"])
-        for name, args in (("OnBlockListRefresh", ()), ("OnBlockedAct", (1, "Pest")), ("OnBlockedAct", (0, "Pest")),
+        for name, args in (("OnBlockListRefresh", ()), ("OnBlockedAct", (1, "Troll")), ("OnBlockedAct", (0, "Troll")),
                            ("Show", ()), ("OnSelectItem", (None,)), ("OnResizeDialog", ())):
             with self.subTest(call=name):
                 self.call(world, window, name, *args)
-        self.assertIsNone(window.blockPlayerButton)
-        self.assertIsNone(window.unblockPlayerButton)
-        self.assertEqual(len(window.groupList), 2)
+        self.assertIsNotNone(window.blockPlayerButton)
+        self.assertIsNotNone(window.unblockPlayerButton)
+        self.assertEqual(len(window.groupList), 5)
+        self.assertEqual(self.names(window.groupList[BLOCK]), ["Pest"])
 
 
 class WhisperBlock(unittest.TestCase):
@@ -463,14 +480,18 @@ class WhisperBlock(unittest.TestCase):
             dialog._WhisperDialog__PlaceBlockButton(300)
         self.assertEqual(position(dialog.blockButton), (300 - 86 + 43, 8))
 
-    def test_under_novaui_the_dialog_has_no_block_button_and_nothing_raises(self):
+    def test_under_novaui_the_dialog_has_the_block_button(self):
+        """NovaUI's dialog binds legacy's block button since the NovaUI
+        catch-up (a proxy the board shows; it had none before)."""
         world, dialog = self.open(True)
-        self.assertIsNone(dialog.blockButton)
+        self.assertIsNotNone(dialog.blockButton)
+        self.assertTrue(dialog.blockButton.IsShow())
         with world.game, w4.quiet():
             dialog.RefreshBlockButton()
             dialog.BlockPlayer()
             dialog.OpenWithoutTarget(lambda name: None)
             dialog.SetWhisperDialogSize(300, 200)
+        self.assertFalse(dialog.blockButton.IsShow(), "no button without a target")
 
     def test_the_uiscript_has_the_block_button(self):
         kids = children(uiscript("whisperdialog.py"), "board")
@@ -691,15 +712,21 @@ class WhisperDetails(unittest.TestCase):
         self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendWhisperDetailsPacket"], [],
                          "no name: the dialog closes and asks nothing")
 
-    def test_under_novaui_the_dialog_has_neither_icon_and_nothing_raises(self):
+    def test_under_novaui_the_dialog_has_both_icons(self):
+        """NovaUI's dialog binds legacy's online icon and flag since the
+        NovaUI catch-up (proxies the board shows; it had neither before)."""
         world, dialog = self.open(True)
-        self.assertIsNone(dialog.online)
-        self.assertIsNone(dialog.flag)
+        self.assertIsNotNone(dialog.online)
+        self.assertIsNotNone(dialog.flag)
         self.details(world, dialog, 1, "en")
+        self.assertEqual(dialog.flag.image, "locale/common/ui/flag/32/en.tga")
+        self.assertTrue(dialog.online.IsShow() and dialog.flag.IsShow())
         self.details(world, dialog, 0, "")
+        self.assertFalse(dialog.flag.IsShow())
         with world.game, w4.quiet():
             dialog.OpenWithoutTarget(lambda name: None)
             dialog.OpenWithTarget("Pest")
+        self.assertFalse(dialog.online.IsShow(), "hidden again until the next answer")
 
     def test_the_uiscript_puts_both_icons_at_olds_places(self):
         kids = children(uiscript("whisperdialog.py"), "board")
@@ -879,18 +906,21 @@ class DeclareWarLimits(unittest.TestCase):
         self.assertIsNone(dialog.endScoreInput)
         self.assertEqual(dialog.GetWarLimits(), (None, None))
 
-    def test_under_novaui_there_are_no_inputs_and_the_two_argument_command_goes(self):
+    def test_under_novaui_the_inputs_hold_32_and_the_four_argument_command_goes(self):
+        """NovaUI's dialog binds legacy's two inputs since the NovaUI catch-up
+        (fields the board shows; it had none before and sent two
+        arguments)."""
         world, dialog = self.open(True)
-        self.assertIsNone(dialog.memberCountInput)
-        self.assertIsNone(dialog.endScoreInput)
-        self.assertEqual(dialog.GetWarLimits(), (None, None))
+        self.assertIsNotNone(dialog.memberCountInput)
+        self.assertIsNotNone(dialog.endScoreInput)
+        self.assertEqual(dialog.GetWarLimits(), ("32", "32"))
         with world.game, w4.quiet():
             w4.board(dialog).insert_text(guild_test.FIELD, "Black Wolves")
             w4.press(dialog, "type_press", 2, 0)
             mark = world.mark()
             w4.press(dialog, "accept_press", 0)
         self.assertEqual([e for e in world.effects_since(mark) if e[0] == "net.SendChatPacket"],
-                         [("net.SendChatPacket", ("/war Black Wolves 2",))])
+                         [("net.SendChatPacket", ("/war Black Wolves 2 32 32",))])
 
     def test_the_uiscript_has_olds_two_rows(self):
         window = uiscript("declareguildwardialog.py")
@@ -937,10 +967,13 @@ class AcceptWarLimits(unittest.TestCase):
         self.assertFalse(dialog.membersCountText.IsShow())
         self.assertTrue(dialog.endScoreText.IsShow())
 
-    def test_under_novaui_both_lines_are_missing_and_open_takes_four_arguments(self):
+    def test_under_novaui_both_lines_show_and_open_takes_four_arguments(self):
+        """NovaUI's dialog binds legacy's two lines since the NovaUI catch-up
+        (text lines the board shows; it had neither before)."""
         world, dialog = self.open(True, 64, 250)
-        self.assertIsNone(dialog.membersCountText)
-        self.assertIsNone(dialog.endScoreText)
+        self.assertEqual(dialog.membersCountText.GetText(), "Players Limit from your guild: 32.")
+        self.assertEqual(dialog.endScoreText.GetText(), "The war will end at 250 Kills.")
+        self.assertTrue(dialog.membersCountText.IsShow() and dialog.endScoreText.IsShow())
         self.assertEqual(dialog.GetGuildName(), "Black Wolves")
 
     def test_close_forgets_the_lines(self):
@@ -1189,13 +1222,10 @@ class MinimapLine(unittest.TestCase):
     window shows (reading "Metin2, CH1", the login text), then the new core's
     GC::CHANNEL says 3 and game.py's OnUpdate runs __RefreshChannelInfo.
 
-    NovaUI's minimap (nui_minimap.MiniMap) reads net.GetServerInfo() once, in
-    its first Show, and has no RefreshServerInfo, so its line keeps the login
-    channel. The method is the UI session's to add (C3 edits no nui_*.py; the
-    handoff names it): `self._set(server_info=nui.plain_text(
-    net.GetServerInfo()))`. game.py already calls it through getattr. Once it
-    exists the expected failure turns into an unexpected success: drop the
-    decorator."""
+    NovaUI's minimap (nui_minimap.MiniMap) reads net.GetServerInfo() at its
+    first Show and again in its RefreshServerInfo, which the NovaUI catch-up
+    added as this handoff asked (C3 edited no nui_*.py), so its line names
+    the new channel too; game.py calls it through getattr."""
 
     def line_after_a_channel_change(self, nui_on):
         state = {"text": "Metin2, CH1", "channel": 1}
@@ -1226,7 +1256,6 @@ class MinimapLine(unittest.TestCase):
     def test_the_legacy_minimap_names_the_new_channel(self):
         self.assertEqual(self.line_after_a_channel_change(False), "Metin2, CH3")
 
-    @unittest.expectedFailure
     def test_novaui_s_minimap_names_the_new_channel(self):
         self.assertEqual(self.line_after_a_channel_change(True), "Metin2, CH3")
 

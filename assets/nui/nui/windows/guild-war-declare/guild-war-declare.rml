@@ -4,17 +4,20 @@
 	     uiscript declareguildwardialog.py; P16 spec 5.10). While the
 	     guild-war-dialogs flag is on, the guild window's declare button makes
 	     nui_guild_war_declare.DeclareGuildWarDialog, a subclass of the legacy
-	     class on proxies: a name, a type, OK or Enter (/war <name> <type>),
-	     Cancel, Escape and the close button are legacy's code. A modal (D12)
-	     above the legacy UI layer, which the scrim centers. Enter in the field
-	     is its OnIMEReturn (OK), Escape its OnPressEscapeKey (Cancel); both
-	     keep the key. The field's limit is GUILD_NAME_MAX_LEN; its text never
-	     enters the model. Each type button shows its hint (the type's title
-	     and descriptions, legacy's tooltip) on hover. The buttons take no
-	     focus and act on a left mousedown. The document loads once: a closed
-	     dialog's board waits, hidden, for the next one (nui_hud.PooledBoard,
-	     P18), its type buttons gone (types_on, a list of one entry while it
-	     shows) and its field empty. -->
+	     class on proxies: a name, the war's member cap and end score (NOVA-90,
+	     32 each at the open, digits only), a type, OK or Enter
+	     (/war <name> <type> <members> <score>), Cancel, Escape and the close
+	     button are legacy's code. A modal (D12) above the legacy UI layer,
+	     which the scrim centers. Enter in the name field is its OnIMEReturn
+	     (OK), Escape its OnPressEscapeKey (Cancel); in a limit field both do
+	     nothing, as legacy's edit lines there; every field keeps the key. The
+	     name field's limit is GUILD_NAME_MAX_LEN, a limit field's 3 digits; no
+	     field's text enters the model. Each type button shows its hint (the
+	     type's title and descriptions, legacy's tooltip) on hover. The buttons
+	     take no focus and act on a left mousedown. The document loads once: a
+	     closed dialog's board waits, hidden, for the next one
+	     (nui_hud.PooledBoard, P18), its type buttons gone (types_on, a list of
+	     one entry while it shows) and its fields empty. -->
 	<title>guild-war-declare</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="guild-war-declare.rcss"/>
@@ -34,6 +37,15 @@
 			<div class="guild-war__row guild-war__row--enemy"><span class="guild-war__label">@ui.GUILD_WAR_ENEMY</span><div
 				class="guild-war__slot"><input id="guild-war-name" type="text" class="nui-input nui-dialog__field guild-war__field"
 				data-attr-maxlength="max"/></div></div>
+			<div class="guild-war__row guild-war__row--limits"><div class="guild-war__limit guild-war__limit--members"><span
+				class="guild-war__label guild-war__label--limit">@ui.GUILD_WAR_ENEMY_NUMBER</span><div
+				class="guild-war__slot guild-war__slot--limit"><input id="guild-war-members" type="text"
+				class="nui-input nui-dialog__field guild-war__field guild-war__field--limit" maxlength="3"
+				data-event-change="members_change(ev.value, ev.linebreak)"/></div></div><div class="guild-war__limit guild-war__limit--score"><span
+				class="guild-war__label guild-war__label--limit">@ui.GUILD_WAR_MAX_SCORE</span><div
+				class="guild-war__slot guild-war__slot--limit"><input id="guild-war-score" type="text"
+				class="nui-input nui-dialog__field guild-war__field guild-war__field--limit" maxlength="3"
+				data-event-change="score_change(ev.value, ev.linebreak)"/></div></div></div>
 			<div class="guild-war__row guild-war__row--type" data-if="type_select"><span class="guild-war__label">@ui.GUILD_WAR_BATTLE_TYPE</span><div
 				class="guild-war__types" data-for="w : types_on"><button class="nui-button nui-anim nui-has-tooltip guild-war__type" data-for="h, i : hints"
 				data-attr-id="'guild-war-type-' + i" data-class-guild-war__type--0="i == 0" data-class-guild-war__type--1="i == 1"
@@ -43,10 +55,12 @@
 				class="guild-war__hint-line" data-for="line : h.lines">{{ line }}</span></span></button></div></div>
 		</div>
 		<div class="nui-window__footer nui-dialog__footer guild-war__footer">
-			<button id="guild-war-accept-cancel" class="nui-button nui-button--medium nui-anim guild-war__button guild-war__button--cancel"
-			        data-event-mousedown="cancel_press(ev.button)"><span class="guild-war__button-label">@ui.CANCEL</span></button>
+			<!-- OK first, then Cancel: legacy's order (OK at 49, Cancel at 120),
+			     which the reviewed design keeps. -->
 			<button id="guild-war-accept-ok" class="nui-button nui-button--medium nui-button--primary nui-anim guild-war__button guild-war__button--accept"
 			        data-event-mousedown="accept_press(ev.button)"><span class="guild-war__button-label">@ui.OK</span></button>
+			<button id="guild-war-accept-cancel" class="nui-button nui-button--medium nui-anim guild-war__button guild-war__button--cancel"
+			        data-event-mousedown="cancel_press(ev.button)"><span class="guild-war__button-label">@ui.CANCEL</span></button>
 		</div>
 	</div>
 </body>

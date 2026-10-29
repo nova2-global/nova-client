@@ -338,6 +338,7 @@ OPTION_UI_COLORS	Χρώματα
 OPTION_UI_COLOR_ACCENT	Χρώμα έμφασης
 OPTION_UI_COLOR_PANEL	Πάνελ
 OPTION_UI_COLOR_OPACITY	Αδιαφάνεια πάνελ
+OPTION_UI_COLOR_OVERLAY	Αδιαφάνεια επικάλυψης
 OPTION_UI_COLOR_HIGHLIGHT	Επισήμανση
 OPTION_UI_COLOR_CUSTOM	Προσαρμοσμένο
 OPTION_UI_COLORS_RESET	Επαναφορά χρωμάτων

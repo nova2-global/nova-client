@@ -1,12 +1,19 @@
 /* Login board: a body-level window, centered horizontally and 72dp above the
    bottom edge like the legacy server board. It stays off the screen center,
    where the legacy locale confirm dialog opens without a lock (uicommon.py
-   QuestionDialog) and NovaUI, drawn above it, would take its clicks. */
+   QuestionDialog) and NovaUI, drawn above it, would take its clicks.
+   Modern (the reviewed login card, stage 1): a 380dp card with 16dp of
+   padding and 12dp between its rows, no title bar; the server row in a
+   sunken well with Choose as a small raised button and its chevron; the
+   fields 38dp tall, each with its pictogram (a person, a lock) in its
+   left padding; Exit and Connect 40dp tall, Connect taking the room. The
+   legacy rows and their order stay: server, fields, error, buttons.
+   Classic: skins/classic/windows/login.rcss. */
 body.login
 {
-	width: 360dp;
+	width: 380dp;
 	left: 50%;
-	margin-left: -180dp;
+	margin-left: -190dp;
 	bottom: 72dp;
 }
 
@@ -20,18 +27,96 @@ body.login
 	}
 }
 
+.login .nui-window__body
+{
+	padding: 16dp 16dp 4dp 16dp;
+	gap: 12dp;
+}
+
+/* The server row: the card's status well (the mockup's server and channel
+   line), the name in body text, Choose at its right end. */
+.login-server
+{
+	box-sizing: border-box;
+	height: 38dp;
+	padding: 0dp 6dp 0dp 12dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+}
 .login-server__name
 {
-	color: var(--text-muted);
+	color: var(--text);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+/* Choose: the label, then a small chevron, as the mockup's channel button. */
+.login-chevron
+{
+	margin: -1dp -3dp 0dp 2dp;
+	transform: scale(0.75);
+	--glyph-ink: var(--text-muted);
+}
 
-/* The input component is 200dp wide; these fill the panel. */
+/* A field and its pictogram: the pictogram sits over the field's left
+   padding and takes no pointer, so a press on it goes to the field. */
+.login-control
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: relative;
+}
+/* The input component is 200dp wide; these fill the card, 38dp tall, the
+   text after the pictogram. */
 input.login-input
 {
 	width: 100%;
+	height: 38dp;
+	padding-left: 34dp;
+	line-height: 36dp;
+}
+.login-icon
+{
+	position: absolute;
+	left: 11dp;
+	top: 11dp;
+	--glyph-ink: var(--text-muted);
+	pointer-events: none;
+}
+/* The lock: a shackle (a ring's upper half) over a body. */
+.login-lock
+{
+	display: block;
+	width: 16dp;
+	height: 16dp;
+}
+.login-lock__shackle, .login-lock__body
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+}
+.login-lock__shackle
+{
+	left: 4dp;
+	top: 1dp;
+	width: 8dp;
+	height: 9dp;
+	border-width: 2dp 2dp 0dp 2dp;
+	border-color: var(--text-muted);
+	border-radius: 4dp 4dp 0dp 0dp;
+}
+.login-lock__body
+{
+	left: 3dp;
+	top: 7dp;
+	width: 10dp;
+	height: 8dp;
+	border-radius: 2dp;
+	background-color: var(--text-muted);
 }
 
 /* An empty-field error focuses the field it names, and the component's
@@ -48,9 +133,27 @@ button.login-button
 {
 	tab-index: none;
 }
+/* Exit and Connect: the card's large buttons; Connect takes the room. */
+.login .nui-window__footer
+{
+	padding: 12dp 16dp 16dp 16dp;
+	gap: 8dp;
+}
 .nui-window__footer .login-button
 {
 	min-width: 96dp;
+}
+/* One class each, so the classic button rules (two classes) keep their
+   size in classic. */
+.login-action
+{
+	height: 40dp;
+	line-height: 38dp;
+	border-radius: 10dp;
+}
+.login-connect
+{
+	flex: 1 1 auto;
 }
 
 /* One line kept for the error (data-visible hides it with visibility), so
@@ -58,6 +161,7 @@ button.login-button
 .login-error
 {
 	min-height: 17dp;
+	margin-top: -4dp;
 }
 
 /* --- Intro motion ----------------------------------------------------------

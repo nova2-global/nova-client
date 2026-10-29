@@ -6,10 +6,10 @@
 	     dialog, and its one button has the focus on each show, so Enter
 	     presses it. One document for every caller; the lines and the label
 	     come from the model (caller text through nui.plain_text). The look is
-	     components/dialog.rcss's, so the window has no sheet of its own (RmlUi
-	     refuses a sheet without rules). -->
+	     components/dialog.rcss's; dialog-message.rcss sets its spacing. -->
 	<title>dialog-message</title>
 	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dialog-message.rcss"/>
 </head>
 <body template="nui" class="nui-scrim nui-fx dialog-message" data-model="dialog_message">
 	<div class="nui-window nui-fx nui-dialog nui-anim" id="dialog-message">

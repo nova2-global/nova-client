@@ -211,7 +211,9 @@ class StandIns(unittest.TestCase):
         self.assertEqual(type(password.passwordValue).__name__, "EditLine")
         self.assertEqual(type(shop.smallRadioButtonGroup).__name__, "RadioButtonGroup")
         self.assertEqual(type(builder.itemSlot).__name__, "LegacySlotWindow")
-        self.assertEqual(sorted(view.slotWindow.slots), list(range(11)) + [23])
+        # The view packet's 16 entries since NOVA-97 (equipmentdialog.py: the
+        # rings and the belt at 13 to 15; before it, one belt slot at 23).
+        self.assertEqual(sorted(view.slotWindow.slots), list(range(11)) + [13, 14, 15])
         self.assertEqual(len(safebox.pageButtonList), 1, "SetTableSize(3) at load: one page")
         for name in ("uiGuild", "uiMessenger", "uiWhisper", "uiUploadMark"):
             self.assertIn(name, modules)

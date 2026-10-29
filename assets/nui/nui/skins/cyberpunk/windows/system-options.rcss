@@ -4,7 +4,15 @@
    started from), so the frame's outline and scan hooks would end under the
    title bar of the modern flex column. Here the window is a block, and its
    rows scroll under the title bar from 89% of the screen's height (the
-   modern column lets them reach 99% less the title bar). */
+   modern column lets them reach 99% less the title bar).
+
+   The look, after the reviewed WSystemOptions board: the title's tile a
+   square with the dim neon line; the sound and music rows open, as the
+   board's (the modern boxes' 1dp border stays, clear, so nothing moves);
+   the labels a size smaller and tracked; the choices of the legacy rows
+   with the board's 7dp sides (more room for long translations); the
+   section headings in the accent with a rule fading out to the right; the
+   swatches square; the overlay opacity row a square magenta box. */
 
 body.skin-cyberpunk.system-options
 {
@@ -13,4 +21,48 @@ body.skin-cyberpunk.system-options
 body.skin-cyberpunk.system-options .system-options__body
 {
 	max-height: 89vh;
+}
+
+body.skin-cyberpunk.system-options .system-options__icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.system-options .so-row--sound, body.skin-cyberpunk.system-options .so-row--music
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.system-options .so-label, body.skin-cyberpunk.system-options .so-motion, body.skin-cyberpunk.system-options .so-effects
+{
+	font-size: var(--font-sm);
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.system-options .so-legacy .so-choice
+{
+	padding: 0 7dp;
+}
+body.skin-cyberpunk.system-options .so-heading
+{
+	color: var(--accent);
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.system-options .so-heading__rule
+{
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--cyberpunk-edge-dim) transparent);
+}
+body.skin-cyberpunk.system-options .so-swatch
+{
+	border-radius: 0;
+}
+
+/* The overlay opacity row: the magenta box. */
+body.skin-cyberpunk.system-options .so-row--overlay
+{
+	border-color: var(--cyberpunk-glow-alt);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-b);
 }

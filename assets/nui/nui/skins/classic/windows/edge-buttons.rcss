@@ -50,6 +50,7 @@ body.skin-classic.edge-buttons .edge__label--left
 body.skin-classic.edge-buttons .edge__text
 {
 	padding: 0;
+	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
 	color: var(--classic-label-white);

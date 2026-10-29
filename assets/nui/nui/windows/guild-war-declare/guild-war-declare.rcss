@@ -1,22 +1,30 @@
-/* The guild war declare dialog's modern look (P16 spec 5.10.2): the dialog
-   kit's look (components/dialog.rcss): the enemy guild's row, the battle
-   type's three buttons (the declared one selected; each shows its hint on
-   hover; each as wide as its label), Cancel and OK. The scrim centers it. Classic (legacy's 230 x 130
-   board, the slot bar under the name, the small type buttons and the
-   middle buttons at the uiscript's places):
-   skins/classic/windows/guild-war-declare.rcss. */
+/* The guild war declare dialog's modern look (P16 spec 5.10.2; the
+   reviewed WGuildWarDeclare board of stage 1): the dialog kit's frame
+   (components/dialog.rcss), its rows 38dp apart with their labels in a
+   96dp column: the enemy guild's field, the war's member cap and end score
+   side by side (NOVA-90; each label over its 3-digit field, so every
+   locale's label fits), the battle type's three buttons (the declared one
+   selected, its label in the accent; each shows its hint on hover; each as
+   wide as its label), then OK and Cancel, legacy's order. The scrim
+   centers it. Classic (legacy's 230 x 170 board, the slot bars under the
+   name and the limits, the small type buttons and the middle buttons at
+   the uiscript's places): skins/classic/windows/guild-war-declare.rcss. */
 
 .guild-war button
 {
 	tab-index: none;
 	focus: none;
 }
+.guild-war__body
+{
+	padding-top: 10dp;
+}
 .guild-war__row
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-bottom: var(--space-2);
+	min-height: 38dp;
 }
 .guild-war__label
 {
@@ -24,6 +32,8 @@
 	flex: 0 0 96dp;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
+	font-weight: bold;
+	text-align: left;
 	white-space: nowrap;
 }
 .guild-war__slot
@@ -35,6 +45,31 @@
 .guild-war__field
 {
 	width: 100%;
+}
+/* The limits: two columns, each its label over a field three digits wide,
+   centered, as the dialog's other labels. */
+.guild-war__row--limits
+{
+	align-items: flex-start;
+	gap: var(--space-3);
+}
+.guild-war__limit
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 1 1 0;
+	min-width: 0;
+}
+.guild-war__label--limit
+{
+	flex: 0 0 auto;
+	margin-bottom: var(--space-1);
+}
+.guild-war__slot--limit
+{
+	flex: 0 0 auto;
+	width: 64dp;
 }
 /* Wide enough for the longest battle type labels of the locales (ru
    "Поле битвы", hu "Harcmező", it "Bandiera") in one row. */
@@ -56,6 +91,10 @@
 {
 	flex: 1 0 auto;
 	padding: 0 var(--space-2);
+}
+.guild-war__type.is-selected
+{
+	color: var(--accent);
 }
 .guild-war__type-label, .guild-war__button-label
 {

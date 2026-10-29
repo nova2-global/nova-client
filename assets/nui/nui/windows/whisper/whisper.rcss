@@ -1,13 +1,17 @@
-/* A whisper dialog's modern look (P16 spec 5.8.2): a window as large as the
-   player made it (legacy's first 300 x 200, its least 300 x 170, the
-   bottom-right corner resizing it); the partner's name in the title bar
-   (or the partner field and OK, before a partner is chosen), a GM badge
-   for a game master, minimize and close; the lines in the body, wrapped at
-   its width, the newest at the bottom, the scroll range at the right; the
-   two-row input and Send in the footer. The Interface places each dialog
-   30dp further from the corner (legacy's cascade); the sheet's place frames
-   it in its snapshots. Classic (legacy's thin board, the name slot, the
-   button art and the dark edit bar at the uiscript's places):
+/* A whisper dialog's modern look (P16 spec 5.8.2; the reviewed WWhisper
+   board of stage 1): a window as large as the player made it (legacy's
+   first 300 x 200, its least 300 x 170, the bottom-right corner resizing
+   it, its grip there); the partner's name in the title bar (or the partner
+   field and OK, before a partner is chosen), the partner's online mark (a
+   dot, --success online, --text-muted offline) and language flag once the
+   server answered (NOVA-48), a GM badge for a game master, Block or Unblock
+   (NOVA-47), minimize and close; the lines on the overlay well (the chat's
+   dark ground, so the chat colors read in both themes), wrapped at its
+   width, the newest at the bottom, the scroll range inside its right edge;
+   the two-row input and Send in a raised compose box. The Interface places
+   each dialog 30dp further from the corner (legacy's cascade); the sheet's
+   place frames it in its snapshots. Classic (legacy's thin board, the name
+   slot, the button art and the dark edit bar at the uiscript's places):
    skins/classic/windows/whisper.rcss. */
 
 body.whisper
@@ -77,6 +81,50 @@ body.whisper
 	background-color: var(--edge-gm);
 	transform: rotate(45deg);
 }
+/* The partner's details (NOVA-48): the online mark, then the language
+   flag (OLD's 32 x 32 at half size). */
+.whisper__online
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 8dp;
+	height: 8dp;
+	border-radius: 4dp;
+	background-color: var(--text-muted);
+}
+.whisper__online.is-online
+{
+	background-color: var(--success);
+}
+.whisper__flag
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 16dp;
+	height: 16dp;
+}
+.whisper__flag-image
+{
+	display: block;
+	width: 16dp;
+	height: 16dp;
+}
+/* Block or Unblock (NOVA-47): a compact ghost text button in the small
+   type, one line, so the partner's name keeps its room. */
+.whisper__block
+{
+	flex: 0 0 auto;
+	height: 22dp;
+	padding: 0 var(--space-1);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	line-height: 20dp;
+	white-space: nowrap;
+}
+.whisper__block-label
+{
+	pointer-events: none;
+}
 .whisper__accept
 {
 	flex: 0 0 auto;
@@ -86,6 +134,13 @@ body.whisper
 .whisper__accept-label, .whisper__send-label
 {
 	pointer-events: none;
+}
+.whisper__minimize
+{
+	width: 24dp;
+	height: 24dp;
+	border-radius: 7dp;
+	line-height: 22dp;
 }
 .whisper__tip
 {
@@ -102,22 +157,34 @@ body.whisper
 	min-height: 0;
 	padding: 0;
 }
+/* The overlay well: the chat's dark ground (--chat-edit-shade, dark in
+   both modern palettes, as the chat log's) with a light rim, rounded on a
+   box that does not clip. */
+.whisper__well
+{
+	display: block;
+	position: absolute;
+	left: var(--space-2);
+	top: var(--space-2);
+	right: var(--space-2);
+	bottom: 0;
+	border-width: 1dp;
+	border-color: var(--tip-divider);
+	border-radius: var(--radius-lg);
+	background-color: var(--chat-edit-shade);
+}
 /* The flow rules (ElementChatLines.h): a column that ends at the bottom and
-   clips the oldest line at its top; each line static and wrapped. The
-   chat colors are made for a dark ground, so the lines sit on the chat's
-   shade in every modern look, as the chat log's do. */
+   clips the oldest line at its top (square, inside the well); each line
+   static and wrapped, in the chat's light colors on the dark well. */
 .whisper__lines
 {
 	display: flex;
 	flex-direction: column-reverse;
 	position: absolute;
-	left: var(--space-2);
-	top: var(--space-2);
-	right: 24dp;
-	bottom: var(--space-2);
-	padding: 2dp var(--space-1);
-	border-radius: var(--radius-md);
-	background-color: var(--chat-edit-shade);
+	left: 18dp;
+	top: 14dp;
+	right: 28dp;
+	bottom: 6dp;
 	overflow: hidden;
 	clip: always;
 }
@@ -125,19 +192,20 @@ body.whisper
 {
 	position: static;
 	height: auto;
+	padding-top: 2dp;
 	white-space: normal;
 	flex-shrink: 0;
-	line-height: 15dp;
-	font-size: var(--font-sm);
+	line-height: 16dp;
+	font-size: var(--font-md);
+	font-effect: shadow(0dp 1dp var(--text-outline));
 }
 .nui-chat__line--w0, .nui-chat__line--w1, .nui-chat__line--w2, .nui-chat__line--w3, .nui-chat__line--w4
 {
 	color: var(--chat-talking);
 }
 /* A game master's line: italic, in the chat's notice color, the one chat
-   color that reads on the shade in every modern look (--edge-gm is made
-   for the light tooltip chip in modern dark, where it reads at 3:1 here).
-   Classic keeps legacy's orange. */
+   color that reads on the well in every modern look. Classic keeps
+   legacy's orange. */
 .nui-chat__line--w5
 {
 	color: var(--chat-notice);
@@ -147,34 +215,36 @@ body.whisper
 {
 	color: var(--chat-info);
 }
+/* The scroll range inside the well's right edge: a faint 5dp track and a
+   9dp silver thumb. */
 .whisper__scroll-box
 {
 	position: absolute;
-	right: var(--space-1);
-	top: var(--space-2);
+	right: 14dp;
+	top: 16dp;
 	bottom: var(--space-2);
-	width: 12dp;
+	width: 9dp;
 }
 input.whisper__scroll
 {
 	display: block;
-	width: 12dp;
+	width: 9dp;
 	height: 100%;
 	focus: none;
 }
 .whisper__scroll slidertrack
 {
-	width: 4dp;
-	margin-left: 4dp;
-	border-radius: 2dp;
-	background-color: var(--surface-sunken);
+	width: 5dp;
+	margin-left: 2dp;
+	border-radius: 3dp;
+	background-color: var(--tip-divider);
 }
 .whisper__scroll sliderbar
 {
-	width: 12dp;
-	height: 22dp;
-	border-radius: 6dp;
-	background-color: var(--text-muted);
+	width: 9dp;
+	height: 30dp;
+	border-radius: 5dp;
+	background-color: var(--tip-socket-silver);
 }
 .whisper__scroll sliderbar:hover, .whisper__scroll sliderbar:active
 {
@@ -189,12 +259,27 @@ input.whisper__scroll
 	width: 0;
 	height: 0;
 }
-/* The input over two rows, Send beside it. */
+/* The compose box: the input over two rows and Send beside it, in a raised
+   rounded box. */
 .whisper__edit
 {
 	flex: 0 0 auto;
 	align-items: center;
 	padding: var(--space-2);
+}
+.whisper__compose
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 0;
+	min-width: 0;
+	gap: var(--space-2);
+	padding: 6dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-raised);
 }
 .whisper__input
 {
@@ -203,7 +288,7 @@ input.whisper__scroll
 	min-width: 0;
 	width: auto;
 	height: 40dp;
-	padding: 2dp var(--space-2);
+	padding: 3dp var(--space-2);
 	line-height: 17dp;
 	white-space: pre-wrap;
 	focus: auto;
@@ -215,7 +300,29 @@ input.whisper__scroll
 .whisper__send
 {
 	flex: 0 0 auto;
-	padding: 0 var(--space-3);
+	height: 36dp;
+	padding: 0 var(--space-4);
+	line-height: 34dp;
+	background-color: var(--surface-hover);
+}
+.whisper__send:hover
+{
+	border-color: var(--accent);
+}
+/* The corner's grip: three short diagonal strokes. A device without
+   effects draws a gradient as the color halfway between its first and last
+   stops (Core/EffectMath.h), so the clear stops at 0% and 100% put that
+   halfway point at 50%, between the strokes: no grip there. */
+.whisper__grip
+{
+	display: block;
+	position: absolute;
+	right: 3dp;
+	bottom: 3dp;
+	width: 10dp;
+	height: 10dp;
+	decorator: linear-gradient(135deg, transparent 0%, transparent 55%, var(--text-muted) 55%, var(--text-muted) 63%, transparent 63%, transparent 71%, var(--text-muted) 71%, var(--text-muted) 79%, transparent 79%, transparent 87%, var(--text-muted) 87%, var(--text-muted) 95%, transparent 95%, transparent 100%);
+	pointer-events: none;
 }
 .whisper__resize
 {

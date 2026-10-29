@@ -30,6 +30,15 @@ body.skin-classic.guild-building
 	height: 240dp;
 	min-width: 0;
 }
+body.skin-classic.guild-building .guild-building__handle
+{
+	display: block;
+}
+body.skin-classic.guild-building .guild-building__title-icon,
+body.skin-classic.guild-building .guild-building__slider-value
+{
+	display: none;
+}
 /* z-index: the parts below are positioned boxes placed from the board's
    corner, later in the document; without it they would take the title
    bar's presses. */
@@ -88,6 +97,8 @@ body.skin-classic.guild-building .guild-building__axis
 	color: var(--text);
 	font-size: var(--font-md);
 	font-weight: normal;
+	text-transform: none;
+	letter-spacing: 0;
 	line-height: 14dp;
 	text-align: center;
 	overflow: visible;
@@ -121,10 +132,12 @@ body.skin-classic.guild-building .guild-building__axis--rot-z { top: 155dp; }
 body.skin-classic.guild-building .guild-building__list
 {
 	position: absolute;
+	box-sizing: content-box;
 	padding: 1dp 0 0 0;
 	background-color: var(--classic-slot-fill);
 	border-width: 1dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
 }
 body.skin-classic.guild-building .guild-building__list--categories
 {
@@ -163,6 +176,7 @@ body.skin-classic.guild-building .guild-building__row
 	margin-right: 0;
 	padding: 0;
 	border-width: 0;
+	border-radius: 0;
 	color: var(--text);
 	font-size: var(--font-md);
 	line-height: 17dp;
@@ -195,6 +209,10 @@ body.skin-classic.guild-building .guild-building__value
 	right: -40dp;
 	top: 0;
 	height: 15dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	pointer-events: none;
 	color: var(--classic-gb-enough);
 	font-size: var(--font-md);
@@ -221,6 +239,7 @@ body.skin-classic.guild-building .guild-building__coord-value
 	decorator: image("d:/ymir work/ui/public/parameter_slot_03.sub");
 	color: var(--text);
 	font-size: var(--font-md);
+	font-weight: normal;
 	line-height: 18dp;
 	text-align: center;
 }

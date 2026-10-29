@@ -1168,27 +1168,6 @@
 				"index": 11,
 				"kind": "item",
 				"type": 1,
-				"ref": 246,
-				"icon": "/icon/item/73001.tga",
-				"count": "",
-				"w": 1,
-				"h": 1,
-				"cd_start": 0.0,
-				"cd_end": 0.0,
-				"active": false,
-				"cover": false,
-				"disabled": false,
-				"locked": false,
-				"covered": false,
-				"target": "",
-				"picked": false,
-				"unavailable": false,
-				"name": "costume_sash"
-			},
-			{
-				"index": 12,
-				"kind": "item",
-				"type": 1,
 				"ref": 253,
 				"icon": "/icon/item/72723.tga",
 				"count": "",
@@ -1207,7 +1186,7 @@
 				"name": "ring1"
 			},
 			{
-				"index": 13,
+				"index": 12,
 				"kind": "item",
 				"type": 1,
 				"ref": 254,
@@ -1228,7 +1207,7 @@
 				"name": "ring2"
 			},
 			{
-				"index": 14,
+				"index": 13,
 				"kind": "item",
 				"type": 1,
 				"ref": 255,
@@ -1249,7 +1228,7 @@
 				"name": "belt"
 			}
 		],
-		"money": "2.000.000.000.000 Yang",
+		"money": "2.000.000.000.000",
 		"money_value": 2000000000000,
 		"dss_active": false,
 		"has_costume": true,
@@ -1266,6 +1245,11 @@
 		],
 		"bag_on": [
 			1
-		]
+		],
+		"figure": "/nui/figures/knight.png",
+		"stat_attack": "1048-1166",
+		"stat_defence": "642",
+		"stat_magic": "236-252",
+		"rail": []
 	}
 }

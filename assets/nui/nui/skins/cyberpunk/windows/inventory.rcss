@@ -1,0 +1,227 @@
+/* Cyberpunk overlay of nui/windows/inventory/inventory.rml, after the
+   mockup's Inventory board (skins-stage2/ref/Inventory-cyberpunk.png): the
+   modern layout to the dp. The paper doll's well square, on the well's
+   color under fine cyan scan lines and a thinner holographic lattice, a
+   magenta glow behind the figure and magenta corner brackets; the rune
+   circle in neon (its glow ring magenta). The wear cells dark plates cut
+   at the bottom right with a cyan line (the plate the place's fill, the
+   line the cell's edge: one element has one image-color), the line dim on
+   an empty cell, the accent under the pointer. The costume, dragon soul
+   and item shop buttons dark plates with a magenta edge cut at the top
+   left and bottom right (the board's outline), their glyphs in the accent,
+   the dragon soul's acid while its window's effect is on. The stats row
+   square plates with magenta icons; the page tabs the skin's underlined
+   tabs on the modern 32dp; the money's coin and amount acid in a field
+   with the neon underline. The figure keeps its pixels. */
+
+/* --- The paper doll ------------------------------------------------------------ */
+
+body.skin-cyberpunk.inv .inv-equip
+{
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+	decorator: repeating-linear-gradient(180deg, transparent 0dp, transparent 1.9dp, var(--cyberpunk-cell) 2dp, var(--cyberpunk-cell) 2.9dp, transparent 3dp),
+	           repeating-linear-gradient(45deg, var(--cyberpunk-holo-a) 0dp, var(--cyberpunk-holo-a) 0.6dp, transparent 0.6dp, transparent 8.5dp),
+	           repeating-linear-gradient(-45deg, var(--cyberpunk-holo-a) 0dp, var(--cyberpunk-holo-a) 0.6dp, transparent 0.6dp, transparent 8.5dp);
+}
+/* The well's edge and the magenta glow behind the figure. */
+body.skin-cyberpunk.inv .inv-doll
+{
+	border-radius: 0;
+	decorator: radial-gradient(60% 50% at 45% 42%, var(--cyberpunk-holo-b) 0%, transparent 72%);
+}
+/* A device without effects draws a gradient as one flat color. */
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.inv .inv-doll
+	{
+		decorator: none;
+	}
+}
+body.skin-cyberpunk.inv .inv-doll__corner
+{
+	border-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.inv .inv-doll__ring
+{
+	border-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.inv .inv-doll__ring--glow
+{
+	border-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.inv .inv-doll__tick
+{
+	decorator: linear-gradient(90deg, var(--cyberpunk-edge) 0%, var(--cyberpunk-edge) 6%, transparent 6%, transparent 94%, var(--cyberpunk-edge) 94%, var(--cyberpunk-edge) 100%);
+}
+body.skin-cyberpunk.inv .inv-doll__chord
+{
+	background-color: var(--cyberpunk-edge-dim);
+}
+
+/* The wear cells: the place draws the dark plate, the cell its edge. */
+body.skin-cyberpunk.inv .inv-wear-place
+{
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--cooldown-shade);
+}
+body.skin-cyberpunk.inv .inv-wear
+{
+	background-color: transparent;
+	border-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.inv .inv-wear.is-empty
+{
+	image-color: var(--border);
+}
+body.skin-cyberpunk.inv .inv-wear:hover
+{
+	background-color: transparent;
+	border-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.inv .inv-wear.is-target
+{
+	background-color: var(--slot-target);
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.inv .inv-wear.is-blocked
+{
+	background-color: var(--slot-blocked);
+	image-color: var(--danger);
+}
+
+/* The costume, dragon soul and item shop buttons: dark plates, the board's
+   cut outline in magenta (the plate's corners outside the cuts are the
+   well's own color). */
+body.skin-cyberpunk.inv .inv-button
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-glow-alt);
+}
+body.skin-cyberpunk.inv .inv-button:hover
+{
+	background-color: var(--surface-sunken);
+	image-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.inv .inv-button:active
+{
+	background-color: var(--selection);
+	image-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.inv .inv-button .nui-glyph, body.skin-cyberpunk.inv .inv-button--mall .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+body.skin-cyberpunk.inv .inv-button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent-hover);
+}
+body.skin-cyberpunk.inv .inv-button--dss.is-on
+{
+	border-color: transparent;
+	image-color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.inv .inv-button--dss.is-on .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-acid);
+}
+
+/* --- The stats row: square plates, magenta icons --------------------------- */
+
+body.skin-cyberpunk.inv .inv-stat
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+	color: var(--cyberpunk-title);
+	font-weight: normal;
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.inv .inv-stat__a, body.skin-cyberpunk.inv .inv-stat__b
+{
+	border-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.inv .inv-stat__icon--attack .inv-stat__a, body.skin-cyberpunk.inv .inv-stat__icon--attack .inv-stat__b
+{
+	background-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.inv .inv-stat__icon--defence .inv-stat__a
+{
+	border-radius: 0;
+}
+
+/* --- The page tabs: the skin's underlined tabs ----------------------------------
+   The modern 32dp: a 5dp gap above 26dp tabs and the row's line; the page
+   shown lit, a soft cyan rising from the line and a magenta underline. */
+
+body.skin-cyberpunk.inv .inv-tabs
+{
+	gap: 0;
+	padding: 5dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.inv .inv-tabs .inv-tab
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-radius: 0;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	line-height: 24dp;
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.inv .inv-tabs .inv-tab:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.inv .inv-tabs .inv-tab.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+
+/* --- The money: an acid amount in a field with the neon underline ------------ */
+
+body.skin-cyberpunk.inv .inv-money__coin
+{
+	--glyph-ink: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.inv .inv-money__amount
+{
+	border-radius: 0;
+	border-bottom-color: var(--cyberpunk-edge);
+	color: var(--cyberpunk-acid);
+	font-weight: normal;
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.inv .inv-money:hover .inv-money__amount
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-bottom-color: var(--accent);
+}
+
+/* --- The shortcut rail: its grip magenta ------------------------------------- */
+
+body.skin-cyberpunk.inv .inv-rail__grip
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-edge-alt);
+}

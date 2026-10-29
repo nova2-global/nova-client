@@ -1,6 +1,8 @@
 {
 	"target": {
 		"name": "Wild Dog",
+		"title": "Wild Dog",
+		"level": 0,
 		"hp": 0.0,
 		"show_hp": false,
 		"buttons": [],

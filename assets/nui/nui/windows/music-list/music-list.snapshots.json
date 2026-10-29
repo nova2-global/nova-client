@@ -1,11 +1,17 @@
 {
-	"$comment": "Golden cases of the music list (tools/check_nui_snapshots.py): the default theme and six files of the staged client's bgm folder; empty: only the default entry; selected: the third entry selected.",
+	"$comment": "Golden cases of the music list (tools/check_nui_snapshots.py): the default theme and six files of the staged client's bgm folder; empty: only the default entry; selected: the third entry selected. The modern and cyberpunk frames are larger than classic's, so the window's shadow stays inside the frame (a shadow the frame's edge cuts stretches the window's background in nuitool's renderer).",
 	"cases": [
-		{"page": "music-list", "themes": "all", "scales": [["100", "1", "320x400"], ["150", "1.5", "480x600"], ["200", "2", "640x800"]],
+		{"page": "music-list", "themes": "all", "except": ["classic"], "scales": [["100", "1", "460x580"], ["150", "1.5", "690x870"], ["200", "2", "920x1160"]],
 		 "fixture": true, "roots": ["assets/ETC"], "time": null},
-		{"page": "music-list", "variant": "empty", "themes": "all", "scales": [["100", "1", "320x400"], ["150", "1.5", "480x600"], ["200", "2", "640x800"]],
+		{"page": "music-list", "variant": "empty", "themes": "all", "except": ["classic"], "scales": [["100", "1", "460x580"], ["150", "1.5", "690x870"], ["200", "2", "920x1160"]],
 		 "fixture": true, "roots": ["assets/ETC"], "time": null},
-		{"page": "music-list", "variant": "selected", "themes": "all", "scales": [["100", "1", "320x400"], ["150", "1.5", "480x600"], ["200", "2", "640x800"]],
+		{"page": "music-list", "variant": "selected", "themes": "all", "except": ["classic"], "scales": [["100", "1", "460x580"], ["150", "1.5", "690x870"], ["200", "2", "920x1160"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "music-list", "themes": ["classic"], "scales": [["100", "1", "320x400"], ["150", "1.5", "480x600"], ["200", "2", "640x800"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "music-list", "variant": "empty", "themes": ["classic"], "scales": [["100", "1", "320x400"], ["150", "1.5", "480x600"], ["200", "2", "640x800"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "music-list", "variant": "selected", "themes": ["classic"], "scales": [["100", "1", "320x400"], ["150", "1.5", "480x600"], ["200", "2", "640x800"]],
 		 "fixture": true, "roots": ["assets/ETC"], "time": null}
 	]
 }

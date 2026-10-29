@@ -69,7 +69,8 @@ class TargetBoardBoard(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
-		return {"name": "", "hp": 0.0, "show_hp": False, "buttons": [], "exchange_at": -1, "in_range": False}
+		return {"name": "", "title": "", "level": 0, "hp": 0.0, "show_hp": False, "buttons": [], "exchange_at": -1,
+		        "in_range": False}
 
 	@nui.on("press")
 	def on_press(self, button_id, button):
@@ -105,6 +106,9 @@ class TargetBoard(object):
 	BTN_BUILDING_DESTROY = _Legacy.BTN_BUILDING_DESTROY
 	BTN_EMOTION_ALLOW = _Legacy.BTN_EMOTION_ALLOW
 	BTN_VOTE_BLOCK_CHAT = _Legacy.BTN_VOTE_BLOCK_CHAT
+	# The block list (NOVA-47): one of the two shows for another player.
+	BTN_BLOCK = _Legacy.BTN_BLOCK
+	BTN_UNBLOCK = _Legacy.BTN_UNBLOCK
 	BUTTON_CONFIG = _Legacy.BUTTON_CONFIG
 	EXCHANGE_LIMIT_RANGE = _Legacy.EXCHANGE_LIMIT_RANGE
 
@@ -137,6 +141,8 @@ class TargetBoard(object):
 			self.BTN_BUILDING_DESTROY: self.__OnDestroyBuilding,
 			self.BTN_EMOTION_ALLOW: self.__OnEmotionAllow,
 			self.BTN_VOTE_BLOCK_CHAT: self.__OnVoteBlockChat,
+			self.BTN_BLOCK: self.OnBlockPlayer,
+			self.BTN_UNBLOCK: self.OnUnblockPlayer,
 		}
 		# Legacy keeps every button in its showing list after construction
 		# and hides them all; a later ShowDefaultButton shows that list.
@@ -148,6 +154,12 @@ class TargetBoard(object):
 		self.isShowButton = False
 		self.hpShown = False
 		self.hp = 0.0
+		# The modern board shows a monster's level apart from its name (a
+		# badge) and the name with its grade but without the "Lv." prefix
+		# legacy puts in front; nameString stays legacy's whole name.
+		self.nuiLevel = 0
+		self.nuiTitle = ""
+		self.__nuiLabel = None
 		if not nui_hud.has_engine():
 			return
 		try:
@@ -175,6 +187,8 @@ class TargetBoard(object):
 	def __Initialize(self):
 		self.nameString = ""
 		self.nameLength = 0
+		self.nuiLevel = 0
+		self.nuiTitle = ""
 		self.vid = 0
 		self.isShowButton = False
 
@@ -299,8 +313,11 @@ class TargetBoard(object):
 		nameFront = ""
 		if -1 != level:
 			nameFront += "Lv." + str(level) + " "
+		gradeFront = ""
 		if grade in _Legacy.GRADE_NAME:
-			nameFront += "(" + _Legacy.GRADE_NAME[grade] + ") "
+			gradeFront = "(" + _Legacy.GRADE_NAME[grade] + ") "
+			nameFront += gradeFront
+		self.__nuiLabel = (level if -1 != level else 0, gradeFront + name)
 		self.SetTargetName(nameFront + name)
 
 	def GetTargetVID(self):
@@ -312,6 +329,8 @@ class TargetBoard(object):
 	def SetTargetName(self, name):
 		self.nameString = name
 		self.nameLength = len(name)
+		label, self.__nuiLabel = self.__nuiLabel, None
+		self.nuiLevel, self.nuiTitle = label if label is not None else (0, name)
 		self._sync()
 
 	def SetHP(self, hpPercentage):
@@ -419,6 +438,14 @@ class TargetBoard(object):
 				self.__HideButton(self.BTN_FRIEND)
 				self.__HideButton(self.BTN_FIGHT)
 
+		# Block or Unblock for another player, never for staff ("[GM]..."),
+		# as legacy (NOVA-47).
+		if self.nameString and not str(self.nameString).startswith("["):
+			if messenger.IsBlocked(self.nameString):
+				self.__ShowButton(self.BTN_UNBLOCK)
+			else:
+				self.__ShowButton(self.BTN_BLOCK)
+
 		# The exchange button shows within EXCHANGE_LIMIT_RANGE, as legacy
 		# measured it here and then every frame; from now on C++ watches the
 		# distance (target.in_range).
@@ -452,6 +479,22 @@ class TargetBoard(object):
 
 	def OnAppendToMessenger(self):
 		net.SendMessengerAddByVIDPacket(self.vid)
+
+	# The block list (NOVA-47): the change is sent and the other button shows
+	# at once, as legacy's.
+	def OnBlockPlayer(self):
+		net.SendBlockAddPacket(self.nameString)
+
+		self.__HideButton(self.BTN_BLOCK)
+		self.__ShowButton(self.BTN_UNBLOCK)
+		self.__ArrangeButtonPosition()
+
+	def OnUnblockPlayer(self):
+		net.SendBlockRemovePacket(self.nameString)
+
+		self.__HideButton(self.BTN_UNBLOCK)
+		self.__ShowButton(self.BTN_BLOCK)
+		self.__ArrangeButtonPosition()
 
 	def OnPartyInvite(self):
 		net.SendPartyInvitePacket(self.vid)
@@ -519,5 +562,5 @@ class TargetBoard(object):
 				if button_id == self.BTN_EXCHANGE:
 					exchange_at = len(buttons)
 				buttons.append({"id": button_id, "label": self.buttonLabels.get(button_id, "")})
-		self.board.set(name=nui.plain_text(self.nameString), hp=self.hp, show_hp=self.hpShown, buttons=buttons,
-		               exchange_at=exchange_at)
+		self.board.set(name=nui.plain_text(self.nameString), title=nui.plain_text(self.nuiTitle), level=self.nuiLevel,
+		               hp=self.hp, show_hp=self.hpShown, buttons=buttons, exchange_at=exchange_at)

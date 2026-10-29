@@ -10,7 +10,10 @@
 	     theme. An area lights while its empire is chosen or the pointer is
 	     over it, and fades in and out (a CSS transition, no Python per
 	     frame). The description is plain paragraphs that scroll
-	     (nui_desc_text); they come from the model through nui.plain_text. -->
+	     (nui_desc_text); they come from the model through nui.plain_text.
+	     Modern puts the description in a rounded well (empire-well) around
+	     the square box that scrolls, and draws the arrows as round buttons
+	     with chevron glyphs; classic draws the legacy arrow art. -->
 	<title>empire</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="empire.rcss"/>
@@ -34,20 +37,22 @@
 		<img class="empire-area-flag empire-area-flag--a nui-anim" src="d:/ymir work/ui/intro/empire/empireareaflag_a.sub" data-class-is-lit="empire == 1"/>
 		<img class="empire-area-flag empire-area-flag--b nui-anim" src="d:/ymir work/ui/intro/empire/empireareaflag_b.sub" data-class-is-lit="empire == 2"/>
 		<img class="empire-area-flag empire-area-flag--c nui-anim" src="d:/ymir work/ui/intro/empire/empireareaflag_c.sub" data-class-is-lit="empire == 3"/>
-		<button id="empire-left" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--left" data-event-click="left()">&#8249;</button>
-		<button id="empire-right" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--right" data-event-click="right()">&#8250;</button>
+		<button id="empire-left" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--left" data-event-click="left()"><span class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		<button id="empire-right" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--right" data-event-click="right()"><span class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div id="empire-board" class="nui-window nui-fx empire-board">
 		<div class="empire-flag-bar">
 			<img class="empire-flag" data-attr-src="flag_image" data-if="flag_image != ''"/>
 		</div>
 		<p class="empire-name">{{ name }}</p>
-		<div id="empire-text" class="empire-text">
-			<p class="empire-text__paragraph" data-for="p : paragraphs">{{ p }}</p>
+		<div class="empire-well">
+			<div id="empire-text" class="empire-text">
+				<p class="empire-text__paragraph" data-for="p : paragraphs">{{ p }}</p>
+			</div>
 		</div>
 		<div class="nui-window__footer empire-footer">
-			<button id="empire-exit" class="nui-button nui-anim empire-button" data-event-click="leave()">@ui.EMPIRE_EXIT</button>
-			<button id="empire-choose" class="nui-button nui-button--primary nui-anim empire-button" data-event-click="choose()">@ui.EMPIRE_SELECT</button>
+			<button id="empire-exit" class="nui-button nui-anim empire-button empire-action" data-event-click="leave()">@ui.EMPIRE_EXIT</button>
+			<button id="empire-choose" class="nui-button nui-button--primary nui-anim empire-button empire-action" data-event-click="choose()">@ui.EMPIRE_SELECT</button>
 		</div>
 	</div>
 </body>

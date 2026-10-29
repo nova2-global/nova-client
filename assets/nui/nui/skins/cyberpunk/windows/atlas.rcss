@@ -1,0 +1,26 @@
+/* Cyberpunk overlay of nui/windows/atlas/atlas.rml, after the WAtlas board
+   of the reviewed mockup: the map chip a square neon box; the map's rim the
+   accent, square, its grid the cyan line (the palette's border) and a faint
+   magenta haze rising from the bottom over the vignette. The map is content
+   and keeps its pixels (the mockup's hue shift of the art is left out), and
+   the box over it still takes no pointer. */
+
+body.skin-cyberpunk.atlas .atlas__title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--selection);
+}
+body.skin-cyberpunk.atlas .atlas__map
+{
+	background-color: var(--scene);
+}
+body.skin-cyberpunk.atlas .atlas__grid
+{
+	border-color: var(--accent);
+	border-radius: 0;
+	decorator: repeating-linear-gradient(90deg, transparent 0dp, transparent 31dp, var(--border) 31dp, var(--border) 32dp),
+	           repeating-linear-gradient(0deg, transparent 0dp, transparent 31dp, var(--border) 31dp, var(--border) 32dp),
+	           linear-gradient(180deg, transparent 45%, var(--cyberpunk-holo-b) 100%),
+	           radial-gradient(circle at 50% 50%, transparent 58%, var(--cooldown-shade) 130%);
+}

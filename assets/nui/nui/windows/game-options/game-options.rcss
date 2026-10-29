@@ -1,12 +1,15 @@
-/* The game options' modern look: a movable window of label and choice
-   rows in legacy's order; the six block toggles in two rows of three, as
-   legacy's. The choice in effect is selected (is-selected); a blocked
+/* The game options' modern look (the reviewed design, board WGameOptions):
+   a movable window with its title glyph, label and choice rows in legacy's
+   order, every other row on a sunken cell; the choices share their row
+   evenly, the six block toggles in two rows of three and the pickup
+   filter's four in two rows of two (NOVA-50), as legacy's. The choice in
+   effect is selected (is-selected) and takes the accent ink; a blocked
    request is a selected toggle. The facade centers the body. Classic (the
-   legacy board, 300 x 283, at legacy's places):
+   legacy board, 300 x 333, at legacy's places):
    skins/classic/windows/game-options.rcss. */
 
-/* The sheet's own place frames the window in its 480 x 420dp snapshots;
-   the facade's center() replaces it in the client. */
+/* The sheet's own place frames the window and its shadow in its 560 x
+   560dp snapshots; the facade's center() replaces it in the client. */
 body.game-options
 {
 	left: 20dp;
@@ -19,26 +22,78 @@ body.game-options
 {
 	tab-index: none;
 }
+
+/* The title glyph on the accent's soft tile: a panel with two setting
+   bars, as the system menu's Game Options. */
+.game-options__icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin: -2dp var(--space-2) 0 0;
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 16dp;
+	vertical-align: middle;
+}
+.game-options__glyph
+{
+	--glyph-ink: var(--accent);
+	display: block;
+}
+.game-options__glyph .nui-glyph__a
+{
+	left: 1dp;
+	top: 1dp;
+	width: 14dp;
+	height: 14dp;
+	border-width: 2dp;
+	border-radius: 3dp;
+}
+.game-options__glyph .nui-glyph__b, .game-options__glyph .nui-glyph__c
+{
+	left: 4dp;
+	height: 2dp;
+	background-color: var(--glyph-ink);
+}
+.game-options__glyph .nui-glyph__b { top: 5dp; width: 8dp; }
+.game-options__glyph .nui-glyph__c { top: 9dp; width: 5dp; }
+
 .game-options__body
 {
-	padding: var(--space-2) var(--space-4) var(--space-3) var(--space-4);
+	padding: var(--space-3) var(--space-4) var(--space-4) var(--space-4);
 }
 .go-row
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
+	min-height: 34dp;
 	margin-top: 6dp;
+	padding: 0 7dp;
+	border-width: 1dp;
+	border-color: transparent;
+	border-radius: var(--radius-lg);
 }
 .go-row:first-child
 {
 	margin-top: 0;
 }
+.go-row:nth-child(even)
+{
+	border-color: var(--border);
+	background-color: var(--surface-sunken);
+}
 .go-label
 {
 	display: block;
 	flex: 0 0 auto;
-	width: 120dp;
+	width: 100dp;
+	margin-right: var(--space-2);
 	color: var(--text-muted);
 	font-size: var(--font-md);
 }
@@ -48,24 +103,59 @@ body.game-options
 	flex-direction: row;
 	flex-wrap: wrap;
 	flex: 1 1 auto;
-	gap: var(--space-1);
+	gap: 5dp;
 }
 .go-choice
 {
 	display: block;
-	height: 30dp;
-	line-height: 28dp;
-	padding: 0 var(--space-2);
+	flex: 1 1 0;
+	min-width: 0;
+	height: 26dp;
+	padding: 0 6dp;
+	font-size: var(--font-sm);
+	line-height: 24dp;
 }
-/* Four PvP choices fit one row: shorter buttons. */
+.go-choice.is-selected
+{
+	color: var(--accent);
+}
+/* The four PvP modes share their row by their labels' widths, which differ
+   most between locales. */
 .go-row--pk .go-choice
 {
-	min-width: 0;
-	padding: 0 10dp;
+	flex: 1 1 auto;
+	padding: 0 4dp;
+}
+/* The block toggles: three to a row, the label at the first row's top. */
+.go-row--block
+{
+	align-items: flex-start;
+	padding-top: 6dp;
+	padding-bottom: 6dp;
+}
+.go-row--block .go-label
+{
+	margin-top: 5dp;
 }
 .go-row--block .go-choice
 {
-	width: 92dp;
+	flex: 1 1 30%;
+}
+/* The pickup filter's toggles: two to a row, as legacy's, sharing the
+   width as the block toggles do; the label at the first row's top. */
+.go-row--pickup
+{
+	align-items: flex-start;
+	padding-top: 6dp;
+	padding-bottom: 6dp;
+}
+.go-row--pickup .go-label
+{
+	margin-top: 5dp;
+}
+.go-row--pickup .go-choice
+{
+	flex: 1 1 45%;
 	min-width: 0;
 }
 .go-tip

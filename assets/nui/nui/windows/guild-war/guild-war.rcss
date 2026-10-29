@@ -1,10 +1,12 @@
-/* The guild war boards' modern look: a column of small panels 10dp from the
-   left and 50dp from the bottom, the first war at the bottom and each later
-   one above it, 4dp apart. A board holds two rows 18dp apart: the guild's
-   mark (16 x 12) and its text, 20dp in. Its width follows its longest text,
-   where legacy computes 30 + longest name * 6 + 40. Classic (the thin
-   board, 50dp tall, the marks at 10, 10 + 18k and the texts at 30, 10 + 18k,
-   uiguild.py:396-428): skins/classic/windows/guild-war.rcss. */
+/* The guild war boards' modern look (the reviewed WGuildWar board of stage
+   1): a column of small panels 10dp from the left and 50dp from the
+   bottom, the first war at the bottom and each later one above it, 4dp
+   apart. A board holds the two guilds' rows, 4dp apart: each a sunken
+   26dp cell with the guild's mark (16 x 12, framed) and its text, 30dp in.
+   Its width follows its longest text, 160dp at least (legacy computes
+   30 + longest name * 6 + 40). Classic (the thin board, 50dp tall, the
+   marks at 10, 10 + 18k and the texts at 30, 10 + 18k, uiguild.py:396-428):
+   skins/classic/windows/guild-war.rcss. */
 
 body.guild-war
 {
@@ -28,28 +30,45 @@ body.guild-war
 .nui-panel.guild-war__board
 {
 	display: block;
-	padding: 6dp 10dp 6dp 8dp;
-	font-size: var(--font-sm);
+	min-width: 160dp;
+	padding: 9dp 10dp;
+	font-size: var(--font-md);
+	font-weight: bold;
 	color: var(--text);
 }
 .guild-war__row-slot
 {
 	display: block;
+	margin-bottom: var(--space-1);
+}
+.guild-war__row-slot:last-child
+{
+	margin-bottom: 0;
 }
 .guild-war__row
 {
 	display: block;
 	position: relative;
-	height: 18dp;
-	padding-left: 22dp;
-	line-height: 18dp;
+	box-sizing: border-box;
+	height: 26dp;
+	padding-left: 30dp;
+	padding-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-sunken);
+	line-height: 24dp;
 	white-space: nowrap;
 }
+/* The mark, framed by a dark hairline. */
 .guild-war__mark
 {
 	position: absolute;
-	left: 0;
-	top: 3dp;
+	left: 6dp;
+	top: 5dp;
 	width: 16dp;
 	height: 12dp;
+	border-width: 1dp;
+	border-color: var(--overlay-scrim);
+	border-radius: 2dp;
 }

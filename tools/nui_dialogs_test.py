@@ -77,7 +77,9 @@ class KitTest(unittest.TestCase):
             localeInfo=self.locale, app=self.app, ime=stub("ime", SetCursorPosition=lambda n: None),
             uiScriptLocale=stub("uiScriptLocale", LOCALE_UISCRIPT_PATH="locale/"),
             exception=stub("exception", Abort=self._abort), net=stub("net"), snd=stub("snd"), chr=stub("chr"),
-            chrmgr=stub("chrmgr"), background=stub("background"), player=stub("player"),
+            # player.MONEY_DIGITS: the client's money input digits (13, OLD's),
+            # which uiCommon.MoneyInputDialog reads since NOVA-96.
+            chrmgr=stub("chrmgr"), background=stub("background"), player=stub("player", MONEY_DIGITS=13),
             playerSettingModule=stub("playerSettingModule"),
             uiPhaseCurtain=stub("uiPhaseCurtain", PhaseCurtain=object))
         for name in KIT_MODULES:
@@ -655,7 +657,7 @@ class Money(KitTest):
         dialog.Open()
         window = self.kit_window(MONEY)
         self.assertEqual(window.model["money"], "Sales Price: 0 Yang")
-        self.assertEqual(window.model["max"], 9)
+        self.assertEqual(window.model["max"], 13, "legacy's player.MONEY_DIGITS since NOVA-96 (9 before)")
         dialog.SetValue(1500)
         window.insert_text("dialog-money-field", "0")
         self.assertEqual(dialog.GetText(), "15000")
@@ -670,14 +672,18 @@ class Money(KitTest):
         dialog.Open()
         self.assertEqual(window.fields["dialog-money-field"], "", "Open clears")
 
-    def test_max_length_stays_at_most_nine_and_the_header_changes(self):
+    def test_max_length_stays_at_most_the_money_digits_and_the_header_changes(self):
+        """Legacy's SetMaxLength caps at player.MONEY_DIGITS since NOVA-96
+        (13, OLD's; at 9 before)."""
         dialog = self.uiCommon.MoneyInputDialog()
-        dialog.SetMaxLength(12)
+        dialog.SetMaxLength(20)
         dialog.SetMoneyHeaderText("Price: ")
         dialog.Open()
         window = self.kit_window(MONEY)
-        self.assertEqual(window.model["max"], 9)
+        self.assertEqual(window.model["max"], 13)
         self.assertEqual(window.model["money"], "Price: 0 Yang")
+        dialog.SetMaxLength(12)
+        self.assertEqual(window.model["max"], 12)
 
 
 class PickMoney(KitTest):
@@ -742,6 +748,30 @@ class PickMoney(KitTest):
         window.fire("cancel")
         self.assertFalse(dialog.IsShow())
         self.assertEqual(self.events.seen, [])
+
+    def test_the_amount_is_legacy_s_and_the_suffixes_need_the_ime_s_money_mode(self):
+        """NOVA-96: legacy's OnAccept reads uiPickMoney.ConvertTextToMoney;
+        its money-mode field takes k, m and b only where the client's IME
+        has the money mode (ime.SetMoneyMode), else digits."""
+        dialog = self.make()
+        dialog.Open(2000000, 1)
+        window = self.kit_window(PICK)
+        window.insert_text("pick-money-field", "\b")
+        window.insert_text("pick-money-field", "5k")
+        self.assertEqual(window.fields["pick-money-field"], "5", "no money mode: digits only")
+        window.insert_text("pick-money-field", "\n")
+        self.assertEqual(self.events.seen, [("accept", 5)])
+        sys.modules["ime"].SetMoneyMode = lambda: None
+        dialog.Open(2000000, 1)
+        window.insert_text("pick-money-field", "\b")
+        window.insert_text("pick-money-field", "5k")
+        self.assertEqual(window.fields["pick-money-field"], "5k")
+        window.insert_text("pick-money-field", "\n")
+        dialog.Open(2000000, 1)
+        window.insert_text("pick-money-field", "\b")
+        window.insert_text("pick-money-field", "3m")
+        window.fire("accept")
+        self.assertEqual(self.events.seen, [("accept", 5), ("accept", 5000), ("accept", 2000000)], "capped at the maximum")
 
     def test_nothing_or_zero_accepts_nothing_but_closes(self):
         dialog = self.make()

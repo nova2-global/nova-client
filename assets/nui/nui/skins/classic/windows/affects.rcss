@@ -6,8 +6,33 @@
    instead: outlined text without a board, 40dp below the icon's top
    (AffectImage.SetToolTipText(name, 0, 40)). */
 
+/* The legacy row: icons 25dp apart, each at 70% of its art (the dragon soul
+   decks at 100%), bare, the tooltip 4dp under the icon; none of the modern
+   frame and time pill. */
+body.skin-classic.affects .affect
+{
+	width: 25dp;
+	height: 26dp;
+}
+body.skin-classic.affects .affect__image
+{
+	width: auto;
+	height: auto;
+	margin: 0;
+}
+body.skin-classic.affects .affect--small .affect__image
+{
+	width: 22.4dp;
+	height: 22.4dp;
+}
+body.skin-classic.affects .affect__ring,
+body.skin-classic.affects .affect__clock
+{
+	display: none;
+}
 body.skin-classic.affects .affect__tip
 {
+	margin-top: var(--space-1);
 	text-align: center;
 }
 body.skin-classic.affects .affect__title

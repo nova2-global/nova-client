@@ -234,6 +234,14 @@ class MiniMap(object):
 			self._set(can_see=True)
 		self._hover_format()
 
+	def RefreshServerInfo(self):
+		"""The server line again from net.GetServerInfo() (uiminimap.py
+		RefreshServerInfo): game.py calls it when a channel change renamed
+		the channel there (NOVA-49). Before the first Show the line is not
+		loaded yet, and that Show reads the text itself."""
+		if self.isLoaded == 1:
+			self._set(server_info=nui.plain_text(net.GetServerInfo()))
+
 	def ShowAtlas(self):
 		if not miniMap.IsAtlas():
 			return

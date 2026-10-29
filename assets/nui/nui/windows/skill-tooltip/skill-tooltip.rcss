@@ -1,0 +1,34 @@
+/* The skill tooltip's modern look (the reviewed skin mockups, stage 1): the
+   shared tooltip board (nui-board--tooltip: the overlay's 51% black) with
+   more room, 300dp wide at least, the legacy lines (components/item-tip.rcss)
+   at 13dp on 19dp lines in their roles' colors, the skill's name at 16dp,
+   and a shorter divider, centered by its slot as an inline block (auto
+   margins or a percentage would make the shrink-to-fit board take the
+   whole screen's width). Classic (legacy's thin
+   board, sizes and divider): skins/classic/windows/skill-tooltip.rcss. */
+
+body.nui-tip
+{
+	min-width: 272dp;
+	padding: 16dp 14dp 18dp 14dp;
+}
+.nui-tip__body
+{
+	font-size: 13dp;
+}
+.nui-tip__line
+{
+	line-height: 19dp;
+}
+.nui-tip__body > .nui-tip__slot:first-child .nui-tip__line
+{
+	font-size: 16dp;
+	line-height: 22dp;
+}
+.nui-tip__rule
+{
+	display: inline-block;
+	vertical-align: top;
+	width: 220dp;
+	margin: 10dp 0 8dp 0;
+}

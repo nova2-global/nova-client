@@ -9,7 +9,8 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -19,7 +20,8 @@
 				"selected": false,
 				"member": true,
 				"love": 87,
-				"hint": "Love points: 87%"
+				"hint": "Love points: 87%",
+				"flags": []
 			},
 			{
 				"kind": "group",
@@ -29,7 +31,8 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -39,7 +42,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -49,7 +53,8 @@
 				"selected": true,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -59,7 +64,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -69,7 +75,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -79,7 +86,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -89,7 +97,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -99,7 +108,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -109,7 +119,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -119,7 +130,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -129,7 +141,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -139,7 +152,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -149,7 +163,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -159,7 +174,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -169,7 +185,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -179,7 +196,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -189,7 +207,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -199,7 +218,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -209,7 +229,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -219,7 +240,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -229,7 +251,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -239,7 +262,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -249,7 +273,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -259,7 +284,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -269,7 +295,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -279,7 +306,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -289,7 +317,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -299,7 +328,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -309,7 +339,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -319,7 +350,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -329,7 +361,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -339,7 +372,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -349,7 +383,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -359,7 +394,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -369,7 +405,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -379,7 +416,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -389,7 +427,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -399,7 +438,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -409,7 +449,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -419,7 +460,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -429,7 +471,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -439,7 +482,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -449,7 +493,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -459,7 +504,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -469,7 +515,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -479,7 +526,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -489,7 +537,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -499,7 +548,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -509,7 +559,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -519,7 +570,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -529,7 +581,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -539,7 +592,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -549,7 +603,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -559,7 +614,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -569,7 +625,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -579,7 +636,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -589,7 +647,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -599,7 +658,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -609,7 +669,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -619,7 +680,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -629,7 +691,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -639,7 +702,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -649,7 +713,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -659,7 +724,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -669,7 +735,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "group",
@@ -679,7 +746,8 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -689,7 +757,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -699,7 +768,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -709,7 +779,8 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "member",
@@ -719,11 +790,97 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
+			},
+			{
+				"kind": "group",
+				"name": "Helper",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": []
+			},
+			{
+				"kind": "member",
+				"name": "Rowan",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": [
+					"/locale/common/ui/flag/32/en.tga",
+					"/locale/common/ui/flag/32/de.tga"
+				]
+			},
+			{
+				"kind": "member",
+				"name": "Sable",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": [
+					"/locale/common/ui/flag/32/pt.tga"
+				]
+			},
+			{
+				"kind": "group",
+				"name": "Team",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": []
+			},
+			{
+				"kind": "member",
+				"name": "Tamsin",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": [
+					"/locale/common/ui/flag/32/en.tga"
+				]
+			},
+			{
+				"kind": "group",
+				"name": "Blocked Players",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": []
+			},
+			{
+				"kind": "member",
+				"name": "Ulric",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": []
 			}
 		],
 		"whisper_enabled": false,
 		"remove_enabled": true,
+		"unblock_enabled": false,
 		"height": 310.0
 	}
 }

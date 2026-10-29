@@ -1,24 +1,20 @@
 /* Classic skin overlay of nui/windows/costume/costume.rml: the legacy
    costume window (uiscript costumewindow.py) at 100%, 1dp to the legacy
-   pixel. Today's table: the stone board, 140 x 180; the title bar at 6, 6,
-   130 wide; Costume_Base at 13, 38 with costume_bg.jpg (113 x 129), its slot
-   window at 3, 3 and the slots at their uiscript places, no slot base (the
-   art has the frames); the third slot (ring1) at legacy's 5, 145, below the
-   board, as legacy places it (it never fills it, P14 spec 2.1). The
-   foundation's table: OLD's 314 x 320 board and places (newcostumewindow.py:
-   the title bar at 6, 9, 303 wide; the base at 10, 40), the cells on the
-   slot base (OLD's art is not in the assets). */
+   pixel, the same with today's table (inv--table-new) and the foundation's
+   (inv--table-old), as legacy's one uiscript since the cut (NOVA-97): the
+   stone board, 140 x 180; the title bar at 6, 6, 130 wide; Costume_Base at
+   13, 38 with costume_bg.jpg (113 x 129), its slot window at 3, 3 and the
+   costume body and hair at their uiscript places, no slot base (the art
+   has the frames). The window holds those two alone: its third slot
+   (ring1's before the cut) went with the rings to the inventory, and the
+   cut's other costume cells are not ported. The modern
+   stage's figure, rune circle and frames are not drawn. */
 
 body.skin-classic.cos
 {
 	width: 140dp;
 	height: 180dp;
 	min-width: 0;
-}
-body.skin-classic.cos.inv--table-old
-{
-	width: 314dp;
-	height: 320dp;
 }
 body.skin-classic.cos .cos__titlebar
 {
@@ -31,11 +27,6 @@ body.skin-classic.cos .cos__titlebar
 	margin: 0;
 	padding: 0;
 	z-index: 1;
-}
-body.skin-classic.cos.inv--table-old .cos__titlebar
-{
-	top: 9dp;
-	width: 303dp;
 }
 body.skin-classic.cos .cos__handle
 {
@@ -55,10 +46,6 @@ body.skin-classic.cos .cos__titlebar .nui-window__close
 	top: 3dp;
 	margin: 0;
 }
-body.skin-classic.cos.inv--table-old .cos__titlebar .nui-window__close
-{
-	left: 285dp;
-}
 body.skin-classic.cos .cos__body
 {
 	display: block;
@@ -67,6 +54,7 @@ body.skin-classic.cos .cos__body
 	padding: 0;
 }
 body.skin-classic.cos .cos-grid,
+body.skin-classic.cos.inv--table-new .cos-grid,
 body.skin-classic.cos.inv--table-old .cos-grid,
 body.skin-classic.cos.cos--companion .cos-grid
 {
@@ -75,18 +63,13 @@ body.skin-classic.cos.cos--companion .cos-grid
 	top: 38dp;
 	width: 113dp;
 	height: 129dp;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 	decorator: image("d:/ymir work/ui/costume/costume_bg.jpg" scale-none left top);
 }
-body.skin-classic.cos.inv--table-old .cos-grid,
-body.skin-classic.cos.inv--table-old.cos--companion .cos-grid
-{
-	left: 10dp;
-	top: 40dp;
-	width: 300dp;
-	height: 270dp;
-	decorator: none;
-}
-body.skin-classic.cos .cos-divider
+body.skin-classic.cos .cos-divider,
+body.skin-classic.cos.inv--table-new .cos-stage
 {
 	display: none;
 }
@@ -103,58 +86,16 @@ body.skin-classic.cos .cos-wear:hover
 	height: 100%;
 	decorator: none;
 }
-body.skin-classic.cos.inv--table-old .cos-wear,
-body.skin-classic.cos.inv--table-old .cos-wear:hover
-{
-	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat left top);
-}
-body.skin-classic.cos .cos-wear--costume_body, body.skin-classic.cos .cos-wear--buffi_costume_body { height: 64dp; }
-body.skin-classic.cos .cos-wear--costume_weapon, body.skin-classic.cos .cos-wear--buffi_costume_weapon { height: 96dp; }
+body.skin-classic.cos .cos-wear--costume_body { height: 64dp; }
 
-/* Today's places: the slot window's (3, 3) on the base plus each slot's x, y. */
-body.skin-classic.cos.inv--table-new .cos-wear--costume_body { left: 64dp; top: 48dp; }
-body.skin-classic.cos.inv--table-new .cos-wear--costume_hair { left: 64dp; top: 11dp; }
-body.skin-classic.cos.inv--table-new .cos-wear--ring1 { left: 8dp; top: 148dp; }
-/* The foundation's places (OLD's, P14 spec 3.3), every name of both tables. */
-body.skin-classic.cos.inv--table-old .cos-wear--costume_body { left: 213dp; top: 77dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_hair { left: 213dp; top: 28dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_weapon { left: 172dp; top: 45dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_mount { left: 213dp; top: 155dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--effect_weapon { left: 117dp; top: 232dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--effect_armor { left: 160dp; top: 232dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_pet { left: 171dp; top: 155dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_sash2 { left: 255dp; top: 77dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_body { left: 59dp; top: 77dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_hair { left: 58dp; top: 27dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_weapon { left: 17dp; top: 44dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_sash2 { left: 100dp; top: 78dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_facial { left: 100dp; top: 27dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_facial { left: 255dp; top: 28dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--effect_weapon_1 { left: 75dp; top: 232dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--effect_armor_1 { left: 203dp; top: 232dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_aura { left: 255dp; top: 112dp; }
-
-/* The names the other table shows in the inventory keep a place too. */
-body.skin-classic.cos.inv--table-new .cos-wear--costume_weapon,
-body.skin-classic.cos.inv--table-new .cos-wear--costume_mount,
-body.skin-classic.cos.inv--table-new .cos-wear--effect_weapon,
-body.skin-classic.cos.inv--table-new .cos-wear--effect_armor,
-body.skin-classic.cos.inv--table-new .cos-wear--costume_pet,
-body.skin-classic.cos.inv--table-new .cos-wear--costume_sash2,
-body.skin-classic.cos.inv--table-new .cos-wear--buffi_costume_body,
-body.skin-classic.cos.inv--table-new .cos-wear--buffi_costume_hair,
-body.skin-classic.cos.inv--table-new .cos-wear--buffi_costume_weapon,
-body.skin-classic.cos.inv--table-new .cos-wear--buffi_costume_sash2,
-body.skin-classic.cos.inv--table-new .cos-wear--buffi_costume_facial,
-body.skin-classic.cos.inv--table-new .cos-wear--costume_facial,
-body.skin-classic.cos.inv--table-new .cos-wear--effect_weapon_1,
-body.skin-classic.cos.inv--table-new .cos-wear--effect_armor_1,
-body.skin-classic.cos.inv--table-new .cos-wear--costume_aura { left: 8dp; top: 148dp; }
-body.skin-classic.cos.inv--table-old .cos-wear--ring1 { left: 20dp; top: 183dp; }
+/* The places, the same in both tables: the slot window's (3, 3) on the base
+   plus each slot's x, y. */
+body.skin-classic.cos.inv--table-new .cos-wear--costume_body,
+body.skin-classic.cos.inv--table-old .cos-wear--costume_body { left: 64dp; top: 48dp; }
+body.skin-classic.cos.inv--table-new .cos-wear--costume_hair,
+body.skin-classic.cos.inv--table-old .cos-wear--costume_hair { left: 64dp; top: 11dp; }
 
 /* No dead zone between two wear places (P14b): half the gap to the place
    beside it, where they stand 8dp apart or less (as the inventory's). */
-body.skin-classic.cos.inv--table-new .cos-wear--costume_body > .cos-wear { nui-hit-outset: 2.5dp 0 0 0; }
-body.skin-classic.cos.inv--table-new .cos-wear--costume_hair > .cos-wear { nui-hit-outset: 0 0 2.5dp 0; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_sash2 > .cos-wear { nui-hit-outset: 0 0 1.5dp 0; }
-body.skin-classic.cos.inv--table-old .cos-wear--costume_aura > .cos-wear { nui-hit-outset: 1.5dp 0 0 0; }
+body.skin-classic.cos .cos-wear--costume_body > .cos-wear { nui-hit-outset: 2.5dp 0 0 0; }
+body.skin-classic.cos .cos-wear--costume_hair > .cos-wear { nui-hit-outset: 0 0 2.5dp 0; }

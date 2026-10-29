@@ -99,6 +99,14 @@ class Rules(unittest.TestCase):
         slots = p.slots_of_theme(data, "t")
         self.assertEqual([(s["slot"], s["default"]) for s in slots], [("accent", "#4080ff"), ("opacity", "90")])
 
+    def test_an_explicit_percent_default_can_preserve_the_legacy_value(self):
+        data = tiny([{"slot": "overlay", "kind": "percent", "min": 30, "max": 100, "step": 1, "default": 51,
+                      "sets": [{"token": "surface", "rule": "alpha"}]}])
+        slot = p.slots_of_theme(data, "t")[0]
+        self.assertEqual(slot["default"], "51")
+        self.assertEqual(p.resolve(data, "t", {"overlay": "51"})["tokens"], {})
+        self.assertEqual(p.resolve(data, "t", {"overlay": "50"})["tokens"]["surface"], "#20202080")
+
     def test_a_file_that_breaks_a_rule_is_refused(self):
         for slots in ([{"slot": "x", "kind": "color", "sets": [{"token": "nope", "rule": "value"}]}],
                       [{"slot": "x", "kind": "color", "sets": [{"token": "accent", "rule": "alpha"}]}],
@@ -126,10 +134,11 @@ class Overrides(unittest.TestCase):
 
 
 class ShippedData(unittest.TestCase):
-    def test_the_modern_themes_offer_four_slots_and_classic_none(self):
+    def test_the_modern_themes_offer_five_slots_and_classic_none(self):
         data = p.load()
         for theme in ("modern-dark", "modern-light"):
-            self.assertEqual([s["slot"] for s in p.slots_of_theme(data, theme)], ["accent", "panel", "opacity", "highlight"], theme)
+            self.assertEqual([s["slot"] for s in p.slots_of_theme(data, theme)],
+                             ["accent", "panel", "opacity", "overlay", "highlight"], theme)
         self.assertEqual(p.slots_of_theme(data, "classic"), [])
 
     def test_every_swatch_keeps_every_pair_alone_and_at_the_lowest_opacity(self):

@@ -1,0 +1,68 @@
+/* Cyberpunk overlay of nui/windows/equipment-view/equipment-view.rml, after
+   the mockup's WEquipView board (skins-stage2/ref/WEquipView-cyberpunk.png):
+   the modern layout to the dp. The title's icon chip a square on the
+   brighter cyan line. The stage square, on the well's color under fine
+   cyan scan lines and a holographic lattice, a magenta glow behind the
+   figure; the code-drawn figure a faint cyan hologram (a soft fill and a
+   brighter line). The cells dark plates cut at the bottom right with a
+   cyan line, as the inventory's (the plate the place's fill, the line the
+   cell's edge), the line dim on an empty cell and acid under the pointer. */
+
+body.skin-cyberpunk.eqv .eqv-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+
+/* --- The stage ------------------------------------------------------------------ */
+
+body.skin-cyberpunk.eqv .eqv-equip
+{
+	border-radius: 0;
+	decorator: repeating-linear-gradient(180deg, transparent 0dp, transparent 1.9dp, var(--cyberpunk-cell) 2dp, var(--cyberpunk-cell) 2.9dp, transparent 3dp),
+	           repeating-linear-gradient(45deg, var(--cyberpunk-holo-a) 0dp, var(--cyberpunk-holo-a) 0.6dp, transparent 0.6dp, transparent 8.5dp),
+	           repeating-linear-gradient(-45deg, var(--cyberpunk-holo-a) 0dp, var(--cyberpunk-holo-a) 0.6dp, transparent 0.6dp, transparent 8.5dp);
+}
+body.skin-cyberpunk.eqv .eqv-light
+{
+	decorator: radial-gradient(70% 70% at 50% 42%, var(--cyberpunk-holo-b) 0%, transparent 70%);
+}
+body.skin-cyberpunk.eqv .eqv-figure
+{
+	opacity: 0.6;
+}
+body.skin-cyberpunk.eqv .eqv-figure__head, body.skin-cyberpunk.eqv .eqv-figure__body, body.skin-cyberpunk.eqv .eqv-figure__leg
+{
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge-dim);
+	background-color: var(--cyberpunk-holo-a);
+}
+
+/* --- The cells: the place draws the dark plate, the cell its edge --------------- */
+
+body.skin-cyberpunk.eqv .eqv-place
+{
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--cooldown-shade);
+}
+body.skin-cyberpunk.eqv .eqv-cell
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.eqv .eqv-cell.is-empty
+{
+	image-color: var(--border);
+}
+body.skin-cyberpunk.eqv .eqv-cell:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-acid);
+}

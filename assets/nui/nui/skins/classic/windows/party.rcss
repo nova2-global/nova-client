@@ -8,8 +8,19 @@
    y 15, 37dp apart and centered, the distribution title centered at y 70,
    the two large mode buttons at y 85 and 110. */
 
+body.skin-classic.party .party
+{
+	width: 106dp;
+}
+body.skin-classic.party .party__row
+{
+	height: 36dp;
+	margin-bottom: 2dp;
+}
 body.skin-classic.party .party-member
 {
+	width: 106dp;
+	height: 36dp;
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
@@ -18,9 +29,23 @@ body.skin-classic.party .party-member__state
 {
 	left: 0;
 	top: 0;
+	width: 22dp;
+	height: 36dp;
+}
+/* An offline member's board is not dimmed in legacy. */
+body.skin-classic.party .party-member__state, body.skin-classic.party .party-member__bar
+{
+	opacity: 1;
+}
+/* Modern's HP percent, sheen, cover and ticks do not show here. */
+body.skin-classic.party .party-member__pct, body.skin-classic.party .party-member__sheen-clock,
+body.skin-classic.party .party-member__cover, body.skin-classic.party .party-member__ticks
+{
+	display: none;
 }
 body.skin-classic.party .party-member__bar
 {
+	display: block;
 	left: 22dp;
 	top: 0;
 	right: auto;
@@ -30,6 +55,7 @@ body.skin-classic.party .party-member__bar
 }
 body.skin-classic.party .party-member__name
 {
+	overflow: visible;
 	padding: 2dp 0 0 3dp;
 	font-weight: normal;
 	line-height: 14dp;
@@ -54,6 +80,20 @@ body.skin-classic.party .party-affect--5 { left: 58dp; }
 body.skin-classic.party .party-affect--6 { left: 70dp; }
 body.skin-classic.party .party-affect--7 { left: 82dp; }
 body.skin-classic.party .party-affect--8 { left: 94dp; }
+
+/* The role buttons a leader opens: 23dp apart, from 110dp right of the
+   board's left edge. */
+body.skin-classic.party .party-roles
+{
+	left: 110dp;
+	height: 36dp;
+}
+body.skin-classic.party .party-role
+{
+	width: 22dp;
+	height: 36dp;
+	margin-right: 1dp;
+}
 
 body.skin-classic.party .party__menu-button
 {
@@ -94,6 +134,7 @@ body.skin-classic.party .party-menu
 {
 	width: 106dp;
 	height: 140dp;
+	margin-top: 2dp;
 	padding: 0;
 	border-width: 0;
 	border-radius: 0;
@@ -152,8 +193,10 @@ body.skin-classic.party .party-role__face
 	top: 0;
 	width: 22dp;
 	height: 36dp;
+	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
+	transform: none;
 }
 body.skin-classic.party .party-role__face[data-state=expel]
 {

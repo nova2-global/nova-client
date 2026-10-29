@@ -26,7 +26,7 @@
 	background-color: var(--surface);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-lg);
+	border-radius: 12dp;
 }
 /* Translucent panels (docs/ui/AUTHORING.md "Player colors"): the opacity
    slot sets --panel-backdrop; boards and tiles stay unblurred (they are
@@ -35,6 +35,7 @@
 .nui-window.nui-fx
 {
 	backdrop-filter: var(--panel-backdrop);
+	box-shadow: 0 18dp 44dp var(--overlay-scrim), 0 2dp 6dp var(--overlay-scrim);
 }
 /* A band across the screen: no side borders and no corners, one line along
    its bottom (the console). */
@@ -44,6 +45,13 @@
 	border-width: 0 0 1dp 0;
 	border-radius: 0;
 	background-color: var(--surface-band);
+}
+/* No shadow: RmlUi draws a box-shadow into a texture clipped to the screen,
+   so on a band as wide as the screen the clipped texture would stretch the
+   band's background. */
+.nui-window--band.nui-fx
+{
+	box-shadow: none;
 }
 /* A frame without its border (the quest board's cinema skin). */
 .nui-window--borderless
@@ -84,8 +92,8 @@
 	flex-direction: row;
 	align-items: center;
 	height: 36dp;
-	padding-left: var(--space-3);
-	padding-right: var(--space-1);
+	padding-left: 14dp;
+	padding-right: 6dp;
 	border-bottom-width: 1dp;
 	border-bottom-color: var(--border);
 }
@@ -103,9 +111,16 @@
 
 .nui-window__title
 {
-	font-size: var(--font-md);
+	font-size: 13dp;
 	font-weight: bold;
 	color: var(--text);
+}
+.nui-window__close
+{
+	width: 24dp;
+	height: 24dp;
+	border-radius: 7dp;
+	line-height: 22dp;
 }
 /* A compact frame's title bar holds a smaller title (the chat log's 24dp
    row); the window sets the bar's height. */
@@ -117,7 +132,7 @@
 .nui-window__body
 {
 	display: block;
-	padding: var(--space-4);
+	padding: 0 12dp 12dp;
 }
 
 .nui-window__footer
@@ -165,7 +180,7 @@ body.nui-scrim .nui-window
 	background-color: var(--surface);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
+	border-radius: 12dp;
 }
 /* A bar along the screen's edge: one line on its top side, no corners (the
    taskbar). */
@@ -185,7 +200,7 @@ body.nui-scrim .nui-window
 {
 	background-color: var(--notice-bar);
 	border-width: 0;
-	border-radius: var(--radius-sm);
+	border-radius: 6dp;
 }
 /* A round ring around something drawn under it (the minimap's map). RmlUi
    scales radii that do not fit down until they do, measured against the
@@ -215,12 +230,19 @@ body.nui-scrim .nui-window
 {
 	background-color: var(--tip-bg);
 	border-color: var(--border);
-	border-radius: var(--radius-md);
-	padding: 8dp 12dp;
+	border-radius: 12dp;
+	padding: 12dp 14dp 14dp;
 }
 .nui-board--tooltip.nui-fx
 {
-	box-shadow: 0 2dp 8dp var(--overlay-scrim);
+	box-shadow: 0 8dp 22dp var(--overlay-scrim);
+}
+/* A tooltip board inside a window (the refine and attach dialogs' item
+   tooltips): opaque, on the scene's color, so the tooltip colors (checked
+   on the overlay over the scene) read on a light panel too. */
+.nui-board--tooltip.nui-board--inset
+{
+	background-color: var(--scene);
 }
 /* A tile: a small framed item of a list or a group (a party member's row).
    Tiles never get hooks. */
@@ -229,7 +251,7 @@ body.nui-scrim .nui-window
 	background-color: var(--surface);
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-sm);
+	border-radius: 7dp;
 }
 
 /* Chrome hooks (docs/ui/AUTHORING.md "Chrome"): decorative parts the runtime

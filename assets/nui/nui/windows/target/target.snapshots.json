@@ -1,5 +1,5 @@
 {
-	"$comment": "Golden cases of the target board (tools/check_nui_snapshots.py): a name alone, a monster with its level, grade and HP (mob) and another player with the relation buttons (player); the classic art is under d:/ymir work/ (assets/ETC).",
+	"$comment": "Golden cases of the target board (tools/check_nui_snapshots.py): a name alone, a monster with its level, grade and HP (mob) and another player with the relation buttons, Block last (player; NOVA-47); the classic art is under d:/ymir work/ (assets/ETC).",
 	"cases": [
 		{"page": "target", "themes": "all", "scales": [["100", "1", "1280x160"], ["150", "1.5", "1920x240"], ["200", "2", "2560x320"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "target", "variant": "mob", "themes": "all", "scales": [["100", "1", "1280x160"], ["150", "1.5", "1920x240"], ["200", "2", "2560x320"]], "fixture": true, "roots": ["assets/ETC"], "time": null},

@@ -1,9 +1,12 @@
 /* Server and channel board: a body-level window, 375dp wide, centered and
    72dp above the bottom edge, as the legacy ServerBoard (uiscript
-   loginwindow.py). The server list (232dp) and the channel column (109dp)
-   sit side by side; OK and Exit end the column. The list viewports are the
+   loginwindow.py). The server list (232dp; 224dp in modern, whose card
+   has more padding) and the channel column (109dp) sit side by side; OK and Exit end the column. The list viewports are the
    legacy 351dp, and 160dp on a screen under 560dp, so the board fits at 200%
-   on 900 lines. */
+   on 900 lines.
+   Modern (the reviewed login card's look, stage 1): 16dp of padding, each
+   list in a sunken well, OK and Exit as wide as the channel column, 32dp
+   tall, at its foot. Classic: skins/classic/windows/server-board.rcss. */
 body.server-board
 {
 	width: 375dp;
@@ -12,11 +15,12 @@ body.server-board
 	bottom: 72dp;
 	min-width: 0dp;
 	box-sizing: border-box;
-	padding: var(--space-3);
+	padding: 16dp;
 }
 .server-board__title
 {
 	display: block;
+	padding-bottom: 4dp;
 	text-align: center;
 	font-weight: bold;
 }
@@ -25,10 +29,21 @@ body.server-board
 	display: flex;
 	flex-direction: row;
 }
+/* The lists in sunken wells (one class each, so classic's list rule keeps
+   its plain boxes). */
+.server-board__servers, .server-board__channels
+{
+	padding: 4dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+}
 .server-board__servers
 {
-	width: 232dp;
+	width: 224dp;
 	flex: 0 0 auto;
+	margin-top: 8dp;
 }
 .server-board__servers .nui-list__viewport
 {
@@ -38,7 +53,7 @@ body.server-board
 {
 	display: block;
 	width: 0dp;
-	margin: 0 3dp;
+	margin: 8dp 4dp 0dp 5dp;
 	border-left-width: 1dp;
 	border-left-color: var(--border);
 }
@@ -48,12 +63,14 @@ body.server-board
 	flex-direction: column;
 	width: 109dp;
 	flex: 0 0 auto;
+	margin-top: 8dp;
 }
-/* The column is as tall as the server list: the channel viewport, the list's
-   10dp of padding and border, and the two buttons with their gaps. */
+/* The column is as tall as the server list's well: the channel viewport,
+   its well's 10dp of padding and border, and the two buttons with their
+   gaps. */
 .server-board__channels .nui-list__viewport
 {
-	height: 279dp;
+	height: 273dp;
 }
 /* The column is narrow: tighter rows, and neither the name nor the state
    shrinks (RmlUi flex items shrink below their content). */
@@ -75,13 +92,18 @@ body.server-board
 {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	gap: var(--space-1);
-	margin-top: var(--space-1);
+	align-items: stretch;
+	gap: 6dp;
+	margin-top: 8dp;
 }
 .server-board__button
 {
 	min-width: 88dp;
+}
+.server-board__action
+{
+	height: 32dp;
+	line-height: 30dp;
 }
 
 @media (max-height: 560dp)
@@ -92,6 +114,6 @@ body.server-board
 	}
 	.server-board__channels .nui-list__viewport
 	{
-		height: 88dp;
+		height: 82dp;
 	}
 }

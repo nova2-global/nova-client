@@ -1,7 +1,9 @@
 {
-	"$comment": "Golden cases of the restart dialog (tools/check_nui_snapshots.py): its two buttons at legacy's place.",
+	"$comment": "Golden cases of the restart dialog (tools/check_nui_snapshots.py): its two buttons at legacy's place; the modern frames leave room for the window's shadow (a shadow cut by the frame's edge moves the soft renderer's drawing), classic keeps its legacy 320 x 200dp frames.",
 	"cases": [
-		{"page": "restart", "themes": "all", "scales": [["100", "1", "320x200"], ["150", "1.5", "480x300"], ["200", "2", "640x400"]],
+		{"page": "restart", "themes": "all", "except": ["classic"], "scales": [["100", "1", "440x300"], ["150", "1.5", "660x450"], ["200", "2", "880x600"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "restart", "themes": ["classic"], "scales": [["100", "1", "320x200"], ["150", "1.5", "480x300"], ["200", "2", "640x400"]],
 		 "fixture": true, "roots": ["assets/ETC"], "time": null}
 	]
 }

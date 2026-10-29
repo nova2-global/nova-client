@@ -1,0 +1,22 @@
+/* Cyberpunk overlay of nui/windows/guild-war-accept/guild-war-accept.rml,
+   after the reviewed WGuildWarAccept board: the declaring guild in a
+   square well with the dim line and a neon underline, behind its crest, a
+   magenta diamond in a magenta halo. The battle types are the skin's
+   chips, the declared one acid (the component's selected look). */
+
+body.skin-cyberpunk.guild-war-accept .guild-war__slot
+{
+	border-color: var(--border);
+	border-bottom-color: var(--cyberpunk-edge);
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild-war-accept .guild-war__crest
+{
+	border-color: var(--cyberpunk-glow-alt);
+	border-radius: 0;
+	background-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.guild-war-accept .guild-war__name
+{
+	color: var(--cyberpunk-title);
+}

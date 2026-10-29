@@ -6,12 +6,23 @@
    15 further (legacy's step), each the list art (16 wide: open or closed,
    online or offline) with its name 20 in, the selection a dark blue bar
    from 16 in over the name (legacy's OnRender, grp color 0, 0, 0.7, 0.7);
-   no hover look, as legacy; the rows clipped 53 above the bottom (legacy's
-   height limit), the scroll bar at 143, 40 down to 76 above the bottom
+   no hover look, as legacy; a roster member's language flags after its
+   name, 16 x 16 and 18 apart (legacy's half-size flags); the rows clipped
+   78 above the bottom (legacy's height limit, less the block buttons' 25
+   since NOVA-47), the scroll bar at 143, 40 down to 101 above the bottom
    (legacy's page size), always laid out but shown only when the rows
-   overflow; the four buttons (21 x 18) centered 40 apart, their tops 30
-   above the bottom, on their art (up, over, down, disabled); the resize
-   edge legacy's 10 tall drag button along the bottom. */
+   overflow; the block and unblock buttons (NOVA-47) on the small art
+   (43 x 21) at 39 and 87, their tops 55 above the bottom, their labels
+   centered over the art and running past it, as legacy's text; the four
+   buttons (21 x 18) centered 40 apart, their tops 30 above the bottom, on
+   their art (up, over, down, disabled); the resize edge legacy's 10 tall
+   drag button along the bottom. */
+
+/* Legacy's least height (150): no modern floor. */
+body.skin-classic.messenger
+{
+	min-height: 0;
+}
 
 body.skin-classic.messenger
 {
@@ -57,12 +68,21 @@ body.skin-classic.messenger .messenger__body
 	display: block;
 	padding: 0;
 }
+/* Modern's well around the list draws nothing here. */
+body.skin-classic.messenger .messenger__well
+{
+	display: block;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
 body.skin-classic.messenger .messenger__list
 {
 	position: absolute;
 	left: 20dp;
 	top: 40dp;
-	bottom: 53dp;
+	bottom: 78dp;
 	width: 140dp;
 	overflow-y: auto;
 }
@@ -82,16 +102,28 @@ body.skin-classic.messenger .messenger__list scrollbarvertical sliderbar
 }
 /* A row: the mark, then the name as wide as its text, cut at the row's end
    (before the scroll bar) when it is longer, so the bar stays under it. */
+body.skin-classic.messenger .messenger__row
+{
+	height: 20dp;
+}
 body.skin-classic.messenger .messenger__line
 {
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
 	height: 16dp;
+	margin: 0;
 	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	line-height: 16dp;
 	font-weight: normal;
 	color: var(--text);
+}
+body.skin-classic.messenger .messenger__line.is-selected .messenger__name
+{
+	font-weight: normal;
 }
 body.skin-classic.messenger .messenger__line:hover,
 body.skin-classic.messenger .messenger__line.is-selected
@@ -119,6 +151,7 @@ body.skin-classic.messenger .messenger__line.is-group .messenger__mark
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
+	opacity: 1;
 	transform: none;
 }
 body.skin-classic.messenger .messenger__line.is-empty .messenger__mark
@@ -160,6 +193,62 @@ body.skin-classic.messenger .messenger__hint
 {
 	left: 20dp;
 }
+body.skin-classic.messenger .messenger__flags
+{
+	flex: 0 0 auto;
+	height: 16dp;
+	margin-left: 0;
+}
+body.skin-classic.messenger .messenger__flag
+{
+	margin-right: 2dp;
+}
+
+/* --- The block list's buttons (NOVA-47) ------------------------------------------------ */
+
+body.skin-classic.messenger .messenger__blocks
+{
+	display: block;
+	height: 0;
+	padding: 0;
+}
+body.skin-classic.messenger .messenger__block
+{
+	position: absolute;
+	bottom: 34dp;
+	width: 43dp;
+	height: 21dp;
+	min-width: 0;
+	padding: 0;
+	overflow: visible;
+	color: var(--classic-button-text);
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.messenger .messenger__block:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.messenger .messenger__block:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+/* Legacy's disabled art is its down art (the uiscript's disable_image). */
+body.skin-classic.messenger .messenger__block[disabled]
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+body.skin-classic.messenger .messenger__block--block { left: 39dp; }
+body.skin-classic.messenger .messenger__block--unblock { left: 87dp; }
+body.skin-classic.messenger .messenger__block-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	line-height: 21dp;
+	white-space: nowrap;
+	text-align: center;
+}
 
 /* --- The buttons --------------------------------------------------------------------- */
 
@@ -178,6 +267,7 @@ body.skin-classic.messenger .messenger__button
 	min-width: 0;
 	padding: 0;
 	border-width: 0;
+	border-radius: 0;
 	background-color: transparent;
 	opacity: 1;
 }
@@ -199,12 +289,25 @@ body.skin-classic.messenger .messenger__button--whisper[disabled] { decorator: i
 body.skin-classic.messenger .messenger__button--remove[disabled] { decorator: image("d:/ymir work/ui/game/windows/messenger_delete_04.sub"); image-color: var(--classic-label-white); }
 body.skin-classic.messenger .messenger__tip
 {
+	left: -40dp;
 	bottom: auto;
 	top: 35dp;
 	margin-bottom: 0;
+	transform: none;
+}
+body.skin-classic.messenger .messenger__button--guild .messenger__tip
+{
+	left: auto;
+	right: 0;
+	margin-right: 0;
+	margin-left: -320dp;
 }
 
-/* Legacy's drag button: 10 tall along the bottom. */
+/* Legacy's drag button: 10 tall along the bottom; modern's grip does not show. */
+body.skin-classic.messenger .messenger__grip
+{
+	display: none;
+}
 body.skin-classic.messenger .messenger__resize
 {
 	height: 10dp;

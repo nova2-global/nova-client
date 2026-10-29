@@ -1,0 +1,62 @@
+/* Cyberpunk overlay of nui/windows/safebox/safebox.rml, after the reviewed
+   WSafebox board: the chest emblem in a square tile with the dim neon line,
+   its lock magenta; the pages as the skin's underlined tabs (tracked muted
+   labels over the row's dim line, the shown page lit, a soft cyan rising
+   from a magenta underline) instead of the modern segmented well. Layout
+   stays the modern one: the row keeps its 32dp, as the tabs component's
+   does in this skin (a 6dp gap above 26dp tabs, whose underline covers
+   the row's line). */
+
+body.skin-cyberpunk.safebox .safebox__title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.safebox .safebox__emblem-lid, body.skin-cyberpunk.safebox .safebox__emblem-chest
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.safebox .safebox__emblem-lock
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-edge-alt);
+}
+/* The page row: no well, the dim line under it. */
+body.skin-cyberpunk.safebox .safebox__pages
+{
+	padding: 6dp 0 0 0;
+	gap: 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.safebox .safebox__pages .safebox__page
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	line-height: 24dp;
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.safebox .safebox__pages .safebox__page:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.safebox .safebox__pages .safebox__page.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

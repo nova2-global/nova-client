@@ -1,0 +1,64 @@
+/* Cyberpunk overlay of nui/windows/whisper/whisper.rml, after the reviewed
+   WWhisper board: the lines on the shared overlay black (tip-bg, as the
+   board's log) in a square well with the dim cyan line; the scroll range a
+   faint cyan track with a magenta-to-cyan thumb; the compose row square,
+   open but for a line along its top, on the faint cyan cell fill (its 1dp
+   border stays, so the field and Send keep their places); minimize muted
+   as the close is, in the accent under the pointer; the corner grip in the
+   accent. The modern layout stays. */
+
+body.skin-cyberpunk.whisper .whisper__well
+{
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--tip-bg);
+}
+body.skin-cyberpunk.whisper .whisper__scroll slidertrack
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.whisper .whisper__scroll sliderbar
+{
+	border-radius: 0;
+	background-color: var(--accent);
+	decorator: vertical-gradient(var(--cyberpunk-edge-alt) var(--accent));
+}
+body.skin-cyberpunk.whisper .whisper__scroll sliderbar:hover, body.skin-cyberpunk.whisper .whisper__scroll sliderbar:active
+{
+	decorator: none;
+	background-color: var(--accent-hover);
+}
+body.skin-cyberpunk.whisper .whisper__compose
+{
+	border-color: transparent;
+	border-top-color: var(--border);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+
+/* Minimize: the close's muted ink, the accent under the pointer. */
+body.skin-cyberpunk.whisper .whisper__minimize
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.whisper .whisper__minimize .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+}
+body.skin-cyberpunk.whisper .whisper__minimize:hover .nui-glyph
+{
+	--glyph-ink: var(--accent-hover);
+}
+body.skin-cyberpunk.whisper .whisper__minimize:active .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
+}
+
+/* The corner's grip in the accent (the modern strokes and stops: a device
+   without effects draws none). */
+body.skin-cyberpunk.whisper .whisper__grip
+{
+	decorator: linear-gradient(135deg, transparent 0%, transparent 55%, var(--accent) 55%, var(--accent) 63%, transparent 63%, transparent 71%, var(--accent) 71%, var(--accent) 79%, transparent 79%, transparent 87%, var(--accent) 87%, var(--accent) 95%, transparent 95%, transparent 100%);
+	opacity: 0.7;
+}

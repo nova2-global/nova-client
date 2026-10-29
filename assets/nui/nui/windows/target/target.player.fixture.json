@@ -1,6 +1,8 @@
 {
 	"target": {
 		"name": "NuiW2B2",
+		"title": "NuiW2B2",
+		"level": 0,
 		"hp": 0.0,
 		"show_hp": false,
 		"buttons": [
@@ -31,6 +33,10 @@
 			{
 				"id": 6,
 				"label": "Group Invitation"
+			},
+			{
+				"id": 18,
+				"label": "Block"
 			}
 		],
 		"exchange_at": 1,

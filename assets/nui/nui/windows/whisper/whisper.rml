@@ -6,7 +6,10 @@
 	     assets/root/nui_whisper.py), a subclass of the legacy class on
 	     proxies: sending, the insult check, the partner without a target,
 	     minimize and close (the Interface's edge buttons), the GM look, the
-	     links and the scroll are legacy's code. The document is instanced
+	     links, the scroll, the block button (NOVA-47: Block or Unblock for
+	     the partner) and the partner's details (NOVA-48: the online or
+	     offline mark and its language flag, once the server answered) are
+	     legacy's code. The document is instanced
 	     (one model per open dialog, whisper_<n>); a closed or minimized
 	     dialog's document waits, hidden, for the next dialog in a pool of
 	     nui_whisper.POOL_BOUND (nui_hud.PooledBoard, P18): its feed key 0,
@@ -38,8 +41,14 @@
 			<span id="whisper-title" class="nui-window__title whisper__title" data-if="!editing_target"><nui-text
 				class="whisper__name" links="off" data-attr-value="target"/></span>
 		</handle>
+		<span id="whisper-online" class="whisper__online" data-if="online_shown" data-class-is-online="online"></span>
+		<span id="whisper-flag" class="whisper__flag" data-if="flag_shown &amp;&amp; flag_src != ''"><img class="whisper__flag-image"
+			data-attr-src="flag_src"/></span>
 		<span id="whisper-gm" class="whisper__gm" data-if="gm"><img class="whisper__gm-mark" data-attr-src="gm_mark_src"/><span
 			class="whisper__gm-badge"></span></span>
+		<button id="whisper-block" class="nui-button nui-button--ghost nui-anim whisper__block" data-if="block_shown"
+		        data-event-mousedown="block_press(ev.button)"><span class="whisper__block-label" data-if="!blocked">@ui.BLOCK_PLAYER</span><span
+			class="whisper__block-label" data-if="blocked">@ui.UNBLOCK_PLAYER</span></button>
 		<button id="whisper-accept" class="nui-button nui-button--medium nui-anim whisper__accept" data-if="accept_shown"
 		        data-event-mousedown="accept_press(ev.button)"><span class="whisper__accept-label">@ui.OK</span></button>
 		<button id="whisper-minimize" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip whisper__minimize"
@@ -52,17 +61,23 @@
 			class="nui-tooltip nui-anim whisper__tip">@ui.CLOSE</span></button>
 	</div>
 	<div class="nui-window__body whisper__body">
+		<!-- The overlay well behind the lines (the rounded look on a box that
+		     does not clip; the lines clip square inside it). -->
+		<div class="whisper__well"></div>
 		<nui-chat-lines id="whisper-lines" class="whisper__lines" view="whisper" mode="flow" step="15" data-attr-key="feed_key"
 		                data-event-nuilink="link(ev.link)" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
 		<div class="whisper__scroll-box" data-for="w : lines_on"><input id="whisper-scroll" type="range" orientation="vertical" class="whisper__scroll"
 			min="0" max="1" step="0.01" data-attr-value="pos" data-event-change="scroll(ev.value)"/></div>
 	</div>
 	<div class="nui-window__footer whisper__edit">
-		<textarea id="whisper-input" class="nui-input whisper__input" rows="2" data-attr-maxlength="input_max"
-		          data-event-change="input_change(ev.value)" data-event-mousedown="input_press(ev.button)"></textarea>
-		<button id="whisper-send" class="nui-button nui-anim whisper__send" data-event-mousedown="send_press(ev.button)"><span
-			class="whisper__send-label">@ui.WHISPER_SEND</span></button>
+		<div class="whisper__compose">
+			<textarea id="whisper-input" class="nui-input whisper__input" rows="2" data-attr-maxlength="input_max"
+			          data-event-change="input_change(ev.value)" data-event-mousedown="input_press(ev.button)"></textarea>
+			<button id="whisper-send" class="nui-button nui-anim whisper__send" data-event-mousedown="send_press(ev.button)"><span
+				class="whisper__send-label">@ui.WHISPER_SEND</span></button>
+		</div>
 	</div>
+	<span class="whisper__grip"></span>
 	<nui-resize id="whisper-resize" class="nui-resize--bottom-right whisper__resize" edge="bottom-right" target="whisper"
 	            min-width="300" min-height="170" data-attr-width="width" data-attr-height="height"
 	            data-event-resized="resized(ev.width, ev.height)"/>

@@ -28,19 +28,27 @@
 	display: flex;
 	flex-direction: row;
 	position: relative;
-	border-bottom-width: 1dp;
-	border-bottom-color: var(--border);
+	gap: 2dp;
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
 }
 .nui-tabs tab
 {
 	display: block;
 	flex: 1 1 0;
-	padding: var(--space-2) var(--space-3);
+	height: 24dp;
+	padding: 0 8dp;
 	/* Reserved for the focus ring, so focus does not move the label. */
 	border-width: 1dp;
 	border-color: transparent;
+	border-radius: 6dp;
 	color: var(--text-muted);
+	font-size: var(--font-md);
 	font-weight: bold;
+	line-height: 22dp;
 	text-align: center;
 	white-space: nowrap;
 	tab-index: auto;
@@ -52,8 +60,9 @@
 }
 .nui-tabs tab:selected
 {
-	color: var(--accent);
-	background-color: transparent;
+	color: var(--text);
+	background-color: var(--surface-raised);
+	border-color: var(--border);
 }
 .nui-tabs tab:focus-visible, .nui-tabs tab.is-focus
 {
@@ -67,6 +76,7 @@
 
 .nui-tabs tab.nui-tabs__indicator
 {
+	display: none;
 	position: absolute;
 	left: 0;
 	bottom: 0;

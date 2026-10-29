@@ -48,23 +48,38 @@
 
 		<!-- The status page (uiscript Character_Page). -->
 		<div class="char-panel char-panel--status" data-for="p : panel_status">
+			<!-- The modern looks: the face in a ring with the level on it, the
+			     class and the guild as chips, then the level, EXP and the EXP
+			     still needed over the bar of the level's progress (EXP over
+			     the sum of the two; the texts are legacy's numbers). -->
 			<div class="char-head">
-				<div id="char-face" class="char-face"><img class="char-face__image" data-if="face != ''" data-attr-src="face"/></div>
+				<div id="char-face" class="char-face nui-fx"><div class="char-face__clip"><img class="char-face__image" data-if="face != ''"
+					data-attr-src="face"/></div><span class="char-face__level">{{ level }}</span></div>
 				<div class="char-who">
 					<div id="char-name" class="char-name" data-event-mouseover="name_over()" data-event-mouseout="name_out()"><span
 						class="char-name__text">{{ name }}</span></div>
 					<div class="char-who__line">
-						<div id="char-level" class="char-chip char-chip--level"><img class="char-art char-art--level" data-attr-src="art.level"/><span
-							class="char-chip__label">@ui.CHARACTER_LEVEL</span><span id="char-value-level" class="char-chip__value">{{ level }}</span></div>
-						<div id="char-guild" class="char-guild" data-if="has_guild"><span class="char-guild__text">{{ guild }}</span></div>
+						<div class="char-tag char-tag--job" data-if="job != ''"><span class="char-ico char-ico--job"></span><span
+							class="char-tag__text">{{ job }}</span></div>
+						<div id="char-guild" class="char-guild" data-if="has_guild"><span class="char-ico char-ico--guild"></span><span
+							class="char-guild__text">{{ guild }}</span></div>
 					</div>
 				</div>
 			</div>
 			<div class="char-progress">
-				<div id="char-exp" class="char-chip char-chip--exp"><img class="char-art char-art--exp" data-attr-src="art.cur_exp"/><span
-					class="char-chip__label">@ui.CHARACTER_EXP</span><span class="char-chip__value">{{ exp }}</span></div>
-				<div id="char-exp-rest" class="char-chip char-chip--rest"><img class="char-art char-art--rest" data-attr-src="art.last_exp"/><span
-					class="char-chip__label">@ui.CHARACTER_EXP_REST</span><span class="char-chip__value">{{ exp_rest }}</span></div>
+				<div class="char-progress__cells">
+					<div id="char-level" class="char-chip char-chip--level"><img class="char-art char-art--level" data-attr-src="art.level"/><span
+						class="char-chip__label">@ui.CHARACTER_LEVEL</span><span id="char-value-level" class="char-chip__value">{{ level }}</span></div>
+					<div id="char-exp" class="char-chip char-chip--exp"><img class="char-art char-art--exp" data-attr-src="art.cur_exp"/><span
+						class="char-chip__label">@ui.CHARACTER_EXP</span><span class="char-chip__value">{{ exp }}</span></div>
+					<div id="char-exp-rest" class="char-chip char-chip--rest"><img class="char-art char-art--rest" data-attr-src="art.last_exp"/><span
+						class="char-chip__label">@ui.CHARACTER_EXP_REST</span><span class="char-chip__value">{{ exp_rest }}</span></div>
+				</div>
+				<div class="char-exp">
+					<progress class="nui-gauge nui-gauge--pink char-exp__bar" direction="right"
+					          data-attr-value="exp * 1 + exp_rest * 1 &gt; 0 ? exp / (exp * 1 + exp_rest * 1) : 0"/>
+					<div class="char-exp__ticks"></div>
+				</div>
 			</div>
 			<div class="char-divider char-divider--base">
 				<div class="char-bar"></div>
@@ -77,9 +92,9 @@
 			<div class="char-base">
 				<img class="char-art char-art--std1" data-attr-src="art.std_item1"/>
 				<img class="char-art char-art--std2" data-attr-src="art.std_item2"/>
-				<div class="char-stats">
+				<div class="char-stats char-stats--base">
 					<div class="char-stat char-stat--ht">
-						<span class="char-stat__label">@ui.CHARACTER_VIT</span>
+						<span class="char-stat__label"><span class="char-ico char-ico--vit"></span>@ui.CHARACTER_VIT</span>
 						<span id="char-value-ht" class="char-stat__value">{{ ht }}</span>
 						<div class="char-steps">
 							<button id="char-minus-ht" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_ht"
@@ -93,7 +108,7 @@
 						</div>
 					</div>
 					<div class="char-stat char-stat--iq">
-						<span class="char-stat__label">@ui.CHARACTER_INT</span>
+						<span class="char-stat__label"><span class="char-ico char-ico--int"></span>@ui.CHARACTER_INT</span>
 						<span id="char-value-iq" class="char-stat__value">{{ iq }}</span>
 						<div class="char-steps">
 							<button id="char-minus-iq" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_iq"
@@ -107,7 +122,7 @@
 						</div>
 					</div>
 					<div class="char-stat char-stat--st">
-						<span class="char-stat__label">@ui.CHARACTER_STR</span>
+						<span class="char-stat__label"><span class="char-ico char-ico--str"></span>@ui.CHARACTER_STR</span>
 						<span id="char-value-st" class="char-stat__value">{{ st }}</span>
 						<div class="char-steps">
 							<button id="char-minus-st" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_st"
@@ -121,7 +136,7 @@
 						</div>
 					</div>
 					<div class="char-stat char-stat--dx">
-						<span class="char-stat__label">@ui.CHARACTER_DEX</span>
+						<span class="char-stat__label"><span class="char-ico char-ico--dex"></span>@ui.CHARACTER_DEX</span>
 						<span id="char-value-dx" class="char-stat__value">{{ dx }}</span>
 						<div class="char-steps">
 							<button id="char-minus-dx" class="nui-button nui-button--icon nui-anim char-step char-step--minus" data-if="minus_dx"
@@ -136,14 +151,14 @@
 					</div>
 				</div>
 				<div class="char-stats char-stats--vital">
-					<div class="char-stat char-stat--hp"><span class="char-stat__label">@ui.CHARACTER_HP</span><span id="char-value-hp"
-						class="char-stat__value">{{ hp }}</span></div>
-					<div class="char-stat char-stat--sp"><span class="char-stat__label">@ui.CHARACTER_SP</span><span id="char-value-sp"
-						class="char-stat__value">{{ sp }}</span></div>
-					<div class="char-stat char-stat--att"><span class="char-stat__label">@ui.CHARACTER_ATT</span><span id="char-value-att"
-						class="char-stat__value">{{ att }}</span></div>
-					<div class="char-stat char-stat--def"><span class="char-stat__label">@ui.CHARACTER_DEF</span><span id="char-value-def"
-						class="char-stat__value">{{ def }}</span></div>
+					<div class="char-stat char-stat--hp"><span class="char-ico char-ico--hp"></span><span
+						class="char-stat__label">@ui.CHARACTER_HP</span><span id="char-value-hp" class="char-stat__value">{{ hp }}</span></div>
+					<div class="char-stat char-stat--sp"><span class="char-ico char-ico--sp"></span><span
+						class="char-stat__label">@ui.CHARACTER_SP</span><span id="char-value-sp" class="char-stat__value">{{ sp }}</span></div>
+					<div class="char-stat char-stat--att"><span class="char-ico char-ico--att"></span><span
+						class="char-stat__label">@ui.CHARACTER_ATT</span><span id="char-value-att" class="char-stat__value">{{ att }}</span></div>
+					<div class="char-stat char-stat--def"><span class="char-ico char-ico--def"></span><span
+						class="char-stat__label">@ui.CHARACTER_DEF</span><span id="char-value-def" class="char-stat__value">{{ def }}</span></div>
 				</div>
 			</div>
 			<div class="char-divider char-divider--extra">
@@ -155,20 +170,20 @@
 				<img class="char-art char-art--ext1" data-attr-src="art.ext_item1"/>
 				<img class="char-art char-art--ext2" data-attr-src="art.ext_item2"/>
 				<div class="char-stats">
-					<div class="char-stat char-stat--mspd"><span class="char-stat__label">@ui.CHARACTER_MOVE_SPEED</span><span
-						id="char-value-mspd" class="char-stat__value">{{ mspd }}</span></div>
-					<div class="char-stat char-stat--aspd"><span class="char-stat__label">@ui.CHARACTER_ATTACK_SPEED</span><span
-						id="char-value-aspd" class="char-stat__value">{{ aspd }}</span></div>
-					<div class="char-stat char-stat--cspd"><span class="char-stat__label">@ui.CHARACTER_CAST_SPEED</span><span
-						id="char-value-cspd" class="char-stat__value">{{ cspd }}</span></div>
+					<div class="char-stat char-stat--mspd"><span class="char-ico char-ico--mspd"></span><span
+						class="char-stat__label">@ui.CHARACTER_MOVE_SPEED</span><span id="char-value-mspd" class="char-stat__value">{{ mspd }}</span></div>
+					<div class="char-stat char-stat--aspd"><span class="char-ico char-ico--aspd"></span><span
+						class="char-stat__label">@ui.CHARACTER_ATTACK_SPEED</span><span id="char-value-aspd" class="char-stat__value">{{ aspd }}</span></div>
+					<div class="char-stat char-stat--cspd"><span class="char-ico char-ico--cspd"></span><span
+						class="char-stat__label">@ui.CHARACTER_CAST_SPEED</span><span id="char-value-cspd" class="char-stat__value">{{ cspd }}</span></div>
 				</div>
 				<div class="char-stats char-stats--magic">
-					<div class="char-stat char-stat--matt"><span class="char-stat__label">@ui.CHARACTER_MAGIC_ATT</span><span
-						id="char-value-matt" class="char-stat__value">{{ matt }}</span></div>
-					<div class="char-stat char-stat--mdef"><span class="char-stat__label">@ui.CHARACTER_MAGIC_DEF</span><span
-						id="char-value-mdef" class="char-stat__value">{{ mdef }}</span></div>
-					<div class="char-stat char-stat--er"><span class="char-stat__label">@ui.CHARACTER_EVASION</span><span
-						id="char-value-er" class="char-stat__value">{{ er }}</span></div>
+					<div class="char-stat char-stat--matt"><span class="char-ico char-ico--matt"></span><span
+						class="char-stat__label">@ui.CHARACTER_MAGIC_ATT</span><span id="char-value-matt" class="char-stat__value">{{ matt }}</span></div>
+					<div class="char-stat char-stat--mdef"><span class="char-ico char-ico--mdef"></span><span
+						class="char-stat__label">@ui.CHARACTER_MAGIC_DEF</span><span id="char-value-mdef" class="char-stat__value">{{ mdef }}</span></div>
+					<div class="char-stat char-stat--er"><span class="char-ico char-ico--er"></span><span
+						class="char-stat__label">@ui.CHARACTER_EVASION</span><span id="char-value-er" class="char-stat__value">{{ er }}</span></div>
 				</div>
 			</div>
 		</div>
@@ -178,7 +193,7 @@
 			<div class="char-divider char-divider--groups">
 				<div class="char-bar"></div>
 				<div class="char-groups">
-					<button class="nui-button nui-anim char-group" data-for="g : groups" data-attr-id="'char-group-' + it_index"
+					<button class="nui-button nui-button--ghost nui-anim char-group" data-for="g : groups" data-attr-id="'char-group-' + it_index"
 					        data-if="g.shown" data-class-char-group--col0="g.col == 0" data-class-char-group--col1="g.col == 1"
 					        data-class-char-group--col2="g.col == 2" data-class-is-selected="g.down"
 					        data-event-mousedown="group_press(it_index, ev.button)"><span
@@ -189,6 +204,11 @@
 					data-attr-src="art.uppt"/><span class="char-points__label">@ui.CHARACTER_POINTS</span><span
 					class="char-points__value">{{ active_points }}</span></div>
 			</div>
+			<!-- The modern looks: each row is one skill, its grade columns left to
+			     right, a step arrow after each column but the last, lit after the
+			     skill's own column; the two halves split by a rule. A column that
+			     is not the skill's grade shows its cover (legacy's disabled
+			     cover) as a padlock. -->
 			<div class="char-skills-board">
 				<div id="char-skills" class="nui-slot-grid char-skills" data-class-nui-attach-right="attach_right">
 					<div class="char-skill-place" data-for="c : skills" data-attr-class="'char-skill-place char-skill--' + c.slot">
@@ -213,8 +233,11 @@
 						     data-event-mousedown="skill_plus(c.slot, ev.button)" data-event-mouseover="skill_over(it_index)"
 						     data-event-mouseout="skill_out(it_index)"><span class="nui-glyph nui-glyph--plus"><span
 							class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
+						<span class="char-step-arrow" data-if="c.col &lt; 2" data-class-is-reached="c.kind != '' &amp;&amp; !c.unavailable"
+						      data-class-is-idle="c.kind == ''"></span>
 					</div>
 				</div>
+				<div class="char-skills-split"></div>
 			</div>
 			<div class="char-divider char-divider--support">
 				<div class="char-bar"></div>
@@ -292,8 +315,11 @@
 				</div>
 				<div class="char-quest-rows">
 					<div class="char-quest" data-for="q : quests" data-attr-id="'char-quest-' + it_index" data-class-is-hidden="!q.shown">
+						<span class="nui-glyph nui-glyph--chevron-right char-quest__chev"><span class="nui-glyph__a"></span><span
+							class="nui-glyph__b"></span></span>
 						<span class="char-quest__name">{{ q.name }}</span>
-						<span class="char-quest__clock" data-attr-id="'char-quest-' + it_index + '-clock'"><span
+						<span class="char-quest__clock" data-attr-id="'char-quest-' + it_index + '-clock'"
+						      data-class-is-timed="q.clock_end &gt; 0"><span
 							class="char-quest__clock-text" data-if="q.clock_end &lt;= 0">{{ q.clock_text }}</span><nui-countdown
 							class="char-quest__countdown" data-if="q.clock_end &gt; 0" format="minsec" minute="@game.QUEST_MIN"
 							second="@game.QUEST_SEC" over="@game.QUEST_TIMEOVER" data-attr-prefix="q.clock_prefix"
@@ -302,16 +328,18 @@
 					</div>
 				</div>
 				<div id="char-quest-scroll" class="char-quest-scroll" data-if="quest_scroll_shown">
-					<button id="char-quest-up" class="nui-button nui-button--ghost nui-button--icon nui-anim char-quest-scroll__up"
+					<button id="char-quest-up" class="nui-button nui-button--icon nui-anim char-quest-scroll__up"
 					        data-event-mousedown="quest_scroll_press(-1, ev.button)"><span class="nui-glyph nui-glyph--chevron-up"><span
 						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 					<progress class="nui-gauge nui-gauge--blue char-quest-scroll__track" direction="bottom"
 					          data-attr-value="quest_scroll_pos"/>
-					<!-- A thumb at the position down its rail, for a skin that draws one
-					     (classic: legacy's middle bar); the modern looks show the gauge. -->
-					<div class="char-quest-scroll__rail"><span class="char-quest-scroll__thumb"
-						data-style---char-quest-thumb="(quest_scroll_pos * 100) + '%'"></span></div>
-					<button id="char-quest-down" class="nui-button nui-button--ghost nui-button--icon nui-anim char-quest-scroll__down"
+					<!-- A thumb at the position down its rail (classic: legacy's middle
+					     bar; the modern looks: a pill in a slim well, lifted by its own
+					     height times the position, so it stays inside the rail). -->
+					<div class="char-quest-scroll__rail"><span class="char-quest-scroll__thumb nui-fx"
+						data-style---char-quest-thumb="(quest_scroll_pos * 100) + '%'"
+						data-style---char-quest-lift="(quest_scroll_pos * -100) + '%'"></span></div>
+					<button id="char-quest-down" class="nui-button nui-button--icon nui-anim char-quest-scroll__down"
 					        data-event-mousedown="quest_scroll_press(1, ev.button)"><span class="nui-glyph nui-glyph--chevron-down"><span
 						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 				</div>
@@ -324,13 +352,13 @@
 		<img class="char-art char-art--tab" data-if="tab == 'SKILL'" data-attr-src="art.tab_2"/>
 		<img class="char-art char-art--tab" data-if="tab == 'EMOTICON'" data-attr-src="art.tab_3"/>
 		<img class="char-art char-art--tab" data-if="tab == 'QUEST'" data-attr-src="art.tab_4"/>
-		<button id="char-tab-status" class="nui-button nui-anim char-tab char-tab--status" data-class-is-selected="tab == 'STATUS'"
+		<button id="char-tab-status" class="nui-button nui-button--ghost nui-anim char-tab char-tab--status" data-class-is-selected="tab == 'STATUS'"
 		        data-event-mousedown="tab_press('STATUS', ev.button)"><span class="char-tab__label">@ui.CHARACTER_MAIN</span></button>
-		<button id="char-tab-skill" class="nui-button nui-anim char-tab char-tab--skill" data-class-is-selected="tab == 'SKILL'"
+		<button id="char-tab-skill" class="nui-button nui-button--ghost nui-anim char-tab char-tab--skill" data-class-is-selected="tab == 'SKILL'"
 		        data-event-mousedown="tab_press('SKILL', ev.button)"><span class="char-tab__label">@ui.CHARACTER_SKILL</span></button>
-		<button id="char-tab-emoticon" class="nui-button nui-anim char-tab char-tab--emoticon" data-class-is-selected="tab == 'EMOTICON'"
+		<button id="char-tab-emoticon" class="nui-button nui-button--ghost nui-anim char-tab char-tab--emoticon" data-class-is-selected="tab == 'EMOTICON'"
 		        data-event-mousedown="tab_press('EMOTICON', ev.button)"><span class="char-tab__label">@ui.CHARACTER_ACTION</span></button>
-		<button id="char-tab-quest" class="nui-button nui-anim char-tab char-tab--quest" data-class-is-selected="tab == 'QUEST'"
+		<button id="char-tab-quest" class="nui-button nui-button--ghost nui-anim char-tab char-tab--quest" data-class-is-selected="tab == 'QUEST'"
 		        data-event-mousedown="tab_press('QUEST', ev.button)"><span class="char-tab__label">@ui.CHARACTER_QUEST</span></button>
 	</div>
 </body>

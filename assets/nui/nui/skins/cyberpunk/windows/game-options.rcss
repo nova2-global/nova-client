@@ -1,0 +1,29 @@
+/* Cyberpunk overlay of nui/windows/game-options/game-options.rml, after the
+   reviewed WGameOptions board: the title's tile a square with the dim neon
+   line; every other row open but for an accent line down its left edge and
+   a faint cyan fading to the right (the rows' 1dp border stays, clear
+   elsewhere, so nothing moves); the labels a size smaller and tracked. The
+   choices are the component's chips, the selected one acid. */
+
+body.skin-cyberpunk.game-options .game-options__icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.game-options .go-row
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.game-options .go-row:nth-child(even)
+{
+	border-color: transparent;
+	border-left-color: var(--accent);
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--cyberpunk-holo-a) transparent);
+}
+body.skin-cyberpunk.game-options .go-label
+{
+	font-size: var(--font-sm);
+	letter-spacing: 0.5dp;
+}

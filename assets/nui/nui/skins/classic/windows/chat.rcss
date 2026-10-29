@@ -44,6 +44,22 @@ body.skin-classic.chat .chat__block.is-open .chat__history
 {
 	border-radius: 0;
 	background-color: transparent;
+	decorator: none;
+}
+/* The lines in the legacy font, 10dp in, without the modern shadow; links
+   are plain runs. */
+body.skin-classic.chat .chat__lines .nui-chat__line
+{
+	margin-left: 10dp;
+	font-size: var(--font-sm);
+	font-effect: none;
+}
+body.skin-classic.chat .chat__lines .nui-link
+{
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.chat .chat__resize
 {
@@ -64,6 +80,13 @@ body.skin-classic.chat .chat__input-row
 	display: block;
 	padding: 0;
 }
+body.skin-classic.chat .chat__block.is-open .chat__input-row
+{
+	height: 25dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--chat-edit-shade);
+}
 body.skin-classic.chat .chat__mode
 {
 	position: absolute;
@@ -80,6 +103,7 @@ body.skin-classic.chat .chat__mode
 	background-color: transparent;
 	color: var(--classic-label-white);
 	font-size: var(--font-md);
+	font-weight: normal;
 	line-height: 16dp;
 }
 body.skin-classic.chat .chat__mode:hover

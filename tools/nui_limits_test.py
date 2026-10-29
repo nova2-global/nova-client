@@ -55,7 +55,7 @@ def foundation_modules(module):
     player = types.SimpleNamespace(INVENTORY_PAGE_SIZE=45, INVENTORY_PAGE_COUNT=5, INVENTORY_PAGE_COLUMNS=5,
                                    INVENTORY_SLOT_COUNT=311, EQUIPMENT_SLOT_START=225, METIN_SOCKET_MAX_NUM=4,
                                    ATTRIBUTE_SLOT_MAX_NUM=7, GOLD_MAX=2000000000000, MONEY_DIGITS=13,
-                                   SKILL_MAX_LEVEL=50, SKILL_GRADE_SAGE_MASTER=4, PLAYER_MAX_LEVEL=150,
+                                   INVENTORY_MONEY_DIGITS=7, SKILL_MAX_LEVEL=50, SKILL_GRADE_SAGE_MASTER=4, PLAYER_MAX_LEVEL=150,
                                    DRAGON_SOUL_PAGE_SIZE=32, DRAGON_SOUL_PAGE_COUNT=5, DRAGON_SOUL_SLOT_COUNT=960,
                                    DRAGON_SOUL_EQUIPMENT_SLOT_START=265, DRAGON_SOUL_EQUIPMENT_PAGE_COUNT=2,
                                    DRAGON_SOUL_EQUIPMENT_FIRST_SIZE=6)
@@ -126,8 +126,9 @@ class Reading(LimitsTest):
                     delattr(modules[module_name], attribute)
             limits = self.m.read(modules)
             self.assertIn(key, limits.fell_back, key)
-            # Keys read from the same names fall back together (MONEY_DIGITS
-            # and INVENTORY_MONEY_DIGITS both read player.MONEY_DIGITS).
+            # Keys read from the same names fall back together (none today:
+            # INVENTORY_MONEY_DIGITS and EXCHANGE_MONEY_DIGITS read the
+            # client's own names since nova-client-src a9976fc).
             sharing = [k for k, n in self.m.NAMES.items() if k != key and set(n) <= set(names)]
             others = [k for k in limits.fell_back if k != key and k not in sharing]
             if key == "MONEY_DIGITS":
@@ -205,8 +206,11 @@ class WearTables(LimitsTest):
         today, foundation = self.m.read({}), self.m.foundation()
         self.assertEqual(len(self.m.wear_table(today)), 24)
         self.assertEqual(len(self.m.wear_table(foundation)), 40)
-        self.assertEqual(counts(today), [12, 3, 9])
-        self.assertEqual(counts(foundation), [15, 17, 8])
+        # Legacy's windows since NOVA-97: the rings and the belt with the
+        # equipment, the costume body and hair alone, the cut's unported
+        # costume cells hidden.
+        self.assertEqual(counts(today), [14, 2, 8])
+        self.assertEqual(counts(foundation), [14, 2, 24])
         self.assertRaises(ValueError, self.m.wear_group, "bag", today)
 
     def test_a_wear_slot_is_its_index_name_cell_group_and_span(self):
@@ -220,26 +224,32 @@ class WearTables(LimitsTest):
         self.assertEqual([slot.index for slot in self.m.wear_table(foundation)], list(range(40)))
 
     def test_todays_shown_cells_are_the_ones_legacy_refreshes(self):
-        """RefreshEquipSlotWindow (uiinventory.py:594-619): EQUIPMENT_PAGE_COUNT
-        (12) cells from EQUIPMENT_SLOT_START, wear 0 to 11, of which ability1
+        """RefreshEquipSlotWindow (uiinventory.py): EQUIPMENT_PAGE_COUNT (12)
+        cells from EQUIPMENT_SLOT_START, wear 0 to 11, of which ability1
         shows nothing (no legacy slot), then NEW_EQUIPMENT_SLOT_COUNT (3) from
-        NEW_EQUIPMENT_SLOT_START, wear 21 to 23, of which the equipment window
-        holds the belt; RefreshCostumeSlot (:87-94): COSTUME_SLOT_COUNT (2)
-        costume cells. The third costume cell, ring1, legacy never refreshes
-        (P14 spec 2.1)."""
+        NEW_EQUIPMENT_SLOT_START, wear 21 to 23: the rings and the belt, which
+        the equipment window holds since NOVA-97; RefreshCostumeSlot:
+        COSTUME_SLOT_COUNT (2) costume cells, the costume window's two slots
+        (its third, ring1's before, went with NOVA-97)."""
         today = self.m.read({})
         refreshed = set(range(90, 102)) | set(range(111, 114))
         equipment = [slot.cell for slot in self.m.wear_group("equipment", today)]
         self.assertTrue(set(equipment) <= refreshed)
-        self.assertEqual(sorted(refreshed - set(equipment)), [101, 111, 112], "ability1, ring1, ring2")
+        self.assertEqual(sorted(refreshed - set(equipment)), [101], "ability1")
         costume = [slot.cell for slot in self.m.wear_group("costume", today)]
-        self.assertEqual(costume, [109, 110, 111])
-        self.assertEqual(costume[:2], list(range(today.COSTUME_SLOT_START, today.COSTUME_SLOT_START + today.COSTUME_SLOT_COUNT)))
-        legacy_slots = re.findall(r'"index":EQUIPMENT_START_INDEX\+(\d+)',
-                                  open(os.path.join(REPO, "assets", "uiscript", "uiscript", "inventorywindow.py"),
-                                       encoding="latin-1").read())
-        self.assertEqual(sorted(90 + int(n) for n in legacy_slots) + [113], sorted(equipment),
-                         "the legacy equipment slots and the belt")
+        self.assertEqual(costume, [109, 110])
+        self.assertEqual(costume, list(range(today.COSTUME_SLOT_START, today.COSTUME_SLOT_START + today.COSTUME_SLOT_COUNT)))
+        script = open(os.path.join(REPO, "assets", "uiscript", "uiscript", "inventorywindow.py"), encoding="latin-1").read()
+        legacy_slots = re.findall(r'"index":EQUIPMENT_START_INDEX\+(\d+)', script)
+        named = {"RING1": 111, "RING2": 112, "BELT": 113}
+        legacy_named = [named[name] for name in re.findall(r'"index":item\.EQUIPMENT_(RING1|RING2|BELT)\b', script)]
+        self.assertEqual(sorted(legacy_named), [111, 112, 113])
+        self.assertEqual(sorted([90 + int(n) for n in legacy_slots] + legacy_named), sorted(equipment),
+                         "the legacy equipment slots, the rings and the belt")
+        costume_script = open(os.path.join(REPO, "assets", "uiscript", "uiscript", "costumewindow.py"),
+                              encoding="latin-1").read()
+        self.assertEqual(sorted(109 + int(n) for n in re.findall(r'"index":COSTUME_START_INDEX\+(\d+)', costume_script)),
+                         costume, "the legacy costume slots")
 
     def test_the_old_table_follows_the_constants_order_when_every_name_resolves(self):
         modules = foundation_modules(self.m)
@@ -283,7 +293,7 @@ WAVE4_KEYS = ("EXCHANGE_ITEM_MAX_NUM", "EXCHANGE_COLUMNS", "EXCHANGE_MONEY_DIGIT
               "GUILD_COMMENT_MAX_LEN", "GUILD_BOARD_LINES", "GUILD_MEMBER_LINES", "GUILD_MEMBER_MAX", "GUILD_ENEMY_SLOTS",
               "GUILD_SKILL_ROW", "GUILD_BUILDING_ROWS", "GUILD_RESOURCE_COLUMNS", "PLAYER_NAME_INPUT_MAX",
               "PLAYER_NAME_SHOWN_MAX")
-WAVE4_FOUNDATION = {"EXCHANGE_MONEY_DIGITS": 13, "SAFEBOX_PAGE_COUNT_MAX": 5, "SAFEBOX_SLOT_COUNT_MAX": 225,
+WAVE4_FOUNDATION = {"EXCHANGE_MONEY_DIGITS": 12, "SAFEBOX_PAGE_COUNT_MAX": 5, "SAFEBOX_SLOT_COUNT_MAX": 225,
                     "WINDOW_BELT_INVENTORY": 7, "WINDOW_GROUND": 12, "VIEW_EQUIP_SLOT_NUM": 16, "GUILD_NAME_MAX_LEN": 24,
                     "PLAYER_NAME_SHOWN_MAX": 22}
 
@@ -311,7 +321,7 @@ def foundation_modules(module):
     13), with their targets."""
     modules = _foundation_modules_3b(module)
     for name, value in (("SAFEBOX", 3), ("MALL", 4), ("DRAGON_SOUL_INVENTORY", 5), ("BELT_INVENTORY", 7),
-                        ("GROUND", 12), ("VIEW_EQUIP_SLOT_NUM", 16)):
+                        ("GROUND", 12), ("VIEW_EQUIP_SLOT_NUM", 16), ("EXCHANGE_MONEY_DIGITS", 12)):
         setattr(modules["player"], name, value)
     modules["exchange"] = types.SimpleNamespace(EXCHANGE_ITEM_MAX_NUM=12, EXCHANGE_COLUMNS=4)
     modules["shop"] = types.SimpleNamespace(SHOP_SLOT_COUNT=40, SHOP_TAB_COUNT_MAX=3)
@@ -391,7 +401,9 @@ class SafeboxPages(LimitsTest):
         today, foundation = self.m.read({}), self.m.foundation()
         self.assertEqual(self.m.safebox_pages(27, today),
                          [{"index": 0, "label": "I"}, {"index": 1, "label": "II"}, {"index": 2, "label": "III"}])
-        self.assertEqual([p["label"] for p in self.m.safebox_pages(45, foundation)], ["I", "II", "III", "IIII", "IIIII"])
+        # Legacy's names since NOVA-97 (uisafebox.py PAGE_NAMES), no longer
+        # one more "I" a page.
+        self.assertEqual([p["label"] for p in self.m.safebox_pages(45, foundation)], ["I", "II", "III", "IV", "V"])
         self.assertEqual(self.m.safebox_pages(9, today), [{"index": 0, "label": "I"}])
         self.assertEqual(self.m.safebox_pages(3, today), [{"index": 0, "label": "I"}], "at least one page")
         self.assertEqual(len(self.m.safebox_pages(45, today)), 3, "today's cap of 3 (min(3, ...))")

@@ -213,3 +213,21 @@ body.skin-classic.help .help__close-label
 	text-align: center;
 	pointer-events: none;
 }
+
+/* Pins against the modern sheet (the reviewed design's cells and tiles,
+   which classic does not take): the lines and the pointers' boxes bare, no
+   bullets. */
+body.skin-classic.help .help__line,
+body.skin-classic.help .help-stick
+{
+	display: block;
+	box-sizing: content-box;
+	min-height: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.help .help__bullet
+{
+	display: none;
+}

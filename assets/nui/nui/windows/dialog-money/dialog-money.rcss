@@ -1,7 +1,50 @@
-/* The money dialog (nui_dialog_money.py). The width, the field and the
-   footer come from components/dialog.rcss; the scrim centers it. The amount
-   line sits under the field. */
+/* The money dialog (nui_dialog_money.py; the reviewed design, board
+   WDialogs). The width, the field and the footer come from
+   components/dialog.rcss; the scrim centers it. Its title glyph, a coin, on
+   the accent's soft tile; the amount line, muted, under the field. */
+.dialog-money .nui-dialog
+{
+	min-width: 330dp;
+}
+.dialog-money__icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin: -2dp var(--space-2) 0 0;
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 16dp;
+	vertical-align: middle;
+}
+.dialog-money__icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	display: block;
+}
+.dialog-money .nui-window__body
+{
+	padding: var(--space-3) 18dp var(--space-2) 18dp;
+}
+.dialog-money .nui-dialog__field
+{
+	width: 170dp;
+}
 .dialog-money__amount
 {
 	margin-top: var(--space-2);
+	color: var(--text-muted);
+}
+.dialog-money .nui-dialog__footer
+{
+	gap: 10dp;
+	padding: 12dp 18dp 15dp 18dp;
+}
+.dialog-money .nui-dialog__footer .nui-button
+{
+	min-width: 82dp;
 }

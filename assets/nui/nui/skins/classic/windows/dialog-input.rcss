@@ -20,3 +20,14 @@ body.skin-classic.dialog-input .nui-window__footer
 	padding: 8dp 16dp 11dp 16dp;
 	gap: 10dp;
 }
+
+/* Pins against the modern sheet (the reviewed design's look, which classic
+   does not take): no title glyph, the middle art's width. */
+body.skin-classic.dialog-input .dialog-input__icon
+{
+	display: none;
+}
+body.skin-classic.dialog-input .nui-dialog__footer .nui-button
+{
+	min-width: 61dp;
+}

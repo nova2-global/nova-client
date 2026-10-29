@@ -1,11 +1,19 @@
-/* The inventory's modern look (P14 spec 6.1): a 236dp window at the
-   screen's right above the taskbar (legacy's place; the controller keeps
-   the player's drags), the costume, dragon soul and mall buttons in the title
-   bar, the equipment on a 44dp pitch over a code-drawn figure, the page tabs
-   (one per page, sharing the width), the bag (a lean slot grid of 5 x 44dp
-   columns) and the money bar. Classic (legacy's 176 x 565 board, its art and
-   places; OLD's 196 x 627 at the foundation's table):
-   skins/classic/windows/inventory.rcss. */
+/* The inventory's modern look (P14 spec 6.1; the stage 1 design,
+   Inventory board): a 236dp window at the screen's right above the taskbar
+   (legacy's place; the controller keeps the player's drags). The paper
+   doll: legacy's equipment slots at their EquipmentSlot places (a 150 x 182
+   slot space scaled so a 32px slot is the 40dp cell, every gap between two
+   neighbors the modern 4dp so the cells' shared 2dp hit outsets tile them),
+   over a figure (an image the controller passes, by the race), a diamond
+   lattice and a soft accent light behind it, a rune circle in perspective
+   under its feet that turns slowly and rests under reduced motion, and
+   corner brackets, all code but the figure; the costume, dragon soul and
+   item shop buttons where legacy's equipment base holds them. Under it the
+   stats row, the page tabs (one per page, in a segmented well), the bag (a
+   lean slot grid of 5 x 44dp columns) and the money. The shortcut rail
+   docks on the window's left edge while it has entries. Classic (legacy's
+   176 x 565 board, its art and places; OLD's 196 x 627 at the
+   foundation's table): skins/classic/windows/inventory.rcss. */
 
 body.inv
 {
@@ -36,108 +44,202 @@ body.inv.inv--placed
 	padding: var(--space-2);
 	gap: var(--space-2);
 }
-
-/* The title bar's buttons: ghost icon buttons left of the close button. */
-.inv-button
-{
-	position: relative;
-	margin-left: 2dp;
-}
-.inv-button.is-active
-{
-	border-color: var(--accent);
-}
-.inv-button.is-active .nui-glyph
-{
-	--glyph-ink: var(--accent);
-}
-/* The legacy active effect over the dragon soul button is classic's. */
-.inv-button__effect
-{
-	display: none;
-	position: absolute;
-	left: 0;
-	top: 0;
-	pointer-events: none;
-}
 .inv-tip
 {
 	white-space: nowrap;
 }
 
-/* --- The equipment: a 5 x 4 grid of 40dp cells 4dp apart -------------------- */
+/* --- The paper doll ------------------------------------------------------------ */
 
+/* The equipment's well: the panel's gradient under the diamond lattice (two
+   sets of thin lines, 45 degrees either way); its edge line is the art's
+   (a border here would move the belt's dock by a rounded pixel). */
 .inv-equip
 {
 	position: relative;
 	width: 216dp;
-	height: 172dp;
+	height: 256dp;
+	background-color: var(--surface-sunken);
+	border-radius: 12dp;
+	decorator: repeating-linear-gradient(45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 7.6dp),
+	           repeating-linear-gradient(-45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 7.6dp),
+	           linear-gradient(180deg, var(--surface) 0%, var(--surface-sunken) 100%);
 }
-/* The figure: a quiet silhouette behind the wear cells. */
-.inv-figure
-{
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 216dp;
-	height: 172dp;
-	pointer-events: none;
-}
-.inv-figure__head, .inv-figure__body, .inv-figure__arm, .inv-figure__leg
+/* The art takes no pointer: the wear cells and buttons over it do. It
+   draws the well's edge line. */
+.inv-doll
 {
 	display: block;
 	position: absolute;
-	background-color: var(--surface-raised);
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	width: 216dp;
+	height: 256dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 12dp;
+	pointer-events: none;
 }
-.inv-figure__head
+.inv-doll__light, .inv-doll__rune, .inv-doll__figure, .inv-doll__corner
 {
-	left: 92dp;
-	top: 2dp;
-	width: 32dp;
-	height: 32dp;
+	display: block;
+	position: absolute;
+	pointer-events: none;
+}
+/* The soft accent light behind the figure, centered on the head's column. */
+.inv-doll__light
+{
+	left: 26.5dp;
+	top: 0;
+	width: 125dp;
+	height: 254dp;
+	decorator: radial-gradient(50% 58% at 50% 60%, var(--slot-target) 0%, transparent 72%);
+}
+/* A device without effects draws a gradient as its middle color: the light
+   would be a flat box. */
+@media (theme: no-effects)
+{
+	.inv-doll__light
+	{
+		display: none;
+	}
+}
+/* The figure (325 x 484 px, drawn for 200%): its box in legacy slot units
+   at -16.4, 4.1, 116.5 x 173.4, so the hood is at the head slot and the
+   feet at the shoes slot. At 0.7 over the well its steel reads as the
+   design's figure on the dark and on the light well alike. */
+.inv-doll__figure
+{
+	left: -0.25dp;
+	top: 9.625dp;
+	width: 145.625dp;
+	height: 216.75dp;
+	opacity: 0.7;
+}
+/* The rune circle under the feet: rings, eight marks and a hexagram on a
+   156dp disc laid back in perspective; the disc turns once in 26s. */
+.inv-doll__rune
+{
+	left: 11dp;
+	top: 151dp;
+	width: 156dp;
+	height: 156dp;
+	transform: perspective(300dp) rotateX(74deg);
+}
+.inv-doll__spin
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 156dp;
+	height: 156dp;
+}
+.inv-doll__spin.nui-anim
+{
+	animation: 26s linear-in-out infinite inv-rune-turn;
+}
+@keyframes inv-rune-turn
+{
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+}
+.inv-doll__ring, .inv-doll__tick, .inv-doll__chord
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+}
+.inv-doll__ring
+{
+	border-color: var(--accent-glow);
 	border-radius: 9999dp;
 }
-.inv-figure__body
+.inv-doll__ring--outer
 {
-	left: 80dp;
-	top: 30dp;
-	width: 56dp;
-	height: 80dp;
-	border-radius: var(--radius-lg);
+	left: 4dp;
+	top: 4dp;
+	width: 148dp;
+	height: 148dp;
+	border-width: 2.5dp;
 }
-.inv-figure__arm
+.inv-doll__ring--glow
 {
-	top: 40dp;
-	width: 18dp;
-	height: 70dp;
-	border-radius: var(--radius-lg);
+	left: 12dp;
+	top: 12dp;
+	width: 132dp;
+	height: 132dp;
+	border-width: 2dp;
+	border-color: var(--accent);
 }
-.inv-figure__arm--left { left: 60dp; transform: rotate(12deg); }
-.inv-figure__arm--right { left: 138dp; transform: rotate(-12deg); }
-.inv-figure__leg
+.inv-doll__ring--inner
 {
-	top: 104dp;
-	width: 22dp;
-	height: 66dp;
-	border-radius: var(--radius-lg);
+	left: 26dp;
+	top: 26dp;
+	width: 104dp;
+	height: 104dp;
+	border-width: 1.5dp;
 }
-.inv-figure__leg--left { left: 84dp; }
-.inv-figure__leg--right { left: 110dp; }
+/* The marks: four bars across the disc, each drawing its two ends at the
+   outer ring. */
+.inv-doll__tick
+{
+	left: 0;
+	top: 75dp;
+	width: 156dp;
+	height: 6dp;
+	decorator: linear-gradient(90deg, var(--accent-glow) 0%, var(--accent-glow) 6%, transparent 6%, transparent 94%, var(--accent-glow) 94%, var(--accent-glow) 100%);
+}
+.inv-doll__tick--b { transform: rotate(45deg); }
+.inv-doll__tick--c { transform: rotate(90deg); }
+.inv-doll__tick--d { transform: rotate(135deg); }
+/* The hexagram: six chords of the inner ring, each 26dp from the middle. */
+.inv-doll__chord
+{
+	left: 33dp;
+	top: 77dp;
+	width: 90dp;
+	height: 1.5dp;
+	background-color: var(--accent-glow);
+}
+.inv-doll__chord--a { transform: rotate(0deg) translateY(26dp); }
+.inv-doll__chord--b { transform: rotate(60deg) translateY(26dp); }
+.inv-doll__chord--c { transform: rotate(120deg) translateY(26dp); }
+.inv-doll__chord--d { transform: rotate(180deg) translateY(26dp); }
+.inv-doll__chord--e { transform: rotate(240deg) translateY(26dp); }
+.inv-doll__chord--f { transform: rotate(300deg) translateY(26dp); }
+/* The corner brackets. */
+.inv-doll__corner
+{
+	width: 14dp;
+	height: 14dp;
+	border-color: var(--accent-glow);
+}
+.inv-doll__corner--tl { left: 5dp; top: 5dp; border-left-width: 1.5dp; border-top-width: 1.5dp; }
+.inv-doll__corner--tr { right: 5dp; top: 5dp; border-right-width: 1.5dp; border-top-width: 1.5dp; }
+.inv-doll__corner--bl { left: 5dp; bottom: 5dp; border-left-width: 1.5dp; border-bottom-width: 1.5dp; }
+.inv-doll__corner--br { right: 5dp; bottom: 5dp; border-right-width: 1.5dp; border-bottom-width: 1.5dp; }
 
 /* A wear cell's place, by the wear slot's name (nui_limits' tables): a
-   place the table in use lacks has no element. Column c and row r on the
-   44dp pitch: left c x 44dp, top r x 44dp. */
+   place the table in use lacks has no element. Today's places are legacy's
+   EquipmentSlot places (uiscript inventorywindow.py) at 1.25 from (26, 8)
+   in the doll, with every gap between two neighbors evened to the modern
+   4dp (legacy's run from 0 to 7px: the right column stands 5dp nearer,
+   and no place moves more than 4dp up or down): the cells' shared 2dp hit
+   outsets (components/slot-grid.rcss; a window sheet sets none) meet in
+   each gap, so the pointer between two cells is over one of them (P14b). */
 .inv-wear-place
 {
 	position: absolute;
 	width: 40dp;
 	height: 40dp;
 }
-/* The tall places: the weapon is three cells, the armor two. */
-.inv-wear--weapon { height: 128dp; }
-.inv-wear--body { height: 84dp; }
+/* The tall places: the weapon is 32 x 96 in legacy, the armor 32 x 64. */
+.inv-wear--weapon { height: 120dp; }
+.inv-wear--body { height: 80dp; }
 /* The wear cell fills its place; the item's icon at its own size in the
-   middle (a 1x2 sword in the weapon's three cells too). */
+   middle (a 1x2 sword in the weapon's place too). */
 .inv-wear
 {
 	display: flex;
@@ -150,21 +252,113 @@ body.inv.inv--placed
 {
 	height: auto;
 }
-.inv-wear--weapon { left: 0; top: 0; }
-.inv-wear--unique1 { left: 44dp; top: 0; }
-.inv-wear--head { left: 88dp; top: 0; }
-.inv-wear--costume_sash { left: 132dp; top: 0; }
-.inv-wear--arrow { left: 176dp; top: 0; }
-.inv-wear--ring1 { left: 44dp; top: 44dp; }
-.inv-wear--body { left: 88dp; top: 44dp; }
-.inv-wear--ring2 { left: 132dp; top: 44dp; }
-.inv-wear--ear { left: 176dp; top: 44dp; }
-.inv-wear--wrist { left: 44dp; top: 88dp; }
-.inv-wear--shield { left: 132dp; top: 88dp; }
-.inv-wear--neck { left: 176dp; top: 88dp; }
-.inv-wear--unique2 { left: 44dp; top: 132dp; }
-.inv-wear--foots { left: 88dp; top: 132dp; }
-.inv-wear--belt { left: 132dp; top: 132dp; }
+.inv-wear--weapon { left: 26dp; top: 9dp; }
+.inv-wear--unique1 { left: 26dp; top: 187dp; }
+.inv-wear--head { left: 70dp; top: 8dp; }
+.inv-wear--body { left: 70dp; top: 52dp; }
+.inv-wear--belt { left: 70dp; top: 136dp; }
+.inv-wear--foots { left: 70dp; top: 187dp; }
+.inv-wear--shield { left: 114dp; top: 48dp; }
+.inv-wear--wrist { left: 114dp; top: 92dp; }
+.inv-wear--unique2 { left: 114dp; top: 187dp; }
+.inv-wear--arrow { left: 158dp; top: 5dp; }
+.inv-wear--ear { left: 158dp; top: 49dp; }
+.inv-wear--neck { left: 158dp; top: 93dp; }
+/* Today's table since the cut (NOVA-97): the rings either side of the
+   belt, on its row, as legacy's uiscript has them; the weapon starts 4dp
+   lower so it ends with the body and the bracelet, 4dp above the rings
+   (every gap 4dp, so the cells' hit boxes tile, P14b). */
+body.inv.inv--table-new .inv-wear--weapon { top: 12dp; }
+body.inv.inv--table-new .inv-wear--ring1,
+body.inv.inv--table-new .inv-wear--ring2 { top: 136dp; }
+/* OLD's slots for a table that holds them (the foundation's): the rings
+   under the weapon and the bracelet, the sash over the shield, which moves
+   one row down; its buttons stack under the necklace. */
+body.inv.inv--table-old .inv-wear--weapon { top: 8dp; }
+.inv-wear--ring1 { left: 26dp; top: 132dp; }
+.inv-wear--costume_sash { left: 114dp; top: 8dp; }
+.inv-wear--ring2 { left: 114dp; top: 140dp; }
+body.inv.inv--table-old .inv-wear--shield { top: 52dp; }
+body.inv.inv--table-old .inv-wear--wrist { top: 96dp; }
+body.inv.inv--table-old .inv-wear--arrow { top: 8dp; }
+body.inv.inv--table-old .inv-wear--ear { top: 52dp; }
+body.inv.inv--table-old .inv-wear--neck { top: 96dp; }
+body.inv.inv--table-old .inv-wear--unique1,
+body.inv.inv--table-old .inv-wear--foots,
+body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
+
+/* The costume, dragon soul and item shop buttons: round, centered where
+   legacy puts them (slot space 94, 21; 130, 124; 130, 164). */
+.inv-button
+{
+	position: absolute;
+	width: 32dp;
+	height: 32dp;
+	min-width: 0;
+	padding: 0;
+	border-radius: 16dp;
+	line-height: 30dp;
+	decorator: radial-gradient(circle at 50% 30%, var(--surface-hover) 0%, var(--surface-sunken) 75%);
+}
+.inv-button .nui-glyph
+{
+	--glyph-ink: var(--text);
+}
+.inv-button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.inv-button--costume { left: 121dp; top: 15dp; }
+.inv-button--dss
+{
+	left: 159dp;
+	top: 141dp;
+	width: 36dp;
+	height: 36dp;
+	border-radius: 18dp;
+	line-height: 34dp;
+}
+.inv-button--mall
+{
+	left: 162dp;
+	top: 195dp;
+	width: 30dp;
+	height: 30dp;
+	border-radius: 15dp;
+	line-height: 28dp;
+}
+.inv-button--mall .nui-glyph
+{
+	--glyph-ink: var(--warning);
+}
+/* The dragon soul window's active effect: an accent ring on the button. */
+.inv-button--dss.is-on
+{
+	border-color: var(--accent);
+}
+body.inv.inv--table-old .inv-button--costume,
+body.inv.inv--table-old .inv-button--dss,
+body.inv.inv--table-old .inv-button--mall
+{
+	left: 163dp;
+	width: 28dp;
+	height: 28dp;
+	border-radius: 14dp;
+	line-height: 26dp;
+}
+body.inv.inv--table-old .inv-button--costume { top: 140dp; }
+body.inv.inv--table-old .inv-button--dss { top: 170dp; }
+body.inv.inv--table-old .inv-button--mall { top: 200dp; }
+/* The legacy active effect over the dragon soul button is classic's. */
+.inv-button__effect
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	pointer-events: none;
+}
+
 /* The belt docks here: its right edge on the inventory's left edge, its top
    at the bag's top (place_next_to). The equipment starts 11dp inside the
    body's border box (the 1dp border, the body's 8dp padding, 2dp of
@@ -173,27 +367,127 @@ body.inv.inv--placed
 {
 	position: absolute;
 	left: -11dp;
-	top: 180dp;
+	top: 334dp;
 	width: 0;
 	height: 0;
 }
 
-/* --- The page tabs ----------------------------------------------------------- */
+/* --- The stats row ----------------------------------------------------------- */
+
+.inv-stats
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 6dp;
+	width: 216dp;
+}
+.inv-stat
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 20dp;
+	padding: 0 7dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+	color: var(--text);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.inv-stat__value
+{
+	margin-left: 5dp;
+	line-height: 18dp;
+}
+/* The icons, two parts each in the accent: crossed blades (attack), a
+   shield (defence) and a star of two squares (magic attack). */
+.inv-stat__icon
+{
+	display: block;
+	position: relative;
+	width: 11dp;
+	height: 11dp;
+}
+.inv-stat__a, .inv-stat__b
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+	border-color: var(--accent);
+}
+.inv-stat__icon--attack .inv-stat__a, .inv-stat__icon--attack .inv-stat__b
+{
+	left: -1dp;
+	top: 4.75dp;
+	width: 13dp;
+	height: 1.5dp;
+	background-color: var(--accent);
+}
+.inv-stat__icon--attack .inv-stat__a { transform: rotate(45deg); }
+.inv-stat__icon--attack .inv-stat__b { transform: rotate(-45deg); }
+.inv-stat__icon--defence .inv-stat__a
+{
+	left: 1dp;
+	top: 0;
+	width: 9dp;
+	height: 11dp;
+	border-width: 1.5dp;
+	border-radius: 2dp 2dp 5dp 5dp;
+}
+.inv-stat__icon--magic .inv-stat__a, .inv-stat__icon--magic .inv-stat__b
+{
+	left: 2dp;
+	top: 2dp;
+	width: 7dp;
+	height: 7dp;
+	border-width: 1.5dp;
+}
+.inv-stat__icon--magic .inv-stat__b { transform: rotate(45deg); }
+
+/* --- The page tabs: a segmented well, the page shown raised ------------------- */
 
 .inv-tabs
 {
 	display: flex;
 	flex-direction: row;
-	gap: var(--space-1);
+	box-sizing: border-box;
+	gap: 2dp;
 	width: 216dp;
+	padding: 3dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
 }
 .inv-tab
 {
 	flex: 1 1 0;
 	min-width: 0;
-	height: 28dp;
+	height: 24dp;
 	padding: 0;
-	line-height: 26dp;
+	line-height: 22dp;
+}
+.inv-tabs .inv-tab
+{
+	border-color: transparent;
+	border-radius: 6dp;
+	background-color: transparent;
+	color: var(--text-muted);
+}
+.inv-tabs .inv-tab:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.inv-tabs .inv-tab.is-selected
+{
+	background-color: var(--surface-raised);
+	border-color: var(--border);
+	color: var(--text);
 }
 .inv-tab__label
 {
@@ -206,7 +500,7 @@ body.inv.inv--placed
 {
 	flex: 0 0 auto;
 }
-/* The money bar: a sunken field with the coin and the amount on its right,
+/* The money: the coin, then a sunken field with the amount on its right,
    wide enough for MONEY_DIGITS and their separators. */
 .inv-money
 {
@@ -216,15 +510,7 @@ body.inv.inv--placed
 	box-sizing: border-box;
 	width: 216dp;
 	height: 28dp;
-	padding: 0 var(--space-2);
-	background-color: var(--surface-sunken);
-	border-width: 1dp;
-	border-color: var(--border);
-	border-radius: var(--radius-sm);
-}
-.inv-money:hover
-{
-	border-color: var(--accent);
+	gap: 6dp;
 }
 .inv-money__coin
 {
@@ -233,9 +519,74 @@ body.inv.inv--placed
 .inv-money__amount
 {
 	flex: 1 1 auto;
+	box-sizing: border-box;
+	height: 28dp;
+	padding: 0 9dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 7dp;
 	color: var(--text);
 	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 26dp;
 	text-align: right;
 	white-space: nowrap;
 	pointer-events: none;
+}
+.inv-money:hover .inv-money__amount
+{
+	border-color: var(--accent);
+}
+
+/* --- The shortcut rail ----------------------------------------------------- */
+
+/* A slim board on the window's left edge, under its title bar: one 36dp
+   button per entry, a glyph in each, its hint on the left. */
+.inv-rail
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: absolute;
+	right: 100%;
+	top: 46dp;
+	margin-right: 6dp;
+	padding: 8dp 6dp 6dp 6dp;
+	gap: 6dp;
+}
+.inv-rail.is-empty
+{
+	display: none;
+}
+.inv-rail__grip
+{
+	display: block;
+	width: 16dp;
+	height: 3dp;
+	margin-bottom: 1dp;
+	border-radius: 2dp;
+	background-color: var(--border);
+}
+.inv-rail__button
+{
+	position: relative;
+	width: 36dp;
+	height: 36dp;
+	min-width: 0;
+	padding: 0;
+	border-radius: 10dp;
+	line-height: 34dp;
+}
+.inv-rail__button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.inv-rail__tip
+{
+	left: auto;
+	right: 100%;
+	bottom: auto;
+	top: 7dp;
+	margin: 0 8dp 0 -320dp;
 }

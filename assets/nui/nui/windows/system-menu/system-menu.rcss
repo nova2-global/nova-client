@@ -1,16 +1,19 @@
-/* The system menu's modern look: one column of buttons, the mall and the
-   exit button set apart by a wider gap, as legacy's column (40 px before
-   them, 30 px elsewhere, 25 px buttons). The facade centers the body.
-   Classic (the thin board, 200 x 288, with the xlarge button art at
-   legacy's places): skins/classic/windows/system-menu.rcss. */
+/* The system menu's modern look (the reviewed design, board WSystemMenu):
+   one column of 38dp buttons in legacy's order, each a glyph and its label
+   from the left, the mall and the exit button set apart by a wider gap, as
+   legacy's column (40 px before them, 30 px elsewhere). The mall keeps
+   legacy's gold label (the warning ink), the exit is the danger button and
+   Cancel the ghost one. The facade centers the body. Classic (the thin
+   board, 200 x 288, with the xlarge button art at legacy's places):
+   skins/classic/windows/system-menu.rcss. */
 
-/* The sheet's own place frames the window in its 320 x 360dp snapshots;
-   the facade's center() replaces it in the client. */
+/* The sheet's own place frames the window and its shadow in its 440 x
+   560dp snapshots; the facade's center() replaces it in the client. */
 body.system-menu
 {
 	left: 50dp;
-	top: 12dp;
-	width: 220dp;
+	top: 30dp;
+	width: 280dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -30,18 +33,108 @@ body.system-menu
 {
 	display: block;
 	width: 100%;
-	margin-top: var(--space-1);
+	height: 38dp;
+	margin-top: 7dp;
+	padding: 0 15dp;
+	border-radius: 9dp;
+	line-height: 36dp;
+	text-align: left;
 }
 .system-menu__button--group
 {
-	margin-top: var(--space-3);
+	margin-top: var(--space-4);
 }
 .system-menu__button:first-child
 {
 	margin-top: 0;
 }
-/* The mall stands out, as legacy's gold label does: the accent. */
+
+/* The glyph before each label, in muted ink that brightens under the
+   pointer. */
+.system-menu__button .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+	margin: -2dp 11dp 0 0;
+}
+.system-menu__button:hover .nui-glyph
+{
+	--glyph-ink: var(--text);
+}
+.system-menu__button--mall .nui-glyph, .system-menu__button--mall:hover .nui-glyph
+{
+	--glyph-ink: var(--warning);
+}
+.system-menu__button--exit .nui-glyph, .system-menu__button--exit:hover .nui-glyph
+{
+	--glyph-ink: var(--danger);
+}
+
+/* The mall stands out, as legacy's gold label does: the warning ink and a
+   warm edge. */
 .system-menu__button--mall
 {
-	color: var(--accent);
+	border-color: var(--ember-glow);
+	color: var(--warning);
+}
+.system-menu__button--mall:hover
+{
+	border-color: var(--warning);
+}
+
+/* The menu's own glyphs (components/glyph.rcss has no book, panel or
+   power sign), drawn on the glyph's parts as the shared ones are. help:
+   an open book, two pages on one spine. */
+.system-menu__glyph--help .nui-glyph__a, .system-menu__glyph--help .nui-glyph__b
+{
+	top: 2dp;
+	width: 7dp;
+	height: 12dp;
+	border-width: 2dp;
+}
+.system-menu__glyph--help .nui-glyph__a
+{
+	left: 1dp;
+	border-radius: 2dp 0 0 2dp;
+}
+.system-menu__glyph--help .nui-glyph__b
+{
+	left: 8dp;
+	border-radius: 0 2dp 2dp 0;
+}
+/* game-options: a panel with two setting bars. */
+.system-menu__glyph--game-options .nui-glyph__a
+{
+	left: 1dp;
+	top: 1dp;
+	width: 14dp;
+	height: 14dp;
+	border-width: 2dp;
+	border-radius: 3dp;
+}
+.system-menu__glyph--game-options .nui-glyph__b, .system-menu__glyph--game-options .nui-glyph__c
+{
+	left: 4dp;
+	height: 2dp;
+	background-color: var(--glyph-ink);
+}
+.system-menu__glyph--game-options .nui-glyph__b { top: 5dp; width: 8dp; }
+.system-menu__glyph--game-options .nui-glyph__c { top: 9dp; width: 5dp; }
+/* exit: the power sign, a ring open at the top (the side without a border
+   tapers off) and its bar. */
+.system-menu__glyph--exit .nui-glyph__a
+{
+	left: 2dp;
+	top: 3dp;
+	width: 12dp;
+	height: 12dp;
+	border-width: 0 2dp 2dp 2dp;
+	border-radius: 9999dp;
+}
+.system-menu__glyph--exit .nui-glyph__b
+{
+	left: 7dp;
+	top: 1dp;
+	width: 2dp;
+	height: 7dp;
+	background-color: var(--glyph-ink);
 }

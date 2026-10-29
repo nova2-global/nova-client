@@ -5,13 +5,17 @@
 	     nui_costume.CostumeWindow (controller assets/root/nui_costume.py), a
 	     subclass of the legacy class whose slot window is a proxy over the
 	     costume group of the wear table (nui_limits), bound to the
-	     inventory's legacy handlers. Its cells are placed by name
+	     inventory's legacy handlers: the costume body and hair, as legacy's
+	     window since the cut (NOVA-97). Its cells are placed by name
 	     (cos-wear--<name>) in each skin's sheet; the companion block and its
-	     divider show only while the table has one (has_companion). It exists
-	     only while it shows, opens beside the inventory and moves alone
-	     after, and draws below the legacy UI layer. A left or right
-	     press anywhere on it raises the window (board_press), as legacy's
-	     window manager raised the window under a press. -->
+	     divider show only while the table has one (has_companion; the cut
+	     hides it). The modern skin stands a figure between the slots on a
+	     small rune circle: an image whose path the controller passes, the
+	     male or the female one by the character's race. It exists only
+	     while it shows, opens beside the inventory and moves alone after,
+	     and draws below the legacy UI layer. A left or right press anywhere
+	     on it raises the window (board_press), as legacy's window manager
+	     raised the window under a press. -->
 	<title>costume</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="costume.rcss"/>
@@ -29,6 +33,20 @@
 	</div>
 	<div class="nui-window__body cos__body">
 		<div id="cos-grid" class="cos-grid" data-for="g : wear_on" data-class-nui-attach-right="attach_right">
+			<!-- The stage's art (today's table): the halo, the rune circle
+			     (it turns the other way to the inventory's), the figure, and
+			     the two empty frames legacy's costume art paints on the left. -->
+			<div class="cos-stage">
+				<div class="cos-stage__halo"></div>
+				<div class="cos-stage__rune"><div class="cos-stage__spin nui-anim"><span
+					class="cos-stage__ring cos-stage__ring--outer"></span><span class="cos-stage__ring cos-stage__ring--glow"></span><span
+					class="cos-stage__ring cos-stage__ring--inner"></span><span class="cos-stage__chord cos-stage__chord--a"></span><span
+					class="cos-stage__chord cos-stage__chord--b"></span><span class="cos-stage__chord cos-stage__chord--c"></span><span
+					class="cos-stage__chord cos-stage__chord--d"></span><span class="cos-stage__chord cos-stage__chord--e"></span><span
+					class="cos-stage__chord cos-stage__chord--f"></span></div></div>
+				<div class="cos-stage__figure"><img class="cos-stage__image" data-if="figure != ''" data-attr-src="figure"/></div>
+				<span class="cos-stage__frame cos-stage__frame--a"></span><span class="cos-stage__frame cos-stage__frame--b"></span>
+			</div>
 			<div class="cos-divider" data-if="has_companion"></div>
 			<div class="cos-wear-place" data-for="w : slots" data-attr-class="'cos-wear-place cos-wear--' + w.name">
 				<div class="nui-slot nui-anim cos-wear" data-attr-id="'cos-wear-' + w.name"

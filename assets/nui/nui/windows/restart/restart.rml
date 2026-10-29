@@ -17,8 +17,8 @@
 </head>
 <body template="nui" class="nui-window nui-fx nui-anim restart" data-model="restart">
 	<div class="restart__buttons">
-		<button id="restart-here" class="nui-button nui-anim restart__button restart__button--here" data-event-mousedown="act('here', ev.button)">@ui.RESTART_HERE</button>
-		<button id="restart-town" class="nui-button nui-anim restart__button restart__button--town" data-event-mousedown="act('town', ev.button)">@ui.RESTART_TOWN</button>
+		<button id="restart-here" class="nui-button nui-anim restart__button restart__button--here" data-event-mousedown="act('here', ev.button)"><span class="nui-glyph nui-glyph--mouse-auto"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>@ui.RESTART_HERE</button>
+		<button id="restart-town" class="nui-button nui-anim restart__button restart__button--town" data-event-mousedown="act('town', ev.button)"><span class="nui-glyph nui-glyph--home"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>@ui.RESTART_TOWN</button>
 	</div>
 </body>
 </rml>

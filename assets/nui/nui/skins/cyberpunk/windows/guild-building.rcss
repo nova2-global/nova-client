@@ -1,0 +1,40 @@
+/* Cyberpunk overlay of nui/windows/guild-building/guild-building.rml, after
+   the reviewed WGuildBuilding board: the house emblem in a square tile with
+   the dim neon edge, its roof magenta; the section headings in the accent,
+   tracked; the two lists square wells on a faint cyan film, the selected
+   row lit from cyan, inside the 70% line with the magenta left edge; the
+   cost and position values in square wells. */
+
+body.skin-cyberpunk.guild-building .guild-building__title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.guild-building .guild-building__title-icon .nui-glyph__a
+{
+	border-color: transparent transparent var(--cyberpunk-edge-alt) transparent;
+}
+body.skin-cyberpunk.guild-building .guild-building__heading
+{
+	color: var(--accent);
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.guild-building .guild-building__list
+{
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.guild-building .guild-building__row.is-selected
+{
+	border-color: var(--cyberpunk-edge);
+	border-left-color: var(--cyberpunk-edge-alt);
+	decorator: horizontal-gradient(var(--selection) transparent);
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.guild-building .guild-building__value, body.skin-cyberpunk.guild-building .guild-building__coord-value
+{
+	border-color: var(--border);
+	border-radius: 0;
+}

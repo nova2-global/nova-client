@@ -65,6 +65,10 @@ body.skin-classic.dsr .dsr__body
 	height: 232dp;
 	padding: 0;
 }
+body.skin-classic.dsr .dsr-title-icon
+{
+	display: none;
+}
 
 /* --- The modes ----------------------------------------------------------------------- */
 
@@ -80,6 +84,12 @@ body.skin-classic.dsr .dsr-modes
 	top: 0;
 	width: 0;
 	height: 0;
+	margin: 0;
+	padding: 0;
+	gap: 0;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 }
 body.skin-classic.dsr .dsr-mode-place
 {
@@ -141,6 +151,11 @@ body.skin-classic.dsr .dsr-main
 	width: 0;
 	height: 0;
 	margin: 0;
+	padding: 0;
+	gap: 0;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 }
 body.skin-classic.dsr .dsr-arrow
 {
@@ -216,6 +231,7 @@ body.skin-classic.dsr .dsr-refine:active
 	width: 88dp;
 	min-width: 0;
 	height: 21dp;
+	margin: 0;
 	padding: 0;
 	border-width: 0;
 	background-color: transparent;

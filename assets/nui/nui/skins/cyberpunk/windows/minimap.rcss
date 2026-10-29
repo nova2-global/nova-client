@@ -1,83 +1,142 @@
-/* Cyberpunk overlay of nui/windows/minimap/minimap.rml: the mockup's round
-   map in a thin neon ring with a soft glow, a ring of ticks just inside it,
-   violet round buttons on the ring and the place line on a neon plate. The
-   map view's rim fades into the disc under a gradient ring the frame draws
-   over it (reduced effects shows the rim hard). Not a mask: a mask costs
-   two layers on every frame the always shown map shows. The map image
-   itself is content and is never tinted. */
+/* Cyberpunk overlay of nui/windows/minimap/minimap.rml: the reviewed
+   mockup's radar (skins-stage2 ref Minimap-cyberpunk). The modern steel
+   bezel becomes a dark band between a 1dp neon ring on the map's edge and
+   a faint outer ring, with cyan ticks every 10 degrees on its inner half
+   and a soft halo outside it; faint radar rings over the map; the north
+   mark magenta; square dark buttons with the glyph in the accent (the close
+   button magenta); the place line and the observers on dark plates with a
+   magenta left edge, in the accent. The map view's rim fades into the band
+   under a gradient ring the frame draws over it, with the radar rings
+   (reduced effects shows both hard edged, without them). Not a mask: a mask
+   costs two layers on every frame the always shown map shows. The map
+   image itself is content and is never tinted. */
 
-/* The ring: a 1dp neon circle where the modern one has a 5dp band, so the
-   tick ring under it shows between the map and the ring. */
+/* --- The bezel ---------------------------------------------------------------------- */
+
+/* The band: the steel disc (146dp, 5dp past the 136dp frame) dark, its
+   rim the faint outer ring. */
+body.skin-cyberpunk.minimap .minimap__steel
+{
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge-dim);
+	background-color: var(--surface-sunken);
+	decorator: none;
+}
+body.skin-cyberpunk.minimap .minimap__steel.nui-fx
+{
+	box-shadow: none;
+}
+/* The ticks: 1 degree in 10, cyan, on the band's inner half; the first
+   decorator covers the outer half again in the band's color, then the
+   outer ring (the disc's round border clips both). */
+body.skin-cyberpunk.minimap .minimap__ticks
+{
+	decorator: radial-gradient(circle closest-side, transparent 0%, transparent 94.4%, var(--surface-sunken) 95.2%, var(--surface-sunken) 97.8%, var(--cyberpunk-edge-dim) 98.6%),
+		repeating-conic-gradient(var(--cyberpunk-edge) 0deg, var(--cyberpunk-edge) 1deg, transparent 1deg, transparent 10deg);
+}
+/* Under the map: the disc in the band's color. */
+body.skin-cyberpunk.minimap .minimap__base
+{
+	background-color: var(--surface-sunken);
+}
+/* The ring: a 1dp neon circle on the map's edge, where the modern one has
+   a 5dp band. */
 body.skin-cyberpunk.minimap .minimap__frame
 {
 	border-width: 1dp;
 	border-color: var(--cyberpunk-edge);
 }
-/* The rim: the disc's color over the map's outer 8% (the map is 128dp in
-   the 136dp frame: 94.1% of its radius), then clear for the ticks. */
+/* Over the map: its rim faded into the band (the map is 128dp in the 132dp
+   frame: 97% of its radius) and three faint radar rings. */
 body.skin-cyberpunk.minimap .minimap__frame.nui-board--ring
 {
-	decorator: radial-gradient(circle closest-side, transparent 86.6%, var(--surface-sunken) 94.1%, transparent 94.1%);
+	decorator: radial-gradient(circle closest-side, transparent 88%, var(--surface-sunken) 97%, transparent 97.5%),
+		repeating-radial-gradient(circle closest-side, transparent 0dp, transparent 21.5dp, var(--border) 22dp, var(--border) 22.5dp, transparent 23dp);
 }
-/* Its glow: the ring board's outline hook, a halo drawn by a gradient 6dp
-   outside the ring and a little inside it. */
+/* Its halo: the ring board's outline hook, a soft glow just outside the
+   band (13dp outside the frame, the band's rim at 7dp). */
 body.skin-cyberpunk.minimap .minimap__frame > .nui-chrome--outline
 {
 	display: block;
-	left: -7dp;
-	top: -7dp;
-	right: -7dp;
-	bottom: -7dp;
-	decorator: radial-gradient(circle closest-side, transparent 84%, var(--cyberpunk-glow) 91%, transparent 100%);
+	left: -13dp;
+	top: -13dp;
+	right: -13dp;
+	bottom: -13dp;
+	decorator: radial-gradient(circle closest-side, transparent 90%, var(--cyberpunk-glow) 92.5%, transparent 100%);
 }
-/* The backing disc shows only between the map (128dp) and the ring
-   (136dp): fine ticks around the map. */
-body.skin-cyberpunk.minimap .minimap__base
+/* North: the mark in magenta. */
+body.skin-cyberpunk.minimap .minimap__north
 {
-	background-color: var(--surface-sunken);
-	decorator: repeating-conic-gradient(var(--cyberpunk-edge-dim) 0deg, var(--cyberpunk-edge-dim) 2deg, transparent 2deg, transparent 10deg);
+	border-color: transparent transparent var(--cyberpunk-edge-alt) transparent;
 }
 
-/* The buttons: dark round chips with a violet edge. */
+/* --- The buttons: square dark chips ------------------------------------------------- */
+
 body.skin-cyberpunk.minimap .minimap__button, body.skin-cyberpunk.minimap .minimap__show
 {
-	border-color: var(--cyberpunk-edge-alt);
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
 	background-color: var(--surface-sunken);
+	decorator: none;
+}
+body.skin-cyberpunk.minimap .minimap__button--hide
+{
+	border-color: var(--cyberpunk-glow-alt);
 }
 body.skin-cyberpunk.minimap .minimap__button:hover, body.skin-cyberpunk.minimap .minimap__show:hover
 {
 	border-color: var(--accent);
 	background-color: var(--surface-hover);
 }
+body.skin-cyberpunk.minimap .minimap__button--hide:hover
+{
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--surface-hover);
+}
 body.skin-cyberpunk.minimap .minimap__button:active, body.skin-cyberpunk.minimap .minimap__show:active
 {
-	background-color: var(--surface-sunken);
+	background-color: var(--selection);
 }
 body.skin-cyberpunk.minimap .minimap__glyph
 {
-	color: var(--cyberpunk-title);
+	color: var(--accent);
+}
+body.skin-cyberpunk.minimap .minimap__icon, body.skin-cyberpunk.minimap .minimap__show-glyph
+{
+	--glyph-ink: var(--accent);
+}
+body.skin-cyberpunk.minimap .minimap__button--hide .minimap__icon, body.skin-cyberpunk.minimap .minimap__button--hide:hover .minimap__icon
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.minimap .minimap__button:hover .minimap__icon, body.skin-cyberpunk.minimap .minimap__show:hover .minimap__show-glyph
+{
+	--glyph-ink: var(--accent-hover);
 }
 
-/* The place and channel line, and the observers, on a neon plate. */
+/* --- The place line and the observers: dark plates ---------------------------------- */
+
 body.skin-cyberpunk.minimap .minimap__text
 {
-	border-width: 1dp;
-	border-color: var(--cyberpunk-edge-dim);
+	border-width: 1dp 1dp 1dp 2dp;
+	border-color: var(--border) var(--border) var(--border) var(--cyberpunk-edge-alt);
 	border-radius: 0;
 	background-color: var(--surface);
-	color: var(--cyberpunk-title);
+	color: var(--accent);
 	letter-spacing: 1dp;
 }
 
-/* Reduced effects: no halo and no rim (without effects their gradients
-   would draw one flat color over the map). */
+/* Reduced effects: no halo, rim, radar rings or tick cover (without effects
+   their gradients would draw one flat color over the map); the ticks go
+   too, so the band is plain. */
 @media (theme: reduced-effects)
 {
 	body.skin-cyberpunk.minimap .minimap__frame > .nui-chrome--outline
 	{
 		display: none;
 	}
-	body.skin-cyberpunk.minimap .minimap__frame.nui-board--ring
+	body.skin-cyberpunk.minimap .minimap__frame.nui-board--ring, body.skin-cyberpunk.minimap .minimap__ticks
 	{
 		decorator: none;
 	}

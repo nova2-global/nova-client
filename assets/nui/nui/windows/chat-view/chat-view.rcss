@@ -33,7 +33,18 @@ body.chat-view
 }
 .chat-view__block .chat__lines .nui-chat__line
 {
-	margin-left: 10dp;
+	margin-left: 12dp;
+	font-size: var(--font-md);
+	font-effect: shadow(0dp 1dp var(--text-outline));
+}
+/* An item link: a chip around the run (the chat's). */
+.chat-view__block .chat__lines .nui-link
+{
+	padding: 0 4dp;
+	border-width: 1dp;
+	border-color: var(--gauge-blue);
+	border-radius: 4dp;
+	background-color: var(--sp-recovery);
 }
 .chat-view__block .chat__lines.has-lines
 {

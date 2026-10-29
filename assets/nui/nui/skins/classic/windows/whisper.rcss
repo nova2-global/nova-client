@@ -4,7 +4,11 @@
    player made it (w x h, legacy's first 300 x 200): the thin board; the
    name slot (Parameter_Slot_05, 130 x 18) at 10, 10 with the partner's name
    at 13, 13 (or the partner field and the small thin OK at 145, 10); the
-   GM mark (ymirred.tga at 0.2, 49 x 25) at 206, 6; minimize and close
+   GM mark (ymirred.tga at 0.2, 49 x 25) at 206, 6; the partner's online
+   or offline mark (the messenger's list art, 16 x 16) at 142, 12 and its
+   language flag (32 x 32) at 160, 8 (NOVA-48); Block or Unblock on the
+   small art (43 x 21) at w - 86, 8, its label centered over the art and
+   running past it, as legacy's text (NOVA-47); minimize and close
    (15 x 15) at w - 42 and w - 24, 12; the lines in legacy's whisper box,
    20, 28 to w - 30, h - 62; the thin scroll bar (17 wide) at w - 25, 35,
    h - 100 tall; the dark edit bar (0x77000000) at 10, h - 60, w - 18 x 50,
@@ -97,6 +101,68 @@ body.skin-classic.whisper .whisper__gm-badge
 {
 	display: none;
 }
+body.skin-classic.whisper .whisper__online
+{
+	position: absolute;
+	left: 142dp;
+	top: 12dp;
+	width: 16dp;
+	height: 16dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/messenger_list_offline.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__online.is-online
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/messenger_list_online.sub" scale-none left top);
+}
+body.skin-classic.whisper .whisper__flag
+{
+	position: absolute;
+	left: 160dp;
+	top: 8dp;
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+body.skin-classic.whisper .whisper__flag-image
+{
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.whisper .whisper__block
+{
+	position: absolute;
+	right: 43dp;
+	top: 8dp;
+	width: 43dp;
+	height: 21dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	overflow: visible;
+	color: var(--classic-button-text);
+	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
+}
+body.skin-classic.whisper .whisper__block:hover
+{
+	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+}
+body.skin-classic.whisper .whisper__block:active
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+}
+body.skin-classic.whisper .whisper__block-label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	line-height: 21dp;
+	text-align: center;
+}
 body.skin-classic.whisper .whisper__accept
 {
 	position: absolute;
@@ -183,7 +249,16 @@ body.skin-classic.whisper .whisper__lines
 }
 body.skin-classic.whisper .whisper__lines .nui-chat__line
 {
+	padding-top: 0;
 	font-size: var(--font-md);
+	line-height: 15dp;
+	font-effect: none;
+}
+/* Modern's overlay well and corner grip do not show here. */
+body.skin-classic.whisper .whisper__well,
+body.skin-classic.whisper .whisper__grip
+{
+	display: none;
 }
 /* Legacy's GM line color (1.0, 0.632, 0.0), 1/255 from --edge-gm. */
 body.skin-classic.whisper .whisper__lines .nui-chat__line--w5
@@ -272,6 +347,16 @@ body.skin-classic.whisper .whisper__edit
 	height: 50dp;
 	padding: 5dp 67dp 5dp 5dp;
 	background-color: var(--classic-chat-log-fill);
+}
+/* Modern's compose box draws nothing here: the edit line and Send sit in
+   the bar as legacy places them. */
+body.skin-classic.whisper .whisper__compose
+{
+	display: block;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.whisper textarea.whisper__input
 {

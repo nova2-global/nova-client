@@ -27,8 +27,9 @@ facade and go into each new board.
 
 Where it differs from legacy: the window shows only when the atlas has a
 size (miniMap.GetAtlasSize), where legacy showed its frame without an image
-too; the title is empty, and the markup shows the default title, for a map
-localeInfo.MINIMAP_ZONE_NAME_DICT lacks, where legacy raised."""
+too. A map localeInfo.MINIMAP_ZONE_NAME_DICT lacks keeps the title the
+window has, as legacy's since NOVA-90 (it raised before): the default
+title, which the markup shows for an empty one, until a map with a name."""
 
 import weakref
 
@@ -187,7 +188,9 @@ class AtlasWindow(object):
 		self.mapName = mapName
 		names = getattr(localeInfo, "MINIMAP_ZONE_NAME_DICT", {}) or {}
 		title = names.get(mapName)
-		self.title = nui.plain_text(title) if title is not None else ""
+		if title is None:
+			return
+		self.title = nui.plain_text(title)
 		if self.board is not None:
 			self.board.set(title=self.title)
 

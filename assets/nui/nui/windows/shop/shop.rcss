@@ -1,17 +1,20 @@
-/* The shop's modern look (P16 spec 5.2.2): a lean 5 x 8 grid; under it the
-   tabs (the shown tab selected, one share of the width each) or the buy and
-   sell toggles (selected while their cursor mode is on), and the danger
-   close-shop button of the player's own shop. The controller places it at
-   legacy's (W - 400, 10) at its first show and keeps the place the player
-   drags it to; the sheet's place frames it in its snapshots. Classic
-   (legacy's 184 x 328 board, its buttons' art at the uiscript's places; a
-   tab's art follows its button state, so a three-tab shop opens with no tab
-   down, as legacy): skins/classic/windows/shop.rcss. */
+/* The shop's modern look (P16 spec 5.2.2; the reviewed mockup WShop): the
+   storefront emblem before the title; a lean 5 x 8 grid in raised wells;
+   under it, in one row, the tabs (a segmented well, the shown tab raised, one
+   share of the width each) or the buy (primary) and sell toggles (selected
+   while their cursor mode is on), or the danger close-shop button of the
+   player's own shop. The controller places it at legacy's (W - 400, 10) at
+   its first show and keeps the place the player drags it to; the sheet's
+   place frames it in its snapshots. Classic (legacy's 184 x 328 board, its
+   buttons' art at the uiscript's places; a tab's art follows its button
+   state, so a three-tab shop opens with no tab down, as legacy):
+   skins/classic/windows/shop.rcss. */
 
 body.shop
 {
 	left: 16dp;
 	top: 16dp;
+	width: 242dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -21,38 +24,133 @@ body.shop
 	tab-index: none;
 	focus: none;
 }
+/* The title's emblem: an accent chip with a storefront (an awning over the
+   walls and the door). */
+.shop__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.shop__emblem-awning, .shop__emblem-wall, .shop__emblem-door
+{
+	display: block;
+	position: absolute;
+	box-sizing: border-box;
+}
+.shop__emblem-awning
+{
+	left: 4dp;
+	top: 4dp;
+	width: 14dp;
+	height: 5dp;
+	border-radius: 2dp 2dp 1dp 1dp;
+	background-color: var(--accent);
+}
+.shop__emblem-wall
+{
+	left: 5dp;
+	top: 9dp;
+	width: 12dp;
+	height: 9dp;
+	border-width: 0 2dp 2dp 2dp;
+	border-color: var(--accent);
+}
+.shop__emblem-door
+{
+	left: 9dp;
+	top: 12dp;
+	width: 4dp;
+	height: 6dp;
+	background-color: var(--accent);
+}
 .shop__body
 {
-	padding: var(--space-3);
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 12dp 12dp;
 }
-.shop__footer
+.shop__grid
 {
-	justify-content: center;
-	padding: var(--space-3);
+	align-self: center;
+	decorator: nui-cells(40dp 4dp 7dp var(--surface-hover) var(--border) 1dp);
 }
-.shop__tabs
+/* The row under the grid: the tabs, or the toggles, or the close-shop
+   button, sharing the width. */
+.shop__footer
 {
 	display: flex;
 	flex-direction: row;
-	gap: var(--space-2);
-	width: 216dp;
+	margin-top: var(--space-3);
+	gap: 10dp;
+}
+.shop__buy, .shop__sell, .shop__close-shop
+{
+	flex: 1 1 0;
+	min-width: 0;
+}
+/* The tabs: legacy's radio buttons as a segmented well, as the tabs
+   component draws its row (components/tabs.rcss): muted labels, the shown
+   tab raised. */
+.shop__tabs
+{
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: row;
+	box-sizing: border-box;
+	height: 32dp;
+	padding: 3dp;
+	gap: 2dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
 }
 .shop__tab-slot
 {
 	display: block;
 	flex: 1 1 0;
+	min-width: 0;
 }
-.shop__tab
+.shop__tabs .shop__tab
 {
 	display: block;
 	width: 100%;
 	min-width: 0;
+	height: 24dp;
 	padding: 0 2dp;
+	border-color: transparent;
+	border-radius: 6dp;
+	background-color: transparent;
+	color: var(--text-muted);
+	line-height: 22dp;
 	overflow: hidden;
 }
-/* The shop's tab name (the server's, up to three in the 216dp row): the
-   small size, cut with an ellipsis if it is still too long; it takes no
-   pointer, so a press on it is the tab's. */
+.shop__tabs .shop__tab:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+/* The tab whose items show (is-current, the shop's tabIdx). is-down is
+   legacy's button state, which classic draws (a three-tab shop opens on its
+   second tab with no button down, legacy's own state). */
+.shop__tabs .shop__tab.is-current
+{
+	background-color: var(--surface-raised);
+	border-color: var(--border);
+	color: var(--text);
+}
+/* The shop's tab name (the server's, up to three in the row): the small
+   size, cut with an ellipsis if it is still too long; it takes no pointer,
+   so a press on it is the tab's. */
 .shop__tab-label
 {
 	display: block;
@@ -61,20 +159,4 @@ body.shop
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	pointer-events: none;
-}
-/* The tab whose items show (is-current, the shop's tabIdx), as a selected
-   choice. is-down is legacy's button state, which classic draws (a three-tab
-   shop opens on its second tab with no button down, legacy's own state). */
-.shop__tab.is-current
-{
-	background-color: var(--selection);
-	border-color: var(--accent);
-}
-.shop__buy, .shop__sell
-{
-	flex: 1 1 0;
-}
-.shop__close-shop
-{
-	flex: 1 1 auto;
 }

@@ -15,7 +15,9 @@ server's mode until its answer reaches OnChangePKMode; a block toggle sends
 /setblockmode with that bit flipped and shows the server's mask until its
 setblockmode command reaches OnBlockMode; the four flags call systemSetting
 (saved at exit), the shop names also uiPrivateShopBuilder.UpdateADBoard
-when turned on. uiGameOption.blockMode and viewChatMode stay the shared
+when turned on; a pickup filter toggle (NOVA-50: equipment, special,
+potions, others; what Z and ` pick up) flips its category through
+systemSetting.SetPickupFilter, which the client saves with the settings. uiGameOption.blockMode and viewChatMode stay the shared
 state: this module reads and writes them, never a copy. Escape closes the
 window in its legacy place (nui_hud.EscapeProxy); a window the player moved
 keeps its place across a hide, as legacy's one window does."""
@@ -34,6 +36,9 @@ import nui_hud
 
 DOCUMENT = "nui/windows/game-options/game-options.rml"
 BLOCK_COUNT = 6
+# The pickup filter's categories, in systemSetting.PICKUP_FILTER_*'s order
+# (uigameoption.py pickupFilterButtonList): equipment, special, potions, others.
+PICKUP_COUNT = 4
 
 
 def _block_bits():
@@ -57,7 +62,8 @@ class GameOptionsBoard(nui.Window):
 		if model is not None:
 			return model()
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
-		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True}
+		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
+		        "pickup": [True] * PICKUP_COUNT}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -68,6 +74,11 @@ class GameOptionsBoard(nui.Window):
 	def on_block(self, index, button):
 		if button == 0:
 			self._owner.nui_block(index)
+
+	@nui.on("pickup")
+	def on_pickup(self, index, button):
+		if button == 0:
+			self._owner.nui_pickup(index)
 
 	@nui.on("close")
 	def on_close(self, button):
@@ -121,13 +132,19 @@ class OptionDialog(nui_hud.LayoutCalls):
 	def blocked(mask):
 		return [bool(mask & (1 << i)) for i in range(BLOCK_COUNT)]
 
+	@staticmethod
+	def pickup():
+		"""Each category's toggle: down while the filter picks it up."""
+		return [bool(systemSetting.GetPickupFilter(i)) for i in range(PICKUP_COUNT)]
+
 	def nui_model(self):
 		mask = uiGameOption.blockMode
 		return {"name_color": constInfo.GET_CHRNAME_COLOR_INDEX(),
 		        "target_board": constInfo.GET_VIEW_OTHER_EMPIRE_PLAYER_TARGET_BOARD(),
 		        "pk_mode": self.pkMode, "block": mask, "blocked": self.blocked(mask),
 		        "view_chat": bool(systemSetting.IsViewChat()), "always_show_name": bool(systemSetting.IsAlwaysShowName()),
-		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText())}
+		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
+		        "pickup": self.pickup()}
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -210,6 +227,11 @@ class OptionDialog(nui_hud.LayoutCalls):
 	def RefreshShowSalesText(self):
 		self._set(sales_text=bool(systemSetting.IsShowSalesText()))
 
+	def RefreshPickupFilter(self):
+		"""A category's toggle is down while the filter picks it up
+		(uigameoption.py RefreshPickupFilter)."""
+		self._set(pickup=self.pickup())
+
 	# --- the board's events (uigameoption.py:149-311) -----------------------------------
 
 	def _in_effect(self, what):
@@ -282,6 +304,14 @@ class OptionDialog(nui_hud.LayoutCalls):
 			net.SendChatPacket("/pkmode %d" % mode, chat.CHAT_TYPE_TALKING)
 		else:
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.OPTION_PVPMODE_NOT_SUPPORT)
+
+	def nui_pickup(self, index):
+		"""A pickup filter toggle (NOVA-50): its category flipped, as legacy's
+		toggle up and down events both do (__TogglePickupFilter)."""
+		if not 0 <= index < PICKUP_COUNT:
+			return
+		systemSetting.SetPickupFilter(index, not systemSetting.GetPickupFilter(index))
+		self.RefreshPickupFilter()
 
 	def nui_block(self, index):
 		"""A block toggle: the toggles show the server's mask, and the command

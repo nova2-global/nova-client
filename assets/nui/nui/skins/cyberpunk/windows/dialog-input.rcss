@@ -1,0 +1,10 @@
+/* Cyberpunk overlay of nui/windows/dialog-input/dialog-input.rml, after the
+   reviewed WDialogs board: the title's tile a square with the dim neon
+   line. The rest is the dialog kit's look in the component skin. */
+
+body.skin-cyberpunk.dialog-input .dialog-input__icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}

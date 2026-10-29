@@ -27,6 +27,8 @@
       data-event-mousedown="board_press(ev.button)"
       data-class-eqv--table-new="table == 'new'" data-class-eqv--table-old="table == 'old'">
 	<div class="nui-window__titlebar eqv__titlebar">
+		<span class="eqv-title-icon"><span class="nui-glyph nui-glyph--character"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span></span></span>
 		<handle class="nui-window__handle eqv__handle" move_target="#document">
 			<span id="equipment-view-title" class="nui-window__title eqv__title">{{ title }}</span>
 		</handle>
@@ -36,6 +38,7 @@
 	</div>
 	<div class="nui-window__body eqv__body">
 		<div id="equipment-view-equip" class="eqv-equip" data-for="w : equip_on">
+			<div class="eqv-light"></div>
 			<div class="eqv-figure"><span class="eqv-figure__head"></span><span class="eqv-figure__body"></span><span
 				class="eqv-figure__arm eqv-figure__arm--left"></span><span class="eqv-figure__arm eqv-figure__arm--right"></span><span
 				class="eqv-figure__leg eqv-figure__leg--left"></span><span class="eqv-figure__leg eqv-figure__leg--right"></span></div>

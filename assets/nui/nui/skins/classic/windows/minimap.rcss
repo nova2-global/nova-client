@@ -16,7 +16,10 @@ body.skin-classic.minimap .minimap__window
 	width: 136dp;
 	height: 137dp;
 }
-body.skin-classic.minimap .minimap__base
+body.skin-classic.minimap .minimap__base,
+body.skin-classic.minimap .minimap__steel,
+body.skin-classic.minimap .minimap__ticks,
+body.skin-classic.minimap .minimap__north
 {
 	display: none;
 }
@@ -27,6 +30,8 @@ body.skin-classic.minimap .minimap__view
 }
 body.skin-classic.minimap .minimap__frame
 {
+	left: 0;
+	top: 0;
 	width: 136dp;
 	height: 137dp;
 	border-width: 0;
@@ -143,7 +148,9 @@ body.skin-classic.minimap .minimap__line--observers
 body.skin-classic.minimap .minimap__text
 {
 	padding: 0;
+	border-width: 0;
 	border-radius: 0;
+	font-weight: normal;
 	background-color: transparent;
 	color: var(--text);
 	font-size: var(--font-md);

@@ -11,9 +11,16 @@
 
 body.skin-classic.music-list
 {
+	left: 10dp;
+	top: 12dp;
 	width: 170dp;
 	height: 300dp;
 	min-width: 0;
+}
+/* The modern music chip is not legacy's. */
+body.skin-classic.music-list .music-list__title-icon
+{
+	display: none;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
    board's corner, later in the document, so without it they would sit above
@@ -65,6 +72,9 @@ body.skin-classic.music-list .music-list__list
 	width: 143dp;
 	height: 200dp;
 	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 }
 body.skin-classic.music-list .music-list__viewport
 {
@@ -88,6 +98,30 @@ body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderbar
 {
 	height: 12dp;
 }
+/* Legacy's scroll bar parts at their art's sizes, without the modern
+   arrows' padding, the track's margins and the corners. */
+body.skin-classic.music-list .music-list__viewport scrollbarvertical
+{
+	width: 15dp;
+	margin-left: 0;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowdec,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowinc
+{
+	box-sizing: content-box;
+	padding: 0;
+	border-radius: 0;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowdec:hover,
+body.skin-classic.music-list .music-list__viewport scrollbarvertical sliderarrowinc:hover
+{
+	background-color: transparent;
+}
+body.skin-classic.music-list .music-list__viewport scrollbarvertical slidertrack
+{
+	margin: 0;
+	border-radius: 0;
+}
 body.skin-classic.music-list .music-list__item
 {
 	display: block;
@@ -105,6 +139,7 @@ body.skin-classic.music-list .music-list__item.is-selected
 body.skin-classic.music-list .music-list__label
 {
 	display: inline-block;
+	overflow: visible;
 	height: 16dp;
 	padding: 0 4dp 0 0;
 	color: var(--text);
@@ -119,6 +154,7 @@ body.skin-classic.music-list .music-list__footer
 	display: block;
 	height: 0;
 	padding: 0;
+	gap: 0;
 }
 body.skin-classic.music-list .music-list__button
 {

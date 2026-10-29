@@ -1,8 +1,10 @@
-/* The help's modern look (P11 spec D14): a centered card on the scrim, the
-   20 lines in two columns, the taskbar pointers' texts as a list under
-   them (the pointers aim at the legacy taskbar's places, which the modern
-   taskbar does not keep, so their art is hidden), and Close in the footer.
-   Classic (legacy's layout over the whole screen):
+/* The help's modern look (P11 spec D14; the reviewed design, board WHelp):
+   a centered card on the scrim under its title row, the 20 lines in two
+   columns, each on a cell with an accent bullet, the taskbar pointers'
+   texts as a grid of tiles, four to a row, each with its glyph (the
+   pointers aim at the legacy taskbar's places, which the modern taskbar
+   does not keep, so their art is hidden), and Close centered in the
+   footer. Classic (legacy's layout over the whole screen):
    skins/classic/windows/help.rcss. */
 /* The modal's body takes the focus when it shows (RmlUi's FocusFlag::Auto
    needs a focusable element), so its keydown handler hears Escape and H;
@@ -21,19 +23,19 @@ body.help
 {
 	display: none;
 }
-/* 790dp with its padding and border: each column (370dp) holds the longest
-   English line (HELP_SCREEN_CAPTURE, 358 to 364dp wide from 100 to 200%, as
-   the font's hinting moves it) on one line at every scale. The card is never
-   taller than the screen (about 480dp: 998 px at 200% on a 900 px screen):
-   the heading, the pointers' list and Close stay, and the lines scroll. */
+/* 800dp with its padding and border: each column holds the longest English
+   line (HELP_SCREEN_CAPTURE) on one line; a longer translation wraps in its
+   cell. The card is never taller than the screen (about 480dp: 998 px at
+   200% on a 900 px screen): the title, the pointers' tiles and Close stay,
+   and the lines scroll. */
 .help__card
 {
 	box-sizing: border-box;
-	width: 790dp;
+	width: 800dp;
 	max-height: 100vh;
 	display: flex;
 	flex-direction: column;
-	padding: var(--space-4) var(--space-5) 0 var(--space-5);
+	padding: 0 18dp 0 18dp;
 }
 .help__heading, .help__sticks, .help__footer
 {
@@ -44,36 +46,115 @@ body.help
 	flex: 1 1 auto;
 	overflow-y: auto;
 }
+/* The title row, as a title bar: the glyph on the accent's soft tile, the
+   title, a rule under them across the card. */
 .help__heading
 {
 	display: block;
-	margin: 0 0 var(--space-3) 0;
+	height: 36dp;
+	margin: 0 -18dp var(--space-3) -18dp;
+	padding: 0 14dp;
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
 	color: var(--text);
-	font-size: var(--font-lg);
+	font-size: 13dp;
 	font-weight: bold;
+	line-height: 36dp;
 }
+.help__icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin: -2dp var(--space-2) 0 0;
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 16dp;
+	vertical-align: middle;
+}
+/* An open book, two pages on one spine (the system menu's Help). */
+.help__glyph
+{
+	--glyph-ink: var(--accent);
+	display: block;
+}
+.help__glyph .nui-glyph__a, .help__glyph .nui-glyph__b
+{
+	top: 2dp;
+	width: 7dp;
+	height: 12dp;
+	border-width: 2dp;
+}
+.help__glyph .nui-glyph__a
+{
+	left: 1dp;
+	border-radius: 2dp 0 0 2dp;
+}
+.help__glyph .nui-glyph__b
+{
+	left: 8dp;
+	border-radius: 0 2dp 2dp 0;
+}
+
 .help__lines, .help__sticks
 {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
-/* Two columns read down, in legacy's order. */
+/* Two columns read down, in legacy's order, 16dp apart. */
 .help__column
 {
 	display: block;
+	box-sizing: border-box;
 	width: 50%;
+}
+.help__column:first-child
+{
+	padding-right: var(--space-2);
+}
+.help__column + .help__column
+{
+	padding-left: var(--space-2);
 }
 .help__line
 {
 	display: block;
-	margin: 0;
-	padding: 3dp 0;
+	position: relative;
+	box-sizing: border-box;
+	min-height: 24dp;
+	margin: 0 0 3dp 0;
+	padding: 3dp 8dp 3dp 23dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-sunken);
 	color: var(--text);
 	font-size: var(--font-sm);
+	line-height: 16dp;
 }
+/* The bullet: an accent diamond. */
+.help__bullet
+{
+	display: block;
+	position: absolute;
+	left: 9dp;
+	top: 8dp;
+	width: 5dp;
+	height: 5dp;
+	background-color: var(--accent);
+	transform: rotate(45deg);
+}
+
+/* The pointers' texts: tiles, four to a row, each with its glyph and its
+   labels centered on the tile's height. */
 .help__sticks
 {
+	gap: 7dp;
 	margin-top: var(--space-3);
 	padding-top: var(--space-3);
 	border-top-width: 1dp;
@@ -81,11 +162,30 @@ body.help
 }
 .help-stick
 {
-	display: block;
-	width: 50%;
-	padding: 3dp 0;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	position: relative;
+	box-sizing: border-box;
+	flex: 1 1 22%;
+	min-height: 48dp;
+	padding: 6dp 6dp 6dp 32dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+	background-color: var(--surface-sunken);
 	color: var(--text-muted);
 	font-size: var(--font-sm);
+	line-height: 14dp;
+}
+.help-stick__glyph
+{
+	--glyph-ink: var(--text-muted);
+	position: absolute;
+	left: 9dp;
+	top: 50%;
+	margin-top: -8dp;
 }
 .help-stick__art
 {
@@ -93,11 +193,17 @@ body.help
 }
 .help-stick__label
 {
-	display: inline;
+	display: block;
 	margin-right: 4dp;
 }
-/* The footer spans the card's width, out of its side padding. */
+/* The footer spans the card's width, out of its side padding; Close in its
+   middle. */
 .help__footer
 {
-	margin: 12dp -24dp 0 -24dp;
+	justify-content: center;
+	margin: 12dp -18dp 0 -18dp;
+}
+.help__close
+{
+	min-width: 110dp;
 }

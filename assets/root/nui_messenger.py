@@ -5,16 +5,22 @@ While the messenger flag is on, Interface.__MakeWindows makes
 MessengerWindow below through nui_windows.make() instead of
 uiMessenger.MessengerWindow: a subclass of the legacy class
 (nui_facade.Facade) whose uiscript loader puts proxies where the widgets
-were (the board, the scroll bar, the four buttons, the resize button). The
+were (the board, the scroll bar, the six buttons, the resize button). The
 legacy group and member items (MessengerFriendGroup, MessengerGuildItem and
 the others) stay the window's data, as legacy makes them, but never show:
-the board shows what they hold, in legacy's order (showingItemList). So the
-C++ handler's calls (OnLogin, OnLogout, OnRemoveList, OnRemoveAllList,
-RefreshGuildMember), the lover's calls, the selection and its rules for the
-whisper and remove buttons, add friend (the dialog kit's input dialog),
-remove (its question: messenger.RemoveFriend and the remove packet, or a
-guild member's kick), whisper (Interface.OpenWhisperDialog) and the guild
-button are legacy's code.
+the board shows what they hold, in legacy's order (showingItemList). The
+groups are legacy's: Friend, Guild, the staff rosters Helper and Team
+(NOVA-30, NOVA-46) and the Blocked Players (NOVA-47), and the family group
+with the lover. So the C++ handler's calls (OnLogin, OnLogout,
+OnRemoveList, OnRemoveAllList, RefreshGuildMember, SetLanguagesFlags,
+OnBlockListRefresh, OnBlockedAct), the lover's calls, the selection and its
+rules for the whisper, remove and unblock buttons, add friend (the dialog
+kit's input dialog), remove (its question: messenger.RemoveFriend and the
+remove packet, or a guild member's kick), block (the input dialog and the
+block packet), unblock (its question and the unblock packet), whisper
+(Interface.OpenWhisperDialog) and the guild button are legacy's code. A
+roster member's languages show as their flags after the name (legacy's
+flag images, from constInfo.GET_LANGUAGE_FLAG).
 
 What NovaUI changes: the list shows every row and scrolls by pixel (D18;
 legacy's 20 px line window drives no flow); the selection bar is a class
@@ -24,6 +30,7 @@ document's resize edge, which reaches legacy's OnResizeDialog through the
 resize button's proxy. The board exists only while the window shows and
 draws below the legacy UI layer, as legacy's window lived in it."""
 
+import constInfo
 import localeInfo
 import ui
 import uiMessenger
@@ -98,6 +105,18 @@ class _MessengerBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner.guildButton.click()
 
+	@nui.on("block_press")
+	def on_block_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.blockPlayerButton.click()
+
+	@nui.on("unblock_press")
+	def on_unblock_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.unblockPlayerButton.click()
+
 	@nui.on("close_press")
 	def on_close_press(self, button):
 		self.raise_for(button)
@@ -109,11 +128,25 @@ class _MessengerBoard(nui_hud.RaisesOnPress, nui.Window):
 		self._owner._resized(height)
 
 
+def flags_of(item):
+	"""The flag images of a roster member's languages (NOVA-30/46: legacy's
+	MessengerMemberItem.SetLanguages, one per space-separated code with a
+	flag file), rooted as the document binds them; none for another item."""
+	get_languages = getattr(item, "GetLanguages", None)
+	languages = get_languages() if get_languages is not None else ""
+	flags = []
+	for code in (languages or "").split():
+		path = constInfo.GET_LANGUAGE_FLAG(code)
+		if path:
+			flags.append("/" + path)
+	return flags
+
+
 def row_of(item):
 	"""A row of the board from one of legacy's items (spec 5.7.2): its kind
 	("group", "member" or "empty", legacy's MESSENGER_EMPTY_LIST line), its
-	name, its states, the member step and the lover's love points (-1 for
-	none) with their hint."""
+	name, its states, the member step, the lover's love points (-1 for
+	none) with their hint, and a roster member's language flags."""
 	if isinstance(item, uiMessenger.MessengerGroupItem):
 		kind = "group"
 	elif isinstance(item, uiMessenger.MessengerMemberItem):
@@ -136,6 +169,7 @@ def row_of(item):
 		"member": item.GetStepWidth() > 0,
 		"love": love,
 		"hint": hint,
+		"flags": flags_of(item),
 	}
 
 
@@ -175,6 +209,7 @@ class MessengerWindow(nui_facade.Facade, uiMessenger.MessengerWindow):
 			"rows": [],
 			"whisper_enabled": False,
 			"remove_enabled": False,
+			"unblock_enabled": False,
 			"height": float(HEIGHT),
 		}
 
@@ -185,7 +220,9 @@ class MessengerWindow(nui_facade.Facade, uiMessenger.MessengerWindow):
 	# --- the proxies' callbacks ---------------------------------------------------------
 
 	def _on_buttons(self, button=None):
-		self.nui_set(whisper_enabled=bool(self.whisperButton.enabled), remove_enabled=bool(self.removeButton.enabled))
+		unblock = getattr(self, "unblockPlayerButton", None)
+		self.nui_set(whisper_enabled=bool(self.whisperButton.enabled), remove_enabled=bool(self.removeButton.enabled),
+		             unblock_enabled=bool(unblock is not None and unblock.enabled))
 
 	def _rows(self):
 		return [row_of(item) for item in self.showingItemList]
@@ -210,7 +247,7 @@ class MessengerWindow(nui_facade.Facade, uiMessenger.MessengerWindow):
 			return
 		self.resizeButton.dragged(0, height - self.resizeButton.GetHeight())
 
-	# --- the loader (uimessenger.py:366-404, on proxies) -----------------------------------
+	# --- the loader (uimessenger.py MessengerWindow.__LoadWindow, on proxies) --------------
 
 	def _MessengerWindow__LoadWindow(self):
 		# The uiscript's style (messengerwindow.py: "movable", "float").
@@ -223,6 +260,9 @@ class MessengerWindow(nui_facade.Facade, uiMessenger.MessengerWindow):
 		self.removeButton = nui_proxies.ButtonProxy(self._on_buttons)
 		self.addFriendButton = nui_proxies.ButtonProxy()
 		self.guildButton = nui_proxies.ButtonProxy()
+		# The block list's buttons (NOVA-47).
+		self.blockPlayerButton = nui_proxies.ButtonProxy()
+		self.unblockPlayerButton = nui_proxies.ButtonProxy(self._on_buttons)
 
 		self.board.SetCloseEvent(ui.__mem_func__(self.Close))
 		self.scrollBar.SetScrollEvent(ui.__mem_func__(self.OnScroll))
@@ -233,6 +273,10 @@ class MessengerWindow(nui_facade.Facade, uiMessenger.MessengerWindow):
 
 		self.whisperButton.Disable()
 		self.removeButton.Disable()
+
+		self.blockPlayerButton.SetEvent(ui.__mem_func__(self.OnPressBlockButton))
+		self.unblockPlayerButton.SetEvent(ui.__mem_func__(self.OnPressUnblockButton))
+		self.unblockPlayerButton.Disable()
 
 		resizeButton = nui_form_proxies.ResizeProxy(0, 0, RESIZE_HEIGHT)
 		resizeButton.AddFlag("restrict_x")
@@ -245,7 +289,7 @@ class MessengerWindow(nui_facade.Facade, uiMessenger.MessengerWindow):
 		self.resizeButton.SetMoveEvent(ui.__mem_func__(self.OnResizeDialog))
 		self.resizeButton.SetPosition(0, HEIGHT)
 
-	# --- the groups: legacy's, never shown (uimessenger.py:483-499) ------------------------
+	# --- the groups: legacy's, never shown (uimessenger.py MessengerWindow.__AddGroup) -----
 
 	def _MessengerWindow__AddGroup(self):
 		member = uiMessenger.MessengerFriendGroup(ui.__mem_func__(self.GetSelf))
@@ -253,6 +297,20 @@ class MessengerWindow(nui_facade.Facade, uiMessenger.MessengerWindow):
 		self.groupList.append(member)
 
 		member = uiMessenger.MessengerGuildGroup(ui.__mem_func__(self.GetSelf))
+		member.Open()
+		self.groupList.append(member)
+
+		# Legacy's order: Friend, Guild, Helper, Team (NOVA-30, NOVA-46), then
+		# the Blocked Players (NOVA-47), at the C++ handler's group indices.
+		member = uiMessenger.MessengerHelperGroup(ui.__mem_func__(self.GetSelf))
+		member.Open()
+		self.groupList.append(member)
+
+		member = uiMessenger.MessengerTeamlerGroup(ui.__mem_func__(self.GetSelf))
+		member.Open()
+		self.groupList.append(member)
+
+		member = uiMessenger.MessengerBlockedGroup(ui.__mem_func__(self.GetSelf))
 		member.Open()
 		self.groupList.append(member)
 

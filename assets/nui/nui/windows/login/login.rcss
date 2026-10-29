@@ -1,65 +1,271 @@
-/* Login board: a body-level window, centered horizontally and 72dp above the
-   bottom edge like the legacy server board. It stays off the screen center,
-   where the legacy locale confirm dialog opens without a lock (uicommon.py
-   QuestionDialog) and NovaUI, drawn above it, would take its clicks.
-   Modern (the reviewed login card, stage 1): a 380dp card with 16dp of
-   padding and 12dp between its rows, no title bar; the server row in a
-   sunken well with Choose as a small raised button and its chevron; the
-   fields 38dp tall, each with its pictogram (a person, a lock) in its
-   left padding; Exit and Connect 40dp tall, Connect taking the room. The
-   legacy rows and their order stay: server, fields, error, buttons.
+/* The login screen, one page (the reviewed Login and Register boards, stage
+   1). The body covers the screen and takes no pointer; its boards take it.
+   Modern: the saved accounts board (300dp) and the account card (380dp)
+   side by side, 14dp apart, centered a little below the screen's middle,
+   each a window frame with 16dp of padding and no title bar; the links
+   centered 28dp above the bottom edge, Exit at the bottom left. The card:
+   the tabs in a sunken well, the title, the fields 38dp tall each with its
+   pictogram, Remember me and the forgot link on one row, the error line,
+   Log in 42dp tall, and the status well (the server's dot, its name, the
+   player count, the channel button) with the server and channel menu
+   under it. While the virtual keyboard shows, the pair rises above it.
+   The legacy locale confirm dialog opens at the screen's middle without
+   a lock; the screen hides while it is open (nui_login.before_popup).
    Classic: skins/classic/windows/login.rcss. */
 body.login
 {
-	width: 380dp;
-	left: 50%;
-	margin-left: -190dp;
-	bottom: 72dp;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
 }
-
-/* The NovaUI virtual keyboard below the board: the board rises above it.
-   Same threshold as the keyboard's own sheet. */
+.login-pair
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 50%;
+	margin-top: -170dp;
+	gap: 14dp;
+	justify-content: center;
+}
 @media (min-height: 680dp)
 {
-	body.login.login--keyboard
+	body.login.login--keyboard .login-pair
 	{
-		bottom: 303dp;
+		top: 40dp;
+		margin-top: 0;
 	}
 }
-
-.login .nui-window__body
+.login-accounts, .login-card, .login-links, .login-exit, .login-menu
 {
-	padding: 16dp 16dp 4dp 16dp;
+	pointer-events: auto;
+}
+.login-accounts
+{
+	position: relative;
+	width: 300dp;
+}
+.login-card
+{
+	position: relative;
+	width: 380dp;
+}
+.login-accounts__body, .login-card__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 16dp;
 	gap: 12dp;
 }
-
-/* The server row: the card's status well (the mockup's server and channel
-   line), the name in body text, Choose at its right end. */
-.login-server
+.login-accounts__body
 {
-	box-sizing: border-box;
-	height: 38dp;
-	padding: 0dp 6dp 0dp 12dp;
-	background-color: var(--surface-sunken);
+	gap: 6dp;
+}
+
+/* --- Saved accounts -------------------------------------------------------- */
+
+.login-h
+{
+	display: block;
+	margin-bottom: 4dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	font-weight: bold;
+}
+.login-acc
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10dp;
+	padding: 8dp 6dp 8dp 10dp;
 	border-width: 1dp;
-	border-color: var(--border);
+	border-color: transparent;
+	border-radius: 11dp;
+}
+.login-acc:hover
+{
+	background-color: var(--surface-hover);
+}
+.login-acc.is-selected
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+}
+.login-acc__face
+{
+	width: 36dp;
+	height: 36dp;
 	border-radius: 10dp;
 }
-.login-server__name
+.login-acc__id
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	gap: 1dp;
+	min-width: 0;
+}
+.login-acc__name
 {
 	color: var(--text);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.login-acc__sub
+{
+	color: var(--text-muted);
+	font-size: var(--font-xs);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-/* Choose: the label, then a small chevron, as the mockup's channel button. */
-.login-chevron
+/* The characters seen at the last log in: a small face each with its
+   level; the one played last ringed in the accent. */
+.login-chars
 {
-	margin: -1dp -3dp 0dp 2dp;
-	transform: scale(0.75);
+	display: flex;
+	flex-direction: row;
+	gap: 4dp;
+	margin-top: 3dp;
+}
+.login-char
+{
+	position: relative;
+	width: 20dp;
+	height: 20dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+}
+.login-char.is-last
+{
+	border-color: var(--accent);
+}
+.login-char__face
+{
+	width: 18dp;
+	height: 18dp;
+	border-radius: 4dp;
+}
+.login-char__lv
+{
+	position: absolute;
+	right: -6dp;
+	bottom: -5dp;
+	padding: 0 2dp;
+	border-radius: 3dp;
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	font-size: 9dp;
+	font-weight: bold;
+	line-height: 11dp;
+}
+.login-acc__forget
+{
+	position: relative;
+	flex: 0 0 auto;
+}
+.login-acc__forget .nui-glyph
+{
 	--glyph-ink: var(--text-muted);
+	transform: scale(0.7);
+}
+.login-tip
+{
+	left: auto;
+	right: 0;
+}
+.login-add
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 6dp;
+	height: 34dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 11dp;
+	color: var(--text-muted);
+	tab-index: none;
+}
+.login-add__glyph
+{
+	--glyph-ink: var(--text-muted);
+	transform: scale(0.75);
+}
+.login-hint
+{
+	display: block;
+	margin-top: 6dp;
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	line-height: 1.4;
+}
+.login-hint--field
+{
+	margin-top: 2dp;
+}
+.login-hint--center
+{
+	margin-top: -4dp;
+	text-align: center;
 }
 
+/* --- The card ---------------------------------------------------------------- */
+
+/* The tabs: two buttons sharing the width in a sunken well, the chosen one
+   raised. */
+.login-tabs
+{
+	display: flex;
+	flex-direction: row;
+	gap: 2dp;
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 11dp;
+	background-color: var(--surface-sunken);
+}
+.login-tab
+{
+	flex: 1 1 0;
+	height: 30dp;
+	line-height: 28dp;
+	border-color: transparent;
+	background-color: transparent;
+	color: var(--text-muted);
+	tab-index: none;
+}
+.login-tab.is-selected
+{
+	border-color: var(--border);
+	background-color: var(--surface-raised);
+	color: var(--text);
+}
+.login-pane
+{
+	display: flex;
+	flex-direction: column;
+	gap: 12dp;
+}
+.login-pane.login-pane--off
+{
+	display: none;
+}
+.login-title
+{
+	display: block;
+	color: var(--text);
+	font-size: var(--font-xl);
+	font-weight: bold;
+}
 /* A field and its pictogram: the pictogram sits over the field's left
    padding and takes no pointer, so a press on it goes to the field. */
 .login-control
@@ -77,6 +283,22 @@ input.login-input
 	height: 38dp;
 	padding-left: 34dp;
 	line-height: 36dp;
+}
+input.login-input--plain
+{
+	padding-left: 12dp;
+}
+input.login-input--eye
+{
+	padding-right: 36dp;
+}
+input.login-input--off
+{
+	display: none;
+}
+.login-pair-fields
+{
+	gap: 10dp;
 }
 .login-icon
 {
@@ -118,7 +340,71 @@ input.login-input
 	border-radius: 2dp;
 	background-color: var(--text-muted);
 }
-
+/* Show the password: an eye (a lens of two borders and a pupil) at the
+   field's right end; on while the password shows. */
+.login-eye
+{
+	position: absolute;
+	right: 6dp;
+	top: 7dp;
+	width: 24dp;
+	height: 24dp;
+	tab-index: none;
+}
+.login-eye__lid, .login-eye__pupil
+{
+	display: block;
+	position: absolute;
+	pointer-events: none;
+}
+.login-eye__lid
+{
+	left: 3dp;
+	top: 6dp;
+	width: 18dp;
+	height: 12dp;
+	box-sizing: border-box;
+	border-width: 2dp;
+	border-color: var(--text-muted);
+	border-radius: 9999dp;
+}
+.login-eye__pupil
+{
+	left: 10dp;
+	top: 10dp;
+	width: 4dp;
+	height: 4dp;
+	border-radius: 9999dp;
+	background-color: var(--text-muted);
+}
+.login-eye.is-selected .login-eye__lid
+{
+	border-color: var(--accent);
+}
+.login-eye.is-selected .login-eye__pupil
+{
+	background-color: var(--accent);
+}
+.login-row
+{
+	align-items: center;
+	gap: 8dp;
+}
+.login-link
+{
+	color: var(--accent);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	cursor: pointer;
+}
+.login-link:hover
+{
+	text-decoration: underline;
+}
+.login-rules--invalid .nui-toggle__track
+{
+	border-color: var(--danger);
+}
 /* An empty-field error focuses the field it names, and the component's
    :focus border (200,000) outweighs --invalid (100,000); this keeps the
    error border on the focused field (210,000). */
@@ -126,42 +412,160 @@ input.login-input.nui-input--invalid
 {
 	border-color: var(--danger);
 }
-
-/* Tab moves only between the two fields, as on the legacy board; the
-   buttons are for the mouse, and Enter in a field submits. */
+/* Tab moves only between the fields; the buttons are for the mouse, and
+   Enter in a field submits. */
 button.login-button
 {
 	tab-index: none;
 }
-/* Exit and Connect: the card's large buttons; Connect takes the room. */
-.login .nui-window__footer
-{
-	padding: 12dp 16dp 16dp 16dp;
-	gap: 8dp;
-}
-.nui-window__footer .login-button
-{
-	min-width: 96dp;
-}
-/* One class each, so the classic button rules (two classes) keep their
-   size in classic. */
+/* Log in and Create account: the card's large button. */
 .login-action
 {
-	height: 40dp;
-	line-height: 38dp;
+	height: 42dp;
+	line-height: 40dp;
 	border-radius: 10dp;
 }
-.login-connect
-{
-	flex: 1 1 auto;
-}
-
 /* One line kept for the error (data-visible hides it with visibility), so
-   the bottom-anchored panel does not grow upward when an error appears. */
+   the card does not jump when an error appears. */
 .login-error
 {
 	min-height: 17dp;
-	margin-top: -4dp;
+	margin-top: -6dp;
+	margin-bottom: -6dp;
+}
+
+/* The error line also carries the screen's one good news: the account was
+   created. */
+.login-error.login-error--ok
+{
+	color: var(--success);
+}
+
+/* The status well: the server's dot and name, the player count, the
+   channel button. The dot is the server's state: ok (a channel takes
+   players), busy, full, down (no channel answers) or unknown. */
+.login-status
+{
+	align-items: center;
+	gap: 8dp;
+	height: 36dp;
+	padding: 0 4dp 0 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 11dp;
+	background-color: var(--surface-sunken);
+	font-size: var(--font-sm);
+}
+.login-status__name
+{
+	color: var(--text);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.login-status__online
+{
+	color: var(--text-muted);
+	white-space: nowrap;
+}
+.login-dot
+{
+	display: inline-block;
+	width: 8dp;
+	height: 8dp;
+	margin-right: 6dp;
+	border-radius: 9999dp;
+	background-color: var(--text-muted);
+	vertical-align: middle;
+}
+.login-status .login-dot
+{
+	margin-right: 0;
+}
+.login-dot--ok
+{
+	background-color: var(--success);
+}
+.login-dot--busy
+{
+	background-color: var(--warning);
+}
+.login-dot--full, .login-dot--down
+{
+	background-color: var(--danger);
+}
+.login-choose
+{
+	white-space: nowrap;
+}
+/* Choose: the label, then a small chevron, as the mockup's channel button. */
+.login-chevron
+{
+	margin: -1dp -3dp 0dp 2dp;
+	transform: scale(0.75);
+	--glyph-ink: var(--text-muted);
+}
+/* The menu under the status well: the servers' row when there are several,
+   then Auto and the channels, each with its state's dot. */
+.login-menu
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 6dp;
+	margin-top: -6dp;
+	padding: 8dp;
+}
+.login-menu__servers
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 6dp;
+	width: 100%;
+	padding-bottom: 6dp;
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+}
+.login-menu__item
+{
+	tab-index: none;
+}
+
+/* --- Links and Exit ----------------------------------------------------------- */
+
+.login-links
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 10dp;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 28dp;
+	pointer-events: none;
+}
+.login-link-button
+{
+	pointer-events: auto;
+	height: 38dp;
+	padding: 0 16dp;
+	line-height: 36dp;
+	border-radius: 10dp;
+	font-weight: bold;
+}
+.login-link-button .nui-glyph, .login-exit .nui-glyph
+{
+	margin-right: 8dp;
+}
+.login-exit
+{
+	position: absolute;
+	left: 24dp;
+	bottom: 24dp;
+	height: 34dp;
+	padding: 0 12dp;
+	line-height: 32dp;
 }
 
 /* --- Intro motion ----------------------------------------------------------
@@ -178,9 +582,9 @@ button.login-button
    state until it starts, so each row's keyframes hold the hidden state
    first instead of using a delay. */
 
-/* The board rises from below with a small overshoot on every show. Same
-   weight as the window frame's open rule and linked later, so it wins. */
-.login.nui-shown.nui-anim
+/* The boards rise from below with a small overshoot on every show (the
+   body covers the screen and never moves). */
+.nui-shown .login-card.nui-anim, .nui-shown .login-accounts.nui-anim
 {
 	animation: 0.7s back-out login-enter;
 }
@@ -288,7 +692,7 @@ button.login-connect
 {
 	0%   { transform: translateX(-72dp) skewX(-20deg); }
 	72%  { transform: translateX(-72dp) skewX(-20deg); }
-	100% { transform: translateX(168dp) skewX(-20deg); }
+	100% { transform: translateX(420dp) skewX(-20deg); }
 }
 
 /* An empty-field error shakes the fields and slides its text in. The

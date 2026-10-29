@@ -113,7 +113,7 @@ class WindowBase(object):
 
 COMPILED = ("_LoginWindow__RefreshServerList", "_LoginWindow__OnSelectServer", "_LoginWindow__RequestServerStateList",
             "_LoginWindow__RefreshServerStateList", "_LoginWindow__OpenServerBoard", "_LoginWindow__OpenLoginBoard",
-            "_LoginWindow__OnClickSelectServerButton", "_LoginWindow__SaveChannelInfo", "_LoginWindow__LoadChannelInfo",
+            "_LoginWindow__OnClickSelectServerButton", "_LoginWindow__ApplyServerChoice", "_LoginWindow__SaveChannelInfo", "_LoginWindow__LoadChannelInfo",
             "_LoginWindow__GetServerID", "_LoginWindow__GetChannelID", "_LoginWindow__GetRegionID",
             "_LoginWindow__ServerIDToServerIndex", "_LoginWindow__ChannelIDToChannelIndex", "_LoginWindow__SetServerInfo",
             "NotifyChannelState", "PopupNotifyMessage", "_LoginWindow__OnCloseInputDialog", "EmptyFunc",
@@ -155,7 +155,7 @@ class ServerBoardTest(unittest.TestCase):
         self.nui_login = support.stub_module(
             "nui_login", place_picker=self.placed.append, enter_login_board=lambda win: False,
             leave_login_board=lambda win: None, before_popup=lambda win: None, after_popup=lambda win, cb: cb,
-            set_server=lambda win, text: None)
+            set_server=lambda win, text: None, is_one_page=lambda win: False, show_channels=lambda win, name, rows: None)
         self.app = support.stub_module("app", DIK_RETURN=DIK_RETURN, loggined=False,
                                        SetGuildMarkPath=lambda path: None, SetGuildSymbolPath=lambda path: None)
         self.modules = support.Modules(nui=support.make_nui(self.state), dbg=self.dbg, systemSetting=self.setting,
@@ -380,7 +380,10 @@ class IntroLoginHooks(unittest.TestCase):
 
     def test_the_refresh_hooks_end_the_list_refreshes(self):
         self.assertEqual(self.names("__RefreshServerList")[-1], "nui_server_board.refresh_servers")
-        self.assertEqual(self.names("__RefreshServerStateList")[-1], "nui_server_board.refresh_channels")
+        # The server board mirrors the channels, then the one-page login's card
+        # takes them too.
+        names = self.names("__RefreshServerStateList")
+        self.assertLess(names.index("nui_server_board.refresh_channels"), names.index("nui_login.show_channels"))
 
 
 if __name__ == "__main__":

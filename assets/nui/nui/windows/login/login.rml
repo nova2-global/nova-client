@@ -1,54 +1,220 @@
 <rml>
 <head>
-	<!-- Login board: replaces the legacy connect and login boards while
-	     UI_NUI_LOGIN is 1 (controller: assets/root/nui_login.py). Not modal,
-	     so the legacy locale strip stays usable. The password stays out of
-	     the model: its field reports every edit through change (ev.value).
-	     The body class nui-escape-keeps-focus keeps the caret in a field on
-	     Escape, as a legacy EditLine does. The login-r1..r4 rows and the
-	     Connect sheen carry the intro motion (login.rcss "Intro motion").
-	     keyboard is true while the NovaUI virtual keyboard comes with the
-	     board: the board then rises above it (login--keyboard). Each field
-	     sits in a login-control with its pictogram (a person, a lock),
-	     drawn in code over the field's left padding; the pictograms and the
-	     chevron on Choose take no pointer, and classic hides them. -->
+	<!-- The login screen, one page (the reviewed Login and Register boards):
+	     the saved accounts board on the left, the account card with its Log
+	     in and Create account tabs, the Discord and Website links under them,
+	     Exit at the bottom left. It replaces the legacy connect, server and
+	     login boards while UI_NUI_LOGIN is 1 (controller:
+	     assets/root/nui_login.py); the server and channel are chosen on the
+	     card (Channel: Auto), so there is no server board step.
+	     The body covers the screen and takes no pointer; only its boards do,
+	     so the legacy locale strip and the theme picker stay usable. Not
+	     modal. The passwords stay out of the model: each password field
+	     reports every edit through change (ev.value). The body class
+	     nui-escape-keeps-focus keeps the caret in a field on Escape, as a
+	     legacy EditLine does. keyboard is true while the NovaUI virtual
+	     keyboard comes with the screen: the boards then rise above it
+	     (login--keyboard). Saved accounts (accounts) come from
+	     nui_accounts.py: names, the characters seen at the last log in and
+	     their levels, never a password. A link with no address (nui_links.py)
+	     is not drawn. -->
 	<title>login</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="login.rcss"/>
 </head>
-<body template="nui" class="nui-window nui-fx nui-anim nui-escape-keeps-focus login" data-model="login" data-class-login--keyboard="keyboard">
-	<div class="nui-window__body nui-stack nui-anim" data-class-login-shake="error != ''">
-		<div class="nui-row login-server login-r1 nui-anim">
-			<span class="nui-grow login-server__name">{{ server }}</span>
-			<button id="login-choose" class="nui-button nui-button--small nui-anim login-button"
-				data-event-click="choose_server()">@ui.LOGIN_SELECT_BUTTON<span class="nui-glyph nui-glyph--chevron-down login-chevron"><span
-				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
-		</div>
-		<div class="nui-field login-r2 nui-anim">
-			<label class="nui-field__label" for="login-user">@ui.LOGIN_ID</label>
-			<div class="login-control">
-				<input id="login-user" type="text" class="nui-input nui-anim login-input" maxlength="19" autofocus="autofocus"
-					data-attr-value="user"
-					data-class-nui-input--invalid="error_on == 'user'"
-					data-event-change="user_edit(ev.value, ev.linebreak)"/>
-				<span class="nui-glyph nui-glyph--character login-icon"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+<body template="nui" class="nui-anim nui-escape-keeps-focus login" data-model="login" data-class-login--keyboard="keyboard">
+	<div class="login-pair">
+		<!-- Saved accounts: one row per account, most recent first; a press
+		     picks it (its name in the card), the cross forgets it. Hidden
+		     while there is none. -->
+		<div id="login-accounts" class="nui-window nui-fx nui-anim login-accounts login-r1" data-if="size(accounts) > 0">
+			<div class="nui-window__body login-accounts__body">
+				<span class="login-h">@ui.NUI_LOGIN_SAVED</span>
+				<div class="login-acc nui-anim" data-for="a : accounts" data-attr-id="'login-acc-' + it_index"
+				     data-class-is-selected="a.selected" data-event-mousedown="pick_account(a.name, ev.button)">
+					<img class="login-acc__face" data-if="a.face != ''" data-attr-src="a.face"/>
+					<span class="login-acc__id">
+						<span class="login-acc__name">{{ a.name }}</span>
+						<span class="login-acc__sub">{{ a.sub }}</span>
+						<span class="login-chars"><span class="login-char" data-for="c : a.chars" data-class-is-last="c.last"><img
+							class="login-char__face" data-if="c.face != ''" data-attr-src="c.face"/><span
+							class="login-char__lv">{{ c.lv }}</span></span></span>
+					</span>
+					<button class="nui-button nui-button--ghost nui-button--icon-sm nui-anim nui-has-tooltip login-acc__forget"
+					        data-event-mousedown="forget_account(a.name, ev.button)"><span class="nui-glyph nui-glyph--close"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+						class="nui-tooltip nui-anim login-tip">@ui.NUI_LOGIN_FORGET</span></button>
+				</div>
+				<button id="login-add" class="nui-button nui-button--ghost nui-anim login-add" data-event-mousedown="add_account(ev.button)"><span
+					class="nui-glyph nui-glyph--plus login-add__glyph"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span></span><span class="login-add__label">@ui.NUI_LOGIN_ADD_ACCOUNT</span></button>
+				<span class="login-hint">@ui.NUI_LOGIN_SAVED_HINT</span>
 			</div>
 		</div>
-		<div class="nui-field login-r3 nui-anim">
-			<label class="nui-field__label" for="login-password">@ui.LOGIN_PASSWORD</label>
-			<div class="login-control">
-				<input id="login-password" type="password" class="nui-input nui-anim login-input" maxlength="16"
-					data-class-nui-input--invalid="error_on == 'password'"
-					data-event-change="password_edit(ev.value, ev.linebreak)"/>
-				<span class="login-icon login-lock"><span class="login-lock__shackle"></span><span class="login-lock__body"></span></span>
+		<!-- The account card. Both tabs' fields stay in the document (the
+		     hidden tab, display: none, keeps what was typed); the tabs are
+		     buttons. -->
+		<div id="login-card" class="nui-window nui-fx nui-anim login-card" data-class-login-shake="error != '' || reg_error != ''">
+			<div class="nui-window__body login-card__body">
+				<div class="login-tabs login-r1 nui-anim" data-if="can_register">
+					<button id="login-tab-login" class="nui-button nui-anim login-tab" data-class-is-selected="tab == 'login'"
+					        data-event-mousedown="tab_press('login', ev.button)">@ui.NUI_LOGIN_TAB_LOGIN</button>
+					<button id="login-tab-register" class="nui-button nui-anim login-tab" data-class-is-selected="tab == 'register'"
+					        data-event-mousedown="tab_press('register', ev.button)">@ui.NUI_LOGIN_TAB_REGISTER</button>
+				</div>
+
+				<!-- Log in -->
+				<div class="login-pane" data-class-login-pane--off="tab != 'login'">
+					<span class="login-title login-r1 nui-anim">@ui.NUI_LOGIN_WELCOME</span>
+					<div class="nui-field login-r2 nui-anim">
+						<label class="nui-field__label" for="login-user">@ui.LOGIN_ID</label>
+						<div class="login-control">
+							<input id="login-user" type="text" class="nui-input nui-anim login-input" maxlength="19" autofocus="autofocus"
+								data-attr-value="user"
+								data-class-nui-input--invalid="error_on == 'user'"
+								data-event-change="user_edit(ev.value, ev.linebreak)"/>
+							<span class="nui-glyph nui-glyph--character login-icon"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+						</div>
+					</div>
+					<div class="nui-field login-r3 nui-anim">
+						<label class="nui-field__label" for="login-password">@ui.LOGIN_PASSWORD</label>
+						<div class="login-control">
+							<!-- Show the password: a second field of type text takes the
+							     place of the password field (an input's type cannot change
+							     from data); the eye copies the text across. -->
+							<input id="login-password" type="password" class="nui-input nui-anim login-input login-input--eye" maxlength="16"
+								data-class-login-input--off="show_password"
+								data-class-nui-input--invalid="error_on == 'password'"
+								data-event-change="password_edit(ev.value, ev.linebreak)"/>
+							<input id="login-password-shown" type="text" class="nui-input nui-anim login-input login-input--eye" maxlength="16"
+								data-class-login-input--off="!show_password"
+								data-class-nui-input--invalid="error_on == 'password'"
+								data-event-change="password_edit(ev.value, ev.linebreak)"/>
+							<span class="login-icon login-lock"><span class="login-lock__shackle"></span><span class="login-lock__body"></span></span>
+							<button id="login-eye" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim login-eye"
+							        data-class-is-selected="show_password" data-event-mousedown="eye_press(ev.button)"><span
+								class="login-eye__lid"></span><span class="login-eye__pupil"></span></button>
+						</div>
+					</div>
+					<div class="nui-row login-row login-r3 nui-anim">
+						<label id="login-remember" class="nui-toggle login-remember" data-event-mousedown="remember_press(ev.button)">
+							<input type="checkbox" class="nui-toggle__input" data-attrif-checked="remember"/>
+							<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+							<span class="nui-toggle__label">@ui.NUI_LOGIN_REMEMBER</span>
+						</label>
+						<span class="nui-grow"></span>
+						<span id="login-forgot" class="login-link nui-anim" data-if="has_forgot"
+						      data-event-mousedown="link_press('forgot', ev.button)">@ui.NUI_LOGIN_FORGOT</span>
+					</div>
+					<span class="nui-field__error login-error nui-anim" data-visible="error != ''" data-class-login-error--in="error != ''"
+						data-class-login-error--ok="error_ok">{{ error }}</span>
+					<button id="login-connect" class="nui-button nui-button--primary nui-anim login-button login-action login-connect login-r4"
+						data-event-click="submit()">@ui.NUI_LOGIN_TAB_LOGIN<span class="login-sheen nui-anim"><span class="login-sheen__half"></span><span class="login-sheen__half login-sheen__half--out"></span></span></button>
+					<!-- The server's state and the channel: the dot's color is the
+					     server's state, the count shows once the server reports it;
+					     the button opens the menu of servers and channels. -->
+					<div class="nui-row login-status login-r4 nui-anim">
+						<span class="login-dot" data-attr-class="'login-dot login-dot--' + server_state"></span>
+						<span class="login-status__name">{{ server_name }}</span>
+						<span class="login-status__online" data-if="online != ''">{{ online }}</span>
+						<span class="nui-grow"></span>
+						<button id="login-choose" class="nui-button nui-button--small nui-anim login-button login-choose"
+						        data-class-is-selected="menu_open" data-event-mousedown="menu_press(ev.button)">{{ channel_text }}<span
+							class="nui-glyph nui-glyph--chevron-down login-chevron"><span class="nui-glyph__a"></span><span
+							class="nui-glyph__b"></span></span></button>
+					</div>
+					<!-- The servers (when there is more than one) and the channels
+					     with their states; Auto picks one at each log in. -->
+					<div id="login-menu" class="nui-board nui-fx login-menu" data-if="menu_open">
+						<div class="login-menu__servers" data-if="size(servers) > 1">
+							<button class="nui-button nui-button--small nui-anim login-menu__item" data-for="s : servers"
+							        data-attr-id="'login-server-' + s.id" data-class-is-selected="s.selected"
+							        data-event-mousedown="server_press(s.id, ev.button)">{{ s.name }}</button>
+						</div>
+						<button id="login-channel-auto" class="nui-button nui-button--small nui-anim login-menu__item"
+						        data-class-is-selected="auto" data-event-mousedown="channel_press(0, ev.button)">@ui.NUI_LOGIN_AUTO</button>
+						<button class="nui-button nui-button--small nui-anim login-menu__item" data-for="c : channels"
+						        data-attr-id="'login-channel-' + c.id" data-class-is-selected="!auto && c.selected"
+						        data-attrif-disabled="c.state == 'full'"
+						        data-event-mousedown="channel_press(c.id, ev.button)"><span
+							data-attr-class="'login-dot login-dot--' + c.state"></span>{{ c.name }}</button>
+					</div>
+				</div>
+
+				<!-- Create account: the same checks as the auth core, run here
+				     first (nui_login.check_registration). -->
+				<div class="login-pane" data-class-login-pane--off="tab != 'register'" data-if="can_register">
+					<span class="login-title">@ui.NUI_LOGIN_REGISTER_TITLE</span>
+					<div class="nui-field">
+						<label class="nui-field__label" for="reg-user">@ui.LOGIN_ID</label>
+						<div class="login-control">
+							<input id="reg-user" type="text" class="nui-input nui-anim login-input" maxlength="30"
+								data-class-nui-input--invalid="reg_error_on == 'user'"
+								data-event-change="reg_edit('user', ev.value, ev.linebreak)"/>
+							<span class="nui-glyph nui-glyph--character login-icon"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
+						</div>
+					</div>
+					<div class="nui-field">
+						<label class="nui-field__label" for="reg-email">@ui.NUI_LOGIN_EMAIL</label>
+						<div class="login-control">
+							<input id="reg-email" type="text" class="nui-input nui-anim login-input login-input--plain" maxlength="64"
+								placeholder="@ui.NUI_LOGIN_EMAIL_HINT"
+								data-class-nui-input--invalid="reg_error_on == 'email'"
+								data-event-change="reg_edit('email', ev.value, ev.linebreak)"/>
+						</div>
+					</div>
+					<div class="nui-row login-pair-fields">
+						<div class="nui-field nui-grow">
+							<label class="nui-field__label" for="reg-password">@ui.LOGIN_PASSWORD</label>
+							<input id="reg-password" type="password" class="nui-input nui-anim login-input login-input--plain" maxlength="16"
+								placeholder="@ui.NUI_LOGIN_PASSWORD_HINT"
+								data-class-nui-input--invalid="reg_error_on == 'password'"
+								data-event-change="reg_edit('password', ev.value, ev.linebreak)"/>
+						</div>
+						<div class="nui-field nui-grow">
+							<label class="nui-field__label" for="reg-confirm">@ui.NUI_LOGIN_CONFIRM</label>
+							<input id="reg-confirm" type="password" class="nui-input nui-anim login-input login-input--plain" maxlength="16"
+								placeholder="@ui.NUI_LOGIN_CONFIRM_HINT"
+								data-class-nui-input--invalid="reg_error_on == 'confirm'"
+								data-event-change="reg_edit('confirm', ev.value, ev.linebreak)"/>
+						</div>
+					</div>
+					<div class="nui-field">
+						<label class="nui-field__label" for="reg-code">@ui.NUI_LOGIN_DELETE_CODE</label>
+						<input id="reg-code" type="text" class="nui-input nui-anim login-input login-input--plain" maxlength="7"
+							placeholder="@ui.NUI_LOGIN_DELETE_CODE_HINT"
+							data-class-nui-input--invalid="reg_error_on == 'code'"
+							data-event-change="reg_edit('code', ev.value, ev.linebreak)"/>
+						<span class="login-hint login-hint--field">@ui.NUI_LOGIN_DELETE_CODE_NOTE</span>
+					</div>
+					<div class="nui-row login-row">
+						<label id="login-rules" class="nui-toggle login-rules" data-class-login-rules--invalid="reg_error_on == 'rules'"
+						       data-event-mousedown="rules_press(ev.button)">
+							<input type="checkbox" class="nui-toggle__input" data-attrif-checked="rules"/>
+							<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+							<span class="nui-toggle__label">@ui.NUI_LOGIN_ACCEPT_RULES</span>
+						</label>
+						<span id="login-rules-link" class="login-link nui-anim" data-if="has_rules"
+						      data-event-mousedown="link_press('rules', ev.button)">@ui.NUI_LOGIN_RULES</span>
+					</div>
+					<span class="nui-field__error login-error nui-anim" data-visible="reg_error != ''" data-class-login-error--in="reg_error != ''">{{ reg_error }}</span>
+					<button id="login-create" class="nui-button nui-button--primary nui-anim login-button login-action login-connect"
+						data-event-click="create()">@ui.NUI_LOGIN_TAB_REGISTER</button>
+					<span class="login-hint login-hint--center">@ui.NUI_LOGIN_REGISTER_NOTE</span>
+				</div>
 			</div>
 		</div>
-		<span class="nui-field__error login-error nui-anim" data-visible="error != ''" data-class-login-error--in="error != ''">{{ error }}</span>
 	</div>
-	<div class="nui-window__footer login-r4 nui-anim">
-		<button id="login-exit" class="nui-button nui-anim login-button login-action" data-event-click="exit()">@ui.LOGIN_EXIT</button>
-		<button id="login-connect" class="nui-button nui-button--primary nui-anim login-button login-action login-connect"
-			data-event-click="submit()">@ui.LOGIN_CONNECT<span class="login-sheen nui-anim"><span class="login-sheen__half"></span><span class="login-sheen__half login-sheen__half--out"></span></span></button>
+	<div class="login-links login-r4 nui-anim" data-if="has_discord || has_website">
+		<button id="login-discord" class="nui-button nui-button--primary nui-anim login-button login-link-button" data-if="has_discord"
+		        data-event-mousedown="link_press('discord', ev.button)"><span class="nui-glyph nui-glyph--chat"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>@ui.NUI_LOGIN_DISCORD</button>
+		<button id="login-website" class="nui-button nui-anim login-button login-link-button" data-if="has_website"
+		        data-event-mousedown="link_press('website', ev.button)"><span class="nui-glyph nui-glyph--map"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>@ui.NUI_LOGIN_WEBSITE</button>
 	</div>
+	<button id="login-exit" class="nui-button nui-button--ghost nui-anim login-button login-exit" data-event-click="exit()"><span
+		class="nui-glyph nui-glyph--leave"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
+		class="nui-glyph__c"></span></span>@ui.LOGIN_EXIT</button>
 </body>
 </rml>

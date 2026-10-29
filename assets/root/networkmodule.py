@@ -268,6 +268,25 @@ class MainStream(object):
 			raise
 			import exception
 			exception.Abort("networkModule.SetGamePhase")
+		self.__NoteSavedAccount()
+
+	def __NoteSavedAccount(self):
+		"""NovaUI's login screen remembers the account (nui_accounts.py) when
+		it asked to: the select screen's characters with their levels, and
+		the one played. Never a password. A failure here never stops the
+		game."""
+		try:
+			import introSelect
+			import nui_accounts
+			slots = []
+			for index in range(introSelect.SelectCharacterWindow.SLOT_COUNT):
+				if net.GetAccountCharacterSlotDataInteger(index, net.ACCOUNT_CHARACTER_SLOT_ID):
+					slots.append((net.GetAccountCharacterSlotDataString(index, net.ACCOUNT_CHARACTER_SLOT_NAME),
+						net.GetAccountCharacterSlotDataInteger(index, net.ACCOUNT_CHARACTER_SLOT_RACE),
+						net.GetAccountCharacterSlotDataInteger(index, net.ACCOUNT_CHARACTER_SLOT_LEVEL)))
+			nui_accounts.note_game_start(getattr(self, "id", ""), player.GetName(), slots)
+		except Exception as error:
+			dbg.TraceError("networkModule: the saved account was not written (%s)" % type(error).__name__)
 
 	################################
 	# Functions used in python

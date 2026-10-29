@@ -14,6 +14,12 @@
 		"target_max": 12,
 		"lines_on": [
 			1
-		]
+		],
+		"block_shown": true,
+		"blocked": true,
+		"online_shown": true,
+		"online": false,
+		"flag_shown": false,
+		"flag_src": ""
 	}
 }

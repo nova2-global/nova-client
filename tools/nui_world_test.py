@@ -64,7 +64,9 @@ MARK_TOTAL = 1280                        # CGuildMarkImage::MARK_TOTAL_COUNT
 
 MINIMAP_METHODS = ("Show", "Hide", "ShowMiniMap", "HideMiniMap", "isShowMiniMap", "SetTop", "ScaleUp", "ScaleDown",
                    "SetMapName", "ShowAtlas", "ToggleAtlasWindow", "UpdateObserverCount", "Close", "SetImprisonmentDuration",
-                   "Destroy")
+                   "Destroy",
+                   # NOVA-49: the server line again after a channel change.
+                   "RefreshServerInfo")
 ATLAS_METHODS = ("LoadWindow", "Show", "Hide", "IsShow", "SetMapName", "SetCenterPositionAdjust", "OnPressEscapeKey", "Destroy")
 GAUGE_METHODS = ("Show", "Hide", "IsShow", "RefreshGauge", "EnableShowAlways", "DisableShowAlways", "Destroy")
 SIGN_METHODS = ("Open", "Show", "Hide", "IsShow", "OnMouseLeftButtonUp", "Destroy")
@@ -546,6 +548,21 @@ class MapNovaUI(unittest.TestCase):
         calls = [name for name, _ in world.game.log if name in ("miniMap.Destroy", "miniMap.UnregisterAtlasWindow")]
         self.assertEqual(calls, ["miniMap.UnregisterAtlasWindow"], "the discarded atlas lets go; no late Destroy")
 
+    def test_the_server_line_follows_a_channel_change(self):
+        """NOVA-49 (uiminimap.py RefreshServerInfo): game.py calls it when a
+        channel change renamed the channel in the server info text; before
+        the first Show it does nothing, and that Show reads the text."""
+        world = self.world()
+        net = world.game.modules["net"]
+        net.__dict__["_answers"]["GetServerInfo"] = "Nova - CH2"
+        world.minimap.RefreshServerInfo()
+        with quiet():
+            world.minimap.Show()
+        self.assertEqual(world.minimap.board.model["server_info"], "Nova - CH2")
+        net.__dict__["_answers"]["GetServerInfo"] = "Nova - CH3"
+        world.minimap.RefreshServerInfo()
+        self.assertEqual(world.minimap.board.model["server_info"], "Nova - CH3")
+
     def test_set_imprisonment_duration_sets_the_line_once(self):
         world = self.world()
         world.minimap.SetImprisonmentDuration(3600)
@@ -565,8 +582,9 @@ class MapNovaUI(unittest.TestCase):
             atlas.Show()
         self.assertEqual(atlas.board.model["title"], "Yongan Area")
         self.assertEqual(atlas.board.placement, ("position", (800 + 30) / 1.5, (450 - 20) / 1.5, (0.5, 0.5)))
+        # A map the dict lacks keeps the title, as legacy's since NOVA-90 (it raised before).
         atlas.SetMapName("metin2_map_unknown")
-        self.assertEqual(atlas.board.model["title"], "", "a map the dict lacks: the default title (legacy raises)")
+        self.assertEqual(atlas.board.model["title"], "Yongan Area", "a map the dict lacks keeps the title")
         atlas.SetCenterPositionAdjust(10, 10)
         self.assertEqual(atlas.board.placement, ("position", (800 + 10) / 1.5, (450 + 10) / 1.5, (0.5, 0.5)))
 

@@ -96,12 +96,33 @@ class Model(EquipmentViewTest):
         self.assertEqual((board.model["title"], board.model["table"]), ("Partner", "new"))
         self.assertEqual(board.model["cells"][4]["h"], 2, "the sword's size, drawn in the weapon's place")
 
-    def test_legacy_s_belt_slot_23_is_not_a_place(self):
+    def test_legacy_s_rings_and_belt_are_the_foundation_s_view_slots_13_to_15(self):
+        """Since NOVA-97 legacy's uiscript holds the view packet's 16 entries
+        (equipmentdialog.py: the rings and the belt at 13 to 15, the two
+        costumes not shown; its belt slot 23 is gone): with the foundation's
+        view table NovaUI shows them where legacy does; with today's 11,
+        which a server sending 11 never fills past 10, it has no place for
+        them."""
+        items = ((4, SWORD, 1), (13, RING, 1), (14, RING, 1), (15, BELT, 1))
         (_, legacy), (_, novaui) = self.worlds()
-        a, _, _ = self.open(legacy, items=((23, BELT, 1),))
-        b, _, _ = self.open(novaui, items=((23, BELT, 1),))
-        self.assertEqual(a.slotWindow.slots[23]["vnum"], BELT, "legacy's uiscript slot nothing fills in game")
-        self.assertEqual([cell for cell in w4.board(b).model["cells"] if cell["kind"]], [])
+        a, _, _ = self.open(legacy, items=items)
+        self.assertNotIn(23, a.slotWindow.slots)
+        self.assertNotIn(11, a.slotWindow.slots, "legacy shows no costume entry")
+        legacy_items = dict((index, slot["vnum"]) for index, slot in a.slotWindow.slots.items() if slot["vnum"])
+        self.assertEqual(legacy_items, {4: SWORD, 13: RING, 14: RING, 15: BELT})
+        limits = novaui.m("nui_limits")
+        limits.use(limits.foundation())
+        try:
+            b, _, _ = self.open(novaui, items=items)
+            board = w4.board(b)
+            vnums = b.slotWindow.vnums()
+            cells = dict((cell["index"], vnums[cell["index"]]) for cell in board.model["cells"] if cell["kind"])
+            self.assertEqual(dict((board.model["places"][i]["index"], vnum) for i, vnum in cells.items()), legacy_items)
+        finally:
+            limits.use(None)
+        world = self.world(True)
+        c, _, _ = self.open(world, items=items[1:])
+        self.assertEqual([cell for cell in w4.board(c).model["cells"] if cell["kind"]], [], "today's 11: no place")
 
     def test_a_count_above_one_shows(self):
         world = self.world(True)

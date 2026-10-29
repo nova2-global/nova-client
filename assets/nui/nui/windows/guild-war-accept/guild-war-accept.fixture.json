@@ -32,6 +32,10 @@
 				]
 			}
 		],
-		"name": "Black Wolves"
+		"name": "Black Wolves",
+		"members": "Players Limit from your guild: 16.",
+		"members_shown": true,
+		"score": "The war will end at 32 Kills.",
+		"score_shown": true
 	}
 }

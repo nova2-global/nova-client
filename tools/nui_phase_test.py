@@ -16,8 +16,8 @@ Each differential case builds two worlds with the same stand-in state,
 drives the legacy class through its methods (its buttons' events) and the
 NovaUI class through its board's data events, and compares what each made
 net, chr and the stream do, in order. net's getters (Get*, Is*) are left out
-of the comparison: the NovaUI select board reads all four slots for its
-slot list; every net call with an effect is compared."""
+of the comparison: the NovaUI select board reads every slot (five since
+NOVA-97) for its slot list; every net call with an effect is compared."""
 import ast
 import gc
 import inspect
@@ -57,7 +57,7 @@ MOTIONS = {"MOTION_INTRO_WAIT": 1, "MOTION_INTRO_SELECTED": 2, "MOTION_INTRO_NOT
 RACES = {"RACE_WARRIOR_M": 0, "RACE_ASSASSIN_W": 1, "RACE_SURA_M": 2, "RACE_SHAMAN_W": 3,
          "RACE_WARRIOR_W": 4, "RACE_ASSASSIN_M": 5, "RACE_SURA_W": 6, "RACE_SHAMAN_M": 7}
 CREATE_FIELD = "create-name"
-KEYS = {"escape": 1, "1": 2, "2": 3, "3": 4, "4": 5, "enter": 28, "f1": 59, "f2": 60, "left": 203, "right": 205}
+KEYS = {"escape": 1, "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "enter": 28, "f1": 59, "f2": 60, "left": 203, "right": 205}
 
 
 def account(*slots):
@@ -626,7 +626,9 @@ class FixtureTest(unittest.TestCase):
             self.assertEqual(create["paragraphs"], desc.load(os.path.join(LOCALE_EN, "jobdesc_warrior.txt")))
         select = fixture("select")["select"]
         self.assertEqual([(s["label"], s["level"]) for s in select["slots"]],
-                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0)])
+                         # Five slots since NOVA-97 (introselect.py SLOT_COUNT).
+                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0),
+                          ("@ui.SELECT_SLOT_EMPTY", 0)])
         self.assertEqual(fixture("loading")["loading"],
                          {"background": "d:/ymir work/uiloading/base/background_loading_warrior.sub",
                           "progress": 42.0, "error": False})
@@ -960,7 +962,9 @@ class SelectTest(unittest.TestCase):
         self.assertEqual((board.get("empire_name"), board.get("flag_image")),
                          ("@game.EMPIRE_B", "d:/ymir work/ui/intro/empire/empireflag_b.sub"))
         self.assertEqual([(s["label"], s["level"]) for s in board.get("slots")],
-                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0)])
+                         # Five slots since NOVA-97 (introselect.py SLOT_COUNT).
+                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0),
+                          ("@ui.SELECT_SLOT_EMPTY", 0)])
         self.assertTrue(board.get("occupied"))
         self.assertFalse(board.get("busy"))
         self.assertEqual(window.backGround.image, "d:/ymir work/ui/intro/select/select.sub")
@@ -1068,7 +1072,8 @@ class SelectTest(unittest.TestCase):
 
     def test_the_hotkeys_stay_in_the_phase_window(self):
         def keys(world, window, novaui):
-            for key in ("3", "right", "right", "left", "1", "4", "enter", "2", "enter"):
+            # 5 selects the fifth slot since NOVA-97 (introselect.py OnKeyDown).
+            for key in ("3", "right", "right", "left", "1", "5", "4", "5", "enter", "2", "enter"):
                 self.assertTrue(window.OnKeyDown(KEYS[key]))
 
         legacy_world, _, novaui_world, window = self.both([keys])

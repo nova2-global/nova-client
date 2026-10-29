@@ -6,10 +6,12 @@ While the guild-war-dialogs flag is on, the game window
 declaration) makes AcceptGuildWarDialog below through nui_windows.make()
 instead of uiGuild.AcceptGuildWarDialog: a subclass of the legacy class
 whose loader (__CreateDialog) puts proxies where the uiscript's widgets
-were, so Open (the declaring guild's name and type), the type buttons (which
-choose the declared type again, as legacy's), OK (the game window's
-"/war <name>") and Cancel or the close button ("/nowar <name>") are legacy's
-code. The type hints are the declare dialog's (nui_guild_war_declare).
+were, so Open (the declaring guild's name and type, and its member cap and
+end score, NOVA-90: each line shown only when the server sent a value, the
+cap as each guild's half), the type buttons (which choose the declared type
+again, as legacy's), OK (the game window's "/war <name>") and Cancel or the
+close button ("/nowar <name>") are legacy's code. The type hints are the
+declare dialog's (nui_guild_war_declare).
 
 A modal (D12) above the legacy UI layer that the scrim centers
 (nui_facade.DialogFacade). It has no field, and legacy's dialog handles no
@@ -70,25 +72,36 @@ class AcceptGuildWarDialog(declare.WarDialogMixin, nui_facade.DialogFacade, uiGu
 			raise
 
 	def nui_model(self):
+		# members and score (NOVA-90): the war's limit lines legacy's Open
+		# writes, each with its shown state.
 		return {"type": 0, "type_select": constInfo.GUILD_WAR_TYPE_SELECT_ENABLE != 0, "hints": declare.type_hints(),
-		        "name": ""}
+		        "name": "", "members": "", "members_shown": False, "score": "", "score_shown": False}
 
 	def _on_name(self, text):
 		self.nui_set(name=text or "")
 
-	# --- the loader (uiguild.py:250-290, on proxies) ---------------------------------------
+	def _limit_line(self, key):
+		"""A limit's text line (uiscript MembersCount, EndScore): its text and
+		its shown state reach the model keys `key` and `key`_shown."""
+		line = nui_proxies.TextProxy(lambda text: self.nui_set(**{key: nui.plain_text(text or "")}))
+		line.on_show = lambda shown: self.nui_set(**{key + "_shown": bool(shown)})
+		return line
+
+	# --- the loader (uiguild.py AcceptGuildWarDialog.__CreateDialog, on proxies) -----------
 
 	def _AcceptGuildWarDialog__CreateDialog(self):
 		# The uiscript's style (acceptguildwardialog.py: "movable", "float").
 		self.AddFlag("movable")
 		self.AddFlag("float")
 
-		self.board = declare.TitledBoardProxy(230, 130)
+		self.board = declare.TitledBoardProxy(230, 175)
 		self.typeButtonList = self._make_type_buttons()
 		self.acceptButton = nui_proxies.ButtonProxy()
 		self.cancelButton = nui_proxies.ButtonProxy()
 		self.inputSlot = nui_proxies.BoardProxy(130, 18)
 		self.inputValue = nui_proxies.TextProxy(self._on_name)
+		self.membersCountText = self._limit_line("members")
+		self.endScoreText = self._limit_line("score")
 
 		gameType = self._game_type()
 

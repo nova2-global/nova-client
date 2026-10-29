@@ -21,6 +21,11 @@
 				"index": 3,
 				"label": "@ui.SELECT_SLOT_EMPTY",
 				"level": 0
+			},
+			{
+				"index": 4,
+				"label": "@ui.SELECT_SLOT_EMPTY",
+				"level": 0
 			}
 		],
 		"occupied": true,

@@ -8,6 +8,7 @@
 		"view_chat": true,
 		"always_show_name": true,
 		"show_damage": true,
-		"sales_text": true
+		"sales_text": true,
+		"pickup": [true, true, false, true]
 	}
 }

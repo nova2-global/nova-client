@@ -1140,7 +1140,10 @@ class Game(object):
         self.element_counts = {}  # document -> elements, for nuigame.NuiStats (default 1)
         # Wave 3a (P11 spec 5.6): what the option windows read and write.
         self.settings = {"music_volume": 0.5, "sound_volume": 0.75, "fog_level": 1, "always_show_name": True,
-                         "show_damage": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0}
+                         "show_damage": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0,
+                         # The pickup filter's four categories (NOVA-50; the
+                         # client's PICKUP_FILTER_ALL by default).
+                         "pickup_filter": [True, True, True, True]}
         self.pk_mode = 0         # player.GetPKMode
         self.guild_id = 0        # player.GetGuildID
         self.software_tiling = False  # background.IsSoftwareTiling
@@ -1479,7 +1482,8 @@ class Game(object):
         """The Wave 3a stand-ins (P11 spec 5.6): systemSetting's getters and
         setters of the option windows over Game.settings (and the view chat
         and sales text flags of Wave 2b), every setter and SaveConfig
-        recorded; background.IsSoftwareTiling (Game.software_tiling) and
+        recorded (the pickup filter's GetPickupFilter and SetPickupFilter,
+        NOVA-50, by category); background.IsSoftwareTiling (Game.software_tiling) and
         EnableSoftwareTiling; app.GetFileList (Game.file_lists) and
         SetCameraMaxDistance. snd, net, chrmgr and uiPrivateShopBuilder are
         plain recording modules; musicInfo comes from load_music_info()."""
@@ -1512,6 +1516,9 @@ class Game(object):
         setter("SetUIScalePercent", lambda value: settings.__setitem__("ui_scale_percent", int(value)))
         setter("SetUIReducedMotion", lambda value: settings.__setitem__("ui_reduced_motion", int(value)))
         setter("SaveConfig", lambda: setattr(game, "saved_configs", game.saved_configs + 1))
+        # Through define(), so a test's scripted answer (Game.answer) wins.
+        define(setting, "GetPickupFilter", lambda index: bool(settings["pickup_filter"][index]))
+        setter("SetPickupFilter", lambda index, on: settings["pickup_filter"].__setitem__(index, bool(on)))
 
         background = modules["background"]
         background.IsSoftwareTiling = lambda: bool(game.software_tiling)
@@ -2147,6 +2154,11 @@ WAVE3B_PLAYER_CONSTANTS = {
     "AUTO_POTION_TYPE_HP": 0, "AUTO_POTION_TYPE_SP": 1,
     "DRAGON_SOUL_PAGE_SIZE": 32, "DRAGON_SOUL_PAGE_COUNT": 5, "DRAGON_SOUL_SLOT_COUNT": 960,
     "DRAGON_SOUL_EQUIPMENT_SLOT_START": 122, "DRAGON_SOUL_EQUIPMENT_PAGE_COUNT": 2, "DRAGON_SOUL_EQUIPMENT_FIRST_SIZE": 6,
+    # The money inputs' digits the client publishes since the foundation cut
+    # (nova-client-src a9976fc, NOVA-96: OLD's 13 for the dialogs, 12 for the
+    # exchange, 7 for the inventory's pick; Q13), which the legacy dialogs,
+    # exchange and inventory read since main's port.
+    "MONEY_DIGITS": 13, "EXCHANGE_MONEY_DIGITS": 12, "INVENTORY_MONEY_DIGITS": 7,
 }
 # PythonItemModule.cpp today (the slot numbers; the flags as CItemData's bits).
 WAVE3B_ITEM_CONSTANTS = {
@@ -3781,9 +3793,15 @@ W4_COMPARED = ("player", "net", "mouse", "app", "shop", "safebox", "exchange", "
 # PythonNetworkStreamModule.cpp).
 W4_EXCHANGE_CONSTANTS = {"EXCHANGE_ITEM_MAX_NUM": 12}
 W4_SHOP_CONSTANTS = {"SHOP_SLOT_COUNT": 40, "SHOP_COIN_TYPE_GOLD": 0, "SHOP_COIN_TYPE_SECONDARY_COIN": 1}
-W4_SAFEBOX_CONSTANTS = {"SAFEBOX_SLOT_X_COUNT": 5, "SAFEBOX_SLOT_Y_COUNT": 9, "SAFEBOX_PAGE_SIZE": 45}
+# SAFEBOX_PAGE_COUNT_MAX and SAFEBOX_MAX_NUM: CPythonSafeBox's constants since
+# the foundation cut (nova-client-src a9976fc), which uisafebox.py reads since
+# main's port (NOVA-97: five pages).
+W4_SAFEBOX_CONSTANTS = {"SAFEBOX_SLOT_X_COUNT": 5, "SAFEBOX_SLOT_Y_COUNT": 9, "SAFEBOX_PAGE_SIZE": 45,
+                        "SAFEBOX_PAGE_COUNT_MAX": 5, "SAFEBOX_MAX_NUM": 225}
+# GUILD_NAME_MAX_LEN: the client's since the foundation cut (Packet.h, 24),
+# which declareguildwardialog.py and game.py read since main's port (NOVA-97).
 W4_GUILD_CONSTANTS = {"AUTH_ADD_MEMBER": 1, "AUTH_REMOVE_MEMBER": 2, "AUTH_NOTICE": 4, "AUTH_SKILL": 8,
-                      "ENEMY_GUILD_SLOT_MAX_COUNT": 6}
+                      "ENEMY_GUILD_SLOT_MAX_COUNT": 6, "GUILD_NAME_MAX_LEN": 24}
 W4_CHR_CONSTANTS = {"PLAYER_NAME_MAX_LEN": 12}
 W4_NET_CONSTANTS = {"ERROR_MARK_UPLOAD_NEED_RECONNECT": 6}
 W4_ITEM_FLAGS = ("ANTIFLAG_GIVE", "ANTIFLAG_MYSHOP", "ANTIFLAG_SELL")
@@ -3798,14 +3816,16 @@ def w4_state():
     Each item is None or {"vnum", "count", "sockets", "attrs"}; "position"
     is the main character's (x, y, z); "vid" its vid; "npcs" the vids
     chr.IsNPC answers True for; "names" vid -> name; "valuable" the
-    inventory positions player.IsValuableItem answers True for."""
+    inventory positions player.IsValuableItem answers True for; the
+    messenger's "blocked" the client's block list in order (NOVA-47:
+    messenger.GetBlockedList, IsBlocked)."""
     return {
         "exchange": {"self": [None] * 12, "target": [None] * 12, "self_elk": 0, "target_elk": 0,
                      "self_accept": False, "target_accept": False, "target_name": "", "target_level": 0},
         "shop": {"open": False, "private": False, "mine": False, "tabs": [{"name": "", "items": [None] * 40, "coin": 0}],
                  "stock": {}, "prices": {}, "built": None},
         "safebox": {"rows": 27, "items": {}, "money": 0, "mall_size": 0, "mall": {}},
-        "messenger": {"friends": {}, "guild": {}, "family": None},
+        "messenger": {"friends": {}, "guild": {}, "family": None, "blocked": []},
         "guild": {"id": 0, "name": "", "level": 0, "exp": 0, "master": "", "members": [], "grades": [],
                   "comments": [], "skills": {}, "gp": (0, 0), "enemies": [""] * 6, "marks": {}},
         "whisper": {},
@@ -4006,6 +4026,10 @@ def install_wave4_ui(game):
     def remove_friend(key):
         w4["messenger"]["friends"].pop(key, None)
     define(messenger, "RemoveFriend", remove_friend)
+    # The block list (NOVA-47, PythonMessenger.cpp): the client's list the
+    # server sent, and whether a name is on it.
+    define(messenger, "GetBlockedList", lambda: tuple(w4["messenger"]["blocked"]))
+    define(messenger, "IsBlocked", lambda name: name in w4["messenger"]["blocked"])
 
     chat = modules["chat"]
     whispers = w4["whisper"]

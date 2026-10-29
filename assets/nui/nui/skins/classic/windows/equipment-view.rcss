@@ -1,13 +1,15 @@
 /* Classic skin overlay of nui/windows/equipment-view/equipment-view.rml:
    the legacy equipment view (uiscript equipmentdialog.py) at 100%, 1dp to
    the legacy pixel: the stone board with its title bar, 180 x 230; the
-   equipment base art (equipment_bg_without_ring.tga, 155 x 187) centered,
-   9 below the middle (13, 30), which draws every slot's frame; each place
-   at the slot window's (3, 3) plus its uiscript slot's x, y, as the
-   inventory's (skins/classic/windows/inventory.rcss): today's under
-   eqv--table-new; OLD's 16 under eqv--table-old on today's art, the rings
-   at 2, 106 and 75, 106 and the belt at 39, 106 (OLD's dialog; OLD's
-   pvp_advanced art is not in NEW's assets). No hover look, as legacy. */
+   equipment base art (equipment_bg_with_ring.tga, 155 x 187, legacy's
+   since NOVA-97) centered, 9 below the middle (13, 30), which draws every
+   slot's frame and the ring boxes; each place at the slot window's (3, 3)
+   plus its uiscript slot's x, y, as the inventory's
+   (skins/classic/windows/inventory.rcss): today's under eqv--table-new;
+   OLD's 16 under eqv--table-old, the rings at 2, 106 and 75, 106 and the
+   belt at 39, 106 (legacy's view slots 13 to 15 since NOVA-97, OLD's
+   dialog's places; OLD's pvp_advanced art is not in NEW's assets). No
+   hover look, as legacy. */
 
 body.skin-classic.eqv
 {
@@ -27,7 +29,7 @@ body.skin-classic.eqv .eqv-equip
 	top: 30dp;
 	width: 155dp;
 	height: 187dp;
-	decorator: image("d:/ymir work/ui/equipment_bg_without_ring.tga" scale-none left top);
+	decorator: image("d:/ymir work/ui/equipment_bg_with_ring.tga" scale-none left top);
 }
 body.skin-classic.eqv .eqv-figure
 {

@@ -159,6 +159,78 @@ class Flows(WhisperTest):
         self.assertEqual(board.focused, INPUT, "OpenWhisperDialog focuses the input")
         self.assertEqual(world.game.calls("nuigame.WhisperAttach"), [("nuigame.WhisperAttach", ("Alice",))])
 
+    def test_the_block_button_follows_the_block_list_and_switches_its_label(self):
+        """NOVA-47 (uiwhisper.py RefreshBlockButton, BlockPlayer): Block for a
+        partner, Unblock for one on the client's block list; a press sends
+        the change and shows the other label at once; no button without a
+        partner."""
+        for blocked, packet in ((False, "net.SendBlockAddPacket"), (True, "net.SendBlockRemovePacket")):
+            def setup(game, blocked=blocked):
+                if blocked:
+                    game.w4["messenger"]["blocked"].append("Alice")
+            results = []
+            for nui_on in (False, True):
+                world = self.world(nui_on, setup=setup)
+                with world.game, w4.quiet():
+                    dialog = world.interface.OpenWhisperDialog("Alice")
+                    before = self.block_view(world, dialog)
+                    mark = world.mark()
+                    if nui_on:
+                        w4.press(dialog, "block_press", 0)
+                    else:
+                        dialog.blockButton.click()
+                    results.append((before, world.effects_since(mark, EFFECTS), self.block_view(world, dialog)))
+            (legacy_before, legacy, legacy_after), (novaui_before, novaui, novaui_after) = results
+            with self.subTest(blocked=blocked):
+                self.assertEqual((novaui_before, novaui, novaui_after), (legacy_before, legacy, legacy_after))
+                self.assertEqual(novaui_before, (True, blocked))
+                self.assertEqual(novaui, [(packet, ("Alice",))])
+                self.assertEqual(novaui_after, (True, not blocked))
+        world = self.world(True)
+        with world.game, w4.quiet():
+            dialog = world.interface.OpenWhisperDialogWithoutTarget()
+        self.assertFalse(w4.board(dialog).model["block_shown"])
+
+    @staticmethod
+    def block_view(world, dialog):
+        """(shown, Unblock's label): the board's, or the legacy button's."""
+        if world.nui_on:
+            model = w4.board(dialog).model
+            return (model["block_shown"], model["blocked"])
+        unblock = world.m("uiScriptLocale").UNBLOCK_PLAYER
+        return (bool(dialog.blockButton.IsShow()), dialog.blockButton.GetText() == unblock)
+
+    def test_the_partner_s_details_show_the_server_s_answer(self):
+        """NOVA-48 (uiwhisper.py SetTargetDetails): hidden until the server's
+        first answer, then the online or offline mark, and the language's
+        flag while online; choosing a partner asks for its details at once."""
+        world = self.world(True)
+        with world.game, w4.quiet():
+            dialog = world.interface.OpenWhisperDialog("Alice")
+            model = w4.board(dialog).model
+            self.assertEqual((model["online_shown"], model["flag_shown"]), (False, False))
+            dialog.SetTargetDetails(1, "en")
+            model = w4.board(dialog).model
+            self.assertEqual((model["online_shown"], model["online"], model["flag_shown"], model["flag_src"]),
+                             (True, True, True, "/locale/common/ui/flag/32/en.tga"))
+            dialog.SetTargetDetails(0, "en")
+            model = w4.board(dialog).model
+            self.assertEqual((model["online_shown"], model["online"], model["flag_shown"]), (True, False, False))
+            dialog.SetTargetDetails(1, "xx")
+            self.assertFalse(w4.board(dialog).model["flag_shown"], "a language without a flag file shows none")
+
+        def flow(world):
+            dialog = world.interface.OpenWhisperDialogWithoutTarget()
+            if world.nui_on:
+                w4.board(dialog).insert_text(TARGET, "Bob")
+                w4.board(dialog).key(TARGET, world.m("nui").KEY_RETURN)
+            else:
+                dialog.titleNameEdit.SetText("Bob")
+                dialog.titleNameEdit.eventReturn()
+        (legacy, _), (novaui, _) = self.run_both(flow)
+        self.assertEqual(novaui, legacy)
+        self.assertIn(("net.SendWhisperDetailsPacket", ("Bob",)), novaui)
+
     def test_enter_and_the_button_send_and_clear_the_input(self):
         def flow(world):
             dialog = world.interface.OpenWhisperDialog("Alice")

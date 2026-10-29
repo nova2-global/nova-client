@@ -9,7 +9,8 @@
 	     centers it. Its body and buttons take no focus, so the buttons act on
 	     a left mousedown and a press never takes the focus from an open chat
 	     field; Escape and the exit key reach the menu in its legacy place
-	     (nui_hud.EscapeProxy). Each button closes the menu first, as legacy's. -->
+	     (nui_hud.EscapeProxy). Each button closes the menu first, as legacy's.
+	     Change channel (NOVA-49) opens legacy's change channel dialog. -->
 	<title>system-menu</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="system-menu.rcss"/>
@@ -20,6 +21,7 @@
 		<button id="system-menu-mall" class="nui-button nui-anim system-menu__button system-menu__button--mall system-menu__button--group" data-if="show_mall" data-event-mousedown="act('mall', ev.button)">@ui.SYSTEM_MALL</button>
 		<button id="system-menu-system-options" class="nui-button nui-anim system-menu__button system-menu__button--system-options" data-event-mousedown="act('system_options', ev.button)">@ui.SYSTEMOPTION_TITLE</button>
 		<button id="system-menu-game-options" class="nui-button nui-anim system-menu__button system-menu__button--game-options" data-event-mousedown="act('game_options', ev.button)">@ui.GAMEOPTION_TITLE</button>
+		<button id="system-menu-move-channel" class="nui-button nui-anim system-menu__button system-menu__button--move-channel" data-event-mousedown="act('move_channel', ev.button)">@ui.SYSTEM_MOVE_CHANNEL</button>
 		<button id="system-menu-change" class="nui-button nui-anim system-menu__button system-menu__button--change" data-event-mousedown="act('change', ev.button)">@ui.SYSTEM_CHANGE</button>
 		<button id="system-menu-logout" class="nui-button nui-anim system-menu__button system-menu__button--logout" data-event-mousedown="act('logout', ev.button)">@ui.SYSTEM_LOGOUT</button>
 		<button id="system-menu-exit" class="nui-button nui-anim system-menu__button system-menu__button--exit system-menu__button--group" data-event-mousedown="act('exit', ev.button)">@ui.SYSTEM_EXIT</button>

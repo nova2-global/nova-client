@@ -990,6 +990,8 @@ class Flows(Pair):
             i.button("wndMoneySlot", "money_press")
             accept_last(w, 1000)
         legacy, _, _ = self.same(flow, expect=["uiPickMoney.PickMoneyDialog.Open", "uiPickMoney.PickMoneyDialog.SetMax"])
+        # Legacy's SetMax(player.INVENTORY_MONEY_DIGITS) since NOVA-96, the
+        # client's 7 (it was a literal 7 before).
         self.assertIn(("uiPickMoney.PickMoneyDialog.SetMax", (7,)), legacy)
 
     def test_money_with_safebox_money_attached(self):

@@ -43,27 +43,6 @@
 				"picked": false,
 				"unavailable": false,
 				"name": "costume_hair"
-			},
-			{
-				"index": 2,
-				"kind": "",
-				"type": 0,
-				"ref": 0,
-				"icon": "",
-				"count": "",
-				"w": 1,
-				"h": 1,
-				"cd_start": 0.0,
-				"cd_end": 0.0,
-				"active": false,
-				"cover": false,
-				"disabled": false,
-				"locked": false,
-				"covered": false,
-				"target": "",
-				"picked": false,
-				"unavailable": false,
-				"name": "ring1"
 			}
 		],
 		"has_companion": false,

@@ -4,7 +4,9 @@ for uiCommon.MoneyInputDialog (the private shop's price).
 
 Open() clears the field; callers set a value after it (SetValue). The line
 under the field is the header and localeInfo.NumberToMoneyString of the
-digits, updated on every edit. Enter and Escape in the field call the
+digits, updated on every edit. The field takes at most the client's
+player.MONEY_DIGITS digits, as legacy's (13, OLD's, for 64-bit gold since
+NOVA-96; legacy kept 9 before). Enter and Escape in the field call the
 accept and cancel events, as in the input dialog. See nui_dialog_kit.py for
 the shared rules.
 """
@@ -12,10 +14,17 @@ the shared rules.
 import localeInfo
 import nui
 import nui_dialog_kit as kit
+import player
 
 FIELD = "dialog-money-field"
-MAX_DIGITS = 9
 DIGITS = "0123456789"
+
+
+def max_digits():
+	"""The most digits the field takes: the client's player.MONEY_DIGITS,
+	as legacy's MoneyInputDialog reads it (its constructor and
+	SetMaxLength, uicommon.py)."""
+	return player.MONEY_DIGITS
 
 
 def digits_of(text):
@@ -41,7 +50,7 @@ class MoneyWindow(kit.KindWindow):
 	FIELD = FIELD
 
 	def initial_model(self):
-		return {"title": "", "max": MAX_DIGITS, "money": ""}
+		return {"title": "", "max": max_digits(), "money": ""}
 
 	@nui.on("edit")
 	def on_edit(self, value, linebreak):
@@ -57,7 +66,7 @@ class MoneyWindow(kit.KindWindow):
 
 
 class MoneyInputDialog(kit.DialogFacade):
-	"""uiCommon.MoneyInputDialog (uicommon.py:386-472)."""
+	"""uiCommon.MoneyInputDialog (uicommon.py MoneyInputDialog)."""
 
 	KIND = MoneyWindow
 	LEGACY = "uiCommon.LegacyMoneyInputDialog"
@@ -65,7 +74,7 @@ class MoneyInputDialog(kit.DialogFacade):
 	def __init__(self):
 		self._header = localeInfo.MONEY_INPUT_DIALOG_SELLPRICE
 		self._title = ""
-		self._max = MAX_DIGITS
+		self._max = max_digits()
 		self._accept_event = None
 		self._cancel_event = None
 		self._value = ""
@@ -121,7 +130,7 @@ class MoneyInputDialog(kit.DialogFacade):
 			self._window.focus(FIELD)
 
 	def SetMaxLength(self, length):
-		self._max = min(MAX_DIGITS, int(length))
+		self._max = min(max_digits(), int(length))
 		if self._legacy is not None:
 			self._legacy.SetMaxLength(length)
 		self._refresh(max=self._max)

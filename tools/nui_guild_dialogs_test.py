@@ -25,6 +25,8 @@ DECLARE_DOCUMENT = "nui/windows/guild-war-declare/guild-war-declare.rml"
 ACCEPT_DOCUMENT = "nui/windows/guild-war-accept/guild-war-accept.rml"
 MARK_DOCUMENT = "nui/windows/guild-mark/guild-mark.rml"
 FIELD = "guild-war-name"
+# The war's member cap and end score (NOVA-90).
+MEMBERS, SCORE = "guild-war-members", "guild-war-score"
 EFFECTS = support.W4_COMPARED + ("snd",)
 MARK_FILES = ["wolf.tga", "castle.png", "dragon.tga", "flag.bmp", "old_sign.jpeg", "rose.png", "sword.jpg", "lion.tga",
               "notes.txt"]
@@ -51,6 +53,9 @@ class DeclareTest(unittest.TestCase):
         """The guild window's declare button (uiguild.py
         __OnClickDeclareWarButton): make(), then Open."""
         world = world_of(nui_on, setup, **kwargs)
+        # The limit fields' changes reach their handlers, as RmlUi's change.
+        for field, event in ((MEMBERS, "members_change"), (SCORE, "score_change")):
+            world.game.state.field_events[(DECLARE_DOCUMENT, field)] = event
         dialog = world.make("guild-war-dialogs", "uiGuild", "DeclareGuildWarDialog",
                             "nui_guild_war_declare.DeclareGuildWarDialog")
         with world.game, w4.quiet():
@@ -63,6 +68,17 @@ class DeclareTest(unittest.TestCase):
         else:
             dialog.inputValue.SetText(text)
 
+    def set_limit(self, world, dialog, field, text):
+        """A limit field's text as a player leaves it: NovaUI's field emptied
+        and typed, legacy's edit line set (its IME takes digits only)."""
+        if world.nui_on:
+            board = w4.board(dialog)
+            board.set_value(field, "")
+            if text:
+                board.insert_text(field, text)
+        else:
+            {MEMBERS: dialog.memberCountInput, SCORE: dialog.endScoreInput}[field].SetText(text)
+
     def assert_the_board_waits(self, world):
         """P18: the closed dialog's board waits, hidden and emptied, in the
         pool for the next dialog: the only declare document left."""
@@ -70,6 +86,7 @@ class DeclareTest(unittest.TestCase):
         self.assertEqual(world.documents().count(DECLARE_DOCUMENT), 1)
         self.assertFalse(board.is_visible())
         self.assertEqual((board.model["types_on"], board.fields.get(FIELD, "")), ([], ""))
+        self.assertEqual((board.fields.get(MEMBERS, ""), board.fields.get(SCORE, "")), ("", ""), "the limits emptied too")
         self.assertIs(board._owner, world.m("nui_hud").NO_OWNER)
         return board
 
@@ -91,7 +108,12 @@ class DeclareTest(unittest.TestCase):
         self.assertIsNone(board.placement, "the scrim centers it")
         locale = world.m("localeInfo")
         model = board.model
-        self.assertEqual((model["type"], model["type_select"], model["max"]), (0, True, 12))
+        # The client's guild.GUILD_NAME_MAX_LEN since NOVA-97 (24; the
+        # uiscript's 12 before).
+        self.assertEqual((model["type"], model["type_select"], model["max"]), (0, True, 24))
+        # NOVA-90: the member cap and the end score at 32 each, as legacy's Open sets them.
+        self.assertEqual((board.get_value(MEMBERS), board.get_value(SCORE)), ("32", "32"))
+        self.assertTrue(dialog.memberCountInput.number_mode and dialog.endScoreInput.number_mode)
         self.assertEqual([hint["title"] for hint in model["hints"]],
                          [locale.GUILDWAR_NORMAL_TITLE, locale.GUILDWAR_WARP_TITLE, locale.GUILDWAR_CTF_TITLE])
         self.assertEqual(model["hints"][2]["lines"], list(locale.GUILDWAR_CTF_DESCLIST))
@@ -133,11 +155,51 @@ class DeclareTest(unittest.TestCase):
             (legacy, _, _), (novaui, world, b) = self.run_both(flow)
             with self.subTest(how=how):
                 self.assertEqual(novaui, legacy)
-                self.assertEqual(novaui, [("net.SendChatPacket", ("/war Black Wolves 2",))])
+                # With the member cap and end score since NOVA-90 (legacy's 32 each).
+                self.assertEqual(novaui, [("net.SendChatPacket", ("/war Black Wolves 2 32 32",))])
                 self.assertFalse(b.IsShow())
                 self.assert_the_board_waits(world)
                 if how == "enter":
                     self.assertTrue(world.kept, "the field keeps Enter")
+
+    def test_the_member_cap_and_end_score_go_with_the_declaration(self):
+        """NOVA-90 (uiguild.py GetWarLimits): the limits as typed when both
+        hold a number; without them (an empty field) the server's defaults."""
+        for members, score, sent in (("10", "50", "/war Black Wolves 0 10 50"), ("", "50", "/war Black Wolves 0"),
+                                     ("8", "", "/war Black Wolves 0")):
+            def flow(world, dialog, members=members, score=score):
+                self.type(world, dialog, "Black Wolves")
+                self.set_limit(world, dialog, MEMBERS, members)
+                self.set_limit(world, dialog, SCORE, score)
+                if world.nui_on:
+                    w4.press(dialog, "accept_press", 0)
+                else:
+                    dialog.acceptButton.click()
+            (legacy, _, _), (novaui, _, b) = self.run_both(flow)
+            with self.subTest(members=members, score=score):
+                self.assertEqual(novaui, legacy)
+                self.assertEqual(novaui, [("net.SendChatPacket", (sent,))])
+                self.assertFalse(b.IsShow())
+
+    def test_a_limit_field_takes_digits_and_keeps_enter_and_escape(self):
+        """Legacy's limit edit lines are in number mode after Open, and bind
+        no return or escape event: Enter and Escape there do nothing, and
+        the field keeps the key."""
+        world, dialog = self.open(True)
+        board = w4.board(dialog)
+        nui = world.m("nui")
+        with world.game, w4.quiet():
+            self.set_limit(world, dialog, MEMBERS, "4x2")
+            self.assertEqual(board.get_value(MEMBERS), "42")
+            self.assertEqual(dialog.memberCountInput.GetText(), "42")
+            mark = world.mark()
+            self.assertTrue(board.key(SCORE, nui.KEY_RETURN))
+            self.assertTrue(board.key(MEMBERS, nui.KEY_ESCAPE))
+            self.assertEqual(world.effects_since(mark, EFFECTS), [])
+            self.assertTrue(dialog.IsShow())
+            self.type(world, dialog, "Red Sun")
+            w4.press(dialog, "accept_press", 0)
+        self.assertEqual(world.effects_since(mark, EFFECTS), [("net.SendChatPacket", ("/war Red Sun 0 42 32",))])
 
     def test_an_empty_name_sends_nothing_and_stays_open(self):
         def flow(world, dialog):
@@ -188,12 +250,13 @@ class DeclareTest(unittest.TestCase):
             self.assertIs(w4.board(second), board, "no load: the waiting board")
             self.assertEqual(pool.loads, loads)
             self.assertEqual(board.get_value(FIELD), "", "none of the last dialog's name")
+            self.assertEqual((board.get_value(MEMBERS), board.get_value(SCORE)), ("32", "32"), "the new dialog's limits")
             self.assertEqual(board.focused, FIELD)
             self.assertEqual((board.model["type"], board.model["types_on"]), (0, [1]), "the new dialog's own type")
             mark = world.mark()
             board.insert_text(FIELD, "Red Sun")
             w4.press(second, "accept_press", 0)
-        self.assertEqual(world.effects_since(mark, EFFECTS), [("net.SendChatPacket", ("/war Red Sun 0",))])
+        self.assertEqual(world.effects_since(mark, EFFECTS), [("net.SendChatPacket", ("/war Red Sun 0 32 32",))])
         self.assertLessEqual(pool.most, 1)
 
     def test_the_phase_end_unloads_the_waiting_board(self):
@@ -288,9 +351,10 @@ class TypeLabelsInEveryLocale(unittest.TestCase):
 
 
 class AcceptTest(unittest.TestCase):
-    def open(self, nui_on, name="Black Wolves", war_type=2, **kwargs):
+    def open(self, nui_on, name="Black Wolves", war_type=2, limits=(), **kwargs):
         """game.py __GuildWar_OpenAskDialog: make(), the accept and cancel
-        events (the game window's /war and /nowar, then its Close), Open."""
+        events (the game window's /war and /nowar, then its Close), Open
+        (with the war's member cap and end score, NOVA-90, when given)."""
         world = world_of(nui_on, **kwargs)
         dialog = world.make("guild-war-dialogs", "uiGuild", "AcceptGuildWarDialog",
                             "nui_guild_war_accept.AcceptGuildWarDialog")
@@ -309,7 +373,7 @@ class AcceptTest(unittest.TestCase):
         with world.game, w4.quiet():
             dialog.SAFE_SetAcceptEvent(accept)
             dialog.SAFE_SetCancelEvent(decline)
-            dialog.Open(name, war_type)
+            dialog.Open(name, war_type, *limits)
         return world, dialog
 
     def run_both(self, flow, **kwargs):
@@ -365,6 +429,21 @@ class AcceptTest(unittest.TestCase):
         self.assertFalse(board.key("", nui.KEY_ESCAPE), "legacy's dialog handles no key")
         self.assertFalse(board.key("", nui.KEY_RETURN))
         self.assertTrue(dialog.IsShow())
+
+    def test_open_shows_the_war_s_limits_the_server_sent(self):
+        """NOVA-90 (uiguild.py AcceptGuildWarDialog.Open): the member cap's
+        line (each guild brings half) and the end score's, each only when
+        the server sent a value, as legacy's text lines."""
+        for limits in ((32, 32), (20, 0), (0, 50), (), (0, 0)):
+            (a_world, a), (b_world, b) = [self.open(nui_on, limits=limits) for nui_on in (False, True)]
+            model = w4.board(b).model
+            with self.subTest(limits=limits):
+                for key, line in (("members", a.membersCountText), ("score", a.endScoreText)):
+                    self.assertEqual((model[key], model[key + "_shown"]), (line.GetText(), bool(line.IsShow())), key)
+                locale = b_world.m("localeInfo")
+                members, score = (tuple(limits) + (0, 0))[:2]
+                self.assertEqual(model["members"], locale.GUILD_WAR_MAX_MEMBERS % (members // 2) if members else "")
+                self.assertEqual(model["score"], locale.GUILD_WAR_MAX_SCORE % score if score else "")
 
     def test_a_long_name_is_shown_whole(self):
         world, dialog = self.open(True, name="Black Wolves Of The North")

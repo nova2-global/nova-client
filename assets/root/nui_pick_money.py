@@ -1,27 +1,52 @@
 """The pick money dialog of the NovaUI dialog kit (nui/windows/pick-money): a
-small window with a digits-only field and the maximum, for
+small window with an amount field and the maximum, for
 uiPickMoney.PickMoneyDialog (splitting a stack, money out of the inventory,
 the safebox and the exchange).
 
 It is not modal, as in legacy: it opens over the inventory, which stays
 usable. Open() places it above the mouse (G6), its bottom center 20dp over
-the pointer, kept on the screen. Enter in the field accepts (the amount,
-capped at the maximum, goes to the accept event when it is above 0) and
-closes; Escape in the field, Cancel and the close button close it. See
+the pointer, kept on the screen. The field takes what legacy's money-mode
+edit line takes (NOVA-96): digits, and OLD's k, m and b suffixes where the
+client's IME has the money mode (ime.SetMoneyMode; without it, digits
+only, as legacy's falls back to the number mode). Enter in the field
+accepts (the amount legacy's uiPickMoney.ConvertTextToMoney reads, capped
+at the maximum, goes to the accept event when it is above 0) and closes;
+Escape in the field, Cancel and the close button close it. See
 nui_dialog_kit.py for the shared rules.
 """
 
 import app
+import ime
 import nui
 import nui_dialog_kit as kit
 import wndMgr
 
 FIELD = "pick-money-field"
 DIGITS = "0123456789"
+# The suffix letters OLD's money mode lets through (uiPickMoney.MONEY_SUFFIX_POWERS).
+SUFFIXES = "kmbKMB"
+
+
+def money_chars():
+	"""What the field takes: legacy's EditLine in money mode calls
+	ime.SetMoneyMode when the client has it, else ime.SetNumberMode
+	(ui.py EditLine.OnSetFocus)."""
+	if getattr(ime, "SetMoneyMode", None) is not None:
+		return DIGITS + SUFFIXES
+	return DIGITS
 
 
 def digits_of(text):
-	return "".join(c for c in text if c in DIGITS)
+	chars = money_chars()
+	return "".join(c for c in text if c in chars)
+
+
+def money_of(text):
+	"""The amount legacy's OnAccept reads from the field's text
+	(uiPickMoney.ConvertTextToMoney: "5k" is 5000, plain digits the
+	number)."""
+	import uiPickMoney
+	return uiPickMoney.ConvertTextToMoney(text)
 
 
 class PickMoneyWindow(kit.KindWindow):
@@ -48,7 +73,7 @@ class PickMoneyWindow(kit.KindWindow):
 
 
 class PickMoneyDialog(kit.DialogFacade):
-	"""uiPickMoney.PickMoneyDialog (uipickmoney.py:6-104)."""
+	"""uiPickMoney.PickMoneyDialog (uipickmoney.py PickMoneyDialog)."""
 
 	KIND = PickMoneyWindow
 	LEGACY = "uiPickMoney.LegacyPickMoneyDialog"
@@ -150,8 +175,8 @@ class PickMoneyDialog(kit.DialogFacade):
 			self._legacy.OnAccept()
 			return
 		text = self._text()
-		if len(text) > 0 and text.isdigit():
-			money = min(int(text), self.maxValue)
+		if len(text) > 0:
+			money = min(money_of(text), self.maxValue)
 			if money > 0 and self.eventAccept:
 				self.eventAccept(money)
 		self.Close()

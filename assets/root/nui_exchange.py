@@ -245,7 +245,8 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 		dlgPickMoney.LoadDialog()
 		dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickMoney))
 		dlgPickMoney.SetTitleName(localeInfo.EXCHANGE_MONEY)
-		# Legacy's SetMax(7); the limits module's digits (P16 spec 3.3).
+		# Legacy's SetMax(player.EXCHANGE_MONEY_DIGITS) (NOVA-96, OLD's 12); the
+		# limits module reads the same constant (P16 spec 3.3).
 		dlgPickMoney.SetMax(limits.EXCHANGE_MONEY_DIGITS)
 		dlgPickMoney.Hide()
 		self.dlgPickMoney = dlgPickMoney

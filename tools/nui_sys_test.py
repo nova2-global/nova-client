@@ -248,7 +248,7 @@ SURFACES = {
         ("Open", "Close", "SAFE_SetSelectEvent", "OnPressEscapeKey"),
     ("uiGameOption", "LegacyOptionDialog", "nui_game_options", "OptionDialog"):
         ("Destroy", "Close", "OnPressEscapeKey", "OnBlockMode", "OnChangePKMode", "RefreshBlock", "RefreshViewChat",
-         "RefreshAlwaysShowName", "RefreshShowDamage", "RefreshShowSalesText"),
+         "RefreshAlwaysShowName", "RefreshShowDamage", "RefreshShowSalesText", "RefreshPickupFilter"),
     ("uiRestart", "RestartDialog", "nui_restart", "RestartDialog"):
         ("LoadDialog", "Destroy", "OpenDialog", "Close", "RestartHere", "RestartTown", "OnPressExitKey", "OnPressEscapeKey"),
     ("uiHelp", "HelpWindow", "nui_help", "HelpWindow"):
@@ -369,6 +369,40 @@ class SystemMenu(Pair):
                 self.assertFalse(a.IsShow(), "legacy closes first")
                 self.assertFalse(b.IsShow())
                 self.assertIsNone(board(b), "the document went with the hide")
+
+    def test_change_channel_opens_legacy_s_dialog_once(self):
+        """NOVA-49 (uisystem.py __ClickMoveChannelButton): the menu closes and
+        opens legacy's change channel dialog, made at the first press; its
+        channels are the login server's, the current one down."""
+        def login_server(game):
+            server_info = types.ModuleType("serverInfo")
+            server_info.REGION_DICT = {0: {1: {"name": "Nova", "channel": {1: {"name": "CH1"}, 2: {"name": "CH2"},
+                                                                          3: {"name": "CH3"}}}}}
+            game.put("serverInfo", server_info)
+            game.answer("net", "GetServerInfo", lambda: "Nova, CH2")
+            game.answer("net", "GetChannelNum", lambda: 2)
+        legacy, novaui = self.worlds(login_server)
+        a, b = legacy.make_menu(), novaui.make_menu()
+        for press in range(2):
+            a.OpenDialog()
+            b.OpenDialog()
+            calls = self.same(legacy, novaui, a.GetChild("movechannel_button").click,
+                              lambda: fire(b, "act", "move_channel", 0), "move channel")
+            self.assertEqual(calls, [])
+            self.assertFalse(a.IsShow() or b.IsShow(), "the menu closes first")
+            for menu in (a, b):
+                dialog = menu.moveChannelDlg
+                self.assertEqual(type(dialog).__name__, "MoveChannelDialog")
+                self.assertEqual(type(dialog).__module__, "uiSystem")
+                self.assertTrue(dialog.IsShow())
+                self.assertEqual(dialog.channelNumberList, [1, 2, 3])
+                self.assertEqual(dialog.selectedChannel, 2)
+            if press == 0:
+                made = (a.moveChannelDlg, b.moveChannelDlg)
+        self.assertIs(b.moveChannelDlg, made[1], "made once")
+        calls = self.same(legacy, novaui, lambda: (a.moveChannelDlg.SelectChannel(3), a.moveChannelDlg.Accept()),
+                          lambda: (b.moveChannelDlg.SelectChannel(3), b.moveChannelDlg.Accept()), "accept")
+        self.assertEqual(calls, [("net.SendChatPacket", ("/ch 3",))])
 
     def test_only_the_left_button_acts(self):
         legacy, novaui, a, b = self.menus()
@@ -953,8 +987,11 @@ class GameOptions(Pair):
             game.settings["show_damage"] = False
         legacy, novaui, a, b = self.pair(setup)
         model = board(b).model
+        # The pickup filter since NOVA-50 (uigameoption.py RefreshPickupFilter).
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
-                                 "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True})
+                                 "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
+                                 "pickup": [True] * 4})
+        self.assertEqual([button.down for button in a.pickupFilterButtonList], [True] * 4)
         self.assertEqual([button.down for button in a.viewChatButtonList], [False, True])
         self.assertEqual([button.down for button in a.showDamageButtonList], [False, True])
         self.assertTrue(a.pvpModeButtonDict[P["PK_MODE_PEACE"]].down, "peace at the first show, as legacy's load")
@@ -1062,6 +1099,25 @@ class GameOptions(Pair):
                 self.assertIs(board(b).get(what), bool(value), "the model follows the setting")
         for world in (legacy, novaui):
             self.assertEqual(world.m("uiGameOption").viewChatMode, 1)
+
+    def test_a_pickup_filter_toggle_flips_its_category(self):
+        """NOVA-50 (uigameoption.py __TogglePickupFilter): a press flips its
+        category through systemSetting.SetPickupFilter, and the toggles show
+        the filter."""
+        legacy, novaui, a, b = self.pair()
+        children = ("pickup_equipment_button", "pickup_special_button", "pickup_potions_button", "pickup_others_button")
+        for index, child in enumerate(children):
+            with self.subTest(pickup=child):
+                calls = self.same(legacy, novaui, a.GetChild(child).click, lambda: fire(b, "pickup", index, 0), child)
+                self.assertEqual(calls, [("systemSetting.SetPickupFilter", (index, False))])
+        self.assertEqual(board(b).get("pickup"), [False] * 4)
+        self.assertEqual([button.down for button in a.pickupFilterButtonList], [False] * 4)
+        calls = self.same(legacy, novaui, a.GetChild(children[2]).click, lambda: fire(b, "pickup", 2, 0), "again")
+        self.assertEqual(calls, [("systemSetting.SetPickupFilter", (2, True))])
+        self.assertEqual(board(b).get("pickup"), [False, False, True, False])
+        b.Hide()
+        b.Show()
+        self.assertEqual(board(b).get("pickup"), [False, False, True, False], "each show reads the filter")
 
     def test_close_escape_and_a_moved_place(self):
         legacy, novaui, a, b = self.pair()
@@ -1299,8 +1355,10 @@ class Fixtures(unittest.TestCase):
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
         game_options = self.world.make_game_options()
+        # pickup: the pickup filter (NOVA-50).
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
-                                                         "view_chat", "always_show_name", "show_damage", "sales_text"})
+                                                         "view_chat", "always_show_name", "show_damage", "sales_text",
+                                                         "pickup"})
 
 
 class OnDemand(unittest.TestCase):

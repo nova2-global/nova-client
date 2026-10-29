@@ -1,10 +1,12 @@
 /* The messenger's modern look (P16 spec 5.7.2): a narrow window of
    legacy's width (170dp, its height the player's, 150dp at least), the
-   rows in a list that scrolls by pixel, four icon buttons with their hints
-   in the footer. A group row shows a chevron (down while open), a member
-   row a dot (--success online, --text-muted offline) 15dp further in, as
-   legacy's step; the selected row the selection color. The lover's row
-   shows its love points on hover. The controller places it at legacy's
+   rows in a list that scrolls by pixel, the block and unblock buttons
+   under it (NOVA-47; side by side, a long label wraps), four icon buttons
+   with their hints in the footer. A group row shows a chevron (down while
+   open), a member row a dot (--success online, --text-muted offline) 15dp
+   further in, as legacy's step, and a roster member's language flags after
+   its name (16dp, legacy's half size); the selected row the selection
+   color. The lover's row shows its love points on hover. The controller places it at legacy's
    (W - 200, H - 450) at its first show and keeps the place the player
    drags it to; the sheet's place frames it in its snapshots. Classic
    (legacy's board, the list art, the selection bar from 16dp in, the
@@ -148,6 +150,56 @@ body.messenger
 {
 	left: 23dp;
 	margin-bottom: 0;
+}
+/* A roster member's language flags (OLD's 32 x 32 at half size), 2dp apart. */
+.messenger__flags
+{
+	display: flex;
+	flex-direction: row;
+	flex: 0 0 auto;
+	align-items: center;
+	margin-left: var(--space-1);
+}
+.messenger__flag
+{
+	display: block;
+	width: 16dp;
+	height: 16dp;
+	margin-right: 2dp;
+}
+.messenger__flag-image
+{
+	display: block;
+	width: 16dp;
+	height: 16dp;
+}
+/* The block list's two buttons (NOVA-47): compact ghost buttons in the
+   small type, each half the row; a long label wraps rather than being cut. */
+.messenger__blocks
+{
+	display: flex;
+	flex-direction: row;
+	flex: 0 0 auto;
+	gap: var(--space-1);
+	padding: var(--space-1) var(--space-2) 0 var(--space-2);
+}
+.messenger__block
+{
+	flex: 1 1 0;
+	min-width: 0;
+	height: auto;
+	min-height: 22dp;
+	padding: 2dp var(--space-1);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	line-height: 16dp;
+}
+.messenger__block-label
+{
+	display: block;
+	white-space: normal;
+	text-align: center;
+	pointer-events: none;
 }
 /* The four buttons centered in one row: add, whisper, remove, guild. */
 .messenger__footer

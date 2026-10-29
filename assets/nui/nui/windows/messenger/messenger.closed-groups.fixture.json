@@ -9,7 +9,8 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
 			},
 			{
 				"kind": "group",
@@ -19,11 +20,46 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": []
+			},
+			{
+				"kind": "group",
+				"name": "Helper",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": []
+			},
+			{
+				"kind": "group",
+				"name": "Team",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": []
+			},
+			{
+				"kind": "group",
+				"name": "Blocked Players",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": []
 			}
 		],
 		"whisper_enabled": false,
 		"remove_enabled": false,
+		"unblock_enabled": false,
 		"height": 150.0
 	}
 }

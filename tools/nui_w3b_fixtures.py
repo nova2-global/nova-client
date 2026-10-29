@@ -134,16 +134,21 @@ def wear_cells(limits, group, filled, targets=None):
 
 
 def money_text(value):
-    """localeInfo.NumberToMoneyString in the en locale: dots every three
-    digits and " Yang"."""
+    """The money slot's text as legacy's RefreshStatus writes it
+    (uiinventory.py MoneySlotText, NOVA-96): localeInfo.NumberToMoneyString in
+    the en locale, dots every three digits and " Yang", while the unit fits
+    the slot (under 10 ** 11), then the amount alone."""
     if value <= 0:
         return "0 Yang"
-    return "{:,}".format(int(value)).replace(",", ".") + " Yang"
+    text = "{:,}".format(int(value)).replace(",", ".")
+    return text + " Yang" if value < 10 ** 11 else text
 
 
 TODAY_WEAR = {"body": 11200, "head": 12200, "foots": 15000, "wrist": 14000, "weapon": 10, "neck": 16000, "ear": 17000,
               "unique1": 71027, "arrow": 8000, "shield": 13000, "belt": 18000}
-FOUNDATION_WEAR = dict(TODAY_WEAR, unique2=70043, costume_sash=73001, ring1=72723, ring2=27003)
+# The rings with the belt since NOVA-97 (legacy's equipment window; the
+# cut's costume sash is not ported, so no cell shows it).
+FOUNDATION_WEAR = dict(TODAY_WEAR, unique2=70043, ring1=72723, ring2=27003)
 
 
 def inventory(limits, page, wear, bag, money, **rest):
@@ -234,12 +239,9 @@ def fixtures():
         ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}), 0),
         ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),
         ("costume", ""): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}),
-        ("costume", "foundation"): costume(FOUNDATION, {
-            "costume_body": 41001, "costume_hair": 73001, "costume_weapon": 1000, "costume_mount": 71027,
-            "effect_weapon": 25040, "effect_armor": 70043, "costume_pet": 27003, "costume_sash2": 30329,
-            "buffi_costume_body": 45001, "buffi_costume_hair": 73001, "buffi_costume_weapon": 3000,
-            "buffi_costume_sash2": 27002, "buffi_costume_facial": 16000, "costume_facial": 17000,
-            "effect_weapon_1": 14000, "effect_armor_1": 15000, "costume_aura": 72723}),
+        # The costume body and hair alone, as legacy's costume window since
+        # NOVA-97 (the cut's other costume cells are not ported).
+        ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001}),
         # An auto potion in the belt is never active: legacy activates only the
         # bag's cells (uiinventory.py RefreshBagSlotWindow).
         ("belt-inventory", ""): belt(TODAY, 4, {0: (27001, 5, {}), 1: (27002, 1, {}), 3: (72723, 1, {})}),

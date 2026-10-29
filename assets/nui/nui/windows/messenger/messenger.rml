@@ -52,6 +52,7 @@
 					class="nui-tooltip nui-anim messenger__hint" data-if="r.love &gt;= 0">{{ r.hint }}</span></div>
 			</div>
 		</div>
+		</div>
 		<div class="messenger__blocks">
 			<button id="messenger-block" class="nui-button nui-anim messenger__block messenger__block--block"
 			        data-event-mousedown="block_press(ev.button)"><span class="messenger__block-label">@ui.BLOCK_PLAYER</span></button>

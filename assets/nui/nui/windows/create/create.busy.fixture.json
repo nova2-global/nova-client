@@ -15,6 +15,8 @@
 		"gauge_dex": 0.1875,
 		"gender": 0,
 		"shape": 0,
-		"busy": true
+		"busy": true,
+		"stage_name": "Kalinka",
+		"stage_job": "@game.JOB_WARRIOR"
 	}
 }

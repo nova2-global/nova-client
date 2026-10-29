@@ -45,6 +45,9 @@ DOCUMENT = "nui/windows/select/select.rml"
 BACKGROUND = "d:/ymir work/ui/intro/select/select.sub"
 FLAG_IMAGE = "d:/ymir work/ui/intro/empire/empireflag_%s.sub"
 JOB_NAMES = ("warrior", "assassin", "sura", "shaman")  # chr.RaceToJob order
+# The class under the 3D character: the job's name as a locale key, which
+# {{ }} translates (locale_game.txt JOB_WARRIOR and so on), in the same order.
+JOB_KEYS = ("@game.JOB_WARRIOR", "@game.JOB_ASSASSIN", "@game.JOB_SURA", "@game.JOB_SHAMAN")
 EMPIRE_LETTERS = {net.EMPIRE_A: "a", net.EMPIRE_B: "b", net.EMPIRE_C: "c"}
 EMPTY_SLOT = "@ui.SELECT_SLOT_EMPTY"
 NO_GUILD = "@game.SELECT_NOT_JOIN_GUILD"
@@ -69,7 +72,8 @@ def gauge_value(stat):
 
 def empty_board():
 	"""The model keys of an empty slot (InitCharacterBoard)."""
-	values = {"occupied": False, "name": "", "level": "", "playtime": "", "guild": NO_GUILD, "job_image": ""}
+	values = {"occupied": False, "name": "", "level": "", "playtime": "", "guild": NO_GUILD, "has_guild": False,
+		"job_image": "", "job_name": ""}
 	for stat in STATS:
 		values["stat_" + stat] = ""
 		values["gauge_" + stat] = 0.0
@@ -342,7 +346,8 @@ class SelectCharacterWindow(introSelect.SelectCharacterWindow):
 
 		values = {"slot": index, "occupied": True, "name": nui.plain_text(name), "level": str(level),
 			"playtime": str(playTime), "guild": nui.plain_text(guildName) if guildName else NO_GUILD,
-			"job_image": job_image(job)}
+			"has_guild": bool(guildName), "job_image": job_image(job),
+			"job_name": JOB_KEYS[job] if 0 <= job < len(JOB_KEYS) else ""}
 		for stat, value, gauge in zip(STATS, stats, self.destGauge):
 			values["stat_" + stat] = str(value)
 			values["gauge_" + stat] = gauge

@@ -2,6 +2,8 @@
 	"loading": {
 		"background": "d:/ymir work/uiloading/base/background_loading_warrior.sub",
 		"progress": 42.0,
-		"error": false
+		"error": false,
+		"preparing": "Preparing Kalinka",
+		"badge": "@game.EMPIRE_A · CH1"
 	}
 }

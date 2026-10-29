@@ -24,7 +24,8 @@ body.loading
 
 /* Modern: the legacy box as the gauge panel (a board), the emblem's ring
    centered on its left, the gauge after it and the progress in percent at
-   its right end. */
+   its right end, and over them "Preparing <name>" with the empire and
+   channel badge at the right. */
 .loading-board
 {
 	position: absolute;
@@ -108,7 +109,7 @@ progress.loading-gauge
 {
 	position: absolute;
 	left: 70dp;
-	top: 34dp;
+	top: 48dp;
 	width: 262dp;
 	height: 10dp;
 	background-color: var(--gauge-track);
@@ -126,7 +127,7 @@ progress.loading-gauge fill
 {
 	display: block;
 	position: absolute;
-	top: 35dp;
+	top: 49dp;
 	width: 1dp;
 	height: 8dp;
 	background-color: var(--cooldown-shade);
@@ -139,13 +140,44 @@ progress.loading-gauge fill
 {
 	position: absolute;
 	left: 340dp;
-	top: 30dp;
+	top: 44dp;
 	width: 46dp;
 	color: var(--accent);
 	font-size: 13dp;
 	font-weight: bold;
 	line-height: 18dp;
 	text-align: right;
+}
+
+/* The row over the gauge, from its left to the percent's right end: the
+   name (cut with an ellipsis before it meets the badge) and the badge. */
+.loading__head
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	position: absolute;
+	left: 70dp;
+	top: 20dp;
+	width: 316dp;
+	height: 18dp;
+	white-space: nowrap;
+}
+.loading__title
+{
+	flex: 1 1 auto;
+	min-width: 0dp;
+	color: var(--text);
+	font-size: 13dp;
+	font-weight: bold;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.loading__badge
+{
+	flex: 0 0 auto;
+	margin-left: var(--space-2);
 }
 
 .loading-error

@@ -8,12 +8,14 @@
 	     background and the characters, drawn in the legacy UI layer, show
 	     through, and only the board and the arrows take the mouse. The
 	     slot list is new: one row per slot, with its character's name and
-	     level. Names come from the model through nui.plain_text. While a
-	     start is under way (busy) every button is disabled. Modern adds
+	     level, under a heading with the chosen slot's number. Names come
+	     from the model through nui.plain_text. While a start is under
+	     way (busy) every button is disabled. Modern adds
 	     code-drawn details: each slot's number and a mark on a slot that
-	     holds a character, the play mark on Start, and the rotate arrows
-	     as blades with their arrowheads (classic draws the legacy dragon
-	     art there and hides the rest). -->
+	     holds a character, the play mark on Start, the rotate arrows as
+	     blades with their arrowheads, and the chosen character's name and
+	     class under the 3D character (classic draws the legacy dragon art
+	     there and hides the rest). -->
 	<title>select</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="select.rcss"/>
@@ -27,8 +29,14 @@
 			</div>
 			<div class="select-empire__text">
 				<span class="select-value select-empire__name">{{ empire_name }}</span>
-				<span class="select-value select-empire__guild">{{ guild }}</span>
+				<span class="select-value select-empire__guild"><span class="select-empire__guild-label" data-if="has_guild">@ui.GUILD_NAME ·</span>{{ guild }}</span>
 			</div>
+		</div>
+		<!-- The list's heading and the chosen slot's number of the slot count
+		     (modern; classic hides it). -->
+		<div class="select-heading">
+			<span class="select-heading__title">@ui.NUI_SELECT_CHARACTERS</span>
+			<span class="select-heading__count">0{{ slot + 1 }} / 0{{ slots.size }}</span>
 		</div>
 		<div class="nui-list select-slots">
 			<div class="nui-list__viewport">
@@ -36,7 +44,7 @@
 					data-attr-id="'select-slot-' + s.index"
 					data-class-is-selected="s.index == slot"
 					data-class-select-slot--empty="s.level <= 0"
-					data-event-click="pick_slot(s.index)"><span class="select-slot__index">0{{ s.index + 1 }}</span><span class="nui-list__label">{{ s.label }}</span><span class="nui-list__meta" data-if="s.level > 0"><span class="select-slot__dot"></span><span class="select-slot__level">{{ s.level }}</span></span></div>
+					data-event-click="pick_slot(s.index)"><span class="select-slot__index">0{{ s.index + 1 }}</span><span class="nui-list__label">{{ s.label }}</span><span class="nui-list__meta" data-if="s.level > 0"><span class="select-slot__dot"></span><span class="select-slot__level"><span class="select-slot__lv">@ui.SELECT_LEVEL</span>{{ s.level }}</span></span></div>
 			</div>
 		</div>
 		<div class="select-info">
@@ -85,6 +93,13 @@
 				<button id="select-exit" class="nui-button nui-anim select-button" data-attrif-disabled="busy" data-event-click="leave()">@ui.SELECT_EXIT</button>
 			</div>
 		</div>
+	</div>
+	<!-- Under the 3D character: the chosen character's name and "Level N ·
+	     <class>" (modern; classic hides it). It takes no mouse (no
+	     nui-interactive). -->
+	<div class="select-stage" data-if="occupied">
+		<span class="select-stage__name">{{ name }}</span>
+		<span class="select-stage__sub">@ui.SELECT_LEVEL {{ level }} · {{ job_name }}</span>
 	</div>
 	<button id="select-left" class="nui-button nui-button--icon nui-anim nui-interactive select-arrow select-arrow--left" data-attrif-disabled="busy" data-event-click="left()">&#8249;<span class="select-blade select-blade--edge"></span><span class="select-blade"></span><span class="select-tip select-tip--a"></span><span class="select-tip select-tip--b"></span></button>
 	<button id="select-right" class="nui-button nui-button--icon nui-anim nui-interactive select-arrow select-arrow--right" data-attrif-disabled="busy" data-event-click="right()">&#8250;<span class="select-blade select-blade--edge"></span><span class="select-blade"></span><span class="select-tip select-tip--a"></span><span class="select-tip select-tip--b"></span></button>

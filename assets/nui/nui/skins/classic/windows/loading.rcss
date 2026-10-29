@@ -4,13 +4,14 @@
    is in use (docs/ui/AUTHORING.md, Skins). */
 
 /* The legacy emblem: its 24 frames of 1/60 s as skin-provided frames (the
-   timing stays in the markup); the modern ring does not show. */
+   timing stays in the markup); the modern ring, marks, percent and the
+   row over the gauge do not show. */
 .skin-classic .loading-frames
 {
 	--frames-pattern: "d:/ymir work/ui/intro/loading/%02d.sub";
 }
 .skin-classic .loading__track, .skin-classic .loading__hole, .skin-classic .loading__ring,
-.skin-classic .loading__tick, .skin-classic .loading__pct
+.skin-classic .loading__tick, .skin-classic .loading__pct, .skin-classic .loading__head
 {
 	display: none;
 }

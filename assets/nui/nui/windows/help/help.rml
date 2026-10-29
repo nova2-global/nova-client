@@ -14,9 +14,10 @@
 	     curtain parts that dim everything but the taskbar, as legacy's
 	     curtain lies under the TOP_MOST taskbar. Modern is a
 	     centered card (the reviewed design, board WHelp): the lines in two
-	     columns, each on a cell with its bullet, the pointers' texts as a
-	     grid of tiles, each with its glyph, no pointers (P11 spec D14: the
-	     modern taskbar is laid out otherwise). -->
+	     columns under a "Controls" heading, each on a cell with its bullet,
+	     the pointers' texts under a "Taskbar guide" heading with their
+	     count as a grid of tiles, each with its glyph, no pointers (P11
+	     spec D14: the modern taskbar is laid out otherwise). -->
 	<title>help</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="help.rcss"/>
@@ -27,6 +28,10 @@
 	<div id="help" class="nui-window nui-fx nui-anim help__card">
 		<p class="help__heading"><span class="help__icon"><span class="nui-glyph help__glyph"><span class="nui-glyph__a"></span><span
 			class="nui-glyph__b"></span></span></span>@ui.SYSTEM_HELP</p>
+		<div class="help__intro">
+			<span class="help__intro-title">@ui.NUI_HELP_CONTROLS</span>
+			<span class="help__intro-note">@ui.NUI_HELP_CONTROLS_NOTE</span>
+		</div>
 		<div class="help__lines">
 			<div class="help__column">
 				<p id="help-line-1" class="help__line help__line--1"><span class="help__bullet"></span>@ui.HELP_MOVE_KEY</p>
@@ -52,6 +57,10 @@
 				<p id="help-line-19" class="help__line help__line--19"><span class="help__bullet"></span>@ui.HELP_MESSENGER_WINDOW</p>
 				<p id="help-line-20" class="help__line help__line--20"><span class="help__bullet"></span>@ui.HELP_HELP</p>
 			</div>
+		</div>
+		<div class="help__guide">
+			<span class="help__guide-title">@ui.NUI_HELP_TASKBAR_GUIDE</span>
+			<span class="nui-badge help__guide-badge">@ui.NUI_HELP_TASKBAR_PARTS</span>
 		</div>
 		<div class="help__sticks">
 			<div id="help-stick-1" class="help-stick help-stick--1"><div class="help-stick__art"></div><span class="nui-glyph nui-glyph--shop help-stick__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="help-stick__label help-stick__label--1">@ui.HELP_FURY</span></div>

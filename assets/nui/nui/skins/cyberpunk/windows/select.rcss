@@ -60,3 +60,21 @@ body.skin-cyberpunk.select .select-arrow:hover .select-blade--edge
 {
 	border-color: var(--accent) transparent transparent transparent;
 }
+
+/* The list heading: the skin's spaced capitals in the accent, as the
+   mockup's headings; the count stays muted. */
+body.skin-cyberpunk.select .select-heading__title
+{
+	color: var(--accent);
+	font-size: 10dp;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+/* The name under the 3D character: the skin's cyan glow and a magenta
+   offset, as the mockup's (no flicker: motion goes on chrome hooks only). */
+body.skin-cyberpunk.select .select-stage__name
+{
+	font-effect: glow(0dp 6dp 0dp 2dp var(--text-outline)), glow(0dp 10dp 0dp 0dp var(--cyberpunk-glow)),
+	             shadow(2dp 0dp var(--cyberpunk-glow-alt));
+}

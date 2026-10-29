@@ -35,7 +35,8 @@ body.skin-cyberpunk.system-options .so-row--sound, body.skin-cyberpunk.system-op
 	border-radius: 0;
 	background-color: transparent;
 }
-body.skin-cyberpunk.system-options .so-label, body.skin-cyberpunk.system-options .so-motion, body.skin-cyberpunk.system-options .so-effects
+body.skin-cyberpunk.system-options .so-label, body.skin-cyberpunk.system-options .so-motion, body.skin-cyberpunk.system-options .so-effects,
+body.skin-cyberpunk.system-options .so-state
 {
 	font-size: var(--font-sm);
 	letter-spacing: 0.5dp;

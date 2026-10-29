@@ -24,6 +24,28 @@ body.cos
 {
 	tab-index: none;
 }
+/* The title bar's window icon, as the dragon soul window's: the person
+   glyph (who wears the costumes) on the accent's soft tile. */
+.cos-title-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 6dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+}
+.cos-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.8);
+}
 .cos__body
 {
 	padding: var(--space-2);

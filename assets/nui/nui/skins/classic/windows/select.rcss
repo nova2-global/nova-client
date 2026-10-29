@@ -114,6 +114,13 @@
 {
 	display: none;
 }
+/* The modern list heading, the "Level" and "Guild" words before the
+   values and the name and class under the 3D character are not legacy's. */
+.skin-classic .select-heading, .skin-classic .select-slot__lv, .skin-classic .select-empire__guild-label,
+.skin-classic .select-stage
+{
+	display: none;
+}
 .skin-classic .select-slot .nui-list__label, .skin-classic .select-slot--empty .nui-list__label
 {
 	color: var(--text);

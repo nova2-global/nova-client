@@ -631,7 +631,8 @@ class FixtureTest(unittest.TestCase):
                           ("@ui.SELECT_SLOT_EMPTY", 0)])
         self.assertEqual(fixture("loading")["loading"],
                          {"background": "d:/ymir work/uiloading/base/background_loading_warrior.sub",
-                          "progress": 42.0, "error": False})
+                          "progress": 42.0, "error": False, "preparing": "Preparing Kalinka",
+                          "badge": "@game.EMPIRE_A · CH1"})
 
 
 # --- discard and __del__ ------------------------------------------------------------
@@ -795,6 +796,23 @@ class LoadingTest(unittest.TestCase):
             self.assertFalse(board._doc)
             self.assertEqual(window.loadStepList, [])
             self.assertEqual(window.errMsg, 0)
+
+    def test_open_names_the_character_the_empire_and_the_channel(self):
+        """The modern looks' row over the gauge: "Preparing <name>" for the
+        stream's slot through plain_text, and the empire's key with the
+        channel part of the server info text."""
+        world = World(stream_slot=0)
+        with world:
+            world.modules["net"].GetServerInfo.return_value = "Nova, CH1 "
+            window = loading_setup(world, True)
+            window.Open()
+            nui_ = world.modules["nui"]
+            self.assertEqual(window.board.get("preparing"), nui_.plain_text("Kalinka"))
+            self.assertEqual(window.board.get("badge"), "@game.EMPIRE_B · CH1")
+            loading = world.novaui["nui_loading"]
+            self.assertEqual(loading.badge_text(1, "1.2.3.4:13000"), "@game.EMPIRE_A")
+            self.assertEqual(loading.badge_text(0, "Nova, C@ui.OK"), nui_.plain_text("C@ui.OK"))
+            self.assertEqual(loading.preparing_text(""), "")
 
     def test_escape_goes_back_to_the_login_as_legacy(self):
         world = World()
@@ -983,6 +1001,20 @@ class SelectTest(unittest.TestCase):
             self.assertEqual(window.board.get("guild"), "@game.SELECT_NOT_JOIN_GUILD")
             self.assertEqual((window.board.get("name"), window.board.get("job_image")), ("", ""))
 
+    def test_the_guild_word_and_the_class_follow_the_slot(self):
+        """The modern looks' "Guild ·" before a guild only, and the class
+        under the 3D character as the job's locale key."""
+        world = World()
+        with world:
+            window = select_setup(world, True)
+            board = window.board
+            board.fire("pick_slot", 0)
+            self.assertEqual((board.get("has_guild"), board.get("job_name")), (True, "@game.JOB_ASSASSIN"))
+            board.fire("pick_slot", 1)
+            self.assertEqual((board.get("has_guild"), board.get("job_name")), (False, "@game.JOB_WARRIOR"))
+            board.fire("pick_slot", 2)
+            self.assertEqual((board.get("has_guild"), board.get("job_name")), (False, ""))
+
     def test_start_and_the_three_second_timer(self):
         def wait(world, window, novaui):
             world.time += 1.0
@@ -1148,6 +1180,17 @@ class CreateTest(unittest.TestCase):
         self.assertFalse(board.get("busy"))
         self.assertTrue(board.is_visible())
         self.assertEqual(board.focused, CREATE_FIELD)
+
+    def test_the_stage_shows_the_typed_name_and_the_class(self):
+        """The modern looks' name and "Level 1 · <class>" under the 3D
+        character: the typed name through plain_text, the slot's job key."""
+        legacy_world, _, novaui_world, window = self.both([])
+        board = window.board
+        self.assertEqual((board.get("stage_name"), board.get("stage_job")), ("", "@game.JOB_SURA"))
+        legacy_world, _, novaui_world, window = self.both([type_name("N@ui.OK"), ("right",)])
+        board = window.board
+        self.assertEqual(board.get("stage_name"), novaui_world.modules["nui"].plain_text("N@ui.OK"))
+        self.assertEqual(board.get("stage_job"), "@game.JOB_SHAMAN")
 
     def test_the_gender_shape_and_slot_pickers(self):
         legacy_world, _, novaui_world, window = self.both(

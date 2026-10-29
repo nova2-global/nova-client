@@ -318,12 +318,16 @@
 						<span class="nui-glyph nui-glyph--chevron-right char-quest__chev"><span class="nui-glyph__a"></span><span
 							class="nui-glyph__b"></span></span>
 						<span class="char-quest__name">{{ q.name }}</span>
+						<!-- The clock line: its mark, then legacy's text or the countdown
+						     (is-over once the time is up: the static text or the run's end). -->
 						<span class="char-quest__clock" data-attr-id="'char-quest-' + it_index + '-clock'"
-						      data-class-is-timed="q.clock_end &gt; 0"><span
+						      data-class-is-timed="q.clock_end &gt; 0" data-class-is-over="q.clock_over"><span
+							class="nui-glyph nui-glyph--clock char-quest__clock-mark"><span class="nui-glyph__a"></span><span
+							class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
 							class="char-quest__clock-text" data-if="q.clock_end &lt;= 0">{{ q.clock_text }}</span><nui-countdown
 							class="char-quest__countdown" data-if="q.clock_end &gt; 0" format="minsec" minute="@game.QUEST_MIN"
 							second="@game.QUEST_SEC" over="@game.QUEST_TIMEOVER" data-attr-prefix="q.clock_prefix"
-							data-attr-end="q.clock_end"/></span>
+							data-attr-end="q.clock_end" data-event-countdownend="quest_clock_over(it_index)"/></span>
 						<span class="char-quest__counter">{{ q.counter }}</span>
 					</div>
 				</div>

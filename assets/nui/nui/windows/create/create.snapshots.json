@@ -1,5 +1,5 @@
 {
-	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py).",
+	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py). The modern looks show the fixture's stage name (Kalinka) and class under the 3D character's place while the field shows empty: a field's text is never in a model.",
 	"cases": [
 		{"page": "create", "themes": "all",
 		 "scales": [["100", "1", "1280x720"], ["150", "1.5", "1920x1080"], ["200", "2", "2560x1440"]],

@@ -108,6 +108,10 @@
 					<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
 					<span class="nui-toggle__label">@ui.OPTION_UI_REDUCED_MOTION</span>
 				</label>
+				<!-- The setting's state as a word after the switch (modern; classic
+				     hides it); it takes no press. -->
+				<span id="so-motion-state" class="so-state" data-if="reduced_motion">@ui.NUI_SYSTEM_OPTIONS_ON</span><span
+					id="so-motion-state-off" class="so-state" data-if="!reduced_motion">@ui.NUI_SYSTEM_OPTIONS_OFF</span>
 			</div>
 			<div class="so-row so-row--effects">
 				<!-- On and disabled while the device draws no effects (the
@@ -118,6 +122,9 @@
 					<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
 					<span class="nui-toggle__label">@ui.OPTION_UI_REDUCED_EFFECTS</span>
 				</label>
+				<span id="so-effects-state" class="so-state" data-if="reduced_effects"
+					data-class-so-state--locked="!effects_available">@ui.NUI_SYSTEM_OPTIONS_ON</span><span
+					id="so-effects-state-off" class="so-state" data-if="!reduced_effects">@ui.NUI_SYSTEM_OPTIONS_OFF</span>
 				<span id="so-effects-note" class="so-note" data-if="!effects_available">@ui.OPTION_UI_EFFECTS_UNAVAILABLE</span>
 			</div>
 			<div id="so-colors" class="so-colors" data-if="size(color_slots) > 0">

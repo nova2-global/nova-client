@@ -16,9 +16,10 @@
      column, a rule between the halves) in a well; each cell's plus button
      over its lower left corner; the support grid under it, as wide;
    - emotions: the solo and mutual grids under their heading bars;
-   - quests: the icon cells beside each row's name, clock (in the warning
-     color while it runs) and counter, a chevron per row, the scroll arrows
-     and a thumb in a slim rail.
+   - quests: the icon cells beside each row's name, clock (a clock mark
+     before it; in the warning color while it runs, the danger color once
+     the time is up) and counter, a chevron per row, the scroll arrows and
+     a thumb in a slim rail.
    The cells keep the component's 40dp cell and 44dp pitch, so their hit
    boxes tile each grid (the step arrows sit in the 4dp gaps).
    Classic (legacy's 253 x 361 board, its art and places at 100%, the
@@ -869,6 +870,28 @@ body.char.char--placed
 .char-quest__clock.is-timed
 {
 	color: var(--warning);
+}
+/* The time is up: the danger color, over the run's warning. */
+.char-quest__clock.is-over
+{
+	color: var(--danger);
+}
+/* The clock mark before the time, in the line's color: 12dp drawn (the 16dp
+   glyph at 0.75), 4dp from the text, its box held to 12dp so the 15dp line
+   keeps its height. */
+.char-quest__clock-mark
+{
+	--glyph-ink: var(--text-muted);
+	margin: -2dp 2dp -2dp -2dp;
+	transform: scale(0.75);
+}
+.char-quest__clock.is-timed .char-quest__clock-mark
+{
+	--glyph-ink: var(--warning);
+}
+.char-quest__clock.is-over .char-quest__clock-mark
+{
+	--glyph-ink: var(--danger);
 }
 .char-quest__counter
 {

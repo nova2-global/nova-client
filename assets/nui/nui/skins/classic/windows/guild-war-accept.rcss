@@ -15,6 +15,21 @@ body.skin-classic.guild-war-accept .guild-war__window
 	min-width: 0;
 	max-width: none;
 }
+/* Legacy's title bar has no icon; its title runs as the modern handle's
+   row does not. */
+body.skin-classic.guild-war-accept .guild-war__title-icon
+{
+	display: none;
+}
+body.skin-classic.guild-war-accept .guild-war__handle
+{
+	display: block;
+}
+body.skin-classic.guild-war-accept .guild-war__title
+{
+	display: inline;
+	overflow: visible;
+}
 body.skin-classic.guild-war-accept .guild-war__titlebar
 {
 	position: absolute;

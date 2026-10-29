@@ -15,6 +15,11 @@ nui_guild_mark), the war declaration (nui_guild_war_declare), comments,
 member grades and general flags, the skills (pick, use, "+"), the dragon
 power heal, grade names and authorities.
 
+The member lines mark the player's own line and show each member's online
+dot from the messenger's Guild group (nui_messenger.guild_logins: the C++
+messenger tells only its handler, the messenger window, who of the guild is
+online; no dots without a NovaUI messenger), refreshed as its logins change.
+
 The board shows what the proxies hold (_sync): only the shown page is built
 (D9: page_info, page_board, ... are [1] for the shown page, else []); the
 base page's tab stays disabled, as legacy's. A grade combo box's list opens
@@ -35,6 +40,7 @@ focus), and while the field has NovaUI's focus the window holds wndMgr's
 
 import guild
 import localeInfo
+import player
 import ui
 import uiGuild
 import uiPickMoney
@@ -47,6 +53,7 @@ import nui_facade
 import nui_form_proxies
 import nui_guild_grade_name
 import nui_hud
+import nui_messenger
 import nui_proxies
 import nui_slots
 import nui_windows
@@ -84,6 +91,21 @@ SCROLL_STEP = 0.01
 # edit line takes wndMgr's (a button: it takes no keys).
 COMMENT = "guild-comment"
 PARK = "guild-post"
+
+
+def presence_of(name, me, logins):
+	"""A member line's online dot: "on" or "off" as the messenger's Guild
+	group holds the member (nui_messenger.guild_logins, the C++ messenger's
+	logins of every member but the player, who is online); "" (no dot) for
+	an empty line, a name the messenger has not heard of, or without a
+	NovaUI messenger."""
+	if not name or logins is None:
+		return ""
+	if name == me:
+		return "on"
+	if name not in logins:
+		return ""
+	return "on" if logins[name] else "off"
 
 
 class _GuildBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -306,6 +328,7 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		except Exception:
 			self.nui_discard()
 			raise
+		nui_messenger.watch_guild_logins(self._on_guild_logins)
 
 	def nui_discard(self):
 		proxy, self.focusProxy = getattr(self, "focusProxy", None), None
@@ -374,14 +397,31 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		        "long": bool(comment.long)}
 
 	@staticmethod
-	def _member_entry(slots):
+	def _member_entry(slots, me="", logins=None):
+		"""A member line, with whether it is the player's (`me`, its name) and
+		its online dot (presence_of)."""
 		if slots is None:
 			return {"name": "", "grade": "", "job": "", "level": "", "offer": "", "general": False,
-			        "combo_enabled": False}
+			        "combo_enabled": False, "me": False, "presence": ""}
 		name, combo, job, level, offer, general = slots
-		return {"name": name.GetText(), "grade": combo.text, "job": nui.plain_text(job.GetText()),
+		text = name.GetText()
+		return {"name": text, "grade": combo.text, "job": nui.plain_text(job.GetText()),
 		        "level": nui.plain_text(level.GetText()), "offer": nui.plain_text(offer.GetText()),
-		        "general": bool(general.checked), "combo_enabled": bool(combo.enabled)}
+		        "general": bool(general.checked), "combo_enabled": bool(combo.enabled),
+		        "me": bool(text) and text == me, "presence": presence_of(text, me, logins)}
+
+	def _members(self):
+		"""The member lines (legacy's line window), the player's marked and
+		each with its online dot."""
+		member = self.pageWindow["MEMBER"]
+		me, logins = player.GetMainCharacterName(), nui_messenger.guild_logins()
+		return [self._member_entry(member.memberDict[line], me, logins) for line in sorted(member.memberDict)]
+
+	def _on_guild_logins(self):
+		"""The messenger's guild logins changed: the member lines' dots, while
+		the board shows."""
+		if self.nui_board() is not None and getattr(self, "pageWindow", None):
+			self.nui_set(members=self._members())
 
 	@staticmethod
 	def _grade_entry(number, slots):
@@ -429,7 +469,7 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		values["comments"] = [self._comment_entry(*board.boardDict[i]) for i in sorted(board.boardDict)]
 
 		member = pages["MEMBER"]
-		values["members"] = [self._member_entry(member.memberDict[line]) for line in sorted(member.memberDict)]
+		values["members"] = self._members()
 		values["member_scroll"] = float(member.scrollBar.GetPos())
 		values["member_scroll_shown"] = bool(member.scrollBar.shown)
 		open_line, items = -1, []

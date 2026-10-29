@@ -2,8 +2,10 @@
    1): a column of small panels 10dp from the left and 50dp from the
    bottom, the first war at the bottom and each later one above it, 4dp
    apart. A board holds the two guilds' rows, 4dp apart: each a sunken
-   26dp cell with the guild's mark (16 x 12, framed) and its text, 30dp in.
-   Its width follows its longest text, 160dp at least (legacy computes
+   26dp cell with the guild's mark (16 x 12, framed), its name 30dp in and
+   its score in a badge at the row's end; the leading guild's row (the
+   higher score) on the selection fill with an accent edge, its score in
+   the accent. Its width follows its longest row, 160dp at least (legacy computes
    30 + longest name * 6 + 40). Classic (the thin board, 50dp tall, the
    marks at 10, 10 + 18k and the texts at 30, 10 + 18k, uiguild.py:396-428):
    skins/classic/windows/guild-war.rcss. */
@@ -47,18 +49,70 @@ body.guild-war
 }
 .guild-war__row
 {
-	display: block;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	position: relative;
 	box-sizing: border-box;
 	height: 26dp;
 	padding-left: 30dp;
-	padding-right: var(--space-2);
+	padding-right: 2dp;
 	border-width: 1dp;
 	border-color: var(--border);
 	border-radius: 6dp;
 	background-color: var(--surface-sunken);
 	line-height: 24dp;
 	white-space: nowrap;
+}
+/* Legacy's one text ("name score") is the classic look's; here the name
+   and the score show apart. */
+.guild-war__text
+{
+	display: none;
+}
+.guild-war__name
+{
+	display: block;
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* The score: a small badge in the row's end, the board's well color. */
+.guild-war__score
+{
+	display: block;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	min-width: 28dp;
+	height: 20dp;
+	margin-left: var(--space-2);
+	padding: 0 5dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+	background-color: var(--surface);
+	font-size: 13dp;
+	line-height: 18dp;
+	text-align: center;
+}
+/* The leading guild: the selection fill and a 2dp accent edge (its
+   padding 1dp narrower, so the mark and the name stay put), its score in
+   the accent. */
+.guild-war__row.is-leading
+{
+	padding-left: 29dp;
+	border-left-width: 2dp;
+	border-left-color: var(--accent);
+	background-color: var(--selection);
+}
+.guild-war__row.is-leading .guild-war__mark
+{
+	left: 5dp;
+}
+.guild-war__row.is-leading .guild-war__score
+{
+	color: var(--accent);
 }
 /* The mark, framed by a dark hairline. */
 .guild-war__mark

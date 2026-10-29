@@ -110,13 +110,15 @@
 {
 	display: flex;
 	flex-direction: column;
-	gap: 4dp;
+	gap: 3dp;
 }
 /* A cell per slot: its number, the name in the middle, the level and its
-   mark; the chosen slot in the accent's soft fill with an accent edge. */
+   mark; the chosen slot in the accent's soft fill with an accent edge.
+   Five slots (NOVA-97) at 25dp, 3dp apart, keep the board short enough
+   for the class art 149dp above it on a 720dp screen. */
 .select-slot
 {
-	min-height: 28dp;
+	min-height: 25dp;
 	padding: 0dp 10dp 0dp 7dp;
 	gap: 6dp;
 	background-color: var(--surface-raised);

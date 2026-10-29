@@ -24,6 +24,10 @@ body.messenger
 	width: 170dp;
 	height: 310dp;
 	min-width: 0;
+	/* The modern chrome (title, block row, action tiles, grip) is taller
+	   than legacy's, so at legacy's least height (150) the list would
+	   vanish: the window stops at two rows of list instead. */
+	min-height: 210dp;
 	focus: none;
 	tab-index: none;
 }

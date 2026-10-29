@@ -18,6 +18,12 @@
    their art (up, over, down, disabled); the resize edge legacy's 10 tall
    drag button along the bottom. */
 
+/* Legacy's least height (150): no modern floor. */
+body.skin-classic.messenger
+{
+	min-height: 0;
+}
+
 body.skin-classic.messenger
 {
 	display: block;

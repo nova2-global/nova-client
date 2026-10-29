@@ -1235,6 +1235,7 @@
 		"stat_attack": "1048-1166",
 		"stat_defence": "642",
 		"stat_magic": "236-252",
-		"rail": []
+		"rail": [],
+		"rail_folded": false
 	}
 }

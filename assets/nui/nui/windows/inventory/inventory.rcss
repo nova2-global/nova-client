@@ -542,7 +542,11 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 /* --- The shortcut rail ----------------------------------------------------- */
 
 /* A slim board on the window's left edge, under its title bar: one 36dp
-   button per entry, a glyph in each, its hint on the left. */
+   button per entry, a 24dp glyph in each, its hint on the left; under them
+   a rule and the fold button. A badge (a count) sits on a button's top
+   right corner; a feature still to come draws its glyph faint, its hint
+   with a second line, and takes no accent on hover (no press). Folded,
+   only the grip and the fold button stay. */
 .inv-rail
 {
 	display: flex;
@@ -556,6 +560,10 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 	gap: 6dp;
 }
 .inv-rail.is-empty
+{
+	display: none;
+}
+.inv-rail.is-folded .inv-rail__button, .inv-rail.is-folded .inv-rail__more
 {
 	display: none;
 }
@@ -578,7 +586,61 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 	border-radius: 10dp;
 	line-height: 34dp;
 }
+.inv-rail__glyph
+{
+	transform: scale(1.5);
+}
 .inv-rail__button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.inv-rail__button.is-soon .inv-rail__glyph
+{
+	opacity: 0.45;
+}
+.inv-rail__button.is-soon:hover .nui-glyph
+{
+	--glyph-ink: var(--text);
+}
+.inv-rail__badge
+{
+	position: absolute;
+	right: -5dp;
+	top: -5dp;
+	min-width: 5dp;
+	height: 15dp;
+	padding: 0 4dp;
+	border-width: 2dp;
+	border-color: var(--surface);
+	background-color: var(--danger);
+	color: var(--text-inverse);
+	line-height: 15dp;
+	text-align: center;
+}
+.inv-rail__more
+{
+	display: block;
+	width: 22dp;
+	height: 1dp;
+	margin: 2dp 0;
+	background-color: var(--border);
+}
+.inv-rail__fold
+{
+	position: relative;
+	width: 36dp;
+	height: 18dp;
+	min-width: 0;
+	padding: 0;
+	border-radius: 7dp;
+	line-height: 16dp;
+}
+.inv-rail__fold-glyph
+{
+	--glyph-ink: var(--text-muted);
+	transform: scale(0.75);
+}
+.inv-rail__fold:hover .inv-rail__fold-glyph
 {
 	--glyph-ink: var(--accent);
 }
@@ -589,4 +651,14 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 	bottom: auto;
 	top: 7dp;
 	margin: 0 8dp 0 -320dp;
+}
+.inv-rail__tip--fold
+{
+	top: -4dp;
+}
+.inv-rail__soon
+{
+	display: block;
+	opacity: 0.75;
+	font-size: var(--font-xs);
 }

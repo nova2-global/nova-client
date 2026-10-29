@@ -225,3 +225,30 @@ body.skin-cyberpunk.inv .inv-rail__grip
 	border-radius: 0;
 	background-color: var(--cyberpunk-edge-alt);
 }
+
+/* The rail's glyphs cyan with magenta accents, its badge a square of acid
+   with dark digits, as the reviewed board draws them. */
+body.skin-cyberpunk.inv .inv-rail__glyph
+{
+	--glyph-ink: var(--accent);
+	--glyph-accent: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.inv .inv-rail__button:hover .inv-rail__glyph
+{
+	--glyph-ink: var(--accent-hover);
+}
+body.skin-cyberpunk.inv .inv-rail__button.is-soon:hover .inv-rail__glyph
+{
+	--glyph-ink: var(--accent);
+}
+body.skin-cyberpunk.inv .inv-rail__badge
+{
+	border-radius: 0;
+	border-color: var(--surface);
+	background-color: var(--focus-ring);
+	color: var(--accent-text);
+}
+body.skin-cyberpunk.inv .inv-rail__fold-glyph
+{
+	--glyph-ink: var(--accent);
+}

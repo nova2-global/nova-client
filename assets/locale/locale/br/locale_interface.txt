@@ -380,3 +380,60 @@ NUI_RAIL_GUIDE	Guia
 NUI_RAIL_SOON	Em breve
 NUI_RAIL_FOLD	Ocultar atalhos
 NUI_RAIL_UNFOLD	Mostrar atalhos
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Escreva uma mensagem...
+NUI_SELECT_CHARACTERS	Personagens
+NUI_GUILD_SKILL_AVAILABLE	disponíveis
+NUI_LOADING_PREPARING	Preparando %s
+NUI_HELP_CONTROLS	Controles
+NUI_HELP_CONTROLS_NOTE	Referência de teclado e mouse
+NUI_HELP_TASKBAR_GUIDE	Guia da barra de tarefas
+NUI_HELP_TASKBAR_PARTS	8 partes
+NUI_SYSTEM_OPTIONS_ON	Ligado
+NUI_SYSTEM_OPTIONS_OFF	Desligado
+NUI_LOGIN_SAVED	Contas salvas
+NUI_LOGIN_FORGET	Esquecer esta conta
+NUI_LOGIN_ADD_ACCOUNT	Adicionar conta
+NUI_LOGIN_SAVED_HINT	Salvo neste computador: o nome da conta e os personagens que você viu no último login, com os níveis da época. As senhas nunca são salvas.
+NUI_LOGIN_TAB_LOGIN	Entrar
+NUI_LOGIN_TAB_REGISTER	Criar conta
+NUI_LOGIN_WELCOME	Bem-vindo de volta, guerreiro
+NUI_LOGIN_REMEMBER	Lembrar de mim
+NUI_LOGIN_FORGOT	Esqueceu a senha?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Canal: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Crie sua conta
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	nome@exemplo.com.br
+NUI_LOGIN_PASSWORD_HINT	8 a 16 caracteres
+NUI_LOGIN_CONFIRM	Confirmar
+NUI_LOGIN_CONFIRM_HINT	Repita
+NUI_LOGIN_DELETE_CODE	Código de exclusão de personagem
+NUI_LOGIN_DELETE_CODE_HINT	7 dígitos
+NUI_LOGIN_DELETE_CODE_NOTE	Você precisa dele para excluir um personagem. Guarde bem.
+NUI_LOGIN_ACCEPT_RULES	Aceito as regras do servidor
+NUI_LOGIN_RULES	Ler
+NUI_LOGIN_REGISTER_NOTE	Você pode entrar logo em seguida, sem site.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Site
+NUI_LOGIN_LAST_PLAYED	Último jogado %s · %s
+NUI_LOGIN_NOW	agora mesmo
+NUI_LOGIN_MINUTES	há %d min
+NUI_LOGIN_HOURS	há %d h
+NUI_LOGIN_YESTERDAY	ontem
+NUI_LOGIN_DAYS	há %d dias
+NUI_LOGIN_ERR_TAKEN	Este nome já está em uso.
+NUI_LOGIN_ERR_LOGIN	Use de 4 a 30 letras e números.
+NUI_LOGIN_ERR_PASSWORD	Use de 8 a 16 caracteres, sem [ ou ].
+NUI_LOGIN_ERR_CONFIRM	As senhas não coincidem.
+NUI_LOGIN_ERR_EMAIL	Digite um e-mail válido.
+NUI_LOGIN_ERR_CODE	Digite exatamente 7 números.
+NUI_LOGIN_ERR_RULES	Aceite as regras do servidor para continuar.
+NUI_LOGIN_ERR_LIMIT	Tentativas demais. Tente mais tarde.
+NUI_LOGIN_ERR_DISABLED	Este servidor não aceita novas contas.
+NUI_LOGIN_ERR_BUSY	O servidor está ocupado. Tente em instantes.
+NUI_LOGIN_ERR_FAILED	Não foi possível criar a conta. Tente mais tarde.
+NUI_LOGIN_CREATED	Sua conta está pronta. Entre com ela.
+NUI_LOGIN_CREATING	Criando sua conta...

@@ -380,3 +380,60 @@ NUI_RAIL_GUIDE	Οδηγός
 NUI_RAIL_SOON	Έρχεται σύντομα
 NUI_RAIL_FOLD	Απόκρυψη συντομεύσεων
 NUI_RAIL_UNFOLD	Εμφάνιση συντομεύσεων
+NUI_MESSENGER_ONLINE	Σε σύνδεση
+NUI_MESSENGER_OFFLINE	Εκτός σύνδεσης
+NUI_WHISPER_PLACEHOLDER	Γράψε ένα μήνυμα...
+NUI_SELECT_CHARACTERS	Χαρακτήρες
+NUI_GUILD_SKILL_AVAILABLE	διαθέσιμοι
+NUI_LOADING_PREPARING	Προετοιμασία: %s
+NUI_HELP_CONTROLS	Χειρισμός
+NUI_HELP_CONTROLS_NOTE	Οδηγός πληκτρολογίου και ποντικιού
+NUI_HELP_TASKBAR_GUIDE	Οδηγός γραμμής εργασιών
+NUI_HELP_TASKBAR_PARTS	8 μέρη
+NUI_SYSTEM_OPTIONS_ON	Ενεργό
+NUI_SYSTEM_OPTIONS_OFF	Ανενεργό
+NUI_LOGIN_SAVED	Αποθηκευμένοι λογαριασμοί
+NUI_LOGIN_FORGET	Ξέχασε αυτόν τον λογαριασμό
+NUI_LOGIN_ADD_ACCOUNT	Προσθήκη λογαριασμού
+NUI_LOGIN_SAVED_HINT	Αποθηκεύονται σε αυτόν τον υπολογιστή: το όνομα του λογαριασμού και οι χαρακτήρες που είδες στην τελευταία σύνδεση, με τα τότε επίπεδά τους. Οι κωδικοί δεν αποθηκεύονται ποτέ.
+NUI_LOGIN_TAB_LOGIN	Σύνδεση
+NUI_LOGIN_TAB_REGISTER	Δημιουργία λογαριασμού
+NUI_LOGIN_WELCOME	Καλώς ήρθες ξανά, πολεμιστή
+NUI_LOGIN_REMEMBER	Να με θυμάσαι
+NUI_LOGIN_FORGOT	Ξέχασες τον κωδικό;
+NUI_LOGIN_AUTO	Αυτόματο
+NUI_LOGIN_CHANNEL	Κανάλι: %s
+NUI_LOGIN_PLAYERS	%s σε σύνδεση
+NUI_LOGIN_REGISTER_TITLE	Δημιούργησε τον λογαριασμό σου
+NUI_LOGIN_EMAIL	Email
+NUI_LOGIN_EMAIL_HINT	onoma@paradeigma.gr
+NUI_LOGIN_PASSWORD_HINT	8 έως 16 χαρακτήρες
+NUI_LOGIN_CONFIRM	Επιβεβαίωση
+NUI_LOGIN_CONFIRM_HINT	Επανάλαβέ τον
+NUI_LOGIN_DELETE_CODE	Κωδικός διαγραφής χαρακτήρα
+NUI_LOGIN_DELETE_CODE_HINT	7 ψηφία
+NUI_LOGIN_DELETE_CODE_NOTE	Τον χρειάζεσαι για να διαγράψεις χαρακτήρα. Φύλαξέ τον.
+NUI_LOGIN_ACCEPT_RULES	Αποδέχομαι τους κανόνες του διακομιστή
+NUI_LOGIN_RULES	Διάβασέ τους
+NUI_LOGIN_REGISTER_NOTE	Μπορείς να συνδεθείς αμέσως μετά, χωρίς ιστότοπο.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Ιστότοπος
+NUI_LOGIN_LAST_PLAYED	Τελευταίο παιχνίδι %s · %s
+NUI_LOGIN_NOW	μόλις τώρα
+NUI_LOGIN_MINUTES	πριν από %d λεπτά
+NUI_LOGIN_HOURS	πριν από %d ώρες
+NUI_LOGIN_YESTERDAY	χθες
+NUI_LOGIN_DAYS	πριν από %d ημέρες
+NUI_LOGIN_ERR_TAKEN	Αυτό το όνομα είναι πιασμένο.
+NUI_LOGIN_ERR_LOGIN	Χρησιμοποίησε 4 έως 30 γράμματα και ψηφία.
+NUI_LOGIN_ERR_PASSWORD	Χρησιμοποίησε 8 έως 16 χαρακτήρες, χωρίς [ ή ].
+NUI_LOGIN_ERR_CONFIRM	Οι κωδικοί δεν ταιριάζουν.
+NUI_LOGIN_ERR_EMAIL	Γράψε έγκυρη διεύθυνση email.
+NUI_LOGIN_ERR_CODE	Γράψε ακριβώς 7 ψηφία.
+NUI_LOGIN_ERR_RULES	Αποδέξου τους κανόνες του διακομιστή για να συνεχίσεις.
+NUI_LOGIN_ERR_LIMIT	Πάρα πολλές προσπάθειες. Δοκίμασε αργότερα.
+NUI_LOGIN_ERR_DISABLED	Αυτός ο διακομιστής δεν δέχεται νέους λογαριασμούς.
+NUI_LOGIN_ERR_BUSY	Ο διακομιστής είναι απασχολημένος. Δοκίμασε σε λίγο.
+NUI_LOGIN_ERR_FAILED	Δεν ήταν δυνατή η δημιουργία του λογαριασμού. Δοκίμασε αργότερα.
+NUI_LOGIN_CREATED	Ο λογαριασμός σου είναι έτοιμος. Συνδέσου με αυτόν.
+NUI_LOGIN_CREATING	Δημιουργία λογαριασμού...

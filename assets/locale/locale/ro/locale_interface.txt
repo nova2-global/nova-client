@@ -380,3 +380,60 @@ NUI_RAIL_GUIDE	Ghid
 NUI_RAIL_SOON	În curând
 NUI_RAIL_FOLD	Ascunde scurtăturile
 NUI_RAIL_UNFOLD	Arată scurtăturile
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Scrie un mesaj...
+NUI_SELECT_CHARACTERS	Personaje
+NUI_GUILD_SKILL_AVAILABLE	disponibile
+NUI_LOADING_PREPARING	Se pregătește %s
+NUI_HELP_CONTROLS	Comenzi
+NUI_HELP_CONTROLS_NOTE	Referință tastatură și mouse
+NUI_HELP_TASKBAR_GUIDE	Ghidul barei de activități
+NUI_HELP_TASKBAR_PARTS	8 părți
+NUI_SYSTEM_OPTIONS_ON	Activat
+NUI_SYSTEM_OPTIONS_OFF	Dezactivat
+NUI_LOGIN_SAVED	Conturi salvate
+NUI_LOGIN_FORGET	Uită acest cont
+NUI_LOGIN_ADD_ACCOUNT	Adaugă cont
+NUI_LOGIN_SAVED_HINT	Salvat pe acest calculator: numele contului și personajele văzute la ultima conectare, cu nivelurile de atunci. Parolele nu sunt salvate niciodată.
+NUI_LOGIN_TAB_LOGIN	Conectare
+NUI_LOGIN_TAB_REGISTER	Creează cont
+NUI_LOGIN_WELCOME	Bine ai revenit, războinicule
+NUI_LOGIN_REMEMBER	Ține-mă minte
+NUI_LOGIN_FORGOT	Ai uitat parola?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Canal: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Creează-ți contul
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	nume@exemplu.ro
+NUI_LOGIN_PASSWORD_HINT	Între 8 și 16 caractere
+NUI_LOGIN_CONFIRM	Confirmă
+NUI_LOGIN_CONFIRM_HINT	Repet-o
+NUI_LOGIN_DELETE_CODE	Cod de ștergere a personajului
+NUI_LOGIN_DELETE_CODE_HINT	7 cifre
+NUI_LOGIN_DELETE_CODE_NOTE	Îți trebuie ca să ștergi un personaj. Păstrează-l în siguranță.
+NUI_LOGIN_ACCEPT_RULES	Accept regulile serverului
+NUI_LOGIN_RULES	Citește-le
+NUI_LOGIN_REGISTER_NOTE	Te poți conecta imediat după, fără site.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Site
+NUI_LOGIN_LAST_PLAYED	Ultimul jucat %s · %s
+NUI_LOGIN_NOW	chiar acum
+NUI_LOGIN_MINUTES	acum %d min
+NUI_LOGIN_HOURS	acum %d h
+NUI_LOGIN_YESTERDAY	ieri
+NUI_LOGIN_DAYS	acum %d zile
+NUI_LOGIN_ERR_TAKEN	Acest nume este luat.
+NUI_LOGIN_ERR_LOGIN	Folosește între 4 și 30 de litere și cifre.
+NUI_LOGIN_ERR_PASSWORD	Folosește între 8 și 16 caractere, fără [ sau ].
+NUI_LOGIN_ERR_CONFIRM	Parolele nu se potrivesc.
+NUI_LOGIN_ERR_EMAIL	Introdu o adresă de e-mail validă.
+NUI_LOGIN_ERR_CODE	Introdu exact 7 cifre.
+NUI_LOGIN_ERR_RULES	Acceptă regulile serverului pentru a continua.
+NUI_LOGIN_ERR_LIMIT	Prea multe încercări. Încearcă mai târziu.
+NUI_LOGIN_ERR_DISABLED	Acest server nu acceptă conturi noi.
+NUI_LOGIN_ERR_BUSY	Serverul este ocupat. Încearcă peste puțin timp.
+NUI_LOGIN_ERR_FAILED	Contul nu a putut fi creat. Încearcă mai târziu.
+NUI_LOGIN_CREATED	Contul tău este gata. Conectează-te cu el.
+NUI_LOGIN_CREATING	Se creează contul...

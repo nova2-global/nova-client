@@ -404,3 +404,60 @@ NUI_RAIL_GUIDE	الدليل
 NUI_RAIL_SOON	قريبًا
 NUI_RAIL_FOLD	إخفاء الاختصارات
 NUI_RAIL_UNFOLD	إظهار الاختصارات
+NUI_MESSENGER_ONLINE	متصل
+NUI_MESSENGER_OFFLINE	غير متصل
+NUI_WHISPER_PLACEHOLDER	اكتب رسالة...
+NUI_SELECT_CHARACTERS	الشخصيات
+NUI_GUILD_SKILL_AVAILABLE	متاحة
+NUI_LOADING_PREPARING	جارٍ تجهيز %s
+NUI_HELP_CONTROLS	عناصر التحكم
+NUI_HELP_CONTROLS_NOTE	مرجع لوحة المفاتيح والفأرة
+NUI_HELP_TASKBAR_GUIDE	دليل شريط المهام
+NUI_HELP_TASKBAR_PARTS	8 أجزاء
+NUI_SYSTEM_OPTIONS_ON	تشغيل
+NUI_SYSTEM_OPTIONS_OFF	إيقاف
+NUI_LOGIN_SAVED	الحسابات المحفوظة
+NUI_LOGIN_FORGET	انسَ هذا الحساب
+NUI_LOGIN_ADD_ACCOUNT	إضافة حساب
+NUI_LOGIN_SAVED_HINT	محفوظ على هذا الكمبيوتر: اسم الحساب والشخصيات التي رأيتها عند آخر تسجيل دخول، بمستوياتها آنذاك. لا تُحفظ كلمات المرور أبدًا.
+NUI_LOGIN_TAB_LOGIN	تسجيل الدخول
+NUI_LOGIN_TAB_REGISTER	إنشاء حساب
+NUI_LOGIN_WELCOME	مرحبًا بعودتك أيها المحارب
+NUI_LOGIN_REMEMBER	تذكرني
+NUI_LOGIN_FORGOT	نسيت كلمة المرور؟
+NUI_LOGIN_AUTO	تلقائي
+NUI_LOGIN_CHANNEL	القناة: %s
+NUI_LOGIN_PLAYERS	%s متصل
+NUI_LOGIN_REGISTER_TITLE	أنشئ حسابك
+NUI_LOGIN_EMAIL	البريد الإلكتروني
+NUI_LOGIN_EMAIL_HINT	name@example.com
+NUI_LOGIN_PASSWORD_HINT	من 8 إلى 16 حرفًا
+NUI_LOGIN_CONFIRM	تأكيد
+NUI_LOGIN_CONFIRM_HINT	أعد كتابتها
+NUI_LOGIN_DELETE_CODE	رمز حذف الشخصية
+NUI_LOGIN_DELETE_CODE_HINT	7 أرقام
+NUI_LOGIN_DELETE_CODE_NOTE	تحتاجه لحذف شخصية. احتفظ به في مكان آمن.
+NUI_LOGIN_ACCEPT_RULES	أوافق على قواعد الخادم
+NUI_LOGIN_RULES	اقرأها
+NUI_LOGIN_REGISTER_NOTE	يمكنك تسجيل الدخول مباشرة بعد ذلك، دون موقع ويب.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	الموقع
+NUI_LOGIN_LAST_PLAYED	آخر لعب %s · %s
+NUI_LOGIN_NOW	الآن
+NUI_LOGIN_MINUTES	قبل %d دقيقة
+NUI_LOGIN_HOURS	قبل %d ساعة
+NUI_LOGIN_YESTERDAY	أمس
+NUI_LOGIN_DAYS	قبل %d يوم
+NUI_LOGIN_ERR_TAKEN	هذا الاسم مستخدم.
+NUI_LOGIN_ERR_LOGIN	استخدم من 4 إلى 30 حرفًا ورقمًا.
+NUI_LOGIN_ERR_PASSWORD	استخدم من 8 إلى 16 حرفًا، بدون [ أو ].
+NUI_LOGIN_ERR_CONFIRM	كلمتا المرور غير متطابقتين.
+NUI_LOGIN_ERR_EMAIL	أدخل بريدًا إلكترونيًا صالحًا.
+NUI_LOGIN_ERR_CODE	أدخل 7 أرقام بالضبط.
+NUI_LOGIN_ERR_RULES	اقبل قواعد الخادم للمتابعة.
+NUI_LOGIN_ERR_LIMIT	محاولات كثيرة جدًا. حاول لاحقًا.
+NUI_LOGIN_ERR_DISABLED	هذا الخادم لا يقبل حسابات جديدة.
+NUI_LOGIN_ERR_BUSY	الخادم مشغول. حاول بعد لحظة.
+NUI_LOGIN_ERR_FAILED	تعذر إنشاء الحساب. حاول لاحقًا.
+NUI_LOGIN_CREATED	حسابك جاهز. سجّل الدخول به.
+NUI_LOGIN_CREATING	جارٍ إنشاء حسابك...

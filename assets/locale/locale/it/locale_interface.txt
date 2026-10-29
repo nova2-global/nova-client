@@ -380,3 +380,60 @@ NUI_RAIL_GUIDE	Guida
 NUI_RAIL_SOON	Prossimamente
 NUI_RAIL_FOLD	Nascondi scorciatoie
 NUI_RAIL_UNFOLD	Mostra scorciatoie
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Scrivi un messaggio...
+NUI_SELECT_CHARACTERS	Personaggi
+NUI_GUILD_SKILL_AVAILABLE	disponibili
+NUI_LOADING_PREPARING	Preparazione di %s
+NUI_HELP_CONTROLS	Comandi
+NUI_HELP_CONTROLS_NOTE	Riferimento tastiera e mouse
+NUI_HELP_TASKBAR_GUIDE	Guida alla barra delle applicazioni
+NUI_HELP_TASKBAR_PARTS	8 parti
+NUI_SYSTEM_OPTIONS_ON	Attivo
+NUI_SYSTEM_OPTIONS_OFF	Disattivo
+NUI_LOGIN_SAVED	Account salvati
+NUI_LOGIN_FORGET	Dimentica questo account
+NUI_LOGIN_ADD_ACCOUNT	Aggiungi account
+NUI_LOGIN_SAVED_HINT	Salvato su questo computer: il nome dell'account e i personaggi visti all'ultimo accesso, con i loro livelli di allora. Le password non vengono mai salvate.
+NUI_LOGIN_TAB_LOGIN	Accedi
+NUI_LOGIN_TAB_REGISTER	Crea account
+NUI_LOGIN_WELCOME	Bentornato, guerriero
+NUI_LOGIN_REMEMBER	Ricordami
+NUI_LOGIN_FORGOT	Password dimenticata?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Canale: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Crea il tuo account
+NUI_LOGIN_EMAIL	Email
+NUI_LOGIN_EMAIL_HINT	nome@esempio.it
+NUI_LOGIN_PASSWORD_HINT	Da 8 a 16 caratteri
+NUI_LOGIN_CONFIRM	Conferma
+NUI_LOGIN_CONFIRM_HINT	Ripetila
+NUI_LOGIN_DELETE_CODE	Codice di eliminazione personaggio
+NUI_LOGIN_DELETE_CODE_HINT	7 cifre
+NUI_LOGIN_DELETE_CODE_NOTE	Ti serve per eliminare un personaggio. Conservalo con cura.
+NUI_LOGIN_ACCEPT_RULES	Accetto le regole del server
+NUI_LOGIN_RULES	Leggile
+NUI_LOGIN_REGISTER_NOTE	Potrai accedere subito dopo, senza sito web.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Sito web
+NUI_LOGIN_LAST_PLAYED	Ultimo giocato %s · %s
+NUI_LOGIN_NOW	proprio ora
+NUI_LOGIN_MINUTES	%d min fa
+NUI_LOGIN_HOURS	%d h fa
+NUI_LOGIN_YESTERDAY	ieri
+NUI_LOGIN_DAYS	%d giorni fa
+NUI_LOGIN_ERR_TAKEN	Questo nome è già in uso.
+NUI_LOGIN_ERR_LOGIN	Usa da 4 a 30 lettere e cifre.
+NUI_LOGIN_ERR_PASSWORD	Usa da 8 a 16 caratteri, senza [ o ].
+NUI_LOGIN_ERR_CONFIRM	Le password non coincidono.
+NUI_LOGIN_ERR_EMAIL	Inserisci un indirizzo email valido.
+NUI_LOGIN_ERR_CODE	Inserisci esattamente 7 cifre.
+NUI_LOGIN_ERR_RULES	Accetta le regole del server per continuare.
+NUI_LOGIN_ERR_LIMIT	Troppi tentativi. Riprova più tardi.
+NUI_LOGIN_ERR_DISABLED	Questo server non accetta nuovi account.
+NUI_LOGIN_ERR_BUSY	Il server è occupato. Riprova tra un momento.
+NUI_LOGIN_ERR_FAILED	Impossibile creare l'account. Riprova più tardi.
+NUI_LOGIN_CREATED	Il tuo account è pronto. Accedi con esso.
+NUI_LOGIN_CREATING	Creazione dell'account in corso...

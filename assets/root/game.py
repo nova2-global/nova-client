@@ -380,6 +380,8 @@ class GameWindow(ui.ScriptWindow):
 		#onPressKeyDict[app.DIK_B]			= lambda state = "EMOTICON": self.interface.ToggleCharacterWindow(state)
 		onPressKeyDict[app.DIK_N]			= lambda state = "QUEST": self.interface.ToggleCharacterWindow(state)
 		onPressKeyDict[app.DIK_I]			= lambda: self.interface.ToggleInventoryWindow()
+		# The special inventory (NOVA-16; OLD game.py:487-488).
+		onPressKeyDict[app.DIK_U]			= lambda: self.interface.ToggleExtraInventoryWindow()
 		onPressKeyDict[app.DIK_O]			= lambda: self.interface.ToggleDragonSoulWindowWithNoInfo()
 		onPressKeyDict[app.DIK_M]			= lambda: self.interface.PressMKey()
 		#onPressKeyDict[app.DIK_H]			= lambda: self.interface.OpenHelpWindow()
@@ -1317,6 +1319,10 @@ class GameWindow(ui.ScriptWindow):
 			## DragonSoul
 			elif player.SLOT_TYPE_DRAGON_SOUL_INVENTORY == attachedType:
 				self.__PutItem(attachedType, attachedItemIndex, attachedItemSlotPos, attachedItemCount, self.PickingCharacterIndex)
+
+			## The special inventory (NOVA-16; OLD game.py:1999-2002)
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedType:
+				self.__PutItem(attachedType, attachedItemIndex, attachedItemSlotPos, attachedItemCount, self.PickingCharacterIndex)
 			
 			mouseModule.mouseController.DeattachObject()
 
@@ -1336,10 +1342,14 @@ class GameWindow(ui.ScriptWindow):
 		return True
 
 	def __PutItem(self, attachedType, attachedItemIndex, attachedItemSlotPos, attachedItemCount, dstChrID):
-		if player.SLOT_TYPE_INVENTORY == attachedType or player.SLOT_TYPE_DRAGON_SOUL_INVENTORY == attachedType:
+		# An extra inventory item (NOVA-16) is given, traded and dropped as an
+		# inventory item is, with its window (OLD game.py:2021-2045); its cell
+		# number is never a worn cell.
+		if player.SLOT_TYPE_INVENTORY == attachedType or player.SLOT_TYPE_DRAGON_SOUL_INVENTORY == attachedType or \
+				player.SLOT_TYPE_EXTRA_INVENTORY == attachedType:
 			attachedInvenType = player.SlotTypeToInvenType(attachedType)
 			if True == chr.HasInstance(self.PickingCharacterIndex) and player.GetMainCharacterIndex() != dstChrID:
-				if player.IsEquipmentSlot(attachedItemSlotPos) and player.SLOT_TYPE_DRAGON_SOUL_INVENTORY != attachedType:
+				if player.SLOT_TYPE_INVENTORY == attachedType and player.IsEquipmentSlot(attachedItemSlotPos):
 					self.stream.popupWindow.Close()
 					self.stream.popupWindow.Open(localeInfo.EXCHANGE_FAILURE_EQUIP_ITEM, 0, localeInfo.UI_OK)
 				else:
@@ -1445,6 +1455,27 @@ class GameWindow(ui.ScriptWindow):
 				self.itemDropQuestionDialog = itemDropQuestionDialog
 
 				constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedType:
+				dropItemIndex = player.GetItemIndex(player.EXTRA_INVENTORY, attachedItemSlotPos)
+
+				item.SelectItem(dropItemIndex)
+				dropItemName = item.GetItemName()
+
+				## Question Text
+				questionText = localeInfo.HOW_MANY_ITEM_DO_YOU_DROP(dropItemName, attachedItemCount)
+
+				## Dialog
+				itemDropQuestionDialog = uiCommon.QuestionDialog()
+				itemDropQuestionDialog.SetText(questionText)
+				itemDropQuestionDialog.SetAcceptEvent(lambda arg=True: self.RequestDropItem(arg))
+				itemDropQuestionDialog.SetCancelEvent(lambda arg=False: self.RequestDropItem(arg))
+				itemDropQuestionDialog.Open()
+				itemDropQuestionDialog.dropType = attachedType
+				itemDropQuestionDialog.dropNumber = attachedItemSlotPos
+				itemDropQuestionDialog.dropCount = attachedItemCount
+				self.itemDropQuestionDialog = itemDropQuestionDialog
+
+				constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
 
 	def RequestDropItem(self, answer):
 		if not self.itemDropQuestionDialog:
@@ -1467,6 +1498,8 @@ class GameWindow(ui.ScriptWindow):
 					# PRIVATESHOP_DISABLE_ITEM_DROP
 					self.__SendDropItemPacket(dropNumber, dropCount, player.DRAGON_SOUL_INVENTORY)
 					# END_OF_PRIVATESHOP_DISABLE_ITEM_DROP
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == dropType:
+				self.__SendDropItemPacket(dropNumber, dropCount, player.EXTRA_INVENTORY)
 
 		self.itemDropQuestionDialog.Close()
 		self.itemDropQuestionDialog = None

@@ -907,3 +907,7 @@ ADD_4TH_STONE_ONLY_ARMOR	Questa pergamena funziona solo sulle armature.
 ADD_4TH_STONE_ONLY_WEAPON	Questa pergamena funziona solo sulle armi.
 ADD_4TH_STONE_NOT_POSSIBLE	Non puoi usare la pergamena su questo oggetto.
 ADD_4TH_STONE_ADD_QUESTION	Desideri aprire il quarto spazio per incastonare?
+MOVE_TO_BANK	Shift + right-click: sposta in banca
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: sposta nella finestra di scambio
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: sposta nell'inventario+
+MOVE_TO_INVENTORY	Ctrl + right-click: sposta nell'inventario

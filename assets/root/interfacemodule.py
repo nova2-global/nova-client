@@ -12,6 +12,7 @@ import player
 import uiTaskBar
 import uiCharacter
 import uiInventory
+import uiExtraInventory
 import uiDragonSoul
 import uiChat
 import uiMessenger
@@ -70,6 +71,7 @@ class Interface(object):
 		self.wndTaskBar = None
 		self.wndCharacter = None
 		self.wndInventory = None
+		self.wndExtraInventory = None
 		self.wndExpandedTaskBar = None
 		self.wndDragonSoul = None
 		self.wndDragonSoulRefine = None
@@ -187,6 +189,10 @@ class Interface(object):
 		wndCharacter = nui_windows.make("character", uiCharacter.CharacterWindow, "nui_character.CharacterWindow")
 		wndInventory = nui_windows.make("inventory", uiInventory.InventoryWindow, "nui_inventory.InventoryWindow")
 		wndInventory.BindInterfaceClass(self)
+		# The special inventory (NOVA-16), legacy only until NovaUI has one.
+		wndExtraInventory = uiExtraInventory.ExtraInventoryWindow()
+		wndExtraInventory.BindInterfaceClass(self)
+		wndExtraInventory.Hide()
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			wndDragonSoul = nui_windows.make("dragon-soul", uiDragonSoul.DragonSoulWindow, "nui_dragon_soul.DragonSoulWindow")	
 			wndDragonSoul.BindInterfaceClass(self)
@@ -211,6 +217,7 @@ class Interface(object):
 		
 		self.wndCharacter = wndCharacter
 		self.wndInventory = wndInventory
+		self.wndExtraInventory = wndExtraInventory
 		self.wndDragonSoul = wndDragonSoul
 		self.wndDragonSoulRefine = wndDragonSoulRefine
 		self.wndMiniMap = wndMiniMap
@@ -221,6 +228,7 @@ class Interface(object):
 			self.wndDragonSoul.SetDragonSoulRefineWindow(self.wndDragonSoulRefine)
 			self.wndDragonSoulRefine.SetInventoryWindows(self.wndInventory, self.wndDragonSoul)
 			self.wndInventory.SetDragonSoulRefineWindow(self.wndDragonSoulRefine)
+			self.wndExtraInventory.SetDragonSoulRefineWindow(self.wndDragonSoulRefine)
 
 	def __MakeDialogs(self):
 		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
@@ -329,6 +337,7 @@ class Interface(object):
 		self.wndMessenger.InitializeHandler()
 
 		self.wndInventory.SetItemToolTip(self.tooltipItem)
+		self.wndExtraInventory.SetItemToolTip(self.tooltipItem)
 
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoul.SetItemToolTip(self.tooltipItem)
@@ -399,6 +408,9 @@ class Interface(object):
 
 		if self.wndInventory:
 			self.wndInventory.Destroy()
+
+		if self.wndExtraInventory:
+			self.wndExtraInventory.Destroy()
 			
 		if self.wndDragonSoul:
 			self.wndDragonSoul.Destroy()
@@ -429,6 +441,9 @@ class Interface(object):
 
 		if self.wndSafebox:
 			self.wndSafebox.Destroy()
+		# A phase that ends with the safebox open gets no CloseSafebox command,
+		# and the tooltip module lives on into the next phase (NOVA-16).
+		uiToolTip.SetSafeboxOpen(False)
 
 		if self.wndWeb:
 			self.wndWeb.Destroy()
@@ -491,6 +506,7 @@ class Interface(object):
 		del self.wndEnergyBar
 		del self.wndCharacter
 		del self.wndInventory
+		del self.wndExtraInventory
 		if self.wndDragonSoul:
 			del self.wndDragonSoul
 		if self.wndDragonSoulRefine:
@@ -589,6 +605,7 @@ class Interface(object):
 	def RefreshInventory(self):
 		self.wndTaskBar.RefreshQuickSlot()
 		self.wndInventory.RefreshItemSlot()
+		self.wndExtraInventory.RefreshItemSlot()
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoul.RefreshItemSlot()
 		if self.wndCubeRenewal:
@@ -766,12 +783,19 @@ class Interface(object):
 	def OpenSafeboxWindow(self, size):
 		self.dlgPassword.CloseDialog()
 		self.wndSafebox.ShowWindow(size)
+		uiToolTip.SetSafeboxOpen(True)
 
 	def RefreshSafeboxMoney(self):
 		self.wndSafebox.RefreshSafeboxMoney()
 
 	def CommandCloseSafebox(self):
 		self.wndSafebox.CommandCloseSafebox()
+		uiToolTip.SetSafeboxOpen(False)
+
+	def IsSafeboxOpen(self):
+		"""Whether the safebox window shows (NEW's safebox module has no
+		IsOpen, OLD's did): the item windows' Shift + right-click."""
+		return bool(self.wndSafebox and self.wndSafebox.IsShow())
 
 	# ITEM_MALL
 	def AskMallPassword(self):
@@ -874,6 +898,9 @@ class Interface(object):
 
 		if self.wndInventory:
 			self.wndInventory.Hide()
+
+		if self.wndExtraInventory:
+			self.wndExtraInventory.Hide()
 			
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoul.Hide()
@@ -997,6 +1024,19 @@ class Interface(object):
 			else:
 				self.wndInventory.OverOutItem()
 				self.wndInventory.Close()
+				# The special inventory goes with the inventory (NOVA-16).
+				if self.wndExtraInventory and self.wndExtraInventory.IsShow():
+					self.wndExtraInventory.OverOutItem()
+					self.wndExtraInventory.Close()
+
+	def ToggleExtraInventoryWindow(self):
+		"""Key U and the inventory's button (NOVA-16)."""
+		if False == player.IsObserverMode():
+			if False == self.wndExtraInventory.IsShow():
+				self.wndExtraInventory.Open()
+			else:
+				self.wndExtraInventory.OverOutItem()
+				self.wndExtraInventory.Close()
 	
 	def ToggleExpandedButton(self):
 		if False == player.IsObserverMode():

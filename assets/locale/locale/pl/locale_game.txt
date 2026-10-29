@@ -907,3 +907,7 @@ ADD_4TH_STONE_ONLY_ARMOR	Ten zwój działa tylko dla Zbroji.
 ADD_4TH_STONE_ONLY_WEAPON	Ten zwój działa tylko dla Broni.
 ADD_4TH_STONE_NOT_POSSIBLE	Nie możesz użyć tego zwoji na tym przedmiotcie.
 ADD_4TH_STONE_ADD_QUESTION	Czy chcesz otworzyć miejsce na czwarte gniazdo?
+MOVE_TO_BANK	Shift + right-click: przenieś do banku
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: przenieś do okna handlu
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: przenieś do ekwipunku+
+MOVE_TO_INVENTORY	Ctrl + right-click: przenieś do ekwipunku

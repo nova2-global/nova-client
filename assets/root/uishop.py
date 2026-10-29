@@ -329,6 +329,38 @@ class ShopDialog(ui.ScriptWindow):
 			else:
 				self.OnSellItem(attachedSlotPos, attachedCount, itemtype)
 
+		## An extra inventory item (NOVA-16; OLD uiShop.py:811-831), always
+		## asked as OLD asks: player.IsValuableItem reads an inventory cell.
+		elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType:
+			itemIndex = player.GetItemIndex(player.EXTRA_INVENTORY, attachedSlotPos)
+			item.SelectItem(itemIndex)
+
+			if item.IsAntiFlag(item.ANTIFLAG_SELL):
+				popup = uiCommon.PopupDialog()
+				popup.SetText(localeInfo.SHOP_CANNOT_SELL_ITEM)
+				popup.SetAcceptEvent(self.__OnClosePopupDialog)
+				popup.Open()
+				self.popup = popup
+				return
+
+			itemPrice = item.GetISellItemPrice()
+
+			if item.Is1GoldItem():
+				itemPrice = attachedCount // itemPrice // 5
+			else:
+				itemPrice = itemPrice * max(1, attachedCount) // 5
+
+			itemName = item.GetItemName()
+
+			questionDialog = uiCommon.QuestionDialog()
+			questionDialog.SetText(localeInfo.DO_YOU_SELL_ITEM(itemName, attachedCount, itemPrice))
+			questionDialog.SetAcceptEvent(lambda arg1=attachedSlotPos, arg2=attachedCount, arg3=player.EXTRA_INVENTORY: self.OnSellItem(arg1, arg2, arg3))
+			questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
+			questionDialog.Open()
+			self.questionDialog = questionDialog
+
+			constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
+
 		else:
 			snd.PlaySound("sound/ui/loginfail.wav")
 

@@ -21,6 +21,25 @@ import constInfo
 
 WARP_SCROLLS = [22011, 22000, 22010]
 
+# The four scrolls that, as every costume, may sit in either inventory
+# (NOVA-16, the server's IsExtraShared, spec 3.2): Ctrl + right-click moves
+# them between the inventory and the special inventory.
+EXTRA_SHARED_SCROLLS = (71051, 71052, 71651, 71652)
+
+# Whether the safebox window shows. NEW's safebox module has no IsOpen
+# (OLD's did), so the interface tells the tooltips when it opens and closes
+# the window (Interface.OpenSafeboxWindow, CommandCloseSafebox).
+g_isSafeboxOpen = False
+
+
+def SetSafeboxOpen(isOpen):
+	global g_isSafeboxOpen
+	g_isSafeboxOpen = bool(isOpen)
+
+
+def IsSafeboxOpen():
+	return g_isSafeboxOpen
+
 # Tooltip max width when descriptions are long
 DESC_MAX_WIDTH = 280
 
@@ -832,10 +851,10 @@ class ItemToolTip(ToolTip):
 
 		metinSlot = []
 		for i in range(player.METIN_SOCKET_MAX_NUM):
-			metinSlot.append(player.GetItemMetinSocket(invenPos, i))
+			metinSlot.append(player.GetItemMetinSocket(invenType, invenPos, i))
 		attrSlot = []
 		for i in range(player.ATTRIBUTE_SLOT_MAX_NUM):
-			attrSlot.append(player.GetItemAttribute(invenPos, i))
+			attrSlot.append(player.GetItemAttribute(invenType, invenPos, i))
 
 		self.AddItemData(itemVnum, metinSlot, attrSlot)
 
@@ -1460,8 +1479,34 @@ class ItemToolTip(ToolTip):
 
 			elif item.LIMIT_TIMER_BASED_ON_WEAR == limitType:
 				self.AppendTimerBasedOnWearLastTime(metinSlot, limitValue2)
-				
+
+		self.__AppendMoveHints(itemVnum, itemType)
+
 		self.ShowToolTip()
+
+	def __AppendMoveHints(self, itemVnum, itemType):
+		## OLD uiToolTip.py:1985-2000 (NOVA-16), for an item of a bag cell or
+		## of the special inventory: Shift + right-click puts it into the open
+		## safebox, Ctrl + right-click into the open trade, and otherwise Ctrl
+		## + right-click moves a costume or one of the four scrolls between
+		## the inventory and the special inventory (the only hint that it does).
+		window = self.itemWindowType
+		if self.isShopItem or window not in (player.INVENTORY, player.EXTRA_INVENTORY):
+			return
+
+		if window == player.INVENTORY and (player.IsEquipmentSlot(self.itemSlotIndex) or player.IsBeltInventorySlot(self.itemSlotIndex)):
+			return
+
+		if IsSafeboxOpen():
+			self.AppendTextLine(localeInfo.MOVE_TO_BANK, self.NORMAL_COLOR)
+
+		if exchange.isTrading():
+			self.AppendTextLine(localeInfo.MOVE_TO_TRADE_WINDOW, self.NORMAL_COLOR)
+		elif item.ITEM_TYPE_COSTUME == itemType or itemVnum in EXTRA_SHARED_SCROLLS:
+			if window == player.INVENTORY:
+				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY_PLUS, self.NORMAL_COLOR)
+			else:
+				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY, self.NORMAL_COLOR)
 
 	def __DragonSoulInfoString (self, dwVnum):
 		step = (dwVnum // 100) % 10

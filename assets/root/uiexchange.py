@@ -126,8 +126,10 @@ class ExchangeDialog(ui.ScriptWindow):
 			net.SendExchangeElkAddPacket(mouseModule.mouseController.GetAttachedMoneyAmount())
 		else:
 			attachedSlotType = mouseModule.mouseController.GetAttachedType()
+			# The special inventory's items too (NOVA-16; OLD uiExchange.py:325-338).
 			if (player.SLOT_TYPE_INVENTORY == attachedSlotType
-				or player.SLOT_TYPE_DRAGON_SOUL_INVENTORY == attachedSlotType):
+				or player.SLOT_TYPE_DRAGON_SOUL_INVENTORY == attachedSlotType
+				or player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType):
 
 				attachedInvenType = player.SlotTypeToInvenType(attachedSlotType)
 				SrcSlotNumber = mouseModule.mouseController.GetAttachedSlotNumber()

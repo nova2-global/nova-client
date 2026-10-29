@@ -15,6 +15,7 @@ class AttachMetinDialog(ui.ScriptWindow):
 
 		self.metinItemPos = 0
 		self.targetItemPos = 0
+		self.metinWindow = player.INVENTORY
 
 	def __LoadScript(self):
 		try:
@@ -74,11 +75,17 @@ class AttachMetinDialog(ui.ScriptWindow):
 			if player.METIN_SOCKET_TYPE_GOLD == slot:
 				return True
 
-	def Open(self, metinItemPos, targetItemPos):
+	def Open(self, metinItemPos, targetItemPos, metinWindow=player.INVENTORY):
+		## The stone may sit in the special inventory (NOVA-16; OLD
+		## uiAttachMetin.py:91-99); the target is always an inventory item.
 		self.metinItemPos = metinItemPos
 		self.targetItemPos = targetItemPos
+		self.metinWindow = metinWindow
 
-		metinIndex = player.GetItemIndex(metinItemPos)
+		if metinWindow == player.INVENTORY:
+			metinIndex = player.GetItemIndex(metinItemPos)
+		else:
+			metinIndex = player.GetItemIndex(metinWindow, metinItemPos)
 		itemIndex = player.GetItemIndex(targetItemPos)
 
 		self.oldToolTip.ClearToolTip()
@@ -148,7 +155,11 @@ class AttachMetinDialog(ui.ScriptWindow):
 		self.SetPosition(x, y)
 
 	def Accept(self):
-		net.SendItemUseToItemPacket(self.metinItemPos, self.targetItemPos)
+		## OLD uiAttachMetin.py:156-160: the stone's window to the inventory target.
+		if self.metinWindow == player.INVENTORY:
+			net.SendItemUseToItemPacket(self.metinItemPos, self.targetItemPos)
+		else:
+			net.SendItemUseToItemPacket(self.metinWindow, self.metinItemPos, player.INVENTORY, self.targetItemPos)
 		snd.PlaySound("sound/ui/metinstone_insert.wav")
 		self.Close()
 

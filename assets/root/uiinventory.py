@@ -31,6 +31,53 @@ ITEM_FLAG_APPLICABLE = 1 << 14
 MONEY_SLOT_UNIT_LIMIT = 10 ** 11
 
 
+# The items that may sit in either inventory (NOVA-16, the server's
+# IsExtraShared, spec 3.2): every costume, and the four scrolls of the
+# special inventory's first category (71051, 71052, 71651, 71652). Ctrl +
+# right-click moves them between the two.
+EXTRA_SHARED_SCROLLS = (71051, 71052, 71651, 71652)
+
+
+def IsExtraSharedItem(itemVnum):
+	if not itemVnum:
+		return False
+	if itemVnum in EXTRA_SHARED_SCROLLS:
+		return True
+	item.SelectItem(itemVnum)
+	return item.GetItemType() == item.ITEM_TYPE_COSTUME
+
+
+def SafeboxCheckinCell(itemVnum):
+	"""The open safebox's cell for Shift + right-click (NOVA-16): the first
+	cell from 0 where the item's cells are free and on one page. OLD's client
+	sent cell 0 and OLD's server searched on from it (input_main.cpp:
+	3015-3030, moving a tall item off a page's last rows); NEW's server
+	refuses a taken cell, so the client searches. 0 when the item fits
+	nowhere: the server then refuses it with OLD's message."""
+	import safebox # the client's; imported here, as the item windows' stand-ins have none
+	columns = safebox.SAFEBOX_SLOT_X_COUNT
+	pageSize = safebox.SAFEBOX_PAGE_SIZE
+	cellCount = safebox.GetCurrentSafeboxSize()
+
+	taken = set()
+	for cell in range(cellCount):
+		vnum = safebox.GetItemID(cell)
+		if vnum:
+			item.SelectItem(vnum)
+			for row in range(item.GetItemSize()[1]):
+				taken.add(cell + row * columns)
+
+	item.SelectItem(itemVnum)
+	height = item.GetItemSize()[1]
+	for cell in range(cellCount):
+		last = cell + (height - 1) * columns
+		if last >= cellCount or last // pageSize != cell // pageSize:
+			continue
+		if not taken.intersection(range(cell, last + 1, columns)):
+			return cell
+	return 0
+
+
 def MoneySlotText(money):
 	"""The money slot's text: localeInfo.NumberToMoneyString while the unit
 	fits, then the amount with the same points and no unit."""
@@ -322,7 +369,9 @@ class InventoryWindow(ui.ScriptWindow):
 			self.mallButton = self.GetChild2("MallButton")
 			self.DSSButton = self.GetChild2("DSSButton")
 			self.costumeButton = self.GetChild2("CostumeButton")
-			
+			# The special inventory (NOVA-16); an older uiscript has no button.
+			self.extraInventoryButton = self.GetChild2("ExtraInventoryButton")
+
 			# One tab per inventory page (OLD uiInventory.py:884-889: five).
 			self.inventoryTab = []
 			for page in range(player.INVENTORY_PAGE_COUNT):
@@ -404,6 +453,9 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.costumeButton:
 			self.costumeButton.SetEvent(ui.__mem_func__(self.ClickCostumeButton))
 
+		if self.extraInventoryButton:
+			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
+
 		self.wndCostume = None
 		
  		#####
@@ -435,6 +487,7 @@ class InventoryWindow(ui.ScriptWindow):
 		self.questionDialog = None
 		self.mallButton = None
 		self.DSSButton = None
+		self.extraInventoryButton = None
 		self.DSSButtonEffect = None
 		self.interface = None
 
@@ -496,6 +549,9 @@ class InventoryWindow(ui.ScriptWindow):
 	def ClickDSSButton(self):
 		print("click_dss_button")
 		self.interface.ToggleDragonSoulWindow()
+
+	def ClickExtraInventoryButton(self):
+		self.interface.ToggleExtraInventoryWindow()
 
 	def UseDSSButtonEffect(self, enable):
 		if self.DSSButton:
@@ -718,6 +774,10 @@ class InventoryWindow(ui.ScriptWindow):
 			elif player.SLOT_TYPE_MALL == attachedSlotType:
 				net.SendMallCheckoutPacket(attachedSlotPos, selectedSlotPos)
 
+			## An extra inventory item moves to the main inventory (OLD :1709-1710).
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType:
+				self.__SendMoveItemPacket(attachedSlotPos, selectedSlotPos, attachedItemCount, player.EXTRA_INVENTORY)
+
 			mouseModule.mouseController.DeattachObject()
 
 	def SelectItemSlot(self, itemSlotIndex):
@@ -733,6 +793,9 @@ class InventoryWindow(ui.ScriptWindow):
 
 			if player.SLOT_TYPE_INVENTORY == attachedSlotType:
 				self.__DropSrcItemToDestItemInInventory(attachedItemVID, attachedSlotPos, itemSlotIndex)
+
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType:
+				self.__DropSrcItemToDestItemInInventory(attachedItemVID, attachedSlotPos, itemSlotIndex, player.EXTRA_INVENTORY)
 
 			mouseModule.mouseController.DeattachObject()
 
@@ -781,7 +844,11 @@ class InventoryWindow(ui.ScriptWindow):
 
 				snd.PlaySound("sound/ui/pick.wav")
 
-	def __DropSrcItemToDestItemInInventory(self, srcItemVID, srcItemSlotPos, dstItemSlotPos):
+	def __DropSrcItemToDestItemInInventory(self, srcItemVID, srcItemSlotPos, dstItemSlotPos, srcWindow=player.INVENTORY):
+		if srcWindow == player.EXTRA_INVENTORY:
+			self.__DropExtraItemToDestItem(srcItemVID, srcItemSlotPos, dstItemSlotPos)
+			return
+
 		if srcItemSlotPos == dstItemSlotPos:
 			return
 	         	
@@ -820,6 +887,28 @@ class InventoryWindow(ui.ScriptWindow):
 			else:
 				self.__SendMoveItemPacket(srcItemSlotPos, dstItemSlotPos, 0)
 				#net.SendItemMovePacket(srcItemSlotPos, dstItemSlotPos, 0)
+
+	def __DropExtraItemToDestItem(self, srcItemVID, srcItemSlotPos, dstItemSlotPos):
+		## An extra inventory item (NOVA-16) dropped on an item here; never the
+		## same cell, EXTRA 10 on INVENTORY 10 is a real drop. A stone opens
+		## the attach dialog (OLD :2095-2120); a key, a scroll the server
+		## applies (71051/71052, ITEM_APPLICABLE) and the other use-on-item
+		## items are used on the target (OLD :1775-1779); an equipment item
+		## (a costume) dropped on a worn cell is worn; anything else moves.
+		if item.IsMetin(srcItemVID):
+			self.AttachMetinToItem(srcItemSlotPos, dstItemSlotPos, player.EXTRA_INVENTORY)
+
+		elif item.IsKey(srcItemVID) or \
+				(self.__GetItemFlags(srcItemSlotPos, player.EXTRA_INVENTORY) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE or \
+				item.GetUseType(srcItemVID) in self.USE_TYPE_TUPLE:
+			self.__SendUseItemToItemPacket(srcItemSlotPos, dstItemSlotPos, player.EXTRA_INVENTORY)
+
+		elif player.IsEquipmentSlot(dstItemSlotPos):
+			if item.IsEquipmentVID(srcItemVID):
+				self.__SendUseItemPacket(srcItemSlotPos, player.EXTRA_INVENTORY)
+
+		else:
+			self.__SendMoveItemPacket(srcItemSlotPos, dstItemSlotPos, 0, player.EXTRA_INVENTORY)
 
 	def __SellItem(self, itemSlotPos):
 		if not player.IsEquipmentSlot(itemSlotPos):
@@ -952,8 +1041,11 @@ class InventoryWindow(ui.ScriptWindow):
 		self.questionDialog.sourcePos = scrollSlotPos
 		self.questionDialog.targetPos = targetSlotPos
 
-	def AttachMetinToItem(self, metinSlotPos, targetSlotPos):
-		metinIndex = player.GetItemIndex(metinSlotPos)
+	def AttachMetinToItem(self, metinSlotPos, targetSlotPos, metinWindow=player.INVENTORY):
+		if metinWindow == player.INVENTORY:
+			metinIndex = player.GetItemIndex(metinSlotPos)
+		else:
+			metinIndex = player.GetItemIndex(metinWindow, metinSlotPos)
 		targetIndex = player.GetItemIndex(targetSlotPos)
 
 		item.SelectItem(metinIndex)
@@ -976,7 +1068,10 @@ class InventoryWindow(ui.ScriptWindow):
 		if player.ATTACH_METIN_OK != result:
 			return
 
-		self.attachMetinDialog.Open(metinSlotPos, targetSlotPos)
+		if metinWindow == player.INVENTORY:
+			self.attachMetinDialog.Open(metinSlotPos, targetSlotPos)
+		else:
+			self.attachMetinDialog.Open(metinSlotPos, targetSlotPos, metinWindow=metinWindow)
 
 
 		
@@ -1000,7 +1095,18 @@ class InventoryWindow(ui.ScriptWindow):
 					self.wndItem.SetUsableItem(True)
 					self.ShowToolTip(overSlotPos)
 					return
-				
+
+			## An extra inventory item over a target it can be used on (OLD :2163-2164).
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedItemType:
+				attachedSlotPos = mouseModule.mouseController.GetAttachedSlotNumber()
+				attachedItemVNum = mouseModule.mouseController.GetAttachedItemIndex()
+
+				if self.__CanUseSrcItemToDstItem(attachedItemVNum, attachedSlotPos, overSlotPos, player.EXTRA_INVENTORY):
+					self.wndItem.SetUseMode(True)
+					self.wndItem.SetUsableItem(True)
+					self.ShowToolTip(overSlotPos)
+					return
+
 		self.ShowToolTip(overSlotPos)
 
 
@@ -1025,10 +1131,10 @@ class InventoryWindow(ui.ScriptWindow):
 			
 		return False
 
-	def __CanUseSrcItemToDstItem(self, srcItemVNum, srcSlotPos, dstSlotPos):
+	def __CanUseSrcItemToDstItem(self, srcItemVNum, srcSlotPos, dstSlotPos, srcWindow=player.INVENTORY):
 		"Can this item be used on the target item?"
 
-		if srcSlotPos == dstSlotPos:
+		if srcWindow == player.INVENTORY and srcSlotPos == dstSlotPos:
 			return False
 
 		if item.IsRefineScroll(srcItemVNum):
@@ -1047,7 +1153,7 @@ class InventoryWindow(ui.ScriptWindow):
 			if player.CanUnlock(srcItemVNum, dstSlotPos):
 				return True
 
-		elif (player.GetItemFlags(srcSlotPos) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:
+		elif (self.__GetItemFlags(srcSlotPos, srcWindow) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:
 			return True
 
 		else:
@@ -1080,6 +1186,12 @@ class InventoryWindow(ui.ScriptWindow):
 				# MR-10: -- END OF -- Add belt support for accessory sockets
 
 		return False
+
+	@staticmethod
+	def __GetItemFlags(slotPos, window=player.INVENTORY):
+		if window == player.INVENTORY:
+			return player.GetItemFlags(slotPos)
+		return player.GetItemFlags(window, slotPos)
 
 	def __CanCleanBrokenMetinStone(self, dstSlotPos):
 		dstItemVNum = player.GetItemIndex(dstSlotPos)
@@ -1259,9 +1371,51 @@ class InventoryWindow(ui.ScriptWindow):
 				self.wndDragonSoulRefine.AutoSetItem((player.INVENTORY, slotIndex), 1)
 				return
 
+		if self.__UseItemWithModifier(slotIndex):
+			mouseModule.mouseController.DeattachObject()
+			self.OverOutItem()
+			return
+
 		self.__UseItem(slotIndex)
 		mouseModule.mouseController.DeattachObject()
 		self.OverOutItem()
+
+	def IsSafeboxOpen(self):
+		"""Whether the safebox window shows (NEW's safebox module has no
+		IsOpen, OLD's did)."""
+		interface = getattr(self, "interface", None)
+		isSafeboxOpen = getattr(interface, "IsSafeboxOpen", None)
+		return bool(isSafeboxOpen and isSafeboxOpen())
+
+	def __UseItemWithModifier(self, slotIndex):
+		"""OLD :2605-2620 (NOVA-16) for a bag cell: Shift + right-click puts
+		the item into the open safebox, Ctrl + right-click into the open
+		trade, otherwise Ctrl + right-click moves a costume or one of the
+		four scrolls to the special inventory (the tooltip's hint lines say
+		so); any other item is used. True when it sent something."""
+		isShift = app.IsPressed(app.DIK_LSHIFT)
+		isControl = app.IsPressed(app.DIK_LCONTROL)
+		if not isShift and not isControl:
+			return False
+
+		if slotIndex >= player.INVENTORY_PAGE_SIZE * player.INVENTORY_PAGE_COUNT:
+			return False
+
+		if isShift and self.IsSafeboxOpen():
+			net.SendSafeboxCheckinPacket(player.INVENTORY, slotIndex, SafeboxCheckinCell(player.GetItemIndex(slotIndex)))
+			return True
+
+		if isControl:
+			import exchange # the client's; imported here, as the item windows' stand-ins have none
+			if exchange.isTrading():
+				net.SendExchangeItemAddPacket(player.INVENTORY, slotIndex, 0)
+				return True
+
+			if IsExtraSharedItem(player.GetItemIndex(slotIndex)):
+				net.SendItemTransferPacket(player.INVENTORY, slotIndex, player.EXTRA_INVENTORY)
+				return True
+
+		return False
 
 	def __UseItem(self, slotIndex):
 		ItemVNum = player.GetItemIndex(slotIndex)
@@ -1287,29 +1441,40 @@ class InventoryWindow(ui.ScriptWindow):
 		self.__SendUseItemPacket(self.questionDialog.slotIndex)
 		self.OnCloseQuestionDialog()		
 
-	def __SendUseItemToItemPacket(self, srcSlotPos, dstSlotPos):
+	## The three senders send a main inventory cell as before, and a cell of
+	## another source window (the extra inventory, NOVA-16) with its window.
+	def __SendUseItemToItemPacket(self, srcSlotPos, dstSlotPos, srcWindow=player.INVENTORY):
 		# Prevent item usage while private shop is open
 		if uiPrivateShopBuilder.IsBuildingPrivateShop():
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.USE_ITEM_FAILURE_PRIVATE_SHOP)
 			return
 
-		net.SendItemUseToItemPacket(srcSlotPos, dstSlotPos)
+		if srcWindow == player.INVENTORY:
+			net.SendItemUseToItemPacket(srcSlotPos, dstSlotPos)
+		else:
+			net.SendItemUseToItemPacket(srcWindow, srcSlotPos, player.INVENTORY, dstSlotPos)
 
-	def __SendUseItemPacket(self, slotPos):
+	def __SendUseItemPacket(self, slotPos, srcWindow=player.INVENTORY):
 		# Prevent item usage while private shop is open
 		if uiPrivateShopBuilder.IsBuildingPrivateShop():
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.USE_ITEM_FAILURE_PRIVATE_SHOP)
 			return
 
-		net.SendItemUsePacket(slotPos)
-	
-	def __SendMoveItemPacket(self, srcSlotPos, dstSlotPos, srcItemCount):
+		if srcWindow == player.INVENTORY:
+			net.SendItemUsePacket(slotPos)
+		else:
+			net.SendItemUsePacket(srcWindow, slotPos)
+
+	def __SendMoveItemPacket(self, srcSlotPos, dstSlotPos, srcItemCount, srcWindow=player.INVENTORY):
 		# Prevent item movement while private shop is open
 		if uiPrivateShopBuilder.IsBuildingPrivateShop():
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.MOVE_ITEM_FAILURE_PRIVATE_SHOP)
 			return
 
-		net.SendItemMovePacket(srcSlotPos, dstSlotPos, srcItemCount)
+		if srcWindow == player.INVENTORY:
+			net.SendItemMovePacket(srcSlotPos, dstSlotPos, srcItemCount)
+		else:
+			net.SendItemMovePacket(srcWindow, srcSlotPos, player.INVENTORY, dstSlotPos, srcItemCount)
 	
 	def SetDragonSoulRefineWindow(self, wndDragonSoulRefine):
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:

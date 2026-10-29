@@ -907,3 +907,7 @@ ADD_4TH_STONE_ONLY_ARMOR	Αυτός ο πάπυρος λειτουργεί μό�
 ADD_4TH_STONE_ONLY_WEAPON	υτός ο πάπυρος λειτουργεί μόνο για Όπλα.
 ADD_4TH_STONE_NOT_POSSIBLE	Δεν μπορείς να χρησιμοποιήσεις αυτον το πάπυρο σε αυτο το αντικείμενο.
 ADD_4TH_STONE_ADD_QUESTION	Επιθυμείς να ανοίξεις έναν χώρο για 4η θήκη
+MOVE_TO_BANK	Shift + right-click: μεταφορά στην τράπεζα
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: μεταφορά στο παράθυρο εμπορίου
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: μεταφορά στο απόθεμα+
+MOVE_TO_INVENTORY	Ctrl + right-click: μεταφορά στο απόθεμα

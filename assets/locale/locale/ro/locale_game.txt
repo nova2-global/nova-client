@@ -907,3 +907,7 @@ ADD_4TH_STONE_ONLY_ARMOR	Merge doar pe Armuri.
 ADD_4TH_STONE_ONLY_WEAPON	Merge doar pe Arme.
 ADD_4TH_STONE_NOT_POSSIBLE	Nu poti folosii acest scroll per acest item.
 ADD_4TH_STONE_ADD_QUESTION	Doriti sa deschideti un spatiu pentru a 4 piatra?
+MOVE_TO_BANK	Shift + right-click: mută în bancă
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: mută în fereastra de schimb
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: mută în inventar+
+MOVE_TO_INVENTORY	Ctrl + right-click: mută în inventar

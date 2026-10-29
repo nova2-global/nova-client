@@ -907,3 +907,7 @@ ADD_4TH_STONE_ONLY_ARMOR	Bu parsömen sadece zirhlarda ise yarar.
 ADD_4TH_STONE_ONLY_WEAPON	Bu parsömen sadece silahlarda ise yarar.
 ADD_4TH_STONE_NOT_POSSIBLE	Bu parsömeni bu esyada kullanamazsin.
 ADD_4TH_STONE_ADD_QUESTION	4. yuvayi açmak istedigine emin misin?
+MOVE_TO_BANK	Shift + right-click: bankaya taşı
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: takas penceresine taşı
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: envantere taşı+
+MOVE_TO_INVENTORY	Ctrl + right-click: envantere taşı

@@ -225,7 +225,9 @@ class PrivateShopBuilder(ui.ScriptWindow):
 			attachedSlotPos = mouseModule.mouseController.GetAttachedSlotNumber()
 			mouseModule.mouseController.DeattachObject()
 
-			if player.SLOT_TYPE_INVENTORY != attachedSlotType and player.SLOT_TYPE_DRAGON_SOUL_INVENTORY != attachedSlotType:
+			# The special inventory's items too (NOVA-16; OLD uiPrivateShopBuilder.py:344).
+			if player.SLOT_TYPE_INVENTORY != attachedSlotType and player.SLOT_TYPE_DRAGON_SOUL_INVENTORY != attachedSlotType and \
+					player.SLOT_TYPE_EXTRA_INVENTORY != attachedSlotType:
 				return
 			attachedInvenType = player.SlotTypeToInvenType(attachedSlotType)
 				

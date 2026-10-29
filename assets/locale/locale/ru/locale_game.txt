@@ -907,3 +907,7 @@ ADD_4TH_STONE_ONLY_ARMOR	Этот свиток работает только с 
 ADD_4TH_STONE_ONLY_WEAPON	Этот свиток работает только с Оружием.
 ADD_4TH_STONE_NOT_POSSIBLE	Вы не можете использовать этот свиток на этот предмет.
 ADD_4TH_STONE_ADD_QUESTION	Вы желаете открыть отверстие под 4 камень?
+MOVE_TO_BANK	Shift + right-click: переместить в банк
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: переместить в окно торговли
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: переместить в инвентарь+
+MOVE_TO_INVENTORY	Ctrl + right-click: переместить в инвентарь

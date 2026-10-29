@@ -908,3 +908,7 @@ ADD_4TH_STONE_ONLY_ARMOR	Este pergaminho só funciona em armaduras.
 ADD_4TH_STONE_ONLY_WEAPON	Este pergaminho só funciona em armas.
 ADD_4TH_STONE_NOT_POSSIBLE	Não podes pôr este pergaminho neste item.
 ADD_4TH_STONE_ADD_QUESTION	Desejas abrir o 4º slot?
+MOVE_TO_BANK	Shift + right-click: Move to Bank
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: Move to trade window
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: Move to Inventory+
+MOVE_TO_INVENTORY	Ctrl + right-click: Move to Inventory

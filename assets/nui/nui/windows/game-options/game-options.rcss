@@ -141,14 +141,21 @@ body.game-options
 {
 	flex: 1 1 30%;
 }
-/* Two pickup toggles a row, as legacy's. */
-.go-row--pickup .go-choices
+/* The pickup filter's toggles: two to a row, as legacy's, sharing the
+   width as the block toggles do; the label at the first row's top. */
+.go-row--pickup
 {
-	max-width: 194dp;
+	align-items: flex-start;
+	padding-top: 6dp;
+	padding-bottom: 6dp;
+}
+.go-row--pickup .go-label
+{
+	margin-top: 5dp;
 }
 .go-row--pickup .go-choice
 {
-	width: 92dp;
+	flex: 1 1 45%;
 	min-width: 0;
 }
 .go-tip

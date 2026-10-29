@@ -264,6 +264,13 @@ body.inv.inv--placed
 .inv-wear--arrow { left: 158dp; top: 5dp; }
 .inv-wear--ear { left: 158dp; top: 49dp; }
 .inv-wear--neck { left: 158dp; top: 93dp; }
+/* Today's table since the cut (NOVA-97): the rings either side of the
+   belt, on its row, as legacy's uiscript has them; the weapon starts 4dp
+   lower so it ends with the body and the bracelet, 4dp above the rings
+   (every gap 4dp, so the cells' hit boxes tile, P14b). */
+body.inv.inv--table-new .inv-wear--weapon { top: 12dp; }
+body.inv.inv--table-new .inv-wear--ring1,
+body.inv.inv--table-new .inv-wear--ring2 { top: 136dp; }
 /* OLD's slots for a table that holds them (the foundation's): the rings
    under the weapon and the bracelet, the sash over the shield, which moves
    one row down; its buttons stack under the necklace. */

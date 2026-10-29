@@ -158,11 +158,40 @@ class Pages(GuildTest):
             name, combo, job, level, offer, general = members[line]
             expected.append({"name": name.GetText(), "grade": combo.text, "job": job.GetText(),
                              "level": level.GetText(), "offer": offer.GetText(), "general": bool(general.image.shown),
-                             "combo_enabled": bool(combo.enable)})
+                             "combo_enabled": bool(combo.enable), "me": name.GetText() == "Tester", "presence": ""})
         self.assertEqual(model["members"], expected)
         self.assertEqual(model["members"][0]["name"], "Tester", "line 0 is the top line")
         self.assertFalse(model["members"][0]["combo_enabled"], "grade 1's combo box is disabled")
         self.assertEqual(model["member_scroll_shown"], True, "30 members, 13 lines")
+
+    def test_the_member_lines_mark_the_player_and_show_the_messenger_s_logins(self):
+        """The reviewed board's own line and online dots: a line is the
+        player's by its name (player.GetMainCharacterName); its dot is the
+        messenger's guild login (nui_messenger.guild_logins: none without a
+        NovaUI messenger or for a name it has not heard of, the player
+        always online), refreshed as the messenger's Guild group changes."""
+        world, window = self.world(True)
+        self.open(world, window)
+        self.tab(world, window, "MEMBER")
+
+        def lines():
+            return [(m["name"], m["me"], m["presence"]) for m in w4.board(window).model["members"][:4]]
+        self.assertEqual(lines(), [("Tester", True, ""), ("Member01", False, ""), ("Member02", False, ""),
+                                   ("Member03", False, "")], "no messenger: no dots")
+        messenger = world.make("messenger", "uiMessenger", "MessengerWindow", "nui_messenger.MessengerWindow")
+        with world.game, w4.quiet():
+            messenger.InitializeHandler()
+            messenger.OnLogin(1, "Member01")
+            messenger.OnLogout(1, "Member02")
+            messenger.OnLogin(0, "Member03")
+        self.assertEqual(lines(), [("Tester", True, "on"), ("Member01", False, "on"), ("Member02", False, "off"),
+                                   ("Member03", False, "")], "a friend's login is not a guild login")
+        with world.game, w4.quiet():
+            messenger.OnLogout(1, "Member01")
+        self.assertEqual(lines()[1], ("Member01", False, "off"))
+        with world.game, w4.quiet():
+            messenger.OnRemoveAllList(1)
+        self.assertEqual(lines()[1:3], [("Member01", False, ""), ("Member02", False, "")])
 
     def test_the_skill_page(self):
         (a_world, a), (b_world, b) = [self.world(nui_on) for nui_on in (False, True)]
@@ -783,7 +812,7 @@ class Facade(GuildTest):
     def test_every_fixture_has_the_model_s_keys_and_kinds(self):
         world, window = self.world(True)
         kinds = w4.model_kinds(window.nui_model())
-        for variant in ("", "board", "member", "member-open", "base", "skill", "grade", "foundation",
+        for variant in ("", "board", "member", "member-open", "base", "skill", "skill-cooling", "grade", "foundation",
                         "foundation-member"):
             self.assertEqual(w4.fixture_keys(window, "guild", variant), kinds, variant)
         for variant in ("", "placed"):

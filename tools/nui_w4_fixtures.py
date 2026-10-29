@@ -302,19 +302,30 @@ def long_name(base, length=22):
     return (base + "xxxxxxxxxxxxxxxxxxxxxxxxx")[:length]
 
 
-def messenger_row(kind, name, online=False, open_=False, selected=False, love=-1, languages=""):
-    """A row as nui_messenger.row_of makes it from legacy's item."""
+def member_state(online):
+    """A member row's state as nui_messenger.state_of makes it."""
+    return "@ui.NUI_MESSENGER_ONLINE" if online else "@ui.NUI_MESSENGER_OFFLINE"
+
+
+def messenger_row(kind, name, online=False, open_=False, selected=False, love=-1, languages="", state=None):
+    """A row as nui_messenger.row_of makes it from legacy's item; `state`
+    None is a member's Online or Offline (none beside language flags), else
+    the row's state as given."""
+    if state is None:
+        state = member_state(online) if kind == "member" and not languages else ""
     return {"kind": kind, "name": name, "online": online, "open": kind == "group" and open_,
             "selected": selected, "member": kind == "member", "love": love,
             "hint": (game_text("AFF_LOVE_POINT") % love) if love >= 0 else "",
-            "flags": [FLAG % code for code in languages.split()]}
+            "flags": [FLAG % code for code in languages.split()], "state": state}
 
 
-def messenger_group(name, members, online, open_=True, selected=None, languages=None):
-    """Legacy's rows of one group (OnRefreshList): the group, then while open
-    its online members, then its offline ones (in their order), or the empty
-    line; `languages` a roster's {member: codes}."""
-    rows = [messenger_row("group", name, open_=open_)]
+def messenger_group(name, members, online, open_=True, selected=None, languages=None, blocked=False):
+    """Legacy's rows of one group (OnRefreshList): the group with its online
+    and total members, then while open its online members, then its offline
+    ones (in their order), or the empty line; `languages` a roster's
+    {member: codes}; the Blocked Players (`blocked`) show no state."""
+    count = "" if blocked else "%d / %d" % (len([m for m in members if m in online]), len(members))
+    rows = [messenger_row("group", name, open_=open_, state=count)]
     if not open_:
         return rows
     if not members:
@@ -322,7 +333,8 @@ def messenger_group(name, members, online, open_=True, selected=None, languages=
         return rows
     ordered = [m for m in members if m in online] + [m for m in members if m not in online]
     rows.extend(messenger_row("member", m, online=m in online, selected=m == selected,
-                              languages=(languages or {}).get(m, "")) for m in ordered)
+                              languages=(languages or {}).get(m, ""), state="" if blocked else None)
+                for m in ordered)
     return rows
 
 
@@ -335,7 +347,8 @@ def messenger_rosters(open_=True, filled=True):
                             open_=open_, languages=helpers)
             + messenger_group(game_text("MESSENGER_TEAMLER"), tuple(team) if filled else (), {TEAM[0][0]},
                               open_=open_, languages=team)
-            + messenger_group(game_text("BLOCKED_PLAYERS_TITLE"), BLOCKED if filled else (), set(), open_=open_))
+            + messenger_group(game_text("BLOCKED_PLAYERS_TITLE"), BLOCKED if filled else (), set(), open_=open_,
+                              blocked=True))
 
 
 def messenger(rows, whisper=False, remove=False, height=310.0, unblock=False):
@@ -350,8 +363,8 @@ def messenger_fixtures():
             + messenger_rosters())
     many = tuple(long_name("Friend%02d" % i) for i in range(64))
     lover = long_name("Lover")
-    foundation = ([messenger_row("group", game_text("MESSENGER_FAMILY"), open_=True),
-                   messenger_row("member", lover, love=87)]
+    foundation = (messenger_group(game_text("MESSENGER_FAMILY"), (lover,), set())[:1]
+                  + [messenger_row("member", lover, love=87)]
                   + messenger_group(game_text("MESSENGER_FRIEND"), many, set(many[::3]), selected=many[3])
                   + messenger_group(game_text("MESSENGER_GUILD"), tuple(long_name(n) for n in GUILD_MATES),
                                     set([long_name(GUILD_MATES[0])]))
@@ -372,7 +385,7 @@ def messenger_fixtures():
             messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, open_=False)
             + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2]), open_=False)
             + messenger_rosters()[:-2]
-            + messenger_group(game_text("BLOCKED_PLAYERS_TITLE"), BLOCKED, set(), selected=BLOCKED[0]),
+            + messenger_group(game_text("BLOCKED_PLAYERS_TITLE"), BLOCKED, set(), selected=BLOCKED[0], blocked=True),
             unblock=True),
     }
 
@@ -476,11 +489,22 @@ def guild_state(game, name, enemies, members, member_name_length=12):
     game.modules["uiScriptLocale"].WINDOWS_PATH = "locale/en/ui/windows/"
 
 
+def guild_logins(members):
+    """The messenger's guild logins of the fixtures' guild (the C++
+    messenger's OnLogin and OnLogout of group GUILD, every member but the
+    tester): every fourth member, from the fourth, offline."""
+    return [(member["name"], i % 4 != 3) for i, member in enumerate(members) if member["name"] != "Tester"]
+
+
 def guild_models(foundation=False):
     """{page key: the board's model} of the guild window with the fixtures'
     guild, made by the controller itself in the Wave 4 test world
-    (tools/nui_w4_world.py): each page selected as its tab does, and the
-    member page again with line 4's grade list open ("MEMBER_OPEN")."""
+    (tools/nui_w4_world.py), beside the messenger that holds the guild's
+    logins (the member lines' online dots): each page selected as its tab
+    does, the member page again with line 4's grade list open
+    ("MEMBER_OPEN") and the skill page again with a skill cooling
+    ("SKILL_COOLING": 24 seconds from -5, so 18 left at the goldens' time
+    1)."""
     import nui_w4_world as w4
     name = long_name("Dragon Order Of The East", 24) if foundation else "Dragon Order"
     enemies = tuple(long_name(e, 24) if e else "" for e in GUILD_ENEMIES) if foundation else GUILD_ENEMIES
@@ -500,9 +524,13 @@ def guild_models(foundation=False):
     if foundation:
         limits.use(limits.foundation())
     try:
+        messenger = world.make("messenger", "uiMessenger", "MessengerWindow", "nui_messenger.MessengerWindow")
         window = world.make("guild", "uiGuild", "GuildWindow", "nui_guild.GuildWindow")
         models = {}
         with world.game, w4.quiet():
+            messenger.InitializeHandler()
+            for name, online in guild_logins(world.game.w4["guild"]["members"]):
+                (messenger.OnLogin if online else messenger.OnLogout)(1, name)
             window.Open()
             for key in ("GUILD_INFO", "BOARD", "MEMBER", "BASE_INFO", "SKILL", "GRADE"):
                 window.SelectPage(key)
@@ -511,6 +539,12 @@ def guild_models(foundation=False):
                     w4.press(window, "combo_press", 4, 0)
                     models["MEMBER_OPEN"] = dict(w4.board(window).model)
                     w4.press(window, "combo_press", 4, 0)
+                if key == "SKILL":
+                    world.game.state.now = -5.0
+                    window.OnUseSkill(213, 24.0)
+                    models["SKILL_COOLING"] = dict(w4.board(window).model)
+                    window.OnUseSkill(213, 0.0)
+                    world.game.state.now = 0.0
         return models
     finally:
         limits.use(None)
@@ -521,7 +555,8 @@ def guild_fixtures():
     foundation = guild_models(True)
     found = {("guild", ""): {"guild": today["GUILD_INFO"]}}
     for key, variant in (("BOARD", "board"), ("MEMBER", "member"), ("MEMBER_OPEN", "member-open"),
-                         ("BASE_INFO", "base"), ("SKILL", "skill"), ("GRADE", "grade")):
+                         ("BASE_INFO", "base"), ("SKILL", "skill"), ("SKILL_COOLING", "skill-cooling"),
+                         ("GRADE", "grade")):
         found[("guild", variant)] = {"guild": today[key]}
     found[("guild", "foundation")] = {"guild": foundation["GUILD_INFO"]}
     found[("guild", "foundation-member")] = {"guild": foundation["MEMBER"]}

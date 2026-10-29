@@ -3,10 +3,12 @@
    WGuildGrade boards: square cards on a faint cyan film under title bars
    lit cyan to magenta, their titles in the accent and their rules fading
    out; square wells with the dim line (the values' underline magenta);
-   table heads in the accent; rows square on the film; checks square with
+   table heads in the accent; rows square on the film, the player's own
+   member line lit with a magenta edge; checks square with
    an acid mark; the board's notices acid, its delete buttons magenta
    wells; the mark in a cut frame with a magenta inner ring; enemies behind
-   magenta diamonds; the skill covers cut, the "+" acid; the page icon in
+   magenta diamonds; the skill covers cut, the "+" acid, the points an
+   acid tag that reads "available"; the page icon in
    a cut chip with the dim neon edge, the key cap magenta; the tabs
    underlined, as the skin's tabs. Labels keep their case (RmlUi
    upper-cases ASCII only) and the modern layout. Under no effects the
@@ -173,6 +175,17 @@ body.skin-cyberpunk.guild .guild__member, body.skin-cyberpunk.guild .guild__comm
 body.skin-cyberpunk.guild .guild__member:hover, body.skin-cyberpunk.guild .guild__comment:hover
 {
 	background-color: var(--surface-hover);
+}
+/* The player's own line: a soft cyan fading out with a magenta edge, the
+   name in the skin's name color. */
+body.skin-cyberpunk.guild .guild__member.is-self
+{
+	border-left-color: var(--cyberpunk-edge-alt);
+	decorator: horizontal-gradient(var(--cyberpunk-holo-a) transparent);
+}
+body.skin-cyberpunk.guild .guild__member.is-self .guild__member-name
+{
+	color: var(--cyberpunk-name);
 }
 /* A notice: the acid edge, an acid film fading to the right and an acid
    "!". */

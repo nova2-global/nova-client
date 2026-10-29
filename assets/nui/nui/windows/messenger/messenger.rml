@@ -13,7 +13,10 @@
 	     lover first, then each group and, while open, its online then
 	     offline members, or the empty line); every row shows and the list
 	     scrolls by pixel (D18). A roster member's row shows its languages'
-	     flags after the name (NOVA-30/46). A left press selects a row (a
+	     flags after the name (NOVA-30/46). A row ends in its state: a
+	     group's online and total members, a member's Online or Offline
+	     (none for the Blocked Players, whose state the client does not
+	     know). A left press selects a row (a
 	     group opens or closes), a double click on an online member whispers.
 	     The lover's row shows its love points on hover. The bottom edge resizes the height (legacy's at least 150).
 	     The rows' own bindings read only the index and top-level keys (the
@@ -30,6 +33,8 @@
       data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar messenger__titlebar">
 		<handle class="nui-window__handle messenger__handle" move_target="#document">
+			<span class="messenger__title-icon"><span class="nui-glyph nui-glyph--character"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 			<span class="nui-window__title messenger__title">@ui.MESSENGER_TITLE</span>
 		</handle>
 		<button id="messenger-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim messenger__close"
@@ -49,6 +54,7 @@
 					class="messenger__mark"></span><span class="messenger__name"><nui-text class="messenger__text" links="off"
 					data-attr-value="r.name"/></span><span class="messenger__flags" data-if="r.flags.size &gt; 0"><span
 					class="messenger__flag" data-for="f : r.flags"><img class="messenger__flag-image" data-attr-src="f"/></span></span><span
+					class="messenger__state" data-if="r.state != ''">{{ r.state }}</span><span
 					class="nui-tooltip nui-anim messenger__hint" data-if="r.love &gt;= 0">{{ r.hint }}</span></div>
 			</div>
 		</div>

@@ -11,7 +11,10 @@ hid the first; here the boards stack upward 4dp apart, the first war at the
 legacy place (P10 spec D19).
 
 The texts are legacy's __RefreshName (uiguild.py:456-468): "name score"
-until the server sends both member counts, then "name(count) score". A
+until the server sends both member counts, then "name(count) score"; each
+row also carries the name part and the score apart, which the modern looks
+show as a name and a score badge, and whether its guild leads (the higher
+score; neither on a tie). A
 guild's mark is a 16 x 12 region of the mark atlas the client downloads
 (mark_source, spec D20); a guild without a mark shows none. A modern board's width follows its
 text; each entry also carries legacy's width from the names' length
@@ -145,7 +148,7 @@ class GuildWarScoreBoard(object):
 	@staticmethod
 	def _data(guild_id):
 		return {"NAME": guild.GetGuildName(guild_id), "SCORE": 0, "MEMBER_COUNT": -1, "MARK": mark_source(guild_id),
-		        "TEXT": ""}
+		        "LABEL": "", "TEXT": ""}
 
 	def __GetDataDict(self, ID):
 		if self.allyGuildID == ID:
@@ -173,14 +176,17 @@ class GuildWarScoreBoard(object):
 		self.__RefreshName()
 
 	def __RefreshName(self):
-		"""Legacy's texts (uiguild.py:456-468), and its width (_legacy_width)."""
+		"""Legacy's texts (uiguild.py:456-468), and its width (_legacy_width):
+		the name part (LABEL, the name or "name(count)"), then the score."""
 		ally, enemy = self.allyDataDict, self.enemyDataDict
 		if -1 == ally["MEMBER_COUNT"] or -1 == enemy["MEMBER_COUNT"]:
-			ally["TEXT"] = "%s %d" % (ally["NAME"], ally["SCORE"])
-			enemy["TEXT"] = "%s %d" % (enemy["NAME"], enemy["SCORE"])
+			ally["LABEL"] = ally["NAME"]
+			enemy["LABEL"] = enemy["NAME"]
 		else:
-			ally["TEXT"] = "%s(%d) %d" % (ally["NAME"], ally["MEMBER_COUNT"], ally["SCORE"])
-			enemy["TEXT"] = "%s(%d) %d" % (enemy["NAME"], enemy["MEMBER_COUNT"], enemy["SCORE"])
+			ally["LABEL"] = "%s(%d)" % (ally["NAME"], ally["MEMBER_COUNT"])
+			enemy["LABEL"] = "%s(%d)" % (enemy["NAME"], enemy["MEMBER_COUNT"])
+		ally["TEXT"] = "%s %d" % (ally["LABEL"], ally["SCORE"])
+		enemy["TEXT"] = "%s %d" % (enemy["LABEL"], enemy["SCORE"])
 		self._changed()
 
 	def Show(self):
@@ -203,10 +209,15 @@ class GuildWarScoreBoard(object):
 		_drop(self)
 
 	def _entry(self):
+		"""A board's entry: each guild's mark, legacy's text (classic), its
+		name part and score apart (the modern looks) and whether it leads."""
 		rows = []
-		for data in (self.allyDataDict, self.enemyDataDict):
+		ally, enemy = self.allyDataDict, self.enemyDataDict
+		for data, other in ((ally, enemy), (enemy, ally)):
 			src, rect = data["MARK"]
-			rows.append({"src": src, "rect": rect, "text": nui.plain_text(data["TEXT"])})
+			rows.append({"src": src, "rect": rect, "text": nui.plain_text(data["TEXT"]),
+			             "name": nui.plain_text(data["LABEL"]), "score": "%d" % data["SCORE"],
+			             "leading": data["SCORE"] > other["SCORE"]})
 		return {"key": self._key, "rows": rows, "legacy_width": self._legacy_width()}
 
 	def _legacy_width(self):

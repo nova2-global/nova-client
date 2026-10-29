@@ -252,6 +252,32 @@ body.inv.inv--placed
 {
 	height: auto;
 }
+/* A refined wear item (inv-wear--refined): a ring and a soft glow around
+   its cell in the upgrade blue (--inv-refine-ring, which a skin may
+   recolor), drawn once as a shadow, so the cell's own hover and drop
+   states still show inside it (a device without effects draws neither,
+   base.rcss); its "+N" (is-refined) at the top right. */
+.inv-wear
+{
+	--inv-refine-ring: var(--gauge-blue);
+}
+.inv-wear--refined.nui-fx
+{
+	box-shadow: 0 0 0 1dp var(--inv-refine-ring), 0 0 8dp var(--inv-refine-ring);
+}
+.inv-wear.is-refined .nui-slot__number
+{
+	left: auto;
+	right: 2dp;
+}
+/* An empty place's mark (the unique, arrow and belt glyphs), a faint
+   watermark in the cell's middle. */
+.inv-wear .inv-wear__mark
+{
+	transform: scale(1.3);
+	opacity: 0.5;
+	--glyph-ink: var(--text-muted);
+}
 .inv-wear--weapon { left: 26dp; top: 9dp; }
 .inv-wear--unique1 { left: 26dp; top: 187dp; }
 .inv-wear--head { left: 70dp; top: 8dp; }

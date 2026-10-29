@@ -80,3 +80,9 @@ body.skin-classic.belt .belt__grid > .nui-slot.is-unavailable
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/game/belt_inventory/slot_disabled.tga" scale-none left top);
 }
+/* No lock: the legacy disabled art says it (the modern skins draw one with
+   the empty number part). */
+body.skin-classic.belt .belt__grid > .nui-slot.is-unavailable.is-empty > .nui-slot__number
+{
+	display: none;
+}

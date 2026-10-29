@@ -1268,6 +1268,42 @@ class TargetDifferential(TargetWorlds):
         self.assertEqual(novaui.board.GetTargetVID(), 300)
         self.assertEqual(novaui.board.GetTargetName(), "Lv.23 (TARGET_LEVEL_BOSS) Wild Dog")
 
+    def test_a_player_target_shows_its_portrait_class_and_guild(self):
+        """The modern head of a player target (player_head): the face of its
+        race and "class · guild", the race read from the target selected
+        for that read alone; a guild whose name the client lacks, a vid
+        without an instance and a board opened by name show less."""
+        legacy, novaui = self.worlds(guild_id=7)
+        game = novaui.game
+        game.answer("chr", "HasInstance", lambda vid: vid == PEER_VID)
+        game.answer("chr", "GetRace", lambda: 5)
+        game.answer("chr", "RaceToJob", lambda race: 1 if race in (1, 5) else 0)
+        game.answer("guild", "GetGuildName", lambda guild_id: "Nova Riders" if guild_id == 7 else "Noname")
+        self.both(legacy, novaui, lambda world: world.board.Open(PEER_VID, "NuiW2B2"))
+        self.same_view(legacy, novaui)
+        model = novaui.board.board.model
+        with novaui:
+            job = novaui.module("nui_hud").locale_text("JOB_ASSASSIN")
+        self.assertTrue(job)
+        self.assertEqual(model["portrait"], "/icon/face/assassin_m.tga")
+        self.assertEqual(model["subtitle"], job + " · Nova Riders")
+        self.assertEqual([args for name, args in game.log if name == "chr.SelectInstance"], [(PEER_VID,), (MAIN_VID,)],
+                         "the main character is selected again")
+        game.target["guild_id"] = 8
+        with novaui, quiet():
+            novaui.board.Open(PEER_VID, "NuiW2B2")
+        self.assertEqual(model["subtitle"], job, "no name for the guild: the class alone")
+        with novaui, quiet():
+            novaui.board.Open(0, "NuiW2B2")
+        self.assertEqual((model["portrait"], model["subtitle"]), ("", ""), "a board opened by name has no head")
+        with novaui, quiet():
+            novaui.board.Open(PEER_VID + 1, "Other")
+        self.assertEqual((model["portrait"], model["subtitle"]), ("", ""), "no instance, no head")
+        with novaui, quiet():
+            novaui.board.Open(PEER_VID, "NuiW2B2")
+            novaui.board.Close()
+        self.assertEqual((novaui.board.nuiPortrait, novaui.board.nuiSubtitle), ("", ""), "a closed board forgets it")
+
     def test_the_exchange_button_follows_the_distance_c_plus_plus_watches(self):
         legacy, novaui = self.worlds()
         T = self.ids(legacy)

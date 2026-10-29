@@ -227,6 +227,14 @@ body.skin-classic.chat-log .chat-log__scroll sliderbar:hover, body.skin-classic.
 {
 	background-color: transparent;
 }
+/* The arrows are the legacy art alone: no modern hover or pressed fill. */
+body.skin-classic.chat-log .chat-log__scroll sliderarrowdec, body.skin-classic.chat-log .chat-log__scroll sliderarrowinc,
+body.skin-classic.chat-log .chat-log__scroll sliderarrowdec:hover, body.skin-classic.chat-log .chat-log__scroll sliderarrowinc:hover,
+body.skin-classic.chat-log .chat-log__scroll sliderarrowdec:active, body.skin-classic.chat-log .chat-log__scroll sliderarrowinc:active
+{
+	border-radius: 0;
+	background-color: transparent;
+}
 body.skin-classic.chat-log .chat-log__scroll sliderarrowdec
 {
 	width: 13dp;

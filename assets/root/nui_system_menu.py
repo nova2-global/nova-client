@@ -127,12 +127,14 @@ class SystemDialog(nui_hud.LayoutCalls):
 		if self.demand is not None and self.demand.show():
 			if self.escapeProxy is not None:
 				self.escapeProxy.show()
+		nui_hud.tell_taskbar("system", self.IsShow())
 
 	def Hide(self):
 		if self.escapeProxy is not None:
 			self.escapeProxy.hide()
 		if self.demand is not None:
 			self.demand.hide()
+		nui_hud.tell_taskbar("system", self.IsShow())
 
 	def IsShow(self):
 		return self.demand is not None and self.demand.is_shown()

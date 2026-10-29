@@ -211,6 +211,12 @@ body.minimap
 	line-height: 17dp;
 	white-space: nowrap;
 }
+/* The local clock after the place, in the muted text. */
+.minimap__clock
+{
+	margin-left: 6dp;
+	color: var(--text-muted);
+}
 
 /* Closed: the show button alone, where the map's top right corner was: a
    dark disc like the map's buttons. */

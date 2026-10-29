@@ -73,3 +73,30 @@ body.belt.belt--expanded
 {
 	decorator: repeating-linear-gradient(135deg, transparent 0dp, transparent 5dp, var(--border) 5dp, var(--border) 10dp);
 }
+/* Its lock, in the cell's middle in the muted text: the cell's number part,
+   empty there, is a 12 x 14dp padlock drawn by two gradients (the body, the
+   first decorator, over the lower half of the shackle, a ring; the ring's
+   stops in percent of its 4dp radius, as RmlUi misplaces dp stops in a
+   radial gradient), so the lean cell needs no other element (P14 spec
+   4.2). --belt-lock-ink colors it. Their first stops are clear, so a device
+   without effects, which draws a gradient in one color, shows no lock. */
+.belt__grid > .nui-slot
+{
+	--belt-lock-ink: var(--text-muted);
+}
+.belt__grid > .nui-slot.is-unavailable.is-empty > .nui-slot__number
+{
+	display: block;
+	left: 13dp;
+	top: 11dp;
+	right: auto;
+	bottom: auto;
+	width: 12dp;
+	height: 14dp;
+	decorator: linear-gradient(180deg, transparent 0%, transparent 43%, var(--belt-lock-ink) 43%, var(--belt-lock-ink) 100%),
+	           radial-gradient(circle 4dp at 50% 4.5dp, transparent 0%, transparent 48%, var(--belt-lock-ink) 48%, var(--belt-lock-ink) 98%, transparent 98%, transparent 100%);
+}
+.belt__grid > .nui-slot.is-unavailable.is-empty > .nui-slot__number .nui-number__text
+{
+	display: none;
+}

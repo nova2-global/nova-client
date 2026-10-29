@@ -316,6 +316,24 @@ body.skin-cyberpunk.taskbar .taskbar-window:active
 	border-bottom-color: var(--cyberpunk-edge-alt);
 	background-color: var(--selection);
 }
+/* An open window's button: the cyan light held, over a 2dp magenta bar
+   across its bottom edge. */
+body.skin-cyberpunk.taskbar .taskbar-window.is-open
+{
+	border-color: transparent;
+	background-color: var(--cyberpunk-holo-a);
+	decorator: none;
+}
+body.skin-cyberpunk.taskbar .taskbar-open
+{
+	left: -1dp;
+	right: -1dp;
+	bottom: -1dp;
+	width: auto;
+	margin-left: 0;
+	border-radius: 0;
+	background-color: var(--cyberpunk-edge-alt);
+}
 body.skin-cyberpunk.taskbar .taskbar-hotkey
 {
 	color: var(--cyberpunk-edge);

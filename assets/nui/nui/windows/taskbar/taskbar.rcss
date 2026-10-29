@@ -471,6 +471,35 @@ progress.taskbar-orb
 {
 	decorator: radial-gradient(circle at 50% 65%, var(--accent-glow) 0%, transparent 70%);
 }
+/* A button whose window is open (is-open): an accent ring around the soft
+   light, the glyph in the accent and a short accent bar on the bottom edge
+   (taskbar-open, hidden on the other buttons). */
+.taskbar-window.is-open
+{
+	border-color: var(--accent-glow);
+	decorator: radial-gradient(circle at 50% 60%, var(--accent-glow) 0%, transparent 70%);
+}
+.taskbar-window.is-open .taskbar-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.taskbar-open
+{
+	display: none;
+	position: absolute;
+	left: 50%;
+	bottom: -2dp;
+	width: 14dp;
+	height: 2dp;
+	margin-left: -7dp;
+	border-radius: 1dp;
+	background-color: var(--accent);
+	pointer-events: none;
+}
+.taskbar-window.is-open .taskbar-open
+{
+	display: block;
+}
 .taskbar-window:active
 {
 	background-color: var(--selection);

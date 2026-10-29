@@ -720,6 +720,54 @@ class Model(Pair):
         self.assertFalse(board(window).model["dss_active"])
 
 
+class ModernMarks(unittest.TestCase):
+    """What the modern skins add to the bag and the wear cells: the refine
+    level ("+N", nui_slots.REFINE_KEY: the inventory's grids opt in), the
+    marks of the empty unique, arrow and belt places, and the taskbar's
+    inventory button, told at each Show and Hide."""
+
+    def world(self):
+        world = World(True)
+        item = world.game.modules["item"]
+        item.ITEM_TYPE_WEAPON, item.ITEM_TYPE_ARMOR, item.ITEM_TYPE_BELT = 1, 2, 34
+        names = {SWORD: "Sword+6", GLAIVE: "Glaive+5", ARMOR: "Armour+3", POTION: "Potion+2", BELT: "Belt"}
+        kinds = {SWORD: 1, GLAIVE: 1, ARMOR: 2, POTION: 3, BELT: 34}
+        item.GetItemName = lambda: names.get(item.selected[0], "")
+        item.GetItemType = lambda: kinds.get(item.selected[0], 0)
+        return world
+
+    def test_the_bag_and_the_wear_cells_carry_the_refine_level(self):
+        model = board(self.world().make_inventory()).model
+        refine = [cell["refine"] for cell in model["bag"]]
+        self.assertEqual((refine[0], refine[2], refine[4], refine[5]), (6, 5, 0, 0), "a potion's +2 is no level")
+        self.assertEqual(sum(1 for level in refine if level), 2)
+        wear = dict((cell["name"], cell["refine"]) for cell in model["wear"])
+        self.assertEqual((wear["body"], wear["belt"], wear["weapon"]), (3, 0, 0))
+
+    def test_empty_unique_arrow_and_belt_places_show_their_mark(self):
+        window = self.world().make_inventory()
+        marks = dict((cell["name"], cell["marks"]) for cell in board(window).model["wear"])
+        self.assertEqual((marks["unique1"], marks["unique2"], marks["arrow"]), (["unique"], ["unique"], ["arrow"]))
+        self.assertEqual((marks["belt"], marks["body"], marks["weapon"]), ([], [], []), "worn, or a place without a mark")
+
+    def test_show_and_hide_tell_the_taskbar(self):
+        world = self.world()
+        told = []
+
+        class Bar(object):
+            def nui_window_shown(self, name, shown):
+                told.append((name, bool(shown)))
+        bar = Bar()
+        hud = world.m("nui_hud")
+        hud.take_over("taskbar", bar)
+        self.addCleanup(hud.forget, "taskbar", bar)
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.Hide()
+            window.Show()
+        self.assertEqual(told, [("inventory", True), ("inventory", False), ("inventory", True)])
+
+
 class Flows(Pair):
     """6.1's flow table, every row: the same calls in the same order."""
 

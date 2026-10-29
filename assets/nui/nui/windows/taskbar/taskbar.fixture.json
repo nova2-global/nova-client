@@ -178,6 +178,10 @@
 		"right_skill_shown": true,
 		"skill_rows": [],
 		"mouse_image": false,
-		"expandable": true
+		"expandable": true,
+		"open_character": false,
+		"open_inventory": true,
+		"open_messenger": false,
+		"open_system": false
 	}
 }

@@ -3,7 +3,8 @@
    modern layout to the dp. The fold bar a square well with the brighter
    cyan line and its chevron in the accent; the cells beyond the belt's
    grade hatched dark on the dim fill (the stripes' first and last stops
-   clear, so a device without effects shows the plain dim cell). */
+   clear, so a device without effects shows the plain dim cell), their
+   locks in the magenta. */
 
 body.skin-cyberpunk.belt .belt__minimize
 {
@@ -21,4 +22,9 @@ body.skin-cyberpunk.belt .belt__grid > .nui-slot.is-unavailable,
 body.skin-cyberpunk.belt .belt__grid > .nui-slot.is-unavailable:hover
 {
 	decorator: repeating-linear-gradient(135deg, transparent 0dp, transparent 4.9dp, var(--cyberpunk-holo-a) 5dp, var(--cyberpunk-holo-a) 9.9dp, transparent 10dp);
+}
+/* The lock in the magenta. */
+body.skin-cyberpunk.belt .belt__grid > .nui-slot
+{
+	--belt-lock-ink: var(--cyberpunk-edge-alt);
 }

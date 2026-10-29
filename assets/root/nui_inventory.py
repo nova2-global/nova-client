@@ -34,7 +34,11 @@ interface binds the window (BindInterfaceClass), the reviewed board's five
 entries are registered (register_board_shortcuts): the offline shop,
 ranking, events and achievements as features to come, and the guide, which
 opens the help window. The rail's fold button hides its entries for the
-rest of the session."""
+rest of the session. The bag and the wear cells carry the refine level
+(their proxies opt in, nui_slots.REFINE_KEY), which the modern skins show as
+a "+N" badge and a lit wear cell; an empty unique, arrow or belt place
+carries its mark (WEAR_MARKS); and Show and Hide tell the NovaUI taskbar,
+whose inventory button shows whether the window is open."""
 
 import app
 import constInfo
@@ -59,6 +63,20 @@ KEY = "inventory"
 # The paper doll's figures (content images, nui/figures/; the controller
 # passes the path, so no markup names it).
 FIGURE_KNIGHT = "/nui/figures/knight.png"
+
+
+# The mark an empty wear place shows (the reviewed board's watermarks; a
+# glyph of components/glyph.rcss, which classic hides): the unique item
+# places, the arrow's and the belt's.
+WEAR_MARKS = {"unique1": "unique", "unique2": "unique", "arrow": "arrow", "belt": "belt"}
+
+
+def wear_marks(name, kind):
+	"""A wear cell's marks: [the place's glyph name] while it is empty and
+	has one, else [] (a list, so the board makes the glyph only where it
+	shows)."""
+	mark = WEAR_MARKS.get(name)
+	return [mark] if mark and not kind else []
 
 
 def figure_for_race(race):
@@ -391,10 +409,12 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"table": limits.WEAR_TABLE_ID,
 			"pages": nui_limits.pages(limits),
 			"page": 0,
-			"bag": [nui_slots.empty_cell(i) for i in range(limits.INVENTORY_PAGE_SIZE)],
+			# The bag and the wear cells carry the refine level (the modern
+			# skins' "+N" badge; nui_slots.REFINE_KEY).
+			"bag": nui_slots.with_refine([nui_slots.empty_cell(i) for i in range(limits.INVENTORY_PAGE_SIZE)]),
 			"bag_cols": limits.INVENTORY_COLUMNS,
-			"wear": [dict(nui_slots.empty_cell(i), name=slot.name)
-			         for i, slot in enumerate(nui_limits.wear_group("equipment", limits))],
+			"wear": nui_slots.with_refine([dict(nui_slots.empty_cell(i), name=slot.name, marks=wear_marks(slot.name, ""))
+			                               for i, slot in enumerate(nui_limits.wear_group("equipment", limits))]),
 			"money": "",
 			"money_value": 0,
 			"dss_active": False,
@@ -541,6 +561,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		marked = nui_slots.with_states(cells, states or {}, picked)
 		for cell, slot in zip(marked, self._wear_slots):
 			cell["name"] = slot.name
+			cell["marks"] = wear_marks(slot.name, cell.get("kind"))
 		return marked
 
 	def _on_wear(self, cells):
@@ -574,9 +595,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 
 		wndItem = nui_slots.SlotWindowProxy(range(limits.INVENTORY_PAGE_SIZE), self._on_bag,
 		                                    cols=limits.INVENTORY_COLUMNS, rows=limits.INVENTORY_ROWS,
-		                                    positions=self._bag_position)
+		                                    positions=self._bag_position, refine=True)
 		self._wear_slots = nui_limits.wear_group("equipment", limits)
-		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._wear_slots], self._on_wear)
+		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._wear_slots], self._on_wear, refine=True)
 		self.wndMoney = nui_proxies.TextProxy(self._on_money)
 		self.wndMoneySlot = nui_proxies.ButtonProxy()
 		self.mallButton = nui_proxies.ButtonProxy()
@@ -674,12 +695,19 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			uiInventory.InventoryWindow.Show(self)
 		finally:
 			self._opening = False
+		self._tell_taskbar()
 
 	def Hide(self):
 		uiInventory.InventoryWindow.Hide(self)
 		# Legacy's Hide returns early while an item question is open.
 		if not self.IsShow():
 			self._hide_board()
+		self._tell_taskbar()
+
+	def _tell_taskbar(self):
+		"""The NovaUI taskbar's inventory button shows whether the window is
+		open (nui_hud.tell_taskbar)."""
+		nui_hud.tell_taskbar("inventory", self.IsShow())
 
 	def SetTop(self):
 		board = self.board()

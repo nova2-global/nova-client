@@ -1,16 +1,18 @@
 /* Classic skin overlay of nui/windows/guild-war-declare/guild-war-declare.rml: the
    legacy guild war declare dialog (uiscript declareguildwardialog.py) at 100%, 1dp
-   to the legacy pixel: the stone board with its title bar, 230 x 130; the
+   to the legacy pixel: the stone board with its title bar, 230 x 170; the
    enemy label at 15, 40, its slot bar at 80, 37 (130 x 18, drawn 131 x 19) with the name at
-   3, 3; the battle type's label at 15, 68 and its three buttons on the
-   small art (43 x 21) at 80, 125 and 170, 65 (the declared one held down);
-   OK at 49, 95 and Cancel at 120, 95 on the middle art. A type's hint is
-   legacy's thin board tooltip. */
+   3, 3; the member cap's label at 15, 70 and its slot bar at 85, 67 (28 x 18),
+   the end score's label at 122, 70 and its slot bar at 180, 67 (30 x 18), each
+   field at 3, 3 (NOVA-90); the battle type's label at 15, 103 and its three
+   buttons on the small art (43 x 21) at 80, 125 and 170, 100 (the declared one
+   held down); OK at 49, 130 and Cancel at 120, 130 on the middle art. A type's
+   hint is legacy's thin board tooltip. */
 
 body.skin-classic.guild-war-declare .guild-war__window
 {
 	width: 230dp;
-	height: 130dp;
+	height: 170dp;
 	min-width: 0;
 	max-width: none;
 }
@@ -44,7 +46,15 @@ body.skin-classic.guild-war-declare .guild-war__label
 	font-size: var(--font-md);
 }
 body.skin-classic.guild-war-declare .guild-war__row--enemy .guild-war__label { top: 40dp; }
-body.skin-classic.guild-war-declare .guild-war__row--type .guild-war__label { top: 68dp; }
+body.skin-classic.guild-war-declare .guild-war__row--type .guild-war__label { top: 103dp; }
+/* The limits' columns are no boxes of their own: their labels and slot bars
+   sit on the board, as the uiscript's. */
+body.skin-classic.guild-war-declare .guild-war__limit
+{
+	display: block;
+}
+body.skin-classic.guild-war-declare .guild-war__limit--members .guild-war__label { top: 70dp; }
+body.skin-classic.guild-war-declare .guild-war__limit--score .guild-war__label { left: 122dp; top: 70dp; }
 /* Legacy's slot bar (a CBar3D) draws its bottom and right lines at y + h
    and x + w, so its 130 x 18 covers 131 x 19 px. */
 body.skin-classic.guild-war-declare .guild-war__slot
@@ -58,6 +68,18 @@ body.skin-classic.guild-war-declare .guild-war__slot
 	border-width: 1dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
 	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.guild-war-declare .guild-war__limit--members .guild-war__slot
+{
+	left: 85dp;
+	top: 67dp;
+	width: 29dp;
+}
+body.skin-classic.guild-war-declare .guild-war__limit--score .guild-war__slot
+{
+	left: 180dp;
+	top: 67dp;
+	width: 31dp;
 }
 /* Legacy's edit line, 90 x 18 at 3, 3 of the slot bar. No margin: the
    dialog kit's field class sets one (components/dialog.rcss), which put
@@ -74,6 +96,11 @@ body.skin-classic.guild-war-declare .guild-war__field
 	border-width: 0;
 	background-color: transparent;
 	line-height: 13dp;
+}
+/* The limits' edit lines, 3 digits each (legacy's 30 and 28 wide). */
+body.skin-classic.guild-war-declare .guild-war__field--limit
+{
+	width: 24dp;
 }
 /* Legacy's text line at 3, 3 of the slot bar; no padding (the modern
    name's 6dp put it 8dp low, over the slot's bottom edge). */
@@ -94,7 +121,7 @@ body.skin-classic.guild-war-declare .guild-war__types
 body.skin-classic.guild-war-declare .guild-war__type
 {
 	position: absolute;
-	top: 65dp;
+	top: 100dp;
 	width: 43dp;
 	min-width: 0;
 	padding: 0;
@@ -136,7 +163,7 @@ body.skin-classic.guild-war-declare .guild-war__footer
 body.skin-classic.guild-war-declare .guild-war__button
 {
 	position: absolute;
-	top: 95dp;
+	top: 130dp;
 	width: 61dp;
 	min-width: 0;
 	padding: 0;
@@ -144,6 +171,6 @@ body.skin-classic.guild-war-declare .guild-war__button
 }
 /* Legacy's middle buttons centered on the board, 5 apart and 30 right
    (-61 - 5 + 30 and 5 + 30): 49 and 120, where its window manager puts
-   them. */
+   them, 130 down. */
 body.skin-classic.guild-war-declare .guild-war__button--accept { left: 49dp; }
 body.skin-classic.guild-war-declare .guild-war__button--cancel { left: 120dp; }

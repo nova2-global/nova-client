@@ -14,6 +14,12 @@
 		"target_max": 12,
 		"lines_on": [
 			1
-		]
+		],
+		"block_shown": true,
+		"blocked": false,
+		"online_shown": true,
+		"online": true,
+		"flag_shown": true,
+		"flag_src": "/locale/common/ui/flag/32/de.tga"
 	}
 }

@@ -1,8 +1,10 @@
 /* A whisper dialog's modern look (P16 spec 5.8.2): a window as large as the
    player made it (legacy's first 300 x 200, its least 300 x 170, the
    bottom-right corner resizing it); the partner's name in the title bar
-   (or the partner field and OK, before a partner is chosen), a GM badge
-   for a game master, minimize and close; the lines in the body, wrapped at
+   (or the partner field and OK, before a partner is chosen), the partner's
+   online mark (a dot, --success online, --text-muted offline) and language
+   flag once the server answered (NOVA-48), a GM badge for a game master,
+   Block or Unblock (NOVA-47), minimize and close; the lines in the body, wrapped at
    its width, the newest at the bottom, the scroll range at the right; the
    two-row input and Send in the footer. The Interface places each dialog
    30dp further from the corner (legacy's cascade); the sheet's place frames
@@ -76,6 +78,50 @@ body.whisper
 	height: 10dp;
 	background-color: var(--edge-gm);
 	transform: rotate(45deg);
+}
+/* The partner's details (NOVA-48): the online mark, then the language
+   flag (OLD's 32 x 32 at half size). */
+.whisper__online
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 8dp;
+	height: 8dp;
+	border-radius: 4dp;
+	background-color: var(--text-muted);
+}
+.whisper__online.is-online
+{
+	background-color: var(--success);
+}
+.whisper__flag
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 16dp;
+	height: 16dp;
+}
+.whisper__flag-image
+{
+	display: block;
+	width: 16dp;
+	height: 16dp;
+}
+/* Block or Unblock (NOVA-47): a compact ghost text button in the small
+   type, one line, so the partner's name keeps its room. */
+.whisper__block
+{
+	flex: 0 0 auto;
+	height: 22dp;
+	padding: 0 var(--space-1);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	line-height: 20dp;
+	white-space: nowrap;
+}
+.whisper__block-label
+{
+	pointer-events: none;
 }
 .whisper__accept
 {

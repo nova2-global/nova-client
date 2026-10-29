@@ -206,8 +206,9 @@ SAFEBOX_ITEMS_FOUNDATION.update({2: (27001, 2000), 44: (27003, 1999)})
 
 
 def pages_of(count):
-    """nui_limits.safebox_pages: "I", "II", ... one more "I" a page."""
-    return [{"index": i, "label": "I" * (i + 1)} for i in range(count)]
+    """nui_limits.safebox_pages: legacy's page names, "I" to "V"
+    (uisafebox.py PAGE_NAMES, NOVA-97)."""
+    return [{"index": i, "label": LIMITS.ROMAN[i]} for i in range(count)]
 
 
 def safebox(limits, items, page_count, page, attaching=False, targets=None):
@@ -288,6 +289,12 @@ def equipment_view(limits, equipped, title_length=12):
 FRIENDS = ("Aldric", "Brenna", "Caius", "Dagny", "Elowen", "Fenwick", "Galen", "Hesper", "Isolde", "Jorund",
            "Kestrel", "Lunara", "Maelis")
 GUILD_MATES = ("Nyx", "Orrin", "Perrin", "Quilla")
+# The staff rosters (NOVA-30, NOVA-46) with their languages, and the block
+# list (NOVA-47).
+HELPERS = (("Rowan", "en de"), ("Sable", "pt"))
+TEAM = (("Tamsin", "en"),)
+BLOCKED = ("Ulric",)
+FLAG = "/locale/common/ui/flag/32/%s.tga"
 
 
 def long_name(base, length=22):
@@ -295,17 +302,18 @@ def long_name(base, length=22):
     return (base + "xxxxxxxxxxxxxxxxxxxxxxxxx")[:length]
 
 
-def messenger_row(kind, name, online=False, open_=False, selected=False, love=-1):
+def messenger_row(kind, name, online=False, open_=False, selected=False, love=-1, languages=""):
     """A row as nui_messenger.row_of makes it from legacy's item."""
     return {"kind": kind, "name": name, "online": online, "open": kind == "group" and open_,
             "selected": selected, "member": kind == "member", "love": love,
-            "hint": (game_text("AFF_LOVE_POINT") % love) if love >= 0 else ""}
+            "hint": (game_text("AFF_LOVE_POINT") % love) if love >= 0 else "",
+            "flags": [FLAG % code for code in languages.split()]}
 
 
-def messenger_group(name, members, online, open_=True, selected=None):
+def messenger_group(name, members, online, open_=True, selected=None, languages=None):
     """Legacy's rows of one group (OnRefreshList): the group, then while open
     its online members, then its offline ones (in their order), or the empty
-    line."""
+    line; `languages` a roster's {member: codes}."""
     rows = [messenger_row("group", name, open_=open_)]
     if not open_:
         return rows
@@ -313,34 +321,59 @@ def messenger_group(name, members, online, open_=True, selected=None):
         rows.append(messenger_row("empty", game_text("MESSENGER_EMPTY_LIST")))
         return rows
     ordered = [m for m in members if m in online] + [m for m in members if m not in online]
-    rows.extend(messenger_row("member", m, online=m in online, selected=m == selected) for m in ordered)
+    rows.extend(messenger_row("member", m, online=m in online, selected=m == selected,
+                              languages=(languages or {}).get(m, "")) for m in ordered)
     return rows
 
 
-def messenger(rows, whisper=False, remove=False, height=310.0):
-    return {"messenger": {"rows": rows, "whisper_enabled": whisper, "remove_enabled": remove, "height": height}}
+def messenger_rosters(open_=True, filled=True):
+    """Legacy's groups after Friend and Guild (uimessenger.py __AddGroup):
+    the staff rosters Helper and Team (NOVA-30, NOVA-46: a member's
+    languages as flags), then the Blocked Players (NOVA-47, offline)."""
+    helpers, team = dict(HELPERS), dict(TEAM)
+    return (messenger_group(game_text("MESSENGER_HELPER"), tuple(helpers) if filled else (), {HELPERS[0][0]},
+                            open_=open_, languages=helpers)
+            + messenger_group(game_text("MESSENGER_TEAMLER"), tuple(team) if filled else (), {TEAM[0][0]},
+                              open_=open_, languages=team)
+            + messenger_group(game_text("BLOCKED_PLAYERS_TITLE"), BLOCKED if filled else (), set(), open_=open_))
+
+
+def messenger(rows, whisper=False, remove=False, height=310.0, unblock=False):
+    return {"messenger": {"rows": rows, "whisper_enabled": whisper, "remove_enabled": remove,
+                          "unblock_enabled": unblock, "height": height}}
 
 
 def messenger_fixtures():
     friends_online = set(FRIENDS[i] for i in (1, 4, 6, 9, 12))
     base = (messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, selected=FRIENDS[4])
-            + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2])))
+            + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2]))
+            + messenger_rosters())
     many = tuple(long_name("Friend%02d" % i) for i in range(64))
     lover = long_name("Lover")
     foundation = ([messenger_row("group", game_text("MESSENGER_FAMILY"), open_=True),
                    messenger_row("member", lover, love=87)]
                   + messenger_group(game_text("MESSENGER_FRIEND"), many, set(many[::3]), selected=many[3])
                   + messenger_group(game_text("MESSENGER_GUILD"), tuple(long_name(n) for n in GUILD_MATES),
-                                    set([long_name(GUILD_MATES[0])])))
-    empty = messenger_group(game_text("MESSENGER_FRIEND"), (), set()) + messenger_group(game_text("MESSENGER_GUILD"),
-                                                                                        (), set())
+                                    set([long_name(GUILD_MATES[0])]))
+                  + messenger_rosters())
+    empty = (messenger_group(game_text("MESSENGER_FRIEND"), (), set())
+             + messenger_group(game_text("MESSENGER_GUILD"), (), set()) + messenger_rosters(filled=False))
     closed = (messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, open_=False)
-              + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2]), open_=False))
+              + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2]), open_=False)
+              + messenger_rosters(open_=False))
     return {
         ("messenger", ""): messenger(base, whisper=True, remove=True),
         ("messenger", "foundation"): messenger(foundation, whisper=False, remove=True),
         ("messenger", "empty"): messenger(empty),
         ("messenger", "closed-groups"): messenger(closed, height=150.0),
+        # Friend and Guild closed, the staff rosters with their flags and the
+        # block list open, the blocked player selected (Unblock on).
+        ("messenger", "rosters"): messenger(
+            messenger_group(game_text("MESSENGER_FRIEND"), FRIENDS, friends_online, open_=False)
+            + messenger_group(game_text("MESSENGER_GUILD"), GUILD_MATES, set(GUILD_MATES[:2]), open_=False)
+            + messenger_rosters()[:-2]
+            + messenger_group(game_text("BLOCKED_PLAYERS_TITLE"), BLOCKED, set(), selected=BLOCKED[0]),
+            unblock=True),
     }
 
 
@@ -355,11 +388,14 @@ def fixtures():
 GM_MARK = "/locale/common/effect/ymirred.tga"
 
 
-def whisper(target, editing=False, gm=False, width=300, height=200, key=1):
+def whisper(target, editing=False, gm=False, width=300, height=200, key=1, blocked=False, online=None, language=""):
     """A whisper dialog's model as nui_whisper builds it: the partner (or the
     partner field and OK, without one), the GM look, the feed's key, the
     size, the scroll at the end, the input's limit for the width (legacy's
-    int((w - 90) / 6) * 3 - 6) and the partner field's."""
+    int((w - 90) / 6) * 3 - 6) and the partner field's; for a partner the
+    block button (NOVA-47, Unblock when `blocked`) and, once the server
+    answered (`online` True or False), its online mark and, while online,
+    its language flag (NOVA-48)."""
     return {"whisper": {
         "target": target,
         "editing_target": editing,
@@ -376,15 +412,21 @@ def whisper(target, editing=False, gm=False, width=300, height=200, key=1):
         # P18: the lines and the scroll while the board shows (a pooled
         # board's wrapper is empty while it waits).
         "lines_on": [1],
+        "block_shown": not editing,
+        "blocked": blocked,
+        "online_shown": online is not None,
+        "online": bool(online),
+        "flag_shown": bool(online and language),
+        "flag_src": FLAG % language if online and language else "",
     }}
 
 
 def whisper_fixtures():
     return {
-        ("whisper", ""): whisper(name_of(12)),
-        ("whisper", "foundation"): whisper(long_name("Partner")),
+        ("whisper", ""): whisper(name_of(12), online=True, language="en"),
+        ("whisper", "foundation"): whisper(long_name("Partner"), blocked=True, online=False),
         ("whisper", "without-target"): whisper("", editing=True),
-        ("whisper", "gm"): whisper("[SA]Admin", gm=True),
+        ("whisper", "gm"): whisper("[SA]Admin", gm=True, online=True, language="de"),
         ("whisper", "small"): whisper(name_of(12), height=170),
     }
 
@@ -519,8 +561,16 @@ def war_declare(limits, war_type):
                                   "max": limits.GUILD_NAME_MAX_LEN, "types_on": [1]}}
 
 
-def war_accept(name, war_type):
-    return {"guild_war_accept": {"type": war_type, "type_select": True, "hints": war_hints(), "name": name}}
+def war_accept(name, war_type, max_members=0, end_score=0):
+    """The accept dialog's model as legacy's Open fills it: the declaring
+    guild's name and type, and the war's limits (NOVA-90): the member cap's
+    line (each guild's half) and the end score's, each shown only when the
+    server sent a value."""
+    members = game_text("GUILD_WAR_MAX_MEMBERS") % (max_members // 2) if max_members > 0 else ""
+    score = game_text("GUILD_WAR_MAX_SCORE") % end_score if end_score > 0 else ""
+    return {"guild_war_accept": {"type": war_type, "type_select": True, "hints": war_hints(), "name": name,
+                                 "members": members, "members_shown": bool(members), "score": score,
+                                 "score_shown": bool(score)}}
 
 
 MARK_FILES = ("castle.png", "dragon.tga", "flag.bmp", "lion.tga", "old_sign.jpeg", "rose.png", "sword.jpg", "wolf.tga")
@@ -545,8 +595,9 @@ def guild_dialog_fixtures():
     return {
         ("guild-war-declare", ""): war_declare(TODAY, 1),
         ("guild-war-declare", "foundation"): war_declare(FOUNDATION, 1),
-        ("guild-war-accept", ""): war_accept("Black Wolves", 2),
-        ("guild-war-accept", "foundation"): war_accept(long_name("Black Wolves Of The North", 24), 2),
+        # OLD's limits, 32 members and 32 kills (the declare dialog's defaults).
+        ("guild-war-accept", ""): war_accept("Black Wolves", 2, 32, 32),
+        ("guild-war-accept", "foundation"): war_accept(long_name("Black Wolves Of The North", 24), 2, 32, 32),
         ("guild-mark", ""): guild_mark("mark", MARK_FILES, 3),
         ("guild-mark", "symbol"): guild_mark("symbol", SYMBOL_FILES, 0),
         ("guild-mark", "empty"): guild_mark("mark", ()),
@@ -591,7 +642,7 @@ def trade_fixtures():
         ("private-shop", "attaching"): private_shop(TODAY, BUILDER_STOCK, attaching=True, targets={17: "move", 22: "move"}),
         # Three pages, page II shown (its cells' ref from 45).
         ("safebox", ""): safebox(TODAY, SAFEBOX_ITEMS, 3, 1),
-        # The foundation's five pages ("I" to "IIIII"), the last shown.
+        # The foundation's five pages ("I" to "V", legacy's PAGE_NAMES), the last shown.
         ("safebox", "foundation"): safebox(FOUNDATION, SAFEBOX_ITEMS_FOUNDATION, 5, 4),
         ("safebox", "one-page"): safebox(TODAY, SAFEBOX_ITEMS, 1, 0),
         # A 1x2 sword attached over cell 17: its footprint on 17 and 22.

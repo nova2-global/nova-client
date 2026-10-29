@@ -1,10 +1,11 @@
 /* The costume window's modern look (P14 spec 6.2): a movable window beside
    the inventory, its cells on the 44dp pitch by the wear slot's name
-   (nui_limits' costume group): today's three in a 3 x 2 area, the
-   foundation's five columns, its companion's block in rows 4 to 6 under a
-   divider.
-   Classic (legacy's 140 x 180 board with costume_bg.jpg; OLD's 314 x 320
-   at the foundation's table): skins/classic/windows/costume.rcss. */
+   (nui_limits' costume group): the costume hair and body side by side, in
+   both tables since the cut (NOVA-97: legacy's costume window holds those
+   two; the other names keep places, should a table show them again, and
+   so does a companion's block, in rows 4 to 6 under a divider).
+   Classic (legacy's 140 x 180 board with costume_bg.jpg):
+   skins/classic/windows/costume.rcss. */
 
 body.cos
 {
@@ -25,13 +26,8 @@ body.cos
 .cos-grid
 {
 	position: relative;
-	width: 128dp;
+	width: 84dp;
 	height: 84dp;
-}
-body.cos.inv--table-old .cos-grid
-{
-	width: 216dp;
-	height: 128dp;
 }
 body.cos.cos--companion .cos-grid
 {

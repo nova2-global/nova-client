@@ -1,11 +1,11 @@
 /* Classic skin overlay of nui/windows/game-options/game-options.rml: the
    legacy game options (uiscript gameoptiondialog.py) at 100%, 1dp to the
-   legacy pixel. The stone board, 300 x 283, with its title bar at 8, 8
+   legacy pixel. The stone board, 300 x 333, with its title bar at 8, 8
    (284 wide; the title centered over the whole bar, the close button at
    266, 3); the labels at x 30, y 42 + 25 per row; the choices from x 90,
    middle art (61dp) 65 apart and the PvP choices small art (43dp) 45
    apart, at y 40, 65, 90, 115 and 140 (the block toggles' two rows), 165,
-   190, 215 and 240. Labels are centered over their art as legacy's text
+   190, 215, 240, and 265 and 290 (the pickup filter's two rows, NOVA-50). Labels are centered over their art as legacy's text
    lines are, a wider one overflowing both ends. The choice in effect and a
    blocked request show the down art. The PvP hints are legacy button
    tooltips: outlined text above the button, without a board. */
@@ -13,7 +13,7 @@
 body.skin-classic.game-options
 {
 	width: 300dp;
-	height: 283dp;
+	height: 333dp;
 	min-width: 0;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
@@ -52,7 +52,7 @@ body.skin-classic.game-options .game-options__titlebar .nui-window__close
 body.skin-classic.game-options .game-options__body
 {
 	position: relative;
-	height: 283dp;
+	height: 333dp;
 	padding: 0;
 }
 body.skin-classic.game-options .go-row,
@@ -79,6 +79,7 @@ body.skin-classic.game-options .go-label--view-chat { top: 167dp; }
 body.skin-classic.game-options .go-label--always-name { top: 192dp; }
 body.skin-classic.game-options .go-label--damage { top: 217dp; }
 body.skin-classic.game-options .go-label--sales { top: 242dp; }
+body.skin-classic.game-options .go-label--pickup { top: 267dp; }
 
 body.skin-classic.game-options .go-choice
 {
@@ -128,6 +129,10 @@ body.skin-classic.game-options .go-choice--damage-1 { left: 90dp; top: 215dp; }
 body.skin-classic.game-options .go-choice--damage-0 { left: 155dp; top: 215dp; }
 body.skin-classic.game-options .go-choice--sales-1 { left: 90dp; top: 240dp; }
 body.skin-classic.game-options .go-choice--sales-0 { left: 155dp; top: 240dp; }
+body.skin-classic.game-options .go-choice--pickup-0 { left: 90dp; top: 265dp; }
+body.skin-classic.game-options .go-choice--pickup-1 { left: 155dp; top: 265dp; }
+body.skin-classic.game-options .go-choice--pickup-2 { left: 90dp; top: 290dp; }
+body.skin-classic.game-options .go-choice--pickup-3 { left: 155dp; top: 290dp; }
 
 /* The PvP choices on the small art; the choice in effect shows its down art,
    under the pointer too. */

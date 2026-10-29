@@ -226,7 +226,8 @@ class Flows(ExchangeTest):
         self.assertEqual(novaui, legacy)
         self.assertIn(("uiPickMoney.PickMoneyDialog.Open", (5000000,)), [(n, args[-1:]) for n, args in novaui])
         self.assertIn(("net.SendExchangeElkAddPacket", (25000,)), novaui)
-        self.assertEqual(b.dlgPickMoney.max, 7, "today's EXCHANGE_MONEY_DIGITS, legacy's SetMax(7)")
+        self.assertEqual(b.dlgPickMoney.max, 12, "legacy's SetMax(player.EXCHANGE_MONEY_DIGITS) since NOVA-96: OLD's 12")
+        self.assertEqual(a.dlgPickMoney.max, 12)
 
     def test_the_money_button_refuses_once_money_is_set(self):
         def setup(game):

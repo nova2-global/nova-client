@@ -15,19 +15,19 @@
 		},
 		"item_list": {
 			"path": "assets/locale/locale/common/item_list.txt",
-			"sha256": "cf6be99d14473a2db7926697e22c0fa0929e29a7e8e6e02b8d4fa1d1b1e1eec1"
+			"sha256": "c2d7b9caf819d962e86e9936062fcc15bd6af3cf53edafa6f022a09e9579ecae"
 		},
 		"itemdesc": {
 			"path": "assets/locale/locale/en/itemdesc.txt",
-			"sha256": "640528900f070dc825b8e33cadabaa6a7d376bb09adb6d41a67982c0f3a57af6"
+			"sha256": "9a795fc8c6cde24b7493784d29c6a494fa1c52fe68a1f8a7805a3cde85804f50"
 		},
 		"skilldesc": {
 			"path": "assets/locale/locale/en/skilldesc.txt",
-			"sha256": "f058892db578cfbac08dcc0db750853747f7a84e2c3fdba44d1e2a191b398966"
+			"sha256": "c03725595967d06ba45389b772a66a8af43053cbe8bb83ab88cecce244bd048d"
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "83e971aea1e10af924bd678eddbdb497c7cbc085dea426c19adf97a11c058f1c"
+			"sha256": "3ae51393297fe51c19d580b6acc9de82fa15734dfcb105bb3517fbce3e05ee09"
 		}
 	},
 	"items": {

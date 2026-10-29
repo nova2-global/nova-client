@@ -4,7 +4,7 @@ While the "select" window flag is on, networkModule.MainStream's select
 setter makes SelectCharacterWindow below through nui_windows.make() instead
 of introSelect.SelectCharacterWindow. It subclasses the legacy class, which
 stays the phase window C++ talks to and keeps the 3D characters, the
-DirectInput hotkeys (OnKeyDown: Escape, 1 to 4, Enter, the arrows), the
+DirectInput hotkeys (OnKeyDown: Escape, 1 to 5, Enter, the arrows), the
 start timer and every packet. Inherited unchanged: the C++ callbacks
 OnCreateFailure, OnDeleteSuccess, OnDeleteFailure and Refresh's legacy part;
 the private-code and rename dialogs (uiCommon.InputDialogWithDescription,
@@ -16,7 +16,8 @@ character renderer are made without the uiscript, the board's labels,
 gauges and buttons come from the model, and the gauge and name-art easing
 is gone (values show at once). The delete question is uiCommon.QuestionDialog
 (the kit, or the legacy dialog, whose Open puts it above NovaUI). The board
-adds a slot list: one row per slot with its character's name and level.
+adds a slot list: one row per slot with its character's name and level,
+SLOT_COUNT of them (legacy's five since NOVA-97, OLD's PLAYER_PER_ACCOUNT).
 
 The document loads hidden in __init__ (nui_ready, nui_discard and __del__
 follow nui_windows.make()'s protocol, as nui_loading does)."""
@@ -98,7 +99,8 @@ class SelectBoard(nui.Window):
 	def initial_model(self):
 		values = empty_board()
 		values.update({"slot": 0, "busy": False, "empire_name": "", "flag_image": "",
-			"slots": [{"index": index, "label": EMPTY_SLOT, "level": 0} for index in range(4)]})
+			"slots": [{"index": index, "label": EMPTY_SLOT, "level": 0}
+			          for index in range(introSelect.SelectCharacterWindow.SLOT_COUNT)]})
 		return values
 
 	def _idle(self):
@@ -272,10 +274,8 @@ class SelectCharacterWindow(introSelect.SelectCharacterWindow):
 		self.privateInputBoard = None
 		self.nameInputBoard = None
 
-		chr.DeleteInstance(0)
-		chr.DeleteInstance(1)
-		chr.DeleteInstance(2)
-		chr.DeleteInstance(3)
+		for index in range(self.SLOT_COUNT):
+			chr.DeleteInstance(index)
 
 		self.Hide()
 		self.KillFocus()

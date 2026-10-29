@@ -23,7 +23,6 @@ costume and belt windows are nui_costume and nui_belt_inventory. Every count
 comes from nui_limits.current()."""
 
 import app
-import mouseModule
 import player
 import ui
 import uiAttachMetin
@@ -41,8 +40,6 @@ import nui_windows
 
 DOCUMENT = "nui/windows/inventory/inventory.rml"
 KEY = "inventory"
-# Legacy's pick money digits (uiinventory.py:529, SetMax(7)).
-LEGACY_MONEY_DIGITS = 7
 
 
 class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -485,8 +482,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		nui_hud.forget(KEY, self)
 
 	def SetInventoryPage(self, page):
-		"""Legacy's two-tab rule (1 - page) cannot hold more pages: the page's
-		tab is down, the others up."""
+		"""Legacy's rule (every other tab up, since NOVA-97's five pages), the
+		page's tab down (a proxy's press does not put it down, as a legacy
+		radio button's does) and the board's page."""
 		self.inventoryPageIndex = page
 		for index, tab in enumerate(self.inventoryTab):
 			if index == page:
@@ -517,11 +515,3 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			self.wndCostume = nui_costume.CostumeWindow(self)
 			self.wndCostume.Show()
 
-	def OpenPickMoneyDialog(self):
-		"""Legacy's, then the money input's digits from the limits module
-		when it opened (legacy limits it to 7 digits, uiinventory.py:529)."""
-		opens = not mouseModule.mouseController.isAttached() and player.GetElk() > 0
-		uiInventory.InventoryWindow.OpenPickMoneyDialog(self)
-		digits = self._limits.INVENTORY_MONEY_DIGITS
-		if opens and digits != LEGACY_MONEY_DIGITS:
-			self.dlgPickMoney.SetMax(digits)

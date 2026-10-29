@@ -1,16 +1,17 @@
 /* Classic skin overlay of nui/windows/guild-war-accept/guild-war-accept.rml: the
    legacy guild war accept dialog (uiscript acceptguildwardialog.py) at 100%, 1dp
-   to the legacy pixel: the stone board with its title bar, 230 x 130; the
+   to the legacy pixel: the stone board with its title bar, 230 x 175; the
    enemy label at 15, 40, its slot bar at 80, 37 (130 x 18, drawn 131 x 19) with the name at
-   3, 3; the battle type's label at 15, 68 and its three buttons on the
-   small art (43 x 21) at 80, 125 and 170, 65 (the declared one held down);
-   OK at 49, 95 and Cancel at 120, 95 on the middle art. A type's hint is
-   legacy's thin board tooltip. */
+   3, 3; the member cap's line at 15, 65 and the end score's at 15, 90, each
+   only when the server sent it (NOVA-90); the battle type's label at 15, 123
+   and its three buttons on the small art (43 x 21) at 80, 125 and 170, 120
+   (the declared one held down); OK at 49, 150 and Cancel at 120, 150 on the
+   middle art. A type's hint is legacy's thin board tooltip. */
 
 body.skin-classic.guild-war-accept .guild-war__window
 {
 	width: 230dp;
-	height: 130dp;
+	height: 175dp;
 	min-width: 0;
 	max-width: none;
 }
@@ -44,7 +45,17 @@ body.skin-classic.guild-war-accept .guild-war__label
 	font-size: var(--font-md);
 }
 body.skin-classic.guild-war-accept .guild-war__row--enemy .guild-war__label { top: 40dp; }
-body.skin-classic.guild-war-accept .guild-war__row--type .guild-war__label { top: 68dp; }
+body.skin-classic.guild-war-accept .guild-war__row--type .guild-war__label { top: 123dp; }
+/* Legacy's text lines MembersCount and EndScore, one line each. */
+body.skin-classic.guild-war-accept .guild-war__limit-line
+{
+	position: absolute;
+	left: 15dp;
+	font-size: var(--font-md);
+	white-space: nowrap;
+}
+body.skin-classic.guild-war-accept .guild-war__row--members .guild-war__limit-line { top: 65dp; }
+body.skin-classic.guild-war-accept .guild-war__row--score .guild-war__limit-line { top: 90dp; }
 /* Legacy's slot bar (a CBar3D) draws its bottom and right lines at y + h
    and x + w, so its 130 x 18 covers 131 x 19 px. */
 body.skin-classic.guild-war-accept .guild-war__slot
@@ -97,7 +108,7 @@ body.skin-classic.guild-war-accept .guild-war__types
 body.skin-classic.guild-war-accept .guild-war__type
 {
 	position: absolute;
-	top: 65dp;
+	top: 120dp;
 	width: 43dp;
 	min-width: 0;
 	padding: 0;
@@ -139,7 +150,7 @@ body.skin-classic.guild-war-accept .guild-war__footer
 body.skin-classic.guild-war-accept .guild-war__button
 {
 	position: absolute;
-	top: 95dp;
+	top: 150dp;
 	width: 61dp;
 	min-width: 0;
 	padding: 0;
@@ -147,6 +158,6 @@ body.skin-classic.guild-war-accept .guild-war__button
 }
 /* Legacy's middle buttons centered on the board, 5 apart and 30 right
    (-61 - 5 + 30 and 5 + 30): 49 and 120, where its window manager puts
-   them. */
+   them, 150 down. */
 body.skin-classic.guild-war-accept .guild-war__button--accept { left: 49dp; }
 body.skin-classic.guild-war-accept .guild-war__button--cancel { left: 120dp; }

@@ -11,7 +11,8 @@
 	     server's state, not the press, until the server answers. The body and
 	     its buttons take no focus, so they act on a left mousedown; Escape
 	     reaches the window in its legacy place (nui_hud.EscapeProxy). The PvP
-	     choices carry legacy's hints. -->
+	     choices carry legacy's hints. The pickup filter's four toggles
+	     (NOVA-50) flip what Z and ` pick up. -->
 	<title>game-options</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="game-options.rcss"/>
@@ -84,6 +85,15 @@
 			<div class="go-choices">
 				<button id="go-sales-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--sales-1" data-class-is-selected="sales_text" data-event-mousedown="choose('sales_text', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_ON</span></button>
 				<button id="go-sales-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--sales-0" data-class-is-selected="!sales_text" data-event-mousedown="choose('sales_text', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_OFF</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--pickup">
+			<span class="go-label go-label--pickup">@ui.OPTION_PICKUP_FILTER</span>
+			<div class="go-choices">
+				<button id="go-pickup-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--pickup-0" data-class-is-selected="pickup[0]" data-event-mousedown="pickup(0, ev.button)"><span class="go-choice__label">@ui.OPTION_PICKUP_EQUIPMENT</span></button>
+				<button id="go-pickup-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--pickup-1" data-class-is-selected="pickup[1]" data-event-mousedown="pickup(1, ev.button)"><span class="go-choice__label">@ui.OPTION_PICKUP_SPECIAL</span></button>
+				<button id="go-pickup-2" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--pickup-2" data-class-is-selected="pickup[2]" data-event-mousedown="pickup(2, ev.button)"><span class="go-choice__label">@ui.OPTION_PICKUP_POTIONS</span></button>
+				<button id="go-pickup-3" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--pickup-3" data-class-is-selected="pickup[3]" data-event-mousedown="pickup(3, ev.button)"><span class="go-choice__label">@ui.OPTION_PICKUP_OTHERS</span></button>
 			</div>
 		</div>
 	</div>

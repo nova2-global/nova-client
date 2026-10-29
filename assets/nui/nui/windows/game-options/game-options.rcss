@@ -1,11 +1,11 @@
 /* The game options' modern look: a movable window of label and choice
-   rows in legacy's order; the six block toggles in two rows of three, as
-   legacy's. The choice in effect is selected (is-selected); a blocked
+   rows in legacy's order; the six block toggles in two rows of three, and
+   the pickup filter's four in two rows of two (NOVA-50), as legacy's. The choice in effect is selected (is-selected); a blocked
    request is a selected toggle. The facade centers the body. Classic (the
    legacy board, 300 x 283, at legacy's places):
    skins/classic/windows/game-options.rcss. */
 
-/* The sheet's own place frames the window in its 480 x 420dp snapshots;
+/* The sheet's own place frames the window in its 480 x 480dp snapshots;
    the facade's center() replaces it in the client. */
 body.game-options
 {
@@ -64,6 +64,16 @@ body.game-options
 	padding: 0 10dp;
 }
 .go-row--block .go-choice
+{
+	width: 92dp;
+	min-width: 0;
+}
+/* Two pickup toggles a row, as legacy's. */
+.go-row--pickup .go-choices
+{
+	max-width: 194dp;
+}
+.go-row--pickup .go-choice
 {
 	width: 92dp;
 	min-width: 0;

@@ -5,9 +5,11 @@
 	     nui_costume.CostumeWindow (controller assets/root/nui_costume.py), a
 	     subclass of the legacy class whose slot window is a proxy over the
 	     costume group of the wear table (nui_limits), bound to the
-	     inventory's legacy handlers. Its cells are placed by name
+	     inventory's legacy handlers: the costume body and hair, as legacy's
+	     window since the cut (NOVA-97). Its cells are placed by name
 	     (cos-wear--<name>) in each skin's sheet; the companion block and its
-	     divider show only while the table has one (has_companion). It exists
+	     divider show only while the table has one (has_companion; the cut
+	     hides it). It exists
 	     only while it shows, opens beside the inventory and moves alone
 	     after, and draws below the legacy UI layer. A left or right
 	     press anywhere on it raises the window (board_press), as legacy's

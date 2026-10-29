@@ -11,12 +11,15 @@ shows (nui_hud.OnDemand), since RmlUi updates every loaded document each
 frame; the constructor loads it once to answer nui_ready().
 
 Each button closes the menu first and then makes legacy's calls, in
-legacy's order (uisystem.py:59-105). The option windows are made through
-uiSystemOption.OptionDialog and uiGameOption.OptionDialog, the factories
-their own flags decide (P11 spec D7), once each, as legacy's."""
+legacy's order (uisystem.py SystemDialog's handlers). The option windows are
+made through uiSystemOption.OptionDialog and uiGameOption.OptionDialog, the
+factories their own flags decide (P11 spec D7), once each, as legacy's.
+Change channel (NOVA-49) opens legacy's uiSystem.MoveChannelDialog, made at
+its first press, as legacy's menu does (it has no NovaUI window)."""
 
 import net
 import uiGameOption
+import uiSystem
 import uiSystemOption
 
 import nui
@@ -56,6 +59,8 @@ class SystemDialog(nui_hud.LayoutCalls):
 		self.eventOpenHelpWindow = None
 		self.systemOptionDlg = None
 		self.gameOptionDlg = None
+		# The change channel dialog (NOVA-49), made on its first open.
+		self.moveChannelDlg = None
 		self.demand = None
 		self.escapeProxy = None
 		self.loaded = False
@@ -98,14 +103,18 @@ class SystemDialog(nui_hud.LayoutCalls):
 		pass
 
 	def Destroy(self):
-		"""As uisystem.py:42-51: the option windows it made go first."""
+		"""As uisystem.py SystemDialog.Destroy: the option windows and the
+		change channel dialog it made go first."""
 		if self.gameOptionDlg:
 			self.gameOptionDlg.Destroy()
 		if self.systemOptionDlg:
 			self.systemOptionDlg.Destroy()
+		if self.moveChannelDlg:
+			self.moveChannelDlg.Destroy()
 		self.eventOpenHelpWindow = None
 		self.systemOptionDlg = None
 		self.gameOptionDlg = None
+		self.moveChannelDlg = None
 		self.nui_discard()
 
 	def SetOpenHelpWindowEvent(self, event):
@@ -156,7 +165,7 @@ class SystemDialog(nui_hud.LayoutCalls):
 		self.Close()
 		return True
 
-	# --- the buttons (uisystem.py:59-105) -----------------------------------------------
+	# --- the buttons (uisystem.py SystemDialog's handlers) ------------------------------
 
 	def nui_act(self, what):
 		"""A button pressed: the menu closes first, then legacy's calls."""
@@ -174,6 +183,10 @@ class SystemDialog(nui_hud.LayoutCalls):
 			if not self.gameOptionDlg:
 				self.gameOptionDlg = uiGameOption.OptionDialog()
 			self.gameOptionDlg.Show()
+		elif what == "move_channel":
+			if not self.moveChannelDlg:
+				self.moveChannelDlg = uiSystem.MoveChannelDialog()
+			self.moveChannelDlg.Open()
 		elif what == "change":
 			net.ExitGame()
 		elif what == "logout":

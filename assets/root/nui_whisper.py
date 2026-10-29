@@ -7,9 +7,13 @@ partner (OpenWhisperDialog, ShowWhisperDialog) and for the dialog without a
 partner (OpenWhisperDialogWithoutTarget): a subclass of the legacy class
 (nui_facade.Facade) whose uiscript loader puts proxies where the widgets
 were. So sending (the insult check, the whisper packet, the own line in the
-store), choosing a partner, minimizing to an edge button and closing (the
-Interface's), the GM look, the links, the scroll and the size rule are
-legacy's code.
+store), choosing a partner (and asking for its details at once), minimizing
+to an edge button and closing (the Interface's), the GM look, the links, the
+scroll and the size rule are legacy's code, and so are the block button
+(NOVA-47: Block or Unblock as the client's list says, the packet and the
+other label at once) and the partner's details (NOVA-48: the online or
+offline mark and the language flag the server's answer shows,
+SetTargetDetails; game.py asks every two seconds).
 
 The lines stay in the C++ whisper store (CPythonChat's CWhisper): the
 legacy text renderer's place is a proxy whose SetTargetName attaches the
@@ -45,6 +49,7 @@ import chat
 import ime
 import nuigame
 import ui
+import uiScriptLocale
 import uiWhisper
 
 import nui
@@ -86,7 +91,9 @@ STATE = {}
 POOL_BOUND = 4
 POOL = nui_hud.BoardPool("whisper", POOL_BOUND)
 # What a waiting board shows: nothing of any conversation.
-EMPTY = {"lines_on": [], "feed_key": 0, "target": "", "gm": False, "editing_target": False, "accept_shown": False}
+EMPTY = {"lines_on": [], "feed_key": 0, "target": "", "gm": False, "editing_target": False, "accept_shown": False,
+         "block_shown": False, "blocked": False, "online_shown": False, "online": False, "flag_shown": False,
+         "flag_src": ""}
 
 
 def end_phase():
@@ -180,6 +187,12 @@ class _WhisperBoard(nui_hud.Pooled, nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner.sendButton.click()
 
+	@nui.on("block_press")
+	def on_block_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.blockButton.click()
+
 	@nui.on("input_change")
 	def on_input_change(self, value):
 		self._owner._input_changed(value)
@@ -261,6 +274,16 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 			"pos": 1.0,
 			"input_max": CHAT_LINE_LIMIT,
 			"target_max": self._limits.PLAYER_NAME_INPUT_MAX,
+			# The block button (NOVA-47): shown for a partner, Unblock while
+			# the partner is on the block list.
+			"block_shown": False,
+			"blocked": False,
+			# The partner's details (NOVA-48): the online or offline mark and
+			# the language flag (a rooted path), once the server answered.
+			"online_shown": False,
+			"online": False,
+			"flag_shown": False,
+			"flag_src": "",
 			# P18: the scroll, a list of one entry while the board shows, none
 			# while it waits in POOL (the lines go with the feed key 0).
 			"lines_on": [1],
@@ -304,6 +327,24 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 	def _on_feed(self, key):
 		self.nui_set(feed_key=int(key))
 
+	def _on_block(self, button=None):
+		block = getattr(self, "blockButton", None)
+		if block is None:
+			return
+		self.nui_set(block_shown=bool(block.shown), blocked=block.text == uiScriptLocale.UNBLOCK_PLAYER)
+
+	def _on_online_image(self, path):
+		self.nui_set(online=path == uiWhisper.WhisperDialog.ONLINE_IMAGE)
+
+	def _on_online_shown(self, shown):
+		self.nui_set(online_shown=bool(shown))
+
+	def _on_flag_image(self, path):
+		self.nui_set(flag_src=("/" + path.lstrip("/")) if path else "")
+
+	def _on_flag_shown(self, shown):
+		self.nui_set(flag_shown=bool(shown))
+
 	def _value(self, field_id):
 		board = self.nui_board()
 		return board.get_value(field_id) if board is not None and board.is_visible() else None
@@ -334,7 +375,7 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		elif what == "kill_focus":
 			board.focus(PARK)
 
-	# --- the loader (uiwhisper.py:69-127, on proxies) ---------------------------------------
+	# --- the loader (uiwhisper.py WhisperDialog.LoadDialog, on proxies) ---------------------
 
 	def LoadDialog(self):
 		# The uiscript's style (whisperdialog.py: "movable", "float").
@@ -355,6 +396,12 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		self.editBar = nui_proxies.BoardProxy(RESIZE_X - 18, 50)
 		self.gamemasterMark = nui_proxies.ImageProxy(image=gm_mark_source())
 		self.gamemasterMark.on_show = self._on_gm
+		# The block button and the partner's details (NOVA-47, NOVA-48).
+		self.blockButton = nui_proxies.ButtonProxy(self._on_block)
+		self.online = nui_proxies.ImageProxy(self._on_online_image)
+		self.online.on_show = self._on_online_shown
+		self.flag = nui_proxies.ImageProxy(self._on_flag_image)
+		self.flag.on_show = self._on_flag_shown
 		self.scrollBar.SetScrollBarSize(RESIZE_X - 160)
 
 		self.gamemasterMark.Hide()
@@ -374,6 +421,10 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		self.ignoreButton.SetToggleUpEvent(ui.__mem_func__(self.IgnoreTarget))
 		self.reportViolentWhisperButton.SetEvent(ui.__mem_func__(self.ReportViolentWhisper))
 		self.acceptButton.SetEvent(ui.__mem_func__(self.AcceptTarget))
+		self.blockButton.SetEvent(ui.__mem_func__(self.BlockPlayer))
+		self.blockButton.Hide()
+		self.online.Hide()
+		self.flag.Hide()
 
 		self.textRenderer = _LinesProxy(self._on_feed)
 		self.textRenderer.SetParent(self)

@@ -11,7 +11,7 @@ so every flow is legacy's code:
 - the safebox: storing an item (an active auto potion used first, the
   check-in packet, a move inside the safebox), taking one (the attach, the
   inventory's check-out), money attached and dropped (legacy's save money
-  call), the pages (legacy's rule of "I", "II", "III", one more "I" a page;
+  call), the pages (legacy's names, uiSafebox.PAGE_NAMES: "I" to "V";
   their count from nui_limits.SAFEBOX_PAGE_COUNT_MAX), the close command;
 - the password dialog: the title and the chat command the Interface sets,
   the secret field, OK and Enter send the command with the password, Cancel
@@ -251,21 +251,19 @@ class SafeboxWindow(nui_facade.Facade, uiSafebox.SafeboxWindow):
 		self.RefreshSafeboxMoney()
 
 	def _SafeboxWindow__MakePageButton(self, pageCount):
-		"""Legacy's page buttons as ButtonProxys: "I", "II", ... (one more "I"
-		each), page 0 down; the board lays them out."""
+		"""Legacy's page buttons as ButtonProxys, named as legacy names them
+		(uiSafebox.PAGE_NAMES: "I" to "V"), page 0 down; the board lays them
+		out, on OLD's small tab art from four pages, as legacy."""
 		self.curPageIndex = 0
 		self.pageButtonList = []
 
-		text = "I"
 		for i in range(pageCount):
 			button = nui_proxies.ButtonProxy(self._on_pages)
-			button.SetText(text)
+			button.SetText(uiSafebox.PAGE_NAMES[i])
 			button.SetEvent(lambda arg=i: self.SelectPage(arg))
 			button.Show()
 
 			self.pageButtonList.append(button)
-
-			text += "I"
 
 		self.pageButtonList[0].Down()
 
@@ -273,8 +271,9 @@ class SafeboxWindow(nui_facade.Facade, uiSafebox.SafeboxWindow):
 
 	def SetTableSize(self, size):
 		"""Legacy's, with the page count from the limits module (legacy's
-		min(3, ...); OLD's 5 at the foundation) and no window size: the board
-		lays itself out, the legacy window stays 0 x 0."""
+		min(safebox.SAFEBOX_PAGE_COUNT_MAX, ...): 5 since the foundation cut,
+		3 with an older exe) and no window size: the board lays itself out,
+		the legacy window stays 0 x 0."""
 		limits = self._limits
 		pageCount = len(nui_limits.safebox_pages(size, limits))
 		rows = limits.SAFEBOX_PAGE_ROWS

@@ -105,6 +105,9 @@ class TargetBoard(object):
 	BTN_BUILDING_DESTROY = _Legacy.BTN_BUILDING_DESTROY
 	BTN_EMOTION_ALLOW = _Legacy.BTN_EMOTION_ALLOW
 	BTN_VOTE_BLOCK_CHAT = _Legacy.BTN_VOTE_BLOCK_CHAT
+	# The block list (NOVA-47): one of the two shows for another player.
+	BTN_BLOCK = _Legacy.BTN_BLOCK
+	BTN_UNBLOCK = _Legacy.BTN_UNBLOCK
 	BUTTON_CONFIG = _Legacy.BUTTON_CONFIG
 	EXCHANGE_LIMIT_RANGE = _Legacy.EXCHANGE_LIMIT_RANGE
 
@@ -137,6 +140,8 @@ class TargetBoard(object):
 			self.BTN_BUILDING_DESTROY: self.__OnDestroyBuilding,
 			self.BTN_EMOTION_ALLOW: self.__OnEmotionAllow,
 			self.BTN_VOTE_BLOCK_CHAT: self.__OnVoteBlockChat,
+			self.BTN_BLOCK: self.OnBlockPlayer,
+			self.BTN_UNBLOCK: self.OnUnblockPlayer,
 		}
 		# Legacy keeps every button in its showing list after construction
 		# and hides them all; a later ShowDefaultButton shows that list.
@@ -419,6 +424,14 @@ class TargetBoard(object):
 				self.__HideButton(self.BTN_FRIEND)
 				self.__HideButton(self.BTN_FIGHT)
 
+		# Block or Unblock for another player, never for staff ("[GM]..."),
+		# as legacy (NOVA-47).
+		if self.nameString and not str(self.nameString).startswith("["):
+			if messenger.IsBlocked(self.nameString):
+				self.__ShowButton(self.BTN_UNBLOCK)
+			else:
+				self.__ShowButton(self.BTN_BLOCK)
+
 		# The exchange button shows within EXCHANGE_LIMIT_RANGE, as legacy
 		# measured it here and then every frame; from now on C++ watches the
 		# distance (target.in_range).
@@ -452,6 +465,22 @@ class TargetBoard(object):
 
 	def OnAppendToMessenger(self):
 		net.SendMessengerAddByVIDPacket(self.vid)
+
+	# The block list (NOVA-47): the change is sent and the other button shows
+	# at once, as legacy's.
+	def OnBlockPlayer(self):
+		net.SendBlockAddPacket(self.nameString)
+
+		self.__HideButton(self.BTN_BLOCK)
+		self.__ShowButton(self.BTN_UNBLOCK)
+		self.__ArrangeButtonPosition()
+
+	def OnUnblockPlayer(self):
+		net.SendBlockRemovePacket(self.nameString)
+
+		self.__HideButton(self.BTN_UNBLOCK)
+		self.__ShowButton(self.BTN_BLOCK)
+		self.__ArrangeButtonPosition()
 
 	def OnPartyInvite(self):
 		net.SendPartyInvitePacket(self.vid)

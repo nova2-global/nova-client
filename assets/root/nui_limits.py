@@ -37,10 +37,14 @@ class WearSlot(tuple):
 
 
 # The wear tables in wear order: (name, group, w, h). NEW is today's
-# (GameLib/ItemData.h EWearPositions, 24), grouped as the legacy windows show
-# them (uiscript/inventorywindow.py, costumewindow.py: RING1 is the costume
-# window's third slot, RING2 is commented out); OLD is the foundation's (OLD's
-# common/length.h, 40 with the aura slot), grouped as OLD's windows show them.
+# (GameLib/ItemData.h EWearPositions, 24), OLD the foundation's (OLD's
+# common/length.h, 40 with the aura slot), each grouped as the legacy windows
+# show them since the foundation cut (NOVA-97: uiscript/inventorywindow.py
+# holds the rings and the belt in the equipment window, costumewindow.py the
+# costume body and hair alone). The slots of the features the cut did not
+# port (OLD's costume sash, costume weapon, mount, effects, pet, wing,
+# companion, facial and aura cells) are hidden, as legacy's windows hide
+# them; P14 grouped OLD's as OLD's own windows showed them.
 _ABILITIES = tuple(("ability%d" % n, "hidden", 1, 1) for n in range(1, 9))
 NEW_WEAR = (
 	("body", "equipment", 1, 2), ("head", "equipment", 1, 1), ("foots", "equipment", 1, 1),
@@ -49,7 +53,7 @@ NEW_WEAR = (
 	("arrow", "equipment", 1, 1), ("shield", "equipment", 1, 1),
 ) + _ABILITIES + (
 	("costume_body", "costume", 1, 2), ("costume_hair", "costume", 1, 1),
-	("ring1", "costume", 1, 1), ("ring2", "hidden", 1, 1), ("belt", "equipment", 1, 1),
+	("ring1", "equipment", 1, 1), ("ring2", "equipment", 1, 1), ("belt", "equipment", 1, 1),
 )
 OLD_WEAR = (
 	("body", "equipment", 1, 2), ("head", "equipment", 1, 1), ("foots", "equipment", 1, 1),
@@ -58,15 +62,15 @@ OLD_WEAR = (
 	("arrow", "equipment", 1, 1), ("shield", "equipment", 1, 1),
 ) + _ABILITIES + (
 	("costume_body", "costume", 1, 2), ("costume_hair", "costume", 1, 1),
-	("costume_sash", "equipment", 1, 1), ("costume_weapon", "costume", 1, 3),
-	("costume_mount", "costume", 1, 1), ("effect_weapon", "costume", 1, 1),
-	("effect_armor", "costume", 1, 1), ("costume_pet", "costume", 1, 1),
-	("costume_sash2", "costume", 1, 1), ("ring1", "equipment", 1, 1), ("ring2", "equipment", 1, 1),
-	("belt", "equipment", 1, 1), ("buffi_costume_body", "costume", 1, 2),
-	("buffi_costume_hair", "costume", 1, 1), ("buffi_costume_weapon", "costume", 1, 3),
-	("buffi_costume_sash2", "costume", 1, 1), ("buffi_costume_facial", "costume", 1, 1),
-	("costume_facial", "costume", 1, 1), ("effect_weapon_1", "costume", 1, 1),
-	("effect_armor_1", "costume", 1, 1), ("costume_aura", "costume", 1, 1),
+	("costume_sash", "hidden", 1, 1), ("costume_weapon", "hidden", 1, 3),
+	("costume_mount", "hidden", 1, 1), ("effect_weapon", "hidden", 1, 1),
+	("effect_armor", "hidden", 1, 1), ("costume_pet", "hidden", 1, 1),
+	("costume_sash2", "hidden", 1, 1), ("ring1", "equipment", 1, 1), ("ring2", "equipment", 1, 1),
+	("belt", "equipment", 1, 1), ("buffi_costume_body", "hidden", 1, 2),
+	("buffi_costume_hair", "hidden", 1, 1), ("buffi_costume_weapon", "hidden", 1, 3),
+	("buffi_costume_sash2", "hidden", 1, 1), ("buffi_costume_facial", "hidden", 1, 1),
+	("costume_facial", "hidden", 1, 1), ("effect_weapon_1", "hidden", 1, 1),
+	("effect_armor_1", "hidden", 1, 1), ("costume_aura", "hidden", 1, 1),
 )
 WEAR_GROUPS = ("equipment", "costume", "hidden")
 WEAR_NAMES = tuple(sorted(set(name for name, _, _, _ in NEW_WEAR + OLD_WEAR)))
@@ -185,7 +189,9 @@ FOUNDATION.update({
 	"STACK_MAX": 2000,
 	"GOLD_MAX": 2000000000000,
 	"MONEY_DIGITS": 13,
-	"INVENTORY_MONEY_DIGITS": 13,
+	# OLD keeps 7 digits in the inventory's pick (OLD uiInventory.py:1302;
+	# Q13, decided 2026-10-25, the client's INVENTORY_MONEY_DIGITS).
+	"INVENTORY_MONEY_DIGITS": 7,
 	"SKILL_LEVEL_MAX": 50,
 	"SKILL_GRADE_COUNT": 4,
 	"SKILL_GRADE_SAGE": 4,
@@ -198,7 +204,8 @@ FOUNDATION.update({
 	# Wave 4 (P16 spec 3): OLD's money digits, safebox pages and size, view
 	# packet, guild names and longest player names; OLD's window enum (its
 	# EXTRA_INVENTORY 6 puts BELT_INVENTORY at 7 and GROUND at 12).
-	"EXCHANGE_MONEY_DIGITS": 13,
+	# OLD's 12 for the exchange (OLD uiExchange.py:114-116; Q13).
+	"EXCHANGE_MONEY_DIGITS": 12,
 	"SAFEBOX_PAGE_COUNT_MAX": 5,
 	"SAFEBOX_SLOT_COUNT_MAX": 225,
 	"WINDOW_BELT_INVENTORY": 7,
@@ -231,7 +238,8 @@ NAMES = {
 	"STACK_MAX": (("item", "ITEM_COUNT_MAX"), ("player", "ITEM_COUNT_MAX")),  # proposed
 	"GOLD_MAX": (("player", "GOLD_MAX"),),  # proposed
 	"MONEY_DIGITS": (("player", "MONEY_DIGITS"),),  # C2's named money-digits constant
-	"INVENTORY_MONEY_DIGITS": (("player", "MONEY_DIGITS"),),
+	# The inventory's pick money digits, OLD's 7 (Q13; nova-client-src a9976fc).
+	"INVENTORY_MONEY_DIGITS": (("player", "INVENTORY_MONEY_DIGITS"),),
 	"SKILL_LEVEL_MAX": (("player", "SKILL_MAX_LEVEL"),),  # proposed
 	"SKILL_GRADE_COUNT": (("skill", "SKILL_GRADE_COUNT"),),
 	"SKILL_GRADE_SAGE": (("player", "SKILL_GRADE_SAGE_MASTER"),),
@@ -260,7 +268,8 @@ NAMES = {
 	# columns.
 	"EXCHANGE_ITEM_MAX_NUM": (("exchange", "EXCHANGE_ITEM_MAX_NUM"),),
 	"EXCHANGE_COLUMNS": (("exchange", "EXCHANGE_COLUMNS"),),  # proposed
-	"EXCHANGE_MONEY_DIGITS": (("player", "MONEY_DIGITS"),),  # C2's money-digits constant
+	# The exchange's money digits, OLD's 12 (Q13; nova-client-src a9976fc).
+	"EXCHANGE_MONEY_DIGITS": (("player", "EXCHANGE_MONEY_DIGITS"),),
 	"SHOP_SLOT_COUNT": (("shop", "SHOP_SLOT_COUNT"),),
 	"SHOP_TAB_COUNT_MAX": (("shop", "SHOP_TAB_COUNT_MAX"),),  # proposed
 	"SAFEBOX_COLUMNS": (("safebox", "SAFEBOX_SLOT_X_COUNT"),),
@@ -617,13 +626,14 @@ class ViewSlot(tuple):
 
 def safebox_pages(rows, limits=None):
 	"""The safebox's page buttons for a size of `rows` (the server's size, 9
-	rows a page): [{"index": i, "label": "I" * (i + 1)}] for i <
+	rows a page): [{"index": i, "label": ROMAN[i]}] for i <
 	min(SAFEBOX_PAGE_COUNT_MAX, max(1, rows // SAFEBOX_PAGE_ROWS)), legacy's
-	rule (uisafebox.py:318-345, :360-366): each label one "I" more than the
-	last, so OLD's fourth and fifth are "IIII" and "IIIII"."""
+	rule (uisafebox.py SetTableSize, __MakePageButton): the labels are its
+	PAGE_NAMES, roman numerals, so OLD's fourth and fifth are "IV" and "V"
+	(NOVA-97; before it legacy wrote one more "I" a page)."""
 	limits = limits or current()
 	count = min(limits.SAFEBOX_PAGE_COUNT_MAX, max(1, int(rows) // max(1, limits.SAFEBOX_PAGE_ROWS)))
-	return [{"index": i, "label": "I" * (i + 1)} for i in range(count)]
+	return [{"index": i, "label": ROMAN[i] if i < len(ROMAN) else str(i + 1)} for i in range(count)]
 
 
 def view_equip_table(limits=None):

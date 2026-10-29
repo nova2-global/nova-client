@@ -147,15 +147,20 @@ class SafeboxModel(SafeboxTest):
         self.assertEqual(b.curPageIndex, 1, "a press on the page that is down does nothing")
 
     def test_the_server_s_size_gives_legacy_s_page_count(self):
-        for size, count in ((9, 1), (18, 2), (27, 3), (45, 3)):
+        # Legacy's cap is the client's SAFEBOX_PAGE_COUNT_MAX since NOVA-97
+        # (5; before it, min(3, ...)), its page names "I" to "V".
+        for size, count in ((9, 1), (18, 2), (27, 3), (36, 4), (45, 5), (54, 5)):
             (_, _, a), (_, _, b) = self.run_both(lambda world, window: None, size=size)
             with self.subTest(size=size):
                 self.assertEqual(w4.board(b).model["page_count"], count)
                 self.assertEqual(len(a.pageButtonList), count)
+                self.assertEqual([page["label"] for page in w4.board(b).model["pages"]],
+                                 [button.GetText() for button in a.pageButtonList])
 
     def test_the_foundation_s_limit_gives_five_pages(self):
         """SetTableSize reads SAFEBOX_PAGE_COUNT_MAX (spec 3.3): OLD's five
-        pages at the foundation, labels I to IIIII (legacy's rule)."""
+        pages at the foundation, labels I to V (legacy's PAGE_NAMES since
+        NOVA-97; before it, one more "I" a page)."""
         def setup(game):
             stock(game)
         world = w4.World(True, setup=setup)
@@ -165,7 +170,7 @@ class SafeboxModel(SafeboxTest):
             window = world.make("safebox", "uiSafebox", "SafeboxWindow", "nui_safebox.SafeboxWindow")
             self.open(world, window, 45)
             model = w4.board(window).model
-            self.assertEqual([page["label"] for page in model["pages"]], ["I", "II", "III", "IIII", "IIIII"])
+            self.assertEqual([page["label"] for page in model["pages"]], ["I", "II", "III", "IV", "V"])
             self.assertEqual(model["page_count"], 5)
         finally:
             limits.use(None)

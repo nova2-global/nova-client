@@ -192,6 +192,10 @@ class RefineDialogNew(ui.ScriptWindow):
 		ui.ScriptWindow.__init__(self)
 		self.__Initialize()
 		self.isLoaded = False
+		self.wndInventory = None
+		self.wndExtraInventory = None
+		# [(window, cell)]: the refined item's cell while the dialog shows.
+		self.lockedItems = []
 
 	def __Initialize(self):
 		self.dlgQuestion = None
@@ -337,6 +341,8 @@ class RefineDialogNew(ui.ScriptWindow):
 		self.SetTop()
 		self.Show()
 
+		self.__LockCells((player.INVENTORY, targetItemPos))
+
 	def Close(self):
 		# MR-15: Multiline dialog messages
 		if self.dlgQuestion:
@@ -345,6 +351,39 @@ class RefineDialogNew(ui.ScriptWindow):
 
 		self.dlgQuestion = None
 		self.Hide()
+
+		self.__ReleaseCells()
+
+	## The tradable icon (NOVA-13; OLD uiRefine.py:437-438, 556-558, 679-705): the cells of the items the
+	## dialog works on take no mouse event while it shows.
+	def SetInven(self, wndInventory, wndExtraInventory=None):
+		self.wndInventory = wndInventory
+		self.wndExtraInventory = wndExtraInventory
+
+	def __InventoryWindowOf(self, window):
+		if window == player.INVENTORY:
+			return self.wndInventory
+		if window == player.EXTRA_INVENTORY:
+			return self.wndExtraInventory
+		return None
+
+	def __LockCells(self, *cells):
+		self.__ReleaseCells()
+		self.lockedItems = list(cells)
+		self.RefreshLockedSlot()
+
+	def __ReleaseCells(self):
+		cells, self.lockedItems = self.lockedItems, []
+		for (window, cell) in cells:
+			wnd = self.__InventoryWindowOf(window)
+			if wnd:
+				wnd.SetCanMouseEventCell(cell)
+
+	def RefreshLockedSlot(self):
+		for (window, cell) in self.lockedItems:
+			wnd = self.__InventoryWindowOf(window)
+			if wnd:
+				wnd.SetCantMouseEventCell(cell)
 
 	def AppendMaterial(self, vnum, count):
 		slot = self.__MakeSlot()

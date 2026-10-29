@@ -26,6 +26,7 @@ class ShopDialog(ui.ScriptWindow):
 		self.questionDialog = None
 		self.popup = None
 		self.itemBuyQuestionDialog = None
+		self.interface = None
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -210,6 +211,24 @@ class ShopDialog(ui.ScriptWindow):
 
 		(self.xShopStart, self.yShopStart, z) = player.GetMainCharacterPosition()
 
+		## An NPC shop marks the items it does not buy (NOVA-13; OLD uiShop.py:670-673).
+		if not isPrivateShop:
+			self.__SetOnTopWindow(player.ON_TOP_WND_SHOP)
+
+	## The tradable icon (NOVA-13; OLD uiShop.py:1365-1370)
+	def BindInterface(self, interface):
+		self.interface = interface
+
+	def __SetOnTopWindow(self, onTopWnd):
+		if not self.interface:
+			return
+		self.interface.SetOnTopWindow(onTopWnd)
+		self.interface.RefreshMarkInventoryBag()
+
+	def OnTop(self):
+		if self.IsShow() and not shop.IsPrivateShop():
+			self.__SetOnTopWindow(player.ON_TOP_WND_SHOP)
+
 	def Close(self):
 		if self.itemBuyQuestionDialog:
 			self.itemBuyQuestionDialog.Close()
@@ -222,6 +241,7 @@ class ShopDialog(ui.ScriptWindow):
 		self.CancelShopping()
 		self.tooltipItem.HideToolTip()
 		self.Hide()
+		self.__SetOnTopWindow(player.ON_TOP_WND_NONE)
 
 	def GetIndexFromSlotPos(self, slotPos):
 		return self.tabIdx * shop.SHOP_SLOT_COUNT + slotPos

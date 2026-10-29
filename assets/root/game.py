@@ -1004,6 +1004,16 @@ class GameWindow(ui.ScriptWindow):
 	def RefreshExchange(self):
 		self.interface.RefreshExchange()
 
+	## The tradable icon (NOVA-13; OLD game.py:2485-2488, past OLD for any
+	## window and for a removal): the server put the item of (window, cell)
+	## at an exchange display slot (GC ITEM_ADD's arg4) or took it out (GC
+	## ITEM_DEL); the client calls these for the owner only.
+	def BINARY_AddItemToExchange(self, window, cell, displaySlot):
+		self.interface.CantTradableItemExchange(displaySlot, cell, window)
+
+	def BINARY_DelItemFromExchange(self, displaySlot):
+		self.interface.ReleaseTradableItemExchange(displaySlot)
+
 	## Party
 	def RecvPartyInviteQuestion(self, leaderVID, leaderName):
 		partyInviteQuestionDialog = uiCommon.QuestionDialog()

@@ -909,3 +909,11 @@ MOVE_TO_BANK	Shift + right-click: in die Bank verschieben
 MOVE_TO_TRADE_WINDOW	Ctrl + right-click: in das Handelsfenster verschieben
 MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: ins Inventar+ verschieben
 MOVE_TO_INVENTORY	Ctrl + right-click: ins Inventar verschieben
+NEW_EXCHANGE_YOU_READY	%s Du bist bereit um zu handeln.
+NEW_EXCHANGE_YOU_ACCEPT	%s Du hast den Handel aktzeptiert.
+NEW_EXCHANGE_ACCEPT	%s %s Handel aktzeptieren.
+NEW_EXCHANGE_YOU_ABORT	%s Du hast den Handel abgebrochen.
+NEW_EXCHANGE_ABORT	%s %s Handel abbrechen.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	Du gibst Sachen weg, ohne dafür etwas anderes zu erhalten,
+NEW_EXCHANGE_ALERT2	und wirst keine Möglichkeit haben, dein Yang oder deine Items zurück zu bekommen.

@@ -130,59 +130,80 @@ class DialogToolTip(support.ToolTip):
         return 100
 
 
-class World(lf.LegacyWorld):
-    """LegacyWorld with K's constants on the player module, C1's functions
-    stood in (the category ranges, the window-aware getters), an exchange
-    module (Game.trading), the Interface's IsSafeboxOpen (Game.safebox), a
-    safebox module and item tooltips the attach dialog can use."""
+def install_k(game):
+    """K's constants on the player module, C1's functions stood in (the
+    category ranges, the window-aware getters, IsAntiFlagBySlot over the
+    item at a cell), an exchange module's isTrading (Game.trading), anti
+    flags, a safebox module where the world has none, and item tooltips
+    the attach dialog can use. Game.safebox stands for the Interface's
+    IsSafeboxOpen."""
+    game.trading = False
+    game.safebox = False
+    game.flags_at = {}
+    player = game.modules["player"]
+    for name, value in K_PLAYER.items():
+        setattr(player, name, value)
+    ok = player.ATTACH_METIN_OK
 
-    def __init__(self):
-        lf.LegacyWorld.__init__(self)
-        game = self.game
-        game.trading = False
-        game.safebox = False
-        game.flags_at = {}
-        player = game.modules["player"]
-        for name, value in K_PLAYER.items():
-            setattr(player, name, value)
-        ok = player.ATTACH_METIN_OK
+    def item_key(at):
+        return at[0] if len(at) == 1 else tuple(at)
+    support.define(player, "GetExtraInventoryCategoryRange",
+                   lambda category: CATEGORY_RANGES[category] if 0 <= category < 5 else (1440, 1440))
+    support.define(player, "GetItemFlags", lambda *at: game.flags_at.get(item_key(at), 0))
+    support.define(player, "CanUnlock", lambda vnum, *at: True)
+    support.define(player, "CanAttachMetin", lambda vnum, *at: ok)
+    support.define(player, "GetItemLink", lambda *at: "link%s" % (at,))
+    support.define(player, "SlotTypeToInvenType", lambda slot_type: SLOT_TO_WINDOW.get(slot_type, 0))
+    support.define(player, "GetISellItemPrice", lambda *at: 10)
 
-        def item_key(at):
-            return at[0] if len(at) == 1 else tuple(at)
-        support.define(player, "GetExtraInventoryCategoryRange",
-                       lambda category: CATEGORY_RANGES[category] if 0 <= category < 5 else (1440, 1440))
-        support.define(player, "GetItemFlags", lambda *at: game.flags_at.get(item_key(at), 0))
-        support.define(player, "CanUnlock", lambda vnum, *at: True)
-        support.define(player, "CanAttachMetin", lambda vnum, *at: ok)
-        support.define(player, "GetItemLink", lambda *at: "link%s" % (at,))
-        support.define(player, "SlotTypeToInvenType", lambda slot_type: SLOT_TO_WINDOW.get(slot_type, 0))
-        support.define(player, "GetISellItemPrice", lambda *at: 10)
+    def anti_flag_by_slot(*args):
+        at = args[:-1]
+        held = game._item_at(*at)
+        if not held["vnum"] and len(at) == 2 and at[0] == INVENTORY:
+            held = game._item_at(at[1])  # a stand-in item given by its plain cell
+        return bool(game.antiflags.get(held["vnum"], 0) & args[-1])
+    support.define(player, "IsAntiFlagBySlot", anti_flag_by_slot)
+    exchange = game.modules.get("exchange")
+    if exchange is None:
         exchange = support.Recording("exchange", game.log, EXCHANGE_ITEM_MAX_NUM=12)
-        support.define(exchange, "isTrading", lambda: game.trading)
         game.put("exchange", exchange)
-        game.interface.IsSafeboxOpen = lambda: game.safebox
-        game.interface.ToggleExtraInventoryWindow = lambda: game.log.append(("interface.ToggleExtraInventoryWindow", ()))
-        game.metins.add(STONE)
-        game.keys.add(KEY)
-        item = game.modules["item"]
-        known = support.module_constants()["item"]
-        # Only names K's exe exports (no ANTIFLAG_SAFEBOX), so that a missing
-        # export fails a test rather than being stood in.
-        for name, value in (("ANTIFLAG_GIVE", 1 << 13), ("ITEM_ANTIFLAG_MYSHOP", 1 << 16), ("ANTIFLAG_MYSHOP", 1 << 16)):
+    support.define(exchange, "isTrading", lambda: game.trading)
+    item = game.modules["item"]
+    known = support.module_constants()["item"]
+    # Only names K's and C1's exe export (no ANTIFLAG_SAFEBOX), so that a
+    # missing export fails a test rather than being stood in.
+    for name, value in (("ANTIFLAG_GIVE", 1 << 13), ("ANTIFLAG_SELL", 1 << 8),
+                        ("ITEM_ANTIFLAG_MYSHOP", 1 << 16), ("ANTIFLAG_MYSHOP", 1 << 16)):
+        if not isinstance(getattr(item, name, None), int):
             setattr(item, name, known.get(name, value))
-        # The open safebox's module (PythonSafeBox.cpp: pages of 5 x 9 cells,
-        # GetCurrentSafeboxSize counts the cells): Game.safebox_items
-        # {cell: vnum}, Game.safebox_cells.
-        game.safebox_items = {}
-        game.safebox_cells = 2 * 45
+    # The open safebox's module where the world has none (PythonSafeBox.cpp:
+    # pages of 5 x 9 cells, GetCurrentSafeboxSize counts the cells):
+    # Game.safebox_items {cell: vnum}, Game.safebox_cells.
+    game.safebox_items = {}
+    game.safebox_cells = 2 * 45
+    if "safebox" not in game.modules:
         safebox = support.Recording("safebox", game.log, SAFEBOX_SLOT_X_COUNT=5, SAFEBOX_SLOT_Y_COUNT=9,
                                     SAFEBOX_PAGE_SIZE=45, SAFEBOX_PAGE_COUNT_MAX=5)
         support.define(safebox, "GetItemID", lambda cell: game.safebox_items.get(cell, 0))
         support.define(safebox, "GetCurrentSafeboxSize", lambda: game.safebox_cells)
         game.put("safebox", safebox)
-        tooltips = types.ModuleType("uiToolTip")
-        tooltips.ItemToolTip = DialogToolTip
-        game.put("uiToolTip", tooltips)
+    tooltips = types.ModuleType("uiToolTip")
+    tooltips.ItemToolTip = DialogToolTip
+    game.put("uiToolTip", tooltips)
+    game.metins.add(STONE)
+    game.keys.add(KEY)
+
+
+class World(lf.LegacyWorld):
+    """LegacyWorld with install_k, and the Interface stand-in's
+    IsSafeboxOpen and ToggleExtraInventoryWindow."""
+
+    def __init__(self):
+        lf.LegacyWorld.__init__(self)
+        game = self.game
+        install_k(game)
+        game.interface.IsSafeboxOpen = lambda: game.safebox
+        game.interface.ToggleExtraInventoryWindow = lambda: game.log.append(("interface.ToggleExtraInventoryWindow", ()))
 
     @property
     def mouse(self):

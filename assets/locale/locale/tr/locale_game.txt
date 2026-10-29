@@ -911,3 +911,11 @@ MOVE_TO_BANK	Shift + right-click: bankaya taşı
 MOVE_TO_TRADE_WINDOW	Ctrl + right-click: takas penceresine taşı
 MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: envantere taşı+
 MOVE_TO_INVENTORY	Ctrl + right-click: envantere taşı
+NEW_EXCHANGE_YOU_READY	%s You are ready to trade.
+NEW_EXCHANGE_YOU_ACCEPT	%s You accept the trade.
+NEW_EXCHANGE_ACCEPT	%s %s accept the trade.
+NEW_EXCHANGE_YOU_ABORT	%s You abort the trade.
+NEW_EXCHANGE_ABORT	%s %s abort the trade.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	You are giving things away for nothing in exchange,
+NEW_EXCHANGE_ALERT2	and won't be able to get the Yang or items back.

@@ -78,6 +78,35 @@ def SafeboxCheckinCell(itemVnum):
 	return 0
 
 
+# The server's ITEM_ANTIFLAG_SAFEBOX (OLD's, and ItemData.h's in NEW's client).
+# OLD's item module exported it as ANTIFLAG_SAFEBOX (PythonItemModule.cpp:
+# 1337-1338); NEW's does not yet, so OnTopAntiFlag falls back to the value.
+ITEM_ANTIFLAG_SAFEBOX = 1 << 17
+
+
+def OnTopAntiFlag(onTopWnd):
+	"""The anti flag of the trade window on top (NOVA-13; OLD
+	uiInventory.py:1326-1400): an item that has it cannot go there."""
+	if onTopWnd == player.ON_TOP_WND_SHOP:
+		return item.ANTIFLAG_SELL
+	if onTopWnd == player.ON_TOP_WND_EXCHANGE:
+		return item.ANTIFLAG_GIVE
+	if onTopWnd == player.ON_TOP_WND_PRIVATE_SHOP:
+		return item.ITEM_ANTIFLAG_MYSHOP
+	if onTopWnd == player.ON_TOP_WND_SAFEBOX:
+		flag = getattr(item, "ANTIFLAG_SAFEBOX", None)
+		return flag if isinstance(flag, int) else ITEM_ANTIFLAG_SAFEBOX
+	return 0
+
+
+def SetSlotState(slotWindow, name, slotIndex):
+	"""A tradable icon state of a slot window's cell (ui.SlotWindow's
+	wrappers of wndMgr; a slot window without them shows none)."""
+	setState = getattr(slotWindow, name, None)
+	if setState:
+		setState(slotIndex)
+
+
 def MoneySlotText(money):
 	"""The money slot's text: localeInfo.NumberToMoneyString while the unit
 	fits, then the amount with the same points and no unit."""
@@ -321,6 +350,8 @@ class InventoryWindow(ui.ScriptWindow):
 		ui.ScriptWindow.__init__(self)
 
 		self.isOpenedBeltWindowWhenClosingInventory = 0		# Whether belt inventory was open when closing inventory
+		# The windows whose items lock cells here (the tradable icon, NOVA-13).
+		self.bindWnds = []
 
 		self.__LoadWindow()
 
@@ -667,10 +698,14 @@ class InventoryWindow(ui.ScriptWindow):
 				else:
 					self.wndItem.DeactivateSlot(slotNumber)			
 					
+		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
 
 		if self.wndBelt:
 			self.wndBelt.RefreshSlot()
+
+		## The page's cells were set anew: the trade windows lock theirs again.
+		self.RefreshLockedSlots()
 
 	def RefreshEquipSlotWindow(self):
 		getItemVNum=player.GetItemIndex
@@ -709,6 +744,64 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem
+
+	## The tradable icon (NOVA-13; OLD uiInventory.py:1326-1400, the item lock
+	## branch left out): a window that holds an item of a bag cell locks the
+	## cell (no mouse event, a red cover) while the item sits there, and the
+	## trade window on top marks the cells whose items it refuses (a white
+	## cover). A cell is locked by its global number; only the visible page's
+	## cells show it, and a page change locks them again.
+	def BindWindow(self, wnd):
+		if wnd not in self.bindWnds:
+			self.bindWnds.append(wnd)
+
+	def GetInventoryPageIndex(self):
+		return self.inventoryPageIndex
+
+	def GetLocalSlotPos(self, globalSlotPos):
+		"""The visible page's cell of a bag cell, or None."""
+		first = self.inventoryPageIndex * player.INVENTORY_PAGE_SIZE
+		if first <= globalSlotPos < first + player.INVENTORY_PAGE_SIZE:
+			return globalSlotPos - first
+		return None
+
+	def SetCantMouseEventCell(self, globalSlotPos):
+		localSlotPos = self.GetLocalSlotPos(globalSlotPos)
+		if localSlotPos is not None:
+			SetSlotState(self.wndItem, "SetCantMouseEventSlot", localSlotPos)
+
+	def SetCanMouseEventCell(self, globalSlotPos):
+		localSlotPos = self.GetLocalSlotPos(globalSlotPos)
+		if localSlotPos is not None:
+			SetSlotState(self.wndItem, "SetCanMouseEventSlot", localSlotPos)
+
+	def RefreshLockedSlots(self):
+		for wnd in list(self.bindWnds):
+			if wnd.IsShow():
+				wnd.RefreshLockedSlot()
+
+	def GetOnTopWindow(self):
+		interface = getattr(self, "interface", None)
+		getOnTopWindow = getattr(interface, "GetOnTopWindow", None)
+		if getOnTopWindow:
+			return getOnTopWindow()
+		return player.ON_TOP_WND_NONE
+
+	def RefreshMarkSlots(self, localIndex=None):
+		## OLD's "if localIndex:" took cell 0 for the whole page.
+		onTopWnd = self.GetOnTopWindow()
+		if localIndex is not None:
+			localIndices = (localIndex,)
+		else:
+			localIndices = range(player.INVENTORY_PAGE_SIZE)
+
+		antiFlag = OnTopAntiFlag(onTopWnd)
+		for localSlotPos in localIndices:
+			globalSlotPos = self.__InventoryLocalSlotPosToGlobalSlotPos(localSlotPos)
+			if antiFlag and player.IsAntiFlagBySlot(player.INVENTORY, globalSlotPos, antiFlag):
+				SetSlotState(self.wndItem, "SetUnusableSlotOnTopWnd", localSlotPos)
+			else:
+				SetSlotState(self.wndItem, "SetUsableSlotOnTopWnd", localSlotPos)
 
 	def SellItem(self):
 		if self.sellingSlotitemIndex == player.GetItemIndex(self.sellingSlotNumber):
@@ -1351,6 +1444,10 @@ class InventoryWindow(ui.ScriptWindow):
 
 		if self.wndBelt:
 			self.wndBelt.SetTop()
+
+		## OLD uiInventory.py:2490-2492: the locks and marks again.
+		self.RefreshLockedSlots()
+		self.RefreshMarkSlots()
 
 	def OnPressEscapeKey(self):
 		self.Close()

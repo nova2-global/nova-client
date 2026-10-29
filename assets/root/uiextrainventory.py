@@ -48,6 +48,8 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 		self.sellingSlotNumber = -1
 		self.sellingSlotitemIndex = 0
 		self.sellingSlotitemCount = 0
+		# The windows whose items lock cells here (the tradable icon, NOVA-13).
+		self.bindWnds = []
 
 		self.__LoadWindow()
 
@@ -118,6 +120,7 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 		self.wndDragonSoulRefine = None
 		self.inventoryTab = []
 		self.categoryTab = []
+		self.bindWnds = []
 
 	def BindInterfaceClass(self, interface):
 		self.interface = interface
@@ -157,6 +160,9 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 	def OnTop(self):
 		if None != self.tooltipItem:
 			self.tooltipItem.SetTop()
+
+		self.RefreshLockedSlots()
+		self.RefreshMarkSlots()
 
 	## Categories and pages
 	def GetCategory(self):
@@ -241,7 +247,62 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 
 			self.wndItem.SetItemSlot(i, getItemVNum(player.EXTRA_INVENTORY, slotNumber), itemCount)
 
+		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
+
+		## The page's cells were set anew: the trade windows lock theirs again.
+		self.RefreshLockedSlots()
+
+	## The tradable icon (NOVA-13), as the inventory's (uiinventory.py): the
+	## special inventory's cells locked by a trade window and marked by the
+	## window on top. Past OLD (uiExtraInventory.py:563-627), the marks read
+	## the special inventory's own cells, not the inventory's of the same
+	## number, and cell 0 is a cell.
+	def BindWindow(self, wnd):
+		if wnd not in self.bindWnds:
+			self.bindWnds.append(wnd)
+
+	def GetLocalSlotPos(self, globalSlotPos):
+		"""The visible page's cell of a special inventory cell, or None."""
+		first = self.__InventoryLocalSlotPosToGlobalSlotPos(0)
+		if first <= globalSlotPos < first + player.EXTRA_INVENTORY_PAGE_SIZE:
+			return globalSlotPos - first
+		return None
+
+	def SetCantMouseEventCell(self, globalSlotPos):
+		localSlotPos = self.GetLocalSlotPos(globalSlotPos)
+		if localSlotPos is not None:
+			uiInventory.SetSlotState(self.wndItem, "SetCantMouseEventSlot", localSlotPos)
+
+	def SetCanMouseEventCell(self, globalSlotPos):
+		localSlotPos = self.GetLocalSlotPos(globalSlotPos)
+		if localSlotPos is not None:
+			uiInventory.SetSlotState(self.wndItem, "SetCanMouseEventSlot", localSlotPos)
+
+	def RefreshLockedSlots(self):
+		for wnd in list(self.bindWnds):
+			if wnd.IsShow():
+				wnd.RefreshLockedSlot()
+
+	def GetOnTopWindow(self):
+		getOnTopWindow = getattr(self.interface, "GetOnTopWindow", None)
+		if getOnTopWindow:
+			return getOnTopWindow()
+		return player.ON_TOP_WND_NONE
+
+	def RefreshMarkSlots(self, localIndex=None):
+		if localIndex is not None:
+			localIndices = (localIndex,)
+		else:
+			localIndices = range(player.EXTRA_INVENTORY_PAGE_SIZE)
+
+		antiFlag = uiInventory.OnTopAntiFlag(self.GetOnTopWindow())
+		for localSlotPos in localIndices:
+			globalSlotPos = self.__InventoryLocalSlotPosToGlobalSlotPos(localSlotPos)
+			if antiFlag and player.IsAntiFlagBySlot(player.EXTRA_INVENTORY, globalSlotPos, antiFlag):
+				uiInventory.SetSlotState(self.wndItem, "SetUnusableSlotOnTopWnd", localSlotPos)
+			else:
+				uiInventory.SetSlotState(self.wndItem, "SetUsableSlotOnTopWnd", localSlotPos)
 
 	## Slot events
 	def SelectEmptySlot(self, selectedSlotPos):

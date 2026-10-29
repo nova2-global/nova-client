@@ -911,3 +911,11 @@ MOVE_TO_BANK	Shift + right-click: переместить в банк
 MOVE_TO_TRADE_WINDOW	Ctrl + right-click: переместить в окно торговли
 MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: переместить в инвентарь+
 MOVE_TO_INVENTORY	Ctrl + right-click: переместить в инвентарь
+NEW_EXCHANGE_YOU_READY	%s Вы готовы к обмену.
+NEW_EXCHANGE_YOU_ACCEPT	%s Вы принимаете обмен.
+NEW_EXCHANGE_ACCEPT	%s %s Обмен принят.
+NEW_EXCHANGE_YOU_ABORT	%s Вы отменили обмен.
+NEW_EXCHANGE_ABORT	%s %s Отмена обмена.
+NEW_EXCHANGE_LEVEL	Ур. %d
+NEW_EXCHANGE_ALERT1	Вы отдаете вещи даром ,
+NEW_EXCHANGE_ALERT2	и не сможете вернуть Янг или предмет.

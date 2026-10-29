@@ -58,6 +58,8 @@ class Interface(object):
 	def __init__(self):
 		systemSetting.SetInterfaceHandler(self)
 		self.windowOpenPosition = 0
+		# The trade window on top (the tradable icon, NOVA-13).
+		self.onTopWindow = player.ON_TOP_WND_NONE
 		self.dlgWhisperWithoutTarget = None
 		self.inputDialog = None
 		self.tipBoard = None
@@ -278,6 +280,39 @@ class Interface(object):
 		self.dlgRefineNew = nui_windows.make("refine", uiRefine.RefineDialogNew, "nui_refine.RefineDialogNew")
 		self.dlgRefineNew.Hide()
 
+	def __BindTradableWindows(self):
+		"""The tradable icon (NOVA-13; OLD interfaceModule.py:362-368,
+		438-460, 494-526): the windows that hold inventory items lock their
+		cells in both inventories, and the trade windows say which is on
+		top, so the inventories mark the items it refuses."""
+		for wnd in (self.dlgExchange, self.dlgShop, self.wndSafebox, self.privateShopBuilder):
+			wnd.BindInterface(self)
+
+		for wnd in (self.dlgExchange, self.privateShopBuilder, self.dlgRefineNew,
+				getattr(self.wndInventory, "attachMetinDialog", None)):
+			if not wnd:
+				continue
+			wnd.SetInven(self.wndInventory, self.wndExtraInventory)
+			self.wndInventory.BindWindow(wnd)
+			self.wndExtraInventory.BindWindow(wnd)
+
+	def SetOnTopWindow(self, onTopWnd):
+		self.onTopWindow = onTopWnd
+
+	def GetOnTopWindow(self):
+		return self.onTopWindow
+
+	def RefreshMarkInventoryBag(self):
+		for wnd in (self.wndInventory, self.wndExtraInventory):
+			if wnd:
+				wnd.RefreshMarkSlots()
+
+	def CantTradableItemExchange(self, dstSlotIndex, srcSlotIndex, srcWindow=player.INVENTORY):
+		self.dlgExchange.CantTradableItem(dstSlotIndex, srcSlotIndex, srcWindow)
+
+	def ReleaseTradableItemExchange(self, dstSlotIndex):
+		self.dlgExchange.ReleaseTradableItem(dstSlotIndex)
+
 	def __MakeHelpWindow(self):
 		self.wndHelp = nui_windows.make("help", uiHelp.HelpWindow, "nui_help.HelpWindow")
 		self.wndHelp.LoadDialog()
@@ -315,6 +350,7 @@ class Interface(object):
 		self.__MakeParty()
 		self.__MakeWindows()
 		self.__MakeDialogs()
+		self.__BindTradableWindows()
 
 		self.__MakeUICurtain()
 		self.__MakeTaskBar()
@@ -728,6 +764,13 @@ class Interface(object):
 
 	def EndExchange(self):
 		self.dlgExchange.CloseDialog()
+		# Completed or canceled, the trade's source cells take the mouse again
+		# and nothing is on top (the legacy CloseDialog does both; a NovaUI
+		# exchange's may not).
+		self.dlgExchange.ReleaseLockedItems()
+		if self.onTopWindow == player.ON_TOP_WND_EXCHANGE:
+			self.SetOnTopWindow(player.ON_TOP_WND_NONE)
+			self.RefreshMarkInventoryBag()
 
 	def RefreshExchange(self):
 		self.dlgExchange.Refresh()

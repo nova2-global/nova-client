@@ -157,7 +157,10 @@ class LoginWindow(ui.ScriptWindow):
 		self.Show()
 
 		global SKIP_LOGIN_PHASE
-		if SKIP_LOGIN_PHASE:
+		if nui_login.is_one_page(self) and not self.loginInfo and not app.loggined:
+			# NovaUI's one-page login: the card chooses the server and channel.
+			self.__NuiOpen()
+		elif SKIP_LOGIN_PHASE:
 			if self.isStartError:
 				self.connectBoard.Hide()
 				self.loginBoard.Hide()
@@ -723,6 +726,9 @@ class LoginWindow(ui.ScriptWindow):
 
 	def OnUpdate(self):
 		ServerStateChecker.Update()
+		if nui_login.is_one_page(self) and app.GetTime() - getattr(self, "nuiStatesAt", 0) >= self.NUI_STATE_REFRESH:
+			self.nuiStatesAt = app.GetTime()
+			self.__RequestServerStateList()
 
 	def EmptyFunc(self):
 		pass
@@ -912,6 +918,12 @@ class LoginWindow(ui.ScriptWindow):
 
 		self.channelList.SelectItem(bakChannelID-1)
 		nui_server_board.refresh_channels(self)
+		try:
+			serverName = serverInfo.REGION_DICT[regionID][serverID]["name"]
+		except KeyError:
+			serverName = ""
+		nui_login.show_channels(self, serverName, [(channelID, channelDataDict["name"], channelDataDict["state"])
+			for channelID, channelDataDict in sorted(channelDict.items())])
 
 	def __GetChannelName(self, regionID, selServerID, selChannelID):
 		try:
@@ -993,6 +1005,12 @@ class LoginWindow(ui.ScriptWindow):
 			self.PopupNotifyMessage(localeInfo.CHANNEL_NOTIFY_FULL)
 			return
 
+		self.__ApplyServerChoice(regionID, serverID, channelID)
+		self.__OpenLoginBoard()
+
+	def __ApplyServerChoice(self, regionID, serverID, channelID):
+		"""What the select-server button does past its checks: the saved
+		choice, the server text, the mark server and the connect info."""
 		self.__SaveChannelInfo()
 
 		try:
@@ -1034,7 +1052,78 @@ class LoginWindow(ui.ScriptWindow):
 			exception.Abort("LoginWindow.__OnClickSelectServerButton - mark information missing")
 			
 		self.stream.SetConnectInfo(ip, tcp_port, account_ip, account_port)
+
+	# --- NovaUI's one-page login (nui_login.py) -----------------------------------------
+	# The card chooses the server and the channel (Auto picks one at each log
+	# in), so the server board step is skipped; the legacy lists stay the
+	# selection the legacy code reads.
+
+	NUI_STATE_REFRESH = 30.0  # seconds between two channel state requests
+
+	def __NuiOpen(self):
+		self.__RefreshServerList()
+		loadRegionID, loadServerID, loadChannelID = self.__LoadChannelInfo()
+		self.__NuiSelectServer(nui_login.saved_server() or loadServerID)
 		self.__OpenLoginBoard()
+
+	def __NuiSelectServer(self, serverID):
+		regionID = self.__GetRegionID()
+		serverIndex = self.__ServerIDToServerIndex(regionID, serverID)
+		if serverIndex < 0:
+			serverIndex = 0
+		self.serverList.SelectItem(serverIndex)
+		serverID = self.__GetServerID()
+		try:
+			servers = [(eachID, data.get("name", "")) for eachID, data in list(serverInfo.REGION_DICT[regionID].items())]
+		except KeyError:
+			servers = []
+		nui_login.show_servers(self, servers, serverID)
+		self.__RequestServerStateList()
+		self.__RefreshServerStateList()
+		self.nuiStatesAt = app.GetTime()
+
+	def NuiChooseServer(self, serverID):
+		self.__NuiSelectServer(serverID)
+
+	def NuiLogin(self, id, pwd, serverID, channelID):
+		"""The card's Log in: the select-server button's checks for the chosen
+		server and channel, the choice applied, then the legacy connect."""
+		regionID = self.__GetRegionID()
+		try:
+			channelDict = serverInfo.REGION_DICT[regionID][serverID]["channel"]
+			state = channelDict[channelID]["state"]
+		except KeyError:
+			self.PopupNotifyMessage(localeInfo.CHANNEL_SELECT_CHANNEL)
+			return
+		if state == serverInfo.STATE_DICT[3]:
+			self.PopupNotifyMessage(localeInfo.CHANNEL_NOTIFY_FULL)
+			return
+		self.serverList.SelectItem(self.__ServerIDToServerIndex(regionID, serverID))
+		self.channelList.SelectItem(self.__ChannelIDToChannelIndex(channelID))
+		self.__ApplyServerChoice(regionID, serverID, channelID)
+		self.Connect(id, pwd)
+
+	def NuiCreateAccount(self, login, pwd, email, code, serverID):
+		"""The card's Create account: the request goes to the chosen server's
+		auth core; OnAccountCreateResult brings the answer."""
+		try:
+			auth = serverInfo.REGION_AUTH_SERVER_DICT[self.__GetRegionID()][serverID]
+		except KeyError:
+			self.PopupNotifyMessage(localeInfo.CHANNEL_SELECT_SERVER)
+			return
+		self.stream.popupWindow.Close()
+		nui_login.before_popup(self)
+		self.stream.popupWindow.Open(uiScriptLocale.NUI_LOGIN_CREATING, nui_login.after_popup(self, 0), localeInfo.UI_CANCEL)
+		net.CreateAccount(auth["ip"], auth["port"], login, pwd, email, code)
+
+	def OnAccountCreateResult(self, code):
+		self.stream.popupWindow.Close()
+		nui_login.show_create_result(self, code)
+
+	def NotifyServerStatus(self, total, channels):
+		"""GC::SERVER_STATUS through the state checker: the selected server's
+		players in total and per channel."""
+		nui_login.show_online(self, total, channels)
 
 	def __OnClickSelectConnectButton(self):
 		self.__RefreshServerList()

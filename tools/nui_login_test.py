@@ -8,7 +8,9 @@ itself onto a stand-in window, so the flows below run the real hook calls,
 with the board and without it (the legacy path)."""
 import ast
 import os
+import shutil
 import sys
+import tempfile
 import types
 import unittest
 
@@ -83,6 +85,10 @@ def load_nui_login(nui_module, setting, dbg_module, app=None, snd=None):
                 modules.load(name)
             except ImportError:
                 pass  # no nui module: nui_login's own imports fail the same way
+        # The saved accounts never reach the repository's config/: the tests
+        # that keep accounts point PATH at a temporary file of their own.
+        modules.load("nui_accounts").PATH = os.devnull
+        modules.load("nui_links")
         module = modules.load("nui_login")
     finally:
         modules.restore()
@@ -931,11 +937,13 @@ class PickerPlace(ControllerTest):
         self.load()
         win, board = self.open_board()
         picker = win.nuiPicker
-        self.assertEqual(picker.keep_clear, [board, win.nuiKeyboard])
+        # The one-page login's body covers the screen: the picker keeps clear
+        # of its two boards.
+        self.assertEqual(picker.keep_clear, [(board, "login-card"), (board, "login-accounts"), win.nuiKeyboard])
         server_board = self.nui.Window()
         win.nuiServerBoard = server_board
         self.m.place_picker(win)
-        self.assertEqual(picker.keep_clear, [board, server_board, win.nuiKeyboard])
+        self.assertEqual(picker.keep_clear, [(board, "login-card"), (board, "login-accounts"), server_board, win.nuiKeyboard])
 
     def test_place_picker_without_a_picker_does_nothing(self):
         win = self.Window(Stream())
@@ -1007,7 +1015,8 @@ class IntroLoginHooks(unittest.TestCase):
 
     def test_every_popup_hides_the_board_before_it_opens_and_brings_it_back(self):
         opening = sorted(name for name in self.methods if "self.stream.popupWindow.Open" in self.names(name))
-        self.assertEqual(opening, ["Connect", "PopupDisplayMessage", "PopupNotifyMessage", "SameLogin_OpenUI"])
+        self.assertEqual(opening, ["Connect", "NuiCreateAccount", "PopupDisplayMessage", "PopupNotifyMessage",
+                                   "SameLogin_OpenUI"])
         for method in opening:
             calls = self.calls(method)
             names = [name for _, name, _ in calls]
@@ -1049,6 +1058,177 @@ class IntroLoginHooks(unittest.TestCase):
 
     def test_the_login_button_path_is_left_alone(self):
         self.assertFalse([name for name in self.names("__OnClickLoginButton") if name.startswith("nui_login.")])
+
+
+
+# --- the one-page login: saved accounts, the card, Create account -------------------
+
+class OnePageTest(ControllerTest):
+    """The board with a saved accounts file of its own (a temporary one)."""
+
+    def setUp(self):
+        super(OnePageTest, self).setUp()
+        folder = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, folder)
+        self.store = self.m.nui_accounts
+        self.store.PATH = os.path.join(folder, "nui_accounts.txt")
+
+    def save(self, login, played, slots, remember=True):
+        self.store.remember_login(login, 2, remember)
+        return self.store.note_game_start(login, played, slots)
+
+
+class SavedAccounts(OnePageTest):
+    def test_an_account_is_written_only_when_its_log_in_asked_to_remember_it(self):
+        self.assertFalse(self.save("kalinka", "Kalinka", [("Kalinka", 4, 75)], remember=False))
+        self.assertEqual(self.store.accounts(), [])
+        self.assertFalse(self.store.note_game_start("kalinka", "Kalinka", []), "no log in asked for it")
+        self.assertTrue(self.save("kalinka", "Kalinka", [("Kalinka", 4, 75), ("Andrei", 5, 71), ("", 0, 0)]))
+        account = self.store.accounts()[0]
+        self.assertEqual((account["login"], account["server"], account["played"]), ("kalinka", 2, "Kalinka"))
+        self.assertEqual(account["characters"], [{"name": "Kalinka", "race": 4, "level": 75},
+                                                 {"name": "Andrei", "race": 5, "level": 71}])
+        with open(self.store.PATH) as handle:
+            self.assertNotIn(PASSWORD, handle.read())
+
+    def test_the_newest_comes_first_five_are_kept_and_a_damaged_line_is_skipped(self):
+        for index in range(7):
+            self.save("acc%d" % index, "", [])
+            self.store.set_setting("remember", "1")
+        with open(self.store.PATH, "a") as handle:
+            handle.write("A\tbroken\tnot-a-number\t1\tx\n")
+        logins = [account["login"] for account in self.store.accounts()]
+        self.assertEqual(len(logins), 5)
+        self.assertNotIn("broken", logins)
+        self.assertEqual(self.store.setting("remember"), "1")
+        self.assertTrue(self.store.forget(logins[0]))
+        self.assertFalse(self.store.forget(logins[0]))
+        self.assertNotIn(logins[0], [account["login"] for account in self.store.accounts()])
+
+    def test_since_words_the_time_as_the_screen_does(self):
+        words = {"now": "now", "minutes": "%dm", "hours": "%dh", "yesterday": "y", "days": "%dd"}
+        self.assertEqual([self.store.since(s, words) for s in (5, 600, 7200, 90000, 400000)],
+                         ["now", "10m", "2h", "y", "4d"])
+
+    def test_the_board_lists_them_and_a_press_picks_one(self):
+        self.save("kalinka", "Kalinka", [("Kalinka", 4, 75)])
+        self.save("mirela", "Mirela", [("Mirela", 3, 68)])
+        win, board = self.open_board()
+        board.reload_accounts()
+        rows = board.get("accounts")
+        self.assertEqual([row["name"] for row in rows], ["mirela", "kalinka"])
+        self.assertEqual(rows[0]["face"], self.store.face_of(3))
+        board.on_pick_account("kalinka", 1)
+        self.assertEqual(board.get("user"), "", "a right press picks nothing")
+        board.on_pick_account("kalinka", 0)
+        self.assertEqual(board.get("user"), "kalinka")
+        self.assertEqual([row["selected"] for row in board.get("accounts")], [False, True])
+        self.assertEqual(board.focused, PASSWORD_FIELD)
+        board.on_forget_account("kalinka", 0)
+        board.on_pick_account("kalinka", 0)  # the same press reaches the row after its cross
+        self.assertEqual([row["name"] for row in board.get("accounts")], ["mirela"])
+        board.on_add_account(0)
+        self.assertEqual((board.get("user"), board.focused), ("", ID_FIELD))
+
+    def test_remember_me_is_saved_and_reaches_the_log_in(self):
+        win, board = self.open_board()
+        self.assertTrue(board.get("remember"))
+        board.on_remember_press(0)
+        self.assertFalse(board.get("remember"))
+        self.assertEqual(self.store.setting("remember"), "0")
+
+
+class TheCard(OnePageTest):
+    def test_the_eye_moves_the_password_to_the_text_field_never_through_the_model(self):
+        win, board = self.open_board()
+        self.type_values(board)
+        board.on_eye_press(0)
+        self.assertTrue(board.get("show_password"))
+        self.assertIn(("set_value", self.m.PASSWORD_SHOWN, PASSWORD, "end"), board.calls)
+        self.assertEqual(board.focused, self.m.PASSWORD_SHOWN)
+        board.on_eye_press(0)
+        self.assertEqual(board.focused, PASSWORD_FIELD)
+        self.assertNotIn(PASSWORD, repr(board.model))
+
+    def test_log_in_goes_through_the_chosen_server_and_auto_picks_the_channel(self):
+        win, board = self.open_board()
+        logins = []
+        win.NuiLogin = lambda user, password, server, channel: logins.append((user, password, server, channel))
+        board.set_servers([(1, "Nova"), (2, "Test")], 2, 0)
+        board.set_channels([(1, "CH1", "BUSY"), (2, "CH2", "NORM"), (3, "CH3", "FULL")])
+        self.assertEqual(board.get("server_state"), "ok")
+        self.type_values(board)
+        board.on_submit()
+        self.assertEqual(logins, [(USER, PASSWORD, 2, 2)], "Auto: a NORM channel before a BUSY one")
+        board.set_online(40, {1: 3, 2: 30})
+        board.on_submit()
+        self.assertEqual(logins[-1][3], 1, "with counts, the fewest players")
+        board.on_channel_press(3, 0)
+        self.assertTrue(board.get("auto"), "a full channel cannot be chosen")
+        board.on_channel_press(2, 0)
+        board.on_submit()
+        self.assertEqual(logins[-1][3], 2)
+        self.assertEqual(self.store.setting("channel"), "2")
+        self.assertIn("CH2", board.get("channel_text"))
+
+    def test_create_checks_first_and_sends_the_lower_cased_login(self):
+        win, board = self.open_board()
+        board.set(can_register=True)
+        sent = []
+        win.NuiCreateAccount = lambda *args: sent.append(args)
+        board.on_tab_press("register", 0)
+        values = {"user": "DarkBlade", "email": "dark@blade.io", "password": "s3cret-pass", "confirm": "s3cret-pass",
+                  "code": "1234567"}
+        for field, value in values.items():
+            board.on_reg_edit(field, value, False)
+        board.on_create()
+        self.assertEqual((board.get("reg_error_on"), sent), ("rules", []))
+        board.on_rules_press(0)
+        board.on_create()
+        self.assertEqual(sent, [("darkblade", "s3cret-pass", "dark@blade.io", "1234567", 0)])
+        self.assertNotIn("s3cret-pass", repr(board.model))
+
+    def test_the_answer_switches_to_log_in_or_shows_its_error(self):
+        win, board = self.open_board()
+        board.set(can_register=True)
+        board.on_tab_press("register", 0)
+        board.on_reg_edit("user", "DarkBlade", False)
+        board.account_created(1)
+        self.assertEqual((board.get("tab"), board.get("reg_error"), board.get("reg_error_on")),
+                         ("register", "@ui.NUI_LOGIN_ERR_TAKEN", "user"))
+        board.account_created(0)
+        self.assertEqual((board.get("tab"), board.get("user"), board.get("error_ok")), ("login", "darkblade", True))
+
+
+class RegistrationRules(unittest.TestCase):
+    def setUp(self):
+        self.check = load_nui_login(make_nui(NuiState()), make_setting(1), make_dbg()).check_registration
+
+    def test_each_rule(self):
+        good = dict(user="DarkBlade", email="dark@blade.io", password="s3cret-pass", confirm="s3cret-pass",
+                    code="1234567", rules=True)
+        self.assertIsNone(self.check(**good))
+        for change, field in ((dict(user="abc"), "user"), (dict(user="dark_blade"), "user"), (dict(user="Admin"), "user"),
+                              (dict(email="dark.blade.io"), "email"), (dict(email="dark@blade"), "email"),
+                              (dict(email="dark@.io"), "email"), (dict(password="short", confirm="short"), "password"),
+                              (dict(password="has[bracket", confirm="has[bracket"), "password"),
+                              (dict(confirm="other-pass"), "confirm"), (dict(code="12345a7"), "code"),
+                              (dict(code="123456"), "code"), (dict(rules=False), "rules")):
+            values = dict(good, **change)
+            with self.subTest(change=change):
+                self.assertEqual(self.check(**values)[0], field)
+
+
+class AutoChannel(unittest.TestCase):
+    def setUp(self):
+        self.pick = load_nui_login(make_nui(NuiState()), make_setting(1), make_dbg()).pick_channel
+
+    def test_the_rule(self):
+        self.assertEqual(self.pick({1: "busy", 2: "ok", 3: "ok"}, {}, 3), 3, "the last played among the ok ones")
+        self.assertEqual(self.pick({1: "busy", 2: "ok"}, {}, 1), 2, "ok before busy, even the last played")
+        self.assertEqual(self.pick({1: "ok", 2: "ok"}, {1: 50, 2: 10}, 1), 2, "the fewest players")
+        self.assertEqual(self.pick({1: "full", 2: "down"}, {}, 2), 2, "none open: the last played")
+        self.assertEqual(self.pick({1: "unknown", 2: "unknown"}, {}, 0), 1, "none known: the lowest")
 
 
 if __name__ == "__main__":

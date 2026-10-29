@@ -575,6 +575,13 @@ body.char.char--placed
 	padding: 0 8dp 0 7dp;
 	decorator: none;
 }
+/* A one-word label longer than its column (German's "Bewegungsgeschw.",
+   "Magie-Verteidigung") breaks inside the word onto its second line,
+   rather than running under the value. */
+.char-extra .char-stat__label
+{
+	word-break: break-word;
+}
 
 /* --- Skills ------------------------------------------------------------------------- */
 

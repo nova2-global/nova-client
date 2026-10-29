@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s Отмена обмена.
 NEW_EXCHANGE_LEVEL	Ур. %d
 NEW_EXCHANGE_ALERT1	Вы отдаете вещи даром ,
 NEW_EXCHANGE_ALERT2	и не сможете вернуть Янг или предмет.
+MULTI_USE_ITEM	Alt + right-click: для массового использования

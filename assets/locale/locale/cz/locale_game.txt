@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s zamítl/a obchod.
 NEW_EXCHANGE_LEVEL	Lv. %d
 NEW_EXCHANGE_ALERT1	Dáváš předměty za žádnou výměnu,
 NEW_EXCHANGE_ALERT2	a nebudeš moci získat předměty/yangy zpět.
+MULTI_USE_ITEM	Alt + right-click: pro hromadné použití

@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s canceló el intercambio.
 NEW_EXCHANGE_LEVEL	Niv. %d
 NEW_EXCHANGE_ALERT1	Estás entregando objetos sin recibir nada a cambio,
 NEW_EXCHANGE_ALERT2	y no podrás recuperar el Yang ni los objetos.
+MULTI_USE_ITEM	Alt + right-click: para usar varios

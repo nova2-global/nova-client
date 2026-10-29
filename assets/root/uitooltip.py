@@ -1267,6 +1267,19 @@ class ItemToolTip(ToolTip):
 		elif item.ITEM_TYPE_FISH == itemType:
 			if 0 != metinSlot:
 				self.__AppendFishInfo(metinSlot[0])
+
+		### Treasure chests (ITEM_GACHA, NOVA-81; OLD uiToolTip.py:1655-1664) ###
+		## The opens left on the stack (socket0); a shop's chest, its opens
+		## per chest (LIMIT_VALUE1).
+		elif item.ITEM_TYPE_GACHA == itemType:
+			if 0 != metinSlot:
+				if self.isShopItem:
+					restUsableCount = int(item.GetLimit(1)[1])
+				else:
+					restUsableCount = int(metinSlot[0])
+
+				self.AppendSpace(5)
+				self.AppendTextLine(localeInfo.TOOLTIP_REST_USABLE_COUNT % (restUsableCount), grp.GenerateColor(0.5, 1.0, 0.3, 1.0))
 		
 		## item.ITEM_TYPE_BLEND
 		elif item.ITEM_TYPE_BLEND == itemType:
@@ -1496,6 +1509,10 @@ class ItemToolTip(ToolTip):
 
 		if window == player.INVENTORY and (player.IsEquipmentSlot(self.itemSlotIndex) or player.IsBeltInventorySlot(self.itemSlotIndex)):
 			return
+
+		## OLD :1981-1982 (NOVA-81): a stack of chests opens several at once.
+		if item.ITEM_TYPE_GACHA == itemType and player.GetItemCount(window, self.itemSlotIndex) > 1:
+			self.AppendTextLine(localeInfo.MULTI_USE_ITEM, self.NORMAL_COLOR)
 
 		if IsSafeboxOpen():
 			self.AppendTextLine(localeInfo.MOVE_TO_BANK, self.NORMAL_COLOR)

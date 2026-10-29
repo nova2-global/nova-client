@@ -36,6 +36,18 @@ MONEY_SLOT_UNIT_LIMIT = 10 ** 11
 # special inventory's first category (71051, 71052, 71651, 71652). Ctrl +
 # right-click moves them between the two.
 EXTRA_SHARED_SCROLLS = (71051, 71052, 71651, 71652)
+# The most treasure chests one Alt + right-click opens (NOVA-81; OLD's client
+# cap, the server's GACHA_MULTI_OPEN_MAX in nova-protocol inventory_packets.h).
+GACHA_MULTI_OPEN_MAX = 1000
+
+
+def IsMultiOpenItem(itemVnum):
+	"""A stack Alt + right-click opens several of (NOVA-81, default G-D2:
+	the treasure chests, ITEM_GACHA, only)."""
+	if not itemVnum:
+		return False
+	item.SelectItem(itemVnum)
+	return item.GetItemType() == item.ITEM_TYPE_GACHA
 
 
 def IsExtraSharedItem(itemVnum):
@@ -1492,11 +1504,18 @@ class InventoryWindow(ui.ScriptWindow):
 		so); any other item is used. True when it sent something."""
 		isShift = app.IsPressed(app.DIK_LSHIFT)
 		isControl = app.IsPressed(app.DIK_LCONTROL)
-		if not isShift and not isControl:
+		isAlt = app.IsPressed(app.DIK_LALT)
+		if not isShift and not isControl and not isAlt:
 			return False
 
 		if slotIndex >= player.INVENTORY_PAGE_SIZE * player.INVENTORY_PAGE_COUNT:
 			return False
+
+		## Alt + right-click on a stack of chests asks how many to open
+		## (NOVA-81; OLD :2533-2565).
+		if isAlt and player.GetItemCount(slotIndex) > 1 and IsMultiOpenItem(player.GetItemIndex(slotIndex)):
+			self.OpenMultiUseDialog(player.INVENTORY, slotIndex, player.GetItemCount(slotIndex))
+			return True
 
 		if isShift and self.IsSafeboxOpen():
 			net.SendSafeboxCheckinPacket(player.INVENTORY, slotIndex, SafeboxCheckinCell(player.GetItemIndex(slotIndex)))
@@ -1513,6 +1532,21 @@ class InventoryWindow(ui.ScriptWindow):
 				return True
 
 		return False
+
+	def OpenMultiUseDialog(self, window, slotIndex, itemCount):
+		self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)
+		self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickMultiUse))
+		self.dlgPickMoney.Open(min(itemCount, GACHA_MULTI_OPEN_MAX))
+		self.dlgPickMoney.multiUseItemPos = (window, slotIndex)
+
+	def OnPickMultiUse(self, count):
+		(window, slotIndex) = self.dlgPickMoney.multiUseItemPos
+		# Prevent item usage while private shop is open
+		if uiPrivateShopBuilder.IsBuildingPrivateShop():
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.USE_ITEM_FAILURE_PRIVATE_SHOP)
+			return
+
+		net.SendItemMultiUsePacket(window, slotIndex, min(count, GACHA_MULTI_OPEN_MAX))
 
 	def __UseItem(self, slotIndex):
 		ItemVNum = player.GetItemIndex(slotIndex)

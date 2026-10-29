@@ -534,6 +534,14 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 			net.SendItemTransferPacket(player.EXTRA_INVENTORY, slotIndex, player.INVENTORY)
 			return
 
+		## Alt + right-click on a stack of chests asks how many to open
+		## (NOVA-81; OLD :932-934, 950-974).
+		itemCount = player.GetItemCount(player.EXTRA_INVENTORY, slotIndex)
+		if app.IsPressed(app.DIK_LALT) and itemCount > 1 and \
+				uiInventory.IsMultiOpenItem(player.GetItemIndex(player.EXTRA_INVENTORY, slotIndex)):
+			self.OpenMultiUseDialog(slotIndex, itemCount)
+			return
+
 		ItemVNum = player.GetItemIndex(player.EXTRA_INVENTORY, slotIndex)
 		item.SelectItem(ItemVNum)
 		if item.IsFlag(item.ITEM_FLAG_CONFIRM_WHEN_USE):
@@ -548,6 +556,21 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 
 		else:
 			self.__SendUseItemPacket(slotIndex)
+
+	def OpenMultiUseDialog(self, slotIndex, itemCount):
+		self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)
+		self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickMultiUse))
+		self.dlgPickMoney.Open(min(itemCount, uiInventory.GACHA_MULTI_OPEN_MAX))
+		self.dlgPickMoney.multiUseSlotIndex = slotIndex
+
+	def OnPickMultiUse(self, count):
+		# Prevent item usage while private shop is open
+		if uiPrivateShopBuilder.IsBuildingPrivateShop():
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.USE_ITEM_FAILURE_PRIVATE_SHOP)
+			return
+
+		net.SendItemMultiUsePacket(player.EXTRA_INVENTORY, self.dlgPickMoney.multiUseSlotIndex,
+			min(count, uiInventory.GACHA_MULTI_OPEN_MAX))
 
 	def __UseItemQuestionDialog_OnCancel(self):
 		self.OnCloseQuestionDialog()

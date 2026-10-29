@@ -931,3 +931,4 @@ NEW_EXCHANGE_ABORT	%s %s Cancelou a troca
 NEW_EXCHANGE_LEVEL	Nivel. %d
 NEW_EXCHANGE_ALERT1	Estas a dar items por nada em troca,
 NEW_EXCHANGE_ALERT2	e não serás capaz de obter o yang ou items de volta.
+MULTI_USE_ITEM	Alt + right-click: para uso múltiplo

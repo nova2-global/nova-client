@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s przerwał wymianę.
 NEW_EXCHANGE_LEVEL	Poziom %d
 NEW_EXCHANGE_ALERT1	Oddajesz przedmioty za nic w zamian,
 NEW_EXCHANGE_ALERT2	i nie będziesz mógł odzyskać Yang ani przedmiotów.
+MULTI_USE_ITEM	Alt + right-click: aby użyć wiele

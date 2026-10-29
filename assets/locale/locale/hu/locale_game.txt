@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s Kereskedés vissza utasítva
 NEW_EXCHANGE_LEVEL	Lv. %d
 NEW_EXCHANGE_ALERT1	Semmilyen esetben sem add oda másoknak a tárgyaidat,
 NEW_EXCHANGE_ALERT2	mert lehet, nem kapod vissza sem a tárgyat se a yang-ot
+MULTI_USE_ITEM	Alt + right-click: többszörös használathoz

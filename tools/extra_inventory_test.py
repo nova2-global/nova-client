@@ -50,6 +50,8 @@ K_PLAYER = {
     "ON_TOP_WND_NONE": 0, "ON_TOP_WND_SHOP": 1, "ON_TOP_WND_EXCHANGE": 2, "ON_TOP_WND_SAFEBOX": 3,
     "ON_TOP_WND_PRIVATE_SHOP": 4,
 }
+# K's item.ITEM_TYPE_GACHA (PythonItemModule.cpp, ItemData.h).
+K_ITEM_TYPE_GACHA = 38
 # The categories' cells (C1's player.GetExtraInventoryCategoryRange: scrolls,
 # materials, stones, chests with 5 pages each, costumes with 12).
 CATEGORY_RANGES = ((0, 225), (225, 450), (450, 675), (675, 900), (900, 1440))
@@ -67,6 +69,7 @@ ORE = 50601
 COSTUME = 41001
 POTION = 27001
 SWORD = 10
+CHEST = 34218  # the Fire Treasure Chest, ITEM_GACHA, LIMIT_VALUE1 10
 ITEM_FLAG_APPLICABLE = 1 << 14
 ITEM_TYPE_COSTUME = 28
 
@@ -79,7 +82,8 @@ NEW_KEYS = {
     "game": {"MOVE_TO_BANK": "Shift + right-click: Move to Bank",
              "MOVE_TO_TRADE_WINDOW": "Ctrl + right-click: Move to trade window",
              "MOVE_TO_INVENTORY_PLUS": "Ctrl + right-click: Move to Inventory+",
-             "MOVE_TO_INVENTORY": "Ctrl + right-click: Move to Inventory"},
+             "MOVE_TO_INVENTORY": "Ctrl + right-click: Move to Inventory",
+             "MULTI_USE_ITEM": "Alt + right-click: open several at once"},
 }
 
 
@@ -176,6 +180,7 @@ def install_k(game):
                         ("ITEM_ANTIFLAG_MYSHOP", 1 << 16), ("ANTIFLAG_MYSHOP", 1 << 16)):
         if not isinstance(getattr(item, name, None), int):
             setattr(item, name, known.get(name, value))
+    item.ITEM_TYPE_GACHA = K_ITEM_TYPE_GACHA
     # The open safebox's module where the world has none (PythonSafeBox.cpp:
     # pages of 5 x 9 cells, GetCurrentSafeboxSize counts the cells):
     # Game.safebox_items {cell: vnum}, Game.safebox_cells.
@@ -249,6 +254,7 @@ class Constants(unittest.TestCase):
         if "EXTRA_INVENTORY" not in known:
             self.skipTest("tools/fixtures/module_constants.json predates K's client tip")
         self.assertEqual(dict((name, known.get(name)) for name in K_PLAYER), K_PLAYER)
+        self.assertEqual(support.module_constants()["item"].get("ITEM_TYPE_GACHA"), K_ITEM_TYPE_GACHA)
 
     def test_the_categories_cover_the_window_page_by_page(self):
         self.assertEqual(CATEGORY_RANGES[0][0], 0)
@@ -753,7 +759,39 @@ class TooltipHints(unittest.TestCase):
         str(BEWITCH): {"name": "Bewitch Item", "type": "USE", "subtype": "USE_CHANGE_ATTRIBUTE"},
         str(POTION): {"name": "Red Potion", "type": "USE", "subtype": "USE_POTION"},
         str(BEAN): {"name": "Dragon Bean", "type": "MATERIAL", "subtype": 5},
+        str(CHEST): {"name": "Fire Treasure Chest", "type": K_ITEM_TYPE_GACHA, "limits": [[0, 0], [0, 10]],
+                     "flags": ["ITEM_STACKABLE"]},
     }
+
+    def texts(self, vnum, window, cell, count=2, sockets=(), shop_item=False):
+        import nui_tooltip_corpus as corpus_tool
+        rows = {"items": dict((k, dict(v, icon="icon/item/%s.tga" % k, desc="", summary="")) for k, v in self.ITEMS.items()),
+                "skills": {}, "mobs": {}}
+        world = corpus_tool.TipWorld(rows, recorder=False)
+        player = world.game.modules["player"]
+        for name, value in K_PLAYER.items():
+            setattr(player, name, value)
+        world.game.modules["item"].ITEM_TYPE_GACHA = K_ITEM_TYPE_GACHA
+        with world, lf.quiet():
+            support.apply_case(world.game, {"vnum": vnum, "pos": cell, "count": count, "sockets": list(sockets)})
+            tip = world.tooltip("item")
+            if shop_item:
+                tip.ClearToolTip()
+                tip.isShopItem = True
+                tip.AddItemData(vnum, [0, 0, 0, 0])
+            else:
+                tip.SetInventoryItem(cell, window)
+        return [row[1] for row in corpus_tool.stand_in_rows(tip) if row[0] == "text"]
+
+    def test_a_chest_says_how_many_opens_are_left(self):
+        locale = support.locale_info("en")
+        self.assertIn("Left: 30", self.texts(CHEST, INVENTORY, 3, count=3, sockets=(30,)))
+        self.assertIn("Left: 142", self.texts(CHEST, EXTRA, 680, count=15, sockets=(142,)))
+        self.assertIn("Left: 10", self.texts(CHEST, INVENTORY, 3, shop_item=True), "a shop's: LIMIT_VALUE1")
+        self.assertIn(locale.MULTI_USE_ITEM, self.texts(CHEST, EXTRA, 680, count=15, sockets=(142,)))
+        self.assertNotIn(locale.MULTI_USE_ITEM, self.texts(CHEST, EXTRA, 680, count=1, sockets=(7,)))
+        self.assertNotIn(locale.MULTI_USE_ITEM, self.texts(CHEST, INVENTORY, 3, shop_item=True))
+        self.assertNotIn(locale.MULTI_USE_ITEM, self.texts(POTION, INVENTORY, 3, count=5))
 
     def test_the_private_shop_builder_reads_the_item_s_own_window(self):
         """SetPrivateShopBuilderItem(window, cell, slot) reads the sockets and
@@ -910,6 +948,58 @@ class SelectItem(unittest.TestCase):
         self.assertEqual(window.inventorySlotPosDict, {0: 9})
 
 
+class Gacha(unittest.TestCase):
+    """NOVA-81, the client half: Alt + right-click on a stack of treasure
+    chests (ITEM_GACHA) asks how many and sends C1's multi-use packet, at
+    most GACHA_MULTI_OPEN_MAX (1000) chests; the tooltip's "Left: %d"."""
+
+    def gacha(self, world, at, count):
+        world.game.give(at, CHEST, count)
+        item = world.game.modules["item"]
+        support.define(item, "GetItemType", lambda: K_ITEM_TYPE_GACHA if item.selected[0] == CHEST else 0)
+
+    def alt_right_click(self, world, window, local, count=None):
+        world.press("DIK_LALT")
+        mark = len(world.sent())
+        with world, lf.quiet():
+            window.UseItemSlot(local)
+            if count is not None:
+                window.dlgPickMoney.accept(count)
+        world.game.pressed = set()
+        return world.sent()[mark:]
+
+    def test_alt_right_click_in_the_inventory_asks_and_opens_that_many(self):
+        world = World()
+        window = make_inventory(world)
+        self.gacha(world, 4, 3)
+        self.assertEqual(self.alt_right_click(world, window, 4, 2), [("net.SendItemMultiUsePacket", (INVENTORY, 4, 2))])
+        self.assertEqual(window.dlgPickMoney.opened, (3,))
+
+    def test_at_most_1000_chests(self):
+        world = World()
+        window = make_inventory(world)
+        self.gacha(world, 4, 1500)
+        self.alt_right_click(world, window, 4)
+        self.assertEqual(window.dlgPickMoney.opened, (1000,))
+
+    def test_one_chest_or_another_item_is_used(self):
+        world = World()
+        window = make_inventory(world)
+        self.gacha(world, 4, 1)
+        world.game.give(5, POTION, 3)
+        self.assertEqual(self.alt_right_click(world, window, 4), [("net.SendItemUsePacket", (4,))])
+        self.assertEqual(self.alt_right_click(world, window, 5), [("net.SendItemUsePacket", (5,))])
+
+    def test_alt_right_click_in_the_special_inventory(self):
+        world = World()
+        window = make_extra(world)
+        with world, lf.quiet():
+            window.categoryTab[CHESTS].click()
+        self.gacha(world, (EXTRA, 675 + 8), 5)
+        self.assertEqual(self.alt_right_click(world, window, 8, 4), [("net.SendItemMultiUsePacket", (EXTRA, 675 + 8, 4))])
+        self.assertEqual(window.dlgPickMoney.opened, (5,))
+
+
 class Locales(unittest.TestCase):
     def test_every_new_key_is_in_all_17_locales_and_english_is_the_spec_s(self):
         locales = [name for name in sorted(os.listdir(LOCALES))
@@ -928,7 +1018,8 @@ class Locales(unittest.TestCase):
                             self.assertEqual(entries[key], english)
                         if kind == "game":
                             self.assertNotIn("|E", entries[key], "NEW has no key icons")
-                            self.assertTrue(entries[key].startswith(("Shift + right-click: ", "Ctrl + right-click: ")))
+                            self.assertTrue(entries[key].startswith(("Shift + right-click: ", "Ctrl + right-click: ",
+                                                                     "Alt + right-click: ")))
 
 
 if __name__ == "__main__":

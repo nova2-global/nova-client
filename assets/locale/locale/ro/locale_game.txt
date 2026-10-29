@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s renunta la negot.
 NEW_EXCHANGE_LEVEL	Lv. %d
 NEW_EXCHANGE_ALERT1	Oferi lucrurile fara a primi nimic in schimb,
 NEW_EXCHANGE_ALERT2	si nu vei putea lua yangul sau obiectele inapoi.
+MULTI_USE_ITEM	Alt + right-click: pentru utilizare multiplă

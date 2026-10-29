@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s abort the trade.
 NEW_EXCHANGE_LEVEL	Lv. %d
 NEW_EXCHANGE_ALERT1	You are giving things away for nothing in exchange,
 NEW_EXCHANGE_ALERT2	and won't be able to get the Yang or items back.
+MULTI_USE_ITEM	Alt + right-click: για πολλαπλή χρήση

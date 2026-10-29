@@ -917,3 +917,4 @@ NEW_EXCHANGE_ABORT	%s %s Handel abbrechen.
 NEW_EXCHANGE_LEVEL	Lv. %d
 NEW_EXCHANGE_ALERT1	Du gibst Sachen weg, ohne dafür etwas anderes zu erhalten,
 NEW_EXCHANGE_ALERT2	und wirst keine Möglichkeit haben, dein Yang oder deine Items zurück zu bekommen.
+MULTI_USE_ITEM	Alt + right-click: für Mehrfachnutzung

@@ -919,3 +919,4 @@ NEW_EXCHANGE_ABORT	%s %s interrompi lo scambio
 NEW_EXCHANGE_LEVEL	Lv. %d
 NEW_EXCHANGE_ALERT1	Stai dando via le cose per niente in cambio,
 NEW_EXCHANGE_ALERT2	e non sarà in grado di recuperare lo Yang o gli oggetti.
+MULTI_USE_ITEM	Alt + right-click: per utilizzo multiplo

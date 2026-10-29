@@ -1,0 +1,14 @@
+/* Cyberpunk overlay of nui/windows/mall/mall.rml, after the reviewed WMall
+   board: the gift emblem in a square tile with the dim neon line, its bow
+   magenta. The grid and the close button are the skin's components. */
+
+body.skin-cyberpunk.mall .mall__title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.mall .mall__title-icon .nui-glyph__c
+{
+	border-color: var(--cyberpunk-edge-alt);
+}

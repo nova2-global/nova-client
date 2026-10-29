@@ -1,0 +1,15 @@
+/* Cyberpunk overlay of nui/windows/select-item/select-item.rml, after the
+   mockup's WSelectItem board (skins-stage2/ref/WSelectItem-cyberpunk.png):
+   the modern layout to the dp. The title's icon chip a square on the
+   brighter cyan line; the grid's well square. */
+
+body.skin-cyberpunk.sel .sel-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.sel .sel__grid-well
+{
+	border-radius: 0;
+}

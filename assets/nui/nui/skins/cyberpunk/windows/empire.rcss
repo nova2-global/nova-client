@@ -1,11 +1,24 @@
-/* Cyberpunk overlay of nui/windows/empire/empire.rml: the scene's bands in
-   the holographic cyan and a faint grid between them. The atlas, the areas
-   and the flags are content and keep their pixels. */
+/* Cyberpunk overlay of nui/windows/empire/empire.rml, after the WEmpire board
+   of the reviewed mockup: the scene's bands in the holographic cyan and a
+   faint grid between them, lit over the grid by a cyan glow behind the
+   atlas and a magenta haze below it (the holographic tints, at full
+   opacity); the flag well and the description square wells, the
+   description with a magenta left edge (its text keeps its place); the
+   arrows the mockup's boxes cut at the top left and bottom right (the
+   board's edge sprite in the neon line, the accent under the pointer),
+   their chevrons light. The atlas, the areas and the flags are content and
+   keep their pixels. */
 
 body.skin-cyberpunk.empire .empire-pattern
 {
 	decorator: repeating-linear-gradient(0deg, var(--cyberpunk-scan) 0dp, var(--cyberpunk-scan) 1dp, transparent 1dp, transparent 32dp),
 		repeating-linear-gradient(90deg, var(--cyberpunk-scan) 0dp, var(--cyberpunk-scan) 1dp, transparent 1dp, transparent 32dp);
+}
+body.skin-cyberpunk.empire .empire-shade
+{
+	decorator: radial-gradient(50% 55% at 55% 52%, var(--cyberpunk-holo-a) 0%, transparent 100%),
+		radial-gradient(45% 40% at 70% 92%, var(--cyberpunk-holo-b) 0%, transparent 100%);
+	opacity: 1;
 }
 body.skin-cyberpunk.empire .empire-line--top
 {
@@ -20,11 +33,41 @@ body.skin-cyberpunk.empire .empire-line--bottom
 	border-top-color: var(--cyberpunk-edge-dim);
 }
 
-/* Reduced effects: the plain scene (without effects the grid's gradients
-   would draw one flat tint). */
+body.skin-cyberpunk.empire .empire-flag-bar
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.empire .empire-well
+{
+	padding-left: 9dp;
+	border-left-width: 2dp;
+	border-left-color: var(--cyberpunk-edge-alt);
+	border-radius: 0;
+}
+
+/* The arrows: one class over every state rule of the skin's icon button. */
+body.skin-cyberpunk.empire .empire-arrow
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.empire .empire-arrow:hover, body.skin-cyberpunk.empire .empire-arrow:active
+{
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.empire .empire-arrow:focus-visible
+{
+	image-color: var(--focus-ring);
+}
+
+/* Reduced effects: the plain scene (without effects the grid's and the
+   glow's gradients would draw one flat tint). */
 @media (theme: reduced-effects)
 {
-	body.skin-cyberpunk.empire .empire-pattern
+	body.skin-cyberpunk.empire .empire-pattern, body.skin-cyberpunk.empire .empire-shade
 	{
 		decorator: none;
 	}

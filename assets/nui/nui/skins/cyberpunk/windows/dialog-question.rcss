@@ -1,0 +1,10 @@
+/* Cyberpunk overlay of nui/windows/dialog-question/dialog-question.rml,
+   after the reviewed WDialogs board, where the question's outline runs
+   from magenta into the accent: the outline hook in magenta (one ninepatch
+   takes one tint; the accent bracket at the bottom right keeps the cyan
+   end). The rest is the dialog kit's look in the component skin. */
+
+body.skin-cyberpunk.dialog-question .nui-dialog > .nui-chrome--outline
+{
+	image-color: var(--cyberpunk-glow-alt);
+}

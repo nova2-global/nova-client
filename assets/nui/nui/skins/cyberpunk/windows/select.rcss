@@ -1,0 +1,62 @@
+/* Cyberpunk overlay of nui/windows/select/select.rml, after the WSelect board
+   of the reviewed mockup. The empire card and the name, level and play time
+   rows are square wells. The slots are dark cells on a faint cyan line, the
+   chosen one on the soft fill inside the dim neon line with the magenta
+   left edge, its name lit; the level marks square. The rotate arrows are
+   the modern blades in neon: a dark blade on a cyan edge, the edge in the
+   full accent under the pointer, the arrowheads light; the button draws no
+   box and no label (the skin's icon button would give it a neon box and
+   its "<" and ">" label in the accent; classic shows that label over its
+   art). The class-name art and the flag are content and keep their
+   pixels. */
+
+body.skin-cyberpunk.select .select-empire, body.skin-cyberpunk.select .select-row
+{
+	border-radius: 0;
+}
+
+body.skin-cyberpunk.select .select-slot
+{
+	background-color: var(--cyberpunk-cell);
+	border-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.select .select-slot:hover
+{
+	background-color: var(--surface-hover);
+}
+body.skin-cyberpunk.select .select-slot.is-selected
+{
+	background-color: var(--selection);
+	border-color: var(--cyberpunk-edge-dim);
+	border-left-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.select .select-slot.is-selected .nui-list__label
+{
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.select .select-slot__dot
+{
+	border-radius: 0;
+}
+
+/* The arrows: one class over every state rule of the skin's icon button. */
+body.skin-cyberpunk.select .select-arrow
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: transparent;
+}
+body.skin-cyberpunk.select .select-blade
+{
+	border-color: var(--scene) transparent transparent transparent;
+}
+body.skin-cyberpunk.select .select-blade--edge
+{
+	border-color: var(--cyberpunk-edge) transparent transparent transparent;
+}
+body.skin-cyberpunk.select .select-arrow:hover .select-blade--edge
+{
+	border-color: var(--accent) transparent transparent transparent;
+}

@@ -1,0 +1,24 @@
+/* Cyberpunk overlay of nui/windows/belt-inventory/belt-inventory.rml, after
+   the mockup's WBelt board (skins-stage2/ref/WBelt-cyberpunk.png): the
+   modern layout to the dp. The fold bar a square well with the brighter
+   cyan line and its chevron in the accent; the cells beyond the belt's
+   grade hatched dark on the dim fill (the stripes' first and last stops
+   clear, so a device without effects shows the plain dim cell). */
+
+body.skin-cyberpunk.belt .belt__minimize
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.belt .belt__minimize:hover
+{
+	border-color: var(--cyberpunk-edge);
+	background-color: var(--surface-hover);
+	decorator: none;
+}
+body.skin-cyberpunk.belt .belt__grid > .nui-slot.is-unavailable,
+body.skin-cyberpunk.belt .belt__grid > .nui-slot.is-unavailable:hover
+{
+	decorator: repeating-linear-gradient(135deg, transparent 0dp, transparent 4.9dp, var(--cyberpunk-holo-a) 5dp, var(--cyberpunk-holo-a) 9.9dp, transparent 10dp);
+}

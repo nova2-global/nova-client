@@ -1,0 +1,85 @@
+/* Cyberpunk overlay of nui/windows/refine/refine.rml, after the mockup's
+   WRefine board (skins-stage2/ref/WRefine-cyberpunk.png): the modern
+   layout to the dp. The title's icon chip a square on the brighter cyan
+   line; the item's cell square on that line. The item's board, inset in
+   the window, the mockup's well: square, opaque on the scene's color (the
+   color the tooltip text is checked on), the dim line with a magenta left
+   edge (2dp, its padding 1dp less), without the floating tooltip's
+   outline and acid bar; its socket frames square on a dark well with a
+   1dp line (the modern 36dp box) and its dividers dashed, as the item
+   tooltip's. The materials square wells
+   with an accent edge on their left (2dp, their padding 1dp less), their
+   cells square; the probability and cost bars square, the cost on an
+   acid tag's fill and line. */
+
+body.skin-cyberpunk.refine .refine-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.refine .refine__item
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}
+
+/* --- The item's board ---------------------------------------------------------- */
+
+body.skin-cyberpunk.refine .refine__tip
+{
+	padding-left: 13dp;
+	border-left-width: 2dp;
+	border-color: var(--border);
+	border-left-color: var(--cyberpunk-edge-alt);
+	background-color: var(--scene);
+	decorator: none;
+}
+body.skin-cyberpunk.refine .refine__tip > .nui-chrome--outline, body.skin-cyberpunk.refine .refine__tip > .nui-chrome--edge-top
+{
+	display: none;
+}
+body.skin-cyberpunk.refine .nui-tip__socket-frame
+{
+	border-width: 1dp;
+	padding: 1dp;
+	border-radius: 0;
+	background-color: var(--cooldown-shade);
+}
+body.skin-cyberpunk.refine .nui-tip__rule
+{
+	background-color: transparent;
+	decorator: repeating-linear-gradient(90deg, transparent 0dp, transparent 1.9dp, var(--tip-divider) 2dp, var(--tip-divider) 4.9dp, transparent 5dp);
+}
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.refine .nui-tip__rule
+	{
+		background-color: var(--tip-divider);
+		decorator: none;
+	}
+}
+
+/* --- The materials and the bars ------------------------------------------------- */
+
+body.skin-cyberpunk.refine .refine__material
+{
+	padding-left: 9dp;
+	border-left-width: 2dp;
+	border-left-color: var(--accent);
+	border-radius: 0;
+}
+body.skin-cyberpunk.refine .refine__material-cell
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}
+body.skin-cyberpunk.refine .refine__line
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.refine .refine__cost
+{
+	border-color: var(--cyberpunk-acid-line);
+	background-color: var(--cyberpunk-acid-soft);
+}

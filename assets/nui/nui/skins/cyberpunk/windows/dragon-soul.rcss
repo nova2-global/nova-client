@@ -1,0 +1,249 @@
+/* Cyberpunk overlay of nui/windows/dragon-soul/dragon-soul.rml, after the
+   mockup's WDragonSoul board (skins-stage2/ref/WDragonSoul-cyberpunk.png):
+   the modern layout to the dp.
+   - The title's icon chip a square on the brighter cyan line.
+   - The altar square, a magenta glow over the sigil; the sigil's rings
+     and hexagram in neon cyan, its middle ring dashed magenta (a repeating
+     conic gradient under a disc of the altar's color that leaves its rim:
+     one element, no motion of its own, it turns with the sigil; a plain
+     magenta ring on a device without effects, which draws a gradient as
+     one flat color), the core's diamond magenta; while the deck is active
+     the rings and lines in the brighter line and the gem in the accent.
+   - The worn cells dark plates cut at the top left and bottom right (the
+     board's shape: the plate the place's fill, the line the cell's edge),
+     the line the accent's 70%, dim on an empty cell; an active cell's line
+     and its breathing ring acid.
+   - The deck choices square boxes on the brighter line, the chosen one
+     acid; the kind tabs square cells, the shown kind's with the accent
+     line and a magenta underline; the kind's name in the name color.
+   - The grade choices the skin's underlined tabs on the modern 32dp. */
+
+body.skin-cyberpunk.ds .ds-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+
+/* --- The altar ----------------------------------------------------------------- */
+
+body.skin-cyberpunk.ds .ds-deck
+{
+	border-radius: 0;
+}
+/* The glow over the sigil (it lights the dashed ring's disc too), under the
+   worn cells and the deck choices, so it tints no icon. */
+body.skin-cyberpunk.ds .ds-emblem__glow
+{
+	z-index: 1;
+	decorator: radial-gradient(50% 50% at 50% 48%, var(--cyberpunk-holo-b) 0%, transparent 100%);
+}
+body.skin-cyberpunk.ds .ds-equip-grid, body.skin-cyberpunk.ds .ds-decks
+{
+	z-index: 2;
+}
+body.skin-cyberpunk.ds .ds-emblem__ring
+{
+	border-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.ds .ds-emblem__ring--middle
+{
+	border-color: transparent;
+	decorator: radial-gradient(50% 50% at 50% 50%, var(--surface-sunken) 0%, var(--surface-sunken) 98.3%, transparent 98.8%),
+	           repeating-conic-gradient(from 0deg, var(--cyberpunk-edge-alt) 0deg, var(--cyberpunk-edge-alt) 3.6deg, transparent 3.7deg, transparent 7.1deg, var(--cyberpunk-edge-alt) 7.2deg);
+}
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.ds .ds-emblem__ring--middle
+	{
+		border-color: var(--cyberpunk-glow-alt);
+		decorator: none;
+	}
+}
+body.skin-cyberpunk.ds .ds-emblem__line
+{
+	background-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.ds .ds-emblem__core
+{
+	border-color: var(--cyberpunk-glow-alt);
+}
+body.skin-cyberpunk.ds .ds-emblem__gem
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-glow-alt);
+}
+body.skin-cyberpunk.ds.ds--active .ds-emblem__ring
+{
+	border-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.ds.ds--active .ds-emblem__ring--middle
+{
+	border-color: transparent;
+}
+body.skin-cyberpunk.ds.ds--active .ds-emblem__line
+{
+	background-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.ds.ds--active .ds-emblem__gem
+{
+	background-color: transparent;
+	decorator: vertical-gradient(var(--accent-hover) var(--accent));
+}
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.ds.ds--active .ds-emblem__ring--middle
+	{
+		border-color: var(--cyberpunk-glow-alt);
+	}
+}
+
+/* --- The worn cells: the place draws the plate, the cell its edge ---------------- */
+
+body.skin-cyberpunk.ds .ds-equip-place
+{
+	decorator: ninepatch(cyberpunk-board, cyberpunk-board-inner) border-box;
+	image-color: var(--cooldown-shade);
+}
+body.skin-cyberpunk.ds .ds-equip-place:hover
+{
+	image-color: var(--selection);
+}
+body.skin-cyberpunk.ds .ds-equip
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.ds .ds-equip.is-empty
+{
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.ds .ds-equip:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.ds .ds-equip.is-active
+{
+	border-color: transparent;
+	image-color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.ds .ds-equip.is-picked
+{
+	background-color: var(--slot-picked);
+}
+body.skin-cyberpunk.ds .ds-equip.is-target
+{
+	background-color: var(--slot-target);
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.ds .ds-equip.is-blocked
+{
+	background-color: var(--slot-blocked);
+	image-color: var(--danger);
+}
+body.skin-cyberpunk.ds .ds-equip__pulse
+{
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+}
+
+/* --- The deck choices -------------------------------------------------------------- */
+
+body.skin-cyberpunk.ds .ds-deck-button
+{
+	border-color: var(--cyberpunk-edge-dim);
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	font-weight: normal;
+}
+body.skin-cyberpunk.ds .ds-deck-button:hover
+{
+	border-color: var(--cyberpunk-edge);
+	background-color: var(--cyberpunk-holo-a);
+	decorator: none;
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.ds .ds-deck-button.is-selected
+{
+	border-color: var(--cyberpunk-acid);
+	background-color: var(--cyberpunk-acid-soft);
+	decorator: none;
+	color: var(--cyberpunk-acid);
+}
+
+/* --- The kinds and the grades ------------------------------------------------------ */
+
+body.skin-cyberpunk.ds .ds-kinds .ds-kind
+{
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+	decorator: none;
+}
+body.skin-cyberpunk.ds .ds-kinds .ds-kind:hover
+{
+	border-color: var(--cyberpunk-edge-dim);
+	background-color: var(--selection);
+	decorator: none;
+}
+body.skin-cyberpunk.ds .ds-kinds .ds-kind.is-selected
+{
+	border-width: 1dp 1dp 2dp 1dp;
+	border-color: var(--accent);
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: var(--selection);
+	decorator: none;
+}
+body.skin-cyberpunk.ds .ds-gem__face
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.ds .ds-kind-title
+{
+	color: var(--cyberpunk-name);
+}
+/* The grades: the skin's underlined tabs, 5dp above 26dp tabs and the
+   row's line (a second row in Russian). */
+body.skin-cyberpunk.ds .ds-grades
+{
+	gap: 0;
+	padding: 5dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.ds .ds-grades .ds-grade
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-radius: 0;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	line-height: 24dp;
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.ds .ds-grades .ds-grade:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.ds .ds-grades .ds-grade.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

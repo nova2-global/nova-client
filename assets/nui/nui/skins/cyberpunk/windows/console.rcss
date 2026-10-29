@@ -1,0 +1,13 @@
+/* Cyberpunk overlay of nui/windows/console/console.rml (no board of its own:
+   the components' look on the band): the resize grip a square corner
+   bracket in the accent over the faint cyan fill, as the frames' bottom
+   right brackets (inside its 16dp box, so its place and hit box stay). */
+
+body.skin-cyberpunk.console .console__resize
+{
+	box-sizing: border-box;
+	border-width: 0 2dp 2dp 0;
+	border-color: var(--accent);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}

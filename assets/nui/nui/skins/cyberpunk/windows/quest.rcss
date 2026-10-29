@@ -1,11 +1,49 @@
-/* Cyberpunk overlay of nui/windows/quest/quest.rml. The quest's scrim leaves
-   the world sharp (legacy dims nothing behind a quest dialog), so it takes
-   no backdrop blur; on the scroll skin's paper the choices are solid chips,
-   so their labels keep their contrast. */
+/* Cyberpunk overlay of nui/windows/quest/quest.rml, after the WQuest board
+   of the reviewed mockup. The quest's scrim leaves the world sharp (legacy
+   dims nothing behind a quest dialog), so it takes no backdrop blur. The
+   modern dress turns neon: each corner bracket a magenta L without its
+   ticks, inside the frame's own pulsing corners, and the top sheen a faint
+   magenta haze from the top left over the frame's scan layer (the frame's
+   edge tab is the top line); both still take no pointer. The speaker's
+   title run in acid, tracked and lit; Next tracked. Reduced effects drops
+   the haze. On the scroll skin's paper the choices are solid chips, so
+   their labels keep their contrast. */
 
 body.skin-cyberpunk.quest.nui-fx
 {
 	backdrop-filter: none;
+}
+
+body.skin-cyberpunk.quest .quest__sheen
+{
+	left: 0;
+	right: 0;
+	height: 240dp;
+	decorator: radial-gradient(circle 200dp at 20% 0%, var(--cyberpunk-holo-b) 0%, transparent 100%);
+}
+body.skin-cyberpunk.quest .quest__corner
+{
+	border-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.quest .quest__tick
+{
+	display: none;
+}
+body.skin-cyberpunk.quest .quest__text .nui-quest__run--title
+{
+	color: var(--cyberpunk-acid);
+	letter-spacing: 1dp;
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-acid-line));
+}
+body.skin-cyberpunk.quest .quest__next
+{
+	letter-spacing: 2dp;
+}
+
+/* The scroll skin's paper fills the card: no haze around it. */
+body.skin-cyberpunk.quest--scroll .quest__sheen
+{
+	display: none;
 }
 body.skin-cyberpunk.quest--scroll .quest__choice
 {
@@ -19,4 +57,14 @@ body.skin-cyberpunk.quest--scroll .quest__choice:active, body.skin-cyberpunk.que
 	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
 	image-color: var(--accent);
 	color: var(--accent-text);
+}
+
+/* Reduced effects: no haze (without effects its gradient would draw one
+   flat tint over its box). */
+@media (theme: reduced-effects)
+{
+	body.skin-cyberpunk.quest .quest__sheen
+	{
+		decorator: none;
+	}
 }

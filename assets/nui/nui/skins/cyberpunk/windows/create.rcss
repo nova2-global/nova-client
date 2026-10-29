@@ -1,0 +1,60 @@
+/* Cyberpunk overlay of nui/windows/create/create.rml, after the WCreate board
+   of the reviewed mockup. The description is a square well with a magenta
+   left edge (the text keeps its place); the name field's pictogram muted,
+   as the login card's; the chosen gender and shape solid accent chips, as
+   the mockup's (the skin's selected choice is acid elsewhere), with the
+   primary button's acid notch under keyboard focus. The rotate arrows are
+   the select screen's neon blades (skins/cyberpunk/windows/select.rcss):
+   the button draws no box and no label. The class-name art is content and
+   keeps its pixels. */
+
+body.skin-cyberpunk.create .create-well
+{
+	padding-left: 9dp;
+	border-left-width: 2dp;
+	border-left-color: var(--cyberpunk-edge-alt);
+	border-radius: 0;
+}
+body.skin-cyberpunk.create .create-icon
+{
+	--glyph-ink: var(--text-muted);
+}
+
+body.skin-cyberpunk.create .create-choice.is-selected
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--accent);
+	color: var(--accent-text);
+}
+body.skin-cyberpunk.create .create-choice.is-selected:hover
+{
+	image-color: var(--accent-hover);
+}
+body.skin-cyberpunk.create .create-choice.is-selected:focus-visible
+{
+	background-color: var(--focus-ring);
+	image-color: var(--accent);
+}
+
+/* The arrows: one class over every state rule of the skin's icon button. */
+body.skin-cyberpunk.create .create-arrow
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: transparent;
+}
+body.skin-cyberpunk.create .create-blade
+{
+	border-color: var(--scene) transparent transparent transparent;
+}
+body.skin-cyberpunk.create .create-blade--edge
+{
+	border-color: var(--cyberpunk-edge) transparent transparent transparent;
+}
+body.skin-cyberpunk.create .create-arrow:hover .create-blade--edge
+{
+	border-color: var(--accent) transparent transparent transparent;
+}

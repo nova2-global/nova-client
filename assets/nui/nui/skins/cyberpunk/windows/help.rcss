@@ -1,0 +1,42 @@
+/* Cyberpunk overlay of nui/windows/help/help.rml, after the reviewed WHelp
+   board: the heading lit and tracked as the frames' titles (its height and
+   line stay); its tile a square with the dim neon line; each line open but
+   for a neon line down its left edge and a faint cyan fading to the right
+   (the lines' 1dp border stays, clear elsewhere, so nothing moves), its
+   bullet magenta; the taskbar guide's cards square on the faint cyan cell
+   fill with the dim line, their glyphs in the text's ink. */
+
+body.skin-cyberpunk.help .help__heading
+{
+	color: var(--cyberpunk-title);
+	font-size: 12dp;
+	letter-spacing: 0.5dp;
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.help .help__icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.help .help__line
+{
+	border-color: transparent;
+	border-left-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--cyberpunk-holo-a) transparent);
+}
+body.skin-cyberpunk.help .help__bullet
+{
+	background-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.help .help-stick
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.help .help-stick__glyph
+{
+	--glyph-ink: var(--text);
+}

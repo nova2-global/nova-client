@@ -1,9 +1,85 @@
-/* Cyberpunk overlay of nui/windows/target/target.rml: the target's name in
-   the skin's title color with a faint glow, as the mockup's window titles. */
+/* Cyberpunk overlay of nui/windows/target/target.rml: the reviewed mockup's
+   red target board (skins-stage2 ref Target-cyberpunk). The board keeps the
+   shared overlay black (tip-bg, a tooltip board) but takes the board's cut
+   (the top left and bottom right corners) with a thin red edge and a red
+   line along its top in place of the tooltips' acid bar; the name lit, a
+   monster's level in a slanted red tag, its HP percent in red, the close
+   cross muted; the HP bar square on the dark well, segmented by the gauge
+   component, its damage chip white. A player's relation buttons are the
+   skin's chips. */
 
-body.skin-cyberpunk.target .target-board__name
+body.skin-cyberpunk.target .target-board
+{
+	decorator: ninepatch(cyberpunk-board, cyberpunk-board-inner) border-box;
+}
+body.skin-cyberpunk.target .target-board > .nui-chrome--outline
+{
+	left: -1dp;
+	top: -1dp;
+	right: -1dp;
+	bottom: -1dp;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--slot-blocked);
+}
+/* The red top line, from the end of the top left cut. */
+body.skin-cyberpunk.target .target-board > .nui-chrome--edge-top
+{
+	left: 5dp;
+	top: -1dp;
+	right: -1dp;
+	width: auto;
+	height: 2dp;
+	background-color: var(--danger);
+}
+
+/* --- The head ------------------------------------------------------------------------ */
+
+body.skin-cyberpunk.target .target-board__title
 {
 	color: var(--cyberpunk-title);
 	letter-spacing: 1dp;
-	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+	font-effect: glow(0dp 3dp 0dp 0dp var(--slot-blocked));
+}
+/* The level: a slanted tag (the toggle track's art), a faint red fill and a
+   red edge. */
+body.skin-cyberpunk.target .target-board__badge
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-skew, cyberpunk-skew-inner) border-box, ninepatch(cyberpunk-skew-edge, cyberpunk-skew-edge-inner) border-box;
+	image-color: var(--danger);
+}
+body.skin-cyberpunk.target .target-board__level
+{
+	color: var(--danger-hover);
+}
+body.skin-cyberpunk.target .target-board__pct
+{
+	color: var(--danger-hover);
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.target .target-board__glyph
+{
+	--glyph-ink: var(--text-muted);
+}
+body.skin-cyberpunk.target .target-board__close:hover .target-board__glyph
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+
+/* --- The HP bar ---------------------------------------------------------------------- */
+
+body.skin-cyberpunk.target progress.target-board__gauge fill
+{
+	border-color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.target progress.target-board__cover fill
+{
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.target .target-board__ticks
+{
+	display: none;
 }

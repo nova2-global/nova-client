@@ -1,196 +1,338 @@
-/* Cyberpunk overlay of nui/windows/taskbar/taskbar.rml: the mockup's neon bar.
-   The bar is the cut-corner panel with the glowing outline, a light that
-   runs along its top edge and the violet cut at its left; the HP ring (the
-   optional skin part of P13 D21, hidden in modern and classic) stands at
-   its left with the HP value inside, where the modern layout has the mall
-   button, and the SP value stands right of the right mode button, in the
-   SP blue. The mall button moves right of the ring and the HP, SP and
-   stamina bars narrow to make room, so the left group still ends where the
-   modern one does (268dp) and the modern narrow-screen steps still fit.
-   Every button is a neon chip. Everything else keeps the modern places
-   (taskbar.rcss). */
+/* Cyberpunk overlay of nui/windows/taskbar/taskbar.rml: the reviewed
+   mockup's neon bar (skins-stage2 ref Taskbar-cyberpunk) on the modern
+   layout. The bar is a band along the screen's bottom edge, lit from the
+   top (a vertex gradient) under a cyan top line with a faint magenta line
+   below it, and fine scan lines; the mall button at its left is the
+   mockup's magenta ring with the shop glyph in pink; the gauges square and
+   segmented; the EXP orbs four acid cells, hatched where they are full,
+   with the percent in acid. The middle group's well and its cells take the
+   mockup's cut corners (the board and chip outlines), the mouse modes a
+   magenta edge, the key and grade tags square; the pager and the window
+   buttons have no chip at rest, the window buttons a soft cyan light and a
+   magenta underline under the pointer. Every part keeps its modern place
+   and size (taskbar.rcss): the mockup has no HP ring, so the optional HP
+   ring and value parts (P13 D21) stay hidden here as in the other skins,
+   and the values stay inside the bars. */
 
-/* --- The bar --------------------------------------------------------------------- */
+/* --- The bar ----------------------------------------------------------------------- */
 
 body.skin-cyberpunk.taskbar .taskbar-bar
 {
-	decorator: ninepatch(cyberpunk-panel, cyberpunk-panel-inner) border-box;
+	border-top-color: var(--cyberpunk-edge);
+	decorator: vertical-gradient(var(--surface-raised) var(--surface));
 }
-/* The bar has a top border only: its padding box starts 1dp below its top
-   and at its sides. */
+/* A band, not a cut panel: no outline around it. */
 body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--outline
 {
-	left: -6dp;
-	top: -7dp;
-	right: -6dp;
-	bottom: -6dp;
-	decorator: ninepatch(cyberpunk-panel-edge, cyberpunk-panel-edge-inner) border-box;
-	image-color: var(--cyberpunk-edge);
+	display: none;
 }
+/* The faint magenta line under the top line, still. */
 body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top
 {
 	display: block;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 1dp;
+	decorator: none;
+	background-color: var(--cyberpunk-holo-b);
+	transform: none;
 }
-body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--corner-tl
+/* Scan lines over the band, under its parts. */
+body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--scan
 {
 	display: block;
-	left: -3dp;
-}
-/* The bar is a board, so cyberpunk.rcss moves neither hook: the bar's own
-   motion, on these two only (every other board's hooks stay still and
-   hidden). */
-body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top.nui-anim
-{
-	animation: 6s linear-in-out infinite cyberpunk-sweep;
-}
-body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--corner-tl.nui-anim
-{
-	animation: 2.4s sine-in-out infinite cyberpunk-pulse;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	decorator: repeating-linear-gradient(180deg, var(--cyberpunk-scan) 0dp, var(--cyberpunk-scan) 1dp, transparent 1dp, transparent 3dp);
 }
 
-/* --- The HP ring and the values (P13 D21) -------------------------------------------
-   A circular progress bar draws its fill from fill-image only: the ring
-   sprite tinted in the HP color, cut clockwise by the HP ratio, over a faint
-   track drawn by a gradient. */
-body.skin-cyberpunk.taskbar progress.taskbar-hp-ring
-{
-	display: block;
-	position: absolute;
-	left: 4dp;
-	top: 4dp;
-	width: 40dp;
-	height: 40dp;
-	fill-image: cyberpunk-ring;
-	image-color: var(--cyberpunk-hp);
-	decorator: radial-gradient(circle closest-side, transparent 72%, var(--hp-recovery) 76%, var(--hp-recovery) 86%, transparent 90%);
-	pointer-events: none;
-}
-body.skin-cyberpunk.taskbar .taskbar-value
-{
-	display: block;
-	position: absolute;
-	top: 4dp;
-	height: 40dp;
-	font-size: var(--font-xs);
-	font-weight: bold;
-	line-height: 40dp;
-	white-space: nowrap;
-	pointer-events: none;
-}
-/* The HP value sits inside the ring, whose opening is about 29dp: 9dp digits
-   with a slight squeeze keep a level-100 character's five digits (and six,
-   just) off the ring's stroke. */
-body.skin-cyberpunk.taskbar .taskbar-value--hp
-{
-	left: 4dp;
-	width: 40dp;
-	color: var(--cyberpunk-hp);
-	font-size: 9dp;
-	letter-spacing: -0.3dp;
-	text-align: center;
-}
-body.skin-cyberpunk.taskbar .taskbar-value--sp
-{
-	left: 50%;
-	margin-left: 268dp;
-	width: 64dp;
-	color: var(--cyberpunk-sp);
-	font-size: var(--font-md);
-	letter-spacing: 1dp;
-	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
-}
-
-/* --- The mall button and the bars, right of the ring ------------------------------- */
+/* --- The mall button: a magenta ring ------------------------------------------------
+   Its 2dp ring moves the glyph's box 1dp in, so the glyph moves 1dp back. */
 
 body.skin-cyberpunk.taskbar .taskbar-mall
 {
-	left: 50dp;
-	image-color: var(--cyberpunk-edge-alt);
+	border-width: 2dp;
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--surface-sunken);
+	decorator: none;
 }
-/* The coin's shop glyph in the warning ink on the dark chip (modern
-   engraves it in the scene's color on its gold coin, which the chip
-   replaces). */
+body.skin-cyberpunk.taskbar .taskbar-mall.nui-fx
+{
+	box-shadow: none;
+}
+body.skin-cyberpunk.taskbar .taskbar-mall:hover
+{
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--cyberpunk-holo-b);
+}
+body.skin-cyberpunk.taskbar .taskbar-mall:active
+{
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--cyberpunk-glow-alt);
+}
+/* The shop glyph in pink on the dark disc (modern engraves it in the
+   scene's color on its gold coin). */
 body.skin-cyberpunk.taskbar .taskbar-mall .taskbar-glyph, body.skin-cyberpunk.taskbar .taskbar-mall:hover .taskbar-glyph
 {
-	--glyph-ink: var(--warning);
+	left: 8dp;
+	top: 8dp;
+	--glyph-ink: var(--chat-info);
 }
 body.skin-cyberpunk.taskbar .taskbar-mall__sheen
 {
-	background-color: var(--cyberpunk-edge-alt);
+	background-color: var(--chat-info);
 }
-body.skin-cyberpunk.taskbar .taskbar-gauge-host
+@media (min-width: 1250dp)
 {
-	left: 96dp;
-	width: 106dp;
+	body.skin-cyberpunk.taskbar .taskbar-mall .taskbar-glyph, body.skin-cyberpunk.taskbar .taskbar-mall:hover .taskbar-glyph
+	{
+		left: 9dp;
+		top: 9dp;
+	}
 }
-body.skin-cyberpunk.taskbar progress.taskbar-gauge, body.skin-cyberpunk.taskbar progress.taskbar-recovery
+
+/* --- Gauges: square and segmented ------------------------------------------------------
+   The component segments the fills; the modern ticks go. The damage chip
+   is white. The empty part is the dark well, opaque, so the SP stripes (in
+   the translucent cyan line here) show on the fill alone. Stamina keeps the
+   modern segments over its fill and track, so its fill drops the
+   component's gaps. */
+
+body.skin-cyberpunk.taskbar progress.taskbar-recovery, body.skin-cyberpunk.taskbar progress.taskbar-recovery fill
 {
-	width: 106dp;
 	border-radius: 0;
 }
-body.skin-cyberpunk.taskbar progress.taskbar-recovery fill
-{
-	border-radius: 0;
-}
-body.skin-cyberpunk.taskbar progress.taskbar-orb
+body.skin-cyberpunk.taskbar progress.taskbar-cover fill
 {
 	border-radius: 0;
 	background-color: var(--surface-sunken);
 }
-body.skin-cyberpunk.taskbar progress.taskbar-orb fill
+body.skin-cyberpunk.taskbar progress.taskbar-gauge--hp fill
 {
-	border-radius: 0;
-	decorator: vertical-gradient(var(--cyberpunk-edge-alt) var(--accent));
+	border-color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.taskbar .taskbar-ticks
+{
+	display: none;
+}
+body.skin-cyberpunk.taskbar progress.taskbar-gauge--st fill
+{
+	decorator: vertical-gradient(var(--sheen) var(--sheen-clear));
 }
 
-/* --- Buttons: neon chips ----------------------------------------------------------- */
+/* --- The EXP orbs: four acid cells ---------------------------------------------------
+   Each orb a 14 x 22dp cell in its 18dp slot, an acid line around a faint
+   acid fill, filled from the bottom to its level (--orb-level, inline from
+   the feed) in acid under dark hatching; no well around them. */
 
-body.skin-cyberpunk.taskbar .taskbar-mall, body.skin-cyberpunk.taskbar .taskbar-mode, body.skin-cyberpunk.taskbar .taskbar-window,
-body.skin-cyberpunk.taskbar .taskbar-expand, body.skin-cyberpunk.taskbar .taskbar-pager__up, body.skin-cyberpunk.taskbar .taskbar-pager__down
+body.skin-cyberpunk.taskbar .taskbar-exp
 {
 	border-color: transparent;
 	border-radius: 0;
 	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 }
-body.skin-cyberpunk.taskbar .taskbar-mode, body.skin-cyberpunk.taskbar .taskbar-window,
-body.skin-cyberpunk.taskbar .taskbar-expand, body.skin-cyberpunk.taskbar .taskbar-pager__up, body.skin-cyberpunk.taskbar .taskbar-pager__down
+body.skin-cyberpunk.taskbar .taskbar-orb-glass
 {
+	--orb-level: 0%;
+	top: 4dp;
+	width: 14dp;
+	height: 22dp;
+	margin-left: 2dp;
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+	decorator: repeating-linear-gradient(135deg, transparent 0dp, transparent 2.9dp, var(--cooldown-shade) 3dp, var(--cooldown-shade) 5.9dp, transparent 6dp),
+		linear-gradient(0deg, var(--cyberpunk-acid) 0%, var(--cyberpunk-acid) var(--orb-level), transparent var(--orb-level), transparent 100%);
+}
+body.skin-cyberpunk.taskbar .taskbar-orb-glass.is-full
+{
+	border-color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.taskbar .taskbar-orb-glass.is-full.nui-fx
+{
+	box-shadow: none;
+}
+body.skin-cyberpunk.taskbar .taskbar-exp__pct
+{
+	color: var(--cyberpunk-acid);
+	letter-spacing: 1dp;
+}
+
+/* --- The middle group: a cut well, cut cells ---------------------------------------- */
+
+body.skin-cyberpunk.taskbar .taskbar-center
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--border);
+}
+/* A quickslot (and the right mouse skill): the chip's outline, cut at the
+   bottom right, in the dim line (the right mouse skill in the modes'
+   magenta); under the pointer the chip lit in the accent; the selected one
+   magenta; an active one acid. */
+body.skin-cyberpunk.taskbar .taskbar-quick-grid .taskbar-cell, body.skin-cyberpunk.taskbar .taskbar-right-skill .taskbar-cell
+{
+	border-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--cyberpunk-edge-dim);
 }
-body.skin-cyberpunk.taskbar .taskbar-mall:hover, body.skin-cyberpunk.taskbar .taskbar-mode:hover, body.skin-cyberpunk.taskbar .taskbar-window:hover,
-body.skin-cyberpunk.taskbar .taskbar-expand:hover, body.skin-cyberpunk.taskbar .taskbar-pager__up:hover, body.skin-cyberpunk.taskbar .taskbar-pager__down:hover
+body.skin-cyberpunk.taskbar .taskbar-right-skill .taskbar-cell
+{
+	image-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.taskbar .taskbar-quick-grid .taskbar-cell:hover, body.skin-cyberpunk.taskbar .taskbar-right-skill .taskbar-cell:hover
 {
 	border-color: transparent;
 	background-color: transparent;
 	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--accent);
 }
-body.skin-cyberpunk.taskbar .taskbar-mall:active, body.skin-cyberpunk.taskbar .taskbar-mode:active, body.skin-cyberpunk.taskbar .taskbar-window:active,
-body.skin-cyberpunk.taskbar .taskbar-expand:active, body.skin-cyberpunk.taskbar .taskbar-pager__up:active, body.skin-cyberpunk.taskbar .taskbar-pager__down:active,
-body.skin-cyberpunk.taskbar .taskbar-mode.is-open
+body.skin-cyberpunk.taskbar .taskbar-quick-grid .taskbar-cell.is-selected
 {
+	border-color: transparent;
 	background-color: transparent;
 	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--cyberpunk-edge-alt);
 }
+body.skin-cyberpunk.taskbar .taskbar-quick-grid .taskbar-cell.is-active
+{
+	border-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-acid);
+}
+/* The active slot's running spark in acid. */
+body.skin-cyberpunk.taskbar .taskbar-aura
+{
+	decorator: radial-gradient(circle, var(--cyberpunk-title) 0%, var(--cyberpunk-acid) 30%, transparent 70%);
+}
+/* The key and the grade tags: square; a grade a dark tag edged and lettered
+   in its grade's color (10dp inside its 1dp edge, the modern 12dp tag). */
+body.skin-cyberpunk.taskbar .taskbar-key
+{
+	border-radius: 0;
+	color: var(--accent);
+}
+body.skin-cyberpunk.taskbar .taskbar-cell .taskbar-count
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.taskbar .taskbar-cell .taskbar-count--m, body.skin-cyberpunk.taskbar .taskbar-cell .taskbar-count--g,
+body.skin-cyberpunk.taskbar .taskbar-cell .taskbar-count--p
+{
+	border-width: 1dp;
+	background-color: var(--tooltip-bg);
+	line-height: 10dp;
+}
+body.skin-cyberpunk.taskbar .taskbar-cell .taskbar-count--m
+{
+	border-color: var(--tip-positive);
+	color: var(--tip-positive);
+}
+body.skin-cyberpunk.taskbar .taskbar-cell .taskbar-count--g
+{
+	border-color: var(--gauge-blue);
+	color: var(--gauge-blue);
+}
+body.skin-cyberpunk.taskbar .taskbar-cell .taskbar-count--p
+{
+	border-color: var(--tip-socket-gold);
+	color: var(--tip-socket-gold);
+}
+
+/* --- Buttons ---------------------------------------------------------------------------
+   The mouse modes: a quickslot's cut outline in magenta, the chip lit
+   magenta while its menu is open, in the accent under the pointer. The
+   expand button a plain dim box, the page buttons bare chevrons. */
+
+body.skin-cyberpunk.taskbar .taskbar-mode
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.taskbar .taskbar-mode:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.taskbar .taskbar-mode:active, body.skin-cyberpunk.taskbar .taskbar-mode.is-open
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.taskbar .taskbar-expand
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.taskbar .taskbar-expand:hover, body.skin-cyberpunk.taskbar .taskbar-pager__up:hover, body.skin-cyberpunk.taskbar .taskbar-pager__down:hover
+{
+	border-color: var(--accent);
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.taskbar .taskbar-expand:active, body.skin-cyberpunk.taskbar .taskbar-pager__up:active, body.skin-cyberpunk.taskbar .taskbar-pager__down:active
+{
+	border-color: var(--accent);
+	background-color: var(--selection);
+}
+body.skin-cyberpunk.taskbar .taskbar-pager__up, body.skin-cyberpunk.taskbar .taskbar-pager__down
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.taskbar .taskbar-expand .taskbar-glyph, body.skin-cyberpunk.taskbar .taskbar-pager__up .taskbar-glyph,
+body.skin-cyberpunk.taskbar .taskbar-pager__down .taskbar-glyph
+{
+	--glyph-ink: var(--accent);
+}
+body.skin-cyberpunk.taskbar .taskbar-pager__page
+{
+	color: var(--cyberpunk-title);
+}
+/* The window buttons: no chip at rest; under the pointer a soft cyan light
+   over a magenta underline, deeper pressed. Hotkeys in the dim cyan. */
+body.skin-cyberpunk.taskbar .taskbar-window
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.taskbar .taskbar-window:hover
+{
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: var(--cyberpunk-holo-a);
+	decorator: none;
+}
+body.skin-cyberpunk.taskbar .taskbar-window:active
+{
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: var(--selection);
+}
+body.skin-cyberpunk.taskbar .taskbar-hotkey
+{
+	color: var(--cyberpunk-edge);
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.taskbar .taskbar-window:hover .taskbar-hotkey
+{
+	color: var(--accent);
+}
+/* The camera image over the right mode: the magenta chip. */
 body.skin-cyberpunk.taskbar .taskbar-camera
 {
+	border-color: transparent;
 	border-radius: 0;
 	background-color: transparent;
 	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
 	image-color: var(--cyberpunk-edge-alt);
-}
-
-/* --- Quickslots and the pager ------------------------------------------------------ */
-
-body.skin-cyberpunk.taskbar .taskbar-key
-{
-	color: var(--accent);
-}
-body.skin-cyberpunk.taskbar .taskbar-pager__page
-{
-	color: var(--accent);
 }
 
 /* --- Menus and the skill picker ------------------------------------------------------
@@ -210,20 +352,16 @@ body.skin-cyberpunk.taskbar .taskbar-picker > .nui-chrome--outline
 }
 
 /* --- Reduced effects ------------------------------------------------------------------
-   No edge light, as on every frame (cyberpunk.rcss), and no gradient track
-   under the HP ring: without effects a gradient draws one flat color over
-   its whole box. */
+   No scan lines and no spark on an active slot (without effects a gradient
+   draws one flat color over its whole box: the spark a square), as on
+   every frame (cyberpunk.rcss); the slot's acid edge still marks it. */
 @media (theme: reduced-effects)
 {
-	body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top
+	body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--scan
 	{
 		display: none;
 	}
-	body.skin-cyberpunk.taskbar .taskbar-bar > .nui-chrome--edge-top.nui-anim
-	{
-		animation: none;
-	}
-	body.skin-cyberpunk.taskbar progress.taskbar-hp-ring
+	body.skin-cyberpunk.taskbar .taskbar-aura
 	{
 		decorator: none;
 	}

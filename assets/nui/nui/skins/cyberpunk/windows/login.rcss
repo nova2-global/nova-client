@@ -1,0 +1,18 @@
+/* Cyberpunk overlay of nui/windows/login/login.rml, after the login card of
+   the reviewed mockup (Login, cyberpunk): the server row the card's status
+   well, square, with an acid left edge (its text where the modern row has
+   it); the fields' pictograms muted, as the mockup's, the person glyph
+   too (the skin inks glyphs in the accent), and Choose's chevron. */
+
+body.skin-cyberpunk.login .login-server
+{
+	padding-left: 11dp;
+	border-color: var(--border);
+	border-left-width: 2dp;
+	border-left-color: var(--cyberpunk-acid);
+	border-radius: 0;
+}
+body.skin-cyberpunk.login .login-icon, body.skin-cyberpunk.login .login-chevron
+{
+	--glyph-ink: var(--text-muted);
+}

@@ -1,0 +1,152 @@
+/* Cyberpunk overlay of nui/windows/messenger/messenger.rml, after the
+   reviewed WMessenger board: the rows in a square well with the dim cyan
+   line; a group row an accent heading, tracked, over a faint line (its
+   1dp margin becomes that line, so every row keeps its place); a member's
+   person in the accent with a magenta presence dot while online, dimmed
+   while offline; the selected row a soft cyan fading to the right with a
+   magenta edge (2dp, its padding 1dp wider, so the name stays put); the
+   scroll thumb a cyan-to-magenta bar; a line above the footer, whose four
+   actions are neon chips cut at the bottom right, their plus and minus
+   badges magenta; the grip a dashed neon line (over the plain grip, which
+   a device without effects keeps). The modern layout stays. */
+
+body.skin-cyberpunk.messenger .messenger__well
+{
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.messenger .messenger__line
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.messenger .messenger__line:hover
+{
+	background-color: var(--surface-hover);
+}
+body.skin-cyberpunk.messenger .messenger__line.is-selected
+{
+	padding-left: 7dp;
+	border-left-width: 2dp;
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--cyberpunk-holo-a) transparent);
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.messenger .messenger__line.is-member.is-selected
+{
+	padding-left: 13dp;
+}
+body.skin-cyberpunk.messenger .messenger__line.is-selected .messenger__name
+{
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+
+/* A group: the accent heading over the line. */
+body.skin-cyberpunk.messenger .messenger__line.is-group
+{
+	margin-bottom: 0;
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+	background-color: transparent;
+	color: var(--accent);
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.messenger .messenger__line.is-group:hover
+{
+	background-color: var(--surface-hover);
+}
+body.skin-cyberpunk.messenger .messenger__line.is-group .messenger__mark
+{
+	border-color: var(--accent);
+}
+
+/* A member's person: the accent, a magenta dot while online. */
+body.skin-cyberpunk.messenger .messenger__line.is-member .messenger__mark
+{
+	decorator: radial-gradient(circle 3.5dp at 7dp 4.5dp, var(--text-muted) 80%, transparent 100%),
+	           radial-gradient(ellipse 7dp 5.5dp at 7dp 16dp, var(--text-muted) 88%, transparent 100%);
+}
+body.skin-cyberpunk.messenger .messenger__line.is-member.is-online .messenger__mark
+{
+	decorator: radial-gradient(circle 3.5dp at 7dp 4.5dp, var(--accent) 80%, transparent 100%),
+	           radial-gradient(ellipse 7dp 5.5dp at 7dp 16dp, var(--accent) 88%, transparent 100%),
+	           radial-gradient(circle 3dp at 13.5dp 3dp, var(--cyberpunk-edge-alt) 75%, transparent 100%);
+}
+
+/* The scroll thumb: cyan into magenta, on a faint cyan track. */
+body.skin-cyberpunk.messenger scrollbarvertical slidertrack
+{
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.messenger scrollbarvertical sliderbar
+{
+	decorator: vertical-gradient(var(--accent) var(--cyberpunk-edge-alt));
+}
+
+/* The footer: a line above it, and the actions as chips. */
+body.skin-cyberpunk.messenger .messenger__footer
+{
+	border-top-color: var(--border);
+}
+body.skin-cyberpunk.messenger .messenger__button
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.messenger .messenger__button:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.messenger .messenger__button:active
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.messenger .messenger__button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent-hover);
+}
+body.skin-cyberpunk.messenger .messenger__button:active .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
+}
+body.skin-cyberpunk.messenger .messenger__button .messenger__badge, body.skin-cyberpunk.messenger .messenger__button:hover .messenger__badge
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+
+/* The grip: neon dashes over the plain dim grip. */
+body.skin-cyberpunk.messenger .messenger__grip
+{
+	border-radius: 0;
+	decorator: repeating-linear-gradient(90deg, var(--cyberpunk-edge) 0dp, var(--cyberpunk-edge) 9.9dp, transparent 10dp, transparent 14dp);
+}
+
+/* A device without effects draws a gradient as one flat color over its
+   whole box, so there the person is a plain 8dp square in the middle of
+   its 16dp box: the accent while online, muted while offline. */
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.messenger .messenger__line.is-member .messenger__mark
+	{
+		width: 8dp;
+		height: 8dp;
+		border-width: 4dp;
+		border-color: transparent;
+		background-color: var(--text-muted);
+		decorator: none;
+	}
+	body.skin-cyberpunk.messenger .messenger__line.is-member.is-online .messenger__mark
+	{
+		background-color: var(--accent);
+		decorator: none;
+	}
+}

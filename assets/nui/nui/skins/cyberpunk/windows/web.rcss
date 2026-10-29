@@ -1,0 +1,10 @@
+/* Cyberpunk overlay of nui/windows/web/web.rml: the shop chip a square neon
+   box, as the mockup's title chips (WAtlas, WChatLog, WMusicList). The
+   page area stays a plain box: the client puts the native page on its
+   border box. */
+
+body.skin-cyberpunk.web .web__title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}

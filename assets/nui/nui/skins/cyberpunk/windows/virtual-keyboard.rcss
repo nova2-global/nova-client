@@ -1,0 +1,34 @@
+/* Cyberpunk overlay of nui/windows/virtual-keyboard/virtual-keyboard.rml, in
+   the login card's look of the reviewed mockup: the keys are the skin's
+   chips; the special keys keep their muted labels, white under the pointer
+   and acid while on (shift, symbols); Enter, the card's primary action, is
+   the solid accent chip as Connect is (the skin's chip rule outweighed the
+   modern accent fill). */
+
+body.skin-cyberpunk.virtual-keyboard .virtual-keyboard__special
+{
+	color: var(--text-muted);
+}
+body.skin-cyberpunk.virtual-keyboard .virtual-keyboard__special:hover
+{
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.virtual-keyboard .virtual-keyboard__special.is-selected
+{
+	color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.virtual-keyboard .virtual-keyboard__enter
+{
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--accent);
+	color: var(--accent-text);
+}
+body.skin-cyberpunk.virtual-keyboard .virtual-keyboard__enter:hover
+{
+	image-color: var(--accent-hover);
+	color: var(--accent-text);
+}
+body.skin-cyberpunk.virtual-keyboard .virtual-keyboard__enter:active
+{
+	image-color: var(--accent);
+}

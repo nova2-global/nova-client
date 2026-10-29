@@ -1,0 +1,90 @@
+/* Cyberpunk overlay of nui/windows/costume/costume.rml, after the mockup's
+   WCostume board (skins-stage2/ref/WCostume-cyberpunk.png): the modern
+   layout to the dp. The stage's well square, on the well's color under
+   fine cyan scan lines and a holographic lattice, a magenta glow behind
+   the figure; the rune circle magenta with an acid glow ring. The wear
+   cells dark plates cut at the bottom right with a cyan line, as the
+   inventory's (the plate the place's fill, the line the cell's edge), and
+   the two empty frames legacy's art paints the same plates with the dim
+   line (one element: the plate's fill rounded inside the cut, the cut's
+   line over it). The figure keeps its pixels. */
+
+body.skin-cyberpunk.cos.inv--table-new .cos-grid
+{
+	border-radius: 0;
+	decorator: repeating-linear-gradient(180deg, transparent 0dp, transparent 1.9dp, var(--cyberpunk-cell) 2dp, var(--cyberpunk-cell) 2.9dp, transparent 3dp),
+	           repeating-linear-gradient(45deg, var(--cyberpunk-holo-a) 0dp, var(--cyberpunk-holo-a) 0.6dp, transparent 0.6dp, transparent 8.5dp),
+	           repeating-linear-gradient(-45deg, var(--cyberpunk-holo-a) 0dp, var(--cyberpunk-holo-a) 0.6dp, transparent 0.6dp, transparent 8.5dp);
+}
+/* The magenta glow behind the figure. */
+body.skin-cyberpunk.cos.inv--table-new .cos-stage
+{
+	decorator: radial-gradient(65% 70% at 52% 45%, var(--cyberpunk-holo-b) 0%, transparent 72%);
+}
+/* A device without effects draws a gradient as one flat color. */
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.cos.inv--table-new .cos-stage
+	{
+		decorator: none;
+	}
+}
+body.skin-cyberpunk.cos .cos-stage__ring
+{
+	border-color: var(--cyberpunk-glow-alt);
+}
+body.skin-cyberpunk.cos .cos-stage__ring--glow
+{
+	border-color: var(--cyberpunk-acid-line);
+}
+body.skin-cyberpunk.cos .cos-stage__chord
+{
+	background-color: var(--cyberpunk-glow-alt);
+}
+body.skin-cyberpunk.cos .cos-stage__frame
+{
+	border-color: transparent;
+	border-radius: 0 0 12dp 0;
+	background-color: var(--cooldown-shade);
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--border);
+}
+body.skin-cyberpunk.cos .cos-divider
+{
+	background-color: var(--cyberpunk-glow-alt);
+}
+
+/* The wear cells: the place draws the dark plate, the cell its edge. */
+body.skin-cyberpunk.cos .cos-wear-place
+{
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--cooldown-shade);
+}
+body.skin-cyberpunk.cos .cos-wear
+{
+	background-color: transparent;
+	border-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.cos .cos-wear.is-empty
+{
+	image-color: var(--border);
+}
+body.skin-cyberpunk.cos .cos-wear:hover
+{
+	background-color: transparent;
+	border-color: transparent;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.cos .cos-wear.is-target
+{
+	background-color: var(--slot-target);
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.cos .cos-wear.is-blocked
+{
+	background-color: var(--slot-blocked);
+	image-color: var(--danger);
+}

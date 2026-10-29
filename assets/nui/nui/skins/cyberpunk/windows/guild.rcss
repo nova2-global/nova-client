@@ -1,0 +1,311 @@
+/* Cyberpunk overlay of nui/windows/guild/guild.rml, after the reviewed
+   WGuildInfo, WGuildBoard, WGuildMembers, WGuildBase, WGuildSkills and
+   WGuildGrade boards: square cards on a faint cyan film under title bars
+   lit cyan to magenta, their titles in the accent and their rules fading
+   out; square wells with the dim line (the values' underline magenta);
+   table heads in the accent; rows square on the film; checks square with
+   an acid mark; the board's notices acid, its delete buttons magenta
+   wells; the mark in a cut frame with a magenta inner ring; enemies behind
+   magenta diamonds; the skill covers cut, the "+" acid; the page icon in
+   a cut chip with the dim neon edge, the key cap magenta; the tabs
+   underlined, as the skin's tabs. Labels keep their case (RmlUi
+   upper-cases ASCII only) and the modern layout. Under no effects the
+   title bars' gradient draws one flat color (the renderer's rule). */
+
+/* --- Title bar ------------------------------------------------------------ */
+
+body.skin-cyberpunk.guild .guild__title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+/* One part of each page's glyph in magenta, as the mockup's icons. */
+body.skin-cyberpunk.guild .guild__title-icon .nui-glyph--community .nui-glyph__c,
+body.skin-cyberpunk.guild .guild__title-icon .nui-glyph--chat .nui-glyph__b
+{
+	background-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.guild .guild__title-icon .nui-glyph--home .nui-glyph__a
+{
+	border-color: transparent transparent var(--cyberpunk-edge-alt) transparent;
+}
+body.skin-cyberpunk.guild .guild__title-icon .nui-glyph--system .nui-glyph__a
+{
+	border-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.guild .guild__title-key
+{
+	border-width: 1dp;
+	border-color: var(--cyberpunk-glow-alt);
+	border-radius: 0;
+	color: var(--cyberpunk-edge-alt);
+	font-weight: normal;
+	line-height: 14dp;
+}
+
+/* --- Cards and their title bars -------------------------------------------- */
+
+body.skin-cyberpunk.guild .guild__card, body.skin-cyberpunk.guild .guild__skill-panel,
+body.skin-cyberpunk.guild .guild__power
+{
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.guild .guild__bar
+{
+	border-radius: 0;
+	decorator: linear-gradient(90deg, var(--cyberpunk-holo-a) 0%, transparent 70%, var(--cyberpunk-holo-b) 100%);
+}
+body.skin-cyberpunk.guild .guild__bar-title
+{
+	color: var(--accent);
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.guild .guild__bar-line
+{
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--cyberpunk-edge) transparent);
+}
+/* The base page's two bars open its two cards. */
+body.skin-cyberpunk.guild .guild__bar--resources, body.skin-cyberpunk.guild .guild__bar--buildings
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild .guild__resources, body.skin-cyberpunk.guild .guild__head--base,
+body.skin-cyberpunk.guild .guild__buildings
+{
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+/* The skill points: an acid tag at the passive bar's end. */
+body.skin-cyberpunk.guild .guild__points
+{
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+	color: var(--cyberpunk-acid);
+	font-weight: normal;
+	letter-spacing: 0.5dp;
+}
+
+/* --- Wells ---------------------------------------------------------------------- */
+
+body.skin-cyberpunk.guild .guild__field .guild__value, body.skin-cyberpunk.guild .guild__value--base
+{
+	border-color: var(--border);
+	border-bottom-color: var(--cyberpunk-glow-alt);
+	border-radius: 0;
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.guild .guild__resource-value, body.skin-cyberpunk.guild .guild__building-name,
+body.skin-cyberpunk.guild .guild__building-grade, body.skin-cyberpunk.guild .guild__building-gem,
+body.skin-cyberpunk.guild .guild__grade-number, body.skin-cyberpunk.guild .guild__grade-name,
+body.skin-cyberpunk.guild .guild__combo
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild .guild__resource-value
+{
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.guild .guild__combo.is-open
+{
+	border-color: var(--accent);
+}
+body.skin-cyberpunk.guild .guild__combo-list
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}
+
+/* --- The info page: the mark's cut frame, the enemies ---------------------------- */
+
+/* The board sprite's cuts (top left, bottom right): the frame in the 70%
+   line, the ring 4dp in magenta; no fill, which would be square. */
+body.skin-cyberpunk.guild .guild__mark-slot
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.guild .guild__mark-ring
+{
+	border-color: transparent;
+	border-radius: 0;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-glow-alt);
+}
+body.skin-cyberpunk.guild .guild__enemy
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild .guild__enemy-mark
+{
+	background-color: var(--cyberpunk-edge-alt);
+	opacity: 1;
+}
+
+/* --- Table heads and rows ------------------------------------------------------------ */
+
+body.skin-cyberpunk.guild .guild__head
+{
+	color: var(--accent);
+}
+/* The buildings' head stays muted, as the mockup's. */
+body.skin-cyberpunk.guild .guild__head--base
+{
+	color: var(--text-muted);
+}
+body.skin-cyberpunk.guild .guild__member, body.skin-cyberpunk.guild .guild__comment
+{
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.guild .guild__member:hover, body.skin-cyberpunk.guild .guild__comment:hover
+{
+	background-color: var(--surface-hover);
+}
+/* A notice: the acid edge, an acid film fading to the right and an acid
+   "!". */
+body.skin-cyberpunk.guild .guild__comment.is-notice
+{
+	border-color: var(--cyberpunk-acid-line);
+	border-left-color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.guild .guild__notice-tint
+{
+	border-radius: 0;
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--cyberpunk-acid-soft) transparent);
+	opacity: 1;
+}
+body.skin-cyberpunk.guild .guild__comment.is-notice .guild__notice
+{
+	color: var(--cyberpunk-acid);
+}
+/* The delete buttons: magenta wells, the cross muted, magenta under the
+   pointer. */
+body.skin-cyberpunk.guild .guild__comment .guild__delete
+{
+	border-color: var(--cyberpunk-glow-alt);
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.guild .guild__comment .guild__delete:hover
+{
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--cyberpunk-holo-b);
+}
+body.skin-cyberpunk.guild .guild__delete .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+}
+body.skin-cyberpunk.guild .guild__delete:hover .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+
+/* --- Checks --------------------------------------------------------------------------- */
+
+body.skin-cyberpunk.guild .guild__check
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild .guild__check:hover
+{
+	border-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.guild .guild__check-mark
+{
+	border-color: var(--cyberpunk-acid);
+}
+/* Grade 1 keeps no hover (the modern rule's, one class up). */
+body.skin-cyberpunk.guild .guild__grade.is-disabled .guild__check:hover
+{
+	border-color: var(--border);
+}
+
+/* --- Scroll bar ------------------------------------------------------------------------ */
+
+body.skin-cyberpunk.guild .guild__member-scroll slidertrack
+{
+	border-radius: 0;
+	background-color: var(--border);
+}
+body.skin-cyberpunk.guild .guild__member-scroll sliderbar
+{
+	border-radius: 0;
+	background-color: var(--accent);
+}
+body.skin-cyberpunk.guild .guild__member-scroll sliderbar:hover, body.skin-cyberpunk.guild .guild__member-scroll sliderbar:active
+{
+	background-color: var(--accent-hover);
+}
+
+/* --- Skills ----------------------------------------------------------------------------- */
+
+/* A skill's cover: the board sprite's cut outline (top left, bottom
+   right) in the 70% line, the dim line on a skill the guild cannot use. */
+body.skin-cyberpunk.guild .guild__skill .nui-slot__cover
+{
+	border-color: transparent;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.guild .guild__skill.is-unavailable .nui-slot__cover
+{
+	image-color: var(--cyberpunk-edge-dim);
+}
+/* The "+": square, acid on the black plate. */
+body.skin-cyberpunk.guild .guild__plus
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild .guild__plus .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-acid);
+}
+
+/* --- Tabs: the skin's underlined tabs ------------------------------------------------------
+   The row's dim line under tracked muted labels; the shown page's tab lit,
+   a soft cyan rising from its magenta underline. The row keeps its 30dp
+   (a 4dp gap above 26dp tabs). */
+
+body.skin-cyberpunk.guild .guild__tabs
+{
+	padding: 4dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.guild .guild__tab
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-color: transparent;
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild .guild__tab:hover
+{
+	background-color: transparent;
+}
+body.skin-cyberpunk.guild .guild__tab.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

@@ -1,0 +1,16 @@
+/* Cyberpunk overlay of nui/windows/quest-curtain/quest-curtain.rml: the
+   letterbox bars stay black and gain the dim neon line of the skin's band
+   frames on their inner edges (inside the bars' boxes, which slide by
+   their own height, so a bar at rest off screen hides its line too). The
+   fades stay plain. */
+
+body.skin-cyberpunk.quest-curtain .quest-curtain__bar--top
+{
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.quest-curtain .quest-curtain__bar--bottom
+{
+	border-top-width: 1dp;
+	border-top-color: var(--cyberpunk-edge-dim);
+}

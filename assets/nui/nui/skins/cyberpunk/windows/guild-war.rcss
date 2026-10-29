@@ -1,0 +1,37 @@
+/* Cyberpunk overlay of nui/windows/guild-war/guild-war.rml, after the
+   reviewed WGuildWar board: each board cut as the skin's HUD boards (6dp
+   cuts at the top left and bottom right), the panel color under the dim
+   neon edge; each guild's row a square well with the dim line, the first
+   one with a magenta left edge, its mark framed in the neon line. The
+   board's slot, which is exactly the board's box, draws the cut fill
+   under it, and the board its edge over that (one tint per element). The
+   names keep their case: they are the players' guild names. */
+
+body.skin-cyberpunk.guild-war .guild-war__slot
+{
+	decorator: ninepatch(cyberpunk-board, cyberpunk-board-inner) border-box;
+	image-color: var(--surface);
+}
+body.skin-cyberpunk.guild-war .nui-panel.guild-war__board
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.guild-war .guild-war__row
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.guild-war .guild-war__row-slot:first-child .guild-war__row
+{
+	border-left-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.guild-war .guild-war__mark
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}

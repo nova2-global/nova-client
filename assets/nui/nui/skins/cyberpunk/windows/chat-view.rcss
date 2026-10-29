@@ -1,0 +1,11 @@
+/* Cyberpunk overlay of nui/windows/chat-view/chat-view.rml: the closed
+   chat's lines keep the modern view shade; an item link is the chat's
+   square acid tag (skins/cyberpunk/windows/chat.rcss), its text in the
+   color its tag gives it. */
+
+body.skin-cyberpunk.chat-view .chat-view__block .chat__lines .nui-link
+{
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+}

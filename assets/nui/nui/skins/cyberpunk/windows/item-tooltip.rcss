@@ -1,0 +1,38 @@
+/* Cyberpunk overlay of nui/windows/item-tooltip/item-tooltip.rml, after the
+   mockup's Tooltip board (skins-stage2/ref/Tooltip-cyberpunk.png). The
+   board is the skin's tooltip board (the component); the block keeps
+   legacy's lines, order and widths. The socket frames square on a dark
+   well with a 1dp line (the modern 36dp box: a 1dp line and 1dp of
+   padding), silver or acid (tip-socket-gold); the dividers dashed (whole
+   on a device without effects, which draws no repeating gradient whose
+   first and last stops are clear); the name lit with a soft glow of its
+   own color. */
+
+body.skin-cyberpunk.nui-tip .nui-tip__socket-frame
+{
+	border-width: 1dp;
+	padding: 1dp;
+	border-radius: 0;
+	background-color: var(--cooldown-shade);
+}
+body.skin-cyberpunk.nui-tip .nui-tip__rule
+{
+	background-color: transparent;
+	decorator: repeating-linear-gradient(90deg, transparent 0dp, transparent 1.9dp, var(--tip-divider) 2dp, var(--tip-divider) 4.9dp, transparent 5dp);
+}
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.nui-tip .nui-tip__rule
+	{
+		background-color: var(--tip-divider);
+		decorator: none;
+	}
+}
+body.skin-cyberpunk.nui-tip .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--title
+{
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-acid-line));
+}
+body.skin-cyberpunk.nui-tip .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--special
+{
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

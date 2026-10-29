@@ -1,6 +1,82 @@
-/* Cyberpunk overlay of nui/windows/party/party.rml: the role and menu
-   buttons as neon chips; the members are tiles (the component) with their
-   role chips in their neon colors. */
+/* Cyberpunk overlay of nui/windows/party/party.rml: the reviewed mockup's
+   party (skins-stage2 ref WParty-cyberpunk). Each member's board takes the
+   board's cut (the top left and bottom right corners): its row draws the
+   dark fill and the tile its dim neon edge over it (one element has one
+   image-color), lit in the accent under the pointer. The role tile is
+   square with a dim neon edge, acid for the leader and magenta for an
+   attacker; its pictogram (a person, the leader's shield, the attacker's
+   sword) in the accent. The HP bar is square on the dark well, segmented
+   by the gauge component (the modern ticks go). The menu toggle is a dark
+   cut tile with a dashed neon rule; the role and menu buttons square dark
+   chips with a dim neon edge. */
+
+/* --- A member's board --------------------------------------------------------------- */
+
+body.skin-cyberpunk.party .party__row
+{
+	decorator: ninepatch(cyberpunk-board, cyberpunk-board-inner) border-box;
+	image-color: var(--surface);
+}
+body.skin-cyberpunk.party .party-member
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-board-edge, cyberpunk-board-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge-dim);
+}
+body.skin-cyberpunk.party .party-member:hover
+{
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.party .party-member__name
+{
+	letter-spacing: 0.5dp;
+}
+
+/* The role tile. */
+body.skin-cyberpunk.party .party-member__state
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}
+body.skin-cyberpunk.party .party-member__state[data-state=leader]
+{
+	border-color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.party .party-member__state[data-state=attacker]
+{
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--cyberpunk-holo-b);
+}
+/* The pictograms in the accent. */
+body.skin-cyberpunk.party .party-role__face[data-state=normal]
+{
+	decorator: radial-gradient(circle 4dp at 9dp 5dp, var(--accent) 80%, transparent 100%),
+	           radial-gradient(ellipse 8dp 6.5dp at 9dp 18dp, var(--accent) 88%, transparent 100%);
+}
+body.skin-cyberpunk.party .party-role__face[data-state=leader]
+{
+	background-color: var(--accent);
+}
+body.skin-cyberpunk.party .party-role__face[data-state=attacker]
+{
+	border-color: transparent transparent var(--accent) transparent;
+	background-color: var(--accent);
+}
+
+/* The HP bar: square, the empty part the dark well; no modern ticks. */
+body.skin-cyberpunk.party progress.party-member__cover fill
+{
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.party .party-member__ticks
+{
+	display: none;
+}
+
+/* --- The role buttons and the menu's buttons: square dark chips --------------------- */
 
 body.skin-cyberpunk.party .party-role, body.skin-cyberpunk.party .party-menu__icon
 {
@@ -15,5 +91,27 @@ body.skin-cyberpunk.party .party-role:hover, body.skin-cyberpunk.party .party-me
 }
 body.skin-cyberpunk.party .party-role:active, body.skin-cyberpunk.party .party-menu__icon:active
 {
-	background-color: var(--surface-sunken);
+	background-color: var(--selection);
+}
+
+/* --- The menu toggle: a dark cut tile with a dashed neon rule ----------------------- */
+
+body.skin-cyberpunk.party .party__menu-button
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-board, cyberpunk-board-inner) border-box;
+	image-color: var(--surface);
+}
+body.skin-cyberpunk.party .party__menu-button:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	image-color: var(--surface-hover);
+}
+body.skin-cyberpunk.party .party__menu-mark
+{
+	border-radius: 0;
+	decorator: repeating-linear-gradient(90deg, var(--accent) 0dp, var(--accent) 6dp, transparent 6.1dp, transparent 8.9dp, var(--accent) 9dp);
 }

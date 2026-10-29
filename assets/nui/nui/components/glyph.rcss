@@ -21,7 +21,8 @@
    mouse-move, mouse-attack (c), mouse-auto, mouse-camera (c), mouse-skill,
    home, coin, lock, and the rail's stall (c), ranking (c), events (c),
    achievements (c) and guide (c), whose __c is an accent part in
-   --glyph-accent (var(--accent) unless a context sets it). Two or three
+   --glyph-accent (var(--accent) unless a context sets it), clock (c) and
+   sword (c). Two or three
    elements each; nui.rtpl links this sheet after button.rcss. */
 
 .nui-glyph
@@ -695,4 +696,63 @@
 	width: 2dp;
 	height: 6dp;
 	background-color: var(--glyph-accent);
+}
+
+/* --- The design gaps --------------------------------------------------------------
+   Two more names: clock (c), a time line's mark, and sword (c), the guild
+   war dialogs' title mark. */
+
+/* clock: a ring with two hands. */
+.nui-glyph--clock .nui-glyph__a
+{
+	left: 1dp;
+	top: 1dp;
+	width: 14dp;
+	height: 14dp;
+	border-width: 2dp;
+	border-radius: 9999dp;
+}
+.nui-glyph--clock .nui-glyph__b
+{
+	left: 7dp;
+	top: 4dp;
+	width: 2dp;
+	height: 5dp;
+	background-color: var(--glyph-ink);
+}
+.nui-glyph--clock .nui-glyph__c
+{
+	left: 7dp;
+	top: 7dp;
+	width: 4dp;
+	height: 2dp;
+	background-color: var(--glyph-ink);
+}
+
+/* sword: an upright blade with a pointed tip, its guard and grip. */
+.nui-glyph--sword .nui-glyph__a
+{
+	left: 6dp;
+	top: 0;
+	width: 4dp;
+	height: 11dp;
+	border-radius: 2dp 2dp 0 0;
+	background-color: var(--glyph-ink);
+}
+.nui-glyph--sword .nui-glyph__b
+{
+	left: 2dp;
+	top: 10dp;
+	width: 12dp;
+	height: 2dp;
+	border-radius: 1dp;
+	background-color: var(--glyph-ink);
+}
+.nui-glyph--sword .nui-glyph__c
+{
+	left: 7dp;
+	top: 12dp;
+	width: 2dp;
+	height: 4dp;
+	background-color: var(--glyph-ink);
 }

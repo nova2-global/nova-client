@@ -21,8 +21,8 @@
    mouse-move, mouse-attack (c), mouse-auto, mouse-camera (c), mouse-skill,
    home, coin, lock, and the rail's stall (c), ranking (c), events (c),
    achievements (c) and guide (c), whose __c is an accent part in
-   --glyph-accent (var(--accent) unless a context sets it), clock (c) and
-   sword (c). Two or three
+   --glyph-accent (var(--accent) unless a context sets it), clock (c),
+   sword (c), unique, arrow and belt (c). Two or three
    elements each; nui.rtpl links this sheet after button.rcss. */
 
 .nui-glyph
@@ -755,4 +755,74 @@
 	width: 2dp;
 	height: 4dp;
 	background-color: var(--glyph-ink);
+}
+
+/* --- The wear places' marks -------------------------------------------------------
+   Three more names, the reviewed inventory board's marks of an empty wear
+   place: unique (a cut gem: the unique item places), arrow (an arrow
+   flying up and right: the arrow place) and belt (c) (a band through its
+   buckle: the belt place). */
+
+/* unique: a cut gem, its crown a trapezoid (a box with no content inked by
+   its bottom border, its sides transparent) over a pavilion pointing down
+   (one inked by its top border). */
+.nui-glyph--unique .nui-glyph__a
+{
+	left: 1dp;
+	top: 3dp;
+	width: 14dp;
+	height: 3dp;
+	border-width: 0 4dp 3dp 4dp;
+	border-color: transparent transparent var(--glyph-ink) transparent;
+}
+.nui-glyph--unique .nui-glyph__b
+{
+	left: 1dp;
+	top: 6dp;
+	width: 0;
+	height: 0;
+	border-width: 7dp 7dp 0 7dp;
+	border-color: var(--glyph-ink) transparent transparent transparent;
+}
+
+/* arrow: a shaft on the diagonal and its head in the top right corner (a
+   box inked by its top border: a triangle with its right angle there). */
+.nui-glyph--arrow .nui-glyph__a
+{
+	left: 1dp;
+	top: 8dp;
+	width: 14dp;
+	height: 2dp;
+	background-color: var(--glyph-ink);
+	transform: rotate(-45deg);
+}
+.nui-glyph--arrow .nui-glyph__b
+{
+	left: 9dp;
+	top: 1dp;
+	width: 0;
+	height: 0;
+	border-width: 6dp 0 0 6dp;
+	border-color: var(--glyph-ink) transparent transparent transparent;
+}
+
+/* belt: the band's two ends and the buckle between them, a ring taller than
+   the band. */
+.nui-glyph--belt .nui-glyph__a, .nui-glyph--belt .nui-glyph__b
+{
+	top: 5dp;
+	width: 5dp;
+	height: 6dp;
+	background-color: var(--glyph-ink);
+}
+.nui-glyph--belt .nui-glyph__a { left: 0; }
+.nui-glyph--belt .nui-glyph__b { left: 11dp; }
+.nui-glyph--belt .nui-glyph__c
+{
+	left: 4dp;
+	top: 3dp;
+	width: 8dp;
+	height: 10dp;
+	border-width: 2dp;
+	border-radius: 1dp;
 }

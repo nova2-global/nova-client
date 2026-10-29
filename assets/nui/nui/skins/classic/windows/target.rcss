@@ -8,7 +8,7 @@
    at least 150). The close button is 30dp from the right edge, y 13. */
 
 /* Legacy's whole name and the legacy gauge in the head; none of the modern
-   head's badge, title and percent, nor its HP bar. */
+   head's badge, title and percent, nor its HP bar or a player's head. */
 body.skin-classic.target .target-board__name
 {
 	display: inline;
@@ -20,9 +20,15 @@ body.skin-classic.target progress.target-board__hp
 body.skin-classic.target .target-board__badge,
 body.skin-classic.target .target-board__title,
 body.skin-classic.target .target-board__pct,
-body.skin-classic.target .target-board__bar
+body.skin-classic.target .target-board__bar,
+body.skin-classic.target .target-board__player
 {
 	display: none;
+}
+/* A player target keeps the legacy head (the modern one hides it). */
+body.skin-classic.target .target-board--player .target-board__head
+{
+	display: flex;
 }
 body.skin-classic.target .target-board
 {

@@ -188,6 +188,13 @@ body.skin-classic.inv .inv-wear:hover
 }
 body.skin-classic.inv .inv-wear--weapon { height: 96dp; }
 body.skin-classic.inv .inv-wear--body { height: 64dp; }
+/* No lit cell: legacy draws none (the classic component sheet hides the
+   modern skins' refine badge). */
+/* Under the no-effects rule's weight (base.rcss). */
+.skin-classic .inv-wear--refined.nui-fx
+{
+	box-shadow: none;
+}
 
 /* The places, the same in both tables: the slot window's (3, 3) on the base
    plus each uiscript slot's x, y; the rings and the belt in a row (the

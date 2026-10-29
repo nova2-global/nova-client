@@ -2,7 +2,8 @@
 <head>
 	<!-- The minimap (uiminimap.py MiniMap, uiscript/minimap.py): the map view
 	     behind its round frame, the zoom, close and atlas buttons, the server
-	     line and the observer count; closed, only the show button. While the
+	     line with the local clock (hours and minutes; classic has none) and
+	     the observer count; closed, only the show button. While the
 	     minimap flag is on, the Interface makes the facade
 	     nui_minimap.MiniMap (controller assets/root/nui_minimap.py), which
 	     makes the atlas too. The map image is a nui-view: C++ renders the
@@ -44,7 +45,7 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip">@game.MINIMAP_INC_SCALE</span></span>
 		<div id="minimap-server" class="minimap__line minimap__line--server" data-if="server_info != ''"><span
-			class="minimap__text">{{ server_info }}</span></div>
+			class="minimap__text">{{ server_info }}<span id="minimap-clock" class="minimap__clock">{{ clock }}</span></span></div>
 		<div id="minimap-observers" class="minimap__line minimap__line--observers" data-if="observers > 0"><span
 			class="minimap__text">{{ observer_text }}</span></div>
 	</div>
@@ -54,5 +55,8 @@
 			class="nui-tooltip nui-anim minimap__tip" data-if="can_see">@game.MINIMAP</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="!can_see">@game.MINIMAP_CANNOT_SEE</span></span>
 	</div>
+	<!-- The local clock's minute: a timer that ends at the next minute, whose
+	     end asks the controller for the time and the next end. -->
+	<nui-countdown id="minimap-clock-timer" format="none" data-attr-end="clock_next" data-event-countdownend="clock_tick()"/>
 </body>
 </rml>

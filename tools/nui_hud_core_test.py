@@ -881,6 +881,22 @@ class TaskbarDifferential(TaskbarWorlds):
             novaui.bar.ShowMouseImage()
             self.assertTrue(novaui.bar.board.get("mouse_image"))
 
+    def test_a_window_s_show_and_hide_light_its_button(self):
+        legacy, novaui = self.worlds()
+        with novaui:
+            bar = novaui.bar
+            self.assertIs(novaui.module("nui_hud").current("taskbar"), bar)
+            for name in ("character", "inventory", "messenger", "system"):
+                self.assertFalse(bar.board.get("open_" + name), name)
+                bar.nui_window_shown(name, True)
+                self.assertTrue(bar.board.get("open_" + name), name)
+                bar.nui_window_shown(name, False)
+                self.assertFalse(bar.board.get("open_" + name), name)
+            bar.nui_window_shown("expand", True)
+            bar.nui_window_shown("atlas", True)
+            self.assertNotIn("open_expand", bar.board.initial_model())
+            self.assertNotIn("open_atlas", bar.board.initial_model())
+
     def test_quickslot_tooltips_show_what_legacy_shows_and_nothing_while_attached(self):
         legacy, novaui = self.worlds()
         for world in (legacy, novaui):

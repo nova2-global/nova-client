@@ -865,6 +865,12 @@
 	right: 4dp;
 	bottom: 3dp;
 }
+/* No refine badge (the modern skins' is-refined, slot-grid.rcss): legacy
+   draws none. */
+.skin-classic .nui-slot.is-refined .nui-slot__number
+{
+	display: none;
+}
 /* The requirement sign: the window names its image in its overlay (legacy
    AppendRequirementSignImage takes any). */
 .skin-classic .nui-slot__sign

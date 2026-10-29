@@ -3,8 +3,9 @@
    the chat chip, the seven filter pills in a row under it, the lines on a
    dark overlay well (--chat-edit-shade, dark in both modern palettes, so
    the chat colors read in light too) from 45dp below the top to 28dp above
-   the bottom with the slim scroll slider beside them, and the input row at
-   the bottom (the accent mode pill, the field, the send button). The parts
+   the bottom with the slim scroll slider and its chevron arrows beside
+   them, and the input row at the bottom (the accent mode pill, the field,
+   the send button). The parts
    sit at fixed distances from the window's edges, as legacy's do, so a
    resize moves them with the edges. Classic (the
    legacy title art, the black 47% body, the xsmall filter buttons, the
@@ -168,7 +169,7 @@ input.chat-log__scroll
 .chat-log__scroll sliderbar
 {
 	width: 6dp;
-	height: 22dp;
+	height: 14dp;
 	margin-left: 3dp;
 	border-radius: 3dp;
 	background-color: var(--text-muted);
@@ -181,10 +182,39 @@ input.chat-log__scroll
 {
 	display: none;
 }
+/* The slider's arrows: 10dp buttons at the ends of the track, each under a
+   chevron glyph (chat-log__arrow, which takes no pointer, so the press
+   reaches the arrow); the bar is 14dp, so even the smallest log leaves it
+   room to move. */
 .chat-log__scroll sliderarrowdec, .chat-log__scroll sliderarrowinc
 {
-	width: 0;
-	height: 0;
+	box-sizing: border-box;
+	width: 12dp;
+	height: 10dp;
+	border-radius: 3dp;
+}
+.chat-log__scroll sliderarrowdec:hover, .chat-log__scroll sliderarrowinc:hover
+{
+	background-color: var(--surface-hover);
+}
+.chat-log__scroll sliderarrowdec:active, .chat-log__scroll sliderarrowinc:active
+{
+	background-color: var(--selection);
+}
+.chat-log__scroll-box .chat-log__arrow
+{
+	position: absolute;
+	left: -2dp;
+	transform: scale(0.7);
+	--glyph-ink: var(--text-muted);
+}
+.chat-log__arrow--up
+{
+	top: -3dp;
+}
+.chat-log__arrow--down
+{
+	bottom: -3dp;
 }
 
 .chat-log__input-row

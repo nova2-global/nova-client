@@ -586,6 +586,56 @@ class Proxy(SlotsTest):
             proxy.SetSlotDiffuseColor(0, 1)
 
 
+class Refine(SlotsTest):
+    """The refine level (refine_level; REFINE_KEY of a grid that opts in,
+    SlotWindowProxy(refine=True)): the "+N" of a weapon's, an armour's or a
+    belt's name, as the tooltip's title names it."""
+
+    NAMES = {16: "Sword+6", 10: "Sword+0", 8003: "Iron Arrow", 9001: "Nahan Armor+5",
+             9195: "Volcanic Glaive+5 [PVM]", 30851: "Temporary Easter Ring +1", 18003: "Linen Belt +3",
+             71014: "Potion of Attack+10"}
+    TYPES = {16: 1, 10: 1, 8003: 1, 9001: 2, 9195: 1, 30851: 30, 18003: 34, 71014: 3}
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        item = self.game.modules["item"]
+        for name, value in (("ITEM_TYPE_WEAPON", 1), ("ITEM_TYPE_ARMOR", 2), ("ITEM_TYPE_USE", 3),
+                            ("ITEM_TYPE_RING", 30), ("ITEM_TYPE_BELT", 34)):
+            setattr(item, name, value)
+        item.GetItemName = lambda: self.NAMES.get(item.selected[0], "")
+        item.GetItemType = lambda: self.TYPES.get(item.selected[0], 0)
+
+    def test_the_level_is_the_plus_of_a_weapon_armour_or_belt_name(self):
+        levels = dict((vnum, self.m.refine_level(vnum)) for vnum in self.NAMES)
+        self.assertEqual(levels, {16: 6, 10: 0, 8003: 0, 9001: 5, 9195: 5, 30851: 0, 18003: 3, 71014: 0})
+        self.assertEqual(self.m.refine_level(0), 0)
+
+    def test_a_grid_that_opts_in_carries_the_level_in_every_cell(self):
+        seen = []
+        proxy = self.m.SlotWindowProxy(range(10), seen.append, cols=5, rows=2, refine=True)
+        self.game.item_sizes[16] = (1, 2)
+        proxy.SetItemSlot(0, 16, 0)
+        proxy.SetItemSlot(1, 18003, 0)
+        proxy.SetItemSlot(2, 27001, 5)
+        proxy.RefreshSlot()
+        cells = seen[-1]
+        self.assertEqual([cell[self.m.REFINE_KEY] for cell in cells], [6, 3, 0, 0, 0, 0, 0, 0, 0, 0])
+        self.assertTrue(cells[5]["covered"], "the sword's lower cell: covered, level 0")
+        proxy.SetItemSlot(1, 0, 0)
+        proxy.RefreshSlot()
+        self.assertEqual(seen[-1][1][self.m.REFINE_KEY], 0, "a cleared slot")
+        plain = []
+        other = self.m.SlotWindowProxy(range(2), plain.append, cols=2, rows=1)
+        other.SetItemSlot(0, 16, 0)
+        other.RefreshSlot()
+        self.assertNotIn(self.m.REFINE_KEY, plain[-1][0], "a grid that does not opt in has no such key")
+        self.assertEqual(set(plain[-1][0]), set(self.m.CELL_KEYS))
+
+    def test_with_refine_gives_empty_cells_the_key_and_keeps_a_level(self):
+        cells = self.m.with_refine([self.m.empty_cell(0), dict(self.m.empty_cell(1), refine=4)])
+        self.assertEqual([cell[self.m.REFINE_KEY] for cell in cells], [0, 4])
+
+
 class Events(SlotsTest):
     """LegacySlotEvents: the cells' events as the legacy C++ slot window sends
     them (P14 spec 6.0's table)."""

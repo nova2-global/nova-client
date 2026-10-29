@@ -40,7 +40,9 @@
    is-target (a drop footprint cell that the attached item can move to),
    is-blocked (one it cannot), is-usable and is-unusable (use mode: the
    item under an attached refine scroll or stone, P14 spec 4.4),
-   is-unavailable (the belt's cells beyond its grade), :hover and is-hover.
+   is-unavailable (the belt's cells beyond its grade), is-refined (the
+   number part shows the refine level, "+6", where a grid opts in), :hover
+   and is-hover.
    A disabled, locked or unavailable cell keeps its pointer events, as legacy
    cells take clicks. nui-slot--h2, --h3, --w2 and --w3 size a single cell
    that holds a taller or wider item (a wear cell).
@@ -422,6 +424,28 @@
 	line-height: 14dp;
 	font-effect: none;
 }
+/* is-refined: the number part shows the item's refine level ("+6") in a
+   grid that opts in to it (nui_slots.REFINE_KEY; the window binds the
+   class where the item has a level and no count, and the value "+" and
+   the level): the badge at the item's top left, in the upgrade blue on
+   the cell's own outline (no chip), as the reviewed board draws it.
+   Classic has no badge: skins/classic/classic.rcss hides the number part
+   of such a cell. */
+.nui-slot.is-refined .nui-slot__number
+{
+	left: 2dp;
+	top: 1dp;
+	right: auto;
+	bottom: auto;
+}
+.nui-slot.is-refined .nui-slot__number .nui-number__text
+{
+	padding: 0;
+	background-color: transparent;
+	color: var(--gauge-blue);
+	font-weight: bold;
+	font-effect: outline(1dp var(--surface-sunken));
+}
 /* A window's key label in a cell (the taskbar's 1 to 4, F1 to F4); the
    window styles it. */
 .nui-slot__key
@@ -585,6 +609,8 @@
 .nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -87dp; }
 .nui-slot-grid--lean.is-attaching > .nui-slot--h2 > .nui-slot__number { bottom: -43dp; }
 .nui-slot-grid--lean.is-attaching > .nui-slot--h3 > .nui-slot__number { bottom: -87dp; }
+/* A refine badge stays at the anchor's top left. */
+.nui-slot-grid--lean.is-attaching > .nui-slot.is-refined > .nui-slot__number { right: auto; bottom: auto; }
 
 /* --- Wave 3c (P15) ------------------------------------------------------------- */
 

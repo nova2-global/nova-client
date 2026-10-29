@@ -6,7 +6,7 @@
 	     assets/root/nui_belt_inventory.py), a subclass of the legacy class
 	     on proxies: legacy's RefreshSlot fills the belt's cells and marks the
 	     ones beyond the belt's grade unavailable (its disabled cover
-	     buttons). It has no title, as legacy's; collapsed it is a tab with
+	     buttons), which the modern skins stripe and lock (a lock glyph). It has no title, as legacy's; collapsed it is a tab with
 	     the expand button. It is docked to the inventory (its right edge on
 	     the inventory's left edge, its top at inv-belt-dock), exists only
 	     while it shows and draws below the legacy UI layer. A left or right
@@ -41,7 +41,11 @@
 				     data-event-dblclick="belt_use(it_index)" data-event-mouseover="belt_over(it_index)"
 				     data-event-mouseout="belt_out(it_index)" data-event-nuidrop="belt_drop(it_index)">
 					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
-					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+					<!-- The count; on an empty cell beyond the belt's grade the same
+					     part, empty, draws the lock (belt.rcss), so a lean cell stays
+					     three elements. -->
+					<nui-number class="nui-slot__number" data-if="c.count != '' || (c.unavailable &amp;&amp; c.kind == '')"
+						data-attr-value="c.count"/>
 				</div>
 			</div>
 		</div>

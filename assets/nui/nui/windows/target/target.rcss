@@ -3,8 +3,8 @@
    in both palettes) at the top center, 10dp from the top. A monster's head
    holds its level in a ring, its name with its grade, its HP in percent and
    the close button, over a 12dp HP bar with the damage chip, a sheen and
-   ticks; another character's board holds its name and the relation buttons
-   in a row below. Classic (the legacy thin board, the outlined whole name,
+   ticks; another character's board holds its portrait, its name over its
+   class and guild, and the relation buttons in a row below. Classic (the legacy thin board, the outlined whole name,
    the legacy gauge and the small thin buttons 68dp apart):
    skins/classic/windows/target.rcss. */
 
@@ -105,6 +105,60 @@ body.target
 	color: var(--tip-normal);
 	font-size: var(--font-sm);
 	font-weight: bold;
+}
+/* A player target's head (target-board--player): the portrait in a ring as
+   the monster's badge draws it, clipped round (a stencil mask while it
+   shows), the name over the class and guild line; the head above hides. */
+.target-board--player .target-board__head
+{
+	display: none;
+}
+.target-board__player
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 34dp;
+}
+.target-board__portrait
+{
+	display: block;
+	position: relative;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 34dp;
+	height: 34dp;
+	margin-right: var(--space-2);
+	overflow: hidden;
+	border-width: 1dp;
+	border-color: var(--danger);
+	border-radius: 17dp;
+	background-color: var(--slot-disabled);
+}
+.target-board__face
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 32dp;
+	height: 32dp;
+}
+.target-board__meta
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.target-board__sub
+{
+	display: block;
+	margin-top: 1dp;
+	color: var(--tip-normal);
+	font-size: var(--font-xs);
+	line-height: 13dp;
+	white-space: nowrap;
+	font-effect: shadow(0dp 1dp var(--text-outline));
 }
 /* The legacy gauge in the head is classic's; the modern bar is below. */
 progress.target-board__hp

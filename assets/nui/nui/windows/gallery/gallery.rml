@@ -288,6 +288,14 @@
 							<img class="nui-slot__icon" data-attr-src="tall_icon"/>
 							<div class="nui-slot__tint"></div>
 						</div>
+						<!-- is-refined: the number part shows a refine level (a grid
+						     that opts in, nui_slots.REFINE_KEY), as nui-number's text
+						     draws it; a window hides it in its classic overlay, as
+						     legacy has none. -->
+						<div class="nui-slot nui-slot--h2 nui-anim is-refined">
+							<img class="nui-slot__icon" data-attr-src="tall_icon"/>
+							<span class="nui-slot__number"><span class="nui-number__text">+6</span></span>
+						</div>
 					</div>
 					<div class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5" id="gallery-lean" data-class-is-attaching="lean_attaching">
 						<div class="nui-slot nui-anim nui-fx" data-for="c : lean" data-attr-id="'gallery-lean-' + it_index"
@@ -341,6 +349,9 @@
 					<span class="gallery-glyph" title="guide"><span class="nui-glyph nui-glyph--guide"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="clock"><span class="nui-glyph nui-glyph--clock"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="sword"><span class="nui-glyph nui-glyph--sword"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="unique"><span class="nui-glyph nui-glyph--unique"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="arrow"><span class="nui-glyph nui-glyph--arrow"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="belt"><span class="nui-glyph nui-glyph--belt"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 				</div>
 				<div class="nui-row gallery-gap">
 					<span class="gallery-label">compact close</span>

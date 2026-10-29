@@ -38,8 +38,10 @@ import json
 import os
 import re
 import sys
+import time
 import types
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
@@ -563,6 +565,33 @@ class MapNovaUI(unittest.TestCase):
         world.minimap.RefreshServerInfo()
         self.assertEqual(world.minimap.board.model["server_info"], "Nova - CH3")
 
+    def test_the_server_line_shows_the_local_clock_once_a_minute(self):
+        """The clock (not in classic): the local time's hours and minutes at
+        the first Show, and a timer that ends just after the next minute; its
+        countdownend reads the time again and moves the end a minute on, so
+        no Python runs in between."""
+        world = self.world()
+        module = world.module("nui_minimap")
+        wall = [7 * 3600 + 5 * 60 + 42.5]
+        fake = types.SimpleNamespace(time=lambda: wall[0], localtime=lambda seconds: time.gmtime(seconds))
+        world.game.state.now = 100.0
+        with mock.patch.object(module, "time", fake), quiet():
+            self.assertEqual(world.minimap.board.model["clock_next"], 0.0, "no timer before the first Show")
+            world.minimap.Show()
+            model = world.minimap.board.model
+            self.assertEqual(model["clock"], "07:05")
+            self.assertAlmostEqual(model["clock_next"], 100.0 + 17.5 + module.CLOCK_LATE)
+            step = 17.5 + module.CLOCK_LATE
+            wall[0] += step
+            world.game.state.now += step
+            world.minimap.board.fire("clock_tick")
+            self.assertEqual(model["clock"], "07:06")
+            self.assertAlmostEqual(model["clock_next"], world.game.state.now + 60.0)
+            world.minimap.Hide()
+            world.minimap.Show()
+            self.assertEqual(model["clock"], "07:06", "a later Show arms nothing again")
+        self.assertEqual([name for name, _ in world.game.log if name in PER_FRAME], [])
+
     def test_set_imprisonment_duration_sets_the_line_once(self):
         world = self.world()
         world.minimap.SetImprisonmentDuration(3600)
@@ -875,6 +904,29 @@ class WarDifferential(unittest.TestCase):
         self.assertEqual(seen[0][-1], [])
         self.assertIsNone(novaui.module("nui_guild_war")._board, "the document goes with the last war")
 
+    def test_each_row_holds_its_name_and_score_apart_and_whether_it_leads(self):
+        """The modern looks' score badge and leading row (the reviewed
+        board): legacy's text split into its name part and its score, the
+        higher score leading, neither on a tie."""
+        world = World(True)
+        seen = []
+        steps = [
+            lambda w: w.interface.OnStartGuildWar(1, 2),
+            lambda w: w.interface.OnRecvGuildWarPoint(1, 2, 5),
+            lambda w: w.interface.UpdateMemberCount(1, 3, 2, 4),
+            lambda w: w.interface.OnRecvGuildWarPoint(2, 1, 7),
+        ]
+        for step in steps:
+            with world, quiet():
+                step(world)
+            entry = world.module("nui_guild_war")._board.model["boards"][0]
+            seen.append([(plain(row["name"]), row["score"], row["leading"], plain(row["text"])) for row in entry["rows"]])
+        self.assertEqual(seen, [
+            [("Dragons", "0", False, "Dragons 0"), ("Lionheart", "0", False, "Lionheart 0")],
+            [("Dragons", "5", True, "Dragons 5"), ("Lionheart", "0", False, "Lionheart 0")],
+            [("Dragons(3)", "5", True, "Dragons(3) 5"), ("Lionheart(4)", "0", False, "Lionheart(4) 0")],
+            [("Dragons(3)", "5", False, "Dragons(3) 5"), ("Lionheart(4)", "7", True, "Lionheart(4) 7")]])
+
     def test_the_classic_width_is_legacys_name_length_rule(self):
         """--legacy-width, which the classic skin sizes a board by: legacy's
         __RefreshName width, 15 wider once both member counts are known."""
@@ -1016,7 +1068,7 @@ class Fixtures(unittest.TestCase):
         for board in boards + fixture("guild-war", "two")["guild_war"]["boards"]:
             self.assertEqual(set(board), {"key", "rows", "legacy_width"})
             for row in board["rows"]:
-                self.assertEqual(set(row), {"src", "rect", "text"})
+                self.assertEqual(set(row), {"src", "rect", "text", "name", "score", "leading"})
 
     def test_the_golden_cases_name_the_stand_ins(self):
         cases = {window: json.loads(read(os.path.join(WINDOWS, window, window + ".snapshots.json")))["cases"]

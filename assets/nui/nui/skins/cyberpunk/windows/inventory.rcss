@@ -93,6 +93,21 @@ body.skin-cyberpunk.inv .inv-wear.is-blocked
 	background-color: var(--slot-blocked);
 	image-color: var(--danger);
 }
+/* A refined item: the wear cell's ring and glow in the acid, and the "+N"
+   badges (the bag's too) in the acid. */
+body.skin-cyberpunk.inv .inv-wear--refined
+{
+	--inv-refine-ring: var(--cyberpunk-acid-line);
+}
+body.skin-cyberpunk.inv .is-refined .nui-slot__number .nui-number__text
+{
+	color: var(--cyberpunk-acid);
+}
+/* An empty place's mark in the neon edge. */
+body.skin-cyberpunk.inv .inv-wear .inv-wear__mark
+{
+	--glyph-ink: var(--cyberpunk-edge);
+}
 
 /* The costume, dragon soul and item shop buttons: dark plates, the board's
    cut outline in magenta (the plate's corners outside the cuts are the

@@ -3,7 +3,9 @@
 	<!-- The taskbar: the HP, SP and stamina gauges, the EXP orbs, the item
 	     mall button, eight quickslots on four pages, the mouse-button mode
 	     buttons with their menus and the skill picker, the expand button and
-	     the four window buttons. While the taskbar flag is on, the Interface
+	     the four window buttons (each lit while its window is open: a window
+	     tells the bar at its Show and Hide, TaskBar.nui_window_shown). While
+	     the taskbar flag is on, the Interface
 	     makes the facade nui_taskbar.TaskBar instead of uiTaskBar.TaskBar.
 	     The gauges, the EXP orbs, the quick page and the quickslots are fed
 	     from C++ (nui.Window.FEEDS), so nothing here runs Python per frame:
@@ -176,14 +178,14 @@
 			</div>
 		</div>
 
-		<button id="btn-character" class="taskbar-window taskbar-window--character nui-has-tooltip"
-			data-event-mousedown="button('character', ev.button)"><span class="nui-glyph nui-glyph--character taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey">C</span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_CHARACTER</span></button>
-		<button id="btn-inventory" class="taskbar-window taskbar-window--inventory nui-has-tooltip"
-			data-event-mousedown="button('inventory', ev.button)"><span class="nui-glyph nui-glyph--inventory taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey">I</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_INVENTORY</span></button>
-		<button id="btn-messenger" class="taskbar-window taskbar-window--messenger nui-has-tooltip"
-			data-event-mousedown="button('messenger', ev.button)"><span class="nui-glyph nui-glyph--community taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="taskbar-hotkey">F</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_MESSENGER</span></button>
-		<button id="btn-system" class="taskbar-window taskbar-window--system nui-has-tooltip"
-			data-event-mousedown="button('system', ev.button)"><span class="nui-glyph nui-glyph--system taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="taskbar-hotkey">Esc</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_SYSTEM</span></button>
+		<button id="btn-character" class="taskbar-window taskbar-window--character nui-has-tooltip" data-class-is-open="open_character"
+			data-event-mousedown="button('character', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--character taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey">C</span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_CHARACTER</span></button>
+		<button id="btn-inventory" class="taskbar-window taskbar-window--inventory nui-has-tooltip" data-class-is-open="open_inventory"
+			data-event-mousedown="button('inventory', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--inventory taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey">I</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_INVENTORY</span></button>
+		<button id="btn-messenger" class="taskbar-window taskbar-window--messenger nui-has-tooltip" data-class-is-open="open_messenger"
+			data-event-mousedown="button('messenger', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--community taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="taskbar-hotkey">F</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_MESSENGER</span></button>
+		<button id="btn-system" class="taskbar-window taskbar-window--system nui-has-tooltip" data-class-is-open="open_system"
+			data-event-mousedown="button('system', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--system taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="taskbar-hotkey">Esc</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_SYSTEM</span></button>
 
 		<div id="camera-image" class="taskbar-camera" data-if="mouse_image"><span class="nui-glyph nui-glyph--mouse-camera taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></div>
 	</div>

@@ -18,6 +18,7 @@ ui.SlotWindow or ui.GridSlotWindow was and turns what the legacy controller
 tells it into cells, and LegacySlotEvents turns the cells' events into the
 legacy slot window's events, so every flow stays the legacy controller's."""
 
+import re
 import weakref
 
 import app
@@ -205,6 +206,40 @@ def footprint(cell, w, h, cols, rows):
 # cells beyond the belt's grade (legacy DisableCoverButton).
 CELL_KEYS = SLOT_KEYS + ("covered", "target", "picked", "unavailable")
 TARGET_STATES = ("move", "blocked", "usable", "unusable")
+
+# The opt-in key of a grid that shows an item's refine level (the modern
+# skins' "+N" badge): a proxy made with refine=True gives every cell it
+# (0 for an empty or covered cell and for an item without one), and the
+# window's empty cells carry it too (with_refine). Other grids never have it.
+REFINE_KEY = "refine"
+# The item types whose names carry their refine level ("Sword+6"):
+# weapons, armour and belts, the equipment the refine dialogs upgrade (a
+# ring's "+1" or a potion's "+10" is no refine level).
+_REFINE_TYPES = ("ITEM_TYPE_WEAPON", "ITEM_TYPE_ARMOR", "ITEM_TYPE_BELT")
+_PLUS = re.compile(r"\+\s*(\d+)")
+
+
+def refine_level(vnum):
+	"""The refine level of an item, as the legacy tooltip's title names it
+	(item.GetItemName(), "Sword+6"): the number after the first "+" of the
+	name of a weapon, an armour or a belt, else 0 (0 for an arrow, whose name
+	has none). For today's item_proto it is vnum % 10 for 5620 of the 5624
+	such items that have a "+"; the name wins for the others ("Nahan
+	Armor+5" is vnum 9001). Selects the item (item.SelectItem)."""
+	if not vnum:
+		return 0
+	item.SelectItem(vnum)
+	types = [getattr(item, name, None) for name in _REFINE_TYPES]
+	if item.GetItemType() not in [kind for kind in types if kind is not None]:
+		return 0
+	found = _PLUS.search(str(item.GetItemName() or ""))
+	return int(found.group(1)) if found else 0
+
+
+def with_refine(cells):
+	"""The cells (copies) with REFINE_KEY at 0 where they lack it: a window
+	whose grid shows the refine level gives its empty cells the key."""
+	return [dict(cell, **{REFINE_KEY: cell.get(REFINE_KEY, 0)}) for cell in cells]
 
 
 def empty_cell(index):
@@ -714,12 +749,16 @@ class SlotWindowProxy(object):
 
 	Only the legacy methods below exist, so a legacy call this proxy does not
 	know raises AttributeError (the tests see it). A slot number the window
-	does not hold is ignored, as CSlotWindow's GetSlotPointer ignores it."""
+	does not hold is ignored, as CSlotWindow's GetSlotPointer ignores it.
 
-	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None):
+	refine=True opts the grid in to the refine level: SetItemSlot reads it
+	(refine_level) and every cell carries REFINE_KEY."""
+
+	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, refine=False):
 		self.on_refresh = on_refresh
 		self.positions = positions
 		self.window = window
+		self.refine = bool(refine)
 		self.use_mode = False
 		self.usable = False
 		self.pick_up = True
@@ -742,7 +781,8 @@ class SlotWindowProxy(object):
 		if record is None:
 			record = self._slots[slot] = {"kind": "", "vnum": 0, "count": "", "icon": "", "w": 1, "h": 1,
 			                              "active": False, "locked": False, "disabled": False, "cd": (0.0, 0.0),
-			                              "cover_art": "", "unavailable": False, "always_cover": False}
+			                              "cover_art": "", "unavailable": False, "always_cover": False,
+			                              "refine": 0}
 		return record
 
 	def _holds(self, slot):
@@ -750,7 +790,7 @@ class SlotWindowProxy(object):
 
 	def _clear(self, record):
 		record.update({"kind": "", "vnum": 0, "count": "", "icon": "", "w": 1, "h": 1, "active": False,
-		               "locked": False, "disabled": False, "cd": (0.0, 0.0)})
+		               "locked": False, "disabled": False, "cd": (0.0, 0.0), "refine": 0})
 
 	# --- what legacy calls -----------------------------------------------------------
 
@@ -771,6 +811,8 @@ class SlotWindowProxy(object):
 		record.update({"kind": "item", "vnum": int(vnum), "icon": icon_source(icon) if icon and _exists(icon) else "",
 		               "w": int(width), "h": int(height), "locked": False, "disabled": False,
 		               "count": str(int(count)) if count and int(count) > 0 else ""})
+		if self.refine:
+			record["refine"] = refine_level(vnum)
 		if not same:
 			record.update({"active": False, "cd": (0.0, 0.0)})
 
@@ -979,6 +1021,11 @@ class SlotWindowProxy(object):
 				cell["unavailable"] = shows_cover and record["unavailable"]
 			cells.append(cell)
 		self._owners = mark_covered(cells, self.cols, self.rows) if self.cols is not None else {}
+		if self.refine:
+			for index, slot in enumerate(self.slot_numbers):
+				record = self._slots.get(slot)
+				anchor = record is not None and record["kind"] == "item" and not cells[index].get("covered")
+				cells[index][REFINE_KEY] = record["refine"] if anchor else 0
 		return cells
 
 	def cells(self):

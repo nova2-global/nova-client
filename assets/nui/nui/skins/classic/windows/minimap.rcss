@@ -145,6 +145,11 @@ body.skin-classic.minimap .minimap__line--observers
 {
 	top: 180dp;
 }
+/* Legacy's server line has no clock. */
+body.skin-classic.minimap .minimap__clock
+{
+	display: none;
+}
 body.skin-classic.minimap .minimap__text
 {
 	padding: 0;

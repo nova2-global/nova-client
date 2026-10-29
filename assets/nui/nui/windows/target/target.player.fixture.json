@@ -40,6 +40,8 @@
 			}
 		],
 		"exchange_at": 1,
-		"in_range": true
+		"in_range": true,
+		"portrait": "/icon/face/assassin_m.tga",
+		"subtitle": "Ninja · Nova Riders"
 	}
 }

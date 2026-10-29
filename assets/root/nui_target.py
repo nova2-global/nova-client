@@ -16,7 +16,11 @@ board measured the distance to its target every frame to show the exchange
 button within EXCHANGE_LIMIT_RANGE; here C++ watches it
 (nuigame.WatchTargetRange, the target.in_range feed) and the button shows
 by that key, so no Python runs per frame. Escape closes the board in its
-legacy place in the Escape chain (nui_hud.EscapeProxy, shown with it)."""
+legacy place in the Escape chain (nui_hud.EscapeProxy, shown with it).
+
+The modern looks give a player target a head of its own (player_head): the
+portrait of its race and a "class · guild" line, read when the board opens
+for it. Another player's level has no getter, so that head has no level."""
 
 import weakref
 
@@ -44,6 +48,16 @@ DOCUMENT = "nui/windows/target/target.rml"
 
 _Legacy = uiTarget.TargetBoard
 
+# A player target's head (the modern looks): the portrait by race
+# (uicharacter.py FACE_IMAGE_DICT's icons, by playerSettingModule's RACE_*
+# numbers) and the class by chr.RaceToJob's job (the localeInfo keys
+# nui_character's class chip reads too).
+FACES = {0: "icon/face/warrior_m.tga", 1: "icon/face/assassin_w.tga", 2: "icon/face/sura_m.tga",
+         3: "icon/face/shaman_w.tga", 4: "icon/face/warrior_w.tga", 5: "icon/face/assassin_m.tga",
+         6: "icon/face/sura_w.tga", 7: "icon/face/shaman_m.tga"}
+JOB_NAMES = {0: "JOB_WARRIOR", 1: "JOB_ASSASSIN", 2: "JOB_SURA", 3: "JOB_SHAMAN"}
+NO_GUILD_NAME = "Noname"   # guild.GetGuildName's answer for a guild whose name the client lacks
+
 
 def _keep(owner):
 	try:
@@ -55,6 +69,30 @@ def _keep(owner):
 def _watch(vid, distance):
 	if nuigame is not None:
 		nuigame.WatchTargetRange(vid, distance)
+
+
+def player_head(vid):
+	"""(portrait, subtitle) of a player target's head: its face as an image
+	source and "class · guild" (either part left out when unknown); ("", "")
+	for a vid without a player's instance. chr reads a race only from its
+	selected instance, so the target is selected for the read and the main
+	character again after it, as the game keeps it."""
+	if not vid or not chr.HasInstance(vid) or chr.GetInstanceType(vid) != chr.INSTANCE_TYPE_PLAYER:
+		return "", ""
+	chr.SelectInstance(vid)
+	race = chr.GetRace()
+	chr.SelectInstance(player.GetMainCharacterIndex())
+	face = FACES.get(race, "")
+	parts = []
+	job = JOB_NAMES.get(chr.RaceToJob(race))
+	job_name = nui_hud.locale_text(job) if job else ""
+	if job_name:
+		parts.append(job_name)
+	guild_id = chr.GetGuildID(vid)
+	guild_name = nui.plain_text(guild.GetGuildName(guild_id)) if guild_id else ""
+	if guild_name and guild_name != NO_GUILD_NAME:
+		parts.append(guild_name)
+	return ("/" + face) if face else "", " · ".join(parts)
 
 
 class TargetBoardBoard(nui.Window):
@@ -70,7 +108,7 @@ class TargetBoardBoard(nui.Window):
 
 	def initial_model(self):
 		return {"name": "", "title": "", "level": 0, "hp": 0.0, "show_hp": False, "buttons": [], "exchange_at": -1,
-		        "in_range": False}
+		        "in_range": False, "portrait": "", "subtitle": ""}
 
 	@nui.on("press")
 	def on_press(self, button_id, button):
@@ -160,6 +198,9 @@ class TargetBoard(object):
 		self.nuiLevel = 0
 		self.nuiTitle = ""
 		self.__nuiLabel = None
+		# A player target's head (player_head): its portrait and subtitle.
+		self.nuiPortrait = ""
+		self.nuiSubtitle = ""
 		if not nui_hud.has_engine():
 			return
 		try:
@@ -189,6 +230,8 @@ class TargetBoard(object):
 		self.nameLength = 0
 		self.nuiLevel = 0
 		self.nuiTitle = ""
+		self.nuiPortrait = ""
+		self.nuiSubtitle = ""
 		self.vid = 0
 		self.isShowButton = False
 
@@ -248,6 +291,7 @@ class TargetBoard(object):
 				self.ResetTargetBoard()
 				self.SetTargetVID(vid)
 				self.SetTargetName(name)
+			self.nuiPortrait, self.nuiSubtitle = player_head(vid)
 
 			if player.IsMainCharacterIndex(vid):
 				self.__ShowMainCharacterMenu()
@@ -257,6 +301,7 @@ class TargetBoard(object):
 				self.RefreshButton()
 				self.Show()
 		else:
+			self.nuiPortrait, self.nuiSubtitle = "", ""
 			self.HideAllButton()
 			self.__ShowButton(self.BTN_WHISPER)
 			self.__ShowButton(self.BTN_VOTE_BLOCK_CHAT)
@@ -563,4 +608,5 @@ class TargetBoard(object):
 					exchange_at = len(buttons)
 				buttons.append({"id": button_id, "label": self.buttonLabels.get(button_id, "")})
 		self.board.set(name=nui.plain_text(self.nameString), title=nui.plain_text(self.nuiTitle), level=self.nuiLevel,
-		               hp=self.hp, show_hp=self.hpShown, buttons=buttons, exchange_at=exchange_at)
+		               hp=self.hp, show_hp=self.hpShown, buttons=buttons, exchange_at=exchange_at,
+		               portrait=self.nuiPortrait, subtitle=self.nuiSubtitle)

@@ -339,6 +339,8 @@
 					<span class="gallery-glyph" title="events"><span class="nui-glyph nui-glyph--events"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="achievements"><span class="nui-glyph nui-glyph--achievements"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="guide"><span class="nui-glyph nui-glyph--guide"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="clock"><span class="nui-glyph nui-glyph--clock"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="sword"><span class="nui-glyph nui-glyph--sword"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 				</div>
 				<div class="nui-row gallery-gap">
 					<span class="gallery-label">compact close</span>

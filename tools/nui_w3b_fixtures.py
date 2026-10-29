@@ -10,9 +10,9 @@ pages).
 
 Each window's fixture is <name>.fixture.json (today), with the variants
 <name>.foundation.fixture.json, the ones the spec names (inventory empty,
-belt collapsed) and the ones the modern skin adds (inventory rail, costume
-female). nui_inventory_test checks that the controllers' models have the
-same keys and kinds."""
+belt collapsed) and the ones the modern skin adds (inventory rail and
+rail-folded, costume female). nui_inventory_test checks that the
+controllers' models have the same keys and kinds."""
 import argparse
 import importlib.util
 import json
@@ -176,10 +176,10 @@ def inventory(limits, page, wear, bag, money, **rest):
         "wear_on": [1], "tabs_on": [1], "bag_on": [1],
         # Stage 1 (modern skin): the paper doll's figure for the race (a
         # warrior's), the stats row as the character window counts them and
-        # the shortcut rail's entries (none registered).
+        # the shortcut rail's entries (none registered) and its fold.
         "figure": FIGURE_KNIGHT,
         "stat_attack": "1048-1166", "stat_defence": "642", "stat_magic": "236-252",
-        "rail": [],
+        "rail": [], "rail_folded": False,
     }
     model.update(rest)
     return {"inventory": model}
@@ -188,14 +188,17 @@ def inventory(limits, page, wear, bag, money, **rest):
 FIGURE_KNIGHT = "/nui/figures/knight.png"
 FIGURE_COSTUME = {"male": "/nui/figures/costume-male.png", "female": "/nui/figures/costume-female.png"}
 
-# A rail of five sample entries (nui_inventory.register_shortcut), one of
-# them disabled.
+# The board's rail (nui_inventory.BOARD_SHORTCUTS): the offline shop, the
+# ranking and the achievements as features to come, and the guide; the
+# events entry stands for a feature that exists, with a badge of three, as
+# the reviewed board shows it.
 SAMPLE_RAIL = [
-    {"id": "offline_shop", "glyph": "shop", "tip": "@ui.PRIVATE_SHOP_TITLE", "enabled": True},
-    {"id": "ranking", "glyph": "community", "tip": "@ui.GUILD_GRADE_RANK", "enabled": True},
-    {"id": "events", "glyph": "gift", "tip": "@ui.CHARACTER_QUEST", "enabled": True},
-    {"id": "alchemy", "glyph": "gem", "tip": "@ui.TASKBAR_DRAGON_SOUL", "enabled": False},
-    {"id": "guide", "glyph": "log", "tip": "@ui.GAME_HELP", "enabled": True},
+    {"id": "offline_shop", "glyph": "stall", "tip": "@ui.NUI_RAIL_OFFLINE_SHOP", "enabled": True, "soon": True, "badge": ""},
+    {"id": "ranking", "glyph": "ranking", "tip": "@ui.NUI_RAIL_RANKING", "enabled": True, "soon": True, "badge": ""},
+    {"id": "events", "glyph": "events", "tip": "@ui.NUI_RAIL_EVENTS", "enabled": True, "soon": False, "badge": "3"},
+    {"id": "achievements", "glyph": "achievements", "tip": "@ui.NUI_RAIL_ACHIEVEMENTS", "enabled": True, "soon": True,
+     "badge": ""},
+    {"id": "guide", "glyph": "guide", "tip": "@ui.NUI_RAIL_GUIDE", "enabled": True, "soon": False, "badge": ""},
 ]
 
 
@@ -262,6 +265,8 @@ def fixtures():
         ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}), 0),
         ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),
         ("inventory", "rail"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL),
+        ("inventory", "rail-folded"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL,
+                                                rail_folded=True),
         ("costume", ""): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}),
         ("costume", "female"): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}, gender="female"),
         # The costume body and hair alone, as legacy's costume window since

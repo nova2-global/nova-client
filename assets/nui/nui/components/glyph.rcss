@@ -19,12 +19,15 @@
    chevron-right, send, log (c), chat, whisper (c), character, inventory,
    community (c), system (c), map, gift (c), gem, shop, heal, leave (c),
    mouse-move, mouse-attack (c), mouse-auto, mouse-camera (c), mouse-skill,
-   home, coin. Two or three elements each; nui.rtpl links this sheet after
-   button.rcss. */
+   home, coin, lock, and the rail's stall (c), ranking (c), events (c),
+   achievements (c) and guide (c), whose __c is an accent part in
+   --glyph-accent (var(--accent) unless a context sets it). Two or three
+   elements each; nui.rtpl links this sheet after button.rcss. */
 
 .nui-glyph
 {
 	--glyph-ink: var(--text);
+	--glyph-accent: var(--accent);
 	display: inline-block;
 	position: relative;
 	width: 16dp;
@@ -540,4 +543,156 @@
 	height: 8dp;
 	border-radius: 1dp;
 	background-color: var(--glyph-ink);
+}
+
+/* --- The inventory's shortcut rail ------------------------------------------------
+   Five more names, from the reviewed inventory board: stall (c), ranking (c),
+   events (c), achievements (c) and guide (c). Their __c is the accent part,
+   inked with --glyph-accent, var(--accent) unless a context sets it. */
+
+/* stall: an awning wider than the stand under it, its door in the
+   accent. */
+.nui-glyph--stall .nui-glyph__a
+{
+	left: 0;
+	top: 2dp;
+	width: 16dp;
+	height: 5dp;
+	border-radius: 2dp 2dp 4dp 4dp;
+	background-color: var(--glyph-ink);
+}
+.nui-glyph--stall .nui-glyph__b
+{
+	left: 2dp;
+	top: 7dp;
+	width: 12dp;
+	height: 8dp;
+	border-width: 0 2dp 2dp 2dp;
+}
+.nui-glyph--stall .nui-glyph__c
+{
+	left: 6dp;
+	top: 9dp;
+	width: 4dp;
+	height: 6dp;
+	background-color: var(--glyph-accent);
+}
+
+/* ranking: a podium, its top step high, a jewel in the accent above it. */
+.nui-glyph--ranking .nui-glyph__a
+{
+	left: 5dp;
+	top: 7dp;
+	width: 6dp;
+	height: 8dp;
+	background-color: var(--glyph-ink);
+}
+.nui-glyph--ranking .nui-glyph__b
+{
+	left: 0;
+	top: 10dp;
+	width: 16dp;
+	height: 5dp;
+	border-width: 0 5dp;
+	border-color: var(--glyph-ink);
+	opacity: 0.7;
+}
+.nui-glyph--ranking .nui-glyph__c
+{
+	left: 6dp;
+	top: 1dp;
+	width: 4dp;
+	height: 4dp;
+	background-color: var(--glyph-accent);
+	transform: rotate(45deg);
+}
+
+/* events: a calendar, its rings above the header, a mark in the accent. */
+.nui-glyph--events .nui-glyph__a
+{
+	left: 1dp;
+	top: 3dp;
+	width: 14dp;
+	height: 12dp;
+	border-width: 4dp 2dp 2dp 2dp;
+	border-radius: 2dp;
+}
+.nui-glyph--events .nui-glyph__b
+{
+	left: 4dp;
+	top: 1dp;
+	width: 8dp;
+	height: 4dp;
+	border-width: 0 2dp;
+}
+.nui-glyph--events .nui-glyph__c
+{
+	left: 6dp;
+	top: 8dp;
+	width: 4dp;
+	height: 4dp;
+	background-color: var(--glyph-accent);
+	transform: rotate(45deg);
+}
+
+/* achievements: a medal hung from a V of ribbon (a corner of two 2dp
+   borders, turned to point down), the jewel in the accent. */
+.nui-glyph--achievements .nui-glyph__a
+{
+	left: 4dp;
+	top: -3dp;
+	width: 8dp;
+	height: 8dp;
+	border-width: 0 2dp 2dp 0;
+	transform: rotate(45deg);
+}
+.nui-glyph--achievements .nui-glyph__b
+{
+	left: 3dp;
+	top: 6dp;
+	width: 10dp;
+	height: 10dp;
+	border-width: 2dp;
+	border-radius: 9999dp;
+}
+.nui-glyph--achievements .nui-glyph__c
+{
+	left: 6dp;
+	top: 9dp;
+	width: 4dp;
+	height: 4dp;
+	border-radius: 9999dp;
+	background-color: var(--glyph-accent);
+}
+
+/* guide: an open book, two pages on the spine, its bookmark in the
+   accent. */
+.nui-glyph--guide .nui-glyph__a, .nui-glyph--guide .nui-glyph__b
+{
+	top: 3dp;
+	width: 7dp;
+	height: 11dp;
+	border-width: 2dp;
+}
+.nui-glyph--guide .nui-glyph__a
+{
+	left: 1dp;
+	border-right-width: 1dp;
+	border-radius: 2dp 0 0 2dp;
+	transform: skewY(10deg);
+}
+.nui-glyph--guide .nui-glyph__b
+{
+	left: 8dp;
+	border-left-width: 1dp;
+	border-radius: 0 2dp 2dp 0;
+	transform: skewY(-10deg);
+}
+.nui-glyph--guide .nui-glyph__c
+{
+	left: 11dp;
+	top: 3dp;
+	width: 2dp;
+	height: 6dp;
+	background-color: var(--glyph-accent);
 }

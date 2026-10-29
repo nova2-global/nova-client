@@ -372,3 +372,11 @@ UNBLOCK_PLAYER	 Επαναφορά Αποκλεισμού Παίκτη
 GUILD_WAR_ENEMY_NUMBER	Μέγιστα μέλη
 GUILD_WAR_MAX_SCORE	Τελικό σκορ
 SYSTEM_MOVE_CHANNEL	Αλλαγή Καναλίου
+NUI_RAIL_OFFLINE_SHOP	Κατάστημα εκτός σύνδεσης
+NUI_RAIL_RANKING	Κατάταξη
+NUI_RAIL_EVENTS	Εκδηλώσεις
+NUI_RAIL_ACHIEVEMENTS	Επιτεύγματα
+NUI_RAIL_GUIDE	Οδηγός
+NUI_RAIL_SOON	Έρχεται σύντομα
+NUI_RAIL_FOLD	Απόκρυψη συντομεύσεων
+NUI_RAIL_UNFOLD	Εμφάνιση συντομεύσεων

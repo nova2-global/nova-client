@@ -371,3 +371,11 @@ UNBLOCK_PLAYER	Débloquer le joueur
 GUILD_WAR_ENEMY_NUMBER	Membres Max.
 GUILD_WAR_MAX_SCORE	Score final
 SYSTEM_MOVE_CHANNEL	Changer le cannal
+NUI_RAIL_OFFLINE_SHOP	Boutique hors ligne
+NUI_RAIL_RANKING	Classement
+NUI_RAIL_EVENTS	Événements
+NUI_RAIL_ACHIEVEMENTS	Succès
+NUI_RAIL_GUIDE	Guide
+NUI_RAIL_SOON	Bientôt disponible
+NUI_RAIL_FOLD	Masquer les raccourcis
+NUI_RAIL_UNFOLD	Afficher les raccourcis

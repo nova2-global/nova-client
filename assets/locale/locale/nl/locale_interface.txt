@@ -371,3 +371,11 @@ UNBLOCK_PLAYER	Deblokkeer Speler
 GUILD_WAR_ENEMY_NUMBER	Max. Leden
 GUILD_WAR_MAX_SCORE	Eindscore
 SYSTEM_MOVE_CHANNEL	Kanaal veranderen
+NUI_RAIL_OFFLINE_SHOP	Offline winkel
+NUI_RAIL_RANKING	Ranglijst
+NUI_RAIL_EVENTS	Evenementen
+NUI_RAIL_ACHIEVEMENTS	Prestaties
+NUI_RAIL_GUIDE	Gids
+NUI_RAIL_SOON	Binnenkort
+NUI_RAIL_FOLD	Snelkoppelingen verbergen
+NUI_RAIL_UNFOLD	Snelkoppelingen tonen

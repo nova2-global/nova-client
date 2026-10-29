@@ -370,3 +370,11 @@ UNBLOCK_PLAYER	Spieler Entsperren
 GUILD_WAR_ENEMY_NUMBER	Max. Mitglieder
 GUILD_WAR_MAX_SCORE	Endstand
 SYSTEM_MOVE_CHANNEL	Kanal Ändern
+NUI_RAIL_OFFLINE_SHOP	Offline-Laden
+NUI_RAIL_RANKING	Rangliste
+NUI_RAIL_EVENTS	Events
+NUI_RAIL_ACHIEVEMENTS	Erfolge
+NUI_RAIL_GUIDE	Anleitung
+NUI_RAIL_SOON	Demnächst
+NUI_RAIL_FOLD	Schnellzugriffe ausblenden
+NUI_RAIL_UNFOLD	Schnellzugriffe einblenden

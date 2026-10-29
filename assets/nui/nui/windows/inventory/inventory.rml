@@ -18,8 +18,9 @@
 	     counts them); the bag is a lean slot grid of INVENTORY_PAGE_SIZE
 	     cells, one page at a time; the page tabs, the bag's columns and the
 	     money's digits come from the limits module too. The shortcut rail
-	     (rail: the entries nui_inventory.register_shortcut adds; none by
-	     default, and then no rail) docks on the window's left edge. Cell
+	     (rail: the entries nui_inventory.register_shortcut adds, the
+	     board's five once the game's interface binds the window; with none
+	     there is no rail) docks on the window's left edge. Cell
 	     events reach the legacy handlers through nui_slots.LegacySlotEvents
 	     (pick and place through the legacy mouse controller). The body and
 	     its controls take no focus, so controls act on a left mousedown. It
@@ -44,16 +45,28 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<!-- The shortcut rail: one button per registered entry (rail), on the
-	     window's left edge; empty, it is not drawn. The kept board's list
-	     is empty while it hides. -->
-	<div class="nui-board nui-fx inv-rail" data-class-is-empty="size(rail) == 0">
+	     window's left edge; empty, it is not drawn. An entry may carry a
+	     badge (its count, "" for none) and be a feature still to come
+	     (soon: its hint says so and it takes no press). The fold button
+	     hides the entries (rail_folded) and shows them again. The kept
+	     board's list is empty while it hides. -->
+	<div class="nui-board nui-fx inv-rail" data-class-is-empty="size(rail) == 0" data-class-is-folded="rail_folded">
 		<span class="inv-rail__grip"></span>
 		<button class="nui-button nui-anim nui-has-tooltip inv-rail__button" data-for="e : rail"
-		        data-attr-id="'inv-rail-' + e.id" data-attrif-disabled="!e.enabled"
+		        data-attr-id="'inv-rail-' + e.id" data-attrif-disabled="!e.enabled" data-class-is-soon="e.soon"
 		        data-event-mousedown="rail_press(e.id, ev.button)"><span class="nui-glyph inv-rail__glyph"
 			data-attr-class="'nui-glyph inv-rail__glyph nui-glyph--' + e.glyph"><span class="nui-glyph__a"></span><span
 			class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
-			class="nui-tooltip nui-anim inv-tip inv-rail__tip">{{ e.tip }}</span></button>
+			class="nui-badge inv-rail__badge" data-if="e.badge != ''">{{ e.badge }}</span><span
+			class="nui-tooltip nui-anim inv-tip inv-rail__tip">{{ e.tip }}<span class="inv-rail__soon"
+			data-if="e.soon">@ui.NUI_RAIL_SOON</span></span></button>
+		<span class="inv-rail__more"></span>
+		<button id="inv-rail-fold" class="nui-button nui-button--ghost nui-anim nui-has-tooltip inv-rail__fold"
+		        data-event-mousedown="rail_fold(ev.button)"><span class="nui-glyph inv-rail__fold-glyph"
+			data-attr-class="rail_folded ? 'nui-glyph inv-rail__fold-glyph nui-glyph--chevron-right' : 'nui-glyph inv-rail__fold-glyph nui-glyph--chevron-left'"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-tooltip nui-anim inv-tip inv-rail__tip inv-rail__tip--fold"><span data-if="!rail_folded">@ui.NUI_RAIL_FOLD</span><span
+			data-if="rail_folded">@ui.NUI_RAIL_UNFOLD</span></span></button>
 	</div>
 	<div class="nui-window__body inv__body">
 		<div id="inv-equip" class="inv-equip" data-class-nui-attach-right="attach_right">

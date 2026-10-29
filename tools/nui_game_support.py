@@ -2706,6 +2706,9 @@ def _wave3b_modules(game):
         def ToggleDragonSoulWindow(self):
             log.append(("interface.ToggleDragonSoulWindow", ()))
 
+        def OpenHelpWindow(self):
+            log.append(("interface.OpenHelpWindow", ()))
+
     class DragonSoulRefine(object):
         shown = False
 

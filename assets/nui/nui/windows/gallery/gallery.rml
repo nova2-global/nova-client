@@ -334,6 +334,11 @@
 					<span class="gallery-glyph" title="mouse-camera"><span class="nui-glyph nui-glyph--mouse-camera"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="mouse-skill"><span class="nui-glyph nui-glyph--mouse-skill"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 					<span class="gallery-glyph" title="home"><span class="nui-glyph nui-glyph--home"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="stall"><span class="nui-glyph nui-glyph--stall"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="ranking"><span class="nui-glyph nui-glyph--ranking"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="events"><span class="nui-glyph nui-glyph--events"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="achievements"><span class="nui-glyph nui-glyph--achievements"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="guide"><span class="nui-glyph nui-glyph--guide"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 				</div>
 				<div class="nui-row gallery-gap">
 					<span class="gallery-label">compact close</span>

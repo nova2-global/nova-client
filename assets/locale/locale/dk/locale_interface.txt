@@ -372,3 +372,11 @@ UNBLOCK_PLAYER	Fjern blokering af spilleren
 GUILD_WAR_ENEMY_NUMBER	Max. Members
 GUILD_WAR_MAX_SCORE	End Score
 SYSTEM_MOVE_CHANNEL	Skift Kanal
+NUI_RAIL_OFFLINE_SHOP	Offline butik
+NUI_RAIL_RANKING	Rangliste
+NUI_RAIL_EVENTS	Begivenheder
+NUI_RAIL_ACHIEVEMENTS	Præstationer
+NUI_RAIL_GUIDE	Guide
+NUI_RAIL_SOON	Kommer snart
+NUI_RAIL_FOLD	Skjul genveje
+NUI_RAIL_UNFOLD	Vis genveje

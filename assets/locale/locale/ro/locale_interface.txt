@@ -372,3 +372,11 @@ UNBLOCK_PLAYER	Deblocheaza Jucator
 GUILD_WAR_ENEMY_NUMBER	Max. Members
 GUILD_WAR_MAX_SCORE	End Score
 SYSTEM_MOVE_CHANNEL	Schimba CH
+NUI_RAIL_OFFLINE_SHOP	Magazin offline
+NUI_RAIL_RANKING	Clasament
+NUI_RAIL_EVENTS	Evenimente
+NUI_RAIL_ACHIEVEMENTS	Realizări
+NUI_RAIL_GUIDE	Ghid
+NUI_RAIL_SOON	În curând
+NUI_RAIL_FOLD	Ascunde scurtăturile
+NUI_RAIL_UNFOLD	Arată scurtăturile

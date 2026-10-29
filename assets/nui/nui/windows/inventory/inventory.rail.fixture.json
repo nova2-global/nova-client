@@ -1238,34 +1238,45 @@
 		"rail": [
 			{
 				"id": "offline_shop",
-				"glyph": "shop",
-				"tip": "@ui.PRIVATE_SHOP_TITLE",
-				"enabled": true
+				"glyph": "stall",
+				"tip": "@ui.NUI_RAIL_OFFLINE_SHOP",
+				"enabled": true,
+				"soon": true,
+				"badge": ""
 			},
 			{
 				"id": "ranking",
-				"glyph": "community",
-				"tip": "@ui.GUILD_GRADE_RANK",
-				"enabled": true
+				"glyph": "ranking",
+				"tip": "@ui.NUI_RAIL_RANKING",
+				"enabled": true,
+				"soon": true,
+				"badge": ""
 			},
 			{
 				"id": "events",
-				"glyph": "gift",
-				"tip": "@ui.CHARACTER_QUEST",
-				"enabled": true
+				"glyph": "events",
+				"tip": "@ui.NUI_RAIL_EVENTS",
+				"enabled": true,
+				"soon": false,
+				"badge": "3"
 			},
 			{
-				"id": "alchemy",
-				"glyph": "gem",
-				"tip": "@ui.TASKBAR_DRAGON_SOUL",
-				"enabled": false
+				"id": "achievements",
+				"glyph": "achievements",
+				"tip": "@ui.NUI_RAIL_ACHIEVEMENTS",
+				"enabled": true,
+				"soon": true,
+				"badge": ""
 			},
 			{
 				"id": "guide",
-				"glyph": "log",
-				"tip": "@ui.GAME_HELP",
-				"enabled": true
+				"glyph": "guide",
+				"tip": "@ui.NUI_RAIL_GUIDE",
+				"enabled": true,
+				"soon": false,
+				"badge": ""
 			}
-		]
+		],
+		"rail_folded": false
 	}
 }

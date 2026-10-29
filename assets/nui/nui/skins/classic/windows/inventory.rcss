@@ -374,3 +374,41 @@ body.skin-classic.inv .inv-rail__button[disabled] .inv-rail__glyph
 {
 	opacity: 0.5;
 }
+body.skin-classic.inv .inv-rail__button.is-soon .inv-rail__glyph
+{
+	opacity: 0.5;
+}
+body.skin-classic.inv .inv-rail__button.is-soon:hover .inv-rail__glyph
+{
+	--glyph-ink: var(--text);
+}
+/* The rule between the cells and the fold button: a legacy line; the fold
+   button a bare chevron under the cells. */
+body.skin-classic.inv .inv-rail__more
+{
+	width: 24dp;
+	margin: 4dp 0 2dp 0;
+	background-color: var(--border);
+}
+body.skin-classic.inv .inv-rail__fold,
+body.skin-classic.inv .inv-rail__fold:hover,
+body.skin-classic.inv .inv-rail__fold:active
+{
+	width: 32dp;
+	height: 16dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	line-height: 16dp;
+	transform: none;
+	decorator: none;
+}
+body.skin-classic.inv .inv-rail__fold-glyph
+{
+	display: inline-block;
+	--glyph-ink: var(--text);
+}
+body.skin-classic.inv .inv-rail__fold:hover .inv-rail__fold-glyph
+{
+	--glyph-ink: var(--highlight);
+}

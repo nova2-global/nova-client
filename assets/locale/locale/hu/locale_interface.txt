@@ -371,3 +371,11 @@ UNBLOCK_PLAYER	Játékos feloldás
 GUILD_WAR_ENEMY_NUMBER	Max. tagok
 GUILD_WAR_MAX_SCORE	Végeredmény
 SYSTEM_MOVE_CHANNEL	Csatorna váltás
+NUI_RAIL_OFFLINE_SHOP	Offline bolt
+NUI_RAIL_RANKING	Rangsor
+NUI_RAIL_EVENTS	Események
+NUI_RAIL_ACHIEVEMENTS	Teljesítmények
+NUI_RAIL_GUIDE	Útmutató
+NUI_RAIL_SOON	Hamarosan
+NUI_RAIL_FOLD	Gyorsgombok elrejtése
+NUI_RAIL_UNFOLD	Gyorsgombok megjelenítése

@@ -396,3 +396,11 @@ UNBLOCK_PLAYER	Unblock Player
 GUILD_WAR_ENEMY_NUMBER	Max. Members
 GUILD_WAR_MAX_SCORE	End Score
 SYSTEM_MOVE_CHANNEL	تغيير القناة
+NUI_RAIL_OFFLINE_SHOP	متجر غير متصل
+NUI_RAIL_RANKING	الترتيب
+NUI_RAIL_EVENTS	الفعاليات
+NUI_RAIL_ACHIEVEMENTS	الإنجازات
+NUI_RAIL_GUIDE	الدليل
+NUI_RAIL_SOON	قريبًا
+NUI_RAIL_FOLD	إخفاء الاختصارات
+NUI_RAIL_UNFOLD	إظهار الاختصارات

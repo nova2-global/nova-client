@@ -372,3 +372,11 @@ UNBLOCK_PLAYER	Sblocca giocatore
 GUILD_WAR_ENEMY_NUMBER	Max. Membri
 GUILD_WAR_MAX_SCORE	Punteggio finale
 SYSTEM_MOVE_CHANNEL	Cambia canale
+NUI_RAIL_OFFLINE_SHOP	Negozio offline
+NUI_RAIL_RANKING	Classifica
+NUI_RAIL_EVENTS	Eventi
+NUI_RAIL_ACHIEVEMENTS	Obiettivi
+NUI_RAIL_GUIDE	Guida
+NUI_RAIL_SOON	Prossimamente
+NUI_RAIL_FOLD	Nascondi scorciatoie
+NUI_RAIL_UNFOLD	Mostra scorciatoie

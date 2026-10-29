@@ -372,3 +372,11 @@ UNBLOCK_PLAYER	Разблокировать игрока
 GUILD_WAR_ENEMY_NUMBER	Макс. Участников
 GUILD_WAR_MAX_SCORE	Финальный результат
 SYSTEM_MOVE_CHANNEL	Смена канала
+NUI_RAIL_OFFLINE_SHOP	Офлайн-лавка
+NUI_RAIL_RANKING	Рейтинг
+NUI_RAIL_EVENTS	События
+NUI_RAIL_ACHIEVEMENTS	Достижения
+NUI_RAIL_GUIDE	Руководство
+NUI_RAIL_SOON	Скоро
+NUI_RAIL_FOLD	Скрыть ярлыки
+NUI_RAIL_UNFOLD	Показать ярлыки

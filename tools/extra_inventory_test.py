@@ -838,6 +838,78 @@ class TooltipHints(unittest.TestCase):
         self.assertEqual(self.lines(COSTUME, DS, 3, safebox=True), [])
 
 
+class SelectItem(unittest.TestCase):
+    """uiselectitem.SelectItemWindow for the guild alchemist (decision c,
+    spec 3.10): the stones of the main inventory, then those of the special
+    inventory's stone category, up to OLD's 55; a press sends the stone's
+    (window, cell), which C1's net.SendSelectItemPacket encodes."""
+
+    def world(self, inventory_stones=(), extra_stones=(), grade=0):
+        world = World()
+        for cell in inventory_stones:
+            world.game.give(cell, STONE)
+            world.game.item_grades[cell] = grade
+        for cell in extra_stones:
+            world.game.give((EXTRA, cell), STONE, 2)
+        world.game.give((EXTRA, 225), BEAN, 3)  # a material: not listed
+        support.define(world.game.modules["player"], "GetItemGrade",
+                       lambda *at: world.game.item_grades.get(at[0] if len(at) == 1 else tuple(at), 0))
+        module = world.load("uiselectitem", "uiselectitem.py")
+        with world, lf.quiet():
+            window = module.SelectItemWindow()
+            window.SetItemToolTip(world.game.modules["uiToolTip"].ItemToolTip())
+            window.Open()
+        return world, window
+
+    def test_the_inventory_s_stones_then_the_special_inventory_s(self):
+        world, window = self.world((0, 46), (450, 460, 674))
+        self.assertEqual(window.inventorySlotPosDict, {0: 0, 1: 46, 2: 450, 3: 460, 4: 674})
+        self.assertEqual(window.inventorySlotWindowDict, {0: INVENTORY, 1: INVENTORY, 2: EXTRA, 3: EXTRA, 4: EXTRA})
+        self.assertEqual(window.itemSlot.shown()[3], (STONE, "2", False))
+
+    def test_olds_cap_of_55_counts_both_windows(self):
+        world, window = self.world(range(0, 40), range(450, 480))
+        self.assertEqual(len(window.inventorySlotPosDict), 55)
+        self.assertEqual(window.inventorySlotPosDict[54], 464)
+
+    def test_a_grade_above_2_is_left_out_in_both(self):
+        world, window = self.world((5,), (), grade=3)
+        world.game.item_grades[(EXTRA, 451)] = 3
+        world.game.give((EXTRA, 451), STONE)
+        with world, lf.quiet():
+            window.RefreshSlot()
+        self.assertEqual(window.inventorySlotPosDict, {})
+
+    def test_a_press_sends_the_window_and_the_cell_and_cell_0_is_a_stone(self):
+        world, window = self.world((0,), (452,))
+        with world, lf.quiet():
+            window.SelectItemSlot(0)
+            window.Open()
+            window.SelectItemSlot(1)
+            window.Open()
+            window.Close()
+        self.assertEqual(world.sent("net.SendSelectItemPacket"),
+                         [("net.SendSelectItemPacket", (INVENTORY, 0)), ("net.SendSelectItemPacket", (EXTRA, 452)),
+                          ("net.SendSelectItemPacket", (0,))])
+
+    def test_the_tooltip_reads_the_stone_s_window(self):
+        world, window = self.world((7,), (452,))
+        with world, lf.quiet():
+            window.OverInItem(0)
+            window.OverInItem(1)
+        self.assertEqual(window.tooltipItem.shown, [("SetInventoryItem", 7), ("SetInventoryItem", 452, EXTRA)])
+
+    def test_an_exe_without_the_special_inventory_lists_the_inventory_only(self):
+        world = lf.LegacyWorld()
+        world.game.give(9, STONE)
+        world.game.metins.add(STONE)
+        module = world.load("uiselectitem", "uiselectitem.py")
+        with world, lf.quiet():
+            window = module.SelectItemWindow()
+            window.RefreshSlot()
+        self.assertEqual(window.inventorySlotPosDict, {0: 9})
+
+
 class Locales(unittest.TestCase):
     def test_every_new_key_is_in_all_17_locales_and_english_is_the_spec_s(self):
         locales = [name for name in sorted(os.listdir(LOCALES))

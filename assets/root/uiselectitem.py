@@ -4,13 +4,32 @@ import item
 import wndMgr
 import net
 
+# The guild alchemist's stones (decision c, spec 3.10): they sit in the
+# special inventory's stone category (nova-protocol inventory_packets.h).
+EXTRA_INVENTORY_CATEGORY_STONES = 2
+# OLD's cap (uiSelectItem.py: slotPos > 54).
+SELECT_ITEM_MAX = 55
+
+
+def GetExtraStoneCells():
+	"""The special inventory's stone cells; none on an exe without the
+	special inventory (no category range)."""
+	getRange = getattr(player, "GetExtraInventoryCategoryRange", None)
+	cells = getRange(EXTRA_INVENTORY_CATEGORY_STONES) if getRange else None
+	if not isinstance(cells, tuple) or len(cells) != 2:
+		return range(0)
+	return range(cells[0], cells[1])
+
+
 class SelectItemWindow(ui.ScriptWindow):
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
 
 		self.tooltipItem = None
+		# {select slot: cell} and {select slot: window} (the cell's window).
 		self.inventorySlotPosDict = {}
+		self.inventorySlotWindowDict = {}
 
 		self.LoadWindow()
 
@@ -55,9 +74,12 @@ class SelectItemWindow(ui.ScriptWindow):
 		self.tooltipItem = tooltipItem
 
 	def SelectItemSlot(self, slotPos):
+		## The stone's window and cell (C1 encodes them, spec 3.10); past OLD,
+		## inventory cell 0 is a stone, not "closed".
 		wndMgr.OnceIgnoreMouseLeftButtonUpEvent()
 		inventorySlotPos = self.inventorySlotPosDict[slotPos]
-		net.SendSelectItemPacket(inventorySlotPos)
+		window = self.inventorySlotWindowDict.get(slotPos, player.INVENTORY)
+		net.SendSelectItemPacket(window, inventorySlotPos)
 		self.Hide()
 
 	def SetTableSize(self, size):
@@ -75,15 +97,23 @@ class SelectItemWindow(ui.ScriptWindow):
 
 		slotPos = 0
 		self.inventorySlotPosDict = {}
+		self.inventorySlotWindowDict = {}
 
 		getItemVNum=player.GetItemIndex
 		getItemCount=player.GetItemCount
 		setItemVNum=self.itemSlot.SetItemSlot
 
-		for i in range(player.INVENTORY_PAGE_SIZE*player.INVENTORY_PAGE_COUNT):
-			slotNumber = i
+		## The main inventory's stones, then the special inventory's, where
+		## every stone is after the cut (decision c; OLD listed two pages of
+		## the main inventory only).
+		cells = [(player.INVENTORY, i) for i in range(player.INVENTORY_PAGE_SIZE*player.INVENTORY_PAGE_COUNT)]
+		cells += [(player.EXTRA_INVENTORY, i) for i in GetExtraStoneCells()]
 
-			itemVNum = getItemVNum(slotNumber)
+		for (window, slotNumber) in cells:
+			if window == player.INVENTORY:
+				itemVNum = getItemVNum(slotNumber)
+			else:
+				itemVNum = getItemVNum(window, slotNumber)
 
 			if 0 == itemVNum:
 				continue
@@ -91,16 +121,20 @@ class SelectItemWindow(ui.ScriptWindow):
 			if not item.IsMetin(itemVNum):
 				continue
 
-			itemGrade = player.GetItemGrade(slotNumber)
+			if window == player.INVENTORY:
+				itemGrade = player.GetItemGrade(slotNumber)
+			else:
+				itemGrade = player.GetItemGrade(window, slotNumber)
 
 			if itemGrade > 2:
 				continue
 
-			self.inventorySlotPosDict[slotPos] = i
+			self.inventorySlotPosDict[slotPos] = slotNumber
+			self.inventorySlotWindowDict[slotPos] = window
 
 			slotPos += 1
 
-			if slotPos > 54:
+			if slotPos >= SELECT_ITEM_MAX:
 				break
 
 		itemCount = len(self.inventorySlotPosDict)
@@ -118,8 +152,13 @@ class SelectItemWindow(ui.ScriptWindow):
 			self.SetTableSize(lineCount)
 
 		for selectWndPos, inventoryPos in list(self.inventorySlotPosDict.items()):
-			itemVNum = getItemVNum(inventoryPos)
-			itemCount = getItemCount(inventoryPos)
+			window = self.inventorySlotWindowDict.get(selectWndPos, player.INVENTORY)
+			if window == player.INVENTORY:
+				itemVNum = getItemVNum(inventoryPos)
+				itemCount = getItemCount(inventoryPos)
+			else:
+				itemVNum = getItemVNum(window, inventoryPos)
+				itemCount = getItemCount(window, inventoryPos)
 
 			if itemCount <= 1:
 				itemCount = 0
@@ -135,5 +174,9 @@ class SelectItemWindow(ui.ScriptWindow):
 	def OverInItem(self, slotIndex):
 		if None != self.tooltipItem:
 			inventorySlotPos = self.inventorySlotPosDict[slotIndex]
-			self.tooltipItem.SetInventoryItem(inventorySlotPos)
+			window = self.inventorySlotWindowDict.get(slotIndex, player.INVENTORY)
+			if window == player.INVENTORY:
+				self.tooltipItem.SetInventoryItem(inventorySlotPos)
+			else:
+				self.tooltipItem.SetInventoryItem(inventorySlotPos, window)
 

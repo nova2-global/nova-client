@@ -1,13 +1,14 @@
 """Which windows run on NovaUI, and the factory that makes them.
 
-Each window has an id. Its default lives here (every Wave 1, 2a, 2b, 3a, 3b
-and 5a window is off: legacy; so is every Wave 4 trade and social window,
-in the groups "trade" and "social") and config/metin2.cfg overrides it through
-UI_NUI_WINDOWS ("+id" on, "-id" off, comma-separated;
-systemSetting.GetUINuiWindows). A group id (GROUPS: "wave1", "hud", "hud2",
-"sys", "rest", "items") in that string stands for each of its windows, in its
-place among the tokens.
-UI_NUI_LOGIN 1 means "+login" unless UI_NUI_WINDOWS names login itself.
+Each window has an id. Every window runs on NovaUI by default (WINDOWS);
+config/metin2.cfg can turn one off through UI_NUI_WINDOWS ("-id", and "+id"
+back on, comma-separated; systemSetting.GetUINuiWindows), for a diagnosis or
+the live kit's legacy runs. A group id (GROUPS: "all", "wave1", "hud",
+"hud2", "sys", "rest", "items", "wave3c", "trade", "social") in that string
+stands for each of its windows, in its place among the tokens: "-all" is a
+legacy client. The look is the theme's (UI_THEME, with UI_COLORS for its
+colors): the classic theme draws the legacy look on NovaUI.
+UI_NUI_LOGIN 1 still means "+login" unless UI_NUI_WINDOWS names login itself.
 A window runs on NovaUI only when its flag is on, NovaUI is available, the
 locale is not right-to-left (nui.enabled_for_locale), its document loaded
 and its controller was made; otherwise the legacy window runs, unchanged.
@@ -47,67 +48,67 @@ except ImportError:  # plain Python outside the client
 	wndMgr = None
 
 
-WINDOWS = (            # (id, default) in this order; the defaults stay False in Waves 1, 2a, 2b, 3a, 3b and 5a
-	("login", False),
-	("dialogs", False),
-	("server-board", False),
-	("virtual-keyboard", False),
-	("locale-strip", False),
-	("loading", False),
-	("empire", False),
-	("select", False),
-	("create", False),
-	("taskbar", False),            # the taskbar: gauges, quickslots, the mouse-button pickers
-	("expanded-taskbar", False),   # the expanded taskbar (the dragon soul button)
-	("energy-bar", False),
-	("gift-box", False),           # the gift icon; needs the NovaUI taskbar, which makes it
-	("game-buttons", False),       # the stat, skill, help, quest, build and observer buttons
-	("affects", False),
-	("target", False),
-	("party", False),
-	("edge-buttons", False),       # the quest and whisper edge buttons
-	("tip-board", False),
-	("big-board", False),
-	("map-name", False),
-	("chat", False),               # the chat window and its input
-	("chat-log", False),           # the chat log
-	("minimap", False),            # the minimap: frame, controls and the map view
-	("atlas", False),              # the atlas (large map); needs the NovaUI minimap, which makes it
-	("player-gauge", False),       # the HP gauge over the player's head
-	("shop-signs", False),         # the private shop signs
-	("guild-war", False),          # the guild war score boards
-	("system-menu", False),        # the system menu (Escape in game)
-	("system-options", False),     # the system options, its music list and the Interface section
-	("game-options", False),       # the game options
-	("restart", False),            # the restart dialog after a death
-	("help", False),               # the help window
-	("point-reset", False),        # the point reset questions; needs the NovaUI dialog kit
-	("quest", False),              # the quest dialog, its letterbox and fades, the HUD hiding it causes
-	("guild-building", False),     # the guild building placement window
-	("web", False),                # the web window around the WebView2 page (the mall)
-	("console", False),            # the developer console (only where legacy opens it)
-	("inventory", False),          # the inventory, its costume and belt windows (Wave 3b)
-	("tooltips", False),           # the Interface's item, skill and link tooltips
-	("refine", False),             # both refine dialogs
-	("attach-metin", False),       # the attach metin stone dialog
-	("select-item", False),        # the select item window (a quest's [SELECT_ITEM])
-	("character", False),          # the character window: status, skills, emotes, quests (Wave 3c)
-	("dragon-soul", False),        # the dragon soul inventory
-	("dragon-soul-refine", False), # the dragon soul refine window
+WINDOWS = (            # (id, default) in this order; every window is on by default since the design gaps
+	("login", True),
+	("dialogs", True),
+	("server-board", True),
+	("virtual-keyboard", True),
+	("locale-strip", True),
+	("loading", True),
+	("empire", True),
+	("select", True),
+	("create", True),
+	("taskbar", True),            # the taskbar: gauges, quickslots, the mouse-button pickers
+	("expanded-taskbar", True),   # the expanded taskbar (the dragon soul button)
+	("energy-bar", True),
+	("gift-box", True),           # the gift icon; needs the NovaUI taskbar, which makes it
+	("game-buttons", True),       # the stat, skill, help, quest, build and observer buttons
+	("affects", True),
+	("target", True),
+	("party", True),
+	("edge-buttons", True),       # the quest and whisper edge buttons
+	("tip-board", True),
+	("big-board", True),
+	("map-name", True),
+	("chat", True),               # the chat window and its input
+	("chat-log", True),           # the chat log
+	("minimap", True),            # the minimap: frame, controls and the map view
+	("atlas", True),              # the atlas (large map); needs the NovaUI minimap, which makes it
+	("player-gauge", True),       # the HP gauge over the player's head
+	("shop-signs", True),         # the private shop signs
+	("guild-war", True),          # the guild war score boards
+	("system-menu", True),        # the system menu (Escape in game)
+	("system-options", True),     # the system options, its music list and the Interface section
+	("game-options", True),       # the game options
+	("restart", True),            # the restart dialog after a death
+	("help", True),               # the help window
+	("point-reset", True),        # the point reset questions; needs the NovaUI dialog kit
+	("quest", True),              # the quest dialog, its letterbox and fades, the HUD hiding it causes
+	("guild-building", True),     # the guild building placement window
+	("web", True),                # the web window around the WebView2 page (the mall)
+	("console", True),            # the developer console (only where legacy opens it)
+	("inventory", True),          # the inventory, its costume and belt windows (Wave 3b)
+	("tooltips", True),           # the Interface's item, skill and link tooltips
+	("refine", True),             # both refine dialogs
+	("attach-metin", True),       # the attach metin stone dialog
+	("select-item", True),        # the select item window (a quest's [SELECT_ITEM])
+	("character", True),          # the character window: status, skills, emotes, quests (Wave 3c)
+	("dragon-soul", True),        # the dragon soul inventory
+	("dragon-soul-refine", True), # the dragon soul refine window
 	# Wave 4 (P16 spec 6.1): the trade and social windows.
-	("exchange", False),           # the exchange (trade) window
-	("shop", False),               # the NPC shop and a player's shop view
-	("private-shop", False),       # the private shop builder
-	("safebox", False),            # the safebox, the password dialog it shares with the mall, the change password dialog
-	("mall", False),               # the item mall storage
-	("equipment-view", False),     # another player's equipment
-	("messenger", False),          # the messenger (friends)
-	("whisper", False),            # the whisper dialogs
-	("guild", False),              # the guild window and its grade name dialog
-	("guild-war-dialogs", False),  # the guild war declare and accept dialogs
-	("guild-mark", False),         # the guild mark and symbol lists
+	("exchange", True),           # the exchange (trade) window
+	("shop", True),               # the NPC shop and a player's shop view
+	("private-shop", True),       # the private shop builder
+	("safebox", True),            # the safebox, the password dialog it shares with the mall, the change password dialog
+	("mall", True),               # the item mall storage
+	("equipment-view", True),     # another player's equipment
+	("messenger", True),          # the messenger (friends)
+	("whisper", True),            # the whisper dialogs
+	("guild", True),              # the guild window and its grade name dialog
+	("guild-war-dialogs", True),  # the guild war declare and accept dialogs
+	("guild-mark", True),         # the guild mark and symbol lists
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
-	("maintenance", False),        # the countdown to a scheduled server shutdown
+	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
 
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
@@ -122,6 +123,9 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view"),
 	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"),
 }
+# "all": every window, so "-all" makes a legacy client (the live kit's legacy
+# runs), and "-all,+id" one with a single NovaUI window.
+GROUPS["all"] = tuple(window_id for window_id, _ in WINDOWS)
 
 DECISIONS = {}         # id -> "nui" or "legacy: <reason>", the last decision
 
@@ -227,10 +231,17 @@ def overrides():
 	return result
 
 
+# The defaults of WINDOWS hold while DEFAULT_ON is True, as in the client.
+# The tests that compare a NovaUI window with the legacy one it replaces set
+# it False (nui_test_support.load_module), so a window there runs on NovaUI
+# only when UI_NUI_WINDOWS names it.
+DEFAULT_ON = True
+
+
 def is_on(window_id):
 	"""The flag alone: the override, else the default (False for an id this
 	table does not know, and for a group id, which is not a window)."""
-	return bool(overrides().get(window_id, _DEFAULTS.get(window_id, False)))
+	return bool(overrides().get(window_id, DEFAULT_ON and _DEFAULTS.get(window_id, False)))
 
 
 def _record(window_id, decision):

@@ -242,6 +242,29 @@ def with_refine(cells):
 	return [dict(cell, **{REFINE_KEY: cell.get(REFINE_KEY, 0)}) for cell in cells]
 
 
+# Wave 4b (NOVA-13, the tradable icon): the opt-in keys of a grid that shows
+# CSlotWindow's two trade marks. in_use: SLOT_STATE_CANT_MOUSE_EVENT
+# (wndMgr.SetCantMouseEventSlot / SetCanMouseEventSlot), an item a trade
+# window holds (the exchange, the private shop builder, the refine and
+# attach dialogs): a red wash, and the cell ignores a press, a drop, a right
+# press and a double click (LegacySlotEvents). unusable_ontop:
+# SLOT_STATE_UNUSABLE (SetUnusableSlotOnTopWnd / SetUsableSlotOnTopWnd), an
+# item the trade window on top refuses: a white wash, and clicks still pass.
+# A proxy made with marks=True gives every cell both (True only on the
+# anchor of a cell that holds something, as CSlotWindow washes only an
+# item's slot, over its whole area); the window binds them as the classes
+# is-in-use and is-unusable-ontop with the part nui-slot__wash
+# (nui/components/slot-grid.rcss). Other grids never have them; every proxy
+# accepts the four calls and keeps the in-use rule.
+MARK_KEYS = ("in_use", "unusable_ontop")
+
+
+def with_marks(cells):
+	"""The cells (copies) with MARK_KEYS at False where they lack them: a
+	window whose grid shows the marks gives its empty cells the keys."""
+	return [dict(cell, **dict((key, cell.get(key, False)) for key in MARK_KEYS)) for cell in cells]
+
+
 def empty_cell(index):
 	"""empty_slot(index) plus covered False, target "", picked False,
 	unavailable False."""
@@ -730,10 +753,34 @@ def _mem_func(fn):
 _EVENT_NAMES = ("select_empty", "select_item", "unselect_empty", "unselect_item", "use", "over_in", "over_out",
                 "pressed_button")
 _DEFAULT_COVER = "d:/ymir work/ui/public/slot_cover_button_01.sub"
+# What a set or clear of a slot drops, as a record's values (CSlotWindow::SetSlot
+# and ClearSlot set its dwState to 0): the lock, the disabled state and the
+# wave 4b marks. A proxy subclass that sets a slot itself updates its record
+# with it.
+CLEARED_STATES = {"locked": False, "disabled": False, "in_use": False, "unusable_ontop": False}
 
 
 def _pick_up_style():
 	return getattr(wndMgr, "SLOT_STYLE_PICK_UP", 1)
+
+
+# Wave 4b: the proxies whose shown marks changed since their cells were last
+# built (legacy marks cells outside RefreshSlot: after a page refresh, on
+# OnTop, when a trade window locks or releases a cell); flush_marks() hands
+# them over.
+_marked = weakref.WeakSet()
+
+
+def flush_marks():
+	"""Pushes every proxy whose shown marks changed since its last
+	RefreshSlot or push (SlotWindowProxy.flush). LegacySlotEvents calls it
+	after each press, release, drop and double click, so a lock a legacy
+	handler made shows at once; a window calls it (or its proxy's flush())
+	at the end of a legacy entry point that marks cells without a NovaUI
+	event (the exchange's ITEM_ADD, the Interface's RefreshMarkInventoryBag,
+	OnTop)."""
+	for proxy in list(_marked):
+		proxy.flush()
 
 
 class SlotWindowProxy(object):
@@ -752,13 +799,26 @@ class SlotWindowProxy(object):
 	does not hold is ignored, as CSlotWindow's GetSlotPointer ignores it.
 
 	refine=True opts the grid in to the refine level: SetItemSlot reads it
-	(refine_level) and every cell carries REFINE_KEY."""
+	(refine_level) and every cell carries REFINE_KEY.
 
-	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, refine=False):
+	Wave 4b: the four mark calls of CSlotWindow (SetCantMouseEventSlot,
+	SetCanMouseEventSlot, SetUnusableSlotOnTopWnd, SetUsableSlotOnTopWnd)
+	set and clear a slot's in-use and unusable marks; SetItemSlot (any set of
+	a slot, as CSlotWindow::SetSlot) and ClearSlot drop both, so legacy marks
+	again after each refresh. The in-use mark holds at once: LegacySlotEvents
+	reads is_in_use(). marks=True opts the grid in to showing them (MARK_KEYS
+	in every cell). Legacy marks cells outside RefreshSlot, which CSlotWindow
+	draws at once: a change of a shown mark makes the proxy `dirty`, and
+	flush() (or nui_slots.flush_marks()) pushes its cells."""
+
+	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, refine=False,
+	             marks=False):
 		self.on_refresh = on_refresh
 		self.positions = positions
 		self.window = window
 		self.refine = bool(refine)
+		self.marks = bool(marks)
+		self.dirty = False
 		self.use_mode = False
 		self.usable = False
 		self.pick_up = True
@@ -782,7 +842,7 @@ class SlotWindowProxy(object):
 			record = self._slots[slot] = {"kind": "", "vnum": 0, "count": "", "icon": "", "w": 1, "h": 1,
 			                              "active": False, "locked": False, "disabled": False, "cd": (0.0, 0.0),
 			                              "cover_art": "", "unavailable": False, "always_cover": False,
-			                              "refine": 0}
+			                              "refine": 0, "in_use": False, "unusable_ontop": False}
 		return record
 
 	def _holds(self, slot):
@@ -790,7 +850,12 @@ class SlotWindowProxy(object):
 
 	def _clear(self, record):
 		record.update({"kind": "", "vnum": 0, "count": "", "icon": "", "w": 1, "h": 1, "active": False,
-		               "locked": False, "disabled": False, "cd": (0.0, 0.0), "refine": 0})
+		               "cd": (0.0, 0.0), "refine": 0})
+		record.update(CLEARED_STATES)
+
+	def _mark_dirty(self):
+		self.dirty = True
+		_marked.add(self)
 
 	# --- what legacy calls -----------------------------------------------------------
 
@@ -809,8 +874,8 @@ class SlotWindowProxy(object):
 		icon = item.GetIconImageFileName()
 		width, height = item.GetItemSize()
 		record.update({"kind": "item", "vnum": int(vnum), "icon": icon_source(icon) if icon and _exists(icon) else "",
-		               "w": int(width), "h": int(height), "locked": False, "disabled": False,
-		               "count": str(int(count)) if count and int(count) > 0 else ""})
+		               "w": int(width), "h": int(height), "count": str(int(count)) if count and int(count) > 0 else ""})
+		record.update(CLEARED_STATES)
 		if self.refine:
 			record["refine"] = refine_level(vnum)
 		if not same:
@@ -825,8 +890,8 @@ class SlotWindowProxy(object):
 			self.ClearSlot(slot)
 			return
 		record = self._record(int(slot))
-		record.update({"kind": "skill", "vnum": int(skill_index), "icon": icon_source(icon), "w": 1, "h": 1,
-		               "locked": False, "disabled": False})
+		record.update({"kind": "skill", "vnum": int(skill_index), "icon": icon_source(icon), "w": 1, "h": 1})
+		record.update(CLEARED_STATES)
 
 	def SetEmotionSlot(self, slot, emotion_index):
 		if not self._holds(slot):
@@ -834,8 +899,8 @@ class SlotWindowProxy(object):
 		get_icon = getattr(player, "GetEmotionIconFileName", None)
 		icon = get_icon(emotion_index) if get_icon is not None else ""
 		record = self._record(int(slot))
-		record.update({"kind": "emotion", "vnum": int(emotion_index), "icon": icon_source(icon), "w": 1, "h": 1,
-		               "locked": False, "disabled": False})
+		record.update({"kind": "emotion", "vnum": int(emotion_index), "icon": icon_source(icon), "w": 1, "h": 1})
+		record.update(CLEARED_STATES)
 
 	def SetSlotCount(self, slot, count):
 		if self._holds(slot):
@@ -910,6 +975,31 @@ class SlotWindowProxy(object):
 		if self._holds(slot):
 			self._record(int(slot))["disabled"] = True
 
+	# Wave 4b (NOVA-13): CSlotWindow's trade marks, each setting or clearing
+	# its own state, so a call twice changes nothing.
+
+	def SetCantMouseEventSlot(self, slot):
+		self._set_mark(slot, "in_use", True)
+
+	def SetCanMouseEventSlot(self, slot):
+		self._set_mark(slot, "in_use", False)
+
+	def SetUnusableSlotOnTopWnd(self, slot):
+		self._set_mark(slot, "unusable_ontop", True)
+
+	def SetUsableSlotOnTopWnd(self, slot):
+		self._set_mark(slot, "unusable_ontop", False)
+
+	def _set_mark(self, slot, key, flag):
+		if not self._holds(slot):
+			return
+		record = self._record(int(slot))
+		if record[key] == flag:
+			return
+		record[key] = flag
+		if self.marks and record["kind"]:
+			self._mark_dirty()
+
 	def SetSlotStyle(self, style):
 		"""wndMgr.SLOT_STYLE_PICK_UP draws the drop footprint; any other style
 		draws none."""
@@ -934,10 +1024,30 @@ class SlotWindowProxy(object):
 		"""Builds the cells from what legacy set, hands them to on_refresh, and
 		shows the hovered cell's tooltip again (CSlotWindow::RefreshSlot)."""
 		self._cells = self._build()
+		self._clean()
 		if self.on_refresh is not None:
 			self.on_refresh(self.cells())
 		if self.events is not None:
 			self.events.refresh_hover()
+
+	def push(self):
+		"""The cells to on_refresh (no tooltip refresh); the proxy is clean."""
+		self._cells = self._build()
+		self._clean()
+		if self.on_refresh is not None:
+			self.on_refresh(self.cells())
+
+	def flush(self):
+		"""push() when a change is not shown yet (`dirty`); True when it
+		pushed."""
+		if not self.dirty:
+			return False
+		self.push()
+		return True
+
+	def _clean(self):
+		self.dirty = False
+		_marked.discard(self)
 
 	def GetSlotCount(self):
 		return len(self.slot_numbers)
@@ -1026,6 +1136,12 @@ class SlotWindowProxy(object):
 				record = self._slots.get(slot)
 				anchor = record is not None and record["kind"] == "item" and not cells[index].get("covered")
 				cells[index][REFINE_KEY] = record["refine"] if anchor else 0
+		if self.marks:
+			for index, slot in enumerate(self.slot_numbers):
+				record = self._slots.get(slot)
+				shown = record is not None and bool(record["kind"]) and not cells[index].get("covered")
+				for key in MARK_KEYS:
+					cells[index][key] = shown and bool(record[key])
 		return cells
 
 	def cells(self):
@@ -1053,6 +1169,14 @@ class SlotWindowProxy(object):
 
 	def is_locked(self, index):
 		return 0 <= index < len(self._cells) and bool(self._cells[index].get("locked"))
+
+	def is_in_use(self, index):
+		"""Whether cell `index`'s slot has the in-use mark now (CSlotWindow
+		reads the slot's state at the event, whatever was last drawn)."""
+		if not (0 <= index < len(self.slot_numbers)):
+			return False
+		record = self._slots.get(self.slot_numbers[index])
+		return record is not None and bool(record["in_use"])
 
 	def vnums(self):
 		"""{anchor index: vnum} of the item cells (CGridSlotWindow's dwItemIndex)."""
@@ -1163,7 +1287,15 @@ class LegacySlotEvents(object):
 	footprint and the drop follow the cell under the pointer. It is told
 	when an attach starts (a press here, or the first pointer event of any
 	such grid while one is attached) and when it ends (watch_attach), in
-	every grid at once."""
+	every grid at once.
+
+	Wave 4b (NOVA-13): a press, a release, a drop, a right press and a
+	double click whose cell (the drop target while something is attached,
+	else the item's anchor) has the in-use mark send nothing, as
+	CSlotWindow's handlers return at SLOT_STATE_CANT_MOUSE_EVENT; the hover
+	and its tooltip still pass. Each press, release, drop and double click
+	ends with flush_marks(), so a mark the legacy handler made (a dialog
+	that locks the cell it opened on) shows at once."""
 
 	def __init__(self, proxy, owner_of=None, on_states=None, on_attaching=None):
 		self.proxy = proxy
@@ -1212,7 +1344,7 @@ class LegacySlotEvents(object):
 
 	def _select(self, index, check_lock):
 		target = self._target(index)
-		if target is None:
+		if target is None or self.proxy.is_in_use(target):
 			return
 		number = self.proxy.slot_number(target)
 		if self.proxy.is_item(target) and not (check_lock and self.proxy.is_locked(target)):
@@ -1239,6 +1371,7 @@ class LegacySlotEvents(object):
 				_press = (self, index)
 			_note_attach()
 			self.refresh_states()
+			flush_marks()
 		elif button == 1:
 			# P15 F-2: CSlotWindow::OnMouseRightButtonDown sends the unselect
 			# event of the slot it picks whatever is attached (a grid picks
@@ -1250,12 +1383,13 @@ class LegacySlotEvents(object):
 			if holding and not ATTACH_RIGHT:
 				return
 			target = self._target(index)
-			if target is None or not (0 <= target < len(self.proxy.slot_numbers)):
+			if target is None or not (0 <= target < len(self.proxy.slot_numbers)) or self.proxy.is_in_use(target):
 				return
 			number = self.proxy.slot_number(target)
 			self._call("unselect_item" if self.proxy.is_item(target) else "unselect_empty", number)
 			if holding:
 				self.refresh_states()
+			flush_marks()
 
 	def release(self, index, button):
 		global _press
@@ -1269,6 +1403,7 @@ class LegacySlotEvents(object):
 			self._select(index, False)
 			_note_attach()
 			self.refresh_states()
+			flush_marks()
 
 	def drop(self, index):
 		self.hovered = index
@@ -1276,11 +1411,13 @@ class LegacySlotEvents(object):
 			self._select(index, False)
 			_note_attach()
 			self.refresh_states()
+			flush_marks()
 
 	def use(self, index):
 		target = self._target(index)
-		if target is not None and self.proxy.is_item(target):
+		if target is not None and self.proxy.is_item(target) and not self.proxy.is_in_use(target):
 			self._call("use", self.proxy.slot_number(target))
+			flush_marks()
 
 	def over(self, index):
 		self.hovered = index
@@ -1433,6 +1570,7 @@ class FullSlotWindowProxy(SlotWindowProxy):
 	  enables the cover again, as CSlotWindow::SetCoverButton does.
 
 	Times are nui.now() seconds. `limits` defaults to nui_limits.current().
+	`marks` opts the grid in to the wave 4b trade marks (SlotWindowProxy).
 
 	CSlotWindow draws a change at once, and legacy's character and dragon
 	soul windows change their slots without RefreshSlot (ActivateSlot, the
@@ -1444,11 +1582,11 @@ class FullSlotWindowProxy(SlotWindowProxy):
 	_ACTIVE_KEY = getattr(skill, "SKILL_TYPE_ACTIVE", 1)
 
 	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, icon_of=None,
-	             limits=None):
+	             limits=None, marks=False):
 		self.icon_of = icon_of
 		self.limits = _current_limits(limits)
 		self._store = {}
-		SlotWindowProxy.__init__(self, slot_numbers, on_refresh, cols, rows, positions, window)
+		SlotWindowProxy.__init__(self, slot_numbers, on_refresh, cols, rows, positions, window, marks=marks)
 		self.dirty = True
 
 	def _record(self, slot):
@@ -1457,13 +1595,6 @@ class FullSlotWindowProxy(SlotWindowProxy):
 		if "alpha" not in record:
 			record.update({"alpha": 1.0, "closed": True, "has_button": False, "button": False})
 		return record
-
-	def push(self):
-		"""The cells to on_refresh (no tooltip refresh); the proxy is clean."""
-		self._cells = self._build()
-		self.dirty = False
-		if self.on_refresh is not None:
-			self.on_refresh(self.cells())
 
 	def RefreshSlot(self):
 		SlotWindowProxy.RefreshSlot(self)
@@ -1481,7 +1612,8 @@ class FullSlotWindowProxy(SlotWindowProxy):
 			return None
 		record = self._record(int(slot))
 		if record["kind"] and record["vnum"] == int(index):
-			record.update({"kind": kind, "icon": icon, "locked": False, "disabled": False})
+			record.update({"kind": kind, "icon": icon})
+			record.update(CLEARED_STATES)
 			return record
 		self._clear_full(record)
 		record.update({"kind": kind, "vnum": int(index), "icon": icon, "w": int(w), "h": int(h), "alpha": float(alpha)})

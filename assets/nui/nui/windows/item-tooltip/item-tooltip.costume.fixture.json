@@ -146,8 +146,29 @@
 				"frame": "",
 				"icon": "",
 				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Ctrl + right-click: Move to Inventory+",
+						"role": "normal",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
 			}
 		],
-		"min_w": 190
+		"min_w": 248
 	}
 }

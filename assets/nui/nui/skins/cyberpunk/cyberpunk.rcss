@@ -868,7 +868,7 @@
 	background-color: var(--cyberpunk-holo-b);
 	border-color: var(--cyberpunk-edge-alt);
 }
-.skin-cyberpunk .nui-slot__cover, .skin-cyberpunk .nui-slot__ring
+.skin-cyberpunk .nui-slot__cover, .skin-cyberpunk .nui-slot__ring, .skin-cyberpunk .nui-slot__wash
 {
 	border-radius: 0;
 }

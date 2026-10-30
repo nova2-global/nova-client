@@ -40,12 +40,15 @@ class TypedSlotWindowProxy(nui_slots.SlotWindowProxy):
 	that answers one at each refresh: the shop's NPC or private type), and
 	their ref is positions(slot) (the safebox's global position, the shop's
 	real index), so nui_slots.LegacySlotEvents finds the picked cell by
-	(type, ref) as the legacy mouse controller attached it."""
+	(type, ref) as the legacy mouse controller attached it. It takes the
+	wave 4b trade marks as every SlotWindowProxy does (marks=True shows
+	them, nui_slots.MARK_KEYS)."""
 
-	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, slot_type=None):
+	def __init__(self, slot_numbers, on_refresh, cols=None, rows=None, positions=None, window=None, slot_type=None,
+	             marks=False):
 		self.slot_type = slot_type
 		nui_slots.SlotWindowProxy.__init__(self, slot_numbers, on_refresh, cols=cols, rows=rows, positions=positions,
-		                                   window=window)
+		                                   window=window, marks=marks)
 
 	def _slot_type(self):
 		slot_type = self.slot_type
@@ -82,8 +85,8 @@ class GuildSkillSlotProxy(nui_slots.SlotWindowProxy):
 			return
 		record = self._record(int(slot))
 		record.update({"kind": "skill", "vnum": int(skill_index), "icon": nui_slots.icon_source(icon), "w": 1, "h": 1,
-		               "locked": False, "disabled": False,
 		               "count": str(int(level)) if level and int(level) > 0 else ""})
+		record.update(nui_slots.CLEARED_STATES)
 
 	def AppendSlotButton(self, up, over="", down=""):
 		self.button_art = (str(up or ""), str(over or ""), str(down or ""))

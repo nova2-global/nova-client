@@ -258,7 +258,11 @@
 				     cells they cover, an active auto potion, a picked stack, the
 				     two-cell footprint of a 1x2 item held over cell 9, a blocked cell, an
 				     item an attached scroll can be used on and one it cannot, a hovered
-				     cell and an unavailable one. -->
+				     cell and an unavailable one. Under each grid, the trade marks of
+				     wave 4b (a fourth row of static cells): an item in use, one the
+				     trade window on top refuses, one with both marks and an item in use
+				     under the pointer (the full cells), and the same in the lean grid
+				     beside an empty cell. -->
 				<div class="nui-row gallery-slots">
 					<div class="nui-slot-grid nui-slot-grid--cols-4 nui-slot-grid--pick">
 						<div class="nui-slot nui-anim" data-for="slot : slots"
@@ -281,6 +285,30 @@
 							<span class="nui-slot__count" data-if="slot.count != ''">{{ slot.count }}</span>
 							<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
 							<span class="nui-slot__sign" data-if="slot.index == slot_sign"></span>
+						</div>
+						<div class="nui-slot nui-anim is-in-use">
+							<img class="nui-slot__icon" data-attr-src="slots[0].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
+							<span class="nui-slot__count">200</span>
+							<nui-number class="nui-slot__digits" value="200"/>
+						</div>
+						<div class="nui-slot nui-anim is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="slots[4].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
+							<span class="nui-slot__count">35</span>
+							<nui-number class="nui-slot__digits" value="35"/>
+						</div>
+						<div class="nui-slot nui-anim is-in-use is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="slots[5].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
+						</div>
+						<div class="nui-slot nui-anim is-in-use is-hover">
+							<img class="nui-slot__icon" data-attr-src="slots[7].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
 						</div>
 					</div>
 					<div class="nui-slot-grid nui-slot-grid--cols-1">
@@ -309,6 +337,25 @@
 							<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 							<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
 						</div>
+						<div class="nui-slot nui-anim nui-fx is-in-use">
+							<img class="nui-slot__icon" data-attr-src="lean[4].icon"/>
+							<div class="nui-slot__wash"></div>
+							<nui-number class="nui-slot__number" value="200"/>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="lean[8].icon"/>
+							<div class="nui-slot__wash"></div>
+							<nui-number class="nui-slot__number" value="35"/>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-in-use is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="lean[11].icon"/>
+							<div class="nui-slot__wash"></div>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-in-use is-hover">
+							<img class="nui-slot__icon" data-attr-src="lean[3].icon"/>
+							<div class="nui-slot__wash"></div>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-empty"></div>
 					</div>
 				</div>
 			</div>

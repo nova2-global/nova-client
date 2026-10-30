@@ -1,4 +1,4 @@
-"""Every count and limit the NovaUI item windows use (Wave 3b, 3c), read once
+"""Every count and limit the NovaUI item windows use (Wave 3b to 4b), read once
 from the client's module constants where the client has them, else today's
 values; FOUNDATION holds the foundation wave's targets for fixtures and tests
 (P14 spec 3). No window hard-codes a count.
@@ -75,8 +75,10 @@ OLD_WEAR = (
 WEAR_GROUPS = ("equipment", "costume", "hidden")
 WEAR_NAMES = tuple(sorted(set(name for name, _, _, _ in NEW_WEAR + OLD_WEAR)))
 
-# The roman numerals of the page tabs, as legacy writes them (literal "I", "II").
-ROMAN = ("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X")
+# The roman numerals of the page tabs, as legacy writes them (literal "I", "II");
+# to XII for the extra inventory's costume pages (wave 4b, NOVA-16:
+# uiscript/extrainventorywindow.py ROMAN).
+ROMAN = ("I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII")
 
 # 3.2's "today" column: the fallbacks. Derived keys are computed by read().
 TODAY = {
@@ -139,8 +141,12 @@ TODAY = {
 	"DRAGON_SOUL_STRENGTH_MAX": 6,
 	# Wave 4 (P16 spec 3): the trade and social windows. The window enum's
 	# values are the client's (GameType.h EWindows: GROUND 6, BELT_INVENTORY 7).
-	"EXCHANGE_ITEM_MAX_NUM": 12,
-	"EXCHANGE_COLUMNS": 4,
+	# Wave 4b (NOVA-12): main's exe ships OLD's 24-slot exchange, 6 x 4
+	# (exchange.EXCHANGE_COLUMNS, EXCHANGE_ROWS; nova-protocol
+	# inventory_packets.h), so today and the foundation agree.
+	"EXCHANGE_ITEM_MAX_NUM": 24,
+	"EXCHANGE_COLUMNS": 6,
+	"EXCHANGE_ROWS": 4,
 	"EXCHANGE_MONEY_DIGITS": 7,
 	"SHOP_SLOT_COUNT": 40,
 	"SHOP_COLUMNS": 5,
@@ -172,6 +178,20 @@ TODAY = {
 	"GUILD_RESOURCE_COLUMNS": 6,
 	"PLAYER_NAME_INPUT_MAX": 12,
 	"PLAYER_NAME_SHOWN_MAX": 12,
+	# Wave 4b (NOVA-16): the extra inventory (main's exe: GameType.h,
+	# PythonPlayerModule.cpp): window 6 and slot type 12, five categories of
+	# 5 x 9 pages, 1440 cells in 32 pages (scrolls, materials, stones and
+	# chests five pages each, the costumes twelve). The category ranges are
+	# the exe's (player.GetExtraInventoryCategoryRange), not limits.
+	"WINDOW_EXTRA_INVENTORY": 6,
+	"SLOT_TYPE_EXTRA_INVENTORY": 12,
+	"EXTRA_INVENTORY_COLUMNS": 5,
+	"EXTRA_INVENTORY_ROWS": 9,
+	"EXTRA_INVENTORY_PAGE_SIZE": 45,
+	"EXTRA_INVENTORY_PAGE_COUNT": 32,
+	"EXTRA_INVENTORY_SLOT_COUNT": 1440,
+	"EXTRA_INVENTORY_CATEGORY_COUNT": 5,
+	"EXTRA_INVENTORY_COSTUME_PAGE_COUNT": 12,
 }
 
 # 3.2's "foundation" column ([PLAN], [RC]); never read at run time.
@@ -204,7 +224,9 @@ FOUNDATION.update({
 	# Wave 4 (P16 spec 3): OLD's money digits, safebox pages and size, view
 	# packet, guild names and longest player names; OLD's window enum (its
 	# EXTRA_INVENTORY 6 puts BELT_INVENTORY at 7 and GROUND at 12).
-	# OLD's 12 for the exchange (OLD uiExchange.py:114-116; Q13).
+	# OLD's 12 for the exchange (OLD uiExchange.py:114-116; Q13). The
+	# exchange's 24 slots, 6 x 4, and the extra inventory are today's too
+	# (wave 4b).
 	"EXCHANGE_MONEY_DIGITS": 12,
 	"SAFEBOX_PAGE_COUNT_MAX": 5,
 	"SAFEBOX_SLOT_COUNT_MAX": 225,
@@ -267,7 +289,10 @@ NAMES = {
 	# counts, GUILD_MEMBER_MAX) have no constant and the same value in both
 	# columns.
 	"EXCHANGE_ITEM_MAX_NUM": (("exchange", "EXCHANGE_ITEM_MAX_NUM"),),
-	"EXCHANGE_COLUMNS": (("exchange", "EXCHANGE_COLUMNS"),),  # proposed
+	# Wave 4b (NOVA-12): PythonExchangeModule.cpp exports both since the
+	# 24-slot exchange.
+	"EXCHANGE_COLUMNS": (("exchange", "EXCHANGE_COLUMNS"),),
+	"EXCHANGE_ROWS": (("exchange", "EXCHANGE_ROWS"),),
 	# The exchange's money digits, OLD's 12 (Q13; nova-client-src a9976fc).
 	"EXCHANGE_MONEY_DIGITS": (("player", "EXCHANGE_MONEY_DIGITS"),),
 	"SHOP_SLOT_COUNT": (("shop", "SHOP_SLOT_COUNT"),),
@@ -292,6 +317,16 @@ NAMES = {
 	"PLAYER_NAME_INPUT_MAX": (("chr", "PLAYER_NAME_MAX_LEN"),),
 	# The longest character name the server sends (OLD's names reach 22 bytes).
 	"PLAYER_NAME_SHOWN_MAX": (("chr", "PLAYER_NAME_SHOWN_MAX"),),  # proposed
+	# Wave 4b (NOVA-16): the extra inventory, the exe's own names.
+	"WINDOW_EXTRA_INVENTORY": (("player", "EXTRA_INVENTORY"),),
+	"SLOT_TYPE_EXTRA_INVENTORY": (("player", "SLOT_TYPE_EXTRA_INVENTORY"),),
+	"EXTRA_INVENTORY_COLUMNS": (("player", "EXTRA_INVENTORY_PAGE_COLUMN"),),
+	"EXTRA_INVENTORY_ROWS": (("player", "EXTRA_INVENTORY_PAGE_ROW"),),
+	"EXTRA_INVENTORY_PAGE_SIZE": (("player", "EXTRA_INVENTORY_PAGE_SIZE"),),
+	"EXTRA_INVENTORY_PAGE_COUNT": (("player", "EXTRA_INVENTORY_PAGE_COUNT"),),
+	"EXTRA_INVENTORY_SLOT_COUNT": (("player", "EXTRA_INVENTORY_SLOT_COUNT"),),
+	"EXTRA_INVENTORY_CATEGORY_COUNT": (("player", "EXTRA_INVENTORY_CATEGORY_COUNT"),),
+	"EXTRA_INVENTORY_COSTUME_PAGE_COUNT": (("player", "EXTRA_INVENTORY_COSTUME_PAGE_COUNT"),),
 }
 
 # Keys read() computes after the others.
@@ -654,3 +689,14 @@ def view_equip_id(limits=None):
 	""""new" (today's 11) or "old" (OLD's 16): the classic sheet's body class
 	(eqv--table-new, eqv--table-old)."""
 	return "old" if (limits or current()).VIEW_EQUIP_SLOT_NUM == len(OLD_VIEW) else "new"
+
+
+# --- Wave 4b (NOVA-12, NOVA-16) ----------------------------------------------------------
+
+# The keys wave 4b adds: the exchange's rows (its 24 slots and 6 columns are
+# Wave 4's keys at main's values now) and the extra inventory's window, slot
+# type and sizes. Main's exe exports every one, so today's values and the
+# foundation's are the same.
+KEYS_W4B = ("EXCHANGE_ROWS", "WINDOW_EXTRA_INVENTORY", "SLOT_TYPE_EXTRA_INVENTORY", "EXTRA_INVENTORY_COLUMNS",
+            "EXTRA_INVENTORY_ROWS", "EXTRA_INVENTORY_PAGE_SIZE", "EXTRA_INVENTORY_PAGE_COUNT",
+            "EXTRA_INVENTORY_SLOT_COUNT", "EXTRA_INVENTORY_CATEGORY_COUNT", "EXTRA_INVENTORY_COSTUME_PAGE_COUNT")

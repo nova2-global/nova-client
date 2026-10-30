@@ -372,3 +372,68 @@ UNBLOCK_PLAYER	Udblokuj Gracza
 GUILD_WAR_ENEMY_NUMBER	Maks. członków
 GUILD_WAR_MAX_SCORE	Końcowy wynik
 SYSTEM_MOVE_CHANNEL	Zmień kanał
+NUI_RAIL_OFFLINE_SHOP	Sklep offline
+NUI_RAIL_RANKING	Ranking
+NUI_RAIL_EVENTS	Wydarzenia
+NUI_RAIL_ACHIEVEMENTS	Osiągnięcia
+NUI_RAIL_GUIDE	Poradnik
+NUI_RAIL_SOON	Wkrótce
+NUI_RAIL_FOLD	Ukryj skróty
+NUI_RAIL_UNFOLD	Pokaż skróty
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Napisz wiadomość...
+NUI_SELECT_CHARACTERS	Postacie
+NUI_GUILD_SKILL_AVAILABLE	dostępne
+NUI_LOADING_PREPARING	Przygotowywanie: %s
+NUI_HELP_CONTROLS	Sterowanie
+NUI_HELP_CONTROLS_NOTE	Skróty klawiatury i myszy
+NUI_HELP_TASKBAR_GUIDE	Przewodnik po pasku zadań
+NUI_HELP_TASKBAR_PARTS	8 części
+NUI_SYSTEM_OPTIONS_ON	Włączone
+NUI_SYSTEM_OPTIONS_OFF	Wyłączone
+NUI_LOGIN_SAVED	Zapisane konta
+NUI_LOGIN_FORGET	Zapomnij to konto
+NUI_LOGIN_ADD_ACCOUNT	Dodaj konto
+NUI_LOGIN_SAVED_HINT	Zapisane na tym komputerze: nazwa konta i postacie widziane przy ostatnim logowaniu, z ich ówczesnymi poziomami. Hasła nigdy nie są zapisywane.
+NUI_LOGIN_TAB_LOGIN	Zaloguj
+NUI_LOGIN_TAB_REGISTER	Utwórz konto
+NUI_LOGIN_WELCOME	Witaj ponownie, wojowniku
+NUI_LOGIN_REMEMBER	Zapamiętaj mnie
+NUI_LOGIN_FORGOT	Nie pamiętasz hasła?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Kanał: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Utwórz konto
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	nazwa@przyklad.pl
+NUI_LOGIN_PASSWORD_HINT	Od 8 do 16 znaków
+NUI_LOGIN_CONFIRM	Potwierdź
+NUI_LOGIN_CONFIRM_HINT	Powtórz
+NUI_LOGIN_DELETE_CODE	Kod usuwania postaci
+NUI_LOGIN_DELETE_CODE_HINT	7 cyfr
+NUI_LOGIN_DELETE_CODE_NOTE	Jest potrzebny do usunięcia postaci. Przechowuj go bezpiecznie.
+NUI_LOGIN_ACCEPT_RULES	Akceptuję zasady serwera
+NUI_LOGIN_RULES	Przeczytaj
+NUI_LOGIN_REGISTER_NOTE	Zalogujesz się od razu, bez strony WWW.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Strona
+NUI_LOGIN_LAST_PLAYED	Ostatnio %s · %s
+NUI_LOGIN_NOW	przed chwilą
+NUI_LOGIN_MINUTES	%d min temu
+NUI_LOGIN_HOURS	%d godz. temu
+NUI_LOGIN_YESTERDAY	wczoraj
+NUI_LOGIN_DAYS	%d dni temu
+NUI_LOGIN_ERR_TAKEN	Ta nazwa jest zajęta.
+NUI_LOGIN_ERR_LOGIN	Użyj od 4 do 30 liter i cyfr.
+NUI_LOGIN_ERR_PASSWORD	Użyj od 8 do 16 znaków, bez [ i ].
+NUI_LOGIN_ERR_CONFIRM	Hasła nie są zgodne.
+NUI_LOGIN_ERR_EMAIL	Podaj poprawny adres e-mail.
+NUI_LOGIN_ERR_CODE	Podaj dokładnie 7 cyfr.
+NUI_LOGIN_ERR_RULES	Zaakceptuj zasady serwera, aby kontynuować.
+NUI_LOGIN_ERR_LIMIT	Zbyt wiele prób. Spróbuj później.
+NUI_LOGIN_ERR_DISABLED	Ten serwer nie przyjmuje nowych kont.
+NUI_LOGIN_ERR_BUSY	Serwer jest zajęty. Spróbuj za chwilę.
+NUI_LOGIN_ERR_FAILED	Nie udało się utworzyć konta. Spróbuj później.
+NUI_LOGIN_CREATED	Twoje konto jest gotowe. Zaloguj się nim.
+NUI_LOGIN_CREATING	Tworzenie konta...

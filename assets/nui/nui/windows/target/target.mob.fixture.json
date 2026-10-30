@@ -7,6 +7,8 @@
 		"show_hp": true,
 		"buttons": [],
 		"exchange_at": -1,
-		"in_range": false
+		"in_range": false,
+		"portrait": "",
+		"subtitle": ""
 	}
 }

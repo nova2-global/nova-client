@@ -82,28 +82,28 @@ class WindowsTest(unittest.TestCase):
 
 
 class Flags(WindowsTest):
-    def test_every_wave1_window_defaults_to_legacy(self):
+    def test_every_wave1_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1)], WAVE1)
         for window_id, default in self.m.WINDOWS[:len(WAVE1)]:
-            self.assertIs(default, False, window_id)
+            self.assertIs(default, True, window_id)  # on in the client (ClientDefault)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
 
-    def test_every_wave2a_window_defaults_to_legacy(self):
+    def test_every_wave2a_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A)], WAVE1 + WAVE2A,
                          "appended in this order")
         for window_id, default in self.m.WINDOWS[len(WAVE1):len(WAVE1 + WAVE2A)]:
-            self.assertIs(default, False, window_id)
+            self.assertIs(default, True, window_id)  # on in the client (ClientDefault)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
 
-    def test_every_wave2b_window_defaults_to_legacy(self):
+    def test_every_wave2b_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B)], WAVE1 + WAVE2A + WAVE2B,
                          "appended in this order")
         for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A):len(WAVE1 + WAVE2A + WAVE2B)]:
-            self.assertIs(default, False, window_id)
+            self.assertIs(default, True, window_id)  # on in the client (ClientDefault)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
@@ -134,12 +134,12 @@ class Flags(WindowsTest):
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
                          sorted(WAVE1[1:] + HUD + WAVE2B))
 
-    def test_every_wave3a_window_defaults_to_legacy(self):
+    def test_every_wave3a_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         earlier = WAVE1 + WAVE2A + WAVE2B + WAVE3A
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(earlier)], earlier,
                          "appended in this order")
         for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B):len(earlier)]:
-            self.assertIs(default, False, window_id)
+            self.assertIs(default, True, window_id)  # on in the client (ClientDefault)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
@@ -173,11 +173,11 @@ class Flags(WindowsTest):
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
                          sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A))
 
-    def test_every_wave5a_window_defaults_to_legacy(self):
+    def test_every_wave5a_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A)],
                          WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A, "appended in this order")
         for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A):]:
-            self.assertIs(default, False, window_id)
+            self.assertIs(default, True, window_id)  # on in the client (ClientDefault)
             self.assertFalse(self.m.is_on(window_id), window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
@@ -211,11 +211,11 @@ class Flags(WindowsTest):
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
                          sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A))
 
-    def test_every_wave3b_window_defaults_to_legacy(self):
+    def test_every_wave3b_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B)],
                          WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B, "appended after console, in this order")
         for window_id, default in self.m.WINDOWS[len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A):len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B)]:
-            self.assertIs(default, False, window_id)
+            self.assertIs(default, True, window_id)  # on in the client (ClientDefault)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
 
@@ -602,12 +602,12 @@ WAVE3C = ["character", "dragon-soul", "dragon-soul-refine"]
 
 
 class Wave3c(WindowsTest):
-    def test_every_wave3c_window_follows_wave3b_s_and_defaults_to_legacy(self):
+    def test_every_wave3c_window_follows_wave3b_s_and_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         ids = [window_id for window_id, _ in self.m.WINDOWS]
         start = ids.index("select-item") + 1
         self.assertEqual(ids[start:start + len(WAVE3C)], WAVE3C, "appended after select item, in this order")
         for window_id in WAVE3C:
-            self.assertIs(dict(self.m.WINDOWS)[window_id], False, window_id)
+            self.assertIs(dict(self.m.WINDOWS)[window_id], True, window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
 
     def test_wave3c_names_the_three_windows_and_items_keeps_its_five(self):
@@ -643,13 +643,13 @@ WAVE4_SOCIAL = ["messenger", "whisper", "guild", "guild-war-dialogs", "guild-mar
 
 
 class Wave4Flags(WindowsTest):
-    def test_every_wave4_window_defaults_to_legacy_appended_after_the_wave3c_windows(self):
+    def test_every_wave4_window_is_on_by_default_appended_after_the_wave3c_windows(self):
         ids = [window_id for window_id, _ in self.m.WINDOWS]
         # P17: both waves appended after select-item; the merge keeps Wave 3c's first.
         start = ids.index(WAVE3C[-1]) + 1
         self.assertEqual(ids[start:start + 11], WAVE4_TRADE + WAVE4_SOCIAL, "appended after the Wave 3c windows, in this order")
         for window_id in WAVE4_TRADE + WAVE4_SOCIAL:
-            self.assertIs(dict(self.m.WINDOWS)[window_id], False, window_id)
+            self.assertIs(dict(self.m.WINDOWS)[window_id], True, window_id)
             self.assertEqual(self.m.use(window_id), (False, "flag off"))
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
         self.assertNotIn("guild-war", WAVE4_SOCIAL, "Wave 2b's score boards keep their id")
@@ -774,13 +774,14 @@ class Maintenance(WindowsTest):
     by default, in the hud group (no new group, so no demo string grows),
     after Wave 4's windows; its document is prewarmed with the others."""
 
-    def test_the_id_is_off_by_default_last_and_in_the_hud_group(self):
+    def test_the_id_is_on_by_default_last_and_in_the_hud_group(self):
         ids = [window_id for window_id, _ in self.m.WINDOWS]
         self.assertEqual(ids[-1], "maintenance")
-        self.assertIs(dict(self.m.WINDOWS)["maintenance"], False)
+        self.assertIs(dict(self.m.WINDOWS)["maintenance"], True)
         self.assertFalse(self.m.is_on("maintenance"))
         self.assertEqual(self.m.use("maintenance"), (False, "flag off"))
-        self.assertEqual([group for group, members in self.m.GROUPS.items() if "maintenance" in members], ["hud"])
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "maintenance" in members and group != "all"],
+                         ["hud"])
         self.setting.windows = "+hud"
         self.assertTrue(self.m.is_on("maintenance"))
         self.setting.windows = "+hud,-maintenance"
@@ -798,6 +799,32 @@ class Maintenance(WindowsTest):
     def test_the_document_is_prewarmed_with_the_on_demand_ones(self):
         self.setting.windows = "+maintenance"
         self.assertIn("nui/windows/maintenance/maintenance.rml", self.m.prewarm_documents())
+
+
+class ClientDefault(WindowsTest):
+    """The client's defaults (DEFAULT_ON, which the other tests turn off):
+    every window on NovaUI with no UI_NUI_WINDOWS, "-all" a legacy client."""
+
+    def setUp(self):
+        super(ClientDefault, self).setUp()
+        self.m.DEFAULT_ON = True
+
+    def test_every_window_is_on_without_a_config(self):
+        for window_id, _ in self.m.WINDOWS:
+            self.assertTrue(self.m.is_on(window_id), window_id)
+
+    def test_all_turns_every_window_off_and_a_later_token_one_back_on(self):
+        self.setting.windows = "-all"
+        self.assertFalse(any(self.m.is_on(window_id) for window_id, _ in self.m.WINDOWS))
+        self.setting.windows = "-all,+login"
+        self.assertEqual([window_id for window_id, _ in self.m.WINDOWS if self.m.is_on(window_id)], ["login"])
+        self.setting.windows = "-social,-character"
+        self.assertFalse(self.m.is_on("messenger"))
+        self.assertFalse(self.m.is_on("character"))
+        self.assertTrue(self.m.is_on("inventory"))
+
+    def test_the_all_group_lists_every_window(self):
+        self.assertEqual(self.m.GROUPS["all"], tuple(window_id for window_id, _ in self.m.WINDOWS))
 
 
 if __name__ == "__main__":

@@ -45,7 +45,10 @@
 		data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
 	<div class="chat-log__scroll-column"></div>
 	<div class="chat-log__scroll-box"><input id="chat-log-scroll" type="range" orientation="vertical" class="chat-log__scroll"
-		min="0" max="1" step="0.01" data-attr-value="end_pos" data-event-change="scroll(ev.value)"/></div>
+		min="0" max="1" step="0.01" data-attr-value="end_pos" data-event-change="scroll(ev.value)"/><span
+		class="nui-glyph nui-glyph--chevron-up chat-log__arrow chat-log__arrow--up"><span class="nui-glyph__a"></span><span
+		class="nui-glyph__b"></span></span><span class="nui-glyph nui-glyph--chevron-down chat-log__arrow chat-log__arrow--down"><span
+		class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
 	<div id="chat-log-input-row" class="chat-log__input-row">
 		<button id="chat-log-mode" class="chat-log__mode" data-event-mousedown="mode(ev.button)"><span
 			data-if="chat_mode == 0">@game.CHAT_NORMAL</span><span

@@ -109,7 +109,9 @@
 		</div>
 
 		<!-- The members (guildwindow_memberpage.py, __MakeMemberPage): legacy's
-		     13-line window over the member list (D18). -->
+		     13-line window over the member list (D18), the player's own line
+		     marked, each member's online dot before its name while the
+		     messenger knows it. -->
 		<div class="guild__page guild__page--member" data-for="p : page_member">
 			<div class="guild__head guild__head--member"><span class="guild__head-cell guild__head-cell--name">@ui.GUILD_MEMBER_NAME</span><span
 				class="guild__head-cell guild__head-cell--grade">@ui.GUILD_MEMBER_RANK</span><span
@@ -118,8 +120,9 @@
 				class="guild__head-cell guild__head-cell--offer">@ui.GUILD_MEMBER_SPECIFIC_GRAVITY</span><span
 				class="guild__head-cell guild__head-cell--general">@ui.GUILD_MEMBER_KNIGHT</span></div>
 			<div class="guild__members" data-event-mousescroll="member_wheel(ev.wheel_delta_y)">
-				<div class="guild__member" data-for="m, i : members" data-attr-id="'guild-member-' + i">
-					<span class="guild__member-name"><nui-text links="off" data-attr-value="m.name"/></span>
+				<div class="guild__member" data-for="m, i : members" data-attr-id="'guild-member-' + i" data-class-is-self="m.me">
+					<span class="guild__member-name"><span class="guild__online" data-if="m.presence != ''"
+						data-class-is-online="m.presence == 'on'"></span><nui-text links="off" data-attr-value="m.name"/></span>
 					<div class="guild__combo-box"><button class="guild__combo" data-attr-id="'guild-member-combo-' + i"
 						data-class-is-enabled="m.combo_enabled" data-class-is-open="combo_line == i"
 						data-event-mousedown="combo_press(i, ev.button)"><span class="guild__combo-text"><nui-text links="off"
@@ -144,7 +147,9 @@
 		</div>
 
 		<!-- The base's information (guildwindow_baseinfopage.py,
-		     __MakeBaseInfoPage): legacy's placeholders; its tab is disabled. -->
+		     __MakeBaseInfoPage): legacy's placeholders, the buildings' head
+		     with legacy's six resource names over the cost columns; its tab
+		     is disabled. -->
 		<div class="guild__page guild__page--base" data-for="p : page_base">
 			<div class="guild__base-name"><span class="guild__label">@ui.GUILD_BASENAME</span><span
 				class="guild__value guild__value--base">@ui.GUILD_BASENAME</span></div>
@@ -157,6 +162,7 @@
 			<div class="guild__bar guild__bar--buildings"><span class="guild__bar-title">@ui.GUILD_BUILDING_INFO</span><span class="guild__bar-line"></span></div>
 			<div class="guild__head guild__head--base"><span class="guild__head-cell guild__head-cell--building">@ui.GUILD_BUILDING_NAME</span><span
 				class="guild__head-cell guild__head-cell--rank">@ui.GUILD_BUILDING_GRADE</span><span
+				class="guild__head-cell guild__head-cell--cost" data-for="r : base_columns">{{ r.name }}</span><span
 				class="guild__head-cell guild__head-cell--operate">@ui.GUILD_BUILDING_OPERATE</span></div>
 			<div class="guild__buildings">
 				<div class="guild__building" data-for="b : base_rows"><span class="guild__building-name">@game.GUILD_BUILDING_NAME</span><span
@@ -166,11 +172,14 @@
 		</div>
 
 		<!-- The guild's skills (guildwindow_guildskillpage.py, __MakeSkillPage):
-		     the passive row and the affect grid stay empty, as legacy's. -->
+		     the passive row and the affect grid stay empty, as legacy's. A
+		     cooling skill shows its seconds left over the sweep (a
+		     nui-countdown on the cell's end: no Python while it counts). -->
 		<div class="guild__page guild__page--skill" data-for="p : page_skill">
 			<div class="guild__skill-panel guild__skill-panel--passive">
 				<div class="guild__bar guild__bar--passive"><span class="guild__bar-title">@ui.GUILD_SKILL_PASSIVE</span><span
 					class="guild__points"><img class="guild__points-art" data-attr-src="points_art"/><span
+					class="guild__points-label">@ui.NUI_GUILD_SKILL_AVAILABLE</span><span
 					class="guild__points-value">{{ skill_point }}</span></span></div>
 				<div id="guild-skill-passive" class="nui-slot-grid nui-slot-grid--lean guild__skills guild__skills--passive"
 				     data-class-nui-slot-grid--cols-9="skill_cols == 9">
@@ -191,6 +200,7 @@
 						<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
 						<div class="nui-slot__cover" data-if="c.cover"></div>
 						<nui-cooldown class="nui-slot__cooldown" data-if="c.cd_end > 0" data-attr-start="c.cd_start" data-attr-end="c.cd_end"/>
+						<nui-countdown class="guild__skill-left" data-if="c.cd_end > 0" data-attr-end="c.cd_end" format="s" round="up"/>
 						<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 						<button class="guild__plus" data-if="active_plus[it_index]" data-attr-id="'guild-skill-plus-' + it_index"
 						        data-event-mousedown="plus_press(it_index, ev.button)"><span class="nui-glyph nui-glyph--plus"><span

@@ -372,3 +372,68 @@ UNBLOCK_PLAYER	Fjern blokering af spilleren
 GUILD_WAR_ENEMY_NUMBER	Max. Members
 GUILD_WAR_MAX_SCORE	End Score
 SYSTEM_MOVE_CHANNEL	Skift Kanal
+NUI_RAIL_OFFLINE_SHOP	Offline butik
+NUI_RAIL_RANKING	Rangliste
+NUI_RAIL_EVENTS	Begivenheder
+NUI_RAIL_ACHIEVEMENTS	Præstationer
+NUI_RAIL_GUIDE	Guide
+NUI_RAIL_SOON	Kommer snart
+NUI_RAIL_FOLD	Skjul genveje
+NUI_RAIL_UNFOLD	Vis genveje
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Skriv en besked...
+NUI_SELECT_CHARACTERS	Karakterer
+NUI_GUILD_SKILL_AVAILABLE	tilgængelige
+NUI_LOADING_PREPARING	Forbereder %s
+NUI_HELP_CONTROLS	Styring
+NUI_HELP_CONTROLS_NOTE	Oversigt over tastatur og mus
+NUI_HELP_TASKBAR_GUIDE	Guide til proceslinjen
+NUI_HELP_TASKBAR_PARTS	8 dele
+NUI_SYSTEM_OPTIONS_ON	Til
+NUI_SYSTEM_OPTIONS_OFF	Fra
+NUI_LOGIN_SAVED	Gemte konti
+NUI_LOGIN_FORGET	Glem denne konto
+NUI_LOGIN_ADD_ACCOUNT	Tilføj konto
+NUI_LOGIN_SAVED_HINT	Gemt på denne computer: kontonavnet og de figurer, du så ved dit sidste login, med deres niveau fra dengang. Adgangskoder gemmes aldrig.
+NUI_LOGIN_TAB_LOGIN	Log ind
+NUI_LOGIN_TAB_REGISTER	Opret konto
+NUI_LOGIN_WELCOME	Velkommen tilbage, kriger
+NUI_LOGIN_REMEMBER	Husk mig
+NUI_LOGIN_FORGOT	Glemt adgangskode?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Kanal: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Opret din konto
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	navn@eksempel.dk
+NUI_LOGIN_PASSWORD_HINT	8 til 16 tegn
+NUI_LOGIN_CONFIRM	Bekræft
+NUI_LOGIN_CONFIRM_HINT	Gentag den
+NUI_LOGIN_DELETE_CODE	Kode til sletning af figur
+NUI_LOGIN_DELETE_CODE_HINT	7 cifre
+NUI_LOGIN_DELETE_CODE_NOTE	Du skal bruge den for at slette en figur. Pas godt på den.
+NUI_LOGIN_ACCEPT_RULES	Jeg accepterer serverens regler
+NUI_LOGIN_RULES	Læs dem
+NUI_LOGIN_REGISTER_NOTE	Du kan logge ind lige bagefter, uden hjemmeside.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Hjemmeside
+NUI_LOGIN_LAST_PLAYED	Sidst spillet %s · %s
+NUI_LOGIN_NOW	lige nu
+NUI_LOGIN_MINUTES	for %d min siden
+NUI_LOGIN_HOURS	for %d t siden
+NUI_LOGIN_YESTERDAY	i går
+NUI_LOGIN_DAYS	for %d dage siden
+NUI_LOGIN_ERR_TAKEN	Navnet er optaget.
+NUI_LOGIN_ERR_LOGIN	Brug 4 til 30 bogstaver og cifre.
+NUI_LOGIN_ERR_PASSWORD	Brug 8 til 16 tegn, uden [ eller ].
+NUI_LOGIN_ERR_CONFIRM	Adgangskoderne er ikke ens.
+NUI_LOGIN_ERR_EMAIL	Indtast en gyldig e-mailadresse.
+NUI_LOGIN_ERR_CODE	Indtast præcis 7 cifre.
+NUI_LOGIN_ERR_RULES	Accepter serverens regler for at fortsætte.
+NUI_LOGIN_ERR_LIMIT	For mange forsøg. Prøv igen senere.
+NUI_LOGIN_ERR_DISABLED	Denne server tager ikke imod nye konti.
+NUI_LOGIN_ERR_BUSY	Serveren er optaget. Prøv igen om lidt.
+NUI_LOGIN_ERR_FAILED	Kontoen kunne ikke oprettes. Prøv igen senere.
+NUI_LOGIN_CREATED	Din konto er klar. Log ind med den.
+NUI_LOGIN_CREATING	Opretter din konto...

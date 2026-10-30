@@ -372,3 +372,68 @@ UNBLOCK_PLAYER	Engeli Kaldir
 GUILD_WAR_ENEMY_NUMBER	Max. Members
 GUILD_WAR_MAX_SCORE	End Score
 SYSTEM_MOVE_CHANNEL	Kanal Degistir
+NUI_RAIL_OFFLINE_SHOP	Çevrimdışı pazar
+NUI_RAIL_RANKING	Sıralama
+NUI_RAIL_EVENTS	Etkinlikler
+NUI_RAIL_ACHIEVEMENTS	Başarımlar
+NUI_RAIL_GUIDE	Rehber
+NUI_RAIL_SOON	Yakında
+NUI_RAIL_FOLD	Kısayolları gizle
+NUI_RAIL_UNFOLD	Kısayolları göster
+NUI_MESSENGER_ONLINE	Çevrimiçi
+NUI_MESSENGER_OFFLINE	Çevrimdışı
+NUI_WHISPER_PLACEHOLDER	Bir mesaj yaz...
+NUI_SELECT_CHARACTERS	Karakterler
+NUI_GUILD_SKILL_AVAILABLE	kullanılabilir
+NUI_LOADING_PREPARING	%s hazırlanıyor
+NUI_HELP_CONTROLS	Kontroller
+NUI_HELP_CONTROLS_NOTE	Klavye ve fare kılavuzu
+NUI_HELP_TASKBAR_GUIDE	Görev çubuğu kılavuzu
+NUI_HELP_TASKBAR_PARTS	8 bölüm
+NUI_SYSTEM_OPTIONS_ON	Açık
+NUI_SYSTEM_OPTIONS_OFF	Kapalı
+NUI_LOGIN_SAVED	Kayıtlı hesaplar
+NUI_LOGIN_FORGET	Bu hesabı unut
+NUI_LOGIN_ADD_ACCOUNT	Hesap ekle
+NUI_LOGIN_SAVED_HINT	Bu bilgisayarda saklanır: hesap adı ve son girişte gördüğün karakterler, o zamanki seviyeleriyle. Şifreler asla saklanmaz.
+NUI_LOGIN_TAB_LOGIN	Giriş yap
+NUI_LOGIN_TAB_REGISTER	Hesap oluştur
+NUI_LOGIN_WELCOME	Tekrar hoş geldin, savaşçı
+NUI_LOGIN_REMEMBER	Beni hatırla
+NUI_LOGIN_FORGOT	Şifreni mi unuttun?
+NUI_LOGIN_AUTO	Otomatik
+NUI_LOGIN_CHANNEL	Kanal: %s
+NUI_LOGIN_PLAYERS	%s çevrimiçi
+NUI_LOGIN_REGISTER_TITLE	Hesabını oluştur
+NUI_LOGIN_EMAIL	E-posta
+NUI_LOGIN_EMAIL_HINT	ad@ornek.com
+NUI_LOGIN_PASSWORD_HINT	8 ile 16 karakter
+NUI_LOGIN_CONFIRM	Onayla
+NUI_LOGIN_CONFIRM_HINT	Tekrar gir
+NUI_LOGIN_DELETE_CODE	Karakter silme kodu
+NUI_LOGIN_DELETE_CODE_HINT	7 rakam
+NUI_LOGIN_DELETE_CODE_NOTE	Bir karakteri silmek için gerekir. Güvende tut.
+NUI_LOGIN_ACCEPT_RULES	Sunucu kurallarını kabul ediyorum
+NUI_LOGIN_RULES	Oku
+NUI_LOGIN_REGISTER_NOTE	Hemen ardından giriş yapabilirsin, web sitesi gerekmez.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Web sitesi
+NUI_LOGIN_LAST_PLAYED	Son oynanan %s · %s
+NUI_LOGIN_NOW	az önce
+NUI_LOGIN_MINUTES	%d dk önce
+NUI_LOGIN_HOURS	%d sa önce
+NUI_LOGIN_YESTERDAY	dün
+NUI_LOGIN_DAYS	%d gün önce
+NUI_LOGIN_ERR_TAKEN	Bu ad alınmış.
+NUI_LOGIN_ERR_LOGIN	4 ile 30 arasında harf ve rakam kullan.
+NUI_LOGIN_ERR_PASSWORD	8 ile 16 karakter kullan, [ ve ] olmadan.
+NUI_LOGIN_ERR_CONFIRM	Şifreler eşleşmiyor.
+NUI_LOGIN_ERR_EMAIL	Geçerli bir e-posta adresi gir.
+NUI_LOGIN_ERR_CODE	Tam olarak 7 rakam gir.
+NUI_LOGIN_ERR_RULES	Devam etmek için sunucu kurallarını kabul et.
+NUI_LOGIN_ERR_LIMIT	Çok fazla deneme. Daha sonra tekrar dene.
+NUI_LOGIN_ERR_DISABLED	Bu sunucu yeni hesap kabul etmiyor.
+NUI_LOGIN_ERR_BUSY	Sunucu meşgul. Birazdan tekrar dene.
+NUI_LOGIN_ERR_FAILED	Hesap oluşturulamadı. Daha sonra tekrar dene.
+NUI_LOGIN_CREATED	Hesabın hazır. Onunla giriş yap.
+NUI_LOGIN_CREATING	Hesabın oluşturuluyor...

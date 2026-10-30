@@ -1,11 +1,14 @@
 /* The messenger's modern look (P16 spec 5.7.2; the reviewed WMessenger
    board of stage 1): a narrow window of legacy's width (170dp, its height
-   the player's, 150dp at least). The rows sit in a rounded well that
+   the player's, 150dp at least), a person in an accent tile before its
+   title. The rows sit in a rounded well that
    scrolls by pixel: a group row is a faint band with a chevron (down while
    open); a member row 12dp further in shows a person (head and bust) with
    a presence dot while online, dimmed while offline, and a roster member's
-   language flags after its name (16dp, legacy's half size); the selected
-   row the selection fill with an accent edge. The block and unblock
+   language flags after its name (16dp, legacy's half size); each row
+   ends in its state (a group's members online of all, a member's Online
+   or Offline); the selected row the selection fill with an accent edge.
+   The block and unblock
    buttons under the well (NOVA-47; side by side, a long label wraps). Four
    raised action tiles in the footer, each glyph with its badge (add and
    remove a friend), their hints centered above them; the grip along the
@@ -39,6 +42,38 @@ body.messenger
 .messenger__titlebar
 {
 	flex: 0 0 auto;
+}
+.messenger__handle
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+/* The title's icon: a person in an accent tile, as the guild window's. */
+.messenger__title-icon
+{
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 8dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+}
+.messenger__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.messenger__title
+{
+	display: block;
+	overflow: hidden;
 }
 .messenger__body
 {
@@ -220,6 +255,34 @@ body.messenger
 	display: block;
 	width: 16dp;
 	height: 16dp;
+}
+/* The state at the row's end (the reviewed board): a group's online and
+   total members in the muted ink (a member's Online in the success ink or
+   Offline muted, hidden below), all in a small regular type. The name gives way first; a
+   locale's long word ends in an ellipsis at 52dp, so a name keeps room. */
+.messenger__state
+{
+	display: block;
+	flex: 0 0 auto;
+	max-width: 52dp;
+	margin-left: var(--space-1);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 10dp;
+	font-weight: normal;
+	color: var(--text-muted);
+}
+.messenger__line.is-member.is-online .messenger__state
+{
+	color: var(--success);
+}
+/* Eddy (2026-10-30): a member row shows no Online or Offline word: at
+   legacy's width it cut the names (12 characters in English, 6 in Greek
+   and Spanish). The group rows keep their count; this rule alone brings
+   the word back. */
+.messenger__line.is-member .messenger__state
+{
+	display: none;
 }
 /* The block list's two buttons (NOVA-47): compact ghost buttons in the
    small type, each half the row; a long label wraps rather than being cut. */

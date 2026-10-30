@@ -1,14 +1,16 @@
 /* A whisper dialog's modern look (P16 spec 5.8.2; the reviewed WWhisper
    board of stage 1): a window as large as the player made it (legacy's
    first 300 x 200, its least 300 x 170, the bottom-right corner resizing
-   it, its grip there); the partner's name in the title bar (or the partner
+   it, its grip there); a speech bubble in an accent tile, then the
+   partner's name in the title bar (or the partner
    field and OK, before a partner is chosen), the partner's online mark (a
    dot, --success online, --text-muted offline) and language flag once the
    server answered (NOVA-48), a GM badge for a game master, Block or Unblock
    (NOVA-47), minimize and close; the lines on the overlay well (the chat's
    dark ground, so the chat colors read in both themes), wrapped at its
    width, the newest at the bottom, the scroll range inside its right edge;
-   the two-row input and Send in a raised compose box. The Interface places
+   the two-row input (its placeholder while empty) and Send in a raised
+   compose box. The Interface places
    each dialog 30dp further from the corner (legacy's cascade); the sheet's
    place frames it in its snapshots. Classic (legacy's thin board, the name
    slot, the button art and the dark edit bar at the uiscript's places):
@@ -42,12 +44,34 @@ body.whisper
 	flex: 0 0 auto;
 	gap: var(--space-1);
 }
+/* The title's icon: a speech bubble in an accent tile, as the guild
+   window's; a handle, so a drag on it moves the dialog too. */
+.whisper__title-icon
+{
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+}
+.whisper__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
 /* The partner field (before a partner is chosen) at the bar's left, as
-   legacy's name slot; the handle takes the rest of the bar. */
+   legacy's name slot, 150dp but for what the icon, OK and the close need;
+   the handle takes the rest of the bar. */
 .whisper__slot
 {
 	display: block;
-	flex: 0 0 150dp;
+	flex: 0 1 150dp;
 	min-width: 0;
 }
 .whisper__target

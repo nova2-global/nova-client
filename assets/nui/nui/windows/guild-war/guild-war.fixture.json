@@ -2,8 +2,8 @@
 	"guild_war": {
 		"boards": [
 			{"key": 1, "legacy_width": "124dp", "rows": [
-				{"src": "/nui/windows/guild-war/fixture/marks.tga", "rect": "0 0 16 12", "text": "Dragons 12"},
-				{"src": "/nui/windows/guild-war/fixture/marks.tga", "rect": "16 0 16 12", "text": "Lionheart 7"}
+				{"src": "/nui/windows/guild-war/fixture/marks.tga", "rect": "0 0 16 12", "text": "Dragons 12", "name": "Dragons", "score": "12", "leading": true},
+				{"src": "/nui/windows/guild-war/fixture/marks.tga", "rect": "16 0 16 12", "text": "Lionheart 7", "name": "Lionheart", "score": "7", "leading": false}
 			]}
 		]
 	}

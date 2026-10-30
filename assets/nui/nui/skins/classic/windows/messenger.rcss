@@ -203,6 +203,13 @@ body.skin-classic.messenger .messenger__flag
 {
 	margin-right: 2dp;
 }
+/* Legacy's rows end at the name (or the flags): no state; and its title
+   has no icon. */
+body.skin-classic.messenger .messenger__state,
+body.skin-classic.messenger .messenger__title-icon
+{
+	display: none;
+}
 
 /* --- The block list's buttons (NOVA-47) ------------------------------------------------ */
 

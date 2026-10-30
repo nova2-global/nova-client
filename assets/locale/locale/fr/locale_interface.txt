@@ -371,3 +371,68 @@ UNBLOCK_PLAYER	Débloquer le joueur
 GUILD_WAR_ENEMY_NUMBER	Membres Max.
 GUILD_WAR_MAX_SCORE	Score final
 SYSTEM_MOVE_CHANNEL	Changer le cannal
+NUI_RAIL_OFFLINE_SHOP	Boutique hors ligne
+NUI_RAIL_RANKING	Classement
+NUI_RAIL_EVENTS	Événements
+NUI_RAIL_ACHIEVEMENTS	Succès
+NUI_RAIL_GUIDE	Guide
+NUI_RAIL_SOON	Bientôt disponible
+NUI_RAIL_FOLD	Masquer les raccourcis
+NUI_RAIL_UNFOLD	Afficher les raccourcis
+NUI_MESSENGER_ONLINE	Connecté
+NUI_MESSENGER_OFFLINE	Déconnecté
+NUI_WHISPER_PLACEHOLDER	Écrire un message...
+NUI_SELECT_CHARACTERS	Personnages
+NUI_GUILD_SKILL_AVAILABLE	disponibles
+NUI_LOADING_PREPARING	Préparation de %s
+NUI_HELP_CONTROLS	Commandes
+NUI_HELP_CONTROLS_NOTE	Référence clavier et souris
+NUI_HELP_TASKBAR_GUIDE	Guide de la barre des tâches
+NUI_HELP_TASKBAR_PARTS	8 parties
+NUI_SYSTEM_OPTIONS_ON	Activé
+NUI_SYSTEM_OPTIONS_OFF	Désactivé
+NUI_LOGIN_SAVED	Comptes enregistrés
+NUI_LOGIN_FORGET	Oublier ce compte
+NUI_LOGIN_ADD_ACCOUNT	Ajouter un compte
+NUI_LOGIN_SAVED_HINT	Enregistré sur cet ordinateur : le nom du compte et les personnages vus à ta dernière connexion, avec leur niveau d'alors. Les mots de passe ne sont jamais enregistrés.
+NUI_LOGIN_TAB_LOGIN	Connexion
+NUI_LOGIN_TAB_REGISTER	Créer un compte
+NUI_LOGIN_WELCOME	Bon retour, guerrier
+NUI_LOGIN_REMEMBER	Se souvenir de moi
+NUI_LOGIN_FORGOT	Mot de passe oublié ?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Canal : %s
+NUI_LOGIN_PLAYERS	%s en ligne
+NUI_LOGIN_REGISTER_TITLE	Crée ton compte
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	nom@exemple.fr
+NUI_LOGIN_PASSWORD_HINT	8 à 16 caractères
+NUI_LOGIN_CONFIRM	Confirmer
+NUI_LOGIN_CONFIRM_HINT	Répète-le
+NUI_LOGIN_DELETE_CODE	Code de suppression de personnage
+NUI_LOGIN_DELETE_CODE_HINT	7 chiffres
+NUI_LOGIN_DELETE_CODE_NOTE	Il sert à supprimer un personnage. Garde-le en lieu sûr.
+NUI_LOGIN_ACCEPT_RULES	J'accepte les règles du serveur
+NUI_LOGIN_RULES	Les lire
+NUI_LOGIN_REGISTER_NOTE	Tu peux te connecter juste après, sans site web.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Site web
+NUI_LOGIN_LAST_PLAYED	Dernier joué %s · %s
+NUI_LOGIN_NOW	à l'instant
+NUI_LOGIN_MINUTES	il y a %d min
+NUI_LOGIN_HOURS	il y a %d h
+NUI_LOGIN_YESTERDAY	hier
+NUI_LOGIN_DAYS	il y a %d jours
+NUI_LOGIN_ERR_TAKEN	Ce nom est déjà pris.
+NUI_LOGIN_ERR_LOGIN	Utilise 4 à 30 lettres et chiffres.
+NUI_LOGIN_ERR_PASSWORD	Utilise 8 à 16 caractères, sans [ ni ].
+NUI_LOGIN_ERR_CONFIRM	Les mots de passe ne correspondent pas.
+NUI_LOGIN_ERR_EMAIL	Saisis une adresse e-mail valide.
+NUI_LOGIN_ERR_CODE	Saisis exactement 7 chiffres.
+NUI_LOGIN_ERR_RULES	Accepte les règles du serveur pour continuer.
+NUI_LOGIN_ERR_LIMIT	Trop de tentatives. Réessaie plus tard.
+NUI_LOGIN_ERR_DISABLED	Ce serveur n'accepte pas de nouveaux comptes.
+NUI_LOGIN_ERR_BUSY	Le serveur est occupé. Réessaie dans un instant.
+NUI_LOGIN_ERR_FAILED	Le compte n'a pas pu être créé. Réessaie plus tard.
+NUI_LOGIN_CREATED	Ton compte est prêt. Connecte-toi avec.
+NUI_LOGIN_CREATING	Création de ton compte...

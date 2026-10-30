@@ -305,6 +305,12 @@ class _CharacterBoard(nui_hud.RaisesOnPress, nui.Window):
 	def on_quest_out(self, index):
 		self._grid("quest").out(int(index))
 
+	@nui.on("quest_clock_over")
+	def on_quest_clock_over(self, index):
+		# A row's countdown reached its end (countdownend: once per end, at
+		# once for one already past).
+		self._owner._quest_clock_over(int(index))
+
 	@nui.on("quest_scroll")
 	def on_quest_scroll(self, delta):
 		# The wheel over the list (new: legacy's list has no wheel): one line
@@ -415,7 +421,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 	@staticmethod
 	def _empty_row(row):
 		return {"row": row, "shown": False, "name": "", "icon": "", "counter": "", "clock_text": "",
-		        "clock_prefix": "", "clock_end": 0.0}
+		        "clock_prefix": "", "clock_end": 0.0, "clock_over": False}
 
 	def _set(self, **values):
 		self._state.update(values)
@@ -864,7 +870,8 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		scrolled one's); legacy's text goes to the Quest_LastTime proxies,
 		and the model gets each row's clock: a name and a time left run as
 		a countdown (clock_prefix and clock_end on the NovaUI clock), else
-		legacy's static text."""
+		legacy's static text; clock_over marks a time that is up (the modern
+		looks' danger color)."""
 		rows = [dict(row) for row in self._state["quests"]]
 		count = min(quest.GetQuestCount(), quest.QUEST_MAX_NUM)
 		for i in range(count):
@@ -876,9 +883,20 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 				continue
 			if len(lastName) > 0 and lastTime > 0:
 				rows[i].update({"clock_text": "", "clock_prefix": nui.plain_text(lastName + " : "),
-				                "clock_end": nui.now() + float(lastTime)})
+				                "clock_end": nui.now() + float(lastTime), "clock_over": False})
 			else:
-				rows[i].update({"clock_text": nui.plain_text(clockText), "clock_prefix": "", "clock_end": 0.0})
+				rows[i].update({"clock_text": nui.plain_text(clockText), "clock_prefix": "", "clock_end": 0.0,
+				                "clock_over": len(lastName) > 0})
+		self._set(quests=rows)
+
+	def _quest_clock_over(self, index):
+		"""A row's countdown ran out: the countdown shows legacy's over text
+		by itself; the row's clock takes the time-up color."""
+		rows = self._state["quests"]
+		if not 0 <= index < len(rows) or rows[index]["clock_end"] <= 0 or rows[index]["clock_over"]:
+			return
+		rows = [dict(row) for row in rows]
+		rows[index]["clock_over"] = True
 		self._set(quests=rows)
 
 	@staticmethod
@@ -913,6 +931,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			# Legacy's Show raises nothing: the boards raised since stay above (VF-1).
 			nui_hud.keep_order(self)
 		uiCharacter.CharacterWindow.Show(self)
+		nui_hud.tell_taskbar("character", self.IsShow())
 
 	def Hide(self):
 		uiCharacter.CharacterWindow.Hide(self)
@@ -923,6 +942,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			events.reset()
 		if self.demand is not None:
 			self.demand.hide()
+		nui_hud.tell_taskbar("character", self.IsShow())
 
 	def SetTop(self):
 		board = self.board()

@@ -113,6 +113,15 @@ def current(key):
 	return _facades.get(key)
 
 
+def tell_taskbar(name, shown):
+	"""A window button's window ("character", "inventory", "messenger" or
+	"system") was shown or hidden: the NovaUI taskbar's button shows the
+	open state (TaskBar.nui_window_shown); the legacy bar has none."""
+	tell = getattr(current("taskbar"), "nui_window_shown", None)
+	if tell is not None:
+		tell(name, shown)
+
+
 class _EscapeWindow(ui.Window):
 	"""The legacy window behind an EscapeProxy: 0 x 0, so never picked."""
 

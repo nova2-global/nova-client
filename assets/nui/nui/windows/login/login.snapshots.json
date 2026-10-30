@@ -1,0 +1,50 @@
+{
+	"$comment": "Login screen cases beyond the base golden (tools/check_nui_snapshots.py PAGES: the Log in tab with three saved accounts, the second server, the channel states and every link). register: the Create account tab with a deletion code error and the rules accepted; menu: the server and channel menu open, no account picked, an empty-name error; first: a first start (no saved account, no Create account tab, no count, no link).",
+	"cases": [
+		{
+			"page": "login",
+			"variant": "register",
+			"themes": "all",
+			"scales": [
+				[
+					"100",
+					"1",
+					"1920x1080"
+				]
+			],
+			"fixture": true,
+			"roots": [],
+			"time": null
+		},
+		{
+			"page": "login",
+			"variant": "menu",
+			"themes": "all",
+			"scales": [
+				[
+					"100",
+					"1",
+					"1920x1080"
+				]
+			],
+			"fixture": true,
+			"roots": [],
+			"time": null
+		},
+		{
+			"page": "login",
+			"variant": "first",
+			"themes": "all",
+			"scales": [
+				[
+					"100",
+					"1",
+					"1920x1080"
+				]
+			],
+			"fixture": true,
+			"roots": [],
+			"time": null
+		}
+	]
+}

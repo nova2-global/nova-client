@@ -6,6 +6,8 @@
 		"has_atlas": true,
 		"server_info": "Nova - CH1",
 		"observers": 0,
-		"observer_text": ""
+		"observer_text": "",
+		"clock": "21:43",
+		"clock_next": 0.0
 	}
 }

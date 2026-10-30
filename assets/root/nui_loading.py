@@ -8,7 +8,9 @@ DEBUG_LoadData, OnUpdate (the load steps), OnPressEscapeKey (back to the
 login), every __Load* and __Register* step and __StartGame are inherited
 unchanged. Only the screen moves to the document: no uiscript is loaded;
 the background, the emblem animation (nui-frames) and the gauge come from
-the model, and the gauge shows the progress at once.
+the model, and the gauge shows the progress at once. The modern looks add
+"Preparing <name>" (the chosen slot's character) and a badge of the empire
+and the channel over the gauge, both set once at Open.
 
 The document loads hidden in __init__, so nui_windows.make() can test it
 (nui_ready); a window whose document did not load is discarded
@@ -21,6 +23,7 @@ import weakref
 import app
 import net
 import ui
+import uiScriptLocale
 
 import introLoading
 import nui
@@ -60,6 +63,37 @@ BACKGROUNDS = (
 )
 
 
+EMPIRE_LETTERS = {net.EMPIRE_A: "a", net.EMPIRE_B: "b", net.EMPIRE_C: "c"}
+
+
+def preparing_text(name):
+	"""NUI_LOADING_PREPARING with the character's name ("Preparing %s"),
+	through plain_text; "" without a name."""
+	if not isinstance(name, str) or not name:
+		return ""
+	text = getattr(uiScriptLocale, "NUI_LOADING_PREPARING", "%s")
+	if not isinstance(text, str) or "%s" not in text:
+		text = "%s"
+	return nui.plain_text(text.replace("%s", name, 1))
+
+
+def badge_text(empire_id, server_info):
+	"""The empire's name as its locale key and the channel from the server
+	info text intrologin sets ("<server>, <channel>"), joined by a middle
+	dot; either alone when the other is missing (a login by address has no
+	channel part), "" without both."""
+	parts = []
+	letter = EMPIRE_LETTERS.get(empire_id)
+	if letter:
+		parts.append("@game.EMPIRE_" + letter.upper())
+	text = server_info.strip() if isinstance(server_info, str) else ""
+	if ", " in text:
+		channel = text.rsplit(", ", 1)[1].strip()
+		if channel:
+			parts.append(nui.plain_text(channel))
+	return " · ".join(parts)
+
+
 def _keep(owner):
 	"""The owner as a weak proxy; an object that takes no weak reference (a
 	plain object() from a fixture check) is kept as it is. The board never
@@ -87,7 +121,7 @@ class LoadingBoard(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
-		return {"background": "", "progress": progress_value(0), "error": False}
+		return {"background": "", "progress": progress_value(0), "error": False, "preparing": "", "badge": ""}
 
 
 class ErrorLine(object):
@@ -159,6 +193,8 @@ class LoadingWindow(introLoading.LoadingWindow):
 		self.Show()
 
 		chrSlot = self.stream.GetCharacterSlot()
+		name = net.GetAccountCharacterSlotDataString(chrSlot, net.ACCOUNT_CHARACTER_SLOT_NAME)
+		self._set(preparing=preparing_text(name), badge=badge_text(net.GetEmpireID(), net.GetServerInfo()))
 		net.SendSelectCharacterPacket(chrSlot)
 
 		app.SetFrameSkip(0)

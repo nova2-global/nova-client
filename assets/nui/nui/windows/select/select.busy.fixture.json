@@ -41,9 +41,11 @@
 		"gauge_str": 0.67,
 		"gauge_dex": 0.33,
 		"guild": "Nova",
+		"has_guild": true,
 		"empire_name": "@game.EMPIRE_B",
 		"flag_image": "d:/ymir work/ui/intro/empire/empireflag_b.sub",
 		"job_image": "/locale/en/ui/select/name_warrior.sub",
+		"job_name": "@game.JOB_WARRIOR",
 		"busy": true
 	}
 }

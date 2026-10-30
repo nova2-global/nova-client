@@ -372,3 +372,68 @@ UNBLOCK_PLAYER	Разблокировать игрока
 GUILD_WAR_ENEMY_NUMBER	Макс. Участников
 GUILD_WAR_MAX_SCORE	Финальный результат
 SYSTEM_MOVE_CHANNEL	Смена канала
+NUI_RAIL_OFFLINE_SHOP	Офлайн-лавка
+NUI_RAIL_RANKING	Рейтинг
+NUI_RAIL_EVENTS	События
+NUI_RAIL_ACHIEVEMENTS	Достижения
+NUI_RAIL_GUIDE	Руководство
+NUI_RAIL_SOON	Скоро
+NUI_RAIL_FOLD	Скрыть ярлыки
+NUI_RAIL_UNFOLD	Показать ярлыки
+NUI_MESSENGER_ONLINE	Онлайн
+NUI_MESSENGER_OFFLINE	Оффлайн
+NUI_WHISPER_PLACEHOLDER	Напишите сообщение...
+NUI_SELECT_CHARACTERS	Персонажи
+NUI_GUILD_SKILL_AVAILABLE	доступно
+NUI_LOADING_PREPARING	Подготовка: %s
+NUI_HELP_CONTROLS	Управление
+NUI_HELP_CONTROLS_NOTE	Справка по клавиатуре и мыши
+NUI_HELP_TASKBAR_GUIDE	Справка по панели задач
+NUI_HELP_TASKBAR_PARTS	8 частей
+NUI_SYSTEM_OPTIONS_ON	Вкл.
+NUI_SYSTEM_OPTIONS_OFF	Выкл.
+NUI_LOGIN_SAVED	Сохранённые аккаунты
+NUI_LOGIN_FORGET	Забыть этот аккаунт
+NUI_LOGIN_ADD_ACCOUNT	Добавить аккаунт
+NUI_LOGIN_SAVED_HINT	Хранится на этом компьютере: имя аккаунта и персонажи, которых вы видели при последнем входе, с их тогдашними уровнями. Пароли никогда не сохраняются.
+NUI_LOGIN_TAB_LOGIN	Войти
+NUI_LOGIN_TAB_REGISTER	Создать аккаунт
+NUI_LOGIN_WELCOME	С возвращением, воин
+NUI_LOGIN_REMEMBER	Запомнить меня
+NUI_LOGIN_FORGOT	Забыли пароль?
+NUI_LOGIN_AUTO	Авто
+NUI_LOGIN_CHANNEL	Канал: %s
+NUI_LOGIN_PLAYERS	%s в сети
+NUI_LOGIN_REGISTER_TITLE	Создайте аккаунт
+NUI_LOGIN_EMAIL	Эл. почта
+NUI_LOGIN_EMAIL_HINT	imya@primer.ru
+NUI_LOGIN_PASSWORD_HINT	От 8 до 16 символов
+NUI_LOGIN_CONFIRM	Подтверждение
+NUI_LOGIN_CONFIRM_HINT	Повторите
+NUI_LOGIN_DELETE_CODE	Код удаления персонажа
+NUI_LOGIN_DELETE_CODE_HINT	7 цифр
+NUI_LOGIN_DELETE_CODE_NOTE	Он нужен для удаления персонажа. Храните его надёжно.
+NUI_LOGIN_ACCEPT_RULES	Я принимаю правила сервера
+NUI_LOGIN_RULES	Прочитать
+NUI_LOGIN_REGISTER_NOTE	Войти можно сразу после этого, без сайта.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Сайт
+NUI_LOGIN_LAST_PLAYED	Последний вход %s · %s
+NUI_LOGIN_NOW	только что
+NUI_LOGIN_MINUTES	%d мин назад
+NUI_LOGIN_HOURS	%d ч назад
+NUI_LOGIN_YESTERDAY	вчера
+NUI_LOGIN_DAYS	%d дн. назад
+NUI_LOGIN_ERR_TAKEN	Это имя занято.
+NUI_LOGIN_ERR_LOGIN	Используйте от 4 до 30 букв и цифр.
+NUI_LOGIN_ERR_PASSWORD	Используйте от 8 до 16 символов, без [ и ].
+NUI_LOGIN_ERR_CONFIRM	Пароли не совпадают.
+NUI_LOGIN_ERR_EMAIL	Введите правильный адрес эл. почты.
+NUI_LOGIN_ERR_CODE	Введите ровно 7 цифр.
+NUI_LOGIN_ERR_RULES	Примите правила сервера, чтобы продолжить.
+NUI_LOGIN_ERR_LIMIT	Слишком много попыток. Попробуйте позже.
+NUI_LOGIN_ERR_DISABLED	Этот сервер не принимает новые аккаунты.
+NUI_LOGIN_ERR_BUSY	Сервер занят. Попробуйте через минуту.
+NUI_LOGIN_ERR_FAILED	Не удалось создать аккаунт. Попробуйте позже.
+NUI_LOGIN_CREATED	Аккаунт готов. Войдите с ним.
+NUI_LOGIN_CREATING	Создание аккаунта...

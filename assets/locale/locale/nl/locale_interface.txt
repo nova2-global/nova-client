@@ -371,3 +371,68 @@ UNBLOCK_PLAYER	Deblokkeer Speler
 GUILD_WAR_ENEMY_NUMBER	Max. Leden
 GUILD_WAR_MAX_SCORE	Eindscore
 SYSTEM_MOVE_CHANNEL	Kanaal veranderen
+NUI_RAIL_OFFLINE_SHOP	Offline winkel
+NUI_RAIL_RANKING	Ranglijst
+NUI_RAIL_EVENTS	Evenementen
+NUI_RAIL_ACHIEVEMENTS	Prestaties
+NUI_RAIL_GUIDE	Gids
+NUI_RAIL_SOON	Binnenkort
+NUI_RAIL_FOLD	Snelkoppelingen verbergen
+NUI_RAIL_UNFOLD	Snelkoppelingen tonen
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Schrijf een bericht...
+NUI_SELECT_CHARACTERS	Personages
+NUI_GUILD_SKILL_AVAILABLE	beschikbaar
+NUI_LOADING_PREPARING	%s wordt voorbereid
+NUI_HELP_CONTROLS	Besturing
+NUI_HELP_CONTROLS_NOTE	Overzicht toetsenbord en muis
+NUI_HELP_TASKBAR_GUIDE	Uitleg van de taakbalk
+NUI_HELP_TASKBAR_PARTS	8 onderdelen
+NUI_SYSTEM_OPTIONS_ON	Aan
+NUI_SYSTEM_OPTIONS_OFF	Uit
+NUI_LOGIN_SAVED	Opgeslagen accounts
+NUI_LOGIN_FORGET	Dit account vergeten
+NUI_LOGIN_ADD_ACCOUNT	Account toevoegen
+NUI_LOGIN_SAVED_HINT	Opgeslagen op deze computer: de accountnaam en de personages die je bij je laatste login zag, met hun niveau van toen. Wachtwoorden worden nooit opgeslagen.
+NUI_LOGIN_TAB_LOGIN	Inloggen
+NUI_LOGIN_TAB_REGISTER	Account maken
+NUI_LOGIN_WELCOME	Welkom terug, krijger
+NUI_LOGIN_REMEMBER	Onthoud mij
+NUI_LOGIN_FORGOT	Wachtwoord vergeten?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Kanaal: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Maak je account
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	naam@voorbeeld.nl
+NUI_LOGIN_PASSWORD_HINT	8 tot 16 tekens
+NUI_LOGIN_CONFIRM	Bevestigen
+NUI_LOGIN_CONFIRM_HINT	Herhaal het
+NUI_LOGIN_DELETE_CODE	Code om personages te verwijderen
+NUI_LOGIN_DELETE_CODE_HINT	7 cijfers
+NUI_LOGIN_DELETE_CODE_NOTE	Je hebt hem nodig om een personage te verwijderen. Bewaar hem goed.
+NUI_LOGIN_ACCEPT_RULES	Ik accepteer de serverregels
+NUI_LOGIN_RULES	Lezen
+NUI_LOGIN_REGISTER_NOTE	Je kunt meteen daarna inloggen, zonder website.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Website
+NUI_LOGIN_LAST_PLAYED	Laatst gespeeld %s · %s
+NUI_LOGIN_NOW	zojuist
+NUI_LOGIN_MINUTES	%d min geleden
+NUI_LOGIN_HOURS	%d u geleden
+NUI_LOGIN_YESTERDAY	gisteren
+NUI_LOGIN_DAYS	%d dagen geleden
+NUI_LOGIN_ERR_TAKEN	Deze naam is al bezet.
+NUI_LOGIN_ERR_LOGIN	Gebruik 4 tot 30 letters en cijfers.
+NUI_LOGIN_ERR_PASSWORD	Gebruik 8 tot 16 tekens, zonder [ of ].
+NUI_LOGIN_ERR_CONFIRM	De wachtwoorden komen niet overeen.
+NUI_LOGIN_ERR_EMAIL	Voer een geldig e-mailadres in.
+NUI_LOGIN_ERR_CODE	Voer precies 7 cijfers in.
+NUI_LOGIN_ERR_RULES	Accepteer de serverregels om door te gaan.
+NUI_LOGIN_ERR_LIMIT	Te veel pogingen. Probeer het later opnieuw.
+NUI_LOGIN_ERR_DISABLED	Deze server neemt geen nieuwe accounts aan.
+NUI_LOGIN_ERR_BUSY	De server is druk. Probeer het zo opnieuw.
+NUI_LOGIN_ERR_FAILED	Het account kon niet worden gemaakt. Probeer het later opnieuw.
+NUI_LOGIN_CREATED	Je account is klaar. Log ermee in.
+NUI_LOGIN_CREATING	Je account wordt gemaakt...

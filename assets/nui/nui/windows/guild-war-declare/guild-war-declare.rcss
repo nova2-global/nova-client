@@ -1,6 +1,7 @@
 /* The guild war declare dialog's modern look (P16 spec 5.10.2; the
    reviewed WGuildWarDeclare board of stage 1): the dialog kit's frame
-   (components/dialog.rcss), its rows 38dp apart with their labels in a
+   (components/dialog.rcss), an upright sword in an accent tile before
+   its title, its rows 38dp apart with their labels in a
    96dp column: the enemy guild's field, the war's member cap and end score
    side by side (NOVA-90; each label over its 3-digit field, so every
    locale's label fits), the battle type's three buttons (the declared one
@@ -14,6 +15,39 @@
 {
 	tab-index: none;
 	focus: none;
+}
+.guild-war__handle
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+/* The title's icon: an upright sword in an accent tile, as the guild
+   window's. */
+.guild-war__title-icon
+{
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 8dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+}
+.guild-war__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.guild-war__title
+{
+	display: block;
+	overflow: hidden;
 }
 .guild-war__body
 {

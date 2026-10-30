@@ -370,3 +370,68 @@ UNBLOCK_PLAYER	Spieler Entsperren
 GUILD_WAR_ENEMY_NUMBER	Max. Mitglieder
 GUILD_WAR_MAX_SCORE	Endstand
 SYSTEM_MOVE_CHANNEL	Kanal Ändern
+NUI_RAIL_OFFLINE_SHOP	Offline-Laden
+NUI_RAIL_RANKING	Rangliste
+NUI_RAIL_EVENTS	Events
+NUI_RAIL_ACHIEVEMENTS	Erfolge
+NUI_RAIL_GUIDE	Anleitung
+NUI_RAIL_SOON	Demnächst
+NUI_RAIL_FOLD	Schnellzugriffe ausblenden
+NUI_RAIL_UNFOLD	Schnellzugriffe einblenden
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Nachricht schreiben...
+NUI_SELECT_CHARACTERS	Charaktere
+NUI_GUILD_SKILL_AVAILABLE	verfügbar
+NUI_LOADING_PREPARING	%s wird vorbereitet
+NUI_HELP_CONTROLS	Steuerung
+NUI_HELP_CONTROLS_NOTE	Tastatur- und Mausbelegung
+NUI_HELP_TASKBAR_GUIDE	Übersicht der Taskleiste
+NUI_HELP_TASKBAR_PARTS	8 Teile
+NUI_SYSTEM_OPTIONS_ON	An
+NUI_SYSTEM_OPTIONS_OFF	Aus
+NUI_LOGIN_SAVED	Gespeicherte Konten
+NUI_LOGIN_FORGET	Dieses Konto vergessen
+NUI_LOGIN_ADD_ACCOUNT	Konto hinzufügen
+NUI_LOGIN_SAVED_HINT	Auf diesem Computer gespeichert: der Kontoname und die Charaktere, die du beim letzten Login gesehen hast, mit ihren damaligen Stufen. Passwörter werden nie gespeichert.
+NUI_LOGIN_TAB_LOGIN	Anmelden
+NUI_LOGIN_TAB_REGISTER	Konto erstellen
+NUI_LOGIN_WELCOME	Willkommen zurück, Krieger
+NUI_LOGIN_REMEMBER	Angemeldet bleiben
+NUI_LOGIN_FORGOT	Passwort vergessen?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Kanal: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Erstelle dein Konto
+NUI_LOGIN_EMAIL	E-Mail
+NUI_LOGIN_EMAIL_HINT	name@beispiel.de
+NUI_LOGIN_PASSWORD_HINT	8 bis 16 Zeichen
+NUI_LOGIN_CONFIRM	Bestätigen
+NUI_LOGIN_CONFIRM_HINT	Wiederholen
+NUI_LOGIN_DELETE_CODE	Charakter-Löschcode
+NUI_LOGIN_DELETE_CODE_HINT	7 Ziffern
+NUI_LOGIN_DELETE_CODE_NOTE	Du brauchst ihn, um einen Charakter zu löschen. Bewahre ihn sicher auf.
+NUI_LOGIN_ACCEPT_RULES	Ich akzeptiere die Serverregeln
+NUI_LOGIN_RULES	Lesen
+NUI_LOGIN_REGISTER_NOTE	Du kannst dich gleich danach anmelden, ohne Website.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Website
+NUI_LOGIN_LAST_PLAYED	Zuletzt gespielt %s · %s
+NUI_LOGIN_NOW	gerade eben
+NUI_LOGIN_MINUTES	vor %d Min.
+NUI_LOGIN_HOURS	vor %d Std.
+NUI_LOGIN_YESTERDAY	gestern
+NUI_LOGIN_DAYS	vor %d Tagen
+NUI_LOGIN_ERR_TAKEN	Dieser Name ist vergeben.
+NUI_LOGIN_ERR_LOGIN	Verwende 4 bis 30 Buchstaben und Ziffern.
+NUI_LOGIN_ERR_PASSWORD	Verwende 8 bis 16 Zeichen, ohne [ oder ].
+NUI_LOGIN_ERR_CONFIRM	Die Passwörter stimmen nicht überein.
+NUI_LOGIN_ERR_EMAIL	Gib eine gültige E-Mail-Adresse ein.
+NUI_LOGIN_ERR_CODE	Gib genau 7 Ziffern ein.
+NUI_LOGIN_ERR_RULES	Akzeptiere die Serverregeln, um fortzufahren.
+NUI_LOGIN_ERR_LIMIT	Zu viele Versuche. Versuche es später erneut.
+NUI_LOGIN_ERR_DISABLED	Dieser Server nimmt keine neuen Konten an.
+NUI_LOGIN_ERR_BUSY	Der Server ist ausgelastet. Versuche es gleich noch einmal.
+NUI_LOGIN_ERR_FAILED	Das Konto konnte nicht erstellt werden. Versuche es später erneut.
+NUI_LOGIN_CREATED	Dein Konto ist bereit. Melde dich damit an.
+NUI_LOGIN_CREATING	Dein Konto wird erstellt...

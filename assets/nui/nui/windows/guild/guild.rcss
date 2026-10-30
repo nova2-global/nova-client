@@ -6,7 +6,8 @@
    is two cards (the guild's values with the offer; the mark, the uploads,
    the enemies and the war declaration), each under a title bar with a
    rule after its title; the comments, the members and the grades are
-   tables of rows with wells for their values; the skills three cards of
+   tables of rows with wells for their values (a member's online dot
+   before its name, the player's own line accented); the skills three cards of
    cells over the dragon power. Controls hover with the surface's hover
    color; checks are wells that hold an accent check mark. The controller
    centers it on the screen at its first open (P18; legacy's place, the
@@ -680,6 +681,39 @@ body.guild
 {
 	background-color: var(--surface-hover);
 }
+/* The player's own line: the selection fill, a 3dp accent edge on its
+   left (its padding 2dp narrower, so every cell stays put), the name bold
+   in the highlight color. */
+.guild__member.is-self
+{
+	padding-left: 5dp;
+	border-left-width: 3dp;
+	border-left-color: var(--accent);
+	background-color: var(--selection);
+}
+.guild__member.is-self .guild__member-name
+{
+	color: var(--highlight);
+	font-weight: bold;
+}
+/* A member's online dot before its name: the success color while online,
+   the muted ink, fainter, while offline. */
+.guild__online
+{
+	display: inline-block;
+	width: 6dp;
+	height: 6dp;
+	margin-right: 6dp;
+	border-radius: 3dp;
+	background-color: var(--text-muted);
+	opacity: 0.6;
+	vertical-align: middle;
+}
+.guild__online.is-online
+{
+	background-color: var(--success);
+	opacity: 1;
+}
 .guild__member-name, .guild__member-cell
 {
 	display: block;
@@ -915,7 +949,20 @@ input.guild__member-scroll
 	border-color: var(--border);
 }
 .guild__head-cell--building { width: 104dp; padding-left: var(--space-1); }
-.guild__head-cell--rank { width: 46dp; }
+.guild__head-cell--rank { width: 48dp; }
+/* A cost column's resource (legacy's six names, the resources card's):
+   centered over its cell and as wide as its column (the cell and the gap
+   after it), in the resources card's small type, on two lines where a
+   locale needs them (a long word breaks rather than run into the next). */
+.guild__head-cell--cost
+{
+	width: 41dp;
+	font-size: 9dp;
+	font-weight: normal;
+	line-height: 10dp;
+	text-align: center;
+	word-break: break-word;
+}
 .guild__head-cell--operate { margin-left: auto; padding-right: var(--space-1); }
 .guild__buildings
 {
@@ -981,7 +1028,8 @@ input.guild__member-scroll
 	position: relative;
 }
 /* The skill points: a badge at the passive bar's end, apart from its
-   title (legacy's "available" art is the classic look's). */
+   title, the word "available" before the count (legacy's "available" art
+   is the classic look's). */
 .guild__points
 {
 	display: block;
@@ -1006,9 +1054,38 @@ input.guild__member-scroll
 {
 	display: none;
 }
+.guild__points-label
+{
+	margin-right: var(--space-1);
+	font-weight: normal;
+}
 .guild__skills
 {
 	margin: 7dp auto 0;
+}
+/* A skill of level 0 (legacy's disabled cover): its icon dimmed. */
+.guild__skill.is-unavailable .nui-slot__icon
+{
+	opacity: 0.4;
+}
+/* A cooling skill's seconds left (a nui-countdown), centered on its icon
+   over the sweep: light bold digits with a dark outline. */
+.guild__skill-left
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 32dp;
+	height: 32dp;
+	z-index: 4;
+	color: var(--text-inverse);
+	font-size: var(--font-md);
+	font-weight: bold;
+	line-height: 32dp;
+	text-align: center;
+	font-effect: outline(1dp var(--text-outline));
+	pointer-events: none;
 }
 /* A skill's "+": a small button at the cell's bottom left corner. */
 .guild__plus

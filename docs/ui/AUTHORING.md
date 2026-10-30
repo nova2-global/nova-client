@@ -235,7 +235,7 @@ All class names start with `nui-`. Modifiers use `--`, parts use `__`, states us
 | Panel | `<div class="nui-panel">` with an optional `nui-panel__title` | `--sunken`, `--flat`. `nui-divider` is a 1dp rule. |
 | Tabs | native `<tabset class="nui-tabs nui-tabs--3">` with `<tab>` and `<panel>` pairs and a last `<tab class="nui-tabs__indicator nui-anim">` | `nui-tabs--2` to `--6` must match the number of real tabs. Modern draws a 3dp-padded segmented well and a raised selected tab; its indicator is hidden. Tabs switch without Python; the selected tab and panel get `:selected`. Tabs are in the tab order: where NovaUI has the keyboard, Tab moves between them, Enter or Space selects one, and `:focus-visible` rings the focused tab. |
 | List | `<div class="nui-list">` around a `<div class="nui-list__viewport">` that holds the rows `<div class="nui-list__item nui-anim">`, parts `nui-list__label`, `nui-list__meta` | `is-selected`, `:hover`, `:focus-visible` (a ring on every edge). Modern has a frameless list of 24dp-minimum rows: hover uses `surface-hover`; selection uses the soft accent fill and accent text. Enter or Space selects the focused row where NovaUI has the keyboard. The `disabled` attribute takes a row out of hit testing, the tab order and Enter/Space. Give the viewport a height in the window sheet to scroll (`.my-list .nui-list__viewport { height: 200dp; }`); the square viewport clips with the scissor alone (see [What the renderer draws](#what-the-renderer-draws)). |
-| Slot grid | `<div class="nui-slot-grid">` with `<div class="nui-slot nui-anim">` cells and their parts `__icon`, `__cover`, `__tint`, `__cooldown`, `__active`, `__finish`, `__ring`, `__flash`, `__count`, `__digits`, `__number`, `__sign`, `__key` | 40dp cells for 32dp icons (the legacy 32dp pitch in classic). `--cols-1` to `--cols-10`, `--pick`, `--lean` (one decorator draws every resting cell; cells hold only `__icon` and `__number`); cells `--h2`, `--h3`, `--w2`, `--w3`; `is-empty`, `is-covered`, `is-disabled`, `is-locked`, `is-picked`, `is-selected`, `is-active` (a lean cell), `is-target`, `is-blocked`, `is-usable`, `is-unusable`, `is-unavailable`, `:hover`, `is-hover`. See [Slot grids](#slot-grids). |
+| Slot grid | `<div class="nui-slot-grid">` with `<div class="nui-slot nui-anim">` cells and their parts `__icon`, `__cover`, `__tint`, `__cooldown`, `__active`, `__finish`, `__ring`, `__flash`, `__count`, `__digits`, `__number`, `__sign`, `__key` | 40dp cells for 32dp icons (the legacy 32dp pitch in classic). `--cols-1` to `--cols-10`, `--pick`, `--lean` (one decorator draws every resting cell; cells hold only `__icon` and `__number`); cells `--h2`, `--h3`, `--w2`, `--w3`; `is-empty`, `is-covered`, `is-disabled`, `is-locked`, `is-picked`, `is-selected`, `is-active` (a lean cell), `is-target`, `is-blocked`, `is-usable`, `is-unusable`, `is-unavailable`, `is-refined` (the number part shows the item's refine level, "+6", where the grid opts in with `nui_slots.SlotWindowProxy(refine=True)`: `REFINE_KEY` in each cell, from `nui_slots.refine_level(vnum)`, the number after the first "+" of a weapon's, armor's or belt's name; modern and cyberpunk only, classic hides it), `:hover`, `is-hover`. See [Slot grids](#slot-grids). |
 | Slider | `<input type="range" class="nui-slider" min max step value>` | `:hover` and `:active` on the thumb, `:focus-visible`; `disabled` attribute. The arrow keys move a focused slider where NovaUI has the keyboard. RmlUi builds the track, fill and thumb; the component centers them in the 20dp input, so give `.nui-slider` no padding or border. |
 | Toggle | `<label class="nui-toggle">` around `<input type="checkbox" class="nui-toggle__input">`, `nui-toggle__track`, `nui-toggle__knob`, `nui-toggle__label` | `checked` and `disabled` attributes. The label forwards clicks to the hidden checkbox, in a document that takes focus: a document whose body has `focus: none` gets no click at all, so such a window flips the toggle on a left `mousedown` on the label ([RCSS and RML differences that matter](#rcss-and-rml-differences-that-matter); the system options' reduced motion). The checkbox stays in the tab order: where NovaUI has the keyboard, Tab reaches the toggle, Space flips it, and `:focus-visible` rings the track. |
 | Text input | `<input type="text" class="nui-input">` (also `type="password"`), inside `div.nui-field` with `label.nui-field__label` and `span.nui-field__error` | `--invalid`, `disabled` attribute, `:focus`, `:placeholder-shown`. The corners are square on purpose: RmlUi makes every text input clip, and square clipping needs no stencil mask. `nui-escape-keeps-focus` on `<body>`: Escape in a field of this document does not leave the field (the login board). |
@@ -323,7 +323,7 @@ Since 2026-10-12 the modern look is drawn in code: boxes, borders, radii, transf
 	class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 ```
 
-- The names: `close`, `plus`, `minus`, `chevron-up`, `chevron-down`, `chevron-left`, `chevron-right`, `send`, `log`, `chat`, `whisper`, `character`, `inventory`, `community`, `system`, `map`, `gift`, `gem`, `shop`, `heal`, `leave`, `mouse-move`, `mouse-attack`, `mouse-auto`, `mouse-camera`, `mouse-skill`, `home`, `coin`. Every glyph has the parts `nui-glyph__a` and `nui-glyph__b`; `log`, `whisper`, `community`, `system`, `gift`, `leave`, `mouse-attack` and `mouse-camera` also `nui-glyph__c`. The gallery shows them all.
+- The names: `close`, `plus`, `minus`, `chevron-up`, `chevron-down`, `chevron-left`, `chevron-right`, `send`, `log`, `chat`, `whisper`, `character`, `inventory`, `community`, `system`, `map`, `gift`, `gem`, `shop`, `heal`, `leave`, `mouse-move`, `mouse-attack`, `mouse-auto`, `mouse-camera`, `mouse-skill`, `home`, `coin`, `lock`, the inventory rail's `stall`, `ranking`, `events`, `achievements` and `guide`, `clock`, `sword`, and the wear places' `unique`, `arrow` and `belt`. Every glyph has the parts `nui-glyph__a` and `nui-glyph__b`; `log`, `whisper`, `community`, `system`, `gift`, `leave`, `mouse-attack`, `mouse-camera`, the five rail glyphs, `clock`, `sword` and `belt` also `nui-glyph__c`. The rail glyphs' `__c` is an accent part, inked with `--glyph-accent` (`var(--accent)` unless a context sets it). The gallery shows them all.
 - A glyph is 16dp square, sits on the text's middle and takes no pointer, so presses go to its button. Its ink is the custom property `--glyph-ink`, `var(--text)` unless a context sets it: `.my-button:hover .nui-glyph { --glyph-ink: var(--accent); }`. So it follows every theme, skin and player color. A context may scale it with a transform.
 - Classic hides every glyph and draws the legacy art instead.
 - Each glyph is two or three elements, which every frame updates (the pass of P13 added about 50 to the always-loaded HUD documents): use one where a control needs a symbol, not as decoration.
@@ -1248,7 +1248,7 @@ The item windows of Wave 3b are **subclasses of the legacy classes** (P14 spec D
 - **The legacy window underneath** stays in the UI layer at 0 x 0 with no child: legacy's `Show` and `Hide` show and hide it, so `IsShow()`, the Escape chain and `SetTop` are legacy's. The subclass overrides `Show` (the board, then legacy's), `Hide` (legacy's, then the board's when legacy's own state says hidden: the inventory's `Hide` returns early while an item question is open), `SetTop` (`bring_to_front`, then legacy's) and every legacy method that sizes or places the window itself (select item's `SetTableSize`; the belt's `AdjustPositionAndSize`), so the 0 x 0 window is never picked over the UI. The loader gives it the flags its uiscript gave legacy's window (`AddFlag("movable")`, `AddFlag("float")`; the belt's constructor adds `float` itself), since only a float window moves when `SetTop` raises it (`CWindow::SetTop`).
 - **A press raises the window.** Legacy's window manager raises the UI-layer window under every left and right press before the press reaches it (`SetTopUIWindow`), which puts it first in the Escape chain and above the windows it overlaps. The NovaUI board takes the press, so its class mixes in `nui_hud.RaisesOnPress`: every mousedown handler calls `self.raise_for(button)` before it acts, and the body's own `data-event-mousedown="board_press(ev.button)"`, which RmlUi runs last as the press bubbles (the board's `@nui.on("board_press")` calls `self.body_pressed(button)`), raises only when no handler did, so a press that opens a dialog leaves the dialog above. The window's `SetTop` raises the board and the legacy window and runs its `OnTop` (the inventory's raises its tooltip and its belt). The refine dialogs, attach metin stone and select item do the same.
 - **On demand.** Since P15 V-2 the inventory, costume and belt keep their boards loaded and hidden after the first open, their lists emptied (`nui_hud.KeptBoard`, [System windows](#system-windows)); select item still loads only while it shows. A board is loaded only while its window shows (`nui_hud.OnDemand`) and takes every key from the proxies' last state at each load, so a refresh while hidden costs only the proxies' bookkeeping, legacy's side effects included (the auto potion's `SetAutoPotionInfo`).
-- **The inventory** (`inventory`, `nui/windows/inventory/`): the equipment group of the wear table placed by name at legacy's places around the paper doll's figure (a content image the model carries, `figure_for_race(race)`, from `nui/figures/`; a rune circle drawn in code behind it), the costume, dragon soul and mall buttons (glyphs in modern, legacy's art at its places in classic), one tab per page, the bag page as a lean grid of `INVENTORY_PAGE_SIZE` cells, the money bar (`money`, `money_value`; the coin glyph; the text is legacy's `MoneySlotText`, the amount without its unit from 12 digits, NOVA-96). The equipment group holds the rings beside the belt in both tables, as legacy's window since the cut (NOVA-97). Its tabs set the page with `SetInventoryPage`, which NovaUI overrides with legacy's rule (every other tab up, NOVA-97's five pages) to put the page's tab proxy down and the page in the model; `OpenPickMoneyDialog` is legacy's (`SetMax(player.INVENTORY_MONEY_DIGITS)`, OLD's 7, since NOVA-96); the fourth socket's scrolls (`OpenSocketOnItem`) are legacy's code; `UseDSSButtonEffect` sets `dss_active`. It draws below the legacy UI layer, as legacy's window lived in it, so the shop, exchange and safebox windows cover it. Modern sits at the screen's right edge above the taskbar. Its shortcut rail, along the window's left edge and hidden while it has no entries, holds the buttons of features that come later (an offline shop, the rankings): `nui_inventory.register_shortcut(id, glyph, tip, callback, enabled=True)` adds an entry or replaces it in place (a glyph of the glyph component, a locale key as its tooltip, the callback run on a left press), `unregister_shortcut(id)` and `set_shortcut_enabled(id, enabled)` change it, and the window's `rail_reach()` tells the costume window how far left the rail reaches. Classic is legacy's 176 x 565 board in both tables, as legacy's one uiscript since the cut: the equipment art with the ring boxes (`equipment_bg_with_ring.tga`) and one tab a page on the small tab art at legacy's 32px pitch.
+- **The inventory** (`inventory`, `nui/windows/inventory/`): the equipment group of the wear table placed by name at legacy's places around the paper doll's figure (a content image the model carries, `figure_for_race(race)`, from `nui/figures/`; a rune circle drawn in code behind it), the costume, dragon soul and mall buttons (glyphs in modern, legacy's art at its places in classic), one tab per page, the bag page as a lean grid of `INVENTORY_PAGE_SIZE` cells, the money bar (`money`, `money_value`; the coin glyph; the text is legacy's `MoneySlotText`, the amount without its unit from 12 digits, NOVA-96). The equipment group holds the rings beside the belt in both tables, as legacy's window since the cut (NOVA-97). Its tabs set the page with `SetInventoryPage`, which NovaUI overrides with legacy's rule (every other tab up, NOVA-97's five pages) to put the page's tab proxy down and the page in the model; `OpenPickMoneyDialog` is legacy's (`SetMax(player.INVENTORY_MONEY_DIGITS)`, OLD's 7, since NOVA-96); the fourth socket's scrolls (`OpenSocketOnItem`) are legacy's code; `UseDSSButtonEffect` sets `dss_active`. It draws below the legacy UI layer, as legacy's window lived in it, so the shop, exchange and safebox windows cover it. Modern sits at the screen's right edge above the taskbar. Its shortcut rail, along the window's left edge and hidden while it has no entries, holds the buttons of the reviewed board: when the game's interface binds the window (`BindInterfaceClass`), `register_board_shortcuts()` registers `BOARD_SHORTCUTS`, the offline shop, ranking, events and achievements as features to come and the guide, which opens the help window (`Interface.OpenHelpWindow`); an id a feature registered first keeps the feature's entry. `nui_inventory.register_shortcut(id, glyph, tip, callback, enabled=True, soon=False)` adds an entry or replaces it in place, keeping its badge (a glyph of the glyph component, a locale key as its tooltip, the callback run on a left press; a `soon` entry is a feature to come: a faint glyph, a second hint line, `NUI_RAIL_SOON`, no press, and no callback needed), `unregister_shortcut(id)`, `set_shortcut_enabled(id, enabled)` and `set_shortcut_badge(id, count)` (a count on the button's corner, none at 0, `99+` over 99) change it, the fold button under a rule hides the entries for the session (`rail_folded()`, `set_rail_folded()`), and the window's `rail_reach()` tells the costume window how far left the rail reaches, folded or not. Classic is legacy's 176 x 565 board in both tables, as legacy's one uiscript since the cut: the equipment art with the ring boxes (`equipment_bg_with_ring.tga`) and one tab a page on the small tab art at legacy's 32px pitch.
 - **The costume window** (`nui/windows/costume/`): the costume group of the wear table by name: the costume body and hair in both tables, as legacy's window since the cut (NOVA-97; its third slot, ring1's, went to the inventory with the rings, and the cut's other costume cells and the companion are not ported). A divider stands before a companion's slots while a table shows them (`has_companion`; none does). Legacy refreshes `COSTUME_SLOT_COUNT` cells; a cell of the group it would not refresh is filled from the inventory at each refresh (none since the cut). Classic is legacy's 140 x 180 board in both tables. It opens beside the inventory's left edge, beyond its shortcut rail, and moves alone after. Modern stands the figure of the character's gender behind the slots (`nui_costume.figure_for_race`, `nui/figures/costume-male.png` or `costume-female.png`).
 - **The belt** (`nui/windows/belt-inventory/`): a lean 4 x 4 grid whose cells beyond the belt's grade are `unavailable` (legacy's disabled cover buttons), the expand and minimize buttons; it is docked to the inventory's `inv-belt-dock`, expanded or collapsed, so the inventory's drags move it.
 - **Select item** (`select-item`, `nui/windows/select-item/`): the stones of legacy's scan (two pages, grade 2 or less, 55 at most) in the rows legacy computes; a press sends the stone's position and hides, the close buttons send 0. Legacy's `wndMgr.OnceIgnoreMouseLeftButtonUpEvent()` is not called (NovaUI acts on the press, so the call would swallow the next legacy release); `Close` and `SelectItemSlot` are overridden for that line alone.
@@ -1354,66 +1354,66 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 
 ## Window flags and the factory
 
-`assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default; `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file. `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself.
+`assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default, and since the design gaps every default is on: a player's look is the theme's (`UI_THEME`, tinted by `UI_COLORS`), and the classic theme draws the legacy look on NovaUI. `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file: `-id` takes a window back to the legacy one for a diagnosis, and `-all` makes a legacy client (the live kit's legacy runs). `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself. The tests that compare a NovaUI window with the legacy one set `nui_windows.DEFAULT_ON` False (`nui_test_support.load_module`), so a window there is NovaUI only when the test names it; `nui_windows_test.ClientDefault` checks the client's defaults.
 
 | Id | Window | Default |
 |---|---|---|
-| `login` | the login board | off |
-| `dialogs` | the dialog kit | off |
-| `server-board` | the server and channel board | off |
-| `virtual-keyboard` | the virtual keyboard (needs the NovaUI login board) | off |
-| `locale-strip` | the locale flag strip | off |
-| `loading`, `empire`, `select`, `create` | the phase windows | off |
-| `taskbar` | the taskbar: gauges, quickslots, the mouse-button pickers | off |
-| `expanded-taskbar` | the expanded taskbar (the dragon soul button) | off |
-| `energy-bar` | the energy bar | off |
-| `gift-box` | the gift icon (needs the NovaUI taskbar, which makes it) | off |
-| `game-buttons` | the stat, skill, help, quest, build and observer buttons | off |
-| `affects` | the affect icons | off |
-| `target` | the target board | off |
-| `party` | the party boards and menu | off |
-| `edge-buttons` | the quest and whisper edge buttons | off |
-| `tip-board`, `big-board` | the tip and big notice boards | off |
-| `map-name` | the map name splash | off |
-| `chat` | the chat window and its input | off |
-| `chat-log` | the chat log | off |
-| `minimap` | the minimap: frame, controls and the map view | off |
-| `atlas` | the atlas (needs the NovaUI minimap, which makes it) | off |
-| `player-gauge` | the HP gauge over the player's head | off |
-| `shop-signs` | the private shop signs | off |
-| `guild-war` | the guild war score boards | off |
-| `system-menu` | the system menu (Escape in game) | off |
-| `system-options` | the system options, the music list and the Interface section | off |
-| `game-options` | the game options | off |
-| `restart` | the restart dialog after a death | off |
-| `help` | the help window | off |
-| `point-reset` | the point reset questions (needs the NovaUI dialog kit) | off |
-| `quest` | the quest dialog, its letterbox and fades, and the HUD hiding it causes (needs the Wave 5a engine) | off |
-| `guild-building` | the guild building placement window | off |
-| `web` | the web window around the WebView2 page, the mall (needs the Wave 5a engine) | off |
-| `console` | the developer console, only where legacy opens it | off |
-| `inventory` | the inventory with its costume and belt windows (needs the Wave 3b engine) | off |
-| `tooltips` | the item, skill and link tooltips | off |
-| `refine` | the refine dialogs (`RefineDialog`, `RefineDialogNew`) | off |
-| `attach-metin` | the attach stone dialog | off |
-| `select-item` | the select item window of a quest's `[SELECT_ITEM]` | off |
-| `character` | the character window: status, skills, emotes, quests (needs the Wave 3c engine) | off |
-| `dragon-soul` | the dragon soul inventory (needs the Wave 3c engine) | off |
-| `dragon-soul-refine` | the dragon soul refine window (needs the Wave 3c engine) | off |
-| `exchange` | the exchange (needs the Wave 4 engine) | off |
-| `shop` | the NPC shop and a player's shop view | off |
-| `private-shop` | the private shop builder | off |
-| `safebox` | the safebox, the password dialog it shares with the mall, the change-password dialog | off |
-| `mall` | the item mall storage | off |
-| `equipment-view` | the equipment view of another player | off |
-| `messenger` | the messenger | off |
-| `whisper` | the whisper dialogs | off |
-| `guild` | the guild window and its grade name dialog | off |
-| `guild-war-dialogs` | the guild war declare and accept dialogs | off |
-| `guild-mark` | the guild mark and symbol lists | off |
-| `maintenance` | the maintenance countdown (NOVA-58, P18) | off |
+| `login` | the login board | on |
+| `dialogs` | the dialog kit | on |
+| `server-board` | the server and channel board | on |
+| `virtual-keyboard` | the virtual keyboard (needs the NovaUI login board) | on |
+| `locale-strip` | the locale flag strip | on |
+| `loading`, `empire`, `select`, `create` | the phase windows | on |
+| `taskbar` | the taskbar: gauges, quickslots, the mouse-button pickers | on |
+| `expanded-taskbar` | the expanded taskbar (the dragon soul button) | on |
+| `energy-bar` | the energy bar | on |
+| `gift-box` | the gift icon (needs the NovaUI taskbar, which makes it) | on |
+| `game-buttons` | the stat, skill, help, quest, build and observer buttons | on |
+| `affects` | the affect icons | on |
+| `target` | the target board | on |
+| `party` | the party boards and menu | on |
+| `edge-buttons` | the quest and whisper edge buttons | on |
+| `tip-board`, `big-board` | the tip and big notice boards | on |
+| `map-name` | the map name splash | on |
+| `chat` | the chat window and its input | on |
+| `chat-log` | the chat log | on |
+| `minimap` | the minimap: frame, controls and the map view | on |
+| `atlas` | the atlas (needs the NovaUI minimap, which makes it) | on |
+| `player-gauge` | the HP gauge over the player's head | on |
+| `shop-signs` | the private shop signs | on |
+| `guild-war` | the guild war score boards | on |
+| `system-menu` | the system menu (Escape in game) | on |
+| `system-options` | the system options, the music list and the Interface section | on |
+| `game-options` | the game options | on |
+| `restart` | the restart dialog after a death | on |
+| `help` | the help window | on |
+| `point-reset` | the point reset questions (needs the NovaUI dialog kit) | on |
+| `quest` | the quest dialog, its letterbox and fades, and the HUD hiding it causes (needs the Wave 5a engine) | on |
+| `guild-building` | the guild building placement window | on |
+| `web` | the web window around the WebView2 page, the mall (needs the Wave 5a engine) | on |
+| `console` | the developer console, only where legacy opens it | on |
+| `inventory` | the inventory with its costume and belt windows (needs the Wave 3b engine) | on |
+| `tooltips` | the item, skill and link tooltips | on |
+| `refine` | the refine dialogs (`RefineDialog`, `RefineDialogNew`) | on |
+| `attach-metin` | the attach stone dialog | on |
+| `select-item` | the select item window of a quest's `[SELECT_ITEM]` | on |
+| `character` | the character window: status, skills, emotes, quests (needs the Wave 3c engine) | on |
+| `dragon-soul` | the dragon soul inventory (needs the Wave 3c engine) | on |
+| `dragon-soul-refine` | the dragon soul refine window (needs the Wave 3c engine) | on |
+| `exchange` | the exchange (needs the Wave 4 engine) | on |
+| `shop` | the NPC shop and a player's shop view | on |
+| `private-shop` | the private shop builder | on |
+| `safebox` | the safebox, the password dialog it shares with the mall, the change-password dialog | on |
+| `mall` | the item mall storage | on |
+| `equipment-view` | the equipment view of another player | on |
+| `messenger` | the messenger | on |
+| `whisper` | the whisper dialogs | on |
+| `guild` | the guild window and its grade name dialog | on |
+| `guild-war-dialogs` | the guild war declare and accept dialogs | on |
+| `guild-mark` | the guild mark and symbol lists | on |
+| `maintenance` | the maintenance countdown (NOVA-58, P18) | on |
 
-**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
+**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). `all` stands for every window. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on, and `-all,+login` is a legacy client with the NovaUI login. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
 
 **Wave 4 groups:** `trade` for the six Wave 4 trade windows (`exchange` to `equipment-view`) and `social` for the five social ones (`messenger` to `guild-mark`). With them and `wave3c` the demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c,+trade,+social` (58 of its 200 characters).
 
@@ -1710,6 +1710,8 @@ Players pick a theme, and the change applies at once, with no reload and no rest
 - `nui.set_theme(theme_id)` applies a theme at once, saves it (`UI_THEME` in `config/metin2.cfg`) and returns its id. The id is matched without regard to case; `"dark"` and `"light"`, from older configs and callers, mean `modern-dark` and `modern-light`. With NovaUI running, an id `themes.json` does not hold raises `ValueError` and nothing is saved. Then every open window's `on_theme_changed(theme_id)` runs.
 - `nui.get_theme()` is the id in use (the saved one without NovaUI, else `modern-dark`). `nui.get_themes()` is the list of `(id, label)` pairs in menu order, `[]` without NovaUI.
 - The config holds an id only when it is not the default: choosing `modern-dark` removes the `UI_THEME` line. A well-formed id the table does not know (content from a newer release) stays in the file and shows the default theme; a malformed value reads as the default.
+
+**The one-page login.** `nui/windows/login` (controller `assets/root/nui_login.py`) is the whole login screen of the reviewed Login and Register boards: the saved accounts board, the account card with its Log in and Create account tabs, the Discord and Website links and Exit. Its `<body>` covers the screen and takes no pointer (`pointer-events: none`); its boards and buttons take it. The server and channel are chosen on the card, so `LoginWindow` skips its server board step (`nui_login.is_one_page`, `__NuiOpen`): the status well shows the selected server's state (from the state checker's channel states) and its player count (`GC::SERVER_STATUS`, `NotifyServerStatus`), and the menu under it lists the servers and channels; Channel: Auto picks one at each log in (`pick_channel`: the fewest players when the counts are known, else a NORM channel before a BUSY one, the last played first). Log in goes through `LoginWindow.NuiLogin` (the select-server button's checks, `__ApplyServerChoice`, then the legacy `Connect`). The saved accounts are `assets/root/nui_accounts.py`, `config/nui_accounts.txt`: written when the game starts (`networkModule.SetGamePhase`) only for a log in with Remember me on; never a password. The links are `assets/root/nui_links.py`: an https address each, and a link without one is not drawn. The Create account tab shows only where `net.CreateAccount` exists (protocol version 4); the card checks the auth core's rules first (`check_registration`) and `LoginWindow.NuiCreateAccount` sends the request, whose answer comes back through `OnAccountCreateResult`. The show-password eye swaps two fields, the password one and a text one (an input's type cannot change from data, NUI013), and copies the text with `set_value`, never through the model.
 
 **The theme picker.** `nui/windows/theme-picker` (controller `assets/root/nui_theme_picker.py`) shows one button per theme at the top left of the login screen, under the flag strip: placed below the NovaUI strip, or where its sheet puts it under the legacy one. Its heading is `@ui.THEME_TITLE` and its labels `@ui.THEME_*`. It keeps clear of the login board, the server board and the keyboard: while it overlaps one of them, it hides (`nui-overlapping`). `nui_login.py` opens it with the NovaUI login board (`win.nuiPicker`), hides it while a legacy popup is open and destroys it with the board. Its `<body>` has `focus: none`, so a press never takes the focus from the board's fields; RmlUi then sends no `click` there, so the buttons act on `mousedown` (`pick(theme.id, ev.button)`, left button only). The gallery's Theme button cycles through `nui.get_themes()`.
 

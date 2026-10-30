@@ -27,9 +27,18 @@ carries (figure_for_race: the race's figure, today the knight for every
 race), and a stats row (attack, defence, magic attack, as the character
 window sums them, refreshed with legacy's RefreshStatus). The shortcut rail
 on the window's left edge shows the entries features register here
-(register_shortcut): an id, a glyph, a tooltip key and an enabled flag
-each; a press on one calls its callback. With none registered there is no
-rail."""
+(register_shortcut): an id, a glyph, a tooltip key, an enabled flag, a
+"soon" flag (a feature still to come) and a badge each; a press on one
+calls its callback. With none registered there is no rail. When the game's
+interface binds the window (BindInterfaceClass), the reviewed board's five
+entries are registered (register_board_shortcuts): the offline shop,
+ranking, events and achievements as features to come, and the guide, which
+opens the help window. The rail's fold button hides its entries for the
+rest of the session. The bag and the wear cells carry the refine level
+(their proxies opt in, nui_slots.REFINE_KEY), which the modern skins show as
+a "+N" badge and a lit wear cell; an empty unique, arrow or belt place
+carries its mark (WEAR_MARKS); and Show and Hide tell the NovaUI taskbar,
+whose inventory button shows whether the window is open."""
 
 import app
 import constInfo
@@ -56,6 +65,20 @@ KEY = "inventory"
 FIGURE_KNIGHT = "/nui/figures/knight.png"
 
 
+# The mark an empty wear place shows (the reviewed board's watermarks; a
+# glyph of components/glyph.rcss, which classic hides): the unique item
+# places, the arrow's and the belt's.
+WEAR_MARKS = {"unique1": "unique", "unique2": "unique", "arrow": "arrow", "belt": "belt"}
+
+
+def wear_marks(name, kind):
+	"""A wear cell's marks: [the place's glyph name] while it is empty and
+	has one, else [] (a list, so the board makes the glyph only where it
+	shows)."""
+	mark = WEAR_MARKS.get(name)
+	return [mark] if mark and not kind else []
+
+
 def figure_for_race(race):
 	"""The paper doll's figure for a race (playerSettingModule's RACE_*, 0 to
 	7). Every race shows the knight today; a race's own figure (a female
@@ -72,13 +95,17 @@ def figure_for_race(race):
 # The glyph names components/glyph.rcss draws.
 GLYPHS = ("close", "plus", "minus", "chevron-up", "chevron-down", "chevron-left", "chevron-right", "send", "log",
           "chat", "whisper", "character", "inventory", "community", "system", "map", "gift", "gem", "shop", "heal",
-          "leave", "mouse-move", "mouse-attack", "mouse-auto", "mouse-camera", "mouse-skill", "home", "coin", "lock")
+          "leave", "mouse-move", "mouse-attack", "mouse-auto", "mouse-camera", "mouse-skill", "home", "coin", "lock",
+          "stall", "ranking", "events", "achievements", "guide")
 # The rail's reach left of the window, in dp (its board and the gap to the
 # window), which the costume window keeps clear while the rail shows.
 RAIL_REACH_DP = 56.0
 
 _shortcuts = []
 _shortcut_callbacks = {}
+# The fold button's state, kept for the session (a list, so the module's
+# functions change it in place).
+_rail_folded = [False]
 
 
 def _is_name(text):
@@ -86,22 +113,25 @@ def _is_name(text):
 	        and all(ord(c) < 128 for c in text))
 
 
-def register_shortcut(entry_id, glyph, tip, callback, enabled=True):
+def register_shortcut(entry_id, glyph, tip, callback, enabled=True, soon=False):
 	"""Adds the rail's entry entry_id (letters, digits and _, starting with a
-	letter), or replaces it in place: a button with the glyph (one of
-	GLYPHS) and the tooltip tip (a locale key, "@ui.KEY" or "@game.KEY"),
-	pressable while enabled. A left press on it calls callback()."""
+	letter), or replaces it in place (keeping its badge): a button with the
+	glyph (one of GLYPHS) and the tooltip tip (a locale key, "@ui.KEY" or
+	"@game.KEY"), pressable while enabled. A left press on it calls
+	callback(). A soon entry is a feature still to come: its hint says so,
+	it takes no press, and its callback may be None."""
 	if not _is_name(entry_id):
 		raise ValueError("shortcut id %r: letters, digits and _, starting with a letter" % (entry_id,))
 	if glyph not in GLYPHS:
 		raise ValueError("shortcut %s: no glyph %r" % (entry_id, glyph))
 	if not (tip.startswith("@ui.") or tip.startswith("@game.")) or not _is_name(tip.split(".", 1)[1]):
 		raise ValueError("shortcut %s: the tooltip is a locale key (@ui.KEY or @game.KEY), not %r" % (entry_id, tip))
-	if not callable(callback):
+	if not callable(callback) and not (soon and callback is None):
 		raise ValueError("shortcut %s: the callback is not callable" % entry_id)
-	entry = {"id": entry_id, "glyph": glyph, "tip": tip, "enabled": bool(enabled)}
+	entry = {"id": entry_id, "glyph": glyph, "tip": tip, "enabled": bool(enabled), "soon": bool(soon), "badge": ""}
 	for index, old in enumerate(_shortcuts):
 		if old["id"] == entry_id:
+			entry["badge"] = old["badge"]
 			_shortcuts[index] = entry
 			break
 	else:
@@ -125,6 +155,17 @@ def set_shortcut_enabled(entry_id, enabled):
 	_publish_shortcuts()
 
 
+def set_shortcut_badge(entry_id, count):
+	"""Puts a count on the entry's badge (0 or less: no badge; over 99:
+	"99+")."""
+	count = int(count)
+	badge = "" if count <= 0 else ("99+" if count > 99 else "%d" % count)
+	for entry in _shortcuts:
+		if entry["id"] == entry_id:
+			entry["badge"] = badge
+	_publish_shortcuts()
+
+
 def shortcuts():
 	"""The registered entries, in rail order (copies)."""
 	return [dict(entry) for entry in _shortcuts]
@@ -132,12 +173,24 @@ def shortcuts():
 
 def press_shortcut(entry_id):
 	"""What a left press on the entry does: its callback, while it is
-	registered and enabled. True when it ran."""
+	registered, enabled and not to come. True when it ran."""
 	for entry in _shortcuts:
-		if entry["id"] == entry_id and entry["enabled"]:
+		if entry["id"] == entry_id and entry["enabled"] and not entry["soon"]:
 			_shortcut_callbacks[entry_id]()
 			return True
 	return False
+
+
+def rail_folded():
+	"""Whether the fold button has hidden the rail's entries."""
+	return _rail_folded[0]
+
+
+def set_rail_folded(folded):
+	"""Hides the rail's entries (True) or shows them (False), for the
+	session."""
+	_rail_folded[0] = bool(folded)
+	_publish_shortcuts()
 
 
 def _publish_shortcuts():
@@ -145,6 +198,36 @@ def _publish_shortcuts():
 	refresh = getattr(window, "_refresh_rail", None)
 	if refresh is not None:
 		refresh()
+
+
+# The reviewed inventory board's rail: (id, glyph, tooltip key, soon). The
+# offline shop, ranking, events and achievements are features to come; the
+# guide opens the help window.
+BOARD_SHORTCUTS = (
+	("offline_shop", "stall", "@ui.NUI_RAIL_OFFLINE_SHOP", True),
+	("ranking", "ranking", "@ui.NUI_RAIL_RANKING", True),
+	("events", "events", "@ui.NUI_RAIL_EVENTS", True),
+	("achievements", "achievements", "@ui.NUI_RAIL_ACHIEVEMENTS", True),
+	("guide", "guide", "@ui.NUI_RAIL_GUIDE", False),
+)
+
+
+def _open_guide():
+	"""The guide entry: the help window, through the interface that bound
+	the shown inventory (Interface.OpenHelpWindow)."""
+	window = nui_hud.current(KEY)
+	interface = getattr(window, "interface", None)
+	if interface is not None:
+		interface.OpenHelpWindow()
+
+
+def register_board_shortcuts():
+	"""Registers the board's five entries, each one only while no feature
+	has registered its id (a feature's own entry stays)."""
+	taken = set(entry["id"] for entry in _shortcuts)
+	for entry_id, glyph, tip, soon in BOARD_SHORTCUTS:
+		if entry_id not in taken:
+			register_shortcut(entry_id, glyph, tip, None if soon else _open_guide, soon=soon)
 
 
 def _span(low, high):
@@ -267,6 +350,12 @@ class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			press_shortcut(str(entry_id))
 
+	@nui.on("rail_fold")
+	def on_rail_fold(self, button):
+		self.raise_for(button)
+		if button == 0:
+			set_rail_folded(not rail_folded())
+
 
 class InventoryWindow(uiInventory.InventoryWindow):
 	"""uiInventory.InventoryWindow on NovaUI (Interface.wndInventory)."""
@@ -320,10 +409,12 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"table": limits.WEAR_TABLE_ID,
 			"pages": nui_limits.pages(limits),
 			"page": 0,
-			"bag": [nui_slots.empty_cell(i) for i in range(limits.INVENTORY_PAGE_SIZE)],
+			# The bag and the wear cells carry the refine level (the modern
+			# skins' "+N" badge; nui_slots.REFINE_KEY).
+			"bag": nui_slots.with_refine([nui_slots.empty_cell(i) for i in range(limits.INVENTORY_PAGE_SIZE)]),
 			"bag_cols": limits.INVENTORY_COLUMNS,
-			"wear": [dict(nui_slots.empty_cell(i), name=slot.name)
-			         for i, slot in enumerate(nui_limits.wear_group("equipment", limits))],
+			"wear": nui_slots.with_refine([dict(nui_slots.empty_cell(i), name=slot.name, marks=wear_marks(slot.name, ""))
+			                               for i, slot in enumerate(nui_limits.wear_group("equipment", limits))]),
 			"money": "",
 			"money_value": 0,
 			"dss_active": False,
@@ -345,7 +436,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			# shortcut rail.
 			"figure": figure_for_race(player.GetRace()),
 			"stat_attack": "", "stat_defence": "", "stat_magic": "",
-			"rail": shortcuts(),
+			"rail": shortcuts(), "rail_folded": rail_folded(),
 		}
 
 	def _set(self, **values):
@@ -380,11 +471,17 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		board.set(wear_on=[], tabs_on=[], bag_on=[], rail=[])
 
 	def _refresh_rail(self):
-		"""The registered shortcuts, to the board while it shows (a kept
-		board takes them at its next show)."""
+		"""The registered shortcuts and the fold, to the board while it shows
+		(a kept board takes them at its next show)."""
 		self._state["rail"] = shortcuts()
+		self._state["rail_folded"] = rail_folded()
 		if self.demand is not None and self.demand.is_shown():
-			self.demand.board().set(rail=self._state["rail"])
+			self.demand.board().set(rail=self._state["rail"], rail_folded=self._state["rail_folded"])
+
+	def BindInterfaceClass(self, interface):
+		"""Legacy's binding, then the board's rail entries."""
+		uiInventory.InventoryWindow.BindInterfaceClass(self, interface)
+		register_board_shortcuts()
 
 	def rail_reach(self):
 		"""How far the shortcut rail reaches left of the window, in dp (0
@@ -464,6 +561,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		marked = nui_slots.with_states(cells, states or {}, picked)
 		for cell, slot in zip(marked, self._wear_slots):
 			cell["name"] = slot.name
+			cell["marks"] = wear_marks(slot.name, cell.get("kind"))
 		return marked
 
 	def _on_wear(self, cells):
@@ -497,9 +595,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 
 		wndItem = nui_slots.SlotWindowProxy(range(limits.INVENTORY_PAGE_SIZE), self._on_bag,
 		                                    cols=limits.INVENTORY_COLUMNS, rows=limits.INVENTORY_ROWS,
-		                                    positions=self._bag_position)
+		                                    positions=self._bag_position, refine=True)
 		self._wear_slots = nui_limits.wear_group("equipment", limits)
-		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._wear_slots], self._on_wear)
+		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._wear_slots], self._on_wear, refine=True)
 		self.wndMoney = nui_proxies.TextProxy(self._on_money)
 		self.wndMoneySlot = nui_proxies.ButtonProxy()
 		self.mallButton = nui_proxies.ButtonProxy()
@@ -597,12 +695,19 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			uiInventory.InventoryWindow.Show(self)
 		finally:
 			self._opening = False
+		self._tell_taskbar()
 
 	def Hide(self):
 		uiInventory.InventoryWindow.Hide(self)
 		# Legacy's Hide returns early while an item question is open.
 		if not self.IsShow():
 			self._hide_board()
+		self._tell_taskbar()
+
+	def _tell_taskbar(self):
+		"""The NovaUI taskbar's inventory button shows whether the window is
+		open (nui_hud.tell_taskbar)."""
+		nui_hud.tell_taskbar("inventory", self.IsShow())
 
 	def SetTop(self):
 		board = self.board()

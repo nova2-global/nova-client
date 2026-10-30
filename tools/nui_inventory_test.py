@@ -720,6 +720,54 @@ class Model(Pair):
         self.assertFalse(board(window).model["dss_active"])
 
 
+class ModernMarks(unittest.TestCase):
+    """What the modern skins add to the bag and the wear cells: the refine
+    level ("+N", nui_slots.REFINE_KEY: the inventory's grids opt in), the
+    marks of the empty unique, arrow and belt places, and the taskbar's
+    inventory button, told at each Show and Hide."""
+
+    def world(self):
+        world = World(True)
+        item = world.game.modules["item"]
+        item.ITEM_TYPE_WEAPON, item.ITEM_TYPE_ARMOR, item.ITEM_TYPE_BELT = 1, 2, 34
+        names = {SWORD: "Sword+6", GLAIVE: "Glaive+5", ARMOR: "Armour+3", POTION: "Potion+2", BELT: "Belt"}
+        kinds = {SWORD: 1, GLAIVE: 1, ARMOR: 2, POTION: 3, BELT: 34}
+        item.GetItemName = lambda: names.get(item.selected[0], "")
+        item.GetItemType = lambda: kinds.get(item.selected[0], 0)
+        return world
+
+    def test_the_bag_and_the_wear_cells_carry_the_refine_level(self):
+        model = board(self.world().make_inventory()).model
+        refine = [cell["refine"] for cell in model["bag"]]
+        self.assertEqual((refine[0], refine[2], refine[4], refine[5]), (6, 5, 0, 0), "a potion's +2 is no level")
+        self.assertEqual(sum(1 for level in refine if level), 2)
+        wear = dict((cell["name"], cell["refine"]) for cell in model["wear"])
+        self.assertEqual((wear["body"], wear["belt"], wear["weapon"]), (3, 0, 0))
+
+    def test_empty_unique_arrow_and_belt_places_show_their_mark(self):
+        window = self.world().make_inventory()
+        marks = dict((cell["name"], cell["marks"]) for cell in board(window).model["wear"])
+        self.assertEqual((marks["unique1"], marks["unique2"], marks["arrow"]), (["unique"], ["unique"], ["arrow"]))
+        self.assertEqual((marks["belt"], marks["body"], marks["weapon"]), ([], [], []), "worn, or a place without a mark")
+
+    def test_show_and_hide_tell_the_taskbar(self):
+        world = self.world()
+        told = []
+
+        class Bar(object):
+            def nui_window_shown(self, name, shown):
+                told.append((name, bool(shown)))
+        bar = Bar()
+        hud = world.m("nui_hud")
+        hud.take_over("taskbar", bar)
+        self.addCleanup(hud.forget, "taskbar", bar)
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.Hide()
+            window.Show()
+        self.assertEqual(told, [("inventory", True), ("inventory", False), ("inventory", True)])
+
+
 class Flows(Pair):
     """6.1's flow table, every row: the same calls in the same order."""
 
@@ -1484,7 +1532,9 @@ class Placement(unittest.TestCase):
                 with self.world.game, quiet():
                     self.window.Show()
                 self.assertTrue(self.window.wndCostume.IsShow())
-                self.assertEqual(board(self.window.wndCostume).placement, ("position", 1201.0, 150.0, (1.0, 0.0)))
+                # The board's rail is registered, so the costume stays clear of it.
+                reach = self.world.m("nui_inventory").RAIL_REACH_DP
+                self.assertEqual(board(self.window.wndCostume).placement, ("position", 1201.0 - reach, 150.0, (1.0, 0.0)))
                 # Its next open beside the laid-out board reads the live box.
                 state.boxes[(inventory_doc, "")] = [1100.0 * scale, 100.0 * scale, 236.0 * scale, 699.0 * scale]
                 self.assertEqual(self.window.board_origin(), (1100.0, 100.0))
@@ -1791,18 +1841,56 @@ class ModernDoll(unittest.TestCase):
             window.RefreshStatus()
         self.assertEqual(board(window).model["stat_attack"], "1048", "one value when the minimum is the maximum")
 
+    def test_the_interface_binding_registers_the_boards_five_entries(self):
+        world = World(True)
+        module = world.m("nui_inventory")
+        window = world.make_inventory()
+        rail = board(window).model["rail"]
+        self.assertEqual([(e["id"], e["glyph"], e["tip"], e["soon"]) for e in rail],
+                         [(entry_id, glyph, tip, soon) for entry_id, glyph, tip, soon in module.BOARD_SHORTCUTS])
+        self.assertEqual([e["id"] for e in rail if not e["soon"]], ["guide"], "only the guide exists today")
+        self.assertTrue(all(e["enabled"] and e["badge"] == "" for e in rail))
+        with world.game:
+            for entry_id in ("offline_shop", "ranking", "events", "achievements"):
+                press(window, "rail_press", entry_id, 0)
+        self.assertNotIn(("interface.OpenHelpWindow", ()), world.game.log, "a feature to come takes no press")
+        with world.game:
+            press(window, "rail_press", "guide", 1)
+            press(window, "rail_press", "guide", 0)
+        self.assertEqual(world.game.log.count(("interface.OpenHelpWindow", ())), 1,
+                         "a left press on the guide opens the help window")
+
+    def test_a_feature_registered_before_the_binding_keeps_its_entry(self):
+        world = World(True)
+        module = world.m("nui_inventory")
+        pressed = []
+        with world.game:
+            module.register_shortcut("ranking", "ranking", "@ui.NUI_RAIL_RANKING", lambda: pressed.append("ranking"))
+        window = world.make_inventory()
+        self.assertEqual([e["id"] for e in board(window).model["rail"]],
+                         ["ranking", "offline_shop", "events", "achievements", "guide"])
+        with world.game:
+            press(window, "rail_press", "ranking", 0)
+            window.BindInterfaceClass(world.interface)
+        self.assertEqual(pressed, ["ranking"])
+        self.assertFalse(board(window).model["rail"][0]["soon"], "a second binding leaves the feature's entry")
+
     def test_a_registered_shortcut_shows_on_the_rail_and_a_left_press_calls_it(self):
         world = World(True)
         module = world.m("nui_inventory")
         window = world.make_inventory()
+        with world.game:
+            for entry in module.BOARD_SHORTCUTS:
+                module.unregister_shortcut(entry[0])
         self.assertEqual(board(window).model["rail"], [], "no entry, no rail")
         pressed = []
         with world.game:
-            module.register_shortcut("offline_shop", "shop", "@ui.PRIVATE_SHOP_TITLE", lambda: pressed.append("shop"))
-            module.register_shortcut("guide", "log", "@ui.GAME_HELP", lambda: pressed.append("guide"), enabled=False)
+            module.register_shortcut("offline_shop", "stall", "@ui.NUI_RAIL_OFFLINE_SHOP", lambda: pressed.append("shop"))
+            module.register_shortcut("guide", "guide", "@ui.NUI_RAIL_GUIDE", lambda: pressed.append("guide"), enabled=False)
         self.assertEqual(board(window).model["rail"], [
-            {"id": "offline_shop", "glyph": "shop", "tip": "@ui.PRIVATE_SHOP_TITLE", "enabled": True},
-            {"id": "guide", "glyph": "log", "tip": "@ui.GAME_HELP", "enabled": False}])
+            {"id": "offline_shop", "glyph": "stall", "tip": "@ui.NUI_RAIL_OFFLINE_SHOP", "enabled": True, "soon": False,
+             "badge": ""},
+            {"id": "guide", "glyph": "guide", "tip": "@ui.NUI_RAIL_GUIDE", "enabled": False, "soon": False, "badge": ""}])
         with world.game:
             press(window, "rail_press", "offline_shop", 0)
             press(window, "rail_press", "offline_shop", 1)
@@ -1811,12 +1899,45 @@ class ModernDoll(unittest.TestCase):
         with world.game:
             module.set_shortcut_enabled("guide", True)
             press(window, "rail_press", "guide", 0)
-            module.register_shortcut("offline_shop", "gift", "@ui.CHARACTER_QUEST", lambda: pressed.append("events"))
+            module.set_shortcut_badge("offline_shop", 3)
+            module.register_shortcut("offline_shop", "events", "@ui.NUI_RAIL_EVENTS", lambda: pressed.append("events"))
             press(window, "rail_press", "offline_shop", 0)
             module.unregister_shortcut("guide")
         self.assertEqual(pressed, ["shop", "guide", "events"])
         self.assertEqual(board(window).model["rail"], [
-            {"id": "offline_shop", "glyph": "gift", "tip": "@ui.CHARACTER_QUEST", "enabled": True}], "replaced in place")
+            {"id": "offline_shop", "glyph": "events", "tip": "@ui.NUI_RAIL_EVENTS", "enabled": True, "soon": False,
+             "badge": "3"}], "replaced in place, its badge kept")
+
+    def test_a_badge_shows_a_count_and_nothing_for_none(self):
+        world = World(True)
+        module = world.m("nui_inventory")
+        window = world.make_inventory()
+        badges = []
+        with world.game:
+            for count in (3, 0, -2, 99, 100, 2500):
+                module.set_shortcut_badge("events", count)
+                badges.append(board(window).model["rail"][2]["badge"])
+        self.assertEqual(badges, ["3", "", "", "99", "99+", "99+"])
+
+    def test_the_fold_button_hides_the_entries_for_the_session(self):
+        world = World(True)
+        module = world.m("nui_inventory")
+        window = world.make_inventory()
+        self.assertFalse(board(window).model["rail_folded"])
+        with world.game:
+            press(window, "rail_fold", 1)
+        self.assertFalse(board(window).model["rail_folded"], "a right press does nothing")
+        with world.game:
+            press(window, "rail_fold", 0)
+        self.assertTrue(board(window).model["rail_folded"])
+        self.assertEqual(window.rail_reach(), module.RAIL_REACH_DP, "the folded rail keeps its column")
+        with world.game, quiet():
+            window.Hide()
+            window.Show()
+        self.assertTrue(board(window).model["rail_folded"], "kept while the window closes and opens")
+        with world.game:
+            press(window, "rail_fold", 0)
+        self.assertFalse(board(window).model["rail_folded"])
 
     def test_an_entry_names_a_glyph_and_a_locale_key(self):
         module = World(True).m("nui_inventory")
@@ -1826,14 +1947,16 @@ class ModernDoll(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     module.register_shortcut(entry_id, glyph, tip, callback)
         self.assertEqual(module.shortcuts(), [])
+        module.register_shortcut("shop", "stall", "@ui.OK", None, soon=True)
+        self.assertEqual([e["id"] for e in module.shortcuts()], ["shop"], "a feature to come needs no callback")
 
     def test_the_kept_board_holds_no_rail_and_the_costume_opens_beyond_it(self):
         world = World(True)
         module = world.m("nui_inventory")
         with world.game:
-            module.register_shortcut("events", "gift", "@ui.CHARACTER_QUEST", lambda: None)
+            module.register_shortcut("events", "events", "@ui.NUI_RAIL_EVENTS", lambda: None)
         window = world.make_inventory()
-        self.assertEqual(len(board(window).model["rail"]), 1)
+        self.assertEqual(len(board(window).model["rail"]), 5)
         state = world.game.state
         state.boxes = getattr(state, "boxes", {})
         scale = module.nui.get_scale() or 1.0
@@ -1846,7 +1969,8 @@ class ModernDoll(unittest.TestCase):
         self.assertEqual(window.demand.kept().model["rail"], [])
         with world.game, quiet():
             window.Show()
-        self.assertEqual([entry["id"] for entry in board(window).model["rail"]], ["events"])
+        self.assertEqual([entry["id"] for entry in board(window).model["rail"]],
+                         ["events", "offline_shop", "ranking", "achievements", "guide"])
 
 
 if __name__ == "__main__":

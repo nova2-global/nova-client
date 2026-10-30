@@ -371,3 +371,68 @@ UNBLOCK_PLAYER	Unblock Player
 GUILD_WAR_ENEMY_NUMBER	Max. Members
 GUILD_WAR_MAX_SCORE	End Score
 SYSTEM_MOVE_CHANNEL	Change Channel
+NUI_RAIL_OFFLINE_SHOP	Offline shop
+NUI_RAIL_RANKING	Ranking
+NUI_RAIL_EVENTS	Events
+NUI_RAIL_ACHIEVEMENTS	Achievements
+NUI_RAIL_GUIDE	Guide
+NUI_RAIL_SOON	Coming soon
+NUI_RAIL_FOLD	Hide shortcuts
+NUI_RAIL_UNFOLD	Show shortcuts
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Write a message...
+NUI_SELECT_CHARACTERS	Characters
+NUI_GUILD_SKILL_AVAILABLE	available
+NUI_LOADING_PREPARING	Preparing %s
+NUI_HELP_CONTROLS	Controls
+NUI_HELP_CONTROLS_NOTE	Keyboard & mouse reference
+NUI_HELP_TASKBAR_GUIDE	Taskbar guide
+NUI_HELP_TASKBAR_PARTS	8 parts
+NUI_SYSTEM_OPTIONS_ON	On
+NUI_SYSTEM_OPTIONS_OFF	Off
+NUI_LOGIN_SAVED	Saved accounts
+NUI_LOGIN_FORGET	Forget this account
+NUI_LOGIN_ADD_ACCOUNT	Add account
+NUI_LOGIN_SAVED_HINT	Saved on this computer: the account name and the characters you saw at your last log in, with their levels as of then. Passwords are never stored.
+NUI_LOGIN_TAB_LOGIN	Log in
+NUI_LOGIN_TAB_REGISTER	Create account
+NUI_LOGIN_WELCOME	Welcome back, warrior
+NUI_LOGIN_REMEMBER	Remember me
+NUI_LOGIN_FORGOT	Forgot password?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Channel: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Create your account
+NUI_LOGIN_EMAIL	Email
+NUI_LOGIN_EMAIL_HINT	name@example.com
+NUI_LOGIN_PASSWORD_HINT	8 to 16 characters
+NUI_LOGIN_CONFIRM	Confirm
+NUI_LOGIN_CONFIRM_HINT	Repeat it
+NUI_LOGIN_DELETE_CODE	Character deletion code
+NUI_LOGIN_DELETE_CODE_HINT	7 digits
+NUI_LOGIN_DELETE_CODE_NOTE	You need it to delete a character. Keep it safe.
+NUI_LOGIN_ACCEPT_RULES	I accept the server rules
+NUI_LOGIN_RULES	Read them
+NUI_LOGIN_REGISTER_NOTE	You can log in right after, no website needed.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Website
+NUI_LOGIN_LAST_PLAYED	Last played %s · %s
+NUI_LOGIN_NOW	just now
+NUI_LOGIN_MINUTES	%d min ago
+NUI_LOGIN_HOURS	%dh ago
+NUI_LOGIN_YESTERDAY	yesterday
+NUI_LOGIN_DAYS	%d days ago
+NUI_LOGIN_ERR_TAKEN	This name is taken.
+NUI_LOGIN_ERR_LOGIN	Use 4 to 30 letters and digits.
+NUI_LOGIN_ERR_PASSWORD	Use 8 to 16 characters, without [ or ].
+NUI_LOGIN_ERR_CONFIRM	The passwords do not match.
+NUI_LOGIN_ERR_EMAIL	Enter a valid email address.
+NUI_LOGIN_ERR_CODE	Enter exactly 7 digits.
+NUI_LOGIN_ERR_RULES	Accept the server rules to continue.
+NUI_LOGIN_ERR_LIMIT	Too many attempts. Try again later.
+NUI_LOGIN_ERR_DISABLED	This server does not take new accounts.
+NUI_LOGIN_ERR_BUSY	The server is busy. Try again in a moment.
+NUI_LOGIN_ERR_FAILED	The account could not be created. Try again later.
+NUI_LOGIN_CREATED	Your account is ready. Log in with it.
+NUI_LOGIN_CREATING	Creating your account...

@@ -372,3 +372,68 @@ UNBLOCK_PLAYER	Desbloquear jugador
 GUILD_WAR_ENEMY_NUMBER	Miembros máximos
 GUILD_WAR_MAX_SCORE	Puntuación final
 SYSTEM_MOVE_CHANNEL	Cambiar de canal
+NUI_RAIL_OFFLINE_SHOP	Tienda sin conexión
+NUI_RAIL_RANKING	Clasificación
+NUI_RAIL_EVENTS	Eventos
+NUI_RAIL_ACHIEVEMENTS	Logros
+NUI_RAIL_GUIDE	Guía
+NUI_RAIL_SOON	Próximamente
+NUI_RAIL_FOLD	Ocultar accesos directos
+NUI_RAIL_UNFOLD	Mostrar accesos directos
+NUI_MESSENGER_ONLINE	Conectado
+NUI_MESSENGER_OFFLINE	Desconectado
+NUI_WHISPER_PLACEHOLDER	Escribe un mensaje...
+NUI_SELECT_CHARACTERS	Personajes
+NUI_GUILD_SKILL_AVAILABLE	disponibles
+NUI_LOADING_PREPARING	Preparando a %s
+NUI_HELP_CONTROLS	Controles
+NUI_HELP_CONTROLS_NOTE	Referencia de teclado y ratón
+NUI_HELP_TASKBAR_GUIDE	Guía de la barra de tareas
+NUI_HELP_TASKBAR_PARTS	8 partes
+NUI_SYSTEM_OPTIONS_ON	Activado
+NUI_SYSTEM_OPTIONS_OFF	Desactivado
+NUI_LOGIN_SAVED	Cuentas guardadas
+NUI_LOGIN_FORGET	Olvidar esta cuenta
+NUI_LOGIN_ADD_ACCOUNT	Añadir cuenta
+NUI_LOGIN_SAVED_HINT	Guardado en este equipo: el nombre de la cuenta y los personajes que viste en tu último inicio de sesión, con sus niveles de entonces. Las contraseñas nunca se guardan.
+NUI_LOGIN_TAB_LOGIN	Iniciar sesión
+NUI_LOGIN_TAB_REGISTER	Crear cuenta
+NUI_LOGIN_WELCOME	Bienvenido de nuevo, guerrero
+NUI_LOGIN_REMEMBER	Recordarme
+NUI_LOGIN_FORGOT	¿Olvidaste la contraseña?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Canal: %s
+NUI_LOGIN_PLAYERS	%s en línea
+NUI_LOGIN_REGISTER_TITLE	Crea tu cuenta
+NUI_LOGIN_EMAIL	Correo electrónico
+NUI_LOGIN_EMAIL_HINT	nombre@ejemplo.com
+NUI_LOGIN_PASSWORD_HINT	De 8 a 16 caracteres
+NUI_LOGIN_CONFIRM	Confirmar
+NUI_LOGIN_CONFIRM_HINT	Repítela
+NUI_LOGIN_DELETE_CODE	Código de borrado de personaje
+NUI_LOGIN_DELETE_CODE_HINT	7 dígitos
+NUI_LOGIN_DELETE_CODE_NOTE	Lo necesitas para borrar un personaje. Guárdalo bien.
+NUI_LOGIN_ACCEPT_RULES	Acepto las normas del servidor
+NUI_LOGIN_RULES	Leerlas
+NUI_LOGIN_REGISTER_NOTE	Podrás iniciar sesión justo después, sin web.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Sitio web
+NUI_LOGIN_LAST_PLAYED	Último jugado %s · %s
+NUI_LOGIN_NOW	ahora mismo
+NUI_LOGIN_MINUTES	hace %d min
+NUI_LOGIN_HOURS	hace %d h
+NUI_LOGIN_YESTERDAY	ayer
+NUI_LOGIN_DAYS	hace %d días
+NUI_LOGIN_ERR_TAKEN	Este nombre ya está en uso.
+NUI_LOGIN_ERR_LOGIN	Usa de 4 a 30 letras y dígitos.
+NUI_LOGIN_ERR_PASSWORD	Usa de 8 a 16 caracteres, sin [ ni ].
+NUI_LOGIN_ERR_CONFIRM	Las contraseñas no coinciden.
+NUI_LOGIN_ERR_EMAIL	Escribe un correo electrónico válido.
+NUI_LOGIN_ERR_CODE	Escribe exactamente 7 dígitos.
+NUI_LOGIN_ERR_RULES	Acepta las normas del servidor para continuar.
+NUI_LOGIN_ERR_LIMIT	Demasiados intentos. Inténtalo más tarde.
+NUI_LOGIN_ERR_DISABLED	Este servidor no admite cuentas nuevas.
+NUI_LOGIN_ERR_BUSY	El servidor está ocupado. Inténtalo en un momento.
+NUI_LOGIN_ERR_FAILED	No se pudo crear la cuenta. Inténtalo más tarde.
+NUI_LOGIN_CREATED	Tu cuenta está lista. Inicia sesión con ella.
+NUI_LOGIN_CREATING	Creando tu cuenta...

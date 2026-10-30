@@ -68,7 +68,7 @@ body.skin-classic.help .help__card
 	decorator: none;
 	background-color: transparent;
 }
-body.skin-classic.help .help__heading
+body.skin-classic.help .help__heading, body.skin-classic.help .help__intro, body.skin-classic.help .help__guide
 {
 	display: none;
 }

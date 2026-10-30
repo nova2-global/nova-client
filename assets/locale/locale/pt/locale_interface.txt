@@ -372,3 +372,68 @@ UNBLOCK_PLAYER	Desbloquear Jogador
 GUILD_WAR_ENEMY_NUMBER	Maximo de Membros
 GUILD_WAR_MAX_SCORE	Pontuação Final
 SYSTEM_MOVE_CHANNEL	Mudar o Canal
+NUI_RAIL_OFFLINE_SHOP	Loja offline
+NUI_RAIL_RANKING	Classificação
+NUI_RAIL_EVENTS	Eventos
+NUI_RAIL_ACHIEVEMENTS	Conquistas
+NUI_RAIL_GUIDE	Guia
+NUI_RAIL_SOON	Em breve
+NUI_RAIL_FOLD	Ocultar atalhos
+NUI_RAIL_UNFOLD	Mostrar atalhos
+NUI_MESSENGER_ONLINE	Ligado
+NUI_MESSENGER_OFFLINE	Desligado
+NUI_WHISPER_PLACEHOLDER	Escreva uma mensagem...
+NUI_SELECT_CHARACTERS	Personagens
+NUI_GUILD_SKILL_AVAILABLE	disponíveis
+NUI_LOADING_PREPARING	A preparar %s
+NUI_HELP_CONTROLS	Controlos
+NUI_HELP_CONTROLS_NOTE	Referência de teclado e rato
+NUI_HELP_TASKBAR_GUIDE	Guia da barra de tarefas
+NUI_HELP_TASKBAR_PARTS	8 partes
+NUI_SYSTEM_OPTIONS_ON	Ligado
+NUI_SYSTEM_OPTIONS_OFF	Desligado
+NUI_LOGIN_SAVED	Contas guardadas
+NUI_LOGIN_FORGET	Esquecer esta conta
+NUI_LOGIN_ADD_ACCOUNT	Adicionar conta
+NUI_LOGIN_SAVED_HINT	Guardado neste computador: o nome da conta e as personagens que viste no último início de sessão, com os níveis de então. As palavras-passe nunca são guardadas.
+NUI_LOGIN_TAB_LOGIN	Iniciar sessão
+NUI_LOGIN_TAB_REGISTER	Criar conta
+NUI_LOGIN_WELCOME	Bem-vindo de volta, guerreiro
+NUI_LOGIN_REMEMBER	Lembrar-me
+NUI_LOGIN_FORGOT	Esqueceste a palavra-passe?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Canal: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Cria a tua conta
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	nome@exemplo.pt
+NUI_LOGIN_PASSWORD_HINT	8 a 16 caracteres
+NUI_LOGIN_CONFIRM	Confirmar
+NUI_LOGIN_CONFIRM_HINT	Repete-a
+NUI_LOGIN_DELETE_CODE	Código de eliminação de personagem
+NUI_LOGIN_DELETE_CODE_HINT	7 dígitos
+NUI_LOGIN_DELETE_CODE_NOTE	Precisas dele para eliminar uma personagem. Guarda-o bem.
+NUI_LOGIN_ACCEPT_RULES	Aceito as regras do servidor
+NUI_LOGIN_RULES	Ler
+NUI_LOGIN_REGISTER_NOTE	Podes iniciar sessão logo a seguir, sem site.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Site
+NUI_LOGIN_LAST_PLAYED	Último jogado %s · %s
+NUI_LOGIN_NOW	agora mesmo
+NUI_LOGIN_MINUTES	há %d min
+NUI_LOGIN_HOURS	há %d h
+NUI_LOGIN_YESTERDAY	ontem
+NUI_LOGIN_DAYS	há %d dias
+NUI_LOGIN_ERR_TAKEN	Este nome já está ocupado.
+NUI_LOGIN_ERR_LOGIN	Usa 4 a 30 letras e algarismos.
+NUI_LOGIN_ERR_PASSWORD	Usa 8 a 16 caracteres, sem [ nem ].
+NUI_LOGIN_ERR_CONFIRM	As palavras-passe não coincidem.
+NUI_LOGIN_ERR_EMAIL	Introduz um endereço de e-mail válido.
+NUI_LOGIN_ERR_CODE	Introduz exatamente 7 algarismos.
+NUI_LOGIN_ERR_RULES	Aceita as regras do servidor para continuar.
+NUI_LOGIN_ERR_LIMIT	Demasiadas tentativas. Tenta mais tarde.
+NUI_LOGIN_ERR_DISABLED	Este servidor não aceita contas novas.
+NUI_LOGIN_ERR_BUSY	O servidor está ocupado. Tenta daqui a pouco.
+NUI_LOGIN_ERR_FAILED	Não foi possível criar a conta. Tenta mais tarde.
+NUI_LOGIN_CREATED	A tua conta está pronta. Inicia sessão com ela.
+NUI_LOGIN_CREATING	A criar a tua conta...

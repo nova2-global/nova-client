@@ -35,6 +35,15 @@ body.skin-classic.whisper .whisper__titlebar
 	decorator: none;
 	z-index: 1;
 }
+/* Legacy's title has no icon, and its input no placeholder. */
+body.skin-classic.whisper .whisper__title-icon
+{
+	display: none;
+}
+body.skin-classic.whisper textarea.whisper__input:placeholder-shown
+{
+	color: transparent;
+}
 body.skin-classic.whisper .whisper__handle
 {
 	display: block;

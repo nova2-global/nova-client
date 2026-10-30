@@ -252,6 +252,32 @@ body.inv.inv--placed
 {
 	height: auto;
 }
+/* A refined wear item (inv-wear--refined): a ring and a soft glow around
+   its cell in the upgrade blue (--inv-refine-ring, which a skin may
+   recolor), drawn once as a shadow, so the cell's own hover and drop
+   states still show inside it (a device without effects draws neither,
+   base.rcss); its "+N" (is-refined) at the top right. */
+.inv-wear
+{
+	--inv-refine-ring: var(--gauge-blue);
+}
+.inv-wear--refined.nui-fx
+{
+	box-shadow: 0 0 0 1dp var(--inv-refine-ring), 0 0 8dp var(--inv-refine-ring);
+}
+.inv-wear.is-refined .nui-slot__number
+{
+	left: auto;
+	right: 2dp;
+}
+/* An empty place's mark (the unique, arrow and belt glyphs), a faint
+   watermark in the cell's middle. */
+.inv-wear .inv-wear__mark
+{
+	transform: scale(1.3);
+	opacity: 0.5;
+	--glyph-ink: var(--text-muted);
+}
 .inv-wear--weapon { left: 26dp; top: 9dp; }
 .inv-wear--unique1 { left: 26dp; top: 187dp; }
 .inv-wear--head { left: 70dp; top: 8dp; }
@@ -542,7 +568,11 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 /* --- The shortcut rail ----------------------------------------------------- */
 
 /* A slim board on the window's left edge, under its title bar: one 36dp
-   button per entry, a glyph in each, its hint on the left. */
+   button per entry, a 24dp glyph in each, its hint on the left; under them
+   a rule and the fold button. A badge (a count) sits on a button's top
+   right corner; a feature still to come draws its glyph faint, its hint
+   with a second line, and takes no accent on hover (no press). Folded,
+   only the grip and the fold button stay. */
 .inv-rail
 {
 	display: flex;
@@ -556,6 +586,10 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 	gap: 6dp;
 }
 .inv-rail.is-empty
+{
+	display: none;
+}
+.inv-rail.is-folded .inv-rail__button, .inv-rail.is-folded .inv-rail__more
 {
 	display: none;
 }
@@ -578,7 +612,61 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 	border-radius: 10dp;
 	line-height: 34dp;
 }
+.inv-rail__glyph
+{
+	transform: scale(1.5);
+}
 .inv-rail__button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.inv-rail__button.is-soon .inv-rail__glyph
+{
+	opacity: 0.45;
+}
+.inv-rail__button.is-soon:hover .nui-glyph
+{
+	--glyph-ink: var(--text);
+}
+.inv-rail__badge
+{
+	position: absolute;
+	right: -5dp;
+	top: -5dp;
+	min-width: 5dp;
+	height: 15dp;
+	padding: 0 4dp;
+	border-width: 2dp;
+	border-color: var(--surface);
+	background-color: var(--danger);
+	color: var(--text-inverse);
+	line-height: 15dp;
+	text-align: center;
+}
+.inv-rail__more
+{
+	display: block;
+	width: 22dp;
+	height: 1dp;
+	margin: 2dp 0;
+	background-color: var(--border);
+}
+.inv-rail__fold
+{
+	position: relative;
+	width: 36dp;
+	height: 18dp;
+	min-width: 0;
+	padding: 0;
+	border-radius: 7dp;
+	line-height: 16dp;
+}
+.inv-rail__fold-glyph
+{
+	--glyph-ink: var(--text-muted);
+	transform: scale(0.75);
+}
+.inv-rail__fold:hover .inv-rail__fold-glyph
 {
 	--glyph-ink: var(--accent);
 }
@@ -589,4 +677,14 @@ body.inv.inv--table-old .inv-button--mall { top: 200dp; }
 	bottom: auto;
 	top: 7dp;
 	margin: 0 8dp 0 -320dp;
+}
+.inv-rail__tip--fold
+{
+	top: -4dp;
+}
+.inv-rail__soon
+{
+	display: block;
+	opacity: 0.75;
+	font-size: var(--font-xs);
 }

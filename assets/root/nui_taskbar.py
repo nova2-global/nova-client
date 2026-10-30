@@ -46,6 +46,8 @@ SKILL_PAGE = 6               # skills per picker row (OpenSelectSkill's PAGE_SLO
 SKILL_CATEGORIES = (1, 21, 41)  # ACTIVE_1, ACTIVE_2, ACTIVE_3: their first skill slot
 
 _BUTTON_NAMES = {0: "character", 1: "inventory", 2: "messenger", 3: "system", 4: "expand"}
+# The window buttons that show whether their window is open (nui_window_shown).
+OPEN_STATE_WINDOWS = ("character", "inventory", "messenger", "system")
 
 # The bar's height above the screen's bottom in dp, its top border included:
 # taskbar.rcss .taskbar-bar (48dp and a 1dp border) and the classic skin's
@@ -107,6 +109,7 @@ class TaskBarBoard(nui.Window):
 			"skill_rows": [],
 			"mouse_image": False,
 			"expandable": True,
+			"open_character": False, "open_inventory": False, "open_messenger": False, "open_system": False,
 		}
 
 	def on_theme_changed(self, theme_id):
@@ -332,6 +335,16 @@ class TaskBar(object):
 
 	def SetToggleButtonEvent(self, eButton, kEventFunc):
 		self.toggleButtonEvents[eButton] = kEventFunc
+
+	def nui_window_shown(self, name, shown):
+		"""A window button's window ("character", "inventory", "messenger" or
+		"system") was shown or hidden: its button shows the open state (NovaUI
+		only; legacy's buttons have none). The window's facade calls it from
+		its Show and Hide through nui_hud.current("taskbar"), so the state
+		follows every way the window opens and closes, with no Python per
+		frame; a window that does not call it leaves its button at rest."""
+		if name in OPEN_STATE_WINDOWS:
+			self._set(**{"open_" + name: bool(shown)})
 
 	## The bar's height (NovaUI only: the legacy bar is always 37 px)
 	def GetBarHeight(self):

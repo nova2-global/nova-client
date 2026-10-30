@@ -1006,6 +1006,22 @@ class Clocks(CharacterTest):
         row = model(window)["quests"][2]
         self.assertEqual((row["clock_end"], row["clock_text"]), (0.0, locale.QUEST_UNLIMITED_TIME))
 
+    def test_a_time_that_is_up_marks_its_row(self):
+        """The modern looks' danger color: clock_over on legacy's over text,
+        and on a run once its countdown ends; a new run clears it."""
+        world = World(True)
+        window = world.open("QUEST")
+        rows = model(window)["quests"]
+        self.assertEqual([row["clock_over"] for row in rows[:3]], [False, True, False])
+        fire(window, "quest_clock_over", 0)
+        self.assertTrue(model(window)["quests"][0]["clock_over"], "the run's end marks its row")
+        fire(window, "quest_clock_over", 2)
+        self.assertFalse(model(window)["quests"][2]["clock_over"], "a row without a run keeps its look")
+        with world.game, quiet():
+            world.game.quests[0]["clock_end"] = world.game.state.now + 60.0
+            window.RefreshQuest()
+        self.assertFalse(model(window)["quests"][0]["clock_over"], "a new run")
+
     def test_the_rows_clocks_follow_legacy_s_index_after_a_scroll(self):
         """D14: legacy writes quest i's clock into row i whatever the scroll."""
         def setup(game):

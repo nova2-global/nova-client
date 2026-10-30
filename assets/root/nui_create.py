@@ -48,6 +48,9 @@ DOCUMENT = "nui/windows/create/create.rml"
 BACKGROUND = "d:/ymir work/ui/intro/select/select.sub"
 NAME_FIELD = "create-name"
 JOB_NAMES = ("warrior", "assassin", "sura", "shaman")  # the slot order
+# The class under the 3D character: the job's name as a locale key, which
+# {{ }} translates (locale_game.txt JOB_WARRIOR and so on).
+JOB_KEYS = ("@game.JOB_WARRIOR", "@game.JOB_ASSASSIN", "@game.JOB_SURA", "@game.JOB_SHAMAN")
 STATS = ("hth", "int", "str", "dex")
 # How many frames a focus of the name field may wait for the field to be
 # enabled again (its disabled attribute follows the model at the next update).
@@ -91,7 +94,8 @@ class CreateBoard(nui.Window):
 			self.element_on("", "click", self._on_click)
 
 	def initial_model(self):
-		values = {"slot": 0, "job_image": "", "paragraphs": [], "gender": 0, "shape": 0, "busy": False}
+		values = {"slot": 0, "job_image": "", "paragraphs": [], "gender": 0, "shape": 0, "busy": False,
+		          "stage_name": "", "stage_job": ""}
 		for stat in STATS:
 			values["stat_" + stat] = ""
 			values["gauge_" + stat] = 0.0
@@ -155,6 +159,8 @@ class CreateBoard(nui.Window):
 	@nui.on("name_edit")
 	def on_name_edit(self, value, linebreak):
 		self.name = value if isinstance(value, str) else ""
+		# The modern looks show the typed name under the 3D character.
+		self.set(stage_name=nui.plain_text(self.name))
 		# Enter in the field creates, as the legacy edit line's return event.
 		if linebreak and self._idle():
 			self._owner.CreateCharacter()
@@ -249,6 +255,7 @@ class CreateCharacterWindow(introCreate.CreateCharacterWindow):
 
 		if self.board is not None:
 			self.board.name = ""
+		self._set(stage_name="")
 
 		self.EnableWindow()
 		self.__SelectSlot(0)
@@ -385,7 +392,8 @@ class CreateCharacterWindow(introCreate.CreateCharacterWindow):
 		if self.IsShow():
 			snd.PlaySound("sound/ui/click.wav")
 
-		self._set(slot=slot, job_image=job_image(slot), paragraphs=nui_desc_text.load(self.DESCRIPTION_FILE_NAME[slot]))
+		self._set(slot=slot, job_image=job_image(slot), stage_job=JOB_KEYS[slot],
+		          paragraphs=nui_desc_text.load(self.DESCRIPTION_FILE_NAME[slot]))
 
 		chr_id = self._CreateCharacterWindow__GetSlotChrID(self.gender, slot)
 		if chr.HasInstance(chr_id):

@@ -372,3 +372,68 @@ UNBLOCK_PLAYER	Odblokovat Hráče
 GUILD_WAR_ENEMY_NUMBER	Max. Členů
 GUILD_WAR_MAX_SCORE	Konečné skore
 SYSTEM_MOVE_CHANNEL	Změnit kanál
+NUI_RAIL_OFFLINE_SHOP	Offline obchod
+NUI_RAIL_RANKING	Žebříček
+NUI_RAIL_EVENTS	Události
+NUI_RAIL_ACHIEVEMENTS	Úspěchy
+NUI_RAIL_GUIDE	Průvodce
+NUI_RAIL_SOON	Již brzy
+NUI_RAIL_FOLD	Skrýt zkratky
+NUI_RAIL_UNFOLD	Zobrazit zkratky
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Napište zprávu...
+NUI_SELECT_CHARACTERS	Postavy
+NUI_GUILD_SKILL_AVAILABLE	k dispozici
+NUI_LOADING_PREPARING	Připravuje se %s
+NUI_HELP_CONTROLS	Ovládání
+NUI_HELP_CONTROLS_NOTE	Přehled klávesnice a myši
+NUI_HELP_TASKBAR_GUIDE	Průvodce panelem úloh
+NUI_HELP_TASKBAR_PARTS	8 částí
+NUI_SYSTEM_OPTIONS_ON	Zapnuto
+NUI_SYSTEM_OPTIONS_OFF	Vypnuto
+NUI_LOGIN_SAVED	Uložené účty
+NUI_LOGIN_FORGET	Zapomenout tento účet
+NUI_LOGIN_ADD_ACCOUNT	Přidat účet
+NUI_LOGIN_SAVED_HINT	Uloženo v tomto počítači: název účtu a postavy, které jsi viděl při posledním přihlášení, s tehdejšími úrovněmi. Hesla se nikdy neukládají.
+NUI_LOGIN_TAB_LOGIN	Přihlásit
+NUI_LOGIN_TAB_REGISTER	Vytvořit účet
+NUI_LOGIN_WELCOME	Vítej zpět, válečníku
+NUI_LOGIN_REMEMBER	Zapamatovat si mě
+NUI_LOGIN_FORGOT	Zapomenuté heslo?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Kanál: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Vytvoř si účet
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	jmeno@priklad.cz
+NUI_LOGIN_PASSWORD_HINT	8 až 16 znaků
+NUI_LOGIN_CONFIRM	Potvrdit
+NUI_LOGIN_CONFIRM_HINT	Zopakuj ho
+NUI_LOGIN_DELETE_CODE	Kód pro smazání postavy
+NUI_LOGIN_DELETE_CODE_HINT	7 číslic
+NUI_LOGIN_DELETE_CODE_NOTE	Potřebuješ ho ke smazání postavy. Uchovej ho v bezpečí.
+NUI_LOGIN_ACCEPT_RULES	Přijímám pravidla serveru
+NUI_LOGIN_RULES	Přečíst
+NUI_LOGIN_REGISTER_NOTE	Přihlásit se můžeš hned poté, bez webu.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Web
+NUI_LOGIN_LAST_PLAYED	Naposledy %s · %s
+NUI_LOGIN_NOW	právě teď
+NUI_LOGIN_MINUTES	před %d min
+NUI_LOGIN_HOURS	před %d h
+NUI_LOGIN_YESTERDAY	včera
+NUI_LOGIN_DAYS	před %d dny
+NUI_LOGIN_ERR_TAKEN	Toto jméno je obsazené.
+NUI_LOGIN_ERR_LOGIN	Použij 4 až 30 písmen a číslic.
+NUI_LOGIN_ERR_PASSWORD	Použij 8 až 16 znaků, bez [ a ].
+NUI_LOGIN_ERR_CONFIRM	Hesla se neshodují.
+NUI_LOGIN_ERR_EMAIL	Zadej platnou e-mailovou adresu.
+NUI_LOGIN_ERR_CODE	Zadej přesně 7 číslic.
+NUI_LOGIN_ERR_RULES	Pro pokračování přijmi pravidla serveru.
+NUI_LOGIN_ERR_LIMIT	Příliš mnoho pokusů. Zkus to později.
+NUI_LOGIN_ERR_DISABLED	Tento server nepřijímá nové účty.
+NUI_LOGIN_ERR_BUSY	Server je vytížený. Zkus to za chvíli.
+NUI_LOGIN_ERR_FAILED	Účet se nepodařilo vytvořit. Zkus to později.
+NUI_LOGIN_CREATED	Tvůj účet je připraven. Přihlas se jím.
+NUI_LOGIN_CREATING	Vytváření účtu...

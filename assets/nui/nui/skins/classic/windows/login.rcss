@@ -3,131 +3,186 @@
    rule starts with .skin-classic, so it acts only while a classic theme is in
    use (docs/ui/AUTHORING.md, Skins). */
 
-/* The legacy login board (uiscript loginwindow.py) as one thin board, 208dp
-   wide: the server row with Choose, the two painted fields, Exit and
-   Connect at the legacy button sizes. The legacy UI draws two boards (the
-   connect board and the login window art); this document is one board, so
-   classic draws one (docs/ui/AUTHORING.md, Classic skin). Every rule
-   starts with .skin-classic and outweighs the rule of login.rcss that it
-   changes; none declares motion. */
-body.skin-classic.login
+/* The one-page login of the reviewed classic board (LoginClassic): both
+   boards in the legacy board art the window frame draws in classic, the
+   saved accounts 280dp and the card 300dp wide, with the legacy board's
+   tight padding; the headings centered in the legacy label color with its
+   outline; the fields, toggles and buttons in the classic components' legacy
+   art; the selected account on the legacy list's selection; no
+   pictograms (the modern lock, person and chevron are not legacy's). None
+   declares motion. */
+.skin-classic .login-accounts
 {
-	width: 208dp;
-	margin-left: -104dp;
-	min-width: 0dp;
-	decorator: classic-thinboard;
+	width: 280dp;
 }
-/* The rows sit where the legacy art puts them, measured from the top of the
-   connect board: the server row is the connect board (30dp), the painted
-   fields are at +56 and +91 (35dp apart; the legacy edit lines inside them
-   are 37 apart), each 17dp under the top of its label, and Exit and
-   Connect are at +114, so the board is 142dp tall at rest. */
-.skin-classic.login .nui-window__body
+.skin-classic .login-card
 {
-	padding: 0dp 15dp 0dp 15dp;
-	gap: 0dp;
+	width: 300dp;
 }
-.skin-classic .login-server
+.skin-classic .login-accounts__body, .skin-classic .login-card__body
 {
-	height: 30dp;
-	padding: 0dp;
-	background-color: transparent;
-	border-width: 0dp;
-	border-radius: 0dp;
+	padding: 6dp 8dp 8dp 8dp;
+	gap: 8dp;
 }
-/* The modern pictograms and the chevron on Choose are not legacy's; each
-   field stands alone on its line, as before them. */
-.skin-classic .login-icon
+.skin-classic .login-pane
+{
+	gap: 8dp;
+}
+.skin-classic .login-h, .skin-classic .login-title
+{
+	color: var(--classic-label-white);
+	text-align: center;
+	font-weight: normal;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+.skin-classic .login-h
+{
+	font-size: var(--font-sm);
+}
+.skin-classic .login-title
+{
+	font-size: var(--font-md);
+}
+.skin-classic .login-acc
+{
+	gap: 8dp;
+	padding: 4dp 4dp 4dp 6dp;
+	border-width: 0;
+	border-radius: 0;
+}
+.skin-classic .login-acc:hover
+{
+	background-color: var(--classic-hover-white);
+}
+.skin-classic .login-acc.is-selected
+{
+	background-color: var(--classic-select);
+}
+.skin-classic .login-acc__face
+{
+	width: 32dp;
+	height: 32dp;
+	border-radius: 0;
+}
+.skin-classic .login-acc__name
+{
+	font-weight: normal;
+}
+.skin-classic .login-char, .skin-classic .login-char__face
+{
+	border-radius: 0;
+}
+.skin-classic .login-add
+{
+	height: 21dp;
+	border-width: 0;
+	border-radius: 0;
+	color: var(--highlight);
+}
+.skin-classic .login-hint
+{
+	color: var(--text-muted);
+}
+/* The modern pictograms and the chevron are not legacy's; the fields start
+   at their own left edge. */
+.skin-classic .login-icon, .skin-classic .login-chevron, .skin-classic .login-add__glyph
 {
 	display: none;
 }
-.skin-classic .login-control
-{
-	display: block;
-}
-.skin-classic.login .login-r2
-{
-	margin-top: 9dp;
-}
-.skin-classic .login-server__name
-{
-	color: var(--text);
-}
-/* Choose: the small art at its legacy width, the label across all of it.
-   A minimum, not a width, so a longer translation widens the art instead
-   of spilling out of it (French needs 54px in Tahoma). */
-.skin-classic .login-server .login-button
-{
-	min-width: 43dp;
-	padding: 0;
-}
-.skin-classic.login .nui-field
-{
-	text-align: center;
-}
-/* 15dp lines plus the classic 2dp margin: 17dp from a label's top to its field. */
-.skin-classic.login .nui-field__label
-{
-	text-align: center;
-	line-height: 15dp;
-}
-/* The field art of the legacy login window, 120 by 18, painted, not bordered.
-   vertical-align: top keeps the field off the text baseline of its line,
-   whose strut comes from the font's rounded ascent and descent and so does
-   not scale linearly: on the baseline, each field row of the board grew
-   1.5px beyond twice its 100% size at 200% with Tahoma. */
 .skin-classic input.login-input
 {
-	decorator: image(classic-login-field);
-	width: 120dp;
 	height: 18dp;
 	line-height: 18dp;
-	vertical-align: top;
-	padding: 0 4dp;
-	border-width: 0;
-	background-color: transparent;
-	color: var(--classic-edit-text);
-	caret-color: var(--classic-edit-text);
-	text-align: left;
+	padding-left: 4dp;
 }
-/* No border to color: the tint turns the painted bevel red. */
-.skin-classic input.login-input.nui-input--invalid
+.skin-classic input.login-input--eye
 {
-	image-color: var(--danger);
+	padding-right: 24dp;
+}
+.skin-classic .login-eye
+{
+	top: -3dp;
+}
+.skin-classic .login-tabs
+{
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+.skin-classic .login-tab
+{
+	height: 21dp;
+	line-height: 21dp;
+}
+.skin-classic .login-action
+{
+	height: 21dp;
+	line-height: 21dp;
+	border-radius: 0;
+}
+.skin-classic .login-link
+{
+	color: var(--highlight);
+	font-weight: normal;
+}
+/* The status line as the legacy board's centered text: the server's dot,
+   its name and count, the channel button. */
+.skin-classic .login-status
+{
+	height: 21dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	justify-content: center;
+}
+.skin-classic .login-status__name
+{
+	color: var(--classic-label-white);
+	font-weight: normal;
+}
+.skin-classic .login-dot
+{
+	width: 7dp;
+	height: 7dp;
+	border-radius: 0;
+}
+.skin-classic .login-menu
+{
+	margin-top: 0;
 }
 /* The legacy UI shows login errors in popups, so classic keeps no empty
-   line for one: the error line takes space only while there is an error
-   (login-error--in follows error != ''), and the board, anchored at its
-   bottom, grows upward by one line then. Centered like the labels, with
-   the outline the legacy UI gives text over its art, since the thin board
-   is translucent over the bright intro. */
-.skin-classic.login .login-error
+   line for one: the error line takes space only while there is an error,
+   centered like the labels, with the outline the legacy UI gives text over
+   its art. */
+.skin-classic .login-error
 {
 	display: none;
 	min-height: 0dp;
-	margin-top: var(--space-1);
+	margin: 0;
 	text-align: center;
 	font-effect: outline(1dp var(--classic-text-outline));
 }
-.skin-classic.login .login-error.login-error--in
+.skin-classic .login-error.login-error--in
 {
 	display: block;
 }
-.skin-classic.login .nui-window__footer
+.skin-classic .login-link-button
 {
-	justify-content: center;
-	gap: 2dp;
-	padding: 5dp 15dp 7dp 15dp;
+	height: 21dp;
+	line-height: 21dp;
+	padding: 0 12dp;
+	border-radius: 0;
+	font-weight: normal;
 }
-/* Exit and Connect: the large art at its legacy width, again as a minimum. */
-.skin-classic .nui-window__footer .login-button
+.skin-classic .login-exit
 {
-	min-width: 88dp;
-	padding: 0;
-	flex: 0 1 auto;
+	height: 21dp;
+	line-height: 21dp;
 }
-/* The legacy Connect label is gray. Both this and the classic --primary rule
-   weigh 200,000, and this sheet comes after classic.rcss. */
+/* The legacy primary labels are gray. Both this and the classic --primary
+   rule weigh 200,000, and this sheet comes after classic.rcss. */
 .skin-classic .login-connect
 {
 	color: var(--classic-button-text);

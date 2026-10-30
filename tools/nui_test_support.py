@@ -653,6 +653,11 @@ def load_module(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    if name == "nui_windows":
+        # The client runs every window on NovaUI by default; the tests compare
+        # NovaUI windows with the legacy ones, so a window is NovaUI here only
+        # when its test names it (nui_windows_test checks the real default).
+        module.DEFAULT_ON = False
     return module
 
 

@@ -253,12 +253,14 @@ body.skin-classic.system-options .so-note
 
 /* Pins against the modern sheet (the reviewed design's look, which classic
    does not take): no title glyph, no volume percent, no rule after a
-   heading, legacy's plain headings and wrapping theme choices, the toggles'
-   labels after their boxes, the selected choice's label in the button text color,
-   and no cell under the volume rows. */
+   heading, no "On" or "Off" after a switch, legacy's plain headings and
+   wrapping theme choices, the toggles' labels after their boxes, the
+   selected choice's label in the button text color, and no cell under the
+   volume rows. */
 body.skin-classic.system-options .system-options__icon,
 body.skin-classic.system-options .so-value,
-body.skin-classic.system-options .so-heading__rule
+body.skin-classic.system-options .so-heading__rule,
+body.skin-classic.system-options .so-state
 {
 	display: none;
 }

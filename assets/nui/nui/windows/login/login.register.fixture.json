@@ -1,0 +1,121 @@
+{
+	"login": {
+		"server": "@ui.LOGIN_DEFAULT_SERVERADDR",
+		"user": "kalinka",
+		"error": "",
+		"error_on": "",
+		"error_ok": false,
+		"keyboard": false,
+		"tab": "register",
+		"accounts": [
+			{
+				"name": "kalinka",
+				"sub": "Last played Kalinka · 2h ago",
+				"face": "/icon/face/warrior_w.tga",
+				"selected": true,
+				"chars": [
+					{
+						"face": "/icon/face/warrior_w.tga",
+						"lv": "75",
+						"last": true
+					},
+					{
+						"face": "/icon/face/assassin_m.tga",
+						"lv": "71",
+						"last": false
+					},
+					{
+						"face": "/icon/face/sura_m.tga",
+						"lv": "68",
+						"last": false
+					}
+				]
+			},
+			{
+				"name": "mirela",
+				"sub": "Last played Mirela · yesterday",
+				"face": "/icon/face/shaman_w.tga",
+				"selected": false,
+				"chars": [
+					{
+						"face": "/icon/face/shaman_w.tga",
+						"lv": "68",
+						"last": true
+					}
+				]
+			},
+			{
+				"name": "shadowfox",
+				"sub": "Last played Vex · 5 days ago",
+				"face": "/icon/face/assassin_w.tga",
+				"selected": false,
+				"chars": [
+					{
+						"face": "/icon/face/assassin_w.tga",
+						"lv": "41",
+						"last": true
+					},
+					{
+						"face": "/icon/face/warrior_m.tga",
+						"lv": "22",
+						"last": false
+					}
+				]
+			}
+		],
+		"remember": true,
+		"show_password": false,
+		"can_register": true,
+		"server_name": "Nova",
+		"server_state": "ok",
+		"online": "1,284 online",
+		"channel_text": "Channel: Auto",
+		"menu_open": false,
+		"servers": [
+			{
+				"id": 1,
+				"name": "Nova",
+				"selected": true
+			},
+			{
+				"id": 2,
+				"name": "Test",
+				"selected": false
+			}
+		],
+		"channels": [
+			{
+				"id": 1,
+				"name": "CH1",
+				"state": "ok",
+				"selected": false
+			},
+			{
+				"id": 2,
+				"name": "CH2",
+				"state": "busy",
+				"selected": false
+			},
+			{
+				"id": 3,
+				"name": "CH3",
+				"state": "full",
+				"selected": false
+			},
+			{
+				"id": 4,
+				"name": "CH4",
+				"state": "down",
+				"selected": false
+			}
+		],
+		"auto": true,
+		"reg_error": "@ui.NUI_LOGIN_ERR_CODE",
+		"reg_error_on": "code",
+		"rules": true,
+		"has_discord": true,
+		"has_website": true,
+		"has_rules": true,
+		"has_forgot": true
+	}
+}

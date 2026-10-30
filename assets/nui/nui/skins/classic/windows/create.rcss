@@ -153,6 +153,11 @@
 {
 	display: none;
 }
+/* Nor is the name and class under the 3D character. */
+.skin-classic .create-stage
+{
+	display: none;
+}
 /* The legacy Create label is gray, as every legacy button label. */
 .skin-classic .create-button.nui-button--primary
 {

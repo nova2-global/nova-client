@@ -1,18 +1,62 @@
-/* Cyberpunk overlay of nui/windows/login/login.rml, after the login card of
-   the reviewed mockup (Login, cyberpunk): the server row the card's status
-   well, square, with an acid left edge (its text where the modern row has
-   it); the fields' pictograms muted, as the mockup's, the person glyph
-   too (the skin inks glyphs in the accent), and Choose's chevron. */
+/* Cyberpunk overlay of nui/windows/login/login.rml, after the reviewed
+   mockup (Login and Register, cyberpunk): the chosen tab an underline in
+   the accent instead of the acid chip of a selected button; the selected
+   account marked by a magenta edge; the status well square with an acid
+   left edge; the fields' pictograms and Choose's chevron muted, as the
+   mockup's (the skin inks glyphs in the accent); the links dark chips
+   over the scene, the Discord one with its glyph in the primary text
+   color. */
 
-body.skin-cyberpunk.login .login-server
+body.skin-cyberpunk.login .login-tabs
 {
-	padding-left: 11dp;
+	border-radius: 0;
+}
+body.skin-cyberpunk.login .login-tab, body.skin-cyberpunk.login .login-tab.is-selected
+{
+	decorator: none;
+	border-width: 0 0 2dp 0;
+	border-color: transparent;
+	color: var(--text-muted);
+}
+body.skin-cyberpunk.login .login-tab.is-selected
+{
+	border-color: var(--accent);
+	color: var(--accent);
+}
+body.skin-cyberpunk.login .login-acc
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.login .login-acc.is-selected
+{
 	border-color: var(--border);
 	border-left-width: 2dp;
+	border-left-color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.login .login-status
+{
+	padding-left: 9dp;
+	border-left-width: 3dp;
 	border-left-color: var(--cyberpunk-acid);
+	border-radius: 0;
+}
+body.skin-cyberpunk.login .login-dot
+{
 	border-radius: 0;
 }
 body.skin-cyberpunk.login .login-icon, body.skin-cyberpunk.login .login-chevron
 {
 	--glyph-ink: var(--text-muted);
+}
+body.skin-cyberpunk.login .login-link
+{
+	color: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.login .login-link-button
+{
+	background-color: var(--surface);
+}
+body.skin-cyberpunk.login .nui-button--primary .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
 }

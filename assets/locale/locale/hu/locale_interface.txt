@@ -371,3 +371,68 @@ UNBLOCK_PLAYER	Játékos feloldás
 GUILD_WAR_ENEMY_NUMBER	Max. tagok
 GUILD_WAR_MAX_SCORE	Végeredmény
 SYSTEM_MOVE_CHANNEL	Csatorna váltás
+NUI_RAIL_OFFLINE_SHOP	Offline bolt
+NUI_RAIL_RANKING	Rangsor
+NUI_RAIL_EVENTS	Események
+NUI_RAIL_ACHIEVEMENTS	Teljesítmények
+NUI_RAIL_GUIDE	Útmutató
+NUI_RAIL_SOON	Hamarosan
+NUI_RAIL_FOLD	Gyorsgombok elrejtése
+NUI_RAIL_UNFOLD	Gyorsgombok megjelenítése
+NUI_MESSENGER_ONLINE	Online
+NUI_MESSENGER_OFFLINE	Offline
+NUI_WHISPER_PLACEHOLDER	Írj egy üzenetet...
+NUI_SELECT_CHARACTERS	Karakterek
+NUI_GUILD_SKILL_AVAILABLE	elérhető
+NUI_LOADING_PREPARING	%s előkészítése
+NUI_HELP_CONTROLS	Irányítás
+NUI_HELP_CONTROLS_NOTE	Billentyűzet és egér áttekintése
+NUI_HELP_TASKBAR_GUIDE	Útmutató a tálcához
+NUI_HELP_TASKBAR_PARTS	8 rész
+NUI_SYSTEM_OPTIONS_ON	Be
+NUI_SYSTEM_OPTIONS_OFF	Ki
+NUI_LOGIN_SAVED	Mentett fiókok
+NUI_LOGIN_FORGET	Fiók elfelejtése
+NUI_LOGIN_ADD_ACCOUNT	Fiók hozzáadása
+NUI_LOGIN_SAVED_HINT	Ezen a számítógépen mentve: a fiók neve és a legutóbbi belépéskor látott karakterek az akkori szintjükkel. Jelszót soha nem mentünk.
+NUI_LOGIN_TAB_LOGIN	Belépés
+NUI_LOGIN_TAB_REGISTER	Fiók létrehozása
+NUI_LOGIN_WELCOME	Üdv újra, harcos
+NUI_LOGIN_REMEMBER	Emlékezz rám
+NUI_LOGIN_FORGOT	Elfelejtett jelszó?
+NUI_LOGIN_AUTO	Auto
+NUI_LOGIN_CHANNEL	Csatorna: %s
+NUI_LOGIN_PLAYERS	%s online
+NUI_LOGIN_REGISTER_TITLE	Hozd létre a fiókod
+NUI_LOGIN_EMAIL	E-mail
+NUI_LOGIN_EMAIL_HINT	nev@pelda.hu
+NUI_LOGIN_PASSWORD_HINT	8–16 karakter
+NUI_LOGIN_CONFIRM	Megerősítés
+NUI_LOGIN_CONFIRM_HINT	Ismételd meg
+NUI_LOGIN_DELETE_CODE	Karaktertörlő kód
+NUI_LOGIN_DELETE_CODE_HINT	7 számjegy
+NUI_LOGIN_DELETE_CODE_NOTE	Karakter törléséhez kell. Őrizd biztonságban.
+NUI_LOGIN_ACCEPT_RULES	Elfogadom a szerver szabályait
+NUI_LOGIN_RULES	Elolvasom
+NUI_LOGIN_REGISTER_NOTE	Utána rögtön beléphetsz, weboldal nélkül.
+NUI_LOGIN_DISCORD	Discord
+NUI_LOGIN_WEBSITE	Weboldal
+NUI_LOGIN_LAST_PLAYED	Utoljára %s · %s
+NUI_LOGIN_NOW	az imént
+NUI_LOGIN_MINUTES	%d perce
+NUI_LOGIN_HOURS	%d órája
+NUI_LOGIN_YESTERDAY	tegnap
+NUI_LOGIN_DAYS	%d napja
+NUI_LOGIN_ERR_TAKEN	Ez a név foglalt.
+NUI_LOGIN_ERR_LOGIN	Használj 4–30 betűt és számjegyet.
+NUI_LOGIN_ERR_PASSWORD	Használj 8–16 karaktert, [ és ] nélkül.
+NUI_LOGIN_ERR_CONFIRM	A jelszavak nem egyeznek.
+NUI_LOGIN_ERR_EMAIL	Adj meg érvényes e-mail címet.
+NUI_LOGIN_ERR_CODE	Pontosan 7 számjegyet adj meg.
+NUI_LOGIN_ERR_RULES	A folytatáshoz fogadd el a szerver szabályait.
+NUI_LOGIN_ERR_LIMIT	Túl sok próbálkozás. Próbáld később.
+NUI_LOGIN_ERR_DISABLED	Ez a szerver nem fogad új fiókokat.
+NUI_LOGIN_ERR_BUSY	A szerver foglalt. Próbáld újra egy perc múlva.
+NUI_LOGIN_ERR_FAILED	A fiókot nem sikerült létrehozni. Próbáld később.
+NUI_LOGIN_CREATED	A fiókod kész. Lépj be vele.
+NUI_LOGIN_CREATING	Fiók létrehozása...

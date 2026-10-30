@@ -115,7 +115,7 @@ body.skin-cyberpunk.minimap .minimap__button:hover .minimap__icon, body.skin-cyb
 	--glyph-ink: var(--accent-hover);
 }
 
-/* --- The place line and the observers: dark plates ---------------------------------- */
+/* --- The place line (its clock in the accent too) and the observers: dark plates ----- */
 
 body.skin-cyberpunk.minimap .minimap__text
 {
@@ -125,6 +125,10 @@ body.skin-cyberpunk.minimap .minimap__text
 	background-color: var(--surface);
 	color: var(--accent);
 	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.minimap .minimap__clock
+{
+	color: var(--accent);
 }
 
 /* Reduced effects: no halo, rim, radar rings or tick cover (without effects

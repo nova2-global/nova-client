@@ -211,6 +211,7 @@ class SafeboxWindow(ui.ScriptWindow):
 		self.isLoaded = 0
 		self.xSafeBoxStart = 0
 		self.ySafeBoxStart = 0
+		self.interface = None
 
 		self.__LoadWindow()
 
@@ -318,6 +319,23 @@ class SafeboxWindow(ui.ScriptWindow):
 		self.SetTableSize(size)
 		self.Show()
 
+		## The safebox marks the items it does not keep (NOVA-13; OLD uiSafebox.py:330-333).
+		self.__SetOnTopWindow(player.ON_TOP_WND_SAFEBOX)
+
+	## The tradable icon (NOVA-13)
+	def BindInterface(self, interface):
+		self.interface = interface
+
+	def __SetOnTopWindow(self, onTopWnd):
+		if not self.interface:
+			return
+		self.interface.SetOnTopWindow(onTopWnd)
+		self.interface.RefreshMarkInventoryBag()
+
+	def OnTop(self):
+		if self.IsShow():
+			self.__SetOnTopWindow(player.ON_TOP_WND_SAFEBOX)
+
 	def __MakePageButton(self, pageCount):
 
 		self.curPageIndex = 0
@@ -414,6 +432,8 @@ class SafeboxWindow(ui.ScriptWindow):
 		self.dlgPickMoney.Close()
 		self.dlgChangePassword.Close()
 		self.Hide()
+
+		self.__SetOnTopWindow(player.ON_TOP_WND_NONE)
 
 	## Slot Event
 	def SelectEmptySlot(self, selectedSlotPos):

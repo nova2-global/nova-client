@@ -907,3 +907,16 @@ ADD_4TH_STONE_ONLY_ARMOR	Este pergamino solo funciona en armaduras.
 ADD_4TH_STONE_ONLY_WEAPON	Este pergamino solo funciona en armas.
 ADD_4TH_STONE_NOT_POSSIBLE	No puedes usar este pergamino en este objeto.
 ADD_4TH_STONE_ADD_QUESTION	¿Deseas abrir un espacio para un cuarto hueco?
+MOVE_TO_BANK	Shift + right-click: mover al banco
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: mover a la ventana de intercambio
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: mover al inventario+
+MOVE_TO_INVENTORY	Ctrl + right-click: mover al inventario
+NEW_EXCHANGE_YOU_READY	%s Estás listo para comerciar.
+NEW_EXCHANGE_YOU_ACCEPT	%s Aceptaste el intercambio.
+NEW_EXCHANGE_ACCEPT	%s %s aceptó el intercambio.
+NEW_EXCHANGE_YOU_ABORT	%s Cancelaste el intercambio.
+NEW_EXCHANGE_ABORT	%s %s canceló el intercambio.
+NEW_EXCHANGE_LEVEL	Niv. %d
+NEW_EXCHANGE_ALERT1	Estás entregando objetos sin recibir nada a cambio,
+NEW_EXCHANGE_ALERT2	y no podrás recuperar el Yang ni los objetos.
+MULTI_USE_ITEM	Alt + right-click: para usar varios

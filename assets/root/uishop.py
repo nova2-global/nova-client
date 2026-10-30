@@ -26,6 +26,7 @@ class ShopDialog(ui.ScriptWindow):
 		self.questionDialog = None
 		self.popup = None
 		self.itemBuyQuestionDialog = None
+		self.interface = None
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -210,6 +211,24 @@ class ShopDialog(ui.ScriptWindow):
 
 		(self.xShopStart, self.yShopStart, z) = player.GetMainCharacterPosition()
 
+		## An NPC shop marks the items it does not buy (NOVA-13; OLD uiShop.py:670-673).
+		if not isPrivateShop:
+			self.__SetOnTopWindow(player.ON_TOP_WND_SHOP)
+
+	## The tradable icon (NOVA-13; OLD uiShop.py:1365-1370)
+	def BindInterface(self, interface):
+		self.interface = interface
+
+	def __SetOnTopWindow(self, onTopWnd):
+		if not self.interface:
+			return
+		self.interface.SetOnTopWindow(onTopWnd)
+		self.interface.RefreshMarkInventoryBag()
+
+	def OnTop(self):
+		if self.IsShow() and not shop.IsPrivateShop():
+			self.__SetOnTopWindow(player.ON_TOP_WND_SHOP)
+
 	def Close(self):
 		if self.itemBuyQuestionDialog:
 			self.itemBuyQuestionDialog.Close()
@@ -222,6 +241,7 @@ class ShopDialog(ui.ScriptWindow):
 		self.CancelShopping()
 		self.tooltipItem.HideToolTip()
 		self.Hide()
+		self.__SetOnTopWindow(player.ON_TOP_WND_NONE)
 
 	def GetIndexFromSlotPos(self, slotPos):
 		return self.tabIdx * shop.SHOP_SLOT_COUNT + slotPos
@@ -328,6 +348,38 @@ class ShopDialog(ui.ScriptWindow):
 
 			else:
 				self.OnSellItem(attachedSlotPos, attachedCount, itemtype)
+
+		## An extra inventory item (NOVA-16; OLD uiShop.py:811-831), always
+		## asked as OLD asks: player.IsValuableItem reads an inventory cell.
+		elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType:
+			itemIndex = player.GetItemIndex(player.EXTRA_INVENTORY, attachedSlotPos)
+			item.SelectItem(itemIndex)
+
+			if item.IsAntiFlag(item.ANTIFLAG_SELL):
+				popup = uiCommon.PopupDialog()
+				popup.SetText(localeInfo.SHOP_CANNOT_SELL_ITEM)
+				popup.SetAcceptEvent(self.__OnClosePopupDialog)
+				popup.Open()
+				self.popup = popup
+				return
+
+			itemPrice = item.GetISellItemPrice()
+
+			if item.Is1GoldItem():
+				itemPrice = attachedCount // itemPrice // 5
+			else:
+				itemPrice = itemPrice * max(1, attachedCount) // 5
+
+			itemName = item.GetItemName()
+
+			questionDialog = uiCommon.QuestionDialog()
+			questionDialog.SetText(localeInfo.DO_YOU_SELL_ITEM(itemName, attachedCount, itemPrice))
+			questionDialog.SetAcceptEvent(lambda arg1=attachedSlotPos, arg2=attachedCount, arg3=player.EXTRA_INVENTORY: self.OnSellItem(arg1, arg2, arg3))
+			questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
+			questionDialog.Open()
+			self.questionDialog = questionDialog
+
+			constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
 
 		else:
 			snd.PlaySound("sound/ui/loginfail.wav")

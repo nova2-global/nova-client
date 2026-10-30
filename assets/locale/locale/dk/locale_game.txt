@@ -907,3 +907,16 @@ ADD_4TH_STONE_ONLY_ARMOR	Denne rulle fungerer kun til rustninger.
 ADD_4TH_STONE_ONLY_WEAPON	Denne rulle fungerer kun til våben.
 ADD_4TH_STONE_NOT_POSSIBLE	Du kan ikke bruge denne rulle på dette genstand.
 ADD_4TH_STONE_ADD_QUESTION	Ønsker du at åbne en plads til en 4. stik?
+MOVE_TO_BANK	Shift + right-click: flytte til banken
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: flytte til handelsvinduet
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: flytte til lager+
+MOVE_TO_INVENTORY	Ctrl + right-click: flytte til lager
+NEW_EXCHANGE_YOU_READY	%s You are ready to trade.
+NEW_EXCHANGE_YOU_ACCEPT	%s You accept the trade.
+NEW_EXCHANGE_ACCEPT	%s %s accept the trade.
+NEW_EXCHANGE_YOU_ABORT	%s You abort the trade.
+NEW_EXCHANGE_ABORT	%s %s abort the trade.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	You are giving things away for nothing in exchange,
+NEW_EXCHANGE_ALERT2	and won't be able to get the Yang or items back.
+MULTI_USE_ITEM	Alt + right-click: for at bruge flere

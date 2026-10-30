@@ -123,6 +123,9 @@ class PrivateShopBuilder(ui.ScriptWindow):
 		self.itemStock = {}
 		self.tooltipItem = None
 		self.priceInputBoard = None
+		self.interface = None
+		self.wndInventory = None
+		self.wndExtraInventory = None
 		self.title = ""
 
 	def __del__(self):
@@ -184,14 +187,57 @@ class PrivateShopBuilder(ui.ScriptWindow):
 		global g_isBuildingPrivateShop
 		g_isBuildingPrivateShop = True
 
+		self.__SetOnTopWindow(player.ON_TOP_WND_PRIVATE_SHOP)
+
 	def Close(self):
 		global g_isBuildingPrivateShop
 		g_isBuildingPrivateShop = False
+
+		## Every cell an item came from takes the mouse again (NOVA-13).
+		for (invenType, invenPos) in list(self.itemStock.values()):
+			self.__SetCellLocked(invenType, invenPos, False)
 
 		self.title = ""
 		self.itemStock = {}
 		shop.ClearPrivateShopStock()
 		self.Hide()
+
+		self.__SetOnTopWindow(player.ON_TOP_WND_NONE)
+
+	## The tradable icon (NOVA-13; OLD uiPrivateShopBuilder.py:210-302): the
+	## cell of an item put into the shop takes no mouse event (a red cover)
+	## until it leaves the shop or the window closes; the items of the stock
+	## ({shop slot: (window, cell)}) are the locks.
+	def BindInterface(self, interface):
+		self.interface = interface
+
+	def SetInven(self, wndInventory, wndExtraInventory=None):
+		self.wndInventory = wndInventory
+		self.wndExtraInventory = wndExtraInventory
+
+	def __SetOnTopWindow(self, onTopWnd):
+		if not self.interface:
+			return
+		self.interface.SetOnTopWindow(onTopWnd)
+		self.interface.RefreshMarkInventoryBag()
+
+	def __SetCellLocked(self, invenType, invenPos, isLocked):
+		if invenType == player.INVENTORY:
+			wnd = self.wndInventory
+		elif invenType == player.EXTRA_INVENTORY:
+			wnd = self.wndExtraInventory
+		else:
+			wnd = None
+		if not wnd:
+			return
+		if isLocked:
+			wnd.SetCantMouseEventCell(invenPos)
+		else:
+			wnd.SetCanMouseEventCell(invenPos)
+
+	def RefreshLockedSlot(self):
+		for (invenType, invenPos) in list(self.itemStock.values()):
+			self.__SetCellLocked(invenType, invenPos, True)
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem
@@ -225,7 +271,9 @@ class PrivateShopBuilder(ui.ScriptWindow):
 			attachedSlotPos = mouseModule.mouseController.GetAttachedSlotNumber()
 			mouseModule.mouseController.DeattachObject()
 
-			if player.SLOT_TYPE_INVENTORY != attachedSlotType and player.SLOT_TYPE_DRAGON_SOUL_INVENTORY != attachedSlotType:
+			# The special inventory's items too (NOVA-16; OLD uiPrivateShopBuilder.py:344).
+			if player.SLOT_TYPE_INVENTORY != attachedSlotType and player.SLOT_TYPE_DRAGON_SOUL_INVENTORY != attachedSlotType and \
+					player.SLOT_TYPE_EXTRA_INVENTORY != attachedSlotType:
 				return
 			attachedInvenType = player.SlotTypeToInvenType(attachedSlotType)
 				
@@ -269,6 +317,7 @@ class PrivateShopBuilder(ui.ScriptWindow):
 			snd.PlaySound("sound/ui/drop.wav")
 
 			del self.itemStock[selectedSlotPos]
+			self.__SetCellLocked(invenType, invenPos, False)
 
 			self.Refresh()
 
@@ -304,6 +353,7 @@ class PrivateShopBuilder(ui.ScriptWindow):
 
 		shop.AddPrivateShopItemStock(attachedInvenType, sourceSlotPos, targetSlotPos, price)
 		self.itemStock[targetSlotPos] = (attachedInvenType, sourceSlotPos)
+		self.__SetCellLocked(attachedInvenType, sourceSlotPos, True)
 		snd.PlaySound("sound/ui/drop.wav")
 
 		self.Refresh()		

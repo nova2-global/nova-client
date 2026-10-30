@@ -1299,7 +1299,9 @@ class DragonSoulRefineWindow(ui.ScriptWindow):
 				if player.INVENTORY == attachedInvenType and player.IsEquipmentSlot(attachedSlotPos):
 					return
 
-				if player.INVENTORY != attachedInvenType and player.DRAGON_SOUL_INVENTORY != attachedInvenType:
+				## A Dragon Bean from the special inventory too (NOVA-16; OLD uiDragonSoul.py:1172-1180).
+				if player.INVENTORY != attachedInvenType and player.DRAGON_SOUL_INVENTORY != attachedInvenType and \
+						player.EXTRA_INVENTORY != attachedInvenType:
 					return
 
 				if True == self.__SetItem((attachedInvenType, attachedSlotPos), selectedSlotPos, attachedItemCount):
@@ -1333,7 +1335,9 @@ class DragonSoulRefineWindow(ui.ScriptWindow):
 					if player.INVENTORY == attachedInvenType and player.IsEquipmentSlot(attachedSlotPos):
 						return
 
-					if player.INVENTORY != attachedInvenType and player.DRAGON_SOUL_INVENTORY != attachedInvenType:
+					## A Dragon Bean from the special inventory too (NOVA-16; OLD uiDragonSoul.py:1210-1218).
+					if player.INVENTORY != attachedInvenType and player.DRAGON_SOUL_INVENTORY != attachedInvenType and \
+							player.EXTRA_INVENTORY != attachedInvenType:
 						return
 
 					self.AutoSetItem((attachedInvenType, attachedSlotPos), 1)

@@ -999,3 +999,16 @@ ADD_4TH_STONE_ONLY_ARMOR	This scroll only works for Armours.
 ADD_4TH_STONE_ONLY_WEAPON	This scroll only works for Weapons.
 ADD_4TH_STONE_NOT_POSSIBLE	You cannot use this scroll on this item.
 ADD_4TH_STONE_ADD_QUESTION	Do you wish to open a space for a 4th socket?
+MOVE_TO_BANK	Shift + right-click: للنقل إلى البنك
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: للنقل إلى نافذة التجارة
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: للنقل إلى الجرد+
+MOVE_TO_INVENTORY	Ctrl + right-click: للنقل إلى الجرد
+NEW_EXCHANGE_YOU_READY	%s You are ready to trade.
+NEW_EXCHANGE_YOU_ACCEPT	%s You accept the trade.
+NEW_EXCHANGE_ACCEPT	%s %s accept the trade.
+NEW_EXCHANGE_YOU_ABORT	%s You abort the trade.
+NEW_EXCHANGE_ABORT	%s %s abort the trade.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	You are giving things away for nothing in exchange,
+NEW_EXCHANGE_ALERT2	and won't be able to get the Yang or items back.
+MULTI_USE_ITEM	Alt + right-click: للاستخدام المتعدد

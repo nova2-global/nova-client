@@ -907,3 +907,16 @@ ADD_4TH_STONE_ONLY_ARMOR	Ce parchemin ne fonctionne que pour les armures.
 ADD_4TH_STONE_ONLY_WEAPON	Ce parchemin ne fonctionne que pour les armes.
 ADD_4TH_STONE_NOT_POSSIBLE	Vous ne pouvez pas utiliser ce parchemin sur cet élément.
 ADD_4TH_STONE_ADD_QUESTION	Souhaitez-vous ouvrir un espace pour un 4ème emplacement?
+MOVE_TO_BANK	Shift + right-click: déplacer à la banque
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: déplacer dans la fenêtre d'échange
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: déplacer dans l'inventaire+
+MOVE_TO_INVENTORY	Ctrl + right-click: déplacer dans l'inventaire
+NEW_EXCHANGE_YOU_READY	%s You are ready to trade.
+NEW_EXCHANGE_YOU_ACCEPT	%s You accept the trade.
+NEW_EXCHANGE_ACCEPT	%s %s accept the trade.
+NEW_EXCHANGE_YOU_ABORT	%s You abort the trade.
+NEW_EXCHANGE_ABORT	%s %s abort the trade.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	You are giving things away for nothing in exchange,
+NEW_EXCHANGE_ALERT2	and won't be able to get the Yang or items back.
+MULTI_USE_ITEM	Alt + right-click: pour utiliser plusieurs fois

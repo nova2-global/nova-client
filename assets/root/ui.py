@@ -1529,6 +1529,21 @@ class SlotWindow(Window):
 	def UnlockSlot(self, slotIndex):
 		wndMgr.UnlockSlot(self.hWnd, slotIndex)
 
+	## The tradable icon (NOVA-13; OLD ui.py:3679-3689): a cell whose item sits
+	## in an open trade window takes no mouse event (a red cover), and a cell
+	## whose item the window on top refuses shows as unusable (a white cover).
+	def SetCanMouseEventSlot(self, slotIndex):
+		wndMgr.SetCanMouseEventSlot(self.hWnd, slotIndex)
+
+	def SetCantMouseEventSlot(self, slotIndex):
+		wndMgr.SetCantMouseEventSlot(self.hWnd, slotIndex)
+
+	def SetUsableSlotOnTopWnd(self, slotIndex):
+		wndMgr.SetUsableSlotOnTopWnd(self.hWnd, slotIndex)
+
+	def SetUnusableSlotOnTopWnd(self, slotIndex):
+		wndMgr.SetUnusableSlotOnTopWnd(self.hWnd, slotIndex)
+
 	def RefreshSlot(self):
 		wndMgr.RefreshSlot(self.hWnd)
 

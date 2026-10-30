@@ -907,3 +907,16 @@ ADD_4TH_STONE_ONLY_ARMOR	This scroll only works for Armours.
 ADD_4TH_STONE_ONLY_WEAPON	This scroll only works for Weapons.
 ADD_4TH_STONE_NOT_POSSIBLE	You cannot use this scroll on this item.
 ADD_4TH_STONE_ADD_QUESTION	Do you wish to open a space for a 4th socket?
+MOVE_TO_BANK	Shift + right-click: verplaats naar de bank
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: verplaats naar het handelsvenster
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: verplaats naar inventaris+
+MOVE_TO_INVENTORY	Ctrl + right-click: verplaats naar inventaris
+NEW_EXCHANGE_YOU_READY	%s Je bent klaar om te handelen.
+NEW_EXCHANGE_YOU_ACCEPT	%s Je hebt de handel geaccepteerd.
+NEW_EXCHANGE_ACCEPT	%s %s accepteer de handel.
+NEW_EXCHANGE_YOU_ABORT	%s Je hebt de handel geannuleerd.
+NEW_EXCHANGE_ABORT	%s %s Annuleer de handel.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	Je bent dingen aan het weggeven voor niks in ruil,
+NEW_EXCHANGE_ALERT2	en het zal niet mogelijk zijn om de Yang of voorwerpen terug te krijgen.
+MULTI_USE_ITEM	Alt + right-click: voor meervoudig gebruik

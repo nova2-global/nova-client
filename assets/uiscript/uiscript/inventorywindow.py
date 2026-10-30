@@ -9,12 +9,12 @@ window = {
 
 	## 600 - (width + żŔ¸ĄÂĘŔ¸·Î şÎĹÍ ¶çżě±â 24 px)
 	"x" : SCREEN_WIDTH - 176,
-	"y" : SCREEN_HEIGHT - 37 - 565,
+	"y" : SCREEN_HEIGHT - 37 - 591,
 
 	"style" : ("movable", "float",),
 
 	"width" : 176,
-	"height" : 565,
+	"height" : 591,
 
 	"children" :
 	(
@@ -28,7 +28,7 @@ window = {
 			"y" : 0,
 
 			"width" : 176,
-			"height" : 565,
+			"height" : 591,
 
 			"children" :
 			(
@@ -343,6 +343,25 @@ window = {
 					"y_step" : 32,
 
 					"image" : "d:/ymir work/ui/public/Slot_Base.sub"
+				},
+
+				## The special inventory (NOVA-16): a band of 26 px between the bag
+				## and the money slot (the board grew from 565 to 591 px for it).
+				{
+					"name" : "ExtraInventoryButton",
+					"type" : "button",
+
+					"x" : 0,
+					"y" : 246 + 32 * 9 + 3,
+
+					"horizontal_align" : "center",
+
+					"text" : uiScriptLocale.EXTRA_INVENTORY_BUTTON,
+					"tooltip_text" : uiScriptLocale.KEYCHANGE_EXTRA_INVENTORY,
+
+					"default_image" : "d:/ymir work/ui/public/large_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/large_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/large_button_03.sub",
 				},
 
 				## Print

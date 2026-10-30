@@ -200,7 +200,8 @@ class CMouseController(object):
 				Type == player.SLOT_TYPE_SHOP or\
 				Type == player.SLOT_TYPE_SAFEBOX or\
 				Type == player.SLOT_TYPE_MALL or\
-				Type == player.SLOT_TYPE_DRAGON_SOUL_INVENTORY:
+				Type == player.SLOT_TYPE_DRAGON_SOUL_INVENTORY or\
+				Type == player.SLOT_TYPE_EXTRA_INVENTORY:
 
 				item.SelectItem(self.AttachedItemIndex)
 				self.AttachedIconHandle = item.GetIconInstance()
@@ -298,7 +299,8 @@ class CMouseController(object):
 				self.AttachedType == player.SLOT_TYPE_SHOP or\
 				self.AttachedType == player.SLOT_TYPE_SAFEBOX or\
 				self.AttachedType == player.SLOT_TYPE_MALL or\
-				(DEATTACH_FREES_EVERY_ICON and self.AttachedType == player.SLOT_TYPE_DRAGON_SOUL_INVENTORY):
+				(DEATTACH_FREES_EVERY_ICON and self.AttachedType == player.SLOT_TYPE_DRAGON_SOUL_INVENTORY) or\
+				self.AttachedType == player.SLOT_TYPE_EXTRA_INVENTORY:
 
 				item.DeleteIconInstance(self.AttachedIconHandle)
 

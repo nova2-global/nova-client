@@ -15,6 +15,11 @@ class AttachMetinDialog(ui.ScriptWindow):
 
 		self.metinItemPos = 0
 		self.targetItemPos = 0
+		self.metinWindow = player.INVENTORY
+		self.wndInventory = None
+		self.wndExtraInventory = None
+		# [(window, cell)]: the stone's and the target's cells while the dialog shows.
+		self.lockedItems = []
 
 	def __LoadScript(self):
 		try:
@@ -74,11 +79,17 @@ class AttachMetinDialog(ui.ScriptWindow):
 			if player.METIN_SOCKET_TYPE_GOLD == slot:
 				return True
 
-	def Open(self, metinItemPos, targetItemPos):
+	def Open(self, metinItemPos, targetItemPos, metinWindow=player.INVENTORY):
+		## The stone may sit in the special inventory (NOVA-16; OLD
+		## uiAttachMetin.py:91-99); the target is always an inventory item.
 		self.metinItemPos = metinItemPos
 		self.targetItemPos = targetItemPos
+		self.metinWindow = metinWindow
 
-		metinIndex = player.GetItemIndex(metinItemPos)
+		if metinWindow == player.INVENTORY:
+			metinIndex = player.GetItemIndex(metinItemPos)
+		else:
+			metinIndex = player.GetItemIndex(metinWindow, metinItemPos)
 		itemIndex = player.GetItemIndex(targetItemPos)
 
 		self.oldToolTip.ClearToolTip()
@@ -128,6 +139,8 @@ class AttachMetinDialog(ui.ScriptWindow):
 		self.SetTop()
 		self.Show()
 
+		self.__LockCells((metinWindow, metinItemPos), (player.INVENTORY, targetItemPos))
+
 	def UpdateDialog(self):
 		newWidth = 15 + self.oldToolTip.GetWidth() + 45 + self.newToolTip.GetWidth() + 15
 		newHeight = self.newToolTip.GetHeight() + 98
@@ -148,9 +161,45 @@ class AttachMetinDialog(ui.ScriptWindow):
 		self.SetPosition(x, y)
 
 	def Accept(self):
-		net.SendItemUseToItemPacket(self.metinItemPos, self.targetItemPos)
+		## OLD uiAttachMetin.py:156-160: the stone's window to the inventory target.
+		if self.metinWindow == player.INVENTORY:
+			net.SendItemUseToItemPacket(self.metinItemPos, self.targetItemPos)
+		else:
+			net.SendItemUseToItemPacket(self.metinWindow, self.metinItemPos, player.INVENTORY, self.targetItemPos)
 		snd.PlaySound("sound/ui/metinstone_insert.wav")
 		self.Close()
 
 	def Close(self):
 		self.Hide()
+		self.__ReleaseCells()
+
+	## The tradable icon (NOVA-13; OLD uiAttachMetin.py:135-193): the cells of the items the
+	## dialog works on take no mouse event while it shows.
+	def SetInven(self, wndInventory, wndExtraInventory=None):
+		self.wndInventory = wndInventory
+		self.wndExtraInventory = wndExtraInventory
+
+	def __InventoryWindowOf(self, window):
+		if window == player.INVENTORY:
+			return self.wndInventory
+		if window == player.EXTRA_INVENTORY:
+			return self.wndExtraInventory
+		return None
+
+	def __LockCells(self, *cells):
+		self.__ReleaseCells()
+		self.lockedItems = list(cells)
+		self.RefreshLockedSlot()
+
+	def __ReleaseCells(self):
+		cells, self.lockedItems = self.lockedItems, []
+		for (window, cell) in cells:
+			wnd = self.__InventoryWindowOf(window)
+			if wnd:
+				wnd.SetCanMouseEventCell(cell)
+
+	def RefreshLockedSlot(self):
+		for (window, cell) in self.lockedItems:
+			wnd = self.__InventoryWindowOf(window)
+			if wnd:
+				wnd.SetCantMouseEventCell(cell)

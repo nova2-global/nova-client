@@ -905,3 +905,16 @@ ADD_4TH_STONE_ONLY_ARMOR	Diese Schriftrolle funktioniert nur für Rüstungen.
 ADD_4TH_STONE_ONLY_WEAPON	Diese Schriftrolle funktioniert nur für Waffen.
 ADD_4TH_STONE_NOT_POSSIBLE	Sie können diese Schriftrolle nicht für dieses Item verwenden.
 ADD_4TH_STONE_ADD_QUESTION	Möchten Sie einen Platz für den 4. Slot öffnen?
+MOVE_TO_BANK	Shift + right-click: in die Bank verschieben
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: in das Handelsfenster verschieben
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: ins Inventar+ verschieben
+MOVE_TO_INVENTORY	Ctrl + right-click: ins Inventar verschieben
+NEW_EXCHANGE_YOU_READY	%s Du bist bereit um zu handeln.
+NEW_EXCHANGE_YOU_ACCEPT	%s Du hast den Handel aktzeptiert.
+NEW_EXCHANGE_ACCEPT	%s %s Handel aktzeptieren.
+NEW_EXCHANGE_YOU_ABORT	%s Du hast den Handel abgebrochen.
+NEW_EXCHANGE_ABORT	%s %s Handel abbrechen.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	Du gibst Sachen weg, ohne dafür etwas anderes zu erhalten,
+NEW_EXCHANGE_ALERT2	und wirst keine Möglichkeit haben, dein Yang oder deine Items zurück zu bekommen.
+MULTI_USE_ITEM	Alt + right-click: für Mehrfachnutzung

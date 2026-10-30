@@ -907,3 +907,16 @@ ADD_4TH_STONE_ONLY_ARMOR	Merge doar pe Armuri.
 ADD_4TH_STONE_ONLY_WEAPON	Merge doar pe Arme.
 ADD_4TH_STONE_NOT_POSSIBLE	Nu poti folosii acest scroll per acest item.
 ADD_4TH_STONE_ADD_QUESTION	Doriti sa deschideti un spatiu pentru a 4 piatra?
+MOVE_TO_BANK	Shift + right-click: mută în bancă
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: mută în fereastra de schimb
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: mută în inventar+
+MOVE_TO_INVENTORY	Ctrl + right-click: mută în inventar
+NEW_EXCHANGE_YOU_READY	%s Esti pregatit sa negociezi.
+NEW_EXCHANGE_YOU_ACCEPT	%s Accepta negotul.
+NEW_EXCHANGE_ACCEPT	%s %s accepta negotul.
+NEW_EXCHANGE_YOU_ABORT	%s Renunti la negot.
+NEW_EXCHANGE_ABORT	%s %s renunta la negot.
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	Oferi lucrurile fara a primi nimic in schimb,
+NEW_EXCHANGE_ALERT2	si nu vei putea lua yangul sau obiectele inapoi.
+MULTI_USE_ITEM	Alt + right-click: pentru utilizare multiplă

@@ -907,3 +907,16 @@ ADD_4TH_STONE_ONLY_ARMOR	This scroll only works for Armours.
 ADD_4TH_STONE_ONLY_WEAPON	This scroll only works for Weapons.
 ADD_4TH_STONE_NOT_POSSIBLE	You cannot use this scroll on this item.
 ADD_4TH_STONE_ADD_QUESTION	Do you wish to open a space for a 4th socket?
+MOVE_TO_BANK	Shift + right-click: áthelyezés a bankba
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: áthelyezés a kereskedési ablakba
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: áthelyezés az inventory+
+MOVE_TO_INVENTORY	Ctrl + right-click: áthelyezés az inventory-ba
+NEW_EXCHANGE_YOU_READY	%s Készen állsz a kereskedésre
+NEW_EXCHANGE_YOU_ACCEPT	%s Elfogadtad a kereskedést
+NEW_EXCHANGE_ACCEPT	%s %s Kereskedés elfogadva
+NEW_EXCHANGE_YOU_ABORT	%s Vissza utasítottad a kereskedést
+NEW_EXCHANGE_ABORT	%s %s Kereskedés vissza utasítva
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	Semmilyen esetben sem add oda másoknak a tárgyaidat,
+NEW_EXCHANGE_ALERT2	mert lehet, nem kapod vissza sem a tárgyat se a yang-ot
+MULTI_USE_ITEM	Alt + right-click: többszörös használathoz

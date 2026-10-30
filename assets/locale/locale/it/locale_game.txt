@@ -907,3 +907,16 @@ ADD_4TH_STONE_ONLY_ARMOR	Questa pergamena funziona solo sulle armature.
 ADD_4TH_STONE_ONLY_WEAPON	Questa pergamena funziona solo sulle armi.
 ADD_4TH_STONE_NOT_POSSIBLE	Non puoi usare la pergamena su questo oggetto.
 ADD_4TH_STONE_ADD_QUESTION	Desideri aprire il quarto spazio per incastonare?
+MOVE_TO_BANK	Shift + right-click: sposta in banca
+MOVE_TO_TRADE_WINDOW	Ctrl + right-click: sposta nella finestra di scambio
+MOVE_TO_INVENTORY_PLUS	Ctrl + right-click: sposta nell'inventario+
+MOVE_TO_INVENTORY	Ctrl + right-click: sposta nell'inventario
+NEW_EXCHANGE_YOU_READY	%s Sei pronto a fare lo scambio
+NEW_EXCHANGE_YOU_ACCEPT	%s Accetti l'operazione.
+NEW_EXCHANGE_ACCEPT	%s %s accetta lo scambio.
+NEW_EXCHANGE_YOU_ABORT	%s Interrompi lo scambio
+NEW_EXCHANGE_ABORT	%s %s interrompi lo scambio
+NEW_EXCHANGE_LEVEL	Lv. %d
+NEW_EXCHANGE_ALERT1	Stai dando via le cose per niente in cambio,
+NEW_EXCHANGE_ALERT2	e non sarà in grado di recuperare lo Yang o gli oggetti.
+MULTI_USE_ITEM	Alt + right-click: per utilizzo multiplo

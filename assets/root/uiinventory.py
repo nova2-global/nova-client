@@ -31,6 +31,94 @@ ITEM_FLAG_APPLICABLE = 1 << 14
 MONEY_SLOT_UNIT_LIMIT = 10 ** 11
 
 
+# The items that may sit in either inventory (NOVA-16, the server's
+# IsExtraShared, spec 3.2): every costume, and the four scrolls of the
+# special inventory's first category (71051, 71052, 71651, 71652). Ctrl +
+# right-click moves them between the two.
+EXTRA_SHARED_SCROLLS = (71051, 71052, 71651, 71652)
+# The most treasure chests one Alt + right-click opens (NOVA-81; OLD's client
+# cap, the server's GACHA_MULTI_OPEN_MAX in nova-protocol inventory_packets.h).
+GACHA_MULTI_OPEN_MAX = 1000
+
+
+def IsMultiOpenItem(itemVnum):
+	"""A stack Alt + right-click opens several of (NOVA-81, default G-D2:
+	the treasure chests, ITEM_GACHA, only)."""
+	if not itemVnum:
+		return False
+	item.SelectItem(itemVnum)
+	return item.GetItemType() == item.ITEM_TYPE_GACHA
+
+
+def IsExtraSharedItem(itemVnum):
+	if not itemVnum:
+		return False
+	if itemVnum in EXTRA_SHARED_SCROLLS:
+		return True
+	item.SelectItem(itemVnum)
+	return item.GetItemType() == item.ITEM_TYPE_COSTUME
+
+
+def SafeboxCheckinCell(itemVnum):
+	"""The open safebox's cell for Shift + right-click (NOVA-16): the first
+	cell from 0 where the item's cells are free and on one page. OLD's client
+	sent cell 0 and OLD's server searched on from it (input_main.cpp:
+	3015-3030, moving a tall item off a page's last rows); NEW's server
+	refuses a taken cell, so the client searches. 0 when the item fits
+	nowhere: the server then refuses it with OLD's message."""
+	import safebox # the client's; imported here, as the item windows' stand-ins have none
+	columns = safebox.SAFEBOX_SLOT_X_COUNT
+	pageSize = safebox.SAFEBOX_PAGE_SIZE
+	cellCount = safebox.GetCurrentSafeboxSize()
+
+	taken = set()
+	for cell in range(cellCount):
+		vnum = safebox.GetItemID(cell)
+		if vnum:
+			item.SelectItem(vnum)
+			for row in range(item.GetItemSize()[1]):
+				taken.add(cell + row * columns)
+
+	item.SelectItem(itemVnum)
+	height = item.GetItemSize()[1]
+	for cell in range(cellCount):
+		last = cell + (height - 1) * columns
+		if last >= cellCount or last // pageSize != cell // pageSize:
+			continue
+		if not taken.intersection(range(cell, last + 1, columns)):
+			return cell
+	return 0
+
+
+# The server's ITEM_ANTIFLAG_SAFEBOX (OLD's, and ItemData.h's in NEW's client).
+# OLD's item module exported it as ANTIFLAG_SAFEBOX (PythonItemModule.cpp:
+# 1337-1338); NEW's does not yet, so OnTopAntiFlag falls back to the value.
+ITEM_ANTIFLAG_SAFEBOX = 1 << 17
+
+
+def OnTopAntiFlag(onTopWnd):
+	"""The anti flag of the trade window on top (NOVA-13; OLD
+	uiInventory.py:1326-1400): an item that has it cannot go there."""
+	if onTopWnd == player.ON_TOP_WND_SHOP:
+		return item.ANTIFLAG_SELL
+	if onTopWnd == player.ON_TOP_WND_EXCHANGE:
+		return item.ANTIFLAG_GIVE
+	if onTopWnd == player.ON_TOP_WND_PRIVATE_SHOP:
+		return item.ITEM_ANTIFLAG_MYSHOP
+	if onTopWnd == player.ON_TOP_WND_SAFEBOX:
+		flag = getattr(item, "ANTIFLAG_SAFEBOX", None)
+		return flag if isinstance(flag, int) else ITEM_ANTIFLAG_SAFEBOX
+	return 0
+
+
+def SetSlotState(slotWindow, name, slotIndex):
+	"""A tradable icon state of a slot window's cell (ui.SlotWindow's
+	wrappers of wndMgr; a slot window without them shows none)."""
+	setState = getattr(slotWindow, name, None)
+	if setState:
+		setState(slotIndex)
+
+
 def MoneySlotText(money):
 	"""The money slot's text: localeInfo.NumberToMoneyString while the unit
 	fits, then the amount with the same points and no unit."""
@@ -274,6 +362,8 @@ class InventoryWindow(ui.ScriptWindow):
 		ui.ScriptWindow.__init__(self)
 
 		self.isOpenedBeltWindowWhenClosingInventory = 0		# Whether belt inventory was open when closing inventory
+		# The windows whose items lock cells here (the tradable icon, NOVA-13).
+		self.bindWnds = []
 
 		self.__LoadWindow()
 
@@ -322,7 +412,9 @@ class InventoryWindow(ui.ScriptWindow):
 			self.mallButton = self.GetChild2("MallButton")
 			self.DSSButton = self.GetChild2("DSSButton")
 			self.costumeButton = self.GetChild2("CostumeButton")
-			
+			# The special inventory (NOVA-16); an older uiscript has no button.
+			self.extraInventoryButton = self.GetChild2("ExtraInventoryButton")
+
 			# One tab per inventory page (OLD uiInventory.py:884-889: five).
 			self.inventoryTab = []
 			for page in range(player.INVENTORY_PAGE_COUNT):
@@ -404,6 +496,9 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.costumeButton:
 			self.costumeButton.SetEvent(ui.__mem_func__(self.ClickCostumeButton))
 
+		if self.extraInventoryButton:
+			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
+
 		self.wndCostume = None
 		
  		#####
@@ -435,6 +530,7 @@ class InventoryWindow(ui.ScriptWindow):
 		self.questionDialog = None
 		self.mallButton = None
 		self.DSSButton = None
+		self.extraInventoryButton = None
 		self.DSSButtonEffect = None
 		self.interface = None
 
@@ -496,6 +592,9 @@ class InventoryWindow(ui.ScriptWindow):
 	def ClickDSSButton(self):
 		print("click_dss_button")
 		self.interface.ToggleDragonSoulWindow()
+
+	def ClickExtraInventoryButton(self):
+		self.interface.ToggleExtraInventoryWindow()
 
 	def UseDSSButtonEffect(self, enable):
 		if self.DSSButton:
@@ -611,10 +710,14 @@ class InventoryWindow(ui.ScriptWindow):
 				else:
 					self.wndItem.DeactivateSlot(slotNumber)			
 					
+		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
 
 		if self.wndBelt:
 			self.wndBelt.RefreshSlot()
+
+		## The page's cells were set anew: the trade windows lock theirs again.
+		self.RefreshLockedSlots()
 
 	def RefreshEquipSlotWindow(self):
 		getItemVNum=player.GetItemIndex
@@ -653,6 +756,64 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem
+
+	## The tradable icon (NOVA-13; OLD uiInventory.py:1326-1400, the item lock
+	## branch left out): a window that holds an item of a bag cell locks the
+	## cell (no mouse event, a red cover) while the item sits there, and the
+	## trade window on top marks the cells whose items it refuses (a white
+	## cover). A cell is locked by its global number; only the visible page's
+	## cells show it, and a page change locks them again.
+	def BindWindow(self, wnd):
+		if wnd not in self.bindWnds:
+			self.bindWnds.append(wnd)
+
+	def GetInventoryPageIndex(self):
+		return self.inventoryPageIndex
+
+	def GetLocalSlotPos(self, globalSlotPos):
+		"""The visible page's cell of a bag cell, or None."""
+		first = self.inventoryPageIndex * player.INVENTORY_PAGE_SIZE
+		if first <= globalSlotPos < first + player.INVENTORY_PAGE_SIZE:
+			return globalSlotPos - first
+		return None
+
+	def SetCantMouseEventCell(self, globalSlotPos):
+		localSlotPos = self.GetLocalSlotPos(globalSlotPos)
+		if localSlotPos is not None:
+			SetSlotState(self.wndItem, "SetCantMouseEventSlot", localSlotPos)
+
+	def SetCanMouseEventCell(self, globalSlotPos):
+		localSlotPos = self.GetLocalSlotPos(globalSlotPos)
+		if localSlotPos is not None:
+			SetSlotState(self.wndItem, "SetCanMouseEventSlot", localSlotPos)
+
+	def RefreshLockedSlots(self):
+		for wnd in list(self.bindWnds):
+			if wnd.IsShow():
+				wnd.RefreshLockedSlot()
+
+	def GetOnTopWindow(self):
+		interface = getattr(self, "interface", None)
+		getOnTopWindow = getattr(interface, "GetOnTopWindow", None)
+		if getOnTopWindow:
+			return getOnTopWindow()
+		return player.ON_TOP_WND_NONE
+
+	def RefreshMarkSlots(self, localIndex=None):
+		## OLD's "if localIndex:" took cell 0 for the whole page.
+		onTopWnd = self.GetOnTopWindow()
+		if localIndex is not None:
+			localIndices = (localIndex,)
+		else:
+			localIndices = range(player.INVENTORY_PAGE_SIZE)
+
+		antiFlag = OnTopAntiFlag(onTopWnd)
+		for localSlotPos in localIndices:
+			globalSlotPos = self.__InventoryLocalSlotPosToGlobalSlotPos(localSlotPos)
+			if antiFlag and player.IsAntiFlagBySlot(player.INVENTORY, globalSlotPos, antiFlag):
+				SetSlotState(self.wndItem, "SetUnusableSlotOnTopWnd", localSlotPos)
+			else:
+				SetSlotState(self.wndItem, "SetUsableSlotOnTopWnd", localSlotPos)
 
 	def SellItem(self):
 		if self.sellingSlotitemIndex == player.GetItemIndex(self.sellingSlotNumber):
@@ -718,6 +879,10 @@ class InventoryWindow(ui.ScriptWindow):
 			elif player.SLOT_TYPE_MALL == attachedSlotType:
 				net.SendMallCheckoutPacket(attachedSlotPos, selectedSlotPos)
 
+			## An extra inventory item moves to the main inventory (OLD :1709-1710).
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType:
+				self.__SendMoveItemPacket(attachedSlotPos, selectedSlotPos, attachedItemCount, player.EXTRA_INVENTORY)
+
 			mouseModule.mouseController.DeattachObject()
 
 	def SelectItemSlot(self, itemSlotIndex):
@@ -733,6 +898,9 @@ class InventoryWindow(ui.ScriptWindow):
 
 			if player.SLOT_TYPE_INVENTORY == attachedSlotType:
 				self.__DropSrcItemToDestItemInInventory(attachedItemVID, attachedSlotPos, itemSlotIndex)
+
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType:
+				self.__DropSrcItemToDestItemInInventory(attachedItemVID, attachedSlotPos, itemSlotIndex, player.EXTRA_INVENTORY)
 
 			mouseModule.mouseController.DeattachObject()
 
@@ -781,7 +949,11 @@ class InventoryWindow(ui.ScriptWindow):
 
 				snd.PlaySound("sound/ui/pick.wav")
 
-	def __DropSrcItemToDestItemInInventory(self, srcItemVID, srcItemSlotPos, dstItemSlotPos):
+	def __DropSrcItemToDestItemInInventory(self, srcItemVID, srcItemSlotPos, dstItemSlotPos, srcWindow=player.INVENTORY):
+		if srcWindow == player.EXTRA_INVENTORY:
+			self.__DropExtraItemToDestItem(srcItemVID, srcItemSlotPos, dstItemSlotPos)
+			return
+
 		if srcItemSlotPos == dstItemSlotPos:
 			return
 	         	
@@ -820,6 +992,28 @@ class InventoryWindow(ui.ScriptWindow):
 			else:
 				self.__SendMoveItemPacket(srcItemSlotPos, dstItemSlotPos, 0)
 				#net.SendItemMovePacket(srcItemSlotPos, dstItemSlotPos, 0)
+
+	def __DropExtraItemToDestItem(self, srcItemVID, srcItemSlotPos, dstItemSlotPos):
+		## An extra inventory item (NOVA-16) dropped on an item here; never the
+		## same cell, EXTRA 10 on INVENTORY 10 is a real drop. A stone opens
+		## the attach dialog (OLD :2095-2120); a key, a scroll the server
+		## applies (71051/71052, ITEM_APPLICABLE) and the other use-on-item
+		## items are used on the target (OLD :1775-1779); an equipment item
+		## (a costume) dropped on a worn cell is worn; anything else moves.
+		if item.IsMetin(srcItemVID):
+			self.AttachMetinToItem(srcItemSlotPos, dstItemSlotPos, player.EXTRA_INVENTORY)
+
+		elif item.IsKey(srcItemVID) or \
+				(self.__GetItemFlags(srcItemSlotPos, player.EXTRA_INVENTORY) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE or \
+				item.GetUseType(srcItemVID) in self.USE_TYPE_TUPLE:
+			self.__SendUseItemToItemPacket(srcItemSlotPos, dstItemSlotPos, player.EXTRA_INVENTORY)
+
+		elif player.IsEquipmentSlot(dstItemSlotPos):
+			if item.IsEquipmentVID(srcItemVID):
+				self.__SendUseItemPacket(srcItemSlotPos, player.EXTRA_INVENTORY)
+
+		else:
+			self.__SendMoveItemPacket(srcItemSlotPos, dstItemSlotPos, 0, player.EXTRA_INVENTORY)
 
 	def __SellItem(self, itemSlotPos):
 		if not player.IsEquipmentSlot(itemSlotPos):
@@ -952,8 +1146,11 @@ class InventoryWindow(ui.ScriptWindow):
 		self.questionDialog.sourcePos = scrollSlotPos
 		self.questionDialog.targetPos = targetSlotPos
 
-	def AttachMetinToItem(self, metinSlotPos, targetSlotPos):
-		metinIndex = player.GetItemIndex(metinSlotPos)
+	def AttachMetinToItem(self, metinSlotPos, targetSlotPos, metinWindow=player.INVENTORY):
+		if metinWindow == player.INVENTORY:
+			metinIndex = player.GetItemIndex(metinSlotPos)
+		else:
+			metinIndex = player.GetItemIndex(metinWindow, metinSlotPos)
 		targetIndex = player.GetItemIndex(targetSlotPos)
 
 		item.SelectItem(metinIndex)
@@ -976,7 +1173,10 @@ class InventoryWindow(ui.ScriptWindow):
 		if player.ATTACH_METIN_OK != result:
 			return
 
-		self.attachMetinDialog.Open(metinSlotPos, targetSlotPos)
+		if metinWindow == player.INVENTORY:
+			self.attachMetinDialog.Open(metinSlotPos, targetSlotPos)
+		else:
+			self.attachMetinDialog.Open(metinSlotPos, targetSlotPos, metinWindow=metinWindow)
 
 
 		
@@ -1000,7 +1200,18 @@ class InventoryWindow(ui.ScriptWindow):
 					self.wndItem.SetUsableItem(True)
 					self.ShowToolTip(overSlotPos)
 					return
-				
+
+			## An extra inventory item over a target it can be used on (OLD :2163-2164).
+			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedItemType:
+				attachedSlotPos = mouseModule.mouseController.GetAttachedSlotNumber()
+				attachedItemVNum = mouseModule.mouseController.GetAttachedItemIndex()
+
+				if self.__CanUseSrcItemToDstItem(attachedItemVNum, attachedSlotPos, overSlotPos, player.EXTRA_INVENTORY):
+					self.wndItem.SetUseMode(True)
+					self.wndItem.SetUsableItem(True)
+					self.ShowToolTip(overSlotPos)
+					return
+
 		self.ShowToolTip(overSlotPos)
 
 
@@ -1025,10 +1236,10 @@ class InventoryWindow(ui.ScriptWindow):
 			
 		return False
 
-	def __CanUseSrcItemToDstItem(self, srcItemVNum, srcSlotPos, dstSlotPos):
+	def __CanUseSrcItemToDstItem(self, srcItemVNum, srcSlotPos, dstSlotPos, srcWindow=player.INVENTORY):
 		"Can this item be used on the target item?"
 
-		if srcSlotPos == dstSlotPos:
+		if srcWindow == player.INVENTORY and srcSlotPos == dstSlotPos:
 			return False
 
 		if item.IsRefineScroll(srcItemVNum):
@@ -1047,7 +1258,7 @@ class InventoryWindow(ui.ScriptWindow):
 			if player.CanUnlock(srcItemVNum, dstSlotPos):
 				return True
 
-		elif (player.GetItemFlags(srcSlotPos) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:
+		elif (self.__GetItemFlags(srcSlotPos, srcWindow) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:
 			return True
 
 		else:
@@ -1080,6 +1291,12 @@ class InventoryWindow(ui.ScriptWindow):
 				# MR-10: -- END OF -- Add belt support for accessory sockets
 
 		return False
+
+	@staticmethod
+	def __GetItemFlags(slotPos, window=player.INVENTORY):
+		if window == player.INVENTORY:
+			return player.GetItemFlags(slotPos)
+		return player.GetItemFlags(window, slotPos)
 
 	def __CanCleanBrokenMetinStone(self, dstSlotPos):
 		dstItemVNum = player.GetItemIndex(dstSlotPos)
@@ -1240,6 +1457,10 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.wndBelt:
 			self.wndBelt.SetTop()
 
+		## OLD uiInventory.py:2490-2492: the locks and marks again.
+		self.RefreshLockedSlots()
+		self.RefreshMarkSlots()
+
 	def OnPressEscapeKey(self):
 		self.Close()
 		return True
@@ -1259,9 +1480,73 @@ class InventoryWindow(ui.ScriptWindow):
 				self.wndDragonSoulRefine.AutoSetItem((player.INVENTORY, slotIndex), 1)
 				return
 
+		if self.__UseItemWithModifier(slotIndex):
+			mouseModule.mouseController.DeattachObject()
+			self.OverOutItem()
+			return
+
 		self.__UseItem(slotIndex)
 		mouseModule.mouseController.DeattachObject()
 		self.OverOutItem()
+
+	def IsSafeboxOpen(self):
+		"""Whether the safebox window shows (NEW's safebox module has no
+		IsOpen, OLD's did)."""
+		interface = getattr(self, "interface", None)
+		isSafeboxOpen = getattr(interface, "IsSafeboxOpen", None)
+		return bool(isSafeboxOpen and isSafeboxOpen())
+
+	def __UseItemWithModifier(self, slotIndex):
+		"""OLD :2605-2620 (NOVA-16) for a bag cell: Shift + right-click puts
+		the item into the open safebox, Ctrl + right-click into the open
+		trade, otherwise Ctrl + right-click moves a costume or one of the
+		four scrolls to the special inventory (the tooltip's hint lines say
+		so); any other item is used. True when it sent something."""
+		isShift = app.IsPressed(app.DIK_LSHIFT)
+		isControl = app.IsPressed(app.DIK_LCONTROL)
+		isAlt = app.IsPressed(app.DIK_LALT)
+		if not isShift and not isControl and not isAlt:
+			return False
+
+		if slotIndex >= player.INVENTORY_PAGE_SIZE * player.INVENTORY_PAGE_COUNT:
+			return False
+
+		## Alt + right-click on a stack of chests asks how many to open
+		## (NOVA-81; OLD :2533-2565).
+		if isAlt and player.GetItemCount(slotIndex) > 1 and IsMultiOpenItem(player.GetItemIndex(slotIndex)):
+			self.OpenMultiUseDialog(player.INVENTORY, slotIndex, player.GetItemCount(slotIndex))
+			return True
+
+		if isShift and self.IsSafeboxOpen():
+			net.SendSafeboxCheckinPacket(player.INVENTORY, slotIndex, SafeboxCheckinCell(player.GetItemIndex(slotIndex)))
+			return True
+
+		if isControl:
+			import exchange # the client's; imported here, as the item windows' stand-ins have none
+			if exchange.isTrading():
+				net.SendExchangeItemAddPacket(player.INVENTORY, slotIndex, 0)
+				return True
+
+			if IsExtraSharedItem(player.GetItemIndex(slotIndex)):
+				net.SendItemTransferPacket(player.INVENTORY, slotIndex, player.EXTRA_INVENTORY)
+				return True
+
+		return False
+
+	def OpenMultiUseDialog(self, window, slotIndex, itemCount):
+		self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)
+		self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickMultiUse))
+		self.dlgPickMoney.Open(min(itemCount, GACHA_MULTI_OPEN_MAX))
+		self.dlgPickMoney.multiUseItemPos = (window, slotIndex)
+
+	def OnPickMultiUse(self, count):
+		(window, slotIndex) = self.dlgPickMoney.multiUseItemPos
+		# Prevent item usage while private shop is open
+		if uiPrivateShopBuilder.IsBuildingPrivateShop():
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.USE_ITEM_FAILURE_PRIVATE_SHOP)
+			return
+
+		net.SendItemMultiUsePacket(window, slotIndex, min(count, GACHA_MULTI_OPEN_MAX))
 
 	def __UseItem(self, slotIndex):
 		ItemVNum = player.GetItemIndex(slotIndex)
@@ -1287,29 +1572,40 @@ class InventoryWindow(ui.ScriptWindow):
 		self.__SendUseItemPacket(self.questionDialog.slotIndex)
 		self.OnCloseQuestionDialog()		
 
-	def __SendUseItemToItemPacket(self, srcSlotPos, dstSlotPos):
+	## The three senders send a main inventory cell as before, and a cell of
+	## another source window (the extra inventory, NOVA-16) with its window.
+	def __SendUseItemToItemPacket(self, srcSlotPos, dstSlotPos, srcWindow=player.INVENTORY):
 		# Prevent item usage while private shop is open
 		if uiPrivateShopBuilder.IsBuildingPrivateShop():
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.USE_ITEM_FAILURE_PRIVATE_SHOP)
 			return
 
-		net.SendItemUseToItemPacket(srcSlotPos, dstSlotPos)
+		if srcWindow == player.INVENTORY:
+			net.SendItemUseToItemPacket(srcSlotPos, dstSlotPos)
+		else:
+			net.SendItemUseToItemPacket(srcWindow, srcSlotPos, player.INVENTORY, dstSlotPos)
 
-	def __SendUseItemPacket(self, slotPos):
+	def __SendUseItemPacket(self, slotPos, srcWindow=player.INVENTORY):
 		# Prevent item usage while private shop is open
 		if uiPrivateShopBuilder.IsBuildingPrivateShop():
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.USE_ITEM_FAILURE_PRIVATE_SHOP)
 			return
 
-		net.SendItemUsePacket(slotPos)
-	
-	def __SendMoveItemPacket(self, srcSlotPos, dstSlotPos, srcItemCount):
+		if srcWindow == player.INVENTORY:
+			net.SendItemUsePacket(slotPos)
+		else:
+			net.SendItemUsePacket(srcWindow, slotPos)
+
+	def __SendMoveItemPacket(self, srcSlotPos, dstSlotPos, srcItemCount, srcWindow=player.INVENTORY):
 		# Prevent item movement while private shop is open
 		if uiPrivateShopBuilder.IsBuildingPrivateShop():
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.MOVE_ITEM_FAILURE_PRIVATE_SHOP)
 			return
 
-		net.SendItemMovePacket(srcSlotPos, dstSlotPos, srcItemCount)
+		if srcWindow == player.INVENTORY:
+			net.SendItemMovePacket(srcSlotPos, dstSlotPos, srcItemCount)
+		else:
+			net.SendItemMovePacket(srcWindow, srcSlotPos, player.INVENTORY, dstSlotPos, srcItemCount)
 	
 	def SetDragonSoulRefineWindow(self, wndDragonSoulRefine):
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:

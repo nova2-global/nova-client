@@ -1354,66 +1354,66 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 
 ## Window flags and the factory
 
-`assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default; `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file. `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself.
+`assets/root/nui_windows.py` decides which windows run on NovaUI. Each window has an id and a default, and since the design gaps every default is on: a player's look is the theme's (`UI_THEME`, tinted by `UI_COLORS`), and the classic theme draws the legacy look on NovaUI. `config/metin2.cfg` overrides the defaults with `UI_NUI_WINDOWS`, comma-separated `+id` (on) and `-id` (off) tokens, which `systemSetting.GetUINuiWindows()` reads and the client keeps when it saves the file: `-id` takes a window back to the legacy one for a diagnosis, and `-all` makes a legacy client (the live kit's legacy runs). `UI_NUI_LOGIN 1` means `+login` unless the string names `login` itself. The tests that compare a NovaUI window with the legacy one set `nui_windows.DEFAULT_ON` False (`nui_test_support.load_module`), so a window there is NovaUI only when the test names it; `nui_windows_test.ClientDefault` checks the client's defaults.
 
 | Id | Window | Default |
 |---|---|---|
-| `login` | the login board | off |
-| `dialogs` | the dialog kit | off |
-| `server-board` | the server and channel board | off |
-| `virtual-keyboard` | the virtual keyboard (needs the NovaUI login board) | off |
-| `locale-strip` | the locale flag strip | off |
-| `loading`, `empire`, `select`, `create` | the phase windows | off |
-| `taskbar` | the taskbar: gauges, quickslots, the mouse-button pickers | off |
-| `expanded-taskbar` | the expanded taskbar (the dragon soul button) | off |
-| `energy-bar` | the energy bar | off |
-| `gift-box` | the gift icon (needs the NovaUI taskbar, which makes it) | off |
-| `game-buttons` | the stat, skill, help, quest, build and observer buttons | off |
-| `affects` | the affect icons | off |
-| `target` | the target board | off |
-| `party` | the party boards and menu | off |
-| `edge-buttons` | the quest and whisper edge buttons | off |
-| `tip-board`, `big-board` | the tip and big notice boards | off |
-| `map-name` | the map name splash | off |
-| `chat` | the chat window and its input | off |
-| `chat-log` | the chat log | off |
-| `minimap` | the minimap: frame, controls and the map view | off |
-| `atlas` | the atlas (needs the NovaUI minimap, which makes it) | off |
-| `player-gauge` | the HP gauge over the player's head | off |
-| `shop-signs` | the private shop signs | off |
-| `guild-war` | the guild war score boards | off |
-| `system-menu` | the system menu (Escape in game) | off |
-| `system-options` | the system options, the music list and the Interface section | off |
-| `game-options` | the game options | off |
-| `restart` | the restart dialog after a death | off |
-| `help` | the help window | off |
-| `point-reset` | the point reset questions (needs the NovaUI dialog kit) | off |
-| `quest` | the quest dialog, its letterbox and fades, and the HUD hiding it causes (needs the Wave 5a engine) | off |
-| `guild-building` | the guild building placement window | off |
-| `web` | the web window around the WebView2 page, the mall (needs the Wave 5a engine) | off |
-| `console` | the developer console, only where legacy opens it | off |
-| `inventory` | the inventory with its costume and belt windows (needs the Wave 3b engine) | off |
-| `tooltips` | the item, skill and link tooltips | off |
-| `refine` | the refine dialogs (`RefineDialog`, `RefineDialogNew`) | off |
-| `attach-metin` | the attach stone dialog | off |
-| `select-item` | the select item window of a quest's `[SELECT_ITEM]` | off |
-| `character` | the character window: status, skills, emotes, quests (needs the Wave 3c engine) | off |
-| `dragon-soul` | the dragon soul inventory (needs the Wave 3c engine) | off |
-| `dragon-soul-refine` | the dragon soul refine window (needs the Wave 3c engine) | off |
-| `exchange` | the exchange (needs the Wave 4 engine) | off |
-| `shop` | the NPC shop and a player's shop view | off |
-| `private-shop` | the private shop builder | off |
-| `safebox` | the safebox, the password dialog it shares with the mall, the change-password dialog | off |
-| `mall` | the item mall storage | off |
-| `equipment-view` | the equipment view of another player | off |
-| `messenger` | the messenger | off |
-| `whisper` | the whisper dialogs | off |
-| `guild` | the guild window and its grade name dialog | off |
-| `guild-war-dialogs` | the guild war declare and accept dialogs | off |
-| `guild-mark` | the guild mark and symbol lists | off |
-| `maintenance` | the maintenance countdown (NOVA-58, P18) | off |
+| `login` | the login board | on |
+| `dialogs` | the dialog kit | on |
+| `server-board` | the server and channel board | on |
+| `virtual-keyboard` | the virtual keyboard (needs the NovaUI login board) | on |
+| `locale-strip` | the locale flag strip | on |
+| `loading`, `empire`, `select`, `create` | the phase windows | on |
+| `taskbar` | the taskbar: gauges, quickslots, the mouse-button pickers | on |
+| `expanded-taskbar` | the expanded taskbar (the dragon soul button) | on |
+| `energy-bar` | the energy bar | on |
+| `gift-box` | the gift icon (needs the NovaUI taskbar, which makes it) | on |
+| `game-buttons` | the stat, skill, help, quest, build and observer buttons | on |
+| `affects` | the affect icons | on |
+| `target` | the target board | on |
+| `party` | the party boards and menu | on |
+| `edge-buttons` | the quest and whisper edge buttons | on |
+| `tip-board`, `big-board` | the tip and big notice boards | on |
+| `map-name` | the map name splash | on |
+| `chat` | the chat window and its input | on |
+| `chat-log` | the chat log | on |
+| `minimap` | the minimap: frame, controls and the map view | on |
+| `atlas` | the atlas (needs the NovaUI minimap, which makes it) | on |
+| `player-gauge` | the HP gauge over the player's head | on |
+| `shop-signs` | the private shop signs | on |
+| `guild-war` | the guild war score boards | on |
+| `system-menu` | the system menu (Escape in game) | on |
+| `system-options` | the system options, the music list and the Interface section | on |
+| `game-options` | the game options | on |
+| `restart` | the restart dialog after a death | on |
+| `help` | the help window | on |
+| `point-reset` | the point reset questions (needs the NovaUI dialog kit) | on |
+| `quest` | the quest dialog, its letterbox and fades, and the HUD hiding it causes (needs the Wave 5a engine) | on |
+| `guild-building` | the guild building placement window | on |
+| `web` | the web window around the WebView2 page, the mall (needs the Wave 5a engine) | on |
+| `console` | the developer console, only where legacy opens it | on |
+| `inventory` | the inventory with its costume and belt windows (needs the Wave 3b engine) | on |
+| `tooltips` | the item, skill and link tooltips | on |
+| `refine` | the refine dialogs (`RefineDialog`, `RefineDialogNew`) | on |
+| `attach-metin` | the attach stone dialog | on |
+| `select-item` | the select item window of a quest's `[SELECT_ITEM]` | on |
+| `character` | the character window: status, skills, emotes, quests (needs the Wave 3c engine) | on |
+| `dragon-soul` | the dragon soul inventory (needs the Wave 3c engine) | on |
+| `dragon-soul-refine` | the dragon soul refine window (needs the Wave 3c engine) | on |
+| `exchange` | the exchange (needs the Wave 4 engine) | on |
+| `shop` | the NPC shop and a player's shop view | on |
+| `private-shop` | the private shop builder | on |
+| `safebox` | the safebox, the password dialog it shares with the mall, the change-password dialog | on |
+| `mall` | the item mall storage | on |
+| `equipment-view` | the equipment view of another player | on |
+| `messenger` | the messenger | on |
+| `whisper` | the whisper dialogs | on |
+| `guild` | the guild window and its grade name dialog | on |
+| `guild-war-dialogs` | the guild war declare and accept dialogs | on |
+| `guild-mark` | the guild mark and symbol lists | on |
+| `maintenance` | the maintenance countdown (NOVA-58, P18) | on |
 
-**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
+**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). `all` stands for every window. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on, and `-all,+login` is a legacy client with the NovaUI login. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
 
 **Wave 4 groups:** `trade` for the six Wave 4 trade windows (`exchange` to `equipment-view`) and `social` for the five social ones (`messenger` to `guild-mark`). With them and `wave3c` the demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c,+trade,+social` (58 of its 200 characters).
 

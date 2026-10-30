@@ -3,12 +3,14 @@
 Each is an https address, or "" while there is none: the screen draws no
 link without an address. FORGOT_PASSWORD falls back to WEBSITE when it is
 "" (an account's password is reset on the website). Fill them in here; the
-login screen reads them when it opens."""
+login screen reads them when it opens. Eddy gave Discord and the website
+(2026-10-30); the server rules have no address yet, so that link is not
+drawn."""
 
 import os
 
-DISCORD = ""
-WEBSITE = ""
+DISCORD = "https://discord.gg/T2y7qb6Er"
+WEBSITE = "https://nova2.global"
 # The rules a new account accepts on the Create account tab.
 SERVER_RULES = ""
 FORGOT_PASSWORD = ""

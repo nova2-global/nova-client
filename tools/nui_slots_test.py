@@ -408,6 +408,14 @@ class Cells(SlotsTest):
         self.controller.AttachObject("legacy", QUICK, 0, 0)
         self.assertEqual(self.m.attached_info()[4:], (1, 2), "a quick slot's item has its size")
 
+    def test_an_extra_inventory_item_has_its_size_too(self):
+        # Wave 4b: an item picked from the extra inventory shows its whole
+        # footprint over the bag or the safebox, as the inventory's does.
+        self.m.player.SLOT_TYPE_EXTRA_INVENTORY = 12
+        self.game.give(3, 10, 1, size=(1, 2))
+        self.controller.AttachObject("legacy", 12, 3, 10, 1)
+        self.assertEqual(self.m.attached_info(), (12, 3, 10, 1, 1, 2))
+
 
 class FootprintVectors(SlotsTest):
     """footprint_states and the CheckMoving rule against every case of

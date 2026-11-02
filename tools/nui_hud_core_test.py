@@ -1212,6 +1212,8 @@ EXPECTED_SITES = {
                            ("make", "game-buttons", "uiGameButton.GameButtonWindow", "nui_game_buttons.GameButtonWindow"),
                            ("make", "character", "uiCharacter.CharacterWindow", "nui_character.CharacterWindow"),
                            ("make", "inventory", "uiInventory.InventoryWindow", "nui_inventory.InventoryWindow"),
+                           ("make", "extra-inventory", "uiExtraInventory.ExtraInventoryWindow",
+                            "nui_extra_inventory.ExtraInventoryWindow"),
                            ("make", "dragon-soul", "uiDragonSoul.DragonSoulWindow", "nui_dragon_soul.DragonSoulWindow"),
                            ("make", "dragon-soul-refine", "uiDragonSoul.DragonSoulRefineWindow",
                             "nui_dragon_soul_refine.DragonSoulRefineWindow"),

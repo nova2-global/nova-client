@@ -107,6 +107,8 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("guild", True),              # the guild window and its grade name dialog
 	("guild-war-dialogs", True),  # the guild war declare and accept dialogs
 	("guild-mark", True),         # the guild mark and symbol lists
+	# Wave 4b (NOVA-16): the special inventory, in the items group.
+	("extra-inventory", True),    # the special inventory (Inventory+)
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
 	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
@@ -118,7 +120,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
-	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item"),
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view"),
 	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"),
@@ -161,6 +163,8 @@ ON_DEMAND_DOCUMENTS = (
 	("refine", ("refine",)),
 	("attach-metin", ("attach-metin",)),
 	("select-item", ("select-item",)),
+	# Wave 4b: the special inventory, kept after its first open as the inventory.
+	("extra-inventory", ("extra-inventory",)),
 	# The tooltips load at their first show and stay loaded, hidden and empty,
 	# until the phase ends (P14 spec D8); listed for the prewarm.
 	("tooltips", ("item-tooltip", "skill-tooltip", "link-tooltip")),

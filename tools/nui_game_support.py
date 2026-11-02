@@ -2223,7 +2223,33 @@ class LegacySlotWindow(object):
     @staticmethod
     def empty():
         return {"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False, "cover": None,
-                "unavailable": False, "always_cover": False}
+                "unavailable": False, "always_cover": False, "in_use": False, "unusable_ontop": False}
+
+    # Wave 4b (NOVA-13): ui.SlotWindow's four wrappers of C1's slot states
+    # (SLOT_STATE_CANT_MOUSE_EVENT, SLOT_STATE_UNUSABLE); CSlotWindow's
+    # SetSlot and ClearSlot drop both. marks() is what is set.
+    def _mark(self, index, key, flag):
+        slot = self._slot(index)
+        if slot is not None:
+            slot[key] = flag
+
+    def SetCantMouseEventSlot(self, index):
+        self._mark(index, "in_use", True)
+
+    def SetCanMouseEventSlot(self, index):
+        self._mark(index, "in_use", False)
+
+    def SetUnusableSlotOnTopWnd(self, index):
+        self._mark(index, "unusable_ontop", True)
+
+    def SetUsableSlotOnTopWnd(self, index):
+        self._mark(index, "unusable_ontop", False)
+
+    def marks(self):
+        """{slot: (in use, unusable on top)} of the slots that hold an item and
+        have a mark, as CSlotWindow draws them (only item slots are washed)."""
+        return dict((index, (slot["in_use"], slot["unusable_ontop"])) for index, slot in self.slots.items()
+                    if slot["vnum"] and (slot["in_use"] or slot["unusable_ontop"]))
 
     def AppendSlot(self, index, x=0, y=0, w=32, h=32):
         self.slots[int(index)] = self.empty()
@@ -2244,12 +2270,14 @@ class LegacySlotWindow(object):
             return
         if slot["vnum"] != vnum:
             slot["active"] = False
-        slot.update({"vnum": int(vnum), "count": int(count), "locked": False, "disabled": False})
+        slot.update({"vnum": int(vnum), "count": int(count), "locked": False, "disabled": False, "in_use": False,
+                     "unusable_ontop": False})
 
     def ClearSlot(self, index):
         slot = self._slot(index)
         if slot is not None:
-            slot.update({"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False})
+            slot.update({"vnum": 0, "count": 0, "active": False, "locked": False, "disabled": False, "in_use": False,
+                         "unusable_ontop": False})
 
     def ActivateSlot(self, index):
         slot = self._slot(index)
@@ -2438,9 +2466,11 @@ class LegacyDialogWindow(object):
         self._name = name
         self.shown = False
 
-    def Open(self, *args):
+    def Open(self, *args, **kwargs):
+        """Wave 4b: a keyword argument (the attach dialog's metinWindow,
+        NOVA-16) is recorded after the positional ones as (name, value)."""
         self.shown = True
-        self._game.log.append((self._name + ".Open", args))
+        self._game.log.append((self._name + ".Open", args + tuple(sorted(kwargs.items()))))
 
     def Close(self):
         self.shown = False
@@ -3794,7 +3824,9 @@ W4_COMPARED = ("player", "net", "mouse", "app", "shop", "safebox", "exchange", "
 # The client's constants the Wave 4 legacy modules read (PythonExchangeModule.cpp,
 # PythonShop.cpp, PythonSafeBox.cpp, PythonGuild.cpp, PythonCharacterModule.cpp,
 # PythonNetworkStreamModule.cpp).
-W4_EXCHANGE_CONSTANTS = {"EXCHANGE_ITEM_MAX_NUM": 12}
+# Wave 4b (NOVA-12): the client's 24-slot exchange, 6 x 4
+# (PythonExchangeModule.cpp at nova-client-src feature/port-wave-4b).
+W4_EXCHANGE_CONSTANTS = {"EXCHANGE_ITEM_MAX_NUM": 24, "EXCHANGE_COLUMNS": 6, "EXCHANGE_ROWS": 4}
 W4_SHOP_CONSTANTS = {"SHOP_SLOT_COUNT": 40, "SHOP_COIN_TYPE_GOLD": 0, "SHOP_COIN_TYPE_SECONDARY_COIN": 1}
 # SAFEBOX_PAGE_COUNT_MAX and SAFEBOX_MAX_NUM: CPythonSafeBox's constants since
 # the foundation cut (nova-client-src a9976fc), which uisafebox.py reads since
@@ -3823,8 +3855,9 @@ def w4_state():
     messenger's "blocked" the client's block list in order (NOVA-47:
     messenger.GetBlockedList, IsBlocked)."""
     return {
-        "exchange": {"self": [None] * 12, "target": [None] * 12, "self_elk": 0, "target_elk": 0,
-                     "self_accept": False, "target_accept": False, "target_name": "", "target_level": 0},
+        "exchange": {"self": [None] * 24, "target": [None] * 24, "self_elk": 0, "target_elk": 0,
+                     "self_accept": False, "target_accept": False, "target_name": "", "target_level": 0,
+                     "self_race": 0, "target_race": 0, "self_level": 0},
         "shop": {"open": False, "private": False, "mine": False, "tabs": [{"name": "", "items": [None] * 40, "coin": 0}],
                  "stock": {}, "prices": {}, "built": None},
         "safebox": {"rows": 27, "items": {}, "money": 0, "mall_size": 0, "mall": {}},
@@ -3888,6 +3921,10 @@ def install_wave4_ui(game):
         define(exchange, "GetAcceptFrom" + who, lambda key=key: w4["exchange"][key + "_accept"])
     define(exchange, "GetNameFromTarget", lambda: w4["exchange"]["target_name"])
     define(exchange, "GetLevelFromTarget", lambda: w4["exchange"]["target_level"])
+    # C1's getters (wave 4b, NOVA-12): set at START; 0 for a partner out of view.
+    define(exchange, "GetRaceFromSelf", lambda: w4["exchange"].get("self_race", 0))
+    define(exchange, "GetRaceFromTarget", lambda: w4["exchange"].get("target_race", 0))
+    define(exchange, "GetLevelFromSelf", lambda: w4["exchange"].get("self_level", 0))
     game.put("exchange", exchange)
 
     safebox = Recording("safebox", log, **W4_SAFEBOX_CONSTANTS)
@@ -4265,3 +4302,86 @@ def load_wave4_legacy(game, social=False):
     for name, file_name in names:
         loaded[name] = game.load(name, file_name)
     return loaded
+
+
+# --- Wave 4b (NOVA-16): the special inventory (uiextrainventory.py) --------------------------------
+
+# C1's constants (nova-client-src feature/port-wave-4b: GameType.h,
+# PythonPlayerModule.cpp): the extra window and its slot type, five
+# categories of 5 x 9 pages, and the trade windows on top
+# (player.ON_TOP_WND_*); module_constants() wins where it has them.
+W4B_EXTRA_PLAYER_CONSTANTS = {
+    "EXTRA_INVENTORY": 6, "SLOT_TYPE_EXTRA_INVENTORY": 12, "EXTRA_INVENTORY_PAGE_COLUMN": 5,
+    "EXTRA_INVENTORY_PAGE_ROW": 9, "EXTRA_INVENTORY_PAGE_SIZE": 45, "EXTRA_INVENTORY_PAGE_COUNT": 32,
+    "EXTRA_INVENTORY_SLOT_COUNT": 1440, "EXTRA_INVENTORY_CATEGORY_COUNT": 5, "EXTRA_INVENTORY_COSTUME_PAGE_COUNT": 12,
+    "ON_TOP_WND_NONE": 0, "ON_TOP_WND_SHOP": 1, "ON_TOP_WND_EXCHANGE": 2, "ON_TOP_WND_SAFEBOX": 3,
+    "ON_TOP_WND_PRIVATE_SHOP": 4,
+}
+# C1's player.GetExtraInventoryCategoryRange: scrolls, materials, stones and
+# chests five pages each, the costumes twelve; an unknown category (1440, 1440).
+EXTRA_CATEGORY_RANGES = ((0, 225), (225, 450), (450, 675), (675, 900), (900, 1440))
+# item.ITEM_TYPE_GACHA (ItemData.h) and the anti flags uiinventory.OnTopAntiFlag
+# reads, where the item module has none.
+W4B_EXTRA_ITEM_CONSTANTS = {"ITEM_TYPE_GACHA": 38, "ANTIFLAG_GIVE": 1 << 13, "ANTIFLAG_SELL": 1 << 14,
+                            "ITEM_ANTIFLAG_MYSHOP": 1 << 16, "ANTIFLAG_MYSHOP": 1 << 16}
+
+
+def install_extra_inventory(game):
+    """Adds to game (after install_wave3b_ui) what uiextrainventory.py uses
+    beyond the Wave 3b windows' stand-ins:
+    - the player module's W4B_EXTRA_PLAYER_CONSTANTS and C1's functions over
+      the Game's items (an extra item is given at (EXTRA_INVENTORY, cell)):
+      GetExtraInventoryCategoryRange (EXTRA_CATEGORY_RANGES), the 3-argument
+      IsAntiFlagBySlot(window, cell, flag) (Game.antiflags by vnum),
+      GetItemLink and CanUnlock with a window;
+    - item.GetItemType (Game.item_types by vnum) and W4B_EXTRA_ITEM_CONSTANTS
+      where the item module has no such int;
+    - an exchange module whose isTrading answers Game.trading, and a safebox
+      module (uiinventory.SafeboxCheckinCell: Game.safebox_items {cell:
+      vnum}, Game.safebox_cells), each only where the world has none;
+    - the Interface stand-in's IsSafeboxOpen (Game.safebox_open),
+      GetOnTopWindow (Game.on_top) and ToggleExtraInventoryWindow (recorded)."""
+    modules = game.modules
+    for attribute, value in (("trading", False), ("safebox_open", False), ("on_top", 0), ("item_types", {}),
+                             ("safebox_items", {}), ("safebox_cells", 90), ("antiflags", {})):
+        if not hasattr(game, attribute):
+            setattr(game, attribute, value)
+    player, item = modules["player"], modules["item"]
+    for name, value in _client_values(W4B_EXTRA_PLAYER_CONSTANTS, "player").items():
+        setattr(player, name, value)
+    known = module_constants().get("item", {})
+    for name, value in W4B_EXTRA_ITEM_CONSTANTS.items():
+        if not isinstance(item.__dict__.get(name), int):
+            setattr(item, name, known.get(name, value))
+
+    define(player, "GetExtraInventoryCategoryRange",
+           lambda category: EXTRA_CATEGORY_RANGES[category] if 0 <= category < len(EXTRA_CATEGORY_RANGES)
+           else (1440, 1440))
+
+    def anti_flag_by_slot(*args):
+        return bool(game.antiflags.get(game._item_at(*args[:-1])["vnum"], 0) & args[-1])
+    define(player, "IsAntiFlagBySlot", anti_flag_by_slot)
+    define(player, "GetItemLink", lambda *at: "|cfff1e6c0|Hitem:%x:0:0:0:0|h[item %d]|h|r"
+           % (game._item_at(*at)["vnum"], game._item_at(*at)["vnum"]))
+    define(player, "CanUnlock", lambda vnum, *at: True)
+    if "GetItemType" not in item.__dict__:
+        define(item, "GetItemType", lambda: game.item_types.get(item.selected[0], 0))
+
+    if "exchange" not in modules:
+        game.put("exchange", Recording("exchange", game.log))
+    exchange = modules["exchange"]
+    if "isTrading" not in exchange.__dict__:
+        define(exchange, "isTrading", lambda: bool(game.trading))
+    if "safebox" not in modules:
+        safebox = Recording("safebox", game.log, SAFEBOX_SLOT_X_COUNT=5, SAFEBOX_SLOT_Y_COUNT=9, SAFEBOX_PAGE_SIZE=45,
+                            SAFEBOX_PAGE_COUNT_MAX=5)
+        define(safebox, "GetItemID", lambda cell: game.safebox_items.get(cell, 0))
+        define(safebox, "GetCurrentSafeboxSize", lambda: game.safebox_cells)
+        game.put("safebox", safebox)
+
+    interface = getattr(game, "interface", None)
+    if interface is not None:
+        interface.IsSafeboxOpen = lambda: bool(game.safebox_open)
+        interface.GetOnTopWindow = lambda: game.on_top
+        interface.ToggleExtraInventoryWindow = lambda: game.log.append(("interface.ToggleExtraInventoryWindow", ()))
+    return game

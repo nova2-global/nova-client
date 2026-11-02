@@ -1,0 +1,149 @@
+/* The special inventory's modern look, in the inventory's (its title bar,
+   its segmented page tabs and its lean grid): the page tabs of the shown
+   category in a segmented well over the grid (one share of the row each,
+   the page shown raised; the costumes' twelve in two rows of six), the
+   page as a lean 5 x 9 grid on the 44dp pitch, and beside it the five
+   categories as a column of the same well. The controller places the
+   window at legacy's place at its first show (left of the inventory, its
+   top at the inventory's) and keeps the place the player drags it to; the
+   sheet's place frames it in its snapshots. Classic (legacy's 270 x 377
+   board, the small tab art for the pages, the large buttons for the
+   categories, at the uiscript's places):
+   skins/classic/windows/extra-inventory.rcss. */
+
+body.xinv
+{
+	left: 16dp;
+	top: 16dp;
+	width: 344dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.xinv button
+{
+	tab-index: none;
+	focus: none;
+}
+.xinv__body
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	padding: var(--space-2);
+	gap: var(--space-2);
+}
+.xinv__main
+{
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 auto;
+	width: 216dp;
+	gap: var(--space-2);
+}
+
+/* --- The page tabs: a segmented well, the page shown raised ------------------ */
+
+.xinv-pages
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	box-sizing: border-box;
+	gap: 2dp;
+	width: 216dp;
+	padding: 3dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+}
+.xinv-page
+{
+	flex: 1 1 0;
+	min-width: 0;
+	height: 24dp;
+	padding: 0;
+	line-height: 22dp;
+}
+/* The costumes' twelve pages: two rows of six. */
+body.xinv.xinv--pages-many .xinv-page
+{
+	flex: 0 0 33dp;
+}
+.xinv-pages .xinv-page
+{
+	border-color: transparent;
+	border-radius: 6dp;
+	background-color: transparent;
+	color: var(--text-muted);
+}
+.xinv-pages .xinv-page:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.xinv-pages .xinv-page.is-selected
+{
+	background-color: var(--surface-raised);
+	border-color: var(--border);
+	color: var(--text);
+}
+/* Labels take no pointer, so a press on one is its button's. */
+.xinv-page__label, .xinv-cat__label
+{
+	pointer-events: none;
+}
+
+/* --- The grid ------------------------------------------------------------- */
+
+.xinv-grid
+{
+	flex: 0 0 auto;
+}
+
+/* --- The categories: the same well as a column ---------------------------- */
+
+.xinv-cats
+{
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	gap: 2dp;
+	width: 104dp;
+	padding: 3dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+}
+.xinv-cat
+{
+	display: block;
+	width: 100%;
+	min-width: 0;
+	height: 28dp;
+	padding: 0 6dp;
+	line-height: 26dp;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.xinv-cats .xinv-cat
+{
+	border-color: transparent;
+	border-radius: 6dp;
+	background-color: transparent;
+	color: var(--text-muted);
+}
+.xinv-cats .xinv-cat:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.xinv-cats .xinv-cat.is-selected
+{
+	background-color: var(--surface-raised);
+	border-color: var(--border);
+	color: var(--text);
+}

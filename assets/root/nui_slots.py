@@ -439,7 +439,8 @@ def attached_info():
 	w = h = 1
 	item_types = (player.SLOT_TYPE_INVENTORY, getattr(player, "SLOT_TYPE_PRIVATE_SHOP", -2),
 	              getattr(player, "SLOT_TYPE_SHOP", -3), getattr(player, "SLOT_TYPE_SAFEBOX", -4),
-	              getattr(player, "SLOT_TYPE_MALL", -5), getattr(player, "SLOT_TYPE_DRAGON_SOUL_INVENTORY", -6))
+	              getattr(player, "SLOT_TYPE_MALL", -5), getattr(player, "SLOT_TYPE_DRAGON_SOUL_INVENTORY", -6),
+	              getattr(player, "SLOT_TYPE_EXTRA_INVENTORY", -8))
 	if vnum != getattr(player, "ITEM_MONEY", -1):
 		if slot_type in item_types:
 			item.SelectItem(vnum)

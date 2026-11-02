@@ -97,12 +97,13 @@ def item_cell(index, position, vnum, count=1, one=False, **states):
     return cell
 
 
-def grid(cols, rows, start, items, targets=None, unavailable=(), one=False, refine=False):
+def grid(cols, rows, start, items, targets=None, unavailable=(), one=False, refine=False, marks=False):
     """The cells of a cols x rows lean grid whose cell i shows position
     start + i: items {cell: (vnum, count, states)}, then the covered cells
     (nui_slots.mark_covered), the footprint's targets and the unavailable
     cells; with refine, every cell's refine level (0 but at a refined
-    item's anchor)."""
+    item's anchor); with marks, every cell's wave 4b trade marks
+    (nui_slots.MARK_KEYS: False but where an item's states set them)."""
     cells = [empty_cell(i) for i in range(cols * rows)]
     for index, (vnum, count, states) in items.items():
         cells[index] = item_cell(index, start + index, vnum, count, one, **states)
@@ -124,7 +125,16 @@ def grid(cols, rows, start, items, targets=None, unavailable=(), one=False, refi
     if refine:
         for index, cell in enumerate(cells):
             cell["refine"] = REFINE.get(items[index][0], 0) if index in items else 0
+    if marks:
+        for cell in cells:
+            for key in MARK_KEYS:
+                cell.setdefault(key, False)
     return cells
+
+
+# Wave 4b (NOVA-13): the trade marks a grid that shows them gives every cell
+# (nui_slots.MARK_KEYS).
+MARK_KEYS = ("in_use", "unusable_ontop")
 
 
 # The inventory's marks of an empty wear place (nui_inventory.WEAR_MARKS).
@@ -185,6 +195,8 @@ def inventory(limits, page, wear, bag, money, **rest):
         "has_costume": True,
         "has_dss": True,
         "has_mall": True,
+        # Wave 4b (NOVA-16): the special inventory's button.
+        "has_extra": True,
         "placed": False,
         # P14b: nothing attached, so an anchor's box covers its item.
         "bag_attaching": False,
@@ -221,12 +233,14 @@ SAMPLE_RAIL = [
 
 
 def today_bag(cols, rows, start):
-    """The sword and the glaive refined (+6, +5), as the reviewed board's."""
+    """The sword and the glaive refined (+6, +5), as the reviewed board's;
+    wave 4b's trade marks (NOVA-13): the blue potions held by a trade
+    window (in use) and the scroll the window on top refuses."""
     return grid(cols, rows, start, {
         0: (16, 1, {}), 2: (3005, 1, {}), 4: (27001, 200, {}), 9: (72723, 1, {"active": True}),
-        18: (13000, 1, {"target": "usable"}), 30: (12200, 1, {}), 35: (27002, 3, {}), 40: (25040, 1, {}),
-        44: (70043, 1, {}), 23: (28030, 1, {"picked": True})},
-        targets={21: "move", 26: "move"}, refine=True)
+        18: (13000, 1, {"target": "usable"}), 30: (12200, 1, {}), 35: (27002, 3, {"in_use": True}),
+        40: (25040, 1, {"unusable_ontop": True}), 44: (70043, 1, {}), 23: (28030, 1, {"picked": True})},
+        targets={21: "move", 26: "move"}, refine=True, marks=True)
 
 
 def hover_bag(cols, rows, start):
@@ -234,13 +248,13 @@ def hover_bag(cols, rows, start):
     page's bottom edge, with 1x1 items around them."""
     return grid(cols, rows, start, {
         30: (27001, 200, {}), 31: (3000, 1, {}), 32: (72723, 1, {}), 37: (10, 1, {}), 33: (12200, 1, {}),
-        43: (25040, 1, {}), 44: (28030, 1, {})}, refine=True)
+        43: (25040, 1, {}), 44: (28030, 1, {})}, refine=True, marks=True)
 
 
 def foundation_bag(cols, rows, start):
     return grid(cols, rows, start, {
         0: (3000, 1, {}), 1: (10, 1, {}), 3: (27001, 2000, {}), 4: (27002, 1999, {}), 11: (72723, 1, {"active": True}),
-        25: (12200, 1, {}), 33: (11200, 1, {}), 42: (25040, 1, {}), 44: (28030, 2, {})}, refine=True)
+        25: (12200, 1, {}), 33: (11200, 1, {}), 42: (25040, 1, {}), 44: (28030, 2, {})}, refine=True, marks=True)
 
 
 def costume(limits, filled, gender="male"):
@@ -281,8 +295,8 @@ def fixtures():
     return {
         ("inventory", ""): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999),
         ("inventory", "foundation"): inventory(FOUNDATION, 2, FOUNDATION_WEAR, foundation_bag, 2000000000000),
-        ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}, refine=True),
-                                          0),
+        ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}, refine=True,
+                                                                                         marks=True), 0),
         ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),
         ("inventory", "rail"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL),
         ("inventory", "rail-folded"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL,

@@ -1,0 +1,79 @@
+<rml>
+<head>
+	<!-- The special inventory (uiextrainventory.py ExtraInventoryWindow,
+	     uiscript extrainventorywindow.py; wave 4b, NOVA-16). While the
+	     extra-inventory flag is on, the Interface makes
+	     nui_extra_inventory.ExtraInventoryWindow (controller
+	     assets/root/nui_extra_inventory.py), a subclass of the legacy class
+	     whose widgets are proxies: the categories and pages, every pick,
+	     move, use, transfer, split, sell, link, the Alt + right-click
+	     multi-open of a stack of chests and its count dialog, the marks
+	     and locks of the trade windows, are legacy's code, and this
+	     document shows what legacy's refresh tells the proxies. The five
+	     category tabs (categories: their locale keys, in the server's
+	     order: scrolls, materials, stones, chests, costumes) and the page
+	     tabs of the shown category (pages: I to V, I to XII for the
+	     costumes), the page shown as a lean slot grid of
+	     EXTRA_INVENTORY_PAGE_SIZE cells (5 x 9) with the trade marks
+	     (is-in-use, is-unusable-ontop and their wash); every count comes
+	     from the limits module. Cell events reach the legacy handlers
+	     through nui_slots.LegacySlotEvents (pick and place through the
+	     legacy mouse controller). The board is kept, hidden, after its
+	     first open (nui_hud.KeptBoard): its cells and tabs go while it hides
+	     (cells_on, tabs_on). The body and its controls take no focus, so
+	     controls act on a left mousedown; the wheel over the board turns
+	     the page, as legacy's OnScrollWheel. It draws below the legacy UI
+	     layer (nui-below-legacy-ui), as legacy's window lived in it. A left
+	     or right press anywhere on it raises the window (board_press). -->
+	<title>extra-inventory</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="extra-inventory.rcss"/>
+</head>
+<body template="nui" id="extra-inventory" class="nui-window nui-fx nui-anim nui-below-legacy-ui xinv" data-model="extra_inventory"
+      data-event-mousedown="board_press(ev.button)" data-event-mousescroll="wheel(ev.wheel_delta_y)"
+      data-class-xinv--pages-many="size(pages) > 7">
+	<div class="nui-window__titlebar xinv__titlebar">
+		<handle id="xinv-title" class="nui-window__handle xinv__handle" move_target="#document">
+			<span class="nui-window__title xinv__title">@ui.KEYCHANGE_EXTRA_INVENTORY</span>
+		</handle>
+		<button id="xinv-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim xinv__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body xinv__body">
+		<div class="xinv__main">
+			<!-- The page tabs of the shown category (legacy shows the first
+			     GetPageCount of its twelve), the page shown raised. -->
+			<div id="xinv-pages" class="xinv-pages" data-for="g : tabs_on">
+				<button class="nui-button nui-anim xinv-page" data-for="p : pages" data-attr-id="'xinv-page-' + it_index"
+				        data-class-is-selected="it_index == page" data-event-mousedown="page_press(it_index, ev.button)"><span
+					class="xinv-page__label">{{ p.label }}</span></button>
+			</div>
+			<div id="xinv-grid" class="nui-slot-grid nui-slot-grid--lean xinv-grid" data-for="g : cells_on"
+			     data-class-is-attaching="attaching" data-class-nui-attach-right="attach_right"
+			     data-class-nui-slot-grid--cols-5="cols == 5">
+				<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'xinv-cell-' + it_index"
+				     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+				     data-class-is-picked="c.picked"
+				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
+				     data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
+				     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+				     data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop"
+				     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
+				     data-event-dblclick="cell_use(it_index)" data-event-mouseover="cell_over(it_index)"
+				     data-event-mouseout="cell_out(it_index)" data-event-nuidrop="cell_drop(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<div class="nui-slot__wash" data-if="c.in_use || c.unusable_ontop"></div>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				</div>
+			</div>
+		</div>
+		<!-- The five categories, the one shown raised. -->
+		<div id="xinv-cats" class="xinv-cats" data-for="g : tabs_on">
+			<button class="nui-button nui-anim xinv-cat" data-for="k : categories" data-attr-id="'xinv-cat-' + it_index"
+			        data-class-is-selected="it_index == category" data-event-mousedown="category_press(it_index, ev.button)"><span
+				class="xinv-cat__label">{{ k.label }}</span></button>
+		</div>
+	</div>
+</body>
+</rml>

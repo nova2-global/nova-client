@@ -1,0 +1,95 @@
+/* Cyberpunk overlay of nui/windows/extra-inventory/extra-inventory.rml, in
+   the inventory's cyberpunk look (skins/cyberpunk/windows/inventory.rcss):
+   the page tabs the skin's underlined tabs (tracked muted labels over the
+   row's dim line, the page shown lit, a soft cyan rising from a magenta
+   underline) instead of the modern segmented well; the categories the
+   same tabs stood on end: a dim line down the column's left, the category
+   shown lit with a magenta bar on that line and the cyan fading from it.
+   Layout stays the modern one: the page row keeps its 32dp (a 5dp gap
+   above 26dp tabs, whose underline covers the row's line), each category
+   its 28dp. */
+
+/* --- The page tabs ----------------------------------------------------------- */
+
+body.skin-cyberpunk.xinv .xinv-pages
+{
+	gap: 0;
+	padding: 5dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.xinv .xinv-pages .xinv-page
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-radius: 0;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	line-height: 24dp;
+	letter-spacing: 1dp;
+}
+/* The costumes' twelve: two rows of six, the modern 33dp less no gap. */
+body.skin-cyberpunk.xinv.xinv--pages-many .xinv-pages .xinv-page
+{
+	flex: 0 0 36dp;
+}
+body.skin-cyberpunk.xinv .xinv-pages .xinv-page:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.xinv .xinv-pages .xinv-page.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+
+/* --- The categories ---------------------------------------------------------- */
+
+body.skin-cyberpunk.xinv .xinv-cats
+{
+	gap: 0;
+	padding: 0 0 0 0;
+	border-width: 0 0 0 1dp;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.xinv .xinv-cats .xinv-cat
+{
+	margin-left: -1dp;
+	border-width: 0 0 0 2dp;
+	border-radius: 0;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	text-align: left;
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.xinv .xinv-cats .xinv-cat:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.xinv .xinv-cats .xinv-cat.is-selected
+{
+	border-color: transparent;
+	border-left-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--cyberpunk-holo-a) transparent);
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}

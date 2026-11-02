@@ -642,6 +642,47 @@ def find_lines(text, expected):
     return found
 
 
+class PackFile(object):
+    """system.py's pack_file: the store's copy of a file, read once, with no
+    close() and no with block."""
+
+    def __init__(self, data):
+        self.data = data
+
+    def read(self):
+        data, self.data = self.data, ""
+        return data
+
+    def readlines(self):
+        return self.read().splitlines(True)
+
+
+class ClientOpen(object):
+    """With it, open() is the client's (system.py): a PackFile for a read of
+    any path that exists (the asset store falls back to the disk), the real
+    open otherwise, and builtins.old_open the real open."""
+
+    def __enter__(self):
+        import builtins
+        self.real = builtins.open
+        real = self.real
+
+        def client_open(path, mode="rb"):
+            if mode in ("r", "rb") and os.path.exists(path):
+                with real(path, mode) as handle:
+                    return PackFile(handle.read())
+            return real(path, mode)
+        builtins.old_open = real
+        builtins.open = client_open
+        return self
+
+    def __exit__(self, *exc):
+        import builtins
+        builtins.open = self.real
+        del builtins.old_open
+        return False
+
+
 def stub_module(name, **members):
     module = types.ModuleType(name)
     for key, value in members.items():

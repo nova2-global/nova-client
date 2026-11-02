@@ -1119,6 +1119,17 @@ class SavedAccounts(OnePageTest):
         self.assertFalse(self.store.forget(logins[0]))
         self.assertNotIn(logins[0], [account["login"] for account in self.store.accounts()])
 
+    def test_the_client_reads_the_file_from_the_disk_not_from_the_asset_store(self):
+        # The r12 live test: the client's open() gave a pack_file, which has
+        # no with block, so the one-page login stopped at saved_channel().
+        self.save("kalinka", "Kalinka", [("Kalinka", 4, 75)])
+        self.store.set_setting("channel", "2")
+        with support.ClientOpen():
+            self.assertEqual(self.store.setting("channel"), "2")
+            self.assertTrue(self.store.set_setting("server", "2"))
+            self.assertEqual([account["login"] for account in self.store.accounts()], ["kalinka"])
+        self.assertEqual(self.store.setting("server"), "2")
+
     def test_since_words_the_time_as_the_screen_does(self):
         words = {"now": "now", "minutes": "%dm", "hours": "%dh", "yesterday": "y", "days": "%dd"}
         self.assertEqual([self.store.since(s, words) for s in (5, 600, 7200, 90000, 400000)],

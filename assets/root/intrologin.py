@@ -17,6 +17,7 @@ import ime
 import uiScriptLocale
 import debugInfo
 import nui_login
+import nui_accounts
 import nui_server_board
 
 # Multi-language hot-reload system
@@ -262,7 +263,8 @@ class LoginWindow(ui.ScriptWindow):
 
 	def __LoadChannelInfo(self):
 		try:
-			with open("config/channel.inf", "r") as file:
+			# The disk file: open() would hand back a pack_file (nui_accounts.disk_open).
+			with nui_accounts.disk_open("config/channel.inf", "r") as file:
 				lines=file.readlines()
 
 				if len(lines)>0:

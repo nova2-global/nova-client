@@ -47,12 +47,22 @@ def _clean(text):
 	return str(text).replace("\t", " ").replace("\r", " ").replace("\n", " ").strip()
 
 
+def disk_open(path, mode="r"):
+	"""The file on disk itself. The client's open() (system.py) hands back the
+	asset store's pack_file for any path the store says exists, and the store
+	falls back to the disk, so a config file comes back as a pack_file: a
+	copy read once, without close() or a with block. A file the client writes
+	and reads again must come through here."""
+	import builtins
+	return getattr(builtins, "old_open", open)(path, mode)
+
+
 def _read():
 	"""(accounts, settings) from the file; empty when there is none."""
 	accounts = []
 	settings = {}
 	try:
-		with open(PATH, "r") as handle:
+		with disk_open(PATH, "r") as handle:
 			lines = handle.readlines()
 	except (IOError, OSError):
 		return accounts, settings
@@ -88,7 +98,7 @@ def _write(accounts, settings):
 		folder = os.path.dirname(PATH)
 		if folder and not os.path.exists(folder):
 			os.mkdir(folder)
-		with open(PATH, "w") as handle:
+		with disk_open(PATH, "w") as handle:
 			handle.write("".join(lines))
 		return True
 	except (IOError, OSError):

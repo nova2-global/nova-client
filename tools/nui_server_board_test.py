@@ -163,10 +163,12 @@ class ServerBoardTest(unittest.TestCase):
         self.server_info = self.modules.load("serverInfo", "serverinfo.py")
         self.modules.load("nui_windows")
         self.m = self.modules.load("nui_server_board")
+        self.accounts = self.modules.load("nui_accounts")
         self.modules.restore()
         self.checker = Checker()
         self.net = support.stub_module("net", SetServerInfo=lambda text: None, SetMarkServer=lambda ip, port: None)
-        namespace = {"nui_server_board": self.m, "nui_login": self.nui_login, "serverInfo": self.server_info,
+        namespace = {"nui_server_board": self.m, "nui_login": self.nui_login, "nui_accounts": self.accounts,
+                     "serverInfo": self.server_info,
                      "ServerStateChecker": self.checker, "net": self.net, "app": self.app,
                      "localeInfo": support.LocaleInfo(), "wndMgr": support.make_wndmgr(),
                      "exception": support.stub_module("exception", Abort=self._abort),

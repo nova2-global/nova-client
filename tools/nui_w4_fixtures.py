@@ -108,13 +108,38 @@ def with_targets(cells, targets):
     return cells
 
 
+# Wave 4b (NOVA-12): the faces by race (uiexchange.py FACE_IMAGE_DICT, as
+# store paths) and the history's shown lines (EXCHANGE_LOG_LINE_COUNT).
+EXCHANGE_FACES = {0: "/icon/face/warrior_m.tga", 1: "/icon/face/assassin_w.tga", 2: "/icon/face/sura_m.tga",
+                  3: "/icon/face/shaman_w.tga", 4: "/icon/face/warrior_w.tga", 5: "/icon/face/assassin_m.tga",
+                  6: "/icon/face/sura_w.tga", 7: "/icon/face/shaman_m.tga"}
+EXCHANGE_LOG_LINE_COUNT = 3
+
+
+def exchange_log(name, *events):
+    """The history's shown lines as legacy's AppendExchangeLog leaves them:
+    each event ("ready", "you_accept", "you_abort", "accept", "abort") at
+    its time, the last EXCHANGE_LOG_LINE_COUNT shown, then empty lines."""
+    keys = {"ready": "NEW_EXCHANGE_YOU_READY", "you_accept": "NEW_EXCHANGE_YOU_ACCEPT",
+            "you_abort": "NEW_EXCHANGE_YOU_ABORT", "accept": "NEW_EXCHANGE_ACCEPT", "abort": "NEW_EXCHANGE_ABORT"}
+    lines = []
+    for index, event in enumerate(events):
+        stamp = "[14:%02d:%02d]" % (2 + index // 2, 7 + 24 * (index % 2))
+        text = game_text(keys[event])
+        lines.append(text % ((stamp, name) if event in ("accept", "abort") else (stamp,)))
+    shown = lines[-EXCHANGE_LOG_LINE_COUNT:]
+    return shown + [""] * (EXCHANGE_LOG_LINE_COUNT - len(shown))
+
+
 def exchange(limits, owner, target, owner_money, target_money, name_length, owner_accept=False, target_accept=False,
-             accept_down=False, accept_enabled=True, attaching=False, owner_targets=None):
+             accept_down=False, accept_enabled=True, attaching=False, owner_targets=None, races=(1, 2), level=75,
+             log=("ready", "accept")):
     cols = limits.EXCHANGE_COLUMNS
     n = limits.EXCHANGE_ITEM_MAX_NUM
     rows = n // cols
+    name = name_of(name_length)
     return {"exchange": {
-        "title": game_text("EXCHANGE_TITLE") % name_of(name_length),
+        "title": game_text("EXCHANGE_TITLE") % name,
         "cols": cols,
         "owner_cells": with_targets(typed_grid(cols, rows, SLOT_TYPE_EXCHANGE_OWNER, owner), owner_targets or {}),
         "target_cells": typed_grid(cols, rows, SLOT_TYPE_EXCHANGE_TARGET, target),
@@ -129,13 +154,37 @@ def exchange(limits, owner, target, owner_money, target_money, name_length, owne
         "owner_attaching": attaching,
         "target_attaching": attaching,
         "grids_on": [1],
+        "owner_face": EXCHANGE_FACES[races[0]],
+        "target_face": EXCHANGE_FACES[races[1]],
+        "target_name": name,
+        "target_level": game_text("NEW_EXCHANGE_LEVEL") % level,
+        "log_lines": exchange_log(name, *log),
+        # Legacy's Refresh tints an accepted side's slot base.
+        "owner_base_accepted": owner_accept,
+        "target_base_accepted": target_accept,
     }}
 
 
-EXCHANGE_OWNER = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 7: (27002, 3)}
-EXCHANGE_TARGET = {0: (3000, 1), 3: (10, 1), 1: (27003, 200), 2: (25040, 1), 6: (13000, 1)}
-EXCHANGE_OWNER_FOUNDATION = {0: (10, 1), 1: (3000, 1), 2: (27001, 2000), 3: (12200, 1), 7: (27002, 1999)}
-EXCHANGE_TARGET_FOUNDATION = {0: (3000, 1), 3: (10, 1), 1: (27003, 2000), 2: (25040, 1), 6: (13000, 1)}
+# On the 6 x 4 grids (wave 4b): a 1x2 sword and a 1x3 glaive on each side,
+# a 200 stack, a few more items toward the right.
+EXCHANGE_OWNER = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 8: (27002, 3), 4: (71027, 1),
+                  11: (28030, 1)}
+EXCHANGE_TARGET = {0: (3000, 1), 3: (10, 1), 1: (27003, 200), 2: (25040, 1), 7: (13000, 1), 5: (14000, 1),
+                   10: (73001, 1)}
+EXCHANGE_OWNER_FOUNDATION = {0: (10, 1), 1: (3000, 1), 2: (27001, 2000), 3: (12200, 1), 8: (27002, 1999),
+                             4: (71027, 1), 11: (28030, 1)}
+EXCHANGE_TARGET_FOUNDATION = {0: (3000, 1), 3: (10, 1), 1: (27003, 2000), 2: (25040, 1), 7: (13000, 1),
+                              5: (14000, 1), 10: (73001, 1)}
+# A full trade: all 24 display slots of each side hold or are covered by an
+# item (legacy's 24-slot window, NOVA-12).
+EXCHANGE_OWNER_FULL = {0: (27001, 200), 1: (27002, 150), 2: (27003, 100), 3: (12200, 1), 4: (13000, 1),
+                       5: (3000, 1), 6: (14000, 1), 7: (15000, 1), 8: (16000, 1), 9: (17000, 1), 10: (8000, 1),
+                       12: (25040, 1), 13: (28030, 1), 14: (28031, 1), 15: (28032, 1), 16: (10, 1), 18: (71027, 1),
+                       19: (72723, 1), 20: (73001, 1), 21: (70043, 1), 23: (28033, 1)}
+EXCHANGE_TARGET_FULL = {0: (10, 1), 1: (3000, 1), 2: (28034, 1), 3: (28035, 1), 4: (28036, 1), 5: (28037, 1),
+                        8: (28038, 1), 9: (28039, 1), 10: (28040, 1), 11: (11200, 1), 12: (41001, 1), 14: (27001, 5),
+                        15: (27002, 9), 16: (27003, 77), 19: (13000, 1), 20: (14000, 1),
+                        21: (15000, 1), 22: (16000, 1), 23: (17000, 1)}
 
 
 # --- the shop and the private shop builder (spec 5.2.6, 5.3.5) -----------------------------------
@@ -650,16 +699,26 @@ def social_fixtures():
 
 def trade_fixtures():
     return {
+        # The partner accepted: its side's slot base green; the history's
+        # ready line and the partner's accept.
         ("exchange", ""): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, target_accept=True),
         ("exchange", "foundation"): exchange(FOUNDATION, EXCHANGE_OWNER_FOUNDATION, EXCHANGE_TARGET_FOUNDATION,
-                                             1999999999999, 1234, 22, target_accept=True),
-        ("exchange", "empty"): exchange(TODAY, {}, {}, 0, 0, 12),
+                                             1999999999999, 1234, 22, target_accept=True, races=(7, 4),
+                                             level=FOUNDATION.PLAYER_LEVEL_MAX),
+        # Nothing offered, nobody accepted: the history's ready line alone.
+        ("exchange", "empty"): exchange(TODAY, {}, {}, 0, 0, 12, races=(0, 6), level=1, log=("ready",)),
+        # Both accepted: both bases green, the toggle down and disabled; five
+        # history lines, the last three shown.
         ("exchange", "accepted"): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, owner_accept=True,
-                                           target_accept=True, accept_down=True, accept_enabled=False),
-        # A 1x2 sword attached over the owner's cell 6: its footprint on 6 and
-        # 10, every cell its own target (P14b, the hit test's sweep).
+                                           target_accept=True, accept_down=True, accept_enabled=False,
+                                           log=("ready", "you_accept", "you_abort", "accept", "you_accept")),
+        # Every display slot of both sides filled (NOVA-12's 24).
+        ("exchange", "full"): exchange(TODAY, EXCHANGE_OWNER_FULL, EXCHANGE_TARGET_FULL, 25000000, 480000, 12,
+                                       races=(5, 3), level=99, log=("ready", "accept", "abort")),
+        # A 1x2 sword attached over the owner's cell 9: its footprint on 9 and
+        # 15, every cell its own target (P14b, the hit test's sweep).
         ("exchange", "attaching"): exchange(TODAY, EXCHANGE_OWNER, EXCHANGE_TARGET, 9999999, 1234, 12, attaching=True,
-                                            owner_targets={6: "move", 10: "move"}),
+                                            owner_targets={9: "move", 15: "move"}),
         ("shop", ""): shop(TODAY, SHOP_ITEMS),
         ("shop", "foundation"): shop(FOUNDATION, SHOP_ITEMS_FOUNDATION),
         ("shop", "tabs2"): shop(TODAY, SHOP_ITEMS, "middle", 0, down=(0,)),

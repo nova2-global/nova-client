@@ -1,18 +1,30 @@
-/* Classic skin overlay of nui/windows/exchange/exchange.rml: the legacy
-   exchange (uiscript exchangedialog.py) at 100%, 1dp to the legacy pixel:
-   the stone board, 282 x 167; the title bar at 8, 8, 266 wide, its title
-   centered; the middle bar (middlebar.sub) at 139, 31; the partner's block
-   at 10, 33 and the player's at 144, 33, each its grid at 0, 0 on the slot
-   base at the 32px pitch, the amount on parameter_slot_02.sub at 0, 102
-   (right-aligned at 59, 2 down), the lamp (accept_button_off.sub, on when
-   that side accepted) at 62, 101; the player's accept toggle on the small
-   button art at 85, 101. A disabled toggle keeps its down art, as legacy's
-   (CButton::Disable with no disable visual changes nothing). */
+/* Classic skin overlay of nui/windows/exchange/exchange.rml: wave 4b's legacy
+   exchange (uiscript exchangedialog.py, OLD's 24-slot window on NEW's art,
+   NOVA-12) at 100%, 1dp to the legacy pixel: the stone board, 442 x 307;
+   the title bar at 8, 8, 426 wide, its title centered; each side's block at
+   its face frame (box_face.sub, 53 x 53, the face 5 in; the partner's at
+   10, 34, the player's at 240, 34): its name at 60, 7 in it and the level
+   at 60, 25 (legacy's green), or "You" at 60, 7 (legacy's red); its grid
+   at 0, 58 (the uiscript's SIDE_Y, 92) on the slot base at the 32px pitch,
+   6 x 4, the base tinted green while that side accepted (legacy's
+   SetSlotBaseImage(0.35, 0.85, 0.35)); under it the amount on
+   parameter_slot_04.sub at 0, 191 (right-aligned 3 from its right end, 2
+   down) and the lamp (accept_button_off.sub, on when that side accepted)
+   at 119, 190; the middle bar (middlebar.sub) at 219, 92; the player's
+   accept toggle on the small button art at 387, 224; the history's thin
+   board at 10, 250, 422 x 49, its three lines 8 in, 5 down, 13 apart. A
+   disabled toggle keeps its down art, as legacy's (CButton::Disable with
+   no disable visual changes nothing).
+
+   Legacy's own colors have no classic tokens yet (the level's 0x00D900,
+   "You"'s 0xD94040 and the base's 0.35, 0.85, 0.35 tint): the nearest
+   tokens stand in, the whisper green (#4ae14a) for the level and the tint
+   and the warning red (#ff4c4c) for "You". */
 
 body.skin-classic.exchange
 {
-	width: 282dp;
-	height: 167dp;
+	width: 442dp;
+	height: 307dp;
 	min-width: 0;
 }
 body.skin-classic.exchange .exchange__title-icon,
@@ -26,11 +38,11 @@ body.skin-classic.exchange .exchange__titlebar
 	position: absolute;
 	left: 8dp;
 	top: 8dp;
-	width: 266dp;
+	width: 426dp;
 	margin: 0;
 	z-index: 1;
-	/* Its last 7dp lie over the grids' first row, which takes the pointer
-	   there (P14b: no dead zone); the handle and the close button take it. */
+	/* Its last few dp lie over the faces' frames, which take no press; the
+	   handle and the close button take it. */
 	pointer-events: none;
 }
 body.skin-classic.exchange .exchange__handle, body.skin-classic.exchange .exchange__titlebar .nui-window__close
@@ -45,7 +57,8 @@ body.skin-classic.exchange .exchange__titlebar .nui-window__close
 	position: relative;
 	left: -3dp;
 }
-body.skin-classic.exchange .exchange__body
+body.skin-classic.exchange .exchange__body, body.skin-classic.exchange .exchange__sides,
+body.skin-classic.exchange .exchange__foot
 {
 	display: block;
 	padding: 0;
@@ -53,8 +66,8 @@ body.skin-classic.exchange .exchange__body
 body.skin-classic.exchange .exchange__divider
 {
 	position: absolute;
-	left: 139dp;
-	top: 31dp;
+	left: 219dp;
+	top: 92dp;
 	width: 4dp;
 	height: 129dp;
 	background-color: transparent;
@@ -64,9 +77,9 @@ body.skin-classic.exchange .exchange__side
 {
 	display: block;
 	position: absolute;
-	top: 33dp;
-	width: 130dp;
-	height: 130dp;
+	top: 34dp;
+	width: 192dp;
+	height: 211dp;
 }
 body.skin-classic.exchange .exchange__side--target
 {
@@ -74,21 +87,98 @@ body.skin-classic.exchange .exchange__side--target
 }
 body.skin-classic.exchange .exchange__side--owner
 {
-	left: 144dp;
+	left: 240dp;
+}
+/* The head: the face frame, the face 5 in, the text lines beside it. */
+body.skin-classic.exchange .exchange__head
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 192dp;
+	height: 53dp;
+}
+body.skin-classic.exchange .exchange__face, body.skin-classic.exchange .exchange__face--owner
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 53dp;
+	height: 53dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/box_face.sub");
+}
+body.skin-classic.exchange .exchange__face-clip
+{
+	left: 5dp;
+	top: 5dp;
+	width: 43dp;
+	height: 43dp;
+	overflow: visible;
+	border-radius: 0;
+}
+body.skin-classic.exchange .exchange__face-image
+{
+	width: 43dp;
+	height: 43dp;
+}
+body.skin-classic.exchange .exchange__who
+{
+	display: block;
+	position: absolute;
+	left: 60dp;
+	top: 0;
+	width: 132dp;
+	height: 53dp;
+}
+body.skin-classic.exchange .exchange__name, body.skin-classic.exchange .exchange__level
+{
+	position: absolute;
+	left: 0;
+	height: 14dp;
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 14dp;
+}
+body.skin-classic.exchange .exchange__name
+{
+	top: 7dp;
+	color: var(--text);
+}
+body.skin-classic.exchange .exchange__name--you
+{
+	color: var(--classic-warning-text);
+}
+body.skin-classic.exchange .exchange__level
+{
+	top: 25dp;
+	color: var(--chat-whisper);
 }
 body.skin-classic.exchange .exchange__grid
 {
 	position: absolute;
 	left: 0;
-	top: 0;
+	top: 58dp;
+}
+/* An accepted side: legacy's slot base, tinted green. */
+body.skin-classic.exchange .exchange__grid.is-accepted
+{
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat left top);
+	image-color: var(--chat-whisper);
 }
 body.skin-classic.exchange .exchange__row
 {
 	display: block;
 	position: absolute;
 	left: 0;
-	top: 101dp;
-	width: 130dp;
+	top: 190dp;
+	width: 192dp;
 	height: 21dp;
 }
 body.skin-classic.exchange .exchange__money
@@ -96,12 +186,12 @@ body.skin-classic.exchange .exchange__money
 	position: absolute;
 	left: 0;
 	top: 1dp;
-	width: 61dp;
+	width: 115dp;
 	height: 18dp;
 	padding: 0;
 	border-width: 0;
 	background-color: transparent;
-	decorator: image("d:/ymir work/ui/public/parameter_slot_02.sub");
+	decorator: image("d:/ymir work/ui/public/parameter_slot_04.sub");
 }
 body.skin-classic.exchange .exchange__money--owner:hover
 {
@@ -110,7 +200,7 @@ body.skin-classic.exchange .exchange__money--owner:hover
 body.skin-classic.exchange .exchange__amount
 {
 	position: absolute;
-	right: 2dp;
+	right: 3dp;
 	top: 2dp;
 	line-height: 14dp;
 	font-size: var(--font-md);
@@ -119,7 +209,7 @@ body.skin-classic.exchange .exchange__amount
 body.skin-classic.exchange .exchange__light
 {
 	position: absolute;
-	left: 62dp;
+	left: 119dp;
 	top: 0;
 	width: 20dp;
 	height: 20dp;
@@ -133,18 +223,31 @@ body.skin-classic.exchange .exchange__light.is-on
 	background-color: transparent;
 	decorator: image("d:/ymir work/ui/game/windows/accept_button_on.sub");
 }
-/* The accept toggle: legacy's small button art (43 x 21) at 85, 101, its
-   label the legacy gray; its row only as wide, so it covers no other part. */
-body.skin-classic.exchange .exchange__row--accept
+/* The history: legacy's thin board, its lines in the legacy text color. */
+body.skin-classic.exchange .exchange__log
 {
-	left: 85dp;
-	width: 43dp;
+	position: absolute;
+	left: 10dp;
+	top: 250dp;
+	width: 422dp;
+	height: 49dp;
+	padding: 5dp 0 0 8dp;
+	box-sizing: border-box;
 }
+body.skin-classic.exchange .exchange__log-line
+{
+	height: 13dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 13dp;
+}
+/* The accept toggle: legacy's small button art (43 x 21) at 387, 224, its
+   label the legacy gray. */
 body.skin-classic.exchange .exchange__accept
 {
 	position: absolute;
-	left: 0;
-	top: 0;
+	left: 387dp;
+	top: 224dp;
 	width: 43dp;
 	min-width: 0;
 	padding: 0;

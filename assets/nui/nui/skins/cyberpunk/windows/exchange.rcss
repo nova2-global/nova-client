@@ -3,7 +3,12 @@
    one arrow magenta; each amount in a square well with the dim line and a
    neon underline, its coin in the warning gold; each lamp a cut chip with
    the faint line and a neon ring around its core; the rule between the
-   columns magenta fading into cyan. Layout stays the modern one. */
+   columns magenta fading into cyan. Wave 4b's parts (NOVA-12): each face in
+   a square well with the dim line (the player's in the accent), the name
+   in the title white, the level an acid chip, an accepted side's cells
+   edged in the neon success line, and the history a square well with the
+   dim line and the neon underline.
+   Layout stays the modern one. */
 
 /* The title's emblem: the button chip's cut fill and edge in one tint. */
 body.skin-cyberpunk.exchange .exchange__title-icon
@@ -59,4 +64,45 @@ body.skin-cyberpunk.exchange .exchange__light
 body.skin-cyberpunk.exchange .exchange__light-ring
 {
 	border-color: var(--cyberpunk-edge-dim);
+}
+/* The faces: square wells with the dim line, cut square (no round clip). */
+body.skin-cyberpunk.exchange .exchange__face
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}
+body.skin-cyberpunk.exchange .exchange__face--owner
+{
+	border-color: var(--accent);
+}
+body.skin-cyberpunk.exchange .exchange__face-clip
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.exchange .exchange__name
+{
+	color: var(--cyberpunk-title);
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.exchange .exchange__name--you
+{
+	color: var(--accent);
+}
+body.skin-cyberpunk.exchange .exchange__level
+{
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+	color: var(--cyberpunk-acid);
+}
+/* An accepted side: the skin's square cells, edged in the success line. */
+body.skin-cyberpunk.exchange .exchange__grid.is-accepted
+{
+	decorator: nui-cells(40dp 4dp 0dp var(--cyberpunk-cell) var(--success) 1dp);
+}
+/* The history: a square well, the dim line and the neon underline. */
+body.skin-cyberpunk.exchange .exchange__log
+{
+	border-color: var(--border);
+	border-bottom-color: var(--cyberpunk-edge);
+	border-radius: 0;
 }

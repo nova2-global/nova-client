@@ -437,10 +437,13 @@ class LoginBoard(nui.Window):
 		or the model's own set (the echo). Applied, never flipped, and saved
 		only when it differs."""
 		remember = bool(checked)
-		if nui_accounts.setting("remember", "1") != ("1" if remember else "0"):
-			nui_accounts.set_setting("remember", "1" if remember else "0")
-		if self.get("remember") != remember:
-			self.set(remember=remember)
+		if self.get("remember") == remember:
+			# The echo of the model's own set. The load sends one for the
+			# initial model before the saved choice is read; saving it would
+			# overwrite that choice (found live on r18).
+			return
+		self.set(remember=remember)
+		nui_accounts.set_setting("remember", "1" if remember else "0")
 
 	# --- the card ---------------------------------------------------------------
 

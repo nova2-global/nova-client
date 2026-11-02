@@ -1240,6 +1240,22 @@ class SavedAccounts(OnePageTest):
         board.on_remember_change(True)
         self.assertEqual((board.get("remember"), self.store.setting("remember")), (True, "1"))
 
+    def test_an_echo_of_the_model_never_overwrites_the_saved_choice(self):
+        """RmlUi echoes a bound checkbox's change at the load, for the
+        initial model (Remember me on) before the board reads the saved
+        choice: that echo must not save "on" over a saved "off"."""
+        self.store.set_setting("remember", "0")
+        win, board = self.open_board()
+        self.assertFalse(board.get("remember"))
+        board.set(remember=True)  # the initial model, as at the load's first echo
+        board.on_remember_change(True)
+        self.assertEqual(self.store.setting("remember"), "0")
+        board.set(remember=False)
+        board.on_remember_change(False)
+        self.assertEqual(self.store.setting("remember"), "0")
+        board.on_remember_change(True)  # a click
+        self.assertEqual((board.get("remember"), self.store.setting("remember")), (True, "1"))
+
     def test_the_toggles_follow_their_checkbox_and_take_no_press(self):
         """The login document takes focus, so a click on a toggle's label
         reaches its checkbox, which flips itself; a mousedown handler that

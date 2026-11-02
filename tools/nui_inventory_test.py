@@ -2318,6 +2318,34 @@ class Wave4b(Pair):
         a, b = self.both(None, released)
         self.assertEqual(self.marks_shown(b), {})
 
+    def test_after_the_destroy_the_mark_calls_are_legacy_s(self):
+        """A logout destroys the inventory before the shop, and the shop's
+        Destroy still refreshes the bag's marks (interfaceModule.Close, then
+        uiShop.Destroy's Close and __SetOnTopWindow). Legacy's Destroy
+        leaves wndItem at 0, so its mark calls then mark nothing and raise
+        nothing; an exception there stops the phase change (a black screen
+        at the logout, found live on r15)."""
+        def refused(game):
+            game.antiflags[POTION] = game.modules["item"].ANTIFLAG_SELL
+        calls = []
+        for world in self.worlds(wave4b(refused)):
+            window = world.make_inventory()
+            world.interface.wndInventory = window
+            with world.game, quiet():
+                world.interface.SetOnTopWindow(W4B_PLAYER["ON_TOP_WND_SHOP"])
+                world.interface.RefreshMarkInventoryBag()
+                window.Destroy()
+                mark = world.mark()
+                world.interface.SetOnTopWindow(W4B_PLAYER["ON_TOP_WND_NONE"])
+                world.interface.RefreshMarkInventoryBag()
+                window.RefreshMarkSlots(4)
+                window.SetCantMouseEventCell(4)
+                window.SetCanMouseEventCell(4)
+                window.RefreshLockedSlots()
+                window.OnTop()
+                calls.append(world.effects_since(mark))
+        self.assertEqual(calls[0], calls[1])
+
     def test_a_cell_in_use_takes_no_press(self):
         world = World(True, setup=wave4b())
         window = world.make_inventory()

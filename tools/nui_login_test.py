@@ -993,6 +993,20 @@ class IntroLoginHooks(unittest.TestCase):
         imports = [alias.name for node in self.tree.body if isinstance(node, ast.Import) for alias in node.names]
         self.assertIn("nui_login", imports)
 
+    def test_a_new_window_has_no_login_info_until_a_debug_client_loads_one(self):
+        # Open reads self.loginInfo for the one-page login; __LoadLoginInfo
+        # sets it only in debug mode, so a release client needs __init__'s.
+        assigned = [node for node in ast.walk(self.methods["__init__"]) if isinstance(node, ast.Assign)
+                    and any(dotted(target) == "self.loginInfo" for target in node.targets)]
+        self.assertEqual(len(assigned), 1)
+        self.assertIsNone(assigned[0].value.value)
+        load = self.methods["_LoginWindow__LoadLoginInfo" if "_LoginWindow__LoadLoginInfo" in self.methods
+                            else "__LoadLoginInfo"]
+        branch = next(node for node in load.body if isinstance(node, ast.If))
+        in_release = [node for stmt in branch.body for node in ast.walk(stmt)
+                      if isinstance(node, ast.Assign) and any(dotted(t) == "self.loginInfo" for t in node.targets)]
+        self.assertEqual(in_release, [], "the release branch of __LoadLoginInfo sets no loginInfo")
+
     def test_a_new_window_has_no_board(self):
         assigned = [node for node in ast.walk(self.methods["__init__"]) if isinstance(node, ast.Assign)
                     and any(dotted(target) == "self.nuiBoard" for target in node.targets)]

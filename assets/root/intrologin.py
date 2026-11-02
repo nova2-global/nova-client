@@ -62,6 +62,8 @@ class LoginWindow(ui.ScriptWindow):
 		self.inputDialog = None
 		self.stream=stream
 		self.isStartError=False
+		# __LoadLoginInfo sets it only in debug mode; Open reads it in every client.
+		self.loginInfo = None
 
 		self.xServerBoard = 0
 		self.yServerBoard = 0

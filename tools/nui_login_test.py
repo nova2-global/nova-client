@@ -1130,6 +1130,27 @@ class SavedAccounts(OnePageTest):
             self.assertEqual([account["login"] for account in self.store.accounts()], ["kalinka"])
         self.assertEqual(self.store.setting("server"), "2")
 
+    def test_the_board_opens_on_the_latest_account_and_its_password(self):
+        # The reviewed board's resting state; the r12 live test opened on an
+        # empty name with the saved account unselected.
+        self.save("kalinka", "Kalinka", [("Kalinka", 4, 75)])
+        self.save("mirela", "Mirela", [("Mirela", 3, 68)])
+        win, board = self.open_board()
+        self.assertEqual(board.get("user"), "mirela")
+        self.assertEqual([row["selected"] for row in board.get("accounts")], [True, False])
+        self.assertEqual(board.focused, self.m.PASSWORD_FIELD)
+
+    def test_without_a_saved_account_the_name_field_takes_the_focus(self):
+        win, board = self.open_board()
+        self.assertEqual((board.get("user"), board.focused), ("", self.m.ID_FIELD))
+
+    def test_a_typed_name_is_not_replaced(self):
+        self.save("mirela", "Mirela", [("Mirela", 3, 68)])
+        board = self.open_window().nuiBoard
+        board.set_user("kalinka")
+        self.assertFalse(board.pick_latest())
+        self.assertEqual(board.get("user"), "kalinka")
+
     def test_since_words_the_time_as_the_screen_does(self):
         words = {"now": "now", "minutes": "%dm", "hours": "%dh", "yesterday": "y", "days": "%dd"}
         self.assertEqual([self.store.since(s, words) for s in (5, 600, 7200, 90000, 400000)],
@@ -1143,8 +1164,9 @@ class SavedAccounts(OnePageTest):
         rows = board.get("accounts")
         self.assertEqual([row["name"] for row in rows], ["mirela", "kalinka"])
         self.assertEqual(rows[0]["face"], self.store.face_of(3))
+        self.assertEqual(board.get("user"), "mirela", "the board opens on the latest")
         board.on_pick_account("kalinka", 1)
-        self.assertEqual(board.get("user"), "", "a right press picks nothing")
+        self.assertEqual(board.get("user"), "mirela", "a right press picks nothing")
         board.on_pick_account("kalinka", 0)
         self.assertEqual(board.get("user"), "kalinka")
         self.assertEqual([row["selected"] for row in board.get("accounts")], [False, True])

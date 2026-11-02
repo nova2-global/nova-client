@@ -558,6 +558,23 @@ button.login-button
 {
 	margin-right: 8dp;
 }
+/* The primary link's glyph in its label's color: with a light player
+   accent (UI_COLORS) the text color's glyph vanished on the button. */
+.login-link-button.nui-button--primary .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
+}
+/* The virtual keyboard keeps legacy's place, centered 46dp above the
+   bottom; the links give way to the bottom-right corner, stacked, as Exit
+   stands in the bottom-left, so they clear it at 1024 wide too. */
+body.login.login--keyboard .login-links
+{
+	left: auto;
+	right: 24dp;
+	bottom: 24dp;
+	flex-direction: column;
+	align-items: flex-end;
+}
 .login-exit
 {
 	position: absolute;

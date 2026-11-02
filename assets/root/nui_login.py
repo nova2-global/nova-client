@@ -360,6 +360,19 @@ class LoginBoard(nui.Window):
 		self.set(tab="login", error="", error_on="")
 		self.focus(self._password_field())
 
+	def pick_latest(self):
+		"""With no name typed, the most recent saved account fills the name
+		field and is selected, as the reviewed board opens. True when it
+		picked one."""
+		if self._user:
+			return False
+		saved = nui_accounts.accounts()
+		if not saved:
+			return False
+		self.set_user(saved[0]["login"])
+		self._select_account(saved[0]["login"])
+		return True
+
 	@nui.on("forget_account")
 	def on_forget_account(self, name, button):
 		if button != 0:
@@ -938,7 +951,8 @@ def enter_login_board(win):
 	if board is None:
 		return False
 	board.active = True
-	board.focus_field(ID_FIELD)
+	# The latest saved account, then its password; else the name field.
+	board.focus_field(board._password_field() if board.pick_latest() else ID_FIELD)
 	popup = getattr(getattr(win, "stream", None), "popupWindow", None)
 	if popup is not None and popup.IsShow():
 		# A popup opened before the board existed (same login): the board

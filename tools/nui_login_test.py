@@ -1221,8 +1221,14 @@ class TheCard(OnePageTest):
         board.account_created(1)
         self.assertEqual((board.get("tab"), board.get("reg_error"), board.get("reg_error_on")),
                          ("register", "@ui.NUI_LOGIN_ERR_TAKEN", "user"))
+        board.set_value("reg-password", "s3cret-pass")
+        board.set_value("reg-confirm", "s3cret-pass")
         board.account_created(0)
         self.assertEqual((board.get("tab"), board.get("user"), board.get("error_ok")), ("login", "darkblade", True))
+        # The r12 live test: the dots stayed, so the next password typed there
+        # was added to the old one.
+        self.assertEqual((board.get_value("reg-password"), board.get_value("reg-confirm")), ("", ""))
+        self.assertEqual((board._reg["password"], board._reg["confirm"]), ("", ""))
 
 
 class RegistrationRules(unittest.TestCase):

@@ -592,6 +592,10 @@ class LoginBoard(nui.Window):
 		if code == ACCOUNT_CREATE_OK:
 			login = self._reg["user"].strip().lower()
 			self._reg.update(password="", confirm="")
+			# The fields too: the tab keeps its elements while Log in shows, and
+			# typing into the old dots would add to the old password.
+			for field in ("reg-password", "reg-confirm"):
+				self.set_value(field, "", even_hidden=True)
 			self.set_user(login)
 			self._select_account(login)
 			self.set(tab="login", error="@ui.NUI_LOGIN_CREATED", error_on="", error_ok=True)

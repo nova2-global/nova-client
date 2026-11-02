@@ -38,7 +38,22 @@ rest of the session. The bag and the wear cells carry the refine level
 (their proxies opt in, nui_slots.REFINE_KEY), which the modern skins show as
 a "+N" badge and a lit wear cell; an empty unique, arrow or belt place
 carries its mark (WEAR_MARKS); and Show and Hide tell the NovaUI taskbar,
-whose inventory button shows whether the window is open."""
+whose inventory button shows whether the window is open.
+
+Wave 4b (NOVA-16, NOVA-13, NOVA-81): the special inventory's button
+(legacy's ExtraInventoryButton, a ButtonProxy whose press is legacy's
+ClickExtraInventoryButton, the Interface's ToggleExtraInventoryWindow) in
+the equipment's button column (classic: legacy's large button under the
+bag); Ctrl, Shift and Alt with a right press reach legacy's
+__UseItemWithModifier (the transfer, the safebox check-in, the trade, the
+chests' multi-open count through OpenMultiUseDialog), which reads the keys
+with app.IsPressed as legacy's slot window does; an extra item dropped on a
+bag cell runs legacy's flow. The bag shows the two trade marks (its proxy
+takes marks=True): legacy marks cells outside RefreshSlot (RefreshMarkSlots
+after the page's refresh and from the Interface's RefreshMarkInventoryBag,
+the locks of the trade windows through SetCantMouseEventCell and
+SetCanMouseEventCell, both again in OnTop), so each of those entry points
+ends with the proxy's flush, once per outermost call."""
 
 import app
 import constInfo
@@ -338,6 +353,12 @@ class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0 and self._owner.mallButton:
 			self._owner.mallButton.click()
 
+	@nui.on("extra_press")
+	def on_extra_press(self, button):
+		self.raise_for(button)
+		if button == 0 and self._owner.extraInventoryButton:
+			self._owner.extraInventoryButton.click()
+
 	@nui.on("close_press")
 	def on_close_press(self, button):
 		self.raise_for(button)
@@ -371,6 +392,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		self._opening = False  # Show() is making the board (board_origin)
 		self._bag_events = None
 		self._wear_events = None
+		self._marks_held = 0  # the legacy entry points that mark bag cells, running
 		self.loaded = False
 		self.demand = None
 		if nui_hud.has_engine_3b():
@@ -411,7 +433,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"page": 0,
 			# The bag and the wear cells carry the refine level (the modern
 			# skins' "+N" badge; nui_slots.REFINE_KEY).
-			"bag": nui_slots.with_refine([nui_slots.empty_cell(i) for i in range(limits.INVENTORY_PAGE_SIZE)]),
+			# Wave 4b: and the trade marks (nui_slots.MARK_KEYS).
+			"bag": nui_slots.with_marks(nui_slots.with_refine([nui_slots.empty_cell(i)
+			                                                   for i in range(limits.INVENTORY_PAGE_SIZE)])),
 			"bag_cols": limits.INVENTORY_COLUMNS,
 			"wear": nui_slots.with_refine([dict(nui_slots.empty_cell(i), name=slot.name, marks=wear_marks(slot.name, ""))
 			                               for i, slot in enumerate(nui_limits.wear_group("equipment", limits))]),
@@ -421,6 +445,8 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"has_costume": False,
 			"has_dss": False,
 			"has_mall": False,
+			# Wave 4b (NOVA-16): the special inventory's button.
+			"has_extra": False,
 			# The board is placed from Python (inv--placed: the sheet's
 			# right and bottom give way to the placement's left and top).
 			"placed": False,
@@ -595,7 +621,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 
 		wndItem = nui_slots.SlotWindowProxy(range(limits.INVENTORY_PAGE_SIZE), self._on_bag,
 		                                    cols=limits.INVENTORY_COLUMNS, rows=limits.INVENTORY_ROWS,
-		                                    positions=self._bag_position, refine=True)
+		                                    positions=self._bag_position, refine=True, marks=True)
 		self._wear_slots = nui_limits.wear_group("equipment", limits)
 		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._wear_slots], self._on_wear, refine=True)
 		self.wndMoney = nui_proxies.TextProxy(self._on_money)
@@ -603,6 +629,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		self.mallButton = nui_proxies.ButtonProxy()
 		self.DSSButton = nui_proxies.ButtonProxy()
 		self.costumeButton = nui_proxies.ButtonProxy() if app.ENABLE_COSTUME_SYSTEM else 0
+		# The special inventory (NOVA-16): legacy's uiscript has the button
+		# (legacy binds it with GetChild2, None on a board without it).
+		self.extraInventoryButton = nui_proxies.ButtonProxy()
 		self.inventoryTab = [nui_proxies.ButtonProxy() for _ in range(limits.INVENTORY_PAGE_COUNT)]
 		self.equipmentTab = [nui_proxies.ButtonProxy(), nui_proxies.ButtonProxy()]
 
@@ -668,8 +697,11 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			self.DSSButton.SetEvent(ui.__mem_func__(self.ClickDSSButton))
 		if self.costumeButton:
 			self.costumeButton.SetEvent(ui.__mem_func__(self.ClickCostumeButton))
+		if self.extraInventoryButton:
+			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
 		self.wndCostume = None
-		self._set(has_costume=bool(self.costumeButton), has_dss=bool(self.DSSButton), has_mall=bool(self.mallButton))
+		self._set(has_costume=bool(self.costumeButton), has_dss=bool(self.DSSButton), has_mall=bool(self.mallButton),
+		          has_extra=bool(self.extraInventoryButton))
 
 		## Refresh
 		self.SetInventoryPage(0)
@@ -740,6 +772,40 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		"""The equipment tabs stay hidden, as legacy hides them."""
 		self.equipmentPageIndex = page
 		self.RefreshEquipSlotWindow()
+
+	# --- wave 4b: the trade marks (NOVA-13) ---------------------------------------------
+	# Legacy marks the bag's cells outside RefreshSlot, which CSlotWindow
+	# draws at once: each entry point below is legacy's, then the bag
+	# proxy's flush (a push only when a shown mark changed), once for the
+	# outermost of them (RefreshBagSlotWindow and OnTop call the others).
+
+	def _marking(self, method, *args):
+		self._marks_held += 1
+		try:
+			return method(self, *args)
+		finally:
+			self._marks_held -= 1
+			wndItem = getattr(self, "wndItem", None)
+			if not self._marks_held and wndItem is not None:
+				wndItem.flush()
+
+	def RefreshBagSlotWindow(self):
+		return self._marking(uiInventory.InventoryWindow.RefreshBagSlotWindow)
+
+	def RefreshMarkSlots(self, localIndex=None):
+		return self._marking(uiInventory.InventoryWindow.RefreshMarkSlots, localIndex)
+
+	def RefreshLockedSlots(self):
+		return self._marking(uiInventory.InventoryWindow.RefreshLockedSlots)
+
+	def SetCantMouseEventCell(self, globalSlotPos):
+		return self._marking(uiInventory.InventoryWindow.SetCantMouseEventCell, globalSlotPos)
+
+	def SetCanMouseEventCell(self, globalSlotPos):
+		return self._marking(uiInventory.InventoryWindow.SetCanMouseEventCell, globalSlotPos)
+
+	def OnTop(self):
+		return self._marking(uiInventory.InventoryWindow.OnTop)
 
 	def RefreshStatus(self):
 		"""Legacy's (the money), then the stats row: attack, defence and

@@ -444,3 +444,4 @@ NUI_LOGIN_ERR_BUSY	The server is busy. Try again in a moment.
 NUI_LOGIN_ERR_FAILED	The account could not be created. Try again later.
 NUI_LOGIN_CREATED	Your account is ready. Log in with it.
 NUI_LOGIN_CREATING	Creating your account...
+HELP_OPEN_EXTRA_INVENTORY	Open special inventory window: U

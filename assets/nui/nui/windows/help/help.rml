@@ -8,9 +8,11 @@
 	     legacy's locked TOP_MOST window does, on its scrim (legacy's
 	     curtain). Escape and H close it (the board's keydown handler); the
 	     exit key reaches it through a TOP_MOST nui_hud.EscapeProxy. The
-	     document exists only while it shows (nui_hud.OnDemand). Classic keeps
-	     legacy's layout: the 20 lines and the close button at legacy's screen
-	     fractions, the 8 pointers on the legacy taskbar's parts, and the two
+	     document exists only while it shows (nui_hud.OnDemand). Since wave 4b
+	     a 21st line names the special inventory's key, U (NOVA-16; game.py's
+	     DIK_U), after the inventory's in modern and after legacy's 20 in
+	     classic. Classic keeps legacy's layout: the 20 lines and the close
+	     button at legacy's screen fractions, the 8 pointers on the legacy taskbar's parts, and the two
 	     curtain parts that dim everything but the taskbar, as legacy's
 	     curtain lies under the TOP_MOST taskbar. Modern is a
 	     centered card (the reviewed design, board WHelp): the lines in two
@@ -47,6 +49,7 @@
 			</div>
 			<div class="help__column">
 				<p id="help-line-11" class="help__line help__line--11"><span class="help__bullet"></span>@ui.HELP_OPEN_INVENTORY</p>
+				<p id="help-line-21" class="help__line help__line--21"><span class="help__bullet"></span>@ui.HELP_OPEN_EXTRA_INVENTORY</p>
 				<p id="help-line-12" class="help__line help__line--12"><span class="help__bullet"></span>@ui.HELP_OPEN_LOG</p>
 				<p id="help-line-13" class="help__line help__line--13"><span class="help__bullet"></span>@ui.HELP_OPEN_ZONEMAP</p>
 				<p id="help-line-14" class="help__line help__line--14"><span class="help__bullet"></span>@ui.HELP_OPEN_MINIMAP</p>

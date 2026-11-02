@@ -18,6 +18,7 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
+import nui_inventory_test as inventory  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
 
 P = w4.P
@@ -461,6 +462,184 @@ class BuilderTest(unittest.TestCase):
             self.assertEqual(w4.fixture_keys(window, "private-shop", variant), kinds, variant)
         legacy_world, legacy = self.world(False)
         self.assertIs(type(legacy), legacy_world.m("uiPrivateShopBuilder").PrivateShopBuilder)
+
+
+# --- wave 4b (NOVA-16, NOVA-13) --------------------------------------------------------------------
+
+EXTRA, SLOT_EXTRA = inventory.EXTRA, inventory.SLOT_EXTRA
+ON_TOP = inventory.W4B_PLAYER
+
+
+def wave4b(stock):
+    """`stock`, main's exe's wave 4b names (nui_inventory_test.install_wave4b)
+    and three potions at the special inventory's 230."""
+    def setup(game):
+        stock(game)
+        inventory.install_wave4b(game)
+        game.give((EXTRA, 230), POTION, 3)
+    return setup
+
+
+def interface_calls(world, mark):
+    return world.calls_since(mark, "interface.")
+
+
+class LockedCells(object):
+    """An inventory window as the trade windows see it after the Interface's
+    SetInven: its lock calls in the log as <name>.SetCantMouseEventCell and
+    <name>.SetCanMouseEventCell."""
+
+    def __init__(self, world, name):
+        self._log = world.game.log
+        self._name = name
+
+    def SetCantMouseEventCell(self, cell):
+        self._log.append((self._name + ".SetCantMouseEventCell", (cell,)))
+
+    def SetCanMouseEventCell(self, cell):
+        self._log.append((self._name + ".SetCanMouseEventCell", (cell,)))
+
+
+class ShopWave4b(ShopTest):
+    """The NPC shop puts itself on top (legacy's __SetOnTopWindow in Open,
+    OnTop and Close, so the inventories mark what it does not buy) and buys
+    an item of the special inventory, all legacy's code; BindInterface and
+    OnTop are legacy's."""
+
+    def test_bind_interface_and_on_top_are_legacy_s(self):
+        world, window = self.world(True)
+        legacy = world.m("uiShop").ShopDialog
+        for name in ("BindInterface", "OnTop"):
+            self.assertIs(getattr(type(window), name), getattr(legacy, name), name)
+
+    def on_top_flow(self, vid):
+        results = []
+        for nui_on in (False, True):
+            world, window = self.world(nui_on, wave4b(shop_stock()))
+            mark = world.mark()
+            with world.game, w4.quiet():
+                window.BindInterface(world.game.interface)
+                window.Open(vid)
+                window.SetTop()
+                window.Close()
+            results.append(interface_calls(world, mark))
+        self.assertEqual(results[1], results[0])
+        return results[0]
+
+    def test_an_npc_shop_is_on_top_from_open_to_close(self):
+        calls = self.on_top_flow(NPC)
+        self.assertEqual(calls, [("interface.SetOnTopWindow", (ON_TOP["ON_TOP_WND_SHOP"],)),
+                                 ("interface.RefreshMarkInventoryBag", ()),
+                                 ("interface.SetOnTopWindow", (ON_TOP["ON_TOP_WND_SHOP"],)),
+                                 ("interface.RefreshMarkInventoryBag", ()),
+                                 ("interface.SetOnTopWindow", (ON_TOP["ON_TOP_WND_NONE"],)),
+                                 ("interface.RefreshMarkInventoryBag", ())])
+
+    def test_a_player_s_shop_is_never_on_top(self):
+        calls = self.on_top_flow(PLAYER_SHOP)
+        self.assertEqual(calls, [("interface.SetOnTopWindow", (ON_TOP["ON_TOP_WND_NONE"],)),
+                                 ("interface.RefreshMarkInventoryBag", ())], "only Close's")
+
+    def test_an_extra_item_dropped_in_is_sold_after_legacy_s_question(self):
+        def flow(world, window):
+            world.attach(SLOT_EXTRA, 230, POTION, 3)
+            self.press(world, window, 20)
+            window.questionDialog.accept()
+        (legacy, _, _), (novaui, _, _) = self.run_both(flow, wave4b(shop_stock()))
+        self.assertEqual(novaui, legacy)
+        self.assertIn(("net.SendShopSellPacketNew", (230, 3, EXTRA)), novaui)
+
+
+class BuilderWave4b(BuilderTest):
+    """The builder stocks an item of the special inventory with its window
+    (legacy's itemStock), locks its cell in that window while it is stocked
+    (SetInven), puts itself on top while open; the stocked cell carries the
+    window's slot type. BindInterface, SetInven and RefreshLockedSlot are
+    legacy's."""
+
+    def world(self, nui_on, **kwargs):
+        kwargs.setdefault("setup", wave4b(builder_stock))
+        world = w4.World(nui_on, **kwargs)
+        window = world.make("private-shop", "uiPrivateShopBuilder", "PrivateShopBuilder",
+                            "nui_private_shop.PrivateShopBuilder")
+        with world.game, w4.quiet():
+            window.Hide()
+            window.SetItemToolTip(world.tooltip)
+            window.BindInterface(world.game.interface)
+            window.SetInven(LockedCells(world, "inventory"), LockedCells(world, "extra"))
+        return world, window
+
+    def drop_extra(self, world, window, position, vnum, cell, price):
+        world.attach(SLOT_EXTRA, position, vnum)
+        if world.nui_on:
+            w4.press(window, "cell_press", cell, 0)
+        else:
+            window.itemSlot.fire("select_empty", cell)
+        board = window.priceInputBoard
+        board.text = str(price)
+        board.accept()
+
+    def test_bind_interface_and_setinven_are_legacy_s(self):
+        world, window = self.world(True)
+        legacy = world.m("uiPrivateShopBuilder").PrivateShopBuilder
+        for name in ("BindInterface", "SetInven", "RefreshLockedSlot"):
+            self.assertIs(getattr(type(window), name), getattr(legacy, name), name)
+
+    def test_an_extra_item_is_stocked_with_its_window_locked_and_shown_by_it(self):
+        results = []
+        for nui_on in (False, True):
+            world, window = self.world(nui_on)
+            mark = world.mark()
+            with world.game, w4.quiet():
+                window.Open("Potions")
+                self.drop_extra(world, window, 230, POTION, 3, 50)
+                self.drop(world, window, 12, POTION, 0, 60)
+                # The press on a cell leaves the NovaUI pointer over it, whose
+                # tooltip the next refresh shows (as CSlotWindow's would); the
+                # hover below is the one compared.
+                window.tooltipItem.shown[:] = []
+                if nui_on:
+                    w4.fire(window, "cell_over", 3)
+                    w4.fire(window, "cell_out", 3)
+                else:
+                    window.itemSlot.fire("over_in", 3)
+                    window.itemSlot.fire("over_out")
+                window.Close()
+            calls = [(name, args) for name, args in world.game.log[mark:]
+                     if name.startswith(("shop.", "interface.", "inventory.", "extra.")) and not support.is_getter(name)]
+            results.append((calls, world, window))
+        (legacy, _, a), (novaui, _, b) = results
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(b.tooltipItem.shown, a.tooltipItem.shown)
+        self.assertEqual(b.tooltipItem.shown, [("SetPrivateShopBuilderItem", EXTRA, 230, 3)])
+        self.assertEqual(legacy[:3], [("shop.ClearPrivateShopStock", ()),
+                                      ("interface.SetOnTopWindow", (ON_TOP["ON_TOP_WND_PRIVATE_SHOP"],)),
+                                      ("interface.RefreshMarkInventoryBag", ())])
+        self.assertIn(("shop.AddPrivateShopItemStock", (EXTRA, 230, 3, 50)), legacy)
+        self.assertIn(("extra.SetCantMouseEventCell", (230,)), legacy)
+        self.assertIn(("inventory.SetCantMouseEventCell", (12,)), legacy)
+        last_clear = len(legacy) - 1 - legacy[::-1].index(("shop.ClearPrivateShopStock", ()))
+        self.assertEqual(sorted(legacy[last_clear - 2:last_clear]), [("extra.SetCanMouseEventCell", (230,)),
+                                                                    ("inventory.SetCanMouseEventCell", (12,))],
+                         "Close releases every stocked cell")
+        self.assertEqual(legacy[-2:], [("interface.SetOnTopWindow", (ON_TOP["ON_TOP_WND_NONE"],)),
+                                       ("interface.RefreshMarkInventoryBag", ())])
+
+    def test_a_stocked_cell_carries_its_item_s_window(self):
+        world, window = self.world(True)
+        with world.game, w4.quiet():
+            window.Open("Potions")
+            self.drop_extra(world, window, 230, POTION, 3, 50)
+            self.drop(world, window, 7, GLAIVE, 0, 5000)
+        cells = w4.board(window).model["cells"]
+        self.assertEqual((cells[3]["type"], cells[3]["ref"]), (SLOT_EXTRA, 230))
+        self.assertEqual([(cells[i]["type"], cells[i]["ref"], cells[i]["covered"]) for i in (0, 5, 10)],
+                         [(P["SLOT_TYPE_INVENTORY"], 7, False), (P["SLOT_TYPE_INVENTORY"], 7, True),
+                          (P["SLOT_TYPE_INVENTORY"], 7, True)])
+        with world.game, w4.quiet():
+            world.attach(SLOT_EXTRA, 230, POTION, 3)
+            w4.fire(window, "cell_over", 3)
+        self.assertTrue(w4.board(window).model["cells"][3]["picked"], "the attached extra item's cell")
 
 
 if __name__ == "__main__":

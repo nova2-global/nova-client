@@ -1545,9 +1545,12 @@ ATTRS_FIXTURE = [[1, 1500], [5, 12], [7, 10], [15, 8], [16, 6], [43, 10], [44, 1
 
 
 def _model_of(world, kind, calls, case=None):
-    """The board's model after `calls` on the world's facade of `kind`."""
+    """The board's model after `calls` on the world's facade of `kind`; the
+    case's safebox_open (uiToolTip.SetSafeboxOpen) and trading
+    (exchange.isTrading) hold for it, as in _run_case."""
     tip = world.tooltip(kind)
     support.apply_case(world.game, case or {"vnum": 0})
+    world.m("uiToolTip").SetSafeboxOpen(bool((case or {}).get("safebox_open")))
     world.game.state.now = FIXTURE_CLOCK_NOW
     for name, args in calls:
         getattr(tip, name)(*args)
@@ -1573,6 +1576,16 @@ def fixtures():
         out[("item-tooltip", "shop")] = {"item_tooltip": _model_of(today, "item", [["SetShopItem", [0]]], {
             "vnum": 30329, "sockets": [CLOCK + 300, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
             "shop": {"open": True, "private": False, "price": 1250}})}
+        # Wave 4b (NOVA-81, NOVA-16): a stack of treasure chests in the bag
+        # with seven opens left, the safebox open and a trade open: the
+        # "Left" line, the multi-open hint and the safebox's and the trade's
+        # move hints; a costume in the special inventory: its move hint.
+        out[("item-tooltip", "gacha")] = {"item_tooltip": _model_of(today, "item", [["SetInventoryItem", [0]]], {
+            "vnum": GACHA_CHEST, "count": 3, "sockets": [7, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
+            "safebox_open": True, "trading": True})}
+        out[("item-tooltip", "extra")] = {"item_tooltip": _model_of(today, "item", [
+            ["SetInventoryItem", [900, EXTRA_INVENTORY]]], {
+            "vnum": 41001, "pos": 900, "sockets": [CLOCK + DAY, 0, 0], "attrs": [], "player": player, "clock": CLOCK})}
         out[("skill-tooltip", "")] = {"skill_tooltip": _model_of(today, "skill", [["SetSkillNew", [1, 1, 2, 5]]], {
             "vnum": 1, "player": {"level": 3, "race": 0},
             "skill": {"vnum": 1, "slot": 1, "grade": 2, "level": 5, "efficient": 0.5, "next": 0.6}})}

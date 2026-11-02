@@ -2,16 +2,19 @@
    inventory (uiscript inventorywindow.py) at 100%, 1dp to the legacy pixel,
    the same with today's table (inv--table-new) and the foundation's
    (inv--table-old), as legacy's one uiscript since the cut (NOVA-97): the
-   stone board, 176 x 565, at legacy's place (the screen's right, 37 above
-   the bottom); the title bar at 8, 7, 161 wide; Equipment_Base at 10, 33
+   stone board, 176 x 591 since wave 4b (565 before), at legacy's place
+   (the screen's right, 37 above the bottom); the title bar at 8, 7, 161 wide; Equipment_Base at 10, 33
    with equipment_bg_with_ring.tga (155 x 187), its slot window at 3, 3 and
    the wear slots at their uiscript places, the rings either side of the
    belt, no slot base (the art has the frames); the costume, dragon soul and
    mall buttons at their places on the base (78, 5; 114, 107; 118, 148);
    one tab a page on the small tab art at 8 + 32 i, 224 (legacy's five); the
-   bag at 8, 246 on the slot base, at the 32px pitch; the money slot
+   bag at 8, 246 on the slot base, at the 32px pitch; the special
+   inventory's button (wave 4b, NOVA-16: ExtraInventoryButton,
+   large_button_0*.sub, 88 x 21, centered at 246 + 32 * 9 + 3 = 537) with
+   its label, in the band the board grew by; the money slot
    (parameter_slot_05.sub, 130 x 18) 28 above the bottom, centered 8 right
-   of the middle (31, 537), its icon 18 left of it and the amount
+   of the middle (31, 563), its icon 18 left of it and the amount
    right-aligned 3 in from its right. The dragon soul button's active
    effect is legacy's slot active frames over it. The
    modern paper doll's art and stats row are not drawn; the shortcut rail,
@@ -21,7 +24,7 @@
 body.skin-classic.inv
 {
 	width: 176dp;
-	height: 565dp;
+	height: 591dp;
 	min-width: 0;
 }
 
@@ -132,6 +135,35 @@ body.skin-classic.inv .inv-equip .inv-button--mall:active
 	decorator: image("d:/ymir work/ui/game/taskbar/mall_button_03.tga");
 	background-color: transparent;
 }
+/* The special inventory (wave 4b, NOVA-16): legacy's large button at
+   (44, 537) on the board, centered under the bag, the equipment's box at
+   (10, 33) being its containing block; its label in the button text's
+   color, its tooltip legacy's (KEYCHANGE_EXTRA_INVENTORY). */
+body.skin-classic.inv .inv-equip .inv-button--extra
+{
+	left: 34dp;
+	top: 504dp;
+	width: 88dp;
+	height: 21dp;
+	line-height: 21dp;
+	text-align: center;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/public/large_button_01.sub");
+}
+body.skin-classic.inv .inv-equip .inv-button--extra:hover
+{
+	decorator: image("d:/ymir work/ui/public/large_button_02.sub");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv-equip .inv-button--extra:active
+{
+	decorator: image("d:/ymir work/ui/public/large_button_03.sub");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv-button--extra .inv-button__label
+{
+	display: inline;
+}
 /* The active dragon soul: legacy's slot window over the button at 3.2, 0
    with the 13 frames of the slot active effect. */
 body.skin-classic.inv .inv-button__effect
@@ -147,7 +179,7 @@ body.skin-classic.inv .inv__body
 {
 	display: block;
 	position: relative;
-	height: 565dp;
+	height: 591dp;
 	padding: 0;
 }
 
@@ -305,13 +337,14 @@ body.skin-classic.inv .inv-bag
 	top: 246dp;
 }
 /* The money slot from its icon (18 left of the slot) to the slot's right
-   edge: 148 x 18 at 13, 537, the amount right-aligned 3 in from the right. */
+   edge: 148 x 18 at 13, 563 (28 above the board's bottom), the amount
+   right-aligned 3 in from the right. */
 body.skin-classic.inv .inv-money,
 body.skin-classic.inv .inv-money:hover
 {
 	position: absolute;
 	left: 13dp;
-	top: 537dp;
+	top: 563dp;
 	width: 148dp;
 	height: 18dp;
 	padding: 0 3dp 0 0;

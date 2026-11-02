@@ -8,7 +8,8 @@
    lattice and a soft accent light behind it, a rune circle in perspective
    under its feet that turns slowly and rests under reduced motion, and
    corner brackets, all code but the figure; the costume, dragon soul and
-   item shop buttons where legacy's equipment base holds them. Under it the
+   item shop buttons where legacy's equipment base holds them, the special
+   inventory's (wave 4b) between the last two in the right column. Under it the
    stats row, the page tabs (one per page, in a segmented well), the bag (a
    lean slot grid of 5 x 44dp columns) and the money. The shortcut rail
    docks on the window's left edge while it has entries. Classic (legacy's
@@ -314,7 +315,10 @@ body.inv.inv--table-old .inv-wear--foots,
 body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
 
 /* The costume, dragon soul and item shop buttons: round, centered where
-   legacy puts them (slot space 94, 21; 130, 124; 130, 164). */
+   legacy puts them (slot space 94, 21; 130, 124; 130, 164); since wave 4b
+   (NOVA-16) the special inventory's stands between the dragon soul's and
+   the item shop's in the right column, the three 4dp apart (legacy's is
+   the large button under the bag, classic's). */
 .inv-button
 {
 	position: absolute;
@@ -338,7 +342,7 @@ body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
 .inv-button--dss
 {
 	left: 159dp;
-	top: 141dp;
+	top: 137dp;
 	width: 36dp;
 	height: 36dp;
 	border-radius: 18dp;
@@ -347,7 +351,7 @@ body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
 .inv-button--mall
 {
 	left: 162dp;
-	top: 195dp;
+	top: 211dp;
 	width: 30dp;
 	height: 30dp;
 	border-radius: 15dp;
@@ -357,6 +361,44 @@ body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
 {
 	--glyph-ink: var(--warning);
 }
+/* The special inventory: the bag glyph with a small accent plus on its
+   shoulder; its label is classic's. */
+.inv-button--extra
+{
+	left: 162dp;
+	top: 177dp;
+	width: 30dp;
+	height: 30dp;
+	border-radius: 15dp;
+	line-height: 28dp;
+}
+.inv-button .inv-button__plus
+{
+	position: absolute;
+	right: 2dp;
+	top: 2dp;
+	width: 10dp;
+	height: 10dp;
+	--glyph-ink: var(--accent);
+}
+.inv-button__plus .nui-glyph__a
+{
+	left: 1dp;
+	top: 4dp;
+	width: 8dp;
+	height: 2dp;
+}
+.inv-button__plus .nui-glyph__b
+{
+	left: 4dp;
+	top: 1dp;
+	width: 2dp;
+	height: 8dp;
+}
+.inv-button__label
+{
+	display: none;
+}
 /* The dragon soul window's active effect: an accent ring on the button. */
 .inv-button--dss.is-on
 {
@@ -364,17 +406,19 @@ body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
 }
 body.inv.inv--table-old .inv-button--costume,
 body.inv.inv--table-old .inv-button--dss,
+body.inv.inv--table-old .inv-button--extra,
 body.inv.inv--table-old .inv-button--mall
 {
-	left: 163dp;
-	width: 28dp;
-	height: 28dp;
-	border-radius: 14dp;
-	line-height: 26dp;
+	left: 164dp;
+	width: 26dp;
+	height: 26dp;
+	border-radius: 13dp;
+	line-height: 24dp;
 }
 body.inv.inv--table-old .inv-button--costume { top: 140dp; }
-body.inv.inv--table-old .inv-button--dss { top: 170dp; }
-body.inv.inv--table-old .inv-button--mall { top: 200dp; }
+body.inv.inv--table-old .inv-button--dss { top: 168dp; }
+body.inv.inv--table-old .inv-button--extra { top: 196dp; }
+body.inv.inv--table-old .inv-button--mall { top: 224dp; }
 /* The legacy active effect over the dragon soul button is classic's. */
 .inv-button__effect
 {

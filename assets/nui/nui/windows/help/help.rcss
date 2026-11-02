@@ -1,5 +1,6 @@
 /* The help's modern look (P11 spec D14; the reviewed design, board WHelp):
-   a centered card on the scrim under its title row, the 20 lines in two
+   a centered card on the scrim under its title row, the 21 lines (legacy's
+   20 and, since wave 4b, the special inventory's key after the inventory's) in two
    columns under the "Controls" heading, each on a cell with an accent
    bullet, the taskbar pointers' texts under the "Taskbar guide" heading
    as a grid of tiles, four to a row, each with its glyph (the
@@ -169,14 +170,16 @@ body.help
 {
 	padding-left: var(--space-2);
 }
+/* 22dp cells 2dp apart: the 11 rows of wave 4b's 21 lines keep the card
+   (with its shadow) within a 720dp screen. */
 .help__line
 {
 	display: block;
 	position: relative;
 	box-sizing: border-box;
-	min-height: 24dp;
-	margin: 0 0 3dp 0;
-	padding: 3dp 8dp 3dp 23dp;
+	min-height: 22dp;
+	margin: 0 0 2dp 0;
+	padding: 2dp 8dp 2dp 23dp;
 	border-width: 1dp;
 	border-color: var(--border);
 	border-radius: 6dp;
@@ -191,7 +194,7 @@ body.help
 	display: block;
 	position: absolute;
 	left: 9dp;
-	top: 8dp;
+	top: 7dp;
 	width: 5dp;
 	height: 5dp;
 	background-color: var(--accent);

@@ -425,6 +425,117 @@ class Facades(unittest.TestCase):
         self.assertIsNone(pair.novaui.dialog.demand)
 
 
+# --- wave 4b: the in-use locks and the special inventory's stone (NOVA-13, NOVA-16) -------------------
+
+# main's exe's extra inventory window (GameType.h).
+EXTRA = 6
+
+
+class LockedCells(object):
+    """An inventory window as the dialogs see it after the Interface's
+    SetInven (interfacemodule.py __BindTradableWindows): its lock calls
+    recorded in the world's log as <name>.SetCantMouseEventCell and
+    <name>.SetCanMouseEventCell."""
+
+    def __init__(self, world, name):
+        self._log = world.game.log
+        self._name = name
+
+    def SetCantMouseEventCell(self, cell):
+        self._log.append((self._name + ".SetCantMouseEventCell", (cell,)))
+
+    def SetCanMouseEventCell(self, cell):
+        self._log.append((self._name + ".SetCanMouseEventCell", (cell,)))
+
+
+LOCKS = ("inventory.", "extra.")
+
+
+def bind_locks(pair):
+    """Both worlds: main's exe's EXTRA_INVENTORY, and the dialog bound to
+    two recording inventories (the inventory and the special one)."""
+    for world in pair.worlds():
+        world.game.modules["player"].EXTRA_INVENTORY = EXTRA
+        with world:
+            world.dialog.SetInven(LockedCells(world, "inventory"), LockedCells(world, "extra"))
+
+
+def run_with_locks(pair, action):
+    """pair.run's effects, with the lock calls in their order."""
+    out = []
+    for world in pair.worlds():
+        with world:
+            mark = len(world.game.log)
+            with corpus_tool.quiet():
+                action(world, world.dialog, world is pair.novaui)
+            out.append([(name, args) for name, args in world.game.log[mark:]
+                        if (name.split(".", 1)[0] in EFFECTS or name.startswith(LOCKS)) and not support.is_getter(name)])
+    return out
+
+
+class TradableLocks(unittest.TestCase):
+    """Wave 4b: legacy's refine dialog locks the refined item's cell and the
+    attach dialog the stone's and the target's while they show (SetInven,
+    the in-use mark of NOVA-13); the attach dialog takes a stone from the
+    special inventory (Open's metinWindow, NOVA-16). The NovaUI dialogs run
+    that code: the same calls, and BindInterface's and SetInven's
+    callers find legacy's methods."""
+
+    STONE_ITEMS = [{"pos": 460, "vnum": 28030}, {"pos": 0, "vnum": 10, "sockets": [SILVER, SILVER, 0], "attrs": [[1, 1500]]}]
+
+    def test_setinven_is_legacy_s(self):
+        world = corpus_tool.DialogWorld(data(), recorder=True)
+        for module, cls, legacy_module, legacy_cls in Facades.CLASSES[:1] + Facades.CLASSES[2:]:
+            ours, theirs = getattr(world.m(module), cls), getattr(world.m(legacy_module), legacy_cls)
+            for name in ("SetInven", "RefreshLockedSlot"):
+                self.assertIs(getattr(ours, name), getattr(theirs, name), "%s.%s" % (cls, name))
+
+    def test_the_refine_dialog_locks_the_item_s_cell_while_it_shows(self):
+        for close in (lambda w, d, n: press(w, d, n, "cancel"), lambda w, d, n: press(w, d, n, "close"),
+                      lambda w, d, n: d.OnPressEscapeKey()):
+            pair = Pair("new", GLAIVE)
+            bind_locks(pair)
+            legacy, novaui = run_with_locks(pair, open_new)
+            self.assertEqual(legacy, novaui)
+            self.assertIn(("inventory.SetCantMouseEventCell", (5,)), legacy)
+            legacy, novaui = run_with_locks(pair, close)
+            self.assertEqual(legacy, novaui)
+            self.assertIn(("inventory.SetCanMouseEventCell", (5,)), legacy)
+
+    def test_an_accepted_refine_releases_the_cell(self):
+        pair = Pair("new", GLAIVE)
+        bind_locks(pair)
+        run_with_locks(pair, lambda w, d, n: open_new(w, d, n, prob=100))
+        legacy, novaui = run_with_locks(pair, lambda w, d, n: press(w, d, n, "accept"))
+        self.assertEqual(legacy, novaui)
+        self.assertEqual(legacy, [("net.SendRefinePacket", (5, 0)), ("inventory.SetCanMouseEventCell", (5,))])
+
+    def test_an_extra_stone_shows_its_image_locks_both_cells_and_is_sent_with_its_window(self):
+        pair = Pair("attach", self.STONE_ITEMS)
+        bind_locks(pair)
+        legacy, novaui = run_with_locks(pair, lambda w, d, n: d.Open(460, 0, metinWindow=EXTRA))
+        self.assertEqual(legacy, novaui)
+        self.assertEqual(legacy, [("extra.SetCantMouseEventCell", (460,)), ("inventory.SetCantMouseEventCell", (0,))])
+        self.assertEqual(pair.novaui.dialog.metinWindow, EXTRA)
+        model = pair.board().model
+        self.assertEqual(model["metin_icon"], "/" + pair.legacy.dialog.metinImage.image)
+        self.assertEqual(model["metin_icon"], "/icon/item/28000.tga", "the extra window's stone")
+        legacy, novaui = run_with_locks(pair, lambda w, d, n: press(w, d, n, "accept"))
+        self.assertEqual(legacy, novaui)
+        self.assertEqual(legacy, [("net.SendItemUseToItemPacket", (EXTRA, 460, 1, 0)),
+                                  ("snd.PlaySound", ("sound/ui/metinstone_insert.wav",)),
+                                  ("extra.SetCanMouseEventCell", (460,)), ("inventory.SetCanMouseEventCell", (0,))])
+
+    def test_no_and_the_close_button_release_both_cells(self):
+        for which in ("cancel", "close"):
+            pair = Pair("attach", Attach.ITEMS)
+            bind_locks(pair)
+            run_with_locks(pair, lambda w, d, n: d.Open(2, 0))
+            legacy, novaui = run_with_locks(pair, lambda w, d, n: press(w, d, n, which))
+            self.assertEqual(legacy, novaui)
+            self.assertEqual(legacy, [("inventory.SetCanMouseEventCell", (2,)), ("inventory.SetCanMouseEventCell", (0,))])
+
+
 class Fixtures(unittest.TestCase):
     """Each fixture holds the model's keys with their kinds (and is the
     model the fixture writer builds, tools/nui_tooltip_corpus.py fixtures)."""

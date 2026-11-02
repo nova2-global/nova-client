@@ -62,6 +62,101 @@ SWORD, GLAIVE, POTION, BLUE_POTION, AUTO_HP, SCROLL, STONE, DETACH, KEY, ARMOR, 
     10, 3000, 27001, 27002, 72723, 25040, 28030, 25100, 50008, 11200, 18000, 71101)
 REFINE_DIALOG = "uiRefine.RefineDialog"
 
+# --- wave 4b (NOVA-16, NOVA-13, NOVA-81): main's exe over the stand-ins -------------------
+# The names wave 4b's legacy code reads that tools/fixtures/module_constants.json
+# (made before the cut) lacks, at main's exe's values (nova-client-src
+# feature/port-wave-4b: GameType.h, PythonPlayerModule.cpp, PythonItemModule.cpp;
+# tools/extra_inventory_test.K_PLAYER).
+W4B_PLAYER = {"EXTRA_INVENTORY": 6, "SLOT_TYPE_EXTRA_INVENTORY": 12, "ON_TOP_WND_NONE": 0, "ON_TOP_WND_SHOP": 1,
+              "ON_TOP_WND_EXCHANGE": 2, "ON_TOP_WND_SAFEBOX": 3, "ON_TOP_WND_PRIVATE_SHOP": 4}
+EXTRA, SLOT_EXTRA = W4B_PLAYER["EXTRA_INVENTORY"], W4B_PLAYER["SLOT_TYPE_EXTRA_INVENTORY"]
+ITEM_TYPE_GACHA = 38
+# player.SlotTypeToInvenType (GameType.cpp's table, with the EXTRA row).
+SLOT_TO_WINDOW = {1: 1, 8: 3, 10: 4, 11: 5, 12: 6}
+# The exe's anti flags (ItemData.h); the safebox's is the server's 1 << 17.
+W4B_ANTIFLAGS = {"ANTIFLAG_GIVE": 1 << 13, "ITEM_ANTIFLAG_MYSHOP": 1 << 16, "ANTIFLAG_MYSHOP": 1 << 16,
+                 "ANTIFLAG_SAFEBOX": 1 << 17}
+# A treasure chest (ITEM_GACHA), a costume and a scroll the two inventories
+# share (uiinventory.EXTRA_SHARED_SCROLLS).
+CHEST, COSTUME, BEWITCH = 34218, 41001, 71051
+
+
+def install_wave4b(game):
+    """main's exe's wave 4b over a Game whose wave 3b UI is installed (a
+    setup step, before the modules load): the window and slot type of the
+    extra inventory and the on-top windows (W4B_PLAYER), the gacha's item
+    type and the anti flags; the window-aware getters (GetItemFlags,
+    GetItemAttribute, IsAntiFlagBySlot, SlotTypeToInvenType; an inventory
+    cell given by its plain number answers for (INVENTORY, cell)); item
+    types by vnum (Game.item_types); the trade (exchange.isTrading,
+    Game.trading); the safebox's cells (Game.safebox_items, safebox_cells);
+    and the Interface's new methods: IsSafeboxOpen (Game.safebox_open),
+    ToggleExtraInventoryWindow, the on-top window (SetOnTopWindow,
+    GetOnTopWindow) and RefreshMarkInventoryBag (its wndInventory's marks)."""
+    player, item = game.modules["player"], game.modules["item"]
+    for name, value in W4B_PLAYER.items():
+        setattr(player, name, value)
+    item.ITEM_TYPE_GACHA = ITEM_TYPE_GACHA
+    for name, value in W4B_ANTIFLAGS.items():
+        if not isinstance(getattr(item, name, None), int):
+            setattr(item, name, value)
+    game.item_types = {}
+    game.trading = False
+    game.safebox_open = False
+    game.safebox_items = {}
+    game.safebox_cells = 2 * 45
+    game.extra_flags = {}
+
+    def key_of(at):
+        return at[0] if len(at) == 1 else tuple(at)
+
+    def held(at):
+        found = game._item_at(*at)
+        if not found["vnum"] and len(at) == 2 and at[0] == player.INVENTORY:
+            found = game._item_at(at[1])
+        return found
+
+    selected = item.selected
+    support.define(item, "GetItemType", lambda: game.item_types.get(selected[0], 0))
+    support.define(player, "GetItemFlags", lambda *at: game.item_flags.get(key_of(at), 0))
+    support.define(player, "GetItemAttribute", lambda *at: (0, 0))
+    support.define(player, "SlotTypeToInvenType", lambda slot_type: SLOT_TO_WINDOW.get(slot_type, 0))
+    support.define(player, "IsAntiFlagBySlot",
+                   lambda *args: bool(game.antiflags.get(held(args[:-1])["vnum"], 0) & args[-1]))
+    exchange = game.modules.get("exchange")
+    if exchange is None:
+        exchange = support.Recording("exchange", game.log, EXCHANGE_ITEM_MAX_NUM=24)
+        game.put("exchange", exchange)
+    support.define(exchange, "isTrading", lambda: game.trading)
+    if "safebox" not in game.modules:
+        safebox = support.Recording("safebox", game.log, SAFEBOX_SLOT_X_COUNT=5, SAFEBOX_SLOT_Y_COUNT=9,
+                                    SAFEBOX_PAGE_SIZE=45)
+        support.define(safebox, "GetItemID", lambda cell: game.safebox_items.get(cell, 0))
+        support.define(safebox, "GetCurrentSafeboxSize", lambda: game.safebox_cells)
+        game.put("safebox", safebox)
+    interface = game.interface
+    interface.onTopWindow = player.ON_TOP_WND_NONE
+    interface.wndInventory = None
+    interface.IsSafeboxOpen = lambda: game.safebox_open
+    interface.ToggleExtraInventoryWindow = lambda: game.log.append(("interface.ToggleExtraInventoryWindow", ()))
+
+    def set_on_top(on_top):
+        game.log.append(("interface.SetOnTopWindow", (on_top,)))
+        interface.onTopWindow = on_top
+
+    def refresh_marks():
+        game.log.append(("interface.RefreshMarkInventoryBag", ()))
+        if interface.wndInventory is not None:
+            interface.wndInventory.RefreshMarkSlots()
+    interface.SetOnTopWindow = set_on_top
+    interface.GetOnTopWindow = lambda: interface.onTopWindow
+    interface.RefreshMarkInventoryBag = refresh_marks
+
+
+def wave4b(*changes):
+    """stock(), install_wave4b and then each change(game)."""
+    return with_state(install_wave4b, *changes)
+
 
 def quiet():
     """The legacy windows print banners."""
@@ -1770,17 +1865,25 @@ class LeanCells(unittest.TestCase):
     """P14 spec 4.2: a lean grid's cell is one element with an icon and a
     number child, and no state of its own needs another element, but the
     bag's active effect: legacy plays its frames over an active cell (the
-    auto potions), which classic shows (P14 V-5)."""
+    auto potions), which classic shows (P14 V-5); and since wave 4b
+    (NOVA-13) the bag's trade marks' wash, made only while a mark is on."""
 
     def cell_template(self, name, collection):
+        """The cell's element, from its start tag to its own end tag (the
+        divs inside it balanced)."""
         text = read(os.path.join(WINDOWS, name, name + ".rml"))
-        match = re.search(r'<div class="nui-slot[^"]*"[^>]*data-for="c : %s".*?</div>' % collection, text, re.S)
+        match = re.search(r'<div class="nui-slot[^"]*"[^>]*data-for="c : %s"' % collection, text)
         self.assertIsNotNone(match, name)
-        return match.group(0)
+        depth = 0
+        for tag in re.finditer(r"<(/?)div[\s>]", text[match.start():]):
+            depth += -1 if tag.group(1) else 1
+            if depth == 0:
+                return text[match.start():match.start() + tag.end()]
+        self.fail("%s: the cell has no end tag" % name)
 
-    def test_each_lean_cell_is_three_elements_and_the_bag_s_four(self):
+    def test_each_lean_cell_is_three_elements_and_the_bag_s_five(self):
         for name, collection, grid, parts in (
-                ("inventory", "bag", "inv-bag", ["div", "img", "nui-number", "nui-frames"]),
+                ("inventory", "bag", "inv-bag", ["div", "img", "div", "nui-number", "nui-frames"]),
                 ("belt-inventory", "cells", "belt-grid", ["div", "img", "nui-number"]),
                 ("select-item", "cells", "select-grid", ["div", "img", "nui-number"])):
             template = self.cell_template(name, collection)
@@ -1792,6 +1895,14 @@ class LeanCells(unittest.TestCase):
     def test_the_bag_s_active_part_shows_only_while_the_cell_is_active(self):
         template = self.cell_template("inventory", "bag")
         self.assertRegex(template, r'<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>')
+
+    def test_the_bag_s_wash_shows_only_while_a_trade_mark_is_on(self):
+        """Wave 4b (NOVA-13): the classes of nui_slots.MARK_KEYS on the cell
+        and its wash after the icon (components/slot-grid.rcss)."""
+        template = self.cell_template("inventory", "bag")
+        self.assertIn('data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop"', template)
+        self.assertRegex(template, r'<img class="nui-slot__icon"[^>]*/>\s*<div class="nui-slot__wash" '
+                                   r'data-if="c.in_use \|\| c.unusable_ontop"></div>')
 
 
 class ModernDoll(unittest.TestCase):
@@ -1971,6 +2082,265 @@ class ModernDoll(unittest.TestCase):
             window.Show()
         self.assertEqual([entry["id"] for entry in board(window).model["rail"]],
                          ["events", "offline_shop", "ranking", "achievements", "guide"])
+
+
+class Wave4b(Pair):
+    """Wave 4b on the NovaUI inventory (port-wave4/ui-followups.md C2,
+    spec 11): the special inventory's button, Ctrl, Shift and Alt with a
+    right press (legacy's __UseItemWithModifier reads app.IsPressed, which
+    the NovaUI bag leaves as legacy's slot window does), an extra item
+    dropped on the bag, and the two trade marks (legacy's RefreshMarkSlots
+    and the trade windows' locks, again after a page change and on top),
+    each compared with legacy call for call (main's exe over the stand-ins,
+    install_wave4b)."""
+
+    def worlds(self, setup=None):
+        return Pair.worlds(self, setup if setup is not None and setup is not stock else wave4b())
+
+    def pressing(self, *keys):
+        """A right press on bag cell `n` with the keys held (app.IsPressed)."""
+        def press_with(n):
+            def flow(w, win, i):
+                w.game.pressed.update(A[key] for key in keys)
+                i.press("bag", n, 1)
+                w.game.pressed.clear()
+            return flow
+        return press_with
+
+    # --- the button ------------------------------------------------------------------
+
+    def test_the_special_inventory_s_button_toggles_its_window(self):
+        legacy, world, window = self.same(lambda w, win, i: i.button("extraInventoryButton", "extra_press"),
+                                          expect=["interface.ToggleExtraInventoryWindow"])
+        self.assertEqual(legacy, [("interface.ToggleExtraInventoryWindow", ())])
+        self.assertTrue(board(window).model["has_extra"])
+        self.assertIsNotNone(window.extraInventoryButton)
+
+    def test_a_right_press_on_the_button_does_nothing(self):
+        world = World(True, setup=wave4b())
+        window = world.make_inventory()
+        mark = world.mark()
+        with world.game, quiet():
+            press(window, "extra_press", 1)
+        self.assertEqual(world.effects_since(mark), [])
+
+    # --- Ctrl, Shift and Alt with a right press ------------------------------------------
+
+    def test_ctrl_moves_a_costume_and_a_shared_scroll_to_the_special_inventory(self):
+        def shared(game):
+            game.give(6, COSTUME, size=(1, 2))
+            game.give(8, BEWITCH, 3)
+            game.item_types[COSTUME] = game.modules["item"].ITEM_TYPE_COSTUME
+        ctrl = self.pressing("DIK_LCONTROL")
+        legacy, _, _ = self.same(ctrl(6), wave4b(shared), expect=["net.SendItemTransferPacket"])
+        self.assertEqual(legacy[0], ("net.SendItemTransferPacket", (P["INVENTORY"], 6, EXTRA)))
+        legacy, _, _ = self.same(ctrl(8), wave4b(shared), expect=["net.SendItemTransferPacket"])
+        self.assertEqual(legacy[0], ("net.SendItemTransferPacket", (P["INVENTORY"], 8, EXTRA)))
+
+    def test_ctrl_on_another_item_uses_it(self):
+        legacy, _, _ = self.same(self.pressing("DIK_LCONTROL")(4), expect=["net.SendItemUsePacket"])
+        self.assertNotIn("net.SendItemTransferPacket", [name for name, _ in legacy])
+
+    def test_ctrl_puts_an_item_into_the_open_trade(self):
+        def trading(game):
+            game.trading = True
+        legacy, _, _ = self.same(self.pressing("DIK_LCONTROL")(4), wave4b(trading),
+                                 expect=["net.SendExchangeItemAddPacket"])
+        self.assertEqual(legacy[0], ("net.SendExchangeItemAddPacket", (P["INVENTORY"], 4, 0)))
+
+    def test_shift_checks_an_item_into_the_open_safebox_s_first_free_cell(self):
+        def safebox_open(game):
+            game.safebox_open = True
+            game.safebox_items[0] = POTION
+        legacy, _, _ = self.same(self.pressing("DIK_LSHIFT")(4), wave4b(safebox_open),
+                                 expect=["net.SendSafeboxCheckinPacket"])
+        self.assertEqual(legacy[0], ("net.SendSafeboxCheckinPacket", (P["INVENTORY"], 4, 1)))
+
+    def test_shift_without_the_safebox_uses_the_item(self):
+        self.same(self.pressing("DIK_LSHIFT")(4), expect=["net.SendItemUsePacket"])
+
+    def test_alt_opens_a_count_of_chests_from_a_stack(self):
+        def chests(game):
+            game.give(8, CHEST, 5)
+            game.give(11, CHEST, 1500)
+            game.item_types[CHEST] = ITEM_TYPE_GACHA
+
+        def flow(n, count):
+            def run(w, win, i):
+                self.pressing("DIK_LALT")(n)(w, win, i)
+                win.dlgPickMoney.accept(count)
+            return run
+        legacy, _, _ = self.same(flow(8, 3), wave4b(chests),
+                                 expect=["uiPickMoney.PickMoneyDialog.Open", "net.SendItemMultiUsePacket"])
+        self.assertIn(("net.SendItemMultiUsePacket", (P["INVENTORY"], 8, 3)), legacy)
+        opened = [args for name, args in legacy if name == "uiPickMoney.PickMoneyDialog.Open"]
+        self.assertEqual(opened[0][-1], 5, "the stack's count")
+        legacy, _, _ = self.same(flow(11, 1200), wave4b(chests), expect=["net.SendItemMultiUsePacket"])
+        opened = [args for name, args in legacy if name == "uiPickMoney.PickMoneyDialog.Open"]
+        self.assertEqual(opened[0][-1], 1000, "at most GACHA_MULTI_OPEN_MAX")
+        self.assertIn(("net.SendItemMultiUsePacket", (P["INVENTORY"], 11, 1000)), legacy)
+
+    def test_alt_on_one_chest_uses_it(self):
+        def chest(game):
+            game.give(8, CHEST, 1)
+            game.item_types[CHEST] = ITEM_TYPE_GACHA
+        self.same(self.pressing("DIK_LALT")(8), wave4b(chest), expect=["net.SendItemUsePacket"])
+
+    # --- an extra item dropped on the bag ------------------------------------------------
+
+    def extra(self, game):
+        """The special inventory's items: a potion stack, a stone, a key and a
+        costume (equipment)."""
+        game.give((EXTRA, 230), POTION, 3)
+        game.give((EXTRA, 460), STONE)
+        game.give((EXTRA, 30), KEY)
+        game.give((EXTRA, 900), COSTUME, size=(1, 2))
+        game.equipment.add(COSTUME)
+        game.item_types[COSTUME] = game.modules["item"].ITEM_TYPE_COSTUME
+
+    def test_an_extra_item_dropped_on_an_empty_cell_moves_there(self):
+        legacy, _, _ = self.same(lambda w, win, i: i.press("bag", 6), wave4b(self.extra),
+                                 before=attach("SLOT_TYPE_EXTRA_INVENTORY", 230, POTION, 3),
+                                 expect=["net.SendItemMovePacket", "mouse.DeattachObject"])
+        self.assertIn(("net.SendItemMovePacket", (EXTRA, 230, P["INVENTORY"], 6, 3)), legacy)
+
+    def test_an_extra_stone_dropped_on_an_item_opens_the_attach_dialog_with_its_window(self):
+        legacy, _, _ = self.same(lambda w, win, i: i.press("bag", 0), wave4b(self.extra),
+                                 before=attach("SLOT_TYPE_EXTRA_INVENTORY", 460, STONE),
+                                 expect=["uiAttachMetin.AttachMetinDialog.Open"])
+        self.assertIn(("uiAttachMetin.AttachMetinDialog.Open", (460, 0, ("metinWindow", EXTRA))), legacy)
+
+    def test_an_extra_key_dropped_on_an_item_is_used_on_it(self):
+        legacy, _, _ = self.same(lambda w, win, i: i.press("bag", 0), wave4b(self.extra),
+                                 before=attach("SLOT_TYPE_EXTRA_INVENTORY", 30, KEY),
+                                 expect=["net.SendItemUseToItemPacket"])
+        self.assertIn(("net.SendItemUseToItemPacket", (EXTRA, 30, P["INVENTORY"], 0)), legacy)
+
+    def test_an_extra_costume_dropped_on_a_worn_cell_is_worn(self):
+        legacy, _, _ = self.same(lambda w, win, i: i.press("wear", I["EQUIPMENT_BODY"]), wave4b(self.extra),
+                                 before=attach("SLOT_TYPE_EXTRA_INVENTORY", 900, COSTUME),
+                                 expect=["net.SendItemUsePacket"])
+        self.assertIn(("net.SendItemUsePacket", (EXTRA, 900)), legacy)
+
+    def test_an_extra_key_over_an_item_marks_it_usable(self):
+        def flow(w, win, i):
+            i.over("bag", 0)
+        _, world, window = self.same(flow, wave4b(self.extra), before=attach("SLOT_TYPE_EXTRA_INVENTORY", 30, KEY))
+        self.assertTrue(window.wndItem.use_mode)
+        self.assertEqual(board(window).model["bag"][0]["target"], "usable")
+
+    # --- the trade marks -----------------------------------------------------------------
+
+    def marks_shown(self, window):
+        """{cell: (in use, unusable on top)} of the board's marked cells."""
+        return dict((cell["index"], (cell["in_use"], cell["unusable_ontop"])) for cell in board(window).model["bag"]
+                    if cell["in_use"] or cell["unusable_ontop"])
+
+    def both(self, setup, step):
+        """step(world, window) in a legacy world and a NovaUI one; the legacy
+        bag's marks and the NovaUI board's after it."""
+        legacy, novaui = self.worlds(setup)
+        found = []
+        for world in (legacy, novaui):
+            window = world.make_inventory()
+            world.interface.wndInventory = window
+            with world.game, quiet():
+                step(world, window)
+            found.append((world, window))
+        (_, a), (_, b) = found
+        self.assertEqual(self.marks_shown(b), a.wndItem.marks())
+        return a, b
+
+    def test_the_window_on_top_marks_the_items_it_refuses(self):
+        def refused(game):
+            game.antiflags[POTION] = game.modules["item"].ANTIFLAG_SELL
+
+        def shop_on_top(world, window):
+            world.interface.SetOnTopWindow(W4B_PLAYER["ON_TOP_WND_SHOP"])
+            world.interface.RefreshMarkInventoryBag()
+        a, b = self.both(wave4b(refused), shop_on_top)
+        self.assertEqual(self.marks_shown(b), {4: (False, True)}, "the board shows it without a RefreshSlot")
+
+        def none_on_top(world, window):
+            shop_on_top(world, window)
+            world.interface.SetOnTopWindow(W4B_PLAYER["ON_TOP_WND_NONE"])
+            world.interface.RefreshMarkInventoryBag()
+        a, b = self.both(wave4b(refused), none_on_top)
+        self.assertEqual(self.marks_shown(b), {})
+
+    def test_the_safebox_s_flag_is_the_server_s(self):
+        def refused(game):
+            game.antiflags[POTION] = W4B_ANTIFLAGS["ANTIFLAG_SAFEBOX"]
+
+        def safebox_on_top(world, window):
+            world.interface.SetOnTopWindow(W4B_PLAYER["ON_TOP_WND_SAFEBOX"])
+            world.interface.RefreshMarkInventoryBag()
+        a, b = self.both(wave4b(refused), safebox_on_top)
+        self.assertEqual(self.marks_shown(b), {4: (False, True)})
+
+    def test_a_trade_window_s_lock_holds_across_a_page_change_and_on_top(self):
+        class Holder(object):
+            """A trade window that holds the potion's cell (legacy's
+            RefreshLockedSlot through the inventory's SetCantMouseEventCell)."""
+
+            def __init__(self, window):
+                self.window = window
+
+            def IsShow(self):
+                return True
+
+            def RefreshLockedSlot(self):
+                self.window.SetCantMouseEventCell(4)
+
+        def lock(world, window):
+            window.BindWindow(Holder(window))
+            window.SetCantMouseEventCell(4)
+        a, b = self.both(None, lock)
+        self.assertEqual(self.marks_shown(b), {4: (True, False)})
+
+        def pages(world, window):
+            lock(world, window)
+            Input(world, window).tab(1)
+            Input(world, window).tab(0)
+        a, b = self.both(None, pages)
+        self.assertEqual(self.marks_shown(b), {4: (True, False)}, "locked again after the page's refresh")
+
+        def on_top(world, window):
+            lock(world, window)
+            window.wndItem.SetCanMouseEventSlot(4)  # the mark gone, the lock still held
+            window.SetTop()
+        a, b = self.both(None, on_top)
+        self.assertEqual(self.marks_shown(b), {4: (True, False)}, "OnTop locks again")
+
+        def released(world, window):
+            window.SetCantMouseEventCell(4)
+            window.SetCanMouseEventCell(4)
+        a, b = self.both(None, released)
+        self.assertEqual(self.marks_shown(b), {})
+
+    def test_a_cell_in_use_takes_no_press(self):
+        world = World(True, setup=wave4b())
+        window = world.make_inventory()
+        with world.game, quiet():
+            window.SetCantMouseEventCell(4)
+        mark = world.mark()
+        with world.game, quiet():
+            i = Input(world, window)
+            i.press("bag", 4)
+            i.press("bag", 4, 1)
+            i.use("bag", 4)
+        self.assertEqual(world.effects_since(mark), [], "no pick, no use")
+        self.assertFalse(world.mouse.isAttached())
+        with world.game, quiet():
+            window.SetCanMouseEventCell(4)
+            Input(world, window).press("bag", 4)
+        self.assertTrue(world.mouse.isAttached(), "released, it picks again")
+
+    def test_a_lock_off_the_shown_page_marks_nothing(self):
+        def lock(world, window):
+            window.SetCantMouseEventCell(50)
+        a, b = self.both(None, lock)
+        self.assertEqual(self.marks_shown(b), {})
 
 
 if __name__ == "__main__":

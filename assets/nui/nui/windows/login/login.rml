@@ -97,8 +97,12 @@
 						</div>
 					</div>
 					<div class="nui-row login-row login-r3 nui-anim">
-						<label id="login-remember" class="nui-toggle login-remember" data-event-mousedown="remember_press(ev.button)">
-							<input type="checkbox" class="nui-toggle__input" data-attrif-checked="remember"/>
+						<!-- This document takes focus, so the label forwards a click to its
+						     checkbox, which flips itself: the model follows its change
+						     (a mousedown flip as well would flip it twice). -->
+						<label id="login-remember" class="nui-toggle login-remember">
+							<input type="checkbox" class="nui-toggle__input" data-attrif-checked="remember"
+							       data-event-change="remember_change(ev.checked)"/>
 							<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
 							<span class="nui-toggle__label">@ui.NUI_LOGIN_REMEMBER</span>
 						</label>
@@ -188,9 +192,9 @@
 						<span class="login-hint login-hint--field">@ui.NUI_LOGIN_DELETE_CODE_NOTE</span>
 					</div>
 					<div class="nui-row login-row">
-						<label id="login-rules" class="nui-toggle login-rules" data-class-login-rules--invalid="reg_error_on == 'rules'"
-						       data-event-mousedown="rules_press(ev.button)">
-							<input type="checkbox" class="nui-toggle__input" data-attrif-checked="rules"/>
+						<label id="login-rules" class="nui-toggle login-rules" data-class-login-rules--invalid="reg_error_on == 'rules'">
+							<input type="checkbox" class="nui-toggle__input" data-attrif-checked="rules"
+							       data-event-change="rules_change(ev.checked)"/>
 							<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
 							<span class="nui-toggle__label">@ui.NUI_LOGIN_ACCEPT_RULES</span>
 						</label>

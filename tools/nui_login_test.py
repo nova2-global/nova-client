@@ -8,6 +8,7 @@ itself onto a stand-in window, so the flows below run the real hook calls,
 with the board and without it (the legacy path)."""
 import ast
 import os
+import re
 import shutil
 import sys
 import tempfile
@@ -26,6 +27,12 @@ LOGIN_DOCUMENT = "nui/windows/login/login.rml"
 PICKER_DOCUMENT = "nui/windows/theme-picker/theme-picker.rml"
 KEYBOARD_DOCUMENT = "nui/windows/virtual-keyboard/virtual-keyboard.rml"
 THEMES = support.THEMES
+
+def read_login_rml():
+    """The login board's markup."""
+    with open(os.path.join(ROOT, "..", "nui", LOGIN_DOCUMENT), encoding="utf-8") as handle:
+        return handle.read()
+
 
 USER = "novaverify01"
 PASSWORD = "Nv-login-42"
@@ -1180,9 +1187,27 @@ class SavedAccounts(OnePageTest):
     def test_remember_me_is_saved_and_reaches_the_log_in(self):
         win, board = self.open_board()
         self.assertTrue(board.get("remember"))
-        board.on_remember_press(0)
+        board.on_remember_change(False)
         self.assertFalse(board.get("remember"))
         self.assertEqual(self.store.setting("remember"), "0")
+        board.on_remember_change(False)  # the model's echo changes nothing
+        self.assertFalse(board.get("remember"))
+        board.on_remember_change(True)
+        self.assertEqual((board.get("remember"), self.store.setting("remember")), (True, "1"))
+
+    def test_the_toggles_follow_their_checkbox_and_take_no_press(self):
+        """The login document takes focus, so a click on a toggle's label
+        reaches its checkbox, which flips itself; a mousedown handler that
+        flipped the model too flipped it twice (live on r15: the rules shown
+        accepted, the model not, and Create account refused)."""
+        markup = read_login_rml()
+        labels = re.findall(r'<label\b[^>]*class="nui-toggle[^"]*"[^>]*>(?:(?!</label>).)*</label>', markup, re.S)
+        self.assertEqual(len(labels), 2)
+        for label in labels:
+            head = label.split(">", 1)[0]
+            self.assertNotIn("data-event-mousedown", head)
+            self.assertNotIn("data-event-click", head)
+            self.assertRegex(label, r'<input[^>]*type="checkbox"[^>]*data-event-change="\w+\(ev\.checked\)"')
 
 
 class TheCard(OnePageTest):
@@ -1230,7 +1255,9 @@ class TheCard(OnePageTest):
             board.on_reg_edit(field, value, False)
         board.on_create()
         self.assertEqual((board.get("reg_error_on"), sent), ("rules", []))
-        board.on_rules_press(0)
+        board.on_rules_change(True)
+        self.assertEqual(board.get("reg_error_on"), "", "accepting the rules clears their error")
+        board.on_rules_change(True)  # the echo of the model's set
         board.on_create()
         self.assertEqual(sent, [("darkblade", "s3cret-pass", "dark@blade.io", "1234567", 0)])
         self.assertNotIn("s3cret-pass", repr(board.model))

@@ -389,13 +389,16 @@ class LoginBoard(nui.Window):
 		self.set(tab="login", error="", error_on="")
 		self.focus(ID_FIELD)
 
-	@nui.on("remember_press")
-	def on_remember_press(self, button):
-		if button != 0:
-			return
-		remember = not self.get("remember")
-		nui_accounts.set_setting("remember", "1" if remember else "0")
-		self.set(remember=remember)
+	@nui.on("remember_change")
+	def on_remember_change(self, checked):
+		"""The toggle's checkbox changed: a click the label forwarded, Space,
+		or the model's own set (the echo). Applied, never flipped, and saved
+		only when it differs."""
+		remember = bool(checked)
+		if nui_accounts.setting("remember", "1") != ("1" if remember else "0"):
+			nui_accounts.set_setting("remember", "1" if remember else "0")
+		if self.get("remember") != remember:
+			self.set(remember=remember)
 
 	# --- the card ---------------------------------------------------------------
 
@@ -567,12 +570,14 @@ class LoginBoard(nui.Window):
 			else:
 				self._create()
 
-	@nui.on("rules_press")
-	def on_rules_press(self, button):
-		if button != 0:
-			return
-		self.set(rules=not self.get("rules"))
-		if self.get("reg_error_on") == "rules":
+	@nui.on("rules_change")
+	def on_rules_change(self, checked):
+		"""The rules checkbox changed (as remember_change): applied, never
+		flipped. Accepting them clears their error."""
+		rules = bool(checked)
+		if self.get("rules") != rules:
+			self.set(rules=rules)
+		if rules and self.get("reg_error_on") == "rules":
 			self.set(reg_error="", reg_error_on="")
 
 	@nui.on("create")

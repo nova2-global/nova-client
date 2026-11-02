@@ -19,6 +19,8 @@
 			{"code": "ru", "name": "Русский", "image": "d:/ymir work/ui/intro/login/server_flag_ru.sub"},
 			{"code": "tr", "name": "Türkçe", "image": "d:/ymir work/ui/intro/login/server_flag_tr.sub"}
 		],
-		"current": "en"
+		"current": "en",
+		"selected": {"code": "en", "name": "English", "image": "d:/ymir work/ui/intro/login/server_flag_en.sub"},
+		"open": false
 	}
 }

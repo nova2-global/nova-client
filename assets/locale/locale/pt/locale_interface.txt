@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Contas guardadas
 NUI_LOGIN_FORGET	Esquecer esta conta
 NUI_LOGIN_ADD_ACCOUNT	Adicionar conta
 NUI_LOGIN_SAVED_HINT	Guardado neste computador: o nome da conta e as personagens que viste no último início de sessão, com os níveis de então. As palavras-passe nunca são guardadas.
+NUI_LOGIN_SAVED_SECRET_HINT	Guardado neste computador: o nome da conta e as personagens que viste no último início de sessão, com os níveis de então. Com Lembrar-me, o Gestor de Credenciais do Windows guarda a palavra-passe.
+NUI_LOGIN_KEYBOARD	Teclado virtual
 NUI_LOGIN_TAB_LOGIN	Iniciar sessão
 NUI_LOGIN_TAB_REGISTER	Criar conta
 NUI_LOGIN_WELCOME	Bem-vindo de volta, guerreiro

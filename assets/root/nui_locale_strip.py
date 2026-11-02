@@ -1,14 +1,15 @@
-"""NovaUI locale flag strip (nui/windows/locale-strip/locale-strip.rml).
+"""NovaUI locale dropdown (nui/windows/locale-strip/locale-strip.rml).
 
 While the "locale-strip" window flag is on (nui_windows), the name
 uilocaleselector.LocaleSelector makes the LocaleStrip facade below instead of
 the legacy strip: the same names and meanings (Create, SetLocaleChangedEvent,
 Destroy, the flag click with its confirm question), drawn by a document.
 
-- The flags are uilocaleselector.AVAILABLE_LOCALES with their legacy flag
-  art; the flag of the locale in use (config/locale.cfg) is selected.
-- A flag acts on a left mousedown: the document never takes the focus, so a
-  login field keeps its caret.
+- The compact button shows the locale in use from config/locale.cfg. Its
+  list contains uilocaleselector.AVAILABLE_LOCALES with their legacy flag
+  art and native names, with the current locale selected.
+- The button and entries act on a left mousedown: the document never takes
+  the focus, so a login field keeps its caret.
 - The confirm is uiCommon.QuestionDialog(), the dialog kit's question when
   its flag is on, else the legacy one.
 - Right-to-left: a confirm to ae closes and re-opens the login window, whose
@@ -42,10 +43,32 @@ def current_locale():
 	return code or DEFAULT_LOCALE
 
 
+# NovaUI draws text left to right with no Arabic shaping, and its fonts have
+# no Arabic letters, so the Arabic entry is named in Latin letters wherever
+# NovaUI draws it (the list and the kit's confirm question). The Arabic
+# client itself shows the legacy strip.
+DRAWN_NAMES = {"ae": "Arabic"}
+
+
+def drawn_name(locale):
+	"""The name NovaUI shows for an AVAILABLE_LOCALES entry."""
+	return DRAWN_NAMES.get(locale["code"], locale["name"])
+
+
 def flags():
-	return [{"code": locale["code"], "name": nui.plain_text(locale["name"]),
+	return [{"code": locale["code"], "name": nui.plain_text(drawn_name(locale)),
 		"image": uilocaleselector.FLAG_IMAGE_PATH % locale["flag"]}
 		for locale in uilocaleselector.AVAILABLE_LOCALES]
+
+
+def selected_flag(rows, code):
+	for flag in rows:
+		if flag["code"] == code:
+			return dict(flag)
+	for flag in rows:
+		if flag["code"] == DEFAULT_LOCALE:
+			return dict(flag)
+	return dict(rows[0]) if rows else {"code": "", "name": "", "image": ""}
 
 
 class LocaleStripWindow(nui.Window):
@@ -60,12 +83,24 @@ class LocaleStripWindow(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
-		return {"flags": flags(), "current": current_locale()}
+		rows = flags()
+		current = current_locale()
+		return {"flags": rows, "current": current, "selected": selected_flag(rows, current), "open": False}
+
+	def close_list(self):
+		if self.get("open"):
+			self.set(open=False)
+
+	@nui.on("toggle")
+	def on_toggle(self, button):
+		if button == 0:
+			self.set(open=not self.get("open"))
 
 	@nui.on("pick")
 	def on_pick(self, code, button):
 		if button != 0:
 			return
+		self.close_list()
 		self._owner._OnClickFlag(code)
 
 
@@ -129,7 +164,7 @@ class LocaleStrip(object):
 		localeName = "Unknown"
 		for locale in uilocaleselector.AVAILABLE_LOCALES:
 			if locale["code"] == localeCode:
-				localeName = locale["name"]
+				localeName = drawn_name(locale)
 				break
 		if not self.confirmDialog:
 			self.confirmDialog = uiCommon.QuestionDialog()

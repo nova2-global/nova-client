@@ -223,6 +223,14 @@ class MainStream(object):
 
 	def SetSelectCharacterPhase(self):
 		try:
+			# Reaching character selection is the first asset-side point after
+			# the auth server accepted the login. Handle the pending credential
+			# here, before the login window and its fields are closed.
+			try:
+				import nui_accounts
+				nui_accounts.note_auth_accepted()
+			except Exception as error:
+				dbg.TraceError("networkModule: the login credential was not updated (%s)" % type(error).__name__)
 			localeInfo.LoadLocaleData()
 			import introSelect
 			self.popupWindow.Close()

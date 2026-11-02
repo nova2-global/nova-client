@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Zapisane konta
 NUI_LOGIN_FORGET	Zapomnij to konto
 NUI_LOGIN_ADD_ACCOUNT	Dodaj konto
 NUI_LOGIN_SAVED_HINT	Zapisane na tym komputerze: nazwa konta i postacie widziane przy ostatnim logowaniu, z ich ówczesnymi poziomami. Hasła nigdy nie są zapisywane.
+NUI_LOGIN_SAVED_SECRET_HINT	Zapisane na tym komputerze: nazwa konta i postacie widziane przy ostatnim logowaniu, z ich ówczesnymi poziomami. Po włączeniu opcji Zapamiętaj mnie hasło przechowuje Menedżer poświadczeń systemu Windows.
+NUI_LOGIN_KEYBOARD	Klawiatura ekranowa
 NUI_LOGIN_TAB_LOGIN	Zaloguj
 NUI_LOGIN_TAB_REGISTER	Utwórz konto
 NUI_LOGIN_WELCOME	Witaj ponownie, wojowniku

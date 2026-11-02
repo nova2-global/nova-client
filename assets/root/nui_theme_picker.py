@@ -1,7 +1,7 @@
-"""The intro theme picker (nui/windows/theme-picker/theme-picker.rml): one
-button per player theme, under the legacy flag strip. nui_login.py opens it
-with the login board, hides it while a legacy popup is open and destroys it
-with the board.
+"""The debug intro theme picker (nui/windows/theme-picker/theme-picker.rml):
+one button per player theme at the sheet's top-left position. nui_login.py
+opens it with the login board only in a debug client, hides it while a legacy
+popup is open and destroys it with the board.
 
 A left press applies the theme at once and saves it (nui.set_theme), so the
 next start opens in it. Every open window, this one included, then gets

@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Gemte konti
 NUI_LOGIN_FORGET	Glem denne konto
 NUI_LOGIN_ADD_ACCOUNT	Tilføj konto
 NUI_LOGIN_SAVED_HINT	Gemt på denne computer: kontonavnet og de figurer, du så ved dit sidste login, med deres niveau fra dengang. Adgangskoder gemmes aldrig.
+NUI_LOGIN_SAVED_SECRET_HINT	Gemt på denne computer: kontonavnet og de figurer, du så ved dit sidste login, med deres niveau fra dengang. Når Husk mig er valgt, opbevarer Windows Legitimationsstyring adgangskoden.
+NUI_LOGIN_KEYBOARD	Virtuelt tastatur
 NUI_LOGIN_TAB_LOGIN	Log ind
 NUI_LOGIN_TAB_REGISTER	Opret konto
 NUI_LOGIN_WELCOME	Velkommen tilbage, kriger

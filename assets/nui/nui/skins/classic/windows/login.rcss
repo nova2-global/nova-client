@@ -176,7 +176,7 @@
 	border-radius: 0;
 	font-weight: normal;
 }
-.skin-classic .login-exit
+.skin-classic .login-exit, .skin-classic .login-keyboard
 {
 	height: 21dp;
 	line-height: 21dp;

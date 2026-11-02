@@ -403,6 +403,8 @@ NUI_LOGIN_SAVED	Opgeslagen accounts
 NUI_LOGIN_FORGET	Dit account vergeten
 NUI_LOGIN_ADD_ACCOUNT	Account toevoegen
 NUI_LOGIN_SAVED_HINT	Opgeslagen op deze computer: de accountnaam en de personages die je bij je laatste login zag, met hun niveau van toen. Wachtwoorden worden nooit opgeslagen.
+NUI_LOGIN_SAVED_SECRET_HINT	Opgeslagen op deze computer: de accountnaam en de personages die je bij je laatste login zag, met hun niveau van toen. Met Onthoud mij bewaart Windows Referentiebeheer het wachtwoord.
+NUI_LOGIN_KEYBOARD	Virtueel toetsenbord
 NUI_LOGIN_TAB_LOGIN	Inloggen
 NUI_LOGIN_TAB_REGISTER	Account maken
 NUI_LOGIN_WELCOME	Welkom terug, krijger

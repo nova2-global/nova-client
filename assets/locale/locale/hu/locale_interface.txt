@@ -403,6 +403,8 @@ NUI_LOGIN_SAVED	Mentett fiókok
 NUI_LOGIN_FORGET	Fiók elfelejtése
 NUI_LOGIN_ADD_ACCOUNT	Fiók hozzáadása
 NUI_LOGIN_SAVED_HINT	Ezen a számítógépen mentve: a fiók neve és a legutóbbi belépéskor látott karakterek az akkori szintjükkel. Jelszót soha nem mentünk.
+NUI_LOGIN_SAVED_SECRET_HINT	Ezen a számítógépen mentve: a fiók neve és a legutóbbi belépéskor látott karakterek az akkori szintjükkel. Az Emlékezz rám opcióval a Windows hitelesítőadat-kezelője őrzi a jelszót.
+NUI_LOGIN_KEYBOARD	Virtuális billentyűzet
 NUI_LOGIN_TAB_LOGIN	Belépés
 NUI_LOGIN_TAB_REGISTER	Fiók létrehozása
 NUI_LOGIN_WELCOME	Üdv újra, harcos

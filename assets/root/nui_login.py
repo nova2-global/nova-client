@@ -35,26 +35,29 @@ input. It is shown before the board, so the board stays on top and keeps
 the keyboard, hides with the board while a legacy popup is open, and goes
 with the board.
 
-The theme picker (nui/windows/theme-picker, nui_theme_picker.py) comes the
-same way, as win.nuiPicker: shown after the ambience and before the board,
-hidden while a legacy popup is open, gone with the board. It never takes the
-focus, so a theme picked there leaves the board's caret and typed text. It
-sits below the NovaUI locale strip when there is one, and keeps clear of the
-boards and the keyboard: while it overlaps one of them that is shown, its
-sheet hides it (place_picker).
+In a debug client, the theme picker (nui/windows/theme-picker,
+nui_theme_picker.py) comes the same way, as win.nuiPicker: shown after the
+ambience and before the board, hidden while a legacy popup is open, gone with
+the board. It never takes the focus, so a theme picked there leaves the
+board's caret and typed text. Its sheet keeps it at the top left, and it stays
+clear of the boards and the keyboard while they are shown.
 
 The NovaUI virtual keyboard (nui/windows/virtual-keyboard,
-nui_virtual_keyboard.py) comes with the board while the "virtual-keyboard"
-flag is on, as win.nuiKeyboard: shown right before the board each time the
-board shows, hidden with it and while a popup is open, gone with it. It
-types into the board's last focused field (LoginBoard.type_text), and the
-board rises above it (the model's keyboard key).
+nui_virtual_keyboard.py) is available while the "virtual-keyboard" flag is
+on, as win.nuiKeyboard. Its button starts off and remembers the player's
+choice. When on, it is shown right before the board, hidden with it and while
+a popup is open, and gone with it. It types into the board's last focused
+field (LoginBoard.type_text), and the board rises above it.
 """
 
 import time
 import weakref
 
 import dbg
+try:
+	import debugInfo
+except ImportError:  # a tool or test without the client's module: no theme picker
+	debugInfo = None
 import systemSetting
 
 try:
@@ -278,6 +281,8 @@ class LoginBoard(nui.Window):
 		self._exit_cb = on_exit
 		self._user = ""
 		self._password = ""
+		self._stored_password = False
+		self._stored_key = None
 		self._reg = {"user": "", "email": "", "password": "", "confirm": "", "code": ""}
 		self.active = False       # the login state: between enter and leave
 		self._suspended = False   # hidden for a legacy popup
@@ -296,12 +301,14 @@ class LoginBoard(nui.Window):
 		# The last focused field takes the virtual keyboard's keys.
 		for element_id in (ID_FIELD, PASSWORD_FIELD, PASSWORD_SHOWN) + REG_FIELDS:
 			self.element_on(element_id, "focus", self._on_field_focus)
+		self.element_on("", "mousedown", self._on_board_press)
 		self.reload_accounts()
 
 	def initial_model(self):
 		return {"server": "@ui.LOGIN_DEFAULT_SERVERADDR", "user": "", "error": "", "error_on": "", "error_ok": False,
-		        "keyboard": False,
-		        "tab": "login", "accounts": [], "remember": True, "show_password": False,
+		        "keyboard": False, "keyboard_available": False,
+		        "tab": "login", "accounts": [], "remember": True, "show_password": False, "stored_password": False,
+		        "secrets_available": nui_accounts.secrets_available(),
 		        "can_register": _can_register(), "server_name": "", "server_state": "unknown", "online": "",
 		        "channel_text": "", "menu_open": False, "servers": [], "channels": [], "auto": True,
 		        "reg_error": "", "reg_error_on": "", "rules": False,
@@ -312,6 +319,10 @@ class LoginBoard(nui.Window):
 		target = event.get("target_id")
 		if target in (ID_FIELD, PASSWORD_FIELD, PASSWORD_SHOWN) + REG_FIELDS:
 			self._active_field = target
+
+	def _on_board_press(self, event):
+		"""A press on the login document is outside the locale document."""
+		close_locale_list(self._owner)
 
 	def _password_field(self):
 		"""The password field in use: the text one while the eye is on."""
@@ -342,6 +353,35 @@ class LoginBoard(nui.Window):
 			                        "last": c["name"] == played} for c in account["characters"]]})
 		self.set(accounts=rows, remember=nui_accounts.setting("remember", "1") != "0")
 
+	def _saved_account(self, login):
+		for account in nui_accounts.accounts():
+			if account["login"] == login:
+				return account
+		return None
+
+	def _set_password(self, password, stored_key=None):
+		"""Fills the real password field without putting its text in the model."""
+		# Clear the inactive text field before marking the new value as stored.
+		# Its change event must not turn the newly loaded secret into an edit.
+		self._stored_password = False
+		self._stored_key = None
+		self._password = ""
+		self.set(show_password=False, stored_password=False)
+		self.set_value(PASSWORD_SHOWN, "", even_hidden=True)
+		self._password = password
+		self._stored_key = stored_key
+		self._stored_password = stored_key is not None
+		self.set(stored_password=self._stored_password)
+		self.set_value(PASSWORD_FIELD, password, even_hidden=True)
+
+	def _fill_saved_account(self, account):
+		login = account["login"]
+		self.set_user(login)
+		self._select_account(login)
+		secret = nui_accounts.load_secret(account["server"], login)
+		key = (account["server"], login) if secret is not None else None
+		self._set_password(secret or "", key)
+
 	def _select_account(self, login):
 		accounts = self.get("accounts") or []
 		for row in accounts:
@@ -355,8 +395,7 @@ class LoginBoard(nui.Window):
 		name = _as_text(name)
 		if not any(account["login"] == name for account in nui_accounts.accounts()):
 			return  # its cross forgot it in the same press
-		self.set_user(name)
-		self._select_account(name)
+		self._fill_saved_account(self._saved_account(name))
 		self.set(tab="login", error="", error_on="")
 		self.focus(self._password_field())
 
@@ -369,15 +408,17 @@ class LoginBoard(nui.Window):
 		saved = nui_accounts.accounts()
 		if not saved:
 			return False
-		self.set_user(saved[0]["login"])
-		self._select_account(saved[0]["login"])
+		self._fill_saved_account(saved[0])
 		return True
 
 	@nui.on("forget_account")
 	def on_forget_account(self, name, button):
 		if button != 0:
 			return
-		nui_accounts.forget(_as_text(name))
+		name = _as_text(name)
+		nui_accounts.forget(name)
+		if self._stored_key is not None and self._stored_key[1] == name:
+			self._set_password("")
 		self.reload_accounts()
 
 	@nui.on("add_account")
@@ -385,6 +426,7 @@ class LoginBoard(nui.Window):
 		if button != 0:
 			return
 		self.set_user("")
+		self._set_password("")
 		self._select_account(None)
 		self.set(tab="login", error="", error_on="")
 		self.focus(ID_FIELD)
@@ -413,7 +455,7 @@ class LoginBoard(nui.Window):
 	def on_eye_press(self, button):
 		"""Shows or hides the password: the other field takes its text (never
 		through the model) and the focus."""
-		if button != 0:
+		if button != 0 or self._stored_password:
 			return
 		show = not self.get("show_password")
 		target = PASSWORD_SHOWN if show else PASSWORD_FIELD
@@ -432,6 +474,8 @@ class LoginBoard(nui.Window):
 	@nui.on("user_edit")
 	def on_user_edit(self, value, linebreak):
 		self._user = _as_text(value)
+		if self._stored_key is not None and self._stored_key[1] != self._user:
+			self._set_password("")
 		if self.get("error_on") == "user" or self.get("error_ok"):
 			self.set(error="", error_on="", error_ok=False)
 		if linebreak:
@@ -439,23 +483,40 @@ class LoginBoard(nui.Window):
 
 	@nui.on("password_edit")
 	def on_password_edit(self, value, linebreak):
-		self._password = _as_text(value)
+		value = _as_text(value)
+		if self._stored_password and value != self._password:
+			self._stored_password = False
+			self._stored_key = None
+			self.set(stored_password=False)
+		self._password = value
 		if self.get("error_on") == "password" or self.get("error_ok"):
 			self.set(error="", error_on="", error_ok=False)
 		if linebreak:
 			self._submit()
 
 	@nui.on("submit")
-	def on_submit(self):
+	def on_submit(self, button=0):
+		if button != 0:
+			return
 		self._submit()
 
 	@nui.on("exit")
-	def on_exit(self):
-		self._exit_cb()
+	def on_exit(self, button=0):
+		if button == 0:
+			self._exit_cb()
 
 	@nui.on("choose_server")
 	def on_choose_server(self):
 		self._choose_cb()
+
+	@nui.on("keyboard_press")
+	def on_keyboard_press(self, button):
+		if button != 0 or not self.get("keyboard_available"):
+			return
+		on = not self.get("keyboard")
+		nui_accounts.set_setting("keyboard", "1" if on else "0")
+		self.set(keyboard=on)
+		set_keyboard_visible(self._owner, on)
 
 	def _submit(self):
 		if not self.is_visible():
@@ -480,9 +541,10 @@ class LoginBoard(nui.Window):
 			self._owner.Connect(user, password)  # an intrologin.py without the one-page login
 			return
 		channel = self._channel or self.auto_channel()
-		nui_accounts.remember_login(user, self._server, self.get("remember"))
+		nui_accounts.remember_login(user, self._server, self.get("remember"), password)
 		nui_accounts.set_setting("last_channel", channel)
-		login(user, password, self._server, channel)
+		if login(user, password, self._server, channel) is False:
+			nui_accounts.login_failed()
 
 	# --- the server and channel -------------------------------------------------
 
@@ -581,7 +643,9 @@ class LoginBoard(nui.Window):
 			self.set(reg_error="", reg_error_on="")
 
 	@nui.on("create")
-	def on_create(self):
+	def on_create(self, button=0):
+		if button != 0:
+			return
 		self._create()
 
 	def _create(self):
@@ -676,6 +740,13 @@ class LoginBoard(nui.Window):
 		self._user = _as_text(user)
 		self.set(user=self._user)
 
+	def login_failed(self, error):
+		"""Drops the pending password and invalidates a refused stored one."""
+		if error == "WRONGPWD" and self._stored_password and self._stored_key is not None:
+			nui_accounts.forget_secret(*self._stored_key)
+			self._set_password("")
+		nui_accounts.login_failed()
+
 	def typed_values(self):
 		return (self._user, self._password)
 
@@ -689,10 +760,14 @@ class LoginBoard(nui.Window):
 	def on_reload(self):
 		# A locale change or hot reload re-loaded the document: its ID field
 		# starts from the model and its password field empty.
-		self.set(user=self._user, show_password=False)
-		self._password = ""
+		self.set(user=self._user, show_password=False, stored_password=False,
+		         secrets_available=nui_accounts.secrets_available())
+		self._set_password("")
 		self._reg.update(password="", confirm="")
 		self.reload_accounts()
+		account = self._saved_account(self._user)
+		if account is not None:
+			self._fill_saved_account(account)
 		if self.is_visible():
 			self.focus(self._password_field() if self._user else ID_FIELD)
 
@@ -762,10 +837,7 @@ def _keyboard(win):
 
 
 def _open_keyboard(win, board):
-	"""The NovaUI virtual keyboard, when its flag allows it; its decision is
-	recorded either way. Optional: when it cannot be made, the board runs
-	without it (and without the legacy keyboard, which types into the legacy
-	IME only)."""
+	"""Makes the optional keyboard hidden and exposes its login button."""
 	if not nui_windows.use(KEYBOARD_ID)[0]:
 		return
 	try:
@@ -778,9 +850,10 @@ def _open_keyboard(win, board):
 		nui_windows.note_failure(KEYBOARD_ID, "the document did not load")
 		return
 	win.nuiKeyboard = keyboard
-	board.set(keyboard=True)
+	board.set(keyboard_available=True,
+	          keyboard=nui_accounts.setting("keyboard", "0") == "1")
 	owner = weakref.ref(win)
-	board.before_show = lambda: _show_keyboard(owner())
+	board.before_show = lambda: _sync_keyboard(owner())
 
 
 def _show_keyboard(win):
@@ -790,9 +863,38 @@ def _show_keyboard(win):
 	ambience, made after it, would draw its embers over the keys. A visible
 	one is left alone."""
 	keyboard = _keyboard(win) if win is not None else None
+	board = _board(win) if win is not None else None
+	if board is None or not board.get("keyboard"):
+		return
 	if keyboard is not None and not keyboard.is_visible():
 		keyboard.show()
 		keyboard.bring_to_front()
+
+
+def _sync_keyboard(win):
+	if win is None:
+		return
+	board = _board(win)
+	if board is not None and board.get("keyboard"):
+		_show_keyboard(win)
+	else:
+		_hide_keyboard(win)
+
+
+def set_keyboard_visible(win, on):
+	"""Applies the keyboard toggle at once without moving the field focus."""
+	board = _board(win)
+	keyboard = _keyboard(win)
+	if board is None or keyboard is None:
+		return False
+	if on:
+		_show_keyboard(win)
+		# _show_keyboard raises the keyboard over the ambience. Put the login
+		# document back above it without changing its focused field.
+		board.bring_to_front()
+	else:
+		_hide_keyboard(win)
+	return True
 
 
 def _hide_keyboard(win):
@@ -816,24 +918,15 @@ def _refuse_keyboard():
 
 
 def place_picker(win):
-	"""The picker below the NovaUI locale strip when there is one (else where
-	its sheet puts it, under the legacy strip), kept clear of the login
-	board, the server board and the keyboard: its sheet hides it while it
-	overlaps one of them that is shown. Called when the picker, the server
-	board or the strip is made."""
+	"""Keeps the debug picker at its sheet position and clear of the boards."""
 	picker = _picker(win)
 	if picker is None:
 		return
-	strip = _strip(win)
-	if strip is not None:
-		picker.place_next_to(strip, "below", 4)
-	else:
-		picker.clear_placement()
+	picker.clear_placement()
 	board = _board(win)
 	targets = [(board, element_id) for element_id in ("login-card", "login-accounts")] if board is not None else []
 	targets += [window for window in (getattr(win, "nuiServerBoard", None), _keyboard(win)) if window is not None]
 	picker.keep_clear_of(*targets)
-	_raise_strip(win)
 
 
 def _strip(win):
@@ -842,13 +935,11 @@ def _strip(win):
 	return strip if strip is not None and getattr(strip, "_doc", 0) else None
 
 
-def _raise_strip(win):
-	"""The strip's flag hints open below it, over the picker: the strip goes
-	above the picker after every show of the picker (a show raises it while
-	a field has the focus). They never overlap otherwise."""
+def close_locale_list(win):
+	"""Closes the separate locale document after a login-board press."""
 	strip = _strip(win)
 	if strip is not None:
-		strip.bring_to_front()
+		strip.close_list()
 
 
 def _open_picker(win):
@@ -857,7 +948,7 @@ def _open_picker(win):
 	without player themes (an exe without nui/theme/themes.json) or when its
 	document does not load, the board runs without it."""
 	get_themes = getattr(nui, "get_themes", None)
-	if nui_theme_picker is None or get_themes is None or not get_themes():
+	if debugInfo is None or not debugInfo.IsDebugMode() or nui_theme_picker is None or get_themes is None or not get_themes():
 		return
 	try:
 		picker = nui_theme_picker.ThemePicker()
@@ -871,7 +962,6 @@ def _open_picker(win):
 	win.nuiPicker = picker
 	place_picker(win)
 	picker.show()
-	_raise_strip(win)
 
 
 def _show_picker(win):
@@ -879,7 +969,6 @@ def _show_picker(win):
 	picker = _picker(win)
 	if picker is not None and not picker.is_visible():
 		picker.show()
-		_raise_strip(win)
 
 
 def _hide_picker(win):
@@ -1024,6 +1113,15 @@ def focus_field(win, which):
 		return False
 	board.focus_field(ID_FIELD if which == "user" else board._password_field())
 	return True
+
+
+def login_failed(win, error=""):
+	"""A connection or authentication failure clears pending secret data."""
+	board = _board(win)
+	if board is not None:
+		board.login_failed(_as_text(error))
+	else:
+		nui_accounts.login_failed()
 
 
 def on_login_board(win):

@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Kayıtlı hesaplar
 NUI_LOGIN_FORGET	Bu hesabı unut
 NUI_LOGIN_ADD_ACCOUNT	Hesap ekle
 NUI_LOGIN_SAVED_HINT	Bu bilgisayarda saklanır: hesap adı ve son girişte gördüğün karakterler, o zamanki seviyeleriyle. Şifreler asla saklanmaz.
+NUI_LOGIN_SAVED_SECRET_HINT	Bu bilgisayarda saklanır: hesap adı ve son girişte gördüğün karakterler, o zamanki seviyeleriyle. Beni hatırla seçiliyken parolayı Windows Kimlik Bilgileri Yöneticisi saklar.
+NUI_LOGIN_KEYBOARD	Sanal klavye
 NUI_LOGIN_TAB_LOGIN	Giriş yap
 NUI_LOGIN_TAB_REGISTER	Hesap oluştur
 NUI_LOGIN_WELCOME	Tekrar hoş geldin, savaşçı

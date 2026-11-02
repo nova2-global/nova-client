@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Uložené účty
 NUI_LOGIN_FORGET	Zapomenout tento účet
 NUI_LOGIN_ADD_ACCOUNT	Přidat účet
 NUI_LOGIN_SAVED_HINT	Uloženo v tomto počítači: název účtu a postavy, které jsi viděl při posledním přihlášení, s tehdejšími úrovněmi. Hesla se nikdy neukládají.
+NUI_LOGIN_SAVED_SECRET_HINT	Uloženo v tomto počítači: název účtu a postavy, které jsi viděl při posledním přihlášení, s tehdejšími úrovněmi. Při volbě Zapamatovat si mě uchovává heslo Správce pověření Windows.
+NUI_LOGIN_KEYBOARD	Virtuální klávesnice
 NUI_LOGIN_TAB_LOGIN	Přihlásit
 NUI_LOGIN_TAB_REGISTER	Vytvořit účet
 NUI_LOGIN_WELCOME	Vítej zpět, válečníku

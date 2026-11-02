@@ -402,6 +402,8 @@ NUI_LOGIN_SAVED	Gespeicherte Konten
 NUI_LOGIN_FORGET	Dieses Konto vergessen
 NUI_LOGIN_ADD_ACCOUNT	Konto hinzufügen
 NUI_LOGIN_SAVED_HINT	Auf diesem Computer gespeichert: der Kontoname und die Charaktere, die du beim letzten Login gesehen hast, mit ihren damaligen Stufen. Passwörter werden nie gespeichert.
+NUI_LOGIN_SAVED_SECRET_HINT	Auf diesem Computer gespeichert: der Kontoname und die Charaktere, die du beim letzten Login gesehen hast, mit ihren damaligen Stufen. Wenn Angemeldet bleiben aktiviert ist, speichert die Windows-Anmeldeinformationsverwaltung das Passwort.
+NUI_LOGIN_KEYBOARD	Virtuelle Tastatur
 NUI_LOGIN_TAB_LOGIN	Anmelden
 NUI_LOGIN_TAB_REGISTER	Konto erstellen
 NUI_LOGIN_WELCOME	Willkommen zurück, Krieger

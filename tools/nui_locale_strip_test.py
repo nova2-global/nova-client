@@ -115,8 +115,12 @@ class Facade(StripTest):
         self.assertTrue(window.is_visible())
         flags = window.model["flags"]
         self.assertEqual(len(flags), 17)
-        self.assertEqual(flags[0], {"code": "ae", "name": "Arabic", "image": "d:/ymir work/ui/intro/login/server_flag_ae.sub"})
+        self.assertEqual(flags[0], {"code": "ae", "name": "Arabic", "image": "d:/ymir work/ui/intro/login/server_flag_ae.sub"},
+                         "NovaUI cannot draw Arabic: its entry is named in Latin letters")
+        self.assertEqual([flag["name"] for flag in flags if any(ord(c) >= 0x0600 and ord(c) <= 0x06FF for c in flag["name"])], [])
         self.assertEqual(window.model["current"], "de")
+        self.assertEqual(window.model["selected"]["name"], "Deutsch")
+        self.assertFalse(window.model["open"])
         self.assertEqual(self.nui_windows.DECISIONS["locale-strip"], "nui")
 
     def test_the_client_reads_the_saved_locale_from_the_disk(self):
@@ -147,12 +151,27 @@ class Facade(StripTest):
 
 
 class Confirm(StripTest):
+    def test_the_button_toggles_the_list_and_only_on_a_left_press(self):
+        strip = self.make_strip()
+        window = strip.nui_window
+        window.fire("toggle", 1)
+        self.assertFalse(window.model["open"])
+        window.fire("toggle", 0)
+        self.assertTrue(window.model["open"])
+        window.fire("toggle", 0)
+        self.assertFalse(window.model["open"])
+
     def test_a_flag_opens_the_kit_question_with_the_legacy_text(self):
         strip = self.make_strip()
+        strip.nui_window.fire("toggle", 0)
         strip.nui_window.fire("pick", "de", 0)
+        self.assertFalse(strip.nui_window.model["open"], "a pick closes the list")
         question = self.window(QUESTION)
         self.assertTrue(question.is_visible())
         self.assertEqual(question.model["lines"], ["Change language to Deutsch and reload the game?"])
+        strip.nui_window.fire("toggle", 0)
+        strip.nui_window.fire("pick", "ae", 0)
+        self.assertEqual(self.window(QUESTION).model["lines"], ["Change language to Arabic and reload the game?"])
         import nui_dialog_question
         self.assertIsInstance(strip.confirmDialog, nui_dialog_question.QuestionDialog)
 
@@ -278,15 +297,17 @@ class RightToLeft(StripTest):
 
 
 class Markup(unittest.TestCase):
-    def test_a_flag_is_a_button_so_a_press_plays_the_click_sound(self):
+    def test_the_toggle_and_entries_are_buttons_so_they_play_the_click_sound(self):
         # G11 plays the legacy click on a mousedown over a button that takes
         # no focus (UiSounds.cpp: a <button>, nui-button or input button); the
         # legacy flags were ui.Button objects, which click too.
         import re
         with open(os.path.join(support.ROOT, "..", "nui", STRIP), encoding="utf-8") as file:
             markup = file.read()
-        hosts = re.findall(r'<(\w+)\s+class="locale-strip__flag\b', markup)
-        self.assertEqual(hosts, ["button"])
+        self.assertRegex(markup, r'<button id="locale-toggle"')
+        self.assertRegex(markup, r'<button\s+class="nui-button nui-button--ghost nui-anim locale-strip__item"')
+        self.assertIn('data-event-mousedown="toggle(ev.button)"', markup)
+        self.assertIn('data-event-mousedown="pick(flag.code, ev.button)"', markup)
 
 
 class Wiring(unittest.TestCase):

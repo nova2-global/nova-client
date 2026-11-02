@@ -403,6 +403,8 @@ NUI_LOGIN_SAVED	Comptes enregistrés
 NUI_LOGIN_FORGET	Oublier ce compte
 NUI_LOGIN_ADD_ACCOUNT	Ajouter un compte
 NUI_LOGIN_SAVED_HINT	Enregistré sur cet ordinateur : le nom du compte et les personnages vus à ta dernière connexion, avec leur niveau d'alors. Les mots de passe ne sont jamais enregistrés.
+NUI_LOGIN_SAVED_SECRET_HINT	Enregistré sur cet ordinateur : le nom du compte et les personnages vus à ta dernière connexion, avec leur niveau d'alors. Avec Se souvenir de moi, le Gestionnaire d’informations d’identification Windows conserve le mot de passe.
+NUI_LOGIN_KEYBOARD	Clavier virtuel
 NUI_LOGIN_TAB_LOGIN	Connexion
 NUI_LOGIN_TAB_REGISTER	Créer un compte
 NUI_LOGIN_WELCOME	Bon retour, guerrier

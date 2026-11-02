@@ -23,6 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = support.ROOT
 NUI_LOGIN = os.path.join(ROOT, "nui_login.py")
 INTROLOGIN = os.path.join(ROOT, "intrologin.py")
+NETWORKMODULE = os.path.join(ROOT, "networkmodule.py")
 LOGIN_DOCUMENT = "nui/windows/login/login.rml"
 PICKER_DOCUMENT = "nui/windows/theme-picker/theme-picker.rml"
 KEYBOARD_DOCUMENT = "nui/windows/virtual-keyboard/virtual-keyboard.rml"
@@ -74,13 +75,14 @@ def keyboard_locale():
         VIRTUAL_KEY_NUMBERS="1234567890-=\\[];',./`")
 
 
-def load_nui_login(nui_module, setting, dbg_module, app=None, snd=None):
+def load_nui_login(nui_module, setting, dbg_module, app=None, snd=None, debug=True):
     """nui_login.py as a fresh module over the given stand-ins (nui_module
     None: `import nui` fails), with the real nui_windows.py,
     nui_theme_picker.py and nui_virtual_keyboard.py loaded over the same
     stand-ins for its imports."""
     modules = support.Modules(
-        dbg=dbg_module, systemSetting=setting, wndMgr=support.make_wndmgr(),
+        dbg=dbg_module, debugInfo=support.stub_module("debugInfo", IsDebugMode=lambda: debug),
+        systemSetting=setting, wndMgr=support.make_wndmgr(),
         app=app or support.stub_module("app", GetRandom=Randoms(), IsRTL=lambda: False),
         snd=snd or support.stub_module("snd", PlaySound=lambda name: None),
         localeInfo=keyboard_locale())
@@ -303,8 +305,9 @@ class ControllerTest(unittest.TestCase):
         self.setting = make_setting(1)
         self.load()
 
-    def load(self, nui_module=_MISSING):
-        self.m = load_nui_login(self.nui if nui_module is _MISSING else nui_module, self.setting, self.dbg)
+    def load(self, nui_module=_MISSING, app=None, debug=True):
+        self.m = load_nui_login(self.nui if nui_module is _MISSING else nui_module, self.setting, self.dbg,
+                                app=app, debug=debug)
         self.Window = compile_login_window(self.m)
         self.choices = Choices()
 
@@ -717,6 +720,13 @@ class LegacyPath(ControllerTest):
 # --- The intro theme picker ----------------------------------------------------
 
 class ThemePicker(ControllerTest):
+    def test_a_release_client_never_makes_the_picker(self):
+        self.load(debug=False)
+        win, board = self.open_board()
+        self.assertIsNone(getattr(win, "nuiPicker", None))
+        self.assertTrue(board.is_visible())
+        self.assertEqual([name for name, _ in self.state.shows], ["IntroAmbient", "LoginBoard"])
+
     def test_the_picker_opens_after_the_ambience_and_before_the_board_which_keeps_the_focus(self):
         win, board = self.open_board()
         self.assertIsNotNone(win.nuiPicker)
@@ -798,19 +808,32 @@ class KeyboardWithTheBoard(ControllerTest):
         super(KeyboardWithTheBoard, self).setUp()
         self.setting = make_setting(1, windows="+virtual-keyboard")
         self.load()
+        folder = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, folder)
+        self.m.nui_accounts.PATH = os.path.join(folder, "nui_accounts.txt")
 
-    def test_the_keyboard_comes_with_the_board_and_the_board_knows(self):
+    def test_the_keyboard_is_available_but_off_by_default(self):
         win, board = self.open_board()
         keyboard = win.nuiKeyboard
         self.assertIsNotNone(keyboard)
-        self.assertTrue(keyboard.is_visible())
-        self.assertIs(board.model["keyboard"], True)
+        self.assertFalse(keyboard.is_visible())
+        self.assertIs(board.model["keyboard_available"], True)
+        self.assertIs(board.model["keyboard"], False)
         self.assertEqual(self.m.nui_windows.DECISIONS["virtual-keyboard"], "nui")
         self.assertEqual(self.dbg.errors, [])
 
-    def test_the_show_order_is_ambience_picker_keyboard_then_the_board(self):
+    def test_a_press_toggles_the_keyboard_at_once_and_saves_the_choice(self):
         win, board = self.open_board()
-        self.assertEqual([name for name, _ in self.state.shows], ["IntroAmbient", "ThemePicker", "VirtualKeyboard", "LoginBoard"])
+        board.on_keyboard_press(0)
+        self.assertTrue(win.nuiKeyboard.is_visible())
+        self.assertTrue(board.model["keyboard"])
+        self.assertEqual(self.m.nui_accounts.setting("keyboard"), "1")
+        board.on_keyboard_press(1)
+        self.assertTrue(board.model["keyboard"], "a right press does nothing")
+        board.on_keyboard_press(0)
+        self.assertFalse(win.nuiKeyboard.is_visible())
+        self.assertFalse(board.model["keyboard"])
+        self.assertEqual(self.m.nui_accounts.setting("keyboard"), "0")
         self.assertEqual(board.focused, ID_FIELD, "the board keeps the focus")
 
     def test_the_keyboard_is_raised_each_time_it_shows_so_the_embers_stay_under_it(self):
@@ -820,6 +843,7 @@ class KeyboardWithTheBoard(ControllerTest):
         win, board = self.open_board()
         keyboard = win.nuiKeyboard
         steps = lambda: [call[0] for call in keyboard.calls if call[0] in ("show", "bring_to_front")]
+        board.on_keyboard_press(0)
         self.assertEqual(steps(), ["show", "bring_to_front"])
         wrapper = self.m.after_popup(win, 0)
         self.m.before_popup(win)
@@ -832,6 +856,7 @@ class KeyboardWithTheBoard(ControllerTest):
         win, board = self.open_board()
         self.assertIsNone(getattr(win, "nuiKeyboard", None))
         self.assertIs(board.model["keyboard"], False)
+        self.assertIs(board.model["keyboard_available"], False)
         self.assertEqual(self.m.nui_windows.DECISIONS["virtual-keyboard"], "legacy: flag off")
 
     def test_the_keyboard_needs_the_novaui_board(self):
@@ -851,6 +876,7 @@ class KeyboardWithTheBoard(ControllerTest):
     def test_the_keyboard_follows_the_server_board_the_popups_and_close(self):
         win, board = self.open_board()
         keyboard = win.nuiKeyboard
+        board.on_keyboard_press(0)
         win._LoginWindow__OpenServerBoard()
         self.assertFalse(keyboard.is_visible())
         win._LoginWindow__OpenLoginBoard()
@@ -867,6 +893,7 @@ class KeyboardWithTheBoard(ControllerTest):
         self.assertIn(("destroy",), keyboard.calls)
 
     def test_a_popup_open_before_the_board_holds_the_keyboard_back_too(self):
+        self.m.nui_accounts.set_setting("keyboard", "1")
         win = self.open_window()
         win.stream.popupWindow.Open("LOGIN_FAILURE_SAMELOGIN", 0)
         win._LoginWindow__OpenLoginBoard()
@@ -912,32 +939,27 @@ class PickerPlace(ControllerTest):
         window.DOCUMENT = "nui/windows/locale-strip/locale-strip.rml"
         return window
 
-    def test_the_picker_goes_below_a_novaui_strip(self):
+    def test_the_picker_keeps_its_sheet_position_with_a_novaui_strip(self):
         win = self.Window(Stream())
         strip = self.strip_window()
         win.localeSelector = Strip(strip)
         win.nuiBoard = self.m.open_board(win, self.choices.choose, self.choices.exit)
         picker = win.nuiPicker
-        self.assertEqual(picker.placement, ("next_to", strip, "below", 4, ""))
-
-    def test_the_strip_goes_above_the_picker_after_each_show_so_its_hints_show(self):
-        # The flag hints open below the strip, where the picker is; every
-        # document is its own stacking context, so the strip must be the
-        # later one.
-        win = self.Window(Stream())
-        strip = self.strip_window()
-        win.localeSelector = Strip(strip)
-        win.nuiBoard = self.m.open_board(win, self.choices.choose, self.choices.exit)
-        raised = strip.front
-        self.assertGreaterEqual(raised, 1)
-        wrapper = self.m.after_popup(win, 0)
-        self.m.before_popup(win)
-        wrapper()
-        self.assertGreater(strip.front, raised, "raised again after the picker came back")
+        self.assertIsNone(picker.placement)
+        self.assertEqual(strip.front, 0)
 
     def test_without_a_novaui_strip_the_sheet_places_the_picker(self):
         win, board = self.open_board()
         self.assertIsNone(win.nuiPicker.placement)
+
+    def test_a_press_on_the_login_board_closes_the_separate_locale_list(self):
+        win, board = self.open_board()
+        strip = self.strip_window()
+        closed = []
+        strip.close_list = lambda: closed.append(True)
+        win.localeSelector = Strip(strip)
+        board._on_board_press({"button": 0})
+        self.assertEqual(closed, [True])
 
     def test_the_picker_keeps_clear_of_every_novaui_board(self):
         self.setting = make_setting(1, windows="+virtual-keyboard")
@@ -1081,6 +1103,17 @@ class IntroLoginHooks(unittest.TestCase):
         self.assertFalse([name for name in self.names("__OnClickLoginButton") if name.startswith("nui_login.")])
 
 
+class CredentialWiring(unittest.TestCase):
+    def test_character_selection_handles_the_credential_at_the_accept_boundary(self):
+        with open(NETWORKMODULE, encoding="utf-8") as file:
+            tree = ast.parse(file.read())
+        stream = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "MainStream")
+        method = next(node for node in stream.body if isinstance(node, ast.FunctionDef)
+                      and node.name == "SetSelectCharacterPhase")
+        calls = [dotted(node.func) for node in ast.walk(method) if isinstance(node, ast.Call)]
+        self.assertIn("nui_accounts.note_auth_accepted", calls)
+
+
 
 # --- the one-page login: saved accounts, the card, Create account -------------------
 
@@ -1136,6 +1169,18 @@ class SavedAccounts(OnePageTest):
             self.assertTrue(self.store.set_setting("server", "2"))
             self.assertEqual([account["login"] for account in self.store.accounts()], ["kalinka"])
         self.assertEqual(self.store.setting("server"), "2")
+
+    def test_without_executable_functions_credentials_are_unavailable_and_safe(self):
+        self.assertFalse(self.store.secrets_available())
+        self.assertFalse(self.store.save_secret(2, "kalinka", PASSWORD))
+        self.assertIsNone(self.store.load_secret(2, "kalinka"))
+        self.assertFalse(self.store.forget_secret(2, "kalinka"))
+        self.store.remember_login("kalinka", 2, True, PASSWORD)
+        self.assertFalse(self.store.note_auth_accepted())
+        self.assertEqual(self.store._pending["secret"], "")
+        if os.path.exists(self.store.PATH):
+            with open(self.store.PATH) as handle:
+                self.assertNotIn(PASSWORD, handle.read())
 
     def test_the_board_opens_on_the_latest_account_and_its_password(self):
         # The reviewed board's resting state; the r12 live test opened on an
@@ -1278,6 +1323,116 @@ class TheCard(OnePageTest):
         # was added to the old one.
         self.assertEqual((board.get_value("reg-password"), board.get_value("reg-confirm")), ("", ""))
         self.assertEqual((board._reg["password"], board._reg["confirm"]), ("", ""))
+
+
+class CredentialManager(ControllerTest):
+    def setUp(self):
+        super(CredentialManager, self).setUp()
+        self.secrets = {}
+        self.deleted = []
+
+        def save(key, secret):
+            self.secrets[key] = secret
+            return True
+
+        def load(key):
+            return self.secrets.get(key)
+
+        def delete(key):
+            self.deleted.append(key)
+            return self.secrets.pop(key, None) is not None
+
+        app = support.stub_module("app", GetRandom=Randoms(), IsRTL=lambda: False,
+                                  SaveLoginSecret=save, LoadLoginSecret=load, DeleteLoginSecret=delete)
+        self.load(app=app)
+        folder = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, folder)
+        self.store = self.m.nui_accounts
+        self.store.PATH = os.path.join(folder, "nui_accounts.txt")
+
+    def save_account(self, login="kalinka", server=2):
+        self.store.remember_login(login, server, True)
+        self.assertTrue(self.store.note_game_start(login, login.title(), [(login.title(), 4, 75)]))
+
+    def test_a_password_is_saved_only_after_authentication_is_accepted(self):
+        win, board = self.open_board()
+        win.NuiLogin = lambda *args: None
+        board.set_servers([(2, "Test")], 2, 1)
+        self.type_values(board)
+        board.on_submit()
+        self.assertEqual(self.secrets, {})
+        self.assertEqual(self.store._pending["secret"], PASSWORD)
+        self.assertTrue(self.store.note_auth_accepted())
+        self.assertEqual(self.secrets, {"2/%s" % USER: PASSWORD})
+        self.assertEqual(self.store._pending["secret"], "")
+        self.assertTrue(self.store.note_game_start(USER, "Nova", [("Nova", 4, 75)]))
+        with open(self.store.PATH) as handle:
+            contents = handle.read()
+        self.assertNotIn(PASSWORD, contents)
+        self.assertNotIn(PASSWORD, repr(board.model))
+
+    def test_authentication_with_remember_me_off_deletes_the_secret(self):
+        self.secrets["2/%s" % USER] = PASSWORD
+        win, board = self.open_board()
+        win.NuiLogin = lambda *args: None
+        board.set_servers([(2, "Test")], 2, 1)
+        board.on_remember_change(False)
+        self.type_values(board)
+        board.on_submit()
+        self.assertIn("2/%s" % USER, self.secrets)
+        self.assertTrue(self.store.note_auth_accepted())
+        self.assertNotIn("2/%s" % USER, self.secrets)
+
+    def test_picking_an_account_fills_the_field_and_hides_the_eye_until_an_edit(self):
+        self.save_account()
+        self.secrets["2/kalinka"] = PASSWORD
+        win, board = self.open_board()
+        self.assertEqual(board.get_value(PASSWORD_FIELD), PASSWORD)
+        self.assertEqual(board.typed_values(), ("kalinka", PASSWORD))
+        self.assertTrue(board.model["stored_password"])
+        self.assertEqual(board.focused, PASSWORD_FIELD)
+        board.on_eye_press(0)
+        self.assertFalse(board.model["show_password"], "a stored password is never shown")
+        board.on_password_edit(PASSWORD + "x", False)
+        self.assertFalse(board.model["stored_password"])
+        board.on_eye_press(0)
+        self.assertTrue(board.model["show_password"])
+        self.assertNotIn(PASSWORD, repr(board.model))
+
+    def test_wrong_password_deletes_a_secret_that_still_filled_the_field(self):
+        self.save_account()
+        self.secrets["2/kalinka"] = PASSWORD
+        win, board = self.open_board()
+        win.OnLoginFailure("WRONGPWD")
+        self.assertNotIn("2/kalinka", self.secrets)
+        self.assertIn("2/kalinka", self.deleted)
+        self.assertEqual(board.get_value(PASSWORD_FIELD), "")
+        self.assertFalse(board.model["stored_password"])
+
+    def test_forgetting_an_account_deletes_its_secret(self):
+        self.save_account()
+        self.secrets["2/kalinka"] = PASSWORD
+        win, board = self.open_board()
+        board.on_forget_account("kalinka", 0)
+        self.assertNotIn("2/kalinka", self.secrets)
+        self.assertEqual(self.store.accounts(), [])
+
+    def test_a_failure_clears_the_pending_password_without_deleting_a_valid_secret(self):
+        self.secrets["2/kalinka"] = "old-secret"
+        self.store.remember_login("kalinka", 2, True, PASSWORD)
+        win, board = self.open_board()
+        win.OnConnectFailure()
+        self.assertEqual(self.store._pending, {})
+        self.assertEqual(self.secrets["2/kalinka"], "old-secret")
+
+    def test_owner_validation_failure_clears_the_pending_password(self):
+        win, board = self.open_board()
+        win.NuiLogin = lambda *args: False
+        board.set_servers([(2, "Test")], 2, 1)
+        self.type_values(board)
+        board.on_submit()
+        self.assertEqual(self.store._pending, {})
+        self.assertEqual(self.secrets, {})
 
 
 class RegistrationRules(unittest.TestCase):

@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Conturi salvate
 NUI_LOGIN_FORGET	Uită acest cont
 NUI_LOGIN_ADD_ACCOUNT	Adaugă cont
 NUI_LOGIN_SAVED_HINT	Salvat pe acest calculator: numele contului și personajele văzute la ultima conectare, cu nivelurile de atunci. Parolele nu sunt salvate niciodată.
+NUI_LOGIN_SAVED_SECRET_HINT	Salvat pe acest calculator: numele contului și personajele văzute la ultima conectare, cu nivelurile de atunci. Cu Ține-mă minte, Managerul de acreditări Windows păstrează parola.
+NUI_LOGIN_KEYBOARD	Tastatură virtuală
 NUI_LOGIN_TAB_LOGIN	Conectare
 NUI_LOGIN_TAB_REGISTER	Creează cont
 NUI_LOGIN_WELCOME	Bine ai revenit, războinicule

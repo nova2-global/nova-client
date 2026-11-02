@@ -29,7 +29,7 @@ import nui_windows
 
 # Available locales configuration
 AVAILABLE_LOCALES = [
-	{"code": "ae", "name": "Arabic", "flag": "ae"},
+	{"code": "ae", "name": "العربية", "flag": "ae"},
 	{"code": "br", "name": "Português Brasileiro", "flag": "br"},
 	{"code": "en", "name": "English", "flag": "en"},
 	{"code": "cz", "name": "Čeština", "flag": "cz"},

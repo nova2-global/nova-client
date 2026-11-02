@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Account salvati
 NUI_LOGIN_FORGET	Dimentica questo account
 NUI_LOGIN_ADD_ACCOUNT	Aggiungi account
 NUI_LOGIN_SAVED_HINT	Salvato su questo computer: il nome dell'account e i personaggi visti all'ultimo accesso, con i loro livelli di allora. Le password non vengono mai salvate.
+NUI_LOGIN_SAVED_SECRET_HINT	Salvato su questo computer: il nome dell'account e i personaggi visti all'ultimo accesso, con i loro livelli di allora. Con Ricordami, Gestione credenziali di Windows conserva la password.
+NUI_LOGIN_KEYBOARD	Tastiera virtuale
 NUI_LOGIN_TAB_LOGIN	Accedi
 NUI_LOGIN_TAB_REGISTER	Crea account
 NUI_LOGIN_WELCOME	Bentornato, guerriero

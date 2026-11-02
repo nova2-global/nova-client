@@ -299,6 +299,7 @@ class LoginWindow(ui.ScriptWindow):
 
 	def OnConnectFailure(self):
 
+		nui_login.login_failed(self)
 		snd.PlaySound("sound/ui/loginfail.wav")
 
 		if app.loggined:
@@ -316,6 +317,7 @@ class LoginWindow(ui.ScriptWindow):
 		self.PopupDisplayMessage(localeInfo.LOGIN_PROCESSING)
 
 	def OnLoginFailure(self, error):
+		nui_login.login_failed(self, error)
 		try:
 			loginFailureMsg = self.loginFailureMsgDict[error]
 		except KeyError:
@@ -1098,14 +1100,15 @@ class LoginWindow(ui.ScriptWindow):
 			state = channelDict[channelID]["state"]
 		except KeyError:
 			self.PopupNotifyMessage(localeInfo.CHANNEL_SELECT_CHANNEL)
-			return
+			return False
 		if state == serverInfo.STATE_DICT[3]:
 			self.PopupNotifyMessage(localeInfo.CHANNEL_NOTIFY_FULL)
-			return
+			return False
 		self.serverList.SelectItem(self.__ServerIDToServerIndex(regionID, serverID))
 		self.channelList.SelectItem(self.__ChannelIDToChannelIndex(channelID))
 		self.__ApplyServerChoice(regionID, serverID, channelID)
 		self.Connect(id, pwd)
+		return True
 
 	def NuiCreateAccount(self, login, pwd, email, code, serverID):
 		"""The card's Create account: the request goes to the chosen server's

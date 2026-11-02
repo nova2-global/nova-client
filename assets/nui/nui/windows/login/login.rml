@@ -16,8 +16,9 @@
 	     keyboard comes with the screen: the boards then rise above it
 	     (login--keyboard). Saved accounts (accounts) come from
 	     nui_accounts.py: names, the characters seen at the last log in and
-	     their levels, never a password. A link with no address (nui_links.py)
-	     is not drawn. -->
+	     their levels. Passwords never enter the model or account file; where
+	     supported, Windows Credential Manager holds them. A link with no
+	     address (nui_links.py) is not drawn. -->
 	<title>login</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="login.rcss"/>
@@ -48,7 +49,8 @@
 				<button id="login-add" class="nui-button nui-button--ghost nui-anim login-add" data-event-mousedown="add_account(ev.button)"><span
 					class="nui-glyph nui-glyph--plus login-add__glyph"><span class="nui-glyph__a"></span><span
 					class="nui-glyph__b"></span></span><span class="login-add__label">@ui.NUI_LOGIN_ADD_ACCOUNT</span></button>
-				<span class="login-hint">@ui.NUI_LOGIN_SAVED_HINT</span>
+				<span class="login-hint" data-if="!secrets_available">@ui.NUI_LOGIN_SAVED_HINT</span>
+				<span class="login-hint" data-if="secrets_available">@ui.NUI_LOGIN_SAVED_SECRET_HINT</span>
 			</div>
 		</div>
 		<!-- The account card. Both tabs' fields stay in the document (the
@@ -91,7 +93,7 @@
 								data-class-nui-input--invalid="error_on == 'password'"
 								data-event-change="password_edit(ev.value, ev.linebreak)"/>
 							<span class="login-icon login-lock"><span class="login-lock__shackle"></span><span class="login-lock__body"></span></span>
-							<button id="login-eye" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim login-eye"
+							<button id="login-eye" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim login-eye" data-if="!stored_password"
 							        data-class-is-selected="show_password" data-event-mousedown="eye_press(ev.button)"><span
 								class="login-eye__lid"></span><span class="login-eye__pupil"></span></button>
 						</div>
@@ -113,7 +115,7 @@
 					<span class="nui-field__error login-error nui-anim" data-visible="error != ''" data-class-login-error--in="error != ''"
 						data-class-login-error--ok="error_ok">{{ error }}</span>
 					<button id="login-connect" class="nui-button nui-button--primary nui-anim login-button login-action login-connect login-r4"
-						data-event-click="submit()">@ui.NUI_LOGIN_TAB_LOGIN<span class="login-sheen nui-anim"><span class="login-sheen__half"></span><span class="login-sheen__half login-sheen__half--out"></span></span></button>
+						data-event-mousedown="submit(ev.button)">@ui.NUI_LOGIN_TAB_LOGIN<span class="login-sheen nui-anim"><span class="login-sheen__half"></span><span class="login-sheen__half login-sheen__half--out"></span></span></button>
 					<!-- The server's state and the channel: the dot's color is the
 					     server's state, the count shows once the server reports it;
 					     the button opens the menu of servers and channels. -->
@@ -203,7 +205,7 @@
 					</div>
 					<span class="nui-field__error login-error nui-anim" data-visible="reg_error != ''" data-class-login-error--in="reg_error != ''">{{ reg_error }}</span>
 					<button id="login-create" class="nui-button nui-button--primary nui-anim login-button login-action login-connect"
-						data-event-click="create()">@ui.NUI_LOGIN_TAB_REGISTER</button>
+						data-event-mousedown="create(ev.button)">@ui.NUI_LOGIN_TAB_REGISTER</button>
 					<span class="login-hint login-hint--center">@ui.NUI_LOGIN_REGISTER_NOTE</span>
 				</div>
 			</div>
@@ -217,8 +219,17 @@
 		        data-event-mousedown="link_press('website', ev.button)"><span class="nui-glyph nui-glyph--map"><span
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>@ui.NUI_LOGIN_WEBSITE</button>
 	</div>
-	<button id="login-exit" class="nui-button nui-button--ghost nui-anim login-button login-exit" data-event-click="exit()"><span
-		class="nui-glyph nui-glyph--leave"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
-		class="nui-glyph__c"></span></span>@ui.LOGIN_EXIT</button>
+	<div class="login-corner-actions">
+		<button id="login-exit" class="nui-button nui-button--ghost nui-anim login-button login-exit" data-event-mousedown="exit(ev.button)"><span
+			class="nui-glyph nui-glyph--leave"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
+			class="nui-glyph__c"></span></span>@ui.LOGIN_EXIT</button>
+		<!-- The virtual keyboard, an accessibility option, off by default: a
+		     labeled button like Exit, so it is found in every look (classic
+		     hides glyphs). -->
+		<button id="login-keyboard" class="nui-button nui-button--ghost nui-anim login-button login-keyboard"
+		        data-if="keyboard_available" data-class-is-selected="keyboard" data-event-mousedown="keyboard_press(ev.button)"><span
+			class="nui-glyph nui-glyph--keyboard"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
+			class="nui-glyph__c"></span></span>@ui.NUI_LOGIN_KEYBOARD</button>
+	</div>
 </body>
 </rml>

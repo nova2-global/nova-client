@@ -403,6 +403,8 @@ NUI_LOGIN_SAVED	Saved accounts
 NUI_LOGIN_FORGET	Forget this account
 NUI_LOGIN_ADD_ACCOUNT	Add account
 NUI_LOGIN_SAVED_HINT	Saved on this computer: the account name and the characters you saw at your last log in, with their levels as of then. Passwords are never stored.
+NUI_LOGIN_SAVED_SECRET_HINT	Saved on this computer: the account name and the characters you saw at your last log in, with their levels as of then. With Remember me, Windows Credential Manager keeps the password.
+NUI_LOGIN_KEYBOARD	Virtual keyboard
 NUI_LOGIN_TAB_LOGIN	Log in
 NUI_LOGIN_TAB_REGISTER	Create account
 NUI_LOGIN_WELCOME	Welcome back, warrior

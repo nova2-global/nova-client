@@ -2083,6 +2083,16 @@ class ModernDoll(unittest.TestCase):
         self.assertEqual([entry["id"] for entry in board(window).model["rail"]],
                          ["events", "offline_shop", "ranking", "achievements", "guide"])
 
+    def test_the_rail_s_repeated_element_reads_no_entry(self):
+        """The kept board empties the rail at each hide, so its data-for
+        element binds nothing of the entry (its button does): RmlUi 6.3 would
+        read the entry that is gone ("rail[0].soon" out of range in syserr,
+        live on r15)."""
+        from nui_hud_test import repeated_element_reads
+        markup = read(os.path.join(WINDOWS, "inventory", "inventory.rml"))
+        self.assertIn('data-for="e : rail"', markup)
+        self.assertEqual([found for found in repeated_element_reads(markup) if found[0] == "e : rail"], [])
+
 
 class Wave4b(Pair):
     """Wave 4b on the NovaUI inventory (port-wave4/ui-followups.md C2,

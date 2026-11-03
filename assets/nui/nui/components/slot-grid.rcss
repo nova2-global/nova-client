@@ -40,7 +40,10 @@
    is-target (a drop footprint cell that the attached item can move to),
    is-blocked (one it cannot), is-usable and is-unusable (use mode: the
    item under an attached refine scroll or stone, P14 spec 4.4),
-   is-unavailable (the belt's cells beyond its grade), :hover and is-hover.
+   is-unavailable (the belt's cells beyond its grade), is-refined (the
+   number part shows the refine level, "+6", where a grid opts in),
+   is-in-use and is-unusable-ontop (the trade marks, with the part
+   nui-slot__wash; see "The trade marks" below), :hover and is-hover.
    A disabled, locked or unavailable cell keeps its pointer events, as legacy
    cells take clicks. nui-slot--h2, --h3, --w2 and --w3 size a single cell
    that holds a taller or wider item (a wear cell).
@@ -422,6 +425,28 @@
 	line-height: 14dp;
 	font-effect: none;
 }
+/* is-refined: the number part shows the item's refine level ("+6") in a
+   grid that opts in to it (nui_slots.REFINE_KEY; the window binds the
+   class where the item has a level and no count, and the value "+" and
+   the level): the badge at the item's top left, in the upgrade blue on
+   the cell's own outline (no chip), as the reviewed board draws it.
+   Classic has no badge: skins/classic/classic.rcss hides the number part
+   of such a cell. */
+.nui-slot.is-refined .nui-slot__number
+{
+	left: 2dp;
+	top: 1dp;
+	right: auto;
+	bottom: auto;
+}
+.nui-slot.is-refined .nui-slot__number .nui-number__text
+{
+	padding: 0;
+	background-color: transparent;
+	color: var(--gauge-blue);
+	font-weight: bold;
+	font-effect: outline(1dp var(--surface-sunken));
+}
 /* A window's key label in a cell (the taskbar's 1 to 4, F1 to F4); the
    window styles it. */
 .nui-slot__key
@@ -585,6 +610,67 @@
 .nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -87dp; }
 .nui-slot-grid--lean.is-attaching > .nui-slot--h2 > .nui-slot__number { bottom: -43dp; }
 .nui-slot-grid--lean.is-attaching > .nui-slot--h3 > .nui-slot__number { bottom: -87dp; }
+/* A refine badge stays at the anchor's top left. */
+.nui-slot-grid--lean.is-attaching > .nui-slot.is-refined > .nui-slot__number { right: auto; bottom: auto; }
+
+/* --- The trade marks (wave 4b, NOVA-13) -------------------------------------------
+   CSlotWindow's SLOT_STATE_CANT_MOUSE_EVENT and SLOT_STATE_UNUSABLE, the
+   opt-in keys in_use and unusable_ontop of nui_slots (MARK_KEYS; a proxy made
+   with marks=True). is-in-use: an item a trade window holds (the exchange,
+   the private shop builder, the refine and attach dialogs); the cell takes
+   no press, drop, right press or double click (nui_slots.LegacySlotEvents).
+   is-unusable-ontop: an item the trade window on top refuses; clicks still
+   pass. Legacy washes the item's whole area over its icon, red or white at
+   30%; here the part nui-slot__wash, which a cell holds only while a mark is
+   on, above the icon and the disabled tint and under the cooldown and the
+   count. A lean anchor's wash keeps its item's area while something is
+   attached (the anchor is one cell then). Modern: in use, the blocked fill
+   inside a danger ring; refused, the item fades into its cell (the cell's
+   base at 60% over it, darker in the dark themes and paler in light, where
+   legacy's white veil would not show); with both, in use. Classic
+   (skins/classic/classic.rcss): legacy's washes, both drawn when both are
+   on.
+
+   <div class="nui-slot nui-anim" ... data-class-is-in-use="c.in_use"
+        data-class-is-unusable-ontop="c.unusable_ontop">
+   	<img class="nui-slot__icon" .../>
+   	<div class="nui-slot__wash" data-if="c.in_use || c.unusable_ontop"></div>
+   	<nui-number class="nui-slot__number" .../>
+   </div> */
+.nui-slot__wash
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	box-sizing: border-box;
+	border-radius: 6dp;
+	pointer-events: none;
+}
+.nui-slot.is-unusable-ontop .nui-slot__wash
+{
+	background-color: var(--surface-sunken);
+	opacity: 0.6;
+}
+.nui-slot.is-in-use .nui-slot__wash
+{
+	background-color: var(--slot-blocked);
+	border-width: 1dp;
+	border-color: var(--danger);
+	opacity: 1;
+}
+/* In a lean grid, by z-index in the grid's stacking context: over the icon
+   (1), under the cooldown (3) and the count (5); a taller or wider item's
+   wash spans its area inside the cell's border (44dp steps less the 2dp of
+   border). */
+.nui-slot-grid--lean .nui-slot__wash { z-index: 2; }
+.nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__wash { bottom: auto; height: 82dp; }
+.nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__wash { bottom: auto; height: 126dp; }
+.nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__wash { right: auto; width: 82dp; }
+.nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__wash { right: auto; width: 126dp; }
 
 /* --- Wave 3c (P15) ------------------------------------------------------------- */
 

@@ -9,6 +9,15 @@
    line (one element: the plate's fill rounded inside the cut, the cut's
    line over it). The figure keeps its pixels. */
 
+/* The title bar's icon tile square on the dim line, as the dragon soul
+   window's. */
+body.skin-cyberpunk.cos .cos-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+
 body.skin-cyberpunk.cos.inv--table-new .cos-grid
 {
 	border-radius: 0;

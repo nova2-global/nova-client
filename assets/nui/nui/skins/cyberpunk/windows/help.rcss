@@ -40,3 +40,13 @@ body.skin-cyberpunk.help .help-stick__glyph
 {
 	--glyph-ink: var(--text);
 }
+
+/* The section headings: the skin's spaced capitals in the accent, as the
+   mockup's; the note and the count keep their looks. */
+body.skin-cyberpunk.help .help__intro-title, body.skin-cyberpunk.help .help__guide-title
+{
+	color: var(--accent);
+	font-size: 10dp;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}

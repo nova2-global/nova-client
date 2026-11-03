@@ -5,9 +5,10 @@ The legacy uiselectitem.SelectItemWindow (made from its real uiscript by
 nui_game_support.install_wave3b_ui) and the NovaUI one, each in a world of
 its own with the same inventory (nui_inventory_test.World), opened as
 interface.BINARY_OpenSelectItemWindow opens it: the same cells (legacy's
-scan of two pages, its grade rule, its cap of 55 and its rows), and the same
-net calls for a press on a stone, a press on an empty cell, a hover and the
-close buttons. Legacy calls wndMgr.OnceIgnoreMouseLeftButtonUpEvent() before
+scan of the inventory's pages and, since wave 4b, of the extra inventory's
+stone category, its grade rule, its cap of 55 and its rows), and the same
+net calls for a press on a stone (its window and cell), a press on an empty
+cell, a hover and the close buttons. Legacy calls wndMgr.OnceIgnoreMouseLeftButtonUpEvent() before
 each packet; NovaUI does not (NovaUI acts on the press, so the call would
 swallow the next legacy release; spec 6.6), and that call is the only
 difference. The window's facade is checked in nui_inventory_test.Facade."""
@@ -24,6 +25,11 @@ fire = inventory.fire
 DOCUMENT = "nui/windows/select-item/select-item.rml"
 STONES = (28030, 28031, 28032, 28033, 28034, 28035, 28036)
 IGNORE = "wndMgr.OnceIgnoreMouseLeftButtonUpEvent"
+INVENTORY = 1
+# Wave 4b (NOVA-16): main's exe's extra inventory (player.EXTRA_INVENTORY,
+# GetExtraInventoryCategoryRange: the stones are category 2, cells 450 to 675).
+EXTRA = 6
+STONE_RANGE = (450, 675)
 
 
 def stones(count, grade=0, start=0, skip=()):
@@ -41,6 +47,28 @@ def stones(count, grade=0, start=0, skip=()):
             game.metins.add(vnum)
             game.item_grades[position] = grade
             position += 1
+    return setup
+
+
+def extra_stones(inventory_count, extra_count, grade=0):
+    """stones(inventory_count), the extra inventory of main's exe (C1's
+    window-aware getters), and extra_count stones in its stone category from
+    its first cell, each of the grade (one of grade 3 among them, left out)."""
+    inventory_stones = stones(inventory_count, grade)
+
+    def setup(game):
+        inventory_stones(game)
+        player = game.modules["player"]
+        player.EXTRA_INVENTORY = EXTRA
+        player.GetExtraInventoryCategoryRange = lambda category: STONE_RANGE if category == 2 else (1440, 1440)
+        player.GetItemGrade = lambda *at: game.item_grades.get(at[0] if len(at) == 1 else tuple(at), 0)
+        cell = STONE_RANGE[0]
+        for index in range(extra_count + 1):
+            vnum = STONES[(index + 3) % len(STONES)]
+            game.give((EXTRA, cell), vnum, 2 + index % 2)
+            game.metins.add(vnum)
+            game.item_grades[(EXTRA, cell)] = 3 if index == 1 else grade
+            cell += 2
     return setup
 
 
@@ -66,6 +94,19 @@ class SelectItemTest(unittest.TestCase):
     def calls(self, world, mark):
         return [(name, args) for name, args in world.game.log[mark:]
                 if name.split(".", 1)[0] in ("net", "wndMgr") and name.startswith(("net.Send", IGNORE))]
+
+    def run_both(self, flow, setup=stones(7)):
+        results = []
+        for world in self.worlds(setup):
+            window = self.open(world)
+            mark = len(world.game.log)
+            with world.game, quiet():
+                flow(world, window)
+            results.append((self.calls(world, mark), window, world))
+        return results
+
+    def without_ignore(self, calls):
+        return [call for call in calls if call[0] != IGNORE]
 
 
 class Cells(SelectItemTest):
@@ -125,19 +166,6 @@ class Cells(SelectItemTest):
 
 
 class Flows(SelectItemTest):
-    def run_both(self, flow, setup=stones(7)):
-        results = []
-        for world in self.worlds(setup):
-            window = self.open(world)
-            mark = len(world.game.log)
-            with world.game, quiet():
-                flow(world, window)
-            results.append((self.calls(world, mark), window, world))
-        return results
-
-    def without_ignore(self, calls):
-        return [call for call in calls if call[0] != IGNORE]
-
     def test_a_press_on_a_stone_sends_its_position_and_hides(self):
         def flow(world, window):
             if world.nui_on:
@@ -146,7 +174,8 @@ class Flows(SelectItemTest):
                 window.itemSlot.fire("select_item", 2)
         (legacy, a, _), (novaui, b, _) = self.run_both(flow)
         self.assertEqual(self.without_ignore(legacy), novaui)
-        self.assertEqual(novaui, [("net.SendSelectItemPacket", (a.inventorySlotPosDict[2],))])
+        self.assertEqual(novaui, [("net.SendSelectItemPacket", (INVENTORY, a.inventorySlotPosDict[2]))],
+                         "the stone's window and cell (decision c)")
         self.assertIn((IGNORE, ()), legacy, "legacy ignores the next release")
         self.assertFalse(a.IsShow())
         self.assertFalse(b.IsShow())
@@ -219,6 +248,48 @@ class Flows(SelectItemTest):
         called = {node.func.attr for node in ast.walk(tree)
                   if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute)}
         self.assertNotIn("OnceIgnoreMouseLeftButtonUpEvent", called)
+
+
+class ExtraInventory(SelectItemTest):
+    """Wave 4b (NOVA-16, decision c): the extra inventory's stones after the
+    inventory's, each sent and shown by its window."""
+
+    def test_its_stones_follow_the_inventory_s_and_the_cap_holds(self):
+        legacy, novaui = self.worlds(extra_stones(4, 5))
+        a, b = self.open(legacy), self.open(novaui)
+        self.assertEqual(self.shown(b), self.legacy_shown(a))
+        self.assertEqual(b.inventorySlotWindowDict, a.inventorySlotWindowDict)
+        self.assertEqual([b.inventorySlotWindowDict[i] for i in range(9)], [INVENTORY] * 4 + [EXTRA] * 5)
+        self.assertEqual([b.inventorySlotPosDict[i] for i in range(4, 9)], [450, 454, 456, 458, 460],
+                         "after the inventory's, in cell order, the grade-3 stone at 452 left out")
+        legacy, novaui = self.worlds(extra_stones(50, 10))
+        a, b = self.open(legacy), self.open(novaui)
+        self.assertEqual(len(b.inventorySlotPosDict), 55)
+        self.assertEqual(self.shown(b), self.legacy_shown(a))
+        self.assertEqual(list(b.inventorySlotWindowDict.values()).count(EXTRA), 5)
+
+    def test_a_press_on_an_extra_stone_sends_its_window_and_cell(self):
+        def flow(world, window):
+            if world.nui_on:
+                fire(window, "cell_press", 5, 0)
+            else:
+                window.itemSlot.fire("select_item", 5)
+        (legacy, a, _), (novaui, b, _) = self.run_both(flow, extra_stones(4, 3))
+        self.assertEqual(self.without_ignore(legacy), novaui)
+        self.assertEqual(novaui, [("net.SendSelectItemPacket", (EXTRA, 454))])
+        self.assertFalse(b.IsShow())
+
+    def test_an_extra_stone_s_tooltip_reads_its_window(self):
+        def flow(world, window):
+            if world.nui_on:
+                fire(window, "cell_over", 4)
+                fire(window, "cell_out", 4)
+            else:
+                window.itemSlot.fire("over_in", 4)
+                window.itemSlot.fire("over_out")
+        (_, a, _), (_, b, _) = self.run_both(flow, extra_stones(4, 3))
+        self.assertEqual(b.tooltipItem.shown, a.tooltipItem.shown)
+        self.assertEqual(b.tooltipItem.shown, [("SetInventoryItem", 450, EXTRA)])
 
 
 class OnDemand(SelectItemTest):

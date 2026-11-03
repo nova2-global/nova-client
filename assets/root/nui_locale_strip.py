@@ -24,6 +24,7 @@ import uiCommon
 import uilocaleselector
 
 import nui
+import nui_accounts
 
 DOCUMENT = "nui/windows/locale-strip/locale-strip.rml"
 LOCALE_CONFIG = "config/locale.cfg"
@@ -34,7 +35,7 @@ def current_locale():
 	"""The locale code intrologin.py saved in config/locale.cfg, "en" when
 	there is none."""
 	try:
-		with open(LOCALE_CONFIG, "r") as file:
+		with nui_accounts.disk_open(LOCALE_CONFIG, "r") as file:
 			code = file.read().strip().lower()
 	except (IOError, OSError):
 		return DEFAULT_LOCALE

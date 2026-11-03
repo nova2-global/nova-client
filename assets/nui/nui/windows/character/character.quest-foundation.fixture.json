@@ -1681,7 +1681,8 @@
 				"counter": "Wolf teeth : 3",
 				"clock_text": "",
 				"clock_prefix": "Time left : ",
-				"clock_end": 126.0
+				"clock_end": 126.0,
+				"clock_over": false
 			},
 			{
 				"row": 1,
@@ -1691,7 +1692,8 @@
 				"counter": "",
 				"clock_text": "",
 				"clock_prefix": "Time left : ",
-				"clock_end": 0.5
+				"clock_end": 0.5,
+				"clock_over": true
 			},
 			{
 				"row": 2,
@@ -1701,7 +1703,8 @@
 				"counter": "Letters : 1",
 				"clock_text": "No time limit.",
 				"clock_prefix": "",
-				"clock_end": 0.0
+				"clock_end": 0.0,
+				"clock_over": false
 			},
 			{
 				"row": 3,
@@ -1711,7 +1714,8 @@
 				"counter": "",
 				"clock_text": "No time limit.",
 				"clock_prefix": "",
-				"clock_end": 0.0
+				"clock_end": 0.0,
+				"clock_over": false
 			},
 			{
 				"row": 4,
@@ -1721,7 +1725,8 @@
 				"counter": "",
 				"clock_text": "No time limit.",
 				"clock_prefix": "",
-				"clock_end": 0.0
+				"clock_end": 0.0,
+				"clock_over": false
 			}
 		],
 		"quest_cells": [

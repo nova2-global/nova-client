@@ -258,7 +258,11 @@
 				     cells they cover, an active auto potion, a picked stack, the
 				     two-cell footprint of a 1x2 item held over cell 9, a blocked cell, an
 				     item an attached scroll can be used on and one it cannot, a hovered
-				     cell and an unavailable one. -->
+				     cell and an unavailable one. Under each grid, the trade marks of
+				     wave 4b (a fourth row of static cells): an item in use, one the
+				     trade window on top refuses, one with both marks and an item in use
+				     under the pointer (the full cells), and the same in the lean grid
+				     beside an empty cell. -->
 				<div class="nui-row gallery-slots">
 					<div class="nui-slot-grid nui-slot-grid--cols-4 nui-slot-grid--pick">
 						<div class="nui-slot nui-anim" data-for="slot : slots"
@@ -282,11 +286,43 @@
 							<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
 							<span class="nui-slot__sign" data-if="slot.index == slot_sign"></span>
 						</div>
+						<div class="nui-slot nui-anim is-in-use">
+							<img class="nui-slot__icon" data-attr-src="slots[0].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
+							<span class="nui-slot__count">200</span>
+							<nui-number class="nui-slot__digits" value="200"/>
+						</div>
+						<div class="nui-slot nui-anim is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="slots[4].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
+							<span class="nui-slot__count">35</span>
+							<nui-number class="nui-slot__digits" value="35"/>
+						</div>
+						<div class="nui-slot nui-anim is-in-use is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="slots[5].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
+						</div>
+						<div class="nui-slot nui-anim is-in-use is-hover">
+							<img class="nui-slot__icon" data-attr-src="slots[7].icon"/>
+							<div class="nui-slot__tint"></div>
+							<div class="nui-slot__wash"></div>
+						</div>
 					</div>
 					<div class="nui-slot-grid nui-slot-grid--cols-1">
 						<div class="nui-slot nui-slot--h2 nui-anim is-locked">
 							<img class="nui-slot__icon" data-attr-src="tall_icon"/>
 							<div class="nui-slot__tint"></div>
+						</div>
+						<!-- is-refined: the number part shows a refine level (a grid
+						     that opts in, nui_slots.REFINE_KEY), as nui-number's text
+						     draws it; a window hides it in its classic overlay, as
+						     legacy has none. -->
+						<div class="nui-slot nui-slot--h2 nui-anim is-refined">
+							<img class="nui-slot__icon" data-attr-src="tall_icon"/>
+							<span class="nui-slot__number"><span class="nui-number__text">+6</span></span>
 						</div>
 					</div>
 					<div class="nui-slot-grid nui-slot-grid--lean nui-slot-grid--cols-5" id="gallery-lean" data-class-is-attaching="lean_attaching">
@@ -301,6 +337,25 @@
 							<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 							<nui-frames class="nui-slot__active" data-if="c.active" count="13" delay="0.0667"/>
 						</div>
+						<div class="nui-slot nui-anim nui-fx is-in-use">
+							<img class="nui-slot__icon" data-attr-src="lean[4].icon"/>
+							<div class="nui-slot__wash"></div>
+							<nui-number class="nui-slot__number" value="200"/>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="lean[8].icon"/>
+							<div class="nui-slot__wash"></div>
+							<nui-number class="nui-slot__number" value="35"/>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-in-use is-unusable-ontop">
+							<img class="nui-slot__icon" data-attr-src="lean[11].icon"/>
+							<div class="nui-slot__wash"></div>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-in-use is-hover">
+							<img class="nui-slot__icon" data-attr-src="lean[3].icon"/>
+							<div class="nui-slot__wash"></div>
+						</div>
+						<div class="nui-slot nui-anim nui-fx is-empty"></div>
 					</div>
 				</div>
 			</div>
@@ -334,6 +389,16 @@
 					<span class="gallery-glyph" title="mouse-camera"><span class="nui-glyph nui-glyph--mouse-camera"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="mouse-skill"><span class="nui-glyph nui-glyph--mouse-skill"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 					<span class="gallery-glyph" title="home"><span class="nui-glyph nui-glyph--home"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="stall"><span class="nui-glyph nui-glyph--stall"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="ranking"><span class="nui-glyph nui-glyph--ranking"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="events"><span class="nui-glyph nui-glyph--events"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="achievements"><span class="nui-glyph nui-glyph--achievements"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="guide"><span class="nui-glyph nui-glyph--guide"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="clock"><span class="nui-glyph nui-glyph--clock"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="sword"><span class="nui-glyph nui-glyph--sword"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="unique"><span class="nui-glyph nui-glyph--unique"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="arrow"><span class="nui-glyph nui-glyph--arrow"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="belt"><span class="nui-glyph nui-glyph--belt"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 				</div>
 				<div class="nui-row gallery-gap">
 					<span class="gallery-label">compact close</span>

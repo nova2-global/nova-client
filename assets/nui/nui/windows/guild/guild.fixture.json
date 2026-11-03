@@ -178,7 +178,9 @@
 				"level": "40",
 				"offer": "0%",
 				"general": false,
-				"combo_enabled": false
+				"combo_enabled": false,
+				"me": true,
+				"presence": "on"
 			},
 			{
 				"name": "Member01",
@@ -187,7 +189,9 @@
 				"level": "41",
 				"offer": "0%",
 				"general": true,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member02",
@@ -196,7 +200,9 @@
 				"level": "42",
 				"offer": "0%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member03",
@@ -205,7 +211,9 @@
 				"level": "43",
 				"offer": "1%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "off"
 			},
 			{
 				"name": "Member04",
@@ -214,7 +222,9 @@
 				"level": "44",
 				"offer": "1%",
 				"general": true,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member05",
@@ -223,7 +233,9 @@
 				"level": "45",
 				"offer": "1%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member06",
@@ -232,7 +244,9 @@
 				"level": "46",
 				"offer": "2%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member07",
@@ -241,7 +255,9 @@
 				"level": "47",
 				"offer": "2%",
 				"general": true,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "off"
 			},
 			{
 				"name": "Member08",
@@ -250,7 +266,9 @@
 				"level": "48",
 				"offer": "2%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member09",
@@ -259,7 +277,9 @@
 				"level": "49",
 				"offer": "3%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member10",
@@ -268,7 +288,9 @@
 				"level": "50",
 				"offer": "3%",
 				"general": true,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			},
 			{
 				"name": "Member11",
@@ -277,7 +299,9 @@
 				"level": "51",
 				"offer": "4%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "off"
 			},
 			{
 				"name": "Member12",
@@ -286,7 +310,9 @@
 				"level": "52",
 				"offer": "4%",
 				"general": false,
-				"combo_enabled": true
+				"combo_enabled": true,
+				"me": false,
+				"presence": "on"
 			}
 		],
 		"member_scroll": 0.0,

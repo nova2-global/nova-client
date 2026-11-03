@@ -9,16 +9,26 @@ the item add packet), the money (the pick money dialog, the money add
 packet), the accept, the exit and the server's refreshes are legacy's code.
 Both grids show only CPythonExchange's state, through legacy's Refresh: a
 drop sends its packet and draws nothing at the drop cell, since the server
-may move it to another cell (NOVA-84, D7). Legacy's per-frame distance rule
-is nuigame.WatchLeaveRange's watch (armed in OpenDialog, stopped in
-CloseDialog, rearmed after each exit packet as legacy resets its start);
-legacy's wndMgr.OnceIgnoreMouseLeftButtonUpEvent() in CloseDialog is left
-out (NovaUI acts on the press, so it would swallow the next legacy
-release). The board loads at the window's first show and is kept, hidden,
-after it, both grids emptied (nui_hud.KeptBoard, P18: WAVE4.md measured
-15.5 to 18.2 ms of UI work at its open, a 60 fps frame in cyberpunk, and a
-document load of 5.8 to 7.6 ms at every open); a refresh while hidden
-reaches the facade's state, which the next show sets."""
+may move it to another cell (NOVA-84, D7). Wave 4b (NOVA-12, NOVA-13) is
+legacy's too: the 6 x 4 grids (nui_limits' EXCHANGE_*), the faces, the
+partner's name and level, the history (exchangeLogs, its last lines), the
+accepted side's green slot base (SetSlotBaseImage on the grids' proxies),
+the give-away question (uiCommon.QuestionDialog2, the dialog kit's facade
+while dialogs is on) and the locks of the source cells in both inventories
+(CantTradableItem from game.py's BINARY_AddItemToExchange through the
+Interface, ReleaseTradableItem, released at the close and the END); the
+cells legacy marks outside a NovaUI event show through
+nui_slots.flush_marks() at the end of each of those entry points. Legacy's
+per-frame distance rule is nuigame.WatchLeaveRange's watch (armed in
+OpenDialog, stopped in CloseDialog, rearmed after each exit packet as legacy
+resets its start); legacy's wndMgr.OnceIgnoreMouseLeftButtonUpEvent() in
+CloseDialog is left out (NovaUI acts on the press, so it would swallow the
+next legacy release), the rest of it kept. The board loads at the window's
+first show and is kept, hidden, after it, both grids emptied
+(nui_hud.KeptBoard, P18: WAVE4.md measured 15.5 to 18.2 ms of UI work at its
+open, a 60 fps frame in cyberpunk, and a document load of 5.8 to 7.6 ms at
+every open); a refresh while hidden reaches the facade's state, which the
+next show sets."""
 
 import exchange
 import localeInfo
@@ -115,6 +125,24 @@ class _ExchangeBoard(nui_hud.RaisesOnPress, nui.Window):
 			self._owner.titleBar.close()
 
 
+class _ExchangeSlots(nui_form_proxies.TypedSlotWindowProxy):
+	"""One side's grid: a TypedSlotWindowProxy that also keeps the slot base
+	legacy sets at each Refresh (uiexchange.py __SetSlotBase, through
+	CallIfAny): an accepted side's base is tinted green
+	(ACCEPTED_SLOT_BASE_COLOR), the other white. on_base(accepted) runs
+	with True for a tinted base."""
+
+	def __init__(self, slot_numbers, on_refresh, on_base, **kwargs):
+		nui_form_proxies.TypedSlotWindowProxy.__init__(self, slot_numbers, on_refresh, **kwargs)
+		self.on_base = on_base
+		self.base = None
+
+	def SetSlotBaseImage(self, path, r=1.0, g=1.0, b=1.0, a=1.0):
+		color = (float(r), float(g), float(b), float(a))
+		self.base = (str(path), color)
+		self.on_base(color != (1.0, 1.0, 1.0, 1.0))
+
+
 class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 	"""uiExchange.ExchangeDialog on NovaUI (Interface.dlgExchange)."""
 
@@ -154,6 +182,17 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 			# P18: both grids, a list of one entry while the board shows,
 			# none while it is kept hidden.
 			"grids_on": [1],
+			# Wave 4b (NOVA-12): the faces (store paths), the partner's name
+			# and level line, the history's shown lines (legacy's
+			# EXCHANGE_LOG_LINE_COUNT, the last ones) and each side's green
+			# slot base.
+			"owner_face": "",
+			"target_face": "",
+			"target_name": "",
+			"target_level": "",
+			"log_lines": [""] * uiExchange.EXCHANGE_LOG_LINE_COUNT,
+			"owner_base_accepted": False,
+			"target_base_accepted": False,
 		}
 
 	def nui_demand(self):
@@ -208,7 +247,30 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 	def _on_accept_button(self, button):
 		self.nui_set(accept_down=bool(button.down), accept_enabled=bool(button.enabled))
 
-	# --- the loader (uiexchange.py:28-66, on proxies) ---------------------------------
+	def _on_owner_face(self, path):
+		self.nui_set(owner_face=nui_slots.icon_source(path))
+
+	def _on_target_face(self, path):
+		self.nui_set(target_face=nui_slots.icon_source(path))
+
+	def _on_target_name(self, text):
+		self.nui_set(target_name=nui.plain_text(text))
+
+	def _on_target_level(self, text):
+		self.nui_set(target_level=nui.plain_text(text))
+
+	def _on_log(self, text):
+		"""A history line's SetText (legacy's AppendExchangeLog sets every
+		line): the lines as legacy's text lines hold them."""
+		self.nui_set(log_lines=[nui.plain_text(line.GetText()) for line in self.ExchangeLogLines])
+
+	def _on_owner_base(self, accepted):
+		self.nui_set(owner_base_accepted=bool(accepted))
+
+	def _on_target_base(self, accepted):
+		self.nui_set(target_base_accepted=bool(accepted))
+
+	# --- the loader (uiexchange.py LoadDialog, on proxies) -----------------------------
 
 	def LoadDialog(self):
 		# The uiscript's style (exchangedialog.py: "movable", "float").
@@ -219,8 +281,8 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 		rows = count // max(1, cols)
 
 		## Owner
-		self.OwnerSlot = nui_form_proxies.TypedSlotWindowProxy(range(count), self._on_owner, cols=cols, rows=rows,
-		                                                       slot_type=player.SLOT_TYPE_EXCHANGE_OWNER)
+		self.OwnerSlot = _ExchangeSlots(range(count), self._on_owner, self._on_owner_base, cols=cols, rows=rows,
+		                                slot_type=player.SLOT_TYPE_EXCHANGE_OWNER)
 		self.OwnerSlot.SetSelectEmptySlotEvent(ui.__mem_func__(self.SelectOwnerEmptySlot))
 		self.OwnerSlot.SetSelectItemSlotEvent(ui.__mem_func__(self.SelectOwnerItemSlot))
 		self.OwnerSlot.SetOverInItemEvent(ui.__mem_func__(self.OverInOwnerItem))
@@ -232,8 +294,8 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 		self.OwnerMoneyButton.SetEvent(ui.__mem_func__(self.OpenPickMoneyDialog))
 
 		## Target
-		self.TargetSlot = nui_form_proxies.TypedSlotWindowProxy(range(count), self._on_target, cols=cols, rows=rows,
-		                                                        slot_type=player.SLOT_TYPE_EXCHANGE_TARGET)
+		self.TargetSlot = _ExchangeSlots(range(count), self._on_target, self._on_target_base, cols=cols, rows=rows,
+		                                 slot_type=player.SLOT_TYPE_EXCHANGE_TARGET)
 		self.TargetSlot.SetOverInItemEvent(ui.__mem_func__(self.OverInTargetItem))
 		self.TargetSlot.SetOverOutItemEvent(ui.__mem_func__(self.OverOutItem))
 		self.TargetMoney = nui_proxies.TextProxy(self._on_target_money)
@@ -256,8 +318,17 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 		self.AcceptButton.SetToggleDownEvent(ui.__mem_func__(self.AcceptExchange))
 
 		self.TitleName = nui_proxies.TextProxy(self._on_title)
-		self.titleBar = nui_proxies.BoardProxy(266, 23)
+		# The uiscript's title bar: the board's width less 16 (442 - 16).
+		self.titleBar = nui_proxies.BoardProxy(426, 23)
 		self.titleBar.SetCloseEvent(net.SendExchangeExitPacket)
+
+		## The faces, the partner's name and level and the history
+		self.FaceOwnerImage = nui_proxies.ImageProxy(self._on_owner_face)
+		self.FaceTargetImage = nui_proxies.ImageProxy(self._on_target_face)
+		self.TargetName = nui_proxies.TextProxy(self._on_target_name)
+		self.TargetLevel = nui_proxies.TextProxy(self._on_target_level)
+		self.ExchangeLogLines = [nui_proxies.TextProxy(self._on_log)
+		                         for i in range(uiExchange.EXCHANGE_LOG_LINE_COUNT)]
 
 		self._owner_events = self.nui_events(nui_slots.LegacySlotEvents(
 			self.OwnerSlot, on_states=self._on_owner_states, on_attaching=self._on_owner_attaching))
@@ -269,15 +340,46 @@ class ExchangeDialog(nui_facade.Facade, uiExchange.ExchangeDialog):
 	def OpenDialog(self):
 		uiExchange.ExchangeDialog.OpenDialog(self)
 		nuigame.WatchLeaveRange(KEY, LEAVE_RANGE, ui.__mem_func__(self._left_range), True)
+		# Legacy's open put the exchange on top, which marked the bags.
+		nui_slots.flush_marks()
 
 	def CloseDialog(self):
-		# Legacy's, without wndMgr.OnceIgnoreMouseLeftButtonUpEvent().
+		# Legacy's, without wndMgr.OnceIgnoreMouseLeftButtonUpEvent(): the
+		# tooltip, the money input and the give-away question close, the
+		# window hides, every source cell takes the mouse again and nothing
+		# is on top.
 		if 0 != self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 
 		self.dlgPickMoney.Close()
+		self.OnCloseQuestionDialog()
 		self.Hide()
+
+		self.ReleaseLockedItems()
+		uiExchange.ExchangeDialog._ExchangeDialog__SetOnTopWindow(self, player.ON_TOP_WND_NONE)
 		nuigame.StopLeaveRange(KEY)
+		nui_slots.flush_marks()
+
+	def OnTop(self):
+		uiExchange.ExchangeDialog.OnTop(self)
+		nui_slots.flush_marks()
+
+	# Wave 4b (NOVA-13): legacy's locks of the source cells, which mark the
+	# inventories' cells outside any NovaUI event (game.py
+	# BINARY_AddItemToExchange and BINARY_DelItemFromExchange through the
+	# Interface, a refresh): each shows at once.
+
+	def CantTradableItem(self, destSlotIndex, srcSlotIndex, srcWindow=player.INVENTORY):
+		uiExchange.ExchangeDialog.CantTradableItem(self, destSlotIndex, srcSlotIndex, srcWindow)
+		nui_slots.flush_marks()
+
+	def ReleaseTradableItem(self, destSlotIndex):
+		uiExchange.ExchangeDialog.ReleaseTradableItem(self, destSlotIndex)
+		nui_slots.flush_marks()
+
+	def RefreshLockedSlot(self):
+		uiExchange.ExchangeDialog.RefreshLockedSlot(self)
+		nui_slots.flush_marks()
 
 	def _left_range(self):
 		"""Legacy's OnUpdate body once the watch fires: the start point reset,

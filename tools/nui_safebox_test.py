@@ -20,6 +20,7 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
+import nui_inventory_test as inventory  # noqa: E402
 import nui_test_support  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
 
@@ -834,6 +835,117 @@ class MallTest(unittest.TestCase):
         self.assertIs(type(legacy), legacy_world.m("uiSafebox").MallWindow)
         engine_world, older = self.world(True, engine_4=False)
         self.assertIs(type(older), engine_world.m("uiSafebox").MallWindow)
+
+
+# --- wave 4b (NOVA-16, NOVA-13) --------------------------------------------------------------------
+
+EXTRA, SLOT_EXTRA = inventory.EXTRA, inventory.SLOT_EXTRA
+ON_TOP = inventory.W4B_PLAYER
+# main's exe's extra inventory (C1: player.GetExtraInventoryCategoryRange and
+# the sizes uiextrainventory.py reads), for the legacy special inventory a
+# checkout drops on.
+EXTRA_SIZES = {"EXTRA_INVENTORY_PAGE_COLUMN": 5, "EXTRA_INVENTORY_PAGE_ROW": 9, "EXTRA_INVENTORY_PAGE_SIZE": 45,
+               "EXTRA_INVENTORY_PAGE_COUNT": 32, "EXTRA_INVENTORY_SLOT_COUNT": 1440,
+               "EXTRA_INVENTORY_CATEGORY_COUNT": 5, "EXTRA_INVENTORY_COSTUME_PAGE_COUNT": 12}
+CATEGORY_RANGES = ((0, 225), (225, 450), (450, 675), (675, 900), (900, 1440))
+
+
+def wave4b_stock(game):
+    """stock(), main's exe's wave 4b names (nui_inventory_test.install_wave4b)
+    and its extra inventory, with three potions at its 230."""
+    stock(game)
+    inventory.install_wave4b(game)
+    player = game.modules["player"]
+    for name, value in EXTRA_SIZES.items():
+        setattr(player, name, value)
+    support.define(player, "GetExtraInventoryCategoryRange",
+                   lambda category: CATEGORY_RANGES[category] if 0 <= category < 5 else (1440, 1440))
+    game.give((EXTRA, 230), POTION, 3)
+
+
+def legacy_special_inventory(world):
+    """The legacy special inventory (uiextrainventory.py from its real
+    uiscript), on its materials category (cells 225 to 269 on page I)."""
+    with world.game, w4.quiet():
+        if "uiInventory" not in world.game.loaded:
+            world.game.load("uiInventory", "uiinventory.py")
+        module = world.game.load("uiExtraInventory", "uiextrainventory.py")
+        return module.ExtraInventoryWindow()
+
+
+class SafeboxWave4b(SafeboxTest):
+    """The safebox puts itself on top (legacy's __SetOnTopWindow in
+    ShowWindow, OnTop and Close: the inventories mark what it does not
+    keep), checks in an item of the special inventory and checks out onto
+    it, all legacy's code; BindInterface and OnTop are legacy's."""
+
+    def test_bind_interface_and_on_top_are_legacy_s(self):
+        world, window = self.world(True)
+        legacy = world.m("uiSafebox").SafeboxWindow
+        for name in ("BindInterface", "OnTop"):
+            self.assertIs(getattr(type(window), name), getattr(legacy, name), name)
+
+    def test_it_is_on_top_from_its_open_to_its_close(self):
+        results = []
+        for nui_on in (False, True):
+            world, window = self.world(nui_on, wave4b_stock)
+            mark = world.mark()
+            with world.game, w4.quiet():
+                window.BindInterface(world.game.interface)
+                window.ShowWindow(27)
+                window.SetTop()
+                window.Close()                  # asks the server (/safebox_close)
+                window.CommandCloseSafebox()    # which closes it
+            results.append(world.calls_since(mark, "interface."))
+        self.assertEqual(results[1], results[0])
+        safebox, none = ON_TOP["ON_TOP_WND_SAFEBOX"], ON_TOP["ON_TOP_WND_NONE"]
+        self.assertEqual(results[0], [("interface.SetOnTopWindow", (safebox,)), ("interface.RefreshMarkInventoryBag", ()),
+                                      ("interface.SetOnTopWindow", (safebox,)), ("interface.RefreshMarkInventoryBag", ()),
+                                      ("interface.SetOnTopWindow", (none,)), ("interface.RefreshMarkInventoryBag", ())])
+
+    def test_an_extra_item_dropped_in_is_checked_in_with_its_window(self):
+        def flow(world, window):
+            world.attach(SLOT_EXTRA, 230, POTION, 3)
+            self.press(world, window, 3)
+        (legacy, _, _), (novaui, _, _) = self.run_both(flow, wave4b_stock)
+        self.assertEqual(novaui, legacy)
+        self.assertIn(("net.SendSafeboxCheckinPacket", (EXTRA, 230, 3)), novaui)
+
+    def test_an_item_picked_here_checks_out_onto_the_special_inventory(self):
+        results = []
+        for nui_on in (False, True):
+            world, window = self.world(nui_on, wave4b_stock)
+            self.open(world, window)
+            extra = legacy_special_inventory(world)
+            mark = world.mark()
+            with world.game, w4.quiet():
+                self.press(world, window, 2)
+                extra.wndItem.fire("select_empty", 3)
+            results.append(world.effects_since(mark))
+        self.assertEqual(results[1], results[0])
+        self.assertIn(("net.SendSafeboxCheckoutPacket", (2, EXTRA, 228)), results[1])
+
+
+class MallWave4b(MallTest):
+    """An item picked in the mall checks out onto the special inventory
+    (legacy's extra window takes SLOT_TYPE_MALL, past OLD)."""
+
+    def test_an_item_picked_here_checks_out_onto_the_special_inventory(self):
+        results = []
+        for nui_on in (False, True):
+            world = w4.World(nui_on, setup=wave4b_stock)
+            window = world.make("mall", "uiSafebox", "MallWindow", "nui_mall.MallWindow")
+            with world.game, w4.quiet():
+                window.SetItemToolTip(world.tooltip)
+            self.open(world, window)
+            extra = legacy_special_inventory(world)
+            mark = world.mark()
+            with world.game, w4.quiet():
+                self.press(world, window, 2)
+                extra.wndItem.fire("select_empty", 4)
+            results.append(world.effects_since(mark))
+        self.assertEqual(results[1], results[0])
+        self.assertIn(("net.SendMallCheckoutPacket", (2, EXTRA, 229)), results[1])
 
 
 class Wiring(unittest.TestCase):

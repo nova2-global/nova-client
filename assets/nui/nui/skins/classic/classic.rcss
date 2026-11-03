@@ -865,6 +865,12 @@
 	right: 4dp;
 	bottom: 3dp;
 }
+/* No refine badge (the modern skins' is-refined, slot-grid.rcss): legacy
+   draws none. */
+.skin-classic .nui-slot.is-refined .nui-slot__number
+{
+	display: none;
+}
 /* The requirement sign: the window names its image in its overlay (legacy
    AppendRequirementSignImage takes any). */
 .skin-classic .nui-slot__sign
@@ -966,6 +972,37 @@
 }
 .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w2 > .nui-slot__number { right: -28dp; }
 .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -60dp; }
+
+/* The trade marks (wave 4b, NOVA-13; components/slot-grid.rcss): legacy's
+   washes over the item's area and its icon (CSlotWindow::__RenderItemWash),
+   red at 30% for an item in use (the --slot-disabled token holds legacy's
+   1, 0, 0, 0.3), white at 30% for one the window on top refuses (the
+   classic token of that white, --classic-chat-press), both when both are
+   on, the white over the red as legacy draws them; no ring. A lean
+   anchor's wash spans its item at the 32dp pitch. */
+.skin-classic .nui-slot__wash,
+.skin-classic .nui-slot.is-in-use .nui-slot__wash
+{
+	border-width: 0;
+	border-radius: 0;
+}
+.skin-classic .nui-slot.is-unusable-ontop .nui-slot__wash
+{
+	background-color: var(--classic-chat-press);
+	opacity: 1;
+}
+.skin-classic .nui-slot.is-in-use .nui-slot__wash
+{
+	background-color: var(--slot-disabled);
+}
+.skin-classic .nui-slot.is-in-use.is-unusable-ontop .nui-slot__wash
+{
+	decorator: linear-gradient(to bottom, var(--classic-chat-press), var(--classic-chat-press));
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__wash { height: 64dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__wash { height: 96dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__wash { width: 64dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__wash { width: 96dp; }
 
 /* The legacy slider (ui.SliderBar): the sliderbar art, 175 x 12, as the
    track and its 53 x 12 cursor as the thumb, the same art at rest, over and

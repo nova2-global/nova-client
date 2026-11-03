@@ -22,7 +22,12 @@ No Python runs per frame (legacy has none). The board exists only while the
 window shows (nui_hud.OnDemand). Legacy sets the result cell without
 RefreshSlot, so every legacy entry point and board event ends with a flush
 of the slot proxies it changed, and of the mode, which legacy keeps in an
-attribute. Every count comes from nui_limits.current()."""
+attribute. Every count comes from nui_limits.current().
+
+Wave 4b (NOVA-16): legacy takes a Dragon Bean from the special inventory too
+(its drop, and the extra window's right press, AutoSetItem((EXTRA, cell),
+1)); a placed item's cell carries the slot type of its window
+(_slot_type_of), so nui_slots finds an attached bean's cell."""
 
 import item
 import localeInfo
@@ -49,9 +54,14 @@ MODES = (("grade", _LEGACY.REFINE_TYPE_GRADE, "@ui.GRADE_SELECT"),
 
 def _slot_type_of(window):
 	"""The slot type of an item of an inventory window (an item placed in
-	the refine window comes from the inventory or the dragon soul one)."""
+	the refine window comes from the inventory, the dragon soul one or,
+	since wave 4b, the special inventory: a Dragon Bean, NOVA-16; an exe
+	without it has no such window)."""
 	if window == getattr(player, "DRAGON_SOUL_INVENTORY", None):
 		return getattr(player, "SLOT_TYPE_DRAGON_SOUL_INVENTORY", player.SLOT_TYPE_INVENTORY)
+	extra = getattr(player, "EXTRA_INVENTORY", None)
+	if isinstance(extra, int) and window == extra:
+		return player.SLOT_TYPE_EXTRA_INVENTORY
 	return player.SLOT_TYPE_INVENTORY
 
 

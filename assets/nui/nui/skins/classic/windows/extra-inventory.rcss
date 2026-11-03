@@ -1,0 +1,140 @@
+/* Classic skin overlay of nui/windows/extra-inventory/extra-inventory.rml:
+   the legacy special inventory (uiscript extrainventorywindow.py) at 100%,
+   1dp to the legacy pixel: the stone board, 270 x 377; the title bar at 8,
+   7, 254 wide; the page tabs on the small tab art, 32 x 19, seven a row
+   from 8, 33 at legacy's 32 x 21 pitch (I to V on the first row, the
+   costumes' VIII to XII on the second; legacy hides the tabs past the
+   category's pages); the grid at 8, 79 on the slot base at the 32px pitch;
+   the five categories on the large button art, 88 x 21, at 174, 79 and
+   24 apart, the category shown held down. */
+
+body.skin-classic.xinv
+{
+	width: 270dp;
+	height: 377dp;
+	min-width: 0;
+}
+/* The title bar: legacy's, placed from the board's corner. z-index: the
+   parts below are positioned boxes later in the document. Its last pixels
+   lie over the first row of page tabs, which take the pointer there; its
+   own controls take it. */
+body.skin-classic.xinv .xinv__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 254dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.xinv .xinv__handle, body.skin-classic.xinv .xinv__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end
+   (ui.py TitleBar.SetWidth: width - 15 - 3, 3); an offset, so the title
+   keeps its place. */
+body.skin-classic.xinv .xinv__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+/* The body's parts, placed from the board's corner. */
+body.skin-classic.xinv .xinv__body
+{
+	display: block;
+	position: relative;
+	height: 377dp;
+	padding: 0;
+}
+body.skin-classic.xinv .xinv__main
+{
+	display: block;
+	width: auto;
+}
+
+/* --- The page tabs ------------------------------------------------------------ */
+
+body.skin-classic.xinv .xinv-pages
+{
+	position: absolute;
+	left: 8dp;
+	top: 33dp;
+	width: 224dp;
+	height: 40dp;
+	gap: 2dp 0dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.xinv .xinv-page,
+body.skin-classic.xinv.xinv--pages-many .xinv-page,
+body.skin-classic.xinv .xinv-page:hover,
+body.skin-classic.xinv .xinv-page:active,
+body.skin-classic.xinv .xinv-page.is-selected
+{
+	flex: 0 0 auto;
+	width: 32dp;
+	height: 19dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--text);
+	line-height: 19dp;
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_01.sub");
+}
+body.skin-classic.xinv .xinv-page:hover
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_02.sub");
+}
+body.skin-classic.xinv .xinv-page:active, body.skin-classic.xinv .xinv-page.is-selected
+{
+	decorator: image("d:/ymir work/ui/game/windows/tab_button_small_03.sub");
+}
+
+/* --- The grid ----------------------------------------------------------------- */
+
+body.skin-classic.xinv .xinv-grid
+{
+	position: absolute;
+	left: 8dp;
+	top: 79dp;
+}
+
+/* --- The categories: the large button art (the classic default button),
+   the label centered over it as legacy's text --------------------------------- */
+
+body.skin-classic.xinv .xinv-cats
+{
+	display: block;
+	position: absolute;
+	left: 174dp;
+	top: 79dp;
+	width: 88dp;
+	gap: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.xinv .xinv-cats .xinv-cat,
+body.skin-classic.xinv .xinv-cats .xinv-cat:hover,
+body.skin-classic.xinv .xinv-cats .xinv-cat.is-selected
+{
+	width: 88dp;
+	height: 21dp;
+	margin: 0 0 3dp 0;
+	padding: 0;
+	border-width: 0;
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	line-height: 21dp;
+	text-align: center;
+	overflow: visible;
+}

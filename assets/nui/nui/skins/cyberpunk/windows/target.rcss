@@ -54,6 +54,17 @@ body.skin-cyberpunk.target .target-board__level
 {
 	color: var(--danger-hover);
 }
+/* A player's portrait: square, in the red edge. */
+body.skin-cyberpunk.target .target-board__portrait
+{
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-cyberpunk.target .target-board__sub
+{
+	color: var(--accent);
+	letter-spacing: 0.5dp;
+}
 body.skin-cyberpunk.target .target-board__pct
 {
 	color: var(--danger-hover);

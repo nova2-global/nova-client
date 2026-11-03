@@ -120,6 +120,23 @@ body.skin-cyberpunk.chat-log .chat-log__scroll sliderbar:hover, body.skin-cyberp
 {
 	background-color: var(--accent-hover);
 }
+/* The arrows: square boxes in the dim neon edge, their chevrons in the
+   accent. */
+body.skin-cyberpunk.chat-log .chat-log__scroll sliderarrowdec, body.skin-cyberpunk.chat-log .chat-log__scroll sliderarrowinc
+{
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}
+body.skin-cyberpunk.chat-log .chat-log__scroll sliderarrowdec:hover, body.skin-cyberpunk.chat-log .chat-log__scroll sliderarrowinc:hover
+{
+	border-color: var(--accent);
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.chat-log .chat-log__scroll-box .chat-log__arrow
+{
+	--glyph-ink: var(--accent);
+}
 body.skin-cyberpunk.chat-log .chat-log__grip
 {
 	background-color: var(--accent);

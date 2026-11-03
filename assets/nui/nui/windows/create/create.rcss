@@ -13,8 +13,9 @@
    label; gender and shape with their label in a column on the left and
    their two choices (the chosen one filled with the accent); Cancel and
    Create, as wide as each other. The arrows are the select screen's
-   blades. Classic (legacy's thin board, its boxes and art at 100%):
-   skins/classic/windows/create.rcss. */
+   blades; the typed name and "Level 1 · <class>" stand between them,
+   under the 3D character. Classic (legacy's thin board, its boxes and
+   art at 100%): skins/classic/windows/create.rcss. */
 .create-board
 {
 	position: absolute;
@@ -195,6 +196,45 @@ progress.create-stat__gauge--sp fill
 {
 	height: 34dp;
 	line-height: 32dp;
+}
+
+/* --- Under the 3D character: the name and its level and class -------------------------------
+   Centered on the rotate arrows (the left one's left edge at 48%, the right
+   one's right edge at 69.75% + 160dp: their middle at 58.875% + 80dp), a
+   560dp box whose bottom sits on the arrows' top (84.17%). Light text with
+   a dark glow on the dark scene, in every palette, as the arrows' heads. */
+.create-stage
+{
+	position: absolute;
+	left: 58.875%;
+	bottom: 15.83%;
+	width: 560dp;
+	margin-left: -200dp;
+	padding-bottom: 8dp;
+	text-align: center;
+	white-space: nowrap;
+	color: var(--text-inverse);
+	font-effect: glow(0dp 6dp 0dp 2dp var(--text-outline));
+}
+.create-stage__name, .create-stage__sub
+{
+	display: block;
+	text-transform: uppercase;
+}
+.create-stage__name
+{
+	font-size: 26dp;
+	font-weight: bold;
+	letter-spacing: 0.12em;
+	line-height: 32dp;
+}
+.create-stage__sub
+{
+	margin-top: 3dp;
+	font-size: var(--font-xs);
+	letter-spacing: 0.18em;
+	line-height: 14dp;
+	opacity: 0.72;
 }
 
 /* --- The rotate arrows: the select screen's blades ------------------------------------------- */

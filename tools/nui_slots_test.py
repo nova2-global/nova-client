@@ -8,6 +8,7 @@ grpImage stand-ins that count the icon instances made and freed."""
 import json
 import os
 import sys
+import types
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -407,6 +408,14 @@ class Cells(SlotsTest):
         self.controller.AttachObject("legacy", QUICK, 0, 0)
         self.assertEqual(self.m.attached_info()[4:], (1, 2), "a quick slot's item has its size")
 
+    def test_an_extra_inventory_item_has_its_size_too(self):
+        # Wave 4b: an item picked from the extra inventory shows its whole
+        # footprint over the bag or the safebox, as the inventory's does.
+        self.m.player.SLOT_TYPE_EXTRA_INVENTORY = 12
+        self.game.give(3, 10, 1, size=(1, 2))
+        self.controller.AttachObject("legacy", 12, 3, 10, 1)
+        self.assertEqual(self.m.attached_info(), (12, 3, 10, 1, 1, 2))
+
 
 class FootprintVectors(SlotsTest):
     """footprint_states and the CheckMoving rule against every case of
@@ -584,6 +593,56 @@ class Proxy(SlotsTest):
         proxy.SetSlotBaseImage("d:/ymir work/ui/public/slot_base.sub", 1.0, 1.0, 1.0, 1.0)
         with self.assertRaises(AttributeError):
             proxy.SetSlotDiffuseColor(0, 1)
+
+
+class Refine(SlotsTest):
+    """The refine level (refine_level; REFINE_KEY of a grid that opts in,
+    SlotWindowProxy(refine=True)): the "+N" of a weapon's, an armour's or a
+    belt's name, as the tooltip's title names it."""
+
+    NAMES = {16: "Sword+6", 10: "Sword+0", 8003: "Iron Arrow", 9001: "Nahan Armor+5",
+             9195: "Volcanic Glaive+5 [PVM]", 30851: "Temporary Easter Ring +1", 18003: "Linen Belt +3",
+             71014: "Potion of Attack+10"}
+    TYPES = {16: 1, 10: 1, 8003: 1, 9001: 2, 9195: 1, 30851: 30, 18003: 34, 71014: 3}
+
+    def setUp(self):
+        SlotsTest.setUp(self)
+        item = self.game.modules["item"]
+        for name, value in (("ITEM_TYPE_WEAPON", 1), ("ITEM_TYPE_ARMOR", 2), ("ITEM_TYPE_USE", 3),
+                            ("ITEM_TYPE_RING", 30), ("ITEM_TYPE_BELT", 34)):
+            setattr(item, name, value)
+        item.GetItemName = lambda: self.NAMES.get(item.selected[0], "")
+        item.GetItemType = lambda: self.TYPES.get(item.selected[0], 0)
+
+    def test_the_level_is_the_plus_of_a_weapon_armour_or_belt_name(self):
+        levels = dict((vnum, self.m.refine_level(vnum)) for vnum in self.NAMES)
+        self.assertEqual(levels, {16: 6, 10: 0, 8003: 0, 9001: 5, 9195: 5, 30851: 0, 18003: 3, 71014: 0})
+        self.assertEqual(self.m.refine_level(0), 0)
+
+    def test_a_grid_that_opts_in_carries_the_level_in_every_cell(self):
+        seen = []
+        proxy = self.m.SlotWindowProxy(range(10), seen.append, cols=5, rows=2, refine=True)
+        self.game.item_sizes[16] = (1, 2)
+        proxy.SetItemSlot(0, 16, 0)
+        proxy.SetItemSlot(1, 18003, 0)
+        proxy.SetItemSlot(2, 27001, 5)
+        proxy.RefreshSlot()
+        cells = seen[-1]
+        self.assertEqual([cell[self.m.REFINE_KEY] for cell in cells], [6, 3, 0, 0, 0, 0, 0, 0, 0, 0])
+        self.assertTrue(cells[5]["covered"], "the sword's lower cell: covered, level 0")
+        proxy.SetItemSlot(1, 0, 0)
+        proxy.RefreshSlot()
+        self.assertEqual(seen[-1][1][self.m.REFINE_KEY], 0, "a cleared slot")
+        plain = []
+        other = self.m.SlotWindowProxy(range(2), plain.append, cols=2, rows=1)
+        other.SetItemSlot(0, 16, 0)
+        other.RefreshSlot()
+        self.assertNotIn(self.m.REFINE_KEY, plain[-1][0], "a grid that does not opt in has no such key")
+        self.assertEqual(set(plain[-1][0]), set(self.m.CELL_KEYS))
+
+    def test_with_refine_gives_empty_cells_the_key_and_keeps_a_level(self):
+        cells = self.m.with_refine([self.m.empty_cell(0), dict(self.m.empty_cell(1), refine=4)])
+        self.assertEqual([cell[self.m.REFINE_KEY] for cell in cells], [0, 4])
 
 
 class Events(SlotsTest):
@@ -1113,6 +1172,199 @@ class FullProxyPush(SlotsTest):
         self.assertTrue(proxy.dirty)
         proxy.RefreshSlot()
         self.assertFalse(proxy.dirty, "RefreshSlot hands the cells over too")
+
+
+# --- Wave 4b (NOVA-13): the trade marks ------------------------------------------------------
+
+class Marks(SlotsTest):
+    """CSlotWindow's in-use and unusable marks on the proxies: the four
+    wndMgr calls, SetSlot and ClearSlot dropping both (dwState = 0), the
+    opt-in keys, and the push of a mark legacy makes outside RefreshSlot."""
+
+    def proxy(self, marks=True, **kwargs):
+        seen = []
+        self.game.item_sizes[10] = (1, 2)
+        proxy = self.m.SlotWindowProxy(range(10), seen.append, cols=5, rows=2, marks=marks, **kwargs)
+        proxy.SetItemSlot(0, 10, 0)
+        proxy.SetItemSlot(1, 27001, 5)
+        proxy.SetItemSlot(2, 27002, 0)
+        proxy.RefreshSlot()
+        return proxy, seen
+
+    def marked(self, cells):
+        return dict((i, (c["in_use"], c["unusable_ontop"])) for i, c in enumerate(cells)
+                    if c["in_use"] or c["unusable_ontop"])
+
+    def test_the_four_calls_set_and_clear_each_mark(self):
+        proxy, seen = self.proxy()
+        self.assertEqual(set(seen[-1][0]), set(self.m.CELL_KEYS) | set(self.m.MARK_KEYS))
+        self.assertEqual(self.marked(seen[-1]), {})
+        proxy.SetCantMouseEventSlot(0)
+        proxy.SetUnusableSlotOnTopWnd(1)
+        proxy.SetUnusableSlotOnTopWnd(2)
+        proxy.SetCantMouseEventSlot(2)
+        proxy.SetCantMouseEventSlot(99)
+        proxy.RefreshSlot()
+        self.assertEqual(self.marked(seen[-1]), {0: (True, False), 1: (False, True), 2: (True, True)},
+                         "the sword's lower cell (5) shows nothing: its anchor washes its whole area")
+        proxy.SetCanMouseEventSlot(2)
+        proxy.SetUsableSlotOnTopWnd(1)
+        proxy.SetUsableSlotOnTopWnd(1)
+        proxy.RefreshSlot()
+        self.assertEqual(self.marked(seen[-1]), {0: (True, False), 2: (False, True)})
+        self.assertEqual([proxy.is_in_use(i) for i in range(4)], [True, False, False, False])
+
+    def test_set_slot_and_clear_slot_drop_both_marks_as_cslotwindow_does(self):
+        proxy, seen = self.proxy()
+        for slot in (0, 1, 2):
+            proxy.SetCantMouseEventSlot(slot)
+            proxy.SetUnusableSlotOnTopWnd(slot)
+        proxy.LockSlot(1)
+        proxy.SetItemSlot(0, 10, 0)            # the same item again: SetSlot's dwState = 0
+        proxy.SetItemSlot(1, 27003, 0)         # another item
+        proxy.ClearSlot(2)
+        proxy.RefreshSlot()
+        self.assertEqual(self.marked(seen[-1]), {})
+        self.assertFalse(seen[-1][1]["locked"], "the lock goes with them")
+        self.assertEqual([proxy.is_in_use(i) for i in range(3)], [False, False, False])
+        proxy.SetCantMouseEventSlot(1)
+        proxy.SetItemSlot(1, 0, 0)             # vnum 0 clears
+        self.assertFalse(proxy.is_in_use(1))
+        proxy.SetCantMouseEventSlot(0)
+        proxy.ClearAllSlot()
+        self.assertFalse(proxy.is_in_use(0))
+
+    def test_an_empty_slot_keeps_the_rule_and_shows_nothing(self):
+        proxy, seen = self.proxy()
+        proxy.SetCantMouseEventSlot(3)
+        proxy.RefreshSlot()
+        self.assertTrue(proxy.is_in_use(3), "CSlotWindow keeps the state of an empty slot")
+        self.assertEqual(self.marked(seen[-1]), {}, "and washes only an item's slot")
+
+    def test_a_grid_that_does_not_opt_in_has_no_keys_and_keeps_the_rule(self):
+        proxy, seen = self.proxy(marks=False)
+        proxy.SetCantMouseEventSlot(1)
+        self.assertFalse(proxy.dirty, "a mark it does not show needs no push")
+        proxy.RefreshSlot()
+        self.assertEqual(set(seen[-1][1]), set(self.m.CELL_KEYS))
+        self.assertTrue(proxy.is_in_use(1))
+
+    def test_a_shown_mark_change_makes_the_proxy_dirty_and_flush_marks_pushes_it(self):
+        proxy, seen = self.proxy()
+        hovered = []
+        proxy.events = types.SimpleNamespace(refresh_hover=lambda: hovered.append(True))
+        count = len(seen)
+        proxy.SetCantMouseEventSlot(4)
+        proxy.SetCanMouseEventSlot(1)
+        self.assertFalse(proxy.dirty, "an empty slot, and a mark that was off already")
+        proxy.SetCantMouseEventSlot(1)
+        self.assertTrue(proxy.dirty)
+        self.m.flush_marks()
+        self.assertEqual(len(seen), count + 1)
+        self.assertEqual(self.marked(seen[-1]), {1: (True, False)})
+        self.assertEqual(hovered, [], "a push shows no tooltip again")
+        self.assertFalse(proxy.dirty)
+        self.m.flush_marks()
+        self.assertFalse(proxy.flush())
+        self.assertEqual(len(seen), count + 1, "nothing to show")
+        proxy.SetUnusableSlotOnTopWnd(2)
+        proxy.RefreshSlot()
+        self.assertFalse(proxy.dirty, "RefreshSlot shows it too")
+        self.assertNotIn(proxy, self.m._marked)
+
+    def test_with_marks_gives_empty_cells_the_keys(self):
+        cells = self.m.with_marks([self.m.empty_cell(0), dict(self.m.empty_cell(1), in_use=True)])
+        self.assertEqual([(c["in_use"], c["unusable_ontop"]) for c in cells], [(False, False), (True, False)])
+
+    def test_the_full_proxy_and_the_typed_grids_take_the_calls(self):
+        seen = []
+        full = self.m.FullSlotWindowProxy([1, 2], seen.append, limits=_Limits("p"), marks=True)
+        full.SetItemSlot(1, 27001, 0)
+        full.SetCantMouseEventSlot(1)
+        full.push()
+        self.assertTrue(seen[-1][0]["in_use"])
+        full.SetSlot(1, 27001, 1, 1, 0)        # CSlotWindow::SetSlot of the same index
+        full.push()
+        self.assertFalse(seen[-1][0]["in_use"])
+        self.game.load("nui_proxies", "nui_proxies.py")
+        forms = self.game.load("nui_form_proxies", "nui_form_proxies.py")
+        typed = forms.TypedSlotWindowProxy(range(4), seen.append, cols=4, rows=1, slot_type=SAFEBOX, marks=True)
+        typed.SetItemSlot(0, 27001, 3)
+        for name in ("SetCantMouseEventSlot", "SetUnusableSlotOnTopWnd", "SetCanMouseEventSlot"):
+            getattr(typed, name)(0)
+        typed.RefreshSlot()
+        self.assertEqual((seen[-1][0]["in_use"], seen[-1][0]["unusable_ontop"], seen[-1][0]["type"]), (False, True, SAFEBOX))
+        plain = forms.TypedSlotWindowProxy(range(2), None, slot_type=SAFEBOX)
+        plain.SetUsableSlotOnTopWnd(0)
+        guild = forms.GuildSkillSlotProxy(range(2), seen.append)
+        guild.SetCantMouseEventSlot(0)
+        self.game.learn(0, 152, level=2)
+        guild.SetSkillSlot(0, 152, 2)
+        self.assertFalse(guild.is_in_use(0), "its SetSkillSlot is a SetSlot")
+
+
+class InUseEvents(SlotsTest):
+    """LegacySlotEvents over an in-use cell: CSlotWindow's handlers return at
+    SLOT_STATE_CANT_MOUSE_EVENT for a press, a release, a right press and a
+    double click; the hover still shows the tooltip; an unusable cell takes
+    every event."""
+
+    def setUp(self):
+        Events.setUp(self)   # Events' grid and handlers, not its tests
+        self.proxy.SetCantMouseEventSlot(0)     # the 1x2 sword (cells 0 and 5)
+        self.proxy.SetUnusableSlotOnTopWnd(2)
+        self.proxy.RefreshSlot()
+
+    def test_a_press_on_an_in_use_item_or_a_cell_it_covers_sends_nothing(self):
+        self.events.press(0, 0)
+        self.events.press(5, 0)
+        self.assertEqual(self.calls, [])
+        self.assertFalse(self.m.attached())
+        self.events.press(2, 0)
+        self.assertEqual(self.calls, [("select_item", 2)], "an unusable item still takes the press")
+
+    def test_nothing_drops_onto_an_in_use_item(self):
+        self.controller.AttachObject("legacy", INVENTORY, 3, 12200, 1)
+        self.events.press(0, 0)
+        self.events.drop(5)
+        self.assertEqual(self.calls, [])
+        self.assertTrue(self.m.attached(), "the icon stays on the cursor")
+        self.controller.DeattachObject()
+        self.events.press(3, 0)
+        self.events.release(0, 0)
+        self.assertEqual([c for c in self.calls if c[0].startswith("select")], [("select_item", 3)],
+                         "the release over the in-use sword drops nothing")
+        self.assertTrue(self.m.attached())
+        self.events.drop(9)
+        self.assertEqual(self.calls[-1], ("select_empty", 9))
+
+    def test_a_right_press_and_a_double_click_send_nothing_and_the_hover_passes(self):
+        self.events.press(0, 1)
+        self.events.press(5, 1)
+        self.events.use(0)
+        self.events.use(5)
+        self.assertEqual(self.calls, [])
+        self.events.press(2, 1)
+        self.events.use(2)
+        self.assertEqual(self.calls, [("unselect_item", 2), ("use", 2)])
+        del self.calls[:]
+        self.events.over(5)
+        self.assertEqual(self.calls, [("over_in", 0)], "the tooltip still shows")
+
+    def test_a_released_cell_takes_the_events_again(self):
+        self.proxy.SetCanMouseEventSlot(0)
+        self.events.press(5, 0)
+        self.assertEqual(self.calls, [("select_item", 0)], "at once, before any refresh")
+
+    def test_a_mark_a_handler_makes_shows_at_the_end_of_the_event(self):
+        seen = []
+        bag = self.m.SlotWindowProxy(range(2), seen.append, cols=2, rows=1, marks=True)
+        bag.SetItemSlot(1, 27001, 0)
+        bag.RefreshSlot()
+        self.proxy.SetUnselectItemSlotEvent(lambda n: bag.SetCantMouseEventSlot(1))
+        self.events.press(2, 1)
+        self.assertTrue(seen[-1][1]["in_use"], "another grid's lock, pushed after the press")
+        self.assertFalse(bag.dirty)
 
 
 class AttachRightBinding(unittest.TestCase):

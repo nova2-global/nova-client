@@ -19,8 +19,11 @@ either way it keeps the legacy attribute name, AtlasWindow.
 Where it differs from legacy: the position line is not made (legacy hides
 it, constInfo.MINIMAP_POSITIONINFO_ENABLE); SetImprisonmentDuration, which
 nothing calls, sets the text once and counts nothing down; the hints open on
-hover."""
+hover; the server line shows the local clock in the modern skins (classic
+hides it), refreshed once a minute by a nui-countdown timer that ends at the
+next minute (clock_next), whose countdownend re-arms it."""
 
+import time
 import weakref
 
 import localeInfo
@@ -41,6 +44,7 @@ import nui_windows
 DOCUMENT = "nui/windows/minimap/minimap.rml"
 VIEW = "minimap"
 HOVER_FORMAT = "{name} ({x}, {y})"   # uiminimap.py:406
+CLOCK_LATE = 0.25                    # seconds after the minute the clock's timer ends
 
 
 def _keep(owner):
@@ -62,7 +66,11 @@ class MiniMapBoard(nui.Window):
 
 	def initial_model(self):
 		return {"shown": False, "open": False, "can_see": True, "has_atlas": False, "server_info": "",
-		        "observers": 0, "observer_text": ""}
+		        "observers": 0, "observer_text": "", "clock": "", "clock_next": 0.0}
+
+	@nui.on("clock_tick")
+	def on_clock_tick(self):
+		self._owner.nui_clock_tick()
 
 	@nui.on("scale_up")
 	def on_scale_up(self, button):
@@ -110,7 +118,7 @@ class MiniMap(object):
 		self.atlasButton = False     # legacy binds the atlas button at its first load, when the map has an atlas
 		self.imprisonmentDuration = 0
 		self.state = {"shown": False, "open": False, "can_see": True, "has_atlas": False, "server_info": "",
-		              "observers": 0, "observer_text": ""}
+		              "observers": 0, "observer_text": "", "clock": "", "clock_next": 0.0}
 		# The engine first: an older exe keeps the legacy minimap, and this
 		# facade then makes no call and no atlas.
 		if not nui_hud.has_engine_2b():
@@ -189,6 +197,7 @@ class MiniMap(object):
 			return
 		self.isLoaded = 1
 		self._set(server_info=nui.plain_text(net.GetServerInfo()))
+		self.nui_clock_tick()
 		self.atlasButton = bool(miniMap.IsAtlas())
 		self.ShowMiniMap()
 
@@ -271,6 +280,16 @@ class MiniMap(object):
 		self._set(server_info=nui.plain_text("%s: %s" % (label, localeInfo.SecondToDHM(rest))))
 
 	# --- the document's events -------------------------------------------------------
+
+	def nui_clock_tick(self):
+		"""The local time as hours and minutes, and the timer's next end: the
+		next minute of the wall clock, a little after it so the minute has
+		turned (the timer's countdownend calls this again: once a minute, no
+		Python in between)."""
+		wall = time.time()
+		local = time.localtime(wall)
+		left = 60.0 - (wall % 60.0) + CLOCK_LATE
+		self._set(clock="%02d:%02d" % (local.tm_hour, local.tm_min), clock_next=nui.now() + left)
 
 	def nui_atlas_button(self):
 		"""The atlas button: legacy binds its event only when the map had an

@@ -25,7 +25,9 @@
 	     partner field Enter accepts and Escape closes; both keep the key. A
 	     press on a link: the legacy item tooltip, or with left Alt a paste.
 	     The body takes no focus but on its fields; controls act on a left
-	     mousedown. It draws below the legacy UI layer, as legacy's window
+	     mousedown. The title bar starts with the whisper's icon (a handle
+	     too); the empty input shows its placeholder (RmlUi's own, which
+	     hides while the field has text). It draws below the legacy UI layer, as legacy's window
 	     lived in it; a press anywhere on it raises the dialog, which focuses
 	     its input (legacy's OnTop). -->
 	<title>whisper</title>
@@ -35,6 +37,8 @@
 <body template="nui" id="whisper" class="nui-window nui-fx nui-anim nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus whisper"
       data-model="whisper" data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar whisper__titlebar">
+		<handle class="whisper__title-icon" move_target="#document"><span class="nui-glyph nui-glyph--whisper"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></handle>
 		<div class="whisper__slot" data-if="editing_target"><input id="whisper-target" type="text" class="nui-input whisper__target"
 			data-attr-maxlength="target_max" data-event-mousedown="target_press(ev.button)"/></div>
 		<handle class="nui-window__handle whisper__handle" move_target="#document">
@@ -71,7 +75,8 @@
 	</div>
 	<div class="nui-window__footer whisper__edit">
 		<div class="whisper__compose">
-			<textarea id="whisper-input" class="nui-input whisper__input" rows="2" data-attr-maxlength="input_max"
+			<textarea id="whisper-input" class="nui-input whisper__input" rows="2" placeholder="@ui.NUI_WHISPER_PLACEHOLDER"
+			          data-attr-maxlength="input_max"
 			          data-event-change="input_change(ev.value)" data-event-mousedown="input_press(ev.button)"></textarea>
 			<button id="whisper-send" class="nui-button nui-anim whisper__send" data-event-mousedown="send_press(ev.button)"><span
 				class="whisper__send-label">@ui.WHISPER_SEND</span></button>

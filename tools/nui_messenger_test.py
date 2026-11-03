@@ -145,6 +145,30 @@ class Model(MessengerTest):
         self.assertEqual((rows[1]["love"], rows[1]["hint"]), (87, world.m("localeInfo").AFF_LOVE_POINT % 87))
         self.assertTrue(all(row["love"] == -1 for row in rows[2:]))
 
+    def test_each_row_ends_in_its_state(self):
+        """The reviewed board's state (nui_messenger.state_of): a group's
+        online and total members, a member's Online or Offline; none for
+        the Blocked Players, whose online state the client never learns,
+        nor beside a roster member's flags."""
+        world, window = self.world(True)
+        self.fill(world, window)
+        with world.game, w4.quiet():
+            window.OnLogin(HELPER, "Helen")
+            window.SetLanguagesFlags(HELPER, "Helen", "en")
+            window.OnLogin(HELPER, "Hank")
+        self.show(world, window)
+        with world.game, w4.quiet():
+            window.OnBlockedAct(1, "Sly")
+        states = [(row["name"], row["state"]) for row in w4.board(window).model["rows"]]
+        locale = world.m("localeInfo")
+        self.assertEqual(states, [
+            (locale.MESSENGER_FRIEND, "2 / 3"), ("Alice", "@ui.NUI_MESSENGER_ONLINE"),
+            ("Carl", "@ui.NUI_MESSENGER_ONLINE"), ("Bob", "@ui.NUI_MESSENGER_OFFLINE"),
+            (locale.MESSENGER_GUILD, "1 / 2"), ("Dana", "@ui.NUI_MESSENGER_ONLINE"), ("Boss", "@ui.NUI_MESSENGER_OFFLINE"),
+            (locale.MESSENGER_HELPER, "2 / 2"), ("Helen", ""), ("Hank", "@ui.NUI_MESSENGER_ONLINE"),
+            (locale.MESSENGER_TEAMLER, "0 / 0"), (locale.MESSENGER_EMPTY_LIST, ""),
+            (locale.BLOCKED_PLAYERS_TITLE, ""), ("Sly", "")])
+
     def test_a_press_on_a_group_closes_it_and_a_second_opens_it(self):
         def flow(world, window):
             self.press_row(world, window, 0)

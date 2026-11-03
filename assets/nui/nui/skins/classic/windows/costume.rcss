@@ -28,6 +28,10 @@ body.skin-classic.cos .cos__titlebar
 	padding: 0;
 	z-index: 1;
 }
+body.skin-classic.cos .cos-title-icon
+{
+	display: none;
+}
 body.skin-classic.cos .cos__handle
 {
 	display: block;

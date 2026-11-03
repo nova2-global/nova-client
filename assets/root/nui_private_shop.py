@@ -11,8 +11,16 @@ drop (the give and my-shop anti flags, the price input with the price
 list's price, the stock), a press on a stocked cell (out of the stock), OK
 (shop.BuildPrivateShop) and Close are legacy's code. The shop's sign is
 Wave 2b's (nui_shop_signs, D24). The builder centers itself at each Open, as
-legacy's does; the board exists only while it shows."""
+legacy's does; the board exists only while it shows.
 
+Wave 4b: an item of the special inventory may be stocked (legacy keeps each
+item's window, NOVA-16), so a stocked cell takes the slot type of its
+item's window (_StockSlotProxy); the on-top window (NOVA-13: legacy's
+__SetOnTopWindow in Open and Close) and the locks of the stocked items'
+cells in both inventories (SetInven, RefreshLockedSlot) are legacy's code,
+BindInterface and SetInven inherited."""
+
+import player
 import ui
 import uiPrivateShopBuilder
 
@@ -24,6 +32,37 @@ import nui_slots
 
 DOCUMENT = "nui/windows/private-shop/private-shop.rml"
 KEY = "private-shop"
+
+
+def _slot_type_of(window):
+	"""The slot type of an item of an inventory window: the inventory, the
+	dragon soul one or, since wave 4b, the special inventory (an exe without
+	it has no such window)."""
+	if window == getattr(player, "DRAGON_SOUL_INVENTORY", None):
+		return getattr(player, "SLOT_TYPE_DRAGON_SOUL_INVENTORY", player.SLOT_TYPE_INVENTORY)
+	extra = getattr(player, "EXTRA_INVENTORY", None)
+	if isinstance(extra, int) and window == extra:
+		return player.SLOT_TYPE_EXTRA_INVENTORY
+	return player.SLOT_TYPE_INVENTORY
+
+
+class _StockSlotProxy(nui_slots.SlotWindowProxy):
+	"""The builder's grid: each stocked item's cells (its anchor and the
+	cells it covers) take the slot type of the window the item is stocked
+	from (window_of(slot), legacy's itemStock), so nui_slots finds an
+	attached item's cell by its own window."""
+
+	def __init__(self, slot_numbers, on_refresh, window_of, **kwargs):
+		self.window_of = window_of
+		nui_slots.SlotWindowProxy.__init__(self, slot_numbers, on_refresh, **kwargs)
+
+	def _build(self):
+		cells = nui_slots.SlotWindowProxy._build(self)
+		for index, cell in enumerate(cells):
+			anchor = self._owners.get(index, index) if cell.get("covered") else index
+			if cells[anchor].get("kind") == "item":
+				cell["type"] = _slot_type_of(self.window_of(self.slot_numbers[anchor]))
+		return cells
 
 
 class _PrivateShopBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -111,6 +150,10 @@ class PrivateShopBuilder(nui_facade.Facade, uiPrivateShopBuilder.PrivateShopBuil
 		"""A cell's inventory position: its stock entry's (legacy's itemStock)."""
 		return getattr(self, "itemStock", {}).get(slot, (0, 0))[1]
 
+	def _window(self, slot):
+		"""A cell's inventory window: its stock entry's (legacy's itemStock)."""
+		return getattr(self, "itemStock", {}).get(slot, (player.INVENTORY, 0))[0]
+
 	def _on_cells(self, cells):
 		events = getattr(self, "_cell_events", None)
 		states, picked = (events.states, events.picked) if events is not None else ({}, -1)
@@ -134,8 +177,8 @@ class PrivateShopBuilder(nui_facade.Facade, uiPrivateShopBuilder.PrivateShopBuil
 		limits = self._limits
 		count, cols = limits.SHOP_SLOT_COUNT, limits.SHOP_COLUMNS
 		self.nameLine = nui_proxies.TextProxy(self._on_name)
-		self.itemSlot = nui_slots.SlotWindowProxy(range(count), self._on_cells, cols=cols, rows=count // max(1, cols),
-		                                          positions=self._position)
+		self.itemSlot = _StockSlotProxy(range(count), self._on_cells, self._window, cols=cols,
+		                                rows=count // max(1, cols), positions=self._position)
 		self.btnOk = nui_proxies.ButtonProxy()
 		self.btnClose = nui_proxies.ButtonProxy()
 		self.titleBar = nui_proxies.BoardProxy(169, 23)

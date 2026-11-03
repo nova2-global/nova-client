@@ -10,7 +10,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "0 / 1"
 			},
 			{
 				"kind": "member",
@@ -21,7 +22,8 @@
 				"member": true,
 				"love": 87,
 				"hint": "Love points: 87%",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "group",
@@ -32,7 +34,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "22 / 64"
 			},
 			{
 				"kind": "member",
@@ -43,7 +46,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -54,7 +58,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -65,7 +70,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -76,7 +82,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -87,7 +94,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -98,7 +106,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -109,7 +118,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -120,7 +130,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -131,7 +142,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -142,7 +154,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -153,7 +166,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -164,7 +178,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -175,7 +190,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -186,7 +202,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -197,7 +214,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -208,7 +226,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -219,7 +238,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -230,7 +250,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -241,7 +262,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -252,7 +274,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -263,7 +286,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -274,7 +298,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -285,7 +310,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -296,7 +322,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -307,7 +334,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -318,7 +346,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -329,7 +358,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -340,7 +370,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -351,7 +382,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -362,7 +394,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -373,7 +406,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -384,7 +418,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -395,7 +430,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -406,7 +442,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -417,7 +454,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -428,7 +466,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -439,7 +478,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -450,7 +490,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -461,7 +502,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -472,7 +514,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -483,7 +526,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -494,7 +538,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -505,7 +550,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -516,7 +562,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -527,7 +574,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -538,7 +586,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -549,7 +598,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -560,7 +610,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -571,7 +622,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -582,7 +634,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -593,7 +646,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -604,7 +658,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -615,7 +670,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -626,7 +682,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -637,7 +694,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -648,7 +706,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -659,7 +718,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -670,7 +730,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -681,7 +742,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -692,7 +754,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -703,7 +766,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -714,7 +778,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -725,7 +790,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -736,7 +802,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "group",
@@ -747,7 +814,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "1 / 4"
 			},
 			{
 				"kind": "member",
@@ -758,7 +826,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -769,7 +838,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -780,7 +850,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -791,7 +862,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "group",
@@ -802,7 +874,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "1 / 2"
 			},
 			{
 				"kind": "member",
@@ -816,7 +889,8 @@
 				"flags": [
 					"/locale/common/ui/flag/32/en.tga",
 					"/locale/common/ui/flag/32/de.tga"
-				]
+				],
+				"state": ""
 			},
 			{
 				"kind": "member",
@@ -829,7 +903,8 @@
 				"hint": "",
 				"flags": [
 					"/locale/common/ui/flag/32/pt.tga"
-				]
+				],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -840,7 +915,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "1 / 1"
 			},
 			{
 				"kind": "member",
@@ -853,7 +929,8 @@
 				"hint": "",
 				"flags": [
 					"/locale/common/ui/flag/32/en.tga"
-				]
+				],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -864,7 +941,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			},
 			{
 				"kind": "member",
@@ -875,7 +953,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			}
 		],
 		"whisper_enabled": false,

@@ -280,12 +280,13 @@ class WearTables(LimitsTest):
 
 # The Wave 4 keys whose names the foundation wave's C2 was asked to expose:
 # today's exe falls back for them.
-WAVE4_PROPOSED = ("EXCHANGE_COLUMNS", "EXCHANGE_MONEY_DIGITS", "SHOP_TAB_COUNT_MAX", "SAFEBOX_PAGE_COUNT_MAX",
+# EXCHANGE_COLUMNS is no longer one: main's exe exports it since wave 4b.
+WAVE4_PROPOSED = ("EXCHANGE_MONEY_DIGITS", "SHOP_TAB_COUNT_MAX", "SAFEBOX_PAGE_COUNT_MAX",
                   "SAFEBOX_SLOT_COUNT_MAX", "SAFEBOX_PASSWORD_MAX_LEN", "WINDOW_BELT_INVENTORY", "VIEW_EQUIP_SLOT_NUM",
                   "GUILD_NAME_MAX_LEN", "GUILD_GRADE_NAME_MAX_LEN", "GUILD_GRADE_COUNT", "GUILD_COMMENT_MAX_LEN",
                   "PLAYER_NAME_SHOWN_MAX")
 # Every Wave 4 key and its fallback, today's and the foundation's values.
-WAVE4_KEYS = ("EXCHANGE_ITEM_MAX_NUM", "EXCHANGE_COLUMNS", "EXCHANGE_MONEY_DIGITS", "SHOP_SLOT_COUNT", "SHOP_COLUMNS",
+WAVE4_KEYS = ("EXCHANGE_ITEM_MAX_NUM", "EXCHANGE_COLUMNS", "EXCHANGE_ROWS", "EXCHANGE_MONEY_DIGITS", "SHOP_SLOT_COUNT", "SHOP_COLUMNS",
               "SHOP_TAB_COUNT_MAX", "PRIVATE_SHOP_SIGN_MAX", "SAFEBOX_COLUMNS", "SAFEBOX_PAGE_ROWS", "SAFEBOX_PAGE_SIZE",
               "SAFEBOX_PAGE_COUNT_MAX", "SAFEBOX_SLOT_COUNT_MAX", "SAFEBOX_PASSWORD_MAX_LEN", "MALL_SLOT_COUNT",
               "WINDOW_SAFEBOX", "WINDOW_MALL", "WINDOW_DRAGON_SOUL_INVENTORY", "WINDOW_BELT_INVENTORY", "WINDOW_GROUND",
@@ -299,16 +300,28 @@ WAVE4_FOUNDATION = {"EXCHANGE_MONEY_DIGITS": 12, "SAFEBOX_PAGE_COUNT_MAX": 5, "S
 
 _today_modules_3b, _foundation_modules_3b = today_modules, foundation_modules
 
+# Wave 4b: main's exe's names and values (nova-client-src feature/port-wave-4b:
+# PythonPlayerModule.cpp, PythonExchangeModule.cpp; nova-protocol
+# inventory_packets.h), the same in today's stand-ins and the foundation's.
+W4B_PLAYER = {"EXTRA_INVENTORY": 6, "SLOT_TYPE_EXTRA_INVENTORY": 12, "EXTRA_INVENTORY_PAGE_COLUMN": 5,
+              "EXTRA_INVENTORY_PAGE_ROW": 9, "EXTRA_INVENTORY_PAGE_SIZE": 45, "EXTRA_INVENTORY_PAGE_COUNT": 32,
+              "EXTRA_INVENTORY_SLOT_COUNT": 1440, "EXTRA_INVENTORY_CATEGORY_COUNT": 5,
+              "EXTRA_INVENTORY_COSTUME_PAGE_COUNT": 12}
+W4B_EXCHANGE = {"EXCHANGE_ITEM_MAX_NUM": 24, "EXCHANGE_COLUMNS": 6, "EXCHANGE_ROWS": 4}
+
 
 def today_modules():
     """What today's exe exposes, the Wave 4 modules' constants included
     (PythonExchangeModule.cpp, PythonShop.cpp, PythonSafeBox.cpp,
     PythonGuild.cpp, PythonCharacterModule.cpp, PythonPlayerModule.cpp's
-    window enum), nothing proposed."""
+    window enum), and main's wave 4b names (the 6 x 4 exchange, the extra
+    inventory), nothing proposed."""
     modules = _today_modules_3b()
     for name, value in (("SAFEBOX", 3), ("MALL", 4), ("DRAGON_SOUL_INVENTORY", 5), ("GROUND", 6)):
         setattr(modules["player"], name, value)
-    modules["exchange"] = types.SimpleNamespace(EXCHANGE_ITEM_MAX_NUM=12)
+    for name, value in W4B_PLAYER.items():
+        setattr(modules["player"], name, value)
+    modules["exchange"] = types.SimpleNamespace(**W4B_EXCHANGE)
     modules["shop"] = types.SimpleNamespace(SHOP_SLOT_COUNT=40, SHOP_COIN_TYPE_GOLD=0, SHOP_COIN_TYPE_SECONDARY_COIN=1)
     modules["safebox"] = types.SimpleNamespace(SAFEBOX_SLOT_X_COUNT=5, SAFEBOX_SLOT_Y_COUNT=9, SAFEBOX_PAGE_SIZE=45)
     modules["guild"] = types.SimpleNamespace(ENEMY_GUILD_SLOT_MAX_COUNT=6)
@@ -323,7 +336,9 @@ def foundation_modules(module):
     for name, value in (("SAFEBOX", 3), ("MALL", 4), ("DRAGON_SOUL_INVENTORY", 5), ("BELT_INVENTORY", 7),
                         ("GROUND", 12), ("VIEW_EQUIP_SLOT_NUM", 16), ("EXCHANGE_MONEY_DIGITS", 12)):
         setattr(modules["player"], name, value)
-    modules["exchange"] = types.SimpleNamespace(EXCHANGE_ITEM_MAX_NUM=12, EXCHANGE_COLUMNS=4)
+    for name, value in W4B_PLAYER.items():
+        setattr(modules["player"], name, value)
+    modules["exchange"] = types.SimpleNamespace(**W4B_EXCHANGE)
     modules["shop"] = types.SimpleNamespace(SHOP_SLOT_COUNT=40, SHOP_TAB_COUNT_MAX=3)
     modules["safebox"] = types.SimpleNamespace(SAFEBOX_SLOT_X_COUNT=5, SAFEBOX_SLOT_Y_COUNT=9, SAFEBOX_PAGE_SIZE=45,
                                                SAFEBOX_PAGE_COUNT_MAX=5, SAFEBOX_MAX_NUM=225, SAFEBOX_PASSWORD_MAX_LEN=6)
@@ -341,7 +356,8 @@ class Wave4Keys(LimitsTest):
         for key in WAVE4_KEYS:
             self.assertIn(key, self.m.TODAY, key)
             self.assertEqual(getattr(limits, key), self.m.TODAY[key], key)
-        self.assertEqual((limits.EXCHANGE_ITEM_MAX_NUM, limits.EXCHANGE_COLUMNS, limits.EXCHANGE_MONEY_DIGITS), (12, 4, 7))
+        self.assertEqual((limits.EXCHANGE_ITEM_MAX_NUM, limits.EXCHANGE_COLUMNS, limits.EXCHANGE_ROWS,
+                          limits.EXCHANGE_MONEY_DIGITS), (24, 6, 4, 7), "main's 6 x 4 exchange since wave 4b")
         self.assertEqual((limits.SAFEBOX_PAGE_SIZE, limits.SAFEBOX_PAGE_COUNT_MAX, limits.SAFEBOX_SLOT_COUNT_MAX), (45, 3, 135))
         self.assertEqual((limits.WINDOW_SAFEBOX, limits.WINDOW_MALL, limits.WINDOW_DRAGON_SOUL_INVENTORY,
                           limits.WINDOW_BELT_INVENTORY, limits.WINDOW_GROUND), (3, 4, 5, 7, 6),
@@ -381,7 +397,7 @@ class Wave4Keys(LimitsTest):
         modules["safebox"] = Raising()
         del modules["exchange"]
         limits = self.m.read(modules)
-        self.assertEqual((limits.SAFEBOX_PAGE_SIZE, limits.EXCHANGE_ITEM_MAX_NUM), (45, 12))
+        self.assertEqual((limits.SAFEBOX_PAGE_SIZE, limits.EXCHANGE_ITEM_MAX_NUM), (45, 24))
         self.assertIn("SAFEBOX_PAGE_SIZE", limits.fell_back)
         self.assertIn("EXCHANGE_ITEM_MAX_NUM", limits.fell_back)
         self.assertEqual(self.m._IMPORTED_W4, ("exchange", "shop", "safebox", "guild", "chr"))
@@ -608,6 +624,69 @@ class Wave3c(LimitsTest):
         loaded = types.SimpleNamespace(**namespace)
         self.assertEqual(self.m.read({"dragon_soul_refine_settings": loaded}).DRAGON_SOUL_STRENGTH_MAX,
                          self.m.TODAY["DRAGON_SOUL_STRENGTH_MAX"], "the shipped table's largest entry is today's")
+
+
+# --- Wave 4b (NOVA-12, NOVA-16) ------------------------------------------------------------
+
+def uiscript_namespace(name):
+    """A legacy uiscript run with stand-ins for uiScriptLocale and the screen
+    size, its module-level names (its constants and `window`)."""
+    path = os.path.join(UISCRIPT, name)
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        source = handle.read().replace("import uiScriptLocale", "")
+    namespace = {"SCREEN_WIDTH": 1600, "SCREEN_HEIGHT": 900, "uiScriptLocale": support.LocaleInfo()}
+    exec(compile(source, path, "exec"), namespace)
+    return namespace
+
+
+class Wave4b(LimitsTest):
+    """Main's exe ships the 6 x 4 exchange and the extra inventory: today's
+    values and the foundation's agree, and each is read from the exe's
+    name."""
+
+    VALUES = {"EXCHANGE_ITEM_MAX_NUM": 24, "EXCHANGE_COLUMNS": 6, "EXCHANGE_ROWS": 4, "WINDOW_EXTRA_INVENTORY": 6,
+              "SLOT_TYPE_EXTRA_INVENTORY": 12, "EXTRA_INVENTORY_COLUMNS": 5, "EXTRA_INVENTORY_ROWS": 9,
+              "EXTRA_INVENTORY_PAGE_SIZE": 45, "EXTRA_INVENTORY_PAGE_COUNT": 32, "EXTRA_INVENTORY_SLOT_COUNT": 1440,
+              "EXTRA_INVENTORY_CATEGORY_COUNT": 5, "EXTRA_INVENTORY_COSTUME_PAGE_COUNT": 12}
+
+    def test_today_s_values_and_the_foundation_s_are_main_s(self):
+        today, foundation = self.m.read({}), self.m.foundation()
+        for key, value in self.VALUES.items():
+            self.assertEqual((getattr(today, key), getattr(foundation, key)), (value, value), key)
+        self.assertEqual(set(self.m.KEYS_W4B) | {"EXCHANGE_ITEM_MAX_NUM", "EXCHANGE_COLUMNS"}, set(self.VALUES))
+        self.assertEqual(today.EXCHANGE_COLUMNS * today.EXCHANGE_ROWS, today.EXCHANGE_ITEM_MAX_NUM)
+        self.assertEqual(today.EXTRA_INVENTORY_COLUMNS * today.EXTRA_INVENTORY_ROWS, today.EXTRA_INVENTORY_PAGE_SIZE)
+        self.assertEqual(today.EXTRA_INVENTORY_PAGE_SIZE * today.EXTRA_INVENTORY_PAGE_COUNT,
+                         today.EXTRA_INVENTORY_SLOT_COUNT)
+        self.assertEqual(foundation.WINDOW_GROUND, 12, "the cut's window enum: EXTRA_INVENTORY 6 put GROUND at 12")
+
+    def test_each_is_read_from_the_exe_s_name_and_none_falls_back(self):
+        limits = self.m.read(today_modules())
+        self.assertFalse([key for key in limits.fell_back if key in self.VALUES])
+        modules = today_modules()
+        modules["exchange"] = types.SimpleNamespace(EXCHANGE_ITEM_MAX_NUM=36, EXCHANGE_COLUMNS=9, EXCHANGE_ROWS=4)
+        modules["player"].EXTRA_INVENTORY_COSTUME_PAGE_COUNT = 10
+        limits = self.m.read(modules)
+        self.assertEqual((limits.EXCHANGE_ITEM_MAX_NUM, limits.EXCHANGE_COLUMNS, limits.EXCHANGE_ROWS), (36, 9, 4))
+        self.assertEqual(limits.EXTRA_INVENTORY_COSTUME_PAGE_COUNT, 10)
+        for key in self.m.KEYS_W4B:
+            self.assertIn(key, self.m.NAMES, key)
+
+    def test_the_legacy_uiscripts_have_these_sizes(self):
+        today = self.m.read({})
+        exchange = uiscript_children(os.path.join(UISCRIPT, "exchangedialog.py"))
+        for name in ("Owner_Slot", "Target_Slot"):
+            grid = exchange[name]
+            self.assertEqual((grid["x_count"], grid["y_count"]), (today.EXCHANGE_COLUMNS, today.EXCHANGE_ROWS), name)
+        extra = uiscript_children(os.path.join(UISCRIPT, "extrainventorywindow.py"))
+        self.assertEqual((extra["ItemSlot"]["x_count"], extra["ItemSlot"]["y_count"]),
+                         (today.EXTRA_INVENTORY_COLUMNS, today.EXTRA_INVENTORY_ROWS))
+        tabs = [name for name in extra if name and re.fullmatch(r"Inventory_Tab_\d\d", name)]
+        self.assertEqual(len(tabs), today.EXTRA_INVENTORY_COSTUME_PAGE_COUNT)
+        self.assertEqual(len([name for name in extra if name and re.fullmatch(r"Cat_\d\d", name)]),
+                         today.EXTRA_INVENTORY_CATEGORY_COUNT)
+        self.assertEqual(self.m.ROMAN, uiscript_namespace("extrainventorywindow.py")["ROMAN"],
+                         "the page tabs' numerals, to XII")
 
 
 if __name__ == "__main__":

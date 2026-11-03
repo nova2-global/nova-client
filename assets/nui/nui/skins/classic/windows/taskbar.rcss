@@ -42,8 +42,8 @@ body.skin-classic.taskbar .taskbar-base
 /* The modern parts legacy has no art for (the middle group's well, the
    gauges' sheen, flow, empty-part covers, ticks, segments, names and
    values, the orbs' glass and the EXP percent, the mode buttons' mouse, the
-   quickslots' aura and cooldown seconds, the window buttons' hotkeys) do
-   not show. */
+   quickslots' aura and cooldown seconds, the window buttons' hotkeys and
+   their open mark) do not show. */
 body.skin-classic.taskbar .taskbar-center,
 body.skin-classic.taskbar .taskbar-sheen-clock,
 body.skin-classic.taskbar progress.taskbar-cover,
@@ -57,7 +57,8 @@ body.skin-classic.taskbar .taskbar-exp__pct,
 body.skin-classic.taskbar .taskbar-mouse,
 body.skin-classic.taskbar .taskbar-aura,
 body.skin-classic.taskbar .taskbar-cool,
-body.skin-classic.taskbar .taskbar-hotkey
+body.skin-classic.taskbar .taskbar-hotkey,
+body.skin-classic.taskbar .taskbar-open
 {
 	display: none;
 }

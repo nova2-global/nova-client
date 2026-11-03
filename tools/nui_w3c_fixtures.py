@@ -137,11 +137,13 @@ def emotes(limits, kind, filled=True):
 
 def quest_rows(limits, quests):
     """The quest rows and their cells: quests [(name, icon, counter, clock)]
-    with clock ("run", prefix, end), ("over", prefix, end) or ("text", text)."""
+    with clock ("run", prefix, end), ("over", prefix, end: a run whose end
+    has passed, its clock_over set as the countdown's end sets it) or
+    ("text", text)."""
     rows, cells = [], []
     for row in range(limits.QUEST_ROWS):
         entry = {"row": row, "shown": False, "name": "", "icon": "", "counter": "", "clock_text": "", "clock_prefix": "",
-                 "clock_end": 0.0}
+                 "clock_end": 0.0, "clock_over": False}
         cell = empty_cell(row)
         cell.update({"slot": row, "base": True})
         if row < len(quests):
@@ -151,6 +153,7 @@ def quest_rows(limits, quests):
                 entry["clock_text"] = clock[1]
             else:
                 entry["clock_prefix"], entry["clock_end"] = clock[1], clock[2]
+                entry["clock_over"] = clock[0] == "over"
             cell.update({"kind": "icon", "type": 0, "ref": row, "icon": icon})
         rows.append(entry)
         cells.append(cell)

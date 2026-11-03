@@ -10,7 +10,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "5 / 13"
 			},
 			{
 				"kind": "group",
@@ -21,7 +22,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "2 / 4"
 			},
 			{
 				"kind": "group",
@@ -32,7 +34,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "1 / 2"
 			},
 			{
 				"kind": "member",
@@ -46,7 +49,8 @@
 				"flags": [
 					"/locale/common/ui/flag/32/en.tga",
 					"/locale/common/ui/flag/32/de.tga"
-				]
+				],
+				"state": ""
 			},
 			{
 				"kind": "member",
@@ -59,7 +63,8 @@
 				"hint": "",
 				"flags": [
 					"/locale/common/ui/flag/32/pt.tga"
-				]
+				],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -70,7 +75,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "1 / 1"
 			},
 			{
 				"kind": "member",
@@ -83,7 +89,8 @@
 				"hint": "",
 				"flags": [
 					"/locale/common/ui/flag/32/en.tga"
-				]
+				],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -94,7 +101,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			},
 			{
 				"kind": "member",
@@ -105,7 +113,8 @@
 				"member": true,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			}
 		],
 		"whisper_enabled": false,

@@ -191,8 +191,8 @@ class Interface(object):
 		wndCharacter = nui_windows.make("character", uiCharacter.CharacterWindow, "nui_character.CharacterWindow")
 		wndInventory = nui_windows.make("inventory", uiInventory.InventoryWindow, "nui_inventory.InventoryWindow")
 		wndInventory.BindInterfaceClass(self)
-		# The special inventory (NOVA-16), legacy only until NovaUI has one.
-		wndExtraInventory = uiExtraInventory.ExtraInventoryWindow()
+		# The special inventory (NOVA-16).
+		wndExtraInventory = nui_windows.make("extra-inventory", uiExtraInventory.ExtraInventoryWindow, "nui_extra_inventory.ExtraInventoryWindow")
 		wndExtraInventory.BindInterfaceClass(self)
 		wndExtraInventory.Hide()
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:

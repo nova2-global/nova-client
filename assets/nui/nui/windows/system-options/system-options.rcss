@@ -264,6 +264,23 @@ body.system-options
 	display: block;
 	width: 108dp;
 }
+/* "On" or "Off" after a switch, as the reviewed design; a press on it
+   does nothing (the switch's label takes the presses). */
+.so-state
+{
+	display: block;
+	flex: 0 0 auto;
+	margin-left: 10dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	white-space: nowrap;
+	pointer-events: none;
+}
+/* Locked on (a device without effects): as faint as the switch. */
+.so-state--locked
+{
+	opacity: 0.45;
+}
 .so-note
 {
 	display: block;

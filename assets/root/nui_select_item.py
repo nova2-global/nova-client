@@ -6,16 +6,20 @@ uiselectitem.SelectItemWindow: a subclass of the legacy class whose loader
 puts proxies where the legacy widgets were (a nui_slots.SlotWindowProxy for
 the stone grid, the board, title bar and close button), bound as legacy
 binds them. Legacy's RefreshSlot runs on the proxy (the scan, the grade
-rule, the cap and the rows), so the window shows legacy's stones in legacy's
-cells. A quest's [SELECT_ITEM] opens it (BINARY_OpenSelectItemWindow); a
-press on a stone sends its inventory position, the close button 0, as
-legacy's. Legacy's wndMgr.OnceIgnoreMouseLeftButtonUpEvent() is not called:
-NovaUI acts on the press and its release stays on NovaUI's side, so the call
-would swallow the next legacy release (P14 spec 6.6). The board exists only
-while the window shows (a list of the rows legacy computes, set once per
-load)."""
+rule, the cap and the rows: the inventory's stones, then the extra
+inventory's stone category since wave 4b), so the window shows legacy's
+stones in legacy's cells, and its OverInItem shows each stone's tooltip by
+its window. A quest's [SELECT_ITEM] opens it (BINARY_OpenSelectItemWindow);
+a press on a stone sends its window and cell (net.SendSelectItemPacket(window,
+cell), legacy's inventorySlotWindowDict; wave 4b, decision c), the close
+button 0, as legacy's. Legacy's wndMgr.OnceIgnoreMouseLeftButtonUpEvent() is
+not called: NovaUI acts on the press and its release stays on NovaUI's side,
+so the call would swallow the next legacy release (P14 spec 6.6). The board
+exists only while the window shows (a list of the rows legacy computes, set
+once per load)."""
 
 import net
+import player
 import ui
 import uiselectitem
 import wndMgr
@@ -188,7 +192,9 @@ class SelectItemWindow(uiselectitem.SelectItemWindow):
 		self.Hide()
 
 	def SelectItemSlot(self, slotPos):
-		# Legacy's, without wndMgr.OnceIgnoreMouseLeftButtonUpEvent().
+		# Legacy's, without wndMgr.OnceIgnoreMouseLeftButtonUpEvent(): the
+		# stone's window and cell (C1 encodes them, spec 3.10).
 		inventorySlotPos = self.inventorySlotPosDict[slotPos]
-		net.SendSelectItemPacket(inventorySlotPos)
+		window = self.inventorySlotWindowDict.get(slotPos, player.INVENTORY)
+		net.SendSelectItemPacket(window, inventorySlotPos)
 		self.Hide()

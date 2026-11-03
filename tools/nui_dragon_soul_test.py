@@ -1710,5 +1710,63 @@ class Order(DragonSoulTest):
         self.assertLess(world.order.index(board(inventory)), world.order.index(board(world.ds)))
 
 
+# --- wave 4b: a Dragon Bean from the special inventory (NOVA-16) -------------------------------------
+
+# main's exe's extra inventory (GameType.h: window 6, slot type 12).
+EXTRA, ST_EXTRA = 6, 12
+BEAN = 100300
+
+
+def extra_bean(game):
+    """stock() and main's exe's extra inventory with five Green Dragon
+    Beans at 230 (its materials category)."""
+    stock(game)
+    player = game.modules["player"]
+    player.EXTRA_INVENTORY, player.SLOT_TYPE_EXTRA_INVENTORY = EXTRA, ST_EXTRA
+    table = {ST_INV: INV, ST_DS: DS, ST_EXTRA: EXTRA}
+    support.define(player, "SlotTypeToInvenType", lambda slot_type: table.get(slot_type, player.RESERVED_WINDOW))
+    game.give((EXTRA, 230), BEAN, 5)
+
+
+class ExtraBeans(DragonSoulTest):
+    """Legacy's refine window takes a bean from the special inventory (its
+    drop, and the extra window's right press, AutoSetItem((EXTRA, cell),
+    1)); the NovaUI window runs that code, and the bean's cell carries the
+    extra window's slot type."""
+
+    def refine_flow(self, flow):
+        (legacy, lw), (novaui, nw) = self.run_flow(flow, refine=True, setup=extra_bean)
+        self.assertEqual(novaui, legacy)
+        self.assert_same_refine(lw, nw)
+        return legacy, nw
+
+    def bean_cell(self, world):
+        return [cell for cell in model(world.refine)["cells"] if cell["kind"] == "item" and cell["ref"] == 230]
+
+    def test_the_extra_window_s_right_press_places_a_bean_and_it_refines(self):
+        def flow(world, input):
+            input.mode("strength")
+            input.press("bag", 4, 1)            # strength 1
+            world.refine.AutoSetItem((EXTRA, 230), 1)
+            input.do_refine()
+        calls, nw = self.refine_flow(flow)
+        refines = [args for name, args in calls if name == "player.SendDragonSoulRefine"]
+        self.assertEqual(len(refines), 1)
+        self.assertIn((EXTRA, 230, 1), refines[0][1].values())
+        (cell,) = self.bean_cell(nw)
+        self.assertEqual(cell["type"], ST_EXTRA)
+
+    def test_a_bean_dragged_from_the_special_inventory_is_placed(self):
+        def flow(world, input):
+            input.mode("strength")
+            input.press("bag", 4, 1)
+            world.mouse.AttachObject(world.ds, ST_EXTRA, 230, BEAN, 5)
+            input.press("cell", 0)              # strength mode: the stone's cell
+        calls, nw = self.refine_flow(flow)
+        self.assertIn(("player.SetItemCount", (EXTRA, 230, 4)), calls)
+        (cell,) = self.bean_cell(nw)
+        self.assertEqual(cell["type"], ST_EXTRA)
+
+
 if __name__ == "__main__":
     unittest.main()

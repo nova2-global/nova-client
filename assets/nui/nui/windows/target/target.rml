@@ -1,8 +1,9 @@
 <rml>
 <head>
 	<!-- The target board (uitarget.py): the name of the character or monster
-	     the player clicked, a monster's HP and, for another player, the
-	     relation buttons (whisper, exchange, fight, friend, party, guild).
+	     the player clicked, a monster's HP and, for another player, its
+	     portrait, class and guild (the modern looks) and the relation
+	     buttons (whisper, exchange, fight, friend, party, guild).
 	     While the target flag is on, the game window makes the facade
 	     nui_target.TargetBoard (controller assets/root/nui_target.py). The
 	     exchange button shows while the target is within the exchange range,
@@ -18,7 +19,7 @@
 <body template="nui" class="nui-overlay nui-below-legacy-ui target" data-model="target">
 	<div class="target__wrap">
 		<div id="target-board" class="target-board nui-board nui-board--tooltip nui-fx nui-interactive" data-class-target-board--hp="show_hp" data-class-target-board--level="level > 0"
-			data-class-target-board--buttons="size(buttons) > 0">
+			data-class-target-board--buttons="size(buttons) > 0" data-class-target-board--player="portrait != ''">
 			<div class="target-board__head">
 				<!-- The modern head: a monster's level in a badge, its name with
 				     its grade, its HP in percent; the HP bar below the head.
@@ -31,6 +32,15 @@
 				<span id="target-percent" class="target-board__pct" data-if="show_hp">{{ hp * 100 | format(0) }}%</span>
 				<progress id="target-hp" class="nui-gauge nui-gauge--red target-board__hp" direction="right"
 					data-if="show_hp" data-attr-value="hp"/>
+			</div>
+			<!-- A player target's modern head, in place of the one above: the
+			     portrait of its race in a round clip, its name over its class
+			     and guild (no level: the client has none for another player).
+			     Classic keeps the legacy head. -->
+			<div id="target-player" class="target-board__player" data-if="portrait != ''">
+				<span class="target-board__portrait"><img class="target-board__face" data-attr-src="portrait"/></span>
+				<span class="target-board__meta"><span class="target-board__title">{{ title }}</span><span id="target-subtitle"
+					class="target-board__sub" data-if="subtitle != ''">{{ subtitle }}</span></span>
 			</div>
 			<button id="target-close" class="nui-button nui-button--ghost nui-button--icon nui-anim target-board__close"
 				data-event-mousedown="close(ev.button)"><span class="nui-glyph nui-glyph--close target-board__glyph"><span

@@ -10,7 +10,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "0 / 0"
 			},
 			{
 				"kind": "empty",
@@ -21,7 +22,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -32,7 +34,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "0 / 0"
 			},
 			{
 				"kind": "empty",
@@ -43,7 +46,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -54,7 +58,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "0 / 0"
 			},
 			{
 				"kind": "empty",
@@ -65,7 +70,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -76,7 +82,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": "0 / 0"
 			},
 			{
 				"kind": "empty",
@@ -87,7 +94,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			},
 			{
 				"kind": "group",
@@ -98,7 +106,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			},
 			{
 				"kind": "empty",
@@ -109,7 +118,8 @@
 				"member": false,
 				"love": -1,
 				"hint": "",
-				"flags": []
+				"flags": [],
+				"state": ""
 			}
 		],
 		"whisper_enabled": false,

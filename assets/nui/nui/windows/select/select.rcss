@@ -11,14 +11,15 @@
 
    Modern (the reviewed design, stage 1): a 280dp panel with the legacy rows
    in their legacy order: the empire card (flag, kingdom, guild) in a well;
-   the four slots as cells with their number, the name and the level with
-   a mark, the chosen one in the accent's soft fill with an accent edge;
-   name, level and play time as label and value wells; the four stat bars;
-   Start (with its play mark) across the panel, Delete (danger) and Close
-   under it. It stays under 500dp, so at 720dp of screen the class-name art
-   still fits above it. The arrows are blades with their arrowheads, light
-   on the dark scene in both palettes, the accent under the pointer.
-   Classic (legacy's thin board, its boxes and art at 100%):
+   a heading with the chosen slot's number; the slots as cells with their
+   number, the name and the level with a mark, the chosen one in the
+   accent's soft fill with an accent edge; name, level and play time as
+   label and value wells; the four stat bars; Start (with its play mark)
+   across the panel, Delete (danger) and Close under it. It stays under
+   510dp, so at 720dp of screen the class-name art still fits above it.
+   The arrows are blades with their arrowheads, light on the dark scene in
+   both palettes, the accent under the pointer; the chosen character's
+   name and class stand between them, under the 3D character. Classic (legacy's thin board, its boxes and art at 100%):
    skins/classic/windows/select.rcss. */
 .select-board
 {
@@ -99,26 +100,68 @@
 	color: var(--text-muted);
 	font-size: var(--font-sm);
 }
+/* "Guild ·" before a guild's name (none before legacy's "No guild"). */
+.select-empire__guild-label
+{
+	margin-right: 4dp;
+}
+
+/* --- The list's heading -------------------------------------------------------------- */
+
+/* "Characters" and the chosen slot's number of the slot count, on a rule.
+   With the list's margin under it, it takes 27dp where the list's margin
+   took 10dp; the rows give 13dp back (24dp cells 2dp apart, the info and
+   stat blocks 2dp closer each), so the board grows 4dp and the class art
+   above it still fits on a 720dp screen. */
+.select-heading
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 6dp;
+	padding-bottom: 3dp;
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 13dp;
+	white-space: nowrap;
+}
+.select-heading__title
+{
+	flex: 1 1 auto;
+	min-width: 0dp;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.select-heading__count
+{
+	flex: 0 0 auto;
+	margin-left: var(--space-2);
+}
 
 /* --- The slots ----------------------------------------------------------------------- */
 
 .select-slots
 {
-	margin: 10dp 0dp 0dp 0dp;
+	margin: 4dp 0dp 0dp 0dp;
 }
 .select-slots .nui-list__viewport
 {
 	display: flex;
 	flex-direction: column;
-	gap: 3dp;
+	gap: 2dp;
 }
-/* A cell per slot: its number, the name in the middle, the level and its
-   mark; the chosen slot in the accent's soft fill with an accent edge.
-   Five slots (NOVA-97) at 25dp, 3dp apart, keep the board short enough
-   for the class art 149dp above it on a 720dp screen. */
+/* A cell per slot: its number, the name in the middle, the level (after
+   "Level") and its mark; the chosen slot in the accent's soft fill with an
+   accent edge. Five slots (NOVA-97) at 24dp, 2dp apart, under the heading,
+   keep the board short enough for the class art 149dp above it on a 720dp
+   screen. */
 .select-slot
 {
-	min-height: 25dp;
+	min-height: 24dp;
 	padding: 0dp 10dp 0dp 7dp;
 	gap: 6dp;
 	background-color: var(--surface-raised);
@@ -164,6 +207,10 @@
 	gap: 5dp;
 	color: var(--text-muted);
 }
+.select-slot__lv
+{
+	margin-right: 3dp;
+}
 .select-slot__dot
 {
 	display: block;
@@ -180,7 +227,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 4dp;
-	padding: 10dp 0dp 0dp 0dp;
+	padding: 8dp 0dp 0dp 0dp;
 }
 .select-row
 {
@@ -223,7 +270,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 6dp;
-	padding: 10dp 0dp 0dp 0dp;
+	padding: 8dp 0dp 0dp 0dp;
 }
 .select-stat
 {
@@ -296,6 +343,45 @@ progress.select-stat__gauge--sp fill
 	border-width: 5dp 0dp 5dp 8dp;
 	border-color: transparent transparent transparent var(--accent-text);
 	vertical-align: middle;
+}
+
+/* --- Under the 3D character: the name and its level and class ------------------------
+   Centered on the rotate arrows (the left one's left edge at 48%, the right
+   one's right edge at 69.75% + 160dp: their middle at 58.875% + 80dp), a
+   560dp box whose bottom sits on the arrows' top (84.17%). Light text with
+   a dark glow on the dark scene, in every palette, as the arrows' heads. */
+.select-stage
+{
+	position: absolute;
+	left: 58.875%;
+	bottom: 15.83%;
+	width: 560dp;
+	margin-left: -200dp;
+	padding-bottom: 8dp;
+	text-align: center;
+	white-space: nowrap;
+	color: var(--text-inverse);
+	font-effect: glow(0dp 6dp 0dp 2dp var(--text-outline));
+}
+.select-stage__name, .select-stage__sub
+{
+	display: block;
+	text-transform: uppercase;
+}
+.select-stage__name
+{
+	font-size: 26dp;
+	font-weight: bold;
+	letter-spacing: 0.12em;
+	line-height: 32dp;
+}
+.select-stage__sub
+{
+	margin-top: 3dp;
+	font-size: var(--font-xs);
+	letter-spacing: 0.18em;
+	line-height: 14dp;
+	opacity: 0.72;
 }
 
 /* --- The rotate arrows ---------------------------------------------------------------- */

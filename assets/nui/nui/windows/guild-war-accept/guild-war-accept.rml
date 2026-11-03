@@ -22,6 +22,8 @@
 	<div class="nui-window nui-fx nui-dialog nui-anim guild-war__window" id="guild-war-accept">
 		<div class="nui-window__titlebar guild-war__titlebar">
 			<handle class="nui-window__handle guild-war__handle" move_target="guild-war-accept">
+				<span class="guild-war__title-icon"><span class="nui-glyph nui-glyph--sword"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 				<span class="nui-window__title guild-war__title">@ui.GUILD_WAR_ACCEPT</span>
 			</handle>
 			<button id="guild-war-accept-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim"

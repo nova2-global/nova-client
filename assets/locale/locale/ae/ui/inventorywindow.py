@@ -10,12 +10,12 @@ window = {
 
 	## 600 - (width + right-side offset of 24 px)
 	"x" : SCREEN_WIDTH - 176,
-	"y" : SCREEN_HEIGHT - 37 - 611,
+	"y" : SCREEN_HEIGHT - 37 - 635,
 
 	"style" : ("movable", "float",),
 
 	"width" : 176,
-	"height" : 611,
+	"height" : 635,
 
 	"children" :
 	(
@@ -29,7 +29,7 @@ window = {
 			"y" : 0,
 
 			"width" : 176,
-			"height" : 611,
+			"height" : 635,
 
 			"children" :
 			(
@@ -347,8 +347,9 @@ window = {
 				},
 
 				## The special inventory (NOVA-16): a band of 26 px between the bag
-				## and the money slot (the board grew from 565 to 591 px for it, and
-				## to 611 px for the gaya row under the yang, NOVA-10).
+				## and the money slot (the board grew from 565 to 591 px for it, to
+				## 611 px for the gaya row under the yang, NOVA-10, and to 635 px for
+				## the offline shop's buttons under this one, NOVA-9).
 				{
 					"name" : "ExtraInventoryButton",
 					"type" : "button",
@@ -364,6 +365,39 @@ window = {
 					"default_image" : "d:/ymir work/ui/public/large_button_01.sub",
 					"over_image" : "d:/ymir work/ui/public/large_button_02.sub",
 					"down_image" : "d:/ymir work/ui/public/large_button_03.sub",
+				},
+
+				## The offline shop (NOVA-9): MANAGE (the owner's panel, or the
+				## builder) and the shop search, side by side under the special
+				## inventory's button. OLD's were image buttons (a Q9 asset): text
+				## buttons here, hidden until the server's CONFIG says the shop is on.
+				{
+					"name" : "OfflineShopButton",
+					"type" : "button",
+
+					"x" : 24,
+					"y" : 246 + 32 * 9 + 3 + 21 + 3,
+
+					"text" : localeInfo.OFFLINE_SHOP_BUTTON,
+					"tooltip_text" : localeInfo.OFFLINE_SHOP,
+
+					"default_image" : "d:/ymir work/ui/public/middle_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/middle_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/middle_button_03.sub",
+				},
+				{
+					"name" : "SearchShopButton",
+					"type" : "button",
+
+					"x" : 24 + 61 + 6,
+					"y" : 246 + 32 * 9 + 3 + 21 + 3,
+
+					"text" : localeInfo.SEARCH_SHOP_BUTTON,
+					"tooltip_text" : uiScriptLocale.SEARCH_SHOP_TITLE,
+
+					"default_image" : "d:/ymir work/ui/public/middle_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/middle_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/middle_button_03.sub",
 				},
 
 				## Print

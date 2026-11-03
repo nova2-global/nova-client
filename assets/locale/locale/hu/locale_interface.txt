@@ -447,3 +447,48 @@ NUI_LOGIN_CREATING	Fiók létrehozása...
 HELP_OPEN_EXTRA_INVENTORY	Különleges leltár ablak megnyitása: U
 GEMSHOP_LEFTTIME	Hátralévő idő:
 GEMSHOP_TITLE	GAYA PIAC
+MYSHOP_DECO_CANCEL	Bezár
+MYSHOP_DECO_DEFAULT	Alapértelmezett
+MYSHOP_DECO_NEXT	Következő
+MYSHOP_DECO_OK	Megerősít
+MYSHOP_DECO_PREV	Vissza
+MYSHOP_DECO_SELECT_MODEL	Válaszd ki boltod megjelenését!
+MYSHOP_DECO_SELECT_TITLE	Válaszd ki neved megjelenését!
+OFFLINE_SHOP_TITLE	Offline bolt megnyitás
+OFFLINE_SHOP_BUTTON_LOCK	Zárva
+OFFLINE_SHOP_BUTTON_UNLOCK	Nyitva
+OFFLINE_SHOP_BUTTON_RENEW	Megújítás
+OFFLINE_SHOP_BUTTON_RENAME	Átnevezés
+OFFLINE_SHOP_BUTTON_CLOSE	Bezárás
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Bolt jelénk változtatása
+OFFLINE_SHOP_INPUT_SIGN_DESC	Bolt név: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d Nap %02d Óra %02d Perc
+SEARCH_SHOP_TITLE	Bolt keresése
+SEARCH_SHOP_BUY_CONFIGM	Szeretné megvásárolni ezt a tárgyat?
+SEARCH_SHOP_BOOKMARK_EMPTY	Üres
+SEARCH_SHOP_BOOKMARK_FULL	Nincsenek üres helyek a keresés könyvjelzői közé.
+SEARCH_SHOP_BOOKMARKS	Elmentettek
+SEARCH_SHOP_FAVOURITES	Kedvencek
+SEARCH_SHOP_SORT_UP	Csökkenő
+SEARCH_SHOP_SORT_DOWN	Növekvő
+SEARCH_SHOP_FILTER_CATEGORY	Szűrő
+OFFLINE_SHOP_LOCATION	Shop Location:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Withdraw
+OFFLINE_SHOP_BUTTON_ADD_TIME	Add Time
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	View Logs
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop expires in:
+OFFLINE_SHOP_TIME_EXCEED	Your shop time have exceeded the limit, you can only have total of %d days
+OFFLINE_SHOP_NO_YANG	You do not have any yang to withdraw!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Boltok

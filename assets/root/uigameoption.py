@@ -8,6 +8,8 @@ import localeInfo
 import constInfo
 import chrmgr
 import player
+import shop
+import uiScriptLocale
 import uiPrivateShopBuilder # 占쏙옙占쏙옙호
 import interfaceModule # 占쏙옙占쏙옙호
 import nui_windows
@@ -26,6 +28,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.RefreshShowDamage()
 		self.RefreshShowSalesText()
 		self.RefreshPickupFilter()
+		self.RefreshHideShops()
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -42,6 +45,8 @@ class OptionDialog(ui.ScriptWindow):
 		self.showDamageButtonList = []
 		self.showsalesTextButtonList = []
 		self.pickupFilterButtonList = []
+		self.hideShopsLabel = None
+		self.hideShopsButtonList = []
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -153,6 +158,50 @@ class OptionDialog(ui.ScriptWindow):
 		self.__ClickRadioButton(self.nameColorModeButtonList, constInfo.GET_CHRNAME_COLOR_INDEX())
 		self.__ClickRadioButton(self.viewTargetBoardButtonList, constInfo.GET_VIEW_OTHER_EMPIRE_PLAYER_TARGET_BOARD())
 		self.__SetPeacePKMode()
+
+		self.__Load_HideShops()
+
+	## The offline shops' NPCs and signs, shown or hidden (NOVA-9; OLD
+	## uiGameOption.py:1169-1218, a "companions" checkbox there): a row under
+	## the pickup filter, made here because the uiscript is the NovaUI
+	## facade's model too. A press sends /hide_shops 0|1; the row shows the
+	## server's state (shop.IsHideShops(), refreshed by GC HIDE_SHOPS through
+	## Interface.OnOfflineShopHideShops), never a local guess (M5).
+	HIDE_SHOPS_ROW_Y = 315
+	HIDE_SHOPS_HEIGHT = 25*14+8
+
+	def __Load_HideShops(self):
+		board = self.GetChild("board")
+		board.SetSize(board.GetWidth(), self.HIDE_SHOPS_HEIGHT)
+		self.SetSize(self.GetWidth(), self.HIDE_SHOPS_HEIGHT)
+
+		label = ui.TextLine()
+		label.SetParent(board)
+		label.SetPosition(30, self.HIDE_SHOPS_ROW_Y + 2)
+		label.SetText(uiScriptLocale.OPTION_SHOW_COMPANIONS_SHOPS)
+		label.Show()
+		self.hideShopsLabel = label
+
+		for (index, text) in enumerate((uiScriptLocale.OPTION_SALESTEXT_VIEW_ON, uiScriptLocale.OPTION_SALESTEXT_VIEW_OFF)):
+			button = ui.RadioButton()
+			button.SetParent(board)
+			button.SetPosition(90 + 65 * index, self.HIDE_SHOPS_ROW_Y)
+			button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+			button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+			button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+			button.SetText(text)
+			button.SAFE_SetEvent(self.__OnClickHideShopsButton, index)
+			button.Show()
+			self.hideShopsButtonList.append(button)
+
+	def __OnClickHideShopsButton(self, hide):
+		if int(bool(shop.IsHideShops())) != hide:
+			net.SendChatPacket("/hide_shops %d" % hide)
+		self.RefreshHideShops()
+
+	# Index 0 "Show" is down while the shops show, 1 "Hide" while they are hidden.
+	def RefreshHideShops(self):
+		self.__ClickRadioButton(self.hideShopsButtonList, int(bool(shop.IsHideShops())))
 
 	def __ClickRadioButton(self, buttonList, buttonIndex):
 		try:
@@ -410,6 +459,7 @@ class OptionDialog(ui.ScriptWindow):
 
 	def Show(self):
 		self.RefreshBlock()
+		self.RefreshHideShops()
 		ui.ScriptWindow.Show(self)
 
 	def Close(self):

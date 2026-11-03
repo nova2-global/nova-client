@@ -45,6 +45,10 @@ import uiselectitem
 # END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
 # The gaya market (NOVA-10; OLD interfaceModule.py:112-114).
 import uiGemShop
+# The offline shop's search, log and decoration windows (NOVA-9, chunk Y2's).
+import uiSearchShop
+import uiOfflineShopLog
+import uiMyShopDecoration
 import uiScriptLocale
 
 import event
@@ -52,6 +56,9 @@ import localeInfo
 import nui_windows
 
 IsQBHide = 0
+# nova-protocol offline_shop_packets.h EOfflineShopCG: the builder's CREATE;
+# every other op's RESULT is the shop window's (NOVA-9).
+OFFLINE_SHOP_OP_CREATE = 0
 ItemMallTraced = False  # OpenItemMall writes its log line once per session
 class Interface(object):
 	CHARACTER_STATUS_TAB = 1
@@ -85,6 +92,9 @@ class Interface(object):
 		self.wndGuild = None
 		self.wndGuildBuilding = None
 		self.wndGemShop = None
+		self.wndSearchShop = None
+		self.wndOfflineShopLog = None
+		self.wndMyShopDeco = None
 
 		self.listGMName = {}
 		self.wndQuestWindow = {}
@@ -239,6 +249,16 @@ class Interface(object):
 		# nui_windows.make later (spec 4.8).
 		self.wndGemShop = uiGemShop.GemShopWindow()
 		self.wndGemShop.Hide()
+
+		# The offline shop's windows (NOVA-9, chunk Y2's classes), made plainly
+		# as well; each may call back OpenOfflineShopLog, OpenSearchShop and
+		# OpenWhisperDialog.
+		self.wndSearchShop = uiSearchShop.SearchShopWindow()
+		self.wndSearchShop.BindInterface(self)
+		self.wndOfflineShopLog = uiOfflineShopLog.OfflineShopLogWindow()
+		self.wndOfflineShopLog.BindInterface(self)
+		self.wndMyShopDeco = uiMyShopDecoration.MyShopDecorationWindow()
+		self.wndMyShopDeco.BindInterface(self)
 
 	def __MakeDialogs(self):
 		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
@@ -533,6 +553,18 @@ class Interface(object):
 			self.wndGemShop.Destroy()
 			self.wndGemShop = None
 
+		if self.wndSearchShop:
+			self.wndSearchShop.Destroy()
+			self.wndSearchShop = None
+
+		if self.wndOfflineShopLog:
+			self.wndOfflineShopLog.Destroy()
+			self.wndOfflineShopLog = None
+
+		if self.wndMyShopDeco:
+			self.wndMyShopDeco.Destroy()
+			self.wndMyShopDeco = None
+
 		self.wndChatLog.Destroy()
 		for btn in self.questButtonList:
 			btn.SetEvent(0)
@@ -737,6 +769,79 @@ class Interface(object):
 
 	def RefreshShopDialog(self):
 		self.dlgShop.Refresh()
+
+	## Offline shop (NOVA-9): the glue between C's callbacks (game.py) and
+	## chunk Y2's windows, as the Y1/Y2 contract names them.
+	# A visitor's view of an offline shop (GC VIEW): every page.
+	def OpenOfflineShopDialog(self, vid):
+		self.wndInventory.Show()
+		self.wndInventory.SetTop()
+		self.dlgShop.Open(vid, multiPage=True)
+		self.dlgShop.SetTop()
+
+	# The owner's panel (GC MANAGE): open 1 opens it, 0 refreshes a shown one.
+	def OpenOfflineShop(self, open):
+		self.dlgShop.OpenOfflineShop(open)
+
+	def UpdateShopLock(self, locked):
+		self.dlgShop.UpdateLock(locked)
+
+	def UpdateShopTime(self, secondsLeft):
+		self.dlgShop.UpdateTime(secondsLeft)
+
+	def UpdateShopSign(self, sign):
+		self.dlgShop.UpdateSign(sign)
+
+	def UpdateShopGold(self, gold):
+		self.dlgShop.UpdateGold(gold)
+
+	def OnOfflineShopResult(self, op, code, arg):
+		if OFFLINE_SHOP_OP_CREATE == op:
+			self.privateShopBuilder.OnOfflineShopResult(op, code, arg)
+		else:
+			self.dlgShop.OnOfflineShopResult(op, code, arg)
+
+	def OpenOfflineShopLog(self):
+		self.wndOfflineShopLog.Open()
+		self.wndOfflineShopLog.SetTop()
+
+	def OfflineShopLog(self, rows, page, last):
+		self.wndOfflineShopLog.SetData(rows, page, last)
+
+	# The search: the inventory's button toggles it (vnum 0), Ctrl + click on
+	# an item opens it on that item (OLD uiInventory.py:1172-1173, 1758-1761).
+	def OpenSearchShop(self, vnum=0):
+		if not vnum and self.wndSearchShop.IsShow():
+			self.wndSearchShop.Close()
+			return
+
+		self.wndSearchShop.Open(vnum)
+		self.wndSearchShop.SetTop()
+
+	def RefreshSearchShop(self):
+		self.wndSearchShop.RefreshItems()
+
+	def OnSearchShopBuyResult(self, code, ownerPid, slot):
+		self.wndSearchShop.OnBuyResult(code, ownerPid, slot)
+
+	def OpenMyShopDecoWnd(self):
+		self.wndMyShopDeco.Open()
+		self.wndMyShopDeco.SetTop()
+
+	# GC CONFIG: the inventory's shop and search entries show only while the
+	# server's offline shop is on (shop.GetConfig(), C's copy of CONFIG).
+	def OnOfflineShopConfig(self):
+		import shop
+		config = shop.GetConfig()
+		self.wndInventory.ShowOfflineShopButtons(isinstance(config, dict) and bool(config.get("enabled")))
+
+	# GC HIDE_SHOPS: the game options show the server's state (M5); a window
+	# made later reads it when it is made.
+	def OnOfflineShopHideShops(self, hidden):
+		gameOptionDlg = getattr(self.dlgSystem, "gameOptionDlg", None)
+		refreshHideShops = getattr(gameOptionDlg, "RefreshHideShops", None)
+		if refreshHideShops:
+			refreshHideShops()
 
 	## Quest
 	def OpenCharacterWindowQuestPage(self):
@@ -976,6 +1081,10 @@ class Interface(object):
 			
 		if self.wndExpandedTaskBar:
 			self.wndExpandedTaskBar.Hide()
+
+		## OLD interfaceModule.py:2761-2762 (NOVA-9).
+		if self.wndMyShopDeco:
+			self.wndMyShopDeco.Hide()
  
 
 	def ShowMouseImage(self):
@@ -1267,6 +1376,12 @@ class Interface(object):
 			hideWindows += self.wndDragonSoul,\
 						self.wndDragonSoulRefine,
 
+		## OLD interfaceModule.py:3369-3370 (NOVA-9). getattr: nui_quest_test
+		## and nui_guild_building_test run this method over an Interface
+		## stand-in that has only the HUD windows.
+		if getattr(self, "wndMyShopDeco", None):
+			hideWindows += self.wndMyShopDeco,
+
 		hideWindows = [x for x in hideWindows if x.IsShow()]
 
 		list([x.Hide() for x in hideWindows])
@@ -1336,22 +1451,40 @@ class Interface(object):
 	#####################################################################################
 	### Private Shop ###
 
+	## The offline shop's builder (NOVA-9: GC MANAGE without a shop, through
+	## game.BINARY_OfflineShopBuilderOpen, or the OpenPrivateShop command).
+	## A new shop starts with the default decoration (OLD interfaceModule.py:
+	## 3494-3495), and Y2's deco button opens the decoration window.
 	def OpenPrivateShopInputNameDialog(self):
 		#if player.IsInSafeArea():
 		#	chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.CANNOT_OPEN_PRIVATE_SHOP_IN_SAFE_AREA)
 		#	return
 
+		uiPrivateShopBuilder.SHOP_DECO = 0
+		uiPrivateShopBuilder.SHOP_STYLE = 0
+
 		inputDialog = uiCommon.InputDialog()
 		inputDialog.SetTitle(localeInfo.PRIVATE_SHOP_INPUT_NAME_DIALOG_TITLE)
 		inputDialog.SetMaxLength(32)
 		inputDialog.SetAcceptEvent(ui.__mem_func__(self.OpenPrivateShopBuilder))
-		inputDialog.SetCancelEvent(ui.__mem_func__(self.ClosePrivateShopInputNameDialog))
+		inputDialog.SetCancelEvent(ui.__mem_func__(self.CancelPrivateShopInputNameDialog))
+		decoButton = getattr(inputDialog, "decoButton", None)
+		if decoButton:
+			decoButton.SetEvent(ui.__mem_func__(self.OpenMyShopDecoWnd))
+			decoButton.Show()
 		inputDialog.Open()
 		self.inputDialog = inputDialog
 
 	def ClosePrivateShopInputNameDialog(self):
 		self.inputDialog = None
 		return True
+
+	## Closing the name dialog ends the server's builder session (LEAVE,
+	## spec 3.4.2), which MANAGE without a shop opened.
+	def CancelPrivateShopInputNameDialog(self):
+		import net
+		net.SendOfflineShopLeavePacket()
+		return self.ClosePrivateShopInputNameDialog()
 
 	def OpenPrivateShopBuilder(self):
 
@@ -1365,9 +1498,20 @@ class Interface(object):
 		self.ClosePrivateShopInputNameDialog()
 		return True
 
-	def AppearPrivateShop(self, vid, text):
+	## style (NOVA-9): the sign's decoration; 0 is today's board, a decorated
+	## one Y2's title bar. A sign shown again takes its new title where the
+	## board's class has UpdateTitle (NovaUI's ShopSign has none yet: it is
+	## made again, as today).
+	def AppearPrivateShop(self, vid, text, style=0):
+		board = self.privateShopAdvertisementBoardDict.get(vid)
+		if board and getattr(type(board), "UpdateTitle", None):
+			board.UpdateTitle(text)
+			return
 
-		board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopAdvertisementBoard, "nui_shop_signs.ShopSign")
+		if style > 0:
+			board = uiPrivateShopBuilder.PrivateShopTitleBar(style)
+		else:
+			board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopAdvertisementBoard, "nui_shop_signs.ShopSign")
 		board.Open(vid, text)
 
 		self.privateShopAdvertisementBoardDict[vid] = board

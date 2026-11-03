@@ -939,3 +939,104 @@ GEM_SYSTEM_OPEN_GEMSHOP	[Gaya] Primero abre el mercado de Gaya.
 GEM_SYSTEM_PICK_GEM	[Gaya] Cantidad de Gaya:%d
 GEM_SYSTEM_REFRESH_SHOP_ITEMS	¿Quieres refrescar la tienda?
 GEM_SYSTEM_NOT_ENOUGHT_ADDITEM	[Gaya] Not Enough %s, %dx more is required
+OFFLINE_SHOP	Tienda offline
+OFFLINE_SHOP_CHANGE_TIME	El tiempo de tu tienda offline ha cambiado en %d hora(s).
+OFFLINE_SHOP_CHANGE_TIME2	El tiempo de tu tienda offline se ha cambiado a ilimitado.
+OFFLINE_SHOP_SELECT_TIME	Has elegido un nuevo tiempo (%d).
+OFFLINE_SHOP_SELECT_TIME2	Has elegido tiempo ilimitado.
+OFFLINE_SHOP_WARNING1	<Aviso de Tienda Offline> Al activar esta opción comprarás todo sin confirmación.
+OFFLINE_SHOP_WARNING2	<Aviso de Tienda Offline> Ten precaución con esta función.
+OFFLINE_SHOP_INPUT_NAME_DIALOG_TITLE	Nombre de la tienda privada.
+OFFLINE_SHOP_INPUT_PRICE_DIALOG_TITLE	Precio
+OFFLINE_SHOP_CANNOT_SELL_ITEM	No puedes vender este objeto en una tienda offline.
+REQUIRED_PREMIUM_USER	Debes ser usuario premium para comprar desde la búsqueda de tiendas.
+SEARCH_SHOP_WAIT	Tienes que esperar 1 segundo entre búsquedas.
+SEARCH_SHOP_PRICE_MIN	Tienes que escoger un precio máximo.
+SEARCH_SHOP_WRONG_NAME	No se encontraron resultados para este objeto.
+DECORATION_REQUIRES_SCROLL	Para usar esta función necesitas un Pergamino de Decoración.
+SEARCH_SHOP_CAT_ALL	Todas
+SEARCH_SHOP_CAT_WEAPONS	Armas
+SEARCH_SHOP_CAT_EQUIPMENTS	Equipo
+SEARCH_SHOP_CAT_VOUCHERS	Cupones NC
+SEARCH_SHOP_CAT_COSTUMES	Trajes
+SEARCH_SHOP_CAT_CHANGERS	Cambios
+SEARCH_SHOP_CAT_STONES	Piedras
+SEARCH_SHOP_CAT_CHESTS	Cofres
+SEARCH_SHOP_CAT_ITEMS	Artículos
+SEARCH_SHOP_CAT_MATERIALS	Materiales
+SEARCH_SHOP_CAT_ORES	Minerales
+SEARCH_SHOP_CAT_PETS	Mascotas
+SEARCH_SHOP_CAT_MOUNTS	Monturas
+SEARCH_SHOP_PREMIMUM_STATUS	Estatus Premium
+SEARCH_SHOP_PREMIMUM_ACTIVE	Activo
+SEARCH_SHOP_PREMIMUM_INACTIVE	Inactivo
+SEARCH_SHOP_GOLD	Yang Total
+SEARCH_SHOP_COSTUME_BODY	Trajes De Cuerpo
+SEARCH_SHOP_COSTUME_HAIR	Disfraces De Cabello
+SEARCH_SHOP_COSTUME_WEAPON	Disfraces de armas
+SEARCH_SHOP_COSTUME_WING	Disfraces de alas
+SEARCH_SHOP_COSTUME_FACIAL	Disfraces faciales
+SEARCH_SHOP_COSTUME_SASH	Disfraces de faja
+SEARCH_SHOP_COSTUME_BODY_EFFECT	Efectos corporales
+SEARCH_SHOP_COSTUME_WEAPON_EFFECT	Efectos de armas
+OFFLINE_SHOP_TOOLTIP_WITHDRAW	Right-click: withdraw the item
+OFFLINE_SHOP_TOOLTIP_CHANGE_PRICE	Alt + right-click: change the price
+OFFLINE_SHOP_TOOLTIP_REMOVE	Ctrl + right-click: remove all identical items
+OFFLINE_SHOP_RESULT_OK	Done.
+OFFLINE_SHOP_RESULT_DISABLED	Offline shops are disabled.
+OFFLINE_SHOP_RESULT_MAP_NOT_ALLOWED	You cannot open an offline shop on this map.
+OFFLINE_SHOP_RESULT_CHANNEL_NOT_ALLOWED	You cannot open an offline shop on this channel.
+OFFLINE_SHOP_RESULT_TOO_CLOSE	You are too close to another shop.
+OFFLINE_SHOP_RESULT_NOT_ENOUGH_GOLD	You do not have enough Yang.
+OFFLINE_SHOP_RESULT_BAD_PRICE	This price is not allowed.
+OFFLINE_SHOP_RESULT_GOLD_CAP	Your shop cannot hold that much Yang.
+OFFLINE_SHOP_RESULT_BAD_SIGN	This shop name is not allowed.
+OFFLINE_SHOP_RESULT_BAD_DECORATION	This decoration is not available.
+OFFLINE_SHOP_RESULT_ITEM_RESTRICTED	This item cannot be sold in an offline shop.
+OFFLINE_SHOP_RESULT_BAD_SLOT	This slot cannot be used.
+OFFLINE_SHOP_RESULT_SLOT_TAKEN	This slot is already taken.
+OFFLINE_SHOP_RESULT_SLOT_LOCKED	This slot is locked. Expand your shop first.
+OFFLINE_SHOP_RESULT_ALREADY_OPEN	You already have an offline shop.
+OFFLINE_SHOP_RESULT_NO_SHOP	You do not have an offline shop.
+OFFLINE_SHOP_RESULT_BUSY	You cannot do that right now.
+OFFLINE_SHOP_RESULT_QUEST_RUNNING	You cannot do that while a quest is running.
+OFFLINE_SHOP_RESULT_NOT_LOCKED	Lock your shop first.
+OFFLINE_SHOP_RESULT_RATE_LIMITED	You are doing that too fast.
+OFFLINE_SHOP_RESULT_INVENTORY_FULL	Your inventory is full.
+OFFLINE_SHOP_RESULT_OWNER_GOLD_MAX	You cannot carry that much Yang.
+OFFLINE_SHOP_RESULT_EMPTY_SHOP	Your shop has no items.
+OFFLINE_SHOP_RESULT_EXPIRED	Your shop's time has run out.
+OFFLINE_SHOP_RESULT_EXTEND_CAP	Your shop's time cannot be extended that far.
+OFFLINE_SHOP_RESULT_MAX_KITS	Your shop cannot be expanded any further.
+OFFLINE_SHOP_RESULT_NEED_KIT	You need a Shop Expansion Kit.
+OFFLINE_SHOP_RESULT_NOT_AT_SHOP	You are not at your shop.
+OFFLINE_SHOP_RESULT_SOLD_OUT	This item has already been sold.
+OFFLINE_SHOP_RESULT_PREMIUM_REQUIRED	Your premium tier does not allow buying from the shop search.
+OFFLINE_SHOP_RESULT_COOLDOWN	Please wait a moment before searching again.
+OFFLINE_SHOP_RESULT_SEARCH_MAP_DENIED	You cannot search shops on this map.
+OFFLINE_SHOP_RESULT_TIMEOUT	The shop did not answer in time. Please try again.
+OFFLINE_SHOP_RESULT_UNREACHABLE	The shop cannot be reached right now.
+OFFLINE_SHOP_RESULT_NOTHING_HELD	Your shop does not hold that much Yang.
+OFFLINE_SHOP_RESULT_OTHER_CHANNEL	This shop is on channel %s.
+OFFLINE_SHOP_RESULT_TRANSFER_LOST	The transfer could not be completed. Please contact support with the code %s.
+OFFLINE_SHOP_LOG_ACTION_0	Opened
+OFFLINE_SHOP_LOG_ACTION_1	Closed
+OFFLINE_SHOP_LOG_ACTION_2	Locked
+OFFLINE_SHOP_LOG_ACTION_3	Unlocked
+OFFLINE_SHOP_LOG_ACTION_4	Added Time
+OFFLINE_SHOP_LOG_ACTION_5	Sold Item
+OFFLINE_SHOP_LOG_ACTION_6	Added Item
+OFFLINE_SHOP_LOG_ACTION_7	Withdrew Item
+OFFLINE_SHOP_LOG_ACTION_8	Withdrew Yang
+OFFLINE_SHOP_LOG_ACTION_9	Price Updated
+OFFLINE_SHOP_LOG_ACTION_10	Item Removed
+OFFLINE_SHOP_LOG_ACTION_11	Item Moved
+OFFLINE_SHOP_SLOT_PENDING	This item is being transferred.
+OFFLINE_SHOP_BULK_ADD	Bulk add
+MYSHOP_DECO_STEP_TITLE	Select title
+MYSHOP_DECO_STEP_MODEL	Model
+SEARCH_SHOP_IN_STOCK	In Stock: %s
+SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
+SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
+OFFLINE_SHOP_BUTTON	Shop
+SEARCH_SHOP_BUTTON	Search

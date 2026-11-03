@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Contul nu a putut fi creat. Încearcă mai târziu.
 NUI_LOGIN_CREATED	Contul tău este gata. Conectează-te cu el.
 NUI_LOGIN_CREATING	Se creează contul...
 HELP_OPEN_EXTRA_INVENTORY	Pentru a deschide inventarul special: U
+GEMSHOP_LEFTTIME	Timp rămas
+GEMSHOP_TITLE	PIAŢA GAYA

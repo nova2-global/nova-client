@@ -929,3 +929,13 @@ PREMIUM_SCROLL_UNUSED	Unused
 PREMIUM_SCROLL_EXPIRED	The time of this premium scroll has run out.
 SHOUT_COLOR_BUTTON	Color
 SHOUT_COLOR_REQUIRES_PERK	Your premium tier does not include shout colors.
+GEM_SYSTEM_ADD_SLOT	Vereist item: %s. Wil je er %d van gebruiken om een extra plaats te ontgrendelen?
+GEM_SYSTEM_BUY_ITEM	Wil je dit item kopen?
+GEM_SYSTEM_NAME	Gaya
+GEM_SYSTEM_NOT_ENOUGHT_REFRESHITEM	[Gaya] Je hebt niet genoeg Gaya Markt Vernieuwingsitems.
+GEM_SYSTEM_NOT_ENOUGH_HP_GEM	[Gaya] Je hebt niet genoeg Gaya.
+GEM_SYSTEM_NO_MORE_ADDSLOT	[Gaya] Je kan geen nieuwe slots ontgrendelen.
+GEM_SYSTEM_OPEN_GEMSHOP	[Gaya] Open de Gaya Markt eerst.
+GEM_SYSTEM_PICK_GEM	[Gaya] Hoeveelheid Gaya: %d
+GEM_SYSTEM_REFRESH_SHOP_ITEMS	Wil je de winkel vernieuwen?
+GEM_SYSTEM_NOT_ENOUGHT_ADDITEM	[Gaya] Not Enough %s, %dx more is required

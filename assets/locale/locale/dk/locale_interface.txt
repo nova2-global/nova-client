@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Kontoen kunne ikke oprettes. Prøv igen senere.
 NUI_LOGIN_CREATED	Din konto er klar. Log ind med den.
 NUI_LOGIN_CREATING	Opretter din konto...
 HELP_OPEN_EXTRA_INVENTORY	Åben specialinventar vinduet: U
+GEMSHOP_LEFTTIME	Resterende tid
+GEMSHOP_TITLE	GAYA MARKED

@@ -43,6 +43,8 @@ import miniMap
 # ACCESSORY_REFINE_ADD_METIN_STONE
 import uiselectitem
 # END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
+# The gaya market (NOVA-10; OLD interfaceModule.py:112-114).
+import uiGemShop
 import uiScriptLocale
 
 import event
@@ -82,6 +84,7 @@ class Interface(object):
 		self.wndMiniMap = None
 		self.wndGuild = None
 		self.wndGuildBuilding = None
+		self.wndGemShop = None
 
 		self.listGMName = {}
 		self.wndQuestWindow = {}
@@ -231,6 +234,11 @@ class Interface(object):
 			self.wndDragonSoulRefine.SetInventoryWindows(self.wndInventory, self.wndDragonSoul)
 			self.wndInventory.SetDragonSoulRefineWindow(self.wndDragonSoulRefine)
 			self.wndExtraInventory.SetDragonSoulRefineWindow(self.wndDragonSoulRefine)
+
+		# The gaya market (NOVA-10), made plainly: the UI session wraps it in
+		# nui_windows.make later (spec 4.8).
+		self.wndGemShop = uiGemShop.GemShopWindow()
+		self.wndGemShop.Hide()
 
 	def __MakeDialogs(self):
 		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
@@ -398,6 +406,7 @@ class Interface(object):
 		self.dlgShop.SetItemToolTip(self.tooltipItem)
 		self.dlgExchange.SetItemToolTip(self.tooltipItem)
 		self.privateShopBuilder.SetItemToolTip(self.tooltipItem)
+		self.wndGemShop.SetItemToolTip(self.tooltipItem)
 
 		self.__InitWhisper()
 		self.DRAGON_SOUL_IS_QUALIFIED = False
@@ -519,6 +528,10 @@ class Interface(object):
 		if self.wndItemSelect:
 			self.wndItemSelect.Destroy()
 		# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
+
+		if self.wndGemShop:
+			self.wndGemShop.Destroy()
+			self.wndGemShop = None
 
 		self.wndChatLog.Destroy()
 		for btn in self.questButtonList:
@@ -1301,6 +1314,24 @@ class Interface(object):
 	def BINARY_OpenSelectItemWindow(self):
 		self.wndItemSelect.Open()
 	# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
+
+	## The gaya cut's stone picker (NOVA-10): C's [SELECT_ITEM_EX max_grade;n]
+	## (OLD's uiSelectItemEx: stones up to the server's grade, open between
+	## cuts). The alchemist's picker, with two more arguments.
+	def BINARY_OpenSelectItemWindowEx(self, maxGrade):
+		self.wndItemSelect.Open(maxGrade=maxGrade, stayOpen=True)
+
+	#####################################################################################
+	### Gaya market (NOVA-10; OLD interfaceModule.py:2026-2033) ###
+
+	def OpenGemShop(self):
+		self.wndGemShop.Open()
+
+	def RefreshGemShop(self):
+		self.wndGemShop.RefreshGemShop()
+
+	def CloseGemShop(self):
+		self.wndGemShop.Close()
 
 	#####################################################################################
 	### Private Shop ###

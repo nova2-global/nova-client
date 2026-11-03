@@ -929,3 +929,13 @@ PREMIUM_SCROLL_UNUSED	Unused
 PREMIUM_SCROLL_EXPIRED	The time of this premium scroll has run out.
 SHOUT_COLOR_BUTTON	Color
 SHOUT_COLOR_REQUIRES_PERK	Your premium tier does not include shout colors.
+GEM_SYSTEM_ADD_SLOT	Element necersar: %s.   Vrei sa folosesti %d pentru a debloca un slot in plus?
+GEM_SYSTEM_BUY_ITEM	Vrei sa achizitionezi acest item?
+GEM_SYSTEM_NAME	Gaya
+GEM_SYSTEM_NOT_ENOUGHT_REFRESHITEM	[Gaya] Nu ai suficiente reimprospatoare Gaya pentru magazin.
+GEM_SYSTEM_NOT_ENOUGH_HP_GEM	[Gaya] Nu ai suficiente Gaya.
+GEM_SYSTEM_NO_MORE_ADDSLOT	[Gaya] Nu pot fi deblocare mai multe sloturi.
+GEM_SYSTEM_OPEN_GEMSHOP	[Gaya] Deschide magazinul Gaya prima data.
+GEM_SYSTEM_PICK_GEM	[Gaya] Cantitate de Gaya: %d
+GEM_SYSTEM_REFRESH_SHOP_ITEMS	Vrei sa reimprospatezi shopul?
+GEM_SYSTEM_NOT_ENOUGHT_ADDITEM	[Gaya] Not Enough %s, %dx more is required

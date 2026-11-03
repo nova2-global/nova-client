@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Impossibile creare l'account. Riprova più tardi.
 NUI_LOGIN_CREATED	Il tuo account è pronto. Accedi con esso.
 NUI_LOGIN_CREATING	Creazione dell'account in corso...
 HELP_OPEN_EXTRA_INVENTORY	Aprire la finestra dell'inventario speciale: U
+GEMSHOP_LEFTTIME	Tempo rimanente
+GEMSHOP_TITLE	NEGOZIO DI GAYA

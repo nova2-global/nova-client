@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Hesap oluşturulamadı. Daha sonra tekrar dene.
 NUI_LOGIN_CREATED	Hesabın hazır. Onunla giriş yap.
 NUI_LOGIN_CREATING	Hesabın oluşturuluyor...
 HELP_OPEN_EXTRA_INVENTORY	Özel Envanter Penceresini aç: U tuşu ile
+GEMSHOP_LEFTTIME	Kalan süre
+GEMSHOP_TITLE	GAYA MAĞAZASI

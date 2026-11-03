@@ -1009,6 +1009,20 @@ class GameWindow(ui.ScriptWindow):
 	def SetShopSellingPrice(self, Price):
 		pass
 
+	## Gaya market (NOVA-10): C's GC::GAYA_MARKET (open 1, open 0) and
+	## GC::GAYA_MARKET_CLOSE (OLD game.py:1805-1817).
+	def OpenGemShop(self):
+		if self.interface:
+			self.interface.OpenGemShop()
+
+	def RefreshGemShop(self):
+		if self.interface:
+			self.interface.RefreshGemShop()
+
+	def CloseGemShop(self):
+		if self.interface:
+			self.interface.CloseGemShop()
+
 	## Exchange
 	def StartExchange(self):
 		self.interface.StartExchange()

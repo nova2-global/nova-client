@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Не удалось создать аккаунт. Попр
 NUI_LOGIN_CREATED	Аккаунт готов. Войдите с ним.
 NUI_LOGIN_CREATING	Создание аккаунта...
 HELP_OPEN_EXTRA_INVENTORY	Окно особого снаряжения: U
+GEMSHOP_LEFTTIME	Оставшееся время
+GEMSHOP_TITLE	БИРЖА GAYA

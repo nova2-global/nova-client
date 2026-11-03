@@ -445,3 +445,5 @@ NUI_LOGIN_ERR_FAILED	Het account kon niet worden gemaakt. Probeer het later opni
 NUI_LOGIN_CREATED	Je account is klaar. Log ermee in.
 NUI_LOGIN_CREATING	Je account wordt gemaakt...
 HELP_OPEN_EXTRA_INVENTORY	Open speciale inventaris venster: U
+GEMSHOP_LEFTTIME	Tijd resterend
+GEMSHOP_TITLE	GAYA MARKT

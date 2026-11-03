@@ -445,3 +445,5 @@ NUI_LOGIN_ERR_FAILED	A fiókot nem sikerült létrehozni. Próbáld később.
 NUI_LOGIN_CREATED	A fiókod kész. Lépj be vele.
 NUI_LOGIN_CREATING	Fiók létrehozása...
 HELP_OPEN_EXTRA_INVENTORY	Különleges leltár ablak megnyitása: U
+GEMSHOP_LEFTTIME	Hátralévő idő:
+GEMSHOP_TITLE	GAYA PIAC

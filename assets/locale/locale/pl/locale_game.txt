@@ -929,3 +929,13 @@ PREMIUM_SCROLL_UNUSED	Unused
 PREMIUM_SCROLL_EXPIRED	The time of this premium scroll has run out.
 SHOUT_COLOR_BUTTON	Color
 SHOUT_COLOR_REQUIRES_PERK	Your premium tier does not include shout colors.
+GEM_SYSTEM_ADD_SLOT	Wymagany przedmiot: %s. Czy chcesz użyć teraz %d, aby odblokować kolejny slot?
+GEM_SYSTEM_BUY_ITEM	Czy chcesz kupić ten przedmiot?
+GEM_SYSTEM_NAME	Gaya
+GEM_SYSTEM_NOT_ENOUGHT_REFRESHITEM	[Gaya] Masz za mało 'Reset Sklepu Gaya'.
+GEM_SYSTEM_NOT_ENOUGH_HP_GEM	[Gaya] Masz za mało Gaya.
+GEM_SYSTEM_NO_MORE_ADDSLOT	[Gaya] Nie możesz dodać więcej slotów.
+GEM_SYSTEM_OPEN_GEMSHOP	[Gaya] Otwórz najpierw Sklep Gaya.
+GEM_SYSTEM_PICK_GEM	[Gaya] Ilość Gaya: %d
+GEM_SYSTEM_REFRESH_SHOP_ITEMS	Czy chcesz zresetować?
+GEM_SYSTEM_NOT_ENOUGHT_ADDITEM	[Gaya] Za mało %s, potrzeba jeszcze %dx

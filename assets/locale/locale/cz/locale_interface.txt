@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Účet se nepodařilo vytvořit. Zkus to později.
 NUI_LOGIN_CREATED	Tvůj účet je připraven. Přihlas se jím.
 NUI_LOGIN_CREATING	Vytváření účtu...
 HELP_OPEN_EXTRA_INVENTORY	Otevřít speciální inventář: pomocí klávesy U
+GEMSHOP_LEFTTIME	Zbývající čas
+GEMSHOP_TITLE	GAYA TRŽIŠTĚ

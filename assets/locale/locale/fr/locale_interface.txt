@@ -445,3 +445,5 @@ NUI_LOGIN_ERR_FAILED	Le compte n'a pas pu être créé. Réessaie plus tard.
 NUI_LOGIN_CREATED	Ton compte est prêt. Connecte-toi avec.
 NUI_LOGIN_CREATING	Création de ton compte...
 HELP_OPEN_EXTRA_INVENTORY	Ouvrir l'inventaire spécial : U
+GEMSHOP_LEFTTIME	Temps restant
+GEMSHOP_TITLE	BOURSE AUX GAYAS

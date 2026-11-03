@@ -1021,3 +1021,13 @@ PREMIUM_SCROLL_UNUSED	Unused
 PREMIUM_SCROLL_EXPIRED	The time of this premium scroll has run out.
 SHOUT_COLOR_BUTTON	Color
 SHOUT_COLOR_REQUIRES_PERK	Your premium tier does not include shout colors.
+GEM_SYSTEM_ADD_SLOT	البند المطلوب: %s. هل تود إستخدام %d الآن لفتح خانة أخرى؟
+GEM_SYSTEM_BUY_ITEM	هل تود شراء هذا الشيء؟
+GEM_SYSTEM_NAME	غايا
+GEM_SYSTEM_NOT_ENOUGHT_REFRESHITEM	[غايا] ليس لديك ما يكفي من "إعادة تعيين متجر الغايا".
+GEM_SYSTEM_NOT_ENOUGH_HP_GEM	[غايا] ليس لديك ما يكفي من الغايا.
+GEM_SYSTEM_NO_MORE_ADDSLOT	[غايا] لا يمكنك فتح المزيد من الخانات.
+GEM_SYSTEM_OPEN_GEMSHOP	[غايا] عليك فتح متجر الغايا أولا.
+GEM_SYSTEM_PICK_GEM	[غايا] عدد غايا: %d
+GEM_SYSTEM_REFRESH_SHOP_ITEMS	هل ترغب في إعادة التعيين؟
+GEM_SYSTEM_NOT_ENOUGHT_ADDITEM	[Gaya] Not Enough %s, %dx more is required

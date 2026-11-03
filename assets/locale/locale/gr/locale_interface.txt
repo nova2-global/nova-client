@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Δεν ήταν δυνατή η δημιουργία του
 NUI_LOGIN_CREATED	Ο λογαριασμός σου είναι έτοιμος. Συνδέσου με αυτόν.
 NUI_LOGIN_CREATING	Δημιουργία λογαριασμού...
 HELP_OPEN_EXTRA_INVENTORY	Άνοιγμα παραθύρου ειδικού καταλόγου: U
+GEMSHOP_LEFTTIME	Υπολειπόμενος χρόνος
+GEMSHOP_TITLE	ΕΜΠΟΡΙΟ GAYA

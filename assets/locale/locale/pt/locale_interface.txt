@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Não foi possível criar a conta. Tenta mais tarde.
 NUI_LOGIN_CREATED	A tua conta está pronta. Inicia sessão com ela.
 NUI_LOGIN_CREATING	A criar a tua conta...
 HELP_OPEN_EXTRA_INVENTORY	Abrir Janela de Inventário Especial: U
+GEMSHOP_LEFTTIME	Tempo restante
+GEMSHOP_TITLE	MERCADO DE GAYA

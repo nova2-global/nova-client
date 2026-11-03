@@ -444,3 +444,5 @@ NUI_LOGIN_ERR_FAILED	Das Konto konnte nicht erstellt werden. Versuche es später
 NUI_LOGIN_CREATED	Dein Konto ist bereit. Melde dich damit an.
 NUI_LOGIN_CREATING	Dein Konto wird erstellt...
 HELP_OPEN_EXTRA_INVENTORY	Spezialinventar öffnen: U
+GEMSHOP_LEFTTIME	Verbleibende Zeit
+GEMSHOP_TITLE	GAYAHANDEL

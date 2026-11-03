@@ -446,3 +446,5 @@ NUI_LOGIN_ERR_FAILED	Nie udało się utworzyć konta. Spróbuj później.
 NUI_LOGIN_CREATED	Twoje konto jest gotowe. Zaloguj się nim.
 NUI_LOGIN_CREATING	Tworzenie konta...
 HELP_OPEN_EXTRA_INVENTORY	Otwórz Okno Ekwipunku Specjalnego: U
+GEMSHOP_LEFTTIME	Pozostały czas
+GEMSHOP_TITLE	SKLEP GAYA

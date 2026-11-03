@@ -929,3 +929,13 @@ PREMIUM_SCROLL_UNUSED	Unused
 PREMIUM_SCROLL_EXPIRED	The time of this premium scroll has run out.
 SHOUT_COLOR_BUTTON	Color
 SHOUT_COLOR_REQUIRES_PERK	Your premium tier does not include shout colors.
+GEM_SYSTEM_ADD_SLOT	Gereken Eşya: %s.  %d Kullanarak ek yuvalar açmak istiyor musun?
+GEM_SYSTEM_BUY_ITEM	Bu eşyayı satın almak istiyor musun?
+GEM_SYSTEM_NAME	Gaya
+GEM_SYSTEM_NOT_ENOUGHT_REFRESHITEM	[Gaya] Yeterince gaya marketi yenilemen yok.
+GEM_SYSTEM_NOT_ENOUGH_HP_GEM	[Gaya] Yeterli gayan yok.
+GEM_SYSTEM_NO_MORE_ADDSLOT	[Gaya] Daha fazla yuva açılamaz.
+GEM_SYSTEM_OPEN_GEMSHOP	[Gaya] Önce gaya marketini aç.
+GEM_SYSTEM_PICK_GEM	[Gaya] Gaya miktarı: %d
+GEM_SYSTEM_REFRESH_SHOP_ITEMS	Marketi yenilemek istiyor musun?
+GEM_SYSTEM_NOT_ENOUGHT_ADDITEM	[Gaya] Not Enough %s, %dx more is required

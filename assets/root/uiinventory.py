@@ -352,6 +352,9 @@ class InventoryWindow(ui.ScriptWindow):
 	wndCostume = None
 	wndBelt = None
 	dlgPickMoney = None
+	# The gaya balance under the yang (NOVA-10); None until the legacy loader
+	# binds it, and in a loader that has none (NovaUI's).
+	wndGem = None
 	
 	sellingSlotNumber = -1
 	isLoaded = 0
@@ -409,6 +412,8 @@ class InventoryWindow(ui.ScriptWindow):
 			self.GetChild("TitleBar").SetCloseEvent(ui.__mem_func__(self.Close))
 			self.wndMoney = self.GetChild("Money")
 			self.wndMoneySlot = self.GetChild("Money_Slot")
+			# The gaya balance (NOVA-10); an older uiscript has none.
+			self.wndGem = self.GetChild2("Gem")
 			self.mallButton = self.GetChild2("MallButton")
 			self.DSSButton = self.GetChild2("DSSButton")
 			self.costumeButton = self.GetChild2("CostumeButton")
@@ -527,6 +532,7 @@ class InventoryWindow(ui.ScriptWindow):
 		self.dlgPickMoney = 0
 		self.wndMoney = 0
 		self.wndMoneySlot = 0
+		self.wndGem = None
 		self.questionDialog = None
 		self.mallButton = None
 		self.DSSButton = None
@@ -753,6 +759,11 @@ class InventoryWindow(ui.ScriptWindow):
 	def RefreshStatus(self):
 		money = player.GetElk()
 		self.wndMoney.SetText(MoneySlotText(money))
+
+		## The gaya balance (NOVA-10: point 163, player.GetGem; at most
+		## 999,999), dotted as the yang is and without a unit.
+		if self.wndGem:
+			self.wndGem.SetText("{:,}".format(player.GetGem()).replace(",", "."))
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem

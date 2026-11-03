@@ -8,3 +8,7 @@ body.skin-classic.player-gauge progress.player-gauge__gauge
 	height: 8dp;
 	border-width: 0;
 }
+body.skin-classic.player-gauge progress.player-gauge__gauge fill
+{
+	border-width: 0;
+}

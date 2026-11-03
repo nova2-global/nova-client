@@ -1,0 +1,8 @@
+/* Cyberpunk overlay of nui/windows/gallery/gallery.rml (the dev gallery of
+   every component): the sample boards are the containing blocks of their
+   chrome hooks, as a HUD board is its document's, so each board's outline
+   and cuts frame the sample instead of the whole window. */
+body.skin-cyberpunk .gallery-board
+{
+	position: relative;
+}

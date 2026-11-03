@@ -2,7 +2,8 @@
 <head>
 	<!-- The minimap (uiminimap.py MiniMap, uiscript/minimap.py): the map view
 	     behind its round frame, the zoom, close and atlas buttons, the server
-	     line and the observer count; closed, only the show button. While the
+	     line with the local clock (hours and minutes; classic has none) and
+	     the observer count; closed, only the show button. While the
 	     minimap flag is on, the Interface makes the facade
 	     nui_minimap.MiniMap (controller assets/root/nui_minimap.py), which
 	     makes the atlas too. The map image is a nui-view: C++ renders the
@@ -19,24 +20,32 @@
 </head>
 <body template="nui" class="nui-overlay nui-below-legacy-ui minimap" data-model="minimap">
 	<div id="minimap" class="minimap__window" data-if="shown &amp;&amp; open">
+		<!-- The modern bezel: a steel ring with ticks around the map and a red
+		     north mark on it (classic draws the legacy frame art instead). -->
+		<div class="minimap__steel nui-fx"></div>
+		<div class="minimap__ticks"></div>
 		<div class="minimap__base nui-board--disc"></div>
 		<nui-view id="minimap-view" name="minimap" class="minimap__view nui-fx nui-interactive"/>
 		<div id="minimap-frame" class="minimap__frame nui-board nui-board--ring nui-fx"></div>
+		<div class="minimap__north"></div>
 		<span id="minimap-atlas" class="minimap__button minimap__button--atlas nui-interactive nui-has-tooltip"
 			data-event-mousedown="atlas(ev.button)"><span class="minimap__glyph">M</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="has_atlas">@game.MINIMAP_SHOW_AREAMAP</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="!has_atlas">@game.MINIMAP_CAN_NOT_SHOW_AREAMAP</span></span>
 		<span id="minimap-hide" class="minimap__button minimap__button--hide nui-interactive nui-has-tooltip"
-			data-event-mousedown="hide_map(ev.button)"><span class="minimap__glyph">&#215;</span><span
+			data-event-mousedown="hide_map(ev.button)"><span class="nui-glyph nui-glyph--close minimap__icon"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip">@game.UI_CLOSE</span></span>
 		<span id="minimap-scale-down" class="minimap__button minimap__button--down nui-interactive nui-has-tooltip"
-			data-event-mousedown="scale_down(ev.button)"><span class="minimap__glyph">&#8722;</span><span
+			data-event-mousedown="scale_down(ev.button)"><span class="nui-glyph nui-glyph--minus minimap__icon"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip">@game.MINIMAP_DEC_SCALE</span></span>
 		<span id="minimap-scale-up" class="minimap__button minimap__button--up nui-interactive nui-has-tooltip"
-			data-event-mousedown="scale_up(ev.button)"><span class="minimap__glyph">+</span><span
+			data-event-mousedown="scale_up(ev.button)"><span class="nui-glyph nui-glyph--plus minimap__icon"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 			class="nui-tooltip nui-anim minimap__tip">@game.MINIMAP_INC_SCALE</span></span>
 		<div id="minimap-server" class="minimap__line minimap__line--server" data-if="server_info != ''"><span
-			class="minimap__text">{{ server_info }}</span></div>
+			class="minimap__text">{{ server_info }}<span id="minimap-clock" class="minimap__clock">{{ clock }}</span></span></div>
 		<div id="minimap-observers" class="minimap__line minimap__line--observers" data-if="observers > 0"><span
 			class="minimap__text">{{ observer_text }}</span></div>
 	</div>
@@ -46,5 +55,8 @@
 			class="nui-tooltip nui-anim minimap__tip" data-if="can_see">@game.MINIMAP</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="!can_see">@game.MINIMAP_CANNOT_SEE</span></span>
 	</div>
+	<!-- The local clock's minute: a timer that ends at the next minute, whose
+	     end asks the controller for the time and the next end. -->
+	<nui-countdown id="minimap-clock-timer" format="none" data-attr-end="clock_next" data-event-countdownend="clock_tick()"/>
 </body>
 </rml>

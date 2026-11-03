@@ -405,6 +405,9 @@
 				"picked": false,
 				"unavailable": false
 			}
+		],
+		"equip_on": [
+			1
 		]
 	}
 }

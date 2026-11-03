@@ -5,14 +5,19 @@
    page buttons (tab_button_middle, 52 x 19) centered 52 apart, their tops
    85 above the board's bottom (legacy's -(n - 1) / 2 x 52 from the middle);
    the large buttons centered, Change Password 58 and Close 37 above the
-   bottom. Four or five pages (the foundation's): OLD's small tab art,
-   32 x 19, 32 apart from x 7, as OLD's safebox places them (tune). */
+   bottom. Four or five pages (the foundation's): legacy's rule since
+   NOVA-97 (uisafebox.py __MakePageButton): OLD's small tab art, 32 x 19,
+   centered 32 apart (-(n - 1) / 2 x 32 from the middle). */
 
 body.skin-classic.safebox
 {
 	width: 176dp;
 	height: 418dp;
 	min-width: 0;
+}
+body.skin-classic.safebox .safebox__title-icon
+{
+	display: none;
 }
 body.skin-classic.safebox .safebox__titlebar
 {
@@ -60,6 +65,12 @@ body.skin-classic.safebox .safebox__pages
 	top: 333dp;
 	width: 176dp;
 	height: 19dp;
+	margin: 0;
+	padding: 0;
+	gap: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	/* Only the buttons take the pointer: the row's box lies over nothing else. */
 	pointer-events: none;
 }
@@ -78,11 +89,15 @@ body.skin-classic.safebox.safebox--pages-3 .safebox__page-slot--0 { left: 10dp; 
 body.skin-classic.safebox.safebox--pages-3 .safebox__page-slot--1 { left: 62dp; }
 body.skin-classic.safebox.safebox--pages-3 .safebox__page-slot--2 { left: 114dp; }
 body.skin-classic.safebox.safebox--pages-small .safebox__page-slot { width: 32dp; }
-body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--0 { left: 7dp; }
-body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--1 { left: 39dp; }
-body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--2 { left: 71dp; }
-body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--3 { left: 103dp; }
-body.skin-classic.safebox.safebox--pages-small .safebox__page-slot--4 { left: 135dp; }
+body.skin-classic.safebox.safebox--pages-4 .safebox__page-slot--0 { left: 24dp; }
+body.skin-classic.safebox.safebox--pages-4 .safebox__page-slot--1 { left: 56dp; }
+body.skin-classic.safebox.safebox--pages-4 .safebox__page-slot--2 { left: 88dp; }
+body.skin-classic.safebox.safebox--pages-4 .safebox__page-slot--3 { left: 120dp; }
+body.skin-classic.safebox.safebox--pages-5 .safebox__page-slot--0 { left: 8dp; }
+body.skin-classic.safebox.safebox--pages-5 .safebox__page-slot--1 { left: 40dp; }
+body.skin-classic.safebox.safebox--pages-5 .safebox__page-slot--2 { left: 72dp; }
+body.skin-classic.safebox.safebox--pages-5 .safebox__page-slot--3 { left: 104dp; }
+body.skin-classic.safebox.safebox--pages-5 .safebox__page-slot--4 { left: 136dp; }
 body.skin-classic.safebox .safebox__page
 {
 	width: 100%;
@@ -90,6 +105,7 @@ body.skin-classic.safebox .safebox__page
 	min-width: 0;
 	padding: 0;
 	border-width: 0;
+	border-radius: 0;
 	background-color: transparent;
 	color: var(--text);
 	line-height: 19dp;
@@ -123,6 +139,9 @@ body.skin-classic.safebox.safebox--pages-small .safebox__page.is-selected
 body.skin-classic.safebox .safebox__footer
 {
 	display: block;
+	width: auto;
+	margin: 0;
+	gap: 0;
 	padding: 0;
 }
 /* Legacy's large art (the classic default button, 88 x 21), its label
@@ -136,6 +155,7 @@ body.skin-classic.safebox .safebox__button
 	min-width: 0;
 	padding: 0;
 	overflow: visible;
+	color: var(--classic-button-text);
 }
 body.skin-classic.safebox .safebox__button--password { top: 360dp; }
 body.skin-classic.safebox .safebox__button--close { top: 381dp; }

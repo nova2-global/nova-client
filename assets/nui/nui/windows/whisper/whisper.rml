@@ -6,10 +6,17 @@
 	     assets/root/nui_whisper.py), a subclass of the legacy class on
 	     proxies: sending, the insult check, the partner without a target,
 	     minimize and close (the Interface's edge buttons), the GM look, the
-	     links and the scroll are legacy's code. The document is instanced
-	     (one model per open dialog, whisper_<n>) and exists only while its
-	     dialog shows; a minimized dialog keeps its draft, size, place and
-	     scroll (nui_whisper.STATE). The lines stay in the C++ whisper store:
+	     links, the scroll, the block button (NOVA-47: Block or Unblock for
+	     the partner) and the partner's details (NOVA-48: the online or
+	     offline mark and its language flag, once the server answered) are
+	     legacy's code. The document is instanced
+	     (one model per open dialog, whisper_<n>); a closed or minimized
+	     dialog's document waits, hidden, for the next dialog in a pool of
+	     nui_whisper.POOL_BOUND (nui_hud.PooledBoard, P18): its feed key 0,
+	     so the lines element holds none, its scroll emptied (lines_on, a
+	     list of one entry while it shows; RmlUi repeats only an element
+	     with contents) and its fields empty. A minimized dialog keeps its draft,
+	     size, place and scroll (nui_whisper.STATE). The lines stay in the C++ whisper store:
 	     C++ publishes the window of them the box shows (feed
 	     whisper.<feed_key>.lines) and nui-chat-lines builds them in flow
 	     mode, wrapped at its width, the newest at its bottom, so no Python
@@ -18,7 +25,9 @@
 	     partner field Enter accepts and Escape closes; both keep the key. A
 	     press on a link: the legacy item tooltip, or with left Alt a paste.
 	     The body takes no focus but on its fields; controls act on a left
-	     mousedown. It draws below the legacy UI layer, as legacy's window
+	     mousedown. The title bar starts with the whisper's icon (a handle
+	     too); the empty input shows its placeholder (RmlUi's own, which
+	     hides while the field has text). It draws below the legacy UI layer, as legacy's window
 	     lived in it; a press anywhere on it raises the dialog, which focuses
 	     its input (legacy's OnTop). -->
 	<title>whisper</title>
@@ -28,14 +37,22 @@
 <body template="nui" id="whisper" class="nui-window nui-fx nui-anim nui-below-legacy-ui nui-field-passes-hotkeys nui-field-keeps-focus whisper"
       data-model="whisper" data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar whisper__titlebar">
+		<handle class="whisper__title-icon" move_target="#document"><span class="nui-glyph nui-glyph--whisper"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></handle>
 		<div class="whisper__slot" data-if="editing_target"><input id="whisper-target" type="text" class="nui-input whisper__target"
 			data-attr-maxlength="target_max" data-event-mousedown="target_press(ev.button)"/></div>
 		<handle class="nui-window__handle whisper__handle" move_target="#document">
 			<span id="whisper-title" class="nui-window__title whisper__title" data-if="!editing_target"><nui-text
 				class="whisper__name" links="off" data-attr-value="target"/></span>
 		</handle>
+		<span id="whisper-online" class="whisper__online" data-if="online_shown" data-class-is-online="online"></span>
+		<span id="whisper-flag" class="whisper__flag" data-if="flag_shown &amp;&amp; flag_src != ''"><img class="whisper__flag-image"
+			data-attr-src="flag_src"/></span>
 		<span id="whisper-gm" class="whisper__gm" data-if="gm"><img class="whisper__gm-mark" data-attr-src="gm_mark_src"/><span
 			class="whisper__gm-badge"></span></span>
+		<button id="whisper-block" class="nui-button nui-button--ghost nui-anim whisper__block" data-if="block_shown"
+		        data-event-mousedown="block_press(ev.button)"><span class="whisper__block-label" data-if="!blocked">@ui.BLOCK_PLAYER</span><span
+			class="whisper__block-label" data-if="blocked">@ui.UNBLOCK_PLAYER</span></button>
 		<button id="whisper-accept" class="nui-button nui-button--medium nui-anim whisper__accept" data-if="accept_shown"
 		        data-event-mousedown="accept_press(ev.button)"><span class="whisper__accept-label">@ui.OK</span></button>
 		<button id="whisper-minimize" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip whisper__minimize"
@@ -48,17 +65,24 @@
 			class="nui-tooltip nui-anim whisper__tip">@ui.CLOSE</span></button>
 	</div>
 	<div class="nui-window__body whisper__body">
+		<!-- The overlay well behind the lines (the rounded look on a box that
+		     does not clip; the lines clip square inside it). -->
+		<div class="whisper__well"></div>
 		<nui-chat-lines id="whisper-lines" class="whisper__lines" view="whisper" mode="flow" step="15" data-attr-key="feed_key"
 		                data-event-nuilink="link(ev.link)" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
-		<div class="whisper__scroll-box"><input id="whisper-scroll" type="range" orientation="vertical" class="whisper__scroll"
+		<div class="whisper__scroll-box" data-for="w : lines_on"><input id="whisper-scroll" type="range" orientation="vertical" class="whisper__scroll"
 			min="0" max="1" step="0.01" data-attr-value="pos" data-event-change="scroll(ev.value)"/></div>
 	</div>
 	<div class="nui-window__footer whisper__edit">
-		<textarea id="whisper-input" class="nui-input whisper__input" rows="2" data-attr-maxlength="input_max"
-		          data-event-change="input_change(ev.value)" data-event-mousedown="input_press(ev.button)"></textarea>
-		<button id="whisper-send" class="nui-button nui-anim whisper__send" data-event-mousedown="send_press(ev.button)"><span
-			class="whisper__send-label">@ui.WHISPER_SEND</span></button>
+		<div class="whisper__compose">
+			<textarea id="whisper-input" class="nui-input whisper__input" rows="2" placeholder="@ui.NUI_WHISPER_PLACEHOLDER"
+			          data-attr-maxlength="input_max"
+			          data-event-change="input_change(ev.value)" data-event-mousedown="input_press(ev.button)"></textarea>
+			<button id="whisper-send" class="nui-button nui-anim whisper__send" data-event-mousedown="send_press(ev.button)"><span
+				class="whisper__send-label">@ui.WHISPER_SEND</span></button>
+		</div>
 	</div>
+	<span class="whisper__grip"></span>
 	<nui-resize id="whisper-resize" class="nui-resize--bottom-right whisper__resize" edge="bottom-right" target="whisper"
 	            min-width="300" min-height="170" data-attr-width="width" data-attr-height="height"
 	            data-event-resized="resized(ev.width, ev.height)"/>

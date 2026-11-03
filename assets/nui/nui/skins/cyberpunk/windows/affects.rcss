@@ -1,12 +1,27 @@
-/* Cyberpunk overlay of nui/windows/affects/affects.rml: each affect icon in
-   a dim neon chip, as the mockup's buff row; the time left in the accent.
-   The icons themselves are content and are never tinted. */
+/* Cyberpunk overlay of nui/windows/affects/affects.rml: the reviewed
+   mockup's buff row (skins-stage2 ref Affects-cyberpunk). Each icon in a
+   thin square neon frame (the modern ring's place, 1dp: the dim cyan, the
+   acid line on an affect that counts down), its time left in acid on a
+   square tag of the shared overlay black. The icons themselves are content
+   and are never tinted. */
 
-body.skin-cyberpunk.affects .affect
+body.skin-cyberpunk.affects .affect__ring
 {
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--cyberpunk-edge-dim);
+	border-width: 1dp;
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
 }
+body.skin-cyberpunk.affects .affect__ring--clocked
+{
+	border-color: var(--cyberpunk-acid-line);
+}
+body.skin-cyberpunk.affects .affect__clock nui-countdown
+{
+	border-radius: 0;
+	color: var(--cyberpunk-acid);
+	letter-spacing: 0.5dp;
+}
+/* The time line of the hint in the accent. */
 body.skin-cyberpunk.affects .affect__time
 {
 	color: var(--accent);

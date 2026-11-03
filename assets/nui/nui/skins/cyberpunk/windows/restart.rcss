@@ -1,0 +1,40 @@
+/* Cyberpunk overlay of nui/windows/restart/restart.rml, after the reviewed
+   WRestart board: both choices the component's chips with their glyphs in
+   the accent; restart here, the first, the acid chip with its label in
+   acid (the board's lit choice), where modern gives it the selection fill.
+   The modern layout stays; the labels tracked 1dp. */
+
+body.skin-cyberpunk.restart .restart__button
+{
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.restart .restart__button .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+body.skin-cyberpunk.restart .restart__button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent-hover);
+}
+body.skin-cyberpunk.restart .restart__button:active .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.restart .restart__button--here
+{
+	border-color: transparent;
+	background-color: transparent;
+	image-color: var(--cyberpunk-acid-line);
+	color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.restart .restart__button--here:hover
+{
+	border-color: transparent;
+	image-color: var(--cyberpunk-acid);
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.restart .restart__button--here:active
+{
+	image-color: var(--cyberpunk-acid);
+	color: var(--cyberpunk-acid);
+}

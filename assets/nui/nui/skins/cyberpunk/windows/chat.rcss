@@ -1,61 +1,106 @@
-/* Cyberpunk overlay of nui/windows/chat/chat.rml: the open chat as the
-   mockup's panel, its line area and input row framed by one neon line, the
-   mode button and the send, whisper and log buttons as chips beside the
-   sunken field. Closed, the lines keep the modern shade. */
+/* Cyberpunk overlay of nui/windows/chat/chat.rml: the reviewed mockup's
+   chat (skins-stage2 ref Chat-cyberpunk). Open, the history keeps the
+   modern shade (the shared overlay black, clear at its top) with square
+   corners, a magenta edge down its left side and, as its sizing bar, a neon
+   line along its top that fades at both ends; the input row a dark strip
+   under a dim line, square: the mode a magenta tag with its name in pink,
+   the field the skin's well with its cyan underline, the send, whisper and
+   log buttons square boxes with a dim edge and the glyph in the accent.
+   Closed, the lines keep the modern shade. */
 
 body.skin-cyberpunk.chat .chat__block.is-open .chat__history
 {
 	box-sizing: border-box;
-	border-width: 1dp 1dp 0 1dp;
-	border-color: var(--cyberpunk-edge);
+	border-width: 0 0 0 2dp;
+	border-color: var(--cyberpunk-edge-alt);
 	border-radius: 0;
 }
-body.skin-cyberpunk.chat .chat__block.is-open .chat__input-row
-{
-	border-width: 0 1dp 1dp 1dp;
-	border-color: var(--cyberpunk-edge);
-}
+/* The sizing bar's mark: a 1dp neon line across the top, fading out at
+   both ends (a plain dim line under reduced effects). */
 body.skin-cyberpunk.chat .chat__grip
 {
-	background-color: var(--accent);
-	opacity: 1;
-}
-body.skin-cyberpunk.chat .chat__mode
-{
-	border-color: transparent;
+	width: 100%;
+	height: 1dp;
+	margin: 0;
 	border-radius: 0;
 	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--accent);
-	color: var(--accent);
+	decorator: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+	opacity: 1;
+}
+
+/* An item link: a square acid tag around the run, whose text keeps the
+   color its tag gives it. */
+body.skin-cyberpunk.chat .chat__lines .nui-link
+{
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+}
+
+/* --- The input row ------------------------------------------------------------------- */
+
+body.skin-cyberpunk.chat .chat__block.is-open .chat__input-row
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+/* The mode: a magenta tag (no chip: the mockup's is square). */
+body.skin-cyberpunk.chat .chat__mode
+{
+	border-color: var(--cyberpunk-glow-alt);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-b);
+	color: var(--chat-info);
+	font-weight: normal;
+	letter-spacing: 1dp;
 }
 body.skin-cyberpunk.chat .chat__mode:hover
 {
-	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	color: var(--text);
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--cyberpunk-holo-b);
+	color: var(--cyberpunk-title);
 }
 body.skin-cyberpunk.chat .chat__mode:active
 {
-	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
-	color: var(--accent-text);
+	border-color: var(--cyberpunk-edge-alt);
+	background-color: var(--cyberpunk-glow-alt);
+	color: var(--cyberpunk-title);
 }
+/* The buttons: square boxes with a dim edge; the glyphs in the accent. */
 body.skin-cyberpunk.chat .chat__button
 {
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
 	border-radius: 0;
-	decorator: ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--cyberpunk-edge-dim);
 }
 body.skin-cyberpunk.chat .chat__button:hover
 {
-	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--accent);
+	border-color: var(--accent);
+	background-color: var(--cyberpunk-holo-a);
 }
 body.skin-cyberpunk.chat .chat__button:active
 {
-	background-color: transparent;
-	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
-	image-color: var(--accent);
+	border-color: var(--accent);
+	background-color: var(--selection);
+}
+/* The glyph keeps its place inside the 1dp edge. */
+body.skin-cyberpunk.chat .chat__glyph
+{
+	left: 4dp;
+	top: 3dp;
+	--glyph-ink: var(--accent);
+}
+body.skin-cyberpunk.chat .chat__button:hover .chat__glyph
+{
+	--glyph-ink: var(--accent-hover);
+}
+
+@media (theme: reduced-effects)
+{
+	body.skin-cyberpunk.chat .chat__grip
+	{
+		decorator: none;
+		background-color: var(--cyberpunk-edge-dim);
+	}
 }

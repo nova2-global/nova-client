@@ -22,3 +22,19 @@ body.skin-classic.dialog-money .nui-window__footer
 	padding: 7dp 16dp 11dp 16dp;
 	gap: 10dp;
 }
+
+/* Pins against the modern sheet (the reviewed design's look, which classic
+   does not take): no title glyph, the amount in the text color, the middle
+   art's width. */
+body.skin-classic.dialog-money .dialog-money__icon
+{
+	display: none;
+}
+body.skin-classic.dialog-money .dialog-money__amount
+{
+	color: var(--text);
+}
+body.skin-classic.dialog-money .nui-dialog__footer .nui-button
+{
+	min-width: 61dp;
+}

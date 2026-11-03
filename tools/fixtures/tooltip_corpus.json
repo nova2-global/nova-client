@@ -10694,6 +10694,52 @@
 				"hair range 174013-174021"
 			]
 		},
+		"34218": {
+			"name": "Fire Treasure Chest",
+			"type": 38,
+			"type_name": "GACHA",
+			"subtype": 0,
+			"subtype_name": "0",
+			"size": [
+				1,
+				1
+			],
+			"antiflags": 0,
+			"flags": 4,
+			"wear": 0,
+			"limits": [
+				[
+					0,
+					0
+				],
+				[
+					0,
+					10
+				]
+			],
+			"applies": [],
+			"values": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"sockets": 0,
+			"price": {
+				"buy": 0,
+				"sell": 0
+			},
+			"refine": 0,
+			"synthetic": true,
+			"why": [
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
+			"desc": "",
+			"summary": ""
+		},
 		"110500": {
 			"name": "Dragon Stone of the Sixth Step",
 			"type": 29,
@@ -14681,6 +14727,27 @@
 			"id": "bag-31032",
 			"context": "SetInventoryItem",
 			"vnum": 31032,
+			"sockets": [
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "vnum-34218",
+			"context": "SetItemToolTip",
+			"vnum": 34218
+		},
+		{
+			"id": "bag-34218",
+			"context": "SetInventoryItem",
+			"vnum": 34218,
 			"sockets": [
 				0,
 				0,
@@ -29697,6 +29764,151 @@
 			"attrs": []
 		},
 		{
+			"id": "gacha-bag",
+			"context": "SetInventoryItem",
+			"vnum": 34218,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				7,
+				0,
+				0
+			],
+			"attrs": []
+		},
+		{
+			"id": "gacha-bag-stack",
+			"context": "SetInventoryItem",
+			"vnum": 34218,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"count": 3,
+			"sockets": [
+				10,
+				0,
+				0
+			],
+			"attrs": []
+		},
+		{
+			"id": "gacha-shop",
+			"context": "SetShopItem",
+			"vnum": 34218,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"shop": {
+				"open": true,
+				"private": false,
+				"price": 500
+			}
+		},
+		{
+			"id": "move-safebox-open",
+			"context": "SetInventoryItem",
+			"vnum": 27001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"safebox_open": true
+		},
+		{
+			"id": "move-trading-costume",
+			"context": "SetInventoryItem",
+			"vnum": 41001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"trading": true
+		},
+		{
+			"id": "move-extra-costume",
+			"context": "SetInventoryItem",
+			"vnum": 41001,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"window": "EXTRA_INVENTORY",
+			"pos": 900
+		},
+		{
+			"id": "move-extra-chest",
+			"context": "SetInventoryItem",
+			"vnum": 34218,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"count": 2,
+			"sockets": [
+				10,
+				0,
+				0
+			],
+			"attrs": [],
+			"window": "EXTRA_INVENTORY",
+			"pos": 675,
+			"safebox_open": true,
+			"trading": true
+		},
+		{
+			"id": "move-worn-safebox-open",
+			"context": "SetInventoryItem",
+			"vnum": 11200,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"pos": 90,
+			"safebox_open": true
+		},
+		{
 			"id": "skill-none",
 			"context": "SetSkillNew",
 			"vnum": 0,
@@ -34146,6 +34358,22 @@
 					[]
 				]
 			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "synthetic-time-34218",
+			"context": "SetInventoryItem",
+			"vnum": 34218,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900
+			],
+			"attrs": [],
 			"player": {
 				"level": 120,
 				"race": 0

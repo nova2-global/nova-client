@@ -5,16 +5,30 @@ While the guild-war-dialogs flag is on, the guild window's declare button
 (uiGuild.GuildWindow.__OnClickDeclareWarButton) makes DeclareGuildWarDialog
 below through nui_windows.make() instead of uiGuild.DeclareGuildWarDialog:
 a subclass of the legacy class whose loader (__CreateDialog) puts proxies
-where the uiscript's widgets were, so Open (the field focused), the type
-buttons, OK and Enter (an empty name does nothing; else the chat command
-"/war <name> <type>" and Close), Cancel, Escape and the close button are
-legacy's code. Legacy's type tooltips (uiToolTip windows) become each type
-button's hint in the document, from the same strings
-(localeInfo.GUILDWAR_*_TITLE and _DESCLIST).
+where the uiscript's widgets were, so Open (the field focused, the member
+cap and the end score in number mode at 32 each), the type buttons, OK and
+Enter (an empty name does nothing; else the chat command
+"/war <name> <type> <members> <score>", or "/war <name> <type>" when a
+limit field holds no number, and Close), Cancel, Escape and the close
+button are legacy's code (NOVA-90). Legacy's type tooltips (uiToolTip
+windows) become each type button's hint in the document, from the same
+strings (localeInfo.GUILDWAR_*_TITLE and _DESCLIST).
 
 A modal (D12) above the legacy UI layer that the scrim centers
-(nui_facade.DialogFacade). The field's limit is GUILD_NAME_MAX_LEN (the
-uiscript's 12 today, 24 at the foundation); its text never enters the model."""
+(nui_facade.DialogFacade). The name field's limit is GUILD_NAME_MAX_LEN (the
+client's guild.GUILD_NAME_MAX_LEN, 24 since the foundation cut, 12 before);
+the member cap's and the end score's 3 digits (the uiscript's), digits only
+while legacy has set their number mode. No field's text enters the model.
+Enter and Escape in a limit field are its legacy edit line's (they do
+nothing there but keep the key).
+
+The guild window makes a new dialog at each press of its declare button, so
+the dialog cannot keep its board; its board waits instead, hidden, for the
+next dialog (P18: WAVE4.md measured 17 to 17.5 ms of UI work at its first
+open, a 60 fps frame): nui_hud.PooledBoard over POOL, one board, its type
+buttons gone (types_on), its field empty and no dialog behind it
+(nui_hud.Pooled). The next dialog takes it with no load and writes the
+field from its own proxy."""
 
 import constInfo
 import localeInfo
@@ -29,11 +43,20 @@ import nui_proxies
 
 DOCUMENT = "nui/windows/guild-war-declare/guild-war-declare.rml"
 FIELD = "guild-war-name"
+# The war's member cap and end score (NOVA-90): the uiscript's edit lines
+# MemberInputValue and EndScoreInputValue, 3 digits each.
+MEMBERS_FIELD = "guild-war-members"
+SCORE_FIELD = "guild-war-score"
+WAR_LIMIT_DIGITS = 3
+DIGITS = "0123456789"
 # The three battle types in the type buttons' order: the button's label
 # (the uiscript's), the hint's title and description lines (localeInfo).
 TYPES = (("GUILD_WAR_NORMAL", "GUILDWAR_NORMAL_TITLE", "GUILDWAR_NORMAL_DESCLIST"),
          ("GUILD_WAR_WARP", "GUILDWAR_WARP_TITLE", "GUILDWAR_WARP_DESCLIST"),
          ("GUILD_WAR_CTF", "GUILDWAR_CTF_TITLE", "GUILDWAR_CTF_DESCLIST"))
+# P18: the board that waits for the next declare dialog. One: one dialog
+# shows at a time (the next press's dialog takes over the last one).
+POOL = nui_hud.BoardPool("guild-war-declare", 1)
 
 
 def type_hints():
@@ -78,6 +101,9 @@ class WarDialogBoard(nui_hud.RaisesOnPress, nui.Window):
 
 	MODAL = True
 	FIELD_ID = None
+	# The other fields' ids and the owner's attribute holding each one's
+	# proxy (the declare dialog's member cap and end score).
+	OTHER_FIELDS = {}
 
 	def __init__(self, owner, model):
 		self._owner = nui_hud.keep_weakly(owner)
@@ -87,16 +113,20 @@ class WarDialogBoard(nui_hud.RaisesOnPress, nui.Window):
 			# A focused field stops every key but Tab: the field hears its own.
 			self.element_on("", "keydown", self._on_key)
 			self.element_on(self.FIELD_ID, "keydown", self._on_key)
+			for field_id in self.OTHER_FIELDS:
+				self.element_on(field_id, "keydown", self._on_key)
 
 	def initial_model(self):
 		return dict(self._initial)
 
 	def _on_key(self, event):
-		"""Legacy's edit line: Enter is its OnIMEReturn (the accept event),
-		Escape its OnPressEscapeKey (the cancel event)."""
+		"""Legacy's edit line: Enter is its OnIMEReturn (the name field's: the
+		accept event), Escape its OnPressEscapeKey (the name field's: the
+		cancel event). A key outside the fields is the name field's."""
 		if not self.is_visible():
 			return None
-		field = getattr(self._owner, "inputValue", None)
+		attribute = self.OTHER_FIELDS.get(event.get("target_id"), "inputValue")
+		field = getattr(self._owner, attribute, None)
 		if field is None:
 			return None
 		key = event.get("key_identifier")
@@ -137,10 +167,21 @@ class WarDialogBoard(nui_hud.RaisesOnPress, nui.Window):
 			self._owner.board.close()
 
 
-class _DeclareBoard(WarDialogBoard):
+class _DeclareBoard(nui_hud.Pooled, WarDialogBoard):
 	DOCUMENT = DOCUMENT
 	MODEL = "guild_war_declare"
 	FIELD_ID = FIELD
+	OTHER_FIELDS = {MEMBERS_FIELD: "memberCountInput", SCORE_FIELD: "endScoreInput"}
+	# nui_hud.Pooled: emptied before the board waits in POOL.
+	FIELDS = (FIELD, MEMBERS_FIELD, SCORE_FIELD)
+
+	@nui.on("members_change")
+	def on_members_change(self, value, linebreak):
+		self._owner._limit_changed(0, value)
+
+	@nui.on("score_change")
+	def on_score_change(self, value, linebreak):
+		self._owner._limit_changed(1, value)
 
 
 class WarDialogMixin(object):
@@ -194,26 +235,71 @@ class DeclareGuildWarDialog(WarDialogMixin, nui_facade.DialogFacade, uiGuild.Dec
 			raise
 
 	def nui_model(self):
+		# types_on (P18): the type buttons, a list of one entry while the
+		# board shows, none while it waits in POOL.
 		return {"type": 0, "type_select": constInfo.GUILD_WAR_TYPE_SELECT_ENABLE != 0, "hints": type_hints(),
-		        "max": self._limits.GUILD_NAME_MAX_LEN}
+		        "max": self._limits.GUILD_NAME_MAX_LEN, "types_on": [1]}
+
+	def nui_demand(self):
+		"""P18: the board comes from POOL and goes back to it."""
+		return nui_hud.PooledBoard(POOL, self._make_board, self._restore_board, self._keep_board,
+		                           self._empty_board, self._adopt_board)
+
+	def _adopt_board(self, board):
+		board.adopt(self)
+
+	def _empty_board(self, board):
+		board.set(types_on=[])
+
+	def Show(self):
+		"""DialogFacade's, then the field written even when it is empty: a
+		board from POOL shows no earlier dialog's name (P18)."""
+		nui_facade.DialogFacade.Show(self)
+		board = self.nui_board()
+		if board is None:
+			return
+		for field in self._fields():
+			if not field.text:
+				board.set_value(field.field_id, "", caret="end", even_hidden=True)
 
 	def _fields(self):
-		field = getattr(self, "inputValue", None)
-		return (field,) if field is not None else ()
+		fields = (getattr(self, "inputValue", None), getattr(self, "memberCountInput", None),
+		          getattr(self, "endScoreInput", None))
+		return tuple(field for field in fields if field is not None)
 
-	# --- the loader (uiguild.py:74-118, on proxies) ---------------------------------------
+	def _limit_changed(self, index, value):
+		"""A limit field's change: digits only while legacy has set its
+		number mode (Open does, as its uiscript edit line takes digits only
+		then); the proxy keeps the text, which GetWarLimits reads."""
+		fields = (getattr(self, "memberCountInput", None), getattr(self, "endScoreInput", None))
+		if not 0 <= index < len(fields) or fields[index] is None:
+			return
+		field = fields[index]
+		value = "" if value is None else str(value)
+		if field.number_mode:
+			digits = "".join(c for c in value if c in DIGITS)
+			if digits != value:
+				value = digits
+				board = self.nui_board()
+				if board is not None and board.is_visible():
+					board.set_value(field.field_id, value, caret="end")
+		field.typed(value)
+
+	# --- the loader (uiguild.py DeclareGuildWarDialog.__CreateDialog, on proxies) ---------
 
 	def _DeclareGuildWarDialog__CreateDialog(self):
 		# The uiscript's style (declareguildwardialog.py: "movable", "float").
 		self.AddFlag("movable")
 		self.AddFlag("float")
 
-		self.board = TitledBoardProxy(230, 130)
+		self.board = TitledBoardProxy(230, 170)
 		self.typeButtonList = self._make_type_buttons()
 		self.acceptButton = nui_proxies.ButtonProxy()
 		self.cancelButton = nui_proxies.ButtonProxy()
 		self.inputSlot = nui_proxies.BoardProxy(130, 18)
 		self.inputValue = self._field(FIELD, self._limits.GUILD_NAME_MAX_LEN, "max")
+		self.memberCountInput = self._field(MEMBERS_FIELD, WAR_LIMIT_DIGITS)
+		self.endScoreInput = self._field(SCORE_FIELD, WAR_LIMIT_DIGITS)
 
 		gameType = self._game_type()
 

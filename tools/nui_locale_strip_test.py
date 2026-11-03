@@ -119,6 +119,14 @@ class Facade(StripTest):
         self.assertEqual(window.model["current"], "de")
         self.assertEqual(self.nui_windows.DECISIONS["locale-strip"], "nui")
 
+    def test_the_client_reads_the_saved_locale_from_the_disk(self):
+        # The client's open() gives a pack_file (no with block) for any path
+        # that exists; the strip reads config/locale.cfg itself.
+        with open("config/locale.cfg", "w") as file:
+            file.write("de")
+        with support.ClientOpen():
+            self.assertEqual(self.make_strip().nui_window.model["current"], "de")
+
     def test_without_a_locale_file_the_current_locale_is_en(self):
         self.assertEqual(self.make_strip().nui_window.model["current"], "en")
 

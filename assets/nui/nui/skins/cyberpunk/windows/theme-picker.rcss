@@ -1,6 +1,10 @@
-/* Cyberpunk overlay of nui/windows/theme-picker/theme-picker.rml. RmlUi 6.3
-   sizes an absolute child by its top and bottom against an auto-height flex
-   container's unsized box (FlexFormattingContext.cpp), so the board's
+/* Cyberpunk overlay of nui/windows/theme-picker/theme-picker.rml, after the
+   theme strip of the reviewed login mockup (Login, cyberpunk): the heading
+   in the accent, tracked; the themes plain tracked labels, under the
+   pointer on the dim chip; the theme in use the solid accent chip (its own
+   square accent background off, which showed under the skin's chip). RmlUi
+   6.3 sizes an absolute child by its top and bottom against an auto-height
+   flex container's unsized box (FlexFormattingContext.cpp), so the board's
    outline hook would be cut to its top in the modern flex row: here the
    board is a line of inline boxes. */
 
@@ -9,12 +13,33 @@ body.skin-cyberpunk.picker
 	display: block;
 	white-space: nowrap;
 }
+body.skin-cyberpunk.picker .picker__label
+{
+	color: var(--accent);
+	letter-spacing: 1dp;
+	vertical-align: middle;
+}
+/* One class over every state rule of the skin's button. */
 body.skin-cyberpunk.picker .picker__button
 {
 	margin-left: var(--space-1);
 	vertical-align: middle;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
 }
-body.skin-cyberpunk.picker .picker__label
+body.skin-cyberpunk.picker .picker__button:hover
 {
-	vertical-align: middle;
+	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
+	image-color: var(--cyberpunk-edge);
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.picker .picker__button.is-selected, body.skin-cyberpunk.picker .picker__button.is-selected:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: ninepatch(cyberpunk-chip-solid, cyberpunk-chip-solid-inner) border-box;
+	image-color: var(--accent);
+	color: var(--accent-text);
 }

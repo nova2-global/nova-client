@@ -24,9 +24,12 @@
 <body template="nui" class="nui-window nui-fx nui-anim guild-building" data-model="guild_building">
 	<div class="nui-window__titlebar guild-building__titlebar">
 		<handle class="nui-window__handle guild-building__handle" move_target="#document">
+			<span class="guild-building__title-icon"><span class="nui-glyph nui-glyph--home"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 			<span id="gb-title" class="nui-window__title guild-building__title">@ui.GUILD_BUILDING_TITLE</span>
 		</handle>
-		<button id="gb-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)">&#215;</button>
+		<button id="gb-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('close', ev.button)"><span
+			class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body guild-building__body">
 		<section class="guild-building__categories">
@@ -86,16 +89,19 @@
 				<span class="guild-building__axis guild-building__axis--rot-x">X</span>
 				<input id="gb-rot-x" type="range" class="nui-slider guild-building__slider guild-building__slider--x" min="0" max="100" step="1"
 					data-attr-value="rot_x" data-attrif-disabled="!rot_x_on" data-event-change="rotate('x', ev.value)"/>
+				<span class="guild-building__slider-value">{{ rot_x }}</span>
 			</div>
 			<div class="guild-building__axis-row guild-building__axis-row--y">
 				<span class="guild-building__axis guild-building__axis--rot-y">Y</span>
 				<input id="gb-rot-y" type="range" class="nui-slider guild-building__slider guild-building__slider--y" min="0" max="100" step="1"
 					data-attr-value="rot_y" data-attrif-disabled="!rot_y_on" data-event-change="rotate('y', ev.value)"/>
+				<span class="guild-building__slider-value">{{ rot_y }}</span>
 			</div>
 			<div class="guild-building__axis-row guild-building__axis-row--z">
 				<span class="guild-building__axis guild-building__axis--rot-z">Z</span>
 				<input id="gb-rot-z" type="range" class="nui-slider guild-building__slider guild-building__slider--z" min="0" max="100" step="1"
 					data-attr-value="rot_z" data-attrif-disabled="!rot_z_on" data-event-change="rotate('z', ev.value)"/>
+				<span class="guild-building__slider-value">{{ rot_z }}</span>
 			</div>
 		</section>
 	</div>

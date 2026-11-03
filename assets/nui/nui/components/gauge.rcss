@@ -11,22 +11,26 @@ progress.nui-gauge
 	display: block;
 	height: 6dp;
 	background-color: var(--gauge-track);
-	border-radius: 3dp;
+	border-radius: 9999dp;
 }
 progress.nui-gauge fill
 {
 	background-color: var(--gauge-red);
-	border-radius: 3dp;
+	border-radius: 9999dp;
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-red) 24%, var(--gauge-red) 100%);
 }
 progress.nui-gauge--pink fill
 {
 	background-color: var(--gauge-pink);
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-pink) 24%, var(--gauge-pink) 100%);
 }
 progress.nui-gauge--purple fill
 {
 	background-color: var(--gauge-purple);
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-purple) 24%, var(--gauge-purple) 100%);
 }
 progress.nui-gauge--blue fill
 {
 	background-color: var(--gauge-blue);
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-blue) 24%, var(--gauge-blue) 100%);
 }

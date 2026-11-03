@@ -1,0 +1,49 @@
+/* Cyberpunk overlay of nui/windows/system-menu/system-menu.rml, after the
+   reviewed WSystemMenu board: the buttons are the component's chips, their
+   glyphs in the accent; the mall the acid chip with its label in acid (the
+   gold that legacy's label has), the exit the magenta chip with a magenta
+   glyph; Cancel the ghost with its cross in the accent. The modern layout
+   stays; the labels tracked 1dp (the column is wide enough in every
+   locale). */
+
+body.skin-cyberpunk.system-menu .system-menu__button
+{
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.system-menu .system-menu__button .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+body.skin-cyberpunk.system-menu .system-menu__button:hover .nui-glyph
+{
+	--glyph-ink: var(--accent-hover);
+}
+body.skin-cyberpunk.system-menu .system-menu__button:active .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.system-menu .system-menu__button--exit .nui-glyph, body.skin-cyberpunk.system-menu .system-menu__button--exit:hover .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.system-menu .system-menu__button--exit:active .nui-glyph
+{
+	--glyph-ink: var(--accent-text);
+}
+
+/* The mall: the acid chip and label. */
+body.skin-cyberpunk.system-menu .system-menu__button--mall
+{
+	image-color: var(--cyberpunk-acid-line);
+	color: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.system-menu .system-menu__button--mall:hover
+{
+	image-color: var(--cyberpunk-acid);
+	color: var(--cyberpunk-title);
+}
+body.skin-cyberpunk.system-menu .system-menu__button--mall:active
+{
+	image-color: var(--cyberpunk-acid);
+	color: var(--cyberpunk-acid);
+}

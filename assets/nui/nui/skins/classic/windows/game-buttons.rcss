@@ -22,6 +22,7 @@ body.skin-classic.game-buttons .game-button__plus
 {
 	width: 32dp;
 	height: 32dp;
+	box-shadow: none;
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
@@ -52,6 +53,7 @@ body.skin-classic.game-buttons .game-button__label
 body.skin-classic.game-buttons .game-button__text
 {
 	padding: 0;
+	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
 	color: var(--classic-label-white);

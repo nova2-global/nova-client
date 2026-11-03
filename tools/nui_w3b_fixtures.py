@@ -9,9 +9,10 @@ pages).
     python3 tools/nui_w3b_fixtures.py --check   write nothing; exit 1 when one is stale
 
 Each window's fixture is <name>.fixture.json (today), with the variants
-<name>.foundation.fixture.json and the ones the spec names (inventory
-empty, belt collapsed). nui_inventory_test checks that the controllers'
-models have the same keys and kinds."""
+<name>.foundation.fixture.json, the ones the spec names (inventory empty,
+belt collapsed) and the ones the modern skin adds (inventory rail and
+rail-folded, costume female). nui_inventory_test checks that the
+controllers' models have the same keys and kinds."""
 import argparse
 import importlib.util
 import json
@@ -68,7 +69,12 @@ ITEMS = {
     30329: ("/icon/item/30329.tga", 1, 1), 41001: ("/icon/item/41002.tga", 1, 2), 45001: ("/icon/item/41005.tga", 1, 2),
     70043: ("/icon/item/70043.tga", 1, 1), 71027: ("/icon/item/71027.tga", 1, 1), 72723: ("/icon/item/72723.tga", 1, 1),
     73001: ("/icon/item/73001.tga", 1, 1), 1000: ("/icon/item/01000.tga", 1, 3), 20: ("/icon/item/00020.tga", 1, 2),
+    16: ("/icon/item/00010.tga", 1, 2), 3005: ("/icon/item/03000.tga", 1, 3), 13006: ("/icon/item/13000.tga", 1, 1),
 }
+# The refine level of the items above that have one (nui_slots.refine_level:
+# the "+N" of a weapon's, an armour's or a belt's name; item_proto's Sword+6,
+# Glaive+5, Battle Shield+6). The inventory's cells carry it (REFINE_KEY).
+REFINE = {16: 6, 3005: 5, 13006: 6}
 
 
 def empty_cell(index):
@@ -91,11 +97,13 @@ def item_cell(index, position, vnum, count=1, one=False, **states):
     return cell
 
 
-def grid(cols, rows, start, items, targets=None, unavailable=(), one=False):
+def grid(cols, rows, start, items, targets=None, unavailable=(), one=False, refine=False, marks=False):
     """The cells of a cols x rows lean grid whose cell i shows position
     start + i: items {cell: (vnum, count, states)}, then the covered cells
     (nui_slots.mark_covered), the footprint's targets and the unavailable
-    cells."""
+    cells; with refine, every cell's refine level (0 but at a refined
+    item's anchor); with marks, every cell's wave 4b trade marks
+    (nui_slots.MARK_KEYS: False but where an item's states set them)."""
     cells = [empty_cell(i) for i in range(cols * rows)]
     for index, (vnum, count, states) in items.items():
         cells[index] = item_cell(index, start + index, vnum, count, one, **states)
@@ -114,12 +122,28 @@ def grid(cols, rows, start, items, targets=None, unavailable=(), one=False):
         cells[index]["target"] = state
     for index in unavailable:
         cells[index]["unavailable"] = True
+    if refine:
+        for index, cell in enumerate(cells):
+            cell["refine"] = REFINE.get(items[index][0], 0) if index in items else 0
+    if marks:
+        for cell in cells:
+            for key in MARK_KEYS:
+                cell.setdefault(key, False)
     return cells
 
 
-def wear_cells(limits, group, filled, targets=None):
-    """The wear group's cells in wear order, CELL_KEYS plus name: filled
-    {name: vnum}."""
+# Wave 4b (NOVA-13): the trade marks a grid that shows them gives every cell
+# (nui_slots.MARK_KEYS).
+MARK_KEYS = ("in_use", "unusable_ontop")
+
+
+# The inventory's marks of an empty wear place (nui_inventory.WEAR_MARKS).
+WEAR_MARKS = {"unique1": "unique", "unique2": "unique", "arrow": "arrow", "belt": "belt"}
+
+
+def wear_cells(limits, group, filled, targets=None, refine=False):
+    """The wear group's cells in wear order, CELL_KEYS plus name (and with
+    refine the inventory's refine level and marks): filled {name: vnum}."""
     cells = []
     for index, slot in enumerate(LIMITS.wear_group(group, limits)):
         if slot.name in filled:
@@ -129,21 +153,31 @@ def wear_cells(limits, group, filled, targets=None):
         if targets and slot.name in targets:
             cell["target"] = targets[slot.name]
         cell["name"] = slot.name
+        if refine:
+            cell["refine"] = REFINE.get(filled.get(slot.name), 0)
+            mark = WEAR_MARKS.get(slot.name)
+            cell["marks"] = [mark] if mark and slot.name not in filled else []
         cells.append(cell)
     return cells
 
 
 def money_text(value):
-    """localeInfo.NumberToMoneyString in the en locale: dots every three
-    digits and " Yang"."""
+    """The money slot's text as legacy's RefreshStatus writes it
+    (uiinventory.py MoneySlotText, NOVA-96): localeInfo.NumberToMoneyString in
+    the en locale, dots every three digits and " Yang", while the unit fits
+    the slot (under 10 ** 11), then the amount alone."""
     if value <= 0:
         return "0 Yang"
-    return "{:,}".format(int(value)).replace(",", ".") + " Yang"
+    text = "{:,}".format(int(value)).replace(",", ".")
+    return text + " Yang" if value < 10 ** 11 else text
 
 
-TODAY_WEAR = {"body": 11200, "head": 12200, "foots": 15000, "wrist": 14000, "weapon": 10, "neck": 16000, "ear": 17000,
-              "unique1": 71027, "arrow": 8000, "shield": 13000, "belt": 18000}
-FOUNDATION_WEAR = dict(TODAY_WEAR, unique2=70043, costume_sash=73001, ring1=72723, ring2=27003)
+# The weapon and the shield refined (+6), as the reviewed board shows them.
+TODAY_WEAR = {"body": 11200, "head": 12200, "foots": 15000, "wrist": 14000, "weapon": 16, "neck": 16000, "ear": 17000,
+              "unique1": 71027, "arrow": 8000, "shield": 13006, "belt": 18000}
+# The rings with the belt since NOVA-97 (legacy's equipment window; the
+# cut's costume sash is not ported, so no cell shows it).
+FOUNDATION_WEAR = dict(TODAY_WEAR, unique2=70043, ring1=72723, ring2=27003)
 
 
 def inventory(limits, page, wear, bag, money, **rest):
@@ -154,13 +188,15 @@ def inventory(limits, page, wear, bag, money, **rest):
         "page": page,
         "bag": bag(cols, rows, page * limits.INVENTORY_PAGE_SIZE),
         "bag_cols": cols,
-        "wear": wear_cells(limits, "equipment", wear),
+        "wear": wear_cells(limits, "equipment", wear, refine=True),
         "money": money_text(money),
         "money_value": money,
         "dss_active": False,
         "has_costume": True,
         "has_dss": True,
         "has_mall": True,
+        # Wave 4b (NOVA-16): the special inventory's button.
+        "has_extra": True,
         "placed": False,
         # P14b: nothing attached, so an anchor's box covers its item.
         "bag_attaching": False,
@@ -168,17 +204,43 @@ def inventory(limits, page, wear, bag, money, **rest):
         "attach_right": ATTACH_RIGHT,
         # P15 V-2: the kept board's lists, shown.
         "wear_on": [1], "tabs_on": [1], "bag_on": [1],
+        # Stage 1 (modern skin): the paper doll's figure for the race (a
+        # warrior's), the stats row as the character window counts them and
+        # the shortcut rail's entries (none registered) and its fold.
+        "figure": FIGURE_KNIGHT,
+        "stat_attack": "1048-1166", "stat_defence": "642", "stat_magic": "236-252",
+        "rail": [], "rail_folded": False,
     }
     model.update(rest)
     return {"inventory": model}
 
 
+FIGURE_KNIGHT = "/nui/figures/knight.png"
+FIGURE_COSTUME = {"male": "/nui/figures/costume-male.png", "female": "/nui/figures/costume-female.png"}
+
+# The board's rail (nui_inventory.BOARD_SHORTCUTS): the offline shop, the
+# ranking and the achievements as features to come, and the guide; the
+# events entry stands for a feature that exists, with a badge of three, as
+# the reviewed board shows it.
+SAMPLE_RAIL = [
+    {"id": "offline_shop", "glyph": "stall", "tip": "@ui.NUI_RAIL_OFFLINE_SHOP", "enabled": True, "soon": True, "badge": ""},
+    {"id": "ranking", "glyph": "ranking", "tip": "@ui.NUI_RAIL_RANKING", "enabled": True, "soon": True, "badge": ""},
+    {"id": "events", "glyph": "events", "tip": "@ui.NUI_RAIL_EVENTS", "enabled": True, "soon": False, "badge": "3"},
+    {"id": "achievements", "glyph": "achievements", "tip": "@ui.NUI_RAIL_ACHIEVEMENTS", "enabled": True, "soon": True,
+     "badge": ""},
+    {"id": "guide", "glyph": "guide", "tip": "@ui.NUI_RAIL_GUIDE", "enabled": True, "soon": False, "badge": ""},
+]
+
+
 def today_bag(cols, rows, start):
+    """The sword and the glaive refined (+6, +5), as the reviewed board's;
+    wave 4b's trade marks (NOVA-13): the blue potions held by a trade
+    window (in use) and the scroll the window on top refuses."""
     return grid(cols, rows, start, {
-        0: (10, 1, {}), 2: (3000, 1, {}), 4: (27001, 200, {}), 9: (72723, 1, {"active": True}),
-        18: (13000, 1, {"target": "usable"}), 30: (12200, 1, {}), 35: (27002, 3, {}), 40: (25040, 1, {}),
-        44: (70043, 1, {}), 23: (28030, 1, {"picked": True})},
-        targets={21: "move", 26: "move"})
+        0: (16, 1, {}), 2: (3005, 1, {}), 4: (27001, 200, {}), 9: (72723, 1, {"active": True}),
+        18: (13000, 1, {"target": "usable"}), 30: (12200, 1, {}), 35: (27002, 3, {"in_use": True}),
+        40: (25040, 1, {"unusable_ontop": True}), 44: (70043, 1, {}), 23: (28030, 1, {"picked": True})},
+        targets={21: "move", 26: "move"}, refine=True, marks=True)
 
 
 def hover_bag(cols, rows, start):
@@ -186,20 +248,22 @@ def hover_bag(cols, rows, start):
     page's bottom edge, with 1x1 items around them."""
     return grid(cols, rows, start, {
         30: (27001, 200, {}), 31: (3000, 1, {}), 32: (72723, 1, {}), 37: (10, 1, {}), 33: (12200, 1, {}),
-        43: (25040, 1, {}), 44: (28030, 1, {})})
+        43: (25040, 1, {}), 44: (28030, 1, {})}, refine=True, marks=True)
 
 
 def foundation_bag(cols, rows, start):
     return grid(cols, rows, start, {
         0: (3000, 1, {}), 1: (10, 1, {}), 3: (27001, 2000, {}), 4: (27002, 1999, {}), 11: (72723, 1, {"active": True}),
-        25: (12200, 1, {}), 33: (11200, 1, {}), 42: (25040, 1, {}), 44: (28030, 2, {})})
+        25: (12200, 1, {}), 33: (11200, 1, {}), 42: (25040, 1, {}), 44: (28030, 2, {})}, refine=True, marks=True)
 
 
-def costume(limits, filled):
+def costume(limits, filled, gender="male"):
     slots = wear_cells(limits, "costume", filled)
     return {"costume": {"table": limits.WEAR_TABLE_ID, "slots": slots,
                         "has_companion": any(cell["name"].startswith("buffi_") for cell in slots),
-                        "attach_right": ATTACH_RIGHT, "wear_on": [1]}}
+                        "attach_right": ATTACH_RIGHT, "wear_on": [1],
+                        # Stage 1: the figure for the character's gender.
+                        "figure": FIGURE_COSTUME[gender]}}
 
 
 def belt(limits, available, items, expanded=True):
@@ -231,15 +295,17 @@ def fixtures():
     return {
         ("inventory", ""): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999),
         ("inventory", "foundation"): inventory(FOUNDATION, 2, FOUNDATION_WEAR, foundation_bag, 2000000000000),
-        ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}), 0),
+        ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}, refine=True,
+                                                                                         marks=True), 0),
         ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),
+        ("inventory", "rail"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL),
+        ("inventory", "rail-folded"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL,
+                                                rail_folded=True),
         ("costume", ""): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}),
-        ("costume", "foundation"): costume(FOUNDATION, {
-            "costume_body": 41001, "costume_hair": 73001, "costume_weapon": 1000, "costume_mount": 71027,
-            "effect_weapon": 25040, "effect_armor": 70043, "costume_pet": 27003, "costume_sash2": 30329,
-            "buffi_costume_body": 45001, "buffi_costume_hair": 73001, "buffi_costume_weapon": 3000,
-            "buffi_costume_sash2": 27002, "buffi_costume_facial": 16000, "costume_facial": 17000,
-            "effect_weapon_1": 14000, "effect_armor_1": 15000, "costume_aura": 72723}),
+        ("costume", "female"): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}, gender="female"),
+        # The costume body and hair alone, as legacy's costume window since
+        # NOVA-97 (the cut's other costume cells are not ported).
+        ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001}),
         # An auto potion in the belt is never active: legacy activates only the
         # bag's cells (uiinventory.py RefreshBagSlotWindow).
         ("belt-inventory", ""): belt(TODAY, 4, {0: (27001, 5, {}), 1: (27002, 1, {}), 3: (72723, 1, {})}),

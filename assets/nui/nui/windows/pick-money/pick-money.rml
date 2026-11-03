@@ -11,21 +11,24 @@
 	<link type="text/rcss" href="pick-money.rcss"/>
 </head>
 <body template="nui" class="nui-window nui-fx nui-anim pick-money" data-model="pick_money">
-	<div class="nui-window__titlebar">
-		<handle class="nui-window__handle" move_target="#document">
-			<span class="nui-window__title">{{ title }}</span>
+	<div class="nui-window__titlebar pick-money__titlebar">
+		<handle class="nui-window__handle pick-money__handle" move_target="#document">
+			<span class="pick-money__title-icon"><span class="nui-glyph nui-glyph--coin"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<span class="nui-window__title pick-money__title">{{ title }}</span>
 		</handle>
-		<button id="pick-money-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-click="cancel()">&#215;</button>
+		<button id="pick-money-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-click="cancel()"><span
+			class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body">
 		<div class="nui-row pick-money__row">
 			<input id="pick-money-field" type="text" class="nui-input pick-money__field" data-attr-maxlength="max" data-event-change="edit(ev.value, ev.linebreak)"/>
 			<span class="pick-money__limit">{{ limit }}</span>
 		</div>
-	</div>
-	<div class="nui-window__footer nui-dialog__footer">
-		<button id="pick-money-cancel" class="nui-button nui-button--medium nui-anim" data-event-click="cancel()">@ui.CANCEL</button>
-		<button id="pick-money-accept" class="nui-button nui-button--medium nui-button--primary nui-anim" data-event-click="accept()">@ui.OK</button>
+		<div class="nui-dialog__footer pick-money__actions">
+			<button id="pick-money-cancel" class="nui-button nui-button--medium nui-anim pick-money__action" data-event-click="cancel()">@ui.CANCEL</button>
+			<button id="pick-money-accept" class="nui-button nui-button--medium nui-button--primary nui-anim pick-money__action" data-event-click="accept()">@ui.OK</button>
+		</div>
 	</div>
 </body>
 </rml>

@@ -1,16 +1,19 @@
-/* The music list's modern look: a movable window with a list of ten rows
-   and its three buttons. The facade centers the body at each open, as
-   legacy does. Classic (the legacy board, 170 x 300, its list and scroll
-   bar and the small buttons at legacy's places):
-   skins/classic/windows/music-list.rcss. */
+/* The music list's modern look: a movable window, the title row with its
+   music chip, the list on a sunken well with legacy's ten rows (30dp
+   apart, a hairline between two rows) and its scroll bar always shown, as
+   legacy's, with its arrows and a slim track; the three buttons centered
+   in the footer. The facade centers the body at each open, as legacy does.
+   Classic (the legacy board, 170 x 300, its list and scroll bar and the
+   small buttons at legacy's places): skins/classic/windows/music-list.rcss,
+   which also takes back every scroll bar rule below. */
 
-/* The sheet's own place frames the window in its 320 x 400dp snapshots;
-   the facade's center() replaces it in the client. */
+/* The sheet's own place frames the window in its snapshots, with room for
+   its shadow; the facade's center() replaces it in the client. */
 body.music-list
 {
-	left: 10dp;
-	top: 12dp;
-	width: 300dp;
+	left: 100dp;
+	top: 24dp;
+	width: 260dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -19,34 +22,170 @@ body.music-list
 {
 	tab-index: none;
 }
+
+/* The music chip left of the title: a note drawn in code (a head, a stem
+   and a flag) in the accent. */
+.music-list__title-icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+	text-align: center;
+	vertical-align: middle;
+}
+.music-list__note
+{
+	display: inline-block;
+	position: relative;
+	width: 16dp;
+	height: 16dp;
+	vertical-align: middle;
+	pointer-events: none;
+}
+.music-list__note-head
+{
+	display: block;
+	position: absolute;
+	left: 3dp;
+	top: 9dp;
+	width: 7dp;
+	height: 5dp;
+	border-radius: 3dp;
+	background-color: var(--accent);
+	transform: rotate(-20deg);
+}
+.music-list__note-stem
+{
+	display: block;
+	position: absolute;
+	left: 8dp;
+	top: 2dp;
+	width: 2dp;
+	height: 10dp;
+	background-color: var(--accent);
+}
+.music-list__note-flag
+{
+	display: block;
+	position: absolute;
+	left: 9dp;
+	top: 3dp;
+	width: 5dp;
+	height: 2dp;
+	border-radius: 1dp;
+	background-color: var(--accent);
+	transform: rotate(35deg);
+}
+
 .music-list__body
 {
-	padding: var(--space-3);
+	padding: var(--space-3) var(--space-3) 6dp;
+}
+.music-list__list
+{
+	padding: 3dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+	background-color: var(--surface-sunken);
 }
 .music-list .music-list__viewport
 {
-	height: 220dp;
+	height: 300dp;
+	overflow-y: scroll;
 }
 .music-list__item
 {
-	height: 26dp;
+	height: 30dp;
 	padding-top: 0;
 	padding-bottom: 0;
-	line-height: 26dp;
+	line-height: 28dp;
+}
+.music-list__item + .music-list__item
+{
+	border-top-color: var(--border);
+}
+.music-list__item:hover + .music-list__item, .music-list__item.is-selected + .music-list__item,
+.music-list__item + .music-list__item:hover, .music-list__item + .music-list__item.is-selected
+{
+	border-top-color: transparent;
 }
 .music-list__label
 {
 	white-space: nowrap;
+	overflow: hidden;
 }
+
+/* The scroll bar: the up and down arrows and a slim rounded track with its
+   thumb. Each arrow is a triangle: a conic wedge from the middle of its
+   content box (8 x 10dp), so it fills one half of that box, which the
+   padding centers in the 16 x 18dp arrow. The rules are lighter than the
+   classic skin's scroll bar rules, and the classic overlay takes back what
+   they add. */
+.music-list__viewport scrollbarvertical
+{
+	width: 16dp;
+	margin-left: var(--space-1);
+}
+.music-list__viewport sliderarrowdec, .music-list__viewport sliderarrowinc
+{
+	box-sizing: border-box;
+	width: 16dp;
+	height: 18dp;
+	border-radius: 5dp;
+}
+.music-list__viewport sliderarrowdec
+{
+	padding: 1dp 4dp 7dp;
+	decorator: conic-gradient(from 141deg, var(--text-muted) 0%, var(--text-muted) 21.5%, transparent 21.5%, transparent 100%) content-box;
+}
+.music-list__viewport sliderarrowinc
+{
+	padding: 7dp 4dp 1dp;
+	decorator: conic-gradient(from -39deg, var(--text-muted) 0%, var(--text-muted) 21.5%, transparent 21.5%, transparent 100%) content-box;
+}
+.music-list__viewport sliderarrowdec:hover, .music-list__viewport sliderarrowinc:hover
+{
+	background-color: var(--surface-hover);
+}
+.music-list__viewport slidertrack
+{
+	margin: 2dp 5dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 3dp;
+	background-color: var(--surface);
+}
+.music-list__viewport sliderbar
+{
+	width: 6dp;
+	margin-left: 5dp;
+	border-radius: 3dp;
+	background-color: var(--surface-hover);
+}
+.music-list__viewport sliderbar:hover, .music-list__viewport sliderbar:active
+{
+	background-color: var(--text-muted);
+}
+
 /* Three buttons fit the width in the longest locale (de: Aktualisieren);
    a longer label wraps the row rather than leave the window. */
 .music-list__footer
 {
 	justify-content: center;
 	flex-wrap: wrap;
+	gap: 6dp;
+	padding: var(--space-2) 10dp var(--space-3);
 }
 .music-list__button
 {
-	min-width: 64dp;
-	padding: 0 var(--space-2);
+	min-width: 54dp;
+	padding: 0 9dp;
 }

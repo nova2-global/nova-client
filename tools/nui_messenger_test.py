@@ -21,7 +21,9 @@ import nui_game_support as support  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
 
 DOCUMENT = "nui/windows/messenger/messenger.rml"
-FRIEND, GUILD = 0, 1
+# The C++ handler's group indices (uimessenger.py): the staff rosters since
+# NOVA-30/46, the block list since NOVA-47.
+FRIEND, GUILD, HELPER, TEAMLER, BLOCK = 0, 1, 2, 3, 4
 
 
 def guild_state(game):
@@ -84,7 +86,8 @@ class MessengerTest(unittest.TestCase):
             else:
                 window.SetTop()
                 button = {"add": window.addFriendButton, "whisper": window.whisperButton,
-                          "remove": window.removeButton, "guild": window.guildButton}[name]
+                          "remove": window.removeButton, "guild": window.guildButton,
+                          "block": window.blockPlayerButton, "unblock": window.unblockPlayerButton}[name]
                 if button.event:
                     button.event(*button.eventArgs)
 
@@ -125,7 +128,10 @@ class Model(MessengerTest):
                     getattr(window, call[0])(*call[1:])
             with self.subTest(call=call):
                 self.assertEqual(w4.board(nwin).model["rows"], self.legacy_rows(lw, lwin))
-        self.assertEqual([row["kind"] for row in self.legacy_rows(lw, lwin)], ["group", "member", "group", "empty"])
+        # Friend, Guild, then the Helper, Team and Blocked Players groups
+        # since NOVA-30/46/47, each showing the empty line.
+        self.assertEqual([row["kind"] for row in self.legacy_rows(lw, lwin)],
+                         ["group", "member", "group", "empty"] + ["group", "empty"] * 3)
 
     def test_the_family_group_and_the_lover_come_first_with_the_love_points(self):
         world, window = self.world(True)
@@ -138,6 +144,30 @@ class Model(MessengerTest):
                          [("group", world.m("localeInfo").MESSENGER_FAMILY), ("member", "Erin")])
         self.assertEqual((rows[1]["love"], rows[1]["hint"]), (87, world.m("localeInfo").AFF_LOVE_POINT % 87))
         self.assertTrue(all(row["love"] == -1 for row in rows[2:]))
+
+    def test_each_row_ends_in_its_state(self):
+        """The reviewed board's state (nui_messenger.state_of): a group's
+        online and total members, a member's Online or Offline; none for
+        the Blocked Players, whose online state the client never learns,
+        nor beside a roster member's flags."""
+        world, window = self.world(True)
+        self.fill(world, window)
+        with world.game, w4.quiet():
+            window.OnLogin(HELPER, "Helen")
+            window.SetLanguagesFlags(HELPER, "Helen", "en")
+            window.OnLogin(HELPER, "Hank")
+        self.show(world, window)
+        with world.game, w4.quiet():
+            window.OnBlockedAct(1, "Sly")
+        states = [(row["name"], row["state"]) for row in w4.board(window).model["rows"]]
+        locale = world.m("localeInfo")
+        self.assertEqual(states, [
+            (locale.MESSENGER_FRIEND, "2 / 3"), ("Alice", "@ui.NUI_MESSENGER_ONLINE"),
+            ("Carl", "@ui.NUI_MESSENGER_ONLINE"), ("Bob", "@ui.NUI_MESSENGER_OFFLINE"),
+            (locale.MESSENGER_GUILD, "1 / 2"), ("Dana", "@ui.NUI_MESSENGER_ONLINE"), ("Boss", "@ui.NUI_MESSENGER_OFFLINE"),
+            (locale.MESSENGER_HELPER, "2 / 2"), ("Helen", ""), ("Hank", "@ui.NUI_MESSENGER_ONLINE"),
+            (locale.MESSENGER_TEAMLER, "0 / 0"), (locale.MESSENGER_EMPTY_LIST, ""),
+            (locale.BLOCKED_PLAYERS_TITLE, ""), ("Sly", "")])
 
     def test_a_press_on_a_group_closes_it_and_a_second_opens_it(self):
         def flow(world, window):
@@ -233,6 +263,81 @@ class Flows(MessengerTest):
                 sent = [call for call in novaui if call[0] == "net.SendMessengerAddByNamePacket"]
                 self.assertEqual(sent, [("net.SendMessengerAddByNamePacket", (text,))] if text else [])
 
+    def test_block_sends_the_typed_name(self):
+        """NOVA-47 (uimessenger.py OnPressBlockButton, OnBlockPlayer): the
+        dialog kit's input dialog, then the block packet with the name."""
+        for text in ("Rival", ""):
+            def flow(world, window, text=text):
+                self.press(world, window, "block")
+                dialog = self.last_dialog(world, "uiCommon.InputDialog")
+                dialog.text = text
+                dialog.accept()
+            (legacy, _, _), (novaui, _, _) = self.run_both(flow)
+            with self.subTest(text=text):
+                self.assertEqual(novaui, legacy)
+                sent = [call for call in novaui if call[0] == "net.SendBlockAddPacket"]
+                self.assertEqual(sent, [("net.SendBlockAddPacket", (text,))] if text else [])
+
+    def test_the_blocked_group_follows_the_block_list_and_unblock_asks(self):
+        """NOVA-47: the Blocked Players group holds the client's list at each
+        show (__RefreshBlockedGroup) and follows the server's answers
+        (OnBlockedAct); Unblock is enabled on a blocked player's row and asks
+        before the unblock packet."""
+        def blocked(game):
+            guild_state(game)
+            game.w4["messenger"]["blocked"].append("Rival")
+
+        def flow(world, window):
+            names = [item.GetName() for item in window.showingItemList]
+            world.row = names.index("Rival")
+            world.enabled_before = self.unblock_enabled(world, window)
+            self.press_row(world, window, world.row)
+            world.enabled_after = self.unblock_enabled(world, window)
+            self.press(world, window, "unblock")
+            dialog = self.last_dialog(world, "uiCommon.QuestionDialog")
+            world.question = dialog.texts
+            dialog.accept()
+            window.OnBlockedAct(0, "Rival")
+            window.OnBlockedAct(1, "Sly")
+        (legacy, a_world, a), (novaui, b_world, b) = self.run_both(flow, setup=blocked)
+        self.assertEqual(novaui, legacy)
+        self.assertEqual((b_world.enabled_before, b_world.enabled_after), (False, True))
+        self.assertEqual((a_world.enabled_before, a_world.enabled_after), (False, True))
+        self.assertEqual(b_world.question, a_world.question)
+        self.assertIn(("net.SendBlockRemovePacket", ("Rival",)), novaui)
+        rows = w4.board(b).model["rows"]
+        self.assertEqual(rows, self.legacy_rows(a_world, a))
+        names = [row["name"] for row in rows]
+        self.assertNotIn("Rival", names)
+        self.assertEqual(names[-2:], [b_world.m("localeInfo").BLOCKED_PLAYERS_TITLE, "Sly"])
+
+    @staticmethod
+    def unblock_enabled(world, window):
+        if world.nui_on:
+            return w4.board(window).model["unblock_enabled"]
+        # The legacy button's last Enable or Disable (the stand-in records them).
+        states = [call[0] for call in window.unblockPlayerButton.calls if call[0] in ("Enable", "Disable")]
+        return bool(states) and states[-1] == "Enable"
+
+    def test_a_roster_member_s_languages_show_as_its_flags(self):
+        """NOVA-30/46 (uimessenger.py SetLanguagesFlags): a Helper or Team
+        member's languages, a flag each that has a file (constInfo)."""
+        def flow(world, window):
+            window.OnLogin(HELPER, "Helen")
+            window.SetLanguagesFlags(HELPER, "Helen", "en de xx")
+            window.OnLogout(TEAMLER, "Tom")
+            window.SetLanguagesFlags(TEAMLER, "Tom", "pt")
+        (legacy, a_world, a), (novaui, b_world, b) = self.run_both(flow)
+        self.assertEqual(novaui, legacy)
+        rows = w4.board(b).model["rows"]
+        self.assertEqual(rows, self.legacy_rows(a_world, a))
+        flags = dict((row["name"], row["flags"]) for row in rows if row["kind"] == "member")
+        self.assertEqual(flags["Helen"], ["/locale/common/ui/flag/32/en.tga", "/locale/common/ui/flag/32/de.tga"])
+        self.assertEqual(flags["Tom"], ["/locale/common/ui/flag/32/pt.tga"])
+        self.assertEqual(flags["Alice"], [])
+        legacy_helen = [item for item in a.showingItemList if item.GetName() == "Helen"][0]
+        self.assertEqual(len(legacy_helen.flagImageList), 2)
+
     def test_the_guild_button_calls_the_interface(self):
         def flow(world, window):
             self.press(world, window, "guild")
@@ -274,7 +379,8 @@ class Flows(MessengerTest):
         with world.game, w4.quiet():
             w4.fire(window, "resized", 220.4)
         self.assertEqual(w4.board(window).model["height"], 220.0)
-        self.assertEqual(window.showingPageSize, 210 - 66)
+        # Less the block buttons' row since NOVA-47 (uimessenger.py OnResizeDialog).
+        self.assertEqual(window.showingPageSize, 210 - 66 - window.BLOCK_BUTTON_ROW_HEIGHT)
         with world.game, w4.quiet():
             w4.fire(window, "resized", 90)
         self.assertEqual(window.resizeButton.GetLocalPosition(), (0, 140), "legacy's least: the button at 140")

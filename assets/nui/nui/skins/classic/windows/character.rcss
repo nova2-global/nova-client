@@ -717,3 +717,150 @@ body.skin-classic.char .char-tab--status { left: 6dp; width: 53dp; }
 body.skin-classic.char .char-tab--skill { left: 61dp; width: 67dp; }
 body.skin-classic.char .char-tab--emoticon { left: 130dp; width: 61dp; }
 body.skin-classic.char .char-tab--quest { left: 192dp; width: 55dp; }
+
+/* --- The modern restyle (skins stage 1): what the modern sheet sets that
+   legacy's board does not have. The modern parts classic does not show
+   (the face's ring parts, the class chip, the EXP bar, the pictograms, the
+   step arrows, the halves' rule) are hidden; the rest keeps legacy's look
+   and places: no well, card, badge or strip look, no margins on the parts
+   placed against the panel, the cover art on every skill and emotion. --- */
+
+body.skin-classic.char .char-face__level, body.skin-classic.char .char-tag, body.skin-classic.char .char-ico,
+body.skin-classic.char .char-exp, body.skin-classic.char .char-step-arrow, body.skin-classic.char .char-skills-split
+{
+	display: none;
+}
+body.skin-classic.char .char-face.nui-fx
+{
+	box-shadow: none;
+}
+/* The face's clip keeps no box: the face image is placed against the face. */
+body.skin-classic.char .char-face__clip
+{
+	display: block;
+	position: static;
+	width: auto;
+	height: auto;
+	overflow: visible;
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.char .char-guild
+{
+	display: block;
+	box-sizing: content-box;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-guild__text
+{
+	overflow: visible;
+}
+body.skin-classic.char .char-divider, body.skin-classic.char .char-progress, body.skin-classic.char .char-groups,
+body.skin-classic.char .char-progress__cells
+{
+	display: block;
+	min-height: 0;
+	height: auto;
+	padding: 0;
+	margin: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: none;
+}
+body.skin-classic.char .char-stat
+{
+	box-sizing: content-box;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-stat__value
+{
+	font-size: var(--font-sm);
+}
+body.skin-classic.char .char-steps
+{
+	width: auto;
+	height: auto;
+}
+body.skin-classic.char .char-step, body.skin-classic.char .char-points--active, body.skin-classic.char .char-skills,
+body.skin-classic.char .char-support, body.skin-classic.char .char-emotes, body.skin-classic.char .char-quest-cells,
+body.skin-classic.char .char-tabs
+{
+	margin: 0;
+}
+body.skin-classic.char .char-group-name
+{
+	height: auto;
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	font-size: var(--font-sm);
+	text-align: left;
+}
+body.skin-classic.char .char-skills-board
+{
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-skill .nui-slot__cover, body.skin-classic.char .char-emote .nui-slot__cover
+{
+	display: block;
+}
+/* The modern looks draw a disabled column's cover as a padlock. */
+body.skin-classic.char .char-skill.is-unavailable .nui-slot__cover
+{
+	left: 0;
+	top: 0;
+	z-index: 3;
+	width: 32dp;
+	height: 32dp;
+	border-radius: 0;
+}
+body.skin-classic.char .char-skill .nui-number__text
+{
+	text-transform: none;
+}
+body.skin-classic.char .char-quest
+{
+	position: static;
+	box-sizing: content-box;
+	padding: 0;
+	border-width: 0;
+}
+body.skin-classic.char .char-quest-scroll progress.char-quest-scroll__track
+{
+	display: block;
+}
+body.skin-classic.char .char-quest-scroll__rail
+{
+	box-sizing: content-box;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-quest-scroll__thumb
+{
+	transform: none;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-quest-scroll__thumb.nui-fx
+{
+	box-shadow: none;
+}
+body.skin-classic.char .char-tabs
+{
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}

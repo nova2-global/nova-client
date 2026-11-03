@@ -432,12 +432,14 @@ TARGET_METHODS = ("SetWhisperEvent", "Hide", "Open", "RefreshByVID", "RefreshByN
                   "ResetTargetBoard", "SetEnemyVID", "SetHP", "Show", "Close", "Destroy", "IsShow", "GetTargetName",
                   "SetTargetVID", "SetTargetName", "ShowDefaultButton", "HideAllButton", "RefreshButton", "IsShowButton",
                   "OnPressedCloseButton", "OnPressEscapeKey", "UpdatePosition", "OnWhisper", "OnExchange", "OnPVP",
-                  "OnAppendToMessenger", "OnPartyInvite", "OnPartyExit", "OnPartyRemove")
+                  "OnAppendToMessenger", "OnPartyInvite", "OnPartyExit", "OnPartyRemove",
+                  # The block list (NOVA-47).
+                  "OnBlockPlayer", "OnUnblockPlayer")
 TARGET_CONSTANTS = ("BTN_WHISPER", "BTN_EXCHANGE", "BTN_FIGHT", "BTN_ACCEPT_FIGHT", "BTN_AVENGE", "BTN_FRIEND",
                     "BTN_INVITE_PARTY", "BTN_LEAVE_PARTY", "BTN_EXCLUDE", "BTN_INVITE_GUILD", "BTN_REMOVE_GUILD",
                     "BTN_DISMOUNT", "BTN_EXIT_OBSERVER", "BTN_VIEW_EQUIPMENT", "BTN_REQUEST_ENTER_PARTY",
-                    "BTN_BUILDING_DESTROY", "BTN_EMOTION_ALLOW", "BTN_VOTE_BLOCK_CHAT", "BUTTON_CONFIG",
-                    "EXCHANGE_LIMIT_RANGE")
+                    "BTN_BUILDING_DESTROY", "BTN_EMOTION_ALLOW", "BTN_VOTE_BLOCK_CHAT", "BTN_BLOCK", "BTN_UNBLOCK",
+                    "BUTTON_CONFIG", "EXCHANGE_LIMIT_RANGE")
 PARTY_METHODS = ("AddPartyMember", "UpdatePartyMemberInfo", "RemovePartyMember", "LinkPartyMember", "UnlinkPartyMember",
                  "UnlinkAllPartyMember", "ExitParty", "PartyHealReady", "ChangePartyParameter", "Show", "Hide", "IsShow",
                  "Destroy", "DestroyPartyMemberInfoBoard", "OnTogglePartyMenu")
@@ -1052,7 +1054,8 @@ def target_setup(game):
     t = game.target = {"same_empire": True, "party": set(), "leaders": set(), "pvp": False, "revenge": False,
                        "challenge": False, "cant_fight": False, "distance": 1000, "horse": False, "buildings": set(),
                        "friend": False, "guild_auth": set(), "guild_member": False, "guild_id": 0, "chr_party": False,
-                       "names": {PEER_VID: "NuiW2B2", 300: "Wild Dog"}, "levels": {300: 23}, "grades": {300: 4}}
+                       "names": {PEER_VID: "NuiW2B2", 300: "Wild Dog"}, "levels": {300: 23}, "grades": {300: 4},
+                       "blocked": set()}
     answer = game.answer
     answer("player", "IsSameEmpire", lambda vid: t["same_empire"])
     answer("player", "IsMainCharacterIndex", lambda vid: vid == MAIN_VID)
@@ -1072,6 +1075,7 @@ def target_setup(game):
     answer("nonplayer", "GetLevelByVID", lambda vid: t["levels"].get(vid, -1))
     answer("nonplayer", "GetGradeByVID", lambda vid: t["grades"].get(vid, -1))
     answer("messenger", "IsFriendByName", lambda name: t["friend"])
+    answer("messenger", "IsBlocked", lambda name: name in t["blocked"])
     answer("guild", "MainPlayerHasAuthority", lambda auth: auth in t["guild_auth"])
     answer("guild", "IsMemberByName", lambda name: t["guild_member"])
     answer("guild", "GetGuildMasterName", lambda: "Master")
@@ -1166,8 +1170,9 @@ class TargetDifferential(TargetWorlds):
             self.assertEqual(view["name"], "NuiW2B2", label)
             if relation == {}:
                 T = self.ids(legacy)
+                # Block since NOVA-47 (uitarget.py RefreshButton).
                 self.assertEqual(view["buttons"], [T.BTN_WHISPER, T.BTN_EXCHANGE, T.BTN_FIGHT, T.BTN_EMOTION_ALLOW,
-                                                   T.BTN_FRIEND, T.BTN_INVITE_PARTY])
+                                                   T.BTN_FRIEND, T.BTN_INVITE_PARTY, T.BTN_BLOCK])
             self.assertTrue(view["shown"], label)
 
     def test_every_button_sends_the_legacy_packet(self):
@@ -1188,6 +1193,36 @@ class TargetDifferential(TargetWorlds):
         self.assertIn(("net.SendChatPacket", ("/emotion_allow %d" % PEER_VID,)), result)
         self.assertEqual(novaui.whispers, legacy.whispers)
         self.assertEqual(novaui.whispers, ["NuiW2B2"])
+
+    def test_block_and_unblock_follow_the_block_list_and_switch_at_a_press(self):
+        """NOVA-47 (uitarget.py): Block for another player, Unblock for one on
+        the block list, neither for staff; a press sends the change and shows
+        the other button at once."""
+        legacy, novaui = self.worlds()
+        T = self.ids(legacy)
+        self.both(legacy, novaui, lambda world: world.board.Open(PEER_VID, "NuiW2B2"))
+        buttons = self.same_view(legacy, novaui)["buttons"]
+        self.assertIn(T.BTN_BLOCK, buttons)
+        self.assertNotIn(T.BTN_UNBLOCK, buttons)
+        result = self.both(legacy, novaui, lambda world: self.press(world, T.BTN_BLOCK))
+        self.assertEqual(result, [("net.SendBlockAddPacket", ("NuiW2B2",))])
+        buttons = self.same_view(legacy, novaui)["buttons"]
+        self.assertEqual((T.BTN_BLOCK in buttons, T.BTN_UNBLOCK in buttons), (False, True))
+        result = self.both(legacy, novaui, lambda world: self.press(world, T.BTN_UNBLOCK))
+        self.assertEqual(result, [("net.SendBlockRemovePacket", ("NuiW2B2",))])
+        self.assertIn(T.BTN_BLOCK, self.same_view(legacy, novaui)["buttons"])
+
+        legacy, novaui = self.worlds(blocked={"NuiW2B2"})
+        self.both(legacy, novaui, lambda world: world.board.Open(PEER_VID, "NuiW2B2"))
+        buttons = self.same_view(legacy, novaui)["buttons"]
+        self.assertEqual((T.BTN_BLOCK in buttons, T.BTN_UNBLOCK in buttons), (False, True))
+
+        legacy, novaui = self.worlds()
+        for world in (legacy, novaui):
+            world.game.target["names"][PEER_VID] = "[GM]Nova"
+        self.both(legacy, novaui, lambda world: world.board.Open(PEER_VID, "[GM]Nova"))
+        buttons = self.same_view(legacy, novaui)["buttons"]
+        self.assertEqual((T.BTN_BLOCK in buttons, T.BTN_UNBLOCK in buttons), (False, False), "never for staff")
 
     def test_the_relation_buttons_without_a_vid_and_the_main_characters_menu(self):
         legacy, novaui = self.worlds(horse=True)
@@ -1232,6 +1267,42 @@ class TargetDifferential(TargetWorlds):
         self.assertEqual(self.same_view(legacy, novaui)["hp"], 1.0)
         self.assertEqual(novaui.board.GetTargetVID(), 300)
         self.assertEqual(novaui.board.GetTargetName(), "Lv.23 (TARGET_LEVEL_BOSS) Wild Dog")
+
+    def test_a_player_target_shows_its_portrait_class_and_guild(self):
+        """The modern head of a player target (player_head): the face of its
+        race and "class · guild", the race read from the target selected
+        for that read alone; a guild whose name the client lacks, a vid
+        without an instance and a board opened by name show less."""
+        legacy, novaui = self.worlds(guild_id=7)
+        game = novaui.game
+        game.answer("chr", "HasInstance", lambda vid: vid == PEER_VID)
+        game.answer("chr", "GetRace", lambda: 5)
+        game.answer("chr", "RaceToJob", lambda race: 1 if race in (1, 5) else 0)
+        game.answer("guild", "GetGuildName", lambda guild_id: "Nova Riders" if guild_id == 7 else "Noname")
+        self.both(legacy, novaui, lambda world: world.board.Open(PEER_VID, "NuiW2B2"))
+        self.same_view(legacy, novaui)
+        model = novaui.board.board.model
+        with novaui:
+            job = novaui.module("nui_hud").locale_text("JOB_ASSASSIN")
+        self.assertTrue(job)
+        self.assertEqual(model["portrait"], "/icon/face/assassin_m.tga")
+        self.assertEqual(model["subtitle"], job + " · Nova Riders")
+        self.assertEqual([args for name, args in game.log if name == "chr.SelectInstance"], [(PEER_VID,), (MAIN_VID,)],
+                         "the main character is selected again")
+        game.target["guild_id"] = 8
+        with novaui, quiet():
+            novaui.board.Open(PEER_VID, "NuiW2B2")
+        self.assertEqual(model["subtitle"], job, "no name for the guild: the class alone")
+        with novaui, quiet():
+            novaui.board.Open(0, "NuiW2B2")
+        self.assertEqual((model["portrait"], model["subtitle"]), ("", ""), "a board opened by name has no head")
+        with novaui, quiet():
+            novaui.board.Open(PEER_VID + 1, "Other")
+        self.assertEqual((model["portrait"], model["subtitle"]), ("", ""), "no instance, no head")
+        with novaui, quiet():
+            novaui.board.Open(PEER_VID, "NuiW2B2")
+            novaui.board.Close()
+        self.assertEqual((novaui.board.nuiPortrait, novaui.board.nuiSubtitle), ("", ""), "a closed board forgets it")
 
     def test_the_exchange_button_follows_the_distance_c_plus_plus_watches(self):
         legacy, novaui = self.worlds()

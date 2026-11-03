@@ -57,11 +57,11 @@ small { font-size: var(--font-sm); }
 /* Scrollbars: RmlUi draws none unless they are styled (width 0). */
 scrollbarvertical
 {
-	width: 10dp;
+	width: 8dp;
 }
 scrollbarhorizontal
 {
-	height: 10dp;
+	height: 8dp;
 }
 scrollbarvertical slidertrack, scrollbarhorizontal slidertrack, scrollbarcorner
 {
@@ -70,18 +70,18 @@ scrollbarvertical slidertrack, scrollbarhorizontal slidertrack, scrollbarcorner
 scrollbarvertical sliderbar
 {
 	margin-left: 2dp;
-	width: 6dp;
+	width: 4dp;
 	min-height: 24dp;
-	border-radius: 3dp;
-	background-color: var(--border);
+	border-radius: 2dp;
+	background-color: var(--surface-hover);
 }
 scrollbarhorizontal sliderbar
 {
 	margin-top: 2dp;
-	height: 6dp;
+	height: 4dp;
 	min-width: 24dp;
-	border-radius: 3dp;
-	background-color: var(--border);
+	border-radius: 2dp;
+	background-color: var(--surface-hover);
 }
 scrollbarvertical sliderbar:hover, scrollbarvertical sliderbar:active,
 scrollbarhorizontal sliderbar:hover, scrollbarhorizontal sliderbar:active

@@ -1,15 +1,20 @@
 {
-	"$comment": "The cyberpunk skin's only art (README.md, \"Art\"): six white sprites with alpha that python3 tools/nui_skin_art.py build draws from these numbers (1x pixels) into cyberpunk-1x.png, cyberpunk-2x.png and cyberpunk-sprites.rcss. RCSS rounds corners only, and a 45-degree cut corner on a box of any size would cost two nested mask layers per element per frame; a ninepatch of white art tinted by image-color draws it as one cached decorator in the player's colors. A circular progress bar draws its fill only from an image (fill-image), so the taskbar's HP ring takes the ring sprite.",
+	"$comment": "The cyberpunk skin's only art (README.md, \"Art\"): eleven white sprites with alpha that python3 tools/nui_skin_art.py build draws from these numbers (1x pixels) into cyberpunk-1x.png, cyberpunk-2x.png and cyberpunk-sprites.rcss. RCSS rounds corners only, and a 45-degree cut corner on a box of any size would cost two nested mask layers per element per frame; a ninepatch of white art tinted by image-color draws it as one cached decorator in the player's colors. The shapes are the reviewed mockup's (stage 2): frames cut 12px at the top right and bottom left, buttons and chips 7px at the bottom right, HUD boards 6px at the top left and bottom right, the toggle a slanted track and knob. A circular progress bar draws its fill only from an image (fill-image), so the taskbar's HP ring takes the ring sprite.",
 	"name": "cyberpunk",
 	"out_dir": "assets/nui/nui/skins/cyberpunk",
 	"scales": [1, 2],
 	"sheet_width": 256,
 	"sprites": [
-		{"id": "panel", "kind": "chamfer-fill", "size": 48, "chamfer": 10, "corners": ["tl", "br"], "alpha": 1.0},
-		{"id": "panel-edge", "kind": "chamfer-edge", "size": 64, "chamfer": 10, "corners": ["tl", "br"], "line": 1, "glow": 6, "glow_alpha": 0.45},
-		{"id": "chip-solid", "kind": "chamfer-fill", "size": 24, "chamfer": 5, "corners": ["tl", "br"], "alpha": 1.0},
-		{"id": "chip", "kind": "chamfer-fill", "size": 24, "chamfer": 5, "corners": ["tl", "br"], "alpha": 0.3},
-		{"id": "chip-edge", "kind": "chamfer-edge", "size": 24, "chamfer": 5, "corners": ["tl", "br"], "line": 1, "glow": 0},
+		{"id": "panel", "kind": "chamfer-fill", "size": 48, "chamfer": 12, "corners": ["tr", "bl"], "alpha": 1.0},
+		{"id": "panel-edge", "kind": "chamfer-edge", "size": 64, "chamfer": 12, "corners": ["tr", "bl"], "line": 1, "glow": 6, "glow_alpha": 0.3},
+		{"id": "chip-solid", "kind": "chamfer-fill", "size": 24, "chamfer": 7, "corners": ["br"], "alpha": 1.0},
+		{"id": "chip", "kind": "chamfer-fill", "size": 24, "chamfer": 7, "corners": ["br"], "alpha": 0.2},
+		{"id": "chip-edge", "kind": "chamfer-edge", "size": 24, "chamfer": 7, "corners": ["br"], "line": 1, "glow": 0},
+		{"id": "board", "kind": "chamfer-fill", "size": 24, "chamfer": 6, "corners": ["tl", "br"], "alpha": 1.0},
+		{"id": "board-edge", "kind": "chamfer-edge", "size": 24, "chamfer": 6, "corners": ["tl", "br"], "line": 1, "glow": 0},
+		{"id": "skew", "kind": "chamfer-fill", "size": 16, "chamfer": 4, "corners": ["tl", "br"], "alpha": 0.15},
+		{"id": "skew-edge", "kind": "chamfer-edge", "size": 16, "chamfer": 4, "corners": ["tl", "br"], "line": 1, "glow": 0},
+		{"id": "knob", "kind": "chamfer-fill", "size": 12, "chamfer": 3, "corners": ["tl", "br"], "alpha": 1.0, "inner": 3},
 		{"id": "ring", "kind": "ring", "size": 40, "line": 3, "glow": 2, "glow_alpha": 0.5}
 	]
 }

@@ -66,7 +66,9 @@ WINDOWS = os.path.join(REPO, "assets", "nui", "nui", "windows")
 ITEM_TYPES = ("NONE", "WEAPON", "ARMOR", "USE", "AUTOUSE", "MATERIAL", "SPECIAL", "TOOL", "LOTTERY", "ELK", "METIN",
               "CONTAINER", "FISH", "ROD", "RESOURCE", "CAMPFIRE", "UNIQUE", "SKILLBOOK", "QUEST", "POLYMORPH",
               "TREASURE_BOX", "TREASURE_KEY", "SKILLFORGET", "GIFTBOX", "PICK", "HAIR", "TOTEM", "BLEND", "COSTUME",
-              "DS", "SPECIAL_DS", "EXTRACT", "SECONDARY_COIN", "RING", "BELT")   # EItemType, ItemData.h:23-61
+              "DS", "SPECIAL_DS", "EXTRACT", "SECONDARY_COIN", "RING", "BELT",   # EItemType, ItemData.h:23-61
+              # Wave 4b: OLD's types since the foundation cut (ItemData.h, the server's item_length.h).
+              "TRANSFER_SCROLL", "FAKE_BUFF_INT_BOOST", "TOGGLE", "GACHA")
 SUB_TYPES = {
     "WEAPON": ("WEAPON_SWORD", "WEAPON_DAGGER", "WEAPON_BOW", "WEAPON_TWO_HANDED", "WEAPON_BELL", "WEAPON_FAN",
                "WEAPON_ARROW"),                                                      # :64-76
@@ -99,6 +101,15 @@ LIMITS = {"LIMIT_NONE": 0, "LEVEL": 1, "STR": 2, "DEX": 3, "INT": 4, "CON": 5, "
           "REAL_TIME_FIRST_USE": 8, "TIMER_BASED_ON_WEAR": 9}                              # :161-185
 # Constants the rules compare with (constinfo.py, uitooltip.py).
 ERROR_METIN_STONE = 28960
+# Wave 4b (NOVA-81): the treasure chest of the gacha cases (a synthetic row:
+# the 4b proto's vnum and values).
+GACHA_CHEST = 34218
+# The extra inventory's window and the gacha's item type (main's exe:
+# GameType.h EXTRA_INVENTORY, ItemData.h ITEM_TYPE_GACHA), which the client
+# constants the stand-ins are made from (tools/fixtures/module_constants.json,
+# before the foundation cut) lack; TipWorld gives the rules both.
+EXTRA_INVENTORY = 6
+ITEM_TYPE_GACHA = 38
 SILVER, GOLD = 1, 2
 CLOCK = 1700000000
 DAY = 24 * 3600
@@ -437,6 +448,10 @@ SYNTHETIC.update({
                   icon="icon/item/missing_stone.tga"),
     110500: dict(_made("Dragon Stone of the Sixth Step", "DS", 0, ((LIMITS["TIMER_BASED_ON_WEAR"], 86400), (0, 0))),
                  applies=[["APPLY_MAX_HP", 100]]),
+    # Wave 4b (NOVA-81): a treasure chest (ITEM_GACHA), which the corpus's proto
+    # predates: the 4b proto's Fire Treasure Chest, ten opens a chest
+    # (LIMIT_VALUE1), stackable.
+    GACHA_CHEST: _made("Fire Treasure Chest", "GACHA", 0, ((0, 0), (0, 10)), flags=FLAGS["ITEM_STACKABLE"]),
 })
 
 # --- the skills (spec 5.8's skill cases; the numbers are the cases', the names the client's) ------
@@ -720,6 +735,23 @@ def state_cases(items):
     add("gem-socket", "AddItemData", 10, sockets=[_first(items, "USE", lambda r: r.get("use_type") == "USE_PUT_INTO_ACCESSORY_SOCKET"),
                                                   _first(items, "USE", lambda r: r.get("use_type") == "USE_PUT_INTO_BELT_SOCKET"), 900003],
         attrs=[])
+
+    # Wave 4b: the gacha's opens left (socket0 in a bag, LIMIT_VALUE1 in a
+    # shop) and the multi-open hint of a stack; the move hints of a bag item
+    # (__AppendMoveHints): the safebox open (uiToolTip.SetSafeboxOpen), a
+    # trade open (exchange.isTrading), an item of the extra inventory
+    # (SetInventoryItem(slot, player.EXTRA_INVENTORY)). `window`,
+    # `safebox_open` and `trading` are the case's (_run_case).
+    chest = GACHA_CHEST if str(GACHA_CHEST) in items else None
+    add("gacha-bag", "SetInventoryItem", chest, sockets=[7, 0, 0], attrs=[])
+    add("gacha-bag-stack", "SetInventoryItem", chest, count=3, sockets=[10, 0, 0], attrs=[])
+    add("gacha-shop", "SetShopItem", chest, sockets=[0, 0, 0], attrs=[], shop={"open": True, "private": False, "price": 500})
+    add("move-safebox-open", "SetInventoryItem", 27001, sockets=[0, 0, 0], attrs=[], safebox_open=True)
+    add("move-trading-costume", "SetInventoryItem", 41001, sockets=[0, 0, 0], attrs=[], trading=True)
+    add("move-extra-costume", "SetInventoryItem", 41001, sockets=[0, 0, 0], attrs=[], window="EXTRA_INVENTORY", pos=900)
+    add("move-extra-chest", "SetInventoryItem", chest, count=2, sockets=[10, 0, 0], attrs=[], window="EXTRA_INVENTORY",
+        pos=675, safebox_open=True, trading=True)
+    add("move-worn-safebox-open", "SetInventoryItem", 11200, sockets=[0, 0, 0], attrs=[], pos=90, safebox_open=True)
     return [case for case in cases if case["vnum"] is not None]
 
 
@@ -907,6 +939,11 @@ class TipWorld(object):
             modules["item"].ITEM_APPLY_MAX_NUM = FOUNDATION_SIZES["ITEM_APPLY_MAX_NUM"]
             affect = modules["item"].GetAffect
             modules["item"].GetAffect = lambda i: (list(_padded(affect, 7)) + [(0, 0)] * 7)[i]
+        # Wave 4b: the extra inventory's window and the gacha's type (main's
+        # exe), and the trade the case opens (exchange.isTrading).
+        modules["player"].EXTRA_INVENTORY = EXTRA_INVENTORY
+        modules["item"].ITEM_TYPE_GACHA = ITEM_TYPE_GACHA
+        support.define(modules["exchange"], "isTrading", lambda: bool(self.data.case.get("trading")))
         game.load_standard()
         game.load("nui_text", "nui_text.py")
         with quiet():
@@ -1067,6 +1104,7 @@ def _run_case(world, case):
     world.rtl[0] = bool(case.get("rtl"))
     game.modules["localeInfo"].MINIMAP_ZONE_NAME_DICT = {"metin2_map_a1": "Yongan"} if case.get("zone") else {}
     world.dragon_soul.isActivated = bool(case.get("ds_active"))
+    world.m("uiToolTip").SetSafeboxOpen(bool(case.get("safebox_open")))
     game.modules["wndMgr"].mouse = tuple(case.get("mouse", (0, 0)))
     if case.get("skill") and "real_grade" in case:
         world.data.case["skill"] = dict(case["skill"], grade=case["real_grade"])
@@ -1084,7 +1122,9 @@ def _run_case(world, case):
     if hasattr(tip, "SetCannotUseItemForceSetDisableColor"):
         tip.SetCannotUseItemForceSetDisableColor(case.get("force_color", True))
     with quiet():
-        if context == "SetInventoryItem":
+        if context == "SetInventoryItem" and "window" in case:
+            tip.SetInventoryItem(pos, getattr(player, case["window"]))
+        elif context == "SetInventoryItem":
             tip.SetInventoryItem(pos)
         elif context in ("SetShopItem", "SetShopItemBySecondaryCoin", "SetExchangeOwnerItem", "SetExchangeTargetItem",
                          "SetSafeBoxItem", "SetMallItem"):
@@ -1505,9 +1545,12 @@ ATTRS_FIXTURE = [[1, 1500], [5, 12], [7, 10], [15, 8], [16, 6], [43, 10], [44, 1
 
 
 def _model_of(world, kind, calls, case=None):
-    """The board's model after `calls` on the world's facade of `kind`."""
+    """The board's model after `calls` on the world's facade of `kind`; the
+    case's safebox_open (uiToolTip.SetSafeboxOpen) and trading
+    (exchange.isTrading) hold for it, as in _run_case."""
     tip = world.tooltip(kind)
     support.apply_case(world.game, case or {"vnum": 0})
+    world.m("uiToolTip").SetSafeboxOpen(bool((case or {}).get("safebox_open")))
     world.game.state.now = FIXTURE_CLOCK_NOW
     for name, args in calls:
         getattr(tip, name)(*args)
@@ -1533,6 +1576,16 @@ def fixtures():
         out[("item-tooltip", "shop")] = {"item_tooltip": _model_of(today, "item", [["SetShopItem", [0]]], {
             "vnum": 30329, "sockets": [CLOCK + 300, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
             "shop": {"open": True, "private": False, "price": 1250}})}
+        # Wave 4b (NOVA-81, NOVA-16): a stack of treasure chests in the bag
+        # with seven opens left, the safebox open and a trade open: the
+        # "Left" line, the multi-open hint and the safebox's and the trade's
+        # move hints; a costume in the special inventory: its move hint.
+        out[("item-tooltip", "gacha")] = {"item_tooltip": _model_of(today, "item", [["SetInventoryItem", [0]]], {
+            "vnum": GACHA_CHEST, "count": 3, "sockets": [7, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
+            "safebox_open": True, "trading": True})}
+        out[("item-tooltip", "extra")] = {"item_tooltip": _model_of(today, "item", [
+            ["SetInventoryItem", [900, EXTRA_INVENTORY]]], {
+            "vnum": 41001, "pos": 900, "sockets": [CLOCK + DAY, 0, 0], "attrs": [], "player": player, "clock": CLOCK})}
         out[("skill-tooltip", "")] = {"skill_tooltip": _model_of(today, "skill", [["SetSkillNew", [1, 1, 2, 5]]], {
             "vnum": 1, "player": {"level": 3, "race": 0},
             "skill": {"vnum": 1, "slot": 1, "grade": 2, "level": 5, "efficient": 0.5, "next": 0.6}})}

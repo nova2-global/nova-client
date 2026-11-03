@@ -13,6 +13,10 @@ body.skin-classic.gift-box .gift-box__icon
 	border-radius: 0;
 	background-color: transparent;
 }
+body.skin-classic.gift-box .gift-box__well
+{
+	display: none;
+}
 /* The legacy present as one skin-provided frame (an <img> at its own size). */
 body.skin-classic.gift-box .gift-box__frames
 {

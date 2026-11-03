@@ -1,7 +1,9 @@
 {
-	"$comment": "Golden cases of the atlas (tools/check_nui_snapshots.py): one map's atlas with its title. The map view is the 256 x 256 stand-in tools/nui_view_fixtures.py makes (--view), whose size is the view's natural size; the classic frame art is under d:/ymir work/ (assets/ETC).",
+	"$comment": "Golden cases of the atlas (tools/check_nui_snapshots.py): one map's atlas with its title. The map view is the 256 x 256 stand-in tools/nui_view_fixtures.py makes (--view), whose size is the view's natural size; the classic frame art is under d:/ymir work/ (assets/ETC). The modern and cyberpunk frames are taller than classic's, so the window's shadow stays inside the frame (a shadow the frame's edge cuts stretches the window's background in nuitool's renderer).",
 	"cases": [
-		{"page": "atlas", "themes": "all", "scales": [["100", "1", "640x400"], ["150", "1.5", "960x600"], ["200", "2", "1280x800"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		{"page": "atlas", "themes": "all", "except": ["classic"], "scales": [["100", "1", "640x480"], ["150", "1.5", "960x720"], ["200", "2", "1280x960"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
+		 "views": {"atlas": "nui/windows/atlas/atlas.view.png"}},
+		{"page": "atlas", "themes": ["classic"], "scales": [["100", "1", "640x400"], ["150", "1.5", "960x600"], ["200", "2", "1280x800"]], "fixture": true, "roots": ["assets/ETC"], "time": null,
 		 "views": {"atlas": "nui/windows/atlas/atlas.view.png"}}
 	]
 }

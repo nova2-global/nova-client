@@ -18,13 +18,41 @@ body.skin-classic.guild-war .nui-panel.guild-war__board
 	font-size: var(--font-md);
 	color: var(--text);
 }
+body.skin-classic.guild-war .nui-panel.guild-war__board
+{
+	min-width: 0;
+	font-weight: normal;
+}
+body.skin-classic.guild-war .guild-war__row-slot
+{
+	margin-bottom: 0;
+}
 body.skin-classic.guild-war .guild-war__row
 {
+	display: block;
+	box-sizing: content-box;
 	height: 18dp;
 	padding-left: 20dp;
+	padding-right: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
 	line-height: 14dp;
 }
 body.skin-classic.guild-war .guild-war__mark
 {
+	left: 0;
 	top: 0;
+	border-width: 0;
+	border-radius: 0;
+}
+/* Legacy's one text ("name score"), no score badge and no leading row. */
+body.skin-classic.guild-war .guild-war__text
+{
+	display: inline;
+}
+body.skin-classic.guild-war .guild-war__name,
+body.skin-classic.guild-war .guild-war__score
+{
+	display: none;
 }

@@ -232,7 +232,9 @@ class GoldenPolicy(Scratch):
                                             "character-hover-", "dragon-soul-hover-", "dragon-soul-refine-hover-",
                                             # Wave 4 (P16): the trade windows' slot hover cases.
                                             "exchange-hover-", "shop-hover-", "private-shop-hover-", "safebox-hover-",
-                                            "mall-hover-"))}
+                                            "mall-hover-",
+                                            # Wave 4b: the extra inventory's slot hover cases.
+                                            "extra-inventory-hover-", "extra-inventory-costumes-hover-"))}
         self.assertEqual(added, classic)
 
     def test_a_theme_without_a_golden_entry_stops_the_checker(self):

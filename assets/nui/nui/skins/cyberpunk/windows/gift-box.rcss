@@ -1,11 +1,39 @@
-/* Cyberpunk overlay of nui/windows/gift-box/gift-box.rml: the gift button as
-   a violet neon chip. */
+/* Cyberpunk overlay of nui/windows/gift-box/gift-box.rml: the reviewed
+   mockup's gift icon (skins-stage2 ref WGiftBox-cyberpunk). The 52dp chip
+   is the frame's dark panel (cut at the top right and bottom left); the
+   well inside it a neon chip (cut at the bottom right, a faint accent fill
+   and the accent edge); the present drawn in neon lines of the accent
+   with its ribbon magenta; the spark keeps the warning color. No motion. */
 
 body.skin-cyberpunk.gift-box .gift-box__icon
 {
 	border-color: transparent;
 	border-radius: 0;
 	background-color: transparent;
+	decorator: ninepatch(cyberpunk-panel, cyberpunk-panel-inner) border-box;
+	image-color: var(--surface);
+}
+body.skin-cyberpunk.gift-box .gift-box__well
+{
+	border-color: transparent;
+	border-radius: 0;
+	background-color: transparent;
 	decorator: ninepatch(cyberpunk-chip, cyberpunk-chip-inner) border-box, ninepatch(cyberpunk-chip-edge, cyberpunk-chip-edge-inner) border-box;
-	image-color: var(--cyberpunk-edge-alt);
+	image-color: var(--accent);
+}
+body.skin-cyberpunk.gift-box .gift-box__bow
+{
+	border-color: var(--accent);
+	border-radius: 0;
+}
+body.skin-cyberpunk.gift-box .gift-box__lid, body.skin-cyberpunk.gift-box .gift-box__box
+{
+	border-width: 2dp;
+	border-color: var(--accent);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.gift-box .gift-box__ribbon
+{
+	background-color: var(--cyberpunk-edge-alt);
 }

@@ -12,8 +12,8 @@
 	display: inline-block;
 	box-sizing: border-box;
 	width: 200dp;
-	height: 32dp;
-	padding: 0 var(--space-2);
+	height: 28dp;
+	padding: 0 9dp;
 	border-width: 1dp;
 	border-color: var(--border);
 	border-radius: 0;
@@ -21,7 +21,7 @@
 	color: var(--text);
 	caret-color: var(--text);
 	font-size: var(--font-md);
-	line-height: 30dp;
+	line-height: 26dp;
 	vertical-align: middle;
 }
 .nui-input:hover, .nui-input.is-hover

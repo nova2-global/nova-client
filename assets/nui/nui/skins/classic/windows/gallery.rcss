@@ -11,3 +11,8 @@ body.skin-classic.nui-window
 {
 	display: none;
 }
+/* The legacy slider is as wide as its art (classic.rcss). */
+.skin-classic .gallery-slider .nui-slider
+{
+	width: 175dp;
+}

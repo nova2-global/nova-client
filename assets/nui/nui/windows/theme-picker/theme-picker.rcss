@@ -11,18 +11,30 @@ body.picker
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: var(--space-1);
-	padding: var(--space-1) var(--space-2);
+	gap: 4dp;
+	padding: 4dp;
 }
+/* Modern (the reviewed login screen's theme strip): the heading in small
+   bold muted type, the themes as small ghost buttons, the one in use
+   filled with the accent. */
 .picker__label
 {
-	margin-right: var(--space-1);
+	padding: 0dp 6dp;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
+	font-weight: bold;
 }
 .picker__button
 {
 	focus: none;
+	background-color: transparent;
+	border-color: transparent;
+	color: var(--text-muted);
+}
+.picker__button:hover
+{
+	background-color: var(--surface-hover);
+	color: var(--text);
 }
 /* Kept clear of the boards and the keyboard (nui.Window.keep_clear_of): while
    it overlaps one that is shown, it is hidden. Not display: none, whose zero

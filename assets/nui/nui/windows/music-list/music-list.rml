@@ -18,9 +18,12 @@
 <body template="nui" class="nui-window nui-fx nui-anim music-list" data-model="music_list">
 	<div class="nui-window__titlebar music-list__titlebar">
 		<handle class="nui-window__handle music-list__handle" move_target="#document">
+			<span class="music-list__title-icon"><span class="music-list__note"><span class="music-list__note-head"></span><span
+				class="music-list__note-stem"></span><span class="music-list__note-flag"></span></span></span>
 			<span class="nui-window__title music-list__title">@ui.MUSICLIST_TITLE</span>
 		</handle>
-		<button id="music-list-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('cancel', ev.button)">&#215;</button>
+		<button id="music-list-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim" data-event-mousedown="act('cancel', ev.button)"><span
+			class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body music-list__body">
 		<div class="nui-list music-list__list">

@@ -9,7 +9,9 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "0 / 1"
 			},
 			{
 				"kind": "member",
@@ -19,7 +21,9 @@
 				"selected": false,
 				"member": true,
 				"love": 87,
-				"hint": "Love points: 87%"
+				"hint": "Love points: 87%",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "group",
@@ -29,7 +33,9 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "22 / 64"
 			},
 			{
 				"kind": "member",
@@ -39,7 +45,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -49,7 +57,9 @@
 				"selected": true,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -59,7 +69,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -69,7 +81,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -79,7 +93,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -89,7 +105,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -99,7 +117,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -109,7 +129,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -119,7 +141,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -129,7 +153,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -139,7 +165,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -149,7 +177,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -159,7 +189,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -169,7 +201,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -179,7 +213,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -189,7 +225,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -199,7 +237,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -209,7 +249,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -219,7 +261,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -229,7 +273,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -239,7 +285,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -249,7 +297,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -259,7 +309,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -269,7 +321,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -279,7 +333,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -289,7 +345,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -299,7 +357,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -309,7 +369,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -319,7 +381,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -329,7 +393,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -339,7 +405,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -349,7 +417,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -359,7 +429,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -369,7 +441,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -379,7 +453,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -389,7 +465,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -399,7 +477,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -409,7 +489,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -419,7 +501,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -429,7 +513,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -439,7 +525,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -449,7 +537,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -459,7 +549,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -469,7 +561,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -479,7 +573,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -489,7 +585,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -499,7 +597,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -509,7 +609,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -519,7 +621,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -529,7 +633,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -539,7 +645,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -549,7 +657,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -559,7 +669,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -569,7 +681,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -579,7 +693,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -589,7 +705,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -599,7 +717,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -609,7 +729,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -619,7 +741,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -629,7 +753,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -639,7 +765,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -649,7 +777,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -659,7 +789,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -669,7 +801,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "group",
@@ -679,7 +813,9 @@
 				"selected": false,
 				"member": false,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "1 / 4"
 			},
 			{
 				"kind": "member",
@@ -689,7 +825,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_ONLINE"
 			},
 			{
 				"kind": "member",
@@ -699,7 +837,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -709,7 +849,9 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
 			},
 			{
 				"kind": "member",
@@ -719,11 +861,105 @@
 				"selected": false,
 				"member": true,
 				"love": -1,
-				"hint": ""
+				"hint": "",
+				"flags": [],
+				"state": "@ui.NUI_MESSENGER_OFFLINE"
+			},
+			{
+				"kind": "group",
+				"name": "Helper",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": [],
+				"state": "1 / 2"
+			},
+			{
+				"kind": "member",
+				"name": "Rowan",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": [
+					"/locale/common/ui/flag/32/en.tga",
+					"/locale/common/ui/flag/32/de.tga"
+				],
+				"state": ""
+			},
+			{
+				"kind": "member",
+				"name": "Sable",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": [
+					"/locale/common/ui/flag/32/pt.tga"
+				],
+				"state": ""
+			},
+			{
+				"kind": "group",
+				"name": "Team",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": [],
+				"state": "1 / 1"
+			},
+			{
+				"kind": "member",
+				"name": "Tamsin",
+				"online": true,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": [
+					"/locale/common/ui/flag/32/en.tga"
+				],
+				"state": ""
+			},
+			{
+				"kind": "group",
+				"name": "Blocked Players",
+				"online": false,
+				"open": true,
+				"selected": false,
+				"member": false,
+				"love": -1,
+				"hint": "",
+				"flags": [],
+				"state": ""
+			},
+			{
+				"kind": "member",
+				"name": "Ulric",
+				"online": false,
+				"open": false,
+				"selected": false,
+				"member": true,
+				"love": -1,
+				"hint": "",
+				"flags": [],
+				"state": ""
 			}
 		],
 		"whisper_enabled": false,
 		"remove_enabled": true,
+		"unblock_enabled": false,
 		"height": 310.0
 	}
 }

@@ -14,8 +14,13 @@
 body.skin-classic.refine
 {
 	--tip-min-w: 190dp;
+	width: auto;
 	min-width: 0;
 	padding: 0;
+}
+body.skin-classic.refine .refine-title-icon
+{
+	display: none;
 }
 body.skin-classic.refine .refine__titlebar
 {
@@ -43,8 +48,19 @@ body.skin-classic.refine .refine__main
 }
 body.skin-classic.refine .refine__item-column
 {
+	display: block;
 	width: 35dp;
+	height: auto;
 	margin: 0 0 0 15dp;
+}
+/* The item's cells at legacy's 32dp steps (the modern cell is taller). */
+body.skin-classic.refine .refine__item.nui-slot--h2
+{
+	height: 64dp;
+}
+body.skin-classic.refine .refine__item.nui-slot--h3
+{
+	height: 96dp;
 }
 body.skin-classic.refine .refine__item.nui-slot--h2, body.skin-classic.refine .refine__item.nui-slot--h3
 {
@@ -69,13 +85,19 @@ body.skin-classic.refine .refine__material
 	display: block;
 	position: relative;
 	height: 34dp;
+	min-height: 0;
 	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
 }
 body.skin-classic.refine .refine__material-cell
 {
 	position: absolute;
 	left: 15dp;
 	top: 0;
+	border-radius: 0;
 }
 body.skin-classic.refine .refine__material-text
 {
@@ -87,6 +109,7 @@ body.skin-classic.refine .refine__material-text
 	height: 32dp;
 	margin: 0;
 	padding: 0 0 0 15dp;
+	font-size: var(--font-md);
 	line-height: 32dp;
 	color: var(--text);
 	decorator: classic-thinboard;
@@ -95,6 +118,12 @@ body.skin-classic.refine .refine__material-text
 body.skin-classic.refine .refine__line
 {
 	margin-top: 7dp;
+	padding: 0;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+	color: var(--text);
+	font-size: var(--font-md);
 	line-height: 17dp;
 	font-effect: outline(1dp var(--classic-text-outline));
 }

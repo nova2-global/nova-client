@@ -52,7 +52,21 @@ body.virtual-keyboard
 	width: auto;
 	min-width: 44dp;
 	padding: 0dp var(--space-2);
+	color: var(--text-muted);
 	font-size: var(--font-sm);
+}
+/* Modern (the login card's look, stage 1): Enter is the card's primary
+   action, filled with the accent. */
+.virtual-keyboard__enter
+{
+	background-color: var(--accent);
+	border-color: var(--accent);
+	color: var(--accent-text);
+}
+.virtual-keyboard__enter:hover
+{
+	background-color: var(--accent-hover);
+	border-color: var(--accent-hover);
 }
 .virtual-keyboard__space
 {

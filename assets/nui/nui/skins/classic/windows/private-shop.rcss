@@ -11,6 +11,10 @@ body.skin-classic.pshop
 	height: 354dp;
 	min-width: 0;
 }
+body.skin-classic.pshop .pshop__title-icon
+{
+	display: none;
+}
 body.skin-classic.pshop .pshop__titlebar
 {
 	position: absolute;
@@ -57,6 +61,7 @@ body.skin-classic.pshop .pshop__name-text
 {
 	line-height: 15dp;
 	font-size: var(--font-md);
+	font-weight: normal;
 	color: var(--classic-edit-text);
 }
 body.skin-classic.pshop .pshop__grid

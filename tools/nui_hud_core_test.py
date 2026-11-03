@@ -161,6 +161,35 @@ class HudHelpers(unittest.TestCase):
         self.hud.forget("x", second)
         self.assertIsNone(self.hud.current("x"))
 
+    def test_moved_place_takes_the_runtime_s_centered_place_as_not_moved(self):
+        """P18 review: the runtime's Center placement puts a board wider or
+        taller than the screen at 0 on that axis, so such a board left where
+        Center put it is not a drag (the guild window, 470dp tall, at 200% on
+        1600 x 900)."""
+        nui = self.world.game.modules["nui"]
+        wnd = self.world.game.modules["wndMgr"]
+        wnd.GetScreenWidth = lambda: 1600
+        wnd.GetScreenHeight = lambda: 900
+
+        class Board(object):
+            def __init__(self, box):
+                self.box = box
+
+            def element_box(self, element_id):
+                return self.box
+
+        place = self.hud.moved_place
+        nui.set_scale_percent(100)
+        self.assertIsNone(place(Board((560.0, 215.0, 480.0, 470.0))), "centered")
+        self.assertIsNone(place(Board((561.5, 213.0, 480.0, 470.0))), "within 2 px of it")
+        self.assertEqual(place(Board((300.0, 120.0, 480.0, 470.0))), (300.0, 120.0), "dragged: its place in dp")
+        self.assertIsNone(place(Board(None)), "no box: nothing kept")
+        nui.set_scale_percent(200)
+        self.assertIsNone(place(Board((320.0, 0.0, 960.0, 940.0))), "taller than the screen: Center's y is 0")
+        self.assertIsNone(place(Board((0.0, 0.0, 1700.0, 940.0))), "wider and taller: Center's place is 0, 0")
+        self.assertEqual(place(Board((320.0, 40.0, 960.0, 940.0))), (160.0, 20.0), "moved down from it: in dp")
+        self.assertEqual(place(Board((100.0, 0.0, 960.0, 940.0))), (50.0, 0.0), "moved left from it")
+
     def test_an_escape_proxy_is_a_zero_size_ui_window_that_runs_its_action_and_keeps_escape(self):
         ran = []
 
@@ -852,6 +881,22 @@ class TaskbarDifferential(TaskbarWorlds):
             novaui.bar.ShowMouseImage()
             self.assertTrue(novaui.bar.board.get("mouse_image"))
 
+    def test_a_window_s_show_and_hide_light_its_button(self):
+        legacy, novaui = self.worlds()
+        with novaui:
+            bar = novaui.bar
+            self.assertIs(novaui.module("nui_hud").current("taskbar"), bar)
+            for name in ("character", "inventory", "messenger", "system"):
+                self.assertFalse(bar.board.get("open_" + name), name)
+                bar.nui_window_shown(name, True)
+                self.assertTrue(bar.board.get("open_" + name), name)
+                bar.nui_window_shown(name, False)
+                self.assertFalse(bar.board.get("open_" + name), name)
+            bar.nui_window_shown("expand", True)
+            bar.nui_window_shown("atlas", True)
+            self.assertNotIn("open_expand", bar.board.initial_model())
+            self.assertNotIn("open_atlas", bar.board.initial_model())
+
     def test_quickslot_tooltips_show_what_legacy_shows_and_nothing_while_attached(self):
         legacy, novaui = self.worlds()
         for world in (legacy, novaui):
@@ -1167,6 +1212,8 @@ EXPECTED_SITES = {
                            ("make", "game-buttons", "uiGameButton.GameButtonWindow", "nui_game_buttons.GameButtonWindow"),
                            ("make", "character", "uiCharacter.CharacterWindow", "nui_character.CharacterWindow"),
                            ("make", "inventory", "uiInventory.InventoryWindow", "nui_inventory.InventoryWindow"),
+                           ("make", "extra-inventory", "uiExtraInventory.ExtraInventoryWindow",
+                            "nui_extra_inventory.ExtraInventoryWindow"),
                            ("make", "dragon-soul", "uiDragonSoul.DragonSoulWindow", "nui_dragon_soul.DragonSoulWindow"),
                            ("make", "dragon-soul-refine", "uiDragonSoul.DragonSoulRefineWindow",
                             "nui_dragon_soul_refine.DragonSoulRefineWindow"),
@@ -1204,6 +1251,8 @@ EXPECTED_SITES = {
                 ("make", "map-name", "uiMapNameShower.MapNameShower", "nui_map_name.MapNameShower"),
                 ("make", "affects", "uiAffectShower.AffectShower", "nui_affects.AffectShower"),
                 ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge"),
+                # P18 (NOVA-58): the maintenance countdown.
+                ("make", "maintenance", "uiMaintenance.MaintenanceWindow", "nui_maintenance.MaintenanceWindow"),
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
@@ -1451,7 +1500,8 @@ class Wiring(unittest.TestCase):
                   and isinstance(node.func, ast.Name) and node.func.id == "getattr"
                   and len(node.args) == 3 and ast.literal_eval(node.args[1]) == "NUI_FACADE"]
         self.assertEqual(sorted(guards), sorted(["getattr(shower, 'NUI_FACADE', False)", "getattr(self.mapNameShower, 'NUI_FACADE', False)",
-                                                 "getattr(self.playerGauge, 'NUI_FACADE', False)"]))
+                                                 "getattr(self.playerGauge, 'NUI_FACADE', False)",
+                                                 "getattr(self.wndMaintenance, 'NUI_FACADE', False)"]))
         source = read(os.path.join(ROOT, "game.py"))
         self.assertIn("if self.mapNameShower.IsShow() and not getattr(self.mapNameShower, \"NUI_FACADE\", False):\n"
                       "\t\t\tself.mapNameShower.Update()", source)
@@ -1593,6 +1643,187 @@ class KeptBoardTest(unittest.TestCase):
         facade.demand.hide()
         self.assertTrue(facade.demand.probe(), "a kept board answers for itself")
         self.assertEqual(log.count("make"), 2)
+
+
+class PooledBoardTest(unittest.TestCase):
+    """nui_hud.BoardPool and PooledBoard (P18): the boards of a window made
+    again at each open, or shown several times at once, wait hidden, emptied
+    and ownerless in a bounded pool for the next window of their class."""
+
+    def setUp(self):
+        self.world = World(True)
+        self.world.__enter__()
+        self.addCleanup(self.world.__exit__)
+        self.hud = self.world.module("nui_hud")
+        self.nui = self.world.game.modules["nui"]
+        self.log = []
+
+    def window_class(self, pool, document="nui/windows/test/test.rml"):
+        nui, hud, log = self.nui, self.hud, self.log
+        field = "test-field"
+        self.world.game.state.field_events[(document, field)] = "typed"
+
+        class Board(hud.Pooled, hud.RaisesOnPress, nui.Window):
+            DOCUMENT = document
+            MODEL = "test"
+            INSTANCED = True
+            FIELDS = (field,)
+            PARK = "test-park"
+
+            def __init__(self, owner):
+                self._owner = hud.keep_weakly(owner)
+                nui.Window.__init__(self)
+
+            def initial_model(self):
+                return {"name": "", "cells": [], "cells_on": [1]}
+
+            @nui.on("typed")
+            def on_typed(self, value, linebreak=False):
+                return self._owner.typed(value)
+
+        class Facade(object):
+            def __init__(self, name):
+                self.name = name
+                self.text = ""
+                self.typed_values = []
+                self.demand = hud.PooledBoard(pool, self.make, self.restore, self.keep, self.empty, self.adopt)
+
+            def make(self):
+                log.append(("make", self.name))
+                return Board(self)
+
+            def adopt(self, board):
+                log.append(("adopt", self.name))
+                board.adopt(self)
+
+            def restore(self, board):
+                log.append(("restore", self.name))
+                board.set(name=self.name, cells=[1, 2], cells_on=[1])
+
+            def keep(self, board):
+                log.append(("keep", self.name))
+
+            def empty(self, board):
+                log.append(("empty", self.name))
+                board.set(name="", cells_on=[])
+
+            def typed(self, value):
+                self.typed_values.append(value)
+
+            def SetTop(self):
+                log.append(("SetTop", self.name))
+
+        return Facade, field
+
+    def test_the_probe_s_board_waits_for_the_first_show_and_a_hide_puts_it_back_emptied(self):
+        pool = self.hud.BoardPool("test-a", 2)
+        Facade, field = self.window_class(pool)
+        a = Facade("a")
+        self.assertTrue(a.demand.probe())
+        self.assertEqual(self.log, [("make", "a")])
+        self.assertEqual(len(pool), 1, "the probe's board waits")
+        self.assertTrue(a.demand.show())
+        self.assertEqual(self.log, [("make", "a"), ("adopt", "a"), ("restore", "a")], "one load for the first open")
+        board = a.demand.board()
+        self.assertEqual(board.model["name"], "a")
+        self.assertEqual(len(pool), 0)
+        board.set_value(field, "a's draft")
+        self.assertEqual(a.typed_values, ["a's draft"])
+        a.demand.hide()
+        self.assertIsNone(a.demand.board(), "a hidden window holds no board")
+        self.assertEqual(pool.boards(), [board])
+        self.assertFalse(board.is_visible())
+        self.assertTrue(board._doc, "it stays loaded")
+        self.assertEqual((board.model["name"], board.model["cells_on"]), ("", []), "emptied")
+        self.assertEqual(board.fields.get(field), "", "no text left in its field")
+        self.assertEqual(a.typed_values, ["a's draft"], "the clearing reaches no window")
+        self.assertIs(board._owner, self.hud.NO_OWNER)
+        self.assertEqual(self.log[-2:], [("keep", "a"), ("empty", "a")])
+
+    def test_the_next_window_of_the_class_takes_the_waiting_board_and_sets_its_own_state(self):
+        pool = self.hud.BoardPool("test-b", 2)
+        Facade, field = self.window_class(pool)
+        a, b = Facade("a"), Facade("b")
+        a.demand.show()
+        board = a.demand.board()
+        board.set_value(field, "secret")
+        a.demand.hide()
+        del self.log[:]
+        self.assertTrue(b.demand.probe(), "a waiting board answers the probe")
+        self.assertTrue(b.demand.show())
+        self.assertIs(b.demand.board(), board, "no load: the waiting board")
+        self.assertEqual(self.log, [("adopt", "b"), ("restore", "b")])
+        self.assertEqual(board.model["name"], "b")
+        self.assertEqual(board.fields.get(field), "")
+        board.fire("typed", "b's", False)
+        self.assertEqual((a.typed_values, b.typed_values), (["secret"], ["b's"]), "its events reach b only")
+        board.raise_for(0)
+        self.assertEqual(self.log[-1], ("SetTop", "b"))
+        self.assertEqual(pool.loads, 1)
+        self.assertEqual(pool.reuses, 1)
+
+    def test_the_bound_counts_every_hidden_board_and_a_drain_unloads_them(self):
+        pool = self.hud.BoardPool("test-c", 2)
+        Facade, field = self.window_class(pool)
+        windows = [Facade(name) for name in "abcd"]
+        for window in windows:
+            window.demand.show()
+        boards = [window.demand.board() for window in windows]
+        self.assertEqual(len(set(map(id, boards))), 4, "four at once: four documents")
+        self.assertEqual(len(self.world.game.loaded_documents()), 4)
+        for window in windows:
+            window.demand.hide()
+        self.assertEqual(len(pool), 2, "two wait")
+        self.assertEqual(len(self.world.game.loaded_documents()), 2, "the others were destroyed")
+        self.assertEqual(self.hud.pool_stats()["test-c"],
+                         {"waiting": 2, "bound": 2, "most": 2, "loads": 4, "reuses": 0})
+        self.assertEqual(self.hud.drain_pools(), 2)
+        self.assertEqual(len(pool), 0)
+        self.assertEqual(self.world.game.loaded_documents(), [])
+
+    def test_destroy_of_a_shown_window_puts_its_board_back_and_forgets_the_callbacks(self):
+        pool = self.hud.BoardPool("test-d", 1)
+        Facade, field = self.window_class(pool)
+        a = Facade("a")
+        a.demand.show()
+        board = a.demand.board()
+        a.demand.destroy()
+        self.assertEqual(pool.boards(), [board])
+        self.assertEqual(self.log[-2:], [("keep", "a"), ("empty", "a")])
+        self.assertFalse(a.demand.show(), "forgotten callbacks: a waiting board is not taken without a window")
+        b = Facade("b")
+        b.demand.show()
+        self.assertIs(b.demand.board(), board)
+
+    def test_a_board_that_did_not_load_never_waits(self):
+        pool = self.hud.BoardPool("test-e", 2)
+        Facade, field = self.window_class(pool, document="nui/windows/broken/broken.rml")
+        self.world.game.state.failing.add("nui/windows/broken/broken.rml")
+        a = Facade("a")
+        self.assertFalse(a.demand.probe())
+        self.assertFalse(a.demand.show())
+        self.assertEqual(len(pool), 0)
+        self.assertEqual(pool.loads, 0)
+
+    def test_release_empties_the_fields_of_a_hidden_board_too(self):
+        """A field a hidden board holds (under a data-if, or the board hidden
+        by its window first) is emptied as well: set_value's even_hidden."""
+        pool = self.hud.BoardPool("test-f", 1)
+        Facade, field = self.window_class(pool)
+        a = Facade("a")
+        a.demand.show()
+        board = a.demand.board()
+        board.set_value(field, "typed")
+        board.hide()
+        board.release()
+        self.assertEqual(board.fields.get(field), "")
+        self.assertEqual(a.typed_values, ["typed"], "the clearing reaches no window")
+
+    def test_no_owner_absorbs_every_call(self):
+        none = self.hud.NO_OWNER
+        self.assertIsNone(none.board.close())
+        self.assertIsNone(none._cell_events.over(3))
+        self.assertFalse(none)
 
 
 if __name__ == "__main__":

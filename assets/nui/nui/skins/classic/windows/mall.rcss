@@ -10,6 +10,10 @@ body.skin-classic.mall
 	height: 370dp;
 	min-width: 0;
 }
+body.skin-classic.mall .mall__title-icon
+{
+	display: none;
+}
 body.skin-classic.mall .mall__titlebar
 {
 	position: absolute;
@@ -48,6 +52,8 @@ body.skin-classic.mall .mall__grid
 body.skin-classic.mall .mall__footer
 {
 	display: block;
+	width: auto;
+	margin: 0;
 	padding: 0;
 }
 /* Legacy's large art (the classic default button, 88 x 21), its label
@@ -61,6 +67,7 @@ body.skin-classic.mall .mall__button
 	min-width: 0;
 	padding: 0;
 	overflow: visible;
+	color: var(--classic-button-text);
 }
 body.skin-classic.mall .mall__label
 {

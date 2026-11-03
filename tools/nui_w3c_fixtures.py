@@ -57,6 +57,7 @@ QUEST_DEFAULT_ICON = "/season1/icon/scroll_open.tga"
 # locale_game.txt (en): the plain entries a fixture shows as legacy's code makes them.
 UNLIMITED = "No time limit."
 GROUP_NAMES = ("Body", "Mental", "Riding")
+JOB_LABEL = "Warrior · Body"
 
 
 def empty_cell(index):
@@ -136,11 +137,13 @@ def emotes(limits, kind, filled=True):
 
 def quest_rows(limits, quests):
     """The quest rows and their cells: quests [(name, icon, counter, clock)]
-    with clock ("run", prefix, end), ("over", prefix, end) or ("text", text)."""
+    with clock ("run", prefix, end), ("over", prefix, end: a run whose end
+    has passed, its clock_over set as the countdown's end sets it) or
+    ("text", text)."""
     rows, cells = [], []
     for row in range(limits.QUEST_ROWS):
         entry = {"row": row, "shown": False, "name": "", "icon": "", "counter": "", "clock_text": "", "clock_prefix": "",
-                 "clock_end": 0.0}
+                 "clock_end": 0.0, "clock_over": False}
         cell = empty_cell(row)
         cell.update({"slot": row, "base": True})
         if row < len(quests):
@@ -150,6 +153,7 @@ def quest_rows(limits, quests):
                 entry["clock_text"] = clock[1]
             else:
                 entry["clock_prefix"], entry["clock_end"] = clock[1], clock[2]
+                entry["clock_over"] = clock[0] == "over"
             cell.update({"kind": "icon", "type": 0, "ref": row, "icon": icon})
         rows.append(entry)
         cells.append(cell)
@@ -171,6 +175,8 @@ def character(limits, tab, values=None, guild=True, skill_rows=None, support_row
         "name": "Kalinka",
         "guild": "Nova Riders" if guild else "",
         "has_guild": bool(guild),
+        # The modern looks' class chip (nui_character.job_label): the warrior, group 1.
+        "job": JOB_LABEL,
         "level": "99", "exp": "2147483647", "exp_rest": "1234567890", "hp": "99999/99999", "sp": "99999/99999",
         "st": "90", "dx": "90", "ht": "90", "iq": "90", "att": "999-999", "def": "999", "matt": "999-999", "mdef": "999",
         "aspd": "999", "mspd": "999", "cspd": "999", "er": "999",

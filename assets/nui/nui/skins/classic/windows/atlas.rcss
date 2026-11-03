@@ -26,3 +26,14 @@ body.skin-classic.atlas .nui-tooltip.atlas__tip
 	color: var(--text);
 	font-effect: outline(1dp var(--classic-text-outline));
 }
+/* The modern map chip and the rim over the map are not legacy's; the map's
+   well draws nothing. */
+body.skin-classic.atlas .atlas__title-icon,
+body.skin-classic.atlas .atlas__grid
+{
+	display: none;
+}
+body.skin-classic.atlas .atlas__map
+{
+	background-color: transparent;
+}

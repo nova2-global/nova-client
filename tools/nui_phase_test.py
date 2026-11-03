@@ -16,8 +16,8 @@ Each differential case builds two worlds with the same stand-in state,
 drives the legacy class through its methods (its buttons' events) and the
 NovaUI class through its board's data events, and compares what each made
 net, chr and the stream do, in order. net's getters (Get*, Is*) are left out
-of the comparison: the NovaUI select board reads all four slots for its
-slot list; every net call with an effect is compared."""
+of the comparison: the NovaUI select board reads every slot (five since
+NOVA-97) for its slot list; every net call with an effect is compared."""
 import ast
 import gc
 import inspect
@@ -57,7 +57,7 @@ MOTIONS = {"MOTION_INTRO_WAIT": 1, "MOTION_INTRO_SELECTED": 2, "MOTION_INTRO_NOT
 RACES = {"RACE_WARRIOR_M": 0, "RACE_ASSASSIN_W": 1, "RACE_SURA_M": 2, "RACE_SHAMAN_W": 3,
          "RACE_WARRIOR_W": 4, "RACE_ASSASSIN_M": 5, "RACE_SURA_W": 6, "RACE_SHAMAN_M": 7}
 CREATE_FIELD = "create-name"
-KEYS = {"escape": 1, "1": 2, "2": 3, "3": 4, "4": 5, "enter": 28, "f1": 59, "f2": 60, "left": 203, "right": 205}
+KEYS = {"escape": 1, "1": 2, "2": 3, "3": 4, "4": 5, "5": 6, "enter": 28, "f1": 59, "f2": 60, "left": 203, "right": 205}
 
 
 def account(*slots):
@@ -626,10 +626,13 @@ class FixtureTest(unittest.TestCase):
             self.assertEqual(create["paragraphs"], desc.load(os.path.join(LOCALE_EN, "jobdesc_warrior.txt")))
         select = fixture("select")["select"]
         self.assertEqual([(s["label"], s["level"]) for s in select["slots"]],
-                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0)])
+                         # Five slots since NOVA-97 (introselect.py SLOT_COUNT).
+                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0),
+                          ("@ui.SELECT_SLOT_EMPTY", 0)])
         self.assertEqual(fixture("loading")["loading"],
                          {"background": "d:/ymir work/uiloading/base/background_loading_warrior.sub",
-                          "progress": 42.0, "error": False})
+                          "progress": 42.0, "error": False, "preparing": "Preparing Kalinka",
+                          "badge": "@game.EMPIRE_A · CH1"})
 
 
 # --- discard and __del__ ------------------------------------------------------------
@@ -793,6 +796,23 @@ class LoadingTest(unittest.TestCase):
             self.assertFalse(board._doc)
             self.assertEqual(window.loadStepList, [])
             self.assertEqual(window.errMsg, 0)
+
+    def test_open_names_the_character_the_empire_and_the_channel(self):
+        """The modern looks' row over the gauge: "Preparing <name>" for the
+        stream's slot through plain_text, and the empire's key with the
+        channel part of the server info text."""
+        world = World(stream_slot=0)
+        with world:
+            world.modules["net"].GetServerInfo.return_value = "Nova, CH1 "
+            window = loading_setup(world, True)
+            window.Open()
+            nui_ = world.modules["nui"]
+            self.assertEqual(window.board.get("preparing"), nui_.plain_text("Kalinka"))
+            self.assertEqual(window.board.get("badge"), "@game.EMPIRE_B · CH1")
+            loading = world.novaui["nui_loading"]
+            self.assertEqual(loading.badge_text(1, "1.2.3.4:13000"), "@game.EMPIRE_A")
+            self.assertEqual(loading.badge_text(0, "Nova, C@ui.OK"), nui_.plain_text("C@ui.OK"))
+            self.assertEqual(loading.preparing_text(""), "")
 
     def test_escape_goes_back_to_the_login_as_legacy(self):
         world = World()
@@ -960,7 +980,9 @@ class SelectTest(unittest.TestCase):
         self.assertEqual((board.get("empire_name"), board.get("flag_image")),
                          ("@game.EMPIRE_B", "d:/ymir work/ui/intro/empire/empireflag_b.sub"))
         self.assertEqual([(s["label"], s["level"]) for s in board.get("slots")],
-                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0)])
+                         # Five slots since NOVA-97 (introselect.py SLOT_COUNT).
+                         [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0),
+                          ("@ui.SELECT_SLOT_EMPTY", 0)])
         self.assertTrue(board.get("occupied"))
         self.assertFalse(board.get("busy"))
         self.assertEqual(window.backGround.image, "d:/ymir work/ui/intro/select/select.sub")
@@ -978,6 +1000,20 @@ class SelectTest(unittest.TestCase):
             self.assertFalse(window.board.get("occupied"))
             self.assertEqual(window.board.get("guild"), "@game.SELECT_NOT_JOIN_GUILD")
             self.assertEqual((window.board.get("name"), window.board.get("job_image")), ("", ""))
+
+    def test_the_guild_word_and_the_class_follow_the_slot(self):
+        """The modern looks' "Guild ·" before a guild only, and the class
+        under the 3D character as the job's locale key."""
+        world = World()
+        with world:
+            window = select_setup(world, True)
+            board = window.board
+            board.fire("pick_slot", 0)
+            self.assertEqual((board.get("has_guild"), board.get("job_name")), (True, "@game.JOB_ASSASSIN"))
+            board.fire("pick_slot", 1)
+            self.assertEqual((board.get("has_guild"), board.get("job_name")), (False, "@game.JOB_WARRIOR"))
+            board.fire("pick_slot", 2)
+            self.assertEqual((board.get("has_guild"), board.get("job_name")), (False, ""))
 
     def test_start_and_the_three_second_timer(self):
         def wait(world, window, novaui):
@@ -1068,7 +1104,8 @@ class SelectTest(unittest.TestCase):
 
     def test_the_hotkeys_stay_in_the_phase_window(self):
         def keys(world, window, novaui):
-            for key in ("3", "right", "right", "left", "1", "4", "enter", "2", "enter"):
+            # 5 selects the fifth slot since NOVA-97 (introselect.py OnKeyDown).
+            for key in ("3", "right", "right", "left", "1", "5", "4", "5", "enter", "2", "enter"):
                 self.assertTrue(window.OnKeyDown(KEYS[key]))
 
         legacy_world, _, novaui_world, window = self.both([keys])
@@ -1143,6 +1180,17 @@ class CreateTest(unittest.TestCase):
         self.assertFalse(board.get("busy"))
         self.assertTrue(board.is_visible())
         self.assertEqual(board.focused, CREATE_FIELD)
+
+    def test_the_stage_shows_the_typed_name_and_the_class(self):
+        """The modern looks' name and "Level 1 · <class>" under the 3D
+        character: the typed name through plain_text, the slot's job key."""
+        legacy_world, _, novaui_world, window = self.both([])
+        board = window.board
+        self.assertEqual((board.get("stage_name"), board.get("stage_job")), ("", "@game.JOB_SURA"))
+        legacy_world, _, novaui_world, window = self.both([type_name("N@ui.OK"), ("right",)])
+        board = window.board
+        self.assertEqual(board.get("stage_name"), novaui_world.modules["nui"].plain_text("N@ui.OK"))
+        self.assertEqual(board.get("stage_job"), "@game.JOB_SHAMAN")
 
     def test_the_gender_shape_and_slot_pickers(self):
         legacy_world, _, novaui_world, window = self.both(

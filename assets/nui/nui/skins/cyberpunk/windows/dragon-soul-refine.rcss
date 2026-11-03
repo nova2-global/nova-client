@@ -1,0 +1,91 @@
+/* Cyberpunk overlay of nui/windows/dragon-soul-refine/dragon-soul-refine.rml,
+   after the mockup's WDragonSoulRefine board (skins-stage2/ref/
+   WDragonSoulRefine-cyberpunk.png): the modern layout to the dp. The
+   title's icon chip a square on the brighter cyan line; the cells' well
+   square; a closed cell the component's dim cell, hatched faintly (the
+   stripes' first and last stops clear, so a device without effects shows
+   the plain cell), its lock muted; the arrow magenta; the three modes the
+   skin's underlined tabs on the modern 32dp; the fee a square well with
+   an acid edge on its left (2dp, its padding 1dp less) and an acid coin. */
+
+body.skin-cyberpunk.dsr .dsr-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.dsr .dsr-main
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.dsr .dsr-cell.is-closed, body.skin-cyberpunk.dsr .dsr-cell.is-closed:hover
+{
+	decorator: repeating-linear-gradient(135deg, transparent 0dp, transparent 4.9dp, var(--cyberpunk-cell) 5dp, var(--cyberpunk-cell) 9.9dp, transparent 10dp);
+}
+body.skin-cyberpunk.dsr .dsr-cell.is-closed .nui-glyph--lock
+{
+	--glyph-ink: var(--text-muted);
+}
+body.skin-cyberpunk.dsr .dsr-arrow .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+
+/* The modes: the skin's underlined tabs, 5dp above 26dp tabs and the row's
+   line (the modern strip's 32dp). */
+body.skin-cyberpunk.dsr .dsr-modes
+{
+	gap: 0;
+	padding: 5dp 0 0 0;
+	border-width: 0 0 1dp 0;
+	border-color: var(--border);
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-cyberpunk.dsr .dsr-modes .dsr-mode
+{
+	height: 26dp;
+	border-width: 0 0 2dp 0;
+	border-radius: 0;
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text-muted);
+	line-height: 24dp;
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.dsr .dsr-modes .dsr-mode:hover
+{
+	border-color: transparent;
+	background-color: transparent;
+	decorator: none;
+	color: var(--text);
+}
+body.skin-cyberpunk.dsr .dsr-modes .dsr-mode.is-selected
+{
+	border-color: transparent;
+	border-bottom-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: vertical-gradient(transparent var(--cyberpunk-holo-a));
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+
+/* The fee: a square well, an acid edge. */
+body.skin-cyberpunk.dsr .dsr-fee
+{
+	padding-left: 7dp;
+	border-left-width: 2dp;
+	border-left-color: var(--cyberpunk-acid);
+	border-radius: 0;
+}
+body.skin-cyberpunk.dsr .dsr-fee__coin
+{
+	--glyph-ink: var(--cyberpunk-acid);
+}
+body.skin-cyberpunk.dsr .dsr-fee__amount
+{
+	color: var(--cyberpunk-title);
+	font-weight: normal;
+	letter-spacing: 0.5dp;
+}

@@ -40,3 +40,8 @@ body.skin-classic.web .web__page
 	height: 550dp;
 	margin: 0;
 }
+/* The modern shop chip is not legacy's. */
+body.skin-classic.web .web__title-icon
+{
+	display: none;
+}

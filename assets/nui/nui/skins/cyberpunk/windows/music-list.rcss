@@ -1,0 +1,89 @@
+/* Cyberpunk overlay of nui/windows/music-list/music-list.rml, after the
+   WMusicList board of the reviewed mockup: the music chip a square neon
+   box; the list a square well, its rows muted between faint cyan hairlines,
+   the one under the pointer brighter, the selected one white and lit on a
+   soft cyan that fades to the right, with the list's magenta left edge;
+   the scroll arrows square boxes with their wedges in the accent, the
+   track a thin cyan line and the thumb the accent; a dim line above the
+   buttons. Classic takes back the scroll bar from its own overlay. */
+
+body.skin-cyberpunk.music-list .music-list__title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+}
+body.skin-cyberpunk.music-list .music-list__list
+{
+	border-radius: 0;
+}
+
+body.skin-cyberpunk.music-list .music-list__item
+{
+	color: var(--text-muted);
+}
+body.skin-cyberpunk.music-list .music-list__item:hover
+{
+	color: var(--text);
+}
+body.skin-cyberpunk.music-list .music-list__item.is-selected
+{
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--selection) transparent);
+	color: var(--cyberpunk-title);
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.music-list .music-list__item + .music-list__item
+{
+	border-top-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.music-list .music-list__item:hover + .music-list__item, body.skin-cyberpunk.music-list .music-list__item.is-selected + .music-list__item,
+body.skin-cyberpunk.music-list .music-list__item + .music-list__item:hover, body.skin-cyberpunk.music-list .music-list__item + .music-list__item.is-selected
+{
+	border-top-color: transparent;
+}
+
+/* The arrows keep their 8 x 10dp wedge box inside the new 1dp edge. */
+body.skin-cyberpunk.music-list .music-list__viewport sliderarrowdec, body.skin-cyberpunk.music-list .music-list__viewport sliderarrowinc
+{
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.music-list .music-list__viewport sliderarrowdec
+{
+	padding: 0dp 3dp 6dp;
+	decorator: conic-gradient(from 141deg, var(--accent) 0%, var(--accent) 21.5%, transparent 21.5%, transparent 100%) content-box;
+}
+body.skin-cyberpunk.music-list .music-list__viewport sliderarrowinc
+{
+	padding: 6dp 3dp 0dp;
+	decorator: conic-gradient(from -39deg, var(--accent) 0%, var(--accent) 21.5%, transparent 21.5%, transparent 100%) content-box;
+}
+body.skin-cyberpunk.music-list .music-list__viewport sliderarrowdec:hover, body.skin-cyberpunk.music-list .music-list__viewport sliderarrowinc:hover
+{
+	border-color: var(--cyberpunk-edge);
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.music-list .music-list__viewport slidertrack
+{
+	margin: 2dp 6.5dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.music-list .music-list__viewport sliderbar
+{
+	width: 5dp;
+	margin-left: 5.5dp;
+	border-radius: 0;
+	background-color: var(--accent);
+}
+body.skin-cyberpunk.music-list .music-list__viewport sliderbar:hover, body.skin-cyberpunk.music-list .music-list__viewport sliderbar:active
+{
+	background-color: var(--accent-hover);
+}
+
+body.skin-cyberpunk.music-list .music-list__footer
+{
+	border-top-color: var(--border);
+}

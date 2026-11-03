@@ -1,16 +1,24 @@
-/* The equipment view's modern look (P16 spec 5.6.2): the inventory's
-   equipment figure, a 5 x 4 layout of 40dp cells on the 44dp pitch over a
-   quiet silhouette, each place by its wear name (the view table's names
-   only; a name the table in use lacks has no element). The controller
-   centers it at its first show and keeps the place the player drags it to;
-   the sheet's place frames it in its snapshots. Classic (legacy's 180 x 230
-   board, the equipment base art, legacy's places for both tables):
-   skins/classic/windows/equipment-view.rcss. */
+/* The equipment view's modern look (P16 spec 5.6.2, restyled to the
+   reviewed design): a 252dp window with another player's equipment on a
+   228 x 260dp stage, a sunken well under a diamond lattice with a soft
+   accent light and a quiet silhouette. Each place is legacy's
+   (uiscript equipmentdialog.py) on a 4 x 5 layout of 44dp cells 4dp apart,
+   by its wear name (the view table's names only; a name the table in use
+   lacks has no element): the weapon three cells tall in the first column,
+   the head, the armor (two cells) and the shoes in the second, the shield,
+   the bracelet and the second unique item in the third, the arrows, the
+   earrings and the necklace in the fourth, the first unique item at the
+   lower left; OLD's rings and belt on the row above the shoes. The
+   controller centers it at its first show and keeps the place the player
+   drags it to; the sheet's place frames it in its snapshots. Classic
+   (legacy's 180 x 230 board, the equipment base art, legacy's places for
+   both tables): skins/classic/windows/equipment-view.rcss. */
 
 body.eqv
 {
 	left: 16dp;
 	top: 16dp;
+	width: 252dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
@@ -20,96 +28,147 @@ body.eqv
 	tab-index: none;
 	focus: none;
 }
+/* The title's icon chip. */
+.eqv-title-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 6dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+}
+.eqv-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.8);
+}
 .eqv__body
 {
 	padding: var(--space-3);
 }
+/* The stage: the panel's gradient under the diamond lattice (two sets of
+   thin lines, 45 degrees either way), as the inventory's. */
 .eqv-equip
 {
 	position: relative;
-	width: 216dp;
-	height: 172dp;
+	box-sizing: border-box;
+	width: 228dp;
+	height: 260dp;
+	overflow: hidden;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 11dp;
+	decorator: repeating-linear-gradient(45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 11.3dp),
+	           repeating-linear-gradient(-45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 11.3dp),
+	           linear-gradient(180deg, var(--surface) 0%, var(--surface-sunken) 100%);
 }
-/* The figure: a quiet silhouette behind the cells, as the inventory's. */
-.eqv-figure
+/* The soft accent light behind the figure. A device without effects draws
+   a gradient as its middle color: the light would be a flat box. */
+.eqv-light
 {
 	position: absolute;
 	left: 0;
 	top: 0;
-	width: 216dp;
-	height: 172dp;
+	width: 226dp;
+	height: 258dp;
+	decorator: radial-gradient(50% 50% at 50% 42%, var(--selection) 0%, transparent 100%);
 	pointer-events: none;
 }
-.eqv-figure__head, .eqv-figure__body, .eqv-figure__arm, .eqv-figure__leg
+@media (theme: no-effects)
+{
+	.eqv-light
+	{
+		display: none;
+	}
+}
+
+/* The silhouette behind the second column's cells, its head at the head's
+   place and its feet at the shoes'. */
+.eqv-figure
+{
+	position: absolute;
+	left: 52dp;
+	top: 22dp;
+	width: 74dp;
+	height: 224dp;
+	opacity: 0.42;
+	pointer-events: none;
+}
+.eqv-figure__head, .eqv-figure__body, .eqv-figure__leg
 {
 	display: block;
 	position: absolute;
-	background-color: var(--surface-raised);
+	background-color: var(--text-muted);
+}
+.eqv-figure__arm
+{
+	display: none;
 }
 .eqv-figure__head
 {
-	left: 92dp;
-	top: 2dp;
-	width: 32dp;
-	height: 32dp;
+	left: 25dp;
+	top: 0;
+	width: 24dp;
+	height: 26dp;
 	border-radius: 9999dp;
 }
 .eqv-figure__body
 {
-	left: 80dp;
+	left: 14dp;
 	top: 30dp;
-	width: 56dp;
-	height: 80dp;
-	border-radius: var(--radius-lg);
+	width: 46dp;
+	height: 92dp;
+	border-radius: 18dp 18dp 8dp 8dp;
 }
-.eqv-figure__arm
-{
-	top: 40dp;
-	width: 18dp;
-	height: 70dp;
-	border-radius: var(--radius-lg);
-}
-.eqv-figure__arm--left { left: 60dp; transform: rotate(12deg); }
-.eqv-figure__arm--right { left: 138dp; transform: rotate(-12deg); }
 .eqv-figure__leg
 {
-	top: 104dp;
-	width: 22dp;
-	height: 66dp;
-	border-radius: var(--radius-lg);
+	top: 118dp;
+	width: 17dp;
+	height: 100dp;
+	border-radius: 7dp;
 }
-.eqv-figure__leg--left { left: 84dp; }
-.eqv-figure__leg--right { left: 110dp; }
+.eqv-figure__leg--left { left: 18dp; transform: rotate(3deg); }
+.eqv-figure__leg--right { right: 18dp; transform: rotate(-3deg); }
 
-/* A cell's place, by the view slot's wear name: column c and row r on the
-   44dp pitch. The weapon is three cells tall, the armor two. */
+/* A cell's place, by the view slot's wear name: column c at 19 + 48c and
+   row r at 11 + 48r inside the stage's border, 44dp cells 4dp apart (the
+   cells' 2dp hit outsets meet in every gap). */
 .eqv-place
 {
 	position: absolute;
-	width: 40dp;
-	height: 40dp;
+	width: 44dp;
+	height: 44dp;
 }
 .eqv-place.is-hidden
 {
 	display: none;
 }
-.eqv-place--weapon { left: 0; top: 0; height: 128dp; }
-.eqv-place--unique1 { left: 44dp; top: 0; }
-.eqv-place--head { left: 88dp; top: 0; }
-.eqv-place--arrow { left: 176dp; top: 0; }
-.eqv-place--ring1 { left: 44dp; top: 44dp; }
-.eqv-place--body { left: 88dp; top: 44dp; height: 84dp; }
-.eqv-place--ring2 { left: 132dp; top: 44dp; }
-.eqv-place--ear { left: 176dp; top: 44dp; }
-.eqv-place--wrist { left: 44dp; top: 88dp; }
-.eqv-place--shield { left: 132dp; top: 88dp; }
-.eqv-place--neck { left: 176dp; top: 88dp; }
-.eqv-place--unique2 { left: 44dp; top: 132dp; }
-.eqv-place--foots { left: 88dp; top: 132dp; }
-.eqv-place--belt { left: 132dp; top: 132dp; }
-.eqv-place--costume_body, .eqv-place--costume_hair { left: 0; top: 132dp; }
-/* The cell fills its place; the item's icon at its own size in the middle
-   (a 1x2 sword in the weapon's three cells too). */
+.eqv-place--weapon { left: 19dp; top: 11dp; height: 140dp; }
+.eqv-place--head { left: 67dp; top: 11dp; }
+.eqv-place--arrow { left: 163dp; top: 11dp; }
+.eqv-place--shield { left: 115dp; top: 59dp; }
+.eqv-place--ear { left: 163dp; top: 59dp; }
+.eqv-place--body { left: 67dp; top: 59dp; height: 92dp; }
+.eqv-place--wrist { left: 115dp; top: 107dp; }
+.eqv-place--neck { left: 163dp; top: 107dp; }
+.eqv-place--ring1 { left: 19dp; top: 155dp; }
+.eqv-place--belt { left: 67dp; top: 155dp; }
+.eqv-place--ring2 { left: 115dp; top: 155dp; }
+.eqv-place--unique1 { left: 19dp; top: 203dp; }
+.eqv-place--foots { left: 67dp; top: 203dp; }
+.eqv-place--unique2 { left: 115dp; top: 203dp; }
+.eqv-place--costume_body, .eqv-place--costume_hair { left: 163dp; top: 203dp; }
+/* The cell fills its place, rounder than a bag cell; the item's icon at
+   its own size in the middle (a 1x2 sword in the weapon's three cells
+   too). */
 .eqv-cell
 {
 	display: flex;
@@ -117,6 +176,7 @@ body.eqv
 	justify-content: center;
 	width: 100%;
 	height: 100%;
+	border-radius: 9dp;
 }
 .eqv-cell .nui-slot__icon
 {

@@ -1,23 +1,52 @@
-/* The refine dialogs' modern look (P14 spec 6.4): a movable window at
-   legacy's place (the screen's right edge less 400, the top less than a
-   tenth down; the controller places it exactly at each open), the item's
-   cells beside its tooltip, the materials in rows under them, the lines
-   legacy shows, OK and Cancel. Classic (legacy's board sized from the
-   tooltip, the tooltip at 50, 38, the item 35 to its left, the materials
-   every 34 px on thin boards): skins/classic/windows/refine.rcss. */
+/* The refine dialogs' modern look (P14 spec 6.4, restyled to the reviewed
+   design): a movable window at legacy's place (the screen's right edge less
+   400, the top less than a tenth down; the controller places it exactly at
+   each open), 388dp wide so it stays on the screen there; the item in a
+   tall cell beside its tooltip, the materials in sunken rows under them,
+   the lines legacy shows (the cost in its warning color) in sunken bars,
+   OK and Cancel. The old dialog (no item, no materials) is as wide as its
+   tooltip. Classic (legacy's board sized from the tooltip, the tooltip at
+   50, 38, the item 35 to its left, the materials every 34 px on thin
+   boards): skins/classic/windows/refine.rcss. */
 
 body.refine
 {
 	left: 100%;
 	margin-left: -400dp;
 	top: 62dp;
+	width: 388dp;
 	min-width: 0;
 	focus: none;
 	tab-index: none;
 }
+body.refine.refine--old
+{
+	width: auto;
+}
 .refine button
 {
 	tab-index: none;
+}
+/* The title's icon chip. */
+.refine-title-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 6dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+}
+.refine-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.8);
 }
 .refine__body
 {
@@ -29,45 +58,104 @@ body.refine
 {
 	display: flex;
 	flex-direction: row;
-	align-items: center;
+	align-items: flex-start;
 }
+/* The item: one cell as tall as legacy's item_cells (1 to 3), the icon in
+   its middle, at the top of its column. */
 .refine__item-column
 {
-	flex-shrink: 0;
+	flex: 0 0 auto;
 	margin-right: var(--space-3);
+}
+.refine__item
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 48dp;
+	height: 48dp;
+	padding: 7dp;
+	border-radius: 9dp;
+}
+.refine__item.nui-slot--h2
+{
+	height: 90dp;
+}
+.refine__item.nui-slot--h3
+{
+	height: 132dp;
+}
+.refine__item .refine__item-icon
+{
+	position: relative;
+	left: auto;
+	top: auto;
 }
 .refine__tip
 {
-	flex-shrink: 0;
+	flex: 1 1 auto;
+	min-width: 0;
 }
+/* The materials: a sunken row each, the icon in its cell, legacy's
+   "name x 02" beside it. */
 .refine__materials
 {
-	display: block;
+	display: flex;
+	flex-direction: column;
 }
 .refine__material
 {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	margin-top: var(--space-2);
+	box-sizing: border-box;
+	min-height: 48dp;
+	margin-top: 7dp;
+	padding: 3dp 10dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+}
+.refine__material:first-child
+{
+	margin-top: var(--space-3);
 }
 .refine__material-cell
 {
 	flex-shrink: 0;
+	border-radius: 9dp;
 }
 .refine__material-text
 {
-	margin-left: var(--space-2);
+	margin-left: 10dp;
+	font-size: 13dp;
 	white-space: nowrap;
 }
+/* The probability and cost lines: a sunken bar each, centered. */
 .refine__line
 {
 	display: block;
-	margin-top: var(--space-2);
+	box-sizing: border-box;
+	margin-top: var(--space-3);
+	padding: 10dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	font-size: 13dp;
 	text-align: center;
 	white-space: nowrap;
+}
+.refine__cost
+{
+	color: var(--warning);
 }
 .refine__footer
 {
 	justify-content: center;
+}
+.refine__accept, .refine__cancel
+{
+	min-width: 112dp;
 }

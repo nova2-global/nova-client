@@ -11,6 +11,15 @@
 		"height": 200.0,
 		"pos": 1.0,
 		"input_max": 99,
-		"target_max": 12
+		"target_max": 12,
+		"lines_on": [
+			1
+		],
+		"block_shown": false,
+		"blocked": false,
+		"online_shown": false,
+		"online": false,
+		"flag_shown": false,
+		"flag_src": ""
 	}
 }

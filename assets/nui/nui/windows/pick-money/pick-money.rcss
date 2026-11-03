@@ -1,24 +1,73 @@
-/* Pick money (nui_pick_money.py): a body-level window, not modal. The
+/* Pick money (nui_pick_money.py; the reviewed mockup WPickMoney): a
+   body-level window, not modal, with the coin emblem before the title; the
+   amount field (right-aligned) and legacy's "/ max" in the muted text on one
+   centered row, then Cancel and OK (primary) sharing the row under it. The
    controller places it above the mouse (nui.Window.set_position); until
-   then the sheet centers it, so a snapshot without a placement shows it. */
+   then the sheet centers it, so a snapshot without a placement shows it.
+   Classic (legacy's 170 x 90 board): skins/classic/windows/pick-money.rcss. */
 body.pick-money
 {
-	width: 240dp;
+	width: 238dp;
 	left: 50%;
 	top: 50%;
 	margin-left: -120dp;
-	margin-top: -64dp;
+	margin-top: -65dp;
+}
+/* The title's emblem: an accent chip with the coin glyph. */
+.pick-money__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.pick-money__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.pick-money .nui-window__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 12dp 12dp;
 }
 .pick-money__row
 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	justify-content: center;
+	gap: 10dp;
 }
 input.pick-money__field
 {
-	width: 96dp;
+	width: 114dp;
+	text-align: right;
 }
 .pick-money__limit
 {
 	color: var(--text-muted);
 	white-space: nowrap;
+}
+.pick-money__actions
+{
+	display: flex;
+	flex-direction: row;
+	margin-top: var(--space-4);
+	gap: 10dp;
+}
+.pick-money__action
+{
+	flex: 1 1 0;
+	min-width: 0;
 }

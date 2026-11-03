@@ -8,15 +8,26 @@ with the same state (nui_w4_world.World), driven through every flow of spec
 They make the same W4_COMPARED calls in the same order (getters left out),
 and the board shows what legacy's widgets show. Legacy's
 wndMgr.OnceIgnoreMouseLeftButtonUpEvent() in CloseDialog is the one
-difference (spec 2.1)."""
+difference (spec 2.1).
+
+Wave 4b (NOVA-12, NOVA-13): the 6 x 4 grids and a full 24-slot trade, the
+faces, the partner's name and level, the history's last three lines, the
+accepted side's green slot base, the give-away question, and the locks of
+the source cells in both inventories (game.py's BINARY_AddItemToExchange
+and BINARY_DelItemFromExchange through interfacemodule.py's own methods,
+released at the close and the END), each compared with legacy's, and shown
+at once on a NovaUI bag (nui_slots.flush_marks)."""
 import inspect
 import os
+import re
 import sys
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
+import extra_inventory_test as ext  # noqa: E402
+import tradable_icon_test as ti  # noqa: E402
 
 P = w4.P
 I = support.module_constants()["item"]
@@ -28,8 +39,9 @@ SWORD, GLAIVE, POTION, HELMET, AUTO_HP, SOUL = 10, 3000, 27001, 12200, 72723, 11
 def stock(game):
     """The tester's inventory: a sword at 0, a potion stack at 4, a helmet at
     9, an active auto potion at 12, an untradable ring at 13; 5.000.000 Yang;
-    a dragon soul stone at dragon soul 3. The trade: the partner (Partner)
-    put a glaive at 0 and 30.000 Yang; the tester a helmet at 2."""
+    a dragon soul stone at dragon soul 3. The trade: the partner (Partner, a
+    sura, level 37) put a glaive at 0 and 30.000 Yang; the tester (an
+    assassin) a helmet at 2."""
     game.give(0, SWORD, size=(1, 2))
     game.give(4, POTION, 50)
     game.give(9, HELMET)
@@ -45,6 +57,24 @@ def stock(game):
     ex["target_elk"] = 30000
     ex["self"][2] = {"vnum": HELMET, "count": 1}
     ex["target_name"] = "Partner"
+    ex["target_level"] = 37
+    ex["self_race"], ex["target_race"] = 5, 2
+
+
+def full(game):
+    """stock, with every one of the 24 display slots of both sides holding
+    an item (1x1 stones and potions, counts on the even cells)."""
+    stock(game)
+    ex = game.w4["exchange"]
+    ex["self"] = [{"vnum": POTION, "count": 2 + i} if i % 2 == 0 else {"vnum": 28030 + i % 10, "count": 1}
+                  for i in range(24)]
+    ex["target"] = [{"vnum": 27002, "count": 3 + i} if i % 2 == 0 else {"vnum": 28030 + i % 10, "count": 1}
+                    for i in range(24)]
+
+
+def untimed(lines):
+    """History lines without their time (legacy's [%H:%M:%S])."""
+    return [re.sub(r"^\[\d\d:\d\d:\d\d\] ", "", line) for line in lines]
 
 
 class ExchangeTest(unittest.TestCase):
@@ -102,14 +132,22 @@ class Model(ExchangeTest):
         self.assertEqual((model["owner_money"], model["target_money"]), (a.OwnerMoney.GetText(), a.TargetMoney.GetText()))
         self.assertEqual(model["target_money"], "30.000")
         self.assertEqual(model["target_money_value"], 30000)
-        self.assertEqual(model["cols"], 4)
-        self.assertEqual(len(model["owner_cells"]), 12)
+        self.assertEqual(model["cols"], 6, "wave 4b: 6 x 4 (nui_limits' EXCHANGE_COLUMNS)")
+        self.assertEqual((len(model["owner_cells"]), len(model["target_cells"])), (24, 24))
         covered = [cell["index"] for cell in model["target_cells"] if cell["covered"]]
-        self.assertEqual(covered, [4, 8], "the glaive's 1x3 from cell 0")
+        self.assertEqual(covered, [6, 12], "the glaive's 1x3 from cell 0")
         self.assertEqual(model["target_cells"][0]["type"], P["SLOT_TYPE_EXCHANGE_TARGET"])
         self.assertEqual(model["owner_cells"][2]["type"], P["SLOT_TYPE_EXCHANGE_OWNER"])
         self.assertEqual((model["accept_down"], model["accept_enabled"], model["owner_accept"], model["target_accept"]),
                          (False, True, False, False))
+        self.assertEqual((model["owner_face"], model["target_face"]),
+                         ("/" + a.FaceOwnerImage.image, "/" + a.FaceTargetImage.image))
+        self.assertEqual((model["owner_face"], model["target_face"]), ("/icon/face/assassin_m.tga", "/icon/face/sura_m.tga"))
+        self.assertEqual((model["target_name"], model["target_level"]), (a.TargetName.GetText(), a.TargetLevel.GetText()))
+        self.assertEqual((model["target_name"], model["target_level"]), ("Partner", "Lv. 37"))
+        self.assertEqual(model["log_lines"], [line.GetText() for line in a.ExchangeLogLines])
+        self.assertEqual(untimed(model["log_lines"]), ["You are ready to trade.", "", ""])
+        self.assertEqual((model["owner_base_accepted"], model["target_base_accepted"]), (False, False))
 
     def test_the_accept_states_follow_legacy_s_refresh(self):
         def flow(world, window):
@@ -164,7 +202,7 @@ class Flows(ExchangeTest):
         (_, _, a), (_, _, b) = self.run_both(flow)
         self.assertEqual(self.board_cells(b, "owner_cells"), {0: (SWORD, ""), 2: (HELMET, "")})
         self.assertEqual(self.board_cells(b, "owner_cells"), self.legacy_cells(a.OwnerSlot))
-        self.assertTrue(w4.board(b).model["owner_cells"][4]["covered"])
+        self.assertTrue(w4.board(b).model["owner_cells"][6]["covered"])
         self.assertFalse(w4.board(b).model["owner_cells"][7]["kind"])
 
     def test_an_active_auto_potion_is_used_first(self):
@@ -226,7 +264,8 @@ class Flows(ExchangeTest):
         self.assertEqual(novaui, legacy)
         self.assertIn(("uiPickMoney.PickMoneyDialog.Open", (5000000,)), [(n, args[-1:]) for n, args in novaui])
         self.assertIn(("net.SendExchangeElkAddPacket", (25000,)), novaui)
-        self.assertEqual(b.dlgPickMoney.max, 7, "today's EXCHANGE_MONEY_DIGITS, legacy's SetMax(7)")
+        self.assertEqual(b.dlgPickMoney.max, 12, "legacy's SetMax(player.EXCHANGE_MONEY_DIGITS) since NOVA-96: OLD's 12")
+        self.assertEqual(a.dlgPickMoney.max, 12)
 
     def test_the_money_button_refuses_once_money_is_set(self):
         def setup(game):
@@ -322,7 +361,7 @@ class Flows(ExchangeTest):
             window.CloseDialog()
         self.assertEqual(world.calls_since(mark, "nuigame.StopLeaveRange"), [("nuigame.StopLeaveRange", ("exchange",))])
         self.assertEqual(world.calls_since(mark, IGNORE), [])
-        self.assertNotIn(DOCUMENT, world.documents())
+        self.assertFalse(window.demand.kept().is_visible(), "P18: kept, hidden")
         legacy, legacy_window = self.world(False)
         self.open(legacy, legacy_window)
         mark = legacy.mark()
@@ -356,11 +395,291 @@ class Flows(ExchangeTest):
             w4.fire(window, "owner_over", 5)
         model = w4.board(window).model
         self.assertTrue(model["owner_attaching"])
-        self.assertEqual([cell["target"] for cell in model["owner_cells"] if cell["target"]], ["move", "move"],
-                         "the sword's 1x2 footprint over cells 5 and 9")
+        self.assertEqual([cell["index"] for cell in model["owner_cells"] if cell["target"] == "move"], [5, 11],
+                         "the sword's 1x2 footprint over cells 5 and 11 (6 columns)")
         with world.game:
             world.mouse.DeattachObject()
         self.assertFalse(w4.board(window).model["owner_attaching"])
+
+
+class Wave4b(ExchangeTest):
+    """NOVA-12: legacy's 24-slot window's parts, compared with legacy's."""
+
+    def test_a_partner_out_of_view_shows_race_0_s_face_and_level_0(self):
+        def setup(game):
+            stock(game)
+            ex = game.w4["exchange"]
+            ex["target_race"], ex["target_level"] = 0, 0
+        (_, _, a), (_, _, b) = self.run_both(lambda world, window: None, setup)
+        model = w4.board(b).model
+        self.assertEqual(model["target_face"], "/" + a.FaceTargetImage.image)
+        self.assertEqual((model["target_face"], model["target_level"]), ("/icon/face/warrior_m.tga", "Lv. 0"))
+
+    def test_the_history_writes_each_accept_change_and_shows_the_last_three(self):
+        def flow(world, window):
+            ex = world.game.w4["exchange"]
+            for side, value in (("target_accept", True), ("self_accept", True), ("self_accept", True),
+                                ("target_accept", False)):
+                ex[side] = value
+                window.Refresh()
+        (legacy, _, a), (novaui, _, b) = self.run_both(flow)
+        self.assertEqual(novaui, legacy)
+        model = w4.board(b).model
+        self.assertEqual(untimed(model["log_lines"]), untimed(line.GetText() for line in a.ExchangeLogLines))
+        self.assertEqual(untimed(model["log_lines"]),
+                         ["Partner accept the trade.", "You accept the trade.", "Partner abort the trade."])
+        self.assertEqual(len(b.exchangeLogs), 4, "ready, then three changes; a refresh that changes nothing writes nothing")
+
+    def test_a_side_that_accepted_has_the_green_slot_base(self):
+        world, window = self.world(True)
+        self.open(world, window)
+        ex = world.game.w4["exchange"]
+        uiexchange = world.m("uiExchange")
+        states = []
+        for side, value in (("target_accept", True), ("self_accept", True), ("target_accept", False)):
+            ex[side] = value
+            with world.game, w4.quiet():
+                window.Refresh()
+            model = w4.board(window).model
+            states.append((model["owner_base_accepted"], model["target_base_accepted"]))
+        self.assertEqual(states, [(False, True), (True, True), (True, False)])
+        self.assertEqual(window.OwnerSlot.base, (uiexchange.SLOT_BASE_IMAGE, uiexchange.ACCEPTED_SLOT_BASE_COLOR))
+        self.assertEqual(window.TargetSlot.base, (uiexchange.SLOT_BASE_IMAGE, uiexchange.SLOT_BASE_COLOR))
+
+    def test_a_full_trade_shows_all_24_cells_of_each_side(self):
+        (legacy, a), (novaui, b) = self.worlds(full)
+        self.open(legacy, a)
+        self.open(novaui, b)
+        for key, slots in (("owner_cells", "OwnerSlot"), ("target_cells", "TargetSlot")):
+            cells = self.board_cells(b, key)
+            self.assertEqual(cells, self.legacy_cells(getattr(a, slots)), key)
+            self.assertEqual(sorted(cells), list(range(24)), key)
+        self.assertEqual(self.board_cells(b, "owner_cells")[22], (POTION, "24"))
+        self.assertEqual(self.board_cells(b, "target_cells")[23], (28033, ""))
+
+    def test_a_drop_on_the_last_cell_sends_cell_23(self):
+        def setup(game):
+            stock(game)
+        def flow(world, window):
+            world.attach(P["SLOT_TYPE_INVENTORY"], 4, POTION, 50)
+            if world.nui_on:
+                w4.press(window, "owner_press", 23, 0)
+            else:
+                window.SetTop()
+                window.OwnerSlot.fire("select_empty", 23)
+        (legacy, _, _), (novaui, _, _) = self.run_both(flow, setup)
+        self.assertEqual(novaui, legacy)
+        self.assertIn(("net.SendExchangeItemAddPacket", (P["INVENTORY"], 4, 23)), novaui)
+
+
+class GiveAway(ExchangeTest):
+    """Legacy's AcceptExchange (OLD uiExchange.py:254-293): giving something
+    for nothing asks first (uiCommon.QuestionDialog2, the dialog kit's
+    facade while dialogs is on)."""
+
+    @staticmethod
+    def nothing_back(game):
+        stock(game)
+        ex = game.w4["exchange"]
+        ex["target"][0] = None
+        ex["target_elk"] = 0
+
+    def press_accept(self, world, window):
+        if world.nui_on:
+            w4.press(window, "accept_press", 0)
+        else:
+            window.AcceptButton.click()
+
+    def test_the_question_s_yes_sends_the_accept(self):
+        def flow(world, window):
+            self.press_accept(world, window)
+            dialog = world.game.dialogs[-1]
+            self.assertEqual((dialog._name, dialog.texts, dialog.is_open),
+                             ("uiCommon.QuestionDialog2", ["You are giving things away for nothing in exchange,",
+                                                           "and won't be able to get the Yang or items back."], True))
+            self.assertEqual(world.calls_since(0, "net."), [])
+            dialog.accept()
+        (legacy, _, _), (novaui, world, b) = self.run_both(flow, self.nothing_back)
+        self.assertEqual(novaui, legacy)
+        self.assertEqual([call for call in novaui if call[0].startswith("net.")], [("net.SendExchangeAcceptPacket", ())])
+        model = w4.board(b).model
+        self.assertEqual((model["accept_down"], model["accept_enabled"]), (True, False))
+        self.assertFalse(world.game.dialogs[-1].is_open)
+
+    def test_the_question_s_no_sends_nothing_and_raises_the_toggle(self):
+        def flow(world, window):
+            self.press_accept(world, window)
+            world.game.dialogs[-1].cancel()
+        (legacy, _, _), (novaui, _, b) = self.run_both(flow, self.nothing_back)
+        self.assertEqual(novaui, legacy)
+        self.assertEqual([call for call in novaui if call[0].startswith("net.")], [])
+        model = w4.board(b).model
+        self.assertEqual((model["accept_down"], model["accept_enabled"]), (False, True))
+
+    def test_the_partner_s_offer_accepts_at_once(self):
+        def flow(world, window):
+            self.press_accept(world, window)
+        (legacy, _, _), (novaui, _, _) = self.run_both(flow)
+        self.assertEqual(novaui, legacy)
+        self.assertEqual([call for call in novaui if call[0].startswith("net.")], [("net.SendExchangeAcceptPacket", ())])
+        self.assertNotIn("uiCommon.QuestionDialog2.Open", [name for name, _ in novaui])
+
+    def test_the_trade_s_end_closes_an_open_question(self):
+        def flow(world, window):
+            self.press_accept(world, window)
+            window.CloseDialog()
+            self.assertFalse(world.game.dialogs[-1].is_open)
+        (legacy, _, _), (novaui, _, _) = self.run_both(flow, self.nothing_back)
+        self.assertEqual([call for call in novaui if call[0] != IGNORE], [call for call in legacy if call[0] != IGNORE])
+
+
+class _Bound(object):
+    """A trade window the locks test does not look at (the shop, the
+    safebox, the private shop builder): what the Interface binds."""
+
+    def BindInterface(self, interface):
+        pass
+
+    def SetInven(self, *args):
+        pass
+
+    def IsShow(self):
+        return False
+
+
+class LockWorld(object):
+    """tradable_icon_test's world with the exchange of either side: legacy's
+    inventory and special inventory (their slot windows tracked), the
+    exchange (NovaUI's with nui_on), an Interface made of
+    interfacemodule.py's own methods, and game.py's two callbacks."""
+
+    def __init__(self, nui_on):
+        self.w4 = w4.World(nui_on, setup=stock)
+        game = self.game = self.w4.game
+        ext.install_k(game)
+        with game, w4.quiet():
+            for name, file_name in (("uiAttachMetin", "uiattachmetin.py"), ("uiInventory", "uiinventory.py"),
+                                    ("uiExtraInventory", "uiextrainventory.py")):
+                game.load(name, file_name)
+        namespace = dict(game.modules)
+        namespace.update(game.loaded)
+        interface = self.interface = ext.compiled("interfacemodule.py", "Interface", ti.INTERFACE, namespace)()
+        interface.onTopWindow = game.modules["player"].ON_TOP_WND_NONE
+        with game, w4.quiet():
+            inventory = self.inventory = game.loaded["uiInventory"].InventoryWindow()
+            inventory.BindInterfaceClass(interface)
+            inventory.SetItemToolTip(ext.DialogToolTip())
+            inventory.Show()
+            extra = self.extra = game.loaded["uiExtraInventory"].ExtraInventoryWindow()
+            extra.BindInterfaceClass(interface)
+            extra.Show()
+        ti.track(inventory.wndItem)
+        ti.track(extra.wndItem)
+        self.exchange = self.w4.make("exchange", "uiExchange", "ExchangeDialog", "nui_exchange.ExchangeDialog")
+        with game, w4.quiet():
+            self.exchange.LoadDialog()
+            self.exchange.SetItemToolTip(self.w4.tooltip)
+        interface.wndInventory, interface.wndExtraInventory = inventory, extra
+        interface.dlgExchange = self.exchange
+        interface.dlgShop = interface.wndSafebox = interface.privateShopBuilder = _Bound()
+        interface.dlgRefineNew = None
+        with game, w4.quiet():
+            interface._Interface__BindTradableWindows()
+        cls = ext.compiled("game.py", "GameWindow", ("BINARY_AddItemToExchange", "BINARY_DelItemFromExchange"))
+        self.game_window = cls()
+        self.game_window.interface = interface
+
+    def run(self, fn, *args):
+        with self.game, w4.quiet():
+            return fn(*args)
+
+    def state(self):
+        return (ti.locked(self.inventory.wndItem), ti.locked(self.extra.wndItem), dict(self.exchange.lockedItems),
+                self.interface.GetOnTopWindow())
+
+
+class Locks(unittest.TestCase):
+    """NOVA-13: the source cells of the items put in take no mouse event
+    until the item leaves or the trade ends, in both inventories, by the
+    legacy flows (game.py -> Interface -> CantTradableItem)."""
+
+    def flow(self, world, end):
+        states = []
+        world.run(world.interface.StartExchange)
+        states.append(world.state())
+        world.run(world.game_window.BINARY_AddItemToExchange, ext.INVENTORY, 4, 0)
+        world.run(world.game_window.BINARY_AddItemToExchange, ext.EXTRA, 225 + 5, 1)
+        states.append(world.state())
+        world.run(world.game_window.BINARY_DelItemFromExchange, 1)
+        states.append(world.state())
+        world.run(world.game_window.BINARY_AddItemToExchange, ext.EXTRA, 225 + 6, 2)
+        world.run(getattr(world.interface if end == "EndExchange" else world.exchange, end))
+        states.append(world.state())
+        return states
+
+    def test_the_locks_and_the_window_on_top_follow_legacy_s(self):
+        for end in ("EndExchange", "CloseDialog"):
+            with self.subTest(end=end):
+                legacy, novaui = LockWorld(False), LockWorld(True)
+                self.assertTrue(getattr(novaui.exchange, "NUI_FACADE", False))
+                expected = self.flow(legacy, end)
+                self.assertEqual(self.flow(novaui, end), expected)
+                self.assertEqual(expected, [
+                    ([], [], {}, 2),
+                    ([4], [5], {0: (ext.INVENTORY, 4), 1: (ext.EXTRA, 230)}, 2),
+                    ([4], [], {0: (ext.INVENTORY, 4)}, 2),
+                    ([], [], {}, 0)])
+
+    def test_a_refresh_locks_the_cells_again(self):
+        for nui_on in (False, True):
+            with self.subTest(nui_on=nui_on):
+                world = LockWorld(nui_on)
+                world.run(world.interface.StartExchange)
+                world.run(world.game_window.BINARY_AddItemToExchange, ext.INVENTORY, 4, 0)
+                world.inventory.wndItem.locks.clear()
+                world.run(world.exchange.Refresh)  # Interface.RefreshExchange
+                self.assertEqual(ti.locked(world.inventory.wndItem), [4])
+
+
+class NovaUIBag(ExchangeTest):
+    """A lock or a release from game.py reaches a NovaUI bag's proxy at once
+    (nui_slots.flush_marks), as CSlotWindow draws its state at once: no
+    NovaUI event follows that would push it."""
+
+    def test_the_lock_and_the_release_show_at_once(self):
+        world, window = self.world(True)
+        slots = world.m("nui_slots")
+        pushed = []
+
+        class Bag(object):
+            def __init__(self):
+                with world.game:
+                    self.wndItem = slots.SlotWindowProxy(range(45), lambda cells: pushed.append(cells), cols=5,
+                                                         rows=9, marks=True)
+                    self.wndItem.SetItemSlot(4, POTION, 50)
+                    self.wndItem.RefreshSlot()
+
+            def SetCantMouseEventCell(self, cell):
+                self.wndItem.SetCantMouseEventSlot(cell)
+
+            def SetCanMouseEventCell(self, cell):
+                self.wndItem.SetCanMouseEventSlot(cell)
+
+        bag = Bag()
+        window.SetInven(bag, None)
+        self.open(world, window)
+        del pushed[:]
+        with world.game, w4.quiet():
+            window.CantTradableItem(0, 4, P["INVENTORY"])
+        self.assertEqual([cells[4]["in_use"] for cells in pushed], [True], "pushed once, at the lock")
+        with world.game, w4.quiet():
+            window.ReleaseTradableItem(0)
+        self.assertEqual([cells[4]["in_use"] for cells in pushed], [True, False])
+        with world.game, w4.quiet():
+            window.CantTradableItem(0, 4, P["INVENTORY"])
+            window.CloseDialog()
+        self.assertEqual(pushed[-1][4]["in_use"], False, "the close releases it at once")
+        self.assertEqual(window.lockedItems, {})
 
 
 class Facade(ExchangeTest):
@@ -416,14 +735,41 @@ class Facade(ExchangeTest):
 
 
 class OnDemand(ExchangeTest):
-    def test_no_document_until_open_and_none_after_close(self):
+    def test_no_document_until_the_first_open_then_kept_hidden_with_no_cell(self):
+        """P18 (V-2b's pattern): nothing loads before the first open; the
+        close keeps the board loaded and hidden, both grids emptied; the
+        next open shows the same board with no load, at the place it was
+        left, with the cells legacy's refresh gave it while hidden."""
         world, window = self.world(True)
         self.assertNotIn(DOCUMENT, world.documents())
         self.open(world, window)
         self.assertIn(DOCUMENT, world.documents())
+        board = w4.board(window)
+        world.game.state.boxes[(DOCUMENT, "")] = (300.0, 120.0, 520.0, 400.0)
         with world.game, w4.quiet():
             window.CloseDialog()
-        self.assertNotIn(DOCUMENT, world.documents())
+        self.assertIsNone(w4.board(window))
+        self.assertIs(window.demand.kept(), board)
+        self.assertFalse(board.is_visible())
+        self.assertEqual(world.documents(), [DOCUMENT], "kept loaded")
+        self.assertEqual(board.model["grids_on"], [], "no cell while hidden")
+        world.game.w4["exchange"]["self"][5] = {"vnum": POTION, "count": 7}
+        with world.game, w4.quiet():
+            window.Refresh()
+        self.open(world, window)
+        self.assertIs(w4.board(window), board, "shown again, not made again")
+        self.assertEqual(board.model["grids_on"], [1])
+        self.assertEqual(self.board_cells(window, "owner_cells")[5], (POTION, "7"))
+        self.assertEqual(board.placement, ("position", 300.0, 120.0, (0.0, 0.0)), "the place it was dragged to")
+        self.assertEqual(world.documents(), [DOCUMENT])
+
+    def test_destroy_unloads_the_kept_board(self):
+        world, window = self.world(True)
+        self.open(world, window)
+        with world.game, w4.quiet():
+            window.CloseDialog()
+            window.Destroy()
+        self.assertEqual(world.documents(), [])
 
     def test_a_refresh_while_hidden_reaches_the_next_board(self):
         world, window = self.world(True)
@@ -443,8 +789,17 @@ class Fixtures(ExchangeTest):
     def test_every_fixture_has_the_model_s_keys_and_kinds(self):
         world, window = self.world(True)
         kinds = w4.model_kinds(window.nui_model())
-        for variant in ("", "foundation", "empty", "accepted"):
+        for variant in ("", "foundation", "empty", "accepted", "full", "attaching"):
             self.assertEqual(w4.fixture_keys(window, "exchange", variant), kinds, variant)
+
+    def test_every_fixture_is_a_6_by_4_trade_with_three_history_lines(self):
+        for variant in ("", "foundation", "empty", "accepted", "full", "attaching"):
+            model = w4.fixture_model("exchange", variant)
+            self.assertEqual((model["cols"], len(model["owner_cells"]), len(model["target_cells"])), (6, 24, 24), variant)
+            self.assertEqual(len(model["log_lines"]), 3, variant)
+        model = w4.fixture_model("exchange", "full")
+        for key in ("owner_cells", "target_cells"):
+            self.assertTrue(all(cell["kind"] or cell["covered"] for cell in model[key]), "full: %s" % key)
 
 
 if __name__ == "__main__":

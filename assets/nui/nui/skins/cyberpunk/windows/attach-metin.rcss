@@ -1,0 +1,66 @@
+/* Cyberpunk overlay of nui/windows/attach-metin/attach-metin.rml, after the
+   mockup's WAttachMetin board (skins-stage2/ref/WAttachMetin-cyberpunk.png):
+   the modern layout to the dp. The title's icon chip a square on the
+   brighter cyan line. The two item boards, inset in the window, the
+   mockup's wells: square, opaque on the scene's color (the color the
+   tooltip text is checked on), the dim line with a magenta left edge (2dp,
+   their padding 1dp less), without the floating tooltip's outline and
+   acid bar; their socket frames square on a dark well with a 1dp line (the
+   modern 36dp box) and their dividers dashed, as the item tooltip's. The
+   arrow magenta; the stone square on its cell's fill with an acid line. */
+
+body.skin-cyberpunk.attach .attach-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+
+/* --- The item boards ------------------------------------------------------------ */
+
+body.skin-cyberpunk.attach .attach__tip
+{
+	padding-left: 13dp;
+	border-left-width: 2dp;
+	border-color: var(--border);
+	border-left-color: var(--cyberpunk-edge-alt);
+	background-color: var(--scene);
+	decorator: none;
+}
+body.skin-cyberpunk.attach .attach__tip > .nui-chrome--outline, body.skin-cyberpunk.attach .attach__tip > .nui-chrome--edge-top
+{
+	display: none;
+}
+body.skin-cyberpunk.attach .nui-tip__socket-frame
+{
+	border-width: 1dp;
+	padding: 1dp;
+	border-radius: 0;
+	background-color: var(--cooldown-shade);
+}
+body.skin-cyberpunk.attach .nui-tip__rule
+{
+	background-color: transparent;
+	decorator: repeating-linear-gradient(90deg, transparent 0dp, transparent 1.9dp, var(--tip-divider) 2dp, var(--tip-divider) 4.9dp, transparent 5dp);
+}
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.attach .nui-tip__rule
+	{
+		background-color: var(--tip-divider);
+		decorator: none;
+	}
+}
+
+/* --- The arrow and the stone -------------------------------------------------- */
+
+body.skin-cyberpunk.attach .attach__arrow .nui-glyph
+{
+	--glyph-ink: var(--cyberpunk-edge-alt);
+}
+body.skin-cyberpunk.attach .attach__stone
+{
+	border-color: var(--cyberpunk-acid);
+	border-radius: 0;
+	background-color: var(--cyberpunk-cell);
+}

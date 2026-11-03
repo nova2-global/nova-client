@@ -48,7 +48,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 1,
@@ -68,7 +71,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 2,
@@ -88,7 +94,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 3,
@@ -108,7 +117,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 4,
@@ -128,7 +140,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 5,
@@ -148,7 +163,10 @@
 				"covered": true,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 6,
@@ -168,7 +186,10 @@
 				"covered": true,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 7,
@@ -188,7 +209,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 8,
@@ -208,7 +232,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 9,
@@ -228,7 +255,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 10,
@@ -248,7 +278,10 @@
 				"covered": true,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 11,
@@ -268,7 +301,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 12,
@@ -288,7 +324,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 13,
@@ -308,7 +347,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 14,
@@ -328,7 +370,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 15,
@@ -348,7 +393,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 16,
@@ -368,7 +416,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 17,
@@ -388,7 +439,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 18,
@@ -408,7 +462,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 19,
@@ -428,7 +485,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 20,
@@ -448,7 +508,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 21,
@@ -468,7 +531,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 22,
@@ -488,7 +554,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 23,
@@ -508,7 +577,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 24,
@@ -528,7 +600,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 25,
@@ -548,7 +623,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 26,
@@ -568,7 +646,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 27,
@@ -588,7 +669,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 28,
@@ -608,7 +692,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 29,
@@ -628,7 +715,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 30,
@@ -648,7 +738,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 31,
@@ -668,7 +761,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 32,
@@ -688,7 +784,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 33,
@@ -708,7 +807,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 34,
@@ -728,7 +830,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 35,
@@ -748,7 +853,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 36,
@@ -768,7 +876,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 37,
@@ -788,7 +899,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 38,
@@ -808,7 +922,10 @@
 				"covered": true,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 39,
@@ -828,7 +945,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 40,
@@ -848,7 +968,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 41,
@@ -868,7 +991,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 42,
@@ -888,7 +1014,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 43,
@@ -908,7 +1037,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			},
 			{
 				"index": 44,
@@ -928,7 +1060,10 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"refine": 0,
+				"in_use": false,
+				"unusable_ontop": false
 			}
 		],
 		"bag_cols": 5,
@@ -952,7 +1087,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "body"
+				"name": "body",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 1,
@@ -973,7 +1110,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "head"
+				"name": "head",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 2,
@@ -994,7 +1133,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "foots"
+				"name": "foots",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 3,
@@ -1015,7 +1156,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "wrist"
+				"name": "wrist",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 4,
@@ -1036,7 +1179,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "weapon"
+				"name": "weapon",
+				"refine": 6,
+				"marks": []
 			},
 			{
 				"index": 5,
@@ -1057,7 +1202,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "neck"
+				"name": "neck",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 6,
@@ -1078,7 +1225,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "ear"
+				"name": "ear",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 7,
@@ -1099,7 +1248,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "unique1"
+				"name": "unique1",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 8,
@@ -1120,7 +1271,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "unique2"
+				"name": "unique2",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 9,
@@ -1141,7 +1294,9 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "arrow"
+				"name": "arrow",
+				"refine": 0,
+				"marks": []
 			},
 			{
 				"index": 10,
@@ -1162,31 +1317,12 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "shield"
+				"name": "shield",
+				"refine": 6,
+				"marks": []
 			},
 			{
 				"index": 11,
-				"kind": "item",
-				"type": 1,
-				"ref": 246,
-				"icon": "/icon/item/73001.tga",
-				"count": "",
-				"w": 1,
-				"h": 1,
-				"cd_start": 0.0,
-				"cd_end": 0.0,
-				"active": false,
-				"cover": false,
-				"disabled": false,
-				"locked": false,
-				"covered": false,
-				"target": "",
-				"picked": false,
-				"unavailable": false,
-				"name": "costume_sash"
-			},
-			{
-				"index": 12,
 				"kind": "item",
 				"type": 1,
 				"ref": 253,
@@ -1204,10 +1340,12 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "ring1"
+				"name": "ring1",
+				"refine": 0,
+				"marks": []
 			},
 			{
-				"index": 13,
+				"index": 12,
 				"kind": "item",
 				"type": 1,
 				"ref": 254,
@@ -1225,10 +1363,12 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "ring2"
+				"name": "ring2",
+				"refine": 0,
+				"marks": []
 			},
 			{
-				"index": 14,
+				"index": 13,
 				"kind": "item",
 				"type": 1,
 				"ref": 255,
@@ -1246,15 +1386,18 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "belt"
+				"name": "belt",
+				"refine": 0,
+				"marks": []
 			}
 		],
-		"money": "2.000.000.000.000 Yang",
+		"money": "2.000.000.000.000",
 		"money_value": 2000000000000,
 		"dss_active": false,
 		"has_costume": true,
 		"has_dss": true,
 		"has_mall": true,
+		"has_extra": true,
 		"placed": false,
 		"bag_attaching": false,
 		"attach_right": true,
@@ -1266,6 +1409,12 @@
 		],
 		"bag_on": [
 			1
-		]
+		],
+		"figure": "/nui/figures/knight.png",
+		"stat_attack": "1048-1166",
+		"stat_defence": "642",
+		"stat_magic": "236-252",
+		"rail": [],
+		"rail_folded": false
 	}
 }

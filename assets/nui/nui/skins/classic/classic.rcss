@@ -145,6 +145,10 @@
 	border-radius: 0;
 	min-width: 64dp;
 }
+.skin-classic.nui-window.nui-fx, .skin-classic .nui-window.nui-fx
+{
+	box-shadow: none;
+}
 
 /* The legacy title bar (BoardWithTitleBar): at (8, 7) of the board, the board
    width minus 15 wide, 23 px of bar on 32 px of art whose last 9 px are
@@ -166,8 +170,13 @@
 }
 .skin-classic .nui-window__title
 {
+	font-size: var(--font-md);
 	font-weight: normal;
 	color: var(--text);
+}
+.skin-classic .nui-window__body
+{
+	padding: var(--space-4);
 }
 
 /* The close button sits on the bar's socket at (width - 18, 3), 15 by 15, and
@@ -206,6 +215,20 @@
 .skin-classic .nui-window__footer
 {
 	border-top-width: 0;
+}
+
+/* Modern's larger board and tile corners do not leak into legacy HUD parts. */
+.skin-classic.nui-board, .skin-classic .nui-board
+{
+	border-radius: var(--radius-md);
+}
+.skin-classic .nui-board--strip
+{
+	border-radius: var(--radius-sm);
+}
+.skin-classic .nui-tile
+{
+	border-radius: var(--radius-sm);
 }
 
 /* A tooltip board: the legacy thin board (ui.ThinBoard, the item, skill and
@@ -257,6 +280,35 @@
 .skin-classic .nui-panel__title
 {
 	color: var(--text);
+}
+
+/* Neutral and status badges keep the pre-modern-refresh legacy geometry. */
+.skin-classic .nui-badge
+{
+	padding: 0 var(--space-2);
+	border-radius: 9dp;
+	background-color: var(--surface-hover);
+	color: var(--text);
+}
+.skin-classic .nui-badge--accent
+{
+	background-color: var(--accent);
+	color: var(--accent-text);
+}
+.skin-classic .nui-badge--danger
+{
+	background-color: var(--danger);
+	color: var(--accent-text);
+}
+.skin-classic .nui-badge--warning
+{
+	background-color: var(--warning);
+	color: var(--accent-text);
+}
+.skin-classic .nui-badge--success
+{
+	background-color: var(--success);
+	color: var(--accent-text);
 }
 
 /* The server board's separator: a light line over a dark one. */
@@ -550,11 +602,23 @@
 {
 	background-color: transparent;
 }
+.skin-classic scrollbarhorizontal
+{
+	height: 10dp;
+}
+.skin-classic scrollbarhorizontal sliderbar
+{
+	margin-top: 2dp;
+	height: 6dp;
+	border-radius: 3dp;
+	background-color: var(--border);
+}
 
 /* --- List: the legacy list box highlights ------------------------------------------ */
 
 .skin-classic .nui-list
 {
+	padding: var(--space-1);
 	background-color: transparent;
 	border-width: 0;
 	border-radius: 0;
@@ -562,6 +626,8 @@
 /* Legacy rows are 17 px: a 15dp line between the 1dp edges. */
 .skin-classic .nui-list__item
 {
+	box-sizing: content-box;
+	min-height: 0;
 	border-radius: 0;
 	border-left-width: 1dp;
 	padding: 0 var(--space-1);
@@ -575,6 +641,8 @@
 {
 	background-color: var(--classic-select);
 	border-left-color: transparent;
+	color: var(--text);
+	font-weight: normal;
 }
 .skin-classic .nui-list__item:focus-visible, .skin-classic .nui-list__item.is-focus
 {
@@ -588,9 +656,35 @@
 
 /* --- Tabs, tooltip, slots, slider ----------------------------------------------------- */
 
+.skin-classic .nui-tabs tabs
+{
+	gap: 0;
+	padding: 0;
+	border-width: 0 0 1dp 0;
+	border-radius: 0;
+	background-color: transparent;
+}
 .skin-classic .nui-tabs tab
 {
+	height: auto;
+	padding: var(--space-2) var(--space-3);
+	border-radius: 0;
+	line-height: 1.4;
 	font-weight: normal;
+}
+.skin-classic .nui-tabs tab:selected
+{
+	color: var(--accent);
+	background-color: transparent;
+	border-color: transparent;
+}
+.skin-classic .nui-tabs tab.nui-tabs__indicator
+{
+	display: block;
+	height: 2dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
 }
 
 /* A thin board at least 32dp tall, so its 16dp corners never shrink. */
@@ -598,6 +692,7 @@
 {
 	decorator: classic-thinboard;
 	background-color: transparent;
+	border-width: 0;
 	border-radius: 0;
 	color: var(--classic-tooltip-text);
 	padding: 8dp 10dp;
@@ -770,6 +865,12 @@
 	right: 4dp;
 	bottom: 3dp;
 }
+/* No refine badge (the modern skins' is-refined, slot-grid.rcss): legacy
+   draws none. */
+.skin-classic .nui-slot.is-refined .nui-slot__number
+{
+	display: none;
+}
 /* The requirement sign: the window names its image in its overlay (legacy
    AppendRequirementSignImage takes any). */
 .skin-classic .nui-slot__sign
@@ -872,42 +973,83 @@
 .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w2 > .nui-slot__number { right: -28dp; }
 .skin-classic .nui-slot-grid--lean.is-attaching > .nui-slot--w3 > .nui-slot__number { right: -60dp; }
 
+/* The trade marks (wave 4b, NOVA-13; components/slot-grid.rcss): legacy's
+   washes over the item's area and its icon (CSlotWindow::__RenderItemWash),
+   red at 30% for an item in use (the --slot-disabled token holds legacy's
+   1, 0, 0, 0.3), white at 30% for one the window on top refuses (the
+   classic token of that white, --classic-chat-press), both when both are
+   on, the white over the red as legacy draws them; no ring. A lean
+   anchor's wash spans its item at the 32dp pitch. */
+.skin-classic .nui-slot__wash,
+.skin-classic .nui-slot.is-in-use .nui-slot__wash
+{
+	border-width: 0;
+	border-radius: 0;
+}
+.skin-classic .nui-slot.is-unusable-ontop .nui-slot__wash
+{
+	background-color: var(--classic-chat-press);
+	opacity: 1;
+}
+.skin-classic .nui-slot.is-in-use .nui-slot__wash
+{
+	background-color: var(--slot-disabled);
+}
+.skin-classic .nui-slot.is-in-use.is-unusable-ontop .nui-slot__wash
+{
+	decorator: linear-gradient(to bottom, var(--classic-chat-press), var(--classic-chat-press));
+}
+.skin-classic .nui-slot-grid--lean > .nui-slot--h2 > .nui-slot__wash { height: 64dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--h3 > .nui-slot__wash { height: 96dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w2 > .nui-slot__wash { width: 64dp; }
+.skin-classic .nui-slot-grid--lean > .nui-slot--w3 > .nui-slot__wash { width: 96dp; }
+
+/* The legacy slider (ui.SliderBar): the sliderbar art, 175 x 12, as the
+   track and its 53 x 12 cursor as the thumb, the same art at rest, over and
+   down, and no fill; the cursor travels 175 - 53 = 122dp. Legacy sizes the
+   slider to its art, so the classic slider is 175dp wide wherever it is; a
+   disabled one hides its cursor (ui.SliderBar.Disable). The system options
+   and guild building overlays place theirs at the legacy offsets. */
+.skin-classic .nui-slider
+{
+	width: 175dp;
+	height: 12dp;
+}
+.skin-classic .nui-slider:disabled
+{
+	opacity: 1;
+}
 .skin-classic .nui-slider slidertrack
 {
-	margin-top: 7dp;
-	height: 4dp;
-	border-radius: 0;
-	background-color: var(--classic-slot-fill);
-	border-width: 1dp;
-	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
-}
-/* RmlUi places the progress at the track's border edge plus its own margin,
-   with the track's content height: the margin puts it inside the borders. */
-.skin-classic .nui-slider sliderprogress
-{
-	margin: 1dp 0 0 1dp;
-	border-radius: 0;
-	background-color: var(--accent);
-}
-.skin-classic .nui-slider sliderbar
-{
-	decorator: tiled-horizontal(classic-button-small-01-l, classic-button-small-01-c, classic-button-small-01-r);
-	width: 12dp;
-	height: 16dp;
+	margin-top: 0;
+	height: 12dp;
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar.sub");
 }
-.skin-classic .nui-slider sliderbar:hover, .skin-classic .nui-slider.is-hover sliderbar,
-.skin-classic .nui-slider:focus-visible sliderbar, .skin-classic .nui-slider.is-focus sliderbar
+.skin-classic .nui-slider sliderprogress
 {
-	decorator: tiled-horizontal(classic-button-small-02-l, classic-button-small-02-c, classic-button-small-02-r);
+	margin: 0;
+	border-radius: 0;
 	background-color: transparent;
 }
+.skin-classic .nui-slider sliderbar,
+.skin-classic .nui-slider sliderbar:hover, .skin-classic .nui-slider.is-hover sliderbar,
+.skin-classic .nui-slider:focus-visible sliderbar, .skin-classic .nui-slider.is-focus sliderbar,
 .skin-classic .nui-slider sliderbar:active, .skin-classic .nui-slider.is-active sliderbar
 {
-	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+	margin-top: 0;
+	width: 53dp;
+	height: 12dp;
+	border-width: 0;
+	border-radius: 0;
 	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/windows/sliderbar_cursor.sub");
+}
+.skin-classic .nui-slider:disabled sliderbar
+{
+	visibility: hidden;
 }
 
 /* --- Tagged text, views and resize handles (Wave 2b) ------------------------------ */

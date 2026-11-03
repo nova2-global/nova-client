@@ -1,0 +1,14 @@
+/* Cyberpunk overlay of nui/windows/server-board/server-board.rml, in the
+   login card's look of the reviewed mockup: the title lit and tracked as
+   the skin's window titles, the two lists in square wells. */
+
+body.skin-cyberpunk.server-board .server-board__title
+{
+	color: var(--cyberpunk-title);
+	letter-spacing: 1dp;
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.server-board .server-board__servers, body.skin-cyberpunk.server-board .server-board__channels
+{
+	border-radius: 0;
+}

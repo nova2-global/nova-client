@@ -1,0 +1,33 @@
+/* Cyberpunk overlay of nui/windows/skill-tooltip/skill-tooltip.rml, after
+   the mockup's WSkillTooltip board (skins-stage2/ref/WSkillTooltip-
+   cyberpunk.png). The board is the skin's tooltip board (the component);
+   the lines keep legacy's order, roles and the modern sizes. The skill's
+   name tracked and lit with a soft glow of its own color; the divider a
+   neon line from magenta to cyan, fading at both ends (one flat line on a
+   device without effects, which draws a gradient as one color). */
+
+body.skin-cyberpunk.nui-tip .nui-tip__body > .nui-tip__slot:first-child .nui-tip__line
+{
+	letter-spacing: 1dp;
+}
+body.skin-cyberpunk.nui-tip .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--title
+{
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-acid-line));
+}
+body.skin-cyberpunk.nui-tip .nui-tip__body > .nui-tip__slot:first-child .nui-tip-role--special
+{
+	font-effect: glow(0dp 3dp 0dp 0dp var(--cyberpunk-glow));
+}
+body.skin-cyberpunk.nui-tip .nui-tip__rule
+{
+	background-color: transparent;
+	decorator: linear-gradient(90deg, transparent 0%, var(--cyberpunk-edge-alt) 30%, var(--accent) 70%, transparent 100%);
+}
+@media (theme: no-effects)
+{
+	body.skin-cyberpunk.nui-tip .nui-tip__rule
+	{
+		background-color: var(--tip-divider);
+		decorator: none;
+	}
+}

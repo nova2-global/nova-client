@@ -13,7 +13,10 @@ subclass's override), then self.nui_end(). Facade gives the window:
   Wave 4 engine, nui_hud.has_engine_4()), nui_discard();
 - the board on demand (nui_hud.OnDemand): made at Show, destroyed at Hide,
   every model key set from the facade's state at each make (_restore_board),
-  so a refresh while hidden costs only the proxies' bookkeeping (D4);
+  so a refresh while hidden costs only the proxies' bookkeeping (D4); a
+  window whose open took a 60 fps frame keeps its board instead (P18,
+  nui_demand(): a nui_hud.KeptBoard, or a nui_hud.PooledBoard whose hidden
+  boards wait for the next window of their class);
 - the place: PLACE None (the window sheet's place), "center", or a callable
   answering (x, y) in dp, at the first show; then where the player moved it
   (a centered window that was not moved is centered again, nui_hud.moved_place);
@@ -64,11 +67,13 @@ def _stop_leave_range(key):
 
 def end_phase():
 	"""nui_windows.end_phase(): no watch outlives the phase (the main actor
-	goes, and the position the watch reads then is the camera's). No
-	document to unload."""
+	goes, and the position the watch reads then is the camera's), and no
+	board waiting in a pool either (nui_hud.drain_pools(), P18): the
+	Interface destroyed its windows first, so every hidden board of a pooled
+	window is in its pool. How many documents went."""
 	for key in LEAVE_RANGE_KEYS:
 		_stop_leave_range(key)
-	return 0
+	return nui_hud.drain_pools()
 
 
 def _collected(demand):
@@ -108,11 +113,18 @@ class Facade(object):
 		self.demand = None
 		self._nui_finalizer = None
 		if nui_hud.has_engine_4():
-			self.demand = nui_hud.OnDemand(self._make_board, self._restore_board, self._keep_board)
+			self.demand = self.nui_demand()
 			# The OnDemand holds the facade's methods weakly, so it never
 			# keeps the facade alive.
 			self._nui_finalizer = weakref.finalize(self, _collected, self.demand)
 			self._nui_finalizer.atexit = False
+
+	def nui_demand(self):
+		"""What holds the board: nui_hud.OnDemand (made at Show, destroyed at
+		Hide). A window that keeps its board overrides it (P18): a
+		nui_hud.KeptBoard, or a nui_hud.PooledBoard for one made again at
+		each open or shown several times at once."""
+		return nui_hud.OnDemand(self._make_board, self._restore_board, self._keep_board)
 
 	def nui_end(self):
 		"""Last in the subclass's constructor: whether a board loads."""

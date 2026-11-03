@@ -73,6 +73,22 @@ ART = (("tab_1", "tab_1.sub"), ("tab_2", "tab_2.sub"), ("tab_3", "tab_3.sub"), (
        ("ext_item2", "label_ext_item2.sub"))
 
 
+# The class chip of the modern looks: chr.RaceToJob's job (playerSettingModule
+# JOB_WARRIOR to JOB_SHAMAN) and the localeInfo key of its name.
+JOB_NAMES = {0: "JOB_WARRIOR", 1: "JOB_ASSASSIN", 2: "JOB_SURA", 3: "JOB_SHAMAN"}
+
+
+def job_label(job, group, group_names):
+	"""The class chip's text: the job's name and, with a skill group, the
+	group's name as legacy names it (SKILL_GROUP_NAME_DICT), joined by a
+	middle dot ("Warrior · Body"); "" for a job without a name."""
+	name = getattr(localeInfo, JOB_NAMES.get(job, ""), "") if job in JOB_NAMES else ""
+	if not name:
+		return ""
+	group_name = group_names.get(job, {}).get(group, "") if group else ""
+	return nui.plain_text(name + (" · " + group_name if group_name else ""))
+
+
 def art_of(windows_path):
 	"""{key: store path} of ART in a locale's windows folder
 	(uiScriptLocale.WINDOWS_PATH, "locale/en/ui/windows/"), rooted."""
@@ -289,6 +305,12 @@ class _CharacterBoard(nui_hud.RaisesOnPress, nui.Window):
 	def on_quest_out(self, index):
 		self._grid("quest").out(int(index))
 
+	@nui.on("quest_clock_over")
+	def on_quest_clock_over(self, index):
+		# A row's countdown reached its end (countdownend: once per end, at
+		# once for one already past).
+		self._owner._quest_clock_over(int(index))
+
 	@nui.on("quest_scroll")
 	def on_quest_scroll(self, delta):
 		# The wheel over the list (new: legacy's list has no wheel): one line
@@ -371,7 +393,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			"placed": False,
 			"art": art_of(uiScriptLocale.WINDOWS_PATH),
 			"attach_right": bool(nui_slots.ATTACH_RIGHT),
-			"face": "", "name": "", "guild": "", "has_guild": False,
+			"face": "", "name": "", "guild": "", "has_guild": False, "job": "",
 			"stat_points": "", "stat_points_shown": False,
 			"groups": [{"index": i, "label": GROUP_LABELS[i], "shown": True, "down": False, "col": i} for i in range(3)],
 			"group_name": "", "group_name_shown": True,
@@ -399,7 +421,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 	@staticmethod
 	def _empty_row(row):
 		return {"row": row, "shown": False, "name": "", "icon": "", "counter": "", "clock_text": "",
-		        "clock_prefix": "", "clock_end": 0.0}
+		        "clock_prefix": "", "clock_end": 0.0, "clock_over": False}
 
 	def _set(self, **values):
 		self._state.update(values)
@@ -477,6 +499,14 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		image = self.faceImage if getattr(self, "faceImage", None) is not None else None
 		face = nui_slots.icon_source(image.image) if image is not None and image.IsShow() and image.image else ""
 		self._set(face=face)
+
+	def _CharacterWindow__SetJobText(self, mainJob, subJob):
+		"""Legacy's (RefreshCharacter's job and skill group; it shows nothing),
+		and the modern looks' class chip: the job, and the group from level
+		5 on, as legacy's rule takes the group then."""
+		uiCharacter.CharacterWindow._CharacterWindow__SetJobText(self, mainJob, subJob)
+		group = subJob if player.GetStatus(player.LEVEL) >= 5 else 0
+		self._set(job=job_label(mainJob, group, self.SKILL_GROUP_NAME_DICT))
 
 	def _on_stat_points(self, text):
 		self._set(stat_points=nui.plain_text(text))
@@ -840,7 +870,8 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 		scrolled one's); legacy's text goes to the Quest_LastTime proxies,
 		and the model gets each row's clock: a name and a time left run as
 		a countdown (clock_prefix and clock_end on the NovaUI clock), else
-		legacy's static text."""
+		legacy's static text; clock_over marks a time that is up (the modern
+		looks' danger color)."""
 		rows = [dict(row) for row in self._state["quests"]]
 		count = min(quest.GetQuestCount(), quest.QUEST_MAX_NUM)
 		for i in range(count):
@@ -852,9 +883,20 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 				continue
 			if len(lastName) > 0 and lastTime > 0:
 				rows[i].update({"clock_text": "", "clock_prefix": nui.plain_text(lastName + " : "),
-				                "clock_end": nui.now() + float(lastTime)})
+				                "clock_end": nui.now() + float(lastTime), "clock_over": False})
 			else:
-				rows[i].update({"clock_text": nui.plain_text(clockText), "clock_prefix": "", "clock_end": 0.0})
+				rows[i].update({"clock_text": nui.plain_text(clockText), "clock_prefix": "", "clock_end": 0.0,
+				                "clock_over": len(lastName) > 0})
+		self._set(quests=rows)
+
+	def _quest_clock_over(self, index):
+		"""A row's countdown ran out: the countdown shows legacy's over text
+		by itself; the row's clock takes the time-up color."""
+		rows = self._state["quests"]
+		if not 0 <= index < len(rows) or rows[index]["clock_end"] <= 0 or rows[index]["clock_over"]:
+			return
+		rows = [dict(row) for row in rows]
+		rows[index]["clock_over"] = True
 		self._set(quests=rows)
 
 	@staticmethod
@@ -889,6 +931,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			# Legacy's Show raises nothing: the boards raised since stay above (VF-1).
 			nui_hud.keep_order(self)
 		uiCharacter.CharacterWindow.Show(self)
+		nui_hud.tell_taskbar("character", self.IsShow())
 
 	def Hide(self):
 		uiCharacter.CharacterWindow.Hide(self)
@@ -899,6 +942,7 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			events.reset()
 		if self.demand is not None:
 			self.demand.hide()
+		nui_hud.tell_taskbar("character", self.IsShow())
 
 	def SetTop(self):
 		board = self.board()

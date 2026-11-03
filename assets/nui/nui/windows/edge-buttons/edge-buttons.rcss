@@ -83,12 +83,13 @@ body.edge-buttons
 	height: 36dp;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: var(--radius-md);
-	background-color: var(--surface);
+	border-radius: 7dp;
+	background-color: var(--surface-sunken);
 }
 .edge__button:hover
 {
 	background-color: var(--surface-hover);
+	border-color: var(--accent);
 }
 .edge__blink
 {
@@ -169,11 +170,16 @@ body.edge-buttons
 	width: 200dp;
 	text-align: left;
 }
+/* The overlay's dark plate, opaque (the scene's color, which the overlay
+   text colors are checked on): a quest label longer than its 100dp column
+   runs under the next column's label, which must cover it. */
 .edge__text
 {
-	padding: 1dp 6dp;
-	border-radius: var(--radius-sm);
-	background-color: var(--tooltip-bg);
+	padding: 1dp 7dp;
+	border-width: 1dp;
+	border-color: var(--tip-divider);
+	border-radius: 6dp;
+	background-color: var(--scene);
 	color: var(--text-inverse);
 	font-size: var(--font-sm);
 	white-space: nowrap;

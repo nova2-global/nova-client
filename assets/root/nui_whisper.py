@@ -7,9 +7,13 @@ partner (OpenWhisperDialog, ShowWhisperDialog) and for the dialog without a
 partner (OpenWhisperDialogWithoutTarget): a subclass of the legacy class
 (nui_facade.Facade) whose uiscript loader puts proxies where the widgets
 were. So sending (the insult check, the whisper packet, the own line in the
-store), choosing a partner, minimizing to an edge button and closing (the
-Interface's), the GM look, the links, the scroll and the size rule are
-legacy's code.
+store), choosing a partner (and asking for its details at once), minimizing
+to an edge button and closing (the Interface's), the GM look, the links, the
+scroll and the size rule are legacy's code, and so are the block button
+(NOVA-47: Block or Unblock as the client's list says, the packet and the
+other label at once) and the partner's details (NOVA-48: the online or
+offline mark and the language flag the server's answer shows,
+SetTargetDetails; game.py asks every two seconds).
 
 The lines stay in the C++ whisper store (CPythonChat's CWhisper): the
 legacy text renderer's place is a proxy whose SetTargetName attaches the
@@ -24,16 +28,28 @@ partner) until a dialog of that partner opens again and takes it, the
 dialog is closed (not minimized) or the phase ends (end_phase(), through
 nui_windows.PHASE_SCOPED); legacy loses the draft when
 the Interface destroys the minimized dialog. Each dialog's board is
-instanced (whisper_<n>), made at its show and destroyed at its hide; it
-draws below the legacy UI layer, as legacy's window lived in it. While one
-of its fields has NovaUI's focus, the dialog holds wndMgr's focus
-(nui_hud.FocusProxy), as a focused legacy edit line would."""
+instanced (whisper_<n>); it draws below the legacy UI layer, as legacy's
+window lived in it. While one of its fields has NovaUI's focus, the dialog
+holds wndMgr's focus (nui_hud.FocusProxy), as a focused legacy edit line
+would.
+
+The boards are pooled (P18, Eddy: keep the slow-opening windows loaded, with
+no memory growth): a dialog the Interface destroys (a close, a minimize)
+puts its board in POOL, hidden, its lines and scroll emptied (lines_on), its
+feed key 0, its fields empty and no dialog behind it
+(nui_hud.PooledBoard, nui_hud.Pooled), and the next dialog takes a waiting
+board instead of loading its document. At most POOL_BOUND boards wait; the
+phase's end unloads them (nui_facade.end_phase). A dialog's Show writes both
+fields from its own proxies, so a board never shows another conversation's
+draft; its model (the partner, the feed key, the size, the place) is the
+dialog's own at each show."""
 
 import app
 import chat
 import ime
 import nuigame
 import ui
+import uiScriptLocale
 import uiWhisper
 
 import nui
@@ -65,6 +81,20 @@ SCROLL_STEP = 0.01
 # minimized dialog (D8); "x" and "y" in dp, or None.
 STATE = {}
 
+# P18: the boards that wait for the next dialog. Four: a player who keeps up
+# to four conversations going (Wave 4's busy case, B3W, shows three dialogs
+# at once), minimizing and opening them in turn, never loads a document
+# again, while a waiting board, emptied, keeps 40 elements (46 in
+# cyberpunk), about 5 to 9 us of RmlUi's update a frame at Wave 3c's
+# measured rate for hidden elements (0.12 to 0.20 us each), until the
+# engine skips hidden documents. A fifth closed dialog's board unloads.
+POOL_BOUND = 4
+POOL = nui_hud.BoardPool("whisper", POOL_BOUND)
+# What a waiting board shows: nothing of any conversation.
+EMPTY = {"lines_on": [], "feed_key": 0, "target": "", "gm": False, "editing_target": False, "accept_shown": False,
+         "block_shown": False, "blocked": False, "online_shown": False, "online": False, "flag_shown": False,
+         "flag_src": ""}
+
 
 def end_phase():
 	"""nui_windows.end_phase(): the kept drafts go with the phase (each
@@ -83,13 +113,17 @@ def gm_mark_source():
 	return "/" + str(common).strip("/") + "/effect/ymirred.tga"
 
 
-class _WhisperBoard(nui_hud.RaisesOnPress, nui.Window):
-	"""A whisper dialog's document; its events go to its dialog. A press on
-	it raises the dialog, as legacy's window manager does."""
+class _WhisperBoard(nui_hud.Pooled, nui_hud.RaisesOnPress, nui.Window):
+	"""A whisper dialog's document; its events go to its dialog (none while
+	it waits in POOL). A press on it raises the dialog, as legacy's window
+	manager does."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "whisper"
 	INSTANCED = True
+	# nui_hud.Pooled: emptied before the board waits, the focus parked.
+	FIELDS = (INPUT, TARGET)
+	PARK = PARK
 
 	def __init__(self, owner, model):
 		self._owner = nui_hud.keep_weakly(owner)
@@ -152,6 +186,12 @@ class _WhisperBoard(nui_hud.RaisesOnPress, nui.Window):
 		self.raise_for(button)
 		if button == 0:
 			self._owner.sendButton.click()
+
+	@nui.on("block_press")
+	def on_block_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.blockButton.click()
 
 	@nui.on("input_change")
 	def on_input_change(self, value):
@@ -234,7 +274,32 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 			"pos": 1.0,
 			"input_max": CHAT_LINE_LIMIT,
 			"target_max": self._limits.PLAYER_NAME_INPUT_MAX,
+			# The block button (NOVA-47): shown for a partner, Unblock while
+			# the partner is on the block list.
+			"block_shown": False,
+			"blocked": False,
+			# The partner's details (NOVA-48): the online or offline mark and
+			# the language flag (a rooted path), once the server answered.
+			"online_shown": False,
+			"online": False,
+			"flag_shown": False,
+			"flag_src": "",
+			# P18: the scroll, a list of one entry while the board shows, none
+			# while it waits in POOL (the lines go with the feed key 0).
+			"lines_on": [1],
 		}
+
+	def nui_demand(self):
+		"""P18: the board comes from POOL and goes back to it."""
+		return nui_hud.PooledBoard(POOL, self._make_board, self._restore_board, self._keep_board,
+		                           self._empty_board, self._adopt_board)
+
+	def _adopt_board(self, board):
+		board.adopt(self)
+
+	def _empty_board(self, board):
+		"""Nothing of this conversation stays on a board that waits."""
+		board.set(**EMPTY)
 
 	def nui_discard(self):
 		lines = getattr(self, "textRenderer", None)
@@ -261,6 +326,24 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 
 	def _on_feed(self, key):
 		self.nui_set(feed_key=int(key))
+
+	def _on_block(self, button=None):
+		block = getattr(self, "blockButton", None)
+		if block is None:
+			return
+		self.nui_set(block_shown=bool(block.shown), blocked=block.text == uiScriptLocale.UNBLOCK_PLAYER)
+
+	def _on_online_image(self, path):
+		self.nui_set(online=path == uiWhisper.WhisperDialog.ONLINE_IMAGE)
+
+	def _on_online_shown(self, shown):
+		self.nui_set(online_shown=bool(shown))
+
+	def _on_flag_image(self, path):
+		self.nui_set(flag_src=("/" + path.lstrip("/")) if path else "")
+
+	def _on_flag_shown(self, shown):
+		self.nui_set(flag_shown=bool(shown))
 
 	def _value(self, field_id):
 		board = self.nui_board()
@@ -292,7 +375,7 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		elif what == "kill_focus":
 			board.focus(PARK)
 
-	# --- the loader (uiwhisper.py:69-127, on proxies) ---------------------------------------
+	# --- the loader (uiwhisper.py WhisperDialog.LoadDialog, on proxies) ---------------------
 
 	def LoadDialog(self):
 		# The uiscript's style (whisperdialog.py: "movable", "float").
@@ -313,6 +396,12 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		self.editBar = nui_proxies.BoardProxy(RESIZE_X - 18, 50)
 		self.gamemasterMark = nui_proxies.ImageProxy(image=gm_mark_source())
 		self.gamemasterMark.on_show = self._on_gm
+		# The block button and the partner's details (NOVA-47, NOVA-48).
+		self.blockButton = nui_proxies.ButtonProxy(self._on_block)
+		self.online = nui_proxies.ImageProxy(self._on_online_image)
+		self.online.on_show = self._on_online_shown
+		self.flag = nui_proxies.ImageProxy(self._on_flag_image)
+		self.flag.on_show = self._on_flag_shown
 		self.scrollBar.SetScrollBarSize(RESIZE_X - 160)
 
 		self.gamemasterMark.Hide()
@@ -332,6 +421,10 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		self.ignoreButton.SetToggleUpEvent(ui.__mem_func__(self.IgnoreTarget))
 		self.reportViolentWhisperButton.SetEvent(ui.__mem_func__(self.ReportViolentWhisper))
 		self.acceptButton.SetEvent(ui.__mem_func__(self.AcceptTarget))
+		self.blockButton.SetEvent(ui.__mem_func__(self.BlockPlayer))
+		self.blockButton.Hide()
+		self.online.Hide()
+		self.flag.Hide()
 
 		self.textRenderer = _LinesProxy(self._on_feed)
 		self.textRenderer.SetParent(self)
@@ -412,9 +505,10 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 			return
 		# The fields as legacy left them (a draft set while hidden), and the
 		# focus legacy gave before the show (OpenWithTarget, the Interface).
+		# Both are written, empty ones too, also the partner field under its
+		# data-if: a board from POOL shows this dialog's text only (P18).
 		for field in (self.chatLine, self.titleNameEdit):
-			if field.text:
-				board.set_value(field.field_id, field.text, caret="end")
+			board.set_value(field.field_id, field.text or "", caret="end", even_hidden=True)
 		for field in (self.titleNameEdit, self.chatLine):
 			if field.focused and field.shown:
 				board.focus(field.field_id)

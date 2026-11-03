@@ -38,8 +38,10 @@ import json
 import os
 import re
 import sys
+import time
 import types
 import unittest
+from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
@@ -64,7 +66,9 @@ MARK_TOTAL = 1280                        # CGuildMarkImage::MARK_TOTAL_COUNT
 
 MINIMAP_METHODS = ("Show", "Hide", "ShowMiniMap", "HideMiniMap", "isShowMiniMap", "SetTop", "ScaleUp", "ScaleDown",
                    "SetMapName", "ShowAtlas", "ToggleAtlasWindow", "UpdateObserverCount", "Close", "SetImprisonmentDuration",
-                   "Destroy")
+                   "Destroy",
+                   # NOVA-49: the server line again after a channel change.
+                   "RefreshServerInfo")
 ATLAS_METHODS = ("LoadWindow", "Show", "Hide", "IsShow", "SetMapName", "SetCenterPositionAdjust", "OnPressEscapeKey", "Destroy")
 GAUGE_METHODS = ("Show", "Hide", "IsShow", "RefreshGauge", "EnableShowAlways", "DisableShowAlways", "Destroy")
 SIGN_METHODS = ("Open", "Show", "Hide", "IsShow", "OnMouseLeftButtonUp", "Destroy")
@@ -546,6 +550,48 @@ class MapNovaUI(unittest.TestCase):
         calls = [name for name, _ in world.game.log if name in ("miniMap.Destroy", "miniMap.UnregisterAtlasWindow")]
         self.assertEqual(calls, ["miniMap.UnregisterAtlasWindow"], "the discarded atlas lets go; no late Destroy")
 
+    def test_the_server_line_follows_a_channel_change(self):
+        """NOVA-49 (uiminimap.py RefreshServerInfo): game.py calls it when a
+        channel change renamed the channel in the server info text; before
+        the first Show it does nothing, and that Show reads the text."""
+        world = self.world()
+        net = world.game.modules["net"]
+        net.__dict__["_answers"]["GetServerInfo"] = "Nova - CH2"
+        world.minimap.RefreshServerInfo()
+        with quiet():
+            world.minimap.Show()
+        self.assertEqual(world.minimap.board.model["server_info"], "Nova - CH2")
+        net.__dict__["_answers"]["GetServerInfo"] = "Nova - CH3"
+        world.minimap.RefreshServerInfo()
+        self.assertEqual(world.minimap.board.model["server_info"], "Nova - CH3")
+
+    def test_the_server_line_shows_the_local_clock_once_a_minute(self):
+        """The clock (not in classic): the local time's hours and minutes at
+        the first Show, and a timer that ends just after the next minute; its
+        countdownend reads the time again and moves the end a minute on, so
+        no Python runs in between."""
+        world = self.world()
+        module = world.module("nui_minimap")
+        wall = [7 * 3600 + 5 * 60 + 42.5]
+        fake = types.SimpleNamespace(time=lambda: wall[0], localtime=lambda seconds: time.gmtime(seconds))
+        world.game.state.now = 100.0
+        with mock.patch.object(module, "time", fake), quiet():
+            self.assertEqual(world.minimap.board.model["clock_next"], 0.0, "no timer before the first Show")
+            world.minimap.Show()
+            model = world.minimap.board.model
+            self.assertEqual(model["clock"], "07:05")
+            self.assertAlmostEqual(model["clock_next"], 100.0 + 17.5 + module.CLOCK_LATE)
+            step = 17.5 + module.CLOCK_LATE
+            wall[0] += step
+            world.game.state.now += step
+            world.minimap.board.fire("clock_tick")
+            self.assertEqual(model["clock"], "07:06")
+            self.assertAlmostEqual(model["clock_next"], world.game.state.now + 60.0)
+            world.minimap.Hide()
+            world.minimap.Show()
+            self.assertEqual(model["clock"], "07:06", "a later Show arms nothing again")
+        self.assertEqual([name for name, _ in world.game.log if name in PER_FRAME], [])
+
     def test_set_imprisonment_duration_sets_the_line_once(self):
         world = self.world()
         world.minimap.SetImprisonmentDuration(3600)
@@ -565,8 +611,9 @@ class MapNovaUI(unittest.TestCase):
             atlas.Show()
         self.assertEqual(atlas.board.model["title"], "Yongan Area")
         self.assertEqual(atlas.board.placement, ("position", (800 + 30) / 1.5, (450 - 20) / 1.5, (0.5, 0.5)))
+        # A map the dict lacks keeps the title, as legacy's since NOVA-90 (it raised before).
         atlas.SetMapName("metin2_map_unknown")
-        self.assertEqual(atlas.board.model["title"], "", "a map the dict lacks: the default title (legacy raises)")
+        self.assertEqual(atlas.board.model["title"], "Yongan Area", "a map the dict lacks keeps the title")
         atlas.SetCenterPositionAdjust(10, 10)
         self.assertEqual(atlas.board.placement, ("position", (800 + 10) / 1.5, (450 + 10) / 1.5, (0.5, 0.5)))
 
@@ -857,6 +904,29 @@ class WarDifferential(unittest.TestCase):
         self.assertEqual(seen[0][-1], [])
         self.assertIsNone(novaui.module("nui_guild_war")._board, "the document goes with the last war")
 
+    def test_each_row_holds_its_name_and_score_apart_and_whether_it_leads(self):
+        """The modern looks' score badge and leading row (the reviewed
+        board): legacy's text split into its name part and its score, the
+        higher score leading, neither on a tie."""
+        world = World(True)
+        seen = []
+        steps = [
+            lambda w: w.interface.OnStartGuildWar(1, 2),
+            lambda w: w.interface.OnRecvGuildWarPoint(1, 2, 5),
+            lambda w: w.interface.UpdateMemberCount(1, 3, 2, 4),
+            lambda w: w.interface.OnRecvGuildWarPoint(2, 1, 7),
+        ]
+        for step in steps:
+            with world, quiet():
+                step(world)
+            entry = world.module("nui_guild_war")._board.model["boards"][0]
+            seen.append([(plain(row["name"]), row["score"], row["leading"], plain(row["text"])) for row in entry["rows"]])
+        self.assertEqual(seen, [
+            [("Dragons", "0", False, "Dragons 0"), ("Lionheart", "0", False, "Lionheart 0")],
+            [("Dragons", "5", True, "Dragons 5"), ("Lionheart", "0", False, "Lionheart 0")],
+            [("Dragons(3)", "5", True, "Dragons(3) 5"), ("Lionheart(4)", "0", False, "Lionheart(4) 0")],
+            [("Dragons(3)", "5", False, "Dragons(3) 5"), ("Lionheart(4)", "7", True, "Lionheart(4) 7")]])
+
     def test_the_classic_width_is_legacys_name_length_rule(self):
         """--legacy-width, which the classic skin sizes a board by: legacy's
         __RefreshName width, 15 wider once both member counts are known."""
@@ -998,7 +1068,7 @@ class Fixtures(unittest.TestCase):
         for board in boards + fixture("guild-war", "two")["guild_war"]["boards"]:
             self.assertEqual(set(board), {"key", "rows", "legacy_width"})
             for row in board["rows"]:
-                self.assertEqual(set(row), {"src", "rect", "text"})
+                self.assertEqual(set(row), {"src", "rect", "text", "name", "score", "leading"})
 
     def test_the_golden_cases_name_the_stand_ins(self):
         cases = {window: json.loads(read(os.path.join(WINDOWS, window, window + ".snapshots.json")))["cases"]
@@ -1006,11 +1076,18 @@ class Fixtures(unittest.TestCase):
         self.assertEqual({c.get("variant") for c in cases["minimap"]}, {None, "closed", "observers"})
         self.assertEqual({c.get("variant") for c in cases["shop-signs"]}, {None, "own-only"})
         self.assertEqual({c.get("variant") for c in cases["guild-war"]}, {None, "two"})
-        frames = {"minimap": "320x240", "atlas": "640x400", "player-gauge": "320x200", "shop-signs": "960x320",
-                  "guild-war": "480x200"}
+        frames = {"minimap": "320x240", "atlas": "640x480", "player-gauge": "320x200", "shop-signs": "960x320",
+                  "guild-war": "480x260"}
+        # The modern and cyberpunk frames of these are taller than classic's: the atlas's
+        # holds the window's shadow, the guild war's two boards of 26dp rows.
+        classic_frames = {"atlas": "640x400", "guild-war": "480x200"}
         for window, window_cases in cases.items():
             for case in window_cases:
+                if window in classic_frames and case["themes"] == ["classic"]:
+                    self.assertEqual(case["scales"][0][2], classic_frames[window], window)
+                    continue
                 self.assertEqual(case["themes"], "all", window)
+                self.assertEqual(case.get("except"), ["classic"] if window in classic_frames else None, window)
                 self.assertEqual([row[:2] for row in case["scales"]], [["100", "1"], ["150", "1.5"], ["200", "2"]], window)
                 self.assertEqual(case["scales"][0][2], frames[window], window)
         for case in cases["minimap"]:

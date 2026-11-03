@@ -380,10 +380,10 @@ def make_nui(state):
             if event:
                 self.fire(event, self.fields.get(element_id, ""), linebreak)
 
-        def set_value(self, element_id, text, caret="end"):
+        def set_value(self, element_id, text, caret="end", even_hidden=False):
             if not isinstance(text, str):
                 raise TypeError(type(text).__name__)
-            if not self._doc or not self.visible:
+            if not self._doc or not (self.visible or even_hidden):
                 return False
             self.calls.append(("set_value", element_id, text, caret))
             limit = state.maxlength.get((self.DOCUMENT, element_id))
@@ -642,6 +642,47 @@ def find_lines(text, expected):
     return found
 
 
+class PackFile(object):
+    """system.py's pack_file: the store's copy of a file, read once, with no
+    close() and no with block."""
+
+    def __init__(self, data):
+        self.data = data
+
+    def read(self):
+        data, self.data = self.data, ""
+        return data
+
+    def readlines(self):
+        return self.read().splitlines(True)
+
+
+class ClientOpen(object):
+    """With it, open() is the client's (system.py): a PackFile for a read of
+    any path that exists (the asset store falls back to the disk), the real
+    open otherwise, and builtins.old_open the real open."""
+
+    def __enter__(self):
+        import builtins
+        self.real = builtins.open
+        real = self.real
+
+        def client_open(path, mode="rb"):
+            if mode in ("r", "rb") and os.path.exists(path):
+                with real(path, mode) as handle:
+                    return PackFile(handle.read())
+            return real(path, mode)
+        builtins.old_open = real
+        builtins.open = client_open
+        return self
+
+    def __exit__(self, *exc):
+        import builtins
+        builtins.open = self.real
+        del builtins.old_open
+        return False
+
+
 def stub_module(name, **members):
     module = types.ModuleType(name)
     for key, value in members.items():
@@ -653,6 +694,11 @@ def load_module(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    if name == "nui_windows":
+        # The client runs every window on NovaUI by default; the tests compare
+        # NovaUI windows with the legacy ones, so a window is NovaUI here only
+        # when its test names it (nui_windows_test checks the real default).
+        module.DEFAULT_ON = False
     return module
 
 

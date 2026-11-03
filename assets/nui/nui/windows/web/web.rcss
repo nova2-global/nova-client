@@ -1,6 +1,7 @@
 /* The web window's modern look: legacy's 760 x 590dp frame, at most 96% of
-   the screen's width and 92% of its height, a column whose page area takes
-   what the title bar leaves, inset 8dp from the frame. The page area is a
+   the screen's width and 92% of its height, the title row with the shop
+   chip (the glyph of the mall buttons that open it), a column whose page
+   area takes what the title bar leaves, inset 8dp from the frame. The page area is a
    plain box: the client puts the native page on its border box (no border,
    no padding, no radius), and its background shows only until the page
    draws. The sheet's own place centers the window in its 1280 x 720dp
@@ -29,6 +30,25 @@ body.web
 .web__titlebar
 {
 	flex: 0 0 auto;
+}
+.web__title-icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+	text-align: center;
+	vertical-align: middle;
+}
+.web__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
 }
 .web__page
 {

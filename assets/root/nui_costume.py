@@ -6,12 +6,16 @@ uiscript loader puts a nui_slots.SlotWindowProxy over the costume group of
 the wear table (nui_limits) where the legacy slot window was, with the
 inventory's handlers (OverInItem, OverOutItem, UseItemSlot, SelectEmptySlot,
 SelectItemSlot) as legacy binds them, so equipping, unequipping and every
-drag is the inventory's legacy code. Legacy refreshes COSTUME_SLOT_COUNT
-cells; the cells of the group it never refreshes (today's ring1, P14 spec
-2.1) are filled from the inventory at each refresh, a difference nobody can
-see today. The board exists only while the window shows; at each open it is
+drag is the inventory's legacy code. The group is the costume body and
+hair, as legacy's window since the cut (NOVA-97). Legacy refreshes
+COSTUME_SLOT_COUNT cells; a cell of the group it would not refresh (none
+since the cut: before it, ring1, P14 spec 2.1) is filled from the inventory
+at each refresh. The board exists only while the window shows; at each open it is
 placed beside the inventory's left edge, top in line (legacy's
-SCREEN_WIDTH - 175 - 140), and it moves alone after."""
+SCREEN_WIDTH - 175 - 140), beyond the inventory's shortcut rail while it has
+one, and it moves alone after. The modern skin stands a figure between the
+slots: an image whose path the model carries, the male or the female one by
+the character's race (figure_for_race)."""
 
 import player
 import ui
@@ -24,6 +28,19 @@ import nui_slots
 
 DOCUMENT = "nui/windows/costume/costume.rml"
 KEY = "costume"
+
+# The figures (content images, nui/figures/; the model carries the path).
+FIGURE_MALE = "/nui/figures/costume-male.png"
+FIGURE_FEMALE = "/nui/figures/costume-female.png"
+# The female races (playerSettingModule: RACE_ASSASSIN_W 1, RACE_SHAMAN_W 3,
+# RACE_WARRIOR_W 4, RACE_SURA_W 6; 0, 2, 5 and 7 are male).
+FEMALE_RACES = (1, 3, 4, 6)
+
+
+def figure_for_race(race):
+	"""The costume window's figure for a race: the female one for a female
+	race, else the male one."""
+	return FIGURE_FEMALE if race in FEMALE_RACES else FIGURE_MALE
 
 
 class _CostumeBoard(nui_hud.RaisesOnPress, nui.Window):
@@ -96,6 +113,8 @@ class CostumeWindow(uiInventory.CostumeWindow):
 			"attach_right": bool(getattr(nui_slots, "ATTACH_RIGHT", False)),
 			# V-2: the wear grid, none while the board is kept hidden.
 			"wear_on": [1],
+			# The figure for the character's gender.
+			"figure": figure_for_race(player.GetRace()),
 		}
 		# V-2 (P15 spec 8.1): kept, hidden, after its first open.
 		self.demand = (nui_hud.KeptBoard(self._make_board, self._restore_board, empty=self._empty_board)
@@ -146,15 +165,18 @@ class CostumeWindow(uiInventory.CostumeWindow):
 		inventory's SCREEN_WIDTH - 176). When both open together (the
 		inventory's Show reopens it), the inventory's new board has no layout
 		yet and an empty box, so its origin is the place it opens at; docked
-		instead when neither is known."""
+		instead when neither is known. The inventory's shortcut rail, while
+		it has entries, stays clear (rail_reach)."""
 		board = self.demand.board() if self.demand is not None else None
 		other = self.wndInventory.board() if hasattr(self.wndInventory, "board") else None
 		if board is None or other is None:
 			return
 		origin = getattr(self.wndInventory, "board_origin", None)
 		origin = origin() if origin is not None else None
+		reach = getattr(self.wndInventory, "rail_reach", None)
+		reach = reach() if reach is not None else 0.0
 		if origin is not None:
-			board.set_position(origin[0] + 1.0, origin[1], origin=(1.0, 0.0))
+			board.set_position(origin[0] + 1.0 - reach, origin[1], origin=(1.0, 0.0))
 		else:
 			board.place_next_to(other, "left", 0)
 
@@ -190,6 +212,9 @@ class CostumeWindow(uiInventory.CostumeWindow):
 		uiInventory.CostumeWindow.RefreshCostumeSlot(self)
 
 	def Show(self):
+		figure = figure_for_race(player.GetRace())
+		if figure != self._state["figure"]:
+			self._set(figure=figure)
 		if self.demand is not None:
 			self.demand.show()
 		uiInventory.CostumeWindow.Show(self)

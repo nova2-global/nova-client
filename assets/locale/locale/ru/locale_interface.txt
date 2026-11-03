@@ -453,3 +453,18 @@ NUI_EXCHANGE_LAMP_WAITING	Ещё не принято
 NUI_EXCHANGE_LAMP_YOU	Вы приняли
 NUI_GUILD_TAB_NEWS	Новости
 NUI_GUILD_TAB_RANKING	Рейтинг участников
+NUI_INTRO_EMPIRE_TITLE	Империя
+NUI_INTRO_SELECTED	Выбрано
+NUI_INTRO_EMPIRE_MOTTO_A	Торговля · Решимость · Единство
+NUI_INTRO_EMPIRE_MOTTO_B	Вера · Честь · Порядок
+NUI_INTRO_EMPIRE_MOTTO_C	Сила · Дисциплина · Слава
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Южное королевство
+NUI_INTRO_EMPIRE_REGION_B	Западное королевство
+NUI_INTRO_EMPIRE_REGION_C	Восточное королевство
+NUI_INTRO_CREATE_TITLE	Создать персонажа
+NUI_INTRO_SELECT_TITLE	Выбор персонажа
+NUI_INTRO_SLOTS	%d мест
+NUI_INTRO_LOADING_TITLE	Вход в королевство

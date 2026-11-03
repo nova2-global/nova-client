@@ -453,3 +453,18 @@ NUI_EXCHANGE_LAMP_WAITING	Jeszcze nie zaakceptowano
 NUI_EXCHANGE_LAMP_YOU	Zaakceptowano przez ciebie
 NUI_GUILD_TAB_NEWS	Aktualności
 NUI_GUILD_TAB_RANKING	Ranking członków
+NUI_INTRO_EMPIRE_TITLE	Imperium
+NUI_INTRO_SELECTED	Wybrano
+NUI_INTRO_EMPIRE_MOTTO_A	Handel · Determinacja · Jedność
+NUI_INTRO_EMPIRE_MOTTO_B	Wiara · Honor · Porządek
+NUI_INTRO_EMPIRE_MOTTO_C	Siła · Dyscyplina · Chwała
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Południowe królestwo
+NUI_INTRO_EMPIRE_REGION_B	Zachodnie królestwo
+NUI_INTRO_EMPIRE_REGION_C	Wschodnie królestwo
+NUI_INTRO_CREATE_TITLE	Utwórz postać
+NUI_INTRO_SELECT_TITLE	Wybór postaci
+NUI_INTRO_SLOTS	%d miejsc
+NUI_INTRO_LOADING_TITLE	Wejście do królestwa

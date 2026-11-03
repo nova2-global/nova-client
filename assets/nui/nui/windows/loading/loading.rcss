@@ -32,9 +32,37 @@ body.loading
 	left: 50%;
 	top: 83.33%;
 	width: 400dp;
-	height: 80dp;
+	height: 116dp;
 	margin-left: -200dp;
+	margin-top: -36dp;
 	box-sizing: border-box;
+}
+.loading-title-icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+	text-align: center;
+	vertical-align: middle;
+}
+.loading-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+.loading-content
+{
+	position: absolute;
+	left: 0dp;
+	top: 36dp;
+	width: 100%;
+	height: 80dp;
 }
 
 /* The engine's contract for nui-frames (Core/ElementFrames.h): an inline
@@ -149,13 +177,11 @@ progress.loading-gauge fill
 	text-align: right;
 }
 
-/* The row over the gauge, from its left to the percent's right end: the
-   name (cut with an ellipsis before it meets the badge) and the badge. */
+/* The character name over the gauge; it is cut before the percent column. */
 .loading__head
 {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
 	align-items: center;
 	position: absolute;
 	left: 70dp;
@@ -174,12 +200,6 @@ progress.loading-gauge fill
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-.loading__badge
-{
-	flex: 0 0 auto;
-	margin-left: var(--space-2);
-}
-
 .loading-error
 {
 	position: absolute;

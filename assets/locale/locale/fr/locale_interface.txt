@@ -452,3 +452,18 @@ NUI_EXCHANGE_LAMP_WAITING	Pas encore accepté
 NUI_EXCHANGE_LAMP_YOU	Vous avez accepté
 NUI_GUILD_TAB_NEWS	Actualités
 NUI_GUILD_TAB_RANKING	Classement des membres
+NUI_INTRO_EMPIRE_TITLE	Empire
+NUI_INTRO_SELECTED	Sélectionné
+NUI_INTRO_EMPIRE_MOTTO_A	Commerce · Détermination · Unité
+NUI_INTRO_EMPIRE_MOTTO_B	Foi · Honneur · Ordre
+NUI_INTRO_EMPIRE_MOTTO_C	Force · Discipline · Gloire
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Royaume du sud
+NUI_INTRO_EMPIRE_REGION_B	Royaume de l'ouest
+NUI_INTRO_EMPIRE_REGION_C	Royaume de l'est
+NUI_INTRO_CREATE_TITLE	Créer un personnage
+NUI_INTRO_SELECT_TITLE	Sélection du personnage
+NUI_INTRO_SLOTS	%d emplacements
+NUI_INTRO_LOADING_TITLE	Entrée dans le royaume

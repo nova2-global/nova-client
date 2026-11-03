@@ -89,6 +89,16 @@ def job_image(job):
 	return ""
 
 
+def slots_badge(count):
+	"""The localized title-bar count, protected from model-key parsing."""
+	pattern = getattr(uiScriptLocale, "NUI_INTRO_SLOTS", "%d slots")
+	try:
+		value = pattern % int(count)
+	except (TypeError, ValueError):
+		value = "%d slots" % int(count)
+	return nui.plain_text(value)
+
+
 class SelectBoard(nui.Window):
 	"""The select board's document, model and handlers; it reports to its
 	owner, the phase window. Every handler does nothing while a start is
@@ -102,10 +112,12 @@ class SelectBoard(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
+		count = int(getattr(self._owner, "SLOT_COUNT", introSelect.SelectCharacterWindow.SLOT_COUNT))
 		values = empty_board()
 		values.update({"slot": 0, "busy": False, "empire_name": "", "flag_image": "",
+			"slot_badge": slots_badge(count),
 			"slots": [{"index": index, "label": EMPTY_SLOT, "level": 0}
-			          for index in range(introSelect.SelectCharacterWindow.SLOT_COUNT)]})
+			          for index in range(count)]})
 		return values
 
 	def _idle(self):

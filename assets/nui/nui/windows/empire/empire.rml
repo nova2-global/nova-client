@@ -39,12 +39,23 @@
 		<img class="empire-area-flag empire-area-flag--c nui-anim" src="d:/ymir work/ui/intro/empire/empireareaflag_c.sub" data-class-is-lit="empire == 3"/>
 		<button id="empire-left" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--left" data-event-click="left()"><span class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 		<button id="empire-right" class="nui-button nui-button--icon nui-anim empire-arrow empire-arrow--right" data-event-click="right()"><span class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		<div class="empire-picks">
+			<button id="empire-pick-1" class="nui-button nui-anim empire-pick" data-class-is-selected="empire == 1" data-event-click="pick(1)"><img class="empire-pick__flag" data-attr-src="flag_a"/><span class="empire-pick__text"><span class="empire-pick__name">@ui.NUI_INTRO_EMPIRE_SHORT_A</span><span class="empire-pick__region">@ui.NUI_INTRO_EMPIRE_REGION_A</span></span></button>
+			<button id="empire-pick-2" class="nui-button nui-anim empire-pick" data-class-is-selected="empire == 2" data-event-click="pick(2)"><img class="empire-pick__flag" data-attr-src="flag_b"/><span class="empire-pick__text"><span class="empire-pick__name">@ui.NUI_INTRO_EMPIRE_SHORT_B</span><span class="empire-pick__region">@ui.NUI_INTRO_EMPIRE_REGION_B</span></span></button>
+			<button id="empire-pick-3" class="nui-button nui-anim empire-pick" data-class-is-selected="empire == 3" data-event-click="pick(3)"><img class="empire-pick__flag" data-attr-src="flag_c"/><span class="empire-pick__text"><span class="empire-pick__name">@ui.NUI_INTRO_EMPIRE_SHORT_C</span><span class="empire-pick__region">@ui.NUI_INTRO_EMPIRE_REGION_C</span></span></button>
+		</div>
 	</div>
 	<div id="empire-board" class="nui-window nui-fx empire-board">
+		<div class="nui-window__titlebar empire-titlebar">
+			<span class="empire-title-icon"><span class="nui-glyph empire-flag-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<div class="nui-window__handle"><span class="nui-window__title">@ui.NUI_INTRO_EMPIRE_TITLE</span></div>
+			<span class="nui-badge nui-badge--accent" data-if="badge != ''">{{ badge }}</span>
+		</div>
 		<div class="empire-flag-bar">
 			<img class="empire-flag" data-attr-src="flag_image" data-if="flag_image != ''"/>
 		</div>
 		<p class="empire-name">{{ name }}</p>
+		<p class="empire-motto">{{ motto }}</p>
 		<div class="empire-well">
 			<div id="empire-text" class="empire-text">
 				<p class="empire-text__paragraph" data-for="p : paragraphs">{{ p }}</p>

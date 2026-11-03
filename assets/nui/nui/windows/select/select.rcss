@@ -31,11 +31,34 @@
 	box-sizing: border-box;
 	padding: 12dp 12dp 0dp 12dp;
 }
+.select-titlebar
+{
+	margin: -12dp -12dp 12dp -12dp;
+}
+.select-title-icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+	text-align: center;
+	vertical-align: middle;
+}
+.select-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
 .select-job
 {
 	position: absolute;
 	left: -27dp;
-	top: -149dp;
+	top: -113dp;
 	pointer-events: none;
 }
 /* Below 720dp of screen the modern board's top is too close to the
@@ -366,7 +389,6 @@ progress.select-stat__gauge--sp fill
 .select-stage__name, .select-stage__sub
 {
 	display: block;
-	text-transform: uppercase;
 }
 .select-stage__name
 {
@@ -374,6 +396,9 @@ progress.select-stat__gauge--sp fill
 	font-weight: bold;
 	letter-spacing: 0.12em;
 	line-height: 32dp;
+	/* Names are ASCII; the translated sub-line keeps its case (RmlUi
+	   uppercases ASCII letters only). */
+	text-transform: uppercase;
 }
 .select-stage__sub
 {

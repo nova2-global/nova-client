@@ -165,6 +165,70 @@ body.empire
 {
 	left: 313dp;
 }
+
+/* The three direct picks sit under the atlas, on the same selection handler
+   as the map areas. */
+.empire-picks
+{
+	display: flex;
+	flex-direction: row;
+	gap: 13dp;
+	position: absolute;
+	left: 22dp;
+	top: 380dp;
+	width: 512dp;
+	height: 24dp;
+}
+.empire-pick
+{
+	display: flex;
+	flex: 0 0 162dp;
+	align-items: center;
+	box-sizing: border-box;
+	height: 24dp;
+	padding: 2dp 7dp;
+	gap: 7dp;
+	border-radius: 0dp;
+	line-height: 10dp;
+	text-align: left;
+}
+.empire-pick.is-selected
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+}
+.empire-pick__flag
+{
+	display: block;
+	flex: 0 0 36dp;
+	width: 36dp;
+	height: 18dp;
+}
+.empire-pick__text
+{
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	min-width: 0dp;
+	line-height: 10dp;
+}
+.empire-pick__name, .empire-pick__region
+{
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.empire-pick__name
+{
+	font-size: var(--font-xs);
+	font-weight: bold;
+}
+.empire-pick__region
+{
+	color: var(--text-muted);
+	font-size: 8dp;
+}
 .empire-board
 {
 	position: absolute;
@@ -174,6 +238,47 @@ body.empire
 	min-width: 0dp;
 	box-sizing: border-box;
 	padding: 12dp 12dp 0dp 12dp;
+}
+.empire-titlebar
+{
+	margin: -12dp -12dp 12dp -12dp;
+}
+.empire-title-icon
+{
+	display: inline-block;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	line-height: 22dp;
+	text-align: center;
+	vertical-align: middle;
+}
+.empire-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+/* The shared glyph primitive has no flag variant: these two code-drawn
+   spans are its pole and flying cloth. */
+.empire-flag-glyph .nui-glyph__a
+{
+	left: 3dp;
+	top: 1dp;
+	width: 2dp;
+	height: 14dp;
+	background-color: var(--glyph-ink);
+}
+.empire-flag-glyph .nui-glyph__b
+{
+	left: 5dp;
+	top: 2dp;
+	width: 9dp;
+	height: 7dp;
+	border-width: 1dp;
 }
 .empire-flag-bar
 {
@@ -188,10 +293,19 @@ body.empire
 }
 .empire-name
 {
-	margin: 10dp 0dp;
+	margin: 10dp 0dp 2dp 0dp;
 	text-align: center;
 	font-size: 15dp;
 	font-weight: bold;
+}
+.empire-motto
+{
+	margin: 0dp 0dp 10dp 0dp;
+	color: var(--text-muted);
+	font-size: 9dp;
+	font-weight: bold;
+	letter-spacing: 0.7dp;
+	text-align: center;
 }
 .empire-well
 {

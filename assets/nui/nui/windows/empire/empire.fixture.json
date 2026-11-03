@@ -4,6 +4,11 @@
 		"hover": 0,
 		"name": "@game.EMPIRE_A",
 		"flag_image": "d:/ymir work/ui/intro/empire/empireflag_a.sub",
+		"flag_a": "d:/ymir work/ui/intro/empire/empireflag_a.sub",
+		"flag_b": "d:/ymir work/ui/intro/empire/empireflag_b.sub",
+		"flag_c": "d:/ymir work/ui/intro/empire/empireflag_c.sub",
+		"badge": "@ui.NUI_INTRO_SELECTED",
+		"motto": "@ui.NUI_INTRO_EMPIRE_MOTTO_A",
 		"paragraphs": [
 			"Shinsoo Kingdom The Shinsoo Kingdom is in the south of the continent. The inhabitants are mainly involved in trade. Opened by Yoon-Yoing after the fall of the Empire, trade relations with the east transformed quickly into a profitable arrangement. The inhabitants fight constantly with the west and this trade route is now totally cut off. When they recognized the threat posed by the Metin Stones, the merchants armed themselves. It is their aim to withstand the attacks from the west, to reopen all trade routes and to unite the whole continent under their leadership."
 		],

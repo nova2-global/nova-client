@@ -32,6 +32,9 @@ DOCUMENT = "nui/windows/empire/empire.rml"
 
 FLAG_IMAGE = "d:/ymir work/ui/intro/empire/empireflag_%s.sub"
 LETTERS = {net.EMPIRE_A: "a", net.EMPIRE_B: "b", net.EMPIRE_C: "c"}
+MOTTOS = {net.EMPIRE_A: "@ui.NUI_INTRO_EMPIRE_MOTTO_A",
+	       net.EMPIRE_B: "@ui.NUI_INTRO_EMPIRE_MOTTO_B",
+	       net.EMPIRE_C: "@ui.NUI_INTRO_EMPIRE_MOTTO_C"}
 
 
 def _keep(owner):
@@ -49,10 +52,11 @@ def empire_model(empire_id):
 	description paragraphs (read now, from the current locale)."""
 	letter = LETTERS.get(empire_id)
 	if letter is None:
-		return {"empire": int(empire_id), "name": "", "flag_image": "", "paragraphs": []}
+		return {"empire": int(empire_id), "name": "", "flag_image": "", "paragraphs": [], "badge": "", "motto": ""}
 	path = getattr(uiScriptLocale, "EMPIREDESC_" + letter.upper(), "")
 	return {"empire": int(empire_id), "name": "@game.EMPIRE_" + letter.upper(),
-		"flag_image": FLAG_IMAGE % letter, "paragraphs": nui_desc_text.load(path) if path else []}
+		"flag_image": FLAG_IMAGE % letter, "paragraphs": nui_desc_text.load(path) if path else [],
+		"badge": "@ui.NUI_INTRO_SELECTED", "motto": MOTTOS[empire_id]}
 
 
 class EmpireBoard(nui.Window):
@@ -67,7 +71,8 @@ class EmpireBoard(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
-		return {"empire": 1, "hover": 0, "name": "", "flag_image": "", "paragraphs": [], "title_image": ""}
+		return {"empire": 1, "hover": 0, "name": "", "flag_image": "", "paragraphs": [], "title_image": "",
+			"badge": "", "motto": "", "flag_a": FLAG_IMAGE % "a", "flag_b": FLAG_IMAGE % "b", "flag_c": FLAG_IMAGE % "c"}
 
 	@nui.on("pick")
 	def on_pick(self, empire_id):

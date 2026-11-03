@@ -451,3 +451,18 @@ NUI_EXCHANGE_LAMP_WAITING	Noch nicht akzeptiert
 NUI_EXCHANGE_LAMP_YOU	Du hast akzeptiert
 NUI_GUILD_TAB_NEWS	Neuigkeiten
 NUI_GUILD_TAB_RANKING	Mitgliederränge
+NUI_INTRO_EMPIRE_TITLE	Reich
+NUI_INTRO_SELECTED	Ausgewählt
+NUI_INTRO_EMPIRE_MOTTO_A	Handel · Entschlossenheit · Einheit
+NUI_INTRO_EMPIRE_MOTTO_B	Glaube · Ehre · Ordnung
+NUI_INTRO_EMPIRE_MOTTO_C	Stärke · Disziplin · Ruhm
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Südliches Königreich
+NUI_INTRO_EMPIRE_REGION_B	Westliches Königreich
+NUI_INTRO_EMPIRE_REGION_C	Östliches Königreich
+NUI_INTRO_CREATE_TITLE	Charakter erstellen
+NUI_INTRO_SELECT_TITLE	Charakterauswahl
+NUI_INTRO_SLOTS	%d Plätze
+NUI_INTRO_LOADING_TITLE	Das Reich betreten

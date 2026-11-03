@@ -12,6 +12,12 @@ body.skin-classic.empire
 {
 	background-color: var(--classic-slot-fill);
 }
+/* Stage 2's modern title, motto and direct picks are not in the legacy
+   window. */
+.skin-classic .empire-titlebar, .skin-classic .empire-motto, .skin-classic .empire-picks
+{
+	display: none;
+}
 /* The legacy backdrop: the pattern between the two line strips, under the
    shade. */
 .skin-classic .empire-pattern

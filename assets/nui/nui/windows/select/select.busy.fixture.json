@@ -1,6 +1,7 @@
 {
 	"select": {
 		"slot": 1,
+		"slot_badge": "5 slots",
 		"slots": [
 			{
 				"index": 0,

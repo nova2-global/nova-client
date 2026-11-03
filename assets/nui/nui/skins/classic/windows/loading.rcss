@@ -11,9 +11,19 @@
 	--frames-pattern: "d:/ymir work/ui/intro/loading/%02d.sub";
 }
 .skin-classic .loading__track, .skin-classic .loading__hole, .skin-classic .loading__ring,
-.skin-classic .loading__tick, .skin-classic .loading__pct, .skin-classic .loading__head
+.skin-classic .loading__tick, .skin-classic .loading__pct, .skin-classic .loading__head,
+.skin-classic .loading-titlebar
 {
 	display: none;
+}
+.skin-classic .loading-board
+{
+	height: 80dp;
+	margin-top: 0dp;
+}
+.skin-classic .loading-content
+{
+	top: 0dp;
 }
 /* The legacy box holds the emblem and the gauge with no panel of its own. */
 .skin-classic .nui-board.loading-board

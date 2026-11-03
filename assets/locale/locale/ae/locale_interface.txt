@@ -477,3 +477,18 @@ NUI_EXCHANGE_LAMP_WAITING	لم تتم الموافقة بعد
 NUI_EXCHANGE_LAMP_YOU	لقد وافقت
 NUI_GUILD_TAB_NEWS	الأخبار
 NUI_GUILD_TAB_RANKING	ترتيب الأعضاء
+NUI_INTRO_EMPIRE_TITLE	الإمبراطورية
+NUI_INTRO_SELECTED	تم الاختيار
+NUI_INTRO_EMPIRE_MOTTO_A	التجارة · العزيمة · الوحدة
+NUI_INTRO_EMPIRE_MOTTO_B	الإيمان · الشرف · النظام
+NUI_INTRO_EMPIRE_MOTTO_C	القوة · الانضباط · المجد
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	المملكة الجنوبية
+NUI_INTRO_EMPIRE_REGION_B	المملكة الغربية
+NUI_INTRO_EMPIRE_REGION_C	المملكة الشرقية
+NUI_INTRO_CREATE_TITLE	إنشاء شخصية
+NUI_INTRO_SELECT_TITLE	اختيار الشخصية
+NUI_INTRO_SLOTS	%d خانات
+NUI_INTRO_LOADING_TITLE	دخول العالم

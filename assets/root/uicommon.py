@@ -89,6 +89,19 @@ class InputDialog(ui.ScriptWindow):
 		self.inputSlot = getObject("InputSlot")
 		self.inputValue = getObject("InputValue")
 
+		## The shop name dialog's decoration button (NOVA-9; OLD uiCommon.py:220-222): hidden
+		## until the caller shows it and gives it its event.
+		self.decoButton = ui.Button()
+		self.decoButton.SetParent(self.board)
+		self.decoButton.SetWindowHorizontalAlignRight()
+		self.decoButton.SetPosition(46, 33)
+		self.decoButton.SetUpVisual("d:/ymir work/ui/public/xsmall_button_01.sub")
+		self.decoButton.SetOverVisual("d:/ymir work/ui/public/xsmall_button_02.sub")
+		self.decoButton.SetDownVisual("d:/ymir work/ui/public/xsmall_button_03.sub")
+		self.decoButton.SetText("...")
+		self.decoButton.SetToolTipText(getattr(uiScriptLocale, "MYSHOP_DECO_SELECT_MODEL", ""))
+		self.decoButton.Hide()
+
 	def Open(self):
 		nui_windows.legacy_dialog_layer(self)
 		self.inputValue.SetFocus()
@@ -103,6 +116,7 @@ class InputDialog(ui.ScriptWindow):
 		self.cancelButton = None
 		self.inputSlot = None
 		self.inputValue = None
+		self.decoButton = None
 		self.Hide()
 
 	def SetTitle(self, name):
@@ -479,6 +493,80 @@ class MoneyInputDialog(ui.ScriptWindow):
 				money = 199999999
 
 		self.moneyText.SetText(self.moneyHeaderText + localeInfo.NumberToMoneyString(money))
+
+class BulkMoneyInputDialog(MoneyInputDialog):
+	"""The money input dialog with a check box under the amount (NOVA-9; OLD
+	uiCommon.py:700-713): the offline shop's "bulk add" of a price, its "apply to all
+	identical items". Always the legacy window: the dialog kit has no check box yet."""
+
+	EXTRA_HEIGHT = 20
+
+	def __init__(self):
+		LegacyMoneyInputDialog.__init__(self)
+		self.checkBox = None
+
+	def __del__(self):
+		LegacyMoneyInputDialog.__del__(self)
+
+	def SetBulkMode(self, text=None, checked=False):
+		"""Shows the check box with `text` (OFFLINE_SHOP_BULK_ADD by default)."""
+		if text is None:
+			text = localeInfo.OFFLINE_SHOP_BULK_ADD
+		checkBox = ui.CheckBox()
+		checkBox.SetParent(self.board)
+		checkBox.SetPosition(22, 80)
+		checkBox.SetTextInfo(text)
+		checkBox.SetCheckStatus(checked)
+		checkBox.Show()
+		self.checkBox = checkBox
+
+		height = 110 + self.EXTRA_HEIGHT
+		self.SetSize(200, height)
+		self.board.SetSize(200, height)
+		self.acceptButton.SetPosition(-61 - 5 + 30, 78 + self.EXTRA_HEIGHT)
+		self.cancelButton.SetPosition(5 + 30, 78 + self.EXTRA_HEIGHT)
+
+	def IsBulkMode(self):
+		return bool(self.checkBox) and self.checkBox.GetCheckStatus()
+
+	def Close(self):
+		self.checkBox = None
+		LegacyMoneyInputDialog.Close(self)
+
+class CheckQuestionDialog(QuestionDialog):
+	"""The question dialog with a check box under the text (NOVA-9; OLD uiShop.py:1534-1546,
+	the offline shop's "remove all identical items"). Always the legacy window."""
+
+	EXTRA_HEIGHT = 25
+
+	def __init__(self):
+		LegacyQuestionDialog.__init__(self)
+		self.checkBox = None
+
+	def __del__(self):
+		LegacyQuestionDialog.__del__(self)
+
+	def SetCheckBox(self, text, checked=False):
+		"""After SetText: the box goes where the buttons were, the buttons below it."""
+		extraHeight = len(getattr(self.textLine, "extraLines", ())) * self.LINE_HEIGHT + 10
+		checkBox = ui.CheckBox()
+		checkBox.SetParent(self.board)
+		checkBox.SetPosition(22, self.BUTTON_Y + extraHeight - 4)
+		checkBox.SetTextInfo(text)
+		checkBox.SetCheckStatus(checked)
+		checkBox.Show()
+		self.checkBox = checkBox
+
+		height = self.BASE_HEIGHT + extraHeight + self.EXTRA_HEIGHT
+		self.SetSize(self.BASE_WIDTH, height)
+		self.board.SetSize(self.BASE_WIDTH, height)
+		self.acceptButton.SetPosition(-40, self.BUTTON_Y + extraHeight + self.EXTRA_HEIGHT)
+		self.cancelButton.SetPosition(40, self.BUTTON_Y + extraHeight + self.EXTRA_HEIGHT)
+		self.SetCenterPosition()
+		self.UpdateRect()
+
+	def IsChecked(self):
+		return bool(self.checkBox) and self.checkBox.GetCheckStatus()
 
 # NovaUI dialog kit (nui_dialog_*.py, flag "dialogs"): with the flag on these
 # names make the NovaUI dialogs; with it off, the legacy classes above. The

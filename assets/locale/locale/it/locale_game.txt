@@ -920,3 +920,12 @@ NEW_EXCHANGE_LEVEL	Lv. %d
 NEW_EXCHANGE_ALERT1	Stai dando via le cose per niente in cambio,
 NEW_EXCHANGE_ALERT2	e non sarà in grado di recuperare lo Yang o gli oggetti.
 MULTI_USE_ITEM	Alt + right-click: per utilizzo multiplo
+PREMIUM_TITLE	Premium
+PREMIUM_TIER_1	Silver
+PREMIUM_TIER_2	Gold
+PREMIUM_TIER_3	Platinum
+PREMIUM_DEACTIVATE_QUESTION	Do you want to turn your remaining premium time back into a scroll?
+PREMIUM_SCROLL_UNUSED	Unused
+PREMIUM_SCROLL_EXPIRED	The time of this premium scroll has run out.
+SHOUT_COLOR_BUTTON	Color
+SHOUT_COLOR_REQUIRES_PERK	Your premium tier does not include shout colors.

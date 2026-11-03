@@ -9,6 +9,7 @@ import localeInfo
 import colorInfo
 import constInfo
 import systemSetting
+import player
 
 ENABLE_CHAT_COMMAND = True
 ENABLE_LAST_SENTENCE_STACK = True
@@ -24,6 +25,30 @@ def RefreshChatMode():
 def DestroyChatInputSetWindow():
 	global chatInputSetList
 	chatInputSetList = []
+
+## NOVA-11 (OLD uiChat.py:51-52, 286-291): the shout color the player picked,
+## an index into the server's palette (1 to its count, 0 for none), shared by
+## the chat window's and the chat log's input as OLD's CHAT_COLOR. Only a
+## shout carries it, and that shout clears it; a talk, party or guild line
+## leaves it for the next shout (PB-C5: OLD sent it with the next line of any
+## type and lost it there).
+SHOUT_COLOR_INDEX = 0
+
+def GetShoutColorIndex():
+	return SHOUT_COLOR_INDEX
+
+def SetShoutColorIndex(index):
+	global SHOUT_COLOR_INDEX
+	SHOUT_COLOR_INDEX = index
+
+def SignedColor(color):
+	## The packed color wndMgr.SetColor reads into a C long (as
+	## grp.GenerateColor gives it): the palette's ARGB with its top bit set
+	## would not fit.
+	color &= 0xFFFFFFFF
+	if color & 0x80000000:
+		return color - (1 << 32)
+	return color
 
 ## ChatModeButton
 class ChatModeButton(ui.Window):
@@ -98,6 +123,96 @@ class ChatModeButton(ui.Window):
 			if self.BUTTON_STATE_DOWN == self.state:
 				grp.SetColor(self.OVER_COLOR)
 				grp.RenderBar(x+1, y+1, self.width-2, self.height-2)
+
+## ShoutColorButton (NOVA-11): drawn as the mode button is, with no art of
+## its own (OLD's shoutcolor/circle.tga is a Q9 asset), and without the mode
+## button's insult filter call.
+class ShoutColorButton(ChatModeButton):
+
+	def __init__(self):
+		ui.Window.__init__(self)
+		self.state = self.BUTTON_STATE_UP
+		self.buttonText = None
+		self.event = None
+		self.text = ""
+		self.SetWindowName("ShoutColorButton")
+
+	def __del__(self):
+		ChatModeButton.__del__(self)
+
+	def SetText(self, text):
+		self.text = text
+		ChatModeButton.SetText(self, text)
+
+## ShoutColorBoard (NOVA-11, OLD uiChat.py:685-722): one swatch per color of
+## the palette the server sent (D16: drawn in the color itself, so no art is
+## needed and the picker cannot drift from the config). Defined whatever the
+## build (PB-C4: OLD defined it only with voice chat).
+class ShoutColorSwatch(ui.Bar):
+
+	def __init__(self, index):
+		ui.Bar.__init__(self)
+		self.index = index
+		self.color = 0
+		self.eventSelect = None
+
+	def __del__(self):
+		ui.Bar.__del__(self)
+
+	def SetSwatchColor(self, color):
+		self.color = color
+		self.SetColor(color)
+
+	def SetSelectEvent(self, event):
+		self.eventSelect = event
+
+	def OnMouseLeftButtonUp(self):
+		if self.eventSelect:
+			self.eventSelect(self.index)
+
+class ShoutColorBoard(ui.Bar):
+
+	SWATCH_SIZE = 18
+	SWATCH_GAP = 4
+	BACKGROUND_COLOR = grp.GenerateColor(0.0, 0.0, 0.0, 0.5)
+
+	def __init__(self):
+		ui.Bar.__init__(self)
+		self.AddFlag("float")
+		self.SetColor(self.BACKGROUND_COLOR)
+		self.swatches = []
+
+	def __del__(self):
+		ui.Bar.__del__(self)
+
+	def Open(self, x, y):
+		## Above the button at (x, y); the server reads index i + 1 for the
+		## palette's color i (spec 2.4: palette[index - 1]).
+		self.swatches = []
+		count = player.GetShoutColorCount()
+		step = self.SWATCH_SIZE + self.SWATCH_GAP
+		for i in range(count):
+			swatch = ShoutColorSwatch(i + 1)
+			swatch.SetParent(self)
+			swatch.SetSize(self.SWATCH_SIZE, self.SWATCH_SIZE)
+			swatch.SetPosition(self.SWATCH_GAP, self.SWATCH_GAP + i * step)
+			swatch.SetSwatchColor(SignedColor(player.GetShoutColor(i)))
+			swatch.SetSelectEvent(ui.__mem_func__(self.OnSelect))
+			swatch.Show()
+			self.swatches.append(swatch)
+
+		height = self.SWATCH_GAP + count * step
+		self.SetSize(self.SWATCH_SIZE + 2 * self.SWATCH_GAP, height)
+		self.SetPosition(x, y - height - 2)
+		self.Show()
+		self.SetTop()
+
+	def OnSelect(self, index):
+		SetShoutColorIndex(index)
+		self.Hide()
+
+	def Destroy(self):
+		self.swatches = []
 
 ## ChatLine
 class ChatLine(ui.EditLine):
@@ -206,6 +321,10 @@ class ChatLine(ui.EditLine):
 	def __SendChatPacket(self, text, type):
 		if net.IsChatInsultIn(text):
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.CHAT_INSULT_STRING)
+		elif chat.CHAT_TYPE_SHOUT == type and GetShoutColorIndex() > 0:
+			## NOVA-11: the picked color goes with this shout only.
+			net.SendChatPacket(text, type, GetShoutColorIndex())
+			SetShoutColorIndex(0)
 		else:
 			net.SendChatPacket(text, type)
 		
@@ -291,9 +410,7 @@ class ChatLine(ui.EditLine):
 
 		if self.lastSentenceStack and self.lastSentencePos < len(self.lastSentenceStack):
 			self.lastSentencePos += 1
-			lastSentence = self.lastSentenceStack[-self.lastSentencePos]
-			self.SetText(lastSentence)				
-			self.SetEndPosition()			
+			self.__RestoreLastSentence(self.lastSentenceStack[-self.lastSentencePos])
 
 	def __NextLastSentenceStack(self):
 		global ENABLE_LAST_SENTENCE_STACK
@@ -302,9 +419,15 @@ class ChatLine(ui.EditLine):
 
 		if self.lastSentenceStack and self.lastSentencePos > 1:
 			self.lastSentencePos -= 1
-			lastSentence = self.lastSentenceStack[-self.lastSentencePos]
-			self.SetText(lastSentence)				
-			self.SetEndPosition()			
+			self.__RestoreLastSentence(self.lastSentenceStack[-self.lastSentencePos])
+
+	## NOVA-11 (OLD uiChat.py:419-467): each sentence keeps the shout color
+	## it was typed with, and recalling it picks that color again.
+	def __RestoreLastSentence(self, lastSentence):
+		(text, shoutColorIndex) = lastSentence
+		self.SetText(text)
+		SetShoutColorIndex(shoutColorIndex)
+		self.SetEndPosition()
 
 	def __PushLastSentenceStack(self, text):		
 		global ENABLE_LAST_SENTENCE_STACK
@@ -318,7 +441,7 @@ class ChatLine(ui.EditLine):
 		if len(self.lastSentenceStack) > LAST_SENTENCE_STACK_SIZE:
 			self.lastSentenceStack.pop(0)
 
-		self.lastSentenceStack.append(text)
+		self.lastSentenceStack.append([text, GetShoutColorIndex()])
 	# END_OF_LAST_SENTENCE_STACK
 
 	def OnIMEReturn(self):
@@ -408,6 +531,18 @@ class ChatInputSet(ui.Window):
 		chatLine.height = 0
 		self.chatLine = chatLine
 
+		## NOVA-11: the shout color button, left of the input, shown while the
+		## chat is open with the shout color perk (OLD uiChat.py:814-826, 1035-1040).
+		btnShoutColor = ShoutColorButton()
+		btnShoutColor.SetParent(self)
+		btnShoutColor.SetSize(40, 17)
+		btnShoutColor.SetText(localeInfo.SHOUT_COLOR_BUTTON)
+		btnShoutColor.SetPosition(50, 2)
+		btnShoutColor.SAFE_SetEvent(self.OnShoutColorButton)
+		btnShoutColor.Hide()
+		self.btnShoutColor = btnShoutColor
+		self.shoutColorBoard = None
+
 		btnSend = ui.Button()
 		btnSend.SetParent(self)
 		btnSend.SetUpVisual("d:/ymir work/ui/game/taskbar/Send_Chat_Button_01.sub")
@@ -421,10 +556,49 @@ class ChatInputSet(ui.Window):
 		self.chatModeButton = None
 		self.chatLine = None
 		self.btnSend = None
+		self.btnShoutColor = None
+		if self.shoutColorBoard:
+			self.shoutColorBoard.Hide()
+			self.shoutColorBoard.Destroy()
+		self.shoutColorBoard = None
+
+	## The input starts right of the mode button, and right of the shout
+	## color button while it shows.
+	def __GetChatLineLeft(self):
+		if self.btnShoutColor and self.btnShoutColor.IsShow():
+			return 57 + 43
+
+		return 57
+
+	def __RefreshShoutColorButton(self):
+		if player.HasPremiumPerk(player.PREMIUM_PERK_SHOUT_COLOR):
+			self.btnShoutColor.Show()
+		else:
+			self.btnShoutColor.Hide()
+
+	## NOVA-11: a press without the perk is refused (OLD uiChat.py:1035-1040,
+	## with a locale key, PB-C11); otherwise it opens or closes the picker.
+	def OnShoutColorButton(self):
+		if not player.HasPremiumPerk(player.PREMIUM_PERK_SHOUT_COLOR):
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.SHOUT_COLOR_REQUIRES_PERK)
+			if self.shoutColorBoard:
+				self.shoutColorBoard.Hide()
+			return
+
+		if not self.shoutColorBoard:
+			self.shoutColorBoard = ShoutColorBoard()
+
+		if self.shoutColorBoard.IsShow():
+			self.shoutColorBoard.Hide()
+			return
+
+		(x, y) = self.btnShoutColor.GetGlobalPosition()
+		self.shoutColorBoard.Open(x, y)
 
 	def Open(self):
+		self.__RefreshShoutColorButton()
 		self.chatLine.Show()
-		self.chatLine.SetPosition(57, 5)
+		self.chatLine.SetPosition(self.__GetChatLineLeft(), 5)
 		self.chatLine.SetFocus()
 		self.chatLine.OpenChat()
 
@@ -441,6 +615,9 @@ class ChatInputSet(ui.Window):
 		self.chatLine.KillFocus()
 		self.chatLine.Hide()
 		self.chatModeButton.Hide()
+		self.btnShoutColor.Hide()
+		if self.shoutColorBoard:
+			self.shoutColorBoard.Hide()
 		self.btnSend.Hide()
 		self.Hide()
 		return True
@@ -468,10 +645,11 @@ class ChatInputSet(ui.Window):
 		self.chatLine.SetUserMax(max)
 
 	def RefreshPosition(self):
+		shift = self.__GetChatLineLeft() - 57
 		if app.IsRTL():
-			self.chatLine.SetSize(self.GetWidth() - 93, 18)
+			self.chatLine.SetSize(self.GetWidth() - 93 - shift, 18)
 		else:
-			self.chatLine.SetSize(self.GetWidth() - 93, 13)
+			self.chatLine.SetSize(self.GetWidth() - 93 - shift, 13)
 
 		self.btnSend.SetPosition(self.GetWidth() - 25, 2)
 

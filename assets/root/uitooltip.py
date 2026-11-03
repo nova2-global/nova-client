@@ -25,6 +25,9 @@ WARP_SCROLLS = [22011, 22000, 22010]
 # (NOVA-16, the server's IsExtraShared, spec 3.2): Ctrl + right-click moves
 # them between the inventory and the special inventory.
 EXTRA_SHARED_SCROLLS = (71051, 71052, 71651, 71652)
+## NOVA-11: the premium scrolls (OLD uiToolTip.py:1416; item_proto value 1
+## the tier, value 2 the seconds a fresh one adds).
+PREMIUM_SCROLLS = (50208, 50209, 50210)
 
 # Whether the safebox window shows. NEW's safebox module has no IsOpen
 # (OLD's did), so the interface tells the tooltips when it opens and closes
@@ -1131,6 +1134,9 @@ class ItemToolTip(ToolTip):
 		self.AppendDescription(itemDesc)
 		self.AppendDescription(itemSummary, self.CONDITION_COLOR)
 
+		if itemVnum in PREMIUM_SCROLLS and 0 != metinSlot:
+			self.__AppendPremiumScrollTime(metinSlot[0])
+
 		### Weapon ###
 		if item.ITEM_TYPE_WEAPON == itemType:
 
@@ -1524,6 +1530,25 @@ class ItemToolTip(ToolTip):
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY_PLUS, self.NORMAL_COLOR)
 			else:
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY, self.NORMAL_COLOR)
+
+	## NOVA-11 (OLD uiToolTip.py:1416-1424): socket 0 of a premium scroll is
+	## the end time a returned scroll keeps (/deactivate_premium, a tier
+	## switch): its time left, or that it has run out (PB-C8: OLD showed 0 left
+	## and the server still took it). A fresh scroll (socket 0 of 0) is unused
+	## and adds value 2's seconds.
+	def __AppendPremiumScrollTime(self, endTime):
+		if endTime > 0:
+			leftSec = endTime - app.GetGlobalTimeStamp()
+			if leftSec > 0:
+				self.AppendSpace(5)
+				self.AppendTextLine(localeInfo.LEFT_TIME + " : " + localeInfo.SecondToDHM(leftSec), self.NORMAL_COLOR)
+			else:
+				self.AppendSpace(5)
+				self.AppendTextLine(localeInfo.PREMIUM_SCROLL_EXPIRED, self.DISABLE_COLOR)
+		else:
+			self.AppendSpace(5)
+			self.AppendTextLine(localeInfo.PREMIUM_SCROLL_UNUSED, self.NORMAL_COLOR)
+			self.AppendTextLine(localeInfo.LEFT_TIME + " : " + localeInfo.SecondToDHM(item.GetValue(2)), self.NORMAL_COLOR)
 
 	def __DragonSoulInfoString (self, dwVnum):
 		step = (dwVnum // 100) % 10

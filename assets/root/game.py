@@ -112,6 +112,10 @@ class GameWindow(ui.ScriptWindow):
 
 		self.mapNameShower = nui_windows.make("map-name", uiMapNameShower.MapNameShower, "nui_map_name.MapNameShower")
 		self.affectShower = nui_windows.make("affects", uiAffectShower.AffectShower, "nui_affects.AffectShower")
+		# NOVA-11 (spec 2.8): a premium status that came before this window is not lost.
+		setPremiumStatus = getattr(self.affectShower, "SetPremiumStatus", None)
+		if setPremiumStatus:
+			setPremiumStatus(player.GetPremiumTier(), player.GetPremiumSecondsLeft())
 
 		self.playerGauge = nui_windows.make("player-gauge", uiPlayerGauge.PlayerGauge, "nui_player_gauge.PlayerGauge", self)
 		self.playerGauge.Hide()
@@ -801,6 +805,14 @@ class GameWindow(ui.ScriptWindow):
 			self.interface.DragonSoulActivate(type - chr.NEW_AFFECT_DRAGON_SOUL_DECK1)
 		elif chr.NEW_AFFECT_DRAGON_SOUL_QUALIFIED == type:
 			self.BINARY_DragonSoulGiveQuilification()
+
+	## Premium (NOVA-11): C's GC::PREMIUM_STATUS handler (OLD's server command
+	## SetPremiumStatus, game.py:3815-3817). A shower without the icon (NovaUI's,
+	## until the UI session adds it) is left alone.
+	def BINARY_SetPremiumStatus(self, tier, secondsLeft):
+		setPremiumStatus = getattr(self.affectShower, "SetPremiumStatus", None)
+		if setPremiumStatus:
+			setPremiumStatus(int(tier), int(secondsLeft))
 
 	def BINARY_NEW_RemoveAffect(self, type, pointIdx):
 		self.affectShower.BINARY_NEW_RemoveAffect(type, pointIdx)

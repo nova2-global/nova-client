@@ -563,6 +563,7 @@ body.skin-classic.char .char-quest-rows
 body.skin-classic.char .char-quest
 {
 	display: block;
+	pointer-events: none;
 	height: 60dp;
 }
 body.skin-classic.char .char-quest__name, body.skin-classic.char .char-quest__clock,
@@ -836,6 +837,11 @@ body.skin-classic.char .char-quest
 	box-sizing: content-box;
 	padding: 0;
 	border-width: 0;
+}
+/* Legacy reacts on the icon alone: no hover plate. */
+body.skin-classic.char .char-quest__plate
+{
+	display: none;
 }
 body.skin-classic.char .char-quest-scroll progress.char-quest-scroll__track
 {

@@ -482,3 +482,10 @@ body.skin-classic.taskbar .taskbar-exp .nui-tooltip.taskbar-tip
 	left: -48dp;
 	top: 3dp;
 }
+
+/* Legacy's Messenger button shows no unread count (the flashing whisper
+   buttons at the screen's edge say it). */
+body.skin-classic.taskbar .taskbar-badge
+{
+	display: none;
+}

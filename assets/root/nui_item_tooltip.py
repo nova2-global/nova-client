@@ -26,7 +26,7 @@ class _ItemTooltipBoard(nui.Window):
 	MODEL = "item_tooltip"
 
 	def initial_model(self):
-		return {"lines": [], "min_w": uiToolTip.ToolTip.TOOL_TIP_WIDTH}
+		return {"lines": [], "min_w": uiToolTip.ToolTip.TOOL_TIP_WIDTH, "icon": "", "icon_h": 1}
 
 
 @nui_tooltip.transactional

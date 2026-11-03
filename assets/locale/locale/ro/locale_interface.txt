@@ -448,3 +448,8 @@ NUI_LOGIN_ERR_FAILED	Contul nu a putut fi creat. Încearcă mai târziu.
 NUI_LOGIN_CREATED	Contul tău este gata. Conectează-te cu el.
 NUI_LOGIN_CREATING	Se creează contul...
 HELP_OPEN_EXTRA_INVENTORY	Pentru a deschide inventarul special: U
+NUI_EXCHANGE_LAMP_PARTNER	Partenerul a acceptat
+NUI_EXCHANGE_LAMP_WAITING	Încă neacceptat
+NUI_EXCHANGE_LAMP_YOU	Ai acceptat
+NUI_GUILD_TAB_NEWS	Noutăți
+NUI_GUILD_TAB_RANKING	Clasamentul membrilor

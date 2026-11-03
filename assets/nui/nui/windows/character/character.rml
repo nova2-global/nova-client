@@ -302,7 +302,12 @@
 			</div>
 		</div>
 
-		<!-- The quest page (uiscript Quest_Page). -->
+		<!-- The quest page (uiscript Quest_Page). The modern looks' row hovers and presses
+		     with its icon cell as one (the reviewed board's row): a press, the
+		     pointer entering and leaving do what the icon cell's do (the model's
+		     quest_hover names the row either one is over, and its plate lights over
+		     both), and the texts take no pointer. Classic keeps legacy's icon-only
+		     reaction. -->
 		<div class="char-panel char-panel--quest" data-for="p : panel_quest">
 			<div class="char-quests" data-event-mousescroll="quest_scroll(ev.wheel_delta_y)">
 				<div id="char-quest-cells" class="nui-slot-grid nui-slot-grid--cols-1 char-quest-cells" data-class-nui-attach-right="attach_right">
@@ -314,7 +319,10 @@
 					</div>
 				</div>
 				<div class="char-quest-rows">
-					<div class="char-quest" data-for="q : quests" data-attr-id="'char-quest-' + it_index" data-class-is-hidden="!q.shown">
+					<div class="char-quest" data-for="q : quests" data-attr-id="'char-quest-' + it_index" data-class-is-hidden="!q.shown" data-class-is-hover="quest_hover == it_index"
+					     data-event-mousedown="quest_press(it_index, ev.button)" data-event-mouseover="quest_over(it_index)"
+					     data-event-mouseout="quest_out(it_index)">
+						<span class="char-quest__plate"></span>
 						<span class="nui-glyph nui-glyph--chevron-right char-quest__chev"><span class="nui-glyph__a"></span><span
 							class="nui-glyph__b"></span></span>
 						<span class="char-quest__name">{{ q.name }}</span>

@@ -64,6 +64,11 @@ body.pshop
 	border-radius: 7dp;
 	overflow: hidden;
 }
+/* The field's focus glow, an effect (a device without effects draws none). */
+.pshop__name.nui-fx
+{
+	box-shadow: 0 0 0 3dp var(--accent-glow);
+}
 .pshop__name-text
 {
 	color: var(--text);
@@ -77,6 +82,14 @@ body.pshop
 {
 	align-self: center;
 	decorator: nui-cells(40dp 4dp 7dp var(--surface-hover) var(--border) 1dp);
+}
+/* The selected item (the one a press picked): the soft fill and a 2dp accent
+   ring around the whole item, as the reviewed board draws it. */
+.pshop__grid > .nui-slot.is-picked
+{
+	background-color: var(--selection);
+	border-width: 2dp;
+	border-color: var(--accent);
 }
 .pshop__footer
 {

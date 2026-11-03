@@ -541,6 +541,30 @@ progress.taskbar-orb
 	text-align: center;
 	pointer-events: none;
 }
+/* The Messenger button's unread count (the reviewed board's badge): a danger
+   pill on the button's top right corner, ringed in the bar's color; the
+   model's text is empty at 0 and the markup draws none. */
+.taskbar-badge
+{
+	display: block;
+	position: absolute;
+	right: 1dp;
+	top: 1dp;
+	box-sizing: border-box;
+	min-width: 15dp;
+	height: 15dp;
+	padding: 0 3dp;
+	border-width: 1dp;
+	border-color: var(--surface);
+	border-radius: 8dp;
+	background-color: var(--danger);
+	color: var(--text-inverse);
+	font-size: 9dp;
+	font-weight: bold;
+	line-height: 13dp;
+	text-align: center;
+	pointer-events: none;
+}
 .taskbar-window:hover .taskbar-hotkey
 {
 	color: var(--text);

@@ -447,3 +447,8 @@ NUI_LOGIN_ERR_FAILED	Le compte n'a pas pu être créé. Réessaie plus tard.
 NUI_LOGIN_CREATED	Ton compte est prêt. Connecte-toi avec.
 NUI_LOGIN_CREATING	Création de ton compte...
 HELP_OPEN_EXTRA_INVENTORY	Ouvrir l'inventaire spécial : U
+NUI_EXCHANGE_LAMP_PARTNER	Le partenaire a accepté
+NUI_EXCHANGE_LAMP_WAITING	Pas encore accepté
+NUI_EXCHANGE_LAMP_YOU	Vous avez accepté
+NUI_GUILD_TAB_NEWS	Actualités
+NUI_GUILD_TAB_RANKING	Classement des membres

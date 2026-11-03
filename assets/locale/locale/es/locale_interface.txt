@@ -448,3 +448,8 @@ NUI_LOGIN_ERR_FAILED	No se pudo crear la cuenta. Inténtalo más tarde.
 NUI_LOGIN_CREATED	Tu cuenta está lista. Inicia sesión con ella.
 NUI_LOGIN_CREATING	Creando tu cuenta...
 HELP_OPEN_EXTRA_INVENTORY	Abrir ventana de inventario especial: U
+NUI_EXCHANGE_LAMP_PARTNER	La otra parte aceptó
+NUI_EXCHANGE_LAMP_WAITING	Aún no aceptado
+NUI_EXCHANGE_LAMP_YOU	Has aceptado
+NUI_GUILD_TAB_NEWS	Noticias
+NUI_GUILD_TAB_RANKING	Clasificación de miembros

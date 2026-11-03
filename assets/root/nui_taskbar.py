@@ -110,6 +110,7 @@ class TaskBarBoard(nui.Window):
 			"mouse_image": False,
 			"expandable": True,
 			"open_character": False, "open_inventory": False, "open_messenger": False, "open_system": False,
+			"messenger_badge": "",
 		}
 
 	def on_theme_changed(self, theme_id):
@@ -345,6 +346,14 @@ class TaskBar(object):
 		frame; a window that does not call it leaves its button at rest."""
 		if name in OPEN_STATE_WINDOWS:
 			self._set(**{"open_" + name: bool(shown)})
+
+	def nui_set_unread_whispers(self, count):
+		"""The Messenger button's badge: the number of whisper conversations
+		with a message the player has not opened (the Interface counts its
+		pending whisper buttons and calls this when the count changes); none
+		at 0, "99+" over 99 (NovaUI only; legacy's button has no badge)."""
+		count = int(count)
+		self._set(messenger_badge="" if count <= 0 else ("99+" if count > 99 else str(count)))
 
 	## The bar's height (NovaUI only: the legacy bar is always 37 px)
 	def GetBarHeight(self):

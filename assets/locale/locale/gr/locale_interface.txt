@@ -448,3 +448,8 @@ NUI_LOGIN_ERR_FAILED	Δεν ήταν δυνατή η δημιουργία του
 NUI_LOGIN_CREATED	Ο λογαριασμός σου είναι έτοιμος. Συνδέσου με αυτόν.
 NUI_LOGIN_CREATING	Δημιουργία λογαριασμού...
 HELP_OPEN_EXTRA_INVENTORY	Άνοιγμα παραθύρου ειδικού καταλόγου: U
+NUI_EXCHANGE_LAMP_PARTNER	Ο άλλος παίκτης αποδέχθηκε
+NUI_EXCHANGE_LAMP_WAITING	Δεν έχει αποδεχθεί ακόμη
+NUI_EXCHANGE_LAMP_YOU	Αποδέχθηκες
+NUI_GUILD_TAB_NEWS	Νέα
+NUI_GUILD_TAB_RANKING	Κατάταξη μελών

@@ -291,6 +291,7 @@ class World(object):
             self.legacy = {name: self._load(name, file_name) for name, file_name in LEGACY.items()}
             self.nui_windows = self._load("nui_windows", "nui_windows.py")
             self._load("nui_desc_text", "nui_desc_text.py")
+            self._load("nui_numbers", "nui_numbers.py")
             self.novaui = {name: self._load(name, name + ".py") for name in NOVAUI}
 
     # --- stand-ins ------------------------------------------------------------------
@@ -973,7 +974,7 @@ class SelectTest(unittest.TestCase):
         self.assertEqual((window.slot, board.get("slot")), (0, 0))
         board.fire("pick_slot", 1)
         self.assertEqual(board.get("name"), "Borak")
-        self.assertEqual((board.get("level"), board.get("playtime")), ("71", "1234"))
+        self.assertEqual((board.get("level"), board.get("playtime")), ("71", "1,234"))
         self.assertEqual([board.get("stat_" + s) for s in ("hth", "int", "str", "dex")], ["45", "12", "60", "30"])
         self.assertEqual(board.get("gauge_str"), 60 / 90.0)
         self.assertEqual(board.get("job_image"), "/locale/en/ui/select/name_warrior.sub")

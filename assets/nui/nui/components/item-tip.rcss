@@ -190,3 +190,70 @@
 {
 	line-height: 16dp;
 }
+
+/* The item's icon in the header (the item tooltip only; its document binds
+   nui-tip--icon on the board and wraps the block with the icon part). The
+   icon sits in a sunken box at the top left, 32dp wide and as tall as the
+   item (one cell, or two for a taller item; a three-cell icon is scaled to
+   64dp); the first line, the name, is indented past it and centered on its
+   height. Classic draws no header icon (its overlay resets this). */
+.nui-tip__wrap
+{
+	display: block;
+	position: relative;
+}
+.nui-tip__icon
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	box-sizing: border-box;
+	width: 44dp;
+	height: 44dp;
+	padding: 5dp 6dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-md);
+	text-align: center;
+	line-height: 0;
+}
+.nui-tip__icon-image
+{
+	display: inline-block;
+	height: 32dp;
+}
+.nui-tip--icon-2 .nui-tip__icon,
+.nui-tip--icon-3 .nui-tip__icon
+{
+	height: 76dp;
+}
+.nui-tip--icon-2 .nui-tip__icon-image,
+.nui-tip--icon-3 .nui-tip__icon-image
+{
+	height: 64dp;
+}
+.nui-tip--icon .nui-tip__body > .nui-tip__slot:first-child
+{
+	padding-left: 52dp;
+	min-height: 44dp;
+}
+.nui-tip--icon .nui-tip__body > .nui-tip__slot:first-child .nui-tip__line
+{
+	line-height: 44dp;
+	text-align: left;
+}
+.nui-tip--icon-2 .nui-tip__body > .nui-tip__slot:first-child
+{
+	min-height: 76dp;
+}
+.nui-tip--icon-2 .nui-tip__body > .nui-tip__slot:first-child .nui-tip__line,
+.nui-tip--icon-3 .nui-tip__body > .nui-tip__slot:first-child .nui-tip__line
+{
+	line-height: 76dp;
+}
+.nui-tip--icon-3 .nui-tip__body > .nui-tip__slot:first-child
+{
+	min-height: 76dp;
+}

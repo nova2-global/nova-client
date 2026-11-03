@@ -448,3 +448,8 @@ NUI_LOGIN_ERR_FAILED	Účet se nepodařilo vytvořit. Zkus to později.
 NUI_LOGIN_CREATED	Tvůj účet je připraven. Přihlas se jím.
 NUI_LOGIN_CREATING	Vytváření účtu...
 HELP_OPEN_EXTRA_INVENTORY	Otevřít speciální inventář: pomocí klávesy U
+NUI_EXCHANGE_LAMP_PARTNER	Protistrana přijala
+NUI_EXCHANGE_LAMP_WAITING	Zatím nepřijato
+NUI_EXCHANGE_LAMP_YOU	Tvé přijetí je potvrzeno
+NUI_GUILD_TAB_NEWS	Novinky
+NUI_GUILD_TAB_RANKING	Žebříček členů

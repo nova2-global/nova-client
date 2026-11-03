@@ -341,6 +341,20 @@ class Transactions(unittest.TestCase):
             texts = [r["text"] for e in world.board().model["lines"] for r in e["runs"]]
             self.assertEqual(texts[-1], "Price: 1.234 Yang", "AppendPrice after AddItemData's ShowToolTip")
 
+    def test_the_header_icon_is_the_shown_items_and_clear_drops_it(self):
+        """The modern header draws the item's icon beside its name: the model
+        carries the icon path and its height in cells, kept from AddItemData."""
+        with World() as world:
+            world.case(shop={"open": True, "private": False, "price": 1234})
+            tip = world.item()
+            tip.SetShopItem(0)
+            model = world.board().model
+            self.assertTrue(model["icon"].startswith("/icon/item/") and model["icon"].endswith(".tga"), model["icon"])
+            self.assertIn(model["icon_h"], (1, 2, 3))
+            self.assertEqual(world.m("nui_tooltip").STATS["errors"], 0)
+            tip.ClearToolTip()
+            self.assertEqual((tip._nui_icon, tip._nui_icon_h), ("", 1))
+
     def test_the_show_runs_legacys_on_update_once_and_shows_the_document_at_the_pointer(self):
         with World() as world:
             world.case()

@@ -447,3 +447,8 @@ NUI_LOGIN_ERR_FAILED	Het account kon niet worden gemaakt. Probeer het later opni
 NUI_LOGIN_CREATED	Je account is klaar. Log ermee in.
 NUI_LOGIN_CREATING	Je account wordt gemaakt...
 HELP_OPEN_EXTRA_INVENTORY	Open speciale inventaris venster: U
+NUI_EXCHANGE_LAMP_PARTNER	Partner heeft geaccepteerd
+NUI_EXCHANGE_LAMP_WAITING	Nog niet geaccepteerd
+NUI_EXCHANGE_LAMP_YOU	Jij hebt geaccepteerd
+NUI_GUILD_TAB_NEWS	Nieuws
+NUI_GUILD_TAB_RANKING	Ledenranglijst

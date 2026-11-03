@@ -92,3 +92,24 @@ body.skin-classic.nui-tip
 	margin-top: 2dp;
 }
 /* --- end of the tooltip lines --- */
+
+/* Legacy draws no icon in the header: the modern header's icon box is gone
+   and the first line is a line like the others. */
+.skin-classic .nui-tip__icon
+{
+	display: none;
+}
+body.skin-classic.nui-tip .nui-tip__body > .nui-tip__slot:first-child
+{
+	padding-left: 0;
+	min-height: 0;
+}
+body.skin-classic.nui-tip .nui-tip__body > .nui-tip__slot:first-child .nui-tip__line
+{
+	line-height: 17dp;
+	text-align: center;
+}
+body.skin-classic.nui-tip .nui-tip__body > .nui-tip__slot:first-child .nui-tip__line--left
+{
+	text-align: left;
+}

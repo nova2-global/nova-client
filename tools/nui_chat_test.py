@@ -1549,6 +1549,7 @@ class Wiring(unittest.TestCase):
             interface.wndQuestWindow = {}
             interface.questButtonList = []
             interface.whisperButtonList = []
+            interface.whisperUnread = set()
             interface.whisperDialogDict = {}
             interface.guildScoreBoardDict = {}
             interface.equipmentDialogDict = {}

@@ -1244,7 +1244,10 @@ def published(world, tip):
     if getattr(tip, "KIND", None) is None:
         return getattr(tip, "_test_published", None)
     board = world.m("nui_tooltip").board(tip.KIND)
-    return {"lines": board.model.get("lines", []), "min_w": board.model.get("min_w", 0)} if board is not None else None
+    if board is None:
+        return None
+    return {"lines": board.model.get("lines", []), "min_w": board.model.get("min_w", 0),
+            "icon": board.model.get("icon", ""), "icon_h": board.model.get("icon_h", 1)}
 
 
 # --- the comparison (spec 5.8), shared by the parity test and the report --------------------------------------
@@ -1555,7 +1558,10 @@ def _model_of(world, kind, calls, case=None):
     for name, args in calls:
         getattr(tip, name)(*args)
     model = published(world, tip)
-    return {"lines": model["lines"], "min_w": model["min_w"]}
+    result = {"lines": model["lines"], "min_w": model["min_w"]}
+    if kind == "item":
+        result["icon"], result["icon_h"] = model.get("icon", ""), model.get("icon_h", 1)
+    return result
 
 
 def fixtures():

@@ -836,6 +836,35 @@ body.char.char--placed
 	border-top-width: 1dp;
 	border-top-color: var(--border);
 }
+/* The row's hover plate, reaching back over its icon cell (40dp and the 8dp
+   gap, and a 4dp margin round the cell): drawn while the pointer is over
+   the row or over its icon cell (the model's quest_hover); it takes no
+   pointer, so the cell keeps its own events. */
+.char-quest__plate
+{
+	display: none;
+	position: absolute;
+	left: -52dp;
+	right: 0;
+	top: -2dp;
+	bottom: -2dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 9dp;
+	background-color: var(--slot-target);
+	pointer-events: none;
+}
+.char-quest:hover .char-quest__plate, .char-quest.is-hover .char-quest__plate
+{
+	display: block;
+}
+/* The texts take no pointer: the row is the one target, so moving over its
+   lines sends no mouseout. */
+.char-quest__name, .char-quest__clock, .char-quest__counter, .char-quest__chev
+{
+	pointer-events: none;
+}
 .char-quest.is-hidden
 {
 	visibility: hidden;

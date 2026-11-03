@@ -68,8 +68,10 @@
 						<span class="nui-glyph nui-glyph--coin exchange__coin"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
 						<span class="exchange__amount">{{ target_money }}</span>
 					</div>
-					<span id="exchange-target-light" class="exchange__light" data-class-is-on="target_accept"><span
-						class="exchange__light-ring"></span><span class="exchange__light-core nui-fx"></span></span>
+					<span id="exchange-target-light" class="exchange__light nui-has-tooltip" data-class-is-on="target_accept"><span
+						class="exchange__light-ring"></span><span class="exchange__light-core nui-fx"></span><span
+						class="nui-tooltip nui-anim exchange__tip"><span data-if="target_accept">@ui.NUI_EXCHANGE_LAMP_PARTNER</span><span
+						data-if="!target_accept">@ui.NUI_EXCHANGE_LAMP_WAITING</span></span></span>
 				</div>
 			</div>
 			<div class="exchange__divider"></div>
@@ -102,8 +104,10 @@
 						<span class="nui-glyph nui-glyph--coin exchange__coin"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
 						<span class="exchange__amount">{{ owner_money }}</span>
 					</button>
-					<span id="exchange-owner-light" class="exchange__light" data-class-is-on="owner_accept"><span
-						class="exchange__light-ring"></span><span class="exchange__light-core nui-fx"></span></span>
+					<span id="exchange-owner-light" class="exchange__light nui-has-tooltip" data-class-is-on="owner_accept"><span
+						class="exchange__light-ring"></span><span class="exchange__light-core nui-fx"></span><span
+						class="nui-tooltip nui-anim exchange__tip"><span data-if="owner_accept">@ui.NUI_EXCHANGE_LAMP_YOU</span><span
+						data-if="!owner_accept">@ui.NUI_EXCHANGE_LAMP_WAITING</span></span></span>
 				</div>
 			</div>
 		</div>

@@ -446,3 +446,8 @@ NUI_LOGIN_ERR_FAILED	Das Konto konnte nicht erstellt werden. Versuche es später
 NUI_LOGIN_CREATED	Dein Konto ist bereit. Melde dich damit an.
 NUI_LOGIN_CREATING	Dein Konto wird erstellt...
 HELP_OPEN_EXTRA_INVENTORY	Spezialinventar öffnen: U
+NUI_EXCHANGE_LAMP_PARTNER	Partner hat akzeptiert
+NUI_EXCHANGE_LAMP_WAITING	Noch nicht akzeptiert
+NUI_EXCHANGE_LAMP_YOU	Du hast akzeptiert
+NUI_GUILD_TAB_NEWS	Neuigkeiten
+NUI_GUILD_TAB_RANKING	Mitgliederränge

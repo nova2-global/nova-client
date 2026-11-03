@@ -103,11 +103,14 @@ class Pages(GuildTest):
         model = w4.board(b).model
         page = a.pageWindow["GUILD_INFO"]
         self.assertEqual(model["info"], {"name": page.nameSlot.GetText(), "master": page.masterNameSlot.GetText(),
-                                         "level": page.guildLevelSlot.GetText(), "cur_exp": page.curExpSlot.GetText(),
-                                         "last_exp": page.lastExpSlot.GetText(),
+                                         "level": page.guildLevelSlot.GetText(), "cur_exp": "1,234,500",
+                                         "last_exp": "5,432,100",
                                          "members": page.memberCountSlot.GetText(),
                                          "avg_level": page.levelAverageSlot.GetText()})
-        self.assertEqual(model["info"]["cur_exp"], "1234500", "legacy's experience times 100")
+        self.assertEqual(page.curExpSlot.GetText(), "1234500", "legacy's experience times 100")
+        self.assertEqual(page.lastExpSlot.GetText(), "5432100")
+        self.assertEqual((model["info"]["cur_exp"], model["info"]["last_exp"]), ("1,234,500", "5,432,100"),
+                         "digits grouped with the locale's separator (nui_numbers)")
         self.assertEqual(model["enemies"], [line.GetText() for line in a.enemyGuildNameList])
         self.assertEqual(model["enemies"][0], "Black Wolves")
         self.assertEqual((model["upload_mark_shown"], model["upload_symbol_shown"], model["declare_shown"]),
@@ -243,6 +246,16 @@ class Pages(GuildTest):
                 self.assertEqual([t["shown"] for t in model["tabs"]], [a.tabDict[k].shown for k in PAGES])
                 self.assertTrue(model["tab_art"].endswith("/tab_%d.sub" % (PAGES.index(expected) + 1)))
         self.assertEqual([t["enabled"] for t in w4.board(b).model["tabs"]], [True, True, True, False, True, True])
+
+    def test_the_tab_names_are_the_reviewed_boards(self):
+        """The modern tab row names the blackboard "News" and the grade page
+        "Member Ranking"; the other tabs keep the page titles."""
+        b_world, b = self.world(True)
+        self.open(b_world, b)
+        labels = dict((t["key"], t["label"]) for t in w4.board(b).model["tabs"])
+        self.assertEqual((labels["BOARD"], labels["GRADE"]), ("@ui.NUI_GUILD_TAB_NEWS", "@ui.NUI_GUILD_TAB_RANKING"))
+        self.assertEqual((labels["GUILD_INFO"], labels["MEMBER"], labels["SKILL"]),
+                         ("Guild Information", "Guild Members", "Guild Skills"))
 
 
 class Flows(GuildTest):

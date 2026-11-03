@@ -255,6 +255,7 @@
 		"open_character": false,
 		"open_inventory": false,
 		"open_messenger": false,
-		"open_system": false
+		"open_system": false,
+		"messenger_badge": ""
 	}
 }

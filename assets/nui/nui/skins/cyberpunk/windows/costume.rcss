@@ -97,3 +97,9 @@ body.skin-cyberpunk.cos .cos-wear.is-blocked
 	background-color: var(--slot-blocked);
 	image-color: var(--danger);
 }
+
+/* The marks of the places no item takes, magenta. */
+body.skin-cyberpunk.cos .cos-stage__mark
+{
+	--glyph-ink: var(--cyberpunk-glow-alt);
+}

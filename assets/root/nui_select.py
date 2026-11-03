@@ -40,6 +40,7 @@ import wndMgr
 
 import introSelect
 import nui
+import nui_numbers
 
 DOCUMENT = "nui/windows/select/select.rml"
 BACKGROUND = "d:/ymir work/ui/intro/select/select.sub"
@@ -344,12 +345,12 @@ class SelectCharacterWindow(introSelect.SelectCharacterWindow):
 		if float(sum(stats)) > 0.0:
 			self.destGauge = [gauge_value(value) for value in stats]
 
-		values = {"slot": index, "occupied": True, "name": nui.plain_text(name), "level": str(level),
-			"playtime": str(playTime), "guild": nui.plain_text(guildName) if guildName else NO_GUILD,
+		values = {"slot": index, "occupied": True, "name": nui.plain_text(name), "level": nui_numbers.group(level),
+			"playtime": nui_numbers.group(playTime), "guild": nui.plain_text(guildName) if guildName else NO_GUILD,
 			"has_guild": bool(guildName), "job_image": job_image(job),
 			"job_name": JOB_KEYS[job] if 0 <= job < len(JOB_KEYS) else ""}
 		for stat, value, gauge in zip(STATS, stats, self.destGauge):
-			values["stat_" + stat] = str(value)
+			values["stat_" + stat] = nui_numbers.group(value)
 			values["gauge_" + stat] = gauge
 		self._set(**values)
 

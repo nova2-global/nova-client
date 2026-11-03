@@ -29,7 +29,8 @@ body.skin-classic.exchange
 }
 body.skin-classic.exchange .exchange__title-icon,
 body.skin-classic.exchange .exchange__light-ring,
-body.skin-classic.exchange .exchange__light-core
+body.skin-classic.exchange .exchange__light-core,
+body.skin-classic.exchange .exchange__tip
 {
 	display: none;
 }

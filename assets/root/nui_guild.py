@@ -54,6 +54,7 @@ import nui_form_proxies
 import nui_guild_grade_name
 import nui_hud
 import nui_messenger
+import nui_numbers
 import nui_proxies
 import nui_slots
 import nui_windows
@@ -70,6 +71,10 @@ PAGES = (("GUILD_INFO", "page_info", "uiscript/guildwindow_guildinfopage.py"),
          ("GRADE", "page_grade", "uiscript/guildwindow_gradepage.py"))
 PAGE_TITLES = {"GUILD_INFO": "GUILD_TILE_INFO", "BOARD": "GUILD_TILE_BOARD", "MEMBER": "GUILD_TILE_MEMBER",
                "BASE_INFO": "GUILD_TILE_BASEINFO", "SKILL": "GUILD_TILE_SKILL", "GRADE": "GUILD_TILE_GRADE"}
+# The tab names the reviewed board draws where they differ from the page titles
+# (the blackboard's tab reads "News", the grade page's "Member Ranking"): the
+# modern skins' tab row shows them; classic draws the locale's tab art.
+TAB_LABELS = {"BOARD": "@ui.NUI_GUILD_TAB_NEWS", "GRADE": "@ui.NUI_GUILD_TAB_RANKING"}
 # The skill slot windows' first slots (guildwindow_guildskillpage.py).
 PASSIVE_START, ACTIVE_START, AFFECT_START = 200, 210, 0
 # The authority bits of the grade page's four checks, in column order.
@@ -386,7 +391,8 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		return "/" + uiScriptLocale.GUILD_PATH.strip("/") + "/tab_%d.sub" % index
 
 	def _tab_entry(self, key, enabled, down, shown):
-		return {"key": key, "label": nui.plain_text(getattr(localeInfo, PAGE_TITLES[key], "")), "enabled": bool(enabled),
+		label = TAB_LABELS.get(key) or nui.plain_text(getattr(localeInfo, PAGE_TITLES[key], ""))
+		return {"key": key, "label": label, "enabled": bool(enabled),
 		        "down": bool(down), "art": self._tab_art(key), "shown": bool(shown)}
 
 	@staticmethod
@@ -454,11 +460,11 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 
 		info = pages["GUILD_INFO"]
 		values["info"] = {"name": info.nameSlot.GetText(), "master": info.masterNameSlot.GetText(),
-		                  "level": nui.plain_text(info.guildLevelSlot.GetText()),
-		                  "cur_exp": nui.plain_text(info.curExpSlot.GetText()),
-		                  "last_exp": nui.plain_text(info.lastExpSlot.GetText()),
+		                  "level": nui_numbers.group(nui.plain_text(info.guildLevelSlot.GetText())),
+		                  "cur_exp": nui_numbers.group(nui.plain_text(info.curExpSlot.GetText())),
+		                  "last_exp": nui_numbers.group(nui.plain_text(info.lastExpSlot.GetText())),
 		                  "members": nui.plain_text(info.memberCountSlot.GetText()),
-		                  "avg_level": nui.plain_text(info.levelAverageSlot.GetText())}
+		                  "avg_level": nui_numbers.group(nui.plain_text(info.levelAverageSlot.GetText()))}
 		values["enemies"] = [line.GetText() for line in self.enemyGuildNameList]
 		values["mark_src"], values["mark_rect"] = self.largeMarkBox.mark()
 		values["upload_mark_shown"] = bool(info.uploadMarkButton.shown)

@@ -472,3 +472,8 @@ NUI_LOGIN_ERR_FAILED	تعذر إنشاء الحساب. حاول لاحقًا.
 NUI_LOGIN_CREATED	حسابك جاهز. سجّل الدخول به.
 NUI_LOGIN_CREATING	جارٍ إنشاء حسابك...
 HELP_OPEN_EXTRA_INVENTORY	فتح قائمة الممتلكات الخاصة: U
+NUI_EXCHANGE_LAMP_PARTNER	وافق الشريك
+NUI_EXCHANGE_LAMP_WAITING	لم تتم الموافقة بعد
+NUI_EXCHANGE_LAMP_YOU	لقد وافقت
+NUI_GUILD_TAB_NEWS	الأخبار
+NUI_GUILD_TAB_RANKING	ترتيب الأعضاء

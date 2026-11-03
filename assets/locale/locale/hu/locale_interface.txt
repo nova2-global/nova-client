@@ -447,3 +447,8 @@ NUI_LOGIN_ERR_FAILED	A fiókot nem sikerült létrehozni. Próbáld később.
 NUI_LOGIN_CREATED	A fiókod kész. Lépj be vele.
 NUI_LOGIN_CREATING	Fiók létrehozása...
 HELP_OPEN_EXTRA_INVENTORY	Különleges leltár ablak megnyitása: U
+NUI_EXCHANGE_LAMP_PARTNER	A partner elfogadta
+NUI_EXCHANGE_LAMP_WAITING	Még nem fogadta el
+NUI_EXCHANGE_LAMP_YOU	Elfogadtad
+NUI_GUILD_TAB_NEWS	Hírek
+NUI_GUILD_TAB_RANKING	Tagi rangsor

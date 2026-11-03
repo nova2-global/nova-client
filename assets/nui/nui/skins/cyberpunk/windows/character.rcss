@@ -224,6 +224,15 @@ body.skin-cyberpunk.char .char-divider--solo, body.skin-cyberpunk.char .char-div
 
 /* --- Quests: muted chevrons, a neon rail ------------------------------------- */
 
+/* The row's hover plate: a soft cyan film fading out with a magenta edge, square. */
+body.skin-cyberpunk.char .char-quest__plate
+{
+	border-radius: 0;
+	border-color: var(--border);
+	border-left-color: var(--cyberpunk-edge-alt);
+	background-color: transparent;
+	decorator: horizontal-gradient(var(--slot-target) transparent);
+}
 body.skin-cyberpunk.char .char-quest__chev
 {
 	--glyph-ink: var(--text-muted);

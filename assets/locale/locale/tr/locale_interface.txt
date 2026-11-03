@@ -448,3 +448,8 @@ NUI_LOGIN_ERR_FAILED	Hesap oluşturulamadı. Daha sonra tekrar dene.
 NUI_LOGIN_CREATED	Hesabın hazır. Onunla giriş yap.
 NUI_LOGIN_CREATING	Hesabın oluşturuluyor...
 HELP_OPEN_EXTRA_INVENTORY	Özel Envanter Penceresini aç: U tuşu ile
+NUI_EXCHANGE_LAMP_PARTNER	Karşı taraf kabul etti
+NUI_EXCHANGE_LAMP_WAITING	Henüz kabul edilmedi
+NUI_EXCHANGE_LAMP_YOU	Kabul ettin
+NUI_GUILD_TAB_NEWS	Haberler
+NUI_GUILD_TAB_RANKING	Üye sıralaması

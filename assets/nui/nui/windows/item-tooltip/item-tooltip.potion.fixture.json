@@ -44,6 +44,8 @@
 				"sub": []
 			}
 		],
-		"min_w": 190
+		"min_w": 190,
+		"icon": "/icon/item/27001.tga",
+		"icon_h": 1
 	}
 }

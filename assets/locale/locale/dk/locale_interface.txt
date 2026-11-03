@@ -448,3 +448,8 @@ NUI_LOGIN_ERR_FAILED	Kontoen kunne ikke oprettes. Prøv igen senere.
 NUI_LOGIN_CREATED	Din konto er klar. Log ind med den.
 NUI_LOGIN_CREATING	Opretter din konto...
 HELP_OPEN_EXTRA_INVENTORY	Åben specialinventar vinduet: U
+NUI_EXCHANGE_LAMP_PARTNER	Partneren har accepteret
+NUI_EXCHANGE_LAMP_WAITING	Endnu ikke accepteret
+NUI_EXCHANGE_LAMP_YOU	Du har accepteret
+NUI_GUILD_TAB_NEWS	Nyheder
+NUI_GUILD_TAB_RANKING	Medlemsrangering

@@ -60,9 +60,13 @@ body.cos.cos--companion .cos-grid
 {
 	height: 304dp;
 }
-/* Today's stage: the well under a diamond mesh (thin lines 45 degrees
-   either way); the halo is the light. Its places are from its padding box. */
-body.cos.inv--table-new .cos-grid
+/* The stage: the well under a diamond mesh (thin lines 45 degrees either
+   way); the halo is the light. Its places are from its padding box. Both
+   tables stand the costume hair and body on it (the foundation's, live since
+   the cut, as today's), with the weapon, accessory and ring places as faint
+   frames that take nothing (Eddy, 2026-11-04). */
+body.cos.inv--table-new .cos-grid,
+body.cos.inv--table-old .cos-grid
 {
 	box-sizing: border-box;
 	width: 176dp;
@@ -75,13 +79,14 @@ body.cos.inv--table-new .cos-grid
 	           repeating-linear-gradient(-45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 11.3dp);
 }
 
-/* --- The stage's art (today's table only) ----------------------------------- */
+/* --- The stage's art (both tables) ------------------------------------------- */
 
 .cos-stage
 {
 	display: none;
 }
-body.cos.inv--table-new .cos-stage
+body.cos.inv--table-new .cos-stage,
+body.cos.inv--table-old .cos-stage
 {
 	display: block;
 	position: absolute;
@@ -99,11 +104,12 @@ body.cos.inv--table-new .cos-stage
 }
 .cos-stage__halo
 {
-	left: 33dp;
-	top: 15dp;
-	width: 126dp;
-	height: 180dp;
-	decorator: radial-gradient(50% 50% at 50% 50%, var(--slot-target) 0%, transparent 72%);
+	left: 22dp;
+	top: 6dp;
+	width: 132dp;
+	height: 196dp;
+	decorator: radial-gradient(48% 46% at 50% 46%, var(--accent-glow) 0%, transparent 64%);
+	opacity: 0.7;
 }
 /* A device without effects draws a gradient as its middle color: the halo
    would be a flat box. */
@@ -124,10 +130,17 @@ body.cos.inv--table-new .cos-stage
 	height: 180dp;
 	text-align: center;
 }
+/* In the accent's glow (the design's lavender figure, see-through in every
+   theme): image-color multiplies the gray carvings, alpha included; its glow
+   is a drop shadow while effects are on. */
 .cos-stage__image
 {
 	height: 180dp;
-	opacity: 0.7;
+	image-color: var(--accent-glow);
+}
+.cos-stage__image.nui-fx
+{
+	filter: drop-shadow(var(--accent-glow) 0dp 0dp 3dp);
 }
 /* The rune circle: rings and a hexagram on a 112dp disc laid back in
    perspective; it turns once in 34s, the other way to the inventory's. */
@@ -147,6 +160,7 @@ body.cos.inv--table-new .cos-stage
 	top: 0;
 	width: 112dp;
 	height: 112dp;
+	opacity: 0.55;
 }
 .cos-stage__spin.nui-anim
 {
@@ -174,7 +188,7 @@ body.cos.inv--table-new .cos-stage
 	top: 3dp;
 	width: 106dp;
 	height: 106dp;
-	border-width: 2dp;
+	border-width: 1dp;
 }
 .cos-stage__ring--glow
 {
@@ -182,7 +196,7 @@ body.cos.inv--table-new .cos-stage
 	top: 10dp;
 	width: 92dp;
 	height: 92dp;
-	border-width: 1.5dp;
+	border-width: 1dp;
 	border-color: var(--accent);
 }
 .cos-stage__ring--inner
@@ -191,7 +205,7 @@ body.cos.inv--table-new .cos-stage
 	top: 20dp;
 	width: 72dp;
 	height: 72dp;
-	border-width: 1.5dp;
+	border-width: 1dp;
 }
 /* The hexagram: six chords of the inner ring, each 18dp from the middle. */
 .cos-stage__chord
@@ -199,7 +213,7 @@ body.cos.inv--table-new .cos-stage
 	left: 25dp;
 	top: 55.5dp;
 	width: 62dp;
-	height: 1.5dp;
+	height: 1dp;
 	background-color: var(--accent-glow);
 }
 .cos-stage__chord--a { transform: rotate(0deg) translateY(18dp); }
@@ -212,17 +226,17 @@ body.cos.inv--table-new .cos-stage
    empty cell's look, but they hold nothing and take no pointer. */
 .cos-stage__frame
 {
-	left: 13dp;
-	width: 40dp;
+	left: 11dp;
+	width: 44dp;
 	box-sizing: border-box;
-	background-color: var(--surface-sunken);
+	background-color: transparent;
 	border-width: 1dp;
 	border-color: var(--border);
-	border-radius: 7dp;
+	border-radius: 8dp;
 }
-.cos-stage__frame--a { top: 27dp; height: 80dp; }
-.cos-stage__frame--b { top: 120dp; height: 40dp; }
-.cos-stage__frame--c { left: 65dp; top: 152dp; height: 40dp; }
+.cos-stage__frame--a { top: 21dp; height: 92dp; }
+.cos-stage__frame--b { top: 118dp; height: 44dp; }
+.cos-stage__frame--c { left: 64dp; top: 150dp; height: 44dp; }
 /* The marks of the three places no item takes (the costume weapon,
    accessory and ring): faint, 22dp, decoration only. */
 .cos-stage__frame
@@ -234,8 +248,31 @@ body.cos.inv--table-new .cos-stage
 .cos-stage__mark
 {
 	--glyph-ink: var(--text-muted);
-	opacity: 0.46;
+	opacity: 0.5;
 	transform: scale(1.375);
+}
+/* The design's sword lies across its frame, the guard to the upper right,
+   its blade a thin line. */
+.cos-stage__frame--a .cos-stage__mark
+{
+	transform: rotate(-135deg) scale(1.375);
+}
+.cos-stage__frame--a .cos-stage__mark .nui-glyph__a
+{
+	left: 7dp;
+	width: 2dp;
+}
+.cos-stage__frame--a .cos-stage__mark .nui-glyph__b
+{
+	left: 4dp;
+	top: 11dp;
+	width: 8dp;
+	height: 1.5dp;
+}
+/* No grip past the guard: the design's T ends the line. */
+.cos-stage__frame--a .cos-stage__mark .nui-glyph__c
+{
+	display: none;
 }
 .cos-divider
 {
@@ -256,11 +293,13 @@ body.cos.inv--table-new .cos-stage
 	height: 40dp;
 }
 .cos-wear--costume_body, .cos-wear--buffi_costume_body { height: 84dp; }
-/* Today's places: the hair and the body on the stage's right, the third
-   at the figure's feet. */
-body.cos.inv--table-new .cos-wear--costume_hair { left: 117dp; top: 23dp; }
-body.cos.inv--table-new .cos-wear--costume_body { left: 117dp; top: 88dp; height: 80dp; }
-body.cos.inv--table-new .cos-wear--ring1 { left: 65dp; top: 152dp; }
+/* The stage's places (both tables, the design's): the hair and the body on
+   the stage's right, today's ring at the figure's feet. */
+body.cos.inv--table-new .cos-wear--costume_hair,
+body.cos.inv--table-old .cos-wear--costume_hair { left: 115dp; top: 21dp; width: 44dp; height: 44dp; }
+body.cos.inv--table-new .cos-wear--costume_body,
+body.cos.inv--table-old .cos-wear--costume_body { left: 115dp; top: 85dp; width: 44dp; height: 86dp; }
+body.cos.inv--table-new .cos-wear--ring1 { left: 64dp; top: 150dp; width: 44dp; height: 44dp; }
 .cos-wear--costume_weapon, .cos-wear--buffi_costume_weapon { height: 128dp; }
 .cos-wear--costume_hair { left: 0; top: 0; }
 .cos-wear--costume_body { left: 44dp; top: 0; }
@@ -285,6 +324,8 @@ body.cos.inv--table-new .cos-wear--ring1 { left: 65dp; top: 152dp; }
    so a table change needs no new rule (P14 spec 3.3). */
 .cos-wear--costume_sash, .cos-wear--ring2, .cos-wear--belt { left: 132dp; top: 88dp; }
 
+/* The design's cells are outlines the figure shows through; the hover, the
+   drop footprint and the other states keep their fills (heavier rules). */
 .cos-wear
 {
 	display: flex;
@@ -292,6 +333,8 @@ body.cos.inv--table-new .cos-wear--ring1 { left: 65dp; top: 152dp; }
 	justify-content: center;
 	width: 100%;
 	height: 100%;
+	background-color: transparent;
+	border-radius: 8dp;
 }
 .cos-wear .nui-slot__icon
 {

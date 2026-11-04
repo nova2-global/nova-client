@@ -857,41 +857,44 @@
 
 /* --- The costume window's marks ---------------------------------------------------
    Two more names, the marks of the costume places no item takes: pentagon (a
-   rounded top over a flat base: the accessory place) and ring (a band under
-   a small gem: the ring place). The costume weapon place takes sword. */
+   wide top narrowing to a flat base, its corners round: the accessory place)
+   and ring (a tall band drawn to a point at the top: the ring place). The
+   costume weapon place takes sword. */
 
-/* pentagon: one box, its top corners round. */
+/* pentagon: one box tipped back in perspective, so its top edge is wider
+   than its base; the corners round. */
 .nui-glyph--pentagon .nui-glyph__a
 {
 	left: 2dp;
 	top: 3dp;
 	width: 12dp;
-	height: 10dp;
-	border-width: 2dp;
-	border-radius: 6dp 6dp 1dp 1dp;
+	height: 11dp;
+	border-width: 1.5dp;
+	border-radius: 3dp;
+	transform: perspective(20dp) rotateX(-42deg);
 }
 .nui-glyph--pentagon .nui-glyph__b
 {
 	display: none;
 }
 
-/* ring: the band, and the gem above it (a box inked by its bottom border: a
-   triangle pointing up). */
+/* ring: a tall band (an oval) drawn to a point at its top (a box inked by
+   its bottom border, a triangle pointing up, on the band's top). */
 .nui-glyph--ring .nui-glyph__a
 {
-	left: 3dp;
-	top: 6dp;
-	width: 10dp;
-	height: 10dp;
-	border-width: 2dp;
+	left: 4dp;
+	top: 4dp;
+	width: 8dp;
+	height: 11dp;
+	border-width: 1.5dp;
 	border-radius: 9999dp;
 }
 .nui-glyph--ring .nui-glyph__b
 {
-	left: 5dp;
-	top: 0;
+	left: 6dp;
+	top: 1dp;
 	width: 0;
 	height: 0;
-	border-width: 0 3dp 5dp 3dp;
+	border-width: 0 2dp 3.5dp 2dp;
 	border-color: transparent transparent var(--glyph-ink) transparent;
 }

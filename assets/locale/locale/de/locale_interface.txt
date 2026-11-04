@@ -402,6 +402,8 @@ NUI_LOGIN_SAVED	Gespeicherte Konten
 NUI_LOGIN_FORGET	Dieses Konto vergessen
 NUI_LOGIN_ADD_ACCOUNT	Konto hinzufügen
 NUI_LOGIN_SAVED_HINT	Auf diesem Computer gespeichert: der Kontoname und die Charaktere, die du beim letzten Login gesehen hast, mit ihren damaligen Stufen. Passwörter werden nie gespeichert.
+NUI_LOGIN_SAVED_SECRET_HINT	Auf diesem Computer gespeichert: der Kontoname und die Charaktere, die du beim letzten Login gesehen hast, mit ihren damaligen Stufen. Wenn Angemeldet bleiben aktiviert ist, speichert die Windows-Anmeldeinformationsverwaltung das Passwort.
+NUI_LOGIN_KEYBOARD	Virtuelle Tastatur
 NUI_LOGIN_TAB_LOGIN	Anmelden
 NUI_LOGIN_TAB_REGISTER	Konto erstellen
 NUI_LOGIN_WELCOME	Willkommen zurück, Krieger
@@ -444,6 +446,26 @@ NUI_LOGIN_ERR_FAILED	Das Konto konnte nicht erstellt werden. Versuche es später
 NUI_LOGIN_CREATED	Dein Konto ist bereit. Melde dich damit an.
 NUI_LOGIN_CREATING	Dein Konto wird erstellt...
 HELP_OPEN_EXTRA_INVENTORY	Spezialinventar öffnen: U
+NUI_EXCHANGE_LAMP_PARTNER	Partner hat akzeptiert
+NUI_EXCHANGE_LAMP_WAITING	Noch nicht akzeptiert
+NUI_EXCHANGE_LAMP_YOU	Du hast akzeptiert
+NUI_GUILD_TAB_NEWS	Neuigkeiten
+NUI_GUILD_TAB_RANKING	Mitgliederränge
+NUI_INTRO_EMPIRE_TITLE	Reich
+NUI_INTRO_SELECTED	Ausgewählt
+NUI_INTRO_EMPIRE_MOTTO_A	Handel · Entschlossenheit · Einheit
+NUI_INTRO_EMPIRE_MOTTO_B	Glaube · Ehre · Ordnung
+NUI_INTRO_EMPIRE_MOTTO_C	Stärke · Disziplin · Ruhm
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Südliches Königreich
+NUI_INTRO_EMPIRE_REGION_B	Westliches Königreich
+NUI_INTRO_EMPIRE_REGION_C	Östliches Königreich
+NUI_INTRO_CREATE_TITLE	Charakter erstellen
+NUI_INTRO_SELECT_TITLE	Charakterauswahl
+NUI_INTRO_SLOTS	%d Plätze
+NUI_INTRO_LOADING_TITLE	Das Reich betreten
 GEMSHOP_LEFTTIME	Verbleibende Zeit
 GEMSHOP_TITLE	GAYAHANDEL
 MYSHOP_DECO_CANCEL	Schließen

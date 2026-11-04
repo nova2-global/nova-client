@@ -291,6 +291,7 @@ class World(object):
             self.legacy = {name: self._load(name, file_name) for name, file_name in LEGACY.items()}
             self.nui_windows = self._load("nui_windows", "nui_windows.py")
             self._load("nui_desc_text", "nui_desc_text.py")
+            self._load("nui_numbers", "nui_numbers.py")
             self.novaui = {name: self._load(name, name + ".py") for name in NOVAUI}
 
     # --- stand-ins ------------------------------------------------------------------
@@ -368,6 +369,7 @@ class World(object):
         modules["uiScriptLocale"] = locale_module(
             "uiScriptLocale",
             EMPIRE_PATH="locale/en/ui/empire/", SELECT_PATH="locale/en/ui/select/", LOCALE_UISCRIPT_PATH="locale/en/ui/",
+            NUI_INTRO_SLOTS="%d slots",
             EMPIREDESC_A=os.path.join(LOCALE_EN, "empiredesc_a.txt"),
             EMPIREDESC_B=os.path.join(LOCALE_EN, "empiredesc_b.txt"),
             EMPIREDESC_C=os.path.join(LOCALE_EN, "empiredesc_c.txt"),
@@ -622,6 +624,8 @@ class FixtureTest(unittest.TestCase):
             empire = fixture("empire")["empire"]
             self.assertEqual(empire["paragraphs"], desc.load(os.path.join(LOCALE_EN, "empiredesc_a.txt")))
             self.assertEqual(empire["title_image"], "/locale/en/ui/empire/title.sub")
+            self.assertEqual((empire["badge"], empire["motto"]),
+                             ("@ui.NUI_INTRO_SELECTED", "@ui.NUI_INTRO_EMPIRE_MOTTO_A"))
             create = fixture("create")["create"]
             self.assertEqual(create["paragraphs"], desc.load(os.path.join(LOCALE_EN, "jobdesc_warrior.txt")))
         select = fixture("select")["select"]
@@ -629,6 +633,7 @@ class FixtureTest(unittest.TestCase):
                          # Five slots since NOVA-97 (introselect.py SLOT_COUNT).
                          [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0),
                           ("@ui.SELECT_SLOT_EMPTY", 0)])
+        self.assertEqual(select["slot_badge"], "5 slots")
         self.assertEqual(fixture("loading")["loading"],
                          {"background": "d:/ymir work/uiloading/base/background_loading_warrior.sub",
                           "progress": 42.0, "error": False, "preparing": "Preparing Kalinka",
@@ -891,6 +896,8 @@ class EmpireTest(unittest.TestCase):
             self.assertTrue(board.is_visible())
             self.assertEqual(board.get("empire"), 2)
             self.assertEqual(board.get("name"), "@game.EMPIRE_B")
+            self.assertEqual((board.get("badge"), board.get("motto")),
+                             ("@ui.NUI_INTRO_SELECTED", "@ui.NUI_INTRO_EMPIRE_MOTTO_B"))
             self.assertEqual(board.get("flag_image"), "d:/ymir work/ui/intro/empire/empireflag_b.sub")
             self.assertEqual(board.get("title_image"), "/locale/en/ui/empire/title.sub")
             self.assertEqual(board.get("paragraphs"),
@@ -903,7 +910,36 @@ class EmpireTest(unittest.TestCase):
             self.assertEqual(board.get("hover"), 0)
             board.fire("right")
             self.assertEqual((window.empireID, board.get("empire"), board.get("name")), (3, 3, "@game.EMPIRE_C"))
+            self.assertEqual(board.get("motto"), "@ui.NUI_INTRO_EMPIRE_MOTTO_C")
             self.assertEqual(board.get("paragraphs")[0], "Jinno Kingdom")
+
+    def test_each_direct_pick_uses_the_same_selection_result_as_the_arrows(self):
+        world = World(randoms=[1])
+        with world:
+            window = empire_setup("SelectEmpireWindow")(world, True)
+            board = window.board
+            board.fire("right")
+            right_model = {key: board.get(key) for key in ("empire", "name", "flag_image", "badge", "motto")}
+            window.OnSelectEmpire(1)
+            board.fire("pick", 2)
+            self.assertEqual({key: board.get(key) for key in right_model}, right_model)
+
+        with open(os.path.join(WINDOWS, "empire", "empire.rml"), encoding="utf-8") as document:
+            source = document.read()
+        for empire_id in (1, 2, 3):
+            with self.subTest(empire=empire_id):
+                self.assertIn('id="empire-pick-%d"' % empire_id, source)
+                self.assertIn('data-event-click="pick(%d)"' % empire_id, source)
+
+    def test_every_empire_has_its_selected_badge_and_motto(self):
+        world = World()
+        with world:
+            model = world.novaui["nui_empire"].empire_model
+            for empire_id, letter in ((1, "A"), (2, "B"), (3, "C")):
+                with self.subTest(empire=empire_id):
+                    values = model(empire_id)
+                    self.assertEqual(values["badge"], "@ui.NUI_INTRO_SELECTED")
+                    self.assertEqual(values["motto"], "@ui.NUI_INTRO_EMPIRE_MOTTO_" + letter)
 
     def test_open_close_and_the_dropped_pages(self):
         world = World()
@@ -973,7 +1009,7 @@ class SelectTest(unittest.TestCase):
         self.assertEqual((window.slot, board.get("slot")), (0, 0))
         board.fire("pick_slot", 1)
         self.assertEqual(board.get("name"), "Borak")
-        self.assertEqual((board.get("level"), board.get("playtime")), ("71", "1234"))
+        self.assertEqual((board.get("level"), board.get("playtime")), ("71", "1,234"))
         self.assertEqual([board.get("stat_" + s) for s in ("hth", "int", "str", "dex")], ["45", "12", "60", "30"])
         self.assertEqual(board.get("gauge_str"), 60 / 90.0)
         self.assertEqual(board.get("job_image"), "/locale/en/ui/select/name_warrior.sub")
@@ -983,6 +1019,7 @@ class SelectTest(unittest.TestCase):
                          # Five slots since NOVA-97 (introselect.py SLOT_COUNT).
                          [("Kalinka", 34), ("Borak", 71), ("@ui.SELECT_SLOT_EMPTY", 0), ("@ui.SELECT_SLOT_EMPTY", 0),
                           ("@ui.SELECT_SLOT_EMPTY", 0)])
+        self.assertEqual(board.get("slot_badge"), "5 slots")
         self.assertTrue(board.get("occupied"))
         self.assertFalse(board.get("busy"))
         self.assertEqual(window.backGround.image, "d:/ymir work/ui/intro/select/select.sub")

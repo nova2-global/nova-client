@@ -19,7 +19,10 @@
 	<link type="text/rcss" href="../../components/item-tip.rcss"/>
 </head>
 <body template="nui" id="item-tooltip" class="nui-board nui-board--tooltip nui-fx nui-tip" data-model="item_tooltip"
-      data-style---tip-min-w="min_w + 'dp'">
+      data-style---tip-min-w="min_w + 'dp'"
+      data-class-nui-tip--icon="icon != ''" data-class-nui-tip--icon-2="icon != '' && icon_h == 2" data-class-nui-tip--icon-3="icon != '' && icon_h >= 3">
+	<div class="nui-tip__wrap">
+	<div class="nui-tip__icon" data-if="icon != ''"><img class="nui-tip__icon-image" data-attr-src="icon"/></div>
 	<div id="tip-body" class="nui-tip__body">
 		<div class="nui-tip__slot" data-for="l : lines">
 			<div class="nui-tip__rule" data-if="l.rule"></div>
@@ -53,6 +56,7 @@
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 </body>
 </rml>

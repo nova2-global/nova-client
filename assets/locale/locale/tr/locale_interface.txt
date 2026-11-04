@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Kayıtlı hesaplar
 NUI_LOGIN_FORGET	Bu hesabı unut
 NUI_LOGIN_ADD_ACCOUNT	Hesap ekle
 NUI_LOGIN_SAVED_HINT	Bu bilgisayarda saklanır: hesap adı ve son girişte gördüğün karakterler, o zamanki seviyeleriyle. Şifreler asla saklanmaz.
+NUI_LOGIN_SAVED_SECRET_HINT	Bu bilgisayarda saklanır: hesap adı ve son girişte gördüğün karakterler, o zamanki seviyeleriyle. Beni hatırla seçiliyken parolayı Windows Kimlik Bilgileri Yöneticisi saklar.
+NUI_LOGIN_KEYBOARD	Sanal klavye
 NUI_LOGIN_TAB_LOGIN	Giriş yap
 NUI_LOGIN_TAB_REGISTER	Hesap oluştur
 NUI_LOGIN_WELCOME	Tekrar hoş geldin, savaşçı
@@ -446,6 +448,26 @@ NUI_LOGIN_ERR_FAILED	Hesap oluşturulamadı. Daha sonra tekrar dene.
 NUI_LOGIN_CREATED	Hesabın hazır. Onunla giriş yap.
 NUI_LOGIN_CREATING	Hesabın oluşturuluyor...
 HELP_OPEN_EXTRA_INVENTORY	Özel Envanter Penceresini aç: U tuşu ile
+NUI_EXCHANGE_LAMP_PARTNER	Karşı taraf kabul etti
+NUI_EXCHANGE_LAMP_WAITING	Henüz kabul edilmedi
+NUI_EXCHANGE_LAMP_YOU	Kabul ettin
+NUI_GUILD_TAB_NEWS	Haberler
+NUI_GUILD_TAB_RANKING	Üye sıralaması
+NUI_INTRO_EMPIRE_TITLE	İmparatorluk
+NUI_INTRO_SELECTED	Seçildi
+NUI_INTRO_EMPIRE_MOTTO_A	Ticaret · Kararlılık · Birlik
+NUI_INTRO_EMPIRE_MOTTO_B	İnanç · Onur · Düzen
+NUI_INTRO_EMPIRE_MOTTO_C	Güç · Disiplin · Zafer
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Güney krallığı
+NUI_INTRO_EMPIRE_REGION_B	Batı krallığı
+NUI_INTRO_EMPIRE_REGION_C	Doğu krallığı
+NUI_INTRO_CREATE_TITLE	Karakter oluştur
+NUI_INTRO_SELECT_TITLE	Karakter seçimi
+NUI_INTRO_SLOTS	%d yuva
+NUI_INTRO_LOADING_TITLE	Diyara giriş
 GEMSHOP_LEFTTIME	Kalan süre
 GEMSHOP_TITLE	GAYA MAĞAZASI
 MYSHOP_DECO_CANCEL	Kapat

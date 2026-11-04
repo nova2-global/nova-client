@@ -403,6 +403,8 @@ NUI_LOGIN_SAVED	Mentett fiókok
 NUI_LOGIN_FORGET	Fiók elfelejtése
 NUI_LOGIN_ADD_ACCOUNT	Fiók hozzáadása
 NUI_LOGIN_SAVED_HINT	Ezen a számítógépen mentve: a fiók neve és a legutóbbi belépéskor látott karakterek az akkori szintjükkel. Jelszót soha nem mentünk.
+NUI_LOGIN_SAVED_SECRET_HINT	Ezen a számítógépen mentve: a fiók neve és a legutóbbi belépéskor látott karakterek az akkori szintjükkel. Az Emlékezz rám opcióval a Windows hitelesítőadat-kezelője őrzi a jelszót.
+NUI_LOGIN_KEYBOARD	Virtuális billentyűzet
 NUI_LOGIN_TAB_LOGIN	Belépés
 NUI_LOGIN_TAB_REGISTER	Fiók létrehozása
 NUI_LOGIN_WELCOME	Üdv újra, harcos
@@ -445,6 +447,26 @@ NUI_LOGIN_ERR_FAILED	A fiókot nem sikerült létrehozni. Próbáld később.
 NUI_LOGIN_CREATED	A fiókod kész. Lépj be vele.
 NUI_LOGIN_CREATING	Fiók létrehozása...
 HELP_OPEN_EXTRA_INVENTORY	Különleges leltár ablak megnyitása: U
+NUI_EXCHANGE_LAMP_PARTNER	A partner elfogadta
+NUI_EXCHANGE_LAMP_WAITING	Még nem fogadta el
+NUI_EXCHANGE_LAMP_YOU	Elfogadtad
+NUI_GUILD_TAB_NEWS	Hírek
+NUI_GUILD_TAB_RANKING	Tagi rangsor
+NUI_INTRO_EMPIRE_TITLE	Birodalom
+NUI_INTRO_SELECTED	Kiválasztva
+NUI_INTRO_EMPIRE_MOTTO_A	Kereskedelem · Elszántság · Egység
+NUI_INTRO_EMPIRE_MOTTO_B	Hit · Becsület · Rend
+NUI_INTRO_EMPIRE_MOTTO_C	Erő · Fegyelem · Dicsőség
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Déli királyság
+NUI_INTRO_EMPIRE_REGION_B	Nyugati királyság
+NUI_INTRO_EMPIRE_REGION_C	Keleti királyság
+NUI_INTRO_CREATE_TITLE	Karakter létrehozása
+NUI_INTRO_SELECT_TITLE	Karakterválasztás
+NUI_INTRO_SLOTS	%d hely
+NUI_INTRO_LOADING_TITLE	Belépés a birodalomba
 GEMSHOP_LEFTTIME	Hátralévő idő:
 GEMSHOP_TITLE	GAYA PIAC
 MYSHOP_DECO_CANCEL	Bezár

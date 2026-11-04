@@ -56,6 +56,14 @@ body.skin-classic.pshop .pshop__name
 	border-width: 1dp;
 	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
 	border-radius: 0;
+	box-shadow: none;
+}
+/* Legacy shows no selected item. */
+body.skin-classic.pshop .pshop__grid > .nui-slot.is-picked
+{
+	background-color: transparent;
+	border-width: 1dp;
+	border-color: transparent;
 }
 body.skin-classic.pshop .pshop__name-text
 {

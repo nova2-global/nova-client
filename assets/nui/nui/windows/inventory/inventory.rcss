@@ -633,9 +633,13 @@ body.inv.inv--table-old .inv-button--mall { top: 224dp; }
 {
 	display: none;
 }
-.inv-rail.is-folded .inv-rail__button, .inv-rail.is-folded .inv-rail__more
+.inv-rail.is-folded .inv-rail__entry, .inv-rail.is-folded .inv-rail__more
 {
 	display: none;
+}
+.inv-rail__entry
+{
+	display: flex;
 }
 .inv-rail__grip
 {

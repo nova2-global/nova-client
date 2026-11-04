@@ -10,7 +10,7 @@
 				"runs": [
 					{
 						"k": "text",
-						"text": "Bunny Ears (brown)",
+						"text": "Bunny Ears (Brown)",
 						"role": "title",
 						"color": "",
 						"end": 0.0
@@ -58,7 +58,28 @@
 			},
 			{
 				"t": "line",
-				"gap": 10,
+				"gap": 5,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength against monsters +5%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 5,
 				"rule": false,
 				"align": "center",
 				"outline": true,
@@ -169,6 +190,8 @@
 				"sub": []
 			}
 		],
-		"min_w": 248
+		"min_w": 248,
+		"icon": "/icon/item/45001.tga",
+		"icon_h": 1
 	}
 }

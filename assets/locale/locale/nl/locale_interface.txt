@@ -403,6 +403,8 @@ NUI_LOGIN_SAVED	Opgeslagen accounts
 NUI_LOGIN_FORGET	Dit account vergeten
 NUI_LOGIN_ADD_ACCOUNT	Account toevoegen
 NUI_LOGIN_SAVED_HINT	Opgeslagen op deze computer: de accountnaam en de personages die je bij je laatste login zag, met hun niveau van toen. Wachtwoorden worden nooit opgeslagen.
+NUI_LOGIN_SAVED_SECRET_HINT	Opgeslagen op deze computer: de accountnaam en de personages die je bij je laatste login zag, met hun niveau van toen. Met Onthoud mij bewaart Windows Referentiebeheer het wachtwoord.
+NUI_LOGIN_KEYBOARD	Virtueel toetsenbord
 NUI_LOGIN_TAB_LOGIN	Inloggen
 NUI_LOGIN_TAB_REGISTER	Account maken
 NUI_LOGIN_WELCOME	Welkom terug, krijger
@@ -445,6 +447,26 @@ NUI_LOGIN_ERR_FAILED	Het account kon niet worden gemaakt. Probeer het later opni
 NUI_LOGIN_CREATED	Je account is klaar. Log ermee in.
 NUI_LOGIN_CREATING	Je account wordt gemaakt...
 HELP_OPEN_EXTRA_INVENTORY	Open speciale inventaris venster: U
+NUI_EXCHANGE_LAMP_PARTNER	Partner heeft geaccepteerd
+NUI_EXCHANGE_LAMP_WAITING	Nog niet geaccepteerd
+NUI_EXCHANGE_LAMP_YOU	Jij hebt geaccepteerd
+NUI_GUILD_TAB_NEWS	Nieuws
+NUI_GUILD_TAB_RANKING	Ledenranglijst
+NUI_INTRO_EMPIRE_TITLE	Rijk
+NUI_INTRO_SELECTED	Geselecteerd
+NUI_INTRO_EMPIRE_MOTTO_A	Handel · Vastberadenheid · Eenheid
+NUI_INTRO_EMPIRE_MOTTO_B	Geloof · Eer · Orde
+NUI_INTRO_EMPIRE_MOTTO_C	Kracht · Discipline · Glorie
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Zuidelijk koninkrijk
+NUI_INTRO_EMPIRE_REGION_B	Westelijk koninkrijk
+NUI_INTRO_EMPIRE_REGION_C	Oostelijk koninkrijk
+NUI_INTRO_CREATE_TITLE	Personage maken
+NUI_INTRO_SELECT_TITLE	Personage selecteren
+NUI_INTRO_SLOTS	%d plaatsen
+NUI_INTRO_LOADING_TITLE	Het rijk betreden
 GEMSHOP_LEFTTIME	Tijd resterend
 GEMSHOP_TITLE	GAYA MARKT
 MYSHOP_DECO_CANCEL	Sluiten

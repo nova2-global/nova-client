@@ -1754,6 +1754,7 @@ class EdgeWorlds(unittest.TestCase):
         interface = object.__new__(module.Interface)
         interface.questButtonList = []
         interface.whisperButtonList = []
+        interface.whisperUnread = set()
         interface.questButtonSuppressed = False
         interface.whisperDialogDict = {}
         interface.listGMName = {}
@@ -1855,6 +1856,30 @@ class EdgeDifferential(EdgeWorlds):
         self.assertEqual(novaui.game.calls("event."), [("event.QuestButtonClick", (2,))])
         self.both(legacy, novaui, lambda world, interface: interface.BINARY_ClearQuest(1))
         self.assertEqual([e["label"] for e in self.same_view(legacy, novaui)["quests"]], ["Highlight"])
+
+    def test_the_taskbar_badge_counts_the_conversations_with_an_unopened_message(self):
+        """The NovaUI taskbar's Messenger badge: pending whisper buttons that
+        hold an unread message; a minimized dialog's button holds none until a
+        message arrives; opening one clears it; hidden at 0."""
+        legacy, novaui = self.worlds()
+        counts = []
+        interface = novaui.interface
+        interface.wndTaskBar = types.SimpleNamespace(nui_set_unread_whispers=counts.append)
+        with novaui, quiet():
+            interface.RecvWhisper("Ann")
+            interface.RecvWhisper("Ann")
+            interface.RecvWhisper("Bob")
+            interface.MakeWhisperButton("Quiet")
+            interface.RecvWhisper("Quiet")
+            self.assertEqual(counts, [1, 1, 2, 3])
+            self.click(novaui, "whisper", "Ann")
+            self.assertEqual(counts[-1], 2)
+            self.click(novaui, "whisper", "Bob")
+            self.click(novaui, "whisper", "Quiet")
+            self.assertEqual(counts[-1], 0, "hidden at 0")
+        with legacy, quiet():  # the legacy taskbar has no such method: nothing breaks
+            legacy.interface.wndTaskBar = object()
+            legacy.interface.RecvWhisper("Ann")
 
     def test_whispers_stack_flash_again_show_game_masters_and_open_their_dialog(self):
         legacy, novaui = self.worlds()

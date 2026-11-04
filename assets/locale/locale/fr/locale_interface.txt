@@ -403,6 +403,8 @@ NUI_LOGIN_SAVED	Comptes enregistrés
 NUI_LOGIN_FORGET	Oublier ce compte
 NUI_LOGIN_ADD_ACCOUNT	Ajouter un compte
 NUI_LOGIN_SAVED_HINT	Enregistré sur cet ordinateur : le nom du compte et les personnages vus à ta dernière connexion, avec leur niveau d'alors. Les mots de passe ne sont jamais enregistrés.
+NUI_LOGIN_SAVED_SECRET_HINT	Enregistré sur cet ordinateur : le nom du compte et les personnages vus à ta dernière connexion, avec leur niveau d'alors. Avec Se souvenir de moi, le Gestionnaire d’informations d’identification Windows conserve le mot de passe.
+NUI_LOGIN_KEYBOARD	Clavier virtuel
 NUI_LOGIN_TAB_LOGIN	Connexion
 NUI_LOGIN_TAB_REGISTER	Créer un compte
 NUI_LOGIN_WELCOME	Bon retour, guerrier
@@ -445,6 +447,26 @@ NUI_LOGIN_ERR_FAILED	Le compte n'a pas pu être créé. Réessaie plus tard.
 NUI_LOGIN_CREATED	Ton compte est prêt. Connecte-toi avec.
 NUI_LOGIN_CREATING	Création de ton compte...
 HELP_OPEN_EXTRA_INVENTORY	Ouvrir l'inventaire spécial : U
+NUI_EXCHANGE_LAMP_PARTNER	Le partenaire a accepté
+NUI_EXCHANGE_LAMP_WAITING	Pas encore accepté
+NUI_EXCHANGE_LAMP_YOU	Vous avez accepté
+NUI_GUILD_TAB_NEWS	Actualités
+NUI_GUILD_TAB_RANKING	Classement des membres
+NUI_INTRO_EMPIRE_TITLE	Empire
+NUI_INTRO_SELECTED	Sélectionné
+NUI_INTRO_EMPIRE_MOTTO_A	Commerce · Détermination · Unité
+NUI_INTRO_EMPIRE_MOTTO_B	Foi · Honneur · Ordre
+NUI_INTRO_EMPIRE_MOTTO_C	Force · Discipline · Gloire
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Royaume du sud
+NUI_INTRO_EMPIRE_REGION_B	Royaume de l'ouest
+NUI_INTRO_EMPIRE_REGION_C	Royaume de l'est
+NUI_INTRO_CREATE_TITLE	Créer un personnage
+NUI_INTRO_SELECT_TITLE	Sélection du personnage
+NUI_INTRO_SLOTS	%d emplacements
+NUI_INTRO_LOADING_TITLE	Entrée dans le royaume
 GEMSHOP_LEFTTIME	Temps restant
 GEMSHOP_TITLE	BOURSE AUX GAYAS
 MYSHOP_DECO_CANCEL	Fermer

@@ -96,7 +96,7 @@ PLAYER_CONSTANTS = {
     "LEVEL": 1, "EXP": 3, "NEXT_EXP": 4, "HP": 5, "MAX_HP": 6, "SP": 7, "MAX_SP": 8, "STAMINA": 9,
     "MAX_STAMINA": 10, "STAT": 28, "SKILL_ACTIVE": 29, "HP_RECOVERY": 32, "SP_RECOVERY": 33,
     "ENERGY": 128, "ENERGY_END_TIME": 129,
-    "METIN_SOCKET_MAX_NUM": 3, "ITEM_MONEY": -1, "QUICKSLOT_PER_PAGE": 8, "QUICKSLOT_PAGES": 4,
+    "METIN_SOCKET_MAX_NUM": 4, "ITEM_MONEY": -1, "QUICKSLOT_PER_PAGE": 8, "QUICKSLOT_PAGES": 4,
     # Wave 3a: PythonPlayerModule.cpp:2551-2564 (Packet.h's EPKModes and block bits).
     "PK_MODE_PEACE": 0, "PK_MODE_REVENGE": 1, "PK_MODE_FREE": 2, "PK_MODE_PROTECT": 3, "PK_MODE_GUILD": 4,
     "PK_MODE_MAX_NUM": 5,
@@ -631,10 +631,10 @@ class ChatStore(object):
 
 def link_from_hyperlink(link, names):
     """chat.GetLinkFromHyperlink (PythonChatModule.cpp:420-483): an item link
-    of at least six fields of a known item, rewritten in hex, with the attribute
+    of at least seven fields of a known item, rewritten in hex, with the attribute
     pairs it carries, wrapped in the client's color and link tags; "" else."""
     fields = (link or "").split(":")
-    if ":" not in (link or "") or fields[0] != "item" or len(fields) < 6:
+    if ":" not in (link or "") or fields[0] != "item" or len(fields) < 7:
         return ""
 
     def hexi(text):
@@ -645,10 +645,10 @@ def link_from_hyperlink(link, names):
     vnum = hexi(fields[1])
     if vnum not in names:
         return ""
-    body = "item:%x:%x:%x:%x:%x" % tuple(hexi(field) & 0xFFFFFFFF for field in fields[1:6])
+    body = "item:%x:%x:%x:%x:%x:%x" % tuple(hexi(field) & 0xFFFFFFFF for field in fields[1:7])
     attributes = False
-    if len(fields) >= 8:
-        for i in range(6, len(fields) - 1, 2):
+    if len(fields) >= 9:
+        for i in range(7, len(fields) - 1, 2):
             body += ":%x:%d" % (hexi(fields[i]) & 0xFFFFFFFF, int(fields[i + 1] or 0))
             attributes = True
     color = "ffffc700" if attributes else "fff1e6c0"
@@ -1163,7 +1163,7 @@ class Game(object):
 
     # --- state helpers --------------------------------------------------------------
 
-    def give(self, position, vnum, count=1, sockets=(0, 0, 0), size=(1, 1)):
+    def give(self, position, vnum, count=1, sockets=(0, 0, 0, 0), size=(1, 1)):
         self.items[position] = {"vnum": vnum, "count": count, "sockets": list(sockets)}
         self.item_sizes[vnum] = size
 
@@ -1195,7 +1195,7 @@ class Game(object):
 
     def _item_at(self, *at):
         key = at[0] if len(at) == 1 else tuple(at)
-        return self.items.get(key, {"vnum": 0, "count": 0, "sockets": [0, 0, 0]})
+        return self.items.get(key, {"vnum": 0, "count": 0, "sockets": [0, 0, 0, 0]})
 
     def _modules(self):
         log = self.log
@@ -1207,7 +1207,7 @@ class Game(object):
         define("GetStatus", lambda kind: game.status.get(kind, 0))
         define("GetItemIndex", lambda *at: game._item_at(*at)["vnum"])
         define("GetItemCount", lambda *at: game._item_at(*at)["count"])
-        define("GetItemMetinSocket", lambda *at: (game._item_at(*at[:-1])["sockets"] + [0, 0, 0])[at[-1]])
+        define("GetItemMetinSocket", lambda *at: (game._item_at(*at[:-1])["sockets"] + [0, 0, 0, 0])[at[-1]])
         define("GetSkillIndex", lambda slot: game.skills.get(slot, {}).get("index", 0))
         define("GetSkillGrade", lambda slot: game.skills.get(slot, {}).get("grade", 0))
         define("GetSkillLevel", lambda slot: game.skills.get(slot, {}).get("level", 0))
@@ -2167,7 +2167,7 @@ WAVE3B_ITEM_CONSTANTS = {
     "BELT_INVENTORY_SLOT_END": 168, "EQUIPMENT_COUNT": 12, "EQUIPMENT_BODY": 90, "EQUIPMENT_HEAD": 91,
     "EQUIPMENT_SHOES": 92, "EQUIPMENT_WRIST": 93, "EQUIPMENT_WEAPON": 94, "EQUIPMENT_NECK": 95, "EQUIPMENT_EAR": 96,
     "EQUIPMENT_UNIQUE1": 97, "EQUIPMENT_UNIQUE2": 98, "EQUIPMENT_ARROW": 99, "EQUIPMENT_RING1": 111,
-    "EQUIPMENT_RING2": 112, "EQUIPMENT_BELT": 113, "ITEM_APPLY_MAX_NUM": 3, "ITEM_SOCKET_MAX_NUM": 3,
+    "EQUIPMENT_RING2": 112, "EQUIPMENT_BELT": 113, "ITEM_APPLY_MAX_NUM": 7, "ITEM_SOCKET_MAX_NUM": 4,
     "LIMIT_MAX_NUM": 2, "ITEM_ANTIFLAG_SELL": 1 << 14, "ANTIFLAG_SELL": 1 << 14, "ITEM_FLAG_CONFIRM_WHEN_USE": 1 << 15,
     "ITEM_TYPE_NONE": 0, "ITEM_TYPE_WEAPON": 1, "ITEM_TYPE_ARMOR": 2, "ITEM_TYPE_USE": 3, "ITEM_TYPE_METIN": 10,
     "ITEM_TYPE_BELT": 34, "ITEM_TYPE_COSTUME": 28, "ARMOR_BODY": 0, "ARMOR_WRIST": 3, "ARMOR_NECK": 5, "ARMOR_EAR": 6,
@@ -2689,7 +2689,7 @@ def _wave3b_modules(game):
     define(player, "CanAttachMetin", lambda vnum, pos: ok["ATTACH_METIN_OK"])
     define(player, "CanDetach", lambda vnum, pos: ok["DETACH_METIN_OK"])
     define(player, "CanUnlock", lambda vnum, pos: True)
-    define(player, "GetItemLink", lambda pos: "|cfff1e6c0|Hitem:%x:0:0:0:0|h[item %d]|h|r"
+    define(player, "GetItemLink", lambda pos: "|cfff1e6c0|Hitem:%x:0:0:0:0:0|h[item %d]|h|r"
            % (game._item_at(pos)["vnum"], game._item_at(pos)["vnum"]))
     define(app, "GetCursor", lambda: game.cursor)
 
@@ -2990,8 +2990,10 @@ def apply_case(game, case):
     (app.GetGlobalTimeStamp), the shop's state and the skill's."""
     data = game.item_data
     position = int(case.get("pos", 0))
+    socket_max = int(getattr(game.modules["item"], "ITEM_SOCKET_MAX_NUM", 4))
+    sockets = (list(case.get("sockets", ())) + [0] * socket_max)[:socket_max]
     held = {"vnum": int(case.get("vnum", 0)), "count": int(case.get("count", 1)),
-            "sockets": list(case.get("sockets", ())), "attrs": [tuple(a) for a in case.get("attrs", ())],
+            "sockets": sockets, "attrs": [tuple(a) for a in case.get("attrs", ())],
             "flags": int(case.get("flags", 0)), "sell_price": int(case.get("sell_price", 0))}
     data.case = dict(case)
     data.case["items"] = {position: held}
@@ -4361,7 +4363,7 @@ def install_extra_inventory(game):
     def anti_flag_by_slot(*args):
         return bool(game.antiflags.get(game._item_at(*args[:-1])["vnum"], 0) & args[-1])
     define(player, "IsAntiFlagBySlot", anti_flag_by_slot)
-    define(player, "GetItemLink", lambda *at: "|cfff1e6c0|Hitem:%x:0:0:0:0|h[item %d]|h|r"
+    define(player, "GetItemLink", lambda *at: "|cfff1e6c0|Hitem:%x:0:0:0:0:0|h[item %d]|h|r"
            % (game._item_at(*at)["vnum"], game._item_at(*at)["vnum"]))
     define(player, "CanUnlock", lambda vnum, *at: True)
     if "GetItemType" not in item.__dict__:

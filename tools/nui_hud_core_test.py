@@ -897,6 +897,15 @@ class TaskbarDifferential(TaskbarWorlds):
             self.assertNotIn("open_expand", bar.board.initial_model())
             self.assertNotIn("open_atlas", bar.board.initial_model())
 
+    def test_the_messenger_badge_is_the_unread_count_none_at_zero_and_99_plus(self):
+        legacy, novaui = self.worlds()
+        with novaui:
+            bar = novaui.bar
+            self.assertEqual(bar.board.get("messenger_badge"), "")
+            for count, text in ((2, "2"), (99, "99"), (100, "99+"), (0, ""), (-1, "")):
+                bar.nui_set_unread_whispers(count)
+                self.assertEqual(bar.board.get("messenger_badge"), text, count)
+
     def test_quickslot_tooltips_show_what_legacy_shows_and_nothing_while_attached(self):
         legacy, novaui = self.worlds()
         for world in (legacy, novaui):
@@ -1411,6 +1420,7 @@ class Wiring(unittest.TestCase):
             interface.wndQuestWindow = {}
             interface.questButtonList = []
             interface.whisperButtonList = []
+            interface.whisperUnread = set()
             interface.whisperDialogDict = {}
             interface.guildScoreBoardDict = {}
             interface.equipmentDialogDict = {}

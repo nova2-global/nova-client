@@ -32,6 +32,7 @@ import weakref
 import app
 import dbg
 import grp
+import item
 import localeInfo
 import uiToolTip
 
@@ -534,7 +535,8 @@ def build_model(tip, positional=False):
 		entry["gap"] = _gap(gap) if lines else 0
 		lines.append(entry)
 		bottom = entry_bottom
-	return {"lines": lines, "min_w": int(getattr(tip, "toolTipWidth", 0) or 0)}
+	return {"lines": lines, "min_w": int(getattr(tip, "toolTipWidth", 0) or 0),
+	        "icon": getattr(tip, "_nui_icon", ""), "icon_h": getattr(tip, "_nui_icon_h", 1)}
 
 
 def _socket_entry(group, times):
@@ -658,7 +660,9 @@ class Facade(object):
 		self._want_show = False
 		self._shown = False
 		self._fixed = None
-		self._model = {"lines": [], "min_w": 0}
+		self._model = {"lines": [], "min_w": 0, "icon": "", "icon_h": 1}
+		self._nui_icon = ""
+		self._nui_icon_h = 1
 		self._nui_discarded = False
 		self.LEGACY.__init__(self, *args, **kwargs)
 
@@ -755,7 +759,10 @@ class Facade(object):
 		if found is None:
 			return
 		_owners[self.KIND] = weakref.ref(self)
-		found.set(lines=model["lines"], min_w=model["min_w"])
+		if self.KIND == "item":
+			found.set(lines=model["lines"], min_w=model["min_w"], icon=model["icon"], icon_h=model["icon_h"])
+		else:
+			found.set(lines=model["lines"], min_w=model["min_w"])
 		STATS["publishes"] += 1
 
 	def _legacy_on_update(self):
@@ -836,7 +843,22 @@ class Facade(object):
 
 	def ClearToolTip(self):
 		super(Facade, self).ClearToolTip()
+		self._nui_icon = ""
+		self._nui_icon_h = 1
 		self._rec_version += 1
+
+	def AddItemData(self, itemVnum, *args, **kwargs):
+		"""Keeps the item's icon for the header (the modern skins draw it beside
+		the name). Legacy's rule selects the item first, as this does; the
+		rule itself is legacy's."""
+		try:
+			item.SelectItem(itemVnum)
+			self._nui_icon = _source(item.GetIconImageFileName())
+			self._nui_icon_h = max(1, min(3, int(item.GetItemSize()[1])))
+		except Exception:
+			self._nui_icon = ""
+			self._nui_icon_h = 1
+		return super(Facade, self).AddItemData(itemVnum, *args, **kwargs)
 
 	def SetToolTipPosition(self, x=-1, y=-1):
 		super(Facade, self).SetToolTipPosition(x, y)

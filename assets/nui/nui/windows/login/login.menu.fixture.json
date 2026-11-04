@@ -6,6 +6,7 @@
 		"error_on": "user",
 		"error_ok": false,
 		"keyboard": false,
+		"keyboard_available": true,
 		"tab": "login",
 		"accounts": [
 			{
@@ -65,6 +66,8 @@
 		],
 		"remember": true,
 		"show_password": false,
+		"stored_password": false,
+		"secrets_available": true,
 		"can_register": true,
 		"server_name": "Nova",
 		"server_state": "ok",

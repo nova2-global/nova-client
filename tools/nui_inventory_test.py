@@ -2083,6 +2083,16 @@ class ModernDoll(unittest.TestCase):
         self.assertEqual([entry["id"] for entry in board(window).model["rail"]],
                          ["events", "offline_shop", "ranking", "achievements", "guide"])
 
+    def test_the_rail_s_repeated_element_reads_no_entry(self):
+        """The kept board empties the rail at each hide, so its data-for
+        element binds nothing of the entry (its button does): RmlUi 6.3 would
+        read the entry that is gone ("rail[0].soon" out of range in syserr,
+        live on r15)."""
+        from nui_hud_test import repeated_element_reads
+        markup = read(os.path.join(WINDOWS, "inventory", "inventory.rml"))
+        self.assertIn('data-for="e : rail"', markup)
+        self.assertEqual([found for found in repeated_element_reads(markup) if found[0] == "e : rail"], [])
+
 
 class Wave4b(Pair):
     """Wave 4b on the NovaUI inventory (port-wave4/ui-followups.md C2,
@@ -2317,6 +2327,34 @@ class Wave4b(Pair):
             window.SetCanMouseEventCell(4)
         a, b = self.both(None, released)
         self.assertEqual(self.marks_shown(b), {})
+
+    def test_after_the_destroy_the_mark_calls_are_legacy_s(self):
+        """A logout destroys the inventory before the shop, and the shop's
+        Destroy still refreshes the bag's marks (interfaceModule.Close, then
+        uiShop.Destroy's Close and __SetOnTopWindow). Legacy's Destroy
+        leaves wndItem at 0, so its mark calls then mark nothing and raise
+        nothing; an exception there stops the phase change (a black screen
+        at the logout, found live on r15)."""
+        def refused(game):
+            game.antiflags[POTION] = game.modules["item"].ANTIFLAG_SELL
+        calls = []
+        for world in self.worlds(wave4b(refused)):
+            window = world.make_inventory()
+            world.interface.wndInventory = window
+            with world.game, quiet():
+                world.interface.SetOnTopWindow(W4B_PLAYER["ON_TOP_WND_SHOP"])
+                world.interface.RefreshMarkInventoryBag()
+                window.Destroy()
+                mark = world.mark()
+                world.interface.SetOnTopWindow(W4B_PLAYER["ON_TOP_WND_NONE"])
+                world.interface.RefreshMarkInventoryBag()
+                window.RefreshMarkSlots(4)
+                window.SetCantMouseEventCell(4)
+                window.SetCanMouseEventCell(4)
+                window.RefreshLockedSlots()
+                window.OnTop()
+                calls.append(world.effects_since(mark))
+        self.assertEqual(calls[0], calls[1])
 
     def test_a_cell_in_use_takes_no_press(self):
         world = World(True, setup=wave4b())

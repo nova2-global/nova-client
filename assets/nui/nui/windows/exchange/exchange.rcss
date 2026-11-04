@@ -263,6 +263,15 @@ body.exchange
 	border-radius: 8dp;
 	background-color: var(--surface-sunken);
 }
+/* The hint over a lamp (the partner's or the player's state), right-aligned
+   to the lamp so it stays inside the window. */
+.exchange__tip
+{
+	left: auto;
+	right: 0;
+	margin-right: 0;
+	margin-left: -320dp;
+}
 .exchange__light-ring
 {
 	display: block;

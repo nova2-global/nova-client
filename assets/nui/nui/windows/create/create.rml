@@ -23,6 +23,11 @@
 </head>
 <body template="nui" class="nui-overlay create" data-model="create">
 	<div id="create-board" class="nui-window nui-fx nui-interactive create-board">
+		<div class="nui-window__titlebar create-titlebar">
+			<span class="create-title-icon"><span class="nui-glyph nui-glyph--character"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<div class="nui-window__handle"><span class="nui-window__title">@ui.NUI_INTRO_CREATE_TITLE</span></div>
+			<span class="nui-badge nui-badge--accent">{{ stage_job }}</span>
+		</div>
 		<img class="create-job" data-attr-src="job_image" data-if="job_image != ''"/>
 		<div class="create-well">
 			<div id="create-text" class="create-text">

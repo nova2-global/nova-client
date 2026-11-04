@@ -48,7 +48,11 @@
 					class="cos-stage__chord cos-stage__chord--d"></span><span class="cos-stage__chord cos-stage__chord--e"></span><span
 					class="cos-stage__chord cos-stage__chord--f"></span></div></div>
 				<div class="cos-stage__figure"><img class="cos-stage__image" data-if="figure != ''" data-attr-src="figure"/></div>
-				<span class="cos-stage__frame cos-stage__frame--a"></span><span class="cos-stage__frame cos-stage__frame--b"></span>
+				<span class="cos-stage__frame cos-stage__frame--a"><span class="nui-glyph nui-glyph--sword cos-stage__mark"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span><span class="cos-stage__frame cos-stage__frame--b"><span
+					class="nui-glyph nui-glyph--pentagon cos-stage__mark"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span><span
+					class="cos-stage__frame cos-stage__frame--c"><span class="nui-glyph nui-glyph--ring cos-stage__mark"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span></span></span>
 			</div>
 			<div class="cos-divider" data-if="has_companion"></div>
 			<div class="cos-wear-place" data-for="w : slots" data-attr-class="'cos-wear-place cos-wear--' + w.name">

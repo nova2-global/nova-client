@@ -5,6 +5,14 @@
 
 /* The classic board is short enough at any height, so the class-name art
    stays where the window's sheet leaves it out for the modern board. */
+.skin-classic .select-titlebar
+{
+	display: none;
+}
+.skin-classic .select-job
+{
+	top: -149dp;
+}
 @media (max-height: 719dp)
 {
 	.skin-classic .select-job

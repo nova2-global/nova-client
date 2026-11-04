@@ -299,10 +299,13 @@ class _CharacterBoard(nui_hud.RaisesOnPress, nui.Window):
 
 	@nui.on("quest_over")
 	def on_quest_over(self, index):
+		self._owner._set(quest_hover=int(index))
 		self._grid("quest").over(int(index))
 
 	@nui.on("quest_out")
 	def on_quest_out(self, index):
+		if self._owner._state.get("quest_hover") == int(index):
+			self._owner._set(quest_hover=-1)
 		self._grid("quest").out(int(index))
 
 	@nui.on("quest_clock_over")
@@ -410,6 +413,8 @@ class CharacterWindow(uiCharacter.CharacterWindow):
 			"quests": [self._empty_row(i) for i in range(limits.QUEST_ROWS)],
 			"quest_cells": [dict(nui_slots.empty_cell(i), slot=i, base=True) for i in range(limits.QUEST_ROWS)],
 			"quest_scroll_shown": False, "quest_scroll_pos": 0.0,
+			# The quest row whose icon or text the pointer is over (the row's hover look).
+			"quest_hover": -1,
 		}
 		for _, key in STATUS_TEXTS:
 			state[key] = ""

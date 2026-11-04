@@ -1,7 +1,6 @@
-/* Intro theme picker (theme-picker.rml): under the legacy flag strip, which
-   never scales (legacy-strip-bottom is in px), and away from the login board
-   (bottom center) and the locale dialog (center). Nothing in it takes the
-   focus. */
+/* Debug intro theme picker (theme-picker.rml): at its own top-left sheet
+   position and away from the login board and locale dialog. Nothing in it
+   takes focus. */
 body.picker
 {
 	left: 16dp;

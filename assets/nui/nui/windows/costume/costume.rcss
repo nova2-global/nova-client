@@ -222,6 +222,21 @@ body.cos.inv--table-new .cos-stage
 }
 .cos-stage__frame--a { top: 27dp; height: 80dp; }
 .cos-stage__frame--b { top: 120dp; height: 40dp; }
+.cos-stage__frame--c { left: 65dp; top: 152dp; height: 40dp; }
+/* The marks of the three places no item takes (the costume weapon,
+   accessory and ring): faint, 22dp, decoration only. */
+.cos-stage__frame
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.cos-stage__mark
+{
+	--glyph-ink: var(--text-muted);
+	opacity: 0.46;
+	transform: scale(1.375);
+}
 .cos-divider
 {
 	position: absolute;

@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Αποθηκευμένοι λογαριασμοί
 NUI_LOGIN_FORGET	Ξέχασε αυτόν τον λογαριασμό
 NUI_LOGIN_ADD_ACCOUNT	Προσθήκη λογαριασμού
 NUI_LOGIN_SAVED_HINT	Αποθηκεύονται σε αυτόν τον υπολογιστή: το όνομα του λογαριασμού και οι χαρακτήρες που είδες στην τελευταία σύνδεση, με τα τότε επίπεδά τους. Οι κωδικοί δεν αποθηκεύονται ποτέ.
+NUI_LOGIN_SAVED_SECRET_HINT	Αποθηκεύονται σε αυτόν τον υπολογιστή: το όνομα του λογαριασμού και οι χαρακτήρες που είδες στην τελευταία σύνδεση, με τα τότε επίπεδά τους. Με την επιλογή «Να με θυμάσαι», η Διαχείριση διαπιστευτηρίων των Windows διατηρεί τον κωδικό πρόσβασης.
+NUI_LOGIN_KEYBOARD	Εικονικό πληκτρολόγιο
 NUI_LOGIN_TAB_LOGIN	Σύνδεση
 NUI_LOGIN_TAB_REGISTER	Δημιουργία λογαριασμού
 NUI_LOGIN_WELCOME	Καλώς ήρθες ξανά, πολεμιστή
@@ -446,6 +448,26 @@ NUI_LOGIN_ERR_FAILED	Δεν ήταν δυνατή η δημιουργία του
 NUI_LOGIN_CREATED	Ο λογαριασμός σου είναι έτοιμος. Συνδέσου με αυτόν.
 NUI_LOGIN_CREATING	Δημιουργία λογαριασμού...
 HELP_OPEN_EXTRA_INVENTORY	Άνοιγμα παραθύρου ειδικού καταλόγου: U
+NUI_EXCHANGE_LAMP_PARTNER	Ο άλλος παίκτης αποδέχθηκε
+NUI_EXCHANGE_LAMP_WAITING	Δεν έχει αποδεχθεί ακόμη
+NUI_EXCHANGE_LAMP_YOU	Αποδέχθηκες
+NUI_GUILD_TAB_NEWS	Νέα
+NUI_GUILD_TAB_RANKING	Κατάταξη μελών
+NUI_INTRO_EMPIRE_TITLE	Αυτοκρατορία
+NUI_INTRO_SELECTED	Επιλεγμένο
+NUI_INTRO_EMPIRE_MOTTO_A	Εμπόριο · Αποφασιστικότητα · Ενότητα
+NUI_INTRO_EMPIRE_MOTTO_B	Πίστη · Τιμή · Τάξη
+NUI_INTRO_EMPIRE_MOTTO_C	Δύναμη · Πειθαρχία · Δόξα
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Νότιο βασίλειο
+NUI_INTRO_EMPIRE_REGION_B	Δυτικό βασίλειο
+NUI_INTRO_EMPIRE_REGION_C	Ανατολικό βασίλειο
+NUI_INTRO_CREATE_TITLE	Δημιουργία χαρακτήρα
+NUI_INTRO_SELECT_TITLE	Επιλογή χαρακτήρα
+NUI_INTRO_SLOTS	%d θέσεις
+NUI_INTRO_LOADING_TITLE	Είσοδος στο βασίλειο
 GEMSHOP_LEFTTIME	Υπολειπόμενος χρόνος
 GEMSHOP_TITLE	ΕΜΠΟΡΙΟ GAYA
 MYSHOP_DECO_CANCEL	Κλείσιμο

@@ -465,11 +465,13 @@ body.skin-classic.guild .guild__comment
 {
 	display: block;
 	height: 20dp;
+	min-height: 0;
 	margin: 0;
 	padding: 0;
 	border-width: 0;
 	border-radius: 0;
 	background-color: transparent;
+	white-space: nowrap;
 }
 body.skin-classic.guild .guild__comment.is-notice
 {
@@ -525,8 +527,21 @@ body.skin-classic.guild .guild__comment-text
 	overflow: visible;
 	decorator: image("d:/ymir work/ui/public/parameter_slot_06.sub");
 }
-/* A long comment's whole text on hover, over a slot bar as wide as it
-   (legacy: 6 a character plus 5, 17 tall). */
+/* Legacy's cut comment (35 characters and "..."), its whole text only on
+   hover, over a slot bar as wide as it (legacy: 6 a character plus 5, 17
+   tall). */
+body.skin-classic.guild .guild__comment-short
+{
+	display: inline;
+}
+body.skin-classic.guild .guild__comment-full
+{
+	display: none;
+}
+body.skin-classic.guild .guild__comment.is-long:hover .guild__comment-short
+{
+	display: none;
+}
 body.skin-classic.guild .guild__comment.is-long:hover .guild__comment-full
 {
 	display: inline-block;

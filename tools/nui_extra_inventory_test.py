@@ -731,6 +731,22 @@ class Marks(Pair):
         self.assertEqual(found[0], found[1])
         self.assertEqual(found[1], ({5: (False, True)}, {0: (True, False), 5: (False, True)}, {0: (True, False)}))
 
+    def test_after_the_destroy_the_mark_calls_are_legacy_s(self):
+        """A logout refreshes the bags' marks after the Interface destroyed
+        them (the shop's Destroy runs last), so each mark call on a destroyed
+        window is legacy's: nothing marked, nothing raised."""
+        calls = []
+        for world in self.worlds():
+            window = world.make_extra()
+            with world.game, quiet():
+                window.Destroy()
+                mark = world.mark()
+                window.RefreshMarkSlots()
+                window.SetCantMouseEventCell(cell(MATERIALS, 0))
+                window.SetCanMouseEventCell(cell(MATERIALS, 0))
+                calls.append(world.effects_since(mark))
+        self.assertEqual(calls[0], calls[1])
+
     def test_a_page_turn_drops_the_marks_and_sets_the_page_s(self):
         world = World(True)
         window = world.make_extra()

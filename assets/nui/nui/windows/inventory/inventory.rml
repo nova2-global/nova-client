@@ -55,17 +55,18 @@
 	     badge (its count, "" for none) and be a feature still to come
 	     (soon: its hint says so and it takes no press). The fold button
 	     hides the entries (rail_folded) and shows them again. The kept
-	     board's list is empty while it hides. -->
+	     board's list is empty while it hides, so the repeated element is a
+	     bare entry and its button binds the item (the guide's data-for rule). -->
 	<div class="nui-board nui-fx inv-rail" data-class-is-empty="size(rail) == 0" data-class-is-folded="rail_folded">
 		<span class="inv-rail__grip"></span>
-		<button class="nui-button nui-anim nui-has-tooltip inv-rail__button" data-for="e : rail"
+		<div class="inv-rail__entry" data-for="e : rail"><button class="nui-button nui-anim nui-has-tooltip inv-rail__button"
 		        data-attr-id="'inv-rail-' + e.id" data-attrif-disabled="!e.enabled" data-class-is-soon="e.soon"
 		        data-event-mousedown="rail_press(e.id, ev.button)"><span class="nui-glyph inv-rail__glyph"
 			data-attr-class="'nui-glyph inv-rail__glyph nui-glyph--' + e.glyph"><span class="nui-glyph__a"></span><span
 			class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
 			class="nui-badge inv-rail__badge" data-if="e.badge != ''">{{ e.badge }}</span><span
 			class="nui-tooltip nui-anim inv-tip inv-rail__tip">{{ e.tip }}<span class="inv-rail__soon"
-			data-if="e.soon">@ui.NUI_RAIL_SOON</span></span></button>
+			data-if="e.soon">@ui.NUI_RAIL_SOON</span></span></button></div>
 		<span class="inv-rail__more"></span>
 		<button id="inv-rail-fold" class="nui-button nui-button--ghost nui-anim nui-has-tooltip inv-rail__fold"
 		        data-event-mousedown="rail_fold(ev.button)"><span class="nui-glyph inv-rail__fold-glyph"

@@ -13,7 +13,10 @@
 	     (Wave 2b). The document exists only while the window shows. The body
 	     and its controls take no focus; controls act on a left mousedown. It
 	     draws below the legacy UI layer, as legacy's window lived in it. A left
-	     or right press anywhere on it raises the window (board_press). -->
+	     or right press anywhere on it raises the window (board_press). The
+	     name line is drawn as the focused field of the reviewed board (the
+	     ring and its glow), and the stocked item a press picked is the
+	     selected one (the soft fill and the 2dp ring around the whole item). -->
 	<title>private-shop</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="private-shop.rcss"/>
@@ -31,11 +34,12 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body pshop__body">
-		<div id="private-shop-name" class="pshop__name"><span class="pshop__name-text">{{ title }}</span></div>
+		<div id="private-shop-name" class="pshop__name nui-fx"><span class="pshop__name-text">{{ title }}</span></div>
 		<div id="private-shop-grid" class="nui-slot-grid nui-slot-grid--lean pshop__grid" data-class-is-attaching="attaching"
 		     data-class-nui-slot-grid--cols-5="cols == 5" data-class-nui-slot-grid--cols-8="cols == 8">
 			<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'private-shop-cell-' + it_index"
 			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
+			     data-class-is-picked="c.picked"
 			     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
 			     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
 			     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"

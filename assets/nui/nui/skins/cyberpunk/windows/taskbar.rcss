@@ -384,3 +384,12 @@ body.skin-cyberpunk.taskbar .taskbar-picker > .nui-chrome--outline
 		decorator: none;
 	}
 }
+
+/* The Messenger button's unread count: a magenta tag, square, with a glow. */
+body.skin-cyberpunk.taskbar .taskbar-badge
+{
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--cyberpunk-glow-alt);
+	color: var(--text-inverse);
+}

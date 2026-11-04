@@ -487,9 +487,15 @@ body.guild
 	transform: rotate(45deg);
 	pointer-events: none;
 }
+/* The comments as the reviewed board draws them, each in full: a long one
+   wraps in its row and the row grows (legacy cut a comment at 35 characters
+   and showed the rest on hover, which classic keeps). The list holds its 12
+   rows' height and scrolls when wrapped rows need more. */
 .guild__comments
 {
 	display: block;
+	max-height: 336dp;
+	overflow-y: auto;
 }
 .guild__comment
 {
@@ -498,14 +504,14 @@ body.guild
 	align-items: center;
 	position: relative;
 	box-sizing: border-box;
-	height: 26dp;
+	min-height: 26dp;
 	margin-bottom: 2dp;
-	padding: 0 2dp;
+	padding: 2dp 2dp;
 	border-width: 1dp;
 	border-color: var(--border);
 	border-radius: 6dp;
 	background-color: var(--surface-raised);
-	white-space: nowrap;
+	white-space: normal;
 }
 .guild__comment:hover
 {
@@ -568,26 +574,15 @@ body.guild
 	flex: 1 1 0;
 	min-width: 0;
 	color: var(--text);
-	overflow: hidden;
+	line-height: 15dp;
+}
+.guild__comment-short
+{
+	display: none;
 }
 .guild__comment-full
 {
-	display: none;
-}
-/* A long comment shows its whole text on hover, over the row. */
-.guild__comment.is-long:hover .guild__comment-text
-{
-	overflow: visible;
-}
-.guild__comment.is-long:hover .guild__comment-short
-{
-	display: none;
-}
-.guild__comment.is-long:hover .guild__comment-full
-{
-	display: inline;
-	padding: 2dp var(--space-1);
-	background-color: var(--surface-raised);
+	display: block;
 }
 /* The delete button: a 22dp well with the close glyph. */
 .guild__delete

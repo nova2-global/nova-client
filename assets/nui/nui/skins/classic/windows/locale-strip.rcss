@@ -1,21 +1,41 @@
-/* Classic skin overlay of nui/windows/locale-strip/locale-strip.rml. The
-   runtime and nuitool apply it after the window's own sheet,
-   locale-strip.rcss, in every theme; every rule starts with .skin-classic, so
-   it acts only while a classic theme is in use (docs/ui/AUTHORING.md, Skins). */
-
-/* The legacy thin board with the flags on it; the legacy strip shows no
-   selection and no hover. */
-body.skin-classic.locale-strip
+/* Classic overlay of the compact locale dropdown. The toggle and rows use
+   the classic button component, and the list uses the same thin board as the
+   login menu. */
+.skin-classic .locale-strip__toggle
 {
+	min-height: 21dp;
+	height: 21dp;
+	padding: 0dp 9dp;
+	background-color: transparent;
+	border-color: transparent;
+	border-radius: 0;
+}
+.skin-classic .locale-strip__menu
+{
+	top: 25dp;
+	padding: 6dp;
 	decorator: classic-thinboard;
 	background-color: transparent;
-	border-bottom-width: 0dp;
+	border-width: 0;
+	border-radius: 0;
 }
-.skin-classic .locale-strip__flag, .skin-classic .locale-strip__flag:hover
+.skin-classic .locale-strip__item
 {
-	background-color: transparent;
+	height: 21dp;
+	padding: 0dp 9dp;
+	border-left-width: 0;
+	border-radius: 0;
 }
-.skin-classic .locale-strip__flag.is-selected
+.skin-classic .locale-strip__item.is-selected
 {
-	border-bottom-color: transparent;
+	background-color: var(--classic-select);
+	color: var(--classic-label-white);
+}
+.skin-classic .locale-strip__item.is-selected .locale-strip__name
+{
+	color: var(--classic-label-white);
+}
+.skin-classic .locale-strip__chevron
+{
+	display: inline-block;
 }

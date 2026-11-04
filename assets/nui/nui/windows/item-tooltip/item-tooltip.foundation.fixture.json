@@ -625,6 +625,8 @@
 				]
 			}
 		],
-		"min_w": 272
+		"min_w": 272,
+		"icon": "/icon/item/00010.tga",
+		"icon_h": 2
 	}
 }

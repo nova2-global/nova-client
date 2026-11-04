@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Gemte konti
 NUI_LOGIN_FORGET	Glem denne konto
 NUI_LOGIN_ADD_ACCOUNT	Tilføj konto
 NUI_LOGIN_SAVED_HINT	Gemt på denne computer: kontonavnet og de figurer, du så ved dit sidste login, med deres niveau fra dengang. Adgangskoder gemmes aldrig.
+NUI_LOGIN_SAVED_SECRET_HINT	Gemt på denne computer: kontonavnet og de figurer, du så ved dit sidste login, med deres niveau fra dengang. Når Husk mig er valgt, opbevarer Windows Legitimationsstyring adgangskoden.
+NUI_LOGIN_KEYBOARD	Virtuelt tastatur
 NUI_LOGIN_TAB_LOGIN	Log ind
 NUI_LOGIN_TAB_REGISTER	Opret konto
 NUI_LOGIN_WELCOME	Velkommen tilbage, kriger
@@ -446,6 +448,26 @@ NUI_LOGIN_ERR_FAILED	Kontoen kunne ikke oprettes. Prøv igen senere.
 NUI_LOGIN_CREATED	Din konto er klar. Log ind med den.
 NUI_LOGIN_CREATING	Opretter din konto...
 HELP_OPEN_EXTRA_INVENTORY	Åben specialinventar vinduet: U
+NUI_EXCHANGE_LAMP_PARTNER	Partneren har accepteret
+NUI_EXCHANGE_LAMP_WAITING	Endnu ikke accepteret
+NUI_EXCHANGE_LAMP_YOU	Du har accepteret
+NUI_GUILD_TAB_NEWS	Nyheder
+NUI_GUILD_TAB_RANKING	Medlemsrangering
+NUI_INTRO_EMPIRE_TITLE	Rige
+NUI_INTRO_SELECTED	Valgt
+NUI_INTRO_EMPIRE_MOTTO_A	Handel · Beslutsomhed · Enhed
+NUI_INTRO_EMPIRE_MOTTO_B	Tro · Ære · Orden
+NUI_INTRO_EMPIRE_MOTTO_C	Styrke · Disciplin · Hæder
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Sydligt kongerige
+NUI_INTRO_EMPIRE_REGION_B	Vestligt kongerige
+NUI_INTRO_EMPIRE_REGION_C	Østligt kongerige
+NUI_INTRO_CREATE_TITLE	Opret figur
+NUI_INTRO_SELECT_TITLE	Vælg figur
+NUI_INTRO_SLOTS	%d pladser
+NUI_INTRO_LOADING_TITLE	Træder ind i riget
 GEMSHOP_LEFTTIME	Resterende tid
 GEMSHOP_TITLE	GAYA MARKED
 MYSHOP_DECO_CANCEL	Luk

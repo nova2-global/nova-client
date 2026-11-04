@@ -19,6 +19,13 @@ body.skin-cyberpunk.pshop .pshop__name
 	border-color: var(--cyberpunk-edge-dim);
 	border-bottom-color: var(--accent);
 	border-radius: 0;
+	box-shadow: none;
+}
+/* The selected item, magenta. */
+body.skin-cyberpunk.pshop .pshop__grid > .nui-slot.is-picked
+{
+	background-color: var(--cyberpunk-holo-b);
+	border-color: var(--cyberpunk-glow-alt);
 }
 body.skin-cyberpunk.pshop .pshop__name-text
 {

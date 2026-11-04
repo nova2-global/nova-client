@@ -40,6 +40,7 @@ import wndMgr
 
 import introSelect
 import nui
+import nui_numbers
 
 DOCUMENT = "nui/windows/select/select.rml"
 BACKGROUND = "d:/ymir work/ui/intro/select/select.sub"
@@ -88,6 +89,16 @@ def job_image(job):
 	return ""
 
 
+def slots_badge(count):
+	"""The localized title-bar count, protected from model-key parsing."""
+	pattern = getattr(uiScriptLocale, "NUI_INTRO_SLOTS", "%d slots")
+	try:
+		value = pattern % int(count)
+	except (TypeError, ValueError):
+		value = "%d slots" % int(count)
+	return nui.plain_text(value)
+
+
 class SelectBoard(nui.Window):
 	"""The select board's document, model and handlers; it reports to its
 	owner, the phase window. Every handler does nothing while a start is
@@ -101,10 +112,12 @@ class SelectBoard(nui.Window):
 		nui.Window.__init__(self)
 
 	def initial_model(self):
+		count = int(getattr(self._owner, "SLOT_COUNT", introSelect.SelectCharacterWindow.SLOT_COUNT))
 		values = empty_board()
 		values.update({"slot": 0, "busy": False, "empire_name": "", "flag_image": "",
+			"slot_badge": slots_badge(count),
 			"slots": [{"index": index, "label": EMPTY_SLOT, "level": 0}
-			          for index in range(introSelect.SelectCharacterWindow.SLOT_COUNT)]})
+			          for index in range(count)]})
 		return values
 
 	def _idle(self):
@@ -344,12 +357,12 @@ class SelectCharacterWindow(introSelect.SelectCharacterWindow):
 		if float(sum(stats)) > 0.0:
 			self.destGauge = [gauge_value(value) for value in stats]
 
-		values = {"slot": index, "occupied": True, "name": nui.plain_text(name), "level": str(level),
-			"playtime": str(playTime), "guild": nui.plain_text(guildName) if guildName else NO_GUILD,
+		values = {"slot": index, "occupied": True, "name": nui.plain_text(name), "level": nui_numbers.group(level),
+			"playtime": nui_numbers.group(playTime), "guild": nui.plain_text(guildName) if guildName else NO_GUILD,
 			"has_guild": bool(guildName), "job_image": job_image(job),
 			"job_name": JOB_KEYS[job] if 0 <= job < len(JOB_KEYS) else ""}
 		for stat, value, gauge in zip(STATS, stats, self.destGauge):
-			values["stat_" + stat] = str(value)
+			values["stat_" + stat] = nui_numbers.group(value)
 			values["gauge_" + stat] = gauge
 		self._set(**values)
 

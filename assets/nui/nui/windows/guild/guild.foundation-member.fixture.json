@@ -13,7 +13,7 @@
 			},
 			{
 				"key": "BOARD",
-				"label": "Blackboard",
+				"label": "@ui.NUI_GUILD_TAB_NEWS",
 				"enabled": true,
 				"down": false,
 				"art": "/locale/en/ui/guild/tab_2.sub",
@@ -45,7 +45,7 @@
 			},
 			{
 				"key": "GRADE",
-				"label": "Rights Administration",
+				"label": "@ui.NUI_GUILD_TAB_RANKING",
 				"enabled": true,
 				"down": false,
 				"art": "/locale/en/ui/guild/tab_6.sub",
@@ -65,8 +65,8 @@
 			"name": "Dragon Order Of The East",
 			"master": "Tester",
 			"level": "20",
-			"cur_exp": "1234500",
-			"last_exp": "5432100",
+			"cur_exp": "1,234,500",
+			"last_exp": "5,432,100",
 			"members": "88 / 88",
 			"avg_level": "64"
 		},

@@ -428,6 +428,8 @@ NUI_LOGIN_SAVED	الحسابات المحفوظة
 NUI_LOGIN_FORGET	انسَ هذا الحساب
 NUI_LOGIN_ADD_ACCOUNT	إضافة حساب
 NUI_LOGIN_SAVED_HINT	محفوظ على هذا الكمبيوتر: اسم الحساب والشخصيات التي رأيتها عند آخر تسجيل دخول، بمستوياتها آنذاك. لا تُحفظ كلمات المرور أبدًا.
+NUI_LOGIN_SAVED_SECRET_HINT	محفوظ على هذا الكمبيوتر: اسم الحساب والشخصيات التي رأيتها عند آخر تسجيل دخول، بمستوياتها آنذاك. مع خيار «تذكرني»، يحتفظ مدير بيانات اعتماد Windows بكلمة المرور.
+NUI_LOGIN_KEYBOARD	لوحة مفاتيح افتراضية
 NUI_LOGIN_TAB_LOGIN	تسجيل الدخول
 NUI_LOGIN_TAB_REGISTER	إنشاء حساب
 NUI_LOGIN_WELCOME	مرحبًا بعودتك أيها المحارب
@@ -470,6 +472,26 @@ NUI_LOGIN_ERR_FAILED	تعذر إنشاء الحساب. حاول لاحقًا.
 NUI_LOGIN_CREATED	حسابك جاهز. سجّل الدخول به.
 NUI_LOGIN_CREATING	جارٍ إنشاء حسابك...
 HELP_OPEN_EXTRA_INVENTORY	فتح قائمة الممتلكات الخاصة: U
+NUI_EXCHANGE_LAMP_PARTNER	وافق الشريك
+NUI_EXCHANGE_LAMP_WAITING	لم تتم الموافقة بعد
+NUI_EXCHANGE_LAMP_YOU	لقد وافقت
+NUI_GUILD_TAB_NEWS	الأخبار
+NUI_GUILD_TAB_RANKING	ترتيب الأعضاء
+NUI_INTRO_EMPIRE_TITLE	الإمبراطورية
+NUI_INTRO_SELECTED	تم الاختيار
+NUI_INTRO_EMPIRE_MOTTO_A	التجارة · العزيمة · الوحدة
+NUI_INTRO_EMPIRE_MOTTO_B	الإيمان · الشرف · النظام
+NUI_INTRO_EMPIRE_MOTTO_C	القوة · الانضباط · المجد
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	المملكة الجنوبية
+NUI_INTRO_EMPIRE_REGION_B	المملكة الغربية
+NUI_INTRO_EMPIRE_REGION_C	المملكة الشرقية
+NUI_INTRO_CREATE_TITLE	إنشاء شخصية
+NUI_INTRO_SELECT_TITLE	اختيار الشخصية
+NUI_INTRO_SLOTS	%d خانات
+NUI_INTRO_LOADING_TITLE	دخول العالم
 GEMSHOP_LEFTTIME	الوقت المتبقي
 GEMSHOP_TITLE	متجر الغايا
 MYSHOP_DECO_CANCEL	أغلق

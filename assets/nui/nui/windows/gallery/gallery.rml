@@ -375,6 +375,7 @@
 					<span class="gallery-glyph" title="whisper"><span class="nui-glyph nui-glyph--whisper"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="character"><span class="nui-glyph nui-glyph--character"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 					<span class="gallery-glyph" title="inventory"><span class="nui-glyph nui-glyph--inventory"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="keyboard"><span class="nui-glyph nui-glyph--keyboard"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="community"><span class="nui-glyph nui-glyph--community"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="system"><span class="nui-glyph nui-glyph--system"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
 					<span class="gallery-glyph" title="map"><span class="nui-glyph nui-glyph--map"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
@@ -399,6 +400,8 @@
 					<span class="gallery-glyph" title="unique"><span class="nui-glyph nui-glyph--unique"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 					<span class="gallery-glyph" title="arrow"><span class="nui-glyph nui-glyph--arrow"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 					<span class="gallery-glyph" title="belt"><span class="nui-glyph nui-glyph--belt"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="gallery-glyph" title="pentagon"><span class="nui-glyph nui-glyph--pentagon"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+					<span class="gallery-glyph" title="ring"><span class="nui-glyph nui-glyph--ring"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 				</div>
 				<div class="nui-row gallery-gap">
 					<span class="gallery-label">compact close</span>

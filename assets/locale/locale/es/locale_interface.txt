@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Cuentas guardadas
 NUI_LOGIN_FORGET	Olvidar esta cuenta
 NUI_LOGIN_ADD_ACCOUNT	Añadir cuenta
 NUI_LOGIN_SAVED_HINT	Guardado en este equipo: el nombre de la cuenta y los personajes que viste en tu último inicio de sesión, con sus niveles de entonces. Las contraseñas nunca se guardan.
+NUI_LOGIN_SAVED_SECRET_HINT	Guardado en este equipo: el nombre de la cuenta y los personajes que viste en tu último inicio de sesión, con sus niveles de entonces. Con Recordarme, el Administrador de credenciales de Windows guarda la contraseña.
+NUI_LOGIN_KEYBOARD	Teclado virtual
 NUI_LOGIN_TAB_LOGIN	Iniciar sesión
 NUI_LOGIN_TAB_REGISTER	Crear cuenta
 NUI_LOGIN_WELCOME	Bienvenido de nuevo, guerrero
@@ -446,6 +448,26 @@ NUI_LOGIN_ERR_FAILED	No se pudo crear la cuenta. Inténtalo más tarde.
 NUI_LOGIN_CREATED	Tu cuenta está lista. Inicia sesión con ella.
 NUI_LOGIN_CREATING	Creando tu cuenta...
 HELP_OPEN_EXTRA_INVENTORY	Abrir ventana de inventario especial: U
+NUI_EXCHANGE_LAMP_PARTNER	La otra parte aceptó
+NUI_EXCHANGE_LAMP_WAITING	Aún no aceptado
+NUI_EXCHANGE_LAMP_YOU	Has aceptado
+NUI_GUILD_TAB_NEWS	Noticias
+NUI_GUILD_TAB_RANKING	Clasificación de miembros
+NUI_INTRO_EMPIRE_TITLE	Imperio
+NUI_INTRO_SELECTED	Seleccionado
+NUI_INTRO_EMPIRE_MOTTO_A	Comercio · Determinación · Unidad
+NUI_INTRO_EMPIRE_MOTTO_B	Fe · Honor · Orden
+NUI_INTRO_EMPIRE_MOTTO_C	Fuerza · Disciplina · Gloria
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Reino del sur
+NUI_INTRO_EMPIRE_REGION_B	Reino del oeste
+NUI_INTRO_EMPIRE_REGION_C	Reino del este
+NUI_INTRO_CREATE_TITLE	Crear personaje
+NUI_INTRO_SELECT_TITLE	Selección de personaje
+NUI_INTRO_SLOTS	%d espacios
+NUI_INTRO_LOADING_TITLE	Entrando en el reino
 GEMSHOP_LEFTTIME	Tiempo restante
 GEMSHOP_TITLE	MERCADO DE GAYA
 MYSHOP_DECO_CANCEL	Cerrar

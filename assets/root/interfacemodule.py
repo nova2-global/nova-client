@@ -395,6 +395,7 @@ class Interface(object):
 
 		self.questButtonList = []
 		self.whisperButtonList = []
+		self.whisperUnread = set()
 		self.whisperDialogDict = {}
 		self.privateShopAdvertisementBoardDict = {}
 
@@ -626,6 +627,8 @@ class Interface(object):
 		if edge is not None:
 			edge.close_all()
 		self.whisperButtonList = []
+		self.whisperUnread = set()
+		self.__RefreshWhisperBadge()
 		self.whisperDialogDict = {}
 		# The NovaUI shop signs share one document, which goes with the last sign.
 		signs = sys.modules.get("nui_shop_signs")
@@ -1750,6 +1753,8 @@ class Interface(object):
 
 			else:
 				btn.Flash()
+			self.whisperUnread.add(name)
+			self.__RefreshWhisperBadge()
 		elif self.IsGameMasterName(name):
 			dlg = self.whisperDialogDict[name]
 			dlg.SetGameMasterLook()
@@ -1864,6 +1869,17 @@ class Interface(object):
 		button.SetEvent(0)
 		self.whisperButtonList.remove(button)
 		self.__ArrangeWhisperButton()
+		self.whisperUnread.discard(button.name)
+		self.__RefreshWhisperBadge()
+
+	## NovaUI taskbar only: its Messenger button's badge counts the pending
+	## whisper buttons that hold a message the player has not opened (a
+	## minimized dialog's button holds none until a message arrives). The legacy
+	## taskbar has no such method.
+	def __RefreshWhisperBadge(self):
+		setter = getattr(getattr(self, "wndTaskBar", None), "nui_set_unread_whispers", None)
+		if setter is not None:
+			setter(len([btn for btn in self.whisperButtonList if btn.name in self.whisperUnread]))
 
 	def HideAllWhisperButton(self):
 		for btn in self.whisperButtonList:

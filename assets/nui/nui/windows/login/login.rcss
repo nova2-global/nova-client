@@ -41,9 +41,15 @@ body.login
 		margin-top: 0;
 	}
 }
-.login-accounts, .login-card, .login-links, .login-exit, .login-menu
+.login-accounts, .login-card, .login-links, .login-corner-actions, .login-menu
 {
 	pointer-events: auto;
+}
+/* A pointer press must leave the caret in the active field. The two
+   checkboxes remain native controls and report their change events. */
+body.login button
+{
+	tab-index: none;
 }
 .login-accounts
 {
@@ -554,7 +560,7 @@ button.login-button
 	border-radius: 10dp;
 	font-weight: bold;
 }
-.login-link-button .nui-glyph, .login-exit .nui-glyph
+.login-link-button .nui-glyph, .login-exit .nui-glyph, .login-keyboard .nui-glyph
 {
 	margin-right: 8dp;
 }
@@ -564,9 +570,8 @@ button.login-button
 {
 	--glyph-ink: var(--accent-text);
 }
-/* The virtual keyboard keeps legacy's place, centered 46dp above the
-   bottom; the links give way to the bottom-right corner, stacked, as Exit
-   stands in the bottom-left, so they clear it at 1024 wide too. */
+/* While the virtual keyboard is on, the links give way to the bottom-right
+   corner and stack so they clear the bottom-left controls. */
 body.login.login--keyboard .login-links
 {
 	left: auto;
@@ -575,14 +580,22 @@ body.login.login--keyboard .login-links
 	flex-direction: column;
 	align-items: flex-end;
 }
-.login-exit
+.login-corner-actions
 {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8dp;
 	position: absolute;
 	left: 24dp;
 	bottom: 24dp;
+}
+.login-exit, .login-keyboard
+{
 	height: 34dp;
 	padding: 0 12dp;
 	line-height: 32dp;
+	opacity: 1;
 }
 
 /* --- Intro motion ----------------------------------------------------------

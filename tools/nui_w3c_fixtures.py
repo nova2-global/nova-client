@@ -193,6 +193,7 @@ def character(limits, tab, values=None, guild=True, skill_rows=None, support_row
         "dual": emotes(limits, "dual", emotes_filled),
         "quest_scroll_shown": scroll is not None,
         "quest_scroll_pos": scroll if scroll is not None else 0.0,
+        "quest_hover": -1,
     }
     for suffix in ("ht", "iq", "st", "dx"):
         model["plus_" + suffix] = True

@@ -404,6 +404,8 @@ NUI_LOGIN_SAVED	Uložené účty
 NUI_LOGIN_FORGET	Zapomenout tento účet
 NUI_LOGIN_ADD_ACCOUNT	Přidat účet
 NUI_LOGIN_SAVED_HINT	Uloženo v tomto počítači: název účtu a postavy, které jsi viděl při posledním přihlášení, s tehdejšími úrovněmi. Hesla se nikdy neukládají.
+NUI_LOGIN_SAVED_SECRET_HINT	Uloženo v tomto počítači: název účtu a postavy, které jsi viděl při posledním přihlášení, s tehdejšími úrovněmi. Při volbě Zapamatovat si mě uchovává heslo Správce pověření Windows.
+NUI_LOGIN_KEYBOARD	Virtuální klávesnice
 NUI_LOGIN_TAB_LOGIN	Přihlásit
 NUI_LOGIN_TAB_REGISTER	Vytvořit účet
 NUI_LOGIN_WELCOME	Vítej zpět, válečníku
@@ -446,6 +448,26 @@ NUI_LOGIN_ERR_FAILED	Účet se nepodařilo vytvořit. Zkus to později.
 NUI_LOGIN_CREATED	Tvůj účet je připraven. Přihlas se jím.
 NUI_LOGIN_CREATING	Vytváření účtu...
 HELP_OPEN_EXTRA_INVENTORY	Otevřít speciální inventář: pomocí klávesy U
+NUI_EXCHANGE_LAMP_PARTNER	Protistrana přijala
+NUI_EXCHANGE_LAMP_WAITING	Zatím nepřijato
+NUI_EXCHANGE_LAMP_YOU	Tvé přijetí je potvrzeno
+NUI_GUILD_TAB_NEWS	Novinky
+NUI_GUILD_TAB_RANKING	Žebříček členů
+NUI_INTRO_EMPIRE_TITLE	Říše
+NUI_INTRO_SELECTED	Vybráno
+NUI_INTRO_EMPIRE_MOTTO_A	Obchod · Odhodlání · Jednota
+NUI_INTRO_EMPIRE_MOTTO_B	Víra · Čest · Řád
+NUI_INTRO_EMPIRE_MOTTO_C	Síla · Disciplína · Sláva
+NUI_INTRO_EMPIRE_SHORT_A	Shinsoo
+NUI_INTRO_EMPIRE_SHORT_B	Chunjo
+NUI_INTRO_EMPIRE_SHORT_C	Jinno
+NUI_INTRO_EMPIRE_REGION_A	Jižní království
+NUI_INTRO_EMPIRE_REGION_B	Západní království
+NUI_INTRO_EMPIRE_REGION_C	Východní království
+NUI_INTRO_CREATE_TITLE	Vytvořit postavu
+NUI_INTRO_SELECT_TITLE	Výběr postavy
+NUI_INTRO_SLOTS	%d míst
+NUI_INTRO_LOADING_TITLE	Vstup do říše
 GEMSHOP_LEFTTIME	Zbývající čas
 GEMSHOP_TITLE	GAYA TRŽIŠTĚ
 MYSHOP_DECO_CANCEL	Zavřít

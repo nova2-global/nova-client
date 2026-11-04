@@ -28,7 +28,7 @@ TRADE_MODULES = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_facade", 
 # The social windows (SOCIAL, P16 spec 11.4), in import order after the shared
 # modules: the grade name dialog's board before the guild window.
 SOCIAL_FLAGS = "+social"
-SOCIAL_MODULES = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_facade", "nui_text", "nui_guild_war", "nui_messenger",
+SOCIAL_MODULES = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_facade", "nui_text", "nui_numbers", "nui_guild_war", "nui_messenger",
                   "nui_whisper", "nui_guild_mark", "nui_guild_war_declare", "nui_guild_war_accept",
                   "nui_guild_grade_name", "nui_guild")
 P = support.module_constants()["player"]

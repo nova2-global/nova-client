@@ -49,8 +49,8 @@ LOG_DOC = "nui/windows/chat-log/chat-log.rml"
 CHAT_MODULES = ("nui_text", "nui_chat_view", "nui_chat", "nui_chat_log")
 C = support.CHAT_CONSTANTS
 A = support.APP_CONSTANTS
-ITEM = "item:6979:0:0:0:0"
-TAGGED_ITEM = "|cfff1e6c0|Hitem:6979:0:0:0:0|h[Red Potion]|h|r"
+ITEM = "item:6979:0:0:0:0:0"
+TAGGED_ITEM = "|cfff1e6c0|Hitem:6979:0:0:0:0:0|h[Red Potion]|h|r"
 
 CHAT_METHODS = ("SetSize", "SetPosition", "SetHeight", "Refresh", "Show", "Hide", "IsShow", "BindInterface",
                 "SetSendWhisperEvent", "SetOpenChatLogEvent", "OpenChat", "CloseChat", "IsEditMode", "SetChatFocus",
@@ -1549,6 +1549,7 @@ class Wiring(unittest.TestCase):
             interface.wndQuestWindow = {}
             interface.questButtonList = []
             interface.whisperButtonList = []
+            interface.whisperUnread = set()
             interface.whisperDialogDict = {}
             interface.guildScoreBoardDict = {}
             interface.equipmentDialogDict = {}

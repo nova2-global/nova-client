@@ -1,6 +1,7 @@
 {
 	"select": {
 		"slot": 1,
+		"slot_badge": "5 slots",
 		"slots": [
 			{
 				"index": 0,
@@ -31,7 +32,7 @@
 		"occupied": true,
 		"name": "Borak",
 		"level": "71",
-		"playtime": "1234",
+		"playtime": "1,234",
 		"stat_hth": "45",
 		"stat_int": "12",
 		"stat_str": "60",

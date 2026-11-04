@@ -169,7 +169,7 @@ def install_dragon_soul(game):
         player.SLOT_TYPE_DRAGON_SOUL_INVENTORY: player.DRAGON_SOUL_INVENTORY}.get(slot_type, player.RESERVED_WINDOW))
     support.define(player, "IsDSEquipmentSlot", lambda window, pos: window == player.INVENTORY and START <= pos < START + 12)
     support.define(player, "SetItemCount", set_count)
-    support.define(player, "GetItemLink", lambda *at: "|cfff1e6c0|Hitem:%x:0:0:0:0|h[item]|h|r" % game._item_at(*at)["vnum"])
+    support.define(player, "GetItemLink", lambda *at: "|cfff1e6c0|Hitem:%x:0:0:0:0:0|h[item]|h|r" % game._item_at(*at)["vnum"])
 
 
 def stock(game):

@@ -778,6 +778,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 	# draws at once: each entry point below is legacy's, then the bag
 	# proxy's flush (a push only when a shown mark changed), once for the
 	# outermost of them (RefreshBagSlotWindow and OnTop call the others).
+	# Legacy's Destroy leaves wndItem at 0, and a logout still refreshes the
+	# marks after it (the shop's Destroy runs after the inventory's), so
+	# only the proxy is flushed.
 
 	def _marking(self, method, *args):
 		self._marks_held += 1
@@ -785,9 +788,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			return method(self, *args)
 		finally:
 			self._marks_held -= 1
-			wndItem = getattr(self, "wndItem", None)
-			if not self._marks_held and wndItem is not None:
-				wndItem.flush()
+			flush = getattr(getattr(self, "wndItem", None), "flush", None)
+			if not self._marks_held and flush is not None:
+				flush()
 
 	def RefreshBagSlotWindow(self):
 		return self._marking(uiInventory.InventoryWindow.RefreshBagSlotWindow)

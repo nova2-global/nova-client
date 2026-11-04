@@ -257,3 +257,43 @@ input.chat__input
 {
 	--glyph-ink: var(--accent);
 }
+
+/* Wave 5 (NOVA-11): the shout color button beside the mode button, and its
+   picker above it: one swatch per color of the server's palette, drawn in
+   the color itself (no art; legacy's ShoutColorBoard). */
+.chat__shout-color
+{
+	min-width: 0;
+}
+.chat__shout-picker
+{
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	left: 60dp;
+	bottom: 36dp;
+	gap: 4dp;
+	padding: 4dp;
+	background-color: var(--surface-raised);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 7dp;
+	z-index: 1;
+}
+.chat__swatch-place
+{
+	display: block;
+}
+.chat__swatch
+{
+	display: block;
+	width: 18dp;
+	height: 18dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+}
+.chat__swatch:hover
+{
+	border-color: var(--accent);
+}

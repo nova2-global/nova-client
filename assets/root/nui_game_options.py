@@ -27,6 +27,7 @@ import constInfo
 import localeInfo
 import net
 import player
+import shop
 import systemSetting
 import uiGameOption
 import uiPrivateShopBuilder
@@ -47,6 +48,12 @@ def _block_bits():
 	        player.BLOCK_FRIEND, player.BLOCK_PARTY_REQUEST)
 
 
+def _hide_shops():
+	"""Whether the offline shops are hidden (an exe without the offline shop:
+	shown)."""
+	return bool(getattr(shop, "IsHideShops", lambda: False)())
+
+
 class GameOptionsBoard(nui.Window):
 	"""The game options' document and model; its events go to its facade."""
 
@@ -63,7 +70,7 @@ class GameOptionsBoard(nui.Window):
 			return model()
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
 		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
-		        "pickup": [True] * PICKUP_COUNT}
+		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -144,7 +151,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "pk_mode": self.pkMode, "block": mask, "blocked": self.blocked(mask),
 		        "view_chat": bool(systemSetting.IsViewChat()), "always_show_name": bool(systemSetting.IsAlwaysShowName()),
 		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
-		        "pickup": self.pickup()}
+		        "pickup": self.pickup(), "hide_shops": _hide_shops()}
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -227,6 +234,12 @@ class OptionDialog(nui_hud.LayoutCalls):
 	def RefreshShowSalesText(self):
 		self._set(sales_text=bool(systemSetting.IsShowSalesText()))
 
+	def RefreshHideShops(self):
+		"""Wave 5 (NOVA-9): the offline shops shown or hidden, the server's
+		state (shop.IsHideShops; Interface.OnOfflineShopHideShops calls this
+		on GC HIDE_SHOPS), never a local guess (M5)."""
+		self._set(hide_shops=_hide_shops())
+
 	def RefreshPickupFilter(self):
 		"""A category's toggle is down while the filter picks it up
 		(uigameoption.py RefreshPickupFilter)."""
@@ -251,6 +264,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return int(bool(systemSetting.IsShowDamage()))
 		if what == "sales_text":
 			return int(bool(systemSetting.IsShowSalesText()))
+		if what == "hide_shops":
+			return int(_hide_shops())
 		return None
 
 	def nui_choose(self, what, value):
@@ -282,6 +297,11 @@ class OptionDialog(nui_hud.LayoutCalls):
 			self.RefreshShowSalesText()
 			if value:
 				uiPrivateShopBuilder.UpdateADBoard()
+		elif what == "hide_shops" and value in (0, 1):
+			# Legacy's row (uiGameOption.__OnClickHideShopsButton): 0 shows the
+			# shops, 1 hides them; the server answers with HIDE_SHOPS.
+			net.SendChatPacket("/hide_shops %d" % value)
+			self.RefreshHideShops()
 
 	def __CheckPvPProtectedLevelPlayer(self):
 		if player.GetStatus(player.LEVEL) < constInfo.PVPMODE_PROTECTED_LEVEL:

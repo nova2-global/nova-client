@@ -117,6 +117,11 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 	BOARD = _ShopBoard
 
 	def __init__(self):
+		self._offline_dialog = None
+		self._using_legacy_offline = False
+		# Legacy's offlineLayout across both windows: True from an offline
+		# view or panel until the next NPC shop opens (uiShop.Close).
+		self._last_offline = False
 		self.nui_begin()
 		try:
 			uiShop.ShopDialog.__init__(self)
@@ -260,8 +265,29 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 
 	# --- what NovaUI changes (P16 spec 5.2.3) -----------------------------------------
 
+	def _legacy_offline(self):
+		"""The honest interim view for Y2's paged offline shop.
+
+		The NovaUI board is the 40-cell NPC shop. It must never render an
+		offline shop as that shape, so the multi-page view and owner panel stay
+		on Y2's legacy window until W5-2 ports their 10 x 8 pages and controls.
+		"""
+		if self._offline_dialog is None:
+			dialog = uiShop.ShopDialog()
+			dialog.LoadDialog()
+			dialog.Hide()
+			if self.interface is not None:
+				dialog.BindInterface(self.interface)
+			if self.tooltipItem:
+				dialog.SetItemToolTip(self.tooltipItem)
+			self._offline_dialog = dialog
+		return self._offline_dialog
+
 	def Refresh(self):
 		"""Legacy's, with the proxy's RefreshSlot for wndMgr.RefreshSlot."""
+		if self._using_legacy_offline:
+			self._legacy_offline().Refresh()
+			return
 		getItemID = shop.GetItemID
 		getItemCount = shop.GetItemCount
 		setItemID = self.itemSlotWindow.SetItemSlot
@@ -279,14 +305,78 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 		uiShop.ShopDialog.OnClickTabButton(self, idx)
 		self._on_tabs()
 
-	def Open(self, vid):
-		uiShop.ShopDialog.Open(self, vid)
+	def Open(self, vid, multiPage=False):
+		if multiPage:
+			nui_facade.Facade.Hide(self)
+			nuigame.StopLeaveRange(KEY)
+			self._using_legacy_offline = True
+			self._last_offline = True
+			self._legacy_offline().Open(vid, multiPage=True)
+			return
+		if self._offline_dialog is not None and self._offline_dialog.IsShow():
+			self._offline_dialog.Close()
+		self._using_legacy_offline = False
+		self._last_offline = False
+		uiShop.ShopDialog.Open(self, vid, multiPage=False)
 		nuigame.WatchLeaveRange(KEY, LEAVE_RANGE, ui.__mem_func__(self._left_range), False)
 
+	def OpenOfflineShop(self, open=1):
+		nui_facade.Facade.Hide(self)
+		nuigame.StopLeaveRange(KEY)
+		self._using_legacy_offline = True
+		self._last_offline = True
+		self._legacy_offline().OpenOfflineShop(open)
+
+	def IsOfflineShopOpen(self):
+		return bool(self._offline_dialog and self._offline_dialog.IsOfflineShopOpen())
+
+	def UpdateLock(self, locked):
+		self._legacy_offline().UpdateLock(locked)
+
+	def UpdateTime(self, secondsLeft):
+		self._legacy_offline().UpdateTime(secondsLeft)
+
+	def UpdateSign(self, sign):
+		self._legacy_offline().UpdateSign(sign)
+
+	def UpdateGold(self, gold):
+		self._legacy_offline().UpdateGold(gold)
+
+	def OnOfflineShopResult(self, op, code, arg):
+		self._legacy_offline().OnOfflineShopResult(op, code, arg)
+
+	def SetTop(self):
+		if self._using_legacy_offline:
+			self._legacy_offline().SetTop()
+			return
+		nui_facade.Facade.SetTop(self)
+
+	def Close(self):
+		if self._using_legacy_offline:
+			self._legacy_offline().Close()
+			self._using_legacy_offline = False
+			nuigame.StopLeaveRange(KEY)
+			return
+		uiShop.ShopDialog.Close(self)
+
 	def Hide(self):
+		if self._using_legacy_offline:
+			self._legacy_offline().Hide()
+			return
 		nui_facade.Facade.Hide(self)
 		if not self.IsShow():
 			nuigame.StopLeaveRange(KEY)
+
+	def Destroy(self):
+		if self._offline_dialog is not None:
+			self._offline_dialog.Destroy()
+			self._offline_dialog = None
+		if self._last_offline:
+			# As legacy's one window: after an offline view or panel (its LEAVE
+			# sent by the delegate above) and no NPC shop since, Close sends no END.
+			self.offlineLayout = True
+		self._using_legacy_offline = False
+		nui_facade.Facade.Destroy(self)
 
 	def _left_range(self):
 		"""Legacy's OnUpdate body once the watch fires: Close()."""

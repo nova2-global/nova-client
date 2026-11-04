@@ -2674,14 +2674,25 @@ def _wave3b_modules(game):
         setattr(player, name, value)
     for name, value in _client_values(WAVE3B_ITEM_CONSTANTS, "item").items():
         setattr(item, name, value)
+    # nui_limits selects the 40-cell wear table only when the exe publishes
+    # every WEAR_* name. Keep the stand-in on the regenerated client's table
+    # instead of silently falling back to the old 24-cell layout.
+    for name, value in module_constants().get("item", {}).items():
+        if name.startswith("WEAR_"):
+            setattr(item, name, value)
     for name, value in WAVE3B_APP_CONSTANTS.items():
         setattr(app, name, value)
 
     define(player, "GetElk", lambda: game.elk)
-    define(player, "IsEquipmentSlot", lambda pos: 90 <= pos < 122)
-    define(player, "IsCostumeSlot", lambda pos: 109 <= pos < 111)
-    define(player, "IsBeltInventorySlot", lambda pos: 152 <= pos < 168)
-    define(player, "IsAvailableBeltInventoryCell", lambda pos: 0 <= pos - 152 < game.belt_cells)
+    equipment_start = int(player.EQUIPMENT_SLOT_START)
+    ds_end = (int(player.DRAGON_SOUL_EQUIPMENT_SLOT_START) +
+              int(player.DRAGON_SOUL_EQUIPMENT_PAGE_COUNT) * int(player.DRAGON_SOUL_EQUIPMENT_FIRST_SIZE))
+    costume_start, costume_end = int(item.COSTUME_SLOT_START), int(item.COSTUME_SLOT_END)
+    belt_start, belt_end = int(item.BELT_INVENTORY_SLOT_START), int(item.BELT_INVENTORY_SLOT_END)
+    define(player, "IsEquipmentSlot", lambda pos: equipment_start <= pos <= ds_end)
+    define(player, "IsCostumeSlot", lambda pos: costume_start <= pos <= costume_end)
+    define(player, "IsBeltInventorySlot", lambda pos: belt_start <= pos < belt_end)
+    define(player, "IsAvailableBeltInventoryCell", lambda pos: 0 <= pos - belt_start < game.belt_cells)
     define(player, "GetItemFlags", lambda pos: game.item_flags.get(pos, 0))
     define(player, "GetItemGrade", lambda pos: game.item_grades.get(pos, 0))
     define(player, "GetItemAttribute", lambda pos, index: (0, 0))
@@ -2939,6 +2950,12 @@ def install_item_data(game, corpus):
     define(shop, "GetItemAttribute", lambda slot, i: attribute(slot, i))
     define(shop, "GetItemPrice", lambda slot: int(shop_state().get("price", 0)))
     define(shop, "GetPrivateShopItemPrice", lambda kind, pos: int(shop_state().get("price", 0)))
+    define(shop, "GetOfflineShopItemID", lambda slot: (case_item(slot) or {}).get("vnum", 0))
+    define(shop, "GetOfflineShopItemMetinSocket", lambda slot, i: socket(slot, i))
+    define(shop, "GetOfflineShopItemAttribute", lambda slot, i: attribute(slot, i))
+    define(shop, "GetOfflineShopItemPrice", lambda slot: int(shop_state().get("price", 0)))
+    define(shop, "IsOwner", lambda: bool(shop_state().get("owner", False)))
+    define(shop, "IsOfflineShopSlotPending", lambda slot: bool(shop_state().get("pending", False)))
     for name in ("exchange", "safebox", "grpText"):
         if name not in modules:
             game.put(name, Recording(name, game.log))
@@ -3332,8 +3349,13 @@ class LegacySkillSlotWindow(LegacySlotWindow):
     def SetSlotCountNew(self, index, grade, level):
         slot = self._slot(index)
         if slot is not None:
-            # The C++ switch: a grade it lacks formats nothing.
-            slot["label"] = {0: "%d" % level, 1: "m%d" % level, 2: "g%d" % level, 3: "p"}.get(grade, "") if level > 0 else ""
+            # The regenerated client's four-grade build uses OLD's over-P
+            # labels: perfect master keeps its level and sage is "s".
+            over_p = getattr(sys.modules.get("skill"), "SKILL_GRADE_COUNT", 3) >= 4
+            labels = ({0: "%d" % level, 1: "m%d" % level, 2: "g%d" % level,
+                       3: "p%d" % level, 4: "s"} if over_p else
+                      {0: "%d" % level, 1: "m%d" % level, 2: "g%d" % level, 3: "p"})
+            slot["label"] = labels.get(grade, "") if level > 0 else ""
 
     def SetSlotCoolTime(self, index, cool_time, elapsed=0.0):
         slot = self._slot(index)
@@ -3712,6 +3734,11 @@ def _wave3c_modules(game):
     player, item, skill, chr_ = modules["player"], modules["item"], modules["skill"], modules["chr"]
     for name, value in _client_values(WAVE3C_PLAYER_CONSTANTS, "player").items():
         setattr(player, name, value)
+    # This constant is the feature marker uiCharacter and nui_limits use for
+    # the fourth (sage) grade sharing OLD's three visible columns.
+    sage = module_constants().get("player", {}).get("SKILL_GRADE_SAGE_MASTER")
+    if isinstance(sage, int) and not isinstance(sage, bool):
+        setattr(player, "SKILL_GRADE_SAGE_MASTER", sage)
     for name, value in _client_values(WAVE3C_SKILL_CONSTANTS, "skill").items():
         setattr(skill, name, value)
     for name, value in WAVE3C_ITEM_CONSTANTS.items():

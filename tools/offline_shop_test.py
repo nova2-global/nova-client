@@ -37,10 +37,11 @@ LOCALE = os.path.join(os.path.dirname(ROOT), "locale", "locale")
 P = support.module_constants()["player"]
 INVENTORY = P["INVENTORY"]
 
-# K's values (nova-client-src 9d49ac2b: GameType.h:164-184 c_Offline_Shop_*, :188 EOfflineShopResultConsts,
-# :230 EOfflineShopLogActionConsts; exported by PythonShop.cpp; k-report.md 5.1).
-K_SHOP_GEOMETRY = {"OFFLINE_SHOP_COLUMNS": 10, "OFFLINE_SHOP_ROWS_PER_PAGE": 8, "OFFLINE_SHOP_PAGE_COUNT": 3,
-                   "OFFLINE_SHOP_SLOT_MAX": 240, "OFFLINE_SHOP_SIGN_STYLE_MAX": 6}
+# K's values, generated from this client's PythonShop.cpp and GameType.h.
+SHOP_CONSTANTS = support.module_constants()["shop"]
+K_SHOP_GEOMETRY = dict((name, SHOP_CONSTANTS[name]) for name in
+                       ("OFFLINE_SHOP_COLUMNS", "OFFLINE_SHOP_ROWS_PER_PAGE", "OFFLINE_SHOP_PAGE_COUNT",
+                        "OFFLINE_SHOP_SLOT_MAX", "OFFLINE_SHOP_SIGN_STYLE_MAX"))
 K_RESULTS = ("OK", "DISABLED", "MAP_NOT_ALLOWED", "CHANNEL_NOT_ALLOWED", "TOO_CLOSE", "NOT_ENOUGH_GOLD", "BAD_PRICE",
              "GOLD_CAP", "BAD_SIGN", "BAD_DECORATION", "ITEM_RESTRICTED", "BAD_SLOT", "SLOT_TAKEN", "SLOT_LOCKED",
              "ALREADY_OPEN", "NO_SHOP", "BUSY", "QUEST_RUNNING", "NOT_LOCKED", "RATE_LIMITED", "INVENTORY_FULL",
@@ -253,10 +254,10 @@ def install_wave5(world):
     shop = modules["shop"]
     for name, value in K_SHOP_GEOMETRY.items():
         setattr(shop, name, value)
-    for value, name in enumerate(K_RESULTS):
-        setattr(shop, "OFFLINE_SHOP_RESULT_" + name, value)
-    for value, name in enumerate(K_LOG_ACTIONS):
-        setattr(shop, "OFFLINE_SHOP_LOG_ACTION_" + name, value)
+    for name in K_RESULTS:
+        setattr(shop, "OFFLINE_SHOP_RESULT_" + name, SHOP_CONSTANTS["OFFLINE_SHOP_RESULT_" + name])
+    for name in K_LOG_ACTIONS:
+        setattr(shop, "OFFLINE_SHOP_LOG_ACTION_" + name, SHOP_CONSTANTS["OFFLINE_SHOP_LOG_ACTION_" + name])
     for value, name in enumerate(K_OPS):
         setattr(shop, "OFFLINE_SHOP_OP_" + name, value)
 

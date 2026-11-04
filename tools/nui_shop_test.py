@@ -314,6 +314,108 @@ class ShopFacade(ShopTest):
             self.assertEqual(len(inspect.signature(getattr(type(window), name)).parameters),
                              len(inspect.signature(member).parameters), name)
 
+    def test_teardown_sends_end_only_when_an_npc_shop_was_the_last(self):
+        """Legacy's one window keeps offlineLayout from an offline view until
+        the next NPC shop: its Destroy then sends no END. With the offline
+        view on the legacy delegate, the facade follows the same rule."""
+        class OfflineDialog(object):
+            def Open(self, vid, multiPage=False):
+                pass
+
+            def Close(self):
+                pass
+
+            def Destroy(self):
+                pass
+
+            def IsShow(self):
+                return False
+
+        for npc_last in (False, True):
+            with self.subTest(npc_last=npc_last):
+                world, window = self.world(True)
+                window._offline_dialog = OfflineDialog()
+                with world.game, w4.quiet():
+                    window.Open(77, multiPage=True)
+                    window.Close()
+                if npc_last:
+                    self.open(world, window)
+                    with world.game, w4.quiet():
+                        window.Close()
+                mark = world.mark()
+                with world.game, w4.quiet():
+                    window.Destroy()
+                ends = world.calls_since(mark, "net.SendShopEndPacket")
+                self.assertEqual(len(ends), 1 if npc_last else 0)
+
+    def test_the_multi_page_and_owner_calls_use_the_legacy_y2_window(self):
+        world, window = self.world(True)
+
+        class OfflineDialog(object):
+            def __init__(self):
+                self.calls = []
+                self.shown = False
+
+            def Open(self, vid, multiPage=False):
+                self.calls.append(("Open", (vid, multiPage)))
+                self.shown = True
+
+            def OpenOfflineShop(self, open=1):
+                self.calls.append(("OpenOfflineShop", (open,)))
+                self.shown = True
+
+            def IsOfflineShopOpen(self):
+                return self.shown
+
+            def IsShow(self):
+                return self.shown
+
+            def SetTop(self):
+                self.calls.append(("SetTop", ()))
+
+            def Refresh(self):
+                self.calls.append(("Refresh", ()))
+
+            def UpdateLock(self, value):
+                self.calls.append(("UpdateLock", (value,)))
+
+            def UpdateTime(self, value):
+                self.calls.append(("UpdateTime", (value,)))
+
+            def UpdateSign(self, value):
+                self.calls.append(("UpdateSign", (value,)))
+
+            def UpdateGold(self, value):
+                self.calls.append(("UpdateGold", (value,)))
+
+            def OnOfflineShopResult(self, op, code, arg):
+                self.calls.append(("OnOfflineShopResult", (op, code, arg)))
+
+            def Close(self):
+                self.calls.append(("Close", ()))
+                self.shown = False
+
+        offline = OfflineDialog()
+        window._offline_dialog = offline
+        with world.game, w4.quiet():
+            window.Open(77, multiPage=True)
+            window.SetTop()
+            window.Refresh()
+            window.OpenOfflineShop(1)
+            window.UpdateLock(1)
+            window.UpdateTime(3600)
+            window.UpdateSign("Night market")
+            window.UpdateGold(123456)
+            window.OnOfflineShopResult(3, 0, 7)
+            self.assertTrue(window.IsOfflineShopOpen())
+            window.Close()
+        self.assertEqual(offline.calls,
+                         [("Open", (77, True)), ("SetTop", ()), ("Refresh", ()),
+                          ("OpenOfflineShop", (1,)), ("UpdateLock", (1,)), ("UpdateTime", (3600,)),
+                          ("UpdateSign", ("Night market",)), ("UpdateGold", (123456,)),
+                          ("OnOfflineShopResult", (3, 0, 7)), ("Close", ())])
+        self.assertNotIn(SHOP_DOCUMENT, world.documents(), "an offline shop never loads the NovaUI NPC board")
+
     def test_make_builds_legacy_with_the_flag_off_or_an_older_exe(self):
         world, window = self.world(False)
         self.assertIs(type(window), world.m("uiShop").ShopDialog)
@@ -411,7 +513,14 @@ class BuilderTest(unittest.TestCase):
         (legacy, _, a), (novaui, world, b) = self.run_both(flow)
         self.assertEqual(novaui, legacy)
         self.assertIn(("shop.DelPrivateShopItemStock", (P["INVENTORY"], 12)), novaui)
-        self.assertIn(("shop.BuildPrivateShop", ("Swords, armour and potions cheap",)), novaui)
+        creates = [args for name, args in novaui if name == "net.SendOfflineShopCreatePacket"]
+        self.assertEqual(len(creates), 1)
+        title, model_vnum, style, listings = creates[0]
+        self.assertEqual((title, style, listings),
+                         ("Swords, armour and potions cheap", 0,
+                          [(P["INVENTORY"], 4, 0, 1000)]))
+        self.assertIsInstance(model_vnum, int)
+        self.assertNotIn(("net.SendOfflineShopLeavePacket", ()), novaui, "CREATE closes without a second LEAVE")
         self.assertFalse(b.IsShow())
         self.assertNotIn(BUILDER_DOCUMENT, world.documents())
 
@@ -430,6 +539,7 @@ class BuilderTest(unittest.TestCase):
             with self.subTest(how=how):
                 self.assertEqual(novaui, legacy)
                 self.assertIn(("shop.ClearPrivateShopStock", ()), novaui)
+                self.assertIn(("net.SendOfflineShopLeavePacket", ()), novaui)
                 self.assertFalse(b.IsShow())
 
     def test_hover_shows_the_stocked_item_s_tooltip(self):

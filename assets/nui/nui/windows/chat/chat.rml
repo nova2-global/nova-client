@@ -38,13 +38,14 @@
 				data-attr-mode="lines_mode" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
 		</div>
 		<!-- Wave 5 (NOVA-11): the shout color picker, above the input row: the
-		     server's palette, each swatch drawn in its color. -->
+		     server's palette, each swatch the shout word in its color (legacy
+		     color tags in nui-text). -->
 		<div id="chat-shout-picker" class="chat__shout-picker nui-interactive" data-if="shout_picker">
 			<span class="chat__swatch-place" data-for="c : shout_colors"><span class="chat__swatch"
-				data-attr-id="'chat-swatch-' + c.index" data-style-background-color="c.color"
-				data-event-mousedown="shout_pick(c.index, ev.button)"></span></span>
+				data-attr-id="'chat-swatch-' + c.index" data-event-mousedown="shout_pick(c.index, ev.button)"><nui-text
+				links="off" data-attr-value="c.text"/></span></span>
 		</div>
-		<div id="chat-input-row" class="chat__input-row nui-interactive">
+		<div id="chat-input-row" class="chat__input-row nui-interactive" data-class-chat--shout-color="shout_color_on">
 			<button id="chat-mode" class="chat__mode" data-event-mousedown="mode(ev.button)"><span
 				data-if="chat_mode == 0">@game.CHAT_NORMAL</span><span
 				data-if="chat_mode == 3">@game.CHAT_PARTY</span><span

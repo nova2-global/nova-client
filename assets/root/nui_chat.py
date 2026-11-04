@@ -480,13 +480,15 @@ def has_shout_color_perk():
 
 def shout_colors():
 	"""The server's palette as swatches: index i + 1 for color i (spec 2.4),
-	ARGB as an unsigned int to "#rrggbbaa"."""
+	each the shout mode's word in that color through the legacy color tag
+	(|cAARRGGBB ... |r, which nui-text draws; ARGB as an unsigned int), so a
+	swatch shows the shout as it will look."""
 	count = int(getattr(player, "GetShoutColorCount", lambda: 0)())
+	word = nui.plain_text(getattr(localeInfo, "CHAT_SHOUT", "") or "")
 	swatches = []
 	for i in range(count):
 		color = int(player.GetShoutColor(i)) & 0xFFFFFFFF
-		swatches.append({"index": i + 1, "color": "#%02x%02x%02x%02x" % ((color >> 16) & 255, (color >> 8) & 255,
-		                                                                color & 255, (color >> 24) & 255)})
+		swatches.append({"index": i + 1, "text": "|c%08X%s|r" % (color, word)})
 	return swatches
 
 

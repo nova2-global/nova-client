@@ -514,7 +514,9 @@ class ChatDifferential(unittest.TestCase):
         with world, quiet():
             board.fire("shout_color", 0)
         self.assertTrue(board.get("shout_picker"))
-        self.assertEqual(board.get("shout_colors"), [{"index": 1, "color": "#ff0000ff"}, {"index": 2, "color": "#00ff0080"}])
+        word = world.game.modules["localeInfo"].CHAT_SHOUT
+        self.assertEqual(board.get("shout_colors"), [{"index": 1, "text": "|cFFFF0000%s|r" % word},
+                                                     {"index": 2, "text": "|c8000FF00%s|r" % word}])
         with world, quiet():
             board.fire("shout_pick", 2, 0)
         self.assertFalse(board.get("shout_picker"))

@@ -10,7 +10,7 @@
 				"runs": [
 					{
 						"k": "text",
-						"text": "Rabbit Costume (brown)",
+						"text": "Rabbit Costume (Brown)",
 						"role": "title",
 						"color": "",
 						"end": 0.0
@@ -146,7 +146,7 @@
 						"text": "",
 						"role": "normal",
 						"color": "",
-						"end": 86401.0
+						"end": 1700086401.0
 					}
 				],
 				"src": "",

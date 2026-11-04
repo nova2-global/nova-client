@@ -127,6 +127,41 @@ class Parity(unittest.TestCase):
 class CoverageGate(unittest.TestCase):
     """Spec 5.8: every live rule line of uitooltip.py runs over the corpus."""
 
+    def test_proto_rows_reads_old_and_current_layouts_by_header_name(self):
+        import tempfile
+        common = ["ITEM_VNUM~RANGE", "ITEM_NAME(K)", "ITEM_TYPE", "SUB_TYPE", "SIZE", "ANTI_FLAG", "FLAG",
+                  "ITEM_WEAR", "IMMUNE", "GOLD", "SHOP_BUY_PRICE", "REFINE", "REFINESET", "MAGIC_PCT",
+                  "LIMIT_TYPE0", "LIMIT_VALUE0", "LIMIT_TYPE1", "LIMIT_VALUE1"]
+        values = {"ITEM_VNUM~RANGE": "10~19", "ITEM_NAME(K)": "Sword+0", "ITEM_TYPE": "ITEM_WEAPON",
+                  "SUB_TYPE": "WEAPON_SWORD", "SIZE": "2", "ANTI_FLAG": "ANTI_MUDANG", "FLAG": "ITEM_TUNABLE",
+                  "ITEM_WEAR": "WEAR_WEAPON", "GOLD": "100", "SHOP_BUY_PRICE": "20", "REFINE": "11",
+                  "LIMIT_TYPE0": "LEVEL", "LIMIT_VALUE0": "5", "LIMIT_TYPE1": "LIMIT_NONE",
+                  "LIMIT_VALUE1": "0", "SOCKET": "4"}
+        values.update(("VALUE%d" % i, str(10 + i)) for i in range(6))
+
+        with tempfile.TemporaryDirectory() as work:
+            for addon_count in (3, 7):
+                header = common + sum((["ADDON_TYPE%d" % i, "ADDON_VALUE%d" % i] for i in range(addon_count)), []) + \
+                    ["VALUE%d" % i for i in range(6)] + ["Specular", "Opacity", "SpecularMask", "SOCKET", "ATTU_ADDON"]
+                if addon_count == 7:
+                    header = header[::2] + header[1::2]  # prove no field depends on its position
+                row_values = dict(values)
+                for i in range(addon_count):
+                    row_values["ADDON_TYPE%d" % i] = "APPLY_NONE"
+                    row_values["ADDON_VALUE%d" % i] = "0"
+                row_values.update({"ADDON_TYPE0": "APPLY_ATT_SPEED", "ADDON_VALUE0": "22",
+                                   "ADDON_TYPE%d" % (addon_count - 1): "APPLY_STR",
+                                   "ADDON_VALUE%d" % (addon_count - 1): "8"})
+                path = os.path.join(work, "item_proto_%d.txt" % addon_count)
+                with open(path, "w", encoding="utf-8") as handle:
+                    handle.write("\t".join(header) + "\n")
+                    handle.write("\t".join(row_values.get(name, "0") for name in header) + "\n")
+                row = corpus_tool.proto_rows(path)[10]
+                self.assertEqual(row["applies"], [["APPLY_ATT_SPEED", 22], ["APPLY_STR", 8]])
+                self.assertEqual(row["values"], [10, 11, 12, 13, 14, 15])
+                self.assertEqual((row["sockets"], row["price"], row["refine"], row["range"]),
+                                 (4, {"buy": 100, "sell": 20}, 11, [10, 19]))
+
     def test_the_branch_list_is_current(self):
         branches = json.loads(read(corpus_tool.BRANCHES))
         self.assertEqual(branches["uitooltip_sha256"], corpus_tool.sha256_of(corpus_tool.RULES),
@@ -434,7 +469,7 @@ class Transactions(unittest.TestCase):
     def test_the_link_tooltip_is_placed_once_and_a_left_press_hides_it(self):
         with World() as world:
             link = world.m("nui_link_tooltip").HyperlinkItemToolTip()
-            link.SetHyperlinkItem("item:a:0:1:0:0".split(":"))
+            link.SetHyperlinkItem("item:a:0:1:0:0:0".split(":"))
             board = world.board("link")
             self.assertEqual(placed(board), ("tooltip", True, 37))
             self.assertTrue(link.IsShow())
@@ -462,7 +497,7 @@ class Transactions(unittest.TestCase):
             tips = [world.item(), world.m("nui_skill_tooltip").SkillToolTip(), world.m("nui_link_tooltip").HyperlinkItemToolTip()]
             self.assertEqual([rec.board(kind) for kind in ("item", "skill", "link")], [None, None, None])
             tips[0].SetItemToolTip(10)
-            tips[2].SetHyperlinkItem("item:a:0:1:0:0".split(":"))
+            tips[2].SetHyperlinkItem("item:a:0:1:0:0:0".split(":"))
             tips[0].HideToolTip()
             self.assertIsNotNone(rec.board("item"), "kept, hidden and empty (D8)")
             self.assertEqual(rec.end_phase(), 2)

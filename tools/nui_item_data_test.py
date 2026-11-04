@@ -30,8 +30,9 @@ class ItemData(unittest.TestCase):
     def test_the_constants_are_the_clients(self):
         constants = support.module_constants()
         self.assertEqual(constants["item"]["ITEM_ANTIFLAG_SELL"], 1 << 8)
-        self.assertEqual(constants["item"]["ITEM_APPLY_MAX_NUM"], 3)
-        self.assertEqual(constants["player"]["METIN_SOCKET_MAX_NUM"], 3)
+        self.assertEqual(constants["item"]["ITEM_APPLY_MAX_NUM"], 7)
+        self.assertEqual(constants["item"]["ITEM_SOCKET_MAX_NUM"], 4)
+        self.assertEqual(constants["player"]["METIN_SOCKET_MAX_NUM"], 4)
         self.assertEqual(self.game.modules["item"].ITEM_TYPE_WEAPON, constants["item"]["ITEM_TYPE_WEAPON"])
 
     def test_generate_color_is_the_clients_signed_packing(self):

@@ -40,6 +40,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import sys
 import types
 
@@ -111,6 +112,7 @@ GACHA_CHEST = 34218
 EXTRA_INVENTORY = 6
 ITEM_TYPE_GACHA = 38
 SILVER, GOLD = 1, 2
+SOCKET_MAX_NUM = 4
 CLOCK = 1700000000
 DAY = 24 * 3600
 
@@ -160,37 +162,58 @@ def _subtype(kind, name):
 
 def proto_rows(path):
     """{vnum: row} of the item proto in the corpus row schema (P14 spec 9.6)."""
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        table = [line.rstrip("\r\n").split("\t") for line in handle]
+    header = next((row for row in table if "ITEM_VNUM~RANGE" in [cell.strip().lstrip("\ufeff") for cell in row]), None)
+    if header is None:
+        raise ValueError("item proto has no ITEM_VNUM~RANGE header")
+    columns = dict((name.strip().lstrip("\ufeff"), index) for index, name in enumerate(header))
+    required = ("ITEM_VNUM~RANGE", "ITEM_NAME(K)", "ITEM_TYPE", "SUB_TYPE", "SIZE", "ANTI_FLAG", "FLAG",
+                "ITEM_WEAR", "GOLD", "SHOP_BUY_PRICE", "REFINE", "LIMIT_TYPE0", "LIMIT_VALUE0", "LIMIT_TYPE1",
+                "LIMIT_VALUE1", "VALUE0", "VALUE1", "VALUE2", "VALUE3", "VALUE4", "VALUE5", "SOCKET")
+    missing = [name for name in required if name not in columns]
+    if missing:
+        raise ValueError("item proto has no column(s): %s" % ", ".join(missing))
+    addon_numbers = sorted(int(match.group(1)) for name in columns
+                           for match in [re.match(r"^ADDON_TYPE(\d+)$", name)] if match)
+    missing_addons = ["ADDON_VALUE%d" % number for number in addon_numbers if "ADDON_VALUE%d" % number not in columns]
+    if missing_addons:
+        raise ValueError("item proto has no column(s): %s" % ", ".join(missing_addons))
+
+    def cell(cells, name):
+        return cells[columns[name]].strip()
+
     rows = {}
-    for cells in read_table(path):
-        if len(cells) < 32:
+    for cells in table:
+        if len(cells) <= max(columns.values()) or not _is_vnum(cell(cells, "ITEM_VNUM~RANGE")):
             continue
-        low, _, high = cells[0].strip().partition("~")
+        low, _, high = cell(cells, "ITEM_VNUM~RANGE").partition("~")
         vnum = int(low)
-        kind = cells[2].strip()
+        kind = cell(cells, "ITEM_TYPE")
         kind = kind[5:] if kind.startswith("ITEM_") else kind
-        limits = [[LIMITS.get(cells[14].strip(), 0), int(cells[15] or 0)],
-                  [LIMITS.get(cells[16].strip(), 0), int(cells[17] or 0)]]
-        applies = [[cells[18].strip(), int(cells[19] or 0)], [cells[20].strip(), int(cells[21] or 0)],
-                   [cells[22].strip(), int(cells[23] or 0)]]
+        limits = [[LIMITS.get(cell(cells, "LIMIT_TYPE%d" % number), 0),
+                   int(cell(cells, "LIMIT_VALUE%d" % number) or 0)] for number in range(2)]
+        applies = [[cell(cells, "ADDON_TYPE%d" % number), int(cell(cells, "ADDON_VALUE%d" % number) or 0)]
+                   for number in addon_numbers]
         row = {
-            "name": cells[1].strip(),
+            "name": cell(cells, "ITEM_NAME(K)"),
             "type": ITEM_TYPES.index(kind) if kind in ITEM_TYPES else 0,
             "type_name": kind,
-            "subtype": _subtype(kind, cells[3].strip()),
-            "subtype_name": cells[3].strip(),
-            "size": [1, int(cells[4] or 1)],
-            "antiflags": _bits(cells[5], ANTI_FLAGS),
-            "flags": _bits(cells[6], FLAGS),
-            "wear": _bits(cells[7], WEARS),
+            "subtype": _subtype(kind, cell(cells, "SUB_TYPE")),
+            "subtype_name": cell(cells, "SUB_TYPE"),
+            "size": [1, int(cell(cells, "SIZE") or 1)],
+            "antiflags": _bits(cell(cells, "ANTI_FLAG"), ANTI_FLAGS),
+            "flags": _bits(cell(cells, "FLAG"), FLAGS),
+            "wear": _bits(cell(cells, "ITEM_WEAR"), WEARS),
             "limits": limits,
             "applies": [a for a in applies if a[0] != "APPLY_NONE"],
-            "values": [int(v or 0) for v in cells[24:30]],
-            "sockets": int(cells[31] or 0),
-            "price": {"buy": int(cells[9] or 0), "sell": int(cells[10] or 0)},
-            "refine": int(cells[11] or 0),
+            "values": [int(cell(cells, "VALUE%d" % number) or 0) for number in range(6)],
+            "sockets": int(cell(cells, "SOCKET") or 0),
+            "price": {"buy": int(cell(cells, "GOLD") or 0), "sell": int(cell(cells, "SHOP_BUY_PRICE") or 0)},
+            "refine": int(cell(cells, "REFINE") or 0),
         }
         if kind == "USE":
-            row["use_type"] = cells[3].strip()
+            row["use_type"] = cell(cells, "SUB_TYPE")
         if high:
             row["range"] = [vnum, int(high)]
         rows[vnum] = row
@@ -273,7 +296,8 @@ def skill_names_of(path):
 NAMED_VNUMS = (50026, 50300, 70037, 70055, 70103, 70104, 70105, 70106, 22000, 22010, 22011, 27989, 76006, 50004,
                72723, 72724, 72725, 72726, 72727, 72728, 72729, 72730, 76004, 76005, 76021, 76022)
 # The kit's items (spec 2.4), which the in-game checks hover.
-KIT_VNUMS = (10, 3000, 11200, 12200, 18000, 27001, 28030, 25040, 30329, 73001, 73002, 73003, 73004, 73005)
+KIT_VNUMS = (10, 3000, 11200, 12200, 18000, 27001, 28030, 25040, 30329, 41001,
+             73001, 73002, 73003, 73004, 73005)
 # The socket materials the accessory and belt rules look up (constinfo.py
 # ACCESSORY_MATERIAL_LIST, JewelAccessoryInfos, GET_BELT_MATERIAL_VNUM).
 MATERIAL_VNUMS = tuple(range(50623, 50639)) + (18900,)
@@ -508,15 +532,20 @@ ATTRS_NORMAL = [[1, 500], [2, 50], [5, 8], [7, 10], [9, 10]]
 ATTRS_RARE = ATTRS_NORMAL + [[15, 5], [16, 4]]
 
 
+def _sockets(values=()):
+    """One client-sized socket vector (main and OLD both expose four)."""
+    return (list(values) + [0] * SOCKET_MAX_NUM)[:SOCKET_MAX_NUM]
+
+
 def _empty_sockets(row):
-    count = min(int(row.get("sockets", 0) or 0), 3)
-    return [SILVER] * count + [0] * (3 - count)
+    count = min(int(row.get("sockets", 0) or 0), SOCKET_MAX_NUM)
+    return [SILVER] * count + [0] * (SOCKET_MAX_NUM - count)
 
 
 def _link(vnum, sockets, attrs, flag=0):
     """The link tokens player.GetItemLink makes (the hex vnum, flags and
     sockets, then attribute pairs: hex type, decimal value)."""
-    tokens = ["item", "%x" % vnum, "%x" % flag] + ["%x" % s for s in sockets]
+    tokens = ["item", "%x" % vnum, "%x" % flag] + ["%x" % s for s in _sockets(sockets)]
     for kind, value in attrs:
         tokens += ["%x" % kind, "%d" % value]
     return ":".join(tokens)
@@ -626,6 +655,10 @@ def state_cases(items):
     add("fan", "SetInventoryItem", fan, sockets=[0, 0, 0], attrs=[])
     shield = _first(items, "ARMOR", lambda r: r["subtype_name"] == "ARMOR_SHIELD")
     add("armor-shield", "SetInventoryItem", shield, sockets=[SILVER, 0, 0], attrs=[])
+    anti_sell = next((int(v) for v in sorted(items, key=int)
+                      if items[v]["antiflags"] & ANTI_FLAGS["ANTI_SELL"]), None)
+    add("anti-sell", "SetInventoryItem", anti_sell, sockets=[], attrs=[],
+        shop={"open": True, "private": False, "price": 0}, sell_price=5000)
 
     # Accessories (bracelet, necklace, earrings) and belts: sockets [filled, opened, time].
     for vnum in (14000, 16000, 17000):
@@ -782,10 +815,10 @@ def api_cases(items):
     add("pointer-high", "item", [["SetItemToolTip", [3000]]], mouse=[30, 40])
     add("hide", "item", [["SetItemToolTip", [10]], ["HideToolTip", []]])
     add("show-again", "item", [["SetItemToolTip", [11200]], ["Hide", []], ["Show", []]])
-    add("cube-appends", "item", [["ClearToolTip", []], ["AddItemData", [27001, [0, 0, 0], [[0, 0]] * 7]],
+    add("cube-appends", "item", [["ClearToolTip", []], ["AddItemData", [27001, _sockets(), [[0, 0]] * 7]],
                                  ["AppendTextLine", ["Keeps bonuses and stones", 0xFF89B88D]]])
     add("cube-unforced", "item", [["SetCannotUseItemForceSetDisableColor", [False]], ["ClearToolTip", []],
-                                  ["AddItemData", [3000, [0, 0, 0], [[0, 0]] * 7]], ["Show", []]], player={"level": 1, "race": 0})
+                                  ["AddItemData", [3000, _sockets(), [[0, 0]] * 7]], ["Show", []]], player={"level": 1, "race": 0})
     ds = 110000
     add("ds-warm", "item", [["WarmDragonSoulTimeCache", [[0, 1]]], ["SetInventoryItem", [0]]], vnum=ds,
         sockets=[3600, 0, 0], attrs=[[1, 100]], ds_active=True)
@@ -866,6 +899,8 @@ def build_corpus(proto=DEFAULT_PROTO, names=DEFAULT_NAMES, mobs=DEFAULT_MOBS):
     cases = item_cases(items) + state_cases(items) + skill_cases() + api_cases(items)
     seen = set()
     for case in cases:
+        if isinstance(case.get("sockets"), list):
+            case["sockets"] = _sockets(case["sockets"])
         if case["id"] in seen:
             raise ValueError("two cases are named %s" % case["id"])
         seen.add(case["id"])
@@ -915,8 +950,8 @@ class TipWorld(object):
     """One stand-in client running uitooltip.py over a corpus (nui_game_support's
     Game, its tooltip ui and item data): `recorder` False is the legacy side
     (the rules alone, their widgets the stand-ins'), True the NovaUI side (the
-    recorder and the three facades loaded). `sizes` "foundation" gives the
-    rules 4 sockets and 7 applies, as the foundation wave's C2 will."""
+    recorder and the three facades loaded). Main and the foundation sizes
+    both give the rules the server's four sockets and seven applies."""
 
     def __init__(self, corpus, recorder, sizes="today", locale="en", wave3b=False):
         self.corpus = corpus
@@ -1113,7 +1148,7 @@ def _run_case(world, case):
     kind = kind_of(case)
     tip = world.tooltip(kind)
     pos = int(case.get("pos", 0))
-    sockets = case.get("sockets", [0, 0, 0])
+    sockets = case.get("sockets", _sockets())
     attrs = case.get("attrs", [])
     attr_slot = attrs if attrs == 0 else [tuple(a) for a in attrs] + [(0, 0)] * (7 - len(attrs))
     socket_slot = case["call_sockets"] if "call_sockets" in case else list(sockets)
@@ -1529,15 +1564,15 @@ FIXTURE_CLOCK_NOW = 1.0   # nui.now() when the models are built: nuitool snap's 
 
 def fixture_corpus(sizes="today"):
     """Items and skills for the fixtures: the corpus's rows, changed where a
-    fixture needs a state the proto has no item for (a weapon with three
-    applies and a first-use time; at the foundation's sizes seven applies)."""
+    fixture needs a state the proto has no item for (a weapon with all seven
+    applies and a first-use time)."""
     data = load_corpus()
     items = dict(data["items"])
-    weapon = dict(items["10"], name="Sword+9", applies=[["APPLY_ATT_SPEED", 22], ["APPLY_STR", 8], ["APPLY_CRITICAL_PCT", 5]],
+    weapon = dict(items["10"], name="Sword+9",
+                  applies=[["APPLY_ATT_SPEED", 22], ["APPLY_STR", 8], ["APPLY_CRITICAL_PCT", 5],
+                           ["APPLY_PENETRATE_PCT", 5], ["APPLY_MAX_HP", 1500], ["APPLY_ATTBONUS_MONSTER", 10],
+                           ["APPLY_RESIST_WARRIOR", 7]],
                   limits=[[LIMITS["LEVEL"], 30], [0, 0]], values=[0, 0, 15, 109, 113, 45])
-    if sizes == "foundation":
-        weapon["applies"] = [["APPLY_ATT_SPEED", 22], ["APPLY_STR", 8], ["APPLY_CRITICAL_PCT", 5], ["APPLY_PENETRATE_PCT", 5],
-                             ["APPLY_MAX_HP", 1500], ["APPLY_ATTBONUS_MONSTER", 10], ["APPLY_RESIST_WARRIOR", 7]]
     items["90010"] = weapon
     skills = dict(data["skills"])
     skills["1"] = dict(skills["1"], requirement=["Sword Spin", 20], requirement_met=False, require_stats=[], level_limit=5)
@@ -1572,7 +1607,7 @@ def fixtures():
     out = {}
     with today:
         out[("item-tooltip", "")] = {"item_tooltip": _model_of(today, "item", [["SetInventoryItem", [0]]], {
-            "vnum": 90010, "sockets": [28030, SILVER, GOLD], "attrs": ATTRS_FIXTURE, "player": player, "clock": CLOCK})}
+            "vnum": 90010, "sockets": _sockets([28030, SILVER, GOLD]), "attrs": ATTRS_FIXTURE, "player": player, "clock": CLOCK})}
         out[("item-tooltip", "costume")] = {"item_tooltip": _model_of(today, "item", [["SetInventoryItem", [0]]], {
             "vnum": 45001, "sockets": [CLOCK + DAY, 0, 0], "attrs": [], "player": player, "clock": CLOCK})}
         out[("item-tooltip", "potion")] = {"item_tooltip": _model_of(today, "item", [["SetInventoryItem", [0]]], {
@@ -1580,7 +1615,7 @@ def fixtures():
         out[("item-tooltip", "accessory")] = {"item_tooltip": _model_of(today, "item", [["SetInventoryItem", [93]]], {
             "vnum": 14000, "pos": 93, "sockets": [2, 3, 5400], "attrs": [], "player": player, "clock": CLOCK})}
         out[("item-tooltip", "shop")] = {"item_tooltip": _model_of(today, "item", [["SetShopItem", [0]]], {
-            "vnum": 30329, "sockets": [CLOCK + 300, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
+            "vnum": 71145, "sockets": [CLOCK + 300, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
             "shop": {"open": True, "private": False, "price": 1250}})}
         # Wave 4b (NOVA-81, NOVA-16): a stack of treasure chests in the bag
         # with seven opens left, the safebox open and a trade open: the
@@ -1642,7 +1677,7 @@ def dialog_fixtures():
         data = fixture_corpus(sizes)
         data["items"]["3001"] = dict(data["items"]["3000"], name="Glaive+1")
         world = DialogWorld(data, recorder=True, sizes=sizes)
-        sockets = [28030, SILVER, GOLD] + ([SILVER] if sizes == "foundation" else [])
+        sockets = _sockets([28030, SILVER, GOLD] + ([SILVER] if sizes == "foundation" else []))
         materials = _materials(data)
         with world:
             world.game.state.now = FIXTURE_CLOCK_NOW
@@ -1659,14 +1694,15 @@ def dialog_fixtures():
             if sizes == "today":
                 old = world.make("old")
                 place_items(world, {"vnum": 0, "player": {"level": 120, "race": 0}, "clock": CLOCK},
-                            [{"pos": 1, "vnum": 25040}, {"pos": 5, "vnum": 10, "sockets": [28030, SILVER, 0]}])
+                            [{"pos": 1, "vnum": 25040}, {"pos": 5, "vnum": 10, "sockets": _sockets([28030, SILVER])}])
                 with quiet():
                     old.Open(1, 5)
                 out[("refine", "old")] = {"refine": dict(old._state)}
                 old.Close()
             attach = world.make("attach")
             place_items(world, {"vnum": 0, "player": {"level": 120, "race": 0}, "clock": CLOCK},
-                        [{"pos": 2, "vnum": 28030}, {"pos": 0, "vnum": 10, "sockets": [SILVER, SILVER, 0] + ([GOLD] if sizes == "foundation" else []),
+                        [{"pos": 2, "vnum": 28030}, {"pos": 0, "vnum": 10,
+                                                     "sockets": _sockets([SILVER, SILVER] + ([GOLD] if sizes == "foundation" else [])),
                                                      "attrs": ATTRS_FIXTURE[:3]}])
             with quiet():
                 attach.Open(2, 0)

@@ -157,6 +157,90 @@
 				"runs": [
 					{
 						"k": "text",
+						"text": "5% Chance for piercing Hits",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Max. HP +1500",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Strength against monsters +10%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
+						"text": "Defence chance against warrior attacks: 7%",
+						"role": "positive",
+						"color": "",
+						"end": 0.0
+					}
+				],
+				"src": "",
+				"ih": 0,
+				"frame": "",
+				"icon": "",
+				"sub": []
+			},
+			{
+				"t": "line",
+				"gap": 0,
+				"rule": false,
+				"align": "center",
+				"outline": true,
+				"runs": [
+					{
+						"k": "text",
 						"text": "Max. HP +1500",
 						"role": "positive-special",
 						"color": "",
@@ -387,6 +471,6 @@
 				]
 			}
 		],
-		"min_w": 227
+		"min_w": 272
 	}
 }

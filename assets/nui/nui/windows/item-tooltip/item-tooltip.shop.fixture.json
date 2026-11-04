@@ -10,7 +10,7 @@
 				"runs": [
 					{
 						"k": "text",
-						"text": "Golden Cog Wheel",
+						"text": "Amulet of Eternal Love",
 						"role": "title",
 						"color": "",
 						"end": 0.0
@@ -31,7 +31,7 @@
 				"runs": [
 					{
 						"k": "text",
-						"text": "Trigger the hidden mechanism in the Isfet",
+						"text": "A silver heart-shaped amulet, decorated",
 						"role": "normal",
 						"color": "",
 						"end": 0.0
@@ -52,7 +52,7 @@
 				"runs": [
 					{
 						"k": "text",
-						"text": "Stele.",
+						"text": "with magic gemstones.",
 						"role": "normal",
 						"color": "",
 						"end": 0.0
@@ -108,7 +108,7 @@
 			}
 		],
 		"min_w": 280,
-		"icon": "/icon/item/30329.tga",
+		"icon": "/icon/item/71145.tga",
 		"icon_h": 1
 	}
 }

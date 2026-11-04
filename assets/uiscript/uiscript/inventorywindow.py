@@ -1,4 +1,5 @@
 import uiScriptLocale
+import localeInfo
 import item
 
 # The equipment cells start at the body's, wear 0 (225 since the foundation cut, 90 before).
@@ -9,12 +10,12 @@ window = {
 
 	## 600 - (width + żŔ¸ĄÂĘŔ¸·Î şÎĹÍ ¶çżě±â 24 px)
 	"x" : SCREEN_WIDTH - 176,
-	"y" : SCREEN_HEIGHT - 37 - 591,
+	"y" : SCREEN_HEIGHT - 37 - 635,
 
 	"style" : ("movable", "float",),
 
 	"width" : 176,
-	"height" : 591,
+	"height" : 635,
 
 	"children" :
 	(
@@ -28,7 +29,7 @@ window = {
 			"y" : 0,
 
 			"width" : 176,
-			"height" : 591,
+			"height" : 635,
 
 			"children" :
 			(
@@ -346,7 +347,9 @@ window = {
 				},
 
 				## The special inventory (NOVA-16): a band of 26 px between the bag
-				## and the money slot (the board grew from 565 to 591 px for it).
+				## and the money slot (the board grew from 565 to 591 px for it, to
+				## 611 px for the gaya row under the yang, NOVA-10, and to 635 px for
+				## the offline shop's buttons under this one, NOVA-9).
 				{
 					"name" : "ExtraInventoryButton",
 					"type" : "button",
@@ -364,13 +367,46 @@ window = {
 					"down_image" : "d:/ymir work/ui/public/large_button_03.sub",
 				},
 
+				## The offline shop (NOVA-9): MANAGE (the owner's panel, or the
+				## builder) and the shop search, side by side under the special
+				## inventory's button. OLD's were image buttons (a Q9 asset): text
+				## buttons here, hidden until the server's CONFIG says the shop is on.
+				{
+					"name" : "OfflineShopButton",
+					"type" : "button",
+
+					"x" : 24,
+					"y" : 246 + 32 * 9 + 3 + 21 + 3,
+
+					"text" : localeInfo.OFFLINE_SHOP_BUTTON,
+					"tooltip_text" : localeInfo.OFFLINE_SHOP,
+
+					"default_image" : "d:/ymir work/ui/public/middle_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/middle_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/middle_button_03.sub",
+				},
+				{
+					"name" : "SearchShopButton",
+					"type" : "button",
+
+					"x" : 24 + 61 + 6,
+					"y" : 246 + 32 * 9 + 3 + 21 + 3,
+
+					"text" : localeInfo.SEARCH_SHOP_BUTTON,
+					"tooltip_text" : uiScriptLocale.SEARCH_SHOP_TITLE,
+
+					"default_image" : "d:/ymir work/ui/public/middle_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/middle_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/middle_button_03.sub",
+				},
+
 				## Print
 				{
 					"name":"Money_Slot",
 					"type":"button",
 
 					"x":8,
-					"y":28,
+					"y":48,
 
 					"horizontal_align":"center",
 					"vertical_align":"bottom",
@@ -402,6 +438,52 @@ window = {
 							"text_horizontal_align" : "right",
 
 							"text" : "123456789",
+						},
+					),
+				},
+
+				## The gaya balance (NOVA-10), under the yang. OLD's gaya icon is a
+				## later asset task (spec Q9): the yang's coin stands in, as in the
+				## cube window, and the slot's tooltip names the currency.
+				{
+					"name":"Gem_Slot",
+					"type":"button",
+
+					"x":8,
+					"y":28,
+
+					"horizontal_align":"center",
+					"vertical_align":"bottom",
+
+					"tooltip_text" : localeInfo.GEM_SYSTEM_NAME,
+
+					"default_image" : "d:/ymir work/ui/public/parameter_slot_05.sub",
+					"over_image" : "d:/ymir work/ui/public/parameter_slot_05.sub",
+					"down_image" : "d:/ymir work/ui/public/parameter_slot_05.sub",
+
+					"children" :
+					(
+						{
+							"name":"Gem_Icon",
+							"type":"image",
+
+							"x":-18,
+							"y":2,
+
+							"image":"d:/ymir work/ui/game/windows/money_icon.sub",
+						},
+
+						{
+							"name" : "Gem",
+							"type" : "text",
+
+							"x" : 3,
+							"y" : 3,
+
+							"horizontal_align" : "right",
+							"text_horizontal_align" : "right",
+
+							"text" : "0",
 						},
 					),
 				},

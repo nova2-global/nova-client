@@ -468,3 +468,50 @@ NUI_INTRO_CREATE_TITLE	Vytvořit postavu
 NUI_INTRO_SELECT_TITLE	Výběr postavy
 NUI_INTRO_SLOTS	%d míst
 NUI_INTRO_LOADING_TITLE	Vstup do říše
+GEMSHOP_LEFTTIME	Zbývající čas
+GEMSHOP_TITLE	GAYA TRŽIŠTĚ
+MYSHOP_DECO_CANCEL	Zavřít
+MYSHOP_DECO_DEFAULT	Výchozí
+MYSHOP_DECO_NEXT	Další
+MYSHOP_DECO_OK	Potvrdit
+MYSHOP_DECO_PREV	Zpět
+MYSHOP_DECO_SELECT_MODEL	Zvol si vzhled svého obchodu.
+MYSHOP_DECO_SELECT_TITLE	Zvol si vzhled svého jména.
+OFFLINE_SHOP_TITLE	Otevřít Offline Stánek
+OFFLINE_SHOP_BUTTON_LOCK	Zamknout
+OFFLINE_SHOP_BUTTON_UNLOCK	Odemknout
+OFFLINE_SHOP_BUTTON_RENEW	Obnovit
+OFFLINE_SHOP_BUTTON_RENAME	Přejmenovat
+OFFLINE_SHOP_BUTTON_CLOSE	Zavřít
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Změnit Značku Obchodu
+OFFLINE_SHOP_INPUT_SIGN_DESC	Jméno Obchodu: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d Dny %02d Hodin %02d Minut
+SEARCH_SHOP_TITLE	Vyhledat obchod
+SEARCH_SHOP_BUY_CONFIGM	Chceš koupit tento předmět?
+SEARCH_SHOP_BOOKMARK_EMPTY	Prázdná
+SEARCH_SHOP_BOOKMARK_FULL	Žádné prázdné sloty pro uložení vyhledávání do záložek.
+SEARCH_SHOP_BOOKMARKS	Záložky
+SEARCH_SHOP_FAVOURITES	Oblíbené
+SEARCH_SHOP_SORT_UP	Sestupně
+SEARCH_SHOP_SORT_DOWN	Vzestupně
+SEARCH_SHOP_FILTER_CATEGORY	Filtr
+OFFLINE_SHOP_LOCATION	Shop Location:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Withdraw
+OFFLINE_SHOP_BUTTON_ADD_TIME	Add Time
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	View Logs
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop expires in:
+OFFLINE_SHOP_TIME_EXCEED	Your shop time have exceeded the limit, you can only have total of %d days
+OFFLINE_SHOP_NO_YANG	You do not have any yang to withdraw!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Obchody

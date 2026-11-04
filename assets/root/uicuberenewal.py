@@ -613,9 +613,14 @@ class CubeRenewalWindow(ui.ScriptWindow):
 	def HasEnoughGold(self, gold):
 		return player.GetElk() >= gold
 
-	# NEW has no gaya yet (NOVA-10): no recipe costs any, and none can be paid.
+	# The gaya wallet (NOVA-10): an exact balance pays (GB14: OLD's
+	# uiCubeRenewal.py:895 colored it red). An exe without player.GetGem pays
+	# no gaya cost.
 	def HasEnoughGem(self, gem):
-		return gem <= 0
+		getGem = getattr(player, "GetGem", None)
+		if not getGem:
+			return gem <= 0
+		return getGem() >= gem
 
 	def GetMaterialPageCount(self, recipe):
 		if recipe["item_ranged"]:

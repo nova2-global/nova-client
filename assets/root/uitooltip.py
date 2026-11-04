@@ -25,6 +25,9 @@ WARP_SCROLLS = [22011, 22000, 22010]
 # (NOVA-16, the server's IsExtraShared, spec 3.2): Ctrl + right-click moves
 # them between the inventory and the special inventory.
 EXTRA_SHARED_SCROLLS = (71051, 71052, 71651, 71652)
+## NOVA-11: the premium scrolls (OLD uiToolTip.py:1416; item_proto value 1
+## the tier, value 2 the seconds a fresh one adds).
+PREMIUM_SCROLLS = (50208, 50209, 50210)
 
 # Whether the safebox window shows. NEW's safebox module has no IsOpen
 # (OLD's did), so the interface tells the tooltips when it opens and closes
@@ -804,6 +807,40 @@ class ItemToolTip(ToolTip):
 		self.AddItemData(itemVnum, metinSlot, attrSlot)
 		self.AppendPriceBySecondaryCoin(price)
 
+	## NOVA-9: a slot of the offline shop shown, a visitor's view or the
+	## owner's panel, from C's offline getters (OLD PythonShop.cpp:696-768);
+	## OLD's uiShop.py:1249 called this and OLD's tooltip had no such method,
+	## so an owner's hover raised (o-cli bug 2). The owner also reads the
+	## three key hints (OLD uiToolTip.py:1967-1970, in plain text), except on a
+	## slot held by a transfer, which takes no action (spec 3.8).
+	def SetOfflineShopItem(self, slotIndex):
+		itemVnum = shop.GetOfflineShopItemID(slotIndex)
+		if 0 == itemVnum:
+			return
+
+		price = shop.GetOfflineShopItemPrice(slotIndex)
+		self.ClearToolTip()
+		self.itemWindowType = None
+		self.itemSlotIndex = slotIndex
+		self.isShopItem = True
+
+		metinSlot = [shop.GetOfflineShopItemMetinSocket(slotIndex, i) for i in range(player.METIN_SOCKET_MAX_NUM)]
+		attrSlot = [shop.GetOfflineShopItemAttribute(slotIndex, i) for i in range(player.ATTRIBUTE_SLOT_MAX_NUM)]
+
+		self.AddItemData(itemVnum, metinSlot, attrSlot)
+		self.AppendPrice(price)
+
+		if not shop.IsOwner():
+			return
+
+		if shop.IsOfflineShopSlotPending(slotIndex):
+			self.AppendTextLine(localeInfo.OFFLINE_SHOP_SLOT_PENDING, self.DISABLE_COLOR)
+			return
+
+		self.AppendTextLine(localeInfo.OFFLINE_SHOP_TOOLTIP_WITHDRAW, self.NORMAL_COLOR)
+		self.AppendTextLine(localeInfo.OFFLINE_SHOP_TOOLTIP_CHANGE_PRICE, self.NORMAL_COLOR)
+		self.AppendTextLine(localeInfo.OFFLINE_SHOP_TOOLTIP_REMOVE, self.NORMAL_COLOR)
+
 	def SetExchangeOwnerItem(self, slotIndex):
 		itemVnum = exchange.GetItemVnumFromSelf(slotIndex)
 		if 0 == itemVnum:
@@ -1130,6 +1167,9 @@ class ItemToolTip(ToolTip):
 		### Description ###
 		self.AppendDescription(itemDesc)
 		self.AppendDescription(itemSummary, self.CONDITION_COLOR)
+
+		if itemVnum in PREMIUM_SCROLLS and 0 != metinSlot:
+			self.__AppendPremiumScrollTime(metinSlot[0])
 
 		### Weapon ###
 		if item.ITEM_TYPE_WEAPON == itemType:
@@ -1524,6 +1564,25 @@ class ItemToolTip(ToolTip):
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY_PLUS, self.NORMAL_COLOR)
 			else:
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY, self.NORMAL_COLOR)
+
+	## NOVA-11 (OLD uiToolTip.py:1416-1424): socket 0 of a premium scroll is
+	## the end time a returned scroll keeps (/deactivate_premium, a tier
+	## switch): its time left, or that it has run out (PB-C8: OLD showed 0 left
+	## and the server still took it). A fresh scroll (socket 0 of 0) is unused
+	## and adds value 2's seconds.
+	def __AppendPremiumScrollTime(self, endTime):
+		if endTime > 0:
+			leftSec = endTime - app.GetGlobalTimeStamp()
+			if leftSec > 0:
+				self.AppendSpace(5)
+				self.AppendTextLine(localeInfo.LEFT_TIME + " : " + localeInfo.SecondToDHM(leftSec), self.NORMAL_COLOR)
+			else:
+				self.AppendSpace(5)
+				self.AppendTextLine(localeInfo.PREMIUM_SCROLL_EXPIRED, self.DISABLE_COLOR)
+		else:
+			self.AppendSpace(5)
+			self.AppendTextLine(localeInfo.PREMIUM_SCROLL_UNUSED, self.NORMAL_COLOR)
+			self.AppendTextLine(localeInfo.LEFT_TIME + " : " + localeInfo.SecondToDHM(item.GetValue(2)), self.NORMAL_COLOR)
 
 	def __DragonSoulInfoString (self, dwVnum):
 		step = (dwVnum // 100) % 10

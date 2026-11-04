@@ -352,6 +352,16 @@ class InventoryWindow(ui.ScriptWindow):
 	wndCostume = None
 	wndBelt = None
 	dlgPickMoney = None
+	# The gaya balance under the yang (NOVA-10); None until the legacy loader
+	# binds it, and in a loader that has none (NovaUI's).
+	wndGem = None
+	# The offline shop's and the search's buttons (NOVA-9), the same way, and
+	# whether the server's offline shop is on (CONFIG's "enabled", through
+	# Interface.OnOfflineShopConfig): until then neither button shows and
+	# Ctrl + click adds a quick slot, as before.
+	offlineShopButton = None
+	searchShopButton = None
+	offlineShopEnabled = False
 	
 	sellingSlotNumber = -1
 	isLoaded = 0
@@ -409,6 +419,11 @@ class InventoryWindow(ui.ScriptWindow):
 			self.GetChild("TitleBar").SetCloseEvent(ui.__mem_func__(self.Close))
 			self.wndMoney = self.GetChild("Money")
 			self.wndMoneySlot = self.GetChild("Money_Slot")
+			# The gaya balance (NOVA-10); an older uiscript has none.
+			self.wndGem = self.GetChild2("Gem")
+			# The offline shop and its search (NOVA-9); an older uiscript has none.
+			self.offlineShopButton = self.GetChild2("OfflineShopButton")
+			self.searchShopButton = self.GetChild2("SearchShopButton")
 			self.mallButton = self.GetChild2("MallButton")
 			self.DSSButton = self.GetChild2("DSSButton")
 			self.costumeButton = self.GetChild2("CostumeButton")
@@ -499,6 +514,14 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.extraInventoryButton:
 			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
 
+		if self.offlineShopButton:
+			self.offlineShopButton.SetEvent(ui.__mem_func__(self.ClickOfflineShopButton))
+
+		if self.searchShopButton:
+			self.searchShopButton.SetEvent(ui.__mem_func__(self.ClickSearchShopButton))
+
+		self.ShowOfflineShopButtons(self.offlineShopEnabled)
+
 		self.wndCostume = None
 		
  		#####
@@ -527,6 +550,9 @@ class InventoryWindow(ui.ScriptWindow):
 		self.dlgPickMoney = 0
 		self.wndMoney = 0
 		self.wndMoneySlot = 0
+		self.wndGem = None
+		self.offlineShopButton = None
+		self.searchShopButton = None
 		self.questionDialog = None
 		self.mallButton = None
 		self.DSSButton = None
@@ -595,6 +621,25 @@ class InventoryWindow(ui.ScriptWindow):
 
 	def ClickExtraInventoryButton(self):
 		self.interface.ToggleExtraInventoryWindow()
+
+	## The offline shop (NOVA-9; OLD uiInventory.py:482-501, the special
+	## inventory's side bar there): MANAGE answers with the owner's panel, or
+	## opens the builder when the player has no shop.
+	def ClickOfflineShopButton(self):
+		net.SendOfflineShopManagePacket()
+
+	def ClickSearchShopButton(self):
+		self.interface.OpenSearchShop()
+
+	def ShowOfflineShopButtons(self, enabled):
+		self.offlineShopEnabled = bool(enabled)
+		for button in (self.offlineShopButton, self.searchShopButton):
+			if not button:
+				continue
+			if self.offlineShopEnabled:
+				button.Show()
+			else:
+				button.Hide()
 
 	def UseDSSButtonEffect(self, enable):
 		if self.DSSButton:
@@ -754,6 +799,11 @@ class InventoryWindow(ui.ScriptWindow):
 		money = player.GetElk()
 		self.wndMoney.SetText(MoneySlotText(money))
 
+		## The gaya balance (NOVA-10: point 163, player.GetGem; at most
+		## 999,999), dotted as the yang is and without a unit.
+		if self.wndGem:
+			self.wndGem.SetText("{:,}".format(player.GetGem()).replace(",", "."))
+
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem
 
@@ -890,6 +940,15 @@ class InventoryWindow(ui.ScriptWindow):
 			return
 
 		itemSlotIndex = self.__InventoryLocalSlotPosToGlobalSlotPos(itemSlotIndex)
+
+		## NOVA-9 (OLD uiInventory.py:1758-1761): Ctrl + click on an item
+		## searches the shops for it, while the offline shop is on, nothing is
+		## attached and no safebox is open; otherwise Ctrl + click adds the
+		## item to the quick slots, as before.
+		if app.IsPressed(app.DIK_LCONTROL) and self.offlineShopEnabled and \
+				not mouseModule.mouseController.isAttached() and not self.IsSafeboxOpen():
+			self.interface.OpenSearchShop(player.GetItemIndex(itemSlotIndex))
+			return
 
 		if mouseModule.mouseController.isAttached():
 			attachedSlotType = mouseModule.mouseController.GetAttachedType()

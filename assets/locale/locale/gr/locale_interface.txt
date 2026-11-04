@@ -468,3 +468,50 @@ NUI_INTRO_CREATE_TITLE	Δημιουργία χαρακτήρα
 NUI_INTRO_SELECT_TITLE	Επιλογή χαρακτήρα
 NUI_INTRO_SLOTS	%d θέσεις
 NUI_INTRO_LOADING_TITLE	Είσοδος στο βασίλειο
+GEMSHOP_LEFTTIME	Υπολειπόμενος χρόνος
+GEMSHOP_TITLE	ΕΜΠΟΡΙΟ GAYA
+MYSHOP_DECO_CANCEL	Κλείσιμο
+MYSHOP_DECO_DEFAULT	Κανονικό
+MYSHOP_DECO_NEXT	Συνέχεια
+MYSHOP_DECO_OK	Ολοκλήρωση
+MYSHOP_DECO_PREV	Πίσω
+MYSHOP_DECO_SELECT_MODEL	Διάλεξε την εμφάνιση του καταστήματός σου.
+MYSHOP_DECO_SELECT_TITLE	Διάλεξε την εμφάνιση του τίτλου σου.
+OFFLINE_SHOP_TITLE	Άνοιξε Μαγαζί Εκτός Σύνδεσεως
+OFFLINE_SHOP_BUTTON_LOCK	Κλείδωσε
+OFFLINE_SHOP_BUTTON_UNLOCK	Ξεκλείδωσε
+OFFLINE_SHOP_BUTTON_RENEW	Ανανέωσε
+OFFLINE_SHOP_BUTTON_RENAME	Μετανόμασε
+OFFLINE_SHOP_BUTTON_CLOSE	Κλείσε
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Άλλαξε το Σύμβολο του Καταστήματος
+OFFLINE_SHOP_INPUT_SIGN_DESC	Όνομα Καταστήματος: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d ΗΜΕΡΑ %02d ΩΡΕΣ %02d Λ
+SEARCH_SHOP_TITLE	Αναζήτησ Καταστήματος
+SEARCH_SHOP_BUY_CONFIGM	Επιθύμεις να αγοράσεις αυτό το αντικείμενο?
+SEARCH_SHOP_BOOKMARK_EMPTY	Άδειο
+SEARCH_SHOP_BOOKMARK_FULL	Καμία κενή θέση για να αποθηκεύσεις μια αναζήτηση.
+SEARCH_SHOP_BOOKMARKS	Σελιδοδείκτες Bookmarks
+SEARCH_SHOP_FAVOURITES	Αγαπημένα Favourites
+SEARCH_SHOP_SORT_UP	Φθίνουσα Descending
+SEARCH_SHOP_SORT_DOWN	Αύξουσα Ascending
+SEARCH_SHOP_FILTER_CATEGORY	Φίλτρο
+OFFLINE_SHOP_LOCATION	Shop Location:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Withdraw
+OFFLINE_SHOP_BUTTON_ADD_TIME	Add Time
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	View Logs
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop expires in:
+OFFLINE_SHOP_TIME_EXCEED	Your shop time have exceeded the limit, you can only have total of %d days
+OFFLINE_SHOP_NO_YANG	You do not have any yang to withdraw!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Καταστήματα

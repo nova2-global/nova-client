@@ -38,6 +38,8 @@ import uiMaintenance
 # PRIVATE_SHOP_PRICE_LIST
 import uiPrivateShopBuilder
 # END_OF_PRIVATE_SHOP_PRICE_LIST
+# The offline shop's remembered prices (NOVA-9, chunk Y2's module; OLD game.py:61)
+import itemPrices
 
 import mouseModule
 import consoleModule
@@ -112,6 +114,10 @@ class GameWindow(ui.ScriptWindow):
 
 		self.mapNameShower = nui_windows.make("map-name", uiMapNameShower.MapNameShower, "nui_map_name.MapNameShower")
 		self.affectShower = nui_windows.make("affects", uiAffectShower.AffectShower, "nui_affects.AffectShower")
+		# NOVA-11 (spec 2.8): a premium status that came before this window is not lost.
+		setPremiumStatus = getattr(self.affectShower, "SetPremiumStatus", None)
+		if setPremiumStatus:
+			setPremiumStatus(player.GetPremiumTier(), player.GetPremiumSecondsLeft())
 
 		self.playerGauge = nui_windows.make("player-gauge", uiPlayerGauge.PlayerGauge, "nui_player_gauge.PlayerGauge", self)
 		self.playerGauge.Hide()
@@ -193,6 +199,8 @@ class GameWindow(ui.ScriptWindow):
 		# PRIVATE_SHOP_PRICE_LIST
 		uiPrivateShopBuilder.Clear()
 		# END_OF_PRIVATE_SHOP_PRICE_LIST
+		# The offline shop's price list (NOVA-9; OLD game.py:330, written back at Close).
+		itemPrices.read_prices()
 
 		# UNKNOWN_UPDATE
 		exchange.InitTrading()
@@ -319,6 +327,8 @@ class GameWindow(ui.ScriptWindow):
 
 		self.KillFocus()
 		app.HideCursor()
+		# The offline shop's price list (NOVA-9; OLD game.py:458).
+		itemPrices.write_price_list()
 
 		print("---------------------------------------------------------------------------- CLOSE GAME WINDOW")
 
@@ -802,6 +812,14 @@ class GameWindow(ui.ScriptWindow):
 		elif chr.NEW_AFFECT_DRAGON_SOUL_QUALIFIED == type:
 			self.BINARY_DragonSoulGiveQuilification()
 
+	## Premium (NOVA-11): C's GC::PREMIUM_STATUS handler (OLD's server command
+	## SetPremiumStatus, game.py:3815-3817). A shower without the icon (NovaUI's,
+	## until the UI session adds it) is left alone.
+	def BINARY_SetPremiumStatus(self, tier, secondsLeft):
+		setPremiumStatus = getattr(self.affectShower, "SetPremiumStatus", None)
+		if setPremiumStatus:
+			setPremiumStatus(int(tier), int(secondsLeft))
+
 	def BINARY_NEW_RemoveAffect(self, type, pointIdx):
 		self.affectShower.BINARY_NEW_RemoveAffect(type, pointIdx)
 
@@ -996,6 +1014,63 @@ class GameWindow(ui.ScriptWindow):
 
 	def SetShopSellingPrice(self, Price):
 		pass
+
+	## Offline shop and search (NOVA-9): C's GC::OFFLINE_SHOP and
+	## GC::SHOP_SEARCH callbacks (k-report 5.2; OLD game.py's names), each
+	## forwarded to the Interface, which reaches chunk Y2's windows.
+	def StartOfflineShop(self, vid):
+		self.interface.OpenOfflineShopDialog(vid)
+
+	def OpenOfflineShop(self, open):
+		self.interface.OpenOfflineShop(open)
+
+	def UpdateShopLock(self, locked):
+		self.interface.UpdateShopLock(locked)
+
+	def UpdateShopTime(self, secondsLeft):
+		self.interface.UpdateShopTime(secondsLeft)
+
+	def UpdateShopSign(self, sign):
+		self.interface.UpdateShopSign(sign)
+
+	def UpdateShopGold(self, gold):
+		self.interface.UpdateShopGold(gold)
+
+	def OnOfflineShopResult(self, op, code, arg):
+		self.interface.OnOfflineShopResult(op, code, arg)
+
+	def BINARY_OfflineShopLog(self, rows, page, last):
+		self.interface.OfflineShopLog(rows, page, last)
+
+	def BINARY_OfflineShopConfig(self):
+		self.interface.OnOfflineShopConfig()
+
+	## MANAGE without a shop: the server opened a builder session.
+	def BINARY_OfflineShopBuilderOpen(self):
+		self.interface.OpenPrivateShopInputNameDialog()
+
+	def BINARY_OfflineShopHideShops(self, hidden):
+		self.interface.OnOfflineShopHideShops(hidden)
+
+	def RefreshSearchShop(self):
+		self.interface.RefreshSearchShop()
+
+	def OnSearchShopBuyResult(self, code, ownerPid, slot):
+		self.interface.OnSearchShopBuyResult(code, ownerPid, slot)
+
+	## Gaya market (NOVA-10): C's GC::GAYA_MARKET (open 1, open 0) and
+	## GC::GAYA_MARKET_CLOSE (OLD game.py:1805-1817).
+	def OpenGemShop(self):
+		if self.interface:
+			self.interface.OpenGemShop()
+
+	def RefreshGemShop(self):
+		if self.interface:
+			self.interface.RefreshGemShop()
+
+	def CloseGemShop(self):
+		if self.interface:
+			self.interface.CloseGemShop()
 
 	## Exchange
 	def StartExchange(self):
@@ -2122,8 +2197,9 @@ class GameWindow(ui.ScriptWindow):
 	def __PrivateShop_Open(self):
 		self.interface.OpenPrivateShopInputNameDialog()
 
-	def BINARY_PrivateShop_Appear(self, vid, text):
-		self.interface.AppearPrivateShop(vid, text)
+	## style: the sign's decoration (NOVA-9; C passes 0 for an unknown one).
+	def BINARY_PrivateShop_Appear(self, vid, text, style=0):
+		self.interface.AppearPrivateShop(vid, text, style)
 
 	def BINARY_PrivateShop_Disappear(self, vid):
 		self.interface.DisappearPrivateShop(vid)

@@ -466,3 +466,50 @@ NUI_INTRO_CREATE_TITLE	Charakter erstellen
 NUI_INTRO_SELECT_TITLE	Charakterauswahl
 NUI_INTRO_SLOTS	%d Plätze
 NUI_INTRO_LOADING_TITLE	Das Reich betreten
+GEMSHOP_LEFTTIME	Verbleibende Zeit
+GEMSHOP_TITLE	GAYAHANDEL
+MYSHOP_DECO_CANCEL	Schließen
+MYSHOP_DECO_DEFAULT	Standard
+MYSHOP_DECO_NEXT	Weiter
+MYSHOP_DECO_OK	Abschließen
+MYSHOP_DECO_PREV	Zurück
+MYSHOP_DECO_SELECT_MODEL	Wähle das Aussehen deines Shops aus.
+MYSHOP_DECO_SELECT_TITLE	Wähle das Aussehen deines Titels aus.
+OFFLINE_SHOP_TITLE	Offline-Shop öffnen
+OFFLINE_SHOP_BUTTON_LOCK	Sperren
+OFFLINE_SHOP_BUTTON_UNLOCK	Freischalten
+OFFLINE_SHOP_BUTTON_RENEW	Erneuern
+OFFLINE_SHOP_BUTTON_RENAME	Umbenennen
+OFFLINE_SHOP_BUTTON_CLOSE	Schliessen
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Shop-Zeichen ändern
+OFFLINE_SHOP_INPUT_SIGN_DESC	Laden Name: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d Tag %02d Stunde %02d Minute
+SEARCH_SHOP_TITLE	Suche nach Laden
+SEARCH_SHOP_BUY_CONFIGM	Möchten Sie diesen Artikel kaufen?
+SEARCH_SHOP_BOOKMARK_EMPTY	Leer
+SEARCH_SHOP_BOOKMARK_FULL	Kein leerer Slot verfügbar um ein neues Lesezeichen hinzu zu fügen.
+SEARCH_SHOP_BOOKMARKS	Lesezeichen
+SEARCH_SHOP_FAVOURITES	Favoriten
+SEARCH_SHOP_SORT_UP	Absteigend
+SEARCH_SHOP_SORT_DOWN	Aufsteigend
+SEARCH_SHOP_FILTER_CATEGORY	Filter
+OFFLINE_SHOP_LOCATION	Shop-Standort:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Abheben
+OFFLINE_SHOP_BUTTON_ADD_TIME	Zeit hinzufügen
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	Logs anzeigen
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop läuft ab in:
+OFFLINE_SHOP_TIME_EXCEED	Die Laufzeit deines Shops überschreitet das Limit; maximal %d Tage.
+OFFLINE_SHOP_NO_YANG	Du hast kein Yang zum Abheben!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Läden

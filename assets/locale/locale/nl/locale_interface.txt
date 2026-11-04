@@ -445,3 +445,50 @@ NUI_LOGIN_ERR_FAILED	Het account kon niet worden gemaakt. Probeer het later opni
 NUI_LOGIN_CREATED	Je account is klaar. Log ermee in.
 NUI_LOGIN_CREATING	Je account wordt gemaakt...
 HELP_OPEN_EXTRA_INVENTORY	Open speciale inventaris venster: U
+GEMSHOP_LEFTTIME	Tijd resterend
+GEMSHOP_TITLE	GAYA MARKT
+MYSHOP_DECO_CANCEL	Sluiten
+MYSHOP_DECO_DEFAULT	Standaard
+MYSHOP_DECO_NEXT	Volgende
+MYSHOP_DECO_OK	Bevestigen
+MYSHOP_DECO_PREV	Vorige
+MYSHOP_DECO_SELECT_MODEL	Kies het uiterlijk van je shop.
+MYSHOP_DECO_SELECT_TITLE	Kies het uiterlijk van je naam.
+OFFLINE_SHOP_TITLE	Open offline shop
+OFFLINE_SHOP_BUTTON_LOCK	Vergrendel
+OFFLINE_SHOP_BUTTON_UNLOCK	Ontgrendel
+OFFLINE_SHOP_BUTTON_RENEW	Vernieuw
+OFFLINE_SHOP_BUTTON_RENAME	Hernoem
+OFFLINE_SHOP_BUTTON_CLOSE	Sluit
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Verander winkelteken
+OFFLINE_SHOP_INPUT_SIGN_DESC	Winkelnaam: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d Dag %02d Uur %02d Min
+SEARCH_SHOP_TITLE	Winkels Doorzoeken
+SEARCH_SHOP_BUY_CONFIGM	Wil je dit voorwerp kopen?
+SEARCH_SHOP_BOOKMARK_EMPTY	Leeg
+SEARCH_SHOP_BOOKMARK_FULL	Geen lege openingen om een zoekactie te bewaren als bladwijzer.
+SEARCH_SHOP_BOOKMARKS	Bladwijzers
+SEARCH_SHOP_FAVOURITES	Favorieten
+SEARCH_SHOP_SORT_UP	Aflopend
+SEARCH_SHOP_SORT_DOWN	Oplopend
+SEARCH_SHOP_FILTER_CATEGORY	Filter
+OFFLINE_SHOP_LOCATION	Shop Location:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Withdraw
+OFFLINE_SHOP_BUTTON_ADD_TIME	Add Time
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	View Logs
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop expires in:
+OFFLINE_SHOP_TIME_EXCEED	Your shop time have exceeded the limit, you can only have total of %d days
+OFFLINE_SHOP_NO_YANG	You do not have any yang to withdraw!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Winkels

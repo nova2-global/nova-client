@@ -446,3 +446,50 @@ NUI_LOGIN_ERR_FAILED	Hesap oluşturulamadı. Daha sonra tekrar dene.
 NUI_LOGIN_CREATED	Hesabın hazır. Onunla giriş yap.
 NUI_LOGIN_CREATING	Hesabın oluşturuluyor...
 HELP_OPEN_EXTRA_INVENTORY	Özel Envanter Penceresini aç: U tuşu ile
+GEMSHOP_LEFTTIME	Kalan süre
+GEMSHOP_TITLE	GAYA MAĞAZASI
+MYSHOP_DECO_CANCEL	Kapat
+MYSHOP_DECO_DEFAULT	Standart
+MYSHOP_DECO_NEXT	Devam
+MYSHOP_DECO_OK	Bitir
+MYSHOP_DECO_PREV	Geri
+MYSHOP_DECO_SELECT_MODEL	Marketinin görünümünü seç.
+MYSHOP_DECO_SELECT_TITLE	Başlığının görünümünü seç.
+OFFLINE_SHOP_TITLE	Çevrimdisi pazar aç
+OFFLINE_SHOP_BUTTON_LOCK	Kilitle
+OFFLINE_SHOP_BUTTON_UNLOCK	Kilidi Kaldir
+OFFLINE_SHOP_BUTTON_RENEW	Yenile
+OFFLINE_SHOP_BUTTON_RENAME	Yeniden Adlandir
+OFFLINE_SHOP_BUTTON_CLOSE	Kapat
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Pazar Basligini Degistir
+OFFLINE_SHOP_INPUT_SIGN_DESC	Pazar adi: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d Gün %02d Saat %02d Dakika
+SEARCH_SHOP_TITLE	Pazar Ara
+SEARCH_SHOP_BUY_CONFIGM	Bu esyayi satin almak istiyor musun?
+SEARCH_SHOP_BOOKMARK_EMPTY	Bos
+SEARCH_SHOP_BOOKMARK_FULL	sik kullanilanlarda bos yer yok.
+SEARCH_SHOP_BOOKMARKS	Sık kullanılanlar
+SEARCH_SHOP_FAVOURITES	Favoriler
+SEARCH_SHOP_SORT_UP	Azalan
+SEARCH_SHOP_SORT_DOWN	Artan
+SEARCH_SHOP_FILTER_CATEGORY	Filter
+OFFLINE_SHOP_LOCATION	Shop Location:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Withdraw
+OFFLINE_SHOP_BUTTON_ADD_TIME	Add Time
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	View Logs
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop expires in:
+OFFLINE_SHOP_TIME_EXCEED	Your shop time have exceeded the limit, you can only have total of %d days
+OFFLINE_SHOP_NO_YANG	You do not have any yang to withdraw!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Pazarlar

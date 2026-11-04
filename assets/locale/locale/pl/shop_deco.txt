@@ -1,0 +1,13 @@
+1	Domyślny	30000
+1	1001 Nocy	30002
+1	Król Grilla	30003
+1	Łowca Skarbów	30004
+1	Oszczędny Płomień	30005
+1	Handlarz Bronią	30006
+1	Płatnerz	30007
+1	Alchemik	30008
+2	Piekło	d:/ymir work/ui/pattern/myshop/fire/p_fire	0xFF976D
+2	Epoka Lodowcowa	d:/ymir work/ui/pattern/myshop/ice/p_ice	0xF9F4FF
+2	Pergamin	d:/ymir work/ui/pattern/myshop/paper/p_paper	0xFFBF8B
+2	Sztandar Wojenny	d:/ymir work/ui/pattern/myshop/ribon/p_ribon	0xFFECD1
+2	Skrzydła	d:/ymir work/ui/pattern/myshop/wing/p_wing	0xF1ECE1

@@ -5,6 +5,7 @@ import item
 import app
 import skill
 import player
+import net
 import uiToolTip
 import math
 import dbg
@@ -605,6 +606,89 @@ class AffectImage(ui.ExpandedImageBox):
 			self.toolTipText.Hide()
 		# MR-10: -- END OF -- Add toolTip support and real-time countdown for affects
 
+## NOVA-11 (OLD uiAffectShower.py:453-516, 898-916): the premium tier's icon,
+## first in the row. Its tooltip names the tier and the time left; a press
+## asks whether to turn the premium time back into a scroll.
+class PremiumImage(ui.ExpandedImageBox):
+
+	## Spec Q9: OLD's art (d:/ymir work/ui/pattern/premium/01-03.dds) is a
+	## later asset task. NEW's stock premium affect art stands in, Gold's for
+	## Platinum. A tier with no entry shows nothing (PB-C7).
+	IMAGE_DICT = {
+		1 : "d:/ymir work/ui/skill/common/affect/silver_premium.sub",
+		2 : "d:/ymir work/ui/skill/common/affect/premium_gold.sub",
+		3 : "d:/ymir work/ui/skill/common/affect/premium_gold.sub",
+	}
+	## The tooltip is rebuilt at most once a second (spec 5.6; OLD tore it
+	## down and rebuilt it every 500 ms, PB-C12).
+	REFRESH_SECONDS = 1
+
+	def __init__(self):
+		ui.ExpandedImageBox.__init__(self)
+		self.tier = 0
+		self.endTime = 0
+		self.nextRefreshTime = 0
+		self.questionDialog = None
+
+		self.toolTip = uiToolTip.ToolTip(150)
+		self.toolTip.HideToolTip()
+
+	def __del__(self):
+		ui.ExpandedImageBox.__del__(self)
+
+	def SetPremiumStatus(self, tier, secondsLeft):
+		self.tier = tier
+		self.LoadImage(self.IMAGE_DICT[tier])
+		self.SetScale(0.7, 0.7)
+
+		self.endTime = app.GetGlobalTimeStamp() + max(0, secondsLeft)
+		self.nextRefreshTime = 0
+		self.UpdateTime()
+
+	def UpdateTime(self):
+		now = app.GetGlobalTimeStamp()
+		if now < self.nextRefreshTime:
+			return
+
+		self.nextRefreshTime = now + self.REFRESH_SECONDS
+		self.toolTip.ClearToolTip()
+		self.toolTip.SetTitle(localeInfo.PREMIUM_TITLE)
+		self.toolTip.AppendTextLine(getattr(localeInfo, "PREMIUM_TIER_%d" % self.tier))
+		self.toolTip.AppendTextLine(localeInfo.SecondToDHM(max(0, self.endTime - now)))
+		self.toolTip.ResizeToolTip()
+
+	def OnMouseLeftButtonDown(self):
+		import uiCommon
+		self.OnCloseQuestionDialog()
+
+		questionDialog = uiCommon.QuestionDialog()
+		questionDialog.SetText(localeInfo.PREMIUM_DEACTIVATE_QUESTION)
+		questionDialog.SetWidth(350)
+		questionDialog.SetAcceptEvent(ui.__mem_func__(self.OnAcceptQuestionDialog))
+		questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
+		questionDialog.Open()
+		self.questionDialog = questionDialog
+
+	def OnAcceptQuestionDialog(self):
+		## Once per question: the dialog goes before the command is sent.
+		if not self.questionDialog:
+			return
+
+		self.OnCloseQuestionDialog()
+		net.SendChatPacket("/deactivate_premium")
+
+	def OnCloseQuestionDialog(self):
+		if self.questionDialog:
+			self.questionDialog.Close()
+
+		self.questionDialog = None
+
+	def OnMouseOverIn(self):
+		self.toolTip.ShowToolTip()
+
+	def OnMouseOverOut(self):
+		self.toolTip.HideToolTip()
+
 class AffectShower(ui.Window):
 
 	MALL_DESC_IDX_START = 1000
@@ -713,6 +797,7 @@ class AffectShower(ui.Window):
 		self.affectImageDict = {}
 		self.horseImage = None
 		self.lovePointImage = None
+		self.premiumImage = None
 		self.autoPotionImageHP = AutoPotionImage()
 		self.autoPotionImageSP = AutoPotionImage()
 		# MR-16: Classic affect duration countdown
@@ -919,6 +1004,21 @@ class AffectShower(ui.Window):
 		self.__ArrangeImageList()
 		# MR-17: -- END OF -- Fix icons not re-arranging after horse state changes
 
+	## NOVA-11 (OLD uiAffectShower.py:898-907): the tier C keeps from
+	## GC::PREMIUM_STATUS, through game.BINARY_SetPremiumStatus. Tier 0 removes
+	## the icon, and so does a tier with no icon (PB-C7: OLD raised KeyError).
+	def SetPremiumStatus(self, tier, secondsLeft):
+		if tier in PremiumImage.IMAGE_DICT:
+			image = PremiumImage()
+			image.SetParent(self)
+			image.SetPremiumStatus(tier, secondsLeft)
+			image.Show()
+			self.premiumImage = image
+		else:
+			self.premiumImage = None
+
+		self.__ArrangeImageList()
+
 	def SetPlayTime(self, playTime):
 		self.serverPlayTime = playTime
 		self.clientPlayTime = app.GetTime()
@@ -1002,6 +1102,8 @@ class AffectShower(ui.Window):
 	def __ArrangeImageList(self):
 
 		width = len(self.affectImageDict) * self.IMAGE_STEP
+		if self.premiumImage:
+			width+=self.IMAGE_STEP
 		if self.lovePointImage:
 			width+=self.IMAGE_STEP
 		if self.horseImage:
@@ -1010,6 +1112,11 @@ class AffectShower(ui.Window):
 		self.SetSize(width, 26)
 
 		xPos = 0
+
+		## The premium icon first (OLD uiAffectShower.py:982-987).
+		if self.premiumImage:
+			self.premiumImage.SetPosition(xPos, 0)
+			xPos += self.IMAGE_STEP
 
 		if self.lovePointImage:
 			if self.lovePointImage.IsShow():
@@ -1027,6 +1134,9 @@ class AffectShower(ui.Window):
 	# MR-12: Fix realtime countdown auto-start
 	def OnUpdate(self):
 		try:
+			if self.premiumImage:
+				self.premiumImage.UpdateTime()
+
 			for image in list(self.affectImageDict.values()):
 				if image.GetAffect() == chr.NEW_AFFECT_AUTO_HP_RECOVERY or image.GetAffect() == chr.NEW_AFFECT_AUTO_SP_RECOVERY:
 					image.UpdateAutoPotionDescription()

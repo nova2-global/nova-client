@@ -445,3 +445,50 @@ NUI_LOGIN_ERR_FAILED	Le compte n'a pas pu être créé. Réessaie plus tard.
 NUI_LOGIN_CREATED	Ton compte est prêt. Connecte-toi avec.
 NUI_LOGIN_CREATING	Création de ton compte...
 HELP_OPEN_EXTRA_INVENTORY	Ouvrir l'inventaire spécial : U
+GEMSHOP_LEFTTIME	Temps restant
+GEMSHOP_TITLE	BOURSE AUX GAYAS
+MYSHOP_DECO_CANCEL	Fermer
+MYSHOP_DECO_DEFAULT	Standard
+MYSHOP_DECO_NEXT	Suivant
+MYSHOP_DECO_OK	Terminer
+MYSHOP_DECO_PREV	Retour
+MYSHOP_DECO_SELECT_MODEL	Sélectionnez l'apparence de votre magasin.
+MYSHOP_DECO_SELECT_TITLE	Sélectionnez l'apparence de votre titre.
+OFFLINE_SHOP_TITLE	Ouvrir une boutique hors ligne
+OFFLINE_SHOP_BUTTON_LOCK	Fermer à clé
+OFFLINE_SHOP_BUTTON_UNLOCK	Ouvrir
+OFFLINE_SHOP_BUTTON_RENEW	Renouveler
+OFFLINE_SHOP_BUTTON_RENAME	Renommer
+OFFLINE_SHOP_BUTTON_CLOSE	Fermer
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Changer le signe de la boutique
+OFFLINE_SHOP_INPUT_SIGN_DESC	Nom de la boutique: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d Jour %02d Heure %02d Min
+SEARCH_SHOP_TITLE	Recherche boutique
+SEARCH_SHOP_BUY_CONFIGM	Voulez-vous acheter cet object?
+SEARCH_SHOP_BOOKMARK_EMPTY	Vide
+SEARCH_SHOP_BOOKMARK_FULL	Aucun emplacement vide pour ajouter une recherche aux favoris.
+SEARCH_SHOP_BOOKMARKS	Marques_Pages
+SEARCH_SHOP_FAVOURITES	Favoris
+SEARCH_SHOP_SORT_UP	Descendant
+SEARCH_SHOP_SORT_DOWN	Ascendant
+SEARCH_SHOP_FILTER_CATEGORY	Filtre
+OFFLINE_SHOP_LOCATION	Shop Location:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Withdraw
+OFFLINE_SHOP_BUTTON_ADD_TIME	Add Time
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	View Logs
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop expires in:
+OFFLINE_SHOP_TIME_EXCEED	Your shop time have exceeded the limit, you can only have total of %d days
+OFFLINE_SHOP_NO_YANG	You do not have any yang to withdraw!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Magasins

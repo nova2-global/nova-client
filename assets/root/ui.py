@@ -3772,3 +3772,333 @@ def GetHyperlink():
 	return wndMgr.GetHyperlink()
 
 RegisterToolTipWindow("TEXT", TextLine)
+
+###################################################################################################
+## The offline shop's widgets (NOVA-9, wave 5 spec 3.8; OLD ui.py:2525, 6754, 6863, 7214, 8082).
+## OLD's art for them (ui/game/refine/checkbox.tga, ThinBoard_*_new/_purple.tga,
+## ui/pattern/myshop/*, ui/search_shop/*) is not in NEW's packs (Q9): each draws NEW's public
+## art and colors until it ships, and takes OLD's art where the file exists.
+###################################################################################################
+
+class CheckBox(Window):
+	"""A box, its check mark and a text; a left click toggles it (OLD ui.py:2525-2610).
+	SetEvent(func, "ON_CHECK") / (func, "ON_UNCHECK") take the toggle's events."""
+
+	BOX_SIZE = 14
+	TEXT_X = 20
+
+	def __init__(self, layer = "UI"):
+		Window.__init__(self, layer)
+		self.checked = False
+		self.eventFunc = {"ON_CHECK" : None, "ON_UNCHECK" : None}
+
+		box = SlotBar()
+		box.SetParent(self)
+		box.AddFlag("not_pick")
+		box.SetSize(self.BOX_SIZE, self.BOX_SIZE)
+		box.SetPosition(0, 0)
+		box.Show()
+		self.box = box
+
+		checkImage = ImageBox()
+		checkImage.SetParent(self)
+		checkImage.AddFlag("not_pick")
+		checkImage.LoadImage("d:/ymir work/ui/public/check_image.sub")
+		checkImage.SetPosition(-4, -2)
+		checkImage.Hide()
+		self.checkImage = checkImage
+
+		textInfo = TextLine()
+		textInfo.SetParent(self)
+		textInfo.SetPosition(self.TEXT_X, 0)
+		textInfo.Show()
+		self.textInfo = textInfo
+
+		self.__Resize()
+
+	def __del__(self):
+		Window.__del__(self)
+
+	def __Resize(self):
+		(width, height) = self.textInfo.GetTextSize()
+		self.SetSize(self.TEXT_X + width, max(self.BOX_SIZE, height))
+
+	def SetTextInfo(self, info):
+		self.textInfo.SetText(info)
+		self.__Resize()
+
+	def SetCheckStatus(self, flag):
+		self.checked = bool(flag)
+		if self.checked:
+			self.checkImage.Show()
+		else:
+			self.checkImage.Hide()
+
+	def GetCheckStatus(self):
+		return self.checked
+
+	def SetEvent(self, func, kind):
+		if kind in self.eventFunc:
+			self.eventFunc[kind] = func
+
+	def OnMouseLeftButtonUp(self):
+		self.SetCheckStatus(not self.checked)
+		event = self.eventFunc["ON_CHECK" if self.checked else "ON_UNCHECK"]
+		if event:
+			event()
+		return True
+
+class ThinBoard2(ThinBoard):
+	"""A thin board with a named look (OLD ui.py:6754-6861): "new" for a shop sign, "purple"
+	for one the player visited. OLD's pattern art when the files exist, otherwise the
+	board's base takes the pattern's color."""
+
+	PATTERN_COLORS = {
+		"new" : grp.GenerateColor(0.0, 0.0, 0.0, 0.51),
+		"purple" : grp.GenerateColor(0.30, 0.05, 0.40, 0.70),
+	}
+
+	def __init__(self, layer = "UI"):
+		ThinBoard.__init__(self, layer)
+		self.pattern = ""
+		self.SetPattern("new")
+
+	def __del__(self):
+		ThinBoard.__del__(self)
+
+	def SetPattern(self, name):
+		self.pattern = name
+		cornerFileNames = ["d:/ymir work/ui/pattern/ThinBoard_Corner_%s_%s.tga" % (dir, name) for dir in ("LeftTop", "LeftBottom", "RightTop", "RightBottom")]
+		lineFileNames = ["d:/ymir work/ui/pattern/ThinBoard_Line_%s_%s.tga" % (dir, name) for dir in ("Left", "Right", "Top", "Bottom")]
+		if all(app.IsExistFile(fileName) for fileName in cornerFileNames + lineFileNames):
+			for corner, fileName in zip(self.Corners, cornerFileNames):
+				corner.LoadImage(fileName)
+			for line, fileName in zip(self.Lines, lineFileNames):
+				line.LoadImage(fileName)
+			self.Base.SetColor(self.BOARD_COLOR)
+		else:
+			self.Base.SetColor(self.PATTERN_COLORS.get(name, self.BOARD_COLOR))
+
+	def GetPattern(self):
+		return self.pattern
+
+class ShopDecoTitle(ThinBoard):
+	"""A decorated shop sign's frame (OLD ui.py:6863-6947): the style's pattern art from
+	shop_deco.txt ("<pattern>_left_top.tga" and the seven other parts) when it exists,
+	otherwise the thin board tinted with the style's font color. `style` is the sign
+	style, 1 to 5; any other draws the plain board."""
+
+	DEFAULT_VALUE = 16
+	PATTERN_CORNER_WIDTH = 48
+	PATTERN_CORNER_HEIGHT = 32
+	PATTERN_LINE_HEIGHT = 32
+
+	def __init__(self, style, layer = "UI", pattern = None, color = None):
+		ThinBoard.__init__(self, layer)
+		if pattern is None:
+			(pattern, color) = self.__StylePattern(style)
+		if color is None:
+			color = 0xFFFFFF
+		self.style = style
+		self.color = color
+		self.patternCorners = []
+		self.patternLines = []
+		cornerFileNames = ["%s_%s.tga" % (pattern, dir) for dir in ("left_top", "left_bottom", "right_top", "right_bottom")]
+		lineFileNames = ["%s_%s.tga" % (pattern, dir) for dir in ("left", "right", "top", "bottom")]
+		if pattern and all(app.IsExistFile(fileName) for fileName in cornerFileNames + lineFileNames):
+			for wnd in self.Corners + self.Lines:
+				wnd.Hide()
+			for fileName in cornerFileNames:
+				self.patternCorners.append(self.__MakePart(fileName))
+			for fileName in lineFileNames:
+				self.patternLines.append(self.__MakePart(fileName))
+		elif pattern:
+			red = ((color >> 16) & 0xFF) / 255.0
+			green = ((color >> 8) & 0xFF) / 255.0
+			blue = (color & 0xFF) / 255.0
+			self.Base.SetColor(grp.GenerateColor(red * 0.35, green * 0.35, blue * 0.35, 0.75))
+
+	def __del__(self):
+		ThinBoard.__del__(self)
+
+	@staticmethod
+	def __StylePattern(style):
+		"""(pattern, color) of the style in shop_deco.txt (offlineshopconst), none without it."""
+		try:
+			import offlineshopconst
+			return offlineshopconst.style_pattern(style)
+		except Exception:
+			## A sign never stops the UI: no rules, no pattern.
+			return ("", 0xFFFFFF)
+
+	def __MakePart(self, fileName):
+		part = ExpandedImageBox()
+		part.AddFlag("attach")
+		part.AddFlag("not_pick")
+		part.LoadImage(fileName)
+		part.SetParent(self)
+		part.SetPosition(0, 0)
+		part.Show()
+		return part
+
+	def GetFontColor(self):
+		"""The style's font color as (r, g, b) floats."""
+		return (((self.color >> 16) & 0xFF) / 255.0, ((self.color >> 8) & 0xFF) / 255.0, (self.color & 0xFF) / 255.0)
+
+	def SetSize(self, width, height):
+		ThinBoard.SetSize(self, width, height)
+		if not self.patternCorners:
+			return
+		width = max(self.DEFAULT_VALUE * 2, width)
+		height = max(self.DEFAULT_VALUE * 2, height)
+		value = self.DEFAULT_VALUE
+		self.patternCorners[self.LT].SetPosition(-self.PATTERN_CORNER_WIDTH + value, -self.PATTERN_CORNER_HEIGHT + value)
+		self.patternCorners[self.LB].SetPosition(-self.PATTERN_CORNER_WIDTH + value, height - self.PATTERN_CORNER_HEIGHT + value)
+		self.patternCorners[self.RT].SetPosition(width - value, -self.PATTERN_CORNER_HEIGHT + value)
+		self.patternCorners[self.RB].SetPosition(width - value, height - self.PATTERN_CORNER_HEIGHT + value)
+		self.patternLines[self.L].SetPosition(0, value)
+		self.patternLines[self.R].SetPosition(width - value, value)
+		self.patternLines[self.B].SetPosition(value, height - self.PATTERN_LINE_HEIGHT + value)
+		self.patternLines[self.T].SetPosition(value, -self.PATTERN_LINE_HEIGHT + value)
+		vertical = float((height - value * 2) - value) / value
+		horizontal = float((width - value * 2) - value) / value
+		self.patternLines[self.L].SetRenderingRect(0, 0, 0, vertical)
+		self.patternLines[self.R].SetRenderingRect(0, 0, 0, vertical)
+		self.patternLines[self.T].SetRenderingRect(0, 0, horizontal, 0)
+		self.patternLines[self.B].SetRenderingRect(0, 0, horizontal, 0)
+
+class CustomScrollBar(ThinScrollBar):
+	"""A thin scroll bar whose middle button can take its own art (OLD ui.py:7214-7250,
+	the search's category list)."""
+
+	def SetScrollImage(self, up, over, down):
+		self.middleBar.SetUpVisual(up)
+		self.middleBar.SetOverVisual(over)
+		self.middleBar.SetDownVisual(down)
+		self.SCROLLBAR_MIDDLE_HEIGHT = self.middleBar.GetHeight()
+
+class ScrollWindow(Window):
+	"""A window that shows a part of a taller content window and scrolls it with a bar
+	and the wheel (OLD ui.py:8082-8320, on NEW's scissor rect): the content is clipped to
+	this window and moved by the bar. SetOnEndScrollEvent's event runs once each time a
+	user's scroll (the bar or the wheel) reaches the content's end. A content that grows
+	or shrinks keeps its pixel offset, the bar follows it, and no event runs (OLD
+	ui.py:8236-8244, 8302-8303); nor does ScrollToStart."""
+
+	THIN, MIDDLE, THICK = list(range(3))
+	WHEEL_STEP = 0.10
+
+	def __init__(self, width, height, kind = 0, layer = "UI"):
+		Window.__init__(self, layer)
+		self.contentWnd = None
+		self.contentX = 0
+		self.contentOffset = 0
+		self.eventScrollEnd = None
+		self.endReached = False
+		self.movingBar = False
+		self.EnableScissorRect()
+		Window.SetSize(self, width, height)
+
+		## The plain bar: ThinScrollBar's middle bar has no art parts, so its SetMiddleBarSize fails.
+		scrollBar = ScrollBar()
+		scrollBar.SetParent(self)
+		scrollBar.SetScrollEvent(__mem_func__(self.__OnScroll))
+		scrollBar.SetScrollBarSize(height)
+		scrollBar.SetPosition(width - scrollBar.SCROLLBAR_WIDTH, 0)
+		scrollBar.Hide()
+		self.scrollBar = scrollBar
+
+	def __del__(self):
+		Window.__del__(self)
+
+	def Destroy(self):
+		self.contentWnd = None
+		self.eventScrollEnd = None
+		if self.scrollBar:
+			self.scrollBar.Destroy()
+		self.scrollBar = None
+
+	def SetContentWindow(self, contentWnd):
+		self.contentWnd = contentWnd
+		self.contentX = contentWnd.GetLocalPosition()[0]
+		self.contentOffset = 0
+		contentWnd.SetParent(self)
+		self.OnContentWindowSizeChange()
+		self.ScrollToStart()
+
+	def SetOnEndScrollEvent(self, event):
+		self.eventScrollEnd = event
+
+	def NeedScrollbar(self):
+		return bool(self.contentWnd) and self.contentWnd.GetHeight() > self.GetHeight()
+
+	def GetScrollRange(self):
+		if not self.contentWnd:
+			return 0
+		return max(0, self.contentWnd.GetHeight() - self.GetHeight())
+
+	def OnContentWindowSizeChange(self):
+		"""Call after the content changed its height: the bar takes the new size and follows
+		the content, which keeps its pixel offset (clamped to the new range)."""
+		if not self.contentWnd or not self.scrollBar:
+			return
+		if self.NeedScrollbar():
+			self.scrollBar.SetMiddleBarSize(float(self.GetHeight()) / float(self.contentWnd.GetHeight()))
+			self.scrollBar.SetScrollStep(min(1.0, float(self.GetHeight()) / float(max(1, self.GetScrollRange()))))
+			self.scrollBar.Show()
+		else:
+			self.scrollBar.Hide()
+		self.__ScrollTo(self.contentOffset)
+
+	def FitWidth(self, contentWidth):
+		Window.SetSize(self, contentWidth + self.scrollBar.SCROLLBAR_WIDTH, self.GetHeight())
+		self.scrollBar.SetScrollBarSize(self.GetHeight())
+		self.scrollBar.SetPosition(contentWidth, 0)
+
+	def AutoFitWidth(self):
+		if self.contentWnd:
+			self.FitWidth(self.contentWnd.GetWidth())
+
+	def ScrollToStart(self):
+		self.__ScrollTo(0)
+
+	def OnRunMouseWheel(self, length):
+		if not self.NeedScrollbar():
+			return False
+		step = self.WHEEL_STEP if length < 0 else -self.WHEEL_STEP
+		self.scrollBar.SetPos(self.scrollBar.GetPos() + step)
+		return True
+
+	def __OnScroll(self):
+		"""The bar moved by the user: a drag, a click, its buttons or the wheel."""
+		if self.movingBar or not self.contentWnd:
+			return
+		pos = max(0.0, min(1.0, self.scrollBar.GetPos()))
+		scrollRange = self.GetScrollRange()
+		self.__MoveContent(int(scrollRange * pos))
+		atEnd = scrollRange > 0 and pos >= 1.0
+		if atEnd and not self.endReached:
+			self.endReached = True
+			if self.eventScrollEnd:
+				self.eventScrollEnd()
+		elif not atEnd:
+			self.endReached = False
+
+	def __ScrollTo(self, offset):
+		"""The content to `offset` pixels and the bar with it, as the program's move: no event."""
+		if not self.contentWnd:
+			return
+		scrollRange = self.GetScrollRange()
+		offset = max(0, min(scrollRange, int(offset)))
+		self.__MoveContent(offset)
+		if self.scrollBar:
+			self.movingBar = True
+			try:
+				self.scrollBar.SetPos(float(offset) / float(scrollRange) if scrollRange else 0.0)
+			finally:
+				self.movingBar = False
+		self.endReached = offset >= scrollRange
+
+	def __MoveContent(self, offset):
+		self.contentOffset = offset
+		self.contentWnd.SetPosition(self.contentX, -offset)

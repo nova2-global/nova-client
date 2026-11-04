@@ -446,3 +446,50 @@ NUI_LOGIN_ERR_FAILED	Contul nu a putut fi creat. Încearcă mai târziu.
 NUI_LOGIN_CREATED	Contul tău este gata. Conectează-te cu el.
 NUI_LOGIN_CREATING	Se creează contul...
 HELP_OPEN_EXTRA_INVENTORY	Pentru a deschide inventarul special: U
+GEMSHOP_LEFTTIME	Timp rămas
+GEMSHOP_TITLE	PIAŢA GAYA
+MYSHOP_DECO_CANCEL	Închide
+MYSHOP_DECO_DEFAULT	Standard
+MYSHOP_DECO_NEXT	Următorul
+MYSHOP_DECO_OK	Confirmă
+MYSHOP_DECO_PREV	Înapoi
+MYSHOP_DECO_SELECT_MODEL	Alege aspectul magazinului.
+MYSHOP_DECO_SELECT_TITLE	Alege aspectul numelui.
+OFFLINE_SHOP_TITLE	Deschide Magazin offline
+OFFLINE_SHOP_BUTTON_LOCK	Blocat
+OFFLINE_SHOP_BUTTON_UNLOCK	Deblocat
+OFFLINE_SHOP_BUTTON_RENEW	Reinnoieste
+OFFLINE_SHOP_BUTTON_RENAME	Schimba nume
+OFFLINE_SHOP_BUTTON_CLOSE	Inchide
+OFFLINE_SHOP_INPUT_SIGN_TITLE	Schimba magazinul
+OFFLINE_SHOP_INPUT_SIGN_DESC	Shop Name: %s
+OFFLINE_SHOP_RENEW_CONFIRM	Renewing the shop costs %s Yang.
+OFFLINE_SHOP_TIME_LEFT	%d Day %02d Hour %02d Min
+SEARCH_SHOP_TITLE	Cauta Magazin
+SEARCH_SHOP_BUY_CONFIGM	Vrei sa cumperi acest item?
+SEARCH_SHOP_BOOKMARK_EMPTY	Gol
+SEARCH_SHOP_BOOKMARK_FULL	Nu exista sloturi goale pentru a marca o cautare.
+SEARCH_SHOP_BOOKMARKS	Marcaje
+SEARCH_SHOP_FAVOURITES	Favourite
+SEARCH_SHOP_SORT_UP	Descendent
+SEARCH_SHOP_SORT_DOWN	Ascendent
+SEARCH_SHOP_FILTER_CATEGORY	Filter
+OFFLINE_SHOP_LOCATION	Shop Location:
+OFFLINE_SHOP_BUTTON_TELEPORT	Teleport
+OFFLINE_SHOP_BUTTON_WITHDRAW	Withdraw
+OFFLINE_SHOP_BUTTON_ADD_TIME	Add Time
+OFFLINE_SHOP_BUTTON_VIEW_LOGS	View Logs
+OFFLINE_SHOP_TEXT_EXPIRE_IN	Shop expires in:
+OFFLINE_SHOP_TIME_EXCEED	Your shop time have exceeded the limit, you can only have total of %d days
+OFFLINE_SHOP_NO_YANG	You do not have any yang to withdraw!
+OFFLINE_SHOP_CHANGE_PRICE_TITLE	Change Price
+OFFLINE_SHOP_CHANGE_PRICE_ALL	Apply to all identical items
+OFFLINE_SHOP_CHANGE_PRICE_LOCKED	You must lock your shop to change prices.
+OFFLINE_SHOP_REMOVE_ITEM_CONFIRM	Remove "%s" from shop?
+OFFLINE_SHOP_REMOVE_ITEM_ALL	Remove all identical items
+OFFLINE_SHOP_REMOVE_ITEM_LOCKED	You must lock your shop to remove items.
+OFFLINE_SHOP_PAGE_BUTTON	Page %d
+OFFLINE_SHOP_EXPAND_BUTTON	Expand Shop
+OFFLINE_SHOP_EXPAND_NO_ITEM	You don't have the required item to expand your shop.
+OFFLINE_SHOP_EXPAND_ROW_CONFIRM	Use %s to expand shop?
+OPTION_SHOW_COMPANIONS_SHOPS	Magazine

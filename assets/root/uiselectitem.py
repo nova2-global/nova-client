@@ -9,6 +9,9 @@ import net
 EXTRA_INVENTORY_CATEGORY_STONES = 2
 # OLD's cap (uiSelectItem.py: slotPos > 54).
 SELECT_ITEM_MAX = 55
+# The alchemist's stones: grade +2 at most (OLD uiSelectItem.py). The gaya
+# cut's picker passes the server's maximum (NOVA-10: 3, OLD uiSelectItemEx.py).
+SELECT_ITEM_MAX_GRADE = 2
 
 
 def GetExtraStoneCells():
@@ -30,6 +33,10 @@ class SelectItemWindow(ui.ScriptWindow):
 		# {select slot: cell} and {select slot: window} (the cell's window).
 		self.inventorySlotPosDict = {}
 		self.inventorySlotWindowDict = {}
+		# The open's highest grade, and whether a pick keeps the window open
+		# (the gaya cut asks again after each stone, NOVA-10).
+		self.maxGrade = SELECT_ITEM_MAX_GRADE
+		self.stayOpen = False
 
 		self.LoadWindow()
 
@@ -61,7 +68,11 @@ class SelectItemWindow(ui.ScriptWindow):
 		self.itemSlot.SetOverInItemEvent(ui.__mem_func__(self.OverInItem))
 		self.itemSlot.SetOverOutItemEvent(ui.__mem_func__(self.OverOutItem))
 
-	def Open(self):
+	## maxGrade and stayOpen: BINARY_OpenSelectItemWindowEx's picker (NOVA-10,
+	## OLD uiSelectItemEx.py); without them, the alchemist's.
+	def Open(self, maxGrade=None, stayOpen=False):
+		self.maxGrade = SELECT_ITEM_MAX_GRADE if maxGrade is None else maxGrade
+		self.stayOpen = stayOpen
 		self.RefreshSlot()
 		self.Show()
 
@@ -80,6 +91,10 @@ class SelectItemWindow(ui.ScriptWindow):
 		inventorySlotPos = self.inventorySlotPosDict[slotPos]
 		window = self.inventorySlotWindowDict.get(slotPos, player.INVENTORY)
 		net.SendSelectItemPacket(window, inventorySlotPos)
+		if self.stayOpen:
+			# The cut asks again for the next stone (OLD uiSelectItemEx.py).
+			self.OverOutItem()
+			return
 		self.Hide()
 
 	def SetTableSize(self, size):
@@ -126,7 +141,7 @@ class SelectItemWindow(ui.ScriptWindow):
 			else:
 				itemGrade = player.GetItemGrade(window, slotNumber)
 
-			if itemGrade > 2:
+			if itemGrade > self.maxGrade:
 				continue
 
 			self.inventorySlotPosDict[slotPos] = slotNumber

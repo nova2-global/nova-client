@@ -3380,8 +3380,8 @@
 20500	metinstone_egg02	
 20501	reddragon_room_box	
 20502	yut_npc	
-20503	scholar_beige_M2	
-20504	gemshop	
+20503	alchemist	
+20504	goods	
 20505	yut	
 20506	king_npc	
 20507	nova_december_mount_1	

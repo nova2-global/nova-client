@@ -2750,6 +2750,10 @@ def _wave3b_modules(game):
         def OpenHelpWindow(self):
             log.append(("interface.OpenHelpWindow", ()))
 
+        def OpenSearchShop(self, vnum=0):
+            # Wave 5 (NOVA-9): the inventory's Search button and Ctrl + click.
+            log.append(("interface.OpenSearchShop", (vnum,) if vnum else ()))
+
     class DragonSoulRefine(object):
         shown = False
 

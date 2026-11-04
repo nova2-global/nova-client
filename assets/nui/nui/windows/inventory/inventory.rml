@@ -178,6 +178,12 @@
 			<span class="nui-glyph nui-glyph--coin inv-money__coin"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>
 			<span class="inv-money__amount">{{ money }}</span>
 		</div>
+		<!-- Wave 5 (NOVA-10): the gaya balance under the money, as legacy's
+		     Gem slot; shown once legacy's RefreshStatus writes it. -->
+		<div id="inv-gem" class="inv-money inv-gem" data-if="gem_on">
+			<span class="nui-glyph nui-glyph--gem inv-money__coin inv-gem__glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
+			<span class="inv-money__amount">{{ gem }}</span>
+		</div>
 	</div>
 </body>
 </rml>

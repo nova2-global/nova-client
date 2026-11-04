@@ -24,7 +24,7 @@
 body.skin-classic.inv
 {
 	width: 176dp;
-	height: 591dp;
+	height: 611dp;
 	min-width: 0;
 }
 
@@ -451,4 +451,13 @@ body.skin-classic.inv .inv-rail__fold-glyph
 body.skin-classic.inv .inv-rail__fold:hover .inv-rail__fold-glyph
 {
 	--glyph-ink: var(--highlight);
+}
+
+/* The gaya slot (Wave 5, NOVA-10): legacy's Gem_Slot, the money slot's art
+   20 under it (the board grew 20 for it, 591 to 611). */
+body.skin-classic.inv .inv-money.inv-gem,
+body.skin-classic.inv .inv-money.inv-gem:hover
+{
+	top: 583dp;
+	margin-top: 0;
 }

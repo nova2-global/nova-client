@@ -1408,6 +1408,8 @@
 		"stat_defence": "642",
 		"stat_magic": "236-252",
 		"rail": [],
-		"rail_folded": false
+		"rail_folded": false,
+		"gem": "",
+		"gem_on": false
 	}
 }

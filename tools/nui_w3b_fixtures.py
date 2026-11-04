@@ -210,6 +210,9 @@ def inventory(limits, page, wear, bag, money, **rest):
         "figure": FIGURE_KNIGHT,
         "stat_attack": "1048-1166", "stat_defence": "642", "stat_magic": "236-252",
         "rail": [], "rail_folded": False,
+        # Wave 5 (NOVA-10): the gaya balance under the money, once legacy
+        # writes it.
+        "gem": "", "gem_on": False,
     }
     model.update(rest)
     return {"inventory": model}
@@ -218,12 +221,14 @@ def inventory(limits, page, wear, bag, money, **rest):
 FIGURE_KNIGHT = "/nui/figures/knight.png"
 FIGURE_COSTUME = {"male": "/nui/figures/costume-male.png", "female": "/nui/figures/costume-female.png"}
 
-# The board's rail (nui_inventory.BOARD_SHORTCUTS): the offline shop, the
-# ranking and the achievements as features to come, and the guide; the
-# events entry stands for a feature that exists, with a badge of three, as
-# the reviewed board shows it.
+# The board's rail (nui_inventory.BOARD_SHORTCUTS): the offline shop and its
+# search (Wave 5, enabled by the server's CONFIG), the ranking and the
+# achievements as features to come, and the guide; the events entry stands
+# for a feature that exists, with a badge of three, as the reviewed board
+# shows it.
 SAMPLE_RAIL = [
-    {"id": "offline_shop", "glyph": "stall", "tip": "@ui.NUI_RAIL_OFFLINE_SHOP", "enabled": True, "soon": True, "badge": ""},
+    {"id": "offline_shop", "glyph": "stall", "tip": "@ui.NUI_RAIL_OFFLINE_SHOP", "enabled": True, "soon": False, "badge": ""},
+    {"id": "shop_search", "glyph": "search", "tip": "@ui.SEARCH_SHOP_TITLE", "enabled": True, "soon": False, "badge": ""},
     {"id": "ranking", "glyph": "ranking", "tip": "@ui.NUI_RAIL_RANKING", "enabled": True, "soon": True, "badge": ""},
     {"id": "events", "glyph": "events", "tip": "@ui.NUI_RAIL_EVENTS", "enabled": True, "soon": False, "badge": "3"},
     {"id": "achievements", "glyph": "achievements", "tip": "@ui.NUI_RAIL_ACHIEVEMENTS", "enabled": True, "soon": True,
@@ -293,8 +298,9 @@ STONES = [28030, 28031, 28032, 28033, 28034, 28035, 28036, 28037, 28038, 28039, 
 
 def fixtures():
     return {
-        ("inventory", ""): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999),
-        ("inventory", "foundation"): inventory(FOUNDATION, 2, FOUNDATION_WEAR, foundation_bag, 2000000000000),
+        ("inventory", ""): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, gem="12.500", gem_on=True),
+        ("inventory", "foundation"): inventory(FOUNDATION, 2, FOUNDATION_WEAR, foundation_bag, 2000000000000,
+                                               gem="12.500", gem_on=True),
         ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}, refine=True,
                                                                                          marks=True), 0),
         ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),

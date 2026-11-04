@@ -21,7 +21,7 @@
    community (c), system (c), map, gift (c), gem, shop, heal, leave (c),
    mouse-move, mouse-attack (c), mouse-auto, mouse-camera (c), mouse-skill,
    home, coin, lock, and the rail's stall (c), ranking (c), events (c),
-   achievements (c) and guide (c), whose __c is an accent part in
+   achievements (c), guide (c) and search (c), whose __c is an accent part in
    --glyph-accent (var(--accent) unless a context sets it), clock (c),
    sword (c), unique, arrow, belt (c), pentagon and ring. Two or three
    elements each; nui.rtpl links this sheet after button.rcss. */
@@ -723,6 +723,37 @@
 	top: 3dp;
 	width: 2dp;
 	height: 6dp;
+	background-color: var(--glyph-accent);
+}
+
+/* search (the rail's shop search, Wave 5): a lens ring, its handle down to
+   the right, a glint in the accent. */
+.nui-glyph--search .nui-glyph__a
+{
+	left: 1dp;
+	top: 1dp;
+	width: 11dp;
+	height: 11dp;
+	border-width: 2dp;
+	border-radius: 9999dp;
+}
+.nui-glyph--search .nui-glyph__b
+{
+	left: 9dp;
+	top: 11.5dp;
+	width: 6dp;
+	height: 2.5dp;
+	border-radius: 1dp;
+	background-color: var(--glyph-ink);
+	transform: rotate(45deg);
+}
+.nui-glyph--search .nui-glyph__c
+{
+	left: 4dp;
+	top: 4dp;
+	width: 2.5dp;
+	height: 2.5dp;
+	border-radius: 9999dp;
 	background-color: var(--glyph-accent);
 }
 

@@ -1952,24 +1952,50 @@ class ModernDoll(unittest.TestCase):
             window.RefreshStatus()
         self.assertEqual(board(window).model["stat_attack"], "1048", "one value when the minimum is the maximum")
 
-    def test_the_interface_binding_registers_the_boards_five_entries(self):
+    def test_the_interface_binding_registers_the_boards_entries(self):
         world = World(True)
         module = world.m("nui_inventory")
         window = world.make_inventory()
         rail = board(window).model["rail"]
         self.assertEqual([(e["id"], e["glyph"], e["tip"], e["soon"]) for e in rail],
-                         [(entry_id, glyph, tip, soon) for entry_id, glyph, tip, soon in module.BOARD_SHORTCUTS])
-        self.assertEqual([e["id"] for e in rail if not e["soon"]], ["guide"], "only the guide exists today")
-        self.assertTrue(all(e["enabled"] and e["badge"] == "" for e in rail))
+                         [(entry_id, glyph, tip, soon) for entry_id, glyph, tip, _, soon in module.BOARD_SHORTCUTS])
+        self.assertEqual([e["id"] for e in rail if not e["soon"]], ["offline_shop", "shop_search", "guide"],
+                         "the offline shop and its search exist since Wave 5; the guide opens the help")
+        self.assertTrue(all(e["badge"] == "" for e in rail))
+        self.assertEqual([e["id"] for e in rail if not e["enabled"]], ["offline_shop", "shop_search"],
+                         "the offline shop's entries wait for the server's CONFIG, as legacy's buttons")
         with world.game:
-            for entry_id in ("offline_shop", "ranking", "events", "achievements"):
+            for entry_id in ("offline_shop", "shop_search", "ranking", "events", "achievements"):
                 press(window, "rail_press", entry_id, 0)
         self.assertNotIn(("interface.OpenHelpWindow", ()), world.game.log, "a feature to come takes no press")
+        self.assertNotIn(("interface.OpenSearchShop", ()), world.game.log, "a disabled entry takes no press")
         with world.game:
             press(window, "rail_press", "guide", 1)
             press(window, "rail_press", "guide", 0)
         self.assertEqual(world.game.log.count(("interface.OpenHelpWindow", ())), 1,
                          "a left press on the guide opens the help window")
+
+    def test_the_offline_shop_entries_follow_the_config_and_press_legacy_s_buttons(self):
+        """Wave 5 (NOVA-9): Interface.OnOfflineShopConfig calls
+        ShowOfflineShopButtons(enabled); the rail's two entries stand where
+        legacy's Offline Shop and Search buttons were, and press them."""
+        world = World(True)
+        window = world.make_inventory()
+        enabled = lambda: dict((e["id"], e["enabled"]) for e in board(window).model["rail"])
+        with world.game, quiet():
+            window.ShowOfflineShopButtons(True)
+        self.assertTrue(window.offlineShopEnabled, "legacy's flag (Ctrl + click searches) is set too")
+        self.assertTrue(enabled()["offline_shop"] and enabled()["shop_search"])
+        mark = len(world.game.log)
+        with world.game, quiet():
+            press(window, "rail_press", "offline_shop", 0)
+            press(window, "rail_press", "shop_search", 0)
+        calls = [c[0] for c in world.game.log[mark:]]
+        self.assertIn("net.SendOfflineShopManagePacket", calls)
+        self.assertIn("interface.OpenSearchShop", calls)
+        with world.game, quiet():
+            window.ShowOfflineShopButtons(False)
+        self.assertFalse(enabled()["offline_shop"] or enabled()["shop_search"])
 
     def test_a_feature_registered_before_the_binding_keeps_its_entry(self):
         world = World(True)
@@ -1979,7 +2005,7 @@ class ModernDoll(unittest.TestCase):
             module.register_shortcut("ranking", "ranking", "@ui.NUI_RAIL_RANKING", lambda: pressed.append("ranking"))
         window = world.make_inventory()
         self.assertEqual([e["id"] for e in board(window).model["rail"]],
-                         ["ranking", "offline_shop", "events", "achievements", "guide"])
+                         ["ranking", "offline_shop", "shop_search", "events", "achievements", "guide"])
         with world.game:
             press(window, "rail_press", "ranking", 0)
             window.BindInterfaceClass(world.interface)
@@ -2027,7 +2053,7 @@ class ModernDoll(unittest.TestCase):
         with world.game:
             for count in (3, 0, -2, 99, 100, 2500):
                 module.set_shortcut_badge("events", count)
-                badges.append(board(window).model["rail"][2]["badge"])
+                badges.append([e for e in board(window).model["rail"] if e["id"] == "events"][0]["badge"])
         self.assertEqual(badges, ["3", "", "", "99", "99+", "99+"])
 
     def test_the_fold_button_hides_the_entries_for_the_session(self):
@@ -2067,7 +2093,7 @@ class ModernDoll(unittest.TestCase):
         with world.game:
             module.register_shortcut("events", "events", "@ui.NUI_RAIL_EVENTS", lambda: None)
         window = world.make_inventory()
-        self.assertEqual(len(board(window).model["rail"]), 5)
+        self.assertEqual(len(board(window).model["rail"]), 6)
         state = world.game.state
         state.boxes = getattr(state, "boxes", {})
         scale = module.nui.get_scale() or 1.0
@@ -2081,7 +2107,7 @@ class ModernDoll(unittest.TestCase):
         with world.game, quiet():
             window.Show()
         self.assertEqual([entry["id"] for entry in board(window).model["rail"]],
-                         ["events", "offline_shop", "ranking", "achievements", "guide"])
+                         ["events", "offline_shop", "shop_search", "ranking", "achievements", "guide"])
 
     def test_the_rail_s_repeated_element_reads_no_entry(self):
         """The kept board empties the rail at each hide, so its data-for

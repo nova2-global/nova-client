@@ -451,6 +451,20 @@ class OfflineShopFacade(unittest.TestCase):
             else:
                 window.itemSlotWindow.fire("unselect_item", cell)
 
+    def test_the_owner_panel_survives_hide_before_its_init(self):
+        """Live (2026-11-05): ui.Window.__init__ calls Hide before legacy's
+        OfflineShopWindow.__init__ sets parent; the NovaUI panel's hooks then
+        report to no shop instead of raising AttributeError."""
+        world = OfflineNuiWorld(True)
+        dialog = world.shop_dialog()
+        panel_class = type(dialog).__init__.__globals__["_OfflineShopWindow"]
+        panel = panel_class.__new__(panel_class)
+        with world, w4.quiet():
+            panel_class.Hide(panel)
+            panel_class.Show(panel)
+            panel._publish("owner_sign", "x")
+            panel._buttons_changed()
+
     def test_view_page_buy_question_packet_and_close_are_legacy_s(self):
         results = []
         for nui_on in (False, True):

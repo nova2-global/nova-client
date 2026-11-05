@@ -197,11 +197,20 @@ class _ShopBoard(nui_hud.RaisesOnPress, nui.Window):
 class _OfflineShopWindow(uiShop.OfflineShopWindow):
 	"""Legacy's owner panel with only its widget loader replaced."""
 
+	def _shop(self):
+		"""The shop dialog this panel reports to; None while ui.Window's
+		__init__ runs (it calls Hide before legacy's __init__ sets parent)."""
+		return self.__dict__.get("parent")
+
 	def _publish(self, key, text):
-		self.parent._owner_text(key, text)
+		shop = self._shop()
+		if shop is not None:
+			shop._owner_text(key, text)
 
 	def _buttons_changed(self, button=None):
-		self.parent._owner_buttons_changed()
+		shop = self._shop()
+		if shop is not None:
+			shop._owner_buttons_changed()
 
 	def LoadWindow(self):
 		import uiScriptLocale
@@ -234,15 +243,21 @@ class _OfflineShopWindow(uiShop.OfflineShopWindow):
 
 	def Show(self):
 		ui.ScriptWindow.Show(self)
-		self.parent._owner_visibility(True)
+		shop = self._shop()
+		if shop is not None:
+			shop._owner_visibility(True)
 
 	def Hide(self):
 		ui.ScriptWindow.Hide(self)
-		self.parent._owner_visibility(False)
+		shop = self._shop()
+		if shop is not None:
+			shop._owner_visibility(False)
 
 	def SetTime(self, secondsLeft):
 		uiShop.OfflineShopWindow.SetTime(self, secondsLeft)
-		self.parent._owner_time(secondsLeft)
+		shop = self._shop()
+		if shop is not None:
+			shop._owner_time(secondsLeft)
 
 
 class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):

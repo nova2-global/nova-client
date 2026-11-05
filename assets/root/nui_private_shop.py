@@ -157,10 +157,12 @@ class PrivateShopBuilder(nui_facade.Facade, uiPrivateShopBuilder.PrivateShopBuil
 	def _on_cells(self, cells):
 		events = getattr(self, "_cell_events", None)
 		states, picked = (events.states, events.picked) if events is not None else ({}, -1)
-		self.nui_set(cells=nui_slots.with_states(cells, states, picked))
+		# Wave 5 (NOVA-9): legacy's Open arranges the grid itself (CONFIG's base
+		# rows of 10, ArrangeSlot), so the columns come with the cells.
+		self.nui_set(cells=nui_slots.with_states(cells, states, picked), cols=self.itemSlot.cols)
 
 	def _on_states(self, states, picked):
-		self.nui_set(cells=nui_slots.with_states(self.itemSlot.cells(), states, picked))
+		self.nui_set(cells=nui_slots.with_states(self.itemSlot.cells(), states, picked), cols=self.itemSlot.cols)
 
 	def _on_attaching(self, flag):
 		self.nui_set(attaching=flag)

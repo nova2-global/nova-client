@@ -231,8 +231,11 @@ BUILDER_STOCK_FOUNDATION.update({2: (12, 27001, 2000), 8: (20, 27002, 1999)})
 BUILDER_TITLE = "Swords, armour and potions cheap"
 
 
-def private_shop(limits, stock, title=BUILDER_TITLE, attaching=False, targets=None):
-    cols, count = limits.SHOP_COLUMNS, limits.SHOP_SLOT_COUNT
+def private_shop(limits, stock, title=BUILDER_TITLE, attaching=False, targets=None, cols=None, count=None):
+    # Wave 5 (NOVA-9): the offline shop's builder arranges CONFIG's base rows
+    # of 10 (cols=10, count=80 for a full page).
+    cols = cols or limits.SHOP_COLUMNS
+    count = count or limits.SHOP_SLOT_COUNT
     items = dict((cell, (vnum, number)) for cell, (_, vnum, number) in stock.items())
     positions = dict((cell, position) for cell, (position, _, _) in stock.items())
     shown = title[:22] + "..." if len(title) > 25 else title
@@ -732,6 +735,7 @@ def trade_fixtures():
         ("shop", "attaching"): shop(TODAY, SHOP_ITEMS, attaching=True),
         ("private-shop", ""): private_shop(TODAY, BUILDER_STOCK),
         ("private-shop", "foundation"): private_shop(FOUNDATION, BUILDER_STOCK_FOUNDATION),
+        ("private-shop", "offline"): private_shop(FOUNDATION, BUILDER_STOCK_FOUNDATION, cols=10, count=80),
         ("private-shop", "empty"): private_shop(TODAY, {}),
         ("private-shop", "attaching"): private_shop(TODAY, BUILDER_STOCK, attaching=True, targets={17: "move", 22: "move"}),
         # Three pages, page II shown (its cells' ref from 45).

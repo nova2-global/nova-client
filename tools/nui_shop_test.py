@@ -470,6 +470,31 @@ class BuilderTest(unittest.TestCase):
             results.append((world.effects_since(mark), world, window))
         return results
 
+    def test_the_board_takes_the_grid_legacy_s_open_arranges(self):
+        """Wave 5 (NOVA-9): legacy's Open arranges CONFIG's base rows of 10
+        (ArrangeSlot); the board shows that grid, not the NPC shop's 5
+        columns (Eddy, 2026-11-05: 5 x 17 and the cells mixed up)."""
+        world, window = self.world(True)
+        # The client loads offlineshopconst (Wave 5); this world does not, so
+        # legacy's module gets the real one (it imports shop when called).
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "offlineshopconst", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "root", "offlineshopconst.py"))
+        offlineshopconst = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(offlineshopconst)
+        legacy = [c for c in type(window).__mro__ if c.__module__ == "uiPrivateShopBuilder"][0]
+        legacy.__init__.__globals__["offlineshopconst"] = offlineshopconst
+        shop_module = world.game.modules["shop"].__dict__
+        shop_module.update(OFFLINE_SHOP_COLUMNS=10, OFFLINE_SHOP_ROWS_PER_PAGE=8, OFFLINE_SHOP_PAGE_COUNT=8,
+                           OFFLINE_SHOP_SLOT_MAX=640)
+        with world.game, w4.quiet():
+            window.Open("Night market")
+        model = w4.board(window).model
+        self.assertEqual((model["cols"], len(model["cells"])), (10, 80), "CONFIG's 8 base rows of 10")
+        self.assertEqual(model["cols"], window.itemSlot.cols)
+        self.assertEqual(len(model["cells"]), len(window.itemSlot.slot_numbers))
+        self.assertEqual(len(model["cells"]) % model["cols"], 0, "whole rows")
+
     def drop(self, world, window, position, vnum, cell, price=None):
         world.attach(P["SLOT_TYPE_INVENTORY"], position, vnum)
         if world.nui_on:

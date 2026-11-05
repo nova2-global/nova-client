@@ -641,6 +641,9 @@ class Wave3c(WindowsTest):
 # --- Wave 4 (P16 spec 6.1) -----------------------------------------------------------------
 
 WAVE4_TRADE = ["exchange", "shop", "private-shop", "safebox", "mall", "equipment-view"]
+# Wave 5 (NOVA-10): the gaya market joins the trade group (its id after Wave
+# 4b's, before the maintenance countdown).
+WAVE5_TRADE = ["gem-shop"]
 WAVE4_SOCIAL = ["messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"]
 
 
@@ -657,17 +660,17 @@ class Wave4Flags(WindowsTest):
         self.assertNotIn("guild-war", WAVE4_SOCIAL, "Wave 2b's score boards keep their id")
 
     def test_trade_and_social_name_their_windows_and_turn_no_other_on(self):
-        self.assertEqual(self.m.GROUPS["trade"], tuple(WAVE4_TRADE))
+        self.assertEqual(self.m.GROUPS["trade"], tuple(WAVE4_TRADE + WAVE5_TRADE))
         self.assertEqual(self.m.GROUPS["social"], tuple(WAVE4_SOCIAL))
         self.assertEqual(self.m.GROUPS["items"], tuple(ITEMS), "+items keeps meaning the Wave 3b windows and the extra inventory")
         self.setting.windows = "+trade,-mall"
-        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "mall") for window_id in WAVE4_TRADE))
+        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "mall") for window_id in WAVE4_TRADE + WAVE5_TRADE))
         self.assertEqual(self.m.use("exchange"), (True, ""))
         self.assertEqual(self.m.use("mall"), (False, "flag off"))
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE4_SOCIAL + WAVE3B))
         self.setting.windows = "+social"
         self.assertTrue(all(self.m.is_on(window_id) for window_id in WAVE4_SOCIAL))
-        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE4_TRADE))
+        self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE4_TRADE + WAVE5_TRADE))
         for group in ("trade", "social"):
             self.assertNotIn(group, [window_id for window_id, _ in self.m.WINDOWS])
             self.assertEqual(self.m.use(group), (False, "flag off"))
@@ -679,7 +682,7 @@ class Wave4Flags(WindowsTest):
         self.assertEqual(len(demo), 50)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS + WAVE4_TRADE + WAVE4_SOCIAL))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS + WAVE4_TRADE + WAVE5_TRADE + WAVE4_SOCIAL))
 
     def test_the_wave4_documents_are_on_demand_and_prewarmed_with_their_flags(self):
         expected = [("exchange", ("exchange",)), ("shop", ("shop",)), ("private-shop", ("private-shop",)),
@@ -768,7 +771,7 @@ class MergedWaves(WindowsTest):
         self.assertEqual(len(demo), 58)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS + WAVE3C + WAVE4_TRADE + WAVE4_SOCIAL))
+                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS + WAVE3C + WAVE4_TRADE + WAVE5_TRADE + WAVE4_SOCIAL))
 
 
 class Maintenance(WindowsTest):

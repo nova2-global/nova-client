@@ -1230,6 +1230,8 @@ EXPECTED_SITES = {
                            ("make", "safebox", "uiSafebox.SafeboxWindow", "nui_safebox.SafeboxWindow"),
                            ("make", "mall", "uiSafebox.MallWindow", "nui_mall.MallWindow"),
                            ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
+                           # Wave 5 (NOVA-10): the gaya market.
+                           ("make", "gem-shop", "uiGemShop.GemShopWindow", "nui_gem_shop.GemShopWindow"),
                            ("make", "exchange", "uiExchange.ExchangeDialog", "nui_exchange.ExchangeDialog"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
                            ("make", "shop", "uiShop.ShopDialog", "nui_shop.ShopDialog"),

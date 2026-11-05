@@ -1,0 +1,7 @@
+{
+	"$comment": "Golden cases of the gaya market (Wave 5, NOVA-10; tools/check_nui_snapshots.py): nine slots, six for sale (two stacks with their counts) and the last three locked (tinted, the lock on them in the modern skins; classic tints them only, as legacy's DisableSlot), each price in gaya under its slot, the refresh time 05:42. The window centers at its first show; the sheet's place frames it here. Classic draws legacy's 168 x 244 board (gemshopwindow.py) with the guild's refresh art and the money icon by each price.",
+	"cases": [
+		{"page": "gem-shop", "themes": "all", "scales": [["100", "1", "360x460"], ["150", "1.5", "540x690"], ["200", "2", "720x920"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "gem-shop", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "360x460"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true}
+	]
+}

@@ -247,7 +247,7 @@ class Interface(object):
 
 		# The gaya market (NOVA-10), made plainly: the UI session wraps it in
 		# nui_windows.make later (spec 4.8).
-		self.wndGemShop = uiGemShop.GemShopWindow()
+		self.wndGemShop = nui_windows.make("gem-shop", uiGemShop.GemShopWindow, "nui_gem_shop.GemShopWindow")
 		self.wndGemShop.Hide()
 
 		# The offline shop's windows (NOVA-9, chunk Y2's classes), made plainly

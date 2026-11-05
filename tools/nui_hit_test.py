@@ -54,7 +54,10 @@ def hit_cases():
 # elements that may take those presses (the list and its items).
 # Wave 5 (NOVA-11): the chat's shout color picker, open over the chat lines
 # as legacy's ShoutColorBoard floats above them.
-OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("chat-swatch-",)}
+# Wave 5 (NOVA-9): the shop search's filter panel, open over the result rows
+# as legacy's SearchFilterWindow floats over the list.
+OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("chat-swatch-",),
+               "shop-search-filter-": ("shop-search-filter-",)}
 
 
 def covered_by_open_popup(name, taken):

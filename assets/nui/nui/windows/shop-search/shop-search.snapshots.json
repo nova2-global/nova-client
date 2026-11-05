@@ -1,0 +1,11 @@
+{
+	"$comment": "Golden cases for the offline-shop search (Wave 5, NOVA-9): several result rows on page 2 of 4, including pending, sold, premium-disabled and no-flag rows; an empty search; the price/gender filter open; and bookmarks open. Every case is recorded in dark, light, cyber and classic at 100%, 150% and 200%. The frame leaves 44dp for blur/shadow at the right and bottom plus another 18dp below it. Dark also covers reduced motion and effects off.",
+	"cases": [
+		{"page": "shop-search", "themes": "all", "scales": [["100", "1", "920x700"], ["150", "1.5", "1380x1050"], ["200", "2", "1840x1400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "shop-search", "variant": "empty", "themes": "all", "scales": [["100", "1", "920x700"], ["150", "1.5", "1380x1050"], ["200", "2", "1840x1400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "shop-search", "variant": "filter", "themes": "all", "scales": [["100", "1", "920x700"], ["150", "1.5", "1380x1050"], ["200", "2", "1840x1400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "shop-search", "variant": "bookmarks", "themes": "all", "scales": [["100", "1", "920x700"], ["150", "1.5", "1380x1050"], ["200", "2", "1840x1400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "shop-search", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "920x700"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
+		{"page": "shop-search", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "920x700"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
+	]
+}

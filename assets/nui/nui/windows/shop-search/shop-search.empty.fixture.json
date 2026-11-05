@@ -1,0 +1,24 @@
+{
+	"shop_search": {
+		"rows": [],
+		"categories": [
+			{"key": 100, "name": "All", "selected": false}, {"key": 200, "name": "Weapons", "selected": false},
+			{"key": 300, "name": "Equipment", "selected": false}, {"key": 400, "name": "Vouchers", "selected": false},
+			{"key": 500, "name": "Costumes", "selected": false}, {"key": 600, "name": "Changers", "selected": false},
+			{"key": 700, "name": "Stones", "selected": false}, {"key": 800, "name": "Chests", "selected": true},
+			{"key": 900, "name": "Items", "selected": false}, {"key": 1000, "name": "Materials", "selected": false},
+			{"key": 1100, "name": "Ores", "selected": false}, {"key": 1200, "name": "Pets", "selected": false},
+			{"key": 1300, "name": "Mounts", "selected": false}
+		],
+		"suggestions": [], "suggestions_shown": false, "pages": [],
+		"sizes": [
+			{"index": 0, "text": "25", "down": true, "shown": true, "enabled": true},
+			{"index": 1, "text": "50", "down": false, "shown": true, "enabled": true},
+			{"index": 2, "text": "100", "down": false, "shown": true, "enabled": true}
+		],
+		"nav_shown": false, "current_page": 0, "page_count": 0, "loading": false, "empty": true,
+		"sort_ascending": true, "sort_text": "Price down", "gold": "8.452.100.000 Yang",
+		"premium": "Inactive", "can_buy": false, "filter_open": false, "filter_male": true,
+		"filter_female": true, "bookmarks_open": false, "bookmarks": [], "status_end": 0.0
+	}
+}

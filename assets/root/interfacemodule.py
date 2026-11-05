@@ -250,10 +250,9 @@ class Interface(object):
 		self.wndGemShop = nui_windows.make("gem-shop", uiGemShop.GemShopWindow, "nui_gem_shop.GemShopWindow")
 		self.wndGemShop.Hide()
 
-		# The offline shop's windows (NOVA-9, chunk Y2's classes), made plainly
-		# as well; each may call back OpenOfflineShopLog, OpenSearchShop and
-		# OpenWhisperDialog.
-		self.wndSearchShop = uiSearchShop.SearchShopWindow()
+		# The offline shop search (NOVA-9) is the legacy controller on NovaUI
+		# proxies; the log and decoration windows remain plain.
+		self.wndSearchShop = nui_windows.make("shop-search", uiSearchShop.SearchShopWindow, "nui_shop_search.SearchShopWindow")
 		self.wndSearchShop.BindInterface(self)
 		self.wndOfflineShopLog = uiOfflineShopLog.OfflineShopLogWindow()
 		self.wndOfflineShopLog.BindInterface(self)

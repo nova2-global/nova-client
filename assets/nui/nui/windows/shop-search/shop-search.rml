@@ -1,0 +1,130 @@
+<rml>
+<head>
+	<!-- The offline-shop search (Wave 5, NOVA-9; uiSearchShop.py
+	     SearchShopWindow and uiscript/searchshop*.py). While shop-search is
+	     enabled the Interface makes nui_shop_search.SearchShopWindow, a
+	     subclass of that legacy controller whose widget makers are proxies.
+	     Legacy still owns search, category selection, filters, sorting,
+	     paging, the premium buy gate, questions, buy/go-to packets, whisper
+	     and bookmark persistence. The result row is left-click buy and
+	     right-click go-to; its owner button whispers. A timer refreshes gold
+	     and premium status once a second, replacing legacy OnUpdate. The
+	     document is on demand and draws below the legacy UI layer. -->
+	<title>shop-search</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="shop-search.rcss"/>
+</head>
+<body template="nui" id="shop-search" class="nui-window nui-fx nui-anim nui-below-legacy-ui shop-search"
+	  data-model="shop_search" data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar shop-search__titlebar">
+		<handle class="nui-window__handle shop-search__handle" move_target="#document">
+			<span class="shop-search__title-icon"><span class="nui-glyph nui-glyph--search"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<span class="nui-window__title shop-search__title">@ui.SEARCH_SHOP_TITLE</span>
+		</handle>
+		<button id="shop-search-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body shop-search__body">
+		<div class="shop-search__toolbar">
+			<div class="shop-search__query-slot"><input id="shop-search-name" type="text" maxlength="64"
+				class="nui-input shop-search__query" data-event-change="search_change(ev.value)"/></div>
+			<button id="shop-search-submit" class="nui-button nui-button--medium nui-button--primary nui-anim shop-search__tool"
+			        data-event-mousedown="search_press(ev.button)">@ui.OK</button>
+			<button id="shop-search-filter" class="nui-button nui-button--medium nui-anim shop-search__tool"
+			        data-event-mousedown="filter_press(ev.button)">@ui.SEARCH_SHOP_FILTER_CATEGORY</button>
+			<button id="shop-search-save" class="nui-button nui-button--medium nui-anim shop-search__tool"
+			        data-event-mousedown="save_press(ev.button)">@ui.SEARCH_SHOP_FAVOURITES</button>
+			<button id="shop-search-bookmarks" class="nui-button nui-button--medium nui-anim shop-search__tool"
+			        data-event-mousedown="bookmarks_press(ev.button)">@ui.SEARCH_SHOP_BOOKMARKS</button>
+			<button id="shop-search-sort" class="nui-button nui-button--medium nui-anim shop-search__tool shop-search__sort"
+			        data-class-is-selected="!sort_ascending" data-event-mousedown="sort_press(ev.button)"><span
+				class="nui-glyph nui-glyph--chevron-up shop-search__sort-arrow" data-if="sort_ascending"><span class="nui-glyph__a"></span><span
+				class="nui-glyph__b"></span></span><span class="nui-glyph nui-glyph--chevron-down shop-search__sort-arrow" data-if="!sort_ascending"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span>{{ sort_text }}</span></button>
+		</div>
+		<div class="shop-search__status">
+			<div class="shop-search__status-card"><span class="shop-search__status-label">@game.SEARCH_SHOP_GOLD</span><span
+				class="shop-search__status-value shop-search__gold">{{ gold }}</span></div>
+			<div class="shop-search__status-card" data-class-is-active="can_buy"><span
+				class="shop-search__status-label">@game.SEARCH_SHOP_PREMIMUM_STATUS</span><span
+				class="shop-search__status-value shop-search__premium">{{ premium }}</span></div>
+		</div>
+		<div class="shop-search__workspace">
+			<div class="shop-search__categories">
+				<div class="shop-search__section-title">@ui.SEARCH_SHOP_FILTER_CATEGORY</div>
+				<div class="shop-search__category-list">
+					<button class="shop-search__category nui-anim" data-for="c : categories"
+					        data-class-is-selected="c.selected" data-event-mousedown="category_press(c.key, ev.button)">{{ c.name }}</button>
+				</div>
+			</div>
+			<div class="shop-search__results">
+				<div id="shop-search-loading" class="shop-search__message" data-if="loading"><span
+					class="shop-search__spinner"></span><span>...</span></div>
+				<div id="shop-search-empty" class="shop-search__message" data-if="empty &amp;&amp; !loading"><span
+					class="nui-glyph nui-glyph--search"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span></span></div>
+				<div class="shop-search__rows" data-if="!loading">
+					<div class="shop-search-row nui-anim" data-for="r : rows" data-attr-id="'shop-search-row-' + r.index"
+					     data-class-is-disabled="!r.buyable" data-class-is-pending="r.state == 'pending'"
+					     data-class-is-sold="r.state == 'sold'" data-event-mouseup="row_release(r.index, ev.button)"
+					     data-event-mouseover="row_over(r.index)" data-event-mouseout="row_out(r.index)">
+						<div class="shop-search-row__icon" data-event-mouseover="icon_over(r.index)"
+						     data-event-mouseout="icon_out(r.index)"><img data-if="r.icon != ''" data-attr-src="r.icon"/></div>
+						<div class="shop-search-row__item"><span class="shop-search-row__name">{{ r.name }}</span><span
+							class="shop-search-row__stock">{{ r.stock }}</span></div>
+						<div class="shop-search-row__price"><span class="nui-glyph nui-glyph--coin"><span
+							class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span>{{ r.price }}</span></div>
+						<div class="shop-search-row__owner"><img class="shop-search-row__flag" data-if="r.flag_shown"
+							data-attr-src="r.flag"/><span>{{ r.owner }}</span></div>
+						<button class="nui-button nui-button--ghost nui-button--icon nui-anim shop-search-row__whisper"
+						        data-attr-id="'shop-search-whisper-' + r.index" data-event-mousedown="whisper_press(r.index, ev.button)">@</button>
+						<span class="shop-search-row__buy">@ui.SHOP_BUY</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="shop-search__footer">
+			<div class="shop-search__sizes"><button class="nui-button nui-button--small nui-anim shop-search__size"
+				data-for="s : sizes" data-class-is-selected="s.down" data-event-mousedown="size_press(s.index, ev.button)">{{ s.text }}</button></div>
+			<div class="shop-search__pages" data-if="nav_shown">
+				<button class="nui-button nui-button--small nui-anim" data-event-mousedown="nav_press(0, ev.button)">&lt;&lt;</button>
+				<button class="nui-button nui-button--small nui-anim" data-event-mousedown="nav_press(1, ev.button)">&lt;</button>
+				<button class="nui-button nui-button--small nui-anim shop-search__page" data-for="p : pages" data-if="p.shown"
+				        data-class-is-selected="p.down" data-event-mousedown="page_press(p.index, ev.button)">{{ p.text }}</button>
+				<button class="nui-button nui-button--small nui-anim" data-event-mousedown="nav_press(2, ev.button)">&gt;</button>
+				<button class="nui-button nui-button--small nui-anim" data-event-mousedown="nav_press(3, ev.button)">&gt;&gt;</button>
+			</div>
+		</div>
+		<div class="shop-search__suggestions nui-fx" data-if="suggestions_shown">
+			<button class="shop-search__suggestion nui-anim" data-for="s : suggestions"
+			        data-event-mousedown="suggestion_press(s.index, ev.button)">{{ s.name }}</button>
+		</div>
+		<div id="shop-search-filter-panel" class="shop-search-panel nui-fx nui-anim shop-search-filter" data-if="filter_open">
+			<div class="shop-search-panel__titlebar"><span>@ui.SEARCH_SHOP_FILTER_CATEGORY</span><button
+				class="nui-button nui-button--ghost nui-button--icon nui-anim" data-event-mousedown="panel_close('filter', ev.button)">x</button></div>
+			<div class="shop-search-panel__body"><label>@game.PRIVATE_SHOP_INPUT_PRICE_DIALOG_TITLE</label><input
+				id="shop-search-max-price" type="text" class="nui-input shop-search-filter__price" data-event-change="filter_change(ev.value)"/>
+				<div class="shop-search-filter__genders"><button class="nui-button nui-button--medium nui-anim"
+					data-class-is-selected="filter_male" data-event-mousedown="gender_press(0, ev.button)">@game.FOR_MALE</button><button
+					class="nui-button nui-button--medium nui-anim" data-class-is-selected="filter_female"
+					data-event-mousedown="gender_press(1, ev.button)">@game.FOR_FEMALE</button></div></div>
+			<div class="shop-search-panel__footer"><button class="nui-button nui-button--medium nui-anim"
+				data-event-mousedown="filter_cancel_press(ev.button)">@ui.CANCEL</button><button
+				class="nui-button nui-button--medium nui-button--primary nui-anim" data-event-mousedown="filter_apply_press(ev.button)">@ui.OK</button></div>
+		</div>
+		<div id="shop-search-bookmarks-panel" class="shop-search-panel nui-fx nui-anim shop-search-bookmarks" data-if="bookmarks_open">
+			<div class="shop-search-panel__titlebar"><span>@ui.SEARCH_SHOP_BOOKMARKS</span><button
+				class="nui-button nui-button--ghost nui-button--icon nui-anim" data-event-mousedown="panel_close('bookmarks', ev.button)">x</button></div>
+			<div class="shop-search-bookmarks__list"><div class="shop-search-bookmark" data-for="b : bookmarks"
+				data-class-is-empty="b.empty"><button class="shop-search-bookmark__name nui-anim"
+				data-event-mousedown="bookmark_select(b.index, ev.button)">{{ b.name }}</button><button
+				class="nui-button nui-button--ghost nui-button--icon nui-anim shop-search-bookmark__remove"
+				data-attrif-disabled="b.empty" data-event-mousedown="bookmark_remove(b.index, ev.button)">x</button></div></div>
+		</div>
+		<nui-countdown class="shop-search__status-clock" format="none" data-attr-end="status_end"
+		               data-event-countdownend="status_tick()"/>
+	</div>
+</body>
+</rml>

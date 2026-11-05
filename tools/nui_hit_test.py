@@ -52,7 +52,9 @@ def hit_cases():
 # list, spec 5.9.2): a press on a control under the list lands on the list, as
 # on legacy's top-most list box. Case name prefix: the id prefixes of the
 # elements that may take those presses (the list and its items).
-OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",)}
+# Wave 5 (NOVA-11): the chat's shout color picker, open over the chat lines
+# as legacy's ShoutColorBoard floats above them.
+OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("chat-swatch-",)}
 
 
 def covered_by_open_popup(name, taken):

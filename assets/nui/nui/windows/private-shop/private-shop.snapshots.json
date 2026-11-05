@@ -5,7 +5,7 @@
 		{"page": "private-shop", "themes": ["classic"], "scales": [["100", "1", "280x520"], ["150", "1.5", "420x780"], ["200", "2", "560x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "private-shop", "variant": "foundation", "themes": "all", "except": ["classic"], "scales": [["100", "1", "380x640"], ["150", "1.5", "570x960"], ["200", "2", "760x1280"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "private-shop", "variant": "foundation", "themes": ["classic"], "scales": [["100", "1", "280x520"], ["150", "1.5", "420x780"], ["200", "2", "560x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
-		{"page": "private-shop", "variant": "offline", "themes": "all", "except": ["classic"], "scales": [["100", "1", "540x640"], ["200", "2", "1080x1280"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "private-shop", "variant": "offline", "themes": "all", "except": ["classic"], "scales": [["100", "1", "620x720"], ["200", "2", "1240x1440"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "private-shop", "variant": "offline", "themes": ["classic"], "scales": [["100", "1", "400x420"], ["200", "2", "800x840"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "private-shop", "variant": "empty", "themes": "all", "except": ["classic"], "scales": [["100", "1", "380x640"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
 		{"page": "private-shop", "variant": "selected", "themes": ["classic"], "scales": [["100", "1", "280x520"], ["200", "2", "560x1040"]], "fixture": true, "roots": ["assets/ETC"], "time": null},

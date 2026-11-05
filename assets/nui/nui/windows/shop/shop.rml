@@ -20,13 +20,15 @@
 	<link type="text/rcss" href="shop.rcss"/>
 </head>
 <body template="nui" id="shop" class="nui-window nui-fx nui-anim nui-below-legacy-ui shop" data-model="shop"
-      data-event-mousedown="board_press(ev.button)"
-      data-class-shop--tabs-middle="tab_group == 'middle'" data-class-shop--tabs-small="tab_group == 'small'">
+      data-event-mousedown="board_press(ev.button)" data-class-shop--offline="offline"
+      data-class-shop--owner="owner" data-class-shop--tabs-middle="tab_group == 'middle'"
+      data-class-shop--tabs-small="tab_group == 'small'">
 	<div class="nui-window__titlebar shop__titlebar">
 		<handle class="nui-window__handle shop__handle" move_target="#document">
 			<span class="shop__title-icon"><span class="shop__emblem-awning"></span><span
 				class="shop__emblem-wall"></span><span class="shop__emblem-door"></span></span>
-			<span id="shop-title" class="nui-window__title shop__title">@ui.SHOP_TITLE</span>
+			<span id="shop-title" class="nui-window__title shop__title"><span data-if="title == ''">@ui.SHOP_TITLE</span><span
+				data-if="title != ''">{{ title }}</span></span>
 		</handle>
 		<button id="shop-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim shop__close-x"
 		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
@@ -34,19 +36,24 @@
 	</div>
 	<div class="nui-window__body shop__body">
 		<div id="shop-grid" class="nui-slot-grid nui-slot-grid--lean shop__grid" data-class-is-attaching="attaching"
-		     data-class-nui-slot-grid--cols-5="cols == 5" data-class-nui-slot-grid--cols-8="cols == 8">
+		     data-class-nui-slot-grid--cols-5="cols == 5" data-class-nui-slot-grid--cols-8="cols == 8"
+		     data-class-nui-slot-grid--cols-10="cols == 10">
 			<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'shop-cell-' + it_index"
 			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
-			     data-class-is-picked="c.picked"
+			     data-class-is-picked="c.picked" data-class-is-disabled="c.disabled"
 			     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
 			     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
 			     data-event-mouseover="cell_over(it_index)" data-event-mouseout="cell_out(it_index)"
 			     data-event-nuidrop="cell_drop(it_index)">
 				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
 				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+				<span class="shop__pending" data-if="c.disabled"></span>
 			</div>
+			<div data-for="l : locks" data-if="l.state != ''"
+			     data-attr-class="'shop__lock shop__lock--row-' + l.row + ' shop__lock--' + l.state"><span
+			     data-if="l.state == 'next'">@ui.OFFLINE_SHOP_EXPAND_BUTTON</span></div>
 		</div>
-		<div class="shop__footer">
+		<div class="shop__footer" data-if="!offline">
 			<div class="shop__tabs" data-if="tab_group != 'none'">
 				<div class="shop__tab-slot" data-for="t : tabs" data-if="t.shown" data-attr-class="'shop__tab-slot shop__tab-slot--' + t.index">
 					<button class="nui-button nui-button--medium nui-anim shop__tab"
@@ -61,6 +68,47 @@
 			        data-class-is-selected="sell_down" data-event-mousedown="sell_press(ev.button)">@ui.SHOP_SELL</button>
 			<button id="shop-close-shop" class="nui-button nui-button--danger nui-anim shop__close-shop" data-if="close_shop_shown"
 			        data-event-mousedown="close_shop_press(ev.button)">@ui.PRIVATE_SHOP_CLOSE_BUTTON</button>
+		</div>
+		<div class="shop__pages" data-if="page_buttons_shown">
+			<div class="shop__page-slot" data-for="p : page_buttons" data-if="p.shown">
+				<button class="nui-button nui-button--small nui-anim shop__page" data-class-is-selected="p.down"
+				        data-event-mousedown="page_press(p.index, ev.button)">{{ p.name }}</button>
+			</div>
+		</div>
+		<div class="shop-owner" data-if="owner_panel_shown">
+			<div class="shop-owner__row shop-owner__row--sign">
+				<div class="shop-owner__value shop-owner__sign"><span>{{ owner_sign }}</span></div>
+				<button class="nui-button nui-button--medium nui-anim shop-owner__side shop-owner__rename"
+				        data-event-mousedown="owner_rename_press(ev.button)">@ui.OFFLINE_SHOP_BUTTON_RENAME</button>
+			</div>
+			<div class="shop-owner__row shop-owner__row--location">
+				<div class="shop-owner__value shop-owner__location"><span>{{ owner_location }}</span></div>
+				<button class="nui-button nui-button--medium nui-anim shop-owner__side shop-owner__warp"
+				        data-event-mousedown="owner_warp_press(ev.button)">@ui.OFFLINE_SHOP_BUTTON_TELEPORT</button>
+			</div>
+			<div class="shop-owner__row shop-owner__row--gold">
+				<div class="shop-owner__gold"><span class="nui-glyph nui-glyph--coin"><span class="nui-glyph__a"></span><span
+					class="nui-glyph__b"></span></span><span>{{ owner_gold }}</span></div>
+				<button class="nui-button nui-button--medium nui-anim shop-owner__side shop-owner__withdraw"
+				        data-event-mousedown="owner_withdraw_press(ev.button)">@ui.OFFLINE_SHOP_BUTTON_WITHDRAW</button>
+			</div>
+			<div class="shop-owner__row shop-owner__row--time">
+				<div class="shop-owner__time"><span>@ui.OFFLINE_SHOP_TEXT_EXPIRE_IN</span><nui-countdown format="dhm"
+					day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE"
+					data-attr-end="owner_time_end" data-event-countdownend="owner_time_end()"/></div>
+				<button class="nui-button nui-button--medium nui-anim shop-owner__side shop-owner__add-time"
+				        data-event-mousedown="owner_time_press(ev.button)">@ui.OFFLINE_SHOP_BUTTON_ADD_TIME</button>
+			</div>
+			<div class="shop-owner__actions">
+				<button class="nui-button nui-button--medium nui-anim shop-owner__lock"
+				        data-event-mousedown="owner_lock_press(ev.button)"><span class="nui-glyph nui-glyph--lock"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span>{{ owner_lock_text }}</button>
+				<button class="nui-button nui-button--medium nui-anim shop-owner__logs"
+				        data-event-mousedown="owner_logs_press(ev.button)"><span class="nui-glyph nui-glyph--log"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>@ui.OFFLINE_SHOP_BUTTON_VIEW_LOGS</button>
+				<button class="nui-button nui-button--danger nui-button--medium nui-anim shop-owner__close"
+				        data-if="owner_close_shown" data-event-mousedown="owner_close_press(ev.button)">@ui.OFFLINE_SHOP_BUTTON_CLOSE</button>
+			</div>
 		</div>
 	</div>
 </body>

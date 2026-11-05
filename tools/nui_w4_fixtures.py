@@ -13,6 +13,7 @@ Each window's fixture is <name>.fixture.json (today), with the variants
 <name>.foundation.fixture.json and the ones the spec names. The windows'
 tests check that the controllers' models have the same keys and kinds."""
 import argparse
+import json
 import os
 import sys
 
@@ -26,6 +27,11 @@ LIMITS = w3b.LIMITS
 TODAY = w3b.TODAY
 FOUNDATION = w3b.FOUNDATION
 LOCALE_EN = os.path.join(REPO, "assets", "locale", "locale", "en")
+with open(os.path.join(REPO, "tools", "fixtures", "module_constants.json"), encoding="utf-8") as _handle:
+    SHOP_CONSTANTS = json.load(_handle)["modules"]["shop"]
+OFFLINE_COLS = SHOP_CONSTANTS["OFFLINE_SHOP_COLUMNS"]
+OFFLINE_ROWS = SHOP_CONSTANTS["OFFLINE_SHOP_ROWS_PER_PAGE"]
+OFFLINE_PAGES = SHOP_CONSTANTS["OFFLINE_SHOP_PAGE_COUNT"]
 
 # player.SLOT_TYPE_* (tools/fixtures/module_constants.json).
 SLOT_TYPE_INVENTORY, SLOT_TYPE_SHOP, SLOT_TYPE_EXCHANGE_OWNER, SLOT_TYPE_EXCHANGE_TARGET = 1, 4, 5, 6
@@ -218,7 +224,65 @@ def shop(limits, items, group="none", tab=0, down=(), mine=False, attaching=Fals
         "close_shop_shown": mine,
         "buy_down": False,
         "sell_down": False,
+        "offline": False,
+        "owner": False,
+        "title": "",
+        "page_buttons": [{"index": i, "name": "", "down": False, "shown": False}
+                         for i in range(OFFLINE_PAGES)],
+        "page_buttons_shown": False,
+        "locks": [{"row": row, "state": ""} for row in range(OFFLINE_ROWS)],
+        "owner_panel_shown": False,
+        "owner_sign": "",
+        "owner_location": "",
+        "owner_gold": "",
+        "owner_time_text": "",
+        "owner_time_end": 0.0,
+        "owner_lock_text": "",
+        "owner_close_shown": False,
     }}
+
+
+OFFLINE_ITEMS = {0: (10, 1), 1: (3000, 1), 2: (27001, 200), 3: (12200, 1), 7: (13000, 1),
+                 13: (25040, 1), 24: (14000, 1), 31: (15000, 1), 42: (27002, 20)}
+
+
+def offline_shop(owner=False):
+    """A live-client 10 x 8 page. The visitor has several pages and locked
+    rows; MANAGE shows a pending item, the next expandable row and every
+    owner-panel field."""
+    page = 1 if owner else 0
+    per_page = OFFLINE_COLS * OFFLINE_ROWS
+    cells = typed_grid(OFFLINE_COLS, OFFLINE_ROWS, SLOT_TYPE_PRIVATE_SHOP, OFFLINE_ITEMS,
+                       ref=lambda index: page * per_page + index)
+    if owner:
+        cells[3]["disabled"] = True
+    else:
+        # The visitor golden also exercises the transfer-in-flight styling;
+        # live interaction remains entirely legacy-owned.
+        cells[3]["disabled"] = True
+    model = shop(TODAY, {})["shop"]
+    model.update({
+        "cells": cells,
+        "cols": OFFLINE_COLS,
+        "offline": True,
+        "owner": owner,
+        "title": "Moonlit market - Aria" if not owner else "Aria's moonlit market",
+        "page_buttons": [{"index": i, "name": "Page %d" % (i + 1), "down": i == page, "shown": True}
+                         for i in range(OFFLINE_PAGES)],
+        "page_buttons_shown": True,
+        "locks": [{"row": row, "state": (("next" if owner and row == 2 else "locked")
+                                             if row >= (2 if owner else 5) else "")}
+                  for row in range(OFFLINE_ROWS)],
+        "owner_panel_shown": owner,
+        "owner_sign": "Aria's moonlit market" if owner else "",
+        "owner_location": "Shop Location: CH1, Joan (4693, 9642)" if owner else "",
+        "owner_gold": "1.234.567.890 Yang" if owner else "",
+        "owner_time_text": "4 Day 00 Hour 00 Min" if owner else "",
+        "owner_time_end": 345601.0 if owner else 0.0,
+        "owner_lock_text": "Unlock" if owner else "",
+        "owner_close_shown": owner,
+    })
+    return {"shop": model}
 
 
 # Inventory positions of the builder's stock, by cell: (position, vnum, count).
@@ -733,6 +797,8 @@ def trade_fixtures():
         # An item attached over the grid: every cell its own target; the
         # shop's SLOT_STYLE_NONE draws no footprint (P14b, the sweep).
         ("shop", "attaching"): shop(TODAY, SHOP_ITEMS, attaching=True),
+        ("shop", "offline"): offline_shop(),
+        ("shop", "offline-owner"): offline_shop(owner=True),
         ("private-shop", ""): private_shop(TODAY, BUILDER_STOCK),
         ("private-shop", "foundation"): private_shop(FOUNDATION, BUILDER_STOCK_FOUNDATION),
         ("private-shop", "offline"): private_shop(FOUNDATION, BUILDER_STOCK_FOUNDATION, cols=10, count=80),

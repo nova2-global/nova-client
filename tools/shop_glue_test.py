@@ -475,7 +475,7 @@ class InterfaceWindows(unittest.TestCase):
         methods = class_methods("interfacemodule.py", "Interface")
         for attribute, made in (("wndSearchShop", "nui_windows.make('shop-search', uiSearchShop.SearchShopWindow, 'nui_shop_search.SearchShopWindow')"),
                                 ("wndOfflineShopLog", "nui_windows.make('offline-shop-log', uiOfflineShopLog.OfflineShopLogWindow, 'nui_offline_shop_log.OfflineShopLogWindow')"),
-                                ("wndMyShopDeco", "uiMyShopDecoration.MyShopDecorationWindow()")):
+                                ("wndMyShopDeco", "nui_windows.make('shop-deco', uiMyShopDecoration.MyShopDecorationWindow, 'nui_shop_deco.MyShopDecorationWindow')")):
             with self.subTest(window=attribute):
                 self.assertIn("self.%s = %s" % (attribute, made), methods["__MakeWindows"])
                 self.assertIn("self.%s.BindInterface(self)" % attribute, methods["__MakeWindows"])
@@ -484,7 +484,7 @@ class InterfaceWindows(unittest.TestCase):
         made = [line for line in methods["__MakeWindows"].split("\n") if "nui_windows.make" in line]
         self.assertEqual(len([line for line in made if "uiSearchShop" in line]), 1)
         self.assertEqual(len([line for line in made if "uiOfflineShopLog" in line]), 1)
-        self.assertFalse([line for line in made if "uiMyShopDecoration" in line])
+        self.assertEqual(len([line for line in made if "uiMyShopDecoration" in line]), 1)
 
     def test_the_whisper_opener_y2_calls_exists(self):
         self.assertIn("OpenWhisperDialog", class_methods("interfacemodule.py", "Interface"))

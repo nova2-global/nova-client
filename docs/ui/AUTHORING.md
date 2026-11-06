@@ -786,6 +786,16 @@ What the color roles mean:
 | `--tip-divider-shadow` | `#000000` | `#000000` | `#000000` |
 | `--tip-socket-silver` | `#b8bec9` | `#b8bec9` | `#c1c1c1` |
 | `--tip-socket-gold` | `#e3b45a` | `#e3b45a` | `#ffc700` |
+| `--shop-sign-1` | `#ff976d` | `#ff976d` | `#ff976d` |
+| `--shop-sign-1-tint` | `#593426bf` | `#593426bf` | `#593426bf` |
+| `--shop-sign-2` | `#f9f4ff` | `#f9f4ff` | `#f9f4ff` |
+| `--shop-sign-2-tint` | `#575559bf` | `#575559bf` | `#575559bf` |
+| `--shop-sign-3` | `#ffbf8b` | `#ffbf8b` | `#ffbf8b` |
+| `--shop-sign-3-tint` | `#594230bf` | `#594230bf` | `#594230bf` |
+| `--shop-sign-4` | `#ffecd1` | `#ffecd1` | `#ffecd1` |
+| `--shop-sign-4-tint` | `#595249bf` | `#595249bf` | `#595249bf` |
+| `--shop-sign-5` | `#f1ece1` | `#f1ece1` | `#f1ece1` |
+| `--shop-sign-5-tint` | `#54524ebf` | `#54524ebf` | `#54524ebf` |
 
 | Token | Shared value |
 |---|---|
@@ -865,6 +875,8 @@ What the color roles mean:
 | `--classic-search-selected` | classic | `#ffffff20` |
 | `--classic-log-row` | classic | `#131313` |
 | `--classic-log-row-alt` | classic | `#1e1e1e` |
+| `--classic-list-hover` | classic | `#ffffff33` |
+| `--classic-list-select` | classic | `#0000804d` |
 
 <!-- tokens:end -->
 

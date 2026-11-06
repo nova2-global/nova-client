@@ -1,0 +1,73 @@
+<rml>
+<head>
+	<!-- The offline shop's decoration (Wave 5, NOVA-9; legacy
+	     uimyshopdecoration.py MyShopDecorationWindow, uiscript
+	     myshopdecorationwindow.py). While the shop-deco flag is on, the
+	     Interface makes nui_shop_deco.MyShopDecorationWindow (controller
+	     assets/root/nui_shop_deco.py), a subclass of the legacy class on
+	     proxies: the two steps (the shop's model, then its sign's style), the
+	     choice, and the commit on Confirm are legacy's code. The list shows
+	     the step's entries (a press chooses one); the preview names the model,
+	     or shows the chosen style's sign with the style's name in it (no 3D
+	     view, legacy's D15). Step 1 has Close and Next, step 2 Back and
+	     Confirm. A left or right press anywhere on it raises the window
+	     (board_press). -->
+	<title>shop-deco</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="shop-deco.rcss"/>
+</head>
+<body template="nui" id="shop-deco" class="nui-window nui-fx nui-anim shop-deco" data-model="shop_deco"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar shop-deco__titlebar">
+		<handle class="nui-window__handle shop-deco__handle" move_target="#document">
+			<span class="shop-deco__title-icon"><span class="nui-glyph nui-glyph--stall"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title shop-deco__title">{{ title }}</span>
+			<span class="shop-deco__steps"><span class="shop-deco__step" data-class-is-on="step == 1"></span><span
+				class="shop-deco__step" data-class-is-on="step == 2"></span></span>
+		</handle>
+		<button id="shop-deco-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim shop-deco__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body shop-deco__body">
+		<p class="shop-deco__description">{{ description }}</p>
+		<div class="shop-deco__panes">
+			<div class="shop-deco__list-board">
+				<div id="shop-deco-list" class="shop-deco__list">
+					<button class="shop-deco__entry nui-anim" data-for="e : entries" data-attr-id="'shop-deco-entry-' + it_index"
+					        data-class-is-selected="it_index == selected"
+					        data-event-mousedown="entry_press(it_index, ev.button)"><span
+						class="shop-deco__entry-label">{{ e.name }}</span></button>
+				</div>
+			</div>
+			<div class="shop-deco__preview">
+				<div class="shop-deco__model" data-if="preview_style &lt; 0"><span class="shop-deco__model-mark"><span
+					class="nui-glyph nui-glyph--stall"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
+					class="nui-glyph__c"></span></span></span><span class="shop-deco__model-name">{{ preview_name }}</span></div>
+				<div class="shop-deco__sign-stage" data-if="preview_style &gt;= 0">
+					<div class="shop-deco__sign" data-class-shop-deco__sign--1="preview_style == 1"
+					     data-class-shop-deco__sign--2="preview_style == 2" data-class-shop-deco__sign--3="preview_style == 3"
+					     data-class-shop-deco__sign--4="preview_style == 4" data-class-shop-deco__sign--5="preview_style == 5"><span
+						class="shop-deco__sign-text">{{ preview_name }}</span></div>
+					<span class="shop-deco__sign-name">{{ preview_name }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="nui-window__footer shop-deco__footer">
+		<button id="shop-deco-cancel" class="nui-button nui-button--medium nui-anim shop-deco__button shop-deco__button--cancel"
+		        data-if="cancel" data-event-mousedown="button_press('cancel', ev.button)"><span
+			class="shop-deco__button-label">@ui.MYSHOP_DECO_CANCEL</span></button>
+		<button id="shop-deco-next" class="nui-button nui-button--medium nui-button--primary nui-anim shop-deco__button shop-deco__button--next"
+		        data-if="next" data-event-mousedown="button_press('next', ev.button)"><span
+			class="shop-deco__button-label">@ui.MYSHOP_DECO_NEXT</span></button>
+		<button id="shop-deco-prev" class="nui-button nui-button--medium nui-anim shop-deco__button shop-deco__button--prev"
+		        data-if="prev" data-event-mousedown="button_press('prev', ev.button)"><span
+			class="shop-deco__button-label">@ui.MYSHOP_DECO_PREV</span></button>
+		<button id="shop-deco-complete" class="nui-button nui-button--medium nui-button--primary nui-anim shop-deco__button shop-deco__button--complete"
+		        data-if="complete" data-event-mousedown="button_press('complete', ev.button)"><span
+			class="shop-deco__button-label">@ui.MYSHOP_DECO_OK</span></button>
+	</div>
+</body>
+</rml>

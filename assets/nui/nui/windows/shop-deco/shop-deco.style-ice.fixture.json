@@ -1,0 +1,40 @@
+{
+	"shop_deco": {
+		"step": 2,
+		"title": "Select title",
+		"description": "Choose your name's appearance.",
+		"entries": [
+			{
+				"key": "0",
+				"name": "Default"
+			},
+			{
+				"key": "1",
+				"name": "Inferno"
+			},
+			{
+				"key": "2",
+				"name": "Ice Age"
+			},
+			{
+				"key": "3",
+				"name": "Parchment"
+			},
+			{
+				"key": "4",
+				"name": "War Banner"
+			},
+			{
+				"key": "5",
+				"name": "Wings"
+			}
+		],
+		"selected": 2,
+		"preview_name": "Ice Age",
+		"preview_style": 2,
+		"next": false,
+		"cancel": false,
+		"prev": true,
+		"complete": true
+	}
+}

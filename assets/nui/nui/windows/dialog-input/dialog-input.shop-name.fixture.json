@@ -1,0 +1,9 @@
+{
+	"dialog_input": {
+		"title": "@game.PRIVATE_SHOP_INPUT_NAME_DIALOG_TITLE",
+		"lines": [],
+		"secret": false,
+		"max": 32,
+		"deco": true
+	}
+}

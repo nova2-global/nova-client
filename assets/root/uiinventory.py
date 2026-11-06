@@ -255,6 +255,10 @@ class CostumeWindow(ui.ScriptWindow):
 			slotNumber = item.COSTUME_SLOT_START + i
 			self.wndEquip.SetItemSlot(slotNumber, getItemVNum(slotNumber), 0)
 
+		## The aura costume (NOVA-23; OLD uiInventory.py:210-223).
+		slotNumber = CostumeAuraSlot()
+		self.wndEquip.SetItemSlot(slotNumber, getItemVNum(slotNumber), 0)
+
 		self.wndEquip.RefreshSlot()
 
 	def __SetShown(self, buttons, isShown):
@@ -351,6 +355,13 @@ def IsSashBonusScroll(itemVnum):
 	its value 0 against sash.CLEAN_ATTR_VALUE0 and sash.TAKE_ATTR_VALUE0)."""
 	item.SelectItem(itemVnum)
 	return item.GetValue(0) in (SASH_CLEAN_ATTR_VALUE0, SASH_TAKE_ATTR_VALUE0)
+
+
+def CostumeAuraSlot():
+	"""The aura costume's cell (wear 39): OLD's item.COSTUME_SLOT_AURA,
+	c_Costume_Slot_Aura (GameType.h), counted from the costume body (wear 19)
+	as the costume window's uiscript counts it."""
+	return item.COSTUME_SLOT_START + 20
 
 
 class BeltInventoryWindow(ui.ScriptWindow):
@@ -516,9 +527,11 @@ class InventoryWindow(ui.ScriptWindow):
 	offlineShopButton = None
 	searchShopButton = None
 	offlineShopEnabled = False
-	# The sash windows (NOVA-20), set by the Interface.
+	# The sash windows (NOVA-20) and the aura window (NOVA-23), set by the
+	# Interface and the game window once they exist.
 	wndSashCombine = None
 	wndSashAbsorption = None
+	wndAura = None
 	
 	sellingSlotNumber = -1
 	isLoaded = 0
@@ -1705,12 +1718,19 @@ class InventoryWindow(ui.ScriptWindow):
 				self.wndDragonSoulRefine.AutoSetItem((player.INVENTORY, slotIndex), 1)
 				return
 
-		## OLD uiInventory.py:2522-2525: a right-click puts the item into the
-		## open sash window (the server picks the slot).
+		## OLD uiInventory.py:2522-2531: a right-click puts the item into the
+		## open sash window (the server picks the slot) or an aura material into
+		## the open aura window.
 		sashWindow = self.GetShownSashWindow()
 		if sashWindow:
 			sashWindow.AddItem(player.INVENTORY, slotIndex)
 			return
+
+		if self.wndAura and self.wndAura.IsOpened():
+			item.SelectItem(player.GetItemIndex(slotIndex))
+			if item.GetItemType() == item.ITEM_TYPE_RESOURCE and item.GetItemSubType() == item.RESOURCE_AURA:
+				net.SendChatPacket("/aura add %d %d %d" % (item.AURA_SLOT_MATERIAL, player.INVENTORY, slotIndex))
+				return
 
 		if self.__UseItemWithModifier(slotIndex):
 			mouseModule.mouseController.DeattachObject()
@@ -1839,7 +1859,10 @@ class InventoryWindow(ui.ScriptWindow):
 		else:
 			net.SendItemMovePacket(srcWindow, srcSlotPos, player.INVENTORY, dstSlotPos, srcItemCount)
 	
-	## OLD uiInventory.py:2732-2747.
+	## OLD uiInventory.py:2729-2747.
+	def SetAuraWindow(self, wndAura):
+		self.wndAura = wndAura
+
 	def SetSashWindow(self, wndSashCombine, wndSashAbsorption):
 		self.wndSashCombine = wndSashCombine
 		self.wndSashAbsorption = wndSashAbsorption

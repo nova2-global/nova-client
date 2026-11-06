@@ -237,7 +237,7 @@ class WearOrder(unittest.TestCase):
 	"""The equipment, costume and view-equip windows on OLD's 40-slot wear
 	order (NOVA-97): the rings and the belt in the equipment window (wear
 	28-30), the costume window's body and hair, and since wave 6 its weapon
-	costume and sash (wear 22 and 21; the other costume cells hold
+	costume, sash and aura (wear 22, 21 and 39; the other costume cells hold
 	unported features), and the view's 16 entries."""
 
 	CUT_EQUIPMENT = list(range(EQUIPMENT_START, EQUIPMENT_START + 11)) + [
@@ -265,13 +265,13 @@ class WearOrder(unittest.TestCase):
 		self.assertTrue(os.path.isfile(os.path.join(REPO, "assets", "metin2_patch_dss_box", "ymir work", "ui",
 		                                            "equipment_bg_with_ring.tga")))
 
-	def test_the_costume_window_shows_the_body_the_hair_the_weapon_and_the_sash(self):
+	def test_the_costume_window_shows_the_body_the_hair_the_weapon_the_sash_and_the_aura(self):
 		world = LegacyWorld()
 		with world:
 			window = read_uiscript(os.path.join(UISCRIPT, "costumewindow.py"))["window"]
 		indices = [slot["index"] for slot in child(window, "CostumeSlot")["slot"]]
-		self.assertEqual([EQUIPMENT_START + 19, EQUIPMENT_START + 20, EQUIPMENT_START + 22, EQUIPMENT_START + 21],
-		                 indices)
+		self.assertEqual([EQUIPMENT_START + 19, EQUIPMENT_START + 20, EQUIPMENT_START + 22, EQUIPMENT_START + 21,
+		                  EQUIPMENT_START + 39], indices)
 
 	def test_the_inventory_refreshes_the_rings_and_the_belt_and_the_costume_window_its_cells(self):
 		world = LegacyWorld()

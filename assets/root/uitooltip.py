@@ -36,6 +36,24 @@ PREMIUM_SCROLLS = (50208, 50209, 50210)
 SASH_ABSORPTION_SOCKET = 0
 SASH_ABSORBED_SOCKET = 1
 
+# The aura costumes' tiers (NOVA-23; OLD uiToolTip.py:1116-1127): vnum ->
+# (tier, the number its name shows, experience per level; 0 at the last tier).
+AURA_TIERS = {
+	149001: (1, 1, 1000),
+	149002: (2, 2, 1000),
+	149003: (3, 3, 1000),
+	149004: (4, 4, 1000),
+	149005: (5, 5, 1000),
+	149006: (5, 6, 0),
+}
+AURA_TIER_DEFAULT = (1, 1, 1000)
+
+
+def GetAuraTier(itemVnum):
+	"""An aura costume's (tier, the number its name shows, experience per
+	level), OLD's __GetAuraTier."""
+	return AURA_TIERS.get(itemVnum, AURA_TIER_DEFAULT)
+
 
 def CalcSashValue(value, absChance):
 	"""A bonus of an absorbed item at a sash's absorption rate (OLD
@@ -1314,14 +1332,16 @@ class ItemToolTip(ToolTip):
 		isCostumeHair = 0
 		isCostumeBody = 0
 		isCostumeSash = 0
+		isCostumeAura = 0
 			
 		if app.ENABLE_COSTUME_SYSTEM:
 			if item.ITEM_TYPE_COSTUME == itemType:
 				isCostumeItem = 1
 				isCostumeHair = item.COSTUME_TYPE_HAIR == itemSubType
 				isCostumeBody = item.COSTUME_TYPE_BODY == itemSubType
-				## OLD uiToolTip.py:1380 (NOVA-20).
+				## OLD uiToolTip.py:1380-1382 (NOVA-20, NOVA-23).
 				isCostumeSash = item.COSTUME_TYPE_SASH == itemSubType
+				isCostumeAura = item.COSTUME_TYPE_AURA == itemSubType
 				
 				#dbg.TraceError("IS_COSTUME_ITEM! body(%d) hair(%d)" % (isCostumeBody, isCostumeHair))
 
@@ -1331,6 +1351,10 @@ class ItemToolTip(ToolTip):
 		### Hair Preview Image ###
 		if self.__IsHair(itemVnum):	
 			self.__AppendHairIcon(itemVnum)
+
+		### Aura Tier (above the description; OLD uiToolTip.py:1403-1406) ###
+		if isCostumeAura:
+			self.AppendTextLine(localeInfo.AURA_TIER % GetAuraTier(itemVnum)[1], self.SPECIAL_POSITIVE_COLOR)
 
 		### Description ###
 		self.AppendDescription(itemDesc)
@@ -1421,6 +1445,20 @@ class ItemToolTip(ToolTip):
 
 			if isCostumeSash:
 				self.__AppendSashInformation(itemVnum, metinSlot, attrSlot)
+
+			elif isCostumeAura:
+				## AURA LEVEL (OLD uiToolTip.py:1563-1578): socket 0 the level,
+				## socket 1 the experience.
+				auraLevel = int(metinSlot[0])
+				auraExp = int(metinSlot[1])
+				expPerLevel = GetAuraTier(itemVnum)[2]
+				if expPerLevel == 0:
+					self.AppendTextLine(localeInfo.AURA_TOOLTIP_LEVEL_MAX % auraLevel, self.CONDITION_COLOR)
+				else:
+					self.AppendTextLine(localeInfo.AURA_TOOLTIP_LEVEL_EXP % (auraLevel, localeInfo.NumberToString(auraExp), localeInfo.NumberToString(expPerLevel)), self.CONDITION_COLOR)
+
+				## The aura's bonuses (the aura bonus system's attributes).
+				self.__AppendAttributeInformation(attrSlot)
 
 			else:
 				self.__AppendAffectInformation()

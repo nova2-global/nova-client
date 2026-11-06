@@ -396,6 +396,16 @@ class Interface(object):
 			if inventory:
 				inventory.BindWindow(wnd)
 
+	## The aura level window (NOVA-23), which the game window makes at the
+	## server's first GC::AURA (OLD game.py:1224-1230).
+	def BindAuraWindow(self, wndAura):
+		wndAura.SetItemToolTip(self.tooltipItem)
+		self.__BindItemHolder(wndAura)
+		if self.wndInventory:
+			self.wndInventory.SetAuraWindow(wndAura)
+		if self.wndExtraInventory:
+			self.wndExtraInventory.SetAuraWindow(wndAura)
+
 	def MakeInterface(self):
 		self.__MakeMessengerWindow()
 		self.__MakeGuildWindow()

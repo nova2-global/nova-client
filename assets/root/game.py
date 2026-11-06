@@ -93,6 +93,8 @@ class GameWindow(ui.ScriptWindow):
 		self.affectShower = None
 		self.playerGauge = None
 		self.wndMaintenance = None
+		# The aura level window (NOVA-23), made at the server's first GC::AURA.
+		self.auraWindow = None
 
 		self.stream = stream
 		self.interface = interfaceModule.Interface()
@@ -316,6 +318,10 @@ class GameWindow(ui.ScriptWindow):
 		if self.targetBoard:
 			self.targetBoard.Destroy()
 			self.targetBoard = None
+
+		if self.auraWindow:
+			self.auraWindow.Destroy()
+			self.auraWindow = None
 	
 		if self.interface:
 			self.interface.HideAllWindows()
@@ -1071,6 +1077,29 @@ class GameWindow(ui.ScriptWindow):
 			self.PopupMessage(localeInfo.SASH_DEL_SERVEITEM)
 		else:
 			self.PopupMessage(localeInfo.SASH_DEL_ABSORDITEM)
+
+	## The aura level window (NOVA-23; OLD game.py:1215-1237): C's GC::AURA.
+	def BINARY_AuraPacket(self, mode, level, aura_cell, material_cell, exp, exp_required):
+		if mode == item.AURA_MODE_CLOSE:
+			if self.auraWindow:
+				self.auraWindow.Close()
+			return
+
+		if mode >= item.AURA_MODE_MAX:
+			return
+
+		if not self.auraWindow:
+			import uiAura
+			self.auraWindow = uiAura.AuraWindow()
+			if self.interface:
+				self.interface.BindAuraWindow(self.auraWindow)
+
+		self.auraWindow.SetLevel(level)
+		self.auraWindow.SetExp(exp, exp_required)
+		self.auraWindow.SetAuraCell(aura_cell)
+		self.auraWindow.SetMaterialCell(material_cell)
+		if not self.auraWindow.IsOpened():
+			self.auraWindow.Open()
 
 	## The server's refusal of a costume switch while fighting (NOVA-22; OLD
 	## game.py:3331-3332): the costume window's switches show the state again.

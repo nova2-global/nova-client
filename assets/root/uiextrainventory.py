@@ -22,7 +22,8 @@ import ime
 ## cell plus page * 45 plus the local cell (player.GetExtraInventoryCategoryRange).
 ##
 ## OLD's search field, sort and group buttons (NOVA-131), mark sell, wiki,
-## chest preview, pet preview and aura window are not ported. Every legacy
+## chest preview and pet preview are not ported; an aura material goes to
+## the aura window (NOVA-23). Every legacy
 ## method here keeps its arguments, so NovaUI can run it from a subclass.
 
 ## The category the window opens on (OLD: materials).
@@ -30,6 +31,9 @@ DEFAULT_CATEGORY = 1
 
 
 class ExtraInventoryWindow(ui.ScriptWindow):
+
+	# The aura level window (NOVA-23), set by the Interface once it exists.
+	wndAura = None
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -130,6 +134,9 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 
 	def SetDragonSoulRefineWindow(self, wndDragonSoulRefine):
 		self.wndDragonSoulRefine = wndDragonSoulRefine
+
+	def SetAuraWindow(self, wndAura):
+		self.wndAura = wndAura
 
 	def Show(self):
 		self.__LoadWindow()
@@ -533,6 +540,13 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 		elif app.IsPressed(app.DIK_LCONTROL):
 			net.SendItemTransferPacket(player.EXTRA_INVENTORY, slotIndex, player.INVENTORY)
 			return
+
+		## An aura material into the open aura window (NOVA-23; OLD :926-930).
+		if self.wndAura and self.wndAura.IsOpened():
+			item.SelectItem(player.GetItemIndex(player.EXTRA_INVENTORY, slotIndex))
+			if item.GetItemType() == item.ITEM_TYPE_RESOURCE and item.GetItemSubType() == item.RESOURCE_AURA:
+				net.SendChatPacket("/aura add %d %d %d" % (item.AURA_SLOT_MATERIAL, player.EXTRA_INVENTORY, slotIndex))
+				return
 
 		## Alt + right-click on a stack of chests asks how many to open
 		## (NOVA-81; OLD :932-934, 950-974).

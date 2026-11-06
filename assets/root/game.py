@@ -1058,6 +1058,15 @@ class GameWindow(ui.ScriptWindow):
 	def OnSearchShopBuyResult(self, code, ownerPid, slot):
 		self.interface.OnSearchShopBuyResult(code, ownerPid, slot)
 
+	## The server's refusal of a costume switch while fighting (NOVA-22; OLD
+	## game.py:3331-3332): the costume window's switches show the state again.
+	def __ResetCostumeSlider(self):
+		if not self.interface:
+			return
+		wndCostume = getattr(self.interface.wndInventory, "wndCostume", None)
+		if wndCostume:
+			wndCostume.ResetSlider()
+
 	## Gaya market (NOVA-10): C's GC::GAYA_MARKET (open 1, open 0) and
 	## GC::GAYA_MARKET_CLOSE (OLD game.py:1805-1817).
 	def OpenGemShop(self):
@@ -2018,6 +2027,9 @@ class GameWindow(ui.ScriptWindow):
 
 			"shutdown_schedule"		: self.OpenShutdownCountdown,
 			"shutdown_cancel"		: self.CloseShutdownCountdown,
+
+			# NOVA-22 (OLD game.py:3028)
+			"ResetCostumeSlider"	: self.__ResetCostumeSlider,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()

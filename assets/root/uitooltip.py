@@ -29,6 +29,26 @@ EXTRA_SHARED_SCROLLS = (71051, 71052, 71651, 71652)
 ## the tier, value 2 the seconds a fresh one adds).
 PREMIUM_SCROLLS = (50208, 50209, 50210)
 
+# The sash's sockets (NOVA-20; OLD's sash.ABSORPTION_SOCKET and
+# sash.ABSORBED_SOCKET, Packet.h): socket 0 holds the absorption rate in
+# percent, socket 1 the vnum of the absorbed weapon or armour. Named here so
+# that the tooltip rules need no sash module.
+SASH_ABSORPTION_SOCKET = 0
+SASH_ABSORBED_SOCKET = 1
+
+
+def CalcSashValue(value, absChance):
+	"""A bonus of an absorbed item at a sash's absorption rate (OLD
+	uiToolTip.py:1103-1114): the rounded share, at least 1 of a positive value."""
+	if not value:
+		return 0
+
+	share = round(value * absChance) / 100
+	valueCalc = int(share - .5) + int(int(share - .5) > 0)
+	if valueCalc <= 0 and value > 0:
+		return 1
+	return valueCalc
+
 # Whether the safebox window shows. NEW's safebox module has no IsOpen
 # (OLD's did), so the interface tells the tooltips when it opens and closes
 # the window (Interface.OpenSafeboxWindow, CommandCloseSafebox).
@@ -960,19 +980,27 @@ class ItemToolTip(ToolTip):
 		atkGrade = item.GetValue(1)
 		self.AppendTextLine(localeInfo.TOOLTIP_ITEM_ATT_GRADE % atkGrade, self.GetChangeTextLineColor(atkGrade))
 
-	def __AppendAttackPowerInfo(self):
+	def __AppendAttackPowerInfo(self, itemAbsChance = 0):
 		minPower = item.GetValue(3)
 		maxPower = item.GetValue(4)
 		addPower = item.GetValue(5)
+		if itemAbsChance:
+			minPower = CalcSashValue(minPower, itemAbsChance)
+			maxPower = CalcSashValue(maxPower, itemAbsChance)
+			addPower = CalcSashValue(addPower, itemAbsChance)
 		if maxPower > minPower:
 			self.AppendTextLine(localeInfo.TOOLTIP_ITEM_ATT_POWER % (minPower+addPower, maxPower+addPower), self.POSITIVE_COLOR)
 		else:
 			self.AppendTextLine(localeInfo.TOOLTIP_ITEM_ATT_POWER_ONE_ARG % (minPower+addPower), self.POSITIVE_COLOR)
 
-	def __AppendMagicAttackInfo(self):
+	def __AppendMagicAttackInfo(self, itemAbsChance = 0):
 		minMagicAttackPower = item.GetValue(1)
 		maxMagicAttackPower = item.GetValue(2)
 		addPower = item.GetValue(5)
+		if itemAbsChance:
+			minMagicAttackPower = CalcSashValue(minMagicAttackPower, itemAbsChance)
+			maxMagicAttackPower = CalcSashValue(maxMagicAttackPower, itemAbsChance)
+			addPower = CalcSashValue(addPower, itemAbsChance)
 
 		if minMagicAttackPower > 0 or maxMagicAttackPower > 0:
 			if maxMagicAttackPower > minMagicAttackPower:
@@ -980,13 +1008,15 @@ class ItemToolTip(ToolTip):
 			else:
 				self.AppendTextLine(localeInfo.TOOLTIP_ITEM_MAGIC_ATT_POWER_ONE_ARG % (minMagicAttackPower+addPower), self.POSITIVE_COLOR)
 
-	def __AppendMagicDefenceInfo(self):
+	def __AppendMagicDefenceInfo(self, itemAbsChance = 0):
 		magicDefencePower = item.GetValue(0)
+		if itemAbsChance:
+			magicDefencePower = CalcSashValue(magicDefencePower, itemAbsChance)
 
 		if magicDefencePower > 0:
 			self.AppendTextLine(localeInfo.TOOLTIP_ITEM_MAGIC_DEF_POWER % magicDefencePower, self.GetChangeTextLineColor(magicDefencePower))
 
-	def __AppendAttributeInformation(self, attrSlot):
+	def __AppendAttributeInformation(self, attrSlot, itemAbsChance = 0):
 		if 0 != attrSlot:
 
 			for i in range(player.ATTRIBUTE_SLOT_MAX_NUM):
@@ -996,6 +1026,9 @@ class ItemToolTip(ToolTip):
 				if 0 == value:
 					continue
 
+				## A sash shows the bonuses it absorbed at its rate (NOVA-20).
+				if itemAbsChance:
+					value = CalcSashValue(value, itemAbsChance)
 				affectString = self.__GetAffectString(type, value)
 				if affectString:
 					affectColor = self.__GetAttributeColor(i, value)
@@ -1094,6 +1127,138 @@ class ItemToolTip(ToolTip):
 		self.AppendDescription(itemDesc)
 		self.AppendDescription(itemSummary, self.CONDITION_COLOR)
 
+	def __AppendAbsorbedItemInformation(self, absorbedVnum, absChance):
+		"""An absorbed weapon's or armour's power and applies at a sash's
+		absorption rate (OLD uiToolTip.py:1514-1555, 2873-2908)."""
+		## ATTACK / DEFENCE
+		item.SelectItem(absorbedVnum)
+		if item.GetItemType() == item.ITEM_TYPE_WEAPON:
+			if item.GetItemSubType() == item.WEAPON_FAN:
+				self.__AppendMagicAttackInfo(absChance)
+				item.SelectItem(absorbedVnum)
+				self.__AppendAttackPowerInfo(absChance)
+			else:
+				self.__AppendAttackPowerInfo(absChance)
+				item.SelectItem(absorbedVnum)
+				self.__AppendMagicAttackInfo(absChance)
+		elif item.GetItemType() == item.ITEM_TYPE_ARMOR:
+			defGrade = CalcSashValue(item.GetValue(1), absChance)
+			defBonus = CalcSashValue(item.GetValue(5) * 2, absChance)
+			if defGrade > 0:
+				self.AppendSpace(5)
+				self.AppendTextLine(localeInfo.TOOLTIP_ITEM_DEF_GRADE % (defGrade + defBonus), self.GetChangeTextLineColor(defGrade))
+
+			item.SelectItem(absorbedVnum)
+			self.__AppendMagicDefenceInfo(absChance)
+
+		## EFFECT
+		item.SelectItem(absorbedVnum)
+		for i in range(item.ITEM_APPLY_MAX_NUM):
+			(affectType, affectValue) = item.GetAffect(i)
+			affectValue = CalcSashValue(affectValue, absChance)
+			affectString = self.__GetAffectString(affectType, affectValue)
+			if affectString and affectValue > 0:
+				self.AppendTextLine(affectString, self.GetChangeTextLineColor(affectValue))
+
+			item.SelectItem(absorbedVnum)
+
+	def __AppendSashInformation(self, itemVnum, metinSlot, attrSlot):
+		"""A sash's absorption rate, and what it absorbed (OLD
+		uiToolTip.py:1509-1560)."""
+		absChance = int(metinSlot[SASH_ABSORPTION_SOCKET])
+		self.AppendTextLine(localeInfo.SASH_ABSORB_CHANCE % (absChance), self.CONDITION_COLOR)
+
+		absorbedVnum = int(metinSlot[SASH_ABSORBED_SOCKET])
+		if absorbedVnum:
+			self.__AppendAbsorbedItemInformation(absorbedVnum, absChance)
+			item.SelectItem(itemVnum)
+			self.__AppendAttributeInformation(attrSlot, absChance)
+		else:
+			self.__AppendAttributeInformation(attrSlot)
+
+	## The sash window's result cells (NOVA-20; OLD uiToolTip.py:2839-2990).
+	def SetSashResultItem(self, slotIndex, window_type = player.INVENTORY):
+		"""The combination's result: the next sash, with the first sash's
+		absorbed item and bonuses at the result's highest rate."""
+		import sash
+		(itemVnum, MinAbs, MaxAbs) = sash.GetResultItem()
+		if not itemVnum:
+			return
+
+		self.ClearToolTip()
+
+		metinSlot = [player.GetItemMetinSocket(window_type, slotIndex, i) for i in range(player.METIN_SOCKET_MAX_NUM)]
+		attrSlot = [player.GetItemAttribute(window_type, slotIndex, i) for i in range(player.ATTRIBUTE_SLOT_MAX_NUM)]
+
+		item.SelectItem(itemVnum)
+		## OLD returned only when both differed ("and"), so any costume or any
+		## sash-numbered subtype passed; a result is a costume sash.
+		if item.GetItemType() != item.ITEM_TYPE_COSTUME or item.GetItemSubType() != item.COSTUME_TYPE_SASH:
+			return
+
+		absChance = MaxAbs
+		itemDesc = item.GetItemDescription()
+		self.__AdjustMaxWidth(attrSlot, itemDesc)
+		self.__SetItemTitle(itemVnum, metinSlot, attrSlot)
+		self.AppendDescription(itemDesc)
+		self.AppendDescription(item.GetItemSummary(), self.CONDITION_COLOR)
+		self.__AppendLimitInformation()
+
+		## ABSORPTION RATE
+		if MinAbs == MaxAbs:
+			self.AppendTextLine(localeInfo.SASH_ABSORB_CHANCE % (MinAbs), self.CONDITION_COLOR)
+		else:
+			self.AppendTextLine(localeInfo.SASH_ABSORB_CHANCE2 % (MinAbs, MaxAbs), self.CONDITION_COLOR)
+
+		absorbedVnum = int(metinSlot[SASH_ABSORBED_SOCKET])
+		if absorbedVnum:
+			self.__AppendAbsorbedItemInformation(absorbedVnum, absChance)
+
+		item.SelectItem(itemVnum)
+		self.__AppendAttributeInformation(attrSlot, MaxAbs)
+
+		self.AppendWearableInformation()
+		self.ShowToolTip()
+
+	def SetSashResultAbsItem(self, slotIndex1, slotIndex2, window_type = player.INVENTORY):
+		"""The absorption's result: the sash with the item's power, applies
+		and bonuses at the sash's rate."""
+		itemVnumSash = player.GetItemIndex(window_type, slotIndex1)
+		itemVnumTarget = player.GetItemIndex(window_type, slotIndex2)
+		if not itemVnumSash or not itemVnumTarget:
+			return
+
+		self.ClearToolTip()
+
+		item.SelectItem(itemVnumSash)
+		if item.GetItemType() != item.ITEM_TYPE_COSTUME or item.GetItemSubType() != item.COSTUME_TYPE_SASH:
+			return
+
+		metinSlot = [player.GetItemMetinSocket(window_type, slotIndex1, i) for i in range(player.METIN_SOCKET_MAX_NUM)]
+		attrSlot = [player.GetItemAttribute(window_type, slotIndex2, i) for i in range(player.ATTRIBUTE_SLOT_MAX_NUM)]
+		absChance = metinSlot[SASH_ABSORPTION_SOCKET]
+
+		itemDesc = item.GetItemDescription()
+		self.__AdjustMaxWidth(attrSlot, itemDesc)
+		self.__SetItemTitle(itemVnumSash, metinSlot, attrSlot)
+		self.AppendDescription(itemDesc)
+		self.AppendDescription(item.GetItemSummary(), self.CONDITION_COLOR)
+		item.SelectItem(itemVnumSash)
+		self.__AppendLimitInformation()
+
+		## ABSORPTION RATE
+		self.AppendTextLine(localeInfo.SASH_ABSORB_CHANCE % (absChance), self.CONDITION_COLOR)
+
+		self.__AppendAbsorbedItemInformation(itemVnumTarget, absChance)
+
+		## ATTR: the target's bonuses at the sash's rate.
+		item.SelectItem(itemVnumTarget)
+		self.__AppendAttributeInformation(attrSlot, absChance)
+
+		item.SelectItem(itemVnumSash)
+		self.AppendWearableInformation()
+		self.ShowToolTip()
+
 	def AddItemData(self, itemVnum, metinSlot, attrSlot = 0, flags = 0, unbindTime = 0):
 		self.itemVnum = itemVnum
 		self.metinSlot = metinSlot
@@ -1148,12 +1313,15 @@ class ItemToolTip(ToolTip):
 		isCostumeItem = 0
 		isCostumeHair = 0
 		isCostumeBody = 0
+		isCostumeSash = 0
 			
 		if app.ENABLE_COSTUME_SYSTEM:
 			if item.ITEM_TYPE_COSTUME == itemType:
 				isCostumeItem = 1
 				isCostumeHair = item.COSTUME_TYPE_HAIR == itemSubType
 				isCostumeBody = item.COSTUME_TYPE_BODY == itemSubType
+				## OLD uiToolTip.py:1380 (NOVA-20).
+				isCostumeSash = item.COSTUME_TYPE_SASH == itemSubType
 				
 				#dbg.TraceError("IS_COSTUME_ITEM! body(%d) hair(%d)" % (isCostumeBody, isCostumeHair))
 
@@ -1250,8 +1418,13 @@ class ItemToolTip(ToolTip):
 		## Costume Item ##
 		elif 0 != isCostumeItem:
 			self.__AppendLimitInformation()
-			self.__AppendAffectInformation()
-			self.__AppendAttributeInformation(attrSlot)
+
+			if isCostumeSash:
+				self.__AppendSashInformation(itemVnum, metinSlot, attrSlot)
+
+			else:
+				self.__AppendAffectInformation()
+				self.__AppendAttributeInformation(attrSlot)
 
 			self.AppendWearableInformation()
 		

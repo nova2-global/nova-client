@@ -1041,3 +1041,11 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Preço de absorção: %d
+SASH_ABSORB_CHANCE	Taxa de absorção: %d%%
+SASH_ABSORB_CHANCE2	taca de absorção: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Queres remover todos os bônus disponíveis?
+SASH_FAILURE_CLEAN	Nenhum bônus pode ser retirado.
+SASH_DEL_SERVEITEM	A faixa 2 será destruída se a combinação falhar.
+SASH_DEL_ABSORDITEM	Absorver o item, destruindo-o no processo?
+SASH_AUTO_COMBINE	Combine all from inventory

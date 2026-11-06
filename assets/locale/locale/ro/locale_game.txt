@@ -1040,3 +1040,11 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Pret absorbtie: %d
+SASH_ABSORB_CHANCE	Rata absorbtie: %d%%
+SASH_ABSORB_CHANCE2	Rata absorbtie: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Vrei sa elimini toate bonusurile disponibile?
+SASH_FAILURE_CLEAN	Nu se pot lua bonusuri.
+SASH_DEL_SERVEITEM	Cea de-a doua esarfa va fi distrusa in cazul in care combinatia esueaza.
+SASH_DEL_ABSORDITEM	Obiectul absorbit v-a fi distrus in proces.
+SASH_AUTO_COMBINE	Combine all from inventory

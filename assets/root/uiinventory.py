@@ -22,6 +22,14 @@ import nui_windows
 
 ITEM_FLAG_APPLICABLE = 1 << 14
 
+# The sash's bonus scrolls (NOVA-20): an item whose value 0 is one of these
+# takes the absorbed bonuses out of a sash (OLD's sash.CLEAN_ATTR_VALUE0 and
+# sash.TAKE_ATTR_VALUE0, Packet.h SASH_CLEAN_ATTR_VALUE0 and
+# SASH_TAKE_OUT_ATTR_VALUE0). Named here so that this module, which NovaUI's
+# windows also run, needs no sash module.
+SASH_CLEAN_ATTR_VALUE0 = 7
+SASH_TAKE_ATTR_VALUE0 = 9
+
 # The money slot (uiscript Money_Slot: parameter_slot_05, 130 px, the text
 # right-aligned 3 px from its right edge) holds a purse of up to 11 digits
 # with its unit, "99.999.999.999 Yang" (120 px in Tahoma 12). 12 digits with
@@ -338,6 +346,13 @@ class CostumeWindow(ui.ScriptWindow):
 		self.__UpdateAuraWingCheckboxes(player.GetAuraWingFlags())
 
 
+def IsSashBonusScroll(itemVnum):
+	"""Whether an item takes the absorbed bonuses out of a sash (OLD's test of
+	its value 0 against sash.CLEAN_ATTR_VALUE0 and sash.TAKE_ATTR_VALUE0)."""
+	item.SelectItem(itemVnum)
+	return item.GetValue(0) in (SASH_CLEAN_ATTR_VALUE0, SASH_TAKE_ATTR_VALUE0)
+
+
 class BeltInventoryWindow(ui.ScriptWindow):
 
 	def __init__(self, wndInventory):
@@ -501,6 +516,9 @@ class InventoryWindow(ui.ScriptWindow):
 	offlineShopButton = None
 	searchShopButton = None
 	offlineShopEnabled = False
+	# The sash windows (NOVA-20), set by the Interface.
+	wndSashCombine = None
+	wndSashAbsorption = None
 	
 	sellingSlotNumber = -1
 	isLoaded = 0
@@ -1332,12 +1350,21 @@ class InventoryWindow(ui.ScriptWindow):
 		scrollIndex = player.GetItemIndex(scrollSlotPos)
 		targetIndex = player.GetItemIndex(targetSlotPos)
 
+		## OLD uiInventory.py:2071-2108 (NOVA-20): the sash's bonus scrolls
+		## have their own refusal and question.
 		if not player.CanDetach(scrollIndex, targetSlotPos):
-			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.REFINE_FAILURE_METIN_INSEPARABLE_ITEM)
+			if IsSashBonusScroll(scrollIndex):
+				chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.SASH_FAILURE_CLEAN)
+			else:
+				chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.REFINE_FAILURE_METIN_INSEPARABLE_ITEM)
 			return
 
 		self.questionDialog = uiCommon.QuestionDialog()
 		self.questionDialog.SetText(localeInfo.REFINE_DO_YOU_SEPARATE_METIN)
+		item.SelectItem(targetIndex)
+		if item.GetItemType() in (item.ITEM_TYPE_WEAPON, item.ITEM_TYPE_ARMOR, item.ITEM_TYPE_COSTUME):
+			if IsSashBonusScroll(scrollIndex):
+				self.questionDialog.SetText(localeInfo.SASH_DO_YOU_CLEAN)
 		self.questionDialog.SetAcceptEvent(ui.__mem_func__(self.OnDetachMetinFromItem))
 		self.questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
 		self.questionDialog.Open()
@@ -1678,6 +1705,13 @@ class InventoryWindow(ui.ScriptWindow):
 				self.wndDragonSoulRefine.AutoSetItem((player.INVENTORY, slotIndex), 1)
 				return
 
+		## OLD uiInventory.py:2522-2525: a right-click puts the item into the
+		## open sash window (the server picks the slot).
+		sashWindow = self.GetShownSashWindow()
+		if sashWindow:
+			sashWindow.AddItem(player.INVENTORY, slotIndex)
+			return
+
 		if self.__UseItemWithModifier(slotIndex):
 			mouseModule.mouseController.DeattachObject()
 			self.OverOutItem()
@@ -1805,6 +1839,23 @@ class InventoryWindow(ui.ScriptWindow):
 		else:
 			net.SendItemMovePacket(srcWindow, srcSlotPos, player.INVENTORY, dstSlotPos, srcItemCount)
 	
+	## OLD uiInventory.py:2732-2747.
+	def SetSashWindow(self, wndSashCombine, wndSashAbsorption):
+		self.wndSashCombine = wndSashCombine
+		self.wndSashAbsorption = wndSashAbsorption
+
+	def isShowSashWindow(self):
+		if self.GetShownSashWindow():
+			return 1
+		return 0
+
+	def GetShownSashWindow(self):
+		"""The sash window that shows, or None."""
+		for wnd in (self.wndSashCombine, self.wndSashAbsorption):
+			if wnd and wnd.IsShow():
+				return wnd
+		return None
+
 	def SetDragonSoulRefineWindow(self, wndDragonSoulRefine):
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoulRefine = wndDragonSoulRefine

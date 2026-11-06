@@ -1058,6 +1058,20 @@ class GameWindow(ui.ScriptWindow):
 	def OnSearchShopBuyResult(self, code, ownerPid, slot):
 		self.interface.OnSearchShopBuyResult(code, ownerPid, slot)
 
+	## The sash windows (NOVA-20; OLD game.py:3628-3637): C's GC::SASH. iAct is
+	## 1 open, 2 close, 3 an item added or taken out, 4 refined; bWindow is
+	## True for the combine window, False for the absorb window.
+	def ActSash(self, iAct, bWindow):
+		if self.interface:
+			self.interface.ActSash(iAct, bWindow)
+
+	def AlertSash(self, bWindow):
+		snd.PlaySound("sound/ui/make_soket.wav")
+		if bWindow:
+			self.PopupMessage(localeInfo.SASH_DEL_SERVEITEM)
+		else:
+			self.PopupMessage(localeInfo.SASH_DEL_ABSORDITEM)
+
 	## The server's refusal of a costume switch while fighting (NOVA-22; OLD
 	## game.py:3331-3332): the costume window's switches show the state again.
 	def __ResetCostumeSlider(self):

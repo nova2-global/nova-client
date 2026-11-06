@@ -1040,3 +1040,11 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Absorption price: %d
+SASH_ABSORB_CHANCE	Absorption rate: %d%%
+SASH_ABSORB_CHANCE2	Absorption rate: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Do you want to remove all available bonuses?
+SASH_FAILURE_CLEAN	No bonuses can be taken away.
+SASH_DEL_SERVEITEM	Sash 2 will be destroyed should the combination fail.
+SASH_DEL_ABSORDITEM	Absorb item, destroying it in the process?
+SASH_AUTO_COMBINE	Combine all from inventory

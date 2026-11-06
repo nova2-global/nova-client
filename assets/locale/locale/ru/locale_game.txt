@@ -1040,3 +1040,11 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Стоимость поглощения: %d
+SASH_ABSORB_CHANCE	Процент Поглощения: %d%%
+SASH_ABSORB_CHANCE2	Процент поглощения: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Вы хотите удалить все бонусы?
+SASH_FAILURE_CLEAN	Нет бонусов которые можно убрать.
+SASH_DEL_SERVEITEM	Шарф 2 будет уничтожен, если комбинация не удасться.
+SASH_DEL_ABSORDITEM	Поглатить предмет уничтожив его?
+SASH_AUTO_COMBINE	Combine all from inventory

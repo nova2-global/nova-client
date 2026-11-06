@@ -1,6 +1,9 @@
 # option
 CONSOLE_ENABLE = 0
 
+# The sash combine window's "combine all" check box (NOVA-20; OLD constInfo.py:4).
+SASH_AUTO_COMBINE = False
+
 PVPMODE_ENABLE = 1
 PVPMODE_TEST_ENABLE = 0
 PVPMODE_ACCELKEY_ENABLE = 1

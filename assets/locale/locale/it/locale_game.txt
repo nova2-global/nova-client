@@ -1040,3 +1040,11 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Prezzo di assorbimento: %d
+SASH_ABSORB_CHANCE	Tasso di assorbimento: %d%%
+SASH_ABSORB_CHANCE2	Tasso di assorbimento: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Vuoi rimuovere tutti i bonus disponibili?
+SASH_FAILURE_CLEAN	Nessun bonus può essere tolto.
+SASH_DEL_SERVEITEM	la 2° Stola  verrà distrutto se la combinazione fallisce.
+SASH_DEL_ABSORDITEM	Assorbire l'oggetto, distruggendolo nel processo?
+SASH_AUTO_COMBINE	Combine all from inventory

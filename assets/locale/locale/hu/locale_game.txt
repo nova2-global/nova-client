@@ -1040,3 +1040,11 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Abszorpciós érték: %d
+SASH_ABSORB_CHANCE	Abszorpciós mérték: %d%%
+SASH_ABSORB_CHANCE2	Abszorpciós mérték: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Szeretné eltávolítaniaz összes rendelkezésre álló bónuszt?
+SASH_FAILURE_CLEAN	A bónuszokat nem lehet elvenni
+SASH_DEL_SERVEITEM	A 2.pánt megsemmisül, ha a kombináció nem sikerül
+SASH_DEL_ABSORDITEM	Az abszorpciós tárgy megsemmisül a folyamat során
+SASH_AUTO_COMBINE	Combine all from inventory

@@ -1040,3 +1040,11 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Absorptie prijs: %d
+SASH_ABSORB_CHANCE	Absorptie ratio: %d%%
+SASH_ABSORB_CHANCE2	Absorptie ratio: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Wil je alle beschikbare bonussen verwijderen?
+SASH_FAILURE_CLEAN	Geen enkele bonus kan weggenomen worden.
+SASH_DEL_SERVEITEM	Schoudergordel 2  zal vernietigd worden als de combinatie faalt.
+SASH_DEL_ABSORDITEM	Absorbeer voorwerp, wordt vernietigd tijdens dit proces?
+SASH_AUTO_COMBINE	Combine all from inventory

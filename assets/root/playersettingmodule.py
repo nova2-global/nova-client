@@ -36,6 +36,10 @@ COMBO_INDEX_4 = 3
 COMBO_INDEX_5 = 4
 COMBO_INDEX_6 = 5
 
+# The bone a sash hangs from (NOVA-20; OLD playerSettingModule.py:1420, 1660,
+# 2020, 2165), the same for every race.
+SASH_BONE = "Bip01 Spine2"
+
 HORSE_SKILL_WILDATTACK = chr.MOTION_SKILL+121
 HORSE_SKILL_CHARGE = chr.MOTION_SKILL+122
 HORSE_SKILL_SPLASH = chr.MOTION_SKILL+123
@@ -661,6 +665,7 @@ def __LoadGameWarriorEx(race, path):
 
 	## Bone
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right_hand")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 
 def __LoadGameAssassinEx(race, path):
 	## Assassin
@@ -873,6 +878,7 @@ def __LoadGameAssassinEx(race, path):
 	chrmgr.RegisterComboAttackNew(chr.MOTION_MODE_HORSE_BOW, COMBO_TYPE_1, COMBO_INDEX_1, chr.MOTION_COMBO_ATTACK_1)
 
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON_LEFT, "equip_left")
 
 def __LoadGameSuraEx(race, path):
@@ -999,6 +1005,7 @@ def __LoadGameSuraEx(race, path):
 	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_HORSE_ONEHAND_SWORD, HORSE_SKILL_WILDATTACK, "skill_wildattack.msa")
 
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 
 def __LoadGameShamanEx(race, path):
 	## Shaman
@@ -1191,6 +1198,7 @@ def __LoadGameShamanEx(race, path):
 	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_HORSE_BELL, HORSE_SKILL_WILDATTACK, "skill_wildattack.msa")
 
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON_LEFT, "equip_left")
 
 

@@ -1233,6 +1233,8 @@ EXPECTED_SITES = {
                            # Wave 5 (NOVA-10): the gaya market.
                            ("make", "gem-shop", "uiGemShop.GemShopWindow", "nui_gem_shop.GemShopWindow"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
+                           ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
+                            "nui_offline_shop_log.OfflineShopLogWindow"),
                            ("make", "exchange", "uiExchange.ExchangeDialog", "nui_exchange.ExchangeDialog"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
                            ("make", "shop", "uiShop.ShopDialog", "nui_shop.ShopDialog"),

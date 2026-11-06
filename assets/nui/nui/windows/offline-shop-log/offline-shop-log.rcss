@@ -1,0 +1,208 @@
+/* The offline shop log's modern look (Wave 5, NOVA-9): the log emblem
+   before the title; a well with legacy's view of 21 rows, each row legacy's
+   five texts in its order (the action as an accent label, the other party,
+   the item, the yang in gold, the date muted), alternate rows raised; a thin
+   scroll range at the well's right while the rows outgrow the view; "..."
+   with a ring while the first page loads, the emblem and "No entries yet"
+   when the shop has no row. The controller places it as legacy's uiscript (20 from the
+   screen's right edge, 60 down) and keeps the place the player drags it
+   to; the sheet's place frames it in its snapshots. Classic (legacy's 520 x 480 board):
+   skins/classic/windows/offline-shop-log.rcss. */
+
+body.shop-log
+{
+	left: 16dp;
+	top: 16dp;
+	width: 680dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.shop-log button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The title's emblem: an accent chip with the log glyph. */
+.shop-log__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.shop-log__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.shop-log__body
+{
+	position: relative;
+	padding: 10dp 12dp 12dp;
+}
+/* The well: 21 rows of 22dp and its padding. */
+.shop-log__list
+{
+	position: relative;
+	box-sizing: border-box;
+	height: 474dp;
+	padding: 5dp 20dp 5dp 5dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
+	overflow: hidden;
+}
+.shop-log__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 22dp;
+	padding: 0 8dp;
+	border-radius: 5dp;
+	color: var(--text);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.shop-log__row.is-odd
+{
+	background-color: var(--surface-raised);
+}
+.shop-log__cell
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.shop-log__action
+{
+	flex: 0 0 104dp;
+	padding-right: 8dp;
+	color: var(--accent);
+	font-weight: bold;
+}
+.shop-log__other
+{
+	flex: 0 0 96dp;
+	padding-right: 8dp;
+	color: var(--text-muted);
+}
+.shop-log__what
+{
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.shop-log__amount
+{
+	flex: 0 0 116dp;
+	padding-right: 12dp;
+	color: var(--warning);
+	text-align: right;
+}
+.shop-log__date
+{
+	flex: 0 0 104dp;
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	text-align: right;
+}
+/* The loading and empty states, in the middle of the well. */
+.shop-log__message
+{
+	display: flex;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 8dp;
+	color: var(--text-muted);
+	pointer-events: none;
+}
+.shop-log__spinner
+{
+	width: 10dp;
+	height: 10dp;
+	border-width: 2dp;
+	border-color: var(--border);
+	border-top-color: var(--accent);
+	border-radius: 8dp;
+}
+.shop-log__empty-dash
+{
+	display: none;
+}
+.shop-log__empty-mark
+{
+	position: relative;
+	width: 16dp;
+	height: 16dp;
+}
+.shop-log__empty-mark .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+/* The scroll range, inside the well's right padding. */
+.shop-log__scroll-box
+{
+	position: absolute;
+	right: 18dp;
+	top: 18dp;
+	width: 8dp;
+	height: 460dp;
+}
+input.shop-log__scroll
+{
+	display: block;
+	width: 8dp;
+	height: 100%;
+	focus: none;
+}
+.shop-log__scroll slidertrack
+{
+	width: 2dp;
+	margin-left: 3dp;
+	border-radius: 2dp;
+	background-color: var(--surface-hover);
+}
+.shop-log__scroll sliderbar
+{
+	width: 8dp;
+	height: 60dp;
+	border-radius: 6dp;
+	background-color: var(--text-muted);
+}
+.shop-log__scroll sliderbar:hover, .shop-log__scroll sliderbar:active
+{
+	background-color: var(--accent);
+}
+.shop-log__scroll sliderprogress
+{
+	display: none;
+}
+.shop-log__scroll sliderarrowdec, .shop-log__scroll sliderarrowinc
+{
+	width: 0;
+	height: 0;
+}
+.shop-log__retry
+{
+	display: none;
+}

@@ -643,7 +643,7 @@ class Wave3c(WindowsTest):
 WAVE4_TRADE = ["exchange", "shop", "private-shop", "safebox", "mall", "equipment-view"]
 # Wave 5 (NOVA-10): the gaya market joins the trade group (its id after Wave
 # 4b's, before the maintenance countdown).
-WAVE5_TRADE = ["gem-shop", "shop-search"]
+WAVE5_TRADE = ["gem-shop", "shop-search", "offline-shop-log"]
 WAVE4_SOCIAL = ["messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"]
 
 
@@ -693,6 +693,7 @@ class Wave4Flags(WindowsTest):
         for entry in expected:
             self.assertIn(entry, self.m.ON_DEMAND_DOCUMENTS)
         self.assertIn(("shop-search", ("shop-search",)), self.m.ON_DEMAND_DOCUMENTS)
+        self.assertIn(("offline-shop-log", ("offline-shop-log",)), self.m.ON_DEMAND_DOCUMENTS)
         self.setting.windows = "+safebox,+equipment-view"
         self.assertEqual(self.m.prewarm_documents(),
                          ["nui/windows/safebox/safebox.rml", "nui/windows/safebox-password/safebox-password.rml",

@@ -863,6 +863,8 @@ What the color roles mean:
 | `--classic-search-name` | classic | `#b3977c` |
 | `--classic-search-disabled` | classic | `#6a6a6a` |
 | `--classic-search-selected` | classic | `#ffffff20` |
+| `--classic-log-row` | classic | `#131313` |
+| `--classic-log-row-alt` | classic | `#1e1e1e` |
 
 <!-- tokens:end -->
 

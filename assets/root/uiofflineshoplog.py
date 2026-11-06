@@ -192,7 +192,7 @@ class OfflineShopLogWindow(ui.ScriptWindow):
 		self.isLast = bool(last)
 		self.nextPage = page + 1
 		for row in rows:
-			logRow = LogRow(len(self.rows))
+			logRow = self.__MakeRow(len(self.rows))
 			logRow.SetParent(self.logsWindow)
 			logRow.SetPosition(0, len(self.rows) * ROW_HEIGHT)
 			logRow.SetInfo(offlineshopconst.log_row(row))
@@ -202,6 +202,10 @@ class OfflineShopLogWindow(ui.ScriptWindow):
 		self.__RefreshState()
 		if self.scrollWindow:
 			self.scrollWindow.OnContentWindowSizeChange()
+
+	def __MakeRow(self, index):
+		"""A row of the view (NovaUI's window makes its own)."""
+		return LogRow(index)
 
 	def OnEndScroll(self):
 		"""The view reached the last row: the next page, once, until the last one came."""

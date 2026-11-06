@@ -109,9 +109,10 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("guild-mark", True),         # the guild mark and symbol lists
 	# Wave 4b (NOVA-16): the special inventory, in the items group.
 	("extra-inventory", True),    # the special inventory (Inventory+)
-	# Wave 5: the gaya market and offline-shop search, in the trade group.
+	# Wave 5: the gaya market, the offline-shop search and log, in the trade group.
 	("gem-shop", True),           # the gaya market
 	("shop-search", True),        # every offline shop's listings
+	("offline-shop-log", True),   # the owner's offline shop log
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
 	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
@@ -125,7 +126,8 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"rest": ("quest", "guild-building", "web", "console"),
 	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
-	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search"),
+	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
+	          "offline-shop-log"),
 	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"),
 }
 # "all": every window, so "-all" makes a legacy client (the live kit's legacy
@@ -185,6 +187,7 @@ ON_DEMAND_DOCUMENTS = (
 	("mall", ("mall",)),
 	("gem-shop", ("gem-shop",)),
 	("shop-search", ("shop-search",)),
+	("offline-shop-log", ("offline-shop-log",)),
 	("equipment-view", ("equipment-view",)),
 	("messenger", ("messenger",)),
 	("whisper", ("whisper",)),

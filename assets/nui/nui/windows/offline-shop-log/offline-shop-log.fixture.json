@@ -1,0 +1,179 @@
+{
+	"offline_shop_log": {
+		"rows": [
+			{
+				"action": "Sold Item",
+				"other": "Kaelor",
+				"what": "Full Moon Sword+7 (x1)",
+				"amount": "12.500.000 Yang",
+				"date": "05-11-2026 18:42",
+				"odd": false
+			},
+			{
+				"action": "Sold Item",
+				"other": "Mirelle",
+				"what": "Red Potion (L) (x200)",
+				"amount": "360.000 Yang",
+				"date": "05-11-2026 17:57",
+				"odd": true
+			},
+			{
+				"action": "Added Item",
+				"other": "-",
+				"what": "Blessing Scroll (x5)",
+				"amount": "-",
+				"date": "05-11-2026 17:12",
+				"odd": false
+			},
+			{
+				"action": "Price Updated",
+				"other": "-",
+				"what": "Moonlight Treasure Chest (x3)",
+				"amount": "-",
+				"date": "05-11-2026 16:27",
+				"odd": true
+			},
+			{
+				"action": "Sold Item",
+				"other": "Tobrin",
+				"what": "Dragon Scale Armor+5 (x1)",
+				"amount": "48.000.000 Yang",
+				"date": "05-11-2026 15:42",
+				"odd": false
+			},
+			{
+				"action": "Withdrew Yang",
+				"other": "-",
+				"what": "-",
+				"amount": "60.860.000 Yang",
+				"date": "05-11-2026 14:57",
+				"odd": true
+			},
+			{
+				"action": "Added Time",
+				"other": "-",
+				"what": "7 days",
+				"amount": "-",
+				"date": "05-11-2026 14:12",
+				"odd": false
+			},
+			{
+				"action": "Sold Item",
+				"other": "Yuna",
+				"what": "Blue Potion (L) (x200)",
+				"amount": "340.000 Yang",
+				"date": "05-11-2026 13:27",
+				"odd": true
+			},
+			{
+				"action": "Item Moved",
+				"other": "-",
+				"what": "Battle Plate Helmet+4 (x1)",
+				"amount": "-",
+				"date": "05-11-2026 12:42",
+				"odd": false
+			},
+			{
+				"action": "Withdrew Item",
+				"other": "-",
+				"what": "Gold Ring (x1)",
+				"amount": "-",
+				"date": "05-11-2026 11:57",
+				"odd": true
+			},
+			{
+				"action": "Added Item",
+				"other": "-",
+				"what": "Spirit Stone of Penetration+2 (x1)",
+				"amount": "-",
+				"date": "05-11-2026 11:12",
+				"odd": false
+			},
+			{
+				"action": "Unlocked",
+				"other": "-",
+				"what": "-",
+				"amount": "-",
+				"date": "05-11-2026 10:27",
+				"odd": true
+			},
+			{
+				"action": "Sold Item",
+				"other": "Arvid",
+				"what": "Ritual Stone (x10)",
+				"amount": "2.750.000 Yang",
+				"date": "05-11-2026 09:42",
+				"odd": false
+			},
+			{
+				"action": "Item Removed",
+				"other": "-",
+				"what": "Wooden Shield (x1)",
+				"amount": "-",
+				"date": "05-11-2026 08:57",
+				"odd": true
+			},
+			{
+				"action": "Locked",
+				"other": "-",
+				"what": "-",
+				"amount": "-",
+				"date": "05-11-2026 08:12",
+				"odd": false
+			},
+			{
+				"action": "Sold Item",
+				"other": "Selene",
+				"what": "Exorcism Scroll (x20)",
+				"amount": "900.000 Yang",
+				"date": "05-11-2026 07:27",
+				"odd": true
+			},
+			{
+				"action": "Added Item",
+				"other": "-",
+				"what": "Ginseng Tea (x50)",
+				"amount": "-",
+				"date": "05-11-2026 06:42",
+				"odd": false
+			},
+			{
+				"action": "Opened",
+				"other": "-",
+				"what": "-",
+				"amount": "-",
+				"date": "05-11-2026 05:57",
+				"odd": true
+			},
+			{
+				"action": "Sold Item",
+				"other": "Doran",
+				"what": "Tiger Bracelet+6 (x1)",
+				"amount": "7.800.000 Yang",
+				"date": "05-11-2026 05:12",
+				"odd": false
+			},
+			{
+				"action": "Price Updated",
+				"other": "-",
+				"what": "Concentrated Reading (x10)",
+				"amount": "-",
+				"date": "05-11-2026 04:27",
+				"odd": true
+			},
+			{
+				"action": "Closed",
+				"other": "-",
+				"what": "-",
+				"amount": "-",
+				"date": "05-11-2026 03:42",
+				"odd": false
+			}
+		],
+		"scroll": 0.0,
+		"scrollable": true,
+		"loading": false,
+		"empty": false,
+		"retry_end": 0.0
+	}
+}

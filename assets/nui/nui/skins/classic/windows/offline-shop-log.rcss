@@ -1,0 +1,165 @@
+/* Classic skin overlay of nui/windows/offline-shop-log/offline-shop-log.rml:
+   legacy's offline shop log (uiscript offlineshoplogwindow.py,
+   uiofflineshoplog.py) at 100%, 1dp to the legacy pixel: the board,
+   520 x 480 (the controller puts it 20 from the screen's right edge and
+   60 down, as legacy's uiscript); the title bar at
+   8, 7, 505 wide; the view at 14, 40, 480 x 425, its rows 20 high on
+   legacy's two dark bars (ROW_COLORS) with the five texts 3 down; legacy's
+   scroll bar at the view's right (494, 40,
+   425 tall); "..." and "-" in the board's middle, as legacy's texts.
+   One change: legacy's columns (6, 96, 190, 330 and 400) are too narrow
+   for their texts, which ran into each other and the date under the
+   scroll bar; here the action, the other party and the item end in "..."
+   at their column's end, the yang ends 6 before the date, the texts are a
+   size smaller, and the rows reach the scroll bar (494) so the date fits
+   whole. */
+
+body.skin-classic.shop-log
+{
+	width: 520dp;
+	height: 480dp;
+	min-width: 0;
+}
+body.skin-classic.shop-log .shop-log__title-icon
+{
+	display: none;
+}
+body.skin-classic.shop-log .shop-log__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 505dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.shop-log .shop-log__handle, body.skin-classic.shop-log .shop-log__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end. */
+body.skin-classic.shop-log .shop-log__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.shop-log .shop-log__body
+{
+	position: static;
+	display: block;
+	padding: 0;
+}
+body.skin-classic.shop-log .shop-log__list
+{
+	position: absolute;
+	left: 14dp;
+	top: 40dp;
+	width: 494dp;
+	height: 425dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.shop-log .shop-log__row
+{
+	display: block;
+	position: relative;
+	width: 494dp;
+	height: 20dp;
+	padding: 0;
+	border-radius: 0;
+	background-color: var(--classic-log-row);
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+body.skin-classic.shop-log .shop-log__row.is-odd
+{
+	background-color: var(--classic-log-row-alt);
+}
+body.skin-classic.shop-log .shop-log__cell
+{
+	position: absolute;
+	top: 3dp;
+	padding: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--text);
+	font-size: var(--font-xs);
+	font-weight: normal;
+	text-align: left;
+}
+body.skin-classic.shop-log .shop-log__action { left: 6dp; width: 82dp; }
+body.skin-classic.shop-log .shop-log__other { left: 92dp; width: 72dp; }
+body.skin-classic.shop-log .shop-log__what { left: 168dp; width: 118dp; }
+body.skin-classic.shop-log .shop-log__amount { left: 288dp; width: 98dp; text-align: right; }
+body.skin-classic.shop-log .shop-log__date { left: 392dp; width: 102dp; }
+/* "..." and "-": legacy's texts centered on the board. */
+body.skin-classic.shop-log .shop-log__message
+{
+	left: -14dp;
+	top: -40dp;
+	width: 520dp;
+	height: 480dp;
+	color: var(--text);
+}
+body.skin-classic.shop-log .shop-log__spinner, body.skin-classic.shop-log .shop-log__empty-mark,
+body.skin-classic.shop-log .shop-log__empty-text
+{
+	display: none;
+}
+body.skin-classic.shop-log .shop-log__empty-dash
+{
+	display: inline;
+}
+body.skin-classic.shop-log .shop-log__scroll-box
+{
+	left: 494dp;
+	top: 40dp;
+	right: auto;
+	width: 17dp;
+	height: 425dp;
+}
+body.skin-classic.shop-log input.shop-log__scroll
+{
+	width: 17dp;
+}
+/* Legacy's ui.ScrollBar, as the guild mark's classic overlay draws it. */
+body.skin-classic.shop-log .shop-log__scroll slidertrack
+{
+	width: 12dp;
+	margin-left: 0;
+	margin-top: -1dp;
+	padding: 2dp 0;
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+body.skin-classic.shop-log .shop-log__scroll sliderbar
+{
+	width: 10dp;
+	height: 12dp;
+	margin-left: 2dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thumb;
+}
+body.skin-classic.shop-log .shop-log__scroll sliderbar:hover, body.skin-classic.shop-log .shop-log__scroll sliderbar:active
+{
+	background-color: transparent;
+}
+body.skin-classic.shop-log .shop-log__scroll sliderarrowdec
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_up_button_01.sub" scale-none left top);
+}
+body.skin-classic.shop-log .shop-log__scroll sliderarrowinc
+{
+	width: 17dp;
+	height: 17dp;
+	decorator: image("d:/ymir work/ui/public/scrollbar_down_button_01.sub" scale-none left top);
+}

@@ -36,6 +36,9 @@ COMBO_INDEX_4 = 3
 COMBO_INDEX_5 = 4
 COMBO_INDEX_6 = 5
 
+# The quiver's bow attack (NOVA-19): OLD's attack_special.msa once NEW's packs
+# carry it; the bow's own attack until then.
+BOW_SPECIAL_ATTACK = "attack.msa"
 # The bone a sash hangs from (NOVA-20; OLD playerSettingModule.py:1420, 1660,
 # 2020, 2165), the same for every race.
 SASH_BONE = "Bip01 Spine2"
@@ -809,6 +812,22 @@ def __LoadGameAssassinEx(race, path):
 	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW, chr.MOTION_COMBO_ATTACK_1,		"attack.msa")
 	chrmgr.ReserveComboAttackNew(chr.MOTION_MODE_BOW, COMBO_TYPE_1, 1)
 	chrmgr.RegisterComboAttackNew(chr.MOTION_MODE_BOW, COMBO_TYPE_1, COMBO_INDEX_1, chr.MOTION_COMBO_ATTACK_1)
+
+	## BOW WITH A QUIVER (NOVA-19; OLD playerSettingModule.py:1576-1590): the
+	## client shows this mode while an unlimited arrow is worn. OLD's attack is
+	## attack_special.msa, which NEW's packs lack: the bow's attack stands in.
+	chrmgr.RegisterMotionMode(chr.MOTION_MODE_BOW_SPECIAL)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WAIT,			"wait.msa", 70)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WAIT,			"wait_1.msa", 30)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WALK,			"walk.msa")
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_RUN,			"run.msa")
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE,		"damage.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE,		"damage_1.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE_BACK,	"damage_2.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE_BACK,	"damage_3.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_COMBO_ATTACK_1,	BOW_SPECIAL_ATTACK)
+	chrmgr.ReserveComboAttackNew(chr.MOTION_MODE_BOW_SPECIAL, COMBO_TYPE_1, 1)
+	chrmgr.RegisterComboAttackNew(chr.MOTION_MODE_BOW_SPECIAL, COMBO_TYPE_1, COMBO_INDEX_1, chr.MOTION_COMBO_ATTACK_1)
 
 	## FISHING
 	chrmgr.SetPathName(path + "fishing/")

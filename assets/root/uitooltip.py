@@ -1370,6 +1370,15 @@ class ItemToolTip(ToolTip):
 
 			self.AppendSpace(5)
 
+			## A quiver's time (NOVA-19; OLD uiToolTip.py:1433-1446): one that
+			## counts in real time shows its end. A first-use one is shown by
+			## the limits below, as every first-use item.
+			if item.WEAPON_UNLIMITED_ARROW == itemSubType:
+				for i in range(item.LIMIT_MAX_NUM):
+					(limitType, limitValue) = item.GetLimit(i)
+					if item.LIMIT_REAL_TIME == limitType:
+						self.AppendMallItemLastTime(metinSlot[0], limitValue)
+
 			## For fans, display magic attack first.
 			if item.WEAPON_FAN == itemSubType:
 				self.__AppendMagicAttackInfo()

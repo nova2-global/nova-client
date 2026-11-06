@@ -2,8 +2,11 @@ import uiScriptLocale
 import item
 
 COSTUME_START_INDEX = item.COSTUME_SLOT_START
-## OLD's other costume cells (wear 21-27, OLD uiscript/costumewindow.py) hold
-## features that are not ported: their slots stay hidden.
+## OLD's other costume cells this window shows (OLD uiscript/costumewindow.py),
+## counted from the costume body (wear 19) as OLD's GameType.h counts them:
+## the weapon costume (wear 22, item.COSTUME_SLOT_WEAPON; NOVA-21). Wear 23-27 (mount, effects, pet, wings)
+## hold features that are not ported: their slots stay hidden.
+WEAPON_SLOT_INDEX = COSTUME_START_INDEX + 3
 
 BUTTON_PATH = "d:/ymir work/ui/public/"
 WINDOW_WIDTH = 216
@@ -82,6 +85,10 @@ window = {
 
 					"image" : "d:/ymir work/ui/costume/costume_bg.jpg",
 				},
+				## The new cells stand on the public slot base, beside the body.
+				{ "name" : "Weapon_Base", "type" : "image", "x" : 134, "y" : 49, "image" : BUTTON_PATH + "Slot_Base.sub" },
+				{ "name" : "Weapon_Base2", "type" : "image", "x" : 134, "y" : 81, "image" : BUTTON_PATH + "Slot_Base.sub" },
+				{ "name" : "Weapon_Base3", "type" : "image", "x" : 134, "y" : 113, "image" : BUTTON_PATH + "Slot_Base.sub" },
 				{
 					"name" : "CostumeSlot",
 					"type" : "slot",
@@ -95,6 +102,7 @@ window = {
 					"slot" : (
 								{"index":COSTUME_START_INDEX+0, "x":61, "y":45, "width":32, "height":64},
 								{"index":COSTUME_START_INDEX+1, "x":61, "y": 8, "width":32, "height":32},
+								{"index":WEAPON_SLOT_INDEX, "x":118, "y":8, "width":32, "height":96},
 							),
 				},
 

@@ -1,6 +1,8 @@
 """Tests of assets/locale/locale/common/item_list.txt at the foundation cut
 (NOVA-98): NEW's lines as they were, then OLD's lines for the cut's items
-NEW's list lacks whose files the client has. Run from tools/:
+NEW's list lacks whose files the client has (wave 6's quivers, sashes,
+weapon costumes and auras since tools/old_art.py took their files from OLD's
+client). Run from tools/:
 
 	python3 -B -m unittest item_list_test
 
@@ -31,8 +33,9 @@ class ItemList(unittest.TestCase):
 		cls.added = cls.lines[cls.want["new_lines"]:-1]
 
 	def test_every_line_is_one_the_loader_takes(self):
-		"""LoadItemList takes 3 or 4 tab columns and logs anything else as a
-		StrangeLine; the file is ASCII with LF breaks and ends with one."""
+		"""LoadItemList takes 3, 4 or 5 tab columns (5 only on OLD's aura
+		lines) and logs anything else as a StrangeLine; the file is ASCII
+		with LF breaks and ends with one."""
 		self.assertTrue(self.data.endswith(b"\n"))
 		self.assertNotIn(b"\r", self.data)
 		taken, strange = old_content.item_list_lines(self.data)
@@ -42,6 +45,7 @@ class ItemList(unittest.TestCase):
 			if tokens is None:
 				continue
 			self.assertTrue(tokens[0].isdigit(), line)
+			self.assertTrue(len(tokens) < 5 or tokens[1] == "AURA", line)
 		self.assertGreater(len(taken), 6400)
 
 	def test_news_lines_are_as_they_were(self):
@@ -53,9 +57,21 @@ class ItemList(unittest.TestCase):
 			line + "\n" for line in self.lines[:self.want["new_lines"]]).encode("ascii"))[0])
 		vnums = [old_content.atoi(old_content.split_tab(line)[0]) for line in self.added]
 		self.assertEqual(vnums, self.want["added"])
-		self.assertEqual(len(vnums), 188)
+		self.assertEqual(len(vnums), 2222)
 		self.assertEqual(len(set(vnums)), len(vnums))
 		self.assertEqual(new_vnums & set(vnums), set())
+
+	def test_an_aura_line_keeps_olds_aura_and_wing_effects(self):
+		"""CItemManager::LoadItemList reads an AURA line's fourth column as
+		the aura's effect and a fifth as the wings' (NOVA-23, OLD's)."""
+		self.assertEqual(old_content.old_item_line(
+			"149006\tAURA\ticon/item/149006.tga\td:/a/only_aura.mse\td:/a/only_wing.mse"),
+			"149006\tAURA\ticon/item/149006.tga\td:/a/only_aura.mse\td:/a/only_wing.mse")
+		with self.assertRaises(ValueError):
+			old_content.old_item_line("1\tWEAPON\ticon/item/1.tga\ta.gr2\tb.gr2")
+		auras = [old_content.split_tab(line) for line in self.added if old_content.split_tab(line)[1] == "AURA"]
+		self.assertEqual([tokens[0] for tokens in auras], ["149001", "149002", "149003", "149004", "149005", "149006"])
+		self.assertEqual(len(auras[-1]), 5)
 
 	def test_every_added_line_names_files_the_client_ships(self):
 		"""A listed icon the store lacks shows no icon at all, where an

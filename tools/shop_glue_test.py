@@ -775,7 +775,9 @@ def wave_keys():
 
 
 class Locales(unittest.TestCase):
-    def test_every_locale_has_every_wave_key_in_one_block_at_the_end(self):
+    def test_every_locale_has_every_wave_key_in_one_block(self):
+        """Wave 5's keys are one block of plain entries; wave 6 (NOVA-19 to
+        NOVA-23) appends its own after it."""
         for locale in lf.locales():
             for file_name, keys in wave_keys().items():
                 with self.subTest(locale=locale, file=file_name):
@@ -789,8 +791,9 @@ class Locales(unittest.TestCase):
                     for key in keys:
                         self.assertEqual(names.count(key), 1, key)
                     first = min(names.index(key) for key in keys)
-                    self.assertEqual(sorted(names[first:]), sorted(keys), "one block, at the end")
-                    for line in lines[first:]:
+                    block = slice(first, first + len(keys))
+                    self.assertEqual(sorted(names[block]), sorted(keys), "one block")
+                    for line in lines[block]:
                         self.assertEqual(len(line.split("\t")), 2, "plain entries: %r" % line)
                         self.assertTrue(line.split("\t")[1], "a text: %r" % line)
 

@@ -22,6 +22,14 @@ import nui_windows
 
 ITEM_FLAG_APPLICABLE = 1 << 14
 
+# The sash's bonus scrolls (NOVA-20): an item whose value 0 is one of these
+# takes the absorbed bonuses out of a sash (OLD's sash.CLEAN_ATTR_VALUE0 and
+# sash.TAKE_ATTR_VALUE0, Packet.h SASH_CLEAN_ATTR_VALUE0 and
+# SASH_TAKE_OUT_ATTR_VALUE0). Named here so that this module, which NovaUI's
+# windows also run, needs no sash module.
+SASH_CLEAN_ATTR_VALUE0 = 7
+SASH_TAKE_ATTR_VALUE0 = 9
+
 # The money slot (uiscript Money_Slot: parameter_slot_05, 130 px, the text
 # right-aligned 3 px from its right edge) holds a purse of up to 11 digits
 # with its unit, "99.999.999.999 Yang" (120 px in Tahoma 12). 12 digits with
@@ -129,6 +137,25 @@ def MoneySlotText(money):
 
 class CostumeWindow(ui.ScriptWindow):
 
+	## The switches of OLD's costume window (__HIDE_COSTUME, NOVA-22; OLD
+	## uiInventory.py:56-366): a toggle button per part, down while the part
+	## shows, whose press asks the server to show or hide it
+	## ("/set_is_show_costumes|hair|weapon|sash 0|1"); the server's
+	## GC::SHOW_COSTUMES then holds the state (player.IsShow*), and its
+	## ResetCostumeSlider command (a refusal while fighting) puts the buttons
+	## back. OLD's sash switch sat in the inventory's equipment panel, beside
+	## its sash slot; here both are in this window. A window whose loader makes
+	## none of them (NovaUI's) has empty lists.
+	costumeButtonList = ()
+	hairButtonList = ()
+	weaponButtonList = ()
+	sashButtonList = ()
+	## The aura's switches (NOVA-23): a toggle button opens a panel with a check
+	## box per aura flag (OLD's "/aura_wing <flags>").
+	wingButtonList = ()
+	auraWingPanel = None
+	auraWingChecks = ()
+
 	def __init__(self, wndInventory):
 		import exception
 		
@@ -144,6 +171,13 @@ class CostumeWindow(ui.ScriptWindow):
 
 		self.isLoaded = 0
 		self.wndInventory = wndInventory
+		self.costumeButtonList = []
+		self.hairButtonList = []
+		self.weaponButtonList = []
+		self.sashButtonList = []
+		self.wingButtonList = []
+		self.auraWingPanel = None
+		self.auraWingChecks = []
 
 		self.__LoadWindow()
 
@@ -152,11 +186,16 @@ class CostumeWindow(ui.ScriptWindow):
 
 	def Show(self):
 		self.__LoadWindow()
+		self.ResetSlider()
 		self.RefreshCostumeSlot()
 
 		ui.ScriptWindow.Show(self)
 
 	def Close(self):
+		if self.auraWingPanel:
+			self.auraWingPanel.Hide()
+		for button in self.wingButtonList:
+			button.SetUp()
 		self.Hide()
 
 	def __LoadWindow(self):
@@ -173,8 +212,15 @@ class CostumeWindow(ui.ScriptWindow):
 			exception.Abort("CostumeWindow.LoadWindow.LoadObject")
 
 		try:
+			GetObject = self.GetChild
 			wndEquip = self.GetChild("CostumeSlot")
 			self.GetChild("TitleBar").SetCloseEvent(ui.__mem_func__(self.Close))
+
+			self.costumeButtonList.append(GetObject("Activate_ON_OFF"))
+			self.hairButtonList.append(GetObject("Activate1_ON_OFF"))
+			self.weaponButtonList.append(GetObject("Activate2_ON_OFF"))
+			self.wingButtonList.append(GetObject("Activate3_ON_OFF"))
+			self.sashButtonList.append(GetObject("Activate5_ON_OFF"))
 
 		except:
 			import exception
@@ -188,17 +234,136 @@ class CostumeWindow(ui.ScriptWindow):
 		wndEquip.SetSelectEmptySlotEvent(ui.__mem_func__(self.wndInventory.SelectEmptySlot))
 		wndEquip.SetSelectItemSlotEvent(ui.__mem_func__(self.wndInventory.SelectItemSlot))
 
+		## ActivateButton
+		for buttons, event in ((self.costumeButtonList, self.OnCostumeActivateButton),
+				(self.hairButtonList, self.OnHairActivateButton),
+				(self.weaponButtonList, self.OnWeaponActivateButton),
+				(self.sashButtonList, self.OnSashActivateButton),
+				(self.wingButtonList, self.__ToggleAuraWingPanel)):
+			for button in buttons:
+				button.SetToggleUpEvent(ui.__mem_func__(event))
+				button.SetToggleDownEvent(ui.__mem_func__(event))
+
 		self.wndEquip = wndEquip
 
 	def RefreshCostumeSlot(self):
 		getItemVNum=player.GetItemIndex
-		
+
+		## COSTUME_SLOT_COUNT runs from the costume body (wear 19) over OLD's
+		## costume sash (21) and weapon costume (22), NOVA-20 and NOVA-21.
 		for i in range(item.COSTUME_SLOT_COUNT):
 			slotNumber = item.COSTUME_SLOT_START + i
 			self.wndEquip.SetItemSlot(slotNumber, getItemVNum(slotNumber), 0)
 
+		## The aura costume (NOVA-23; OLD uiInventory.py:210-223).
+		slotNumber = CostumeAuraSlot()
+		self.wndEquip.SetItemSlot(slotNumber, getItemVNum(slotNumber), 0)
+
 		self.wndEquip.RefreshSlot()
-		
+
+	def __SetShown(self, buttons, isShown):
+		for button in buttons:
+			if isShown:
+				button.Down()
+			else:
+				button.SetUp()
+
+	def __AskShow(self, buttons, isShown, command):
+		"""OLD's On*ActivateButton: the button shows the part's new state and
+		the server is asked for it."""
+		self.__SetShown(buttons, not isShown)
+		net.SendChatPacket("/%s %d" % (command, 0 if isShown else 1))
+
+	def OnCostumeActivateButton(self):
+		self.__AskShow(self.costumeButtonList, player.IsShowCostumes(), "set_is_show_costumes")
+
+	def OnHairActivateButton(self):
+		self.__AskShow(self.hairButtonList, player.IsShowHair(), "set_is_show_hair")
+
+	def OnWeaponActivateButton(self):
+		self.__AskShow(self.weaponButtonList, player.IsShowWeapon(), "set_is_show_weapon")
+
+	def OnSashActivateButton(self):
+		self.__AskShow(self.sashButtonList, player.IsShowSash(), "set_is_show_sash")
+
+	## The aura's flags (OLD uiInventory.py:254-329), each a check box: OLD's
+	## wings, aura and aura wing effect, those the client's player module has.
+	AURA_WING_FLAGS = (("AURA_WING_FLAG_WING", "AURA_WING_SHOW_WING"), ("AURA_WING_FLAG_AURA", "AURA_WING_SHOW_AURA"),
+			("AURA_WING_FLAG_EFFECT", "AURA_WING_SHOW_EFFECT"))
+	AURA_WING_PANEL_POSITION = (163, 143)
+
+	def __ToggleAuraWingPanel(self):
+		if self.auraWingPanel and self.auraWingPanel.IsShow():
+			self.auraWingPanel.Hide()
+			self.__SetShown(self.wingButtonList, False)
+			return
+
+		if not self.auraWingPanel:
+			self.__CreateAuraWingPanel()
+
+		self.__UpdateAuraWingCheckboxes(player.GetAuraWingFlags())
+
+		self.auraWingPanel.SetPosition(*self.AURA_WING_PANEL_POSITION)
+		self.auraWingPanel.Show()
+		self.auraWingPanel.SetTop()
+		self.__SetShown(self.wingButtonList, True)
+
+	def __CreateAuraWingPanel(self):
+		flags = [(getattr(player, flag), label) for (flag, label) in self.AURA_WING_FLAGS if hasattr(player, flag)]
+		panel = ui.Board()
+		panel.SetParent(self)
+		panel.SetSize(150, 20 + 20 * len(flags))
+		panel.AddFlag("float")
+		panel.Show()
+
+		checks = []
+		for (index, (flag, label)) in enumerate(flags):
+			checkBox = ui.CheckBox()
+			checkBox.SetParent(panel)
+			checkBox.SetPosition(15, 12 + 20 * index)
+			checkBox.SetTextInfo(getattr(localeInfo, label))
+			event = lambda flag=flag: self.__SendAuraWingToggle(flag)
+			checkBox.SetEvent(event, "ON_CHECK")
+			checkBox.SetEvent(event, "ON_UNCHECK")
+			checkBox.Show()
+			checks.append((flag, checkBox))
+
+		self.auraWingChecks = checks
+		self.auraWingPanel = panel
+
+	def __SendAuraWingToggle(self, flag):
+		flags = player.GetAuraWingFlags()
+		flags ^= flag
+		net.SendChatPacket("/aura_wing %d" % flags)
+
+	def __UpdateAuraWingCheckboxes(self, flags):
+		if not self.auraWingPanel:
+			return
+		for (flag, checkBox) in self.auraWingChecks:
+			checkBox.SetCheckStatus(bool(flags & flag))
+
+	def ResetSlider(self):
+		self.__SetShown(self.costumeButtonList, player.IsShowCostumes())
+		self.__SetShown(self.hairButtonList, player.IsShowHair())
+		self.__SetShown(self.weaponButtonList, player.IsShowWeapon())
+		self.__SetShown(self.sashButtonList, player.IsShowSash())
+		self.__UpdateAuraWingCheckboxes(player.GetAuraWingFlags())
+
+
+def IsSashBonusScroll(itemVnum):
+	"""Whether an item takes the absorbed bonuses out of a sash (OLD's test of
+	its value 0 against sash.CLEAN_ATTR_VALUE0 and sash.TAKE_ATTR_VALUE0)."""
+	item.SelectItem(itemVnum)
+	return item.GetValue(0) in (SASH_CLEAN_ATTR_VALUE0, SASH_TAKE_ATTR_VALUE0)
+
+
+def CostumeAuraSlot():
+	"""The aura costume's cell (wear 39): OLD's item.COSTUME_SLOT_AURA,
+	c_Costume_Slot_Aura (GameType.h), counted from the costume body (wear 19)
+	as the costume window's uiscript counts it."""
+	return item.COSTUME_SLOT_START + 20
+
+
 class BeltInventoryWindow(ui.ScriptWindow):
 
 	def __init__(self, wndInventory):
@@ -362,6 +527,11 @@ class InventoryWindow(ui.ScriptWindow):
 	offlineShopButton = None
 	searchShopButton = None
 	offlineShopEnabled = False
+	# The sash windows (NOVA-20) and the aura window (NOVA-23), set by the
+	# Interface and the game window once they exist.
+	wndSashCombine = None
+	wndSashAbsorption = None
+	wndAura = None
 	
 	sellingSlotNumber = -1
 	isLoaded = 0
@@ -1193,12 +1363,21 @@ class InventoryWindow(ui.ScriptWindow):
 		scrollIndex = player.GetItemIndex(scrollSlotPos)
 		targetIndex = player.GetItemIndex(targetSlotPos)
 
+		## OLD uiInventory.py:2071-2108 (NOVA-20): the sash's bonus scrolls
+		## have their own refusal and question.
 		if not player.CanDetach(scrollIndex, targetSlotPos):
-			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.REFINE_FAILURE_METIN_INSEPARABLE_ITEM)
+			if IsSashBonusScroll(scrollIndex):
+				chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.SASH_FAILURE_CLEAN)
+			else:
+				chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.REFINE_FAILURE_METIN_INSEPARABLE_ITEM)
 			return
 
 		self.questionDialog = uiCommon.QuestionDialog()
 		self.questionDialog.SetText(localeInfo.REFINE_DO_YOU_SEPARATE_METIN)
+		item.SelectItem(targetIndex)
+		if item.GetItemType() in (item.ITEM_TYPE_WEAPON, item.ITEM_TYPE_ARMOR, item.ITEM_TYPE_COSTUME):
+			if IsSashBonusScroll(scrollIndex):
+				self.questionDialog.SetText(localeInfo.SASH_DO_YOU_CLEAN)
 		self.questionDialog.SetAcceptEvent(ui.__mem_func__(self.OnDetachMetinFromItem))
 		self.questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
 		self.questionDialog.Open()
@@ -1539,6 +1718,20 @@ class InventoryWindow(ui.ScriptWindow):
 				self.wndDragonSoulRefine.AutoSetItem((player.INVENTORY, slotIndex), 1)
 				return
 
+		## OLD uiInventory.py:2522-2531: a right-click puts the item into the
+		## open sash window (the server picks the slot) or an aura material into
+		## the open aura window.
+		sashWindow = self.GetShownSashWindow()
+		if sashWindow:
+			sashWindow.AddItem(player.INVENTORY, slotIndex)
+			return
+
+		if self.wndAura and self.wndAura.IsOpened():
+			item.SelectItem(player.GetItemIndex(slotIndex))
+			if item.GetItemType() == item.ITEM_TYPE_RESOURCE and item.GetItemSubType() == item.RESOURCE_AURA:
+				net.SendChatPacket("/aura add %d %d %d" % (item.AURA_SLOT_MATERIAL, player.INVENTORY, slotIndex))
+				return
+
 		if self.__UseItemWithModifier(slotIndex):
 			mouseModule.mouseController.DeattachObject()
 			self.OverOutItem()
@@ -1666,6 +1859,26 @@ class InventoryWindow(ui.ScriptWindow):
 		else:
 			net.SendItemMovePacket(srcWindow, srcSlotPos, player.INVENTORY, dstSlotPos, srcItemCount)
 	
+	## OLD uiInventory.py:2729-2747.
+	def SetAuraWindow(self, wndAura):
+		self.wndAura = wndAura
+
+	def SetSashWindow(self, wndSashCombine, wndSashAbsorption):
+		self.wndSashCombine = wndSashCombine
+		self.wndSashAbsorption = wndSashAbsorption
+
+	def isShowSashWindow(self):
+		if self.GetShownSashWindow():
+			return 1
+		return 0
+
+	def GetShownSashWindow(self):
+		"""The sash window that shows, or None."""
+		for wnd in (self.wndSashCombine, self.wndSashAbsorption):
+			if wnd and wnd.IsShow():
+				return wnd
+		return None
+
 	def SetDragonSoulRefineWindow(self, wndDragonSoulRefine):
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
 			self.wndDragonSoulRefine = wndDragonSoulRefine

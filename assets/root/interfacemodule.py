@@ -45,6 +45,7 @@ import uiselectitem
 # END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
 # The gaya market (NOVA-10; OLD interfaceModule.py:112-114).
 import uiGemShop
+import uiSash
 # The offline shop's search, log and decoration windows (NOVA-9, chunk Y2's).
 import uiSearchShop
 import uiOfflineShopLog
@@ -92,6 +93,8 @@ class Interface(object):
 		self.wndGuild = None
 		self.wndGuildBuilding = None
 		self.wndGemShop = None
+		self.wndSashCombine = None
+		self.wndSashAbsorption = None
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
@@ -372,12 +375,45 @@ class Interface(object):
 		self.wndItemSelect.Hide()
 	# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
 				
+	## The sash windows (NOVA-20; OLD interfaceModule.py:656-665), made
+	## plainly, as the other wave windows: the UI session wraps them.
+	def __MakeSashWindow(self):
+		self.wndSashCombine = uiSash.CombineWindow()
+		self.wndSashCombine.Hide()
+
+		self.wndSashAbsorption = uiSash.AbsorbWindow()
+		self.wndSashAbsorption.LoadWindow()
+		self.wndSashAbsorption.Hide()
+
+		if self.wndInventory:
+			self.wndInventory.SetSashWindow(self.wndSashCombine, self.wndSashAbsorption)
+		## The tradable icon (NOVA-13): their items' cells take no mouse event.
+		for wnd in (self.wndSashCombine, self.wndSashAbsorption):
+			self.__BindItemHolder(wnd)
+
+	def __BindItemHolder(self, wnd):
+		wnd.SetInven(self.wndInventory, self.wndExtraInventory)
+		for inventory in (self.wndInventory, self.wndExtraInventory):
+			if inventory:
+				inventory.BindWindow(wnd)
+
+	## The aura level window (NOVA-23), which the game window makes at the
+	## server's first GC::AURA (OLD game.py:1224-1230).
+	def BindAuraWindow(self, wndAura):
+		wndAura.SetItemToolTip(self.tooltipItem)
+		self.__BindItemHolder(wndAura)
+		if self.wndInventory:
+			self.wndInventory.SetAuraWindow(wndAura)
+		if self.wndExtraInventory:
+			self.wndExtraInventory.SetAuraWindow(wndAura)
+
 	def MakeInterface(self):
 		self.__MakeMessengerWindow()
 		self.__MakeGuildWindow()
 		self.__MakeChatWindow()
 		self.__MakeParty()
 		self.__MakeWindows()
+		self.__MakeSashWindow()
 		self.__MakeDialogs()
 		self.__BindTradableWindows()
 
@@ -429,6 +465,8 @@ class Interface(object):
 		self.dlgExchange.SetItemToolTip(self.tooltipItem)
 		self.privateShopBuilder.SetItemToolTip(self.tooltipItem)
 		self.wndGemShop.SetItemToolTip(self.tooltipItem)
+		self.wndSashCombine.SetItemToolTip(self.tooltipItem)
+		self.wndSashAbsorption.SetItemToolTip(self.tooltipItem)
 
 		self.__InitWhisper()
 		self.DRAGON_SOUL_IS_QUALIFIED = False
@@ -554,6 +592,14 @@ class Interface(object):
 		if self.wndGemShop:
 			self.wndGemShop.Destroy()
 			self.wndGemShop = None
+
+		if self.wndSashCombine:
+			self.wndSashCombine.Destroy()
+			self.wndSashCombine = None
+
+		if self.wndSashAbsorption:
+			self.wndSashAbsorption.Destroy()
+			self.wndSashAbsorption = None
 
 		if self.wndSearchShop:
 			self.wndSearchShop.Destroy()
@@ -1439,6 +1485,32 @@ class Interface(object):
 	## cuts). The alchemist's picker, with two more arguments.
 	def BINARY_OpenSelectItemWindowEx(self, maxGrade):
 		self.wndItemSelect.Open(maxGrade=maxGrade, stayOpen=True)
+
+	#####################################################################################
+	### Sash (NOVA-20; OLD interfaceModule.py:3270-3303) ###
+
+	def ActSash(self, iAct, bWindow):
+		if bWindow:
+			wndSash = self.wndSashCombine
+		else:
+			wndSash = self.wndSashAbsorption
+
+		if iAct == 1:
+			if not wndSash.IsOpened():
+				wndSash.Open()
+
+			if not self.wndInventory.IsShow():
+				self.wndInventory.Show()
+		elif iAct == 2:
+			if wndSash.IsOpened():
+				wndSash.Close()
+		elif iAct == 3 or iAct == 4:
+			if wndSash.IsOpened():
+				wndSash.Refresh(iAct)
+		else:
+			return
+
+		self.wndInventory.RefreshBagSlotWindow()
 
 	#####################################################################################
 	### Gaya market (NOVA-10; OLD interfaceModule.py:2026-2033) ###

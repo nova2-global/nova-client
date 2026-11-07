@@ -1040,3 +1040,20 @@ SEARCH_SHOP_FOLLOW_SIGNAL	Follow the signal on the map, it will lead to the shop
 SEARCH_SHOP_OTHER_MAP	You are in a different map, do you want to teleport?
 OFFLINE_SHOP_BUTTON	Shop
 SEARCH_SHOP_BUTTON	Search
+SASH_REFINE_COST	Стоимость поглощения: %d
+SASH_ABSORB_CHANCE	Процент Поглощения: %d%%
+SASH_ABSORB_CHANCE2	Процент поглощения: %d%% ~ %d%%
+SASH_DO_YOU_CLEAN	Вы хотите удалить все бонусы?
+SASH_FAILURE_CLEAN	Нет бонусов которые можно убрать.
+SASH_DEL_SERVEITEM	Шарф 2 будет уничтожен, если комбинация не удасться.
+SASH_DEL_ABSORDITEM	Поглатить предмет уничтожив его?
+SASH_AUTO_COMBINE	Combine all from inventory
+AURA_TIER	Tier %d
+AURA_TOOLTIP_LEVEL_MAX	Level %d (MAX)
+AURA_TOOLTIP_LEVEL_EXP	Level %d (%s/%s EXP)
+AURA_WINDOW_LEVEL	Level: %d
+AURA_WINDOW_MAX	MAX
+AURA_WINDOW_EXP	%s / %s EXP
+AURA_WING_SHOW_WING	Wings
+AURA_WING_SHOW_AURA	Aura
+AURA_WING_SHOW_EFFECT	Aura Wing Effect

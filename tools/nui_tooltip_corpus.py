@@ -105,6 +105,9 @@ ERROR_METIN_STONE = 28960
 # Wave 4b (NOVA-81): the treasure chest of the gacha cases (a synthetic row:
 # the 4b proto's vnum and values).
 GACHA_CHEST = 34218
+SASH, SASH_NEXT = 900029, 900030
+AURA_FIRST, AURA_LAST = 149001, 149006
+QUIVER = 900031
 # The extra inventory's window and the gacha's item type (main's exe:
 # GameType.h EXTRA_INVENTORY, ItemData.h ITEM_TYPE_GACHA), which the client
 # constants the stand-ins are made from (tools/fixtures/module_constants.json,
@@ -477,6 +480,19 @@ SYNTHETIC.update({
     # predates: the 4b proto's Fire Treasure Chest, ten opens a chest
     # (LIMIT_VALUE1), stackable.
     GACHA_CHEST: _made("Fire Treasure Chest", "GACHA", 0, ((0, 0), (0, 10)), flags=FLAGS["ITEM_STACKABLE"]),
+    # Wave 6 (NOVA-20): a sash and the next one, a combination's result
+    # (COSTUME_TYPE_SASH), which the corpus's proto predates.
+    SASH: _made("Sash of Trials", "COSTUME", support.module_constants()["item"]["COSTUME_TYPE_SASH"],
+                ((LIMITS["LEVEL"], 30), (0, 0)), desc="Absorbs the power of a weapon or armour."),
+    SASH_NEXT: _made("Sash of the Second Trial", "COSTUME", support.module_constants()["item"]["COSTUME_TYPE_SASH"],
+                     ((LIMITS["LEVEL"], 30), (0, 0))),
+    # Wave 6 (NOVA-23): an aura of the first tier and one of the last, whose
+    # level has no experience (uitooltip.AURA_TIERS names their vnums).
+    AURA_FIRST: _made("Ordinary Aura Outfit", "COSTUME", support.module_constants()["item"]["COSTUME_TYPE_AURA"]),
+    AURA_LAST: _made("Radiant Aura Outfit", "COSTUME", support.module_constants()["item"]["COSTUME_TYPE_AURA"]),
+    # Wave 6 (NOVA-19): a quiver that counts in real time.
+    QUIVER: _made("Quiver of Hours", "WEAPON", support.module_constants()["item"]["WEAPON_UNLIMITED_ARROW"],
+                  ((LIMITS["LEVEL"], 1), (LIMITS["REAL_TIME"], 3600))),
 })
 
 # --- the skills (spec 5.8's skill cases; the numbers are the cases', the names the client's) ------
@@ -861,6 +877,44 @@ def api_cases(items):
     return cases
 
 
+def wave6_cases(items):
+    """Wave 6's tooltips: the sash's (NOVA-20, OLD uiToolTip.py:1509-1560,
+    2839-2990), a worn rate with an absorbed sword, fan, armour or nothing,
+    the combine window's result (sash.GetResultItem: the next sash at a rate
+    or a range, none, not a sash) and the absorb window's (the sash in pos 0,
+    the item in pos 1, or one of them missing or no sash); an aura's tier and
+    level (NOVA-23). The quiver's time (NOVA-19) is a synthetic-time case."""
+    cases = []
+    sword, fan, armour = 10, 7000, 11200
+
+    def add(case_id, context, vnum, sockets, **values):
+        case = {"id": case_id, "context": context, "vnum": vnum, "sockets": sockets, "attrs": ATTRS_NORMAL,
+                "player": dict(PLAYER), "clock": CLOCK}
+        case.update(values)
+        cases.append(case)
+
+    if str(SASH) not in items:
+        return cases
+    for name, absorbed, rate in (("sword", sword, 19), ("fan", fan, 25), ("armour", armour, 15), ("nothing", 0, 11)):
+        add("sash-absorbed-%s" % name, "SetInventoryItem", SASH, [rate, absorbed, 0])
+    for name, result in (("range", [SASH_NEXT, 11, 19]), ("rate", [SASH_NEXT, 25, 25]), ("none", [0, 0, 0]),
+                         ("not-a-sash", [sword, 5, 5])):
+        add("sash-combine-%s" % name, "calls", SASH, [19, sword, 0], kind="item", calls=[["SetSashResultItem", [0]]],
+            sash_result=result)
+    add("sash-combine-unabsorbed", "calls", SASH, [11, 0, 0], kind="item", calls=[["SetSashResultItem", [0]]],
+        sash_result=[SASH_NEXT, 11, 11])
+    for name, target in (("sword", sword), ("fan", fan), ("armour", armour)):
+        add("sash-absorb-%s" % name, "calls", SASH, [19, 0, 0], kind="item", calls=[["SetSashResultAbsItem", [0, 1]]],
+            more_items=[{"pos": 1, "vnum": target, "sockets": [0, 0, 0], "attrs": ATTRS_RARE}])
+    add("sash-absorb-no-target", "calls", SASH, [19, 0, 0], kind="item", calls=[["SetSashResultAbsItem", [0, 1]]])
+    add("sash-absorb-not-a-sash", "calls", sword, [0, 0, 0], kind="item", calls=[["SetSashResultAbsItem", [0, 1]]],
+        more_items=[{"pos": 1, "vnum": armour, "sockets": [0, 0, 0], "attrs": []}])
+    # The aura's tier and level (NOVA-23; socket 0 the level, 1 the experience).
+    add("aura-level", "SetInventoryItem", AURA_FIRST, [12, 340, 0])
+    add("aura-level-max", "SetInventoryItem", AURA_LAST, [250, 0, 0])
+    return cases
+
+
 def _synthetic_ds(items):
     """A dragon soul stone of step 5 (vnum digit 5), which no rule names."""
     return 110500 if "110500" in items else None
@@ -914,7 +968,7 @@ def build_corpus(proto=DEFAULT_PROTO, names=DEFAULT_NAMES, mobs=DEFAULT_MOBS):
                    icon=row.get("icon", "icon/item/%05d.tga" % 27001), desc=row.get("desc", ""), summary=row.get("summary", ""))
         items[str(vnum)] = row
     mob_names = names_of(mobs)
-    cases = item_cases(items) + state_cases(items) + skill_cases() + api_cases(items)
+    cases = item_cases(items) + state_cases(items) + skill_cases() + api_cases(items) + wave6_cases(items)
     seen = set()
     for case in cases:
         if isinstance(case.get("sockets"), list):
@@ -997,6 +1051,11 @@ class TipWorld(object):
         modules["player"].EXTRA_INVENTORY = EXTRA_INVENTORY
         modules["item"].ITEM_TYPE_GACHA = ITEM_TYPE_GACHA
         support.define(modules["exchange"], "isTrading", lambda: bool(self.data.case.get("trading")))
+        # Wave 6 (NOVA-20): the combine window's result, as the sash module
+        # answers it (OLD PythonSash.cpp GetResultItem: vnum, lowest and
+        # highest rate).
+        sash = modules["sash"] = types.ModuleType("sash")
+        sash.GetResultItem = lambda: tuple(self.data.case.get("sash_result", (0, 0, 0)))
         game.load_standard()
         game.load("nui_text", "nui_text.py")
         with quiet():
@@ -1154,6 +1213,11 @@ def _run_case(world, case):
     game = world.game
     world.main_call_publishes = world.m("nui_tooltip").STATS["publishes"] if world.recorder else 0
     support.apply_case(game, case)
+    held = world.data.case["items"]
+    for row in case.get("more_items", ()):
+        held[int(row["pos"])] = {"vnum": int(row["vnum"]), "count": int(row.get("count", 1)),
+                                 "sockets": list(row.get("sockets", ())), "attrs": [tuple(a) for a in row.get("attrs", ())],
+                                 "flags": 0, "sell_price": 0}
     world.rtl[0] = bool(case.get("rtl"))
     game.modules["localeInfo"].MINIMAP_ZONE_NAME_DICT = {"metin2_map_a1": "Yongan"} if case.get("zone") else {}
     world.dragon_soul.isActivated = bool(case.get("ds_active"))

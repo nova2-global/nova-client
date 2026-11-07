@@ -15,7 +15,7 @@
 		},
 		"item_list": {
 			"path": "assets/locale/locale/common/item_list.txt",
-			"sha256": "c2d7b9caf819d962e86e9936062fcc15bd6af3cf53edafa6f022a09e9579ecae"
+			"sha256": "13e51f55a89bf6b477624ba9eb4e376a072e23f15b682a87f65994fef805e864"
 		},
 		"itemdesc": {
 			"path": "assets/locale/locale/en/itemdesc.txt",
@@ -27,7 +27,7 @@
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "726905952d24dc07aa5ca11d4759270566ef9a4b9d2c13354695e0313916ae7a"
+			"sha256": "ff5140bc13521cb32699a9bf8c886718c685edc88bfdd242ec399e1144415e56"
 		}
 	},
 	"items": {
@@ -13332,14 +13332,14 @@
 			"name": "Ordinary Aura Outfit",
 			"type": 28,
 			"type_name": "COSTUME",
-			"subtype": 2,
-			"subtype_name": "COSTUME_AURA",
+			"subtype": 10,
+			"subtype_name": "10",
 			"size": [
 				1,
 				1
 			],
-			"antiflags": 57472,
-			"flags": 8192,
+			"antiflags": 0,
+			"flags": 0,
 			"wear": 0,
 			"limits": [
 				[
@@ -13353,7 +13353,7 @@
 			],
 			"applies": [],
 			"values": [
-				1,
+				0,
 				0,
 				0,
 				0,
@@ -13362,17 +13362,17 @@
 			],
 			"sockets": 0,
 			"price": {
-				"buy": 100000,
+				"buy": 0,
 				"sell": 0
 			},
-			"refine": 149002,
-			"icon": "icon/item/149001.tga",
-			"desc": "A faint glow that surrounds its bearer, holding only a trace of hidden power waiting to be awakened.",
-			"summary": "",
+			"refine": 0,
+			"synthetic": true,
 			"why": [
-				"lowest of COSTUME/COSTUME_AURA",
-				"lowest of COSTUME/COSTUME_AURA size 1"
-			]
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
+			"desc": "",
+			"summary": ""
 		},
 		"149990": {
 			"name": "Aura Ice Rune (1)",
@@ -13595,6 +13595,52 @@
 					100
 				]
 			],
+			"values": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"sockets": 0,
+			"price": {
+				"buy": 0,
+				"sell": 0
+			},
+			"refine": 0,
+			"synthetic": true,
+			"why": [
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
+			"desc": "",
+			"summary": ""
+		},
+		"149006": {
+			"name": "Radiant Aura Outfit",
+			"type": 28,
+			"type_name": "COSTUME",
+			"subtype": 10,
+			"subtype_name": "10",
+			"size": [
+				1,
+				1
+			],
+			"antiflags": 0,
+			"flags": 0,
+			"wear": 0,
+			"limits": [
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"applies": [],
 			"values": [
 				0,
 				0,
@@ -14749,6 +14795,144 @@
 			"why": [
 				"a rule branch the proto has no item for"
 			],
+			"desc": "",
+			"summary": ""
+		},
+		"900029": {
+			"name": "Sash of Trials",
+			"type": 28,
+			"type_name": "COSTUME",
+			"subtype": 3,
+			"subtype_name": "3",
+			"size": [
+				1,
+				1
+			],
+			"antiflags": 0,
+			"flags": 0,
+			"wear": 0,
+			"limits": [
+				[
+					1,
+					30
+				],
+				[
+					0,
+					0
+				]
+			],
+			"applies": [],
+			"values": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"sockets": 0,
+			"price": {
+				"buy": 0,
+				"sell": 0
+			},
+			"refine": 0,
+			"desc": "Absorbs the power of a weapon or armour.",
+			"synthetic": true,
+			"why": [
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
+			"summary": ""
+		},
+		"900030": {
+			"name": "Sash of the Second Trial",
+			"type": 28,
+			"type_name": "COSTUME",
+			"subtype": 3,
+			"subtype_name": "3",
+			"size": [
+				1,
+				1
+			],
+			"antiflags": 0,
+			"flags": 0,
+			"wear": 0,
+			"limits": [
+				[
+					1,
+					30
+				],
+				[
+					0,
+					0
+				]
+			],
+			"applies": [],
+			"values": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"sockets": 0,
+			"price": {
+				"buy": 0,
+				"sell": 0
+			},
+			"refine": 0,
+			"synthetic": true,
+			"why": [
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
+			"desc": "",
+			"summary": ""
+		},
+		"900031": {
+			"name": "Quiver of Hours",
+			"type": 1,
+			"type_name": "WEAPON",
+			"subtype": 9,
+			"subtype_name": "9",
+			"size": [
+				1,
+				1
+			],
+			"antiflags": 0,
+			"flags": 0,
+			"wear": 0,
+			"limits": [
+				[
+					1,
+					1
+				],
+				[
+					7,
+					3600
+				]
+			],
+			"applies": [],
+			"values": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"sockets": 0,
+			"price": {
+				"buy": 0,
+				"sell": 0
+			},
+			"refine": 0,
+			"synthetic": true,
+			"why": [
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
 			"desc": "",
 			"summary": ""
 		}
@@ -21155,6 +21339,28 @@
 			"clock": 1700000000
 		},
 		{
+			"id": "vnum-149006",
+			"context": "SetItemToolTip",
+			"vnum": 149006
+		},
+		{
+			"id": "bag-149006",
+			"context": "SetInventoryItem",
+			"vnum": 149006,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
 			"id": "vnum-149990",
 			"context": "SetItemToolTip",
 			"vnum": 149990
@@ -21757,6 +21963,72 @@
 			"id": "bag-900028",
 			"context": "SetInventoryItem",
 			"vnum": 900028,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "vnum-900029",
+			"context": "SetItemToolTip",
+			"vnum": 900029
+		},
+		{
+			"id": "bag-900029",
+			"context": "SetInventoryItem",
+			"vnum": 900029,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "vnum-900030",
+			"context": "SetItemToolTip",
+			"vnum": 900030
+		},
+		{
+			"id": "bag-900030",
+			"context": "SetInventoryItem",
+			"vnum": 900030,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "vnum-900031",
+			"context": "SetItemToolTip",
+			"vnum": 900031
+		},
+		{
+			"id": "bag-900031",
+			"context": "SetInventoryItem",
+			"vnum": 900031,
 			"sockets": [
 				0,
 				0,
@@ -40103,6 +40375,40 @@
 			"clock": 1700000000
 		},
 		{
+			"id": "synthetic-time-149001",
+			"context": "SetInventoryItem",
+			"vnum": 149001,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "synthetic-time-149006",
+			"context": "SetInventoryItem",
+			"vnum": 149006,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
 			"id": "synthetic-time-900001",
 			"context": "SetInventoryItem",
 			"vnum": 900001,
@@ -40511,6 +40817,57 @@
 			"clock": 1700000000
 		},
 		{
+			"id": "synthetic-time-900029",
+			"context": "SetInventoryItem",
+			"vnum": 900029,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "synthetic-time-900030",
+			"context": "SetInventoryItem",
+			"vnum": 900030,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "synthetic-time-900031",
+			"context": "SetInventoryItem",
+			"vnum": 900031,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
 			"id": "timer-not-ds",
 			"context": "SetInventoryItem",
 			"vnum": 900025,
@@ -40521,6 +40878,869 @@
 				0
 			],
 			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "sash-absorbed-sword",
+			"context": "SetInventoryItem",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				10,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "sash-absorbed-fan",
+			"context": "SetInventoryItem",
+			"vnum": 900029,
+			"sockets": [
+				25,
+				7000,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "sash-absorbed-armour",
+			"context": "SetInventoryItem",
+			"vnum": 900029,
+			"sockets": [
+				15,
+				11200,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "sash-absorbed-nothing",
+			"context": "SetInventoryItem",
+			"vnum": 900029,
+			"sockets": [
+				11,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "sash-combine-range",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				10,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultItem",
+					[
+						0
+					]
+				]
+			],
+			"sash_result": [
+				900030,
+				11,
+				19
+			]
+		},
+		{
+			"id": "sash-combine-rate",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				10,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultItem",
+					[
+						0
+					]
+				]
+			],
+			"sash_result": [
+				900030,
+				25,
+				25
+			]
+		},
+		{
+			"id": "sash-combine-none",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				10,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultItem",
+					[
+						0
+					]
+				]
+			],
+			"sash_result": [
+				0,
+				0,
+				0
+			]
+		},
+		{
+			"id": "sash-combine-not-a-sash",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				10,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultItem",
+					[
+						0
+					]
+				]
+			],
+			"sash_result": [
+				10,
+				5,
+				5
+			]
+		},
+		{
+			"id": "sash-combine-unabsorbed",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				11,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultItem",
+					[
+						0
+					]
+				]
+			],
+			"sash_result": [
+				900030,
+				11,
+				11
+			]
+		},
+		{
+			"id": "sash-absorb-sword",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultAbsItem",
+					[
+						0,
+						1
+					]
+				]
+			],
+			"more_items": [
+				{
+					"pos": 1,
+					"vnum": 10,
+					"sockets": [
+						0,
+						0,
+						0
+					],
+					"attrs": [
+						[
+							1,
+							500
+						],
+						[
+							2,
+							50
+						],
+						[
+							5,
+							8
+						],
+						[
+							7,
+							10
+						],
+						[
+							9,
+							10
+						],
+						[
+							15,
+							5
+						],
+						[
+							16,
+							4
+						]
+					]
+				}
+			]
+		},
+		{
+			"id": "sash-absorb-fan",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultAbsItem",
+					[
+						0,
+						1
+					]
+				]
+			],
+			"more_items": [
+				{
+					"pos": 1,
+					"vnum": 7000,
+					"sockets": [
+						0,
+						0,
+						0
+					],
+					"attrs": [
+						[
+							1,
+							500
+						],
+						[
+							2,
+							50
+						],
+						[
+							5,
+							8
+						],
+						[
+							7,
+							10
+						],
+						[
+							9,
+							10
+						],
+						[
+							15,
+							5
+						],
+						[
+							16,
+							4
+						]
+					]
+				}
+			]
+		},
+		{
+			"id": "sash-absorb-armour",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultAbsItem",
+					[
+						0,
+						1
+					]
+				]
+			],
+			"more_items": [
+				{
+					"pos": 1,
+					"vnum": 11200,
+					"sockets": [
+						0,
+						0,
+						0
+					],
+					"attrs": [
+						[
+							1,
+							500
+						],
+						[
+							2,
+							50
+						],
+						[
+							5,
+							8
+						],
+						[
+							7,
+							10
+						],
+						[
+							9,
+							10
+						],
+						[
+							15,
+							5
+						],
+						[
+							16,
+							4
+						]
+					]
+				}
+			]
+		},
+		{
+			"id": "sash-absorb-no-target",
+			"context": "calls",
+			"vnum": 900029,
+			"sockets": [
+				19,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultAbsItem",
+					[
+						0,
+						1
+					]
+				]
+			]
+		},
+		{
+			"id": "sash-absorb-not-a-sash",
+			"context": "calls",
+			"vnum": 10,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"kind": "item",
+			"calls": [
+				[
+					"SetSashResultAbsItem",
+					[
+						0,
+						1
+					]
+				]
+			],
+			"more_items": [
+				{
+					"pos": 1,
+					"vnum": 11200,
+					"sockets": [
+						0,
+						0,
+						0
+					],
+					"attrs": []
+				}
+			]
+		},
+		{
+			"id": "aura-level",
+			"context": "SetInventoryItem",
+			"vnum": 149001,
+			"sockets": [
+				12,
+				340,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "aura-level-max",
+			"context": "SetInventoryItem",
+			"vnum": 149006,
+			"sockets": [
+				250,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					1,
+					500
+				],
+				[
+					2,
+					50
+				],
+				[
+					5,
+					8
+				],
+				[
+					7,
+					10
+				],
+				[
+					9,
+					10
+				]
+			],
 			"player": {
 				"level": 120,
 				"race": 0

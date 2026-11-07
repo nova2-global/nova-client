@@ -93,6 +93,8 @@ class GameWindow(ui.ScriptWindow):
 		self.affectShower = None
 		self.playerGauge = None
 		self.wndMaintenance = None
+		# The aura level window (NOVA-23), made at the server's first GC::AURA.
+		self.auraWindow = None
 
 		self.stream = stream
 		self.interface = interfaceModule.Interface()
@@ -316,6 +318,10 @@ class GameWindow(ui.ScriptWindow):
 		if self.targetBoard:
 			self.targetBoard.Destroy()
 			self.targetBoard = None
+
+		if self.auraWindow:
+			self.auraWindow.Destroy()
+			self.auraWindow = None
 	
 		if self.interface:
 			self.interface.HideAllWindows()
@@ -1057,6 +1063,52 @@ class GameWindow(ui.ScriptWindow):
 
 	def OnSearchShopBuyResult(self, code, ownerPid, slot):
 		self.interface.OnSearchShopBuyResult(code, ownerPid, slot)
+
+	## The sash windows (NOVA-20; OLD game.py:3628-3637): C's GC::SASH. iAct is
+	## 1 open, 2 close, 3 an item added or taken out, 4 refined; bWindow is
+	## True for the combine window, False for the absorb window.
+	def ActSash(self, iAct, bWindow):
+		if self.interface:
+			self.interface.ActSash(iAct, bWindow)
+
+	def AlertSash(self, bWindow):
+		snd.PlaySound("sound/ui/make_soket.wav")
+		if bWindow:
+			self.PopupMessage(localeInfo.SASH_DEL_SERVEITEM)
+		else:
+			self.PopupMessage(localeInfo.SASH_DEL_ABSORDITEM)
+
+	## The aura level window (NOVA-23; OLD game.py:1215-1237): C's GC::AURA.
+	def BINARY_AuraPacket(self, mode, level, aura_cell, material_cell, exp, exp_required):
+		if mode == item.AURA_MODE_CLOSE:
+			if self.auraWindow:
+				self.auraWindow.Close()
+			return
+
+		if mode >= item.AURA_MODE_MAX:
+			return
+
+		if not self.auraWindow:
+			import uiAura
+			self.auraWindow = uiAura.AuraWindow()
+			if self.interface:
+				self.interface.BindAuraWindow(self.auraWindow)
+
+		self.auraWindow.SetLevel(level)
+		self.auraWindow.SetExp(exp, exp_required)
+		self.auraWindow.SetAuraCell(aura_cell)
+		self.auraWindow.SetMaterialCell(material_cell)
+		if not self.auraWindow.IsOpened():
+			self.auraWindow.Open()
+
+	## The server's refusal of a costume switch while fighting (NOVA-22; OLD
+	## game.py:3331-3332): the costume window's switches show the state again.
+	def __ResetCostumeSlider(self):
+		if not self.interface:
+			return
+		wndCostume = getattr(self.interface.wndInventory, "wndCostume", None)
+		if wndCostume:
+			wndCostume.ResetSlider()
 
 	## Gaya market (NOVA-10): C's GC::GAYA_MARKET (open 1, open 0) and
 	## GC::GAYA_MARKET_CLOSE (OLD game.py:1805-1817).
@@ -2018,6 +2070,9 @@ class GameWindow(ui.ScriptWindow):
 
 			"shutdown_schedule"		: self.OpenShutdownCountdown,
 			"shutdown_cancel"		: self.CloseShutdownCountdown,
+
+			# NOVA-22 (OLD game.py:3028)
+			"ResetCostumeSlider"	: self.__ResetCostumeSlider,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()

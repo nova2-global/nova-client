@@ -3034,7 +3034,7 @@ TOOLTIP_CHAR_WIDTH = 6
 TOOLTIP_LINE_HEIGHT = 12
 LOCALE_ROOT = os.path.normpath(os.path.join(support.HERE, "..", "assets", "locale", "locale"))
 LOCALE_FUNCTIONS = ("DO_YOU_SELL_ITEM", "DO_YOU_BUY_ITEM", "REFINE_FAILURE_CAN_NOT_ATTACH", "REFINE_FAILURE_NO_SOCKET",
-                    "REFINE_FAILURE_NO_GOLD_SOCKET", "HOW_MANY_ITEM_DO_YOU_DROP", "NumberToMoneyString",
+                    "REFINE_FAILURE_NO_GOLD_SOCKET", "HOW_MANY_ITEM_DO_YOU_DROP", "NumberToString", "NumberToMoneyString",
                     "NumberToSecondaryCoinString", "SecondToDHM", "SecondToHM", "RTSecondToDHMS")
 
 

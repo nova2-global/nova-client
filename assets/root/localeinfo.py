@@ -404,6 +404,11 @@ def FISHING_NOTIFY(isFish, fishName):
 def FISHING_SUCCESS(isFish, fishName):
 	return FISHING_SUCCESS1 % (fishName) if isFish else FISHING_SUCCESS2 % (fishName)
 
+# A number with . as the thousands separator, and no unit (OLD localeInfo.py:737-741; the aura's
+# experience, NOVA-23).
+def NumberToString(n):
+	return '0' if (n <= 0) else '.'.join([(i - 3) < 0 and str(n)[:i] or str(n)[i - 3 : i] for i in range(len(str(n)) % 3, len(str(n)) + 1, 3) if i])
+
 # Convert a integer amount into a string and add . as separator for money.
 def NumberToMoneyString(n):
 	return '0 {:s}'.format(MONETARY_UNIT0) if (n <= 0) else '{:s} {:s}'.format('.'.join([(i - 3) < 0 and str(n)[:i] or str(n)[i - 3 : i] for i in range(len(str(n)) % 3, len(str(n)) + 1, 3) if i]), MONETARY_UNIT0)

@@ -36,6 +36,12 @@ COMBO_INDEX_4 = 3
 COMBO_INDEX_5 = 4
 COMBO_INDEX_6 = 5
 
+# The quiver's bow attack (NOVA-19): OLD's attack_special.msa.
+BOW_SPECIAL_ATTACK = "attack_special.msa"
+# The bone a sash hangs from (NOVA-20; OLD playerSettingModule.py:1420, 1660,
+# 2020, 2165), the same for every race.
+SASH_BONE = "Bip01 Spine2"
+
 HORSE_SKILL_WILDATTACK = chr.MOTION_SKILL+121
 HORSE_SKILL_CHARGE = chr.MOTION_SKILL+122
 HORSE_SKILL_SPLASH = chr.MOTION_SKILL+123
@@ -216,6 +222,10 @@ def __InitData():
 
 	# Love Pendant equip effect
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_LOVE_PENDANT_EQUIP, "", "d:/ymir work/effect/etc/buff/buff_item4.mse")
+
+	# Sash combine and equip effects (NOVA-20; OLD playerSettingModule.py:283-284)
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_SASH_SUCCEDED, "", "d:/ymir work/effect/etc/buff/buff_item6.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_SASH_EQUIP, "", "d:/ymir work/effect/etc/buff/buff_item7.mse")
 
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_PENETRATE, "Bip01", "d:/ymir work/effect/hit/gwantong.mse")
 	#chrmgr.RegisterCacheEffect(chrmgr.EFFECT_BLOCK, "", "d:/ymir work/effect/etc/")
@@ -399,6 +409,8 @@ def __LoadGameEffect():
 
 	chrmgr.RegisterEffect(chrmgr.EFFECT_REFINED+19, "Bip01", "D:/ymir work/pc/common/effect/armor/armor-4-2-1.mse")
 	chrmgr.RegisterEffect(chrmgr.EFFECT_REFINED+20, "Bip01", "D:/ymir work/pc/common/effect/armor/armor-4-2-2.mse")
+	# The glow of a sash that absorbs enough (NOVA-20; OLD :588, at + 21 there)
+	chrmgr.RegisterEffect(chrmgr.EFFECT_REFINED+chrmgr.EFFECT_SASH, "Bip01", "d:/ymir work/pc/common/effect/armor/acc_01.mse")
 
 	## FlyData
 	effect.RegisterIndexedFlyData(effect.FLY_EXP, effect.INDEX_FLY_TYPE_NORMAL, "d:/ymir work/effect/etc/gathering/ga_piece_yellow_small2.msf")				## Yellow (EXP)
@@ -661,6 +673,7 @@ def __LoadGameWarriorEx(race, path):
 
 	## Bone
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right_hand")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 
 def __LoadGameAssassinEx(race, path):
 	## Assassin
@@ -805,6 +818,21 @@ def __LoadGameAssassinEx(race, path):
 	chrmgr.ReserveComboAttackNew(chr.MOTION_MODE_BOW, COMBO_TYPE_1, 1)
 	chrmgr.RegisterComboAttackNew(chr.MOTION_MODE_BOW, COMBO_TYPE_1, COMBO_INDEX_1, chr.MOTION_COMBO_ATTACK_1)
 
+	## BOW WITH A QUIVER (NOVA-19; OLD playerSettingModule.py:1576-1590): the
+	## client shows this mode while an unlimited arrow is worn.
+	chrmgr.RegisterMotionMode(chr.MOTION_MODE_BOW_SPECIAL)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WAIT,			"wait.msa", 70)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WAIT,			"wait_1.msa", 30)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WALK,			"walk.msa")
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_RUN,			"run.msa")
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE,		"damage.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE,		"damage_1.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE_BACK,	"damage_2.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_DAMAGE_BACK,	"damage_3.msa", 50)
+	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_COMBO_ATTACK_1,	BOW_SPECIAL_ATTACK)
+	chrmgr.ReserveComboAttackNew(chr.MOTION_MODE_BOW_SPECIAL, COMBO_TYPE_1, 1)
+	chrmgr.RegisterComboAttackNew(chr.MOTION_MODE_BOW_SPECIAL, COMBO_TYPE_1, COMBO_INDEX_1, chr.MOTION_COMBO_ATTACK_1)
+
 	## FISHING
 	chrmgr.SetPathName(path + "fishing/")
 	chrmgr.RegisterMotionMode(chr.MOTION_MODE_FISHING)
@@ -873,6 +901,7 @@ def __LoadGameAssassinEx(race, path):
 	chrmgr.RegisterComboAttackNew(chr.MOTION_MODE_HORSE_BOW, COMBO_TYPE_1, COMBO_INDEX_1, chr.MOTION_COMBO_ATTACK_1)
 
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON_LEFT, "equip_left")
 
 def __LoadGameSuraEx(race, path):
@@ -999,6 +1028,7 @@ def __LoadGameSuraEx(race, path):
 	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_HORSE_ONEHAND_SWORD, HORSE_SKILL_WILDATTACK, "skill_wildattack.msa")
 
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 
 def __LoadGameShamanEx(race, path):
 	## Shaman
@@ -1191,6 +1221,7 @@ def __LoadGameShamanEx(race, path):
 	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_HORSE_BELL, HORSE_SKILL_WILDATTACK, "skill_wildattack.msa")
 
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON, "equip_right")
+	chrmgr.RegisterAttachingBoneName(chr.PART_SASH, SASH_BONE)
 	chrmgr.RegisterAttachingBoneName(chr.PART_WEAPON_LEFT, "equip_left")
 
 

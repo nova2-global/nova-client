@@ -11,8 +11,8 @@ C's; the quiver's rules are chunk SA's. Here:
   ordinary arrow shows no time;
 - playersettingmodule: both assassins register OLD's bow-with-a-quiver
   motion mode (OLD playerSettingModule.py:1576-1590) from their bow folder,
-  with the bow's attack standing in for OLD's attack_special.msa, which
-  NEW's packs lack; no other race registers it;
+  with OLD's attack_special.msa (tools/old_art.py took it, and the
+  animation it names, from OLD's client); no other race registers it;
 - the inventory's arrow cell (wear 9) takes the quiver as it takes arrows."""
 import os
 import sys
@@ -20,6 +20,7 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import legacy_foundation_test as lf  # noqa: E402
+import old_content  # noqa: E402
 import wave6_support as w6  # noqa: E402
 
 CLOCK = 1700000000
@@ -59,8 +60,14 @@ class ToolTip(unittest.TestCase):
 
 
 class Motions(unittest.TestCase):
+    @classmethod
+    def files(cls):
+        if not hasattr(cls, "_files"):
+            cls._files = old_content.published_files()
+        return cls._files
+
     OLD_FILES = ["wait.msa", "wait_1.msa", "walk.msa", "run.msa", "damage.msa", "damage_1.msa", "damage_2.msa",
-                 "damage_3.msa", "attack.msa"]
+                 "damage_3.msa", "attack_special.msa"]
 
     def test_both_assassins_register_the_quiver_bow(self):
         motions = lf.RaceMotions(self)
@@ -79,7 +86,8 @@ class Motions(unittest.TestCase):
                 self.assertEqual(weights[(motions.chr.MOTION_WAIT, "wait.msa")], 70)
                 self.assertEqual(weights[(motions.chr.MOTION_WAIT, "wait_1.msa")], 30)
                 attack = [name for index, name, _ in registered if index == motions.chr.MOTION_COMBO_ATTACK_1]
-                self.assertEqual(attack, ["attack.msa"], "the bow's attack stands in for attack_special.msa")
+                self.assertEqual(attack, ["attack_special.msa"], "OLD's attack")
+                self.assertIn(old_content.store_name(folder + "bow/attack_special.msa"), self.files())
                 bow = [name for name, _ in motions.motions[(race, motions.chr.MOTION_MODE_BOW,
                                                              motions.chr.MOTION_COMBO_ATTACK_1)]]
                 self.assertEqual(len(bow), 1)

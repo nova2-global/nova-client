@@ -36,9 +36,8 @@ COMBO_INDEX_4 = 3
 COMBO_INDEX_5 = 4
 COMBO_INDEX_6 = 5
 
-# The quiver's bow attack (NOVA-19): OLD's attack_special.msa once NEW's packs
-# carry it; the bow's own attack until then.
-BOW_SPECIAL_ATTACK = "attack.msa"
+# The quiver's bow attack (NOVA-19): OLD's attack_special.msa.
+BOW_SPECIAL_ATTACK = "attack_special.msa"
 # The bone a sash hangs from (NOVA-20; OLD playerSettingModule.py:1420, 1660,
 # 2020, 2165), the same for every race.
 SASH_BONE = "Bip01 Spine2"
@@ -224,6 +223,10 @@ def __InitData():
 	# Love Pendant equip effect
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_LOVE_PENDANT_EQUIP, "", "d:/ymir work/effect/etc/buff/buff_item4.mse")
 
+	# Sash combine and equip effects (NOVA-20; OLD playerSettingModule.py:283-284)
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_SASH_SUCCEDED, "", "d:/ymir work/effect/etc/buff/buff_item6.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_SASH_EQUIP, "", "d:/ymir work/effect/etc/buff/buff_item7.mse")
+
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_PENETRATE, "Bip01", "d:/ymir work/effect/hit/gwantong.mse")
 	#chrmgr.RegisterCacheEffect(chrmgr.EFFECT_BLOCK, "", "d:/ymir work/effect/etc/")
 	#chrmgr.RegisterCacheEffect(chrmgr.EFFECT_DODGE, "", "d:/ymir work/effect/etc/")
@@ -406,6 +409,8 @@ def __LoadGameEffect():
 
 	chrmgr.RegisterEffect(chrmgr.EFFECT_REFINED+19, "Bip01", "D:/ymir work/pc/common/effect/armor/armor-4-2-1.mse")
 	chrmgr.RegisterEffect(chrmgr.EFFECT_REFINED+20, "Bip01", "D:/ymir work/pc/common/effect/armor/armor-4-2-2.mse")
+	# The glow of a sash that absorbs enough (NOVA-20; OLD :588, at + 21 there)
+	chrmgr.RegisterEffect(chrmgr.EFFECT_REFINED+chrmgr.EFFECT_SASH, "Bip01", "d:/ymir work/pc/common/effect/armor/acc_01.mse")
 
 	## FlyData
 	effect.RegisterIndexedFlyData(effect.FLY_EXP, effect.INDEX_FLY_TYPE_NORMAL, "d:/ymir work/effect/etc/gathering/ga_piece_yellow_small2.msf")				## Yellow (EXP)
@@ -814,8 +819,7 @@ def __LoadGameAssassinEx(race, path):
 	chrmgr.RegisterComboAttackNew(chr.MOTION_MODE_BOW, COMBO_TYPE_1, COMBO_INDEX_1, chr.MOTION_COMBO_ATTACK_1)
 
 	## BOW WITH A QUIVER (NOVA-19; OLD playerSettingModule.py:1576-1590): the
-	## client shows this mode while an unlimited arrow is worn. OLD's attack is
-	## attack_special.msa, which NEW's packs lack: the bow's attack stands in.
+	## client shows this mode while an unlimited arrow is worn.
 	chrmgr.RegisterMotionMode(chr.MOTION_MODE_BOW_SPECIAL)
 	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WAIT,			"wait.msa", 70)
 	chrmgr.RegisterCacheMotionData(chr.MOTION_MODE_BOW_SPECIAL, chr.MOTION_WAIT,			"wait_1.msa", 30)

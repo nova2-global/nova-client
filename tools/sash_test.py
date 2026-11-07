@@ -19,7 +19,9 @@ legacy Python runs over nui_game_support's stand-ins with C's names
 - uitooltip: the absorption rate and the absorbed item's power, applies
   and bonuses at the rate (CalcSashValue, OLD uiToolTip.py:1103-1114,
   1509-1560), the combine and absorb results (OLD :2839-2990);
-- playersettingmodule: every race hangs the sash from Bip01 Spine2;
+- playersettingmodule: every race hangs the sash from Bip01 Spine2, and the
+  sash's combine, equip and glow effects are OLD's (playerSettingModule.py:
+  283-284, 588), files tools/old_art.py took from OLD's client;
 - every key in all 17 locales."""
 import os
 import sys
@@ -538,6 +540,55 @@ class Locales(unittest.TestCase):
     def test_every_locale_has_the_sash_keys(self):
         w6.check_keys(self, GAME_KEYS)
         w6.check_keys(self, INTERFACE_KEYS, "locale_interface.txt")
+
+
+class SashEffects(unittest.TestCase):
+    """OLD's sash effects: SE_EFFECT_SASH_SUCCEDED and SE_EFFECT_SASH_EQUIP
+    (OLD playerSettingModule.py:283-284) and the glow of a sash that absorbs
+    enough (EFFECT_REFINED + EFFECT_SASH; OLD registered acc_01.mse at
+    EFFECT_REFINED + 21, :588), as INIT and EFFECT register them."""
+
+    REFINED, SASH = 10000, 700
+
+    def setUp(self):
+        patcher = mock.patch.dict(sys.modules)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        modules = dict((name, lf.Numbered(name)) for name in lf.RaceMotions.C_MODULES)
+        chrmgr = modules["chrmgr"]
+        chrmgr.EFFECT_REFINED, chrmgr.EFFECT_SASH = self.REFINED, self.SASH
+        self.effects = {}
+
+        def register(index, bone, path, *rest):
+            self.effects.setdefault(index, []).append((bone, path))
+
+        chrmgr.RegisterCacheEffect = chrmgr.RegisterEffect = register
+        sys.modules.update(modules)
+        self.chrmgr = chrmgr
+        namespace = {"__name__": "playerSettingModule"}
+        path = os.path.join(lf.ROOT, "playersettingmodule.py")
+        exec(compile(lf.read(path), path, "exec"), namespace)
+        with lf.quiet():
+            for name in ("INIT", "EFFECT"):
+                namespace["LoadGameData"](name)
+
+    def test_the_combine_and_equip_effects_are_olds(self):
+        self.assertEqual(self.effects.get(self.chrmgr.EFFECT_SASH_SUCCEDED),
+                         [("", "d:/ymir work/effect/etc/buff/buff_item6.mse")])
+        self.assertEqual(self.effects.get(self.chrmgr.EFFECT_SASH_EQUIP),
+                         [("", "d:/ymir work/effect/etc/buff/buff_item7.mse")])
+
+    def test_the_glow_is_olds_acc_01_on_bip01(self):
+        self.assertEqual(self.effects.get(self.REFINED + self.SASH),
+                         [("Bip01", "d:/ymir work/pc/common/effect/armor/acc_01.mse")])
+
+    def test_the_client_ships_every_sash_effect(self):
+        import old_content
+        files = old_content.published_files()
+        for index in (self.chrmgr.EFFECT_SASH_SUCCEDED, self.chrmgr.EFFECT_SASH_EQUIP, self.REFINED + self.SASH):
+            for _, path in self.effects.get(index, []):
+                with self.subTest(path=path):
+                    self.assertIn(old_content.store_name(path), files)
 
 
 if __name__ == "__main__":

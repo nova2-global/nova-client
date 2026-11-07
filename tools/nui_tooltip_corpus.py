@@ -294,6 +294,7 @@ def skill_names_of(path):
 # --- choosing the items (spec 5.8) -------------------------------------------------------------
 
 NAMED_VNUMS = (50026, 50300, 70037, 70055, 70103, 70104, 70105, 70106, 22000, 22010, 22011, 27989, 76006, 50004,
+               50208, 50209, 50210,
                72723, 72724, 72725, 72726, 72727, 72728, 72729, 72730, 76004, 76005, 76021, 76022)
 # The kit's items (spec 2.4), which the in-game checks hover.
 KIT_VNUMS = (10, 3000, 11200, 12200, 18000, 27001, 28030, 25040, 30329, 41001,
@@ -525,8 +526,9 @@ def skill_rows(names):
 
 ITEM_CONTEXTS = ("SetInventoryItem", "SetShopItem", "SetShopItemBySecondaryCoin", "SetExchangeOwnerItem",
                  "SetExchangeTargetItem", "SetPrivateShopBuilderItem", "SetSafeBoxItem", "SetMallItem",
-                 "SetHyperlinkItem", "SetItemToolTip", "AddItemData", "AddRefineItemData", "attach")
+                 "SetOfflineShopItem", "SetHyperlinkItem", "SetItemToolTip", "AddItemData", "AddRefineItemData", "attach")
 SKILL_CONTEXTS = ("SetSkill", "SetSkillNew", "SetSkillOnlyName")
+SKILL_GRADE_COUNT = support.module_constants()["skill"]["SKILL_GRADE_COUNT"]
 PLAYER = {"level": 120, "race": 0}
 ATTRS_NORMAL = [[1, 500], [2, 50], [5, 8], [7, 10], [9, 10]]
 ATTRS_RARE = ATTRS_NORMAL + [[15, 5], [16, 4]]
@@ -584,6 +586,8 @@ def item_cases(items):
                 values["shop"] = {"open": True, "private": False, "price": 1234567}
             if context == "SetPrivateShopBuilderItem":
                 values["shop"] = {"open": True, "private": True, "price": 98765}
+            if context == "SetOfflineShopItem":
+                values["shop"] = {"offline": True, "owner": False, "price": 7654321}
             if context == "SetSafeBoxItem":
                 values["flags"] = 1
             if context == "SetHyperlinkItem":
@@ -659,6 +663,19 @@ def state_cases(items):
                       if items[v]["antiflags"] & ANTI_FLAGS["ANTI_SELL"]), None)
     add("anti-sell", "SetInventoryItem", anti_sell, sockets=[], attrs=[],
         shop={"open": True, "private": False, "price": 0}, sell_price=5000)
+
+    # Wave 5: premium scrolls in their three server states, and an offline
+    # shop item as a buyer, its owner, and a pending owner slot.
+    premium = 50208 if "50208" in items else None
+    add("premium-scroll-fresh", "SetInventoryItem", premium, sockets=[0, 0, 0], attrs=[])
+    add("premium-scroll-returned", "SetInventoryItem", premium, sockets=[CLOCK + 600, 0, 0], attrs=[])
+    add("premium-scroll-expired", "SetInventoryItem", premium, sockets=[CLOCK - 1, 0, 0], attrs=[])
+    add("offline-shop-buyer", "SetOfflineShopItem", 27001, sockets=[0, 0, 0], attrs=[],
+        shop={"offline": True, "owner": False, "price": 123456})
+    add("offline-shop-owner", "SetOfflineShopItem", 27001, sockets=[0, 0, 0], attrs=[],
+        shop={"offline": True, "owner": True, "pending": False, "price": 123456})
+    add("offline-shop-pending", "SetOfflineShopItem", 27001, sockets=[0, 0, 0], attrs=[],
+        shop={"offline": True, "owner": True, "pending": True, "price": 123456})
 
     # Accessories (bracelet, necklace, earrings) and belts: sockets [filled, opened, time].
     for vnum in (14000, 16000, 17000):
@@ -803,7 +820,7 @@ def api_cases(items):
         case.update(merged)
         cases.append(case)
 
-    for context in ("SetInventoryItem", "SetShopItem", "SetShopItemBySecondaryCoin", "SetExchangeOwnerItem",
+    for context in ("SetInventoryItem", "SetShopItem", "SetShopItemBySecondaryCoin", "SetOfflineShopItem", "SetExchangeOwnerItem",
                     "SetExchangeTargetItem", "SetPrivateShopBuilderItem", "SetSafeBoxItem", "SetMallItem"):
         cases.append({"id": "empty-%s" % context, "context": context, "vnum": 0, "sockets": [0, 0, 0], "attrs": [],
                       "player": dict(PLAYER), "clock": CLOCK})
@@ -883,6 +900,7 @@ def skill_cases():
         add("skill-%d-name" % index, "SetSkillOnlyName", index, grade=2, level=0)
     add("skill-1-real-grade", "SetSkillNew", 1, grade=1, level=5, real_grade=2)
     add("skill-1-real-grade-3", "SetSkillNew", 1, grade=3, level=5, real_grade=3)
+    add("skill-grade-count", "SetSkillNew", 1, grade=SKILL_GRADE_COUNT, level=5)
     return cases
 
 
@@ -1161,7 +1179,7 @@ def _run_case(world, case):
             tip.SetInventoryItem(pos, getattr(player, case["window"]))
         elif context == "SetInventoryItem":
             tip.SetInventoryItem(pos)
-        elif context in ("SetShopItem", "SetShopItemBySecondaryCoin", "SetExchangeOwnerItem", "SetExchangeTargetItem",
+        elif context in ("SetShopItem", "SetShopItemBySecondaryCoin", "SetOfflineShopItem", "SetExchangeOwnerItem", "SetExchangeTargetItem",
                          "SetSafeBoxItem", "SetMallItem"):
             getattr(tip, context)(pos)
         elif context == "SetPrivateShopBuilderItem":

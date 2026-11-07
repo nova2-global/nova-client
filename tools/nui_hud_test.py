@@ -272,6 +272,9 @@ class QuestionDialog(object):
     def SetText(self, text):
         self.text = text
 
+    def SetWidth(self, width):
+        self.width = width
+
     def SetAcceptEvent(self, event):
         self.accept = event
 
@@ -925,6 +928,40 @@ class AffectDifferential(AffectWorlds):
         shower.BINARY_NEW_AddAffect(999, 0, 0, 10)                                   # not in the table
         shower.SetHorseState(15, 3, 1)
         shower.SetLoverInfo("Partner", 50)
+
+    def test_the_premium_tier_shows_first_and_a_press_asks_before_it_deactivates(self):
+        """Wave 5 (NOVA-11): legacy's PremiumImage on NovaUI, first in the row;
+        a tier without art shows nothing; a left press asks, Yes sends
+        /deactivate_premium once."""
+        _, novaui = self.worlds()
+        shower = novaui.shower
+        with novaui, quiet():
+            shower.SetAffect(CHR["AFFECT_JEONGWI"])
+            shower.SetPremiumStatus(2, 3600)
+        icons = shower.board.get("icons")
+        premium = icons[0]
+        self.assertEqual((premium["kind"], premium["image"]),
+                         ("premium", "d:/ymir work/ui/skill/common/affect/premium_gold.sub"))
+        self.assertTrue(premium["clocked"])
+        self.assertAlmostEqual(premium["end"] - novaui.game.state.now, 3600, delta=1)
+        self.assertEqual(len(icons), 2, "the premium icon, then the affect")
+        with novaui, quiet():
+            shower.board.fire("icon_press", premium["key"], 1)
+        self.assertIsNone(shower.premiumQuestion, "a right press asks nothing")
+        with novaui, quiet():
+            shower.board.fire("icon_press", premium["key"], 0)
+        self.assertIsNotNone(shower.premiumQuestion)
+        mark = len(novaui.game.log)
+        with novaui, quiet():
+            shower._accept_premium_question()
+            shower._accept_premium_question()
+        sent = [c for c in novaui.game.log[mark:] if c[0] == "net.SendChatPacket"]
+        self.assertEqual(sent, [("net.SendChatPacket", ("/deactivate_premium",))])
+        for tier in (0, 9):
+            with novaui, quiet():
+                shower.SetPremiumStatus(tier, 3600)
+            self.assertEqual([icon["kind"] for icon in shower.board.get("icons")], ["affect"],
+                             "tier %d shows no premium icon" % tier)
 
     def test_every_kind_of_icon_shows_as_legacy_shows_it_and_the_times_count_down(self):
         legacy, novaui = self.worlds()

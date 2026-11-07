@@ -22,12 +22,15 @@
 	<link type="text/rcss" href="private-shop.rcss"/>
 </head>
 <body template="nui" id="private-shop" class="nui-window nui-fx nui-anim nui-below-legacy-ui pshop" data-model="private_shop"
-      data-event-mousedown="board_press(ev.button)">
+      data-event-mousedown="board_press(ev.button)" data-class-pshop--wide="cols == 10">
 	<div class="nui-window__titlebar pshop__titlebar">
 		<handle class="nui-window__handle pshop__handle" move_target="#document">
 			<span class="pshop__title-icon"><span class="nui-glyph nui-glyph--inventory"><span
 				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
-			<span class="nui-window__title pshop__title">@ui.PRIVATE_SHOP_TITLE</span>
+			<span class="nui-window__title pshop__title" data-if="cols != 10">@ui.PRIVATE_SHOP_TITLE</span>
+			<!-- Wave 5 (NOVA-9): the offline shop's builder, 10 columns (legacy's
+			     privateshopbuildernew.py and its title). -->
+			<span class="nui-window__title pshop__title" data-if="cols == 10">@ui.OFFLINE_SHOP_TITLE</span>
 		</handle>
 		<button id="private-shop-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim pshop__close-x"
 		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
@@ -36,7 +39,8 @@
 	<div class="nui-window__body pshop__body">
 		<div id="private-shop-name" class="pshop__name nui-fx"><span class="pshop__name-text">{{ title }}</span></div>
 		<div id="private-shop-grid" class="nui-slot-grid nui-slot-grid--lean pshop__grid" data-class-is-attaching="attaching"
-		     data-class-nui-slot-grid--cols-5="cols == 5" data-class-nui-slot-grid--cols-8="cols == 8">
+		     data-class-nui-slot-grid--cols-5="cols == 5" data-class-nui-slot-grid--cols-8="cols == 8"
+		     data-class-nui-slot-grid--cols-10="cols == 10">
 			<div class="nui-slot nui-anim nui-fx" data-for="c : cells" data-attr-id="'private-shop-cell-' + it_index"
 			     data-class-is-empty="c.kind == '' &amp;&amp; !c.covered" data-class-is-covered="c.covered"
 			     data-class-is-picked="c.picked"

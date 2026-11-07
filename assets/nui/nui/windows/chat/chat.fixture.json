@@ -7,6 +7,9 @@
 		"history_height": 138.0,
 		"view_chat": true,
 		"lines_mode": "view",
-		"draft": ""
+		"draft": "",
+		"shout_color_on": false,
+		"shout_picker": false,
+		"shout_colors": []
 	}
 }

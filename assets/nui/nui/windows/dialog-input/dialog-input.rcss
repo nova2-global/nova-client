@@ -56,6 +56,31 @@
 {
 	width: 210dp;
 }
+/* The shop name dialog's decoration button (Wave 5): a stall icon button
+   beside the field, shown only when the caller shows it, with legacy's
+   tooltip text as its hint. */
+.dialog-input__deco-host
+{
+	margin: var(--space-2) 0 0 6dp;
+	vertical-align: middle;
+}
+.dialog-input__deco
+{
+	display: block;
+	width: 32dp;
+	min-width: 0;
+	height: 32dp;
+	padding: 0;
+}
+.dialog-input__deco .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	margin: 7dp;
+}
+.dialog-input__deco-label
+{
+	display: none;
+}
 .dialog-input .nui-dialog__footer
 {
 	gap: 10dp;

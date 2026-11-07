@@ -530,7 +530,8 @@ class Input(KitTest):
         dialog.Open()
         window = self.kit_window(INPUT)
         self.assertEqual(window.model, {"title": "INPUT_PRIVATE_CODE_DIALOG_TITLE",
-                                        "lines": ["INPUT_PRIVATE_CODE_DIALOG_DESCRIPTION"], "secret": True, "max": 7})
+                                        "lines": ["INPUT_PRIVATE_CODE_DIALOG_DESCRIPTION"], "secret": True, "max": 7,
+                                        "deco": False})
         self.assertEqual(window.focused, "dialog-input-secret", "secret mode uses the password field")
 
     def test_number_mode_keeps_digits_and_enter_accepts_and_escape_cancels(self):
@@ -828,6 +829,37 @@ class Busy(KitTest):
         second.Open()
         self.assertIsNone(second._legacy, "free again: the NovaUI window")
         self.assertEqual(self.kit_window(QUESTION).model["lines"], ["guild"])
+
+    def test_the_shop_name_dialog_shows_its_decoration_button_and_a_press_runs_its_event(self):
+        """Wave 5 (NOVA-9): Interface.OpenPrivateShopInputNameDialog shows
+        uiCommon.InputDialog.decoButton with OpenMyShopDecoWnd as its event."""
+        plain = self.uiCommon.InputDialog()
+        self.assertFalse(plain.decoButton.IsShow(), "hidden until the caller shows it")
+        dialog = self.uiCommon.InputDialog()
+        dialog.decoButton.SetEvent(self.events("deco"))
+        dialog.decoButton.Show()
+        dialog.Open()
+        window = self.kit_window(INPUT)
+        self.assertTrue(window.model["deco"])
+        window.fire("deco")
+        self.assertEqual(self.events.seen, [("deco",)])
+        self.assertTrue(dialog.IsShow(), "the press closes nothing")
+        dialog.decoButton.Hide()
+        self.assertFalse(window.model["deco"])
+
+    def test_a_busy_name_dialog_gives_the_legacy_one_its_decoration_button(self):
+        first = self.uiCommon.InputDialog()
+        first.Open()
+        second = self.uiCommon.InputDialog()
+        second.decoButton.SetEvent(self.events("deco"))
+        second.decoButton.Show()
+        second.Open()
+        legacy = second._legacy.decoButton
+        self.assertTrue(legacy.IsShow())
+        legacy.event(*legacy.eventArgs)
+        self.assertEqual(self.events.seen, [("deco",)], "the legacy button runs the caller's event")
+        second.decoButton.Hide()
+        self.assertFalse(legacy.IsShow())
 
     def test_a_busy_input_dialog_routes_get_text_to_the_legacy_one(self):
         first = self.uiCommon.InputDialog()

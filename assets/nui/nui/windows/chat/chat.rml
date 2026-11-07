@@ -37,12 +37,25 @@
 			<nui-chat-lines id="chat-lines" class="chat__lines" view="window" step="15"
 				data-attr-mode="lines_mode" data-event-mousescroll="wheel(ev.wheel_delta_y)"/>
 		</div>
-		<div id="chat-input-row" class="chat__input-row nui-interactive">
+		<!-- Wave 5 (NOVA-11): the shout color picker, above the input row: the
+		     server's palette, each swatch the shout word in its color (legacy
+		     color tags in nui-text). -->
+		<div id="chat-shout-picker" class="chat__shout-picker nui-interactive" data-if="shout_picker">
+			<span class="chat__swatch-place" data-for="c : shout_colors"><span class="chat__swatch"
+				data-attr-id="'chat-swatch-' + c.index" data-event-mousedown="shout_pick(c.index, ev.button)"><nui-text
+				links="off" data-attr-value="c.text"/></span></span>
+		</div>
+		<div id="chat-input-row" class="chat__input-row nui-interactive" data-class-chat--shout-color="shout_color_on">
 			<button id="chat-mode" class="chat__mode" data-event-mousedown="mode(ev.button)"><span
 				data-if="chat_mode == 0">@game.CHAT_NORMAL</span><span
 				data-if="chat_mode == 3">@game.CHAT_PARTY</span><span
 				data-if="chat_mode == 4">@game.CHAT_GUILD</span><span
 				data-if="chat_mode == 6">@game.CHAT_SHOUT</span></button>
+			<!-- Wave 5 (NOVA-11): the shout color button, while the chat is open
+			     with the premium perk; its picker is above the row (the row
+			     clips its children). -->
+			<button id="chat-shout-color" class="chat__mode chat__shout-color" data-if="shout_color_on"
+				data-event-mousedown="shout_color(ev.button)">@game.SHOUT_COLOR_BUTTON</button>
 			<div id="chat-field" class="chat__field">
 				<input id="chat-input" type="text" maxlength="512" class="nui-input chat__input"
 					data-attr-value="draft" data-event-change="changed(ev.value, ev.linebreak)"/>

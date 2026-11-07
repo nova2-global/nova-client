@@ -1,0 +1,134 @@
+/* Classic skin overlay of nui/windows/gem-shop/gem-shop.rml: legacy's gaya
+   market (uiscript gemshopwindow.py) at 100%, 1dp to the legacy pixel: the
+   stone board, 168 x 244; the title bar at 6, 6, 153 wide; the refresh
+   button's art at 10, 35; "Time remaining" centered at 74 and the time at
+   134, 38 down; the nine slots at 28, 73 and 118 across and 65, 123 and 181
+   down on the slot base, each price 6 under its slot after the money icon,
+   as legacy's text and icon; a locked slot only tinted, as legacy's
+   DisableSlot (no lock mark). */
+
+body.skin-classic.gem-shop
+{
+	width: 168dp;
+	height: 244dp;
+	min-width: 0;
+}
+body.skin-classic.gem-shop .gem-shop__title-icon
+{
+	display: none;
+}
+body.skin-classic.gem-shop .gem-shop__titlebar
+{
+	position: absolute;
+	left: 6dp;
+	top: 6dp;
+	width: 153dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.gem-shop .gem-shop__handle, body.skin-classic.gem-shop .gem-shop__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end. */
+body.skin-classic.gem-shop .gem-shop__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.gem-shop .gem-shop__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.gem-shop .gem-shop__head
+{
+	display: block;
+	height: 0;
+	margin: 0;
+}
+/* The guild's refresh art (default, over, down). */
+body.skin-classic.gem-shop .gem-shop__refresh,
+body.skin-classic.gem-shop .gem-shop__refresh:hover,
+body.skin-classic.gem-shop .gem-shop__refresh:active
+{
+	position: absolute;
+	left: 10dp;
+	top: 35dp;
+	width: 18dp;
+	height: 18dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/guild/refresh_button_01.sub" scale-none left top);
+}
+body.skin-classic.gem-shop .gem-shop__refresh:hover
+{
+	decorator: image("d:/ymir work/ui/game/guild/refresh_button_02.sub" scale-none left top);
+}
+body.skin-classic.gem-shop .gem-shop__refresh:active
+{
+	decorator: image("d:/ymir work/ui/game/guild/refresh_button_03.sub" scale-none left top);
+}
+body.skin-classic.gem-shop .gem-shop__time-label
+{
+	position: absolute;
+	left: 14dp;
+	top: 38dp;
+	width: 120dp;
+	margin: 0;
+	color: var(--text);
+	text-align: center;
+}
+body.skin-classic.gem-shop .gem-shop__time
+{
+	position: absolute;
+	left: 114dp;
+	top: 38dp;
+	width: 40dp;
+	min-width: 0;
+	height: auto;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	font-weight: normal;
+	line-height: 16dp;
+}
+body.skin-classic.gem-shop .gem-shop__market
+{
+	position: absolute;
+	left: 28dp;
+	top: 65dp;
+	width: 135dp;
+	gap: 6dp 0;
+}
+body.skin-classic.gem-shop .gem-shop__item
+{
+	align-items: flex-start;
+	width: 45dp;
+}
+body.skin-classic.gem-shop .gem-shop__cell
+{
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.gem-shop .gem-shop__price
+{
+	justify-content: flex-start;
+	height: 14dp;
+	margin: 6dp 0 0 -3dp;
+	gap: 3dp;
+}
+body.skin-classic.gem-shop .gem-shop__coin
+{
+	display: inline-block;
+	width: 15dp;
+	height: 12dp;
+	decorator: image("d:/ymir work/ui/game/windows/money_icon.sub" scale-none left center);
+}
+body.skin-classic.gem-shop .gem-shop__amount
+{
+	font-weight: normal;
+}

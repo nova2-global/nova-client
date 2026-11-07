@@ -98,3 +98,27 @@ body.skin-classic.pshop .pshop__close
 {
 	left: 104dp;
 }
+
+/* Wave 5 (NOVA-9): legacy's offline shop builder (privateshopbuildernew.py):
+   the board 345 wide, the title bar 330, the name slot 318, the 10 x 8 grid
+   at (12, 60), OK and Close centered 40 either side of the middle. */
+body.skin-classic.pshop.pshop--wide
+{
+	width: 345dp;
+}
+body.skin-classic.pshop.pshop--wide .pshop__titlebar
+{
+	width: 330dp;
+}
+body.skin-classic.pshop.pshop--wide .pshop__name
+{
+	width: 318dp;
+}
+body.skin-classic.pshop.pshop--wide .pshop__ok
+{
+	left: 102dp;
+}
+body.skin-classic.pshop.pshop--wide .pshop__close
+{
+	left: 182dp;
+}

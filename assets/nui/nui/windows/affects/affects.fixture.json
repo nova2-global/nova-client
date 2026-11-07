@@ -1,6 +1,8 @@
 {
 	"affects": {
 		"icons": [
+			{"key": -12, "kind": "premium", "image": "d:/ymir work/ui/skill/common/affect/premium_gold.sub", "small": true,
+			 "title": "Premium", "line": "Gold", "end": 259200.0, "clocked": true, "label": false},
 			{"key": -11, "kind": "horse", "image": "d:/ymir work/ui/pattern/horsestate/31.dds", "small": true,
 			 "title": "", "line": "Battle Horse\nFull", "end": 0.0, "clocked": false, "label": false},
 			{"key": 14, "kind": "affect", "image": "d:/ymir work/ui/skill/warrior/jeongwi_03.sub", "small": true,

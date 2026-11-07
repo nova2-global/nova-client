@@ -38,6 +38,7 @@ import colorInfo
 import ime
 import localeInfo
 import net
+import player
 import uiChat
 import wndMgr
 
@@ -223,6 +224,11 @@ class ChatInput(object):
 	def _send(self, text, chat_type):
 		if net.IsChatInsultIn(text):
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.CHAT_INSULT_STRING)
+		elif chat.CHAT_TYPE_SHOUT == chat_type and _shout_color_index() > 0:
+			# Wave 5 (NOVA-11; legacy ChatLine.__SendChatPacket): the picked
+			# color goes with this shout only.
+			net.SendChatPacket(text, chat_type, _shout_color_index())
+			uiChat.SetShoutColorIndex(0)
 		else:
 			net.SendChatPacket(text, chat_type)
 
@@ -275,22 +281,30 @@ class ChatInput(object):
 
 	# --- history -------------------------------------------------------------------
 
+	# Each sentence keeps the shout color it was typed with, and recalling it
+	# picks that color again (Wave 5, NOVA-11; legacy's [text, index]).
 	def _push_sentence(self, text):
 		if len(text) <= 0:
 			return
 		if len(self.lastSentenceStack) > self.LAST_SENTENCE_STACK_SIZE:
 			self.lastSentenceStack.pop(0)
-		self.lastSentenceStack.append(text)
+		self.lastSentenceStack.append([text, _shout_color_index()])
+
+	def _restore_sentence(self, sentence):
+		text, index = sentence
+		self.SetText(text)
+		if hasattr(uiChat, "SetShoutColorIndex"):
+			uiChat.SetShoutColorIndex(index)
 
 	def PrevLastSentence(self):
 		if self.lastSentenceStack and self.lastSentencePos < len(self.lastSentenceStack):
 			self.lastSentencePos += 1
-			self.SetText(self.lastSentenceStack[-self.lastSentencePos])
+			self._restore_sentence(self.lastSentenceStack[-self.lastSentencePos])
 
 	def NextLastSentence(self):
 		if self.lastSentenceStack and self.lastSentencePos > 1:
 			self.lastSentencePos -= 1
-			self.SetText(self.lastSentenceStack[-self.lastSentencePos])
+			self._restore_sentence(self.lastSentenceStack[-self.lastSentencePos])
 
 	# --- the field's events ------------------------------------------------------
 
@@ -382,7 +396,9 @@ class ChatBoard(nui.Window):
 	def initial_model(self):
 		return {"open": False, "shown": False, "chat_mode": chat.CHAT_TYPE_TALKING, "mark": "",
 		        "history_height": ChatWindow.HISTORY_HEIGHT, "view_chat": True,
-		        "lines_mode": "off" if nui_hud.has_engine_3a() else "view", "draft": ""}
+		        "lines_mode": "off" if nui_hud.has_engine_3a() else "view", "draft": "",
+		        # Wave 5 (NOVA-11): the shout color button and its picker.
+		        "shout_color_on": False, "shout_picker": False, "shout_colors": []}
 
 	def on_scale_changed(self, scale):
 		self._owner.nui_place()
@@ -415,6 +431,16 @@ class ChatBoard(nui.Window):
 		if button == 0:
 			self._owner.input.OnIMEReturn()
 
+	@nui.on("shout_color")
+	def on_shout_color(self, button):
+		if button == 0:
+			self._owner.nui_shout_color()
+
+	@nui.on("shout_pick")
+	def on_shout_pick(self, index, button):
+		if button == 0:
+			self._owner.nui_shout_pick(index)
+
 	@nui.on("whisper")
 	def on_whisper(self, button):
 		if button == 0:
@@ -436,6 +462,34 @@ class ChatBoard(nui.Window):
 	@nui.on("wheel")
 	def on_wheel(self, delta):
 		self._owner.nui_wheel(delta)
+
+
+def _shout_color_index():
+	"""The shout color picked for the next shout (legacy uiChat's module
+	index; 0: none, or an exe without shout colors)."""
+	return int(getattr(uiChat, "GetShoutColorIndex", lambda: 0)())
+
+
+def has_shout_color_perk():
+	"""Whether the player's premium tier includes shout colors (Wave 5,
+	NOVA-11; an exe without premium: no)."""
+	has_perk = getattr(player, "HasPremiumPerk", None)
+	perk = getattr(player, "PREMIUM_PERK_SHOUT_COLOR", None)
+	return bool(has_perk is not None and perk is not None and has_perk(perk))
+
+
+def shout_colors():
+	"""The server's palette as swatches: index i + 1 for color i (spec 2.4),
+	each the shout mode's word in that color through the legacy color tag
+	(|cAARRGGBB ... |r, which nui-text draws; ARGB as an unsigned int), so a
+	swatch shows the shout as it will look."""
+	count = int(getattr(player, "GetShoutColorCount", lambda: 0)())
+	word = nui.plain_text(getattr(localeInfo, "CHAT_SHOUT", "") or "")
+	swatches = []
+	for i in range(count):
+		color = int(player.GetShoutColor(i)) & 0xFFFFFFFF
+		swatches.append({"index": i + 1, "text": "|c%08X%s|r" % (color, word)})
+	return swatches
 
 
 def wheel_end_pos(view, delta):
@@ -636,11 +690,31 @@ class ChatWindow(object):
 		to the mode's prefix with the caret at the end."""
 		chat.SetBoardState(self.chatID, chat.BOARD_STATE_EDIT)
 		self.boardState = chat.BOARD_STATE_EDIT
-		self.nui_set(open=True)
+		self.nui_set(open=True, shout_color_on=has_shout_color_perk(), shout_picker=False)
 		self.nui_sync_lines()
 		if self.board is not None and self.board.focus("chat-input"):
 			self.fieldFocused = True
 		self.input.ResetChat()
+
+	# --- the shout color (Wave 5, NOVA-11; legacy ChatInputSet) --------------------
+
+	def nui_shout_color(self):
+		"""The shout color button: the picker, or legacy's line without the
+		perk (OnShoutColorButton)."""
+		if not has_shout_color_perk():
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.SHOUT_COLOR_REQUIRES_PERK)
+			self.nui_set(shout_picker=False)
+			return
+		state = getattr(self, "_shout_picker", False)
+		self._shout_picker = not state
+		self.nui_set(shout_picker=self._shout_picker, shout_colors=shout_colors() if self._shout_picker else [])
+
+	def nui_shout_pick(self, index):
+		"""A swatch: that color for the next shout (legacy ShoutColorBoard.OnSelect)."""
+		if hasattr(uiChat, "SetShoutColorIndex"):
+			uiChat.SetShoutColorIndex(int(index))
+		self._shout_picker = False
+		self.nui_set(shout_picker=False)
 
 	def CloseChat(self):
 		"""uichat.py:675-695: the view board state; the scroll (D12) back at
@@ -650,7 +724,7 @@ class ChatWindow(object):
 		if self.endPos != 1.0:
 			self.endPos = 1.0
 			chat.SetEndPos(self.chatID, 1.0)
-		self.nui_set(open=False)
+		self.nui_set(open=False, shout_color_on=False, shout_picker=False)
 		self.nui_sync_lines()
 		# NovaUI's focus off the field (when the field has it: not the log's
 		# field's), then wndMgr's: the window wndMgr then activates may focus

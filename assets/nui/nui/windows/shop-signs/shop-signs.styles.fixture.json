@@ -1,0 +1,14 @@
+{
+	"shop_signs": {
+		"show_all": true,
+		"tick_end": 0.0,
+		"signs": [
+			{"vid": 11, "text": "Inferno Arms", "own": false, "shown": true, "legacy_width": "112dp", "style": 1, "seen": false, "always": false, "near": true},
+			{"vid": 12, "text": "Ice Age Potions", "own": false, "shown": true, "legacy_width": "130dp", "style": 2, "seen": false, "always": false, "near": true},
+			{"vid": 13, "text": "Parchment & Scrolls", "own": false, "shown": true, "legacy_width": "154dp", "style": 3, "seen": false, "always": false, "near": true},
+			{"vid": 14, "text": "War Banner Armory", "own": false, "shown": true, "legacy_width": "142dp", "style": 4, "seen": false, "always": false, "near": true},
+			{"vid": 15, "text": "Wings of Fortune", "own": false, "shown": true, "legacy_width": "136dp", "style": 5, "seen": false, "always": false, "near": true},
+			{"vid": 16, "text": "Fresh fish", "own": false, "shown": true, "legacy_width": "80dp", "style": 0, "seen": true, "always": false, "near": true}
+		]
+	}
+}

@@ -492,6 +492,7 @@ NUI_INTRO_CREATE_TITLE	إنشاء شخصية
 NUI_INTRO_SELECT_TITLE	اختيار الشخصية
 NUI_INTRO_SLOTS	%d خانات
 NUI_INTRO_LOADING_TITLE	دخول العالم
+NUI_SHOP_LOG_EMPTY	لا توجد سجلات بعد
 GEMSHOP_LEFTTIME	الوقت المتبقي
 GEMSHOP_TITLE	متجر الغايا
 MYSHOP_DECO_CANCEL	أغلق

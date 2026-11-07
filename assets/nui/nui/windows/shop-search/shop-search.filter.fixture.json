@@ -1,0 +1,26 @@
+{
+	"shop_search": {
+		"rows": [
+			{"index": 0, "shown": true, "name": "Blessing Scroll", "stock": "In stock: 12", "price": "48.000.000 Yang", "owner": "Caius", "icon": "/icon/item/71021.tga", "flag": "/d:/ymir work/ui/intro/empire/empireflag_c.sub", "flag_shown": true, "state": "", "buyable": true},
+			{"index": 1, "shown": true, "name": "Reinforce Item", "stock": "In stock: 5", "price": "175.000.000 Yang", "owner": "Dagny", "icon": "/icon/item/71084.tga", "flag": "", "flag_shown": false, "state": "", "buyable": true}
+		],
+		"categories": [
+			{"key": 100, "name": "All", "selected": true}, {"key": 200, "name": "Weapons", "selected": false},
+			{"key": 300, "name": "Equipment", "selected": false}, {"key": 400, "name": "Vouchers", "selected": false},
+			{"key": 500, "name": "Costumes", "selected": false}, {"key": 600, "name": "Changers", "selected": false},
+			{"key": 700, "name": "Stones", "selected": false}, {"key": 800, "name": "Chests", "selected": false}
+		],
+		"suggestions": [{"index": 0, "name": "Blessing Scroll"}, {"index": 1, "name": "Blessing Marble"}],
+		"suggestions_shown": false,
+		"pages": [{"index": 0, "text": "1", "down": true, "shown": true, "enabled": true}],
+		"sizes": [
+			{"index": 0, "text": "25", "down": true, "shown": true, "enabled": true},
+			{"index": 1, "text": "50", "down": false, "shown": true, "enabled": true},
+			{"index": 2, "text": "100", "down": false, "shown": true, "enabled": true}
+		],
+		"nav_shown": true, "current_page": 0, "page_count": 1, "loading": false, "empty": false,
+		"sort_ascending": true, "sort_text": "Price down", "gold": "8.452.100.000 Yang",
+		"premium": "Active", "can_buy": true, "filter_open": true, "filter_male": true,
+		"filter_female": false, "bookmarks_open": false, "bookmarks": [], "status_end": 0.0
+	}
+}

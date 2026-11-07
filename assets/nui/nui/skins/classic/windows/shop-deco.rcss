@@ -1,0 +1,182 @@
+/* Classic skin overlay of nui/windows/shop-deco/shop-deco.rml: legacy's
+   decoration window (uiscript myshopdecorationwindow.py,
+   uimyshopdecoration.py) at 100%, 1dp to the legacy pixel: the board,
+   380 x 330; the title bar at 8, 7, 365 wide, the step's title centered;
+   the step's line centered 36 down; the list's thin board at 10, 54
+   (185 x 238) with its rows at 14, 58, 17 high, the chosen one on legacy's
+   ListBox select bar; the preview's thin board at 200, 54 (166 x 120) with
+   the name in its middle, and on the style step the style's frame at 223,
+   124 (120 x 32): ShopDecoTitle's thin board tinted with the style's color
+   at 35%, as legacy draws it without the pattern art (L15); the step's two
+   middle buttons 45 either side of the middle, 34 above the bottom. */
+
+body.skin-classic.shop-deco
+{
+	width: 380dp;
+	height: 330dp;
+	min-width: 0;
+}
+body.skin-classic.shop-deco .shop-deco__title-icon,
+body.skin-classic.shop-deco .shop-deco__steps
+{
+	display: none;
+}
+body.skin-classic.shop-deco .shop-deco__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 365dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.shop-deco .shop-deco__handle, body.skin-classic.shop-deco .shop-deco__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.shop-deco .shop-deco__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.shop-deco .shop-deco__body
+{
+	position: static;
+	display: block;
+	padding: 0;
+}
+body.skin-classic.shop-deco .shop-deco__description
+{
+	position: absolute;
+	left: 0;
+	top: 36dp;
+	width: 380dp;
+	margin: 0;
+	color: var(--text);
+	font-size: var(--font-sm);
+	text-align: center;
+}
+body.skin-classic.shop-deco .shop-deco__panes
+{
+	display: block;
+	height: 0;
+}
+body.skin-classic.shop-deco .shop-deco__list-board
+{
+	position: absolute;
+	left: 10dp;
+	top: 54dp;
+	width: 185dp;
+	height: 238dp;
+	padding: 4dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.shop-deco .shop-deco__list
+{
+	width: 177dp;
+	height: 230dp;
+}
+body.skin-classic.shop-deco .shop-deco__entry,
+body.skin-classic.shop-deco .shop-deco__entry:hover,
+body.skin-classic.shop-deco .shop-deco__entry.is-selected
+{
+	height: 17dp;
+	margin: 0;
+	padding: 0 0 0 2dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	decorator: none;
+}
+body.skin-classic.shop-deco .shop-deco__entry:hover
+{
+	background-color: var(--classic-list-hover);
+}
+body.skin-classic.shop-deco .shop-deco__entry.is-selected
+{
+	background-color: var(--classic-list-select);
+}
+body.skin-classic.shop-deco .shop-deco__entry-label
+{
+	line-height: 17dp;
+}
+body.skin-classic.shop-deco .shop-deco__preview
+{
+	position: absolute;
+	left: 200dp;
+	top: 54dp;
+	width: 166dp;
+	height: 120dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.shop-deco .shop-deco__model-mark, body.skin-classic.shop-deco .shop-deco__sign-text
+{
+	display: none;
+}
+body.skin-classic.shop-deco .shop-deco__model-name, body.skin-classic.shop-deco .shop-deco__sign-name
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 52dp;
+	width: 166dp;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: normal;
+	text-align: center;
+}
+body.skin-classic.shop-deco .shop-deco__sign
+{
+	position: absolute;
+	left: 23dp;
+	top: 70dp;
+	width: 120dp;
+	min-width: 0;
+	height: 32dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.shop-deco .shop-deco__sign--1 { background-color: var(--shop-sign-1-tint); }
+body.skin-classic.shop-deco .shop-deco__sign--2 { background-color: var(--shop-sign-2-tint); }
+body.skin-classic.shop-deco .shop-deco__sign--3 { background-color: var(--shop-sign-3-tint); }
+body.skin-classic.shop-deco .shop-deco__sign--4 { background-color: var(--shop-sign-4-tint); }
+body.skin-classic.shop-deco .shop-deco__sign--5 { background-color: var(--shop-sign-5-tint); }
+body.skin-classic.shop-deco .shop-deco__footer
+{
+	display: block;
+	height: 0;
+	padding: 0;
+}
+body.skin-classic.shop-deco .shop-deco__button
+{
+	position: absolute;
+	top: 296dp;
+}
+body.skin-classic.shop-deco .shop-deco__button--next, body.skin-classic.shop-deco .shop-deco__button--prev
+{
+	left: 114dp;
+}
+body.skin-classic.shop-deco .shop-deco__button--cancel, body.skin-classic.shop-deco .shop-deco__button--complete
+{
+	left: 204dp;
+}
+/* A label longer than the middle art (pl, pt, ro, ru) runs past both ends,
+   as legacy's text line does; it takes no presses, so it never presses the
+   neighbor it covers. */
+body.skin-classic.shop-deco .shop-deco__button-label
+{
+	pointer-events: none;
+}

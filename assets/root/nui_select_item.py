@@ -193,8 +193,13 @@ class SelectItemWindow(uiselectitem.SelectItemWindow):
 
 	def SelectItemSlot(self, slotPos):
 		# Legacy's, without wndMgr.OnceIgnoreMouseLeftButtonUpEvent(): the
-		# stone's window and cell (C1 encodes them, spec 3.10).
+		# stone's window and cell (C1 encodes them, spec 3.10). The gaya cut's
+		# picker (Wave 5, Open(..., stayOpen=True)) stays open for the next
+		# stone, as legacy's.
 		inventorySlotPos = self.inventorySlotPosDict[slotPos]
 		window = self.inventorySlotWindowDict.get(slotPos, player.INVENTORY)
 		net.SendSelectItemPacket(window, inventorySlotPos)
+		if getattr(self, "stayOpen", False):
+			self.OverOutItem()
+			return
 		self.Hide()

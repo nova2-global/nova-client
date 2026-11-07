@@ -7,6 +7,9 @@
 		"history_height": 138.0,
 		"view_chat": true,
 		"lines_mode": "edit",
-		"draft": "#nuiw2b meet at the well"
+		"draft": "#nuiw2b meet at the well",
+		"shout_color_on": true,
+		"shout_picker": false,
+		"shout_colors": []
 	}
 }

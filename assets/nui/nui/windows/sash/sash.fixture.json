@@ -1,0 +1,71 @@
+{
+	"sash": {
+		"mode": "combine",
+		"cells": [
+			{
+				"index": 0,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 1,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 2,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			}
+		],
+		"price": "Absorption price: 0",
+		"auto_combine": false,
+		"auto_shown": true,
+		"attach_right": true
+	}
+}

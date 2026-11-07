@@ -1,0 +1,92 @@
+<rml>
+<head>
+	<!-- The sash combine and absorb windows (Wave 6, NOVA-20; legacy
+	     uisash.py CombineWindow and AbsorbWindow, uiscripts
+	     sash_combinewindow.py and sash_absorbwindow.py). While the sash flag
+	     is on, the Interface makes nui_sash.CombineWindow and
+	     nui_sash.AbsorbWindow (controller assets/root/nui_sash.py),
+	     subclasses of the legacy classes on proxies: the drops, the removals,
+	     the server's refresh, the cell locks, the result tooltips and the
+	     requests are legacy's code. One document for both (mode): the two
+	     material cells and the result cell in a row, a plus between the
+	     materials and a chevron before the result, each with legacy's label
+	     under it (the absorb window's middle cell, the weapon or armor whose
+	     bonuses go into the sash, is three cells tall and has no label, as
+	     legacy's); the combine window's price line and auto combine check
+	     box under the row; OK and Cancel. The document exists only while its
+	     window shows (each window its own instanced model) and draws below
+	     the legacy UI layer. The body and its controls take no focus;
+	     controls act on a left mousedown. A left or right press anywhere on
+	     it raises the window (board_press), as legacy's window manager
+	     raised the window under a press. -->
+	<title>sash</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="sash.rcss"/>
+</head>
+<body template="nui" id="sash" class="nui-window nui-fx nui-anim nui-below-legacy-ui sash" data-model="sash"
+      data-event-mousedown="board_press(ev.button)" data-class-sash--combine="mode == 'combine'"
+      data-class-sash--absorb="mode == 'absorb'">
+	<div class="nui-window__titlebar sash__titlebar">
+		<span class="sash-title-icon"><span class="nui-glyph nui-glyph--gem"><span class="nui-glyph__a"></span><span
+			class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+		<handle class="nui-window__handle sash__handle" move_target="#document">
+			<span class="nui-window__title sash__title" data-if="mode == 'combine'">@ui.SASH_COMBINE</span>
+			<span class="nui-window__title sash__title" data-if="mode == 'absorb'">@ui.SASH_ABSORB</span>
+		</handle>
+		<button id="sash-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim sash__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body sash__body">
+		<div id="sash-row" class="sash__row" data-class-nui-attach-right="attach_right">
+			<div class="sash__place sash__place--0">
+				<div id="sash-cell-0" class="nui-slot nui-anim nui-fx sash__cell"
+				     data-class-is-empty="cells[0].kind == ''" data-class-is-target="cells[0].target == 'move'"
+				     data-event-mousedown="cell_press(0, ev.button)" data-event-mouseup="cell_release(0, ev.button)"
+				     data-event-dblclick="cell_use(0)" data-event-mouseover="cell_over(0)"
+				     data-event-mouseout="cell_out(0)" data-event-nuidrop="cell_drop(0)">
+					<img class="nui-slot__icon" data-if="cells[0].icon != ''" data-attr-src="cells[0].icon"/>
+				</div>
+				<span class="sash__caption sash__caption--0">@ui.SASH_MAIN</span>
+			</div>
+			<span class="sash__mark sash__mark--plus"><span class="nui-glyph nui-glyph--plus"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<div class="sash__place sash__place--1">
+				<div id="sash-cell-1" class="nui-slot nui-anim nui-fx sash__cell"
+				     data-class-sash__cell--tall="mode == 'absorb'"
+				     data-class-is-empty="cells[1].kind == ''" data-class-is-target="cells[1].target == 'move'"
+				     data-event-mousedown="cell_press(1, ev.button)" data-event-mouseup="cell_release(1, ev.button)"
+				     data-event-dblclick="cell_use(1)" data-event-mouseover="cell_over(1)"
+				     data-event-mouseout="cell_out(1)" data-event-nuidrop="cell_drop(1)">
+					<img class="nui-slot__icon" data-if="cells[1].icon != ''" data-attr-src="cells[1].icon"/>
+				</div>
+				<span class="sash__caption sash__caption--1" data-if="mode == 'combine'">@ui.SASH_SERVE</span>
+			</div>
+			<span class="sash__mark sash__mark--to"><span class="nui-glyph nui-glyph--chevron-right"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<div class="sash__place sash__place--2">
+				<div id="sash-cell-2" class="nui-slot nui-anim nui-fx sash__cell sash__cell--result"
+				     data-class-is-empty="cells[2].kind == ''" data-class-is-target="cells[2].target == 'move'"
+				     data-event-mousedown="cell_press(2, ev.button)" data-event-mouseup="cell_release(2, ev.button)"
+				     data-event-dblclick="cell_use(2)" data-event-mouseover="cell_over(2)"
+				     data-event-mouseout="cell_out(2)" data-event-nuidrop="cell_drop(2)">
+					<img class="nui-slot__icon" data-if="cells[2].icon != ''" data-attr-src="cells[2].icon"/>
+				</div>
+				<span class="sash__caption sash__caption--2">@ui.SASH_RESULT</span>
+			</div>
+		</div>
+		<div id="sash-price" class="sash__price" data-if="mode == 'combine'">{{ price }}</div>
+		<div class="sash__auto-row" data-if="auto_shown">
+			<div id="sash-auto" class="sash__auto" data-class-is-checked="auto_combine"
+			     data-event-mousedown="auto_press(ev.button)"><span class="sash__check nui-anim"><span
+				class="sash__check-mark"></span></span><span class="sash__auto-label">@game.SASH_AUTO_COMBINE</span></div>
+		</div>
+	</div>
+	<div class="nui-window__footer sash__footer">
+		<button id="sash-accept" class="nui-button nui-button--primary nui-button--medium nui-anim sash__accept"
+		        data-event-mousedown="accept_press(ev.button)">@ui.OK</button>
+		<button id="sash-cancel" class="nui-button nui-button--medium nui-anim sash__cancel"
+		        data-event-mousedown="cancel_press(ev.button)">@ui.CANCEL</button>
+	</div>
+</body>
+</rml>

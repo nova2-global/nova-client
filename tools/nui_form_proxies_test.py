@@ -66,6 +66,9 @@ USERS = {
                                   ("item", "gradeDict", "GRADE_NOTICE_AUTHORITY"),
                                   ("item", "gradeDict", "GRADE_SKILL_AUTHORITY")]},
     "EditableSlotProxy": {"uiguild.py": [("item", "gradeDict", "GRADE_SLOT_NAME"), ("item", "gradeDict", 0)]},
+    # Wave 6: ui.CheckBox in the sash combine window and the costume window's
+    # aura flag panel.
+    "CheckBoxProxy": {"uisash.py": [("attr", "checkBox")], "uiinventory.py": [("name", "checkBox")]},
     "CommentProxy": {"uiguild.py": [("item", "boardDict", 2)]},
     "GaugeProxy": {"uiguild.py": [("attr", "gpGauge")]},
     "MarkProxy": {"uiguild.py": [("attr", "largeMarkBox")]},
@@ -92,6 +95,7 @@ SPEC = {
                    "SetCurrentItem", "SelectItem", "Enable", "Disable", "CloseListBox", "Destroy", "pressed", "picked"),
     "CheckProxy": ("SetCheck", "Disable", "Show", "pressed"),
     "EditableSlotProxy": ("SetText", "SetEvent", "Disable", "pressed"),
+    "CheckBoxProxy": ("SetTextInfo", "SetCheckStatus", "GetCheckStatus", "SetEvent", "Show", "Hide", "click"),
     "CommentProxy": ("SetText",),
     "GaugeProxy": ("SetPercentage",),
     "MarkProxy": ("SetIndex", "SetScale", "AddFlag", "SetPosition", "GetWidth", "Show", "Hide"),
@@ -389,6 +393,21 @@ class Combo(FormProxiesTest):
 
 
 class Guild(FormProxiesTest):
+    def test_the_check_box_flips_then_runs_the_new_state_s_event(self):
+        """ui.CheckBox.OnMouseLeftButtonUp: the state flips first, then
+        ON_CHECK or ON_UNCHECK runs, so the event reads the new state."""
+        log = []
+        box = self.m.CheckBoxProxy(lambda proxy: log.append(("change", proxy.checked)))
+        box.SetEvent(lambda: log.append(("check", box.GetCheckStatus())), "ON_CHECK")
+        box.SetEvent(lambda: log.append(("uncheck", box.GetCheckStatus())), "ON_UNCHECK")
+        box.SetEvent(lambda: log.append("never"), "ON_OTHER")
+        box.SetTextInfo("Auto")
+        box.click()
+        box.click()
+        self.assertEqual(box.text, "Auto")
+        self.assertEqual(log, [("change", False), ("change", True), ("check", True), ("change", False),
+                               ("uncheck", False)])
+
     def test_check_editable_slot_comment_gauge(self):
         log = []
         check = self.m.CheckProxy(lambda: log.append("check"))

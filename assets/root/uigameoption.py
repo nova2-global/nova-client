@@ -29,6 +29,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.RefreshShowSalesText()
 		self.RefreshPickupFilter()
 		self.RefreshHideShops()
+		self.RefreshShowSash()
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -47,6 +48,8 @@ class OptionDialog(ui.ScriptWindow):
 		self.pickupFilterButtonList = []
 		self.hideShopsLabel = None
 		self.hideShopsButtonList = []
+		self.showSashLabel = None
+		self.showSashButtonList = []
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -160,6 +163,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.__SetPeacePKMode()
 
 		self.__Load_HideShops()
+		self.__Load_ShowSash()
 
 	## The offline shops' NPCs and signs, shown or hidden (NOVA-9; OLD
 	## uiGameOption.py:1169-1218, a "companions" checkbox there): a row under
@@ -202,6 +206,47 @@ class OptionDialog(ui.ScriptWindow):
 	# Index 0 "Show" is down while the shops show, 1 "Hide" while they are hidden.
 	def RefreshHideShops(self):
 		self.__ClickRadioButton(self.hideShopsButtonList, int(bool(shop.IsHideShops())))
+
+	## The sashes drawn or not (SHOW_ACCE, NOVA-20; OLD settingsData.py:262-270,
+	## the "shoulder_sash" toggle, uiGameOption.py:979-980 and 1030-1032): a row
+	## under the hide-shops row, the board grown by one more row. A press sets
+	## systemSetting.SetShowAcceFlag and refreshes, as show damage does; the
+	## client saves SHOW_ACCE to metin2.cfg with the other settings at exit
+	## (OLD saved at each press). When it is off, the client hides every sash.
+	SHOW_SASH_ROW_Y = 340
+	SHOW_SASH_HEIGHT = 25*15+8
+
+	def __Load_ShowSash(self):
+		board = self.GetChild("board")
+		board.SetSize(board.GetWidth(), self.SHOW_SASH_HEIGHT)
+		self.SetSize(self.GetWidth(), self.SHOW_SASH_HEIGHT)
+
+		label = ui.TextLine()
+		label.SetParent(board)
+		label.SetPosition(30, self.SHOW_SASH_ROW_Y + 2)
+		label.SetText(uiScriptLocale.OPTION_ACCE)
+		label.Show()
+		self.showSashLabel = label
+
+		for (index, text) in enumerate((uiScriptLocale.OPTION_SALESTEXT_VIEW_ON, uiScriptLocale.OPTION_SALESTEXT_VIEW_OFF)):
+			button = ui.RadioButton()
+			button.SetParent(board)
+			button.SetPosition(90 + 65 * index, self.SHOW_SASH_ROW_Y)
+			button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+			button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+			button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+			button.SetText(text)
+			button.SAFE_SetEvent(self.__OnClickShowSashButton, index == 0)
+			button.Show()
+			self.showSashButtonList.append(button)
+
+	def __OnClickShowSashButton(self, show):
+		systemSetting.SetShowAcceFlag(show)
+		self.RefreshShowSash()
+
+	# Index 0 "Show" is down while the sashes are drawn, 1 "Hide" while they are not.
+	def RefreshShowSash(self):
+		self.__ClickRadioButton(self.showSashButtonList, 0 if systemSetting.IsShowAcce() else 1)
 
 	def __ClickRadioButton(self, buttonList, buttonIndex):
 		try:

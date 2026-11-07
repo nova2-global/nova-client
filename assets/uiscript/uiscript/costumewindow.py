@@ -7,11 +7,14 @@ COSTUME_START_INDEX = item.COSTUME_SLOT_START
 ## the costume sash (wear 21, item.COSTUME_SLOT_SASH; NOVA-20; OLD showed it in
 ## the inventory's equipment panel), the weapon costume (wear 22,
 ## item.COSTUME_SLOT_WEAPON; NOVA-21) and the aura costume (wear 39,
-## item.COSTUME_SLOT_AURA; NOVA-23). Wear 23-27 (mount, effects, pet, wings)
-## hold features that are not ported: their slots stay hidden.
+## item.COSTUME_SLOT_AURA; NOVA-23) and OLD's "SASH WING" cell, the sash
+## costume (wear 27, COSTUME_START_INDEX + 8, OLD's c_Costume_Slot_Sash and
+## item.COSTUME_SLOT_SASH2; the wings), below the aura. Wear 23-26 (mount,
+## effects, pet) hold features that are not ported: their slots stay hidden.
 SASH_SLOT_INDEX = COSTUME_START_INDEX + 2
 WEAPON_SLOT_INDEX = COSTUME_START_INDEX + 3
 AURA_SLOT_INDEX = COSTUME_START_INDEX + 20
+WING_SLOT_INDEX = COSTUME_START_INDEX + 8
 
 BUTTON_PATH = "d:/ymir work/ui/public/"
 WINDOW_WIDTH = 216
@@ -96,6 +99,7 @@ window = {
 				{ "name" : "Weapon_Base3", "type" : "image", "x" : 134, "y" : 113, "image" : BUTTON_PATH + "Slot_Base.sub" },
 				{ "name" : "Sash_Base", "type" : "image", "x" : 172, "y" : 49, "image" : BUTTON_PATH + "Slot_Base.sub" },
 				{ "name" : "Aura_Base", "type" : "image", "x" : 172, "y" : 89, "image" : BUTTON_PATH + "Slot_Base.sub" },
+				{ "name" : "Wing_Base", "type" : "image", "x" : 172, "y" : 129, "image" : BUTTON_PATH + "Slot_Base.sub" },
 				{
 					"name" : "CostumeSlot",
 					"type" : "slot",
@@ -112,6 +116,7 @@ window = {
 								{"index":WEAPON_SLOT_INDEX, "x":118, "y":8, "width":32, "height":96},
 								{"index":SASH_SLOT_INDEX, "x":156, "y":8, "width":32, "height":32},
 								{"index":AURA_SLOT_INDEX, "x":156, "y":48, "width":32, "height":32},
+								{"index":WING_SLOT_INDEX, "x":156, "y":88, "width":32, "height":32},
 							),
 				},
 

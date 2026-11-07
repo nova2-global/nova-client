@@ -1,0 +1,13 @@
+{
+	"$comment": "Golden cases of the aura level window (Wave 6, NOVA-23; tools/check_nui_snapshots.py): the default fixture is an aura at level 3 with 450 of 1.000 experience (45%, legacy's fill of 84 of 188 pixels as the fraction 0.4468) and a material stack of 5; empty: no aura and no material (legacy writes no text and hides the gauge); max: a level 250 aura with no material (the gauge full, MAX, no experience line). The window centers at its first show; the sheet's place frames it here. The modern looks keep room for the frame's shadow; classic draws legacy's 248 x 265 board (aura_levelupwindow.py) on its own canvas, with no background art (legacy's aura_levelup_bg.sub is not in the packs).",
+	"cases": [
+		{"page": "aura", "themes": "all", "except": ["classic"], "scales": [["100", "1", "420x400"], ["150", "1.5", "630x600"], ["200", "2", "840x800"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "aura", "themes": ["classic"], "scales": [["100", "1", "280x300"], ["150", "1.5", "420x450"], ["200", "2", "560x600"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "aura", "variant": "empty", "themes": "all", "except": ["classic"], "scales": [["100", "1", "420x400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "aura", "variant": "empty", "themes": ["classic"], "scales": [["100", "1", "280x300"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "aura", "variant": "max", "themes": "all", "except": ["classic"], "scales": [["100", "1", "420x400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "aura", "variant": "max", "themes": ["classic"], "scales": [["100", "1", "280x300"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "aura", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "420x400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
+		{"page": "aura", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "420x400"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
+	]
+}

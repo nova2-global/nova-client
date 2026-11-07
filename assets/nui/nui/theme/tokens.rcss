@@ -396,6 +396,7 @@ body.skin-classic
 	--classic-disabled-text: #6e6e6e;
 	--classic-key-text: #000000;
 	--classic-label-white: #ffffff;
+	--classic-aura-exp-fill: #44aaff;
 	--classic-chat-press: #ffffff4d;
 	--classic-chat-log-fill: #00000077;
 	--classic-chat-grip: #989898;

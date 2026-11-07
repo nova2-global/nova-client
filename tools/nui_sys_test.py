@@ -248,7 +248,8 @@ SURFACES = {
         ("Open", "Close", "SAFE_SetSelectEvent", "OnPressEscapeKey"),
     ("uiGameOption", "LegacyOptionDialog", "nui_game_options", "OptionDialog"):
         ("Destroy", "Close", "OnPressEscapeKey", "OnBlockMode", "OnChangePKMode", "RefreshBlock", "RefreshViewChat",
-         "RefreshAlwaysShowName", "RefreshShowDamage", "RefreshShowSalesText", "RefreshPickupFilter"),
+         "RefreshAlwaysShowName", "RefreshShowDamage", "RefreshShowSalesText", "RefreshPickupFilter",
+         "RefreshHideShops", "RefreshShowSash"),
     ("uiRestart", "RestartDialog", "nui_restart", "RestartDialog"):
         ("LoadDialog", "Destroy", "OpenDialog", "Close", "RestartHere", "RestartTown", "OnPressExitKey", "OnPressEscapeKey"),
     ("uiHelp", "HelpWindow", "nui_help", "HelpWindow"):
@@ -971,10 +972,21 @@ BLOCK_CHILDREN = ("block_exchange_button", "block_party_button", "block_guild_bu
                   "block_friend_button", "block_party_request_button")
 
 
+def sash_flag(game, shown=True):
+    """systemSetting's SHOW_ACCE flag (NOVA-20) over a state of its own, as
+    CPythonSystem keeps it: IsShowAcce answers 1 or 0, and SetShowAcceFlag
+    keeps 1 as on (systemSetShowAcce). Both calls are recorded."""
+    state = {"shown": shown}
+    game.answer("systemSetting", "IsShowAcce", lambda: int(state["shown"]))
+    game.answer("systemSetting", "SetShowAcceFlag", lambda flag: state.__setitem__("shown", flag == 1))
+    return state
+
+
 class GameOptions(Pair):
     def setup_state(self, game):
         game.status[P["LEVEL"]] = 105
         game.pk_mode = P["PK_MODE_PEACE"]
+        game.sash_flag = sash_flag(game)
 
     def pair(self, setup=None):
         legacy, novaui = self.worlds(setup)
@@ -994,7 +1006,7 @@ class GameOptions(Pair):
         # The pickup filter since NOVA-50 (uigameoption.py RefreshPickupFilter).
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
-                                 "pickup": [True] * 4, "hide_shops": False})
+                                 "pickup": [True] * 4, "hide_shops": False, "show_sash": True})
         self.assertEqual([button.down for button in a.pickupFilterButtonList], [True] * 4)
         self.assertEqual([button.down for button in a.viewChatButtonList], [False, True])
         self.assertEqual([button.down for button in a.showDamageButtonList], [False, True])
@@ -1044,6 +1056,10 @@ class GameOptions(Pair):
                 self.assertTrue(a.GetChild(child).down, "legacy shows it in effect")
                 self.assertEqual(self.same(legacy, novaui, a.GetChild(child).click,
                                            lambda: fire(b, "choose", what, value, 0), child), [])
+        # The sash row's "Show" (NOVA-20), made in uigameoption.py, not the uiscript.
+        self.assertTrue(a.showSashButtonList[0].down, "legacy shows the sashes drawn")
+        self.assertEqual(self.same(legacy, novaui, a.showSashButtonList[0].click,
+                                   lambda: fire(b, "choose", "show_sash", 1, 0), "sash"), [])
         # PvP: the mode the server answered is the one in effect; a press on it
         # sends no /pkmode again.
         for world in (legacy, novaui):
@@ -1103,6 +1119,45 @@ class GameOptions(Pair):
                 self.assertIs(board(b).get(what), bool(value), "the model follows the setting")
         for world in (legacy, novaui):
             self.assertEqual(world.m("uiGameOption").viewChatMode, 1)
+
+    def test_the_sash_row_sets_show_acce_as_legacy_and_shows_the_flag(self):
+        """NOVA-20 (uigameoption.py __OnClickShowSashButton, RefreshShowSash):
+        "Hide" calls SetShowAcceFlag(False) and "Show" SetShowAcceFlag(True),
+        as show damage does; nothing is saved at the press (SHOW_ACCE goes to
+        metin2.cfg at exit), and the row shows the flag."""
+        legacy, novaui, a, b = self.pair()
+        calls = self.same(legacy, novaui, a.showSashButtonList[1].click, lambda: fire(b, "choose", "show_sash", 0, 0),
+                          "hide the sashes")
+        self.assertEqual(calls, [("systemSetting.SetShowAcceFlag", (False,))])
+        self.assertIs(board(b).get("show_sash"), False)
+        self.assertEqual([button.down for button in a.showSashButtonList], [False, True])
+        for world in (legacy, novaui):
+            self.assertFalse(world.game.sash_flag["shown"])
+        self.assertEqual(self.same(legacy, novaui, a.showSashButtonList[1].click,
+                                   lambda: fire(b, "choose", "show_sash", 0, 0), "hide again"), [],
+                         "a press on the choice in effect makes no call")
+        calls = self.same(legacy, novaui, a.showSashButtonList[0].click, lambda: fire(b, "choose", "show_sash", 1, 0),
+                          "show the sashes")
+        self.assertEqual(calls, [("systemSetting.SetShowAcceFlag", (True,))])
+        self.assertIs(board(b).get("show_sash"), True)
+        self.assertEqual([button.down for button in a.showSashButtonList], [True, False])
+        for world in (legacy, novaui):
+            self.assertNotIn(("systemSetting.SaveConfig", ()), world.effects(), "saved at exit, as the other flags")
+        self.assertEqual(self.same(legacy, novaui, lambda: None, lambda: fire(b, "choose", "show_sash", 2, 0), "no such"), [])
+
+    def test_each_show_reads_the_sash_flag(self):
+        legacy, novaui, a, b = self.pair(lambda game: game.sash_flag.__setitem__("shown", False))
+        self.assertIs(board(b).get("show_sash"), False)
+        self.assertEqual([button.down for button in a.showSashButtonList], [False, True], "legacy's load")
+        novaui.game.sash_flag["shown"] = True
+        b.Hide()
+        b.Show()
+        self.assertIs(board(b).get("show_sash"), True)
+        legacy.game.sash_flag["shown"] = True
+        a.RefreshShowSash()
+        b.RefreshShowSash()
+        self.assertEqual([button.down for button in a.showSashButtonList], [True, False])
+        self.assertIs(board(b).get("show_sash"), True)
 
     def test_a_pickup_filter_toggle_flips_its_category(self):
         """NOVA-50 (uigameoption.py __TogglePickupFilter): a press flips its
@@ -1359,10 +1414,11 @@ class Fixtures(unittest.TestCase):
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
         game_options = self.world.make_game_options()
-        # pickup: the pickup filter (NOVA-50); hide_shops: Wave 5's row (NOVA-9).
+        # pickup: the pickup filter (NOVA-50); hide_shops: Wave 5's row (NOVA-9);
+        # show_sash: Wave 6's row (SHOW_ACCE, NOVA-20).
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
-                                                         "pickup", "hide_shops"})
+                                                         "pickup", "hide_shops", "show_sash"})
 
 
 class HideShops(unittest.TestCase):
@@ -1381,6 +1437,136 @@ class HideShops(unittest.TestCase):
         sent = [args for name, args in world.game.log[mark:] if name == "net.SendChatPacket"]
         self.assertEqual(sent, [("/hide_shops 1",)], "Show is in effect: only Hide sends")
         self.assertFalse(board(options).model["hide_shops"], "the row waits for the server's HIDE_SHOPS")
+
+
+LOCALES = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "locale", "locale"))
+CLASSIC_GAME_OPTIONS = os.path.normpath(os.path.join(WINDOWS, "..", "skins", "classic", "windows", "game-options.rcss"))
+# OLD's label (settingsData.py:264, _L("OPTION_ACCE", "Shoulder Sash")) and
+# OLD's translations of it (Ol:<locale>/locale_interface.txt); OLD has no ae
+# or br text, so those two take OLD's English, as Wave 5's keys did.
+OLD_ACCE = {"ae": "Shoulder Sash", "br": "Shoulder Sash", "cz": "Ramenní šerpa", "de": "Schulterband",
+            "dk": "Shoulder Sash", "en": "Shoulder Sash", "es": "Estola", "fr": "Shoulder Echarpe",
+            "gr": "Κορδέλα Όμου", "hu": "Vállpánt", "it": "Stola", "nl": "Schoudergordel", "pl": "Shoulder Szarfa",
+            "pt": "Faixa de Ombro", "ro": "Esarfa de umar", "ru": "Шарфы", "tr": "Omuz Kusagi"}
+
+
+class ShowSash(unittest.TestCase):
+    """Wave 6 (SHOW_ACCE, NOVA-20): the game options' sash row, OLD's
+    "shoulder_sash" toggle (uiGameOption.py:979-980, 1030-1032), in the
+    legacy window (uigameoption.py __Load_ShowSash) and in the NovaUI one."""
+
+    def legacy(self, shown=True):
+        world = World(False)
+        state = sash_flag(world.game, shown)
+        world.__enter__()
+        self.addCleanup(world.__exit__)
+        dialog = world.make_game_options()
+        self.assertEqual(type(dialog).__module__, "uiGameOption")
+        with quiet():
+            dialog.Show()
+        return world, dialog, state
+
+    @staticmethod
+    def place(widget):
+        return [call[1:] for call in widget.calls if call[0] == "SetPosition"][-1]
+
+    def test_the_legacy_row_sits_under_the_hide_shops_row_and_the_board_grows_by_one_row(self):
+        world, dialog, state = self.legacy()
+        cls = type(dialog)
+        self.assertEqual(cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_ROW_Y + 25)
+        self.assertEqual(cls.SHOW_SASH_HEIGHT, cls.HIDE_SHOPS_HEIGHT + 25)
+        self.assertEqual(self.place(dialog.showSashLabel), (30, cls.SHOW_SASH_ROW_Y + 2))
+        self.assertEqual([self.place(button) for button in dialog.showSashButtonList],
+                         [(90, cls.SHOW_SASH_ROW_Y), (155, cls.SHOW_SASH_ROW_Y)])
+        self.assertEqual([self.place(button) for button in dialog.hideShopsButtonList],
+                         [(90, cls.HIDE_SHOPS_ROW_Y), (155, cls.HIDE_SHOPS_ROW_Y)])
+        self.assertEqual(dialog.GetChild("board").size[1], cls.SHOW_SASH_HEIGHT, "the board grown by one row")
+        self.assertEqual(dialog.size[1], cls.SHOW_SASH_HEIGHT, "the window with it")
+        self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
+                         "the bottom margin under the last row kept")
+
+    def test_the_legacy_row_has_old_s_label_and_the_show_and_hide_buttons_on_the_middle_art(self):
+        world, dialog, state = self.legacy()
+        self.assertEqual(dialog.showSashLabel.text, "OPTION_ACCE")
+        self.assertEqual([button.text for button in dialog.showSashButtonList],
+                         ["OPTION_SALESTEXT_VIEW_ON", "OPTION_SALESTEXT_VIEW_OFF"])
+        for button in dialog.showSashButtonList:
+            self.assertEqual(button.visuals, {"up": "d:/ymir work/ui/public/middle_button_01.sub",
+                                              "over": "d:/ymir work/ui/public/middle_button_02.sub",
+                                              "down": "d:/ymir work/ui/public/middle_button_03.sub"})
+            self.assertTrue(button.shown)
+        self.assertTrue(dialog.showSashLabel.shown)
+
+    def test_the_legacy_row_shows_the_flag_from_the_load(self):
+        for shown, downs in ((True, [True, False]), (False, [False, True])):
+            with self.subTest(shown=shown):
+                world, dialog, state = self.legacy(shown)
+                self.assertEqual([button.down for button in dialog.showSashButtonList], downs)
+
+    def test_a_legacy_press_sets_the_flag_and_the_row_follows(self):
+        world, dialog, state = self.legacy()
+        mark = world.mark()
+        with quiet():
+            dialog.showSashButtonList[1].click()
+        self.assertEqual(world.effects_since(mark), [("systemSetting.SetShowAcceFlag", (False,))])
+        self.assertFalse(state["shown"])
+        self.assertEqual([button.down for button in dialog.showSashButtonList], [False, True])
+        mark = world.mark()
+        with quiet():
+            dialog.showSashButtonList[0].click()
+        self.assertEqual(world.effects_since(mark), [("systemSetting.SetShowAcceFlag", (True,))])
+        self.assertTrue(state["shown"])
+        self.assertEqual([button.down for button in dialog.showSashButtonList], [True, False])
+
+    def test_a_flag_that_refuses_the_change_keeps_the_row(self):
+        """RefreshShowSash, not the radio button's own press, decides the look."""
+        world, dialog, state = self.legacy()
+        world.game.answer("systemSetting", "SetShowAcceFlag", lambda flag: None)
+        with quiet():
+            dialog.showSashButtonList[1].click()
+        self.assertEqual([button.down for button in dialog.showSashButtonList], [True, False])
+
+    def test_the_novaui_row_matches_legacy_s_place_in_classic(self):
+        """The document's row and buttons, and the classic overlay's places
+        against legacy's constants: label at x 30, y row + 2; the choices at x
+        90 and 155, y row; the body and board as tall as legacy's board."""
+        world, dialog, state = self.legacy()
+        cls = type(dialog)
+        document = read(os.path.join(WINDOWS, "game-options", "game-options.rml"))
+        for button_id, value, selected, key in (("go-sash-1", 1, "show_sash", "OPTION_SALESTEXT_VIEW_ON"),
+                                                ("go-sash-0", 0, "!show_sash", "OPTION_SALESTEXT_VIEW_OFF")):
+            match = re.search(r'<button id="%s"[^>]*>' % button_id, document)
+            self.assertIsNotNone(match, button_id)
+            tag = match.group(0)
+            self.assertIn('data-class-is-selected="%s"' % selected, tag)
+            self.assertIn("data-event-mousedown=\"choose('show_sash', %d, ev.button)\"" % value, tag)
+            self.assertIn("go-choice--middle go-choice--sash-%d" % value, tag)
+            self.assertIn('<span class="go-choice__label">@ui.%s</span>' % key, document[match.end():match.end() + 80])
+        self.assertIn('<span class="go-label go-label--sash">@ui.OPTION_ACCE</span>', document)
+        self.assertLess(document.index('id="go-shops-1"'), document.index('id="go-sash-1"'), "under the shops row")
+        classic = read(CLASSIC_GAME_OPTIONS)
+        rule = r"body\.skin-classic\.game-options \.%s \{ (?:left: (\d+)dp; )?top: (\d+)dp; \}"
+        self.assertEqual(re.search(rule % "go-label--sash", classic).group(2), str(cls.SHOW_SASH_ROW_Y + 2))
+        for value, x in ((1, 90), (0, 155)):
+            found = re.search(rule % ("go-choice--sash-%d" % value), classic)
+            self.assertEqual((found.group(1), found.group(2)), (str(x), str(cls.SHOW_SASH_ROW_Y)))
+        heights = re.findall(r"height: (\d+)dp;", classic.split(".game-options__titlebar")[0])
+        self.assertEqual(heights, [str(cls.SHOW_SASH_HEIGHT)], "the body as tall as legacy's board")
+        body = classic.split("body.skin-classic.game-options .game-options__body")[1].split("}")[0]
+        self.assertIn("height: %ddp;" % cls.SHOW_SASH_HEIGHT, body)
+
+    def test_the_label_is_in_every_locale_with_old_s_text(self):
+        locales = [name for name in sorted(os.listdir(LOCALES))
+                   if os.path.exists(os.path.join(LOCALES, name, "locale_interface.txt"))]
+        self.assertEqual(locales, sorted(OLD_ACCE))
+        for locale in locales:
+            with self.subTest(locale=locale):
+                with open(os.path.join(LOCALES, locale, "locale_interface.txt"), "rb") as handle:
+                    data = handle.read()
+                self.assertTrue(data.endswith(b"\n"))
+                self.assertNotIn(b"\r", data)
+                lines = [line for line in data.decode("utf-8").split("\n") if line.startswith("OPTION_ACCE\t")]
+                self.assertEqual(lines, ["OPTION_ACCE\t" + OLD_ACCE[locale]], "one entry, OLD's text")
 
 
 class OnDemand(unittest.TestCase):

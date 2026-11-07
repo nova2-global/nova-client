@@ -57,7 +57,9 @@ class ItemList(unittest.TestCase):
 			line + "\n" for line in self.lines[:self.want["new_lines"]]).encode("ascii"))[0])
 		vnums = [old_content.atoi(old_content.split_tab(line)[0]) for line in self.added]
 		self.assertEqual(vnums, self.want["added"])
-		self.assertEqual(len(vnums), 2222)
+		# 2222 at the cut and wave 6; the sash costumes (OLD's wings) and the
+		# glowing sashes' model vnums (851xx, 861xx; NOVA-20) since.
+		self.assertEqual(len(vnums), 3019)
 		self.assertEqual(len(set(vnums)), len(vnums))
 		self.assertEqual(new_vnums & set(vnums), set())
 

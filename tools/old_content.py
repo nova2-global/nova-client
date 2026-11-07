@@ -97,14 +97,15 @@ def lines_of(data):
 
 def item_list_lines(data):
 	"""CItemManager::LoadItemList (src/GameLib/ItemManager.cpp): {vnum: line}
-	for the lines it takes (3 or 4 tab columns; a later line for a vnum
-	replaces an earlier one) and the lines it logs as StrangeLine."""
+	for the lines it takes (3, 4 or 5 tab columns, the fifth an aura's wing
+	effect since NOVA-23; a later line for a vnum replaces an earlier one)
+	and the lines it logs as StrangeLine."""
 	taken, strange = {}, []
 	for line in lines_of(data):
 		tokens = split_tab(line)
 		if tokens is None:
 			continue
-		if len(tokens) not in (3, 4):
+		if len(tokens) not in (3, 4, 5):
 			strange.append(line)
 			continue
 		taken[atoi(tokens[0])] = line
@@ -149,15 +150,13 @@ def cut_item_vnums(text):
 
 
 def old_item_line(line):
-	"""OLD's line as NEW's loader takes it. OLD's loader reads a fifth column
-	only on an AURA line (its aura and wing effects, ENABLE_AURA_SYSTEM) and
-	then sets the icon alone, so that line keeps its first three columns;
-	NEW has no aura part."""
+	"""OLD's line as NEW's loader takes it. Both loaders read a fifth column
+	only on an AURA line: its fourth is the aura's effect and its fifth the
+	wings' (OLD's ENABLE_AURA_SYSTEM, NEW's NOVA-23), and the icon is set
+	alone."""
 	tokens = split_tab(line)
-	if len(tokens) == 5:
-		if tokens[1] != "AURA":
-			raise ValueError("a five-column line that is not an aura: %r" % line)
-		return "\t".join(tokens[:3])
+	if len(tokens) == 5 and tokens[1] != "AURA":
+		raise ValueError("a five-column line that is not an aura: %r" % line)
 	return line
 
 

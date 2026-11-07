@@ -15,7 +15,7 @@
 		},
 		"item_list": {
 			"path": "assets/locale/locale/common/item_list.txt",
-			"sha256": "c2d7b9caf819d962e86e9936062fcc15bd6af3cf53edafa6f022a09e9579ecae"
+			"sha256": "13e51f55a89bf6b477624ba9eb4e376a072e23f15b682a87f65994fef805e864"
 		},
 		"itemdesc": {
 			"path": "assets/locale/locale/en/itemdesc.txt",

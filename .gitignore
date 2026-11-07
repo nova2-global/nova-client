@@ -82,3 +82,7 @@ assets/pack.local.cfg
 
 # tools/check_nui_snapshots.py leaves its output here after a mismatch
 /.snapshot-check-*/
+
+# Python bytecode from running the tools and tests
+__pycache__/
+*.pyc

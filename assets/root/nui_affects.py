@@ -29,16 +29,19 @@ import app
 import chr
 import item
 import localeInfo
+import net
 import player
 import skill
 
 import nui
 import nui_hud
+import ui
 import uiAffectShower
 
 DOCUMENT = "nui/windows/affects/affects.rml"
 LOVER_KEY = -10
 HORSE_KEY = -11
+PREMIUM_KEY = -12
 
 _Legacy = uiAffectShower.AffectShower
 _LOVE_FILES = uiAffectShower.LovePointImage.FILE_DICT
@@ -105,6 +108,10 @@ class AffectBoard(nui.Window):
 	def on_icon_over(self, key):
 		self._owner.nui_icon_over(key)
 
+	@nui.on("icon_press")
+	def on_icon_press(self, key, button):
+		self._owner.nui_icon_press(key, button)
+
 
 class AffectShower(object):
 	"""uiAffectShower.AffectShower on NovaUI (GameWindow.affectShower)."""
@@ -126,6 +133,8 @@ class AffectShower(object):
 		self.pending = {}       # classic affect bit -> a duration that came before its icon
 		self.horse = None       # {"image", "lines"} while a horse state shows
 		self.lover = None       # {"name", "point", "shown"}
+		self.premium = None     # {"tier", "end"} while a premium tier shows (Wave 5, NOVA-11)
+		self.premiumQuestion = None
 		self.dsTimeCache = {}   # (slot, vnum) -> {"remainSec", "endTime"}, as AffectImage keeps it
 		if not nui_hud.has_engine():
 			return
@@ -294,6 +303,46 @@ class AffectShower(object):
 			self.horse = self._horse_state(level, health, battery)
 		# MR-17: the icons move after a horse state change.
 		self._arrange()
+
+	## The premium tier's icon (Wave 5, NOVA-11; legacy PremiumImage): first in
+	## the row; GC::PREMIUM_STATUS through game.BINARY_SetPremiumStatus, and
+	## game.py once when the window is made. A tier without art (0, or a bad
+	## one) shows nothing (PB-C7). Its time left counts in its tooltip.
+	def SetPremiumStatus(self, tier, secondsLeft):
+		tier = int(tier)
+		if tier in uiAffectShower.PremiumImage.IMAGE_DICT:
+			self.premium = {"tier": tier, "end": nui.now() + max(0, int(secondsLeft))}
+		else:
+			self.premium = None
+			self._close_premium_question()
+		self._arrange()
+
+	def nui_icon_press(self, key, button):
+		"""A left press on the premium icon asks whether to turn the premium
+		time back into a scroll, as legacy's (OnMouseLeftButtonDown)."""
+		if key != PREMIUM_KEY or button != 0 or not self.premium:
+			return
+		import uiCommon
+		self._close_premium_question()
+		dialog = uiCommon.QuestionDialog()
+		dialog.SetText(localeInfo.PREMIUM_DEACTIVATE_QUESTION)
+		dialog.SetWidth(350)
+		dialog.SetAcceptEvent(ui.__mem_func__(self._accept_premium_question))
+		dialog.SetCancelEvent(ui.__mem_func__(self._close_premium_question))
+		dialog.Open()
+		self.premiumQuestion = dialog
+
+	def _accept_premium_question(self):
+		# Once per question: the dialog goes before the command is sent.
+		if not self.premiumQuestion:
+			return
+		self._close_premium_question()
+		net.SendChatPacket("/deactivate_premium")
+
+	def _close_premium_question(self):
+		if self.premiumQuestion:
+			self.premiumQuestion.Close()
+		self.premiumQuestion = None
 
 	def SetPlayTime(self, playTime):
 		self.serverPlayTime = playTime
@@ -488,6 +537,12 @@ class AffectShower(object):
 
 	def _icons(self):
 		icons = []
+		if self.premium:
+			tier = self.premium["tier"]
+			icons.append({"key": PREMIUM_KEY, "kind": "premium",
+			              "image": uiAffectShower.PremiumImage.IMAGE_DICT[tier], "small": True,
+			              "title": _text(_locale("PREMIUM_TITLE")), "line": _text(_locale("PREMIUM_TIER_%d" % tier)),
+			              "end": self.premium["end"], "clocked": True, "label": False})
 		if self.lover and self.lover["shown"]:
 			point = min(100, max(0, self.lover["point"]))
 			line = localeInfo.AFF_LOVE_POINT % (point)

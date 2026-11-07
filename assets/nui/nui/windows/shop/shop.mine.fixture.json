@@ -830,6 +830,72 @@
 		"sell_shown": false,
 		"close_shop_shown": true,
 		"buy_down": false,
-		"sell_down": false
+		"sell_down": false,
+		"offline": false,
+		"owner": false,
+		"title": "",
+		"page_buttons": [
+			{
+				"index": 0,
+				"name": "",
+				"down": false,
+				"shown": false
+			},
+			{
+				"index": 1,
+				"name": "",
+				"down": false,
+				"shown": false
+			},
+			{
+				"index": 2,
+				"name": "",
+				"down": false,
+				"shown": false
+			}
+		],
+		"page_buttons_shown": false,
+		"locks": [
+			{
+				"row": 0,
+				"state": ""
+			},
+			{
+				"row": 1,
+				"state": ""
+			},
+			{
+				"row": 2,
+				"state": ""
+			},
+			{
+				"row": 3,
+				"state": ""
+			},
+			{
+				"row": 4,
+				"state": ""
+			},
+			{
+				"row": 5,
+				"state": ""
+			},
+			{
+				"row": 6,
+				"state": ""
+			},
+			{
+				"row": 7,
+				"state": ""
+			}
+		],
+		"owner_panel_shown": false,
+		"owner_sign": "",
+		"owner_location": "",
+		"owner_gold": "",
+		"owner_time_text": "",
+		"owner_time_end": 0.0,
+		"owner_lock_text": "",
+		"owner_close_shown": false
 	}
 }

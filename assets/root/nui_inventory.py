@@ -111,7 +111,7 @@ def figure_for_race(race):
 GLYPHS = ("close", "plus", "minus", "chevron-up", "chevron-down", "chevron-left", "chevron-right", "send", "log",
           "chat", "whisper", "character", "inventory", "community", "system", "map", "gift", "gem", "shop", "heal",
           "leave", "mouse-move", "mouse-attack", "mouse-auto", "mouse-camera", "mouse-skill", "home", "coin", "lock",
-          "stall", "ranking", "events", "achievements", "guide")
+          "stall", "ranking", "events", "achievements", "guide", "search")
 # The rail's reach left of the window, in dp (its board and the gap to the
 # window), which the costume window keeps clear while the rail shows.
 RAIL_REACH_DP = 56.0
@@ -215,18 +215,6 @@ def _publish_shortcuts():
 		refresh()
 
 
-# The reviewed inventory board's rail: (id, glyph, tooltip key, soon). The
-# offline shop, ranking, events and achievements are features to come; the
-# guide opens the help window.
-BOARD_SHORTCUTS = (
-	("offline_shop", "stall", "@ui.NUI_RAIL_OFFLINE_SHOP", True),
-	("ranking", "ranking", "@ui.NUI_RAIL_RANKING", True),
-	("events", "events", "@ui.NUI_RAIL_EVENTS", True),
-	("achievements", "achievements", "@ui.NUI_RAIL_ACHIEVEMENTS", True),
-	("guide", "guide", "@ui.NUI_RAIL_GUIDE", False),
-)
-
-
 def _open_guide():
 	"""The guide entry: the help window, through the interface that bound
 	the shown inventory (Interface.OpenHelpWindow)."""
@@ -236,13 +224,49 @@ def _open_guide():
 		interface.OpenHelpWindow()
 
 
-def register_board_shortcuts():
-	"""Registers the board's five entries, each one only while no feature
-	has registered its id (a feature's own entry stays)."""
+def _open_offline_shop():
+	"""The offline shop entry (Wave 5, NOVA-9): legacy's Offline Shop button,
+	ClickOfflineShopButton (MANAGE: the owner's panel, or the builder when
+	the player has no shop)."""
+	window = nui_hud.current(KEY)
+	if window is not None:
+		window.ClickOfflineShopButton()
+
+
+def _open_shop_search():
+	"""The search entry (Wave 5, NOVA-9): legacy's Search button,
+	ClickSearchShopButton (Interface.OpenSearchShop)."""
+	window = nui_hud.current(KEY)
+	if window is not None:
+		window.ClickSearchShopButton()
+
+
+# The reviewed inventory board's rail: (id, glyph, tooltip key, callback,
+# soon). The offline shop and its search are Wave 5's (on while the server's
+# offline shop CONFIG says enabled, as legacy's two buttons show); ranking,
+# events and achievements are features to come; the guide opens the help
+# window.
+BOARD_SHORTCUTS = (
+	("offline_shop", "stall", "@ui.NUI_RAIL_OFFLINE_SHOP", _open_offline_shop, False),
+	("shop_search", "search", "@ui.SEARCH_SHOP_TITLE", _open_shop_search, False),
+	("ranking", "ranking", "@ui.NUI_RAIL_RANKING", None, True),
+	("events", "events", "@ui.NUI_RAIL_EVENTS", None, True),
+	("achievements", "achievements", "@ui.NUI_RAIL_ACHIEVEMENTS", None, True),
+	("guide", "guide", "@ui.NUI_RAIL_GUIDE", _open_guide, False),
+)
+# The entries legacy shows only while the offline shop is enabled.
+OFFLINE_SHOP_SHORTCUTS = ("offline_shop", "shop_search")
+
+
+def register_board_shortcuts(offline_shop_enabled=False):
+	"""Registers the board's entries, each one only while no feature has
+	registered its id (a feature's own entry stays). The offline shop's two
+	are pressable while offline_shop_enabled."""
 	taken = set(entry["id"] for entry in _shortcuts)
-	for entry_id, glyph, tip, soon in BOARD_SHORTCUTS:
+	for entry_id, glyph, tip, callback, soon in BOARD_SHORTCUTS:
 		if entry_id not in taken:
-			register_shortcut(entry_id, glyph, tip, None if soon else _open_guide, soon=soon)
+			enabled = bool(offline_shop_enabled) if entry_id in OFFLINE_SHOP_SHORTCUTS else True
+			register_shortcut(entry_id, glyph, tip, callback, enabled=enabled, soon=soon)
 
 
 def _span(low, high):
@@ -441,6 +465,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			                               for i, slot in enumerate(nui_limits.wear_group("equipment", limits))]),
 			"money": "",
 			"money_value": 0,
+			# Wave 5 (NOVA-10): the gaya balance, shown once legacy writes it.
+			"gem": "",
+			"gem_on": False,
 			"dss_active": False,
 			"has_costume": False,
 			"has_dss": False,
@@ -507,7 +534,15 @@ class InventoryWindow(uiInventory.InventoryWindow):
 	def BindInterfaceClass(self, interface):
 		"""Legacy's binding, then the board's rail entries."""
 		uiInventory.InventoryWindow.BindInterfaceClass(self, interface)
-		register_board_shortcuts()
+		register_board_shortcuts(getattr(self, "offlineShopEnabled", False))
+
+	def ShowOfflineShopButtons(self, enabled):
+		"""Legacy's (its flag, which Ctrl + click on an item reads to search
+		the shops), then the rail's offline shop and search entries, which
+		stand where legacy's two buttons were (Interface.OnOfflineShopConfig)."""
+		uiInventory.InventoryWindow.ShowOfflineShopButtons(self, enabled)
+		for entry_id in OFFLINE_SHOP_SHORTCUTS:
+			set_shortcut_enabled(entry_id, self.offlineShopEnabled)
 
 	def rail_reach(self):
 		"""How far the shortcut rail reaches left of the window, in dp (0
@@ -600,6 +635,10 @@ class InventoryWindow(uiInventory.InventoryWindow):
 	def _on_money(self, text):
 		self._set(money=nui.plain_text(text), money_value=int(player.GetElk()))
 
+	def _on_gem(self, text):
+		"""The gaya balance as legacy writes it (dots between the thousands)."""
+		self._set(gem=nui.plain_text(text), gem_on=True)
+
 	def _press_page(self, index):
 		"""A tab: the page's button, which a press on the page shown does
 		not reach (CRadioButton ignores a press on the button that is down)."""
@@ -625,6 +664,9 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		self._wear_slots = nui_limits.wear_group("equipment", limits)
 		wndEquip = nui_slots.SlotWindowProxy([slot.cell for slot in self._wear_slots], self._on_wear, refine=True)
 		self.wndMoney = nui_proxies.TextProxy(self._on_money)
+		# The gaya balance (Wave 5, NOVA-10): legacy's Gem text, which its
+		# RefreshStatus fills from player.GetGem() (an exe without it: none).
+		self.wndGem = nui_proxies.TextProxy(self._on_gem) if hasattr(player, "GetGem") else None
 		self.wndMoneySlot = nui_proxies.ButtonProxy()
 		self.mallButton = nui_proxies.ButtonProxy()
 		self.DSSButton = nui_proxies.ButtonProxy()

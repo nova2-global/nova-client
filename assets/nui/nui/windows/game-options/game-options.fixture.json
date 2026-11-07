@@ -9,6 +9,7 @@
 		"always_show_name": true,
 		"show_damage": true,
 		"sales_text": true,
+		"hide_shops": false,
 		"pickup": [true, true, false, true]
 	}
 }

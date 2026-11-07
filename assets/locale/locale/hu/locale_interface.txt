@@ -467,6 +467,7 @@ NUI_INTRO_CREATE_TITLE	Karakter létrehozása
 NUI_INTRO_SELECT_TITLE	Karakterválasztás
 NUI_INTRO_SLOTS	%d hely
 NUI_INTRO_LOADING_TITLE	Belépés a birodalomba
+NUI_SHOP_LOG_EMPTY	Még nincs bejegyzés
 GEMSHOP_LEFTTIME	Hátralévő idő:
 GEMSHOP_TITLE	GAYA PIAC
 MYSHOP_DECO_CANCEL	Bezár

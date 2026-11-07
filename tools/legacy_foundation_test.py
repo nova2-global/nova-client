@@ -105,6 +105,17 @@ class LegacyWorld(object):
 			support.define(player, "IsEquipmentSlot", lambda pos: EQUIPMENT_START <= pos < EQUIPMENT_START + 40)
 			support.define(player, "IsCostumeSlot", lambda pos: EQUIPMENT_START + 19 <= pos < EQUIPMENT_START + 28)
 			support.define(player, "IsBeltInventorySlot", lambda pos: 295 <= pos < 311)
+		else:
+			# The committed constants fixture is now the foundation client. Keep
+			# this one pre-cut comparison explicit instead of inheriting it.
+			player, item = game.modules["player"], game.modules["item"]
+			for name, value in support.WAVE3B_PLAYER_CONSTANTS.items():
+				setattr(player, name, value)
+			for name, value in support.WAVE3B_ITEM_CONSTANTS.items():
+				setattr(item, name, value)
+			support.define(player, "IsEquipmentSlot", lambda pos: 90 <= pos < 122)
+			support.define(player, "IsCostumeSlot", lambda pos: 109 <= pos < 111)
+			support.define(player, "IsBeltInventorySlot", lambda pos: 152 <= pos < 168)
 		game.load_standard()
 
 	def __enter__(self):
@@ -941,7 +952,10 @@ class TooltipApplies(unittest.TestCase):
 	def test_a_name_that_is_no_number_adds_no_apply(self):
 		"""The stand-in item module answers a function for a name it does not
 		define, as no client does: only an int constant makes an entry."""
-		corpus_tool, world = self.world({})
+		corpus_tool, world = tooltip_world({10: self.SWORD})
+		world.game.modules["item"].lack(*OLD_APPLIES)
+		with quiet():
+			world.game.load("uiToolTip", "uitooltip.py")
 		with world:
 			table = world.m("uiToolTip").ItemToolTip.AFFECT_DICT
 		self.assertEqual([], [key for key in table if not isinstance(key, int)])
@@ -1063,12 +1077,12 @@ class SageGrade(unittest.TestCase):
 			# skill 1, normal level 1: the next columns show the grand and perfect master's icons, closed.
 			1: (icon % (1, 1), "1", False), 21: (icon % (1, 3), "", True), 41: (icon % (1, 4), "", True),
 			# skill 2, the sage grade: the third column.
-			2: (icon % (2, 1), "", True), 22: (icon % (2, 3), "", True), 42: (icon % (2, 4), "", False),
+			2: (icon % (2, 1), "", True), 22: (icon % (2, 3), "", True), 42: (icon % (2, 4), "s", False),
 			# skill 3, master 5, and skill 4, grand master 9: the second column.
 			3: (icon % (3, 1), "", True), 23: (icon % (3, 2), "m5", False), 43: (icon % (3, 4), "", True),
 			4: (icon % (4, 1), "", True), 24: (icon % (4, 3), "g9", False), 44: (icon % (4, 4), "", True),
 			# skill 5, perfect master 7: the third column.
-			5: (icon % (5, 1), "", True), 25: (icon % (5, 3), "", True), 45: (icon % (5, 4), "p", False),
+			5: (icon % (5, 1), "", True), 25: (icon % (5, 3), "", True), 45: (icon % (5, 4), "p7", False),
 		}, shown)
 		self.assertIn((42, 4, 1), counts, "the sage grade's count")
 		self.assertIn((45, 3, 7), counts, "P7")
@@ -1091,7 +1105,11 @@ class SageGrade(unittest.TestCase):
 
 	def test_without_the_sage_grade_the_columns_stay_todays(self):
 		import nui_character_test as character
-		character_module, world, window, counts = self.character(character.warrior)
+		def before_cut(game):
+			character.warrior(game)
+			game.modules["skill"].SKILL_GRADE_COUNT = 3
+			game.modules["player"].lack("SKILL_GRADE_SAGE_MASTER")
+		character_module, world, window, counts = self.character(before_cut)
 		cells = character_module.legacy_skill_cells(window, "Skill_Active_Slot")
 		self.assertEqual((self.ICON % (3, 2), "m5"), cells[23][1:3])
 		self.assertEqual((self.ICON % (4, 3), "g9"), cells[44][1:3], "the grand master in the third column")
@@ -1138,9 +1156,13 @@ class SageGrade(unittest.TestCase):
 	def test_without_the_sage_grade_the_riding_icon_stays_todays(self):
 		import nui_character_test as character
 		for (grade, level), icon in (((0, 1), 1), ((0, 2), 2), ((0, 5), 3), ((1, 5), 3)):
+			def before_cut(game, grade=grade, level=level):
+				character.warrior(game, riding=(grade, level))
+				game.modules["skill"].SKILL_GRADE_COUNT = 3
+				game.modules["player"].lack("SKILL_GRADE_SAGE_MASTER")
 			with self.subTest(grade=grade, level=level):
 				self.assertEqual([self.ICON % (130, icon)],
-				                 self.riding_icons(lambda game: character.warrior(game, riding=(grade, level))))
+				                 self.riding_icons(before_cut))
 
 	def sage_tooltip(self, grade, level, sage=True):
 		import json

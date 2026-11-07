@@ -467,6 +467,7 @@ NUI_INTRO_CREATE_TITLE	Personage maken
 NUI_INTRO_SELECT_TITLE	Personage selecteren
 NUI_INTRO_SLOTS	%d plaatsen
 NUI_INTRO_LOADING_TITLE	Het rijk betreden
+NUI_SHOP_LOG_EMPTY	Nog geen vermeldingen
 GEMSHOP_LEFTTIME	Tijd resterend
 GEMSHOP_TITLE	GAYA MARKT
 MYSHOP_DECO_CANCEL	Sluiten

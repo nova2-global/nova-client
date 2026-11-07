@@ -1407,7 +1407,15 @@
 				"glyph": "stall",
 				"tip": "@ui.NUI_RAIL_OFFLINE_SHOP",
 				"enabled": true,
-				"soon": true,
+				"soon": false,
+				"badge": ""
+			},
+			{
+				"id": "shop_search",
+				"glyph": "search",
+				"tip": "@ui.SEARCH_SHOP_TITLE",
+				"enabled": true,
+				"soon": false,
 				"badge": ""
 			},
 			{
@@ -1443,6 +1451,8 @@
 				"badge": ""
 			}
 		],
-		"rail_folded": false
+		"rail_folded": false,
+		"gem": "",
+		"gem_on": false
 	}
 }

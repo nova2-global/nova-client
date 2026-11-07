@@ -80,6 +80,7 @@ body.shop
 }
 .shop__grid
 {
+	position: relative;
 	align-self: center;
 	decorator: nui-cells(40dp 4dp 7dp var(--surface-hover) var(--border) 1dp);
 }
@@ -159,4 +160,164 @@ body.shop
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	pointer-events: none;
+}
+
+/* Offline VIEW and MANAGE keep legacy's 10 x 8 page, but at the lean
+   modern grid's 44dp pitch. The same document changes shape before Show,
+   so there is never a 40-cell NPC board behind an offline shop. */
+body.shop.shop--offline
+{
+	width: 476dp;
+}
+.shop--offline .shop__body
+{
+	padding: 10dp 12dp 14dp;
+}
+.shop__pending
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 8;
+	border-radius: 7dp;
+	background-color: var(--slot-unavailable);
+	pointer-events: none;
+}
+.shop__lock
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 40dp;
+	z-index: 20;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-width: 1dp;
+	border-radius: 7dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	pointer-events: none;
+}
+.shop__lock--locked
+{
+	border-color: var(--border);
+	background-color: var(--slot-locked);
+}
+.shop__lock--next
+{
+	border-color: var(--success);
+	background-color: var(--selection);
+	color: var(--success);
+}
+.shop__lock--next:hover
+{
+	background-color: var(--surface-hover);
+}
+.shop__lock--row-0 { top: 0; }
+.shop__lock--row-1 { top: 44dp; }
+.shop__lock--row-2 { top: 88dp; }
+.shop__lock--row-3 { top: 132dp; }
+.shop__lock--row-4 { top: 176dp; }
+.shop__lock--row-5 { top: 220dp; }
+.shop__lock--row-6 { top: 264dp; }
+.shop__lock--row-7 { top: 308dp; }
+
+.shop__pages
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-top: var(--space-3);
+	gap: var(--space-2);
+}
+.shop__page-slot
+{
+	display: block;
+}
+.shop__page
+{
+	min-width: 72dp;
+}
+.shop__page.is-selected
+{
+	border-color: var(--accent);
+	background-color: var(--selection);
+	color: var(--accent);
+}
+
+/* The owner panel is the fields and controls of legacy's
+   uiscript/offlineshop.py, arranged as four readable rows and one action
+   row. Its edit, money and question dialogs remain legacy's. */
+.shop-owner
+{
+	display: flex;
+	flex-direction: column;
+	margin-top: var(--space-3);
+	padding-top: var(--space-3);
+	gap: var(--space-2);
+	border-top-width: 1dp;
+	border-top-color: var(--border);
+}
+.shop-owner__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	min-height: 36dp;
+	gap: var(--space-2);
+}
+.shop-owner__value, .shop-owner__gold, .shop-owner__time
+{
+	box-sizing: border-box;
+	display: flex;
+	flex: 1 1 auto;
+	align-items: center;
+	min-width: 0;
+	min-height: 34dp;
+	padding: 6dp 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 7dp;
+	background-color: var(--surface-sunken);
+	overflow: hidden;
+}
+.shop-owner__value
+{
+	color: var(--text);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.shop-owner__gold, .shop-owner__time
+{
+	gap: var(--space-2);
+}
+.shop-owner__time nui-countdown
+{
+	margin-left: auto;
+	color: var(--text-muted);
+}
+.shop-owner__side
+{
+	flex: 0 0 96dp;
+	min-width: 96dp;
+}
+.shop-owner__actions
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-2);
+}
+.shop-owner__actions .nui-button
+{
+	flex: 1 1 0;
+	min-width: 0;
+}
+.shop-owner__actions .nui-glyph
+{
+	margin-right: var(--space-1);
 }

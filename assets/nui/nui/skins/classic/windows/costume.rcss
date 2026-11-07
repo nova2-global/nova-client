@@ -73,7 +73,8 @@ body.skin-classic.cos.cos--companion .cos-grid
 	decorator: image("d:/ymir work/ui/costume/costume_bg.jpg" scale-none left top);
 }
 body.skin-classic.cos .cos-divider,
-body.skin-classic.cos.inv--table-new .cos-stage
+body.skin-classic.cos.inv--table-new .cos-stage,
+body.skin-classic.cos.inv--table-old .cos-stage
 {
 	display: none;
 }

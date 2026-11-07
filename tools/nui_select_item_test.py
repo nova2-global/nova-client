@@ -180,6 +180,27 @@ class Flows(SelectItemTest):
         self.assertFalse(a.IsShow())
         self.assertFalse(b.IsShow())
 
+    def test_the_gaya_picker_stays_open_after_a_stone_as_legacy_s(self):
+        """Wave 5 (NOVA-10): BINARY_OpenSelectItemWindowEx opens the picker with
+        stayOpen=True; a pick sends the stone and the picker stays, as legacy's."""
+        results = []
+        for world in self.worlds(stones(7)):
+            window = world.make_select_item()
+            with world.game, quiet():
+                window.Open(maxGrade=4, stayOpen=True)
+            mark = len(world.game.log)
+            with world.game, quiet():
+                if world.nui_on:
+                    fire(window, "cell_press", 2, 0)
+                else:
+                    window.itemSlot.fire("select_item", 2)
+            results.append((self.calls(world, mark), window))
+        (legacy, a), (novaui, b) = results
+        self.assertEqual(self.without_ignore(legacy), novaui)
+        self.assertEqual(novaui, [("net.SendSelectItemPacket", (INVENTORY, a.inventorySlotPosDict[2]))])
+        self.assertTrue(a.IsShow())
+        self.assertTrue(b.IsShow(), "the next cut asks again: the picker stays open")
+
     def test_a_right_press_and_a_press_on_an_empty_cell_do_nothing(self):
         def flow(world, window):
             if world.nui_on:

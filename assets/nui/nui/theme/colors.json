@@ -139,7 +139,18 @@
 				"tip-divider": "#ffffff29",
 				"tip-divider-shadow": "#000000",
 				"tip-socket-silver": "#b8bec9",
-				"tip-socket-gold": "#e3b45a"
+				"tip-socket-gold": "#e3b45a",
+				"shop-sign-1": "#ff976d",
+				"shop-sign-1-tint": "#593426bf",
+				"shop-sign-2": "#f9f4ff",
+				"shop-sign-2-tint": "#575559bf",
+				"shop-sign-3": "#ffbf8b",
+				"shop-sign-3-tint": "#594230bf",
+				"shop-sign-4": "#ffecd1",
+				"shop-sign-4-tint": "#595249bf",
+				"shop-sign-5": "#f1ece1",
+				"shop-sign-5-tint": "#54524ebf",
+				"shop-sign-seen": "#4c0c66b2"
 			},
 			"slots": [
 				{"slot": "accent", "kind": "color", "label": "OPTION_UI_COLOR_ACCENT", "swatches": ["#a594ff", "#6fd49a", "#f5c060", "#ff6f6a", "#3f86f2", "#5fe3d4", "#ff9e3a", "#eceef2"], "sets": [{"token": "accent", "rule": "value"}, {"token": "accent-hover", "rule": "mix", "with": "#ffffff", "t": 0.2}, {"token": "accent-text", "rule": "pick", "from": ["accent-text", "text"], "on": "accent"}, {"token": "selection", "rule": "mix", "with": "surface", "t": 0.72}, {"token": "accent-glow", "rule": "alpha", "a": 140}, {"token": "slot-target", "rule": "alpha", "a": 77}]},
@@ -249,7 +260,18 @@
 				"tip-divider": "#ffffff29",
 				"tip-divider-shadow": "#000000",
 				"tip-socket-silver": "#b8bec9",
-				"tip-socket-gold": "#e3b45a"
+				"tip-socket-gold": "#e3b45a",
+				"shop-sign-1": "#ff976d",
+				"shop-sign-1-tint": "#593426bf",
+				"shop-sign-2": "#f9f4ff",
+				"shop-sign-2-tint": "#575559bf",
+				"shop-sign-3": "#ffbf8b",
+				"shop-sign-3-tint": "#594230bf",
+				"shop-sign-4": "#ffecd1",
+				"shop-sign-4-tint": "#595249bf",
+				"shop-sign-5": "#f1ece1",
+				"shop-sign-5-tint": "#54524ebf",
+				"shop-sign-seen": "#4c0c66b2"
 			},
 			"slots": [
 				{"slot": "accent", "kind": "color", "label": "OPTION_UI_COLOR_ACCENT", "swatches": ["#5a45e6", "#1f8a4c", "#9a6200", "#c4322b", "#7438c4", "#0b6f6a", "#b14a00", "#15171c"], "sets": [{"token": "accent", "rule": "value"}, {"token": "accent-hover", "rule": "mix", "with": "#000000", "t": 0.2}, {"token": "accent-text", "rule": "pick", "from": ["accent-text", "text"], "on": "accent"}, {"token": "selection", "rule": "mix", "with": "surface", "t": 0.72}, {"token": "accent-glow", "rule": "alpha", "a": 77}, {"token": "slot-target", "rule": "alpha", "a": 51}]},

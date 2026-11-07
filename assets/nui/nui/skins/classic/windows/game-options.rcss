@@ -13,7 +13,7 @@
 body.skin-classic.game-options
 {
 	width: 300dp;
-	height: 333dp;
+	height: 358dp;
 	min-width: 0;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
@@ -52,7 +52,7 @@ body.skin-classic.game-options .game-options__titlebar .nui-window__close
 body.skin-classic.game-options .game-options__body
 {
 	position: relative;
-	height: 333dp;
+	height: 358dp;
 	padding: 0;
 }
 body.skin-classic.game-options .go-row,
@@ -80,6 +80,8 @@ body.skin-classic.game-options .go-label--always-name { top: 192dp; }
 body.skin-classic.game-options .go-label--damage { top: 217dp; }
 body.skin-classic.game-options .go-label--sales { top: 242dp; }
 body.skin-classic.game-options .go-label--pickup { top: 267dp; }
+/* Wave 5's hide-shops row (legacy's at 315, the board grown 333 to 358). */
+body.skin-classic.game-options .go-label--shops { top: 317dp; }
 
 body.skin-classic.game-options .go-choice
 {
@@ -133,6 +135,8 @@ body.skin-classic.game-options .go-choice--pickup-0 { left: 90dp; top: 265dp; }
 body.skin-classic.game-options .go-choice--pickup-1 { left: 155dp; top: 265dp; }
 body.skin-classic.game-options .go-choice--pickup-2 { left: 90dp; top: 290dp; }
 body.skin-classic.game-options .go-choice--pickup-3 { left: 155dp; top: 290dp; }
+body.skin-classic.game-options .go-choice--shops-0 { left: 90dp; top: 315dp; }
+body.skin-classic.game-options .go-choice--shops-1 { left: 155dp; top: 315dp; }
 
 /* The PvP choices on the small art; the choice in effect shows its down art,
    under the pointer too. */

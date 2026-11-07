@@ -186,6 +186,12 @@ class MyShopDecorationWindow(ui.ScriptWindow):
 		uiPrivateShopBuilder.SHOP_STYLE = self.selectedStyle
 		self.Close()
 
+	def __MakePreview(self, style):
+		"""The style's frame, or the plain board for 0 (NovaUI's window makes its own)."""
+		if style:
+			return ui.ShopDecoTitle(style)
+		return ui.ThinBoard2()
+
 	def __ClearPreview(self):
 		if self.preview:
 			self.preview.Hide()
@@ -200,10 +206,7 @@ class MyShopDecorationWindow(ui.ScriptWindow):
 			return
 		names = dict((style, name) for (style, name, _, _) in self.styles)
 		self.modelName.SetText(names.get(self.selectedStyle, ""))
-		if self.selectedStyle:
-			preview = ui.ShopDecoTitle(self.selectedStyle)
-		else:
-			preview = ui.ThinBoard2()
+		preview = self.__MakePreview(self.selectedStyle)
 		preview.SetParent(self.previewWindow)
 		preview.AddFlag("not_pick")
 		preview.SetPosition(23, 70)

@@ -5,6 +5,7 @@
 			"@game.INPUT_PRIVATE_CODE_DIALOG_DESCRIPTION"
 		],
 		"secret": true,
-		"max": 7
+		"max": 7,
+		"deco": false
 	}
 }

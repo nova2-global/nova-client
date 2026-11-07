@@ -608,6 +608,17 @@ body.inv.inv--table-old .inv-button--mall { top: 224dp; }
 {
 	border-color: var(--accent);
 }
+/* The gaya balance (Wave 5): the money's row under it, a gem in the
+   accent; it takes no press. */
+.inv-gem
+{
+	margin-top: 4dp;
+	pointer-events: none;
+}
+.inv-gem .inv-gem__glyph
+{
+	--glyph-ink: var(--accent);
+}
 
 /* --- The shortcut rail ----------------------------------------------------- */
 

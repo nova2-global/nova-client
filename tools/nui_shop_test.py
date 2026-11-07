@@ -19,6 +19,7 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
 import nui_inventory_test as inventory  # noqa: E402
+import offline_shop_test as offline  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
 
 P = w4.P
@@ -28,6 +29,44 @@ SHOP_DOCUMENT = "nui/windows/shop/shop.rml"
 BUILDER_DOCUMENT = "nui/windows/private-shop/private-shop.rml"
 SWORD, GLAIVE, POTION, HELMET, SHIELD, RING = 10, 3000, 27001, 12200, 13000, 70043
 NPC, PLAYER_SHOP, ME = 9003, 5000, 1
+
+
+class OfflineNuiWorld(offline.World):
+    """offline_shop_test's protocol-6 state over either legacy or the
+    NovaUI factory. The real offlineshopconst is loaded after the Wave 4
+    modules, as the live client loads it."""
+
+    def __init__(self, nui_on):
+        self.w4 = w4.World(nui_on)
+        game = self.game = self.w4.game
+        self.shop = {"items": {}, "owner": False, "locked": False, "gold": 0, "pages": 1, "kits": 0,
+                     "unlocked": 80, "config": dict(offline.CONFIG),
+                     "info": {"sign": "Bob's shop", "channel": 1, "map": 1, "x": 469300, "y": 964200,
+                              "seconds_left": 4 * offline.DAY, "kits": 0, "model_vnum": 30000, "style": 0,
+                              "gold": 0, "locked": 0, "unlocked_slots": 80}}
+        self.perks, self.counts, self.distances = set(), {}, {}
+        self.elk, self.map_name = 0, "metin2_map_a1"
+        self.selected, self.index, self.results = [0], {}, []
+        offline.install_wave5(self)
+        self.loaded = {"uiShop": self.w4.m("uiShop")}
+        with game, w4.quiet():
+            for name, file_name in (("offlineshopconst", "offlineshopconst.py"), ("itemPrices", "itemprices.py")):
+                self.loaded[name] = game.load(name, file_name)
+        self.tooltip = self.w4.tooltip
+        self.interface = offline.FakeInterface(self)
+        self.nui_on = nui_on
+
+    def shop_dialog(self):
+        with self, w4.quiet():
+            dialog = self.w4.make("shop", "uiShop", "ShopDialog", "nui_shop.ShopDialog")
+            dialog.LoadDialog()
+            dialog.Hide()
+            dialog.SetItemToolTip(self.tooltip)
+            dialog.BindInterface(self.interface)
+        return dialog
+
+    def documents(self):
+        return self.w4.documents()
 
 
 def shop_stock(tabs=1, private=False):
@@ -314,6 +353,53 @@ class ShopFacade(ShopTest):
             self.assertEqual(len(inspect.signature(getattr(type(window), name)).parameters),
                              len(inspect.signature(member).parameters), name)
 
+    def test_teardown_sends_end_only_when_an_npc_shop_was_the_last(self):
+        """Legacy's one window keeps offlineLayout from an offline view until
+        the next NPC shop: its Destroy then sends no END."""
+        for npc_last in (False, True):
+            with self.subTest(npc_last=npc_last):
+                world = OfflineNuiWorld(True)
+                window = world.shop_dialog()
+                with world, w4.quiet():
+                    window.Open(77, multiPage=True)
+                    window.Close()
+                if npc_last:
+                    world.game.w4["npcs"].add(NPC)
+                    with world, w4.quiet():
+                        window.Open(NPC)
+                        window.Close()
+                mark = world.mark()
+                with world, w4.quiet():
+                    window.Destroy()
+                ends = [call for call in world.game.log[mark:] if call[0] == "net.SendShopEndPacket"]
+                self.assertEqual(len(ends), 1 if npc_last else 0)
+
+    def test_the_multi_page_and_owner_views_are_the_subclass_board(self):
+        world = OfflineNuiWorld(True)
+        world.list_item(3, SWORD, count=2, price=70, pending=True)
+        window = world.shop_dialog()
+        with world, w4.quiet():
+            window.Open(77, multiPage=True)
+            board = w4.board(window)
+            self.assertTrue(board.model["offline"])
+            self.assertEqual((board.model["cols"], len(board.model["cells"])), (10, 80))
+            self.assertFalse(hasattr(window, "_offline_dialog"))
+            world.shop.update(owner=True, locked=True, gold=123456, pages=3)
+            world.shop["info"].update(sign="Night market", locked=1, gold=123456, seconds_left=3600)
+            window.OpenOfflineShop(1)
+            window.UpdateLock(1)
+            window.UpdateTime(3600)
+            window.UpdateSign("Night market")
+            window.UpdateGold(123456)
+            window.OnOfflineShopResult(3, 0, 7)
+            self.assertTrue(window.IsOfflineShopOpen())
+            model = w4.board(window).model
+            self.assertTrue(model["owner"] and model["owner_panel_shown"])
+            self.assertEqual((model["owner_sign"], model["owner_gold"]),
+                             ("Night market", world.game.modules["localeInfo"].NumberToMoneyString(123456)))
+            window.Close()
+        self.assertNotIn(SHOP_DOCUMENT, world.documents())
+
     def test_make_builds_legacy_with_the_flag_off_or_an_older_exe(self):
         world, window = self.world(False)
         self.assertIs(type(window), world.m("uiShop").ShopDialog)
@@ -331,8 +417,164 @@ class ShopFacade(ShopTest):
     def test_every_fixture_has_the_model_s_keys_and_kinds(self):
         world, window = self.world(True)
         kinds = w4.model_kinds(window.nui_model())
-        for variant in ("", "foundation", "tabs2", "tabs3", "mine", "attaching"):
+        for variant in ("", "foundation", "tabs2", "tabs3", "mine", "attaching", "offline", "offline-owner"):
             self.assertEqual(w4.fixture_keys(window, "shop", variant), kinds, variant)
+
+
+class OfflineShopFacade(unittest.TestCase):
+    """The W5-2 differential: the facade and legacy run the same inherited
+    offline methods; only the input widget differs."""
+
+    def open(self, nui_on, owner=False, locked=False, gold=0, pages=3, unlocked=80):
+        world = OfflineNuiWorld(nui_on)
+        world.shop.update(owner=owner, locked=locked, gold=gold, pages=pages, unlocked=unlocked)
+        world.shop["info"].update(locked=int(locked), gold=gold, seconds_left=4 * offline.DAY,
+                                  unlocked_slots=unlocked)
+        window = world.shop_dialog()
+        with world, w4.quiet():
+            if owner:
+                window.OpenOfflineShop(1)
+            else:
+                window.Open(7001, multiPage=True)
+        return world, window
+
+    def effects(self, world, mark):
+        return world.w4.effects_since(mark)
+
+    def cell_press(self, world, window, cell, button):
+        if world.nui_on:
+            w4.press(window, "cell_press", cell, button)
+        else:
+            if button == 0:
+                filled = bool(window.itemSlotWindow.slots[cell]["vnum"])
+                window.itemSlotWindow.fire("select_item" if filled else "select_empty", cell)
+            else:
+                window.itemSlotWindow.fire("unselect_item", cell)
+
+    def test_the_owner_panel_survives_hide_before_its_init(self):
+        """Live (2026-11-05): ui.Window.__init__ calls Hide before legacy's
+        OfflineShopWindow.__init__ sets parent; the NovaUI panel's hooks then
+        report to no shop instead of raising AttributeError."""
+        world = OfflineNuiWorld(True)
+        dialog = world.shop_dialog()
+        panel_class = type(dialog).__init__.__globals__["_OfflineShopWindow"]
+        panel = panel_class.__new__(panel_class)
+        with world, w4.quiet():
+            panel_class.Hide(panel)
+            panel_class.Show(panel)
+            panel._publish("owner_sign", "x")
+            panel._buttons_changed()
+
+    def test_view_page_buy_question_packet_and_close_are_legacy_s(self):
+        results = []
+        for nui_on in (False, True):
+            world = OfflineNuiWorld(nui_on)
+            world.list_item(84, SWORD, count=2, price=1000000000, id=9084)
+            world.shop.update(pages=3, unlocked=160)
+            window = world.shop_dialog()
+            with world, w4.quiet():
+                window.Open(7001, multiPage=True)
+                mark = world.mark()
+                window.SelectOfflinePage(1)
+                self.cell_press(world, window, 4, 1)
+                world.dialogs("QuestionDialog")[-1].accept()
+                window.Close()
+            results.append((self.effects(world, mark), world, window))
+        self.assertEqual(results[1][0], results[0][0])
+        self.assertIn(("net.SendOfflineShopBuyPacket", (7001, 84, 9084, 1000000000)), results[1][0])
+        packets = [call for call in results[1][0] if call[0].startswith("net.Send")]
+        self.assertEqual(packets[-1], ("net.SendOfflineShopLeavePacket", ()))
+        self.assertNotIn("net.SendShopEndPacket", [name for name, _ in packets])
+        self.assertEqual(results[2 - 1][2].GetOfflinePage(), 1)
+
+    def test_pending_is_inert_and_the_next_lock_row_asks_then_expands(self):
+        results = []
+        for nui_on in (False, True):
+            world, window = self.open(nui_on, owner=True, locked=True, pages=3, unlocked=80)
+            world.list_item(1, SWORD, pending=True)
+            world.counts[offline.KIT] = 1
+            with world, w4.quiet():
+                window.Refresh()
+                pending_disabled = w4.board(window).model["cells"][1]["disabled"] if nui_on else True
+                mark = world.mark()
+                self.cell_press(world, window, 1, 1)
+                self.cell_press(world, window, 1, 0)
+                window.SelectOfflinePage(1)
+                if nui_on:
+                    w4.fire(window, "lock_release", 0, 0)
+                else:
+                    window.lockOverlays[0].OnMouseLeftButtonUp()
+                world.dialogs("QuestionDialog")[-1].accept()
+            results.append((self.effects(world, mark), world, window, pending_disabled))
+        self.assertEqual(results[1][0], results[0][0])
+        self.assertEqual([call for call in results[1][0] if call[0].startswith("net.Send")],
+                         [("net.SendShopExpandPacket", ())])
+        self.assertTrue(results[1][3])
+
+    def test_owner_add_price_remove_withdraw_and_gold_are_legacy_s(self):
+        results = []
+        for nui_on in (False, True):
+            world, window = self.open(nui_on, owner=True, locked=True, gold=123456, unlocked=160)
+            world.list_item(3, SWORD, price=70)
+            world.game.give((offline.INVENTORY, 5), SWORD)
+            with world, w4.quiet():
+                window.Refresh()
+                mark = world.mark()
+                window.SelectOfflinePage(1)
+                world.w4.attach(P["SLOT_TYPE_INVENTORY"], 5, SWORD)
+                self.cell_press(world, window, 2, 0)
+                price = world.dialogs("BulkMoneyInputDialog")[-1]
+                price.text, price.checked = "5000", True
+                price.accept()
+                window.SelectOfflinePage(0)
+                self.cell_press(world, window, 3, 1)
+                world.game.pressed.add(A["DIK_LALT"])
+                self.cell_press(world, window, 3, 1)
+                change = world.dialogs("BulkMoneyInputDialog")[-1]
+                change.text = "90"
+                change.accept()
+                world.game.pressed.clear()
+                world.game.pressed.add(A["DIK_LCONTROL"])
+                self.cell_press(world, window, 3, 1)
+                world.dialogs("CheckQuestionDialog")[-1].accept()
+                world.game.pressed.clear()
+                window.OpenPickMoneyDialog()
+                world.dialogs("PickMoneyDialog")[-1].accept(1000)
+            results.append(self.effects(world, mark))
+        self.assertEqual(results[1], results[0])
+        packets = [call for call in results[1] if call[0].startswith("net.Send")]
+        self.assertEqual(packets, [
+            ("net.SendShopAddItemPacket", (offline.INVENTORY, 5, 82, 5000, True)),
+            ("net.SendShopWithdrawItemPacket", (3,)),
+            ("net.SendShopUpdatePricePacket", (3, 90, False)),
+            ("net.SendShopRemoveItemPacket", (3, True)),
+            ("net.SendShopWithdrawGoldPacket", (1000,)),
+        ])
+
+    def test_manage_refresh_updates_result_and_npc_over_panel_are_legacy_s(self):
+        results = []
+        for nui_on in (False, True):
+            world, window = self.open(nui_on, owner=True, locked=False, gold=10)
+            world.game.w4["npcs"].add(NPC)
+            with world, w4.quiet():
+                mark = world.mark()
+                window.OpenOfflineShop(0)
+                window.UpdateLock(1)
+                window.UpdateTime(7200)
+                window.UpdateSign("Night market")
+                window.UpdateGold(987654)
+                window.OnOfflineShopResult(offline.K_OPS.index("LOCK"), offline.K_RESULTS.index("NOT_LOCKED"), 0)
+                if nui_on:
+                    model = w4.board(window).model
+                    self.assertEqual((model["owner_sign"], model["owner_lock_text"]), ("Night market", "Unlock"))
+                    self.assertEqual(model["owner_gold"],
+                                     world.game.modules["localeInfo"].NumberToMoneyString(987654))
+                window.Open(NPC)
+                window.Close()
+            results.append(self.effects(world, mark))
+        self.assertEqual(results[1], results[0])
+        packets = [call for call in results[1] if call[0].startswith("net.Send")]
+        self.assertEqual(packets, [("net.SendOfflineShopLeavePacket", ()), ("net.SendShopEndPacket", ())])
 
 
 # --- the private shop builder --------------------------------------------------------------------
@@ -367,6 +609,31 @@ class BuilderTest(unittest.TestCase):
                 flow(world, window)
             results.append((world.effects_since(mark), world, window))
         return results
+
+    def test_the_board_takes_the_grid_legacy_s_open_arranges(self):
+        """Wave 5 (NOVA-9): legacy's Open arranges CONFIG's base rows of 10
+        (ArrangeSlot); the board shows that grid, not the NPC shop's 5
+        columns (Eddy, 2026-11-05: 5 x 17 and the cells mixed up)."""
+        world, window = self.world(True)
+        # The client loads offlineshopconst (Wave 5); this world does not, so
+        # legacy's module gets the real one (it imports shop when called).
+        import importlib.util
+        spec = importlib.util.spec_from_file_location(
+            "offlineshopconst", os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "assets", "root", "offlineshopconst.py"))
+        offlineshopconst = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(offlineshopconst)
+        legacy = [c for c in type(window).__mro__ if c.__module__ == "uiPrivateShopBuilder"][0]
+        legacy.__init__.__globals__["offlineshopconst"] = offlineshopconst
+        shop_module = world.game.modules["shop"].__dict__
+        shop_module.update(OFFLINE_SHOP_COLUMNS=10, OFFLINE_SHOP_ROWS_PER_PAGE=8, OFFLINE_SHOP_PAGE_COUNT=8,
+                           OFFLINE_SHOP_SLOT_MAX=640)
+        with world.game, w4.quiet():
+            window.Open("Night market")
+        model = w4.board(window).model
+        self.assertEqual((model["cols"], len(model["cells"])), (10, 80), "CONFIG's 8 base rows of 10")
+        self.assertEqual(model["cols"], window.itemSlot.cols)
+        self.assertEqual(len(model["cells"]), len(window.itemSlot.slot_numbers))
+        self.assertEqual(len(model["cells"]) % model["cols"], 0, "whole rows")
 
     def drop(self, world, window, position, vnum, cell, price=None):
         world.attach(P["SLOT_TYPE_INVENTORY"], position, vnum)
@@ -411,7 +678,14 @@ class BuilderTest(unittest.TestCase):
         (legacy, _, a), (novaui, world, b) = self.run_both(flow)
         self.assertEqual(novaui, legacy)
         self.assertIn(("shop.DelPrivateShopItemStock", (P["INVENTORY"], 12)), novaui)
-        self.assertIn(("shop.BuildPrivateShop", ("Swords, armour and potions cheap",)), novaui)
+        creates = [args for name, args in novaui if name == "net.SendOfflineShopCreatePacket"]
+        self.assertEqual(len(creates), 1)
+        title, model_vnum, style, listings = creates[0]
+        self.assertEqual((title, style, listings),
+                         ("Swords, armour and potions cheap", 0,
+                          [(P["INVENTORY"], 4, 0, 1000)]))
+        self.assertIsInstance(model_vnum, int)
+        self.assertNotIn(("net.SendOfflineShopLeavePacket", ()), novaui, "CREATE closes without a second LEAVE")
         self.assertFalse(b.IsShow())
         self.assertNotIn(BUILDER_DOCUMENT, world.documents())
 
@@ -430,6 +704,7 @@ class BuilderTest(unittest.TestCase):
             with self.subTest(how=how):
                 self.assertEqual(novaui, legacy)
                 self.assertIn(("shop.ClearPrivateShopStock", ()), novaui)
+                self.assertIn(("net.SendOfflineShopLeavePacket", ()), novaui)
                 self.assertFalse(b.IsShow())
 
     def test_hover_shows_the_stocked_item_s_tooltip(self):

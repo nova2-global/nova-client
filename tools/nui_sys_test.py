@@ -994,7 +994,7 @@ class GameOptions(Pair):
         # The pickup filter since NOVA-50 (uigameoption.py RefreshPickupFilter).
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
-                                 "pickup": [True] * 4})
+                                 "pickup": [True] * 4, "hide_shops": False})
         self.assertEqual([button.down for button in a.pickupFilterButtonList], [True] * 4)
         self.assertEqual([button.down for button in a.viewChatButtonList], [False, True])
         self.assertEqual([button.down for button in a.showDamageButtonList], [False, True])
@@ -1359,10 +1359,28 @@ class Fixtures(unittest.TestCase):
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
         game_options = self.world.make_game_options()
-        # pickup: the pickup filter (NOVA-50).
+        # pickup: the pickup filter (NOVA-50); hide_shops: Wave 5's row (NOVA-9).
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
-                                                         "pickup"})
+                                                         "pickup", "hide_shops"})
+
+
+class HideShops(unittest.TestCase):
+    """Wave 5 (NOVA-9): the game options' hide-shops row, legacy's
+    (uiGameOption.__OnClickHideShopsButton, RefreshHideShops)."""
+
+    def test_a_press_sends_hide_shops_only_when_it_changes_and_the_row_shows_the_server_s_state(self):
+        world = World(True)
+        options = world.make_game_options()
+        with world.game, quiet():
+            options.Show()
+        mark = len(world.game.log)
+        with world.game, quiet():
+            board(options).fire("choose", "hide_shops", 0, 0)
+            board(options).fire("choose", "hide_shops", 1, 0)
+        sent = [args for name, args in world.game.log[mark:] if name == "net.SendChatPacket"]
+        self.assertEqual(sent, [("/hide_shops 1",)], "Show is in effect: only Hide sends")
+        self.assertFalse(board(options).model["hide_shops"], "the row waits for the server's HIDE_SHOPS")
 
 
 class OnDemand(unittest.TestCase):

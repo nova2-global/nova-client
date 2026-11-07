@@ -18,7 +18,8 @@ body.skin-cyberpunk.cos .cos-title-icon
 	background-color: var(--cyberpunk-holo-a);
 }
 
-body.skin-cyberpunk.cos.inv--table-new .cos-grid
+body.skin-cyberpunk.cos.inv--table-new .cos-grid,
+body.skin-cyberpunk.cos.inv--table-old .cos-grid
 {
 	border-radius: 0;
 	decorator: repeating-linear-gradient(180deg, transparent 0dp, transparent 1.9dp, var(--cyberpunk-cell) 2dp, var(--cyberpunk-cell) 2.9dp, transparent 3dp),
@@ -26,14 +27,16 @@ body.skin-cyberpunk.cos.inv--table-new .cos-grid
 	           repeating-linear-gradient(-45deg, var(--cyberpunk-holo-a) 0dp, var(--cyberpunk-holo-a) 0.6dp, transparent 0.6dp, transparent 8.5dp);
 }
 /* The magenta glow behind the figure. */
-body.skin-cyberpunk.cos.inv--table-new .cos-stage
+body.skin-cyberpunk.cos.inv--table-new .cos-stage,
+body.skin-cyberpunk.cos.inv--table-old .cos-stage
 {
 	decorator: radial-gradient(65% 70% at 52% 45%, var(--cyberpunk-holo-b) 0%, transparent 72%);
 }
 /* A device without effects draws a gradient as one flat color. */
 @media (theme: no-effects)
 {
-	body.skin-cyberpunk.cos.inv--table-new .cos-stage
+	body.skin-cyberpunk.cos.inv--table-new .cos-stage,
+	body.skin-cyberpunk.cos.inv--table-old .cos-stage
 	{
 		decorator: none;
 	}

@@ -18,6 +18,13 @@
 		{"page": "shop", "name": "hover-gap", "themes": ["dark", "cyber"], "scales": [["100", "1", "380x600"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [93, 106]},
 		{"page": "shop", "name": "hover-covered", "themes": ["dark", "cyber"], "scales": [["100", "1", "380x600"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [93, 174]},
 		{"page": "shop", "name": "hover-anchor", "themes": ["classic"], "scales": [["100", "1", "280x480"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [76, 66]},
-		{"page": "shop", "name": "hover-covered", "themes": ["classic"], "scales": [["100", "1", "280x480"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [76, 130]}
+		{"page": "shop", "name": "hover-covered", "themes": ["classic"], "scales": [["100", "1", "280x480"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "hover": [76, 130]},
+		{"page": "shop", "variant": "offline", "themes": "all", "except": ["classic"], "scales": [["100", "1", "620x600"], ["150", "1.5", "930x900"], ["200", "2", "1240x1200"]], "fixture": true, "roots": ["assets/ETC"], "time": 1},
+		{"page": "shop", "variant": "offline", "themes": ["classic"], "scales": [["100", "1", "440x440"], ["150", "1.5", "660x660"], ["200", "2", "880x880"]], "fixture": true, "roots": ["assets/ETC"], "time": 1},
+		{"page": "shop", "variant": "offline-owner", "themes": "all", "except": ["classic"], "scales": [["100", "1", "620x840"], ["150", "1.5", "930x1260"], ["200", "2", "1240x1680"]], "fixture": true, "roots": ["assets/ETC"], "time": 1},
+		{"page": "shop", "variant": "offline-owner", "themes": ["classic"], "scales": [["100", "1", "440x600"], ["150", "1.5", "660x900"], ["200", "2", "880x1200"]], "fixture": true, "roots": ["assets/ETC"], "time": 1},
+		{"page": "shop", "variant": "offline-owner", "name": "reduced-motion", "themes": "all", "except": ["classic"], "scales": [["100", "1", "620x840"]], "fixture": true, "roots": ["assets/ETC"], "time": 1, "reduced_motion": true},
+		{"page": "shop", "variant": "offline-owner", "name": "reduced-motion", "themes": ["classic"], "scales": [["100", "1", "440x600"]], "fixture": true, "roots": ["assets/ETC"], "time": 1, "reduced_motion": true},
+		{"page": "shop", "variant": "offline-owner", "name": "no-effects", "themes": ["dark", "cyber"], "scales": [["100", "1", "620x840"]], "fixture": true, "roots": ["assets/ETC"], "time": 1, "effects": "off"}
 	]
 }

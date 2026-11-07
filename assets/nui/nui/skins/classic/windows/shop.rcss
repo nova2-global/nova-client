@@ -165,3 +165,174 @@ body.skin-classic.shop.shop--tabs-small .shop__tab.is-down, body.skin-classic.sh
 {
 	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
 }
+
+/* Offline VIEW: uiscript/shopdialognew.py widened to 345, with the 10 x 8
+   grid still at (12, 34), page buttons at y 296 and the legacy owner panel
+   from uiscript/offlineshop.py at y 322. */
+body.skin-classic.shop.shop--offline
+{
+	width: 345dp;
+	height: 328dp;
+}
+body.skin-classic.shop.shop--offline.shop--owner
+{
+	height: 472dp;
+}
+body.skin-classic.shop.shop--offline .shop__titlebar
+{
+	width: 330dp;
+}
+body.skin-classic.shop.shop--offline .shop__grid
+{
+	left: 12dp;
+	top: 34dp;
+}
+body.skin-classic.shop.shop--offline .shop__pending
+{
+	border-radius: 0;
+	background-color: var(--slot-unavailable);
+}
+body.skin-classic.shop.shop--offline .shop__lock
+{
+	height: 32dp;
+	border-width: 0;
+	border-radius: 0;
+	font-size: var(--font-sm);
+}
+body.skin-classic.shop.shop--offline .shop__lock--locked
+{
+	background-color: var(--slot-locked);
+}
+body.skin-classic.shop.shop--offline .shop__lock--next
+{
+	background-color: var(--selection);
+	color: var(--success);
+}
+body.skin-classic.shop.shop--offline .shop__lock--row-0 { top: 0; }
+body.skin-classic.shop.shop--offline .shop__lock--row-1 { top: 32dp; }
+body.skin-classic.shop.shop--offline .shop__lock--row-2 { top: 64dp; }
+body.skin-classic.shop.shop--offline .shop__lock--row-3 { top: 96dp; }
+body.skin-classic.shop.shop--offline .shop__lock--row-4 { top: 128dp; }
+body.skin-classic.shop.shop--offline .shop__lock--row-5 { top: 160dp; }
+body.skin-classic.shop.shop--offline .shop__lock--row-6 { top: 192dp; }
+body.skin-classic.shop.shop--offline .shop__lock--row-7 { top: 224dp; }
+body.skin-classic.shop.shop--offline .shop__pages
+{
+	position: absolute;
+	left: 0;
+	top: 296dp;
+	width: 345dp;
+	height: 21dp;
+	margin: 0;
+	gap: 10dp;
+}
+body.skin-classic.shop.shop--offline .shop__page
+{
+	width: 43dp;
+	min-width: 43dp;
+	padding: 0;
+}
+body.skin-classic.shop.shop--offline .shop__page.is-selected
+{
+	decorator: tiled-horizontal(classic-button-small-03-l, classic-button-small-03-c, classic-button-small-03-r);
+	color: var(--classic-button-text);
+}
+
+body.skin-classic.shop .shop-owner
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 322dp;
+	width: 345dp;
+	height: 150dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+}
+body.skin-classic.shop .shop-owner__row
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	width: 345dp;
+	height: 22dp;
+	min-height: 0;
+}
+body.skin-classic.shop .shop-owner__row--sign { top: 0; }
+body.skin-classic.shop .shop-owner__row--location { top: 26dp; }
+body.skin-classic.shop .shop-owner__row--gold { top: 52dp; }
+body.skin-classic.shop .shop-owner__row--time { top: 78dp; }
+body.skin-classic.shop .shop-owner__value, body.skin-classic.shop .shop-owner__gold,
+body.skin-classic.shop .shop-owner__time
+{
+	display: block;
+	position: absolute;
+	left: 14dp;
+	top: 0;
+	min-height: 0;
+	height: 18dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	line-height: 18dp;
+}
+body.skin-classic.shop .shop-owner__value
+{
+	width: 250dp;
+}
+body.skin-classic.shop .shop-owner__gold
+{
+	box-sizing: border-box;
+	width: 160dp;
+	padding-left: 4dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-light);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.shop .shop-owner__gold .nui-glyph
+{
+	display: none;
+}
+body.skin-classic.shop .shop-owner__time
+{
+	width: 250dp;
+}
+body.skin-classic.shop .shop-owner__time nui-countdown
+{
+	position: absolute;
+	left: 116dp;
+	top: 0;
+	margin: 0;
+	color: var(--text);
+}
+body.skin-classic.shop .shop-owner__side
+{
+	position: absolute;
+	left: 270dp;
+	top: 0;
+	width: 61dp;
+	min-width: 61dp;
+	padding: 0;
+}
+body.skin-classic.shop .shop-owner__actions
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 112dp;
+	width: 345dp;
+	height: 21dp;
+}
+body.skin-classic.shop .shop-owner__actions .nui-button
+{
+	position: absolute;
+	top: 0;
+	width: 88dp;
+	min-width: 88dp;
+	padding: 0;
+}
+body.skin-classic.shop .shop-owner__lock { left: 14dp; }
+body.skin-classic.shop .shop-owner__logs { left: 128dp; }
+body.skin-classic.shop .shop-owner__close { left: 243dp; }

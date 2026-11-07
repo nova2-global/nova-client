@@ -495,6 +495,47 @@ class ChatDifferential(unittest.TestCase):
         legacy, novaui = self.flow(steps)
         self.assertEqual(novaui.text(), "second")
 
+    def test_the_shout_color_button_picker_and_one_colored_shout(self):
+        """Wave 5 (NOVA-11; legacy ChatInputSet): with the perk, the button shows
+        while the chat is open; a swatch picks the color the next shout sends,
+        once; without the perk, a press prints legacy's line."""
+        world = World(True)
+        world.enter_game()
+        perk = [True]
+        game = world.game
+        game.answer("player", "HasPremiumPerk", lambda which: perk[0])
+        game.modules["player"].__dict__.setdefault("PREMIUM_PERK_SHOUT_COLOR", 3)
+        game.answer("player", "GetShoutColorCount", lambda: 2)
+        game.answer("player", "GetShoutColor", lambda i: (0xFFFF0000, 0x8000FF00)[i])
+        board = world.board()
+        with world:
+            world.chat.OpenChat()
+        self.assertTrue(board.get("shout_color_on"))
+        with world, quiet():
+            board.fire("shout_color", 0)
+        self.assertTrue(board.get("shout_picker"))
+        word = world.game.modules["localeInfo"].CHAT_SHOUT
+        self.assertEqual(board.get("shout_colors"), [{"index": 1, "text": "|cFFFF0000%s|r" % word},
+                                                     {"index": 2, "text": "|c8000FF00%s|r" % word}])
+        with world, quiet():
+            board.fire("shout_pick", 2, 0)
+        self.assertFalse(board.get("shout_picker"))
+        mark = len(game.log)
+        world.type("!hello")
+        world.enter()
+        world.game.time += 100
+        world.type("!again")
+        world.enter()
+        sent = [args for name, args in game.log[mark:] if name == "net.SendChatPacket"]
+        shout = world.game.modules["chat"].CHAT_TYPE_SHOUT
+        self.assertEqual(sent, [("hello", shout, 2), ("again", shout)], "the picked color goes with one shout")
+        perk[0] = False
+        mark = len(game.log)
+        with world, quiet():
+            board.fire("shout_color", 0)
+        self.assertFalse(board.get("shout_picker"))
+        self.assertTrue(any(name == "chat.AppendChat" for name, _ in game.log[mark:]), "legacy's line without the perk")
+
     def test_the_history_keeps_thirty_three_lines(self):
         world = World(True)
         world.enter_game()
@@ -504,7 +545,8 @@ class ChatDifferential(unittest.TestCase):
             world.type("line %d" % i)
             world.enter()
         self.assertEqual(len(world.chat.input.lastSentenceStack), 33, "legacy's > 32 check keeps 33")
-        self.assertEqual(world.chat.input.lastSentenceStack[0], "line 7")
+        self.assertEqual(world.chat.input.lastSentenceStack[0], ["line 7", 0],
+                         "each sentence keeps its shout color (Wave 5, legacy's [text, index])")
 
     def test_the_mode_button_cycles_party_guild_shout_and_back_with_the_mark(self):
         def opened(world):
@@ -1406,6 +1448,7 @@ WAVE2B_SITES = {
                            ("make", "minimap", "uiMiniMap.MiniMap", "nui_minimap.MiniMap"),
                            ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
+                           ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign")],
     "game.py": [("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge")],
 }

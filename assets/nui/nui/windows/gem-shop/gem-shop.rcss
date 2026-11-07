@@ -1,0 +1,159 @@
+/* The gaya market's modern look (Wave 5, NOVA-10): the gem emblem before the
+   title; a head row with the refresh button and the time left until the
+   server re-rolls the market; legacy's 3 x 3 market, each slot a raised well
+   with its price in gaya under it, a locked slot tinted with the lock on it.
+   The controller centers it at its first show and keeps the place the
+   player drags it to; the sheet's place frames it in its snapshots. Classic
+   (legacy's 168 x 244 board): skins/classic/windows/gem-shop.rcss. */
+
+body.gem-shop
+{
+	left: 16dp;
+	top: 16dp;
+	width: 216dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.gem-shop button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The title's emblem: an accent chip with the gem glyph. */
+.gem-shop__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.gem-shop__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.gem-shop__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 12dp 12dp;
+}
+/* The head: the refresh button, then the time left on the right. */
+.gem-shop__head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 28dp;
+	margin-bottom: 10dp;
+}
+.gem-shop__refresh
+{
+	flex: 0 0 auto;
+}
+/* The label and the time take no press (classic's label spans the refresh
+   button's place, legacy's text lines take none). */
+.gem-shop__time-label, .gem-shop__time
+{
+	pointer-events: none;
+}
+.gem-shop__time-label
+{
+	flex: 1 1 auto;
+	margin: 0 var(--space-2);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: right;
+	white-space: nowrap;
+}
+.gem-shop__time
+{
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	min-width: 52dp;
+	height: 24dp;
+	padding: 0 8dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 7dp;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 22dp;
+	text-align: center;
+}
+/* The timer only counts (format none): it takes no room. */
+.gem-shop__clock
+{
+	display: none;
+}
+/* Legacy's 3 x 3 market: three items a row. */
+.gem-shop__market
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 10dp 12dp;
+}
+.gem-shop__item
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 56dp;
+}
+.gem-shop__cell
+{
+	width: 44dp;
+	height: 44dp;
+}
+.gem-shop__lock
+{
+	position: absolute;
+	right: 2dp;
+	bottom: 2dp;
+	z-index: 2;
+	--glyph-ink: var(--text);
+	transform: scale(0.75);
+}
+/* The price: the gem in the accent, the amount. */
+.gem-shop__price
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	height: 18dp;
+	margin-top: 3dp;
+	gap: 3dp;
+	pointer-events: none;
+}
+.gem-shop__gem
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.75);
+}
+/* Classic's money icon before the price (its art lives in the classic
+   overlay); the modern skins draw the gem glyph. */
+.gem-shop__coin
+{
+	display: none;
+}
+.gem-shop__amount
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	white-space: nowrap;
+}

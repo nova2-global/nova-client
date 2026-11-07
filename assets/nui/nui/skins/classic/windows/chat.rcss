@@ -218,3 +218,19 @@ body.skin-classic.chat .nui-tooltip.chat__tip
 	color: var(--text);
 	font-effect: outline(1dp var(--classic-text-outline));
 }
+
+/* Wave 5's shout color button (NOVA-11): legacy's at (50, 2), 40 x 17, drawn
+   as the mode button; while it shows, the field moves 43 right
+   (ChatInputSet.__GetChatLineLeft), its right edge kept. */
+body.skin-classic.chat .chat__shout-color
+{
+	left: 50dp;
+	width: 40dp;
+	height: 17dp;
+	line-height: 15dp;
+}
+body.skin-classic.chat .chat--shout-color .chat__field
+{
+	left: 96dp;
+	width: 422dp;
+}

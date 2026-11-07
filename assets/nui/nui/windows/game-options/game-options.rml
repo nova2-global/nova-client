@@ -98,6 +98,16 @@
 				<button id="go-pickup-3" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--pickup-3" data-class-is-selected="pickup[3]" data-event-mousedown="pickup(3, ev.button)"><span class="go-choice__label">@ui.OPTION_PICKUP_OTHERS</span></button>
 			</div>
 		</div>
+		<!-- Wave 5 (NOVA-9): the offline shops shown or hidden, the server's
+		     state; a press sends /hide_shops 0|1 (legacy's row under the
+		     pickup filter). -->
+		<div class="go-row go-row--shops">
+			<span class="go-label go-label--shops">@ui.OPTION_SHOW_COMPANIONS_SHOPS</span>
+			<div class="go-choices">
+				<button id="go-shops-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--shops-0" data-class-is-selected="!hide_shops" data-event-mousedown="choose('hide_shops', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_ON</span></button>
+				<button id="go-shops-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--shops-1" data-class-is-selected="hide_shops" data-event-mousedown="choose('hide_shops', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_OFF</span></button>
+			</div>
+		</div>
 	</div>
 </body>
 </rml>

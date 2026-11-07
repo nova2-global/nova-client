@@ -1,0 +1,47 @@
+{
+	"shop_search": {
+		"rows": [
+			{"index": 0, "shown": true, "name": "Red Potion (M)", "stock": "In stock: 200", "price": "125.000 Yang", "owner": "Aldric", "icon": "/icon/item/27001.tga", "flag": "/d:/ymir work/ui/intro/empire/empireflag_a.sub", "flag_shown": true, "state": "", "buyable": true},
+			{"index": 1, "shown": true, "name": "Blue Potion (M)", "stock": "In stock: 84", "price": "980.000 Yang", "owner": "Brenna", "icon": "/icon/item/27004.tga", "flag": "/d:/ymir work/ui/intro/empire/empireflag_b.sub", "flag_shown": true, "state": "", "buyable": true},
+			{"index": 2, "shown": true, "name": "Blessing Scroll", "stock": "In stock: 12", "price": "48.000.000 Yang", "owner": "Caius", "icon": "/icon/item/71021.tga", "flag": "/d:/ymir work/ui/intro/empire/empireflag_c.sub", "flag_shown": true, "state": "pending", "buyable": true},
+			{"index": 3, "shown": true, "name": "Reinforce Item", "stock": "In stock: 5", "price": "175.000.000 Yang", "owner": "Dagny", "icon": "/icon/item/71084.tga", "flag": "", "flag_shown": false, "state": "", "buyable": true},
+			{"index": 4, "shown": true, "name": "Sword+9", "stock": "In stock: 1", "price": "1.250.000.000 Yang", "owner": "Elowen", "icon": "/icon/item/00010.tga", "flag": "/d:/ymir work/ui/intro/empire/empireflag_a.sub", "flag_shown": true, "state": "", "buyable": false},
+			{"index": 5, "shown": true, "name": "Warrior Skill Book", "stock": "In stock: 3", "price": "2.100.000.000 Yang", "owner": "Fenwick", "icon": "/icon/item/27002.tga", "flag": "/d:/ymir work/ui/intro/empire/empireflag_b.sub", "flag_shown": true, "state": "", "buyable": false},
+			{"index": 6, "shown": true, "name": "Moonlight Treasure Chest", "stock": "In stock: 30", "price": "6.500.000.000 Yang", "owner": "Galen", "icon": "/icon/item/50011.tga", "flag": "", "flag_shown": false, "state": "sold", "buyable": true}
+		],
+		"categories": [
+			{"key": 100, "name": "All", "selected": true}, {"key": 200, "name": "Weapons", "selected": false},
+			{"key": 300, "name": "Equipment", "selected": false}, {"key": 400, "name": "Vouchers", "selected": false},
+			{"key": 500, "name": "Costumes", "selected": false}, {"key": 600, "name": "Changers", "selected": false},
+			{"key": 700, "name": "Stones", "selected": false}, {"key": 800, "name": "Chests", "selected": false},
+			{"key": 900, "name": "Items", "selected": false}, {"key": 1000, "name": "Materials", "selected": false},
+			{"key": 1100, "name": "Ores", "selected": false}, {"key": 1200, "name": "Pets", "selected": false},
+			{"key": 1300, "name": "Mounts", "selected": false}
+		],
+		"suggestions": [], "suggestions_shown": false,
+		"pages": [
+			{"index": 0, "text": "1", "down": false, "shown": true, "enabled": true},
+			{"index": 1, "text": "2", "down": true, "shown": true, "enabled": true},
+			{"index": 2, "text": "3", "down": false, "shown": true, "enabled": true},
+			{"index": 3, "text": "4", "down": false, "shown": true, "enabled": true},
+			{"index": 4, "text": "", "down": false, "shown": false, "enabled": true}
+		],
+		"sizes": [
+			{"index": 0, "text": "25", "down": true, "shown": true, "enabled": true},
+			{"index": 1, "text": "50", "down": false, "shown": true, "enabled": true},
+			{"index": 2, "text": "100", "down": false, "shown": true, "enabled": true}
+		],
+		"nav_shown": true, "current_page": 1, "page_count": 4, "loading": false, "empty": false,
+		"sort_ascending": true, "sort_text": "Price down", "gold": "8.452.100.000 Yang",
+		"premium": "Active", "can_buy": true, "filter_open": false, "filter_male": true,
+		"filter_female": true, "bookmarks_open": false,
+		"bookmarks": [
+			{"index": 0, "name": "Blessing Scroll", "empty": false}, {"index": 1, "name": "Sword+9", "empty": false},
+			{"index": 2, "name": "Empty", "empty": true}, {"index": 3, "name": "Empty", "empty": true},
+			{"index": 4, "name": "Empty", "empty": true}, {"index": 5, "name": "Empty", "empty": true},
+			{"index": 6, "name": "Empty", "empty": true}, {"index": 7, "name": "Empty", "empty": true},
+			{"index": 8, "name": "Empty", "empty": true}, {"index": 9, "name": "Empty", "empty": true}
+		],
+		"status_end": 0.0
+	}
+}

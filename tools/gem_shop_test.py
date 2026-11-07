@@ -398,13 +398,14 @@ class Glue(unittest.TestCase):
         window.RefreshGemShop()
         window.CloseGemShop()
 
-    def test_the_market_window_is_made_plainly_and_bound(self):
-        """Interface.__MakeWindows makes it (no nui_windows.make site: the UI
-        session wraps it later, spec 4.8); MakeInterface gives it the item
-        tooltip and Close destroys it."""
+    def test_the_market_window_is_made_through_the_factory_and_bound(self):
+        """Interface.__MakeWindows makes it through nui_windows.make (spec 4.8:
+        the UI session's NovaUI market, nui_gem_shop.GemShopWindow, while the
+        gem-shop flag is on; legacy's class otherwise); MakeInterface gives it
+        the item tooltip and Close destroys it."""
         methods = class_methods("interfacemodule.py", "Interface")
-        self.assertIn("self.wndGemShop = uiGemShop.GemShopWindow()", methods["__MakeWindows"])
-        self.assertNotIn("GemShop", "".join(line for line in methods["__MakeWindows"].split("\n") if "nui_windows.make" in line))
+        self.assertIn("self.wndGemShop = nui_windows.make('gem-shop', uiGemShop.GemShopWindow, 'nui_gem_shop.GemShopWindow')",
+                      methods["__MakeWindows"])
         self.assertIn("self.wndGemShop.SetItemToolTip(self.tooltipItem)", methods["MakeInterface"])
         self.assertIn("self.wndGemShop.Destroy()", methods["Close"])
         self.assertIn("self.wndGemShop = None", methods["__init__"])

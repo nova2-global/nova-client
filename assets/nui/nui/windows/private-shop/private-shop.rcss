@@ -103,3 +103,10 @@ body.pshop
 	flex: 1 1 0;
 	min-width: 0;
 }
+
+/* Wave 5 (NOVA-9): the offline shop's builder, a 10-column grid (436dp) on a
+   window 26dp wider, as the 5-column one's padding. */
+body.pshop.pshop--wide
+{
+	width: 462dp;
+}

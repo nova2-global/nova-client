@@ -467,6 +467,7 @@ NUI_INTRO_CREATE_TITLE	Créer un personnage
 NUI_INTRO_SELECT_TITLE	Sélection du personnage
 NUI_INTRO_SLOTS	%d emplacements
 NUI_INTRO_LOADING_TITLE	Entrée dans le royaume
+NUI_SHOP_LOG_EMPTY	Aucune entrée pour l'instant
 GEMSHOP_LEFTTIME	Temps restant
 GEMSHOP_TITLE	BOURSE AUX GAYAS
 MYSHOP_DECO_CANCEL	Fermer

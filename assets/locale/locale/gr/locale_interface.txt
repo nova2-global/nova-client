@@ -468,6 +468,7 @@ NUI_INTRO_CREATE_TITLE	Δημιουργία χαρακτήρα
 NUI_INTRO_SELECT_TITLE	Επιλογή χαρακτήρα
 NUI_INTRO_SLOTS	%d θέσεις
 NUI_INTRO_LOADING_TITLE	Είσοδος στο βασίλειο
+NUI_SHOP_LOG_EMPTY	Δεν υπάρχουν εγγραφές ακόμα
 GEMSHOP_LEFTTIME	Υπολειπόμενος χρόνος
 GEMSHOP_TITLE	ΕΜΠΟΡΙΟ GAYA
 MYSHOP_DECO_CANCEL	Κλείσιμο

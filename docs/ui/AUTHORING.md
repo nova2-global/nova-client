@@ -786,6 +786,17 @@ What the color roles mean:
 | `--tip-divider-shadow` | `#000000` | `#000000` | `#000000` |
 | `--tip-socket-silver` | `#b8bec9` | `#b8bec9` | `#c1c1c1` |
 | `--tip-socket-gold` | `#e3b45a` | `#e3b45a` | `#ffc700` |
+| `--shop-sign-1` | `#ff976d` | `#ff976d` | `#ff976d` |
+| `--shop-sign-1-tint` | `#593426bf` | `#593426bf` | `#593426bf` |
+| `--shop-sign-2` | `#f9f4ff` | `#f9f4ff` | `#f9f4ff` |
+| `--shop-sign-2-tint` | `#575559bf` | `#575559bf` | `#575559bf` |
+| `--shop-sign-3` | `#ffbf8b` | `#ffbf8b` | `#ffbf8b` |
+| `--shop-sign-3-tint` | `#594230bf` | `#594230bf` | `#594230bf` |
+| `--shop-sign-4` | `#ffecd1` | `#ffecd1` | `#ffecd1` |
+| `--shop-sign-4-tint` | `#595249bf` | `#595249bf` | `#595249bf` |
+| `--shop-sign-5` | `#f1ece1` | `#f1ece1` | `#f1ece1` |
+| `--shop-sign-5-tint` | `#54524ebf` | `#54524ebf` | `#54524ebf` |
+| `--shop-sign-seen` | `#4c0c66b2` | `#4c0c66b2` | `#4c0c66b2` |
 
 | Token | Shared value |
 |---|---|
@@ -855,6 +866,18 @@ What the color roles mean:
 | `--classic-skill-group-text` | classic | `#ffe3ad` |
 | `--classic-maintenance-label` | classic | `#f35637` |
 | `--classic-maintenance-time` | classic | `#dbad7b` |
+| `--classic-search-row` | classic | `#131313` |
+| `--classic-search-row-alt` | classic | `#0c0c0c` |
+| `--classic-search-row-hover` | classic | `#272727` |
+| `--classic-search-row-pending` | classic | `#2b2b10` |
+| `--classic-search-row-sold` | classic | `#400703` |
+| `--classic-search-name` | classic | `#b3977c` |
+| `--classic-search-disabled` | classic | `#6a6a6a` |
+| `--classic-search-selected` | classic | `#ffffff20` |
+| `--classic-log-row` | classic | `#131313` |
+| `--classic-log-row-alt` | classic | `#1e1e1e` |
+| `--classic-list-hover` | classic | `#ffffff33` |
+| `--classic-list-select` | classic | `#0000804d` |
 
 <!-- tokens:end -->
 
@@ -1351,6 +1374,20 @@ Main's wave 4b (the extra inventory, item transfer and gacha multi-open, the 24-
 - **The exchange** is legacy's new window: 6 x 4 slots a side (`nui_limits` `EXCHANGE_ITEM_MAX_NUM` 24, `EXCHANGE_COLUMNS` 6, `EXCHANGE_ROWS` 4), the faces, the partner's name and level, the history's last three lines, the accepted side's green base, the give-away question through the dialog kit, and the in-use locks on the cells offered (`CantTradableItem`, `ReleaseTradableItem`).
 - **The inventory** has legacy's Inventory+ button (`ExtraInventoryButton`), its bag shows both cell states, and its modifier presses run legacy's `__UseItemWithModifier` and `OpenMultiUseDialog`; the shop, safebox, private shop builder, mall, dragon soul refine, attach metin and refine windows take extra-inventory items and lock the cells they use, all through legacy's code. The select item window sends `(window, cell)` and lists the extra inventory's stones after the inventory's. The help lists U for the special inventory.
 
+## Wave 5 windows
+
+Main's Wave 5 (the offline shops, NOVA-9, and the gaya market, NOVA-10) added legacy windows and changed others. NovaUI follows it with the [Wave 4](#wave-4-windows) subclass pattern (`nui_facade.Facade`, the legacy loader overridden by its mangled name, proxies where the widgets were), so every flow, check and packet is legacy's code, and none of these windows runs Python per frame. The four new windows are in the `trade` group.
+
+- **The offline shop** lives in the `shop` and `private-shop` windows: `nui_shop.ShopDialog` shows a visitor's view and the owner's panel with legacy's 10 x 8 paged grid, questions, packets and owner panel (no second legacy dialog behind the facade), and the builder shows the grid legacy's `Open` arranges (CONFIG's rows of 10), not the NPC shop's 5 columns.
+- **The gaya market** (`gem-shop`, `nui_gem_shop.GemShopWindow`): the 3 x 3 market, the nine prices, the locked slots, the questions before an unlock, a buy or a refresh, and their checks are legacy's. The 500-unit walk-away is a `nuigame.WatchLeaveRange` watch (armed by `Open`, stopped by `Hide`) that runs legacy's `CloseShop`. The "HH:MM" refresh time is legacy's text, written again at each minute's turn by a `nui-countdown` (`format="none"`) whose `countdownend` fires once a minute. The board exists only while the window shows and draws below the legacy UI layer.
+- **The shop search** (`shop-search`, `nui_shop_search`): `uiSearchShop.SearchShopWindow` stays the controller, so queries, paging, filters, premium checks, buy, go-to, whisper and the bookmarks are legacy's. Legacy polled the gold and the search-buy perk in `OnUpdate`; a hidden `nui-countdown` asks legacy's two refresh methods once a second while the window shows.
+- **The offline shop log** (`offline-shop-log`, `nui_offline_shop_log.OfflineShopLogWindow`): the pages asked (CG LOGS), the rows appended (`SetData`, `offlineshopconst.log_row`), a refused page and the loading, empty and last states are legacy's; the legacy seam `__MakeRow` lets the facade make rows of proxies. The board scrolls `VIEW_ROWS` (21) rows at a time, legacy's 425 px view of 20 px rows, and a scroll that reaches the end runs legacy's `OnEndScroll` once. Legacy's retry of a page refused as too soon is a `nui-countdown` whose `countdownend` runs legacy's `OnUpdate` once. Legacy's place: the right edge 20dp from the screen's, 60dp down. Classic is legacy's board with its columns re-spaced in the extra-small font, since legacy's places overlapped and clipped the date in NovaUI's font.
+- **The decoration** (`shop-deco`, `nui_shop_deco.MyShopDecorationWindow`): the two steps (the shop's model, then its sign's style, from CONFIG and `shop_deco.txt`), the choice that only Complete commits (`uiPrivateShopBuilder.SHOP_DECO` and `SHOP_STYLE`, with CONFIG's decoration item) and Cancel, X and Escape keeping what was committed are legacy's; the legacy seam `__MakePreview(style)` lets the facade make the preview. There is no 3D view (legacy's D15, Q8): the preview names the model, or shows the style's sign. It centers at its first show. It opens over the name dialog, a kit modal, and covers the kit (`nui_dialog_kit.cover`) until it hides. Classic is legacy's 380 x 330 board, the style's frame drawn as `ShopDecoTitle`'s thin board tinted with the style's color (no pattern art, legacy's L15).
+- **The name dialog's decoration button:** `nui_dialog_input.DecoButton` stands for `uiCommon.InputDialog.decoButton` (`SetEvent`, `SetToolTipText`, `Show`, `Hide`, `IsShow`), hidden until the caller shows it. The board's `deco` key shows a button with the `MYSHOP_DECO_SELECT_MODEL` hint, which classic draws as legacy's extra-small "..." button. Golden: `dialog-input-shop-name`.
+- **The signs** (`shop-signs`, `nui_shop_signs.ShopSign`): one facade for both legacy signs, `PrivateShopAdvertisementBoard()` and a decorated offline shop's `PrivateShopTitleBar(style)` (styles 1 to 5 through `offlineshopconst.clamp_style`, and 0 past the five the sheets draw); the Interface makes every style through `make()`. Each sign keeps its `title` for the shop window and has `UpdateTitle`, `MarkSeen` and `MarkUnseen`. Which signs show is Wave 5's rule (`uiprivateshopbuilder.IsBoardShown`): the player's own (the stall and the offline shop), the target's and the hovered character's always, and with the sales texts on also the `sign_display_count()` nearest within `SIGN_RANGE`. The controller works the rule out when a sign comes or goes and at a hidden `nui-countdown`'s end once a second (`refresh()`), and writes the signs to the model only when one changed, since the runtime updates every view of a key it is given, equal or not. Legacy checks the target and the hovered character in each sign's frame; no feed gives NovaUI those two, so such a sign shows within a second rather than at once. A visited shop's plain sign takes the seen tint (`--shop-sign-seen`, legacy's purple) for `SIGN_SEEN_MINUTES`; a decorated one keeps its style, as legacy's title bar. A host without `offlineshopconst` keeps the rule from before Wave 5. The style colors are the `shop-sign-1` to `shop-sign-5` tokens and their `-tint`s, in every palette. Golden: `shop-signs-styles`.
+
+**Tests:** `tools/nui_gem_shop_test.py` (in the Wave 4 world), `nui_shop_search_test.py`, `nui_offline_shop_log_test.py`, `nui_shop_deco_test.py` and `nui_shop_signs_test.py` (over `offline_shop_test`'s protocol-6 world, `nui_shop_test.OfflineNuiWorld`) run each flow on the legacy window and on the facade and require the same effects (packets, dialogs, chat lines, the Interface's calls, what the signs show after each step); the NovaUI side also checks what the board shows and its timers. The offline shop's views are in `nui_shop_test.py`, the name dialog's button in `nui_dialogs_test.py`.
+
 ## The maintenance countdown
 
 The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in the `hud` group, `nui_maintenance.MaintenanceWindow`) replaces legacy's `uimaintenance.MaintenanceWindow`, a thin board at the top left that `game.py` makes before the preserved server commands run, opens with the seconds left of the server's `shutdown_schedule` (`OpenShutdownCountdown`) and closes on `shutdown_cancel` (`CloseShutdownCountdown`) and at the phase's end (where it now also `Destroy`s a NovaUI one).
@@ -1391,7 +1428,7 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 | `minimap` | the minimap: frame, controls and the map view | on |
 | `atlas` | the atlas (needs the NovaUI minimap, which makes it) | on |
 | `player-gauge` | the HP gauge over the player's head | on |
-| `shop-signs` | the private shop signs | on |
+| `shop-signs` | the private and offline shop signs, every style | on |
 | `guild-war` | the guild war score boards | on |
 | `system-menu` | the system menu (Escape in game) | on |
 | `system-options` | the system options, the music list and the Interface section | on |
@@ -1408,6 +1445,7 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 | `refine` | the refine dialogs (`RefineDialog`, `RefineDialogNew`) | on |
 | `attach-metin` | the attach stone dialog | on |
 | `select-item` | the select item window of a quest's `[SELECT_ITEM]` | on |
+| `extra-inventory` | the extra inventory (Wave 4b) | on |
 | `character` | the character window: status, skills, emotes, quests (needs the Wave 3c engine) | on |
 | `dragon-soul` | the dragon soul inventory (needs the Wave 3c engine) | on |
 | `dragon-soul-refine` | the dragon soul refine window (needs the Wave 3c engine) | on |
@@ -1422,11 +1460,15 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 | `guild` | the guild window and its grade name dialog | on |
 | `guild-war-dialogs` | the guild war declare and accept dialogs | on |
 | `guild-mark` | the guild mark and symbol lists | on |
+| `gem-shop` | the gaya market (Wave 5, NOVA-10) | on |
+| `shop-search` | the offline shop search (Wave 5, NOVA-9) | on |
+| `offline-shop-log` | the offline shop log (Wave 5, NOVA-9) | on |
+| `shop-deco` | the offline shop decoration (Wave 5, NOVA-9) | on |
 | `maintenance` | the maintenance countdown (NOVA-58, P18) | on |
 
-**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). `all` stands for every window. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on, and `-all,+login` is a legacy client with the NovaUI login. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
+**Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`) and Wave 4b's `extra-inventory`, and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). `all` stands for every window. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on, and `-all,+login` is a legacy client with the NovaUI login. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
 
-**Wave 4 groups:** `trade` for the six Wave 4 trade windows (`exchange` to `equipment-view`) and `social` for the five social ones (`messenger` to `guild-mark`). With them and `wave3c` the demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c,+trade,+social` (58 of its 200 characters).
+**Wave 4 groups:** `trade` for the six Wave 4 trade windows (`exchange` to `equipment-view`) and the four of Wave 5 (`gem-shop` to `shop-deco`), and `social` for the five social ones (`messenger` to `guild-mark`). With them and `wave3c` the demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c,+trade,+social` (58 of its 200 characters).
 
 - **`use(window_id)`** returns `(True, "")` or `(False, reason)` with the first check that failed: `"flag off"`, `"NovaUI unavailable"`, `"right-to-left locale"` (`nui.enabled_for_locale()`). It records the decision in `nui_windows.DECISIONS` (`"nui"` or `"legacy: <reason>"`) and writes it to `log.txt` when it changed.
 - **`make(window_id, legacy, novaui, *args)`** makes the NovaUI class (a class or a `"module.Class"` string, imported only then) when `use()` allows it, else the legacy one with the same arguments. A NovaUI constructor that raises, or one whose module cannot be imported, falls back to legacy, and so does an instance whose `nui_ready()` answers `False` (its document did not load): `make()` calls its `nui_discard()` and drops it before it makes the legacy one. Each such fallback is written once to `syserr.txt` as `nui_windows: <id>: <reason>; using the legacy window` (`note_failure`).

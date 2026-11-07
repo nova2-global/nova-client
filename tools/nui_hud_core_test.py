@@ -1254,6 +1254,9 @@ EXPECTED_SITES = {
                            ("make", "big-board", "uiTip.BigBoard", "nui_big_board.BigBoard"),
                            ("make", "web", "uiWeb.WebWindow", "nui_web.WebWindow"),
                            ("make", "select-item", "uiselectitem.SelectItemWindow", "nui_select_item.SelectItemWindow"),
+                           # Wave 6 (NOVA-20): the sash combine and absorb windows.
+                           ("make", "sash", "uiSash.CombineWindow", "nui_sash.CombineWindow"),
+                           ("make", "sash", "uiSash.AbsorbWindow", "nui_sash.AbsorbWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
@@ -1270,6 +1273,8 @@ EXPECTED_SITES = {
                 ("make", "player-gauge", "uiPlayerGauge.PlayerGauge", "nui_player_gauge.PlayerGauge"),
                 # P18 (NOVA-58): the maintenance countdown.
                 ("make", "maintenance", "uiMaintenance.MaintenanceWindow", "nui_maintenance.MaintenanceWindow"),
+                # Wave 6 (NOVA-23): the aura level window, at the first GC::AURA.
+                ("make", "aura", "uiAura.AuraWindow", "nui_aura.AuraWindow"),
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],

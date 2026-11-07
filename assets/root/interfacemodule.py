@@ -1513,7 +1513,7 @@ class Interface(object):
 			return
 
 		if style > 0:
-			board = uiPrivateShopBuilder.PrivateShopTitleBar(style)
+			board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopTitleBar, "nui_shop_signs.ShopSign", style)
 		else:
 			board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopAdvertisementBoard, "nui_shop_signs.ShopSign")
 		board.Open(vid, text)

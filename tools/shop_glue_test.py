@@ -226,7 +226,8 @@ class InterfaceWorld(object):
                 self.titles.append(text)
 
         class NovaSign(object):
-            """NovaUI's nui_shop_signs.ShopSign: no UpdateTitle yet."""
+            """A factory sign without UpdateTitle (NovaUI's nui_shop_signs.ShopSign
+            had none before Wave 5's follow-up)."""
 
             def __init__(self):
                 self.kind = "nova"
@@ -416,8 +417,8 @@ class InterfaceGlue(unittest.TestCase):
         self.assertEqual((boards[70].kind, boards[70].opened), ("advertisement", (70, "plain")))
         self.assertEqual((boards[71].kind, boards[71].style, boards[71].opened), ("title", 4, (71, "styled")))
         self.assertEqual(boards[72].kind, "advertisement")
-        self.assertEqual(world.calls("nui_windows.make"), [("nui_windows.make", ("shop-signs", "nui_shop_signs.ShopSign"), {})] * 2,
-                         "the style 0 line, and only it, goes through the factory")
+        self.assertEqual(world.calls("nui_windows.make"), [("nui_windows.make", ("shop-signs", "nui_shop_signs.ShopSign"), {})] * 3,
+                         "every style goes through the factory (NovaUI draws the styles too)")
 
     def test_a_sign_shown_again_updates_its_title(self):
         world = InterfaceWorld()
@@ -428,7 +429,7 @@ class InterfaceGlue(unittest.TestCase):
         self.assertEqual(board.titles, ["second"])
         self.assertEqual(len(world.calls("made")), 1)
 
-    def test_a_novaui_sign_without_update_title_is_made_again_as_today(self):
+    def test_a_sign_without_update_title_is_made_again(self):
         world = InterfaceWorld()
         world.nova_signs = True
         world.call("AppearPrivateShop", 70, "first")

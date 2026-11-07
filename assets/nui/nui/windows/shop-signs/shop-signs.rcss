@@ -5,8 +5,12 @@
    palettes; 26dp tall, its name bold on one line with 10dp on each side,
    centered on the shop's point (the anchor's default alignment); the accent
    edge under the pointer. Its width follows the drawn name, where legacy
-   computes len(name) * 6 + 20. Classic (the thin board, 32dp tall as
-   legacy's ThinBoard makes it at least): skins/classic/windows/shop-signs.rcss. */
+   computes len(name) * 6 + 20. A decorated offline shop's sign (styles 1
+   to 5) has its style's edge, tint and text color (the shop-sign tokens:
+   shop_deco.txt's colors); a visited shop's plain sign the seen tint
+   (legacy's purple) for SIGN_SEEN_MINUTES. Classic (the thin board, 32dp
+   tall as legacy's ThinBoard makes it at least):
+   skins/classic/windows/shop-signs.rcss. */
 
 body.shop-signs
 {
@@ -35,4 +39,17 @@ body.shop-signs
 .nui-panel.shop-sign:hover
 {
 	border-color: var(--accent);
+}
+.nui-panel.shop-sign.shop-sign--style-1 { border-color: var(--shop-sign-1); background-color: var(--shop-sign-1-tint); color: var(--shop-sign-1); }
+.nui-panel.shop-sign.shop-sign--style-2 { border-color: var(--shop-sign-2); background-color: var(--shop-sign-2-tint); color: var(--shop-sign-2); }
+.nui-panel.shop-sign.shop-sign--style-3 { border-color: var(--shop-sign-3); background-color: var(--shop-sign-3-tint); color: var(--shop-sign-3); }
+.nui-panel.shop-sign.shop-sign--style-4 { border-color: var(--shop-sign-4); background-color: var(--shop-sign-4-tint); color: var(--shop-sign-4); }
+.nui-panel.shop-sign.shop-sign--style-5 { border-color: var(--shop-sign-5); background-color: var(--shop-sign-5-tint); color: var(--shop-sign-5); }
+.nui-panel.shop-sign.is-seen
+{
+	background-color: var(--shop-sign-seen);
+}
+.shop-signs__tick
+{
+	display: none;
 }

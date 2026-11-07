@@ -141,6 +141,7 @@ body, body.theme-dark
 	--shop-sign-4-tint: #595249bf;
 	--shop-sign-5: #f1ece1;
 	--shop-sign-5-tint: #54524ebf;
+	--shop-sign-seen: #4c0c66b2;
 }
 
 body.theme-light
@@ -253,6 +254,7 @@ body.theme-light
 	--shop-sign-4-tint: #595249bf;
 	--shop-sign-5: #f1ece1;
 	--shop-sign-5-tint: #54524ebf;
+	--shop-sign-seen: #4c0c66b2;
 }
 
 body.theme-classic
@@ -365,6 +367,7 @@ body.theme-classic
 	--shop-sign-4-tint: #595249bf;
 	--shop-sign-5: #f1ece1;
 	--shop-sign-5-tint: #54524ebf;
+	--shop-sign-seen: #4c0c66b2;
 }
 
 /* Skin classic: overrides shared tokens and adds its own (classic-...) while a

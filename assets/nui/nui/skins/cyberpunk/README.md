@@ -390,6 +390,7 @@ The palette (every color of the `dark` palette's keys) and the skin's own tokens
 | `--shop-sign-4-tint` | `#595249bf` |
 | `--shop-sign-5` | `#f1ece1` |
 | `--shop-sign-5-tint` | `#54524ebf` |
+| `--shop-sign-seen` | `#4c0c66b2` |
 
 | Skin token | Value |
 |---|---|

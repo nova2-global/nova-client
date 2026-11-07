@@ -112,6 +112,7 @@ body.skin-cyberpunk.theme-cyberpunk
 	--shop-sign-4-tint: #595249bf;
 	--shop-sign-5: #f1ece1;
 	--shop-sign-5-tint: #54524ebf;
+	--shop-sign-seen: #4c0c66b2;
 }
 
 /* The skin's own tokens (cyberpunk-...) and the shared ones it overrides. */

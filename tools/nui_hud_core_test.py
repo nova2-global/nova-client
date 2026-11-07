@@ -1256,6 +1256,7 @@ EXPECTED_SITES = {
                            ("make", "select-item", "uiselectitem.SelectItemWindow", "nui_select_item.SelectItemWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
+                           ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign"),
                            ("make", "equipment-view", "uiEquipmentDialog.EquipmentDialog", "nui_equipment_view.EquipmentDialog"),
                            ("make", "whisper", "uiWhisper.WhisperDialog", "nui_whisper.WhisperDialog"),

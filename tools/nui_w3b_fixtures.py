@@ -69,6 +69,10 @@ ITEMS = {
     30329: ("/icon/item/30329.tga", 1, 1), 41001: ("/icon/item/41002.tga", 1, 2), 45001: ("/icon/item/41005.tga", 1, 2),
     70043: ("/icon/item/70043.tga", 1, 1), 71027: ("/icon/item/71027.tga", 1, 1), 72723: ("/icon/item/72723.tga", 1, 1),
     73001: ("/icon/item/73001.tga", 1, 1), 1000: ("/icon/item/01000.tga", 1, 3), 20: ("/icon/item/00020.tga", 1, 2),
+    # Wave 6's costume cells: a sash (85001, Lord Sash), a weapon costume
+    # (40101, 32 x 64) and an aura (149001); no sash costume (48000 up) has an
+    # icon in the packs yet.
+    85001: ("/icon/item/85001.tga", 1, 1), 40101: ("/icon/item/40101.tga", 1, 2), 149001: ("/icon/item/149001.tga", 1, 1),
     16: ("/icon/item/00010.tga", 1, 2), 3005: ("/icon/item/03000.tga", 1, 3), 13006: ("/icon/item/13000.tga", 1, 1),
 }
 # The refine level of the items above that have one (nui_slots.refine_level:
@@ -141,9 +145,15 @@ MARK_KEYS = ("in_use", "unusable_ontop")
 WEAR_MARKS = {"unique1": "unique", "unique2": "unique", "arrow": "arrow", "belt": "belt"}
 
 
-def wear_cells(limits, group, filled, targets=None, refine=False):
+# Wave 6: the costume window's marks of an empty place (nui_costume.COSTUME_MARKS).
+COSTUME_MARKS = {"costume_weapon": "sword", "costume_sash": "pentagon", "costume_aura": "ring",
+                 "costume_sash2": "chevron-down"}
+
+
+def wear_cells(limits, group, filled, targets=None, refine=False, marks=None):
     """The wear group's cells in wear order, CELL_KEYS plus name (and with
-    refine the inventory's refine level and marks): filled {name: vnum}."""
+    refine the inventory's refine level and marks; with marks, the marks of
+    that table): filled {name: vnum}."""
     cells = []
     for index, slot in enumerate(LIMITS.wear_group(group, limits)):
         if slot.name in filled:
@@ -156,6 +166,9 @@ def wear_cells(limits, group, filled, targets=None, refine=False):
         if refine:
             cell["refine"] = REFINE.get(filled.get(slot.name), 0)
             mark = WEAR_MARKS.get(slot.name)
+            cell["marks"] = [mark] if mark and slot.name not in filled else []
+        if marks is not None:
+            mark = marks.get(slot.name)
             cell["marks"] = [mark] if mark and slot.name not in filled else []
         cells.append(cell)
     return cells
@@ -262,13 +275,28 @@ def foundation_bag(cols, rows, start):
         25: (12200, 1, {}), 33: (11200, 1, {}), 42: (25040, 1, {}), 44: (28030, 2, {})}, refine=True, marks=True)
 
 
-def costume(limits, filled, gender="male"):
-    slots = wear_cells(limits, "costume", filled)
+# The aura panel's rows in legacy's order (uiinventory.py AURA_WING_FLAGS:
+# player.AURA_WING_FLAG_WING 1, _AURA 2, _EFFECT 4).
+WING_ROWS = (("wing", 1), ("aura", 2), ("effect", 4))
+
+
+def costume(limits, filled, gender="male", hidden=(), wing_flags=None):
+    """The costume window's model: the costume group's cells (filled
+    {name: vnum}), the switches down but the parts in `hidden` (the
+    server's IsShow* answers, ResetSlider), and with wing_flags the aura
+    panel open, its switch down and a row per flag."""
+    slots = wear_cells(limits, "costume", filled, marks=COSTUME_MARKS)
     return {"costume": {"table": limits.WEAR_TABLE_ID, "slots": slots,
                         "has_companion": any(cell["name"].startswith("buffi_") for cell in slots),
                         "attach_right": ATTACH_RIGHT, "wear_on": [1],
                         # Stage 1: the figure for the character's gender.
-                        "figure": FIGURE_COSTUME[gender]}}
+                        "figure": FIGURE_COSTUME[gender],
+                        # Wave 6 (NOVA-22, 23): the switches, the aura panel.
+                        "show_body": "body" not in hidden, "show_hair": "hair" not in hidden,
+                        "show_weapon": "weapon" not in hidden, "show_sash": "sash" not in hidden,
+                        "wing_down": wing_flags is not None, "wing_open": wing_flags is not None,
+                        "wing_rows": [] if wing_flags is None else [{"key": key, "checked": bool(wing_flags & flag)}
+                                                                    for key, flag in WING_ROWS]}}
 
 
 def belt(limits, available, items, expanded=True):
@@ -309,9 +337,18 @@ def fixtures():
                                                 rail_folded=True),
         ("costume", ""): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}),
         ("costume", "female"): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}, gender="female"),
-        # The costume body and hair alone, as legacy's costume window since
-        # NOVA-97 (the cut's other costume cells are not ported).
+        # The foundation's costume window since Wave 6: the costume body and
+        # hair worn, the sash, weapon costume, sash costume and aura places
+        # empty (their marks).
         ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001}),
+        # Every cell with an icon in the packs filled (no sash costume has
+        # one yet, so its place stays empty), the hair and sash switches up.
+        ("costume", "foundation-full"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001,
+                                                             "costume_sash": 85001, "costume_weapon": 40101,
+                                                             "costume_aura": 149001}, hidden=("hair", "sash")),
+        # The aura panel open: wings and aura shown, the wing effect hidden.
+        ("costume", "foundation-aura"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001,
+                                                             "costume_aura": 149001}, wing_flags=3),
         # An auto potion in the belt is never active: legacy activates only the
         # bag's cells (uiinventory.py RefreshBagSlotWindow).
         ("belt-inventory", ""): belt(TODAY, 4, {0: (27001, 5, {}), 1: (27002, 1, {}), 3: (72723, 1, {})}),

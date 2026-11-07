@@ -226,7 +226,8 @@ class InterfaceWorld(object):
                 self.titles.append(text)
 
         class NovaSign(object):
-            """NovaUI's nui_shop_signs.ShopSign: no UpdateTitle yet."""
+            """A factory sign without UpdateTitle (NovaUI's nui_shop_signs.ShopSign
+            had none before Wave 5's follow-up)."""
 
             def __init__(self):
                 self.kind = "nova"
@@ -416,8 +417,8 @@ class InterfaceGlue(unittest.TestCase):
         self.assertEqual((boards[70].kind, boards[70].opened), ("advertisement", (70, "plain")))
         self.assertEqual((boards[71].kind, boards[71].style, boards[71].opened), ("title", 4, (71, "styled")))
         self.assertEqual(boards[72].kind, "advertisement")
-        self.assertEqual(world.calls("nui_windows.make"), [("nui_windows.make", ("shop-signs", "nui_shop_signs.ShopSign"), {})] * 2,
-                         "the style 0 line, and only it, goes through the factory")
+        self.assertEqual(world.calls("nui_windows.make"), [("nui_windows.make", ("shop-signs", "nui_shop_signs.ShopSign"), {})] * 3,
+                         "every style goes through the factory (NovaUI draws the styles too)")
 
     def test_a_sign_shown_again_updates_its_title(self):
         world = InterfaceWorld()
@@ -428,7 +429,7 @@ class InterfaceGlue(unittest.TestCase):
         self.assertEqual(board.titles, ["second"])
         self.assertEqual(len(world.calls("made")), 1)
 
-    def test_a_novaui_sign_without_update_title_is_made_again_as_today(self):
+    def test_a_sign_without_update_title_is_made_again(self):
         world = InterfaceWorld()
         world.nova_signs = True
         world.call("AppearPrivateShop", 70, "first")
@@ -474,8 +475,8 @@ class InterfaceWindows(unittest.TestCase):
     def test_y2_s_windows_are_made_bound_and_destroyed(self):
         methods = class_methods("interfacemodule.py", "Interface")
         for attribute, made in (("wndSearchShop", "nui_windows.make('shop-search', uiSearchShop.SearchShopWindow, 'nui_shop_search.SearchShopWindow')"),
-                                ("wndOfflineShopLog", "uiOfflineShopLog.OfflineShopLogWindow()"),
-                                ("wndMyShopDeco", "uiMyShopDecoration.MyShopDecorationWindow()")):
+                                ("wndOfflineShopLog", "nui_windows.make('offline-shop-log', uiOfflineShopLog.OfflineShopLogWindow, 'nui_offline_shop_log.OfflineShopLogWindow')"),
+                                ("wndMyShopDeco", "nui_windows.make('shop-deco', uiMyShopDecoration.MyShopDecorationWindow, 'nui_shop_deco.MyShopDecorationWindow')")):
             with self.subTest(window=attribute):
                 self.assertIn("self.%s = %s" % (attribute, made), methods["__MakeWindows"])
                 self.assertIn("self.%s.BindInterface(self)" % attribute, methods["__MakeWindows"])
@@ -483,7 +484,8 @@ class InterfaceWindows(unittest.TestCase):
                 self.assertIn("self.%s = None" % attribute, methods["__init__"])
         made = [line for line in methods["__MakeWindows"].split("\n") if "nui_windows.make" in line]
         self.assertEqual(len([line for line in made if "uiSearchShop" in line]), 1)
-        self.assertFalse([line for line in made if "uiOfflineShopLog" in line or "uiMyShopDecoration" in line])
+        self.assertEqual(len([line for line in made if "uiOfflineShopLog" in line]), 1)
+        self.assertEqual(len([line for line in made if "uiMyShopDecoration" in line]), 1)
 
     def test_the_whisper_opener_y2_calls_exists(self):
         self.assertIn("OpenWhisperDialog", class_methods("interfacemodule.py", "Interface"))

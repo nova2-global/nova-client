@@ -1233,6 +1233,10 @@ EXPECTED_SITES = {
                            # Wave 5 (NOVA-10): the gaya market.
                            ("make", "gem-shop", "uiGemShop.GemShopWindow", "nui_gem_shop.GemShopWindow"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
+                           ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
+                            "nui_offline_shop_log.OfflineShopLogWindow"),
+                           ("make", "shop-deco", "uiMyShopDecoration.MyShopDecorationWindow",
+                            "nui_shop_deco.MyShopDecorationWindow"),
                            ("make", "exchange", "uiExchange.ExchangeDialog", "nui_exchange.ExchangeDialog"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
                            ("make", "shop", "uiShop.ShopDialog", "nui_shop.ShopDialog"),
@@ -1252,6 +1256,7 @@ EXPECTED_SITES = {
                            ("make", "select-item", "uiselectitem.SelectItemWindow", "nui_select_item.SelectItemWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
+                           ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopAdvertisementBoard", "nui_shop_signs.ShopSign"),
                            ("make", "equipment-view", "uiEquipmentDialog.EquipmentDialog", "nui_equipment_view.EquipmentDialog"),
                            ("make", "whisper", "uiWhisper.WhisperDialog", "nui_whisper.WhisperDialog"),

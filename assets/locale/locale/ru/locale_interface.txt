@@ -468,6 +468,7 @@ NUI_INTRO_CREATE_TITLE	Создать персонажа
 NUI_INTRO_SELECT_TITLE	Выбор персонажа
 NUI_INTRO_SLOTS	%d мест
 NUI_INTRO_LOADING_TITLE	Вход в королевство
+NUI_SHOP_LOG_EMPTY	Записей пока нет
 GEMSHOP_LEFTTIME	Оставшееся время
 GEMSHOP_TITLE	БИРЖА GAYA
 MYSHOP_DECO_CANCEL	Закрыть

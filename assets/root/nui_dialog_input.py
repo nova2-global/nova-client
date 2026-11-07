@@ -10,8 +10,13 @@ button call them too, and none of them closes the dialog. Number mode keeps
 digits only, secret mode shows stars, and the field's value never enters a
 data model. The document has a text field and a password field, never a
 field whose type changes (dialog-input.rml); the facade uses the one its
-secret mode names. See nui_dialog_kit.py for the shared rules.
+secret mode names. The shop name dialog's decoration button (Wave 5,
+NOVA-9; uiCommon.InputDialog.decoButton) is hidden until the caller shows
+it and gives it its event; a press runs the event and closes nothing. See
+nui_dialog_kit.py for the shared rules.
 """
+
+import weakref
 
 import nui
 import nui_dialog_kit as kit
@@ -33,7 +38,7 @@ class InputWindow(kit.KindWindow):
 	FIELDS = (FIELD, SECRET_FIELD)
 
 	def initial_model(self):
-		return {"title": "", "lines": [], "secret": False, "max": 12}
+		return {"title": "", "lines": [], "secret": False, "max": 12, "deco": False}
 
 	@nui.on("edit")
 	def on_edit(self, value, linebreak):
@@ -46,6 +51,78 @@ class InputWindow(kit.KindWindow):
 	@nui.on("cancel")
 	def on_cancel(self):
 		self.forward("_nui_cancel")
+
+	@nui.on("deco")
+	def on_deco(self):
+		self.forward("_nui_deco")
+
+
+class DecoButton(object):
+	"""uiCommon.InputDialog.decoButton (Wave 5, NOVA-9; OLD uiCommon.py:220-222):
+	the shop name dialog's decoration button, hidden until the caller shows
+	it. SetEvent, Show, Hide and IsShow reach the dialog the facade shows,
+	or the legacy one it routes to."""
+
+	def __init__(self, owner):
+		self._owner = weakref.ref(owner)
+		self.event = None
+		self.event_args = ()
+		self.shown = False
+		self.tooltip = ""
+
+	def _legacy(self):
+		owner = self._owner()
+		legacy = owner._legacy if owner is not None else None
+		return getattr(legacy, "decoButton", None) if legacy is not None else None
+
+	def _changed(self):
+		owner = self._owner()
+		if owner is not None:
+			owner._refresh(deco=bool(self.shown))
+
+	def SetEvent(self, event, *args):
+		self.event = event
+		self.event_args = args
+		legacy = self._legacy()
+		if legacy is not None:
+			legacy.SetEvent(event, *args)
+
+	def SetToolTipText(self, text, *args):
+		self.tooltip = "" if text is None else str(text)
+		legacy = self._legacy()
+		if legacy is not None:
+			legacy.SetToolTipText(text, *args)
+
+	def Show(self):
+		self.shown = True
+		legacy = self._legacy()
+		if legacy is not None:
+			legacy.Show()
+		self._changed()
+
+	def Hide(self):
+		self.shown = False
+		legacy = self._legacy()
+		if legacy is not None:
+			legacy.Hide()
+		self._changed()
+
+	def IsShow(self):
+		return bool(self.shown)
+
+	def click(self):
+		kit.call_event(self.event, *self.event_args)
+
+	def replay(self, legacy):
+		button = getattr(legacy, "decoButton", None)
+		if button is None:
+			return
+		if self.event:
+			button.SetEvent(self.event, *self.event_args)
+		if self.tooltip:
+			button.SetToolTipText(self.tooltip)
+		if self.shown:
+			button.Show()
 
 
 class InputDialog(kit.DialogFacade):
@@ -62,6 +139,7 @@ class InputDialog(kit.DialogFacade):
 		self._accept_event = None
 		self._cancel_event = None
 		self._value = ""
+		self.decoButton = DecoButton(self)
 		kit.DialogFacade.__init__(self)
 
 	def _descriptions(self):
@@ -73,6 +151,7 @@ class InputDialog(kit.DialogFacade):
 			"lines": [nui.plain_text(line) for line in self._descriptions()],
 			"secret": bool(self._secret),
 			"max": 12 if self._max is None else int(self._max),
+			"deco": bool(self.decoButton.shown),
 		}
 
 	def _field_text(self):
@@ -95,6 +174,7 @@ class InputDialog(kit.DialogFacade):
 		self._replay_descriptions(legacy)
 		legacy.SetAcceptEvent(self._accept_event)
 		legacy.SetCancelEvent(self._cancel_event)
+		self.decoButton.replay(legacy)
 
 	def _refresh(self, **values):
 		if self._held():
@@ -204,6 +284,9 @@ class InputDialog(kit.DialogFacade):
 
 	def _nui_cancel(self):
 		kit.call_event(self._cancel_event)
+
+	def _nui_deco(self):
+		self.decoButton.click()
 
 	def _nui_escape(self):
 		# The legacy edit line kept Escape, with or without an event.

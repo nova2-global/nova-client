@@ -1,0 +1,56 @@
+<rml>
+<head>
+	<!-- The offline shop's log (Wave 5, NOVA-9; legacy uiofflineshoplog.py
+	     OfflineShopLogWindow, uiscript offlineshoplogwindow.py). While the
+	     offline-shop-log flag is on, the Interface makes
+	     nui_offline_shop_log.OfflineShopLogWindow (controller
+	     assets/root/nui_offline_shop_log.py), a subclass of the legacy class on
+	     proxies: the pages asked, the rows appended, the next page asked once
+	     when the user's scroll reaches the end, a refused page and the states
+	     are legacy's code. The list shows legacy's view of 21 rows, each with
+	     legacy's five texts (the action, the other party, the item, the yang,
+	     the date); the bar and the wheel move it. "..." shows while the first
+	     page loads; when the shop has no row, "No entries yet" (classic: legacy's
+	     "-"). A page refused as too soon is
+	     asked again by the timer's end (no Python per frame). The document
+	     exists only while the window shows. A left or right press anywhere on
+	     it raises the window (board_press). -->
+	<title>offline-shop-log</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="offline-shop-log.rcss"/>
+</head>
+<body template="nui" id="offline-shop-log" class="nui-window nui-fx nui-anim shop-log" data-model="offline_shop_log"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar shop-log__titlebar">
+		<handle class="nui-window__handle shop-log__handle" move_target="#document">
+			<span class="shop-log__title-icon"><span class="nui-glyph nui-glyph--log"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title shop-log__title">@ui.OFFLINE_SHOP_BUTTON_VIEW_LOGS</span>
+		</handle>
+		<button id="offline-shop-log-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim shop-log__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body shop-log__body">
+		<div id="offline-shop-log-list" class="shop-log__list" data-event-mousescroll="wheel(ev.wheel_delta_y)">
+			<div class="shop-log__row" data-for="r : rows" data-class-is-odd="r.odd"
+			     data-attr-id="'offline-shop-log-row-' + it_index"><span
+				class="shop-log__cell shop-log__action">{{ r.action }}</span><span
+				class="shop-log__cell shop-log__other">{{ r.other }}</span><span
+				class="shop-log__cell shop-log__what">{{ r.what }}</span><span
+				class="shop-log__cell shop-log__amount">{{ r.amount }}</span><span
+				class="shop-log__cell shop-log__date">{{ r.date }}</span></div>
+			<div id="offline-shop-log-loading" class="shop-log__message shop-log__message--loading" data-if="loading"><span
+				class="shop-log__spinner"></span><span class="shop-log__message-text">...</span></div>
+			<div id="offline-shop-log-empty" class="shop-log__message shop-log__message--empty" data-if="empty"><span
+				class="shop-log__empty-mark"><span class="nui-glyph nui-glyph--log"><span class="nui-glyph__a"></span><span
+				class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span><span
+				class="shop-log__message-text shop-log__empty-text">@ui.NUI_SHOP_LOG_EMPTY</span><span
+				class="shop-log__message-text shop-log__empty-dash">-</span></div>
+		</div>
+		<div class="shop-log__scroll-box" data-if="scrollable"><input id="offline-shop-log-scroll" type="range" orientation="vertical"
+			class="shop-log__scroll" min="0" max="1" step="0.001" data-attr-value="scroll" data-event-change="scroll(ev.value)"/></div>
+		<nui-countdown class="shop-log__retry" format="none" data-attr-end="retry_end" data-event-countdownend="retry()"/>
+	</div>
+</body>
+</rml>

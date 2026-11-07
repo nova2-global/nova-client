@@ -1,0 +1,48 @@
+{
+	"shop_deco": {
+		"step": 1,
+		"title": "Model",
+		"description": "Choose your shop's appearance.",
+		"entries": [
+			{
+				"key": "30000",
+				"name": "Default"
+			},
+			{
+				"key": "30002",
+				"name": "1001 Nights"
+			},
+			{
+				"key": "30003",
+				"name": "BBQ King"
+			},
+			{
+				"key": "30004",
+				"name": "Treasure Hunter"
+			},
+			{
+				"key": "30005",
+				"name": "Frugal Flame"
+			},
+			{
+				"key": "30006",
+				"name": "Arms Dealer"
+			},
+			{
+				"key": "30007",
+				"name": "Armour Dealership"
+			},
+			{
+				"key": "30008",
+				"name": "Alchemist"
+			}
+		],
+		"selected": 3,
+		"preview_name": "Treasure Hunter",
+		"preview_style": -1,
+		"next": true,
+		"cancel": true,
+		"prev": false,
+		"complete": false
+	}
+}

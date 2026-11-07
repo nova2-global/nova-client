@@ -1,11 +1,12 @@
 {
 	"shop_signs": {
 		"show_all": true,
+		"tick_end": 0.0,
 		"signs": [
-			{"vid": 11, "text": "Potions and more", "own": false, "shown": true, "legacy_width": "116dp"},
-			{"vid": 12, "text": "|cffffc700Golden|r Bazaar", "own": false, "shown": true, "legacy_width": "170dp"},
-			{"vid": 13, "text": "My shop", "own": true, "shown": true, "legacy_width": "62dp"},
-			{"vid": 14, "text": "Swords +9 cheap", "own": false, "shown": true, "legacy_width": "110dp"}
+			{"vid": 11, "text": "Potions and more", "own": false, "shown": true, "legacy_width": "116dp", "style": 0, "seen": false, "always": false, "near": true},
+			{"vid": 12, "text": "|cffffc700Golden|r Bazaar", "own": false, "shown": true, "legacy_width": "170dp", "style": 0, "seen": false, "always": false, "near": true},
+			{"vid": 13, "text": "My shop", "own": true, "shown": true, "legacy_width": "62dp", "style": 0, "seen": false, "always": true, "near": true},
+			{"vid": 14, "text": "Swords +9 cheap", "own": false, "shown": true, "legacy_width": "110dp", "style": 0, "seen": false, "always": false, "near": true}
 		]
 	}
 }

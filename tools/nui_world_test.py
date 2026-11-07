@@ -71,7 +71,8 @@ MINIMAP_METHODS = ("Show", "Hide", "ShowMiniMap", "HideMiniMap", "isShowMiniMap"
                    "RefreshServerInfo")
 ATLAS_METHODS = ("LoadWindow", "Show", "Hide", "IsShow", "SetMapName", "SetCenterPositionAdjust", "OnPressEscapeKey", "Destroy")
 GAUGE_METHODS = ("Show", "Hide", "IsShow", "RefreshGauge", "EnableShowAlways", "DisableShowAlways", "Destroy")
-SIGN_METHODS = ("Open", "Show", "Hide", "IsShow", "OnMouseLeftButtonUp", "Destroy")
+SIGN_METHODS = ("Open", "UpdateTitle", "MarkSeen", "MarkUnseen", "Show", "Hide", "IsShow", "OnMouseLeftButtonUp",
+                "Destroy")
 WAR_METHODS = ("Initialize", "Open", "Show", "Hide", "IsShow", "SetScore", "UpdateMemberCount", "Destroy")
 INTERFACE_METHODS = ("OnStartGuildWar", "OnEndGuildWar", "UpdateMemberCount", "OnRecvGuildWarPoint", "AppearPrivateShop",
                      "DisappearPrivateShop")
@@ -299,8 +300,15 @@ class Facades(unittest.TestCase):
                    GAUGE_METHODS)
 
     def test_the_shop_sign_facade_keeps_the_legacy_surface(self):
-        self.check(self.world.module("uiPrivateShopBuilder").PrivateShopAdvertisementBoard,
-                   self.world.module("nui_shop_signs").ShopSign, SIGN_METHODS, same_name=False)
+        """ShopSign stands in for both legacy signs: PrivateShopTitleBar(style),
+        and with the style left out PrivateShopAdvertisementBoard()."""
+        builder, signs = self.world.module("uiPrivateShopBuilder"), self.world.module("nui_shop_signs")
+        self.check(builder.PrivateShopTitleBar, signs.ShopSign, SIGN_METHODS, same_name=False)
+        for name in SIGN_METHODS:
+            assert_callable_like(self, getattr(object.__new__(builder.PrivateShopAdvertisementBoard), name),
+                                 getattr(object.__new__(signs.ShopSign), name), "ShopSign.%s" % name)
+        self.assertEqual(inspect.signature(signs.ShopSign.__init__).parameters["style"].default, 0,
+                         "PrivateShopAdvertisementBoard() is a style 0 sign")
 
     def test_the_guild_war_facade_keeps_the_legacy_surface(self):
         self.check(self.world.module("uiGuild").GuildWarScoreBoard, self.world.module("nui_guild_war").GuildWarScoreBoard,
@@ -737,8 +745,10 @@ class SignDifferential(unittest.TestCase):
         board = signs._board
         if board is None or not board._doc:
             return {}
+        signs.refresh()
         show_all = board.model["show_all"]
-        return {s["vid"]: s["text"] for s in board.model["signs"] if s["shown"] and (show_all or s["own"])}
+        return {s["vid"]: s["text"] for s in board.model["signs"]
+                if s["shown"] and (s["always"] or (show_all and s["near"]))}
 
     def flow(self, steps):
         legacy, novaui = self.worlds()
@@ -855,7 +865,8 @@ class SignDifferential(unittest.TestCase):
         self.assertEqual(World(True).module("nui_shop_signs").ShopSignBoard.FEEDS, {"show_all": "system.show_sales_text"})
         document = read(os.path.join(WINDOWS, "shop-signs", "shop-signs.rml"))
         self.assertIn('<nui-anchor class="shop-signs__anchor" mode="project" height="220" data-attr-vid="s.vid"', document)
-        self.assertIn('data-attr-id="\'shop-sign-\' + s.vid" data-if="s.shown &amp;&amp; (show_all || s.own)"', document)
+        self.assertIn('data-attr-id="\'shop-sign-\' + s.vid" data-if="s.shown &amp;&amp; (s.always || (show_all &amp;&amp; s.near))"',
+                      document)
         self.assertIn('data-event-mouseup="open(s.vid, ev.button)"', document)
         self.assertIn('links="off" data-attr-value="s.text"', document)
         self.assertIn('<div class="shop-signs__slot" data-for="s : signs">\n\t\t<nui-anchor', document,
@@ -1046,12 +1057,16 @@ class Fixtures(unittest.TestCase):
         self.assertEqual(fixture("player-gauge")["player_gauge"], {"shown": True, "vid": 1, "hp_ratio": 0.42})
 
     def test_the_sign_fixtures_hold_four_signs_one_own_one_tagged(self):
-        self.check(self.world.module("nui_shop_signs").ShopSignBoard(), "shop-signs", ("own-only",))
+        self.check(self.world.module("nui_shop_signs").ShopSignBoard(), "shop-signs", ("own-only", "styles"))
         signs = fixture("shop-signs")["shop_signs"]["signs"]
         self.assertEqual(len(signs), 4)
-        for sign in signs + fixture("shop-signs", "own-only")["shop_signs"]["signs"]:
-            self.assertEqual(set(sign), {"vid", "text", "own", "shown", "legacy_width"})
-            self.assertEqual(sign["legacy_width"], self.world.module("nui_shop_signs").legacy_width(sign["text"]))
+        styled = fixture("shop-signs", "styles")["shop_signs"]["signs"]
+        self.assertEqual(sorted(sign["style"] for sign in styled), [0, 1, 2, 3, 4, 5])
+        self.assertEqual([sign["seen"] for sign in styled if sign["style"] == 0], [True], "a visited plain sign")
+        for sign in signs + fixture("shop-signs", "own-only")["shop_signs"]["signs"] + styled:
+            self.assertEqual(set(sign), {"vid", "text", "own", "shown", "legacy_width", "style", "seen", "always", "near"})
+            self.assertEqual(sign["legacy_width"],
+                             self.world.module("nui_shop_signs").legacy_width(sign["text"], sign["style"]))
         self.assertEqual(sum(1 for sign in signs if sign["own"]), 1)
         self.assertTrue(any("|c" in sign["text"] for sign in signs))
         self.assertFalse(fixture("shop-signs", "own-only")["shop_signs"]["show_all"])
@@ -1074,7 +1089,7 @@ class Fixtures(unittest.TestCase):
         cases = {window: json.loads(read(os.path.join(WINDOWS, window, window + ".snapshots.json")))["cases"]
                  for window in WORLD_WINDOWS}
         self.assertEqual({c.get("variant") for c in cases["minimap"]}, {None, "closed", "observers"})
-        self.assertEqual({c.get("variant") for c in cases["shop-signs"]}, {None, "own-only"})
+        self.assertEqual({c.get("variant") for c in cases["shop-signs"]}, {None, "own-only", "styles"})
         self.assertEqual({c.get("variant") for c in cases["guild-war"]}, {None, "two"})
         frames = {"minimap": "320x240", "atlas": "640x480", "player-gauge": "320x200", "shop-signs": "960x320",
                   "guild-war": "480x260"}
@@ -1094,8 +1109,8 @@ class Fixtures(unittest.TestCase):
             self.assertEqual(case["views"], {"minimap": "nui/windows/minimap/minimap.view.png"})
         self.assertEqual(cases["atlas"][0]["views"], {"atlas": "nui/windows/atlas/atlas.view.png"})
         self.assertEqual(cases["player-gauge"][0]["anchors"], {"1": [160, 120]})
-        vids = {str(sign["vid"]) for sign in fixture("shop-signs")["shop_signs"]["signs"]}
         for case in cases["shop-signs"]:
+            vids = {str(sign["vid"]) for sign in fixture("shop-signs", case.get("variant", ""))["shop_signs"]["signs"]}
             self.assertEqual(set(case["anchors"]), vids)
 
 

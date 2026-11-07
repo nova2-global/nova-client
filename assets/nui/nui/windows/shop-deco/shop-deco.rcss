@@ -1,0 +1,211 @@
+/* The offline shop decoration's modern look (Wave 5, NOVA-9): the shop
+   emblem before the step's title and two dots for the two steps; the
+   step's line; the entries as a list of rows on the left (the chosen one
+   in the accent), the preview on the right: the stall mark and the model's
+   name on step 1, the chosen style's sign with its name on step 2 (each
+   style's tint and text color, the sign styles' tokens); the step's two
+   buttons in the footer. Centered at its first show, as legacy's uiscript.
+   Classic (legacy's 380 x 330 board): skins/classic/windows/shop-deco.rcss. */
+
+body.shop-deco
+{
+	left: 16dp;
+	top: 16dp;
+	width: 440dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.shop-deco button
+{
+	tab-index: none;
+	focus: none;
+}
+.shop-deco__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.shop-deco__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+/* The two steps: the current one a longer accent dot. */
+.shop-deco__steps
+{
+	display: inline-block;
+	margin-left: var(--space-2);
+	vertical-align: middle;
+}
+.shop-deco__step
+{
+	display: inline-block;
+	width: 6dp;
+	height: 6dp;
+	margin-right: 4dp;
+	border-radius: 3dp;
+	background-color: var(--border);
+}
+.shop-deco__step.is-on
+{
+	width: 16dp;
+	background-color: var(--accent);
+}
+.shop-deco__body
+{
+	padding: 8dp 12dp 4dp;
+}
+.shop-deco__description
+{
+	margin: 0 0 10dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.shop-deco__panes
+{
+	display: flex;
+	flex-direction: row;
+	gap: 10dp;
+	height: 240dp;
+}
+.shop-deco__list-board
+{
+	flex: 0 0 180dp;
+	box-sizing: border-box;
+	padding: 5dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
+}
+.shop-deco__list
+{
+	height: 228dp;
+	overflow-y: auto;
+}
+.shop-deco__entry
+{
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	height: 26dp;
+	margin-bottom: 2dp;
+	padding: 0 10dp;
+	border-width: 1dp;
+	border-color: transparent;
+	border-radius: 6dp;
+	background-color: transparent;
+	color: var(--text);
+	font-size: var(--font-sm);
+	text-align: left;
+}
+.shop-deco__entry:hover
+{
+	background-color: var(--surface-hover);
+}
+.shop-deco__entry.is-selected
+{
+	border-color: var(--accent-glow);
+	background-color: var(--selection);
+	color: var(--accent);
+	font-weight: bold;
+}
+.shop-deco__entry-label
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	line-height: 24dp;
+}
+.shop-deco__preview
+{
+	display: flex;
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	align-items: center;
+	justify-content: center;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-raised);
+}
+/* Step 1: the stall mark over the model's name. */
+.shop-deco__model
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12dp;
+}
+.shop-deco__model-mark
+{
+	position: relative;
+	width: 48dp;
+	height: 48dp;
+	border-radius: 24dp;
+	background-color: var(--selection);
+}
+.shop-deco__model-mark .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 16dp;
+	top: 16dp;
+	transform: scale(1.6);
+}
+.shop-deco__model-name
+{
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	text-align: center;
+}
+/* Step 2: the style's sign, as the shops show it over their owners. */
+.shop-deco__sign-stage
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.shop-deco__sign
+{
+	box-sizing: border-box;
+	min-width: 140dp;
+	padding: 8dp 18dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	font-weight: bold;
+	text-align: center;
+}
+.shop-deco__sign--1 { border-color: var(--shop-sign-1); background-color: var(--shop-sign-1-tint); color: var(--shop-sign-1); }
+.shop-deco__sign--2 { border-color: var(--shop-sign-2); background-color: var(--shop-sign-2-tint); color: var(--shop-sign-2); }
+.shop-deco__sign--3 { border-color: var(--shop-sign-3); background-color: var(--shop-sign-3-tint); color: var(--shop-sign-3); }
+.shop-deco__sign--4 { border-color: var(--shop-sign-4); background-color: var(--shop-sign-4-tint); color: var(--shop-sign-4); }
+.shop-deco__sign--5 { border-color: var(--shop-sign-5); background-color: var(--shop-sign-5-tint); color: var(--shop-sign-5); }
+.shop-deco__sign-name
+{
+	display: none;
+}
+.shop-deco__footer
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	gap: 8dp;
+}

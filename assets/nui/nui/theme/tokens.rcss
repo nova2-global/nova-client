@@ -131,6 +131,17 @@ body, body.theme-dark
 	--tip-divider-shadow: #000000;
 	--tip-socket-silver: #b8bec9;
 	--tip-socket-gold: #e3b45a;
+	--shop-sign-1: #ff976d;
+	--shop-sign-1-tint: #593426bf;
+	--shop-sign-2: #f9f4ff;
+	--shop-sign-2-tint: #575559bf;
+	--shop-sign-3: #ffbf8b;
+	--shop-sign-3-tint: #594230bf;
+	--shop-sign-4: #ffecd1;
+	--shop-sign-4-tint: #595249bf;
+	--shop-sign-5: #f1ece1;
+	--shop-sign-5-tint: #54524ebf;
+	--shop-sign-seen: #4c0c66b2;
 }
 
 body.theme-light
@@ -233,6 +244,17 @@ body.theme-light
 	--tip-divider-shadow: #000000;
 	--tip-socket-silver: #b8bec9;
 	--tip-socket-gold: #e3b45a;
+	--shop-sign-1: #ff976d;
+	--shop-sign-1-tint: #593426bf;
+	--shop-sign-2: #f9f4ff;
+	--shop-sign-2-tint: #575559bf;
+	--shop-sign-3: #ffbf8b;
+	--shop-sign-3-tint: #594230bf;
+	--shop-sign-4: #ffecd1;
+	--shop-sign-4-tint: #595249bf;
+	--shop-sign-5: #f1ece1;
+	--shop-sign-5-tint: #54524ebf;
+	--shop-sign-seen: #4c0c66b2;
 }
 
 body.theme-classic
@@ -335,6 +357,17 @@ body.theme-classic
 	--tip-divider-shadow: #000000;
 	--tip-socket-silver: #c1c1c1;
 	--tip-socket-gold: #ffc700;
+	--shop-sign-1: #ff976d;
+	--shop-sign-1-tint: #593426bf;
+	--shop-sign-2: #f9f4ff;
+	--shop-sign-2-tint: #575559bf;
+	--shop-sign-3: #ffbf8b;
+	--shop-sign-3-tint: #594230bf;
+	--shop-sign-4: #ffecd1;
+	--shop-sign-4-tint: #595249bf;
+	--shop-sign-5: #f1ece1;
+	--shop-sign-5-tint: #54524ebf;
+	--shop-sign-seen: #4c0c66b2;
 }
 
 /* Skin classic: overrides shared tokens and adds its own (classic-...) while a
@@ -389,4 +422,8 @@ body.skin-classic
 	--classic-search-name: #b3977c;
 	--classic-search-disabled: #6a6a6a;
 	--classic-search-selected: #ffffff20;
+	--classic-log-row: #131313;
+	--classic-log-row-alt: #1e1e1e;
+	--classic-list-hover: #ffffff33;
+	--classic-list-select: #0000804d;
 }

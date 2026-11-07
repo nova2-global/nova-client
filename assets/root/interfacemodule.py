@@ -250,13 +250,15 @@ class Interface(object):
 		self.wndGemShop = nui_windows.make("gem-shop", uiGemShop.GemShopWindow, "nui_gem_shop.GemShopWindow")
 		self.wndGemShop.Hide()
 
-		# The offline shop search (NOVA-9) is the legacy controller on NovaUI
-		# proxies; the log and decoration windows remain plain.
+		# The offline shop's search, log and decoration windows (NOVA-9) are the
+		# legacy controllers on NovaUI proxies.
 		self.wndSearchShop = nui_windows.make("shop-search", uiSearchShop.SearchShopWindow, "nui_shop_search.SearchShopWindow")
 		self.wndSearchShop.BindInterface(self)
-		self.wndOfflineShopLog = uiOfflineShopLog.OfflineShopLogWindow()
+		self.wndOfflineShopLog = nui_windows.make("offline-shop-log", uiOfflineShopLog.OfflineShopLogWindow,
+		                                          "nui_offline_shop_log.OfflineShopLogWindow")
 		self.wndOfflineShopLog.BindInterface(self)
-		self.wndMyShopDeco = uiMyShopDecoration.MyShopDecorationWindow()
+		self.wndMyShopDeco = nui_windows.make("shop-deco", uiMyShopDecoration.MyShopDecorationWindow,
+		                                      "nui_shop_deco.MyShopDecorationWindow")
 		self.wndMyShopDeco.BindInterface(self)
 
 	def __MakeDialogs(self):
@@ -1511,7 +1513,7 @@ class Interface(object):
 			return
 
 		if style > 0:
-			board = uiPrivateShopBuilder.PrivateShopTitleBar(style)
+			board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopTitleBar, "nui_shop_signs.ShopSign", style)
 		else:
 			board = nui_windows.make("shop-signs", uiPrivateShopBuilder.PrivateShopAdvertisementBoard, "nui_shop_signs.ShopSign")
 		board.Open(vid, text)

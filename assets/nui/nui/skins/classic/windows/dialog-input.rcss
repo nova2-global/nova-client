@@ -31,3 +31,41 @@ body.skin-classic.dialog-input .nui-dialog__footer .nui-button
 {
 	min-width: 61dp;
 }
+
+/* The shop name dialog's decoration button (Wave 5, NOVA-9; uicommon.py's
+   decoButton): legacy's "..." on the extra small art beside the field. */
+body.skin-classic.dialog-input .dialog-input__deco-host
+{
+	margin: 2dp 0 0 4dp;
+}
+body.skin-classic.dialog-input .dialog-input__deco
+{
+	width: 38dp;
+	height: 19dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_01.sub" scale-none left top);
+	color: var(--classic-button-text);
+	line-height: 19dp;
+	text-align: center;
+}
+body.skin-classic.dialog-input .dialog-input__deco:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_02.sub" scale-none left top);
+}
+body.skin-classic.dialog-input .dialog-input__deco:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_03.sub" scale-none left top);
+}
+body.skin-classic.dialog-input .dialog-input__deco .nui-glyph
+{
+	display: none;
+}
+body.skin-classic.dialog-input .dialog-input__deco-label
+{
+	display: inline;
+	color: var(--classic-button-text);
+}

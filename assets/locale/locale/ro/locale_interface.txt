@@ -468,6 +468,7 @@ NUI_INTRO_CREATE_TITLE	Creează personaj
 NUI_INTRO_SELECT_TITLE	Selectare personaj
 NUI_INTRO_SLOTS	%d locuri
 NUI_INTRO_LOADING_TITLE	Intrare în regat
+NUI_SHOP_LOG_EMPTY	Încă nu există înregistrări
 GEMSHOP_LEFTTIME	Timp rămas
 GEMSHOP_TITLE	PIAŢA GAYA
 MYSHOP_DECO_CANCEL	Închide

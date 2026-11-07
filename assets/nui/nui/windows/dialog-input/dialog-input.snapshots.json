@@ -1,8 +1,11 @@
 {
-	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py).",
+	"$comment": "Golden cases of this window (tools/check_nui_snapshots.py). shop-name: the offline shop name dialog with its decoration button (Wave 5, NOVA-9).",
 	"cases": [
 		{"page": "dialog-input", "themes": "all",
 		 "scales": [["100", "1", "640x360"], ["150", "1.5", "960x540"], ["200", "2", "1280x720"]],
-		 "fixture": true, "roots": [], "time": null}
+		 "fixture": true, "roots": [], "time": null},
+		{"page": "dialog-input", "variant": "shop-name", "themes": "all",
+		 "scales": [["100", "1", "640x360"], ["200", "2", "1280x720"]],
+		 "fixture": true, "roots": ["assets/ETC"], "time": null}
 	]
 }

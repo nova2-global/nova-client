@@ -17,6 +17,12 @@ import nui_windows
 blockMode = 0
 viewChatMode = 0
 
+
+def IsHideBuffi():
+	"""1 while the player hides the buffi (player.IsHideBuffi, the server's
+	GC::BUFFI_HIDE state; NOVA-38), 0 on an exe without it."""
+	return int(bool(getattr(player, "IsHideBuffi", lambda: False)()))
+
 class OptionDialog(ui.ScriptWindow):
 
 	def __init__(self):
@@ -29,6 +35,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.RefreshShowSalesText()
 		self.RefreshPickupFilter()
 		self.RefreshHideShops()
+		self.RefreshHideBuffi()
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -47,6 +54,8 @@ class OptionDialog(ui.ScriptWindow):
 		self.pickupFilterButtonList = []
 		self.hideShopsLabel = None
 		self.hideShopsButtonList = []
+		self.hideBuffiLabel = None
+		self.hideBuffiButtonList = []
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -160,6 +169,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.__SetPeacePKMode()
 
 		self.__Load_HideShops()
+		self.__Load_HideBuffi()
 
 	## The offline shops' NPCs and signs, shown or hidden (NOVA-9; OLD
 	## uiGameOption.py:1169-1218, a "companions" checkbox there): a row under
@@ -202,6 +212,47 @@ class OptionDialog(ui.ScriptWindow):
 	# Index 0 "Show" is down while the shops show, 1 "Hide" while they are hidden.
 	def RefreshHideShops(self):
 		self.__ClickRadioButton(self.hideShopsButtonList, int(bool(shop.IsHideShops())))
+
+	## The buffi shown or hidden (NOVA-38; OLD uiGameOption.py:1174, 1220-1223,
+	## its "companions" checkbox's Buffi entry): a row under the hide-shops row.
+	## A press sends /hide_buffi 0|1; the row shows the server's state
+	## (player.IsHideBuffi(), refreshed by GC::BUFFI_HIDE through
+	## Interface.OnBuffiHide), never a local guess.
+	HIDE_BUFFI_ROW_Y = HIDE_SHOPS_ROW_Y + 25
+	HIDE_BUFFI_HEIGHT = HIDE_SHOPS_HEIGHT + 25
+
+	def __Load_HideBuffi(self):
+		board = self.GetChild("board")
+		board.SetSize(board.GetWidth(), self.HIDE_BUFFI_HEIGHT)
+		self.SetSize(self.GetWidth(), self.HIDE_BUFFI_HEIGHT)
+
+		label = ui.TextLine()
+		label.SetParent(board)
+		label.SetPosition(30, self.HIDE_BUFFI_ROW_Y + 2)
+		label.SetText(uiScriptLocale.OPTION_SHOW_COMPANIONS_BUFFI)
+		label.Show()
+		self.hideBuffiLabel = label
+
+		for (index, text) in enumerate((uiScriptLocale.OPTION_SALESTEXT_VIEW_ON, uiScriptLocale.OPTION_SALESTEXT_VIEW_OFF)):
+			button = ui.RadioButton()
+			button.SetParent(board)
+			button.SetPosition(90 + 65 * index, self.HIDE_BUFFI_ROW_Y)
+			button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+			button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+			button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+			button.SetText(text)
+			button.SAFE_SetEvent(self.__OnClickHideBuffiButton, index)
+			button.Show()
+			self.hideBuffiButtonList.append(button)
+
+	def __OnClickHideBuffiButton(self, hide):
+		if IsHideBuffi() != hide:
+			net.SendChatPacket("/hide_buffi %d" % hide)
+		self.RefreshHideBuffi()
+
+	# Index 0 "Show" is down while the buffi show, 1 "Hide" while they are hidden.
+	def RefreshHideBuffi(self):
+		self.__ClickRadioButton(self.hideBuffiButtonList, IsHideBuffi())
 
 	def __ClickRadioButton(self, buttonList, buttonIndex):
 		try:

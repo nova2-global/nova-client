@@ -1363,6 +1363,11 @@ class ItemToolTip(ToolTip):
 		if itemVnum in PREMIUM_SCROLLS and 0 != metinSlot:
 			self.__AppendPremiumScrollTime(metinSlot[0])
 
+		## A buffi item's INT (NOVA-38; OLD uiToolTip.py:1413-1414): the value
+		## of its fifth attribute, which the INT boosters raise.
+		if constInfo.IS_FAKEBUFF_ITEM(itemVnum) and attrSlot and len(attrSlot) > 4:
+			self.AppendTextLine(localeInfo.TOOLTIP_INT(attrSlot[4][1]), self.SPECIAL_POSITIVE_COLOR)
+
 		### Weapon ###
 		if item.ITEM_TYPE_WEAPON == itemType:
 

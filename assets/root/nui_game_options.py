@@ -17,7 +17,9 @@ setblockmode command reaches OnBlockMode; the four flags call systemSetting
 (saved at exit), the shop names also uiPrivateShopBuilder.UpdateADBoard
 when turned on; a pickup filter toggle (NOVA-50: equipment, special,
 potions, others; what Z and ` pick up) flips its category through
-systemSetting.SetPickupFilter, which the client saves with the settings. uiGameOption.blockMode and viewChatMode stay the shared
+systemSetting.SetPickupFilter, which the client saves with the settings; the
+sash row (SHOW_ACCE, NOVA-20) calls systemSetting.SetShowAcceFlag, saved at
+exit with the other flags. uiGameOption.blockMode and viewChatMode stay the shared
 state: this module reads and writes them, never a copy. Escape closes the
 window in its legacy place (nui_hud.EscapeProxy); a window the player moved
 keeps its place across a hide, as legacy's one window does."""
@@ -54,6 +56,12 @@ def _hide_shops():
 	return bool(getattr(shop, "IsHideShops", lambda: False)())
 
 
+def _show_sash():
+	"""Whether the client draws the sashes (systemSetting.IsShowAcce,
+	SHOW_ACCE; uigameoption.py RefreshShowSash)."""
+	return bool(systemSetting.IsShowAcce())
+
+
 class GameOptionsBoard(nui.Window):
 	"""The game options' document and model; its events go to its facade."""
 
@@ -70,7 +78,7 @@ class GameOptionsBoard(nui.Window):
 			return model()
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
 		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
-		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False}
+		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False, "show_sash": True}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -151,7 +159,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "pk_mode": self.pkMode, "block": mask, "blocked": self.blocked(mask),
 		        "view_chat": bool(systemSetting.IsViewChat()), "always_show_name": bool(systemSetting.IsAlwaysShowName()),
 		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
-		        "pickup": self.pickup(), "hide_shops": _hide_shops()}
+		        "pickup": self.pickup(), "hide_shops": _hide_shops(), "show_sash": _show_sash()}
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -240,6 +248,11 @@ class OptionDialog(nui_hud.LayoutCalls):
 		on GC HIDE_SHOPS), never a local guess (M5)."""
 		self._set(hide_shops=_hide_shops())
 
+	def RefreshShowSash(self):
+		"""SHOW_ACCE (NOVA-20): the sashes drawn or not, the client's flag
+		(uigameoption.py RefreshShowSash)."""
+		self._set(show_sash=_show_sash())
+
 	def RefreshPickupFilter(self):
 		"""A category's toggle is down while the filter picks it up
 		(uigameoption.py RefreshPickupFilter)."""
@@ -266,6 +279,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return int(bool(systemSetting.IsShowSalesText()))
 		if what == "hide_shops":
 			return int(_hide_shops())
+		if what == "show_sash":
+			return int(_show_sash())
 		return None
 
 	def nui_choose(self, what, value):
@@ -302,6 +317,11 @@ class OptionDialog(nui_hud.LayoutCalls):
 			# shops, 1 hides them; the server answers with HIDE_SHOPS.
 			net.SendChatPacket("/hide_shops %d" % value)
 			self.RefreshHideShops()
+		elif what == "show_sash" and value in (0, 1):
+			# Legacy's row (uiGameOption.__OnClickShowSashButton): 1 draws the
+			# sashes, 0 hides them.
+			systemSetting.SetShowAcceFlag(bool(value))
+			self.RefreshShowSash()
 
 	def __CheckPvPProtectedLevelPlayer(self):
 		if player.GetStatus(player.LEVEL) < constInfo.PVPMODE_PROTECTED_LEVEL:

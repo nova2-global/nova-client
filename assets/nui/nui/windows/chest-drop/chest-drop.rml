@@ -1,0 +1,57 @@
+<rml>
+<head>
+	<!-- The chest-drop preview (Wave 7, NOVA-18; legacy uichestdrop.py
+	     ChestDropWindow, OLD's uiTimerWindow.ChestItemPopup). While the
+	     chest-drop flag is on, the Interface makes
+	     nui_chest_drop.ChestDropWindow (controller
+	     assets/root/nui_chest_drop.py), a subclass of the legacy class on
+	     proxies: the request, the rows the server sent, OLD's tier rule and
+	     the texts are legacy's code. The board says where the items are found
+	     (and how many times a gacha chest opens), shows the chest, then one
+	     row per item: its icon, "<count>x <name>" and its chance tier (low,
+	     middle, high). The list scrolls in RmlUi; nothing runs per frame. The
+	     document exists only while the window shows and draws below the
+	     legacy UI layer. A left or right press anywhere on it raises the
+	     window (board_press). -->
+	<title>chest-drop</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="chest-drop.rcss"/>
+</head>
+<body template="nui" id="chest-drop" class="nui-window nui-fx nui-anim nui-below-legacy-ui chest-drop" data-model="chest_drop"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar chest-drop__titlebar">
+		<handle class="nui-window__handle chest-drop__handle" move_target="#document">
+			<span class="chest-drop__title-icon"><span class="nui-glyph nui-glyph--gift"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title chest-drop__title">{{ title }}</span>
+		</handle>
+		<button id="chest-drop-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim chest-drop__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body chest-drop__body">
+		<div class="chest-drop__info">
+			<div id="chest-drop-info" class="chest-drop__line">{{ info }}</div>
+			<div id="chest-drop-opens" class="chest-drop__line" data-if="opens != ''">{{ opens }}</div>
+		</div>
+		<div class="chest-drop__chest">
+			<div class="chest-drop__well chest-drop__chest-slot"><img class="chest-drop__icon" data-if="chest_icon != ''" data-attr-src="chest_icon"/></div>
+			<span id="chest-drop-name" class="chest-drop__chest-name">{{ chest_name }}</span>
+		</div>
+		<div class="nui-list chest-drop__list">
+			<div id="chest-drop-rows" class="nui-list__viewport chest-drop__viewport">
+				<div class="chest-drop__row" data-for="r : rows" data-attr-id="'chest-drop-row-' + it_index"
+				     data-class-is-low="r.tier == 1" data-class-is-middle="r.tier == 2" data-class-is-high="r.tier == 3">
+					<div class="chest-drop__well chest-drop__slot"><img class="chest-drop__icon" data-if="r.icon != ''" data-attr-src="r.icon"/></div>
+					<div class="chest-drop__text">
+						<span class="chest-drop__name">{{ r.name }}</span>
+						<span class="chest-drop__tier chest-drop__tier--low" data-if="r.tier == 1">@game.CHEST_DROP_TIER_LOW</span>
+						<span class="chest-drop__tier chest-drop__tier--middle" data-if="r.tier == 2">@game.CHEST_DROP_TIER_MIDDLE</span>
+						<span class="chest-drop__tier chest-drop__tier--high" data-if="r.tier == 3">@game.CHEST_DROP_TIER_HIGH</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

@@ -408,7 +408,7 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_SUBTRACT]	= lambda: self.interface.MiniMapScaleDown()
 		onPressKeyDict[app.DIK_L]			= lambda: self.interface.ToggleChatLogWindow()
 		onPressKeyDict[app.DIK_COMMA]		= lambda: self.ShowConsole()		# "`" key
-		onPressKeyDict[app.DIK_LSHIFT]		= lambda: self.__SetQuickPageMode()
+		onPressKeyDict[app.DIK_LSHIFT]		= lambda: self.__PressLeftShiftKey()
 		onPressKeyDict[app.DIK_X]			= lambda: self.__SetChannelSwitchMode(True)
 
 		onPressKeyDict[app.DIK_J]			= lambda: self.__PressJKey()
@@ -551,6 +551,14 @@ class GameWindow(ui.ScriptWindow):
 
 	def __SetQuickPageMode(self):
 		self.pressNumber=ui.__mem_func__(self.__SelectQuickPage)
+
+	# Left Shift: the quick page mode, and OLD's Shift over a chest opens its
+	# contents (NOVA-18; OLD's OnPressLeftShiftKey of the inventory, the
+	# special inventory and the shop, uiInventory.py:1201-1208).
+	def __PressLeftShiftKey(self):
+		self.__SetQuickPageMode()
+		if self.interface:
+			self.interface.OpenHoveredChestDrop()
 
 	# X pressed (True) or released (False): the channel quick switch (NOVA-49).
 	# OLD's X also jumped and flew (OnXIn); that is not ported. NEW has no
@@ -1123,6 +1131,16 @@ class GameWindow(ui.ScriptWindow):
 	def CloseGemShop(self):
 		if self.interface:
 			self.interface.CloseGemShop()
+
+	## Chest-drop preview (NOVA-18): C's GC::CHEST_DROP_INFO, a chest's rows
+	## [(vnum, count, chance)] in the server's order. OLD appended each row
+	## (BINARY_AddChestDropInfo, game.py:1173-1176), so a second answer for a
+	## chest doubled its rows; the rows replace the known ones here. Then
+	## OLD's BINARY_RefreshChestDropInfo (:1178-1179) opens the window.
+	def BINARY_SetChestDropInfo(self, chestVnum, rows):
+		constInfo.CHESTS_PREVIEW[chestVnum] = [tuple(row) for row in rows]
+		if self.interface:
+			self.interface.RefreshChestDrop(chestVnum)
 
 	## Exchange
 	def StartExchange(self):

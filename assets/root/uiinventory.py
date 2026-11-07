@@ -1419,6 +1419,7 @@ class InventoryWindow(ui.ScriptWindow):
 
 		
 	def OverOutItem(self):
+		constInfo.SET_HOVERED_CHEST(0)
 		self.wndItem.SetUsableItem(False)
 		if None != self.tooltipItem:
 			self.tooltipItem.HideToolTip()
@@ -1426,6 +1427,9 @@ class InventoryWindow(ui.ScriptWindow):
 	def OverInItem(self, overSlotPos):
 		overSlotPos = self.__InventoryLocalSlotPosToGlobalSlotPos(overSlotPos)
 		self.wndItem.SetUsableItem(False)
+		## OLD's selectedItem (uiInventory.py:2159): Shift over a chest shows
+		## its contents (NOVA-18).
+		constInfo.SET_HOVERED_CHEST(player.GetItemIndex(overSlotPos))
 
 		if mouseModule.mouseController.isAttached():
 			attachedItemType = mouseModule.mouseController.GetAttachedType()

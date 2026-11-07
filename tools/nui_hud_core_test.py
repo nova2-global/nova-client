@@ -1232,6 +1232,8 @@ EXPECTED_SITES = {
                            ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
                            # Wave 5 (NOVA-10): the gaya market.
                            ("make", "gem-shop", "uiGemShop.GemShopWindow", "nui_gem_shop.GemShopWindow"),
+                           # Wave 7 (NOVA-18): the chest-drop preview.
+                           ("make", "chest-drop", "uiChestDrop.ChestDropWindow", "nui_chest_drop.ChestDropWindow"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
                            ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
                             "nui_offline_shop_log.OfflineShopLogWindow"),

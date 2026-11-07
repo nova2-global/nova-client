@@ -20,7 +20,8 @@ WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "p
 WAVE5A = ["quest", "guild-building", "web", "console"]
 WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # The items group: the Wave 3b windows and wave 4b's extra inventory.
-ITEMS = WAVE3B + ["extra-inventory"]
+# Wave 7 (NOVA-18): the chest-drop preview joins the items group.
+ITEMS = WAVE3B + ["extra-inventory", "chest-drop"]
 # Documents a later stage writes, listed for the prewarm already: the test
 # below fails while a document named here exists, or one not named here is
 # missing. TOOLTIPS AND DIALOGS (P14 spec 9.1, 9.4) wrote the last Wave 3b ones.
@@ -837,3 +838,29 @@ class ClientDefault(WindowsTest):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+# --- Wave 7 (NOVA-18) --------------------------------------------------------------------------
+
+
+class Wave7ChestDrop(WindowsTest):
+    """The chest-drop preview is the id "chest-drop", on by default, in the
+    items group, its document on demand; inserted before the maintenance
+    countdown, which stays last."""
+
+    def test_the_id_is_on_by_default_in_the_items_group_before_maintenance(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertEqual(ids[-2:], ["chest-drop", "maintenance"])
+        self.assertIs(dict(self.m.WINDOWS)["chest-drop"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "chest-drop" in members and group != "all"],
+                         ["items"])
+        self.setting.windows = "+items,-chest-drop"
+        self.assertFalse(self.m.is_on("chest-drop"))
+        self.setting.windows = "+chest-drop"
+        self.assertTrue(self.m.is_on("chest-drop"))
+
+    def test_the_document_is_on_demand_and_prewarmed_with_its_flag(self):
+        self.assertIn(("chest-drop", ("chest-drop",)), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+chest-drop"
+        self.assertIn("nui/windows/chest-drop/chest-drop.rml", self.m.prewarm_documents())
+

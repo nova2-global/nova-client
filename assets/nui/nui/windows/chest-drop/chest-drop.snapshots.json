@@ -1,0 +1,9 @@
+{
+	"$comment": "Golden cases of the chest-drop preview (Wave 7, NOVA-18; tools/check_nui_snapshots.py): the Moonlight Treasure Box with six rows, two in each chance tier (low, middle, high), the list scrolling past the fifth. The window centers at its first show; the sheet's place frames it here. Classic draws legacy's 320 x 400 board (uichestdrop.py) with OLD's bands.",
+	"cases": [
+		{"page": "chest-drop", "themes": "all", "except": ["classic"], "scales": [["100", "1", "480x600"], ["150", "1.5", "720x900"], ["200", "2", "960x1200"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "chest-drop", "themes": ["classic"], "scales": [["100", "1", "352x432"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "chest-drop", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "480x600"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
+		{"page": "chest-drop", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "480x600"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
+	]
+}

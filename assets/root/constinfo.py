@@ -4,6 +4,11 @@ CONSOLE_ENABLE = 0
 # The sash combine window's "combine all" check box (NOVA-20; OLD constInfo.py:4).
 SASH_AUTO_COMBINE = False
 
+# The chest-drop preview's rows (NOVA-18; OLD constInfo.py:32): chest vnum ->
+# [(vnum, count, chance)] as GC::CHEST_DROP_INFO sent them, kept for the
+# session so a chest is asked for once (uichestdrop.request).
+CHESTS_PREVIEW = {}
+
 PVPMODE_ENABLE = 1
 PVPMODE_TEST_ENABLE = 0
 PVPMODE_ACCELKEY_ENABLE = 1
@@ -311,3 +316,33 @@ def GET_CHANNEL_SERVER_INFO(channel):
 	else:
 		channelName = localeInfo.CHANNEL_NORMAL % channel
 	return "%s, %s" % (serverDict["name"], channelName)
+
+
+## The chest-drop preview (NOVA-18; OLD constInfo.py:543-555): a gift box, a
+## gacha chest or a treasure box of the use type opens into a group whose rows
+## Shift shows (uichestdrop.py).
+def IS_CHEST_PREVIEWABLE(itemVnum):
+	if not itemVnum:
+		return False
+	item.SelectItem(itemVnum)
+	itemType = item.GetItemType()
+	if itemType == getattr(item, "ITEM_TYPE_GIFTBOX", -1):
+		return True
+	if itemType == item.ITEM_TYPE_GACHA:
+		return True
+	if itemType == item.ITEM_TYPE_USE and item.GetItemSubType() == item.USE_TREASURE_BOX:
+		return True
+	return False
+
+## The chest under the pointer in the inventory, the special inventory or a
+## shop (OLD's selectedItem of each): their OverInItem sets it, OverOutItem
+## clears it, and the Shift press reads it (Interface.OpenHoveredChestDrop).
+HOVERED_CHEST = 0
+
+def SET_HOVERED_CHEST(itemVnum):
+	global HOVERED_CHEST
+	HOVERED_CHEST = itemVnum if itemVnum and IS_CHEST_PREVIEWABLE(itemVnum) else 0
+
+def GET_HOVERED_CHEST():
+	return HOVERED_CHEST
+

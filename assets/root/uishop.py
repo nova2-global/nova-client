@@ -571,6 +571,9 @@ class ShopDialog(ui.ScriptWindow):
 			self.__OfflineOverInItem(slotIndex)
 			return
 		slotIndex = self.__GetRealIndex(slotIndex)
+		## OLD uiShop.py:1131-1140: Shift over a chest shows its contents
+		## (NOVA-18).
+		constInfo.SET_HOVERED_CHEST(shop.GetItemID(slotIndex))
 		if mouseModule.mouseController.isAttached():
 			return
 
@@ -581,6 +584,7 @@ class ShopDialog(ui.ScriptWindow):
 				self.tooltipItem.SetShopItemBySecondaryCoin(slotIndex)
 	def OverOutItem(self):
 		self.hoveredSlot = -1
+		constInfo.SET_HOVERED_CHEST(0)
 		if 0 != self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 

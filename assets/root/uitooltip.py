@@ -1753,6 +1753,10 @@ class ItemToolTip(ToolTip):
 			elif item.LIMIT_TIMER_BASED_ON_WEAR == limitType:
 				self.AppendTimerBasedOnWearLastTime(metinSlot, limitValue2)
 
+		## OLD uiToolTip.py:1961-1962 (NOVA-18): Shift shows a chest's contents.
+		if constInfo.IS_CHEST_PREVIEWABLE(itemVnum):
+			self.AppendTextLine(localeInfo.CHEST_CONTENT_PREVIEW, self.NORMAL_COLOR)
+
 		self.__AppendMoveHints(itemVnum, itemType)
 
 		self.ShowToolTip()

@@ -45,6 +45,7 @@ import uiselectitem
 # END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
 # The gaya market (NOVA-10; OLD interfaceModule.py:112-114).
 import uiGemShop
+import uiChestDrop
 import uiSash
 # The offline shop's search, log and decoration windows (NOVA-9, chunk Y2's).
 import uiSearchShop
@@ -93,6 +94,7 @@ class Interface(object):
 		self.wndGuild = None
 		self.wndGuildBuilding = None
 		self.wndGemShop = None
+		self.wndChestDrop = None
 		self.wndSashCombine = None
 		self.wndSashAbsorption = None
 		self.wndSearchShop = None
@@ -252,6 +254,10 @@ class Interface(object):
 		# nui_windows.make later (spec 4.8).
 		self.wndGemShop = nui_windows.make("gem-shop", uiGemShop.GemShopWindow, "nui_gem_shop.GemShopWindow")
 		self.wndGemShop.Hide()
+
+		# The chest-drop preview (NOVA-18; OLD interfaceModule.py:758-760).
+		self.wndChestDrop = nui_windows.make("chest-drop", uiChestDrop.ChestDropWindow, "nui_chest_drop.ChestDropWindow")
+		self.wndChestDrop.Hide()
 
 		# The offline shop's search, log and decoration windows (NOVA-9) are the
 		# legacy controllers on NovaUI proxies.
@@ -592,6 +598,10 @@ class Interface(object):
 		if self.wndGemShop:
 			self.wndGemShop.Destroy()
 			self.wndGemShop = None
+
+		if self.wndChestDrop:
+			self.wndChestDrop.Destroy()
+			self.wndChestDrop = None
 
 		if self.wndSashCombine:
 			self.wndSashCombine.Destroy()
@@ -1431,6 +1441,9 @@ class Interface(object):
 		## stand-in that has only the HUD windows.
 		if getattr(self, "wndMyShopDeco", None):
 			hideWindows += self.wndMyShopDeco,
+		## OLD interfaceModule.py:3381-3382 (NOVA-18).
+		if getattr(self, "wndChestDrop", None):
+			hideWindows += self.wndChestDrop,
 
 		hideWindows = [x for x in hideWindows if x.IsShow()]
 
@@ -1523,6 +1536,27 @@ class Interface(object):
 
 	def CloseGemShop(self):
 		self.wndGemShop.Close()
+
+	#####################################################################################
+	### Chest-drop preview (NOVA-18; OLD uiInventory.py:1201-1208, game.py:1173-1179) ###
+
+	def OpenChestDrop(self, vnum):
+		"""Asks the server for a chest's rows once a session, then opens the
+		window on what is known (OLD's Shift press). False: no chest."""
+		if not self.wndChestDrop or not uiChestDrop.request(vnum):
+			return False
+		self.wndChestDrop.Open(vnum)
+		return True
+
+	def OpenHoveredChestDrop(self):
+		"""The Shift press: the chest under the pointer in the inventory, the
+		special inventory or a shop (OLD's OnPressLeftShiftKey of each)."""
+		return self.OpenChestDrop(uiChestDrop.hovered_vnum())
+
+	def RefreshChestDrop(self, vnum):
+		"""The server's answer (OLD's BINARY_RefreshChestDropInfo)."""
+		if self.wndChestDrop:
+			self.wndChestDrop.Refresh(vnum)
 
 	#####################################################################################
 	### Private Shop ###

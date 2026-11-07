@@ -1,0 +1,170 @@
+/* The chest-drop preview's modern look (Wave 7, NOVA-18): the gift emblem
+   before the title; the info lines; the chest in a well with its name; then
+   the rows in a scrolling list, each a raised band with the item's slot,
+   "<count>x <name>" and the chance tier under it, the tier's mark on the
+   band's left edge (low in the accent, middle in blue, high in green, as
+   OLD's purple, blue and green). The controller centers it at its first show;
+   the sheet's place frames it in its snapshots. Classic (legacy's 320 x 400
+   board): skins/classic/windows/chest-drop.rcss. */
+
+body.chest-drop
+{
+	left: 16dp;
+	top: 16dp;
+	width: 320dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.chest-drop button
+{
+	tab-index: none;
+	focus: none;
+}
+.chest-drop__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.chest-drop__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.chest-drop__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 8dp 12dp 12dp;
+}
+.chest-drop__info
+{
+	margin-bottom: 8dp;
+	pointer-events: none;
+}
+.chest-drop__line
+{
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+}
+.chest-drop__chest
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10dp;
+	box-sizing: border-box;
+	height: 56dp;
+	padding: 0 10dp;
+	margin-bottom: 8dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	pointer-events: none;
+}
+.chest-drop__chest-slot, .chest-drop__slot
+{
+	flex: 0 0 auto;
+	width: 40dp;
+	height: 40dp;
+}
+/* The icons sit in plain wells, not slot cells: the rows take no press, so
+   nothing here is a slot to hover or pick. */
+.chest-drop__well
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+}
+.chest-drop__icon
+{
+	display: block;
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+.chest-drop__chest-name
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-weight: bold;
+}
+.chest-drop__viewport
+{
+	height: 300dp;
+}
+.chest-drop__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 10dp;
+	box-sizing: border-box;
+	height: 52dp;
+	padding: 0 8dp;
+	margin-bottom: 4dp;
+	background-color: var(--surface-raised);
+	border-width: 0 0 0 3dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	pointer-events: none;
+}
+.chest-drop__row.is-low
+{
+	border-left-color: var(--accent);
+}
+.chest-drop__row.is-middle
+{
+	border-left-color: var(--gauge-blue);
+}
+.chest-drop__row.is-high
+{
+	border-left-color: var(--success);
+}
+.chest-drop__text
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+}
+.chest-drop__name
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.chest-drop__tier
+{
+	font-size: var(--font-sm);
+	font-weight: bold;
+}
+.chest-drop__tier--low
+{
+	color: var(--accent);
+}
+.chest-drop__tier--middle
+{
+	color: var(--gauge-blue);
+}
+.chest-drop__tier--high
+{
+	color: var(--success);
+}

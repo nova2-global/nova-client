@@ -68,7 +68,9 @@ def aura_world():
 
 
 def game_window(world, interface=None):
-    Game = sash_test.compiled("game.py", "GameWindow", ["BINARY_AuraPacket"], {"item": world.game.modules["item"]})
+    # game.py makes the window through nui_windows.make() (Wave 6 NovaUI).
+    Game = sash_test.compiled("game.py", "GameWindow", ["BINARY_AuraPacket"],
+                              {"item": world.game.modules["item"], "nui_windows": world.game.loaded["nui_windows"]})
     game = Game()
     game.auraWindow = None
     game.interface = interface

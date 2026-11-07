@@ -848,6 +848,7 @@ What the color roles mean:
 | `--classic-disabled-text` | classic | `#6e6e6e` |
 | `--classic-key-text` | classic | `#000000` |
 | `--classic-label-white` | classic | `#ffffff` |
+| `--classic-aura-exp-fill` | classic | `#44aaff` |
 | `--classic-chat-press` | classic | `#ffffff4d` |
 | `--classic-chat-log-fill` | classic | `#00000077` |
 | `--classic-chat-grip` | classic | `#989898` |

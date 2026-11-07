@@ -1,0 +1,186 @@
+/* Classic skin overlay of nui/windows/aura/aura.rml: legacy's aura level
+   window (uiscript aura_levelupwindow.py) at 100%, 1dp to the legacy pixel:
+   the stone board, 248 x 265; the title bar at 6, 6, 235 wide; "Main" and
+   "Material" centered at 79 and 171, 45 down (the slot group at 13, 35 and
+   its captions at 66 and 158, 10 down); the two cells on the slot base at
+   62 and 154, 66 down; the level centered at 124, 112 down; the gauge's two
+   flat bars at 30, 132, 188 x 12 (the background in legacy's 0xFF333333,
+   the fill's width legacy's), the percentage centered on it at 131 and the
+   experience at 150; the large buttons at 36 and 124, 215 down. Legacy's
+   background art (aura_levelup_bg.sub) is not in the packs, so classic draws
+   what legacy's uiscript draws today: the board, the slot bases and the
+   bars. The fill stands in with the classic gauge blue until the palette
+   has legacy's 0xFF44AAFF. */
+
+body.skin-classic.aura
+{
+	width: 248dp;
+	height: 265dp;
+	min-width: 0;
+}
+body.skin-classic.aura .aura__title-icon
+{
+	display: none;
+}
+body.skin-classic.aura .aura__titlebar
+{
+	position: absolute;
+	left: 6dp;
+	top: 6dp;
+	width: 235dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.aura .aura__handle, body.skin-classic.aura .aura__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end. */
+body.skin-classic.aura .aura__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.aura .aura__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.aura .aura__cells
+{
+	display: block;
+	height: 0;
+}
+body.skin-classic.aura .aura__feed
+{
+	display: none;
+}
+body.skin-classic.aura .aura__column
+{
+	display: block;
+	position: absolute;
+	top: 45dp;
+	width: 92dp;
+	height: 53dp;
+}
+body.skin-classic.aura .aura__column--main
+{
+	left: 33dp;
+}
+body.skin-classic.aura .aura__column--material
+{
+	left: 125dp;
+}
+body.skin-classic.aura .aura__caption
+{
+	margin: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 16dp;
+}
+/* The cells on legacy's slot base, at 62 and 154 on the board. */
+body.skin-classic.aura .aura__cell
+{
+	position: absolute;
+	left: 29dp;
+	top: 21dp;
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.aura .aura__progress
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 248dp;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.aura .aura__stats
+{
+	display: block;
+	height: 0;
+}
+body.skin-classic.aura .aura__level, body.skin-classic.aura .aura__percent, body.skin-classic.aura .aura__exp
+{
+	display: block;
+	position: absolute;
+	left: 24dp;
+	width: 200dp;
+	height: 16dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 16dp;
+	text-align: center;
+}
+body.skin-classic.aura .aura__level
+{
+	top: 112dp;
+}
+/* Over the gauge, as legacy's text draws after the bars. */
+body.skin-classic.aura .aura__percent
+{
+	top: 131dp;
+	z-index: 1;
+}
+body.skin-classic.aura .aura__exp
+{
+	top: 150dp;
+}
+body.skin-classic.aura .aura__gauge-slot
+{
+	position: absolute;
+	left: 30dp;
+	top: 132dp;
+	width: 188dp;
+	height: 12dp;
+	margin: 0;
+}
+body.skin-classic.aura progress.aura__gauge
+{
+	width: 188dp;
+	height: 12dp;
+	decorator: none;
+	background-color: var(--classic-slot-dark);
+	border-radius: 0;
+}
+body.skin-classic.aura progress.aura__gauge fill
+{
+	margin: 0;
+	decorator: none;
+	/* Legacy's ExpGaugeFill bar color, 0xFF44AAFF (aura_levelupwindow.py). */
+	background-color: var(--classic-aura-exp-fill);
+	border-radius: 0;
+}
+body.skin-classic.aura .aura__footer
+{
+	display: block;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.aura .aura__accept, body.skin-classic.aura .aura__cancel
+{
+	position: absolute;
+	top: 215dp;
+	width: 88dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+}
+body.skin-classic.aura .aura__accept
+{
+	left: 36dp;
+}
+body.skin-classic.aura .aura__cancel
+{
+	left: 124dp;
+}

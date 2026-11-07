@@ -12,7 +12,6 @@ and the experience line in each state), the walk-away watch, that no Python
 runs per frame, the lifecycle, that the loader binds as legacy's does, and
 that every fixture has every model key."""
 
-import math
 import os
 import sys
 import unittest
@@ -401,11 +400,10 @@ class NoPerFramePython(AuraTest):
         nuigame = world.game.modules["nuigame"]
         state = nuigame.LeaveRangeState(KEY)
         self.assertIsNotNone(state)
-        # Legacy closes at 1000 or more; the watch fires past its range, so the
-        # range is the double just under 1000.
+        # Legacy closes at 1000 or more; the engine keeps the range as a float
+        # and fires past it, so the range is the largest float under 1000.
         self.assertEqual((state["range"], state["rearm"], state["start"]),
-                         (math.nextafter(1000.0, 0.0), False, [1000.0, 2000.0]))
-        self.assertTrue(1000.0 > state["range"] and not 999.9999 > state["range"])
+                         (999.99993896484375, False, [1000.0, 2000.0]))
         with world.game, w4.quiet():
             world.window.Close()
         self.assertIsNone(nuigame.LeaveRangeState(KEY))

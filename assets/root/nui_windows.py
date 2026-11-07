@@ -200,7 +200,9 @@ ON_DEMAND_DOCUMENTS = (
 	("guild", ("guild", "guild-grade-name")),
 	("guild-war-dialogs", ("guild-war-declare", "guild-war-accept")),
 	("guild-mark", ("guild-mark",)),
-	# Wave 6 (NOVA-23): the aura level window, only while it shows.
+	# Wave 6 (NOVA-20, NOVA-23): the sash combine or absorb window and the
+	# aura level window, each only while it shows.
+	("sash", ("sash",)),
 	("aura", ("aura",)),
 	# P18: the maintenance countdown, only while it shows.
 	("maintenance", ("maintenance",)),

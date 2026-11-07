@@ -29,11 +29,9 @@ OnUpdate (uiaura.py:281-286: 1000 units or more from the open position on
 either axis runs OnClose once) is a nuigame.WatchLeaveRange watch, armed by
 Open and stopped by Hide, whose callback is legacy's OnClose. The watch
 fires past `range` (|d| > range) where legacy fires at |d| >= 1000, so the
-range is the double just under LIMIT_RANGE (math.nextafter): the engine takes
-it as a double, and |d| > that is |d| >= 1000. The board exists only while
-the window shows."""
-
-import math
+range is the largest 32-bit float under LIMIT_RANGE
+(nui_facade.below_as_float): the engine keeps the range as a float, and
+|d| > that is |d| >= 1000. The board exists only while the window shows."""
 
 import nuigame
 import ui
@@ -47,9 +45,9 @@ import nui_slots
 
 DOCUMENT = "nui/windows/aura/aura.rml"
 KEY = "aura"
-# Legacy's LIMIT_RANGE (uiaura.py:19), less one ulp: see the module docstring
-# for > and >=.
-LEAVE_RANGE = math.nextafter(float(getattr(uiAura, "LIMIT_RANGE", 1000)), 0.0)
+# Legacy's LIMIT_RANGE (uiaura.py:19) as the float just under it: see the
+# module docstring for > and >=.
+LEAVE_RANGE = nui_facade.below_as_float(getattr(uiAura, "LIMIT_RANGE", 1000))
 # Legacy's EXP_GAUGE_MAX_WIDTH (uiaura.py:20): the fill's full width.
 GAUGE_WIDTH = getattr(uiAura, "EXP_GAUGE_MAX_WIDTH", 188)
 # The uiscript's bar height (aura_levelupwindow.py: ExpGaugeBG, ExpGaugeFill).

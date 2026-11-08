@@ -309,9 +309,11 @@ def fixtures():
                                                 rail_folded=True),
         ("costume", ""): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}),
         ("costume", "female"): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}, gender="female"),
-        # The costume body and hair alone, as legacy's costume window since
-        # NOVA-97 (the cut's other costume cells are not ported).
-        ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001}),
+        # The costume body and hair, as legacy's costume window since NOVA-97,
+        # and the buffi's block (NOVA-38: its costume body worn, its hair
+        # empty, its weapon costume worn).
+        ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001,
+                                                        "buffi_costume_body": 41001, "buffi_costume_weapon": 1000}),
         # An auto potion in the belt is never active: legacy activates only the
         # bag's cells (uiinventory.py RefreshBagSlotWindow).
         ("belt-inventory", ""): belt(TODAY, 4, {0: (27001, 5, {}), 1: (27002, 1, {}), 3: (72723, 1, {})}),

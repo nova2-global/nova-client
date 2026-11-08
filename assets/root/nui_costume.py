@@ -7,7 +7,9 @@ the wear table (nui_limits) where the legacy slot window was, with the
 inventory's handlers (OverInItem, OverOutItem, UseItemSlot, SelectEmptySlot,
 SelectItemSlot) as legacy binds them, so equipping, unequipping and every
 drag is the inventory's legacy code. The group is the costume body and
-hair, as legacy's window since the cut (NOVA-97). Legacy refreshes
+hair, as legacy's window since the cut (NOVA-97), and in the live table the
+buffi's costume body, hair and weapon costume (NOVA-38: has_companion, the
+sheet's companion block under the stage, legacy's buffi panel). Legacy refreshes
 COSTUME_SLOT_COUNT cells; a cell of the group it would not refresh (none
 since the cut: before it, ring1, P14 spec 2.1) is filled from the inventory
 at each refresh. The board exists only while the window shows; at each open it is

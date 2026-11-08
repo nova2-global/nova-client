@@ -208,9 +208,10 @@ class WearTables(LimitsTest):
         self.assertEqual(len(self.m.wear_table(foundation)), 40)
         # Legacy's windows since NOVA-97: the rings and the belt with the
         # equipment, the costume body and hair alone, the cut's unported
-        # costume cells hidden.
+        # costume cells hidden; the foundation's costume group also holds the
+        # buffi's costume body, hair and weapon costume (NOVA-38).
         self.assertEqual(counts(today), [14, 2, 8])
-        self.assertEqual(counts(foundation), [14, 2, 24])
+        self.assertEqual(counts(foundation), [14, 5, 21])
         self.assertRaises(ValueError, self.m.wear_group, "bag", today)
 
     def test_a_wear_slot_is_its_index_name_cell_group_and_span(self):

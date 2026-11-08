@@ -340,3 +340,39 @@ body.cos.inv--table-new .cos-wear--ring1 { left: 64dp; top: 150dp; width: 44dp; 
 {
 	height: auto;
 }
+
+/* --- The buffi's block (NOVA-38; the live table) -------------------------------
+
+   Legacy's buffi panel (uiscript costumewindow.py, OLD's
+   uiscript/costumewindow.py:54, 74-76) under the stage: a divider, its
+   title, and the buffi's weapon costume, hair and body costume with legacy's
+   places to each other (the weapon on the left, the hair over the body). */
+.cos-companion-title
+{
+	display: none;
+}
+body.cos.cos--companion.inv--table-old .cos-grid
+{
+	height: 396dp;
+}
+body.cos.cos--companion.inv--table-old .cos-divider
+{
+	left: 12dp;
+	top: 216dp;
+	width: 150dp;
+}
+body.cos.cos--companion.inv--table-old .cos-companion-title
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 222dp;
+	width: 174dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+	pointer-events: none;
+}
+body.cos.inv--table-old .cos-wear--buffi_costume_weapon { left: 38dp; top: 244dp; width: 44dp; height: 128dp; }
+body.cos.inv--table-old .cos-wear--buffi_costume_hair { left: 92dp; top: 244dp; width: 44dp; height: 44dp; }
+body.cos.inv--table-old .cos-wear--buffi_costume_body { left: 92dp; top: 298dp; width: 44dp; height: 86dp; }

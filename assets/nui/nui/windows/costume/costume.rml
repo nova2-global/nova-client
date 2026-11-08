@@ -6,10 +6,12 @@
 	     subclass of the legacy class whose slot window is a proxy over the
 	     costume group of the wear table (nui_limits), bound to the
 	     inventory's legacy handlers: the costume body and hair, as legacy's
-	     window since the cut (NOVA-97). Its cells are placed by name
+	     window since the cut (NOVA-97), and in the live table the buffi's
+	     costume body, hair and weapon costume (NOVA-38, legacy's buffi
+	     panel). Its cells are placed by name
 	     (cos-wear--<name>) in each skin's sheet; the companion block and its
-	     divider show only while the table has one (has_companion; the cut
-	     hides it). The modern skin stands a figure between the slots on a
+	     divider and title show only while the table has one
+	     (has_companion). The modern skin stands a figure between the slots on a
 	     small rune circle: an image whose path the controller passes, the
 	     male or the female one by the character's race. It exists only
 	     while it shows, opens beside the inventory and moves alone after,
@@ -55,6 +57,7 @@
 					class="nui-glyph__b"></span></span></span>
 			</div>
 			<div class="cos-divider" data-if="has_companion"></div>
+			<span class="cos-companion-title" data-if="has_companion">@ui.COSTUME_WINDOW_BUFFICOSTUME</span>
 			<div class="cos-wear-place" data-for="w : slots" data-attr-class="'cos-wear-place cos-wear--' + w.name">
 				<div class="nui-slot nui-anim cos-wear" data-attr-id="'cos-wear-' + w.name"
 				     data-class-is-empty="w.kind == ''" data-class-is-target="w.target == 'move'"

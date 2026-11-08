@@ -473,6 +473,7 @@ NPC_LIST = os.path.join(old_content.ASSETS, "root", "npclist.txt")
 # Where CRaceManager looks for an npclist name's folder.
 NPC_FOLDERS = ("npc", "npc2", "monster", "monster2")
 BASE_MODEL = re.compile(rb'BaseModelFileName\s+"([^"]+)"', re.I)
+EFFECT_SCRIPT = re.compile(rb'EffectScriptName\s+"([^"]+)"', re.I)
 
 
 def _rows(data):
@@ -484,7 +485,9 @@ def _rows(data):
 
 def shop_seeds(deco_data, npclist_data, index, packer, files):
 	"""The store paths shop_deco.txt names that NEW lacks: for each type 1
-	row, its vnum's model (the msm in the npclist name's folder, the base
+	row, the effects its vnum's model attaches (the msm's EffectScriptName,
+	OLD's p_shop_*.mse; even when NEW ships the model) and, when NEW lacks
+	the model, the model (the msm in the npclist name's folder, the base
 	model it names, motlist.txt and the motions that lists); for each type 2
 	row, its pattern's eight parts."""
 	names = {}
@@ -502,16 +505,21 @@ def shop_seeds(deco_data, npclist_data, index, packer, files):
 			name = names.get(int(cells[2]))
 			if not name:
 				continue
-			if any("d:/ymir work/%s/%s/%s.msm" % (top, name, name) in files for top in NPC_FOLDERS):
-				continue
+			shipped = any("d:/ymir work/%s/%s/%s.msm" % (top, name, name) in files for top in NPC_FOLDERS)
 			for top in NPC_FOLDERS:
 				folder = "d:/ymir work/%s/%s/" % (top, name)
 				msm = folder + name + ".msm"
 				if msm not in index:
 					continue
-				add(msm)
 				with open(os.path.join(packer, index[msm][1]), "rb") as handle:
-					base = BASE_MODEL.search(handle.read())
+					script = handle.read()
+				if not shipped:
+					add(msm)
+				for effect in EFFECT_SCRIPT.finditer(script):
+					add(store_path(effect.group(1).decode("latin-1"), msm))
+				if shipped:
+					break
+				base = BASE_MODEL.search(script)
 				motlist = folder + "motlist.txt"
 				motions = []
 				if motlist in index:

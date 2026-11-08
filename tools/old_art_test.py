@@ -187,7 +187,9 @@ class ShopSeeds(unittest.TestCase):
 		folder = os.path.join(self.packer, "source", "npc2", "privateshop_2")
 		os.makedirs(folder)
 		with open(os.path.join(folder, "privateshop_2.msm"), "wb") as handle:
-			handle.write(b'ScriptType RaceDataScript\r\nBaseModelFileName "D:\\Ymir Work\\npc2\\privateshop_2\\privateshop_2.GR2"\r\n')
+			handle.write(b'ScriptType RaceDataScript\r\nBaseModelFileName "D:\\Ymir Work\\npc2\\privateshop_2\\privateshop_2.GR2"\r\n'
+				b'Group AttachingData\r\n{\r\n    Group AttachingData00\r\n    {\r\n        AttachingDataType    2\r\n'
+				b'        EffectScriptName     "D:\\Ymir Work\\effect\\npc2\\p_shop_02.mse"\r\n    }\r\n}\r\n')
 		with open(os.path.join(folder, "motlist.txt"), "wb") as handle:
 			handle.write(b"GENERAL WAIT wait.msa 100")
 		self.index = {
@@ -202,15 +204,24 @@ class ShopSeeds(unittest.TestCase):
 		got = old_art.shop_seeds(self.DECO, self.NPCLIST, self.index, self.packer, files)
 		self.assertEqual(got, [
 			"d:/ymir work/npc2/privateshop_2/privateshop_2.msm",
+			"d:/ymir work/effect/npc2/p_shop_02.mse",
 			"d:/ymir work/npc2/privateshop_2/motlist.txt",
 			"d:/ymir work/npc2/privateshop_2/privateshop_2.gr2",
 			"d:/ymir work/npc2/privateshop_2/wait.msa"] + [
 			"d:/ymir work/ui/pattern/myshop/fire/p_fire_%s.tga" % part for part in old_art.PATTERN_PARTS])
 
-	def test_a_model_new_already_ships_is_left(self):
+	def test_a_model_new_already_ships_is_left_but_not_its_effects(self):
+		"""r31 live: NEW had OLD's shop models but not the effects their msm
+		attach (CEffectManager::RegisterEffect p_shop_04.mse Error)."""
 		files = {"d:/ymir work/npc2/privateshop_2/privateshop_2.msm"}
 		got = old_art.shop_seeds(self.DECO, self.NPCLIST, self.index, self.packer, files)
-		self.assertFalse([path for path in got if "npc2" in path])
+		self.assertFalse([path for path in got if "/npc2/privateshop" in path])
+		self.assertIn("d:/ymir work/effect/npc2/p_shop_02.mse", got)
+
+	def test_an_effect_new_ships_is_left(self):
+		files = {"d:/ymir work/npc2/privateshop_2/privateshop_2.msm", "d:/ymir work/effect/npc2/p_shop_02.mse"}
+		got = old_art.shop_seeds(self.DECO, self.NPCLIST, self.index, self.packer, files)
+		self.assertNotIn("d:/ymir work/effect/npc2/p_shop_02.mse", got)
 
 	def test_a_model_new_ships_in_another_npc_folder_is_left(self):
 		"""NEW has 30000's privateshop in npc2, OLD in npc and npc2 both."""

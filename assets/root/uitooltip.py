@@ -2861,7 +2861,9 @@ class SkillToolTip(ToolTip):
 				self.AppendTextLine(skill.GetSkillConditionDescription(skillIndex, i), self.CONDITION_COLOR)
 
 	def AppendGuildSkillData(self, skillIndex, skillLevel):
-		skillMaxLevel = 7
+		# OLD uiToolTip.py:3330: the skill's own maximum (7 for the active
+		# skills, 12 for the NOVA-34 passives).
+		skillMaxLevel = skill.GetSkillMaxLevel(skillIndex)
 		skillCurrentPercentage = float(skillLevel) / float(skillMaxLevel)
 		skillNextPercentage = float(skillLevel + 1) / float(skillMaxLevel)
 

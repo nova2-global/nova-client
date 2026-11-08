@@ -1949,6 +1949,15 @@ class GameWindow(ui.ScriptWindow):
 	def BINARY_GuildWar_OnSendDeclare(self, guildID):
 		pass
 
+	# NOVA-34: the guild passives' progress (GC::GUILD_PASSIVE; OLD
+	# game.py:4222-4239), one (skillIndex, currentAmount, requiredAmount,
+	# itemVnum, personalContribution) per passive.
+	def RecvGuildSkillContribution(self, contributionList):
+		if not self.interface or not self.interface.wndGuild:
+			return
+		for data in contributionList:
+			self.interface.wndGuild.RefreshSkillContribution(*data[:5])
+
 	# The member cap and end score the declaring guild chose (NOVA-90, OLD
 	# game.py:2854-2908).
 	def BINARY_GuildWar_OnRecvDeclare(self, guildID, warType, maxMemberCount=0, endScore=0):

@@ -19,6 +19,8 @@ import background
 import miniMap
 import chr
 import uiScriptLocale
+import item
+import chat
 import nui_windows
 from _weakref import proxy
 
@@ -808,6 +810,11 @@ class GuildWindow(ui.ScriptWindow):
 
 		self.enemyGuildNameList = []
 
+		# NOVA-34: each passive's progress toward its next level, by guild
+		# skill index (7-9), from GC::GUILD_PASSIVE (OLD uiguild.py:1884-1931).
+		self.skillContributionInfo = {}
+		self.contributionInputDialog = None
+
 	def Open(self):
 		self.Show()
 		self.SetTop()
@@ -1258,8 +1265,14 @@ class GuildWindow(ui.ScriptWindow):
 		page.affectSlot.SetOverOutItemEvent(ui.__mem_func__(self.OverOutItem))
 		page.btnHealGSP.SetEvent(ui.__mem_func__(self.__OnOpenHealGSPBoard))
 
+		self.FillGuildSkillSlots(page)
+
+	def FillGuildSkillSlots(self, page):
+		"""The passive and active rows' skills, and each slot's guild skill
+		index (vnum - 151). NOVA-34: the passive row holds OLD's three
+		passives (158-160, OLD uiguild.py:1872-1880) in place of the dragon
+		eye (151), which legacy left commented out."""
 		## Passive
-		"""
 		for i in range(len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)):
 
 			slotIndex = page.passiveSlot.GetStartIndex()+i
@@ -1267,8 +1280,7 @@ class GuildWindow(ui.ScriptWindow):
 
 			page.passiveSlot.SetSkillSlot(slotIndex, skillIndex, 0)
 			page.passiveSlot.RefreshSlot()
-			guild.SetSkillIndex(slotIndex, i)
-		"""
+			guild.SetSkillIndex(slotIndex, skillIndex - playerSettingModule.GUILD_SKILL_START)
 
 		## Active
 		for i in range(len(playerSettingModule.ACTIVE_GUILD_SKILL_INDEX_LIST)):
@@ -1279,7 +1291,7 @@ class GuildWindow(ui.ScriptWindow):
 			page.activeSlot.SetSkillSlot(slotIndex, skillIndex, 0)
 			page.activeSlot.SetCoverButton(slotIndex)
 			page.activeSlot.RefreshSlot()
-			guild.SetSkillIndex(slotIndex, len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)+i)
+			guild.SetSkillIndex(slotIndex, skillIndex - playerSettingModule.GUILD_SKILL_START)
 
 	def __MakeGradePage(self):
 
@@ -1383,6 +1395,7 @@ class GuildWindow(ui.ScriptWindow):
 		self.pickDialog = None
 		self.questionDialog = None
 		self.moneyDialog = None
+		self.OnCancelContribution()
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -1673,9 +1686,9 @@ class GuildWindow(ui.ScriptWindow):
 		page.passiveSlot.HideAllSlotButton()
 		page.activeSlot.HideAllSlotButton()
 
-		## Passive
-		"""
-		for i in xrange(len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)):
+		## Passive: the "+" opens the donation while a next level is
+		## left (OLD uiguild.py:2445-2455); skill points do not raise them.
+		for i in range(len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)):
 
 			slotIndex = page.passiveSlot.GetStartIndex()+i
 			skillIndex = playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST[i]
@@ -1683,10 +1696,8 @@ class GuildWindow(ui.ScriptWindow):
 			skillMaxLevel = skill.GetSkillMaxLevel(skillIndex)
 
 			page.passiveSlot.SetSlotCount(slotIndex, skillLevel)
-			if skillPoint > 0:
-				if skillLevel < skillMaxLevel:
-					page.passiveSlot.ShowSlotButton(slotIndex)
-		"""
+			if skillLevel < skillMaxLevel:
+				page.passiveSlot.ShowSlotButton(slotIndex)
 
 		## Active
 		for i in range(len(playerSettingModule.ACTIVE_GUILD_SKILL_INDEX_LIST)):
@@ -1959,8 +1970,61 @@ class GuildWindow(ui.ScriptWindow):
 		player.UseGuildSkill(slotNumber)
 
 	def OnUpGuildSkill(self, slotNumber, type):
+		if type == self.GUILD_SKILL_PASSIVE_SLOT:
+			self.OpenContributionDialog(slotNumber)
+			return
 		skillIndex = player.GetSkillIndex(slotNumber)
 		net.SendChatPacket("/gskillup " + str(skillIndex))
+
+	## NOVA-34: the passives' donations (OLD uiguild.py:1895-1989)
+	def RefreshSkillContribution(self, skillIndex, currentAmount, requiredAmount, itemVnum, personalContribution):
+		self.skillContributionInfo[skillIndex] = {
+			"currentAmount": currentAmount,
+			"requiredAmount": requiredAmount,
+			"itemVnum": itemVnum,
+			"personalContribution": personalContribution,
+		}
+		self.RefreshGuildSkillPage()
+
+	def OpenContributionDialog(self, slotNumber):
+		guildSkillIndex = guild.GetSkillIndex(slotNumber)
+		info = self.skillContributionInfo.get(guildSkillIndex)
+		if not info or info["requiredAmount"] <= 0 or info["itemVnum"] <= 0:
+			return
+		if info["currentAmount"] >= info["requiredAmount"]:
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GUILD_PASSIVE_READY)
+			return
+
+		self.OnCancelContribution()
+
+		skillLevel = guild.GetSkillLevel(slotNumber)
+		item.SelectItem(info["itemVnum"])
+		dialog = uiCommon.InputDialogWithDescription2()
+		dialog.SetTitle(localeInfo.GUILD_PASSIVE_CONTRIBUTE_TITLE)
+		dialog.SetMaxLength(5)
+		dialog.SetNumberMode()
+		dialog.SetDescription1(localeInfo.GUILD_PASSIVE_CONTRIBUTE_LEVEL % (skill.GetSkillName(player.GetSkillIndex(slotNumber)), skillLevel, skillLevel + 1))
+		dialog.SetDescription2(localeInfo.GUILD_PASSIVE_CONTRIBUTE_NEED % (info["requiredAmount"] - info["currentAmount"], item.GetItemName()))
+		dialog.SetAcceptEvent(lambda arg=guildSkillIndex: self.OnAcceptContribution(arg))
+		dialog.SetCancelEvent(ui.__mem_func__(self.OnCancelContribution))
+		dialog.Open()
+		self.contributionInputDialog = dialog
+
+	def OnAcceptContribution(self, guildSkillIndex):
+		dialog = self.contributionInputDialog
+		if not dialog:
+			return
+		text = dialog.GetText()
+		if text.isdigit() and int(text) > 0:
+			net.SendGuildContributePacket(guildSkillIndex, int(text))
+		else:
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GUILD_PASSIVE_INVALID_AMOUNT)
+		self.OnCancelContribution()
+
+	def OnCancelContribution(self):
+		if self.contributionInputDialog:
+			self.contributionInputDialog.Close()
+		self.contributionInputDialog = None
 
 	def OnUseSkill(self, slotNumber, coolTime):
 
@@ -2011,6 +2075,25 @@ class GuildWindow(ui.ScriptWindow):
 			skillLevel = guild.GetSkillLevel(slotNumber)
 
 			self.tooltipSkill.SetSkill(skillIndex, skillLevel)
+
+			# NOVA-34: a passive's progress (OLD uiguild.py:2774-2807).
+			if type == self.GUILD_SKILL_PASSIVE_SLOT:
+				self.AppendContributionToolTip(guild.GetSkillIndex(slotNumber))
+
+	def AppendContributionToolTip(self, guildSkillIndex):
+		info = self.skillContributionInfo.get(guildSkillIndex)
+		if not info or info["requiredAmount"] <= 0:
+			return
+		self.tooltipSkill.AppendSpace(5)
+		self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_UPGRADE, 0xffffffff)
+		if info["itemVnum"] > 0:
+			item.SelectItem(info["itemVnum"])
+			self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_REQUIRED % item.GetItemName(), 0xffffff00)
+		progress = float(info["currentAmount"]) / float(info["requiredAmount"]) * 100
+		self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_PROGRESS % (info["currentAmount"], info["requiredAmount"], progress),
+										 0xff00ff00 if progress >= 100 else 0xffffffff)
+		if info["personalContribution"] > 0:
+			self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_PERSONAL % info["personalContribution"], 0xff00ffff)
 
 	def OverOutItem(self):
 		if None != self.tooltipSkill:

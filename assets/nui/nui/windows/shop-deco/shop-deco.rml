@@ -8,8 +8,10 @@
 	     proxies: the two steps (the shop's model, then its sign's style), the
 	     choice, and the commit on Confirm are legacy's code. The list shows
 	     the step's entries (a press chooses one); the preview names the model,
-	     or shows the chosen style's sign with the style's name in it (no 3D
-	     view, legacy's D15). Step 1 has Close and Next, step 2 Back and
+	     or shows the chosen style's sign with the style's name in it. On the
+	     model step a client with model previews (NOVA-137) shows the model
+	     turning over its name: the nui-view "model-shop-deco" (model_view),
+	     else the stall mark. Step 1 has Close and Next, step 2 Back and
 	     Confirm. A left or right press anywhere on it raises the window
 	     (board_press). -->
 	<title>shop-deco</title>
@@ -43,7 +45,9 @@
 				</div>
 			</div>
 			<div class="shop-deco__preview">
-				<div class="shop-deco__model" data-if="preview_style &lt; 0"><span class="shop-deco__model-mark"><span
+				<div class="shop-deco__model" data-if="preview_style &lt; 0" data-class-has-view="model_view"><nui-view
+					id="shop-deco-model-view" class="shop-deco__model-view" name="model-shop-deco" hover="none"
+					data-if="model_view"></nui-view><span class="shop-deco__model-mark" data-if="!model_view"><span
 					class="nui-glyph nui-glyph--stall"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
 					class="nui-glyph__c"></span></span></span><span class="shop-deco__model-name">{{ preview_name }}</span></div>
 				<div class="shop-deco__sign-stage" data-if="preview_style &gt;= 0">

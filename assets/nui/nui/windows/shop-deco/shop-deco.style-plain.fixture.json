@@ -32,6 +32,7 @@
 		"selected": 0,
 		"preview_name": "Default",
 		"preview_style": 0,
+		"model_view": false,
 		"next": false,
 		"cancel": false,
 		"prev": true,

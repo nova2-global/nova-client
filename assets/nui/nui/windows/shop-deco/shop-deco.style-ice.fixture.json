@@ -32,6 +32,7 @@
 		"selected": 2,
 		"preview_name": "Ice Age",
 		"preview_style": 2,
+		"model_view": false,
 		"next": false,
 		"cancel": false,
 		"prev": true,

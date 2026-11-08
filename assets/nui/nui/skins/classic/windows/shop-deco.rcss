@@ -119,6 +119,20 @@ body.skin-classic.shop-deco .shop-deco__preview
 	background-color: transparent;
 	decorator: classic-thinboard;
 }
+/* The model over its name in legacy's board (uimyshopdecoration.py MODEL_VIEW_RECT and
+   MODEL_NAME_BELOW_VIEW: the name 46 below the board's middle). */
+body.skin-classic.shop-deco .shop-deco__model-view
+{
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 160dp;
+	height: 96dp;
+}
+body.skin-classic.shop-deco .shop-deco__model.has-view .shop-deco__model-name
+{
+	top: 98dp;
+}
 body.skin-classic.shop-deco .shop-deco__model-mark, body.skin-classic.shop-deco .shop-deco__sign-text
 {
 	display: none;

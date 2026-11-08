@@ -134,6 +134,25 @@ class Flows(DecoTest):
 
 
 class Board(DecoTest):
+    def test_the_model_step_shows_the_model_view_and_the_style_step_hides_it(self):
+        """NOVA-137: model_view follows legacy's render target window."""
+        world, window = self.opened(True)
+        self.assertTrue(w4.board(window).model["model_view"])
+        with world, w4.quiet():
+            w4.press(window, "button_press", "next", 0)
+        self.assertFalse(w4.board(window).model["model_view"])
+        with world, w4.quiet():
+            w4.press(window, "button_press", "prev", 0)
+        self.assertTrue(w4.board(window).model["model_view"])
+
+    def test_a_client_without_model_previews_keeps_the_stall_mark(self):
+        world = DecoWorld(True)
+        world.game.modules["player"].lack("SelectShopModel", "MyShopDecoShow")
+        window = world.deco_window()
+        with world, w4.quiet():
+            window.Open()
+        self.assertFalse(w4.board(window).model["model_view"])
+
     def test_the_model_step_lists_configs_models_and_names_the_choice(self):
         world, window = self.opened(True)
         model = w4.board(window).model

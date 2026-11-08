@@ -1,0 +1,86 @@
+BoundingSphereRadius   0.000000
+BoundingSpherePosition 0.000000 0.000000 0.000000
+
+Group Mesh
+{
+    StartTime           0.000000
+    List TimeEventPosition
+    {
+        0.000000 "MOVING_TYPE_DIRECT" 23.927999 -15.846000 0.000000
+    }
+    
+    MeshFileName               	"third_3_new.mde"
+    MeshAnimationLoopEnable    	1
+    MeshAnimationLoopCount     	0
+    MeshAnimationFrameDelay    	0.020000
+    
+    MeshElementCount           	4
+    Group MeshElement00
+    {
+        BillboardType              	0
+        BlendingEnable             	1
+        BlendingSrcType            	2
+        BlendingDestType           	6
+        
+        TextureAnimationLoopEnable 	1
+        TextureAnimationFrameDelay 	0.020000
+        TextureAnimationStartFrame 	0
+        
+        ColorOperationType         	4
+        ColorFactor                	1.000000 1.000000 1.000000 1.000000
+        List TimeEventAlpha
+        {
+        }
+    }
+    Group MeshElement01
+    {
+        BillboardType              	0
+        BlendingEnable             	1
+        BlendingSrcType            	3
+        BlendingDestType           	5
+        
+        TextureAnimationLoopEnable 	1
+        TextureAnimationFrameDelay 	0.020000
+        TextureAnimationStartFrame 	0
+        
+        ColorOperationType         	4
+        ColorFactor                	0.823529 0.556863 1.000000 1.000000
+        List TimeEventAlpha
+        {
+        }
+    }
+    Group MeshElement02
+    {
+        BillboardType              	0
+        BlendingEnable             	0
+        BlendingSrcType            	3
+        BlendingDestType           	2
+        
+        TextureAnimationLoopEnable 	1
+        TextureAnimationFrameDelay 	0.020000
+        TextureAnimationStartFrame 	0
+        
+        ColorOperationType         	4
+        ColorFactor                	1.000000 0.913725 0.913725 1.000000
+        List TimeEventAlpha
+        {
+        }
+    }
+    Group MeshElement03
+    {
+        BillboardType              	0
+        BlendingEnable             	0
+        BlendingSrcType            	2
+        BlendingDestType           	3
+        
+        TextureAnimationLoopEnable 	1
+        TextureAnimationFrameDelay 	0.020000
+        TextureAnimationStartFrame 	0
+        
+        ColorOperationType         	4
+        ColorFactor                	1.000000 1.000000 1.000000 1.000000
+        List TimeEventAlpha
+        {
+        }
+    }
+}

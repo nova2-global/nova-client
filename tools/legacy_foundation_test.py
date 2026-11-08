@@ -281,8 +281,9 @@ class WearOrder(unittest.TestCase):
 		with world:
 			window = read_uiscript(os.path.join(UISCRIPT, "costumewindow.py"))["window"]
 		indices = [slot["index"] for slot in child(window, "CostumeSlot")["slot"]]
+		# And the wings (the sash costume, wear 27, OLD's "SASH WING" cell; NOVA-20 follow-up).
 		self.assertEqual([EQUIPMENT_START + 19, EQUIPMENT_START + 20, EQUIPMENT_START + 22, EQUIPMENT_START + 21,
-		                  EQUIPMENT_START + 39], indices)
+		                  EQUIPMENT_START + 39, EQUIPMENT_START + 27], indices)
 
 	def test_the_inventory_refreshes_the_rings_and_the_belt_and_the_costume_window_its_cells(self):
 		world = LegacyWorld()

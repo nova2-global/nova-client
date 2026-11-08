@@ -1,0 +1,78 @@
+<rml>
+<head>
+	<!-- The aura level window (Wave 6, NOVA-23; legacy uiaura.py AuraWindow,
+	     uiscript aura_levelupwindow.py). While the aura flag is on,
+	     game.BINARY_AuraPacket makes nui_aura.AuraWindow (controller
+	     assets/root/nui_aura.py), a subclass of the legacy class on proxies:
+	     the two cells (the aura costume and its material, whose count shows
+	     above 1), the level, the experience and its percentage, the cell
+	     locks in both inventories, the tooltips and the "/aura add|remove|
+	     leveling|close" chat commands are legacy's code. The gauge shows
+	     legacy's fill width as a fraction of its 188 pixels, and only while
+	     legacy shows its background (an aura is in). The 1000-unit walk-away
+	     is the engine's watch. The document exists only while the window
+	     shows; it opens centered. A left or right press anywhere on it
+	     raises the window (board_press). -->
+	<title>aura</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="aura.rcss"/>
+</head>
+<body template="nui" id="aura" class="nui-window nui-fx nui-anim aura" data-model="aura"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar aura__titlebar">
+		<handle class="nui-window__handle aura__handle" move_target="#document">
+			<span class="aura__title-icon"><span class="nui-glyph nui-glyph--unique"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<span class="nui-window__title aura__title">@ui.AURA_LEVELUP_TITLE</span>
+		</handle>
+		<button id="aura-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim aura__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body aura__body">
+		<div id="aura-cells" class="aura__cells" data-class-nui-attach-right="attach_right">
+			<div class="aura__column aura__column--main">
+				<span class="aura__caption">@ui.AURA_MAIN</span>
+				<div id="aura-cell-0" class="nui-slot nui-anim nui-fx aura__cell" data-class-is-empty="cells[0].kind == ''"
+				     data-class-is-target="cells[0].target == 'move'"
+				     data-event-mousedown="cell_press(0, ev.button)" data-event-mouseup="cell_release(0, ev.button)"
+				     data-event-dblclick="cell_use(0)" data-event-nuidrop="cell_drop(0)"
+				     data-event-mouseover="cell_over(0)" data-event-mouseout="cell_out(0)">
+					<img class="nui-slot__icon" data-if="cells[0].icon != ''" data-attr-src="cells[0].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[0].count != ''" data-attr-value="cells[0].count"/>
+				</div>
+			</div>
+			<span class="aura__feed"><span class="nui-glyph nui-glyph--chevron-left"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<div class="aura__column aura__column--material">
+				<span class="aura__caption">@ui.AURA_SUB</span>
+				<div id="aura-cell-1" class="nui-slot nui-anim nui-fx aura__cell" data-class-is-empty="cells[1].kind == ''"
+				     data-class-is-target="cells[1].target == 'move'"
+				     data-event-mousedown="cell_press(1, ev.button)" data-event-mouseup="cell_release(1, ev.button)"
+				     data-event-dblclick="cell_use(1)" data-event-nuidrop="cell_drop(1)"
+				     data-event-mouseover="cell_over(1)" data-event-mouseout="cell_out(1)">
+					<img class="nui-slot__icon" data-if="cells[1].icon != ''" data-attr-src="cells[1].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[1].count != ''" data-attr-value="cells[1].count"/>
+				</div>
+			</div>
+		</div>
+		<div class="aura__progress">
+			<div class="aura__stats">
+				<span id="aura-level" class="aura__level">{{ level }}</span>
+				<span id="aura-percent" class="aura__percent">{{ percent }}</span>
+			</div>
+			<div class="aura__gauge-slot">
+				<progress id="aura-gauge" class="nui-gauge nui-gauge--blue aura__gauge" direction="right"
+				          data-class-is-hidden="!gauge" data-attr-value="fill"/>
+			</div>
+			<div id="aura-exp" class="aura__exp">{{ exp }}</div>
+		</div>
+	</div>
+	<div class="nui-window__footer aura__footer">
+		<button id="aura-accept" class="nui-button nui-button--primary nui-anim aura__accept"
+		        data-event-mousedown="accept_press(ev.button)">@ui.AURA_LEVELUP_BUTTON</button>
+		<button id="aura-cancel" class="nui-button nui-anim aura__cancel"
+		        data-event-mousedown="cancel_press(ev.button)">@ui.CANCEL</button>
+	</div>
+</body>
+</rml>

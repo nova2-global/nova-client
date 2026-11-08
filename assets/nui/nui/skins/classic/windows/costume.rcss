@@ -1,19 +1,27 @@
 /* Classic skin overlay of nui/windows/costume/costume.rml: the legacy
-   costume window (uiscript costumewindow.py) at 100%, 1dp to the legacy
-   pixel, the same with today's table (inv--table-new) and the foundation's
-   (inv--table-old), as legacy's one uiscript since the cut (NOVA-97): the
-   stone board, 140 x 180; the title bar at 6, 6, 130 wide; Costume_Base at
-   13, 38 with costume_bg.jpg (113 x 129), its slot window at 3, 3 and the
-   costume body and hair at their uiscript places, no slot base (the art
-   has the frames). The window holds those two alone: its third slot
-   (ring1's before the cut) went with the rings to the inventory, and the
-   cut's other costume cells are not ported. The modern
-   stage's figure, rune circle and frames are not drawn. */
+   costume window (uiscript costumewindow.py, Wave 6) at 100%, 1dp to the
+   legacy pixel, the same with today's table (inv--table-new) and the
+   foundation's (inv--table-old), as legacy's one uiscript: the stone
+   board, 216 x 236; the title bar at 6, 6, 206 wide, its close button at
+   the bar's right end; Costume_Base at 13, 38, here the grid grown to
+   cover the slot window (3 + 190 by 3 + 145) with costume_bg.jpg (113 x
+   129) at its top left; the slot window at 3, 3 and each cell at its
+   uiscript place: the costume body and hair on the art's frames, the
+   weapon costume (32 x 96), the costume sash, the aura and the sash
+   costume on Slot_Base.sub (the uiscript's Weapon_Base, Sash_Base,
+   Aura_Base and the sash costume's base under the aura). Today's table
+   holds the body and hair alone. The five switches (middle button art, 61
+   x 21) at their uiscript places, down (is-selected) while the part
+   shows; the aura panel (legacy's __CreateAuraWingPanel board) at
+   AURA_WING_PANEL_POSITION (163, 143), 150 x (20 + 20 n), a ui.CheckBox per
+   row at 15, 12 + 20 i (a 14 x 14 slot bar, check_image at -4, -2, the
+   text at 20). The modern stage's figure, rune circle and frames are not
+   drawn. */
 
 body.skin-classic.cos
 {
-	width: 140dp;
-	height: 180dp;
+	width: 216dp;
+	height: 236dp;
 	min-width: 0;
 }
 body.skin-classic.cos .cos__titlebar
@@ -22,7 +30,7 @@ body.skin-classic.cos .cos__titlebar
 	position: absolute;
 	left: 6dp;
 	top: 6dp;
-	width: 130dp;
+	width: 206dp;
 	height: 32dp;
 	margin: 0;
 	padding: 0;
@@ -46,7 +54,7 @@ body.skin-classic.cos .cos__handle
 body.skin-classic.cos .cos__titlebar .nui-window__close
 {
 	position: absolute;
-	left: 112dp;
+	left: 188dp;
 	top: 3dp;
 	margin: 0;
 }
@@ -54,7 +62,7 @@ body.skin-classic.cos .cos__body
 {
 	display: block;
 	position: relative;
-	height: 180dp;
+	height: 236dp;
 	padding: 0;
 }
 body.skin-classic.cos .cos-grid,
@@ -65,8 +73,8 @@ body.skin-classic.cos.cos--companion .cos-grid
 	position: absolute;
 	left: 13dp;
 	top: 38dp;
-	width: 113dp;
-	height: 129dp;
+	width: 193dp;
+	height: 148dp;
 	background-color: transparent;
 	border-width: 0;
 	border-radius: 0;
@@ -92,6 +100,7 @@ body.skin-classic.cos .cos-wear:hover
 	decorator: none;
 }
 body.skin-classic.cos .cos-wear--costume_body { height: 64dp; }
+body.skin-classic.cos .cos-wear--costume_weapon { height: 96dp; }
 
 /* The places, the same in both tables: the slot window's (3, 3) on the base
    plus each slot's x, y. */
@@ -99,8 +108,101 @@ body.skin-classic.cos.inv--table-new .cos-wear--costume_body,
 body.skin-classic.cos.inv--table-old .cos-wear--costume_body { left: 64dp; top: 48dp; }
 body.skin-classic.cos.inv--table-new .cos-wear--costume_hair,
 body.skin-classic.cos.inv--table-old .cos-wear--costume_hair { left: 64dp; top: 11dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_weapon { left: 121dp; top: 11dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_sash { left: 159dp; top: 11dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_aura { left: 159dp; top: 51dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_sash2 { left: 159dp; top: 91dp; }
+/* Slot_Base.sub under the cells the art has no frame for (the weapon's
+   three bases a vertical repeat). */
+body.skin-classic.cos .cos-wear--costume_weapon,
+body.skin-classic.cos .cos-wear--costume_sash,
+body.skin-classic.cos .cos-wear--costume_aura,
+body.skin-classic.cos .cos-wear--costume_sash2
+{
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat-y left top);
+}
 
 /* No dead zone between two wear places (P14b): half the gap to the place
-   beside it, where they stand 8dp apart or less (as the inventory's). */
+   beside it, where they stand 8dp apart or less (as the inventory's): the
+   hair and the body 5dp, the weapon and the right column 6dp, the sash,
+   the aura and the sash costume 8dp. */
 body.skin-classic.cos .cos-wear--costume_body > .cos-wear { nui-hit-outset: 2.5dp 0 0 0; }
 body.skin-classic.cos .cos-wear--costume_hair > .cos-wear { nui-hit-outset: 0 0 2.5dp 0; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_weapon > .cos-wear { nui-hit-outset: 0 3dp 0 0; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_sash > .cos-wear { nui-hit-outset: 0 0 4dp 3dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_aura > .cos-wear { nui-hit-outset: 4dp 0 4dp 3dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--costume_sash2 > .cos-wear { nui-hit-outset: 4dp 0 0 3dp; }
+
+/* --- The switches (uiscript Activate*_ON_OFF, middle button art) --------------- */
+
+body.skin-classic.cos .cos-switches
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.cos .cos-switch
+{
+	position: absolute;
+	width: 61dp;
+	min-width: 0;
+	padding: 0;
+	text-align: center;
+}
+body.skin-classic.cos .cos-switch--body { left: 13dp; top: 176dp; }
+body.skin-classic.cos .cos-switch--hair { left: 77dp; top: 176dp; }
+body.skin-classic.cos .cos-switch--weapon { left: 141dp; top: 176dp; }
+body.skin-classic.cos .cos-switch--sash { left: 13dp; top: 200dp; }
+body.skin-classic.cos .cos-switch--aura { left: 77dp; top: 200dp; }
+
+/* --- The aura panel (a ui.Board at 163, 143 with a ui.CheckBox per flag) ------ */
+
+body.skin-classic.cos .cos-wing
+{
+	display: block;
+	position: absolute;
+	left: 163dp;
+	top: 143dp;
+	width: 150dp;
+	height: auto;
+	min-height: 40dp;
+	margin: 0;
+	padding: 12dp 0 8dp 15dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-board;
+	z-index: 2;
+}
+body.skin-classic.cos .cos-wing__row
+{
+	display: block;
+	position: relative;
+	height: 20dp;
+	color: var(--text);
+}
+body.skin-classic.cos .cos-wing__row .nui-toggle__track
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 14dp;
+	height: 14dp;
+}
+body.skin-classic.cos .cos-wing__row .nui-toggle__knob
+{
+	left: -5dp;
+	top: -3dp;
+}
+body.skin-classic.cos .cos-wing__row .nui-toggle__label
+{
+	position: absolute;
+	left: 20dp;
+	top: 0;
+	line-height: 14dp;
+	white-space: nowrap;
+}

@@ -56,7 +56,8 @@ A = support.APP_CONSTANTS
 EFFECT_MODULES = ("net", "player", "mouse", "ime", "chat", "snd", "interface", "uiCommon", "uiPickMoney", "uiRefine",
                   "uiAttachMetin")
 NOVAUI_MODULES = ("nui_inventory", "nui_costume", "nui_belt_inventory", "nui_select_item")
-LOADED_NOVAUI = ("nui_limits", "nui_proxies", "nui_belt_inventory", "nui_costume", "nui_inventory", "nui_select_item")
+LOADED_NOVAUI = ("nui_limits", "nui_proxies", "nui_form_proxies", "nui_belt_inventory", "nui_costume", "nui_inventory",
+                 "nui_select_item")
 # Item numbers the flows use (any vnum works; these are the corpus' kinds).
 SWORD, GLAIVE, POTION, BLUE_POTION, AUTO_HP, SCROLL, STONE, DETACH, KEY, ARMOR, BELT, CLEAN = (
     10, 3000, 27001, 27002, 72723, 25040, 28030, 25100, 50008, 11200, 18000, 71101)

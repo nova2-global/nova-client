@@ -19,10 +19,12 @@ WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", 
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
 WAVE5A = ["quest", "guild-building", "web", "console"]
 WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
-# The items group: the Wave 3b windows and wave 4b's extra inventory.
-ITEMS = WAVE3B + ["extra-inventory"]
-# Wave 7 (NOVA-43): the switchbot joins the items group, its id after Wave 5's
-# shop-deco, before the maintenance countdown.
+# The items group: the Wave 3b windows, wave 4b's extra inventory and Wave 6's
+# sash and aura windows (NOVA-20, NOVA-23).
+WAVE6_ITEMS = ["sash", "aura"]
+ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS
+# Wave 7 (NOVA-43): the switchbot joins the items group, after Wave 6's sash
+# and aura.
 WAVE7_ITEMS = ["switchbot"]
 ITEMS = ITEMS + WAVE7_ITEMS
 # Documents a later stage writes, listed for the prewarm already: the test
@@ -618,7 +620,7 @@ class Wave3c(WindowsTest):
 
     def test_wave3c_names_the_three_windows_and_items_keeps_its_six(self):
         self.assertEqual(self.m.GROUPS["wave3c"], tuple(WAVE3C))
-        self.assertEqual(self.m.GROUPS["items"], tuple(ITEMS), "+items keeps meaning the Wave 3b windows and the extra inventory")
+        self.assertEqual(self.m.GROUPS["items"], tuple(ITEMS), "+items keeps meaning the Wave 3b windows, the extra inventory and the sash and aura windows")
         self.setting.windows = "+items"
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE3C),
                          "+items turns no Wave 3c window on (Eddy's own config names +items)")
@@ -666,7 +668,7 @@ class Wave4Flags(WindowsTest):
     def test_trade_and_social_name_their_windows_and_turn_no_other_on(self):
         self.assertEqual(self.m.GROUPS["trade"], tuple(WAVE4_TRADE + WAVE5_TRADE))
         self.assertEqual(self.m.GROUPS["social"], tuple(WAVE4_SOCIAL))
-        self.assertEqual(self.m.GROUPS["items"], tuple(ITEMS), "+items keeps meaning the Wave 3b windows and the extra inventory")
+        self.assertEqual(self.m.GROUPS["items"], tuple(ITEMS), "+items keeps meaning the Wave 3b windows, the extra inventory and the sash and aura windows")
         self.setting.windows = "+trade,-mall"
         self.assertEqual(self.m.overrides(), dict((window_id, window_id != "mall") for window_id in WAVE4_TRADE + WAVE5_TRADE))
         self.assertEqual(self.m.use("exchange"), (True, ""))

@@ -147,6 +147,9 @@ class TargetBoard(object):
 	# The block list (NOVA-47): one of the two shows for another player.
 	BTN_BLOCK = _Legacy.BTN_BLOCK
 	BTN_UNBLOCK = _Legacy.BTN_UNBLOCK
+	# The duel rules (NOVA-28): refuse a challenge, pardon a revenge.
+	BTN_DENY_FIGHT = _Legacy.BTN_DENY_FIGHT
+	BTN_CANCEL_AVENGE = _Legacy.BTN_CANCEL_AVENGE
 	BUTTON_CONFIG = _Legacy.BUTTON_CONFIG
 	EXCHANGE_LIMIT_RANGE = _Legacy.EXCHANGE_LIMIT_RANGE
 
@@ -163,7 +166,7 @@ class TargetBoard(object):
 		self.buttonEvents = {
 			self.BTN_WHISPER: self.OnWhisper,
 			self.BTN_EXCHANGE: self.OnExchange,
-			self.BTN_FIGHT: self.OnPVP,
+			self.BTN_FIGHT: self.OnAdvancedPVP,
 			self.BTN_ACCEPT_FIGHT: self.OnPVP,
 			self.BTN_AVENGE: self.OnPVP,
 			self.BTN_FRIEND: self.OnAppendToMessenger,
@@ -181,7 +184,11 @@ class TargetBoard(object):
 			self.BTN_VOTE_BLOCK_CHAT: self.__OnVoteBlockChat,
 			self.BTN_BLOCK: self.OnBlockPlayer,
 			self.BTN_UNBLOCK: self.OnUnblockPlayer,
+			self.BTN_DENY_FIGHT: self.OnCancelDuel,
+			self.BTN_CANCEL_AVENGE: self.OnCancelDuel,
 		}
+		# The duel rules board (NOVA-28), made at the first Fight.
+		self.duelRulesDialog = None
 		# Legacy keeps every button in its showing list after construction
 		# and hides them all; a later ShowDefaultButton shows that list.
 		self.showingButtonList = [button_id for button_id, attribute in self.BUTTON_CONFIG]
@@ -240,6 +247,9 @@ class TargetBoard(object):
 	def Destroy(self):
 		if self.vid:
 			_watch(0, 0)
+		if self.duelRulesDialog:
+			self.duelRulesDialog.Destroy()
+			self.duelRulesDialog = None
 		self.eventWhisper = None
 		self.__Initialize()
 		self.nui_discard()
@@ -278,7 +288,12 @@ class TargetBoard(object):
 	def Close(self):
 		_watch(0, 0)
 		self.__Initialize()
+		self.CloseDuelRules()
 		self.Hide()
+
+	def CloseDuelRules(self):
+		if self.duelRulesDialog:
+			self.duelRulesDialog.Close()
 
 	def Open(self, vid, name):
 		if vid:
@@ -472,9 +487,11 @@ class TargetBoard(object):
 			if player.IsRevengeInstance(self.vid):
 				self.__HideButton(self.BTN_FIGHT)
 				self.__ShowButton(self.BTN_AVENGE)
+				self.__ShowButton(self.BTN_CANCEL_AVENGE)
 			elif player.IsChallengeInstance(self.vid):
 				self.__HideButton(self.BTN_FIGHT)
 				self.__ShowButton(self.BTN_ACCEPT_FIGHT)
+				self.__ShowButton(self.BTN_DENY_FIGHT)
 			elif player.IsCantFightInstance(self.vid):
 				self.__HideButton(self.BTN_FIGHT)
 
@@ -521,6 +538,18 @@ class TargetBoard(object):
 
 	def OnPVP(self):
 		net.SendChatPacket("/pvp %d" % (self.vid))
+
+	# The duel rules (NOVA-28), legacy's (uitarget.py OnAdvancedPVP,
+	# OnCancelDuel).
+	def OnAdvancedPVP(self):
+		if not self.duelRulesDialog:
+			import nui_windows
+			import uiDuel
+			self.duelRulesDialog = nui_windows.make("duel-rules", uiDuel.DuelRulesDialog, "nui_duel_rules.DuelRulesDialog")
+		self.duelRulesDialog.Open(self.vid)
+
+	def OnCancelDuel(self):
+		net.SendChatPacket("/cancel_pvp %d" % (self.vid))
 
 	def OnAppendToMessenger(self):
 		net.SendMessengerAddByVIDPacket(self.vid)

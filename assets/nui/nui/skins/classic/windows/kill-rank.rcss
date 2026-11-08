@@ -1,0 +1,135 @@
+/* Classic skin overlay of nui/windows/kill-rank/kill-rank.rml: legacy's kill
+   ranking (uiscript killrankwindow.py, uikillrank.py) at 100%, 1dp to the
+   legacy pixel: the board, 390 x 380; the title bar at 8, 7, 375 wide, the
+   ranking's title centered; the eight tabs (the large button art, 88 x 21,
+   the shown one down) at x 10, 102, 194, 286 and y 34, 58; the header at y
+   90 and the rows 22 apart from y 112, the columns at x 24, 74, 210 and 310
+   (uikillrank.ROW_X); the first three places in OLD's gold, silver and
+   bronze, the player's own row 8 lower in OLD's blue. */
+
+body.skin-classic.kill-rank
+{
+	width: 390dp;
+	height: 380dp;
+	min-width: 0;
+}
+body.skin-classic.kill-rank .kill-rank__title-icon
+{
+	display: none;
+}
+body.skin-classic.kill-rank .kill-rank__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 375dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.kill-rank .kill-rank__handle, body.skin-classic.kill-rank .kill-rank__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.kill-rank .kill-rank__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.kill-rank .kill-rank__body
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 390dp;
+	height: 380dp;
+	padding: 0;
+}
+body.skin-classic.kill-rank .kill-rank__tabs
+{
+	display: block;
+	margin: 0;
+}
+body.skin-classic.kill-rank .kill-rank__tab
+{
+	position: absolute;
+	width: 88dp;
+	height: 21dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	font-weight: normal;
+	line-height: 21dp;
+	text-align: center;
+	decorator: image("d:/ymir work/ui/public/large_button_01.sub");
+}
+body.skin-classic.kill-rank .kill-rank__tab:hover
+{
+	decorator: image("d:/ymir work/ui/public/large_button_02.sub");
+}
+body.skin-classic.kill-rank .kill-rank__tab:active,
+body.skin-classic.kill-rank .kill-rank__tab.is-selected
+{
+	decorator: image("d:/ymir work/ui/public/large_button_03.sub");
+	background-color: transparent;
+	color: var(--classic-button-text);
+}
+body.skin-classic.kill-rank .kill-rank__tab--0 { left: 10dp; top: 34dp; }
+body.skin-classic.kill-rank .kill-rank__tab--1 { left: 102dp; top: 34dp; }
+body.skin-classic.kill-rank .kill-rank__tab--2 { left: 194dp; top: 34dp; }
+body.skin-classic.kill-rank .kill-rank__tab--3 { left: 286dp; top: 34dp; }
+body.skin-classic.kill-rank .kill-rank__tab--4 { left: 10dp; top: 58dp; }
+body.skin-classic.kill-rank .kill-rank__tab--5 { left: 102dp; top: 58dp; }
+body.skin-classic.kill-rank .kill-rank__tab--6 { left: 194dp; top: 58dp; }
+body.skin-classic.kill-rank .kill-rank__tab--7 { left: 286dp; top: 58dp; }
+body.skin-classic.kill-rank .kill-rank__table
+{
+	position: absolute;
+	left: 0;
+	top: 90dp;
+	width: 390dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.kill-rank .kill-rank__head, body.skin-classic.kill-rank .kill-rank__row
+{
+	display: block;
+	position: relative;
+	height: 22dp;
+	border-width: 0;
+	font-weight: normal;
+	color: var(--classic-rank-row);
+}
+body.skin-classic.kill-rank .kill-rank__head
+{
+	color: var(--text);
+}
+body.skin-classic.kill-rank .kill-rank__row--first { color: var(--classic-rank-first); }
+body.skin-classic.kill-rank .kill-rank__row--second { color: var(--classic-rank-second); }
+body.skin-classic.kill-rank .kill-rank__row--third { color: var(--classic-rank-third); }
+body.skin-classic.kill-rank .kill-rank__rows
+{
+	height: 220dp;
+}
+body.skin-classic.kill-rank .kill-rank__row--own
+{
+	margin-top: 8dp;
+	color: var(--classic-rank-own);
+}
+body.skin-classic.kill-rank .kill-rank__head .kill-rank__cell, body.skin-classic.kill-rank .kill-rank__row .kill-rank__cell
+{
+	position: absolute;
+	top: 0;
+	flex: none;
+	text-align: left;
+}
+body.skin-classic.kill-rank .kill-rank__cell--rank { left: 24dp; width: 48dp; }
+body.skin-classic.kill-rank .kill-rank__cell--name { left: 74dp; width: 134dp; }
+body.skin-classic.kill-rank .kill-rank__cell--guild { left: 210dp; width: 98dp; }
+body.skin-classic.kill-rank .kill-rank__cell--count { left: 310dp; width: 74dp; text-align: left; }

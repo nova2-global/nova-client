@@ -27,6 +27,7 @@ import ime
 
 import ui
 import uiCommon
+import uiDuel
 import uiPhaseCurtain
 import uiMapNameShower
 import uiAffectShower
@@ -415,6 +416,9 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_H]			= lambda: self.__PressHKey()
 		onPressKeyDict[app.DIK_B]			= lambda: self.__PressBKey()
 		onPressKeyDict[app.DIK_F]			= lambda: self.__PressFKey()
+		# The guild war top killers show while TAB is held (NOVA-29, OLD
+		# game.py:525-526 and 596).
+		onPressKeyDict[app.DIK_TAB]			= lambda: self.interface.OpenTopKillers()
 
 		self.onPressKeyDict = onPressKeyDict
 
@@ -424,6 +428,7 @@ class GameWindow(ui.ScriptWindow):
 		onClickKeyDict[app.DIK_LEFT] = lambda : self.StopLeft()
 		onClickKeyDict[app.DIK_RIGHT] = lambda : self.StopRight()
 		onClickKeyDict[app.DIK_SPACE] = lambda : self.EndAttack()
+		onClickKeyDict[app.DIK_TAB] = lambda : self.interface.CloseTopKillers()
 
 		onClickKeyDict[app.DIK_W] = lambda : self.StopUp()
 		onClickKeyDict[app.DIK_S] = lambda : self.StopDown()
@@ -938,8 +943,28 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.RecvWhisper(name)
 
 	def OnRecvWhisperSystemMessage(self, mode, name, line):
-		chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, line)
+		# A challenge's rules (NOVA-28, OLD game.py:1435-1446): "<<~N~>>" is said
+		# as OLD's title and one line per rule.
+		rules = uiDuel.parse_rules_whisper(line)
+		if rules is not None:
+			for ruleLine in uiDuel.rule_lines(rules):
+				chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, ruleLine)
+		else:
+			chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, line)
 		self.interface.RecvWhisper(name)
+
+	# The kill ranking (NOVA-29, OLD game.py:3872-3876): GC::KILL_RANK calls
+	# both, the player's own row first.
+	def RefreshKillRank(self, type):
+		self.interface.RefreshKillRank(int(type))
+
+	def SetPersonalKillRank(self, rank, name, guildName, count):
+		self.interface.SetPersonalKillRank(rank, name, guildName, count)
+
+	# The guild war top killers (NOVA-29, OLD game.py:1209-1211): one fighter's
+	# line of GC::GUILD_WAR_TOP.
+	def BINARY_WarTop(self, guildId, pName, pRace, totalDamage, kills, deads, ping):
+		self.interface.UpdateTopKillers(guildId, pName, pRace, totalDamage, kills, deads, ping)
 
 	def OnRecvWhisperError(self, mode, name, line):
 		# The target blocked the sender (NOVA-47): said in the whisper and no

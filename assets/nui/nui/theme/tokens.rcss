@@ -414,6 +414,11 @@ body.skin-classic
 	--classic-skill-group-text: #ffe3ad;
 	--classic-maintenance-label: #f35637;
 	--classic-maintenance-time: #dbad7b;
+	--classic-rank-first: #ce9d32;
+	--classic-rank-second: #c5c5c5;
+	--classic-rank-third: #985f50;
+	--classic-rank-own: #408cc3;
+	--classic-rank-row: #919191;
 	--classic-search-row: #131313;
 	--classic-search-row-alt: #0c0c0c;
 	--classic-search-row-hover: #272727;

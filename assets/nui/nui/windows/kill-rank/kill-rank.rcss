@@ -1,0 +1,126 @@
+/* The kill ranking's modern look (NOVA-29): the ranking glyph on the accent's
+   tile before the ranking's title; the eight rankings as two rows of four
+   tabs, the shown one in the accent; a table of the first ten places (the
+   first three in gold, silver and bronze) and, under a rule, the player's own
+   row in the accent. Centered at its first show. Classic (legacy's 390 x 380
+   board): skins/classic/windows/kill-rank.rcss. */
+
+body.kill-rank
+{
+	left: 16dp;
+	top: 16dp;
+	width: 480dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.kill-rank button
+{
+	tab-index: none;
+	focus: none;
+}
+.kill-rank__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.kill-rank__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.kill-rank__body
+{
+	padding: 10dp 12dp 12dp;
+}
+.kill-rank__tabs
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 6dp;
+	margin-bottom: 10dp;
+}
+.kill-rank__tab
+{
+	flex: 0 0 108dp;
+	box-sizing: border-box;
+	height: 28dp;
+	padding: 0 6dp;
+	font-size: var(--font-sm);
+}
+.kill-rank__tab.is-selected
+{
+	border-color: var(--accent-glow);
+	background-color: var(--selection);
+	color: var(--accent);
+	font-weight: bold;
+}
+.kill-rank__tab-label
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.kill-rank__table
+{
+	box-sizing: border-box;
+	padding: 6dp 8dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
+}
+.kill-rank__head, .kill-rank__row
+{
+	display: flex;
+	flex-direction: row;
+	height: 24dp;
+	align-items: center;
+	font-size: var(--font-sm);
+}
+.kill-rank__head
+{
+	color: var(--text-muted);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+}
+.kill-rank__row
+{
+	color: var(--text);
+}
+.kill-rank__row--first { color: var(--warning); font-weight: bold; }
+.kill-rank__row--second { color: var(--text); font-weight: bold; }
+.kill-rank__row--third { color: var(--text-muted); font-weight: bold; }
+.kill-rank__row--own
+{
+	margin-top: 6dp;
+	border-top-width: 1dp;
+	border-top-color: var(--border);
+	color: var(--accent);
+	font-weight: bold;
+}
+.kill-rank__cell
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.kill-rank__cell--rank { flex: 0 0 48dp; }
+.kill-rank__cell--name { flex: 1 1 150dp; }
+.kill-rank__cell--guild { flex: 1 1 130dp; }
+.kill-rank__cell--count { flex: 0 0 80dp; text-align: right; }

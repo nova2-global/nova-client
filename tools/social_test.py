@@ -1379,12 +1379,15 @@ class MoveChannel(unittest.TestCase):
 
     def test_the_system_menu_grows_by_olds_row(self):
         window = uiscript("systemdialog.py")
-        self.assertEqual(window["height"], 318)
+        # 348 since wave 7's Ranking button (NOVA-29), between the game options
+        # and the change channel.
+        self.assertEqual(window["height"], 348)
         board = children(window)["board"]
-        self.assertEqual(board["height"], 318)
+        self.assertEqual(board["height"], 348)
         rows = [child for child in board["children"]]
         names = [row["name"] for row in rows]
-        self.assertEqual(names.index("movechannel_button"), names.index("game_option_button") + 1)
+        self.assertEqual(names.index("killrank_button"), names.index("game_option_button") + 1)
+        self.assertEqual(names.index("movechannel_button"), names.index("killrank_button") + 1)
         self.assertEqual(names.index("change_button"), names.index("movechannel_button") + 1)
         move = rows[names.index("movechannel_button")]
         self.assertEqual(move["text"], "SYSTEM_MOVE_CHANNEL")

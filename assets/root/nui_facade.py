@@ -52,7 +52,7 @@ import nui_limits
 
 # The windows that watch the distance under their KEY (LEAVE_RANGE): the
 # exchange, the shop, the safebox, the mall and the gaya market.
-LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop")
+LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop", "kill-rank")
 
 
 def _stop_leave_range(key):

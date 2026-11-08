@@ -19,6 +19,8 @@ class SystemDialog(ui.ScriptWindow):
 	
 	def __Initialize(self):
 		self.eventOpenHelpWindow = None
+		# The kill ranking (NOVA-29), the Interface's OpenKillRank.
+		self.eventOpenKillRank = None
 		self.systemOptionDlg = None
 		self.gameOptionDlg = None
 		# The change channel dialog (NOVA-49), made on its first open.
@@ -41,6 +43,7 @@ class SystemDialog(ui.ScriptWindow):
 		self.GetChild("cancel_button").SAFE_SetEvent(self.Close)
 		self.GetChild("mall_button").SAFE_SetEvent(self.__ClickInGameShopButton)
 		self.GetChild("movechannel_button").SAFE_SetEvent(self.__ClickMoveChannelButton)
+		self.GetChild("killrank_button").SAFE_SetEvent(self.__ClickKillRankButton)
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -58,6 +61,9 @@ class SystemDialog(ui.ScriptWindow):
 
 	def SetOpenHelpWindowEvent(self, event):
 		self.eventOpenHelpWindow = event
+
+	def SetOpenKillRankEvent(self, event):
+		self.eventOpenKillRank = event
 
 	def OpenDialog(self):
 		self.Show()
@@ -101,6 +107,14 @@ class SystemDialog(ui.ScriptWindow):
 
 		if None != self.eventOpenHelpWindow:
 			self.eventOpenHelpWindow()
+
+	# The kill ranking (NOVA-29): the menu's temporary entry, OLD's extra
+	# inventory button (uiInventory.py:1178) until NOVA-16's window has it.
+	def __ClickKillRankButton(self):
+		self.Close()
+
+		if None != self.eventOpenKillRank:
+			self.eventOpenKillRank()
 
 	def __ClickInGameShopButton(self):
 		self.Close()

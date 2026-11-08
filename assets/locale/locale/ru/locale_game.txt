@@ -1057,3 +1057,16 @@ AURA_WINDOW_EXP	%s / %s EXP
 AURA_WING_SHOW_WING	Wings
 AURA_WING_SHOW_AURA	Aura
 AURA_WING_SHOW_EFFECT	Aura Wing Effect
+DUEL_ANTI_MOUNT	Без маунтов
+DUEL_ANTI_PET	Без питомцев
+DUEL_ANTI_POTION	Без зелий
+DUEL_ANTI_CRITICAL	Без Критического удара
+DUEL_ANTI_PIERCE	Без Пронзающего удара
+DUEL_ANTI_POISON	Без отравления
+DUEL_ANTI_FIRE	Без Поджога
+DUEL_ANTI_CHANGE_EQUIP	Без смены снаряжения
+DUEL_ANTI_PARTY	Без группы
+TARGET_BUTTON_DENY_FIGHT	Отказать
+TARGET_BUTTON_CANCEL_AVENGE	Извинение
+BATTLE_RULES	Правила боя:
+GUILD_WAR_TOP_MVP	MVP: %s

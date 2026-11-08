@@ -49,6 +49,7 @@ import uiSash
 # The offline shop's search, log and decoration windows (NOVA-9, chunk Y2's).
 import uiSearchShop
 import uiOfflineShopLog
+import uiKillRank
 import uiMyShopDecoration
 import uiScriptLocale
 
@@ -98,6 +99,9 @@ class Interface(object):
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
+		# NOVA-29: the kill ranking and the guild war top killers.
+		self.wndKillRank = None
+		self.wndTopKillers = None
 
 		self.listGMName = {}
 		self.wndQuestWindow = {}
@@ -264,6 +268,13 @@ class Interface(object):
 		                                      "nui_shop_deco.MyShopDecorationWindow")
 		self.wndMyShopDeco.BindInterface(self)
 
+		# The kill ranking (NOVA-29, OLD interfaceModule.py:780-782) and the guild
+		# war top killers (OLD :279-280).
+		self.wndKillRank = nui_windows.make("kill-rank", uiKillRank.KillRankWindow, "nui_kill_rank.KillRankWindow")
+		self.wndKillRank.LoadWindow()
+		self.wndTopKillers = nui_windows.make("guild-war-top", uiGuild.TopWarPlayersDialog,
+		                                      "nui_guild_war_top.TopWarPlayersDialog")
+
 	def __MakeDialogs(self):
 		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
 		self.dlgExchange.LoadDialog()
@@ -291,6 +302,7 @@ class Interface(object):
 		self.dlgSystem = nui_windows.make("system-menu", uiSystem.SystemDialog, "nui_system_menu.SystemDialog")
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
+		self.dlgSystem.SetOpenKillRankEvent(ui.__mem_func__(self.OpenKillRank))
 
 		self.dlgSystem.Hide()
 
@@ -609,6 +621,14 @@ class Interface(object):
 			self.wndOfflineShopLog.Destroy()
 			self.wndOfflineShopLog = None
 
+		if self.wndKillRank:
+			self.wndKillRank.Destroy()
+			self.wndKillRank = None
+
+		if self.wndTopKillers:
+			self.wndTopKillers.Destroy()
+			self.wndTopKillers = None
+
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Destroy()
 			self.wndMyShopDeco = None
@@ -858,6 +878,39 @@ class Interface(object):
 	def OfflineShopLog(self, rows, page, last):
 		self.wndOfflineShopLog.SetData(rows, page, last)
 
+	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the system
+	# menu's button toggles it (the temporary entry, PRODUCT-DECISIONS NOVA-29
+	# Q3, until the extra inventory's button of OLD); the answer refreshes it.
+	def OpenKillRank(self):
+		if not self.wndKillRank:
+			return
+		if self.wndKillRank.IsShow():
+			self.wndKillRank.Close()
+		else:
+			self.wndKillRank.Open(-1)
+
+	def RefreshKillRank(self, type):
+		if self.wndKillRank:
+			self.wndKillRank.RefreshKillRank(type)
+
+	def SetPersonalKillRank(self, rank, name, guildName, count):
+		if self.wndKillRank:
+			self.wndKillRank.SetPersonalKillRank(rank, name, guildName, count)
+
+	# The guild war top killers (NOVA-29): shown while TAB is held during a war
+	# (OLD toggled at the press and at the release, interfaceModule.py:4313).
+	def OpenTopKillers(self):
+		if self.wndTopKillers and not self.wndTopKillers.IsShow():
+			self.wndTopKillers.Open()
+
+	def CloseTopKillers(self):
+		if self.wndTopKillers and self.wndTopKillers.IsShow():
+			self.wndTopKillers.Close()
+
+	def UpdateTopKillers(self, guildId, name, race, totalDamage, kills, deaths, ping):
+		if self.wndTopKillers:
+			self.wndTopKillers.Update(guildId, name, race, totalDamage, kills, deaths, ping)
+
 	# The search: the inventory's button toggles it (vnum 0), Ctrl + click on
 	# an item opens it on that item (OLD uiInventory.py:1172-1173, 1758-1761).
 	def OpenSearchShop(self, vnum=0):
@@ -1032,6 +1085,8 @@ class Interface(object):
 		guildWarScoreBoard.Open(guildSelf, guildOpp)
 		guildWarScoreBoard.Show()
 		self.guildScoreBoardDict[uiGuild.GetGVGKey(guildSelf, guildOpp)] = guildWarScoreBoard
+		if getattr(self, "wndTopKillers", None):
+			self.wndTopKillers.BeginWar(guildSelf, guildOpp)
 
 	def OnEndGuildWar(self, guildSelf, guildOpp):
 		self.wndGuild.OnEndGuildWar(guildSelf, guildOpp)
@@ -1043,6 +1098,8 @@ class Interface(object):
 
 		self.guildScoreBoardDict[key].Destroy()
 		del self.guildScoreBoardDict[key]
+		if getattr(self, "wndTopKillers", None):
+			self.wndTopKillers.EndWar()
 
 	# GUILDWAR_MEMBER_COUNT
 	def UpdateMemberCount(self, gulidID1, memberCount1, guildID2, memberCount2):
@@ -1061,6 +1118,8 @@ class Interface(object):
 
 		guildBoard = self.guildScoreBoardDict[key]
 		guildBoard.SetScore(gainGuildID, opponentGuildID, point)
+		if getattr(self, "wndTopKillers", None):
+			self.wndTopKillers.SetScore(gainGuildID, point)
 
 	## PK Mode
 	def OnChangePKMode(self):

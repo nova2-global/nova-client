@@ -17,7 +17,9 @@ setblockmode command reaches OnBlockMode; the four flags call systemSetting
 (saved at exit), the shop names also uiPrivateShopBuilder.UpdateADBoard
 when turned on; a pickup filter toggle (NOVA-50: equipment, special,
 potions, others; what Z and ` pick up) flips its category through
-systemSetting.SetPickupFilter, which the client saves with the settings. uiGameOption.blockMode and viewChatMode stay the shared
+systemSetting.SetPickupFilter, which the client saves with the settings; the
+hide-shops and hide-buffi rows (NOVA-9, NOVA-38) send /hide_shops and
+/hide_buffi and show the server's state. uiGameOption.blockMode and viewChatMode stay the shared
 state: this module reads and writes them, never a copy. Escape closes the
 window in its legacy place (nui_hud.EscapeProxy); a window the player moved
 keeps its place across a hide, as legacy's one window does."""
@@ -54,6 +56,12 @@ def _hide_shops():
 	return bool(getattr(shop, "IsHideShops", lambda: False)())
 
 
+def _hide_buffi():
+	"""Whether the buffi are hidden (NOVA-38: uiGameOption.IsHideBuffi, the
+	server's GC::BUFFI_HIDE state; an exe without it: shown)."""
+	return bool(uiGameOption.IsHideBuffi())
+
+
 class GameOptionsBoard(nui.Window):
 	"""The game options' document and model; its events go to its facade."""
 
@@ -70,7 +78,7 @@ class GameOptionsBoard(nui.Window):
 			return model()
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
 		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
-		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False}
+		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False, "hide_buffi": False}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -151,7 +159,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "pk_mode": self.pkMode, "block": mask, "blocked": self.blocked(mask),
 		        "view_chat": bool(systemSetting.IsViewChat()), "always_show_name": bool(systemSetting.IsAlwaysShowName()),
 		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
-		        "pickup": self.pickup(), "hide_shops": _hide_shops()}
+		        "pickup": self.pickup(), "hide_shops": _hide_shops(), "hide_buffi": _hide_buffi()}
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -240,6 +248,12 @@ class OptionDialog(nui_hud.LayoutCalls):
 		on GC HIDE_SHOPS), never a local guess (M5)."""
 		self._set(hide_shops=_hide_shops())
 
+	def RefreshHideBuffi(self):
+		"""NOVA-38: the buffi shown or hidden, the server's state
+		(player.IsHideBuffi; Interface.OnBuffiHide calls this on
+		GC::BUFFI_HIDE), never a local guess."""
+		self._set(hide_buffi=_hide_buffi())
+
 	def RefreshPickupFilter(self):
 		"""A category's toggle is down while the filter picks it up
 		(uigameoption.py RefreshPickupFilter)."""
@@ -266,6 +280,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return int(bool(systemSetting.IsShowSalesText()))
 		if what == "hide_shops":
 			return int(_hide_shops())
+		if what == "hide_buffi":
+			return int(_hide_buffi())
 		return None
 
 	def nui_choose(self, what, value):
@@ -302,6 +318,11 @@ class OptionDialog(nui_hud.LayoutCalls):
 			# shops, 1 hides them; the server answers with HIDE_SHOPS.
 			net.SendChatPacket("/hide_shops %d" % value)
 			self.RefreshHideShops()
+		elif what == "hide_buffi" and value in (0, 1):
+			# Legacy's row (uiGameOption.__OnClickHideBuffiButton): 0 shows the
+			# buffi, 1 hides them; the server answers with GC::BUFFI_HIDE.
+			net.SendChatPacket("/hide_buffi %d" % value)
+			self.RefreshHideBuffi()
 
 	def __CheckPvPProtectedLevelPlayer(self):
 		if player.GetStatus(player.LEVEL) < constInfo.PVPMODE_PROTECTED_LEVEL:

@@ -5,7 +5,8 @@
    266, 3); the labels at x 30, y 42 + 25 per row; the choices from x 90,
    middle art (61dp) 65 apart and the PvP choices small art (43dp) 45
    apart, at y 40, 65, 90, 115 and 140 (the block toggles' two rows), 165,
-   190, 215, 240, and 265 and 290 (the pickup filter's two rows, NOVA-50). Labels are centered over their art as legacy's text
+   190, 215, 240, 265 and 290 (the pickup filter's two rows, NOVA-50), 315
+   (hide shops, NOVA-9) and 340 (hide buffi, NOVA-38). Labels are centered over their art as legacy's text
    lines are, a wider one overflowing both ends. The choice in effect and a
    blocked request show the down art. The PvP hints are legacy button
    tooltips: outlined text above the button, without a board. */
@@ -13,7 +14,7 @@
 body.skin-classic.game-options
 {
 	width: 300dp;
-	height: 358dp;
+	height: 383dp;
 	min-width: 0;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
@@ -52,7 +53,7 @@ body.skin-classic.game-options .game-options__titlebar .nui-window__close
 body.skin-classic.game-options .game-options__body
 {
 	position: relative;
-	height: 358dp;
+	height: 383dp;
 	padding: 0;
 }
 body.skin-classic.game-options .go-row,
@@ -80,8 +81,10 @@ body.skin-classic.game-options .go-label--always-name { top: 192dp; }
 body.skin-classic.game-options .go-label--damage { top: 217dp; }
 body.skin-classic.game-options .go-label--sales { top: 242dp; }
 body.skin-classic.game-options .go-label--pickup { top: 267dp; }
-/* Wave 5's hide-shops row (legacy's at 315, the board grown 333 to 358). */
+/* Wave 5's hide-shops row (legacy's at 315, the board grown 333 to 358), and
+   NOVA-38's hide-buffi row under it (legacy's at 340, the board grown to 383). */
 body.skin-classic.game-options .go-label--shops { top: 317dp; }
+body.skin-classic.game-options .go-label--buffi { top: 342dp; }
 
 body.skin-classic.game-options .go-choice
 {
@@ -137,6 +140,8 @@ body.skin-classic.game-options .go-choice--pickup-2 { left: 90dp; top: 290dp; }
 body.skin-classic.game-options .go-choice--pickup-3 { left: 155dp; top: 290dp; }
 body.skin-classic.game-options .go-choice--shops-0 { left: 90dp; top: 315dp; }
 body.skin-classic.game-options .go-choice--shops-1 { left: 155dp; top: 315dp; }
+body.skin-classic.game-options .go-choice--buffi-0 { left: 90dp; top: 340dp; }
+body.skin-classic.game-options .go-choice--buffi-1 { left: 155dp; top: 340dp; }
 
 /* The PvP choices on the small art; the choice in effect shows its down art,
    under the pointer too. */

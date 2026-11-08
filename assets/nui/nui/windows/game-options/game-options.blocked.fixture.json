@@ -10,6 +10,7 @@
 		"show_damage": true,
 		"sales_text": false,
 		"hide_shops": true,
+		"hide_buffi": true,
 		"pickup": [false, true, true, false]
 	}
 }

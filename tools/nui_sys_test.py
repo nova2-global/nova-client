@@ -994,7 +994,7 @@ class GameOptions(Pair):
         # The pickup filter since NOVA-50 (uigameoption.py RefreshPickupFilter).
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
-                                 "pickup": [True] * 4, "hide_shops": False})
+                                 "pickup": [True] * 4, "hide_shops": False, "hide_buffi": False})
         self.assertEqual([button.down for button in a.pickupFilterButtonList], [True] * 4)
         self.assertEqual([button.down for button in a.viewChatButtonList], [False, True])
         self.assertEqual([button.down for button in a.showDamageButtonList], [False, True])
@@ -1359,10 +1359,11 @@ class Fixtures(unittest.TestCase):
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
         game_options = self.world.make_game_options()
-        # pickup: the pickup filter (NOVA-50); hide_shops: Wave 5's row (NOVA-9).
+        # pickup: the pickup filter (NOVA-50); hide_shops: Wave 5's row (NOVA-9);
+        # hide_buffi: the buffi's row (NOVA-38).
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
-                                                         "pickup", "hide_shops"})
+                                                         "pickup", "hide_shops", "hide_buffi"})
 
 
 class HideShops(unittest.TestCase):

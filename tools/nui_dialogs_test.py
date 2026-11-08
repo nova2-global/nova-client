@@ -37,6 +37,9 @@ FACADES = [
     ("uicommon.py", "InputDialogWithDescription", "nui_dialog_input", "InputDialogWithDescription"),
     ("uicommon.py", "InputDialogWithDescription2", "nui_dialog_input", "InputDialogWithDescription2"),
     ("uicommon.py", "MoneyInputDialog", "nui_dialog_money", "MoneyInputDialog"),
+    # The offline shop's two dialogs with a check box (NOVA-9; the kit's since NOVA-169's follow-up).
+    ("uicommon.py", "BulkMoneyInputDialog", "nui_dialog_money", "BulkMoneyInputDialog"),
+    ("uicommon.py", "CheckQuestionDialog", "nui_dialog_question", "CheckQuestionDialog"),
     ("uipickmoney.py", "PickMoneyDialog", "nui_pick_money", "PickMoneyDialog"),
 ]
 SHIMS = ["Show", "Hide", "IsShow", "SetTop", "SetCenterPosition", "SetPosition", "ClearDictionary", "Lock",
@@ -191,7 +194,8 @@ class WiringFlagOff(KitTest):
 
     def test_with_the_flag_off_the_names_make_the_legacy_classes_and_import_nothing_novaui(self):
         for name in ("PopupDialog", "InputDialog", "InputDialogWithDescription", "InputDialogWithDescription2",
-                     "QuestionDialog", "QuestionDialog2", "MoneyInputDialog"):
+                     "QuestionDialog", "QuestionDialog2", "MoneyInputDialog", "BulkMoneyInputDialog",
+                     "CheckQuestionDialog"):
             made = getattr(self.uiCommon, name)()
             self.assertIsInstance(made, getattr(self.uiCommon, "Legacy" + name), name)
         self.assertIsInstance(self.uiPickMoney.PickMoneyDialog(), self.uiPickMoney.LegacyPickMoneyDialog)
@@ -233,6 +237,8 @@ class Wiring(KitTest):
                  (self.uiCommon.InputDialogWithDescription, nui_dialog_input.InputDialogWithDescription),
                  (self.uiCommon.InputDialogWithDescription2, nui_dialog_input.InputDialogWithDescription2),
                  (self.uiCommon.MoneyInputDialog, nui_dialog_money.MoneyInputDialog),
+                 (self.uiCommon.BulkMoneyInputDialog, nui_dialog_money.BulkMoneyInputDialog),
+                 (self.uiCommon.CheckQuestionDialog, nui_dialog_question.CheckQuestionDialog),
                  (self.uiPickMoney.PickMoneyDialog, nui_pick_money.PickMoneyDialog),
                  (self.networkModule.PopupDialog, nui_dialog_message.PhasePopupDialog)]
         for factory, facade in pairs:
@@ -401,7 +407,7 @@ class Question(KitTest):
         dialog.Open()
         window = self.kit_window(QUESTION)
         self.assertEqual(window.model, {"lines": ["LOCALE_CHANGE_CONFIRM"], "accept_label": "@ui.YES", "cancel_label": "@ui.NO",
-                                        "warn_line": -1})
+                                        "warn_line": -1, "check_on": False, "check_text": "", "checked": False})
         self.assertEqual(window.focused, "dialog-question-accept")
         window.fire("accept")
         window.fire("cancel")
@@ -685,6 +691,59 @@ class Money(KitTest):
         self.assertEqual(window.model["money"], "Price: 0 Yang")
         dialog.SetMaxLength(12)
         self.assertEqual(window.model["max"], 12)
+
+
+class CheckBoxes(KitTest):
+    """The offline shop's two dialogs with a check box (uicommon.py
+    BulkMoneyInputDialog and CheckQuestionDialog, NOVA-9) on the kit: the box
+    shows only when asked for, a left press on its row flips it as legacy's
+    CheckBox does, and the reads are legacy's."""
+
+    def test_the_bulk_box_shows_flips_reads_and_goes_with_close(self):
+        dialog = self.uiCommon.BulkMoneyInputDialog()
+        dialog.SetTitle("PRIVATE_SHOP_INPUT_PRICE_DIALOG_TITLE")
+        dialog.SetAcceptEvent(self.events("accept"))
+        dialog.Open()
+        window = self.kit_window(MONEY)
+        self.assertFalse(window.model["check_on"], "no box before SetBulkMode")
+        dialog.SetBulkMode()
+        self.assertEqual((window.model["check_on"], window.model["checked"]), (True, False))
+        self.assertTrue(window.model["check_text"], "the default text (OFFLINE_SHOP_BULK_ADD)")
+        self.assertFalse(dialog.IsBulkMode())
+        window.fire("check", 1)
+        self.assertFalse(dialog.IsBulkMode(), "a right press does nothing")
+        window.fire("check", 0)
+        self.assertTrue(dialog.IsBulkMode())
+        self.assertTrue(window.model["checked"])
+        dialog.SetValue(2500)
+        window.insert_text("dialog-money-field", "\n")
+        self.assertEqual(self.events.seen, [("accept",)])
+        self.assertTrue(dialog.IsBulkMode(), "read before the caller closes it, as legacy's")
+        dialog.Close()
+        self.assertFalse(dialog.IsBulkMode(), "Close drops the box, as legacy's")
+        plain = self.uiCommon.MoneyInputDialog()
+        plain.Open()
+        self.assertFalse(self.kit_window(MONEY).model["check_on"], "the plain money dialog shows no box")
+
+    def test_the_question_box_shows_after_the_text_flips_and_reads(self):
+        dialog = self.uiCommon.CheckQuestionDialog()
+        dialog.SetText("OFFLINE_SHOP_REMOVE_ITEM_QUESTION")
+        dialog.SetCheckBox("OFFLINE_SHOP_REMOVE_ALL", True)
+        dialog.SetAcceptEvent(self.events("accept"))
+        dialog.Open()
+        window = self.kit_window(QUESTION)
+        self.assertEqual((window.model["check_on"], window.model["check_text"], window.model["checked"]),
+                         (True, "OFFLINE_SHOP_REMOVE_ALL", True))
+        self.assertTrue(dialog.IsChecked())
+        window.fire("check", 0)
+        self.assertFalse(dialog.IsChecked())
+        window.fire("accept")
+        self.assertEqual(self.events.seen, [("accept",)])
+        dialog.Close()
+        plain = self.uiCommon.QuestionDialog()
+        plain.SetText("LOCALE_CHANGE_CONFIRM")
+        plain.Open()
+        self.assertFalse(self.kit_window(QUESTION).model["check_on"], "the plain question shows no box")
 
 
 class PickMoney(KitTest):

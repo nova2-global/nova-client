@@ -50,7 +50,7 @@ class MoneyWindow(kit.KindWindow):
 	FIELD = FIELD
 
 	def initial_model(self):
-		return {"title": "", "max": max_digits(), "money": ""}
+		return {"title": "", "max": max_digits(), "money": "", "check_on": False, "check_text": "", "checked": False}
 
 	@nui.on("edit")
 	def on_edit(self, value, linebreak):
@@ -63,6 +63,13 @@ class MoneyWindow(kit.KindWindow):
 	@nui.on("cancel")
 	def on_cancel(self):
 		self.forward("_nui_cancel")
+
+	@nui.on("check")
+	def on_check(self, button):
+		"""A left press on the check box's row (the document takes no click
+		to forward from its label, as the system options' toggles)."""
+		if int(button) == 0:
+			self.forward("_nui_check")
 
 
 class MoneyInputDialog(kit.DialogFacade):
@@ -83,8 +90,14 @@ class MoneyInputDialog(kit.DialogFacade):
 	def _money_text(self):
 		return nui.plain_text(self._header + localeInfo.NumberToMoneyString(money_of(self._value)))
 
+	def _check(self):
+		"""The check box row's keys: none here (BulkMoneyInputDialog has one)."""
+		return {"check_on": False, "check_text": "", "checked": False}
+
 	def _fill(self):
-		return {"title": nui.plain_text(self._title), "max": int(self._max), "money": self._money_text()}
+		values = {"title": nui.plain_text(self._title), "max": int(self._max), "money": self._money_text()}
+		values.update(self._check())
+		return values
 
 	def _field_text(self):
 		return self._value
@@ -192,3 +205,55 @@ class MoneyInputDialog(kit.DialogFacade):
 	def _nui_escape(self):
 		kit.call_event(self._cancel_event)
 		return True
+
+	def _nui_check(self):
+		"""Only BulkMoneyInputDialog shows the row."""
+
+
+class BulkMoneyInputDialog(MoneyInputDialog):
+	"""uiCommon.BulkMoneyInputDialog (uicommon.py BulkMoneyInputDialog; OLD
+	uiCommon.py:700-713): the money dialog with a check box under the amount,
+	the offline shop's "bulk add" of a price. SetBulkMode shows the box,
+	IsBulkMode reads it, and Close takes it away, as legacy's Close drops its
+	check box. A press on the row flips it, as legacy's CheckBox does."""
+
+	LEGACY = "uiCommon.LegacyBulkMoneyInputDialog"
+
+	def __init__(self):
+		self._check_text = None
+		self._checked = False
+		MoneyInputDialog.__init__(self)
+
+	def _check(self):
+		return {"check_on": self._check_text is not None,
+		        "check_text": nui.plain_text(self._check_text or ""), "checked": bool(self._checked)}
+
+	def _replay(self, legacy):
+		MoneyInputDialog._replay(self, legacy)
+		if self._check_text is not None:
+			legacy.SetBulkMode(self._check_text, self._checked)
+
+	def SetBulkMode(self, text=None, checked=False):
+		if text is None:
+			text = localeInfo.OFFLINE_SHOP_BULK_ADD
+		self._check_text = text
+		self._checked = bool(checked)
+		if self._legacy is not None:
+			self._legacy.SetBulkMode(text, checked)
+		self._refresh(**self._check())
+
+	def IsBulkMode(self):
+		if self._legacy is not None:
+			return self._legacy.IsBulkMode()
+		return self._check_text is not None and bool(self._checked)
+
+	def Close(self):
+		self._check_text = None
+		self._checked = False
+		MoneyInputDialog.Close(self)
+
+	def _nui_check(self):
+		if self._check_text is None:
+			return
+		self._checked = not self._checked
+		self._refresh(checked=self._checked)

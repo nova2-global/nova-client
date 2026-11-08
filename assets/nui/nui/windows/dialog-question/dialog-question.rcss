@@ -26,3 +26,8 @@
 {
 	min-width: 82dp;
 }
+/* CheckQuestionDialog's check box under the text (the offline shop's "remove all identical items"). */
+.dialog-question__check
+{
+	margin-top: var(--space-2);
+}

@@ -1,0 +1,41 @@
+{
+	"pet_evolution": {
+		"icon": "/icon/item/55701.tga",
+		"name": "Rex",
+		"current": {
+			"title": "Heroic",
+			"color": "#89d3f9",
+			"active": "Basic Skills 8",
+			"passive": "Heroic Skills 1"
+		},
+		"next": {
+			"title": "Heroic Plus",
+			"color": "#55b5f6",
+			"active": "Basic Skills 9",
+			"passive": "Heroic Skills 2"
+		},
+		"materials": [
+			{
+				"icon": "/icon/item/27001.tga",
+				"count": "200"
+			},
+			{
+				"icon": "/icon/item/27002.tga",
+				"count": "200"
+			},
+			{
+				"icon": "/icon/item/27992.tga",
+				"count": "200"
+			},
+			{
+				"icon": "/icon/item/27993.tga",
+				"count": "200"
+			},
+			{
+				"icon": "/icon/item/27994.tga",
+				"count": "200"
+			}
+		],
+		"cost": "Price 1.000.000.000 Yang"
+	}
+}

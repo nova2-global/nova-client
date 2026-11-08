@@ -1,0 +1,251 @@
+/* The pet window's modern look (NOVA-24): the community glyph on the accent's
+   tile before the title; the portrait on a framed tile beside the name, the
+   level, the grade (in OLD's grade color), the exp gauge and the hint line
+   (legacy's text tooltip of the gauge and the bonus levels); the evolve
+   button, blinking at a gate; the three bonus rows (name, level, plus); the
+   ten basic skill cells in two rows of five and the three larger heroic
+   cells, the cells over the grade's counts dimmed under a lock. The preview
+   window has an accent edge. The controller centers it at its first show.
+   Classic (legacy's 406 x 513 art): skins/classic/windows/pet.rcss. */
+
+body.pet
+{
+	left: 16dp;
+	top: 16dp;
+	width: 316dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+	--pet-grade: var(--accent);
+}
+.pet button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The preview's portrait has an accent edge. */
+.pet--preview .pet__portrait
+{
+	border-color: var(--accent);
+}
+.pet__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.pet__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.pet__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 14dp 12dp;
+}
+.pet__header
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+.pet__portrait
+{
+	flex: 0 0 auto;
+	width: 84dp;
+	height: 84dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+	pointer-events: none;
+}
+.pet__portrait-image
+{
+	width: 76dp;
+	height: 76dp;
+	margin: 3dp;
+}
+.pet__status
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	margin-left: 12dp;
+}
+.pet__line
+{
+	display: block;
+	height: 18dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 18dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet__name
+{
+	font-weight: bold;
+}
+.pet__evolution
+{
+	color: var(--pet-grade);
+}
+.pet__exp
+{
+	display: block;
+	height: 10dp;
+	padding: 2dp 0;
+	margin-top: 2dp;
+}
+.pet__gauge
+{
+	width: 100%;
+	pointer-events: none;
+}
+.pet__hint
+{
+	display: block;
+	height: 16dp;
+	margin-top: 2dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	line-height: 16dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet__evolve-row
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-top: 8dp;
+}
+.pet__evolve
+{
+	min-width: 120dp;
+}
+/* Legacy's flashing button: dimmer every other half second (nui-blink). */
+.pet__blink.nui-blink-off .pet__evolve
+{
+	background-color: var(--accent-hover);
+}
+.pet__section
+{
+	display: flex;
+	flex-direction: column;
+	margin-top: 10dp;
+}
+.pet__caption
+{
+	display: block;
+	margin-bottom: 6dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet__bonus
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 24dp;
+	margin-bottom: 3dp;
+	padding: 0 4dp 0 8dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-sunken);
+}
+.pet__bonus-name
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-size: var(--font-md);
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet__bonus-level
+{
+	flex: 0 0 auto;
+	min-width: 88dp;
+	height: 22dp;
+	color: var(--accent);
+	font-size: var(--font-md);
+	line-height: 22dp;
+	text-align: right;
+	white-space: nowrap;
+}
+.pet__plus
+{
+	flex: 0 0 auto;
+	margin-left: 4dp;
+}
+.pet__cells
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: var(--space-1);
+}
+.pet__cells--normal
+{
+	width: 216dp;
+	margin: 0 auto;
+}
+.pet__cell
+{
+	position: relative;
+	width: 40dp;
+	height: 40dp;
+}
+.pet__cell--heroic
+{
+	width: 48dp;
+	height: 48dp;
+}
+/* A cell over the grade's counts: dimmed under a lock (legacy's disabled
+   overlay). */
+.pet__lock
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 6dp;
+	background-color: var(--slot-disabled);
+	pointer-events: none;
+}
+.pet__cell.is-disabled .pet__lock
+{
+	display: block;
+}
+/* OLD's skill art is 37 x 37 (heroic 46 x 46): drawn near its size. */
+.pet__cell .nui-slot__icon
+{
+	width: 36dp;
+	height: 36dp;
+	margin: 2dp;
+}
+.pet__cell--heroic .nui-slot__icon
+{
+	width: 44dp;
+	height: 44dp;
+}

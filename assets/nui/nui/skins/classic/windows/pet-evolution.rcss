@@ -1,0 +1,211 @@
+/* Classic skin overlay of nui/windows/pet-evolution/pet-evolution.rml:
+   legacy's pet evolution window (uiscript petevolutionwindow.py) at 100%,
+   1dp to the legacy pixel: the board, 260 x 330, its title bar at 6, 6;
+   the top panel (OLD's slot bar: dark, edged) at 15, 45, 230 x 150, with
+   the seal's cell at 15, 10 in it, the name centered 30 left of its middle,
+   "Current" and its grade right-aligned 30 left of the middle and "Next
+   Evo" and its grade left-aligned 30 right of it (55 and 75 down), the
+   arrow (arrow.png) in the middle 70 down, the counts 105 and 125 down; the
+   material panel at 15, 200, 230 x 72, its title on its top edge, the
+   36dp cells 7 apart centered 12 down and the cost 52 down; Evolve and
+   Cancel (big_thin_button) at 24 and 132, 285 down. OLD drew its NewUI
+   board, which NEW lacks: classic draws NEW's board, as the uiscript does. */
+
+body.skin-classic.pet-evolution
+{
+	width: 260dp;
+	height: 330dp;
+	min-width: 0;
+}
+body.skin-classic.pet-evolution .pet-evolution__titlebar
+{
+	position: absolute;
+	left: 6dp;
+	top: 6dp;
+	width: 248dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.pet-evolution .pet-evolution__handle, body.skin-classic.pet-evolution .pet-evolution__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.pet-evolution .pet-evolution__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.pet-evolution .pet-evolution__top, body.skin-classic.pet-evolution .pet-evolution__materials-box
+{
+	display: block;
+	position: absolute;
+	left: 15dp;
+	width: 230dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--classic-separator);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	box-sizing: border-box;
+}
+body.skin-classic.pet-evolution .pet-evolution__top
+{
+	top: 45dp;
+	height: 150dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__materials-box
+{
+	top: 200dp;
+	height: 72dp;
+	margin: 0;
+}
+body.skin-classic.pet-evolution .pet-evolution__caption
+{
+	position: absolute;
+	left: 0;
+	top: -8dp;
+	width: 228dp;
+	margin: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+body.skin-classic.pet-evolution .pet-evolution__materials
+{
+	position: absolute;
+	left: 0;
+	top: 12dp;
+	width: 228dp;
+	gap: 7dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__material-cell
+{
+	width: 36dp;
+	height: 36dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__cost
+{
+	position: absolute;
+	left: 0;
+	top: 52dp;
+	width: 228dp;
+	margin: 0;
+	height: 16dp;
+	line-height: 16dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__footer
+{
+	display: block;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.pet-evolution .pet-evolution__button
+{
+	position: absolute;
+	top: 285dp;
+	width: 104dp;
+	height: 25dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_01.sub" scale-none left top);
+}
+body.skin-classic.pet-evolution .pet-evolution__button:hover
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_02.sub" scale-none left top);
+}
+body.skin-classic.pet-evolution .pet-evolution__button:active
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_03.sub" scale-none left top);
+}
+body.skin-classic.pet-evolution #pet-evolution-ok { left: 24dp; }
+body.skin-classic.pet-evolution #pet-evolution-cancel { left: 132dp; }
+body.skin-classic.pet-evolution .pet-evolution__pet
+{
+	display: block;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.pet-evolution .pet-evolution__item
+{
+	position: absolute;
+	left: 15dp;
+	top: 10dp;
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__name
+{
+	position: absolute;
+	left: 0;
+	top: 13dp;
+	width: 168dp;
+	margin: 0;
+	text-align: center;
+	font-size: var(--font-lg);
+	font-weight: normal;
+}
+body.skin-classic.pet-evolution .pet-evolution__grades
+{
+	display: block;
+	height: 0;
+}
+body.skin-classic.pet-evolution .pet-evolution__grade
+{
+	display: block;
+	position: absolute;
+	top: 55dp;
+	width: 100dp;
+	height: 90dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__grade--current { left: -15dp; text-align: right; }
+body.skin-classic.pet-evolution .pet-evolution__grade--next { left: 144dp; text-align: left; }
+body.skin-classic.pet-evolution .pet-evolution__label, body.skin-classic.pet-evolution .pet-evolution__grade-name, body.skin-classic.pet-evolution .pet-evolution__count
+{
+	display: block;
+	height: 20dp;
+	margin: 0;
+	line-height: 16dp;
+	font-size: var(--font-md);
+	font-weight: normal;
+}
+body.skin-classic.pet-evolution .pet-evolution__label, body.skin-classic.pet-evolution .pet-evolution__count
+{
+	color: var(--text);
+}
+body.skin-classic.pet-evolution .pet-evolution__count
+{
+	position: absolute;
+	width: 100dp;
+}
+body.skin-classic.pet-evolution .pet-evolution__grade .pet-evolution__count:nth-child(3) { top: 50dp; }
+body.skin-classic.pet-evolution .pet-evolution__grade .pet-evolution__count:nth-child(4) { top: 70dp; }
+body.skin-classic.pet-evolution .pet-evolution__arrow
+{
+	position: absolute;
+	left: 78dp;
+	top: 70dp;
+	width: 73dp;
+	height: 54dp;
+	margin: 0;
+	decorator: image("d:/ymir work/ui/pet/arrow.png" scale-none left top);
+}
+body.skin-classic.pet-evolution .pet-evolution__arrow .nui-glyph
+{
+	display: none;
+}
+/* Legacy's material images are 7dp apart: each cell's hit box reaches half
+   of it. */
+body.skin-classic.pet-evolution .pet-evolution__material-cell
+{
+	nui-hit-outset: 0 3.5dp;
+}

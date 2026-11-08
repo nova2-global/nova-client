@@ -1,0 +1,20 @@
+{
+	"pet_attr_refine": {
+		"attribute": "Max HP",
+		"current_level": "Lv. 4",
+		"current_value": "400",
+		"next_level": "Lv. 5",
+		"next_value": "500",
+		"materials": [
+			{
+				"icon": "/icon/item/27992.tga",
+				"count": "20"
+			},
+			{
+				"icon": "/icon/item/27993.tga",
+				"count": "20"
+			}
+		],
+		"cost": "Price 250.000 Yang"
+	}
+}

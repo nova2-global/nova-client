@@ -1,0 +1,50 @@
+<rml>
+<head>
+	<!-- The pet hatch window (NOVA-24; legacy uipet.py PetHatchEggWindow,
+	     uiscript pethatcheggwindow.py, 176 x 184), also the Pet Name Changer's
+	     rename dialog. While the pet-hatch window is on, the Interface makes
+	     nui_pet_hatch.PetHatchEggWindow (controller
+	     assets/root/nui_pet_hatch.py), a subclass of the legacy class on
+	     proxies: the title and the button (Hatch, or legacy's rename texts),
+	     the egg's cell and the pet's (the seal alone when renaming), the
+	     price line (hidden when renaming), the name field (its limit 20, its
+	     text never in the model), the name check and its popup, the wait
+	     refusal and the requests are legacy's code. A modal: Enter in the
+	     field hatches, Escape closes. The buttons act on a left mousedown. -->
+	<title>pet-hatch</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="pet-hatch.rcss"/>
+</head>
+<body template="nui" class="nui-scrim nui-fx pet-hatch" data-model="pet_hatch" data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window nui-fx nui-dialog nui-anim pet-hatch__window" id="pet-hatch">
+		<div class="nui-window__titlebar pet-hatch__titlebar">
+			<handle class="nui-window__handle pet-hatch__handle" move_target="pet-hatch">
+				<span class="nui-window__title pet-hatch__title">{{ title }}</span>
+			</handle>
+			<button id="pet-hatch-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim pet-hatch__close"
+			        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		</div>
+		<div class="nui-window__body pet-hatch__body">
+			<div class="pet-hatch__cells">
+				<div id="pet-hatch-cell-0" class="nui-slot pet-hatch__cell" data-class-is-empty="cells[0].kind == ''">
+					<img class="nui-slot__icon" data-if="cells[0].icon != ''" data-attr-src="cells[0].icon"/>
+				</div>
+				<span class="pet-hatch__arrow" data-if="cells[1].kind != ''"><span class="nui-glyph nui-glyph--chevron-right"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+				<div id="pet-hatch-cell-1" class="nui-slot pet-hatch__cell" data-if="cells[1].kind != ''">
+					<img class="nui-slot__icon" data-if="cells[1].icon != ''" data-attr-src="cells[1].icon"/>
+				</div>
+			</div>
+			<div class="pet-hatch__caption">@ui.PET_HATCHING_NIK</div>
+			<div class="pet-hatch__slot"><input id="pet-hatch-field" type="text"
+				class="nui-input nui-dialog__field pet-hatch__field" data-attr-maxlength="max"/></div>
+			<div id="pet-hatch-price" class="pet-hatch__price" data-class-is-hidden="!price_shown">{{ price }}</div>
+		</div>
+		<div class="nui-window__footer nui-dialog__footer pet-hatch__footer">
+			<button id="pet-hatch-button" class="nui-button nui-button--medium nui-button--primary nui-anim pet-hatch__button"
+			        data-event-mousedown="hatch_press(ev.button)"><span class="pet-hatch__label">{{ button }}</span></button>
+		</div>
+	</div>
+</body>
+</rml>

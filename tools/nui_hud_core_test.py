@@ -1237,6 +1237,8 @@ EXPECTED_SITES = {
                             "nui_offline_shop_log.OfflineShopLogWindow"),
                            ("make", "shop-deco", "uiMyShopDecoration.MyShopDecorationWindow",
                             "nui_shop_deco.MyShopDecorationWindow"),
+                           # Wave 7 (NOVA-43): the switchbot.
+                           ("make", "switchbot", "uiSwitchbot.SwitchbotWindow", "nui_switchbot.SwitchbotWindow"),
                            ("make", "exchange", "uiExchange.ExchangeDialog", "nui_exchange.ExchangeDialog"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
                            ("make", "shop", "uiShop.ShopDialog", "nui_shop.ShopDialog"),

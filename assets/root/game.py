@@ -358,6 +358,8 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_F2]	= lambda: self.__PressQuickSlot(5)
 		onPressKeyDict[app.DIK_F3]	= lambda: self.__PressQuickSlot(6)
 		onPressKeyDict[app.DIK_F4]	= lambda: self.__PressQuickSlot(7)
+		# The switchbot (NOVA-43; OLD game.py:491).
+		onPressKeyDict[app.DIK_F5]	= lambda: self.ShowSwitchbot()
 
 		onPressKeyDict[app.DIK_LALT]		= lambda: self.ShowName()
 		onPressKeyDict[app.DIK_LCONTROL]	= lambda: self.ShowMouseImage()
@@ -1123,6 +1125,21 @@ class GameWindow(ui.ScriptWindow):
 	def CloseGemShop(self):
 		if self.interface:
 			self.interface.CloseGemShop()
+
+	## The switchbot (NOVA-43; OLD game.py:3286-3287, 3935-3941): F5 and the
+	## server's ShowMeSwitchbot toggle it; C's GC::SWITCHBOT state and the item
+	## packets of window SWITCHBOT refresh it.
+	def ShowSwitchbot(self):
+		if self.interface:
+			self.interface.ToggleSwitchbotWindow()
+
+	def RefreshSwitchbotWindow(self):
+		if self.interface:
+			self.interface.RefreshSwitchbotWindow()
+
+	def RefreshSwitchbotItem(self, slot):
+		if self.interface:
+			self.interface.RefreshSwitchbotItem(slot)
 
 	## Exchange
 	def StartExchange(self):
@@ -2073,6 +2090,9 @@ class GameWindow(ui.ScriptWindow):
 
 			# NOVA-22 (OLD game.py:3028)
 			"ResetCostumeSlider"	: self.__ResetCostumeSlider,
+
+			# NOVA-43 (OLD game.py:2972): /switchbot opens the switchbot.
+			"ShowMeSwitchbot"		: self.ShowSwitchbot,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()

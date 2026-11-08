@@ -115,6 +115,8 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("shop-search", True),        # every offline shop's listings
 	("offline-shop-log", True),   # the owner's offline shop log
 	("shop-deco", True),          # the offline shop's model and sign style
+	# Wave 7 (NOVA-43): the switchbot, in the items group.
+	("switchbot", True),          # the switchbot's six slots, targets, cost and start/stop
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
 	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
@@ -126,7 +128,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
-	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory"),
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "switchbot"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
@@ -191,6 +193,8 @@ ON_DEMAND_DOCUMENTS = (
 	("shop-search", ("shop-search",)),
 	("offline-shop-log", ("offline-shop-log",)),
 	("shop-deco", ("shop-deco",)),
+	# Wave 7 (NOVA-43): the switchbot, only while it shows.
+	("switchbot", ("switchbot",)),
 	("equipment-view", ("equipment-view",)),
 	("messenger", ("messenger",)),
 	("whisper", ("whisper",)),

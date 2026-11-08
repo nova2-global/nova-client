@@ -1,0 +1,286 @@
+<rml>
+<head>
+	<!-- The switchbot (Wave 7, NOVA-43; legacy uiswitchbot.py SwitchbotWindow,
+	     uiscript switchbot.py, OLD root/uiSwitchbot.py). While the switchbot
+	     flag is on, the Interface makes nui_switchbot.SwitchbotWindow
+	     (controller assets/root/nui_switchbot.py), a subclass of the legacy
+	     class on proxies: the six slots of item window SWITCHBOT, each tab's
+	     state (idle, rolling, finished), the three alternative target sets of
+	     the selected slot with their 5 + 2 rows, the cost of a roll (a switch
+	     item or the server's yang price), the 6/7 toggle, the roll speed and
+	     start/stop are what legacy's code told the proxies. The attribute
+	     search list and the saved configurations are legacy's classes too,
+	     shown here as panels. The server rolls; nothing here runs per frame.
+	     The document exists only while the window shows and draws below the
+	     legacy UI layer. A left or right press anywhere raises the window
+	     (board_press). -->
+	<title>switchbot</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="switchbot.rcss"/>
+</head>
+<body template="nui" id="switchbot" class="nui-window nui-fx nui-anim nui-below-legacy-ui switchbot" data-model="switchbot"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar switchbot__titlebar">
+		<handle class="nui-window__handle switchbot__handle" move_target="#document">
+			<span class="switchbot__title-icon"><span class="nui-glyph nui-glyph--refresh"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title switchbot__title">@ui.SWITCHBOT_TITLE</span>
+		</handle>
+		<button id="switchbot-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim switchbot__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body switchbot__body">
+		<!-- The six slots: a card each, the item (up to 3 cells tall) on a full
+		     slot cell, the tab's state, and the select button with its numeral. -->
+		<div id="switchbot-tabs" class="switchbot__tabs" data-class-is-attaching="attaching" data-class-nui-attach-right="attach_right">
+			<div class="switchbot__tab" data-for="c : cells" data-class-is-selected="c.selected"
+			     data-class-is-idle="c.state == 'idle'" data-class-is-active="c.state == 'active'"
+			     data-class-is-finished="c.state == 'finished'">
+				<div class="switchbot__state"></div>
+				<div class="nui-slot nui-anim nui-fx switchbot__cell" data-attr-id="'switchbot-cell-' + it_index"
+				     data-class-is-empty="c.kind == ''" data-class-is-target="c.target == 'move'"
+				     data-class-is-blocked="c.target == 'blocked'" data-class-is-active="c.active"
+				     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
+				     data-event-mousedown="slot_press(it_index, ev.button)" data-event-mouseup="slot_release(it_index, ev.button)"
+				     data-event-dblclick="slot_use(it_index)" data-event-mouseover="slot_over(it_index)"
+				     data-event-mouseout="slot_out(it_index)" data-event-nuidrop="slot_drop(it_index)">
+					<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+					<span class="switchbot__drop-hint" data-if="c.kind == ''">@ui.NUI_SWITCHBOT_EMPTY</span>
+				</div>
+				<button class="nui-button nui-button--medium nui-anim switchbot__select" data-attr-id="'switchbot-tab-' + it_index"
+				        data-class-is-selected="c.selected" data-event-mousedown="tab_press(it_index, ev.button)">{{ c.label }}</button>
+			</div>
+		</div>
+		<div class="switchbot__main">
+			<div class="nui-panel switchbot__targets" data-class-is-blank="!filled">
+				<div class="switchbot__targets-head">
+					<span class="switchbot__targets-title">@ui.NUI_SWITCHBOT_TARGETS</span>
+					<span class="switchbot__alt-label">@ui.SWITCHBOT_ALTERNATIVE</span>
+					<button id="switchbot-alt-0" class="nui-button nui-button--medium nui-anim switchbot__alt" data-class-is-selected="alt == 0"
+					        data-event-mousedown="alt_press(0, ev.button)">I</button>
+					<button id="switchbot-alt-1" class="nui-button nui-button--medium nui-anim switchbot__alt" data-class-is-selected="alt == 1"
+					        data-event-mousedown="alt_press(1, ev.button)">II</button>
+					<button id="switchbot-alt-2" class="nui-button nui-button--medium nui-anim switchbot__alt" data-class-is-selected="alt == 2"
+					        data-event-mousedown="alt_press(2, ev.button)">III</button>
+				</div>
+			<div id="switchbot-row-0" class="switchbot__row" data-class-is-hidden="!rows[0].shown"
+			     data-class-is-struck="rows[0].line">
+				<button id="switchbot-row-0-pick" class="nui-button nui-anim switchbot__pick" data-attrif-disabled="!rows[0].can_pick"
+				        data-event-mousedown="row_pick(0, ev.button)"><span class="switchbot__pick-label">{{ rows[0].name }}</span><span
+					class="nui-glyph nui-glyph--chevron-down switchbot__pick-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<button id="switchbot-row-0-minus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--minus"
+				        data-attrif-disabled="!rows[0].editing" data-event-mousedown="row_minus(0, ev.button)"><span
+					class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">-</span></button>
+				<input id="switchbot-value-0" type="text" maxlength="4" class="nui-input switchbot__value" data-attr-value="rows[0].value"
+				       data-attrif-disabled="!rows[0].editing" data-event-change="row_value(0, ev.value)"/>
+				<button id="switchbot-row-0-plus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--plus"
+				        data-attrif-disabled="!rows[0].editing" data-event-mousedown="row_plus(0, ev.button)"><span
+					class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">+</span></button>
+				<button id="switchbot-row-0-clear" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__clear"
+				        data-attrif-disabled="!rows[0].can_clear" data-event-mousedown="row_clear(0, ev.button)"><span
+					class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<div class="switchbot__strike"></div>
+			</div>
+			<div id="switchbot-row-1" class="switchbot__row" data-class-is-hidden="!rows[1].shown"
+			     data-class-is-struck="rows[1].line">
+				<button id="switchbot-row-1-pick" class="nui-button nui-anim switchbot__pick" data-attrif-disabled="!rows[1].can_pick"
+				        data-event-mousedown="row_pick(1, ev.button)"><span class="switchbot__pick-label">{{ rows[1].name }}</span><span
+					class="nui-glyph nui-glyph--chevron-down switchbot__pick-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<button id="switchbot-row-1-minus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--minus"
+				        data-attrif-disabled="!rows[1].editing" data-event-mousedown="row_minus(1, ev.button)"><span
+					class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">-</span></button>
+				<input id="switchbot-value-1" type="text" maxlength="4" class="nui-input switchbot__value" data-attr-value="rows[1].value"
+				       data-attrif-disabled="!rows[1].editing" data-event-change="row_value(1, ev.value)"/>
+				<button id="switchbot-row-1-plus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--plus"
+				        data-attrif-disabled="!rows[1].editing" data-event-mousedown="row_plus(1, ev.button)"><span
+					class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">+</span></button>
+				<button id="switchbot-row-1-clear" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__clear"
+				        data-attrif-disabled="!rows[1].can_clear" data-event-mousedown="row_clear(1, ev.button)"><span
+					class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<div class="switchbot__strike"></div>
+			</div>
+			<div id="switchbot-row-2" class="switchbot__row" data-class-is-hidden="!rows[2].shown"
+			     data-class-is-struck="rows[2].line">
+				<button id="switchbot-row-2-pick" class="nui-button nui-anim switchbot__pick" data-attrif-disabled="!rows[2].can_pick"
+				        data-event-mousedown="row_pick(2, ev.button)"><span class="switchbot__pick-label">{{ rows[2].name }}</span><span
+					class="nui-glyph nui-glyph--chevron-down switchbot__pick-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<button id="switchbot-row-2-minus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--minus"
+				        data-attrif-disabled="!rows[2].editing" data-event-mousedown="row_minus(2, ev.button)"><span
+					class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">-</span></button>
+				<input id="switchbot-value-2" type="text" maxlength="4" class="nui-input switchbot__value" data-attr-value="rows[2].value"
+				       data-attrif-disabled="!rows[2].editing" data-event-change="row_value(2, ev.value)"/>
+				<button id="switchbot-row-2-plus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--plus"
+				        data-attrif-disabled="!rows[2].editing" data-event-mousedown="row_plus(2, ev.button)"><span
+					class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">+</span></button>
+				<button id="switchbot-row-2-clear" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__clear"
+				        data-attrif-disabled="!rows[2].can_clear" data-event-mousedown="row_clear(2, ev.button)"><span
+					class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<div class="switchbot__strike"></div>
+			</div>
+			<div id="switchbot-row-3" class="switchbot__row" data-class-is-hidden="!rows[3].shown"
+			     data-class-is-struck="rows[3].line">
+				<button id="switchbot-row-3-pick" class="nui-button nui-anim switchbot__pick" data-attrif-disabled="!rows[3].can_pick"
+				        data-event-mousedown="row_pick(3, ev.button)"><span class="switchbot__pick-label">{{ rows[3].name }}</span><span
+					class="nui-glyph nui-glyph--chevron-down switchbot__pick-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<button id="switchbot-row-3-minus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--minus"
+				        data-attrif-disabled="!rows[3].editing" data-event-mousedown="row_minus(3, ev.button)"><span
+					class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">-</span></button>
+				<input id="switchbot-value-3" type="text" maxlength="4" class="nui-input switchbot__value" data-attr-value="rows[3].value"
+				       data-attrif-disabled="!rows[3].editing" data-event-change="row_value(3, ev.value)"/>
+				<button id="switchbot-row-3-plus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--plus"
+				        data-attrif-disabled="!rows[3].editing" data-event-mousedown="row_plus(3, ev.button)"><span
+					class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">+</span></button>
+				<button id="switchbot-row-3-clear" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__clear"
+				        data-attrif-disabled="!rows[3].can_clear" data-event-mousedown="row_clear(3, ev.button)"><span
+					class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<div class="switchbot__strike"></div>
+			</div>
+			<div id="switchbot-row-4" class="switchbot__row" data-class-is-hidden="!rows[4].shown"
+			     data-class-is-struck="rows[4].line">
+				<button id="switchbot-row-4-pick" class="nui-button nui-anim switchbot__pick" data-attrif-disabled="!rows[4].can_pick"
+				        data-event-mousedown="row_pick(4, ev.button)"><span class="switchbot__pick-label">{{ rows[4].name }}</span><span
+					class="nui-glyph nui-glyph--chevron-down switchbot__pick-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<button id="switchbot-row-4-minus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--minus"
+				        data-attrif-disabled="!rows[4].editing" data-event-mousedown="row_minus(4, ev.button)"><span
+					class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">-</span></button>
+				<input id="switchbot-value-4" type="text" maxlength="4" class="nui-input switchbot__value" data-attr-value="rows[4].value"
+				       data-attrif-disabled="!rows[4].editing" data-event-change="row_value(4, ev.value)"/>
+				<button id="switchbot-row-4-plus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--plus"
+				        data-attrif-disabled="!rows[4].editing" data-event-mousedown="row_plus(4, ev.button)"><span
+					class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">+</span></button>
+				<button id="switchbot-row-4-clear" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__clear"
+				        data-attrif-disabled="!rows[4].can_clear" data-event-mousedown="row_clear(4, ev.button)"><span
+					class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<div class="switchbot__strike"></div>
+			</div>
+			<div id="switchbot-row-5" class="switchbot__row switchbot__row--rare" data-class-is-hidden="!rows[5].shown"
+			     data-class-is-struck="rows[5].line">
+				<button id="switchbot-row-5-pick" class="nui-button nui-anim switchbot__pick" data-attrif-disabled="!rows[5].can_pick"
+				        data-event-mousedown="row_pick(5, ev.button)"><span class="switchbot__pick-label">{{ rows[5].name }}</span><span
+					class="nui-glyph nui-glyph--chevron-down switchbot__pick-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<button id="switchbot-row-5-minus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--minus"
+				        data-attrif-disabled="!rows[5].editing" data-event-mousedown="row_minus(5, ev.button)"><span
+					class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">-</span></button>
+				<input id="switchbot-value-5" type="text" maxlength="4" class="nui-input switchbot__value" data-attr-value="rows[5].value"
+				       data-attrif-disabled="!rows[5].editing" data-event-change="row_value(5, ev.value)"/>
+				<button id="switchbot-row-5-plus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--plus"
+				        data-attrif-disabled="!rows[5].editing" data-event-mousedown="row_plus(5, ev.button)"><span
+					class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">+</span></button>
+				<button id="switchbot-row-5-clear" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__clear"
+				        data-attrif-disabled="!rows[5].can_clear" data-event-mousedown="row_clear(5, ev.button)"><span
+					class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<div class="switchbot__strike"></div>
+			</div>
+			<div id="switchbot-row-6" class="switchbot__row switchbot__row--rare" data-class-is-hidden="!rows[6].shown"
+			     data-class-is-struck="rows[6].line">
+				<button id="switchbot-row-6-pick" class="nui-button nui-anim switchbot__pick" data-attrif-disabled="!rows[6].can_pick"
+				        data-event-mousedown="row_pick(6, ev.button)"><span class="switchbot__pick-label">{{ rows[6].name }}</span><span
+					class="nui-glyph nui-glyph--chevron-down switchbot__pick-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<button id="switchbot-row-6-minus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--minus"
+				        data-attrif-disabled="!rows[6].editing" data-event-mousedown="row_minus(6, ev.button)"><span
+					class="nui-glyph nui-glyph--minus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">-</span></button>
+				<input id="switchbot-value-6" type="text" maxlength="4" class="nui-input switchbot__value" data-attr-value="rows[6].value"
+				       data-attrif-disabled="!rows[6].editing" data-event-change="row_value(6, ev.value)"/>
+				<button id="switchbot-row-6-plus" class="nui-button nui-button--icon nui-anim switchbot__step switchbot__step--plus"
+				        data-attrif-disabled="!rows[6].editing" data-event-mousedown="row_plus(6, ev.button)"><span
+					class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+					class="switchbot__step-text">+</span></button>
+				<button id="switchbot-row-6-clear" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__clear"
+				        data-attrif-disabled="!rows[6].can_clear" data-event-mousedown="row_clear(6, ev.button)"><span
+					class="nui-glyph nui-glyph--close"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				<div class="switchbot__strike"></div>
+			</div>
+			</div>
+			<div class="switchbot__side">
+				<span class="switchbot__side-label">@ui.SWITCHBOT_COST</span>
+				<div class="switchbot__costs">
+					<button id="switchbot-cost-item" class="nui-button nui-button--medium nui-anim switchbot__cost" data-class-is-selected="cost == 0"
+					        data-attrif-disabled="!cost_enabled" data-event-mousedown="cost_press(0, ev.button)">@ui.SWITCHBOT_COST_ITEM</button>
+					<button id="switchbot-cost-yang" class="nui-button nui-button--medium nui-anim switchbot__cost" data-class-is-selected="cost == 1"
+					        data-attrif-disabled="!cost_enabled" data-event-mousedown="cost_press(1, ev.button)"><span
+						class="nui-glyph nui-glyph--coin switchbot__coin"><span class="nui-glyph__a"></span><span
+						class="nui-glyph__b"></span></span>@ui.SWITCHBOT_COST_YANG</button>
+				</div>
+				<span id="switchbot-cost-text" class="switchbot__cost-text">{{ cost_text }}</span>
+				<button id="switchbot-rare" class="nui-button nui-button--medium nui-anim switchbot__rare" data-class-is-hidden="!rare_shown"
+				        data-class-is-selected="rare_on" data-event-mousedown="rare_press(ev.button)">@ui.SWITCHBOT_RARE</button>
+				<div class="switchbot__speed">
+					<span class="nui-glyph nui-glyph--clock switchbot__clock"><span class="nui-glyph__a"></span><span
+						class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
+					<span class="switchbot__speed-text">{{ speed_text }}</span>
+				</div>
+				<div class="switchbot__premium" data-class-is-on="premium_on">
+					<span class="switchbot__premium-label">@ui.SWITCHBOT_PREMIUM_LABEL</span>
+					<span id="switchbot-premium" class="switchbot__premium-status">{{ premium_text }}</span>
+				</div>
+				<div class="switchbot__actions">
+					<button id="switchbot-start" class="nui-button nui-button--primary nui-anim switchbot__start" data-class-is-active="active"
+					        data-attrif-disabled="!start_enabled" data-event-mousedown="start_press(ev.button)">{{ start_label }}</button>
+					<button id="switchbot-save" class="nui-button nui-button--medium nui-anim switchbot__save"
+					        data-event-mousedown="save_press(ev.button)">@ui.SWITCHBOT_SAVE</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- The attribute search list (legacy's SearchListWindow): its filter, its
+	     lines and accept or cancel. -->
+	<div id="switchbot-picker" class="nui-panel switchbot__panel switchbot__picker" data-class-is-hidden="!picker_on">
+		<div class="switchbot__panel-head"><span class="switchbot__panel-title">{{ picker_title }}</span></div>
+		<input id="switchbot-picker-filter" type="text" maxlength="50" class="nui-input switchbot__filter"
+		       data-event-change="picker_filter(ev.value)"/>
+		<div class="nui-list switchbot__picker-list">
+			<div class="nui-list__viewport">
+				<div class="nui-list__item nui-anim switchbot__picker-item" data-for="p : picker_items" data-class-is-selected="p.selected"
+				     data-event-mousedown="picker_item(it_index, ev.button)"><span class="nui-list__label">{{ p.text }}</span></div>
+			</div>
+		</div>
+		<div class="switchbot__panel-actions">
+			<button id="switchbot-picker-accept" class="nui-button nui-button--primary nui-button--medium nui-anim"
+			        data-event-mousedown="picker_accept(ev.button)">@ui.ACCEPT</button>
+			<button id="switchbot-picker-cancel" class="nui-button nui-button--medium nui-anim"
+			        data-event-mousedown="picker_cancel(ev.button)">@ui.CANCEL</button>
+		</div>
+	</div>
+	<!-- The saved configurations (legacy's ConfigurationWindow): a name and
+	     Save, then each saved set with load and delete. -->
+	<div id="switchbot-presets" class="nui-panel switchbot__panel switchbot__presets" data-class-is-hidden="!presets_on">
+		<div class="switchbot__panel-head"><span class="switchbot__panel-title">{{ presets_title }}</span>
+			<button id="switchbot-presets-close" class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__panel-close"
+			        data-event-mousedown="preset_close(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button></div>
+		<div class="switchbot__preset-new">
+			<input id="switchbot-preset-name" type="text" maxlength="32" class="nui-input switchbot__preset-name"
+			       data-event-change="preset_name(ev.value)"/>
+			<button id="switchbot-preset-save" class="nui-button nui-button--medium nui-anim"
+			        data-event-mousedown="preset_save(ev.button)">@game.SWITCHBOT_SAVE</button>
+		</div>
+		<div class="nui-list switchbot__preset-list">
+			<div class="nui-list__viewport">
+				<div class="nui-list__item switchbot__preset" data-for="s : presets">
+					<span class="nui-list__label switchbot__preset-label">{{ s.name }}</span>
+					<button class="nui-button nui-button--medium nui-anim switchbot__preset-load"
+					        data-event-mousedown="preset_load(it_index, ev.button)">@game.SWITCHBOT_LOAD_CONFIGURATION</button>
+					<button class="nui-button nui-button--ghost nui-button--icon nui-anim switchbot__preset-delete"
+					        data-event-mousedown="preset_delete(it_index, ev.button)"><span class="nui-glyph nui-glyph--close"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

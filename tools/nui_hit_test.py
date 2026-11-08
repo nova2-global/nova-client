@@ -57,7 +57,10 @@ def hit_cases():
 # Wave 5 (NOVA-9): the shop search's filter panel, open over the result rows
 # as legacy's SearchFilterWindow floats over the list.
 OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("chat-swatch-",),
-               "shop-search-filter-": ("shop-search-filter-",)}
+               "shop-search-filter-": ("shop-search-filter-",),
+               # Wave 7 (NOVA-43): the switchbot's search list and saved sets,
+               # open over its targets as legacy's boards float over the window.
+               "switchbot-picker-": ("switchbot-picker",), "switchbot-presets-": ("switchbot-preset",)}
 
 
 def covered_by_open_popup(name, taken):

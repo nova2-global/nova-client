@@ -1,0 +1,17 @@
+{
+	"$comment": "Golden cases of the switchbot (Wave 7, NOVA-43; tools/check_nui_snapshots.py), each fixture written from the facade's own model in the test world (tools/switchbot_test.py): four items in the six slots (slot II rolling, slot III finished, IV and VI empty), slot I selected with two targets in alternative I; picker: the search list open over the board; presets: the saved sets; rare: the 6/7 toggle on (the normal rows struck), the yang cost and its price line; empty: no item. Modern themes in every shipped theme but classic; classic is legacy's 758 x 580 board on its own canvas. The window centers at its first show; the sheet's place frames it here.",
+	"cases": [
+		{"page": "switchbot", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x720"], ["150", "1.5", "1230x1080"], ["200", "2", "1640x1440"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "picker", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "presets", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "rare", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "empty", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "themes": ["classic"], "scales": [["100", "1", "820x720"], ["150", "1.5", "1230x1080"], ["200", "2", "1640x1440"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "picker", "themes": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "presets", "themes": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "rare", "themes": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "variant": "empty", "themes": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "switchbot", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
+		{"page": "switchbot", "name": "no-effects", "themes": ["dark", "cyber"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
+	]
+}

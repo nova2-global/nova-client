@@ -1,0 +1,168 @@
+/* The aura level window's modern look (Wave 6, NOVA-23): the cut gem on the
+   accent's tile before the title; the aura costume's cell and its
+   material's cell side by side under their captions, a chevron from the
+   material to the aura; a sunken panel with the level on the left and the
+   percentage on the right over the experience gauge (a code-drawn
+   nui-gauge, legacy's fill as a fraction), the experience line under it;
+   Level Up and Cancel. Without an aura, legacy writes no text and hides the
+   gauge: the panel keeps its height, so the window does not jump when an
+   aura is dropped in. The controller centers it at its first show and keeps
+   the place the player drags it to; the sheet's place frames it in its
+   snapshots. Classic (legacy's 248 x 265 board):
+   skins/classic/windows/aura.rcss. */
+
+body.aura
+{
+	left: 16dp;
+	top: 16dp;
+	width: 264dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.aura button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The title's emblem: an accent chip with the cut gem. */
+.aura__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.aura__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.aura__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 14dp 4dp;
+}
+/* The two cells, each under its caption, the chevron between them. */
+.aura__cells
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	justify-content: center;
+}
+.aura__column
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 88dp;
+}
+.aura__caption
+{
+	display: block;
+	width: 100%;
+	margin-bottom: 6dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.aura__cell
+{
+	width: 44dp;
+	height: 44dp;
+}
+.aura__feed
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 16dp;
+	height: 16dp;
+	margin: 0 8dp 14dp;
+	pointer-events: none;
+}
+.aura__feed .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+}
+/* The level, the gauge and the experience on a sunken panel. */
+.aura__progress
+{
+	display: flex;
+	flex-direction: column;
+	margin-top: 12dp;
+	padding: 8dp 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+	pointer-events: none;
+}
+.aura__stats
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 18dp;
+}
+.aura__level
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.aura__percent
+{
+	flex: 0 0 auto;
+	color: var(--accent);
+	font-size: var(--font-md);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.aura__gauge-slot
+{
+	display: block;
+	height: 6dp;
+	margin: 5dp 0;
+}
+.aura__gauge
+{
+	width: 100%;
+}
+/* Legacy hides the gauge's background and fill without an aura. */
+.aura__gauge.is-hidden
+{
+	visibility: hidden;
+}
+.aura__exp
+{
+	display: block;
+	height: 16dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	line-height: 16dp;
+	text-align: center;
+	white-space: nowrap;
+}
+.aura__footer
+{
+	justify-content: center;
+}
+.aura__accept, .aura__cancel
+{
+	min-width: 104dp;
+}

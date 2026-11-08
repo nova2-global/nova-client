@@ -72,7 +72,67 @@ class Seeds(unittest.TestCase):
 		self.assertEqual(old_art.seeds(self.OLD, self.PROTO, new, files), [
 			"icon/item/79501.tga",
 			"d:/ymir work/item/wing/acce_01.gr2",
+			"icon/item/86001.tga", "d:/ymir work/item/wing/wing_01.gr2",
 			"icon/item/149006.tga", "d:/ymir work/a/aura.mse", "d:/ymir work/a/wing.mse"] + list(old_art.EXTRA[1:]))
+
+
+class WingSeeds(unittest.TestCase):
+	"""The wings (COSTUME_SASH2, the NOVA-20 follow-up): besides their
+	item_list lines, their shining effects (locale/common/shiningtable.txt)
+	and the race shapes the msm files' WingData groups give the wings whose
+	value 3 names one (OLD GameLib/RaceDataFile.cpp:653-815)."""
+
+	PROTO = ("ITEM_VNUM~RANGE\tITEM_NAME(K)\tITEM_TYPE\tSUB_TYPE\tVALUE0\tVALUE1\tVALUE2\tVALUE3\n"
+		"48000\tLucifer Wings\tITEM_COSTUME\tCOSTUME_SASH2\t4\t0\t0\t8\n"
+		"48376\tShiva Coat\tITEM_COSTUME\tCOSTUME_SASH2\t4\t0\t0\t48376\n"
+		"48380~48381\tShiva Coat+\tITEM_COSTUME\tCOSTUME_SASH2\t4\t0\t0\t48380\n"
+		"85001\tSash\tITEM_COSTUME\tCOSTUME_SASH\t1\t0\t0\t48377\n")
+
+	def test_the_value_3_of_the_wings_names_their_shapes(self):
+		self.assertEqual(old_art.wing_shapes(self.PROTO), {8, 48376, 48380})
+
+	def test_a_shining_tables_effects_without_their_bones(self):
+		table = (b"48493\td:/ymir work/item/wing/2022_march_shiva1_col1.mse\n"
+			b"48500~48502\tD:/ymir work/effect/mehok/22/wing.mse#Bip01\td:/ymir work/item/wing/a.mse\n"
+			b"\n48069\tD:\\ymir work\\item\\wing\\space.mse\n"
+			b"48070\td:/ymir work/item/wing/a.mse\n")
+		self.assertEqual(old_art.shining_seeds(table), [
+			"d:/ymir work/item/wing/2022_march_shiva1_col1.mse",
+			"d:/ymir work/effect/mehok/22/wing.mse",
+			"d:/ymir work/item/wing/a.mse",
+			"d:/ymir work/item/wing/space.mse"])
+
+	MSM = (b'Group WingData\n{\n\tPathName\t"d:/ymir Work/pc/warrior/"\n\n\tWingDataCount\t\t\t3\n'
+		b'\tGroup WingData00\n\t{\n\t\tWingIndex\t\t\t48376\n\t\tModel\t\t\t\t"wing/2021august_shiva_coat.gr2"\n'
+		b'\t\tCustomSpecular\t\t1\n\t\tSourceSkin\t\t\t"d:/ymir work/pc/common/090177_JinM_col1_D.dds"\n'
+		b'\t\tCommonTargetSkin\t"d:/ymir work/pc/common/090177_JinM_col1_D_1.dds"\n\t}\n'
+		b'\tGroup WingData01\n\t{\n\t\tWingIndex\t\t\t48399\n\t\tModel\t\t\t\t"wing/other.gr2"\n\t}\n'
+		b'\tGroup WingData02\n\t{\n\t\tSpecialPath\t\t\t"d:/ymir work/pc2/warrior/"\n\t\tWingIndex\t\t\t48380\n'
+		b'\t\tModel\t\t\t\t"Wing/Coat.gr2"\n\t\tSourceSkin2\t\t\t"a.dds"\n\t\tCommonTargetSkin2\t"d:/ymir work/pc2/b.dds"\n\t}\n'
+		b'}\nGroup ShapeData\n{\n\tPathName\t"d:/ymir Work/pc/warrior/"\n\tModel\t"x.gr2"\n}\n')
+
+	def test_the_shapes_of_the_cuts_wings_their_models_and_their_skins(self):
+		self.assertEqual(old_art.wing_shape_seeds([self.MSM], {48376, 48380, 8}), [
+			"d:/ymir work/pc/warrior/wing/2021august_shiva_coat.gr2",
+			"d:/ymir work/pc/common/090177_jinm_col1_d_1.dds",
+			"d:/ymir work/pc2/warrior/wing/coat.gr2",
+			"d:/ymir work/pc2/b.dds"])
+
+	def test_a_special_path_holds_for_the_shapes_after_it_as_olds_loader_reads_it(self):
+		msm = self.MSM.replace(b"WingDataCount\t\t\t3", b"WingDataCount\t\t\t4").replace(
+			b"\n}\nGroup ShapeData", b'\n\tGroup WingData03\n\t{\n\t\tWingIndex\t8\n\t\tModel\t"wing/late.gr2"\n\t}\n}\nGroup ShapeData')
+		self.assertEqual(old_art.wing_shape_seeds([msm], {8}), ["d:/ymir work/pc2/warrior/wing/late.gr2"])
+
+
+class ManifestMerge(unittest.TestCase):
+
+	def test_a_run_adds_its_rows_to_the_manifests(self):
+		kept = [("d:/b.gr2", "item/b.gr2", "source/b.gr2", "copied")]
+		added = [("d:/a.dds", "item/a.dds", "source/a.dds", "copied"),
+			("d:/b.gr2", "item/b2.gr2", "source/b2.gr2", "converted")]
+		self.assertEqual(old_art.merge_rows(kept, added), [
+			("d:/a.dds", "item/a.dds", "source/a.dds", "copied"),
+			("d:/b.gr2", "item/b.gr2", "source/b.gr2", "copied")])
 
 
 class Groups(unittest.TestCase):

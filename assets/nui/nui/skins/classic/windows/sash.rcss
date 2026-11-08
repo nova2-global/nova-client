@@ -1,0 +1,218 @@
+/* Classic skin overlay of nui/windows/sash/sash.rml: legacy's sash windows
+   (uiscripts sash_combinewindow.py and sash_absorbwindow.py) at 100%, 1dp
+   to the legacy pixel. OLD's backgrounds (acce_combine.tga, acce_absorb.tga)
+   are not in NEW's packs, so each slot stands on the public slot base, as
+   legacy's uiscripts do; no marks between the slots.
+   - The combine window: the board 215 x 280; the title bar at 6, 6, 200
+     wide; the three slots at 90 across and 45, 98 and 153 down, each label
+     centered at 106, 33, 35 and 37 under its slot's top; the price centered
+     at 105, 235 down; the check box (ui.CheckBox: a 14 x 14 slot bar, the
+     check image at -4, -2 of it, the label 20 in) centered, 212 down; OK
+     and Cancel (the middle buttons) at 40 and 114, 255 down.
+   - The absorb window: the board 205 x 270; the title bar at 6, 6, 190
+     wide; the sash's slot at 38, 79, its label centered at 51, 113; the
+     item's slot, three slot bases tall (31 x 96), at 137, 46; the result's
+     slot at 87, 164, its label centered at 100, 198; OK and Cancel at 40
+     and 114, 235 down.
+   The icons draw from their slot's top left corner, as CSlotWindow's. */
+
+body.skin-classic.sash
+{
+	width: 215dp;
+	height: 280dp;
+	min-width: 0;
+}
+body.skin-classic.sash.sash--absorb
+{
+	width: 205dp;
+	height: 270dp;
+}
+body.skin-classic.sash .sash-title-icon
+{
+	display: none;
+}
+body.skin-classic.sash .sash__titlebar
+{
+	position: absolute;
+	left: 6dp;
+	top: 6dp;
+	width: 200dp;
+	margin: 0;
+	z-index: 1;
+}
+body.skin-classic.sash.sash--absorb .sash__titlebar
+{
+	width: 190dp;
+}
+/* Legacy's TitleBar puts its close button 3 from its right end. */
+body.skin-classic.sash .sash__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.sash .sash__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.sash .sash__row
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+}
+body.skin-classic.sash .sash__mark
+{
+	display: none;
+}
+/* Each place is its slot, 32 x 32 on the slot base; its label is centered
+   on a 100dp box around the label's legacy center. */
+body.skin-classic.sash .sash__place
+{
+	display: block;
+	position: absolute;
+	width: 32dp;
+	height: 32dp;
+}
+body.skin-classic.sash .sash__cell
+{
+	width: 32dp;
+	height: 32dp;
+	padding: 0;
+}
+body.skin-classic.sash .sash__cell.sash__cell--result
+{
+	border-width: 0;
+}
+body.skin-classic.sash .sash__caption
+{
+	position: absolute;
+	left: -34dp;
+	width: 100dp;
+	height: auto;
+	margin: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 14dp;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.sash.sash--combine .sash__place--0 { left: 90dp; top: 45dp; }
+body.skin-classic.sash.sash--combine .sash__place--1 { left: 90dp; top: 98dp; }
+body.skin-classic.sash.sash--combine .sash__place--2 { left: 90dp; top: 153dp; }
+body.skin-classic.sash.sash--combine .sash__caption--0 { top: 33dp; }
+body.skin-classic.sash.sash--combine .sash__caption--1 { top: 35dp; }
+body.skin-classic.sash.sash--combine .sash__caption--2 { top: 37dp; }
+body.skin-classic.sash.sash--absorb .sash__place--0 { left: 38dp; top: 79dp; }
+body.skin-classic.sash.sash--absorb .sash__place--1 { left: 137dp; top: 46dp; height: 96dp; }
+body.skin-classic.sash.sash--absorb .sash__place--2 { left: 87dp; top: 164dp; }
+body.skin-classic.sash.sash--absorb .sash__caption--0 { left: -37dp; top: 34dp; }
+body.skin-classic.sash.sash--absorb .sash__caption--2 { left: -37dp; top: 34dp; }
+/* The absorb window's item slot: three slot bases, the icon at its top. */
+body.skin-classic.sash .sash__cell.sash__cell--tall
+{
+	display: block;
+	height: 96dp;
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat left top);
+}
+/* The price: legacy's text line, centered at 105, 235 down. */
+body.skin-classic.sash .sash__price
+{
+	position: absolute;
+	left: 5dp;
+	top: 235dp;
+	width: 200dp;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+/* The check box row spans the board and takes no press; the box and its
+   label, centered on it, take theirs, as legacy's CheckBox window. */
+body.skin-classic.sash .sash__auto-row
+{
+	position: absolute;
+	left: 0;
+	top: 212dp;
+	width: 215dp;
+	margin: 0;
+	pointer-events: none;
+}
+body.skin-classic.sash .sash__auto
+{
+	position: relative;
+	height: 15dp;
+	padding: 0;
+	pointer-events: auto;
+}
+/* Legacy's slot bar (a CBar3D) draws its bottom and right lines at y + h
+   and x + w, so its 14 x 14 covers 15 x 15 px. */
+body.skin-classic.sash .sash__check
+{
+	width: 15dp;
+	height: 15dp;
+	margin-right: 5dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.sash .sash__auto:hover .sash__check
+{
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+}
+body.skin-classic.sash .sash__check-mark
+{
+	left: -5dp;
+	top: -3dp;
+	width: 24dp;
+	height: 16dp;
+	border-width: 0;
+	transform: none;
+	decorator: image("d:/ymir work/ui/public/check_image.sub");
+}
+body.skin-classic.sash .sash__auto-label
+{
+	color: var(--text);
+	font-size: var(--font-md);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+/* OK and Cancel: legacy's middle buttons, their labels gray (the uiscripts
+   give the first one no color: the classic primary's accent stays off). */
+body.skin-classic.sash .sash__footer
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	padding: 0;
+	border-width: 0;
+}
+body.skin-classic.sash .sash__accept, body.skin-classic.sash .sash__cancel
+{
+	position: absolute;
+	top: 255dp;
+	min-width: 61dp;
+	margin: 0;
+}
+body.skin-classic.sash.sash--absorb .sash__accept, body.skin-classic.sash.sash--absorb .sash__cancel
+{
+	top: 235dp;
+}
+body.skin-classic.sash .sash__accept
+{
+	left: 40dp;
+	color: var(--classic-button-text);
+}
+body.skin-classic.sash .sash__cancel
+{
+	left: 114dp;
+}

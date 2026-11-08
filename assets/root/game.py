@@ -1098,7 +1098,7 @@ class GameWindow(ui.ScriptWindow):
 
 		if not self.auraWindow:
 			import uiAura
-			self.auraWindow = uiAura.AuraWindow()
+			self.auraWindow = nui_windows.make("aura", uiAura.AuraWindow, "nui_aura.AuraWindow")
 			if self.interface:
 				self.interface.BindAuraWindow(self.auraWindow)
 

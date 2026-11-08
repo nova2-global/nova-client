@@ -57,7 +57,14 @@ def hit_cases():
 # Wave 5 (NOVA-9): the shop search's filter panel, open over the result rows
 # as legacy's SearchFilterWindow floats over the list.
 OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("chat-swatch-",),
-               "shop-search-filter-": ("shop-search-filter-",)}
+               "shop-search-filter-": ("shop-search-filter-",),
+               # Wave 6: legacy's aura flag panel floats at 163, 143 over the
+               # weapon switch and the sash costume cell (uiinventory.py
+               # AURA_WING_PANEL_POSITION), as legacy's board does.
+               "costume-foundation-aura-classic-": ("cos-wing",)}
+# Cases whose open popup covers slot cells on purpose: their sweep is not
+# checked (the same window's other cases sweep those cells).
+SWEEP_UNDER_OPEN_POPUP = ("costume-foundation-aura-classic-",)
 
 
 def covered_by_open_popup(name, taken):
@@ -134,7 +141,7 @@ class PressesReachTheirControls(unittest.TestCase):
         its gaps included, reaches the item's anchor."""
         swept = 0
         for name, report in sorted(self.sweeps.items()):
-            if not report["cells"]:
+            if not report["cells"] or name.startswith(SWEEP_UNDER_OPEN_POPUP):
                 continue
             swept += 1
             with self.subTest(case=name):

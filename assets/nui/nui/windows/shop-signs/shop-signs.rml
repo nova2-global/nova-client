@@ -15,7 +15,8 @@
 	     (s.near); the controller works it out when a sign comes or goes and
 	     once a second at the timer's end (tick), not every frame. A visited
 	     shop's plain sign is tinted (is-seen); a decorated one draws its
-	     style. A release of the left button on a sign opens the shop
+	     style: OLD's pattern art around it in every skin (components/sign-pattern.rcss,
+	     NOVA-170). A release of the left button on a sign opens the shop
 	     (net.SendOnClickPacket). The names are shown as written, their color
 	     tags drawn and links not (nui-text links="off"). Each repeated slot
 	     binds nothing: RmlUi updates a repeated element's own views with the
@@ -23,6 +24,7 @@
 	     d:/ymir work/ (assets/ETC). -->
 	<title>shop-signs</title>
 	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="../../components/sign-pattern.rcss"/>
 	<link type="text/rcss" href="shop-signs.rcss"/>
 </head>
 <body template="nui" class="nui-overlay nui-below-legacy-ui shop-signs" data-model="shop_signs">
@@ -32,8 +34,18 @@
 			class="nui-panel shop-sign nui-interactive" data-class-shop-sign--style-1="s.style == 1"
 			data-class-shop-sign--style-2="s.style == 2" data-class-shop-sign--style-3="s.style == 3"
 			data-class-shop-sign--style-4="s.style == 4" data-class-shop-sign--style-5="s.style == 5"
+			data-class-nui-sign-pattern="s.style &gt; 0" data-class-nui-sign-pattern--1="s.style == 1"
+			data-class-nui-sign-pattern--2="s.style == 2" data-class-nui-sign-pattern--3="s.style == 3"
+			data-class-nui-sign-pattern--4="s.style == 4" data-class-nui-sign-pattern--5="s.style == 5"
 			data-class-is-seen="s.seen" data-style---legacy-width="s.legacy_width" data-event-mouseup="open(s.vid, ev.button)"><nui-text
-			class="shop-sign__text" links="off" data-attr-value="s.text"/></div></nui-anchor>
+			class="shop-sign__text" links="off" data-attr-value="s.text"/><span class="nui-sign-pattern__part nui-sign-pattern__part--lt"
+			data-if="s.style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--rt" data-if="s.style &gt; 0"></span><span
+			class="nui-sign-pattern__part nui-sign-pattern__part--lb" data-if="s.style &gt; 0"></span><span
+			class="nui-sign-pattern__part nui-sign-pattern__part--rb" data-if="s.style &gt; 0"></span><span
+			class="nui-sign-pattern__part nui-sign-pattern__part--l" data-if="s.style &gt; 0"></span><span
+			class="nui-sign-pattern__part nui-sign-pattern__part--r" data-if="s.style &gt; 0"></span><span
+			class="nui-sign-pattern__part nui-sign-pattern__part--t" data-if="s.style &gt; 0"></span><span
+			class="nui-sign-pattern__part nui-sign-pattern__part--b" data-if="s.style &gt; 0"></span></div></nui-anchor>
 	</div>
 	<nui-countdown class="shop-signs__tick" format="none" data-attr-end="tick_end" data-event-countdownend="tick()"/>
 </body>

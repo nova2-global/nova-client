@@ -172,6 +172,75 @@ class Groups(unittest.TestCase):
 		self.assertEqual(old_art.granny_tag(path), old_art.CUSTOM_TAG)
 
 
+class ShopSeeds(unittest.TestCase):
+	"""The offline shop's decoration (NOVA-170): the NPC models of
+	shop_deco.txt's type 1 rows, by the folder NEW's npclist names for each
+	vnum, and the eight parts of each type 2 row's sign pattern."""
+
+	DECO = (b"1\tDefault\t30000\n1\tBBQ King\t30003\n"
+		b"2\tInferno\td:/ymir work/ui/pattern/myshop/fire/p_fire\t0xFF976D\n")
+	NPCLIST = b"30000\tprivateshop\t\n30003\tprivateshop_2\t\n"
+
+	def setUp(self):
+		self.packer = tempfile.mkdtemp()
+		self.addCleanup(shutil.rmtree, self.packer)
+		folder = os.path.join(self.packer, "source", "npc2", "privateshop_2")
+		os.makedirs(folder)
+		with open(os.path.join(folder, "privateshop_2.msm"), "wb") as handle:
+			handle.write(b'ScriptType RaceDataScript\r\nBaseModelFileName "D:\\Ymir Work\\npc2\\privateshop_2\\privateshop_2.GR2"\r\n')
+		with open(os.path.join(folder, "motlist.txt"), "wb") as handle:
+			handle.write(b"GENERAL WAIT wait.msa 100")
+		self.index = {
+			"d:/ymir work/npc2/privateshop_2/privateshop_2.msm":
+				("d:/ymir work/npc2/privateshop_2/privateshop_2.msm", "source/npc2/privateshop_2/privateshop_2.msm"),
+			"d:/ymir work/npc2/privateshop_2/motlist.txt":
+				("d:/ymir work/npc2/privateshop_2/motlist.txt", "source/npc2/privateshop_2/motlist.txt"),
+		}
+
+	def test_each_models_script_base_model_motions_and_each_patterns_parts(self):
+		files = {"d:/ymir work/npc2/privateshop/privateshop.msm"}
+		got = old_art.shop_seeds(self.DECO, self.NPCLIST, self.index, self.packer, files)
+		self.assertEqual(got, [
+			"d:/ymir work/npc2/privateshop_2/privateshop_2.msm",
+			"d:/ymir work/npc2/privateshop_2/motlist.txt",
+			"d:/ymir work/npc2/privateshop_2/privateshop_2.gr2",
+			"d:/ymir work/npc2/privateshop_2/wait.msa"] + [
+			"d:/ymir work/ui/pattern/myshop/fire/p_fire_%s.tga" % part for part in old_art.PATTERN_PARTS])
+
+	def test_a_model_new_already_ships_is_left(self):
+		files = {"d:/ymir work/npc2/privateshop_2/privateshop_2.msm"}
+		got = old_art.shop_seeds(self.DECO, self.NPCLIST, self.index, self.packer, files)
+		self.assertFalse([path for path in got if "npc2" in path])
+
+	def test_a_model_new_ships_in_another_npc_folder_is_left(self):
+		"""NEW has 30000's privateshop in npc2, OLD in npc and npc2 both."""
+		self.index["d:/ymir work/npc/privateshop/privateshop.msm"] = (
+			"d:/ymir work/npc/privateshop/privateshop.msm", "source/npc2/privateshop_2/privateshop_2.msm")
+		files = {"d:/ymir work/npc2/privateshop/privateshop.msm"}
+		got = old_art.shop_seeds(self.DECO, self.NPCLIST, self.index, self.packer, files)
+		self.assertFalse([path for path in got if "/privateshop/" in path])
+
+	def test_a_numbered_model_goes_with_the_group_of_its_base_folder(self):
+		folders = {"d:/ymir work/npc2": {"metin2_patch_xmas": 90, "npc2": 40},
+			"d:/ymir work/npc2/privateshop": {"npc2": 7}, "d:/ymir work/ui/pattern": {"ETC": 30}}
+		self.assertEqual(old_art.shop_group("d:/ymir work/npc2/privateshop_3/wait.gr2", folders), "npc2")
+		self.assertEqual(old_art.shop_group("d:/ymir work/ui/pattern/myshop/ice/p_ice_top.tga", folders), "ETC")
+
+
+class TreeGroups(unittest.TestCase):
+	"""A sparse worktree has only some groups on disk: the shop's art takes
+	its groups and NEW's files from git's tree (old_art.tree_files)."""
+
+	def test_the_tree_decides_the_group_where_the_disk_has_no_folder(self):
+		paths = ["assets/npc2/ymir work/npc2/privateshop/privateshop.msm",
+			"assets/ETC/ymir work/ui/pattern/board_base.tga", "assets/icon/icon/item/1.tga"]
+		folders = old_art.tree_group_folders(paths, ["npc2", "ETC", "icon"])
+		self.assertEqual(old_art.choose_group("d:/ymir work/npc2/privateshop_1/wait.gr2", folders), "npc2")
+		self.assertEqual(old_art.choose_group("d:/ymir work/ui/pattern/myshop/fire/p_fire_top.tga", folders), "ETC")
+		self.assertEqual(old_art.tree_published(paths, ["npc2", "ETC", "icon"]), {
+			"d:/ymir work/npc2/privateshop/privateshop.msm", "d:/ymir work/ui/pattern/board_base.tga", "icon/item/1.tga"})
+
+
 class Manifest(unittest.TestCase):
 	"""The files tools/old_art.py took (tools/fixtures/old_art.tsv)."""
 

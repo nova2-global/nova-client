@@ -6,8 +6,8 @@
    (185 x 238) with its rows at 14, 58, 17 high, the chosen one on legacy's
    ListBox select bar; the preview's thin board at 200, 54 (166 x 120) with
    the name in its middle, and on the style step the style's frame at 223,
-   124 (120 x 32): ShopDecoTitle's thin board tinted with the style's color
-   at 35%, as legacy draws it without the pattern art (L15); the step's two
+   124 (120 x 32): ShopDecoTitle's thin board framed by the style's pattern
+   art (components/sign-pattern.rcss, NOVA-170); the step's two
    middle buttons 45 either side of the middle, 34 above the bottom. */
 
 body.skin-classic.shop-deco
@@ -149,11 +149,6 @@ body.skin-classic.shop-deco .shop-deco__sign
 	background-color: transparent;
 	decorator: classic-thinboard;
 }
-body.skin-classic.shop-deco .shop-deco__sign--1 { background-color: var(--shop-sign-1-tint); }
-body.skin-classic.shop-deco .shop-deco__sign--2 { background-color: var(--shop-sign-2-tint); }
-body.skin-classic.shop-deco .shop-deco__sign--3 { background-color: var(--shop-sign-3-tint); }
-body.skin-classic.shop-deco .shop-deco__sign--4 { background-color: var(--shop-sign-4-tint); }
-body.skin-classic.shop-deco .shop-deco__sign--5 { background-color: var(--shop-sign-5-tint); }
 body.skin-classic.shop-deco .shop-deco__footer
 {
 	display: block;

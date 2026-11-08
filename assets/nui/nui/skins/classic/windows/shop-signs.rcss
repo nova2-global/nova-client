@@ -4,9 +4,10 @@
    that at least 32 by 32 (ui.py:2003-2007): the facade gives each sign that
    width as --legacy-width, so the board is legacy's, and 32dp tall. A
    decorated offline shop's sign (PrivateShopTitleBar: len(name) * 6 + 40
-   wide, 32 tall) is ShopDecoTitle's thin board tinted with the style's
-   color at 35% (no pattern art, legacy's L15), its name in the style's
-   color; a visited shop's plain sign legacy's purple base (SEEN_COLOR). */
+   wide, 32 tall) is ShopDecoTitle's thin board framed by the style's
+   pattern art (components/sign-pattern.rcss, NOVA-170), its name in the
+   style's color; a visited shop's plain sign legacy's purple base
+   (SEEN_COLOR). */
 
 body.skin-classic.shop-signs
 {
@@ -28,11 +29,11 @@ body.skin-classic.shop-signs .nui-panel.shop-sign:hover
 {
 	border-color: transparent;
 }
-body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-1 { background-color: var(--shop-sign-1-tint); color: var(--shop-sign-1); }
-body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-2 { background-color: var(--shop-sign-2-tint); color: var(--shop-sign-2); }
-body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-3 { background-color: var(--shop-sign-3-tint); color: var(--shop-sign-3); }
-body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-4 { background-color: var(--shop-sign-4-tint); color: var(--shop-sign-4); }
-body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-5 { background-color: var(--shop-sign-5-tint); color: var(--shop-sign-5); }
+body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-1 { color: var(--shop-sign-1); }
+body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-2 { color: var(--shop-sign-2); }
+body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-3 { color: var(--shop-sign-3); }
+body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-4 { color: var(--shop-sign-4); }
+body.skin-classic.shop-signs .nui-panel.shop-sign.shop-sign--style-5 { color: var(--shop-sign-5); }
 body.skin-classic.shop-signs .nui-panel.shop-sign.is-seen
 {
 	background-color: var(--shop-sign-seen);

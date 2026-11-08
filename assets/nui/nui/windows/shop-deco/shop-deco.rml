@@ -14,6 +14,7 @@
 	     (board_press). -->
 	<title>shop-deco</title>
 	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="../../components/sign-pattern.rcss"/>
 	<link type="text/rcss" href="shop-deco.rcss"/>
 </head>
 <body template="nui" id="shop-deco" class="nui-window nui-fx nui-anim shop-deco" data-model="shop_deco"
@@ -48,8 +49,19 @@
 				<div class="shop-deco__sign-stage" data-if="preview_style &gt;= 0">
 					<div class="shop-deco__sign" data-class-shop-deco__sign--1="preview_style == 1"
 					     data-class-shop-deco__sign--2="preview_style == 2" data-class-shop-deco__sign--3="preview_style == 3"
-					     data-class-shop-deco__sign--4="preview_style == 4" data-class-shop-deco__sign--5="preview_style == 5"><span
-						class="shop-deco__sign-text">{{ preview_name }}</span></div>
+					     data-class-shop-deco__sign--4="preview_style == 4" data-class-shop-deco__sign--5="preview_style == 5"
+					     data-class-nui-sign-pattern="preview_style &gt; 0" data-class-nui-sign-pattern--1="preview_style == 1"
+					     data-class-nui-sign-pattern--2="preview_style == 2" data-class-nui-sign-pattern--3="preview_style == 3"
+					     data-class-nui-sign-pattern--4="preview_style == 4" data-class-nui-sign-pattern--5="preview_style == 5"><span
+						class="shop-deco__sign-text">{{ preview_name }}</span><span class="nui-sign-pattern__part nui-sign-pattern__part--lt"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--rt"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--lb"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--rb"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--l"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--r"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--t"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--b"
+						data-if="preview_style &gt; 0"></span></div>
 					<span class="shop-deco__sign-name">{{ preview_name }}</span>
 				</div>
 			</div>

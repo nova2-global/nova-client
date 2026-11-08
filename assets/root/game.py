@@ -24,6 +24,8 @@ import localeInfo
 import constInfo
 import exchange
 import ime
+## The advanced pet's module (NOVA-24, chunk C's PythonPetAdvanced.cpp).
+import pet
 
 import ui
 import uiCommon
@@ -415,6 +417,11 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_H]			= lambda: self.__PressHKey()
 		onPressKeyDict[app.DIK_B]			= lambda: self.__PressBKey()
 		onPressKeyDict[app.DIK_F]			= lambda: self.__PressFKey()
+		## The advanced pet (NOVA-24; OLD game.py:500-501): P toggles the pet
+		## window; Tab previews the pet seal under the pointer (OLD's
+		## CWindowManager::RunPressTabKey, which NEW's exe lacks).
+		onPressKeyDict[app.DIK_P]			= lambda: self.interface.TogglePetWindow()
+		onPressKeyDict[app.DIK_TAB]			= lambda: self.interface.PressTabKey()
 
 		self.onPressKeyDict = onPressKeyDict
 
@@ -1100,6 +1107,59 @@ class GameWindow(ui.ScriptWindow):
 		self.auraWindow.SetMaterialCell(material_cell)
 		if not self.auraWindow.IsOpened():
 			self.auraWindow.Open()
+
+	## The advanced pet (NOVA-24; OLD game.py:4081-4117): C's GC::PET_ADVANCED.
+	## RefreshStatus and RefreshSkill come at most once per 300 ms.
+	def BINARY_PetRefreshSkill(self):
+		if not self.interface:
+			return
+		pet.UpdateSkillProtoExpr()
+		self.interface.wndPetInterfaceWindow.RefreshSkillSlot()
+		self.interface.wndPetWindow.RefreshSkillSlot()
+
+	def BINARY_PetRefreshStatus(self):
+		if not self.interface:
+			return
+		self.interface.wndPetWindow.RefreshStatus()
+		self.interface.wndPetInterfaceWindow.RefreshStatus()
+		if self.interface.wndPetRefineWindow.IsShow():
+			self.interface.wndPetRefineWindow.Refresh()
+
+	def BINARY_PetSummon(self):
+		if not self.interface:
+			return
+		pet.UpdateSkillProtoExpr()
+		self.interface.wndPetInterfaceWindow.Open()
+		if self.interface.wndPetWindow.IsShow():
+			self.interface.TogglePetWindow()
+
+	def BINARY_PetAttrRefineInfo(self, index, nextValue):
+		if self.interface:
+			self.interface.wndPetRefineWindow.Open(index, nextValue)
+
+	def BINARY_PetEvolutionInfo(self):
+		if self.interface:
+			self.interface.wndPetEvolutionWindow.Open()
+
+	def BINARY_PetEvolveResult(self, result):
+		if not self.interface:
+			return
+		if result:
+			self.interface.wndPetEvolutionWindow.OnEvolveSuccess()
+		else:
+			self.interface.wndPetEvolutionWindow.OnEvolveFailure()
+
+	def BINARY_PetUnsummon(self):
+		if not self.interface:
+			return
+		self.interface.wndPetInterfaceWindow.Close()
+		self.interface.wndPetWindow.Close()
+
+	def BINARY_PetPreview(self):
+		if not self.interface:
+			return
+		pet.UpdateSkillProtoExpr(-1, True)
+		self.interface.wndPetPreviewWindow.Open(True)
 
 	## The server's refusal of a costume switch while fighting (NOVA-22; OLD
 	## game.py:3331-3332): the costume window's switches show the state again.

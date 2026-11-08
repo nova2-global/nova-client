@@ -69,7 +69,9 @@ ITEM_TYPES = ("NONE", "WEAPON", "ARMOR", "USE", "AUTOUSE", "MATERIAL", "SPECIAL"
               "TREASURE_BOX", "TREASURE_KEY", "SKILLFORGET", "GIFTBOX", "PICK", "HAIR", "TOTEM", "BLEND", "COSTUME",
               "DS", "SPECIAL_DS", "EXTRACT", "SECONDARY_COIN", "RING", "BELT",   # EItemType, ItemData.h:23-61
               # Wave 4b: OLD's types since the foundation cut (ItemData.h, the server's item_length.h).
-              "TRANSFER_SCROLL", "FAKE_BUFF_INT_BOOST", "TOGGLE", "GACHA")
+              "TRANSFER_SCROLL", "FAKE_BUFF_INT_BOOST", "TOGGLE", "GACHA",
+              # NOVA-24: the advanced pet's items (ItemData.h ITEM_TYPE_PET_ADVANCED 39).
+              "PET_ADVANCED")
 SUB_TYPES = {
     "WEAPON": ("WEAPON_SWORD", "WEAPON_DAGGER", "WEAPON_BOW", "WEAPON_TWO_HANDED", "WEAPON_BELL", "WEAPON_FAN",
                "WEAPON_ARROW"),                                                      # :64-76
@@ -85,6 +87,9 @@ SUB_TYPES = {
             "USE_TIME_CHARGE_PER", "USE_TIME_CHARGE_FIX", "USE_PUT_INTO_BELT_SOCKET", "USE_PUT_INTO_RING_SOCKET"),
     "DS": ("DS_SLOT1", "DS_SLOT2", "DS_SLOT3", "DS_SLOT4", "DS_SLOT5", "DS_SLOT6"),
     "METIN": ("METIN_NORMAL", "METIN_GOLD"),
+    # NOVA-24 (contract 6, ProtoReader.cpp's names in item.PET_* order).
+    "PET_ADVANCED": ("EGG", "SUMMON", "SKILL_BOOK", "HEROIC_SKILL_BOOK", "SKILL_REVERT", "SKILLPOWER_REROLL",
+                     "CHANGE_NAME", "DESTINY_ORB"),
 }
 ANTI_FLAGS = {"ANTI_FEMALE": 1 << 0, "ANTI_MALE": 1 << 1, "ANTI_MUSA": 1 << 2, "ANTI_ASSASSIN": 1 << 3,
               "ANTI_SURA": 1 << 4, "ANTI_MUDANG": 1 << 5, "ANTI_GET": 1 << 6, "ANTI_DROP": 1 << 7, "ANTI_SELL": 1 << 8,
@@ -915,6 +920,23 @@ def wave6_cases(items):
     return cases
 
 
+def pet_cases(items):
+    """The advanced pet's lines (NOVA-24): an egg that cannot hatch yet
+    (decision Q2, socket 1) and one that can; a seal with the destiny orb's
+    bonus (attribute 0) in the bag (the Tab hint) and in the safebox (none)."""
+    cases = []
+    egg, seal = 55401, 55701
+    if str(egg) in items:
+        for name, hatch in (("waiting", CLOCK + 7200), ("ready", 0)):
+            cases.append({"id": "pet-egg-%s" % name, "context": "SetInventoryItem", "vnum": egg,
+                          "sockets": [CLOCK + 7 * DAY, hatch, 0], "attrs": [], "player": dict(PLAYER), "clock": CLOCK})
+    if str(seal) in items:
+        for context in ("SetInventoryItem", "SetSafeBoxItem"):
+            cases.append({"id": "pet-seal-%s" % context, "context": context, "vnum": seal, "sockets": [0, 0, 0],
+                          "attrs": [[63, -100]], "player": dict(PLAYER), "clock": CLOCK})
+    return cases
+
+
 def _synthetic_ds(items):
     """A dragon soul stone of step 5 (vnum digit 5), which no rule names."""
     return 110500 if "110500" in items else None
@@ -968,7 +990,7 @@ def build_corpus(proto=DEFAULT_PROTO, names=DEFAULT_NAMES, mobs=DEFAULT_MOBS):
                    icon=row.get("icon", "icon/item/%05d.tga" % 27001), desc=row.get("desc", ""), summary=row.get("summary", ""))
         items[str(vnum)] = row
     mob_names = names_of(mobs)
-    cases = item_cases(items) + state_cases(items) + skill_cases() + api_cases(items) + wave6_cases(items)
+    cases = item_cases(items) + state_cases(items) + skill_cases() + api_cases(items) + wave6_cases(items) + pet_cases(items)
     seen = set()
     for case in cases:
         if isinstance(case.get("sockets"), list):

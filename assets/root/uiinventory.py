@@ -30,6 +30,26 @@ ITEM_FLAG_APPLICABLE = 1 << 14
 SASH_CLEAN_ATTR_VALUE0 = 7
 SASH_TAKE_ATTR_VALUE0 = 9
 
+# The advanced pet's items (NOVA-24; contract 6, NEW's ItemData.h): their
+# type and subtypes, the seal's summoned flag (socket 3) and the preview's
+# inventory mode. Named here, as the sash's, so that this module, which
+# NovaUI's windows and every test world also run, needs no pet module.
+PET_ITEM_TYPE = 39
+PET_EGG = 0
+PET_SUMMON = 1
+PET_NAME_CHANGE = 6
+PET_DESTINY_ORB = 7
+PET_SUMMONED_SOCKET = 3
+PET_PREVIEW_INVENTORY = 3
+
+
+def GetPetItemSubType(vnum):
+	"""The advanced pet subtype of an item, or -1 for any other item."""
+	item.SelectItem(vnum)
+	if item.GetItemType() != PET_ITEM_TYPE:
+		return -1
+	return item.GetItemSubType()
+
 # The money slot (uiscript Money_Slot: parameter_slot_05, 130 px, the text
 # right-aligned 3 px from its right edge) holds a purse of up to 11 digits
 # with its unit, "99.999.999.999 Yang" (120 px in Tahoma 12). 12 digits with
@@ -924,6 +944,15 @@ class InventoryWindow(ui.ScriptWindow):
 					
 				else:
 					self.wndItem.DeactivateSlot(slotNumber)			
+
+			## A summoned pet's seal glows (NOVA-24; OLD uiInventory.py:1469-1473:
+			## socket 3 is set while it is out). OLD tinted the cell; NEW's slot
+			## window activates it, as an active auto potion.
+			elif GetPetItemSubType(itemVnum) == PET_SUMMON:
+				if player.GetItemMetinSocket(slotNumber, PET_SUMMONED_SOCKET) != 0:
+					self.wndItem.ActivateSlot(i)
+				else:
+					self.wndItem.DeactivateSlot(i)
 					
 		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
@@ -1051,6 +1080,38 @@ class InventoryWindow(ui.ScriptWindow):
 		self.__SendUseItemToItemPacket(self.questionDialog.sourcePos, self.questionDialog.targetPos)
 		self.OnCloseQuestionDialog()
 
+	## OLD uiInventory.py:2329-2358 (NOVA-24): the destiny orb maxes a pet and
+	## adds a permanent -100% against monsters to its seal (attribute 0), so
+	## it asks first. OLD bug 10: OLD's test let any pet item or an egg
+	## through; only a seal takes the orb.
+	def __CanUsePetItemToDstItem(self, scrollSlotPos, targetSlotPos):
+		if GetPetItemSubType(player.GetItemIndex(targetSlotPos)) != PET_SUMMON:
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.PET_ADVANCED_ORB_ALERT)
+			return
+
+		if player.GetItemAttribute(targetSlotPos, 0)[0] != 0:
+			popup = uiCommon.PopupDialog()
+			popup.SetText(localeInfo.PET_ADVANCED_ORB_ALREADY_USED)
+			popup.Open()
+			self.popup = popup
+			return
+
+		item.SelectItem(player.GetItemIndex(targetSlotPos))
+		self.questionDialog = uiCommon.QuestionDialog()
+		self.questionDialog.SetText(localeInfo.PET_ADVANCED_ORB_WARNING % item.GetItemName())
+		self.questionDialog.SetAcceptEvent(ui.__mem_func__(self.OnAcceptPetOrbItem))
+		self.questionDialog.SetCancelEvent(ui.__mem_func__(self.OnCloseQuestionDialog))
+		self.questionDialog.Open()
+		self.questionDialog.sourcePos = scrollSlotPos
+		self.questionDialog.targetPos = targetSlotPos
+
+	def OnAcceptPetOrbItem(self):
+		if self.questionDialog == None:
+			return
+
+		self.__SendUseItemToItemPacket(self.questionDialog.sourcePos, self.questionDialog.targetPos)
+		self.OnCloseQuestionDialog()
+
 	def OnCloseQuestionDialog(self):
 		if not self.questionDialog:
 			return
@@ -1124,6 +1185,16 @@ class InventoryWindow(ui.ScriptWindow):
 			attachedSlotType = mouseModule.mouseController.GetAttachedType()
 			attachedSlotPos = mouseModule.mouseController.GetAttachedSlotNumber()
 			attachedItemVID = mouseModule.mouseController.GetAttachedItemIndex()
+
+			## The Pet Name Changer dropped on a pet seal opens the rename
+			## dialog (NOVA-24; OLD uiInventory.py:1768-1773; OLD opened it on
+			## any item).
+			if player.SLOT_TYPE_INVENTORY == attachedSlotType and \
+					GetPetItemSubType(player.GetItemIndex(attachedSlotPos)) == PET_NAME_CHANGE and \
+					GetPetItemSubType(player.GetItemIndex(itemSlotIndex)) == PET_SUMMON:
+				mouseModule.mouseController.DeattachObject()
+				self.interface.wndPetEggHatch.Open(itemSlotIndex, player.INVENTORY, True)
+				return
 
 			if player.SLOT_TYPE_INVENTORY == attachedSlotType:
 				self.__DropSrcItemToDestItemInInventory(attachedItemVID, attachedSlotPos, itemSlotIndex)
@@ -1207,6 +1278,10 @@ class InventoryWindow(ui.ScriptWindow):
 
 		elif item.GetUseType(srcItemVID) in self.USE_TYPE_TUPLE:
 			self.__SendUseItemToItemPacket(srcItemSlotPos, dstItemSlotPos)			
+
+		## The destiny orb on a pet seal (NOVA-24; OLD uiInventory.py:1917-1918).
+		elif GetPetItemSubType(srcItemVID) == PET_DESTINY_ORB:
+			self.__CanUsePetItemToDstItem(srcItemSlotPos, dstItemSlotPos)
 
 		else:
 			#snd.PlaySound("sound/ui/drop.wav")
@@ -1419,12 +1494,14 @@ class InventoryWindow(ui.ScriptWindow):
 
 		
 	def OverOutItem(self):
+		self.tabPreviewCell = -1
 		self.wndItem.SetUsableItem(False)
 		if None != self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 
 	def OverInItem(self, overSlotPos):
 		overSlotPos = self.__InventoryLocalSlotPosToGlobalSlotPos(overSlotPos)
+		self.tabPreviewCell = overSlotPos
 		self.wndItem.SetUsableItem(False)
 
 		if mouseModule.mouseController.isAttached():
@@ -1703,6 +1780,20 @@ class InventoryWindow(ui.ScriptWindow):
 		self.Close()
 		return True
 
+	## Tab over a pet seal previews its pet (NOVA-24; OLD uiInventory.py:
+	## 1210-1217): the Interface's PressTabKey asks; the cell is the one the
+	## pointer is over (OverInItem).
+	tabPreviewCell = -1
+
+	def OnPressTabKey(self):
+		if self.tabPreviewCell < 0:
+			return False
+		if GetPetItemSubType(player.GetItemIndex(self.tabPreviewCell)) != PET_SUMMON:
+			return False
+		import pet
+		pet.ReqPetPreview(PET_PREVIEW_INVENTORY, player.INVENTORY, self.tabPreviewCell)
+		return True
+
 	def UseItemSlot(self, slotIndex):
 		curCursorNum = app.GetCursor()
 		if app.SELL == curCursorNum:
@@ -1735,6 +1826,11 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.__UseItemWithModifier(slotIndex):
 			mouseModule.mouseController.DeattachObject()
 			self.OverOutItem()
+			return
+
+		## An egg opens the hatch window (NOVA-24; OLD uiInventory.py:2621-2625).
+		if GetPetItemSubType(player.GetItemIndex(slotIndex)) == PET_EGG:
+			self.interface.wndPetEggHatch.Open(slotIndex, player.INVENTORY)
 			return
 
 		self.__UseItem(slotIndex)

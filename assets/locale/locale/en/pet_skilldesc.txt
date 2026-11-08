@@ -1,0 +1,21 @@
+ANTI_CRITICAL_PCT	Iron Focus	Reduces the chance of receiving critical hits.
+APPLY_ANTI_PENETRATE_PCT	Inner Guard	Lowers the chance of receiving piercing (penetrating) hits.
+ATT_BONUS_TO_BOSS	Boss Hunter	Increases damage dealt to boss enemies.
+ATT_BONUS_TO_MONSTER	Monster Slayer	Boosts attack power against standard monsters.
+ATT_BONUS_TO_METIN_STONE	Stonebreaker	Increases damage against Metin Stones.
+POISON_PCT	Venom Edge	Grants a chance to poison enemies with attacks.
+REFLECT_MELEE	Thorn Skin	Reflects a portion of melee damage back to attackers.
+HP_REGEN	Vital Surge	Speeds up natural HP regeneration over time.
+ATT_GRADE_BONUS	Sharp Edge	Increases base attack value for all attacks.
+MAX_HP	Heart of the Titan	Increases your maximum health, allowing you to withstand more damage.
+ATT_BONUS_TO_FIRE	Flame Strike	Increases damage against fire-aligned enemies.
+ATT_BONUS_TO_ICE	Frostbite	Increases damage against ice-aligned enemies.
+ATT_BONUS_TO_EARTH	Crag Breaker	Increases damage against earth-aligned enemies.
+ATT_BONUS_TO_WIND	Windpiercer	Increases damage against wind-aligned enemies.
+ITEM_DROP_BONUS	Fortune Seeker	Increases the chance for items to drop from enemies.
+APPLY_ANTI_HUMAN	Duelist's Wrath	Boosts human resistance against opponents.
+ATT_BONUS_ELEMENTAL	Elemental Mastery	Increases damage against all elemental enemies.
+ATTBONUS_MAGIC_MELEE	Arcane Strikes	Enhances melee damage that scales with magic.
+NORMAL_HIT_DAMAGE_BONUS	Brutal Force	Increases the damage of regular (non-skill) hits.
+SKILL_DAMAGE_BONUS	Master Technique	Boosts the damage of all skill-based attacks.
+SKILL_DEFEND_BONUS	Tactical Defense	Reduces damage taken from enemy skills.

@@ -1057,3 +1057,37 @@ AURA_WINDOW_EXP	%s / %s EXP
 AURA_WING_SHOW_WING	Wings
 AURA_WING_SHOW_AURA	Aura
 AURA_WING_SHOW_EFFECT	Aura Wing Effect
+PET_EVOLVE_GRADE_JUNIOR	Novato
+PET_EVOLVE_GRADE_APPRENTICE	Aprendiz
+PET_EVOLVE_GRADE_SCOUT	Explorador
+PET_EVOLVE_GRADE_ELITE	Élite
+PET_EVOLVE_GRADE_CHAMPION	Campeón
+PET_EVOLVE_GRADE_VETERAN	Veterano
+PET_EVOLVE_GRADE_MYTHIC	Mítico
+PET_EVOLVE_GRADE_HEROIC	Héroe
+PET_EVOLVE_GRADE_HEROICPLUS	Héroe Plus
+PET_EVOLVE_GRADE_HEROICMAX	Héroe Ascendido
+TOOLTIP_PET_ATTR_INFO	Level %d, %s
+PET_EVOLVE_PRICE	Precio %s
+PET_EVOLVE_ACTIVE_SKILL_COUNT	Habilidades básicas %s
+PET_EVOLVE_PASSIVE_SKILL_COUNT	Habilidades heroicas %s
+PET_TOOLTIP_SKILL_CUR_LEVEL	Nivel: %d
+PET_EVOLVE_SUCCESS	¡Evolución completada con éxito!
+PET_EVOLVE_FAILURE	¡Evolución fallida!
+PET_EVOLVE_ERROR_NOT_ENOUGH_ITEM	No tienes suficientes %dx %s
+PET_EVOLVE_ERROR_NOT_ENOUGH_GOLD	No tienes suficiente Yang.
+PET_ATTR_REFINE_FAILURE	Error al mejorar el bonus.
+PET_ATTR_REFINE_SUCCESS	¡Bonus mejorado correctamente!
+PET_HATCH_NAME_TOO_SHORT	¡El nombre elegido es demasiado corto!
+PET_HATCH_NEED_WAIT	Debes esperar %s
+PET_HATCH_RENAME_TITLE	Cambiar nombre de mascota
+PET_HATCH_RENAME_BUTTON	Cambiar nombre
+PET_ADVANCED_ORB_WARNING	¿Agregar -100%% contra monstruos a %s? Acción irreversible.
+PET_ADVANCED_ORB_ALREADY_USED	¡Ya has usado un orbe en este sello!
+PET_ADVANCED_ORB_ALERT	Solo puedes usar este objeto en un sello de mascota.
+TARGET_INFO_EXP	Experience: %s
+PET_EGG_HATCH_IN	Hatches in: %s
+PET_TOOLTIP_TAB_PREVIEW	Press Tab to preview this pet
+PET_INFO_NAME	Name:
+PET_INFO_EVOLUTION	Evo:
+PET_INFO_LEVEL	Level:

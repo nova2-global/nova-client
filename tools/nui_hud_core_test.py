@@ -1257,6 +1257,14 @@ EXPECTED_SITES = {
                            # Wave 6 (NOVA-20): the sash combine and absorb windows.
                            ("make", "sash", "uiSash.CombineWindow", "nui_sash.CombineWindow"),
                            ("make", "sash", "uiSash.AbsorbWindow", "nui_sash.AbsorbWindow"),
+                           # NOVA-24: the advanced pet's windows (contract 8; the
+                           # preview is a second "pet" window).
+                           ("make", "pet-hatch", "uiPet.PetHatchEggWindow", "nui_pet_hatch.PetHatchEggWindow"),
+                           ("make", "pet-attr-refine", "uiPet.PetAttrRefineWindow", "nui_pet_attr_refine.PetAttrRefineWindow"),
+                           ("make", "pet-evolution", "uiPet.PetEvolutionWindow", "nui_pet_evolution.PetEvolutionWindow"),
+                           ("make", "pet-mini", "uiPet.PetInterfaceWindow", "nui_pet_mini.PetInterfaceWindow"),
+                           ("make", "pet", "uiPet.PetWindow", "nui_pet.PetWindow"),
+                           ("make", "pet", "uiPet.PetWindow", "nui_pet.PetWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),

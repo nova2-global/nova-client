@@ -291,8 +291,12 @@ class Interface(unittest.TestCase):
     def test_the_windows_are_made_bound_and_destroyed(self):
         source = lf.read(os.path.join(w6.ROOT, "interfacemodule.py"))
         self.assertIn("import uiSash", source.split("\n"))
-        for line in ("self.__MakeSashWindow()", "self.wndSashCombine = uiSash.CombineWindow()",
-                     "self.wndSashAbsorption = uiSash.AbsorbWindow()", "self.wndSashAbsorption.LoadWindow()",
+        # NovaUI Wave 6 makes both through nui_windows.make() (legacy's class
+        # while the "sash" window is off).
+        for line in ("self.__MakeSashWindow()",
+                     'self.wndSashCombine = nui_windows.make("sash", uiSash.CombineWindow, "nui_sash.CombineWindow")',
+                     'self.wndSashAbsorption = nui_windows.make("sash", uiSash.AbsorbWindow, "nui_sash.AbsorbWindow")',
+                     "self.wndSashAbsorption.LoadWindow()",
                      "self.wndInventory.SetSashWindow(self.wndSashCombine, self.wndSashAbsorption)",
                      "self.wndSashCombine.SetItemToolTip(self.tooltipItem)",
                      "self.wndSashAbsorption.SetItemToolTip(self.tooltipItem)",

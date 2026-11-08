@@ -1,0 +1,71 @@
+{
+	"sash": {
+		"mode": "combine",
+		"cells": [
+			{
+				"index": 0,
+				"kind": "item",
+				"type": 1,
+				"ref": 0,
+				"icon": "/icon/item/85001.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 1,
+				"kind": "item",
+				"type": 1,
+				"ref": 1,
+				"icon": "/icon/item/85001.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 2,
+				"kind": "item",
+				"type": 1,
+				"ref": 2,
+				"icon": "/icon/item/85002.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			}
+		],
+		"price": "Absorption price: 250000",
+		"auto_combine": true,
+		"auto_shown": true,
+		"attach_right": true
+	}
+}

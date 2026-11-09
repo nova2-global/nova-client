@@ -1,14 +1,10 @@
-"""Tests of the NovaUI dungeon manager, its drops panel, its ready notice and the dungeon ranking
-(assets/root/nui_dungeon_timer.py, nui_dungeon_drops.py, nui_dungeon_notice.py,
-nui_dungeon_rank.py; NOVA-25).
+"""Tests of the NovaUI dungeon manager, direction D "Bestiary" (assets/root/nui_dungeon_timer.py),
+its ready notice and the dungeon ranking (nui_dungeon_notice.py, nui_dungeon_rank.py; NOVA-25).
 
-Each flow runs on the legacy windows (uitimerwindow.py, uidungeonrank.py) and on the NovaUI
-facades over the same stand-in world (dungeon_timer_support.World), and what each sends must be
-the same: the chat commands ("/warp_dungeon", "/rank_dungeon"), the drop requests, the tooltip
-calls, the windows shown. The NovaUI side also checks what the boards show (the rows and their
-clocks, the chosen dungeon, the description's tones, the empty hint, the drops, the rankings),
-that no Python runs per frame (OnUpdate None; the clocks are nui-countdowns, the notices
-nui_dungeon_notice's timers, the ranking's walk-away a leave-range watch), and the wiring."""
+The deck of boss cards, the hide control, the merged drops grid with its filters, Run and
+Practice and the Wiki button are NovaUI's; the Teleport, the ranking commands, the ticket's
+tooltip and the hidden-dungeon rule (HIDDEN_DUNGEONS, session and level) stay legacy's code in
+uitimerwindow.py. The ready notice and the ranking run as before, and the wiring is pinned."""
 import json
 import os
 import sys
@@ -23,15 +19,16 @@ WINDOWS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 NEW_DUNGEONS = [0, 1, 2, 3, 5, 6]
 
 
-def opened(nui_on):
-    """The classic look, so a flow compares with legacy's (the modern look asks for drops by itself)."""
-    world = dts.World(nui_on)
+def opened(nui_on=True, preview=False, select_ok=True):
+    world = dts.World(nui_on, preview=preview)
+    if preview and not select_ok:
+        world.game.modules["modelpreview"].Select = lambda name, race: 0
     rank = world.rank()
     window = world.timer()
-    if nui_on:
-        world.game.modules["nui_dungeon_timer"].is_classic_skin = lambda: True
+    world.game.state.now = 100.0
     with world.game, w4.quiet():
         window.Open()
+    world.game.state.now = 110.0
     return world, window, rank
 
 
@@ -40,149 +37,377 @@ def press(world, window, event, *args):
         return w4.press(window, event, *args)
 
 
-class Both(unittest.TestCase):
-    """A flow on each side; the effects compared."""
-
-    def run_both(self, nui_flow, legacy_flow):
-        effects = []
-        sides = []
-        for nui_on in (False, True):
-            world, window, rank = opened(nui_on)
-            mark = world.mark()
-            with world.game, w4.quiet():
-                (nui_flow if nui_on else legacy_flow)(world, window, rank)
-            effects.append((world.chat_commands(), world.drop_requests(), bool(window.IsShow()), bool(rank.IsShow()),
-                            [(n, a) for n, a in world.game.log[mark:] if n.startswith("net.")]))
-            sides.append((world, window, rank))
-        self.assertEqual(effects[1], effects[0])
-        return sides
+def model(window):
+    return w4.board(window).model
 
 
-class Flows(Both):
-    def test_the_ranking_buttons_and_the_teleport(self):
-        def legacy(world, window, rank):
-            window.SetDescription(6)
-            window.btnTimeRank.event()
-            window.btnOverAllRank.event()
-            window.btnDamageRank.event()
-            window.teleport.event()
-
-        def nui(world, window, rank):
-            w4.press(window, "row_press", 6, 0)
-            for name in ("time", "overall", "damage", "teleport"):
-                if w4.board(window) is not None:
-                    w4.press(window, "button_press", name, 0)
-        (_, legacy_window, _), (world, window, rank) = self.run_both(nui, legacy)
-        self.assertEqual(world.chat_commands(), ["/rank_dungeon 0 6", "/rank_dungeon 1 6", "/rank_dungeon 2 6",
-                                                 "/warp_dungeon 6"])
-        self.assertIsNone(w4.board(window), "the teleport closes the board")
-        self.assertTrue(rank.IsShow())
-
-    def test_the_drops_button_asks_once(self):
-        def legacy(world, window, rank):
-            window.SetDescription(2)
-            window.btnDungeonDrops.event()
-            world.timer_module.add_drop(2, 2598, 1, 27001, 1, 500000)
-            window.btnDungeonDrops.event()
-
-        def nui(world, window, rank):
-            w4.press(window, "row_press", 2, 0)
-            w4.press(window, "button_press", "drops", 0)
-            world.timer_module.add_drop(2, 2598, 1, 27001, 1, 500000)
-            w4.press(window, "button_press", "drops", 0)
-        (_, legacy_window, _), (world, window, _) = self.run_both(nui, legacy)
-        self.assertEqual(world.drop_requests(), [(2,)])
-        self.assertTrue(window.wndDrops.IsShow())
-        self.assertTrue(legacy_window.wndDrops.IsShow())
-
-    def test_hiding_and_showing_dungeons(self):
-        def legacy(world, window, rank):
-            window.HideDungeon(1)
-            window.HideDungeon(5)
-            window.showHiddenBtn.event()
-
-        def nui(world, window, rank):
-            w4.press(window, "hide_press", 1, 0)
-            w4.press(window, "hide_press", 5, 0)
-            self.assertEqual([r["idx"] for r in w4.board(window).model["rows"]], [0, 2, 3, 6])
-            self.assertTrue(w4.board(window).model["show_hidden"])
-            w4.press(window, "button_press", "show_hidden", 0)
-        (_, legacy_window, _), (world, window, _) = self.run_both(nui, legacy)
-        self.assertEqual(window.visible_indices, legacy_window.visible_indices)
-        model = w4.board(window).model
-        self.assertEqual([r["idx"] for r in model["rows"]], NEW_DUNGEONS)
-        self.assertFalse(model["show_hidden"])
-
-    def test_the_ticket_shows_the_item_tooltip_as_legacy(self):
-        calls = []
-        for nui_on in (False, True):
-            world = dts.World(nui_on)
-            world.timer_module.DESCRIPTION.clear()
-            window = world.timer()
-            world.timer_module.DESCRIPTION[1][5] = 30750
-            with world.game, w4.quiet():
-                window.Open()
-                if nui_on:
-                    window.SetDescription(1)
-                    w4.fire(window, "ticket_over")
-                    w4.fire(window, "ticket_out")
-                else:
-                    window.itemSlot.AppendSlot(0)
-                    window.SetDescription(1)
-                    window.itemSlot.events["over_in"](0)
-                    window.itemSlot.events["over_out"]()
-            calls.append(list(world.tooltip.calls))
-            if nui_on:
-                self.assertEqual(w4.board(window).model["ticket"]["icon"], "/icon/item/30750.tga")
-        self.assertEqual(calls[1], calls[0])
-        self.assertTrue(calls[0])
+def card(window, idx):
+    return next(c for c in model(window)["cards"] if c["idx"] == idx)
 
 
-class Board(unittest.TestCase):
-    def test_open_shows_the_six_dungeons_and_the_first(self):
-        world, window, _ = opened(True)
-        model = w4.board(window).model
-        self.assertEqual([r["idx"] for r in model["rows"]], NEW_DUNGEONS)
-        self.assertEqual(model["rows"][3]["title"], "Aqua Dragon")
-        self.assertEqual((model["selected"], model["name"], model["boss"]), (0, "Demon Tower", "mob 1095"))
-        self.assertEqual((model["level"], model["group"], model["cooldown"]),
-                         ("Min. Level 75 Max. Level 105", "Group Request:  No", "Cooldown:  0 Mins"))
-        self.assertEqual(model["ticket_label"], "Entry Ticket")
-        self.assertEqual(model["desc"][0], {"text": "Ground floor:", "tone": "heading"})
-        self.assertEqual(model["empty"], "")
+def slots(window):
+    return dict((c["idx"], c["slot"]) for c in model(window)["cards"])
 
-    def test_the_clocks_count_from_quest_time_ready(self):
-        world, window, _ = opened(True)
+
+class Deck(unittest.TestCase):
+    def test_open_shows_every_dungeon_in_order_with_the_first_in_front(self):
+        world, window, _ = opened()
+        self.assertEqual([c["idx"] for c in model(window)["cards"]], NEW_DUNGEONS)
+        self.assertEqual(slots(window), {0: "c", 1: "r1", 2: "r2", 3: "r3", 5: "l2", 6: "l1"})
+        self.assertEqual(model(window)["selected"], 0)
+        self.assertEqual((card(window, 0)["title"], card(window, 0)["level"], card(window, 0)["mono"]),
+                         ("Demon Tower", "Lv 75-105", "DT"))
+        self.assertEqual(card(window, 5)["mono"], "NE")
+
+    def test_a_press_on_a_side_card_selects_it_and_the_deck_turns(self):
+        world, window, _ = opened()
+        press(world, window, "card_press", 2, 0)
+        self.assertEqual(model(window)["selected"], 2)
+        self.assertEqual(model(window)["name"], "Devil`s Catacomb")
+        self.assertEqual(slots(window), {2: "c", 3: "r1", 5: "r2", 6: "r3", 0: "l2", 1: "l1"})
+
+    def test_the_arrows_select_the_neighbors_and_wrap(self):
+        world, window, _ = opened()
+        press(world, window, "arrow_press", "prev", 0)
+        self.assertEqual(model(window)["selected"], 6, "before the first is the last")
+        press(world, window, "arrow_press", "next", 0)
+        press(world, window, "arrow_press", "next", 0)
+        self.assertEqual(model(window)["selected"], 1)
+
+    def test_a_right_press_selects_nothing(self):
+        world, window, _ = opened()
+        press(world, window, "card_press", 2, 1)
+        press(world, window, "arrow_press", "next", 1)
+        self.assertEqual(model(window)["selected"], 0)
+
+    def test_the_badge_reads_ready_then_the_clock(self):
+        world, window, _ = opened()
+        self.assertEqual((card(window, 5)["state"], card(window, 5)["end"]), ("ready", 0.0))
         with world.game:
             window.SetTimeLeft(5, 600)
-            self.assertEqual(w4.board(window).model["rows"][4]["end"], 0.0, "nothing counts before QuestTimeReady")
             window.QuestTimeReady()
-        self.assertEqual(w4.board(window).model["rows"][4]["end"], 600.0)
+        self.assertEqual((card(window, 5)["state"], card(window, 5)["end"]), ("cd", 710.0))
         world.game.timestamp += 600
-        press(world, window, "row_ready", 5)
-        self.assertEqual(w4.board(window).model["rows"][4]["end"], 0.0)
-
-    def test_a_note_keeps_its_tone(self):
-        world, window, _ = opened(True)
-        press(world, window, "row_press", 1, 0)
-        tones = [line["tone"] for line in w4.board(window).model["desc"]]
-        self.assertIn("note", tones)
-        self.assertIn("heading", tones)
-
-    def test_every_hidden_shows_the_hint(self):
-        world, window, _ = opened(True)
-        for idx in NEW_DUNGEONS:
-            press(world, window, "hide_press", idx, 0)
-        model = w4.board(window).model
-        self.assertEqual(model["rows"], [])
-        self.assertEqual(model["empty"], "All dungeons are hidden for your level. Press Show Hidden to see them.")
+        with world.game, w4.quiet():
+            w4.fire(window, "card_ready", 5)
+        self.assertEqual((card(window, 5)["state"], card(window, 5)["end"]), ("ready", 0.0))
 
     def test_no_python_per_frame(self):
-        world, window, rank = opened(True)
-        for cls in (type(window), type(rank), type(window.wndDrops)):
-            self.assertIsNone(cls.OnUpdate, cls.__name__)
+        world, window, rank = opened()
+        self.assertIsNone(type(window).OnUpdate)
+        self.assertIsNone(type(rank).OnUpdate)
         with world.game:
-            window.UpdateTime()  # game.OnUpdate's call does nothing here
+            window.UpdateTime()
+
+
+class Bosses(unittest.TestCase):
+    """One named preview per dungeon; only the visible cards' previews run."""
+
+    def previews(self, world):
+        return world.game.modules["modelpreview"].calls
+
+    def test_each_visible_card_selects_and_shows_its_boss(self):
+        world, window, _ = opened(preview=True)
+        calls = self.previews(world)
+        self.assertIn(("Select", "dungeon_boss_0", 1095), calls)
+        self.assertIn(("Show", "dungeon_boss_0", True), calls)
+        self.assertIn(("Select", "dungeon_boss_5", window.nui_race(5)), calls)
+        self.assertEqual([c["view"] for c in model(window)["cards"]], [True, True, True, False, True, True],
+                         "the card behind the deck has no view")
+
+    def test_the_card_behind_the_deck_has_no_preview_until_it_comes_into_view(self):
+        world, window, _ = opened(preview=True)
+        self.assertFalse([c for c in self.previews(world) if c[1] == "dungeon_boss_3"])
+        press(world, window, "arrow_press", "next", 0)
+        self.assertIn(("Select", "dungeon_boss_3", window.nui_race(3)), self.previews(world))
+        self.assertEqual(card(window, 3)["view"], True)
+
+    def test_a_select_is_not_repeated_while_the_deck_turns(self):
+        world, window, _ = opened(preview=True)
+        before = len([c for c in self.previews(world) if c[0] == "Select"])
+        press(world, window, "arrow_press", "next", 0)
+        selects = [c for c in self.previews(world) if c[0] == "Select"]
+        self.assertEqual(len(selects), before + 1, "only the card that came into view is new")
+        self.assertEqual(selects[-1][1], "dungeon_boss_3")
+
+    def test_closing_clears_every_preview_that_was_made(self):
+        world, window, _ = opened(preview=True)
+        with world.game, w4.quiet():
+            w4.press(window, "close_press", 0)
+        cleared = [c for c in self.previews(world) if c[0] == "Clear"]
+        self.assertEqual(sorted(c[1] for c in cleared), ["dungeon_boss_%d" % i for i in (0, 1, 2, 5, 6)])
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertIn(("Select", "dungeon_boss_0", 1095), self.previews(world)[-12:], "selected again after the clear")
+
+    def test_a_race_without_a_model_shows_the_monogram(self):
+        world, window, _ = opened(preview=True, select_ok=False)
+        self.assertEqual([c["view"] for c in model(window)["cards"]], [False] * 6)
+        self.assertEqual(card(window, 0)["mono"], "DT")
+
+    def test_a_client_without_previews_still_opens(self):
+        world, window, _ = opened()
+        self.assertEqual([c["view"] for c in model(window)["cards"]], [False] * 6)
+
+    def test_the_old_single_preview_is_not_used(self):
+        world, window, _ = opened(preview=True)
+        self.assertFalse([c for c in self.previews(world) if c[1] == "dungeon_boss"])
+
+
+class Hiding(unittest.TestCase):
+    def test_none_hidden_at_the_start(self):
+        world, window, _ = opened()
+        self.assertEqual(model(window)["chip"], "")
+        self.assertFalse(model(window)["chip_on"])
+
+    def test_hiding_the_front_card_leaves_the_deck_and_moves_on(self):
+        world, window, _ = opened()
+        press(world, window, "arrow_press", "next", 0)
+        press(world, window, "hide_press", 0)
+        self.assertEqual(model(window)["selected"], 2, "the next card takes the front")
+        self.assertEqual(card(window, 1)["slot"], "out")
+        self.assertEqual(model(window)["chip"], "1 hidden")
+        self.assertEqual(window.visible_indices, [0, 2, 3, 5, 6])
+
+    def test_hiding_keeps_the_legacy_rule(self):
+        world, window, _ = opened()
+        press(world, window, "hide_press", 0)
+        module = world.timer_module
+        self.assertEqual(module.SESSION_HIDDEN[0], 1)
+        self.assertGreater(module.HIDDEN_DUNGEONS[0], 0, "hidden at the player's level")
+
+    def test_the_last_visible_dungeon_cannot_be_hidden(self):
+        world, window, _ = opened()
+        for _i in range(5):
+            press(world, window, "hide_press", 0)
+        self.assertEqual(len(window.visible_indices), 1)
+        self.assertTrue(model(window)["hide_locked"])
+        last = window.index
+        press(world, window, "hide_press", 0)
+        self.assertEqual(window.visible_indices, [last], "a press that slips through hides nothing")
+
+    def test_the_chip_shows_the_hidden_cards_dashed_and_becomes_done(self):
+        world, window, _ = opened()
+        press(world, window, "hide_press", 0)
+        press(world, window, "chip_press", 0)
+        self.assertTrue(model(window)["chip_on"])
+        self.assertEqual(model(window)["chip"], "Done")
+        hidden = card(window, 0)
+        self.assertNotEqual(hidden["slot"], "out")
+        self.assertEqual((hidden["hidden"], hidden["state"]), (True, "hidden"))
+        press(world, window, "chip_press", 0)
+        self.assertEqual(model(window)["chip"], "1 hidden")
+        self.assertEqual(card(window, 0)["slot"], "out")
+
+    def test_unhiding_from_the_shown_deck(self):
+        world, window, _ = opened()
+        press(world, window, "hide_press", 0)
+        press(world, window, "chip_press", 0)
+        press(world, window, "card_press", 0, 0)
+        self.assertEqual(window.index, 0)
+        self.assertTrue(model(window)["hero_hidden"])
+        press(world, window, "hide_press", 0)
+        self.assertFalse(card(window, 0)["hidden"])
+        self.assertEqual(world.timer_module.SESSION_HIDDEN[0], 0)
+        self.assertEqual(world.timer_module.HIDDEN_DUNGEONS[0], 0)
+        self.assertEqual(window.index, 0, "unhiding keeps the front card")
+        self.assertEqual(model(window)["chip"], "Done", "stays until Done is pressed")
+
+    def test_a_hidden_clock_is_kept(self):
+        world, window, _ = opened()
+        with world.game:
+            window.SetTimeLeft(1, 600)
+            window.QuestTimeReady()
+        press(world, window, "arrow_press", "next", 0)
+        press(world, window, "hide_press", 0)
+        self.assertEqual(window.GetEndTime(1), world.game.timestamp + 600)
+
+
+class Details(unittest.TestCase):
+    def test_the_front_cards_details(self):
+        world, window, _ = opened()
+        m = model(window)
+        self.assertEqual((m["name"], m["boss"]), ("Demon Tower", "Boss: mob 1095"))
+        self.assertEqual((m["level"], m["group"], m["cooldown"]), ("Lv 75-105", "No", "0 Mins"))
+        self.assertTrue(m["ticket_none"], "no ticket reads None")
+
+    def test_the_ticket_is_the_real_slot_with_its_tooltip(self):
+        world, window, _ = opened()
+        world.timer_module.DESCRIPTION[1][5] = 30750
+        with world.game, w4.quiet():
+            window.SetDescription(1)
+            w4.fire(window, "ticket_over")
+            w4.fire(window, "ticket_out")
+        self.assertEqual(model(window)["ticket"]["icon"], "/icon/item/30750.tga")
+        self.assertFalse(model(window)["ticket_none"])
+        self.assertEqual([c[0] for c in world.tooltip.calls], ["SetItemToolTip", "HideToolTip"])
+
+    def test_a_ticketless_dungeon_after_a_ticket_reads_none_again(self):
+        world, window, _ = opened()
+        world.timer_module.DESCRIPTION[1][5] = 30750
+        with world.game, w4.quiet():
+            window.SetDescription(1)
+            window.SetDescription(2)
+        self.assertTrue(model(window)["ticket_none"])
+        self.assertEqual(model(window)["ticket"]["kind"], "")
+
+    def test_the_notice_box_is_per_dungeon(self):
+        world, window, _ = opened()
+        press(world, window, "notice_press", 0)
+        self.assertTrue(model(window)["notice"])
+        press(world, window, "arrow_press", "next", 0)
+        self.assertFalse(model(window)["notice"])
+
+    def test_the_ranking_buttons_send_legacys_commands(self):
+        world, window, rank = opened()
+        for name in ("time", "overall", "damage"):
+            press(world, window, "button_press", name, 0)
+        self.assertEqual(world.chat_commands(), ["/rank_dungeon 0 0", "/rank_dungeon 1 0", "/rank_dungeon 2 0"])
+        self.assertTrue(rank.IsShow())
+
+
+class Wiki(unittest.TestCase):
+    def test_without_the_wiki_the_button_is_off_and_sends_nothing(self):
+        world, window, _ = opened()
+        self.assertFalse(model(window)["wiki_on"])
+        press(world, window, "wiki_press", 0)
+        self.assertEqual(world.chat_commands(), [])
+
+    def test_with_the_wiki_it_opens_the_boss(self):
+        world, window, _ = opened()
+        opened_with = []
+        world.interface.OpenWikiMob = lambda vnum: opened_with.append(vnum) or True
+        world.interface.wndWiki = object()
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertTrue(model(window)["wiki_on"])
+        press(world, window, "wiki_press", 0)
+        self.assertEqual(opened_with, [1095])
+
+
+class Drops(unittest.TestCase):
+    def filled(self):
+        world, window, _ = opened()
+        module = world.timer_module
+        with world.game, w4.quiet():
+            module.add_drop(0, 2598, 1, 27001, 3, 800000)   # guaranteed
+            module.add_drop(0, 2598, 1, 27002, 1, 500000)   # common
+            module.add_drop(0, 2598, 1, 27003, 1, 100000)   # rare
+            module.add_drop(0, 2597, 2, 27002, 2, 100000)   # the same vnum, rare beats common
+            module.add_drop(0, 2597, 2, 30190, 1, 900000)   # guaranteed
+            module.add_drop(0, 2597, 2, 27001, 9, 100000)   # guaranteed stays
+            window.refreshMobList()
+        return world, window
+
+    def test_every_mob_merged_one_grid_best_band_kept(self):
+        world, window = self.filled()
+        m = model(window)
+        self.assertEqual(m["drops_state"], "ready")
+        self.assertEqual([(i["vnum"], i["band"], i["count"]) for i in m["drops_items"]],
+                         [(27001, "guaranteed", "3"), (30190, "guaranteed", ""),
+                          (27002, "rare", "2"), (27003, "rare", "")],
+                         "guaranteed, common then rare; 27002 is rare, its better band")
+        self.assertEqual(m["drops_count"], "4")
+
+    def test_the_filter_chips_count_and_filter(self):
+        world, window = self.filled()
+        m = model(window)
+        self.assertEqual([(f["band"], f["n"], f["on"]) for f in m["filter_chips"]],
+                         [("guaranteed", 2, False), ("common", 0, False), ("rare", 2, False)])
+        press(world, window, "filter_press", "rare", 0)
+        m = model(window)
+        self.assertEqual([i["vnum"] for i in m["drops_items"]], [27002, 27003])
+        self.assertEqual(m["drops_count"], "2 of 4")
+        self.assertEqual([f["on"] for f in m["filter_chips"]], [False, False, True])
+        press(world, window, "filter_press", "rare", 0)
+        self.assertEqual(model(window)["drops_count"], "4", "pressing the active chip clears it")
+
+    def test_a_cell_gives_the_tooltip_of_the_item_it_shows(self):
+        world, window = self.filled()
+        press(world, window, "filter_press", "rare", 0)
+        with world.game, w4.quiet():
+            w4.fire(window, "drop_over", 1)
+            w4.fire(window, "drop_out")
+        self.assertEqual([c[:2] for c in world.tooltip.calls], [("SetItemToolTip", 27003), ("HideToolTip",)])
+
+    def test_loading_empty_and_the_retry_inside_the_servers_second(self):
+        world, window, _ = opened()
+        self.assertEqual(model(window)["drops_state"], "loading")
+        self.assertIn((0,), world.drop_requests())
+        with world.game, w4.quiet():
+            w4.press(window, "arrow_press", "next", 0)
+            w4.press(window, "arrow_press", "next", 0)
+        self.assertEqual(model(window)["drops_retry"] > 0, True, "a second request inside the second: retried")
+        asked = len(world.drop_requests())
+        world.game.state.now = 112.0
+        with world.game, w4.quiet():
+            w4.fire(window, "drops_retry")
+        self.assertEqual(len(world.drop_requests()), asked + 1)
+        self.assertEqual(world.drop_requests()[-1], (2,))
+        with world.game, w4.quiet():
+            w4.fire(window, "drops_timeout")
+        self.assertEqual(model(window)["drops_state"], "empty")
+        self.assertEqual(model(window)["drops_count"], "0")
+
+    def test_a_second_visit_asks_nothing(self):
+        world, window, _ = opened()
+        before = len(world.drop_requests())
+        with world.game, w4.quiet():
+            world.game.state.now = 120.0
+            w4.press(window, "arrow_press", "next", 0)
+            w4.press(window, "arrow_press", "prev", 0)
+        self.assertEqual(len([r for r in world.drop_requests() if r == (0,)]), 1)
+        self.assertGreater(len(world.drop_requests()), before)
+
+
+class RunAndPractice(unittest.TestCase):
+    def test_run_is_teleport_when_ready(self):
+        world, window, _ = opened()
+        m = model(window)
+        self.assertEqual((m["mode"], m["go_label"], m["go_end"], m["go_locked"]), ("run", "Teleport", 0.0, False))
+        press(world, window, "go_press", 0)
+        self.assertEqual(world.chat_commands(), ["/warp_dungeon 0"])
+        self.assertIsNone(w4.board(window), "teleport closes the window, as legacy")
+
+    def test_run_is_locked_with_the_live_clock_on_cooldown(self):
+        world, window, _ = opened()
+        with world.game:
+            window.SetTimeLeft(0, 600)
+            window.QuestTimeReady()
+        m = model(window)
+        self.assertEqual(m["go_label"], "Ready in")
+        self.assertEqual((m["go_end"], m["go_locked"]), (710.0, True))
+        press(world, window, "go_press", 0)
+        self.assertEqual(world.chat_commands(), [], "the handler checks too, past a stale model")
+
+    def test_practice_sends_the_command_whatever_the_cooldown(self):
+        world, window, _ = opened()
+        with world.game:
+            window.SetTimeLeft(2, 600)
+            window.QuestTimeReady()
+        press(world, window, "card_press", 2, 0)
+        press(world, window, "seg_press", "practice", 0)
+        m = model(window)
+        self.assertEqual((m["mode"], m["go_label"], m["go_end"], m["go_locked"]),
+                         ("practice", "Start practice", 0.0, False))
+        press(world, window, "go_press", 0)
+        self.assertEqual(world.chat_commands(), ["/practice_dungeon 2"])
+        self.assertIsNone(w4.board(window), "the fight starts: the window closes, as the teleport")
+
+    def test_practice_clears_the_filter_and_the_mode_comes_back(self):
+        world, window, _ = opened()
+        press(world, window, "seg_press", "practice", 0)
+        self.assertEqual(model(window)["mode"], "practice")
+        press(world, window, "seg_press", "run", 0)
+        self.assertEqual(model(window)["mode"], "run")
+
+    def test_the_window_opens_on_run(self):
+        world, window, _ = opened()
+        press(world, window, "seg_press", "practice", 0)
+        with world.game, w4.quiet():
+            window.Close()
+            window.Open()
+        self.assertEqual(model(window)["mode"], "run")
 
 
 class Notices(unittest.TestCase):
@@ -191,7 +416,7 @@ class Notices(unittest.TestCase):
         notices = window.nui_notices
         with world.game, w4.quiet():
             window.QuestTimeReady()
-            w4.press(window, "row_press", 2, 0)
+            w4.press(window, "card_press", 2, 0)
             w4.press(window, "notice_press", 0)
             self.assertTrue(w4.board(window).model["notice"])
             window.SetTimeLeft(2, 30)
@@ -210,39 +435,12 @@ class Notices(unittest.TestCase):
         world, window, _ = opened(True)
         with world.game, w4.quiet():
             window.QuestTimeReady()
-            w4.press(window, "row_press", 6, 0)
+            w4.press(window, "card_press", 6, 0)
             w4.press(window, "notice_press", 0)
             window.SetTimeLeft(6, 30)
             w4.press(window, "notice_press", 0)
         self.assertEqual(window.nui_notices.timers, [])
         self.assertIsNone(window.nui_notices.board)
-
-
-class Drops(unittest.TestCase):
-    def test_mobs_items_and_back(self):
-        world, window, _ = opened(True)
-        module = world.timer_module
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 2, 0)
-            w4.press(window, "button_press", "drops", 0)
-            module.add_drop(2, 2598, 1, 27001, 1, 1000000)
-            module.add_drop(2, 2598, 1, 27992, 3, 300000)
-            module.add_drop(2, 2595, 2, 27001, 5, 1000)
-            window.refreshMobList()
-        drops = window.wndDrops
-        model = w4.board(drops).model
-        self.assertEqual(model["mobs"], [{"name": "mob 2598", "type": "boss"}, {"name": "mob 2595", "type": "stone"}])
-        self.assertEqual(model["info"], "The following mobs are located in Devil`s Catacomb")
-        press(world, drops, "mob_press", 0, 0)
-        model = w4.board(drops).model
-        self.assertEqual(model["showing"], "items")
-        self.assertEqual([(i["text"], i["band"]) for i in model["items"]],
-                         [("1x item 27001", "guaranteed"), ("3x item 27992", "common")])
-        self.assertEqual(model["header"], {"name": "mob 2598", "type": "boss"})
-        press(world, drops, "back_press", 0)
-        self.assertEqual(w4.board(drops).model["showing"], "mobs")
-        press(world, drops, "close_press", 0)
-        self.assertFalse(drops.IsShow())
 
 
 class Rank(unittest.TestCase):
@@ -316,6 +514,13 @@ class Factory(unittest.TestCase):
                 with self.subTest(fixture=file_name):
                     self.assertEqual(sorted(fixture), sorted(model))
 
+    def test_the_board_is_d_not_the_old_layout(self):
+        rml = open(os.path.join(WINDOWS, "dungeon-timer", "dungeon-timer.rml"), encoding="utf-8").read()
+        for needle in ("dungeon-timer__card", "dungeon-timer__deck", "'model-dungeon-boss-' + c.idx"):
+            self.assertIn(needle, rml)
+        for gone in ("dungeon-timer__row", "dungeon-timer__desc", "drop_mob_press"):
+            self.assertNotIn(gone, rml)
+
     def test_the_registration(self):
         world = dts.World(True)
         windows = world.m("nui_windows")
@@ -329,143 +534,6 @@ class Factory(unittest.TestCase):
         self.assertIn(("dungeon-drops", ("dungeon-drops",)), windows.ON_DEMAND_DOCUMENTS)
         self.assertIn(("dungeon-rank", ("dungeon-rank",)), windows.ON_DEMAND_DOCUMENTS)
         self.assertIn("dungeon-rank", world.m("nui_facade").LEAVE_RANGE_KEYS)
-
-
-class Drops(unittest.TestCase):
-    """The drops: inside the manager in the modern skins, the popup in classic."""
-
-    def opened(self, nui_on=True, classic=False, preview=False):
-        world = dts.World(nui_on, preview=preview)
-        rank = world.rank()
-        window = world.timer()
-        if nui_on:
-            world.game.modules["nui_dungeon_timer"].is_classic_skin = lambda: classic
-        world.game.state.now = 100.0
-        with world.game, w4.quiet():
-            window.Open()
-        world.game.state.now = 110.0
-        return world, window, rank
-
-    def test_the_popup_on_novaui_makes_no_legacy_board(self):
-        world, window, _ = self.opened(True, classic=True)
-        with world.game, w4.quiet():
-            w4.press(window, "button_press", "drops", 0)
-        self.assertTrue(window.wndDrops.IsShow())
-        self.assertEqual(world.game.legacy_boards, [], "the legacy Board's art would show at the screen's top left")
-
-    def test_the_legacy_popup_still_has_its_board(self):
-        world, window, _ = self.opened(False)
-        self.assertEqual(len(world.game.legacy_boards), 1)
-
-    def test_choosing_a_dungeon_asks_once_and_shows_loading(self):
-        world, window, _ = self.opened()
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 6, 0)
-        self.assertIn((6,), world.drop_requests())
-        self.assertEqual(w4.board(window).model["drops_state"], "loading")
-        before = len(world.drop_requests())
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 6, 0)
-        self.assertEqual(len(world.drop_requests()), before, "a second press on the same dungeon asks nothing")
-
-    def test_the_rows_appear_in_the_manager(self):
-        world, window, _ = self.opened()
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 2, 0)
-            world.timer_module.add_drop(2, 2598, 1, 27001, 3, 500000)
-            world.timer_module.add_drop(2, 2598, 1, 27002, 1, 800000)
-            world.timer_module.add_drop(2, 2597, 2, 30190, 1, 100000)
-            window.refreshMobList()
-        model = w4.board(window).model
-        self.assertEqual(model["drops_state"], "ready")
-        self.assertEqual([m["name"] for m in model["drops_mobs"]], ["mob 2598", "mob 2597"])
-        self.assertTrue(model["drops_mobs"][0]["active"])
-        self.assertEqual([(i["vnum"], i["count"], i["band"]) for i in model["drops_items"]],
-                         [(27001, "3", "common"), (27002, "", "guaranteed")])
-        with world.game, w4.quiet():
-            w4.press(window, "drop_mob_press", 1, 0)
-        self.assertEqual([i["vnum"] for i in w4.board(window).model["drops_items"]], [30190])
-        self.assertEqual([(i["vnum"], i["band"]) for i in w4.board(window).model["drops_items"]], [(30190, "rare")])
-
-    def test_a_drop_cell_gives_the_item_tooltip(self):
-        world, window, _ = self.opened()
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 2, 0)
-            world.timer_module.add_drop(2, 2598, 1, 27001, 1, 500000)
-            window.refreshMobList()
-            w4.fire(window, "drop_over", 0)
-            w4.fire(window, "drop_out")
-        self.assertEqual([c[:2] for c in world.tooltip.calls],
-                         [("SetItemToolTip", 27001), ("HideToolTip",)] if world.tooltip.calls else [])
-        self.assertTrue(world.tooltip.calls)
-
-    def test_no_answer_after_the_wait_reads_empty(self):
-        world, window, _ = self.opened()
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 3, 0)
-            self.assertEqual(w4.board(window).model["drops_state"], "loading")
-            w4.fire(window, "drops_timeout")
-        self.assertEqual(w4.board(window).model["drops_state"], "empty")
-
-    def test_a_request_inside_the_servers_second_is_retried(self):
-        world, window, _ = self.opened()
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 1, 0)
-            w4.press(window, "row_press", 2, 0)
-        self.assertEqual(w4.board(window).model["drops_retry"] > 0, True)
-        asked = len(world.drop_requests())
-        world.game.state.now = 120.0
-        with world.game, w4.quiet():
-            w4.fire(window, "drops_retry")
-        self.assertEqual(world.drop_requests()[-1], (2,))
-        self.assertEqual(len(world.drop_requests()), asked + 1)
-
-    def test_classic_keeps_the_popup_and_does_not_ask_on_choose(self):
-        world, window, _ = self.opened(classic=True)
-        self.assertEqual(world.drop_requests(), [])
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 6, 0)
-        self.assertEqual(world.drop_requests(), [], "classic asks at its Drops button, as legacy")
-        with world.game, w4.quiet():
-            w4.press(window, "button_press", "drops", 0)
-        self.assertEqual(world.drop_requests(), [(6,)])
-        self.assertTrue(window.wndDrops.IsShow())
-
-
-class BossPreview(unittest.TestCase):
-    def test_the_boss_turns_while_shown(self):
-        world, window, _ = Drops().opened(preview=True)
-        preview = world.game.modules["modelpreview"]
-        self.assertEqual(preview.calls[-2:], [("Select", "dungeon_boss", 1095), ("Show", "dungeon_boss", True)])
-        self.assertTrue(w4.board(window).model["model_view"])
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 5, 0)
-        self.assertEqual(preview.calls[-2:], [("Select", "dungeon_boss", 6191), ("Show", "dungeon_boss", True)])
-        with world.game, w4.quiet():
-            window.Close()
-        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", False))
-
-    def test_an_unknown_boss_hides_the_preview(self):
-        world, window, _ = Drops().opened(preview=True)
-        preview = world.game.modules["modelpreview"]
-        world.timer_module.DESCRIPTION[3][0][0] = 0
-        with world.game, w4.quiet():
-            w4.press(window, "row_press", 3, 0)
-        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", False))
-        self.assertFalse(w4.board(window).model["model_view"])
-
-    def test_without_the_module_nothing_breaks(self):
-        world, window, _ = Drops().opened()
-        self.assertFalse(w4.board(window).model["model_view"])
-
-    def test_the_legacy_window_turns_the_boss_too(self):
-        world, window, _ = Drops().opened(False, preview=True)
-        preview = world.game.modules["modelpreview"]
-        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", True))
-        with world.game, w4.quiet():
-            window.Close()
-        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", False))
-
 
 if __name__ == "__main__":
     unittest.main()

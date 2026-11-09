@@ -920,6 +920,27 @@ def rarity_of(chance):
 	return 1
 
 
+# The bands from best to worst when one item drops in several (D's grid keeps its best band).
+_BAND_ORDER = {3: 0, 1: 1, 2: 2}
+# The grid's order: guaranteed, then common, then rare.
+_GRID_ORDER = {3: 0, 2: 1, 1: 2}
+
+
+def merged_drops(dungeon_index):
+	"""Every mob's items of a dungeon as one list of (vnum, count, band), one row per vnum: a
+	vnum in several bands keeps the best one (guaranteed, then rare, then common), its first
+	row in that band; the rows are guaranteed, then common, then rare, each band in the
+	server's order."""
+	best = {}
+	for mob in DUNGEON_DROP.get(dungeon_index, {}).values():
+		for vnum, count, chance in mob["items"]:
+			band = rarity_of(chance)
+			if vnum not in best or _BAND_ORDER[band] < _BAND_ORDER[best[vnum][1]]:
+				best[vnum] = (count, band, len(best) if vnum not in best else best[vnum][2])
+	rows = sorted(((_GRID_ORDER[band], order, vnum, count, band) for vnum, (count, band, order) in best.items()))
+	return [(vnum, count, band) for _, _, vnum, count, band in rows]
+
+
 def rarity_text(band):
 	return {1: localeInfo.TIMERWINDOW_DROP_RARE, 2: localeInfo.TIMERWINDOW_DROP_COMMON,
 	        3: localeInfo.TIMERWINDOW_DROP_GUARANTEED}[band]

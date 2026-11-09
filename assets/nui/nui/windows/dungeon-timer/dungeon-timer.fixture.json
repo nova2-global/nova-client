@@ -1,166 +1,249 @@
 {
-	"dungeon_timer": {
-		"rows": [
-			{
-				"idx": 0,
-				"title": "Demon Tower",
-				"end": 0.0,
-				"event": false
-			},
-			{
-				"idx": 1,
-				"title": "Spider Baroness",
-				"end": 0.0,
-				"event": false
-			},
-			{
-				"idx": 2,
-				"title": "Devil`s Catacomb",
-				"end": 421.0,
-				"event": false
-			},
-			{
-				"idx": 3,
-				"title": "Aqua Dragon",
-				"end": 0.0,
-				"event": false
-			},
-			{
-				"idx": 5,
-				"title": "Nemeres",
-				"end": 0.0,
-				"event": false
-			},
-			{
-				"idx": 6,
-				"title": "Razador",
-				"end": 1201.0,
-				"event": false
-			}
-		],
-		"selected": 5,
-		"show_hidden": false,
-		"empty": "",
-		"name": "Nemeres",
-		"boss": "Nemere",
-		"ticket_label": "Entry Ticket",
-		"level": "Min. Level 90 Max. Level 120",
-		"group": "Group Request:  No",
-		"cooldown": "Cooldown:  10 Mins",
-		"attach_right": true,
-		"ticket": {
-			"index": 0,
-			"kind": "",
-			"type": 0,
-			"ref": 0,
-			"icon": "",
-			"count": "",
-			"w": 1,
-			"h": 1,
-			"cd_start": 0.0,
-			"cd_end": 0.0,
-			"active": false,
-			"cover": false,
-			"disabled": false,
-			"locked": false,
-			"covered": false,
-			"target": "",
-			"picked": false,
-			"unavailable": false
-		},
-		"desc": [
-			{
-				"text": "Stage 1:",
-				"tone": "heading"
-			},
-			{
-				"text": "Kill monsters that will drop north stars, use them to open the seals.",
-				"tone": ""
-			},
-			{
-				"text": "",
-				"tone": ""
-			},
-			{
-				"text": "Stage 2:",
-				"tone": "heading"
-			},
-			{
-				"text": "Kill all the monsters and destroy the Metin of Cold.",
-				"tone": ""
-			},
-			{
-				"text": "Note:",
-				"tone": "note"
-			},
-			{
-				"text": "Seals have to be opened in the correct order.",
-				"tone": ""
-			}
-		],
-		"notice": true,
-		"notice_label": "",
-		"sel_end": 0.0,
-		"model_view": true,
-		"drops_state": "ready",
-		"drops_mobs": [
-			{
-				"i": 0,
-				"name": "Nemere",
-				"type": "boss",
-				"active": true
-			},
-			{
-				"i": 1,
-				"name": "Ice Golem",
-				"type": "mob",
-				"active": false
-			},
-			{
-				"i": 2,
-				"name": "Metin of Cold",
-				"type": "stone",
-				"active": false
-			}
-		],
-		"drops_items": [
-			{
-				"i": 0,
-				"vnum": 30190,
-				"icon": "/icon/item/30190.tga",
-				"count": "2",
-				"band": "common"
-			},
-			{
-				"i": 1,
-				"vnum": 27992,
-				"icon": "/icon/item/27992.tga",
-				"count": "",
-				"band": "guaranteed"
-			},
-			{
-				"i": 2,
-				"vnum": 27993,
-				"icon": "/icon/item/27993.tga",
-				"count": "",
-				"band": "rare"
-			},
-			{
-				"i": 3,
-				"vnum": 70024,
-				"icon": "/icon/item/70024.tga",
-				"count": "",
-				"band": "rare"
-			},
-			{
-				"i": 4,
-				"vnum": 50124,
-				"icon": "/icon/item/50124.tga",
-				"count": "5",
-				"band": "common"
-			}
-		],
-		"drops_retry": 0.0,
-		"drops_timeout": 0.0
-	}
+ "dungeon_timer": {
+  "cards": [
+   {
+    "idx": 0,
+    "title": "Demon Tower",
+    "mono": "DT",
+    "level": "Lv 75-105",
+    "slot": "l2",
+    "hidden": false,
+    "view": true,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 1,
+    "title": "Spider Baroness",
+    "mono": "SB",
+    "level": "Lv 75-105",
+    "slot": "l1",
+    "hidden": false,
+    "view": false,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 2,
+    "title": "Devil`s Catacomb",
+    "mono": "DC",
+    "level": "Lv 75-105",
+    "slot": "c",
+    "hidden": false,
+    "view": true,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 3,
+    "title": "Aqua Dragon",
+    "mono": "AD",
+    "level": "Lv 75-105",
+    "slot": "r1",
+    "hidden": false,
+    "view": true,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 5,
+    "title": "Nemeres",
+    "mono": "NE",
+    "level": "Lv 90-120",
+    "slot": "r2",
+    "hidden": false,
+    "view": true,
+    "state": "cd",
+    "end": 421.0
+   },
+   {
+    "idx": 6,
+    "title": "Razador",
+    "mono": "RA",
+    "level": "Lv 90-120",
+    "slot": "r3",
+    "hidden": false,
+    "view": false,
+    "state": "ready",
+    "end": 0.0
+   }
+  ],
+  "selected": 2,
+  "chip": "",
+  "chip_on": false,
+  "hero_hidden": false,
+  "hide_locked": false,
+  "empty": "",
+  "name": "Devil`s Catacomb",
+  "boss": "Boss: Azrael",
+  "level": "Lv 75-105",
+  "group": "No",
+  "cooldown": "7 Mins",
+  "ticket": {
+   "index": 0,
+   "kind": "",
+   "type": 0,
+   "ref": 0,
+   "icon": "",
+   "count": "",
+   "w": 1,
+   "h": 1,
+   "cd_start": 0.0,
+   "cd_end": 0.0,
+   "active": false,
+   "cover": false,
+   "disabled": false,
+   "locked": false,
+   "covered": false,
+   "target": "",
+   "picked": false,
+   "unavailable": false
+  },
+  "ticket_none": true,
+  "attach_right": true,
+  "wiki_on": true,
+  "notice": true,
+  "mode": "run",
+  "go_label": "Teleport",
+  "go_end": 0.0,
+  "go_locked": false,
+  "drops_state": "ready",
+  "drops_items": [
+   {
+    "i": 0,
+    "vnum": 27992,
+    "icon": "/icon/item/27992.tga",
+    "count": "",
+    "band": "guaranteed"
+   },
+   {
+    "i": 1,
+    "vnum": 27993,
+    "icon": "/icon/item/27993.tga",
+    "count": "",
+    "band": "guaranteed"
+   },
+   {
+    "i": 2,
+    "vnum": 30190,
+    "icon": "/icon/item/30190.tga",
+    "count": "",
+    "band": "guaranteed"
+   },
+   {
+    "i": 3,
+    "vnum": 70024,
+    "icon": "/icon/item/70024.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 4,
+    "vnum": 50124,
+    "icon": "/icon/item/50124.tga",
+    "count": "5",
+    "band": "common"
+   },
+   {
+    "i": 5,
+    "vnum": 27992,
+    "icon": "/icon/item/27992.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 6,
+    "vnum": 27993,
+    "icon": "/icon/item/27993.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 7,
+    "vnum": 30190,
+    "icon": "/icon/item/30190.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 8,
+    "vnum": 70024,
+    "icon": "/icon/item/70024.tga",
+    "count": "4",
+    "band": "common"
+   },
+   {
+    "i": 9,
+    "vnum": 50124,
+    "icon": "/icon/item/50124.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 10,
+    "vnum": 27992,
+    "icon": "/icon/item/27992.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 11,
+    "vnum": 27993,
+    "icon": "/icon/item/27993.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 12,
+    "vnum": 30190,
+    "icon": "/icon/item/30190.tga",
+    "count": "3",
+    "band": "rare"
+   },
+   {
+    "i": 13,
+    "vnum": 70024,
+    "icon": "/icon/item/70024.tga",
+    "count": "",
+    "band": "rare"
+   },
+   {
+    "i": 14,
+    "vnum": 50124,
+    "icon": "/icon/item/50124.tga",
+    "count": "",
+    "band": "rare"
+   },
+   {
+    "i": 15,
+    "vnum": 27992,
+    "icon": "/icon/item/27992.tga",
+    "count": "",
+    "band": "rare"
+   }
+  ],
+  "drops_count": "16",
+  "filter_chips": [
+   {
+    "band": "guaranteed",
+    "label": "Guaranteed",
+    "n": 3,
+    "on": false
+   },
+   {
+    "band": "common",
+    "label": "Common",
+    "n": 9,
+    "on": false
+   },
+   {
+    "band": "rare",
+    "label": "Rare",
+    "n": 4,
+    "on": false
+   }
+  ],
+  "drops_retry": 0.0,
+  "drops_timeout": 0.0
+ }
 }

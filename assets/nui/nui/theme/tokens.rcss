@@ -71,6 +71,8 @@ body, body.theme-dark
 	--slot-disabled: #ff6f6a38;
 	--slot-locked: #0000008c;
 	--slot-picked: #a594ff38;
+	--dungeon-badge-ready: #6fd49a;
+	--dungeon-badge-cooldown: #ff8a85;
 	--notice-bar: #00000080;
 	--notice-text-big: #f2e7c1;
 	--edge-gm: #b9791c;
@@ -184,6 +186,8 @@ body.theme-light
 	--slot-disabled: #c4322b38;
 	--slot-locked: #15171c66;
 	--slot-picked: #5a45e638;
+	--dungeon-badge-ready: #6fd49a;
+	--dungeon-badge-cooldown: #ff8a85;
 	--notice-bar: #00000080;
 	--notice-text-big: #f2e7c1;
 	--edge-gm: #ffb547;
@@ -297,6 +301,8 @@ body.theme-classic
 	--slot-disabled: #ff00004d;
 	--slot-locked: #00000080;
 	--slot-picked: #ffffff80;
+	--dungeon-badge-ready: #8ab98e;
+	--dungeon-badge-cooldown: #ff8a85;
 	--notice-bar: #00000080;
 	--notice-text-big: #f2e7c1;
 	--edge-gm: #ffa200;

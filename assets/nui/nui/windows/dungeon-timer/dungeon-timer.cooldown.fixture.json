@@ -1,0 +1,193 @@
+{
+ "dungeon_timer": {
+  "cards": [
+   {
+    "idx": 0,
+    "title": "Demon Tower",
+    "mono": "DT",
+    "level": "Lv 75-105",
+    "slot": "r1",
+    "hidden": false,
+    "view": true,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 1,
+    "title": "Spider Baroness",
+    "mono": "SB",
+    "level": "Lv 75-105",
+    "slot": "r2",
+    "hidden": false,
+    "view": false,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 2,
+    "title": "Devil`s Catacomb",
+    "mono": "DC",
+    "level": "Lv 75-105",
+    "slot": "r3",
+    "hidden": false,
+    "view": true,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 3,
+    "title": "Aqua Dragon",
+    "mono": "AD",
+    "level": "Lv 75-105",
+    "slot": "l2",
+    "hidden": false,
+    "view": true,
+    "state": "ready",
+    "end": 0.0
+   },
+   {
+    "idx": 5,
+    "title": "Nemeres",
+    "mono": "NE",
+    "level": "Lv 90-120",
+    "slot": "c",
+    "hidden": false,
+    "view": true,
+    "state": "cd",
+    "end": 421.0
+   },
+   {
+    "idx": 6,
+    "title": "Razador",
+    "mono": "RA",
+    "level": "Lv 90-120",
+    "slot": "l1",
+    "hidden": false,
+    "view": false,
+    "state": "ready",
+    "end": 0.0
+   }
+  ],
+  "selected": 5,
+  "chip": "",
+  "chip_on": false,
+  "hero_hidden": false,
+  "hide_locked": false,
+  "empty": "",
+  "name": "Nemeres",
+  "boss": "Boss: Nemere",
+  "level": "Lv 90-120",
+  "group": "No",
+  "cooldown": "10 Mins",
+  "ticket": {
+   "index": 0,
+   "kind": "",
+   "type": 0,
+   "ref": 0,
+   "icon": "",
+   "count": "",
+   "w": 1,
+   "h": 1,
+   "cd_start": 0.0,
+   "cd_end": 0.0,
+   "active": false,
+   "cover": false,
+   "disabled": false,
+   "locked": false,
+   "covered": false,
+   "target": "",
+   "picked": false,
+   "unavailable": false
+  },
+  "ticket_none": true,
+  "attach_right": true,
+  "wiki_on": true,
+  "notice": true,
+  "mode": "run",
+  "go_label": "Ready in",
+  "go_end": 421.0,
+  "go_locked": true,
+  "drops_state": "ready",
+  "drops_items": [
+   {
+    "i": 0,
+    "vnum": 27992,
+    "icon": "/icon/item/27992.tga",
+    "count": "",
+    "band": "guaranteed"
+   },
+   {
+    "i": 1,
+    "vnum": 27993,
+    "icon": "/icon/item/27993.tga",
+    "count": "2",
+    "band": "guaranteed"
+   },
+   {
+    "i": 2,
+    "vnum": 30190,
+    "icon": "/icon/item/30190.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 3,
+    "vnum": 70024,
+    "icon": "/icon/item/70024.tga",
+    "count": "5",
+    "band": "common"
+   },
+   {
+    "i": 4,
+    "vnum": 50124,
+    "icon": "/icon/item/50124.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 5,
+    "vnum": 27992,
+    "icon": "/icon/item/27992.tga",
+    "count": "",
+    "band": "common"
+   },
+   {
+    "i": 6,
+    "vnum": 27993,
+    "icon": "/icon/item/27993.tga",
+    "count": "",
+    "band": "rare"
+   },
+   {
+    "i": 7,
+    "vnum": 70024,
+    "icon": "/icon/item/70024.tga",
+    "count": "",
+    "band": "rare"
+   }
+  ],
+  "drops_count": "8",
+  "filter_chips": [
+   {
+    "band": "guaranteed",
+    "label": "Guaranteed",
+    "n": 2,
+    "on": false
+   },
+   {
+    "band": "common",
+    "label": "Common",
+    "n": 4,
+    "on": false
+   },
+   {
+    "band": "rare",
+    "label": "Rare",
+    "n": 2,
+    "on": false
+   }
+  ],
+  "drops_retry": 0.0,
+  "drops_timeout": 0.0
+ }
+}

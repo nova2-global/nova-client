@@ -1,0 +1,48 @@
+{
+	"dungeon_drops": {
+		"info": "The following mobs are located in Devil`s Catacomb",
+		"showing": "items",
+		"mobs": [
+			{
+				"name": "Azrael",
+				"type": "boss"
+			},
+			{
+				"name": "Charon",
+				"type": "boss"
+			},
+			{
+				"name": "Metin of Devil",
+				"type": "stone"
+			},
+			{
+				"name": "Tartaros",
+				"type": "mob"
+			}
+		],
+		"items": [
+			{
+				"text": "1x Azrael's Seal",
+				"icon": "/icon/item/27001.tga",
+				"band": "guaranteed",
+				"type": "boss"
+			},
+			{
+				"text": "3x Blessing Scroll",
+				"icon": "/icon/item/25040.tga",
+				"band": "common",
+				"type": "boss"
+			},
+			{
+				"text": "1x Mithril",
+				"icon": "/icon/item/27992.tga",
+				"band": "rare",
+				"type": "boss"
+			}
+		],
+		"header": {
+			"name": "Azrael",
+			"type": "boss"
+		}
+	}
+}

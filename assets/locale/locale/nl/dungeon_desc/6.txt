@@ -1,0 +1,28 @@
+$Deze map is verdeeld in 7 gebieden. Klik 
+$op Am-heh Gorge om de kerker te starten . 
+
+#Fase 1:
+Vermoord alle monsters in de kamer. Deze vind je in de nieuwe
+ontgrendelde kamer.
+
+#Fase 2:
+Vind het gouden Cog wiel en sleep het wiel op Isfel Stele in het
+midden van het tweede gebied.
+
+#Fase 3:
+Vermoord alle monsters in de kamer. Deze vind je in de nieuwe
+ontgrendelde kamer.
+
+#Fase 4:
+Vermoord Ignator.
+
+#Fase 5:
+Vermoord alle monsters tot je maat Stenen dropt.
+Sleep de steen in willekeurige volgorde om de zegel te ontgrendelen .
+Je slaagt door alle zegels te ontgrendelen.
+
+#Fase 6:
+Breek het vagevuur metin in het aangewezen gebied.
+
+#Fase 7:
+Vermoord Razador ! 

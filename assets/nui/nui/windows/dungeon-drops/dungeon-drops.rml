@@ -1,0 +1,58 @@
+<rml>
+<head>
+	<!-- The dungeon manager's drops panel (NOVA-25; legacy uitimerwindow.py
+	     MobDropPopup, OLD's _DUNGEON_DROP_INFO_ panel). While the
+	     dungeon-drops flag is on, the manager makes
+	     nui_dungeon_drops.MobDropPopup (controller
+	     assets/root/nui_dungeon_drops.py), a subclass of the legacy class on
+	     proxies: the mobs and items in the server's order, each item's line
+	     and chance band, and the way back are legacy's code. The mob list
+	     (a row's tint is its type: mob, boss or stone; a press lists its
+	     items), or the chosen mob's header (a press goes back) over its
+	     items, each with its icon, "<count>x <name>" and its band. A left or
+	     right press anywhere on it raises the window (board_press). -->
+	<title>dungeon-drops</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dungeon-drops.rcss"/>
+</head>
+<body template="nui" id="dungeon-drops" class="nui-window nui-fx nui-anim dungeon-drops" data-model="dungeon_drops"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar dungeon-drops__titlebar">
+		<handle class="nui-window__handle dungeon-drops__handle" move_target="#document">
+			<span class="dungeon-drops__title-icon"><span class="nui-glyph nui-glyph--gift"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title dungeon-drops__title">@game.TIMERWINDOW_DROP_TITLE</span>
+		</handle>
+		<button id="dungeon-drops-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim dungeon-drops__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body dungeon-drops__body">
+		<p class="dungeon-drops__info">{{ info }}</p>
+		<div id="dungeon-drops-mobs" class="dungeon-drops__list dungeon-drops__list--mobs" data-if="showing == 'mobs'">
+			<button class="dungeon-drops__mob nui-anim" data-for="m : mobs" data-attr-id="'dungeon-drops-mob-' + it_index"
+			        data-attr-class="'dungeon-drops__mob nui-anim dungeon-drops__mob--' + m.type"
+			        data-event-mousedown="mob_press(it_index, ev.button)"><span class="dungeon-drops__mob-mark"></span><span
+				class="dungeon-drops__mob-name">{{ m.name }}</span><span class="dungeon-drops__mob-go"><span
+				class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span></span></span></button>
+		</div>
+		<div class="dungeon-drops__mob-items" data-if="showing == 'items'">
+			<button id="dungeon-drops-back" class="dungeon-drops__mob dungeon-drops__header nui-anim"
+			        data-attr-class="'dungeon-drops__mob dungeon-drops__header nui-anim dungeon-drops__mob--' + header.type"
+			        data-event-mousedown="back_press(ev.button)"><span class="dungeon-drops__mob-back"><span
+				class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span></span></span><span
+				class="dungeon-drops__mob-name">{{ header.name }}</span></button>
+			<div id="dungeon-drops-items" class="dungeon-drops__list dungeon-drops__list--items">
+				<div class="dungeon-drops__item" data-for="i : items" data-attr-id="'dungeon-drops-item-' + it_index">
+					<div class="nui-slot dungeon-drops__icon"><img class="nui-slot__icon" data-if="i.icon != ''" data-attr-src="i.icon"/></div>
+					<span class="dungeon-drops__item-name">{{ i.text }}</span>
+					<span class="dungeon-drops__band" data-attr-class="'dungeon-drops__band dungeon-drops__band--' + i.band"><span
+						data-if="i.band == 'rare'">@game.TIMERWINDOW_DROP_RARE</span><span
+						data-if="i.band == 'common'">@game.TIMERWINDOW_DROP_COMMON</span><span
+						data-if="i.band == 'guaranteed'">@game.TIMERWINDOW_DROP_GUARANTEED</span></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

@@ -1,0 +1,89 @@
+{
+	"$comment": "Golden cases of the dungeon ready notice (NOVA-25; tools/check_nui_snapshots.py): two boxes stacked (Nemeres, then Razador) while a third dungeon's timer runs, at clock time 1. A full-screen overlay; the canvas is a strip of the screen's top. Classic draws legacy's 150 x 50 half-black boxes.",
+	"cases": [
+		{
+			"page": "dungeon-notice",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x320"
+				],
+				[
+					"150",
+					"1.5",
+					"720x480"
+				],
+				[
+					"200",
+					"2",
+					"960x640"
+				]
+			],
+			"fixture": true
+		},
+		{
+			"page": "dungeon-notice",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x320"
+				],
+				[
+					"150",
+					"1.5",
+					"720x480"
+				],
+				[
+					"200",
+					"2",
+					"960x640"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			]
+		},
+		{
+			"page": "dungeon-notice",
+			"name": "reduced-motion",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x320"
+				]
+			],
+			"fixture": true,
+			"reduced_motion": true
+		},
+		{
+			"page": "dungeon-notice",
+			"name": "no-effects",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x320"
+				]
+			],
+			"fixture": true,
+			"effects": "off"
+		}
+	]
+}

@@ -1,0 +1,54 @@
+#Rés-do-Chão:
+Destroi a Metin da Dureza oposta ao portal de entrada.
+Assim que a metin for destruída, vais ser teleportado para o 1º andar.
+
+#1º Andar:
+Mata todos os monstros para avançares para o primeiro andar.
+$Atenção: A partir daqui, os monstros são agressivos!
+
+#2º Andar:
+Mata todos os monstros para avançares para o andar seguinte.
+
+#3º Andar:
+Destroi a Metin do Diabo para avançares para o próximo desafio neste andar.
+Assim que partires a Metin do Diabo, 7 Metins da queda vão aparecer neste andar.
+Tens de parti-las até encontrares a Metin correta que te vai teleportar para
+o andar seguinte.
+
+#4º Andar:
+A tarefa neste andar é abrires os 5 selos com as Pedra Chave que dropam
+nos arqueiros.Apenas 1 chave dropa a cada spawn de monstros.
+Para abrires os selos, tens de arrastar a Pedra Chave para o selo a partir
+do teu inventário.
+
+#Floor 5:
+O objectivo neste andar é o Ferreiro especial.
+Para obteres este Ferreiro, tens de matar o Rei Demónio Orgulhoso.
+Assim que o matares, o ferreiro irá aparecer.
+$Nota:Este ferreiro nao requer nenhuns materiais para upares os teus equipes.
+
+#6º Andar:
+Destroi todas as Metins da Morte
+Objectivo: Encontra o "Mapa Zin San Gui" para avançares para o próximo andar.
+Assim que partires a última Metin da Morte, irá aparecer uma Metin do Assassino.
+Assim que partires esta Metin, irás dropar um Velho Cofre Desconhecido.
+Tens de clicar no "Velho Cofre Desconhecido" para encontrares o "Mapa Zin San Gui".
+Se clicares e não dropar nada, significa que era um Cofre Falso.
+Tens de continuar a partir Metins do Assassino até o "Mapa Zin San Gui" dropar
+do "Velho Cofre Desconhecido".
+$Nota: assim que o Mapa Zin San Gui dropar, a Metin do Assassino irá deixar de spawnar.
+
+#7º Andar:
+Neste andar tens de encontrar a Chave Zin Bong In. Assim que enontrares a chave,
+tens de arrasta-la e dropa-la na Lápide no lado oposto da sala. 
+Existe também uma "Chave Falsa" com o nome Chave Bong In. Esta chave é inútil.
+$Conselho: As chaves (ambas elas) dropam a partir do Fantasma Imortal.
+
+#8º Andar:
+Este é o último andar. Aqui irás encontrar o Fantasma da Morte. 
+É tua opção matares todos os monstros antes do Fantasma da Morte.
+Ele normalmente spawna no lado oposto da sala.
+
+#9º Andar:
+A Sala Azul, aqui é onde encontrarás o maior desafio desta torre.
+Aqui irás ter de enfrentar o Fantasma da Morte Azul, o governante da Torre.

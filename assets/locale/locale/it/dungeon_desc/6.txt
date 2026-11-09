@@ -1,0 +1,26 @@
+$Questa mappa è divisa in 7 aree. Clicca 
+$su Am-heh Gorge per iniziare il dungeon. 
+
+#Fase 1:
+Uccidi tutti i mostri della prima stanza sbloccata.
+
+#Fase 2:
+Trova la ruota ingranaggio d'oro e trascinala sulla Stele Isfle al centro
+della seconda area.
+
+#Fase 3:
+Uccidi tutti i mostri della nuova stanza sbloccata.
+
+#Fase 4:
+Uccidi Ignator.
+
+#Fase 5:
+Uccidi mostri finchè non trovi la Pietra Maat.
+Trascina la pietra per sbloccare i sigilli nell'ordine corretto.
+Questa fase finirà quando tutti i sigilli sono sbloccati.
+
+#Fase 6:
+Distruggi il Metin del Purgatorio nell'area designata.
+
+#Fase 7:
+Uccidi Razador ! 

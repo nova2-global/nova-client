@@ -1,0 +1,29 @@
+{
+	"dungeon_drops": {
+		"info": "The following mobs are located in Devil`s Catacomb",
+		"showing": "mobs",
+		"mobs": [
+			{
+				"name": "Azrael",
+				"type": "boss"
+			},
+			{
+				"name": "Charon",
+				"type": "boss"
+			},
+			{
+				"name": "Metin of Devil",
+				"type": "stone"
+			},
+			{
+				"name": "Tartaros",
+				"type": "mob"
+			}
+		],
+		"items": [],
+		"header": {
+			"name": "",
+			"type": "mob"
+		}
+	}
+}

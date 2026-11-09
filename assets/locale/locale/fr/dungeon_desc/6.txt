@@ -1,0 +1,26 @@
+$Cette carte est divisée en 7 zones. Cliquez
+$sur Am-heh Gorge pour démarrer le donjon.
+
+#Phase 1:
+Tuez tous les monstres dans la salle trouvée dans la salle nouvellement déverrouillée.
+
+#Phase 2:
+Trouvez la Roue dentée dorée et faites glisser la roue vers la Isfel Stele au milieu de
+la deuxième zone.
+
+#Phase 3:
+Tuez tous les monstres dans la salle trouvée dans la salle nouvellement déverrouillée.
+
+#Phase 4:
+Kill Ignator.
+
+#Phase 5:
+Tuez des monstres jusqu'à ce que vous déposiez des Pierres Maat.
+Faites glisser la pierre pour déverrouiller le sceau dans un ordre correct de votre choix.
+Cette phase sera passée lorsque tous les sceaux seront déverrouillés.
+
+#Phase 6:
+Tuez la Metin de deu du purgatoire dans la zone désignée.
+
+#Phase 7:
+Tuez le Razador!

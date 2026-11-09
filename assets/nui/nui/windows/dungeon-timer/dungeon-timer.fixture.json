@@ -1,0 +1,104 @@
+{
+	"dungeon_timer": {
+		"rows": [
+			{
+				"idx": 0,
+				"title": "Demon Tower",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 1,
+				"title": "Spider Baroness",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 2,
+				"title": "Devil`s Catacomb",
+				"end": 421.0,
+				"event": false
+			},
+			{
+				"idx": 3,
+				"title": "Aqua Dragon",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 5,
+				"title": "Nemeres",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 6,
+				"title": "Razador",
+				"end": 1201.0,
+				"event": false
+			}
+		],
+		"selected": 5,
+		"show_hidden": false,
+		"empty": "",
+		"name": "Nemeres",
+		"boss": "Nemere",
+		"ticket_label": "Entry Ticket",
+		"level": "Min. Level 90 Max. Level 120",
+		"group": "Group Request:  No",
+		"cooldown": "Cooldown:  10 Mins",
+		"attach_right": true,
+		"ticket": {
+			"index": 0,
+			"kind": "",
+			"type": 0,
+			"ref": 0,
+			"icon": "",
+			"count": "",
+			"w": 1,
+			"h": 1,
+			"cd_start": 0.0,
+			"cd_end": 0.0,
+			"active": false,
+			"cover": false,
+			"disabled": false,
+			"locked": false,
+			"covered": false,
+			"target": "",
+			"picked": false,
+			"unavailable": false
+		},
+		"desc": [
+			{
+				"text": "Stage 1:",
+				"tone": "heading"
+			},
+			{
+				"text": "Kill monsters that will drop north stars, use them to open the seals.",
+				"tone": ""
+			},
+			{
+				"text": "",
+				"tone": ""
+			},
+			{
+				"text": "Stage 2:",
+				"tone": "heading"
+			},
+			{
+				"text": "Kill all the monsters and destroy the Metin of Cold.",
+				"tone": ""
+			},
+			{
+				"text": "Note:",
+				"tone": "note"
+			},
+			{
+				"text": "Seals have to be opened in the correct order.",
+				"tone": ""
+			}
+		],
+		"notice": true,
+		"notice_label": ""
+	}
+}

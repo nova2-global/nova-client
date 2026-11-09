@@ -1,0 +1,133 @@
+/* Classic skin overlay of nui/windows/dungeon-rank/dungeon-rank.rml:
+   legacy's dungeon ranking (uiscript dungeonrankwindow.py, uidungeonrank.py)
+   at 100%, 1dp to the legacy pixel: the board, 356 x 402; the title bar at
+   6, 6, its text centered; the header's thin board at 13, 34 (330 x 30)
+   with the name centered on 135 and the count on 272; the ten rows at 8, 67,
+   29 apart (340 x 27, a bar each, as NEW's legacy draws OLD's missing row
+   art), the rank, the name and the count centered on 32, 134 and 272, the
+   first three in OLD's gold, silver and bronze; the own row 2 lower, in
+   OLD's blue; the loading line centered 80 down. */
+
+body.skin-classic.dungeon-rank
+{
+	width: 356dp;
+	height: 402dp;
+	min-width: 0;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__title-icon
+{
+	display: none;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__titlebar
+{
+	position: absolute;
+	left: 6dp;
+	top: 6dp;
+	width: 346dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__handle, body.skin-classic.dungeon-rank .dungeon-rank__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__body
+{
+	position: static;
+	display: block;
+	padding: 0;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__header
+{
+	position: absolute;
+	left: 13dp;
+	top: 34dp;
+	width: 330dp;
+	height: 30dp;
+	padding: 0;
+	border-width: 0;
+	color: var(--text);
+	decorator: classic-thinboard;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__head-name, body.skin-classic.dungeon-rank .dungeon-rank__head-count
+{
+	position: absolute;
+	top: 8dp;
+	width: 120dp;
+	text-align: center;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__head-name
+{
+	left: 75dp;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__head-count
+{
+	left: 212dp;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__rows
+{
+	position: absolute;
+	left: 8dp;
+	top: 67dp;
+	width: 340dp;
+	padding: 0;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__row
+{
+	position: relative;
+	display: block;
+	width: 340dp;
+	height: 27dp;
+	margin: 0 0 2dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+	color: var(--text-muted);
+	line-height: 27dp;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__rank, body.skin-classic.dungeon-rank .dungeon-rank__name,
+body.skin-classic.dungeon-rank .dungeon-rank__count
+{
+	position: absolute;
+	top: 0;
+	width: 100dp;
+	font-weight: normal;
+	text-align: center;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__rank
+{
+	left: -18dp;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__name
+{
+	left: 84dp;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__count
+{
+	left: 222dp;
+}
+body.skin-classic.dungeon-rank .dungeon-rank__row--gold
+{
+	color: var(--tip-socket-gold);
+}
+body.skin-classic.dungeon-rank .dungeon-rank__row--silver
+{
+	color: var(--tip-socket-silver);
+}
+body.skin-classic.dungeon-rank .dungeon-rank__row--bronze
+{
+	color: var(--ember);
+}
+body.skin-classic.dungeon-rank .dungeon-rank__row--own
+{
+	position: absolute;
+	left: 8dp;
+	top: 359dp;
+	color: var(--chat-party);
+}
+body.skin-classic.dungeon-rank .dungeon-rank__loading
+{
+	top: 13dp;
+}

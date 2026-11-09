@@ -1,0 +1,33 @@
+#Faza 1:
+După ce activezi runa la Leul de Ghiață, omoară toți monștrii pentru a proceda spre
+următoarea fază.
+
+#Faza 2:
+Omoară monștrii pănă găseşti "Cheia înghețată" adevărată pentru a proceda spre
+faza 3.
+
+#Faza 3:
+Omoară toți monștrii.
+
+#Faza 4:
+Omoară cele 2 valuri de monștri pentru a proceda.
+
+#Faza 5:
+Omoară monștri ce vor dropa stele nordice, apoi foloseștele pentru a deschide sigiliul
+cuburilor arctice. Sigiliile trebuie deschise în ordinea corectă.
+
+#Faza 6:
+Omoară toți monștrii și apoi Metinul de Gheață.
+
+#Faza 7:
+Găseşte şi înfrânge-l pe adevăratul Szel. 
+
+#Faza 8:
+Omoară monştrii până găseşti Cheie Floare de Gheaţă pentru a proceda.
+
+#Faza 9:
+Distruge Pilonul Dragon din Nord. Apoi vorbeșste cu Leul de Gheață pentru a intra
+în camera lui Nemere.
+
+#Faza 10:
+Înfrânge-l pe Nemere, Regele gheţii.

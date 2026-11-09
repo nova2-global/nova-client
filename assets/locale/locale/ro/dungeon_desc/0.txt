@@ -1,0 +1,62 @@
+Etajul 1
+Distruge Metinul Puterii aflat în partea opusă intrării. 
+Odata ce Metinul este distrus,toţi jucătorii vor fi teleportaţi la următorul etaj. 
+Dacă Metinul nu se află in locul precizat, trebuie sa asteptaţi deoarece atât timp cât
+cineva este la etajul al doilea, Metinul nu va fi respawnat.
+
+Etajul 2
+Omoară toţi monştrii pentru a urca la nivelul următor.
+Atenţie: De la acest nivel, monştrii vor deveni agresivi!
+
+Etajul 3
+Omoară toţi monştrii pentru a urca la nivelul următor. 
+
+Etajul 4
+Distruge Metinul Diavolului pentru a continua provocarea etajului. 
+Odată ce a fost distrus, 7 Metine ale Dizgrației vor apărea pe suprafaţa etajului. 
+Trebuie sa spargi acele Metine până îl vei găsi pe cel corect. 
+Dacă loveşti un Metin al Dizgrației incorect, acesta va dispărea când va mai avea
+aproximativ 20% din viaţă. 
+Odată ce vei sparge adevaratul Metin al Dizgrației , vei primi mesajul că vei fi 
+teleportat la etajul 5.
+
+Etajul 5
+Misiunea acestui etaj implică deschiderea celor 5 Sigilii vechi cu ajutorul Cheii
+ce este dropată de către arcaşi. 
+După fiecare spawn, va fi dropată o Piatra Cheie. 
+Pentru a deschide un Sigiliu vechi trebuie să aşezi Piatra Cheie pe Sigiliu. 
+
+Etajul 6
+Ţinta acestui etaj este Fierarul.
+Odată ce l-ai ucis, va aparea Fierarul. 
+Acesta, nu cere materiale de upgrade.
+
+Etajul 7
+Distruge toate Metinele Morții. 
+Scop: Găsirea hărţii pentru a avansa la etajul următor.  
+Odată ce ai spart ultimul Metin al Morţii, camera va fi plină cu monştri şi
+Metinul Crimelor va apărea. 
+Odată ce vei sparge acest Metin, vei dropa o Ladă veche necunoscută. 
+Deschide lada pentru a găsi Harta pentru peștera Zin. Dacă deschizi lada si nu 
+se întâmplă nimic, înseamnă că ai deschis o ladă falsă. Trebuie sa distrugi
+Metinul Crimelor până vei găsi lada corectă.
+Notă: Odată ce harta pentru peștera Zin va fi dropată , Metinul Crimelor nu
+va mai apărea.
+
+Etajul 8
+La acest etaj trebuie să găseşti Cheie Zin-Bong-In. 
+Odată ce o vei găsi trebuie sa o aşezi pe Piatra de Mormânt aflată în partea
+opusă zonei în care aţi urcat. 
+Există de asemenea şi o “Cheie Falsă” numităCheie Bong-In. 
+Aceasta nu are nicio utilizare.
+
+Etajul 9
+Acesta este ultimul etaj. 
+Aici va trebui sa îl înfruntaţi pe neînfricatul Înger cu Coasă. 
+Este alegerea ta dacă doreşti să omori toţi monştrii înainte de a-l răpune 
+pe Îngerul cu Coasă. 
+De obicei poate fi găsit în partea din spate a etajului.
+
+Etajul 10
+Camera Albastră, aici vei primi cea mai provocatoare misiune din tot turnul.
+Trebuie sa înfrângi Moartea Albastră, conducătoarea turnului.

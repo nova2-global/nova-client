@@ -1,0 +1,12 @@
+#Piano 1:
+Uccidi il Barone Ragno
+
+#Piano 2:
+Evoca la Baronessa Ragno con il flauto che hai trovato dal Barone.
+
+#Piano 3:
+Uccidi la Baronessa Ragno
+
+$Nota:
+Distruggere le uova di ragno renderà più debole la Baronessa ma i suoi 
+attacchi diventeranno più letali.

@@ -1,0 +1,25 @@
+$Tato mapa je rozdělena do 7 oblastí. Klikněte
+$na Am-heh Gorge ke startu dungeonu.
+
+#Fáze 1:
+Zabijte všechny příšery v nově odemknuté místnosti.
+
+#Fáze 2:
+Najděte Zlaté ozubené kolo a použij je pro spuštění skrytého mechanismu v náhrobku Isfet.
+Nachází se uprostřed oblasti.
+
+#Fáze 3:
+Zabijte všechny příšery v nově odemknuté místnosti.
+
+#Fáze 4:
+Zabijte Ignatora.
+
+#Fáze 5:
+Zabíjejte příšery a sbírejte kameny Maat k odemknutí pečetí ve správném pořadí.
+Tato fáze skončí, když odemknete všechny pečetě.
+
+#Fáze 6:
+Metin Ohně očistce v požadované oblasti.
+
+#Fáze 6:
+Zabijte Razadora!

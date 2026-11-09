@@ -1,0 +1,12 @@
+#1º Desafio:
+Mata a Aranha Barão
+
+#2º Desafio:
+Atrai a Aranha Baronesa com o item que dropaste anteriormente.
+
+#3º Desafio:
+Mata a Aranha Baronesa.
+
+$Nota:
+Partires os Ovos aranha irá enfraquecer a vida da Aranha mais irá deixa-la
+com mais ataque.

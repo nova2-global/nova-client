@@ -1,0 +1,25 @@
+$Bu bölge 7ye bölünmüştür.  
+$ Am-heh Gorge'a tıkla ve başla . 
+
+#Aşama 1:
+Kili açılan odadaki tüm canavarları öldür.
+
+#Aşama 2:
+Altın Cog tekerini bul ve onu odanın ortasındaki sütuna sürükle.
+
+#Aşama 3:
+Kili açılan odadaki tüm canavarları öldür.
+
+#Aşama 4:
+Inator'u öldür.
+
+#Aşama 5:
+maat taşını düşürene kadar canavarları öldür.
+Doğru mühürü bulana kadar taşları mühürlere sürükle.
+Bu aşamayı geçmek için tüm mühürleri açmalısın.
+
+#Aşama 6:
+Odadaki metini öldür ve sonraki aşamaya geç.
+
+#Aşama 7:
+Razador'u öldür ! 

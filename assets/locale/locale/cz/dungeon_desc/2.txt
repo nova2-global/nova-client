@@ -1,0 +1,21 @@
+#Úrověň 1:
+Zabíjejte příšery, dokud vám nepadne Klíč krystalu duše‎‎. Ten vložte do sochy Kud, 
+abyste byli teleportováni na další patro katakomb.
+
+#Úroveň 2:
+Musíte si probojovat cestu přes brány zatracení než dorazíte k Želví skále, která
+vás teleportuje do další úrovně
+
+#Úroveň 3:
+Na tomto patře se nachází 7 Metinů odplaty, ale jenom dva jsou ty pravé.
+Znič pravé kameny Metin a budeš teleportován do další úrovně.
+
+#Úrověň 4:
+Nalezněte a zabijte Tartarose. Naleznete ho v jednou z pokojů pod kopcem.
+Seberte padlé předměty a odemkněte obelisk na kopci.
+
+#Úroveň 5:
+Zabijte všechny příšery a Charona, poté budete teleportováni na další úroveň.
+
+#Úrověň 6:
+Přemozte Azraela!!

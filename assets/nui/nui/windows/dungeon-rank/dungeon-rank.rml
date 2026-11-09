@@ -1,0 +1,46 @@
+<rml>
+<head>
+	<!-- The dungeon ranking (NOVA-25; legacy uidungeonrank.py
+	     DungeonRankWindow, uiscript dungeonrankwindow.py, OLD's
+	     newdungeonrankwindow.py). While the dungeon-rank flag is on, the
+	     Interface makes nui_dungeon_rank.DungeonRankWindow (controller
+	     assets/root/nui_dungeon_rank.py), a subclass of the legacy class on
+	     proxies: the loading line, the server's ten rows, the player's own row
+	     and the title (the dungeon and the ranking) are legacy's code. The
+	     first three rows take the podium's colors, the own row sits apart.
+	     A left or right press anywhere on it raises the window (board_press). -->
+	<title>dungeon-rank</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dungeon-rank.rcss"/>
+</head>
+<body template="nui" id="dungeon-rank" class="nui-window nui-fx nui-anim dungeon-rank" data-model="dungeon_rank"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar dungeon-rank__titlebar">
+		<handle class="nui-window__handle dungeon-rank__handle" move_target="#document">
+			<span class="dungeon-rank__title-icon"><span class="nui-glyph nui-glyph--ranking"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title dungeon-rank__title">{{ title }}</span>
+		</handle>
+		<button id="dungeon-rank-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim dungeon-rank__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body dungeon-rank__body">
+		<div class="dungeon-rank__header">
+			<span class="dungeon-rank__head-name">@ui.KILL_COUNT_NAME</span>
+			<span class="dungeon-rank__head-count">@ui.KILL_COUNT_COUNT</span>
+		</div>
+		<div class="dungeon-rank__rows">
+			<div class="dungeon-rank__row" data-for="r : rows" data-attr-id="'dungeon-rank-row-' + it_index"
+			     data-class-dungeon-rank__row--gold="it_index == 0" data-class-dungeon-rank__row--silver="it_index == 1"
+			     data-class-dungeon-rank__row--bronze="it_index == 2"><span
+				class="dungeon-rank__rank">{{ r.rank }}</span><span class="dungeon-rank__name">{{ r.name }}</span><span
+				class="dungeon-rank__count">{{ r.count }}</span></div>
+			<p class="dungeon-rank__loading" data-if="loading">@ui.DUNGEON_RANK_LOADING</p>
+		</div>
+		<div id="dungeon-rank-own" class="dungeon-rank__row dungeon-rank__row--own"><span
+			class="dungeon-rank__rank">{{ own.rank }}</span><span class="dungeon-rank__name">{{ own.name }}</span><span
+			class="dungeon-rank__count">{{ own.count }}</span></div>
+	</div>
+</body>
+</rml>

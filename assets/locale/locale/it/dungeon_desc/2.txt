@@ -1,0 +1,22 @@
+#Piano 1:
+Uccidi i mostri fino a droppare la Chiave Cristallo delle Anime. Trascinala poi sulla 
+Statua Kud per procedere al prossimo piano.
+
+#Piano 2:
+Dovrai lottare e passare attraverso diversi portali fino ad arrivare al centro,
+dove troverai la Roccia Della Tartaruga. Clicca per procedere al prossimo piano.
+
+#Piano 3:
+In questo piano troverai 7 Metin ma solo 2 di esse sono reali.
+Trova la Metin corretta per procedere.
+
+#Piano 4:
+Trova e uccidi Tartaros. Lo puoi trovare in una delle stanze.
+Prendi l'oggetto che ti lascerà cadere, dirigiti al centro e posizionalo nell'Obelisco situato al centro.
+
+#Piano 5:
+Uccidi tutti i mostri del piano per poi concentrarti su Charon.
+Una volta ucciso potrai accedere all'ultimo piano.
+
+#Piano 6:
+Sconfiggi il temuto Azrael!!

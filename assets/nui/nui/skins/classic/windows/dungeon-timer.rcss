@@ -1,0 +1,244 @@
+/* Classic skin overlay of nui/windows/dungeon-timer/dungeon-timer.rml:
+   legacy's dungeon manager (uiscript timerwindow.py, uitimerwindow.py) at
+   100%, 1dp to the legacy pixel. OLD's art (ui/dungeon_manager/*) is not in
+   NEW's packs, so this is NEW's legacy window: the board, 618 x 472, and its
+   title bar; the "choose" line on a thin board at 20, 34 (578 x 30); the
+   list's thin board at 17, 69 (584 x 155), its rows at 21, 73, 281 x 36
+   (legacy's 287 less the classic scroll bar's room), two per line, 38 apart, a bar each (on cooldown the
+   disabled tint, an event dungeon the selection's), the name over the state
+   in the middle and the hide mark 20 from the right; the buttons' thin
+   board at 20, 227 (578 x 32), the buttons at 60, 200, 340 and 480, 5 down;
+   the facts' thin board at 20, 262 (447 x 40): the ticket's label at 10,
+   the ticket at 85, 4, the level at 125, the group at 220, the cooldown at
+   340; the description's thin board at 20, 304 (447 x 128); the boss frame
+   at 473, 262 (125 x 168), the boss's name centered; the notice box at 24,
+   442 and Teleport at 510, 438. */
+
+body.skin-classic.dungeon-timer
+{
+	width: 618dp;
+	height: 472dp;
+	min-width: 0;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__title-icon,
+body.skin-classic.dungeon-timer .dungeon-timer__boss-mark,
+body.skin-classic.dungeon-timer .dungeon-timer__name
+{
+	display: none;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 603dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__handle, body.skin-classic.dungeon-timer .dungeon-timer__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__body,
+body.skin-classic.dungeon-timer .dungeon-timer__footer
+{
+	position: static;
+	display: block;
+	height: 0;
+	padding: 0;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__choose
+{
+	position: absolute;
+	left: 20dp;
+	top: 34dp;
+	width: 578dp;
+	height: 30dp;
+	margin: 0;
+	color: var(--text);
+	line-height: 30dp;
+	decorator: classic-thinboard;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__list
+{
+	position: absolute;
+	left: 17dp;
+	top: 69dp;
+	width: 584dp;
+	height: 155dp;
+	padding: 4dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__rows
+{
+	gap: 2dp 4dp;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row,
+body.skin-classic.dungeon-timer .dungeon-timer__row:hover
+{
+	width: 281dp;
+	height: 36dp;
+	padding: 2dp 20dp 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--surface-band);
+	text-align: center;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row.is-event
+{
+	background-color: var(--selection);
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row.is-cooldown
+{
+	background-color: var(--slot-disabled);
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row-title
+{
+	font-weight: normal;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row-state,
+body.skin-classic.dungeon-timer .dungeon-timer__row-clock
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row-hide,
+body.skin-classic.dungeon-timer .dungeon-timer__row-hide:hover,
+body.skin-classic.dungeon-timer .dungeon-timer__row-hide:active
+{
+	right: 4dp;
+	top: 2dp;
+	width: 15dp;
+	height: 15dp;
+	min-width: 0;
+	padding: 0;
+	decorator: image(classic-close-01);
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row-hide:hover
+{
+	decorator: image(classic-close-02);
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row-hide:active
+{
+	decorator: image(classic-close-03);
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row-hide .nui-glyph
+{
+	display: none;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__show-hidden-row
+{
+	margin: 12dp 0 0;
+	text-align: left;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__buttons
+{
+	position: absolute;
+	left: 20dp;
+	top: 227dp;
+	display: block;
+	width: 578dp;
+	height: 32dp;
+	margin: 0;
+	decorator: classic-thinboard;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__button
+{
+	position: absolute;
+	top: 5dp;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__button--drops { left: 40dp; }
+body.skin-classic.dungeon-timer .dungeon-timer__button--time { left: 180dp; }
+body.skin-classic.dungeon-timer .dungeon-timer__button--overall { left: 320dp; }
+body.skin-classic.dungeon-timer .dungeon-timer__button--damage { left: 460dp; }
+body.skin-classic.dungeon-timer .dungeon-timer__button-label
+{
+	pointer-events: none;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__detail
+{
+	display: block;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__info
+{
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__facts
+{
+	position: absolute;
+	left: 20dp;
+	top: 262dp;
+	display: block;
+	width: 447dp;
+	height: 40dp;
+	padding: 0;
+	border-width: 0;
+	decorator: classic-thinboard;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__fact
+{
+	position: absolute;
+	top: 13dp;
+	white-space: nowrap;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__fact--ticket { left: 10dp; }
+body.skin-classic.dungeon-timer .dungeon-timer__fact--level { left: 125dp; top: 6dp; width: 90dp; white-space: normal; }
+body.skin-classic.dungeon-timer .dungeon-timer__fact--group { left: 220dp; }
+body.skin-classic.dungeon-timer .dungeon-timer__fact--cooldown { left: 340dp; }
+body.skin-classic.dungeon-timer .dungeon-timer__ticket
+{
+	position: absolute;
+	left: 85dp;
+	top: 4dp;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__desc
+{
+	position: absolute;
+	left: 20dp;
+	top: 304dp;
+	width: 447dp;
+	height: 128dp;
+	margin: 0;
+	padding: 6dp 8dp;
+	box-sizing: border-box;
+	decorator: classic-thinboard;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__desc-line--heading
+{
+	font-weight: normal;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__boss
+{
+	position: absolute;
+	left: 473dp;
+	top: 262dp;
+	width: 125dp;
+	height: 168dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__boss-name
+{
+	margin-top: 76dp;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__notice
+{
+	position: absolute;
+	left: 24dp;
+	top: 442dp;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__button--teleport
+{
+	left: 510dp;
+	top: 438dp;
+}

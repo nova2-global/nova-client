@@ -1,0 +1,34 @@
+#Nivel 1:
+Después de activar la carrera en el León de Hielo, mata a todos los monstruos para
+proceder al siguiente nivel.
+
+#Etapa 2:
+Mata a los monstruos hasta que sueltes la verdadera "Llave de escarcha" para pasar
+al tercer piso.
+
+#Etapa 3:
+Mata a todos los monstruos.
+
+# Etapa 4:
+Mata a las 2 oleadas de monstruos para continuar.
+
+# Etapa 5:
+Mata a los monstruos que arrojarán estrellas del norte, úsalas para abrir los
+sellos de los cubos árticos, Los sellos deben abrirse en el orden correcto.
+
+# Etapa 6:
+Mata a todos los monstruos y destruye el Metin of Cold.
+
+# Etapa 7:
+Encuentra y derrota a Szel, el señor del hielo.
+
+# Etapa 8:
+Mata a los monstruos hasta que sueltes la llave de flor de hielo correcta para
+pasar al siguiente nivel.
+
+# Etapa 9:
+Destruye el Pilar del Dragón del Norte. Para entrar en la sala del jefe, habla
+con Ice Lion.
+
+#Sala Jefe:
+¡Derrota a Nemere, rey de la escarcha y el hielo!

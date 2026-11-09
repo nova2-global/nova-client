@@ -1,0 +1,63 @@
+{
+	"dungeon_rank": {
+		"title": "Time Ranking",
+		"loading": true,
+		"rows": [
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			}
+		],
+		"own": {
+			"rank": "-",
+			"name": "-",
+			"count": "-"
+		}
+	}
+}

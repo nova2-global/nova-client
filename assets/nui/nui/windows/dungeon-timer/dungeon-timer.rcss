@@ -1,0 +1,300 @@
+/* The dungeon manager's modern look (NOVA-25): the clock mark before the
+   title; the "choose a dungeon" line; the dungeons as cards two per row in a
+   scrolling list (the chosen one ringed in the accent, one on cooldown on
+   the danger's tint with its clock, an event dungeon on the selection's
+   tint), each with its hide mark; the drops and the three ranking buttons;
+   the chosen dungeon's entry ticket, level band, group rule and cooldown
+   over its description, beside the boss panel (its name, no 3D preview);
+   the notice box and Teleport in the footer. Centered at its first show, as
+   legacy's uiscript. Classic (legacy's 618 x 472 board):
+   skins/classic/windows/dungeon-timer.rcss. */
+
+body.dungeon-timer
+{
+	left: 16dp;
+	top: 16dp;
+	width: 640dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.dungeon-timer button
+{
+	tab-index: none;
+	focus: none;
+}
+.dungeon-timer__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.dungeon-timer__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.dungeon-timer__body
+{
+	padding: 6dp 12dp 4dp;
+}
+.dungeon-timer__choose
+{
+	margin: 0 0 6dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+}
+.dungeon-timer__list
+{
+	position: relative;
+	box-sizing: border-box;
+	height: 170dp;
+	padding: 6dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
+	overflow-y: auto;
+}
+.dungeon-timer__rows
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 6dp;
+}
+.dungeon-timer__row
+{
+	position: relative;
+	box-sizing: border-box;
+	width: 296dp;
+	height: 44dp;
+	padding: 5dp 30dp 0 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-raised);
+}
+.dungeon-timer__row:hover
+{
+	background-color: var(--surface-hover);
+}
+.dungeon-timer__row.is-event
+{
+	background-color: var(--selection);
+}
+.dungeon-timer__row.is-cooldown
+{
+	border-color: var(--danger);
+}
+.dungeon-timer__row.is-selected
+{
+	border-color: var(--accent);
+}
+.dungeon-timer__row-title
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: var(--text);
+	font-size: var(--font-sm);
+	font-weight: bold;
+}
+.dungeon-timer__row-state
+{
+	display: block;
+	color: var(--success);
+	font-size: var(--font-xs);
+}
+.dungeon-timer__row-clock
+{
+	color: var(--danger);
+}
+.dungeon-timer__row-hide
+{
+	position: absolute;
+	right: 4dp;
+	top: 4dp;
+}
+.dungeon-timer__empty
+{
+	margin: 40dp 0 0;
+	color: var(--danger);
+	text-align: center;
+}
+.dungeon-timer__show-hidden-row
+{
+	margin-top: 10dp;
+	text-align: center;
+}
+.dungeon-timer__buttons
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: 8dp;
+	margin: 8dp 0;
+}
+.dungeon-timer__detail
+{
+	display: flex;
+	flex-direction: row;
+	gap: 8dp;
+}
+.dungeon-timer__info
+{
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	padding: 8dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-raised);
+}
+.dungeon-timer__facts
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6dp 12dp;
+	padding-bottom: 6dp;
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.dungeon-timer__ticket
+{
+	flex: 0 0 auto;
+}
+.dungeon-timer__desc
+{
+	height: 112dp;
+	margin-top: 6dp;
+	overflow-y: auto;
+}
+.dungeon-timer__desc-line
+{
+	margin: 0;
+	min-height: 14dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.dungeon-timer__desc-line--heading
+{
+	color: var(--accent);
+	font-weight: bold;
+}
+.dungeon-timer__desc-line--note
+{
+	color: var(--warning);
+}
+.dungeon-timer__desc-line--hint
+{
+	color: var(--accent-hover);
+}
+.dungeon-timer__boss
+{
+	display: flex;
+	flex: 0 0 150dp;
+	flex-direction: column;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 10dp 8dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
+	text-align: center;
+}
+.dungeon-timer__name
+{
+	color: var(--accent);
+	font-size: var(--font-md);
+	font-weight: bold;
+}
+.dungeon-timer__boss-mark
+{
+	position: relative;
+	width: 56dp;
+	height: 56dp;
+	margin: 18dp 0 12dp;
+	border-radius: 28dp;
+	background-color: var(--selection);
+}
+.dungeon-timer__boss-mark .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 20dp;
+	top: 20dp;
+	transform: scale(1.8);
+}
+.dungeon-timer__boss-name
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.dungeon-timer__footer
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+.dungeon-timer__notice
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8dp;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.dungeon-timer__notice-box
+{
+	position: relative;
+	box-sizing: border-box;
+	width: 16dp;
+	height: 16dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+	background-color: var(--surface-sunken);
+}
+.dungeon-timer__notice.is-checked .dungeon-timer__notice-box
+{
+	border-color: var(--accent);
+	background-color: var(--accent);
+}
+.dungeon-timer__notice-mark
+{
+	display: none;
+	position: absolute;
+	left: 4dp;
+	top: 1dp;
+	width: 4dp;
+	height: 8dp;
+	border-width: 0 2dp 2dp 0;
+	border-color: var(--accent-text);
+	transform: rotate(45deg);
+}
+.dungeon-timer__notice.is-checked .dungeon-timer__notice-mark
+{
+	display: block;
+}

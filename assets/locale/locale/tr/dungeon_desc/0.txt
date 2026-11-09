@@ -1,0 +1,50 @@
+#Zemin kat:
+Geçitin karşısındaki metini yok et.
+Metini yok ettiğin zaman 1. kata ışınlanıcaksın.
+
+#1. Kat:
+Sonraki kata geçmek için tüm canavarları öldür.
+$Dikkat: Bu kattan itibaren canavarlar daha agresif olucak!
+
+#2. Kat:
+Sonraki kata geçmek için tüm canavarları öldür.
+
+#3. Kat:
+Bu kattaki sonraki mücadeleye geçmek için şeytan metnini yok et.
+Şeytan metinini yok ettiğinde 7 adet düşüş metni doğucak.
+Doğru olanı bulana kadar tüm metinleri yok et.
+
+#4. Kat:
+Bu katta yapman gereken okçulardan düşen anahtar taşı ile 5 mühürü açman.
+Her gruptan sadece 1 anahtar taşı düşer.
+Mühürü açmak için anahtarı üzerine sürüklemelisin.
+
+#5. Kat:
+Bu kattaki hedefin Demirciye ulaşmak.
+Demirciye ulaşmak için, Gurulu Şeytan Kralı öldürmelisin.
+$Not:Bu demirci yükseltme için senden eşya talep etmez.
+
+#6. Kat:
+Tüm ölüm metinlerini yok et
+Hedef: sonraki aşamaya ulaşmak için "Zin San Gui" haritasını bulmalısın.
+Son ölüm metinini yok ettiğinde, yeni bir metin doğucak.
+Bu metini yok ettiğinde, içinden "Bilinmeyen Eski Sandık" düşer."Zin San Gui"
+haritasını elde etmek için bu sandığı açmalısın.
+Eğer sandığı açar ve hiçbirşey olmaz ise bu sahte sandığı açtığın anlamına gelir.
+"Zin San Gui" haritasını elde edene kadar metinleri yıkıp sandıkları açmaya devam etmelisin.
+$Not: "Zin San Gui" haritasını elde ettiğin zaman metinler daha fazla yeniden doğmaz.
+
+#7. Kat:
+Bu katta yapman gereken Zin Bong In Anahtarını bulmak. Zin Bong In Anahtarını
+bulduğun zaman yapman gereke onu kattaki mezar taşına sürüklemek. 
+Bu katta aynı zamanda Bong in adlı sahte bir anahtar bulunmaktadır, bu anahtar işlevsizdir.
+$ipucu: Anahtarlar ölümsüz hayaletten düşer.
+
+#8. Kat:
+Bu son kat, bu katta yapman gereken Azraili bulup öldürmek. 
+Bu kattaki diğer canavarları öldürüp öldürmemek sana kalmış.
+Genelde odanın arka tarafında doğar.
+
+#9. Kat:
+Mavi Oda, Bu kulede karşılaşacağın en zorlu rakip Mavi Ölüm
+seni bu katta bekliyordu.

@@ -1,0 +1,55 @@
+
+#Földszint:
+Pusztítsd el a keménység metinjét a bejárati portállal szemben.
+Miután a Metin megsemmisült, az 1. emeletre teleportálunk.
+
+# 1. emelet:
+Öld meg az összes csőcseléket, hogy továbbmenj a következő emeletre.
+$ Figyelem: Ettől a szinttől kezdve a szörnyek agresszívek!
+
+# 2. emelet:
+Öld meg az összes csőcseléket, hogy továbbmenj a következő emeletre.
+
+# 3. emelet:
+Pusztítsd el az ördög metinjét, hogy folytathasd a következő kihívást ugyanazon
+az emeleten.
+Miután megölted az ördög metinjét, 7 őszi metin fog megjelenni a padló körül.
+Meg kell őlnie ezeket a Metineket, amíg meg nem találja a megfelelőt.
+
+# 4. emelet:
+Ennek a padlónak a feladata az 5 pecsét kinyitása a leeső kulccsal
+az íjászok. Minden vívás után 1 Kulcskő esik.
+A pecsét kinyitásához húzza a kulcsot a pecsétre.
+
+# 5. emelet:
+Ennek a padlónak a célja a különleges Kovács.
+Ennek a kovácsnak a megszerzéséhez meg kell ölnie a büszke démonkirályt.
+Amint megöli, a Fekete Smith jönni fog.
+$ Megjegyzés: Ehhez a Black Smith-hez nem lesz szükség frissítési anyagra.
+
+# 6. emelet:
+Pusztítsd el a halál összes metináját
+Cél: keresse meg a "Zin San Gui térképet" a következő emelet eléréséhez.
+Miután megtörted a halál utolsó metinjét, új gyilkosság-metin fog ívni.
+Ha megtörik ezt a Metint, egy ismeretlen öreg láda leesik. Kattintson rá
+az "Ismeretlen régi láda", hogy megtalálja a "Zin San Gui térképet".
+Ha rákattintasz, és semmi nem esik, az azt jelenti, hogy hamis mellkas volt.
+Addig kell megölned a gyilkosság metinjét, amíg a "Zin San Gui térkép" le nem
+esik az "Ismeretlen régi ládából".
+$ Megjegyzés: amint a Zin San Gui térkép leesik, a Metin of Murder leállítja
+az ívást.
+
+# 7. emelet:
+Ezen az emeleten meg kell találnia a Zin Bong In Key-t. Miután megtalálta ezt a 
+kulcsot, meg kell húzd és dobd a szoba sírhelyének szemközti sírkőre.
+Van még egy "Fake Key" néven Bong In Key. Ez a kulcs semmilyen célt nem szolgál.
+$ Tipp: A kulcsokat (hamis és helyes is) az Immortal Ghost dobja el.
+
+# 8. emelet:
+Ez az utolsó emelet. Itt találja a Death Reaper-t.
+Rajtad múlik, hogy megölöd-e az összes csőcseléket, mielőtt megölöd a
+Death Reaper-t. Általában a szoba hátsó részén terem.
+
+# 9. emelet:
+A kék szoba, itt kapja meg a legnagyobb kihívást a toronyon
+ahol szembe kell néznie a Kék Halállal, a démontorony uralkodójával.

@@ -1,0 +1,11 @@
+#Poziom 1:
+Zabij Króla Pająków. 
+
+#Poziom 2:
+Przywołaj Baronówne Pająków po przez użycie Fleta. 
+
+#Poziom 3:
+Zabij Baronówne Pająków. 
+
+$Note:
+Niszczenie Pajęczych Jajek osłabi Baronówne Pająków ale także ją to wzmocni. 

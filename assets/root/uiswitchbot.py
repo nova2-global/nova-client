@@ -137,6 +137,16 @@ class SwitchbotAttribute(ui.Window):
 
 	VALUE_WIDTH = 50
 
+	## ui.Window.__init__ calls Hide (below) before __Initialize runs, so what
+	## Hide reads has a class-level default, as OLD's row had (:309-314).
+	searchTypeButton = None
+	deleteAttributeButton = None
+	valueInput = None
+	valueEditLine = None
+	leftArrow = None
+	rightArrow = None
+	LineBar = None
+
 	def __init__(self):
 		ui.Window.__init__(self)
 		self.__Initialize()
@@ -922,6 +932,7 @@ class SearchListWindow(ui.BoardWithTitleBar):
 			self.key = key
 			self.value = value
 			self.textLine = ui.TextLine()
+			self.textLine.AddFlag("not_pick")
 			self.textLine.SetParent(self)
 			self.textLine.SetPosition(10, 1)
 			self.textLine.SetText(str(value))

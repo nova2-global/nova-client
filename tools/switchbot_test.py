@@ -115,11 +115,25 @@ def install(game, bot):
     return module
 
 
-def world(nui_on, bot=None, items=((0, SWORD), (2, BLADE))):
+def hide_in_window_init(game):
+    """The real ui.Window.__init__ ends with self.Hide() (ui.py:101), before a
+    subclass has set anything; the stand-in's does not."""
+    window = game.modules["ui"].Window
+    stand_in = window.__init__
+
+    def init(self, *args, **kwargs):
+        stand_in(self, *args, **kwargs)
+        self.Hide()
+    window.__init__ = init
+
+
+def world(nui_on, bot=None, items=((0, SWORD), (2, BLADE)), real_init=False):
     bot = bot or Switchbot()
 
     def setup(game):
         install(game, bot)
+        if real_init:
+            hide_in_window_init(game)
         for entry in items:
             slot, vnum, height = (tuple(entry) + (2,))[:3]
             game.give((SWITCHBOT_WINDOW, slot), vnum, size=(1, height))
@@ -257,6 +271,22 @@ class Legacy(unittest.TestCase):
         game_world, window = world(False)
         self.assertFalse(hasattr(type(window), "OnUpdate") and callable(getattr(type(window), "OnUpdate", None))
                          and "OnUpdate" in vars(type(window)), "no OnUpdate of its own (OLD polled the premium)")
+
+
+class RealWindowInit(unittest.TestCase):
+    """ui.Window.__init__ calls Hide before the subclass's own constructor runs,
+    so a Hide override may read nothing its constructor sets. Legacy's window is
+    what make() falls back to and what the right-to-left locale always runs: a
+    raise here stops the Interface from building, so no client enters the game."""
+
+    def test_the_legacy_window_builds_and_opens(self):
+        game_world, window = world(False, real_init=True)
+        self.assertEqual(sorted(window.attrDict), [0, 1, 2, 3, 4])
+        self.assertEqual(sorted(window.rareAttrDict), [5, 6])
+
+    def test_the_facade_builds_and_opens_and_does_not_fall_back(self):
+        game_world, window = world(True, real_init=True)
+        self.assertIsNotNone(w4.board(window), "NovaUI's window, not legacy's fallback")
 
 
 class Flows(SwitchbotTest):

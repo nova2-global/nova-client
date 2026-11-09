@@ -1600,6 +1600,20 @@ class SlotWindow(Window):
 
 		wndMgr.SetSlot(self.hWnd, renderingSlotNumber, skillIndex, 1, 1, skillIcon)
 
+	## The advanced pet's skill cell (NOVA-24; OLD ui.py:3888-3915): the
+	## skill's icon and its level as the count. NEW's window manager has no
+	## SetSlotScale, so OLD's scale (the mini window's 0.55) is not applied:
+	## the icon draws at its size.
+	def SetPetSkillSlot(self, renderingSlotNumber, vnum, skillLevel, scalex = 1.0, scaley = 1.0):
+		import pet
+		petSkillIcon = pet.GetSkillProtoIconImage(vnum)
+		if not petSkillIcon:
+			wndMgr.ClearSlot(self.hWnd, renderingSlotNumber)
+			return
+
+		wndMgr.SetSlot(self.hWnd, renderingSlotNumber, vnum, 1, 1, petSkillIcon)
+		wndMgr.SetSlotCount(self.hWnd, renderingSlotNumber, skillLevel)
+
 	def SetEmotionSlot(self, renderingSlotNumber, emotionIndex):
 		import player
 		icon = player.GetEmotionIconImage(emotionIndex)

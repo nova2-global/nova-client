@@ -1,0 +1,168 @@
+/* Classic skin overlay of nui/windows/pet-mini/pet-mini.rml: legacy's pet
+   mini window (uiscript petinterfacewindow.py, OLD's art) at 100%, 1dp to the
+   legacy pixel: the thin board, 245 x 135 open and 75 x 75 folded; the icon
+   on its slot cover (pet_slot_corver.sub) at 18, 18, shifted 12 right while
+   folded; the name at 65, 16 and the grade at 65, 30; the exp bar
+   (expbar_bg_small.png, the fill expbar_small.png) at 65, 48, 163 x 16; the
+   skill cells at 18, 72, 20 x 20 at a 21 pitch, the heroic row 22 lower,
+   25 x 25 (slot-small.png, slot_disabled_small.png over the closed ones).
+   Legacy grows and shrinks the board over 0.22 and 0.18 s; classic declares
+   no motion and switches at once. */
+
+body.skin-classic.pet-mini
+{
+	width: 75dp;
+	height: 75dp;
+	border-radius: 0;
+}
+body.skin-classic.pet-mini.is-open
+{
+	width: 245dp;
+	height: 135dp;
+}
+body.skin-classic.pet-mini .pet-mini__icon
+{
+	left: 30dp;
+	top: 18dp;
+	width: 32dp;
+	height: 38dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pet/mini_window/pet_slot_corver.sub" scale-none left top);
+}
+body.skin-classic.pet-mini.is-open .pet-mini__icon
+{
+	left: 18dp;
+}
+body.skin-classic.pet-mini .pet-mini__icon-image
+{
+	margin: 3dp 0 0 0;
+}
+body.skin-classic.pet-mini .pet-mini__extras
+{
+	left: 0;
+	top: 0;
+	width: 245dp;
+}
+body.skin-classic.pet-mini .pet-mini__title, body.skin-classic.pet-mini .pet-mini__evo
+{
+	position: absolute;
+	left: 65dp;
+	font-weight: normal;
+	font-size: var(--font-md);
+}
+body.skin-classic.pet-mini .pet-mini__title
+{
+	color: var(--classic-skill-group-text);
+}
+body.skin-classic.pet-mini .pet-mini__title { top: 16dp; }
+body.skin-classic.pet-mini .pet-mini__evo { top: 30dp; }
+body.skin-classic.pet-mini .pet-mini__exp
+{
+	position: absolute;
+	left: 65dp;
+	top: 48dp;
+	width: 163dp;
+	height: 16dp;
+	padding: 0;
+	decorator: image("d:/ymir work/ui/pet/expbar_bg_small.png" scale-none left top);
+}
+body.skin-classic.pet-mini progress.pet-mini__gauge
+{
+	width: 163dp;
+	height: 16dp;
+	decorator: none;
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.pet-mini progress.pet-mini__gauge fill
+{
+	margin: 0;
+	decorator: image("d:/ymir work/ui/pet/expbar_small.png" scale-none left top);
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.pet-mini .pet-mini__hint
+{
+	position: absolute;
+	left: 65dp;
+	top: 49dp;
+	width: 163dp;
+	color: var(--text);
+	text-align: center;
+}
+body.skin-classic.pet-mini .pet-mini__cells
+{
+	left: 18dp;
+	top: 72dp;
+	width: 210dp;
+}
+body.skin-classic.pet-mini .pet-mini__row
+{
+	display: block;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.pet-mini .pet-mini__cell
+{
+	position: absolute;
+	width: 20dp;
+	height: 20dp;
+	decorator: image("d:/ymir work/ui/pet/slot-small.png" scale-none left top);
+}
+body.skin-classic.pet-mini .pet-mini__cell--heroic
+{
+	width: 25dp;
+	height: 25dp;
+}
+body.skin-classic.pet-mini #pet-mini-cell-0 { left: 0dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-1 { left: 21dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-2 { left: 42dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-3 { left: 63dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-4 { left: 84dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-5 { left: 105dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-6 { left: 126dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-7 { left: 147dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-8 { left: 168dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-9 { left: 189dp; top: 0; }
+body.skin-classic.pet-mini #pet-mini-cell-10 { left: 0dp; top: 22dp; }
+body.skin-classic.pet-mini #pet-mini-cell-11 { left: 21dp; top: 22dp; }
+body.skin-classic.pet-mini #pet-mini-cell-12 { left: 42dp; top: 22dp; }
+body.skin-classic.pet-mini .pet-mini__cell .nui-slot__icon
+{
+	width: 20dp;
+	height: 20dp;
+	margin: 0;
+}
+body.skin-classic.pet-mini .pet-mini__cell--heroic .nui-slot__icon
+{
+	width: 25dp;
+	height: 25dp;
+}
+body.skin-classic.pet-mini .pet-mini__lock
+{
+	width: 20dp;
+	height: 20dp;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pet/slot_disabled_small.png" scale-none left top);
+}
+/* Legacy's small cells are 1dp apart in a row: each cell's hit box reaches
+   half of it (the heroic row's cells overlap, as legacy's). */
+body.skin-classic.pet-mini .pet-mini__cell--normal
+{
+	nui-hit-outset: 0 0.5dp;
+}
+/* The first four basic cells lie over the heroic row, 2dp above it: half
+   of that gap each (the heroic cells take the other half). */
+body.skin-classic.pet-mini #pet-mini-cell-0, body.skin-classic.pet-mini #pet-mini-cell-1,
+body.skin-classic.pet-mini #pet-mini-cell-2, body.skin-classic.pet-mini #pet-mini-cell-3
+{
+	nui-hit-outset: 0 0.5dp 1dp 0.5dp;
+}
+/* The heroic row is 2dp under the basic one: half of it each. */
+body.skin-classic.pet-mini .pet-mini__cell--heroic
+{
+	nui-hit-outset: 1dp 0 0 0;
+}

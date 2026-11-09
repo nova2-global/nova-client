@@ -33,6 +33,14 @@ PREMIUM_SCROLLS = (50208, 50209, 50210)
 # sash.ABSORBED_SOCKET, Packet.h): socket 0 holds the absorption rate in
 # percent, socket 1 the vnum of the absorbed weapon or armour. Named here so
 # that the tooltip rules need no sash module.
+# The advanced pet's items (NOVA-24; contract 4.2 and 6, NEW's ItemData.h):
+# their type, the egg and seal subtypes and the egg's hatch-time socket.
+# Named here, as the sash's, so that this module needs no pet module.
+PET_ITEM_TYPE = 39
+PET_EGG = 0
+PET_SUMMON = 1
+PET_EGG_HATCH_SOCKET = 1
+
 SASH_ABSORPTION_SOCKET = 0
 SASH_ABSORBED_SOCKET = 1
 
@@ -1737,6 +1745,19 @@ class ItemToolTip(ToolTip):
 				else:
 					self.AppendMallItemLastTime(metinSlot[0], item.GetLimitValue(1))
 
+		## The advanced pet's items (NOVA-24; OLD uiToolTip.py:1728-1760): the
+		## seal's attributes (the destiny orb's), limits and applies, and an
+		## egg's or seal's real time.
+		elif PET_ITEM_TYPE == itemType:
+			self.__AppendAttributeInformation(attrSlot)
+			self.__AppendLimitInformation()
+			self.__AppendAffectInformation()
+			for i in range(item.LIMIT_MAX_NUM):
+				(limitType, limitValue) = item.GetLimit(i)
+				if item.LIMIT_REAL_TIME == limitType:
+					self.AppendMallItemLastTime(metinSlot[0], item.GetLimitValue(i))
+					break
+
 		elif item.ITEM_TYPE_DS == itemType:
 			self.AppendTextLine(self.__DragonSoulInfoString(itemVnum))
 			self.__AppendAttributeInformation(attrSlot)
@@ -1758,6 +1779,7 @@ class ItemToolTip(ToolTip):
 			self.AppendTextLine(localeInfo.CHEST_CONTENT_PREVIEW, self.NORMAL_COLOR)
 
 		self.__AppendMoveHints(itemVnum, itemType)
+		self.__AppendPetHints(itemType, metinSlot)
 
 		self.ShowToolTip()
 
@@ -1788,6 +1810,25 @@ class ItemToolTip(ToolTip):
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY_PLUS, self.NORMAL_COLOR)
 			else:
 				self.AppendTextLine(localeInfo.MOVE_TO_INVENTORY, self.NORMAL_COLOR)
+
+	## The advanced pet (NOVA-24). An egg made while PET_EGG_HATCH_SECONDS
+	## was above 0 says when it can hatch (decision Q2, socket 1). A seal
+	## outside the safebox says Tab previews its pet: OLD's line
+	## (uiToolTip.py:2013-2014) was English with an emoji NEW lacks (OLD bug
+	## 7), and the safebox has no Tab host.
+	def __AppendPetHints(self, itemType, metinSlot):
+		if PET_ITEM_TYPE != itemType:
+			return
+
+		subType = item.GetItemSubType()
+		if PET_EGG == subType and metinSlot:
+			leftSec = metinSlot[PET_EGG_HATCH_SOCKET] - app.GetGlobalTimeStamp()
+			if leftSec > 0:
+				self.AppendSpace(5)
+				self.AppendTextLine(localeInfo.PET_EGG_HATCH_IN % localeInfo.SecondToDHM(leftSec), self.NORMAL_COLOR)
+		elif PET_SUMMON == subType and self.itemWindowType != player.SAFEBOX:
+			self.AppendSpace(5)
+			self.AppendTextLine(localeInfo.PET_TOOLTIP_TAB_PREVIEW, self.SPECIAL_POSITIVE_COLOR)
 
 	## NOVA-11 (OLD uiToolTip.py:1416-1424): socket 0 of a premium scroll is
 	## the end time a returned scroll keeps (/deactivate_premium, a tier
@@ -3135,6 +3176,49 @@ class SkillToolTip(ToolTip):
 			self.AppendTextLine(localeInfo.SKILL_SUMMON_DESCRIPTION % (15), color)
 		elif 0 == skillLevel:
 			self.AppendTextLine(localeInfo.SKILL_SUMMON_DESCRIPTION % (10), color)
+
+
+## The advanced pet's skill tooltip (NOVA-24; OLD uiToolTip.py:3597-3645): the
+## skill's name, description and level, and its bonus at the value the server
+## sent for that skill on the pet (contract 6's GetSkillProtoValue). OLD always
+## read the preview's value; isPreview picks the table.
+class PetSkillToolTip(ToolTip):
+
+	PET_SKILL_TOOL_TIP_WIDTH = 255
+
+	def __init__(self):
+		ToolTip.__init__(self, self.PET_SKILL_TOOL_TIP_WIDTH)
+
+	def __del__(self):
+		ToolTip.__del__(self)
+
+	def SetSkill(self, skillID, skillLevel, isPreview = False):
+		import pet
+		self.ClearToolTip()
+
+		if skillID == 0:
+			self.Hide()
+			return
+
+		self.SetTitle(pet.GetSkillProtoName(skillID))
+		## OLD passed its wrap width (30) where NEW's AppendDescription takes
+		## the color: the text drew near black.
+		self.AppendDescription(pet.GetSkillProtoDesc(skillID))
+
+		self.AppendSpace(5)
+		self.AppendTextLine(localeInfo.PET_TOOLTIP_SKILL_CUR_LEVEL % skillLevel, self.NORMAL_COLOR)
+
+		applyType = int(pet.GetSkillProtoApply(skillID))
+		applyValue = int(float(pet.GetSkillProtoValue(skillID, isPreview)))
+		affect = ItemToolTip.AFFECT_DICT.get(applyType)
+		if affect:
+			self.AppendTextLine(affect(applyValue), self.NORMAL_COLOR)
+
+		self.ResizeToolTip()
+		self.Show()
+
+	def HideToolTip(self):
+		self.Hide()
 
 
 if __name__ == "__main__":	

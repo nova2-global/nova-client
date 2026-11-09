@@ -1,0 +1,309 @@
+/* Classic skin overlay of nui/windows/pet/pet.rml: legacy's pet window
+   (uiscript petwindow.py, OLD's art from its packs) at 100%, 1dp to the
+   legacy pixel: no board, the portrait panel (pet_image.png, 316 x 130) at
+   50, 0 with the level, grade and name on their rounded slots at 47, 157
+   and 265, 95 down; the body art (bg.png, or bg-preview.png in the preview)
+   at 0, 115; the close button at 360, 141; the exp bar (expbar.png) at 49,
+   121; the bonus names (attr_type.png) at 48 and the levels (attr_level.png)
+   at 220, 184, 206 and 228 down, the plus 15 from the level's right end; the
+   skill frame (skill_slots.png) at 52, 287, the basic cells at legacy's 37dp
+   pitch, the heroic ones 46dp; the section titles centered at 158, 266 and
+   373; the evolve button (big_thin_button) at 59, 470. Legacy's window has
+   no title bar: the portrait panel is the handle. The hint line sits under
+   the exp bar where legacy's pointer tooltip drew. */
+
+body.skin-classic.pet
+{
+	width: 406dp;
+	height: 518dp;
+	min-width: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pet/bg.png" scale-none left bottom);
+	box-shadow: none;
+}
+body.skin-classic.pet.pet--preview
+{
+	decorator: image("d:/ymir work/ui/pet/bg-preview.png" scale-none left bottom);
+}
+body.skin-classic.pet .pet__title-icon, body.skin-classic.pet .pet__title
+{
+	display: none;
+}
+body.skin-classic.pet .pet__titlebar
+{
+	position: absolute;
+	left: 50dp;
+	top: 0;
+	width: 316dp;
+	height: 90dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pet/pet_image.png" scale-none left top);
+	z-index: 0;
+}
+body.skin-classic.pet .pet__handle
+{
+	width: 316dp;
+	height: 90dp;
+}
+body.skin-classic.pet .pet__close
+{
+	position: absolute;
+	left: 310dp;
+	top: 141dp;
+	width: 27dp;
+	height: 27dp;
+	decorator: image("d:/ymir work/ui/pattern/NewUI/close_01.sub" scale-none left top);
+	background-color: transparent;
+	border-width: 0;
+}
+body.skin-classic.pet .pet__close:hover
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/close_02.sub" scale-none left top);
+}
+body.skin-classic.pet .pet__close .nui-glyph
+{
+	display: none;
+}
+body.skin-classic.pet .pet__body, body.skin-classic.pet .pet__header, body.skin-classic.pet .pet__status, body.skin-classic.pet .pet__section, body.skin-classic.pet .pet__evolve-row
+{
+	display: block;
+	position: static;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.pet .pet__portrait
+{
+	position: absolute;
+	left: 158dp;
+	top: 0;
+	width: 100dp;
+	height: 100dp;
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.pet .pet__portrait-image
+{
+	width: 100dp;
+	height: 100dp;
+	margin: 0;
+}
+body.skin-classic.pet .pet__line
+{
+	position: absolute;
+	top: 95dp;
+	width: 98dp;
+	height: 22dp;
+	line-height: 22dp;
+	text-align: center;
+	font-weight: normal;
+	decorator: image("d:/ymir work/ui/pet/rounded-slot.png" scale-none left top);
+}
+body.skin-classic.pet #pet-level { left: 47dp; }
+body.skin-classic.pet #pet-evolution { left: 157dp; }
+body.skin-classic.pet #pet-name { left: 265dp; }
+body.skin-classic.pet .pet__exp
+{
+	position: absolute;
+	left: 49dp;
+	top: 121dp;
+	width: 307dp;
+	height: 23dp;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.pet progress.pet__gauge
+{
+	width: 307dp;
+	height: 23dp;
+	decorator: none;
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.pet progress.pet__gauge fill
+{
+	margin: 0;
+	decorator: image("d:/ymir work/ui/pet/expbar.png" scale-none left top);
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.pet .pet__hint
+{
+	position: absolute;
+	left: 49dp;
+	top: 125dp;
+	width: 307dp;
+	color: var(--text);
+	text-align: center;
+}
+body.skin-classic.pet .pet__caption
+{
+	position: absolute;
+	left: 0;
+	width: 406dp;
+	margin: 0;
+	color: var(--classic-skill-group-text);
+	font-size: var(--font-md);
+}
+body.skin-classic.pet .pet__section:nth-child(3) .pet__caption { top: 158dp; }
+body.skin-classic.pet .pet__section:nth-child(4) .pet__caption { top: 266dp; }
+body.skin-classic.pet .pet__section:nth-child(5) .pet__caption { top: 373dp; }
+body.skin-classic.pet .pet__bonus
+{
+	position: absolute;
+	left: 48dp;
+	width: 311dp;
+	height: 20dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pet/attr_type.png" scale-none left top);
+}
+body.skin-classic.pet #pet-bonus-0 { top: 184dp; }
+body.skin-classic.pet #pet-bonus-1 { top: 206dp; }
+body.skin-classic.pet #pet-bonus-2 { top: 228dp; }
+body.skin-classic.pet .pet__bonus-name
+{
+	position: absolute;
+	left: 10dp;
+	top: 2dp;
+	color: var(--classic-skill-group-text);
+	line-height: 16dp;
+}
+body.skin-classic.pet .pet__bonus-level
+{
+	position: absolute;
+	left: 172dp;
+	top: 0;
+	width: 139dp;
+	min-width: 0;
+	height: 18dp;
+	padding-left: 10dp;
+	line-height: 18dp;
+	text-align: left;
+	color: var(--classic-skill-group-text);
+	decorator: image("d:/ymir work/ui/pet/attr_level.png" scale-none left top);
+}
+body.skin-classic.pet .pet__plus
+{
+	position: absolute;
+	left: 284dp;
+	top: 3dp;
+	width: 12dp;
+	height: 12dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/plus_button_1.sub" scale-none left top);
+}
+body.skin-classic.pet .pet__plus:hover
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/plus_button_2.sub" scale-none left top);
+}
+body.skin-classic.pet .pet__plus .nui-glyph
+{
+	display: none;
+}
+body.skin-classic.pet .pet__cells
+{
+	display: block;
+	width: 0;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.pet #pet-cells
+{
+	position: absolute;
+	left: 52dp;
+	top: 287dp;
+	width: 304dp;
+	height: 157dp;
+	decorator: image("d:/ymir work/ui/pet/skill_slots.png" scale-none left top);
+}
+body.skin-classic.pet .pet__cell
+{
+	position: absolute;
+	width: 37dp;
+	height: 37dp;
+	margin: 0;
+}
+body.skin-classic.pet .pet__cell--heroic
+{
+	width: 46dp;
+	height: 46dp;
+}
+body.skin-classic.pet #pet-cell-0 { left: 1dp; top: 0dp; }
+body.skin-classic.pet #pet-cell-1 { left: 65dp; top: 0dp; }
+body.skin-classic.pet #pet-cell-2 { left: 129dp; top: 0dp; }
+body.skin-classic.pet #pet-cell-3 { left: 197dp; top: 0dp; }
+body.skin-classic.pet #pet-cell-4 { left: 265dp; top: 0dp; }
+body.skin-classic.pet #pet-cell-5 { left: 1dp; top: 38dp; }
+body.skin-classic.pet #pet-cell-6 { left: 65dp; top: 38dp; }
+body.skin-classic.pet #pet-cell-7 { left: 129dp; top: 38dp; }
+body.skin-classic.pet #pet-cell-8 { left: 197dp; top: 38dp; }
+body.skin-classic.pet #pet-cell-9 { left: 265dp; top: 38dp; }
+body.skin-classic.pet #pet-cell-10 { left: 91dp; top: 395dp; }
+body.skin-classic.pet #pet-cell-11 { left: 175dp; top: 395dp; }
+body.skin-classic.pet #pet-cell-12 { left: 267dp; top: 395dp; }
+body.skin-classic.pet .pet__lock
+{
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/pet/disabled_slot.png" scale-none left top);
+}
+body.skin-classic.pet .pet__cell--heroic .pet__lock
+{
+	decorator: image("d:/ymir work/ui/pet/disabled_slot_big.png" scale-none left top);
+}
+body.skin-classic.pet .pet__evolve
+{
+	position: absolute;
+	left: 59dp;
+	top: 470dp;
+	width: 104dp;
+	min-width: 0;
+	height: 25dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_01.sub" scale-none left top);
+}
+body.skin-classic.pet .pet__evolve:hover
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_02.sub" scale-none left top);
+}
+body.skin-classic.pet .pet__evolve[disabled]
+{
+	opacity: 1;
+	decorator: image("d:/ymir work/ui/pet/btn_disabled.png" scale-none left top);
+}
+body.skin-classic.pet .pet__blink.nui-blink-off .pet__evolve
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_02.sub" scale-none left top);
+}
+body.skin-classic.pet .pet__cell .nui-slot__icon
+{
+	width: 37dp;
+	height: 37dp;
+	margin: 0;
+}
+body.skin-classic.pet .pet__cell--heroic .nui-slot__icon
+{
+	width: 46dp;
+	height: 46dp;
+}
+/* Legacy's two basic rows are 1dp apart: each cell's hit box reaches half
+   of it (the columns' wide gaps are past the sweep's neighbor rule). */
+body.skin-classic.pet .pet__cell--normal
+{
+	nui-hit-outset: 0.5dp 0;
+}

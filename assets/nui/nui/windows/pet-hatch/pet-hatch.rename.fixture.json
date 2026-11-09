@@ -1,0 +1,45 @@
+{
+	"pet_hatch": {
+		"title": "Pet Name Changer",
+		"button": "Change Name",
+		"price": "Price: 1.000.000 Yang",
+		"price_shown": false,
+		"cells": [
+			{
+				"index": 0,
+				"kind": "item",
+				"type": 1,
+				"ref": 0,
+				"icon": "/icon/item/55701.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false
+			},
+			{
+				"index": 1,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false
+			}
+		],
+		"max": 20
+	}
+}

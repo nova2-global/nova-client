@@ -1,0 +1,74 @@
+/* The pet hatch window's modern look (NOVA-24): the dialog kit's look
+   (components/dialog.rcss): the egg's cell, a chevron and the pet's cell,
+   the name caption and field, the price line and the hatch button; renaming,
+   the seal alone and no price. The scrim centers it. Classic (legacy's
+   176 x 184 board, the incubator art): skins/classic/windows/pet-hatch.rcss. */
+
+.pet-hatch button
+{
+	tab-index: none;
+	focus: none;
+}
+.pet-hatch__body
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.pet-hatch__cells
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 10dp;
+}
+.pet-hatch__cell
+{
+	width: 44dp;
+	height: 44dp;
+}
+.pet-hatch__arrow
+{
+	display: block;
+	width: 16dp;
+	height: 16dp;
+	margin: 0 10dp;
+}
+.pet-hatch__arrow .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+}
+.pet-hatch__caption
+{
+	display: block;
+	margin-bottom: 4dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+	pointer-events: none;
+}
+.pet-hatch__slot
+{
+	display: block;
+}
+.pet-hatch__price
+{
+	display: block;
+	height: 16dp;
+	margin-top: 8dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 16dp;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet-hatch__price.is-hidden
+{
+	visibility: hidden;
+}
+.pet-hatch__label
+{
+	pointer-events: none;
+}

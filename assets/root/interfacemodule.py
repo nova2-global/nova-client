@@ -47,6 +47,8 @@ import uiselectitem
 import uiGemShop
 import uiChestDrop
 import uiSash
+## The advanced pet's windows (NOVA-24).
+import uiPet
 # The offline shop's search, log and decoration windows (NOVA-9, chunk Y2's).
 import uiSearchShop
 import uiOfflineShopLog
@@ -99,6 +101,13 @@ class Interface(object):
 		self.wndChestDrop = None
 		self.wndSashCombine = None
 		self.wndSashAbsorption = None
+		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398).
+		self.wndPetEggHatch = None
+		self.wndPetRefineWindow = None
+		self.wndPetEvolutionWindow = None
+		self.wndPetInterfaceWindow = None
+		self.wndPetWindow = None
+		self.wndPetPreviewWindow = None
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
@@ -411,6 +420,17 @@ class Interface(object):
 			if inventory:
 				inventory.BindWindow(wnd)
 
+	## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398),
+	## each through the factory with contract 8's id and controller; the
+	## preview is a second "pet" window.
+	def __MakePetWindows(self):
+		self.wndPetEggHatch = nui_windows.make("pet-hatch", uiPet.PetHatchEggWindow, "nui_pet_hatch.PetHatchEggWindow")
+		self.wndPetRefineWindow = nui_windows.make("pet-attr-refine", uiPet.PetAttrRefineWindow, "nui_pet_attr_refine.PetAttrRefineWindow")
+		self.wndPetEvolutionWindow = nui_windows.make("pet-evolution", uiPet.PetEvolutionWindow, "nui_pet_evolution.PetEvolutionWindow")
+		self.wndPetInterfaceWindow = nui_windows.make("pet-mini", uiPet.PetInterfaceWindow, "nui_pet_mini.PetInterfaceWindow")
+		self.wndPetWindow = nui_windows.make("pet", uiPet.PetWindow, "nui_pet.PetWindow")
+		self.wndPetPreviewWindow = nui_windows.make("pet", uiPet.PetWindow, "nui_pet.PetWindow")
+
 	## The aura level window (NOVA-23), which the game window makes at the
 	## server's first GC::AURA (OLD game.py:1224-1230).
 	def BindAuraWindow(self, wndAura):
@@ -428,6 +448,7 @@ class Interface(object):
 		self.__MakeParty()
 		self.__MakeWindows()
 		self.__MakeSashWindow()
+		self.__MakePetWindows()
 		self.__MakeDialogs()
 		self.__BindTradableWindows()
 
@@ -619,6 +640,26 @@ class Interface(object):
 		if self.wndSashAbsorption:
 			self.wndSashAbsorption.Destroy()
 			self.wndSashAbsorption = None
+
+		## OLD interfaceModule.py:1654-1660, 1685-1691.
+		if self.wndPetEggHatch:
+			self.wndPetEggHatch.Destroy()
+			self.wndPetEggHatch = None
+		if self.wndPetRefineWindow:
+			self.wndPetRefineWindow.Destroy()
+			self.wndPetRefineWindow = None
+		if self.wndPetEvolutionWindow:
+			self.wndPetEvolutionWindow.Destroy()
+			self.wndPetEvolutionWindow = None
+		if self.wndPetInterfaceWindow:
+			self.wndPetInterfaceWindow.Destroy()
+			self.wndPetInterfaceWindow = None
+		if self.wndPetWindow:
+			self.wndPetWindow.Destroy()
+			self.wndPetWindow = None
+		if self.wndPetPreviewWindow:
+			self.wndPetPreviewWindow.Destroy()
+			self.wndPetPreviewWindow = None
 
 		if self.wndSearchShop:
 			self.wndSearchShop.Destroy()
@@ -1158,6 +1199,13 @@ class Interface(object):
 		## OLD interfaceModule.py:2761-2762 (NOVA-9).
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Hide()
+
+		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:2735-2741).
+		for name in ("wndPetEggHatch", "wndPetRefineWindow", "wndPetEvolutionWindow", "wndPetInterfaceWindow",
+					 "wndPetWindow", "wndPetPreviewWindow"):
+			wnd = getattr(self, name, None)
+			if wnd:
+				wnd.Hide()
  
 
 	def ShowMouseImage(self):
@@ -1266,6 +1314,24 @@ class Interface(object):
 				if self.wndExtraInventory and self.wndExtraInventory.IsShow():
 					self.wndExtraInventory.OverOutItem()
 					self.wndExtraInventory.Close()
+
+	## Key P (NOVA-24; OLD interfaceModule.py:4419-4424).
+	def TogglePetWindow(self):
+		if self.wndPetWindow.IsShow():
+			self.wndPetWindow.Close()
+		else:
+			self.wndPetWindow.Open()
+
+	## Key Tab (NOVA-24): OLD's exe asked the shown windows, topmost first,
+	## until one's OnPressTabKey answered True (CWindowManager::RunPressTabKey);
+	## NEW's exe has no such walk, so the game window asks these. Only the
+	## window whose item the pointer is over answers.
+	def PressTabKey(self):
+		for name in ("wndInventory", "wndExtraInventory", "dlgExchange", "dlgShop", "wndSearchShop"):
+			wnd = getattr(self, name, None)
+			if wnd and wnd.IsShow() and getattr(wnd, "OnPressTabKey", None) and wnd.OnPressTabKey():
+				return True
+		return False
 
 	def ToggleExtraInventoryWindow(self):
 		"""Key U and the inventory's button (NOVA-16)."""
@@ -1461,6 +1527,15 @@ class Interface(object):
 		## The switchbot (NOVA-43; OLD interfaceModule.py:3384-3385).
 		if getattr(self, "wndSwitchbot", None):
 			hideWindows += self.wndSwitchbot,
+
+		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:3358-3364).
+		if getattr(self, "wndPetWindow", None):
+			hideWindows += self.wndPetEggHatch,
+			hideWindows += self.wndPetRefineWindow,
+			hideWindows += self.wndPetEvolutionWindow,
+			hideWindows += self.wndPetInterfaceWindow,
+			hideWindows += self.wndPetWindow,
+			hideWindows += self.wndPetPreviewWindow,
 
 		hideWindows = [x for x in hideWindows if x.IsShow()]
 

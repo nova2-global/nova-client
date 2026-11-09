@@ -1,0 +1,185 @@
+/* Classic skin overlay of nui/windows/pet-attr-refine/pet-attr-refine.rml:
+   legacy's pet bonus refine window (uiscript petrefineattrwindow.py) at
+   100%, 1dp to the legacy pixel: the board, 260 x 330, its title bar at 6,
+   6; the top panel at 15, 45, 230 x 150, with the bonus centered 10 down,
+   "Current Value" at 30, 40 with its level right-aligned 30 from the right
+   and its value under it at 65, the down arrow (arrow_down.png) centered 75
+   down, "Next Value" at 30, 100 with its level and its value at 125; the
+   material panel at 15, 200, 230 x 72; Upgrade and Cancel at 24 and 132,
+   285 down. */
+
+body.skin-classic.pet-attr-refine
+{
+	width: 260dp;
+	height: 330dp;
+	min-width: 0;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__titlebar
+{
+	position: absolute;
+	left: 6dp;
+	top: 6dp;
+	width: 248dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__handle, body.skin-classic.pet-attr-refine .pet-attr-refine__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__top, body.skin-classic.pet-attr-refine .pet-attr-refine__materials-box
+{
+	display: block;
+	position: absolute;
+	left: 15dp;
+	width: 230dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--classic-separator);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	box-sizing: border-box;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__top
+{
+	top: 45dp;
+	height: 150dp;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__materials-box
+{
+	top: 200dp;
+	height: 72dp;
+	margin: 0;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__caption
+{
+	position: absolute;
+	left: 0;
+	top: -8dp;
+	width: 228dp;
+	margin: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__materials
+{
+	position: absolute;
+	left: 0;
+	top: 12dp;
+	width: 228dp;
+	gap: 7dp;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__material-cell
+{
+	width: 36dp;
+	height: 36dp;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__cost
+{
+	position: absolute;
+	left: 0;
+	top: 52dp;
+	width: 228dp;
+	margin: 0;
+	height: 16dp;
+	line-height: 16dp;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__footer
+{
+	display: block;
+	height: 0;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__button
+{
+	position: absolute;
+	top: 285dp;
+	width: 104dp;
+	height: 25dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_01.sub" scale-none left top);
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__button:hover
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_02.sub" scale-none left top);
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__button:active
+{
+	decorator: image("d:/ymir work/ui/pattern/NewUI/buttons/big_thin_button_03.sub" scale-none left top);
+}
+body.skin-classic.pet-attr-refine #pet-attr-refine-ok { left: 24dp; }
+body.skin-classic.pet-attr-refine #pet-attr-refine-cancel { left: 132dp; }
+body.skin-classic.pet-attr-refine .pet-attr-refine__attribute
+{
+	position: absolute;
+	left: 0;
+	top: 10dp;
+	width: 228dp;
+	margin: 0;
+	font-weight: normal;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__row
+{
+	display: block;
+	position: absolute;
+	left: 30dp;
+	width: 168dp;
+	height: 45dp;
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__row:nth-child(2) { top: 40dp; }
+body.skin-classic.pet-attr-refine .pet-attr-refine__row:nth-child(4) { top: 100dp; }
+body.skin-classic.pet-attr-refine .pet-attr-refine__label
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: var(--text);
+	font-size: var(--font-lg);
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__level, body.skin-classic.pet-attr-refine .pet-attr-refine__value
+{
+	position: absolute;
+	right: 0;
+	width: 80dp;
+	font-weight: normal;
+	color: var(--text);
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__level { top: 0; }
+body.skin-classic.pet-attr-refine .pet-attr-refine__value { top: 25dp; }
+body.skin-classic.pet-attr-refine .pet-attr-refine__arrow
+{
+	position: absolute;
+	left: 98dp;
+	top: 75dp;
+	width: 32dp;
+	height: 32dp;
+	margin: 0;
+	decorator: image("d:/ymir work/ui/pet/arrow_down.png" scale-none left top);
+}
+body.skin-classic.pet-attr-refine .pet-attr-refine__arrow .nui-glyph
+{
+	display: none;
+}
+/* Legacy's material images are 7dp apart: each cell's hit box reaches half
+   of it. */
+body.skin-classic.pet-attr-refine .pet-attr-refine__material-cell
+{
+	nui-hit-outset: 0 3.5dp;
+}

@@ -28,6 +28,9 @@ ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop"]
 # and aura.
 WAVE7_ITEMS = ["switchbot"]
 ITEMS = ITEMS + WAVE7_ITEMS
+# Wave 7 (NOVA-24): the advanced pet's windows.
+WAVE7_PET = ["pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"]
+ITEMS = ITEMS + WAVE7_PET
 # Documents a later stage writes, listed for the prewarm already: the test
 # below fails while a document named here exists, or one not named here is
 # missing. TOOLTIPS AND DIALOGS (P14 spec 9.1, 9.4) wrote the last Wave 3b ones.

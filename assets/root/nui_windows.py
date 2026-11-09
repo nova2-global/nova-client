@@ -122,6 +122,12 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("chest-drop", True),         # what a chest can give, with each item's chance tier
 	# Wave 7 (NOVA-43): the switchbot, in the items group.
 	("switchbot", True),          # the switchbot's six slots, targets, cost and start/stop
+	# Wave 7 (NOVA-24): the advanced pet's windows, in the items group.
+	("pet", True),                # the advanced pet (your own and a preview)
+	("pet-mini", True),           # the summoned pet's small window
+	("pet-hatch", True),          # hatching an egg, the pet's name
+	("pet-evolution", True),      # evolving a pet
+	("pet-attr-refine", True),    # refining a pet's attributes
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
 	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
@@ -133,7 +139,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
-	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop", "switchbot"),
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop", "switchbot", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
@@ -212,6 +218,12 @@ ON_DEMAND_DOCUMENTS = (
 	# aura level window, each only while it shows.
 	("sash", ("sash",)),
 	("aura", ("aura",)),
+	# Wave 7 (NOVA-24): the advanced pet's windows, each only while it shows.
+	("pet", ("pet",)),
+	("pet-mini", ("pet-mini",)),
+	("pet-hatch", ("pet-hatch",)),
+	("pet-evolution", ("pet-evolution",)),
+	("pet-attr-refine", ("pet-attr-refine",)),
 	# P18: the maintenance countdown, only while it shows.
 	("maintenance", ("maintenance",)),
 )

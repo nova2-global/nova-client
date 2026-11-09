@@ -1,0 +1,129 @@
+/* Classic skin overlay of nui/windows/pet-hatch/pet-hatch.rml: legacy's pet
+   hatch window (uiscript pethatcheggwindow.py, OLD's incubator art) at 100%,
+   1dp to the legacy pixel: the stone board with its title bar, 176 x 184;
+   the cell on its incubator slot (Pet_Incu_slot_001.tga) at 68, 34, the item
+   at 72, 38 (legacy draws the pet over the egg in one place: the pet's cell
+   only, the egg's while renaming); the name panel (Pet_Incu_001.tga) at 12,
+   78 with its caption centered at 22, 86 and the field at 23, 106, 129 x 16;
+   the price centered at 13, 132, 150 wide; the button (LargeB_Button) at 39,
+   151. */
+
+body.skin-classic.pet-hatch .pet-hatch__window
+{
+	width: 176dp;
+	height: 184dp;
+	min-width: 0;
+	max-width: none;
+}
+body.skin-classic.pet-hatch .pet-hatch__titlebar
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 174dp;
+	margin: 0;
+	z-index: 1;
+}
+body.skin-classic.pet-hatch .pet-hatch__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.pet-hatch .pet-hatch__cells
+{
+	display: block;
+	position: absolute;
+	left: 68dp;
+	top: 34dp;
+	width: 40dp;
+	height: 40dp;
+	margin: 0;
+	decorator: image("d:/ymir work/ui/pet/Pet_Incu_slot_001.tga" scale-none left top);
+}
+body.skin-classic.pet-hatch .pet-hatch__arrow
+{
+	display: none;
+}
+body.skin-classic.pet-hatch .pet-hatch__cell
+{
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	width: 32dp;
+	height: 32dp;
+	decorator: none;
+	background-color: transparent;
+	border-width: 0;
+}
+body.skin-classic.pet-hatch .pet-hatch__caption
+{
+	position: absolute;
+	left: 12dp;
+	top: 78dp;
+	width: 151dp;
+	height: 53dp;
+	margin: 0;
+	padding-top: 8dp;
+	box-sizing: border-box;
+	color: var(--text);
+	font-size: var(--font-md);
+	decorator: image("d:/ymir work/ui/pet/Pet_Incu_001.tga" scale-none left top);
+}
+body.skin-classic.pet-hatch .pet-hatch__slot
+{
+	position: absolute;
+	left: 23dp;
+	top: 106dp;
+	width: 129dp;
+	height: 16dp;
+}
+body.skin-classic.pet-hatch .pet-hatch__field
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 129dp;
+	height: 16dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	line-height: 13dp;
+}
+body.skin-classic.pet-hatch .pet-hatch__price
+{
+	position: absolute;
+	left: 13dp;
+	top: 132dp;
+	width: 150dp;
+	height: 14dp;
+	margin: 0;
+	line-height: 14dp;
+}
+body.skin-classic.pet-hatch .pet-hatch__footer
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.pet-hatch .pet-hatch__button
+{
+	position: absolute;
+	left: 39dp;
+	top: 151dp;
+	width: 100dp;
+	height: 21dp;
+	min-width: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/pattern/LargeB_Button_01.tga" scale-none left top);
+}
+body.skin-classic.pet-hatch .pet-hatch__button:hover
+{
+	decorator: image("d:/ymir work/ui/pattern/LargeB_Button_02.tga" scale-none left top);
+}
+body.skin-classic.pet-hatch .pet-hatch__button:active
+{
+	decorator: image("d:/ymir work/ui/pattern/LargeB_Button_03.tga" scale-none left top);
+}

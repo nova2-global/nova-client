@@ -337,6 +337,19 @@ class ShopDialog(ui.ScriptWindow):
 		self.OnCloseQuestionDialog()
 		return True
 
+	## Tab over a pet seal of the offline shop previews its pet (NOVA-24; OLD
+	## uiShop.py:1142-1152), through the Interface's PressTabKey. hoveredSlot
+	## is the offline shop's global slot under the pointer.
+	def OnPressTabKey(self):
+		if not self.isOfflineShop or self.hoveredSlot < 0:
+			return False
+		item.SelectItem(shop.GetOfflineShopItemID(self.hoveredSlot))
+		if not (item.GetItemType() == item.ITEM_TYPE_PET_ADVANCED and item.GetItemSubType() == item.PET_SUMMON):
+			return False
+		import pet
+		pet.ReqPetPreview(pet.PET_PREVIEW_OFFLINESHOP, self.hoveredSlot)
+		return True
+
 	def OnPressEscapeKey(self):
 		self.Close()
 		return True

@@ -1,0 +1,156 @@
+/* The pet evolution window's modern look (NOVA-24): a sunken panel with the
+   seal's cell and the pet's name over the current and next grade (OLD's
+   grade colors, a chevron between) and their skill counts; a second panel
+   with the materials (cells with their counts) and the cost; Evolve and
+   Cancel. Centered at its first show. Classic (legacy's 260 x 330 board):
+   skins/classic/windows/pet-evolution.rcss. */
+
+body.pet-evolution
+{
+	--grade-color: var(--accent);
+	left: 16dp;
+	top: 16dp;
+	width: 300dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.pet-evolution button
+{
+	tab-index: none;
+	focus: none;
+}
+.pet-evolution__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 14dp 4dp;
+}
+.pet-evolution__top, .pet-evolution__materials-box
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+}
+.pet-evolution__materials-box
+{
+	margin-top: 10dp;
+}
+.pet-evolution__caption
+{
+	display: block;
+	margin-bottom: 6dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet-evolution__materials
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	gap: var(--space-1);
+}
+.pet-evolution__material-cell
+{
+	display: block;
+	width: 40dp;
+	height: 40dp;
+}
+.pet-evolution__cost
+{
+	display: block;
+	height: 18dp;
+	margin-top: 6dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 18dp;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet-evolution__footer
+{
+	justify-content: center;
+}
+.pet-evolution__button
+{
+	min-width: 104dp;
+}
+.pet-evolution__label
+{
+	pointer-events: none;
+}
+.pet-evolution__pet
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 8dp;
+}
+.pet-evolution__item
+{
+	width: 40dp;
+	height: 40dp;
+}
+.pet-evolution__name
+{
+	margin-left: 10dp;
+	color: var(--text);
+	font-size: var(--font-lg);
+	font-weight: bold;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet-evolution__grades
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	pointer-events: none;
+}
+.pet-evolution__grade
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 104dp;
+}
+.pet-evolution__label
+{
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.pet-evolution__grade-name
+{
+	color: var(--grade-color);
+	margin: 2dp 0 4dp;
+	font-size: var(--font-md);
+	font-weight: bold;
+	white-space: nowrap;
+}
+.pet-evolution__count
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+.pet-evolution__arrow
+{
+	display: block;
+	width: 16dp;
+	height: 16dp;
+	margin: 0 6dp;
+}
+.pet-evolution__arrow .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}

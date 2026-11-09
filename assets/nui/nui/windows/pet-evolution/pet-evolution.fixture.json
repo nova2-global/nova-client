@@ -1,0 +1,33 @@
+{
+	"pet_evolution": {
+		"icon": "/icon/item/55701.tga",
+		"name": "Rex",
+		"current": {
+			"title": "Veteran",
+			"color": "#1f9e16",
+			"active": "Basic Skills 5",
+			"passive": "Heroic Skills 0"
+		},
+		"next": {
+			"title": "Mythic",
+			"color": "#b9f2ff",
+			"active": "Basic Skills 6",
+			"passive": "Heroic Skills 0"
+		},
+		"materials": [
+			{
+				"icon": "/icon/item/27992.tga",
+				"count": "200"
+			},
+			{
+				"icon": "/icon/item/27993.tga",
+				"count": "200"
+			},
+			{
+				"icon": "/icon/item/27994.tga",
+				"count": "200"
+			}
+		],
+		"cost": "Price 50.000.000 Yang"
+	}
+}

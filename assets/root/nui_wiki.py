@@ -408,19 +408,19 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		return [v for v in item.ListByType(item_type, item_sub) if v not in data.ITEM_BLACKLIST]
 
 	def _list_vnums(self, vnums):
-		"""A hand-kept list holds what exists in this proto."""
-		import item
-		found = []
-		for vnum in sorted(vnums):
-			if item.SelectItem(vnum):
-				found.append(vnum)
-		return found
+		"""A hand-kept list, in vnum order. nui_wiki_data keeps only vnums in
+		NEW's item_proto: item.SelectItem reports a missing vnum to syserr and
+		selects another item, so it cannot test for one."""
+		return sorted(vnums)
 
 	def _list_mobs(self, sub):
 		import nonplayer
 		return [v for v in nonplayer.List(sub["mob_kind"], sub["band"][0], sub["band"][1]) if v not in data.MOB_BLACKLIST]
 
 	def search(self, text):
+		text = text if isinstance(text, str) else ""
+		# Kept in the model so that opening a category can clear the field.
+		self.nui_set(search=text)
 		text = text.strip()
 		self._search = text
 		if not text:

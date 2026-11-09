@@ -1,5 +1,6 @@
 """NOVA-42: the wiki browser's hand-kept vnum lists, ported as they are from
-OLD's inGameWikiConfig.py (costume, chest and blacklist ranges). NEW's
+OLD's inGameWikiConfig.py (costume, chest and blacklist ranges), the costume
+and chest lists cut to the vnums NEW's item_proto has. NEW's
 proto is a superset of OLD's with the same vnums (scope, "What NEW has"); NEW's
 extra items are not reviewed here, so an equipment grid can list content
 OLD filtered away (open question, see the report).
@@ -24,7 +25,7 @@ COSTUME_WEAPONS_ENTRIES = (
 	R(40136, 40143), R(40150, 40157), R(40164, 40171), R(40179, 40187), R(40191, 40197),
 	R(40200, 40218), R(40227, 40288), R(40302, 40348), R(40355, 40431), R(40438, 40445),
 	R(40452, 40459), R(40466, 40504), R(40511, 40518), R(40525, 40638), R(40659, 40830),
-	R(40852, 41000), R(50969, 51000), R(240001, 240559),
+	R(40852, 41000), R(50969, 50988), R(50989, 51000), R(240001, 240559),
 )
 COSTUME_WEAPONS = _expand(COSTUME_WEAPONS_ENTRIES)
 

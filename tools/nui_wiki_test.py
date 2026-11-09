@@ -119,6 +119,29 @@ class Listing(WikiTest):
             window.search("xyzzy")
         self.assertEqual(w4.board(window).model["list_state"], "empty")
 
+    def test_a_hand_kept_list_shows_its_vnums_though_select_item_answers_none(self):
+        world, window = self.world()
+        module = world.m("nui_wiki")
+        world.game.answer("item", "SelectItem", lambda v: None)  # the client's item.SelectItem
+        with world.game, w4.quiet():
+            window.Open()
+            chests = module.TREE[1]["subs"][1]
+            window._open_sub(chests)
+        rows = w4.board(window).model["list"]
+        self.assertEqual([r["vnum"] for r in rows], sorted(chests["vnums"]))
+        self.assertTrue(rows)
+
+    def test_opening_a_category_clears_the_search_field(self):
+        world, window = self.world()
+        module = world.m("nui_wiki")
+        with world.game, w4.quiet():
+            window.Open()
+            window.search("wolf")
+        self.assertEqual(w4.board(window).model["search"], "wolf")
+        with world.game, w4.quiet():
+            window._open_sub(module.TREE[2]["subs"][0])
+        self.assertEqual(w4.board(window).model["search"], "")
+
     def test_the_text_pages_have_a_place_to_plug_in(self):
         world, window = self.world()
         data = world.m("nui_wiki_data")

@@ -29,7 +29,7 @@
 		<nui-countdown class="wiki__clock" format="none" data-if="retry_at > 0" data-attr-end="retry_at" data-event-countdownend="retry_fire()"/>
 		<nui-countdown class="wiki__clock" format="none" data-if="timeout_at > 0" data-attr-end="timeout_at" data-event-countdownend="timeout_fire()"/>
 		<div class="wiki__side">
-			<input type="text" id="wiki-search" class="nui-input wiki__search" data-value="search" data-event-change="search_change(ev.value)"/>
+			<input type="text" id="wiki-search" class="nui-input wiki__search" maxlength="64" data-attr-value="search" data-event-change="search_change(ev.value)"/>
 			<div class="nui-list wiki__tree">
 				<div id="wiki-tree" class="nui-list__viewport">
 					<div class="wiki__cat" data-for="c : tree">

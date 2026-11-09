@@ -317,10 +317,10 @@ class HideBuffi(unittest.TestCase):
             dialog.hideBuffiButtonList[1].click()
         self.assertEqual(world.effects_since(mark), [])
 
-    def test_the_row_sits_under_the_hide_shops_row_and_grows_the_board(self):
+    def test_the_row_sits_under_the_sash_row_and_grows_the_board(self):
         world, dialog = self.world(False)
-        self.assertEqual(dialog.HIDE_BUFFI_ROW_Y, dialog.HIDE_SHOPS_ROW_Y + 25)
-        self.assertEqual(dialog.HIDE_BUFFI_HEIGHT, dialog.HIDE_SHOPS_HEIGHT + 25)
+        self.assertEqual(dialog.HIDE_BUFFI_ROW_Y, dialog.SHOW_SASH_ROW_Y + 25)
+        self.assertEqual(dialog.HIDE_BUFFI_HEIGHT, dialog.SHOW_SASH_HEIGHT + 25)
 
 
 class HideBuffiGlue(unittest.TestCase):

@@ -207,11 +207,13 @@ class WearTables(LimitsTest):
         self.assertEqual(len(self.m.wear_table(today)), 24)
         self.assertEqual(len(self.m.wear_table(foundation)), 40)
         # Legacy's windows since NOVA-97: the rings and the belt with the
-        # equipment, the costume body and hair alone, the cut's unported
-        # costume cells hidden; the foundation's costume group also holds the
-        # buffi's costume body, hair and weapon costume (NOVA-38).
+        # equipment; since Wave 6 the foundation's costume window holds the
+        # costume body and hair, sash, weapon costume, sash costume and aura
+        # (NOVA-20, 21, 23) and the buffi's costume body, hair and weapon costume
+        # (NOVA-38), the cut's unported costume cells hidden. Today's
+        # costume window keeps the body and hair.
         self.assertEqual(counts(today), [14, 2, 8])
-        self.assertEqual(counts(foundation), [14, 5, 21])
+        self.assertEqual(counts(foundation), [14, 9, 17])
         self.assertRaises(ValueError, self.m.wear_group, "bag", today)
 
     def test_a_wear_slot_is_its_index_name_cell_group_and_span(self):
@@ -251,6 +253,37 @@ class WearTables(LimitsTest):
                               encoding="latin-1").read()
         self.assertEqual(sorted(109 + int(n) for n in re.findall(r'"index":COSTUME_START_INDEX\+(\d+)', costume_script)),
                          costume, "the legacy costume slots")
+
+    def test_the_foundations_costume_cells_are_the_legacy_windows(self):
+        """Wave 6 (NOVA-20, 21, 23): the foundation's costume group is the
+        legacy uiscript's cells (uiscript/costumewindow.py CostumeSlot:
+        COSTUME_START_INDEX+0 and +1, WEAPON_SLOT_INDEX, SASH_SLOT_INDEX,
+        AURA_SLOT_INDEX, and the sash costume's COSTUME_START_INDEX+8, read
+        from the uiscript) and every one of them is a cell legacy's
+        RefreshCostumeSlot sets (uiinventory.py: COSTUME_SLOT_COUNT cells
+        from COSTUME_SLOT_START, then CostumeAuraSlot(), COSTUME_SLOT_START +
+        20), at the foundation's count and at the cut client's (9)."""
+        foundation = self.m.foundation()
+        start = foundation.COSTUME_SLOT_START
+        script = open(os.path.join(REPO, "assets", "uiscript", "uiscript", "costumewindow.py"), encoding="latin-1").read()
+        offsets = dict((name, int(n)) for name, n in re.findall(r"^(\w+_SLOT_INDEX) = COSTUME_START_INDEX \+ (\d+)$",
+                                                                 script, re.M))
+        legacy = [start + int(n) for n in re.findall(r'"index"\s*:\s*COSTUME_START_INDEX\s*\+\s*(\d+)', script)]
+        legacy += [start + offsets[name] for name in re.findall(r'"index"\s*:\s*(\w+_SLOT_INDEX)\b', script)]
+        # The buffi's cells (NOVA-38), refreshed apart (uiinventory.py CostumeBuffiSlots).
+        buffi = [start + 12 + int(n) for n in re.findall(r'"index"\s*:\s*BUFFI_START_INDEX\s*\+\s*(\d+)', script)]
+        self.assertEqual(buffi, [start + 12, start + 13, start + 14])
+        costume = self.m.wear_group("costume", foundation)
+        self.assertEqual(sorted(slot.cell for slot in costume), sorted(legacy + buffi), "the legacy costume slots")
+        self.assertEqual([(slot.name, slot.index) for slot in costume],
+                         [("costume_body", 19), ("costume_hair", 20), ("costume_sash", 21), ("costume_weapon", 22),
+                          ("costume_sash2", 27), ("buffi_costume_body", 31), ("buffi_costume_hair", 32),
+                          ("buffi_costume_weapon", 33), ("costume_aura", 39)])
+        for count in (foundation.COSTUME_SLOT_COUNT, 9):
+            refreshed = set(range(start, start + count)) | {start + 20}
+            self.assertTrue(set(legacy) <= refreshed, "COSTUME_SLOT_COUNT %d" % count)
+        weapon = [slot for slot in costume if slot.name == "costume_weapon"][0]
+        self.assertEqual((weapon.w, weapon.h), (1, 3), "the uiscript's 32 x 96 cell")
 
     def test_the_old_table_follows_the_constants_order_when_every_name_resolves(self):
         modules = foundation_modules(self.m)

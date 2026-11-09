@@ -21,7 +21,8 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "costume_body"
+				"name": "costume_body",
+				"marks": []
 			},
 			{
 				"index": 1,
@@ -42,17 +43,18 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "costume_hair"
+				"name": "costume_hair",
+				"marks": []
 			},
 			{
 				"index": 2,
-				"kind": "item",
-				"type": 1,
-				"ref": 256,
-				"icon": "/icon/item/41002.tga",
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
 				"count": "",
 				"w": 1,
-				"h": 2,
+				"h": 1,
 				"cd_start": 0.0,
 				"cd_end": 0.0,
 				"active": false,
@@ -63,7 +65,10 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "buffi_costume_body"
+				"name": "costume_sash",
+				"marks": [
+					"pentagon"
+				]
 			},
 			{
 				"index": 3,
@@ -84,10 +89,81 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "buffi_costume_hair"
+				"name": "costume_weapon",
+				"marks": [
+					"sword"
+				]
 			},
 			{
 				"index": 4,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false,
+				"name": "costume_sash2",
+				"marks": [
+					"chevron-down"
+				]
+			},
+			{
+				"index": 5,
+				"kind": "item",
+				"type": 1,
+				"ref": 256,
+				"icon": "/icon/item/41002.tga",
+				"count": "",
+				"w": 1,
+				"h": 2,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false,
+				"name": "buffi_costume_body",
+				"marks": []
+			},
+			{
+				"index": 6,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false,
+				"name": "buffi_costume_hair",
+				"marks": []
+			},
+			{
+				"index": 7,
 				"kind": "item",
 				"type": 1,
 				"ref": 258,
@@ -105,7 +181,32 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "buffi_costume_weapon"
+				"name": "buffi_costume_weapon",
+				"marks": []
+			},
+			{
+				"index": 8,
+				"kind": "",
+				"type": 0,
+				"ref": 0,
+				"icon": "",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false,
+				"name": "costume_aura",
+				"marks": [
+					"ring"
+				]
 			}
 		],
 		"has_companion": true,
@@ -113,6 +214,13 @@
 		"wear_on": [
 			1
 		],
-		"figure": "/nui/figures/costume-male.png"
+		"figure": "/nui/figures/costume-male.png",
+		"show_body": true,
+		"show_hair": true,
+		"show_weapon": true,
+		"show_sash": true,
+		"wing_down": false,
+		"wing_open": false,
+		"wing_rows": []
 	}
 }

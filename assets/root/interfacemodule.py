@@ -378,10 +378,10 @@ class Interface(object):
 	## The sash windows (NOVA-20; OLD interfaceModule.py:656-665), made
 	## plainly, as the other wave windows: the UI session wraps them.
 	def __MakeSashWindow(self):
-		self.wndSashCombine = uiSash.CombineWindow()
+		self.wndSashCombine = nui_windows.make("sash", uiSash.CombineWindow, "nui_sash.CombineWindow")
 		self.wndSashCombine.Hide()
 
-		self.wndSashAbsorption = uiSash.AbsorbWindow()
+		self.wndSashAbsorption = nui_windows.make("sash", uiSash.AbsorbWindow, "nui_sash.AbsorbWindow")
 		self.wndSashAbsorption.LoadWindow()
 		self.wndSashAbsorption.Hide()
 

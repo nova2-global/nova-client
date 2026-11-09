@@ -39,14 +39,16 @@ class WearSlot(tuple):
 # The wear tables in wear order: (name, group, w, h). NEW is today's
 # (GameLib/ItemData.h EWearPositions, 24), OLD the foundation's (OLD's
 # common/length.h, 40 with the aura slot), each grouped as the legacy windows
-# show them since the foundation cut (NOVA-97: uiscript/inventorywindow.py
-# holds the rings and the belt in the equipment window, costumewindow.py the
-# costume body and hair alone). The slots of the features the cut did not
-# port (OLD's costume sash, costume weapon, mount, effects, pet, wing,
-# companion, facial and aura cells) are hidden, as legacy's windows hide
-# them; P14 grouped OLD's as OLD's own windows showed them. The buffi's
-# costume body, hair and weapon costume (wear 31-33, NOVA-38) are in the
-# costume group, as legacy's costume window shows them in its buffi panel;
+# show them (P14 spec 3.3): since the foundation cut (NOVA-97)
+# uiscript/inventorywindow.py holds the rings and the belt in the equipment
+# window, and since Wave 6 costumewindow.py holds the costume body and hair,
+# the costume sash (wear 21, NOVA-20), the weapon costume (wear 22, NOVA-21),
+# the sash costume (wear 27, OLD's COSTUME_SASH2 wings) and the aura costume
+# (wear 39, NOVA-23). The slots of the features the cut did not port (OLD's
+# mount, effects, pet, companion and facial cells) are hidden, as legacy's
+# windows hide them; P14 grouped OLD's as OLD's own windows showed them. The
+# buffi's costume body, hair and weapon costume (wear 31-33, NOVA-38) are in
+# the costume group, as legacy's costume window shows them in its buffi panel;
 # its wings and facial (34, 35) take unported costumes and stay hidden.
 _ABILITIES = tuple(("ability%d" % n, "hidden", 1, 1) for n in range(1, 9))
 NEW_WEAR = (
@@ -65,15 +67,15 @@ OLD_WEAR = (
 	("arrow", "equipment", 1, 1), ("shield", "equipment", 1, 1),
 ) + _ABILITIES + (
 	("costume_body", "costume", 1, 2), ("costume_hair", "costume", 1, 1),
-	("costume_sash", "hidden", 1, 1), ("costume_weapon", "hidden", 1, 3),
+	("costume_sash", "costume", 1, 1), ("costume_weapon", "costume", 1, 3),
 	("costume_mount", "hidden", 1, 1), ("effect_weapon", "hidden", 1, 1),
 	("effect_armor", "hidden", 1, 1), ("costume_pet", "hidden", 1, 1),
-	("costume_sash2", "hidden", 1, 1), ("ring1", "equipment", 1, 1), ("ring2", "equipment", 1, 1),
+	("costume_sash2", "costume", 1, 1), ("ring1", "equipment", 1, 1), ("ring2", "equipment", 1, 1),
 	("belt", "equipment", 1, 1), ("buffi_costume_body", "costume", 1, 2),
 	("buffi_costume_hair", "costume", 1, 1), ("buffi_costume_weapon", "costume", 1, 3),
 	("buffi_costume_sash2", "hidden", 1, 1), ("buffi_costume_facial", "hidden", 1, 1),
 	("costume_facial", "hidden", 1, 1), ("effect_weapon_1", "hidden", 1, 1),
-	("effect_armor_1", "hidden", 1, 1), ("costume_aura", "hidden", 1, 1),
+	("effect_armor_1", "hidden", 1, 1), ("costume_aura", "costume", 1, 1),
 )
 WEAR_GROUPS = ("equipment", "costume", "hidden")
 WEAR_NAMES = tuple(sorted(set(name for name, _, _, _ in NEW_WEAR + OLD_WEAR)))

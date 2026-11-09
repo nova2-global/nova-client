@@ -12,7 +12,8 @@
 	     its buttons take no focus, so they act on a left mousedown; Escape
 	     reaches the window in its legacy place (nui_hud.EscapeProxy). The PvP
 	     choices carry legacy's hints. The pickup filter's four toggles
-	     (NOVA-50) flip what Z and ` pick up. -->
+	     (NOVA-50) flip what Z and ` pick up; the last row shows or hides
+	     every sash (SHOW_ACCE, NOVA-20). -->
 	<title>game-options</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="game-options.rcss"/>
@@ -108,8 +109,18 @@
 				<button id="go-shops-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--shops-1" data-class-is-selected="hide_shops" data-event-mousedown="choose('hide_shops', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_OFF</span></button>
 			</div>
 		</div>
+		<!-- Wave 6 (NOVA-20): the sashes drawn or not (SHOW_ACCE), the
+		     client's flag; a press calls systemSetting.SetShowAcceFlag
+		     (legacy's row under the hide-shops row). -->
+		<div class="go-row go-row--sash">
+			<span class="go-label go-label--sash">@ui.OPTION_ACCE</span>
+			<div class="go-choices">
+				<button id="go-sash-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--sash-1" data-class-is-selected="show_sash" data-event-mousedown="choose('show_sash', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_ON</span></button>
+				<button id="go-sash-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--sash-0" data-class-is-selected="!show_sash" data-event-mousedown="choose('show_sash', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_OFF</span></button>
+			</div>
+		</div>
 		<!-- NOVA-38: the buffi shown or hidden, the server's state; a press
-		     sends /hide_buffi 0|1 (legacy's row under the hide-shops row). -->
+		     sends /hide_buffi 0|1 (legacy's row under the sash row). -->
 		<div class="go-row go-row--buffi">
 			<span class="go-label go-label--buffi">@ui.OPTION_SHOW_COMPANIONS_BUFFI</span>
 			<div class="go-choices">

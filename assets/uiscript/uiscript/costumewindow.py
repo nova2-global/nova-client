@@ -7,11 +7,14 @@ COSTUME_START_INDEX = item.COSTUME_SLOT_START
 ## the costume sash (wear 21, item.COSTUME_SLOT_SASH; NOVA-20; OLD showed it in
 ## the inventory's equipment panel), the weapon costume (wear 22,
 ## item.COSTUME_SLOT_WEAPON; NOVA-21) and the aura costume (wear 39,
-## item.COSTUME_SLOT_AURA; NOVA-23). Wear 23-27 (mount, effects, pet, wings)
-## hold features that are not ported: their slots stay hidden.
+## item.COSTUME_SLOT_AURA; NOVA-23) and OLD's "SASH WING" cell, the sash
+## costume (wear 27, COSTUME_START_INDEX + 8, OLD's c_Costume_Slot_Sash and
+## item.COSTUME_SLOT_SASH2; the wings), below the aura. Wear 23-26 (mount,
+## effects, pet) hold features that are not ported: their slots stay hidden.
 SASH_SLOT_INDEX = COSTUME_START_INDEX + 2
 WEAPON_SLOT_INDEX = COSTUME_START_INDEX + 3
 AURA_SLOT_INDEX = COSTUME_START_INDEX + 20
+WING_SLOT_INDEX = COSTUME_START_INDEX + 8
 ## The buffi's costume cells (NOVA-38, OLD's __FAKE_BUFF__): wear 31-35,
 ## item.COSTUME_BUFFI_SLOT_START (OLD GameType.h:174), counted from the costume
 ## body as the others. OLD's panel (uiscript/costumewindow.py:54, 74-78) stood
@@ -106,6 +109,7 @@ window = {
 				{ "name" : "Weapon_Base3", "type" : "image", "x" : 134, "y" : 113, "image" : BUTTON_PATH + "Slot_Base.sub" },
 				{ "name" : "Sash_Base", "type" : "image", "x" : 172, "y" : 49, "image" : BUTTON_PATH + "Slot_Base.sub" },
 				{ "name" : "Aura_Base", "type" : "image", "x" : 172, "y" : 89, "image" : BUTTON_PATH + "Slot_Base.sub" },
+				{ "name" : "Wing_Base", "type" : "image", "x" : 172, "y" : 129, "image" : BUTTON_PATH + "Slot_Base.sub" },
 				## The buffi's panel (OLD's "Buffi" title over its cells).
 				{ "name" : "BuffiTitle", "type" : "text", "x" : BUFFI_PANEL_X + BUFFI_PANEL_WIDTH // 2 - 8, "y" : 33, "text" : uiScriptLocale.COSTUME_WINDOW_BUFFICOSTUME, "text_horizontal_align" : "center" },
 				{ "name" : "BuffiWeapon_Base", "type" : "image", "x" : BUFFI_PANEL_X + 3, "y" : 81, "image" : BUTTON_PATH + "Slot_Base.sub" },
@@ -130,6 +134,7 @@ window = {
 								{"index":WEAPON_SLOT_INDEX, "x":118, "y":8, "width":32, "height":96},
 								{"index":SASH_SLOT_INDEX, "x":156, "y":8, "width":32, "height":32},
 								{"index":AURA_SLOT_INDEX, "x":156, "y":48, "width":32, "height":32},
+								{"index":WING_SLOT_INDEX, "x":156, "y":88, "width":32, "height":32},
 								## The buffi's body, hair and weapon costume (OLD's +0, +1, +2).
 								{"index":BUFFI_START_INDEX+0, "x":BUFFI_PANEL_X - 16 + 44, "y":68, "width":32, "height":64},
 								{"index":BUFFI_START_INDEX+1, "x":BUFFI_PANEL_X - 16 + 42, "y":24, "width":32, "height":32},

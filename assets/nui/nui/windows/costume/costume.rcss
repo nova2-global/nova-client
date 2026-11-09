@@ -1,15 +1,19 @@
 /* The costume window's modern look (P14 spec 6.2; the stage 1 design,
-   WCostume board): a movable window beside the inventory. Today's cells,
-   the costume hair and body (legacy's costume window holds those two since
-   the cut, NOVA-97), stand on a stage around a figure (an image the
-   controller passes, male or female by the race) on a small rune circle
-   that turns the other way to the inventory's, over a diamond mesh and a
-   soft accent halo, with the two empty frames legacy's costume art paints
-   on its left. The foundation's cells keep the 44dp pitch by the wear
-   slot's name (nui_limits' costume group; the other names keep places,
-   should a table show them again, and so does a companion's block, in
-   rows 4 to 6 under a divider).
-   Classic (legacy's 140 x 180 board with costume_bg.jpg):
+   WCostume board; Wave 6): a movable window beside the inventory. Its
+   cells stand on a stage around a figure (an image the controller passes,
+   male or female by the race) on a small rune circle that turns the other
+   way to the inventory's, over a diamond mesh and a soft accent halo: the
+   costume hair and body on the right, and in the foundation's table
+   (inv--table-old) the weapon costume, the costume sash and the sash
+   costume down the left and the aura at the figure's feet, each empty one
+   showing its place's mark (Wave 6, NOVA-20, 21, 23). Today's table keeps
+   the three empty frames legacy's costume art paints on the left instead.
+   The other names keep places on the 44dp pitch, should a table show them
+   again, and so does a companion's block, in rows 4 to 6 under a divider.
+   Under the stage, legacy's five switches in a row that wraps (three, then
+   two), the stage's width, and under them the aura panel while it is open:
+   a sunken panel with a toggle per aura flag (NOVA-22, 23).
+   Classic (legacy's 216 x 236 board with costume_bg.jpg):
    skins/classic/windows/costume.rcss. */
 
 body.cos
@@ -79,6 +83,13 @@ body.cos.inv--table-old .cos-grid
 	           repeating-linear-gradient(-45deg, var(--border) 0dp, var(--border) 0.7dp, transparent 0.7dp, transparent 11.3dp);
 }
 
+/* The foundation's table stands a third cell in the left column (the sash
+   costume, under the sash): the stage is 8dp taller. */
+body.cos.inv--table-old .cos-grid
+{
+	height: 218dp;
+}
+
 /* --- The stage's art (both tables) ------------------------------------------- */
 
 .cos-stage
@@ -95,6 +106,10 @@ body.cos.inv--table-old .cos-stage
 	width: 174dp;
 	height: 208dp;
 	pointer-events: none;
+}
+body.cos.inv--table-old .cos-stage
+{
+	height: 216dp;
 }
 .cos-stage__halo, .cos-stage__rune, .cos-stage__figure, .cos-stage__frame
 {
@@ -237,6 +252,12 @@ body.cos.inv--table-old .cos-stage
 .cos-stage__frame--a { top: 21dp; height: 92dp; }
 .cos-stage__frame--b { top: 118dp; height: 44dp; }
 .cos-stage__frame--c { left: 64dp; top: 150dp; height: 44dp; }
+/* The foundation's table holds those places' cells (Wave 6): their marks
+   replace the frames. */
+body.cos.inv--table-old .cos-stage__frame
+{
+	display: none;
+}
 /* The marks of the three places no item takes (the costume weapon,
    accessory and ring): faint, 22dp, decoration only. */
 .cos-stage__frame
@@ -300,6 +321,18 @@ body.cos.inv--table-old .cos-wear--costume_hair { left: 115dp; top: 21dp; width:
 body.cos.inv--table-new .cos-wear--costume_body,
 body.cos.inv--table-old .cos-wear--costume_body { left: 115dp; top: 85dp; width: 44dp; height: 86dp; }
 body.cos.inv--table-new .cos-wear--ring1 { left: 64dp; top: 150dp; width: 44dp; height: 44dp; }
+/* Wave 6 (the foundation's table): the weapon costume on frame a's place,
+   the costume sash on frame b's (1dp higher) and the sash costume under
+   it, 4dp apart, so the cells' shared 2dp outset leaves no dead zone
+   between them; the aura on frame c's place, at the figure's feet; the
+   hair and the body 4dp further right, so the stage's margins match and
+   the aura stands more than 8dp from every neighbor (P14b). */
+body.cos.inv--table-old .cos-wear--costume_weapon { left: 11dp; top: 21dp; width: 44dp; height: 92dp; }
+body.cos.inv--table-old .cos-wear--costume_sash { left: 11dp; top: 117dp; width: 44dp; height: 44dp; }
+body.cos.inv--table-old .cos-wear--costume_sash2 { left: 11dp; top: 165dp; width: 44dp; height: 44dp; }
+body.cos.inv--table-old .cos-wear--costume_aura { left: 64dp; top: 150dp; width: 44dp; height: 44dp; }
+body.cos.inv--table-old .cos-wear--costume_hair { left: 119dp; }
+body.cos.inv--table-old .cos-wear--costume_body { left: 119dp; }
 .cos-wear--costume_weapon, .cos-wear--buffi_costume_weapon { height: 128dp; }
 .cos-wear--costume_hair { left: 0; top: 0; }
 .cos-wear--costume_body { left: 44dp; top: 0; }
@@ -340,6 +373,85 @@ body.cos.inv--table-new .cos-wear--ring1 { left: 64dp; top: 150dp; width: 44dp; 
 {
 	height: auto;
 }
+/* An empty Wave 6 place's mark (w.marks), as the stage's frames drew it:
+   faint, 22dp, decoration only. */
+.cos-wear .cos-wear__mark
+{
+	--glyph-ink: var(--text-muted);
+	opacity: 0.5;
+	transform: scale(1.375);
+}
+/* The weapon costume's sword lies across its cell, the guard to the upper
+   right, its blade a thin line, as frame a's. */
+.cos-wear--costume_weapon .cos-wear__mark
+{
+	transform: rotate(-135deg) scale(1.375);
+}
+.cos-wear--costume_weapon .cos-wear__mark .nui-glyph__a
+{
+	left: 7dp;
+	width: 2dp;
+}
+.cos-wear--costume_weapon .cos-wear__mark .nui-glyph__b
+{
+	left: 4dp;
+	top: 11dp;
+	width: 8dp;
+	height: 1.5dp;
+}
+.cos-wear--costume_weapon .cos-wear__mark .nui-glyph__c
+{
+	display: none;
+}
+
+/* --- The switches and the aura panel (Wave 6) ---------------------------------- */
+
+/* Legacy's five switches under the stage, its width: three in the first
+   row, two in the second, which share its width. */
+.cos-switches
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 176dp;
+	gap: 4dp;
+	margin-top: var(--space-2);
+}
+/* The small text keeps the widest label (Costume) clear of the edges. */
+.cos-switch
+{
+	flex: 1 1 56dp;
+	min-width: 0;
+	padding: 0 2dp;
+	font-size: var(--font-sm);
+	text-align: center;
+	white-space: nowrap;
+}
+/* The aura panel: a sunken panel under the switches, a toggle per flag. */
+.cos-wing
+{
+	display: flex;
+	flex-direction: column;
+	gap: 6dp;
+	box-sizing: border-box;
+	width: 176dp;
+	margin-top: var(--space-2);
+	padding: 8dp 10dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+}
+.cos-wing__row
+{
+	display: flex;
+	color: var(--text);
+	font-size: var(--font-md);
+}
+.cos .nui-toggle__input
+{
+	tab-index: none;
+}
 
 /* --- The buffi's block (NOVA-38; the live table) -------------------------------
 
@@ -353,12 +465,12 @@ body.cos.inv--table-new .cos-wear--ring1 { left: 64dp; top: 150dp; width: 44dp; 
 }
 body.cos.cos--companion.inv--table-old .cos-grid
 {
-	height: 396dp;
+	height: 404dp;
 }
 body.cos.cos--companion.inv--table-old .cos-divider
 {
 	left: 12dp;
-	top: 216dp;
+	top: 224dp;
 	width: 150dp;
 }
 body.cos.cos--companion.inv--table-old .cos-companion-title
@@ -366,13 +478,13 @@ body.cos.cos--companion.inv--table-old .cos-companion-title
 	display: block;
 	position: absolute;
 	left: 0;
-	top: 222dp;
+	top: 230dp;
 	width: 174dp;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
 	text-align: center;
 	pointer-events: none;
 }
-body.cos.inv--table-old .cos-wear--buffi_costume_weapon { left: 38dp; top: 244dp; width: 44dp; height: 128dp; }
-body.cos.inv--table-old .cos-wear--buffi_costume_hair { left: 92dp; top: 244dp; width: 44dp; height: 44dp; }
-body.cos.inv--table-old .cos-wear--buffi_costume_body { left: 92dp; top: 298dp; width: 44dp; height: 86dp; }
+body.cos.inv--table-old .cos-wear--buffi_costume_weapon { left: 38dp; top: 252dp; width: 44dp; height: 128dp; }
+body.cos.inv--table-old .cos-wear--buffi_costume_hair { left: 92dp; top: 252dp; width: 44dp; height: 44dp; }
+body.cos.inv--table-old .cos-wear--buffi_costume_body { left: 92dp; top: 306dp; width: 44dp; height: 86dp; }

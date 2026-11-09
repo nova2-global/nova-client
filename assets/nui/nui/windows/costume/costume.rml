@@ -1,24 +1,34 @@
 <rml>
 <head>
 	<!-- The costume window (uiinventory.py CostumeWindow, uiscript
-	     costumewindow.py; P14 spec 6.2). The NovaUI inventory makes
+	     costumewindow.py; P14 spec 6.2, Wave 6). The NovaUI inventory makes
 	     nui_costume.CostumeWindow (controller assets/root/nui_costume.py), a
 	     subclass of the legacy class whose slot window is a proxy over the
 	     costume group of the wear table (nui_limits), bound to the
-	     inventory's legacy handlers: the costume body and hair, as legacy's
-	     window since the cut (NOVA-97), and in the live table the buffi's
-	     costume body, hair and weapon costume (NOVA-38, legacy's buffi
-	     panel). Its cells are placed by name
-	     (cos-wear--<name>) in each skin's sheet; the companion block and its
-	     divider and title show only while the table has one
-	     (has_companion). The modern skin stands a figure between the slots on a
-	     small rune circle: an image whose path the controller passes, the
-	     male or the female one by the character's race. It exists only
-	     while it shows, opens beside the inventory and moves alone after,
-	     and draws below the legacy UI layer. A left or right press anywhere
-	     on it raises the window (board_press), as legacy's window manager
-	     raised the window under a press. The modern title bar leads with a
-	     person glyph on the accent's tile, as the other item windows'. -->
+	     inventory's legacy handlers: the costume body and hair, and in the
+	     foundation's table the costume sash, the weapon costume, the sash
+	     costume and the aura costume (NOVA-20, 21, 23). Its cells are placed
+	     by name (cos-wear--<name>) in each skin's sheet; an empty sash,
+	     weapon, sash costume or aura cell shows its place's mark (w.marks).
+	     The companion block, its divider and its title show only while the
+	     table has one (has_companion: the buffi's costume body, hair and
+	     weapon costume, NOVA-38, legacy's buffi panel; the cut hides it). The modern skin stands a
+	     figure between the slots on a small rune circle: an image whose path
+	     the controller passes, the male or the female one by the
+	     character's race. Under the slots, legacy's five switches (NOVA-22),
+	     toggle buttons down while the part shows (show_body, show_hair,
+	     show_weapon, show_sash; the aura's wing_down opens its panel): a
+	     left press is the switch proxy's click (cos_switch), so legacy's
+	     handler asks the server. The aura panel (wing_open) holds a row per
+	     aura flag (wing_rows); its check box only shows the state (the
+	     board takes no focus, so a label never forwards a click), and a
+	     left press on a row is that box's click (cos_wing_row). It exists
+	     only while it shows, opens beside the inventory and moves alone
+	     after, and draws below the legacy UI layer. A left or right press
+	     anywhere on it raises the window (board_press), as legacy's window
+	     manager raised the window under a press. The modern title bar leads
+	     with a person glyph on the accent's tile, as the other item
+	     windows'. -->
 	<title>costume</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="costume.rcss"/>
@@ -67,8 +77,37 @@
 				     data-event-mouseout="cos_out(it_index)" data-event-nuidrop="cos_drop(it_index)">
 					<img class="nui-slot__icon" data-if="w.icon != ''" data-attr-src="w.icon"/>
 					<nui-number class="nui-slot__number" data-if="w.count != ''" data-attr-value="w.count"/>
+					<!-- An empty sash, weapon, sash costume or aura place's mark
+					     (w.marks: none, or its glyph's name; classic hides glyphs). -->
+					<span data-for="m : w.marks" data-attr-class="'nui-glyph cos-wear__mark nui-glyph--' + m"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
 				</div>
 			</div>
+		</div>
+		<!-- The switches (uiscript Activate*_ON_OFF): down while the part shows. -->
+		<div class="cos-switches">
+			<button id="cos-show-body" class="nui-button nui-button--medium nui-anim cos-switch cos-switch--body"
+			        data-class-is-selected="show_body" data-event-mousedown="cos_switch('body', ev.button)">@ui.COSTUME_SHOW_BODY</button>
+			<button id="cos-show-hair" class="nui-button nui-button--medium nui-anim cos-switch cos-switch--hair"
+			        data-class-is-selected="show_hair" data-event-mousedown="cos_switch('hair', ev.button)">@ui.COSTUME_SHOW_HAIR</button>
+			<button id="cos-show-weapon" class="nui-button nui-button--medium nui-anim cos-switch cos-switch--weapon"
+			        data-class-is-selected="show_weapon" data-event-mousedown="cos_switch('weapon', ev.button)">@ui.COSTUME_SHOW_WEAPON</button>
+			<button id="cos-show-sash" class="nui-button nui-button--medium nui-anim cos-switch cos-switch--sash"
+			        data-class-is-selected="show_sash" data-event-mousedown="cos_switch('sash', ev.button)">@ui.COSTUME_SHOW_SASH</button>
+			<button id="cos-show-aura" class="nui-button nui-button--medium nui-anim cos-switch cos-switch--aura"
+			        data-class-is-selected="wing_down" data-event-mousedown="cos_switch('wing', ev.button)">@ui.COSTUME_SHOW_AURA</button>
+		</div>
+		<!-- The aura panel (legacy's __CreateAuraWingPanel board): a row per
+		     aura flag; the check box shows the state, a press on the row flips it. -->
+		<div id="cos-wing" class="cos-wing" data-if="wing_open">
+			<label class="nui-toggle cos-wing__row" data-for="r : wing_rows" data-attr-id="'cos-wing-' + r.key"
+			       data-event-mousedown="cos_wing_row(it_index, ev.button)">
+				<input type="checkbox" class="nui-toggle__input" data-attrif-checked="r.checked"/>
+				<span class="nui-toggle__track nui-anim"><span class="nui-toggle__knob nui-anim"></span></span>
+				<span class="nui-toggle__label" data-if="r.key == 'wing'">@game.AURA_WING_SHOW_WING</span>
+				<span class="nui-toggle__label" data-if="r.key == 'aura'">@game.AURA_WING_SHOW_AURA</span>
+				<span class="nui-toggle__label" data-if="r.key == 'effect'">@game.AURA_WING_SHOW_EFFECT</span>
+			</label>
 		</div>
 	</div>
 </body>

@@ -1,0 +1,217 @@
+/* The sash windows' modern look (Wave 6, NOVA-20): the item windows' frame
+   and title bar, the gem emblem on the accent's tile; the two material
+   cells and the result cell in one row, a plus between the materials and a
+   chevron before the result, each cell with legacy's label under it (the
+   absorb window's middle cell, the weapon or armor, three cells tall); the
+   combine window's price in a sunken bar and its auto combine check box
+   under the row; OK and Cancel. The controller centers it at its first show
+   and keeps the place the player drags it to; the sheet's place frames it
+   in its snapshots. Classic (legacy's 215 x 280 and 205 x 270 boards):
+   skins/classic/windows/sash.rcss. */
+
+body.sash
+{
+	left: 16dp;
+	top: 16dp;
+	width: 324dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.sash button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The title's emblem: an accent chip with the gem glyph. */
+.sash-title-icon
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: 6dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+}
+.sash-title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	transform: scale(0.8);
+}
+.sash__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: var(--space-3);
+}
+/* The row: each place a cell over its label, the marks between them on the
+   cells' middle line (a label's height above the row's). */
+.sash__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+.sash__place
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex: 0 0 auto;
+	width: 88dp;
+}
+.sash__cell
+{
+	width: 44dp;
+	height: 44dp;
+	padding: 5dp;
+}
+/* The absorb window's weapon or armor: three cells tall, the item's icon
+   at its own height in the middle. */
+.sash__cell.sash__cell--tall
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 108dp;
+}
+.sash__cell--tall .nui-slot__icon
+{
+	height: auto;
+}
+/* The result: its edge in the accent's glow at rest. */
+.sash__cell.sash__cell--result
+{
+	border-color: var(--accent-glow);
+}
+.sash__caption
+{
+	display: block;
+	height: 16dp;
+	margin-top: 5dp;
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	line-height: 16dp;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.sash__mark
+{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 18dp;
+	height: 18dp;
+	margin-bottom: 21dp;
+	pointer-events: none;
+}
+.sash__mark--plus .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+	transform: scale(0.75);
+}
+.sash__mark--to .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+/* The price: a sunken bar, centered, in the warning color (the refine
+   dialog's cost). */
+.sash__price
+{
+	display: block;
+	box-sizing: border-box;
+	margin-top: var(--space-3);
+	padding: 7dp 10dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	color: var(--warning);
+	font-size: var(--font-md);
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+/* The auto combine check box: an 18dp well holding an accent check mark
+   while checked, its label after it; the whole row takes the press. */
+.sash__auto-row
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-top: 10dp;
+}
+.sash__auto
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 2dp 4dp;
+	background-color: transparent;
+	border-width: 0;
+}
+.sash__check
+{
+	display: block;
+	position: relative;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 18dp;
+	height: 18dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+	background-color: var(--surface-sunken);
+	pointer-events: none;
+}
+.sash__check.nui-anim
+{
+	transition: border-color 0.1s cubic-out;
+}
+.sash__auto:hover .sash__check
+{
+	border-color: var(--accent);
+}
+.sash__check-mark
+{
+	display: none;
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	width: 8dp;
+	height: 4dp;
+	border-width: 0 0 2dp 2dp;
+	border-color: var(--accent);
+	transform: rotate(-45deg);
+	pointer-events: none;
+}
+.sash__auto.is-checked .sash__check-mark
+{
+	display: block;
+}
+.sash__auto-label
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+	pointer-events: none;
+}
+.sash__footer
+{
+	justify-content: center;
+}
+.sash__accept, .sash__cancel
+{
+	min-width: 112dp;
+}

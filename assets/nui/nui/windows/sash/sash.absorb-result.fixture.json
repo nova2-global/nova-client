@@ -1,0 +1,71 @@
+{
+	"sash": {
+		"mode": "absorb",
+		"cells": [
+			{
+				"index": 0,
+				"kind": "item",
+				"type": 1,
+				"ref": 0,
+				"icon": "/icon/item/85001.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 1,
+				"kind": "item",
+				"type": 1,
+				"ref": 1,
+				"icon": "/icon/item/03010.tga",
+				"count": "",
+				"w": 1,
+				"h": 3,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			},
+			{
+				"index": 2,
+				"kind": "item",
+				"type": 1,
+				"ref": 2,
+				"icon": "/icon/item/85001.tga",
+				"count": "",
+				"w": 1,
+				"h": 1,
+				"cd_start": 0.0,
+				"cd_end": 0.0,
+				"active": false,
+				"cover": false,
+				"disabled": false,
+				"locked": false,
+				"covered": false,
+				"target": "",
+				"picked": false,
+				"unavailable": false
+			}
+		],
+		"price": "",
+		"auto_combine": false,
+		"auto_shown": false,
+		"attach_right": true
+	}
+}

@@ -7,7 +7,10 @@
    inventory's (the plate the place's fill, the line the cell's edge), and
    the two empty frames legacy's art paints the same plates with the dim
    line (one element: the plate's fill rounded inside the cut, the cut's
-   line over it). The figure keeps its pixels. */
+   line over it). The figure keeps its pixels. Wave 6: the empty places'
+   marks magenta, as the frames' were; the aura panel a square sunken
+   plate on the well's scan lines, its left edge the magenta line, as the
+   character window's skill board. */
 
 /* The title bar's icon tile square on the dim line, as the dragon soul
    window's. */
@@ -105,4 +108,18 @@ body.skin-cyberpunk.cos .cos-wear.is-blocked
 body.skin-cyberpunk.cos .cos-stage__mark
 {
 	--glyph-ink: var(--cyberpunk-glow-alt);
+}
+
+/* Wave 6: the marks of the empty places, magenta as the frames'. */
+body.skin-cyberpunk.cos .cos-wear__mark
+{
+	--glyph-ink: var(--cyberpunk-glow-alt);
+}
+/* The aura panel: a square plate under the switches. */
+body.skin-cyberpunk.cos .cos-wing
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-left-color: var(--cyberpunk-edge-alt);
+	border-radius: 0;
+	decorator: repeating-linear-gradient(180deg, transparent 0dp, transparent 1.9dp, var(--cyberpunk-cell) 2dp, var(--cyberpunk-cell) 2.9dp, transparent 3dp);
 }

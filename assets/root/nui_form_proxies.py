@@ -538,6 +538,56 @@ class CheckProxy(nui_proxies._Shown):
 			_call(self.event)
 
 
+class CheckBoxProxy(nui_proxies._Shown):
+	"""ui.CheckBox (Wave 6: the sash combine window's auto combine box, the
+	costume window's aura flag boxes): the text, the checked state and the
+	ON_CHECK and ON_UNCHECK events; click() is its OnMouseLeftButtonUp
+	(ui.py CheckBox): the state flips, then the event of the new state runs.
+	on_change(proxy) runs after each change of the state, the text or the
+	shown flag."""
+
+	def __init__(self, on_change=None):
+		self.on_change = on_change
+		self.checked = False
+		self.text = ""
+		self.events = {"ON_CHECK": None, "ON_UNCHECK": None}
+		self.shown = False
+
+	def _changed(self):
+		_call(self.on_change, self)
+
+	def Show(self):
+		self.shown = True
+		self._changed()
+
+	def Hide(self):
+		self.shown = False
+		self._changed()
+
+	def SetTextInfo(self, info):
+		self.text = "" if info is None else str(info)
+		self._changed()
+
+	def SetCheckStatus(self, flag):
+		self.checked = bool(flag)
+		self._changed()
+
+	def GetCheckStatus(self):
+		return self.checked
+
+	def SetEvent(self, func, kind):
+		if kind in self.events:
+			self.events[kind] = func
+
+	def SetWindowHorizontalAlignCenter(self):
+		"""Nothing: the document lays itself out."""
+
+	def click(self):
+		"""The board's box: legacy's OnMouseLeftButtonUp."""
+		self.SetCheckStatus(not self.checked)
+		_call(self.events["ON_CHECK" if self.checked else "ON_UNCHECK"])
+
+
 class EditableSlotProxy(nui_proxies._Shown):
 	"""uiguild.EditableTextSlot: its text and enabled state; pressed() is its
 	release (event(arg), while enabled)."""

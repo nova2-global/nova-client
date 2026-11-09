@@ -6,6 +6,9 @@
 		],
 		"accept_label": "@ui.YES",
 		"cancel_label": "@ui.NO",
-		"warn_line": -1
+		"warn_line": -1,
+		"check_on": false,
+		"check_text": "",
+		"checked": false
 	}
 }

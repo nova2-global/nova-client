@@ -12,6 +12,8 @@
 		{"path": "d:/ymir work/ui/game/windows/party_affect_*.sub", "kind": "party-bonus-icon",
 		 "why": "the nine party bonus icons of a member's board, as the affect icons are"},
 		{"path": "/icon/item/27001.tga", "kind": "test-page",
-		 "why": "the render test page's image cells draw one item icon"}
+		 "why": "the render test page's image cells draw one item icon"},
+		{"path": "d:/ymir work/ui/pattern/myshop/*/p_*_*.tga", "kind": "shop-sign-pattern",
+		 "why": "OLD's decorated shop sign frames, the shop_deco.txt style the player chose for its sign (components/sign-pattern.rcss, NOVA-170)"}
 	]
 }

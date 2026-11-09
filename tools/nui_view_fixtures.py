@@ -2,7 +2,7 @@
 """Writes or checks the stand-in images of the map and world goldens (P10
 spec 5.0.4): fixture data for nuitool snap, never loaded by the client.
 
-    python3 tools/nui_view_fixtures.py            # write the three files
+    python3 tools/nui_view_fixtures.py            # write the four files
     python3 tools/nui_view_fixtures.py --check    # exit 1 when a file differs from what this script makes
 
 - nui/windows/minimap/minimap.view.png: the minimap view's stand-in
@@ -16,6 +16,10 @@ spec 5.0.4): fixture data for nuitool snap, never loaded by the client.
   marks side by side (32 x 12), opaque, as the client's mark/<prefix>_<n>.tga
   holds them (src/UserInterface/MarkImage.h); the war board fixture shows
   mark 0 and mark 1.
+- nui/windows/shop-deco/shop-deco.model.view.png: the shop decoration's
+  model view (--view model-shop-deco=..., NOVA-137), a 190 x 210 stall (a
+  counter under a striped awning on two posts) over transparent black, every
+  texel opaque or empty, as the client's model preview leaves its target.
 
 Plain CPython (zlib and struct only). No image holds an opaque #FF00FF
 texel, which the client's color key would draw transparent (lint NUI010).
@@ -33,6 +37,7 @@ WINDOWS = os.path.join(ROOT, "assets", "nui", "nui", "windows")
 MINIMAP = os.path.join(WINDOWS, "minimap", "minimap.view.png")
 ATLAS = os.path.join(WINDOWS, "atlas", "atlas.view.png")
 MARKS = os.path.join(WINDOWS, "guild-war", "fixture", "marks.tga")
+SHOP_MODEL = os.path.join(WINDOWS, "shop-deco", "shop-deco.model.view.png")
 
 GREEN_DARK = (74, 108, 50)
 GREEN_LIGHT = (108, 142, 68)
@@ -111,6 +116,31 @@ def marks_pixels():
             else:
                 d = math.hypot(mx - 7.5, (y - 5.5) * 1.2)
                 row.append((240, 240, 236, 255) if 2.6 < d < 4.4 else (30, 44, 110, 255))
+        rows.append(row)
+    return width, height, rows
+
+
+def shop_model_pixels():
+    """A stall: two posts, an awning of red and cream stripes sloping out
+    over them, and a wooden counter with a darker top, centered low."""
+    width, height = 190, 210
+    wood, wood_top, post = (138, 92, 52), (96, 62, 34), (84, 58, 36)
+    red, cream = (186, 48, 44), (236, 224, 196)
+    rows = []
+    for y in range(height):
+        row = []
+        for x in range(width):
+            pixel = (0, 0, 0, 0)
+            if 52 <= x < 60 or 130 <= x < 138:
+                if 78 <= y < 176:
+                    pixel = post + (255,)
+            if 60 <= y < 92:
+                half = 52 + (y - 60) * 14 // 32
+                if 95 - half <= x < 95 + half:
+                    pixel = (red if ((x - (95 - half)) // 12) % 2 == 0 else cream) + (255,)
+            if 128 <= y < 176 and 44 <= x < 146:
+                pixel = (wood_top if y < 136 else wood) + (255,)
+            row.append(pixel)
         rows.append(row)
     return width, height, rows
 
@@ -203,6 +233,7 @@ FILES = (
     (MINIMAP, minimap_pixels, png_bytes, png_pixels),
     (ATLAS, atlas_pixels, png_bytes, png_pixels),
     (MARKS, marks_pixels, tga_bytes, tga_pixels),
+    (SHOP_MODEL, shop_model_pixels, png_bytes, png_pixels),
 )
 
 

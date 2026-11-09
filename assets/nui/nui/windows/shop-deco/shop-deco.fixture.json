@@ -40,6 +40,7 @@
 		"selected": 3,
 		"preview_name": "Treasure Hunter",
 		"preview_style": -1,
+		"model_view": false,
 		"next": true,
 		"cancel": true,
 		"prev": false,

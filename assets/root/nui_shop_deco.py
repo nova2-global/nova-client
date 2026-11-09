@@ -16,9 +16,11 @@ Escape keeping what was committed are legacy's code.
 The name dialog's decoration button opens it (Interface.OpenMyShopDecoWnd)
 while that dialog, a kit modal, is shown: the window covers the kit
 (nui_dialog_kit.cover, when the kit is loaded), so the modal steps aside until the window hides, as
-for a legacy dialog opened above NovaUI. There is no 3D view (legacy's D15,
-Q8): the preview names the model, or shows the style's sign. No Python runs
-per frame."""
+for a legacy dialog opened above NovaUI. On the model step the preview shows
+the model turning over its name (NOVA-137: the document's nui-view
+"model-shop-deco", the client's "shop_deco" model preview, which legacy's
+player.SelectShopModel and MyShopDecoShow drive; a client without it shows the
+stall mark instead), or the style's sign. No Python runs per frame."""
 
 import sys
 
@@ -175,6 +177,23 @@ class _PreviewProxy(nui_proxies._Shown):
 		self.owner._publish_preview(self)
 
 
+class _ModelViewProxy(nui_proxies._Shown):
+	"""The preview's render target (ui.RenderTarget): the document's view of the
+	"shop_deco" model preview, shown while legacy shows it."""
+
+	def __init__(self, owner):
+		self.owner = owner
+		self.shown = False
+
+	def Show(self):
+		self.shown = True
+		self.owner.nui_set(model_view=True)
+
+	def Hide(self):
+		self.shown = False
+		self.owner.nui_set(model_view=False)
+
+
 class MyShopDecorationWindow(nui_facade.Facade, uiMyShopDecoration.MyShopDecorationWindow):
 	"""uiMyShopDecoration.MyShopDecorationWindow on NovaUI (Interface.wndMyShopDeco)."""
 
@@ -203,6 +222,8 @@ class MyShopDecorationWindow(nui_facade.Facade, uiMyShopDecoration.MyShopDecorat
 			# The sign the preview shows on the style step: the sheets' style (0 to
 			# STYLE_CLASSES), -1 for none (the model step).
 			"preview_style": -1,
+			# The model step shows the client's model preview (NOVA-137).
+			"model_view": False,
 			"next": True,
 			"cancel": True,
 			"prev": False,
@@ -244,6 +265,11 @@ class MyShopDecorationWindow(nui_facade.Facade, uiMyShopDecoration.MyShopDecorat
 
 	def _MyShopDecorationWindow__MakePreview(self, style):
 		return _PreviewProxy(self, style)
+
+	def _MyShopDecorationWindow__MakeModelView(self):
+		if not uiMyShopDecoration.model_preview_available():
+			return None
+		return _ModelViewProxy(self)
 
 	# --- what NovaUI changes -----------------------------------------------------------
 

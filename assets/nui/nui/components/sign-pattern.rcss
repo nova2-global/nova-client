@@ -1,0 +1,85 @@
+/* OLD's decorated shop sign frame (legacy ui.ShopDecoTitle; OLD ui.py:6863-6947), the
+   shop sign styles 1 to 5 of shop_deco.txt (Inferno, Ice Age, Parchment, War Banner,
+   Wings), for the shop signs and the decoration window's style preview (NOVA-170).
+   The frame is OLD's pattern art in every skin: content, not chrome (nui/content-art.json),
+   since a style is what the player chose its sign to look like.
+
+   <div class="nui-sign-pattern nui-sign-pattern--N">...text...
+       <span class="nui-sign-pattern__part nui-sign-pattern__part--lt"/> (and --rt, --lb, --rb, --l, --r, --t, --b)
+   </div>
+
+   Legacy's geometry, 1dp to the legacy pixel (DEFAULT_VALUE 16, the corners 48 x 32,
+   the side edges 16 wide, the top and bottom edges 32 tall): the corners overhang the
+   board by 32 x 16, the side edges repeat from 16 to the height less 16, and the top and
+   bottom edges from 16 to the width less 16, centered on the board's edge. A board is
+   at least 32 x 32 (ShopDecoTitle.SetSize). */
+
+.nui-sign-pattern
+{
+	position: relative;
+	min-height: 32dp;
+}
+.nui-sign-pattern__part
+{
+	display: block;
+	position: absolute;
+	pointer-events: none;
+}
+.nui-sign-pattern__part--lt { left: -32dp; top: -16dp; width: 48dp; height: 32dp; }
+.nui-sign-pattern__part--rt { right: -32dp; top: -16dp; width: 48dp; height: 32dp; }
+.nui-sign-pattern__part--lb { left: -32dp; bottom: -16dp; width: 48dp; height: 32dp; }
+.nui-sign-pattern__part--rb { right: -32dp; bottom: -16dp; width: 48dp; height: 32dp; }
+.nui-sign-pattern__part--l { left: 0; top: 16dp; bottom: 16dp; width: 16dp; }
+.nui-sign-pattern__part--r { right: 0; top: 16dp; bottom: 16dp; width: 16dp; }
+.nui-sign-pattern__part--t { left: 16dp; right: 16dp; top: -16dp; height: 32dp; }
+.nui-sign-pattern__part--b { left: 16dp; right: 16dp; bottom: -16dp; height: 32dp; }
+
+/* Style 1: d:/ymir work/ui/pattern/myshop/fire/p_fire_*.tga */
+.nui-sign-pattern--1 .nui-sign-pattern__part--lt { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_left_top.tga" scale-none left top); }
+.nui-sign-pattern--1 .nui-sign-pattern__part--rt { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_right_top.tga" scale-none left top); }
+.nui-sign-pattern--1 .nui-sign-pattern__part--lb { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_left_bottom.tga" scale-none left top); }
+.nui-sign-pattern--1 .nui-sign-pattern__part--rb { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_right_bottom.tga" scale-none left top); }
+.nui-sign-pattern--1 .nui-sign-pattern__part--l { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_left.tga" repeat-y left top); }
+.nui-sign-pattern--1 .nui-sign-pattern__part--r { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_right.tga" repeat-y left top); }
+.nui-sign-pattern--1 .nui-sign-pattern__part--t { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_top.tga" repeat-x left top); }
+.nui-sign-pattern--1 .nui-sign-pattern__part--b { decorator: image("d:/ymir work/ui/pattern/myshop/fire/p_fire_bottom.tga" repeat-x left top); }
+
+/* Style 2: d:/ymir work/ui/pattern/myshop/ice/p_ice_*.tga */
+.nui-sign-pattern--2 .nui-sign-pattern__part--lt { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_left_top.tga" scale-none left top); }
+.nui-sign-pattern--2 .nui-sign-pattern__part--rt { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_right_top.tga" scale-none left top); }
+.nui-sign-pattern--2 .nui-sign-pattern__part--lb { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_left_bottom.tga" scale-none left top); }
+.nui-sign-pattern--2 .nui-sign-pattern__part--rb { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_right_bottom.tga" scale-none left top); }
+.nui-sign-pattern--2 .nui-sign-pattern__part--l { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_left.tga" repeat-y left top); }
+.nui-sign-pattern--2 .nui-sign-pattern__part--r { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_right.tga" repeat-y left top); }
+.nui-sign-pattern--2 .nui-sign-pattern__part--t { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_top.tga" repeat-x left top); }
+.nui-sign-pattern--2 .nui-sign-pattern__part--b { decorator: image("d:/ymir work/ui/pattern/myshop/ice/p_ice_bottom.tga" repeat-x left top); }
+
+/* Style 3: d:/ymir work/ui/pattern/myshop/paper/p_paper_*.tga */
+.nui-sign-pattern--3 .nui-sign-pattern__part--lt { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_left_top.tga" scale-none left top); }
+.nui-sign-pattern--3 .nui-sign-pattern__part--rt { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_right_top.tga" scale-none left top); }
+.nui-sign-pattern--3 .nui-sign-pattern__part--lb { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_left_bottom.tga" scale-none left top); }
+.nui-sign-pattern--3 .nui-sign-pattern__part--rb { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_right_bottom.tga" scale-none left top); }
+.nui-sign-pattern--3 .nui-sign-pattern__part--l { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_left.tga" repeat-y left top); }
+.nui-sign-pattern--3 .nui-sign-pattern__part--r { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_right.tga" repeat-y left top); }
+.nui-sign-pattern--3 .nui-sign-pattern__part--t { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_top.tga" repeat-x left top); }
+.nui-sign-pattern--3 .nui-sign-pattern__part--b { decorator: image("d:/ymir work/ui/pattern/myshop/paper/p_paper_bottom.tga" repeat-x left top); }
+
+/* Style 4: d:/ymir work/ui/pattern/myshop/ribon/p_ribon_*.tga */
+.nui-sign-pattern--4 .nui-sign-pattern__part--lt { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_left_top.tga" scale-none left top); }
+.nui-sign-pattern--4 .nui-sign-pattern__part--rt { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_right_top.tga" scale-none left top); }
+.nui-sign-pattern--4 .nui-sign-pattern__part--lb { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_left_bottom.tga" scale-none left top); }
+.nui-sign-pattern--4 .nui-sign-pattern__part--rb { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_right_bottom.tga" scale-none left top); }
+.nui-sign-pattern--4 .nui-sign-pattern__part--l { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_left.tga" repeat-y left top); }
+.nui-sign-pattern--4 .nui-sign-pattern__part--r { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_right.tga" repeat-y left top); }
+.nui-sign-pattern--4 .nui-sign-pattern__part--t { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_top.tga" repeat-x left top); }
+.nui-sign-pattern--4 .nui-sign-pattern__part--b { decorator: image("d:/ymir work/ui/pattern/myshop/ribon/p_ribon_bottom.tga" repeat-x left top); }
+
+/* Style 5: d:/ymir work/ui/pattern/myshop/wing/p_wing_*.tga */
+.nui-sign-pattern--5 .nui-sign-pattern__part--lt { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_left_top.tga" scale-none left top); }
+.nui-sign-pattern--5 .nui-sign-pattern__part--rt { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_right_top.tga" scale-none left top); }
+.nui-sign-pattern--5 .nui-sign-pattern__part--lb { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_left_bottom.tga" scale-none left top); }
+.nui-sign-pattern--5 .nui-sign-pattern__part--rb { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_right_bottom.tga" scale-none left top); }
+.nui-sign-pattern--5 .nui-sign-pattern__part--l { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_left.tga" repeat-y left top); }
+.nui-sign-pattern--5 .nui-sign-pattern__part--r { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_right.tga" repeat-y left top); }
+.nui-sign-pattern--5 .nui-sign-pattern__part--t { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_top.tga" repeat-x left top); }
+.nui-sign-pattern--5 .nui-sign-pattern__part--b { decorator: image("d:/ymir work/ui/pattern/myshop/wing/p_wing_bottom.tga" repeat-x left top); }

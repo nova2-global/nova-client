@@ -24,7 +24,8 @@ class QuestionWindow(kit.KindWindow):
 	DEFAULT = "dialog-question-accept"
 
 	def initial_model(self):
-		return {"lines": [], "accept_label": "@ui.YES", "cancel_label": "@ui.NO", "warn_line": -1}
+		return {"lines": [], "accept_label": "@ui.YES", "cancel_label": "@ui.NO", "warn_line": -1,
+		        "check_on": False, "check_text": "", "checked": False}
 
 	@nui.on("accept")
 	def on_accept(self):
@@ -33,6 +34,12 @@ class QuestionWindow(kit.KindWindow):
 	@nui.on("cancel")
 	def on_cancel(self):
 		self.forward("_nui_cancel")
+
+	@nui.on("check")
+	def on_check(self, button):
+		"""A left press on the check box's row (CheckQuestionDialog)."""
+		if int(button) == 0:
+			self.forward("_nui_check")
 
 
 class QuestionDialog(kit.DialogFacade):
@@ -63,6 +70,7 @@ class QuestionDialog(kit.DialogFacade):
 			"accept_label": "@ui.YES" if self._accept_text is None else nui.plain_text(self._accept_text),
 			"cancel_label": "@ui.NO" if self._cancel_text is None else nui.plain_text(self._cancel_text),
 			"warn_line": self._warn_row(),
+			"check_on": False, "check_text": "", "checked": False,
 		}
 
 	def _replay_text(self, legacy):
@@ -144,6 +152,53 @@ class QuestionDialog(kit.DialogFacade):
 
 	def _nui_escape(self):
 		return self.OnPressEscapeKey()
+
+	def _nui_check(self):
+		"""Only CheckQuestionDialog shows the row."""
+
+
+class CheckQuestionDialog(QuestionDialog):
+	"""uiCommon.CheckQuestionDialog (uicommon.py CheckQuestionDialog; OLD
+	uiShop.py:1534-1546): the question with a check box under its text, the
+	offline shop's "remove all identical items". SetCheckBox (after SetText,
+	as legacy's) shows the box, IsChecked reads it, and a press on the row
+	flips it, as legacy's CheckBox does."""
+
+	LEGACY = "uiCommon.LegacyCheckQuestionDialog"
+
+	def __init__(self):
+		self._check_text = None
+		self._checked = False
+		QuestionDialog.__init__(self)
+
+	def _fill(self):
+		values = QuestionDialog._fill(self)
+		values.update({"check_on": self._check_text is not None,
+		               "check_text": nui.plain_text(self._check_text or ""), "checked": bool(self._checked)})
+		return values
+
+	def _replay(self, legacy):
+		QuestionDialog._replay(self, legacy)
+		if self._check_text is not None:
+			legacy.SetCheckBox(self._check_text, self._checked)
+
+	def SetCheckBox(self, text, checked=False):
+		self._check_text = text
+		self._checked = bool(checked)
+		if self._legacy is not None:
+			self._legacy.SetCheckBox(text, checked)
+		self._refresh(check_on=True, check_text=nui.plain_text(text), checked=self._checked)
+
+	def IsChecked(self):
+		if self._legacy is not None:
+			return self._legacy.IsChecked()
+		return self._check_text is not None and bool(self._checked)
+
+	def _nui_check(self):
+		if self._check_text is None:
+			return
+		self._checked = not self._checked
+		self._refresh(checked=self._checked)
 
 
 class QuestionDialog2(QuestionDialog):

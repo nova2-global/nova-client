@@ -3,8 +3,10 @@ and its sign's style, chosen in two steps before the builder opens.
 
 The shop name dialog's decoration button opens it (Interface.OpenMyShopDecoWnd).
 Step 1 lists CONFIG's models by their shop_deco.txt names, step 2 the sign
-styles CONFIG allows (0, the plain board, then the patterns). There is no 3D
-view (D15, Q8): the right side names the model, or shows the style's frame.
+styles CONFIG allows (0, the plain board, then the patterns). The right side
+shows the chosen model turning (NOVA-137: OLD's player.SelectShopModel and
+MyShopDecoShow on the client's "shop_deco" render target) over its name, or the
+style's frame; a client without render targets names the model only.
 Clicks only choose; Complete commits the choice into
 uiPrivateShopBuilder.SHOP_DECO (the model vnum) and SHOP_STYLE, and only with
 CONFIG's decoration item in the inventory (o-cli bug 10: OLD wrote both at
@@ -20,6 +22,15 @@ import uiScriptLocale
 STEP_MODEL = 1
 STEP_STYLE = 2
 
+# The model view in the legacy preview board (166 x 120): the model over its name.
+MODEL_VIEW_RECT = (3, 3, 160, 96)
+MODEL_NAME_BELOW_VIEW = 46
+
+
+def model_preview_available():
+	"""The client draws shop models into "shop_deco" (NOVA-137)."""
+	return hasattr(player, "SelectShopModel") and hasattr(player, "MyShopDecoShow")
+
 
 class MyShopDecorationWindow(ui.ScriptWindow):
 
@@ -33,6 +44,7 @@ class MyShopDecorationWindow(ui.ScriptWindow):
 		self.selectedModel = 0     # a vnum
 		self.selectedStyle = 0
 		self.preview = None
+		self.modelView = None
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -79,6 +91,7 @@ class MyShopDecorationWindow(ui.ScriptWindow):
 	def Destroy(self):
 		self.Close()
 		self.preview = None
+		self.modelView = None
 		self.interface = None
 		self.isLoaded = False
 		self.ClearDictionary()
@@ -192,10 +205,43 @@ class MyShopDecorationWindow(ui.ScriptWindow):
 			return ui.ShopDecoTitle(style)
 		return ui.ThinBoard2()
 
+	def __MakeModelView(self):
+		"""The render target showing "shop_deco" (NovaUI's window makes its own); None
+		on a client without render targets."""
+		if not model_preview_available() or not ui.RenderTarget.IsAvailable():
+			return None
+		view = ui.RenderTarget()
+		view.SetParent(self.previewWindow)
+		view.AddFlag("not_pick")
+		(x, y, width, height) = MODEL_VIEW_RECT
+		view.SetPosition(x, y)
+		view.SetSize(width, height)
+		view.SetRenderTarget("shop_deco")
+		return view
+
+	def __ShowModel(self):
+		"""Step 1: the chosen model, turning (OLD SelectShopModel, MyShopDecoShow). False
+		when the client cannot show it."""
+		if self.modelView is None:
+			self.modelView = self.__MakeModelView()
+		if self.modelView is None or not self.selectedModel:
+			return False
+		player.SelectShopModel(self.selectedModel)
+		player.MyShopDecoShow(True)
+		self.modelView.Show()
+		return True
+
+	def __HideModel(self):
+		if self.modelView is not None:
+			self.modelView.Hide()
+		if model_preview_available():
+			player.MyShopDecoShow(False)
+
 	def __ClearPreview(self):
 		if self.preview:
 			self.preview.Hide()
 		self.preview = None
+		self.__HideModel()
 
 	def __RefreshPreview(self):
 		"""The model's name, or the style's frame with its name."""
@@ -203,7 +249,9 @@ class MyShopDecorationWindow(ui.ScriptWindow):
 		if self.step == STEP_MODEL:
 			names = dict(self.models)
 			self.modelName.SetText(names.get(self.selectedModel, str(self.selectedModel)))
+			self.modelName.SetPosition(0, MODEL_NAME_BELOW_VIEW if self.__ShowModel() else 0)
 			return
+		self.modelName.SetPosition(0, 0)
 		names = dict((style, name) for (style, name, _, _) in self.styles)
 		self.modelName.SetText(names.get(self.selectedStyle, ""))
 		preview = self.__MakePreview(self.selectedStyle)

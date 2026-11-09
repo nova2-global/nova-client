@@ -394,6 +394,20 @@ def install_widgets(game):
         def GetFontColor(self):
             return (1.0, 1.0, 1.0)
 
+    class RenderTarget(Bar):
+        """ui.RenderTarget (NOVA-137): the target it shows."""
+
+        @staticmethod
+        def IsAvailable():
+            return True
+
+        def __init__(self, layer="UI"):
+            Bar.__init__(self, layer)
+            self.target = None
+
+        def SetRenderTarget(self, name):
+            self.target = name
+
     class CheckBox(Bar):
         def __init__(self, layer="UI"):
             Bar.__init__(self, layer)
@@ -492,7 +506,7 @@ def install_widgets(game):
 
     for name, cls in (("Bar", Bar), ("ThinBoard", Board), ("ThinBoard2", ThinBoard2), ("ShopDecoTitle", ShopDecoTitle),
                       ("CheckBox", CheckBox), ("ScrollWindow", ScrollWindow), ("CustomScrollBar", Bar),
-                      ("ListBox", ListBox)):
+                      ("ListBox", ListBox), ("RenderTarget", RenderTarget)):
         setattr(ui, name, cls)
 
     common = game.modules["uiCommon"]
@@ -974,6 +988,39 @@ class Decoration(unittest.TestCase):
             window.OnSelectEntry(2, "")
             window.Close()
         self.assertEqual((builder.SHOP_DECO, builder.SHOP_STYLE), (0, 0))
+
+    def test_the_model_step_shows_the_chosen_model_turning(self):
+        """NOVA-137: OLD's player.SelectShopModel and MyShopDecoShow on the "shop_deco"
+        target, shown in the preview board over the model's name."""
+        world = World()
+        mark = len(world.game.log)
+        window = self.window(world)
+        calls = [(name, args) for name, args in world.game.log[mark:] if name in ("player.SelectShopModel", "player.MyShopDecoShow")]
+        self.assertEqual(calls[-2:], [("player.SelectShopModel", (30000,)), ("player.MyShopDecoShow", (True,))])
+        self.assertEqual(window.modelView.target, "shop_deco")
+        self.assertTrue(window.modelView.IsShow())
+        self.assertEqual(window.modelView.position, (3, 3))
+        self.assertEqual(window.modelView.size, (160, 96))
+        with world, w4.quiet():
+            mark = len(world.game.log)
+            window.OnSelectEntry(30003, "")
+            self.assertIn(("player.SelectShopModel", (30003,)), world.game.log[mark:])
+            window.UseNextButton()
+        self.assertFalse(window.modelView.IsShow(), "the style step shows the sign, not the model")
+        self.assertEqual(world.game.log[-1], ("player.MyShopDecoShow", (False,)))
+        with world, w4.quiet():
+            window.UsePrevButton()
+            self.assertTrue(window.modelView.IsShow())
+            window.Close()
+        self.assertFalse(window.modelView.IsShow())
+        self.assertEqual(world.game.log[-1], ("player.MyShopDecoShow", (False,)))
+
+    def test_a_client_without_model_previews_names_the_model(self):
+        world = World()
+        world.game.modules["player"].lack("SelectShopModel", "MyShopDecoShow")
+        window = self.window(world)
+        self.assertIsNone(window.modelView)
+        self.assertNotIn("player.SelectShopModel", [name for name, _ in world.game.log])
 
     def test_complete_commits_the_choice(self):
         world = World()

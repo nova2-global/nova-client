@@ -115,6 +115,15 @@ class Data(unittest.TestCase):
 
 
 class Timer(unittest.TestCase):
+    def test_hide_works_before_init_has_run(self):
+        """ui.Window.__init__ calls Hide before the subclass sets its attributes,
+        which the stand-in ui does not: r34 crashed entering the game on this."""
+        world = legacy_world()
+        cls = world.timer_module.TimerWindow
+        bare = cls.__new__(cls)
+        bare._TimerWindow__HideBossModel()
+        self.assertIsNone(bare.bossView)
+
     def test_open_lists_every_dungeon_ready_and_shows_the_first(self):
         world = legacy_world()
         window = opened_timer(world)

@@ -465,6 +465,10 @@ class TimerWindow(ui.ScriptWindow):
 	BTN_H = 28
 	BTN_MARGIN_TOP = 12
 	DESC_STEP = 14
+	# ui.Window.__init__ calls Hide, which reaches __HideBossModel before __init__
+	# below has set these.
+	bossView = None
+	bossRace = 0
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)

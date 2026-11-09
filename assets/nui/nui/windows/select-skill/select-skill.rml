@@ -1,0 +1,49 @@
+<rml>
+<head>
+	<!-- The select skill window (NOVA-37; legacy uiselectskill.py SelectSkillWindow, uiscript
+	     selectskillwindow.py). While the select-skill flag is on, the Interface makes
+	     nui_select_skill.SelectSkillWindow (controller assets/root/nui_select_skill.py), a
+	     subclass of the legacy class on proxies: the job's two rows of skills, their tooltips,
+	     the preview's model and motion, and the /select_skill it sends are legacy's code.
+	     The preview is the nui-view "model-select-skill" (OLD's render target), shown while
+	     legacy shows its window; a client without render targets shows a mark. A left or
+	     right press anywhere on it raises the window (board_press). -->
+	<title>select-skill</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="select-skill.rcss"/>
+</head>
+<body template="nui" id="select-skill" class="nui-window nui-fx nui-anim select-skill" data-model="select_skill"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar select-skill__titlebar">
+		<handle class="nui-window__handle select-skill__handle" move_target="#document">
+			<span class="select-skill__title-icon"><span class="nui-glyph nui-glyph--sword"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title select-skill__title">@ui.SELECT_CLASS</span>
+		</handle>
+		<button id="select-skill-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim select-skill__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body select-skill__body">
+		<div class="select-skill__group" data-for="g : groups">
+			<div class="select-skill__row" data-class-nui-attach-right="attach_right">
+				<div class="select-skill__cell-box" data-for="c : g.cells">
+					<div class="nui-slot nui-anim nui-fx select-skill__cell" data-attr-id="'select-skill-cell-' + g.group + '-' + it_index"
+					     data-class-is-empty="c.kind == ''"
+					     data-event-mousedown="cell_press(g.group, it_index, ev.button)"
+					     data-event-mouseover="cell_over(g.group, it_index)" data-event-mouseout="cell_out(g.group, it_index)">
+						<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+					</div>
+				</div>
+			</div>
+			<button class="nui-button nui-button--medium nui-anim select-skill__pick" data-attr-id="'select-skill-pick-' + g.group"
+			        data-event-mousedown="pick_press(g.group, ev.button)">{{ g.name }}</button>
+		</div>
+		<div class="select-skill__preview">
+			<nui-view class="select-skill__view" name="model-select-skill" hover="none" data-if="model_view"></nui-view>
+			<span class="nui-glyph nui-glyph--sword select-skill__mark" data-if="!model_view"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
+		</div>
+	</div>
+</body>
+</rml>

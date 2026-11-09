@@ -1,0 +1,11 @@
+{
+	"$comment": "Golden cases of the select skill window (NOVA-37; tools/check_nui_snapshots.py): a warrior's two groups with the preview shown; noview: a client without render targets. The window centers at its first show; the sheet's place frames it here, with room for the modern shadow. Classic draws legacy's 250 x 400 board.",
+	"cases": [
+		{"page": "select-skill", "themes": "all", "except": ["classic"], "scales": [["100", "1", "460x540"], ["150", "1.5", "690x810"], ["200", "2", "920x1080"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "views": {"model-select-skill": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"}},
+		{"page": "select-skill", "themes": ["classic"], "scales": [["100", "1", "290x440"], ["150", "1.5", "435x660"], ["200", "2", "580x880"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "views": {"model-select-skill": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"}},
+		{"page": "select-skill", "variant": "noview", "themes": "all", "except": ["classic"], "scales": [["100", "1", "460x540"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "select-skill", "variant": "noview", "themes": ["classic"], "scales": [["100", "1", "290x440"]], "fixture": true, "roots": ["assets/ETC"], "time": null},
+		{"page": "select-skill", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "460x540"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "reduced_motion": true, "views": {"model-select-skill": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"}},
+		{"page": "select-skill", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "460x540"]], "fixture": true, "roots": ["assets/ETC"], "time": null, "effects": "off", "views": {"model-select-skill": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"}}
+	]
+}

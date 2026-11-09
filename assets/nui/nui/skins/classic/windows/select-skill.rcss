@@ -1,0 +1,92 @@
+/* Classic skin overlay of nui/windows/select-skill/select-skill.rml: legacy's select skill
+   window (uiscript selectskillwindow.py) at 100%, 1dp to the legacy pixel: the board, 250 x 400;
+   the title bar at 8, 7, 235 wide, the title centered; each group's six slots (32 x 32, 5 apart)
+   at 22 across and 60 or 140 down, its xlarge button centered 45 down from them (105, 185); the
+   preview at 20, 225 (225 x 150), legacy's render target. */
+
+body.skin-classic.select-skill
+{
+	width: 250dp;
+	height: 400dp;
+	min-width: 0;
+}
+body.skin-classic.select-skill .select-skill__title-icon
+{
+	display: none;
+}
+body.skin-classic.select-skill .select-skill__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 235dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.select-skill .select-skill__handle, body.skin-classic.select-skill .select-skill__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.select-skill .select-skill__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.select-skill .select-skill__group
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 250dp;
+	height: 0;
+}
+body.skin-classic.select-skill .select-skill__row
+{
+	position: absolute;
+	top: 60dp;
+	left: 22dp;
+	gap: 5dp;
+}
+body.skin-classic.select-skill .select-skill__group:nth-of-type(2) .select-skill__row
+{
+	top: 140dp;
+}
+body.skin-classic.select-skill .select-skill__cell
+{
+	width: 32dp;
+	height: 32dp;
+	nui-hit-outset: 3dp;
+}
+body.skin-classic.select-skill .select-skill__pick
+{
+	position: absolute;
+	left: 47dp;
+	top: 105dp;
+	width: 156dp;
+}
+body.skin-classic.select-skill .select-skill__group:nth-of-type(2) .select-skill__pick
+{
+	top: 185dp;
+}
+body.skin-classic.select-skill .select-skill__preview
+{
+	position: absolute;
+	left: 20dp;
+	top: 225dp;
+	width: 225dp;
+	height: 150dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.select-skill .select-skill__view
+{
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	width: 225dp;
+	height: 150dp;
+}

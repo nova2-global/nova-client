@@ -2238,6 +2238,9 @@ class GameWindow(ui.ScriptWindow):
 	## BINARY CALLBACK
 	######################################################################################
 
+	def OpenSelectSkillWindow(self):
+		self.interface.OpenSelectSkillWindow()
+
 	def __ServerCommand_Build(self):
 		serverCommandList={
 			"ConsoleEnable"			: self.__Console_Enable,
@@ -2253,6 +2256,8 @@ class GameWindow(ui.ScriptWindow):
 			"CloseMall"				: self.CommandCloseMall,
 			"ShowMeMallPassword"	: self.AskMallPassword,
 			"item_mall"				: self.__ItemMall_Open,
+			# NOVA-37 (OLD game.py:3054): the letter of the skill_group quest.
+			"OpenSelectSkillWindow"	: self.OpenSelectSkillWindow,
 			# END_OF_ITEM_MALL
 
 			"RefineSuceeded"		: self.RefineSuceededMessage,

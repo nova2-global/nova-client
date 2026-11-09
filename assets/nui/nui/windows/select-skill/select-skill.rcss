@@ -1,0 +1,93 @@
+/* The select skill window's modern look (NOVA-37): the two groups side by side, each a row of
+   six skills over the button that picks it; the character turning below them. Centered at its
+   first show, as legacy's uiscript. Classic (legacy's 250 x 400 board):
+   skins/classic/windows/select-skill.rcss. */
+
+body.select-skill
+{
+	left: 16dp;
+	top: 16dp;
+	width: 304dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.select-skill button
+{
+	tab-index: none;
+	focus: none;
+}
+.select-skill__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.select-skill__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.select-skill__body
+{
+	display: flex;
+	flex-direction: column;
+	gap: 12dp;
+	padding-top: 10dp;
+}
+.select-skill__group
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8dp;
+}
+.select-skill__row
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-1);
+}
+.select-skill__pick
+{
+	width: 150dp;
+}
+.select-skill__preview
+{
+	position: relative;
+	height: 150dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+}
+.select-skill__view
+{
+	position: absolute;
+	left: 1dp;
+	top: 1dp;
+	right: 1dp;
+	bottom: 1dp;
+	width: 276dp;
+	height: 146dp;
+	pointer-events: none;
+}
+.select-skill__mark
+{
+	--glyph-ink: var(--text-muted);
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -12dp;
+	margin-top: -12dp;
+}

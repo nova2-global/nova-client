@@ -609,3 +609,4 @@ DUNGEON_MANAGER_SHOW_HIDDEN	Show Hidden
 DUNGEON_MANAGER_NOTICE	Notify me when ready
 DUNGEON_RANK_LOADING	Loading...
 DUNGEON_MANAGER_NO_DROPS	No drops known for this dungeon.
+SELECT_CLASS	Choisissez votre classe

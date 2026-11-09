@@ -939,7 +939,8 @@ class GameWindow(ui.ScriptWindow):
 	# NOVA-40 (OLD game.py SetPCTargetBoard's HP path, Q3 b): a player target's
 	# percent, for the board already open on it.
 	def SetPCTargetHP(self, vid, hpPercentage):
-		if vid == self.targetBoard.GetTargetVID():
+		# OLD uiTarget.py:1126: the player's own board has no bar.
+		if vid == self.targetBoard.GetTargetVID() and not player.IsMainCharacterIndex(vid):
 			self.targetBoard.SetPCHP(hpPercentage)
 
 	# GC::TARGET_INFO (NOVA-40, OLD game.py:2501-2544): a mob's drop rows, cached

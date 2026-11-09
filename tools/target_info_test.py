@@ -375,6 +375,35 @@ class Wiring(unittest.TestCase):
         self.assertIn(("ref", 5001), calls)
 
 
+class OwnBoard(unittest.TestCase):
+    def test_the_player_s_own_board_gets_no_bar(self):
+        # OLD uiTarget.py:1126: "if player.GetName() != name".
+        import types
+        import boss_windows_support as bw
+        calls = []
+        with hud.quiet():
+            Game = bw.compiled("game.py", "GameWindow", ["SetPCTargetHP"],
+                               scope={"player": types.SimpleNamespace(IsMainCharacterIndex=lambda vid: vid == 1)})
+
+        class Board(object):
+            def __init__(self, vid):
+                self.vid = vid
+
+            def GetTargetVID(self):
+                return self.vid
+
+            def SetPCHP(self, percent):
+                calls.append(percent)
+
+        game = Game.__new__(Game)
+        game.targetBoard = Board(1)
+        game.SetPCTargetHP(1, 80)
+        self.assertEqual(calls, [])
+        game.targetBoard = Board(77)
+        game.SetPCTargetHP(77, 80)
+        self.assertEqual(calls, [80])
+
+
 class Fallback(unittest.TestCase):
     def test_the_legacy_info_board_opens_under_the_novaui_target_board(self):
         # The target-info flag off with the target board on: a real mix.

@@ -11,9 +11,9 @@ show at the screen's top left).
 
 What NovaUI changes: the board sits under the target board at its sheet's
 place (legacy's position is the target board's); the drop list scrolls in
-RmlUi; the retry is a nui-countdown (legacy's OnUpdate waits for a time). OLD
-cycled the icon of a metin stone row and a valentine letter row every couple of
-seconds; this board shows one icon and no Python runs per frame."""
+RmlUi; the retry is a nui-countdown (legacy's OnUpdate waits for a time). No
+Python runs per frame. OLD cycled the icon of a metin stone row and a valentine
+letter row every couple of seconds; neither this board nor legacy's does."""
 
 import ui
 import uiTargetInfo

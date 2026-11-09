@@ -1,0 +1,142 @@
+/* Classic skin overlay of nui/windows/dungeon-drops/dungeon-drops.rml:
+   legacy's drops panel (uitimerwindow.py MobDropPopup, a 320 x 400 board
+   with its title bar) at 100%, 1dp to the legacy pixel: the info line
+   centered 38 down; the mob list at 12, 75 (290 x 312), its rows 53 high and
+   54 apart, a bar in OLD's mob, boss or stone tint each with the mob's name
+   on NEW's long thin button at 46; a chosen mob's header row at 12, 72 over
+   its items at 12, 133 (290 x 258), each 65 high and 66 apart: the icon at
+   20, the line centered 22 down and the band 40 down (the two lines take
+   no presses, so the icon's cell keeps its whole box). */
+
+body.skin-classic.dungeon-drops
+{
+	width: 320dp;
+	height: 400dp;
+	min-width: 0;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__title-icon,
+body.skin-classic.dungeon-drops .dungeon-drops__mob-mark,
+body.skin-classic.dungeon-drops .dungeon-drops__mob-go,
+body.skin-classic.dungeon-drops .dungeon-drops__mob-back
+{
+	display: none;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 305dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__handle, body.skin-classic.dungeon-drops .dungeon-drops__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__body
+{
+	position: static;
+	display: block;
+	padding: 0;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__info
+{
+	position: absolute;
+	left: 0;
+	top: 38dp;
+	width: 320dp;
+	margin: 0;
+	color: var(--text);
+}
+body.skin-classic.dungeon-drops .dungeon-drops__list--mobs
+{
+	position: absolute;
+	left: 12dp;
+	top: 75dp;
+	width: 300dp;
+	height: 312dp;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__list--items
+{
+	position: absolute;
+	left: 12dp;
+	top: 133dp;
+	width: 300dp;
+	height: 258dp;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__mob,
+body.skin-classic.dungeon-drops .dungeon-drops__mob:hover
+{
+	width: 290dp;
+	height: 53dp;
+	margin: 0 0 1dp;
+	padding: 0 0 0 46dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--surface-band);
+}
+body.skin-classic.dungeon-drops .dungeon-drops__mob--boss
+{
+	background-color: var(--selection);
+}
+body.skin-classic.dungeon-drops .dungeon-drops__mob--stone
+{
+	background-color: var(--slot-disabled);
+}
+body.skin-classic.dungeon-drops .dungeon-drops__header
+{
+	position: absolute;
+	left: 12dp;
+	top: 72dp;
+	height: 53dp;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__mob-name
+{
+	flex: 0 0 180dp;
+	height: 25dp;
+	font-weight: normal;
+	line-height: 25dp;
+	text-align: center;
+	decorator: tiled-horizontal(classic-button-large-01-l, classic-button-large-01-c, classic-button-large-01-r);
+}
+body.skin-classic.dungeon-drops .dungeon-drops__item
+{
+	position: relative;
+	display: block;
+	width: 290dp;
+	height: 65dp;
+	margin: 0 0 1dp;
+	padding: 0;
+	border-radius: 0;
+	background-color: var(--surface-band);
+}
+body.skin-classic.dungeon-drops .dungeon-drops__icon
+{
+	position: absolute;
+	left: 20dp;
+	top: 16dp;
+	margin: 0;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__item-name
+{
+	position: absolute;
+	left: 0;
+	top: 16dp;
+	width: 290dp;
+	color: var(--tip-price);
+	text-align: center;
+	pointer-events: none;
+}
+body.skin-classic.dungeon-drops .dungeon-drops__band
+{
+	position: absolute;
+	left: 0;
+	top: 34dp;
+	width: 290dp;
+	margin: 0;
+	font-weight: normal;
+	text-align: center;
+	pointer-events: none;
+}

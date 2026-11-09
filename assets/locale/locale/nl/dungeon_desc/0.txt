@@ -1,0 +1,59 @@
+#Begane grond:
+Vernietig de Metin van Taaiheid tegenover het toegangsportaal.
+Eens de Metin kapot is, word je geteleporteerd naar de 1e verdieping.
+
+#Verdieping 1:
+Dood alle monsters om door te gaan naar de volgende verdieping.
+$Aandacht: Vanaf dit level, zijn de monsters agressief!
+
+#Verdieping 2:
+Dood alle mobs om door te gaan naar de volgende verdieping.
+
+#Verdieping 3:
+Vernietig de Metin van Duivel om door te gaan met de volgende
+uitdaging op dezelfde verdieping.
+Eens je de Metin van Duivel hebt vernietigd, 7 Metin van Vallen
+zal rond de vloer spawnen.
+Je moet deze Metins kapot maken tot je de juiste vind.
+
+#Verdieping 4:
+De taak op deze verdieping is om de 5 zielen teopenen met de
+Sleutel Steen dat valt 
+van de boogschutters. Na elke spawn,Valt er 1 Sleutel Steen.
+Om de Ziel teopenen moet je de sleutel slepen naar de ziel.
+
+#Verdieping 5:
+Het doel van deze verdieping is de speciale smid.
+Om deze Smid te krijgen, moet je de Trotse Demon Koning doden.
+Eens je deze hebt gedood, zal de Smid spawnen.
+$Notitie:Deze Smid vraagt geen upgrade materiaal.
+
+#Verdieping 6:
+Maak alle Metins van Moord kapot.
+Doel: Vind de "Zin San Gui kaart" om de volgende verdieping
+te bereiken.
+Eens je de laatste Metin van Moord hebt vernietigd, Zal er een
+nieuwe Metin van Moord spawnen.
+Wanneer je deze Metin kapot maakt, zal er een Onbekende Oude Kist
+vallen.Je moet klikken op de "Onbekende Oude Kist" om de
+"Zin San Gui kaart" te vinden.Als je klikt en niets valt,
+is het een valse kist. Je moet de Metin van Moord blijven kapot
+maken tot de "Zin San Gui kaart" valt van de "Onbekende Oude Kist".
+$Notitie: eens de Zin San Gui kaart valt, stopt de Metin van Moord
+met spawnen.
+
+#Verdieping 7:
+Op deze verdieping moet je de Zin Bong In Sleutel vinden. Eens je deze
+sleutel hebt gevonden, moet je het slepen en neerzetten op de Grafsteen
+aan de overkant van de spawnplaats van de kamer. Er is ook een "Valse Sleutel"
+genoemd Bong In Sleutel. Deze sleutel heeft geen zin.
+$Tip: De sleutels (zowel nep als correct) worden door de Onsterfelijke Geest gedropt.
+
+#Verdieping 8:
+Dit is de laatste verdieping. Hier ga je de Magere Hein vinden . 
+Het is aan jou om alle mobs te doden voordat je de Magere Hein doodt.
+Meestal spawnt het aan de achterkant van de kamer.
+
+#Verdieping 9:
+De Blauwe Kamer, Dat is waar je de meest uitdagende taak op deze toren krijgt
+waar je de Blauwe Dood onder ogen moet zien, de heerser van de demontoren.

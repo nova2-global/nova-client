@@ -1,0 +1,22 @@
+{
+	"dungeon_notice": {
+		"timers": [
+			{
+				"idx": 2,
+				"end": 421.0
+			}
+		],
+		"toasts": [
+			{
+				"key": 1,
+				"title": "Nemeres",
+				"end": 3.0
+			},
+			{
+				"key": 2,
+				"title": "Razador",
+				"end": 3.5
+			}
+		]
+	}
+}

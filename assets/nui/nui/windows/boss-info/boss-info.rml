@@ -1,0 +1,54 @@
+<rml>
+<head>
+	<!-- The boss info panel (uibossinfo.py BossInfoWindow, NOVA-27; OLD
+	     uiBossInfo.py, BOSS_INFO): the current map's bosses at the screen's
+	     left edge, 250dp down, alive in the success color and dead in the
+	     danger color. While the boss-info flag is on (the hud group), the
+	     Interface makes nui_boss_info.BossInfoWindow (controller
+	     assets/root/nui_boss_info.py), a subclass of the legacy class on
+	     proxies: the server's list, the empty list closing the panel and the
+	     expanded flag (systemSetting's BOSS_INFO) are legacy's code. The
+	     arrow (toggle_press) slides the panel out of the screen but for its
+	     edge and back; the slide is a transform transition (collapsed), not
+	     legacy's 4 px a frame. Each row's hint opens on :hover with no
+	     Python: the name, the level, the state and, while a respawn time is
+	     ahead, its clock as a nui-countdown whose end republishes the rows
+	     (respawned). Legacy's geometry in dp in every look: the board 138
+	     wide (185 when a name is longer than 14 characters), OLD's height
+	     table, the rows 32 tall from 16dp down, 40dp apart (one boss: 46dp
+	     down). The document exists only while the panel shows
+	     (nui_hud.OnDemand) and draws below the legacy UI layer. -->
+	<title>boss-info</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="boss-info.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui boss-info" data-model="boss_info">
+	<div id="boss-info" class="boss-info__panel nui-anim" data-class-is-collapsed="collapsed"
+	     data-class-is-wide="wide" data-class-is-single="single"
+	     data-style---boss-info-height="height + 'dp'" data-style---boss-info-toggle-top="button_top + 'dp'">
+		<div class="nui-board nui-fx nui-interactive boss-info__board">
+			<div class="boss-info__slot" data-for="r : rows">
+				<div class="boss-info__row nui-has-tooltip nui-interactive" data-attr-id="'boss-info-row-' + it_index"
+				     data-class-is-alive="r.alive" data-class-is-dead="!r.alive"
+				     data-style---boss-info-row-top="r.top + 'dp'">
+					<span class="boss-info__dot"></span>
+					<span class="boss-info__name">{{ r.name }}</span>
+					<span class="nui-tooltip nui-anim boss-info__tip">
+						<span class="boss-info__tip-title">{{ r.name }}</span>
+						<span class="boss-info__tip-line" data-if="r.level != ''">{{ r.level }}</span>
+						<span class="boss-info__tip-line boss-info__tip-state">{{ r.state }}</span>
+						<span class="boss-info__tip-line" data-if="r.respawn">{{ respawn_before }} <nui-countdown format="dhms" day="@game.DAY" hour="@game.HOUR" minute="@game.MINUTE" second="@game.SECOND" data-attr-end="r.respawn_end" data-event-countdownend="respawned()"/> {{ respawn_after }}</span>
+					</span>
+				</div>
+			</div>
+		</div>
+		<button id="boss-info-toggle" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim nui-interactive boss-info__toggle"
+		        data-event-mousedown="toggle_press(ev.button)"><span class="nui-glyph nui-glyph--chevron-left boss-info__glyph boss-info__glyph--collapse"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="nui-glyph nui-glyph--chevron-right boss-info__glyph boss-info__glyph--expand"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
+			class="boss-info__arrow boss-info__arrow--collapse">&lt;</span><span
+			class="boss-info__arrow boss-info__arrow--expand">&gt;</span></button>
+	</div>
+</body>
+</rml>

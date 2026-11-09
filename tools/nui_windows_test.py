@@ -21,7 +21,10 @@ P18_HUD = ["maintenance"]
 W7_HUD = ["duel-rules"]
 W7_HUD2 = ["guild-war-top"]
 W7_SOCIAL = ["kill-rank"]
-HUD = WAVE2A + P18_HUD + W7_HUD
+# NOVA-27: the boss info panel and the damage count join the hud group, before
+# the maintenance countdown.
+NOVA27_HUD = ["boss-info", "damage-count"]
+HUD = WAVE2A + NOVA27_HUD + P18_HUD + W7_HUD
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
 HUD2 = WAVE2B + W7_HUD2
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
@@ -131,7 +134,7 @@ class Flags(WindowsTest):
     def test_hud2_names_the_seven_wave2b_windows_and_hud_keeps_its_twelve(self):
         self.assertEqual(self.m.GROUPS["hud2"], tuple(HUD2))
         self.assertEqual(self.m.GROUPS["hud"], tuple(HUD), "+hud keeps meaning the Wave 2a windows (and P18's maintenance countdown, wave 7's duel rules)")
-        self.assertEqual(len(self.m.GROUPS["hud"]), 14)
+        self.assertEqual(len(self.m.GROUPS["hud"]), 16)
         self.setting.windows = "+hud"
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2B), "+hud turns no Wave 2b window on")
         self.setting.windows = "+hud2,-atlas"
@@ -826,6 +829,63 @@ class Maintenance(WindowsTest):
     def test_the_document_is_prewarmed_with_the_on_demand_ones(self):
         self.setting.windows = "+maintenance"
         self.assertIn("nui/windows/maintenance/maintenance.rml", self.m.prewarm_documents())
+
+
+class BossWindows(WindowsTest):
+    """NOVA-27: the boss info panel ("boss-info") and the damage count
+    ("damage-count") are on by default, in the hud group, just before the
+    maintenance countdown, and their documents are prewarmed with the
+    on-demand ones."""
+
+    def test_the_ids_are_on_by_default_before_maintenance_and_in_the_hud_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertEqual(ids[-3:], NOVA27_HUD + ["maintenance"])
+        for window_id in NOVA27_HUD:
+            self.assertIs(dict(self.m.WINDOWS)[window_id], True, window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual([group for group, members in self.m.GROUPS.items() if window_id in members and group != "all"],
+                             ["hud"])
+        self.setting.windows = "+hud,-damage-count"
+        self.assertTrue(self.m.is_on("boss-info"))
+        self.assertFalse(self.m.is_on("damage-count"))
+
+    def test_the_documents_are_prewarmed(self):
+        self.setting.windows = "+boss-info,+damage-count"
+        documents = self.m.prewarm_documents()
+        self.assertIn("nui/windows/boss-info/boss-info.rml", documents)
+        self.assertIn("nui/windows/damage-count/damage-count.rml", documents)
+
+
+class DungeonWindows(WindowsTest):
+    """NOVA-25: the dungeon manager ("dungeon-timer"), its drops panel
+    ("dungeon-drops") and the dungeon ranking ("dungeon-rank") are on by
+    default, in the dungeon group, before NOVA-27's windows and the
+    maintenance countdown, and their documents (the manager's with its ready
+    notice) are prewarmed with the on-demand ones."""
+
+    DUNGEON = ["dungeon-timer", "dungeon-drops", "dungeon-rank"]
+
+    def test_the_ids_are_on_by_default_in_the_dungeon_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        start = ids.index("dungeon-timer")
+        self.assertEqual(ids[start:start + 3], self.DUNGEON)
+        self.assertLess(start, ids.index("maintenance"))
+        self.assertEqual(self.m.GROUPS["dungeon"], tuple(self.DUNGEON))
+        for window_id in self.DUNGEON:
+            self.assertIs(dict(self.m.WINDOWS)[window_id], True, window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual([group for group, members in self.m.GROUPS.items() if window_id in members and group != "all"],
+                             ["dungeon"])
+        self.setting.windows = "+dungeon,-dungeon-drops"
+        self.assertTrue(self.m.is_on("dungeon-timer"))
+        self.assertFalse(self.m.is_on("dungeon-drops"))
+        self.assertRaises(ValueError, self.m.set_override, "dungeon", True)
+
+    def test_the_documents_are_prewarmed(self):
+        self.setting.windows = "+dungeon"
+        documents = self.m.prewarm_documents()
+        for name in ("dungeon-timer", "dungeon-notice", "dungeon-drops", "dungeon-rank"):
+            self.assertIn("nui/windows/%s/%s.rml" % (name, name), documents)
 
 
 class ClientDefault(WindowsTest):

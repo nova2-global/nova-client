@@ -1,0 +1,131 @@
+{
+	"$comment": "Golden cases of the dungeon manager's drops panel (NOVA-25; tools/check_nui_snapshots.py): Devil`s Catacomb's mobs (two bosses, a stone, a mob); items: Azrael's three drops, one per band. Centered at its first show; the sheet's place frames it here, with room for the modern shadow. Classic draws legacy's 320 x 400 board.",
+	"cases": [
+		{
+			"page": "dungeon-drops",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x520"
+				],
+				[
+					"150",
+					"1.5",
+					"720x780"
+				],
+				[
+					"200",
+					"2",
+					"960x1040"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/icon"
+			]
+		},
+		{
+			"page": "dungeon-drops",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"350x430"
+				],
+				[
+					"150",
+					"1.5",
+					"525x645"
+				],
+				[
+					"200",
+					"2",
+					"700x860"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			]
+		},
+		{
+			"page": "dungeon-drops",
+			"variant": "items",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x520"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/icon"
+			]
+		},
+		{
+			"page": "dungeon-drops",
+			"variant": "items",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"350x430"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			]
+		},
+		{
+			"page": "dungeon-drops",
+			"name": "reduced-motion",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x520"
+				]
+			],
+			"fixture": true,
+			"reduced_motion": true
+		},
+		{
+			"page": "dungeon-drops",
+			"name": "no-effects",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"480x520"
+				]
+			],
+			"fixture": true,
+			"effects": "off"
+		}
+	]
+}

@@ -1,0 +1,30 @@
+#Aşama 1:
+Buz aslanını aktive et ve tüm canavarlar öldür.
+
+#Aşama 2:
+Gerçek "Buz Anahtarı"nı bulana kadar canavarları öldür.
+
+#Aşama 3:
+Tüm canavarları öldür.
+
+#Aşama 4:
+Tüm canavarları öldür ve sonraki aşamaya geç.
+
+#Aşama 5:
+Kuzey yıldızını elde etmek için canavarları öldür, bunları kullanarak küpleri aç,
+sonraki aşamaya geçmek için tüm küpleri aç.
+
+#Aşama 6:
+Tüm canavarları öldür ve metin taşını yok et.
+
+#Aşama 7:
+Szel'i bul ve öldür.
+
+#Aşama 8:
+Sonraki aşamaya geçmek için doğru anahtarı bul ve aktive et.
+
+#Aşama 9:
+Kuzey ejderi sütununu yok et. Patron odasına girmek için aslanla konuş.
+
+#Patron odası:
+Buz Kralı Nemere'yi öldür!

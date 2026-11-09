@@ -1,0 +1,55 @@
+<rml>
+<head>
+	<!-- The damage count window (uidamagecount.py DamageCountWindow,
+	     uiscript damagecount.py; NOVA-27, OLD uiDamageCount.py,
+	     __BOSS_DAMAGE_COUNT__): the top 10 attackers of a damage-count world
+	     boss, highest first, with each one's damage and share, a bar against
+	     the leader in the row's color, the player's own row framed, and the
+	     boss's name and HP above. While the damage-count flag is on (the hud
+	     group), the Interface makes nui_damage_count.DamageCountWindow
+	     (controller assets/root/nui_damage_count.py), a subclass of the
+	     legacy class on proxies: the ranking, the shares, the HP colors and
+	     the rules that open and close it are legacy's code. An updated row's
+	     damage turns from grey to the text color in 0.1s (flash 1 and 2 run
+	     the same keyframes, so each update starts them again), with no
+	     Python per frame. The title row moves the window; its close button
+	     closes it (close_press); a press anywhere raises it (board_press).
+	     Legacy's 392dp board, its gauge and texts at their places, the rows
+	     25dp tall from 60dp down. The document exists only while the window
+	     shows (nui_hud.OnDemand) and draws below the legacy UI layer. -->
+	<title>damage-count</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="damage-count.rcss"/>
+</head>
+<body template="nui" id="damage-count" class="nui-window nui-fx nui-anim nui-below-legacy-ui damage-count"
+      data-model="damage_count" data-event-mousedown="board_press(ev.button)">
+	<handle class="damage-count__handle" move_target="#document">
+		<span class="damage-count__target">{{ target }}</span>
+		<div class="damage-count__hp">
+			<span class="damage-count__hp-text">{{ hp_text }}</span>
+			<progress class="nui-gauge damage-count__gauge" direction="right" data-attr-value="hp_value"/>
+			<span class="damage-count__hp-percent" data-class-is-high="hp_tone == 'high'"
+			      data-class-is-mid="hp_tone == 'mid'" data-class-is-low="hp_tone == 'low'">{{ hp_percent }}</span>
+		</div>
+	</handle>
+	<button id="damage-count-close" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim damage-count__close"
+	        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+		class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	<div id="damage-count-list" class="damage-count__list">
+		<div class="damage-count__slot" data-for="r : rows">
+			<div class="damage-count__row" data-attr-id="'damage-count-row-' + it_index"
+			     data-class-is-own="r.own" data-class-damage-count__row--c0="r.color == 0" data-class-damage-count__row--c1="r.color == 1" data-class-damage-count__row--c2="r.color == 2" data-class-damage-count__row--c3="r.color == 3"
+			     data-class-damage-count__row--c4="r.color == 4" data-class-damage-count__row--c5="r.color == 5" data-class-damage-count__row--c6="r.color == 6" data-class-damage-count__row--c7="r.color == 7"
+			     data-style---damage-count-bar="r.width + 'dp'">
+				<span class="damage-count__bar"></span>
+				<span class="damage-count__frame"></span>
+				<span class="damage-count__no">{{ r.no }}</span>
+				<img class="damage-count__face" data-if="r.face != ''" data-attr-src="r.face"/>
+				<span class="damage-count__name">{{ r.name }}</span>
+				<span class="damage-count__damage nui-anim" data-class-is-flash-a="r.flash == 1"
+				      data-class-is-flash-b="r.flash == 2">{{ r.damage }}</span>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

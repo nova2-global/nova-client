@@ -1,0 +1,63 @@
+{
+	"dungeon_rank": {
+		"title": "Nemeres Time Ranking",
+		"loading": false,
+		"rows": [
+			{
+				"rank": "1",
+				"name": "Lyra",
+				"count": "0:38:12"
+			},
+			{
+				"rank": "2",
+				"name": "Brannoc",
+				"count": "0:41:05"
+			},
+			{
+				"rank": "3",
+				"name": "Seraphine",
+				"count": "0:44:50"
+			},
+			{
+				"rank": "4",
+				"name": "Kael",
+				"count": "0:51:09"
+			},
+			{
+				"rank": "5",
+				"name": "Tamsin",
+				"count": "1:02:33"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			},
+			{
+				"rank": "-",
+				"name": "-",
+				"count": "-"
+			}
+		],
+		"own": {
+			"rank": "4",
+			"name": "Kael",
+			"count": "0:51:09"
+		}
+	}
+}

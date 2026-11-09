@@ -1,0 +1,17 @@
+#Phase 1:
+Run through the temple maze to find the
+boss and kill it to open the portal to
+the boss room !
+
+#Phase 2:
+Visit the guardian to teleport to the
+last boss.The Guardian will request a 
+key to take you to boss room.
+
+#Phase 3:
+Find the boss that drops the key on the
+map and open the portal to the boss 
+room.
+
+#Phase 4:
+Kill The Jotun Thrym !

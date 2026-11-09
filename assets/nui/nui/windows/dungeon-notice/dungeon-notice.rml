@@ -1,0 +1,27 @@
+<rml>
+<head>
+	<!-- The dungeon ready notice (NOVA-25; legacy uitimerwindow.py
+	     TimerNotice). Owned by the NovaUI dungeon manager
+	     (assets/root/nui_dungeon_notice.py, Notices): one hidden timer per
+	     checked dungeon whose re-entry clock runs (timer_end at its end),
+	     and the boxes that show, stacked near the top of the screen, each
+	     with the dungeon's name and "Available" for three seconds
+	     (toast_end). It takes no presses (nui-overlay). -->
+	<title>dungeon-notice</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="dungeon-notice.rcss"/>
+</head>
+<body template="nui" id="dungeon-notice" class="nui-overlay dungeon-notice" data-model="dungeon_notice">
+	<div class="dungeon-notice__timers">
+		<span class="dungeon-notice__slot" data-for="t : timers"><nui-countdown class="dungeon-notice__timer" format="none"
+			data-attr-end="t.end" data-event-countdownend="timer_end(t.idx)"/></span>
+	</div>
+	<div class="dungeon-notice__stack">
+		<div class="nui-tile dungeon-notice__box" data-for="n : toasts" data-attr-id="'dungeon-notice-' + n.key">
+			<nui-countdown class="dungeon-notice__timer" format="none" data-attr-end="n.end" data-event-countdownend="toast_end(n.key)"/>
+			<span class="dungeon-notice__title">{{ n.title }}</span>
+			<span class="dungeon-notice__text">@game.TIMERWINDOW_AVAILABLE</span>
+		</div>
+	</div>
+</body>
+</rml>

@@ -1,0 +1,15 @@
+{
+	"boss_info": {
+		"rows": [
+			{"name": "Queen Spider", "level": "Level 50", "state": "Dead", "alive": false, "respawn": true, "respawn_end": 125.0, "top": 46}
+		],
+		"count": 1,
+		"single": true,
+		"wide": false,
+		"collapsed": false,
+		"height": 106,
+		"button_top": 16,
+		"respawn_before": "Respawning in",
+		"respawn_after": ""
+	}
+}

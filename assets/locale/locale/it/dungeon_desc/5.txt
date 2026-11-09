@@ -1,0 +1,31 @@
+#Piano 1:
+Dopo aver cliccato sul Leone di Ghiaccio, uccidi tutti i mostri per procedere
+al prossimo livello.
+
+#Piano 2:
+Uccidi i mostri fino a droppare la "Chiave Ghiacciata" per procedere al 3° piano.
+
+#Piano 3:
+Uccidi tutti i mostri.
+
+#Piano 4:
+Uccidi le 2 ondate di mostri per procedere.
+
+#Piano 5:
+Uccidi i mostri fino a droppare la Stella del Nord, usala per aprire i Cubi Artici,
+i sigilli devono essere aperti nell'ordine corretto.
+
+#Piano 6:
+Uccidi tutti i mostri e distruggi la Metin del Freddo.
+
+#Piano 7:
+Trova e uccidi Szel, il Re del Ghiaccio.
+
+#Piano 8:
+Uccidi i mostri fino a droppare il Fiore Ghiacciato corretto, procedi poi al prossimo piano.
+
+#Piano 9:
+Distruggi il pilastro del Drago del Nord. Per entrare nella stanza del boss, parla con il Leone di Ghiaccio.
+
+#Stanza del Boss:
+Uccidi Nemere, Re del freddo e del ghiaccio!

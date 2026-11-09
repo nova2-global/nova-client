@@ -1,0 +1,18 @@
+{
+	"boss_info": {
+		"rows": [
+			{"name": "Death Reaper of the Ancient Temple", "level": "Level 75", "state": "Alive", "alive": true, "respawn": false, "respawn_end": 0.0, "top": 16},
+			{"name": "Aquadragonis", "level": "Level 125", "state": "Dead", "alive": false, "respawn": true, "respawn_end": 600.0, "top": 56},
+			{"name": "Green Dragon", "level": "Level 120", "state": "Alive", "alive": true, "respawn": false, "respawn_end": 0.0, "top": 96},
+			{"name": "Arachne", "level": "Level 120", "state": "Dead", "alive": false, "respawn": false, "respawn_end": 0.0, "top": 136}
+		],
+		"count": 4,
+		"single": false,
+		"wide": true,
+		"collapsed": false,
+		"height": 197,
+		"button_top": 82,
+		"respawn_before": "Respawning in",
+		"respawn_after": ""
+	}
+}

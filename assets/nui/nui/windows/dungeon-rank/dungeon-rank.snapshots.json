@@ -1,0 +1,129 @@
+{
+	"$comment": "Golden cases of the dungeon ranking (NOVA-25; tools/check_nui_snapshots.py): Nemeres's time ranking with five ranked players and the player's own row (fourth); loading: the window as a ranking button opens it, before the server's rows. Centered at its first show; the sheet's place frames it here, with room for the modern shadow. Classic draws legacy's 356 x 402 board.",
+	"cases": [
+		{
+			"page": "dungeon-rank",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"520x540"
+				],
+				[
+					"150",
+					"1.5",
+					"780x810"
+				],
+				[
+					"200",
+					"2",
+					"1040x1080"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "dungeon-rank",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"380x430"
+				],
+				[
+					"150",
+					"1.5",
+					"570x645"
+				],
+				[
+					"200",
+					"2",
+					"760x860"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		},
+		{
+			"page": "dungeon-rank",
+			"variant": "loading",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"520x540"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "dungeon-rank",
+			"variant": "loading",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"380x430"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		},
+		{
+			"page": "dungeon-rank",
+			"name": "reduced-motion",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"520x540"
+				]
+			],
+			"fixture": true,
+			"time": null,
+			"reduced_motion": true
+		},
+		{
+			"page": "dungeon-rank",
+			"name": "no-effects",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"520x540"
+				]
+			],
+			"fixture": true,
+			"time": null,
+			"effects": "off"
+		}
+	]
+}

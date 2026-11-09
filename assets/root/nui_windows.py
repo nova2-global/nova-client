@@ -4,7 +4,7 @@ Each window has an id. Every window runs on NovaUI by default (WINDOWS);
 config/metin2.cfg can turn one off through UI_NUI_WINDOWS ("-id", and "+id"
 back on, comma-separated; systemSetting.GetUINuiWindows), for a diagnosis or
 the live kit's legacy runs. A group id (GROUPS: "all", "wave1", "hud",
-"hud2", "sys", "rest", "items", "wave3c", "trade", "social") in that string
+"hud2", "sys", "rest", "items", "wave3c", "trade", "social", "dungeon") in that string
 stands for each of its windows, in its place among the tokens: "-all" is a
 legacy client. The look is the theme's (UI_THEME, with UI_COLORS for its
 colors): the classic theme draws the legacy look on NovaUI.
@@ -134,6 +134,15 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("duel-rules", True),         # the duel rules a challenger ticks
 	("guild-war-top", True),      # the guild war top killers (TAB held)
 	("kill-rank", True),          # the kill ranking
+	# NOVA-25: the dungeon manager, its drops panel and the dungeon ranking,
+	# in the dungeon group.
+	("dungeon-timer", True),      # the dungeon manager: the list, the cooldowns, the teleport
+	("dungeon-drops", True),      # the dungeon manager's drops panel
+	("dungeon-rank", True),       # the dungeon ranking
+	# NOVA-27: the boss info panel and the damage count window, in the hud
+	# group (HUD windows of the game phase, beside the target board).
+	("boss-info", True),          # the current map's bosses at the left edge
+	("damage-count", True),       # a damage-count boss's top 10 attackers
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
 	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
@@ -141,7 +150,7 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"wave1": ("dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"),
 	"hud": ("taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
-	        "edge-buttons", "tip-board", "big-board", "map-name", "maintenance", "duel-rules"),
+	        "edge-buttons", "tip-board", "big-board", "map-name", "boss-info", "damage-count", "maintenance", "duel-rules"),
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war", "guild-war-top"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
@@ -149,7 +158,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
-	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank"),
+	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank", "dungeon", "dungeon-timer", "dungeon-drops", "dungeon-rank"),
 }
 # "all": every window, so "-all" makes a legacy client (the live kit's legacy
 # runs), and "-all,+id" one with a single NovaUI window.
@@ -235,6 +244,14 @@ ON_DEMAND_DOCUMENTS = (
 	("duel-rules", ("duel-rules",)),
 	("guild-war-top", ("guild-war-top",)),
 	("kill-rank", ("kill-rank",)),
+	# NOVA-25: the dungeon manager (and its ready notice), its drops panel and
+	# the ranking, each only while it shows.
+	("dungeon-timer", ("dungeon-timer", "dungeon-notice")),
+	("dungeon-drops", ("dungeon-drops",)),
+	("dungeon-rank", ("dungeon-rank",)),
+	# NOVA-27: the boss info panel and the damage count, each only while it shows.
+	("boss-info", ("boss-info",)),
+	("damage-count", ("damage-count",)),
 	# P18: the maintenance countdown, only while it shows.
 	("maintenance", ("maintenance",)),
 )

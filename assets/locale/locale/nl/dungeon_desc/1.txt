@@ -1,0 +1,12 @@
+#Fase 1:
+Vermoord de Spinnen Baron
+
+#Fase 2:
+Lok de Spinnen Barones met het item dat eerder is gevallen.
+
+#Fase 3:
+Vermoord de Spinnen Barones
+
+$Note:
+Kapot maken van Spinnen Eieren maakt de spinnen barones zwakker maar
+ze krijgt meer kracht.

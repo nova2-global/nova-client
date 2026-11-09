@@ -440,4 +440,20 @@ body.skin-classic
 	--classic-log-row-alt: #1e1e1e;
 	--classic-list-hover: #ffffff33;
 	--classic-list-select: #0000804d;
+	--classic-boss-alive: #c3d4c4;
+	--classic-boss-dead: #e57875;
+	--classic-boss-row: #000000b0;
+	--classic-damage-own: #c41c1c;
+	--classic-damage-flash: #5d5d5d;
+	--classic-damage-row-0: #61384a;
+	--classic-damage-row-1: #44542f;
+	--classic-damage-row-2: #3c3350;
+	--classic-damage-row-3: #2a5160;
+	--classic-damage-row-4: #656565;
+	--classic-damage-row-5: #9f751a;
+	--classic-damage-row-6: #295684;
+	--classic-damage-row-7: #6b9618;
+	--classic-damage-hp-high: #a7ffd4;
+	--classic-damage-hp-mid: #ffe6ba;
+	--classic-damage-hp-low: #ff0000;
 }

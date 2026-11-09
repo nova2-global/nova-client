@@ -1,0 +1,35 @@
+#Fase 1:
+Na het activeren van de kerker op de Ijs Leeuw, Vermoord alle monsters
+om verder te gaan naar de volgende level.
+
+#Fase 2:
+Vermoord monsters tot je de juiste "Vorst Sleutel" vind om verder te
+gaan naar de 3e verdieping.
+
+#Fase 3:
+Vermoord alle monsters.
+
+#Fase 4:
+Dood de 2 golven van monsters om door te gaan.
+
+#Fase 5:
+Dood monsters die Noord Sterren laten vallen, gebuik ze om de zegels om
+de arctische kubussen te openen, Zegels moeten in de juiste volgorde
+geopent worden.
+
+#Fase 6:
+Vermoord alle monsters en maak Metin van Verkoudheid kapot.
+
+#Fase 7:
+Vind en Vermoord Szel, De heer van Ijs.
+
+#Fase 8:
+Dood alle monsters tot je de correcte ijsbloem sleutel vind om verder
+naar de volgende level.
+
+#Fase 9:
+Maak de Noord Draken Pilaar kapot. Om in de baas kamer te komen moet
+je met de Ijs Leeuw praten talk.
+
+#Baas Kamer:
+Versla Nemere, Koning van Vorst en Ijs!

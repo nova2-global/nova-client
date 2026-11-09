@@ -1,0 +1,47 @@
+#Parter:
+Zniszcz Metin Twardości po drugiej stronie wejścia. 
+Kiedy metin zostanie zniszczony, będziesz teleportowany na pierwsze piętro. 
+
+#Poziom 1:
+Zabij wszystkie potwory żeby przejść na następne piętro. 
+$Attention: Zaczynając od tego piętra, potwory są agresywne! 
+
+#Poziom 2:
+Zabij wszystkie potwory żeby przejść na następne piętro. 
+
+#Poziom 3:
+Znisz Metin Diabła żeby kontynuować wyzwanie na tym piętrze. 
+Kiedy już Metin Diabła został zniszczony, siedem Metinów Upadku się pojawią na tym piętrze. 
+Musisz niszczyć Metiny dopóki nie znajdziesz właściwy. 
+
+#Poziom 4:
+Twoim zadaniem na tym piętrze jest otwarcie pięciu kolumn po przez użycie kamienia otwarcia, który wypada z łuczników. Po każdym spawnie, jeden kamień otwarcia wypadnie. 
+Żeby otworzyć kolumne musisz przeciągnąć i upuścić kamień otwarcia na kolumnę. 
+
+#Poziom 5:
+Zadaniem na tym piętrze jest specialny kowal. 
+Żeby dotrzeć do specialnego kowala, musisz zabić Elit. Króla Demonów. 
+Kiedy już go zabijesz, kowal się pojawi. 
+$Note:Ten kowal nie będzie wymagał żadnych materiałów ulepszenia. 
+
+#Poziom 6:
+Zniszcz wszystkie Metiny Śmierci. 
+Aim: Znajdz mape "Zin San Gui" żeby przejść na następne piętro. 
+Kiedy już ostatni Metin Śmierci zostanie zniszczony, nowy Metin Morderstwa się wygeneruje. 
+Kiedy już metin zostanie zniszczony, Nieznana Stara Skrzynia wypadnie. Wtedy musisz otworzyć Nieznaną Starą Skrzynie żeby znaleść "Mape Zin San Gui". 
+Jeśli ją otworzysz i nic wypadnie, to znaczy że to była fałszywa skrzynia. 
+Musisz cały czas niszczyć Metin Morderstwa dopóki nie zdobędziesz "Mape Zin San Gui" z "Nieznanej Starej Skrzyni". 
+$Note: Kiedy Mapa Zin San Gui wypadnie, Metin Morderstwa przestanie się pojawać. 
+
+#Poziom 7:
+Na tym piętrze musisz znaleść klucz Zin Bong In. Kiedy już znajdziecie ten klucz, przeciągnągnij go na grobowiec po drugiej stronie piętra. 
+Jest także "Fałszywy Klucz" nazwany Bong In. Ten klucz nie ma żadnego użycia. 
+$Tip: Obydwa fałszywy i prawidłowy klucz wypadają z Nieś. Ducha. 
+
+#Poziom 8:
+To jest ostanie piętro. Tutaj znajdziesz Umarłego Rozpruwacza. 
+To zależy od ciebie czy chcesz zabić potwory przed zabiciem Umarłego Rozpruwacza. 
+Zazwyczaj, on pojawia się na drugim końcu piętra. 
+
+#Poziom 9:
+Niebieski Pokój, tutaj jest najtrudniejsze wyzwanie tej wieży gdzie musisz stanąć twarzą w twarz z Niebieską Śmiercią, władcą Wieży Demonów. 

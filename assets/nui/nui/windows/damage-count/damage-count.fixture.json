@@ -1,0 +1,42 @@
+{
+	"damage_count": {
+		"target": "Green Dragon",
+		"hp_text": "",
+		"hp_percent": "64%",
+		"hp_tone": "high",
+		"hp_value": 0.64,
+		"rows": [
+			{
+				"no": "1.",
+				"name": "Alpha",
+				"damage": "Damage: 30.0K(50.0%)",
+				"face": "d:/ymir work/ui/game/windows/face_warrior.sub",
+				"own": false,
+				"width": 380,
+				"color": 0,
+				"flash": 0
+			},
+			{
+				"no": "2.",
+				"name": "Me",
+				"damage": "Damage: 18.0K(30.0%)",
+				"face": "d:/ymir work/ui/game/windows/face_assassin.sub",
+				"own": true,
+				"width": 228,
+				"color": 1,
+				"flash": 1
+			},
+			{
+				"no": "3.",
+				"name": "Gamma",
+				"damage": "Damage: 12.0K(20.0%)",
+				"face": "d:/ymir work/ui/game/windows/face_sura.sub",
+				"own": false,
+				"width": 152,
+				"color": 2,
+				"flash": 0
+			}
+		],
+		"count": 3
+	}
+}

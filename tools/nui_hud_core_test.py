@@ -1273,6 +1273,13 @@ EXPECTED_SITES = {
                            ("make", "pet-mini", "uiPet.PetInterfaceWindow", "nui_pet_mini.PetInterfaceWindow"),
                            ("make", "pet", "uiPet.PetWindow", "nui_pet.PetWindow"),
                            ("make", "pet", "uiPet.PetWindow", "nui_pet.PetWindow"),
+                           # NOVA-27: the boss info panel and the damage count.
+                           ("make", "boss-info", "uiBossInfo.BossInfoWindow", "nui_boss_info.BossInfoWindow"),
+                           ("make", "damage-count", "uiDamageCount.DamageCountWindow",
+                            "nui_damage_count.DamageCountWindow"),
+                           # NOVA-25: the dungeon manager and the dungeon ranking.
+                           ("make", "dungeon-timer", "uiTimerWindow.TimerWindow", "nui_dungeon_timer.TimerWindow"),
+                           ("make", "dungeon-rank", "uiDungeonRank.DungeonRankWindow", "nui_dungeon_rank.DungeonRankWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
@@ -1296,6 +1303,8 @@ EXPECTED_SITES = {
     # Wave 7 (NOVA-28): the duel rules, made by the target board's Fight.
     "uitarget.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
     "nui_target.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    # NOVA-25: the dungeon manager makes its drops panel.
+    "uitimerwindow.py": [("make", "dungeon-drops", "MobDropPopup", "nui_dungeon_drops.MobDropPopup")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
     # Wave 3b (P14 spec 6.7): the inventory's dialogs, in the legacy class
     # and in the NovaUI loader that stands for its uiscript loader.

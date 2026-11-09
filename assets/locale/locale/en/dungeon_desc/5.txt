@@ -1,0 +1,18 @@
+#Stage 1:
+Kill monsters that will drop north stars, use them to open the seals on the arctic Cubes,
+Seals have to be opened in the correct order.
+
+#Stage 2:
+Kill all the monsters and destroy the Metin of Cold.
+
+#Stage 3:
+Find and defeat Szel, The lord of Ice.
+
+#Stage 4:
+Kill monsters until you drop the correct frostflower key to proceed to next level.
+
+#Stage 5:
+Destroy the North Dragon Pillar. To enter the boss room talk to the Ice Lion.
+
+#Boss Room:
+Defeat Nemere, King of Frost and Ice!!!

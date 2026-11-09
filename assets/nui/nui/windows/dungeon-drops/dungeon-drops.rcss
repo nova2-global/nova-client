@@ -1,0 +1,162 @@
+/* The drops panel's modern look (NOVA-25): the gift mark before the title;
+   the line naming the dungeon; the mobs as rows, a mark in the type's color
+   (a mob the text's, a boss the accent's, a stone the danger's), a chevron
+   to its items; a chosen mob's header row (a chevron back) over its items,
+   each with its icon, its line and its chance band (rare in the accent,
+   common in the text color, guaranteed in the success color). Centered at
+   its first show. Classic (legacy's 320 x 400 board): skins/classic/windows/
+   dungeon-drops.rcss. */
+
+body.dungeon-drops
+{
+	left: 16dp;
+	top: 16dp;
+	width: 340dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.dungeon-drops button
+{
+	tab-index: none;
+	focus: none;
+}
+.dungeon-drops__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.dungeon-drops__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.dungeon-drops__body
+{
+	padding: 6dp 12dp 12dp;
+}
+.dungeon-drops__info
+{
+	margin: 0 0 8dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+}
+.dungeon-drops__list
+{
+	height: 300dp;
+	overflow-y: auto;
+}
+.dungeon-drops__list--items
+{
+	height: 250dp;
+}
+.dungeon-drops__mob
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+	width: 100%;
+	height: 40dp;
+	margin-bottom: 4dp;
+	padding: 0 10dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-raised);
+	color: var(--text);
+	font-size: var(--font-sm);
+	text-align: left;
+}
+.dungeon-drops__mob:hover
+{
+	background-color: var(--surface-hover);
+}
+.dungeon-drops__mob-mark
+{
+	flex: 0 0 8dp;
+	height: 22dp;
+	margin-right: 10dp;
+	border-radius: 4dp;
+	background-color: var(--text-muted);
+}
+.dungeon-drops__mob--boss .dungeon-drops__mob-mark
+{
+	background-color: var(--accent);
+}
+.dungeon-drops__mob--stone .dungeon-drops__mob-mark
+{
+	background-color: var(--danger);
+}
+.dungeon-drops__mob-name
+{
+	flex: 1 1 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: bold;
+}
+.dungeon-drops__mob-go, .dungeon-drops__mob-back
+{
+	position: relative;
+	flex: 0 0 16dp;
+	height: 16dp;
+}
+.dungeon-drops__mob-back
+{
+	margin-right: 10dp;
+}
+.dungeon-drops__mob-go .nui-glyph, .dungeon-drops__mob-back .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+}
+.dungeon-drops__header
+{
+	border-color: var(--accent-glow);
+	background-color: var(--selection);
+}
+.dungeon-drops__item
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+	min-height: 48dp;
+	margin-bottom: 4dp;
+	padding: 4dp 8dp;
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+}
+.dungeon-drops__icon
+{
+	flex: 0 0 auto;
+	margin-right: 10dp;
+}
+.dungeon-drops__item-name
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.dungeon-drops__band
+{
+	flex: 0 0 auto;
+	margin-left: 8dp;
+	font-size: var(--font-xs);
+	font-weight: bold;
+}
+.dungeon-drops__band--rare { color: var(--accent); }
+.dungeon-drops__band--common { color: var(--text); }
+.dungeon-drops__band--guaranteed { color: var(--success); }

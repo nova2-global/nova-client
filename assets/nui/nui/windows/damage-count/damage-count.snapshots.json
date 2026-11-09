@@ -1,0 +1,13 @@
+{
+	"$comment": "Golden cases of the damage count window (NOVA-27; tools/check_nui_snapshots.py): three attackers, the player's own row framed and its damage just updated, the boss at 64%; full: ten rows (the most it shows), the HP numbers given and the boss at 24%; single: the player alone, 31%. The window sits at legacy's Open place for a 1600 wide screen (440, 100); the cases frame it with room for the modern shadow. Classic draws legacy's thin board, the rows' eight colors and the public gauge and close art, on legacy's canvas.",
+	"cases": [
+		{"page": "damage-count", "fixture": true, "time": null, "roots": ["assets/ETC"], "themes": "all", "except": ["classic"], "scales": [["100", "1", "880x290"], ["150", "1.5", "1320x435"], ["200", "2", "1760x580"]]},
+		{"page": "damage-count", "fixture": true, "time": null, "themes": ["classic"], "roots": ["assets/ETC"], "scales": [["100", "1", "860x240"], ["150", "1.5", "1290x360"], ["200", "2", "1720x480"]]},
+		{"page": "damage-count", "fixture": true, "time": null, "variant": "full", "roots": ["assets/ETC"], "themes": "all", "except": ["classic"], "scales": [["100", "1", "880x470"]]},
+		{"page": "damage-count", "fixture": true, "time": null, "variant": "full", "themes": ["classic"], "roots": ["assets/ETC"], "scales": [["100", "1", "860x420"]]},
+		{"page": "damage-count", "fixture": true, "time": null, "variant": "single", "roots": ["assets/ETC"], "themes": "all", "except": ["classic"], "scales": [["100", "1", "880x230"]]},
+		{"page": "damage-count", "fixture": true, "time": null, "variant": "single", "themes": ["classic"], "roots": ["assets/ETC"], "scales": [["100", "1", "860x180"]]},
+		{"page": "damage-count", "fixture": true, "time": null, "roots": ["assets/ETC"], "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "880x290"]], "reduced_motion": true},
+		{"page": "damage-count", "fixture": true, "time": null, "roots": ["assets/ETC"], "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "880x290"]], "effects": "off"}
+	]
+}

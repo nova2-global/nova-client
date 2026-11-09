@@ -1,0 +1,12 @@
+#Étape 1:
+Tuer le Baron Spider.
+
+#Étape 2:
+Attirez la the Baronne araignée avec l'objet déposé précédemment.
+
+#Étape 3:
+Tuer la the Baronne araignée.
+
+$Remarque:
+Tuer le Oeuf d'araignée affaiblira la Baronne araignée mais augmentera également
+sa puissance.

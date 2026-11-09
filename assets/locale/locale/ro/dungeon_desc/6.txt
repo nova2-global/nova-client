@@ -1,0 +1,27 @@
+Această hartă este compusă din 7 zone. 
+Click pe Am-heh pentru a începe.
+
+#Faza 1:
+Această etapă este finalizată după ce sunt înfrânţi toţi monştrii nivelului.
+
+#Faza 2:
+Găseşte Roată Zimțată de Aur şi foloseşte-o pentru a porni mecanismul secret
+al Stele Isfet din centru.
+
+#Faza 3:
+Această etapă este identică cu prima, trebuie să ucizi toţi monştrii.
+
+#Faza 4:
+Înfrânge-l pe Ignitor.
+
+#Faza 5:
+Caută Piatră Maat şi pune-le pe Isfet Stele în ordinea corectă.
+Această etapă va fi trecută cînd toate sigiliile vor fi deschise.
+
+#Faza 6:
+Distruge Metinul Focul Iadului. 
+
+#Faza 7:
+Învinge-l pe Razador.
+
+

@@ -892,6 +892,22 @@ What the color roles mean:
 | `--classic-log-row-alt` | classic | `#1e1e1e` |
 | `--classic-list-hover` | classic | `#ffffff33` |
 | `--classic-list-select` | classic | `#0000804d` |
+| `--classic-boss-alive` | classic | `#c3d4c4` |
+| `--classic-boss-dead` | classic | `#e57875` |
+| `--classic-boss-row` | classic | `#000000b0` |
+| `--classic-damage-own` | classic | `#c41c1c` |
+| `--classic-damage-flash` | classic | `#5d5d5d` |
+| `--classic-damage-row-0` | classic | `#61384a` |
+| `--classic-damage-row-1` | classic | `#44542f` |
+| `--classic-damage-row-2` | classic | `#3c3350` |
+| `--classic-damage-row-3` | classic | `#2a5160` |
+| `--classic-damage-row-4` | classic | `#656565` |
+| `--classic-damage-row-5` | classic | `#9f751a` |
+| `--classic-damage-row-6` | classic | `#295684` |
+| `--classic-damage-row-7` | classic | `#6b9618` |
+| `--classic-damage-hp-high` | classic | `#a7ffd4` |
+| `--classic-damage-hp-mid` | classic | `#ffe6ba` |
+| `--classic-damage-hp-low` | classic | `#ff0000` |
 
 <!-- tokens:end -->
 
@@ -1425,6 +1441,16 @@ Wave 7's PvP port (NOVA-28 duel rules, NOVA-29 kill ranking and guild war top ki
 
 **Tests:** `tools/pvp_test.py` (each flow on legacy's window and the facade in one stand-in world, the board's model, the walk-away watch, the fixtures, the wiring, the locales). Goldens: `duel-rules`, `-none`; `kill-rank`, `-empty`; `guild-war-top`, `-start`; each with `reduced-motion` and `no-effects`.
 
+## The dungeon windows
+
+NOVA-25's three windows follow the [Wave 4 windows](#wave-4-windows) pattern on the legacy classes of `uitimerwindow.py` and `uidungeonrank.py` (OLD's `uiTimerWindow.py` and `uiDungeonRank.py`, written for NEW: OLD's art is not in NEW's packs and its 3D boss preview waits for NOVA-137):
+
+- **The dungeon manager** (`dungeon-timer`, `nui_dungeon_timer.TimerWindow`, F6): the loader's proxies and two makers (`__MakeBoard`, a dungeon's row; `__MakeDescLine`, a description line) keep the list, hiding and showing, the chosen dungeon, the ticket's tooltip (`LegacySlotEvents` over the one cell), the teleport and the ranking and drops buttons legacy's. Legacy counts each row's re-entry clock in rounded-up minutes every frame (`game.OnUpdate`, `Interface.UpdateTimer`); here a row's clock is a `nui-countdown format="ms"` whose `countdownend` (`row_ready`) turns it ready, and `UpdateTime` does nothing. The clocks are kept per dungeon in the window (`endTimes`), so a hidden row keeps its clock. The ready notice of a checked dungeon is `nui_dungeon_notice.Notices`: a `dungeon-notice` overlay document, loaded only while a clock is watched or a box shows, whose hidden `nui-countdown format="none"` timers raise `timer_end` and, three seconds after a box shows, `toast_end`.
+- **The drops panel** (`dungeon-drops`, `nui_dungeon_drops.MobDropPopup`), made by the manager's `LoadWindow` through `make()`: the mobs in the server's order, a mob's items (icon, `"<count>x <name>"`, the chance band), the header back. The legacy board's own sizing and title calls do nothing under the facade.
+- **The ranking** (`dungeon-rank`, `nui_dungeon_rank.DungeonRankWindow`): the loading line, ten rows and the own row are `RankImage` proxies that keep legacy's count rule (`count_text`); the walk-away (more than 1500 on either axis) is a leave-range watch (`LEAVE_RANGE_KEYS`).
+
+**Tests:** `tools/dungeon_timer_test.py` (the legacy windows, the data files, the wiring, the locales) and `tools/nui_dungeon_timer_test.py` (each flow on both sides, the boards, the notices, the factory and the registration), over `tools/dungeon_timer_support.py`.
+
 ## The maintenance countdown
 
 The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in the `hud` group, `nui_maintenance.MaintenanceWindow`) replaces legacy's `uimaintenance.MaintenanceWindow`, a thin board at the top left that `game.py` makes before the preserved server commands run, opens with the seconds left of the server's `shutdown_schedule` (`OpenShutdownCountdown`) and closes on `shutdown_cancel` (`CloseShutdownCountdown`) and at the phase's end (where it now also `Destroy`s a NovaUI one).
@@ -1506,6 +1532,9 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 | `duel-rules` | the duel rules a challenger ticks (wave 7, NOVA-28) | on |
 | `guild-war-top` | the guild war top killers, TAB held (wave 7, NOVA-29) | on |
 | `kill-rank` | the kill ranking (wave 7, NOVA-29) | on |
+| `dungeon-timer` | the dungeon manager and its ready notice (NOVA-25) | on |
+| `dungeon-drops` | the dungeon manager's drops panel (NOVA-25) | on |
+| `dungeon-rank` | the dungeon ranking (NOVA-25) | on |
 | `maintenance` | the maintenance countdown (NOVA-58, P18) | on |
 
 **Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), Wave 4b's `extra-inventory` and Wave 6's `sash` and `aura`, and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). `all` stands for every window. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on, and `-all,+login` is a legacy client with the NovaUI login. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).
@@ -1518,6 +1547,7 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 - **The protocol of what `make()` builds:** load the document in `__init__` (hidden), not in `Open()`; `nui_ready()` says whether it loaded; `nui_discard()` destroys the NovaUI parts and sets `self._nui_discarded`. A phase window's NovaUI subclass skips the legacy `net.SetPhaseWindow(<phase>, 0)` in `__del__` once discarded, so a late collection does not clear the slot of the legacy window made in its place.
 - **Phases:** a phase window's NovaUI documents go with its `Close()` (the login board and its parts, the server board, the locale strip, the phase windows' boards; the HUD with `Interface.Close` and the game window's `Close`), and come back when the phase is built again. `networkModule.MainStream` calls **`end_phase()`** after the old phase window's `Close()` and before the new one's `Open()`; it unloads the documents no phase window owns, those of the modules in `PHASE_SCOPED` (the dialog kit, `nui_quest`: the quest curtain and any quest board left, and `nui_tooltip`: the three tooltip documents), and writes `nui_windows: phase ended, <n> document(s) unloaded` to `log.txt`. A document shared between windows needs such an `end_phase()`, and its module goes into `PHASE_SCOPED`: a hidden document that outlives its phase costs its update in every frame of the next. After the new phase window's `Open()`, `MainStream` calls **`start_phase(window)`**: in the game phase it asks the runtime to prewarm the style sheets of every on-demand document whose window is on (`ON_DEMAND_DOCUMENTS`, `nui.prewarm(paths)`), which the runtime parses one document per calm frame from a little after the phase starts, so the first open of the system options, a dialog or a quest parses no sheet while the game runs; it writes the count to `log.txt`. A new window that loads its document only while it shows adds that document to `ON_DEMAND_DOCUMENTS` (`nui_windows_test` checks that every listed document exists and that its id is a window of `WINDOWS`).
 - **`refuse(window_id, reason)`** records a refusal `use()` does not know (the virtual keyboard without the NovaUI login board, the gift box without the NovaUI taskbar, the atlas without the NovaUI minimap, the point reset without the dialog kit); `set_override(window_id, on)` writes one override and saves the config, for a settings window and tests.
+- **The dungeon group (NOVA-25):** `dungeon` names the dungeon manager, its drops panel and the dungeon ranking (`dungeon-timer`, `dungeon-drops`, `dungeon-rank`).
 - **Adding a window:** give it an id (lowercase letters, digits and `-`), add `(id, False)` to `WINDOWS`, and make it through `make()` or a factory. It stays off until its default turns on.
 
 ## Rules

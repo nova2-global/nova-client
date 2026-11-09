@@ -1,0 +1,38 @@
+{
+	"dungeon_timer": {
+		"rows": [],
+		"selected": 5,
+		"show_hidden": true,
+		"empty": "All dungeons are hidden for your level. Press Show Hidden to see them.",
+		"name": "Nemeres",
+		"boss": "Nemere",
+		"ticket_label": "Entry Ticket",
+		"level": "Min. Level 90 Max. Level 120",
+		"group": "Group Request:  No",
+		"cooldown": "Cooldown:  10 Mins",
+		"attach_right": true,
+		"ticket": {
+			"index": 0,
+			"kind": "",
+			"type": 0,
+			"ref": 0,
+			"icon": "",
+			"count": "",
+			"w": 1,
+			"h": 1,
+			"cd_start": 0.0,
+			"cd_end": 0.0,
+			"active": false,
+			"cover": false,
+			"disabled": false,
+			"locked": false,
+			"covered": false,
+			"target": "",
+			"picked": false,
+			"unavailable": false
+		},
+		"desc": [],
+		"notice": true,
+		"notice_label": ""
+	}
+}

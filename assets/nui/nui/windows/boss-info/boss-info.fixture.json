@@ -1,0 +1,17 @@
+{
+	"boss_info": {
+		"rows": [
+			{"name": "Green Dragon", "level": "Level 120", "state": "Alive", "alive": true, "respawn": false, "respawn_end": 0.0, "top": 16},
+			{"name": "Abomination", "level": "Level 120", "state": "Dead", "alive": false, "respawn": true, "respawn_end": 3725.0, "top": 56},
+			{"name": "Arachne", "level": "Level 120", "state": "Alive", "alive": true, "respawn": false, "respawn_end": 0.0, "top": 96}
+		],
+		"count": 3,
+		"single": false,
+		"wide": false,
+		"collapsed": false,
+		"height": 151,
+		"button_top": 59,
+		"respawn_before": "Respawning in",
+		"respawn_after": ""
+	}
+}

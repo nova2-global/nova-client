@@ -1234,6 +1234,8 @@ EXPECTED_SITES = {
                            ("make", "gem-shop", "uiGemShop.GemShopWindow", "nui_gem_shop.GemShopWindow"),
                            # Wave 7 (NOVA-18): the chest-drop preview.
                            ("make", "chest-drop", "uiChestDrop.ChestDropWindow", "nui_chest_drop.ChestDropWindow"),
+                           # Wave 8 (NOVA-42): the wiki browser, no legacy window.
+                           ("make", "wiki", "uiWiki.UnavailableWindow", "nui_wiki.WikiWindow"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
                            ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
                             "nui_offline_shop_log.OfflineShopLogWindow"),

@@ -208,6 +208,7 @@ def inventory(limits, page, wear, bag, money, **rest):
         "has_costume": True,
         "has_dss": True,
         "has_mall": True,
+        "has_wiki": False,
         # Wave 4b (NOVA-16): the special inventory's button.
         "has_extra": True,
         "placed": False,

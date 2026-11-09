@@ -46,6 +46,7 @@ import uiselectitem
 # The gaya market (NOVA-10; OLD interfaceModule.py:112-114).
 import uiGemShop
 import uiChestDrop
+import uiWiki
 import uiSash
 ## The advanced pet's windows (NOVA-24).
 import uiPet
@@ -106,6 +107,7 @@ class Interface(object):
 		self.wndGuildBuilding = None
 		self.wndGemShop = None
 		self.wndChestDrop = None
+		self.wndWiki = None
 		self.wndSashCombine = None
 		self.wndSashAbsorption = None
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398).
@@ -284,6 +286,10 @@ class Interface(object):
 		# The chest-drop preview (NOVA-18; OLD interfaceModule.py:758-760).
 		self.wndChestDrop = nui_windows.make("chest-drop", uiChestDrop.ChestDropWindow, "nui_chest_drop.ChestDropWindow")
 		self.wndChestDrop.Hide()
+		# The ingame wiki's item and mob browser (NOVA-42). It has no legacy
+		# window: uiWiki.UnavailableWindow stands in when NovaUI cannot run.
+		self.wndWiki = nui_windows.make("wiki", uiWiki.UnavailableWindow, "nui_wiki.WikiWindow")
+		self.wndWiki.Hide()
 
 		# The offline shop's search, log and decoration windows (NOVA-9) are the
 		# legacy controllers on NovaUI proxies.
@@ -336,6 +342,9 @@ class Interface(object):
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
 		self.dlgSystem.SetOpenKillRankEvent(ui.__mem_func__(self.OpenKillRank))
+		# NovaUI's system menu only (nui_system_menu.SetOpenWikiEvent).
+		if hasattr(self.dlgSystem, "SetOpenWikiEvent"):
+			self.dlgSystem.SetOpenWikiEvent(ui.__mem_func__(self.ToggleWiki))
 
 		self.dlgSystem.Hide()
 
@@ -597,12 +606,43 @@ class Interface(object):
 		self.__InitWhisper()
 		self.DRAGON_SOUL_IS_QUALIFIED = False
 
+	def ToggleWiki(self):
+		"""The ingame wiki (NOVA-42), from the system menu and the inventory."""
+		if self.wndWiki:
+			self.wndWiki.Toggle()
+
+	def OpenWikiItem(self, vnum):
+		"""True when the wiki opened on the item."""
+		return bool(self.wndWiki and self.wndWiki.OpenItem(vnum))
+
+	def OpenWikiMob(self, vnum):
+		return bool(self.wndWiki and self.wndWiki.OpenMob(vnum))
+
+	def WikiAnswer(self, *rows):
+		if self.wndWiki:
+			self.wndWiki.WikiAnswer(*rows)
+
 	def MakeHyperlinkTooltip(self, hyperlink):
 		tokens = hyperlink.split(":")
 		if tokens and len(tokens):
 			type = tokens[0]
 			if "item" == type:
 				self.hyperlinkItemTooltip.SetHyperlinkItem(tokens)
+			elif "syswiki" == type and len(tokens) >= 3:
+				self.__OpenWikiLink(tokens[1], tokens[2].split("?")[0])
+
+	def __OpenWikiLink(self, kind, ident):
+		"""OLD's chat links, syswiki:<kind>:<ident>[?y=NNN] (interfaceModule.py:1154).
+		The browser opens "item" and "mob" links; a text page link
+		(NOVA-139) has no page to open yet and does nothing."""
+		try:
+			vnum = int(ident)
+		except ValueError:
+			return
+		if kind == "item":
+			self.OpenWikiItem(vnum)
+		elif kind == "mob":
+			self.OpenWikiMob(vnum)
 
 	## Make Windows & Dialogs
 	################################
@@ -722,6 +762,10 @@ class Interface(object):
 		if self.wndChestDrop:
 			self.wndChestDrop.Destroy()
 			self.wndChestDrop = None
+
+		if self.wndWiki:
+			self.wndWiki.Destroy()
+			self.wndWiki = None
 
 		if self.wndSashCombine:
 			self.wndSashCombine.Destroy()
@@ -1695,6 +1739,8 @@ class Interface(object):
 		## OLD interfaceModule.py:3381-3382 (NOVA-18).
 		if getattr(self, "wndChestDrop", None):
 			hideWindows += self.wndChestDrop,
+		if getattr(self, "wndWiki", None):
+			hideWindows += self.wndWiki,
 
 		## The switchbot (NOVA-43; OLD interfaceModule.py:3384-3385).
 		if getattr(self, "wndSwitchbot", None):

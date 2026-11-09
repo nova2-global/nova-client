@@ -1927,6 +1927,11 @@ class InventoryWindow(ui.ScriptWindow):
 			net.SendSafeboxCheckinPacket(player.INVENTORY, slotIndex, SafeboxCheckinCell(player.GetItemIndex(slotIndex)))
 			return True
 
+		## Shift + right-click opens the item in the wiki (NOVA-42; OLD :2509);
+		## where the wiki cannot open (no NovaUI) the item is used as before.
+		if isShift and self.interface and self.interface.OpenWikiItem(player.GetItemIndex(slotIndex)):
+			return True
+
 		if isControl:
 			import exchange # the client's; imported here, as the item windows' stand-ins have none
 			if exchange.isTrading():
@@ -1938,6 +1943,11 @@ class InventoryWindow(ui.ScriptWindow):
 				return True
 
 		return False
+
+	def ClickWikiButton(self):
+		## The inventory's wiki button (NOVA-42; OLD's wikiBtn, :470).
+		if self.interface:
+			self.interface.ToggleWiki()
 
 	def OpenMultiUseDialog(self, window, slotIndex, itemCount):
 		self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)

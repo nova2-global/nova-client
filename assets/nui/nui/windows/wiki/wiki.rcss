@@ -1,0 +1,288 @@
+/* The ingame wiki browser's modern look (NOVA-42): three columns on the
+   usual window frame. Tokens and dp only. Classic:
+   skins/classic/windows/wiki.rcss. */
+
+body.wiki
+{
+	left: 16dp;
+	top: 16dp;
+	width: 780dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.wiki button
+{
+	tab-index: none;
+	focus: none;
+}
+.wiki__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.wiki__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.wiki__clock
+{
+	display: none;
+}
+.wiki__body
+{
+	display: flex;
+	flex-direction: row;
+	height: 500dp;
+	padding: 8dp 12dp 12dp;
+}
+.wiki__side
+{
+	display: flex;
+	flex-direction: column;
+	width: 180dp;
+	margin-right: var(--space-2);
+}
+.wiki__search
+{
+	width: 180dp;
+	margin-bottom: var(--space-2);
+}
+.wiki__tree
+{
+	flex: 1;
+}
+.wiki__cat-button, .wiki__sub-button
+{
+	display: block;
+	width: 100%;
+	text-align: left;
+}
+.wiki__fold
+{
+	display: inline-block;
+	width: 6dp;
+	height: 6dp;
+	margin-right: var(--space-1);
+	background-color: var(--text-muted);
+}
+.wiki__fold.is-open
+{
+	background-color: var(--accent);
+}
+.wiki__sub-button
+{
+	margin-left: 12dp;
+	width: 160dp;
+	color: var(--text-muted);
+}
+.wiki__list
+{
+	display: flex;
+	flex-direction: column;
+	width: 260dp;
+	margin-right: var(--space-2);
+}
+.wiki__rows
+{
+	flex: 1;
+}
+.wiki__row, .wiki__loot, .wiki__origin
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+	padding: var(--space-1) var(--space-2);
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__row:hover, .wiki__loot:hover
+{
+	background-color: var(--selection);
+}
+.wiki__well
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 36dp;
+	height: 36dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+	background-color: var(--surface-sunken);
+	flex-shrink: 0;
+}
+.wiki__icon
+{
+	position: absolute;
+	left: 2dp;
+	top: 2dp;
+	width: 32dp;
+	height: 32dp;
+}
+.wiki__mob-glyph
+{
+	--glyph-ink: var(--danger);
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+}
+.wiki__row-name
+{
+	flex: 1;
+	color: var(--text);
+}
+.wiki__row-note
+{
+	margin-left: var(--space-2);
+	color: var(--text-muted);
+}
+.wiki__page
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	position: relative;
+}
+.wiki__page-head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: var(--space-2);
+}
+.wiki__preview
+{
+	width: 96dp;
+	height: 96dp;
+	margin-right: var(--space-3);
+}
+.wiki__view
+{
+	display: block;
+	width: 96dp;
+	height: 96dp;
+}
+.wiki__view--hover
+{
+	width: 150dp;
+	height: 200dp;
+}
+.wiki__preview-well
+{
+	width: 96dp;
+	height: 96dp;
+}
+.wiki__preview-well .wiki__icon
+{
+	left: 32dp;
+	top: 32dp;
+}
+.wiki__head-text
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+.wiki__page-name
+{
+	font-size: var(--font-lg);
+	color: var(--text);
+}
+.wiki__page-sub, .wiki__page-common
+{
+	color: var(--text-muted);
+}
+.wiki__sections, .wiki__scroll
+{
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	min-height: 0;
+}
+.wiki__heading
+{
+	margin-top: var(--space-2);
+	padding: var(--space-1) var(--space-2);
+	color: var(--accent);
+	border-bottom-width: 1dp;
+	border-color: var(--accent-glow);
+}
+.wiki__origin-label
+{
+	width: 90dp;
+	color: var(--text-muted);
+}
+.wiki__origin-name
+{
+	flex: 1;
+	color: var(--text);
+}
+.wiki__origin.is-link .wiki__origin-name
+{
+	color: var(--accent);
+}
+.wiki__refine
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: var(--space-1) var(--space-2);
+}
+.wiki__refine-label
+{
+	width: 40dp;
+	color: var(--text-muted);
+}
+.wiki__mat
+{
+	position: relative;
+	width: 36dp;
+	height: 36dp;
+	margin-right: var(--space-1);
+}
+.wiki__mat-count
+{
+	position: absolute;
+	right: 2dp;
+	bottom: 0dp;
+	color: var(--text);
+}
+.wiki__refine-cost
+{
+	margin-left: auto;
+	color: var(--text);
+}
+.wiki__state
+{
+	padding: var(--space-3);
+	text-align: center;
+	color: var(--text-muted);
+}
+.wiki__hover-preview
+{
+	position: absolute;
+	right: 0dp;
+	top: 0dp;
+	width: 150dp;
+	height: 200dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	background-color: var(--surface-raised);
+	pointer-events: none;
+}

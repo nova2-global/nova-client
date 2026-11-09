@@ -357,6 +357,11 @@ body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
 	border-radius: 15dp;
 	line-height: 28dp;
 }
+/* The wiki button sits in the title bar: the equipment column is full. */
+.inv__wiki
+{
+	margin-right: var(--space-1);
+}
 .inv-button--mall .nui-glyph
 {
 	--glyph-ink: var(--warning);

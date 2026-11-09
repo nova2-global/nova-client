@@ -2196,6 +2196,12 @@ class Wave4b(Pair):
     def test_shift_without_the_safebox_uses_the_item(self):
         self.same(self.pressing("DIK_LSHIFT")(4), expect=["net.SendItemUsePacket"])
 
+    def test_shift_opens_the_item_in_the_wiki_where_the_wiki_can_open(self):
+        def wiki(game):
+            game.wiki_opens = True
+        legacy, _, _ = self.same(self.pressing("DIK_LSHIFT")(4), wave4b(wiki), expect=["interface.OpenWikiItem"])
+        self.assertEqual(legacy[0][0], "interface.OpenWikiItem")
+
     def test_alt_opens_a_count_of_chests_from_a_stack(self):
         def chests(game):
             game.give(8, CHEST, 5)

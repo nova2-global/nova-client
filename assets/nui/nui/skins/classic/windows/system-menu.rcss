@@ -64,3 +64,9 @@ body.skin-classic.system-menu .system-menu__button--mall:active
 	decorator: image("d:/ymir work/ui/public/xlarge_button_02.sub");
 	color: var(--classic-mall-text);
 }
+
+/* The wiki button is the modern skins'; classic keeps legacy's layout (NOVA-42). */
+body.skin-classic.system-menu .system-menu__button--wiki
+{
+	display: none;
+}

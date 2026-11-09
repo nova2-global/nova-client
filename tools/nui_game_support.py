@@ -2760,6 +2760,11 @@ def _wave3b_modules(game):
             # Wave 5 (NOVA-9): the inventory's Search button and Ctrl + click.
             log.append(("interface.OpenSearchShop", (vnum,) if vnum else ()))
 
+        def OpenWikiItem(self, vnum):
+            # NOVA-42: Shift + right-click; True when the wiki opened.
+            log.append(("interface.OpenWikiItem", (vnum,)))
+            return getattr(game, "wiki_opens", False)
+
     class DragonSoulRefine(object):
         shown = False
 

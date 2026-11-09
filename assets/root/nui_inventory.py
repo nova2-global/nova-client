@@ -377,6 +377,12 @@ class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0 and self._owner.mallButton:
 			self._owner.mallButton.click()
 
+	@nui.on("wiki_press")
+	def on_wiki_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.ClickWikiButton()
+
 	@nui.on("extra_press")
 	def on_extra_press(self, button):
 		self.raise_for(button)
@@ -472,6 +478,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"has_costume": False,
 			"has_dss": False,
 			"has_mall": False,
+			"has_wiki": False,
 			# Wave 4b (NOVA-16): the special inventory's button.
 			"has_extra": False,
 			# The board is placed from Python (inv--placed: the sheet's
@@ -743,7 +750,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
 		self.wndCostume = None
 		self._set(has_costume=bool(self.costumeButton), has_dss=bool(self.DSSButton), has_mall=bool(self.mallButton),
-		          has_extra=bool(self.extraInventoryButton))
+		          has_extra=bool(self.extraInventoryButton), has_wiki=True)
 
 		## Refresh
 		self.SetInventoryPage(0)

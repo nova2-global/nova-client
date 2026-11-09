@@ -1390,6 +1390,7 @@
 		"has_costume": true,
 		"has_dss": true,
 		"has_mall": true,
+		"has_wiki": false,
 		"has_extra": true,
 		"placed": false,
 		"bag_attaching": false,

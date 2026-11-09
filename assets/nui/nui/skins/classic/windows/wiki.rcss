@@ -1,0 +1,8 @@
+/* Classic skin overlay of nui/windows/wiki/wiki.rml: the wiki has no legacy
+   window (NOVA-42), so classic keeps the browser's own layout on the stone
+   board, code-drawn like the other classic windows with no legacy art. */
+
+body.skin-classic.wiki .wiki__title-icon
+{
+	display: none;
+}

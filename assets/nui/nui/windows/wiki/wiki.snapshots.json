@@ -1,0 +1,9 @@
+{
+	"$comment": "Golden cases of the ingame wiki browser (NOVA-42, tools/check_nui_snapshots.py): a weapon's page with its origins, contents and refine costs.",
+	"cases": [
+		{"page": "wiki", "themes": "all", "except": ["classic"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "themes": ["classic"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
+		{"page": "wiki", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
+	]
+}

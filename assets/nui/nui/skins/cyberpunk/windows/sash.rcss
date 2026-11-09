@@ -1,0 +1,30 @@
+/* Cyberpunk overlay of nui/windows/sash/sash.rml, as the refine dialog's and
+   the guild's checks: the title's icon chip a square on the dim neon line;
+   the price bar square, on an acid tag's fill and line; the check box
+   square, its mark acid. The cells are the skin's components. */
+
+body.skin-cyberpunk.sash .sash-title-icon
+{
+	border-color: var(--cyberpunk-edge-dim);
+	border-radius: 0;
+	background-color: var(--cyberpunk-holo-a);
+}
+body.skin-cyberpunk.sash .sash__price
+{
+	border-color: var(--cyberpunk-acid-line);
+	border-radius: 0;
+	background-color: var(--cyberpunk-acid-soft);
+}
+body.skin-cyberpunk.sash .sash__check
+{
+	border-color: var(--border);
+	border-radius: 0;
+}
+body.skin-cyberpunk.sash .sash__auto:hover .sash__check
+{
+	border-color: var(--cyberpunk-edge);
+}
+body.skin-cyberpunk.sash .sash__check-mark
+{
+	border-color: var(--cyberpunk-acid);
+}

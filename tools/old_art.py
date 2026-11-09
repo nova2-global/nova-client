@@ -2,9 +2,18 @@
 item_list lines name for the quivers, sashes, weapon costumes and auras of
 the cut's item_proto that NEW's list lacks, the sash effects and the quiver's
 bow attack (EXTRA), and every texture, effect, mesh and motion those name in
-turn, taken from OLD's client source into the asset groups.
+turn, taken from OLD's client source into the asset groups. Since the NOVA-20
+follow-up it takes the wings too (COSTUME_SASH2): their item_list lines, the
+effects NEW's locale/common/shiningtable.txt gives them, and the models and
+skins of the race shapes (the msm files' WingData groups) their value 3 names.
 
+	python3 tools/old_art.py plan PACKER OLD_ITEM_LIST CUT_ITEM_PROTO GRLIST
 	python3 tools/old_art.py import PACKER OLD_ITEM_LIST CUT_ITEM_PROTO GRLIST
+
+plan lists what an import would take (files and MB by kind) and writes
+nothing. OLD_ART_SCRATCH names a folder grlist (a Windows program) can read and
+write, for its listings and converted models (default tools/; a worktree on
+WSL's own disk needs one on a Windows drive).
 
 PACKER is OLD's packer folder: xml/<pack>_create.xml names the store path of
 each file under source/ (Lunika Compile-64/CRYPTION). OLD_ITEM_LIST and
@@ -17,7 +26,7 @@ empty; grlist writes them as standard files the way OLD's loader reads them
 (OLD EterGrnLib/Thing.cpp GetMyFileInfo). Every other file is copied as it
 is. A file NEW's groups already publish is never written. The manifest
 (tools/fixtures/old_art.tsv) lists each file taken: store path, file under
-assets/, OLD's source and how it was taken. Run old_content.py item_list afterwards so the
+assets/, OLD's source and how it was taken; a run adds its rows to it. Run old_content.py item_list afterwards so the
 lines whose files now ship are added.
 """
 import os
@@ -30,7 +39,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import old_content  # noqa: E402
 
 MANIFEST = os.path.join(old_content.REPO, "tools", "fixtures", "old_art.tsv")
-SUB_TYPES = ("COSTUME_WEAPON", "COSTUME_SASH", "COSTUME_AURA", "WEAPON_UNLIMITED_ARROW")
+SUB_TYPES = ("COSTUME_WEAPON", "COSTUME_SASH", "COSTUME_AURA", "WEAPON_UNLIMITED_ARROW", "COSTUME_SASH2")
+# The wings' shining effects and race shapes (NOVA-20 follow-up).
+SHINING_TABLE = os.path.join(old_content.ASSETS, "locale", "locale", "common", "shiningtable.txt")
+MSM_FOLDER = os.path.join(old_content.ASSETS, "root", "msm")
 # OLD playerSettingModule.py:283-284 (the sash's combine and equip effects),
 # :588 (its glow, EFFECT_REFINED + 21) and :1587 (the quiver's bow attack).
 EXTRA = (
@@ -119,6 +131,121 @@ def seeds(old_data, proto_text, new_data, files):
 		if path not in files and path not in out:
 			out.append(path)
 	return out
+
+
+def wing_shapes(proto_text):
+	"""The value 3 of the cut's wings (COSTUME_SASH2): the race shape each
+	wears (OLD CActorInstance::AttachSash, CRaceData::FindWing)."""
+	rows = proto_text.split("\n")
+	header = rows[0].split("\t")
+	column = header.index("VALUE3")
+	shapes = set()
+	for row in rows[1:]:
+		cells = row.split("\t")
+		if len(cells) > column and cells[3].strip() == "COSTUME_SASH2":
+			shapes.add(old_content.atoi(cells[column]))
+	return shapes
+
+
+def shining_seeds(data):
+	"""The effects a shiningtable.txt names (OLD CItemManager::
+	LoadShiningTable: a vnum or a range, then up to six effects, each with
+	an optional #bone)."""
+	out = []
+	for line in old_content.lines_of(data):
+		tokens = old_content.split_tab(line)
+		for token in (tokens or [])[1:]:
+			path = store_path(token.split("#")[0], "")
+			if path not in out:
+				out.append(path)
+	return out
+
+
+MSM_TOKEN = re.compile(r'"[^"]*"|[{}]|[^\s{}"]+')
+
+
+def wing_shape_seeds(msm_texts, shapes):
+	"""The model and the skins of each WingData group whose WingIndex is in
+	`shapes`, read as OLD's loader reads them (OLD RaceDataFile.cpp:653-815):
+	PathName before the model, a SpecialPath replacing it for that group and
+	the ones after it, a TargetSkin after the path, a CommonTargetSkin as it
+	is."""
+	out = []
+	for text in msm_texts:
+		if isinstance(text, bytes):
+			text = text.decode("latin-1")
+		tokens = [token.strip('"') if token.startswith('"') else token for token in MSM_TOKEN.findall(text)]
+		groups, depth, path, entry = [], 0, "", None
+		i = 0
+		while i < len(tokens):
+			token = tokens[i]
+			low = token.lower()
+			if low == "group" and i + 1 < len(tokens):
+				groups.append(tokens[i + 1].lower())
+				i += 2
+				continue
+			if token == "{":
+				depth += 1
+				if len(groups) >= 2 and groups[-2] == "wingdata" and groups[-1].startswith("wingdata"):
+					entry = {}
+			elif token == "}":
+				depth -= 1
+				if entry is not None and groups and groups[-1].startswith("wingdata") and len(groups) >= 2:
+					if old_content.atoi(entry.get("wingindex", "0")) in shapes:
+						if "model" in entry:
+							out.append(old_content.store_name(path + entry["model"]))
+						for key in ("targetskin", "targetskin2"):
+							if key in entry:
+								out.append(old_content.store_name(path + entry[key]))
+						for key in ("commontargetskin", "commontargetskin2", "commontargetskin3",
+								"commontargetskin4", "commontargetskin5"):
+							if key in entry:
+								out.append(old_content.store_name(entry[key]))
+					entry = None
+				if groups:
+					groups.pop()
+			elif i + 1 < len(tokens) and tokens[i + 1] not in ("{", "}"):
+				if groups and groups[-1] == "wingdata" and entry is None and low == "pathname":
+					path = tokens[i + 1]
+				elif entry is not None:
+					if low == "specialpath":
+						path = tokens[i + 1]
+					else:
+						entry[low] = tokens[i + 1]
+				i += 2
+				continue
+			i += 1
+	result = []
+	for item in out:
+		item = store_path(item, "")
+		if item not in result:
+			result.append(item)
+	return result
+
+
+def wing_seeds(proto_text):
+	"""What the wings need beyond their item_list lines: NEW's shining
+	table's effects and the models and skins of their race shapes."""
+	found = []
+	if os.path.exists(SHINING_TABLE):
+		with open(SHINING_TABLE, "rb") as handle:
+			found.extend(shining_seeds(handle.read()))
+	texts = []
+	if os.path.isdir(MSM_FOLDER):
+		for name in sorted(os.listdir(MSM_FOLDER)):
+			if name.lower().endswith(".msm"):
+				with open(os.path.join(MSM_FOLDER, name), "rb") as handle:
+					texts.append(handle.read())
+	found.extend(wing_shape_seeds(texts, wing_shapes(proto_text)))
+	return found
+
+
+def merge_rows(kept, added):
+	"""The manifest's rows after a run: the rows it had, and the run's for
+	store paths it did not have, in store path order."""
+	rows = dict((row[0], tuple(row)) for row in added)
+	rows.update((row[0], tuple(row)) for row in kept)
+	return [rows[path] for path in sorted(rows)]
 
 
 def group_folders(assets, groups):
@@ -221,10 +348,15 @@ def closure(start, index, files, packer, grlist, scratch):
 	return take, missing
 
 
-def import_art(packer, old_item_list, cut_proto, grlist):
-	assets = old_content.ASSETS
-	with open(os.path.join(assets, "groups.txt"), encoding="utf-8") as handle:
-		groups = [line for line in (raw.split("#")[0].strip() for raw in handle) if line]
+def scratch_folder():
+	folder = os.environ.get("OLD_ART_SCRATCH") or os.path.join(old_content.REPO, "tools")
+	os.makedirs(folder, exist_ok=True)
+	return folder
+
+
+def gather(packer, old_item_list, cut_proto, grlist, scratch):
+	"""What a run takes: ({store: source}, {store: referrer} missing in OLD
+	too, the packer index, NEW's published files)."""
 	files = old_content.published_files()
 	with open(old_item_list, "rb") as handle:
 		old_data = handle.read()
@@ -233,17 +365,55 @@ def import_art(packer, old_item_list, cut_proto, grlist):
 	with open(old_content.ITEM_LIST, "rb") as handle:
 		new_data = old_content.news_part(handle.read(), "item_list")
 	index = packer_index(packer)
-	scratch = os.path.join(old_content.REPO, "tools")
-	take, missing = closure(seeds(old_data, proto_text, new_data, files), index, files, packer, grlist, scratch)
+	start = seeds(old_data, proto_text, new_data, files)
+	start += [path for path in wing_seeds(proto_text) if path not in files and path not in start]
+	take, missing = closure(start, index, files, packer, grlist, scratch)
+	return take, missing, index, files
+
+
+def kind_of(path):
+	return os.path.splitext(path)[1].lower() or "(none)"
+
+
+def plan_art(packer, old_item_list, cut_proto, grlist):
+	scratch = scratch_folder()
+	take, missing, _, _ = gather(packer, old_item_list, cut_proto, grlist, scratch)
+	kinds, total, custom = {}, 0, 0
+	for path in take:
+		source = os.path.join(packer, take[path])
+		size = os.path.getsize(source)
+		count, sizes = kinds.get(kind_of(path), (0, 0))
+		kinds[kind_of(path)] = (count + 1, sizes + size)
+		total += size
+		if path.endswith(".gr2") and granny_tag(source) == CUSTOM_TAG:
+			custom += 1
+	print("would take %d files, %.1f MB (%d models to convert):" % (len(take), total / 1048576.0, custom))
+	for kind in sorted(kinds, key=lambda kind: -kinds[kind][1]):
+		print("  %-6s %6d files %9.1f MB" % (kind, kinds[kind][0], kinds[kind][1] / 1048576.0))
+	print("%d named but missing in OLD too:" % len(missing))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path] or "item_list"))
+	return 0
+
+
+def import_art(packer, old_item_list, cut_proto, grlist):
+	assets = old_content.ASSETS
+	with open(os.path.join(assets, "groups.txt"), encoding="utf-8") as handle:
+		groups = [line for line in (raw.split("#")[0].strip() for raw in handle) if line]
+	scratch = scratch_folder()
+	take, missing, index, _ = gather(packer, old_item_list, cut_proto, grlist, scratch)
 	folders = group_folders(assets, groups)
-	rows, converts = [], []
+	rows, converts, placed = [], [], []
 	for path in sorted(take):
 		group = choose_group(path, folders)
 		source = os.path.join(packer, take[path])
 		target = destination(assets, group, index[path][0])
 		os.makedirs(os.path.dirname(target), exist_ok=True)
 		if path.endswith(".gr2") and granny_tag(source) == CUSTOM_TAG:
-			converts.append((source, target))
+			# grlist writes into the scratch folder, which it can reach.
+			converted = os.path.join(scratch, "old_art_%d.gr2" % len(converts))
+			converts.append((source, converted))
+			placed.append((converted, target))
 			how = "converted"
 		else:
 			with open(source, "rb") as src, open(target, "wb") as out:
@@ -256,9 +426,20 @@ def import_art(packer, old_item_list, cut_proto, grlist):
 		failed += [row for row in results if len(row) == 3 and row[1] in ("ERROR", "DIFFERENT")]
 		if code and not failed:
 			failed.append(("grlist", kind, "exit %d" % code))
+	for converted, target in placed:
+		if os.path.exists(converted):
+			with open(converted, "rb") as src, open(target, "wb") as out:
+				out.write(src.read())
+			os.remove(converted)
+		else:
+			failed.append((converted, "ERROR", "not written"))
+	kept = []
+	if os.path.exists(MANIFEST):
+		with open(MANIFEST, encoding="utf-8") as handle:
+			kept = [line.rstrip("\n").split("\t") for line in handle if line.strip() and not line.startswith("#")]
 	with open(MANIFEST, "w", encoding="utf-8", newline="\n") as handle:
 		handle.write("# store path\tfile under assets/\tOLD source (under the packer folder)\thow\n")
-		for row in rows:
+		for row in merge_rows(kept, rows):
 			handle.write("\t".join(row) + "\n")
 	print("took %d files (%d converted), %d named but missing in OLD too:" % (
 		len(rows), len(converts), len(missing)))
@@ -272,6 +453,8 @@ def import_art(packer, old_item_list, cut_proto, grlist):
 def _main(argv):
 	if len(argv) == 5 and argv[0] == "import":
 		return import_art(*argv[1:])
+	if len(argv) == 5 and argv[0] == "plan":
+		return plan_art(*argv[1:])
 	print(__doc__)
 	return 2
 

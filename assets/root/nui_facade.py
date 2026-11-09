@@ -44,6 +44,7 @@ subclass's override), then self.nui_end(). Facade gives the window:
 A board is a nui.Window with nui_hud.RaisesOnPress, defined in the window's
 own controller module (lint NUI006 finds its @nui.on handlers there)."""
 
+import struct
 import weakref
 
 import nui
@@ -52,7 +53,20 @@ import nui_limits
 
 # The windows that watch the distance under their KEY (LEAVE_RANGE): the
 # exchange, the shop, the safebox, the mall and the gaya market.
-LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop", "kill-rank")
+LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop", "aura", "sash-combine", "sash-absorb", "kill-rank")
+
+
+def below_as_float(value):
+	"""The largest 32-bit float under a positive `value`, as the double that
+	holds it exactly. A legacy walk-away rule of `>= LIMIT` becomes a
+	nuigame.WatchLeaveRange watch with this range: the engine keeps the range
+	as a float and fires when a float distance is greater than it
+	(NuiGameModule.cpp WatchLeaveRange's static_cast<float>, NuiRangeWatch.cpp),
+	and no float lies between this one and `value`, so `> range` is `>= value`.
+	The double just under `value` (math.nextafter) would round back to `value`
+	in the engine. Used by the Wave 6 sash and aura windows."""
+	bits = struct.unpack("<I", struct.pack("<f", float(value)))[0]
+	return struct.unpack("<f", struct.pack("<I", bits - 1))[0]
 
 
 def _stop_leave_range(key):

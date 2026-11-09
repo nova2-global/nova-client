@@ -21,7 +21,8 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "costume_body"
+				"name": "costume_body",
+				"marks": []
 			},
 			{
 				"index": 1,
@@ -42,7 +43,8 @@
 				"target": "",
 				"picked": false,
 				"unavailable": false,
-				"name": "costume_hair"
+				"name": "costume_hair",
+				"marks": []
 			}
 		],
 		"has_companion": false,
@@ -50,6 +52,13 @@
 		"wear_on": [
 			1
 		],
-		"figure": "/nui/figures/costume-female.png"
+		"figure": "/nui/figures/costume-female.png",
+		"show_body": true,
+		"show_hair": true,
+		"show_weapon": true,
+		"show_sash": true,
+		"wing_down": false,
+		"wing_open": false,
+		"wing_rows": []
 	}
 }

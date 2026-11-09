@@ -1057,3 +1057,29 @@ AURA_WINDOW_EXP	%s / %s EXP
 AURA_WING_SHOW_WING	Wings
 AURA_WING_SHOW_AURA	Aura
 AURA_WING_SHOW_EFFECT	Aura Wing Effect
+TIMERWINDOW_DUNGEON_TITLES	Demon Tower, Spider Baroness, Devil`s Catacomb, Aqua Dragon, Solitary Temple, Nemeres, Razador, Ochao, Meley, Hive Cave, Crystal Dungeon, Mushroom Dungeon, Duratus, Demon Pit, Fear Dungeon, Mazel Run, Ghidorah`s Nest, Ancient Pyramid, White Tower, Ship Defence, Elder Elemental Vault
+TIMERWINDOW_AVAILABLE	Disponibile
+TIMERWINDOW_READY_TO_FIGHT	Pronto a Combattere!
+TIMERWINDOW_REQUIRED_LEVEL	Livello Min. %d \nLivello Max. %d 
+TIMERWINDOW_GROUP_REQUEST	Gruppo richiesto
+TIMERWINDOW_ENTRY_TICKET	Biglietto d'entrata
+TIMERWINDOW_COOLDOWN	Tempo di attesa
+TIMERWINDOW_DROP_TITLE	Dungeon Drops
+TIMERWINDOW_DROP_LIST	The following mobs are located in %s
+TIMERWINDOW_MINUTE	%d Min
+TIMERWINDOW_MINUTES	%d Mins
+TIMERWINDOW_GROUP_NO	No
+TIMERWINDOW_GROUP_YES	Yes
+TIMERWINDOW_EMPTY	No dungeons found.
+TIMERWINDOW_ALL_HIDDEN	All dungeons are hidden for your level. Press Show Hidden to see them.
+TIMERWINDOW_LOAD_ERROR	Load error: %s
+TIMERWINDOW_DROP_RARE	Rare Drop
+TIMERWINDOW_DROP_COMMON	Common Drop
+TIMERWINDOW_DROP_GUARANTEED	Guaranteed Drop
+BOSS_INFO_LEVEL	Livello %d
+BOSS_INFO_ALIVE	Vivo
+BOSS_INFO_DEAD	Morto
+BOSS_INFO_RESPAWN	Ricompare tra %s
+BOSS_INFO_EXPAND	Mostra i boss
+BOSS_INFO_COLLAPSE	Nascondi i boss
+DAMAGE_COUNT_DAMAGE	Danno: %s(%s)

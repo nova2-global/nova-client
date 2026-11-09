@@ -1254,6 +1254,13 @@ EXPECTED_SITES = {
                            ("make", "big-board", "uiTip.BigBoard", "nui_big_board.BigBoard"),
                            ("make", "web", "uiWeb.WebWindow", "nui_web.WebWindow"),
                            ("make", "select-item", "uiselectitem.SelectItemWindow", "nui_select_item.SelectItemWindow"),
+                           # NOVA-27: the boss info panel and the damage count.
+                           ("make", "boss-info", "uiBossInfo.BossInfoWindow", "nui_boss_info.BossInfoWindow"),
+                           ("make", "damage-count", "uiDamageCount.DamageCountWindow",
+                            "nui_damage_count.DamageCountWindow"),
+                           # NOVA-25: the dungeon manager and the dungeon ranking.
+                           ("make", "dungeon-timer", "uiTimerWindow.TimerWindow", "nui_dungeon_timer.TimerWindow"),
+                           ("make", "dungeon-rank", "uiDungeonRank.DungeonRankWindow", "nui_dungeon_rank.DungeonRankWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
@@ -1272,6 +1279,8 @@ EXPECTED_SITES = {
                 ("make", "maintenance", "uiMaintenance.MaintenanceWindow", "nui_maintenance.MaintenanceWindow"),
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
+    # NOVA-25: the dungeon manager makes its drops panel.
+    "uitimerwindow.py": [("make", "dungeon-drops", "MobDropPopup", "nui_dungeon_drops.MobDropPopup")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
     # Wave 3b (P14 spec 6.7): the inventory's dialogs, in the legacy class
     # and in the NovaUI loader that stands for its uiscript loader.

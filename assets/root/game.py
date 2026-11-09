@@ -34,6 +34,8 @@ import uiPlayerGauge
 import uiCharacter
 import uiTarget
 import uiMaintenance
+# The dungeon manager's data and drop list (NOVA-25).
+import uiTimerWindow
 
 # PRIVATE_SHOP_PRICE_LIST
 import uiPrivateShopBuilder
@@ -358,6 +360,8 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_F2]	= lambda: self.__PressQuickSlot(5)
 		onPressKeyDict[app.DIK_F3]	= lambda: self.__PressQuickSlot(6)
 		onPressKeyDict[app.DIK_F4]	= lambda: self.__PressQuickSlot(7)
+		# NOVA-25: the dungeon manager (OLD game.py:493).
+		onPressKeyDict[app.DIK_F6]	= lambda: self.OpenTimerWindow()
 
 		onPressKeyDict[app.DIK_LALT]		= lambda: self.ShowName()
 		onPressKeyDict[app.DIK_LCONTROL]	= lambda: self.ShowMouseImage()
@@ -893,16 +897,40 @@ class GameWindow(ui.ScriptWindow):
 		if vid != self.targetBoard.GetTargetVID():
 			self.targetBoard.ResetTargetBoard()
 			self.targetBoard.SetEnemyVID(vid)
+			# NOVA-27 (OLD game.py:1361-1362): a new target closes the damage count.
+			self.__CloseDamageCount()
 
 		self.targetBoard.SetHP(hpPercentage)
 		self.targetBoard.Show()
 
+		# NOVA-27 (OLD game.py:1373): the boss's HP in the damage count.
+		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
+		if wndDamageCount:
+			wndDamageCount.AddHPInfo(vid, hpPercentage)
+
 	def CloseTargetBoardIfDifferent(self, vid):
 		if vid != self.targetBoard.GetTargetVID():
 			self.targetBoard.Close()
+			self.__CloseDamageCount()
 
 	def CloseTargetBoard(self):
 		self.targetBoard.Close()
+		self.__CloseDamageCount()
+
+	def __CloseDamageCount(self):
+		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
+		if wndDamageCount:
+			wndDamageCount.Close()
+
+	## NOVA-27: GC::BOSS_DAMAGE_COUNT, one row of a damage-count boss's top
+	## attackers (OLD game.py:1819-1823).
+	def BINARY_UpdateBossDamageCount(self, attackerVID, victimVID, totalDamage):
+		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
+		if not wndDamageCount:
+			return
+		wndDamageCount.AddData(attackerVID, victimVID, totalDamage)
+		if not wndDamageCount.IsShow():
+			wndDamageCount.Open()
 
 	## View Equipment
 	def OpenEquipmentDialog(self, vid):
@@ -1109,6 +1137,56 @@ class GameWindow(ui.ScriptWindow):
 		wndCostume = getattr(self.interface.wndInventory, "wndCostume", None)
 		if wndCostume:
 			wndCostume.ResetSlider()
+
+	## The boss info panel's list (NOVA-27; OLD game.py:4030-4041): the
+	## server's "ClearBossInfo", "AddBossInfo <vnum> <alive> <respawn time>"
+	## and "BossInfoLoadComplete".
+	def __ClearBossInfo(self):
+		if self.interface:
+			self.interface.ClearBossInfo()
+
+	def __AddBossInfo(self, bossVnum, isAlive, timeUntilRespawn):
+		if self.interface:
+			self.interface.AddBossInfo(int(bossVnum), int(isAlive), int(timeUntilRespawn))
+
+	def __BossInfoLoadComplete(self):
+		if self.interface:
+			self.interface.BossInfoLoadComplete()
+
+	## The dungeon manager (NOVA-25; OLD game.py:3843-3883 and 1181-1189).
+	def OpenTimerWindow(self):
+		if self.interface:
+			self.interface.OpenTimerWindow()
+
+	def SetQuestTime(self, index, time):
+		if self.interface:
+			self.interface.SetQuestTime(int(index), int(time))
+
+	def QuestTimeReady(self):
+		if self.interface:
+			self.interface.QuestTimeReady()
+		else:
+			uiTimerWindow.TIMER_STATE["loaded"] = True
+
+	def RefreshDungeonRank(self, type, dungeonIndex):
+		if self.interface:
+			self.interface.RefreshDungeonRank(int(type), int(dungeonIndex))
+
+	def SetPersonalDungeonRank(self, rank, name, count, type):
+		if self.interface:
+			self.interface.SetPersonalDungeonRank(rank, name, count, type)
+
+	def __SetPersonalDungeonRankPacked(self, packed):
+		## "SetPersonalDungeonRank /<rank>/<name>/<count>/<type>": one token.
+		fields = packed.split("/")
+		if len(fields) >= 5:
+			self.SetPersonalDungeonRank(fields[1], fields[2], fields[3], fields[4])
+
+	## GC::DUNGEON_DROP: one drop of a dungeon's mob (the drops panel).
+	def BINARY_UpdateDungeonDrop(self, dungeonIndex, mobVnum, mobType, itemVnum, itemCount, itemChance):
+		uiTimerWindow.add_drop(dungeonIndex, mobVnum, mobType, itemVnum, itemCount, itemChance)
+		if self.interface:
+			self.interface.RefreshDungeonDrops()
 
 	## Gaya market (NOVA-10): C's GC::GAYA_MARKET (open 1, open 0) and
 	## GC::GAYA_MARKET_CLOSE (OLD game.py:1805-1817).
@@ -1694,6 +1772,10 @@ class GameWindow(ui.ScriptWindow):
 
 		self.interface.BUILD_OnUpdate()
 
+		# NOVA-25: the dungeon manager's clocks (OLD game.py:2335); NovaUI's
+		# count by themselves.
+		self.interface.UpdateTimer()
+
 		self.__AskWhisperDetails()
 		self.__RefreshChannelInfo()
 
@@ -2073,6 +2155,19 @@ class GameWindow(ui.ScriptWindow):
 
 			# NOVA-22 (OLD game.py:3028)
 			"ResetCostumeSlider"	: self.__ResetCostumeSlider,
+
+			# NOVA-25: the dungeon manager's clocks and the dungeon ranking
+			# (OLD game.py:3066-3079; OLD's C++ split SetPersonalDungeonRank's
+			# "/"-separated argument, PythonNetworkStreamCommand.cpp:188-197).
+			"SetQuestTime"			: self.SetQuestTime,
+			"QuestTimeReady"		: self.QuestTimeReady,
+			"RefreshDungeonRank"	: self.RefreshDungeonRank,
+			"SetPersonalDungeonRank"	: self.__SetPersonalDungeonRankPacked,
+
+			# NOVA-27: the boss info panel (OLD game.py:3096-3100)
+			"ClearBossInfo"			: self.__ClearBossInfo,
+			"AddBossInfo"			: self.__AddBossInfo,
+			"BossInfoLoadComplete"	: self.__BossInfoLoadComplete,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()

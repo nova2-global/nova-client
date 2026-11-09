@@ -50,6 +50,12 @@ import uiSash
 import uiSearchShop
 import uiOfflineShopLog
 import uiMyShopDecoration
+# The dungeon manager and the dungeon ranking (NOVA-25).
+import uiTimerWindow
+import uiDungeonRank
+# The boss info panel and the damage count window (NOVA-27).
+import uiBossInfo
+import uiDamageCount
 import uiScriptLocale
 
 import event
@@ -98,6 +104,10 @@ class Interface(object):
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
+		self.wndTimer = None
+		self.wndDungeonRank = None
+		self.wndBossInfo = None
+		self.wndDamageCount = None
 
 		self.listGMName = {}
 		self.wndQuestWindow = {}
@@ -407,6 +417,71 @@ class Interface(object):
 		if self.wndExtraInventory:
 			self.wndExtraInventory.SetAuraWindow(wndAura)
 
+	## The boss info panel and the damage count window (NOVA-27; OLD
+	## interfaceModule.py:399-400, 503-506). The panel waits hidden for the
+	## server's boss list; the damage count opens at its first row.
+	def __MakeBossWindows(self):
+		self.wndBossInfo = nui_windows.make("boss-info", uiBossInfo.BossInfoWindow, "nui_boss_info.BossInfoWindow")
+		self.wndDamageCount = nui_windows.make("damage-count", uiDamageCount.DamageCountWindow, "nui_damage_count.DamageCountWindow")
+		self.wndDamageCount.LoadWindow()
+		self.wndDamageCount.Hide()
+
+	def ClearBossInfo(self):
+		if self.wndBossInfo:
+			self.wndBossInfo.ClearBossInfo()
+
+	def AddBossInfo(self, bossVnum, isAlive, timeUntilRespawn):
+		if self.wndBossInfo:
+			self.wndBossInfo.AddBossInfo(bossVnum, isAlive, timeUntilRespawn)
+
+	def BossInfoLoadComplete(self):
+		if self.wndBossInfo:
+			self.wndBossInfo.BossInfoLoadComplete()
+
+	## The dungeon manager and the dungeon ranking (NOVA-25; OLD
+	## interfaceModule.py:753-757, 785-787, 4199-4209, 4248-4253). The
+	## manager's drops panel is made by the manager (uitimerwindow).
+	def __MakeDungeonWindows(self):
+		uiTimerWindow.reset_session()
+		self.wndTimer = nui_windows.make("dungeon-timer", uiTimerWindow.TimerWindow, "nui_dungeon_timer.TimerWindow")
+		self.wndTimer.BindInterface(self)
+		self.wndTimer.LoadWindow()
+		self.wndTimer.Hide()
+		self.wndDungeonRank = nui_windows.make("dungeon-rank", uiDungeonRank.DungeonRankWindow, "nui_dungeon_rank.DungeonRankWindow")
+		self.wndDungeonRank.LoadWindow()
+		self.wndDungeonRank.Hide()
+
+	def OpenTimerWindow(self):
+		if self.wndTimer.IsShow():
+			self.wndTimer.Close()
+		else:
+			self.wndTimer.Open()
+
+	def UpdateTimer(self):
+		if self.wndTimer:
+			self.wndTimer.UpdateTime()
+
+	def SetQuestTime(self, index, time):
+		if self.wndTimer:
+			self.wndTimer.SetTimeLeft(index, time)
+
+	def QuestTimeReady(self):
+		if self.wndTimer:
+			self.wndTimer.QuestTimeReady()
+
+	def RefreshDungeonDrops(self):
+		if self.wndTimer:
+			self.wndTimer.refreshMobList()
+
+	def OpenDungeonRank(self):
+		self.wndDungeonRank.Open(-1, -1)
+
+	def RefreshDungeonRank(self, type, dungeonIndex):
+		self.wndDungeonRank.RefreshDungeonRank(type, dungeonIndex)
+
+	def SetPersonalDungeonRank(self, rank, name, count, type):
+		self.wndDungeonRank.SetPersonalDungeonRank(rank, name, count, type)
+
 	def MakeInterface(self):
 		self.__MakeMessengerWindow()
 		self.__MakeGuildWindow()
@@ -429,6 +504,8 @@ class Interface(object):
 		# ACCESSORY_REFINE_ADD_METIN_STONE
 		self.__MakeItemSelectWindow()
 		# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
+		self.__MakeDungeonWindows()
+		self.__MakeBossWindows()
 
 		self.questButtonList = []
 		self.whisperButtonList = []
@@ -467,6 +544,7 @@ class Interface(object):
 		self.wndGemShop.SetItemToolTip(self.tooltipItem)
 		self.wndSashCombine.SetItemToolTip(self.tooltipItem)
 		self.wndSashAbsorption.SetItemToolTip(self.tooltipItem)
+		self.wndTimer.SetToolTip(self.tooltipItem)
 
 		self.__InitWhisper()
 		self.DRAGON_SOUL_IS_QUALIFIED = False
@@ -612,6 +690,24 @@ class Interface(object):
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Destroy()
 			self.wndMyShopDeco = None
+
+		# NOVA-27 (OLD interfaceModule.py:1489-1491, 1661-1662).
+		if self.wndBossInfo:
+			self.wndBossInfo.Destroy()
+			self.wndBossInfo = None
+
+		if self.wndDamageCount:
+			self.wndDamageCount.Destroy()
+			self.wndDamageCount = None
+
+		# NOVA-25 (OLD interfaceModule.py:1600-1601, 1624-1625).
+		if self.wndTimer:
+			self.wndTimer.Destroy()
+			self.wndTimer = None
+
+		if self.wndDungeonRank:
+			self.wndDungeonRank.Destroy()
+			self.wndDungeonRank = None
 
 		self.wndChatLog.Destroy()
 		for btn in self.questButtonList:
@@ -1096,11 +1192,20 @@ class Interface(object):
 		if self.wndExpandedTaskBar:
 			self.wndExpandedTaskBar.Show()
 			self.wndExpandedTaskBar.SetTop()
+		# NOVA-27 (OLD interfaceModule.py:2664-2665), only with a boss list:
+		# OLD showed the empty panel on a map without bosses.
+		wndBossInfo = getattr(self, "wndBossInfo", None)
+		if wndBossInfo and wndBossInfo.HasBossInfo():
+			wndBossInfo.Show()
 
 	def HideAllWindows(self):
 		if self.wndTaskBar:
 			self.wndTaskBar.Hide()
-		
+
+		# NOVA-27 (OLD interfaceModule.py:2743-2744).
+		if getattr(self, "wndBossInfo", None):
+			self.wndBossInfo.Hide()
+
 		if self.wndEnergyBar:
 			self.wndEnergyBar.Hide()
 
@@ -1431,6 +1536,14 @@ class Interface(object):
 		## stand-in that has only the HUD windows.
 		if getattr(self, "wndMyShopDeco", None):
 			hideWindows += self.wndMyShopDeco,
+
+		## NOVA-25 (OLD interfaceModule.py:3378-3379).
+		if getattr(self, "wndTimer", None):
+			hideWindows += self.wndTimer,
+
+		## NOVA-27 (OLD interfaceModule.py:3366-3367).
+		if getattr(self, "wndBossInfo", None):
+			hideWindows += self.wndBossInfo,
 
 		hideWindows = [x for x in hideWindows if x.IsShow()]
 

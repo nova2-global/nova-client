@@ -1057,3 +1057,29 @@ AURA_WINDOW_EXP	%s / %s EXP
 AURA_WING_SHOW_WING	Wings
 AURA_WING_SHOW_AURA	Aura
 AURA_WING_SHOW_EFFECT	Aura Wing Effect
+TIMERWINDOW_DUNGEON_TITLES	Demon Tower, Spider Baroness, Devil`s Catacomb, Aqua Dragon, Solitary Temple, Nemeres, Razador, Ochao, Meley, Hive Cave, Crystal Dungeon, Mushroom Dungeon, Duratus, Demon Pit, Fear Dungeon, Mazel Run, Ghidorah`s Nest, Ancient Pyramid, White Tower, Ship Defence, Elder Elemental Vault
+TIMERWINDOW_AVAILABLE	Activ
+TIMERWINDOW_READY_TO_FIGHT	Pregatit de lupta!
+TIMERWINDOW_REQUIRED_LEVEL	Niv. Min. %d \nNiv. Max. %d
+TIMERWINDOW_GROUP_REQUEST	Grup Necesar
+TIMERWINDOW_ENTRY_TICKET	Ticket de intrare
+TIMERWINDOW_COOLDOWN	Cooldown
+TIMERWINDOW_DROP_TITLE	Dungeon Drops
+TIMERWINDOW_DROP_LIST	Urmatori monstrii sunt localizati in %s
+TIMERWINDOW_MINUTE	%d Min
+TIMERWINDOW_MINUTES	%d Mins
+TIMERWINDOW_GROUP_NO	No
+TIMERWINDOW_GROUP_YES	Yes
+TIMERWINDOW_EMPTY	No dungeons found.
+TIMERWINDOW_ALL_HIDDEN	All dungeons are hidden for your level. Press Show Hidden to see them.
+TIMERWINDOW_LOAD_ERROR	Load error: %s
+TIMERWINDOW_DROP_RARE	Rare Drop
+TIMERWINDOW_DROP_COMMON	Common Drop
+TIMERWINDOW_DROP_GUARANTEED	Guaranteed Drop
+BOSS_INFO_LEVEL	Nivel %d
+BOSS_INFO_ALIVE	Viu
+BOSS_INFO_DEAD	Mort
+BOSS_INFO_RESPAWN	Reapare în %s
+BOSS_INFO_EXPAND	Arată boșii
+BOSS_INFO_COLLAPSE	Ascunde boșii
+DAMAGE_COUNT_DAMAGE	Daune: %s(%s)

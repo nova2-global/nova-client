@@ -51,8 +51,9 @@ import nui_hud
 import nui_limits
 
 # The windows that watch the distance under their KEY (LEAVE_RANGE): the
-# exchange, the shop, the safebox, the mall and the gaya market.
-LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop")
+# exchange, the shop, the safebox, the mall, the gaya market and the dungeon
+# ranking (NOVA-25).
+LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop", "dungeon-rank")
 
 
 def _stop_leave_range(key):

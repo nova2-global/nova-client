@@ -814,6 +814,7 @@ class GameWhisperDetails(unittest.TestCase):
         window.shownChannel = 0
         window.interface = types.SimpleNamespace(whisperDialogDict={"Pest": object()},
                                                  BUILD_OnUpdate=lambda: log.append(("BUILD_OnUpdate", ())),
+                                                 UpdateTimer=lambda: None,
                                                  wndMiniMap=types.SimpleNamespace())
         window.OnUpdate()
         calls = [entry for entry in log if entry[0] in ("BUILD_OnUpdate", "net.SendWhisperDetailsPacket",

@@ -1057,3 +1057,29 @@ AURA_WINDOW_EXP	%s / %s EXP
 AURA_WING_SHOW_WING	Wings
 AURA_WING_SHOW_AURA	Aura
 AURA_WING_SHOW_EFFECT	Aura Wing Effect
+TIMERWINDOW_DUNGEON_TITLES	Demon Tower, Spider Baroness, Devil`s Catacomb, Aqua Dragon, Solitary Temple, Nemeres, Razador, Ochao, Meley, Hive Cave, Crystal Dungeon, Mushroom Dungeon, Duratus, Demon Pit, Fear Dungeon, Mazel Run, Ghidorah`s Nest, Ancient Pyramid, White Tower, Ship Defence, Elder Elemental Vault
+TIMERWINDOW_AVAILABLE	Aktif
+TIMERWINDOW_READY_TO_FIGHT	Dövüşe Hazır!
+TIMERWINDOW_REQUIRED_LEVEL	Min. Seviye %d \nMaks. Seviye %d
+TIMERWINDOW_GROUP_REQUEST	Grup Talebi
+TIMERWINDOW_ENTRY_TICKET	Giris Bileti
+TIMERWINDOW_COOLDOWN	Bekleme Süresi
+TIMERWINDOW_DROP_TITLE	Dungeon Drops
+TIMERWINDOW_DROP_LIST	Yaratıklar burada bulunur %s
+TIMERWINDOW_MINUTE	%d Min
+TIMERWINDOW_MINUTES	%d Mins
+TIMERWINDOW_GROUP_NO	No
+TIMERWINDOW_GROUP_YES	Yes
+TIMERWINDOW_EMPTY	No dungeons found.
+TIMERWINDOW_ALL_HIDDEN	All dungeons are hidden for your level. Press Show Hidden to see them.
+TIMERWINDOW_LOAD_ERROR	Load error: %s
+TIMERWINDOW_DROP_RARE	Rare Drop
+TIMERWINDOW_DROP_COMMON	Common Drop
+TIMERWINDOW_DROP_GUARANTEED	Guaranteed Drop
+BOSS_INFO_LEVEL	Seviye %d
+BOSS_INFO_ALIVE	Canlı
+BOSS_INFO_DEAD	Ölü
+BOSS_INFO_RESPAWN	%s içinde yeniden doğar
+BOSS_INFO_EXPAND	Patronları göster
+BOSS_INFO_COLLAPSE	Patronları gizle
+DAMAGE_COUNT_DAMAGE	Hasar: %s(%s)

@@ -844,12 +844,12 @@ class ClientDefault(WindowsTest):
 
 class Wave7Switchbot(WindowsTest):
     """Wave 7 (NOVA-43): the switchbot is the id "switchbot", on by default,
-    in the items group, after Wave 5's shop-deco and before the maintenance
+    in the items group, after Wave 6's sash and aura and before the maintenance
     countdown; its document loads only while it shows and is prewarmed."""
 
     def test_the_id_is_on_by_default_before_maintenance_and_in_the_items_group(self):
         ids = [window_id for window_id, _ in self.m.WINDOWS]
-        self.assertEqual(ids[-3:], ["shop-deco", "switchbot", "maintenance"])
+        self.assertEqual(ids[-3:], ["aura", "switchbot", "maintenance"])
         self.assertIs(dict(self.m.WINDOWS)["switchbot"], True)
         self.assertEqual([group for group, members in self.m.GROUPS.items() if "switchbot" in members and group != "all"],
                          ["items"])

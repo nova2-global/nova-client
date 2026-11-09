@@ -1,0 +1,204 @@
+/* The damage count window's modern look, at legacy's geometry in dp: a
+   392dp board, the boss's name at (10, 10), the HP gauge 180dp wide at
+   (106, 30) with "HP / max" centered above it and the percentage at
+   (292, 27) in the success, warning or danger color (legacy's > 60, > 24
+   and lower), the close button at the top right; the rows 25dp tall from
+   60dp down, 6dp in, each a bar as long as legacy's (--damage-count-bar,
+   380dp for the leader) behind the rank at 10dp, the face (half size) at
+   25dp, the name at 55dp and the damage at 240dp; the player's own row in
+   an accent frame 380dp wide. The board grows with its rows, 5dp below the
+   last (legacy's 50 + 25 per row left the last one 10 px outside it). The
+   place is legacy's Open (the screen's center less 360, 100 down), set by
+   the facade. Classic (legacy's thin board, the rows' eight colors, the red
+   frame, the gauge art and the close art): skins/classic/windows/damage-count.rcss. */
+
+body.damage-count
+{
+	position: absolute;
+	left: 440dp;
+	top: 100dp;
+	width: 392dp;
+	padding: 60dp 6dp 5dp 6dp;
+	box-sizing: border-box;
+}
+.damage-count__handle
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 30dp;
+	height: 55dp;
+	cursor: move;
+}
+.damage-count__target
+{
+	display: block;
+	position: absolute;
+	left: 10dp;
+	top: 10dp;
+	width: 90dp;
+	white-space: nowrap;
+	overflow: hidden;
+	font-size: var(--font-sm);
+	font-weight: bold;
+	color: var(--accent);
+}
+.damage-count__hp
+{
+	display: block;
+	position: absolute;
+	left: 106dp;
+	top: 10dp;
+	width: 240dp;
+	height: 30dp;
+}
+.damage-count__hp-text
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 180dp;
+	text-align: center;
+	white-space: nowrap;
+	font-size: var(--font-xs);
+	color: var(--text);
+}
+.damage-count__gauge
+{
+	position: absolute;
+	left: 0;
+	top: 20dp;
+	width: 180dp;
+}
+.damage-count__hp-percent
+{
+	display: block;
+	position: absolute;
+	left: 186dp;
+	top: 17dp;
+	white-space: nowrap;
+	font-size: var(--font-xs);
+	font-weight: bold;
+	color: var(--success);
+}
+.damage-count__hp-percent.is-mid
+{
+	color: var(--warning);
+}
+.damage-count__hp-percent.is-low
+{
+	color: var(--danger);
+}
+.damage-count__close
+{
+	position: absolute;
+	right: 6dp;
+	top: 6dp;
+}
+.damage-count__close .nui-glyph
+{
+	pointer-events: none;
+}
+.damage-count__list
+{
+	display: block;
+	width: 380dp;
+}
+.damage-count__slot
+{
+	display: block;
+}
+.damage-count__row
+{
+	display: block;
+	position: relative;
+	width: 380dp;
+	height: 25dp;
+	--damage-count-bar: 380dp;
+}
+.damage-count__bar
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 1dp;
+	bottom: 1dp;
+	width: var(--damage-count-bar);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+}
+.damage-count__frame
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 380dp;
+	height: 25dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--accent);
+	border-radius: var(--radius-sm);
+}
+.damage-count__row.is-own .damage-count__frame
+{
+	display: block;
+}
+.damage-count__no, .damage-count__name, .damage-count__damage
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	line-height: 25dp;
+	white-space: nowrap;
+	color: var(--text);
+}
+.damage-count__no
+{
+	left: 10dp;
+	font-size: var(--font-sm);
+	font-weight: bold;
+}
+.damage-count__face
+{
+	display: block;
+	position: absolute;
+	left: 25dp;
+	top: 2dp;
+	width: 21dp;
+	height: 21dp;
+}
+.damage-count__name
+{
+	left: 55dp;
+	width: 180dp;
+	overflow: hidden;
+	font-size: var(--font-sm);
+	font-weight: bold;
+}
+.damage-count__damage
+{
+	left: 240dp;
+	font-size: var(--font-xs);
+	font-weight: bold;
+}
+.damage-count__damage.is-flash-a.nui-anim
+{
+	animation: 0.1s linear-in damage-count-flash-a;
+}
+.damage-count__damage.is-flash-b.nui-anim
+{
+	animation: 0.1s linear-in damage-count-flash-b;
+}
+@keyframes damage-count-flash-a
+{
+	from { color: var(--text-muted); }
+	to { color: var(--text); }
+}
+@keyframes damage-count-flash-b
+{
+	from { color: var(--text-muted); }
+	to { color: var(--text); }
+}

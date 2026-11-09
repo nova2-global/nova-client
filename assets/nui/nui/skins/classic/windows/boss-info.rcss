@@ -1,0 +1,80 @@
+/* Classic skin overlay of nui/windows/boss-info/boss-info.rml: legacy's
+   uibossinfo.BossInfoWindow at 100%, 1dp to the legacy pixel. The thin
+   board (ui.ThinBoard) at the window's (10, 0), legacy's width and OLD's
+   height; each row a bar of black at 0xB0 (uibossinfo.ROW_COLOR), 118 (165)
+   by 32, its 8 x 8 state dot at (14, 12) and its name at x 40 in legacy's
+   font, OLD's green 0xFFC3D4C4 while alive and red 0xFFE57875 while dead;
+   the arrow is the public xsmall button (38 x 19) with "<" or ">" on it, at
+   (width - 19, top) on the board. No slide: classic declares no motion, so
+   the panel jumps where legacy moves it 4 px a frame. The hint is the
+   shared classic tooltip. */
+
+body.skin-classic.boss-info .boss-info__board
+{
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+}
+body.skin-classic.boss-info .boss-info__row
+{
+	border-radius: 0;
+	background-color: var(--classic-boss-row);
+}
+body.skin-classic.boss-info .boss-info__dot
+{
+	border-radius: 0;
+	background-color: var(--classic-boss-alive);
+}
+body.skin-classic.boss-info .boss-info__row.is-dead .boss-info__dot
+{
+	background-color: var(--classic-boss-dead);
+}
+body.skin-classic.boss-info .boss-info__name
+{
+	font-weight: normal;
+	color: var(--classic-boss-alive);
+}
+body.skin-classic.boss-info .boss-info__row.is-dead .boss-info__name
+{
+	color: var(--classic-boss-dead);
+}
+body.skin-classic.boss-info .boss-info__toggle
+{
+	width: 38dp;
+	height: 19dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_01.sub" scale-none left top);
+	color: var(--classic-button-text);
+	font-size: var(--font-md);
+	line-height: 19dp;
+	text-align: center;
+}
+body.skin-classic.boss-info .boss-info__toggle:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_02.sub" scale-none left top);
+	color: var(--classic-button-text);
+}
+body.skin-classic.boss-info .boss-info__toggle:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_03.sub" scale-none left top);
+	color: var(--classic-button-text);
+}
+body.skin-classic.boss-info .boss-info__toggle .nui-glyph
+{
+	display: none;
+}
+body.skin-classic.boss-info .boss-info__arrow--collapse,
+body.skin-classic.boss-info .is-collapsed .boss-info__arrow--expand
+{
+	display: inline;
+}
+body.skin-classic.boss-info .is-collapsed .boss-info__arrow--collapse
+{
+	display: none;
+}

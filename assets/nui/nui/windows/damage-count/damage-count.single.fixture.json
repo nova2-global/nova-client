@@ -1,0 +1,22 @@
+{
+	"damage_count": {
+		"target": "Green Dragon",
+		"hp_text": "",
+		"hp_percent": "31%",
+		"hp_tone": "mid",
+		"hp_value": 0.31,
+		"rows": [
+			{
+				"no": "1.",
+				"name": "Me",
+				"damage": "Damage: 999.0K(100.0%)",
+				"face": "d:/ymir work/ui/game/windows/face_shaman.sub",
+				"own": true,
+				"width": 380,
+				"color": 0,
+				"flash": 0
+			}
+		],
+		"count": 1
+	}
+}

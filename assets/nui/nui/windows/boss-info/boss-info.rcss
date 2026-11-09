@@ -1,0 +1,152 @@
+/* The boss info panel's modern look, at legacy's geometry in dp: the panel
+   at the screen's left edge, 250dp down (legacy's window at (-10, 250) with
+   its board 10 in); the board 138dp wide (185dp with a long name) and as
+   tall as OLD's height table (--boss-info-height); each row 118dp (165dp)
+   by 32dp at 10dp in and its own top (--boss-info-row-top), a rounded
+   sunken pill with the state dot where legacy's icon was and the name 40dp
+   in, in the success color while alive and the danger color while dead (a long
+   name runs past the pill, as legacy's runs past its bar); the
+   arrow 19dp left of the board's right edge, at --boss-info-toggle-top.
+   Collapsed, the panel slides left until 20dp of the board show (legacy's
+   -(width - 20)), in 0.2s. The hint opens right of the row. Classic
+   (legacy's thin board, dark bars, its colors and the xsmall button art):
+   skins/classic/windows/boss-info.rcss. */
+
+body.boss-info
+{
+	focus: none;
+	tab-index: none;
+}
+.boss-info__panel
+{
+	position: absolute;
+	left: 0;
+	top: 250dp;
+	width: 138dp;
+	--boss-info-height: 106dp;
+	--boss-info-toggle-top: 37dp;
+	height: var(--boss-info-height);
+	transform: translateX(0dp);
+}
+.boss-info__panel.is-wide
+{
+	width: 185dp;
+}
+.boss-info__panel.is-collapsed
+{
+	transform: translateX(-118dp);
+}
+.boss-info__panel.is-wide.is-collapsed
+{
+	transform: translateX(-165dp);
+}
+.boss-info__panel.nui-anim
+{
+	transition: transform 0.2s cubic-out;
+}
+.boss-info__board
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+}
+.boss-info__slot
+{
+	display: block;
+}
+.boss-info__row
+{
+	display: block;
+	position: absolute;
+	left: 10dp;
+	--boss-info-row-top: 16dp;
+	top: var(--boss-info-row-top);
+	width: 118dp;
+	height: 32dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+}
+.is-wide .boss-info__row
+{
+	width: 165dp;
+}
+.boss-info__dot
+{
+	display: block;
+	position: absolute;
+	left: 14dp;
+	top: 12dp;
+	width: 8dp;
+	height: 8dp;
+	border-radius: 4dp;
+	background-color: var(--success);
+}
+.boss-info__row.is-dead .boss-info__dot
+{
+	background-color: var(--danger);
+}
+.boss-info__name
+{
+	display: block;
+	position: absolute;
+	left: 40dp;
+	top: 0;
+	line-height: 32dp;
+	white-space: nowrap;
+	font-size: var(--font-sm);
+	color: var(--success);
+}
+.boss-info__row.is-dead .boss-info__name
+{
+	color: var(--danger);
+}
+.boss-info__tip
+{
+	left: 100%;
+	bottom: auto;
+	top: 0;
+	margin-left: var(--space-1);
+	margin-bottom: 0;
+	text-align: center;
+}
+.boss-info__tip-title, .boss-info__tip-line
+{
+	display: block;
+}
+.boss-info__tip-title
+{
+	font-weight: bold;
+	color: var(--tip-title);
+}
+.boss-info__toggle
+{
+	position: absolute;
+	left: 119dp;
+	top: var(--boss-info-toggle-top);
+	width: 20dp;
+	height: 32dp;
+	margin: 0;
+}
+.is-wide .boss-info__toggle
+{
+	left: 166dp;
+}
+.boss-info__toggle .nui-glyph, .boss-info__arrow
+{
+	pointer-events: none;
+}
+.boss-info__glyph--expand, .is-collapsed .boss-info__glyph--collapse
+{
+	display: none;
+}
+.is-collapsed .boss-info__glyph--expand
+{
+	display: inline-block;
+}
+.boss-info__arrow
+{
+	display: none;
+}

@@ -72,7 +72,8 @@ class NpcList(unittest.TestCase):
 	def test_the_cuts_new_mobs_the_client_creates(self):
 		"""Of the 2,083 mobs the cut brings, NEW's own list made 51 (8 of them
 		through a '#' path); OLD's lines make 164 more, and the gaya NPCs'
-		stand-in models 2 more."""
+		stand-in models 2 more. Art that lands later, such as the advanced pet's
+		and the offline shop's, only adds to that."""
 		new_mobs = old_content.parse_ranges(self.want["cut_new_mobs"])
 		self.assertEqual(len(new_mobs), 2083)
 
@@ -80,8 +81,8 @@ class NpcList(unittest.TestCase):
 			names, folders = old_content.npclist_entries(text)
 			return sum(1 for vnum in new_mobs if old_content.mob_shows(vnum, names, folders, self.files))
 		self.assertEqual(shown(self.new_text), 51)
-		self.assertEqual(shown(self.text), self.want["cut_new_mobs_shown"])
-		self.assertEqual(shown(self.text), 217)
+		self.assertGreaterEqual(shown(self.text), self.want["cut_new_mobs_shown"])
+		self.assertEqual(self.want["cut_new_mobs_shown"], 217)
 
 	def test_a_hash_name_is_a_path_to_its_shape_file(self):
 		"""CRaceManager::__LoadRaceData (LOAD_LOCAL_RESOURCE): '#<path>' loads
@@ -103,15 +104,15 @@ class NpcList(unittest.TestCase):
 		self.assertEqual(len(set(folders)), len(folders))
 
 	def test_the_added_mobs_whose_model_the_client_ships(self):
-		"""150 of the added mobs find their .msm on CRaceManager's paths, so
-		the client creates them; the others stay unseen until their folders
-		land. The gaya NPCs 20503 and 20504 count through their stand-in models
+		"""At the cut 150 of the added mobs find their .msm on CRaceManager's
+		paths, so the client creates them; the others stay unseen until their
+		folders land, so later art only raises the count. The gaya NPCs 20503 and 20504 count through their stand-in models
 		(alchemist, goods) until OLD's art ships (NOVA-10)."""
 		names, folders = old_content.npclist_entries(self.text)
 		shown = [vnum for vnum in old_content.parse_ranges(self.want["names"])
 			if old_content.mob_shows(vnum, names, folders, self.files)]
-		self.assertEqual(len(shown), self.want["shown"])
-		self.assertEqual(len(shown), 150)
+		self.assertGreaterEqual(len(shown), self.want["shown"])
+		self.assertEqual(self.want["shown"], 150)
 
 
 if __name__ == "__main__":

@@ -867,6 +867,14 @@ What the color roles mean:
 | `--classic-skill-group-text` | classic | `#ffe3ad` |
 | `--classic-maintenance-label` | classic | `#f35637` |
 | `--classic-maintenance-time` | classic | `#dbad7b` |
+| `--classic-switchbot-idle` | classic | `#ff000033` |
+| `--classic-switchbot-active` | classic | `#ff991933` |
+| `--classic-switchbot-finished` | classic | `#00ff0033` |
+| `--classic-switchbot-strike` | classic | `#80000099` |
+| `--classic-switchbot-select` | classic | `#ffffff` |
+| `--classic-switchbot-label` | classic | `#ada09b` |
+| `--classic-switchbot-premium-on` | classic | `#4ba136` |
+| `--classic-switchbot-premium-off` | classic | `#9c262b` |
 | `--classic-search-row` | classic | `#131313` |
 | `--classic-search-row-alt` | classic | `#0c0c0c` |
 | `--classic-search-row-hover` | classic | `#272727` |

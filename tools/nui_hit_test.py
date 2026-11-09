@@ -61,7 +61,10 @@ OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("
                # Wave 6: legacy's aura flag panel floats at 163, 143 over the
                # weapon switch and the sash costume cell (uiinventory.py
                # AURA_WING_PANEL_POSITION), as legacy's board does.
-               "costume-foundation-aura-classic-": ("cos-wing",)}
+               "costume-foundation-aura-classic-": ("cos-wing",),
+               # Wave 7 (NOVA-43): the switchbot's search list and saved sets,
+               # open over its targets as legacy's boards float over the window.
+               "switchbot-picker-": ("switchbot-picker",), "switchbot-presets-": ("switchbot-preset",)}
 # Cases whose open popup covers slot cells on purpose: their sweep is not
 # checked (the same window's other cases sweep those cells).
 SWEEP_UNDER_OPEN_POPUP = ("costume-foundation-aura-classic-",)

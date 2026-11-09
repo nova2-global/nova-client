@@ -1103,6 +1103,11 @@ class InventoryWindow(ui.ScriptWindow):
 			elif player.SLOT_TYPE_EXTRA_INVENTORY == attachedSlotType:
 				self.__SendMoveItemPacket(attachedSlotPos, selectedSlotPos, attachedItemCount, player.EXTRA_INVENTORY)
 
+			## A switchbot item back to the inventory (NOVA-43). OLD dropped it
+			## nowhere: only its right click sent it back.
+			elif getattr(player, "SLOT_TYPE_SWITCHBOT", None) == attachedSlotType:
+				self.__SendMoveItemPacket(attachedSlotPos, selectedSlotPos, attachedItemCount, player.SWITCHBOT)
+
 			mouseModule.mouseController.DeattachObject()
 
 	def SelectItemSlot(self, itemSlotIndex):

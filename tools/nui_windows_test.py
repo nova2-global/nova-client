@@ -24,6 +24,10 @@ WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # (NOVA-18).
 WAVE6_ITEMS = ["sash", "aura"]
 ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop"]
+# Wave 7 (NOVA-43): the switchbot joins the items group, after Wave 6's sash
+# and aura.
+WAVE7_ITEMS = ["switchbot"]
+ITEMS = ITEMS + WAVE7_ITEMS
 # Documents a later stage writes, listed for the prewarm already: the test
 # below fails while a document named here exists, or one not named here is
 # missing. TOOLTIPS AND DIALOGS (P14 spec 9.1, 9.4) wrote the last Wave 3b ones.
@@ -836,6 +840,30 @@ class ClientDefault(WindowsTest):
 
     def test_the_all_group_lists_every_window(self):
         self.assertEqual(self.m.GROUPS["all"], tuple(window_id for window_id, _ in self.m.WINDOWS))
+
+
+
+class Wave7Switchbot(WindowsTest):
+    """Wave 7 (NOVA-43): the switchbot is the id "switchbot", on by default,
+    in the items group, after Wave 6's sash and aura and before the maintenance
+    countdown; its document loads only while it shows and is prewarmed."""
+
+    def test_the_id_is_on_by_default_before_maintenance_and_in_the_items_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertEqual(ids[-3:], ["aura", "switchbot", "maintenance"])
+        self.assertIs(dict(self.m.WINDOWS)["switchbot"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "switchbot" in members and group != "all"],
+                         ["items"])
+        self.assertEqual(self.m.use("switchbot"), (False, "flag off"))
+        self.setting.windows = "+items"
+        self.assertTrue(self.m.is_on("switchbot"))
+        self.setting.windows = "+items,-switchbot"
+        self.assertFalse(self.m.is_on("switchbot"))
+
+    def test_the_document_is_on_demand_and_prewarmed(self):
+        self.assertIn(("switchbot", ("switchbot",)), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+switchbot"
+        self.assertEqual(self.m.prewarm_documents(), ["nui/windows/switchbot/switchbot.rml"])
 
 
 if __name__ == "__main__":

@@ -51,6 +51,8 @@ import uiSash
 import uiSearchShop
 import uiOfflineShopLog
 import uiMyShopDecoration
+# The switchbot (NOVA-43; OLD interfaceModule.py:90, 417).
+import uiSwitchbot
 import uiScriptLocale
 
 import event
@@ -100,6 +102,7 @@ class Interface(object):
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
+		self.wndSwitchbot = None
 
 		self.listGMName = {}
 		self.wndQuestWindow = {}
@@ -269,6 +272,11 @@ class Interface(object):
 		self.wndMyShopDeco = nui_windows.make("shop-deco", uiMyShopDecoration.MyShopDecorationWindow,
 		                                      "nui_shop_deco.MyShopDecorationWindow")
 		self.wndMyShopDeco.BindInterface(self)
+
+		# The switchbot (NOVA-43; OLD interfaceModule.py:417): the legacy
+		# controller, on NovaUI proxies while the switchbot flag is on.
+		self.wndSwitchbot = nui_windows.make("switchbot", uiSwitchbot.SwitchbotWindow, "nui_switchbot.SwitchbotWindow")
+		self.wndSwitchbot.Hide()
 
 	def __MakeDialogs(self):
 		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
@@ -471,6 +479,7 @@ class Interface(object):
 		self.dlgExchange.SetItemToolTip(self.tooltipItem)
 		self.privateShopBuilder.SetItemToolTip(self.tooltipItem)
 		self.wndGemShop.SetItemToolTip(self.tooltipItem)
+		self.wndSwitchbot.SetItemToolTip(self.tooltipItem)
 		self.wndSashCombine.SetItemToolTip(self.tooltipItem)
 		self.wndSashAbsorption.SetItemToolTip(self.tooltipItem)
 
@@ -614,6 +623,10 @@ class Interface(object):
 		if self.wndSearchShop:
 			self.wndSearchShop.Destroy()
 			self.wndSearchShop = None
+
+		if self.wndSwitchbot:
+			self.wndSwitchbot.Destroy()
+			self.wndSwitchbot = None
 
 		if self.wndOfflineShopLog:
 			self.wndOfflineShopLog.Destroy()
@@ -1445,6 +1458,10 @@ class Interface(object):
 		if getattr(self, "wndChestDrop", None):
 			hideWindows += self.wndChestDrop,
 
+		## The switchbot (NOVA-43; OLD interfaceModule.py:3384-3385).
+		if getattr(self, "wndSwitchbot", None):
+			hideWindows += self.wndSwitchbot,
+
 		hideWindows = [x for x in hideWindows if x.IsShow()]
 
 		list([x.Hide() for x in hideWindows])
@@ -1557,6 +1574,25 @@ class Interface(object):
 		"""The server's answer (OLD's BINARY_RefreshChestDropInfo)."""
 		if self.wndChestDrop:
 			self.wndChestDrop.Refresh(vnum)
+
+	#####################################################################################
+	### Switchbot (NOVA-43; OLD interfaceModule.py:3099-3111) ###
+
+	def ToggleSwitchbotWindow(self):
+		if not self.wndSwitchbot:
+			return
+		if self.wndSwitchbot.IsShow():
+			self.wndSwitchbot.Close()
+		else:
+			self.wndSwitchbot.Open()
+
+	def RefreshSwitchbotWindow(self):
+		if self.wndSwitchbot and self.wndSwitchbot.IsShow():
+			self.wndSwitchbot.RefreshSwitchbotWindow()
+
+	def RefreshSwitchbotItem(self, slot):
+		if self.wndSwitchbot and self.wndSwitchbot.IsShow():
+			self.wndSwitchbot.RefreshSwitchbotItem(slot)
 
 	#####################################################################################
 	### Private Shop ###

@@ -1,0 +1,432 @@
+/* Classic skin overlay of nui/windows/switchbot/switchbot.rml: legacy's
+   switchbot (uiscript switchbot.py, OLD uiSwitchbot.py's places) at 100%, 1dp
+   to the legacy pixel: the stone board, 758 x 580; the title bar at 8, 7;
+   the six tabs of 85 x 153 from 92, 84, 100 apart, each a state bar of 81 x
+   149 in OLD's tinted red, orange or green, the white box of the selected
+   tab, the item at 26, 22 on the slot base and its numeral's middle button
+   at 12, 126; the alternative label at 512, 262 and its buttons from 495,
+   282; the cost label, buttons and line at 495, 318 to 366; start at 668,
+   422, save at 8, 474, the 6/7 toggle at 485, 480, the premium line at 490,
+   520 and the speed at 490, 540; the target rows at 92 from 312, 27 apart,
+   369 wide: the bonus button, the clear art at 205, - and + at 249 and 329,
+   the value at 274, a struck row under legacy's dark red line. OLD's own
+   switchbot art is not shipped (as the legacy window's): the public board,
+   slots and buttons stand in. The search list and the saved sets (below the tabs, so
+   they cover no item) are legacy's boards with title bars, here inside the
+   board. */
+
+body.skin-classic.switchbot
+{
+	width: 758dp;
+	height: 580dp;
+	min-width: 0;
+}
+body.skin-classic.switchbot .switchbot__title-icon,
+body.skin-classic.switchbot .switchbot__drop-hint,
+body.skin-classic.switchbot .switchbot__targets-title,
+body.skin-classic.switchbot .switchbot__clock,
+body.skin-classic.switchbot .switchbot__coin,
+body.skin-classic.switchbot .switchbot__pick-glyph
+{
+	display: none;
+}
+body.skin-classic.switchbot .switchbot__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 743dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.switchbot .switchbot__handle, body.skin-classic.switchbot .switchbot__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.switchbot .switchbot__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.switchbot .switchbot__body,
+body.skin-classic.switchbot .switchbot__main,
+body.skin-classic.switchbot .switchbot__targets,
+body.skin-classic.switchbot .switchbot__targets-head,
+body.skin-classic.switchbot .switchbot__side,
+body.skin-classic.switchbot .switchbot__costs,
+body.skin-classic.switchbot .switchbot__actions,
+body.skin-classic.switchbot .switchbot__speed,
+body.skin-classic.switchbot .switchbot__premium
+{
+	display: block;
+	position: static;
+	width: auto;
+	height: 0;
+	min-height: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: none;
+}
+
+/* The six tabs. */
+body.skin-classic.switchbot .switchbot__tabs
+{
+	display: flex;
+	flex-direction: row;
+	position: absolute;
+	left: 92dp;
+	top: 84dp;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__tab
+{
+	display: block;
+	width: 85dp;
+	height: 153dp;
+	margin-right: 15dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.switchbot .switchbot__tab.is-selected
+{
+	border-width: 1dp;
+	border-color: var(--classic-switchbot-select);
+	background-color: transparent;
+}
+body.skin-classic.switchbot .switchbot__state
+{
+	left: 2dp;
+	right: auto;
+	top: 2dp;
+	width: 81dp;
+	height: 149dp;
+	border-radius: 0;
+}
+body.skin-classic.switchbot .switchbot__tab.is-selected .switchbot__state
+{
+	left: 1dp;
+	top: 1dp;
+}
+body.skin-classic.switchbot .switchbot__tab.is-idle .switchbot__state
+{
+	background-color: var(--classic-switchbot-idle);
+}
+body.skin-classic.switchbot .switchbot__tab.is-active .switchbot__state
+{
+	background-color: var(--classic-switchbot-active);
+}
+body.skin-classic.switchbot .switchbot__tab.is-finished .switchbot__state
+{
+	background-color: var(--classic-switchbot-finished);
+}
+body.skin-classic.switchbot .switchbot__tab .nui-slot
+{
+	position: absolute;
+	left: 26dp;
+	top: 22dp;
+	width: 32dp;
+	height: 32dp;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__tab .nui-slot--h2
+{
+	height: 64dp;
+}
+body.skin-classic.switchbot .switchbot__tab .nui-slot--h3
+{
+	height: 96dp;
+}
+body.skin-classic.switchbot .switchbot__tab.is-selected .nui-slot
+{
+	left: 25dp;
+	top: 21dp;
+}
+body.skin-classic.switchbot .switchbot__select
+{
+	position: absolute;
+	left: 12dp;
+	top: 126dp;
+	width: 61dp;
+	min-width: 0;
+}
+body.skin-classic.switchbot .switchbot__tab.is-selected .switchbot__select
+{
+	left: 11dp;
+	top: 125dp;
+}
+
+/* The alternatives. */
+body.skin-classic.switchbot .switchbot__alt-label
+{
+	position: absolute;
+	left: 512dp;
+	top: 262dp;
+	margin: 0;
+	color: var(--classic-switchbot-label);
+	font-size: var(--font-sm);
+}
+body.skin-classic.switchbot .switchbot__alt
+{
+	position: absolute;
+	top: 282dp;
+	width: 61dp;
+	min-width: 0;
+	margin: 0;
+}
+body.skin-classic.switchbot #switchbot-alt-0
+{
+	left: 495dp;
+}
+body.skin-classic.switchbot #switchbot-alt-1
+{
+	left: 560dp;
+}
+body.skin-classic.switchbot #switchbot-alt-2
+{
+	left: 625dp;
+}
+
+/* The target rows. */
+body.skin-classic.switchbot .switchbot__row
+{
+	display: block;
+	position: absolute;
+	left: 92dp;
+	width: 369dp;
+	height: 27dp;
+	padding: 0;
+	border-width: 0;
+	opacity: 1;
+}
+body.skin-classic.switchbot #switchbot-row-0
+{
+	top: 312dp;
+}
+body.skin-classic.switchbot #switchbot-row-1
+{
+	top: 339dp;
+}
+body.skin-classic.switchbot #switchbot-row-2
+{
+	top: 366dp;
+}
+body.skin-classic.switchbot #switchbot-row-3
+{
+	top: 393dp;
+}
+body.skin-classic.switchbot #switchbot-row-4
+{
+	top: 420dp;
+}
+body.skin-classic.switchbot #switchbot-row-5
+{
+	top: 447dp;
+}
+body.skin-classic.switchbot #switchbot-row-6
+{
+	top: 474dp;
+}
+body.skin-classic.switchbot .switchbot__pick
+{
+	display: block;
+	position: absolute;
+	left: 1dp;
+	top: 3dp;
+	width: 200dp;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__pick-label
+{
+	display: block;
+	text-align: center;
+}
+body.skin-classic.switchbot .switchbot__clear,
+body.skin-classic.switchbot .switchbot__clear:hover,
+body.skin-classic.switchbot .switchbot__clear:active
+{
+	position: absolute;
+	left: 205dp;
+	top: 7dp;
+	width: 13dp;
+	height: 13dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	background-color: transparent;
+	decorator: image(classic-close-01);
+}
+body.skin-classic.switchbot .switchbot__clear:hover
+{
+	decorator: image(classic-close-02);
+}
+body.skin-classic.switchbot .switchbot__clear:active
+{
+	decorator: image(classic-close-03);
+}
+body.skin-classic.switchbot .switchbot__step
+{
+	position: absolute;
+	top: 4dp;
+	width: 20dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.switchbot .switchbot__step--minus
+{
+	left: 249dp;
+}
+body.skin-classic.switchbot .switchbot__step--plus
+{
+	left: 329dp;
+}
+body.skin-classic.switchbot .switchbot__step-text
+{
+	display: inline;
+	pointer-events: none;
+}
+body.skin-classic.switchbot .switchbot__value
+{
+	position: absolute;
+	left: 274dp;
+	top: 4dp;
+	width: 50dp;
+	height: 18dp;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__row.is-struck .switchbot__strike
+{
+	left: 2dp;
+	right: auto;
+	top: 13dp;
+	width: 361dp;
+	height: 2dp;
+	background-color: var(--classic-switchbot-strike);
+}
+
+/* The cost, 6/7, start, save, premium and speed. */
+body.skin-classic.switchbot .switchbot__side-label
+{
+	position: absolute;
+	left: 495dp;
+	top: 318dp;
+	margin: 0;
+	color: var(--classic-switchbot-label);
+}
+body.skin-classic.switchbot .switchbot__cost
+{
+	position: absolute;
+	top: 338dp;
+	width: 88dp;
+	margin: 0;
+}
+body.skin-classic.switchbot #switchbot-cost-item
+{
+	left: 495dp;
+}
+body.skin-classic.switchbot #switchbot-cost-yang
+{
+	left: 590dp;
+}
+body.skin-classic.switchbot .switchbot__cost-text
+{
+	position: absolute;
+	left: 495dp;
+	top: 366dp;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__start
+{
+	position: absolute;
+	left: 668dp;
+	top: 422dp;
+	width: 88dp;
+	height: auto;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__save
+{
+	position: absolute;
+	left: 8dp;
+	top: 474dp;
+	width: 61dp;
+	min-width: 0;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__rare
+{
+	position: absolute;
+	left: 485dp;
+	top: 480dp;
+	width: 88dp;
+	margin: 0;
+}
+body.skin-classic.switchbot .switchbot__premium-label
+{
+	position: absolute;
+	left: 490dp;
+	top: 520dp;
+	margin: 0;
+	color: var(--classic-switchbot-label);
+}
+body.skin-classic.switchbot .switchbot__premium-status
+{
+	position: absolute;
+	left: 603dp;
+	top: 520dp;
+	color: var(--classic-switchbot-premium-off);
+}
+body.skin-classic.switchbot .switchbot__premium.is-on .switchbot__premium-status
+{
+	color: var(--classic-switchbot-premium-on);
+}
+body.skin-classic.switchbot .switchbot__speed-text
+{
+	position: absolute;
+	left: 490dp;
+	top: 540dp;
+	color: var(--classic-switchbot-label);
+}
+
+/* The search list (260 x 260) and the saved sets (250 wide): legacy's boards. */
+body.skin-classic.switchbot .switchbot__panel
+{
+	decorator: classic-board;
+	border-width: 0;
+	background-color: transparent;
+	border-radius: 0;
+}
+body.skin-classic.switchbot .switchbot__picker
+{
+	left: 249dp;
+	top: 250dp;
+	width: 260dp;
+	height: 260dp;
+}
+body.skin-classic.switchbot .switchbot__presets
+{
+	left: 8dp;
+	top: 250dp;
+	width: 250dp;
+	height: 320dp;
+}
+body.skin-classic.switchbot .switchbot__picker .nui-list__viewport
+{
+	height: 128dp;
+}
+/* What legacy hides (an empty slot's targets, a row its item has no bonus
+   for, the 6/7 toggle of an aura) stays hidden over the places above. */
+body.skin-classic.switchbot .is-hidden
+{
+	display: none;
+}
+body.skin-classic.switchbot .switchbot__targets.is-blank
+{
+	display: none;
+}

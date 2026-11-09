@@ -1,0 +1,473 @@
+/* The switchbot's modern look (Wave 7, NOVA-43): the rolling emblem before
+   the title; a row of six item cards, one per slot (the item on its cell,
+   the state stripe on top: idle, rolling in the warning tone, finished in
+   the success tone, the selected card ringed in the accent, its numeral
+   under it); then the selected slot's target sets (the three alternatives
+   as a segmented row and the five normal and two rare rows, each a bonus
+   picker, its value with - and +, and clear), and beside them the roll's
+   cost (switch item or yang, the price line under it), the 6/7 toggle, the
+   roll speed with the premium line, and start/stop with save. The search
+   list and the saved sets open as panels over the board. The controller
+   centers it at its first show; the sheet's place frames it in its
+   snapshots. Classic (legacy's 758 x 580 board): skins/classic/windows/
+   switchbot.rcss. */
+
+body.switchbot
+{
+	left: 16dp;
+	top: 16dp;
+	width: 664dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.switchbot button
+{
+	tab-index: none;
+	focus: none;
+}
+.switchbot .is-hidden
+{
+	display: none;
+}
+.switchbot__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.switchbot__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.switchbot__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 10dp 16dp 16dp;
+}
+
+/* --- the six cards -------------------------------------------------------------- */
+.switchbot__tabs
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-bottom: 12dp;
+}
+.switchbot__tab
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	box-sizing: border-box;
+	width: 98dp;
+	height: 194dp;
+	padding: 10dp 6dp 8dp;
+	background-color: var(--surface-sunken);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 10dp;
+}
+.switchbot__tab.is-selected
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+}
+.switchbot__state
+{
+	position: absolute;
+	left: 10dp;
+	right: 10dp;
+	top: 4dp;
+	height: 3dp;
+	border-radius: 2dp;
+	background-color: transparent;
+	pointer-events: none;
+}
+.switchbot__tab.is-idle .switchbot__state
+{
+	background-color: var(--text-muted);
+}
+.switchbot__tab.is-active .switchbot__state
+{
+	background-color: var(--warning);
+}
+.switchbot__tab.is-finished .switchbot__state
+{
+	background-color: var(--success);
+}
+/* The item: a cell for one to three rows, centered in a three-row area. */
+.switchbot__cell
+{
+	margin-top: 0;
+	margin-bottom: auto;
+}
+.switchbot__tab .nui-slot
+{
+	width: 40dp;
+	height: 40dp;
+}
+.switchbot__tab .nui-slot--h2
+{
+	height: 84dp;
+}
+.switchbot__tab .nui-slot--h3
+{
+	height: 128dp;
+}
+.switchbot__drop-hint
+{
+	position: absolute;
+	left: -22dp;
+	top: 48dp;
+	width: 84dp;
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	text-align: center;
+	pointer-events: none;
+}
+.switchbot__select
+{
+	min-width: 56dp;
+}
+.switchbot__select.is-selected
+{
+	border-color: var(--accent);
+}
+
+/* --- the targets ------------------------------------------------------------------ */
+.switchbot__main
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+.switchbot__targets
+{
+	flex: 1 1 auto;
+	box-sizing: border-box;
+	min-height: 242dp;
+	margin-right: 12dp;
+	padding: 10dp 12dp;
+}
+.switchbot__targets-head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 30dp;
+	margin-bottom: 6dp;
+}
+.switchbot__targets-title
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.switchbot__alt-label
+{
+	flex: 0 0 auto;
+	margin-right: var(--space-2);
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	white-space: nowrap;
+	pointer-events: none;
+}
+.switchbot__alt
+{
+	min-width: 40dp;
+	margin-left: 4dp;
+}
+.switchbot__alt.is-selected
+{
+	border-color: var(--accent);
+}
+.switchbot__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	position: relative;
+	height: 34dp;
+}
+.switchbot__row--rare
+{
+	padding-left: 6dp;
+	border-left-width: 2dp;
+	border-left-color: var(--accent-glow);
+}
+.switchbot__row.is-struck
+{
+	opacity: 0.45;
+}
+.switchbot__strike
+{
+	display: none;
+}
+.switchbot__row.is-struck .switchbot__strike
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 16dp;
+	height: 1dp;
+	background-color: var(--danger);
+	pointer-events: none;
+}
+.switchbot__pick
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 1 1 auto;
+	min-width: 0;
+	margin-right: 6dp;
+	text-align: left;
+}
+.switchbot__pick-label
+{
+	flex: 1 1 auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	pointer-events: none;
+}
+.switchbot__pick-glyph
+{
+	flex: 0 0 auto;
+	margin-left: 4dp;
+}
+.switchbot__step
+{
+	flex: 0 0 auto;
+}
+/* Legacy's - and + texts: classic's buttons show them, the modern ones the glyphs. */
+.switchbot__step-text
+{
+	display: none;
+}
+.switchbot__value
+{
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 56dp;
+	margin: 0 4dp;
+	text-align: center;
+}
+.switchbot__clear
+{
+	flex: 0 0 auto;
+	margin-left: 4dp;
+}
+
+/* --- the side: cost, 6/7, speed and start ----------------------------------------- */
+.switchbot__side
+{
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 auto;
+	box-sizing: border-box;
+	width: 196dp;
+}
+.switchbot__side-label
+{
+	margin-bottom: 4dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	pointer-events: none;
+}
+.switchbot__costs
+{
+	display: flex;
+	flex-direction: row;
+}
+.switchbot__cost
+{
+	flex: 1 1 0;
+	min-width: 0;
+}
+.switchbot__cost + .switchbot__cost
+{
+	margin-left: 6dp;
+}
+.switchbot__cost.is-selected
+{
+	border-color: var(--accent);
+}
+.switchbot__coin
+{
+	margin-right: 4dp;
+}
+.switchbot__cost-text
+{
+	margin: 6dp 0 12dp;
+	color: var(--text);
+	font-size: var(--font-sm);
+	pointer-events: none;
+}
+.switchbot__rare
+{
+	margin-bottom: 12dp;
+}
+.switchbot__rare.is-selected
+{
+	border-color: var(--accent);
+}
+.switchbot__speed
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 4dp;
+	pointer-events: none;
+}
+.switchbot__clock
+{
+	margin-right: 6dp;
+	--glyph-ink: var(--text-muted);
+}
+.switchbot__speed-text
+{
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+.switchbot__premium
+{
+	margin-bottom: 14dp;
+	font-size: var(--font-sm);
+	pointer-events: none;
+}
+.switchbot__premium-label
+{
+	margin-right: 4dp;
+	color: var(--text-muted);
+}
+.switchbot__premium-status
+{
+	color: var(--text-muted);
+	font-weight: bold;
+}
+.switchbot__premium.is-on .switchbot__premium-status
+{
+	color: var(--success);
+}
+.switchbot__actions
+{
+	display: flex;
+	flex-direction: column;
+}
+.switchbot__start
+{
+	height: 36dp;
+	margin-bottom: 8dp;
+}
+
+/* --- the panels over the board ----------------------------------------------------- */
+.switchbot__panel
+{
+	position: absolute;
+	z-index: 10;
+	box-sizing: border-box;
+	width: 300dp;
+	border-color: var(--accent);
+}
+.switchbot__picker
+{
+	left: 182dp;
+	top: 150dp;
+}
+.switchbot__presets
+{
+	left: 182dp;
+	top: 150dp;
+}
+.switchbot__panel-head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 28dp;
+	margin-bottom: 6dp;
+}
+.switchbot__panel-title
+{
+	flex: 1 1 auto;
+	color: var(--text);
+	font-weight: bold;
+	pointer-events: none;
+}
+.switchbot__filter
+{
+	display: block;
+	box-sizing: border-box;
+	width: 100%;
+	margin-bottom: 6dp;
+}
+.switchbot__picker-list .nui-list__viewport, .switchbot__preset-list .nui-list__viewport
+{
+	height: 168dp;
+	overflow-y: auto;
+}
+.switchbot__panel-actions
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	margin-top: 8dp;
+}
+.switchbot__panel-actions button
+{
+	margin-left: 6dp;
+}
+.switchbot__preset-new
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 6dp;
+}
+.switchbot__preset-name
+{
+	flex: 1 1 auto;
+	margin-right: 6dp;
+}
+.switchbot__preset
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.switchbot__preset-label
+{
+	flex: 1 1 auto;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.switchbot__preset-delete
+{
+	margin-left: 4dp;
+}
+/* An empty slot has no targets: the panel keeps its place, empty, so the
+   side does not move as items come and go. */
+.switchbot__targets.is-blank > *
+{
+	visibility: hidden;
+}

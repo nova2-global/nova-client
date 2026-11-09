@@ -20,6 +20,13 @@ import localeInfo
 # frees nothing more; False keeps the old frees.
 DEATTACH_FREES_EVERY_ICON = True
 
+
+def _SwitchbotSlotType():
+	"""player.SLOT_TYPE_SWITCHBOT (NOVA-43): a switchbot item is attached with
+	its item icon, which DeattachObject frees (OLD mouseModule.py:203 made it
+	and never freed it); -1 on an exe without the switchbot."""
+	return getattr(player, "SLOT_TYPE_SWITCHBOT", -1)
+
 ## Mouse Controller
 ## When operating the mouse cursor, you can exchange information with the attached Object.
 
@@ -201,7 +208,8 @@ class CMouseController(object):
 				Type == player.SLOT_TYPE_SAFEBOX or\
 				Type == player.SLOT_TYPE_MALL or\
 				Type == player.SLOT_TYPE_DRAGON_SOUL_INVENTORY or\
-				Type == player.SLOT_TYPE_EXTRA_INVENTORY:
+				Type == player.SLOT_TYPE_EXTRA_INVENTORY or\
+				Type == _SwitchbotSlotType():
 
 				item.SelectItem(self.AttachedItemIndex)
 				self.AttachedIconHandle = item.GetIconInstance()
@@ -300,7 +308,8 @@ class CMouseController(object):
 				self.AttachedType == player.SLOT_TYPE_SAFEBOX or\
 				self.AttachedType == player.SLOT_TYPE_MALL or\
 				(DEATTACH_FREES_EVERY_ICON and self.AttachedType == player.SLOT_TYPE_DRAGON_SOUL_INVENTORY) or\
-				self.AttachedType == player.SLOT_TYPE_EXTRA_INVENTORY:
+				self.AttachedType == player.SLOT_TYPE_EXTRA_INVENTORY or\
+				self.AttachedType == _SwitchbotSlotType():
 
 				item.DeleteIconInstance(self.AttachedIconHandle)
 

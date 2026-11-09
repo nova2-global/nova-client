@@ -531,3 +531,14 @@ COSTUME_SHOW_WEAPON	Weapon
 COSTUME_SHOW_SASH	Sash
 COSTUME_SHOW_AURA	Aura
 OPTION_ACCE	Κορδέλα Όμου
+SWITCHBOT_TITLE	Switchbot
+SWITCHBOT_ALTERNATIVE	Εναλλακτικές επιλογές:
+SWITCHBOT_COST	Κόστος ανά ρίψη:
+SWITCHBOT_COST_ITEM	Αντικείμενο αλλαγής
+SWITCHBOT_COST_YANG	Yang
+SWITCHBOT_START	Ξεκίνα
+SWITCHBOT_SAVE	Σώσε τις ρυθμίσεις
+SWITCHBOT_RARE	Μπόνους 6/7
+SWITCHBOT_PREMIUM_LABEL	Premium Switcher:
+NUI_SWITCHBOT_TARGETS	Στόχοι μπόνους
+NUI_SWITCHBOT_EMPTY	Σύρε ένα αντικείμενο εδώ

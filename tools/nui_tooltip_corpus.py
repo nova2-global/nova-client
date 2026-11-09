@@ -530,10 +530,14 @@ def skill_rows(names):
         "130": named(130, type=SKILL_TYPES["SUPPORT"]),
         "131": named(131, type=SKILL_TYPES["SUPPORT"], desc="Summon a horse."),
         "137": named(137, type=SKILL_TYPES["HORSE"], affects=["Riding Skill"], need_sp=20),
-        "151": named(151, type=SKILL_TYPES["GUILD"], affects=["Max. Dragon Ghost +1400"], cool_time=0, need_sp=0),
+        "151": named(151, type=SKILL_TYPES["GUILD"], affects=["Max. Dragon Ghost +1400"], cool_time=0, need_sp=0,
+                     max_level=7),
         "152": named(152, type=SKILL_TYPES["GUILD"], affects=["Max. HP Increase +20%"], cool_time=120, need_sp=300,
-                     level_limit=30),
-        "153": named(153, type=SKILL_TYPES["GUILD"], cool_time=0, need_sp=0),
+                     level_limit=30, max_level=7),
+        "153": named(153, type=SKILL_TYPES["GUILD"], cool_time=0, need_sp=0, max_level=7),
+        # NOVA-34: a guild passive (skilltable.txt's 12 levels, k * 12).
+        "158": named(158, type=SKILL_TYPES["GUILD"], affects=["Strong Against Monsters +4%"], cool_time=0,
+                     need_sp=0, max_level=12),
         "999": dict(named(999), name=[""]),
     }
 
@@ -945,6 +949,10 @@ def skill_cases():
             add("guild-%d-l%d" % (index, level), "SetSkillNew", index, level=level, player={"level": 20 if level % 2 else 120})
         add("guild-%d-old" % index, "SetSkill", index)
         add("guild-%d-old-level" % index, "SetSkill", index, level=3, skill_level=3)
+    # NOVA-34: a guild passive, its maximum level (12) read from the skill
+    # table, below it and at it.
+    add("guild-158-old-level", "SetSkill", 158, level=4, skill_level=4)
+    add("guild-158-old-max", "SetSkill", 158, level=12, skill_level=12)
     for index in (1, 3, 4, 5, 19, 94, 137, 141, 142):
         for grade in range(4):
             for level in (1, 17, 20, 40):

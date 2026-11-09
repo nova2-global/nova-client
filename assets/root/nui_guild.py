@@ -283,6 +283,13 @@ class _GuildBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner._press_plus(int(index))
 
+	# NOVA-34: a passive's "+", the donation dialog (OnUpGuildSkill).
+	@nui.on("passive_plus_press")
+	def on_passive_plus_press(self, index, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner._press_plus(int(index), "passiveSlot")
+
 	@nui.on("heal_press")
 	def on_heal_press(self, button):
 		self.raise_for(button)
@@ -580,10 +587,10 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 		else:
 			events.out(index)
 
-	def _press_plus(self, index):
+	def _press_plus(self, index, grid="activeSlot"):
 		"""A skill's "+": the slot window's pressed-button event with the slot
 		(OnUpGuildSkill)."""
-		slots = self.pageWindow["SKILL"].activeSlot
+		slots = getattr(self.pageWindow["SKILL"], grid)
 		if not (0 <= index < len(slots.slot_numbers)) or not slots.plus()[index]:
 			return
 		event = slots.handlers().get("pressed_button")
@@ -862,16 +869,7 @@ class GuildWindow(nui_facade.Facade, uiGuild.GuildWindow):
 			"affect": self.nui_events(nui_slots.LegacySlotEvents(page.affectSlot)),
 		}
 
-		## Active
-		import playerSettingModule
-		for i in range(len(playerSettingModule.ACTIVE_GUILD_SKILL_INDEX_LIST)):
-			slotIndex = page.activeSlot.GetStartIndex() + i
-			skillIndex = playerSettingModule.ACTIVE_GUILD_SKILL_INDEX_LIST[i]
-
-			page.activeSlot.SetSkillSlot(slotIndex, skillIndex, 0)
-			page.activeSlot.SetCoverButton(slotIndex)
-			page.activeSlot.RefreshSlot()
-			guild.SetSkillIndex(slotIndex, len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST) + i)
+		self.FillGuildSkillSlots(page)
 
 	def _make_grade_page(self):
 		"""__MakeGradePage (uiguild.py:1225-1298): each grade's editable name

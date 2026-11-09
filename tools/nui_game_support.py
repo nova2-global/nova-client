@@ -471,6 +471,12 @@ class ToolTip(object):
         self.visible = False
 
     def __getattr__(self, name):
+        if name.startswith("Append"):
+            # The lines a caller adds after a Set* (the guild passives'
+            # progress, NOVA-34): recorded in `calls` only.
+            def append(*args):
+                self.calls.append((name,) + args)
+            return append
         if name.startswith("__") or not name.startswith("Set"):
             raise AttributeError(name)
 
@@ -4091,6 +4097,10 @@ def install_wave4_ui(game):
     define(guild, "IsMemberByName", lambda name: any(m["name"] == name for m in g()["members"]))
     define(guild, "MainPlayerHasAuthority", lambda auth: bool(g().get("my_auth", 0) & auth))
     define(guild, "GetSkillLevel", lambda slot: g()["skills"].get(slot, 0))
+    # PythonGuild.cpp's slot -> guild skill index map (the guild passives'
+    # donations look their progress up by it, NOVA-34).
+    define(guild, "SetSkillIndex", lambda slot, index: g().setdefault("skill_index", {}).__setitem__(slot, index))
+    define(guild, "GetSkillIndex", lambda slot: g().get("skill_index", {}).get(slot, 0))
     define(guild, "HasGuildLand", lambda: False)
     define(guild, "GetGuildMoney", lambda: g().get("money", 0))
 
@@ -4214,13 +4224,29 @@ def install_wave4_ui(game):
         def GetText(self):
             return self.text
 
+    class InputDialogWithDescription2(InputDialog):
+        """uiCommon.InputDialogWithDescription2 (the guild passives' donation,
+        NOVA-34): two description lines, recorded with Open."""
+
+        def SetNumberMode(self):
+            self.number_mode = True
+
+        def SetDescription1(self, text):
+            self.SetText1(text)
+
+        def SetDescription2(self, text):
+            self.SetText2(text)
+
     common = modules["uiCommon"]
     common.InputDialog = lambda *args: InputDialog(game, "uiCommon", "InputDialog")
+    common.InputDialogWithDescription2 = lambda *args: InputDialogWithDescription2(
+        game, "uiCommon", "InputDialogWithDescription2")
     common.MoneyInputDialog = lambda *args: InputDialog(game, "uiCommon", "MoneyInputDialog")
 
     # The social modules' own imports: playersettingmodule.py's guild skill
     # lists (:50-51) and ui.ListBoxEx with its Item.
-    game.put("playerSettingModule", types.SimpleNamespace(PASSIVE_GUILD_SKILL_INDEX_LIST=(151,),
+    game.put("playerSettingModule", types.SimpleNamespace(GUILD_SKILL_START=151,
+                                                          PASSIVE_GUILD_SKILL_INDEX_LIST=(158, 159, 160),
                                                           ACTIVE_GUILD_SKILL_INDEX_LIST=(152, 153, 154, 155, 156, 157)))
     window = ui.Window
 

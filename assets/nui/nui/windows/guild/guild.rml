@@ -172,7 +172,8 @@
 		</div>
 
 		<!-- The guild's skills (guildwindow_guildskillpage.py, __MakeSkillPage):
-		     the passive row and the affect grid stay empty, as legacy's. A
+		     the passive row holds the three guild passives (NOVA-34), whose "+"
+		     opens the donation; the affect grid stays empty, as legacy's. A
 		     cooling skill shows its seconds left over the sweep (a
 		     nui-countdown on the cell's end: no Python while it counts). -->
 		<div class="guild__page guild__page--skill" data-for="p : page_skill">
@@ -186,6 +187,10 @@
 					<div class="nui-slot nui-anim guild__skill" data-for="c : passive_cells" data-attr-id="'guild-skill-passive-' + it_index"
 					     data-class-is-empty="c.kind == ''" data-event-mouseover="passive_over(it_index)" data-event-mouseout="passive_out(it_index)">
 						<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+						<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
+						<button class="guild__plus" data-if="passive_plus[it_index]" data-attr-id="'guild-passive-plus-' + it_index"
+						        data-event-mousedown="passive_plus_press(it_index, ev.button)"><span class="nui-glyph nui-glyph--plus"><span
+							class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 					</div>
 				</div>
 			</div>

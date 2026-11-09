@@ -23,11 +23,11 @@
 		},
 		"skilldesc": {
 			"path": "assets/locale/locale/en/skilldesc.txt",
-			"sha256": "c03725595967d06ba45389b772a66a8af43053cbe8bb83ab88cecce244bd048d"
+			"sha256": "2338c40a922897d4101a0d8dd584c15bac58bb8470ac1361b8a5a5a82daec5c5"
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "40ec6f4d5b2e016fa88589e6accfd54df6088b593bcacf465034ba9511f402c0"
+			"sha256": "a26fc0bb866054232f72c3d7754606d5438158ff463f8657402f9cfc1d30f6aa"
 		}
 	},
 	"items": {
@@ -15286,7 +15286,7 @@
 			"desc": "Increase Maximum Dragon Ghost.",
 			"conditions": [],
 			"type": 3,
-			"max_level": 40,
+			"max_level": 7,
 			"level_limit": 0,
 			"affects": [
 				"Max. Dragon Ghost +1400"
@@ -15310,7 +15310,7 @@
 				"Guild War Only"
 			],
 			"type": 3,
-			"max_level": 40,
+			"max_level": 7,
 			"level_limit": 30,
 			"affects": [
 				"Max. HP Increase +20%"
@@ -15334,9 +15334,33 @@
 				"Guild War Only"
 			],
 			"type": 3,
-			"max_level": 40,
+			"max_level": 7,
 			"level_limit": 0,
 			"affects": [],
+			"need_sp": 0,
+			"continuation_sp": 0,
+			"cool_time": 0,
+			"duration": 0,
+			"use_hp": false,
+			"requirement": null,
+			"require_stats": [],
+			"requirement_met": true,
+			"new_affects": []
+		},
+		"158": {
+			"name": [
+				"Dragon Hunt"
+			],
+			"desc": "Increases your monster hunting abilities",
+			"conditions": [
+				"Active while a member of the guild"
+			],
+			"type": 3,
+			"max_level": 12,
+			"level_limit": 0,
+			"affects": [
+				"Strong Against Monsters +4%"
+			],
 			"need_sp": 0,
 			"continuation_sp": 0,
 			"cool_time": 0,
@@ -36798,6 +36822,34 @@
 				"next": 0.6
 			},
 			"skill_level": 3
+		},
+		{
+			"id": "guild-158-old-level",
+			"context": "SetSkill",
+			"vnum": 158,
+			"skill": {
+				"vnum": 158,
+				"slot": 1,
+				"grade": 0,
+				"level": 4,
+				"efficient": 0.5,
+				"next": 0.6
+			},
+			"skill_level": 4
+		},
+		{
+			"id": "guild-158-old-max",
+			"context": "SetSkill",
+			"vnum": 158,
+			"skill": {
+				"vnum": 158,
+				"slot": 1,
+				"grade": 0,
+				"level": 12,
+				"efficient": 0.5,
+				"next": 0.6
+			},
+			"skill_level": 12
 		},
 		{
 			"id": "skill-1-g0-l1",

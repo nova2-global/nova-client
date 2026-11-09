@@ -1,0 +1,52 @@
+#Piano Terra:
+Distruggi il Metin della Durezza situato all'opposto dell'entrata.
+Una volta che la metin sarà distrutta, verrai teletrasportato al 1° piano.
+
+#Piano 1:
+Uccidi tutti i mostri per procedere al prossimo piano.
+$Attenzione: I mostri in questo piano sono aggressivi!
+
+#Piano 2:
+Uccidi tutti i mostri per procedere al prossimo piano.
+
+#Piano 3:
+Distruggi la Metin del Diavolo per procedere al prossimo step.
+Una volta distrutta, 7 Metin della Caduta cadranno intorno al piano.
+Dovrai distruggerle finchè non trovi quella corretta.
+
+#Piano 4:
+La missione in questo piano è di aprire 5 sigilli con le Pietre Chiave che lasceranno cadere
+gli arcieri. In ogni ondata di mostri troverai 1 chiave.
+Per aprire un sigillo dovrai trascinare la chiave su di esso.
+
+#Piano 5:
+Lo scopo di questo piano è il Fabbro Speciale.
+Per avere questo fabbro, dovrai uccidere il Re dei Demoni Elitario.
+Una volta ucciso troverai il Fabbro Speciale.
+$Nota: Questo fabbro non ti richiederà alcun materiale per l'up degli oggetti.
+
+#Piano 6:
+Distruggi tutti i Metin della Morte
+Obiettivo: trova la "Mappa Zin San Gui" per avanzare al prossimo piano.
+Una volta distrutto l'ultimo metin della Morte troverai un Metin dell'Assassino.
+Quando distruggi questo metin, ti verrà dato un Vecchio Baule Sconosciuto. Dovrai cliccarci sopra
+per poter trovare la "Mappa Zin San Gui".
+Se ci clicchi e non ti verrà dato nulla significa che il Baule era falso.
+Dunque dovrai continuar a distruggere Metin dell'Assassino fino a ricevere la "Mappa Zin San Gui"
+dal Vecchio Baule Sconosciuto.
+$Nota: una voltra trovata la mappa le Metin dell'Assassino smetteranno di cadere.
+
+#Piano 7:
+In questo piano dovrai trovare la chiave Zing Bong. Una volta trovata la chiave dovrai trascinarla
+sul monumento situato all'opposto del punto di spawn del piano. 
+Ci sono anche chiavi "false" chiamate "Chiave Bong". Quest'ultime sono inutili.
+$Consiglio: Le chiavi (sia le false che le corrette) potrai trovarle dagli Spiriti Immortali.
+
+#Piano 8:
+Questo è l'ultimo piano. Qui troverai la Morte Personificata. 
+La scelta è tua se voler ripulire prima tutti i mostri del piano prima di ucciderla.
+Solitamente la trovi sul bordo mappa a destra.
+
+#Piano 9:
+La Stanza Blu, qui è dove troverai la sfida più ardua della torre,
+dove dovrai affrontare la Morte Blu, il comandante della Torre dei Demoni.

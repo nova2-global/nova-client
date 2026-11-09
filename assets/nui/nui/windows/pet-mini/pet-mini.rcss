@@ -1,0 +1,175 @@
+/* The pet's mini window, modern (NOVA-24): folded, the pet's icon on an
+   accent-edged tile; open, the name and level, the grade in OLD's color,
+   the exp gauge with the hint line under it, and the ten basic and three
+   heroic skill cells in two rows. The fold is the class is-open: the board's
+   size eases between 75 x 75 and 245 x 135 (no motion under reduced
+   motion). Legacy's place: 260 from the left, the window's bottom 145 above
+   the screen's. Classic: skins/classic/windows/pet-mini.rcss. */
+
+body.pet-mini
+{
+	left: 260dp;
+	bottom: 145dp;
+	width: 75dp;
+	height: 75dp;
+	min-width: 0;
+	padding: 0;
+	focus: none;
+	tab-index: none;
+	--pet-grade: var(--accent);
+}
+body.pet-mini.is-open
+{
+	width: 245dp;
+	height: 135dp;
+}
+body.pet-mini.nui-anim
+{
+	transition: width height 0.2s cubic-out;
+}
+.pet-mini__fold
+{
+	display: block;
+	position: absolute;
+	width: 0;
+	height: 0;
+	visibility: hidden;
+}
+.pet-mini__handle
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+.pet-mini__icon
+{
+	position: absolute;
+	left: 14dp;
+	top: 14dp;
+	width: 44dp;
+	height: 44dp;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+}
+.pet-mini__icon:hover
+{
+	border-color: var(--accent);
+}
+.pet-mini__icon-image
+{
+	width: 32dp;
+	height: 32dp;
+	margin: 5dp;
+	pointer-events: none;
+}
+.pet-mini__extras
+{
+	display: none;
+	position: absolute;
+	left: 66dp;
+	top: 10dp;
+	width: 170dp;
+}
+body.pet-mini.is-open .pet-mini__extras
+{
+	display: block;
+}
+.pet-mini__title
+{
+	display: block;
+	height: 16dp;
+	color: var(--text);
+	font-size: var(--font-md);
+	font-weight: bold;
+	line-height: 16dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet-mini__evo
+{
+	display: block;
+	height: 16dp;
+	color: var(--pet-grade);
+	font-size: var(--font-sm);
+	line-height: 16dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet-mini__exp
+{
+	display: block;
+	height: 8dp;
+	padding: 2dp 0;
+}
+.pet-mini__gauge
+{
+	width: 100%;
+	pointer-events: none;
+}
+.pet-mini__hint
+{
+	display: block;
+	height: 14dp;
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	line-height: 14dp;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.pet-mini__cells
+{
+	position: absolute;
+	left: -52dp;
+	top: 64dp;
+	width: 228dp;
+}
+.pet-mini__row
+{
+	display: flex;
+	flex-direction: row;
+	gap: var(--space-1);
+	margin-bottom: 4dp;
+}
+.pet-mini__cell
+{
+	position: relative;
+	width: 19dp;
+	height: 19dp;
+}
+.pet-mini__cell--heroic
+{
+	width: 24dp;
+	height: 24dp;
+}
+.pet-mini__lock
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 4dp;
+	background-color: var(--slot-disabled);
+	pointer-events: none;
+}
+.pet-mini__cell.is-disabled .pet-mini__lock
+{
+	display: block;
+}
+/* OLD's 37 x 37 skill art drawn at the small cell's size (legacy's 0.55). */
+.pet-mini__cell .nui-slot__icon
+{
+	width: 17dp;
+	height: 17dp;
+	margin: 1dp;
+}
+.pet-mini__cell--heroic .nui-slot__icon
+{
+	width: 22dp;
+	height: 22dp;
+}

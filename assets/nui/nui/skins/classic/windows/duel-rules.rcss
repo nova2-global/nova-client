@@ -1,0 +1,143 @@
+/* Classic skin overlay of nui/windows/duel-rules/duel-rules.rml: legacy's duel
+   rules board (uiscript duelrulesdialog.py, uiduel.py) at 100%, 1dp to the
+   legacy pixel: the board, 355 x 180; the title bar at 8, 7, 340 wide, the
+   title centered; the nine check boxes (ui.CheckBox: the 14 x 14 slot bar,
+   the check image, the text 20 to the right) in two columns at x 20 and 190,
+   rows 20 apart from y 38 (uiduel.RULE_POSITION); Fight and Cancel, the
+   middle buttons, 50 either side of the middle, 40 above the bottom. */
+
+body.skin-classic.duel-rules
+{
+	width: 355dp;
+	height: 180dp;
+	min-width: 0;
+}
+body.skin-classic.duel-rules .duel-rules__title-icon
+{
+	display: none;
+}
+body.skin-classic.duel-rules .duel-rules__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 340dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.duel-rules .duel-rules__handle, body.skin-classic.duel-rules .duel-rules__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.duel-rules .duel-rules__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.duel-rules .duel-rules__body
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 355dp;
+	height: 180dp;
+	padding: 0;
+}
+body.skin-classic.duel-rules .duel-rules__rules
+{
+	display: block;
+	position: absolute;
+	left: 20dp;
+	top: 38dp;
+	width: 340dp;
+	white-space: normal;
+}
+body.skin-classic.duel-rules .duel-rules__rule
+{
+	display: inline-block;
+	position: relative;
+	width: 170dp;
+	vertical-align: top;
+	height: 20dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--text);
+	font-size: var(--font-sm);
+}
+body.skin-classic.duel-rules .duel-rules__rule:hover,
+body.skin-classic.duel-rules .duel-rules__rule.is-checked
+{
+	background-color: transparent;
+	color: var(--text);
+}
+body.skin-classic.duel-rules .duel-rules__check
+{
+	position: absolute;
+	width: 14dp;
+	height: 14dp;
+	margin: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/slot_base.sub");
+}
+body.skin-classic.duel-rules .duel-rules__rule.is-checked .duel-rules__check-mark
+{
+	left: -4dp;
+	top: -2dp;
+	width: 21dp;
+	height: 17dp;
+	border-width: 0;
+	transform: none;
+	decorator: image("d:/ymir work/ui/public/check_image.sub");
+}
+body.skin-classic.duel-rules .duel-rules__label
+{
+	position: absolute;
+	left: 20dp;
+	top: 0;
+	width: 150dp;
+	line-height: 14dp;
+}
+body.skin-classic.duel-rules .duel-rules__footer
+{
+	position: absolute;
+	left: 0;
+	top: 140dp;
+	width: 355dp;
+	height: 21dp;
+	padding: 0;
+	gap: 0;
+	display: block;
+}
+body.skin-classic.duel-rules .duel-rules__button
+{
+	position: absolute;
+	top: 0;
+	width: 61dp;
+	height: 21dp;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-button-text);
+	line-height: 21dp;
+	text-align: center;
+	decorator: image("d:/ymir work/ui/public/middle_button_01.sub");
+}
+body.skin-classic.duel-rules .duel-rules__button:hover
+{
+	decorator: image("d:/ymir work/ui/public/middle_button_02.sub");
+}
+body.skin-classic.duel-rules .duel-rules__button:active
+{
+	decorator: image("d:/ymir work/ui/public/middle_button_03.sub");
+}
+body.skin-classic.duel-rules .duel-rules__button--accept { left: 97dp; }
+body.skin-classic.duel-rules .duel-rules__button--cancel { left: 197dp; }

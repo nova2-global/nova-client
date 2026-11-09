@@ -1,0 +1,188 @@
+{
+	"$comment": "Golden cases of the pet window (NOVA-24; tools/check_nui_snapshots.py): the default fixture is the own pet at a gate (Heroic at 100 with 0 exp: Evolve blinks; 8 basic and 1 heroic cells open, the rest locked; the exp line in the hint); preview: another player's pet (the preview look, no plus); young: a Junior at 5 (every cell locked, Evolve disabled). Classic draws legacy's 406 x 513 art (petwindow.py, OLD's packs) on its own canvas; the modern looks keep room for the frame's shadow.",
+	"cases": [
+		{
+			"page": "pet",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"460x700"
+				],
+				[
+					"150",
+					"1.5",
+					"690x1050"
+				],
+				[
+					"200",
+					"2",
+					"920x1400"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null
+		},
+		{
+			"page": "pet",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"440x560"
+				],
+				[
+					"150",
+					"1.5",
+					"660x840"
+				],
+				[
+					"200",
+					"2",
+					"880x1120"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null
+		},
+		{
+			"page": "pet",
+			"variant": "preview",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"460x700"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null
+		},
+		{
+			"page": "pet",
+			"variant": "preview",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"440x560"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null
+		},
+		{
+			"page": "pet",
+			"variant": "young",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"460x700"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null
+		},
+		{
+			"page": "pet",
+			"variant": "young",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"440x560"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null
+		},
+		{
+			"page": "pet",
+			"name": "reduced-motion",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"460x700"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null,
+			"reduced_motion": true
+		},
+		{
+			"page": "pet",
+			"name": "no-effects",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"460x700"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC",
+				"assets/icon"
+			],
+			"time": null,
+			"effects": "off"
+		}
+	]
+}

@@ -1,0 +1,71 @@
+<rml>
+<head>
+	<!-- The pet evolution window (NOVA-24; legacy uipet.py PetEvolutionWindow,
+	     uiscript petevolutionwindow.py, 260 x 330). BINARY_PetEvolutionInfo
+	     opens nui_pet_evolution.PetEvolutionWindow (controller
+	     assets/root/nui_pet_evolution.py), a subclass of the legacy class on
+	     proxies: the seal's icon (its item tooltip on hover) and the pet's
+	     name, the current and the next grade in OLD's colors with their basic
+	     and heroic skill counts, the materials (icon, count, item tooltip),
+	     the cost, Evolve (legacy's money and material checks, then
+	     pet.Evolve) and Cancel are legacy's code. Centered; the document
+	     exists only while the window shows. -->
+	<title>pet-evolution</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="pet-evolution.rcss"/>
+</head>
+<body template="nui" id="pet-evolution" class="nui-window nui-fx nui-anim pet-evolution" data-model="pet_evolution"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar pet-evolution__titlebar">
+		<handle class="nui-window__handle pet-evolution__handle" move_target="#document">
+			<span class="nui-window__title pet-evolution__title">@ui.PET_EVOLUTION_TITLE</span>
+		</handle>
+		<button id="pet-evolution-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim pet-evolution__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body pet-evolution__body">
+		<div class="pet-evolution__top">
+			<div class="pet-evolution__pet">
+				<div id="pet-evolution-item" class="nui-slot pet-evolution__item" data-event-mouseover="item_over()" data-event-mouseout="item_out()">
+					<img class="nui-slot__icon" data-if="icon != ''" data-attr-src="icon"/>
+				</div>
+				<span id="pet-evolution-name" class="pet-evolution__name">{{ name }}</span>
+			</div>
+			<div class="pet-evolution__grades">
+				<div class="pet-evolution__grade pet-evolution__grade--current">
+					<span class="pet-evolution__label">@ui.PET_UI_CURRENT</span>
+					<span id="pet-evolution-current" class="pet-evolution__grade-name" data-style---grade-color="current.color">{{ current.title }}</span>
+					<span class="pet-evolution__count">{{ current.active }}</span>
+					<span class="pet-evolution__count">{{ current.passive }}</span>
+				</div>
+				<span class="pet-evolution__arrow"><span class="nui-glyph nui-glyph--chevron-right"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+				<div class="pet-evolution__grade pet-evolution__grade--next">
+					<span class="pet-evolution__label">@ui.PET_UI_NEXT_EVOLUTION</span>
+					<span id="pet-evolution-next" class="pet-evolution__grade-name" data-style---grade-color="next.color">{{ next.title }}</span>
+					<span class="pet-evolution__count">{{ next.active }}</span>
+					<span class="pet-evolution__count">{{ next.passive }}</span>
+				</div>
+			</div>
+		</div>
+			<div class="pet-evolution__materials-box">
+				<div class="pet-evolution__caption">@ui.PET_UI_REQUIREMENTS</div>
+				<div id="pet-evolution-materials" class="pet-evolution__materials">
+					<div class="nui-slot pet-evolution__material-cell" data-for="m : materials" data-attr-id="'pet-evolution-material-' + it_index"
+					     data-event-mouseover="material_over(it_index)" data-event-mouseout="material_out(it_index)">
+						<img class="nui-slot__icon" data-if="m.icon != ''" data-attr-src="m.icon"/>
+						<nui-number class="nui-slot__number" data-if="m.count != ''" data-attr-value="m.count"/>
+					</div>
+				</div>
+				<div id="pet-evolution-cost" class="pet-evolution__cost">{{ cost }}</div>
+			</div>
+	</div>
+	<div class="nui-window__footer pet-evolution__footer">
+		<button id="pet-evolution-ok" class="nui-button nui-button--medium nui-button--primary nui-anim pet-evolution__button"
+		        data-event-mousedown="evolve_press(ev.button)">@ui.PET_EVOLVE_BUTTON</button>
+		<button id="pet-evolution-cancel" class="nui-button nui-button--medium nui-anim pet-evolution__button"
+		        data-event-mousedown="cancel_press(ev.button)">@ui.CANCEL</button>
+	</div>
+</body>
+</rml>

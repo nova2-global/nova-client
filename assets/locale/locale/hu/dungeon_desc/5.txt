@@ -1,0 +1,35 @@
+# 1. szakasz:
+Miután aktiválta a futást az Ice Lion-on, Ölje meg az összes szörnyet, hogy folytassa
+a következő szint.
+
+# 2. szakasz:
+Öld meg a szörnyeket, amíg el nem dobod a valódi "Frost Key" -t, hogy továbbmenj 
+a 3. emeletre.
+
+# 3. szakasz:
+Ölj meg minden szörnyet.
+
+# 4. szakasz:
+Öld meg a szörnyek 2 hullámát a folytatáshoz.
+
+# 5. szakasz:
+Ölj meg olyan szörnyeket, amelyek leeresztik az északi csillagokat, és használd fel,
+hogy kinyissák a sarkokat a sarkvidéki kockákon, A tömítéseket a megfelelő 
+sorrendben kell kinyitni.
+
+# 6. szakasz:
+Öld meg az összes szörnyet és pusztítsd el a hideg Metint.
+
+# 7. Szakasz:
+Keresse meg és győzze le Szelt, a Jég urát.
+
+# 8. szakasz:
+Öld meg a szörnyeket, amíg el nem dobod a megfelelő fagyvirág kulcsot, hogy 
+továbblépj a következő szintre.
+
+# 9. szakasz:
+Pusztítsd el az Északi Sárkány oszlopot. A főnök szobájába való beszédhez beszéljen
+az Jégoroszlánnal.
+
+# Főnök szoba:
+Győzd le Nemerét, a fagy és jég királyát!

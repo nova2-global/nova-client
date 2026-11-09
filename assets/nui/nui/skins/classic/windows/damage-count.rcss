@@ -1,0 +1,109 @@
+/* Classic skin overlay of nui/windows/damage-count/damage-count.rml:
+   legacy's uidamagecount.DamageCountWindow at 100%, 1dp to the legacy pixel.
+   The thin board (uiscript damagecount.py "thinboard") 392 wide; the boss's
+   name at (10, 10) and the texts in legacy's font and white; the HP gauge is
+   the public red gauge (ui.Gauge, 180 wide) at (106, 30), the percentage in
+   OLD's colors (colorInfo.CHAT_RGB_SHOUT, CHAT_RGB_NOTICE,
+   TITLE_RGB_EVIL_4); the close button is the public close art (15 x 15) at
+   (370, 10); each row a bar in OLD's COLOR_LIST color by its rank, square,
+   the own row framed in OLD's red 0xFFC41C1C. */
+
+body.skin-classic.damage-count
+{
+	decorator: classic-thinboard;
+	background-color: transparent;
+	border-width: 0;
+	border-radius: 0;
+}
+body.skin-classic.damage-count .damage-count__target,
+body.skin-classic.damage-count .damage-count__hp-text,
+body.skin-classic.damage-count .damage-count__no,
+body.skin-classic.damage-count .damage-count__name,
+body.skin-classic.damage-count .damage-count__damage
+{
+	color: var(--classic-label-white);
+}
+body.skin-classic.damage-count .damage-count__target
+{
+	font-weight: normal;
+}
+body.skin-classic.damage-count .damage-count__hp-percent
+{
+	color: var(--classic-damage-hp-high);
+}
+body.skin-classic.damage-count .damage-count__hp-percent.is-mid
+{
+	color: var(--classic-damage-hp-mid);
+}
+body.skin-classic.damage-count .damage-count__hp-percent.is-low
+{
+	color: var(--classic-damage-hp-low);
+}
+body.skin-classic.damage-count .damage-count__close
+{
+	right: auto;
+	left: 370dp;
+	top: 10dp;
+	width: 15dp;
+	height: 15dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_01.sub" scale-none left top);
+}
+body.skin-classic.damage-count .damage-count__close:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_02.sub" scale-none left top);
+}
+body.skin-classic.damage-count .damage-count__close:active
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/close_button_03.sub" scale-none left top);
+}
+body.skin-classic.damage-count .damage-count__close .nui-glyph
+{
+	display: none;
+}
+body.skin-classic.damage-count .damage-count__bar
+{
+	top: 0;
+	bottom: 0;
+	border-radius: 0;
+	background-color: var(--classic-damage-row-0);
+}
+body.skin-classic.damage-count .damage-count__row--c1 .damage-count__bar
+{
+	background-color: var(--classic-damage-row-1);
+}
+body.skin-classic.damage-count .damage-count__row--c2 .damage-count__bar
+{
+	background-color: var(--classic-damage-row-2);
+}
+body.skin-classic.damage-count .damage-count__row--c3 .damage-count__bar
+{
+	background-color: var(--classic-damage-row-3);
+}
+body.skin-classic.damage-count .damage-count__row--c4 .damage-count__bar
+{
+	background-color: var(--classic-damage-row-4);
+}
+body.skin-classic.damage-count .damage-count__row--c5 .damage-count__bar
+{
+	background-color: var(--classic-damage-row-5);
+}
+body.skin-classic.damage-count .damage-count__row--c6 .damage-count__bar
+{
+	background-color: var(--classic-damage-row-6);
+}
+body.skin-classic.damage-count .damage-count__row--c7 .damage-count__bar
+{
+	background-color: var(--classic-damage-row-7);
+}
+body.skin-classic.damage-count .damage-count__frame
+{
+	border-radius: 0;
+	border-color: var(--classic-damage-own);
+}

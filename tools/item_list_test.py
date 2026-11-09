@@ -59,7 +59,8 @@ class ItemList(unittest.TestCase):
 		self.assertEqual(vnums, self.want["added"])
 		# 2222 at the cut and wave 6; the sash costumes (OLD's wings) and the
 		# glowing sashes' model vnums (851xx, 861xx; NOVA-20) since.
-		self.assertEqual(len(vnums), 3019)
+		# The 45 advanced pet items (NOVA-24: OLD live, the 0.2 pack's rows).
+		self.assertEqual(len(vnums), 3064)
 		self.assertEqual(len(set(vnums)), len(vnums))
 		self.assertEqual(new_vnums & set(vnums), set())
 

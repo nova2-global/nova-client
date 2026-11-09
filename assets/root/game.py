@@ -24,9 +24,12 @@ import localeInfo
 import constInfo
 import exchange
 import ime
+## The advanced pet's module (NOVA-24, chunk C's PythonPetAdvanced.cpp).
+import pet
 
 import ui
 import uiCommon
+import uiDuel
 import uiPhaseCurtain
 import uiMapNameShower
 import uiAffectShower
@@ -34,6 +37,8 @@ import uiPlayerGauge
 import uiCharacter
 import uiTarget
 import uiMaintenance
+# The dungeon manager's data and drop list (NOVA-25).
+import uiTimerWindow
 
 # PRIVATE_SHOP_PRICE_LIST
 import uiPrivateShopBuilder
@@ -358,6 +363,10 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_F2]	= lambda: self.__PressQuickSlot(5)
 		onPressKeyDict[app.DIK_F3]	= lambda: self.__PressQuickSlot(6)
 		onPressKeyDict[app.DIK_F4]	= lambda: self.__PressQuickSlot(7)
+		# The switchbot (NOVA-43; OLD game.py:491).
+		onPressKeyDict[app.DIK_F5]	= lambda: self.ShowSwitchbot()
+		# NOVA-25: the dungeon manager (OLD game.py:493).
+		onPressKeyDict[app.DIK_F6]	= lambda: self.OpenTimerWindow()
 
 		onPressKeyDict[app.DIK_LALT]		= lambda: self.ShowName()
 		onPressKeyDict[app.DIK_LCONTROL]	= lambda: self.ShowMouseImage()
@@ -408,13 +417,21 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_SUBTRACT]	= lambda: self.interface.MiniMapScaleDown()
 		onPressKeyDict[app.DIK_L]			= lambda: self.interface.ToggleChatLogWindow()
 		onPressKeyDict[app.DIK_COMMA]		= lambda: self.ShowConsole()		# "`" key
-		onPressKeyDict[app.DIK_LSHIFT]		= lambda: self.__SetQuickPageMode()
+		onPressKeyDict[app.DIK_LSHIFT]		= lambda: self.__PressLeftShiftKey()
 		onPressKeyDict[app.DIK_X]			= lambda: self.__SetChannelSwitchMode(True)
 
 		onPressKeyDict[app.DIK_J]			= lambda: self.__PressJKey()
 		onPressKeyDict[app.DIK_H]			= lambda: self.__PressHKey()
 		onPressKeyDict[app.DIK_B]			= lambda: self.__PressBKey()
 		onPressKeyDict[app.DIK_F]			= lambda: self.__PressFKey()
+		## The advanced pet (NOVA-24; OLD game.py:500-501): P toggles the pet
+		## window; Tab previews the pet seal under the pointer (OLD's
+		## CWindowManager::RunPressTabKey, which NEW's exe lacks).
+		onPressKeyDict[app.DIK_P]			= lambda: self.interface.TogglePetWindow()
+		onPressKeyDict[app.DIK_TAB]			= lambda: self.interface.PressTabKey()
+		# The guild war top killers show while TAB is held (NOVA-29, OLD
+		# game.py:525-526 and 596).
+		onPressKeyDict[app.DIK_TAB]			= lambda: self.interface.OpenTopKillers()
 
 		self.onPressKeyDict = onPressKeyDict
 
@@ -424,6 +441,7 @@ class GameWindow(ui.ScriptWindow):
 		onClickKeyDict[app.DIK_LEFT] = lambda : self.StopLeft()
 		onClickKeyDict[app.DIK_RIGHT] = lambda : self.StopRight()
 		onClickKeyDict[app.DIK_SPACE] = lambda : self.EndAttack()
+		onClickKeyDict[app.DIK_TAB] = lambda : self.interface.CloseTopKillers()
 
 		onClickKeyDict[app.DIK_W] = lambda : self.StopUp()
 		onClickKeyDict[app.DIK_S] = lambda : self.StopDown()
@@ -551,6 +569,14 @@ class GameWindow(ui.ScriptWindow):
 
 	def __SetQuickPageMode(self):
 		self.pressNumber=ui.__mem_func__(self.__SelectQuickPage)
+
+	# Left Shift: the quick page mode, and OLD's Shift over a chest opens its
+	# contents (NOVA-18; OLD's OnPressLeftShiftKey of the inventory, the
+	# special inventory and the shop, uiInventory.py:1201-1208).
+	def __PressLeftShiftKey(self):
+		self.__SetQuickPageMode()
+		if self.interface:
+			self.interface.OpenHoveredChestDrop()
 
 	# X pressed (True) or released (False): the channel quick switch (NOVA-49).
 	# OLD's X also jumped and flew (OnXIn); that is not ported. NEW has no
@@ -893,16 +919,40 @@ class GameWindow(ui.ScriptWindow):
 		if vid != self.targetBoard.GetTargetVID():
 			self.targetBoard.ResetTargetBoard()
 			self.targetBoard.SetEnemyVID(vid)
+			# NOVA-27 (OLD game.py:1361-1362): a new target closes the damage count.
+			self.__CloseDamageCount()
 
 		self.targetBoard.SetHP(hpPercentage)
 		self.targetBoard.Show()
 
+		# NOVA-27 (OLD game.py:1373): the boss's HP in the damage count.
+		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
+		if wndDamageCount:
+			wndDamageCount.AddHPInfo(vid, hpPercentage)
+
 	def CloseTargetBoardIfDifferent(self, vid):
 		if vid != self.targetBoard.GetTargetVID():
 			self.targetBoard.Close()
+			self.__CloseDamageCount()
 
 	def CloseTargetBoard(self):
 		self.targetBoard.Close()
+		self.__CloseDamageCount()
+
+	def __CloseDamageCount(self):
+		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
+		if wndDamageCount:
+			wndDamageCount.Close()
+
+	## NOVA-27: GC::BOSS_DAMAGE_COUNT, one row of a damage-count boss's top
+	## attackers (OLD game.py:1819-1823).
+	def BINARY_UpdateBossDamageCount(self, attackerVID, victimVID, totalDamage):
+		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
+		if not wndDamageCount:
+			return
+		wndDamageCount.AddData(attackerVID, victimVID, totalDamage)
+		if not wndDamageCount.IsShow():
+			wndDamageCount.Open()
 
 	## View Equipment
 	def OpenEquipmentDialog(self, vid):
@@ -938,8 +988,28 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.RecvWhisper(name)
 
 	def OnRecvWhisperSystemMessage(self, mode, name, line):
-		chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, line)
+		# A challenge's rules (NOVA-28, OLD game.py:1435-1446): "<<~N~>>" is said
+		# as OLD's title and one line per rule.
+		rules = uiDuel.parse_rules_whisper(line)
+		if rules is not None:
+			for ruleLine in uiDuel.rule_lines(rules):
+				chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, ruleLine)
+		else:
+			chat.AppendWhisper(chat.WHISPER_TYPE_SYSTEM, name, line)
 		self.interface.RecvWhisper(name)
+
+	# The kill ranking (NOVA-29, OLD game.py:3872-3876): GC::KILL_RANK calls
+	# both, the player's own row first.
+	def RefreshKillRank(self, type):
+		self.interface.RefreshKillRank(int(type))
+
+	def SetPersonalKillRank(self, rank, name, guildName, count):
+		self.interface.SetPersonalKillRank(rank, name, guildName, count)
+
+	# The guild war top killers (NOVA-29, OLD game.py:1209-1211): one fighter's
+	# line of GC::GUILD_WAR_TOP.
+	def BINARY_WarTop(self, guildId, pName, pRace, totalDamage, kills, deads, ping):
+		self.interface.UpdateTopKillers(guildId, pName, pRace, totalDamage, kills, deads, ping)
 
 	def OnRecvWhisperError(self, mode, name, line):
 		# The target blocked the sender (NOVA-47): said in the whisper and no
@@ -1058,6 +1128,10 @@ class GameWindow(ui.ScriptWindow):
 	def BINARY_OfflineShopHideShops(self, hidden):
 		self.interface.OnOfflineShopHideShops(hidden)
 
+	## GC::BUFFI_HIDE (NOVA-38): the server's /hide_buffi state.
+	def BINARY_OnBuffiHide(self, hidden):
+		self.interface.OnBuffiHide(hidden)
+
 	def RefreshSearchShop(self):
 		self.interface.RefreshSearchShop()
 
@@ -1101,6 +1175,59 @@ class GameWindow(ui.ScriptWindow):
 		if not self.auraWindow.IsOpened():
 			self.auraWindow.Open()
 
+	## The advanced pet (NOVA-24; OLD game.py:4081-4117): C's GC::PET_ADVANCED.
+	## RefreshStatus and RefreshSkill come at most once per 300 ms.
+	def BINARY_PetRefreshSkill(self):
+		if not self.interface:
+			return
+		pet.UpdateSkillProtoExpr()
+		self.interface.wndPetInterfaceWindow.RefreshSkillSlot()
+		self.interface.wndPetWindow.RefreshSkillSlot()
+
+	def BINARY_PetRefreshStatus(self):
+		if not self.interface:
+			return
+		self.interface.wndPetWindow.RefreshStatus()
+		self.interface.wndPetInterfaceWindow.RefreshStatus()
+		if self.interface.wndPetRefineWindow.IsShow():
+			self.interface.wndPetRefineWindow.Refresh()
+
+	def BINARY_PetSummon(self):
+		if not self.interface:
+			return
+		pet.UpdateSkillProtoExpr()
+		self.interface.wndPetInterfaceWindow.Open()
+		if self.interface.wndPetWindow.IsShow():
+			self.interface.TogglePetWindow()
+
+	def BINARY_PetAttrRefineInfo(self, index, nextValue):
+		if self.interface:
+			self.interface.wndPetRefineWindow.Open(index, nextValue)
+
+	def BINARY_PetEvolutionInfo(self):
+		if self.interface:
+			self.interface.wndPetEvolutionWindow.Open()
+
+	def BINARY_PetEvolveResult(self, result):
+		if not self.interface:
+			return
+		if result:
+			self.interface.wndPetEvolutionWindow.OnEvolveSuccess()
+		else:
+			self.interface.wndPetEvolutionWindow.OnEvolveFailure()
+
+	def BINARY_PetUnsummon(self):
+		if not self.interface:
+			return
+		self.interface.wndPetInterfaceWindow.Close()
+		self.interface.wndPetWindow.Close()
+
+	def BINARY_PetPreview(self):
+		if not self.interface:
+			return
+		pet.UpdateSkillProtoExpr(-1, True)
+		self.interface.wndPetPreviewWindow.Open(True)
+
 	## The server's refusal of a costume switch while fighting (NOVA-22; OLD
 	## game.py:3331-3332): the costume window's switches show the state again.
 	def __ResetCostumeSlider(self):
@@ -1109,6 +1236,56 @@ class GameWindow(ui.ScriptWindow):
 		wndCostume = getattr(self.interface.wndInventory, "wndCostume", None)
 		if wndCostume:
 			wndCostume.ResetSlider()
+
+	## The boss info panel's list (NOVA-27; OLD game.py:4030-4041): the
+	## server's "ClearBossInfo", "AddBossInfo <vnum> <alive> <respawn time>"
+	## and "BossInfoLoadComplete".
+	def __ClearBossInfo(self):
+		if self.interface:
+			self.interface.ClearBossInfo()
+
+	def __AddBossInfo(self, bossVnum, isAlive, timeUntilRespawn):
+		if self.interface:
+			self.interface.AddBossInfo(int(bossVnum), int(isAlive), int(timeUntilRespawn))
+
+	def __BossInfoLoadComplete(self):
+		if self.interface:
+			self.interface.BossInfoLoadComplete()
+
+	## The dungeon manager (NOVA-25; OLD game.py:3843-3883 and 1181-1189).
+	def OpenTimerWindow(self):
+		if self.interface:
+			self.interface.OpenTimerWindow()
+
+	def SetQuestTime(self, index, time):
+		if self.interface:
+			self.interface.SetQuestTime(int(index), int(time))
+
+	def QuestTimeReady(self):
+		if self.interface:
+			self.interface.QuestTimeReady()
+		else:
+			uiTimerWindow.TIMER_STATE["loaded"] = True
+
+	def RefreshDungeonRank(self, type, dungeonIndex):
+		if self.interface:
+			self.interface.RefreshDungeonRank(int(type), int(dungeonIndex))
+
+	def SetPersonalDungeonRank(self, rank, name, count, type):
+		if self.interface:
+			self.interface.SetPersonalDungeonRank(rank, name, count, type)
+
+	def __SetPersonalDungeonRankPacked(self, packed):
+		## "SetPersonalDungeonRank /<rank>/<name>/<count>/<type>": one token.
+		fields = packed.split("/")
+		if len(fields) >= 5:
+			self.SetPersonalDungeonRank(fields[1], fields[2], fields[3], fields[4])
+
+	## GC::DUNGEON_DROP: one drop of a dungeon's mob (the drops panel).
+	def BINARY_UpdateDungeonDrop(self, dungeonIndex, mobVnum, mobType, itemVnum, itemCount, itemChance):
+		uiTimerWindow.add_drop(dungeonIndex, mobVnum, mobType, itemVnum, itemCount, itemChance)
+		if self.interface:
+			self.interface.RefreshDungeonDrops()
 
 	## Gaya market (NOVA-10): C's GC::GAYA_MARKET (open 1, open 0) and
 	## GC::GAYA_MARKET_CLOSE (OLD game.py:1805-1817).
@@ -1123,6 +1300,31 @@ class GameWindow(ui.ScriptWindow):
 	def CloseGemShop(self):
 		if self.interface:
 			self.interface.CloseGemShop()
+
+	## Chest-drop preview (NOVA-18): C's GC::CHEST_DROP_INFO, a chest's rows
+	## [(vnum, count, chance)] in the server's order. OLD appended each row
+	## (BINARY_AddChestDropInfo, game.py:1173-1176), so a second answer for a
+	## chest doubled its rows; the rows replace the known ones here. Then
+	## OLD's BINARY_RefreshChestDropInfo (:1178-1179) opens the window.
+	def BINARY_SetChestDropInfo(self, chestVnum, rows):
+		constInfo.CHESTS_PREVIEW[chestVnum] = [tuple(row) for row in rows]
+		if self.interface:
+			self.interface.RefreshChestDrop(chestVnum)
+
+	## The switchbot (NOVA-43; OLD game.py:3286-3287, 3935-3941): F5 and the
+	## server's ShowMeSwitchbot toggle it; C's GC::SWITCHBOT state and the item
+	## packets of window SWITCHBOT refresh it.
+	def ShowSwitchbot(self):
+		if self.interface:
+			self.interface.ToggleSwitchbotWindow()
+
+	def RefreshSwitchbotWindow(self):
+		if self.interface:
+			self.interface.RefreshSwitchbotWindow()
+
+	def RefreshSwitchbotItem(self, slot):
+		if self.interface:
+			self.interface.RefreshSwitchbotItem(slot)
 
 	## Exchange
 	def StartExchange(self):
@@ -1694,6 +1896,10 @@ class GameWindow(ui.ScriptWindow):
 
 		self.interface.BUILD_OnUpdate()
 
+		# NOVA-25: the dungeon manager's clocks (OLD game.py:2335); NovaUI's
+		# count by themselves.
+		self.interface.UpdateTimer()
+
 		self.__AskWhisperDetails()
 		self.__RefreshChannelInfo()
 
@@ -1949,6 +2155,15 @@ class GameWindow(ui.ScriptWindow):
 	def BINARY_GuildWar_OnSendDeclare(self, guildID):
 		pass
 
+	# NOVA-34: the guild passives' progress (GC::GUILD_PASSIVE; OLD
+	# game.py:4222-4239), one (skillIndex, currentAmount, requiredAmount,
+	# itemVnum, personalContribution) per passive.
+	def RecvGuildSkillContribution(self, contributionList):
+		if not self.interface or not self.interface.wndGuild:
+			return
+		for data in contributionList:
+			self.interface.wndGuild.RefreshSkillContribution(*data[:5])
+
 	# The member cap and end score the declaring guild chose (NOVA-90, OLD
 	# game.py:2854-2908).
 	def BINARY_GuildWar_OnRecvDeclare(self, guildID, warType, maxMemberCount=0, endScore=0):
@@ -2073,6 +2288,22 @@ class GameWindow(ui.ScriptWindow):
 
 			# NOVA-22 (OLD game.py:3028)
 			"ResetCostumeSlider"	: self.__ResetCostumeSlider,
+
+			# NOVA-43 (OLD game.py:2972): /switchbot opens the switchbot.
+			"ShowMeSwitchbot"		: self.ShowSwitchbot,
+
+			# NOVA-25: the dungeon manager's clocks and the dungeon ranking
+			# (OLD game.py:3066-3079; OLD's C++ split SetPersonalDungeonRank's
+			# "/"-separated argument, PythonNetworkStreamCommand.cpp:188-197).
+			"SetQuestTime"			: self.SetQuestTime,
+			"QuestTimeReady"		: self.QuestTimeReady,
+			"RefreshDungeonRank"	: self.RefreshDungeonRank,
+			"SetPersonalDungeonRank"	: self.__SetPersonalDungeonRankPacked,
+
+			# NOVA-27: the boss info panel (OLD game.py:3096-3100)
+			"ClearBossInfo"			: self.__ClearBossInfo,
+			"AddBossInfo"			: self.__AddBossInfo,
+			"BossInfoLoadComplete"	: self.__BossInfoLoadComplete,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()

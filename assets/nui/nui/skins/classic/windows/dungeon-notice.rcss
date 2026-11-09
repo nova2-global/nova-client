@@ -1,0 +1,21 @@
+/* Classic skin overlay of nui/windows/dungeon-notice/dungeon-notice.rml:
+   legacy's TimerNotice, a 150 x 50 half-black box (uitimerwindow.py), its
+   two lines centered 10 and 28 down in the legacy text color. */
+
+body.skin-classic.dungeon-notice .dungeon-notice__box
+{
+	width: 150dp;
+	height: 50dp;
+	padding-top: 6dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--overlay-scrim);
+	decorator: none;
+	box-shadow: none;
+}
+body.skin-classic.dungeon-notice .dungeon-notice__title,
+body.skin-classic.dungeon-notice .dungeon-notice__text
+{
+	color: var(--text);
+	font-weight: normal;
+}

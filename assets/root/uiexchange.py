@@ -27,6 +27,12 @@ FACE_IMAGE_DICT = {
 	6 : "icon/face/sura_w.tga",
 	7 : "icon/face/shaman_m.tga",
 }
+## The advanced pet's preview modes of the two sides (NOVA-24, contract 6's
+## pet.PET_PREVIEW_EXCHANGE_SELF and _OTHER), named here so that the hover,
+## which every test world runs, needs no pet module.
+PET_PREVIEW_EXCHANGE_SELF = 1
+PET_PREVIEW_EXCHANGE_OTHER = 2
+
 ## A side's slots once it accepted: green (OLD uiExchange.py:552-558).
 SLOT_BASE_IMAGE = "d:/ymir work/ui/public/slot_base.sub"
 ACCEPTED_SLOT_BASE_COLOR = (0.35, 0.85, 0.35, 1.0)
@@ -423,16 +429,37 @@ class ExchangeDialog(ui.ScriptWindow):
 		CallIfAny(slotWindow, "SetSlotBaseImage", SLOT_BASE_IMAGE, *color)
 
 	def OverInOwnerItem(self, slotIndex):
+		self.tabPreviewItem = (PET_PREVIEW_EXCHANGE_SELF, slotIndex)
 
 		if 0 != self.tooltipItem:
 			self.tooltipItem.SetExchangeOwnerItem(slotIndex)
 
 	def OverInTargetItem(self, slotIndex):
+		self.tabPreviewItem = (PET_PREVIEW_EXCHANGE_OTHER, slotIndex)
 
 		if 0 != self.tooltipItem:
 			self.tooltipItem.SetExchangeTargetItem(slotIndex)
 
+	## Tab over a pet seal on either side previews its pet (NOVA-24; OLD
+	## uiExchange.py:527-536), through the Interface's PressTabKey.
+	tabPreviewItem = None
+
+	def OnPressTabKey(self):
+		if not self.tabPreviewItem:
+			return False
+		import pet
+		mode, slotIndex = self.tabPreviewItem
+		if mode == PET_PREVIEW_EXCHANGE_SELF:
+			item.SelectItem(exchange.GetItemVnumFromSelf(slotIndex))
+		else:
+			item.SelectItem(exchange.GetItemVnumFromTarget(slotIndex))
+		if not (item.GetItemType() == item.ITEM_TYPE_PET_ADVANCED and item.GetItemSubType() == item.PET_SUMMON):
+			return False
+		pet.ReqPetPreview(mode, slotIndex)
+		return True
+
 	def OverOutItem(self):
+		self.tabPreviewItem = None
 
 		if 0 != self.tooltipItem:
 			self.tooltipItem.HideToolTip()

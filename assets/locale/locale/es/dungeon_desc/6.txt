@@ -1,0 +1,28 @@
+$ Este mapa está dividido en 7 áreas. Hacer clic
+$ en Am-heh Gorge para iniciar la mazmorra.
+
+#Fase 1:
+Mata a todos los monstruos en la habitación que se encuentran en la habitación
+recién desbloqueada.
+
+#Fase 2:
+Encuentra la rueda dentada dorada y arrastra la rueda hasta Isfel Stele en medio de
+la segunda área.
+
+#Fase 3:
+Mata a todos los monstruos en la habitación que se encuentran en la habitación
+recién desbloqueada.
+
+#Fase 4:
+Mata a Ignator.
+
+# Fase 5:
+Mata a los monstruos hasta que sueltes maat Stones.
+Arrastre la piedra para desbloquear el sello en el orden correcto de su elección.
+Esta fase pasará cuando todos los sellos estén desbloqueados.
+
+# Fase 6:
+Mata al metin de fuego del purgatorio en el Área designada.
+
+#Fase 7:
+¡Mata al Razador!

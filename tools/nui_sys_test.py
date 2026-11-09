@@ -1006,7 +1006,7 @@ class GameOptions(Pair):
         # The pickup filter since NOVA-50 (uigameoption.py RefreshPickupFilter).
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
-                                 "pickup": [True] * 4, "hide_shops": False, "show_sash": True})
+                                 "pickup": [True] * 4, "hide_shops": False, "show_sash": True, "hide_buffi": False})
         self.assertEqual([button.down for button in a.pickupFilterButtonList], [True] * 4)
         self.assertEqual([button.down for button in a.viewChatButtonList], [False, True])
         self.assertEqual([button.down for button in a.showDamageButtonList], [False, True])
@@ -1415,10 +1415,10 @@ class Fixtures(unittest.TestCase):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
         game_options = self.world.make_game_options()
         # pickup: the pickup filter (NOVA-50); hide_shops: Wave 5's row (NOVA-9);
-        # show_sash: Wave 6's row (SHOW_ACCE, NOVA-20).
+        # show_sash: Wave 6's row (SHOW_ACCE, NOVA-20). hide_buffi: the buffi's row (NOVA-38).
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
-                                                         "pickup", "hide_shops", "show_sash"})
+                                                         "pickup", "hide_shops", "show_sash", "hide_buffi"})
 
 
 class HideShops(unittest.TestCase):
@@ -1480,8 +1480,10 @@ class ShowSash(unittest.TestCase):
                          [(90, cls.SHOW_SASH_ROW_Y), (155, cls.SHOW_SASH_ROW_Y)])
         self.assertEqual([self.place(button) for button in dialog.hideShopsButtonList],
                          [(90, cls.HIDE_SHOPS_ROW_Y), (155, cls.HIDE_SHOPS_ROW_Y)])
-        self.assertEqual(dialog.GetChild("board").size[1], cls.SHOW_SASH_HEIGHT, "the board grown by one row")
-        self.assertEqual(dialog.size[1], cls.SHOW_SASH_HEIGHT, "the window with it")
+        # The buffi's row (NOVA-38) comes under it and grows the board once more.
+        self.assertEqual(cls.HIDE_BUFFI_HEIGHT, cls.SHOW_SASH_HEIGHT + 25)
+        self.assertEqual(dialog.GetChild("board").size[1], cls.HIDE_BUFFI_HEIGHT, "the board grown by its rows")
+        self.assertEqual(dialog.size[1], cls.HIDE_BUFFI_HEIGHT, "the window with it")
         self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
                          "the bottom margin under the last row kept")
 
@@ -1551,9 +1553,9 @@ class ShowSash(unittest.TestCase):
             found = re.search(rule % ("go-choice--sash-%d" % value), classic)
             self.assertEqual((found.group(1), found.group(2)), (str(x), str(cls.SHOW_SASH_ROW_Y)))
         heights = re.findall(r"height: (\d+)dp;", classic.split(".game-options__titlebar")[0])
-        self.assertEqual(heights, [str(cls.SHOW_SASH_HEIGHT)], "the body as tall as legacy's board")
+        self.assertEqual(heights, [str(cls.HIDE_BUFFI_HEIGHT)], "the body as tall as legacy's board")
         body = classic.split("body.skin-classic.game-options .game-options__body")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % cls.SHOW_SASH_HEIGHT, body)
+        self.assertIn("height: %ddp;" % cls.HIDE_BUFFI_HEIGHT, body)
 
     def test_the_label_is_in_every_locale_with_old_s_text(self):
         locales = [name for name in sorted(os.listdir(LOCALES))

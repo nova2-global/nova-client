@@ -1,0 +1,29 @@
+#Poziom 1:
+Po aktywowaniu Lodowego Lwa, zabij wszystkie potwory żeby przedostać się na następny poziom. 
+
+#Poziom 2:
+Zabijaj potwory póki nie zdobędziesz "Lodowy Klucza" żeby przejść na trzecie piętro. 
+
+#Poziom 3:
+Zabij wszystkie potwory. 
+
+#Poziom 4:
+Zabij dwie fale potworów żeby przejść na następny poziom. 
+
+#Poziom 5:
+Zabijaj potwory póki nie zdobędziesz Pólnocną Gwiazde, użyj jej żeby otworzyć Arktyczne Sześcian, uszczelki muszą być otwarte w prawidłowej kolejności. 
+
+#Poziom 6:
+Zabij wszystkie potwory i zniszcz Metin Zimna. 
+
+#Poziom 7:
+Znajdz i zabij Szel, Lorda Zimna. 
+
+#Poziom 8:
+Zabijaj potwory dopóki nie wypadnie prawidłowy Lodowy Kwiat żeby przejść na następny poziom. 
+
+#Poziom 9:
+Zniszcz Północny Smoczy Filar. Żeby wejść do pokoju bossa porozmawiaj z Lodowym Lwem. 
+
+#Pokój Bossa :
+Pokonaj Nemere, Króla Mrozu i Lodu! 

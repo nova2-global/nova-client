@@ -1,0 +1,59 @@
+<rml>
+<head>
+	<!-- The guild war top killers (NOVA-29; legacy uiguild.py TopWarPlayersDialog,
+	     uiscript guildtopwarplayers.py, OLD uiGuild.py). Held open with TAB
+	     during a war; while the guild-war-top flag is on, the Interface makes
+	     nui_guild_war_top.TopWarPlayersDialog (controller
+	     assets/root/nui_guild_war_top.py), a subclass of the legacy class on
+	     proxies: the guilds, the score, each fighter's line and the order are
+	     legacy's code. The player's guild on the left, the enemy's on the
+	     right; each side its name and score, its MVP and ten rows. -->
+	<title>guild-war-top</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="guild-war-top.rcss"/>
+</head>
+<body template="nui" id="guild-war-top" class="nui-window nui-fx nui-anim guild-war-top" data-model="guild_war_top"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar guild-war-top__titlebar">
+		<handle class="nui-window__handle guild-war-top__handle" move_target="#document">
+			<span class="guild-war-top__title-icon"><span class="nui-glyph nui-glyph--sword"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title guild-war-top__title">@ui.GUILD_WAR_TOP_TITLE</span>
+		</handle>
+	</div>
+	<div class="nui-window__body guild-war-top__body">
+		<div class="guild-war-top__side guild-war-top__side--ally">
+			<div class="guild-war-top__name">{{ left.name }}</div>
+			<div class="guild-war-top__mvp">{{ left.mvp }}</div>
+			<div class="guild-war-top__head"><span class="guild-war-top__cell guild-war-top__cell--name">@ui.GUILD_WAR_TOP_NAME</span><span
+				class="guild-war-top__cell guild-war-top__cell--kills">@ui.GUILD_WAR_TOP_KILLS</span><span
+				class="guild-war-top__cell guild-war-top__cell--deaths">@ui.GUILD_WAR_TOP_DEATHS</span><span
+				class="guild-war-top__cell guild-war-top__cell--damage">@ui.GUILD_WAR_TOP_DAMAGE</span><span
+				class="guild-war-top__cell guild-war-top__cell--ping">@ui.GUILD_WAR_TOP_PING</span></div>
+			<div class="guild-war-top__row" data-for="r : left.rows"><span class="guild-war-top__cell guild-war-top__cell--name"><img
+				class="guild-war-top__face" data-if="r.portrait != ''" data-attr-src="r.portrait"/><span
+				class="guild-war-top__player">{{ r.name }}</span></span><span
+				class="guild-war-top__cell guild-war-top__cell--kills">{{ r.kills }}</span><span
+				class="guild-war-top__cell guild-war-top__cell--deaths">{{ r.deaths }}</span><span
+				class="guild-war-top__cell guild-war-top__cell--damage">{{ r.damage }}</span><span
+				class="guild-war-top__cell guild-war-top__cell--ping">{{ r.ping }}</span></div>
+		</div>
+		<div class="guild-war-top__side guild-war-top__side--enemy">
+			<div class="guild-war-top__name">{{ right.name }}</div>
+			<div class="guild-war-top__mvp">{{ right.mvp }}</div>
+			<div class="guild-war-top__head"><span class="guild-war-top__cell guild-war-top__cell--name">@ui.GUILD_WAR_TOP_NAME</span><span
+				class="guild-war-top__cell guild-war-top__cell--kills">@ui.GUILD_WAR_TOP_KILLS</span><span
+				class="guild-war-top__cell guild-war-top__cell--deaths">@ui.GUILD_WAR_TOP_DEATHS</span><span
+				class="guild-war-top__cell guild-war-top__cell--damage">@ui.GUILD_WAR_TOP_DAMAGE</span><span
+				class="guild-war-top__cell guild-war-top__cell--ping">@ui.GUILD_WAR_TOP_PING</span></div>
+			<div class="guild-war-top__row" data-for="r : right.rows"><span class="guild-war-top__cell guild-war-top__cell--name"><img
+				class="guild-war-top__face" data-if="r.portrait != ''" data-attr-src="r.portrait"/><span
+				class="guild-war-top__player">{{ r.name }}</span></span><span
+				class="guild-war-top__cell guild-war-top__cell--kills">{{ r.kills }}</span><span
+				class="guild-war-top__cell guild-war-top__cell--deaths">{{ r.deaths }}</span><span
+				class="guild-war-top__cell guild-war-top__cell--damage">{{ r.damage }}</span><span
+				class="guild-war-top__cell guild-war-top__cell--ping">{{ r.ping }}</span></div>
+		</div>
+	</div>
+</body>
+</rml>

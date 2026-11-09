@@ -1,0 +1,17 @@
+{
+	"chest_drop": {
+		"title": "Chest Items",
+		"info": "The following items can be found in Moonlight Treasure Box",
+		"opens": "",
+		"chest_icon": "/icon/item/50011.tga",
+		"chest_name": "Moonlight Treasure Box",
+		"rows": [
+			{"icon": "/icon/item/27992.tga", "name": "5x White Pearl", "tier": 3},
+			{"icon": "/icon/item/71084.tga", "name": "1x Enchant Item", "tier": 1},
+			{"icon": "/icon/item/27001.tga", "name": "20x Red Potion (S)", "tier": 2},
+			{"icon": "/icon/item/28000.tga", "name": "1x Stone of Breach+0", "tier": 2},
+			{"icon": "/icon/item/72723.tga", "name": "1x Elixir of the Sun (S)", "tier": 1},
+			{"icon": "/icon/item/50150.tga", "name": "1x Lucky Gold Coin", "tier": 3}
+		]
+	}
+}

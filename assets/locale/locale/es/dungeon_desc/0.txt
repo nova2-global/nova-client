@@ -1,0 +1,52 @@
+#Planta baja:
+Destruye el Metin of Toughness frente al portal de entrada.
+Una vez que el Metin sea destruido, serás teletransportado al primer piso.
+
+#Piso 1:
+Mata a todas las turbas para pasar al siguiente piso.
+$ Atención: ¡A partir de este nivel, los monstruos son agresivos!
+
+#Piso 2:
+Mata a todas las turbas para pasar al siguiente piso.
+
+#Piso 3:
+Destruye el Metin of Devil para continuar con el siguiente desafío en el mismo piso.
+Una vez que hayas matado al Metin of Devil, 7 Metin of Fall aparecerán por el suelo.
+Necesitas romper esos Metins hasta que encuentres el correcto.
+
+#Piso 4:
+La tarea en este piso es abrir el 5 Sello con la Piedra Clave que cae de
+los arqueros. Después de cada aparición, caerá 1 piedra clave.
+Para abrir un sello, debes arrastrar y soltar la piedra clave en el sello.
+
+#Piso 5:
+El objetivo de este piso es el Herrero especial.
+Para conseguir este Herrero, debes matar al Orgulloso Rey Demonio.
+Una vez que lo mates, aparecerá el Black Smith.
+$ Nota: Este Black Smith no requerirá ningún material de actualización.
+
+#Piso 6:
+Destruye todos los Metins of Death
+Objetivo: encontrar el "mapa de Zin San Gui" para llegar al siguiente piso.
+Una vez que hayas roto el último Metin of Death, aparecerá un nuevo Metin of Murder.
+Cuando rompas este Metin, aparecerá un viejo cofre desconocido. Debes hacer clic en
+el "Cofre Viejo Desconocido" para encontrar el "mapa de Zin San Gui".
+Si hace clic y no cae nada, significa que era un cofre falso.
+Debes seguir matando al Metin of Murder hasta que aparezca el "mapa de Zin San Gui".
+del "Cofre Viejo Desconocido".
+$ Nota: una vez que caiga el mapa de Zin San Gui, el Metin of Murder dejará de aparecer.
+
+#Piso 7:
+En este piso debes encontrar el Zin Bong In Key. Una vez que encuentre esta clave, debe
+arrástrelo y suéltelo en la lápida en el lado opuesto del lugar de desove de esa habitación.
+También hay una "Llave falsa" llamada Bong In Key. Esta clave no sirve para nada.
+$ Sugerencia: El Fantasma Inmortal deja caer las llaves (tanto falsas como correctas).
+
+#Piso 8:
+Este es el último piso. Aquí encontrarás el Death Reaper.
+Depende de ti matar a todas las turbas antes de matar al Death Reaper.
+Por lo general, se genera en la parte posterior de la habitación.
+
+#Piso 9:
+The Blue Room, ahí es donde obtienes la tarea más desafiante en esta torre
+donde tienes que enfrentarte a la Muerte Azul, el gobernante de la torre del demonio.

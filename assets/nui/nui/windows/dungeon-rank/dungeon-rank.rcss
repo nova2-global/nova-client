@@ -1,0 +1,136 @@
+/* The dungeon ranking's modern look (NOVA-25): the podium mark before the
+   title; the header (name, count); ten rows, the first three in the
+   podium's colors (the warning's gold, the muted silver and the danger's
+   bronze); the player's own
+   row apart under them, on the accent's tint. Centered at its first show,
+   as legacy's uiscript. Classic (legacy's 356 x 402 board, its rows 29
+   apart): skins/classic/windows/dungeon-rank.rcss. */
+
+body.dungeon-rank
+{
+	left: 16dp;
+	top: 16dp;
+	width: 380dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.dungeon-rank button
+{
+	tab-index: none;
+	focus: none;
+}
+.dungeon-rank__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.dungeon-rank__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.dungeon-rank__body
+{
+	padding: 8dp 12dp 12dp;
+}
+.dungeon-rank__header
+{
+	display: flex;
+	flex-direction: row;
+	padding: 0 10dp 6dp 46dp;
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.dungeon-rank__head-name
+{
+	flex: 1 1 auto;
+}
+.dungeon-rank__head-count
+{
+	flex: 0 0 auto;
+	text-align: right;
+}
+.dungeon-rank__rows
+{
+	position: relative;
+	padding: 6dp 0;
+}
+.dungeon-rank__row
+{
+	display: flex;
+	flex-direction: row;
+	box-sizing: border-box;
+	height: 26dp;
+	margin-bottom: 2dp;
+	padding: 0 10dp;
+	border-radius: 6dp;
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	font-size: var(--font-sm);
+	line-height: 26dp;
+}
+.dungeon-rank__rank
+{
+	flex: 0 0 36dp;
+	font-weight: bold;
+}
+.dungeon-rank__name
+{
+	flex: 1 1 auto;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.dungeon-rank__count
+{
+	flex: 0 0 auto;
+	text-align: right;
+}
+.dungeon-rank__row--gold
+{
+	color: var(--warning);
+}
+.dungeon-rank__row--silver
+{
+	color: var(--text-muted);
+}
+.dungeon-rank__row--bronze
+{
+	color: var(--danger);
+}
+.dungeon-rank__row--own
+{
+	margin: 0;
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	background-color: var(--selection);
+	color: var(--accent);
+}
+.dungeon-rank__loading
+{
+	position: absolute;
+	left: 0;
+	top: 40dp;
+	box-sizing: border-box;
+	width: 100%;
+	margin: 0;
+	padding: 8dp 0;
+	border-radius: 8dp;
+	background-color: var(--surface-raised);
+	color: var(--text-muted);
+	text-align: center;
+}

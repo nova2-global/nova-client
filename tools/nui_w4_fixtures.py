@@ -562,8 +562,12 @@ def whisper_fixtures():
 
 # --- the guild window and its grade name dialog (SOCIAL, spec 5.9.8) ---------------------------------------
 
-GUILD_SKILL_ICONS = {152: "gaho", 153: "chukbok", 154: "seonghwi", 155: "gasok", 156: "bunno", 157: "jumunsul"}
-GUILD_SKILL_LEVELS = {210: 0, 211: 1, 212: 3, 213: 5, 214: 7, 215: 2}
+GUILD_SKILL_ICONS = {152: "gaho", 153: "chukbok", 154: "seonghwi", 155: "gasok", 156: "bunno", 157: "jumunsul",
+                     158: "yongan", 159: "yongan", 160: "yongan"}
+# The active skills at 210-215 and the guild passives (NOVA-34) at 200-202:
+# Dragon Hunt at 4, Dragon Apex not raised, Dragon Shatter at its maximum 12.
+GUILD_SKILL_LEVELS = {210: 0, 211: 1, 212: 3, 213: 5, 214: 7, 215: 2, 200: 4, 201: 0, 202: 12}
+GUILD_PASSIVE_MAX_LEVEL = 12
 GUILD_MARK_ATLAS = "nui/windows/guild-war/fixture/marks.tga"
 GUILD_ENEMIES = ("Black Wolves", "", "Red Sun", "", "", "")
 
@@ -594,13 +598,14 @@ def guild_state(game, name, enemies, members, member_name_length=12):
     game.answer("guild", "GetGuildMemberLevelAverage", 64)
     game.answer("guild", "GetGuildExperienceSummary", 10000)
     game.answer("guild", "HasGuildLand", True)
-    game.answer("skill", "GetSkillMaxLevel", 20)
+    game.answer("skill", "GetSkillMaxLevel", lambda index: GUILD_PASSIVE_MAX_LEVEL if 158 <= index <= 160 else 20)
     game.modules["skill"].GetIconImageFileNameNew = (
         lambda index, grade: "d:/ymir work/ui/skill/common/guild/%s.sub" % GUILD_SKILL_ICONS[index]
         if index in GUILD_SKILL_ICONS else "")
     game.answer("net", "GetGuildID", 7)
     game.answer("chr", "RaceToJob", lambda race: race % 4)
-    game.modules["player"].GetSkillIndex = lambda slot: 152 + slot - 210 if 210 <= slot < 216 else 0
+    game.modules["player"].GetSkillIndex = lambda slot: (152 + slot - 210 if 210 <= slot < 216
+                                                         else 158 + slot - 200 if 200 <= slot < 203 else 0)
     game.modules["uiScriptLocale"].GUILD_PATH = "locale/en/ui/guild/"
     game.modules["uiScriptLocale"].WINDOWS_PATH = "locale/en/ui/windows/"
 

@@ -37,6 +37,7 @@ WINDOWS = os.path.join(ROOT, "assets", "nui", "nui", "windows")
 MINIMAP = os.path.join(WINDOWS, "minimap", "minimap.view.png")
 ATLAS = os.path.join(WINDOWS, "atlas", "atlas.view.png")
 MARKS = os.path.join(WINDOWS, "guild-war", "fixture", "marks.tga")
+BOSS = os.path.join(WINDOWS, "dungeon-timer", "dungeon-timer.boss.view.png")
 SHOP_MODEL = os.path.join(WINDOWS, "shop-deco", "shop-deco.model.view.png")
 
 GREEN_DARK = (74, 108, 50)
@@ -97,6 +98,32 @@ def atlas_pixels():
             row.append((r, g, b, 255))
         rows.append(row)
     return size, size, rows
+
+
+def boss_pixels():
+    """A horned figure on transparent, 154 x 240: the boss preview's stand-in
+    (--view model-dungeon-boss=...)."""
+    width, height = 154, 240
+    rows = []
+    for y in range(height):
+        row = []
+        for x in range(width):
+            cx, nx, ny = width / 2.0, (x - width / 2.0) / (width / 2.0), y / float(height)
+            head = (nx * 1.9) ** 2 + ((ny - 0.25) * 6.0) ** 2 < 1.0
+            horn = abs(abs(nx) - (0.28 + (0.17 - ny) * 1.6)) < 0.06 and 0.08 < ny < 0.2
+            body = ny > 0.32 and abs(nx) < 0.34 + 0.46 * min(1.0, (ny - 0.32) / 0.3) and ny < 0.97
+            eye = abs(ny - 0.24) < 0.012 and 0.08 < abs(nx) < 0.2
+            if eye:
+                row.append((236, 96, 64, 255))
+            elif head or horn:
+                row.append((58, 48, 74, 255))
+            elif body:
+                shade = 36 + int(ny * 40)
+                row.append((shade + 18, shade, shade + 34, 255))
+            else:
+                row.append((0, 0, 0, 0))
+        rows.append(row)
+    return width, height, rows
 
 
 def marks_pixels():
@@ -232,6 +259,7 @@ def tga_pixels(data):
 FILES = (
     (MINIMAP, minimap_pixels, png_bytes, png_pixels),
     (ATLAS, atlas_pixels, png_bytes, png_pixels),
+    (BOSS, boss_pixels, png_bytes, png_pixels),
     (MARKS, marks_pixels, tga_bytes, tga_pixels),
     (SHOP_MODEL, shop_model_pixels, png_bytes, png_pixels),
 )

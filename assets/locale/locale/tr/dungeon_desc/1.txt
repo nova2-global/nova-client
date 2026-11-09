@@ -1,0 +1,12 @@
+#1. Aşama:
+Örümcek Baronunu Öldür.
+
+#2. Aşama:
+Düşürdüğün objeyi kullanarak Örümcek Baroniçeyi çağır.
+
+#3. Aşama:
+Örümcek Baroniçeyi öldür.
+
+$Not:
+Örümcek yumurtalarını öldürmek Baroniçeyi zayıflatır fakat
+hasarını arttırır.

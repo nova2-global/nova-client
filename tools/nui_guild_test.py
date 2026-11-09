@@ -213,7 +213,9 @@ class Pages(GuildTest):
         self.assertEqual(model["gp_text"], "40 / 100")
         self.assertAlmostEqual(model["gp_ratio"], 0.4)
         self.assertAlmostEqual(model["gp_legacy"], int(40.0 * 173.0 / 95.0) * 95.0 / (100 * 173.0))
-        self.assertEqual([cell["kind"] for cell in model["passive_cells"]], [""] * 9, "the passive row stays empty")
+        # NOVA-34: the three guild passives fill the passive row's first cells
+        # (nui_guild_passive_test.py tests them).
+        self.assertEqual([cell["kind"] for cell in model["passive_cells"]], ["skill"] * 3 + [""] * 6)
 
     def test_the_grade_page(self):
         (a_world, a), (b_world, b) = [self.world(nui_on) for nui_on in (False, True)]

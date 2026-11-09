@@ -1,0 +1,30 @@
+#1º Desafio:
+Mata todos os monstros para avançares para o próximo desafio.
+
+#2º Desafio:
+Mata monstros até dropares a "Chave de Geada" para avançares para o próximo desafio.
+
+#3º Desafio:
+Mata todos os monstros.
+
+#4º Desafio:
+Mata as duas ondas de monstros que irão spawnar para avançares.
+
+#5º Desafio:
+Mata os monstros que irão dropar as Estrelas do Norte. Usa-as nos Cubos.
+Os Cubos têm de ser abertos na ordem correta.
+
+#6º Desafio:
+Mata todos os monstros e destroi  a Metin do Frio.
+
+#7º Desafio:
+Encontra e derroda o Szel, O Lorde de Gelo.
+
+#8º Desafio:
+Mata todos os monstros até dropares a Chave Flôr de Geada correta para avançares ao próximo nível.
+
+#9º Desafio:
+Destroi o Pilar do Dragão do Norte. Para entrares na sala do Boss fala com o Leão de Gelo.
+
+#Sala do Boss:
+Derrota o Nemere, Rei da Geada e do Gelo!

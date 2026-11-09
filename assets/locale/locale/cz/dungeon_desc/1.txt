@@ -1,0 +1,11 @@
+#Úroveň 1:
+Zabijte Pavoučího barona
+
+#Úroveň 2:
+Přivolejte Pavoučí baronku pomocí padlého předmětu.
+
+#Úroveň 3:
+Zabijte Pavoučí Baronku
+
+$Poznámka:
+Zabitím Pavoučího vajíčka oslabíte Baronku, ale zároveň zvýšíte její sílu.

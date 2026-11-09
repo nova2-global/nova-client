@@ -1232,11 +1232,19 @@ EXPECTED_SITES = {
                            ("make", "chat-log", "uiChat.ChatLogWindow", "nui_chat_log.ChatLogWindow"),
                            # Wave 5 (NOVA-10): the gaya market.
                            ("make", "gem-shop", "uiGemShop.GemShopWindow", "nui_gem_shop.GemShopWindow"),
+                           # Wave 7 (NOVA-18): the chest-drop preview.
+                           ("make", "chest-drop", "uiChestDrop.ChestDropWindow", "nui_chest_drop.ChestDropWindow"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
                            ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
                             "nui_offline_shop_log.OfflineShopLogWindow"),
                            ("make", "shop-deco", "uiMyShopDecoration.MyShopDecorationWindow",
                             "nui_shop_deco.MyShopDecorationWindow"),
+                           # Wave 7 (NOVA-43): the switchbot.
+                           ("make", "switchbot", "uiSwitchbot.SwitchbotWindow", "nui_switchbot.SwitchbotWindow"),
+                           # Wave 7 (NOVA-29): the kill ranking and the guild war top killers.
+                           ("make", "kill-rank", "uiKillRank.KillRankWindow", "nui_kill_rank.KillRankWindow"),
+                           ("make", "guild-war-top", "uiGuild.TopWarPlayersDialog",
+                            "nui_guild_war_top.TopWarPlayersDialog"),
                            ("make", "exchange", "uiExchange.ExchangeDialog", "nui_exchange.ExchangeDialog"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
                            ("make", "shop", "uiShop.ShopDialog", "nui_shop.ShopDialog"),
@@ -1257,6 +1265,21 @@ EXPECTED_SITES = {
                            # Wave 6 (NOVA-20): the sash combine and absorb windows.
                            ("make", "sash", "uiSash.CombineWindow", "nui_sash.CombineWindow"),
                            ("make", "sash", "uiSash.AbsorbWindow", "nui_sash.AbsorbWindow"),
+                           # NOVA-24: the advanced pet's windows (contract 8; the
+                           # preview is a second "pet" window).
+                           ("make", "pet-hatch", "uiPet.PetHatchEggWindow", "nui_pet_hatch.PetHatchEggWindow"),
+                           ("make", "pet-attr-refine", "uiPet.PetAttrRefineWindow", "nui_pet_attr_refine.PetAttrRefineWindow"),
+                           ("make", "pet-evolution", "uiPet.PetEvolutionWindow", "nui_pet_evolution.PetEvolutionWindow"),
+                           ("make", "pet-mini", "uiPet.PetInterfaceWindow", "nui_pet_mini.PetInterfaceWindow"),
+                           ("make", "pet", "uiPet.PetWindow", "nui_pet.PetWindow"),
+                           ("make", "pet", "uiPet.PetWindow", "nui_pet.PetWindow"),
+                           # NOVA-27: the boss info panel and the damage count.
+                           ("make", "boss-info", "uiBossInfo.BossInfoWindow", "nui_boss_info.BossInfoWindow"),
+                           ("make", "damage-count", "uiDamageCount.DamageCountWindow",
+                            "nui_damage_count.DamageCountWindow"),
+                           # NOVA-25: the dungeon manager and the dungeon ranking.
+                           ("make", "dungeon-timer", "uiTimerWindow.TimerWindow", "nui_dungeon_timer.TimerWindow"),
+                           ("make", "dungeon-rank", "uiDungeonRank.DungeonRankWindow", "nui_dungeon_rank.DungeonRankWindow"),
                            ("make", "quest", "uiQuest.QuestDialog", "nui_quest.QuestDialog"),
                            ("make", "guild-war", "uiGuild.GuildWarScoreBoard", "nui_guild_war.GuildWarScoreBoard"),
                            ("make", "shop-signs", "uiPrivateShopBuilder.PrivateShopTitleBar", "nui_shop_signs.ShopSign"),
@@ -1277,6 +1300,11 @@ EXPECTED_SITES = {
                 ("make", "aura", "uiAura.AuraWindow", "nui_aura.AuraWindow"),
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
+    # Wave 7 (NOVA-28): the duel rules, made by the target board's Fight.
+    "uitarget.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    "nui_target.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    # NOVA-25: the dungeon manager makes its drops panel.
+    "uitimerwindow.py": [("make", "dungeon-drops", "MobDropPopup", "nui_dungeon_drops.MobDropPopup")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
     # Wave 3b (P14 spec 6.7): the inventory's dialogs, in the legacy class
     # and in the NovaUI loader that stands for its uiscript loader.

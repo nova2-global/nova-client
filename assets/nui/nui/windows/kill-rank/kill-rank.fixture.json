@@ -1,0 +1,84 @@
+{
+	"kill_rank": {
+		"title": "Top Killed Monsters",
+		"tab": 3,
+		"rows": [
+			{
+				"rank": "1",
+				"name": "Alex",
+				"guild": "Nova",
+				"count": "27.007",
+				"place": 1
+			},
+			{
+				"rank": "2",
+				"name": "Sara",
+				"guild": "B L A C K W O L V E S",
+				"count": "14.903",
+				"place": 2
+			},
+			{
+				"rank": "3",
+				"name": "Enturion",
+				"guild": "-",
+				"count": "12.002",
+				"place": 3
+			},
+			{
+				"rank": "4",
+				"name": "Kai",
+				"guild": "Nova2 Team",
+				"count": "9.649",
+				"place": 4
+			},
+			{
+				"rank": "5",
+				"name": "Myth",
+				"guild": "Nova2 Team",
+				"count": "5.640",
+				"place": 5
+			},
+			{
+				"rank": "6",
+				"name": "Jardakent",
+				"guild": "-",
+				"count": "4.708",
+				"place": 6
+			},
+			{
+				"rank": "7",
+				"name": "Skepta",
+				"guild": "-",
+				"count": "2.277",
+				"place": 7
+			},
+			{
+				"rank": "8",
+				"name": "Xian",
+				"guild": "Nova2 Team",
+				"count": "564",
+				"place": 8
+			},
+			{
+				"rank": "9",
+				"name": "Sokrates",
+				"guild": "-",
+				"count": "243",
+				"place": 9
+			},
+			{
+				"rank": "10",
+				"name": "Eddy",
+				"guild": "-",
+				"count": "25",
+				"place": 10
+			}
+		],
+		"own": {
+			"rank": "42",
+			"name": "Lucas",
+			"guild": "Nova2 Team",
+			"count": "112"
+		}
+	}
+}

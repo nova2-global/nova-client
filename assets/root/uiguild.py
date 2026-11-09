@@ -19,6 +19,8 @@ import background
 import miniMap
 import chr
 import uiScriptLocale
+import item
+import chat
 import nui_windows
 from _weakref import proxy
 
@@ -808,6 +810,11 @@ class GuildWindow(ui.ScriptWindow):
 
 		self.enemyGuildNameList = []
 
+		# NOVA-34: each passive's progress toward its next level, by guild
+		# skill index (7-9), from GC::GUILD_PASSIVE (OLD uiguild.py:1884-1931).
+		self.skillContributionInfo = {}
+		self.contributionInputDialog = None
+
 	def Open(self):
 		self.Show()
 		self.SetTop()
@@ -1258,8 +1265,14 @@ class GuildWindow(ui.ScriptWindow):
 		page.affectSlot.SetOverOutItemEvent(ui.__mem_func__(self.OverOutItem))
 		page.btnHealGSP.SetEvent(ui.__mem_func__(self.__OnOpenHealGSPBoard))
 
+		self.FillGuildSkillSlots(page)
+
+	def FillGuildSkillSlots(self, page):
+		"""The passive and active rows' skills, and each slot's guild skill
+		index (vnum - 151). NOVA-34: the passive row holds OLD's three
+		passives (158-160, OLD uiguild.py:1872-1880) in place of the dragon
+		eye (151), which legacy left commented out."""
 		## Passive
-		"""
 		for i in range(len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)):
 
 			slotIndex = page.passiveSlot.GetStartIndex()+i
@@ -1267,8 +1280,7 @@ class GuildWindow(ui.ScriptWindow):
 
 			page.passiveSlot.SetSkillSlot(slotIndex, skillIndex, 0)
 			page.passiveSlot.RefreshSlot()
-			guild.SetSkillIndex(slotIndex, i)
-		"""
+			guild.SetSkillIndex(slotIndex, skillIndex - playerSettingModule.GUILD_SKILL_START)
 
 		## Active
 		for i in range(len(playerSettingModule.ACTIVE_GUILD_SKILL_INDEX_LIST)):
@@ -1279,7 +1291,7 @@ class GuildWindow(ui.ScriptWindow):
 			page.activeSlot.SetSkillSlot(slotIndex, skillIndex, 0)
 			page.activeSlot.SetCoverButton(slotIndex)
 			page.activeSlot.RefreshSlot()
-			guild.SetSkillIndex(slotIndex, len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)+i)
+			guild.SetSkillIndex(slotIndex, skillIndex - playerSettingModule.GUILD_SKILL_START)
 
 	def __MakeGradePage(self):
 
@@ -1383,6 +1395,7 @@ class GuildWindow(ui.ScriptWindow):
 		self.pickDialog = None
 		self.questionDialog = None
 		self.moneyDialog = None
+		self.OnCancelContribution()
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -1673,9 +1686,9 @@ class GuildWindow(ui.ScriptWindow):
 		page.passiveSlot.HideAllSlotButton()
 		page.activeSlot.HideAllSlotButton()
 
-		## Passive
-		"""
-		for i in xrange(len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)):
+		## Passive: the "+" opens the donation while a next level is
+		## left (OLD uiguild.py:2445-2455); skill points do not raise them.
+		for i in range(len(playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST)):
 
 			slotIndex = page.passiveSlot.GetStartIndex()+i
 			skillIndex = playerSettingModule.PASSIVE_GUILD_SKILL_INDEX_LIST[i]
@@ -1683,10 +1696,8 @@ class GuildWindow(ui.ScriptWindow):
 			skillMaxLevel = skill.GetSkillMaxLevel(skillIndex)
 
 			page.passiveSlot.SetSlotCount(slotIndex, skillLevel)
-			if skillPoint > 0:
-				if skillLevel < skillMaxLevel:
-					page.passiveSlot.ShowSlotButton(slotIndex)
-		"""
+			if skillLevel < skillMaxLevel:
+				page.passiveSlot.ShowSlotButton(slotIndex)
 
 		## Active
 		for i in range(len(playerSettingModule.ACTIVE_GUILD_SKILL_INDEX_LIST)):
@@ -1959,8 +1970,61 @@ class GuildWindow(ui.ScriptWindow):
 		player.UseGuildSkill(slotNumber)
 
 	def OnUpGuildSkill(self, slotNumber, type):
+		if type == self.GUILD_SKILL_PASSIVE_SLOT:
+			self.OpenContributionDialog(slotNumber)
+			return
 		skillIndex = player.GetSkillIndex(slotNumber)
 		net.SendChatPacket("/gskillup " + str(skillIndex))
+
+	## NOVA-34: the passives' donations (OLD uiguild.py:1895-1989)
+	def RefreshSkillContribution(self, skillIndex, currentAmount, requiredAmount, itemVnum, personalContribution):
+		self.skillContributionInfo[skillIndex] = {
+			"currentAmount": currentAmount,
+			"requiredAmount": requiredAmount,
+			"itemVnum": itemVnum,
+			"personalContribution": personalContribution,
+		}
+		self.RefreshGuildSkillPage()
+
+	def OpenContributionDialog(self, slotNumber):
+		guildSkillIndex = guild.GetSkillIndex(slotNumber)
+		info = self.skillContributionInfo.get(guildSkillIndex)
+		if not info or info["requiredAmount"] <= 0 or info["itemVnum"] <= 0:
+			return
+		if info["currentAmount"] >= info["requiredAmount"]:
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GUILD_PASSIVE_READY)
+			return
+
+		self.OnCancelContribution()
+
+		skillLevel = guild.GetSkillLevel(slotNumber)
+		item.SelectItem(info["itemVnum"])
+		dialog = uiCommon.InputDialogWithDescription2()
+		dialog.SetTitle(localeInfo.GUILD_PASSIVE_CONTRIBUTE_TITLE)
+		dialog.SetMaxLength(5)
+		dialog.SetNumberMode()
+		dialog.SetDescription1(localeInfo.GUILD_PASSIVE_CONTRIBUTE_LEVEL % (skill.GetSkillName(player.GetSkillIndex(slotNumber)), skillLevel, skillLevel + 1))
+		dialog.SetDescription2(localeInfo.GUILD_PASSIVE_CONTRIBUTE_NEED % (info["requiredAmount"] - info["currentAmount"], item.GetItemName()))
+		dialog.SetAcceptEvent(lambda arg=guildSkillIndex: self.OnAcceptContribution(arg))
+		dialog.SetCancelEvent(ui.__mem_func__(self.OnCancelContribution))
+		dialog.Open()
+		self.contributionInputDialog = dialog
+
+	def OnAcceptContribution(self, guildSkillIndex):
+		dialog = self.contributionInputDialog
+		if not dialog:
+			return
+		text = dialog.GetText()
+		if text.isdigit() and int(text) > 0:
+			net.SendGuildContributePacket(guildSkillIndex, int(text))
+		else:
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GUILD_PASSIVE_INVALID_AMOUNT)
+		self.OnCancelContribution()
+
+	def OnCancelContribution(self):
+		if self.contributionInputDialog:
+			self.contributionInputDialog.Close()
+		self.contributionInputDialog = None
 
 	def OnUseSkill(self, slotNumber, coolTime):
 
@@ -2011,6 +2075,25 @@ class GuildWindow(ui.ScriptWindow):
 			skillLevel = guild.GetSkillLevel(slotNumber)
 
 			self.tooltipSkill.SetSkill(skillIndex, skillLevel)
+
+			# NOVA-34: a passive's progress (OLD uiguild.py:2774-2807).
+			if type == self.GUILD_SKILL_PASSIVE_SLOT:
+				self.AppendContributionToolTip(guild.GetSkillIndex(slotNumber))
+
+	def AppendContributionToolTip(self, guildSkillIndex):
+		info = self.skillContributionInfo.get(guildSkillIndex)
+		if not info or info["requiredAmount"] <= 0:
+			return
+		self.tooltipSkill.AppendSpace(5)
+		self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_UPGRADE, 0xffffffff)
+		if info["itemVnum"] > 0:
+			item.SelectItem(info["itemVnum"])
+			self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_REQUIRED % item.GetItemName(), 0xffffff00)
+		progress = float(info["currentAmount"]) / float(info["requiredAmount"]) * 100
+		self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_PROGRESS % (info["currentAmount"], info["requiredAmount"], progress),
+										 0xff00ff00 if progress >= 100 else 0xffffffff)
+		if info["personalContribution"] > 0:
+			self.tooltipSkill.AppendTextLine(localeInfo.GUILD_PASSIVE_TOOLTIP_PERSONAL % info["personalContribution"], 0xff00ffff)
 
 	def OverOutItem(self):
 		if None != self.tooltipSkill:
@@ -2949,3 +3032,134 @@ Destroy building:
 
 GuildWindow._RebuildLocaleStrings()
 localeInfo.RegisterReloadCallback(GuildWindow._RebuildLocaleStrings)
+
+
+# The guild war top killers (NOVA-29; OLD __GUILD_TOP_KILLERS__, uiGuild.py:175-394).
+TOP_WAR_ROWS = 10
+TOP_WAR_ROW_Y = 98
+TOP_WAR_ROW_HEIGHT = 22
+# A side's columns from its left edge: name, kills, deaths, damage, ping.
+TOP_WAR_COLUMNS = (0, 130, 175, 225, 290)
+TOP_WAR_SIDE_X = (20, 370)
+
+
+def HumanNumber(num):
+	"""OLD's constInfo.ConvertNumberToHumanText: three significant digits and a K, M, B
+	or T (1234567 is "1.23M")."""
+	num = float("{:.3g}".format(num))
+	magnitude = 0
+	while abs(num) >= 1000 and magnitude < 4:
+		magnitude += 1
+		num /= 1000.0
+	return "{}{}".format("{:f}".format(num).rstrip("0").rstrip("."), ["", "K", "M", "B", "T"][magnitude])
+
+
+def TopWarSorted(lines):
+	"""A side's fighters, OLD's order: [kills, deaths, damage, race, ping] highest
+	first (uiGuild.py:370), as (name, data) pairs."""
+	return sorted(list(lines.items()), key=lambda entry: (entry[1], entry[0]), reverse=True)
+
+
+class TopWarPlayersDialog(ui.ScriptWindow):
+	"""The board the Interface keeps (wndTopKillers): BeginWar names the two guilds
+	(the player's on the left), each GC::GUILD_WAR_TOP line (game.py BINARY_WarTop)
+	goes to Update, and TAB held shows it during a war (Open, Close).
+
+	What differs from OLD: a line of a guild that is not one of the two (another
+	war nearby) is ignored, where OLD raised a KeyError; a new war forgets the last
+	war's lines; ten rows a side, without OLD's scroll lists and art."""
+
+	def __init__(self):
+		ui.ScriptWindow.__init__(self)
+		self.inWar = 0
+		self.DATA = {}
+		self.guildNumber = {}
+		self.rows = {}
+		self.__CreateDialog()
+
+	def __del__(self):
+		ui.ScriptWindow.__del__(self)
+
+	def Destroy(self):
+		self.ClearDictionary()
+		self.guildNumber = {}
+		self.DATA = {}
+		self.rows = {}
+
+	def __CreateDialog(self):
+		try:
+			pyScrLoader = ui.PythonScriptLoader()
+			pyScrLoader.LoadScriptFile(self, "uiscript/guildtopwarplayers.py")
+		except:
+			import exception
+			exception.Abort("TopWarPlayersDialog.__CreateDialog - LoadScript")
+
+		try:
+			self.board = self.GetChild("Board")
+		except:
+			import exception
+			exception.Abort("TopWarPlayersDialog.__CreateDialog - BindObject")
+
+		self.rows = {}
+		for side in (1, 2):
+			self.rows[side] = [self.__MakeRow(side, index) for index in range(TOP_WAR_ROWS)]
+
+	def __MakeRow(self, side, index):
+		texts = []
+		for x in TOP_WAR_COLUMNS:
+			text = ui.TextLine()
+			text.SetParent(self.board)
+			text.SetPosition(TOP_WAR_SIDE_X[side - 1] + x, TOP_WAR_ROW_Y + index * TOP_WAR_ROW_HEIGHT)
+			text.Show()
+			texts.append(text)
+		return texts
+
+	def Close(self):
+		self.Hide()
+
+	def BeginWar(self, guild1, guild2):
+		self.DATA = {}
+		self.guildNumber = {}
+		for side, guildID in ((1, guild1), (2, guild2)):
+			self.guildNumber[guildID] = {"side": side, "name": self.GetChild("guild%d_name" % side),
+			                             "mvp": self.GetChild("guild%d_mvp" % side)}
+			self.guildNumber[guildID]["name"].SetText(guild.GetGuildName(guildID))
+			self.guildNumber[guildID]["mvp"].SetText("")
+			for texts in self.rows[side]:
+				for text in texts:
+					text.SetText("")
+		self.inWar = 1
+
+	def EndWar(self):
+		self.inWar = 0
+		self.Close()
+
+	def SetScore(self, gainGuildID, point):
+		if gainGuildID not in self.guildNumber:
+			return
+		self.guildNumber[gainGuildID]["name"].SetText("%s (%d)" % (guild.GetGuildName(gainGuildID), point))
+
+	def Update(self, guildId, pName, pRace, totalDamage, kills, deads, ping):
+		if guildId not in self.guildNumber:
+			return
+
+		self.DATA.setdefault(guildId, {})[pName] = [kills, deads, totalDamage, pRace, ping]
+		data_sorted = TopWarSorted(self.DATA[guildId])
+
+		side = self.guildNumber[guildId]["side"]
+		self.guildNumber[guildId]["mvp"].SetText(localeInfo.GUILD_WAR_TOP_MVP % data_sorted[0][0])
+		for index, texts in enumerate(self.rows[side]):
+			if index < len(data_sorted):
+				name, (k, d, damage, race, p) = data_sorted[index]
+				values = (name, "%d" % k, "%d" % d, HumanNumber(damage), "%d" % p)
+			else:
+				values = ("", "", "", "", "")
+			for text, value in zip(texts, values):
+				text.SetText(value)
+
+	def Open(self):
+		if not self.inWar:
+			return
+		self.SetCenterPosition()
+		self.Show()
+		self.SetTop()

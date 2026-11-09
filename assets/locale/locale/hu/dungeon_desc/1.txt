@@ -1,0 +1,12 @@
+# 1. szakasz:
+Öld meg Pók bárót
+
+# 2. szakasz:
+Csalogassa be a Pók bárónőt a korábban elejtett tétellel.
+
+# 3. szakasz:
+Öld meg Pók bárónőt
+
+$ Megjegyzés:
+A póktojás megölése gyengíti a pók bárónét, de növekedni is fog
+ereje.

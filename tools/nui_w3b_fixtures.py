@@ -339,8 +339,10 @@ def fixtures():
         ("costume", "female"): costume(TODAY, {"costume_body": 41001, "costume_hair": 73001}, gender="female"),
         # The foundation's costume window since Wave 6: the costume body and
         # hair worn, the sash, weapon costume, sash costume and aura places
-        # empty (their marks).
-        ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001}),
+        # empty (their marks), and the buffi's block (NOVA-38: its costume
+        # body worn, its hair empty, its weapon costume worn).
+        ("costume", "foundation"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001,
+                                                        "buffi_costume_body": 41001, "buffi_costume_weapon": 1000}),
         # Every cell with an icon in the packs filled (no sash costume has
         # one yet, so its place stays empty), the hair and sash switches up.
         ("costume", "foundation-full"): costume(FOUNDATION, {"costume_body": 45001, "costume_hair": 73001,

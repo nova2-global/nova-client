@@ -1,0 +1,7 @@
+#Index	BossVnum	Min Level	Max Level	Group Requirement	Cooldown	Entry Ticket
+0	1095	75	105	|E~/xmark.tga|e	0	0
+1	2092	75	105	|E~/xmark.tga|e	5 Mins	0
+2	2598	75	105	|E~/xmark.tga|e	10 Mins	0
+3	2493	75	105	|E~/xmark.tga|e	5 Mins	0
+5	6191	90	120	|E~/xmark.tga|e	10 Mins	0
+6	6091	90	120	|E~/xmark.tga|e	10 Mins	0

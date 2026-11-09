@@ -1510,13 +1510,16 @@ class Wiring(unittest.TestCase):
         modules = {name: mock.MagicMock(name=name) for name in names - {"sys", "nui_windows", "systemSetting", "dbg", "ui"}}
         Recorded.made = []
         legacy = {("uiChat", "ChatWindow"), ("uiChat", "ChatLogWindow"), ("uiMiniMap", "MiniMap"),
-                  ("uiGuild", "GuildWarScoreBoard"), ("uiPrivateShopBuilder", "PrivateShopAdvertisementBoard")}
+                  ("uiGuild", "GuildWarScoreBoard"), ("uiPrivateShopBuilder", "PrivateShopAdvertisementBoard"),
+                  # Wave 7 (NOVA-29): the top killers, in hud2 with the war boards.
+                  ("uiGuild", "TopWarPlayersDialog")}
         for module, name in legacy:
             setattr(modules[module], name, window_class(name, False))
         modules["uiChat"].ChatWindow.CHAT_WINDOW_WIDTH = 600
         modules["uiChat"].ChatWindow.EDIT_LINE_HEIGHT = 25
         for module_name, class_name in (("nui_chat", "ChatWindow"), ("nui_chat_log", "ChatLogWindow"), ("nui_minimap", "MiniMap"),
-                                        ("nui_guild_war", "GuildWarScoreBoard"), ("nui_shop_signs", "ShopSign")):
+                                        ("nui_guild_war", "GuildWarScoreBoard"), ("nui_shop_signs", "ShopSign"),
+                                        ("nui_guild_war_top", "TopWarPlayersDialog")):
             module = types.ModuleType(module_name)
             if module_name in raising:
                 def boom(*args):

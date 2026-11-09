@@ -337,6 +337,19 @@ class ShopDialog(ui.ScriptWindow):
 		self.OnCloseQuestionDialog()
 		return True
 
+	## Tab over a pet seal of the offline shop previews its pet (NOVA-24; OLD
+	## uiShop.py:1142-1152), through the Interface's PressTabKey. hoveredSlot
+	## is the offline shop's global slot under the pointer.
+	def OnPressTabKey(self):
+		if not self.isOfflineShop or self.hoveredSlot < 0:
+			return False
+		item.SelectItem(shop.GetOfflineShopItemID(self.hoveredSlot))
+		if not (item.GetItemType() == item.ITEM_TYPE_PET_ADVANCED and item.GetItemSubType() == item.PET_SUMMON):
+			return False
+		import pet
+		pet.ReqPetPreview(pet.PET_PREVIEW_OFFLINESHOP, self.hoveredSlot)
+		return True
+
 	def OnPressEscapeKey(self):
 		self.Close()
 		return True
@@ -571,6 +584,9 @@ class ShopDialog(ui.ScriptWindow):
 			self.__OfflineOverInItem(slotIndex)
 			return
 		slotIndex = self.__GetRealIndex(slotIndex)
+		## OLD uiShop.py:1131-1140: Shift over a chest shows its contents
+		## (NOVA-18).
+		constInfo.SET_HOVERED_CHEST(shop.GetItemID(slotIndex))
 		if mouseModule.mouseController.isAttached():
 			return
 
@@ -581,6 +597,7 @@ class ShopDialog(ui.ScriptWindow):
 				self.tooltipItem.SetShopItemBySecondaryCoin(slotIndex)
 	def OverOutItem(self):
 		self.hoveredSlot = -1
+		constInfo.SET_HOVERED_CHEST(0)
 		if 0 != self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 

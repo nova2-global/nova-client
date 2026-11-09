@@ -45,11 +45,23 @@ import uiselectitem
 # END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
 # The gaya market (NOVA-10; OLD interfaceModule.py:112-114).
 import uiGemShop
+import uiChestDrop
 import uiSash
+## The advanced pet's windows (NOVA-24).
+import uiPet
 # The offline shop's search, log and decoration windows (NOVA-9, chunk Y2's).
 import uiSearchShop
 import uiOfflineShopLog
+import uiKillRank
 import uiMyShopDecoration
+# The switchbot (NOVA-43; OLD interfaceModule.py:90, 417).
+import uiSwitchbot
+# The dungeon manager and the dungeon ranking (NOVA-25).
+import uiTimerWindow
+import uiDungeonRank
+# The boss info panel and the damage count window (NOVA-27).
+import uiBossInfo
+import uiDamageCount
 import uiScriptLocale
 
 import event
@@ -93,11 +105,27 @@ class Interface(object):
 		self.wndGuild = None
 		self.wndGuildBuilding = None
 		self.wndGemShop = None
+		self.wndChestDrop = None
 		self.wndSashCombine = None
 		self.wndSashAbsorption = None
+		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398).
+		self.wndPetEggHatch = None
+		self.wndPetRefineWindow = None
+		self.wndPetEvolutionWindow = None
+		self.wndPetInterfaceWindow = None
+		self.wndPetWindow = None
+		self.wndPetPreviewWindow = None
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
+		self.wndSwitchbot = None
+		# NOVA-29: the kill ranking and the guild war top killers.
+		self.wndKillRank = None
+		self.wndTopKillers = None
+		self.wndTimer = None
+		self.wndDungeonRank = None
+		self.wndBossInfo = None
+		self.wndDamageCount = None
 
 		self.listGMName = {}
 		self.wndQuestWindow = {}
@@ -253,6 +281,10 @@ class Interface(object):
 		self.wndGemShop = nui_windows.make("gem-shop", uiGemShop.GemShopWindow, "nui_gem_shop.GemShopWindow")
 		self.wndGemShop.Hide()
 
+		# The chest-drop preview (NOVA-18; OLD interfaceModule.py:758-760).
+		self.wndChestDrop = nui_windows.make("chest-drop", uiChestDrop.ChestDropWindow, "nui_chest_drop.ChestDropWindow")
+		self.wndChestDrop.Hide()
+
 		# The offline shop's search, log and decoration windows (NOVA-9) are the
 		# legacy controllers on NovaUI proxies.
 		self.wndSearchShop = nui_windows.make("shop-search", uiSearchShop.SearchShopWindow, "nui_shop_search.SearchShopWindow")
@@ -263,6 +295,18 @@ class Interface(object):
 		self.wndMyShopDeco = nui_windows.make("shop-deco", uiMyShopDecoration.MyShopDecorationWindow,
 		                                      "nui_shop_deco.MyShopDecorationWindow")
 		self.wndMyShopDeco.BindInterface(self)
+
+		# The switchbot (NOVA-43; OLD interfaceModule.py:417): the legacy
+		# controller, on NovaUI proxies while the switchbot flag is on.
+		self.wndSwitchbot = nui_windows.make("switchbot", uiSwitchbot.SwitchbotWindow, "nui_switchbot.SwitchbotWindow")
+		self.wndSwitchbot.Hide()
+
+		# The kill ranking (NOVA-29, OLD interfaceModule.py:780-782) and the guild
+		# war top killers (OLD :279-280).
+		self.wndKillRank = nui_windows.make("kill-rank", uiKillRank.KillRankWindow, "nui_kill_rank.KillRankWindow")
+		self.wndKillRank.LoadWindow()
+		self.wndTopKillers = nui_windows.make("guild-war-top", uiGuild.TopWarPlayersDialog,
+		                                      "nui_guild_war_top.TopWarPlayersDialog")
 
 	def __MakeDialogs(self):
 		self.dlgExchange = nui_windows.make("exchange", uiExchange.ExchangeDialog, "nui_exchange.ExchangeDialog")
@@ -291,6 +335,7 @@ class Interface(object):
 		self.dlgSystem = nui_windows.make("system-menu", uiSystem.SystemDialog, "nui_system_menu.SystemDialog")
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
+		self.dlgSystem.SetOpenKillRankEvent(ui.__mem_func__(self.OpenKillRank))
 
 		self.dlgSystem.Hide()
 
@@ -397,6 +442,17 @@ class Interface(object):
 			if inventory:
 				inventory.BindWindow(wnd)
 
+	## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398),
+	## each through the factory with contract 8's id and controller; the
+	## preview is a second "pet" window.
+	def __MakePetWindows(self):
+		self.wndPetEggHatch = nui_windows.make("pet-hatch", uiPet.PetHatchEggWindow, "nui_pet_hatch.PetHatchEggWindow")
+		self.wndPetRefineWindow = nui_windows.make("pet-attr-refine", uiPet.PetAttrRefineWindow, "nui_pet_attr_refine.PetAttrRefineWindow")
+		self.wndPetEvolutionWindow = nui_windows.make("pet-evolution", uiPet.PetEvolutionWindow, "nui_pet_evolution.PetEvolutionWindow")
+		self.wndPetInterfaceWindow = nui_windows.make("pet-mini", uiPet.PetInterfaceWindow, "nui_pet_mini.PetInterfaceWindow")
+		self.wndPetWindow = nui_windows.make("pet", uiPet.PetWindow, "nui_pet.PetWindow")
+		self.wndPetPreviewWindow = nui_windows.make("pet", uiPet.PetWindow, "nui_pet.PetWindow")
+
 	## The aura level window (NOVA-23), which the game window makes at the
 	## server's first GC::AURA (OLD game.py:1224-1230).
 	def BindAuraWindow(self, wndAura):
@@ -407,6 +463,71 @@ class Interface(object):
 		if self.wndExtraInventory:
 			self.wndExtraInventory.SetAuraWindow(wndAura)
 
+	## The boss info panel and the damage count window (NOVA-27; OLD
+	## interfaceModule.py:399-400, 503-506). The panel waits hidden for the
+	## server's boss list; the damage count opens at its first row.
+	def __MakeBossWindows(self):
+		self.wndBossInfo = nui_windows.make("boss-info", uiBossInfo.BossInfoWindow, "nui_boss_info.BossInfoWindow")
+		self.wndDamageCount = nui_windows.make("damage-count", uiDamageCount.DamageCountWindow, "nui_damage_count.DamageCountWindow")
+		self.wndDamageCount.LoadWindow()
+		self.wndDamageCount.Hide()
+
+	def ClearBossInfo(self):
+		if self.wndBossInfo:
+			self.wndBossInfo.ClearBossInfo()
+
+	def AddBossInfo(self, bossVnum, isAlive, timeUntilRespawn):
+		if self.wndBossInfo:
+			self.wndBossInfo.AddBossInfo(bossVnum, isAlive, timeUntilRespawn)
+
+	def BossInfoLoadComplete(self):
+		if self.wndBossInfo:
+			self.wndBossInfo.BossInfoLoadComplete()
+
+	## The dungeon manager and the dungeon ranking (NOVA-25; OLD
+	## interfaceModule.py:753-757, 785-787, 4199-4209, 4248-4253). The
+	## manager's drops panel is made by the manager (uitimerwindow).
+	def __MakeDungeonWindows(self):
+		uiTimerWindow.reset_session()
+		self.wndTimer = nui_windows.make("dungeon-timer", uiTimerWindow.TimerWindow, "nui_dungeon_timer.TimerWindow")
+		self.wndTimer.BindInterface(self)
+		self.wndTimer.LoadWindow()
+		self.wndTimer.Hide()
+		self.wndDungeonRank = nui_windows.make("dungeon-rank", uiDungeonRank.DungeonRankWindow, "nui_dungeon_rank.DungeonRankWindow")
+		self.wndDungeonRank.LoadWindow()
+		self.wndDungeonRank.Hide()
+
+	def OpenTimerWindow(self):
+		if self.wndTimer.IsShow():
+			self.wndTimer.Close()
+		else:
+			self.wndTimer.Open()
+
+	def UpdateTimer(self):
+		if self.wndTimer:
+			self.wndTimer.UpdateTime()
+
+	def SetQuestTime(self, index, time):
+		if self.wndTimer:
+			self.wndTimer.SetTimeLeft(index, time)
+
+	def QuestTimeReady(self):
+		if self.wndTimer:
+			self.wndTimer.QuestTimeReady()
+
+	def RefreshDungeonDrops(self):
+		if self.wndTimer:
+			self.wndTimer.refreshMobList()
+
+	def OpenDungeonRank(self):
+		self.wndDungeonRank.Open(-1, -1)
+
+	def RefreshDungeonRank(self, type, dungeonIndex):
+		self.wndDungeonRank.RefreshDungeonRank(type, dungeonIndex)
+
+	def SetPersonalDungeonRank(self, rank, name, count, type):
+		self.wndDungeonRank.SetPersonalDungeonRank(rank, name, count, type)
+
 	def MakeInterface(self):
 		self.__MakeMessengerWindow()
 		self.__MakeGuildWindow()
@@ -414,6 +535,7 @@ class Interface(object):
 		self.__MakeParty()
 		self.__MakeWindows()
 		self.__MakeSashWindow()
+		self.__MakePetWindows()
 		self.__MakeDialogs()
 		self.__BindTradableWindows()
 
@@ -429,6 +551,8 @@ class Interface(object):
 		# ACCESSORY_REFINE_ADD_METIN_STONE
 		self.__MakeItemSelectWindow()
 		# END_OF_ACCESSORY_REFINE_ADD_METIN_STONE
+		self.__MakeDungeonWindows()
+		self.__MakeBossWindows()
 
 		self.questButtonList = []
 		self.whisperButtonList = []
@@ -465,8 +589,10 @@ class Interface(object):
 		self.dlgExchange.SetItemToolTip(self.tooltipItem)
 		self.privateShopBuilder.SetItemToolTip(self.tooltipItem)
 		self.wndGemShop.SetItemToolTip(self.tooltipItem)
+		self.wndSwitchbot.SetItemToolTip(self.tooltipItem)
 		self.wndSashCombine.SetItemToolTip(self.tooltipItem)
 		self.wndSashAbsorption.SetItemToolTip(self.tooltipItem)
+		self.wndTimer.SetToolTip(self.tooltipItem)
 
 		self.__InitWhisper()
 		self.DRAGON_SOUL_IS_QUALIFIED = False
@@ -593,6 +719,10 @@ class Interface(object):
 			self.wndGemShop.Destroy()
 			self.wndGemShop = None
 
+		if self.wndChestDrop:
+			self.wndChestDrop.Destroy()
+			self.wndChestDrop = None
+
 		if self.wndSashCombine:
 			self.wndSashCombine.Destroy()
 			self.wndSashCombine = None
@@ -601,17 +731,67 @@ class Interface(object):
 			self.wndSashAbsorption.Destroy()
 			self.wndSashAbsorption = None
 
+		## OLD interfaceModule.py:1654-1660, 1685-1691.
+		if self.wndPetEggHatch:
+			self.wndPetEggHatch.Destroy()
+			self.wndPetEggHatch = None
+		if self.wndPetRefineWindow:
+			self.wndPetRefineWindow.Destroy()
+			self.wndPetRefineWindow = None
+		if self.wndPetEvolutionWindow:
+			self.wndPetEvolutionWindow.Destroy()
+			self.wndPetEvolutionWindow = None
+		if self.wndPetInterfaceWindow:
+			self.wndPetInterfaceWindow.Destroy()
+			self.wndPetInterfaceWindow = None
+		if self.wndPetWindow:
+			self.wndPetWindow.Destroy()
+			self.wndPetWindow = None
+		if self.wndPetPreviewWindow:
+			self.wndPetPreviewWindow.Destroy()
+			self.wndPetPreviewWindow = None
+
 		if self.wndSearchShop:
 			self.wndSearchShop.Destroy()
 			self.wndSearchShop = None
+
+		if self.wndSwitchbot:
+			self.wndSwitchbot.Destroy()
+			self.wndSwitchbot = None
 
 		if self.wndOfflineShopLog:
 			self.wndOfflineShopLog.Destroy()
 			self.wndOfflineShopLog = None
 
+		if self.wndKillRank:
+			self.wndKillRank.Destroy()
+			self.wndKillRank = None
+
+		if self.wndTopKillers:
+			self.wndTopKillers.Destroy()
+			self.wndTopKillers = None
+
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Destroy()
 			self.wndMyShopDeco = None
+
+		# NOVA-27 (OLD interfaceModule.py:1489-1491, 1661-1662).
+		if self.wndBossInfo:
+			self.wndBossInfo.Destroy()
+			self.wndBossInfo = None
+
+		if self.wndDamageCount:
+			self.wndDamageCount.Destroy()
+			self.wndDamageCount = None
+
+		# NOVA-25 (OLD interfaceModule.py:1600-1601, 1624-1625).
+		if self.wndTimer:
+			self.wndTimer.Destroy()
+			self.wndTimer = None
+
+		if self.wndDungeonRank:
+			self.wndDungeonRank.Destroy()
+			self.wndDungeonRank = None
 
 		self.wndChatLog.Destroy()
 		for btn in self.questButtonList:
@@ -858,6 +1038,39 @@ class Interface(object):
 	def OfflineShopLog(self, rows, page, last):
 		self.wndOfflineShopLog.SetData(rows, page, last)
 
+	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the system
+	# menu's button toggles it (the temporary entry, PRODUCT-DECISIONS NOVA-29
+	# Q3, until the extra inventory's button of OLD); the answer refreshes it.
+	def OpenKillRank(self):
+		if not self.wndKillRank:
+			return
+		if self.wndKillRank.IsShow():
+			self.wndKillRank.Close()
+		else:
+			self.wndKillRank.Open(-1)
+
+	def RefreshKillRank(self, type):
+		if self.wndKillRank:
+			self.wndKillRank.RefreshKillRank(type)
+
+	def SetPersonalKillRank(self, rank, name, guildName, count):
+		if self.wndKillRank:
+			self.wndKillRank.SetPersonalKillRank(rank, name, guildName, count)
+
+	# The guild war top killers (NOVA-29): shown while TAB is held during a war
+	# (OLD toggled at the press and at the release, interfaceModule.py:4313).
+	def OpenTopKillers(self):
+		if self.wndTopKillers and not self.wndTopKillers.IsShow():
+			self.wndTopKillers.Open()
+
+	def CloseTopKillers(self):
+		if self.wndTopKillers and self.wndTopKillers.IsShow():
+			self.wndTopKillers.Close()
+
+	def UpdateTopKillers(self, guildId, name, race, totalDamage, kills, deaths, ping):
+		if self.wndTopKillers:
+			self.wndTopKillers.Update(guildId, name, race, totalDamage, kills, deaths, ping)
+
 	# The search: the inventory's button toggles it (vnum 0), Ctrl + click on
 	# an item opens it on that item (OLD uiInventory.py:1172-1173, 1758-1761).
 	def OpenSearchShop(self, vnum=0):
@@ -892,6 +1105,14 @@ class Interface(object):
 		refreshHideShops = getattr(gameOptionDlg, "RefreshHideShops", None)
 		if refreshHideShops:
 			refreshHideShops()
+
+	# GC::BUFFI_HIDE (NOVA-38): the game options show the server's /hide_buffi
+	# state (player.IsHideBuffi); a window made later reads it when it is made.
+	def OnBuffiHide(self, hidden):
+		gameOptionDlg = getattr(self.dlgSystem, "gameOptionDlg", None)
+		refreshHideBuffi = getattr(gameOptionDlg, "RefreshHideBuffi", None)
+		if refreshHideBuffi:
+			refreshHideBuffi()
 
 	## Quest
 	def OpenCharacterWindowQuestPage(self):
@@ -1032,6 +1253,8 @@ class Interface(object):
 		guildWarScoreBoard.Open(guildSelf, guildOpp)
 		guildWarScoreBoard.Show()
 		self.guildScoreBoardDict[uiGuild.GetGVGKey(guildSelf, guildOpp)] = guildWarScoreBoard
+		if getattr(self, "wndTopKillers", None):
+			self.wndTopKillers.BeginWar(guildSelf, guildOpp)
 
 	def OnEndGuildWar(self, guildSelf, guildOpp):
 		self.wndGuild.OnEndGuildWar(guildSelf, guildOpp)
@@ -1043,6 +1266,8 @@ class Interface(object):
 
 		self.guildScoreBoardDict[key].Destroy()
 		del self.guildScoreBoardDict[key]
+		if getattr(self, "wndTopKillers", None):
+			self.wndTopKillers.EndWar()
 
 	# GUILDWAR_MEMBER_COUNT
 	def UpdateMemberCount(self, gulidID1, memberCount1, guildID2, memberCount2):
@@ -1061,6 +1286,8 @@ class Interface(object):
 
 		guildBoard = self.guildScoreBoardDict[key]
 		guildBoard.SetScore(gainGuildID, opponentGuildID, point)
+		if getattr(self, "wndTopKillers", None):
+			self.wndTopKillers.SetScore(gainGuildID, point)
 
 	## PK Mode
 	def OnChangePKMode(self):
@@ -1096,11 +1323,20 @@ class Interface(object):
 		if self.wndExpandedTaskBar:
 			self.wndExpandedTaskBar.Show()
 			self.wndExpandedTaskBar.SetTop()
+		# NOVA-27 (OLD interfaceModule.py:2664-2665), only with a boss list:
+		# OLD showed the empty panel on a map without bosses.
+		wndBossInfo = getattr(self, "wndBossInfo", None)
+		if wndBossInfo and wndBossInfo.HasBossInfo():
+			wndBossInfo.Show()
 
 	def HideAllWindows(self):
 		if self.wndTaskBar:
 			self.wndTaskBar.Hide()
-		
+
+		# NOVA-27 (OLD interfaceModule.py:2743-2744).
+		if getattr(self, "wndBossInfo", None):
+			self.wndBossInfo.Hide()
+
 		if self.wndEnergyBar:
 			self.wndEnergyBar.Hide()
 
@@ -1135,6 +1371,13 @@ class Interface(object):
 		## OLD interfaceModule.py:2761-2762 (NOVA-9).
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Hide()
+
+		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:2735-2741).
+		for name in ("wndPetEggHatch", "wndPetRefineWindow", "wndPetEvolutionWindow", "wndPetInterfaceWindow",
+					 "wndPetWindow", "wndPetPreviewWindow"):
+			wnd = getattr(self, name, None)
+			if wnd:
+				wnd.Hide()
  
 
 	def ShowMouseImage(self):
@@ -1243,6 +1486,24 @@ class Interface(object):
 				if self.wndExtraInventory and self.wndExtraInventory.IsShow():
 					self.wndExtraInventory.OverOutItem()
 					self.wndExtraInventory.Close()
+
+	## Key P (NOVA-24; OLD interfaceModule.py:4419-4424).
+	def TogglePetWindow(self):
+		if self.wndPetWindow.IsShow():
+			self.wndPetWindow.Close()
+		else:
+			self.wndPetWindow.Open()
+
+	## Key Tab (NOVA-24): OLD's exe asked the shown windows, topmost first,
+	## until one's OnPressTabKey answered True (CWindowManager::RunPressTabKey);
+	## NEW's exe has no such walk, so the game window asks these. Only the
+	## window whose item the pointer is over answers.
+	def PressTabKey(self):
+		for name in ("wndInventory", "wndExtraInventory", "dlgExchange", "dlgShop", "wndSearchShop"):
+			wnd = getattr(self, name, None)
+			if wnd and wnd.IsShow() and getattr(wnd, "OnPressTabKey", None) and wnd.OnPressTabKey():
+				return True
+		return False
 
 	def ToggleExtraInventoryWindow(self):
 		"""Key U and the inventory's button (NOVA-16)."""
@@ -1431,6 +1692,30 @@ class Interface(object):
 		## stand-in that has only the HUD windows.
 		if getattr(self, "wndMyShopDeco", None):
 			hideWindows += self.wndMyShopDeco,
+		## OLD interfaceModule.py:3381-3382 (NOVA-18).
+		if getattr(self, "wndChestDrop", None):
+			hideWindows += self.wndChestDrop,
+
+		## The switchbot (NOVA-43; OLD interfaceModule.py:3384-3385).
+		if getattr(self, "wndSwitchbot", None):
+			hideWindows += self.wndSwitchbot,
+
+		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:3358-3364).
+		if getattr(self, "wndPetWindow", None):
+			hideWindows += self.wndPetEggHatch,
+			hideWindows += self.wndPetRefineWindow,
+			hideWindows += self.wndPetEvolutionWindow,
+			hideWindows += self.wndPetInterfaceWindow,
+			hideWindows += self.wndPetWindow,
+			hideWindows += self.wndPetPreviewWindow,
+
+		## NOVA-25 (OLD interfaceModule.py:3378-3379).
+		if getattr(self, "wndTimer", None):
+			hideWindows += self.wndTimer,
+
+		## NOVA-27 (OLD interfaceModule.py:3366-3367).
+		if getattr(self, "wndBossInfo", None):
+			hideWindows += self.wndBossInfo,
 
 		hideWindows = [x for x in hideWindows if x.IsShow()]
 
@@ -1523,6 +1808,46 @@ class Interface(object):
 
 	def CloseGemShop(self):
 		self.wndGemShop.Close()
+
+	#####################################################################################
+	### Chest-drop preview (NOVA-18; OLD uiInventory.py:1201-1208, game.py:1173-1179) ###
+
+	def OpenChestDrop(self, vnum):
+		"""Asks the server for a chest's rows once a session, then opens the
+		window on what is known (OLD's Shift press). False: no chest."""
+		if not self.wndChestDrop or not uiChestDrop.request(vnum):
+			return False
+		self.wndChestDrop.Open(vnum)
+		return True
+
+	def OpenHoveredChestDrop(self):
+		"""The Shift press: the chest under the pointer in the inventory, the
+		special inventory or a shop (OLD's OnPressLeftShiftKey of each)."""
+		return self.OpenChestDrop(uiChestDrop.hovered_vnum())
+
+	def RefreshChestDrop(self, vnum):
+		"""The server's answer (OLD's BINARY_RefreshChestDropInfo)."""
+		if self.wndChestDrop:
+			self.wndChestDrop.Refresh(vnum)
+
+	#####################################################################################
+	### Switchbot (NOVA-43; OLD interfaceModule.py:3099-3111) ###
+
+	def ToggleSwitchbotWindow(self):
+		if not self.wndSwitchbot:
+			return
+		if self.wndSwitchbot.IsShow():
+			self.wndSwitchbot.Close()
+		else:
+			self.wndSwitchbot.Open()
+
+	def RefreshSwitchbotWindow(self):
+		if self.wndSwitchbot and self.wndSwitchbot.IsShow():
+			self.wndSwitchbot.RefreshSwitchbotWindow()
+
+	def RefreshSwitchbotItem(self, slot):
+		if self.wndSwitchbot and self.wndSwitchbot.IsShow():
+			self.wndSwitchbot.RefreshSwitchbotItem(slot)
 
 	#####################################################################################
 	### Private Shop ###

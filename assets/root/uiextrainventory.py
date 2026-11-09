@@ -21,9 +21,9 @@ import ime
 ## and costumes with twelve. A page cell's global cell is the category's first
 ## cell plus page * 45 plus the local cell (player.GetExtraInventoryCategoryRange).
 ##
-## OLD's search field, sort and group buttons (NOVA-131), mark sell, wiki,
-## chest preview and pet preview are not ported; an aura material goes to
-## the aura window (NOVA-23). Every legacy
+## OLD's search field, sort and group buttons (NOVA-131), mark sell, wiki
+## and chest preview are not ported; an aura material goes to the aura window
+## (NOVA-23); Tab over a pet seal previews its pet (NOVA-24). Every legacy
 ## method here keeps its arguments, so NovaUI can run it from a subclass.
 
 ## The category the window opens on (OLD: materials).
@@ -159,6 +159,20 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 			self.dlgPickMoney.Close()
 
 		self.Hide()
+
+	## Tab over a pet seal previews its pet (NOVA-24; OLD uiExtraInventory.py:
+	## 448-455), through the Interface's PressTabKey.
+	tabPreviewCell = -1
+
+	def OnPressTabKey(self):
+		if self.tabPreviewCell < 0:
+			return False
+		item.SelectItem(player.GetItemIndex(player.EXTRA_INVENTORY, self.tabPreviewCell))
+		if not (item.GetItemType() == item.ITEM_TYPE_PET_ADVANCED and item.GetItemSubType() == item.PET_SUMMON):
+			return False
+		import pet
+		pet.ReqPetPreview(pet.PET_PREVIEW_INVENTORY, player.EXTRA_INVENTORY, self.tabPreviewCell)
+		return True
 
 	def OnPressEscapeKey(self):
 		self.Close()
@@ -464,13 +478,19 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 		constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(0)
 
 	def OverOutItem(self):
+		constInfo.SET_HOVERED_CHEST(0)
+		self.tabPreviewCell = -1
 		self.wndItem.SetUsableItem(False)
 		if None != self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 
 	def OverInItem(self, overSlotPos):
 		overSlotPos = self.__InventoryLocalSlotPosToGlobalSlotPos(overSlotPos)
+		self.tabPreviewCell = overSlotPos
 		self.wndItem.SetUsableItem(False)
+		## OLD's selectedItem (uiExtraInventory.py:331-439): Shift over a chest
+		## shows its contents (NOVA-18).
+		constInfo.SET_HOVERED_CHEST(player.GetItemIndex(player.EXTRA_INVENTORY, overSlotPos))
 
 		if mouseModule.mouseController.isAttached():
 			attachedItemType = mouseModule.mouseController.GetAttachedType()

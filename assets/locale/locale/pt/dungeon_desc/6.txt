@@ -1,0 +1,26 @@
+$Este mapa é divido em 7 áreas. Clica 
+$no Desfiladeiro Am-heh para começares. 
+
+#1º Fase:
+Mata todos os monstros na sala que desbloqueaste.
+
+#2º Fase:
+Encontra a Roda Dentada de ouro e arrasta-a para Isfel Stele no meio da 
+segunda área.
+
+#3º Fase:
+Mata todos os monstros na sala que desbloqueaste.
+
+#4º Fase:
+Mata o Ignator.
+
+#5º Fase:
+Mata monstros até dropares pedras maat.
+Arrasta a pedra para o selo na ordem que escolheres.
+Avançarás para a próxima fase assim que desbloqueares todos os selos.
+
+#6º Fase:
+Destroi a Metin do Purgatório na área designada.
+
+#7º Fase:
+Mata o Razador ! 

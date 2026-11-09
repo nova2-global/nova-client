@@ -689,6 +689,13 @@ class PremiumImage(ui.ExpandedImageBox):
 	def OnMouseOverOut(self):
 		self.toolTip.HideToolTip()
 
+def BuffiNameAffect():
+	"""The buffi name scroll's affect (NOVA-38): chr.AFFECT_BUFFI_NAME, the
+	server's AFFECT_BUFFI_NAME 553 on an exe without the name."""
+	value = getattr(chr, "AFFECT_BUFFI_NAME", None)
+	return value if isinstance(value, int) else 553
+
+
 class AffectShower(ui.Window):
 
 	MALL_DESC_IDX_START = 1000
@@ -760,6 +767,12 @@ class AffectShower(ui.Window):
 	if app.ENABLE_DRAGON_SOUL_SYSTEM:
 		_AFFECT_TEMPLATE[chr.NEW_AFFECT_DRAGON_SOUL_DECK1] = ("TOOLTIP_DRAGON_SOUL_DECK1", "d:/ymir work/ui/dragonsoul/buff_ds_sky1.tga")
 		_AFFECT_TEMPLATE[chr.NEW_AFFECT_DRAGON_SOUL_DECK2] = ("TOOLTIP_DRAGON_SOUL_DECK2", "d:/ymir work/ui/dragonsoul/buff_ds_land1.tga")
+
+	## The buffi's name scroll (NOVA-38; OLD uiAffectShower.py:664): its +5%
+	## against monsters, the affect's value. OLD showed the scroll's icon
+	## (icon/item/91035.tga), which NEW's packs do not ship: the mall's attack
+	## bonus icon instead.
+	_AFFECT_TEMPLATE[BuffiNameAffect()] = ("TOOLTIP_APPLY_ATTBONUS_MONSTER", "d:/ymir work/ui/skill/common/affect/att_bonus.sub")
 
 	AFFECT_DATA_DICT = {}  # populated by _RebuildLocaleStrings()
 

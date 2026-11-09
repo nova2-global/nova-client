@@ -1,0 +1,212 @@
+<rml>
+<head>
+	<!-- The pet window (NOVA-24; legacy uipet.py PetWindow, uiscript
+	     petwindow.py, 406 x 513). While the pet window is on, the Interface
+	     makes nui_pet.PetWindow (controller assets/root/nui_pet.py) twice, the
+	     own pet's window (key P) and the preview (Tab over a seal), each a
+	     subclass of the legacy class on proxies with its own model (INSTANCED):
+	     the name, level and grade lines (legacy's texts without their color
+	     tags, the grade in OLD's color), the portrait, the exp gauge (legacy's
+	     fraction; its hover writes legacy's exp line into the hint under it),
+	     the evolve button (shown while a grade is left, blinking at a gate,
+	     disabled between gates), the three bonus rows (a press on the level or
+	     on the plus asks the refine info; the level's hover writes legacy's
+	     bonus line into the hint), the ten basic and three heroic skill cells
+	     (the cells over the grade's counts dimmed and locked; hover shows the
+	     pet skill tooltip; a Pet Revertus dropped on a cell resets that skill)
+	     and close are legacy's code. The preview window has the preview's
+	     look (preview). The document exists only while the window shows; it
+	     opens centered. A press anywhere raises it (board_press). -->
+	<title>pet</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="pet.rcss"/>
+</head>
+<body template="nui" id="pet" class="nui-window nui-fx nui-anim pet" data-model="pet"
+      data-class-pet--preview="preview" data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar pet__titlebar">
+		<handle class="nui-window__handle pet__handle" move_target="#document">
+			<span class="pet__title-icon"><span class="nui-glyph nui-glyph--community"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title pet__title">@ui.PET_INFORMATION_TITLE</span>
+		</handle>
+		<button id="pet-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim pet__close"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body pet__body">
+		<div class="pet__header">
+			<div class="pet__portrait"><img class="pet__portrait-image" data-if="portrait != ''" data-attr-src="portrait"/></div>
+			<div class="pet__status">
+				<div id="pet-name" class="pet__line pet__name">{{ name }}</div>
+				<div id="pet-level" class="pet__line">{{ level }}</div>
+				<div id="pet-evolution" class="pet__line pet__evolution" data-style---pet-grade="evolution_color">{{ evolution }}</div>
+				<div id="pet-exp" class="pet__exp" data-event-mouseover="exp_over()" data-event-mouseout="exp_out()">
+					<progress id="pet-gauge" class="nui-gauge nui-gauge--blue pet__gauge" direction="right" data-attr-value="exp"/>
+				</div>
+				<div id="pet-hint" class="pet__hint">{{ hint }}</div>
+			</div>
+		</div>
+		<div class="pet__evolve-row" data-if="evolve_shown">
+			<nui-blink class="pet__blink" data-class-is-flashing="evolve_flash" data-attr-period="evolve_flash ? 1 : 0">
+				<button id="pet-evolve" class="nui-button nui-button--medium nui-button--primary nui-anim pet__evolve"
+				        data-attrif-disabled="!evolve_enabled"
+				        data-event-mousedown="evolve_press(ev.button)">@ui.PET_EVOLVE_BUTTON</button>
+			</nui-blink>
+		</div>
+		<div class="pet__section">
+			<div class="pet__caption">@ui.PET_UI_ATTRIBUTES</div>
+			<div id="pet-bonus-0" class="pet__bonus" data-class-is-empty="bonuses[0].name == ''">
+				<span class="pet__bonus-name">{{ bonuses[0].name }}</span>
+				<div id="pet-bonus-level-0" class="pet__bonus-level" data-event-mousedown="level_press(0, ev.button)"
+				     data-event-mouseover="bonus_over(0)" data-event-mouseout="bonus_out(0)">{{ bonuses[0].level }}</div>
+				<button id="pet-plus-0" class="nui-button nui-button--ghost nui-button--icon nui-anim pet__plus"
+				        data-if="bonuses[0].plus" data-event-mousedown="plus_press(0, ev.button)"><span class="nui-glyph nui-glyph--plus"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			</div>
+			<div id="pet-bonus-1" class="pet__bonus" data-class-is-empty="bonuses[1].name == ''">
+				<span class="pet__bonus-name">{{ bonuses[1].name }}</span>
+				<div id="pet-bonus-level-1" class="pet__bonus-level" data-event-mousedown="level_press(1, ev.button)"
+				     data-event-mouseover="bonus_over(1)" data-event-mouseout="bonus_out(1)">{{ bonuses[1].level }}</div>
+				<button id="pet-plus-1" class="nui-button nui-button--ghost nui-button--icon nui-anim pet__plus"
+				        data-if="bonuses[1].plus" data-event-mousedown="plus_press(1, ev.button)"><span class="nui-glyph nui-glyph--plus"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			</div>
+			<div id="pet-bonus-2" class="pet__bonus" data-class-is-empty="bonuses[2].name == ''">
+				<span class="pet__bonus-name">{{ bonuses[2].name }}</span>
+				<div id="pet-bonus-level-2" class="pet__bonus-level" data-event-mousedown="level_press(2, ev.button)"
+				     data-event-mouseover="bonus_over(2)" data-event-mouseout="bonus_out(2)">{{ bonuses[2].level }}</div>
+				<button id="pet-plus-2" class="nui-button nui-button--ghost nui-button--icon nui-anim pet__plus"
+				        data-if="bonuses[2].plus" data-event-mousedown="plus_press(2, ev.button)"><span class="nui-glyph nui-glyph--plus"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			</div>
+		</div>
+		<div class="pet__section">
+			<div class="pet__caption">@ui.PET_UI_BASIC_SKILLS</div>
+			<div id="pet-cells" class="pet__cells pet__cells--normal" data-class-nui-attach-right="attach_right">
+				<div id="pet-cell-0" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[0].kind == ''"
+				     data-class-is-disabled="disabled[0]" data-class-is-target="cells[0].target != ''"
+				     data-event-mousedown="cell_press(0, ev.button)" data-event-mouseup="cell_release(0, ev.button)"
+				     data-event-dblclick="cell_use(0)" data-event-nuidrop="cell_drop(0)"
+				     data-event-mouseover="cell_over(0)" data-event-mouseout="cell_out(0)">
+					<img class="nui-slot__icon" data-if="cells[0].icon != ''" data-attr-src="cells[0].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[0].count != ''" data-attr-value="cells[0].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-1" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[1].kind == ''"
+				     data-class-is-disabled="disabled[1]" data-class-is-target="cells[1].target != ''"
+				     data-event-mousedown="cell_press(1, ev.button)" data-event-mouseup="cell_release(1, ev.button)"
+				     data-event-dblclick="cell_use(1)" data-event-nuidrop="cell_drop(1)"
+				     data-event-mouseover="cell_over(1)" data-event-mouseout="cell_out(1)">
+					<img class="nui-slot__icon" data-if="cells[1].icon != ''" data-attr-src="cells[1].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[1].count != ''" data-attr-value="cells[1].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-2" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[2].kind == ''"
+				     data-class-is-disabled="disabled[2]" data-class-is-target="cells[2].target != ''"
+				     data-event-mousedown="cell_press(2, ev.button)" data-event-mouseup="cell_release(2, ev.button)"
+				     data-event-dblclick="cell_use(2)" data-event-nuidrop="cell_drop(2)"
+				     data-event-mouseover="cell_over(2)" data-event-mouseout="cell_out(2)">
+					<img class="nui-slot__icon" data-if="cells[2].icon != ''" data-attr-src="cells[2].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[2].count != ''" data-attr-value="cells[2].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-3" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[3].kind == ''"
+				     data-class-is-disabled="disabled[3]" data-class-is-target="cells[3].target != ''"
+				     data-event-mousedown="cell_press(3, ev.button)" data-event-mouseup="cell_release(3, ev.button)"
+				     data-event-dblclick="cell_use(3)" data-event-nuidrop="cell_drop(3)"
+				     data-event-mouseover="cell_over(3)" data-event-mouseout="cell_out(3)">
+					<img class="nui-slot__icon" data-if="cells[3].icon != ''" data-attr-src="cells[3].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[3].count != ''" data-attr-value="cells[3].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-4" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[4].kind == ''"
+				     data-class-is-disabled="disabled[4]" data-class-is-target="cells[4].target != ''"
+				     data-event-mousedown="cell_press(4, ev.button)" data-event-mouseup="cell_release(4, ev.button)"
+				     data-event-dblclick="cell_use(4)" data-event-nuidrop="cell_drop(4)"
+				     data-event-mouseover="cell_over(4)" data-event-mouseout="cell_out(4)">
+					<img class="nui-slot__icon" data-if="cells[4].icon != ''" data-attr-src="cells[4].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[4].count != ''" data-attr-value="cells[4].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-5" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[5].kind == ''"
+				     data-class-is-disabled="disabled[5]" data-class-is-target="cells[5].target != ''"
+				     data-event-mousedown="cell_press(5, ev.button)" data-event-mouseup="cell_release(5, ev.button)"
+				     data-event-dblclick="cell_use(5)" data-event-nuidrop="cell_drop(5)"
+				     data-event-mouseover="cell_over(5)" data-event-mouseout="cell_out(5)">
+					<img class="nui-slot__icon" data-if="cells[5].icon != ''" data-attr-src="cells[5].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[5].count != ''" data-attr-value="cells[5].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-6" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[6].kind == ''"
+				     data-class-is-disabled="disabled[6]" data-class-is-target="cells[6].target != ''"
+				     data-event-mousedown="cell_press(6, ev.button)" data-event-mouseup="cell_release(6, ev.button)"
+				     data-event-dblclick="cell_use(6)" data-event-nuidrop="cell_drop(6)"
+				     data-event-mouseover="cell_over(6)" data-event-mouseout="cell_out(6)">
+					<img class="nui-slot__icon" data-if="cells[6].icon != ''" data-attr-src="cells[6].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[6].count != ''" data-attr-value="cells[6].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-7" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[7].kind == ''"
+				     data-class-is-disabled="disabled[7]" data-class-is-target="cells[7].target != ''"
+				     data-event-mousedown="cell_press(7, ev.button)" data-event-mouseup="cell_release(7, ev.button)"
+				     data-event-dblclick="cell_use(7)" data-event-nuidrop="cell_drop(7)"
+				     data-event-mouseover="cell_over(7)" data-event-mouseout="cell_out(7)">
+					<img class="nui-slot__icon" data-if="cells[7].icon != ''" data-attr-src="cells[7].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[7].count != ''" data-attr-value="cells[7].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-8" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[8].kind == ''"
+				     data-class-is-disabled="disabled[8]" data-class-is-target="cells[8].target != ''"
+				     data-event-mousedown="cell_press(8, ev.button)" data-event-mouseup="cell_release(8, ev.button)"
+				     data-event-dblclick="cell_use(8)" data-event-nuidrop="cell_drop(8)"
+				     data-event-mouseover="cell_over(8)" data-event-mouseout="cell_out(8)">
+					<img class="nui-slot__icon" data-if="cells[8].icon != ''" data-attr-src="cells[8].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[8].count != ''" data-attr-value="cells[8].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-9" class="nui-slot nui-anim nui-fx pet__cell pet__cell--normal" data-class-is-empty="cells[9].kind == ''"
+				     data-class-is-disabled="disabled[9]" data-class-is-target="cells[9].target != ''"
+				     data-event-mousedown="cell_press(9, ev.button)" data-event-mouseup="cell_release(9, ev.button)"
+				     data-event-dblclick="cell_use(9)" data-event-nuidrop="cell_drop(9)"
+				     data-event-mouseover="cell_over(9)" data-event-mouseout="cell_out(9)">
+					<img class="nui-slot__icon" data-if="cells[9].icon != ''" data-attr-src="cells[9].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[9].count != ''" data-attr-value="cells[9].count"/>
+					<div class="pet__lock"></div>
+				</div>
+			</div>
+		</div>
+		<div class="pet__section">
+			<div class="pet__caption">@ui.PET_UI_HEROIC_SKILLS</div>
+			<div id="pet-heroic-cells" class="pet__cells pet__cells--heroic" data-class-nui-attach-right="attach_right">
+				<div id="pet-cell-10" class="nui-slot nui-anim nui-fx pet__cell pet__cell--heroic" data-class-is-empty="cells[10].kind == ''"
+				     data-class-is-disabled="disabled[10]" data-class-is-target="cells[10].target != ''"
+				     data-event-mousedown="cell_press(10, ev.button)" data-event-mouseup="cell_release(10, ev.button)"
+				     data-event-dblclick="cell_use(10)" data-event-nuidrop="cell_drop(10)"
+				     data-event-mouseover="cell_over(10)" data-event-mouseout="cell_out(10)">
+					<img class="nui-slot__icon" data-if="cells[10].icon != ''" data-attr-src="cells[10].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[10].count != ''" data-attr-value="cells[10].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-11" class="nui-slot nui-anim nui-fx pet__cell pet__cell--heroic" data-class-is-empty="cells[11].kind == ''"
+				     data-class-is-disabled="disabled[11]" data-class-is-target="cells[11].target != ''"
+				     data-event-mousedown="cell_press(11, ev.button)" data-event-mouseup="cell_release(11, ev.button)"
+				     data-event-dblclick="cell_use(11)" data-event-nuidrop="cell_drop(11)"
+				     data-event-mouseover="cell_over(11)" data-event-mouseout="cell_out(11)">
+					<img class="nui-slot__icon" data-if="cells[11].icon != ''" data-attr-src="cells[11].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[11].count != ''" data-attr-value="cells[11].count"/>
+					<div class="pet__lock"></div>
+				</div>
+				<div id="pet-cell-12" class="nui-slot nui-anim nui-fx pet__cell pet__cell--heroic" data-class-is-empty="cells[12].kind == ''"
+				     data-class-is-disabled="disabled[12]" data-class-is-target="cells[12].target != ''"
+				     data-event-mousedown="cell_press(12, ev.button)" data-event-mouseup="cell_release(12, ev.button)"
+				     data-event-dblclick="cell_use(12)" data-event-nuidrop="cell_drop(12)"
+				     data-event-mouseover="cell_over(12)" data-event-mouseout="cell_out(12)">
+					<img class="nui-slot__icon" data-if="cells[12].icon != ''" data-attr-src="cells[12].icon"/>
+					<nui-number class="nui-slot__number" data-if="cells[12].count != ''" data-attr-value="cells[12].count"/>
+					<div class="pet__lock"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

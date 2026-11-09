@@ -14,15 +14,34 @@ WAVE2A = ["taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons
 # P18 (NOVA-58): the maintenance countdown joins the hud group, appended to
 # WINDOWS after Wave 4's windows.
 P18_HUD = ["maintenance"]
-HUD = WAVE2A + P18_HUD
+# Wave 7 (NOVA-28, NOVA-29): the duel rules join the hud group (with the
+# target board), the guild war top killers hud2 (with the war boards) and the
+# kill ranking the social group; their ids come before the maintenance
+# countdown.
+W7_HUD = ["duel-rules"]
+W7_HUD2 = ["guild-war-top"]
+W7_SOCIAL = ["kill-rank"]
+# NOVA-27: the boss info panel and the damage count join the hud group, before
+# the maintenance countdown.
+NOVA27_HUD = ["boss-info", "damage-count"]
+HUD = WAVE2A + NOVA27_HUD + P18_HUD + W7_HUD
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
+HUD2 = WAVE2B + W7_HUD2
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
 WAVE5A = ["quest", "guild-building", "web", "console"]
 WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
-# The items group: the Wave 3b windows, wave 4b's extra inventory and Wave 6's
-# sash and aura windows (NOVA-20, NOVA-23).
+# The items group: the Wave 3b windows, wave 4b's extra inventory, Wave 6's
+# sash and aura windows (NOVA-20, NOVA-23) and Wave 7's chest-drop preview
+# (NOVA-18).
 WAVE6_ITEMS = ["sash", "aura"]
-ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS
+ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop"]
+# Wave 7 (NOVA-43): the switchbot joins the items group, after Wave 6's sash
+# and aura.
+WAVE7_ITEMS = ["switchbot"]
+ITEMS = ITEMS + WAVE7_ITEMS
+# Wave 7 (NOVA-24): the advanced pet's windows.
+WAVE7_PET = ["pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"]
+ITEMS = ITEMS + WAVE7_PET
 # Documents a later stage writes, listed for the prewarm already: the test
 # below fails while a document named here exists, or one not named here is
 # missing. TOOLTIPS AND DIALOGS (P14 spec 9.1, 9.4) wrote the last Wave 3b ones.
@@ -113,13 +132,13 @@ class Flags(WindowsTest):
             self.assertEqual(self.m.DECISIONS[window_id], "legacy: flag off")
 
     def test_hud2_names_the_seven_wave2b_windows_and_hud_keeps_its_twelve(self):
-        self.assertEqual(self.m.GROUPS["hud2"], tuple(WAVE2B))
-        self.assertEqual(self.m.GROUPS["hud"], tuple(HUD), "+hud keeps meaning the Wave 2a windows (and P18's maintenance countdown)")
-        self.assertEqual(len(self.m.GROUPS["hud"]), 13)
+        self.assertEqual(self.m.GROUPS["hud2"], tuple(HUD2))
+        self.assertEqual(self.m.GROUPS["hud"], tuple(HUD), "+hud keeps meaning the Wave 2a windows (and P18's maintenance countdown, wave 7's duel rules)")
+        self.assertEqual(len(self.m.GROUPS["hud"]), 16)
         self.setting.windows = "+hud"
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2B), "+hud turns no Wave 2b window on")
         self.setting.windows = "+hud2,-atlas"
-        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "atlas") for window_id in WAVE2B))
+        self.assertEqual(self.m.overrides(), dict((window_id, window_id != "atlas") for window_id in HUD2))
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE2A), "+hud2 turns no Wave 2a window on")
         self.assertEqual(self.m.use("chat"), (True, ""))
         self.assertEqual(self.m.use("atlas"), (False, "flag off"))
@@ -136,7 +155,7 @@ class Flags(WindowsTest):
                 self.assertIn(window_id, known)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B))
+                         sorted(WAVE1[1:] + HUD + HUD2))
 
     def test_every_wave3a_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         earlier = WAVE1 + WAVE2A + WAVE2B + WAVE3A
@@ -150,8 +169,8 @@ class Flags(WindowsTest):
 
     def test_sys_names_the_six_wave3a_windows_and_hud2_keeps_its_seven(self):
         self.assertEqual(self.m.GROUPS["sys"], tuple(WAVE3A))
-        self.assertEqual(self.m.GROUPS["hud2"], tuple(WAVE2B), "+hud2 keeps meaning the Wave 2b windows")
-        self.assertEqual(len(self.m.GROUPS["hud2"]), 7)
+        self.assertEqual(self.m.GROUPS["hud2"], tuple(HUD2), "+hud2 keeps meaning the Wave 2b windows (and wave 7's top killers)")
+        self.assertEqual(len(self.m.GROUPS["hud2"]), 8)
         self.setting.windows = "+hud2"
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE3A), "+hud2 turns no Wave 3a window on")
         self.setting.windows = "+sys,-help"
@@ -175,7 +194,7 @@ class Flags(WindowsTest):
                 self.assertIn(window_id, known)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A))
+                         sorted(WAVE1[1:] + HUD + HUD2 + WAVE3A))
 
     def test_every_wave5a_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A)],
@@ -213,7 +232,7 @@ class Flags(WindowsTest):
                 self.assertIn(window_id, known)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A))
+                         sorted(WAVE1[1:] + HUD + HUD2 + WAVE3A + WAVE5A))
 
     def test_every_wave3b_window_is_on_by_default_in_the_client_and_named_in_the_tests(self):
         self.assertEqual([window_id for window_id, _ in self.m.WINDOWS][:len(WAVE1 + WAVE2A + WAVE2B + WAVE3A + WAVE5A + WAVE3B)],
@@ -243,7 +262,7 @@ class Flags(WindowsTest):
         self.assertEqual(len(demo), 35)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS))
+                         sorted(WAVE1[1:] + HUD + HUD2 + WAVE3A + WAVE5A + ITEMS))
 
     def test_a_group_turns_its_members_on_and_off_in_token_order(self):
         self.assertEqual(self.m.GROUPS["hud"], tuple(HUD))
@@ -630,7 +649,7 @@ class Wave3c(WindowsTest):
         self.assertEqual(len(demo), 43)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS + WAVE3C))
+                         sorted(WAVE1[1:] + HUD + HUD2 + WAVE3A + WAVE5A + ITEMS + WAVE3C))
 
     def test_the_wave3c_boards_are_prewarmed_with_their_flags(self):
         for window_id in WAVE3C:
@@ -663,7 +682,7 @@ class Wave4Flags(WindowsTest):
 
     def test_trade_and_social_name_their_windows_and_turn_no_other_on(self):
         self.assertEqual(self.m.GROUPS["trade"], tuple(WAVE4_TRADE + WAVE5_TRADE))
-        self.assertEqual(self.m.GROUPS["social"], tuple(WAVE4_SOCIAL))
+        self.assertEqual(self.m.GROUPS["social"], tuple(WAVE4_SOCIAL + W7_SOCIAL))
         self.assertEqual(self.m.GROUPS["items"], tuple(ITEMS), "+items keeps meaning the Wave 3b windows, the extra inventory and the sash and aura windows")
         self.setting.windows = "+trade,-mall"
         self.assertEqual(self.m.overrides(), dict((window_id, window_id != "mall") for window_id in WAVE4_TRADE + WAVE5_TRADE))
@@ -671,7 +690,7 @@ class Wave4Flags(WindowsTest):
         self.assertEqual(self.m.use("mall"), (False, "flag off"))
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE4_SOCIAL + WAVE3B))
         self.setting.windows = "+social"
-        self.assertTrue(all(self.m.is_on(window_id) for window_id in WAVE4_SOCIAL))
+        self.assertTrue(all(self.m.is_on(window_id) for window_id in WAVE4_SOCIAL + W7_SOCIAL))
         self.assertFalse(any(self.m.is_on(window_id) for window_id in WAVE4_TRADE + WAVE5_TRADE))
         for group in ("trade", "social"):
             self.assertNotIn(group, [window_id for window_id, _ in self.m.WINDOWS])
@@ -684,7 +703,8 @@ class Wave4Flags(WindowsTest):
         self.assertEqual(len(demo), 50)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS + WAVE4_TRADE + WAVE5_TRADE + WAVE4_SOCIAL))
+                         sorted(WAVE1[1:] + HUD + HUD2 + WAVE3A + WAVE5A + ITEMS + WAVE4_TRADE + WAVE5_TRADE + WAVE4_SOCIAL
+                                + W7_SOCIAL))
 
     def test_the_wave4_documents_are_on_demand_and_prewarmed_with_their_flags(self):
         expected = [("exchange", ("exchange",)), ("shop", ("shop",)), ("private-shop", ("private-shop",)),
@@ -776,7 +796,7 @@ class MergedWaves(WindowsTest):
         self.assertEqual(len(demo), 58)
         self.setting.windows = demo
         self.assertEqual(sorted(window_id for window_id, on in self.m.overrides().items() if on),
-                         sorted(WAVE1[1:] + HUD + WAVE2B + WAVE3A + WAVE5A + ITEMS + WAVE3C + WAVE4_TRADE + WAVE5_TRADE + WAVE4_SOCIAL))
+                         sorted(WAVE1[1:] + HUD + HUD2 + WAVE3A + WAVE5A + ITEMS + WAVE3C + WAVE4_TRADE + WAVE5_TRADE + WAVE4_SOCIAL + W7_SOCIAL))
 
 
 class Maintenance(WindowsTest):
@@ -811,6 +831,63 @@ class Maintenance(WindowsTest):
         self.assertIn("nui/windows/maintenance/maintenance.rml", self.m.prewarm_documents())
 
 
+class BossWindows(WindowsTest):
+    """NOVA-27: the boss info panel ("boss-info") and the damage count
+    ("damage-count") are on by default, in the hud group, just before the
+    maintenance countdown, and their documents are prewarmed with the
+    on-demand ones."""
+
+    def test_the_ids_are_on_by_default_before_maintenance_and_in_the_hud_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertEqual(ids[-3:], NOVA27_HUD + ["maintenance"])
+        for window_id in NOVA27_HUD:
+            self.assertIs(dict(self.m.WINDOWS)[window_id], True, window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual([group for group, members in self.m.GROUPS.items() if window_id in members and group != "all"],
+                             ["hud"])
+        self.setting.windows = "+hud,-damage-count"
+        self.assertTrue(self.m.is_on("boss-info"))
+        self.assertFalse(self.m.is_on("damage-count"))
+
+    def test_the_documents_are_prewarmed(self):
+        self.setting.windows = "+boss-info,+damage-count"
+        documents = self.m.prewarm_documents()
+        self.assertIn("nui/windows/boss-info/boss-info.rml", documents)
+        self.assertIn("nui/windows/damage-count/damage-count.rml", documents)
+
+
+class DungeonWindows(WindowsTest):
+    """NOVA-25: the dungeon manager ("dungeon-timer"), its drops panel
+    ("dungeon-drops") and the dungeon ranking ("dungeon-rank") are on by
+    default, in the dungeon group, before NOVA-27's windows and the
+    maintenance countdown, and their documents (the manager's with its ready
+    notice) are prewarmed with the on-demand ones."""
+
+    DUNGEON = ["dungeon-timer", "dungeon-drops", "dungeon-rank"]
+
+    def test_the_ids_are_on_by_default_in_the_dungeon_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        start = ids.index("dungeon-timer")
+        self.assertEqual(ids[start:start + 3], self.DUNGEON)
+        self.assertLess(start, ids.index("maintenance"))
+        self.assertEqual(self.m.GROUPS["dungeon"], tuple(self.DUNGEON))
+        for window_id in self.DUNGEON:
+            self.assertIs(dict(self.m.WINDOWS)[window_id], True, window_id)
+            self.assertEqual(self.m.use(window_id), (False, "flag off"))
+            self.assertEqual([group for group, members in self.m.GROUPS.items() if window_id in members and group != "all"],
+                             ["dungeon"])
+        self.setting.windows = "+dungeon,-dungeon-drops"
+        self.assertTrue(self.m.is_on("dungeon-timer"))
+        self.assertFalse(self.m.is_on("dungeon-drops"))
+        self.assertRaises(ValueError, self.m.set_override, "dungeon", True)
+
+    def test_the_documents_are_prewarmed(self):
+        self.setting.windows = "+dungeon"
+        documents = self.m.prewarm_documents()
+        for name in ("dungeon-timer", "dungeon-notice", "dungeon-drops", "dungeon-rank"):
+            self.assertIn("nui/windows/%s/%s.rml" % (name, name), documents)
+
+
 class ClientDefault(WindowsTest):
     """The client's defaults (DEFAULT_ON, which the other tests turn off):
     every window on NovaUI with no UI_NUI_WINDOWS, "-all" a legacy client."""
@@ -837,5 +914,55 @@ class ClientDefault(WindowsTest):
         self.assertEqual(self.m.GROUPS["all"], tuple(window_id for window_id, _ in self.m.WINDOWS))
 
 
+
+class Wave7Switchbot(WindowsTest):
+    """Wave 7 (NOVA-43): the switchbot is the id "switchbot", on by default,
+    in the items group, after Wave 6's sash and aura and before the maintenance
+    countdown; its document loads only while it shows and is prewarmed."""
+
+    def test_the_id_is_on_by_default_before_maintenance_and_in_the_items_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertLess(ids.index("switchbot"), ids.index("maintenance"))
+        self.assertIs(dict(self.m.WINDOWS)["switchbot"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "switchbot" in members and group != "all"],
+                         ["items"])
+        self.assertEqual(self.m.use("switchbot"), (False, "flag off"))
+        self.setting.windows = "+items"
+        self.assertTrue(self.m.is_on("switchbot"))
+        self.setting.windows = "+items,-switchbot"
+        self.assertFalse(self.m.is_on("switchbot"))
+
+    def test_the_document_is_on_demand_and_prewarmed(self):
+        self.assertIn(("switchbot", ("switchbot",)), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+switchbot"
+        self.assertEqual(self.m.prewarm_documents(), ["nui/windows/switchbot/switchbot.rml"])
+
+
 if __name__ == "__main__":
     unittest.main()
+
+
+# --- Wave 7 (NOVA-18) --------------------------------------------------------------------------
+
+
+class Wave7ChestDrop(WindowsTest):
+    """The chest-drop preview is the id "chest-drop", on by default, in the
+    items group, its document on demand; inserted before the maintenance
+    countdown, which stays last."""
+
+    def test_the_id_is_on_by_default_in_the_items_group_before_maintenance(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertLess(ids.index("chest-drop"), ids.index("maintenance"))
+        self.assertIs(dict(self.m.WINDOWS)["chest-drop"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "chest-drop" in members and group != "all"],
+                         ["items"])
+        self.setting.windows = "+items,-chest-drop"
+        self.assertFalse(self.m.is_on("chest-drop"))
+        self.setting.windows = "+chest-drop"
+        self.assertTrue(self.m.is_on("chest-drop"))
+
+    def test_the_document_is_on_demand_and_prewarmed_with_its_flag(self):
+        self.assertIn(("chest-drop", ("chest-drop",)), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+chest-drop"
+        self.assertIn("nui/windows/chest-drop/chest-drop.rml", self.m.prewarm_documents())
+

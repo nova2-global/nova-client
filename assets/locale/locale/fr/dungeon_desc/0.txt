@@ -1,0 +1,52 @@
+#Rez-de-chaussée
+Détruisez la Metin de ténacité en face du portail d'entrée.
+Une fois la Metin est détruite, vous serez téléporté au premier étage.
+
+#Étage 1:
+Tuez tous les monstres pour passer à l'étage suivant.
+$Attention: À partir de ce niveau, les monstres sont agressifs!
+
+#Étage 2:
+Tuez tous les monstres pour passer à l'étage suivant.
+
+#Étage 3:
+Détruisez la Metin du Diable pour passer au défi suivant au même étage.
+Une fois vous détruisez la Metin du Diable, 7 Metin de l'automne apparaîtront autour du sol.
+Vous devez casser ces Metins jusqu'à ce que vous trouviez la bonne.
+
+#Étage 4:
+La tàche à cet étage est d'ouvrir les 5 sceau avec la clé de voûte qui tombe des archers.
+Àprès chaque apparition, la clé de voûte tombera.
+Pour ouvrir un sceau, vous devez faire glisser et déposer la clé de voûte sur le sceau.
+
+#Étage 5:
+Le but de cet étage est le Blacksmith spécial.
+Pour obtenir ce Blacksmith, vous devez tuer le Proud Demon King.
+Une fois que vous l'avez tué, le Blacksmith apparaîtra.
+$Remarque: Ce Blacksmith ne nécessitera aucun matériel d'amélioration.
+
+#Étage 6:
+Détruisez tous les Metins de mort.
+Objectif: trouver la "carte Zin San Gui" pour atteindre l'étage suivant.
+Une fois que vous avez brisé la dernière Metins de mort, une nouvelle Metin de meurtre apparaîtra.
+Lorsque vous cassez cette metin, un Vieux coffre inconnu tombera. Vous devez cliquer sur
+le "Vieux coffre inconnu" pour trouver la "carte Zin San Gui".
+Si vous cliquez et que rien ne tombe, cela signifie que c'était un faux coffre.
+Vous devez continuer à tuer la Metin de meurtre jusqu'à ce que la "carte Zin San Gui" tombe
+du "Vieux coffre inconnu".
+$Remarque: une fois que la carte Zin San Gui tombe, la Metin de meurtre cesse de réapparaître.
+
+#Étage 7:
+À cet étage, vous devez trouver la clé Zin Bong In. Une fois que vous avez trouvé cette clé, vous devez
+le faire glisser et le déposer sur la Pierre tombale à l'opposé du site de frai de cette chambre.
+Il existe également une "Fausse Clé" nommée clé Bong In. Cette clé ne sert à rien.
+$Astuce: Les clés (fausses et correctes) sont abandonnées par le Fantôme immortel.
+
+#Étage 8:
+Ceci est le dernier étage. Vous trouverez ici le Faucheur mortel.
+C'est à vous de tuer tous les monstres avant de tuer le Faucheur mortel.
+Habituellement, il apparaît à l'arrière de la chambre.
+
+#Étage 9:
+La Chambre bleue, c'est là que vous obtenez la tâche la plus difficile sur cette tour
+où vous devez faire face à la Mort bleue, le souverain de la tour des démons.

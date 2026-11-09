@@ -11,6 +11,7 @@
 		"sales_text": false,
 		"hide_shops": true,
 		"show_sash": false,
+		"hide_buffi": true,
 		"pickup": [false, true, true, false]
 	}
 }

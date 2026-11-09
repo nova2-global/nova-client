@@ -1,0 +1,12 @@
+#Nivel 1:
+Mata al barón araña
+
+#Etapa 2:
+Atrae a la baronesa araña con el objeto que soltó anteriormente.
+
+#Etapa 3:
+Mata a la baronesa araña
+
+$ Nota:
+Matar el huevo de araña debilitará a la baronesa araña pero también aumentará
+su poder.

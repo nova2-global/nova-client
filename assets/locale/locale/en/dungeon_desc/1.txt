@@ -1,0 +1,14 @@
+#Stage 1:
+Kill Spider Baron.
+
+#Stage 2:
+Use the Arachnids Whistle to uncover the spider eggs.
+
+#Stage 3:
+Destroy at least 5 spider eggs to lure the Queen.
+
+#Stage 4:
+Kill the Spider Queen.
+
+$Note:
+Killing Spider Eggs will give the Queen extra defense.

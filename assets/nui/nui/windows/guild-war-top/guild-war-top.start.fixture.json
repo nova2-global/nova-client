@@ -1,0 +1,14 @@
+{
+	"guild_war_top": {
+		"left": {
+			"name": "Lions",
+			"mvp": "",
+			"rows": []
+		},
+		"right": {
+			"name": "Wolves",
+			"mvp": "",
+			"rows": []
+		}
+	}
+}

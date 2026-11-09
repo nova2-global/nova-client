@@ -1,0 +1,34 @@
+#Úroveň 1: 
+Po aktivaci dungeonu u Ledového Lva zabijte všechny příšery k teleportaci
+do další úrovně.
+
+#Úrověň 2:
+Zabijte všechny příšery, dokud vám nepadne doopravdový "Ledový klíč" poté budete
+teleportování do další úrovně.
+
+#Úroveň 3:
+Zabijte všechny příšery.
+
+#Úroveň 4:
+Zabijte dvě vlny příšer k pokračování.
+
+#Úroveň 5:
+Zabijte příšery z kterých získáte Severky, ty použijte k otevření pečetí na arktických kostkách,
+pečetě musí být otevřeny ve správném pořadí.
+
+#Úroveň 6:
+Zabijte všechny příšery a poté zničte Metin Chladu.
+
+#Úroveň 7:
+Najděte a zničte Szel, krále ledu.
+
+#Úroveň 8:
+Zabíjejte příšery, dokud vám nepadne správný klíč mrazivého květu. Poté budete
+posunuti na další level.
+
+#Úroveň 9:
+Zničte sloup severního draka. Ke vstupu do pokoje velitele si promluvte
+s Ledovým lvem.
+
+#Pokoj velitele:
+Přemozte Nemera, krále mrazu a ledu!

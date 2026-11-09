@@ -1,0 +1,24 @@
+#Task 1:
+Destroy the metin stones until the 
+desired metins stones have spawned.
+
+$Note:
+Every metin stone has a special effect ,
+which will be increased by the number of 
+the same metins stone.
+
+The amount of HP regeneration of the
+dragon will be increased by the metin of
+arrogance.
+
+Dragon Damage will be increased by the
+Metin of vengeance.
+
+HP regeneration speed will be increased
+by the Metin of solitude.
+
+Dragon Defence will be increased by the 
+Metin of mountain. 
+
+#Task 2:
+Slay Beran Setaou ( Blue Dragon ).

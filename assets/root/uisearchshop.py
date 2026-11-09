@@ -19,8 +19,9 @@ What changed from OLD (o-cli bugs fixed):
   showed "Active" for Silver and refused its buy);
 - no app.ENABLE_* gate and no C++ call at import: the index is built when the
   window opens first.
-OLD's 3D preview (Alt) and pet preview (Tab) have no host in NEW (D15) and are
-not ported, nor is OLD's "Buy VIP" button (/in_game_mall has no host)."""
+OLD's 3D preview (Alt) has no host in NEW (D15) and is not ported, nor is
+OLD's "Buy VIP" button (/in_game_mall has no host). Tab over a pet seal's row
+previews its pet (NOVA-24), through the Interface's PressTabKey."""
 
 import ui
 import net
@@ -623,6 +624,21 @@ class SearchShopWindow(ui.ScriptWindow):
 		self.Close()
 		return True
 
+	## Tab over a pet seal's row previews its pet (NOVA-24; OLD
+	## uiSearchShop.py:680-684, 1152-1155): the row's slot in its owner's shop.
+	tabPreviewRow = None
+
+	def OnPressTabKey(self):
+		row = self.tabPreviewRow
+		if not row:
+			return False
+		item.SelectItem(row["vnum"])
+		if not (item.GetItemType() == item.ITEM_TYPE_PET_ADVANCED and item.GetItemSubType() == item.PET_SUMMON):
+			return False
+		import pet
+		pet.ReqPetPreview(pet.PET_PREVIEW_SEARCHSHOP, row["slot"], row["owner_pid"])
+		return True
+
 	def __BuildIndex(self):
 		"""The C++ name index, once (OLD built it at import, :53)."""
 		if self.indexBuilt:
@@ -900,6 +916,7 @@ class SearchShopWindow(ui.ScriptWindow):
 
 	## The tooltip of a row's item
 	def ShowRowToolTip(self, row):
+		self.tabPreviewRow = row
 		if not self.tooltipItem or not row:
 			return
 		self.tooltipItem.ClearToolTip()
@@ -907,6 +924,7 @@ class SearchShopWindow(ui.ScriptWindow):
 		self.tooltipItem.ShowToolTip()
 
 	def HideRowToolTip(self):
+		self.tabPreviewRow = None
 		if self.tooltipItem:
 			self.tooltipItem.HideToolTip()
 

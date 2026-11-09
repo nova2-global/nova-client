@@ -1,0 +1,125 @@
+/* Classic skin overlay of nui/windows/chest-drop/chest-drop.rml: legacy's
+   chest-drop window (uichestdrop.py, OLD's uiTimerWindow.ChestItemPopup) at
+   100%, 1dp to the legacy pixel: the stone board, 320 x 400; the title bar at
+   8, 7, 305 wide; the info lines centered at 34 and 48 down; the chest's band
+   at 7, 72, 306 x 60 with its icon at 22 and its name centered 30 down; the
+   rows' scroll window at 7, 133, 305 x 258, each row a 295 x 65 band 66
+   apart with the icon at 20, "<count>x <name>" centered 22 down and the tier
+   centered 40 down, in OLD's text color and tier colors. */
+
+body.skin-classic.chest-drop
+{
+	width: 320dp;
+	height: 400dp;
+	min-width: 0;
+}
+body.skin-classic.chest-drop .chest-drop__title-icon
+{
+	display: none;
+}
+body.skin-classic.chest-drop .chest-drop__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 305dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.chest-drop .chest-drop__handle, body.skin-classic.chest-drop .chest-drop__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.chest-drop .chest-drop__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.chest-drop .chest-drop__body
+{
+	display: block;
+	padding: 0;
+}
+body.skin-classic.chest-drop .chest-drop__info
+{
+	position: absolute;
+	left: 0;
+	top: 34dp;
+	width: 320dp;
+	margin: 0;
+}
+body.skin-classic.chest-drop .chest-drop__line
+{
+	height: 14dp;
+	color: var(--highlight);
+	font-size: var(--font-md);
+	line-height: 14dp;
+	/* Legacy's text lines never wrap. */
+	white-space: nowrap;
+}
+body.skin-classic.chest-drop .chest-drop__chest
+{
+	position: absolute;
+	left: 7dp;
+	top: 72dp;
+	width: 306dp;
+	height: 60dp;
+	padding: 0 0 0 22dp;
+	margin: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--surface-sunken);
+}
+body.skin-classic.chest-drop .chest-drop__chest-slot, body.skin-classic.chest-drop .chest-drop__slot
+{
+	width: 32dp;
+	height: 32dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.chest-drop .chest-drop__chest-name
+{
+	margin-right: 54dp;
+	color: var(--highlight);
+	font-weight: normal;
+	text-align: center;
+}
+body.skin-classic.chest-drop .chest-drop__list
+{
+	position: absolute;
+	left: 7dp;
+	top: 133dp;
+	width: 305dp;
+}
+body.skin-classic.chest-drop .chest-drop__viewport
+{
+	height: 258dp;
+}
+body.skin-classic.chest-drop .chest-drop__row
+{
+	width: 295dp;
+	height: 65dp;
+	padding: 0 0 0 20dp;
+	margin-bottom: 1dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--surface-raised);
+}
+body.skin-classic.chest-drop .chest-drop__text
+{
+	align-items: center;
+	margin-right: 52dp;
+}
+body.skin-classic.chest-drop .chest-drop__name
+{
+	color: var(--highlight);
+	font-size: var(--font-md);
+}
+body.skin-classic.chest-drop .chest-drop__tier
+{
+	margin-top: 4dp;
+	font-size: var(--font-md);
+	font-weight: normal;
+}

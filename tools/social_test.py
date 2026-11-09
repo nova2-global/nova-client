@@ -814,6 +814,7 @@ class GameWhisperDetails(unittest.TestCase):
         window.shownChannel = 0
         window.interface = types.SimpleNamespace(whisperDialogDict={"Pest": object()},
                                                  BUILD_OnUpdate=lambda: log.append(("BUILD_OnUpdate", ())),
+                                                 UpdateTimer=lambda: None,
                                                  wndMiniMap=types.SimpleNamespace())
         window.OnUpdate()
         calls = [entry for entry in log if entry[0] in ("BUILD_OnUpdate", "net.SendWhisperDetailsPacket",
@@ -1069,11 +1070,12 @@ class ChannelQuickSwitch(unittest.TestCase):
         player = support.Recording("player", self.log)
         cls = compiled("game.py", "GameWindow", ("__BuildKeyDict", "__SetChannelSwitchMode", "__PressNumKey",
                                                  "__SetQuickSlotMode", "__SetQuickPageMode", "__SelectQuickPage",
-                                                 "__PressQuickSlot"),
+                                                 "__PressQuickSlot", "__PressLeftShiftKey"),
                        {"app": self.app, "net": net, "chrmgr": chrmgr, "player": player,
                         "ui": types.SimpleNamespace(__mem_func__=lambda f: f)})
         window = cls()
         window.channelSwitchMode = False
+        window.interface = None
         self.slots = []
         window.pressNumber = self.slots.append
         window._GameWindow__BuildKeyDict()
@@ -1379,12 +1381,15 @@ class MoveChannel(unittest.TestCase):
 
     def test_the_system_menu_grows_by_olds_row(self):
         window = uiscript("systemdialog.py")
-        self.assertEqual(window["height"], 318)
+        # 348 since wave 7's Ranking button (NOVA-29), between the game options
+        # and the change channel.
+        self.assertEqual(window["height"], 348)
         board = children(window)["board"]
-        self.assertEqual(board["height"], 318)
+        self.assertEqual(board["height"], 348)
         rows = [child for child in board["children"]]
         names = [row["name"] for row in rows]
-        self.assertEqual(names.index("movechannel_button"), names.index("game_option_button") + 1)
+        self.assertEqual(names.index("killrank_button"), names.index("game_option_button") + 1)
+        self.assertEqual(names.index("movechannel_button"), names.index("killrank_button") + 1)
         self.assertEqual(names.index("change_button"), names.index("movechannel_button") + 1)
         move = rows[names.index("movechannel_button")]
         self.assertEqual(move["text"], "SYSTEM_MOVE_CHANNEL")

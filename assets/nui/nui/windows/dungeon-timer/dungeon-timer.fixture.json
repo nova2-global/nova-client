@@ -1,0 +1,166 @@
+{
+	"dungeon_timer": {
+		"rows": [
+			{
+				"idx": 0,
+				"title": "Demon Tower",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 1,
+				"title": "Spider Baroness",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 2,
+				"title": "Devil`s Catacomb",
+				"end": 421.0,
+				"event": false
+			},
+			{
+				"idx": 3,
+				"title": "Aqua Dragon",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 5,
+				"title": "Nemeres",
+				"end": 0.0,
+				"event": false
+			},
+			{
+				"idx": 6,
+				"title": "Razador",
+				"end": 1201.0,
+				"event": false
+			}
+		],
+		"selected": 5,
+		"show_hidden": false,
+		"empty": "",
+		"name": "Nemeres",
+		"boss": "Nemere",
+		"ticket_label": "Entry Ticket",
+		"level": "Min. Level 90 Max. Level 120",
+		"group": "Group Request:  No",
+		"cooldown": "Cooldown:  10 Mins",
+		"attach_right": true,
+		"ticket": {
+			"index": 0,
+			"kind": "",
+			"type": 0,
+			"ref": 0,
+			"icon": "",
+			"count": "",
+			"w": 1,
+			"h": 1,
+			"cd_start": 0.0,
+			"cd_end": 0.0,
+			"active": false,
+			"cover": false,
+			"disabled": false,
+			"locked": false,
+			"covered": false,
+			"target": "",
+			"picked": false,
+			"unavailable": false
+		},
+		"desc": [
+			{
+				"text": "Stage 1:",
+				"tone": "heading"
+			},
+			{
+				"text": "Kill monsters that will drop north stars, use them to open the seals.",
+				"tone": ""
+			},
+			{
+				"text": "",
+				"tone": ""
+			},
+			{
+				"text": "Stage 2:",
+				"tone": "heading"
+			},
+			{
+				"text": "Kill all the monsters and destroy the Metin of Cold.",
+				"tone": ""
+			},
+			{
+				"text": "Note:",
+				"tone": "note"
+			},
+			{
+				"text": "Seals have to be opened in the correct order.",
+				"tone": ""
+			}
+		],
+		"notice": true,
+		"notice_label": "",
+		"sel_end": 0.0,
+		"model_view": true,
+		"drops_state": "ready",
+		"drops_mobs": [
+			{
+				"i": 0,
+				"name": "Nemere",
+				"type": "boss",
+				"active": true
+			},
+			{
+				"i": 1,
+				"name": "Ice Golem",
+				"type": "mob",
+				"active": false
+			},
+			{
+				"i": 2,
+				"name": "Metin of Cold",
+				"type": "stone",
+				"active": false
+			}
+		],
+		"drops_items": [
+			{
+				"i": 0,
+				"vnum": 30190,
+				"icon": "/icon/item/30190.tga",
+				"count": "2",
+				"band": "common"
+			},
+			{
+				"i": 1,
+				"vnum": 27992,
+				"icon": "/icon/item/27992.tga",
+				"count": "",
+				"band": "guaranteed"
+			},
+			{
+				"i": 2,
+				"vnum": 27993,
+				"icon": "/icon/item/27993.tga",
+				"count": "",
+				"band": "rare"
+			},
+			{
+				"i": 3,
+				"vnum": 70024,
+				"icon": "/icon/item/70024.tga",
+				"count": "",
+				"band": "rare"
+			},
+			{
+				"i": 4,
+				"vnum": 50124,
+				"icon": "/icon/item/50124.tga",
+				"count": "5",
+				"band": "common"
+			}
+		],
+		"drops_retry": 0.0,
+		"drops_timeout": 0.0
+	}
+}

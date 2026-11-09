@@ -4,7 +4,7 @@ Each window has an id. Every window runs on NovaUI by default (WINDOWS);
 config/metin2.cfg can turn one off through UI_NUI_WINDOWS ("-id", and "+id"
 back on, comma-separated; systemSetting.GetUINuiWindows), for a diagnosis or
 the live kit's legacy runs. A group id (GROUPS: "all", "wave1", "hud",
-"hud2", "sys", "rest", "items", "wave3c", "trade", "social") in that string
+"hud2", "sys", "rest", "items", "wave3c", "trade", "social", "dungeon") in that string
 stands for each of its windows, in its place among the tokens: "-all" is a
 legacy client. The look is the theme's (UI_THEME, with UI_COLORS for its
 colors): the classic theme draws the legacy look on NovaUI.
@@ -118,6 +118,31 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	# Wave 6 (NOVA-20, NOVA-23): the sash and aura windows, in the items group.
 	("sash", True),               # the sash combine and absorb windows
 	("aura", True),               # the aura level window
+	# Wave 7 (NOVA-18): the chest-drop preview, in the items group.
+	("chest-drop", True),         # what a chest can give, with each item's chance tier
+	# Wave 7 (NOVA-43): the switchbot, in the items group.
+	("switchbot", True),          # the switchbot's six slots, targets, cost and start/stop
+	# Wave 7 (NOVA-24): the advanced pet's windows, in the items group.
+	("pet", True),                # the advanced pet (your own and a preview)
+	("pet-mini", True),           # the summoned pet's small window
+	("pet-hatch", True),          # hatching an egg, the pet's name
+	("pet-evolution", True),      # evolving a pet
+	("pet-attr-refine", True),    # refining a pet's attributes
+	# Wave 7 (NOVA-28, NOVA-29): the duel rules (hud, with the target), the
+	# guild war top killers (hud2, with the war boards), the kill ranking
+	# (social).
+	("duel-rules", True),         # the duel rules a challenger ticks
+	("guild-war-top", True),      # the guild war top killers (TAB held)
+	("kill-rank", True),          # the kill ranking
+	# NOVA-25: the dungeon manager, its drops panel and the dungeon ranking,
+	# in the dungeon group.
+	("dungeon-timer", True),      # the dungeon manager: the list, the cooldowns, the teleport
+	("dungeon-drops", True),      # the dungeon manager's drops panel
+	("dungeon-rank", True),       # the dungeon ranking
+	# NOVA-27: the boss info panel and the damage count window, in the hud
+	# group (HUD windows of the game phase, beside the target board).
+	("boss-info", True),          # the current map's bosses at the left edge
+	("damage-count", True),       # a damage-count boss's top 10 attackers
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
 	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
@@ -125,15 +150,17 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"wave1": ("dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"),
 	"hud": ("taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
-	        "edge-buttons", "tip-board", "big-board", "map-name", "maintenance"),
-	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
+	        "edge-buttons", "tip-board", "big-board", "map-name", "boss-info", "damage-count", "maintenance", "duel-rules"),
+	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war", "guild-war-top"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
-	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura"),
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop",
+	          "switchbot", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
-	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"),
+	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank"),
+	"dungeon": ("dungeon-timer", "dungeon-drops", "dungeon-rank"),
 }
 # "all": every window, so "-all" makes a legacy client (the live kit's legacy
 # runs), and "-all,+id" one with a single NovaUI window.
@@ -194,6 +221,10 @@ ON_DEMAND_DOCUMENTS = (
 	("shop-search", ("shop-search",)),
 	("offline-shop-log", ("offline-shop-log",)),
 	("shop-deco", ("shop-deco",)),
+	# Wave 7: the chest-drop preview, only while it shows.
+	("chest-drop", ("chest-drop",)),
+	# Wave 7 (NOVA-43): the switchbot, only while it shows.
+	("switchbot", ("switchbot",)),
 	("equipment-view", ("equipment-view",)),
 	("messenger", ("messenger",)),
 	("whisper", ("whisper",)),
@@ -204,6 +235,25 @@ ON_DEMAND_DOCUMENTS = (
 	# aura level window, each only while it shows.
 	("sash", ("sash",)),
 	("aura", ("aura",)),
+	# Wave 7 (NOVA-24): the advanced pet's windows, each only while it shows.
+	("pet", ("pet",)),
+	("pet-mini", ("pet-mini",)),
+	("pet-hatch", ("pet-hatch",)),
+	("pet-evolution", ("pet-evolution",)),
+	("pet-attr-refine", ("pet-attr-refine",)),
+	# Wave 7: the duel rules, the top killers and the kill ranking, each only
+	# while it shows.
+	("duel-rules", ("duel-rules",)),
+	("guild-war-top", ("guild-war-top",)),
+	("kill-rank", ("kill-rank",)),
+	# NOVA-25: the dungeon manager (and its ready notice), its drops panel and
+	# the ranking, each only while it shows.
+	("dungeon-timer", ("dungeon-timer", "dungeon-notice")),
+	("dungeon-drops", ("dungeon-drops",)),
+	("dungeon-rank", ("dungeon-rank",)),
+	# NOVA-27: the boss info panel and the damage count, each only while it shows.
+	("boss-info", ("boss-info",)),
+	("damage-count", ("damage-count",)),
 	# P18: the maintenance countdown, only while it shows.
 	("maintenance", ("maintenance",)),
 )

@@ -1,0 +1,25 @@
+$Ta mapa jest podzielona na siedem części. Naciśnij 
+$na Am-heh Gorge żeby zacząć loch . 
+
+#Poziom 1:
+Zabij wszystkie potwory w odblokowanym pokoju. 
+
+#Poziom 2:
+Znajdz złote koło zębate i przenieś je na Isfel Stele w środku drugiego pokoju. 
+
+#Poziom 3:
+Zabij wszystkie potwory w nowo odblokowanym pokoju. 
+
+#Poziom 4:
+Zabij Ignatora. 
+
+#Poziom 5:
+Zabij pokoju dopóki nie wypdanie matt Stones. 
+Przenieś zdobyty kamień na pieczęć w prawidłowej kolejnośći twojego wyboru. 
+Przejdziesz na następny poziom kiedy wszystkie pieczęci zostaną odblokowane. 
+
+#Poziom 6:
+Zniszcz Metin Purgatorium. 
+
+#Poziom 7:
+Zabij Razadora! 

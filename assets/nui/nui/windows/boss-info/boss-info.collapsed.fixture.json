@@ -1,0 +1,16 @@
+{
+	"boss_info": {
+		"rows": [
+			{"name": "Green Dragon", "level": "Level 120", "state": "Alive", "alive": true, "respawn": false, "respawn_end": 0.0, "top": 16},
+			{"name": "Abomination", "level": "Level 120", "state": "Dead", "alive": false, "respawn": true, "respawn_end": 3725.0, "top": 56}
+		],
+		"count": 2,
+		"single": false,
+		"wide": false,
+		"collapsed": true,
+		"height": 106,
+		"button_top": 37,
+		"respawn_before": "Respawning in",
+		"respawn_after": ""
+	}
+}

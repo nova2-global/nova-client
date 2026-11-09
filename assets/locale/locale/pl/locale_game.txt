@@ -1057,3 +1057,107 @@ AURA_WINDOW_EXP	%s / %s EXP
 AURA_WING_SHOW_WING	Wings
 AURA_WING_SHOW_AURA	Aura
 AURA_WING_SHOW_EFFECT	Aura Wing Effect
+CHEST_DROP_TITLE	Chest Items
+CHEST_DROP_FOUND_IN	W %s można znaleźć następujące przedmioty
+CHEST_DROP_OPEN_TIMES	Tę skrzynię można otworzyć %d raz(y)
+CHEST_DROP_TIER_LOW	Low Chance Item
+CHEST_DROP_TIER_MIDDLE	Middle Chance Item
+CHEST_DROP_TIER_HIGH	High Chance Item
+CHEST_CONTENT_PREVIEW	[Shift], aby zobaczyć zawartość skrzyni
+GUILD_PASSIVE_CONTRIBUTE_TITLE	Contribute Items
+GUILD_PASSIVE_CONTRIBUTE_LEVEL	[%s] Lv.%d -> %d
+GUILD_PASSIVE_CONTRIBUTE_NEED	%dx %s Required
+GUILD_PASSIVE_READY	This skill is ready to upgrade!
+GUILD_PASSIVE_INVALID_AMOUNT	Invalid amount!
+GUILD_PASSIVE_TOOLTIP_UPGRADE	Possible Upgrade:
+GUILD_PASSIVE_TOOLTIP_REQUIRED	Required: %s
+GUILD_PASSIVE_TOOLTIP_PROGRESS	Progress: %d / %d (%.1f%%)
+GUILD_PASSIVE_TOOLTIP_PERSONAL	Your contribution: %d
+SWITCHBOT_START	Start
+SWITCHBOT_STOP	Stop
+SWITCHBOT_EMPTY_ATTR	- Wyczyść -
+SWITCHBOT_SELECT_ATTR	Wybierz atrybut
+SWITCHBOT_CLEAR_ATTR	Wyczyść atrybut
+SWITCHBOT_CONFIGURATION_TITLE	Switchbot Konfiguracje
+SWITCHBOT_SAVE_BUTTON	Zapisz opcje
+SWITCHBOT_SAVE	Zapisz
+SWITCHBOT_LOAD_CONFIGURATION	Wczytaj
+SWITCHBOT_CLEAR_CONFIGURATION	Wyczyść
+SWITCHBOT_PREMIUM_ACTIVE	Aktywny
+SWITCHBOT_PREMIUM_INACTIVE	Nieaktywny
+SWITCHBOT_COST_ITEM_INFO	Jeden przedmiot zmiany na losowanie
+SWITCHBOT_COST_YANG_INFO	%s na losowanie
+SWITCHBOT_SPEED	Szybkość: %.2f s
+PET_EVOLVE_GRADE_JUNIOR	Nowicjusz
+PET_EVOLVE_GRADE_APPRENTICE	Czeladnik
+PET_EVOLVE_GRADE_SCOUT	Zwiadowca
+PET_EVOLVE_GRADE_ELITE	Elita
+PET_EVOLVE_GRADE_CHAMPION	Czempion
+PET_EVOLVE_GRADE_VETERAN	Weteran
+PET_EVOLVE_GRADE_MYTHIC	Mityczny
+PET_EVOLVE_GRADE_HEROIC	Heroiczny
+PET_EVOLVE_GRADE_HEROICPLUS	Heroiczny Plus
+PET_EVOLVE_GRADE_HEROICMAX	Heroiczny Wzniosły
+TOOLTIP_PET_ATTR_INFO	Poziom %d, %s
+PET_EVOLVE_PRICE	Cena %s
+PET_EVOLVE_ACTIVE_SKILL_COUNT	Umiejętności podstawowe %s
+PET_EVOLVE_PASSIVE_SKILL_COUNT	Umiejętności heroiczne %s
+PET_TOOLTIP_SKILL_CUR_LEVEL	Poziom: %d
+PET_EVOLVE_SUCCESS	Ewolucja zakończona sukcesem!
+PET_EVOLVE_FAILURE	Ewolucja nie powiodła się!
+PET_EVOLVE_ERROR_NOT_ENOUGH_ITEM	Nie masz wystarczająco: %dx %s
+PET_EVOLVE_ERROR_NOT_ENOUGH_GOLD	Nie masz wystarczająco Yang
+PET_ATTR_REFINE_FAILURE	Nie udało się ulepszyć bonusu!
+PET_ATTR_REFINE_SUCCESS	Pomyślnie ulepszono bonus!
+PET_HATCH_NAME_TOO_SHORT	Wybrana nazwa jest za krótka!
+PET_HATCH_NEED_WAIT	Musisz poczekać %s
+PET_HATCH_RENAME_TITLE	Zmiana nazwy zwierzaka
+PET_HATCH_RENAME_BUTTON	Zmień nazwę
+PET_ADVANCED_ORB_WARNING	Dodać -100%% Potwora do %s? Akcja nieodwracalna.
+PET_ADVANCED_ORB_ALREADY_USED	Na tej pieczęci użyto już orbu!
+PET_ADVANCED_ORB_ALERT	Możesz użyć tego przedmiotu tylko na Pieczęci Zwierzaka!
+TARGET_INFO_EXP	Doświadczenie: %s
+PET_EGG_HATCH_IN	Hatches in: %s
+PET_TOOLTIP_TAB_PREVIEW	Press Tab to preview this pet
+PET_INFO_NAME	Name:
+PET_INFO_EVOLUTION	Evo:
+PET_INFO_LEVEL	Level:
+DUEL_ANTI_MOUNT	Bez wierzchowców
+DUEL_ANTI_PET	Bez zwierzaka
+DUEL_ANTI_POTION	Bez mikstur
+DUEL_ANTI_CRITICAL	Bez trafień krytycznych
+DUEL_ANTI_PIERCE	Bez przeszycia
+DUEL_ANTI_POISON	Bez trucizny
+DUEL_ANTI_FIRE	Bez ognia
+DUEL_ANTI_CHANGE_EQUIP	Bez zmiany ekwipunku
+DUEL_ANTI_PARTY	Bez grupy
+TARGET_BUTTON_DENY_FIGHT	Odrzuć
+TARGET_BUTTON_CANCEL_AVENGE	Ułaskaw
+BATTLE_RULES	Zasady walki:
+GUILD_WAR_TOP_MVP	MVP: %s
+TIMERWINDOW_DUNGEON_TITLES	Demon Tower, Spider Baroness, Devil`s Catacomb, Aqua Dragon, Solitary Temple, Nemeres, Razador, Ochao, Meley, Hive Cave, Crystal Dungeon, Mushroom Dungeon, Duratus, Demon Pit, Fear Dungeon, Mazel Run, Ghidorah`s Nest, Ancient Pyramid, White Tower, Ship Defence, Elder Elemental Vault
+TIMERWINDOW_AVAILABLE	Dostępny 
+TIMERWINDOW_READY_TO_FIGHT	Gotowy do walki!
+TIMERWINDOW_REQUIRED_LEVEL	Min. Level %d \nMax. Level %d
+TIMERWINDOW_GROUP_REQUEST	Grupa Wymagana 
+TIMERWINDOW_ENTRY_TICKET	Bilet Wejściowy 
+TIMERWINDOW_COOLDOWN	Oczekiwanie  
+TIMERWINDOW_DROP_TITLE	Dungeon Drops
+TIMERWINDOW_DROP_LIST	Następujące potwory znajdują się w %s
+TIMERWINDOW_MINUTE	%d Min
+TIMERWINDOW_MINUTES	%d Mins
+TIMERWINDOW_GROUP_NO	No
+TIMERWINDOW_GROUP_YES	Yes
+TIMERWINDOW_EMPTY	No dungeons found.
+TIMERWINDOW_ALL_HIDDEN	All dungeons are hidden for your level. Press Show Hidden to see them.
+TIMERWINDOW_LOAD_ERROR	Load error: %s
+TIMERWINDOW_DROP_RARE	Rare Drop
+TIMERWINDOW_DROP_COMMON	Common Drop
+TIMERWINDOW_DROP_GUARANTEED	Guaranteed Drop
+BOSS_INFO_LEVEL	Poziom %d
+BOSS_INFO_ALIVE	Żywy
+BOSS_INFO_DEAD	Martwy
+BOSS_INFO_RESPAWN	Odrodzi się za %s
+BOSS_INFO_EXPAND	Pokaż bossów
+BOSS_INFO_COLLAPSE	Ukryj bossów
+DAMAGE_COUNT_DAMAGE	Obrażenia: %s(%s)

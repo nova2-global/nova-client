@@ -55,7 +55,11 @@ GUILD_SKILL_SPPEDUP = chr.MOTION_SKILL+110
 GUILD_SKILL_DRAGONWRATH = chr.MOTION_SKILL+111
 GUILD_SKILL_MAGICUP = chr.MOTION_SKILL+112
 
-PASSIVE_GUILD_SKILL_INDEX_LIST = ( 151, )
+# The first guild skill's vnum: a guild skill's index is its vnum minus it.
+GUILD_SKILL_START = 151
+# NOVA-34: OLD's guild passives (Dragon Hunt, Dragon Apex, Dragon Shatter),
+# OLD playerSettingModule.py:72; the dragon eye (151) had no slot.
+PASSIVE_GUILD_SKILL_INDEX_LIST = ( 158, 159, 160 )
 ACTIVE_GUILD_SKILL_INDEX_LIST = ( 152, 153, 154, 155, 156, 157, )
 
 NEW_678TH_SKILL_ENABLE = 0

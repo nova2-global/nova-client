@@ -1,0 +1,50 @@
+#Přízemí:
+Znič Metin Tvrdosti naproti vstupnímu portálu.
+Jakmile je Kámen Tvrdosti zničen, budeš teleportován do 1. patra.
+
+#1. Patro
+Zabij všechny příšery a budeš přesunut to dalšího patra.
+$Varování: Počínaje touto úrovní, příšery budou agresivní!
+
+#2. Patro
+Zabij všechny příšery a budeš přesunut do dalšího patra.
+
+
+#3. Patro
+Znič Metin Ďábla a pokračuj v další výzvě v tomto patře.
+Poté co zničíte Metin ďábla se objeví 7x Metin pádu. 
+Musíte je ničit, dokud nenajdete správný, který vás pustí dál.
+
+#4. Patro
+Otevřete 5 pečetí pomocí klíčů, které získáte z lukostřelců. 
+V každé vlně padá jeden klíč.
+K otevření pečeti, musíte přetáhnout klíč na pečeť.
+
+#5. Patro
+Cílem tohoto patra je dostat se k speciálnímu kováři.
+Abyste se k tomuto kováři dostali musíte zabít Hrdého Krále Démonů.
+Jakmile ho zabijete, objeví se kovář.
+$Poznámka: U tohoto kováře nepotřebujete žádné materiály k vylepšení.
+
+#6. Patro:
+Zničte všechny Metiny smrti.
+Cíl: získat "Mapu sluje Zin" k přesunu do dalšího patra.
+Jakmile zničíte poslední Metin smrti, objeví se Metin Vraždy.
+Pokud zničíte Metin vraždy padne vám Neznámá stará bedna.
+Když bednu otevřete a nezískáte mapu, tak se po chvíli objeví nový metin a opakujete
+akci, dokud nezískáte "Mapu sluje Zin"
+$Poznámka: jakmile Mapa sluje Zin padne, Metin vraždy se přestane objevovat.
+
+#7. Patro:
+V tomto patře musíte najít Klíč Zin Bong In. Jakmile tento klíč najdete, musíte
+ho přetáhnout na náhrobní kámen na druhé straně pokoje.
+Nachází se zde však i falešný kámen s názvem Klíč Bong In. Tento klíč je vámk ničemu.
+$Tip: Klíče (oba dva) se dají získat z Nesmrtelných duchů.
+
+#8. Patro:
+Toto je poslední patro věže. Nachází se zde Zubatá s kosou.
+Je na vás jestli, zabijete všechny příšery předtím než Zubatou s kosou.
+
+#9. Patro:
+Modrý pokoj, tady na vás čeká nejtěžší úkol z této věže. Zde se musíte
+postavit Modré Smrti, vládci Věže Démonů.

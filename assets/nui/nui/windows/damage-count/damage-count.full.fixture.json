@@ -1,0 +1,112 @@
+{
+	"damage_count": {
+		"target": "Green Dragon",
+		"hp_text": "1.234.567 / 5.000.000",
+		"hp_percent": "24%",
+		"hp_tone": "low",
+		"hp_value": 0.24,
+		"rows": [
+			{
+				"no": "1.",
+				"name": "Alpha",
+				"damage": "Damage: 12.0M(18.2%)",
+				"face": "d:/ymir work/ui/game/windows/face_warrior.sub",
+				"own": false,
+				"width": 380,
+				"color": 0,
+				"flash": 0
+			},
+			{
+				"no": "2.",
+				"name": "Bravo",
+				"damage": "Damage: 10.8M(16.4%)",
+				"face": "d:/ymir work/ui/game/windows/face_assassin.sub",
+				"own": false,
+				"width": 342,
+				"color": 1,
+				"flash": 0
+			},
+			{
+				"no": "3.",
+				"name": "Charlie",
+				"damage": "Damage: 9.6M(14.5%)",
+				"face": "d:/ymir work/ui/game/windows/face_sura.sub",
+				"own": false,
+				"width": 304,
+				"color": 2,
+				"flash": 0
+			},
+			{
+				"no": "4.",
+				"name": "Delta",
+				"damage": "Damage: 8.4M(12.7%)",
+				"face": "d:/ymir work/ui/game/windows/face_shaman.sub",
+				"own": false,
+				"width": 266,
+				"color": 3,
+				"flash": 0
+			},
+			{
+				"no": "5.",
+				"name": "Echo",
+				"damage": "Damage: 7.2M(10.9%)",
+				"face": "d:/ymir work/ui/game/windows/face_warrior.sub",
+				"own": false,
+				"width": 228,
+				"color": 4,
+				"flash": 0
+			},
+			{
+				"no": "6.",
+				"name": "Me",
+				"damage": "Damage: 6.0M(9.1%)",
+				"face": "d:/ymir work/ui/game/windows/face_assassin.sub",
+				"own": true,
+				"width": 190,
+				"color": 5,
+				"flash": 0
+			},
+			{
+				"no": "7.",
+				"name": "Golf",
+				"damage": "Damage: 4.8M(7.3%)",
+				"face": "d:/ymir work/ui/game/windows/face_sura.sub",
+				"own": false,
+				"width": 152,
+				"color": 6,
+				"flash": 0
+			},
+			{
+				"no": "8.",
+				"name": "Hotel",
+				"damage": "Damage: 3.6M(5.5%)",
+				"face": "d:/ymir work/ui/game/windows/face_shaman.sub",
+				"own": false,
+				"width": 114,
+				"color": 7,
+				"flash": 0
+			},
+			{
+				"no": "9.",
+				"name": "India",
+				"damage": "Damage: 2.4M(3.6%)",
+				"face": "d:/ymir work/ui/game/windows/face_warrior.sub",
+				"own": false,
+				"width": 76,
+				"color": 0,
+				"flash": 0
+			},
+			{
+				"no": "10.",
+				"name": "Juliett",
+				"damage": "Damage: 1.2M(1.8%)",
+				"face": "d:/ymir work/ui/game/windows/face_assassin.sub",
+				"own": false,
+				"width": 38,
+				"color": 1,
+				"flash": 0
+			}
+		],
+		"count": 10
+	}
+}

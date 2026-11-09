@@ -346,7 +346,8 @@ class Wiring(unittest.TestCase):
         with hud.quiet():
             import types
             Game = bw.compiled("game.py", "GameWindow", ["SetHPTargetBoard", "SetPCTargetHP", "BINARY_SetTargetInfo", "__CloseDamageCount"],
-                               scope={"uiTargetInfo": types.SimpleNamespace(store=lambda r, rows: store.append((r, rows)))})
+                               scope={"uiTargetInfo": types.SimpleNamespace(store=lambda r, rows: store.append((r, rows))),
+                                      "player": types.SimpleNamespace(IsMainCharacterIndex=lambda vid: False)})
         calls = []
         store = []
         class Board(object):

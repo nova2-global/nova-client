@@ -22,6 +22,13 @@
 		<div class="nui-window__body">
 			<input id="dialog-money-field" type="text" class="nui-input nui-dialog__field" data-attr-maxlength="max" data-event-change="edit(ev.value, ev.linebreak)"/>
 			<p class="nui-dialog__text dialog-money__amount">{{ money }}</p>
+			<!-- BulkMoneyInputDialog's check box (the offline shop's "bulk add");
+			     the document takes no click to forward from the label, so a left
+			     press on the row flips it and the box follows the model. -->
+			<label id="dialog-money-check" class="nui-toggle dialog-money__check" data-if="check_on"
+			       data-event-mousedown="check(ev.button)"><input type="checkbox" class="nui-toggle__input"
+			       data-attrif-checked="checked"/><span class="nui-toggle__track nui-anim"><span
+			       class="nui-toggle__knob nui-anim"></span></span><span class="nui-toggle__label">{{ check_text }}</span></label>
 		</div>
 		<div class="nui-window__footer nui-dialog__footer">
 			<button id="dialog-money-cancel" class="nui-button nui-button--medium nui-anim" data-event-click="cancel()">@ui.CANCEL</button>

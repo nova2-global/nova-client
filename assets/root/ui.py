@@ -1359,6 +1359,27 @@ class Bar3D(Window):
 	def SetColor(self, left, right, center):
 		wndMgr.SetColor(self.hWnd, left, right, center)
 
+class RenderTarget(Window):
+	"""A render target in the legacy UI (NOVA-137; OLD ui.py RenderTarget): it shows the
+	target of its name, which a model preview (modelpreview, or OLD's player.SelectShopModel
+	for "shop_deco") draws into at this window's size while it is shown. IsAvailable is
+	False on a client without render targets; nothing should make one there."""
+
+	@staticmethod
+	def IsAvailable():
+		return hasattr(wndMgr, "RegisterRenderTarget") and hasattr(wndMgr, "SetRenderTarget")
+
+	def __init__(self, layer = "UI"):
+		Window.__init__(self, layer)
+
+	def RegisterWindow(self, layer):
+		self.hWnd = wndMgr.RegisterRenderTarget(self, layer)
+
+	def SetRenderTarget(self, name):
+		"""A target name, or OLD's index (1 is "shop_deco")."""
+		wndMgr.SetRenderTarget(self.hWnd, name)
+
+
 class SlotWindow(Window):
 
 	def __init__(self):

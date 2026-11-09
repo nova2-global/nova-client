@@ -8,12 +8,15 @@
 	     proxies: the two steps (the shop's model, then its sign's style), the
 	     choice, and the commit on Confirm are legacy's code. The list shows
 	     the step's entries (a press chooses one); the preview names the model,
-	     or shows the chosen style's sign with the style's name in it (no 3D
-	     view, legacy's D15). Step 1 has Close and Next, step 2 Back and
+	     or shows the chosen style's sign with the style's name in it. On the
+	     model step a client with model previews (NOVA-137) shows the model
+	     turning over its name: the nui-view "model-shop-deco" (model_view),
+	     else the stall mark. Step 1 has Close and Next, step 2 Back and
 	     Confirm. A left or right press anywhere on it raises the window
 	     (board_press). -->
 	<title>shop-deco</title>
 	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="../../components/sign-pattern.rcss"/>
 	<link type="text/rcss" href="shop-deco.rcss"/>
 </head>
 <body template="nui" id="shop-deco" class="nui-window nui-fx nui-anim shop-deco" data-model="shop_deco"
@@ -42,14 +45,27 @@
 				</div>
 			</div>
 			<div class="shop-deco__preview">
-				<div class="shop-deco__model" data-if="preview_style &lt; 0"><span class="shop-deco__model-mark"><span
+				<div class="shop-deco__model" data-if="preview_style &lt; 0" data-class-has-view="model_view"><nui-view
+					id="shop-deco-model-view" class="shop-deco__model-view" name="model-shop-deco" hover="none"
+					data-if="model_view"></nui-view><span class="shop-deco__model-mark" data-if="!model_view"><span
 					class="nui-glyph nui-glyph--stall"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span
 					class="nui-glyph__c"></span></span></span><span class="shop-deco__model-name">{{ preview_name }}</span></div>
 				<div class="shop-deco__sign-stage" data-if="preview_style &gt;= 0">
 					<div class="shop-deco__sign" data-class-shop-deco__sign--1="preview_style == 1"
 					     data-class-shop-deco__sign--2="preview_style == 2" data-class-shop-deco__sign--3="preview_style == 3"
-					     data-class-shop-deco__sign--4="preview_style == 4" data-class-shop-deco__sign--5="preview_style == 5"><span
-						class="shop-deco__sign-text">{{ preview_name }}</span></div>
+					     data-class-shop-deco__sign--4="preview_style == 4" data-class-shop-deco__sign--5="preview_style == 5"
+					     data-class-nui-sign-pattern="preview_style &gt; 0" data-class-nui-sign-pattern--1="preview_style == 1"
+					     data-class-nui-sign-pattern--2="preview_style == 2" data-class-nui-sign-pattern--3="preview_style == 3"
+					     data-class-nui-sign-pattern--4="preview_style == 4" data-class-nui-sign-pattern--5="preview_style == 5"><span
+						class="shop-deco__sign-text">{{ preview_name }}</span><span class="nui-sign-pattern__part nui-sign-pattern__part--lt"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--rt"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--lb"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--rb"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--l"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--r"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--t"
+						data-if="preview_style &gt; 0"></span><span class="nui-sign-pattern__part nui-sign-pattern__part--b"
+						data-if="preview_style &gt; 0"></span></div>
 					<span class="shop-deco__sign-name">{{ preview_name }}</span>
 				</div>
 			</div>

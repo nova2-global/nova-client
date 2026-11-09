@@ -48,3 +48,8 @@
 {
 	min-width: 82dp;
 }
+/* BulkMoneyInputDialog's check box under the amount (the offline shop's "bulk add"). */
+.dialog-money__check
+{
+	margin-top: var(--space-2);
+}

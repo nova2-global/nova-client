@@ -497,7 +497,7 @@ class MoneyInputDialog(ui.ScriptWindow):
 class BulkMoneyInputDialog(MoneyInputDialog):
 	"""The money input dialog with a check box under the amount (NOVA-9; OLD
 	uiCommon.py:700-713): the offline shop's "bulk add" of a price, its "apply to all
-	identical items". Always the legacy window: the dialog kit has no check box yet."""
+	identical items". With the dialogs flag on, the kit's (nui_dialog_money.BulkMoneyInputDialog)."""
 
 	EXTRA_HEIGHT = 20
 
@@ -535,7 +535,8 @@ class BulkMoneyInputDialog(MoneyInputDialog):
 
 class CheckQuestionDialog(QuestionDialog):
 	"""The question dialog with a check box under the text (NOVA-9; OLD uiShop.py:1534-1546,
-	the offline shop's "remove all identical items"). Always the legacy window."""
+	the offline shop's "remove all identical items"). With the dialogs flag on, the kit's
+	(nui_dialog_question.CheckQuestionDialog)."""
 
 	EXTRA_HEIGHT = 25
 
@@ -579,6 +580,8 @@ LegacyInputDialogWithDescription2 = InputDialogWithDescription2
 LegacyQuestionDialog = QuestionDialog
 LegacyQuestionDialog2 = QuestionDialog2
 LegacyMoneyInputDialog = MoneyInputDialog
+LegacyBulkMoneyInputDialog = BulkMoneyInputDialog
+LegacyCheckQuestionDialog = CheckQuestionDialog
 PopupDialog = nui_windows.factory("dialogs", LegacyPopupDialog, "nui_dialog_message.PopupDialog")
 InputDialog = nui_windows.factory("dialogs", LegacyInputDialog, "nui_dialog_input.InputDialog")
 InputDialogWithDescription = nui_windows.factory("dialogs", LegacyInputDialogWithDescription, "nui_dialog_input.InputDialogWithDescription")
@@ -586,3 +589,7 @@ InputDialogWithDescription2 = nui_windows.factory("dialogs", LegacyInputDialogWi
 QuestionDialog = nui_windows.factory("dialogs", LegacyQuestionDialog, "nui_dialog_question.QuestionDialog")
 QuestionDialog2 = nui_windows.factory("dialogs", LegacyQuestionDialog2, "nui_dialog_question.QuestionDialog2")
 MoneyInputDialog = nui_windows.factory("dialogs", LegacyMoneyInputDialog, "nui_dialog_money.MoneyInputDialog")
+## The offline shop's two dialogs with a check box (NOVA-9, NOVA-169 follow-up): the kit
+## draws the box too now, so they follow the dialogs flag as the others do.
+BulkMoneyInputDialog = nui_windows.factory("dialogs", LegacyBulkMoneyInputDialog, "nui_dialog_money.BulkMoneyInputDialog")
+CheckQuestionDialog = nui_windows.factory("dialogs", LegacyCheckQuestionDialog, "nui_dialog_question.CheckQuestionDialog")

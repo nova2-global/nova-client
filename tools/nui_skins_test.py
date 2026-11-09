@@ -119,7 +119,7 @@ class SkinFolders(unittest.TestCase):
 
 CONTENT_ART = os.path.join(NUI, "content-art.json")
 CONTENT_KINDS = {"item-icon", "skill-icon", "action-icon", "affect-icon", "party-bonus-icon", "emblem", "flag",
-                 "guild-mark", "map", "portrait", "quest-picture", "technical", "test-page"}
+                 "guild-mark", "map", "portrait", "quest-picture", "shop-sign-pattern", "technical", "test-page"}
 IMAGE_EXT = re.compile(r"\.(png|tga|jpg|jpeg|bmp|dds|sub)\b", re.I)
 NUITOOL = os.environ.get("NUITOOL") or shutil.which("nuitool")
 

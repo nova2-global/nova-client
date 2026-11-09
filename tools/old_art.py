@@ -9,6 +9,15 @@ skins of the race shapes (the msm files' WingData groups) their value 3 names.
 
 	python3 tools/old_art.py plan PACKER OLD_ITEM_LIST CUT_ITEM_PROTO GRLIST
 	python3 tools/old_art.py import PACKER OLD_ITEM_LIST CUT_ITEM_PROTO GRLIST
+	python3 tools/old_art.py shop-plan PACKER GRLIST
+	python3 tools/old_art.py shop PACKER GRLIST
+
+shop and shop-plan take the offline shop's decoration (NOVA-170) instead: the
+NPC models shop_deco.txt's type 1 rows name (by NEW's npclist folder for each
+vnum: the msm, its base model, motlist.txt and the motions it lists) and the
+eight parts of each type 2 row's sign pattern. They read NEW's files and
+groups from git's tree, so they work in a sparse worktree; add what they
+write with `git add --sparse`.
 
 plan lists what an import would take (files and MB by kind) and writes
 nothing. OLD_ART_SCRATCH names a folder grlist (a Windows program) can read and
@@ -398,14 +407,19 @@ def plan_art(packer, old_item_list, cut_proto, grlist):
 
 def import_art(packer, old_item_list, cut_proto, grlist):
 	assets = old_content.ASSETS
-	with open(os.path.join(assets, "groups.txt"), encoding="utf-8") as handle:
-		groups = [line for line in (raw.split("#")[0].strip() for raw in handle) if line]
 	scratch = scratch_folder()
 	take, missing, index, _ = gather(packer, old_item_list, cut_proto, grlist, scratch)
-	folders = group_folders(assets, groups)
+	folders = group_folders(assets, _groups())
+	return place(packer, grlist, scratch, take, missing, index, folders)
+
+
+def place(packer, grlist, scratch, take, missing, index, folders, group_of=None):
+	"""Writes each file taken into its group (a custom Granny file converted
+	by grlist) and adds its rows to the manifest."""
+	assets = old_content.ASSETS
 	rows, converts, placed = [], [], []
 	for path in sorted(take):
-		group = choose_group(path, folders)
+		group = (group_of or choose_group)(path, folders)
 		source = os.path.join(packer, take[path])
 		target = destination(assets, group, index[path][0])
 		os.makedirs(os.path.dirname(target), exist_ok=True)
@@ -450,11 +464,177 @@ def import_art(packer, old_item_list, cut_proto, grlist):
 	return 1 if failed else 0
 
 
+# --- the offline shop's decoration (NOVA-170) -------------------------------
+
+# The eight parts of a sign pattern (OLD ui.py:6913-6916 ShopDecoTitle).
+PATTERN_PARTS = ("left_top", "left_bottom", "right_top", "right_bottom", "left", "right", "top", "bottom")
+SHOP_DECO = os.path.join(old_content.ASSETS, "locale", "locale", "common", "shop_deco.txt")
+NPC_LIST = os.path.join(old_content.ASSETS, "root", "npclist.txt")
+# Where CRaceManager looks for an npclist name's folder.
+NPC_FOLDERS = ("npc", "npc2", "monster", "monster2")
+BASE_MODEL = re.compile(rb'BaseModelFileName\s+"([^"]+)"', re.I)
+EFFECT_SCRIPT = re.compile(rb'EffectScriptName\s+"([^"]+)"', re.I)
+
+
+def _rows(data):
+	for line in data.decode("latin-1").splitlines():
+		cells = [cell.strip() for cell in line.split("\t")]
+		if cells and cells[0]:
+			yield cells
+
+
+def shop_seeds(deco_data, npclist_data, index, packer, files):
+	"""The store paths shop_deco.txt names that NEW lacks: for each type 1
+	row, the effects its vnum's model attaches (the msm's EffectScriptName,
+	OLD's p_shop_*.mse; even when NEW ships the model) and, when NEW lacks
+	the model, the model (the msm in the npclist name's folder, the base
+	model it names, motlist.txt and the motions that lists); for each type 2
+	row, its pattern's eight parts."""
+	names = {}
+	for cells in _rows(npclist_data):
+		if len(cells) >= 2 and cells[0].isdigit():
+			names[int(cells[0])] = cells[1].lower()
+	out = []
+
+	def add(path):
+		if path not in files and path not in out:
+			out.append(path)
+
+	for cells in _rows(deco_data):
+		if cells[0] == "1" and len(cells) >= 3 and cells[2].isdigit():
+			name = names.get(int(cells[2]))
+			if not name:
+				continue
+			shipped = any("d:/ymir work/%s/%s/%s.msm" % (top, name, name) in files for top in NPC_FOLDERS)
+			for top in NPC_FOLDERS:
+				folder = "d:/ymir work/%s/%s/" % (top, name)
+				msm = folder + name + ".msm"
+				if msm not in index:
+					continue
+				with open(os.path.join(packer, index[msm][1]), "rb") as handle:
+					script = handle.read()
+				if not shipped:
+					add(msm)
+				for effect in EFFECT_SCRIPT.finditer(script):
+					add(store_path(effect.group(1).decode("latin-1"), msm))
+				if shipped:
+					break
+				base = BASE_MODEL.search(script)
+				motlist = folder + "motlist.txt"
+				motions = []
+				if motlist in index:
+					with open(os.path.join(packer, index[motlist][1]), "rb") as handle:
+						for line in handle.read().decode("latin-1").splitlines():
+							tokens = line.split()
+							if len(tokens) >= 3 and tokens[2].lower().endswith(".msa"):
+								motions.append(store_path(tokens[2], motlist))
+					add(motlist)
+				if base:
+					add(store_path(base.group(1).decode("latin-1"), msm))
+				for motion in motions:
+					add(motion)
+				break
+		elif cells[0] == "2" and len(cells) >= 3:
+			pattern = old_content.store_name(cells[2])
+			for part in PATTERN_PARTS:
+				add("%s_%s.tga" % (pattern, part))
+	return out
+
+
+NUMBERED_FOLDER = re.compile(r"(d:/ymir work/[^/]+/[^/]+?)_\d+/")
+
+
+def shop_group(path, folders):
+	"""choose_group, but a numbered model folder (privateshop_3) goes with
+	the group of its base folder (privateshop) when NEW has one."""
+	match = NUMBERED_FOLDER.match(path)
+	if match and match.group(1) in folders:
+		return choose_group(match.group(1) + "/x", folders)
+	return choose_group(path, folders)
+
+
+def tree_files():
+	"""Every file of git's tree under assets/ (a sparse worktree has only
+	some on disk)."""
+	done = subprocess.run(["git", "-C", old_content.REPO, "ls-files", "-z", "--", "assets"], capture_output=True, check=True)
+	return [path for path in done.stdout.decode("utf-8", "replace").split("\0") if path]
+
+
+def _tree_store(path, groups):
+	"""(group, store path) of a tree path assets/<group>/<path>, or None."""
+	parts = path.split("/")
+	if len(parts) < 3 or parts[0] != "assets" or parts[1] not in groups:
+		return None
+	relative = old_content.store_name("/".join(parts[2:]))
+	if relative.startswith("ymir work/"):
+		relative = "d:/" + relative
+	return parts[1], relative
+
+
+def tree_group_folders(paths, groups):
+	"""group_folders, from tree paths instead of the disk."""
+	folders = {}
+	for path in paths:
+		found = _tree_store(path, groups)
+		if not found:
+			continue
+		group, relative = found
+		parts = relative.split("/")[:-1]
+		for i in range(1, len(parts) + 1):
+			counts = folders.setdefault("/".join(parts[:i]), {})
+			counts[group] = counts.get(group, 0) + 1
+	return folders
+
+
+def tree_published(paths, groups):
+	"""published_files, from tree paths instead of the disk."""
+	return set(found[1] for found in (_tree_store(path, groups) for path in paths) if found)
+
+
+def _groups():
+	with open(os.path.join(old_content.ASSETS, "groups.txt"), encoding="utf-8") as handle:
+		return [line for line in (raw.split("#")[0].strip() for raw in handle) if line]
+
+
+def shop_gather(packer, grlist, scratch):
+	groups = _groups()
+	paths = tree_files()
+	files = tree_published(paths, groups)
+	index = packer_index(packer)
+	with open(SHOP_DECO, "rb") as handle:
+		deco = handle.read()
+	with open(NPC_LIST, "rb") as handle:
+		npclist = handle.read()
+	start = shop_seeds(deco, npclist, index, packer, files)
+	take, missing = closure(start, index, files, packer, grlist, scratch)
+	return take, missing, index, tree_group_folders(paths, groups)
+
+
+def plan_shop(packer, grlist):
+	take, missing, _, _ = shop_gather(packer, grlist, scratch_folder())
+	for path in sorted(take):
+		print("  %s <- %s" % (path, take[path]))
+	print("would take %d files; %d named but missing in OLD too:" % (len(take), len(missing)))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path]))
+	return 0
+
+
+def import_shop(packer, grlist):
+	scratch = scratch_folder()
+	take, missing, index, folders = shop_gather(packer, grlist, scratch)
+	return place(packer, grlist, scratch, take, missing, index, folders, shop_group)
+
+
 def _main(argv):
 	if len(argv) == 5 and argv[0] == "import":
 		return import_art(*argv[1:])
 	if len(argv) == 5 and argv[0] == "plan":
 		return plan_art(*argv[1:])
+	if len(argv) == 3 and argv[0] == "shop":
+		return import_shop(*argv[1:])
+	if len(argv) == 3 and argv[0] == "shop-plan":
+		return plan_shop(*argv[1:])
 	print(__doc__)
 	return 2
 

@@ -957,6 +957,14 @@ class Interface(object):
 		if refreshHideShops:
 			refreshHideShops()
 
+	# GC::BUFFI_HIDE (NOVA-38): the game options show the server's /hide_buffi
+	# state (player.IsHideBuffi); a window made later reads it when it is made.
+	def OnBuffiHide(self, hidden):
+		gameOptionDlg = getattr(self.dlgSystem, "gameOptionDlg", None)
+		refreshHideBuffi = getattr(gameOptionDlg, "RefreshHideBuffi", None)
+		if refreshHideBuffi:
+			refreshHideBuffi()
+
 	## Quest
 	def OpenCharacterWindowQuestPage(self):
 		self.wndCharacter.Show()

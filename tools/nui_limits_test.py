@@ -209,10 +209,11 @@ class WearTables(LimitsTest):
         # Legacy's windows since NOVA-97: the rings and the belt with the
         # equipment; since Wave 6 the foundation's costume window holds the
         # costume body and hair, sash, weapon costume, sash costume and aura
-        # (NOVA-20, 21, 23), the cut's unported costume cells hidden. Today's
+        # (NOVA-20, 21, 23) and the buffi's costume body, hair and weapon costume
+        # (NOVA-38), the cut's unported costume cells hidden. Today's
         # costume window keeps the body and hair.
         self.assertEqual(counts(today), [14, 2, 8])
-        self.assertEqual(counts(foundation), [14, 6, 20])
+        self.assertEqual(counts(foundation), [14, 9, 17])
         self.assertRaises(ValueError, self.m.wear_group, "bag", today)
 
     def test_a_wear_slot_is_its_index_name_cell_group_and_span(self):
@@ -269,11 +270,15 @@ class WearTables(LimitsTest):
                                                                  script, re.M))
         legacy = [start + int(n) for n in re.findall(r'"index"\s*:\s*COSTUME_START_INDEX\s*\+\s*(\d+)', script)]
         legacy += [start + offsets[name] for name in re.findall(r'"index"\s*:\s*(\w+_SLOT_INDEX)\b', script)]
+        # The buffi's cells (NOVA-38), refreshed apart (uiinventory.py CostumeBuffiSlots).
+        buffi = [start + 12 + int(n) for n in re.findall(r'"index"\s*:\s*BUFFI_START_INDEX\s*\+\s*(\d+)', script)]
+        self.assertEqual(buffi, [start + 12, start + 13, start + 14])
         costume = self.m.wear_group("costume", foundation)
-        self.assertEqual(sorted(slot.cell for slot in costume), sorted(legacy), "the legacy costume slots")
+        self.assertEqual(sorted(slot.cell for slot in costume), sorted(legacy + buffi), "the legacy costume slots")
         self.assertEqual([(slot.name, slot.index) for slot in costume],
                          [("costume_body", 19), ("costume_hair", 20), ("costume_sash", 21), ("costume_weapon", 22),
-                          ("costume_sash2", 27), ("costume_aura", 39)])
+                          ("costume_sash2", 27), ("buffi_costume_body", 31), ("buffi_costume_hair", 32),
+                          ("buffi_costume_weapon", 33), ("costume_aura", 39)])
         for count in (foundation.COSTUME_SLOT_COUNT, 9):
             refreshed = set(range(start, start + count)) | {start + 20}
             self.assertTrue(set(legacy) <= refreshed, "COSTUME_SLOT_COUNT %d" % count)

@@ -279,6 +279,11 @@ class CostumeWindow(ui.ScriptWindow):
 		slotNumber = CostumeAuraSlot()
 		self.wndEquip.SetItemSlot(slotNumber, getItemVNum(slotNumber), 0)
 
+		## The buffi's costumes (NOVA-38; OLD uiInventory.py:193-206), the
+		## cells the window shows.
+		for slotNumber in CostumeBuffiSlots():
+			self.wndEquip.SetItemSlot(slotNumber, getItemVNum(slotNumber), 0)
+
 		self.wndEquip.RefreshSlot()
 
 	def __SetShown(self, buttons, isShown):
@@ -382,6 +387,30 @@ def CostumeAuraSlot():
 	c_Costume_Slot_Aura (GameType.h), counted from the costume body (wear 19)
 	as the costume window's uiscript counts it."""
 	return item.COSTUME_SLOT_START + 20
+
+
+## The buffi's costume cells the costume window shows (NOVA-38): its costume
+## body, hair and weapon costume, the first three of OLD's five (wear 31-33 of
+## item.COSTUME_BUFFI_SLOT_START, OLD GameType.h:174-181). Its wings and facial
+## (wear 34, 35) take NEW's unported sash2 and facial costumes.
+BUFFI_COSTUME_SHOWN = 3
+
+
+def CostumeBuffiSlots():
+	"""The buffi's shown costume cells: item.COSTUME_BUFFI_SLOT_START (wear 31)
+	onward, counted from the costume body (wear 19) as the costume window's
+	uiscript counts it when the client lacks the name."""
+	start = getattr(item, "COSTUME_BUFFI_SLOT_START", None)
+	if not isinstance(start, int):
+		start = item.COSTUME_SLOT_START + 12
+	return list(range(start, start + BUFFI_COSTUME_SHOWN))
+
+
+def IsFakeBuffIntBoost(itemVnum):
+	"""Whether an item raises a buffi's INT (OLD's item.IsFakeBuffIntBoost,
+	ITEM_FAKE_BUFF_INT_BOOST); an exe without it has none."""
+	isIntBoost = getattr(item, "IsFakeBuffIntBoost", None)
+	return bool(isIntBoost(itemVnum)) if isIntBoost else False
 
 
 class BeltInventoryWindow(ui.ScriptWindow):
@@ -953,6 +982,14 @@ class InventoryWindow(ui.ScriptWindow):
 					self.wndItem.ActivateSlot(i)
 				else:
 					self.wndItem.DeactivateSlot(i)
+
+			## A buffi item is active while its buffi is out (NOVA-38; OLD
+			## uiInventory.py:1476-1479: the server sets its socket 3).
+			elif constInfo.IS_FAKEBUFF_ITEM(itemVnum):
+				if player.METIN_SOCKET_MAX_NUM > 3 and 0 != player.GetItemMetinSocket(slotNumber, 3):
+					self.wndItem.ActivateSlot(i)
+				else:
+					self.wndItem.DeactivateSlot(i)
 					
 		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
@@ -1288,6 +1325,11 @@ class InventoryWindow(ui.ScriptWindow):
 		elif GetPetItemSubType(srcItemVID) == PET_DESTINY_ORB:
 			self.__CanUsePetItemToDstItem(srcItemSlotPos, dstItemSlotPos)
 
+		## A buffi INT booster is used on the item it is dropped on (NOVA-38;
+		## OLD uiInventory.py:1919-1920); the server takes only a buffi item.
+		elif IsFakeBuffIntBoost(srcItemVID):
+			self.__SendUseItemToItemPacket(srcItemSlotPos, dstItemSlotPos)
+
 		else:
 			#snd.PlaySound("sound/ui/drop.wav")
 
@@ -1552,6 +1594,8 @@ class InventoryWindow(ui.ScriptWindow):
 			return True
 		elif item.IsKey(srcItemVNum):
 			return True
+		elif IsFakeBuffIntBoost(srcItemVNum):
+			return True
 		elif (player.GetItemFlags(srcSlotPos) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:
 			return True
 		else:
@@ -1580,6 +1624,11 @@ class InventoryWindow(ui.ScriptWindow):
 				return True
 		elif item.IsKey(srcItemVNum):
 			if player.CanUnlock(srcItemVNum, dstSlotPos):
+				return True
+
+		## NOVA-38 (OLD uiInventory.py:2236-2238): a booster on a buffi item.
+		elif IsFakeBuffIntBoost(srcItemVNum):
+			if constInfo.IS_FAKEBUFF_ITEM(player.GetItemIndex(dstSlotPos)):
 				return True
 
 		elif (self.__GetItemFlags(srcSlotPos, srcWindow) & ITEM_FLAG_APPLICABLE) == ITEM_FLAG_APPLICABLE:

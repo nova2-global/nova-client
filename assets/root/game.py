@@ -1075,6 +1075,10 @@ class GameWindow(ui.ScriptWindow):
 	def BINARY_OfflineShopHideShops(self, hidden):
 		self.interface.OnOfflineShopHideShops(hidden)
 
+	## GC::BUFFI_HIDE (NOVA-38): the server's /hide_buffi state.
+	def BINARY_OnBuffiHide(self, hidden):
+		self.interface.OnBuffiHide(hidden)
+
 	def RefreshSearchShop(self):
 		self.interface.RefreshSearchShop()
 

@@ -15,7 +15,7 @@
 		},
 		"item_list": {
 			"path": "assets/locale/locale/common/item_list.txt",
-			"sha256": "988afcc6cce63b4113596d8a6828d83807229d867437c39af579d23c29a4b65b"
+			"sha256": "620706a7a2eb747e9362d92f1c587cbed880ab56fc0e2a482abdadd17afadb65"
 		},
 		"itemdesc": {
 			"path": "assets/locale/locale/en/itemdesc.txt",
@@ -27,7 +27,7 @@
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "a406e2af65af42aaf46d560987f282bce38df5d562bd5c3dc26a165889a0a641"
+			"sha256": "6412e3a34672d56869249705dbc5cbb46b019181d1f0875d37ef181637d4dbf0"
 		}
 	},
 	"items": {
@@ -9725,9 +9725,9 @@
 		},
 		"55006": {
 			"name": "Pet Revertus",
-			"type": 39,
+			"type": 0,
 			"type_name": "PET_ADVANCED",
-			"subtype": 4,
+			"subtype": 0,
 			"subtype_name": "SKILL_REVERT",
 			"size": [
 				1,
@@ -9761,7 +9761,7 @@
 				"sell": 10000
 			},
 			"refine": 0,
-			"icon": "icon/item/55006-new.tga",
+			"icon": "icon/item/55006.tga",
 			"desc": "Open the Pet window and drag the token to the skill you want to remove. Note: All books used will be lost for nothing!",
 			"summary": "",
 			"why": [
@@ -9771,9 +9771,9 @@
 		},
 		"55007": {
 			"name": "Pet PvP Destiny Orb",
-			"type": 39,
+			"type": 0,
 			"type_name": "PET_ADVANCED",
-			"subtype": 7,
+			"subtype": 0,
 			"subtype_name": "DESTINY_ORB",
 			"size": [
 				1,
@@ -9817,9 +9817,9 @@
 		},
 		"55008": {
 			"name": "Pet Name Changer",
-			"type": 39,
+			"type": 0,
 			"type_name": "PET_ADVANCED",
-			"subtype": 6,
+			"subtype": 0,
 			"subtype_name": "CHANGE_NAME",
 			"size": [
 				1,
@@ -9863,9 +9863,9 @@
 		},
 		"55010": {
 			"name": "Monsters Book",
-			"type": 39,
+			"type": 0,
 			"type_name": "PET_ADVANCED",
-			"subtype": 2,
+			"subtype": 0,
 			"subtype_name": "SKILL_BOOK",
 			"size": [
 				1,
@@ -9899,7 +9899,7 @@
 				"sell": 10000
 			},
 			"refine": 0,
-			"icon": "icon/item/55012.tga",
+			"icon": "icon/item/55010.tga",
 			"desc": "After learning this skill your pet increases your damage against monsters.",
 			"summary": "",
 			"why": [
@@ -9909,9 +9909,9 @@
 		},
 		"55025": {
 			"name": "Berserker Book (H)",
-			"type": 39,
+			"type": 0,
 			"type_name": "PET_ADVANCED",
-			"subtype": 3,
+			"subtype": 0,
 			"subtype_name": "HEROIC_SKILL_BOOK",
 			"size": [
 				1,
@@ -9945,7 +9945,7 @@
 				"sell": 1000
 			},
 			"refine": 0,
-			"icon": "icon/item/55011.tga",
+			"icon": "icon/item/55025.tga",
 			"desc": "After learning this skill your pet increases your magic-/ melee damage",
 			"summary": "",
 			"why": [
@@ -10002,7 +10002,7 @@
 		},
 		"55401": {
 			"name": "Monkey Egg",
-			"type": 39,
+			"type": 0,
 			"type_name": "PET_ADVANCED",
 			"subtype": 0,
 			"subtype_name": "EGG",
@@ -10049,9 +10049,9 @@
 		},
 		"55700": {
 			"name": "Mini Monkey",
-			"type": 39,
+			"type": 0,
 			"type_name": "PET_ADVANCED",
-			"subtype": 1,
+			"subtype": 0,
 			"subtype_name": "SUMMON",
 			"size": [
 				1,
@@ -10085,7 +10085,7 @@
 				"sell": 1000
 			},
 			"refine": 0,
-			"icon": "icon/item/55701.tga",
+			"icon": "icon/item/55700.tga",
 			"desc": "Fixed Bonuses: Max HP, Critical Chance, Chance to block phyiscal attack",
 			"summary": "",
 			"why": [
@@ -13565,6 +13565,52 @@
 			"why": [
 				"hair range 174013-174021"
 			]
+		},
+		"91010": {
+			"name": "Dragon Buffi (Permanent)",
+			"type": 3,
+			"type_name": "USE",
+			"subtype": 10,
+			"subtype_name": "10",
+			"size": [
+				1,
+				1
+			],
+			"antiflags": 0,
+			"flags": 0,
+			"wear": 0,
+			"limits": [
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"applies": [],
+			"values": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"sockets": 0,
+			"price": {
+				"buy": 0,
+				"sell": 0
+			},
+			"refine": 0,
+			"synthetic": true,
+			"why": [
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
+			"desc": "",
+			"summary": ""
 		},
 		"110500": {
 			"name": "Dragon Stone of the Sixth Step",
@@ -20907,6 +20953,28 @@
 			"id": "bag-90007",
 			"context": "SetInventoryItem",
 			"vnum": 90007,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "vnum-91010",
+			"context": "SetItemToolTip",
+			"vnum": 91010
+		},
+		{
+			"id": "bag-91010",
+			"context": "SetInventoryItem",
+			"vnum": 91010,
 			"sockets": [
 				0,
 				0,
@@ -40358,6 +40426,23 @@
 			"clock": 1700000000
 		},
 		{
+			"id": "synthetic-time-91010",
+			"context": "SetInventoryItem",
+			"vnum": 91010,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
 			"id": "synthetic-time-110500",
 			"context": "SetInventoryItem",
 			"vnum": 110500,
@@ -41748,33 +41833,37 @@
 			"clock": 1700000000
 		},
 		{
-			"id": "pet-egg-waiting",
+			"id": "buffi-int",
 			"context": "SetInventoryItem",
-			"vnum": 55401,
+			"vnum": 91010,
 			"sockets": [
-				1700604800,
-				1700007200,
 				0,
-				0
-			],
-			"attrs": [],
-			"player": {
-				"level": 120,
-				"race": 0
-			},
-			"clock": 1700000000
-		},
-		{
-			"id": "pet-egg-ready",
-			"context": "SetInventoryItem",
-			"vnum": 55401,
-			"sockets": [
-				1700604800,
 				0,
 				0,
 				0
 			],
-			"attrs": [],
+			"attrs": [
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					140
+				]
+			],
 			"player": {
 				"level": 120,
 				"race": 0

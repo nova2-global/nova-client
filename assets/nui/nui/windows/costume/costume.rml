@@ -10,8 +10,9 @@
 	     costume and the aura costume (NOVA-20, 21, 23). Its cells are placed
 	     by name (cos-wear--<name>) in each skin's sheet; an empty sash,
 	     weapon, sash costume or aura cell shows its place's mark (w.marks).
-	     The companion block and its divider show only while the table has
-	     one (has_companion; the cut hides it). The modern skin stands a
+	     The companion block, its divider and its title show only while the
+	     table has one (has_companion: the buffi's costume body, hair and
+	     weapon costume, NOVA-38, legacy's buffi panel; the cut hides it). The modern skin stands a
 	     figure between the slots on a small rune circle: an image whose path
 	     the controller passes, the male or the female one by the
 	     character's race. Under the slots, legacy's five switches (NOVA-22),
@@ -66,6 +67,7 @@
 					class="nui-glyph__b"></span></span></span>
 			</div>
 			<div class="cos-divider" data-if="has_companion"></div>
+			<span class="cos-companion-title" data-if="has_companion">@ui.COSTUME_WINDOW_BUFFICOSTUME</span>
 			<div class="cos-wear-place" data-for="w : slots" data-attr-class="'cos-wear-place cos-wear--' + w.name">
 				<div class="nui-slot nui-anim cos-wear" data-attr-id="'cos-wear-' + w.name"
 				     data-class-is-empty="w.kind == ''" data-class-is-target="w.target == 'move'"

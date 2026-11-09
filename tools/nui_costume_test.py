@@ -39,7 +39,10 @@ import hide_costume_test  # noqa: E402
 I = inv.I
 COSTUME_START = I["COSTUME_SLOT_START"]
 CELLS = {"costume_body": COSTUME_START, "costume_hair": COSTUME_START + 1, "costume_sash": COSTUME_START + 2,
-         "costume_weapon": COSTUME_START + 3, "costume_sash2": COSTUME_START + 8, "costume_aura": COSTUME_START + 20}
+         "costume_weapon": COSTUME_START + 3, "costume_sash2": COSTUME_START + 8, "costume_aura": COSTUME_START + 20,
+         # The buffi's costume body, hair and weapon costume (wear 31-33, NOVA-38).
+         "buffi_costume_body": COSTUME_START + 12, "buffi_costume_hair": COSTUME_START + 13,
+         "buffi_costume_weapon": COSTUME_START + 14}
 WAVE6_CELLS = ("costume_sash", "costume_weapon", "costume_sash2", "costume_aura")
 # The switches: (board part, legacy list, model key, player getter, command).
 SWITCHES = (("body", "costumeButtonList", "show_body", "IsShowCostumes", "set_is_show_costumes"),
@@ -157,7 +160,7 @@ class Grouping(unittest.TestCase):
         self.assertEqual(sorted(b.wndEquip.slot_numbers), sorted(a.wndEquip.slots))
         self.assertEqual([cell["name"] for cell in model(b)["slots"]],
                          ["costume_body", "costume_hair", "costume_sash", "costume_weapon", "costume_sash2",
-                          "costume_aura"])
+                          "buffi_costume_body", "buffi_costume_hair", "buffi_costume_weapon", "costume_aura"])
 
 
 class LoaderBindsAsLegacy(Both):
@@ -376,6 +379,10 @@ class Cells(Both):
         player = novaui.game.modules["player"]
         with novaui.game:
             for name, cell in cells.items():
+                # The buffi's cells stay empty here (nui_buffi_test fills them).
+                if name.startswith("buffi_"):
+                    self.assertFalse(cell["kind"], name)
+                    continue
                 self.assertEqual(cell["ref"], CELLS[name], name)
                 self.assertEqual(cell["marks"], [], name)
                 self.assertTrue(cell["icon"], name)
@@ -387,7 +394,8 @@ class Cells(Both):
         marks = dict((cell["name"], cell["marks"]) for cell in model(b)["slots"])
         self.assertEqual(marks, {"costume_body": [], "costume_hair": [], "costume_sash": ["pentagon"],
                                  "costume_weapon": ["sword"], "costume_sash2": ["chevron-down"],
-                                 "costume_aura": ["ring"]})
+                                 "costume_aura": ["ring"], "buffi_costume_body": [], "buffi_costume_hair": [],
+                                 "buffi_costume_weapon": []})
 
     def test_a_drop_on_each_wave6_cell_is_the_inventory_s_legacy_move(self):
         bag = {"costume_sash": BAG_SASH, "costume_weapon": BAG_WEAPON, "costume_aura": BAG_AURA,

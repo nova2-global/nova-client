@@ -10,7 +10,9 @@ equipping, unequipping and every drag is the inventory's legacy code. The
 group is the legacy uiscript's cells (uiscript/costumewindow.py
 CostumeSlot): the costume body and hair, and in the foundation's table the
 costume sash (NOVA-20), the weapon costume (NOVA-21), the sash costume
-(OLD's COSTUME_SASH2 wings) and the aura costume (NOVA-23). An empty sash,
+(OLD's COSTUME_SASH2 wings), the aura costume (NOVA-23) and the buffi's
+costume body, hair and weapon costume (NOVA-38: has_companion, the sheet's
+companion block, legacy's buffi panel). An empty sash,
 weapon, sash costume or aura cell carries its place's mark (COSTUME_MARKS),
 as the inventory's wear cells do. Legacy refreshes COSTUME_SLOT_COUNT cells
 from the costume body and the aura cell (uiinventory.py RefreshCostumeSlot);

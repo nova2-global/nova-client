@@ -46,7 +46,10 @@ class WearSlot(tuple):
 # the sash costume (wear 27, OLD's COSTUME_SASH2 wings) and the aura costume
 # (wear 39, NOVA-23). The slots of the features the cut did not port (OLD's
 # mount, effects, pet, companion and facial cells) are hidden, as legacy's
-# windows hide them; P14 grouped OLD's as OLD's own windows showed them.
+# windows hide them; P14 grouped OLD's as OLD's own windows showed them. The
+# buffi's costume body, hair and weapon costume (wear 31-33, NOVA-38) are in
+# the costume group, as legacy's costume window shows them in its buffi panel;
+# its wings and facial (34, 35) take unported costumes and stay hidden.
 _ABILITIES = tuple(("ability%d" % n, "hidden", 1, 1) for n in range(1, 9))
 NEW_WEAR = (
 	("body", "equipment", 1, 2), ("head", "equipment", 1, 1), ("foots", "equipment", 1, 1),
@@ -68,8 +71,8 @@ OLD_WEAR = (
 	("costume_mount", "hidden", 1, 1), ("effect_weapon", "hidden", 1, 1),
 	("effect_armor", "hidden", 1, 1), ("costume_pet", "hidden", 1, 1),
 	("costume_sash2", "costume", 1, 1), ("ring1", "equipment", 1, 1), ("ring2", "equipment", 1, 1),
-	("belt", "equipment", 1, 1), ("buffi_costume_body", "hidden", 1, 2),
-	("buffi_costume_hair", "hidden", 1, 1), ("buffi_costume_weapon", "hidden", 1, 3),
+	("belt", "equipment", 1, 1), ("buffi_costume_body", "costume", 1, 2),
+	("buffi_costume_hair", "costume", 1, 1), ("buffi_costume_weapon", "costume", 1, 3),
 	("buffi_costume_sash2", "hidden", 1, 1), ("buffi_costume_facial", "hidden", 1, 1),
 	("costume_facial", "hidden", 1, 1), ("effect_weapon_1", "hidden", 1, 1),
 	("effect_armor_1", "hidden", 1, 1), ("costume_aura", "costume", 1, 1),

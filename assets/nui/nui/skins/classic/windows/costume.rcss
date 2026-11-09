@@ -206,3 +206,48 @@ body.skin-classic.cos .cos-wing__row .nui-toggle__label
 	line-height: 14dp;
 	white-space: nowrap;
 }
+
+/* --- The buffi's panel (NOVA-38) ------------------------------------------------
+
+   Legacy's buffi panel (uiscript costumewindow.py: BUFFI_PANEL_X 216, 96
+   wide): the board grows by 96 to 312, the title bar with it; the title
+   text centered at 256, 33; the slot window (3, 3 on the base) grown by 96,
+   the buffi's weapon costume (32 x 96), hair and body (32 x 64) at their
+   uiscript places, each on Slot_Base.sub (the uiscript's BuffiWeapon_Base,
+   BuffiHair_Base and BuffiBody_Base), on Wave 6's 216 x 236 board. */
+body.skin-classic.cos.cos--companion
+{
+	width: 312dp;
+}
+body.skin-classic.cos.cos--companion .cos__titlebar
+{
+	width: 302dp;
+}
+body.skin-classic.cos.cos--companion .cos__titlebar .nui-window__close
+{
+	left: 284dp;
+}
+body.skin-classic.cos.cos--companion .cos-companion-title
+{
+	display: block;
+	position: absolute;
+	left: 195dp;
+	top: -5dp;
+	width: 96dp;
+	text-align: center;
+	pointer-events: none;
+}
+body.skin-classic.cos .cos-wear--buffi_costume_body { height: 64dp; }
+body.skin-classic.cos .cos-wear--buffi_costume_weapon { height: 96dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_weapon { left: 206dp; top: 43dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_hair { left: 245dp; top: 27dp; }
+body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_body { left: 247dp; top: 71dp; }
+body.skin-classic.cos .cos-wear--buffi_costume_weapon,
+body.skin-classic.cos .cos-wear--buffi_costume_hair,
+body.skin-classic.cos .cos-wear--buffi_costume_body
+{
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" repeat-y left top);
+}
+/* No dead zone between the weapon costume and the hair, 7dp apart (P14b). */
+body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_weapon > .cos-wear { nui-hit-outset: 0 3.5dp 0 0; }
+body.skin-classic.cos.inv--table-old .cos-wear--buffi_costume_hair > .cos-wear { nui-hit-outset: 0 0 0 3.5dp; }

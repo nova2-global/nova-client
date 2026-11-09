@@ -234,6 +234,11 @@ def GET_BELT_MATERIAL_VNUM(vnum, subType = 0):
 def IS_AUTO_POTION(itemVnum):
 	return IS_AUTO_POTION_HP(itemVnum) or IS_AUTO_POTION_SP(itemVnum)
 	
+# A buffi item (NOVA-38; OLD constInfo.py:614-615): the dragon, healer and
+# fused buffi, permanent or timed (91010-91027).
+def IS_FAKEBUFF_ITEM(itemVnum):
+	return 91010 <= itemVnum <= 91027
+
 # Check if vnum is an HP auto-potion
 def IS_AUTO_POTION_HP(itemVnum):
 	if 72723 <= itemVnum and 72726 >= itemVnum:

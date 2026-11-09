@@ -22,7 +22,9 @@ WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # The items group: the Wave 3b windows, wave 4b's extra inventory and Wave 6's
 # sash and aura windows (NOVA-20, NOVA-23).
 WAVE6_ITEMS = ["sash", "aura"]
-ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS
+# Wave 7 (NOVA-24): the advanced pet's windows.
+WAVE7_PET = ["pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"]
+ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + WAVE7_PET
 # Documents a later stage writes, listed for the prewarm already: the test
 # below fails while a document named here exists, or one not named here is
 # missing. TOOLTIPS AND DIALOGS (P14 spec 9.1, 9.4) wrote the last Wave 3b ones.

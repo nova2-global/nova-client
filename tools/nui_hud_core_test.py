@@ -1241,6 +1241,10 @@ EXPECTED_SITES = {
                             "nui_shop_deco.MyShopDecorationWindow"),
                            # Wave 7 (NOVA-43): the switchbot.
                            ("make", "switchbot", "uiSwitchbot.SwitchbotWindow", "nui_switchbot.SwitchbotWindow"),
+                           # Wave 7 (NOVA-29): the kill ranking and the guild war top killers.
+                           ("make", "kill-rank", "uiKillRank.KillRankWindow", "nui_kill_rank.KillRankWindow"),
+                           ("make", "guild-war-top", "uiGuild.TopWarPlayersDialog",
+                            "nui_guild_war_top.TopWarPlayersDialog"),
                            ("make", "exchange", "uiExchange.ExchangeDialog", "nui_exchange.ExchangeDialog"),
                            ("make", "point-reset", "uiPointReset.PointResetDialog", "nui_point_reset.PointResetDialog"),
                            ("make", "shop", "uiShop.ShopDialog", "nui_shop.ShopDialog"),
@@ -1289,6 +1293,9 @@ EXPECTED_SITES = {
                 ("make", "aura", "uiAura.AuraWindow", "nui_aura.AuraWindow"),
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
+    # Wave 7 (NOVA-28): the duel rules, made by the target board's Fight.
+    "uitarget.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    "nui_target.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],
     # Wave 3b (P14 spec 6.7): the inventory's dialogs, in the legacy class
     # and in the NovaUI loader that stands for its uiscript loader.

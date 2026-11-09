@@ -53,7 +53,7 @@ import nui_limits
 
 # The windows that watch the distance under their KEY (LEAVE_RANGE): the
 # exchange, the shop, the safebox, the mall and the gaya market.
-LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop", "aura", "sash-combine", "sash-absorb")
+LEAVE_RANGE_KEYS = ("exchange", "shop", "safebox", "mall", "gem-shop", "aura", "sash-combine", "sash-absorb", "kill-rank")
 
 
 def below_as_float(value):

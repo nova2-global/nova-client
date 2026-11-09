@@ -1,0 +1,91 @@
+/* Classic skin overlay of nui/windows/guild-war-top/guild-war-top.rml: legacy's
+   top killers board (uiscript guildtopwarplayers.py, uiguild.py
+   TopWarPlayersDialog) at 100%, 1dp to the legacy pixel: the board, 720 x
+   340; the title bar at 8, 7, 705 wide, the title centered; each side from x
+   20 (the player's guild) and 370 (the enemy's): its name at y 36, its MVP at
+   54, the header at 78 and ten rows 22 apart from 98, the columns at 0, 130,
+   175, 225 and 290 (uiguild.TOP_WAR_COLUMNS). Text only, as legacy's: no
+   portrait and no side edges. */
+
+body.skin-classic.guild-war-top
+{
+	width: 720dp;
+	height: 340dp;
+	min-width: 0;
+}
+body.skin-classic.guild-war-top .guild-war-top__title-icon,
+body.skin-classic.guild-war-top .guild-war-top__face
+{
+	display: none;
+}
+body.skin-classic.guild-war-top .guild-war-top__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 705dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.guild-war-top .guild-war-top__handle
+{
+	pointer-events: auto;
+}
+body.skin-classic.guild-war-top .guild-war-top__body
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 720dp;
+	height: 340dp;
+	padding: 0;
+}
+body.skin-classic.guild-war-top .guild-war-top__side
+{
+	position: absolute;
+	top: 36dp;
+	width: 340dp;
+	min-height: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.guild-war-top .guild-war-top__side--ally { left: 20dp; }
+body.skin-classic.guild-war-top .guild-war-top__side--enemy { left: 370dp; }
+body.skin-classic.guild-war-top .guild-war-top__name
+{
+	height: 18dp;
+	font-weight: normal;
+}
+body.skin-classic.guild-war-top .guild-war-top__mvp
+{
+	height: 24dp;
+	margin: 0;
+	color: var(--text);
+}
+body.skin-classic.guild-war-top .guild-war-top__head, body.skin-classic.guild-war-top .guild-war-top__row
+{
+	display: block;
+	position: relative;
+	height: 22dp;
+	border-width: 0;
+	color: var(--text);
+}
+body.skin-classic.guild-war-top .guild-war-top__head
+{
+	height: 20dp;
+}
+body.skin-classic.guild-war-top .guild-war-top__cell
+{
+	position: absolute;
+	top: 0;
+	flex: none;
+}
+body.skin-classic.guild-war-top .guild-war-top__cell--name { left: 0dp; width: 128dp; text-align: left; }
+body.skin-classic.guild-war-top .guild-war-top__cell--kills { left: 130dp; width: 43dp; text-align: left; }
+body.skin-classic.guild-war-top .guild-war-top__cell--deaths { left: 175dp; width: 48dp; text-align: left; }
+body.skin-classic.guild-war-top .guild-war-top__cell--damage { left: 225dp; width: 63dp; text-align: left; }
+body.skin-classic.guild-war-top .guild-war-top__cell--ping { left: 290dp; width: 50dp; text-align: left; }

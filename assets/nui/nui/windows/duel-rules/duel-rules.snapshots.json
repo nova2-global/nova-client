@@ -1,0 +1,129 @@
+{
+	"$comment": "Golden cases of the duel rules (NOVA-28; tools/check_nui_snapshots.py): three of the nine rules ticked (No Mount, No Potions, No Poison); none: a first open. Under the target board at legacy's place in game; the sheet's place frames it here, with room for the modern shadow. Classic draws legacy's 355 x 180 board with the check boxes at OLD's places.",
+	"cases": [
+		{
+			"page": "duel-rules",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"560x440"
+				],
+				[
+					"150",
+					"1.5",
+					"840x660"
+				],
+				[
+					"200",
+					"2",
+					"1120x880"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "duel-rules",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"375x200"
+				],
+				[
+					"150",
+					"1.5",
+					"563x300"
+				],
+				[
+					"200",
+					"2",
+					"750x400"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		},
+		{
+			"page": "duel-rules",
+			"variant": "none",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"560x440"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "duel-rules",
+			"variant": "none",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"375x200"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		},
+		{
+			"page": "duel-rules",
+			"name": "reduced-motion",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"560x440"
+				]
+			],
+			"fixture": true,
+			"time": null,
+			"reduced_motion": true
+		},
+		{
+			"page": "duel-rules",
+			"name": "no-effects",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"560x440"
+				]
+			],
+			"fixture": true,
+			"time": null,
+			"effects": "off"
+		}
+	]
+}

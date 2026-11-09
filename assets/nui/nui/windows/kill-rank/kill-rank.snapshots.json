@@ -1,0 +1,129 @@
+{
+	"$comment": "Golden cases of the kill ranking (NOVA-29; tools/check_nui_snapshots.py): the monster ranking's ten places and the player's own row (42nd); empty: the dungeon ranking before NOVA-25 counts anything, only the player's row with a dash. Centered at its first show; the sheet's place frames it here, with room for the modern shadow. Classic draws legacy's 390 x 380 board.",
+	"cases": [
+		{
+			"page": "kill-rank",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"640x600"
+				],
+				[
+					"150",
+					"1.5",
+					"960x900"
+				],
+				[
+					"200",
+					"2",
+					"1280x1200"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "kill-rank",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"410x400"
+				],
+				[
+					"150",
+					"1.5",
+					"615x600"
+				],
+				[
+					"200",
+					"2",
+					"820x800"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		},
+		{
+			"page": "kill-rank",
+			"variant": "empty",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"640x600"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "kill-rank",
+			"variant": "empty",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"410x400"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		},
+		{
+			"page": "kill-rank",
+			"name": "reduced-motion",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"640x600"
+				]
+			],
+			"fixture": true,
+			"time": null,
+			"reduced_motion": true
+		},
+		{
+			"page": "kill-rank",
+			"name": "no-effects",
+			"themes": [
+				"dark"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"640x600"
+				]
+			],
+			"fixture": true,
+			"time": null,
+			"effects": "off"
+		}
+	]
+}

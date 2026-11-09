@@ -1,0 +1,43 @@
+<rml>
+<head>
+	<!-- The duel rules (NOVA-28; legacy uiduel.py DuelRulesDialog, uiscript
+	     duelrulesdialog.py, OLD uiTarget.py AdvancedDuel). The target board's
+	     Fight button opens it; while the duel-rules flag is on, that is
+	     nui_duel_rules.DuelRulesDialog (controller assets/root/nui_duel_rules.py),
+	     a subclass of the legacy class on proxies: the rules, the ticked ones
+	     kept between opens and "/pvp <vid> <rules>" are legacy's code. Each
+	     row is a rule's check box (a press flips it); Fight sends the
+	     challenge, Cancel and X close it. A left or right press anywhere on it
+	     raises the window (board_press). -->
+	<title>duel-rules</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="duel-rules.rcss"/>
+</head>
+<body template="nui" id="duel-rules" class="nui-window nui-fx nui-anim duel-rules" data-model="duel_rules"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar duel-rules__titlebar">
+		<handle class="nui-window__handle duel-rules__handle" move_target="#document">
+			<span class="duel-rules__title-icon"><span class="nui-glyph nui-glyph--sword"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title duel-rules__title">@ui.DUEL_RULES_TITLE</span>
+		</handle>
+		<button id="duel-rules-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim duel-rules__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body duel-rules__body">
+		<div class="duel-rules__rules">
+			<button class="duel-rules__rule nui-anim" data-for="r : rules" data-attr-id="'duel-rules-rule-' + it_index"
+			        data-class-is-checked="r.checked"
+			        data-event-mousedown="rule_press(it_index, ev.button)"><span class="duel-rules__check"><span
+				class="duel-rules__check-mark"></span></span><span class="duel-rules__label">{{ r.label }}</span></button>
+		</div>
+	</div>
+	<div class="nui-window__footer duel-rules__footer">
+		<button id="duel-rules-cancel" class="nui-button nui-button--medium nui-anim duel-rules__button duel-rules__button--cancel"
+		        data-event-mousedown="button_press('cancel', ev.button)"><span class="duel-rules__button-label">@ui.CANCEL</span></button>
+		<button id="duel-rules-accept" class="nui-button nui-button--medium nui-button--primary nui-anim duel-rules__button duel-rules__button--accept"
+		        data-event-mousedown="button_press('accept', ev.button)"><span class="duel-rules__button-label">@ui.DUEL_RULES_ACCEPT</span></button>
+	</div>
+</body>
+</rml>

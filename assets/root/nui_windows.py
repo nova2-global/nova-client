@@ -128,6 +128,12 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("pet-hatch", True),          # hatching an egg, the pet's name
 	("pet-evolution", True),      # evolving a pet
 	("pet-attr-refine", True),    # refining a pet's attributes
+	# Wave 7 (NOVA-28, NOVA-29): the duel rules (hud, with the target), the
+	# guild war top killers (hud2, with the war boards), the kill ranking
+	# (social).
+	("duel-rules", True),         # the duel rules a challenger ticks
+	("guild-war-top", True),      # the guild war top killers (TAB held)
+	("kill-rank", True),          # the kill ranking
 	# P18 (NOVA-58): the maintenance countdown, in the hud group.
 	("maintenance", True),        # the countdown to a scheduled server shutdown
 )
@@ -135,15 +141,15 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"wave1": ("dialogs", "server-board", "virtual-keyboard", "locale-strip", "loading", "empire", "select", "create"),
 	"hud": ("taskbar", "expanded-taskbar", "energy-bar", "gift-box", "game-buttons", "affects", "target", "party",
-	        "edge-buttons", "tip-board", "big-board", "map-name", "maintenance"),
-	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"),
+	        "edge-buttons", "tip-board", "big-board", "map-name", "maintenance", "duel-rules"),
+	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war", "guild-war-top"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
 	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop", "switchbot", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
-	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark"),
+	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank"),
 }
 # "all": every window, so "-all" makes a legacy client (the live kit's legacy
 # runs), and "-all,+id" one with a single NovaUI window.
@@ -224,6 +230,11 @@ ON_DEMAND_DOCUMENTS = (
 	("pet-hatch", ("pet-hatch",)),
 	("pet-evolution", ("pet-evolution",)),
 	("pet-attr-refine", ("pet-attr-refine",)),
+	# Wave 7: the duel rules, the top killers and the kill ranking, each only
+	# while it shows.
+	("duel-rules", ("duel-rules",)),
+	("guild-war-top", ("guild-war-top",)),
+	("kill-rank", ("kill-rank",)),
 	# P18: the maintenance countdown, only while it shows.
 	("maintenance", ("maintenance",)),
 )

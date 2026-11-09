@@ -1,0 +1,130 @@
+/* The duel rules' modern look (NOVA-28): a sword on the accent's tile before
+   the title; the nine rules as check rows in two columns, a ticked one in
+   the accent; Cancel and Fight (the primary) in the footer. At legacy's
+   place under the target board (the facade's PLACE). Classic (legacy's 355
+   x 180 board, the check boxes at OLD's places):
+   skins/classic/windows/duel-rules.rcss. */
+
+body.duel-rules
+{
+	left: 16dp;
+	top: 16dp;
+	width: 400dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.duel-rules button
+{
+	tab-index: none;
+	focus: none;
+}
+.duel-rules__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.duel-rules__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.duel-rules__body
+{
+	padding: 10dp 12dp 6dp;
+}
+.duel-rules__rules
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 6dp;
+}
+.duel-rules__rule
+{
+	display: flex;
+	flex: 0 0 182dp;
+	box-sizing: border-box;
+	height: 30dp;
+	padding: 0 8dp;
+	align-items: center;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 7dp;
+	background-color: var(--surface-sunken);
+	color: var(--text);
+	font-size: var(--font-sm);
+	text-align: left;
+}
+.duel-rules__rule:hover
+{
+	background-color: var(--surface-hover);
+}
+.duel-rules__rule.is-checked
+{
+	border-color: var(--accent-glow);
+	background-color: var(--selection);
+	color: var(--accent);
+}
+.duel-rules__check
+{
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	flex: 0 0 16dp;
+	width: 16dp;
+	height: 16dp;
+	margin-right: 8dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+	background-color: var(--surface-raised);
+	pointer-events: none;
+}
+.duel-rules__check-mark
+{
+	display: none;
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+	width: 7dp;
+	height: 3dp;
+	border-width: 0 0 2dp 2dp;
+	border-color: var(--accent);
+	transform: rotate(-45deg);
+	pointer-events: none;
+}
+.duel-rules__rule.is-checked .duel-rules__check-mark
+{
+	display: block;
+}
+.duel-rules__label
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.duel-rules__footer
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	gap: 8dp;
+}
+.duel-rules__button-label
+{
+	pointer-events: none;
+}

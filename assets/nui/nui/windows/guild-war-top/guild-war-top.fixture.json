@@ -1,0 +1,80 @@
+{
+	"guild_war_top": {
+		"left": {
+			"name": "Lions (12)",
+			"mvp": "MVP: Alex",
+			"rows": [
+				{
+					"name": "Alex",
+					"kills": "15",
+					"deaths": "0",
+					"damage": "1.23M",
+					"ping": "40",
+					"portrait": "/icon/face/warrior_m.tga"
+				},
+				{
+					"name": "Sara",
+					"kills": "12",
+					"deaths": "1",
+					"damage": "980K",
+					"ping": "47",
+					"portrait": "/icon/face/assassin_w.tga"
+				},
+				{
+					"name": "Kai",
+					"kills": "9",
+					"deaths": "2",
+					"damage": "751K",
+					"ping": "54",
+					"portrait": "/icon/face/sura_m.tga"
+				},
+				{
+					"name": "Myth",
+					"kills": "6",
+					"deaths": "3",
+					"damage": "402K",
+					"ping": "61",
+					"portrait": "/icon/face/shaman_w.tga"
+				},
+				{
+					"name": "Xian",
+					"kills": "3",
+					"deaths": "4",
+					"damage": "88K",
+					"ping": "68",
+					"portrait": "/icon/face/warrior_m.tga"
+				}
+			]
+		},
+		"right": {
+			"name": "Wolves (9)",
+			"mvp": "MVP: Enturion",
+			"rows": [
+				{
+					"name": "Enturion",
+					"kills": "11",
+					"deaths": "0",
+					"damage": "1.23M",
+					"ping": "40",
+					"portrait": "/icon/face/warrior_m.tga"
+				},
+				{
+					"name": "Jardakent",
+					"kills": "8",
+					"deaths": "1",
+					"damage": "980K",
+					"ping": "47",
+					"portrait": "/icon/face/assassin_w.tga"
+				},
+				{
+					"name": "Skepta",
+					"kills": "5",
+					"deaths": "2",
+					"damage": "751K",
+					"ping": "54",
+					"portrait": "/icon/face/sura_m.tga"
+				}
+			]
+		}
+	}
+}

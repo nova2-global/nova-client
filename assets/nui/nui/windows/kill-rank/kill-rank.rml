@@ -1,0 +1,68 @@
+<rml>
+<head>
+	<!-- The kill ranking (NOVA-29; legacy uikillrank.py KillRankWindow, uiscript
+	     killrankwindow.py, OLD uiKillRank.py). The system menu's Ranking button
+	     opens it (the temporary entry); while the kill-rank flag is on, that is
+	     nui_kill_rank.KillRankWindow (controller assets/root/nui_kill_rank.py),
+	     a subclass of the legacy class on proxies: the requests, the answer, the
+	     tabs and the rows are legacy's code. A tab asks for its ranking; the
+	     first ten places show, then the player's own row (a dash without a
+	     place). The window closes when the player walks away (a leave-range
+	     watch). A left or right press anywhere on it raises the window. -->
+	<title>kill-rank</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="kill-rank.rcss"/>
+</head>
+<body template="nui" id="kill-rank" class="nui-window nui-fx nui-anim kill-rank" data-model="kill_rank"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar kill-rank__titlebar">
+		<handle class="nui-window__handle kill-rank__handle" move_target="#document">
+			<span class="kill-rank__title-icon"><span class="nui-glyph nui-glyph--ranking"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+			<span class="nui-window__title kill-rank__title">{{ title }}</span>
+		</handle>
+		<button id="kill-rank-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim kill-rank__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body kill-rank__body">
+		<div class="kill-rank__tabs">
+			<button id="kill-rank-tab-0" class="nui-button nui-anim kill-rank__tab kill-rank__tab--0" data-class-is-selected="tab == 0"
+			        data-event-mousedown="tab_press(0, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB0</span></button>
+			<button id="kill-rank-tab-1" class="nui-button nui-anim kill-rank__tab kill-rank__tab--1" data-class-is-selected="tab == 1"
+			        data-event-mousedown="tab_press(1, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB1</span></button>
+			<button id="kill-rank-tab-2" class="nui-button nui-anim kill-rank__tab kill-rank__tab--2" data-class-is-selected="tab == 2"
+			        data-event-mousedown="tab_press(2, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB2</span></button>
+			<button id="kill-rank-tab-3" class="nui-button nui-anim kill-rank__tab kill-rank__tab--3" data-class-is-selected="tab == 3"
+			        data-event-mousedown="tab_press(3, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB3</span></button>
+			<button id="kill-rank-tab-4" class="nui-button nui-anim kill-rank__tab kill-rank__tab--4" data-class-is-selected="tab == 4"
+			        data-event-mousedown="tab_press(4, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB4</span></button>
+			<button id="kill-rank-tab-5" class="nui-button nui-anim kill-rank__tab kill-rank__tab--5" data-class-is-selected="tab == 5"
+			        data-event-mousedown="tab_press(5, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB5</span></button>
+			<button id="kill-rank-tab-6" class="nui-button nui-anim kill-rank__tab kill-rank__tab--6" data-class-is-selected="tab == 6"
+			        data-event-mousedown="tab_press(6, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB6</span></button>
+			<button id="kill-rank-tab-7" class="nui-button nui-anim kill-rank__tab kill-rank__tab--7" data-class-is-selected="tab == 7"
+			        data-event-mousedown="tab_press(7, ev.button)"><span class="kill-rank__tab-label">@ui.KILL_RANK_TAB7</span></button>
+		</div>
+		<div class="kill-rank__table">
+			<div class="kill-rank__head"><span class="kill-rank__cell kill-rank__cell--rank">@ui.KILL_RANK_COLUMN_RANK</span><span
+				class="kill-rank__cell kill-rank__cell--name">@ui.KILL_RANK_COLUMN_NAME</span><span
+				class="kill-rank__cell kill-rank__cell--guild">@ui.KILL_RANK_COLUMN_GUILD</span><span
+				class="kill-rank__cell kill-rank__cell--count">@ui.KILL_RANK_COLUMN_COUNT</span></div>
+			<div class="kill-rank__rows">
+				<div class="kill-rank__row" data-for="r : rows" data-class-kill-rank__row--first="r.place == 1"
+				     data-class-kill-rank__row--second="r.place == 2" data-class-kill-rank__row--third="r.place == 3"><span
+					class="kill-rank__cell kill-rank__cell--rank">{{ r.rank }}</span><span
+					class="kill-rank__cell kill-rank__cell--name">{{ r.name }}</span><span
+					class="kill-rank__cell kill-rank__cell--guild">{{ r.guild }}</span><span
+					class="kill-rank__cell kill-rank__cell--count">{{ r.count }}</span></div>
+			</div>
+			<div class="kill-rank__row kill-rank__row--own" data-if="own.name != ''"><span
+				class="kill-rank__cell kill-rank__cell--rank">{{ own.rank }}</span><span
+				class="kill-rank__cell kill-rank__cell--name">{{ own.name }}</span><span
+				class="kill-rank__cell kill-rank__cell--guild">{{ own.guild }}</span><span
+				class="kill-rank__cell kill-rank__cell--count">{{ own.count }}</span></div>
+		</div>
+	</div>
+</body>
+</rml>

@@ -10,6 +10,7 @@ import nonplayer
 import localeInfo
 import constInfo
 import uiCommon
+import nui_windows
 
 class TargetBoard(ui.ThinBoard):
 
@@ -35,6 +36,10 @@ class TargetBoard(ui.ThinBoard):
 	# The block list (NOVA-47): one of the two shows for another player.
 	BTN_BLOCK = 18
 	BTN_UNBLOCK = 19
+	# The duel rules (NOVA-28, OLD uiTarget.py:737-738): refuse a challenge,
+	# pardon a revenge ("/cancel_pvp").
+	BTN_DENY_FIGHT = 20
+	BTN_CANCEL_AVENGE = 21
 
 	# (buttonId, localeInfo attribute name) — text resolved at __init__ time
 	BUTTON_CONFIG = (
@@ -58,6 +63,8 @@ class TargetBoard(ui.ThinBoard):
 		(BTN_VOTE_BLOCK_CHAT, "VOTE_BLOCK_CHAT"),
 		(BTN_BLOCK, "TARGET_BUTTON_BLOCK"),
 		(BTN_UNBLOCK, "TARGET_BUTTON_UNBLOCK"),
+		(BTN_DENY_FIGHT, "TARGET_BUTTON_DENY_FIGHT"),
+		(BTN_CANCEL_AVENGE, "TARGET_BUTTON_CANCEL_AVENGE"),
 	)
 
 	GRADE_NAME = {}
@@ -131,9 +138,13 @@ class TargetBoard(ui.ThinBoard):
 
 		self.buttonDict[self.BTN_WHISPER].SetEvent(ui.__mem_func__(self.OnWhisper))
 		self.buttonDict[self.BTN_EXCHANGE].SetEvent(ui.__mem_func__(self.OnExchange))
-		self.buttonDict[self.BTN_FIGHT].SetEvent(ui.__mem_func__(self.OnPVP))
+		# Fight opens the duel rules (NOVA-28, OLD uiTarget.py:983); accepting a
+		# challenge or a revenge sends the bare "/pvp <vid>", as OLD.
+		self.buttonDict[self.BTN_FIGHT].SetEvent(ui.__mem_func__(self.OnAdvancedPVP))
 		self.buttonDict[self.BTN_ACCEPT_FIGHT].SetEvent(ui.__mem_func__(self.OnPVP))
 		self.buttonDict[self.BTN_AVENGE].SetEvent(ui.__mem_func__(self.OnPVP))
+		self.buttonDict[self.BTN_DENY_FIGHT].SetEvent(ui.__mem_func__(self.OnCancelDuel))
+		self.buttonDict[self.BTN_CANCEL_AVENGE].SetEvent(ui.__mem_func__(self.OnCancelDuel))
 		self.buttonDict[self.BTN_FRIEND].SetEvent(ui.__mem_func__(self.OnAppendToMessenger))
 		self.buttonDict[self.BTN_INVITE_PARTY].SetEvent(ui.__mem_func__(self.OnPartyInvite))
 		self.buttonDict[self.BTN_LEAVE_PARTY].SetEvent(ui.__mem_func__(self.OnPartyExit))
@@ -160,6 +171,8 @@ class TargetBoard(ui.ThinBoard):
 		self.vid = 0
 		self.eventWhisper = None
 		self.isShowButton = False
+		# The duel rules board (NOVA-28), made at the first Fight.
+		self.duelRulesDialog = None
 
 		self.__Initialize()
 		self.ResetTargetBoard()
@@ -176,6 +189,9 @@ class TargetBoard(ui.ThinBoard):
 		self.isShowButton = False
 
 	def Destroy(self):
+		if self.duelRulesDialog:
+			self.duelRulesDialog.Destroy()
+			self.duelRulesDialog = None
 		self.eventWhisper = None
 		self.closeButton = None
 		self.showingButtonList = None
@@ -190,7 +206,12 @@ class TargetBoard(ui.ThinBoard):
 
 	def Close(self):
 		self.__Initialize()
+		self.CloseDuelRules()
 		self.Hide()
+
+	def CloseDuelRules(self):
+		if self.duelRulesDialog:
+			self.duelRulesDialog.Close()
 
 	def Open(self, vid, name):
 		if vid:
@@ -366,6 +387,17 @@ class TargetBoard(ui.ThinBoard):
 	def OnPVP(self):
 		net.SendChatPacket("/pvp %d" % (self.vid))
 
+	# The duel rules (NOVA-28, OLD uiTarget.py:1438-1445): Fight opens the
+	# rules board for the target; Deny and Pardon send "/cancel_pvp <vid>".
+	def OnAdvancedPVP(self):
+		if not self.duelRulesDialog:
+			import uiDuel
+			self.duelRulesDialog = nui_windows.make("duel-rules", uiDuel.DuelRulesDialog, "nui_duel_rules.DuelRulesDialog")
+		self.duelRulesDialog.Open(self.vid)
+
+	def OnCancelDuel(self):
+		net.SendChatPacket("/cancel_pvp %d" % (self.vid))
+
 	def OnAppendToMessenger(self):
 		net.SendMessengerAddByVIDPacket(self.vid)
 
@@ -511,9 +543,11 @@ class TargetBoard(ui.ThinBoard):
 			if player.IsRevengeInstance(self.vid):
 				self.__HideButton(self.BTN_FIGHT)
 				self.__ShowButton(self.BTN_AVENGE)
+				self.__ShowButton(self.BTN_CANCEL_AVENGE)
 			elif player.IsChallengeInstance(self.vid):
 				self.__HideButton(self.BTN_FIGHT)
 				self.__ShowButton(self.BTN_ACCEPT_FIGHT)
+				self.__ShowButton(self.BTN_DENY_FIGHT)
 			elif player.IsCantFightInstance(self.vid):
 				self.__HideButton(self.BTN_FIGHT)
 

@@ -1,0 +1,120 @@
+/* The guild war top killers' modern look (NOVA-29): a sword on the danger's
+   tile before the title; the two sides next to each other, the player's
+   guild on the left with an accent edge, the enemy on the right with a
+   danger edge; each side its name and score, its MVP, a header and the
+   fighters' rows: the race's portrait and the name, kills, deaths, damage
+   and ping. Centered while TAB is held. Classic (legacy's 720 x 340 board):
+   skins/classic/windows/guild-war-top.rcss. */
+
+body.guild-war-top
+{
+	left: 16dp;
+	top: 16dp;
+	width: 760dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.guild-war-top__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--danger);
+	border-radius: 7dp;
+	background-color: var(--surface-sunken);
+	vertical-align: middle;
+}
+.guild-war-top__title-icon .nui-glyph
+{
+	--glyph-ink: var(--danger);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.guild-war-top__body
+{
+	display: flex;
+	flex-direction: row;
+	gap: 10dp;
+	padding: 10dp 12dp 12dp;
+}
+.guild-war-top__side
+{
+	flex: 1 1 0;
+	box-sizing: border-box;
+	min-height: 300dp;
+	padding: 8dp 10dp;
+	border-width: 1dp 1dp 1dp 3dp;
+	border-color: var(--border);
+	border-radius: 9dp;
+	background-color: var(--surface-sunken);
+}
+.guild-war-top__side--ally
+{
+	border-left-color: var(--accent);
+}
+.guild-war-top__side--enemy
+{
+	border-left-color: var(--danger);
+}
+.guild-war-top__name
+{
+	color: var(--text);
+	font-weight: bold;
+}
+.guild-war-top__mvp
+{
+	height: 18dp;
+	margin-bottom: 6dp;
+	color: var(--warning);
+	font-size: var(--font-sm);
+}
+.guild-war-top__head, .guild-war-top__row
+{
+	display: flex;
+	flex-direction: row;
+	height: 26dp;
+	align-items: center;
+	font-size: var(--font-sm);
+}
+.guild-war-top__head
+{
+	height: 20dp;
+	color: var(--text-muted);
+	border-bottom-width: 1dp;
+	border-bottom-color: var(--border);
+}
+.guild-war-top__row
+{
+	color: var(--text);
+}
+.guild-war-top__cell
+{
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.guild-war-top__cell--name { flex: 1 1 120dp; }
+.guild-war-top__cell--kills { flex: 0 0 42dp; text-align: right; }
+.guild-war-top__cell--deaths { flex: 0 0 48dp; text-align: right; }
+.guild-war-top__cell--damage { flex: 0 0 62dp; text-align: right; }
+.guild-war-top__cell--ping { flex: 0 0 44dp; text-align: right; }
+.guild-war-top__face
+{
+	display: inline-block;
+	width: 20dp;
+	height: 20dp;
+	margin-right: 6dp;
+	border-radius: 10dp;
+	vertical-align: middle;
+}
+.guild-war-top__player
+{
+	vertical-align: middle;
+}

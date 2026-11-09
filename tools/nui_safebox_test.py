@@ -307,8 +307,9 @@ class SafeboxFlows(SafeboxTest):
         nuigame = world.game.modules["nuigame"]
         facade = world.m("nui_facade")
         self.assertIn("nui_facade", world.m("nui_windows").PHASE_SCOPED)
+        # Wave 7 (NOVA-29): the kill ranking's walk-away watch too.
         self.assertEqual(facade.LEAVE_RANGE_KEYS, ("exchange", "shop", "safebox", "mall", "gem-shop", "aura", "sash-combine",
-                                                     "sash-absorb"))
+                                                     "sash-absorb", "kill-rank"))
         with world.game, w4.quiet():
             self.assertEqual(facade.end_phase(), 0, "no document to unload")
         self.assertIsNone(nuigame.LeaveRangeState("safebox"))

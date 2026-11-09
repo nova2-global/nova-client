@@ -1,0 +1,42 @@
+{
+	"duel_rules": {
+		"rules": [
+			{
+				"label": "No Mount",
+				"checked": false
+			},
+			{
+				"label": "No Pet",
+				"checked": false
+			},
+			{
+				"label": "No Potions",
+				"checked": false
+			},
+			{
+				"label": "No Critical",
+				"checked": false
+			},
+			{
+				"label": "No Pierce",
+				"checked": false
+			},
+			{
+				"label": "No Poison",
+				"checked": false
+			},
+			{
+				"label": "No Fire",
+				"checked": false
+			},
+			{
+				"label": "No Equipment Change",
+				"checked": false
+			},
+			{
+				"label": "No Party",
+				"checked": false
+			}
+		]
+	}
+}

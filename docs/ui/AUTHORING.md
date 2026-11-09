@@ -875,6 +875,11 @@ What the color roles mean:
 | `--classic-switchbot-label` | classic | `#ada09b` |
 | `--classic-switchbot-premium-on` | classic | `#4ba136` |
 | `--classic-switchbot-premium-off` | classic | `#9c262b` |
+| `--classic-rank-first` | classic | `#ce9d32` |
+| `--classic-rank-second` | classic | `#c5c5c5` |
+| `--classic-rank-third` | classic | `#985f50` |
+| `--classic-rank-own` | classic | `#408cc3` |
+| `--classic-rank-row` | classic | `#919191` |
 | `--classic-search-row` | classic | `#131313` |
 | `--classic-search-row-alt` | classic | `#0c0c0c` |
 | `--classic-search-row-hover` | classic | `#272727` |
@@ -1410,6 +1415,16 @@ Main's Wave 6 (NOVA-19 to NOVA-23: quivers, the sash, the weapon costume, the co
 
 **Tests:** `tools/nui_costume_test.py`, `nui_sash_test.py` and `nui_aura_test.py` run each flow on the legacy window and on NovaUI's and require the same effects (chat commands, sash module calls, the inventory's lock calls, tooltip calls); the options row is in `nui_sys_test.py`. Goldens: `costume-foundation-full`, `costume-foundation-aura`, `sash`, `sash-filled`, `sash-absorb`, `sash-absorb-result`, `aura`, `aura-empty`, `aura-max`.
 
+## Wave 7 PvP windows
+
+Wave 7's PvP port (NOVA-28 duel rules, NOVA-29 kill ranking and guild war top killers) added three legacy windows, each with its NovaUI facade in the [Wave 4](#wave-4-windows) subclass pattern (`nui_facade.Facade`, the legacy loader overridden by its mangled name, proxies where the widgets were), so the commands sent, the rules and the rows are legacy's code, and none runs Python per frame:
+
+- **The duel rules** (`duel-rules`, in the `hud` group; `nui_duel_rules.DuelRulesDialog` over `uiduel.DuelRulesDialog`): the target board's Fight button (legacy's and `nui_target`'s) opens it; nine check rows (OLD's rules in OLD's order, `uiDuel.DUEL_FLAGS`; the advanced pet's rule waits for NOVA-24), Fight sends `/pvp <vid> <rules>`, Cancel and X close it; the ticked rules stay between opens, as OLD's. The board's `CheckBoxProxy` stands for `ui.CheckBox`. At legacy's place under the target board. The target board also gained Deny and Pardon (`/cancel_pvp <vid>`), and `game.py` says a challenge's rules whisper (`<<~N~>>`) as OLD's list.
+- **The kill ranking** (`kill-rank`, in the `social` group; `nui_kill_rank.KillRankWindow` over `uikillrank.KillRankWindow`): eight ranking tabs, the first ten places (gold, silver, bronze) and the player's own row (a dash without a place), from `GC::KILL_RANK` through `game.py`'s `RefreshKillRank` and `SetPersonalKillRank`. Legacy's walk-away (1500, in `OnUpdate`) is a `nuigame.WatchLeaveRange` watch under its key (`LEAVE_RANGE_KEYS`). The system menu's Ranking button opens it until the extra inventory carries OLD's button.
+- **The guild war top killers** (`guild-war-top`, in the `hud2` group; `nui_guild_war_top.TopWarPlayersDialog` over `uiguild.TopWarPlayersDialog`): shown while TAB is held during a war; the player's guild on the left, the enemy's on the right, each its name and score, its MVP and ten rows (the modern looks add the race's portrait). Each `GC::GUILD_WAR_TOP` line reaches `Update` through `game.py`'s `BINARY_WarTop`.
+
+**Tests:** `tools/pvp_test.py` (each flow on legacy's window and the facade in one stand-in world, the board's model, the walk-away watch, the fixtures, the wiring, the locales). Goldens: `duel-rules`, `-none`; `kill-rank`, `-empty`; `guild-war-top`, `-start`; each with `reduced-motion` and `no-effects`.
+
 ## The maintenance countdown
 
 The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in the `hud` group, `nui_maintenance.MaintenanceWindow`) replaces legacy's `uimaintenance.MaintenanceWindow`, a thin board at the top left that `game.py` makes before the preserved server commands run, opens with the seconds left of the server's `shutdown_schedule` (`OpenShutdownCountdown`) and closes on `shutdown_cancel` (`CloseShutdownCountdown`) and at the phase's end (where it now also `Destroy`s a NovaUI one).
@@ -1488,6 +1503,9 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 | `shop-deco` | the offline shop decoration (Wave 5, NOVA-9) | on |
 | `sash` | the sash combine and absorb windows (Wave 6, NOVA-20) | on |
 | `aura` | the aura level window (Wave 6, NOVA-23) | on |
+| `duel-rules` | the duel rules a challenger ticks (wave 7, NOVA-28) | on |
+| `guild-war-top` | the guild war top killers, TAB held (wave 7, NOVA-29) | on |
+| `kill-rank` | the kill ranking (wave 7, NOVA-29) | on |
 | `maintenance` | the maintenance countdown (NOVA-58, P18) | on |
 
 **Groups:** a group id in `UI_NUI_WINDOWS` stands for each of its windows, in its place among the tokens: `wave1` for every Wave 1 window but `login` (`dialogs`, `server-board`, `virtual-keyboard`, `locale-strip`, `loading`, `empire`, `select`, `create`), `hud` for the twelve Wave 2a windows above (`taskbar` to `map-name`) and, since P18, the maintenance countdown (`maintenance`, listed last), `hud2` for the seven Wave 2b ones (`chat` to `guild-war`), `sys` for the six Wave 3a ones (`system-menu` to `point-reset`), `rest` for the four Wave 5a ones (`quest` to `console`), `items` for the five Wave 3b ones (`inventory` to `select-item`), Wave 4b's `extra-inventory` and Wave 6's `sash` and `aura`, and `wave3c` for the three Wave 3c ones (`character` to `dragon-soul-refine`). `all` stands for every window. A later token wins per id: `+hud,-target` is every HUD window but the target board, `-target,+hud` has it on, and `-all,+login` is a legacy client with the NovaUI login. A group id is not a window (`use("hud")` answers `(False, "flag off")`), and `set_override()` refuses one (`ValueError`). The demo configuration is `UI_NUI_WINDOWS +wave1,+hud,+hud2,+sys,+rest,+items,+wave3c` (43 of its 200 characters).

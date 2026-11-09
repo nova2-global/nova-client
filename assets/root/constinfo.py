@@ -9,6 +9,12 @@ SASH_AUTO_COMBINE = False
 # session so a chest is asked for once (uichestdrop.request).
 CHESTS_PREVIEW = {}
 
+# The mob info board's drops (NOVA-40; OLD constInfo.py:146): race ->
+# {"items": merged rows, "level": the player's level at the answer,
+# "currentAttackers": GC::TARGET's live count}. Cleared on map change
+# (uitargetinfo.forget), refetched when the level changes.
+MONSTER_INFO_DATA = {}
+
 PVPMODE_ENABLE = 1
 PVPMODE_TEST_ENABLE = 0
 PVPMODE_ACCELKEY_ENABLE = 1

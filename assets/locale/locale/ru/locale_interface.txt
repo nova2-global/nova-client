@@ -610,3 +610,6 @@ DUNGEON_MANAGER_SHOW_HIDDEN	Show Hidden
 DUNGEON_MANAGER_NOTICE	Notify me when ready
 DUNGEON_RANK_LOADING	Loading...
 DUNGEON_MANAGER_NO_DROPS	No drops known for this dungeon.
+OPTION_MOB_INFO	Информация о монтсре
+OPTION_MOB_INFO_AGGR	Агрессивный
+OPTION_MOB_INFO_LEVEL	Уровень

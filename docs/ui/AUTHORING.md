@@ -1534,6 +1534,7 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 | `kill-rank` | the kill ranking (wave 7, NOVA-29) | on |
 | `dungeon-timer` | the dungeon manager and its ready notice (NOVA-25) | on |
 | `dungeon-drops` | the dungeon manager's drops panel (NOVA-25) | on |
+| `target-info` | the mob info board under the target board: stats and drops (NOVA-40) | on |
 | `dungeon-rank` | the dungeon ranking (NOVA-25) | on |
 | `maintenance` | the maintenance countdown (NOVA-58, P18) | on |
 

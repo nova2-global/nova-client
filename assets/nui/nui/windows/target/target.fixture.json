@@ -9,6 +9,10 @@
 		"exchange_at": -1,
 		"in_range": false,
 		"portrait": "",
-		"subtitle": ""
+		"subtitle": "",
+		"hp_values": "",
+		"element": 0,
+		"element_name": "",
+		"show_info": false
 	}
 }

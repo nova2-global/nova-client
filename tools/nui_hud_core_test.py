@@ -1301,8 +1301,11 @@ EXPECTED_SITES = {
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     # Wave 7 (NOVA-28): the duel rules, made by the target board's Fight.
-    "uitarget.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
-    "nui_target.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    # NOVA-40: the mob info board comes first, made in the constructor.
+    "uitarget.py": [("make", "target-info", "uiTargetInfo.InfoBoard", "nui_target_info.InfoBoard"),
+                    ("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    "nui_target.py": [("make", "target-info", "uiTargetInfo.InfoBoard", "nui_target_info.InfoBoard"),
+                      ("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
     # NOVA-25: the dungeon manager makes its drops panel.
     "uitimerwindow.py": [("make", "dungeon-drops", "MobDropPopup", "nui_dungeon_drops.MobDropPopup")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],

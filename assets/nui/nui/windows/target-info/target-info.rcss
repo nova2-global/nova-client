@@ -1,0 +1,110 @@
+/* The mob info board's modern look (NOVA-40): the shared overlay board under
+   the target board, top center. The stats as centered lines with hairline
+   separators, then up to five 38dp drop rows of icon and text; the whole row
+   hovers (the slot hover rule) and the list scrolls past five. Classic (the
+   legacy thin board, 250 wide): skins/classic/windows/target-info.rcss. */
+
+body.target-info
+{
+	focus: none;
+	tab-index: none;
+}
+.target-info__wrap
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 96dp;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+.target-info__board
+{
+	display: block;
+	position: relative;
+	box-sizing: border-box;
+	width: 280dp;
+	padding: var(--space-2) var(--space-3);
+}
+.target-info__stats
+{
+	display: block;
+}
+.target-info__line
+{
+	color: var(--tip-normal);
+	font-size: var(--font-sm);
+	line-height: 17dp;
+	text-align: center;
+	white-space: nowrap;
+}
+.target-info__sep
+{
+	height: 0;
+	margin: 3dp 0;
+	border-bottom-width: 1dp;
+	border-color: var(--text-muted);
+	line-height: 0;
+}
+.target-info__drops
+{
+	display: block;
+	max-height: 190dp;
+	overflow-y: auto;
+	margin-top: var(--space-1);
+}
+.target-info__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+	min-height: 38dp;
+	padding: 2dp;
+	border-radius: 4dp;
+}
+.target-info__row:hover
+{
+	background-color: var(--surface-hover);
+}
+.target-info__icon
+{
+	flex: 0 0 auto;
+	width: 34dp;
+	height: 34dp;
+	margin-right: var(--space-2);
+	border-radius: 4dp;
+	background-color: var(--cooldown-shade);
+}
+.target-info__img
+{
+	width: 32dp;
+	height: 32dp;
+	pointer-events: none;
+}
+.target-info__text
+{
+	flex: 1 1 auto;
+	min-width: 0;
+	pointer-events: none;
+}
+.target-info__name
+{
+	display: block;
+	color: var(--text-inverse);
+	font-size: var(--font-sm);
+}
+.target-info__extra
+{
+	display: block;
+	color: var(--tip-normal);
+	font-size: var(--font-xs);
+}
+.target-info__clock
+{
+	position: absolute;
+	width: 0;
+	height: 0;
+	visibility: hidden;
+}

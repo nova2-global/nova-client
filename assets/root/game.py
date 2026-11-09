@@ -36,6 +36,7 @@ import uiAffectShower
 import uiPlayerGauge
 import uiCharacter
 import uiTarget
+import uiTargetInfo
 import uiMaintenance
 # The dungeon manager's data and drop list (NOVA-25).
 import uiTimerWindow
@@ -147,6 +148,9 @@ class GameWindow(ui.ScriptWindow):
 
 	def Open(self):
 		app.SetFrameSkip(1)
+
+		# NOVA-40: a new map, so the drops the server lists may differ.
+		uiTargetInfo.forget()
 
 		self.SetSize(wndMgr.GetScreenWidth(), wndMgr.GetScreenHeight())
 
@@ -915,20 +919,34 @@ class GameWindow(ui.ScriptWindow):
 	def __RefreshTargetBoard(self):
 		self.targetBoard.Refresh()
 		
-	def SetHPTargetBoard(self, vid, hpPercentage):
+	def SetHPTargetBoard(self, vid, hpPercentage, HP=0, MaxHP=0, bElement=0, currentAttackers=0):
 		if vid != self.targetBoard.GetTargetVID():
 			self.targetBoard.ResetTargetBoard()
 			self.targetBoard.SetEnemyVID(vid)
 			# NOVA-27 (OLD game.py:1361-1362): a new target closes the damage count.
 			self.__CloseDamageCount()
 
-		self.targetBoard.SetHP(hpPercentage)
+		self.targetBoard.SetHP(hpPercentage, HP, MaxHP)
+		self.targetBoard.SetElement(bElement)
+		self.targetBoard.SetAttackers(currentAttackers)
 		self.targetBoard.Show()
 
 		# NOVA-27 (OLD game.py:1373): the boss's HP in the damage count.
 		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
 		if wndDamageCount:
-			wndDamageCount.AddHPInfo(vid, hpPercentage)
+			wndDamageCount.AddHPInfo(vid, hpPercentage, HP, MaxHP)
+
+	# NOVA-40 (OLD game.py SetPCTargetBoard's HP path, Q3 b): a player target's
+	# percent, for the board already open on it.
+	def SetPCTargetHP(self, vid, hpPercentage):
+		if vid == self.targetBoard.GetTargetVID():
+			self.targetBoard.SetPCHP(hpPercentage)
+
+	# GC::TARGET_INFO (NOVA-40, OLD game.py:2501-2544): a mob's drop rows, cached
+	# per race by uiTargetInfo.
+	def BINARY_SetTargetInfo(self, race, rows):
+		uiTargetInfo.store(race, rows)
+		self.targetBoard.RefreshInfoBoard(race)
 
 	def CloseTargetBoardIfDifferent(self, vid):
 		if vid != self.targetBoard.GetTargetVID():

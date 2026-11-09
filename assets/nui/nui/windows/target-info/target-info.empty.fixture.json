@@ -1,0 +1,64 @@
+{
+ "target_info": {
+  "lines": [
+   {
+    "text": "Max. HP : 1.234",
+    "sep": false
+   },
+   {
+    "text": "Damage : 12 - 30",
+    "sep": false
+   },
+   {
+    "text": "Experience : 900",
+    "sep": false
+   },
+   {
+    "text": "Gold : 10 - 25",
+    "sep": false
+   },
+   {
+    "text": "Regen 7% every 3 sec.",
+    "sep": false
+   },
+   {
+    "text": "",
+    "sep": true
+   },
+   {
+    "text": "Race : Orc",
+    "sep": false
+   },
+   {
+    "text": "Subspecies : Fire, Attack Fire",
+    "sep": false
+   },
+   {
+    "text": "",
+    "sep": true
+   },
+   {
+    "text": "Resists:",
+    "sep": false
+   },
+   {
+    "text": "Sword: 10% Two-Handed: 0% Bell: -5%",
+    "sep": false
+   },
+   {
+    "text": "Dagger: 0% Fan: 15% Bow: 20%",
+    "sep": false
+   },
+   {
+    "text": "Hits: 0% Skills: 0%",
+    "sep": false
+   },
+   {
+    "text": "No items droppable.",
+    "sep": false
+   }
+  ],
+  "rows": [],
+  "retry": 0.0
+ }
+}

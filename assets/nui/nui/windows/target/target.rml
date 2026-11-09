@@ -29,6 +29,10 @@
 					class="target-board__level">{{ level }}</span></span>
 				<span id="target-name" class="target-board__name">{{ name }}</span>
 				<span id="target-title" class="target-board__title">{{ title }}</span>
+				<span id="target-element" data-if="element > 0" data-attr-class="'target-board__element target-board__element--' + element">{{ element_name }}</span>
+				<button id="target-info" class="nui-button nui-button--ghost nui-button--icon nui-anim target-board__info" data-if="show_info"
+					data-event-mousedown="info(ev.button)">?</button>
+				<span id="target-values" class="target-board__values" data-if="hp_values != ''">{{ hp_values }}</span>
 				<span id="target-percent" class="target-board__pct" data-if="show_hp">{{ hp * 100 | format(0) }}%</span>
 				<progress id="target-hp" class="nui-gauge nui-gauge--red target-board__hp" direction="right"
 					data-if="show_hp" data-attr-value="hp"/>
@@ -41,6 +45,7 @@
 				<span class="target-board__portrait"><img class="target-board__face" data-attr-src="portrait"/></span>
 				<span class="target-board__meta"><span class="target-board__title">{{ title }}</span><span id="target-subtitle"
 					class="target-board__sub" data-if="subtitle != ''">{{ subtitle }}</span></span>
+				<span id="target-player-percent" class="target-board__pct" data-if="show_hp">{{ hp * 100 | format(0) }}%</span>
 			</div>
 			<button id="target-close" class="nui-button nui-button--ghost nui-button--icon nui-anim target-board__close"
 				data-event-mousedown="close(ev.button)"><span class="nui-glyph nui-glyph--close target-board__glyph"><span

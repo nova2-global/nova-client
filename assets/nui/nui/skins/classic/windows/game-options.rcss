@@ -15,7 +15,7 @@
 body.skin-classic.game-options
 {
 	width: 300dp;
-	height: 408dp;
+	height: 458dp;
 	min-width: 0;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
@@ -54,7 +54,7 @@ body.skin-classic.game-options .game-options__titlebar .nui-window__close
 body.skin-classic.game-options .game-options__body
 {
 	position: relative;
-	height: 408dp;
+	height: 458dp;
 	padding: 0;
 }
 body.skin-classic.game-options .go-row,
@@ -88,6 +88,8 @@ body.skin-classic.game-options .go-label--shops { top: 317dp; }
 body.skin-classic.game-options .go-label--sash { top: 342dp; }
 /* The buffi's row (NOVA-38; legacy's at 365, the board grown to 408). */
 body.skin-classic.game-options .go-label--buffi { top: 367dp; }
+body.skin-classic.game-options .go-label--mob-level { top: 392dp; }
+body.skin-classic.game-options .go-label--mob-ai { top: 417dp; }
 
 body.skin-classic.game-options .go-choice
 {
@@ -147,6 +149,10 @@ body.skin-classic.game-options .go-choice--sash-1 { left: 90dp; top: 340dp; }
 body.skin-classic.game-options .go-choice--sash-0 { left: 155dp; top: 340dp; }
 body.skin-classic.game-options .go-choice--buffi-0 { left: 90dp; top: 365dp; }
 body.skin-classic.game-options .go-choice--buffi-1 { left: 155dp; top: 365dp; }
+body.skin-classic.game-options .go-choice--mob-level-1 { left: 90dp; top: 390dp; }
+body.skin-classic.game-options .go-choice--mob-level-0 { left: 155dp; top: 390dp; }
+body.skin-classic.game-options .go-choice--mob-ai-1 { left: 90dp; top: 415dp; }
+body.skin-classic.game-options .go-choice--mob-ai-0 { left: 155dp; top: 415dp; }
 
 /* The PvP choices on the small art; the choice in effect shows its down art,
    under the pointer too. */

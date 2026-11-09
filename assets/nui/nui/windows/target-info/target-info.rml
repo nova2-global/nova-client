@@ -1,0 +1,39 @@
+<rml>
+<head>
+	<!-- The mob info board under the target board (NOVA-40; legacy
+	     uitargetinfo.py InfoBoard, OLD uiTarget.py:249-756). While the
+	     target-info flag is on, the target board makes
+	     nui_target_info.InfoBoard (controller assets/root/nui_target_info.py),
+	     a subclass of the legacy class on proxies: the stats (from the
+	     client's mob_proto), the race and resist lines, the drops the server
+	     listed and their merged +0..+9 rows are legacy's code. The stats as
+	     text lines with separators, the drops as rows (icon, text, the
+	     attacker and guaranteed lines the drop rule will fill). The whole row
+	     hovers (the slot hover rule) and shows the item's tooltip. The list
+	     scrolls in RmlUi; the retry after a request the server dropped is a
+	     nui-countdown, so nothing runs per frame. -->
+	<title>target-info</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="target-info.rcss"/>
+</head>
+<body template="nui" class="nui-overlay nui-below-legacy-ui target-info" data-model="target_info">
+	<div class="target-info__wrap">
+		<div id="target-info-board" class="target-info__board nui-board nui-board--tooltip nui-fx nui-interactive">
+			<div class="target-info__stats">
+				<div class="target-info__line" data-for="l : lines" data-class-target-info__sep="l.sep">{{ l.text }}</div>
+			</div>
+			<div id="target-info-rows" class="target-info__drops nui-list__viewport" data-if="size(rows) > 0">
+				<div class="target-info__row nui-anim" data-for="r, i : rows" data-attr-id="'target-info-row-' + i"
+				     data-event-mouseover="row_over(i)" data-event-mouseout="row_out()">
+					<div class="target-info__icon"><img class="target-info__img" data-if="r.icon != ''" data-attr-src="r.icon"/></div>
+					<div class="target-info__text">
+						<span class="target-info__name">{{ r.text }}</span>
+						<span class="target-info__extra" data-for="e : r.lines">{{ e }}</span>
+					</div>
+				</div>
+			</div>
+			<nui-countdown class="target-info__clock" format="none" data-if="retry > 0" data-attr-end="retry" data-event-countdownend="retry_done()"/>
+		</div>
+	</div>
+</body>
+</rml>

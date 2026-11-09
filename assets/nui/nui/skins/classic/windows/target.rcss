@@ -19,7 +19,6 @@ body.skin-classic.target progress.target-board__hp
 }
 body.skin-classic.target .target-board__badge,
 body.skin-classic.target .target-board__title,
-body.skin-classic.target .target-board__pct,
 body.skin-classic.target .target-board__bar,
 body.skin-classic.target .target-board__player
 {
@@ -129,4 +128,49 @@ body.skin-classic.target .target-board__button:hover
 body.skin-classic.target .target-board__button:active
 {
 	decorator: image("d:/ymir work/ui/public/small_thin_button_03.sub");
+}
+/* NOVA-40 (legacy uitarget.py): the percent beside the gauge, the numbers over
+   it, the element's name and the "?" info button after the name, in the
+   legacy board's font. */
+body.skin-classic.target .target-board__pct
+{
+	flex: 0 0 auto;
+	margin: 0 6dp 0 0;
+	font-weight: normal;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.target .target-board__values
+{
+	position: absolute;
+	right: 60dp;
+	top: 1dp;
+	margin: 0;
+	color: var(--classic-button-text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.target .target-board__element
+{
+	position: absolute;
+	left: 23dp;
+	top: 0;
+	margin: 0;
+	padding: 0;
+	background-color: transparent;
+	font-weight: normal;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.target .target-board__info
+{
+	width: 20dp;
+	height: 16dp;
+	margin: 0 0 0 4dp;
+	padding: 0;
+	line-height: 16dp;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_01.sub");
+	color: var(--classic-button-text);
+}
+body.skin-classic.target .target-board__info:hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/xsmall_button_02.sub");
 }

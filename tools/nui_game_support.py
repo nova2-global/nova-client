@@ -1146,7 +1146,7 @@ class Game(object):
         self.element_counts = {}  # document -> elements, for nuigame.NuiStats (default 1)
         # Wave 3a (P11 spec 5.6): what the option windows read and write.
         self.settings = {"music_volume": 0.5, "sound_volume": 0.75, "fog_level": 1, "always_show_name": True,
-                         "show_damage": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0,
+                         "show_damage": True, "show_mob_level": True, "show_mob_ai": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0,
                          # The pickup filter's four categories (NOVA-50; the
                          # client's PICKUP_FILTER_ALL by default).
                          "pickup_filter": [True, True, True, True]}
@@ -1516,6 +1516,10 @@ class Game(object):
         setter("SetFogLevel", lambda value: settings.__setitem__("fog_level", int(value)))
         setter("SetAlwaysShowNameFlag", lambda value: settings.__setitem__("always_show_name", bool(value)))
         setter("SetShowDamageFlag", lambda value: settings.__setitem__("show_damage", bool(value)))
+        getter("IsShowMobLevel", "show_mob_level", bool)
+        getter("IsShowMobAIFlag", "show_mob_ai", bool)
+        setter("SetShowMobLevel", lambda value: settings.__setitem__("show_mob_level", bool(value)))
+        setter("SetShowMobAIFlag", lambda value: settings.__setitem__("show_mob_ai", bool(value)))
         setter("SetViewChatFlag", lambda value: setattr(game, "view_chat", bool(value)))
         setter("SetShowSalesTextFlag", lambda value: setattr(game, "show_sales_text", bool(value)))
         setter("SetUITheme", lambda value: settings.__setitem__("ui_theme", value))

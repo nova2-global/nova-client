@@ -1069,11 +1069,12 @@ class ChannelQuickSwitch(unittest.TestCase):
         player = support.Recording("player", self.log)
         cls = compiled("game.py", "GameWindow", ("__BuildKeyDict", "__SetChannelSwitchMode", "__PressNumKey",
                                                  "__SetQuickSlotMode", "__SetQuickPageMode", "__SelectQuickPage",
-                                                 "__PressQuickSlot"),
+                                                 "__PressQuickSlot", "__PressLeftShiftKey"),
                        {"app": self.app, "net": net, "chrmgr": chrmgr, "player": player,
                         "ui": types.SimpleNamespace(__mem_func__=lambda f: f)})
         window = cls()
         window.channelSwitchMode = False
+        window.interface = None
         self.slots = []
         window.pressNumber = self.slots.append
         window._GameWindow__BuildKeyDict()

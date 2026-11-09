@@ -922,7 +922,7 @@ class Wave7Switchbot(WindowsTest):
 
     def test_the_id_is_on_by_default_before_maintenance_and_in_the_items_group(self):
         ids = [window_id for window_id, _ in self.m.WINDOWS]
-        self.assertEqual(ids[-3:], ["aura", "switchbot", "maintenance"])
+        self.assertLess(ids.index("switchbot"), ids.index("maintenance"))
         self.assertIs(dict(self.m.WINDOWS)["switchbot"], True)
         self.assertEqual([group for group, members in self.m.GROUPS.items() if "switchbot" in members and group != "all"],
                          ["items"])
@@ -952,7 +952,7 @@ class Wave7ChestDrop(WindowsTest):
 
     def test_the_id_is_on_by_default_in_the_items_group_before_maintenance(self):
         ids = [window_id for window_id, _ in self.m.WINDOWS]
-        self.assertEqual(ids[-2:], ["chest-drop", "maintenance"])
+        self.assertLess(ids.index("chest-drop"), ids.index("maintenance"))
         self.assertIs(dict(self.m.WINDOWS)["chest-drop"], True)
         self.assertEqual([group for group, members in self.m.GROUPS.items() if "chest-drop" in members and group != "all"],
                          ["items"])

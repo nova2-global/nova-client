@@ -154,11 +154,13 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war", "guild-war-top"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
-	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop", "switchbot", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop",
+	          "switchbot", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
-	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank", "dungeon", "dungeon-timer", "dungeon-drops", "dungeon-rank"),
+	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank"),
+	"dungeon": ("dungeon-timer", "dungeon-drops", "dungeon-rank"),
 }
 # "all": every window, so "-all" makes a legacy client (the live kit's legacy
 # runs), and "-all,+id" one with a single NovaUI window.

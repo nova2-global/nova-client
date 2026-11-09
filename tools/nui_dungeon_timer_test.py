@@ -24,9 +24,12 @@ NEW_DUNGEONS = [0, 1, 2, 3, 5, 6]
 
 
 def opened(nui_on):
+    """The classic look, so a flow compares with legacy's (the modern look asks for drops by itself)."""
     world = dts.World(nui_on)
     rank = world.rank()
     window = world.timer()
+    if nui_on:
+        world.game.modules["nui_dungeon_timer"].is_classic_skin = lambda: True
     with world.game, w4.quiet():
         window.Open()
     return world, window, rank
@@ -326,6 +329,142 @@ class Factory(unittest.TestCase):
         self.assertIn(("dungeon-drops", ("dungeon-drops",)), windows.ON_DEMAND_DOCUMENTS)
         self.assertIn(("dungeon-rank", ("dungeon-rank",)), windows.ON_DEMAND_DOCUMENTS)
         self.assertIn("dungeon-rank", world.m("nui_facade").LEAVE_RANGE_KEYS)
+
+
+class Drops(unittest.TestCase):
+    """The drops: inside the manager in the modern skins, the popup in classic."""
+
+    def opened(self, nui_on=True, classic=False, preview=False):
+        world = dts.World(nui_on, preview=preview)
+        rank = world.rank()
+        window = world.timer()
+        if nui_on:
+            world.game.modules["nui_dungeon_timer"].is_classic_skin = lambda: classic
+        world.game.state.now = 100.0
+        with world.game, w4.quiet():
+            window.Open()
+        world.game.state.now = 110.0
+        return world, window, rank
+
+    def test_the_popup_on_novaui_makes_no_legacy_board(self):
+        world, window, _ = self.opened(True, classic=True)
+        with world.game, w4.quiet():
+            w4.press(window, "button_press", "drops", 0)
+        self.assertTrue(window.wndDrops.IsShow())
+        self.assertEqual(world.game.legacy_boards, [], "the legacy Board's art would show at the screen's top left")
+
+    def test_the_legacy_popup_still_has_its_board(self):
+        world, window, _ = self.opened(False)
+        self.assertEqual(len(world.game.legacy_boards), 1)
+
+    def test_choosing_a_dungeon_asks_once_and_shows_loading(self):
+        world, window, _ = self.opened()
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 6, 0)
+        self.assertIn((6,), world.drop_requests())
+        self.assertEqual(w4.board(window).model["drops_state"], "loading")
+        before = len(world.drop_requests())
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 6, 0)
+        self.assertEqual(len(world.drop_requests()), before, "a second press on the same dungeon asks nothing")
+
+    def test_the_rows_appear_in_the_manager(self):
+        world, window, _ = self.opened()
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 2, 0)
+            world.timer_module.add_drop(2, 2598, 1, 27001, 3, 500000)
+            world.timer_module.add_drop(2, 2598, 1, 27002, 1, 800000)
+            world.timer_module.add_drop(2, 2597, 2, 30190, 1, 100000)
+            window.refreshMobList()
+        model = w4.board(window).model
+        self.assertEqual(model["drops_state"], "ready")
+        self.assertEqual([m["name"] for m in model["drops_mobs"]], ["mob 2598", "mob 2597"])
+        self.assertTrue(model["drops_mobs"][0]["active"])
+        self.assertEqual([(i["vnum"], i["count"], i["band"]) for i in model["drops_items"]],
+                         [(27001, "3", "common"), (27002, "", "guaranteed")])
+        with world.game, w4.quiet():
+            w4.press(window, "drop_mob_press", 1, 0)
+        self.assertEqual([i["vnum"] for i in w4.board(window).model["drops_items"]], [30190])
+        self.assertEqual([(i["vnum"], i["band"]) for i in w4.board(window).model["drops_items"]], [(30190, "rare")])
+
+    def test_a_drop_cell_gives_the_item_tooltip(self):
+        world, window, _ = self.opened()
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 2, 0)
+            world.timer_module.add_drop(2, 2598, 1, 27001, 1, 500000)
+            window.refreshMobList()
+            w4.fire(window, "drop_over", 0)
+            w4.fire(window, "drop_out")
+        self.assertEqual([c[:2] for c in world.tooltip.calls],
+                         [("SetItemToolTip", 27001), ("HideToolTip",)] if world.tooltip.calls else [])
+        self.assertTrue(world.tooltip.calls)
+
+    def test_no_answer_after_the_wait_reads_empty(self):
+        world, window, _ = self.opened()
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 3, 0)
+            self.assertEqual(w4.board(window).model["drops_state"], "loading")
+            w4.fire(window, "drops_timeout")
+        self.assertEqual(w4.board(window).model["drops_state"], "empty")
+
+    def test_a_request_inside_the_servers_second_is_retried(self):
+        world, window, _ = self.opened()
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 1, 0)
+            w4.press(window, "row_press", 2, 0)
+        self.assertEqual(w4.board(window).model["drops_retry"] > 0, True)
+        asked = len(world.drop_requests())
+        world.game.state.now = 120.0
+        with world.game, w4.quiet():
+            w4.fire(window, "drops_retry")
+        self.assertEqual(world.drop_requests()[-1], (2,))
+        self.assertEqual(len(world.drop_requests()), asked + 1)
+
+    def test_classic_keeps_the_popup_and_does_not_ask_on_choose(self):
+        world, window, _ = self.opened(classic=True)
+        self.assertEqual(world.drop_requests(), [])
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 6, 0)
+        self.assertEqual(world.drop_requests(), [], "classic asks at its Drops button, as legacy")
+        with world.game, w4.quiet():
+            w4.press(window, "button_press", "drops", 0)
+        self.assertEqual(world.drop_requests(), [(6,)])
+        self.assertTrue(window.wndDrops.IsShow())
+
+
+class BossPreview(unittest.TestCase):
+    def test_the_boss_turns_while_shown(self):
+        world, window, _ = Drops().opened(preview=True)
+        preview = world.game.modules["modelpreview"]
+        self.assertEqual(preview.calls[-2:], [("Select", "dungeon_boss", 1095), ("Show", "dungeon_boss", True)])
+        self.assertTrue(w4.board(window).model["model_view"])
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 5, 0)
+        self.assertEqual(preview.calls[-2:], [("Select", "dungeon_boss", 6191), ("Show", "dungeon_boss", True)])
+        with world.game, w4.quiet():
+            window.Close()
+        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", False))
+
+    def test_an_unknown_boss_hides_the_preview(self):
+        world, window, _ = Drops().opened(preview=True)
+        preview = world.game.modules["modelpreview"]
+        world.timer_module.DESCRIPTION[3][0][0] = 0
+        with world.game, w4.quiet():
+            w4.press(window, "row_press", 3, 0)
+        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", False))
+        self.assertFalse(w4.board(window).model["model_view"])
+
+    def test_without_the_module_nothing_breaks(self):
+        world, window, _ = Drops().opened()
+        self.assertFalse(w4.board(window).model["model_view"])
+
+    def test_the_legacy_window_turns_the_boss_too(self):
+        world, window, _ = Drops().opened(False, preview=True)
+        preview = world.game.modules["modelpreview"]
+        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", True))
+        with world.game, w4.quiet():
+            window.Close()
+        self.assertEqual(preview.calls[-1], ("Show", "dungeon_boss", False))
 
 
 if __name__ == "__main__":

@@ -33,6 +33,13 @@
 		},
 		"desc": [],
 		"notice": true,
-		"notice_label": ""
+		"notice_label": "",
+		"sel_end": 0.0,
+		"model_view": false,
+		"drops_state": "empty",
+		"drops_mobs": [],
+		"drops_items": [],
+		"drops_retry": 0.0,
+		"drops_timeout": 0.0
 	}
 }

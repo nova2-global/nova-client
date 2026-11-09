@@ -87,6 +87,13 @@
 			}
 		],
 		"notice": false,
-		"notice_label": ""
+		"notice_label": "",
+		"sel_end": 421.0,
+		"model_view": false,
+		"drops_state": "loading",
+		"drops_mobs": [],
+		"drops_items": [],
+		"drops_retry": 0.0,
+		"drops_timeout": 0.0
 	}
 }

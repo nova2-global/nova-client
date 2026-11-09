@@ -94,10 +94,73 @@ def interface_keys(locale="en"):
     return values
 
 
+class ModelPreview(object):
+    """The client's modelpreview module (PythonModelPreviewModule.cpp), recording its calls."""
+
+    def __init__(self):
+        self.calls = []
+
+    def Select(self, name, race):
+        self.calls.append(("Select", name, race))
+        return 1
+
+    def Show(self, name, show):
+        self.calls.append(("Show", name, bool(show)))
+
+    def Clear(self, name):
+        self.calls.append(("Clear", name))
+
+    def GetState(self, name):
+        return {"shown": 0, "race": 0, "has_model": 0, "renders": 0, "texels": (0, 0)}
+
+
+class RenderTarget(object):
+    """ui.RenderTarget (the client's render target widget)."""
+
+    def __init__(self):
+        self.name = ""
+        self.shown = False
+
+    @staticmethod
+    def IsAvailable():
+        return True
+
+    def SetParent(self, parent):
+        pass
+
+    def AddFlag(self, flag):
+        pass
+
+    def SetPosition(self, x, y):
+        pass
+
+    def SetSize(self, width, height):
+        pass
+
+    def SetRenderTarget(self, name):
+        self.name = name
+
+    def Show(self):
+        self.shown = True
+
+    def Hide(self):
+        self.shown = False
+
+
 def install(game):
     """C's names and the missing widgets on a stand-in client's modules."""
     game.modules["uiScriptLocale"].__dict__.update(interface_keys())
     ui = game.modules["ui"]
+    game.legacy_boards = []
+    base_board = ui.BoardWithTitleBar
+
+    class CountingBoard(base_board):
+        """ui.BoardWithTitleBar: a real one draws its corners and lines as soon as it is shown."""
+
+        def __init__(self, *args, **kwargs):
+            base_board.__init__(self, *args, **kwargs)
+            game.legacy_boards.append(self)
+    ui.BoardWithTitleBar = CountingBoard
     ui.ScrollWindow = ScrollWindow
     if not isinstance(getattr(ui, "CheckBox", None), type):
         ui.CheckBox = w6.CheckBox
@@ -132,9 +195,12 @@ def install(game):
 class World(w4.World):
     """nui_w4_world.World with the dungeon windows: legacy (nui_on False) or NovaUI."""
 
-    def __init__(self, nui_on):
+    def __init__(self, nui_on, preview=False):
         def setup(game):
             install(game)
+            if preview:
+                game.modules["modelpreview"] = ModelPreview()
+                game.modules["ui"].RenderTarget = RenderTarget
         w4.World.__init__(self, nui_on, windows=FLAGS, setup=setup, modules=w4.TRADE_MODULES)
         game = self.game
         with self.game, w4.quiet():

@@ -40,6 +40,40 @@ body.skin-classic.dungeon-timer .dungeon-timer__handle, body.skin-classic.dungeo
 {
 	pointer-events: auto;
 }
+/* The modern wrappers hold nothing of legacy's layout (their children are
+   placed by the rules below), and the drops pane and the hero are the modern
+   skins'. The boss's model preview, when there is one, fills the frame. */
+body.skin-classic.dungeon-timer .dungeon-timer__roster,
+body.skin-classic.dungeon-timer .dungeon-timer__main
+{
+	display: block;
+	position: static;
+	width: auto;
+	height: 0;
+	min-width: 0;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__hero,
+body.skin-classic.dungeon-timer .dungeon-timer__drops
+{
+	display: none;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__button--drops
+{
+	display: block;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__boss-view
+{
+	left: 4dp;
+	top: 4dp;
+	width: 117dp;
+	height: 140dp;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__boss.has-view .dungeon-timer__boss-name
+{
+	margin-top: 146dp;
+}
 body.skin-classic.dungeon-timer .dungeon-timer__body,
 body.skin-classic.dungeon-timer .dungeon-timer__footer
 {
@@ -75,6 +109,8 @@ body.skin-classic.dungeon-timer .dungeon-timer__list
 }
 body.skin-classic.dungeon-timer .dungeon-timer__rows
 {
+	flex-direction: row;
+	flex-wrap: wrap;
 	gap: 2dp 4dp;
 }
 body.skin-classic.dungeon-timer .dungeon-timer__row,
@@ -129,6 +165,15 @@ body.skin-classic.dungeon-timer .dungeon-timer__row-hide:active
 body.skin-classic.dungeon-timer .dungeon-timer__row-hide .nui-glyph
 {
 	display: none;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__row-hide
+{
+	display: block;
+}
+body.skin-classic.dungeon-timer .dungeon-timer__facts.no-ticket .dungeon-timer__fact--ticket,
+body.skin-classic.dungeon-timer .dungeon-timer__facts.no-ticket .dungeon-timer__ticket
+{
+	display: block;
 }
 body.skin-classic.dungeon-timer .dungeon-timer__show-hidden-row
 {
@@ -186,6 +231,11 @@ body.skin-classic.dungeon-timer .dungeon-timer__fact
 {
 	position: absolute;
 	top: 13dp;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--text);
 	white-space: nowrap;
 }
 body.skin-classic.dungeon-timer .dungeon-timer__fact--ticket { left: 10dp; }

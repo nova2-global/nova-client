@@ -152,6 +152,14 @@ class MobDropPopup(nui_facade.Facade, uiTimerWindow.MobDropPopup):
 	def nui_model(self):
 		return {"info": "", "showing": "mobs", "mobs": [], "items": [], "header": {"name": "", "type": "mob"}}
 
+	# --- the legacy window underneath: no art of its own --------------------------------
+
+	def _MobDropPopup__InitBoard(self):
+		"""A plain window, not ui.BoardWithTitleBar: the board's corners, edges and
+		title bar are made and shown at once, so the facade's 0 x 0 window would show
+		them at the screen's top left, "shown" as soon as the facade is."""
+		ui.Window.__init__(self)
+
 	# --- legacy's board sizing and title: the board's ----------------------------------
 
 	def SetSize(self, width, height):

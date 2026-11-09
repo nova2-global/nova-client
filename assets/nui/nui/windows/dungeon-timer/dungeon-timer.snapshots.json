@@ -1,5 +1,5 @@
 {
-	"$comment": "Golden cases of the dungeon manager (NOVA-25; tools/check_nui_snapshots.py): NEW's six dungeons with Nemeres chosen (its notice checked) and two on cooldown at clock time 1 (Devil`s Catacomb 7:00 left, Razador 20:00); hidden: two dungeons hidden, Show Hidden shown, Devil`s Catacomb chosen; empty: every dungeon hidden, the hint. No entry ticket in NEW's six (OLD's file has none for them). Centered at its first show; the sheet's place frames it here, with room for the modern shadow. Classic draws NEW's legacy 618 x 472 board.",
+	"$comment": "Golden cases of the dungeon manager (NOVA-25; tools/check_nui_snapshots.py): NEW's six dungeons with Nemeres chosen (its notice checked) and two on cooldown at clock time 1 (Devil`s Catacomb 7:00 left, Razador 20:00); hidden: two dungeons hidden, Show Hidden shown, Devil`s Catacomb chosen; empty: every dungeon hidden, the hint. No entry ticket in NEW's six (OLD's file has none for them). Centered at its first show; the sheet's place frames it here, with room for the modern shadow. Classic draws NEW's legacy 618 x 472 board; the boss view is a stand-in PNG (tools/nui_view_fixtures.py).",
 	"cases": [
 		{
 			"page": "dungeon-timer",
@@ -11,20 +11,23 @@
 				[
 					"100",
 					"1",
-					"790x690"
+					"940x700"
 				],
 				[
 					"150",
 					"1.5",
-					"1185x1035"
+					"1410x1050"
 				],
 				[
 					"200",
 					"2",
-					"1580x1380"
+					"1880x1400"
 				]
 			],
-			"fixture": true
+			"fixture": true,
+			"views": {
+				"model-dungeon-boss": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"
+			}
 		},
 		{
 			"page": "dungeon-timer",
@@ -51,7 +54,10 @@
 			"fixture": true,
 			"roots": [
 				"assets/ETC"
-			]
+			],
+			"views": {
+				"model-dungeon-boss": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"
+			}
 		},
 		{
 			"page": "dungeon-timer",
@@ -64,7 +70,7 @@
 				[
 					"100",
 					"1",
-					"790x690"
+					"940x700"
 				]
 			],
 			"fixture": true
@@ -98,7 +104,7 @@
 				[
 					"100",
 					"1",
-					"790x690"
+					"940x700"
 				]
 			],
 			"fixture": true
@@ -131,11 +137,14 @@
 				[
 					"100",
 					"1",
-					"790x690"
+					"940x700"
 				]
 			],
 			"fixture": true,
-			"reduced_motion": true
+			"reduced_motion": true,
+			"views": {
+				"model-dungeon-boss": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"
+			}
 		},
 		{
 			"page": "dungeon-timer",
@@ -147,11 +156,14 @@
 				[
 					"100",
 					"1",
-					"790x690"
+					"940x700"
 				]
 			],
 			"fixture": true,
-			"effects": "off"
+			"effects": "off",
+			"views": {
+				"model-dungeon-boss": "nui/windows/dungeon-timer/dungeon-timer.boss.view.png"
+			}
 		}
 	]
 }

@@ -20,8 +20,8 @@
 ## notice box checked, the dungeon's row announces itself for three seconds when its clock ends.
 ##
 ## What differs from OLD:
-## - no 3D boss preview (OLD's render target and CPythonDungeonTimerManager wait for NOVA-137):
-##   the preview frame names the boss;
+## - the 3D boss preview uses the client's modelpreview module (NOVA-137); on a client without
+##   it the preview frame names the boss;
 ## - OLD's art (ui/dungeon_manager/*) and its monster faces are not in NEW's packs: the rows are
 ##   bars in OLD's sizes, available and on cooldown in two colors, and the drops rows carry no face;
 ## - the hidden dungeons and the notice choices last for the session (NEW has no cfg store);
@@ -67,6 +67,20 @@ NOTICE_SECONDS = 3
 def log(msg):
 	if DEBUG:
 		print("[TimerWindow] %s" % msg)
+
+
+## The boss's preview (the client's modelpreview module, NOVA-137; absent on a client without
+## it, then the frame only names the boss, as before).
+BOSS_PREVIEW = "dungeon_boss"
+BOSS_VIEW_RECT = (4, 24, 117, 140)
+
+
+def model_preview():
+	try:
+		import modelpreview
+	except ImportError:
+		return None
+	return modelpreview
 
 
 def _mins_ceil(seconds):
@@ -472,6 +486,8 @@ class TimerWindow(ui.ScriptWindow):
 		self.announced = {}     # idx -> the clock's end already announced
 		self.notices = {}       # idx -> its TimerNotice
 		self.wndDrops = None
+		self.bossView = None    # the render target of the boss's preview, None without one
+		self.bossRace = 0       # the race the preview shows, 0 for none
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -566,6 +582,43 @@ class TimerWindow(ui.ScriptWindow):
 		self.noticeBtn.SetTextInfo(uiScriptLocale.DUNGEON_MANAGER_NOTICE)
 		self.noticeBtn.Show()
 
+		self.bossView = self.__MakeBossView()
+
+	def __MakeBossView(self):
+		"""The boss preview's render target over the boss frame; None on a client without
+		render targets."""
+		if model_preview() is None or not hasattr(ui, "RenderTarget") or not ui.RenderTarget.IsAvailable():
+			return None
+		view = ui.RenderTarget()
+		view.SetParent(self.GetChild("RenderBG"))
+		view.AddFlag("not_pick")
+		(x, y, width, height) = BOSS_VIEW_RECT
+		view.SetPosition(x, y)
+		view.SetSize(width, height)
+		view.SetRenderTarget(BOSS_PREVIEW)
+		return view
+
+	def __ShowBossModel(self, race):
+		"""The chosen dungeon's boss, turning; hidden for race 0 or without the preview."""
+		race = int(race)
+		preview = model_preview()
+		if preview is None or self.bossView is None or race == 0:
+			self.__HideBossModel()
+			return
+		if race != self.bossRace:
+			preview.Select(BOSS_PREVIEW, race)
+			self.bossRace = race
+		preview.Show(BOSS_PREVIEW, True)
+		self.bossView.Show()
+
+	def __HideBossModel(self):
+		preview = model_preview()
+		if preview is not None:
+			preview.Show(BOSS_PREVIEW, False)
+		if self.bossView is not None:
+			self.bossView.Hide()
+		self.bossRace = 0
+
 	def __MakeBoard(self, idx):
 		return TimerBoard(self.dungeonsWindow, idx, self)
 
@@ -653,6 +706,7 @@ class TimerWindow(ui.ScriptWindow):
 		self.index = index
 		data = DESCRIPTION[index]
 		self.BossName.SetText(nonplayer.GetMonsterName(data[0][0]))
+		self.__ShowBossModel(data[0][0])
 
 		title, font = extract_font_tag(get_title(index))
 		if font:
@@ -775,6 +829,15 @@ class TimerWindow(ui.ScriptWindow):
 	def Close(self):
 		self.Hide()
 
+	def Hide(self):
+		self.__HideBossModel()
+		ui.ScriptWindow.Hide(self)
+
+	def Show(self):
+		if self.index in DESCRIPTION and self.bossRace == 0:
+			self.__ShowBossModel(DESCRIPTION[self.index][0][0])
+		ui.ScriptWindow.Show(self)
+
 	def UpdateTime(self):
 		"""Every frame (game.OnUpdate through Interface.UpdateTimer): each row's clock, and the
 		notice of a checked dungeon whose clock ended (OLD TimerBoard.UpdateTime)."""
@@ -812,6 +875,10 @@ class TimerWindow(ui.ScriptWindow):
 			notice.Destroy()
 		self.notices = {}
 		self.__ClearList()
+		preview = model_preview()
+		if preview is not None:
+			preview.Clear(BOSS_PREVIEW)
+		self.bossView = None
 		self.board = None
 		self.itemSlot = None
 		self.teleport = None
@@ -966,7 +1033,7 @@ class MobDropPopup(ui.BoardWithTitleBar):
 			self.expandButton = None
 
 	def __init__(self, interface):
-		ui.BoardWithTitleBar.__init__(self)
+		self.__InitBoard()
 		self.interface = interface
 		self.index = 0
 		self.mobRows = []
@@ -979,6 +1046,9 @@ class MobDropPopup(ui.BoardWithTitleBar):
 
 	def __del__(self):
 		ui.BoardWithTitleBar.__del__(self)
+
+	def __InitBoard(self):
+		ui.BoardWithTitleBar.__init__(self)
 
 	def __LoadWindow(self):
 		self.SetTitleName(localeInfo.TIMERWINDOW_DROP_TITLE)

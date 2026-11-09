@@ -8,10 +8,21 @@
 	     proxies: the list, hiding and showing, the chosen dungeon, the
 	     ticket's tooltip, the teleport, the ranking and drops buttons and the
 	     notice box are legacy's code. Each row counts its re-entry clock down
-	     (nui-countdown, M:SS; legacy counts rounded-up minutes every frame)
-	     and turns ready at its end (row_ready); the hide mark on a row hides
-	     that dungeon. No 3D boss preview (NOVA-137): the boss frame names the
-	     boss. A left or right press anywhere on it raises the window. -->
+	     (nui-countdown, M:SS) and turns ready at its end (row_ready); the
+	     hide mark on a row hides that dungeon.
+
+	     The modern skins lay the window out as one view of the chosen
+	     dungeon: the roster on the left (available in green, a running clock
+	     in red), the dungeon's name and state over the boss on its stage, its
+	     entry requirements as chips, its drops (a chip per mob, the items as
+	     a grid with whole-cell hover) and its description, and the rankings;
+	     Teleport is the primary action in the footer. The classic skin keeps
+	     legacy's arrangement (skins/classic/windows/dungeon-timer.rcss) and
+	     legacy's drops popup behind the Dungeon Drops button (its board is
+	     dungeon-drops.rml). The boss is the client's "dungeon_boss" model
+	     preview (nui-view "model-dungeon-boss", NOVA-137), or a mark and the
+	     boss's name where that preview does not exist. A left or right press
+	     anywhere on the window raises it. -->
 	<title>dungeon-timer</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="dungeon-timer.rcss"/>
@@ -29,65 +40,108 @@
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 	</div>
 	<div class="nui-window__body dungeon-timer__body">
-		<p class="dungeon-timer__choose">@ui.DUNGEON_MANAGER_CHOOSE_DUNGEON</p>
-		<div id="dungeon-timer-list" class="dungeon-timer__list">
-			<div class="dungeon-timer__rows">
-				<div class="dungeon-timer__row nui-anim" data-for="r : rows" data-attr-id="'dungeon-timer-row-' + r.idx"
-				     data-class-is-selected="r.idx == selected" data-class-is-cooldown="r.end > 0"
-				     data-class-is-event="r.event" data-event-mousedown="row_press(r.idx, ev.button)">
-					<span class="dungeon-timer__row-title">{{ r.title }}</span>
-					<span class="dungeon-timer__row-state" data-if="r.end &lt;= 0">@game.TIMERWINDOW_READY_TO_FIGHT</span>
-					<span class="dungeon-timer__row-state dungeon-timer__row-clock" data-if="r.end > 0"><nui-countdown
-						format="ms" data-attr-end="r.end" data-event-countdownend="row_ready(r.idx)"/></span>
-					<button class="nui-button nui-button--ghost nui-button--icon nui-anim dungeon-timer__row-hide"
-					        data-attr-id="'dungeon-timer-hide-' + r.idx"
-					        data-event-mousedown="hide_press(r.idx, ev.button)"><span class="nui-glyph nui-glyph--close"><span
-						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
-				</div>
-			</div>
-			<p class="dungeon-timer__empty" data-if="empty != ''">{{ empty }}</p>
-			<div class="dungeon-timer__show-hidden-row" data-if="show_hidden"><button id="dungeon-timer-show-hidden"
-			        class="nui-button nui-button--medium nui-anim dungeon-timer__show-hidden"
-			        data-event-mousedown="button_press('show_hidden', ev.button)"><span
-				class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_SHOW_HIDDEN</span></button></div>
-		</div>
-		<div class="dungeon-timer__buttons">
-			<button id="dungeon-timer-drops" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--drops"
-			        data-event-mousedown="button_press('drops', ev.button)"><span
-				class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_DROPS</span></button>
-			<button id="dungeon-timer-time" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--time"
-			        data-event-mousedown="button_press('time', ev.button)"><span
-				class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_TIME_RANK</span></button>
-			<button id="dungeon-timer-overall" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--overall"
-			        data-event-mousedown="button_press('overall', ev.button)"><span
-				class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_OVERALL_RANK</span></button>
-			<button id="dungeon-timer-damage" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--damage"
-			        data-event-mousedown="button_press('damage', ev.button)"><span
-				class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_DAMAGE_RANK</span></button>
-		</div>
-		<div class="dungeon-timer__detail">
-			<div class="dungeon-timer__info">
-				<div class="dungeon-timer__facts" data-class-nui-attach-right="attach_right">
-					<span class="dungeon-timer__fact dungeon-timer__fact--ticket">{{ ticket_label }}</span>
-					<div id="dungeon-timer-ticket" class="nui-slot nui-anim dungeon-timer__ticket"
-					     data-class-is-empty="ticket.kind == ''"
-					     data-event-mousedown="ticket_press(ev.button)" data-event-mouseover="ticket_over()"
-					     data-event-mouseout="ticket_out()">
-						<img class="nui-slot__icon" data-if="ticket.icon != ''" data-attr-src="ticket.icon"/>
+		<div class="dungeon-timer__roster">
+			<p class="dungeon-timer__choose">@ui.DUNGEON_MANAGER_CHOOSE_DUNGEON</p>
+			<div id="dungeon-timer-list" class="dungeon-timer__list">
+				<div class="dungeon-timer__rows">
+					<div class="dungeon-timer__row nui-anim" data-for="r : rows" data-attr-id="'dungeon-timer-row-' + r.idx"
+					     data-class-is-selected="r.idx == selected" data-class-is-cooldown="r.end > 0"
+					     data-class-is-event="r.event" data-event-mousedown="row_press(r.idx, ev.button)">
+						<span class="dungeon-timer__row-title">{{ r.title }}</span>
+						<span class="dungeon-timer__row-state" data-if="r.end &lt;= 0">@game.TIMERWINDOW_READY_TO_FIGHT</span>
+						<span class="dungeon-timer__row-state dungeon-timer__row-clock" data-if="r.end > 0"><nui-countdown
+							format="ms" data-attr-end="r.end" data-event-countdownend="row_ready(r.idx)"/></span>
+						<button class="nui-button nui-button--ghost nui-button--icon nui-anim dungeon-timer__row-hide"
+						        data-attr-id="'dungeon-timer-hide-' + r.idx"
+						        data-event-mousedown="hide_press(r.idx, ev.button)"><span class="nui-glyph nui-glyph--close"><span
+							class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
 					</div>
-					<span class="dungeon-timer__fact dungeon-timer__fact--level">{{ level }}</span>
-					<span class="dungeon-timer__fact dungeon-timer__fact--group">{{ group }}</span>
-					<span class="dungeon-timer__fact dungeon-timer__fact--cooldown">{{ cooldown }}</span>
 				</div>
-				<div id="dungeon-timer-desc" class="dungeon-timer__desc">
-					<p class="dungeon-timer__desc-line" data-for="d : desc" data-attr-class="'dungeon-timer__desc-line dungeon-timer__desc-line--' + d.tone">{{ d.text }}</p>
+				<p class="dungeon-timer__empty" data-if="empty != ''">{{ empty }}</p>
+				<div class="dungeon-timer__show-hidden-row" data-if="show_hidden"><button id="dungeon-timer-show-hidden"
+				        class="nui-button nui-button--medium nui-anim dungeon-timer__show-hidden"
+				        data-event-mousedown="button_press('show_hidden', ev.button)"><span
+					class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_SHOW_HIDDEN</span></button></div>
+			</div>
+		</div>
+		<div class="dungeon-timer__main">
+			<div class="dungeon-timer__hero">
+				<span class="dungeon-timer__hero-name">{{ name }}</span>
+				<span class="dungeon-timer__hero-state" data-if="sel_end &lt;= 0">@game.TIMERWINDOW_READY_TO_FIGHT</span>
+				<span class="dungeon-timer__hero-state dungeon-timer__hero-clock" data-if="sel_end > 0"><nui-countdown
+					format="ms" data-attr-end="sel_end"/></span>
+			</div>
+			<div class="dungeon-timer__detail">
+				<div class="dungeon-timer__boss" data-class-has-view="model_view">
+					<span class="dungeon-timer__name">{{ name }}</span>
+					<nui-view class="dungeon-timer__boss-view" name="model-dungeon-boss" hover="none" data-if="model_view"></nui-view>
+					<span class="dungeon-timer__boss-mark" data-if="!model_view"><span class="nui-glyph nui-glyph--sword"><span class="nui-glyph__a"></span><span
+						class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
+					<span class="dungeon-timer__boss-name">{{ boss }}</span>
+				</div>
+				<div class="dungeon-timer__info">
+					<div class="dungeon-timer__facts" data-class-nui-attach-right="attach_right" data-class-no-ticket="ticket.kind == ''">
+						<span class="dungeon-timer__fact dungeon-timer__fact--ticket">{{ ticket_label }}</span>
+						<div id="dungeon-timer-ticket" class="nui-slot nui-anim dungeon-timer__ticket"
+						     data-class-is-empty="ticket.kind == ''"
+						     data-event-mousedown="ticket_press(ev.button)" data-event-mouseover="ticket_over()"
+						     data-event-mouseout="ticket_out()">
+							<img class="nui-slot__icon" data-if="ticket.icon != ''" data-attr-src="ticket.icon"/>
+						</div>
+						<span class="dungeon-timer__fact dungeon-timer__fact--level">{{ level }}</span>
+						<span class="dungeon-timer__fact dungeon-timer__fact--group">{{ group }}</span>
+						<span class="dungeon-timer__fact dungeon-timer__fact--cooldown">{{ cooldown }}</span>
+					</div>
+					<div class="dungeon-timer__drops">
+						<div class="dungeon-timer__drops-head">
+							<span class="dungeon-timer__drops-title">@ui.DUNGEON_MANAGER_DROPS</span>
+						</div>
+						<div class="dungeon-timer__drop-mobs">
+							<button class="nui-anim dungeon-timer__drop-mob" data-for="m : drops_mobs"
+							        data-attr-id="'dungeon-timer-drop-mob-' + m.i"
+							        data-attr-class="'nui-anim dungeon-timer__drop-mob dungeon-timer__drop-mob--' + m.type"
+							        data-class-is-active="m.active"
+							        data-event-mousedown="drop_mob_press(m.i, ev.button)">{{ m.name }}</button>
+						</div>
+						<div id="dungeon-timer-drops-grid" class="dungeon-timer__drop-grid">
+							<div class="nui-slot nui-anim dungeon-timer__drop" data-for="d : drops_items"
+							     data-attr-id="'dungeon-timer-drop-' + d.i"
+							     data-attr-class="'nui-slot nui-anim dungeon-timer__drop dungeon-timer__drop--' + d.band"
+							     data-event-mouseover="drop_over(d.i)" data-event-mouseout="drop_out()">
+								<img class="nui-slot__icon" data-if="d.icon != ''" data-attr-src="d.icon"/>
+								<span class="nui-slot__count" data-if="d.count != ''">{{ d.count }}</span>
+							</div>
+							<p class="dungeon-timer__drops-note" data-if="drops_state == 'loading'">@ui.DUNGEON_RANK_LOADING</p>
+							<p class="dungeon-timer__drops-note" data-if="drops_state == 'empty'">@ui.DUNGEON_MANAGER_NO_DROPS</p>
+						</div>
+						<div class="dungeon-timer__legend">
+							<span class="dungeon-timer__legend-item"><span class="dungeon-timer__legend-dot dungeon-timer__legend-dot--guaranteed"></span>@game.TIMERWINDOW_DROP_GUARANTEED</span>
+							<span class="dungeon-timer__legend-item"><span class="dungeon-timer__legend-dot dungeon-timer__legend-dot--common"></span>@game.TIMERWINDOW_DROP_COMMON</span>
+							<span class="dungeon-timer__legend-item"><span class="dungeon-timer__legend-dot dungeon-timer__legend-dot--rare"></span>@game.TIMERWINDOW_DROP_RARE</span>
+						</div>
+						<nui-countdown class="dungeon-timer__hidden-clock" format="none" data-if="drops_retry > 0"
+						               data-attr-end="drops_retry" data-event-countdownend="drops_retry()"/>
+						<nui-countdown class="dungeon-timer__hidden-clock" format="none" data-if="drops_timeout > 0"
+						               data-attr-end="drops_timeout" data-event-countdownend="drops_timeout()"/>
+					</div>
+					<div id="dungeon-timer-desc" class="dungeon-timer__desc">
+						<p class="dungeon-timer__desc-line" data-for="d : desc" data-attr-class="'dungeon-timer__desc-line dungeon-timer__desc-line--' + d.tone">{{ d.text }}</p>
+					</div>
 				</div>
 			</div>
-			<div class="dungeon-timer__boss">
-				<span class="dungeon-timer__name">{{ name }}</span>
-				<span class="dungeon-timer__boss-mark"><span class="nui-glyph nui-glyph--sword"><span class="nui-glyph__a"></span><span
-					class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span></span>
-				<span class="dungeon-timer__boss-name">{{ boss }}</span>
+			<div class="dungeon-timer__buttons">
+				<button id="dungeon-timer-drops" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--drops"
+				        data-event-mousedown="button_press('drops', ev.button)"><span
+					class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_DROPS</span></button>
+				<button id="dungeon-timer-time" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--time"
+				        data-event-mousedown="button_press('time', ev.button)"><span
+					class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_TIME_RANK</span></button>
+				<button id="dungeon-timer-overall" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--overall"
+				        data-event-mousedown="button_press('overall', ev.button)"><span
+					class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_OVERALL_RANK</span></button>
+				<button id="dungeon-timer-damage" class="nui-button nui-button--medium nui-anim dungeon-timer__button dungeon-timer__button--damage"
+				        data-event-mousedown="button_press('damage', ev.button)"><span
+					class="dungeon-timer__button-label">@ui.DUNGEON_MANAGER_DAMAGE_RANK</span></button>
 			</div>
 		</div>
 	</div>

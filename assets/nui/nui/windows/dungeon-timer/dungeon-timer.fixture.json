@@ -99,6 +99,68 @@
 			}
 		],
 		"notice": true,
-		"notice_label": ""
+		"notice_label": "",
+		"sel_end": 0.0,
+		"model_view": true,
+		"drops_state": "ready",
+		"drops_mobs": [
+			{
+				"i": 0,
+				"name": "Nemere",
+				"type": "boss",
+				"active": true
+			},
+			{
+				"i": 1,
+				"name": "Ice Golem",
+				"type": "mob",
+				"active": false
+			},
+			{
+				"i": 2,
+				"name": "Metin of Cold",
+				"type": "stone",
+				"active": false
+			}
+		],
+		"drops_items": [
+			{
+				"i": 0,
+				"vnum": 30190,
+				"icon": "/icon/item/30190.tga",
+				"count": "2",
+				"band": "common"
+			},
+			{
+				"i": 1,
+				"vnum": 27992,
+				"icon": "/icon/item/27992.tga",
+				"count": "",
+				"band": "guaranteed"
+			},
+			{
+				"i": 2,
+				"vnum": 27993,
+				"icon": "/icon/item/27993.tga",
+				"count": "",
+				"band": "rare"
+			},
+			{
+				"i": 3,
+				"vnum": 70024,
+				"icon": "/icon/item/70024.tga",
+				"count": "",
+				"band": "rare"
+			},
+			{
+				"i": 4,
+				"vnum": 50124,
+				"icon": "/icon/item/50124.tga",
+				"count": "5",
+				"band": "common"
+			}
+		],
+		"drops_retry": 0.0,
+		"drops_timeout": 0.0
 	}
 }

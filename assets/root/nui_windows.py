@@ -122,6 +122,8 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("chest-drop", True),         # what a chest can give, with each item's chance tier
 	# Wave 7 (NOVA-43): the switchbot, in the items group.
 	("switchbot", True),          # the switchbot's six slots, targets, cost and start/stop
+	# Wave 8 (NOVA-17): fast equip, in the items group.
+	("fastequip", True),          # the 10 saved gear sets
 	# Wave 7 (NOVA-24): the advanced pet's windows, in the items group.
 	("pet", True),                # the advanced pet (your own and a preview)
 	("pet-mini", True),           # the summoned pet's small window
@@ -155,7 +157,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
 	"rest": ("quest", "guild-building", "web", "console"),
 	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop",
-	          "switchbot", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
+	          "switchbot", "fastequip", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
@@ -225,6 +227,8 @@ ON_DEMAND_DOCUMENTS = (
 	("chest-drop", ("chest-drop",)),
 	# Wave 7 (NOVA-43): the switchbot, only while it shows.
 	("switchbot", ("switchbot",)),
+	# Wave 8 (NOVA-17): fast equip, only while it shows.
+	("fastequip", ("fastequip",)),
 	("equipment-view", ("equipment-view",)),
 	("messenger", ("messenger",)),
 	("whisper", ("whisper",)),

@@ -56,6 +56,8 @@ import uiKillRank
 import uiMyShopDecoration
 # The switchbot (NOVA-43; OLD interfaceModule.py:90, 417).
 import uiSwitchbot
+# Fast equip (NOVA-17; OLD interfaceModule.py:93).
+import uiFastEquip
 # The dungeon manager and the dungeon ranking (NOVA-25).
 import uiTimerWindow
 import uiDungeonRank
@@ -119,6 +121,7 @@ class Interface(object):
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
 		self.wndSwitchbot = None
+		self.wndFastEquip = None
 		# NOVA-29: the kill ranking and the guild war top killers.
 		self.wndKillRank = None
 		self.wndTopKillers = None
@@ -300,6 +303,11 @@ class Interface(object):
 		# controller, on NovaUI proxies while the switchbot flag is on.
 		self.wndSwitchbot = nui_windows.make("switchbot", uiSwitchbot.SwitchbotWindow, "nui_switchbot.SwitchbotWindow")
 		self.wndSwitchbot.Hide()
+
+		# Fast equip (NOVA-17; OLD interfaceModule.py:520-524): the legacy
+		# controller, on NovaUI proxies while the fastequip flag is on.
+		self.wndFastEquip = nui_windows.make("fastequip", uiFastEquip.FastEquipWindow, "nui_fastequip.FastEquipWindow")
+		self.wndFastEquip.Hide()
 
 		# The kill ranking (NOVA-29, OLD interfaceModule.py:780-782) and the guild
 		# war top killers (OLD :279-280).
@@ -590,6 +598,7 @@ class Interface(object):
 		self.privateShopBuilder.SetItemToolTip(self.tooltipItem)
 		self.wndGemShop.SetItemToolTip(self.tooltipItem)
 		self.wndSwitchbot.SetItemToolTip(self.tooltipItem)
+		self.wndFastEquip.SetItemToolTip(self.tooltipItem)
 		self.wndSashCombine.SetItemToolTip(self.tooltipItem)
 		self.wndSashAbsorption.SetItemToolTip(self.tooltipItem)
 		self.wndTimer.SetToolTip(self.tooltipItem)
@@ -758,6 +767,9 @@ class Interface(object):
 		if self.wndSwitchbot:
 			self.wndSwitchbot.Destroy()
 			self.wndSwitchbot = None
+		if self.wndFastEquip:
+			self.wndFastEquip.Destroy()
+			self.wndFastEquip = None
 
 		if self.wndOfflineShopLog:
 			self.wndOfflineShopLog.Destroy()
@@ -915,6 +927,8 @@ class Interface(object):
 
 	def RefreshInventory(self):
 		self.wndTaskBar.RefreshQuickSlot()
+		if self.wndFastEquip:
+			self.wndFastEquip.RefreshInventory()
 		self.wndInventory.RefreshItemSlot()
 		self.wndExtraInventory.RefreshItemSlot()
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
@@ -1699,6 +1713,8 @@ class Interface(object):
 		## The switchbot (NOVA-43; OLD interfaceModule.py:3384-3385).
 		if getattr(self, "wndSwitchbot", None):
 			hideWindows += self.wndSwitchbot,
+		if getattr(self, "wndFastEquip", None):
+			hideWindows += self.wndFastEquip,
 
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:3358-3364).
 		if getattr(self, "wndPetWindow", None):
@@ -1840,6 +1856,19 @@ class Interface(object):
 			self.wndSwitchbot.Close()
 		else:
 			self.wndSwitchbot.Open()
+
+	### Fast equip (NOVA-17; OLD interfaceModule.py:1564, 1763) ###
+	def ToggleFastEquipWindow(self):
+		if not self.wndFastEquip:
+			return
+		if self.wndFastEquip.IsShow():
+			self.wndFastEquip.Close()
+		else:
+			self.wndFastEquip.Open()
+
+	def RefreshFastEquip(self, setIndex, switched):
+		if self.wndFastEquip and self.wndFastEquip.IsShow():
+			self.wndFastEquip.RefreshFastEquip(setIndex, switched)
 
 	def RefreshSwitchbotWindow(self):
 		if self.wndSwitchbot and self.wndSwitchbot.IsShow():

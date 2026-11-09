@@ -361,6 +361,17 @@ body.inv.inv--table-old .inv-wear--unique2 { top: 189dp; }
 {
 	--glyph-ink: var(--warning);
 }
+/* Fast equip (NOVA-17), on the panel's free left edge beside the rings; the
+   right column is full. */
+.inv-button--fastequip
+{
+	left: 2dp;
+	top: 141dp;
+	width: 22dp;
+	height: 22dp;
+	border-radius: 11dp;
+	line-height: 20dp;
+}
 /* The special inventory: the bag glyph with a small accent plus on its
    shoulder; its label is classic's. */
 .inv-button--extra

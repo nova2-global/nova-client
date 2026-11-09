@@ -1161,3 +1161,7 @@ BOSS_INFO_RESPAWN	Verschijnt over %s
 BOSS_INFO_EXPAND	Bazen tonen
 BOSS_INFO_COLLAPSE	Bazen verbergen
 DAMAGE_COUNT_DAMAGE	Schade: %s(%s)
+FAST_EQUIP_TITLE	Snelle Uitrusting
+FAST_EQUIP_CLEAR_CONFIRM	Ben je zeker dat je deze pagina wilt wissen?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

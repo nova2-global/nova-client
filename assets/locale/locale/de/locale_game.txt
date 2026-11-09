@@ -1159,3 +1159,7 @@ BOSS_INFO_RESPAWN	Erscheint in %s
 BOSS_INFO_EXPAND	Bosse anzeigen
 BOSS_INFO_COLLAPSE	Bosse ausblenden
 DAMAGE_COUNT_DAMAGE	Schaden: %s(%s)
+FAST_EQUIP_TITLE	Schnelles Equipment
+FAST_EQUIP_CLEAR_CONFIRM	Bist du dir sicher, dass du diese Seite leeren möchtest?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

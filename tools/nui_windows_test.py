@@ -39,6 +39,8 @@ ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop"]
 # and aura.
 WAVE7_ITEMS = ["switchbot"]
 ITEMS = ITEMS + WAVE7_ITEMS
+# Wave 8 (NOVA-17): fast equip, after the switchbot.
+ITEMS = ITEMS + ["fastequip"]
 # Wave 7 (NOVA-24): the advanced pet's windows.
 WAVE7_PET = ["pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"]
 ITEMS = ITEMS + WAVE7_PET
@@ -936,6 +938,25 @@ class Wave7Switchbot(WindowsTest):
         self.assertIn(("switchbot", ("switchbot",)), self.m.ON_DEMAND_DOCUMENTS)
         self.setting.windows = "+switchbot"
         self.assertEqual(self.m.prewarm_documents(), ["nui/windows/switchbot/switchbot.rml"])
+
+
+class Wave8FastEquip(WindowsTest):
+    """Wave 8 (NOVA-17): fast equip is the id "fastequip", on by default, in
+    the items group, after the switchbot and before the maintenance
+    countdown; its document loads only while it shows and is prewarmed."""
+
+    def test_the_id_is_on_by_default_before_maintenance_and_in_the_items_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertLess(ids.index("switchbot"), ids.index("fastequip"))
+        self.assertLess(ids.index("fastequip"), ids.index("maintenance"))
+        self.assertIs(dict(self.m.WINDOWS)["fastequip"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "fastequip" in members and group != "all"],
+                         ["items"])
+
+    def test_the_document_is_on_demand_and_prewarmed(self):
+        self.assertIn(("fastequip", ("fastequip",)), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+fastequip"
+        self.assertEqual(self.m.prewarm_documents(), ["nui/windows/fastequip/fastequip.rml"])
 
 
 if __name__ == "__main__":

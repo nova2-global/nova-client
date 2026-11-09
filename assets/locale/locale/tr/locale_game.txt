@@ -1161,3 +1161,7 @@ BOSS_INFO_RESPAWN	%s içinde yeniden doğar
 BOSS_INFO_EXPAND	Patronları göster
 BOSS_INFO_COLLAPSE	Patronları gizle
 DAMAGE_COUNT_DAMAGE	Hasar: %s(%s)
+FAST_EQUIP_TITLE	Hızlı ekipman
+FAST_EQUIP_CLEAR_CONFIRM	Bu sayfayı temizlemek istediğine emin misin?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

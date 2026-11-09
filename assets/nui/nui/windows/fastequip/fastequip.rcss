@@ -1,0 +1,279 @@
+/* The fast equip window's modern look (Wave 8, NOVA-17): the 10 sets as a
+   rail (color chip, name, edit), the selected set's name bar with the
+   equipped stripe, and OLD's wear layout at 1.25 x on a code-drawn canvas,
+   each usable cell a slot; an edit panel over the board for the name and
+   the 12 colors. Classic (legacy's 460 x 375 board): skins/classic/windows/
+   fastequip.rcss. */
+
+body.fastequip
+{
+	--fe-color: var(--surface-sunken);
+	left: 16dp;
+	top: 16dp;
+	width: 640dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.fastequip button
+{
+	tab-index: none;
+	focus: none;
+}
+.fastequip__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.fastequip__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.fastequip__body
+{
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	padding: 10dp 16dp 16dp;
+}
+.fastequip__timer
+{
+	display: none;
+}
+
+/* --- the sets ------------------------------------------------------------ */
+.fastequip__sets
+{
+	width: 132dp;
+	margin-right: 12dp;
+}
+.fastequip__sets-head
+{
+	height: 24dp;
+	line-height: 24dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.fastequip__set
+{
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 32dp;
+	margin-bottom: 4dp;
+	padding: 0 4dp 0 8dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	background-color: var(--surface-sunken);
+}
+.fastequip__set:hover,
+.fastequip__set.is-selected
+{
+	border-color: var(--accent);
+	background-color: var(--selection);
+}
+.fastequip__set-color
+{
+	background-color: var(--fe-color);
+	width: 8dp;
+	height: 16dp;
+	margin-right: 6dp;
+	border-radius: 2dp;
+}
+.fastequip__set-name
+{
+	flex: 1 1 0;
+	white-space: nowrap;
+	overflow: hidden;
+	color: var(--text);
+}
+.fastequip__set-edit
+{
+	width: 22dp;
+	height: 22dp;
+	margin-left: 4dp;
+}
+.fastequip__set-edit-mark
+{
+	color: var(--text-muted);
+}
+
+/* --- the selected set ---------------------------------------------------- */
+.fastequip__main
+{
+	position: relative;
+	width: 460dp;
+}
+.fastequip__title-bar
+{
+	background-color: var(--fe-color);
+	position: relative;
+	height: 28dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 6dp;
+	text-align: center;
+}
+.fastequip__set-title
+{
+	line-height: 26dp;
+	color: var(--text);
+}
+.fastequip__equipped-stripe
+{
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 6dp;
+	height: 100%;
+	border-radius: 6dp 0 0 6dp;
+	background-color: var(--success);
+}
+.fastequip__title-bar.is-equipped .fastequip__equipped-stripe
+{
+	display: block;
+}
+.fastequip__canvas
+{
+	position: relative;
+	width: 460dp;
+	height: 372dp;
+	margin-top: 8dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+}
+.fastequip__cell
+{
+	position: absolute;
+	margin: 0;
+}
+.fastequip__tip
+{
+	white-space: nowrap;
+	bottom: 110%;
+	left: 0;
+}
+.fastequip__cell--missing
+{
+	opacity: 0.55;
+	border-color: var(--warning);
+}
+.fastequip .fastequip__cell--w0 { left: 270dp; top: 71dp; width: 40dp; height: 80dp; }
+.fastequip .fastequip__cell--w1 { left: 270dp; top: 21dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w2 { left: 270dp; top: 218dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w3 { left: 323dp; top: 114dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w4 { left: 218dp; top: 30dp; width: 40dp; height: 120dp; }
+.fastequip .fastequip__cell--w5 { left: 374dp; top: 115dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w6 { left: 374dp; top: 71dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w7 { left: 220dp; top: 218dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w8 { left: 326dp; top: 218dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w9 { left: 374dp; top: 21dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w10 { left: 323dp; top: 71dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w19 { left: 74dp; top: 74dp; width: 40dp; height: 80dp; }
+.fastequip .fastequip__cell--w20 { left: 74dp; top: 12dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w21 { left: 323dp; top: 21dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w22 { left: 22dp; top: 32dp; width: 40dp; height: 120dp; }
+.fastequip .fastequip__cell--w23 { left: 74dp; top: 172dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w24 { left: 10dp; top: 232dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w25 { left: 102dp; top: 232dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w26 { left: 23dp; top: 172dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w27 { left: 129dp; top: 74dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w28 { left: 218dp; top: 167dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w29 { left: 323dp; top: 167dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w30 { left: 272dp; top: 167dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w31 { left: 77dp; top: 326dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w32 { left: 129dp; top: 326dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w33 { left: 182dp; top: 326dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w36 { left: 127dp; top: 12dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w37 { left: 53dp; top: 232dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w38 { left: 144dp; top: 232dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w39 { left: 302dp; top: 326dp; width: 40dp; height: 40dp; }
+
+.fastequip__row-label
+{
+	position: absolute;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	top: 342dp;
+}
+.fastequip__row-label--buffi
+{
+	left: 77dp;
+}
+.fastequip__row-label--aura
+{
+	left: 302dp;
+}
+.fastequip__buttons
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin-top: 10dp;
+}
+.fastequip__switch
+{
+	margin-right: 12dp;
+}
+
+/* --- the edit panel over the board --------------------------------------- */
+.fastequip__edit
+{
+	position: absolute;
+	left: 148dp;
+	top: 52dp;
+	width: 200dp;
+	padding: 12dp;
+	z-index: 2;
+}
+.fastequip__name-input
+{
+	display: block;
+	width: 100%;
+	box-sizing: border-box;
+	margin-bottom: 10dp;
+}
+.fastequip__palette
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	margin-bottom: 10dp;
+}
+.fastequip__swatch
+{
+	background-color: var(--fe-color);
+	width: 26dp;
+	height: 16dp;
+	margin: 0 4dp 4dp 0;
+	border-width: 1dp;
+	border-color: transparent;
+	border-radius: 3dp;
+}
+.fastequip__swatch.is-selected
+{
+	border-color: var(--text);
+}
+.fastequip__edit-buttons
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}

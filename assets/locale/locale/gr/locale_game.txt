@@ -1161,3 +1161,7 @@ BOSS_INFO_RESPAWN	Respawning in %s
 BOSS_INFO_EXPAND	Show the bosses
 BOSS_INFO_COLLAPSE	Hide the bosses
 DAMAGE_COUNT_DAMAGE	Damage: %s(%s)
+FAST_EQUIP_TITLE	Γρήγορος Εξοπλισμός
+FAST_EQUIP_CLEAR_CONFIRM	Είσαι σίγουρος οτι θέλεις να καθαρίσεις αυτή τη σελίδα?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

@@ -377,6 +377,12 @@ class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0 and self._owner.mallButton:
 			self._owner.mallButton.click()
 
+	@nui.on("fastequip_press")
+	def on_fastequip_press(self, button):
+		self.raise_for(button)
+		if button == 0 and self._owner.fastEquipButton:
+			self._owner.fastEquipButton.click()
+
 	@nui.on("extra_press")
 	def on_extra_press(self, button):
 		self.raise_for(button)
@@ -474,6 +480,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"has_mall": False,
 			# Wave 4b (NOVA-16): the special inventory's button.
 			"has_extra": False,
+			"has_fastequip": False,
 			# The board is placed from Python (inv--placed: the sheet's
 			# right and bottom give way to the placement's left and top).
 			"placed": False,
@@ -674,6 +681,7 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		# The special inventory (NOVA-16): legacy's uiscript has the button
 		# (legacy binds it with GetChild2, None on a board without it).
 		self.extraInventoryButton = nui_proxies.ButtonProxy()
+		self.fastEquipButton = nui_proxies.ButtonProxy()
 		self.inventoryTab = [nui_proxies.ButtonProxy() for _ in range(limits.INVENTORY_PAGE_COUNT)]
 		self.equipmentTab = [nui_proxies.ButtonProxy(), nui_proxies.ButtonProxy()]
 
@@ -741,9 +749,12 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			self.costumeButton.SetEvent(ui.__mem_func__(self.ClickCostumeButton))
 		if self.extraInventoryButton:
 			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
+		if self.fastEquipButton:
+			self.fastEquipButton.SetEvent(ui.__mem_func__(self.ClickFastEquipButton))
 		self.wndCostume = None
 		self._set(has_costume=bool(self.costumeButton), has_dss=bool(self.DSSButton), has_mall=bool(self.mallButton),
-		          has_extra=bool(self.extraInventoryButton))
+		          has_extra=bool(self.extraInventoryButton),
+		          has_fastequip=bool(self.fastEquipButton))
 
 		## Refresh
 		self.SetInventoryPage(0)

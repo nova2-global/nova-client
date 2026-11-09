@@ -1161,3 +1161,7 @@ BOSS_INFO_RESPAWN	Réapparition dans %s
 BOSS_INFO_EXPAND	Afficher les boss
 BOSS_INFO_COLLAPSE	Masquer les boss
 DAMAGE_COUNT_DAMAGE	Dégâts : %s(%s)
+FAST_EQUIP_TITLE	Equipements préréglés
+FAST_EQUIP_CLEAR_CONFIRM	Voulez-vous vraiment effacer cette page ?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

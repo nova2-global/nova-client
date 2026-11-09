@@ -1480,8 +1480,10 @@ class ShowSash(unittest.TestCase):
                          [(90, cls.SHOW_SASH_ROW_Y), (155, cls.SHOW_SASH_ROW_Y)])
         self.assertEqual([self.place(button) for button in dialog.hideShopsButtonList],
                          [(90, cls.HIDE_SHOPS_ROW_Y), (155, cls.HIDE_SHOPS_ROW_Y)])
-        self.assertEqual(dialog.GetChild("board").size[1], cls.SHOW_SASH_HEIGHT, "the board grown by one row")
-        self.assertEqual(dialog.size[1], cls.SHOW_SASH_HEIGHT, "the window with it")
+        # The buffi's row (NOVA-38) comes under it and grows the board once more.
+        self.assertEqual(cls.HIDE_BUFFI_HEIGHT, cls.SHOW_SASH_HEIGHT + 25)
+        self.assertEqual(dialog.GetChild("board").size[1], cls.HIDE_BUFFI_HEIGHT, "the board grown by its rows")
+        self.assertEqual(dialog.size[1], cls.HIDE_BUFFI_HEIGHT, "the window with it")
         self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
                          "the bottom margin under the last row kept")
 
@@ -1551,9 +1553,9 @@ class ShowSash(unittest.TestCase):
             found = re.search(rule % ("go-choice--sash-%d" % value), classic)
             self.assertEqual((found.group(1), found.group(2)), (str(x), str(cls.SHOW_SASH_ROW_Y)))
         heights = re.findall(r"height: (\d+)dp;", classic.split(".game-options__titlebar")[0])
-        self.assertEqual(heights, [str(cls.SHOW_SASH_HEIGHT)], "the body as tall as legacy's board")
+        self.assertEqual(heights, [str(cls.HIDE_BUFFI_HEIGHT)], "the body as tall as legacy's board")
         body = classic.split("body.skin-classic.game-options .game-options__body")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % cls.SHOW_SASH_HEIGHT, body)
+        self.assertIn("height: %ddp;" % cls.HIDE_BUFFI_HEIGHT, body)
 
     def test_the_label_is_in_every_locale_with_old_s_text(self):
         locales = [name for name in sorted(os.listdir(LOCALES))

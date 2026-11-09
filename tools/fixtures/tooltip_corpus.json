@@ -27,7 +27,7 @@
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "ff5140bc13521cb32699a9bf8c886718c685edc88bfdd242ec399e1144415e56"
+			"sha256": "6412e3a34672d56869249705dbc5cbb46b019181d1f0875d37ef181637d4dbf0"
 		}
 	},
 	"items": {
@@ -13566,6 +13566,52 @@
 				"hair range 174013-174021"
 			]
 		},
+		"91010": {
+			"name": "Dragon Buffi (Permanent)",
+			"type": 3,
+			"type_name": "USE",
+			"subtype": 10,
+			"subtype_name": "10",
+			"size": [
+				1,
+				1
+			],
+			"antiflags": 0,
+			"flags": 0,
+			"wear": 0,
+			"limits": [
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				]
+			],
+			"applies": [],
+			"values": [
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+			],
+			"sockets": 0,
+			"price": {
+				"buy": 0,
+				"sell": 0
+			},
+			"refine": 0,
+			"synthetic": true,
+			"why": [
+				"a rule branch the proto has no item for"
+			],
+			"icon": "icon/item/27001.tga",
+			"desc": "",
+			"summary": ""
+		},
 		"110500": {
 			"name": "Dragon Stone of the Sixth Step",
 			"type": 29,
@@ -20907,6 +20953,28 @@
 			"id": "bag-90007",
 			"context": "SetInventoryItem",
 			"vnum": 90007,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "vnum-91010",
+			"context": "SetItemToolTip",
+			"vnum": 91010
+		},
+		{
+			"id": "bag-91010",
+			"context": "SetInventoryItem",
+			"vnum": 91010,
 			"sockets": [
 				0,
 				0,
@@ -40358,6 +40426,23 @@
 			"clock": 1700000000
 		},
 		{
+			"id": "synthetic-time-91010",
+			"context": "SetInventoryItem",
+			"vnum": 91010,
+			"sockets": [
+				1700000600,
+				0,
+				1700000900,
+				0
+			],
+			"attrs": [],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
 			"id": "synthetic-time-110500",
 			"context": "SetInventoryItem",
 			"vnum": 110500,
@@ -41739,6 +41824,44 @@
 				[
 					9,
 					10
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000
+		},
+		{
+			"id": "buffi-int",
+			"context": "SetInventoryItem",
+			"vnum": 91010,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					0
+				],
+				[
+					0,
+					140
 				]
 			],
 			"player": {

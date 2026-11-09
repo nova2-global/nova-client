@@ -108,6 +108,7 @@ GACHA_CHEST = 34218
 SASH, SASH_NEXT = 900029, 900030
 AURA_FIRST, AURA_LAST = 149001, 149006
 QUIVER = 900031
+BUFFI = 91010
 # The extra inventory's window and the gacha's item type (main's exe:
 # GameType.h EXTRA_INVENTORY, ItemData.h ITEM_TYPE_GACHA), which the client
 # constants the stand-ins are made from (tools/fixtures/module_constants.json,
@@ -493,6 +494,8 @@ SYNTHETIC.update({
     # Wave 6 (NOVA-19): a quiver that counts in real time.
     QUIVER: _made("Quiver of Hours", "WEAPON", support.module_constants()["item"]["WEAPON_UNLIMITED_ARROW"],
                   ((LIMITS["LEVEL"], 1), (LIMITS["REAL_TIME"], 3600))),
+    # Wave 7 (NOVA-38): a buffi item, whose fifth attribute is its INT.
+    BUFFI: _made("Dragon Buffi (Permanent)", "USE", SUB_TYPES["USE"].index("USE_SPECIAL")),
 })
 
 # --- the skills (spec 5.8's skill cases; the numbers are the cases', the names the client's) ------
@@ -912,6 +915,8 @@ def wave6_cases(items):
     # The aura's tier and level (NOVA-23; socket 0 the level, 1 the experience).
     add("aura-level", "SetInventoryItem", AURA_FIRST, [12, 340, 0])
     add("aura-level-max", "SetInventoryItem", AURA_LAST, [250, 0, 0])
+    # The buffi item's INT line (NOVA-38; OLD uiToolTip.py:1413-1414).
+    add("buffi-int", "SetInventoryItem", BUFFI, [0, 0, 0], attrs=[[0, 0], [0, 0], [0, 0], [0, 0], [0, 140]])
     return cases
 
 

@@ -129,8 +129,10 @@ TREE = (
 	]},
 ) + tuple(data.TEXT_CATEGORIES)
 
-# Sessions' answers: {(kind, vnum): answer dict}.
-ANSWERS = {}
+# The answers: {(kind, vnum): answer dict}, kept by the data cache (on disk per
+# server and data version).
+import datacache
+ANSWERS = datacache.Table("wiki")
 
 
 def _locale(key):

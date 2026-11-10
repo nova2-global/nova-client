@@ -35,6 +35,8 @@
 import re
 import time
 
+import datacache
+
 import app
 import ui
 import net
@@ -57,8 +59,22 @@ ORDERED_INDICES = []   # events (index 150 and above) first, then the others
 
 # What the server sent this session (OLD constInfo.DUNGEON_TIMER_LOADED and DUNGEON_DROP).
 TIMER_STATE = {"loaded": False}
-## DUNGEON_DROP = { dungeon index : { mob vnum : {"type": mob type, "items": [(vnum, count, chance)]} } }
-DUNGEON_DROP = {}
+
+
+def _fold_drop(table, dungeonIndex, row):
+	"""One GC::DUNGEON_DROP row into DUNGEON_DROP (also as the data cache reads it back)."""
+	mobVnum, mobType, itemVnum, itemCount, itemChance = row
+	mobs = table.setdefault(dungeonIndex, {})
+	if mobVnum not in mobs:
+		mobs[mobVnum] = {"type": mobType, "items": []}
+	mobs[mobVnum]["items"].append((itemVnum, itemCount, itemChance))
+
+
+## DUNGEON_DROP = { dungeon index : { mob vnum : {"type": mob type, "items": [(vnum, count, chance)]} } },
+## kept by the data cache (datacache.py: on disk per server and data version).
+DUNGEON_DROP = datacache.Table("dungeon_drop", fold=_fold_drop)
+## A set the data cache empties when the server's data version changes (the drops asked).
+asked_set = datacache.asked_set
 
 INFO_FILE = "locale/common/dungeon_info.txt"
 NOTICE_SECONDS = 3
@@ -317,11 +333,8 @@ def desc_line(line):
 
 
 def add_drop(dungeonIndex, mobVnum, mobType, itemVnum, itemCount, itemChance):
-	"""One GC::DUNGEON_DROP row (OLD game.BINARY_UpdateDungeonDrop)."""
-	mobs = DUNGEON_DROP.setdefault(dungeonIndex, {})
-	if mobVnum not in mobs:
-		mobs[mobVnum] = {"type": mobType, "items": []}
-	mobs[mobVnum]["items"].append((itemVnum, itemCount, itemChance))
+	"""One GC::DUNGEON_DROP row (OLD game.BINARY_UpdateDungeonDrop), written through."""
+	DUNGEON_DROP.append(dungeonIndex, (mobVnum, mobType, itemVnum, itemCount, itemChance))
 
 
 def reset_session():

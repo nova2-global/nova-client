@@ -1583,7 +1583,12 @@ class Game(object):
 
     def load(self, name, file_name=None):
         """Imports assets/root/<file_name> as `name` over the stand-ins (and
-        keeps it in self.modules, so later loads import it)."""
+        keeps it in self.modules, so later loads import it). The data cache
+        (datacache.py, which the answer tables import) comes first, fresh for
+        each world, so a world is a client process; with no data version set
+        it keeps memory only and writes nothing."""
+        if name != "datacache" and "datacache" not in self.modules:
+            self.load("datacache", "datacache.py")
         with self:
             path = os.path.join(ROOT, file_name or (name.lower() + ".py"))
             sys.modules.pop(name, None)

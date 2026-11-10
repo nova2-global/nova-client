@@ -5,9 +5,11 @@ CONSOLE_ENABLE = 0
 SASH_AUTO_COMBINE = False
 
 # The chest-drop preview's rows (NOVA-18; OLD constInfo.py:32): chest vnum ->
-# [(vnum, count, chance)] as GC::CHEST_DROP_INFO sent them, kept for the
-# session so a chest is asked for once (uichestdrop.request).
-CHESTS_PREVIEW = {}
+# [(vnum, count, chance)] as GC::CHEST_DROP_INFO sent them, kept by the data
+# cache (datacache.py: on disk per server and data version) so a chest is
+# asked for once (uichestdrop.request).
+import datacache
+CHESTS_PREVIEW = datacache.Table("chest_drop")
 
 # The mob info board's drops (NOVA-40; OLD constInfo.py:146): race ->
 # {"items": merged rows, "level": the player's level at the answer,

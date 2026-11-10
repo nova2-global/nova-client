@@ -128,10 +128,12 @@ body.fastequip
 	border-radius: 6dp;
 	text-align: center;
 }
+/* The bar's fill is a set's color, always a saturated or dark swatch, so its
+   name is always the light ink, in the light palette too. */
 .fastequip__set-title
 {
 	line-height: 26dp;
-	color: var(--text);
+	color: var(--text-inverse);
 }
 .fastequip__equipped-stripe
 {

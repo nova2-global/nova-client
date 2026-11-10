@@ -19,7 +19,7 @@
 <body template="nui" class="nui-overlay nui-below-legacy-ui target" data-model="target">
 	<div class="target__wrap">
 		<div id="target-board" class="target-board nui-board nui-board--tooltip nui-fx nui-interactive" data-class-target-board--hp="show_hp" data-class-target-board--level="level > 0"
-			data-class-target-board--buttons="size(buttons) > 0" data-class-target-board--player="portrait != ''">
+			data-class-target-board--buttons="size(buttons) > 0" data-class-target-board--player="portrait != ''" data-class-target-board--numbers="hp_values != ''">
 			<div class="target-board__head">
 				<!-- The modern head: a monster's level in a badge, its name with
 				     its grade, its HP in percent; the HP bar below the head.

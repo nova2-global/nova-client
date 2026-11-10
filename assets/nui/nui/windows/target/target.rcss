@@ -43,6 +43,28 @@ body.target
 	width: 320dp;
 	padding: 8dp 8dp 10dp 10dp;
 }
+/* NOVA-40: the exact numbers, the element chip and the info button share the
+   head with the name, which 320dp would cut to a few letters. */
+.target-board--numbers
+{
+	width: 440dp;
+}
+/* NOVA-40: a player's board has the HP bar too, but keeps its own width and
+   padding, with the relation buttons on one row inside the board. The bar
+   reaches as far right as the buttons do. */
+.target-board--hp.target-board--player
+{
+	width: auto;
+	padding: var(--space-2) var(--space-6) var(--space-2) var(--space-3);
+}
+.target-board--player .target-board__pct
+{
+	margin-right: 8dp;
+}
+.target-board--player .target-board__bar
+{
+	margin-right: -18dp;
+}
 .target-board__head
 {
 	display: flex;

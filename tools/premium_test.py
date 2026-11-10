@@ -237,7 +237,7 @@ class GameForwards(unittest.TestCase):
         GameWindow.__init__ over stand-ins (social_test's way)."""
         from unittest import mock
         names = ("interfaceModule", "uiPhaseCurtain", "uiTarget", "consoleModule", "wndMgr", "uiMapNameShower",
-                 "uiAffectShower", "uiPlayerGauge", "uiMaintenance", "net")
+                 "uiAffectShower", "uiPlayerGauge", "uiMaintenance", "net", "datacache")
         namespace = dict((name, mock.MagicMock()) for name in names)
         namespace["ui"] = types.SimpleNamespace(ScriptWindow=mock.MagicMock(), __mem_func__=lambda function: function)
         shower = Recorder()

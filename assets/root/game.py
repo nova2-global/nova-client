@@ -116,6 +116,7 @@ class GameWindow(ui.ScriptWindow):
 
 		self.targetBoard = nui_windows.make("target", uiTarget.TargetBoard, "nui_target.TargetBoard")
 		self.targetBoard.SetWhisperEvent(ui.__mem_func__(self.interface.OpenWhisperDialog))
+		self.targetBoard.SetWikiItemEvent(ui.__mem_func__(self.interface.OpenWikiItem))
 		self.targetBoard.Hide()
 
 		self.console = nui_windows.make("console", consoleModule.ConsoleWindow, "nui_console.ConsoleWindow")

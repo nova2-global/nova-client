@@ -299,6 +299,66 @@ class Board(unittest.TestCase):
             self.assertFalse(targetinfo(legacy).set_attackers(RACE, 4), "the same count changes nothing")
 
 
+class WikiFromDrops(unittest.TestCase):
+    """Eddy (r41): a left press on a drop row opens the wiki on that item
+    (Interface.OpenWikiItem); hover keeps the item's tooltip."""
+
+    def open_with_rows(self, w, opened):
+        Board.open(None, w)
+        with w:
+            w.board.SetWikiItemEvent(lambda vnum: opened.append(vnum))
+            targetinfo(w).store(RACE, [(11000, 1, 0, 0, 0), (27001, 3, 0, 0, 0)])
+            w.board.RefreshInfoBoard(RACE)
+
+    def press(self, w, index, button=0):
+        with w, hud.quiet():
+            if type(w.board.infoBoard).__module__ == "nui_target_info":
+                w.board.infoBoard.nui_board().fire("row_press", index, button)
+            else:
+                row = w.board.infoBoard.itemRows[index]
+                if button == 0:
+                    row.OnMouseLeftButtonDown()
+                else:
+                    row.OnMouseRightButtonDown()
+
+    def test_a_left_press_on_a_row_opens_the_wiki_on_its_item(self):
+        for w in pair():
+            opened = []
+            self.open_with_rows(w, opened)
+            self.press(w, 1)
+            self.press(w, 0)
+            self.assertEqual(opened, [27001, 11000])
+
+    def test_a_right_press_opens_nothing(self):
+        w = world(True)
+        opened = []
+        self.open_with_rows(w, opened)
+        self.press(w, 0, button=1)
+        self.assertEqual(opened, [])
+
+    def test_hover_still_shows_the_tooltip(self):
+        w = world(True)
+        self.open_with_rows(w, [])
+        with w, hud.quiet():
+            w.board.infoBoard.nui_board().fire("row_over", 1)
+            self.assertEqual(w.board.infoBoard.itemTooltip.shown[-1:], [("SetItemToolTip", 27001)])
+
+    def test_a_board_made_without_the_event_opens_nothing(self):
+        for w in pair():
+            Board.open(None, w)
+            with w:
+                targetinfo(w).store(RACE, [(11000, 1, 0, 0, 0)])
+                w.board.RefreshInfoBoard(RACE)
+            self.press(w, 0)
+
+    def test_the_document_sends_the_press(self):
+        rml = open(os.path.join(WINDOW, "target-info.rml"), encoding="utf-8").read()
+        self.assertIn('data-event-mousedown="row_press(i, ev.button)"', rml)
+
+    def test_game_gives_the_target_board_the_interface_s_wiki(self):
+        game = open(os.path.join(ASSETS, "root", "game.py"), encoding="utf-8").read()
+        self.assertIn("self.targetBoard.SetWikiItemEvent(ui.__mem_func__(self.interface.OpenWikiItem))", game)
+
 class BoardHP(unittest.TestCase):
     def test_a_monster_shows_percent_and_numbers(self):
         legacy, novaui = pair()

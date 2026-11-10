@@ -11,6 +11,9 @@
 ## was asked at; it is thrown away on map change (game.py Open) and asked again
 ## after a level up, since the server's list depends on both. OLD only kept it.
 ##
+## A left press on a drop row opens the wiki on its item (Eddy, r41): the
+## target board hands the Interface's OpenWikiItem down (SetWikiItemEvent).
+##
 ## The server answers once a second for the player's current target; a request
 ## inside that second is dropped, so an open board retries while it waits
 ## (RETRY_DELAY, up to RETRY_MAX). A mob with no drops answers with no rows.
@@ -272,7 +275,8 @@ def item_row(entry, currentAttackers):
 # --- the board ---------------------------------------------------------------------------
 
 class _ItemRow(ui.Window):
-	"""A drop row (OLD's ItemListBoxItem): icon and text; hover shows the tooltip."""
+	"""A drop row (OLD's ItemListBoxItem): icon and text; hover shows the
+	tooltip, a left press opens the wiki on the item."""
 
 	HEIGHT = 37
 
@@ -281,6 +285,7 @@ class _ItemRow(ui.Window):
 		self.SetSize(width, self.HEIGHT + 12 * len(lines))
 		self.vnum = vnum
 		self.tooltip = None
+		self.clickEvent = None
 		image = ui.ExpandedImageBox()
 		image.SetParent(self)
 		image.AddFlag("not_pick")
@@ -305,6 +310,14 @@ class _ItemRow(ui.Window):
 	def SetTooltip(self, tooltip):
 		self.tooltip = tooltip
 
+	def SetClickEvent(self, event):
+		self.clickEvent = event
+
+	def OnMouseLeftButtonDown(self):
+		if self.clickEvent:
+			self.clickEvent(self.vnum)
+		return True
+
 	def OnMouseOverIn(self):
 		if self.tooltip:
 			self.tooltip(self.vnum)
@@ -321,6 +334,8 @@ class InfoBoard(ui.ThinBoard):
 	LINE_STEP = 17
 	MAX_ITEM_COUNT = 5
 	ROW_HEIGHT = _ItemRow.HEIGHT
+	## Interface.OpenWikiItem, from the target board (SetWikiItemEvent).
+	eventWikiItem = None
 
 	def __init__(self):
 		self._InitBoard()
@@ -345,7 +360,16 @@ class InfoBoard(ui.ThinBoard):
 		tooltip.HideToolTip()
 		return tooltip
 
+	def SetWikiItemEvent(self, event):
+		self.eventWikiItem = event
+
+	def OnPressItemRow(self, vnum):
+		"""A left press on a drop row: the wiki on that item, in front."""
+		if self.eventWikiItem and vnum:
+			self.eventWikiItem(vnum)
+
 	def Destroy(self):
+		self.eventWikiItem = None
 		self.itemTooltip = None
 		self.itemScrollWnd = None
 		self.children = []
@@ -471,6 +495,7 @@ class InfoBoard(ui.ThinBoard):
 			row.SetParent(content)
 			row.SetPosition(0, yItemPos)
 			row.SetTooltip(ui.__mem_func__(self.OnShowItemTooltip))
+			row.SetClickEvent(ui.__mem_func__(self.OnPressItemRow))
 			row.Show()
 			self.itemRows.append(row)
 			yItemPos += row.GetHeight()

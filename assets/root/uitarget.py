@@ -333,6 +333,11 @@ class TargetBoard(ui.ThinBoard):
 	def SetWhisperEvent(self, event):
 		self.eventWhisper = event
 
+	def SetWikiItemEvent(self, event):
+		"""Interface.OpenWikiItem, for the info board's drop rows."""
+		if self.infoBoard:
+			self.infoBoard.SetWikiItemEvent(event)
+
 	def UpdatePosition(self):
 		self.SetPosition(wndMgr.GetScreenWidth() // 2 - self.GetWidth() // 2, 10)
 

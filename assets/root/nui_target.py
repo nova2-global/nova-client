@@ -375,6 +375,11 @@ class TargetBoard(object):
 	def SetWhisperEvent(self, event):
 		self.eventWhisper = event
 
+	def SetWikiItemEvent(self, event):
+		"""Interface.OpenWikiItem, for the info board's drop rows."""
+		if self.infoBoard:
+			self.infoBoard.SetWikiItemEvent(event)
+
 	def ResetTargetBoard(self):
 		_watch(0, 0)
 		self.shownButtons = set()

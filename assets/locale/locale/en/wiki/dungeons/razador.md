@@ -1,0 +1,34 @@
+---
+title: Razador
+category: dungeons
+---
+### Dungeon ticket
+No ticket is needed to enter this dungeon.
+
+### Recommended bonuses
+None.
+
+--- {style=ornate}
+
+This dungeon has 7 phases, which come in a random order each time. You are teleported to each stage. These are the encounters you can meet.
+
+### Phase 1
+Defeat all the monsters to obtain the [[item:30329]]. Right-click it, and once you find the correct one, you are teleported to the next phase.
+
+### Phase 2
+Defeat all the monsters to advance to the next phase.
+
+### Phase 3
+Defeat all the monsters to advance to the next phase.
+
+### Phase 4
+Defeat monsters to collect [[item:30330|Maat Stones]], then use them to make all the pillars disappear. Each time you use one, more monsters spawn!
+
+### Phase 5
+Destroy the [[mob:8057]] to advance to the next stage.
+
+### Phase 6
+Defeat the [[mob:6051]] boss to advance to the next stage.
+
+### Phase 7
+Defeat [[mob:6091]] in his Throne of Hell!

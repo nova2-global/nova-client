@@ -22,8 +22,9 @@ Interface.PasteWikiLink.
 Nothing runs per frame: the search is the field's change event, and the retry
 and the give-up are two hidden nui-countdowns (retry_at, timeout_at). The
 board exists only while the window shows; the tabs and their histories stay
-with the window. NOVA-139's text pages plug in at
-nui_wiki_data.TEXT_CATEGORIES; _open_sub dispatches on a row's "kind".
+with the window. NOVA-139's text pages (nui_wiki_pages.py)
+are a page kind of their own, KIND_PAGE, whose rows sit in the tree after
+the browser's categories.
 """
 
 import ui
@@ -33,6 +34,7 @@ import nui_facade
 import nui_hud
 import nui_slots
 import nui_wiki_data as data
+import nui_wiki_pages as pages
 
 DOCUMENT = "nui/windows/wiki/wiki.rml"
 KEY = "wiki"
@@ -41,6 +43,8 @@ HOVER_PREVIEW = "wiki_hover"
 
 # EWikiKind and EWikiStatus (nova-protocol's wiki_packets.h).
 KIND_ITEM, KIND_MOB = 0, 1
+# NOVA-139: a text page's place is (KIND_PAGE, path) (nui_wiki_pages).
+KIND_PAGE = pages.KIND_PAGE
 STATUS_OK, STATUS_BUSY = 0, 1
 FLAG_COMMON = 0x01
 # EWikiOriginType.
@@ -123,13 +127,15 @@ TREE = (
 		_vnum_sub("WIKI_SUB_COSTUME_MASKS", data.COSTUME_MASKS),
 		_vnum_sub("WIKI_SUB_COSTUME_EFFECTS", data.COSTUME_EFFECTS),
 	]},
-) + tuple(data.TEXT_CATEGORIES)
+) + tuple(data.TEXT_CATEGORIES) + tuple(pages.tree_categories())
 
 # Sessions' answers: {(kind, vnum): answer dict}.
 ANSWERS = {}
 
 
 def _locale(key):
+	if isinstance(key, tuple):  # NOVA-139: a text page's row, ("page", path)
+		return pages.label(key)
 	import localeInfo
 	return getattr(localeInfo, key, key)
 
@@ -351,6 +357,16 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner.link_page()
 
+	# NOVA-139: a text page's links and its viewport (nui_wiki_pages).
+	@nui.on("tp_link")
+	def on_tp_link(self, index, button):
+		self.raise_for(button)
+		self._owner.follow_text_link(int(index), int(button))
+
+	@nui.on("tp_open")
+	def on_tp_open(self):
+		self._owner.text_page_open()
+
 	@nui.on("retry_fire")
 	def on_retry_fire(self):
 		self._owner.retry_fire()
@@ -377,12 +393,14 @@ def wiki_link(kind, vnum, name):
 	(syswiki:<kind>:<ident>, opened by Interface.__OpenWikiLink) in the
 	color OLD's quests gave it. A "|" in the name would end the link's tags,
 	so it is left out."""
+	if kind == KIND_PAGE:
+		return pages.chat_link(vnum, name, LINK_COLOR)
 	ident = "item" if kind == KIND_ITEM else "mob"
 	name = (name or "").replace("|", "")
 	return "|c%s|Hsyswiki:%s:%d|h[%s]|h|r" % (LINK_COLOR, ident, int(vnum), name)
 
 
-class WikiWindow(nui_facade.Facade, ui.Window):
+class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	"""The browser (Interface.wndWiki). Facade's Show and Hide handle the
 	board; ui.Window.__init__ calls Hide before this __init__ finishes, so
 	everything Hide can reach has a class-level default.
@@ -424,7 +442,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			raise
 
 	def nui_model(self):
-		return {
+		model = {
 			"tree": [],
 			"list": [],
 			"list_state": "",
@@ -462,6 +480,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			"retry_at": 0.0,
 			"timeout_at": 0.0,
 		}
+		model.update(pages.initial_model())
+		return model
 
 	# --- the Interface's calls --------------------------------------------------------
 
@@ -495,6 +515,15 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 	def OpenMob(self, vnum):
 		self._show_window()
 		self._go(self._at_page(KIND_MOB, int(vnum)))
+		return True
+
+	def OpenPage(self, path):
+		"""A text page (NOVA-139; a syswiki:page:<path> link). False for a
+		bad path or a page index.txt does not list."""
+		if not pages.exists(path):
+			return False
+		self._show_window()
+		self._go(self._page_location(path))
 		return True
 
 	def Destroy(self):
@@ -637,7 +666,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		elif refresh_page or page != self._current:
 			self._select(page[0], page[1])
 			self._remember(page)
-		if list_key is not None and list_key[0] == "sub":
+		if list_key is not None and list_key[0] in ("sub", "pages"):
 			self._open[list_key[1]] = True
 		home = list_key is None and page is None
 		values = dict(self._tabs_model())
@@ -679,6 +708,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 	def _list_title(self, list_key):
 		if list_key[0] == "sub":
 			return _locale(TREE[list_key[1]]["subs"][list_key[2]]["label"])
+		if list_key[0] == "pages":  # NOVA-139: a text category's pages
+			return _locale(TREE[list_key[1]]["label"])
 		text = _locale("WIKI_SEARCH_TRAIL")
 		try:
 			return text % list_key[1]
@@ -714,13 +745,13 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 	# --- the tree, the list and the home page --------------------------------------------
 
 	def _tree_model(self):
-		shown = self._location()[0]
+		shown, page = self._location()
 		rows = []
 		for i, category in enumerate(TREE):
 			subs = []
 			if self._open.get(i):
 				subs = [{"cat": i, "sub": j, "label": nui.plain_text(_locale(s["label"])),
-				         "selected": shown == ("sub", i, j)}
+				         "selected": shown == ("sub", i, j) or page == (KIND_PAGE, s.get("page"))}
 				        for j, s in enumerate(category["subs"])]
 			rows.append({"cat": i, "label": nui.plain_text(_locale(category["label"])),
 			             "open": bool(self._open.get(i)), "subs": subs})
@@ -753,8 +784,16 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 					return
 
 	def _open_text_page(self, sub, button=0):
-		"""Where NOVA-139's text pages open: a location whose page is
-		("text", sub["page"]) once that ticket brings a page format."""
+		"""NOVA-139: a text page opens with its category's pages as its list."""
+		self._follow(self._page_location(sub["page"]), button)
+
+	@staticmethod
+	def _page_location(path):
+		"""A text page's location: its category's pages and the page."""
+		for i, category in enumerate(TREE):
+			if any(s.get("page") == path for s in category["subs"]):
+				return (("pages", i), (KIND_PAGE, path))
+		return (None, (KIND_PAGE, path))
 
 	def _build_list(self, list_key):
 		self._list_key = list_key
@@ -766,8 +805,11 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			import item
 			import nonplayer
 			text = list_key[1]
-			pairs = [(KIND_ITEM, v) for v in item.Search(text, SEARCH_ROWS_MAX) if v not in data.ITEM_BLACKLIST]
+			pairs = [(KIND_PAGE, p) for p in pages.search(text)]
+			pairs += [(KIND_ITEM, v) for v in item.Search(text, SEARCH_ROWS_MAX) if v not in data.ITEM_BLACKLIST]
 			pairs += [(KIND_MOB, v) for v in nonplayer.Search(text, SEARCH_ROWS_MAX) if v not in data.MOB_BLACKLIST]
+		elif list_key[0] == "pages":
+			pairs = [(KIND_PAGE, s["page"]) for s in TREE[list_key[1]]["subs"]]
 		else:
 			sub = TREE[list_key[1]]["subs"][list_key[2]]
 			kind = sub["kind"]
@@ -832,6 +874,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		self.nui_set(list=rows, list_state="ready" if rows else "empty")
 
 	def _row_model(self, index, kind, vnum):
+		if kind == KIND_PAGE:
+			return pages.row_model(index, vnum)
 		if kind == KIND_ITEM:
 			return {"i": index, "vnum": vnum, "mob": False, "icon": _item_icon(vnum),
 			        "name": nui.plain_text(_item_name(vnum)), "note": ""}
@@ -885,6 +929,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		self._paste_link(wiki_link(page[0], page[1], self._raw_name(page[0], page[1])))
 
 	def _raw_name(self, kind, vnum):
+		if kind == KIND_PAGE:
+			return pages.title(vnum)
 		if kind == KIND_ITEM:
 			return _item_name(vnum)
 		import nonplayer
@@ -902,9 +948,14 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		self._preview_shown = False
 		self.nui_set(page_state="", page_kind="", page_vnum=0, page_name="", page_sub="", page_icon="",
 		             page_common=False, model_view=False, origins=[], chest=[], refine=[], drops=[],
-		             retry_at=0.0, timeout_at=0.0)
+		             retry_at=0.0, timeout_at=0.0, **pages.initial_model())
 
 	def _select(self, kind, vnum):
+		if kind == KIND_PAGE:
+			self._stop_preview(PREVIEW)
+			self._preview_shown = False
+			self._select_text_page(vnum)
+			return
 		self._current = (kind, vnum)
 		self._retries = 0
 		head = self._page_head(kind, vnum)
@@ -930,7 +981,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		clock. A request the server refuses or never answers is sent again
 		until TRIES_MAX; the window never waits forever."""
 		import net
-		if self._current is None:
+		if self._current is None or self._current[0] == KIND_PAGE:
 			return
 		kind, vnum = self._current
 		self._retries += 1
@@ -1012,7 +1063,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		"""One preview on the page and one on hover (the scope's default):
 		mobs by their vnum, items by preview_of. An item with no drawable
 		model, or a race the client cannot make, shows its icon."""
-		preview = _modelpreview()
+		preview = None if kind == KIND_PAGE else _modelpreview()
 		shown = False
 		if preview is not None:
 			if kind == KIND_MOB:

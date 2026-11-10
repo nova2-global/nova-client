@@ -1263,3 +1263,10 @@ WIKI_TABS_FULL	The wiki keeps at most %d tabs open. Close one first.
 WIKI_SEARCH_HINT	Search items and monsters	
 WIKI_SEARCH_TRAIL	Search: %s	
 WIKI_TAB_HINT	Middle-click or Ctrl+click a link to open it in a new tab.	
+WIKI_CAT_GUIDES	Guides	
+WIKI_CAT_DUNGEONS	Dungeons	
+WIKI_CAT_SYSTEMS	Systems	
+WIKI_CAT_EVENTS	Events	
+WIKI_NOTE	Note	
+WIKI_WARNING	Warning	
+WIKI_PAGE_ERROR	This part of the page could not be shown:	

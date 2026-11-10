@@ -1039,6 +1039,11 @@
 		],
 		"drops": [],
 		"retry_at": 0.0,
-		"timeout_at": 0.0
+		"timeout_at": 0.0,
+		"tp_title": "",
+		"tp_blocks": [],
+		"tp_decor": [],
+		"tp_view": [],
+		"tp_open_at": 0.0
 	}
 }

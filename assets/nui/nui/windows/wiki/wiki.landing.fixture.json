@@ -1,0 +1,612 @@
+{
+	"wiki": {
+		"tree": [
+			{
+				"cat": 0,
+				"label": "Equipment",
+				"open": true,
+				"subs": [
+					{
+						"cat": 0,
+						"sub": 0,
+						"label": "Weapons",
+						"selected": false
+					},
+					{
+						"cat": 0,
+						"sub": 1,
+						"label": "Armor",
+						"selected": false
+					}
+				]
+			},
+			{
+				"cat": 10,
+				"label": "Guides",
+				"open": true,
+				"subs": [
+					{
+						"cat": 10,
+						"sub": 0,
+						"label": "The Basic Guide",
+						"selected": false
+					}
+				]
+			},
+			{
+				"cat": 11,
+				"label": "Dungeons",
+				"open": false,
+				"subs": []
+			},
+			{
+				"cat": 12,
+				"label": "Systems",
+				"open": false,
+				"subs": []
+			},
+			{
+				"cat": 13,
+				"label": "Events",
+				"open": false,
+				"subs": []
+			}
+		],
+		"list": [],
+		"list_state": "ready",
+		"list_title": "",
+		"list_count": "",
+		"list_sel": -1,
+		"home": false,
+		"quick": [
+			{
+				"cat": 0,
+				"label": "Equipment",
+				"subs": [
+					{
+						"cat": 0,
+						"sub": 0,
+						"label": "Weapons"
+					},
+					{
+						"cat": 0,
+						"sub": 1,
+						"label": "Armor"
+					},
+					{
+						"cat": 0,
+						"sub": 2,
+						"label": "Helmets"
+					},
+					{
+						"cat": 0,
+						"sub": 3,
+						"label": "Shields"
+					},
+					{
+						"cat": 0,
+						"sub": 4,
+						"label": "Earrings"
+					},
+					{
+						"cat": 0,
+						"sub": 5,
+						"label": "Bracelets"
+					},
+					{
+						"cat": 0,
+						"sub": 6,
+						"label": "Necklaces"
+					},
+					{
+						"cat": 0,
+						"sub": 7,
+						"label": "Shoes"
+					},
+					{
+						"cat": 0,
+						"sub": 8,
+						"label": "Belts"
+					},
+					{
+						"cat": 0,
+						"sub": 9,
+						"label": "Rings"
+					}
+				]
+			},
+			{
+				"cat": 1,
+				"label": "Chests",
+				"subs": [
+					{
+						"cat": 1,
+						"sub": 0,
+						"label": "Boss Chests"
+					},
+					{
+						"cat": 1,
+						"sub": 1,
+						"label": "Event Chests"
+					},
+					{
+						"cat": 1,
+						"sub": 2,
+						"label": "Other Chests"
+					}
+				]
+			},
+			{
+				"cat": 2,
+				"label": "Bosses",
+				"subs": [
+					{
+						"cat": 2,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 2,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 2,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 3,
+				"label": "Monsters",
+				"subs": [
+					{
+						"cat": 3,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 3,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 3,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 4,
+				"label": "Metin Stones",
+				"subs": [
+					{
+						"cat": 4,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 4,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 4,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 5,
+				"label": "Costumes",
+				"subs": [
+					{
+						"cat": 5,
+						"sub": 0,
+						"label": "Weapon Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 1,
+						"label": "Armor Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 2,
+						"label": "Hair Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 3,
+						"label": "Pets"
+					},
+					{
+						"cat": 5,
+						"sub": 4,
+						"label": "Mounts"
+					},
+					{
+						"cat": 5,
+						"sub": 5,
+						"label": "Wings"
+					},
+					{
+						"cat": 5,
+						"sub": 6,
+						"label": "Masks"
+					},
+					{
+						"cat": 5,
+						"sub": 7,
+						"label": "Effects"
+					}
+				]
+			}
+		],
+		"recent": [],
+		"tabs": [
+			{
+				"i": 0,
+				"label": "The Basic Guide",
+				"active": true
+			}
+		],
+		"tabs_full": false,
+		"can_back": true,
+		"can_forward": false,
+		"crumbs": [
+			{
+				"i": 0,
+				"label": "Home",
+				"last": false,
+				"link": true
+			},
+			{
+				"i": 1,
+				"label": "Guides",
+				"last": false,
+				"link": true
+			},
+			{
+				"i": 2,
+				"label": "The Basic Guide",
+				"last": true,
+				"link": false
+			}
+		],
+		"page_state": "text",
+		"page_kind": "text",
+		"page_vnum": 0,
+		"page_name": "The Basic Guide",
+		"page_sub": "",
+		"page_icon": "",
+		"page_common": false,
+		"page_link": true,
+		"model_view": false,
+		"hover_view": false,
+		"origins": [],
+		"chest": [],
+		"refine": [],
+		"drops": [],
+		"retry_at": 0.0,
+		"timeout_at": 0.0,
+		"tp_title": "The Basic Guide",
+		"tp_blocks": [
+			{
+				"k": "h2",
+				"runs": [
+					{
+						"t": "Hotkeys",
+						"b": false,
+						"i": false,
+						"l": -1,
+						"e": false
+					}
+				],
+				"items": [],
+				"rows": [],
+				"src": "",
+				"alt": "",
+				"fl": "",
+				"al": "",
+				"w": "auto",
+				"style": "",
+				"cols": [],
+				"text": ""
+			},
+			{
+				"k": "p",
+				"runs": [
+					{
+						"t": "These keys open the windows you will use most.",
+						"b": false,
+						"i": false,
+						"l": -1,
+						"e": false
+					}
+				],
+				"items": [],
+				"rows": [],
+				"src": "",
+				"alt": "",
+				"fl": "",
+				"al": "",
+				"w": "auto",
+				"style": "",
+				"cols": [],
+				"text": ""
+			},
+			{
+				"k": "cols",
+				"runs": [],
+				"items": [],
+				"rows": [],
+				"src": "",
+				"alt": "",
+				"fl": "",
+				"al": "",
+				"w": "auto",
+				"style": "",
+				"cols": [
+					{
+						"blocks": [
+							{
+								"k": "ul",
+								"runs": [],
+								"items": [
+									{
+										"n": "",
+										"d": 0,
+										"runs": [
+											{
+												"t": "U",
+												"b": true,
+												"i": false,
+												"l": -1,
+												"e": false
+											},
+											{
+												"t": " opens the extra inventory.",
+												"b": false,
+												"i": false,
+												"l": -1,
+												"e": false
+											}
+										]
+									},
+									{
+										"n": "",
+										"d": 0,
+										"runs": [
+											{
+												"t": "F5",
+												"b": true,
+												"i": false,
+												"l": -1,
+												"e": false
+											},
+											{
+												"t": " opens the switch bot.",
+												"b": false,
+												"i": false,
+												"l": -1,
+												"e": false
+											}
+										]
+									},
+									{
+										"n": "",
+										"d": 0,
+										"runs": [
+											{
+												"t": "F6",
+												"b": true,
+												"i": false,
+												"l": -1,
+												"e": false
+											},
+											{
+												"t": " opens the ",
+												"b": false,
+												"i": false,
+												"l": -1,
+												"e": false
+											},
+											{
+												"t": "Dungeon Manager",
+												"b": false,
+												"i": false,
+												"l": 0,
+												"e": false
+											},
+											{
+												"t": ".",
+												"b": false,
+												"i": false,
+												"l": -1,
+												"e": false
+											}
+										]
+									}
+								],
+								"rows": [],
+								"src": "",
+								"alt": "",
+								"fl": "",
+								"al": "",
+								"w": "auto",
+								"style": "",
+								"cols": [],
+								"text": ""
+							}
+						]
+					},
+					{
+						"blocks": [
+							{
+								"k": "ul",
+								"runs": [],
+								"items": [
+									{
+										"n": "",
+										"d": 0,
+										"runs": [
+											{
+												"t": "F10",
+												"b": true,
+												"i": false,
+												"l": -1,
+												"e": false
+											},
+											{
+												"t": " opens the fast equipment changer.",
+												"b": false,
+												"i": false,
+												"l": -1,
+												"e": false
+											}
+										]
+									},
+									{
+										"n": "",
+										"d": 0,
+										"runs": [
+											{
+												"t": "P",
+												"b": true,
+												"i": false,
+												"l": -1,
+												"e": false
+											},
+											{
+												"t": " opens the advanced pet window.",
+												"b": false,
+												"i": false,
+												"l": -1,
+												"e": false
+											}
+										]
+									}
+								],
+								"rows": [],
+								"src": "",
+								"alt": "",
+								"fl": "",
+								"al": "",
+								"w": "auto",
+								"style": "",
+								"cols": [],
+								"text": ""
+							}
+						]
+					}
+				],
+				"text": ""
+			},
+			{
+				"k": "hr",
+				"runs": [],
+				"items": [],
+				"rows": [],
+				"src": "",
+				"alt": "",
+				"fl": "",
+				"al": "",
+				"w": "auto",
+				"style": "ornate",
+				"cols": [],
+				"text": ""
+			},
+			{
+				"k": "h2",
+				"runs": [
+					{
+						"t": "Finding your way",
+						"b": false,
+						"i": false,
+						"l": -1,
+						"e": false
+					}
+				],
+				"items": [],
+				"rows": [],
+				"src": "",
+				"alt": "",
+				"fl": "",
+				"al": "",
+				"w": "auto",
+				"style": "",
+				"cols": [],
+				"text": ""
+			},
+			{
+				"k": "p",
+				"runs": [
+					{
+						"t": "You can also find useful systems in your inventory and next to your minimap.",
+						"b": false,
+						"i": false,
+						"l": -1,
+						"e": false
+					}
+				],
+				"items": [],
+				"rows": [],
+				"src": "",
+				"alt": "",
+				"fl": "",
+				"al": "",
+				"w": "auto",
+				"style": "",
+				"cols": [],
+				"text": ""
+			},
+			{
+				"k": "p",
+				"runs": [
+					{
+						"t": "To read about any item in this wiki, hold ",
+						"b": false,
+						"i": false,
+						"l": -1,
+						"e": false
+					},
+					{
+						"t": "Shift",
+						"b": true,
+						"i": false,
+						"l": -1,
+						"e": false
+					},
+					{
+						"t": " and right-click it in your inventory.",
+						"b": false,
+						"i": false,
+						"l": -1,
+						"e": false
+					}
+				],
+				"items": [],
+				"rows": [],
+				"src": "",
+				"alt": "",
+				"fl": "",
+				"al": "",
+				"w": "auto",
+				"style": "",
+				"cols": [],
+				"text": ""
+			}
+		],
+		"tp_decor": [],
+		"tp_view": [
+			{
+				"n": 1
+			}
+		],
+		"tp_open_at": 0.0
+	}
+}

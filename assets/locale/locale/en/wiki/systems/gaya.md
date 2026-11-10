@@ -1,0 +1,25 @@
+---
+title: Gaya
+category: systems
+---
+## General information
+- Gaya is a currency. Your balance is shown next to your gold.
+- You get Gaya by cutting [[item:50926|Glimmerstones]] at the Gaya Merchant.
+- You spend Gaya at the Gaya Market on upgrade items, pets, mounts or boosters.
+- Gaya cannot be moved to other characters and cannot be traded.
+
+--- {style=ornate}
+
+## How to obtain Gaya
+Bring [[item:50926|Glimmerstones]] to the Gaya Merchant. Ask him first: he tells you how many stones and how much yang a cut takes, and how likely it is to succeed.
+
+:::warning
+A cut can fail, and then the stones are lost.
+:::
+
+--- {style=ornate}
+
+## The Gaya Market
+- The market is divided into 3 rows, from the least valued items to the most valued.
+- The 2nd and 3rd rows are locked at first. A [[item:39064]] unlocks them.
+- The market refreshes on its own every few hours. A [[item:39063]] refreshes it at once.

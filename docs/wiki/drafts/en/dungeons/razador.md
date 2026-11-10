@@ -1,0 +1,58 @@
+---
+title: Razador
+category: dungeons
+order: 130
+---
+![](d:/ymir work/ui/wiki/banners/razador.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+No ticket is needed to enter this dungeon.
+
+### Recommended Bonuses:
+
+N/A
+
+--- {style=ornate}
+
+This dungeon has 7 phases, which appear in a random order each time.
+You will be automatically teleported to each stage. Below is a list of possible encounters.
+
+### Phase 1:
+
+Defeat all the monsters to obtain the . Right-click it, and once
+you find the correct one, you will be teleported to the next phase.
+
+### Phase 2:
+
+Defeat all the monsters to advance to the next phase.
+
+### Phase 3:
+
+Defeat all the monsters to advance to the next phase.
+
+### Phase 4:
+
+In this phase, defeat monsters to collect , then use them to make
+all the Pillars disappear. Each time you use one, more monsters will spawn!
+
+### Phase 5:
+
+Destroy the Purgatory Fire Metin to advance to the next stage.
+
+### Phase 6:
+
+Defeat the Ignator Boss to advance to the next stage.
+
+### Phase 7:
+
+Defeat Razador in his Throne of Hell!
+
+--- {style=ornate}
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+[[item:30329]], [[item:30330]], [[item:42325]]

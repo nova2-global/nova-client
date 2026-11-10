@@ -182,9 +182,8 @@ MOB_BLACKLIST_ENTRIES = (
 MOB_BLACKLIST = _expand(MOB_BLACKLIST_ENTRIES)
 
 
-# NOVA-139: text categories (guides, dungeons, systems, events) go here, one
-# dict per category with "label" (a localeInfo key) and "subs" of rows
-# {"label": key, "kind": "page", "page": "<id>"}. nui_wiki.TREE lists them
-# after the browser's own categories and WikiWindow._open_sub opens a "page"
-# row. Nothing else in the window needs to change for the pages.
+# NOVA-139: the text pages' categories (guides, dungeons, systems, events)
+# come from the pages themselves (nui_wiki_pages.tree_categories(), which
+# reads the pack, so it cannot live in this module); nui_wiki.TREE lists
+# them after these. A hand-kept category of "page" rows may still go here.
 TEXT_CATEGORIES = ()

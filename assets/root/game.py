@@ -22,6 +22,7 @@ import skill
 import messenger
 import localeInfo
 import constInfo
+import datacache
 import exchange
 import ime
 ## The advanced pet's module (NOVA-24, chunk C's PythonPetAdvanced.cpp).
@@ -74,6 +75,7 @@ testAlignment = 0
 
 class GameWindow(ui.ScriptWindow):
 	def __init__(self, stream):
+		datacache.begin_session()
 		ui.ScriptWindow.__init__(self, "GAME")
 		self.SetWindowName("game")
 		net.SetPhaseWindow(net.PHASE_WINDOW_GAME, self)
@@ -1331,6 +1333,12 @@ class GameWindow(ui.ScriptWindow):
 	def BINARY_WikiAnswer(self, kind, status, vnum, flags, origins, chest, refine, drops):
 		if self.interface:
 			self.interface.WikiAnswer(kind, status, vnum, flags, origins, chest, refine, drops)
+
+	## GC::DATA_VERSION: the server's data version, at every login and when a
+	## reload changes it. The cached answers (datacache.py) are keyed by the
+	## address the player connected to and this version.
+	def BINARY_DataVersion(self, version):
+		datacache.set_version(self.stream.GetConnectAddr(), version)
 
 	def BINARY_SetChestDropInfo(self, chestVnum, rows):
 		constInfo.CHESTS_PREVIEW[chestVnum] = [tuple(row) for row in rows]

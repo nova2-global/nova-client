@@ -290,8 +290,8 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 	_keep_description = False
 
 	def __init__(self):
-		self._drops_asked = set()
-		self._drops_empty = set()
+		self._drops_asked = uiTimerWindow.asked_set()
+		self._drops_empty = uiTimerWindow.asked_set()
 		self._drops_next_ask = 0.0
 		self._drop_items = []
 		# idx -> whether its preview has a model (made at the first show of its card).

@@ -839,5 +839,39 @@ class PlainTooltips(unittest.TestCase):
             self.assertFalse(world.m("nui_item_tooltip").PlainToolTip().nui_ready(), "an exe without the 3b engine")
 
 
+class SkillBookWithoutASkill(unittest.TestCase):
+    """A skill book shown with no sockets (the dungeon manager's drops, the
+    chest preview, the wiki) has no skill on it, and the client's
+    skill.GetSkillName raises for skill 0. Found live on r36: hovering a
+    dropped book logged RuntimeError and showed no tooltip."""
+
+    def test_a_book_with_no_skill_shows_its_own_name(self):
+        def name(index, grade=0):
+            if int(index) <= 0:
+                raise RuntimeError("skill.GetSkillName - Failed to find skill by %d" % index)
+            return "Sword Spin"
+        for vnum in (50300, 70037, 70055):
+            with World() as world:
+                world.case(vnum=vnum, sockets=[0, 0, 0])
+                world.game.answer("skill", "GetSkillName", name)
+                tip = world.item()
+                tip.SetItemToolTip(vnum)
+                board = world.board()
+                self.assertTrue(board is not None and board.visible, vnum)
+                titles = [r["text"] for e in board.model["lines"] for r in e["runs"] if r.get("role") == "title"]
+                self.assertTrue(titles and titles[0], (vnum, titles))
+
+    def test_a_book_with_its_skill_still_names_the_skill(self):
+        with World() as world:
+            world.case(vnum=50300, sockets=[5, 0, 0])
+            world.game.answer("skill", "GetSkillName", lambda index, grade=0: "Sword Spin")
+            tip = world.item()
+            tip.ClearToolTip()
+            tip.AddItemData(50300, [5, 0, 0])
+            tip.ShowToolTip()
+            titles = [r["text"] for e in world.board().model["lines"] for r in e["runs"] if r.get("role") == "title"]
+            self.assertTrue(titles and titles[0].startswith("Sword Spin"), titles)
+
+
 if __name__ == "__main__":
     unittest.main()

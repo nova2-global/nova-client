@@ -2031,6 +2031,12 @@ class ItemToolTip(ToolTip):
 		# MR-10: -- END OF -- Fix element centering in tooltips
 
 	def __SetSkillBookToolTip(self, skillIndex, bookName, skillGrade):
+		# A book with no skill on it (a drop list, the chest preview, the wiki)
+		# names itself: skill.GetSkillName raises for skill 0.
+		if not skillIndex or skillIndex <= 0:
+			self.SetTitle(item.GetItemName())
+			return
+
 		skillName = skill.GetSkillName(skillIndex)
 
 		if not skillName:

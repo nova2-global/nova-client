@@ -607,8 +607,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 
 	def OpenLink(self, kind, ident):
 		"""A syswiki link, syswiki:<kind>:<ident>: "item" and "mob" (a vnum)
-		and "list" (a path) open here; any other kind goes to _open_link,
-		where NOVA-139's text pages plug in. False when nothing opened."""
+		and "list" (a path) open here; any other kind goes to _open_link.
+		False when nothing opened."""
 		if kind == "list":
 			return self.OpenList(ident)
 		if kind in ("item", "mob"):
@@ -620,8 +620,9 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		return self._open_link(kind, ident)
 
 	def _open_link(self, kind, ident):
-		"""The hook for link kinds this module does not know (NOVA-139's
-		"page"); none opens yet."""
+		"""The hook for link kinds this module does not know; none opens
+		yet. NOVA-139's text pages come through Interface.OpenWikiPage, to
+		OpenPage (feature/wiki-pages)."""
 		return False
 
 	def OpenList(self, path):

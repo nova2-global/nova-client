@@ -293,6 +293,7 @@ class UnknownKinds(R3Test):
                                        OpenWikiMob=lambda v: called.append(("mob", v)),
                                        OpenWikiList=lambda p: called.append(("list", p)),
                                        OpenWikiLink=lambda k, i: called.append(("hook", k, i)),
+                                       OpenWikiPage=lambda p: called.append(("page", p)),
                                        hyperlinkItemTooltip=None)
         method = qol.interface_method("MakeHyperlinkTooltip")
         opener = qol.interface_method("__OpenWikiLink")
@@ -301,9 +302,34 @@ class UnknownKinds(R3Test):
 
     def test_an_unknown_kind_reaches_the_hook_with_its_whole_path(self):
         method, holder, called = self.handler()
+        method(holder, "syswiki:quiz:a:b?y=3")
+        self.assertEqual(called, [("hook", "quiz", "a:b")])
+
+    def test_a_page_link_opens_that_text_page(self):
+        # NOVA-139 (feature/wiki-pages): wndWiki.OpenPage(path).
+        method, holder, called = self.handler()
         method(holder, "syswiki:page:dungeons/demon_tower")
-        method(holder, "syswiki:page:a:b?y=3")
-        self.assertEqual(called, [("hook", "page", "dungeons/demon_tower"), ("hook", "page", "a:b")])
+        method(holder, "syswiki:page:guides/a?y=3")
+        self.assertEqual(called, [("page", "dungeons/demon_tower"), ("page", "guides/a")])
+
+    def test_open_wiki_page_asks_the_wiki_and_brings_it_to_the_front(self):
+        calls = []
+        wiki = types.SimpleNamespace(OpenPage=lambda p: calls.append(("OpenPage", p)) or True,
+                                     SetTop=lambda: calls.append(("SetTop",)))
+        holder = types.SimpleNamespace(wndWiki=wiki)
+        self.assertTrue(qol.interface_method("OpenWikiPage")(holder, "dungeons/demon_tower"))
+        self.assertEqual(calls, [("OpenPage", "dungeons/demon_tower"), ("SetTop",)])
+
+    def test_open_wiki_page_does_nothing_before_the_pages_branch(self):
+        # OpenPage exists only once feature/wiki-pages is merged.
+        holder = types.SimpleNamespace(wndWiki=types.SimpleNamespace(SetTop=lambda: None))
+        self.assertFalse(qol.interface_method("OpenWikiPage")(holder, "a"))
+        holder.wndWiki = None
+        self.assertFalse(qol.interface_method("OpenWikiPage")(holder, "a"))
+        world, window = self.world()
+        holder.wndWiki = window
+        with world.game, w4.quiet():
+            self.assertFalse(qol.interface_method("OpenWikiPage")(holder, "a"))
 
     def test_the_hook_asks_the_wiki(self):
         asked = []

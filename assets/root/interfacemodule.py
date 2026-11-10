@@ -639,6 +639,19 @@ class Interface(object):
 		opened that list."""
 		return bool(self.wndWiki and self.wndWiki.OpenList(path))
 
+	def OpenWikiPage(self, path):
+		"""A text page link (syswiki:page:<path>, NOVA-139): the wiki's
+		OpenPage, in front of every window. OpenPage comes with the text
+		pages (feature/wiki-pages); before that this opens nothing. True
+		when the page opened."""
+		wiki = self.wndWiki
+		if not wiki or not hasattr(wiki, "OpenPage"):
+			return False
+		if not wiki.OpenPage(path):
+			return False
+		wiki.SetTop()
+		return True
+
 	def OpenWikiLink(self, kind, ident):
 		"""The hook for every syswiki link kind __OpenWikiLink does not open
 		itself (NOVA-139's syswiki:page:<path>): the wiki's OpenLink, which
@@ -688,10 +701,14 @@ class Interface(object):
 	def __OpenWikiLink(self, kind, ident):
 		"""OLD's chat links, syswiki:<kind>:<ident>[?y=NNN] (interfaceModule.py:1154).
 		The browser opens "item" and "mob" links, and "list" links (a list,
-		the home page or a search, NOVA-42 round 3). Any other kind (a text
-		page, NOVA-139's syswiki:page:<path>) goes to OpenWikiLink whole."""
+		the home page or a search, NOVA-42 round 3), and "page" links
+		(NOVA-139's text pages, OpenWikiPage). Any other kind goes to
+		OpenWikiLink whole."""
 		if kind == "list":
 			self.OpenWikiList(ident)
+			return
+		if kind == "page":
+			self.OpenWikiPage(ident)
 			return
 		if kind not in ("item", "mob"):
 			self.OpenWikiLink(kind, ident)

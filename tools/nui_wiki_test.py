@@ -411,15 +411,16 @@ class SyswikiLink(unittest.TestCase):
         called = []
         holder = types.SimpleNamespace(OpenWikiItem=lambda v: called.append(("item", v)),
                                        OpenWikiMob=lambda v: called.append(("mob", v)),
-                                       OpenWikiLink=lambda k, i: called.append(("hook", k, i)))
+                                       OpenWikiLink=lambda k, i: called.append(("hook", k, i)),
+                                       OpenWikiPage=lambda p: called.append(("page", p)))
         method = self.method()
         method(holder, "item", "19")
         method(holder, "mob", "8002")
         method(holder, "page", "guide")
         method(holder, "item", "x")
-        # Since round 3 a kind the browser does not open goes to the
-        # OpenWikiLink hook (NOVA-139's text pages plug in there).
-        self.assertEqual(called, [("item", 19), ("mob", 8002), ("hook", "page", "guide")])
+        # Since round 3 a page link goes to OpenWikiPage (NOVA-139's text
+        # pages), and any other kind to the OpenWikiLink hook.
+        self.assertEqual(called, [("item", 19), ("mob", 8002), ("page", "guide")])
 
 
 if __name__ == "__main__":

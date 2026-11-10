@@ -7,10 +7,10 @@ window = {
 	"style" : ("float",),
 
 	"x" : (SCREEN_WIDTH  - 200) /2,
-	"y" : (SCREEN_HEIGHT - 348) /2,
+	"y" : (SCREEN_HEIGHT - 318) /2,
 
 	"width" : 200,
-	"height" : 348,
+	"height" : 318,
 
 	"children" :
 	(
@@ -22,7 +22,7 @@ window = {
 			"y" : 0,
 
 			"width" : 200,
-			"height" : 348,
+			"height" : 318,
 
 			"children" :
 			(
@@ -80,21 +80,6 @@ window = {
 					"over_image" : ROOT + "XLarge_Button_02.sub",
 					"down_image" : ROOT + "XLarge_Button_03.sub",
 				},
-				## The kill ranking (NOVA-29): the temporary entry until the extra
-				## inventory's button of OLD (PRODUCT-DECISIONS NOVA-29 Q3).
-				{
-					"name" : "killrank_button",
-					"type" : "button",
-
-					"x" : 10,
-					"y" : 147,
-
-					"text" : uiScriptLocale.SYSTEM_KILL_RANK,
-
-					"default_image" : ROOT + "XLarge_Button_01.sub",
-					"over_image" : ROOT + "XLarge_Button_02.sub",
-					"down_image" : ROOT + "XLarge_Button_03.sub",
-				},
 				## Change channel (NOVA-49): OLD's place, between the game
 				## options and the character change (OLD systemdialog.py:64-75).
 				{
@@ -102,7 +87,7 @@ window = {
 					"type" : "button",
 
 					"x" : 10,
-					"y" : 177,
+					"y" : 147,
 
 					"text" : uiScriptLocale.SYSTEM_MOVE_CHANNEL,
 
@@ -115,7 +100,7 @@ window = {
 					"type" : "button",
 
 					"x" : 10,
-					"y" : 207,
+					"y" : 177,
 
 					"text" : uiScriptLocale.SYSTEM_CHANGE,
 
@@ -128,7 +113,7 @@ window = {
 					"type" : "button",
 
 					"x" : 10,
-					"y" : 237,
+					"y" : 207,
 
 					"text" : uiScriptLocale.SYSTEM_LOGOUT,
 
@@ -141,7 +126,7 @@ window = {
 					"type" : "button",
 
 					"x" : 10,
-					"y" : 277,
+					"y" : 247,
 
 					"text" : uiScriptLocale.SYSTEM_EXIT,
 
@@ -154,7 +139,7 @@ window = {
 					"type" : "button",
 
 					"x" : 10,
-					"y" : 307,
+					"y" : 277,
 
 					"text" : uiScriptLocale.CANCEL,
 

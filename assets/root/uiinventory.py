@@ -649,6 +649,9 @@ class InventoryWindow(ui.ScriptWindow):
 			# The special inventory (NOVA-16); an older uiscript has no button.
 			self.extraInventoryButton = self.GetChild2("ExtraInventoryButton")
 			self.fastEquipButton = self.GetChild2("FastEquipButton")
+			# The kill ranking (NOVA-29), OLD's extra inventory button; an older
+			# uiscript has none.
+			self.rankingButton = self.GetChild2("RankingButton")
 
 			# One tab per inventory page (OLD uiInventory.py:884-889: five).
 			self.inventoryTab = []
@@ -737,6 +740,9 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.fastEquipButton:
 			self.fastEquipButton.SetEvent(ui.__mem_func__(self.ClickFastEquipButton))
 
+		if self.rankingButton:
+			self.rankingButton.SetEvent(ui.__mem_func__(self.ClickRankingButton))
+
 		if self.offlineShopButton:
 			self.offlineShopButton.SetEvent(ui.__mem_func__(self.ClickOfflineShopButton))
 
@@ -781,6 +787,7 @@ class InventoryWindow(ui.ScriptWindow):
 		self.DSSButton = None
 		self.extraInventoryButton = None
 		self.fastEquipButton = None
+		self.rankingButton = None
 		self.DSSButtonEffect = None
 		self.interface = None
 
@@ -853,6 +860,12 @@ class InventoryWindow(ui.ScriptWindow):
 	## The offline shop (NOVA-9; OLD uiInventory.py:482-501, the special
 	## inventory's side bar there): MANAGE answers with the owner's panel, or
 	## opens the builder when the player has no shop.
+	# The kill ranking (NOVA-29): OLD's OpenRanking and OpenKillRank
+	# (uiInventory.py:491-493, 1178-1179).
+	def ClickRankingButton(self):
+		if self.interface:
+			self.interface.OpenKillRank()
+
 	def ClickOfflineShopButton(self):
 		net.SendOfflineShopManagePacket()
 

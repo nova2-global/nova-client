@@ -372,10 +372,8 @@ window = {
 					"name" : "ExtraInventoryButton",
 					"type" : "button",
 
-					"x" : 0,
+					"x" : 10,
 					"y" : 246 + 32 * 9 + 3,
-
-					"horizontal_align" : "center",
 
 					"text" : uiScriptLocale.EXTRA_INVENTORY_BUTTON,
 					"tooltip_text" : uiScriptLocale.KEYCHANGE_EXTRA_INVENTORY,
@@ -383,6 +381,24 @@ window = {
 					"default_image" : "d:/ymir work/ui/public/large_button_01.sub",
 					"over_image" : "d:/ymir work/ui/public/large_button_02.sub",
 					"down_image" : "d:/ymir work/ui/public/large_button_03.sub",
+				},
+
+				## The kill ranking (NOVA-29): OLD's extra inventory strip had the
+				## Ranking button (OLD uiscript/extrainventorywindow.py:93-104), art
+				## NEW's packs lack: a stock text button right of the special
+				## inventory's, in its band (the two side by side, centered).
+				{
+					"name" : "RankingButton",
+					"type" : "button",
+
+					"x" : 104,
+					"y" : 246 + 32 * 9 + 3,
+
+					"text" : uiScriptLocale.SYSTEM_KILL_RANK,
+
+					"default_image" : "d:/ymir work/ui/public/middle_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/middle_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/middle_button_03.sub",
 				},
 
 				## The offline shop (NOVA-9): MANAGE (the owner's panel, or the

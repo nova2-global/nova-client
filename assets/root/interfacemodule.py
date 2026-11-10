@@ -354,7 +354,6 @@ class Interface(object):
 		self.dlgSystem = nui_windows.make("system-menu", uiSystem.SystemDialog, "nui_system_menu.SystemDialog")
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
-		self.dlgSystem.SetOpenKillRankEvent(ui.__mem_func__(self.OpenKillRank))
 		# NovaUI's system menu only (nui_system_menu.SetOpenWikiEvent).
 		if hasattr(self.dlgSystem, "SetOpenWikiEvent"):
 			self.dlgSystem.SetOpenWikiEvent(ui.__mem_func__(self.ToggleWiki))
@@ -1107,9 +1106,9 @@ class Interface(object):
 	def OfflineShopLog(self, rows, page, last):
 		self.wndOfflineShopLog.SetData(rows, page, last)
 
-	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the system
-	# menu's button toggles it (the temporary entry, PRODUCT-DECISIONS NOVA-29
-	# Q3, until the extra inventory's button of OLD); the answer refreshes it.
+	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the
+	# inventory's Ranking button toggles it (legacy's, and the NovaUI rail's
+	# entry), as OLD's extra inventory button; the answer refreshes it.
 	def OpenKillRank(self):
 		if not self.wndKillRank:
 			return

@@ -243,7 +243,7 @@ SURFACES = {
          "OnPressExitKey", "OnPressEscapeKey"),
     ("uiSystemOption", "LegacyOptionDialog", "nui_system_options", "OptionDialog"):
         ("Destroy", "Close", "OnPressEscapeKey", "OnChangeMusicVolume", "OnChangeSoundVolume", "OnChangeShadowQuality",
-         "OnCloseInputDialog", "OnCloseQuestionDialog"),
+         "OnCloseInputDialog", "OnCloseQuestionDialog", "OnChangeFieldOfView"),
     ("uiSelectMusic", "FileListDialog", "nui_system_options", "FileListDialog"):
         ("Open", "Close", "SAFE_SetSelectEvent", "OnPressEscapeKey"),
     ("uiGameOption", "LegacyOptionDialog", "nui_game_options", "OptionDialog"):
@@ -1410,7 +1410,9 @@ class Fixtures(unittest.TestCase):
         keys = {"sound_volume", "music_volume", "music_file", "camera", "fog", "tiling", "interface", "themes", "theme",
                 "scales", "scale", "auto_percent", "reduced_motion",
                 # P13 spec 5.6: reduced effects and the player colors.
-                "reduced_effects", "effects_available", "color_slots", "accent_hue", "colors_adjusted"}
+                "reduced_effects", "effects_available", "color_slots", "accent_hue", "colors_adjusted",
+                # NOVA-116: the field of view and its range.
+                "fov", "fov_min", "fov_max"}
         self.assertEqual(set(options.nui_model()), keys)
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
@@ -1825,3 +1827,129 @@ class Wiring(unittest.TestCase):
             self.assertEqual(world.m("uiGameOption").OptionDialog.window_id, "game-options")
             with quiet():
                 self.assertIsInstance(world.m("uiSystemOption").OptionDialog(), world.m("uiSystemOption").LegacyOptionDialog)
+
+
+# --- the field of view (NOVA-116) -------------------------------------------------------------
+
+CLASSIC_SYSTEM_OPTIONS = os.path.normpath(os.path.join(WINDOWS, "..", "skins", "classic", "windows", "system-options.rcss"))
+# OPTION_FIELD_OF_VIEW in each locale (NOVA-116: a new key, not OLD's
+# OPTION_VIEW_POINT, whose de, cz and gr texts said "lookout" and "points").
+FIELD_OF_VIEW_TEXT = {"ae": "مجال الرؤية", "br": "Campo visual", "cz": "Zorné pole", "de": "Sichtfeld",
+                      "dk": "Synsfelt", "en": "Field of View", "es": "Campo visual", "fr": "Champ visuel",
+                      "gr": "Οπτικό πεδίο", "hu": "Látószög", "it": "Campo visivo", "nl": "Gezichtsveld",
+                      "pl": "Pole widzenia", "pt": "Campo visual", "ro": "Câmp vizual", "ru": "Поле зрения",
+                      "tr": "Görüş alanı"}
+
+
+class FieldOfView(Pair):
+    """The field of view row (POINT_OF_VIEW, NOVA-116; OLD's "View Point"
+    slider, uiGameOption.py:1248-1293, range 30 to 120, whole degrees) in the
+    legacy system options (uisystemoption.py, uiscript systemoptiondialog.py)
+    and in the NovaUI ones."""
+
+    def setup_state(self, game):
+        game.settings.update({"sound_volume": 0.75, "music_volume": 0.5, "fog_level": 1, "field_of_view": 48.0})
+        game.software_tiling = False
+
+    def pair(self):
+        legacy, novaui = self.worlds()
+        a, b = legacy.make_options(), novaui.make_options()
+        a.Show()
+        b.Show()
+        return legacy, novaui, a, b
+
+    def test_the_legacy_row_sits_in_the_free_row_under_tiling_and_the_board_keeps_its_size(self):
+        legacy, novaui, a, b = self.pair()
+        cls = type(a)
+        self.assertEqual(cls.FIELD_OF_VIEW_ROW_Y, 210, "the row legacy's commented-out shadow slider left free")
+        script = support.read_uiscript("uiscript/systemoptiondialog.py")
+        board_spec = script["children"][0]
+        children = {child["name"]: child for child in board_spec["children"]}
+        self.assertEqual((children["fov_name"]["x"], children["fov_name"]["y"]), (30, cls.FIELD_OF_VIEW_ROW_Y + 2))
+        self.assertEqual((children["fov_controller"]["type"], children["fov_controller"]["x"],
+                          children["fov_controller"]["y"]), ("sliderbar", 110, cls.FIELD_OF_VIEW_ROW_Y))
+        self.assertEqual(max(child["y"] for child in board_spec["children"]), cls.FIELD_OF_VIEW_ROW_Y + 2, "the last row")
+        self.assertIs(a.ctrlFieldOfView, a.GetChild("fov_controller"))
+        self.assertEqual(a.GetChild("fov_name").text, "OPTION_FIELD_OF_VIEW")
+        self.assertEqual((script["height"], board_spec["height"]), (255, 255), "legacy's board height, the slider ending at 222")
+
+    def test_each_show_puts_the_angle_on_both_sliders(self):
+        legacy, novaui, a, b = self.pair()
+        self.assertAlmostEqual(a.ctrlFieldOfView.GetSliderPos(), (48.0 - 30) / 90)
+        model = board(b).model
+        self.assertEqual((model["fov"], model["fov_min"], model["fov_max"]), (48, 30, 120))
+        novaui.game.settings["field_of_view"] = 120.0
+        b.Hide()
+        b.Show()
+        self.assertEqual(board(b).model["fov"], 120)
+        self.assertEqual(novaui.effects()[-1:], [], "a show only reads")
+
+    def test_a_move_sets_the_angle_in_whole_degrees_as_legacy_does(self):
+        legacy, novaui, a, b = self.pair()
+        for fraction, degrees in ((0.5, 75), (1.0, 120), (0.0, 30), (61.0 / 122 + 1.0 / 122, 76)):
+            with self.subTest(degrees=degrees):
+                calls = self.same(legacy, novaui, lambda: a.ctrlFieldOfView.drag_to(fraction),
+                                  lambda: fire(b, "fov", degrees), "fov %d" % degrees)
+                self.assertEqual(calls, [("systemSetting.SetPOV", (float(degrees),))])
+                self.assertIsInstance(calls[0][1][0], float, "OLD's SetPOV takes a float")
+                self.assertEqual(board(b).get("fov"), degrees)
+                self.assertEqual((legacy.game.settings["field_of_view"], novaui.game.settings["field_of_view"]),
+                                 (float(degrees), float(degrees)))
+        for world in (legacy, novaui):
+            self.assertNotIn(("systemSetting.SaveConfig", ()), world.effects(), "saved at exit, as the volumes")
+
+    def test_the_models_own_angle_coming_back_and_a_value_that_is_no_number_do_nothing(self):
+        legacy, novaui, a, b = self.pair()
+        mark = novaui.mark()
+        fire(b, "fov", 48)
+        fire(b, "fov", "48.2")
+        fire(b, "fov", "wide")
+        fire(b, "fov", None)
+        self.assertEqual(novaui.effects_since(mark), [])
+        fire(b, "fov", "90.4")
+        self.assertEqual(novaui.effects_since(mark), [("systemSetting.SetPOV", (90.0,))], "a slider's text value, rounded")
+        fire(b, "fov", 500)
+        self.assertEqual(novaui.effects_since(mark)[-1], ("systemSetting.SetPOV", (120.0,)), "kept in the range")
+        self.assertEqual(board(b).get("fov"), 120)
+
+    def test_the_novaui_row_is_a_whole_degree_slider_over_the_clients_range_after_tiling(self):
+        document = read(os.path.join(WINDOWS, "system-options", "system-options.rml"))
+        match = re.search(r'<input id="so-fov"[^>]*/>', document)
+        self.assertIsNotNone(match)
+        tag = match.group(0)
+        for part in ('type="range"', 'min="30"', 'max="120"', 'step="1"', 'data-attr-value="fov"',
+                     'data-event-change="fov(ev.value)"', "so-slider--fov"):
+            self.assertIn(part, tag)
+        self.assertIn('<span id="so-fov-label" class="so-label so-label--fov">@ui.OPTION_FIELD_OF_VIEW</span>', document)
+        self.assertIn('<span id="so-fov-value" class="so-value">{{ fov }}&#176;</span>', document)
+        self.assertLess(document.index('id="so-tiling-apply"'), document.index('id="so-fov"'), "under the tiling row")
+        self.assertLess(document.index('id="so-fov"'), document.index('id="so-interface"'), "in the legacy part")
+
+    def test_the_classic_row_is_at_legacy_s_place_and_the_legacy_part_grows_by_it(self):
+        legacy, novaui, a, b = self.pair()
+        row = type(a).FIELD_OF_VIEW_ROW_Y
+        classic = read(CLASSIC_SYSTEM_OPTIONS)
+        self.assertIn("body.skin-classic.system-options .so-label--fov { top: %ddp; }" % (row + 2), classic)
+        self.assertIn("body.skin-classic.system-options .so-slider--fov { top: %ddp; }" % row, classic)
+        part = classic.split("body.skin-classic.system-options .so-legacy\n{")[1].split("}")[0]
+        self.assertIn("height: %ddp;" % (row + 22), part, "the legacy part as tall as its last row")
+
+    def test_the_label_is_in_every_locale(self):
+        locales = [name for name in sorted(os.listdir(LOCALES))
+                   if os.path.exists(os.path.join(LOCALES, name, "locale_interface.txt"))]
+        self.assertEqual(locales, sorted(FIELD_OF_VIEW_TEXT))
+        for locale in locales:
+            with self.subTest(locale=locale):
+                with open(os.path.join(LOCALES, locale, "locale_interface.txt"), "rb") as handle:
+                    data = handle.read()
+                self.assertTrue(data.endswith(b"\n"))
+                self.assertNotIn(b"\r", data)
+                lines = [line for line in data.decode("utf-8").split("\n") if line.startswith("OPTION_FIELD_OF_VIEW\t")]
+                self.assertEqual(lines, ["OPTION_FIELD_OF_VIEW\t" + FIELD_OF_VIEW_TEXT[locale]])
+
+    def test_legacy_s_slider_event_on_the_facade_reads_the_boards_angle(self):
+        legacy, novaui, a, b = self.pair()
+        board(b).model["fov"] = 100
+        mark = novaui.mark()
+        b.OnChangeFieldOfView()
+        self.assertEqual(novaui.effects_since(mark), [("systemSetting.SetPOV", (100.0,))])

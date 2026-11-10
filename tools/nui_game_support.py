@@ -1151,7 +1151,10 @@ class Game(object):
                          "show_damage": True, "show_mob_level": True, "show_mob_ai": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0,
                          # The pickup filter's four categories (NOVA-50; the
                          # client's PICKUP_FILTER_ALL by default).
-                         "pickup_filter": [True, True, True, True]}
+                         "pickup_filter": [True, True, True, True],
+                         # The field of view in degrees (NOVA-116; POINT_OF_VIEW,
+                         # FIELD_OF_VIEW_DEFAULT by default).
+                         "field_of_view": 30.0}
         self.pk_mode = 0         # player.GetPKMode
         self.guild_id = 0        # player.GetGuildID
         self.software_tiling = False  # background.IsSoftwareTiling
@@ -1534,6 +1537,11 @@ class Game(object):
         # Through define(), so a test's scripted answer (Game.answer) wins.
         define(setting, "GetPickupFilter", lambda index: bool(settings["pickup_filter"][index]))
         setter("SetPickupFilter", lambda index, on: settings["pickup_filter"].__setitem__(index, bool(on)))
+        # The field of view (NOVA-116): OLD's pair, a float each way, clamped
+        # to the client's range (CPythonSystem::ClampFieldOfView), and the range.
+        setting.FIELD_OF_VIEW_MIN, setting.FIELD_OF_VIEW_MAX, setting.FIELD_OF_VIEW_DEFAULT = 30, 120, 30
+        getter("GetPOV", "field_of_view", float)
+        setter("SetPOV", lambda value: settings.__setitem__("field_of_view", min(120.0, max(30.0, float(value)))))
 
         background = modules["background"]
         background.IsSoftwareTiling = lambda: bool(game.software_tiling)

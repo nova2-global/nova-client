@@ -12,7 +12,8 @@
 	     the facade fills the model from the getters at each show. The legacy
 	     rows keep legacy's order and calls: the sound and music sliders, the
 	     background music and its Change button (the music list), the camera
-	     distance, the fog and the tiling choices with Apply. The Interface
+	     distance, the fog and the tiling choices with Apply, and the field of
+	     view slider (NOVA-116). The Interface
 	     section applies each choice at once and saves it (nui.set_theme,
 	     set_scale_percent, set_reduced_motion); the scale is a row of
 	     choices, not a slider, so the window does not rescale under a drag
@@ -77,6 +78,15 @@
 					<button id="so-tiling-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--small so-choice--tiling-1" data-class-is-selected="tiling == 1" data-event-mousedown="choose('tiling', 1, ev.button)"><span class="so-choice__label">@ui.OPTION_TILING_GPU</span></button>
 					<button id="so-tiling-apply" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-tiling-apply" data-event-mousedown="act('tiling_apply', ev.button)"><span class="so-choice__label">@ui.OPTION_TILING_APPLY</span></button>
 				</div>
+			</div>
+			<!-- The field of view (NOVA-116): whole degrees over the client's
+			     range (systemSetting.FIELD_OF_VIEW_MIN to MAX, pinned by
+			     nui_sys_test.FieldOfView). -->
+			<div class="so-row so-row--fov">
+				<span id="so-fov-label" class="so-label so-label--fov">@ui.OPTION_FIELD_OF_VIEW</span>
+				<input id="so-fov" type="range" class="nui-slider so-slider so-slider--fov" min="30" max="120" step="1"
+					data-attr-value="fov" data-event-change="fov(ev.value)"/>
+				<span id="so-fov-value" class="so-value">{{ fov }}&#176;</span>
 			</div>
 		</div>
 		<div id="so-interface" class="so-interface" data-if="interface">

@@ -6,6 +6,9 @@
 		"camera": 0,
 		"fog": 1,
 		"tiling": 1,
+		"fov": 30,
+		"fov_min": 30,
+		"fov_max": 120,
 		"interface": true,
 		"themes": [
 			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},

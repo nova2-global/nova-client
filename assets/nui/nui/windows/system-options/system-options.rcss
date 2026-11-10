@@ -86,9 +86,9 @@ body.system-options
 	font-size: var(--font-md);
 }
 
-/* The volume rows: raised cells (the slider's track is the sunken color),
+/* The volume rows and the field of view (NOVA-116): raised cells (the slider's track is the sunken color),
    the slider filling the row and its value after it. */
-.so-row--sound, .so-row--music
+.so-row--sound, .so-row--music, .so-row--fov
 {
 	padding: 0 var(--space-2);
 	border-width: 1dp;

@@ -19,7 +19,24 @@ MUSIC_FILENAME_MAX_LEN = 25
 
 blockMode = 0
 
+def field_of_view_place(degrees):
+	"""The slider's place (0 to 1) of an angle, over the client's range
+	(systemSetting.FIELD_OF_VIEW_MIN to MAX; OLD's (pov - 30) / 90)."""
+	low, high = systemSetting.FIELD_OF_VIEW_MIN, systemSetting.FIELD_OF_VIEW_MAX
+	return min(1.0, max(0.0, (float(degrees) - low) / (high - low)))
+
+
+def field_of_view_of_place(place):
+	"""The whole degree at a slider's place (OLD's int(30 + pos * 90),
+	rounded so a place written by field_of_view_place reads back)."""
+	low, high = systemSetting.FIELD_OF_VIEW_MIN, systemSetting.FIELD_OF_VIEW_MAX
+	return int(round(low + min(1.0, max(0.0, float(place))) * (high - low)))
+
+
 class OptionDialog(ui.ScriptWindow):
+	# The field of view's row (NOVA-116, uiscript systemoptiondialog.py): the
+	# label 2 lower, the slider at x 110.
+	FIELD_OF_VIEW_ROW_Y = 210
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -43,6 +60,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.fogModeButtonList = []
 		self.tilingModeButtonList = []
 		self.ctrlShadowQuality = 0
+		self.ctrlFieldOfView = 0
 		
 	def Destroy(self):
 		self.ClearDictionary()
@@ -74,6 +92,7 @@ class OptionDialog(ui.ScriptWindow):
 			self.tilingModeButtonList.append(GetObject("tiling_cpu"))
 			self.tilingModeButtonList.append(GetObject("tiling_gpu"))
 			self.tilingApplyButton=GetObject("tiling_apply")
+			self.ctrlFieldOfView = GetObject("fov_controller")
 			#self.ctrlShadowQuality = GetObject("shadow_bar")
 		except:
 			import exception
@@ -95,6 +114,9 @@ class OptionDialog(ui.ScriptWindow):
 
 #		self.ctrlShadowQuality.SetSliderPos(float(systemSetting.GetShadowLevel()) / 5.0)
 #		self.ctrlShadowQuality.SetEvent(ui.__mem_func__(self.OnChangeShadowQuality))
+
+		self.ctrlFieldOfView.SetSliderPos(field_of_view_place(systemSetting.GetPOV()))
+		self.ctrlFieldOfView.SetEvent(ui.__mem_func__(self.OnChangeFieldOfView))
 
 		self.changeMusicButton.SAFE_SetEvent(self.__OnClickChangeMusicButton)
 
@@ -220,6 +242,9 @@ class OptionDialog(ui.ScriptWindow):
 		pos = self.ctrlSoundVolume.GetSliderPos()
 		snd.SetSoundVolume(pos)
 		systemSetting.SetSoundVolume(pos)
+
+	def OnChangeFieldOfView(self):
+		systemSetting.SetPOV(float(field_of_view_of_place(self.ctrlFieldOfView.GetSliderPos())))
 
 	def OnChangeShadowQuality(self):
 		pos = self.ctrlShadowQuality.GetSliderPos()

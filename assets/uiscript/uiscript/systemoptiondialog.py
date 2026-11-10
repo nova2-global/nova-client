@@ -262,6 +262,26 @@ window = {
 				},
 
 
+				## The field of view (NOVA-116), in the row the shadow slider
+				## below left free: OLD's slider, 30 to 120 degrees.
+				{
+					"name" : "fov_name",
+					"type" : "text",
+
+					"x" : 30,
+					"y" : 210+2,
+
+					"text" : uiScriptLocale.OPTION_FIELD_OF_VIEW,
+				},
+
+				{
+					"name" : "fov_controller",
+					"type" : "sliderbar",
+
+					"x" : 110,
+					"y" : 210,
+				},
+
 				## 그림자
 #				{
 #					"name" : "shadow_mode",

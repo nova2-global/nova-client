@@ -68,6 +68,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_test_support as support  # noqa: E402
 
 ROOT = support.ROOT
+# The modules nui_wiki imports for its text pages (NOVA-139), in load order.
+WIKI_PAGE_MODULES = ("nui_wiki_page_format", "nui_wiki_pages")
 find_lines = support.find_lines
 
 GETTER_PREFIXES = ("Get", "Is", "Has", "Can", "LocalQuickSlotIndexTo", "Find")
@@ -1592,6 +1594,11 @@ class Game(object):
         it keeps memory only and writes nothing."""
         if name != "datacache" and "datacache" not in self.modules:
             self.load("datacache", "datacache.py")
+        # The wiki imports its text pages (NOVA-139): the page format and the
+        # page store come first unless the test loaded its own.
+        for needed in WIKI_PAGE_MODULES if name == "nui_wiki" else ():
+            if needed not in self.modules:
+                self.load(needed, needed + ".py")
         with self:
             path = os.path.join(ROOT, file_name or (name.lower() + ".py"))
             sys.modules.pop(name, None)

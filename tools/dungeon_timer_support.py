@@ -110,6 +110,9 @@ class ModelPreview(object):
     def Clear(self, name):
         self.calls.append(("Clear", name))
 
+    def SetStill(self, name, still):
+        self.calls.append(("SetStill", name, bool(still)))
+
     def GetState(self, name):
         return {"shown": 0, "race": 0, "has_model": 0, "renders": 0, "texels": (0, 0)}
 

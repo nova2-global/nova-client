@@ -295,6 +295,8 @@ class Interface(object):
 		# window: uiWiki.UnavailableWindow stands in when NovaUI cannot run.
 		self.wndWiki = nui_windows.make("wiki", uiWiki.UnavailableWindow, "nui_wiki.WikiWindow")
 		self.wndWiki.Hide()
+		# Its Link button pastes a page's link where the player types.
+		self.wndWiki.SetPasteLinkEvent(ui.__mem_func__(self.PasteWikiLink))
 
 		# The offline shop's search, log and decoration windows (NOVA-9) are the
 		# legacy controllers on NovaUI proxies.
@@ -354,7 +356,6 @@ class Interface(object):
 		self.dlgSystem = nui_windows.make("system-menu", uiSystem.SystemDialog, "nui_system_menu.SystemDialog")
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
-		self.dlgSystem.SetOpenKillRankEvent(ui.__mem_func__(self.OpenKillRank))
 		# NovaUI's system menu only (nui_system_menu.SetOpenWikiEvent).
 		if hasattr(self.dlgSystem, "SetOpenWikiEvent"):
 			self.dlgSystem.SetOpenWikiEvent(ui.__mem_func__(self.ToggleWiki))
@@ -632,6 +633,31 @@ class Interface(object):
 
 	def OpenWikiMob(self, vnum):
 		return bool(self.wndWiki and self.wndWiki.OpenMob(vnum))
+
+	def PasteWikiLink(self, link):
+		"""The wiki's Link button (NOVA-42): a page's syswiki link into the
+		whisper dialog whose input has the focus, else into the chat input,
+		which opens for it (an open one keeps its text). True when it went
+		in. A NovaUI whisper answers by its focus proxy (it holds wndMgr's
+		focus while its field has NovaUI's), a legacy one by its edit line."""
+		import ime
+		for dlg in list(self.whisperDialogDict.values()):
+			if not dlg.IsShow():
+				continue
+			proxy = getattr(dlg, "focusProxy", None)
+			focused = proxy.has_focus() if proxy is not None else dlg.chatLine.IsFocus()
+			if focused:
+				dlg.chatLine.SetFocus()
+				ime.PasteString(link)
+				return True
+		if self.wndChat.IsEditMode():
+			self.SetChatFocus()
+		else:
+			self.ToggleChat()
+			if not self.wndChat.IsEditMode():
+				return False
+		ime.PasteString(link)
+		return True
 
 	def WikiAnswer(self, *rows):
 		if self.wndWiki:
@@ -1107,9 +1133,9 @@ class Interface(object):
 	def OfflineShopLog(self, rows, page, last):
 		self.wndOfflineShopLog.SetData(rows, page, last)
 
-	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the system
-	# menu's button toggles it (the temporary entry, PRODUCT-DECISIONS NOVA-29
-	# Q3, until the extra inventory's button of OLD); the answer refreshes it.
+	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the
+	# inventory's Ranking button toggles it (legacy's, and the NovaUI rail's
+	# entry), as OLD's extra inventory button; the answer refreshes it.
 	def OpenKillRank(self):
 		if not self.wndKillRank:
 			return

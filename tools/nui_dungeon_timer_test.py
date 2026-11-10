@@ -140,7 +140,7 @@ class Bosses(unittest.TestCase):
         self.assertEqual(sorted(c[1] for c in cleared), ["dungeon_boss_%d" % i for i in (0, 1, 2, 5, 6)])
         with world.game, w4.quiet():
             window.Open()
-        self.assertIn(("Select", "dungeon_boss_0", 1095), self.previews(world)[-12:], "selected again after the clear")
+        self.assertIn(("Select", "dungeon_boss_0", 1095), self.previews(world)[-15:], "selected again after the clear")
 
     def test_a_race_without_a_model_shows_the_monogram(self):
         world, window, _ = opened(preview=True, select_ok=False)
@@ -150,6 +150,40 @@ class Bosses(unittest.TestCase):
     def test_a_client_without_previews_still_opens(self):
         world, window, _ = opened()
         self.assertEqual([c["view"] for c in model(window)["cards"]], [False] * 6)
+
+    def still(self, world):
+        """Each preview's latest SetStill."""
+        out = {}
+        for c in self.previews(world):
+            if c[0] == "SetStill":
+                out[c[1]] = c[2]
+        return out
+
+    def test_only_the_front_card_turns_the_side_cards_keep_their_picture(self):
+        # Live on r38: five bosses updated, deformed and drawn every frame.
+        world, window, _ = opened(preview=True)
+        front = model(window)["selected"]
+        still = self.still(world)
+        self.assertEqual(still.pop("dungeon_boss_%d" % front), False, "the front card turns")
+        self.assertEqual(sorted(still), ["dungeon_boss_%d" % i for i in (0, 1, 2, 5, 6) if i != front])
+        self.assertTrue(all(still.values()), "the side cards are still")
+        press(world, window, "arrow_press", "next", 0)
+        now = model(window)["selected"]
+        self.assertNotEqual(now, front)
+        still = self.still(world)
+        self.assertEqual(still["dungeon_boss_%d" % now], False, "the new front card turns")
+        self.assertEqual(still["dungeon_boss_%d" % front], True, "the old one keeps its picture")
+
+    def test_a_client_without_still_previews_still_turns_every_card(self):
+        world, window, _ = opened(preview=True)
+        stub = type(world.game.modules["modelpreview"])
+        set_still = stub.SetStill
+        del stub.SetStill
+        try:
+            press(world, window, "arrow_press", "next", 0)
+            self.assertEqual(card(window, 3)["view"], True)
+        finally:
+            stub.SetStill = set_still
 
     def test_the_old_single_preview_is_not_used(self):
         world, window, _ = opened(preview=True)

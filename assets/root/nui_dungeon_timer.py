@@ -8,12 +8,13 @@ through nui_windows.make() instead of uiTimerWindow.TimerWindow: a subclass of t
 handler, through nui_slots.LegacySlotEvents), the teleport and the ranking commands are legacy's
 code.
 
-The board is a deck of boss cards: every dungeon has a card with its boss turning (one named
-model preview per dungeon, "dungeon_boss_<idx>", view "model-dungeon-boss-<idx>", shown only for
-the visible cards), a badge (Ready, the live countdown, or Hidden), and a place in the deck
-(a slot class; the sheet transitions left, top, width, height and opacity over 0.3 s). Below it
-the front dungeon's details, its drops merged across all its mobs in one grid (merged_drops) with
-filter chips, and Run or Practice.
+The board is a deck of boss cards: every dungeon has a card with its boss (one named model
+preview per dungeon, "dungeon_boss_<idx>", view "model-dungeon-boss-<idx>", shown only for the
+visible cards; the front card's boss turns, the side cards' are still pictures), a badge (Ready,
+the live countdown, or Hidden), and a place in the deck (a slot class; the sheet transitions
+left, top, width, height and opacity over 0.3 s). Below it the front dungeon's details, its
+drops merged across all its mobs in one grid (merged_drops) with filter chips, and Run or
+Practice.
 
 No Python runs per frame. A card's clock is a nui-countdown (M:SS) to the dungeon's re-entry
 time: its end raises card_ready and the card turns ready. The notice of a checked dungeon is
@@ -47,6 +48,7 @@ DROPS_ANSWER_WAIT = 3.0
 SLOTS = {0: "c", 1: "r1", 2: "r2", 3: "r3", -1: "l1", -2: "l2", -3: "l3"}
 # The slots that show a card: the outermost ones sit behind the deck, hidden.
 SHOWN_SLOTS = ("c", "r1", "r2", "l1", "l2")
+FRONT_SLOT = "c"
 PREVIEW_PREFIX = "dungeon_boss_"
 
 
@@ -488,6 +490,11 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 		if not self._preview_models[idx]:
 			return False
 		preview.Show(name, True)
+		# Only the front card turns; a side card is drawn once and keeps its picture (r38: five
+		# bosses turning every frame cost the frame rate). A client without SetStill turns them all.
+		set_still = getattr(preview, "SetStill", None)
+		if set_still is not None:
+			set_still(name, slot != FRONT_SLOT)
 		return True
 
 	def _clear_previews(self):

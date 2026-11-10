@@ -1,8 +1,8 @@
 <rml>
 <head>
 	<!-- The kill ranking (NOVA-29; legacy uikillrank.py KillRankWindow, uiscript
-	     killrankwindow.py, OLD uiKillRank.py). The system menu's Ranking button
-	     opens it (the temporary entry); while the kill-rank flag is on, that is
+	     killrankwindow.py, OLD uiKillRank.py). The inventory's Ranking (legacy's
+	     button, the NovaUI rail's entry) opens it, as OLD's; while the kill-rank flag is on, that is
 	     nui_kill_rank.KillRankWindow (controller assets/root/nui_kill_rank.py),
 	     a subclass of the legacy class on proxies: the requests, the answer, the
 	     tabs and the rows are legacy's code. A tab asks for its ranking; the

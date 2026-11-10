@@ -1,8 +1,79 @@
 /* Classic skin overlay of nui/windows/wiki/wiki.rml: the wiki has no legacy
    window (NOVA-42), so classic keeps the browser's own layout on the stone
-   board, code-drawn like the other classic windows with no legacy art. */
+   board, code-drawn like the other classic windows. The bar's buttons are
+   legacy middle buttons with a drawn glyph (legacy has no art for Back,
+   Forward, Home, a tab's close or a new tab), as the dungeon manager's
+   arrows; the trail, the tabs and the chips are square, on the slot colors. */
 
 body.skin-classic.wiki .wiki__title-icon
 {
 	display: none;
+}
+body.skin-classic.wiki .wiki__nav .nui-glyph,
+body.skin-classic.wiki .wiki__tab-close .nui-glyph,
+body.skin-classic.wiki .wiki__new-tab .nui-glyph
+{
+	--glyph-ink: var(--classic-button-text);
+	display: inline-block;
+}
+body.skin-classic.wiki .wiki__nav,
+body.skin-classic.wiki .wiki__new-tab
+{
+	height: 21dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: tiled-horizontal(classic-button-middle-01-l, classic-button-middle-01-c, classic-button-middle-01-r);
+	color: var(--classic-button-text);
+	line-height: 21dp;
+}
+body.skin-classic.wiki .wiki__nav:hover,
+body.skin-classic.wiki .wiki__new-tab:hover
+{
+	decorator: tiled-horizontal(classic-button-middle-02-l, classic-button-middle-02-c, classic-button-middle-02-r);
+}
+body.skin-classic.wiki .wiki__nav:active,
+body.skin-classic.wiki .wiki__new-tab:active,
+body.skin-classic.wiki .wiki__nav.is-selected
+{
+	decorator: tiled-horizontal(classic-button-middle-03-l, classic-button-middle-03-c, classic-button-middle-03-r);
+}
+body.skin-classic.wiki .wiki__nav.is-selected .nui-glyph
+{
+	--glyph-ink: var(--accent);
+}
+body.skin-classic.wiki .wiki__new-tab
+{
+	width: 24dp;
+}
+body.skin-classic.wiki .wiki__trail,
+body.skin-classic.wiki .wiki__tab,
+body.skin-classic.wiki .wiki__chip
+{
+	border-radius: 0;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.wiki .wiki__trail
+{
+	height: 22dp;
+	line-height: 20dp;
+}
+body.skin-classic.wiki .wiki__tab.is-active
+{
+	border-color: var(--accent);
+}
+body.skin-classic.wiki .wiki__tab:hover,
+body.skin-classic.wiki .wiki__chip:hover
+{
+	border-color: var(--accent);
+}
+body.skin-classic.wiki .wiki__tab-close
+{
+	background-color: transparent;
+}
+/* The legacy font sits lower on its line: the list's title keeps clear of its rule. */
+body.skin-classic.wiki .wiki__list-head
+{
+	line-height: 19dp;
 }

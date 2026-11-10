@@ -147,6 +147,20 @@ class Bosses(unittest.TestCase):
         self.assertEqual([c["view"] for c in model(window)["cards"]], [False] * 6)
         self.assertEqual(card(window, 0)["mono"], "DT")
 
+    def test_a_dungeon_without_a_boss_selects_no_model(self):
+        # Race 0 is the warrior for the client now (r39), no longer "no model".
+        world = dts.World(True, preview=True)
+        world.rank()
+        window = world.timer()
+        real = window.nui_race
+        window.nui_race = lambda idx: 0 if idx == 5 else real(idx)
+        world.game.state.now = 100.0
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertFalse([c for c in self.previews(world) if c[1] == "dungeon_boss_5"], "no warrior on the card")
+        self.assertEqual(card(window, 5)["view"], False)
+        self.assertIn(("Select", "dungeon_boss_0", 1095), self.previews(world))
+
     def test_a_client_without_previews_still_opens(self):
         world, window, _ = opened()
         self.assertEqual([c["view"] for c in model(window)["cards"]], [False] * 6)

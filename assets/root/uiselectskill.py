@@ -6,8 +6,11 @@ render target, and the buttons that pick a group with /select_skill.
 Hovering a skill plays its motion on the preview: motion NAME_SKILL + n, n being 1 to 6 or 16 to
 21 from the warrior's row for every job (OLD's SKILL_INDEX_DICT[0]), since n is a motion slot and
 not a skill vnum. The dressed model is made only when its gear changes (a hover keeps it) and the
-camera stands at OLD's (0, -1200, 600). Without a client's modelpreview module or render
-targets, the window shows no preview. A server can refuse the pick (the group is no longer 0): a
+camera stands at OLD's (0, -1200, 600). While no skill is hovered, the preview casts the job's
+skills of both groups at random, one after another, each in its row's gear (Eddy; OLD only looped
+the wait): modelpreview.SetSkillCycle, run by the client each frame, so no Python runs per frame.
+The skills' effects draw inside the preview only. Without a client's modelpreview module or render
+targets, the window shows no preview; a client without SetSkillCycle shows the wait. A server can refuse the pick (the group is no longer 0): a
 window that picked closes either way."""
 
 import item
@@ -140,6 +143,8 @@ class SelectSkillWindow(ui.ScriptWindow):
 		self.toolTipSkill = toolTipSkill
 
 	def Open(self):
+		if not self.IsShow():
+			self.__StartCycle()
 		self.__ApplyPreview()
 		if self.IsShow():
 			return
@@ -180,6 +185,19 @@ class SelectSkillWindow(ui.ScriptWindow):
 		self.__ApplyPreview()
 		if self.toolTipSkill:
 			self.toolTipSkill.HideToolTip()
+
+	def __StartCycle(self):
+		"""The idle casting: every skill of both groups, each in its row's gear."""
+		preview = model_preview()
+		set_cycle = getattr(preview, "SetSkillCycle", None) if preview is not None else None
+		if set_cycle is None:
+			return
+		gear = SKILL_INDEX_DICT[player.GetJob()]
+		entries = []
+		for group, row in ((1, 3), (2, 4)):
+			body, weapon = gear[row]
+			entries.extend((motion, body, weapon) for motion in SKILL_INDEX_DICT[0][group])
+		set_cycle(PREVIEW, entries)
 
 	def __ApplyPreview(self, motion = 0):
 		"""OLD's setRenderTarget: the row of gear follows the motion (1 to 6 the first group's

@@ -10,7 +10,16 @@ import nonplayer
 import localeInfo
 import constInfo
 import uiCommon
+import uiTargetInfo
 import nui_windows
+import nui_numbers
+
+# OLD uiTarget.py ELEMENT_IMAGE_DIC (char.cpp:7450-7470), drawn as a colored
+# name because OLD's 12zi element art is not in NEW's packs.
+ELEMENT_NAME_KEY = {1: "TARGET_INFO_RACE_ELEC", 2: "TARGET_INFO_RACE_FIRE", 3: "TARGET_INFO_RACE_ICE",
+                    4: "TARGET_INFO_RACE_WIND", 5: "TARGET_INFO_RACE_EARTH", 6: "TARGET_INFO_RACE_DARK"}
+ELEMENT_COLOR = {1: 0xffcdb3ff, 2: 0xffff8a4a, 3: 0xff7ec9ff, 4: 0xff9fffa6, 5: 0xffd6b16e, 6: 0xffc17bff}
+
 
 class TargetBoard(ui.ThinBoard):
 
@@ -95,6 +104,36 @@ class TargetBoard(ui.ThinBoard):
 		hpGauge.MakeGauge(130, "red")
 		hpGauge.Hide()
 
+		# NOVA-40 (OLD uiTarget.py:862, 1330-1391): the percent beside the gauge,
+		# the exact numbers over it, the element and the info button of a mob.
+		hpPercent = ui.TextLine()
+		hpPercent.SetParent(self)
+		hpPercent.SetOutline()
+		hpPercent.SetWindowHorizontalAlignRight()
+		hpPercent.SetHorizontalAlignRight()
+		hpPercent.Hide()
+
+		hpValues = ui.TextLine()
+		hpValues.SetParent(self)
+		hpValues.SetOutline()
+		hpValues.SetWindowHorizontalAlignRight()
+		hpValues.SetHorizontalAlignCenter()
+		hpValues.Hide()
+
+		elementText = ui.TextLine()
+		elementText.SetParent(self)
+		elementText.SetOutline()
+		elementText.Hide()
+
+		infoButton = ui.Button()
+		infoButton.SetParent(self)
+		infoButton.SetUpVisual("d:/ymir work/ui/public/xsmall_button_01.sub")
+		infoButton.SetOverVisual("d:/ymir work/ui/public/xsmall_button_02.sub")
+		infoButton.SetDownVisual("d:/ymir work/ui/public/xsmall_button_03.sub")
+		infoButton.SetText("?")
+		infoButton.SetEvent(ui.__mem_func__(self.OnPressedInfoButton))
+		infoButton.Hide()
+
 		closeButton = ui.Button()
 		closeButton.SetParent(self)
 		closeButton.SetUpVisual("d:/ymir work/ui/public/close_button_01.sub")
@@ -165,6 +204,12 @@ class TargetBoard(ui.ThinBoard):
 
 		self.name = name
 		self.hpGauge = hpGauge
+		self.hpPercent = hpPercent
+		self.hpValues = hpValues
+		self.elementText = elementText
+		self.infoButton = infoButton
+		self.element = 0
+		self.vnum = 0
 		self.closeButton = closeButton
 		self.nameString = 0
 		self.nameLength = 0
@@ -175,6 +220,7 @@ class TargetBoard(ui.ThinBoard):
 		self.duelRulesDialog = None
 
 		self.__Initialize()
+		self.infoBoard = nui_windows.make("target-info", uiTargetInfo.InfoBoard, "nui_target_info.InfoBoard")
 		self.ResetTargetBoard()
 
 	def __del__(self):
@@ -198,6 +244,13 @@ class TargetBoard(ui.ThinBoard):
 		self.buttonDict = None
 		self.name = None
 		self.hpGauge = None
+		self.hpPercent = None
+		self.hpValues = None
+		self.elementText = None
+		self.infoButton = None
+		if self.infoBoard:
+			self.infoBoard.Destroy()
+			self.infoBoard = None
 		self.__Initialize()
 
 	def OnPressedCloseButton(self):
@@ -207,6 +260,8 @@ class TargetBoard(ui.ThinBoard):
 	def Close(self):
 		self.__Initialize()
 		self.CloseDuelRules()
+		if self.infoBoard:
+			self.infoBoard.Close()
 		self.Hide()
 
 	def CloseDuelRules(self):
@@ -292,6 +347,14 @@ class TargetBoard(ui.ThinBoard):
 		self.name.SetHorizontalAlignCenter()
 		self.name.SetWindowHorizontalAlignCenter()
 		self.hpGauge.Hide()
+		self.hpPercent.Hide()
+		self.hpValues.Hide()
+		self.elementText.Hide()
+		self.infoButton.Hide()
+		self.element = 0
+		self.vnum = 0
+		if self.infoBoard:
+			self.infoBoard.Close()
 		self.SetSize(250, 40)
 
 	def SetTargetVID(self, vid):
@@ -312,6 +375,13 @@ class TargetBoard(ui.ThinBoard):
 
 		self.SetTargetName(nameFront + name)
 
+		# NOVA-40 (OLD uiTarget.py:1079-1086): the info button of a monster.
+		self.vnum = uiTargetInfo.race_of_vid(vid)
+		if self.vnum:
+			self.infoButton.SetPosition(self.name.GetTextSize()[0] + 32, 13)
+			self.infoButton.SetWindowHorizontalAlignLeft()
+			self.infoButton.Show()
+
 	def GetTargetVID(self):
 		return self.vid
 
@@ -323,10 +393,11 @@ class TargetBoard(ui.ThinBoard):
 		self.nameLength = len(name)
 		self.name.SetText(name)
 
-	def SetHP(self, hpPercentage):
+	def SetHP(self, hpPercentage, actualHP=0, maxHP=0):
 		if not self.hpGauge.IsShow():
 
-			self.SetSize(200 + 7 * self.nameLength, self.GetHeight())
+			# OLD's 250 (uiTarget.py:1340): room for the percent beside the name.
+			self.SetSize(250 + 7 * self.nameLength, self.GetHeight())
 
 			if app.IsRTL():
 				self.name.SetPosition( self.GetWidth()-23, 13)
@@ -339,6 +410,57 @@ class TargetBoard(ui.ThinBoard):
 			self.UpdatePosition()
 
 		self.hpGauge.SetPercentage(hpPercentage, 100)
+		self.__ShowHPText(hpPercentage, actualHP, maxHP)
+
+	def __ShowHPText(self, hpPercentage, actualHP, maxHP):
+		self.hpPercent.SetPosition(180, 13)
+		self.hpPercent.SetText("%d%%" % (hpPercentage))
+		self.hpPercent.Show()
+		if maxHP > 0:
+			self.hpValues.SetPosition(110, 4)
+			self.hpValues.SetText(nui_numbers.group(int(max(actualHP, 0))) + " / " + nui_numbers.group(int(maxHP)))
+			self.hpValues.Show()
+		else:
+			self.hpValues.Hide()
+
+	def SetPCHP(self, hpPercentage):
+		"""A player target's bar and percent (OLD uiTarget.py:1126-1178): the
+		same gauge at the right, the board's size and buttons untouched."""
+		if not self.hpGauge.IsShow():
+			self.name.SetPosition(23, 13)
+			self.name.SetWindowHorizontalAlignLeft()
+			self.name.SetHorizontalAlignLeft()
+			self.hpGauge.Show()
+		self.hpGauge.SetPercentage(hpPercentage, 100)
+		self.__ShowHPText(hpPercentage, 0, 0)
+
+	def SetElement(self, elementId):
+		"""Set when the element changes; OLD made a new image per packet."""
+		if elementId == self.element:
+			return
+		self.element = elementId
+		if elementId in ELEMENT_NAME_KEY:
+			self.elementText.SetText(getattr(localeInfo, ELEMENT_NAME_KEY[elementId], ""))
+			self.elementText.SetPackedFontColor(ELEMENT_COLOR[elementId])
+			self.elementText.SetPosition(23, 0)
+			self.elementText.Show()
+		else:
+			self.elementText.Hide()
+
+	def SetAttackers(self, count):
+		if self.vnum and uiTargetInfo.set_attackers(self.vnum, count):
+			self.infoBoard.RefreshAttackerInfo()
+
+	def RefreshInfoBoard(self, race):
+		if self.vnum == race and self.infoBoard.IsShow():
+			self.infoBoard.Refresh()
+
+	def OnPressedInfoButton(self):
+		if self.infoBoard.IsShow():
+			self.infoBoard.Close()
+		elif self.vnum:
+			self.infoBoard.Open(self, self.vnum, self.GetTargetVID())
+		self.SetTop()
 
 	def ShowDefaultButton(self):
 

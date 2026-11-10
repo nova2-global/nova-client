@@ -128,6 +128,22 @@
 				<button id="go-buffi-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--buffi-1" data-class-is-selected="hide_buffi" data-event-mousedown="choose('hide_buffi', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_SALESTEXT_VIEW_OFF</span></button>
 			</div>
 		</div>
+		<!-- NOVA-40: the name's level and aggressive star (legacy's rows under
+		     the buffi row; OLD's "monster_info" group). -->
+		<div class="go-row go-row--mob-level">
+			<span class="go-label go-label--mob-level">@ui.OPTION_MOB_INFO_LEVEL</span>
+			<div class="go-choices">
+				<button id="go-mob-level-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--mob-level-1" data-class-is-selected="mob_level" data-event-mousedown="choose('mob_level', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_ON</span></button>
+				<button id="go-mob-level-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--mob-level-0" data-class-is-selected="!mob_level" data-event-mousedown="choose('mob_level', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_OFF</span></button>
+			</div>
+		</div>
+		<div class="go-row go-row--mob-ai">
+			<span class="go-label go-label--mob-ai">@ui.OPTION_MOB_INFO_AGGR</span>
+			<div class="go-choices">
+				<button id="go-mob-ai-1" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--mob-ai-1" data-class-is-selected="mob_ai" data-event-mousedown="choose('mob_ai', 1, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_ON</span></button>
+				<button id="go-mob-ai-0" class="nui-button nui-button--medium nui-anim go-choice go-choice--middle go-choice--mob-ai-0" data-class-is-selected="!mob_ai" data-event-mousedown="choose('mob_ai', 0, ev.button)"><span class="go-choice__label">@ui.OPTION_VIEW_CHAT_OFF</span></button>
+			</div>
+		</div>
 	</div>
 </body>
 </rml>

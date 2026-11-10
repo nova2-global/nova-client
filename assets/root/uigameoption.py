@@ -37,6 +37,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.RefreshHideShops()
 		self.RefreshShowSash()
 		self.RefreshHideBuffi()
+		self.RefreshMobInfo()
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -59,6 +60,9 @@ class OptionDialog(ui.ScriptWindow):
 		self.showSashButtonList = []
 		self.hideBuffiLabel = None
 		self.hideBuffiButtonList = []
+		self.mobLevelButtonList = []
+		self.mobAIButtonList = []
+		self.mobInfoLabels = []
 
 	def Destroy(self):
 		self.ClearDictionary()
@@ -174,6 +178,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.__Load_HideShops()
 		self.__Load_ShowSash()
 		self.__Load_HideBuffi()
+		self.__Load_MobInfo()
 
 	## The offline shops' NPCs and signs, shown or hidden (NOVA-9; OLD
 	## uiGameOption.py:1169-1218, a "companions" checkbox there): a row under
@@ -298,6 +303,52 @@ class OptionDialog(ui.ScriptWindow):
 	# Index 0 "Show" is down while the buffi show, 1 "Hide" while they are hidden.
 	def RefreshHideBuffi(self):
 		self.__ClickRadioButton(self.hideBuffiButtonList, IsHideBuffi())
+
+	## The name's level and star (NOVA-40; OLD uiGameOption.py:1156, 1189-1191,
+	## its "monster_info" checkbox group): two rows under the buffi row.
+	MOB_INFO_LEVEL_Y = HIDE_BUFFI_ROW_Y + 25
+	MOB_INFO_AGGR_Y = MOB_INFO_LEVEL_Y + 25
+	MOB_INFO_HEIGHT = HIDE_BUFFI_HEIGHT + 50
+
+	def __Load_MobInfo(self):
+		board = self.GetChild("board")
+		board.SetSize(board.GetWidth(), self.MOB_INFO_HEIGHT)
+		self.SetSize(self.GetWidth(), self.MOB_INFO_HEIGHT)
+		self.mobLevelButtonList = self.__MobInfoRow(board, self.MOB_INFO_LEVEL_Y, uiScriptLocale.OPTION_MOB_INFO_LEVEL, self.__OnClickMobLevelButton)
+		self.mobAIButtonList = self.__MobInfoRow(board, self.MOB_INFO_AGGR_Y, uiScriptLocale.OPTION_MOB_INFO_AGGR, self.__OnClickMobAIButton)
+
+	def __MobInfoRow(self, board, rowY, text, event):
+		label = ui.TextLine()
+		label.SetParent(board)
+		label.SetPosition(30, rowY + 2)
+		label.SetText(text)
+		label.Show()
+		self.mobInfoLabels.append(label)
+		buttons = []
+		for (index, caption) in enumerate((uiScriptLocale.OPTION_SALESTEXT_VIEW_ON, uiScriptLocale.OPTION_SALESTEXT_VIEW_OFF)):
+			button = ui.RadioButton()
+			button.SetParent(board)
+			button.SetPosition(90 + 65 * index, rowY)
+			button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+			button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+			button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+			button.SetText(caption)
+			button.SAFE_SetEvent(event, index)
+			button.Show()
+			buttons.append(button)
+		return buttons
+
+	def __OnClickMobLevelButton(self, index):
+		systemSetting.SetShowMobLevel(0 if index else 1)
+		self.RefreshMobInfo()
+
+	def __OnClickMobAIButton(self, index):
+		systemSetting.SetShowMobAIFlag(0 if index else 1)
+		self.RefreshMobInfo()
+
+	def RefreshMobInfo(self):
+		self.__ClickRadioButton(self.mobLevelButtonList, 0 if systemSetting.IsShowMobLevel() else 1)
+		self.__ClickRadioButton(self.mobAIButtonList, 0 if systemSetting.IsShowMobAIFlag() else 1)
 
 	def __ClickRadioButton(self, buttonList, buttonIndex):
 		try:

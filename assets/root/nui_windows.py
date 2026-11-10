@@ -141,6 +141,8 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("dungeon-timer", True),      # the dungeon manager: the list, the cooldowns, the teleport
 	("dungeon-drops", True),      # the dungeon manager's drops panel
 	("dungeon-rank", True),       # the dungeon ranking
+	# Wave 8 (NOVA-40): the mob info board under the target board.
+	("target-info", True),        # a mob's stats and drops
 	# NOVA-27: the boss info panel and the damage count window, in the hud
 	# group (HUD windows of the game phase, beside the target board).
 	("boss-info", True),          # the current map's bosses at the left edge
@@ -163,6 +165,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	          "offline-shop-log", "shop-deco"),
 	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank"),
 	"dungeon": ("dungeon-timer", "dungeon-drops", "dungeon-rank"),
+	"mob-board": ("target-info",),
 }
 # "all": every window, so "-all" makes a legacy client (the live kit's legacy
 # runs), and "-all,+id" one with a single NovaUI window.
@@ -254,6 +257,8 @@ ON_DEMAND_DOCUMENTS = (
 	# the ranking, each only while it shows.
 	("dungeon-timer", ("dungeon-timer", "dungeon-notice")),
 	("dungeon-drops", ("dungeon-drops",)),
+	# Wave 8: the mob info board, only while it shows.
+	("target-info", ("target-info",)),
 	("dungeon-rank", ("dungeon-rank",)),
 	# NOVA-27: the boss info panel and the damage count, each only while it shows.
 	("boss-info", ("boss-info",)),

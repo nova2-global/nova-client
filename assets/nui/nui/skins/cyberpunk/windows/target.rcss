@@ -94,3 +94,13 @@ body.skin-cyberpunk.target .target-board__ticks
 {
 	display: none;
 }
+/* NOVA-40: the numbers in the skin's accent, the element chip square. */
+body.skin-cyberpunk.target .target-board__values
+{
+	color: var(--accent);
+	letter-spacing: 0.5dp;
+}
+body.skin-cyberpunk.target .target-board__element
+{
+	border-radius: 0;
+}

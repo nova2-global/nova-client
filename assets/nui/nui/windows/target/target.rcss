@@ -303,3 +303,42 @@ nui-blink.nui-blink-off .target-board__sheen.nui-anim
 	padding: 0 var(--space-3);
 	font-size: var(--font-sm);
 }
+/* NOVA-40: the exact HP numbers beside the percent, a small element chip
+   (code-drawn in the element's color) and the info button in the head. */
+.target-board__values
+{
+	flex: 0 0 auto;
+	margin-right: var(--space-1);
+	color: var(--tip-normal);
+	font-size: var(--font-xs);
+	white-space: nowrap;
+}
+.target-board__element
+{
+	flex: 0 0 auto;
+	margin-right: var(--space-1);
+	padding: 0 var(--space-1);
+	border-radius: 4dp;
+	font-size: var(--font-xs);
+	font-weight: bold;
+	white-space: nowrap;
+	color: var(--text-inverse);
+	background-color: var(--cooldown-shade);
+}
+.target-board__element--1 { color: var(--tip-skill-point); }
+.target-board__element--2 { color: var(--danger); }
+.target-board__element--3 { color: var(--chat-info); }
+.target-board__element--4 { color: var(--tip-positive); }
+.target-board__element--5 { color: var(--tip-price); }
+.target-board__element--6 { color: var(--accent); }
+.target-board__info
+{
+	flex: 0 0 auto;
+	width: 22dp;
+	height: 20dp;
+	margin-right: var(--space-1);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 18dp;
+	text-align: center;
+}

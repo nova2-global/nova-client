@@ -545,8 +545,9 @@ class ChatDifferential(unittest.TestCase):
             world.type("line %d" % i)
             world.enter()
         self.assertEqual(len(world.chat.input.lastSentenceStack), 33, "legacy's > 32 check keeps 33")
-        self.assertEqual(world.chat.input.lastSentenceStack[0], ["line 7", 0],
-                         "each sentence keeps its shout color (Wave 5, legacy's [text, index])")
+        self.assertEqual(world.chat.input.lastSentenceStack[0], ["line 7", 0, []],
+                         "each sentence keeps its shout color (Wave 5, legacy's [text, index]) and, since "
+                         "NOVA-42 round 3, its link tokens (link_tokens)")
 
     def test_the_mode_button_cycles_party_guild_shout_and_back_with_the_mark(self):
         def opened(world):
@@ -589,10 +590,11 @@ class ChatDifferential(unittest.TestCase):
                 world.chat.OpenChat()
         legacy, novaui = self.flow([opened, lambda w: w.type("look "), lambda w: w.link(ITEM),
                                     lambda w: w.link(ITEM, alt=True)])
-        self.assertEqual(novaui.text(), "look " + TAGGED_ITEM)
+        # NOVA-42 round 3: the field shows the link's token, swapped back on send (link_tokens).
+        self.assertEqual(novaui.text(), "look [Red Potion]")
         for world in (legacy, novaui):
             self.assertEqual(world.game.calls("interface.MakeHyperlinkTooltip"), [("interface.MakeHyperlinkTooltip", (ITEM,))])
-            self.assertEqual(world.game.calls("ime.PasteString"), [("ime.PasteString", (TAGGED_ITEM,))])
+            self.assertEqual(world.game.calls("ime.PasteString"), [("ime.PasteString", ("[Red Potion]",))])
         self.assertEqual(novaui.game.legacy_pasted, [], "the paste reached the NovaUI field")
 
     def test_an_inventory_alt_click_pastes_into_the_focused_novaui_field(self):

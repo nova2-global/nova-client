@@ -47,6 +47,7 @@ dialog's own at each show."""
 import app
 import chat
 import ime
+import link_tokens
 import nuigame
 import ui
 import uiScriptLocale
@@ -642,6 +643,6 @@ class WhisperDialog(nui_facade.Facade, uiWhisper.WhisperDialog):
 		if not link:
 			return
 		if app.IsPressed(app.DIK_LALT):
-			ime.PasteString(chat.GetLinkFromHyperlink(link))
+			link_tokens.paste(chat.GetLinkFromHyperlink(link))
 		else:
 			self.interface.MakeHyperlinkTooltip(link)

@@ -147,6 +147,8 @@ class ChatLogWindow(object):
 		self.scrollBarPos = 1.0
 		self.input = nui_chat.ChatInput(None, "chat-log-input", self.CHAT_LOG_WINDOW_MINIMUM_WIDTH // 8,
 		                                nui_chat.weak_event(self.Close), None)
+		# A link pasted while the log's field has the focus (link_tokens).
+		self.input.focus_check = nui_chat.weak_event(self._link_focus)
 		# Legacy's state calls (uichat.py:886-889), its input's insult filter
 		# (ChatModeButton.__init__), and the scroll event its first SetSize
 		# sends (the scroll bar's SetPos, uichat.py:1023, ui.py ScrollBar).
@@ -338,6 +340,9 @@ class ChatLogWindow(object):
 		self.input.SetUserMax(int(width) // 8)
 
 	# --- the field's focus -----------------------------------------------------------------
+
+	def _link_focus(self):
+		return bool(self.fieldFocused)
 
 	def nui_field_focus(self):
 		self.fieldFocused = True

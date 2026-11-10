@@ -5,6 +5,7 @@ import wndMgr
 import net
 import app
 import ime
+import link_tokens
 import localeInfo
 import colorInfo
 import constInfo
@@ -247,6 +248,24 @@ class ChatLine(ui.EditLine):
 		self.lastSentenceStack = []
 		self.lastSentencePos = 0
 
+		## NOVA-42 round 3: a pasted link shows as its token and is swapped
+		## back on send (link_tokens), as NovaUI's chat input does.
+		self.linkTokens = link_tokens.LinkTokens()
+		link_tokens.register(self)
+
+	def link_tokens(self):
+		return self.linkTokens
+
+	def link_focused(self):
+		return bool(self.IsShow() and self.IsFocus())
+
+	def SetText(self, text):
+		## The link tokens go with the text a SetText replaces.
+		tokens = self.__dict__.get("linkTokens")
+		if tokens is not None:
+			tokens.clear()
+		ui.EditLine.SetText(self, text)
+
 	def SetChatMode(self, mode):
 		self.chatMode = mode
 
@@ -319,6 +338,7 @@ class ChatLine(ui.EditLine):
 		
 
 	def __SendChatPacket(self, text, type):
+		text = self.linkTokens.expand(text)
 		if net.IsChatInsultIn(text):
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.CHAT_INSULT_STRING)
 		elif chat.CHAT_TYPE_SHOUT == type and GetShoutColorIndex() > 0:
@@ -424,8 +444,10 @@ class ChatLine(ui.EditLine):
 	## NOVA-11 (OLD uiChat.py:419-467): each sentence keeps the shout color
 	## it was typed with, and recalling it picks that color again.
 	def __RestoreLastSentence(self, lastSentence):
-		(text, shoutColorIndex) = lastSentence
+		(text, shoutColorIndex) = lastSentence[0], lastSentence[1]
 		self.SetText(text)
+		if len(lastSentence) > 2:
+			self.linkTokens.restore(lastSentence[2])
 		SetShoutColorIndex(shoutColorIndex)
 		self.SetEndPosition()
 
@@ -441,7 +463,7 @@ class ChatLine(ui.EditLine):
 		if len(self.lastSentenceStack) > LAST_SENTENCE_STACK_SIZE:
 			self.lastSentenceStack.pop(0)
 
-		self.lastSentenceStack.append([text, GetShoutColorIndex()])
+		self.lastSentenceStack.append([text, GetShoutColorIndex(), self.linkTokens.snapshot()])
 	# END_OF_LAST_SENTENCE_STACK
 
 	def OnIMEReturn(self):
@@ -485,7 +507,7 @@ class ChatLine(ui.EditLine):
 		if hyperlink:
 			if app.IsPressed(app.DIK_LALT):
 				link = chat.GetLinkFromHyperlink(hyperlink)
-				ime.PasteString(link)
+				link_tokens.paste(link)
 			else:
 				self.interface.MakeHyperlinkTooltip(hyperlink)
 		else:
@@ -1011,7 +1033,11 @@ class ChatWindow(ui.Window):
 		self.chatInputSet.OnChangeChatMode()
 
 	def SetChatFocus(self):
-		self.chatInputSet.SetChatFocus()			
+		self.chatInputSet.SetChatFocus()
+
+	def PasteLink(self, link):
+		## NOVA-42 round 3: Interface.PasteWikiLink, as its token.
+		return link_tokens.paste(link, target=self.chatInputSet.chatLine)			
 
 	def BindInterface(self, interface):
 		self.chatInputSet.BindInterface(interface)
@@ -1343,7 +1369,7 @@ class ChatLogWindow(ui.Window):
 		if hyperlink:
 			if app.IsPressed(app.DIK_LALT):
 				link = chat.GetLinkFromHyperlink(hyperlink)
-				ime.PasteString(link)
+				link_tokens.paste(link)
 			else:
 				self.interface.MakeHyperlinkTooltip(hyperlink)
 

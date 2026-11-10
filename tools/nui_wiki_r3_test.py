@@ -98,6 +98,63 @@ class ZOrder(R3Test):
         self.assertEqual(w4.board(window).front, before + 2)
 
 
+class _Window(object):
+    """A shown window that can be weakly referenced, as a facade can."""
+
+    def __init__(self):
+        self.shown = True
+
+    def IsShow(self):
+        return self.shown
+
+
+class BuriedWiki(R3Test):
+    """The Wiki button (inventory, system menu: Interface.ToggleWiki) on a
+    wiki that is open but behind another window brings it to the front; only
+    a wiki already on top closes (the coordinator, after Eddy's r39 notes)."""
+
+    def other_window_raised(self, world):
+        hud = world.m("nui_hud")
+        other = _Window()
+        hud.note_top(other)
+        self.other = other   # held: the record is weak
+        return other
+
+    def test_the_button_on_a_buried_wiki_brings_it_to_the_front(self):
+        world, window = self.opened()
+        other = self.other_window_raised(world)
+        with world.game, w4.quiet():
+            before = w4.board(window).front
+            window.Toggle()
+        self.assertTrue(window.IsShow())
+        self.assertEqual(w4.board(window).front, before + 1)
+        self.assertTrue(world.m("nui_hud").is_top(window))
+        self.assertIsNotNone(other)
+
+    def test_the_button_on_the_top_wiki_closes_it(self):
+        world, window = self.opened()
+        with world.game, w4.quiet():
+            window.Toggle()
+        self.assertFalse(window.IsShow())
+
+    def test_a_hidden_window_raised_later_does_not_bury_the_wiki(self):
+        world, window = self.opened()
+        other = self.other_window_raised(world)
+        other.shown = False
+        with world.game, w4.quiet():
+            window.Toggle()
+        self.assertFalse(window.IsShow())
+
+    def test_a_facade_records_its_raise(self):
+        world, window = self.opened()
+        hud = world.m("nui_hud")
+        self.other_window_raised(world)
+        self.assertFalse(hud.is_top(window))
+        with world.game, w4.quiet():
+            window.SetTop()
+        self.assertTrue(hud.is_top(window))
+
+
 class TabMenu(R3Test):
     def two_tabs(self):
         world, window = self.opened()

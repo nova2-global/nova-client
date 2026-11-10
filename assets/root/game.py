@@ -24,6 +24,7 @@ import localeInfo
 import constInfo
 import exchange
 import ime
+import link_tokens
 ## The advanced pet's module (NOVA-24, chunk C's PythonPetAdvanced.cpp).
 import pet
 
@@ -1709,7 +1710,7 @@ class GameWindow(ui.ScriptWindow):
 			if hyperlink:
 				if app.IsPressed(app.DIK_LALT):
 					link = chat.GetLinkFromHyperlink(hyperlink)
-					ime.PasteString(link)
+					link_tokens.paste(link)
 				else:
 					self.interface.MakeHyperlinkTooltip(hyperlink)
 				return

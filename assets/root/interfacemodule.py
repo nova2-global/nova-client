@@ -654,7 +654,7 @@ class Interface(object):
 
 	def OpenWikiLink(self, kind, ident):
 		"""The hook for every syswiki link kind __OpenWikiLink does not open
-		itself (NOVA-139's syswiki:page:<path>): the wiki's OpenLink, which
+		itself (not item, mob, list or page): the wiki's OpenLink, which
 		answers False for a kind it does not know. True when a page opened."""
 		opener = getattr(self.wndWiki, "OpenLink", None) if self.wndWiki else None
 		return bool(opener and opener(kind, ident))
@@ -664,8 +664,12 @@ class Interface(object):
 		whisper dialog whose input has the focus, else into the chat input,
 		which opens for it (an open one keeps its text). True when it went
 		in. A NovaUI whisper answers by its focus proxy (it holds wndMgr's
-		focus while its field has NovaUI's), a legacy one by its edit line."""
+		focus while its field has NovaUI's), a legacy one by its edit line.
+		The input shows the link's token and swaps it back on send
+		(PasteLink, link_tokens, round 3); a window without PasteLink takes
+		the raw link."""
 		import ime
+		target = None
 		for dlg in list(self.whisperDialogDict.values()):
 			if not dlg.IsShow():
 				continue
@@ -673,15 +677,21 @@ class Interface(object):
 			focused = proxy.has_focus() if proxy is not None else dlg.chatLine.IsFocus()
 			if focused:
 				dlg.chatLine.SetFocus()
-				ime.PasteString(link)
-				return True
-		if self.wndChat.IsEditMode():
-			self.SetChatFocus()
+				target = dlg
+				break
+		if target is None:
+			if self.wndChat.IsEditMode():
+				self.SetChatFocus()
+			else:
+				self.ToggleChat()
+				if not self.wndChat.IsEditMode():
+					return False
+			target = self.wndChat
+		paste = getattr(target, "PasteLink", None)
+		if callable(paste):
+			paste(link)
 		else:
-			self.ToggleChat()
-			if not self.wndChat.IsEditMode():
-				return False
-		ime.PasteString(link)
+			ime.PasteString(link)
 		return True
 
 	def WikiAnswer(self, *rows):

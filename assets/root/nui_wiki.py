@@ -590,10 +590,15 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		self.Hide()
 
 	def Toggle(self):
-		if self.IsShow():
+		"""The Wiki button (inventory, system menu): opens the wiki, brings a
+		wiki that is open but behind another window to the front, and closes
+		only a wiki already on top (nui_hud.is_top)."""
+		if not self.IsShow():
+			self.Open()
+		elif nui_hud.is_top(self):
 			self.Close()
 		else:
-			self.Open()
+			self.SetTop()
 
 	def OpenItem(self, vnum):
 		self._show_window()

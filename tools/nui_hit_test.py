@@ -64,10 +64,13 @@ OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("
                "costume-foundation-aura-classic-": ("cos-wing",),
                # Wave 7 (NOVA-43): the switchbot's search list and saved sets,
                # open over its targets as legacy's boards float over the window.
-               "switchbot-picker-": ("switchbot-picker",), "switchbot-presets-": ("switchbot-preset",)}
+               "switchbot-picker-": ("switchbot-picker",), "switchbot-presets-": ("switchbot-preset",),
+               # Wave 8 (NOVA-17): fast equip's edit panel, open over the cells
+               # as legacy's popup floats over the window.
+               "fastequip-edit-": ("fastequip-edit", "fastequip-name", "fastequip-color-")}
 # Cases whose open popup covers slot cells on purpose: their sweep is not
 # checked (the same window's other cases sweep those cells).
-SWEEP_UNDER_OPEN_POPUP = ("costume-foundation-aura-classic-",)
+SWEEP_UNDER_OPEN_POPUP = ("costume-foundation-aura-classic-", "fastequip-edit-")
 
 
 def covered_by_open_popup(name, taken):

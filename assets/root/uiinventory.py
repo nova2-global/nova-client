@@ -648,6 +648,7 @@ class InventoryWindow(ui.ScriptWindow):
 			self.costumeButton = self.GetChild2("CostumeButton")
 			# The special inventory (NOVA-16); an older uiscript has no button.
 			self.extraInventoryButton = self.GetChild2("ExtraInventoryButton")
+			self.fastEquipButton = self.GetChild2("FastEquipButton")
 
 			# One tab per inventory page (OLD uiInventory.py:884-889: five).
 			self.inventoryTab = []
@@ -733,6 +734,9 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.extraInventoryButton:
 			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
 
+		if self.fastEquipButton:
+			self.fastEquipButton.SetEvent(ui.__mem_func__(self.ClickFastEquipButton))
+
 		if self.offlineShopButton:
 			self.offlineShopButton.SetEvent(ui.__mem_func__(self.ClickOfflineShopButton))
 
@@ -776,6 +780,7 @@ class InventoryWindow(ui.ScriptWindow):
 		self.mallButton = None
 		self.DSSButton = None
 		self.extraInventoryButton = None
+		self.fastEquipButton = None
 		self.DSSButtonEffect = None
 		self.interface = None
 
@@ -837,6 +842,10 @@ class InventoryWindow(ui.ScriptWindow):
 	def ClickDSSButton(self):
 		print("click_dss_button")
 		self.interface.ToggleDragonSoulWindow()
+
+	def ClickFastEquipButton(self):
+		"""Fast equip (NOVA-17; OLD uiInventory.py:1176)."""
+		self.interface.ToggleFastEquipWindow()
 
 	def ClickExtraInventoryButton(self):
 		self.interface.ToggleExtraInventoryWindow()

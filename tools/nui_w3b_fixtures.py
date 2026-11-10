@@ -210,6 +210,7 @@ def inventory(limits, page, wear, bag, money, **rest):
         "has_mall": True,
         # Wave 4b (NOVA-16): the special inventory's button.
         "has_extra": True,
+        "has_fastequip": True,
         "placed": False,
         # P14b: nothing attached, so an anchor's box covers its item.
         "bag_attaching": False,

@@ -1161,3 +1161,7 @@ BOSS_INFO_RESPAWN	Reaparece en %s
 BOSS_INFO_EXPAND	Mostrar los jefes
 BOSS_INFO_COLLAPSE	Ocultar los jefes
 DAMAGE_COUNT_DAMAGE	Daño: %s(%s)
+FAST_EQUIP_TITLE	Equipo rápido
+FAST_EQUIP_CLEAR_CONFIRM	¿Está seguro de que desea borrar esta página?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

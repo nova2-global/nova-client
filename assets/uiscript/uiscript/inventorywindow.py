@@ -346,6 +346,24 @@ window = {
 					"image" : "d:/ymir work/ui/public/Slot_Base.sub"
 				},
 
+				## Fast equip (NOVA-17): OLD's inventory opened it from a button.
+				## The board's rows are full, so a small one sits on the title
+				## bar, left of the title.
+				{
+					"name" : "FastEquipButton",
+					"type" : "button",
+
+					"x" : 14,
+					"y" : 8,
+
+					"text" : uiScriptLocale.FAST_EQUIP_BUTTON,
+					"tooltip_text" : uiScriptLocale.FAST_EQUIP_TITLE,
+
+					"default_image" : "d:/ymir work/ui/public/small_button_01.sub",
+					"over_image" : "d:/ymir work/ui/public/small_button_02.sub",
+					"down_image" : "d:/ymir work/ui/public/small_button_03.sub",
+				},
+
 				## The special inventory (NOVA-16): a band of 26 px between the bag
 				## and the money slot (the board grew from 565 to 591 px for it, to
 				## 611 px for the gaya row under the yang, NOVA-10, and to 635 px for

@@ -134,6 +134,10 @@
 				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-glyph nui-glyph--plus inv-button__plus"><span
 				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span
 				class="inv-button__label">@ui.EXTRA_INVENTORY_BUTTON</span><span class="nui-tooltip nui-anim inv-tip">@ui.KEYCHANGE_EXTRA_INVENTORY</span></button>
+			<button id="inv-fastequip" class="nui-button nui-anim nui-has-tooltip inv-button inv-button--fastequip"
+			        data-if="has_fastequip" data-event-mousedown="fastequip_press(ev.button)"><span class="nui-glyph nui-glyph--refresh"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span
+				class="inv-button__label">@ui.FAST_EQUIP_BUTTON</span><span class="nui-tooltip nui-anim inv-tip">@ui.FAST_EQUIP_TITLE</span></button>
 			<div id="inv-belt-dock" class="inv-belt-dock"></div>
 		</div>
 		<!-- Attack, defence and magic attack (the character window's sums). -->

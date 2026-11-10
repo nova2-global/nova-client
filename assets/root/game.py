@@ -367,6 +367,8 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_F5]	= lambda: self.ShowSwitchbot()
 		# NOVA-25: the dungeon manager (OLD game.py:493).
 		onPressKeyDict[app.DIK_F6]	= lambda: self.OpenTimerWindow()
+		# NOVA-17 fast equip (OLD game.py:506).
+		onPressKeyDict[app.DIK_F10]	= lambda: self.ToggleFastEquip()
 
 		onPressKeyDict[app.DIK_LALT]		= lambda: self.ShowName()
 		onPressKeyDict[app.DIK_LCONTROL]	= lambda: self.ShowMouseImage()
@@ -1317,6 +1319,16 @@ class GameWindow(ui.ScriptWindow):
 	def ShowSwitchbot(self):
 		if self.interface:
 			self.interface.ToggleSwitchbotWindow()
+
+	## Fast equip (NOVA-17; OLD game.py:2496-2498): F10 toggles the window;
+	## GC::FAST_EQUIP reaches it from C++.
+	def ToggleFastEquip(self):
+		if self.interface:
+			self.interface.ToggleFastEquipWindow()
+
+	def RefreshFastEquip(self, setIndex, switched):
+		if self.interface:
+			self.interface.RefreshFastEquip(setIndex, switched)
 
 	def RefreshSwitchbotWindow(self):
 		if self.interface:

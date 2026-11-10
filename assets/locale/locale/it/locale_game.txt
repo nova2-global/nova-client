@@ -1161,3 +1161,7 @@ BOSS_INFO_RESPAWN	Ricompare tra %s
 BOSS_INFO_EXPAND	Mostra i boss
 BOSS_INFO_COLLAPSE	Nascondi i boss
 DAMAGE_COUNT_DAMAGE	Danno: %s(%s)
+FAST_EQUIP_TITLE	Equip Veloce
+FAST_EQUIP_CLEAR_CONFIRM	Sei sicuro di voler cancellare questa pagina?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

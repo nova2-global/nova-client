@@ -1241,6 +1241,8 @@ EXPECTED_SITES = {
                             "nui_shop_deco.MyShopDecorationWindow"),
                            # Wave 7 (NOVA-43): the switchbot.
                            ("make", "switchbot", "uiSwitchbot.SwitchbotWindow", "nui_switchbot.SwitchbotWindow"),
+                           # Wave 8 (NOVA-17): fast equip.
+                           ("make", "fastequip", "uiFastEquip.FastEquipWindow", "nui_fastequip.FastEquipWindow"),
                            # Wave 7 (NOVA-29): the kill ranking and the guild war top killers.
                            ("make", "kill-rank", "uiKillRank.KillRankWindow", "nui_kill_rank.KillRankWindow"),
                            ("make", "guild-war-top", "uiGuild.TopWarPlayersDialog",

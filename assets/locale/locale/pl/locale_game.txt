@@ -1161,3 +1161,7 @@ BOSS_INFO_RESPAWN	Odrodzi się za %s
 BOSS_INFO_EXPAND	Pokaż bossów
 BOSS_INFO_COLLAPSE	Ukryj bossów
 DAMAGE_COUNT_DAMAGE	Obrażenia: %s(%s)
+FAST_EQUIP_TITLE	Szybkie wyposażenie
+FAST_EQUIP_CLEAR_CONFIRM	Czy na pewno chcesz wyczyścić tę stronę?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.

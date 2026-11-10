@@ -306,7 +306,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -328,91 +330,117 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "bold",
 						"b": true,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": ", ",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "italic",
 						"b": false,
 						"i": true,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": " or ",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "both",
 						"b": true,
 						"i": true,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": ", and links open pages: the ",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "Sword+0",
 						"b": false,
 						"i": false,
 						"l": 0,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": ", the ",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "Wild Dog",
 						"b": false,
 						"i": false,
 						"l": 1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": " and the ",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "Demon Tower",
 						"b": false,
 						"i": false,
 						"l": 2,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": ".",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -448,7 +476,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -470,7 +500,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -492,7 +524,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -519,7 +553,9 @@
 								"b": false,
 								"i": false,
 								"l": -1,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							}
 						]
 					},
@@ -532,21 +568,27 @@
 								"b": false,
 								"i": false,
 								"l": -1,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							},
 							{
 								"t": "Wolf",
 								"b": false,
 								"i": false,
 								"l": 3,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							},
 							{
 								"t": " link",
 								"b": false,
 								"i": false,
 								"l": -1,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							}
 						]
 					},
@@ -559,7 +601,9 @@
 								"b": false,
 								"i": false,
 								"l": -1,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							}
 						]
 					}
@@ -587,7 +631,9 @@
 								"b": false,
 								"i": false,
 								"l": -1,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							}
 						]
 					},
@@ -600,7 +646,9 @@
 								"b": false,
 								"i": false,
 								"l": -1,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							}
 						]
 					},
@@ -613,7 +661,9 @@
 								"b": false,
 								"i": false,
 								"l": -1,
-								"e": false
+								"e": false,
+								"m": "",
+								"icon": ""
 							}
 						]
 					}
@@ -657,7 +707,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							},
@@ -668,7 +720,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							},
@@ -679,7 +733,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							}
@@ -695,7 +751,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							},
@@ -706,7 +764,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							},
@@ -717,7 +777,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							}
@@ -733,7 +795,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							},
@@ -744,7 +808,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							},
@@ -755,7 +821,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								]
 							}
@@ -807,21 +875,27 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "[[item:abc]]",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": true
+						"e": true,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": ".",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -871,21 +945,27 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									},
 									{
 										"t": "formatting",
 										"b": true,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									},
 									{
 										"t": " and lists:",
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -912,7 +992,9 @@
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									}
@@ -954,7 +1036,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -995,7 +1079,9 @@
 										"b": true,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -1022,7 +1108,9 @@
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									},
@@ -1035,7 +1123,9 @@
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									}
@@ -1062,7 +1152,9 @@
 										"b": true,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -1107,6 +1199,12 @@
 				"n": 1
 			}
 		],
-		"tp_open_at": 0.0
+		"tp_open_at": 0.0,
+		"classes": [],
+		"viewer": false,
+		"viewer_name": "",
+		"list_range": "",
+		"list_prev": false,
+		"list_next": false
 	}
 }

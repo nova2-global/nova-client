@@ -31,7 +31,7 @@ It allows you to **recolour any skin of your choice!**
 
 - **Note: The colors you request must be original and not already available in the game!**
 
-[[item:80017]], [[item:75551]]
+![[item:80017]], ![[item:75551]]
 
 --- {style=ornate}
 

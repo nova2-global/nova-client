@@ -56,4 +56,4 @@ Defeat the Boss Duratus!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:30750]] x30, [[item:30750]] x1, [[item:30751]] x1, [[item:30752]] x4, [[item:42212]]
+![[item:30750]] x30, ![[item:30750]] x1, ![[item:30751]] x1, ![[item:30752]] x4, ![[item:42212]]

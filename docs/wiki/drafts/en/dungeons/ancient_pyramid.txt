@@ -27,7 +27,7 @@ Destroy the Stone of Wadjet.
 
 Defeat all monsters to collect 4 Pieces of Pergamen. Click on
 and then defeat the Servant of Anubus to proceed.
-[[item:30800]] x1, [[item:30801]] x1, [[item:30802]] x1, [[item:30803]] x1
+![[item:30800]] x1, ![[item:30801]] x1, ![[item:30802]] x1, ![[item:30803]] x1
 
 ### Phase 3:
 
@@ -42,7 +42,7 @@ Defeat the 3 Ra Bosses to proceed to the next stage.
 Defeat monsters to collect the Bundle of Wisdom . Drag it to the Effigy of Anubis.
 Complete any additional challenges in this phase, but always drag the Bundle of Wisdom to the
 Effigy to proceed.
-[[item:30804]] x4
+![[item:30804]] x4
 
 ### Phase 6:
 
@@ -53,7 +53,7 @@ Defeat Anubis to advance.
 Defeat all monsters, then click on the on the ground and drag it to the Pillar of Wadjet.
 Next, destroy the Sphinx Stone, defeat the enemy there, collect the Ankh Key again, and drag
 it to the Pillar of Wadjet.
-[[item:30805]] x2
+![[item:30805]] x2
 
 ### Phase 8:
 
@@ -72,4 +72,4 @@ unique from all the others!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:34242]] x3, [[item:34242]] x1, [[item:42385]], [[item:42071]]
+![[item:34242]] x3, ![[item:34242]] x1, ![[item:42385]], ![[item:42071]]

@@ -25,7 +25,7 @@ order: 167
 
 - The player who finds the **hidden GM**, first will receive and a .
 
-[[item:80014]], [[item:71136]]
+![[item:80014]], ![[item:71136]]
 
 --- {style=ornate}
 

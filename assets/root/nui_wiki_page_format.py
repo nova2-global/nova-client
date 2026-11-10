@@ -13,7 +13,8 @@ A page is UTF-8 text:
     ---
     # Heading, ## and ### too
     Text with **bold**, *italic*, [[item:19]], [[mob:101|Wild Dog]],
-    [[page:dungeons/demon_tower]].
+    [[page:dungeons/demon_tower]], and an item with its icon and its
+    tooltip, ![[item:30304]] (r4: OLD's [IMG=icon/item/N.tga; ITEM_TOOLTIP=N]).
     - bullets, 1. numbers, | tables |, ![alt](pack/path.png){float=right width=180},
     ---, --- {style=ornate}, :::note, :::warning, :::columns with +++ breaks, :::
 
@@ -90,8 +91,10 @@ def walk(blocks):
 	return out
 
 
-def _run(text, bold=False, italic=False, link=None, error=False):
-	return {"t": text, "b": bold, "i": italic, "link": link, "e": error}
+def _run(text, bold=False, italic=False, link=None, error=False, embed=False):
+	"""A piece of text: bold, italic, a link (kind, ident, text or None), an
+	error, or an embed (a link shown with the item's icon, ![[item:N]])."""
+	return {"t": text, "b": bold, "i": italic, "link": link, "e": error, "embed": embed}
 
 
 # --- paths ------------------------------------------------------------------------------
@@ -168,8 +171,11 @@ class _Parser(object):
 
 	# --- inline --------------------------------------------------------------------------
 
-	def _link(self, body, raw):
-		"""[[kind:ident]] or [[kind:ident|text]]: the run, or an error run."""
+	def _link(self, body, raw, embed=False):
+		"""[[kind:ident]] or [[kind:ident|text]]: the run, or an error run.
+		With embed (a ! before it), only an item: an embed shows the item's
+		icon and tooltip, which a mob or a page does not have (OLD's pages
+		embedded items only)."""
 		target, bar, label = body.partition("|")
 		kind, colon, ident = target.partition(":")
 		kind, ident = kind.strip(), ident.strip()
@@ -182,10 +188,12 @@ class _Parser(object):
 			reason = "a page path is [a-z0-9_/-], at most %d characters: %s" % (PATH_MAX, raw)
 		elif bar and not label.strip():
 			reason = "a link's text after | is empty: %s" % raw
+		elif embed and kind != "item":
+			reason = "only items embed, as ![[item:<vnum>]]; write a %s as a link, [[%s:...]]: %s" % (kind, kind, raw)
 		if reason:
 			self.inline_problems.append(reason)
 			return _run(raw, error=True)
-		return _run("", link=(kind, ident, label.strip() if bar else None))
+		return _run("", link=(kind, ident, label.strip() if bar else None), embed=embed)
 
 	def tokens(self, text):
 		"""Text, star and link tokens; escapes resolved into text."""
@@ -211,14 +219,16 @@ class _Parser(object):
 					count = 3
 				out.append(("star", count))
 				i = j
-			elif text.startswith("[[", i):
-				end = text.find("]]", i + 2)
-				if end < 0 or "[[" in text[i + 2:end]:
-					buf.append("[[")
-					i += 2
+			elif text.startswith("[[", i) or text.startswith("![[", i):
+				embed = c == "!"
+				start = i + 1 if embed else i
+				end = text.find("]]", start + 2)
+				if end < 0 or "[[" in text[start + 2:end]:
+					buf.append(text[i:start + 2])
+					i = start + 2
 					continue
 				flush()
-				out.append(("link", self._link(text[i + 2:end], text[i:end + 2])))
+				out.append(("link", self._link(text[start + 2:end], text[i:end + 2], embed)))
 				i = end + 2
 			else:
 				buf.append(c)

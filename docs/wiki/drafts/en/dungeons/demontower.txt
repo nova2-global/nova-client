@@ -26,7 +26,7 @@ In this phase, defeat the Death Reaper to get the Zin-Bong-In Key.
 Use the key by right-clicking it or dragging it to the Sa-Soe Tomb to summon
 the Elite Vile Demon King. Defeat the boss to move on to the next phase.
 
-[[item:30304]]
+![[item:30304]]
 
 ### Phase 3:
 

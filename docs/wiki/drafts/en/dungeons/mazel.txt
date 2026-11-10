@@ -44,4 +44,4 @@ With the stone destroyed, Boss Mazel can now be defeated!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:34035]] x25, [[item:34035]] x10, [[item:42380]]
+![[item:34035]] x25, ![[item:34035]] x10, ![[item:42380]]

@@ -209,6 +209,21 @@ def category_name(locale, category):
     return locale_string(locale, keys[category], category) if category in keys else category
 
 
+def item_icons():
+    """{vnum: icon source} from the checkout's item_list.txt, as the client
+    shows an embedded item's icon (nui_slots.icon_source)."""
+    out = {}
+    path = os.path.join(LOCALES, "common", "item_list.txt")
+    if os.path.isfile(path):
+        with open(path, "rb") as handle:
+            for line in handle.read().decode("utf-8", "replace").splitlines():
+                parts = line.split("\t")
+                if len(parts) > 2 and parts[0].strip().isdigit() and parts[2].strip():
+                    icon = parts[2].strip().replace("\\", "/")
+                    out[int(parts[0])] = icon if icon.startswith("/") or icon[1:3] == ":/" else "/" + icon
+    return out
+
+
 def fixture_for(page_file, data_dir=None, locale="locale/en", skip=0):
     """The wiki model with the page shown, as the window builds it."""
     store = "%s/wiki/__preview__.txt" % locale
@@ -217,7 +232,9 @@ def fixture_for(page_file, data_dir=None, locale="locale/en", skip=0):
     real = pages.exists
     pages.exists = lambda path: path == "__preview__" or real(path)
     try:
-        values, _ = pages.render("__preview__", lambda kind, vnum: (items if kind == "item" else mobs).get(vnum, ""))
+        icons = item_icons()
+        values, _ = pages.render("__preview__", lambda kind, vnum: (items if kind == "item" else mobs).get(vnum, ""),
+                                 lambda vnum: icons.get(vnum, ""))
         category = (pages.load("__preview__").meta or {}).get("category", "")
         tree = []
         for i, entry in enumerate(pages.tree_categories()):
@@ -293,7 +310,10 @@ def goldens(data_dir):
     write_json(os.path.join(WIKI_DIR, "wiki.page-end.fixture.json"), fixture_for(EXAMPLE, data_dir, skip=EXAMPLE_END))
     landing = os.path.join(LOCALES, "en", "wiki", "guides", "basic_guide.txt")
     write_json(os.path.join(WIKI_DIR, "wiki.landing.fixture.json"), fixture_for(landing, data_dir))
-    print("wrote wiki.page.fixture.json and wiki.landing.fixture.json")
+    # r4: items with their icon, in a sentence and in a table.
+    tower = os.path.join(LOCALES, "en", "wiki", "dungeons", "demon_tower.txt")
+    write_json(os.path.join(WIKI_DIR, "wiki.embed.fixture.json"), fixture_for(tower, data_dir))
+    print("wrote wiki.page.fixture.json, wiki.landing.fixture.json and wiki.embed.fixture.json")
 
 
 def option(args, name, default=None):

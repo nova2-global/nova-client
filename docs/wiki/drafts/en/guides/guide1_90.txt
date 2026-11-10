@@ -11,7 +11,7 @@ order: 191
 
 On your first login, you will receive an and along with a start at **Level 75!**
 
-[[item:50187]], [[item:34270]]
+![[item:50187]], ![[item:34270]]
 
 - These two chests will provide you with plenty of items to get you started in the world of Nova2.
 
@@ -28,7 +28,7 @@ On your first login, you will receive an and along with a start at **Level 75!**
 \**N/A Insta. Upgrade Skills to P. Re-purchased at **General Store****
 \**N/A Insta. Upgrade Skills to L from P. Craft more at **Shima NPC****
 
-[[item:52048]] x1, [[item:53009]] x1, [[item:91022]] x1, [[item:71136]] x1, [[item:70002]] x1, [[item:72004]] x1, [[item:71145]] x1, [[item:50512]] x1, [[item:50570]] x2
+![[item:52048]] x1, ![[item:53009]] x1, ![[item:91022]] x1, ![[item:71136]] x1, ![[item:70002]] x1, ![[item:72004]] x1, ![[item:71145]] x1, ![[item:50512]] x1, ![[item:50570]] x2
 
 - Additionally, you’ll be given all the essential potions so you can jump straight into action!
 
@@ -67,14 +67,14 @@ On your first login, you will receive an and along with a start at **Level 75!**
 
 ![](d:/ymir work/ui/wiki/images/eq_ui.png)
 
-[[item:189]], [[item:11289]], [[item:17209]], [[item:14209]], [[item:16209]], [[item:12249]], [[item:15189]], [[item:13049]]
+![[item:189]], ![[item:11289]], ![[item:17209]], ![[item:14209]], ![[item:16209]], ![[item:12249]], ![[item:15189]], ![[item:13049]]
 
 --- {style=ornate}
 
 ## Where to Farm?
 
 Using your travel to Farm Maps and then head to **Akanta Field** or **Akanta Cave** at Lv90!
-[[item:70058]]
+![[item:70058]]
 
 This map is ideal for farming up to a **recommended level of 90** while you complete your
 \**guide quests**. It’s also the perfect place to begin working on your **Biology Quests**, as
@@ -100,9 +100,9 @@ visiting the PvM Crafter in Map 1 or Map 2.
 Demon Tower Aqua Dragon Solitary Temple Devil's Catacomb
 Spider Baroness
 
-[[item:34000]], [[item:34001]], [[item:34002]], [[item:34003]], [[item:34004]], [[item:34005]], [[item:34006]], [[item:34007]], [[item:34008]], [[item:34009]], [[item:27992]], [[item:27993]], [[item:27994]]
+![[item:34000]], ![[item:34001]], ![[item:34002]], ![[item:34003]], ![[item:34004]], ![[item:34005]], ![[item:34006]], ![[item:34007]], ![[item:34008]], ![[item:34009]], ![[item:27992]], ![[item:27993]], ![[item:27994]]
 
-[[item:34010]], [[item:34013]], [[item:34011]], [[item:85001]], [[item:34046]]
+![[item:34010]], ![[item:34013]], ![[item:34011]], ![[item:85001]], ![[item:34046]]
 
 --- {style=ornate}
 
@@ -152,10 +152,10 @@ Strong Against Monsters, Strong Against Bosses & Strong Against Elemental.
 
 ![](d:/ymir work/ui/wiki/images/eq_ui.png)
 
-[[item:18010]]
+![[item:18010]]
 
 --- {style=ornate}
 
 Ready to go to the next stage?
 [[page:guides/guide90_110|**The Next Steps**>]]
-[[item:9299]], [[item:19289]], [[item:17609]], [[item:14609]], [[item:16609]], [[item:12899]], [[item:15489]], [[item:13229]], [[item:18014]]
+![[item:9299]], ![[item:19289]], ![[item:17609]], ![[item:14609]], ![[item:16609]], ![[item:12899]], ![[item:15489]], ![[item:13229]], ![[item:18014]]

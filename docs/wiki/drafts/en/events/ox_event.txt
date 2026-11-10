@@ -29,7 +29,7 @@ order: 166
 
 - In a **Special OX Event**, the rewards may vary depending on the occasion.
 
-[[item:80015]], [[item:71136]]
+![[item:80015]], ![[item:71136]]
 
 --- {style=ornate}
 

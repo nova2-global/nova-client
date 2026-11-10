@@ -21,9 +21,9 @@ Keep the sash you want to keep in the first sash slot.
 --- {style=ornate}
 
 ## Bonus absorption
-| Grade | Absorbs |
-|---|---|
-| Basic | 1% |
-| Fine | 5% |
-| Noble | 10% |
-| The highest grade | 11% to 25% |
+| Grade | Absorbs | Sash |
+|---|---|---|
+| Basic | 1% | ![[item:85001]] |
+| Fine | 5% | ![[item:85002]] |
+| Noble | 10% | ![[item:85003]] |
+| The highest grade | 11% to 25% | ![[item:85004]] |

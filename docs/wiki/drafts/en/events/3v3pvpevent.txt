@@ -66,4 +66,4 @@ order: 173
 
 - If you register for the tournament and then return to the city, you will **remain registered.**
   However, if you are not present in the PvP Arena when it’s your turn, you will be **disqualified.**
-[[item:80017]]
+![[item:80017]]

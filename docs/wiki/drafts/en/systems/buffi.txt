@@ -31,4 +31,4 @@ To upgrade your Buffi, you’ll need INT for the best possible stats.
 
 - Note: You can combine 10x to reach the maximum.
 
-[[item:91031]], [[item:91031]], [[item:91033]]
+![[item:91031]], ![[item:91031]], ![[item:91033]]

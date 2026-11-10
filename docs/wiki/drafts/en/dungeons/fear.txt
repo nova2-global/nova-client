@@ -57,4 +57,4 @@ Face and defeat the Almighty Fear Dragon!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:30740]] x3, [[item:30740]] x1, [[item:30741]] x1, [[item:30743]] x1, [[item:42430]]
+![[item:30740]] x3, ![[item:30740]] x1, ![[item:30741]] x1, ![[item:30743]] x1, ![[item:42430]]

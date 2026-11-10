@@ -320,21 +320,27 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "[[item:abc]]",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": true
+						"e": true,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": ".",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -384,21 +390,27 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									},
 									{
 										"t": "formatting",
 										"b": true,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									},
 									{
 										"t": " and lists:",
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -425,7 +437,9 @@
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									}
@@ -467,7 +481,9 @@
 										"b": false,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -508,7 +524,9 @@
 										"b": true,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -535,7 +553,9 @@
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									},
@@ -548,7 +568,9 @@
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									}
@@ -575,7 +597,9 @@
 										"b": true,
 										"i": false,
 										"l": -1,
-										"e": false
+										"e": false,
+										"m": "",
+										"icon": ""
 									}
 								],
 								"items": [],
@@ -620,6 +644,12 @@
 				"n": 1
 			}
 		],
-		"tp_open_at": 0.0
+		"tp_open_at": 0.0,
+		"classes": [],
+		"viewer": false,
+		"viewer_name": "",
+		"list_range": "",
+		"list_prev": false,
+		"list_next": false
 	}
 }

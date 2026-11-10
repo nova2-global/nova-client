@@ -29,7 +29,7 @@ order: 94
 
 - There is a **50% chance** that this process will fail!
 
-[[item:50926]]
+![[item:50926]]
 
 --- {style=ornate}
 
@@ -45,9 +45,9 @@ order: 94
 
 - The 2nd and the 3rd row are locked by default and require to be unlocked.
 
-[[item:39064]]
+![[item:39064]]
 
 - **Note:** The whole market will be refreshed every 5 hours.
   If you wish to refresh the market before 5 hours, you need to use 1x
 
-[[item:39063]]
+![[item:39063]]

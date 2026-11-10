@@ -44,7 +44,7 @@ Note: The previous tier on the item will be **destroyed**
 - You will need spciecifc items obtained from the Mythical Forest Map, along with
   items obtained from Hydra, Ghidorah, White Tower, and Ancient Pyramid.
 
-[[item:55260]], [[item:55270]], [[item:55280]], [[item:55290]], [[item:55300]]
+![[item:55260]], ![[item:55270]], ![[item:55280]], ![[item:55290]], ![[item:55300]]
 
 ![](d:/ymir work/ui/pet/arrow.png)
 

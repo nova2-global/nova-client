@@ -24,7 +24,7 @@ Defeat the Spider Baron to obtain the . Use this item to advance to the next pha
 Destroy 5 Spider Eggs to summon the final boss, the Spider Baroness.
 Breaking more eggs will weaken her further.
 
-[[item:30327]]
+![[item:30327]]
 
 ### Stage 3:
 

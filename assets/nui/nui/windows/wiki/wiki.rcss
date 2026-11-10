@@ -201,6 +201,7 @@ body.wiki
 {
 	display: flex;
 	flex-direction: row;
+	position: relative;
 	height: 440dp;
 }
 .wiki__side
@@ -280,6 +281,73 @@ body.wiki
 .wiki__rows #wiki-rows
 {
 	height: 415dp;
+}
+/* The class filter and the pager each take a 26dp row from the list. */
+.wiki__rows.has-classes #wiki-rows, .wiki__rows.has-pager #wiki-rows
+{
+	height: 389dp;
+}
+.wiki__rows.has-classes.has-pager #wiki-rows
+{
+	height: 363dp;
+}
+
+/* An equipment list's class filter (OLD's class buttons): one segment each. */
+.wiki__classes
+{
+	display: flex;
+	flex-direction: row;
+	height: 22dp;
+	margin: 4dp 0dp 0dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+}
+.wiki__class
+{
+	display: block;
+	flex: 1;
+	overflow: hidden;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	line-height: 20dp;
+	text-align: center;
+	white-space: nowrap;
+}
+.wiki__class + .wiki__class
+{
+	border-left-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__class:hover
+{
+	color: var(--text);
+	background-color: var(--surface-hover);
+}
+.wiki__class.is-selected
+{
+	color: var(--accent);
+	background-color: var(--selection);
+}
+
+/* A long list's pager: one page of rows is laid out at a time. */
+.wiki__pager
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 26dp;
+	border-top-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__pager-range
+{
+	flex: 1;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+	white-space: nowrap;
 }
 .wiki__row, .wiki__loot, .wiki__origin
 {
@@ -435,9 +503,97 @@ body.wiki
 }
 .wiki__preview
 {
+	position: relative;
 	width: 96dp;
 	height: 96dp;
 	margin-right: var(--space-3);
+}
+.wiki__preview > *
+{
+	pointer-events: none;
+}
+/* A model preview opens the model viewer on a press. */
+.wiki__preview.is-zoomable:hover
+{
+	background-color: var(--surface-hover);
+}
+.wiki__zoom-mark
+{
+	position: absolute;
+	right: 2dp;
+	bottom: 2dp;
+	width: 16dp;
+	height: 16dp;
+	color: var(--text-muted);
+	opacity: 0.7;
+}
+.wiki__preview.is-zoomable:hover .wiki__zoom-mark
+{
+	color: var(--accent);
+	opacity: 1;
+}
+
+/* --- The model viewer: over the content area; a press around the stage closes it --- */
+
+.wiki__viewer
+{
+	position: absolute;
+	left: 0dp;
+	top: 0dp;
+	right: 0dp;
+	bottom: 0dp;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	/* No border: RmlUi paints the background inside it, so a translucent
+	   border lets the page's rules show through. */
+	background-color: var(--surface);
+}
+.wiki__viewer-bar
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 30dp;
+	padding: 0dp var(--space-1) 0dp var(--space-3);
+	border-bottom-width: 1dp;
+	border-color: var(--accent-glow);
+}
+.wiki__viewer-name
+{
+	color: var(--accent);
+	font-size: var(--font-lg);
+	white-space: nowrap;
+}
+.wiki__viewer-hint
+{
+	flex: 1;
+	margin-left: var(--space-3);
+	overflow: hidden;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+/* The model's stage: a drag turns it (drag: drag sends dragstart, drag and
+   dragend), the wheel zooms it; its view takes no pointer. */
+.wiki__stage
+{
+	display: block;
+	width: 380dp;
+	height: 404dp;
+	margin: 0dp auto;
+	drag: drag;
+	background-color: var(--surface-sunken);
+}
+.wiki__stage > *
+{
+	pointer-events: none;
+}
+.wiki__viewer-view
+{
+	display: block;
+	width: 380dp;
+	height: 404dp;
 }
 .wiki__view
 {

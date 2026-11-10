@@ -20,8 +20,12 @@ What the converter does with it:
   - GOTO=page:<p>, item:<v>, monster:<v>: a link with the line's text;
     GOTO=<number> (a scroll to a place: the table of contents over the
     guide_tabs art) is dropped with its line.
-  - IMG with ITEM_TOOLTIP=<vnum>: an [[item:<vnum>]] link (xN with
-    ITEM_COUNT); runs of them join into one line.
+  - IMG with ITEM_TOOLTIP=<vnum>: an embedded item, ![[item:<vnum>]],
+    which shows the item's icon and its tooltip and opens its page, as
+    OLD's icon did (xN after it with ITEM_COUNT; the visual bonuses OLD
+    could list after the vnum, ITEM_TOOLTIP=<vnum>:<type>:<value>..., are
+    dropped: an embed shows the item's own tooltip); runs of them join into
+    one line.
   - divider_long: --- {style=ornate}; divider_small: ---; guide_tabs: dropped;
     emoji/<key>: **<KEY>**; BANNER_IMG and other images: an image line,
     lowercased (the art is OLD's and NEW lacks it: check reports it).
@@ -147,7 +151,7 @@ class Converter(object):
             vnum = str(found["item_tooltip"]).split(":")[0].strip()
             if vnum.isdigit() and int(vnum) > 0:
                 count = found.get("item_count")
-                self.items.append("[[item:%d]]%s" % (int(vnum), " x%s" % count if count not in (None, True) else ""))
+                self.items.append("![[item:%d]]%s" % (int(vnum), " x%s" % count if count not in (None, True) else ""))
                 return
         if "divider_long" in lower:
             self.block("--- {style=ornate}")

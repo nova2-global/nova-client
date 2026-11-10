@@ -11,13 +11,17 @@ body.skin-classic.wiki .wiki__title-icon
 }
 body.skin-classic.wiki .wiki__nav .nui-glyph,
 body.skin-classic.wiki .wiki__tab-close .nui-glyph,
-body.skin-classic.wiki .wiki__new-tab .nui-glyph
+body.skin-classic.wiki .wiki__new-tab .nui-glyph,
+body.skin-classic.wiki .wiki__pager-button .nui-glyph,
+body.skin-classic.wiki .wiki__viewer-close .nui-glyph
 {
 	--glyph-ink: var(--classic-button-text);
 	display: inline-block;
 }
 body.skin-classic.wiki .wiki__nav,
-body.skin-classic.wiki .wiki__new-tab
+body.skin-classic.wiki .wiki__new-tab,
+body.skin-classic.wiki .wiki__pager-button,
+body.skin-classic.wiki .wiki__viewer-close
 {
 	height: 21dp;
 	border-width: 0;
@@ -28,12 +32,16 @@ body.skin-classic.wiki .wiki__new-tab
 	line-height: 21dp;
 }
 body.skin-classic.wiki .wiki__nav:hover,
-body.skin-classic.wiki .wiki__new-tab:hover
+body.skin-classic.wiki .wiki__new-tab:hover,
+body.skin-classic.wiki .wiki__pager-button:hover,
+body.skin-classic.wiki .wiki__viewer-close:hover
 {
 	decorator: tiled-horizontal(classic-button-middle-02-l, classic-button-middle-02-c, classic-button-middle-02-r);
 }
 body.skin-classic.wiki .wiki__nav:active,
 body.skin-classic.wiki .wiki__new-tab:active,
+body.skin-classic.wiki .wiki__pager-button:active,
+body.skin-classic.wiki .wiki__viewer-close:active,
 body.skin-classic.wiki .wiki__nav.is-selected
 {
 	decorator: tiled-horizontal(classic-button-middle-03-l, classic-button-middle-03-c, classic-button-middle-03-r);
@@ -42,9 +50,50 @@ body.skin-classic.wiki .wiki__nav.is-selected .nui-glyph
 {
 	--glyph-ink: var(--accent);
 }
-body.skin-classic.wiki .wiki__new-tab
+body.skin-classic.wiki .wiki__new-tab,
+body.skin-classic.wiki .wiki__pager-button,
+body.skin-classic.wiki .wiki__viewer-close
 {
 	width: 24dp;
+}
+/* A disabled pager arrow: the legacy button's disabled look. */
+body.skin-classic.wiki .wiki__pager-button:disabled
+{
+	decorator: tiled-horizontal(classic-button-middle-01-l, classic-button-middle-01-c, classic-button-middle-01-r);
+	opacity: 0.45;
+}
+/* r4: the class filter, as square slot cells (OLD's class buttons were
+   radio buttons); the chosen class is lit. The embedded item's well is a
+   square slot, as an inventory cell. */
+body.skin-classic.wiki .wiki__classes,
+body.skin-classic.wiki .wp__embed
+{
+	border-radius: 0;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.wiki .wiki__class + .wiki__class
+{
+	border-color: var(--classic-slot-dark);
+}
+body.skin-classic.wiki .wiki__class
+{
+	color: var(--classic-button-text);
+	line-height: 19dp;
+}
+body.skin-classic.wiki .wiki__class:hover
+{
+	background-color: var(--classic-hover-white);
+}
+body.skin-classic.wiki .wiki__class.is-selected
+{
+	color: var(--accent);
+	background-color: var(--classic-hover-white);
+}
+/* The model viewer on the board's own dark, the stage a slot's fill. */
+body.skin-classic.wiki .wiki__stage
+{
+	background-color: var(--classic-slot-fill);
 }
 body.skin-classic.wiki .wiki__trail,
 body.skin-classic.wiki .wiki__tab,

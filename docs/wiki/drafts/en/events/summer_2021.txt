@@ -30,7 +30,7 @@ To access the event, you can reach out to the event NPC named \*Etna Peninsula G
 
 --- {style=ornate}
 
-[[item:48365]], [[item:48366]], [[item:59086]], [[item:59087]]
+![[item:48365]], ![[item:48366]], ![[item:59086]], ![[item:59087]]
 
 This NPC offers you the following options:
 
@@ -54,7 +54,7 @@ In addition, you may find other permanent rewards such as, Wings and effects.
 
 ### Hover + Shift to preview
 
-[[item:34105]], [[item:34106]], [[item:34109]], [[item:34110]], [[item:34102]], [[item:34126]], [[item:34127]], [[item:34125]]
+![[item:34105]], ![[item:34106]], ![[item:34109]], ![[item:34110]], ![[item:34102]], ![[item:34126]], ![[item:34127]], ![[item:34125]]
 
 --- {style=ornate}
 
@@ -72,23 +72,23 @@ Drops on summer map is divided into 3.
 
 ---
 
-[[item:34113]], [[item:34114]], [[item:34115]], [[item:34116]], [[item:34121]]
+![[item:34113]], ![[item:34114]], ![[item:34115]], ![[item:34116]], ![[item:34121]]
 
 These items can be dropped anywhere on mystery bay and are used to craft mainly boosters such as:
 
-[[item:34122]], [[item:34123]], [[item:34124]], [[item:34125]]
+![[item:34122]], ![[item:34123]], ![[item:34124]], ![[item:34125]]
 
 ---
 
 - 2. Metin Drops
 
-[[item:34066]]
+![[item:34066]]
 
 Metins drop mainly Whelk along with boosted drops from your level cap.
 
 - 3. Boss Drops
 
-[[item:34101]], [[item:34103]], [[item:34104]], [[item:34107]], [[item:34108]], [[item:34111]], [[item:34112]]
+![[item:34101]], ![[item:34103]], ![[item:34104]], ![[item:34107]], ![[item:34108]], ![[item:34111]], ![[item:34112]]
 
 Bosses drops all temporary chests along with boosted drops from your level cap.
 

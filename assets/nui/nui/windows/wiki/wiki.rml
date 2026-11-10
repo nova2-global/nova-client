@@ -19,7 +19,11 @@
 	     nui_wiki_pages.py, its sheet wiki-pages.rcss) takes the list's room
 	     too: its blocks are model data drawn by fixed markup, never markup
 	     from the page, and one level of blocks repeats inside notes and
-	     columns. -->
+	     columns. An item in a page (![[item:N]], r4) shows its icon in the
+	     run and its tooltip on hover (tp_over, tp_out). An equipment list
+	     has a class filter (classes), a long list a pager (one page of rows
+	     is laid out at a time), and the model viewer (r4) covers the content
+	     area. -->
 	<title>wiki</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="wiki.rcss"/>
@@ -113,8 +117,13 @@
 			</div>
 			<div class="wiki__list" data-if="!home &amp;&amp; page_kind != 'text'">
 				<div class="wiki__list-head"><span class="wiki__list-title">{{ list_title }}</span><span class="wiki__list-count">{{ list_count }}</span></div>
+				<div class="wiki__classes" data-if="classes.size > 0">
+					<span class="wiki__class" data-for="c : classes" data-attr-id="'wiki-class-' + c.id" data-class-is-selected="c.on"
+					      data-event-mousedown="class_press(c.i, ev.button)">{{ c.label }}</span>
+				</div>
 				<div class="wiki__state" data-if="list_state == 'empty'">@game.WIKI_NOTHING_FOUND</div>
-				<div class="nui-list wiki__rows" data-if="list_state != 'empty'">
+				<div class="nui-list wiki__rows" data-if="list_state != 'empty'" data-class-has-classes="classes.size > 0"
+				     data-class-has-pager="list_range != ''">
 					<div id="wiki-rows" class="nui-list__viewport">
 						<div class="wiki__row" data-for="r : list" data-attr-id="'wiki-row-' + r.i" data-class-is-selected="r.i == list_sel"
 						     data-event-mousedown="row_press(r.i, ev.button)" data-event-mouseover="row_over(r.i)" data-event-mouseout="row_out()">
@@ -124,13 +133,24 @@
 						</div>
 					</div>
 				</div>
+				<div class="wiki__pager" data-if="list_range != ''">
+					<button id="wiki-list-prev" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim wiki__pager-button"
+					        data-attrif-disabled="!list_prev" data-event-mousedown="list_prev_press(ev.button)"><span
+						class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+					<span class="wiki__pager-range">{{ list_range }}</span>
+					<button id="wiki-list-next" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim wiki__pager-button"
+					        data-attrif-disabled="!list_next" data-event-mousedown="list_next_press(ev.button)"><span
+						class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				</div>
 			</div>
 			<div class="wiki__page" data-if="!home">
 				<div class="wiki__state" data-if="page_state == ''">@game.WIKI_PICK</div>
 				<div class="wiki__page-head" data-if="page_state != '' &amp;&amp; page_state != 'text'">
-					<div class="wiki__preview">
+					<div id="wiki-preview" class="wiki__preview" data-class-is-zoomable="model_view" data-event-mousedown="preview_press(ev.button)">
 						<nui-view class="wiki__view" name="model-wiki" hover="none" data-if="model_view"></nui-view>
 						<div class="wiki__well wiki__preview-well" data-if="!model_view"><img class="wiki__icon" data-if="page_icon != ''" data-attr-src="page_icon"/></div>
+						<span class="wiki__zoom-mark" data-if="model_view"><span class="nui-glyph nui-glyph--search"><span
+							class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
 					</div>
 					<div class="wiki__head-text">
 						<span id="wiki-page-name" class="wiki__page-name">{{ page_name }}</span>
@@ -182,16 +202,16 @@
 								<div id="wiki-text-title" class="wp__title">{{ tp_title }}</div>
 								<div class="wp__block" data-for="b : tp_blocks">
 									<div data-if="b.k == 'p' || b.k == 'h1' || b.k == 'h2' || b.k == 'h3'" data-attr-class="'wp__text wp__text--' + b.k">
-										<span class="wp__run" data-for="r : b.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)">{{ r.t }}</span>
+										<span class="wp__run" data-for="r : b.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)" data-class-is-embed="r.m != ''" data-event-mouseover="tp_over(r.l)" data-event-mouseout="tp_out()"><span class="wp__embed" data-if="r.m != ''"><img class="wp__embed-icon" data-if="r.icon != ''" data-attr-src="r.icon"/></span>{{ r.t }}</span>
 									</div>
 									<div class="wp__list" data-if="b.k == 'ul' || b.k == 'ol'">
 										<div data-for="e : b.items" data-attr-class="'wp__item wp__item--d' + e.d"><span class="wp__marker" data-class-is-dot="e.n == ''">{{ e.n }}</span><div class="wp__item-text">
-											<span class="wp__run" data-for="r : e.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)">{{ r.t }}</span>
+											<span class="wp__run" data-for="r : e.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)" data-class-is-embed="r.m != ''" data-event-mouseover="tp_over(r.l)" data-event-mouseout="tp_out()"><span class="wp__embed" data-if="r.m != ''"><img class="wp__embed-icon" data-if="r.icon != ''" data-attr-src="r.icon"/></span>{{ r.t }}</span>
 										</div></div>
 									</div>
 									<div class="wp__table" data-if="b.k == 'table'">
 										<div class="wp__tr" data-for="row : b.rows" data-class-is-head="row.head"><div class="wp__td" data-for="cell : row.cells">
-											<span class="wp__run" data-for="r : cell.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)">{{ r.t }}</span>
+											<span class="wp__run" data-for="r : cell.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)" data-class-is-embed="r.m != ''" data-event-mouseover="tp_over(r.l)" data-event-mouseout="tp_out()"><span class="wp__embed" data-if="r.m != ''"><img class="wp__embed-icon" data-if="r.icon != ''" data-attr-src="r.icon"/></span>{{ r.t }}</span>
 										</div></div>
 									</div>
 									<img class="wp__img" data-if="b.k == 'img'" data-attr-src="b.src" data-style---wp-w="b.w" data-class-wp__img--left="b.fl == 'left'" data-class-wp__img--right="b.fl == 'right'" data-class-wp__img--center="b.al == 'center'" data-class-wp__img--end="b.al == 'right'"/>
@@ -202,16 +222,16 @@
 										<div class="wp__box-label" data-if="b.k == 'warn'">@game.WIKI_WARNING</div>
 										<div class="wp__cols"><div class="wp__col" data-for="c : b.cols"><div class="wp__block" data-for="l : c.blocks">
 											<div data-if="l.k == 'p' || l.k == 'h1' || l.k == 'h2' || l.k == 'h3'" data-attr-class="'wp__text wp__text--' + l.k">
-												<span class="wp__run" data-for="r : l.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)">{{ r.t }}</span>
+												<span class="wp__run" data-for="r : l.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)" data-class-is-embed="r.m != ''" data-event-mouseover="tp_over(r.l)" data-event-mouseout="tp_out()"><span class="wp__embed" data-if="r.m != ''"><img class="wp__embed-icon" data-if="r.icon != ''" data-attr-src="r.icon"/></span>{{ r.t }}</span>
 											</div>
 											<div class="wp__list" data-if="l.k == 'ul' || l.k == 'ol'">
 												<div data-for="e : l.items" data-attr-class="'wp__item wp__item--d' + e.d"><span class="wp__marker" data-class-is-dot="e.n == ''">{{ e.n }}</span><div class="wp__item-text">
-													<span class="wp__run" data-for="r : e.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)">{{ r.t }}</span>
+													<span class="wp__run" data-for="r : e.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)" data-class-is-embed="r.m != ''" data-event-mouseover="tp_over(r.l)" data-event-mouseout="tp_out()"><span class="wp__embed" data-if="r.m != ''"><img class="wp__embed-icon" data-if="r.icon != ''" data-attr-src="r.icon"/></span>{{ r.t }}</span>
 												</div></div>
 											</div>
 											<div class="wp__table" data-if="l.k == 'table'">
 												<div class="wp__tr" data-for="row : l.rows" data-class-is-head="row.head"><div class="wp__td" data-for="cell : row.cells">
-													<span class="wp__run" data-for="r : cell.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)">{{ r.t }}</span>
+													<span class="wp__run" data-for="r : cell.runs" data-class-is-bold="r.b" data-class-is-italic="r.i" data-class-is-link="r.l &gt;= 0" data-class-is-bad="r.e" data-event-mousedown="tp_link(r.l, ev.button)" data-class-is-embed="r.m != ''" data-event-mouseover="tp_over(r.l)" data-event-mouseout="tp_out()"><span class="wp__embed" data-if="r.m != ''"><img class="wp__embed-icon" data-if="r.icon != ''" data-attr-src="r.icon"/></span>{{ r.t }}</span>
 												</div></div>
 											</div>
 											<img class="wp__img" data-if="l.k == 'img'" data-attr-src="l.src" data-style---wp-w="l.w" data-class-wp__img--left="l.fl == 'left'" data-class-wp__img--right="l.fl == 'right'" data-class-wp__img--center="l.al == 'center'" data-class-wp__img--end="l.al == 'right'"/>
@@ -225,6 +245,24 @@
 					</div>
 				</div>
 				<div class="wiki__hover-preview" data-if="hover_view"><nui-view class="wiki__view wiki__view--hover" name="model-wiki-hover" hover="none"></nui-view></div>
+			</div>
+			<!-- The model viewer (r4): a press on the page's preview shows its
+			     model over the content area, in its own view (model-wiki-viewer).
+			     The stage turns it on a drag, zooms on the wheel and resets on a
+			     double click; a press around it, the close button or Escape
+			     closes it. -->
+			<div id="wiki-viewer" class="wiki__viewer" data-if="viewer" data-event-mousedown="viewer_backdrop_press(ev.button)">
+				<div class="wiki__viewer-bar">
+					<span class="wiki__viewer-name">{{ viewer_name }}</span>
+					<span class="wiki__viewer-hint">@game.WIKI_VIEWER_HINT</span>
+					<button id="wiki-viewer-close" class="nui-button nui-button--ghost nui-button--icon nui-anim wiki__viewer-close"
+					        data-event-mousedown="viewer_close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+						class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+				</div>
+				<div id="wiki-viewer-stage" class="wiki__stage" data-event-mousedown="viewer_stage_press(ev.button)"
+				     data-event-dragstart="viewer_grab(ev.mouse_x)" data-event-drag="viewer_drag(ev.mouse_x)"
+				     data-event-dragend="viewer_drop()" data-event-mousescroll="viewer_wheel(ev.wheel_delta_y)"
+				     data-event-dblclick="viewer_reset()"><nui-view class="wiki__viewer-view" name="model-wiki-viewer" hover="none"></nui-view></div>
 			</div>
 		</div>
 	</div>

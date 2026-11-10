@@ -29,7 +29,7 @@ order: 174
   for that specific placement.
 
 \**Example: Two players with the same fish size in 3rd place will both receive**
-[[item:80017]] x1
+![[item:80017]] x1
 
 --- {style=ornate}
 
@@ -38,7 +38,7 @@ order: 174
 - The top three contenders in this event will receive the following rewards!
 
 \**First Place: Second Place: Third Place:**
-[[item:80017]] x3, [[item:80017]] x2, [[item:80017]] x1
+![[item:80017]] x3, ![[item:80017]] x2, ![[item:80017]] x1
 
 --- {style=ornate}
 

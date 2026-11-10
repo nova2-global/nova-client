@@ -32,7 +32,7 @@ category: systems
 
 ## yang and Battle Coins. Battle Coins, are obtained exclusively through the BattlePass quests.
 
-[[item:34100]]
+![[item:34100]]
 
 --- {style=ornate}
 

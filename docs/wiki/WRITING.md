@@ -8,13 +8,13 @@ You never place anything by pixel. The old wiki's `.txt` pages did, and they bro
 
 | What | Where |
 |---|---|
-| An English page | `assets/locale/locale/en/wiki/<path>.md` |
-| The same page in another language | `assets/locale/locale/<lang>/wiki/<path>.md` (for example `de`, `fr`, `pt`) |
+| An English page | `assets/locale/locale/en/wiki/<path>.txt` |
+| The same page in another language | `assets/locale/locale/<lang>/wiki/<path>.txt` (for example `de`, `fr`, `pt`) |
 | The list of every page | `assets/locale/locale/en/wiki/index.txt` |
 | Images for pages | `assets/locale/locale/common/wiki/<name>.png` (shared by every language), or any image already in the pack |
 | Drafts that must not ship | `docs/wiki/drafts/` (outside `assets/`, so the game never sees them) |
 
-A page's **path** is its file name without `.md`, relative to the `wiki` folder, for example `dungeons/demon_tower`. Paths use only lowercase letters, digits, `_`, `-` and `/`, at most 64 characters.
+A page's **path** is its file name without `.txt`, relative to the `wiki` folder, for example `dungeons/demon_tower`. Paths use only lowercase letters, digits, `_`, `-` and `/`, at most 64 characters.
 
 **English is the fallback.** When a player's language has no file for a page, the English page shows. So write the English page first; translations are optional.
 
@@ -26,7 +26,7 @@ guides/basic_guide
 dungeons/demon_tower
 ```
 
-Save files as UTF-8.
+Save files as UTF-8, with the extension `.txt`. The game reads no other extension from the pack (a `.md` page never shows), and `check` reports any other file in a `wiki` folder. No page may be called `index`: that name is the list.
 
 ## The front matter
 
@@ -211,7 +211,7 @@ It reads every page in every language and prints one line a problem: markup the 
 ## Previewing a page without the game
 
 ```
-python3 tools/nui_wiki_pages_tool.py preview assets/locale/locale/en/wiki/dungeons/demon_tower.md
+python3 tools/nui_wiki_pages_tool.py preview assets/locale/locale/en/wiki/dungeons/demon_tower.txt
 ```
 
 This draws the wiki window with your page, as the game would, into `preview.png`. It needs `nuitool` (ask a developer for it; `docs/ui/AUTHORING.md` explains how to build it) on your `PATH` or in the `NUITOOL` variable. The file can be anywhere, so you can preview a draft before it ships.
@@ -232,4 +232,4 @@ The wiki's Link button puts a link to the open page in the chat or a whisper. It
 
 ## A complete example
 
-`docs/wiki/examples/every-feature.md` uses every feature once. Preview it to see each one in each theme.
+`docs/wiki/examples/every-feature.txt` uses every feature once. Preview it to see each one in each theme.

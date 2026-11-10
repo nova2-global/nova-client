@@ -3,27 +3,28 @@ preview one with nuitool. Run from the asset repository root, or anywhere:
 paths are found from this file. docs/wiki/WRITING.md explains it for authors.
 
   python3 tools/nui_wiki_pages_tool.py check [--data <rt/share/conf>]
-      Every page in assets/locale/locale/*/wiki/: its front matter and
+      Every page in assets/locale/locale/*/wiki/ (a .txt file; any other
+      file there is a problem, the client cannot read it): its front matter and
       markup, index.txt (every English page listed once, every line a page),
       the categories, the links (item and mob numbers against item_names.txt
       and mob_names.txt when --data names the server's conf folder; page
       links against index.txt) and the images (each must be a file in the
       asset folders). Prints one line a problem; exit 1 when there is one.
 
-  python3 tools/nui_wiki_pages_tool.py preview <page.md> [--theme classic] [--scale 1.5]
+  python3 tools/nui_wiki_pages_tool.py preview <page.txt> [--theme classic] [--scale 1.5]
           [--locale en] [--skip N] [--out preview.png] [--data <rt/share/conf>]
       The page as the wiki window shows it, as a PNG, through nuitool
       ($NUITOOL or nuitool on PATH). Themes: modern-dark, modern-light,
-      cyberpunk, classic. Any .md file works, inside the pack or not.
+      cyberpunk, classic. Any page file works, inside the pack or not.
       nuitool does not scroll: --skip N leaves out the page's first N
       blocks, to see what is further down.
 
-  python3 tools/nui_wiki_pages_tool.py fixture <page.md> --out <fixture.json>
+  python3 tools/nui_wiki_pages_tool.py fixture <page.txt> --out <fixture.json>
       The wiki window's model showing that page (what preview snaps).
 
   python3 tools/nui_wiki_pages_tool.py goldens
       Writes the golden fixtures wiki.page.fixture.json and
-      wiki.page-end.fixture.json (docs/wiki/examples/every-feature.md, its
+      wiki.page-end.fixture.json (docs/wiki/examples/every-feature.txt, its
       top and its second half) and wiki.landing.fixture.json (guides/basic_guide).
 """
 
@@ -41,8 +42,8 @@ ASSETS = os.path.join(REPO, "assets")
 ROOT = os.path.join(ASSETS, "root")
 LOCALES = os.path.join(ASSETS, "locale", "locale")
 WIKI_DIR = os.path.join(ASSETS, "nui", "nui", "windows", "wiki")
-EXAMPLE = os.path.join(REPO, "docs", "wiki", "examples", "every-feature.md")
-EXAMPLE_END = 11  # every-feature.md's blocks up to its map
+EXAMPLE = os.path.join(REPO, "docs", "wiki", "examples", "every-feature.txt")
+EXAMPLE_END = 11  # every-feature.txt's blocks up to its map
 DEFAULT_DATA = "/home/eddy/new-project/new/port-w7/chest-drop/rt/share/conf"
 sys.path.insert(0, ROOT)
 
@@ -103,9 +104,22 @@ def page_files():
         top = os.path.join(LOCALES, lang, "wiki")
         for folder, _, files in os.walk(top):
             for name in files:
-                if name.endswith(".md"):
-                    rel = os.path.relpath(os.path.join(folder, name), top)[:-3].replace(os.sep, "/")
-                    out[(lang, rel)] = os.path.join(folder, name)
+                rel = os.path.relpath(os.path.join(folder, name), top).replace(os.sep, "/")
+                if name.endswith(".txt") and rel != pages.RESERVED + ".txt":
+                    out[(lang, rel[:-4])] = os.path.join(folder, name)
+    return out
+
+
+def unreadable_files():
+    """Files under a wiki folder the client's pack.Get will not give Python
+    (anything but .py, .pyc and .txt): such a page never shows in the game."""
+    out = []
+    for lang in sorted(os.listdir(LOCALES)):
+        top = os.path.join(LOCALES, lang, "wiki")
+        for folder, _, files in os.walk(top):
+            for name in files:
+                if os.path.splitext(name)[1].lower() not in (".txt", ".py", ".pyc"):
+                    out.append("locale/%s/wiki/%s" % (lang, os.path.relpath(os.path.join(folder, name), top).replace(os.sep, "/")))
     return out
 
 
@@ -124,10 +138,12 @@ def check(data_dir):
     known = set(path for lang, path in files if lang == "en")
     for path in listed:
         if path not in known:
-            problems.append("locale/en/wiki/index.txt: %s has no file locale/en/wiki/%s.md" % (path, path))
+            problems.append("locale/en/wiki/index.txt: %s has no file locale/en/wiki/%s.txt" % (path, path))
+    for name in unreadable_files():
+        problems.append("%s: the game reads only .txt pages (pack.Get refuses this extension)" % name)
     categories = set(ident for ident, _ in pages.CATEGORIES)
     for (lang, path), full in sorted(files.items()):
-        where = "locale/%s/wiki/%s.md" % (lang, path)
+        where = "locale/%s/wiki/%s.txt" % (lang, path)
         if not fmt.valid_page_path(path):
             problems.append("%s: the file's path is not [a-z0-9_/-]" % where)
             continue
@@ -195,7 +211,7 @@ def category_name(locale, category):
 
 def fixture_for(page_file, data_dir=None, locale="locale/en", skip=0):
     """The wiki model with the page shown, as the window builds it."""
-    store = "%s/wiki/__preview__.md" % locale
+    store = "%s/wiki/__preview__.txt" % locale
     use_folder(locale, {store: read_file(page_file)})
     items, mobs = names(data_dir, "item") or {}, names(data_dir, "mob") or {}
     real = pages.exists
@@ -275,7 +291,7 @@ def goldens(data_dir):
     write_json(os.path.join(WIKI_DIR, "wiki.page.fixture.json"), fixture_for(EXAMPLE, data_dir))
     # nuitool does not scroll: the page's second half, after its map.
     write_json(os.path.join(WIKI_DIR, "wiki.page-end.fixture.json"), fixture_for(EXAMPLE, data_dir, skip=EXAMPLE_END))
-    landing = os.path.join(LOCALES, "en", "wiki", "guides", "basic_guide.md")
+    landing = os.path.join(LOCALES, "en", "wiki", "guides", "basic_guide.txt")
     write_json(os.path.join(WIKI_DIR, "wiki.landing.fixture.json"), fixture_for(landing, data_dir))
     print("wrote wiki.page.fixture.json and wiki.landing.fixture.json")
 

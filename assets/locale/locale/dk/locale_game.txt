@@ -1256,3 +1256,12 @@ WIKI_SUB_COSTUME_MOUNTS	Mounts
 WIKI_SUB_COSTUME_WINGS	Wings	
 WIKI_SUB_COSTUME_MASKS	Masks	
 WIKI_SUB_COSTUME_EFFECTS	Effects	
+WIKI_HOME	Home	
+WIKI_CATEGORIES	Categories	
+WIKI_RECENT	Recently viewed	
+WIKI_NO_RECENT	The pages you open show here.	
+WIKI_LINK	Link	
+WIKI_TABS_FULL	The wiki keeps at most %d tabs open. Close one first.	
+WIKI_SEARCH_HINT	Search items and monsters	
+WIKI_SEARCH_TRAIL	Search: %s	
+WIKI_TAB_HINT	Middle-click or Ctrl+click a link to open it in a new tab.	

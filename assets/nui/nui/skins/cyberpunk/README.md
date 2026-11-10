@@ -320,6 +320,8 @@ The palette (every color of the `dark` palette's keys) and the skin's own tokens
 | `--slot-disabled` | `#ff3d7159` |
 | `--slot-locked` | `#0000008c` |
 | `--slot-picked` | `#23e5ff59` |
+| `--dungeon-badge-ready` | `#3bffb0` |
+| `--dungeon-badge-cooldown` | `#ff7096` |
 | `--notice-bar` | `#00000080` |
 | `--notice-text-big` | `#8af2ff` |
 | `--edge-gm` | `#ffb347` |

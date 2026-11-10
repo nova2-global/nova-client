@@ -24,3 +24,6 @@ class UnavailableWindow(object):
 
 	def WikiAnswer(self, *rows):
 		pass
+
+	def SetPasteLinkEvent(self, event):
+		pass

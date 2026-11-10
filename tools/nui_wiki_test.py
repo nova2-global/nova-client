@@ -69,6 +69,8 @@ class WikiTest(unittest.TestCase):
             world.game.load("nui_wiki_data", "nui_wiki_data.py")
             module = world.game.load("nui_wiki", "nui_wiki.py")
             module.ANSWERS.clear()
+        # The search field's data-event-change (wiki.rml).
+        world.game.state.field_events[("nui/windows/wiki/wiki.rml", "wiki-search")] = "search_change"
         with world.game, w4.quiet():
             window = world.nui_windows.make("wiki", type("Unused", (), {}), "nui_wiki.WikiWindow")
         return world, window
@@ -136,11 +138,11 @@ class Listing(WikiTest):
         module = world.m("nui_wiki")
         with world.game, w4.quiet():
             window.Open()
-            window.search("wolf")
-        self.assertEqual(w4.board(window).model["search"], "wolf")
+            w4.board(window).insert_text("wiki-search", "wolf")
+        self.assertEqual(w4.board(window).fields["wiki-search"], "wolf")
         with world.game, w4.quiet():
             window._open_sub(module.TREE[2]["subs"][0])
-        self.assertEqual(w4.board(window).model["search"], "")
+        self.assertEqual(w4.board(window).fields["wiki-search"], "")
 
     def test_the_text_pages_have_a_place_to_plug_in(self):
         world, window = self.world()

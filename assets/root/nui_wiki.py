@@ -11,9 +11,18 @@ answers WIKI_STATUS_BUSY; the window asks again a moment later, and a request
 that is never answered is sent again until TRIES_MAX, when the page says it
 could not load instead of sitting empty.
 
+It browses like a web browser (Eddy's notes after r38): back and forward, a
+home page with every category's lists and the pages viewed last, a trail
+from Home to the page, and up to TABS_MAX tabs, each with its own history. A
+middle press, or a left press with Ctrl held, opens a link in a new tab
+behind the shown one; a middle press on a tab closes it. The Link button
+puts the page's syswiki link (wiki_link) where the player types, through
+Interface.PasteWikiLink.
+
 Nothing runs per frame: the search is the field's change event, and the retry
 and the give-up are two hidden nui-countdowns (retry_at, timeout_at). The
-board exists only while the window shows. NOVA-139's text pages plug in at
+board exists only while the window shows; the tabs and their histories stay
+with the window. NOVA-139's text pages plug in at
 nui_wiki_data.TEXT_CATEGORIES; _open_sub dispatches on a row's "kind".
 """
 
@@ -51,6 +60,18 @@ ANSWER_WAIT_SECONDS = 2.5
 TRIES_MAX = 6
 LIST_ROWS_MAX = 500
 SEARCH_ROWS_MAX = 200
+# The tabs, as in a browser (Eddy's r38 notes), the pages the home page lists,
+# and the steps a tab remembers.
+TABS_MAX = 8
+TAB_LABEL_MAX = 16
+RECENT_MAX = 8
+HISTORY_MAX = 50
+SEARCH_FIELD = "wiki-search"
+# Takes the focus off the search field before a link is pasted elsewhere
+# (the home button, focus: auto in wiki.rcss).
+PARK = "wiki-home-button"
+# OLD's syswiki link color (its quests' "|~FF00C0FC").
+LINK_COLOR = "ff00c0fc"
 
 
 def _item_sub(label, item_type, item_sub=-1):
@@ -191,7 +212,9 @@ def _wearer_race(item_module):
 
 
 class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
-	"""The browser's document; its events go to the window."""
+	"""The browser's document; its events go to the window. Every press that
+	follows a link passes its button: the window opens a middle press, or a
+	left press with Ctrl held, in a new tab."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "wiki"
@@ -214,9 +237,19 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0:
 			self._owner.Close()
 
+	# The body takes no focus (a press on the window keeps another window's
+	# caret), so the field asks for its own, as the shop search's does.
+	@nui.on("search_press")
+	def on_search_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self.focus(SEARCH_FIELD)
+
 	@nui.on("search_change")
-	def on_search_change(self, text):
+	def on_search_change(self, text, linebreak=False):
 		self._owner.search(text)
+		if linebreak:
+			self._owner.open_first()
 
 	@nui.on("tree_press")
 	def on_tree_press(self, category, button):
@@ -227,14 +260,17 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	@nui.on("sub_press")
 	def on_sub_press(self, category, sub, button):
 		self.raise_for(button)
-		if button == 0:
-			self._owner.open_sub(int(category), int(sub))
+		self._owner.open_sub(int(category), int(sub), int(button))
+
+	@nui.on("quick_press")
+	def on_quick_press(self, category, sub, button):
+		self.raise_for(button)
+		self._owner.open_sub(int(category), int(sub), int(button))
 
 	@nui.on("row_press")
 	def on_row_press(self, index, button):
 		self.raise_for(button)
-		if button == 0:
-			self._owner.select_row(int(index))
+		self._owner.select_row(int(index), int(button))
 
 	@nui.on("row_over")
 	def on_row_over(self, index):
@@ -244,17 +280,20 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	def on_row_out(self):
 		self._owner.out_row()
 
+	@nui.on("recent_press")
+	def on_recent_press(self, index, button):
+		self.raise_for(button)
+		self._owner.open_recent(int(index), int(button))
+
 	@nui.on("origin_press")
 	def on_origin_press(self, index, button):
 		self.raise_for(button)
-		if button == 0:
-			self._owner.press_origin(int(index))
+		self._owner.press_origin(int(index), int(button))
 
 	@nui.on("loot_press")
 	def on_loot_press(self, kind, vnum, button):
 		self.raise_for(button)
-		if button == 0:
-			self._owner.open_item(int(vnum))
+		self._owner.open_item(int(vnum), int(button))
 
 	@nui.on("loot_over")
 	def on_loot_over(self, vnum):
@@ -263,6 +302,54 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	@nui.on("loot_out")
 	def on_loot_out(self):
 		self._owner.out_row()
+
+	@nui.on("back_press")
+	def on_back_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.back()
+
+	@nui.on("forward_press")
+	def on_forward_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.forward()
+
+	@nui.on("home_press")
+	def on_home_press(self, button):
+		self.raise_for(button)
+		self._owner.home(int(button))
+
+	@nui.on("crumb_press")
+	def on_crumb_press(self, index, button):
+		self.raise_for(button)
+		self._owner.press_crumb(int(index), int(button))
+
+	@nui.on("tab_press")
+	def on_tab_press(self, index, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.switch_tab(int(index))
+		elif button == 2:
+			self._owner.close_tab(int(index))
+
+	@nui.on("tab_close_press")
+	def on_tab_close_press(self, index, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.close_tab(int(index))
+
+	@nui.on("new_tab_press")
+	def on_new_tab_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.new_tab()
+
+	@nui.on("link_press")
+	def on_link_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.link_page()
 
 	@nui.on("retry_fire")
 	def on_retry_fire(self):
@@ -273,10 +360,38 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 		self._owner.timeout_fire()
 
 
+def _home():
+	return (None, None)
+
+
+def _new_tab(location):
+	return {"stack": [location], "at": 0}
+
+
+def _shorten(text, limit):
+	return text if len(text) <= limit else text[:limit - 3].rstrip() + "..."
+
+
+def wiki_link(kind, vnum, name):
+	"""The chat link of an item's or a mob's page, OLD's syswiki form
+	(syswiki:<kind>:<ident>, opened by Interface.__OpenWikiLink) in the
+	color OLD's quests gave it. A "|" in the name would end the link's tags,
+	so it is left out."""
+	ident = "item" if kind == KIND_ITEM else "mob"
+	name = (name or "").replace("|", "")
+	return "|c%s|Hsyswiki:%s:%d|h[%s]|h|r" % (LINK_COLOR, ident, int(vnum), name)
+
+
 class WikiWindow(nui_facade.Facade, ui.Window):
 	"""The browser (Interface.wndWiki). Facade's Show and Hide handle the
 	board; ui.Window.__init__ calls Hide before this __init__ finishes, so
-	everything Hide can reach has a class-level default."""
+	everything Hide can reach has a class-level default.
+
+	Where the browser is: a location, (list, page). The list is None, a tree
+	row ("sub", category, sub) or a search ("search", text); the page is None
+	or (kind, vnum). (None, None) is the home page. Each tab keeps its own
+	history of locations (a stack and the place in it), as a browser does;
+	the tabs and the recently viewed pages last as long as the window."""
 
 	KEY = KEY
 	BOARD = _WikiBoard
@@ -285,6 +400,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 	_current = None
 	_preview_shown = False
 	_hover_shown = False
+	_hover_key = None        # (kind, vnum) in the hover preview, None when none
+	_paste_link = None
 
 	def __init__(self):
 		self.nui_begin()
@@ -292,12 +409,15 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			ui.Window.__init__(self)
 			self.AddFlag("movable")
 			self.AddFlag("float")
-			self._rows = []          # {"kind", "vnum"} of the shown list
+			self._rows = []          # (kind, vnum) of the shown list
+			self._list_key = False   # the list the rows are of (False: none built yet)
 			self._origins = []
-			self._sub = None
 			self._open = {}          # category index: unfolded
-			self._search = ""
 			self._retries = 0
+			self._tabs = [_new_tab(_home())]
+			self._active = 0
+			self._recent = []        # (kind, vnum), the last page shown first
+			self._crumbs = []        # the trail's locations, None for a label only
 			self.nui_end()
 		except Exception:
 			self.nui_discard()
@@ -305,10 +425,23 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 
 	def nui_model(self):
 		return {
-			"search": "",
 			"tree": [],
 			"list": [],
 			"list_state": "",
+			"list_title": "",
+			"list_count": "",
+			"list_sel": -1,
+			# The home page: the quick links (every category and its lists)
+			# and the pages viewed last.
+			"home": True,
+			"quick": [],
+			"recent": [],
+			# The tabs, back and forward, and the trail.
+			"tabs": [],
+			"tabs_full": False,
+			"can_back": False,
+			"can_forward": False,
+			"crumbs": [],
 			# The page: "", "loading", "failed" or "ready", the kind ("item",
 			# "mob") and its head, and the sections its answer brought.
 			"page_state": "",
@@ -318,6 +451,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			"page_sub": "",
 			"page_icon": "",
 			"page_common": False,
+			"page_link": False,
 			"model_view": False,
 			"hover_view": False,
 			"origins": [],
@@ -331,8 +465,16 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 
 	# --- the Interface's calls --------------------------------------------------------
 
+	def SetPasteLinkEvent(self, event):
+		"""Interface.PasteWikiLink: puts a page's link where the player types."""
+		self._paste_link = event
+
 	def Open(self):
-		self.nui_set(tree=self._tree_model())
+		self._show_window()
+		self._render(refresh_page=True)
+
+	def _show_window(self):
+		self.nui_set(quick=self._quick_model())
 		self.Show()
 		self.SetTop()
 
@@ -346,17 +488,18 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			self.Open()
 
 	def OpenItem(self, vnum):
-		self.Open()
-		self._select(KIND_ITEM, int(vnum))
+		self._show_window()
+		self._go(self._at_page(KIND_ITEM, int(vnum)))
 		return True
 
 	def OpenMob(self, vnum):
-		self.Open()
-		self._select(KIND_MOB, int(vnum))
+		self._show_window()
+		self._go(self._at_page(KIND_MOB, int(vnum)))
 		return True
 
 	def Destroy(self):
 		self._clear_previews()
+		self._paste_link = None
 		nui_facade.Facade.Destroy(self)
 
 	def Hide(self):
@@ -364,41 +507,278 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		self._stop_preview(HOVER_PREVIEW)
 		self._preview_shown = False
 		self._hover_shown = False
+		self._hover_key = None
+		if self.__dict__.get("_state") and self._state.get("hover_view"):
+			self.nui_set(hover_view=False)
 		nui_facade.Facade.Hide(self)
 
-	# --- the tree and the list ----------------------------------------------------------
+	# --- locations, history and tabs ----------------------------------------------------
+
+	def _tab(self):
+		return self._tabs[self._active]
+
+	def _location(self):
+		tab = self._tab()
+		return tab["stack"][tab["at"]]
+
+	def _at_page(self, kind, vnum):
+		"""The current list with this page."""
+		return (self._location()[0], (kind, vnum))
+
+	@staticmethod
+	def _wants_new_tab(button):
+		"""A middle press, or a left press with Ctrl held, as in a browser."""
+		if button == 2:
+			return True
+		if button != 0:
+			return False
+		import app
+		keys = [getattr(app, name, None) for name in ("DIK_LCONTROL", "DIK_RCONTROL")]
+		return any(key is not None and app.IsPressed(key) for key in keys)
+
+	def _follow(self, location, button):
+		"""A press on a link: a new tab, the same tab, or nothing (a right press)."""
+		if self._wants_new_tab(button):
+			self._open_tab(location)
+		elif button == 0:
+			self._go(location)
+
+	def _go(self, location):
+		"""Shows a location in this tab. A new one drops the pages ahead (as
+		a browser does after Back); the one already shown shows again (a
+		page that could not load asks again)."""
+		tab = self._tab()
+		if location != self._location():
+			del tab["stack"][tab["at"] + 1:]
+			tab["stack"].append(location)
+			if len(tab["stack"]) > HISTORY_MAX:
+				del tab["stack"][0]
+			tab["at"] = len(tab["stack"]) - 1
+		self._render(refresh_page=True)
+
+	def _replace(self, location):
+		tab = self._tab()
+		tab["stack"][tab["at"]] = location
+
+	def back(self):
+		tab = self._tab()
+		if tab["at"] > 0:
+			tab["at"] -= 1
+			self._render()
+
+	def forward(self):
+		tab = self._tab()
+		if tab["at"] < len(tab["stack"]) - 1:
+			tab["at"] += 1
+			self._render()
+
+	def home(self, button=0):
+		self._follow(_home(), button)
+
+	def _open_tab(self, location):
+		"""A new tab behind this one, as a browser's middle click opens it;
+		its page is asked for when the tab shows."""
+		if len(self._tabs) >= TABS_MAX:
+			self._say_tabs_full()
+			return False
+		self._tabs.append(_new_tab(location))
+		self.nui_set(**self._tabs_model())
+		return True
+
+	def _say_tabs_full(self):
+		import chat
+		text = _locale("WIKI_TABS_FULL")
+		try:
+			text = text % TABS_MAX
+		except (TypeError, ValueError):
+			pass
+		chat.AppendChat(chat.CHAT_TYPE_INFO, text)
+
+	def new_tab(self):
+		if self._open_tab(_home()):
+			self.switch_tab(len(self._tabs) - 1)
+
+	def switch_tab(self, index):
+		if 0 <= index < len(self._tabs) and index != self._active:
+			self._active = index
+			self._render()
+
+	def close_tab(self, index):
+		"""The tab goes; the one after it shows (the one before, for the last
+		tab). The last tab left becomes a home tab."""
+		if not (0 <= index < len(self._tabs)):
+			return
+		if len(self._tabs) == 1:
+			self._tabs = [_new_tab(_home())]
+			self._active = 0
+			self._render()
+			return
+		del self._tabs[index]
+		if index < self._active:
+			self._active -= 1
+			self.nui_set(**self._tabs_model())
+		elif index == self._active:
+			self._active = min(index, len(self._tabs) - 1)
+			self._render()
+		else:
+			self.nui_set(**self._tabs_model())
+
+	# --- what a location shows ------------------------------------------------------------
+
+	def _render(self, refresh_page=False, sync_field=True):
+		"""Shows the active tab's location: the list (built again only when
+		it changed), the page (selected again only when it changed, or on
+		refresh_page), the tree's mark, the trail, the tabs and the home page."""
+		list_key, page = self._location()
+		if list_key != self._list_key:
+			self._build_list(list_key)
+		if page is None:
+			self._clear_page()
+		elif refresh_page or page != self._current:
+			self._select(page[0], page[1])
+			self._remember(page)
+		if list_key is not None and list_key[0] == "sub":
+			self._open[list_key[1]] = True
+		home = list_key is None and page is None
+		values = dict(self._tabs_model())
+		values.update(self._list_mark())
+		self._crumbs, values["crumbs"] = self._crumbs_model(list_key, page)
+		values.update(home=home, tree=self._tree_model(), page_link=page is not None)
+		if home:
+			values["recent"] = self._recent_model()
+		self.nui_set(**values)
+		if sync_field:
+			self._sync_field(list_key)
+
+	def _sync_field(self, list_key):
+		"""The search field shows the location's search, or nothing. Its text
+		is never in the model (docs/ui/AUTHORING.md "Text fields"), and the
+		change it causes finds the same search, so it changes nothing."""
+		board = self.nui_board()
+		if board is None or not board.is_visible():
+			return
+		text = list_key[1] if list_key is not None and list_key[0] == "search" else ""
+		if board.get_value(SEARCH_FIELD) != text:
+			board.set_value(SEARCH_FIELD, text, caret="end")
+
+	def _label(self, location):
+		list_key, page = location
+		if page is not None:
+			return self._page_name(page[0], page[1])
+		if list_key is not None:
+			return self._list_title(list_key)
+		return _locale("WIKI_HOME")
+
+	def _tabs_model(self):
+		tabs = [{"i": i, "label": nui.plain_text(_shorten(self._label(tab["stack"][tab["at"]]), TAB_LABEL_MAX)),
+		         "active": i == self._active} for i, tab in enumerate(self._tabs)]
+		tab = self._tab()
+		return {"tabs": tabs, "tabs_full": len(self._tabs) >= TABS_MAX,
+		        "can_back": tab["at"] > 0, "can_forward": tab["at"] < len(tab["stack"]) - 1}
+
+	def _list_title(self, list_key):
+		if list_key[0] == "sub":
+			return _locale(TREE[list_key[1]]["subs"][list_key[2]]["label"])
+		text = _locale("WIKI_SEARCH_TRAIL")
+		try:
+			return text % list_key[1]
+		except (TypeError, ValueError):
+			return "%s %s" % (text, list_key[1])
+
+	def _crumbs_model(self, list_key, page):
+		"""The trail: Home, the category and the list (or the search), the
+		page. Each but the last goes back up to its place in this tab; the
+		category is a label only."""
+		trail = [(_locale("WIKI_HOME"), _home())]
+		if list_key is not None:
+			if list_key[0] == "sub":
+				trail.append((_locale(TREE[list_key[1]]["label"]), None))
+			trail.append((self._list_title(list_key), (list_key, None)))
+		if page is not None:
+			trail.append((self._page_name(page[0], page[1]), (list_key, page)))
+		last = len(trail) - 1
+		model = [{"i": i, "label": nui.plain_text(label), "last": i == last, "link": i != last and target is not None}
+		         for i, (label, target) in enumerate(trail)]
+		return [target for _, target in trail], model
+
+	def press_crumb(self, index, button=0):
+		if 0 <= index < len(self._crumbs) - 1 and self._crumbs[index] is not None:
+			self._follow(self._crumbs[index], button)
+
+	def _list_mark(self):
+		"""Which row is the shown page."""
+		page = self._location()[1]
+		sel = self._rows.index(page) if page is not None and page in self._rows else -1
+		return {"list_sel": sel}
+
+	# --- the tree, the list and the home page --------------------------------------------
 
 	def _tree_model(self):
+		shown = self._location()[0]
 		rows = []
 		for i, category in enumerate(TREE):
 			subs = []
 			if self._open.get(i):
-				subs = [{"cat": i, "sub": j, "label": nui.plain_text(_locale(s["label"]))}
+				subs = [{"cat": i, "sub": j, "label": nui.plain_text(_locale(s["label"])),
+				         "selected": shown == ("sub", i, j)}
 				        for j, s in enumerate(category["subs"])]
 			rows.append({"cat": i, "label": nui.plain_text(_locale(category["label"])),
 			             "open": bool(self._open.get(i)), "subs": subs})
 		return rows
 
+	def _quick_model(self):
+		return [{"cat": i, "label": nui.plain_text(_locale(category["label"])),
+		         "subs": [{"cat": i, "sub": j, "label": nui.plain_text(_locale(s["label"]))}
+		                  for j, s in enumerate(category["subs"])]}
+		        for i, category in enumerate(TREE)]
+
 	def toggle_category(self, index):
 		self._open[index] = not self._open.get(index)
 		self.nui_set(tree=self._tree_model())
 
-	def open_sub(self, category, sub):
-		self._open_sub(TREE[category]["subs"][sub])
+	def open_sub(self, category, sub, button=0):
+		if 0 <= category < len(TREE) and 0 <= sub < len(TREE[category]["subs"]):
+			self._open_sub(TREE[category]["subs"][sub], button)
 
-	def _open_sub(self, sub):
-		"""Fills the list from a tree row. A "page" row (NOVA-139's text
-		pages, nui_wiki_data.TEXT_CATEGORIES) would dispatch here."""
-		self._sub = sub
-		self._search = ""
-		self.nui_set(search="")
-		kind = sub["kind"]
-		if kind == "items":
-			self._set_rows(KIND_ITEM, self._list_items(sub))
-		elif kind == "vnums":
-			self._set_rows(KIND_ITEM, self._list_vnums(sub["vnums"]))
-		elif kind == "mobs":
-			self._set_rows(KIND_MOB, self._list_mobs(sub))
+	def _open_sub(self, sub, button=0):
+		"""Opens a tree row's list. A "page" row (NOVA-139's text pages,
+		nui_wiki_data.TEXT_CATEGORIES) goes to _open_text_page."""
+		if sub.get("kind") == "page":
+			self._open_text_page(sub, button)
+			return
+		for i, category in enumerate(TREE):
+			for j, candidate in enumerate(category["subs"]):
+				if candidate is sub:
+					self._follow((("sub", i, j), None), button)
+					return
+
+	def _open_text_page(self, sub, button=0):
+		"""Where NOVA-139's text pages open: a location whose page is
+		("text", sub["page"]) once that ticket brings a page format."""
+
+	def _build_list(self, list_key):
+		self._list_key = list_key
+		if list_key is None:
+			self._rows = []
+			self.nui_set(list=[], list_state="", list_title="", list_count="")
+			return
+		if list_key[0] == "search":
+			import item
+			import nonplayer
+			text = list_key[1]
+			pairs = [(KIND_ITEM, v) for v in item.Search(text, SEARCH_ROWS_MAX) if v not in data.ITEM_BLACKLIST]
+			pairs += [(KIND_MOB, v) for v in nonplayer.Search(text, SEARCH_ROWS_MAX) if v not in data.MOB_BLACKLIST]
+		else:
+			sub = TREE[list_key[1]]["subs"][list_key[2]]
+			kind = sub["kind"]
+			if kind == "items":
+				pairs = [(KIND_ITEM, v) for v in self._list_items(sub)]
+			elif kind == "vnums":
+				pairs = [(KIND_ITEM, v) for v in self._list_vnums(sub["vnums"])]
+			else:
+				pairs = [(KIND_MOB, v) for v in self._list_mobs(sub)]
+		self._set_pairs(pairs)
+		self.nui_set(list_title=nui.plain_text(self._list_title(list_key)), list_count=str(len(self._rows)))
 
 	def _list_items(self, sub):
 		import item
@@ -418,23 +798,32 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		return [v for v in nonplayer.List(sub["mob_kind"], sub["band"][0], sub["band"][1]) if v not in data.MOB_BLACKLIST]
 
 	def search(self, text):
-		text = text if isinstance(text, str) else ""
-		# Kept in the model so that opening a category can clear the field.
-		self.nui_set(search=text)
-		text = text.strip()
-		self._search = text
-		if not text:
-			self.nui_set(list=[], list_state="")
-			self._rows = []
+		"""The field's text. Typing on in a search changes it in place, so a
+		search is one step of the tab's history; an empty field leaves it."""
+		text = text.strip() if isinstance(text, str) else ""
+		list_key, page = self._location()
+		searching = list_key is not None and list_key[0] == "search"
+		if text:
+			location = (("search", text), page)
+			if list_key == location[0]:
+				return
+			if searching:
+				self._replace(location)
+			else:
+				tab = self._tab()
+				del tab["stack"][tab["at"] + 1:]
+				tab["stack"].append(location)
+				tab["at"] += 1
+		elif searching:
+			self._replace((None, page))
+		else:
 			return
-		import item
-		import nonplayer
-		rows = [(KIND_ITEM, v) for v in item.Search(text, SEARCH_ROWS_MAX) if v not in data.ITEM_BLACKLIST]
-		rows += [(KIND_MOB, v) for v in nonplayer.Search(text, SEARCH_ROWS_MAX) if v not in data.MOB_BLACKLIST]
-		self._set_pairs(rows)
+		self._render(sync_field=False)
 
-	def _set_rows(self, kind, vnums):
-		self._set_pairs([(kind, v) for v in vnums])
+	def open_first(self):
+		"""Enter in the search field: the first match's page."""
+		if self._rows:
+			self.select_row(0)
 
 	def _set_pairs(self, pairs):
 		pairs = pairs[:LIST_ROWS_MAX]
@@ -451,25 +840,69 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		        "name": nui.plain_text(nonplayer.GetMonsterName(vnum)),
 		        "note": nui.plain_text(_locale("WIKI_LEVEL") % int(nonplayer.GetMonsterLevel(vnum)))}
 
+	def _remember(self, page):
+		if page in self._recent:
+			self._recent.remove(page)
+		self._recent.insert(0, page)
+		del self._recent[RECENT_MAX:]
+
+	def _recent_model(self):
+		return [self._row_model(i, kind, vnum) for i, (kind, vnum) in enumerate(self._recent)]
+
+	def open_recent(self, index, button=0):
+		if 0 <= index < len(self._recent):
+			self._follow((None, self._recent[index]), button)
+
 	# --- the page ------------------------------------------------------------------------
 
-	def select_row(self, index):
+	def select_row(self, index, button=0):
 		if 0 <= index < len(self._rows):
-			kind, vnum = self._rows[index]
-			self._select(kind, vnum)
+			self._follow(self._at_page(*self._rows[index]), button)
 
-	def open_item(self, vnum):
-		self._select(KIND_ITEM, vnum)
+	def open_item(self, vnum, button=0):
+		self._follow(self._at_page(KIND_ITEM, int(vnum)), button)
 
-	def press_origin(self, index):
+	def press_origin(self, index, button=0):
 		"""A mob or chest origin opens its own page; NPCs do not."""
 		if not (0 <= index < len(self._origins)):
 			return
 		origin_type, source = self._origins[index]
 		if origin_type == ORIGIN_MOB:
-			self._select(KIND_MOB, source)
+			self._follow(self._at_page(KIND_MOB, source), button)
 		elif origin_type == ORIGIN_CHEST:
-			self._select(KIND_ITEM, source)
+			self._follow(self._at_page(KIND_ITEM, source), button)
+
+	def link_page(self):
+		"""The Link button: the page's chat link where the player types (the
+		whisper that has the focus, else the chat input). The focus leaves
+		the search field first, so the paste does not land there."""
+		page = self._location()[1]
+		if page is None or self._paste_link is None:
+			return
+		board = self.nui_board()
+		if board is not None:
+			board.focus(PARK)
+		self._paste_link(wiki_link(page[0], page[1], self._raw_name(page[0], page[1])))
+
+	def _raw_name(self, kind, vnum):
+		if kind == KIND_ITEM:
+			return _item_name(vnum)
+		import nonplayer
+		return nonplayer.GetMonsterName(vnum)
+
+	def _page_name(self, kind, vnum):
+		return nui.plain_text(self._raw_name(kind, vnum))
+
+	def _clear_page(self):
+		if self._current is None and not self._state.get("page_state"):
+			return
+		self._current = None
+		self._origins = []
+		self._stop_preview(PREVIEW)
+		self._preview_shown = False
+		self.nui_set(page_state="", page_kind="", page_vnum=0, page_name="", page_sub="", page_icon="",
+		             page_common=False, model_view=False, origins=[], chest=[], refine=[], drops=[],
+		             retry_at=0.0, timeout_at=0.0)
 
 	def _select(self, kind, vnum):
 		self._current = (kind, vnum)
@@ -596,8 +1029,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			self._preview_shown = shown
 			self.nui_set(model_view=shown)
 		else:
-			self._hover_shown = shown
-			self.nui_set(hover_view=shown)
+			self._hover_key = (kind, vnum)
+			self._set_hover_view(shown)
 		if not shown and preview is not None:
 			preview.Show(name, False)
 
@@ -614,10 +1047,23 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			preview.Clear(PREVIEW)
 			preview.Clear(HOVER_PREVIEW)
 
+	def _set_hover_view(self, shown):
+		"""hover_view only when it changes: each change adds or removes the
+		hover nui-view element."""
+		shown = bool(shown)
+		self._hover_shown = shown
+		if bool(self._state.get("hover_view")) != shown:
+			self.nui_set(hover_view=shown)
+
 	def over_row(self, index):
+		"""RmlUi 6.3 bubbles mouseover, so a row can report the pointer more
+		than once (its children take no pointer in wiki.rcss as well): the
+		row already in the hover preview selects nothing again."""
 		if not (0 <= index < len(self._rows)):
 			return
 		kind, vnum = self._rows[index]
+		if self._hover_key == (kind, vnum):
+			return
 		self._show_tooltip(kind, vnum)
 		self._show_preview(kind, vnum, HOVER_PREVIEW)
 
@@ -636,7 +1082,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 	def out_row(self):
 		if self.tooltip is not None:
 			self.tooltip.HideToolTip()
+		self._hover_key = None
 		if self._hover_shown:
-			self._hover_shown = False
 			self._stop_preview(HOVER_PREVIEW)
-			self.nui_set(hover_view=False)
+		self._set_hover_view(False)

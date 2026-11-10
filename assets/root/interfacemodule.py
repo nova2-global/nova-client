@@ -295,6 +295,8 @@ class Interface(object):
 		# window: uiWiki.UnavailableWindow stands in when NovaUI cannot run.
 		self.wndWiki = nui_windows.make("wiki", uiWiki.UnavailableWindow, "nui_wiki.WikiWindow")
 		self.wndWiki.Hide()
+		# Its Link button pastes a page's link where the player types.
+		self.wndWiki.SetPasteLinkEvent(ui.__mem_func__(self.PasteWikiLink))
 
 		# The offline shop's search, log and decoration windows (NOVA-9) are the
 		# legacy controllers on NovaUI proxies.
@@ -632,6 +634,31 @@ class Interface(object):
 
 	def OpenWikiMob(self, vnum):
 		return bool(self.wndWiki and self.wndWiki.OpenMob(vnum))
+
+	def PasteWikiLink(self, link):
+		"""The wiki's Link button (NOVA-42): a page's syswiki link into the
+		whisper dialog whose input has the focus, else into the chat input,
+		which opens for it (an open one keeps its text). True when it went
+		in. A NovaUI whisper answers by its focus proxy (it holds wndMgr's
+		focus while its field has NovaUI's), a legacy one by its edit line."""
+		import ime
+		for dlg in list(self.whisperDialogDict.values()):
+			if not dlg.IsShow():
+				continue
+			proxy = getattr(dlg, "focusProxy", None)
+			focused = proxy.has_focus() if proxy is not None else dlg.chatLine.IsFocus()
+			if focused:
+				dlg.chatLine.SetFocus()
+				ime.PasteString(link)
+				return True
+		if self.wndChat.IsEditMode():
+			self.SetChatFocus()
+		else:
+			self.ToggleChat()
+			if not self.wndChat.IsEditMode():
+				return False
+		ime.PasteString(link)
+		return True
 
 	def WikiAnswer(self, *rows):
 		if self.wndWiki:

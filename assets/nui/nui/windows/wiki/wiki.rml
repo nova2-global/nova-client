@@ -1,14 +1,20 @@
 <rml>
 <head>
 	<!-- The ingame wiki's item and mob browser (NOVA-42; nui_wiki.WikiWindow,
-	     no legacy window). Left: the search field and the category tree,
-	     OLD's WIKI_CATEGORIES on NEW's data. Middle: the listed items or mobs.
-	     Right: the chosen page, its model preview (the views "model-wiki" and
-	     "model-wiki-hover") and the rows the server sent: where an item comes
-	     from, a chest's contents, refine costs, a mob's drops. The two hidden
-	     nui-countdowns retry a request and give up on an answer; nothing
-	     runs per frame. The document exists only while the window shows.
-	     NOVA-139's text pages plug in beside the list (nui_wiki_data.TEXT_CATEGORIES). -->
+	     no legacy window). Top: Back, Forward, Home, the trail from Home to
+	     the page and the page's Link button; under it the tabs, as in a web
+	     browser (a middle press or Ctrl and a press on a link opens it in a
+	     new tab; a middle press on a tab closes it). Left: the search field
+	     and the category tree, OLD's WIKI_CATEGORIES on NEW's data. Then the
+	     home page (every category's lists and the pages viewed last), or the
+	     listed items or mobs and the chosen page: its model preview (the
+	     views "model-wiki" and "model-wiki-hover") and the rows the server
+	     sent: where an item comes from, a chest's contents, refine costs, a
+	     mob's drops. Every list scrolls in a viewport of a fixed height, so
+	     nothing runs out of the window. The two hidden nui-countdowns retry
+	     a request and give up on an answer; nothing runs per frame. The
+	     document exists only while the window shows. NOVA-139's text pages
+	     plug in beside the list (nui_wiki_data.TEXT_CATEGORIES). -->
 	<title>wiki</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="wiki.rcss"/>
@@ -28,50 +34,107 @@
 	<div class="nui-window__body wiki__body">
 		<nui-countdown class="wiki__clock" format="none" data-if="retry_at > 0" data-attr-end="retry_at" data-event-countdownend="retry_fire()"/>
 		<nui-countdown class="wiki__clock" format="none" data-if="timeout_at > 0" data-attr-end="timeout_at" data-event-countdownend="timeout_fire()"/>
-		<div class="wiki__side">
-			<input type="text" id="wiki-search" class="nui-input wiki__search" maxlength="64" data-attr-value="search" data-event-change="search_change(ev.value)"/>
-			<div class="nui-list wiki__tree">
-				<div id="wiki-tree" class="nui-list__viewport">
-					<div class="wiki__cat" data-for="c : tree">
-						<button class="nui-button nui-button--ghost nui-anim wiki__cat-button" data-attr-id="'wiki-cat-' + c.cat" data-event-mousedown="tree_press(c.cat, ev.button)">
-							<span class="wiki__fold" data-class-is-open="c.open"></span>{{ c.label }}</button>
-						<button class="nui-button nui-button--ghost nui-anim wiki__sub-button" data-for="s : c.subs"
-						        data-attr-id="'wiki-sub-' + s.cat + '-' + s.sub"
-						        data-event-mousedown="sub_press(s.cat, s.sub, ev.button)">{{ s.label }}</button>
+		<div class="wiki__bar">
+			<button id="wiki-back" class="nui-button nui-button--ghost nui-button--icon nui-anim wiki__nav"
+			        data-attrif-disabled="!can_back" data-event-mousedown="back_press(ev.button)"><span
+				class="nui-glyph nui-glyph--chevron-left"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			<button id="wiki-forward" class="nui-button nui-button--ghost nui-button--icon nui-anim wiki__nav"
+			        data-attrif-disabled="!can_forward" data-event-mousedown="forward_press(ev.button)"><span
+				class="nui-glyph nui-glyph--chevron-right"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			<button id="wiki-home-button" class="nui-button nui-button--ghost nui-button--icon nui-anim wiki__nav wiki__park"
+			        data-class-is-selected="home" data-event-mousedown="home_press(ev.button)"><span
+				class="nui-glyph nui-glyph--home"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			<div class="wiki__trail">
+				<span class="wiki__crumb" data-for="k : crumbs" data-attr-id="'wiki-crumb-' + k.i" data-class-is-link="k.link"
+				      data-class-is-last="k.last" data-event-mousedown="crumb_press(k.i, ev.button)">{{ k.label }}</span>
+			</div>
+			<button id="wiki-link" class="nui-button nui-button--medium nui-anim wiki__link" data-if="page_link"
+			        data-event-mousedown="link_press(ev.button)">@game.WIKI_LINK</button>
+		</div>
+		<div class="wiki__tabs">
+			<div class="wiki__tab" data-for="t : tabs" data-class-is-active="t.active">
+				<div class="wiki__tab-label" data-attr-id="'wiki-tab-' + t.i" data-event-mousedown="tab_press(t.i, ev.button)">{{ t.label }}</div>
+				<button class="nui-button nui-button--ghost nui-button--icon-sm nui-anim wiki__tab-close" data-attr-id="'wiki-tab-close-' + t.i"
+				        data-event-mousedown="tab_close_press(t.i, ev.button)"><span class="nui-glyph nui-glyph--close"><span
+					class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+			</div>
+			<button id="wiki-new-tab" class="nui-button nui-button--ghost nui-button--icon-sm nui-anim wiki__new-tab"
+			        data-attrif-disabled="tabs_full" data-event-mousedown="new_tab_press(ev.button)"><span
+				class="nui-glyph nui-glyph--plus"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+		</div>
+		<div class="wiki__main">
+			<div class="wiki__side">
+				<input type="text" id="wiki-search" class="nui-input wiki__search" maxlength="64" placeholder="@game.WIKI_SEARCH_HINT"
+				       data-event-mousedown="search_press(ev.button)" data-event-change="search_change(ev.value, ev.linebreak)"/>
+				<div class="nui-list wiki__tree">
+					<div id="wiki-tree" class="nui-list__viewport">
+						<div class="wiki__cat" data-for="c : tree">
+							<button class="nui-button nui-button--ghost nui-anim wiki__cat-button" data-attr-id="'wiki-cat-' + c.cat" data-event-mousedown="tree_press(c.cat, ev.button)">
+								<span class="wiki__fold" data-class-is-open="c.open"></span>{{ c.label }}</button>
+							<button class="nui-button nui-button--ghost nui-anim wiki__sub-button" data-for="s : c.subs"
+							        data-attr-id="'wiki-sub-' + s.cat + '-' + s.sub" data-class-is-selected="s.selected"
+							        data-event-mousedown="sub_press(s.cat, s.sub, ev.button)">{{ s.label }}</button>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="wiki__list">
-			<div class="wiki__state" data-if="list_state == 'empty'">@game.WIKI_NOTHING_FOUND</div>
-			<div class="nui-list wiki__rows" data-if="list_state != 'empty'">
-				<div id="wiki-rows" class="nui-list__viewport">
-					<div class="wiki__row" data-for="r : list" data-attr-id="'wiki-row-' + r.i"
-					     data-event-mousedown="row_press(r.i, ev.button)" data-event-mouseover="row_over(r.i)" data-event-mouseout="row_out()">
-						<div class="wiki__well"><img class="wiki__icon" data-if="r.icon != ''" data-attr-src="r.icon"/><span class="nui-glyph nui-glyph--sword wiki__mob-glyph" data-if="r.mob"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
-						<span class="wiki__row-name">{{ r.name }}</span>
-						<span class="wiki__row-note">{{ r.note }}</span>
+			<div class="wiki__home" data-if="home">
+				<div class="nui-list wiki__home-cats">
+					<div id="wiki-home" class="nui-list__viewport">
+						<div class="wiki__heading">@game.WIKI_CATEGORIES</div>
+						<div class="wiki__quick" data-for="q : quick">
+							<span class="wiki__quick-label">{{ q.label }}</span>
+							<div class="wiki__chips">
+								<span class="wiki__chip" data-for="s : q.subs" data-attr-id="'wiki-quick-' + s.cat + '-' + s.sub"
+								      data-event-mousedown="quick_press(s.cat, s.sub, ev.button)">{{ s.label }}</span>
+							</div>
+						</div>
+						<div class="wiki__hint">@game.WIKI_TAB_HINT</div>
+					</div>
+				</div>
+				<div class="nui-list wiki__home-recent">
+					<div id="wiki-recent" class="nui-list__viewport">
+						<div class="wiki__heading">@game.WIKI_RECENT</div>
+						<div class="wiki__state wiki__state--left" data-if="recent.size == 0">@game.WIKI_NO_RECENT</div>
+						<div class="wiki__row" data-for="r : recent" data-attr-id="'wiki-recent-' + r.i"
+						     data-event-mousedown="recent_press(r.i, ev.button)">
+							<div class="wiki__well"><img class="wiki__icon" data-if="r.icon != ''" data-attr-src="r.icon"/><span class="nui-glyph nui-glyph--sword wiki__mob-glyph" data-if="r.mob"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
+							<span class="wiki__row-name">{{ r.name }}</span>
+							<span class="wiki__row-note">{{ r.note }}</span>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="wiki__page">
-			<div class="wiki__state" data-if="page_state == ''">@game.WIKI_PICK</div>
-			<div class="wiki__page-head" data-if="page_state != ''">
-				<div class="wiki__preview">
-					<nui-view class="wiki__view" name="model-wiki" hover="none" data-if="model_view"></nui-view>
-					<div class="wiki__well wiki__preview-well" data-if="!model_view"><img class="wiki__icon" data-if="page_icon != ''" data-attr-src="page_icon"/></div>
-				</div>
-				<div class="wiki__head-text">
-					<span id="wiki-page-name" class="wiki__page-name">{{ page_name }}</span>
-					<span class="wiki__page-sub" data-if="page_sub != ''">{{ page_sub }}</span>
-					<span class="wiki__page-common" data-if="page_common">@game.WIKI_COMMON_DROP</span>
+			<div class="wiki__list" data-if="!home">
+				<div class="wiki__list-head"><span class="wiki__list-title">{{ list_title }}</span><span class="wiki__list-count">{{ list_count }}</span></div>
+				<div class="wiki__state" data-if="list_state == 'empty'">@game.WIKI_NOTHING_FOUND</div>
+				<div class="nui-list wiki__rows" data-if="list_state != 'empty'">
+					<div id="wiki-rows" class="nui-list__viewport">
+						<div class="wiki__row" data-for="r : list" data-attr-id="'wiki-row-' + r.i" data-class-is-selected="r.i == list_sel"
+						     data-event-mousedown="row_press(r.i, ev.button)" data-event-mouseover="row_over(r.i)" data-event-mouseout="row_out()">
+							<div class="wiki__well"><img class="wiki__icon" data-if="r.icon != ''" data-attr-src="r.icon"/><span class="nui-glyph nui-glyph--sword wiki__mob-glyph" data-if="r.mob"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></div>
+							<span class="wiki__row-name">{{ r.name }}</span>
+							<span class="wiki__row-note">{{ r.note }}</span>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="wiki__state" data-if="page_state == 'loading'">@game.WIKI_LOADING</div>
-			<div class="wiki__state" data-if="page_state == 'failed'">@game.WIKI_LOAD_FAILED</div>
-			<div class="wiki__sections" data-if="page_state == 'ready'">
-				<div class="nui-list wiki__scroll">
+			<div class="wiki__page" data-if="!home">
+				<div class="wiki__state" data-if="page_state == ''">@game.WIKI_PICK</div>
+				<div class="wiki__page-head" data-if="page_state != ''">
+					<div class="wiki__preview">
+						<nui-view class="wiki__view" name="model-wiki" hover="none" data-if="model_view"></nui-view>
+						<div class="wiki__well wiki__preview-well" data-if="!model_view"><img class="wiki__icon" data-if="page_icon != ''" data-attr-src="page_icon"/></div>
+					</div>
+					<div class="wiki__head-text">
+						<span id="wiki-page-name" class="wiki__page-name">{{ page_name }}</span>
+						<span class="wiki__page-sub" data-if="page_sub != ''">{{ page_sub }}</span>
+						<span class="wiki__page-common" data-if="page_common">@game.WIKI_COMMON_DROP</span>
+					</div>
+				</div>
+				<div class="wiki__state" data-if="page_state == 'loading'">@game.WIKI_LOADING</div>
+				<div class="wiki__state" data-if="page_state == 'failed'">@game.WIKI_LOAD_FAILED</div>
+				<div class="nui-list wiki__scroll" data-if="page_state == 'ready'">
 					<div id="wiki-page" class="nui-list__viewport">
 						<div data-if="origins.size > 0">
 							<div class="wiki__heading">@game.WIKI_ORIGINS</div>
@@ -104,8 +167,8 @@
 						<div class="wiki__state" data-if="origins.size == 0 &amp;&amp; chest.size == 0 &amp;&amp; refine.size == 0 &amp;&amp; drops.size == 0">@game.WIKI_NOTHING_KNOWN</div>
 					</div>
 				</div>
+				<div class="wiki__hover-preview" data-if="hover_view"><nui-view class="wiki__view wiki__view--hover" name="model-wiki-hover" hover="none"></nui-view></div>
 			</div>
-			<div class="wiki__hover-preview" data-if="hover_view"><nui-view class="wiki__view wiki__view--hover" name="model-wiki-hover" hover="none"></nui-view></div>
 		</div>
 	</div>
 </body>

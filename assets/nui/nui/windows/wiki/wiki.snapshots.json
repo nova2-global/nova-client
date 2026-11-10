@@ -1,9 +1,13 @@
 {
-	"$comment": "Golden cases of the ingame wiki browser (NOVA-42, tools/check_nui_snapshots.py): a weapon's page with its origins, contents and refine costs.",
+	"$comment": "Golden cases of the ingame wiki browser (NOVA-42, tools/check_nui_snapshots.py): a weapon's page with its origins, contents and refine costs, three tabs and the trail; home: the home page's quick links and recently viewed pages; long: a long list, an unfolded tree, a long page and eight tabs, each scrolling inside the window. Classic at every scale.",
 	"cases": [
-		{"page": "wiki", "themes": "all", "except": ["classic"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
-		{"page": "wiki", "themes": ["classic"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
-		{"page": "wiki", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
-		{"page": "wiki", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "950x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
+		{"page": "wiki", "themes": "all", "except": ["classic"], "scales": [["100", "1", "1000x760"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "themes": ["classic"], "scales": [["100", "1", "1000x760"], ["150", "1.5", "1500x1140"], ["200", "2", "2000x1520"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "variant": "home", "themes": "all", "except": ["classic"], "scales": [["100", "1", "1000x760"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "variant": "home", "themes": ["classic"], "scales": [["100", "1", "1000x760"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "variant": "long", "themes": "all", "except": ["classic"], "scales": [["100", "1", "1000x760"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "variant": "long", "themes": ["classic"], "scales": [["100", "1", "1000x760"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "wiki", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "1000x760"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
+		{"page": "wiki", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "1000x760"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
 	]
 }

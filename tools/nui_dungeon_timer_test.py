@@ -5,9 +5,11 @@ The deck of boss cards, the hide control, the merged drops grid with its filters
 Practice and the Wiki button are NovaUI's; the Teleport, the ranking commands, the ticket's
 tooltip and the hidden-dungeon rule (HIDDEN_DUNGEONS, session and level) stay legacy's code in
 uitimerwindow.py. The ready notice and the ranking run as before, and the wiring is pinned."""
+import ast
 import json
 import os
 import sys
+import types
 import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -281,6 +283,29 @@ class Wiki(unittest.TestCase):
         with world.game, w4.quiet():
             window.Open()
         self.assertTrue(model(window)["wiki_on"])
+        press(world, window, "wiki_press", 0)
+        self.assertEqual(opened_with, [1095])
+
+    def test_the_real_interface_method_reaches_the_wiki_windows_open_mob(self):
+        """The button once both branches are merged: interfacemodule's real OpenWikiMob, with the
+        window's OpenMob behind it (nui_wiki.WikiWindow, read from its source so it stays real)."""
+        root = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "assets", "root")
+        source = open(os.path.join(root, "interfacemodule.py"), encoding="utf-8").read()
+        interface_class = next(n for n in ast.parse(source).body if isinstance(n, ast.ClassDef) and n.name == "Interface")
+        node = next(n for n in interface_class.body if isinstance(n, ast.FunctionDef) and n.name == "OpenWikiMob")
+        scope = {}
+        exec(compile(ast.Module(body=[node], type_ignores=[]), "interfacemodule.py", "exec"), scope)
+        wiki_source = open(os.path.join(root, "nui_wiki.py"), encoding="utf-8").read()
+        wiki_class = next(n for n in ast.parse(wiki_source).body if isinstance(n, ast.ClassDef) and n.name == "WikiWindow")
+        self.assertIn("OpenMob", [n.name for n in wiki_class.body if isinstance(n, ast.FunctionDef)])
+
+        world, window, _ = opened()
+        opened_with = []
+        world.interface.wndWiki = types.SimpleNamespace(OpenMob=lambda vnum: opened_with.append(vnum) or True)
+        world.interface.OpenWikiMob = types.MethodType(scope["OpenWikiMob"], world.interface)
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertTrue(model(window)["wiki_on"], "the button enables once the wiki is merged")
         press(world, window, "wiki_press", 0)
         self.assertEqual(opened_with, [1095])
 

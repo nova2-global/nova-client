@@ -1,0 +1,8 @@
+/* Cyberpunk skin overlay of nui/windows/select-skill/select-skill.rml (direction D "Orbit",
+   .nui-work/design/select-skill/pulled/ss.css .t-cyber): the second group's name in the skin's
+   magenta second accent, told apart from the cyan accent. */
+
+body.skin-cyberpunk.select-skill
+{
+	--select-skill-group-2: var(--cyberpunk-edge-alt);
+}

@@ -867,6 +867,7 @@ What the color roles mean:
 | `--classic-gb-enough` | classic | `#c2c2c2` |
 | `--classic-gb-short` | classic | `#e67976` |
 | `--classic-skill-group-text` | classic | `#ffe3ad` |
+| `--classic-group-2` | classic | `#7ab4ff` |
 | `--classic-maintenance-label` | classic | `#f35637` |
 | `--classic-maintenance-time` | classic | `#dbad7b` |
 | `--classic-switchbot-idle` | classic | `#ff000033` |

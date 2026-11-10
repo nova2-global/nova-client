@@ -1,92 +1,82 @@
-/* Classic skin overlay of nui/windows/select-skill/select-skill.rml: legacy's select skill
-   window (uiscript selectskillwindow.py) at 100%, 1dp to the legacy pixel: the board, 250 x 400;
-   the title bar at 8, 7, 235 wide, the title centered; each group's six slots (32 x 32, 5 apart)
-   at 22 across and 60 or 140 down, its xlarge button centered 45 down from them (105, 185); the
-   preview at 20, 225 (225 x 150), legacy's render target. */
+/* Classic skin overlay of nui/windows/select-skill/select-skill.rml, direction D "Orbit" in the
+   Original theme (.nui-work/design/select-skill/pulled/ss.css, .t-classic): the classic skin's
+   real art on the window's 880 x 560 layout. The stone board, its title bar and close button are
+   the frame's (classic.rcss); the side panels are the thin board (nui-panel); the ring's skills sit
+   on the legacy slot art; each Choose button is the legacy XLarge_Button (180 x 25: the default,
+   over and down art) stretched to its panel's width, as the design does. The text is the legacy
+   font at its sizes, the second group's name in --classic-group-2. A hovered ring skill gets a
+   1dp accent line 1dp outside its slot (the design's outline): the cell is 36dp with the slot art
+   centered, and the line takes its place in the padding. */
 
 body.skin-classic.select-skill
 {
-	width: 250dp;
-	height: 400dp;
-	min-width: 0;
+	--select-skill-group-2: var(--classic-group-2);
 }
-body.skin-classic.select-skill .select-skill__title-icon
-{
-	display: none;
-}
-body.skin-classic.select-skill .select-skill__titlebar
-{
-	position: absolute;
-	left: 8dp;
-	top: 7dp;
-	width: 235dp;
-	margin: 0;
-	z-index: 1;
-	pointer-events: none;
-}
-body.skin-classic.select-skill .select-skill__handle, body.skin-classic.select-skill .select-skill__titlebar .nui-window__close
-{
-	pointer-events: auto;
-}
+/* The content below the title bar (which ends 30dp down): 22dp under it and 20dp in from the
+   board's edges, the design's 8dp of board and 12dp of padding. */
 body.skin-classic.select-skill .select-skill__body
 {
-	display: block;
-	padding: 0;
+	height: 530dp;
+	padding: 22dp 20dp 20dp;
 }
-body.skin-classic.select-skill .select-skill__group
+body.skin-classic.select-skill .select-skill__side
 {
-	display: block;
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 250dp;
-	height: 0;
+	padding: 14dp;
+}
+body.skin-classic.select-skill .select-skill__head
+{
+	font-size: 13dp;
+	font-weight: normal;
+}
+body.skin-classic.select-skill .select-skill__rule
+{
+	background-color: var(--classic-separator);
 }
 body.skin-classic.select-skill .select-skill__row
 {
-	position: absolute;
-	top: 60dp;
-	left: 22dp;
-	gap: 5dp;
-}
-body.skin-classic.select-skill .select-skill__group:nth-of-type(2) .select-skill__row
-{
-	top: 140dp;
-}
-body.skin-classic.select-skill .select-skill__cell
-{
-	width: 32dp;
-	height: 32dp;
-	nui-hit-outset: 3dp;
+	border-radius: 0;
 }
 body.skin-classic.select-skill .select-skill__pick
 {
-	position: absolute;
-	left: 47dp;
-	top: 105dp;
-	width: 156dp;
+	height: 25dp;
+	line-height: 25dp;
+	padding: 0 4dp;
+	decorator: image("d:/ymir work/ui/public/xlarge_button_01.sub");
+	color: var(--text);
 }
-body.skin-classic.select-skill .select-skill__group:nth-of-type(2) .select-skill__pick
+body.skin-classic.select-skill .select-skill__pick:hover
 {
-	top: 185dp;
+	decorator: image("d:/ymir work/ui/public/xlarge_button_02.sub");
+	color: var(--accent);
 }
-body.skin-classic.select-skill .select-skill__preview
+body.skin-classic.select-skill .select-skill__pick:active
 {
-	position: absolute;
-	left: 20dp;
-	top: 225dp;
-	width: 225dp;
-	height: 150dp;
-	border-width: 0;
+	decorator: image("d:/ymir work/ui/public/xlarge_button_03.sub");
+	color: var(--accent);
+}
+body.skin-classic.select-skill .select-skill__cell
+{
+	width: 36dp;
+	height: 36dp;
+	padding: 2dp;
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" scale-none center center);
+}
+body.skin-classic.select-skill .select-skill__cell.is-selected
+{
+	padding: 1dp;
+	border-width: 1dp;
+	border-color: var(--accent);
+}
+body.skin-classic.select-skill .select-skill__now,
+body.skin-classic.select-skill .select-skill__now.is-idle
+{
+	padding: 0;
 	border-radius: 0;
 	background-color: transparent;
+	font-weight: normal;
+	color: var(--accent);
 }
-body.skin-classic.select-skill .select-skill__view
+body.skin-classic.select-skill .select-skill__now.is-idle
 {
-	left: 0;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	width: 225dp;
-	height: 150dp;
+	color: var(--text-muted);
 }

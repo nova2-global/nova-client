@@ -2760,6 +2760,10 @@ def _wave3b_modules(game):
         def OpenHelpWindow(self):
             log.append(("interface.OpenHelpWindow", ()))
 
+        def OpenKillRank(self):
+            # NOVA-29: the inventory's Ranking (the rail's entry).
+            log.append(("interface.OpenKillRank", ()))
+
         def OpenSearchShop(self, vnum=0):
             # Wave 5 (NOVA-9): the inventory's Search button and Ctrl + click.
             log.append(("interface.OpenSearchShop", (vnum,) if vnum else ()))

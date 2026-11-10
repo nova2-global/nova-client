@@ -621,6 +621,17 @@ OPTION_MOB_INFO	Monster info
 OPTION_MOB_INFO_AGGR	Aggressive
 OPTION_MOB_INFO_LEVEL	Level
 SELECT_CLASS	Choose your class
+SELECT_SKILL_CHOOSE	Choose %s
+SELECT_SKILL_IDLE	Idle
+SELECT_SKILL_IDLE_HINT	Hover a skill or a side
+SELECT_SKILL_PLAYS_WARRIOR_1	Fast sword attacks on several enemies, with Berserk and Aura of the Sword for damage.
+SELECT_SKILL_PLAYS_WARRIOR_2	A sturdy front line: splash strikes, knockdowns and Strong Body for defense.
+SELECT_SKILL_PLAYS_ASSASSIN_1	Daggers up close: strike from behind or from stealth, then poison the crowd.
+SELECT_SKILL_PLAYS_ASSASSIN_2	An archer: volleys of fire and poison arrows at range, Feather Walk for speed.
+SELECT_SKILL_PLAYS_SURA_1	A cursed blade up close: Enchanted Blade, dark armor, and Fear to weaken foes.
+SELECT_SKILL_PLAYS_SURA_2	A dark caster: long-range dark and flame spells, with Dark Protection.
+SELECT_SKILL_PLAYS_SHAMAN_1	Dragon spells at range, plus Blessing, Reflect and Dragon's Strength for the party.
+SELECT_SKILL_PLAYS_SHAMAN_2	Lightning at range, plus Cure, Swiftness and Attack Up for the party.
 DUNGEON_MANAGER_DROPS_HEAD	Drops
 DUNGEON_MANAGER_READY	Ready
 DUNGEON_MANAGER_HIDDEN	Hidden

@@ -4,6 +4,8 @@
    {
     "group": 1,
     "name": "Body",
+    "plays": "Fast sword attacks on several enemies, with Berserk and Aura of the Sword for damage.",
+    "choose": "Choose Body",
     "cells": [
      {
       "index": 0,
@@ -23,7 +25,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Three-Way Cut",
+      "tag": "Frontal Slash Attack 3 times"
      },
      {
       "index": 1,
@@ -43,7 +47,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Sword Spin",
+      "tag": "Frontal Slash Attack"
      },
      {
       "index": 2,
@@ -63,7 +69,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Berserk",
+      "tag": "Increases Attack Speed"
      },
      {
       "index": 3,
@@ -83,7 +91,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Aura of the Sword",
+      "tag": "Increases Attack Power"
      },
      {
       "index": 4,
@@ -103,33 +113,17 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
-     },
-     {
-      "index": 5,
-      "kind": "skill",
-      "type": 0,
-      "ref": 5,
-      "icon": "d:/ymir work/ui/skill/warrior/gigongcham_01.sub",
-      "count": "",
-      "w": 1,
-      "h": 1,
-      "cd_start": 0.0,
-      "cd_end": 0.0,
-      "active": false,
-      "cover": false,
-      "disabled": false,
-      "locked": false,
-      "covered": false,
-      "target": "",
-      "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Dash",
+      "tag": "Powerful Splash Attack"
      }
     ]
    },
    {
     "group": 2,
     "name": "Mental",
+    "plays": "A sturdy front line: splash strikes, knockdowns and Strong Body for defense.",
+    "choose": "Choose Mental",
     "cells": [
      {
       "index": 0,
@@ -149,7 +143,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Spirit Strike (W)",
+      "tag": "Frontal Splash Attack"
      },
      {
       "index": 1,
@@ -169,7 +165,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Bash",
+      "tag": "Straight Splash Attack"
      },
      {
       "index": 2,
@@ -189,7 +187,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Stump",
+      "tag": "Straight Splash Attack"
      },
      {
       "index": 3,
@@ -209,7 +209,9 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Strong Body",
+      "tag": "Increases defence"
      },
      {
       "index": 4,
@@ -229,32 +231,19 @@
       "covered": false,
       "target": "",
       "picked": false,
-      "unavailable": false
-     },
-     {
-      "index": 5,
-      "kind": "skill",
-      "type": 0,
-      "ref": 5,
-      "icon": "d:/ymir work/ui/skill/warrior/samyeon_01.sub",
-      "count": "",
-      "w": 1,
-      "h": 1,
-      "cd_start": 0.0,
-      "cd_end": 0.0,
-      "active": false,
-      "cover": false,
-      "disabled": false,
-      "locked": false,
-      "covered": false,
-      "target": "",
-      "picked": false,
-      "unavailable": false
+      "unavailable": false,
+      "name": "Sword Strike",
+      "tag": "Long-Range Attack"
      }
     ]
    }
   ],
   "model_view": true,
-  "attach_right": true
+  "attach_right": true,
+  "active_group": 0,
+  "hover_group": 0,
+  "hover_slot": -1,
+  "caption_name": "",
+  "caption_tag": ""
  }
 }

@@ -6,9 +6,12 @@ _raw_name, wiki_link, the board's tp_link and tp_open), and its window
 takes TextPageWindow as a base for the new methods.
 
 Files. A page is one file per language in the client pack,
-locale/<lang>/wiki/<path>.md, beside the locale's other text (OLD kept its
+locale/<lang>/wiki/<path>.txt, beside the locale's other text (OLD kept its
 pages in locale/<lang>/wiki/ too). A language without the file shows the
-English one, locale/en/wiki/<path>.md. locale/en/wiki/index.txt lists every
+English one, locale/en/wiki/<path>.txt. The extension is .txt because the
+client's pack.Get gives Python only .py, .pyc and .txt files
+(PythonPackModule.cpp) and raises for any other: r40 shipped .md pages that
+no client could read. "index" is not a page: locale/en/wiki/index.txt lists every
 page once, one path a line, in the order the tree shows them inside their
 category: the pack cannot list a folder, and English is the language every
 page exists in.
@@ -25,6 +28,8 @@ KIND_PAGE = 2
 FALLBACK_LOCALE = "locale/en"
 INDEX = FALLBACK_LOCALE + "/wiki/index.txt"
 SEARCH_MAX = 50
+# locale/en/wiki/index.txt is the list, so no page is called "index".
+RESERVED = "index"
 
 # The tree's text categories, in order: (front matter category, locale key).
 # A page whose category is not here is in no category (links and the search
@@ -57,7 +62,9 @@ def initial_model():
 # --- reading pages --------------------------------------------------------------------
 
 def _read_pack(path):
-	"""A pack file's bytes, or None."""
+	"""A pack file's text, or None. A file the pack has but will not give
+	(pack.Get refuses an extension other than .py, .pyc and .txt) goes to
+	syserr, so a page that cannot be read is never silent."""
 	try:
 		import pack
 	except ImportError:
@@ -65,10 +72,22 @@ def _read_pack(path):
 	try:
 		if not pack.Exist(path):
 			return None
-		data = pack.Get(path)
 	except Exception:
 		return None
+	try:
+		data = pack.Get(path)
+	except Exception as error:
+		_trace("nui_wiki_pages: pack.Get(%s) failed: %s" % (path, error))
+		return None
 	return data if isinstance(data, (bytes, str)) else None
+
+
+def _trace(text):
+	try:
+		import dbg
+		dbg.TraceError(text)
+	except Exception:
+		pass
 
 
 def _locale_path():
@@ -97,7 +116,7 @@ def reset():
 
 
 def page_file(locale, path):
-	return "%s/wiki/%s.md" % (locale, path)
+	return "%s/wiki/%s.txt" % (locale, path)
 
 
 def index():
@@ -108,7 +127,8 @@ def index():
 		text = data.decode("utf-8", "replace") if isinstance(data, bytes) else (data or "")
 		for line in text.splitlines():
 			line = line.strip().lstrip("﻿")
-			if line and not line.startswith("#") and fmt.valid_page_path(line) and line not in _index:
+			if line and not line.startswith("#") and fmt.valid_page_path(line) and line != RESERVED \
+					and line not in _index:
 				_index.append(line)
 	return list(_index)
 
@@ -116,7 +136,7 @@ def index():
 def load(path):
 	"""The page in the player's language, else in English; None when there
 	is no such page. Parsed once per language."""
-	if not fmt.valid_page_path(path):
+	if not fmt.valid_page_path(path) or path == RESERVED:
 		return None
 	locale = LOCALE()
 	key = (locale, path)

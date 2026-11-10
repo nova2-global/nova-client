@@ -3,7 +3,7 @@
 
   python3 tools/wiki_convert_old.py [--old <OLD client_pack/source>] [--out docs/wiki/drafts]
 
-Every OLD page becomes <out>/en/<path>.md, a draft that does not ship (it is
+Every OLD page becomes <out>/en/<path>.txt, a draft that does not ship (it is
 outside assets/). A page ships only after someone reads it and copies it to
 assets/locale/locale/en/wiki/ and lists it in index.txt. <out>/conversion-log.txt
 says what each page lost.
@@ -265,19 +265,19 @@ def main(argv):
             converter = Converter(rel, title.replace(":", " -").strip(), order)
             text = converter.convert(lines)
             path = new_path(rel)
-            target = os.path.join(out, "en", *path.split("/")) + ".md"
+            target = os.path.join(out, "en", *path.split("/")) + ".txt"
             os.makedirs(os.path.dirname(target), exist_ok=True)
             with open(target, "w", encoding="utf-8", newline="\n") as handle:
                 handle.write(text)
             page = fmt.parse(text)
             for line, message in page.problems:
-                converter.log.append("%s -> %s.md:%d: %s" % (rel, path, line, message))
+                converter.log.append("%s -> %s.txt:%d: %s" % (rel, path, line, message))
             log.extend(converter.log)
             made.append((rel, path))
     with open(os.path.join(out, "conversion-log.txt"), "w", encoding="utf-8", newline="\n") as handle:
         handle.write("# wiki_convert_old.py: what each OLD page lost or kept from OLD's art\n")
         for rel, path in made:
-            handle.write("%s -> %s.md\n" % (rel, path))
+            handle.write("%s -> %s.txt\n" % (rel, path))
         handle.write("\n")
         handle.write("\n".join(log) + "\n")
     print("converted %d pages into %s" % (len(made), out))

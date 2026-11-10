@@ -57,11 +57,11 @@ INDEX = "# the wiki's pages\nguides/start\ndungeons/demon_tower\nsystems/sash\nb
 def files(extra=None):
     out = {
         "locale/en/wiki/index.txt": INDEX.encode(),
-        "locale/en/wiki/guides/start.md": GUIDE.encode(),
-        "locale/de/wiki/guides/start.md": GUIDE_DE.encode(),
-        "locale/en/wiki/dungeons/demon_tower.md": TOWER.encode(),
-        "locale/en/wiki/systems/sash.md": SASH.encode(),
-        "locale/en/wiki/systems/broken.md": BROKEN.encode(),
+        "locale/en/wiki/guides/start.txt": GUIDE.encode(),
+        "locale/de/wiki/guides/start.txt": GUIDE_DE.encode(),
+        "locale/en/wiki/dungeons/demon_tower.txt": TOWER.encode(),
+        "locale/en/wiki/systems/sash.txt": SASH.encode(),
+        "locale/en/wiki/systems/broken.txt": BROKEN.encode(),
     }
     out.update(extra or {})
     return out
@@ -377,6 +377,64 @@ class Markup(unittest.TestCase):
         rcss = self.read(WIKI_DIR, "wiki-pages.rcss")
         self.assertIsNone(re.search(r"#[0-9a-fA-F]{3,8}\b", rcss))
         self.assertIsNone(re.search(r"\d+px\b", rcss))
+
+
+def client_pack(store):
+    """The client's pack module as PythonPackModule.cpp has it: Exist for any
+    file, Get only for .py, .pyc and .txt (it raises for anything else) and
+    returns str."""
+    import types
+    pack = types.ModuleType("pack")
+    pack.Exist = lambda path: 1 if path in store else 0
+
+    def get(path):
+        if os.path.splitext(path)[1].lower() not in (".py", ".pyc", ".txt") or path not in store:
+            raise RuntimeError("pack.Get refuses %s" % path)
+        return store[path].decode("utf-8")
+    pack.Get = get
+    return pack
+
+
+class ClientPack(PagesTest):
+    """r40: the shipped pages never showed. The tests above hand the module a
+    reader of their own; these go through the client's pack rules."""
+
+    def world_on_pack(self, store):
+        world = w4.World(True, windows="+items,+wiki", setup=base.setup)
+        world.game.modules["pack"] = client_pack(store)
+        world.game.answer("app", "GetLocalePath", lambda: "locale/en")
+        with world.game, w4.quiet():
+            world.game.load("nui_wiki_page_format", "nui_wiki_page_format.py")
+            pages = world.game.load("nui_wiki_pages", "nui_wiki_pages.py")
+            pages.reset()
+            world.game.load("nui_wiki_data", "nui_wiki_data.py")
+            module = world.game.load("nui_wiki", "nui_wiki.py")
+        return world, module, pages
+
+    def shipped_store(self):
+        """Every file under assets/locale/locale, by store path."""
+        store = {}
+        top = os.path.join(ASSETS, "locale")
+        for folder, _, names in os.walk(os.path.join(top, "locale")):
+            if os.sep + "wiki" not in folder:
+                continue
+            for name in names:
+                full = os.path.join(folder, name)
+                with open(full, "rb") as handle:
+                    store[os.path.relpath(full, top).replace(os.sep, "/")] = handle.read()
+        return store
+
+    def test_the_shipped_pages_reach_the_tree_through_the_client_s_pack(self):
+        world, module, pages = self.world_on_pack(self.shipped_store())
+        categories = [c["category"] for c in module.TREE if c.get("category")]
+        self.assertEqual(categories, ["guides", "dungeons", "systems", "events"])
+        with world.game, w4.quiet():
+            self.assertEqual(pages.title("dungeons/demon_tower"), "Demon Tower")
+
+    def test_every_shipped_page_has_an_extension_pack_get_reads(self):
+        for path in self.shipped_store():
+            with self.subTest(path=path):
+                self.assertIn(os.path.splitext(path)[1], (".txt",))
 
 
 class Shipped(unittest.TestCase):

@@ -1,0 +1,79 @@
+---
+title: Ghidorah's Nest
+category: dungeons
+order: 140
+---
+![](d:/ymir work/ui/wiki/banners/ghidorah.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+Get the ticket by talking to the NPC at the dungeon entrance. **Ticket:**
+
+### Reset Cooldown:
+
+This dungeon’s cooldown can be reset at the entrance by using:
+
+### Recommended Bonuses:
+
+Strong Against Undead, Elemental & **Fire** Element / **Fire** Resistance
+
+--- {style=ornate}
+
+### Phase 1:
+
+Defeat monsters to obtain the correct Drag it to the gate to proceed to the next stage.
+
+### Phase 2:
+
+Destroy the Metin of Inferno. At 50% HP, defeat the Undead Commander to further
+damage the Metin.
+
+### Phase 3:
+
+Destroy all three Metin of Inferno to advance to the next stage.
+
+### Phase 4:
+
+Defeat monsters to collect 4 Pulling Ropes . Drag them to the Warrior Statue to proceed.
+
+### Phase 5:
+
+Destroy all 5 Metin of Eggsplotion to advance.
+
+### Phase 6:
+
+Locate the Undead Giant’s chains and break them to release the Undead Giant.
+Repeat two more times to proceed.
+
+### Phase 7:
+
+Attack the Metin of Eggsplotion until it reaches 50% HP, then defeat the Undead Commander.
+Destroy the Metin, which will drop . Drag the keys to the Destiny Lock by the bridge.
+
+### Phase 8:
+
+Defeat the Epic Undead Commander. Be aware that he can teleport away.
+
+### Phase 9:
+
+Release the Undead Giant from its chains again. At 75%, 50%, and 25% HP, it will be
+protected—you must defeat the Incinerator each time. Finally, defeat the Undead Giant to proceed.
+
+### Phase 10:
+
+Defeat the final boss, Ghidorah, and claim your loot from Ghidorah’s Treasure.
+
+--- {style=ornate}
+
+### Hard Mode:
+
+Currently, the Hard Mode of this dungeon is identical to Normal Mode.
+However, running it gives you the chance to obtain an exclusive costume
+unique from all the others!
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+[[item:34239]] x3, [[item:34239]] x1, [[item:30794]], [[item:30795]] x4, [[item:30794]] x3, [[item:42255]], [[item:42075]]

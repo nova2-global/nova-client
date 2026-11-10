@@ -1,0 +1,40 @@
+---
+title: Hide & Seek
+category: events
+order: 167
+---
+![](d:/ymir work/ui/wiki/banners/hidenseek.png){align=center width=100%}
+
+## Hide and Seek Event — Find the Hidden Staff!
+
+- **The Hide and Seek Event is a fun, interactive challenge composed of **three rounds.****
+  On special occasions, there might even be an extra bonus round!
+
+- During the event, a staff member hides on a random map, and your goal is to find
+  them before anyone else does.
+
+- At the start of each round, the staff member will give **clues** about the map
+  and their exact hiding spot. As time passes, more clues will be revealed.
+
+--- {style=ornate}
+
+## Event Rewards:
+
+- Use the clues to identify the correct map and location and if you’re the first to reach
+  the GM, you’ll win the reward!
+
+- The player who finds the **hidden GM**, first will receive and a .
+
+[[item:80014]], [[item:71136]]
+
+--- {style=ornate}
+
+## Event Rules:
+
+- All in-game rules apply to the Hide and Seek Event.
+
+- No insults or toxic behavior.
+
+- No spam during the event.
+
+- The use of bots, hacks, or unfair advantages (e.g., trackers, speedhack, etc.) is strictly prohibited.

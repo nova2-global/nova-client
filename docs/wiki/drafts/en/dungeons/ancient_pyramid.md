@@ -1,0 +1,75 @@
+---
+title: Ancient Pyramid
+category: dungeons
+order: 141
+---
+![](d:/ymir work/ui/wiki/banners/ancientpyramid.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+Get the ticket by talking to the NPC at the dungeon entrance. **Ticket:**
+
+### Reset Cooldown:
+
+This dungeon’s cooldown can be reset at the entrance by using:
+
+### Recommended Bonuses:
+
+Strong Against Undead, Elemental & **Earth** Element / **Earth** Resistance
+
+--- {style=ornate}
+
+### Phase 1:
+
+Destroy the Stone of Wadjet.
+
+### Phase 2:
+
+Defeat all monsters to collect 4 Pieces of Pergamen. Click on
+and then defeat the Servant of Anubus to proceed.
+[[item:30800]] x1, [[item:30801]] x1, [[item:30802]] x1, [[item:30803]] x1
+
+### Phase 3:
+
+Destroy the Pharaoh Stone until you find the correct one. Then defeat Bastet to advance.
+
+### Phase 4:
+
+Defeat the 3 Ra Bosses to proceed to the next stage.
+
+### Phase 5:
+
+Defeat monsters to collect the Bundle of Wisdom . Drag it to the Effigy of Anubis.
+Complete any additional challenges in this phase, but always drag the Bundle of Wisdom to the
+Effigy to proceed.
+[[item:30804]] x4
+
+### Phase 6:
+
+Defeat Anubis to advance.
+
+### Phase 7:
+
+Defeat all monsters, then click on the on the ground and drag it to the Pillar of Wadjet.
+Next, destroy the Sphinx Stone, defeat the enemy there, collect the Ankh Key again, and drag
+it to the Pillar of Wadjet.
+[[item:30805]] x2
+
+### Phase 8:
+
+Defeat the Sphinx and claim the Sphinx Treasure!
+
+--- {style=ornate}
+
+### Hard Mode:
+
+Currently, the Hard Mode of this dungeon is identical to Normal Mode.
+However, running it gives you the chance to obtain an exclusive costume
+unique from all the others!
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+[[item:34242]] x3, [[item:34242]] x1, [[item:42385]], [[item:42071]]

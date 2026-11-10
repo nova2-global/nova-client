@@ -1,0 +1,57 @@
+---
+title: Fishing
+category: events
+order: 174
+---
+![](d:/ymir work/ui/wiki/banners/fishing.png){align=center width=100%}
+
+## Fishing Event — Cast, Relax, and Compete!
+
+- **The Fishing Event is a calm yet competitive activity designed for those who want to**
+  take a break from battle and enjoy a more peaceful side of Nova.
+
+- To begin fishing, visit one of the friendly **Fishermen NPCs** found in every city
+  to purchase your **Fishing Rod** and **Baits**.
+
+- Everyone can participate in this event as long as they follow the rules.
+  The goal is simple — catch the biggest fish within the event duration and claim your prize!
+
+- Find a peaceful fishing spot, cast your line, and let luck decide your fortune!
+
+--- {style=ornate}
+
+## How to Participate:
+
+- To win, you have **2 weeks** to catch the biggest fish possible.
+  When submission time arrives, choose your top 3 catches wisely!
+
+- In the event of a tie, both players will receive the **full prize amount**
+  for that specific placement.
+
+\**Example: Two players with the same fish size in 3rd place will both receive**
+[[item:80017]] x1
+
+--- {style=ornate}
+
+## Event Rewards:
+
+- The top three contenders in this event will receive the following rewards!
+
+\**First Place: Second Place: Third Place:**
+[[item:80017]] x3, [[item:80017]] x2, [[item:80017]] x1
+
+--- {style=ornate}
+
+## Event Rules:
+
+- Any use of cheats, hacks, or automation (fishing bots) will lead to
+  **immediate disqualification and severe punishment.**
+
+- Players have **2 weeks** from the start announcement to collect as many fish as possible.
+
+- You can only submit your **3 biggest fish** during the collection period.
+
+- Submissions are limited to **one account per player**. If you are caught submitting
+  from multiple accounts or characters, you will be directly disqualified.
+
+- Staying true to fair play is mandatory. Any unfair advantage will result in removal from the event.

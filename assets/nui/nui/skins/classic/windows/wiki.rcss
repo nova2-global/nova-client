@@ -108,3 +108,22 @@ body.skin-classic.wiki .wiki__menu-item.is-off:hover
 {
 	background-color: transparent;
 }
+
+/* Text pages (NOVA-139, wiki-pages.rcss): tables, notes, warnings and error
+   blocks are square, on the slot colors, as the trail and the tabs are. */
+body.skin-classic.wiki .wp__table,
+body.skin-classic.wiki .wp__td
+{
+	border-color: var(--classic-slot-dark);
+}
+body.skin-classic.wiki .wp__tr.is-head
+{
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.wiki .wp__box--note,
+body.skin-classic.wiki .wp__box--warn,
+body.skin-classic.wiki .wp__error
+{
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+}

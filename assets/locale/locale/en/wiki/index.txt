@@ -1,0 +1,13 @@
+# Every wiki page, one path a line (docs/wiki/WRITING.md). The tree shows a
+# category's pages in this order, after any "order:" in their front matter.
+guides/basic_guide
+dungeons/demon_tower
+dungeons/spider_baroness
+dungeons/devils_catacomb
+dungeons/aqua_dragon
+dungeons/nemere
+dungeons/razador
+systems/dungeon_manager
+systems/gaya
+systems/shoulder_sash
+events/ox_event

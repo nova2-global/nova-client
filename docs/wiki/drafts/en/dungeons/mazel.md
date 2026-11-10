@@ -1,0 +1,47 @@
+---
+title: Mazel Run
+category: dungeons
+order: 139
+---
+![](d:/ymir work/ui/wiki/banners/mazelrun.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+The ticket can be obtained from Dark Beam Stones in the Secret Wood. **Ticket:**
+
+### Reset Cooldown:
+
+This dungeon’s cooldown can be reset at the entrance by using:
+
+### Recommended Bonuses:
+
+Strong Against Devils
+
+--- {style=ornate}
+
+### Phase 1:
+
+Attack Boss Mazel until his HP reaches 75%. He will then teleport,
+starting the next phase.
+
+### Phase 2:
+
+Proceed further into the dungeon and attack Boss Mazel until his HP
+reaches 25% to advance to the next phase.
+
+### Phase 3:
+
+Boss Mazel becomes protected. Destroy the Dark Beam Stone to remove his protection.
+
+### Phase 4:
+
+With the stone destroyed, Boss Mazel can now be defeated!
+
+--- {style=ornate}
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+[[item:34035]] x25, [[item:34035]] x10, [[item:42380]]

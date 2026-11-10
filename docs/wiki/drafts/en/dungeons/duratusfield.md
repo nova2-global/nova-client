@@ -1,0 +1,59 @@
+---
+title: Duratus Field
+category: dungeons
+order: 136
+---
+![](d:/ymir work/ui/wiki/banners/duratusfield.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+Get the ticket by defeating Metin of Demise in Lost Forest, Green Almighty Dragon **Ticket:**
+
+### Reset Cooldown:
+
+This dungeon’s cooldown can be reset at the entrance by using:
+
+### Recommended Bonuses:
+
+Strong Against Undead
+
+--- {style=ornate}
+
+### Phase 1:
+
+Defeat all monsters until the Metin Stones appear.
+
+### Phase 2:
+
+Destroy all the Metin Stones.
+
+### Phase 3:
+
+Defeat the Underground Troll to obtain the Explosion Crystal .
+Right-click the crystal on the Bomb Box to destroy the fence.
+
+### Phase 4:
+
+Defeat monsters until you collect 4 Duratus Seals .
+Right-click them to open all four Monuments.
+
+### Phase 5:
+
+Defeat the four Underground Trolls.
+
+### Phase 6:
+
+Destroy all the Metin Stones.
+
+### Phase 7:
+
+Defeat the Boss Duratus!
+
+--- {style=ornate}
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+[[item:30750]] x30, [[item:30750]] x1, [[item:30751]] x1, [[item:30752]] x4, [[item:42212]]

@@ -1,0 +1,57 @@
+---
+title: White Tower
+category: dungeons
+order: 142
+---
+![](d:/ymir work/ui/wiki/banners/whitetower.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+Get the ticket by talking to the NPC at the dungeon entrance. **Ticket:**
+
+### Reset Cooldown:
+
+This dungeon’s cooldown can be reset at the entrance by using:
+
+### Recommended Bonuses:
+
+Strong Against Devil, Elemental & **Wind** Element / **Wind** Resistance
+
+--- {style=ornate}
+
+### Phase 1:
+
+Assist the Ruler's Guardian in destroying 4 Metin of Magnemite. Make sure the guardian survives!
+
+### Phase 2:
+
+Help the Ruler's Guardian defeat all monsters on your left and right to proceed to the next stage.
+
+### Phase 3:
+
+Destroy 4 Metin of Magnetone. At 50% HP, defeat Crowdusk to fully destroy the Metin.
+Each Metin drops a that must be deposited in the Tower’s Pillar at the center.
+[[item:30796]] x1
+
+### Phase 4:
+
+Destroy 5 Metin of Wings and place the Magical Cubes in the Tower’s Pillar.
+
+### Phase 5:
+
+Defeat Lord Adenoid and collect his treasure!
+
+--- {style=ornate}
+
+### Hard Mode:
+
+Currently, the Hard Mode of this dungeon is identical to Normal Mode.
+However, running it gives you the chance to obtain an exclusive costume
+unique from all the others!
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+[[item:34241]] x3, [[item:34241]] x1, [[item:42408]], [[item:42086]]

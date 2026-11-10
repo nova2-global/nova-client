@@ -1269,3 +1269,10 @@ WIKI_TAB_HINT	Middle-click or Ctrl+click a link to open it in a new tab.
 WIKI_MENU_CLOSE	Close	
 WIKI_MENU_CLOSE_OTHERS	Close other tabs	
 WIKI_MENU_NEW_TAB	Open in new tab	
+WIKI_CAT_GUIDES	Guides	
+WIKI_CAT_DUNGEONS	Dungeons	
+WIKI_CAT_SYSTEMS	Systems	
+WIKI_CAT_EVENTS	Events	
+WIKI_NOTE	Note	
+WIKI_WARNING	Warning	
+WIKI_PAGE_ERROR	This part of the page could not be shown:	

@@ -1,0 +1,54 @@
+---
+title: Solitary Temple
+category: dungeons
+order: 128
+---
+![](d:/ymir work/ui/wiki/banners/solitary.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+No ticket is needed to enter this dungeon.
+
+### Recommended Bonuses:
+
+Strong Against Devil
+
+--- {style=ornate}
+
+### Phase 1:
+
+Enter the first open zone and defeat all the monsters at the end
+to advance to the next phase.
+
+### Phase 2:
+
+Return to the center and turn right into the next open zone.
+Go to the end and defeat the Queen Snake to advance to the next phase.
+
+### Phase 3:
+
+Return to the center and turn right into the next open zone.
+Proceed to the end and defeat the Fire Reaper to advance to the next phase
+
+### Phase 4:
+
+Return to the center and turn right into the next open zone.
+Proceed to the end and defeat the Archimedeon. After defeating Archimedeon, a passage
+will open to the left of the statue. Enter it and go to the end to start the next phase.
+
+### Stage 5:
+
+Defeat the temple guardian Tenes to advance to the final phase!
+
+### Stage 6:
+
+Take the fight with The Almighty Tormentor and achive a win!
+
+--- {style=ornate}
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+[[item:42260]]

@@ -1,17 +1,19 @@
 /* Classic skin overlay of nui/windows/fastequip/fastequip.rml: legacy's
    fastequip window (uiscript fastequipwindow.py, OLD NewFastEquipWindow.py)
-   at 100%, 1dp to the legacy pixel: the thin board, 460 x 375; the 10 sets
+   at 100%, 1dp to the legacy pixel: the thin board, 460 x 435; the 10 sets
    as OLD's 88 x 21 rows from 16, 60, 23 apart (their colored bar, the edit
    mark at the left); the name bar at 115, 36 with the equipped bar left of
    it; the wear cells at OLD's slot positions from 111, 66; Switch and Clear
-   at 171 and 271, 290; the row of buffi and aura cells under the buttons.
+   at 171 and 271, 290; the row of buffi and aura cells under the buttons,
+   the buffi's laid out as the costume window's (a tall weapon, the hair
+   over the body).
    OLD's fast equip art is not shipped (as the legacy window's): the stock
    slot and buttons stand in. */
 
 body.skin-classic.fastequip
 {
 	width: 460dp;
-	height: 375dp;
+	height: 435dp;
 	min-width: 0;
 }
 body.skin-classic.fastequip .fastequip__title-icon,
@@ -34,7 +36,7 @@ body.skin-classic.fastequip .fastequip__body
 	left: 0;
 	top: 0;
 	width: 460dp;
-	height: 375dp;
+	height: 435dp;
 	padding: 0;
 	display: block;
 }
@@ -117,7 +119,7 @@ body.skin-classic.fastequip .fastequip__canvas
 	left: 111dp;
 	top: 66dp;
 	width: 336dp;
-	height: 299dp;
+	height: 360dp;
 	margin: 0;
 	border-width: 0;
 	background-color: transparent;
@@ -145,16 +147,18 @@ body.skin-classic.fastequip .fastequip__cell--w27 { left: 97dp; top: 54dp; width
 body.skin-classic.fastequip .fastequip__cell--w28 { left: 168dp; top: 129dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
 body.skin-classic.fastequip .fastequip__cell--w29 { left: 252dp; top: 129dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
 body.skin-classic.fastequip .fastequip__cell--w30 { left: 211dp; top: 129dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
-body.skin-classic.fastequip .fastequip__cell--w31 { left: 55dp; top: 256dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
-body.skin-classic.fastequip .fastequip__cell--w32 { left: 97dp; top: 256dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
-body.skin-classic.fastequip .fastequip__cell--w33 { left: 139dp; top: 256dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w31 { left: 97dp; top: 292dp; width: 32dp; height: 64dp; nui-hit-outset: 2dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w32 { left: 97dp; top: 256dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 2dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w33 { left: 55dp; top: 260dp; width: 32dp; height: 96dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
 body.skin-classic.fastequip .fastequip__cell--w36 { left: 95dp; top: 5dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
 body.skin-classic.fastequip .fastequip__cell--w37 { left: 36dp; top: 181dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 3.5dp 0dp 1dp; }
 body.skin-classic.fastequip .fastequip__cell--w38 { left: 109dp; top: 181dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 1dp; }
 body.skin-classic.fastequip .fastequip__cell--w39 { left: 235dp; top: 256dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
 
+/* Legacy's slot draws a tall item's icon from the cell's top. */
 body.skin-classic.fastequip .fastequip__cell
 {
+	display: block;
 	background-color: transparent;
 }
 body.skin-classic.fastequip .fastequip__row-label

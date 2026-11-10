@@ -1177,6 +1177,8 @@ FAST_EQUIP_TITLE	Equipamento Rápido
 FAST_EQUIP_CLEAR_CONFIRM	Tens a certeza de que desejas limpar esta página?
 FAST_EQUIP_SET_NAME	Set %d
 FAST_EQUIP_ALREADY	This set is already equipped.
+FAST_EQUIP_NOT_FOR_SET	This item cannot be part of a set.
+FAST_EQUIP_WRONG_CHARACTER	Your character cannot wear this item.
 TARGET_INFO_DAMAGE	Dano : %s - %s
 TARGET_INFO_DEFENSE	Defesa : %s
 TARGET_INFO_MAINRACE	Raça : %s

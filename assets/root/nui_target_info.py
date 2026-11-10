@@ -9,6 +9,9 @@ resists, the drop rows and their texts, the cache and the retry are legacy's
 code. The plain window it stands on is NOT ui.ThinBoard (its corners would
 show at the screen's top left).
 
+A left press on a drop row opens the wiki on its item (legacy's
+OnPressItemRow; Eddy, r41), and hover keeps the item's tooltip.
+
 What NovaUI changes: the board sits under the target board at its sheet's
 place (legacy's position is the target board's); the drop list scrolls in
 RmlUi; the retry is a nui-countdown (legacy's OnUpdate waits for a time). No
@@ -48,6 +51,11 @@ class _Board(nui.Window):
 	@nui.on("row_out")
 	def on_row_out(self):
 		self._owner.row_out()
+
+	@nui.on("row_press")
+	def on_row_press(self, index, button):
+		if button == 0:
+			self._owner.row_press(int(index))
 
 	@nui.on("retry_done")
 	def on_retry_done(self):
@@ -120,6 +128,10 @@ class InfoBoard(nui_facade.Facade, uiTargetInfo.InfoBoard):
 
 	def row_out(self):
 		self.OnShowItemTooltip(0)
+
+	def row_press(self, index):
+		if 0 <= index < len(self._rows):
+			self.OnPressItemRow(self._rows[index]["vnum"])
 
 	# --- the retry (legacy's OnUpdate waits for a time) ------------------------------
 

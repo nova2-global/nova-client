@@ -9,7 +9,8 @@
 	     listed and their merged +0..+9 rows are legacy's code. The stats as
 	     text lines with separators, the drops as rows (icon, text, the
 	     attacker and guaranteed lines the drop rule will fill). The whole row
-	     hovers (the slot hover rule) and shows the item's tooltip. The list
+	     hovers (the slot hover rule) and shows the item's tooltip; a left
+	     press on it opens the wiki on the item (Eddy, r41). The list
 	     scrolls in RmlUi; the retry after a request the server dropped is a
 	     nui-countdown, so nothing runs per frame. -->
 	<title>target-info</title>
@@ -24,7 +25,7 @@
 			</div>
 			<div id="target-info-rows" class="target-info__drops nui-list__viewport" data-if="size(rows) > 0">
 				<div class="target-info__row nui-anim" data-for="r, i : rows" data-attr-id="'target-info-row-' + i"
-				     data-event-mouseover="row_over(i)" data-event-mouseout="row_out()">
+				     data-event-mouseover="row_over(i)" data-event-mouseout="row_out()" data-event-mousedown="row_press(i, ev.button)">
 					<div class="target-info__icon"><img class="target-info__img" data-if="r.icon != ''" data-attr-src="r.icon"/></div>
 					<div class="target-info__text">
 						<span class="target-info__name">{{ r.text }}</span>

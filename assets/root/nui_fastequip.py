@@ -14,7 +14,15 @@ proxies were told.
 Nothing runs per frame: the trailing refresh is a nui-countdown timer whose
 countdownend calls legacy's CheckRefreshDue, and the window keeps its board
 only while it shows. It draws below the legacy UI layer, as legacy's window
-lived in it."""
+lived in it.
+
+Eddy's r41 notes: a press, a drag's release or a legacy drop anywhere on the
+canvas (the set's slot area) goes to legacy's DropAnywhere, which finds the
+item's cell; a tall item's icon keeps its size in its cell (the sheet). The
+name field takes the focus (the body's focus: none is inherited, so the
+field sets focus: auto and focuses itself on a press, and the panel focuses
+it once shown), its text never enters the model, and Enter and Escape reach
+legacy's edit line events (save, close)."""
 
 import uiFastEquip
 import ui
@@ -87,6 +95,10 @@ class _EditPopup(object):
 		self.saveEvent = None
 		self.nameEditLine = nui_form_proxies.FieldProxy(NAME_FIELD, owner._on_field)
 		self.nameEditLine.SetMax(fastEquip.NAME_MAX_CHARS)
+		self.nameEditLine.reader = lambda: owner._name_value()
+		# As legacy's EditPopUp: Enter saves, Escape closes.
+		self.nameEditLine.SetReturnEvent(ui.__mem_func__(self.UpdateButton))
+		self.nameEditLine.SetEscapeEvent(ui.__mem_func__(self.Close))
 
 	def _changed(self):
 		try:
@@ -115,6 +127,7 @@ class _EditPopup(object):
 		self.nameEditLine.SetText(name)
 		self.shown = True
 		self._changed()
+		self.nameEditLine.SetFocus()
 
 	def Close(self):
 		self.Hide()
@@ -138,9 +151,30 @@ class _FastEquipBoard(nui_hud.RaisesOnPress, nui.Window):
 		self._owner = nui_hud.keep_weakly(owner)
 		self._initial = model
 		nui.Window.__init__(self)
+		if self._doc:
+			# A focused field stops every key but Tab: the field hears its own.
+			self.element_on(NAME_FIELD, "keydown", self._on_name_key)
 
 	def initial_model(self):
 		return dict(self._initial)
+
+	def _on_name_key(self, event):
+		"""Legacy's edit line: Enter is its OnIMEReturn (save), Escape its
+		OnPressEscapeKey (close the panel); each is kept, so Escape does not
+		also close the window."""
+		if not self.is_visible():
+			return None
+		popup = self._owner.wndPopUpEdit
+		if popup is None or not popup.IsShow():
+			return None
+		key = event.get("key_identifier")
+		if key in (nui.KEY_RETURN, nui.KEY_NUMPADENTER):
+			popup.nameEditLine.fire_return()
+			return True
+		if key == nui.KEY_ESCAPE:
+			popup.nameEditLine.fire_escape()
+			return True
+		return None
 
 	@nui.on("board_press")
 	def on_board_press(self, button):
@@ -205,6 +239,35 @@ class _FastEquipBoard(nui_hud.RaisesOnPress, nui.Window):
 	def on_name_typed(self, value):
 		self._owner.wndPopUpEdit.nameEditLine.typed(value)
 
+	@nui.on("name_press")
+	def on_name_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self.focus(NAME_FIELD)
+
+	@nui.on("edit_click")
+	def on_edit_click(self, index):
+		"""The edit button's click, after the press opened the panel: the
+		field is shown now (a data-if field takes no focus in the press's own
+		handler), so it gets the caret, as legacy's Open gives it."""
+		popup = self._owner.wndPopUpEdit
+		if popup is not None and popup.IsShow() and popup.index == int(index):
+			self.focus(NAME_FIELD)
+
+	@nui.on("canvas_press")
+	def on_canvas_press(self, button):
+		if button == 0:
+			self._owner.DropAnywhere()
+
+	@nui.on("canvas_release")
+	def on_canvas_release(self, button):
+		if button == 0 and nui_slots.take_drag_release():
+			self._owner.DropAnywhere()
+
+	@nui.on("canvas_drop")
+	def on_canvas_drop(self):
+		self._owner.DropAnywhere()
+
 	@nui.on("color_press")
 	def on_color_press(self, index, button):
 		self.raise_for(button)
@@ -266,7 +329,6 @@ class FastEquipWindow(nui_facade.Facade, uiFastEquip.FastEquipWindow):
 			"buffi_on": False,
 			"aura_on": False,
 			"edit_on": False,
-			"edit_name": "",
 			"palette": [],
 			"refresh_end": 0.0,
 		}
@@ -284,7 +346,7 @@ class FastEquipWindow(nui_facade.Facade, uiFastEquip.FastEquipWindow):
 		self.AddFlag("movable")
 		self.AddFlag("float")
 		sync = lambda *args: self._sync()
-		self.board = nui_proxies.BoardProxy(460, 375)
+		self.board = nui_proxies.BoardProxy(460, 435)
 		self.titleLabel = nui_proxies.TextProxy(sync)
 		self.titleColor = _Bar(sync)
 		self.equippedBar = _Bar(sync)
@@ -377,7 +439,6 @@ class FastEquipWindow(nui_facade.Facade, uiFastEquip.FastEquipWindow):
 		values["cells"] = cells
 		popup = self.wndPopUpEdit
 		values["edit_on"] = bool(popup is not None and popup.shown)
-		values["edit_name"] = nui.plain_text(popup.nameEditLine.text) if popup is not None else ""
 		colors = []
 		for i, color in enumerate(uiFastEquip.COLORS):
 			colors.append({"index": i + 1, "css": _css(color), "selected": popup is not None and popup.colorIndex == i + 1})
@@ -392,9 +453,19 @@ class FastEquipWindow(nui_facade.Facade, uiFastEquip.FastEquipWindow):
 		if board is None or not board.is_visible():
 			return
 		if what == "text":
-			board.set_value(field.field_id, field.text, caret="end")
+			# The panel may not show yet (its data-if): even_hidden.
+			board.set_value(field.field_id, field.text, caret="end", even_hidden=True)
 		elif what == "focus":
 			board.focus(field.field_id)
+
+	def _name_value(self):
+		"""The name field's live text (None without a shown board)."""
+		board = self.nui_board()
+		return board.get_value(NAME_FIELD) if board is not None and board.is_visible() else None
+
+	def DropAnywhere(self):
+		uiFastEquip.FastEquipWindow.DropAnywhere(self)
+		nui_slots.flush_marks()
 
 	def _ArmRefreshTimer(self, seconds):
 		self.nui_set(refresh_end=nui.now() + seconds)

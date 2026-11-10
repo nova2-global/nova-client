@@ -38,6 +38,10 @@ DOCUMENT = "nui/windows/wiki/wiki.rml"
 KEY = "wiki"
 PREVIEW = "wiki"
 HOVER_PREVIEW = "wiki_hover"
+# The hover preview makes a model only once the pointer has rested on a row
+# this long, and not while the wheel turns (modelpreview.SetDwell): a list
+# scrolled under a still pointer changes the row every few frames (r39).
+HOVER_DWELL_MS = 180
 
 # EWikiKind and EWikiStatus (nova-protocol's wiki_packets.h).
 KIND_ITEM, KIND_MOB = 0, 1
@@ -1015,6 +1019,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		preview = _modelpreview()
 		shown = False
 		if preview is not None:
+			if name == HOVER_PREVIEW and hasattr(preview, "SetDwell"):
+				preview.SetDwell(name, HOVER_DWELL_MS)
 			if kind == KIND_MOB:
 				shown = bool(preview.Select(name, vnum))
 			else:

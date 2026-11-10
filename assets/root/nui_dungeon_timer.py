@@ -486,7 +486,9 @@ class TimerWindow(nui_facade.Facade, uiTimerWindow.TimerWindow):
 				preview.Show(name, False)
 			return False
 		if idx not in self._preview_models:
-			self._preview_models[idx] = bool(preview.Select(name, self.nui_race(idx)))
+			# 0 is no boss here; the client takes race 0 for the warrior (r39).
+			race = self.nui_race(idx)
+			self._preview_models[idx] = bool(race) and bool(preview.Select(name, race))
 		if not self._preview_models[idx]:
 			return False
 		preview.Show(name, True)

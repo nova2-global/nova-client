@@ -42,11 +42,24 @@ class Preview(object):
     def SetSkillMotion(self, name, motion):
         self.calls.append(("SetSkillMotion", name, motion))
 
+    def SetSkillCycle(self, name, entries):
+        self.calls.append(("SetSkillCycle", name, list(entries)))
+
     def Show(self, name, show):
         self.calls.append(("Show", name, bool(show)))
 
     def Clear(self, name):
         self.calls.append(("Clear", name))
+
+
+class OldPreview(Preview):
+    """A client from before the idle casting: no SetSkillCycle (getattr finds None)."""
+    SetSkillCycle = None
+
+
+def warrior_cycle(body=11289, weapon=189):
+    """Every skill of both groups (motion slots 1 to 6, 16 to 21), in the row's gear."""
+    return [(motion, body, weapon) for motion in (1, 2, 3, 4, 5, 6, 16, 17, 18, 19, 20, 21)]
 
 
 class Tooltip(object):
@@ -61,8 +74,8 @@ class Tooltip(object):
 
 
 class World(w4.World):
-    def __init__(self, nui_on, job=JOB_WARRIOR, preview=True, costumes=True):
-        self.preview = Preview() if preview else None
+    def __init__(self, nui_on, job=JOB_WARRIOR, preview=True, costumes=True, old_client=False):
+        self.preview = (OldPreview() if old_client else Preview()) if preview else None
         self.events = []
         self.job = job
 
@@ -161,6 +174,7 @@ class Flows(Both):
     def test_open_dresses_the_model_at_olds_camera_and_starts_idle(self):
         world, window = opened(False)
         self.assertEqual(world.preview.calls, [
+            ("SetSkillCycle", "select_skill", warrior_cycle()),
             ("Select", "select_skill", RACE, 11289, 189, HAIR_PART, SASH_VNUM),
             ("SetEye", "select_skill", -1200, 600),
             ("SetSkillMotion", "select_skill", 0),
@@ -168,10 +182,38 @@ class Flows(Both):
 
     def test_open_twice_does_not_make_the_model_again(self):
         def flow(world, window, nui_on):
-            mark = sum(1 for c in world.preview.calls if c[0] == "Select")
+            mark = sum(1 for c in world.preview.calls if c[0] in ("Select", "SetSkillCycle"))
             window.Open()
-            self.assertEqual(sum(1 for c in world.preview.calls if c[0] == "Select"), mark)
+            self.assertEqual(sum(1 for c in world.preview.calls if c[0] in ("Select", "SetSkillCycle")), mark)
         self.run_both(flow)
+
+    def test_idle_casts_every_skill_of_both_groups_in_its_rows_gear(self):
+        # Eddy: with no skill hovered, the preview casts the job's skills, one after another.
+        for job, gear in ((JOB_WARRIOR, (11289, 189, 11289, 189)), (JOB_ASSASSIN, (41003, 40102, 41003, 40103))):
+            with self.subTest(job=job):
+                world, window = opened(False, job=job)
+                cycle = world.preview.calls[0]
+                self.assertEqual(cycle[:2], ("SetSkillCycle", "select_skill"))
+                self.assertEqual(cycle[2], [(m, gear[0], gear[1]) for m in (1, 2, 3, 4, 5, 6)] +
+                                 [(m, gear[2], gear[3]) for m in (16, 17, 18, 19, 20, 21)],
+                                 "an assassin's second group is the bow's")
+
+    def test_a_reopened_window_starts_its_cycle_again(self):
+        def flow(world, window, nui_on):
+            window.Close()
+            window.Open()
+        calls, _, _, shown = self.run_both(flow)
+        self.assertTrue(shown)
+        self.assertIn(("SetSkillCycle", "select_skill", warrior_cycle()), calls)
+
+    def test_a_race_zero_warrior_gets_the_same_calls(self):
+        # r39: bot12, race 0, saw an empty preview; the client took race 0 for "no model".
+        world = World(False)
+        world.game.modules["player"].GetRace = lambda: 0
+        window = world.window()
+        with world.game, w4.quiet():
+            window.Open()
+        self.assertIn(("Select", "select_skill", 0, 11289, 189, HAIR_PART, SASH_VNUM), world.preview.calls)
 
     def test_hovering_plays_the_warrior_rows_motion_slot_without_a_new_model(self):
         def flow(world, window, nui_on):
@@ -219,7 +261,7 @@ class Flows(Both):
 
     def test_no_costumes_give_no_hair_or_sash_and_no_stale_item(self):
         world, window = opened(False, costumes=False)
-        self.assertEqual(world.preview.calls[0], ("Select", "select_skill", RACE, 11289, 189, 0, 0))
+        self.assertEqual(world.preview.calls[1], ("Select", "select_skill", RACE, 11289, 189, 0, 0))
         self.assertNotIn(0, world.selected, "item.SelectItem(0) reads the last selected item")
 
     def test_a_client_without_previews_still_works(self):
@@ -227,6 +269,13 @@ class Flows(Both):
             with self.subTest(nui_on=nui_on):
                 world, window = opened(nui_on, preview=False)
                 self.assertTrue(window.IsShow())
+
+    def test_a_client_without_the_cycle_still_shows_the_model(self):
+        for nui_on in (False, True):
+            with self.subTest(nui_on=nui_on):
+                world, window = opened(nui_on, old_client=True)
+                self.assertTrue(window.IsShow())
+                self.assertEqual(world.preview.calls[0][0], "Select")
 
     def test_every_job_has_two_rows_of_six_and_gear(self):
         world = World(False)

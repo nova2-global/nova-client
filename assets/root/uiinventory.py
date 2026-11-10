@@ -17,6 +17,7 @@ import uiPrivateShopBuilder # Prevent ItemMove while private shop is open
 import localeInfo
 import constInfo
 import ime
+import link_tokens
 import wndMgr
 import nui_windows
 
@@ -1279,7 +1280,7 @@ class InventoryWindow(ui.ScriptWindow):
 
 			elif app.IsPressed(app.DIK_LALT):
 				link = player.GetItemLink(itemSlotIndex)
-				ime.PasteString(link)
+				link_tokens.paste(link)
 
 			elif app.IsPressed(app.DIK_LSHIFT):
 				itemCount = player.GetItemCount(itemSlotIndex)

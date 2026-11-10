@@ -2,9 +2,11 @@
 <head>
 	<!-- The ingame wiki's item and mob browser (NOVA-42; nui_wiki.WikiWindow,
 	     no legacy window). Top: Back, Forward, Home, the trail from Home to
-	     the page and the page's Link button; under it the tabs, as in a web
+	     the page and the Link button (every page links: an item, a mob, a
+	     list, the home page, a search); under it the tabs, as in a web
 	     browser (a middle press or Ctrl and a press on a link opens it in a
-	     new tab; a middle press on a tab closes it). Left: the search field
+	     new tab; a middle press on a tab closes it; a right press on a tab
+	     or a crumb opens its menu, wiki-menu). Left: the search field
 	     and the category tree, OLD's WIKI_CATEGORIES on NEW's data. Then the
 	     home page (every category's lists and the pages viewed last), or the
 	     listed items or mobs and the chosen page: its model preview (the
@@ -48,7 +50,7 @@
 				<span class="wiki__crumb" data-for="k : crumbs" data-attr-id="'wiki-crumb-' + k.i" data-class-is-link="k.link"
 				      data-class-is-last="k.last" data-event-mousedown="crumb_press(k.i, ev.button)">{{ k.label }}</span>
 			</div>
-			<button id="wiki-link" class="nui-button nui-button--medium nui-anim wiki__link" data-if="page_link"
+			<button id="wiki-link" class="nui-button nui-button--medium nui-anim wiki__link"
 			        data-event-mousedown="link_press(ev.button)">@game.WIKI_LINK</button>
 		</div>
 		<div class="wiki__tabs">
@@ -170,6 +172,14 @@
 				<div class="wiki__hover-preview" data-if="hover_view"><nui-view class="wiki__view wiki__view--hover" name="model-wiki-hover" hover="none"></nui-view></div>
 			</div>
 		</div>
+	</div>
+	<!-- The menu of a right press on a tab (Close, Close other tabs) or a crumb
+	     (Open in new tab, Link), under the pressed element; any other press on
+	     the window closes it. -->
+	<div id="wiki-menu" class="nui-board nui-fx wiki__menu" data-if="menu.size > 0"
+	     data-style---wiki-menu-x="menu_x + 'dp'" data-style---wiki-menu-y="menu_y + 'dp'">
+		<button class="nui-button nui-button--ghost nui-anim wiki__menu-item" data-for="m : menu" data-attr-id="'wiki-menu-' + m.i"
+		        data-class-is-off="m.off" data-event-mousedown="menu_press(m.i, ev.button)">{{ m.label }}</button>
 	</div>
 </body>
 </rml>

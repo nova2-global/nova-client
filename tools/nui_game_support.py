@@ -1337,6 +1337,9 @@ class Game(object):
             nui._nui.FollowPointer = lambda *args: True
             self.state.decorators.add("nui-cells")
         modules["nui"] = nui
+        # The real link tokens (NOVA-42 round 3), one module per client, so
+        # each world keeps its own registry of chat and whisper inputs.
+        modules["link_tokens"] = support.load_module("link_tokens", os.path.join(ROOT, "link_tokens.py"))
         return modules
 
     def _wave2b_modules(self, modules):

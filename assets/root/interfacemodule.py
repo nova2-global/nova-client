@@ -634,13 +634,42 @@ class Interface(object):
 	def OpenWikiMob(self, vnum):
 		return bool(self.wndWiki and self.wndWiki.OpenMob(vnum))
 
+	def OpenWikiList(self, path):
+		"""A list link (syswiki:list:<path>, NOVA-42): True when the wiki
+		opened that list."""
+		return bool(self.wndWiki and self.wndWiki.OpenList(path))
+
+	def OpenWikiPage(self, path):
+		"""A text page link (syswiki:page:<path>, NOVA-139): the wiki's
+		OpenPage, in front of every window. OpenPage comes with the text
+		pages (feature/wiki-pages); before that this opens nothing. True
+		when the page opened."""
+		wiki = self.wndWiki
+		if not wiki or not hasattr(wiki, "OpenPage"):
+			return False
+		if not wiki.OpenPage(path):
+			return False
+		wiki.SetTop()
+		return True
+
+	def OpenWikiLink(self, kind, ident):
+		"""The hook for every syswiki link kind __OpenWikiLink does not open
+		itself (not item, mob, list or page): the wiki's OpenLink, which
+		answers False for a kind it does not know. True when a page opened."""
+		opener = getattr(self.wndWiki, "OpenLink", None) if self.wndWiki else None
+		return bool(opener and opener(kind, ident))
+
 	def PasteWikiLink(self, link):
 		"""The wiki's Link button (NOVA-42): a page's syswiki link into the
 		whisper dialog whose input has the focus, else into the chat input,
 		which opens for it (an open one keeps its text). True when it went
 		in. A NovaUI whisper answers by its focus proxy (it holds wndMgr's
-		focus while its field has NovaUI's), a legacy one by its edit line."""
+		focus while its field has NovaUI's), a legacy one by its edit line.
+		The input shows the link's token and swaps it back on send
+		(PasteLink, link_tokens, round 3); a window without PasteLink takes
+		the raw link."""
 		import ime
+		target = None
 		for dlg in list(self.whisperDialogDict.values()):
 			if not dlg.IsShow():
 				continue
@@ -648,15 +677,21 @@ class Interface(object):
 			focused = proxy.has_focus() if proxy is not None else dlg.chatLine.IsFocus()
 			if focused:
 				dlg.chatLine.SetFocus()
-				ime.PasteString(link)
-				return True
-		if self.wndChat.IsEditMode():
-			self.SetChatFocus()
+				target = dlg
+				break
+		if target is None:
+			if self.wndChat.IsEditMode():
+				self.SetChatFocus()
+			else:
+				self.ToggleChat()
+				if not self.wndChat.IsEditMode():
+					return False
+			target = self.wndChat
+		paste = getattr(target, "PasteLink", None)
+		if callable(paste):
+			paste(link)
 		else:
-			self.ToggleChat()
-			if not self.wndChat.IsEditMode():
-				return False
-		ime.PasteString(link)
+			ime.PasteString(link)
 		return True
 
 	def WikiAnswer(self, *rows):
@@ -670,19 +705,31 @@ class Interface(object):
 			if "item" == type:
 				self.hyperlinkItemTooltip.SetHyperlinkItem(tokens)
 			elif "syswiki" == type and len(tokens) >= 3:
-				self.__OpenWikiLink(tokens[1], tokens[2].split("?")[0])
+				# A list link's path holds ":" (syswiki:list:costumes:costume_hair).
+				self.__OpenWikiLink(tokens[1], ":".join(tokens[2:]).split("?")[0])
 
 	def __OpenWikiLink(self, kind, ident):
 		"""OLD's chat links, syswiki:<kind>:<ident>[?y=NNN] (interfaceModule.py:1154).
-		The browser opens "item" and "mob" links; a text page link
-		(NOVA-139) has no page to open yet and does nothing."""
+		The browser opens "item" and "mob" links, and "list" links (a list,
+		the home page or a search, NOVA-42 round 3), and "page" links
+		(NOVA-139's text pages, OpenWikiPage). Any other kind goes to
+		OpenWikiLink whole."""
+		if kind == "list":
+			self.OpenWikiList(ident)
+			return
+		if kind == "page":
+			self.OpenWikiPage(ident)
+			return
+		if kind not in ("item", "mob"):
+			self.OpenWikiLink(kind, ident)
+			return
 		try:
 			vnum = int(ident)
 		except ValueError:
 			return
 		if kind == "item":
 			self.OpenWikiItem(vnum)
-		elif kind == "mob":
+		else:
 			self.OpenWikiMob(vnum)
 
 	## Make Windows & Dialogs

@@ -467,7 +467,8 @@ class Flows(WhisperTest):
                 self.assertEqual(b_links, a_links)
                 self.assertEqual(b_links, [] if alt else [link])
                 if alt:
-                    self.assertIn(("ime.PasteString", ("|Hitem:13|h[Sword]|h",)), novaui)
+                    # NOVA-42 round 3: the dialog's input takes the link's token (link_tokens).
+                    self.assertIn(("ime.PasteString", ("[Sword]",)), novaui)
 
     def test_the_scroll_and_the_resize_reach_the_store_as_legacy_s(self):
         def flow(world):

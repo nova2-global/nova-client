@@ -486,10 +486,12 @@ class Link(QolTest):
         self.assertEqual(link.count("|"), 5)
         self.assertTrue(link.startswith("|cff00c0fc|Hsyswiki:mob:%d|h[" % WOLF))
 
-    def test_home_has_no_link(self):
+    def test_home_links_too(self):
+        # Round 3 (Eddy's r39 notes): every page links; the home page as
+        # syswiki:list:home (nui_wiki_r3_test.ListLinks).
         world, window = self.opened()
-        self.assertFalse(self.model(window)["page_link"])
-        self.assertEqual(self.linked(world, window), [])
+        self.assertTrue(self.model(window)["page_link"])
+        self.assertEqual(self.linked(world, window), ["|cff00c0fc|Hsyswiki:list:home|h[Wiki]|h|r"])
 
     def test_the_link_leaves_the_search_field_first(self):
         world, window = self.opened()

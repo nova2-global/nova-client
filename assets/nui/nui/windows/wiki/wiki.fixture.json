@@ -295,6 +295,9 @@
 		"page_link": true,
 		"model_view": false,
 		"hover_view": false,
+		"menu": [],
+		"menu_x": 0.0,
+		"menu_y": 0.0,
 		"origins": [
 			{
 				"i": 0,

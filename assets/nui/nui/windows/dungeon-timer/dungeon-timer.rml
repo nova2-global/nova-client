@@ -17,12 +17,15 @@
 	     the front card hides it; the chip shows the hidden cards dashed. The
 	     front card's details, the drops of all its mobs merged in one grid
 	     with whole-item hover and filter chips, and Run or Practice below. A
-	     left or right press anywhere on the window raises it. -->
+	     left or right press anywhere on the window raises it. It draws below
+	     the legacy UI layer (nui-below-legacy-ui), as its legacy ScriptWindow
+	     lived in the UI layer and as the wiki its Wiki button opens does, so
+	     the wiki comes in front of it (NOVA-42, Eddy's r39 notes). -->
 	<title>dungeon-timer</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="dungeon-timer.rcss"/>
 </head>
-<body template="nui" id="dungeon-timer" class="nui-window nui-fx nui-anim dungeon-timer" data-model="dungeon_timer"
+<body template="nui" id="dungeon-timer" class="nui-window nui-fx nui-anim nui-below-legacy-ui dungeon-timer" data-model="dungeon_timer"
       data-event-mousedown="board_press(ev.button)">
 	<div class="nui-window__titlebar dungeon-timer__titlebar">
 		<handle class="nui-window__handle dungeon-timer__handle" move_target="#document">

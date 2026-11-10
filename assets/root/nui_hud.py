@@ -819,6 +819,39 @@ def note_raise(window):
 	shows later without a raise of its own stays below it (keep_order)."""
 	_raise_count[0] += 1
 	_raises[window] = _raise_count[0]
+	note_top(window)
+
+
+# Which window was raised last (NOVA-42 round 3: the Wiki button brings a
+# buried wiki to the front and closes only one on top). Every facade's SetTop
+# and every note_raise records here; keep_order does not read it, so it
+# changes no board's order.
+_tops = weakref.WeakKeyDictionary()   # window -> the number of its last raise
+_top_count = [0]
+
+
+def note_top(window):
+	try:
+		_top_count[0] += 1
+		_tops[window] = _top_count[0]
+	except TypeError:
+		pass
+
+
+def is_top(window):
+	"""True when no other shown window was raised after `window`'s last
+	raise. Only raises recorded here count (facades' SetTop, note_raise): a
+	legacy window raised by legacy code is not seen."""
+	mine = _tops.get(window, 0)
+	for other, seq in list(_tops.items()):
+		if other is window or seq <= mine:
+			continue
+		try:
+			if other.IsShow():
+				return False
+		except Exception:
+			continue
+	return True
 
 
 def keep_order(window):

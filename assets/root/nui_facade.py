@@ -234,6 +234,7 @@ class Facade(object):
 		board = self.nui_board()
 		if board is not None:
 			board.bring_to_front()
+		nui_hud.note_top(self)
 		super(Facade, self).SetTop()
 
 	def Destroy(self):

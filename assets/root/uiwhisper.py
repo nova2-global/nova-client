@@ -5,6 +5,7 @@ import player
 import app
 import localeInfo
 import ime
+import link_tokens
 import chr
 import messenger
 import uiScriptLocale
@@ -75,6 +76,10 @@ class WhisperDialog(ui.ScriptWindow):
 		self.blockButton = None
 		self.online = None
 		self.flag = None
+		## NOVA-42 round 3: a pasted link shows as its token and is swapped
+		## back on send (link_tokens); NovaUI's dialog sends through here too.
+		self.linkTokens = link_tokens.LinkTokens()
+		link_tokens.register(self)
 	def __del__(self):
 		print("---------------------------------------------------------------------------- DELETE WHISPER DIALOG")
 		ui.ScriptWindow.__del__(self)		
@@ -384,9 +389,34 @@ class WhisperDialog(ui.ScriptWindow):
 	def OnScroll(self):
 		chat.SetWhisperPosition(self.targetName, self.scrollBar.GetPos())
 
+	def link_tokens(self):
+		tokens = self.__dict__.get("linkTokens")
+		if tokens is None:
+			tokens = self.linkTokens = link_tokens.LinkTokens()
+		return tokens
+
+	def link_focused(self):
+		"""A NovaUI dialog answers by its focus proxy (it holds wndMgr's focus
+		while its field has NovaUI's), a legacy one by its edit line."""
+		if not self.IsShow():
+			return False
+		proxy = getattr(self, "focusProxy", None)
+		if proxy is not None:
+			return bool(proxy.has_focus())
+		line = getattr(self, "chatLine", None)
+		return bool(line is not None and line.IsFocus())
+
+	def PasteLink(self, link):
+		## A link into this dialog's input, as its token; the input takes the
+		## focus first, so the paste lands there.
+		line = getattr(self, "chatLine", None)
+		if line is not None:
+			line.SetFocus()
+		return link_tokens.paste(link, target=self)
+
 	def SendWhisper(self):
 
-		text = self.chatLine.GetText()
+		text = self.link_tokens().expand(self.chatLine.GetText())
 		textLength = len(text)
 
 		if textLength > 0:
@@ -396,6 +426,7 @@ class WhisperDialog(ui.ScriptWindow):
 
 			net.SendWhisperPacket(self.targetName, text)
 			self.chatLine.SetText("")
+			self.link_tokens().clear()
 
 			chat.AppendWhisper(chat.WHISPER_TYPE_CHAT, self.targetName, player.GetName() + " : " + text)
 
@@ -410,7 +441,7 @@ class WhisperDialog(ui.ScriptWindow):
 		if hyperlink:
 			if app.IsPressed(app.DIK_LALT):
 				link = chat.GetLinkFromHyperlink(hyperlink)
-				ime.PasteString(link)
+				link_tokens.paste(link)
 			else:
 				self.interface.MakeHyperlinkTooltip(hyperlink)
 

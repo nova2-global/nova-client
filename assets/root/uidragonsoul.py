@@ -16,6 +16,7 @@ import uiPrivateShopBuilder
 import localeInfo
 import constInfo
 import ime
+import link_tokens
 import uiInventory
 import sys
 ITEM_FLAG_APPLICABLE = 1 << 14
@@ -417,7 +418,7 @@ class DragonSoulWindow(ui.ScriptWindow):
 				chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.SHOP_BUY_INFO)
 			elif app.IsPressed(app.DIK_LALT):
 				link = player.GetItemLink(player.DRAGON_SOUL_INVENTORY, itemSlotIndex)
-				ime.PasteString(link)
+				link_tokens.paste(link)
 			else:
 				selectedItemVNum = player.GetItemIndex(player.DRAGON_SOUL_INVENTORY, itemSlotIndex)
 				itemCount = player.GetItemCount(player.DRAGON_SOUL_INVENTORY, itemSlotIndex)

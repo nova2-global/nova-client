@@ -14,6 +14,7 @@ import uiPrivateShopBuilder # Prevent ItemMove while private shop is open
 import localeInfo
 import constInfo
 import ime
+import link_tokens
 
 ## The special inventory (NOVA-16; OLD uiExtraInventory.py): the extra
 ## inventory window (player.EXTRA_INVENTORY, 1440 cells) in five categories
@@ -381,7 +382,7 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 
 			elif app.IsPressed(app.DIK_LALT):
 				link = player.GetItemLink(player.EXTRA_INVENTORY, itemSlotIndex)
-				ime.PasteString(link)
+				link_tokens.paste(link)
 
 			elif app.IsPressed(app.DIK_LSHIFT):
 				itemCount = player.GetItemCount(player.EXTRA_INVENTORY, itemSlotIndex)

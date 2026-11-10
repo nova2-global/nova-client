@@ -634,6 +634,18 @@ class Interface(object):
 	def OpenWikiMob(self, vnum):
 		return bool(self.wndWiki and self.wndWiki.OpenMob(vnum))
 
+	def OpenWikiList(self, path):
+		"""A list link (syswiki:list:<path>, NOVA-42): True when the wiki
+		opened that list."""
+		return bool(self.wndWiki and self.wndWiki.OpenList(path))
+
+	def OpenWikiLink(self, kind, ident):
+		"""The hook for every syswiki link kind __OpenWikiLink does not open
+		itself (NOVA-139's syswiki:page:<path>): the wiki's OpenLink, which
+		answers False for a kind it does not know. True when a page opened."""
+		opener = getattr(self.wndWiki, "OpenLink", None) if self.wndWiki else None
+		return bool(opener and opener(kind, ident))
+
 	def PasteWikiLink(self, link):
 		"""The wiki's Link button (NOVA-42): a page's syswiki link into the
 		whisper dialog whose input has the focus, else into the chat input,
@@ -670,19 +682,27 @@ class Interface(object):
 			if "item" == type:
 				self.hyperlinkItemTooltip.SetHyperlinkItem(tokens)
 			elif "syswiki" == type and len(tokens) >= 3:
-				self.__OpenWikiLink(tokens[1], tokens[2].split("?")[0])
+				# A list link's path holds ":" (syswiki:list:costumes:costume_hair).
+				self.__OpenWikiLink(tokens[1], ":".join(tokens[2:]).split("?")[0])
 
 	def __OpenWikiLink(self, kind, ident):
 		"""OLD's chat links, syswiki:<kind>:<ident>[?y=NNN] (interfaceModule.py:1154).
-		The browser opens "item" and "mob" links; a text page link
-		(NOVA-139) has no page to open yet and does nothing."""
+		The browser opens "item" and "mob" links, and "list" links (a list,
+		the home page or a search, NOVA-42 round 3). Any other kind (a text
+		page, NOVA-139's syswiki:page:<path>) goes to OpenWikiLink whole."""
+		if kind == "list":
+			self.OpenWikiList(ident)
+			return
+		if kind not in ("item", "mob"):
+			self.OpenWikiLink(kind, ident)
+			return
 		try:
 			vnum = int(ident)
 		except ValueError:
 			return
 		if kind == "item":
 			self.OpenWikiItem(vnum)
-		elif kind == "mob":
+		else:
 			self.OpenWikiMob(vnum)
 
 	## Make Windows & Dialogs

@@ -67,7 +67,10 @@ OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("
                "switchbot-picker-": ("switchbot-picker",), "switchbot-presets-": ("switchbot-preset",),
                # Wave 8 (NOVA-17): fast equip's edit panel, open over the cells
                # as legacy's popup floats over the window.
-               "fastequip-edit-": ("fastequip-edit", "fastequip-name", "fastequip-color-")}
+               "fastequip-edit-": ("fastequip-edit", "fastequip-name", "fastequip-color-"),
+               # NOVA-42 round 3: the wiki's tab and crumb menus, open under
+               # the pressed tab or crumb over the controls below them.
+               "wiki-menu-": ("wiki-menu",), "wiki-crumb-menu-": ("wiki-menu",)}
 # Cases whose open popup covers slot cells on purpose: their sweep is not
 # checked (the same window's other cases sweep those cells).
 SWEEP_UNDER_OPEN_POPUP = ("costume-foundation-aura-classic-", "fastequip-edit-")

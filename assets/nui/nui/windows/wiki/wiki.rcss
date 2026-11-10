@@ -554,3 +554,40 @@ body.wiki
 	background-color: var(--surface-raised);
 	pointer-events: none;
 }
+
+/* --- The menu of a right press on a tab or a crumb ------------------------------------ */
+
+/* Placed by the controller under the pressed element (menu_x, menu_y in dp from
+   the window's border box), above everything in the window. Its look is the
+   nui-board's (window-frame.rcss) and the skins'. */
+.wiki__menu
+{
+	--wiki-menu-x: 0dp;
+	--wiki-menu-y: 0dp;
+	position: absolute;
+	left: var(--wiki-menu-x);
+	top: var(--wiki-menu-y);
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	min-width: 150dp;
+	padding: var(--space-1);
+}
+.wiki__menu-item
+{
+	display: block;
+	height: 26dp;
+	padding: 0 var(--space-2);
+	border-radius: 6dp;
+	text-align: left;
+	line-height: 24dp;
+	white-space: nowrap;
+	color: var(--text);
+}
+.wiki__menu-item.is-off,
+.wiki__menu-item.is-off:hover
+{
+	background-color: transparent;
+	color: var(--text-muted);
+	opacity: 0.55;
+}

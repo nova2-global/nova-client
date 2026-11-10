@@ -26,6 +26,8 @@ with the window. NOVA-139's text pages plug in at
 nui_wiki_data.TEXT_CATEGORIES; _open_sub dispatches on a row's "kind".
 """
 
+import re
+
 import ui
 
 import nui
@@ -72,6 +74,34 @@ SEARCH_FIELD = "wiki-search"
 PARK = "wiki-home-button"
 # OLD's syswiki link color (its quests' "|~FF00C0FC").
 LINK_COLOR = "ff00c0fc"
+# A list's link, syswiki:list:<path> (Eddy's r39 notes: link any page). The
+# server takes it as free only for a path of 1 to LIST_PATH_MAX characters of
+# [a-z0-9_:] (srv input_main.cpp IsWikiHyperlink), so a path is made of the
+# tree's ids, "home", or "search:" and the search's UTF-8 bytes in hex.
+LIST_PATH_MAX = 64
+HOME_PATH = "home"
+SEARCH_PATH = "search:"
+NO_LIST = False          # list_of_path's answer for a path that names no list
+_PATH_CHARS = re.compile(r"[a-z0-9_:]{1,%d}\Z" % LIST_PATH_MAX)
+_HEX = re.compile(r"(?:[0-9a-f]{2})+\Z")
+# The menu a right press on a tab or a crumb opens, placed where no box is
+# known (an exe without GetElementBox): under the tab strip's start, in dp.
+MENU_FALLBACK = (12.0, 76.0)
+
+
+def _slug(label):
+	"""A tree row's id from its locale key: WIKI_SUB_COSTUME_HAIR is
+	costume_hair, WIKI_CAT_COSTUMES is costumes. Links keep these, so a
+	renamed key keeps its id by giving the row an "id"."""
+	text = label.lower()
+	for prefix in ("wiki_cat_", "wiki_sub_"):
+		if text.startswith(prefix):
+			text = text[len(prefix):]
+	return re.sub(r"[^a-z0-9_]", "_", text)
+
+
+def _ident(entry):
+	return entry.get("id") or _slug(entry["label"])
 
 
 def _item_sub(label, item_type, item_sub=-1):
@@ -214,7 +244,8 @@ def _wearer_race(item_module):
 class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	"""The browser's document; its events go to the window. Every press that
 	follows a link passes its button: the window opens a middle press, or a
-	left press with Ctrl held, in a new tab."""
+	left press with Ctrl held, in a new tab. A right press on a tab or a
+	crumb opens their menu; any other press closes it."""
 
 	DOCUMENT = DOCUMENT
 	MODEL = "wiki"
@@ -230,6 +261,7 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	@nui.on("board_press")
 	def on_board_press(self, button):
 		self.body_pressed(button)
+		self._owner.board_pressed()
 
 	@nui.on("close_press")
 	def on_close_press(self, button):
@@ -323,13 +355,18 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	@nui.on("crumb_press")
 	def on_crumb_press(self, index, button):
 		self.raise_for(button)
-		self._owner.press_crumb(int(index), int(button))
+		if button == 1:
+			self._owner.crumb_menu(int(index))
+		else:
+			self._owner.press_crumb(int(index), int(button))
 
 	@nui.on("tab_press")
 	def on_tab_press(self, index, button):
 		self.raise_for(button)
 		if button == 0:
 			self._owner.switch_tab(int(index))
+		elif button == 1:
+			self._owner.tab_menu(int(index))
 		elif button == 2:
 			self._owner.close_tab(int(index))
 
@@ -350,6 +387,12 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 		self.raise_for(button)
 		if button == 0:
 			self._owner.link_page()
+
+	@nui.on("menu_press")
+	def on_menu_press(self, index, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.press_menu(int(index))
 
 	@nui.on("retry_fire")
 	def on_retry_fire(self):
@@ -382,6 +425,62 @@ def wiki_link(kind, vnum, name):
 	return "|c%s|Hsyswiki:%s:%d|h[%s]|h|r" % (LINK_COLOR, ident, int(vnum), name)
 
 
+def wiki_list_link(path, name):
+	"""The chat link of a list page (a tree row's list, the home page, a
+	search): syswiki:list:<path>, opened by Interface.__OpenWikiLink."""
+	name = (name or "").replace("|", "")
+	return "|c%s|Hsyswiki:list:%s|h[%s]|h|r" % (LINK_COLOR, path, name)
+
+
+def _search_hex(text):
+	"""The search's UTF-8 bytes in hex, cut at a character so the path keeps
+	to LIST_PATH_MAX: a longer search links its first characters, whose
+	matches include the longer one's."""
+	budget = (LIST_PATH_MAX - len(SEARCH_PATH)) // 2
+	data_bytes = b""
+	for char in text:
+		encoded = char.encode("utf-8")
+		if len(data_bytes) + len(encoded) > budget:
+			break
+		data_bytes += encoded
+	return "".join("%02x" % b for b in bytearray(data_bytes))
+
+
+def list_path(list_key):
+	"""A list's link path: "home" for none, "<category id>:<list id>" for a
+	tree row's list, "search:<hex>" for a search."""
+	if list_key is None:
+		return HOME_PATH
+	if list_key[0] == "search":
+		return SEARCH_PATH + _search_hex(list_key[1])
+	category = TREE[list_key[1]]
+	return "%s:%s" % (_ident(category), _ident(category["subs"][list_key[2]]))
+
+
+def list_of_path(path):
+	"""The list a link path names (None: the home page), or NO_LIST for a
+	path that names none (a stale link, a tree row that went, bad hex)."""
+	if not isinstance(path, str) or not _PATH_CHARS.match(path):
+		return NO_LIST
+	if path == HOME_PATH:
+		return None
+	if path.startswith(SEARCH_PATH):
+		digits = path[len(SEARCH_PATH):]
+		if not _HEX.match(digits):
+			return NO_LIST
+		try:
+			text = bytes(bytearray(int(digits[i:i + 2], 16) for i in range(0, len(digits), 2))).decode("utf-8")
+		except UnicodeDecodeError:
+			return NO_LIST
+		text = text.strip()
+		return ("search", text) if text else NO_LIST
+	for i, category in enumerate(TREE):
+		for j, sub in enumerate(category["subs"]):
+			if path == "%s:%s" % (_ident(category), _ident(sub)):
+				return ("sub", i, j)
+	return NO_LIST
+
+
 class WikiWindow(nui_facade.Facade, ui.Window):
 	"""The browser (Interface.wndWiki). Facade's Show and Hide handle the
 	board; ui.Window.__init__ calls Hide before this __init__ finishes, so
@@ -402,6 +501,8 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 	_hover_shown = False
 	_hover_key = None        # (kind, vnum) in the hover preview, None when none
 	_paste_link = None
+	_menu_actions = ()       # the open menu's actions, one per entry (None: off)
+	_menu_fresh = False      # the press that opened the menu is still bubbling
 
 	def __init__(self):
 		self.nui_begin()
@@ -451,7 +552,14 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			"page_sub": "",
 			"page_icon": "",
 			"page_common": False,
-			"page_link": False,
+			# Every page links (Eddy's r39 notes); the key stays for the
+			# fixtures and the tests.
+			"page_link": True,
+			# The menu of a right press on a tab or a crumb: its entries
+			# ({"i", "label", "off"}; none: closed) and its place in dp.
+			"menu": [],
+			"menu_x": 0.0,
+			"menu_y": 0.0,
 			"model_view": False,
 			"hover_view": False,
 			"origins": [],
@@ -497,6 +605,35 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		self._go(self._at_page(KIND_MOB, int(vnum)))
 		return True
 
+	def OpenLink(self, kind, ident):
+		"""A syswiki link, syswiki:<kind>:<ident>: "item" and "mob" (a vnum)
+		and "list" (a path) open here; any other kind goes to _open_link,
+		where NOVA-139's text pages plug in. False when nothing opened."""
+		if kind == "list":
+			return self.OpenList(ident)
+		if kind in ("item", "mob"):
+			try:
+				vnum = int(ident)
+			except (TypeError, ValueError):
+				return False
+			return self.OpenItem(vnum) if kind == "item" else self.OpenMob(vnum)
+		return self._open_link(kind, ident)
+
+	def _open_link(self, kind, ident):
+		"""The hook for link kinds this module does not know (NOVA-139's
+		"page"); none opens yet."""
+		return False
+
+	def OpenList(self, path):
+		"""A list link (syswiki:list:<path>): that list, or the home page, in
+		this tab. False, and nothing opens, for a path that names no list."""
+		list_key = list_of_path(path)
+		if list_key is NO_LIST:
+			return False
+		self._show_window()
+		self._go((list_key, None))
+		return True
+
 	def Destroy(self):
 		self._clear_previews()
 		self._paste_link = None
@@ -510,6 +647,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		self._hover_key = None
 		if self.__dict__.get("_state") and self._state.get("hover_view"):
 			self.nui_set(hover_view=False)
+		self.close_menu()
 		nui_facade.Facade.Hide(self)
 
 	# --- locations, history and tabs ----------------------------------------------------
@@ -643,7 +781,7 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 		values = dict(self._tabs_model())
 		values.update(self._list_mark())
 		self._crumbs, values["crumbs"] = self._crumbs_model(list_key, page)
-		values.update(home=home, tree=self._tree_model(), page_link=page is not None)
+		values.update(home=home, tree=self._tree_model())
 		if home:
 			values["recent"] = self._recent_model()
 		self.nui_set(**values)
@@ -873,16 +1011,101 @@ class WikiWindow(nui_facade.Facade, ui.Window):
 			self._follow(self._at_page(KIND_ITEM, source), button)
 
 	def link_page(self):
-		"""The Link button: the page's chat link where the player types (the
-		whisper that has the focus, else the chat input). The focus leaves
-		the search field first, so the paste does not land there."""
-		page = self._location()[1]
-		if page is None or self._paste_link is None:
+		"""The Link button: the shown place's chat link where the player
+		types (the whisper that has the focus, else the chat input)."""
+		self._paste(self._link_of(self._location()))
+
+	def _link_of(self, location):
+		"""A page links as syswiki:item or syswiki:mob, a list (the home
+		page, a tree row's list, a search) as syswiki:list."""
+		list_key, page = location
+		if page is not None:
+			return wiki_link(page[0], page[1], self._raw_name(page[0], page[1]))
+		if list_key is None:
+			name = _locale("WIKI_TITLE")
+		elif list_key[0] == "sub":
+			name = "%s > %s" % (_locale(TREE[list_key[1]]["label"]), self._list_title(list_key))
+		else:
+			name = self._list_title(list_key)
+		return wiki_list_link(list_path(list_key), name)
+
+	def _paste(self, link):
+		"""The focus leaves the search field first, so the paste does not
+		land there."""
+		if self._paste_link is None:
 			return
 		board = self.nui_board()
 		if board is not None:
 			board.focus(PARK)
-		self._paste_link(wiki_link(page[0], page[1], self._raw_name(page[0], page[1])))
+		self._paste_link(link)
+
+	# --- the menu of a right press on a tab or a crumb ----------------------------------
+
+	def tab_menu(self, index):
+		"""Close, and Close other tabs (off with one tab)."""
+		if not (0 <= index < len(self._tabs)):
+			return
+		others = len(self._tabs) > 1
+		self._open_menu("wiki-tab-%d" % index, (
+			("WIKI_MENU_CLOSE", lambda: self.close_tab(index)),
+			("WIKI_MENU_CLOSE_OTHERS", (lambda: self.close_other_tabs(index)) if others else None),
+		))
+
+	def crumb_menu(self, index):
+		"""Open in new tab, and Link. The category is a label, with no place
+		of its own, so it has no menu."""
+		if not (0 <= index < len(self._crumbs)) or self._crumbs[index] is None:
+			self.close_menu()
+			return
+		target = self._crumbs[index]
+		self._open_menu("wiki-crumb-%d" % index, (
+			("WIKI_MENU_NEW_TAB", lambda: self._open_tab(target)),
+			("WIKI_LINK", lambda: self._paste(self._link_of(target))),
+		))
+
+	def _open_menu(self, element_id, entries):
+		"""The menu under the pressed element (its border box's bottom left,
+		in dp from the window's)."""
+		x, y = MENU_FALLBACK
+		board = self.nui_board()
+		box = board.element_box(element_id) if board is not None else None
+		body = board.element_box("") if board is not None else None
+		if box and body:
+			scale = nui.get_scale() or 1.0
+			x = (box[0] - body[0]) / scale
+			y = (box[1] + box[3] - body[1]) / scale
+		self._menu_actions = tuple(action for _, action in entries)
+		self._menu_fresh = True
+		self.nui_set(menu=[{"i": i, "label": nui.plain_text(_locale(key)), "off": action is None}
+		                   for i, (key, action) in enumerate(entries)], menu_x=x, menu_y=y)
+
+	def close_menu(self):
+		self._menu_actions = ()
+		self._menu_fresh = False
+		if self.__dict__.get("_state") and self._state.get("menu"):
+			self.nui_set(menu=[])
+
+	def board_pressed(self):
+		"""Any press on the window closes the menu, but the one that opened it."""
+		if self._menu_fresh:
+			self._menu_fresh = False
+		elif self._menu_actions:
+			self.close_menu()
+
+	def press_menu(self, index):
+		"""An entry's action, after the menu closes; an off entry only closes it."""
+		actions = self._menu_actions
+		self.close_menu()
+		if 0 <= index < len(actions) and actions[index] is not None:
+			actions[index]()
+
+	def close_other_tabs(self, index):
+		"""Only that tab is left, and it shows."""
+		if not (0 <= index < len(self._tabs)) or len(self._tabs) == 1:
+			return
+		self._tabs = [self._tabs[index]]
+		self._active = 0
+		self._render()
 
 	def _raw_name(self, kind, vnum):
 		if kind == KIND_ITEM:

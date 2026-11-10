@@ -77,3 +77,34 @@ body.skin-classic.wiki .wiki__list-head
 {
 	line-height: 19dp;
 }
+/* The tab and crumb menu: the legacy thin board (ui.ThinBoard) on an opaque
+   black fill, since the board is translucent and the menu lies over the window's
+   text; square rows that lighten under the pointer. */
+body.skin-classic.wiki .wiki__menu
+{
+	decorator: classic-thinboard;
+	padding: 6dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.wiki .wiki__menu.nui-fx
+{
+	box-shadow: none;
+}
+body.skin-classic.wiki .wiki__menu-item
+{
+	height: 20dp;
+	border-radius: 0;
+	line-height: 19dp;
+	color: var(--classic-button-text);
+}
+body.skin-classic.wiki .wiki__menu-item:hover
+{
+	background-color: var(--classic-hover-white);
+}
+body.skin-classic.wiki .wiki__menu-item.is-off,
+body.skin-classic.wiki .wiki__menu-item.is-off:hover
+{
+	background-color: transparent;
+}

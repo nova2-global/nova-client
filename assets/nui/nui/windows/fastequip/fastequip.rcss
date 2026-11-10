@@ -154,7 +154,7 @@ body.fastequip
 {
 	position: relative;
 	width: 460dp;
-	height: 372dp;
+	height: 462dp;
 	margin-top: 8dp;
 	border-width: 1dp;
 	border-color: var(--border);
@@ -165,6 +165,17 @@ body.fastequip
 {
 	position: absolute;
 	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+/* An item's icon at its own size (32 x 64 or 32 x 96dp) in the middle of
+   its cell, as the inventory's wear cells show it (Eddy, r41: a two-cell
+   armor shrank to 32 x 32); the cell is the item's whole area, so its one
+   hover and tooltip cover every part of it. */
+.fastequip__cell .nui-slot__icon
+{
+	height: auto;
 }
 .fastequip__tip
 {
@@ -200,17 +211,19 @@ body.fastequip
 .fastequip .fastequip__cell--w28 { left: 218dp; top: 167dp; width: 40dp; height: 40dp; }
 .fastequip .fastequip__cell--w29 { left: 323dp; top: 167dp; width: 40dp; height: 40dp; }
 .fastequip .fastequip__cell--w30 { left: 272dp; top: 167dp; width: 40dp; height: 40dp; }
-.fastequip .fastequip__cell--w31 { left: 77dp; top: 326dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w31 { left: 129dp; top: 370dp; width: 40dp; height: 80dp; }
 .fastequip .fastequip__cell--w32 { left: 129dp; top: 326dp; width: 40dp; height: 40dp; }
-.fastequip .fastequip__cell--w33 { left: 182dp; top: 326dp; width: 40dp; height: 40dp; }
+.fastequip .fastequip__cell--w33 { left: 77dp; top: 330dp; width: 40dp; height: 120dp; }
 .fastequip .fastequip__cell--w36 { left: 127dp; top: 12dp; width: 40dp; height: 40dp; }
 .fastequip .fastequip__cell--w37 { left: 53dp; top: 232dp; width: 40dp; height: 40dp; }
 .fastequip .fastequip__cell--w38 { left: 144dp; top: 232dp; width: 40dp; height: 40dp; }
 .fastequip .fastequip__cell--w39 { left: 302dp; top: 326dp; width: 40dp; height: 40dp; }
 
+/* The labels let a drop through to the canvas under them. */
 .fastequip__row-label
 {
 	position: absolute;
+	pointer-events: none;
 	color: var(--text-muted);
 	font-size: var(--font-sm);
 	top: 342dp;
@@ -245,8 +258,11 @@ body.fastequip
 	padding: 12dp;
 	z-index: 2;
 }
+/* The body's focus: none is inherited: the field takes the focus itself
+   (RmlUi gives a press's focus only to a focusable element). */
 .fastequip__name-input
 {
+	focus: auto;
 	display: block;
 	width: 100%;
 	box-sizing: border-box;

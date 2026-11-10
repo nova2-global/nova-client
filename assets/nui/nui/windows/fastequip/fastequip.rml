@@ -6,8 +6,12 @@
 	     a subclass of the legacy class on proxies: the 10 sets with their name
 	     and color, the selected set's wear cells (only the ones the server can
 	     use today, fastEquip.IsUsableCell), Switch, Clear and the edit panel.
-	     A cell's events go to legacy's handlers by its wear index. The refresh
-	     timer is a nui-countdown so nothing runs per frame. The document exists
+	     A cell's events go to legacy's handlers by its wear index; a press, a
+	     drag's release or a legacy drop on the canvas between the cells goes
+	     to legacy's DropAnywhere, which finds the item's cell (Eddy, r41). The
+	     name field takes the focus on a press (focus: auto under the body's
+	     focus: none) and its text never enters the model. The refresh timer
+	     is a nui-countdown so nothing runs per frame. The document exists
 	     only while the window shows and draws below the legacy UI layer. -->
 	<title>fastequip</title>
 	<link type="text/template" href="../../nui.rtpl"/>
@@ -34,7 +38,7 @@
 				<div class="fastequip__set-color" data-style---fe-color="s.css"></div>
 				<span class="fastequip__set-name">{{ s.name }}</span>
 				<button class="nui-button nui-button--ghost nui-button--icon nui-anim fastequip__set-edit" data-attr-id="'fastequip-edit-' + s.index"
-				        data-event-mousedown="edit_press(s.index, ev.button)"><span class="fastequip__set-edit-mark">...</span></button>
+				        data-event-mousedown="edit_press(s.index, ev.button)" data-event-click="edit_click(s.index)"><span class="fastequip__set-edit-mark">...</span></button>
 			</div>
 		</div>
 		<div class="fastequip__main">
@@ -42,7 +46,9 @@
 				<span class="fastequip__set-title">{{ title }}</span>
 				<div class="fastequip__equipped-stripe"></div>
 			</div>
-			<div id="fastequip-canvas" class="fastequip__canvas" data-class-is-attaching="attaching" data-class-nui-attach-right="attach_right">
+			<div id="fastequip-canvas" class="fastequip__canvas" data-class-is-attaching="attaching" data-class-nui-attach-right="attach_right"
+			     data-event-mousedown="canvas_press(ev.button)" data-event-mouseup="canvas_release(ev.button)"
+			     data-event-nuidrop="canvas_drop()">
 			<div id="fastequip-cell-0" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w0" data-if="cells[0].shown"
 			     data-class-is-empty="cells[0].kind == ''" data-class-is-target="cells[0].target == 'move'"
 			     data-class-is-blocked="cells[0].target == 'blocked'" data-class-is-disabled="cells[0].disabled"
@@ -412,7 +418,8 @@
 			</div>
 		</div>
 		<div id="fastequip-edit" class="nui-panel nui-fx fastequip__edit" data-if="edit_on">
-			<input id="fastequip-name" type="text" class="nui-input fastequip__name-input" maxlength="15" data-attr-value="edit_name" data-event-change="name_typed(ev.value)"/>
+			<input id="fastequip-name" type="text" class="nui-input fastequip__name-input" maxlength="15"
+			       data-event-mousedown="name_press(ev.button)" data-event-change="name_typed(ev.value)"/>
 			<div class="fastequip__palette">
 				<div class="fastequip__swatch nui-anim" data-for="c : palette" data-attr-id="'fastequip-color-' + c.index" data-class-is-selected="c.selected"
 				     data-style---fe-color="c.css" data-event-mousedown="color_press(c.index, ev.button)"></div>

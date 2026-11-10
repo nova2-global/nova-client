@@ -1165,6 +1165,8 @@ FAST_EQUIP_TITLE	Fast Equipment
 FAST_EQUIP_CLEAR_CONFIRM	Are you sure you want to clear this page?
 FAST_EQUIP_SET_NAME	Set %d
 FAST_EQUIP_ALREADY	This set is already equipped.
+FAST_EQUIP_NOT_FOR_SET	This item cannot be part of a set.
+FAST_EQUIP_WRONG_CHARACTER	Your character cannot wear this item.
 TARGET_INFO_DAMAGE	Sebzés : %s - %s
 TARGET_INFO_DEFENSE	Védelem : %s
 TARGET_INFO_MAINRACE	Osztály : %s

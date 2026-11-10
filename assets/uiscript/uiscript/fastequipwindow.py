@@ -3,11 +3,11 @@ import uiScriptLocale
 ## Fast equip (NOVA-17): OLD's uiscript/NewFastEquipWindow.py, its 460 px board
 ## with the 10 sets on the left and the set's name bar over the cells. OLD's
 ## art under d:/ymir work/ui/fastequip is not shipped, so the cells' slots are
-## built in code (uifastequip.CELLS, only the usable ones). The board is 44 px
+## built in code (uifastequip.CELLS, only the usable ones). The board is 104 px
 ## taller than OLD's for the row of buffi and aura cells (NEW's) under the
-## buttons.
+## buttons: the buffi's weapon is three cells tall (Eddy, r41).
 BOARD_WIDTH = 460
-BOARD_HEIGHT = 331 + 44
+BOARD_HEIGHT = 331 + 104
 BUTTON = "d:/ymir work/ui/public/middle_button_0%d.sub"
 
 

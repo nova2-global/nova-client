@@ -620,3 +620,4 @@ FAST_EQUIP_MISSING	Not on this character
 OPTION_MOB_INFO	Monster info
 OPTION_MOB_INFO_AGGR	Aggressif
 OPTION_MOB_INFO_LEVEL	Niveau
+SELECT_CLASS	Choisissez votre classe

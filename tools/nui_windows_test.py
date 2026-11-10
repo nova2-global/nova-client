@@ -28,7 +28,7 @@ HUD = WAVE2A + NOVA27_HUD + P18_HUD + W7_HUD
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
 HUD2 = WAVE2B + W7_HUD2
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
-WAVE5A = ["quest", "guild-building", "web", "console"]
+WAVE5A = ["quest", "guild-building", "web", "console", "select-skill"]  # select-skill: NOVA-37
 WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # The items group: the Wave 3b windows, wave 4b's extra inventory, Wave 6's
 # sash and aura windows (NOVA-20, NOVA-23) and Wave 7's chest-drop preview

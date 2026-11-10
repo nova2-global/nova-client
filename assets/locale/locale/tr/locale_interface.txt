@@ -621,3 +621,4 @@ FAST_EQUIP_MISSING	Not on this character
 OPTION_MOB_INFO	Canavar Bilgisi
 OPTION_MOB_INFO_AGGR	Agresif
 OPTION_MOB_INFO_LEVEL	Seviye
+SELECT_CLASS	Sinifini Seç

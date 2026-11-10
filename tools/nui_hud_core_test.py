@@ -1239,6 +1239,8 @@ EXPECTED_SITES = {
                             "nui_offline_shop_log.OfflineShopLogWindow"),
                            ("make", "shop-deco", "uiMyShopDecoration.MyShopDecorationWindow",
                             "nui_shop_deco.MyShopDecorationWindow"),
+                           # NOVA-37: the skill group's pick, the letter's window.
+                           ("make", "select-skill", "uiSelectSkill.SelectSkillWindow", "nui_select_skill.SelectSkillWindow"),
                            # Wave 7 (NOVA-43): the switchbot.
                            ("make", "switchbot", "uiSwitchbot.SwitchbotWindow", "nui_switchbot.SwitchbotWindow"),
                            # Wave 8 (NOVA-17): fast equip.

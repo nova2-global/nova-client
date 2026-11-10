@@ -54,6 +54,7 @@ import uiSearchShop
 import uiOfflineShopLog
 import uiKillRank
 import uiMyShopDecoration
+import uiSelectSkill
 # The switchbot (NOVA-43; OLD interfaceModule.py:90, 417).
 import uiSwitchbot
 # Fast equip (NOVA-17; OLD interfaceModule.py:93).
@@ -120,6 +121,7 @@ class Interface(object):
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
+		self.wndSelectSkill = None
 		self.wndSwitchbot = None
 		self.wndFastEquip = None
 		# NOVA-29: the kill ranking and the guild war top killers.
@@ -298,6 +300,9 @@ class Interface(object):
 		self.wndMyShopDeco = nui_windows.make("shop-deco", uiMyShopDecoration.MyShopDecorationWindow,
 		                                      "nui_shop_deco.MyShopDecorationWindow")
 		self.wndMyShopDeco.BindInterface(self)
+		# NOVA-37 (OLD interfaceModule.py:752-754).
+		self.wndSelectSkill = nui_windows.make("select-skill", uiSelectSkill.SelectSkillWindow, "nui_select_skill.SelectSkillWindow")
+		self.wndSelectSkill.LoadWindow()
 
 		# The switchbot (NOVA-43; OLD interfaceModule.py:417): the legacy
 		# controller, on NovaUI proxies while the switchbot flag is on.
@@ -585,6 +590,7 @@ class Interface(object):
 		# END_OF_ITEM_MALL
 
 		self.wndCharacter.SetSkillToolTip(self.tooltipSkill)
+		self.wndSelectSkill.SetSkillToolTip(self.tooltipSkill)
 		self.wndTaskBar.SetItemToolTip(self.tooltipItem)
 		self.wndTaskBar.SetSkillToolTip(self.tooltipSkill)
 		self.wndGuild.SetSkillToolTip(self.tooltipSkill)
@@ -786,6 +792,11 @@ class Interface(object):
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Destroy()
 			self.wndMyShopDeco = None
+
+		# NOVA-37 (OLD interfaceModule.py:1580).
+		if self.wndSelectSkill:
+			self.wndSelectSkill.Destroy()
+			self.wndSelectSkill = None
 
 		# NOVA-27 (OLD interfaceModule.py:1489-1491, 1661-1662).
 		if self.wndBossInfo:
@@ -1101,6 +1112,10 @@ class Interface(object):
 	def OnSearchShopBuyResult(self, code, ownerPid, slot):
 		self.wndSearchShop.OnBuyResult(code, ownerPid, slot)
 
+	def OpenSelectSkillWindow(self):
+		"""NOVA-37: the letter's button (server command OpenSelectSkillWindow)."""
+		self.wndSelectSkill.Open()
+
 	def OpenMyShopDecoWnd(self):
 		self.wndMyShopDeco.Open()
 		self.wndMyShopDeco.SetTop()
@@ -1385,6 +1400,10 @@ class Interface(object):
 		## OLD interfaceModule.py:2761-2762 (NOVA-9).
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Hide()
+
+		## NOVA-37: the select skill window goes with the others.
+		if getattr(self, "wndSelectSkill", None):
+			self.wndSelectSkill.Hide()
 
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:2735-2741).
 		for name in ("wndPetEggHatch", "wndPetRefineWindow", "wndPetEvolutionWindow", "wndPetInterfaceWindow",
@@ -1706,6 +1725,9 @@ class Interface(object):
 		## stand-in that has only the HUD windows.
 		if getattr(self, "wndMyShopDeco", None):
 			hideWindows += self.wndMyShopDeco,
+		## NOVA-37 (OLD interfaceModule.py:1594).
+		if getattr(self, "wndSelectSkill", None):
+			hideWindows += self.wndSelectSkill,
 		## OLD interfaceModule.py:3381-3382 (NOVA-18).
 		if getattr(self, "wndChestDrop", None):
 			hideWindows += self.wndChestDrop,

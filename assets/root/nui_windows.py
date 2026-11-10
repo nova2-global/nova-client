@@ -87,6 +87,7 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("guild-building", True),     # the guild building placement window
 	("web", True),                # the web window around the WebView2 page (the mall)
 	("console", True),            # the developer console (only where legacy opens it)
+	("select-skill", True),       # the skill group's pick (NOVA-37)
 	("inventory", True),          # the inventory, its costume and belt windows (Wave 3b)
 	("tooltips", True),           # the Interface's item, skill and link tooltips
 	("refine", True),             # both refine dialogs
@@ -157,7 +158,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	        "edge-buttons", "tip-board", "big-board", "map-name", "boss-info", "damage-count", "maintenance", "duel-rules"),
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war", "guild-war-top"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
-	"rest": ("quest", "guild-building", "web", "console"),
+	"rest": ("quest", "guild-building", "web", "console", "select-skill"),
 	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop",
 	          "switchbot", "fastequip", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
@@ -255,6 +256,7 @@ ON_DEMAND_DOCUMENTS = (
 	("kill-rank", ("kill-rank",)),
 	# NOVA-25: the dungeon manager (and its ready notice), its drops panel and
 	# the ranking, each only while it shows.
+	("select-skill", ("select-skill",)),
 	("dungeon-timer", ("dungeon-timer", "dungeon-notice")),
 	("dungeon-drops", ("dungeon-drops",)),
 	# Wave 8: the mob info board, only while it shows.

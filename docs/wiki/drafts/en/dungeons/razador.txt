@@ -55,4 +55,4 @@ Defeat Razador in his Throne of Hell!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:30329]], [[item:30330]], [[item:42325]]
+![[item:30329]], ![[item:30330]], ![[item:42325]]

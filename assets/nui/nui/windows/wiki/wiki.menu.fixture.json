@@ -352,6 +352,12 @@
 		"tp_blocks": [],
 		"tp_decor": [],
 		"tp_view": [],
-		"tp_open_at": 0.0
+		"tp_open_at": 0.0,
+		"classes": [],
+		"viewer": false,
+		"viewer_name": "",
+		"list_range": "",
+		"list_prev": false,
+		"list_next": false
 	}
 }

@@ -21,7 +21,7 @@ order: 110
 
 - Absorbed items can be removed with certificate of reversal or certificate of reversal+
 
-[[item:85009]], [[item:85010]]
+![[item:85009]], ![[item:85010]]
 
 - Using this item will remove the item,
   however it will **completely destroy** the item as well.
@@ -38,11 +38,11 @@ order: 110
 
 \****Select** your preferred sash style to view its drop table.**
 
-[[item:85001]], [[item:85011]], [[item:85015]], [[item:85005]]
+![[item:85001]], ![[item:85011]], ![[item:85015]], ![[item:85005]]
 
-[[item:86005]], [[item:86011]], [[item:86015]], [[item:86021]], [[item:86025]], [[item:86031]], [[item:86035]], [[item:86001]]
+![[item:86005]], ![[item:86011]], ![[item:86015]], ![[item:86021]], ![[item:86025]], ![[item:86031]], ![[item:86035]], ![[item:86001]]
 
-[[item:86045]], [[item:86051]], [[item:86055]], [[item:85021]], [[item:86041]]
+![[item:86045]], ![[item:86051]], ![[item:86055]], ![[item:85021]], ![[item:86041]]
 
 Obtained from Bosses Obtained from Meley
 
@@ -52,7 +52,7 @@ Obtained from Bosses Obtained from Meley
 
 - You can **combine** Shoulder Sashes at Theowahdan.
 
-[[item:85001]], [[item:85002]], [[item:85003]], [[item:85004]]
+![[item:85001]], ![[item:85002]], ![[item:85003]], ![[item:85004]]
 
 ![](d:/ymir work/ui/pet/arrow.png)
 

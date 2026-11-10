@@ -25,6 +25,12 @@ board exists only while the window shows; the tabs and their histories stay
 with the window. NOVA-139's text pages (nui_wiki_pages.py)
 are a page kind of their own, KIND_PAGE, whose rows sit in the tree after
 the browser's categories.
+
+Round four (after r41): equipment lists filter by class as OLD's did
+(CLASSES), every list has all its items and shows one page of
+LIST_PAGE_ROWS rows at a time, the item tooltip is the Interface's
+(SetItemToolTip), and a press on a page's model preview opens the model
+viewer (VIEWER_PREVIEW) over the content area.
 """
 
 import re
@@ -68,8 +74,14 @@ BANDS = ((1, 109), (110, 129), (130, 255))
 RETRY_SECONDS = 1.0
 ANSWER_WAIT_SECONDS = 2.5
 TRIES_MAX = 6
-LIST_ROWS_MAX = 500
-SEARCH_ROWS_MAX = 200
+# Every list has all its items (r41: the costume lists stopped at 500 and a
+# search at 200). The window lays out one page of LIST_PAGE_ROWS rows at a
+# time (Prev and Next under the list), so a list of thousands costs the
+# layout of a short one; the rows keep their index in the whole list. A
+# search asks the client for up to SEARCH_ROWS_MAX of each kind: all of
+# them, in practice.
+LIST_PAGE_ROWS = 100
+SEARCH_ROWS_MAX = 100000
 # The tabs, as in a browser (Eddy's r38 notes), the pages the home page lists,
 # and the steps a tab remembers.
 TABS_MAX = 8
@@ -96,6 +108,40 @@ _HEX = re.compile(r"(?:[0-9a-f]{2})+\Z")
 # known (an exe without GetElementBox): under the tab strip's start, in dp.
 MENU_FALLBACK = (12.0, 76.0)
 
+# Equipment by class (NOVA-42 r4), OLD's class buttons (inGameWikiUI.py
+# CLASS_BUTTONS) in OLD's order, and All. An item shows under a class when it
+# lacks that class's anti-flag (OLD's GameLib/ItemManager.cpp
+# IsFilteredAntiflag), so an item several classes use shows under each and
+# an item any class uses under every one. NEW has no lycan (the client
+# exports no ITEM_ANTIFLAG_WOLFMAN, the tooltip lists four classes), as OLD
+# had it off (INGAME_WIKI_WOLFMAN). The filter is part of an equipment
+# list's place, ("sub", category, list, class), so a tab, Back and Forward
+# and a list link (equipment:weapons:sura) keep it; the class last picked
+# stays for the next equipment list, as OLD's button did, and the first is
+# the player's own (race % 4: warrior, ninja, sura, shaman).
+CLASSES = (
+	("warrior", "ITEM_ANTIFLAG_WARRIOR", "TOOLTIP_WARRIOR"),
+	("ninja", "ITEM_ANTIFLAG_ASSASSIN", "TOOLTIP_ASSASSIN"),
+	("shaman", "ITEM_ANTIFLAG_SHAMAN", "TOOLTIP_SHAMAN"),
+	("sura", "ITEM_ANTIFLAG_SURA", "TOOLTIP_SURA"),
+)
+CLASS_ALL = "all"
+CLASS_IDS = tuple(c[0] for c in CLASSES) + (CLASS_ALL,)
+JOB_CLASSES = ("warrior", "ninja", "sura", "shaman")
+
+# The model viewer (Eddy after r41): a press on a page's model preview shows
+# it over the content area, in a view of its own so the page's small view
+# never holds a big target; closing it clears that preview (its target goes,
+# its model waits in the client's pool). A drag turns it (VIEWER_TURN
+# degrees a dp) and stops its own turn, the wheel zooms by VIEWER_ZOOM_STEP
+# a notch between the limits (the client's camera distance,
+# modelpreview.SetZoom), a double click resets it.
+VIEWER_PREVIEW = "wiki_viewer"
+VIEWER_TURN = 0.6
+VIEWER_ZOOM_STEP = 1.15
+VIEWER_ZOOM_MIN = 0.5
+VIEWER_ZOOM_MAX = 4.0
+
 
 def _slug(label):
 	"""A tree row's id from its locale key: WIKI_SUB_COSTUME_HAIR is
@@ -113,7 +159,22 @@ def _ident(entry):
 
 
 def _item_sub(label, item_type, item_sub=-1):
-	return {"label": label, "kind": "items", "item_type": item_type, "item_sub": item_sub}
+	return {"label": label, "kind": "items", "item_type": item_type, "item_sub": item_sub, "by_class": True}
+
+
+def class_allows(item_module, ident):
+	"""The selected item is usable by the class `ident` (OLD's rule: it lacks
+	that class's anti-flag); every item is, for All."""
+	for name, flag, _ in CLASSES:
+		if name == ident:
+			value = getattr(item_module, flag, None)
+			return value is None or not item_module.IsAntiFlag(value)
+	return True
+
+
+def _by_class(list_key):
+	"""The list is an equipment list, which the class filter applies to."""
+	return bool(list_key) and list_key[0] == "sub" and bool(TREE[list_key[1]]["subs"][list_key[2]].get("by_class"))
 
 
 def _mob_subs(kind):
@@ -316,6 +377,18 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 		self.raise_for(button)
 		self._owner.select_row(int(index), int(button))
 
+	@nui.on("list_prev_press")
+	def on_list_prev_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.list_page_step(-1)
+
+	@nui.on("list_next_press")
+	def on_list_next_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.list_page_step(1)
+
 	@nui.on("row_over")
 	def on_row_over(self, index):
 		self._owner.over_row(int(index))
@@ -416,6 +489,66 @@ class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	def on_tp_open(self):
 		self._owner.text_page_open()
 
+	# r4: an embedded item's tooltip (![[item:N]], nui_wiki_page_format).
+	@nui.on("tp_over")
+	def on_tp_over(self, index):
+		self._owner.over_text_link(int(index))
+
+	@nui.on("tp_out")
+	def on_tp_out(self):
+		self._owner.out_text_link()
+
+	# r4: the equipment list's class filter.
+	@nui.on("class_press")
+	def on_class_press(self, index, button):
+		self.raise_for(button)
+		self._owner.press_class(int(index), int(button))
+
+	# r4: the model viewer. The stage is the model's view (a drag turns it,
+	# the wheel zooms, a double click resets it); the backdrop around it
+	# closes the viewer on a press, as the close button does.
+	@nui.on("preview_press")
+	def on_preview_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.open_viewer()
+
+	@nui.on("viewer_close_press")
+	def on_viewer_close_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.close_viewer()
+
+	@nui.on("viewer_stage_press")
+	def on_viewer_stage_press(self, button):
+		self.raise_for(button)
+		self._owner.viewer_stage_pressed()
+
+	@nui.on("viewer_backdrop_press")
+	def on_viewer_backdrop_press(self, button):
+		self.raise_for(button)
+		self._owner.viewer_backdrop_pressed(int(button))
+
+	@nui.on("viewer_grab")
+	def on_viewer_grab(self, x):
+		self._owner.viewer_grab(float(x))
+
+	@nui.on("viewer_drag")
+	def on_viewer_drag(self, x):
+		self._owner.viewer_drag(float(x))
+
+	@nui.on("viewer_drop")
+	def on_viewer_drop(self):
+		self._owner.viewer_drop()
+
+	@nui.on("viewer_wheel")
+	def on_viewer_wheel(self, delta):
+		self._owner.viewer_wheel(float(delta))
+
+	@nui.on("viewer_reset")
+	def on_viewer_reset(self):
+		self._owner.viewer_reset()
+
 	@nui.on("retry_fire")
 	def on_retry_fire(self):
 		self._owner.retry_fire()
@@ -478,7 +611,7 @@ def _text_category(category):
 
 def list_path(list_key):
 	"""A list's link path: "home" for none, "<category id>:<list id>" for a
-	tree row's list, "<category id>" for a text category's pages,
+	tree row's list (and ":<class>" for an equipment list's filter), "<category id>" for a text category's pages,
 	"search:<hex>" for a search."""
 	if list_key is None:
 		return HOME_PATH
@@ -487,12 +620,15 @@ def list_path(list_key):
 	category = TREE[list_key[1]]
 	if list_key[0] == "pages":
 		return _ident(category)
-	return "%s:%s" % (_ident(category), _ident(category["subs"][list_key[2]]))
+	path = "%s:%s" % (_ident(category), _ident(category["subs"][list_key[2]]))
+	return path + ":" + list_key[3] if len(list_key) > 3 else path
 
 
 def list_of_path(path):
 	"""The list a link path names (None: the home page), or NO_LIST for a
-	path that names none (a stale link, a tree row that went, bad hex)."""
+	path that names none (a stale link, a tree row that went, bad hex). An
+	equipment list's path may end in its class; without one (r3's links)
+	the window gives it the class in use (WikiWindow._with_class)."""
 	if not isinstance(path, str) or not _PATH_CHARS.match(path):
 		return NO_LIST
 	if path == HOME_PATH:
@@ -514,8 +650,11 @@ def list_of_path(path):
 				return ("pages", i)
 			continue
 		for j, sub in enumerate(category["subs"]):
-			if path == "%s:%s" % (_ident(category), _ident(sub)):
+			own = "%s:%s" % (_ident(category), _ident(sub))
+			if path == own:
 				return ("sub", i, j)
+			if sub.get("by_class") and path.startswith(own + ":") and path[len(own) + 1:] in CLASS_IDS:
+				return ("sub", i, j, path[len(own) + 1:])
 	return NO_LIST
 
 
@@ -541,6 +680,15 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	_paste_link = None
 	_menu_actions = ()       # the open menu's actions, one per entry (None: off)
 	_menu_fresh = False      # the press that opened the menu is still bubbling
+	_class = None            # the class filter last picked (None: the player's own)
+	_tooltip_item = None     # the Interface's item tooltip (SetItemToolTip)
+	_tip_link = None         # the text page link whose item tooltip shows
+	_viewer = False          # the model viewer shows
+	_viewer_plan = None      # (kind, vnum) it shows
+	_viewer_rotation = 0.0
+	_viewer_zoom = 1.0
+	_viewer_grab_x = None    # the drag's last pointer x, in px
+	_viewer_on_stage = False # the press on the model still bubbles to the backdrop
 
 	def __init__(self):
 		self.nui_begin()
@@ -548,7 +696,8 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			ui.Window.__init__(self)
 			self.AddFlag("movable")
 			self.AddFlag("float")
-			self._rows = []          # (kind, vnum) of the shown list
+			self._rows = []          # (kind, vnum) of the shown list, all of it
+			self._list_page = 0      # its page of rows on show
 			self._list_key = False   # the list the rows are of (False: none built yet)
 			self._origins = []
 			self._open = {}          # category index: unfolded
@@ -570,6 +719,11 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			"list_title": "",
 			"list_count": "",
 			"list_sel": -1,
+			# A long list's pager: the rows on show ("1-100 / 1385"; "" for a
+			# list of one page) and whether there is a page before and after.
+			"list_range": "",
+			"list_prev": False,
+			"list_next": False,
 			# The home page: the quick links (every category and its lists)
 			# and the pages viewed last.
 			"home": True,
@@ -600,6 +754,12 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			"menu_y": 0.0,
 			"model_view": False,
 			"hover_view": False,
+			# The equipment list's class filter ({"i", "id", "label", "on"};
+			# none: not an equipment list).
+			"classes": [],
+			# The model viewer, and the name it shows.
+			"viewer": False,
+			"viewer_name": "",
 			"origins": [],
 			"chest": [],
 			"refine": [],
@@ -616,6 +776,20 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	def SetPasteLinkEvent(self, event):
 		"""Interface.PasteWikiLink: puts a page's link where the player types."""
 		self._paste_link = event
+
+	def SetItemToolTip(self, tooltip):
+		"""The Interface's item tooltip (NovaUI's, nui_item_tooltip, when
+		the tooltips flag is on), as the inventory gets it. Without one the
+		wiki makes a legacy uiToolTip.ItemToolTip of its own."""
+		self._tooltip_item = tooltip
+
+	def OnPressEscapeKey(self):
+		"""Escape closes the model viewer and keeps the key; with no viewer
+		the key goes on, as it did before the viewer."""
+		if self._viewer:
+			self.close_viewer()
+			return True
+		return False
 
 	def Open(self):
 		self._show_window()
@@ -677,7 +851,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		if list_key is NO_LIST:
 			return False
 		self._show_window()
-		self._go((list_key, None))
+		self._go((self._with_class(list_key), None))
 		return True
 
 	def OpenPage(self, path):
@@ -690,11 +864,16 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		return True
 
 	def Destroy(self):
+		self.close_viewer()
 		self._clear_previews()
 		self._paste_link = None
+		self._tooltip_item = None
 		nui_facade.Facade.Destroy(self)
 
 	def Hide(self):
+		self.close_viewer()
+		self._hide_tip()
+		self._tip_link = None
 		self._stop_preview(PREVIEW)
 		self._stop_preview(HOVER_PREVIEW)
 		self._preview_shown = False
@@ -833,8 +1012,10 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		if list_key is not None and list_key[0] in ("sub", "pages"):
 			self._open[list_key[1]] = True
 		home = list_key is None and page is None
+		self._page_of_shown()
 		values = dict(self._tabs_model())
 		values.update(self._list_mark())
+		values["classes"] = self._classes_model(list_key)
 		self._crumbs, values["crumbs"] = self._crumbs_model(list_key, page)
 		values.update(home=home, tree=self._tree_model())
 		if home:
@@ -915,7 +1096,8 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			subs = []
 			if self._open.get(i):
 				subs = [{"cat": i, "sub": j, "label": nui.plain_text(_locale(s["label"])),
-				         "selected": shown == ("sub", i, j) or page == (KIND_PAGE, s.get("page"))}
+				         "selected": (shown is not None and tuple(shown[:3]) == ("sub", i, j))
+				                     or page == (KIND_PAGE, s.get("page"))}
 				        for j, s in enumerate(category["subs"])]
 			rows.append({"cat": i, "label": nui.plain_text(_locale(category["label"])),
 			             "open": bool(self._open.get(i)), "subs": subs})
@@ -944,7 +1126,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		for i, category in enumerate(TREE):
 			for j, candidate in enumerate(category["subs"]):
 				if candidate is sub:
-					self._follow((("sub", i, j), None), button)
+					self._follow((self._with_class(("sub", i, j)), None), button)
 					return
 
 	def _open_text_page(self, sub, button=0):
@@ -978,7 +1160,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			sub = TREE[list_key[1]]["subs"][list_key[2]]
 			kind = sub["kind"]
 			if kind == "items":
-				pairs = [(KIND_ITEM, v) for v in self._list_items(sub)]
+				pairs = [(KIND_ITEM, v) for v in self._list_items(sub, list_key[3] if len(list_key) > 3 else CLASS_ALL)]
 			elif kind == "vnums":
 				pairs = [(KIND_ITEM, v) for v in self._list_vnums(sub["vnums"])]
 			else:
@@ -986,12 +1168,62 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		self._set_pairs(pairs)
 		self.nui_set(list_title=nui.plain_text(self._list_title(list_key)), list_count=str(len(self._rows)))
 
-	def _list_items(self, sub):
+	def _list_items(self, sub, ident=CLASS_ALL):
+		"""An equipment list, of the items the class `ident` can use."""
 		import item
 		item_type = getattr(item, sub["item_type"])
 		item_sub = sub["item_sub"]
 		item_sub = getattr(item, item_sub) if isinstance(item_sub, str) else item_sub
-		return [v for v in item.ListByType(item_type, item_sub) if v not in data.ITEM_BLACKLIST]
+		out = []
+		for v in item.ListByType(item_type, item_sub):
+			if v in data.ITEM_BLACKLIST:
+				continue
+			if ident != CLASS_ALL:
+				item.SelectItem(v)
+				if not class_allows(item, ident):
+					continue
+			out.append(v)
+		return out
+
+	# --- the class filter ----------------------------------------------------------------
+
+	def _own_class(self):
+		import player
+		try:
+			race = int(player.GetRace())
+		except Exception:
+			race = 0
+		return JOB_CLASSES[race % len(JOB_CLASSES)] if race >= 0 else JOB_CLASSES[0]
+
+	def _picked_class(self):
+		return self._class if self._class in CLASS_IDS else self._own_class()
+
+	def _with_class(self, list_key):
+		"""An equipment list's place with its class: the one it names, else
+		the one last picked (the player's own at first)."""
+		if list_key is not None and list_key[0] == "sub" and len(list_key) == 3 and _by_class(list_key):
+			return list_key + (self._picked_class(),)
+		return list_key
+
+	def _classes_model(self, list_key):
+		if not _by_class(list_key) or len(list_key) < 4:
+			return []
+		labels = [_locale(key) for _, _, key in CLASSES] + [_locale("WIKI_CLASS_ALL")]
+		return [{"i": i, "id": ident, "label": nui.plain_text(labels[i]), "on": ident == list_key[3]}
+		        for i, ident in enumerate(CLASS_IDS)]
+
+	def press_class(self, index, button=0):
+		"""A class of the equipment list's filter: this list (and the page
+		beside it) for that class, a step of the tab's history; a middle
+		press or Ctrl opens it in a new tab."""
+		list_key, page = self._location()
+		if not _by_class(list_key) or not (0 <= index < len(CLASS_IDS)):
+			return
+		ident = CLASS_IDS[index]
+		wants_tab = self._wants_new_tab(button)
+		if button == 0 and not wants_tab:
+			self._class = ident
+		self._follow((tuple(list_key[:3]) + (ident,), page), button)
 
 	def _list_vnums(self, vnums):
 		"""A hand-kept list, in vnum order. nui_wiki_data keeps only vnums in
@@ -1032,10 +1264,47 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			self.select_row(0)
 
 	def _set_pairs(self, pairs):
-		pairs = pairs[:LIST_ROWS_MAX]
-		self._rows = pairs
-		rows = [self._row_model(i, kind, vnum) for i, (kind, vnum) in enumerate(pairs)]
-		self.nui_set(list=rows, list_state="ready" if rows else "empty")
+		"""A new list: all its rows, shown from its first page."""
+		self._rows = list(pairs)
+		self._list_page = 0
+		self._publish_rows()
+
+	def _list_pages(self):
+		return max(1, (len(self._rows) + LIST_PAGE_ROWS - 1) // LIST_PAGE_ROWS)
+
+	def _publish_rows(self):
+		"""The rows of the page on show; only those are made and laid out."""
+		count = len(self._rows)
+		self._list_page = max(0, min(self._list_page, self._list_pages() - 1))
+		start = self._list_page * LIST_PAGE_ROWS
+		end = min(count, start + LIST_PAGE_ROWS)
+		rows = [self._row_model(i, self._rows[i][0], self._rows[i][1]) for i in range(start, end)]
+		paged = count > LIST_PAGE_ROWS
+		text = ""
+		if paged:
+			text = _locale("WIKI_LIST_RANGE")
+			try:
+				text = text % (start + 1, end, count)
+			except (TypeError, ValueError):
+				text = "%d-%d / %d" % (start + 1, end, count)
+		self.nui_set(list=rows, list_state="ready" if count else "empty", list_range=nui.plain_text(text),
+		             list_prev=paged and self._list_page > 0, list_next=paged and end < count)
+
+	def list_page_step(self, step):
+		"""Prev (-1) and Next (+1) under a long list."""
+		page = self._list_page + step
+		if 0 <= page < self._list_pages() and page != self._list_page:
+			self._list_page = page
+			self._publish_rows()
+
+	def _page_of_shown(self):
+		"""The list shows the page that holds the shown page's row."""
+		page = self._location()[1]
+		if page is not None and page in self._rows:
+			wanted = self._rows.index(page) // LIST_PAGE_ROWS
+			if wanted != self._list_page:
+				self._list_page = wanted
+				self._publish_rows()
 
 	def _row_model(self, index, kind, vnum):
 		if kind == KIND_PAGE:
@@ -1156,7 +1425,10 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			self.nui_set(menu=[])
 
 	def board_pressed(self):
-		"""Any press on the window closes the menu, but the one that opened it."""
+		"""Any press on the window closes the menu, but the one that opened
+		it. The body hears a press last, so a press on the viewer's model has
+		bubbled through the backdrop by now."""
+		self._viewer_on_stage = False
 		if self._menu_fresh:
 			self._menu_fresh = False
 		elif self._menu_actions:
@@ -1189,6 +1461,8 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		return nui.plain_text(self._raw_name(kind, vnum))
 
 	def _clear_page(self):
+		self.close_viewer()
+		self.out_text_link()
 		if self._current is None and not self._state.get("page_state"):
 			return
 		self._current = None
@@ -1200,6 +1474,8 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		             retry_at=0.0, timeout_at=0.0, **pages.initial_model())
 
 	def _select(self, kind, vnum):
+		self.close_viewer()
+		self.out_text_link()
 		if kind == KIND_PAGE:
 			self._stop_preview(PREVIEW)
 			self._preview_shown = False
@@ -1317,14 +1593,7 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 		if preview is not None:
 			if name == HOVER_PREVIEW and hasattr(preview, "SetDwell"):
 				preview.SetDwell(name, HOVER_DWELL_MS)
-			if kind == KIND_MOB:
-				shown = bool(preview.Select(name, vnum))
-			else:
-				plan = preview_of(vnum)
-				if plan is not None:
-					shown = bool(preview.Select(name, plan[1]))
-					if shown and plan[0] == "parts":
-						shown = bool(preview.SetParts(name, *plan[2]))
+			shown = self._select_model(preview, name, kind, vnum)
 			if shown:
 				preview.Show(name, True)
 		if name == PREVIEW:
@@ -1335,6 +1604,136 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 			self._set_hover_view(shown)
 		if not shown and preview is not None:
 			preview.Show(name, False)
+
+	@staticmethod
+	def _select_model(preview, name, kind, vnum):
+		"""Puts the model of a page in the preview `name`: a mob by its vnum,
+		an item by preview_of (its race, and the parts it is worn with).
+		False when there is none to show."""
+		if kind == KIND_MOB:
+			return bool(preview.Select(name, vnum))
+		plan = preview_of(vnum)
+		if plan is None:
+			return False
+		shown = bool(preview.Select(name, plan[1]))
+		if shown and plan[0] == "parts":
+			shown = bool(preview.SetParts(name, *plan[2]))
+		return shown
+
+	# --- the model viewer -------------------------------------------------------------
+
+	def open_viewer(self):
+		"""The page's model, larger, over the content area: the same model
+		(race, parts, hair, sash) in the viewer's own preview, turning at
+		the natural distance. The page's small view rests meanwhile."""
+		if self._viewer or not self._preview_shown or self._current is None or self._current[0] == KIND_PAGE:
+			return
+		preview = _modelpreview()
+		if preview is None:
+			return
+		kind, vnum = self._current
+		if not self._select_model(preview, VIEWER_PREVIEW, kind, vnum):
+			preview.Clear(VIEWER_PREVIEW)
+			return
+		self._viewer = True
+		self._viewer_plan = (kind, vnum)
+		self._viewer_rotation = 0.0
+		self._viewer_zoom = 1.0
+		self._viewer_grab_x = None
+		self._viewer_on_stage = False
+		self._viewer_call("SetZoom", 1.0)
+		self._viewer_call("SetTurn", True)
+		preview.Show(VIEWER_PREVIEW, True)
+		preview.Show(PREVIEW, False)
+		self._hide_tip()
+		self.nui_set(viewer=True, viewer_name=self._page_name(kind, vnum))
+
+	def close_viewer(self):
+		"""The close button, Escape, a press outside the model, a new page,
+		a hide: the viewer's preview is cleared (its render target goes)."""
+		if not self._viewer:
+			return
+		self._viewer = False
+		self._viewer_plan = None
+		self._viewer_grab_x = None
+		self._viewer_on_stage = False
+		preview = _modelpreview()
+		if preview is not None:
+			preview.Clear(VIEWER_PREVIEW)
+			if self._preview_shown:
+				preview.Show(PREVIEW, True)
+		if self.__dict__.get("_state"):
+			self.nui_set(viewer=False, viewer_name="")
+
+	def _viewer_call(self, call, *args):
+		"""A viewer call the client may not have (an exe before r4)."""
+		preview = _modelpreview()
+		function = getattr(preview, call, None) if preview is not None else None
+		if function is not None:
+			function(VIEWER_PREVIEW, *args)
+
+	def _viewer_state(self):
+		preview = _modelpreview()
+		get_state = getattr(preview, "GetState", None) if preview is not None else None
+		try:
+			return get_state(VIEWER_PREVIEW) if get_state is not None else None
+		except Exception:
+			return None
+
+	def viewer_stage_pressed(self):
+		"""A press on the model: it bubbles to the backdrop next, which must
+		not close the viewer for it."""
+		self._viewer_on_stage = True
+
+	def viewer_backdrop_pressed(self, button):
+		if self._viewer_on_stage:
+			self._viewer_on_stage = False
+			return
+		if button == 0:
+			self.close_viewer()
+
+	def viewer_grab(self, x):
+		"""A drag begins: the model stops its own turn where it is."""
+		if not self._viewer:
+			return
+		self._viewer_grab_x = x
+		state = self._viewer_state()
+		if isinstance(state, dict) and "rotation" in state:
+			self._viewer_rotation = float(state["rotation"])
+		self._viewer_call("SetTurn", False)
+
+	def viewer_drag(self, x):
+		"""The pointer moved by dx px: the model turns VIEWER_TURN degrees a dp."""
+		if not self._viewer or self._viewer_grab_x is None:
+			return
+		scale = nui.get_scale() or 1.0
+		turn = (x - self._viewer_grab_x) / scale * VIEWER_TURN
+		self._viewer_grab_x = x
+		rotation = (self._viewer_rotation + turn) % 360.0
+		self._viewer_rotation = 0.0 if rotation >= 360.0 else rotation
+		self._viewer_call("SetRotation", self._viewer_rotation)
+
+	def viewer_drop(self):
+		self._viewer_grab_x = None
+
+	def viewer_wheel(self, delta):
+		"""RmlUi's wheel delta is negative upward: up zooms in."""
+		if not self._viewer or not delta:
+			return
+		zoom = self._viewer_zoom * (VIEWER_ZOOM_STEP ** -delta)
+		self._viewer_zoom = max(VIEWER_ZOOM_MIN, min(VIEWER_ZOOM_MAX, zoom))
+		self._viewer_call("SetZoom", self._viewer_zoom)
+
+	def viewer_reset(self):
+		"""A double click: front on, the natural distance, turning again."""
+		if not self._viewer:
+			return
+		self._viewer_rotation = 0.0
+		self._viewer_zoom = 1.0
+		self._viewer_grab_x = None
+		self._viewer_call("SetRotation", 0.0)
+		self._viewer_call("SetZoom", 1.0)
+		self._viewer_call("SetTurn", True)
 
 	def _stop_preview(self, name):
 		if not self.__dict__.get("_state"):
@@ -1372,18 +1771,33 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	def over_vnum(self, vnum):
 		self._show_tooltip(KIND_ITEM, vnum)
 
-	def _show_tooltip(self, kind, vnum):
-		if kind != KIND_ITEM:
-			return
+	def _item_tip(self):
+		"""The Interface's item tooltip (SetItemToolTip), else one of the
+		wiki's own."""
+		if self._tooltip_item is not None:
+			return self._tooltip_item
 		if self.tooltip is None:
 			import uiToolTip
 			self.tooltip = uiToolTip.ItemToolTip()
 			self.tooltip.HideToolTip()
-		self.tooltip.SetItemToolTip(int(vnum))
+		return self.tooltip
+
+	def _show_tooltip(self, kind, vnum):
+		if kind != KIND_ITEM:
+			return
+		self._item_tip().SetItemToolTip(int(vnum))
+
+	def _hide_tip(self):
+		tip = self._tooltip_item if self._tooltip_item is not None else self.tooltip
+		if tip is not None:
+			tip.HideToolTip()
+
+	@staticmethod
+	def _item_icon_of(vnum):
+		return _item_icon(vnum)
 
 	def out_row(self):
-		if self.tooltip is not None:
-			self.tooltip.HideToolTip()
+		self._hide_tip()
 		self._hover_key = None
 		if self._hover_shown:
 			self._stop_preview(HOVER_PREVIEW)

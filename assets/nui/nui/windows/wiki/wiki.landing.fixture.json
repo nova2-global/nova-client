@@ -306,7 +306,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -328,7 +330,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -369,14 +373,18 @@
 												"b": true,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											},
 											{
 												"t": " opens the extra inventory.",
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									},
@@ -389,14 +397,18 @@
 												"b": true,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											},
 											{
 												"t": " opens the switch bot.",
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									},
@@ -409,28 +421,36 @@
 												"b": true,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											},
 											{
 												"t": " opens the ",
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											},
 											{
 												"t": "Dungeon Manager",
 												"b": false,
 												"i": false,
 												"l": 0,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											},
 											{
 												"t": ".",
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									}
@@ -462,14 +482,18 @@
 												"b": true,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											},
 											{
 												"t": " opens the fast equipment changer.",
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									},
@@ -482,14 +506,18 @@
 												"b": true,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											},
 											{
 												"t": " opens the advanced pet window.",
 												"b": false,
 												"i": false,
 												"l": -1,
-												"e": false
+												"e": false,
+												"m": "",
+												"icon": ""
 											}
 										]
 									}
@@ -531,7 +559,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -553,7 +583,9 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -575,21 +607,27 @@
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": "Shift",
 						"b": true,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					},
 					{
 						"t": " and right-click it in your inventory.",
 						"b": false,
 						"i": false,
 						"l": -1,
-						"e": false
+						"e": false,
+						"m": "",
+						"icon": ""
 					}
 				],
 				"items": [],
@@ -610,6 +648,12 @@
 				"n": 1
 			}
 		],
-		"tp_open_at": 0.0
+		"tp_open_at": 0.0,
+		"classes": [],
+		"viewer": false,
+		"viewer_name": "",
+		"list_range": "",
+		"list_prev": false,
+		"list_next": false
 	}
 }

@@ -25,5 +25,8 @@ class UnavailableWindow(object):
 	def WikiAnswer(self, *rows):
 		pass
 
+	def SetItemToolTip(self, tooltip):
+		pass
+
 	def SetPasteLinkEvent(self, event):
 		pass

@@ -70,7 +70,10 @@ OPEN_POPUPS = {"guild-member-open-": ("guild-combo-",), "chat-shout-colors-": ("
                "fastequip-edit-": ("fastequip-edit", "fastequip-name", "fastequip-color-"),
                # NOVA-42 round 3: the wiki's tab and crumb menus, open under
                # the pressed tab or crumb over the controls below them.
-               "wiki-menu-": ("wiki-menu",), "wiki-crumb-menu-": ("wiki-menu",)}
+               "wiki-menu-": ("wiki-menu",), "wiki-crumb-menu-": ("wiki-menu",),
+               # NOVA-42 round 4: the model viewer covers the wiki's content
+               # area while it is open, as a dialog would.
+               "wiki-viewer-": ("wiki-viewer",)}
 # Cases whose open popup covers slot cells on purpose: their sweep is not
 # checked (the same window's other cases sweep those cells).
 SWEEP_UNDER_OPEN_POPUP = ("costume-foundation-aura-classic-", "fastequip-edit-")

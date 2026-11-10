@@ -27,4 +27,4 @@ order: 170
   as the northern sky itself. Each chest may contain valuable items, resources, and rare treasures.
 
 - Click on the chest to **view the rewards inside!**
-[[item:34550]], **SHIFT**
+![[item:34550]], **SHIFT**

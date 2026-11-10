@@ -64,7 +64,7 @@ Item: Level: Time: Reward: Choice:
 - The Biologist Chest I and II can be purchased from the Item Shop. Each chest provides
   all the required items to complete the Biology quest, along with enough Elixirs
   to ensure a 100% success rate when submitting them.
-[[item:91050]], [[item:91051]], [[item:39023]], [[item:30006]], [[item:30220]], [[item:30047]], [[item:30221]], [[item:30015]], [[item:30222]], [[item:30050]], [[item:30223]], [[item:30165]], [[item:30224]], [[item:30166]], [[item:30225]], [[item:30167]], [[item:30226]], [[item:30168]], [[item:30227]], [[item:30251]], [[item:30228]], [[item:30252]], [[item:30228]], [[item:34256]], [[item:34263]], [[item:34257]], [[item:34264]], [[item:34258]], [[item:34265]], [[item:34259]], [[item:34266]], [[item:34260]], [[item:34267]], [[item:34261]], [[item:34268]], [[item:34262]], [[item:34269]]
+![[item:91050]], ![[item:91051]], ![[item:39023]], ![[item:30006]], ![[item:30220]], ![[item:30047]], ![[item:30221]], ![[item:30015]], ![[item:30222]], ![[item:30050]], ![[item:30223]], ![[item:30165]], ![[item:30224]], ![[item:30166]], ![[item:30225]], ![[item:30167]], ![[item:30226]], ![[item:30168]], ![[item:30227]], ![[item:30251]], ![[item:30228]], ![[item:30252]], ![[item:30228]], ![[item:34256]], ![[item:34263]], ![[item:34257]], ![[item:34264]], ![[item:34258]], ![[item:34265]], ![[item:34259]], ![[item:34266]], ![[item:34260]], ![[item:34267]], ![[item:34261]], ![[item:34268]], ![[item:34262]], ![[item:34269]]
 
 ![](d:/ymir work/ui/wiki/images/checkmarck.png)
 

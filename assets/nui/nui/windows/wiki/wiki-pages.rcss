@@ -114,6 +114,33 @@
 {
 	color: var(--danger);
 }
+/* An embedded item (![[item:N]]): its icon in a small well before its name.
+   The run hears the pointer once (tp_over); its children take none. */
+.wp__run > *, .wp__embed > *
+{
+	pointer-events: none;
+}
+.wp__embed
+{
+	display: inline-block;
+	width: 26dp;
+	height: 26dp;
+	margin: 0dp 3dp 0dp 1dp;
+	vertical-align: middle;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+	text-align: center;
+}
+.wp__embed-icon
+{
+	height: 24dp;
+}
+.wp__run.is-embed:hover .wp__embed
+{
+	border-color: var(--accent);
+}
 
 /* --- Lists ----------------------------------------------------------------------- */
 

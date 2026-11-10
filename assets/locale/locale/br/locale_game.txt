@@ -1278,3 +1278,6 @@ WIKI_CAT_EVENTS	Events
 WIKI_NOTE	Note	
 WIKI_WARNING	Warning	
 WIKI_PAGE_ERROR	This part of the page could not be shown:	
+WIKI_CLASS_ALL	All	
+WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
+WIKI_LIST_RANGE	%d-%d of %d	

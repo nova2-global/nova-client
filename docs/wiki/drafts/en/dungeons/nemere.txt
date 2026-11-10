@@ -43,4 +43,4 @@ Defeat the final boss, Nemere, in his Ice Lair.
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:30332]], [[item:30333]], [[item:42266]]
+![[item:30332]], ![[item:30333]], ![[item:42266]]

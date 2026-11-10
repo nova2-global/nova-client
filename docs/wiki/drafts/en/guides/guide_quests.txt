@@ -35,7 +35,7 @@ Both metin stones can be found in Farm Maps > Akanta Field.
 
 ### 5x Enhance Change Scroll+, 100x Clams & 75.000.000 Gold
 
-[[item:85012]], [[item:72005]], [[item:71052]], [[item:27987]], [[item:1]]
+![[item:85012]], ![[item:72005]], ![[item:71052]], ![[item:27987]], ![[item:1]]
 
 --- {style=ornate}
 
@@ -47,7 +47,7 @@ You can quickly access these dungeons by clicking on your keyboard.
 
 Reward: 1x Lord Sash (noble), 1x Young Moa & 100.000.000 Gold
 
-[[item:85003]], [[item:52108]], [[item:80007]], **F6**
+![[item:85003]], ![[item:52108]], ![[item:80007]], **F6**
 
 --- {style=ornate}
 
@@ -64,7 +64,7 @@ Reward: 1x Lord Sash (noble), 5x Azrael's Horn, 5x Flame Stone,
 
 ### 5x Ice Flame Stone, 5x Jotun's Horn, 100.000.000 Gold
 
-[[item:85003]], [[item:34046]], [[item:30524]], [[item:30525]], [[item:34045]], [[item:80007]], **F6**
+![[item:85003]], ![[item:34046]], ![[item:30524]], ![[item:30525]], ![[item:34045]], ![[item:80007]], **F6**
 
 --- {style=ornate}
 
@@ -77,7 +77,7 @@ It is recommended you level to 130 in Guatama Cliff.
 
 ### Reward: 10x Multi-Crystal Fragment, 125.000.000 Gold
 
-[[item:34017]], [[item:1]], [[item:80007]]
+![[item:34017]], ![[item:1]], ![[item:80007]]
 
 --- {style=ornate}
 
@@ -93,7 +93,7 @@ Keep in Mind that they spawn in specific locations.
 
 ### 5x Multi-Crystal Fragment, 150.000.000 Gold
 
-[[item:34018]], [[item:34019]], [[item:34020]], [[item:34017]], [[item:80007]], [[item:1]]
+![[item:34018]], ![[item:34019]], ![[item:34020]], ![[item:34017]], ![[item:80007]], ![[item:1]]
 
 **F6**
 
@@ -110,7 +110,7 @@ Reward: 50x Mazel Portal, 100x Charming Cube Chest, 3x Weapon Stone Token
 
 ### 3x Armor Stone Token, 5x Mazel Heart, 250.000.000 Gold
 
-**F6**, [[item:34035]], [[item:34092]], [[item:34033]], [[item:34034]], [[item:34040]], [[item:1]]
+**F6**, ![[item:34035]], ![[item:34092]], ![[item:34033]], ![[item:34034]], ![[item:34040]], ![[item:1]]
 
 --- {style=ornate}
 
@@ -127,8 +127,8 @@ You can find all the Stones in Mythical Forest.
 
 ### 3x Earth Infusion [I], 500.000.000 Gold
 
-**F6**, [[item:55260]], [[item:55261]], [[item:55262]], [[item:80007]]
+**F6**, ![[item:55260]], ![[item:55261]], ![[item:55262]], ![[item:80007]]
 
 --- {style=ornate}
 
-[[item:1]]
+![[item:1]]

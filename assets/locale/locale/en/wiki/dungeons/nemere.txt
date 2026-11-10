@@ -11,7 +11,7 @@ None.
 --- {style=ornate}
 
 ### Phase 1
-Defeat all the monsters to obtain the [[item:30332]]. Right-click it to make all the Arctic Cubes disappear.
+Defeat all the monsters to obtain the ![[item:30332]]. Right-click it to make all the Arctic Cubes disappear.
 
 ### Phase 2
 Defeat all the monsters and destroy the Metin of Cold to advance to the next phase.
@@ -20,7 +20,7 @@ Defeat all the monsters and destroy the Metin of Cold to advance to the next pha
 Defeat Commander Szel to advance to the next phase.
 
 ### Phase 4
-Defeat monsters until you obtain the correct [[item:30333]] to advance to the next phase.
+Defeat monsters until you obtain the correct ![[item:30333]] to advance to the next phase.
 
 ### Phase 5
 Defeat the final boss, [[mob:6191]], in his Ice Lair.

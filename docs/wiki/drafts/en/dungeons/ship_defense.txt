@@ -68,4 +68,4 @@ unique from all the others!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:34240]] x3, [[item:34240]] x1, [[item:42151]], [[item:42079]]
+![[item:34240]] x3, ![[item:34240]] x1, ![[item:42151]], ![[item:42079]]

@@ -594,6 +594,9 @@ class Interface(object):
 
 		self.wndSafebox.SetItemToolTip(self.tooltipItem)
 		self.wndCubeRenewal.SetItemToolTip(self.tooltipItem)
+		# The wiki's items show this tooltip too (NovaUI's when it is on).
+		if self.wndWiki:
+			self.wndWiki.SetItemToolTip(self.tooltipItem)
 
 		# ITEM_MALL
 		self.wndMall.SetItemToolTip(self.tooltipItem)

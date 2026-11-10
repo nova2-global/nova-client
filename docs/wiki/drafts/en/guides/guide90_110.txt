@@ -56,7 +56,7 @@ so you don’t lose important content before fully completing your equipment.
 
 ![](d:/ymir work/ui/wiki/images/eq_ui.png)
 
-[[item:3229]], [[item:19299]], [[item:17599]], [[item:14599]], [[item:16599]], [[item:12889]], [[item:15479]], [[item:13219]], [[item:18019]], [[item:85004]], [[item:18019]]
+![[item:3229]], ![[item:19299]], ![[item:17599]], ![[item:14599]], ![[item:16599]], ![[item:12889]], ![[item:15479]], ![[item:13219]], ![[item:18019]], ![[item:85004]], ![[item:18019]]
 
 --- {style=ornate}
 
@@ -104,17 +104,17 @@ as soon as you reach the appropriate area.
 Razador Nemeres Ochao Hive Cave
 Crystal & Mushroom
 
-[[item:34501]], [[item:34500]], [[item:66000]], [[item:66010]], [[item:66020]], [[item:66030]], [[item:66040]], [[item:66050]], [[item:30750]], [[item:51159]], [[item:34020]], [[item:80014]], [[item:34030]]
+![[item:34501]], ![[item:34500]], ![[item:66000]], ![[item:66010]], ![[item:66020]], ![[item:66030]], ![[item:66040]], ![[item:66050]], ![[item:30750]], ![[item:51159]], ![[item:34020]], ![[item:80014]], ![[item:34030]]
 
-[[item:31108]], [[item:31109]], [[item:31111]], [[item:31113]], [[item:31112]], [[item:31113]], [[item:50301]], [[item:50302]], [[item:50303]], [[item:50600]]
+![[item:31108]], ![[item:31109]], ![[item:31111]], ![[item:31113]], ![[item:31112]], ![[item:31113]], ![[item:50301]], ![[item:50302]], ![[item:50303]], ![[item:50600]]
 
 \**Obtained from Duratus. Obtained from Demon Pit.**
 
-[[item:30524]], [[item:30525]], [[item:34045]], [[item:34012]]
+![[item:30524]], ![[item:30525]], ![[item:34045]], ![[item:34012]]
 
 --- {style=ornate}
 
-[[item:34018]], [[item:30525]], [[item:34028]], [[item:71651]], [[item:71652]], [[item:55009]], [[item:55401]], [[item:34020]], [[item:34501]], [[item:34021]], [[item:34022]], [[item:55009]], [[item:71651]], [[item:71652]]
+![[item:34018]], ![[item:30525]], ![[item:34028]], ![[item:71651]], ![[item:71652]], ![[item:55009]], ![[item:55401]], ![[item:34020]], ![[item:34501]], ![[item:34021]], ![[item:34022]], ![[item:55009]], ![[item:71651]], ![[item:71652]]
 \**Note:**
 
 The **Demon Pit Dungeon** also drops the same loot from the Metin stones

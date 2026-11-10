@@ -28,4 +28,4 @@ order: 169
 
 - Click on the chests below to **view the rewards inside!**
 
-[[item:50011]], [[item:50043]], [[item:50044]], **SHIFT**
+![[item:50011]], ![[item:50043]], ![[item:50044]], **SHIFT**

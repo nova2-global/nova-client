@@ -42,4 +42,4 @@ Defeat the Mushroom Boss!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:42455]], [[item:50652]] x1
+![[item:42455]], ![[item:50652]] x1

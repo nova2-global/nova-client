@@ -19,7 +19,9 @@ page exists in.
 Every string a page brings reaches the model through nui.plain_text and
 {{ }}: a page is never markup. Links are indexes into the window's
 _tp_links; a press follows them as the wiki's other links (a middle press, or
-Ctrl and a left press, opens a new tab)."""
+Ctrl and a left press, opens a new tab). An embedded item (![[item:N]], r4)
+is a link whose run also has the item's icon ("m" "item", "icon"), and the
+pointer over it shows the item's tooltip, once per entry (tp_over, tp_out)."""
 
 import nui
 import nui_wiki_page_format as fmt
@@ -240,10 +242,12 @@ def _missing(path):
 	return page
 
 
-def render(path, name_of):
+def render(path, name_of, icon_of=None):
 	"""(model values, links) of the page at path. name_of(kind, vnum) is an
-	item's or a mob's name; links are (kind, ident), a run's "l" its index
-	(-1 for text). A link to a page that does not exist is an error run."""
+	item's or a mob's name, icon_of(vnum) an item's icon source; links are
+	(kind, ident, embed), a run's "l" its index (-1 for text), its "m" "item"
+	for an embed (with the item's "icon") and "" otherwise. A link to a page
+	that does not exist is an error run."""
 	page = load(path)
 	if page is None:
 		page = _missing(path)
@@ -253,7 +257,8 @@ def render(path, name_of):
 		out = []
 		for run in source:
 			link = run["link"]
-			model = {"t": nui.plain_text(run["t"]), "b": run["b"], "i": run["i"], "l": -1, "e": run["e"]}
+			model = {"t": nui.plain_text(run["t"]), "b": run["b"], "i": run["i"], "l": -1, "e": run["e"],
+			         "m": "", "icon": ""}
 			if link:
 				kind, ident, text = link
 				if kind == "page" and not exists(ident):
@@ -265,7 +270,10 @@ def render(path, name_of):
 						else:
 							text = name_of(kind, int(ident)) or "#%s" % ident
 					model.update(t=nui.plain_text(text), l=len(links))
-					links.append((kind, ident))
+					embed = bool(run.get("embed")) and kind == "item"
+					if embed:
+						model.update(m="item", icon=(icon_of(int(ident)) if icon_of else "") or "")
+					links.append((kind, ident, embed))
 			out.append(model)
 		return out
 
@@ -297,11 +305,13 @@ class TextPageWindow(object):
 
 	_tp_links = ()
 	_tp_serial = 0
+	_tip_link = None  # the embed whose tooltip shows
 
 	def _select_text_page(self, path):
 		self._current = (KIND_PAGE, path)
 		self._origins = []
-		values, self._tp_links = render(path, self._tp_name)
+		self.out_text_link()
+		values, self._tp_links = render(path, self._tp_name, self._tp_icon)
 		self._tp_serial += 1
 		self.nui_set(page_state="text", page_kind="text", page_vnum=0, page_name=values["tp_title"], page_sub="",
 		             page_icon="", page_common=False, model_view=False, origins=[], chest=[], refine=[], drops=[],
@@ -309,6 +319,26 @@ class TextPageWindow(object):
 
 	def _tp_name(self, kind, vnum):
 		return self._raw_name(0 if kind == "item" else 1, vnum)
+
+	def _tp_icon(self, vnum):
+		return self._item_icon_of(vnum)
+
+	def over_text_link(self, index):
+		"""The pointer on an embedded item: its tooltip. RmlUi sends the
+		mouseover again for the embed's own children, so the link already
+		shown shows nothing again; text and plain links show none."""
+		if not (0 <= index < len(self._tp_links)) or index == self._tip_link:
+			return
+		kind, ident, embed = self._tp_links[index]
+		if not embed:
+			return
+		self._tip_link = index
+		self._show_tooltip(0, int(ident))
+
+	def out_text_link(self):
+		if self._tip_link is not None:
+			self._tip_link = None
+			self._hide_tip()
 
 	def text_page_open(self):
 		"""The hidden clock's end: the page's viewport again (see tp_view)."""
@@ -318,7 +348,7 @@ class TextPageWindow(object):
 	def follow_text_link(self, index, button=0):
 		if not (0 <= index < len(self._tp_links)):
 			return
-		kind, ident = self._tp_links[index]
+		kind, ident = self._tp_links[index][:2]
 		if kind == "page":
 			location = self._page_location(ident)
 		else:

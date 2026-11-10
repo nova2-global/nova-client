@@ -120,6 +120,26 @@ Item and monster links take the number from the game's tables (the vnum). A page
 
 A broken link (a wrong kind, a number that is not a number, a page that does not exist) shows in red, and the page says what is wrong.
 
+### Items with their icon
+
+Put a `!` before an item link to show the item as the game does: its icon in a small box, then its name. Pointing at it shows the item's full tooltip, and a click opens its page, like any link.
+
+```
+Defeat the [[mob:1093]] to get the ![[item:30304]].
+Collect ![[item:30330|Maat Stones]] x5 to break the pillars.
+| Grade | Sash |
+|---|---|
+| Basic | ![[item:85001]] |
+```
+
+The first line shows the Zin-Bong-In Key's icon and name in the sentence. Text after a `|` replaces the name, as in a link. An embed works anywhere a link does: in paragraphs, lists, tables, notes and bold text.
+
+Use an embed where a player needs to recognize the item (a key, a stone, a reward), and a plain link elsewhere, so the text stays easy to read. Only items embed: `![[mob:...]]` and `![[page:...]]` are mistakes and show in red; write monsters and pages as links. To show a `!` right before a link, write `\!`.
+
+Why `![[...]]`: in Markdown a `!` before a link makes it an image, so an embed reads as "this link, shown as a picture". `[[item:N|icon]]` would clash with link text (a link whose text is "icon"), and `{{ }}` is the interface's own template syntax, which a page must never use.
+
+OLD's pages placed an item's icon by pixel, `[IMG=icon/item/30304.tga; ITEM_TOOLTIP=30304; X=270; Y=133]`. The converter (`tools/wiki_convert_old.py`) turns each one into `![[item:30304]]` (with ` xN` after it for an `item_count`).
+
 ## Images
 
 An image is a line of its own:

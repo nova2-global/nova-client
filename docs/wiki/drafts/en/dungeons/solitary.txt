@@ -51,4 +51,4 @@ Take the fight with The Almighty Tormentor and achive a win!
 Lucky Bosses are rare enemies that appear after defeating the regular boss.
 They drop the same materials as the standard boss but also have a chance to
 reward you with an exclusive costume!
-[[item:42260]]
+![[item:42260]]

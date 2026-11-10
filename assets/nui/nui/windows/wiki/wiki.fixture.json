@@ -1,0 +1,39 @@
+{
+	"wiki": {
+		"search": "",
+		"tree": [
+			{"cat": 0, "label": "Equipment", "open": true, "subs": [
+				{"cat": 0, "sub": 0, "label": "Weapons"},
+				{"cat": 0, "sub": 1, "label": "Armor"}
+			]},
+			{"cat": 2, "label": "Bosses", "open": false, "subs": []}
+		],
+		"list": [
+			{"i": 0, "vnum": 19, "mob": false, "icon": "/icon/item/27992.tga", "name": "Moon Blade", "note": ""},
+			{"i": 1, "vnum": 8002, "mob": true, "icon": "", "name": "Wolf King", "note": "Lv. 20"}
+		],
+		"list_state": "ready",
+		"page_state": "ready",
+		"page_kind": "item",
+		"page_vnum": 19,
+		"page_name": "Moon Blade",
+		"page_sub": "",
+		"page_icon": "/icon/item/27992.tga",
+		"page_common": false,
+		"model_view": false,
+		"hover_view": false,
+		"origins": [
+			{"i": 0, "label": "Dropped by", "name": "Wolf King", "link": true},
+			{"i": 1, "label": "Sold by", "name": "Weaponsmith", "link": false}
+		],
+		"chest": [
+			{"i": 0, "vnum": 27001, "icon": "/icon/item/27001.tga", "name": "Red Potion (S)", "count": "5"}
+		],
+		"refine": [
+			{"label": "+1", "cost": "10,000 Yang", "mats": [{"vnum": 30000, "count": "3", "icon": "/icon/item/27992.tga"}]}
+		],
+		"drops": [],
+		"retry_at": 0.0,
+		"timeout_at": 0.0
+	}
+}

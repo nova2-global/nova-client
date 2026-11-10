@@ -46,6 +46,9 @@
 		<handle id="inv-title" class="nui-window__handle inv__handle" move_target="#document">
 			<span class="nui-window__title inv__title">@ui.INVENTORY_TITLE</span>
 		</handle>
+		<button id="inv-wiki" class="nui-button nui-button--ghost nui-button--icon nui-anim nui-has-tooltip inv__wiki"
+		        data-if="has_wiki" data-event-mousedown="wiki_press(ev.button)"><span class="nui-glyph nui-glyph--guide"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim inv-tip">@game.WIKI_TITLE</span></button>
 		<button id="inv-close" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim inv__close"
 		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
 			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>

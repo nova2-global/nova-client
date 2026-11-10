@@ -485,3 +485,9 @@ body.skin-classic.inv .inv-money.inv-gem:hover
 	top: 583dp;
 	margin-top: 0;
 }
+
+/* The wiki button is the modern skins'; classic keeps legacy's layout (NOVA-42). */
+body.skin-classic.inv .inv__wiki
+{
+	display: none;
+}

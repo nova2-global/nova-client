@@ -1397,6 +1397,7 @@
 		"has_costume": true,
 		"has_dss": true,
 		"has_mall": true,
+		"has_wiki": false,
 		"has_extra": true,
 		"has_fastequip": true,
 		"placed": false,

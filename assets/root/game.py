@@ -1327,6 +1327,11 @@ class GameWindow(ui.ScriptWindow):
 	## (BINARY_AddChestDropInfo, game.py:1173-1176), so a second answer for a
 	## chest doubled its rows; the rows replace the known ones here. Then
 	## OLD's BINARY_RefreshChestDropInfo (:1178-1179) opens the window.
+	## The ingame wiki (NOVA-42): one page's rows, or a busy answer.
+	def BINARY_WikiAnswer(self, kind, status, vnum, flags, origins, chest, refine, drops):
+		if self.interface:
+			self.interface.WikiAnswer(kind, status, vnum, flags, origins, chest, refine, drops)
+
 	def BINARY_SetChestDropInfo(self, chestVnum, rows):
 		constInfo.CHESTS_PREVIEW[chestVnum] = [tuple(row) for row in rows]
 		if self.interface:

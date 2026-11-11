@@ -27,7 +27,7 @@
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "b83c20669426ed3cb0de61b6c97451b8951f135ae16f24f68e3fb6a96730d497"
+			"sha256": "9d9524c23a6c4029b7d566bc68f48aa168db20fd85bf473bbd848141f0d496af"
 		}
 	},
 	"items": {
@@ -32734,6 +32734,98 @@
 				"price": 0
 			},
 			"sell_price": 5000
+		},
+		{
+			"id": "shop-barter-all",
+			"context": "SetShopItem",
+			"vnum": 11290,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"shop": {
+				"open": true,
+				"private": false,
+				"price": 50000,
+				"barter": [
+					[
+						25040,
+						3
+					],
+					[
+						27001,
+						50
+					]
+				],
+				"all": 1
+			}
+		},
+		{
+			"id": "shop-barter-any",
+			"context": "SetShopItem",
+			"vnum": 11290,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"shop": {
+				"open": true,
+				"private": false,
+				"price": 0,
+				"barter": [
+					[
+						25040,
+						2
+					],
+					[
+						27001,
+						20
+					],
+					[
+						25040,
+						1
+					]
+				],
+				"all": 0
+			}
+		},
+		{
+			"id": "shop-private",
+			"context": "SetShopItem",
+			"vnum": 10,
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"sockets": [
+				0,
+				0,
+				0,
+				0
+			],
+			"attrs": [],
+			"shop": {
+				"open": true,
+				"private": true,
+				"price": 700
+			}
 		},
 		{
 			"id": "premium-scroll-fresh",

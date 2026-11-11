@@ -338,6 +338,189 @@ class ShopFlows(ShopTest):
         self.assertEqual((args[0], args[1], args[3]), ("shop", 1000, False))
 
 
+# --- NOVA-83: barter rows and bulk buys (OLD uiShop.py:1043-1110) ---------------------------------------
+
+COIN, SCALE, PEARL, BOX, SCROLL = 80005, 80006, 80007, 50011, 25040
+STACKABLE = 4  # CItemData::ITEM_FLAG_STACKABLE
+
+
+def barter_stock(tabs=1, private=False, coin_tab=False):
+    """shop_stock's NPC with two barter rows: a box at 7 for 2 coins and a
+    scale (every cost, no yang; it does not stack), five scrolls at 8 for 3
+    coins or a pearl (any one) and 1000 yang (they stack). The potions at 2
+    stack too. coin_tab: the first tab is a secondary coin tab."""
+    stock = shop_stock(tabs)
+
+    def setup(game):
+        stock(game)
+        first = game.w4["shop"]["tabs"][0]
+        first["items"][7] = {"vnum": BOX, "count": 1, "price": 0, "barter": [(COIN, 2), (SCALE, 1)], "all": True}
+        first["items"][8] = {"vnum": SCROLL, "count": 5, "price": 1000, "barter": [(COIN, 3), (PEARL, 1)], "all": False}
+        if coin_tab:
+            first["coin"] = 1
+        for vnum in (POTION, SCROLL, COIN):
+            game.item_flags_of[vnum] = STACKABLE
+    return setup
+
+
+class ShopBarter(ShopTest):
+    """NOVA-83: Shift + click asks how many (an NPC shop's gold tab only),
+    the buy question lists the costs, the count packet, a plain press on a
+    barter row asks, an older exe buys one item at a time, and the board's
+    barter mark. Legacy and NovaUI make the same calls."""
+
+    def shifted(self, world, key="DIK_LSHIFT"):
+        world.game.pressed.add(A[key])
+
+    def count_dialogs(self, world):
+        return [d for d in world.game.dialogs if d._name == "uiCommon.InputDialog"]
+
+    def buy_packets(self, effects):
+        return [c for c in effects if c[0] in ("net.SendShopBuyPacket", "net.SendShopBuyCountPacket")]
+
+    def test_shift_and_a_right_press_asks_how_many_up_to_the_cap(self):
+        # The potions: 200 a row, one stack of 2000 holds 10 rows; the box does
+        # not stack: 45; the scrolls: 5 a row, 400 rows; either Shift.
+        for cell, cap, key in ((2, 10, "DIK_LSHIFT"), (7, 45, "DIK_RSHIFT"), (8, 400, "DIK_LSHIFT")):
+            def flow(world, window, cell=cell, key=key):
+                self.shifted(world, key)
+                self.press(world, window, cell, 1)
+            (legacy, world_a, _), (novaui, world_b, _) = self.run_both(flow, barter_stock())
+            with self.subTest(cell=cell):
+                self.assertEqual(novaui, legacy)
+                self.assertEqual(self.buy_packets(novaui), [], "nothing is bought before the count")
+                (dialog,) = self.count_dialogs(world_b)
+                self.assertTrue(dialog.is_open)
+                self.assertEqual(dialog.title, "Items to buy (max. %d)" % cap)
+                self.assertEqual(dialog.max_length, len(str(cap)))
+                self.assertTrue(getattr(dialog, "number_mode", False))
+
+    def test_the_count_question_lists_every_cost_and_the_yang_times_the_count(self):
+        def flow(world, window):
+            self.shifted(world)
+            self.press(world, window, 8, 1)
+            self.count_dialogs(world)[-1].text = "3"
+            self.count_dialogs(world)[-1].accept()
+            self.texts = getattr(self, "texts", []) + [window.itemBuyQuestionDialog.texts[0]]
+            window.itemBuyQuestionDialog.accept()
+        self.texts = []
+        (legacy, _, _), (novaui, world, _) = self.run_both(flow, barter_stock())
+        self.assertEqual(novaui, legacy)
+        money = world.game.modules["localeInfo"].NumberToMoneyString(3000)
+        self.assertEqual(self.texts, ["Do you want to buy 15x item %d for 9x item %d or 3x item %d + %s?"
+                                      % (SCROLL, COIN, PEARL, money)] * 2)
+        self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyCountPacket", (8, 3))])
+
+    def test_a_plain_right_press_on_a_barter_row_asks_with_its_costs_then_buys_one(self):
+        def flow(world, window):
+            self.press(world, window, 7, 1)
+            self.texts.append(window.itemBuyQuestionDialog.texts[0])
+            window.itemBuyQuestionDialog.accept()
+        self.texts = []
+        (legacy, _, _), (novaui, _, _) = self.run_both(flow, barter_stock())
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(self.texts, ["Do you want to buy 1x item %d for 2x item %d, 1x item %d?" % (BOX, COIN, SCALE)] * 2)
+        self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyPacket", (7,))])
+
+    def test_a_count_of_one_sends_the_one_item_packet_and_a_count_above_the_cap_is_the_cap(self):
+        for typed, packet in (("1", ("net.SendShopBuyPacket", (2,))), ("999", ("net.SendShopBuyCountPacket", (2, 10))),
+                              ("0", None), ("", None)):
+            def flow(world, window, typed=typed):
+                self.shifted(world)
+                self.press(world, window, 2, 1)
+                self.count_dialogs(world)[-1].text = typed
+                self.count_dialogs(world)[-1].accept()
+                if window.itemBuyQuestionDialog:
+                    window.itemBuyQuestionDialog.accept()
+            (legacy, _, _), (novaui, _, _) = self.run_both(flow, barter_stock())
+            with self.subTest(typed=typed):
+                self.assertEqual(novaui, legacy)
+                self.assertEqual(self.buy_packets(novaui), [packet] if packet else [])
+
+    def test_shift_and_a_left_press_asks_how_many_instead_of_picking_the_item(self):
+        def flow(world, window):
+            self.shifted(world)
+            self.press(world, window, 2)
+            self.count_dialogs(world)[-1].text = "2"
+            self.count_dialogs(world)[-1].accept()
+            window.itemBuyQuestionDialog.accept()
+        (legacy, world, _), (novaui, _, _) = self.run_both(flow, barter_stock())
+        self.assertEqual(novaui, legacy)
+        self.assertNotIn("mouse.AttachObject", [name for name, _ in novaui])
+        self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyCountPacket", (2, 2))])
+
+    def test_shift_buys_one_in_a_player_s_shop_and_a_secondary_coin_tab(self):
+        def private(world, window):
+            self.shifted(world)
+            self.press(world, window, 2, 1)
+            window.itemBuyQuestionDialog.accept()
+        (legacy, world, _), (novaui, world_b, _) = self.run_both(private, barter_stock(), vid=PLAYER_SHOP)
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(self.count_dialogs(world_b), [])
+        self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyPacket", (2,))])
+
+        def coin(world, window):
+            self.shifted(world)
+            self.press(world, window, 2, 1)
+        (legacy, world, _), (novaui, world_b, _) = self.run_both(coin, barter_stock(coin_tab=True))
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(self.count_dialogs(world_b), [])
+        self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyPacket", (2,))])
+
+    def test_an_older_exe_buys_one_item_with_no_barter_and_no_count(self):
+        def setup(game):
+            barter_stock()(game)
+            game.modules["net"].lack("SendShopBuyCountPacket")
+            game.modules["shop"].lack("HasBarter", "IsBarterAll", "GetBarterCost", "BARTER_COST_MAX", "BUY_COUNT_MAX",
+                                      "BUY_UNSTACKED_MAX")
+
+        def flow(world, window):
+            self.shifted(world)
+            self.press(world, window, 2, 1)
+            self.press(world, window, 7, 1)
+        (legacy, _, _), (novaui, world, b) = self.run_both(flow, setup)
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(self.count_dialogs(world), [])
+        self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyPacket", (2,)), ("net.SendShopBuyPacket", (7,))])
+        self.assertFalse(any(cell["barter"] for cell in w4.board(b).model["cells"]))
+
+    def test_a_second_tab_s_buy_question_and_drop_name_its_row_once(self):
+        """The buy mode's press and the inventory's drop hand the real index
+        on: it is no longer offset by the tab twice (row 80 for tab 1's
+        first cell)."""
+        def flow(world, window):
+            if world.nui_on:
+                w4.press(window, "tab_press", 1, 0)
+            else:
+                window.middleRadioButtonGroup.buttonGroup[1][0].click()
+            window.CancelShopping()
+            world.game.cursor = A["BUY"]
+            self.press(world, window, 0)
+            window.itemBuyQuestionDialog.accept()
+            world.game.cursor = A["NORMAL"]
+            self.press(world, window, 0)
+            world.mouse.RunCallBack("INVENTORY")
+            window.itemBuyQuestionDialog.accept()
+        (legacy, _, _), (novaui, _, _) = self.run_both(flow, shop_stock(2))
+        self.assertEqual(novaui, legacy)
+        self.assertEqual(self.buy_packets(novaui), [("net.SendShopBuyPacket", (40,))] * 2)
+
+    def test_the_board_marks_the_barter_rows_cells(self):
+        (_, _, a), (_, world, b) = self.run_both(lambda world, window: None, barter_stock())
+        cells = w4.board(b).model["cells"]
+        self.assertEqual([cell["index"] for cell in cells if cell["barter"]], [7, 8])
+        self.assertTrue(all("barter" in cell for cell in cells))
+
+    def test_the_shop_error_not_enough_item_has_its_message_in_every_locale(self):
+        from legacy_foundation_test import run_localeinfo
+        for locale in ("ae br cz de dk en es fr gr hu it nl pl pt ro ru tr").split():
+            namespace, _, errors = run_localeinfo(locale)
+            with self.subTest(locale=locale):
+                self.assertEqual(errors, [])
+                self.assertEqual(namespace["SHOP_ERROR_DICT"].get("NOT_ENOUGH_ITEM"), namespace["SHOP_NOT_ENOUGH_ITEM"])
+                self.assertTrue(namespace["SHOP_NOT_ENOUGH_ITEM"])
+
+
 class ShopFacade(ShopTest):
     def test_the_class_the_methods_and_no_per_frame_python(self):
         world, window = self.world(True)
@@ -417,7 +600,7 @@ class ShopFacade(ShopTest):
     def test_every_fixture_has_the_model_s_keys_and_kinds(self):
         world, window = self.world(True)
         kinds = w4.model_kinds(window.nui_model())
-        for variant in ("", "foundation", "tabs2", "tabs3", "mine", "attaching", "offline", "offline-owner"):
+        for variant in ("", "foundation", "tabs2", "tabs3", "mine", "attaching", "barter", "offline", "offline-owner"):
             self.assertEqual(w4.fixture_keys(window, "shop", variant), kinds, variant)
 
 

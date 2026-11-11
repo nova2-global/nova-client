@@ -1292,3 +1292,8 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+SHOP_NOT_ENOUGH_ITEM	Não tens materiais suficientes.
+SHOP_TEXT_OR	ou
+SHOP_BUY_COUNT_TITLE	Quantidade a comprar (máx. %d)
+DO_YOU_BUY_WITH_ITEM	Queres comprar %s por %s?
+SHOP_BULK_BUY_HINT	Shift + click: comprar vários

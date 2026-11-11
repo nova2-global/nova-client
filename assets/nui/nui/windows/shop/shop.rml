@@ -14,7 +14,10 @@
 	     frame. The body and its controls take no focus; controls act on a left
 	     mousedown. It draws below the legacy UI layer, as legacy's window
 	     lived in it, and opens over the inventory (legacy's order). A left or
-	     right press anywhere on it raises the window (board_press). -->
+	     right press anywhere on it raises the window (board_press). A row
+	     that costs items (NOVA-83, c.barter) carries a small code-drawn mark
+	     at its item's top left in the modern looks; classic hides it, as
+	     legacy draws none. Its tooltip lists the costs. -->
 	<title>shop</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="shop.rcss"/>
@@ -48,6 +51,7 @@
 				<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
 				<nui-number class="nui-slot__number" data-if="c.count != ''" data-attr-value="c.count"/>
 				<span class="shop__pending" data-if="c.disabled"></span>
+				<span class="shop__barter" data-if="c.barter"></span>
 			</div>
 			<div data-for="l : locks" data-if="l.state != ''"
 			     data-attr-class="'shop__lock shop__lock--row-' + l.row + ' shop__lock--' + l.state"><span

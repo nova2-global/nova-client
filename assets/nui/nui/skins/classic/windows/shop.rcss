@@ -336,3 +336,8 @@ body.skin-classic.shop .shop-owner__actions .nui-button
 body.skin-classic.shop .shop-owner__lock { left: 14dp; }
 body.skin-classic.shop .shop-owner__logs { left: 128dp; }
 body.skin-classic.shop .shop-owner__close { left: 243dp; }
+/* NOVA-83: legacy draws no barter mark; the tooltip lists the costs. */
+body.skin-classic.shop .shop__barter
+{
+	display: none;
+}

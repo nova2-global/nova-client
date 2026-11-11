@@ -1280,3 +1280,8 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+SHOP_NOT_ENOUGH_ITEM	Nemáš dostatek potřebných předmětů.
+SHOP_TEXT_OR	nebo
+SHOP_BUY_COUNT_TITLE	Počet ke koupi (max. %d)
+DO_YOU_BUY_WITH_ITEM	Chceš koupit %s za %s?
+SHOP_BULK_BUY_HINT	Shift + click: koupit více kusů

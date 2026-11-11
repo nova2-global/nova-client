@@ -19,7 +19,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 1,
@@ -39,7 +40,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 2,
@@ -59,7 +61,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 3,
@@ -79,7 +82,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 4,
@@ -99,7 +103,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 5,
@@ -119,7 +124,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 6,
@@ -139,7 +145,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 7,
@@ -159,7 +166,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 8,
@@ -179,7 +187,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 9,
@@ -199,7 +208,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 10,
@@ -219,7 +229,8 @@
 				"covered": true,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 11,
@@ -239,7 +250,8 @@
 				"covered": true,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 12,
@@ -259,7 +271,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 13,
@@ -279,7 +292,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 14,
@@ -299,7 +313,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 15,
@@ -319,7 +334,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 16,
@@ -339,7 +355,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 17,
@@ -359,7 +376,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 18,
@@ -379,7 +397,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 19,
@@ -399,7 +418,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 20,
@@ -419,7 +439,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 21,
@@ -439,7 +460,8 @@
 				"covered": true,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 22,
@@ -459,7 +481,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 23,
@@ -479,7 +502,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 24,
@@ -499,7 +523,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 25,
@@ -519,7 +544,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 26,
@@ -539,7 +565,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 27,
@@ -559,7 +586,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 28,
@@ -579,7 +607,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 29,
@@ -599,7 +628,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 30,
@@ -619,7 +649,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 31,
@@ -639,7 +670,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 32,
@@ -659,7 +691,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 33,
@@ -679,7 +712,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 34,
@@ -699,7 +733,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 35,
@@ -719,7 +754,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 36,
@@ -739,7 +775,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 37,
@@ -759,7 +796,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 38,
@@ -779,7 +817,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 39,
@@ -799,7 +838,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 40,
@@ -819,7 +859,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 41,
@@ -839,7 +880,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 42,
@@ -859,7 +901,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 43,
@@ -879,7 +922,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 44,
@@ -899,7 +943,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 45,
@@ -919,7 +964,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 46,
@@ -939,7 +985,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 47,
@@ -959,7 +1006,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 48,
@@ -979,7 +1027,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 49,
@@ -999,7 +1048,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 50,
@@ -1019,7 +1069,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 51,
@@ -1039,7 +1090,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 52,
@@ -1059,7 +1111,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 53,
@@ -1079,7 +1132,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 54,
@@ -1099,7 +1153,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 55,
@@ -1119,7 +1174,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 56,
@@ -1139,7 +1195,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 57,
@@ -1159,7 +1216,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 58,
@@ -1179,7 +1237,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 59,
@@ -1199,7 +1258,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 60,
@@ -1219,7 +1279,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 61,
@@ -1239,7 +1300,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 62,
@@ -1259,7 +1321,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 63,
@@ -1279,7 +1342,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 64,
@@ -1299,7 +1363,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 65,
@@ -1319,7 +1384,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 66,
@@ -1339,7 +1405,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 67,
@@ -1359,7 +1426,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 68,
@@ -1379,7 +1447,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 69,
@@ -1399,7 +1468,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 70,
@@ -1419,7 +1489,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 71,
@@ -1439,7 +1510,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 72,
@@ -1459,7 +1531,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 73,
@@ -1479,7 +1552,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 74,
@@ -1499,7 +1573,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 75,
@@ -1519,7 +1594,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 76,
@@ -1539,7 +1615,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 77,
@@ -1559,7 +1636,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 78,
@@ -1579,7 +1657,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			},
 			{
 				"index": 79,
@@ -1599,7 +1678,8 @@
 				"covered": false,
 				"target": "",
 				"picked": false,
-				"unavailable": false
+				"unavailable": false,
+				"barter": false
 			}
 		],
 		"cols": 10,

@@ -827,7 +827,8 @@ class GameWindowState(unittest.TestCase):
     def test_a_new_game_window_is_out_of_channel_mode_has_asked_nothing_and_shows_no_channel_yet(self):
         from unittest import mock
         names = ("interfaceModule", "uiPhaseCurtain", "nui_windows", "uiTarget", "consoleModule", "wndMgr",
-                 "uiMapNameShower", "uiAffectShower", "uiPlayerGauge", "uiMaintenance", "net", "player", "datacache")
+                 "uiMapNameShower", "uiAffectShower", "uiPlayerGauge", "uiMaintenance", "net", "player", "datacache",
+                 "player_options")
         namespace = dict((name, mock.MagicMock()) for name in names)
         namespace["ui"] = types.SimpleNamespace(ScriptWindow=mock.MagicMock(), __mem_func__=lambda function: function)
         cls = compiled("game.py", "GameWindow", ("__init__",), namespace)

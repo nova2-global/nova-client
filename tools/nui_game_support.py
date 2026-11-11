@@ -1594,10 +1594,6 @@ class Game(object):
         it keeps memory only and writes nothing."""
         if name != "datacache" and "datacache" not in self.modules:
             self.load("datacache", "datacache.py")
-        # The key bindings' table (NOVA-121), which the taskbars, the chats
-        # and game.py import; it reads config/keys.cfg at its first use.
-        if name not in ("datacache", "keybindings") and "keybindings" not in self.modules:
-            self.load("keybindings", "keybindings.py")
         # The key bindings' table (NOVA-121), which the option windows, the
         # taskbars and the chats read: fresh for each world, config/keys.cfg
         # the world's file (Game.files).

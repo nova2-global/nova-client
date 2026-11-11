@@ -267,6 +267,16 @@ class NamedFiles(unittest.TestCase):
 		self.assertEqual(old_art.CHAT_FLAGS, tuple(
 			"d:/ymir work/ui/flags/empire_20x15/empire_%d.png" % empire for empire in (1, 2, 3)))
 
+	def test_the_language_flags_are_olds_for_the_seventeen_locales(self):
+		"""OLD PythonChat.cpp:574: flags_20x15/<language>.png (NOVA-51), for
+		the login screen's 17 locales (language_packets.h's codes)."""
+		codes = ("en", "ae", "br", "cz", "de", "dk", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+		self.assertEqual(old_art.CHAT_LANGUAGE_FLAGS, tuple(
+			"d:/ymir work/ui/flags/flags_20x15/%s.png" % code for code in codes))
+
+	def test_with_no_names_files_takes_both_kinds_of_chat_flag(self):
+		self.assertEqual(old_art.default_files(), list(old_art.CHAT_FLAGS + old_art.CHAT_LANGUAGE_FLAGS))
+
 
 class Manifest(unittest.TestCase):
 	"""The files tools/old_art.py took (tools/fixtures/old_art.tsv)."""
@@ -295,6 +305,10 @@ class Manifest(unittest.TestCase):
 	def test_the_chat_flags_are_taken(self):
 		taken = {row[0] for row in self.rows}
 		self.assertEqual([path for path in old_art.CHAT_FLAGS if path not in taken], [])
+
+	def test_the_chat_language_flags_are_taken(self):
+		taken = {row[0] for row in self.rows}
+		self.assertEqual([path for path in old_art.CHAT_LANGUAGE_FLAGS if path not in taken], [])
 
 	def test_the_waves_extra_files_are_taken(self):
 		taken = {row[0] for row in self.rows}

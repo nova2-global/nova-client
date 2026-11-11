@@ -1129,10 +1129,11 @@
 	background-color: transparent;
 }
 
-/* The shout line's empire flag (NOVA-110; components/chat.rcss): OLD's
-   20 x 15 flags (OLD PythonChat.cpp:578, d:/ymir work/ui/flags/empire_20x15),
-   1dp to the legacy pixel, the text 4dp after it, as OLD's edit and log
-   boards place it. */
+/* The shout line's language and empire flags (NOVA-51, NOVA-110;
+   components/chat.rcss): OLD's 20 x 15 flags (OLD PythonChat.cpp:574 and
+   :578, d:/ymir work/ui/flags/flags_20x15 and empire_20x15), 1dp to the
+   legacy pixel, each followed by 4dp, as OLD's edit and log boards place
+   them. */
 .skin-classic .nui-chat__flag
 {
 	height: 15dp;
@@ -1140,3 +1141,20 @@
 .skin-classic .nui-chat__flag--empire-1 { decorator: image("d:/ymir work/ui/flags/empire_20x15/empire_1.png"); }
 .skin-classic .nui-chat__flag--empire-2 { decorator: image("d:/ymir work/ui/flags/empire_20x15/empire_2.png"); }
 .skin-classic .nui-chat__flag--empire-3 { decorator: image("d:/ymir work/ui/flags/empire_20x15/empire_3.png"); }
+.skin-classic .nui-chat__flag--lang-en { decorator: image("d:/ymir work/ui/flags/flags_20x15/en.png"); }
+.skin-classic .nui-chat__flag--lang-ae { decorator: image("d:/ymir work/ui/flags/flags_20x15/ae.png"); }
+.skin-classic .nui-chat__flag--lang-br { decorator: image("d:/ymir work/ui/flags/flags_20x15/br.png"); }
+.skin-classic .nui-chat__flag--lang-cz { decorator: image("d:/ymir work/ui/flags/flags_20x15/cz.png"); }
+.skin-classic .nui-chat__flag--lang-de { decorator: image("d:/ymir work/ui/flags/flags_20x15/de.png"); }
+.skin-classic .nui-chat__flag--lang-dk { decorator: image("d:/ymir work/ui/flags/flags_20x15/dk.png"); }
+.skin-classic .nui-chat__flag--lang-es { decorator: image("d:/ymir work/ui/flags/flags_20x15/es.png"); }
+.skin-classic .nui-chat__flag--lang-fr { decorator: image("d:/ymir work/ui/flags/flags_20x15/fr.png"); }
+.skin-classic .nui-chat__flag--lang-gr { decorator: image("d:/ymir work/ui/flags/flags_20x15/gr.png"); }
+.skin-classic .nui-chat__flag--lang-hu { decorator: image("d:/ymir work/ui/flags/flags_20x15/hu.png"); }
+.skin-classic .nui-chat__flag--lang-it { decorator: image("d:/ymir work/ui/flags/flags_20x15/it.png"); }
+.skin-classic .nui-chat__flag--lang-nl { decorator: image("d:/ymir work/ui/flags/flags_20x15/nl.png"); }
+.skin-classic .nui-chat__flag--lang-pl { decorator: image("d:/ymir work/ui/flags/flags_20x15/pl.png"); }
+.skin-classic .nui-chat__flag--lang-pt { decorator: image("d:/ymir work/ui/flags/flags_20x15/pt.png"); }
+.skin-classic .nui-chat__flag--lang-ro { decorator: image("d:/ymir work/ui/flags/flags_20x15/ro.png"); }
+.skin-classic .nui-chat__flag--lang-ru { decorator: image("d:/ymir work/ui/flags/flags_20x15/ru.png"); }
+.skin-classic .nui-chat__flag--lang-tr { decorator: image("d:/ymir work/ui/flags/flags_20x15/tr.png"); }

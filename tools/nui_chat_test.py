@@ -1176,8 +1176,9 @@ class Fixtures(unittest.TestCase):
         ids = [line["id"] for line in lines]
         self.assertEqual(ids, sorted(set(ids)), "%s: ids rise, oldest first" % path)
         for line in lines:
-            # A shout carries its sender's empire (NOVA-110, ShoutFlags).
-            self.assertEqual(set(line) - {"empire"}, {"id", "type", "t", "runs"}, path)
+            # A shout carries its sender's language (NOVA-51) and empire
+            # (NOVA-110, ShoutFlags).
+            self.assertEqual(set(line) - {"empire", "lang"}, {"id", "type", "t", "runs"}, path)
             self.assertTrue(0 <= line["type"] <= 8, path)
             self.assertTrue(now - 4.0 <= line["t"] <= now, "%s: t within 4 s before the snap clock" % path)
             for run in line["runs"]:
@@ -1316,6 +1317,62 @@ class ShoutFlags(unittest.TestCase):
                 head = handle.read(24)
             self.assertEqual(head[:8], b"\x89PNG\r\n\x1a\n", store)
             self.assertEqual((int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")), (20, 15), store)
+
+
+# --- the shout line's language flag (NOVA-51) ---------------------------------------------------------
+
+# language_packets.h's codes: the login screen's 17 locales, by id.
+LANGUAGE_CODES = ("en", "ae", "br", "cz", "de", "dk", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+
+
+def png_size(path):
+    with open(path, "rb") as handle:
+        head = handle.read(24)
+    if head[:8] != b"\x89PNG\r\n\x1a\n":
+        return None
+    return int.from_bytes(head[16:20], "big"), int.from_bytes(head[20:24], "big")
+
+
+class LanguageFlags(unittest.TestCase):
+    """A shout carries its sender's language code next to its empire, as
+    NuiChatFeed publishes it (a key on a shout with a language only), and
+    both looks draw a flag for each of the 17 languages from art the client
+    ships, before the empire flag."""
+
+    def test_a_shout_line_carries_a_language_code_and_no_other_line_does(self):
+        shouts = 0
+        for name in FEED_LINES:
+            with open(os.path.join(WINDOWS, *name.split("/")), encoding="utf-8") as handle:
+                for line in json.load(handle):
+                    if line["type"] == SHOUT:
+                        shouts += 1
+                        self.assertIn(line.get("lang"), LANGUAGE_CODES, "%s %s" % (name, line["id"]))
+                    else:
+                        self.assertNotIn("lang", line, "%s %s" % (name, line["id"]))
+        self.assertGreaterEqual(shouts, 4, "a shout in the closed chat, the closed view, the open chat and the log")
+
+    def test_modern_draws_the_login_strips_flags_in_the_shout_flags_box(self):
+        sheet = rules(read(os.path.join(NUI, "components", "chat.rcss")))
+        for code in LANGUAGE_CODES:
+            store = "d:/ymir work/ui/intro/login/server_flag_%s.sub" % code
+            rule = sheet.get(".nui-chat__flag--lang-%s" % code, "")
+            self.assertIn('image("%s" contain)' % store, rule, code)
+            self.assertIsNotNone(store_file(store), store)
+
+    def test_classic_draws_olds_twenty_by_fifteen_language_flags(self):
+        sheet = rules(read(os.path.join(NUI, "skins", "classic", "classic.rcss")))
+        for code in LANGUAGE_CODES:
+            store = "d:/ymir work/ui/flags/flags_20x15/%s.png" % code
+            self.assertIn('image("%s")' % store, sheet.get(".skin-classic .nui-chat__flag--lang-%s" % code, ""), code)
+            path = store_file(store)
+            self.assertIsNotNone(path, store)
+            self.assertEqual(png_size(path), (20, 15), store)
+
+    def test_the_login_strips_flags_are_listed_as_content_art(self):
+        with open(os.path.join(NUI, "content-art.json"), encoding="utf-8") as handle:
+            entries = json.load(handle)["content"]
+        self.assertIn(("d:/ymir work/ui/intro/login/server_flag_*.sub", "flag"),
+                      [(entry["path"], entry["kind"]) for entry in entries])
 
 
 # --- the chat log on demand (P11 spec 5.3, D5) -----------------------------------------------------------

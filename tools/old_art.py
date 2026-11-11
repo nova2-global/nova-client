@@ -16,8 +16,9 @@ skins of the race shapes (the msm files' WingData groups) their value 3 names.
 	python3 tools/old_art.py files PACKER GRLIST [STORE_PATH...]
 
 files and files-plan take the store paths named (OLD's spelling, any case)
-and every file they name in turn; with none named, the empire flags of the
-chat's shout lines (NOVA-110, CHAT_FLAGS). They read NEW's groups from git's
+and every file they name in turn; with none named, the empire and language
+flags of the chat's shout lines (NOVA-110 CHAT_FLAGS, NOVA-51
+CHAT_LANGUAGE_FLAGS). They read NEW's groups from git's
 tree, as shop does.
 
 shop and shop-plan take the offline shop's decoration (NOVA-170) instead: the
@@ -638,6 +639,15 @@ def import_shop(packer, grlist):
 
 # OLD PythonChat.cpp:578 (AppendChat): the empire flag of a shout line.
 CHAT_FLAGS = tuple("d:/ymir work/ui/flags/empire_20x15/empire_%d.png" % empire for empire in (1, 2, 3))
+# OLD PythonChat.cpp:574: the sender's language flag (NOVA-51), for the
+# login screen's 17 locales (nova-protocol language_packets.h's codes).
+LANGUAGE_CODES = ("en", "ae", "br", "cz", "de", "dk", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+CHAT_LANGUAGE_FLAGS = tuple("d:/ymir work/ui/flags/flags_20x15/%s.png" % code for code in LANGUAGE_CODES)
+
+
+def default_files():
+	"""What files and files-plan take with no names: both chat flags."""
+	return list(CHAT_FLAGS + CHAT_LANGUAGE_FLAGS)
 
 
 def files_seeds(names, files):
@@ -686,7 +696,7 @@ def _main(argv):
 	if len(argv) == 3 and argv[0] == "shop-plan":
 		return plan_shop(*argv[1:])
 	if len(argv) >= 3 and argv[0] in ("files", "files-plan"):
-		names = list(argv[3:]) or list(CHAT_FLAGS)
+		names = list(argv[3:]) or default_files()
 		return (import_files if argv[0] == "files" else plan_files)(argv[1], argv[2], names)
 	print(__doc__)
 	return 2

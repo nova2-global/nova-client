@@ -11,13 +11,16 @@ skins of the race shapes (the msm files' WingData groups) their value 3 names.
 	python3 tools/old_art.py import PACKER OLD_ITEM_LIST CUT_ITEM_PROTO GRLIST
 	python3 tools/old_art.py shop-plan PACKER GRLIST
 	python3 tools/old_art.py shop PACKER GRLIST
+	python3 tools/old_art.py rings-plan PACKER GRLIST
+	python3 tools/old_art.py rings PACKER GRLIST
 
 shop and shop-plan take the offline shop's decoration (NOVA-170) instead: the
 NPC models shop_deco.txt's type 1 rows name (by NEW's npclist folder for each
 vnum: the msm, its base model, motlist.txt and the motions it lists) and the
-eight parts of each type 2 row's sign pattern. They read NEW's files and
-groups from git's tree, so they work in a sparse worktree; add what they
-write with `git add --sparse`.
+eight parts of each type 2 row's sign pattern. rings and rings-plan take
+OLD's select and target rings (NOVA-127, RINGS) and what they name. Both
+read NEW's files and groups from git's tree, so they work in a sparse
+worktree; add what they write with `git add --sparse`.
 
 plan lists what an import would take (files and MB by kind) and writes
 nothing. OLD_ART_SCRATCH names a folder grlist (a Windows program) can read and
@@ -626,6 +629,51 @@ def import_shop(packer, grlist):
 	return place(packer, grlist, scratch, take, missing, index, folders, shop_group)
 
 
+# --- the select and target rings (NOVA-127) ----------------------------------
+
+# OLD playerSettingModule.py:295-302: each empire's ring and the monsters',
+# for the hover (select) and the clicked target (glow_select).
+RINGS = tuple("d:/ymir work/effect/world/%s_%sselect.mse" % (who, glow)
+	for who in ("shinsoo", "chunjo", "jinnos", "mob") for glow in ("", "glow_"))
+
+
+def ring_seeds(files):
+	"""The rings NEW does not publish."""
+	return [path for path in RINGS if path not in files]
+
+
+def git_blob(tree_path):
+	"""A file of git's index (the tree tree_files lists), read where a
+	sparse worktree has none on disk."""
+	done = subprocess.run(["git", "-C", old_content.REPO, "show", ":" + tree_path], capture_output=True, check=True)
+	return done.stdout
+
+
+def rings_gather(packer, grlist, scratch):
+	groups = _groups()
+	paths = tree_files()
+	files = tree_published(paths, groups)
+	index = packer_index(packer)
+	take, missing = closure(ring_seeds(files), index, files, packer, grlist, scratch)
+	return take, missing, index, tree_group_folders(paths, groups)
+
+
+def plan_rings(packer, grlist):
+	take, missing, _, _ = rings_gather(packer, grlist, scratch_folder())
+	for path in sorted(take):
+		print("  %s <- %s" % (path, take[path]))
+	print("would take %d files; %d named but missing in OLD too:" % (len(take), len(missing)))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path]))
+	return 0
+
+
+def import_rings(packer, grlist):
+	scratch = scratch_folder()
+	take, missing, index, folders = rings_gather(packer, grlist, scratch)
+	return place(packer, grlist, scratch, take, missing, index, folders)
+
+
 def _main(argv):
 	if len(argv) == 5 and argv[0] == "import":
 		return import_art(*argv[1:])
@@ -635,6 +683,10 @@ def _main(argv):
 		return import_shop(*argv[1:])
 	if len(argv) == 3 and argv[0] == "shop-plan":
 		return plan_shop(*argv[1:])
+	if len(argv) == 3 and argv[0] == "rings":
+		return import_rings(*argv[1:])
+	if len(argv) == 3 and argv[0] == "rings-plan":
+		return plan_rings(*argv[1:])
 	print(__doc__)
 	return 2
 

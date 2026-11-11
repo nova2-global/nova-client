@@ -409,6 +409,39 @@ class Orbit(unittest.TestCase):
         self.assertIn(("SetSkillMotion", "select_skill", 5), world.preview.calls[mark:])
         self.assertEqual(world.events[-1], ("tooltip", 4, 5, 0))
 
+    def test_moving_within_a_hovered_skill_casts_it_once(self):
+        # r42 (NOVA-37): the pointer moving within one skill (its ring cell to its row, or a
+        # child's mouseout and mouseover) gave its OverInItem again, and each SetSkillMotion
+        # restarted the cast. Its tooltip still comes back.
+        world, window = opened(True)
+        mark, events = len(world.preview.calls), len(world.events)
+        with world.game, w4.quiet():
+            w4.fire(window, "cell_over", 1, 0)
+            w4.fire(window, "cell_over", 1, 0)
+            w4.fire(window, "cell_out", 1, 0)
+            w4.fire(window, "cell_over", 1, 0)
+            w4.fire(window, "cell_out", 1, 0)
+            w4.fire(window, "cell_over", 1, 0)
+        casts = [call for call in world.preview.calls[mark:] if call[0] == "SetSkillMotion"]
+        self.assertEqual(casts, [("SetSkillMotion", "select_skill", 1)])
+        self.assertEqual(world.events[events:].count(("tooltip", 0, 1, 0)), 3)
+        with world.game, w4.quiet():
+            w4.fire(window, "cell_over", 1, 1)
+            w4.fire(window, "cell_over", 1, 0)
+        casts = [call for call in world.preview.calls[mark:] if call[0] == "SetSkillMotion"]
+        self.assertEqual(casts, [("SetSkillMotion", "select_skill", motion) for motion in (1, 2, 1)],
+                         "another skill, then the first again: each is cast")
+
+    def test_a_reopened_window_casts_the_skill_hovered_before_it_closed(self):
+        world, window = opened(True)
+        with world.game, w4.quiet():
+            w4.fire(window, "cell_over", 1, 0)
+            window.Close()
+            window.Open()
+            mark = len(world.preview.calls)
+            w4.fire(window, "cell_over", 1, 0)
+        self.assertIn(("SetSkillMotion", "select_skill", 1), world.preview.calls[mark:])
+
     def test_a_side_hover_makes_its_group_active_without_casting(self):
         world, window = opened(True)
         mark = len(world.preview.calls)

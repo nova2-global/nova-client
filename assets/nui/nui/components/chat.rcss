@@ -55,3 +55,24 @@ nui-chat-lines
    inline opacity (three steps, its fade-steps): an opacity change rebuilds
    the line's meshes, so a transition here would rebuild them every frame.
    is-fading marks the line while it fades. */
+
+/* The sender's empire flag at the start of a shout line (NOVA-110; the
+   element's "Marks", ElementChatLines.h): span.nui-chat__flag
+   .nui-chat__flag--empire .nui-chat__flag--empire-<1..3> before the runs.
+   Modern themes draw the empire select's banners (the same art the empire
+   and select windows show; a flag is content art, nui/content-art.json), 20 x 12dp, about their 128 x 79 aspect, inside
+   the 15dp line; the classic skin draws OLD's 20 x 15 flags (classic.rcss).
+   The size and the 4dp gap after the flag are defaults, Eddy to confirm.
+   A mark added later (the language flag, NOVA-51) is another
+   nui-chat__flag--<mark> with its own images. */
+.nui-chat__flag
+{
+	display: inline-block;
+	width: 20dp;
+	height: 12dp;
+	margin-right: 4dp;
+	vertical-align: middle;
+}
+.nui-chat__flag--empire-1 { decorator: image("d:/ymir work/ui/intro/empire/empireflag_a.sub"); }
+.nui-chat__flag--empire-2 { decorator: image("d:/ymir work/ui/intro/empire/empireflag_b.sub"); }
+.nui-chat__flag--empire-3 { decorator: image("d:/ymir work/ui/intro/empire/empireflag_c.sub"); }

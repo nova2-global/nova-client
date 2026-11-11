@@ -1,6 +1,9 @@
 # store path	file under assets/	OLD source (under the packer folder)	how
 d:/ymir work/costume_pack/1/hair/ninja_k.gr2	item/ymir work/costume_pack/1/hair/ninja_k.gr2	source/nv_16/costume_pack/1/hair/ninja_k.gr2	converted
 d:/ymir work/costume_pack/1/hair/woj_m.gr2	item/ymir work/costume_pack/1/hair/woj_m.gr2	source/nv_16/costume_pack/1/hair/woj_m.gr2	converted
+d:/ymir work/costume_pack/1/ninja_k.gr2	item/ymir work/costume_pack/1/ninja_k.gr2	source/nv_16/costume_pack/1/ninja_k.gr2	converted
+d:/ymir work/costume_pack/1/texture/asek_studio_1.dds	item/ymir work/costume_pack/1/texture/asek_studio_1.dds	source/nv_16/costume_pack/1/texture/asek_studio_1.dds	copied
+d:/ymir work/costume_pack/1/texture/asek_studio_woj.dds	item/ymir work/costume_pack/1/texture/asek_studio_woj.dds	source/nv_16/costume_pack/1/texture/asek_studio_woj.dds	copied
 d:/ymir work/costume_pack/1/texture/hair.dds	item/ymir work/costume_pack/1/texture/hair.dds	source/nv_16/costume_pack/1/texture/hair.dds	copied
 d:/ymir work/costume_pack/1/weapon/2reka.gr2	item/ymir work/costume_pack/1/weapon/2reka.gr2	source/nv_16/costume_pack/1/weapon/2reka.gr2	converted
 d:/ymir work/costume_pack/1/weapon/asek.dds	item/ymir work/costume_pack/1/weapon/asek.dds	source/nv_16/costume_pack/1/weapon/asek.dds	copied
@@ -10,19 +13,29 @@ d:/ymir work/costume_pack/1/weapon/miecz.gr2	item/ymir work/costume_pack/1/weapo
 d:/ymir work/costume_pack/1/weapon/miecz_2.gr2	item/ymir work/costume_pack/1/weapon/miecz_2.gr2	source/nv_16/costume_pack/1/weapon/miecz_2.gr2	converted
 d:/ymir work/costume_pack/1/weapon/noze.gr2	item/ymir work/costume_pack/1/weapon/noze.gr2	source/nv_16/costume_pack/1/weapon/noze.gr2	converted
 d:/ymir work/costume_pack/1/weapon/wachlarz.gr2	item/ymir work/costume_pack/1/weapon/wachlarz.gr2	source/nv_16/costume_pack/1/weapon/wachlarz.gr2	converted
+d:/ymir work/costume_pack/1/woj_m.gr2	item/ymir work/costume_pack/1/woj_m.gr2	source/nv_16/costume_pack/1/woj_m.gr2	converted
 d:/ymir work/costume_pack/2/hair/woj_m.gr2	item/ymir work/costume_pack/2/hair/woj_m.gr2	source/nv_16/costume_pack/2/hair/woj_m.gr2	converted
+d:/ymir work/costume_pack/2/texture/asek_studio_1.dds	item/ymir work/costume_pack/2/texture/asek_studio_1.dds	source/nv_16/costume_pack/2/texture/asek_studio_1.dds	copied
 d:/ymir work/costume_pack/2/texture/asek_studio_2.dds	item/ymir work/costume_pack/2/texture/asek_studio_2.dds	source/nv_16/costume_pack/2/texture/asek_studio_2.dds	copied
 d:/ymir work/costume_pack/2/texture/asek_studio_hair.dds	item/ymir work/costume_pack/2/texture/asek_studio_hair.dds	source/nv_16/costume_pack/2/texture/asek_studio_hair.dds	copied
+d:/ymir work/costume_pack/2/woj_m.gr2	item/ymir work/costume_pack/2/woj_m.gr2	source/nv_16/costume_pack/2/woj_m.gr2	converted
 d:/ymir work/costume_pack/hair/ninja_k.dds	item/ymir work/costume_pack/hair/ninja_k.dds	source/nv_16/costume_pack/hair/ninja_k.dds	copied
 d:/ymir work/costume_pack/hair/woj_m.dds	item/ymir work/costume_pack/hair/woj_m.dds	source/nv_16/costume_pack/hair/woj_m.dds	copied
+d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_mwa.dds	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_mwa.dds	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_mwa.dds	copied
+d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_was.dds	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_was.dds	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_was.dds	copied
+d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_wsh.dds	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_wsh.dds	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_body_wsh.dds	copied
 d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_hair_m.dds	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_hair_m.dds	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_hair_m.dds	copied
 d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_hair_w.dds	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_hair_w.dds	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/angel_hair_w.dds	copied
 d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/assassin_angel_hair_w.gr2	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/assassin_angel_hair_w.gr2	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/assassin_angel_hair_w.gr2	converted
+d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/assassin_angel_w.gr2	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/assassin_angel_w.gr2	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/assassin_angel_w.gr2	converted
 d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/warrior_angel_hair_m.gr2	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/warrior_angel_hair_m.gr2	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/warrior_angel_hair_m.gr2	converted
+d:/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/warrior_angel_m.gr2	item/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/warrior_angel_m.gr2	source/nv_42/ymir work/dane_tex/angel_of_love_tex/www.daneservice.com/warrior_angel_m.gr2	converted
 d:/ymir work/dane_tex/azola_tex/www.daneservice.com/assassin_h_w.gr2	item/ymir work/dane_tex/azola_tex/www.daneservice.com/assassin_h_w.gr2	source/nv_40/ymir work/dane_tex/azola_tex/www.daneservice.com/assassin_h_w.gr2	converted
+d:/ymir work/dane_tex/azola_tex/www.daneservice.com/assassin_w.gr2	item/ymir work/dane_tex/azola_tex/www.daneservice.com/assassin_w.gr2	source/nv_40/ymir work/dane_tex/azola_tex/www.daneservice.com/assassin_w.gr2	converted
 d:/ymir work/dane_tex/azola_tex/www.daneservice.com/dane_body_fas.dds	item/ymir work/dane_tex/azola_tex/www.daneservice.com/dane_body_fas.dds	source/nv_40/ymir work/dane_tex/azola_tex/www.daneservice.com/dane_body_fas.dds	copied
 d:/ymir work/dane_tex/azola_tex/www.daneservice.com/dane_body_m.dds	item/ymir work/dane_tex/azola_tex/www.daneservice.com/dane_body_m.dds	source/nv_40/ymir work/dane_tex/azola_tex/www.daneservice.com/dane_body_m.dds	copied
 d:/ymir work/dane_tex/azola_tex/www.daneservice.com/warrior_h_m.gr2	item/ymir work/dane_tex/azola_tex/www.daneservice.com/warrior_h_m.gr2	source/nv_40/ymir work/dane_tex/azola_tex/www.daneservice.com/warrior_h_m.gr2	converted
+d:/ymir work/dane_tex/azola_tex/www.daneservice.com/warrior_m.gr2	item/ymir work/dane_tex/azola_tex/www.daneservice.com/warrior_m.gr2	source/nv_40/ymir work/dane_tex/azola_tex/www.daneservice.com/warrior_m.gr2	converted
 d:/ymir work/dane_tex/beastman_tex/body_m_wa.dds	item/ymir work/dane_tex/beastman_tex/body_m_wa.dds	source/nv_37/ymir work/dane_tex/beastman_tex/body_m_wa.dds	copied
 d:/ymir work/dane_tex/beastman_tex/hair_f.dds	item/ymir work/dane_tex/beastman_tex/hair_f.dds	source/nv_37/ymir work/dane_tex/beastman_tex/hair_f.dds	copied
 d:/ymir work/dane_tex/beastman_tex/hair_m.dds	item/ymir work/dane_tex/beastman_tex/hair_m.dds	source/nv_37/ymir work/dane_tex/beastman_tex/hair_m.dds	copied
@@ -30,30 +43,51 @@ d:/ymir work/dane_tex/diving_tex/body_m.dds	item/ymir work/dane_tex/diving_tex/b
 d:/ymir work/dane_tex/diving_tex/hair_f.dds	item/ymir work/dane_tex/diving_tex/hair_f.dds	source/nv_37/ymir work/dane_tex/diving_tex/hair_f.dds	copied
 d:/ymir work/dane_tex/diving_tex/hair_m.dds	item/ymir work/dane_tex/diving_tex/hair_m.dds	source/nv_37/ymir work/dane_tex/diving_tex/hair_m.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/assassin_h_w.gr2	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/assassin_h_w.gr2	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/assassin_h_w.gr2	converted
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/assassin_w.gr2	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/assassin_w.gr2	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/assassin_w.gr2	converted
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_body_fas.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_body_fas.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_body_fas.dds	copied
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_body_mwa.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_body_mwa.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_body_mwa.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_hair_f.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_hair_f.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_hair_f.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_hair_m.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_hair_m.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col1/dane_hair_m.dds	copied
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_body_fas.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_body_fas.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_body_fas.dds	copied
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_body_mwa.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_body_mwa.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_body_mwa.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_hair_f.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_hair_f.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_hair_f.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_hair_m.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_hair_m.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/col2/dane_hair_m.dds	copied
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_body_fas.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_body_fas.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_body_fas.dds	copied
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_body_mwa.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_body_mwa.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_body_mwa.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_hair_f.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_hair_f.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_hair_f.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_hair_m.dds	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_hair_m.dds	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/dane_hair_m.dds	copied
 d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/warrior_h_m.gr2	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/warrior_h_m.gr2	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/warrior_h_m.gr2	converted
+d:/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/warrior_m.gr2	item/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/warrior_m.gr2	source/nv_41/ymir work/dane_tex/dragon_thor_tex/www.daneservice.com/warrior_m.gr2	converted
 d:/ymir work/dane_tex/fire_fragon_tex/body_m.dds	item/ymir work/dane_tex/fire_fragon_tex/body_m.dds	source/nv_37/ymir work/dane_tex/fire_fragon_tex/body_m.dds	copied
 d:/ymir work/dane_tex/fire_fragon_tex/hair_f.dds	item/ymir work/dane_tex/fire_fragon_tex/hair_f.dds	source/nv_37/ymir work/dane_tex/fire_fragon_tex/hair_f.dds	copied
 d:/ymir work/dane_tex/fire_fragon_tex/hair_m.dds	item/ymir work/dane_tex/fire_fragon_tex/hair_m.dds	source/nv_37/ymir work/dane_tex/fire_fragon_tex/hair_m.dds	copied
+d:/ymir work/dane_tex/judment_rol_tex/body_f_as.dds	item/ymir work/dane_tex/judment_rol_tex/body_f_as.dds	source/nv_42/ymir work/dane_tex/judment_rol_tex/body_f_as.dds	copied
 d:/ymir work/dane_tex/judment_rol_tex/body_m_wa.dds	item/ymir work/dane_tex/judment_rol_tex/body_m_wa.dds	source/nv_42/ymir work/dane_tex/judment_rol_tex/body_m_wa.dds	copied
 d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/assassin_h_w.gr2	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/assassin_h_w.gr2	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/assassin_h_w.gr2	converted
+d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/assassin_w.gr2	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/assassin_w.gr2	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/assassin_w.gr2	converted
 d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_f.dds	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_f.dds	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_f.dds	copied
+d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_fas.dds	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_fas.dds	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_fas.dds	copied
 d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_m.dds	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_m.dds	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/dane_body_m.dds	copied
+d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/face/assassin_face_w.dds	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/face/assassin_face_w.dds	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/face/assassin_face_w.dds	copied
+d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/face/warrior_face_m.dds	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/face/warrior_face_m.dds	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/face/warrior_face_m.dds	copied
 d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/warrior_h_m.gr2	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/warrior_h_m.gr2	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/warrior_h_m.gr2	converted
+d:/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/warrior_m.gr2	item/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/warrior_m.gr2	source/nv_41/ymir work/dane_tex/light_bridge_tex/www.daneservice.com/warrior_m.gr2	converted
 d:/ymir work/dane_tex/therattan_tex/www.daneservice.com/assassin_h_w.gr2	item/ymir work/dane_tex/therattan_tex/www.daneservice.com/assassin_h_w.GR2	source/nv_40/ymir work/dane_tex/therattan_tex/www.daneservice.com/assassin_h_w.GR2	converted
+d:/ymir work/dane_tex/therattan_tex/www.daneservice.com/assassin_w.gr2	item/ymir work/dane_tex/therattan_tex/www.daneservice.com/assassin_w.gr2	source/nv_40/ymir work/dane_tex/therattan_tex/www.daneservice.com/assassin_w.gr2	converted
 d:/ymir work/dane_tex/therattan_tex/www.daneservice.com/dane_body_fas.dds	item/ymir work/dane_tex/therattan_tex/www.daneservice.com/dane_body_fas.dds	source/nv_40/ymir work/dane_tex/therattan_tex/www.daneservice.com/dane_body_fas.dds	copied
 d:/ymir work/dane_tex/therattan_tex/www.daneservice.com/dane_body_mwa.dds	item/ymir work/dane_tex/therattan_tex/www.daneservice.com/dane_body_mwa.dds	source/nv_40/ymir work/dane_tex/therattan_tex/www.daneservice.com/dane_body_mwa.dds	copied
 d:/ymir work/dane_tex/therattan_tex/www.daneservice.com/warrior_h_m.gr2	item/ymir work/dane_tex/therattan_tex/www.daneservice.com/warrior_h_m.GR2	source/nv_40/ymir work/dane_tex/therattan_tex/www.daneservice.com/warrior_h_m.GR2	converted
+d:/ymir work/dane_tex/therattan_tex/www.daneservice.com/warrior_m.gr2	item/ymir work/dane_tex/therattan_tex/www.daneservice.com/warrior_m.GR2	source/nv_40/ymir work/dane_tex/therattan_tex/www.daneservice.com/warrior_m.GR2	converted
 d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/assassin_snake_hair_w.gr2	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/assassin_snake_hair_w.GR2	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/assassin_snake_hair_w.GR2	converted
+d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/assassin_snake_w.gr2	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/assassin_snake_w.GR2	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/assassin_snake_w.GR2	converted
+d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_body_mw.dds	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_body_mw.dds	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_body_mw.dds	copied
+d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_body_wa.dds	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_body_wa.dds	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_body_wa.dds	copied
 d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_m.dds	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_m.dds	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_m.dds	copied
 d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_mw.dds	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_mw.dds	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_mw.dds	copied
 d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_w.dds	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_w.dds	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/dane_hair_w.dds	copied
+d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_face.dds	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_face.dds	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_face.dds	copied
 d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_snake_hair_m.gr2	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_snake_hair_m.GR2	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_snake_hair_m.GR2	converted
+d:/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_snake_m.gr2	item/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_snake_m.GR2	source/nv_31/ymir work/dane_tex/wicked_snake_tex/www.daneservice.com/warrior_snake_m.GR2	converted
 d:/ymir work/eden_style_tex/m_r21_body_diff.tga	item/ymir work/eden_style_tex/m_r21_body_diff.tga	source/nv_13/eden_style_tex/m_r21_body_diff.tga	copied
 d:/ymir work/eden_style_tex/m_r21_hand_diff.tga	item/ymir work/eden_style_tex/m_r21_hand_diff.tga	source/nv_13/eden_style_tex/m_r21_hand_diff.tga	copied
 d:/ymir work/eden_style_tex/m_r21_leg_diff.tga	item/ymir work/eden_style_tex/m_r21_leg_diff.tga	source/nv_13/eden_style_tex/m_r21_leg_diff.tga	copied
@@ -11253,6 +11287,7 @@ d:/ymir work/pc/assassin/assassin_summer_2020_lod_03.gr2	PC/ymir work/pc/assassi
 d:/ymir work/pc/assassin/assassin_summer_2021.gr2	PC/ymir work/pc/assassin/assassin_summer_2021.gr2	source/nv_25/ymir work/pc/assassin/assassin_summer_2021.gr2	converted
 d:/ymir work/pc/assassin/assassin_summer_2021_1.dds	PC/ymir work/pc/assassin/assassin_summer_2021_1.dds	source/nv_25/ymir work/pc/assassin/assassin_summer_2021_1.dds	copied
 d:/ymir work/pc/assassin/assassin_summer_2021_2.dds	PC/ymir work/pc/assassin/assassin_summer_2021_2.dds	source/nv_25/ymir work/pc/assassin/assassin_summer_2021_2.dds	copied
+d:/ymir work/pc/assassin/assassin_summer_2022_1.dds	PC/ymir work/pc/assassin/assassin_summer_2022_1.dds	source/nv_38/ymir work/pc/assassin/assassin_summer_2022_1.dds	copied
 d:/ymir work/pc/assassin/assassin_valentines.dds	PC/ymir work/pc/assassin/assassin_valentines.dds	source/pc/assassin/assassin_valentines.dds	copied
 d:/ymir work/pc/assassin/assassin_valentines.gr2	PC/ymir work/pc/assassin/assassin_valentines.gr2	source/pc/assassin/assassin_valentines.gr2	converted
 d:/ymir work/pc/assassin/bow/attack_special.msa	PC/ymir work/pc/assassin/bow/attack_special.msa	source/pc/assassin/bow/attack_special.msa	copied
@@ -13201,147 +13236,279 @@ d:/ymir work/pc/common/wedding_style_tex_dane/lfcl_cash_eventdreass01a_head_alph
 d:/ymir work/pc/common/wedding_style_tex_dane/m01_black_diff.dds	PC/ymir work/pc/common/wedding_style_tex_dane/m01_black_diff.dds	source/nv_18/pc/common/wedding_style_tex_dane/m01_black_diff.dds	copied
 d:/ymir work/pc/common/wedding_style_tex_dane/m_01_diff.dds	PC/ymir work/pc/common/wedding_style_tex_dane/m_01_diff.dds	source/nv_18/pc/common/wedding_style_tex_dane/m_01_diff.dds	copied
 d:/ymir work/pc/common/wedding_style_tex_dane/m_white_diff.dds	PC/ymir work/pc/common/wedding_style_tex_dane/m_white_diff.dds	source/nv_18/pc/common/wedding_style_tex_dane/m_white_diff.dds	copied
+d:/ymir work/pc/pewi_armor/dragon/dragon_warrior_m.gr2	PC/ymir work/pc/pewi_armor/dragon/dragon_warrior_m.gr2	source/nv_18/pc/pewi_armor/dragon/dragon_warrior_m.gr2	converted
+d:/ymir work/pc/pewi_armor/dragon/nu_m_sk_dragon003.dds	PC/ymir work/pc/pewi_armor/dragon/nu_m_sk_dragon003.dds	source/nv_18/pc/pewi_armor/dragon/nu_m_sk_dragon003.dds	copied
+d:/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1.dds	PC/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1.dds	source/nv_18/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1.dds	copied
+d:/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1_blue.dds	PC/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1_blue.dds	source/nv_18/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1_blue.dds	copied
+d:/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1_green.dds	PC/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1_green.dds	source/nv_18/pc/pewi_armor/pewi_templario/pewi_templario_m1_col1_green.dds	copied
+d:/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1.dds	PC/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1.dds	source/nv_18/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1.dds	copied
+d:/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1_blue.dds	PC/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1_blue.dds	source/nv_18/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1_blue.dds	copied
+d:/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1_green.dds	PC/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1_green.dds	source/nv_18/pc/pewi_armor/pewi_templario/pewi_templario_m2_col1_green.dds	copied
+d:/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_warrior_m.gr2	PC/ymir work/pc/pewi_armor/pewi_templario/pewi_templario_warrior_m.gr2	source/nv_18/pc/pewi_armor/pewi_templario/pewi_templario_warrior_m.gr2	converted
+d:/ymir work/pc/plechito/adventure_bandit/assassin_w.gr2	PC/ymir work/pc/plechito/adventure_bandit/assassin_w.gr2	source/nv_11/pc/plechito/adventure_bandit/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/adventure_bandit/hair/assassin_w.gr2	PC/ymir work/pc/plechito/adventure_bandit/hair/assassin_w.gr2	source/nv_11/pc/plechito/adventure_bandit/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/adventure_bandit/hair/plechito_tex.dds	PC/ymir work/pc/plechito/adventure_bandit/hair/plechito_tex.dds	source/nv_11/pc/plechito/adventure_bandit/hair/plechito_tex.dds	copied
 d:/ymir work/pc/plechito/adventure_bandit/hair/plechito_tex2.dds	PC/ymir work/pc/plechito/adventure_bandit/hair/plechito_tex2.dds	source/nv_11/pc/plechito/adventure_bandit/hair/plechito_tex2.dds	copied
 d:/ymir work/pc/plechito/adventure_bandit/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/adventure_bandit/hair/plechito_tex_w.dds	source/nv_11/pc/plechito/adventure_bandit/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/adventure_bandit/hair/warrior_m.gr2	PC/ymir work/pc/plechito/adventure_bandit/hair/warrior_m.gr2	source/nv_11/pc/plechito/adventure_bandit/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/adventure_bandit/plechito_tex.dds	PC/ymir work/pc/plechito/adventure_bandit/plechito_tex.dds	source/nv_11/pc/plechito/adventure_bandit/plechito_tex.dds	copied
+d:/ymir work/pc/plechito/adventure_bandit/plechito_tex_w.dds	PC/ymir work/pc/plechito/adventure_bandit/plechito_tex_w.dds	source/nv_11/pc/plechito/adventure_bandit/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/adventure_bandit/warrior_m.gr2	PC/ymir work/pc/plechito/adventure_bandit/warrior_m.gr2	source/nv_11/pc/plechito/adventure_bandit/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/ancient_egypt/assassin_w.gr2	PC/ymir work/pc/plechito/ancient_egypt/assassin_w.gr2	source/nv_23/pc/plechito/ancient_egypt/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/ancient_egypt/hair/assassin_w.gr2	PC/ymir work/pc/plechito/ancient_egypt/hair/assassin_w.gr2	source/nv_23/pc/plechito/ancient_egypt/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_m1.dds	PC/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_m1.dds	source/nv_23/pc/plechito/ancient_egypt/hair/plechito_tex_m1.dds	copied
 d:/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_m2.dds	PC/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_m2.dds	source/nv_23/pc/plechito/ancient_egypt/hair/plechito_tex_m2.dds	copied
 d:/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_w1.dds	PC/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_w1.dds	source/nv_23/pc/plechito/ancient_egypt/hair/plechito_tex_w1.dds	copied
 d:/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_w2.dds	PC/ymir work/pc/plechito/ancient_egypt/hair/plechito_tex_w2.dds	source/nv_23/pc/plechito/ancient_egypt/hair/plechito_tex_w2.dds	copied
 d:/ymir work/pc/plechito/ancient_egypt/hair/warrior_m.gr2	PC/ymir work/pc/plechito/ancient_egypt/hair/warrior_m.gr2	source/nv_23/pc/plechito/ancient_egypt/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/ancient_egypt/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/ancient_egypt/plechito_tex_m_w.dds	source/nv_23/pc/plechito/ancient_egypt/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/ancient_egypt/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/ancient_egypt/plechito_tex_w_w.dds	source/nv_23/pc/plechito/ancient_egypt/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/ancient_egypt/warrior_m.gr2	PC/ymir work/pc/plechito/ancient_egypt/warrior_m.gr2	source/nv_23/pc/plechito/ancient_egypt/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/android_costume/assassin_w2.gr2	PC/ymir work/pc/plechito/android_costume/assassin_w2.gr2	source/nv_22/pc/plechito/android_costume/assassin_w2.gr2	converted
 d:/ymir work/pc/plechito/android_costume/hair/assassin_w2.gr2	PC/ymir work/pc/plechito/android_costume/hair/assassin_w2.gr2	source/nv_22/pc/plechito/android_costume/hair/assassin_w2.gr2	converted
 d:/ymir work/pc/plechito/android_costume/hair/plechito_tex_m2.dds	PC/ymir work/pc/plechito/android_costume/hair/plechito_tex_m2.dds	source/nv_22/pc/plechito/android_costume/hair/plechito_tex_m2.dds	copied
 d:/ymir work/pc/plechito/android_costume/hair/plechito_tex_w2.dds	PC/ymir work/pc/plechito/android_costume/hair/plechito_tex_w2.dds	source/nv_22/pc/plechito/android_costume/hair/plechito_tex_w2.dds	copied
 d:/ymir work/pc/plechito/android_costume/hair/warrior_m2.gr2	PC/ymir work/pc/plechito/android_costume/hair/warrior_m2.gr2	source/nv_22/pc/plechito/android_costume/hair/warrior_m2.gr2	converted
 d:/ymir work/pc/plechito/android_costume/plechito_tex_m2.dds	PC/ymir work/pc/plechito/android_costume/plechito_tex_m2.dds	source/nv_22/pc/plechito/android_costume/plechito_tex_m2.dds	copied
 d:/ymir work/pc/plechito/android_costume/plechito_tex_w2.dds	PC/ymir work/pc/plechito/android_costume/plechito_tex_w2.dds	source/nv_22/pc/plechito/android_costume/plechito_tex_w2.dds	copied
+d:/ymir work/pc/plechito/android_costume/warrior_m2.gr2	PC/ymir work/pc/plechito/android_costume/warrior_m2.gr2	source/nv_22/pc/plechito/android_costume/warrior_m2.gr2	converted
+d:/ymir work/pc/plechito/arcane_academy/assassin_w.gr2	PC/ymir work/pc/plechito/arcane_academy/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/arcane_academy/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/arcane_academy/hair/assassin_w.gr2	PC/ymir work/pc/plechito/arcane_academy/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/arcane_academy/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/arcane_academy/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/arcane_academy/hair/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/arcane_academy/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/arcane_academy/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/arcane_academy/hair/plechito_tex_w.dds	source/nv_40/ymir work/pc/plechito/arcane_academy/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/arcane_academy/hair/warrior_m.gr2	PC/ymir work/pc/plechito/arcane_academy/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/arcane_academy/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/arcane_academy/plechito_tex_m.dds	PC/ymir work/pc/plechito/arcane_academy/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/arcane_academy/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/arcane_academy/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/arcane_academy/plechito_tex_w_as.dds	source/nv_40/ymir work/pc/plechito/arcane_academy/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/arcane_academy/warrior_m.gr2	PC/ymir work/pc/plechito/arcane_academy/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/arcane_academy/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/beach_outfit/hair/assassin_w.gr2	PC/ymir work/pc/plechito/beach_outfit/hair/assassin_w.gr2	source/nv_23/pc/plechito/beach_outfit/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/beach_outfit/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/beach_outfit/hair/plechito_tex_m.dds	source/nv_23/pc/plechito/beach_outfit/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/beach_outfit/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/beach_outfit/hair/plechito_tex_w.dds	source/nv_23/pc/plechito/beach_outfit/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/beach_outfit/hair/warrior_m.gr2	PC/ymir work/pc/plechito/beach_outfit/hair/warrior_m.gr2	source/nv_23/pc/plechito/beach_outfit/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/beach_outfit/plechito_tex_m_su.dds	PC/ymir work/pc/plechito/beach_outfit/plechito_tex_m_su.dds	source/nv_23/pc/plechito/beach_outfit/plechito_tex_m_su.dds	copied
+d:/ymir work/pc/plechito/beach_outfit/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/beach_outfit/plechito_tex_m_w.dds	source/nv_23/pc/plechito/beach_outfit/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/beach_outfit/warrior_m.gr2	PC/ymir work/pc/plechito/beach_outfit/warrior_m.gr2	source/nv_23/pc/plechito/beach_outfit/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/chinese_festive_costume/assassin_w.gr2	PC/ymir work/pc/plechito/chinese_festive_costume/assassin_w.gr2	source/nv_11/pc/plechito/chinese_festive_costume/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/chinese_festive_costume/hair/assassin_w.gr2	PC/ymir work/pc/plechito/chinese_festive_costume/hair/assassin_w.gr2	source/nv_11/pc/plechito/chinese_festive_costume/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/chinese_festive_costume/hair/basic_hair_w.dds	PC/ymir work/pc/plechito/chinese_festive_costume/hair/basic_hair_w.dds	source/nv_11/pc/plechito/chinese_festive_costume/hair/basic_hair_w.dds	copied
 d:/ymir work/pc/plechito/chinese_festive_costume/hair/plechito_tex_m_a.dds	PC/ymir work/pc/plechito/chinese_festive_costume/hair/plechito_tex_m_a.dds	source/nv_11/pc/plechito/chinese_festive_costume/hair/plechito_tex_m_a.dds	copied
 d:/ymir work/pc/plechito/chinese_festive_costume/hair/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/chinese_festive_costume/hair/plechito_tex_m_w.dds	source/nv_11/pc/plechito/chinese_festive_costume/hair/plechito_tex_m_w.dds	copied
 d:/ymir work/pc/plechito/chinese_festive_costume/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/chinese_festive_costume/hair/plechito_tex_w.dds	source/nv_11/pc/plechito/chinese_festive_costume/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/chinese_festive_costume/hair/warrior_m.gr2	PC/ymir work/pc/plechito/chinese_festive_costume/hair/warrior_m.gr2	source/nv_11/pc/plechito/chinese_festive_costume/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/chinese_festive_costume/plechito_tex_as.dds	PC/ymir work/pc/plechito/chinese_festive_costume/plechito_tex_as.dds	source/nv_11/pc/plechito/chinese_festive_costume/plechito_tex_as.dds	copied
+d:/ymir work/pc/plechito/chinese_festive_costume/plechito_tex_m.dds	PC/ymir work/pc/plechito/chinese_festive_costume/plechito_tex_m.dds	source/nv_11/pc/plechito/chinese_festive_costume/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/chinese_festive_costume/plechito_tex_ww.dds	PC/ymir work/pc/plechito/chinese_festive_costume/plechito_tex_ww.dds	source/nv_11/pc/plechito/chinese_festive_costume/plechito_tex_ww.dds	copied
+d:/ymir work/pc/plechito/chinese_festive_costume/warrior_m.gr2	PC/ymir work/pc/plechito/chinese_festive_costume/warrior_m.gr2	source/nv_11/pc/plechito/chinese_festive_costume/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/christmas2019/hair/hair_46_1.dds	PC/ymir work/pc/plechito/christmas2019/hair/hair_46_1.dds	source/nv_4/pc/plechito/christmas2019/hair/hair_46_1.dds	copied
 d:/ymir work/pc/plechito/christmas2019/hair/plechito_tex_f.dds	PC/ymir work/pc/plechito/christmas2019/hair/plechito_tex_f.dds	source/nv_4/pc/plechito/christmas2019/hair/plechito_tex_f.dds	copied
 d:/ymir work/pc/plechito/christmas2019/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2019/hair/plechito_tex_m.dds	source/nv_4/pc/plechito/christmas2019/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2019/plechito_tex_female_w.dds	PC/ymir work/pc/plechito/christmas2019/plechito_tex_female_w.dds	source/nv_4/pc/plechito/christmas2019/plechito_tex_female_w.dds	copied
 d:/ymir work/pc/plechito/christmas2019/plechito_tex_male.dds	PC/ymir work/pc/plechito/christmas2019/plechito_tex_male.dds	source/nv_4/pc/plechito/christmas2019/plechito_tex_male.dds	copied
+d:/ymir work/pc/plechito/christmas2020_1/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2020_1/assassin_w.gr2	source/nv_16/pc/plechito/christmas2020_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2020_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2020_1/hair/assassin_w.gr2	source/nv_16/pc/plechito/christmas2020_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2020_1/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2020_1/hair/plechito_tex_m.dds	source/nv_16/pc/plechito/christmas2020_1/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2020_1/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2020_1/hair/plechito_tex_w.dds	source/nv_16/pc/plechito/christmas2020_1/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/christmas2020_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2020_1/hair/warrior_m.gr2	source/nv_16/pc/plechito/christmas2020_1/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2020_1/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/christmas2020_1/plechito_tex_m_w.dds	source/nv_16/pc/plechito/christmas2020_1/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/christmas2020_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/christmas2020_1/plechito_tex_w_w.dds	source/nv_16/pc/plechito/christmas2020_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/christmas2020_1/warrior_christmas_2015_kindofgreen.dds	PC/ymir work/pc/plechito/christmas2020_1/warrior_christmas_2015_kindofgreen.dds	source/nv_16/pc/plechito/christmas2020_1/warrior_christmas_2015_kindofgreen.dds	copied
+d:/ymir work/pc/plechito/christmas2020_1/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2020_1/warrior_m.gr2	source/nv_16/pc/plechito/christmas2020_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2021_1/assassin_face_f.dds	PC/ymir work/pc/plechito/christmas2021_1/assassin_face_f.dds	source/nv_27/ymir work/pc/plechito/christmas2021_1/assassin_face_f.dds	copied
+d:/ymir work/pc/plechito/christmas2021_1/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2021_1/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2021_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2021_1/hair/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2021_1/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2021_1/hair/plechito_tex_m.dds	source/nv_27/ymir work/pc/plechito/christmas2021_1/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2021_1/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2021_1/hair/plechito_tex_w.dds	source/nv_27/ymir work/pc/plechito/christmas2021_1/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/christmas2021_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2021_1/hair/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_1/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/christmas2021_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2021_1/plechito_tex_m.dds	source/nv_27/ymir work/pc/plechito/christmas2021_1/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/christmas2021_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/christmas2021_1/plechito_tex_w_w.dds	source/nv_27/ymir work/pc/plechito/christmas2021_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/christmas2021_1/warrior_face_m.dds	PC/ymir work/pc/plechito/christmas2021_1/warrior_face_m.dds	source/nv_27/ymir work/pc/plechito/christmas2021_1/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/christmas2021_1/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2021_1/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2021_2/assassin_face_f.dds	PC/ymir work/pc/plechito/christmas2021_2/assassin_face_f.dds	source/nv_27/ymir work/pc/plechito/christmas2021_2/assassin_face_f.dds	copied
+d:/ymir work/pc/plechito/christmas2021_2/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2021_2/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_2/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2021_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2021_2/hair/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_2/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2021_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2021_2/hair/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_2/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/christmas2021_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2021_2/plechito_tex_m.dds	source/nv_27/ymir work/pc/plechito/christmas2021_2/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2021_2/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/christmas2021_2/plechito_tex_w_as.dds	source/nv_27/ymir work/pc/plechito/christmas2021_2/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/christmas2021_2/warrior_face_m.dds	PC/ymir work/pc/plechito/christmas2021_2/warrior_face_m.dds	source/nv_27/ymir work/pc/plechito/christmas2021_2/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/christmas2021_2/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2021_2/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/christmas2021_2/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2022_1/assassin_face_w.dds	PC/ymir work/pc/plechito/christmas2022_1/assassin_face_w.dds	source/nv_41/ymir work/pc/plechito/christmas2022_1/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/christmas2022_1/warrior_face_m.dds	PC/ymir work/pc/plechito/christmas2022_1/warrior_face_m.dds	source/nv_41/ymir work/pc/plechito/christmas2022_1/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/christmas2022_2/assassin_face_f.dds	PC/ymir work/pc/plechito/christmas2022_2/assassin_face_f.dds	source/nv_40/ymir work/pc/plechito/christmas2022_2/assassin_face_f.dds	copied
+d:/ymir work/pc/plechito/christmas2022_2/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2022_2/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/christmas2022_2/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2022_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2022_2/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/christmas2022_2/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2022_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2022_2/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/christmas2022_2/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/christmas2022_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2022_2/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/christmas2022_2/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2022_2/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2022_2/plechito_tex_w.dds	source/nv_40/ymir work/pc/plechito/christmas2022_2/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/christmas2022_2/warrior_face_m.dds	PC/ymir work/pc/plechito/christmas2022_2/warrior_face_m.dds	source/nv_40/ymir work/pc/plechito/christmas2022_2/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/christmas2022_2/warrior_face_m2.dds	PC/ymir work/pc/plechito/christmas2022_2/warrior_face_m2.dds	source/nv_40/ymir work/pc/plechito/christmas2022_2/warrior_face_m2.dds	copied
+d:/ymir work/pc/plechito/christmas2022_2/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2022_2/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/christmas2022_2/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2023_1/assassin_face_f.dds	PC/ymir work/pc/plechito/christmas2023_1/assassin_face_f.dds	source/nv_41/ymir work/pc/plechito/christmas2023_1/assassin_face_f.dds	copied
+d:/ymir work/pc/plechito/christmas2023_1/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_1/assassin_w.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_1/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/christmas2023_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_1/hair/assassin_w.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_1/hair/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/christmas2023_1/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_1/hair/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_1/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2023_1/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2023_1/hair/plechito_tex_w.dds	source/nv_41/ymir work/pc/plechito/christmas2023_1/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/christmas2023_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_1/hair/warrior_m.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_1/hair/warrior_m.GR2	converted
+d:/ymir work/pc/plechito/christmas2023_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_1/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_1/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/christmas2023_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/christmas2023_1/plechito_tex_w_w.dds	source/nv_41/ymir work/pc/plechito/christmas2023_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/christmas2023_1/warrior_face_m.dds	PC/ymir work/pc/plechito/christmas2023_1/warrior_face_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_1/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/christmas2023_1/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_1/warrior_m.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_1/warrior_m.GR2	converted
+d:/ymir work/pc/plechito/christmas2023_2/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_2/assassin_w.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_2/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/christmas2023_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_2/hair/assassin_w.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_2/hair/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/christmas2023_2/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_2/hair/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_2/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2023_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_2/hair/warrior_m.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_2/hair/warrior_m.GR2	converted
+d:/ymir work/pc/plechito/christmas2023_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_2/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_2/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/christmas2023_2/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/christmas2023_2/plechito_tex_w_as.dds	source/nv_41/ymir work/pc/plechito/christmas2023_2/plechito_tex_w_as.dds	copied
 d:/ymir work/pc/plechito/christmas2023_2/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/christmas2023_2/plechito_tex_w_w.dds	source/nv_41/ymir work/pc/plechito/christmas2023_2/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/christmas2023_2/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_2/warrior_m.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_2/warrior_m.GR2	converted
+d:/ymir work/pc/plechito/christmas2023_3/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_3/assassin_w.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_3/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/christmas2023_3/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_3/hair/assassin_w.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_3/hair/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/christmas2023_3/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_3/hair/warrior_m.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_3/hair/warrior_m.GR2	converted
 d:/ymir work/pc/plechito/christmas2023_3/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_3/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_3/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2023_3/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/christmas2023_3/plechito_tex_w_w.dds	source/nv_41/ymir work/pc/plechito/christmas2023_3/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/christmas2023_3/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_3/warrior_m.GR2	source/nv_41/ymir work/pc/plechito/christmas2023_3/warrior_m.GR2	converted
+d:/ymir work/pc/plechito/christmas2023_4/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_4/assassin_w.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_4/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2023_4/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_4/hair/assassin_w.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_4/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2023_4/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_4/hair/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_4/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2023_4/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2023_4/hair/plechito_tex_w.dds	source/nv_41/ymir work/pc/plechito/christmas2023_4/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/christmas2023_4/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_4/hair/warrior_m.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_4/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2023_4/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_4/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_4/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/christmas2023_4/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/christmas2023_4/plechito_tex_w_as.dds	source/nv_41/ymir work/pc/plechito/christmas2023_4/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/christmas2023_4/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_4/warrior_m.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_4/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2023_5/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_5/assassin_w.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_5/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2023_5/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2023_5/hair/assassin_w.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_5/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/christmas2023_5/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_5/hair/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_5/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2023_5/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2023_5/hair/plechito_tex_w.dds	source/nv_41/ymir work/pc/plechito/christmas2023_5/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/christmas2023_5/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_5/hair/warrior_m.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_5/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2023_5/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2023_5/plechito_tex_m.dds	source/nv_41/ymir work/pc/plechito/christmas2023_5/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/christmas2023_5/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/christmas2023_5/plechito_tex_w_as.dds	source/nv_41/ymir work/pc/plechito/christmas2023_5/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/christmas2023_5/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2023_5/warrior_m.gr2	source/nv_41/ymir work/pc/plechito/christmas2023_5/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/christmas2024_1/assassin_halloween_2021_1.dds	PC/ymir work/pc/plechito/christmas2024_1/assassin_halloween_2021_1.dds	source/nv_46/ymir work/pc/plechito/christmas2024_1/assassin_halloween_2021_1.dds	copied
+d:/ymir work/pc/plechito/christmas2024_1/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_1/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_1/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_1/hair/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_1/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_1/hair/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_1/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_1/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/christmas2024_1/plechito_tex_m_w.dds	source/nv_46/ymir work/pc/plechito/christmas2024_1/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/christmas2024_1/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_1/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_1/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/christmas2024_2/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_2/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_2/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_2/hair/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_2/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_2/hair/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_2/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2024_2/plechito_tex_m.dds	source/nv_46/ymir work/pc/plechito/christmas2024_2/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2024_2/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2024_2/plechito_tex_w.dds	source/nv_46/ymir work/pc/plechito/christmas2024_2/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/christmas2024_2/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_2/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_2/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/christmas2024_3/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_3/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_3/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_3/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_3/hair/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_3/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_3/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_3/hair/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_3/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_3/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2024_3/plechito_tex_m.dds	source/nv_46/ymir work/pc/plechito/christmas2024_3/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2024_3/plechito_tex_w.dds	PC/ymir work/pc/plechito/christmas2024_3/plechito_tex_w.dds	source/nv_46/ymir work/pc/plechito/christmas2024_3/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/christmas2024_3/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_3/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_3/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/christmas2024_4/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_4/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_4/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_4/hair/assassin_w.gr2	PC/ymir work/pc/plechito/christmas2024_4/hair/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_4/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_4/hair/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_4/hair/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_4/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/christmas2024_4/plechito_tex_m.dds	PC/ymir work/pc/plechito/christmas2024_4/plechito_tex_m.dds	source/nv_46/ymir work/pc/plechito/christmas2024_4/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/christmas2024_4/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/christmas2024_4/plechito_tex_w_as.dds	source/nv_46/ymir work/pc/plechito/christmas2024_4/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/christmas2024_4/warrior_m.gr2	PC/ymir work/pc/plechito/christmas2024_4/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/christmas2024_4/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/corona_virus_costumes/original_texture.dds	PC/ymir work/pc/plechito/corona_virus_costumes/original_texture.dds	source/nv_27/ymir work/pc/plechito/corona_virus_costumes/original_texture.dds	copied
+d:/ymir work/pc/plechito/corona_virus_costumes/original_texture2.dds	PC/ymir work/pc/plechito/corona_virus_costumes/original_texture2.dds	source/nv_27/ymir work/pc/plechito/corona_virus_costumes/original_texture2.dds	copied
+d:/ymir work/pc/plechito/cowboy_costume/assassin_w.gr2	PC/ymir work/pc/plechito/cowboy_costume/assassin_w.gr2	source/nv_12/pc/plechito/cowboy_costume/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/cowboy_costume/hair/assassin_w.gr2	PC/ymir work/pc/plechito/cowboy_costume/hair/assassin_w.gr2	source/nv_12/pc/plechito/cowboy_costume/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/cowboy_costume/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/cowboy_costume/hair/plechito_tex_m.dds	source/nv_12/pc/plechito/cowboy_costume/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/cowboy_costume/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/cowboy_costume/hair/plechito_tex_w.dds	source/nv_12/pc/plechito/cowboy_costume/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/cowboy_costume/hair/warrior_m.gr2	PC/ymir work/pc/plechito/cowboy_costume/hair/warrior_m.gr2	source/nv_12/pc/plechito/cowboy_costume/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/cowboy_costume/plechito_tex.dds	PC/ymir work/pc/plechito/cowboy_costume/plechito_tex.dds	source/nv_12/pc/plechito/cowboy_costume/plechito_tex.dds	copied
+d:/ymir work/pc/plechito/cowboy_costume/plechito_tex_wa.dds	PC/ymir work/pc/plechito/cowboy_costume/plechito_tex_wa.dds	source/nv_12/pc/plechito/cowboy_costume/plechito_tex_wa.dds	copied
+d:/ymir work/pc/plechito/cowboy_costume/warrior_m.gr2	PC/ymir work/pc/plechito/cowboy_costume/warrior_m.gr2	source/nv_12/pc/plechito/cowboy_costume/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/dark_cult_costume/assassin_w.gr2	PC/ymir work/pc/plechito/dark_cult_costume/assassin_w.gr2	source/nv_29/ymir work/pc/plechito/dark_cult_costume/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/dark_cult_costume/hair/assassin_w.gr2	PC/ymir work/pc/plechito/dark_cult_costume/hair/assassin_w.gr2	source/nv_29/ymir work/pc/plechito/dark_cult_costume/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/dark_cult_costume/hair/warrior_m.gr2	PC/ymir work/pc/plechito/dark_cult_costume/hair/warrior_m.gr2	source/nv_29/ymir work/pc/plechito/dark_cult_costume/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/dark_cult_costume/plechito_tex_m.dds	PC/ymir work/pc/plechito/dark_cult_costume/plechito_tex_m.dds	source/nv_29/ymir work/pc/plechito/dark_cult_costume/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/dark_cult_costume/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/dark_cult_costume/plechito_tex_w_w.dds	source/nv_29/ymir work/pc/plechito/dark_cult_costume/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/dark_cult_costume/warrior_m.gr2	PC/ymir work/pc/plechito/dark_cult_costume/warrior_m.gr2	source/nv_29/ymir work/pc/plechito/dark_cult_costume/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/death_ruler_costume/assassin_w.gr2	PC/ymir work/pc/plechito/death_ruler_costume/assassin_w.gr2	source/nv_17/ymir work/pc/plechito/death_ruler_costume/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/death_ruler_costume/hair/plechito_tex.dds	PC/ymir work/pc/plechito/death_ruler_costume/hair/plechito_tex.dds	source/nv_17/ymir work/pc/plechito/death_ruler_costume/hair/plechito_tex.dds	copied
 d:/ymir work/pc/plechito/death_ruler_costume/hair/warrior_m.gr2	PC/ymir work/pc/plechito/death_ruler_costume/hair/warrior_m.gr2	source/nv_17/ymir work/pc/plechito/death_ruler_costume/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/death_ruler_costume/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/death_ruler_costume/plechito_tex_m_w.dds	source/nv_17/ymir work/pc/plechito/death_ruler_costume/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/death_ruler_costume/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/death_ruler_costume/plechito_tex_w_w.dds	source/nv_17/ymir work/pc/plechito/death_ruler_costume/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/death_ruler_costume/warrior_m.gr2	PC/ymir work/pc/plechito/death_ruler_costume/warrior_m.gr2	source/nv_17/ymir work/pc/plechito/death_ruler_costume/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/demon_hunter_costume/assassin_w.gr2	PC/ymir work/pc/plechito/demon_hunter_costume/assassin_w.gr2	source/nv_12/pc/plechito/demon_hunter_costume/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/demon_hunter_costume/hair/assassin_w.gr2	PC/ymir work/pc/plechito/demon_hunter_costume/hair/assassin_w.gr2	source/nv_12/pc/plechito/demon_hunter_costume/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/demon_hunter_costume/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/demon_hunter_costume/hair/plechito_tex_m.dds	source/nv_12/pc/plechito/demon_hunter_costume/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/demon_hunter_costume/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/demon_hunter_costume/hair/plechito_tex_w.dds	source/nv_12/pc/plechito/demon_hunter_costume/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/demon_hunter_costume/hair/warrior_m.gr2	PC/ymir work/pc/plechito/demon_hunter_costume/hair/warrior_m.gr2	source/nv_12/pc/plechito/demon_hunter_costume/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_m1.dds	PC/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_m1.dds	source/nv_12/pc/plechito/demon_hunter_costume/plechito_tex_m1.dds	copied
+d:/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_m_w.dds	source/nv_12/pc/plechito/demon_hunter_costume/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_w1.dds	PC/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_w1.dds	source/nv_12/pc/plechito/demon_hunter_costume/plechito_tex_w1.dds	copied
+d:/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_w2.dds	PC/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_w2.dds	source/nv_12/pc/plechito/demon_hunter_costume/plechito_tex_w2.dds	copied
+d:/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_w_a.dds	PC/ymir work/pc/plechito/demon_hunter_costume/plechito_tex_w_a.dds	source/nv_12/pc/plechito/demon_hunter_costume/plechito_tex_w_a.dds	copied
+d:/ymir work/pc/plechito/demon_hunter_costume/warrior_m.gr2	PC/ymir work/pc/plechito/demon_hunter_costume/warrior_m.gr2	source/nv_12/pc/plechito/demon_hunter_costume/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/demon_slayer/assassin_halloween_2021_1_w.dds	PC/ymir work/pc/plechito/demon_slayer/assassin_halloween_2021_1_w.dds	source/nv_40/ymir work/pc/plechito/demon_slayer/assassin_halloween_2021_1_w.dds	copied
+d:/ymir work/pc/plechito/demon_slayer/assassin_w.gr2	PC/ymir work/pc/plechito/demon_slayer/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/demon_slayer/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/demon_slayer/hair/assassin_w.gr2	PC/ymir work/pc/plechito/demon_slayer/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/demon_slayer/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/demon_slayer/hair/hair_head_m.dds	PC/ymir work/pc/plechito/demon_slayer/hair/hair_head_m.dds	source/nv_40/ymir work/pc/plechito/demon_slayer/hair/hair_head_m.dds	copied
 d:/ymir work/pc/plechito/demon_slayer/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/demon_slayer/hair/plechito_tex_w.dds	source/nv_40/ymir work/pc/plechito/demon_slayer/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/demon_slayer/hair/warrior_m.gr2	PC/ymir work/pc/plechito/demon_slayer/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/demon_slayer/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/demon_slayer/plechito_tex_m.dds	PC/ymir work/pc/plechito/demon_slayer/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/demon_slayer/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/demon_slayer/warrior_halloween_2021_1.dds	PC/ymir work/pc/plechito/demon_slayer/warrior_halloween_2021_1.dds	source/nv_40/ymir work/pc/plechito/demon_slayer/warrior_halloween_2021_1.dds	copied
+d:/ymir work/pc/plechito/demon_slayer/warrior_m.gr2	PC/ymir work/pc/plechito/demon_slayer/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/demon_slayer/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/desert_bandit/hair/warrior_m.gr2	PC/ymir work/pc/plechito/desert_bandit/hair/warrior_m.gr2	source/nv_19/pc/plechito/desert_bandit/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/desert_bandit/plechito_tex_m.dds	PC/ymir work/pc/plechito/desert_bandit/plechito_tex_m.dds	source/nv_19/pc/plechito/desert_bandit/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/desert_bandit/plechito_tex_m2.dds	PC/ymir work/pc/plechito/desert_bandit/plechito_tex_m2.dds	source/nv_19/pc/plechito/desert_bandit/plechito_tex_m2.dds	copied
+d:/ymir work/pc/plechito/desert_bandit/warrior_m.gr2	PC/ymir work/pc/plechito/desert_bandit/warrior_m.gr2	source/nv_19/pc/plechito/desert_bandit/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/easter2020/assassin_w.gr2	PC/ymir work/pc/plechito/easter2020/assassin_w.gr2	source/nv_8/pc/plechito/easter2020/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2020/hair/assassin_w.gr2	PC/ymir work/pc/plechito/easter2020/hair/assassin_w.gr2	source/nv_8/pc/plechito/easter2020/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2020/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/easter2020/hair/plechito_tex_m.dds	source/nv_8/pc/plechito/easter2020/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/easter2020/hair/plechito_tex_m_2.dds	PC/ymir work/pc/plechito/easter2020/hair/plechito_tex_m_2.dds	source/nv_19/pc/plechito/easter2020/hair/plechito_tex_m_2.dds	copied
 d:/ymir work/pc/plechito/easter2020/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/easter2020/hair/plechito_tex_w.dds	source/nv_8/pc/plechito/easter2020/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/easter2020/hair/plechito_tex_w_2.dds	PC/ymir work/pc/plechito/easter2020/hair/plechito_tex_w_2.dds	source/nv_19/pc/plechito/easter2020/hair/plechito_tex_w_2.dds	copied
 d:/ymir work/pc/plechito/easter2020/hair/warrior_m.gr2	PC/ymir work/pc/plechito/easter2020/hair/warrior_m.gr2	source/nv_8/pc/plechito/easter2020/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/easter2020/plechito_tex_m.dds	PC/ymir work/pc/plechito/easter2020/plechito_tex_m.dds	source/nv_8/pc/plechito/easter2020/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/easter2020/plechito_tex_m_2.dds	PC/ymir work/pc/plechito/easter2020/plechito_tex_m_2.dds	source/nv_19/pc/plechito/easter2020/plechito_tex_m_2.dds	copied
+d:/ymir work/pc/plechito/easter2020/plechito_tex_w.dds	PC/ymir work/pc/plechito/easter2020/plechito_tex_w.dds	source/nv_8/pc/plechito/easter2020/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/easter2020/plechito_tex_w_2.dds	PC/ymir work/pc/plechito/easter2020/plechito_tex_w_2.dds	source/nv_19/pc/plechito/easter2020/plechito_tex_w_2.dds	copied
+d:/ymir work/pc/plechito/easter2020/warrior_m.gr2	PC/ymir work/pc/plechito/easter2020/warrior_m.gr2	source/nv_8/pc/plechito/easter2020/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/easter2021/assassin_w.gr2	PC/ymir work/pc/plechito/easter2021/assassin_w.gr2	source/nv_19/pc/plechito/easter2021/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2021/hair/assassin_w.gr2	PC/ymir work/pc/plechito/easter2021/hair/assassin_w.gr2	source/nv_19/pc/plechito/easter2021/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2021/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/easter2021/hair/plechito_tex_m.dds	source/nv_19/pc/plechito/easter2021/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/easter2021/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/easter2021/hair/plechito_tex_w.dds	source/nv_19/pc/plechito/easter2021/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/easter2021/hair/plechito_tex_w2.dds	PC/ymir work/pc/plechito/easter2021/hair/plechito_tex_w2.dds	source/nv_19/pc/plechito/easter2021/hair/plechito_tex_w2.dds	copied
 d:/ymir work/pc/plechito/easter2021/hair/warrior_m.gr2	PC/ymir work/pc/plechito/easter2021/hair/warrior_m.gr2	source/nv_19/pc/plechito/easter2021/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/easter2021/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/easter2021/plechito_tex_m_w.dds	source/nv_19/pc/plechito/easter2021/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/easter2021/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/easter2021/plechito_tex_w_w.dds	source/nv_19/pc/plechito/easter2021/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/easter2021/warrior_m.gr2	PC/ymir work/pc/plechito/easter2021/warrior_m.gr2	source/nv_19/pc/plechito/easter2021/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/easter2022_1/assassin_w.gr2	PC/ymir work/pc/plechito/easter2022_1/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/easter2022_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2022_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/easter2022_1/hair/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/easter2022_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2022_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/easter2022_1/hair/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/easter2022_1/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/easter2022_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/easter2022_1/plechito_tex_m.dds	source/nv_34/ymir work/pc/plechito/easter2022_1/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/easter2022_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/easter2022_1/plechito_tex_w_w.dds	source/nv_34/ymir work/pc/plechito/easter2022_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/easter2022_1/warrior_m.gr2	PC/ymir work/pc/plechito/easter2022_1/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/easter2022_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/easter2022_2/assassin_face_w.dds	PC/ymir work/pc/plechito/easter2022_2/assassin_face_w.dds	source/nv_34/ymir work/pc/plechito/easter2022_2/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/easter2022_2/assassin_w.gr2	PC/ymir work/pc/plechito/easter2022_2/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/easter2022_2/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2022_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/easter2022_2/hair/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/easter2022_2/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/easter2022_2/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/easter2022_2/hair/plechito_tex_m.dds	source/nv_34/ymir work/pc/plechito/easter2022_2/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/easter2022_2/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/easter2022_2/hair/plechito_tex_w.dds	source/nv_34/ymir work/pc/plechito/easter2022_2/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/easter2022_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/easter2022_2/hair/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/easter2022_2/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/easter2022_2/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/easter2022_2/plechito_tex_m_w.dds	source/nv_34/ymir work/pc/plechito/easter2022_2/plechito_tex_m_w.dds	copied
 d:/ymir work/pc/plechito/easter2022_2/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/easter2022_2/plechito_tex_w_w.dds	source/nv_34/ymir work/pc/plechito/easter2022_2/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/easter2022_2/warrior_face_m.dds	PC/ymir work/pc/plechito/easter2022_2/warrior_face_m.dds	source/nv_34/ymir work/pc/plechito/easter2022_2/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/easter2022_2/warrior_m.gr2	PC/ymir work/pc/plechito/easter2022_2/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/easter2022_2/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/forst_dragon/assassin_face_f.dds	PC/ymir work/pc/plechito/forst_dragon/assassin_face_f.dds	source/nv_23/pc/plechito/forst_dragon/assassin_face_f.dds	copied
+d:/ymir work/pc/plechito/forst_dragon/assassin_w.gr2	PC/ymir work/pc/plechito/forst_dragon/assassin_w.gr2	source/nv_23/pc/plechito/forst_dragon/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/forst_dragon/hair/assassin_w.gr2	PC/ymir work/pc/plechito/forst_dragon/hair/assassin_w.gr2	source/nv_23/pc/plechito/forst_dragon/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/forst_dragon/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/forst_dragon/hair/plechito_tex_m.dds	source/nv_23/pc/plechito/forst_dragon/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/forst_dragon/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/forst_dragon/hair/plechito_tex_w.dds	source/nv_23/pc/plechito/forst_dragon/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/forst_dragon/hair/warrior_m.gr2	PC/ymir work/pc/plechito/forst_dragon/hair/warrior_m.gr2	source/nv_23/pc/plechito/forst_dragon/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/forst_dragon/plechito_tex_m.dds	PC/ymir work/pc/plechito/forst_dragon/plechito_tex_m.dds	source/nv_23/pc/plechito/forst_dragon/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/forst_dragon/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/forst_dragon/plechito_tex_w_w.dds	source/nv_23/pc/plechito/forst_dragon/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/forst_dragon/warrior_face.dds	PC/ymir work/pc/plechito/forst_dragon/warrior_face.dds	source/nv_23/pc/plechito/forst_dragon/warrior_face.dds	copied
+d:/ymir work/pc/plechito/forst_dragon/warrior_m.gr2	PC/ymir work/pc/plechito/forst_dragon/warrior_m.gr2	source/nv_23/pc/plechito/forst_dragon/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/gold_armors/plechito_tex.dds	PC/ymir work/pc/plechito/gold_armors/plechito_tex.dds	source/nv_10/pc/plechito/gold_armors/plechito_tex.dds	copied
+d:/ymir work/pc/plechito/gold_armors/plechito_tex_m.dds	PC/ymir work/pc/plechito/gold_armors/plechito_tex_m.dds	source/nv_10/pc/plechito/gold_armors/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/gold_armors/warrior_m.gr2	PC/ymir work/pc/plechito/gold_armors/warrior_m.gr2	source/nv_10/pc/plechito/gold_armors/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halfmoon_mage/assassin_w.gr2	PC/ymir work/pc/plechito/halfmoon_mage/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/halfmoon_mage/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halfmoon_mage/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halfmoon_mage/hair/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/halfmoon_mage/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halfmoon_mage/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/halfmoon_mage/hair/plechito_tex_m.dds	source/nv_34/ymir work/pc/plechito/halfmoon_mage/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halfmoon_mage/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/halfmoon_mage/hair/plechito_tex_w.dds	source/nv_34/ymir work/pc/plechito/halfmoon_mage/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/halfmoon_mage/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halfmoon_mage/hair/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/halfmoon_mage/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/halfmoon_mage/plechito_tex_m.dds	PC/ymir work/pc/plechito/halfmoon_mage/plechito_tex_m.dds	source/nv_34/ymir work/pc/plechito/halfmoon_mage/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halfmoon_mage/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/halfmoon_mage/plechito_tex_w_w.dds	source/nv_34/ymir work/pc/plechito/halfmoon_mage/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/halfmoon_mage/warrior_m.gr2	PC/ymir work/pc/plechito/halfmoon_mage/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/halfmoon_mage/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/halloween2019/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2019/hair/assassin_w.gr2	source/nv_3/pc/plechito/halloween2019/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2019/hair/plechito_tex.dds	PC/ymir work/pc/plechito/halloween2019/hair/plechito_tex.dds	source/nv_3/pc/plechito/halloween2019/hair/plechito_tex.dds	copied
 d:/ymir work/pc/plechito/halloween2019/hair/plechito_tex2.dds	PC/ymir work/pc/plechito/halloween2019/hair/plechito_tex2.dds	source/nv_3/pc/plechito/halloween2019/hair/plechito_tex2.dds	copied
@@ -13354,65 +13521,147 @@ d:/ymir work/pc/plechito/halloween2019/plechito_tex01.dds	PC/ymir work/pc/plechi
 d:/ymir work/pc/plechito/halloween2019/plechito_tex02.dds	PC/ymir work/pc/plechito/halloween2019/plechito_tex02.dds	source/nv_3/pc/plechito/halloween2019/plechito_tex02.dds	copied
 d:/ymir work/pc/plechito/halloween2019/plechito_tex03.dds	PC/ymir work/pc/plechito/halloween2019/plechito_tex03.dds	source/nv_3/pc/plechito/halloween2019/plechito_tex03.dds	copied
 d:/ymir work/pc/plechito/halloween2019/plechito_tex04.dds	PC/ymir work/pc/plechito/halloween2019/plechito_tex04.dds	source/nv_3/pc/plechito/halloween2019/plechito_tex04.dds	copied
+d:/ymir work/pc/plechito/halloween2020/assassin_w_hallo.gr2	PC/ymir work/pc/plechito/halloween2020/assassin_w_hallo.gr2	source/nv_14/pc/plechito/halloween2020/assassin_w_hallo.gr2	converted
+d:/ymir work/pc/plechito/halloween2020/plechito_tex_m1.dds	PC/ymir work/pc/plechito/halloween2020/plechito_tex_m1.dds	source/nv_14/pc/plechito/halloween2020/plechito_tex_m1.dds	copied
+d:/ymir work/pc/plechito/halloween2020/plechito_tex_m2.dds	PC/ymir work/pc/plechito/halloween2020/plechito_tex_m2.dds	source/nv_14/pc/plechito/halloween2020/plechito_tex_m2.dds	copied
+d:/ymir work/pc/plechito/halloween2020/plechito_tex_m3.dds	PC/ymir work/pc/plechito/halloween2020/plechito_tex_m3.dds	source/nv_14/pc/plechito/halloween2020/plechito_tex_m3.dds	copied
+d:/ymir work/pc/plechito/halloween2020/plechito_tex_w2.dds	PC/ymir work/pc/plechito/halloween2020/plechito_tex_w2.dds	source/nv_14/pc/plechito/halloween2020/plechito_tex_w2.dds	copied
+d:/ymir work/pc/plechito/halloween2020/plechito_tex_w3.dds	PC/ymir work/pc/plechito/halloween2020/plechito_tex_w3.dds	source/nv_14/pc/plechito/halloween2020/plechito_tex_w3.dds	copied
+d:/ymir work/pc/plechito/halloween2020/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/halloween2020/plechito_tex_w_w.dds	source/nv_14/pc/plechito/halloween2020/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/halloween2020/warrior_m_hallo.gr2	PC/ymir work/pc/plechito/halloween2020/warrior_m_hallo.gr2	source/nv_14/pc/plechito/halloween2020/warrior_m_hallo.gr2	converted
+d:/ymir work/pc/plechito/halloween2021_1/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2021_1/assassin_w.gr2	source/nv_25/ymir work/pc/plechito/halloween2021_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2021_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2021_1/hair/assassin_w.gr2	source/nv_25/ymir work/pc/plechito/halloween2021_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2021_1/hair/plechito_tex.dds	PC/ymir work/pc/plechito/halloween2021_1/hair/plechito_tex.dds	source/nv_25/ymir work/pc/plechito/halloween2021_1/hair/plechito_tex.dds	copied
 d:/ymir work/pc/plechito/halloween2021_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2021_1/hair/warrior_m.gr2	source/nv_25/ymir work/pc/plechito/halloween2021_1/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2021_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2021_1/plechito_tex_m.dds	source/nv_25/ymir work/pc/plechito/halloween2021_1/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2021_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/halloween2021_1/plechito_tex_w_w.dds	source/nv_25/ymir work/pc/plechito/halloween2021_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/halloween2021_1/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2021_1/warrior_m.gr2	source/nv_25/ymir work/pc/plechito/halloween2021_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2021_2/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2021_2/assassin_face_w.dds	source/nv_25/ymir work/pc/plechito/halloween2021_2/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2021_2/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2021_2/assassin_w.GR2	source/nv_25/ymir work/pc/plechito/halloween2021_2/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/halloween2021_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2021_2/hair/assassin_w.GR2	source/nv_25/ymir work/pc/plechito/halloween2021_2/hair/assassin_w.GR2	converted
 d:/ymir work/pc/plechito/halloween2021_2/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2021_2/hair/plechito_tex_m.dds	source/nv_25/ymir work/pc/plechito/halloween2021_2/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2021_2/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/halloween2021_2/hair/plechito_tex_w.dds	source/nv_25/ymir work/pc/plechito/halloween2021_2/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/halloween2021_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2021_2/hair/warrior_m.GR2	source/nv_25/ymir work/pc/plechito/halloween2021_2/hair/warrior_m.GR2	converted
 d:/ymir work/pc/plechito/halloween2021_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2021_2/plechito_tex_m.dds	source/nv_25/ymir work/pc/plechito/halloween2021_2/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/halloween2021_2/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/halloween2021_2/plechito_tex_w_w.dds	source/nv_25/ymir work/pc/plechito/halloween2021_2/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/halloween2021_2/warrior_face.dds	PC/ymir work/pc/plechito/halloween2021_2/warrior_face.dds	source/nv_25/ymir work/pc/plechito/halloween2021_2/warrior_face.dds	copied
+d:/ymir work/pc/plechito/halloween2021_2/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2021_2/warrior_m.GR2	source/nv_25/ymir work/pc/plechito/halloween2021_2/warrior_m.GR2	converted
+d:/ymir work/pc/plechito/halloween2022_1/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2022_1/assassin_face_w.dds	source/nv_40/ymir work/pc/plechito/halloween2022_1/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2022_1/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2022_1/warrior_face_m.dds	source/nv_40/ymir work/pc/plechito/halloween2022_1/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2022_3/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2022_3/assassin_face_w.dds	source/nv_45/ymir work/pc/plechito/halloween2022_3/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2022_3/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2022_3/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2022_3/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2022_3/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2022_3/hair/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2022_3/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2022_3/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2022_3/hair/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2022_3/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/halloween2022_3/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2022_3/plechito_tex_m.dds	source/nv_45/ymir work/pc/plechito/halloween2022_3/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2022_3/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/halloween2022_3/plechito_tex_w_w.dds	source/nv_45/ymir work/pc/plechito/halloween2022_3/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/halloween2022_3/warrior_face.dds	PC/ymir work/pc/plechito/halloween2022_3/warrior_face.dds	source/nv_45/ymir work/pc/plechito/halloween2022_3/warrior_face.dds	copied
+d:/ymir work/pc/plechito/halloween2022_3/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2022_3/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2022_3/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2023_1/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2023_1/assassin_face_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_1/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2023_1/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_1/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_1/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_1/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_1/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2023_1/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/halloween2023_1/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2023_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/halloween2023_1/plechito_tex_w_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/halloween2023_1/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2023_1/warrior_face_m.dds	source/nv_40/ymir work/pc/plechito/halloween2023_1/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2023_1/warrior_halloween_2021_1.dds	PC/ymir work/pc/plechito/halloween2023_1/warrior_halloween_2021_1.dds	source/nv_40/ymir work/pc/plechito/halloween2023_1/warrior_halloween_2021_1.dds	copied
+d:/ymir work/pc/plechito/halloween2023_1/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_1/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2023_2/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2023_2/assassin_face_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_2/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2023_2/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_2/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_2/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_2/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_2/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_2/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2023_2/hair/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/halloween2023_2/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2023_2/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/halloween2023_2/hair/plechito_tex_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_2/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/halloween2023_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_2/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_2/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2023_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2023_2/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/halloween2023_2/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/halloween2023_2/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/halloween2023_2/plechito_tex_w_as.dds	source/nv_40/ymir work/pc/plechito/halloween2023_2/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/halloween2023_2/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2023_2/warrior_face_m.dds	source/nv_40/ymir work/pc/plechito/halloween2023_2/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2023_2/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_2/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_2/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2023_3/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_3/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_3/assassin_w.gr2	converted
+d:/ymir work/pc/plechito/halloween2023_3/body_parts.dds	PC/ymir work/pc/plechito/halloween2023_3/body_parts.dds	source/nv_40/ymir work/pc/plechito/halloween2023_3/body_parts.dds	copied
+d:/ymir work/pc/plechito/halloween2023_3/face/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2023_3/face/assassin_face_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_3/face/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2023_3/face/assassin_face_w_flesh.dds	PC/ymir work/pc/plechito/halloween2023_3/face/assassin_face_w_flesh.dds	source/nv_40/ymir work/pc/plechito/halloween2023_3/face/assassin_face_w_flesh.dds	copied
+d:/ymir work/pc/plechito/halloween2023_3/face/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2023_3/face/warrior_face_m.dds	source/nv_40/ymir work/pc/plechito/halloween2023_3/face/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2023_3/face/warrior_face_m_flesh.dds	PC/ymir work/pc/plechito/halloween2023_3/face/warrior_face_m_flesh.dds	source/nv_40/ymir work/pc/plechito/halloween2023_3/face/warrior_face_m_flesh.dds	copied
 d:/ymir work/pc/plechito/halloween2023_3/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_3/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_3/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_3/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_3/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_3/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_3/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2023_3/plechito_tex_m.dds	source/nv_40/ymir work/pc/plechito/halloween2023_3/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2023_3/plechito_tex_w.dds	PC/ymir work/pc/plechito/halloween2023_3/plechito_tex_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_3/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/halloween2023_3/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_3/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_3/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2023_4/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_4/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_4/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_4/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_4/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_4/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_4/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/halloween2023_4/plechito_tex_m_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_4/plechito_tex_m_w.dds	copied
 d:/ymir work/pc/plechito/halloween2023_4/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/halloween2023_4/plechito_tex_w_as.dds	source/nv_40/ymir work/pc/plechito/halloween2023_4/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/halloween2023_4/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_4/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2023_4_red/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_4_red/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4_red/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_4_red/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2023_4_red/hair/assassin_w.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4_red/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_4_red/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_4_red/hair/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4_red/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/halloween2023_4_red/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/halloween2023_4_red/plechito_tex_m_w.dds	source/nv_40/ymir work/pc/plechito/halloween2023_4_red/plechito_tex_m_w.dds	copied
 d:/ymir work/pc/plechito/halloween2023_4_red/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/halloween2023_4_red/plechito_tex_w_as.dds	source/nv_40/ymir work/pc/plechito/halloween2023_4_red/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/halloween2023_4_red/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2023_4_red/warrior_m.gr2	source/nv_40/ymir work/pc/plechito/halloween2023_4_red/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/halloween2024_1/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2024_1/assassin_face_w.dds	source/nv_45/ymir work/pc/plechito/halloween2024_1/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2024_1/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2024_1/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_1/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2024_1/hair/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_1/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_1/hair/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_1/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2024_1/plechito_tex_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_1/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2024_1/plechito_tex_w.dds	PC/ymir work/pc/plechito/halloween2024_1/plechito_tex_w.dds	source/nv_45/ymir work/pc/plechito/halloween2024_1/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/halloween2024_1/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2024_1/warrior_face_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_1/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2024_1/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_1/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_1/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2024_3/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2024_3/warrior_face_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_3/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2024_4/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2024_4/assassin_face_w.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2024_4/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2024_4/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_4/assassin_w.GR2	copied
+d:/ymir work/pc/plechito/halloween2024_4/bones.dds	PC/ymir work/pc/plechito/halloween2024_4/bones.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/bones.dds	copied
 d:/ymir work/pc/plechito/halloween2024_4/hair/assassin_w.dds	PC/ymir work/pc/plechito/halloween2024_4/hair/assassin_w.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/hair/assassin_w.dds	copied
 d:/ymir work/pc/plechito/halloween2024_4/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2024_4/hair/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_4/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_4/hair/warrior_m.dds	PC/ymir work/pc/plechito/halloween2024_4/hair/warrior_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/hair/warrior_m.dds	copied
 d:/ymir work/pc/plechito/halloween2024_4/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_4/hair/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_4/hair/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2024_4/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/halloween2024_4/plechito_tex_m_w.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/halloween2024_4/plechito_tex_m_w_body.dds	PC/ymir work/pc/plechito/halloween2024_4/plechito_tex_m_w_body.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/plechito_tex_m_w_body.dds	copied
+d:/ymir work/pc/plechito/halloween2024_4/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/halloween2024_4/plechito_tex_w_as.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/halloween2024_4/plechito_tex_w_w_body.dds	PC/ymir work/pc/plechito/halloween2024_4/plechito_tex_w_w_body.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/plechito_tex_w_w_body.dds	copied
+d:/ymir work/pc/plechito/halloween2024_4/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2024_4/warrior_face_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_4/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2024_4/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_4/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_4/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2024_5/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2024_5/assassin_face_w.dds	source/nv_45/ymir work/pc/plechito/halloween2024_5/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2024_5/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2024_5/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_5/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_5/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2024_5/hair/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_5/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_5/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_5/hair/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_5/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_5/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2024_5/plechito_tex_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_5/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2024_5/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/halloween2024_5/plechito_tex_w_as.dds	source/nv_45/ymir work/pc/plechito/halloween2024_5/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/halloween2024_5/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_5/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_5/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/halloween2024_6/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_6/hair/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_6/hair/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2024_6/plechito_tex_deco.dds	PC/ymir work/pc/plechito/halloween2024_6/plechito_tex_deco.dds	source/nv_45/ymir work/pc/plechito/halloween2024_6/plechito_tex_deco.dds	copied
 d:/ymir work/pc/plechito/halloween2024_6/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2024_6/plechito_tex_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_6/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/halloween2024_6/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2024_6/warrior_face_m.dds	source/nv_45/ymir work/pc/plechito/halloween2024_6/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2024_6/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2024_6/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2024_6/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2025_1/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2025_1/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_1/assassin_w.GR2	copied
+d:/ymir work/pc/plechito/halloween2025_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2025_1/plechito_tex_m.dds	source/nv_45/ymir work/pc/plechito/halloween2025_1/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/halloween2025_1/plechito_tex_w.dds	PC/ymir work/pc/plechito/halloween2025_1/plechito_tex_w.dds	source/nv_45/ymir work/pc/plechito/halloween2025_1/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/halloween2025_1/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2025_1/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_1/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2025_2/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2025_2/assassin_face_w.dds	source/nv_45/ymir work/pc/plechito/halloween2025_2/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2025_2/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2025_2/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_2/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2025_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2025_2/hair/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_2/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2025_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2025_2/hair/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_2/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/halloween2025_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2025_2/plechito_tex_m.dds	source/nv_45/ymir work/pc/plechito/halloween2025_2/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2025_2/plechito_tex_w.dds	PC/ymir work/pc/plechito/halloween2025_2/plechito_tex_w.dds	source/nv_45/ymir work/pc/plechito/halloween2025_2/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/halloween2025_2/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2025_2/warrior_face_m.dds	source/nv_45/ymir work/pc/plechito/halloween2025_2/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2025_2/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2025_2/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_2/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/halloween2025_5/assassin_face_w.dds	PC/ymir work/pc/plechito/halloween2025_5/assassin_face_w.dds	source/nv_45/ymir work/pc/plechito/halloween2025_5/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/halloween2025_5/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2025_5/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_5/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2025_5/hair/assassin_w.gr2	PC/ymir work/pc/plechito/halloween2025_5/hair/assassin_w.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_5/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/halloween2025_5/hair/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2025_5/hair/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_5/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/halloween2025_5/plechito_tex_m.dds	PC/ymir work/pc/plechito/halloween2025_5/plechito_tex_m.dds	source/nv_45/ymir work/pc/plechito/halloween2025_5/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/halloween2025_5/plechito_tex_w.dds	PC/ymir work/pc/plechito/halloween2025_5/plechito_tex_w.dds	source/nv_45/ymir work/pc/plechito/halloween2025_5/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/halloween2025_5/warrior_face_m.dds	PC/ymir work/pc/plechito/halloween2025_5/warrior_face_m.dds	source/nv_45/ymir work/pc/plechito/halloween2025_5/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/halloween2025_5/warrior_m.gr2	PC/ymir work/pc/plechito/halloween2025_5/warrior_m.GR2	source/nv_45/ymir work/pc/plechito/halloween2025_5/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/japanese_festive_costumes/assassin_w.gr2	PC/ymir work/pc/plechito/japanese_festive_costumes/assassin_w.gr2	source/nv_23/pc/plechito/japanese_festive_costumes/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/japanese_festive_costumes/hair/assassin_w.gr2	PC/ymir work/pc/plechito/japanese_festive_costumes/hair/assassin_w.gr2	source/nv_23/pc/plechito/japanese_festive_costumes/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/japanese_festive_costumes/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/japanese_festive_costumes/hair/plechito_tex_m.dds	source/nv_23/pc/plechito/japanese_festive_costumes/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/japanese_festive_costumes/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/japanese_festive_costumes/hair/plechito_tex_w.dds	source/nv_23/pc/plechito/japanese_festive_costumes/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/japanese_festive_costumes/hair/warrior_m.gr2	PC/ymir work/pc/plechito/japanese_festive_costumes/hair/warrior_m.gr2	source/nv_23/pc/plechito/japanese_festive_costumes/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/japanese_festive_costumes/plechito_tex_m.dds	PC/ymir work/pc/plechito/japanese_festive_costumes/plechito_tex_m.dds	source/nv_23/pc/plechito/japanese_festive_costumes/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/japanese_festive_costumes/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/japanese_festive_costumes/plechito_tex_w_w.dds	source/nv_23/pc/plechito/japanese_festive_costumes/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/japanese_festive_costumes/warrior_m.gr2	PC/ymir work/pc/plechito/japanese_festive_costumes/warrior_m.gr2	source/nv_23/pc/plechito/japanese_festive_costumes/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/magic_costumes/assassin_w.gr2	PC/ymir work/pc/plechito/magic_costumes/assassin_w.gr2	source/nv_8/pc/plechito/magic_costumes/assassin_w.gr2	converted
+d:/ymir work/pc/plechito/magic_costumes/body_tex.dds	PC/ymir work/pc/plechito/magic_costumes/body_tex.dds	source/nv_8/pc/plechito/magic_costumes/body_tex.dds	copied
 d:/ymir work/pc/plechito/magic_costumes/hair/assassin_w.gr2	PC/ymir work/pc/plechito/magic_costumes/hair/assassin_w.gr2	source/nv_8/pc/plechito/magic_costumes/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/magic_costumes/hair/assassin_w2.gr2	PC/ymir work/pc/plechito/magic_costumes/hair/assassin_w2.gr2	source/nv_8/pc/plechito/magic_costumes/hair/assassin_w2.gr2	converted
 d:/ymir work/pc/plechito/magic_costumes/hair/plechito_tex_f.dds	PC/ymir work/pc/plechito/magic_costumes/hair/plechito_tex_f.dds	source/nv_8/pc/plechito/magic_costumes/hair/plechito_tex_f.dds	copied
@@ -13423,116 +13672,200 @@ d:/ymir work/pc/plechito/magic_costumes/hair/plechito_tex_w.dds	PC/ymir work/pc/
 d:/ymir work/pc/plechito/magic_costumes/hair/plechito_tex_w2.dds	PC/ymir work/pc/plechito/magic_costumes/hair/plechito_tex_w2.dds	source/nv_8/pc/plechito/magic_costumes/hair/plechito_tex_w2.dds	copied
 d:/ymir work/pc/plechito/magic_costumes/hair/warrior_m.gr2	PC/ymir work/pc/plechito/magic_costumes/hair/warrior_m.gr2	source/nv_8/pc/plechito/magic_costumes/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/magic_costumes/hair/warrior_m2.gr2	PC/ymir work/pc/plechito/magic_costumes/hair/warrior_m2.gr2	source/nv_8/pc/plechito/magic_costumes/hair/warrior_m2.gr2	converted
+d:/ymir work/pc/plechito/magic_costumes/plechito_tex_m.dds	PC/ymir work/pc/plechito/magic_costumes/plechito_tex_m.dds	source/nv_8/pc/plechito/magic_costumes/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/magic_costumes/plechito_tex_m2.dds	PC/ymir work/pc/plechito/magic_costumes/plechito_tex_m2.dds	source/nv_8/pc/plechito/magic_costumes/plechito_tex_m2.dds	copied
+d:/ymir work/pc/plechito/magic_costumes/plechito_tex_ww.dds	PC/ymir work/pc/plechito/magic_costumes/plechito_tex_ww.dds	source/nv_8/pc/plechito/magic_costumes/plechito_tex_ww.dds	copied
+d:/ymir work/pc/plechito/magic_costumes/plechito_tex_ww2.dds	PC/ymir work/pc/plechito/magic_costumes/plechito_tex_ww2.dds	source/nv_8/pc/plechito/magic_costumes/plechito_tex_ww2.dds	copied
+d:/ymir work/pc/plechito/magic_costumes/warrior_m.gr2	PC/ymir work/pc/plechito/magic_costumes/warrior_m.gr2	source/nv_8/pc/plechito/magic_costumes/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/new_year_2023/assassin_w.gr2	PC/ymir work/pc/plechito/new_year_2023/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/new_year_2023/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/new_year_2023/hair/assassin_w.gr2	PC/ymir work/pc/plechito/new_year_2023/hair/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/new_year_2023/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/new_year_2023/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/new_year_2023/hair/plechito_tex_m.dds	source/nv_46/ymir work/pc/plechito/new_year_2023/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/new_year_2023/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/new_year_2023/hair/plechito_tex_w.dds	source/nv_46/ymir work/pc/plechito/new_year_2023/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/new_year_2023/hair/warrior_m.gr2	PC/ymir work/pc/plechito/new_year_2023/hair/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/new_year_2023/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/new_year_2023/plechito_tex_m.dds	PC/ymir work/pc/plechito/new_year_2023/plechito_tex_m.dds	source/nv_46/ymir work/pc/plechito/new_year_2023/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/new_year_2023/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/new_year_2023/plechito_tex_w_w.dds	source/nv_46/ymir work/pc/plechito/new_year_2023/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/new_year_2023/warrior_m.gr2	PC/ymir work/pc/plechito/new_year_2023/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/new_year_2023/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/new_year_2024/assassin_w.gr2	PC/ymir work/pc/plechito/new_year_2024/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/new_year_2024/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/new_year_2024/hair/assassin_w.gr2	PC/ymir work/pc/plechito/new_year_2024/hair/assassin_w.GR2	source/nv_46/ymir work/pc/plechito/new_year_2024/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/new_year_2024/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/new_year_2024/hair/plechito_tex_m.dds	source/nv_46/ymir work/pc/plechito/new_year_2024/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/new_year_2024/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/new_year_2024/hair/plechito_tex_w.dds	source/nv_46/ymir work/pc/plechito/new_year_2024/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/new_year_2024/hair/warrior_m.gr2	PC/ymir work/pc/plechito/new_year_2024/hair/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/new_year_2024/hair/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/new_year_2024/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/new_year_2024/plechito_tex_m_w.dds	source/nv_46/ymir work/pc/plechito/new_year_2024/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/new_year_2024/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/new_year_2024/plechito_tex_w_as.dds	source/nv_46/ymir work/pc/plechito/new_year_2024/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/new_year_2024/plechito_tex_was_body.dds	PC/ymir work/pc/plechito/new_year_2024/plechito_tex_was_body.dds	source/nv_46/ymir work/pc/plechito/new_year_2024/plechito_tex_was_body.dds	copied
+d:/ymir work/pc/plechito/new_year_2024/warrior_m.gr2	PC/ymir work/pc/plechito/new_year_2024/warrior_m.GR2	source/nv_46/ymir work/pc/plechito/new_year_2024/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/pirates_1/assassin_w.gr2	PC/ymir work/pc/plechito/pirates_1/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/pirates_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/pirates_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/pirates_1/hair/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/pirates_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/pirates_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/pirates_1/hair/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/pirates_1/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/pirates_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/pirates_1/plechito_tex_m.dds	source/nv_38/ymir work/pc/plechito/pirates_1/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/pirates_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/pirates_1/plechito_tex_w_w.dds	source/nv_38/ymir work/pc/plechito/pirates_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/pirates_1/warrior_m.gr2	PC/ymir work/pc/plechito/pirates_1/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/pirates_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/pirates_2/assassin_w.gr2	PC/ymir work/pc/plechito/pirates_2/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/pirates_2/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/pirates_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/pirates_2/hair/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/pirates_2/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/pirates_2/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/pirates_2/hair/plechito_tex_m.dds	source/nv_38/ymir work/pc/plechito/pirates_2/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/pirates_2/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/pirates_2/hair/plechito_tex_w.dds	source/nv_38/ymir work/pc/plechito/pirates_2/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/pirates_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/pirates_2/hair/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/pirates_2/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/pirates_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/pirates_2/plechito_tex_m.dds	source/nv_38/ymir work/pc/plechito/pirates_2/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/pirates_2/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/pirates_2/plechito_tex_w_as.dds	source/nv_38/ymir work/pc/plechito/pirates_2/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/pirates_2/warrior_face_m.dds	PC/ymir work/pc/plechito/pirates_2/warrior_face_m.dds	source/nv_38/ymir work/pc/plechito/pirates_2/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/pirates_2/warrior_m.gr2	PC/ymir work/pc/plechito/pirates_2/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/pirates_2/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/pirates_3/assassin_w.gr2	PC/ymir work/pc/plechito/pirates_3/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/pirates_3/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/pirates_3/hair/assassin_w.gr2	PC/ymir work/pc/plechito/pirates_3/hair/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/pirates_3/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/pirates_3/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/pirates_3/hair/plechito_tex_m.dds	source/nv_38/ymir work/pc/plechito/pirates_3/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/pirates_3/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/pirates_3/hair/plechito_tex_w.dds	source/nv_38/ymir work/pc/plechito/pirates_3/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/pirates_3/hair/warrior_m.gr2	PC/ymir work/pc/plechito/pirates_3/hair/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/pirates_3/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/pirates_3/plechito_tex_m.dds	PC/ymir work/pc/plechito/pirates_3/plechito_tex_m.dds	source/nv_38/ymir work/pc/plechito/pirates_3/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/pirates_3/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/pirates_3/plechito_tex_w_w.dds	source/nv_38/ymir work/pc/plechito/pirates_3/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/pirates_3/warrior_face_m.dds	PC/ymir work/pc/plechito/pirates_3/warrior_face_m.dds	source/nv_38/ymir work/pc/plechito/pirates_3/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/pirates_3/warrior_m.gr2	PC/ymir work/pc/plechito/pirates_3/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/pirates_3/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/ramadan2021/assassin_w.gr2	PC/ymir work/pc/plechito/ramadan2021/assassin_w.gr2	source/nv_20/pc/plechito/ramadan2021/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/ramadan2021/hair/assassin_w.gr2	PC/ymir work/pc/plechito/ramadan2021/hair/assassin_w.gr2	source/nv_20/pc/plechito/ramadan2021/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/ramadan2021/hair/warrior_m.gr2	PC/ymir work/pc/plechito/ramadan2021/hair/warrior_m.gr2	source/nv_20/pc/plechito/ramadan2021/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/ramadan2021/plechito_tex_m.dds	PC/ymir work/pc/plechito/ramadan2021/plechito_tex_m.dds	source/nv_20/pc/plechito/ramadan2021/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/ramadan2021/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/ramadan2021/plechito_tex_w_as.dds	source/nv_20/pc/plechito/ramadan2021/plechito_tex_w_as.dds	copied
 d:/ymir work/pc/plechito/ramadan2021/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/ramadan2021/plechito_tex_w_w.dds	source/nv_20/pc/plechito/ramadan2021/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/ramadan2021/warrior_m.gr2	PC/ymir work/pc/plechito/ramadan2021/warrior_m.gr2	source/nv_20/pc/plechito/ramadan2021/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/royal_phoenix/assassin_w.gr2	PC/ymir work/pc/plechito/royal_phoenix/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/royal_phoenix/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/royal_phoenix/hair/assassin_w.gr2	PC/ymir work/pc/plechito/royal_phoenix/hair/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/royal_phoenix/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/royal_phoenix/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/royal_phoenix/hair/plechito_tex_m.dds	source/nv_27/ymir work/pc/plechito/royal_phoenix/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/royal_phoenix/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/royal_phoenix/hair/plechito_tex_w.dds	source/nv_27/ymir work/pc/plechito/royal_phoenix/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/royal_phoenix/hair/warrior_m.gr2	PC/ymir work/pc/plechito/royal_phoenix/hair/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/royal_phoenix/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/royal_phoenix/plechito_tex_m.dds	PC/ymir work/pc/plechito/royal_phoenix/plechito_tex_m.dds	source/nv_27/ymir work/pc/plechito/royal_phoenix/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/royal_phoenix/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/royal_phoenix/plechito_tex_w_as.dds	source/nv_27/ymir work/pc/plechito/royal_phoenix/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/royal_phoenix/warrior_m.gr2	PC/ymir work/pc/plechito/royal_phoenix/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/royal_phoenix/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/sakura_samurai_costumes/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/sakura_samurai_costumes/hair/plechito_tex_m.dds	source/nv_15/pc/plechito/sakura_samurai_costumes/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/sakura_samurai_costumes/hair/warrior_m.gr2	PC/ymir work/pc/plechito/sakura_samurai_costumes/hair/warrior_m.gr2	source/nv_15/pc/plechito/sakura_samurai_costumes/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/sakura_samurai_costumes/plechito_tex_m.dds	PC/ymir work/pc/plechito/sakura_samurai_costumes/plechito_tex_m.dds	source/nv_15/pc/plechito/sakura_samurai_costumes/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/sakura_samurai_costumes/warrior_m.gr2	PC/ymir work/pc/plechito/sakura_samurai_costumes/warrior_m.gr2	source/nv_15/pc/plechito/sakura_samurai_costumes/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/school_uniform/assassin_w.gr2	PC/ymir work/pc/plechito/school_uniform/assassin_w.gr2	source/nv_13/pc/plechito/school_uniform/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/school_uniform/hair/assassin_w.gr2	PC/ymir work/pc/plechito/school_uniform/hair/assassin_w.gr2	source/nv_13/pc/plechito/school_uniform/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/school_uniform/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/school_uniform/hair/plechito_tex_m.dds	source/nv_13/pc/plechito/school_uniform/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/school_uniform/hair/warrior_m.gr2	PC/ymir work/pc/plechito/school_uniform/hair/warrior_m.gr2	source/nv_13/pc/plechito/school_uniform/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/school_uniform/plechito_tex_m.dds	PC/ymir work/pc/plechito/school_uniform/plechito_tex_m.dds	source/nv_13/pc/plechito/school_uniform/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/school_uniform/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/school_uniform/plechito_tex_w_w.dds	source/nv_13/pc/plechito/school_uniform/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/school_uniform/warrior_m.gr2	PC/ymir work/pc/plechito/school_uniform/warrior_m.gr2	source/nv_13/pc/plechito/school_uniform/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/squidgame_costume/assassin_w.gr2	PC/ymir work/pc/plechito/squidgame_costume/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/squidgame_costume/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/squidgame_costume/hair/assassin_w.gr2	PC/ymir work/pc/plechito/squidgame_costume/hair/assassin_w.gr2	source/nv_27/ymir work/pc/plechito/squidgame_costume/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/squidgame_costume/hair/mask.dds	PC/ymir work/pc/plechito/squidgame_costume/hair/mask.dds	source/nv_27/ymir work/pc/plechito/squidgame_costume/hair/mask.dds	copied
 d:/ymir work/pc/plechito/squidgame_costume/hair/mask2.dds	PC/ymir work/pc/plechito/squidgame_costume/hair/mask2.dds	source/nv_27/ymir work/pc/plechito/squidgame_costume/hair/mask2.dds	copied
 d:/ymir work/pc/plechito/squidgame_costume/hair/warrior_m.gr2	PC/ymir work/pc/plechito/squidgame_costume/hair/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/squidgame_costume/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/squidgame_costume/plechito_tex00.dds	PC/ymir work/pc/plechito/squidgame_costume/plechito_tex00.dds	source/nv_27/ymir work/pc/plechito/squidgame_costume/plechito_tex00.dds	copied
+d:/ymir work/pc/plechito/squidgame_costume/warrior_m.gr2	PC/ymir work/pc/plechito/squidgame_costume/warrior_m.gr2	source/nv_27/ymir work/pc/plechito/squidgame_costume/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/stpatrick_costumes/assassin_face_w.dds	PC/ymir work/pc/plechito/stpatrick_costumes/assassin_face_w.dds	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/stpatrick_costumes/assassin_w.gr2	PC/ymir work/pc/plechito/stpatrick_costumes/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/stpatrick_costumes/hair/assassin_w.gr2	PC/ymir work/pc/plechito/stpatrick_costumes/hair/assassin_w.gr2	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/stpatrick_costumes/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/stpatrick_costumes/hair/plechito_tex_m.dds	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/stpatrick_costumes/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/stpatrick_costumes/hair/plechito_tex_w.dds	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/stpatrick_costumes/hair/warrior_m.gr2	PC/ymir work/pc/plechito/stpatrick_costumes/hair/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/stpatrick_costumes/plechito_tex_m.dds	PC/ymir work/pc/plechito/stpatrick_costumes/plechito_tex_m.dds	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/stpatrick_costumes/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/stpatrick_costumes/plechito_tex_w_w.dds	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/stpatrick_costumes/warrior_face_m.dds	PC/ymir work/pc/plechito/stpatrick_costumes/warrior_face_m.dds	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/stpatrick_costumes/warrior_m.gr2	PC/ymir work/pc/plechito/stpatrick_costumes/warrior_m.gr2	source/nv_34/ymir work/pc/plechito/stpatrick_costumes/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/summer2020_costume/assassin_w.gr2	PC/ymir work/pc/plechito/summer2020_costume/assassin_w.gr2	source/nv_11/pc/plechito/summer2020_costume/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/summer2020_costume/hair/assassin_w.gr2	PC/ymir work/pc/plechito/summer2020_costume/hair/assassin_w.gr2	source/nv_11/pc/plechito/summer2020_costume/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/summer2020_costume/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/summer2020_costume/hair/plechito_tex_m.dds	source/nv_11/pc/plechito/summer2020_costume/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/summer2020_costume/hair/plechito_tex_m_a.dds	PC/ymir work/pc/plechito/summer2020_costume/hair/plechito_tex_m_a.dds	source/nv_11/pc/plechito/summer2020_costume/hair/plechito_tex_m_a.dds	copied
 d:/ymir work/pc/plechito/summer2020_costume/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/summer2020_costume/hair/plechito_tex_w.dds	source/nv_11/pc/plechito/summer2020_costume/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/summer2020_costume/hair/warrior_m.gr2	PC/ymir work/pc/plechito/summer2020_costume/hair/warrior_m.gr2	source/nv_11/pc/plechito/summer2020_costume/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/summer2020_costume/plechito_tex_m.dds	PC/ymir work/pc/plechito/summer2020_costume/plechito_tex_m.dds	source/nv_11/pc/plechito/summer2020_costume/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/summer2020_costume/plechito_tex_ww.dds	PC/ymir work/pc/plechito/summer2020_costume/plechito_tex_ww.dds	source/nv_11/pc/plechito/summer2020_costume/plechito_tex_ww.dds	copied
+d:/ymir work/pc/plechito/summer2020_costume/warrior_m.gr2	PC/ymir work/pc/plechito/summer2020_costume/warrior_m.gr2	source/nv_11/pc/plechito/summer2020_costume/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/summer2021/assassin_w.gr2	PC/ymir work/pc/plechito/summer2021/assassin_w.gr2	source/nv_23/pc/plechito/summer2021/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/summer2021/hair/assassin_w.gr2	PC/ymir work/pc/plechito/summer2021/hair/assassin_w.gr2	source/nv_23/pc/plechito/summer2021/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/summer2021/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/summer2021/hair/plechito_tex_m.dds	source/nv_23/pc/plechito/summer2021/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/summer2021/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/summer2021/hair/plechito_tex_w.dds	source/nv_23/pc/plechito/summer2021/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/summer2021/hair/warrior_m.gr2	PC/ymir work/pc/plechito/summer2021/hair/warrior_m.gr2	source/nv_23/pc/plechito/summer2021/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/summer2021/plechito_tex_m.dds	PC/ymir work/pc/plechito/summer2021/plechito_tex_m.dds	source/nv_23/pc/plechito/summer2021/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/summer2021/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/summer2021/plechito_tex_w_w.dds	source/nv_23/pc/plechito/summer2021/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/summer2021/warrior_m.gr2	PC/ymir work/pc/plechito/summer2021/warrior_m.gr2	source/nv_23/pc/plechito/summer2021/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/summer2023/assassin_w.gr2	PC/ymir work/pc/plechito/summer2023/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/summer2023/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/summer2023/hair/assassin_w.gr2	PC/ymir work/pc/plechito/summer2023/hair/assassin_w.gr2	source/nv_38/ymir work/pc/plechito/summer2023/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/summer2023/hair/warrior_m.gr2	PC/ymir work/pc/plechito/summer2023/hair/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/summer2023/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/summer2023/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/summer2023/plechito_tex_m_w.dds	source/nv_38/ymir work/pc/plechito/summer2023/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/summer2023/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/summer2023/plechito_tex_w_as.dds	source/nv_38/ymir work/pc/plechito/summer2023/plechito_tex_w_as.dds	copied
 d:/ymir work/pc/plechito/summer2023/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/summer2023/plechito_tex_w_w.dds	source/nv_38/ymir work/pc/plechito/summer2023/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/summer2023/warrior_m.gr2	PC/ymir work/pc/plechito/summer2023/warrior_m.gr2	source/nv_38/ymir work/pc/plechito/summer2023/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_m.dds	source/nv_7/pc/plechito/valentine2020_costume/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_m_2.dds	PC/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_m_2.dds	source/nv_7/pc/plechito/valentine2020_costume/hair/plechito_tex_m_2.dds	copied
 d:/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_w.dds	source/nv_7/pc/plechito/valentine2020_costume/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_w_2.dds	PC/ymir work/pc/plechito/valentine2020_costume/hair/plechito_tex_w_2.dds	source/nv_7/pc/plechito/valentine2020_costume/hair/plechito_tex_w_2.dds	copied
 d:/ymir work/pc/plechito/valentine2020_costume/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2020_costume/plechito_tex_m.dds	source/nv_7/pc/plechito/valentine2020_costume/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2020_costume/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/valentine2020_costume/plechito_tex_w_w.dds	source/nv_7/pc/plechito/valentine2020_costume/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/valentine2021/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2021/assassin_w.gr2	source/nv_18/pc/plechito/valentine2021/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2021/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2021/hair/assassin_w.gr2	source/nv_18/pc/plechito/valentine2021/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2021/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2021/hair/plechito_tex_m.dds	source/nv_18/pc/plechito/valentine2021/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2021/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/valentine2021/hair/plechito_tex_w.dds	source/nv_18/pc/plechito/valentine2021/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/valentine2021/hair/plechito_tex_w2.dds	PC/ymir work/pc/plechito/valentine2021/hair/plechito_tex_w2.dds	source/nv_18/pc/plechito/valentine2021/hair/plechito_tex_w2.dds	copied
 d:/ymir work/pc/plechito/valentine2021/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2021/hair/warrior_m.gr2	source/nv_18/pc/plechito/valentine2021/hair/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/valentine2021/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/valentine2021/plechito_tex_m_w.dds	source/nv_18/pc/plechito/valentine2021/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/valentine2021/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/valentine2021/plechito_tex_w_w.dds	source/nv_18/pc/plechito/valentine2021/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/valentine2021/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2021/warrior_m.gr2	source/nv_18/pc/plechito/valentine2021/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/valentine2022_1/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2022_1/assassin_w.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2022_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2022_1/hair/assassin_w.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2022_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2022_1/hair/warrior_m.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_1/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/valentine2022_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2022_1/plechito_tex_m.dds	source/nv_30/ymir work/pc/plechito/valentine2022_1/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2022_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/valentine2022_1/plechito_tex_w_w.dds	source/nv_30/ymir work/pc/plechito/valentine2022_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/valentine2022_1/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2022_1/warrior_m.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/valentine2022_2/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2022_2/assassin_w.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_2/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2022_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2022_2/hair/assassin_w.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_2/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2022_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2022_2/hair/warrior_m.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_2/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/valentine2022_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2022_2/plechito_tex_m.dds	source/nv_30/ymir work/pc/plechito/valentine2022_2/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2022_2/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/valentine2022_2/plechito_tex_w_as.dds	source/nv_30/ymir work/pc/plechito/valentine2022_2/plechito_tex_w_as.dds	copied
 d:/ymir work/pc/plechito/valentine2022_2/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/valentine2022_2/plechito_tex_w_w.dds	source/nv_30/ymir work/pc/plechito/valentine2022_2/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/valentine2022_2/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2022_2/warrior_m.gr2	source/nv_30/ymir work/pc/plechito/valentine2022_2/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/valentine2023_1/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2023_1/assassin_w.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2023_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2023_1/hair/assassin_w.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2023_1/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2023_1/hair/plechito_tex_m.dds	source/nv_42/ymir work/pc/plechito/valentine2023_1/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2023_1/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/valentine2023_1/hair/plechito_tex_w.dds	source/nv_42/ymir work/pc/plechito/valentine2023_1/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/valentine2023_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2023_1/hair/warrior_m.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_1/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/valentine2023_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2023_1/plechito_tex_m.dds	source/nv_42/ymir work/pc/plechito/valentine2023_1/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/valentine2023_1/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/valentine2023_1/plechito_tex_w_w.dds	source/nv_42/ymir work/pc/plechito/valentine2023_1/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/valentine2023_1/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2023_1/warrior_m.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/valentine2023_2/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2023_2/assassin_w.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_2/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2023_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2023_2/hair/assassin_w.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_2/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2023_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2023_2/hair/warrior_m.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_2/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/valentine2023_2/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2023_2/plechito_tex_m.dds	source/nv_42/ymir work/pc/plechito/valentine2023_2/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2023_2/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/valentine2023_2/plechito_tex_w_w.dds	source/nv_42/ymir work/pc/plechito/valentine2023_2/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/valentine2023_2/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2023_2/warrior_m.gr2	source/nv_42/ymir work/pc/plechito/valentine2023_2/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/valentine2024_1/assassin_face_w.dds	PC/ymir work/pc/plechito/valentine2024_1/assassin_face_w.dds	source/nv_42/ymir work/pc/plechito/valentine2024_1/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/valentine2024_1/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2024_1/assassin_w.gr2	source/nv_42/ymir work/pc/plechito/valentine2024_1/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2024_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2024_1/hair/assassin_w.gr2	source/nv_42/ymir work/pc/plechito/valentine2024_1/hair/assassin_w.gr2	converted
 d:/ymir work/pc/plechito/valentine2024_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2024_1/hair/warrior_m.gr2	source/nv_42/ymir work/pc/plechito/valentine2024_1/hair/warrior_m.gr2	converted
 d:/ymir work/pc/plechito/valentine2024_1/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/valentine2024_1/plechito_tex_m_w.dds	source/nv_42/ymir work/pc/plechito/valentine2024_1/plechito_tex_m_w.dds	copied
 d:/ymir work/pc/plechito/valentine2024_1/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/valentine2024_1/plechito_tex_w_as.dds	source/nv_42/ymir work/pc/plechito/valentine2024_1/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/valentine2024_1/warrior_face_m.dds	PC/ymir work/pc/plechito/valentine2024_1/warrior_face_m.dds	source/nv_42/ymir work/pc/plechito/valentine2024_1/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/valentine2024_1/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2024_1/warrior_m.gr2	source/nv_42/ymir work/pc/plechito/valentine2024_1/warrior_m.gr2	converted
+d:/ymir work/pc/plechito/valentine2025_1/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2025_1/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_1/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/valentine2025_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2025_1/hair/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_1/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/valentine2025_1/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2025_1/hair/plechito_tex_m.dds	source/nv_47/ymir work/pc/plechito/valentine2025_1/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2025_1/hair/plechito_tex_w.dds	PC/ymir work/pc/plechito/valentine2025_1/hair/plechito_tex_w.dds	source/nv_47/ymir work/pc/plechito/valentine2025_1/hair/plechito_tex_w.dds	copied
 d:/ymir work/pc/plechito/valentine2025_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2025_1/hair/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_1/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/valentine2025_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2025_1/plechito_tex_m.dds	source/nv_47/ymir work/pc/plechito/valentine2025_1/plechito_tex_m.dds	copied
+d:/ymir work/pc/plechito/valentine2025_1/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/valentine2025_1/plechito_tex_w_as.dds	source/nv_47/ymir work/pc/plechito/valentine2025_1/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/valentine2025_1/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2025_1/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_1/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/valentine2025_2/assassin_face_w.dds	PC/ymir work/pc/plechito/valentine2025_2/assassin_face_w.dds	source/nv_47/ymir work/pc/plechito/valentine2025_2/assassin_face_w.dds	copied
+d:/ymir work/pc/plechito/valentine2025_2/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2025_2/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_2/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/valentine2025_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2025_2/hair/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_2/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/valentine2025_2/hair/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2025_2/hair/plechito_tex_m.dds	source/nv_47/ymir work/pc/plechito/valentine2025_2/hair/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2025_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2025_2/hair/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_2/hair/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/valentine2025_2/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/valentine2025_2/plechito_tex_m_w.dds	source/nv_47/ymir work/pc/plechito/valentine2025_2/plechito_tex_m_w.dds	copied
 d:/ymir work/pc/plechito/valentine2025_2/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/valentine2025_2/plechito_tex_w_as.dds	source/nv_47/ymir work/pc/plechito/valentine2025_2/plechito_tex_w_as.dds	copied
+d:/ymir work/pc/plechito/valentine2025_2/warrior_face_m.dds	PC/ymir work/pc/plechito/valentine2025_2/warrior_face_m.dds	source/nv_47/ymir work/pc/plechito/valentine2025_2/warrior_face_m.dds	copied
+d:/ymir work/pc/plechito/valentine2025_2/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2025_2/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2025_2/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/valentine2026_1/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2026_1/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_1/assassin_w.GR2	copied
+d:/ymir work/pc/plechito/valentine2026_1/assassin_w_body.dds	PC/ymir work/pc/plechito/valentine2026_1/assassin_w_body.dds	source/nv_47/ymir work/pc/plechito/valentine2026_1/assassin_w_body.dds	copied
 d:/ymir work/pc/plechito/valentine2026_1/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2026_1/hair/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_1/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/valentine2026_1/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2026_1/hair/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_1/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/valentine2026_1/plechito_tex_m.dds	PC/ymir work/pc/plechito/valentine2026_1/plechito_tex_m.dds	source/nv_47/ymir work/pc/plechito/valentine2026_1/plechito_tex_m.dds	copied
 d:/ymir work/pc/plechito/valentine2026_1/plechito_tex_w.dds	PC/ymir work/pc/plechito/valentine2026_1/plechito_tex_w.dds	source/nv_47/ymir work/pc/plechito/valentine2026_1/plechito_tex_w.dds	copied
+d:/ymir work/pc/plechito/valentine2026_1/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2026_1/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_1/warrior_m.GR2	copied
+d:/ymir work/pc/plechito/valentine2026_2/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2026_2/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_2/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/valentine2026_2/hair/assassin_w.gr2	PC/ymir work/pc/plechito/valentine2026_2/hair/assassin_w.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_2/hair/assassin_w.GR2	copied
 d:/ymir work/pc/plechito/valentine2026_2/hair/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2026_2/hair/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_2/hair/warrior_m.GR2	copied
 d:/ymir work/pc/plechito/valentine2026_2/plechito_tex_m_w.dds	PC/ymir work/pc/plechito/valentine2026_2/plechito_tex_m_w.dds	source/nv_47/ymir work/pc/plechito/valentine2026_2/plechito_tex_m_w.dds	copied
+d:/ymir work/pc/plechito/valentine2026_2/plechito_tex_w_as.dds	PC/ymir work/pc/plechito/valentine2026_2/plechito_tex_w_as.dds	source/nv_47/ymir work/pc/plechito/valentine2026_2/plechito_tex_w_as.dds	copied
 d:/ymir work/pc/plechito/valentine2026_2/plechito_tex_w_w.dds	PC/ymir work/pc/plechito/valentine2026_2/plechito_tex_w_w.dds	source/nv_47/ymir work/pc/plechito/valentine2026_2/plechito_tex_w_w.dds	copied
+d:/ymir work/pc/plechito/valentine2026_2/warrior_m.gr2	PC/ymir work/pc/plechito/valentine2026_2/warrior_m.GR2	source/nv_47/ymir work/pc/plechito/valentine2026_2/warrior_m.GR2	copied
 d:/ymir work/pc/ridack_work/ridack_akatsuki/ridack_akatsuki.dds	PC/ymir work/pc/ridack_work/ridack_akatsuki/ridack_akatsuki.dds	source/nv_30/ymir work/pc/ridack_work/ridack_akatsuki/ridack_akatsuki.dds	copied
 d:/ymir work/pc/ridack_work/ridack_armor_25_purp/ridack_m_foot.dds	PC/ymir work/pc/ridack_work/ridack_armor_25_purp/ridack_m_foot.dds	source/nv_13/pc/ridack_work/ridack_armor_25_purp/ridack_m_foot.dds	copied
 d:/ymir work/pc/ridack_work/ridack_armor_25_purp/ridack_m_hand.dds	PC/ymir work/pc/ridack_work/ridack_armor_25_purp/ridack_m_hand.dds	source/nv_13/pc/ridack_work/ridack_armor_25_purp/ridack_m_hand.dds	copied
@@ -13541,8 +13874,14 @@ d:/ymir work/pc/ridack_work/ridack_armor_25_purp/ridack_m_lower.dds	PC/ymir work
 d:/ymir work/pc/ridack_work/ridack_armor_25_purp/ridack_m_upper.dds	PC/ymir work/pc/ridack_work/ridack_armor_25_purp/ridack_m_upper.dds	source/nv_13/pc/ridack_work/ridack_armor_25_purp/ridack_m_upper.dds	copied
 d:/ymir work/pc/ridack_work/ridack_armor_29/ridack_armor_m.dds	PC/ymir work/pc/ridack_work/ridack_armor_29/ridack_armor_m.dds	source/nv_12/pc/ridack_work/ridack_armor_29/ridack_armor_m.dds	copied
 d:/ymir work/pc/ridack_work/ridack_armor_29/ridack_wing.dds	PC/ymir work/pc/ridack_work/ridack_armor_29/ridack_wing.dds	source/nv_12/pc/ridack_work/ridack_armor_29/ridack_wing.dds	copied
+d:/ymir work/pc/sama_work/world_6/assassin_f.dds	PC/ymir work/pc/sama_work/world_6/assassin_f.dds	source/nv_40/ymir work/pc/sama_work/world_6/assassin_f.dds	copied
+d:/ymir work/pc/sama_work/world_6/assassin_f.gr2	PC/ymir work/pc/sama_work/world_6/assassin_f.gr2	source/nv_40/ymir work/pc/sama_work/world_6/assassin_f.gr2	converted
 d:/ymir work/pc/sama_work/world_6/assassin_f_h.gr2	PC/ymir work/pc/sama_work/world_6/assassin_f_h.gr2	source/nv_40/ymir work/pc/sama_work/world_6/assassin_f_h.gr2	converted
+d:/ymir work/pc/sama_work/world_6/assassin_face_f.dds	PC/ymir work/pc/sama_work/world_6/assassin_face_f.dds	source/nv_40/ymir work/pc/sama_work/world_6/assassin_face_f.dds	copied
 d:/ymir work/pc/sama_work/world_6/warrior_f_h.dds	PC/ymir work/pc/sama_work/world_6/warrior_f_h.dds	source/nv_40/ymir work/pc/sama_work/world_6/warrior_f_h.dds	copied
+d:/ymir work/pc/sama_work/world_6/warrior_face.dds	PC/ymir work/pc/sama_work/world_6/warrior_face.dds	source/nv_40/ymir work/pc/sama_work/world_6/warrior_face.dds	copied
+d:/ymir work/pc/sama_work/world_6/warrior_m.dds	PC/ymir work/pc/sama_work/world_6/warrior_m.dds	source/nv_40/ymir work/pc/sama_work/world_6/warrior_m.dds	copied
+d:/ymir work/pc/sama_work/world_6/warrior_m.gr2	PC/ymir work/pc/sama_work/world_6/warrior_m.gr2	source/nv_40/ymir work/pc/sama_work/world_6/warrior_m.gr2	converted
 d:/ymir work/pc/sama_work/world_6/warrior_m_h.dds	PC/ymir work/pc/sama_work/world_6/warrior_m_h.dds	source/nv_40/ymir work/pc/sama_work/world_6/warrior_m_h.dds	copied
 d:/ymir work/pc/sama_work/world_6/warrior_m_h.gr2	PC/ymir work/pc/sama_work/world_6/warrior_m_h.gr2	source/nv_40/ymir work/pc/sama_work/world_6/warrior_m_h.gr2	converted
 d:/ymir work/pc/shaman/c1_neck.dds	PC/ymir work/pc/shaman/c1_neck.dds	source/pc/shaman/c1_neck.dds	copied
@@ -13566,6 +13905,11 @@ d:/ymir work/pc/shaman/shaman_7_1_red.dds	PC/ymir work/pc/shaman/shaman_7_1_red.
 d:/ymir work/pc/shaman/shaman_8_1.dds	PC/ymir work/pc/shaman/shaman_8_1.dds	source/nv_23/pc/shaman/shaman_8_1.dds	copied
 d:/ymir work/pc/shaman/shaman_8_1.gr2	PC/ymir work/pc/shaman/shaman_8_1.gr2	source/nv_23/pc/shaman/shaman_8_1.gr2	converted
 d:/ymir work/pc/shaman/shaman_8_2.dds	PC/ymir work/pc/shaman/shaman_8_2.dds	source/nv_23/pc/shaman/shaman_8_2.dds	copied
+d:/ymir work/pc/shaman/shaman_assassin1.gr2	PC/ymir work/pc/shaman/shaman_assassin1.gr2	source/pc/shaman/shaman_assassin1.gr2	converted
+d:/ymir work/pc/shaman/shaman_assassin12.dds	PC/ymir work/pc/shaman/shaman_assassin12.dds	source/nv_15/pc/shaman/shaman_assassin12.dds	copied
+d:/ymir work/pc/shaman/shaman_assassin1_lod_01.gr2	PC/ymir work/pc/shaman/shaman_assassin1_lod_01.gr2	source/pc/shaman/shaman_assassin1_lod_01.gr2	converted
+d:/ymir work/pc/shaman/shaman_assassin1_lod_02.gr2	PC/ymir work/pc/shaman/shaman_assassin1_lod_02.gr2	source/pc/shaman/shaman_assassin1_lod_02.gr2	converted
+d:/ymir work/pc/shaman/shaman_assassin1_lod_03.gr2	PC/ymir work/pc/shaman/shaman_assassin1_lod_03.gr2	source/pc/shaman/shaman_assassin1_lod_03.gr2	converted
 d:/ymir work/pc/shaman/v3_armor.gr2	PC/ymir work/pc/shaman/v3_armor.GR2	source/nv_12/pc/shaman/v3_armor.GR2	converted
 d:/ymir work/pc/shaman/wing/2021_november_cloak.gr2	PC/ymir work/pc/shaman/wing/2021_november_cloak.GR2	source/nv_26/ymir work/pc/shaman/wing/2021_november_cloak.GR2	converted
 d:/ymir work/pc/shaman/wing/2021_october_cloak.gr2	PC/ymir work/pc/shaman/wing/2021_october_cloak.GR2	source/nv_24/pc/shaman/wing/2021_october_cloak.GR2	converted
@@ -14256,6 +14600,7 @@ d:/ymir work/pc/warrior/warrior_summer_2020_lod_03.gr2	PC/ymir work/pc/warrior/w
 d:/ymir work/pc/warrior/warrior_summer_2021.gr2	PC/ymir work/pc/warrior/warrior_summer_2021.gr2	source/nv_25/ymir work/pc/warrior/warrior_summer_2021.gr2	converted
 d:/ymir work/pc/warrior/warrior_summer_2021_1.dds	PC/ymir work/pc/warrior/warrior_summer_2021_1.dds	source/nv_25/ymir work/pc/warrior/warrior_summer_2021_1.dds	copied
 d:/ymir work/pc/warrior/warrior_summer_2021_2.dds	PC/ymir work/pc/warrior/warrior_summer_2021_2.dds	source/nv_25/ymir work/pc/warrior/warrior_summer_2021_2.dds	copied
+d:/ymir work/pc/warrior/warrior_summer_2022_1.dds	PC/ymir work/pc/warrior/warrior_summer_2022_1.dds	source/nv_38/ymir work/pc/warrior/warrior_summer_2022_1.dds	copied
 d:/ymir work/pc/warrior/warrior_valentines.dds	PC/ymir work/pc/warrior/warrior_valentines.dds	source/pc/warrior/warrior_valentines.dds	copied
 d:/ymir work/pc/warrior/warrior_valentines.gr2	PC/ymir work/pc/warrior/warrior_valentines.gr2	source/pc/warrior/warrior_valentines.gr2	converted
 d:/ymir work/pc/warrior/wing/2021_november_cloak.gr2	PC/ymir work/pc/warrior/wing/2021_november_cloak.GR2	source/nv_26/ymir work/pc/warrior/wing/2021_november_cloak.GR2	converted
@@ -14279,6 +14624,11 @@ d:/ymir work/pc2/assassin/wing/2021_october_cloak.gr2	pc2/ymir work/pc2/assassin
 d:/ymir work/pc2/assassin/wing/2021_pvp_cloak.gr2	pc2/ymir work/pc2/assassin/wing/2021_pvp_cloak.GR2	source/nv_23/pc2/assassin/wing/2021_pvp_cloak.GR2	converted
 d:/ymir work/pc2/assassin/wing/2021august_shiva_coat.gr2	pc2/ymir work/pc2/assassin/wing/2021august_shiva_coat.gr2	source/nv_23/pc2/assassin/wing/2021august_shiva_coat.gr2	converted
 d:/ymir work/pc2/assassin/wing/2022_valentine_shiva.gr2	pc2/ymir work/pc2/assassin/wing/2022_valentine_shiva.GR2	source/nv_31/ymir work/pc2/assassin/wing/2022_valentine_shiva.GR2	converted
+d:/ymir work/pc2/shaman/shaman_assassin1.gr2	pc2/ymir work/pc2/shaman/shaman_assassin1.gr2	source/pc2/shaman/shaman_assassin1.gr2	converted
+d:/ymir work/pc2/shaman/shaman_assassin12.dds	pc2/ymir work/pc2/shaman/shaman_assassin12.dds	source/nv_15/pc2/shaman/shaman_assassin12.dds	copied
+d:/ymir work/pc2/shaman/shaman_assassin1_lod_01.gr2	pc2/ymir work/pc2/shaman/shaman_assassin1_lod_01.gr2	source/pc2/shaman/shaman_assassin1_lod_01.gr2	converted
+d:/ymir work/pc2/shaman/shaman_assassin1_lod_02.gr2	pc2/ymir work/pc2/shaman/shaman_assassin1_lod_02.gr2	source/pc2/shaman/shaman_assassin1_lod_02.gr2	converted
+d:/ymir work/pc2/shaman/shaman_assassin1_lod_03.gr2	pc2/ymir work/pc2/shaman/shaman_assassin1_lod_03.gr2	source/pc2/shaman/shaman_assassin1_lod_03.gr2	converted
 d:/ymir work/pc2/shaman/wing/2021_november_cloak.gr2	pc2/ymir work/pc2/shaman/wing/2021_november_cloak.GR2	source/nv_26/ymir work/pc2/shaman/wing/2021_november_cloak.GR2	converted
 d:/ymir work/pc2/shaman/wing/2021_october_cloak.gr2	pc2/ymir work/pc2/shaman/wing/2021_october_cloak.GR2	source/nv_24/pc2/shaman/wing/2021_october_cloak.GR2	converted
 d:/ymir work/pc2/shaman/wing/2021_pvp_cloak.gr2	pc2/ymir work/pc2/shaman/wing/2021_pvp_cloak.GR2	source/nv_23/pc2/shaman/wing/2021_pvp_cloak.GR2	converted
@@ -14295,6 +14645,11 @@ d:/ymir work/pc2/warrior/wing/2021_pvp_cloak.gr2	pc2/ymir work/pc2/warrior/wing/
 d:/ymir work/pc2/warrior/wing/2021august_shiva_coat.gr2	pc2/ymir work/pc2/warrior/wing/2021august_shiva_coat.gr2	source/nv_23/pc2/warrior/wing/2021august_shiva_coat.gr2	converted
 d:/ymir work/pc2/warrior/wing/2022_valentine_shiva.gr2	pc2/ymir work/pc2/warrior/wing/2022_valentine_shiva.GR2	source/nv_31/ymir work/pc2/warrior/wing/2022_valentine_shiva.GR2	converted
 d:/ymir work/ryen_armas/angel/angel_cetro.tga	item/ymir work/ryen_armas/angel/angel_cetro.tga	source/nv_46/ymir work/ryen_armas/angel/angel_cetro.tga	copied
+d:/ymir work/shardwork/body/basic/warrior_m.dds	item/ymir work/shardwork/body/basic/warrior_m.dds	source/nv_14/shardwork/body/basic/warrior_m.dds	copied
+d:/ymir work/shardwork/body/halloween/assassin_f.dds	item/ymir work/shardwork/body/halloween/assassin_f.dds	source/nv_14/shardwork/body/halloween/assassin_f.dds	copied
+d:/ymir work/shardwork/costumes/halloween_01/base.dds	item/ymir work/shardwork/costumes/halloween_01/base.dds	source/nv_14/shardwork/costumes/halloween_01/base.dds	copied
+d:/ymir work/shardwork/costumes/halloween_01/f_assassin.gr2	item/ymir work/shardwork/costumes/halloween_01/f_assassin.gr2	source/nv_14/shardwork/costumes/halloween_01/f_assassin.gr2	converted
+d:/ymir work/shardwork/costumes/halloween_01/m_warrior.gr2	item/ymir work/shardwork/costumes/halloween_01/m_warrior.gr2	source/nv_14/shardwork/costumes/halloween_01/m_warrior.gr2	converted
 d:/ymir work/shardwork/hair/001/f_assassin.gr2	item/ymir work/shardwork/hair/001/f_assassin.gr2	source/nv_14/shardwork/hair/001/f_assassin.gr2	converted
 d:/ymir work/shardwork/hair/001/halloween_hat_f.dds	item/ymir work/shardwork/hair/001/halloween_hat_f.dds	source/nv_14/shardwork/hair/001/halloween_hat_f.dds	copied
 d:/ymir work/shardwork/hair/001/halloween_hat_m.dds	item/ymir work/shardwork/hair/001/halloween_hat_m.dds	source/nv_14/shardwork/hair/001/halloween_hat_m.dds	copied

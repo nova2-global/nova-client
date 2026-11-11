@@ -226,10 +226,13 @@ HAVE_OLD = os.path.isdir(OLD_COMMON) and os.path.isfile(CUT_PROTO)
 
 
 class ShiningTable(unittest.TestCase):
-    """locale/common/shiningtable.txt: the wings' shining effects."""
+    """locale/common/shiningtable.txt: the wings' shining effects. Since
+    NOVA-176 the table holds the body armors' and body costumes' rows too
+    (shining_table_test.py); these tests read the wings' rows."""
 
     def setUp(self):
-        self.data, self.rows = read_rows("shiningtable.txt")
+        self.data, rows = read_rows("shiningtable.txt")
+        self.rows = [row for row in rows if all(48000 <= vnum < 49000 for vnum in first_vnums(row[0]))]
 
     def test_every_row_is_a_wing_and_its_effects_as_olds_loader_reads_them(self):
         self.assertTrue(self.data.endswith(b"\n"))

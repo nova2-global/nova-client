@@ -238,6 +238,27 @@ class ShopSeeds(unittest.TestCase):
 		self.assertEqual(old_art.shop_group("d:/ymir work/ui/pattern/myshop/ice/p_ice_top.tga", folders), "ETC")
 
 
+class RingSeeds(unittest.TestCase):
+	"""NOVA-127: OLD's select and target rings (OLD playerSettingModule.py:
+	295-302), each of the three empires and the monsters'."""
+
+	def test_the_eight_rings_of_olds_registrations(self):
+		self.assertEqual(sorted(old_art.RINGS), sorted(
+			"d:/ymir work/effect/world/%s_%sselect.mse" % (who, glow)
+			for who in ("shinsoo", "chunjo", "jinnos", "mob") for glow in ("", "glow_")))
+
+	def test_a_ring_new_ships_is_left(self):
+		files = {"d:/ymir work/effect/world/mob_select.mse"}
+		got = old_art.ring_seeds(files)
+		self.assertNotIn("d:/ymir work/effect/world/mob_select.mse", got)
+		self.assertEqual(len(got), 7)
+
+	def test_a_blob_is_read_from_gits_tree(self):
+		"""The rings' scripts are read where the sparse worktree has no file."""
+		data = old_art.git_blob("assets/groups.txt")
+		self.assertIn(b"root", data)
+
+
 class TreeGroups(unittest.TestCase):
 	"""A sparse worktree has only some groups on disk: the shop's art takes
 	its groups and NEW's files from git's tree (old_art.tree_files)."""

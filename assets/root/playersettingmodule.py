@@ -238,6 +238,17 @@ def __InitData():
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_SPIN_TOP, "", "d:/ymir work/effect/etc/firecracker/paing_i.mse")
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_SELECT, "", "d:/ymir work/effect/etc/click/click_select.mse")
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_TARGET, "", "d:/ymir work/effect/etc/click/click_glow_select.mse")
+	# Each empire's ring and the monsters', hover and target (NOVA-127; OLD
+	# playerSettingModule.py:295-302). The client falls back to the two
+	# generic rings above for a ring that fails to register.
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_SHINSOO, "", "d:/ymir work/effect/world/shinsoo_select.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_TARGET_SHINSOO, "", "d:/ymir work/effect/world/shinsoo_glow_select.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_CHUNJO, "", "d:/ymir work/effect/world/chunjo_select.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_TARGET_CHUNJO, "", "d:/ymir work/effect/world/chunjo_glow_select.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_JINNOS, "", "d:/ymir work/effect/world/jinnos_select.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_TARGET_JINNOS, "", "d:/ymir work/effect/world/jinnos_glow_select.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_MONSTER, "", "d:/ymir work/effect/world/mob_select.mse")
+	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_TARGET_MONSTER, "", "d:/ymir work/effect/world/mob_glow_select.mse")
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_STUN, "Bip01 Head", "d:/ymir work/effect/etc/stun/stun.mse")
 	chrmgr.RegisterCacheEffect(chrmgr.EFFECT_CRITICAL, "Bip01 R Hand", "d:/ymir work/effect/hit/critical.mse")
 	player.RegisterCacheEffect(player.EFFECT_PICK, "d:/ymir work/effect/etc/click/click.mse")

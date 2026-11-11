@@ -417,8 +417,11 @@ class MapDifferential(unittest.TestCase):
         legacy, novaui = self.worlds()
         self.assertEqual(novaui.effects(), legacy.effects())
         calls = [name for name, _ in novaui.effects()]
+        # NOVA-129: each atlas hands C++ its boss and stone marks' strings
+        # after it registers (atlas_marks_test).
         self.assertEqual(calls, ["miniMap.Create", "miniMap.SetScale", "miniMap.HideAtlas", "miniMap.RegisterAtlasWindow",
-                                 "miniMap.HideAtlas", "miniMap.Show", "miniMap.Show", "miniMap.Show"])
+                                 "miniMap.SetAtlasMarkTexts", "miniMap.HideAtlas", "miniMap.Show", "miniMap.Show",
+                                 "miniMap.Show"])
         self.assertEqual(self.state(novaui), self.state(legacy))
         self.assertEqual(novaui.minimap.board.model["server_info"], "Nova - CH1")
         self.assertEqual(type(novaui.minimap.AtlasWindow).__module__, "nui_atlas")

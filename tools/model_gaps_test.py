@@ -68,7 +68,9 @@ class Causes(unittest.TestCase):
 		self.assertEqual(self.cause(("armor", "shape", 5)), "ok")
 		self.assertEqual(self.cause(("costume_armor", "shape", 127)), "model_missing")
 		self.assertEqual(self.cause(("armor", "shape", 22)), "shape_missing")
-		self.assertEqual(self.cause(("costume_hair", "hair", 1573)), "hair_missing")  # model only: NEW's reader drops it
+		# A model-only hair registers (NOVA-177, as OLD's reader); its GR2 is not in the pack.
+		self.assertEqual(self.cause(("costume_hair", "hair", 1573)), "model_missing")
+		self.assertEqual(self.cause(("costume_hair", "hair", 99)), "hair_missing")
 		self.assertEqual(self.cause(("weapon", "weapon", 110)), "ok")
 		self.assertEqual(self.cause(("weapon", "weapon", 312)), "no_item_list")
 		self.assertEqual(self.cause(("costume_weapon", "weapon", 40031)), "no_model_path")

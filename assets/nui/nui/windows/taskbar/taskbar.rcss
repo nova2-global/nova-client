@@ -527,9 +527,13 @@ progress.taskbar-orb
 	top: 7dp;
 	transform: scale(1.4);
 }
+/* The window buttons' keys (NOVA-121, the player's): "Alt+M" fits the
+   button; a longer one is cut at its edges. */
 .taskbar-hotkey
 {
 	display: block;
+	overflow: hidden;
+	white-space: nowrap;
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -715,11 +719,15 @@ progress.taskbar-orb
 	height: 40dp;
 	border-color: var(--border);
 }
-/* The key in a pill at the cell's top left. */
+/* The key in a pill at the cell's top left, the player's key (NOVA-121): a
+   long one ("Ctrl+3", "Num 6") is cut at the cell's width. */
 .taskbar-key
 {
 	left: 2dp;
 	top: 2dp;
+	max-width: 30dp;
+	overflow: hidden;
+	white-space: nowrap;
 	padding: 0 3dp;
 	border-radius: 4dp;
 	background-color: var(--tooltip-bg);

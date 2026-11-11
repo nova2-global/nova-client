@@ -530,3 +530,45 @@ class Pages(Base):
 
 	def tearDown(self):
 		self.kb.CAPTURE.cancel()
+
+
+class ClientOpen(unittest.TestCase):
+	def test_the_table_reads_the_disk_not_a_pack_file(self):
+		"""system.py's open() answers a name the asset store has with a pack
+		file without `with`; the table opens with builtins.old_open."""
+		import builtins
+		kb = load()
+		seen = []
+
+		def disk(path, mode="r"):
+			seen.append((path, mode))
+			raise IOError(path)
+
+		class PackFile(object):
+			pass
+
+		saved = getattr(builtins, "old_open", None)
+		builtins.old_open = disk
+		real_open = builtins.open
+		builtins.open = lambda *args, **kwargs: PackFile()
+		try:
+			bindings = kb.Bindings()
+			self.assertFalse(bindings.load())
+		finally:
+			builtins.open = real_open
+			if saved is None:
+				del builtins.old_open
+			else:
+				builtins.old_open = saved
+		self.assertEqual(seen, [("config/keys.cfg", "r")])
+		self.assertEqual(bindings.table, kb.defaults())
+
+	def test_any_read_error_is_the_defaults(self):
+		kb = load()
+
+		def broken(path, mode="r"):
+			raise AttributeError("__enter__")
+
+		bindings = kb.Bindings(opener=broken)
+		self.assertFalse(bindings.load())
+		self.assertEqual(bindings.table, kb.defaults())

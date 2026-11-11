@@ -366,12 +366,19 @@ def notice(result):
 	return ""
 
 
+def _disk_open(path, mode="r"):
+	"""The file on disk: the client's open() (system.py) answers a name the
+	asset store also has with a pack file, which has no `with`."""
+	import builtins
+	return getattr(builtins, "old_open", open)(path, mode)
+
+
 class Bindings(object):
 	"""The player's bindings, {action id: [primary, alternate]}."""
 
 	def __init__(self, path=PATH, opener=None, autosave=True):
 		self.path = path
-		self.opener = opener or open
+		self.opener = opener or _disk_open
 		self.autosave = autosave
 		self.table = defaults()
 		self._index = None
@@ -501,7 +508,7 @@ class Bindings(object):
 			with self.opener(self.path, "w") as handle:
 				handle.write("\n".join(self.lines()) + "\n")
 			return True
-		except (IOError, OSError):
+		except Exception:
 			return False
 
 	def load(self):
@@ -511,7 +518,7 @@ class Bindings(object):
 		try:
 			with self.opener(self.path, "r") as handle:
 				text = handle.read()
-		except (IOError, OSError):
+		except Exception:
 			return False
 		seen = set()
 		for line in text.split("\n"):

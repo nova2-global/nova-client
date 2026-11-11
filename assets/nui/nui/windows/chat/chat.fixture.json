@@ -10,6 +10,7 @@
 		"draft": "",
 		"shout_color_on": false,
 		"shout_picker": false,
-		"shout_colors": []
+		"shout_colors": [],
+		"tip_log": "@game.CHAT_LOG"
 	}
 }

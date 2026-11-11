@@ -6,8 +6,8 @@ challenger ticks the rules the duel will hold and presses Fight, which sends
 "/pvp <vid> <rules>" (OLD's format); Cancel closes it and sends nothing. The
 server whispers the rules to the challenged player as a second system line
 "<<~<rules>~>>", which game.py turns into OLD's list (rule_lines). The rules are
-OLD's numbers; OLD's tenth, no advanced pet, waits for the advanced pet
-(NOVA-24) and is not offered.
+OLD's numbers, all ten of OLD's: the tenth, no advanced pet, came with the
+advanced pet (NOVA-24, NOVA-71).
 
 OLD drew the board on its own art (ui/advanced_duel/*), not in NEW's packs: the
 board is uiscript/duelrulesdialog.py, the check boxes ui.CheckBox made in code at
@@ -17,7 +17,7 @@ import net
 import ui
 import localeInfo
 
-# (rule bit, localeInfo key), OLD's DUEL_FLAGS order (uiTarget.py:36-46).
+# (rule bit, localeInfo key), OLD's DUEL_FLAGS order (uiTarget.py:36-47).
 DUEL_FLAGS = (
 	(1 << 0, "DUEL_ANTI_MOUNT"),
 	(1 << 1, "DUEL_ANTI_PET"),
@@ -28,6 +28,7 @@ DUEL_FLAGS = (
 	(1 << 6, "DUEL_ANTI_FIRE"),
 	(1 << 7, "DUEL_ANTI_CHANGE_EQUIP"),
 	(1 << 8, "DUEL_ANTI_PARTY"),
+	(1 << 9, "DUEL_ANTI_PET_ADVANCED"),
 )
 # The marker the rules' whisper carries (OLD pvp.cpp:428, game.py:1436).
 RULES_OPEN = "<<~"

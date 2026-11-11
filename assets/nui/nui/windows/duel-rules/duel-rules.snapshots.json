@@ -1,5 +1,5 @@
 {
-	"$comment": "Golden cases of the duel rules (NOVA-28; tools/check_nui_snapshots.py): three of the nine rules ticked (No Mount, No Potions, No Poison); none: a first open. Under the target board at legacy's place in game; the sheet's place frames it here, with room for the modern shadow. Classic draws legacy's 355 x 180 board with the check boxes at OLD's places.",
+	"$comment": "Golden cases of the duel rules (NOVA-28; tools/check_nui_snapshots.py): three of the ten rules ticked (No Mount, No Potions, No Poison); none: a first open. Under the target board at legacy's place in game; the sheet's place frames it here, with room for the modern shadow. Classic draws legacy's 355 x 180 board with the check boxes at OLD's places.",
 	"cases": [
 		{
 			"page": "duel-rules",

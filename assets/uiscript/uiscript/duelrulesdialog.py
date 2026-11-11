@@ -5,7 +5,7 @@ ROOT = "d:/ymir work/ui/public/"
 ## The duel rules board (NOVA-28; OLD uiTarget.py AdvancedDuel, 148-246): the
 ## challenger ticks the rules and sends the challenge. OLD drew it in code on its
 ## own art (ui/advanced_duel/*), which is not in NEW's packs; here it is a board
-## with a title bar, OLD's 355 wide, the nine rules' check boxes made in code in
+## with a title bar, OLD's 355 wide, the ten rules' check boxes made in code in
 ## two columns (uiduel.py RULE_POSITION), and OLD's two buttons.
 
 window = {

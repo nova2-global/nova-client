@@ -1131,6 +1131,7 @@ DUEL_ANTI_POISON	Без отравления
 DUEL_ANTI_FIRE	Без Поджога
 DUEL_ANTI_CHANGE_EQUIP	Без смены снаряжения
 DUEL_ANTI_PARTY	Без группы
+DUEL_ANTI_PET_ADVANCED	No Advanced Pet
 TARGET_BUTTON_DENY_FIGHT	Отказать
 TARGET_BUTTON_CANCEL_AVENGE	Извинение
 BATTLE_RULES	Правила боя:

@@ -4,7 +4,7 @@ While the duel-rules flag is on, the target board's Fight button (legacy
 uitarget.py and nui_target.py OnAdvancedPVP) makes DuelRulesDialog below
 through nui_windows.make() instead of uiDuel.DuelRulesDialog: a subclass of
 the legacy class (nui_facade.Facade) whose loader puts proxies where the
-widgets were (the title bar, the nine rules' check boxes, Fight and Cancel).
+widgets were (the title bar, the ten rules' check boxes, Fight and Cancel).
 So the rules offered, their order, the ticked rules kept between opens and
 "/pvp <vid> <rules>" are legacy's code (OLD uiTarget.py AdvancedDuel).
 

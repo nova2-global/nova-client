@@ -41,6 +41,7 @@ GAME_KEYS = {
 	"DUEL_ANTI_MOUNT": "No Mount", "DUEL_ANTI_PET": "No Pet", "DUEL_ANTI_POTION": "No Potions",
 	"DUEL_ANTI_CRITICAL": "No Critical", "DUEL_ANTI_PIERCE": "No Pierce", "DUEL_ANTI_POISON": "No Poison",
 	"DUEL_ANTI_FIRE": "No Fire", "DUEL_ANTI_CHANGE_EQUIP": "No Equipment Change", "DUEL_ANTI_PARTY": "No Party",
+	"DUEL_ANTI_PET_ADVANCED": "No Advanced Pet",
 	"TARGET_BUTTON_DENY_FIGHT": "Deny", "TARGET_BUTTON_CANCEL_AVENGE": "Pardon", "BATTLE_RULES": "Battle Rules:",
 	"GUILD_WAR_TOP_MVP": "MVP: %s",
 }
@@ -161,12 +162,26 @@ class DuelRules(unittest.TestCase):
 		self.assertEqual(results[1], results[0])
 		return results[0]
 
-	def test_the_rules_are_olds_nine_in_olds_order(self):
+	def test_the_rules_are_olds_ten_in_olds_order(self):
 		world = PvpWorld(False)
 		module = world.game.loaded["uiDuel"]
-		self.assertEqual([bit for bit, _ in module.DUEL_FLAGS], [1 << i for i in range(9)])
+		self.assertEqual([bit for bit, _ in module.DUEL_FLAGS], [1 << i for i in range(10)])
 		self.assertEqual([key for _, key in module.DUEL_FLAGS][:3], ["DUEL_ANTI_MOUNT", "DUEL_ANTI_PET", "DUEL_ANTI_POTION"])
-		self.assertNotIn("DUEL_ANTI_PET_ADVANCED", [key for _, key in module.DUEL_FLAGS], "waits for NOVA-24")
+		# NOVA-71: OLD's tenth (uiTarget.py:46), now the advanced pet is in.
+		self.assertEqual(module.DUEL_FLAGS[9], (1 << 9, "DUEL_ANTI_PET_ADVANCED"))
+
+	def test_the_tenth_rule_fits_legacy_s_board_above_the_buttons(self):
+		world = PvpWorld(False)
+		module = world.game.loaded["uiDuel"]
+		last_y = max(module.RULE_POSITION(i)[1] for i in range(len(module.DUEL_FLAGS)))
+		self.assertLessEqual(last_y + module.ROW_HEIGHT, 140, "the buttons sit 40 above the 180 board's bottom")
+
+	def test_fight_sends_the_advanced_pet_rule(self):
+		def flow(world, window):
+			self.tick(world, window, 9)
+			self.button(world, window, "accept")
+		chat, shown, flags = self.both(flow)
+		self.assertEqual(chat, ["/pvp %d 512" % PEER_VID])
 
 	def test_fight_sends_the_ticked_rules(self):
 		def flow(world, window):
@@ -195,7 +210,8 @@ class DuelRules(unittest.TestCase):
 			self.tick(world, window, 1)
 		rules = model(window)["rules"]
 		self.assertEqual([r["label"] for r in rules][:2], ["No Mount", "No Pet"])
-		self.assertEqual([r["checked"] for r in rules], [i == 1 for i in range(9)])
+		self.assertEqual([r["checked"] for r in rules], [i == 1 for i in range(10)])
+		self.assertEqual(rules[9]["label"], "No Advanced Pet")
 		self.assertIsNone(type(window).OnUpdate)
 
 	def test_every_fixture_has_every_model_key(self):
@@ -227,6 +243,14 @@ class RulesWhisper(unittest.TestCase):
 		self.assertEqual(log, [("chat.AppendWhisper", (255, "Rival", "Battle Rules:")),
 		                       ("chat.AppendWhisper", (255, "Rival", "|E~/xmark.tga|e No Potions")),
 		                       ("chat.AppendWhisper", (255, "Rival", "|E~/xmark.tga|e No Fire")),
+		                       ("interface.RecvWhisper", ("Rival",))])
+
+	def test_the_challenged_side_reads_the_advanced_pet_rule(self):
+		window, log = self.window()
+		window.OnRecvWhisperSystemMessage(0, "Rival", "<<~514~>>")
+		self.assertEqual(log, [("chat.AppendWhisper", (255, "Rival", "Battle Rules:")),
+		                       ("chat.AppendWhisper", (255, "Rival", "|E~/xmark.tga|e No Pet")),
+		                       ("chat.AppendWhisper", (255, "Rival", "|E~/xmark.tga|e No Advanced Pet")),
 		                       ("interface.RecvWhisper", ("Rival",))])
 
 	def test_another_system_line_is_said_as_it_is(self):

@@ -536,10 +536,15 @@ def _races(packer, old_root, grlist, tsv, item_proto, category, part, run):
 	rows = [row for row in rows if row[3] == category]
 	start = race_seeds(rows, items, old, new_races, pack)
 	first = ("/pc/warrior/", "/pc2/warrior/", "/pc/assassin/", "/pc2/assassin/")
+	jobs = ("warrior", "assassin", "sura", "shaman")
 	if part == "1":
 		start = [path for path in start if any(f in path for f in first)]
 	elif part == "2":
 		start = [path for path in start if not any(f in path for f in first)]
+	elif part in jobs:
+		start = [path for path in start if "/pc/%s/" % part in path or "/pc2/%s/" % part in path]
+	elif part == "rest":
+		start = [path for path in start if not any("/pc/%s/" % j in path or "/pc2/%s/" % j in path for j in jobs)]
 	scratch = old_art.scratch_folder()
 	take, missing = old_art.closure(start, old["index"], set(pack.files), packer, grlist, scratch)
 	sizes = dict((path, os.path.getsize(os.path.join(packer, source))) for path, source in take.items())

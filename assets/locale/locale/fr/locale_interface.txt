@@ -654,3 +654,85 @@ DUNGEON_MANAGER_RANK_DAMAGE	Damage
 DUNGEON_MANAGER_FILTER_GUARANTEED	Guaranteed
 DUNGEON_MANAGER_FILTER_COMMON	Common
 DUNGEON_MANAGER_FILTER_RARE	Rare
+KEYBIND_TITLE	Raccourcis clavier
+KEYBIND_ROW	Clavier
+KEYBIND_OPEN	Modifier
+KEYBIND_HINT	Cliquez sur une touche, puis appuyez sur la nouvelle. Esc annule, Backspace efface.
+KEYBIND_PRESS	Appuyez sur une touche
+KEYBIND_COLUMN_ACTION	Action
+KEYBIND_COLUMN_1	Touche
+KEYBIND_COLUMN_2	Seconde
+KEYBIND_RESET	Standard
+KEYBIND_BACK	Retour
+KEYBIND_NOTICE_RESERVED	Impossible d'assigner %s.
+KEYBIND_NOTICE_NO_MODIFIER	%s n'accepte ni Ctrl, ni Alt, ni Shift.
+KEYBIND_NOTICE_CLEARED	%s n'a plus de touche.
+KEYBIND_NOTICE_SWAPPED	%s était sur %s, qui a maintenant %s.
+KEYBIND_NOTICE_TAKEN	%s était sur %s, qui n'a plus de touche.
+KEYBIND_NOTICE_RESET	Toutes les touches sont revenues par défaut.
+KEYBIND_SECTION_MOVEMENT	Déplacement
+KEYBIND_SECTION_CAMERA	Caméra
+KEYBIND_SECTION_ACTIONS	Actions
+KEYBIND_SECTION_QUICKSLOTS	Accès rapide
+KEYBIND_SECTION_WINDOWS	Fenêtres
+KEYBIND_SECTION_HORSE	Cheval
+KEYBIND_SECTION_EMOTIONS	Émotions
+KEYBIND_MOVE_UP	Avancer
+KEYBIND_MOVE_DOWN	Reculer
+KEYBIND_MOVE_LEFT	À gauche
+KEYBIND_MOVE_RIGHT	À droite
+KEYBIND_CAMERA_ROTATE_CW	Rotation horaire
+KEYBIND_CAMERA_ROTATE_CCW	Rotation antihoraire
+KEYBIND_CAMERA_ZOOM_OUT	Zoom arrière
+KEYBIND_CAMERA_ZOOM_IN	Zoom avant
+KEYBIND_CAMERA_PITCH_DOWN	Regarder en bas
+KEYBIND_CAMERA_PITCH_UP	Regarder en haut
+KEYBIND_ATTACK	Attaquer
+KEYBIND_PICKUP	Ramasser les objets
+KEYBIND_NEXT_TARGET	Cible suivante, kills de guerre
+KEYBIND_SHOW_NAMES	Afficher les noms
+KEYBIND_QUICK_PAGE_MODE	Page rapide (maintenir)
+KEYBIND_CHANNEL_SWITCH	Changer de canal (maintenir)
+KEYBIND_QUICKSLOT_1	Emplacement 1
+KEYBIND_QUICKSLOT_2	Emplacement 2
+KEYBIND_QUICKSLOT_3	Emplacement 3
+KEYBIND_QUICKSLOT_4	Emplacement 4
+KEYBIND_QUICKSLOT_5	Emplacement 5
+KEYBIND_QUICKSLOT_6	Emplacement 6
+KEYBIND_QUICKSLOT_7	Emplacement 7
+KEYBIND_QUICKSLOT_8	Emplacement 8
+KEYBIND_CHARACTER	Personnage
+KEYBIND_SKILLS	Compétences
+KEYBIND_EMOTIONS	Émotions
+KEYBIND_QUESTS	Missions
+KEYBIND_INVENTORY	Inventaire
+KEYBIND_SPECIAL_INVENTORY	Inventaire spécial
+KEYBIND_DRAGON_SOUL	Pierres-dragons
+KEYBIND_MINIMAP	Mini-carte
+KEYBIND_MESSENGER	Amis
+KEYBIND_GUILD	Guilde
+KEYBIND_CHAT_LOG	Historique du tchat
+KEYBIND_HELP	Aide
+KEYBIND_PET	Familier
+KEYBIND_SWITCHBOT	Switchbot
+KEYBIND_DUNGEON_MANAGER	Gestion des donjons
+KEYBIND_FAST_EQUIP	Équipements préréglés
+KEYBIND_MINIMAP_ZOOM_IN	Mini-carte (+)
+KEYBIND_MINIMAP_ZOOM_OUT	Mini-carte (-)
+KEYBIND_QUEST_BUTTONS	Suivi de quête
+KEYBIND_DS_DECK_1	Deck d'alchimie 1
+KEYBIND_DS_DECK_2	Deck d'alchimie 2
+KEYBIND_HORSE_SUMMON	Appeler le cheval
+KEYBIND_HORSE_FEED	Nourrir cheval
+KEYBIND_HORSE_BACK	Renvoyer cheval
+KEYBIND_HORSE_RIDE	Chevaucher
+KEYBIND_MOUNT	Monter ou descendre
+KEYBIND_EMOTION_1	Émotion 1
+KEYBIND_EMOTION_2	Émotion 2
+KEYBIND_EMOTION_3	Émotion 3
+KEYBIND_EMOTION_4	Émotion 4
+KEYBIND_EMOTION_5	Émotion 5
+KEYBIND_EMOTION_6	Émotion 6
+KEYBIND_EMOTION_7	Émotion 7
+KEYBIND_EMOTION_8	Émotion 8
+KEYBIND_EMOTION_9	Émotion 9

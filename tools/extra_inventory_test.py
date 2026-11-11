@@ -640,7 +640,10 @@ class GameDrops(unittest.TestCase):
 
     def test_u_toggles_the_special_inventory(self):
         source = lf.read(os.path.join(ROOT, "game.py"))
-        self.assertRegex(source, r"onPressKeyDict\[app\.DIK_U\]\s*=\s*lambda: self\.interface\.ToggleExtraInventoryWindow\(\)")
+        self.assertIn('"special_inventory": lambda: interface().ToggleExtraInventoryWindow()', source)
+        # U is its default key (NOVA-121's table).
+        self.assertIn('Action("special_inventory", "windows", "KEYBIND_SPECIAL_INVENTORY", "Special inventory", (key("U"),))',
+                      lf.read(os.path.join(ROOT, "keybindings.py")))
         interface = lf.read(os.path.join(ROOT, "interfacemodule.py"))
         self.assertIn("def ToggleExtraInventoryWindow(self):", interface)
         self.assertIn("self.wndExtraInventory.RefreshItemSlot()", interface)

@@ -751,7 +751,10 @@ class Hooks(unittest.TestCase):
 
     def test_game_toggles_on_f10_and_passes_the_refresh(self):
         game = self.read("game.py")
-        self.assertIn("onPressKeyDict[app.DIK_F10]\t= lambda: self.ToggleFastEquip()", game)
+        self.assertIn('"fast_equip": lambda: self.ToggleFastEquip()', game)
+        # F10 is its default key (NOVA-121's table).
+        self.assertIn('Action("fast_equip", "windows", "KEYBIND_FAST_EQUIP", "Fast equip", (key("F10"),))',
+                      self.read("keybindings.py"))
         self.assertIn("def RefreshFastEquip(self, setIndex, switched):", game)
 
     def test_the_interface_makes_toggles_refreshes_and_hides_it(self):

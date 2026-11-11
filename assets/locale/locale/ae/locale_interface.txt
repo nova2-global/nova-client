@@ -679,3 +679,85 @@ DUNGEON_MANAGER_RANK_DAMAGE	Damage
 DUNGEON_MANAGER_FILTER_GUARANTEED	Guaranteed
 DUNGEON_MANAGER_FILTER_COMMON	Common
 DUNGEON_MANAGER_FILTER_RARE	Rare
+KEYBIND_TITLE	تعيين المفاتيح
+KEYBIND_ROW	لوحة المفاتيح
+KEYBIND_OPEN	تغيير
+KEYBIND_HINT	انقر على مفتاح ثم اضغط المفتاح الجديد. Esc للإلغاء، Backspace للمسح.
+KEYBIND_PRESS	اضغط على مفتاح
+KEYBIND_COLUMN_ACTION	الإجراء
+KEYBIND_COLUMN_1	المفتاح
+KEYBIND_COLUMN_2	البديل
+KEYBIND_RESET	افتراضي
+KEYBIND_BACK	رجوع
+KEYBIND_NOTICE_RESERVED	لا يمكن تعيين المفتاح %s.
+KEYBIND_NOTICE_NO_MODIFIER	لا يمكن استخدام Ctrl أو Alt أو Shift مع %s.
+KEYBIND_NOTICE_CLEARED	لم يعد لـ %s أي مفتاح.
+KEYBIND_NOTICE_SWAPPED	كان المفتاح %s مخصصًا لـ %s، والآن أصبح له %s.
+KEYBIND_NOTICE_TAKEN	كان المفتاح %s مخصصًا لـ %s، والآن ليس له مفتاح.
+KEYBIND_NOTICE_RESET	عادت جميع المفاتيح إلى الوضع الافتراضي.
+KEYBIND_SECTION_MOVEMENT	الحركة
+KEYBIND_SECTION_CAMERA	الكاميرا
+KEYBIND_SECTION_ACTIONS	الإجراءات
+KEYBIND_SECTION_QUICKSLOTS	الوصول السريع
+KEYBIND_SECTION_WINDOWS	النوافذ
+KEYBIND_SECTION_HORSE	الحصان
+KEYBIND_SECTION_EMOTIONS	المشاعر
+KEYBIND_MOVE_UP	إلى الأمام
+KEYBIND_MOVE_DOWN	إلى الوراء
+KEYBIND_MOVE_LEFT	يسار
+KEYBIND_MOVE_RIGHT	يمين
+KEYBIND_CAMERA_ROTATE_CW	تدوير مع عقارب الساعة
+KEYBIND_CAMERA_ROTATE_CCW	تدوير عكس عقارب الساعة
+KEYBIND_CAMERA_ZOOM_OUT	تصغير
+KEYBIND_CAMERA_ZOOM_IN	تكبير
+KEYBIND_CAMERA_PITCH_DOWN	النظر للأسفل
+KEYBIND_CAMERA_PITCH_UP	النظر للأعلى
+KEYBIND_ATTACK	هجوم
+KEYBIND_PICKUP	التقاط الأغراض
+KEYBIND_NEXT_TARGET	الهدف التالي، قتلى الحرب
+KEYBIND_SHOW_NAMES	عرض الأسماء
+KEYBIND_QUICK_PAGE_MODE	صفحة الفتحات (ضغط مستمر)
+KEYBIND_CHANNEL_SWITCH	تغيير القناة (ضغط مستمر)
+KEYBIND_QUICKSLOT_1	الفتحة 1
+KEYBIND_QUICKSLOT_2	الفتحة 2
+KEYBIND_QUICKSLOT_3	الفتحة 3
+KEYBIND_QUICKSLOT_4	الفتحة 4
+KEYBIND_QUICKSLOT_5	الفتحة 5
+KEYBIND_QUICKSLOT_6	الفتحة 6
+KEYBIND_QUICKSLOT_7	الفتحة 7
+KEYBIND_QUICKSLOT_8	الفتحة 8
+KEYBIND_CHARACTER	الشخصية
+KEYBIND_SKILLS	المهارات
+KEYBIND_EMOTIONS	المشاعر
+KEYBIND_QUESTS	المهمات
+KEYBIND_INVENTORY	قائمة الجرد
+KEYBIND_SPECIAL_INVENTORY	قائمة الجرد الخاصة
+KEYBIND_DRAGON_SOUL	أحجار التنين
+KEYBIND_MINIMAP	الخريطة الصغيرة
+KEYBIND_MESSENGER	أصدقاء
+KEYBIND_GUILD	الرابطة
+KEYBIND_CHAT_LOG	سجل الدردشة
+KEYBIND_HELP	مساعدة
+KEYBIND_PET	الرفيق
+KEYBIND_SWITCHBOT	سويتش بوت
+KEYBIND_DUNGEON_MANAGER	مدير الزنزانات
+KEYBIND_FAST_EQUIP	تجهيز سريع
+KEYBIND_MINIMAP_ZOOM_IN	الخريطة الصغيرة (+)
+KEYBIND_MINIMAP_ZOOM_OUT	الخريطة الصغيرة (-)
+KEYBIND_QUEST_BUTTONS	عرض المهام
+KEYBIND_DS_DECK_1	طقم الكيمياء 1
+KEYBIND_DS_DECK_2	طقم الكيمياء 2
+KEYBIND_HORSE_SUMMON	استدعاء الحصان
+KEYBIND_HORSE_FEED	تعليف الحصان
+KEYBIND_HORSE_BACK	أرسل الحصان
+KEYBIND_HORSE_RIDE	ركوب
+KEYBIND_MOUNT	الركوب أو النزول
+KEYBIND_EMOTION_1	رمز المشاعر 1
+KEYBIND_EMOTION_2	رمز المشاعر 2
+KEYBIND_EMOTION_3	رمز المشاعر 3
+KEYBIND_EMOTION_4	رمز المشاعر 4
+KEYBIND_EMOTION_5	رمز المشاعر 5
+KEYBIND_EMOTION_6	رمز المشاعر 6
+KEYBIND_EMOTION_7	رمز المشاعر 7
+KEYBIND_EMOTION_8	رمز المشاعر 8
+KEYBIND_EMOTION_9	رمز المشاعر 9

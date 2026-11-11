@@ -655,3 +655,85 @@ DUNGEON_MANAGER_RANK_DAMAGE	Damage
 DUNGEON_MANAGER_FILTER_GUARANTEED	Guaranteed
 DUNGEON_MANAGER_FILTER_COMMON	Common
 DUNGEON_MANAGER_FILTER_RARE	Rare
+KEYBIND_TITLE	Назначение клавиш
+KEYBIND_ROW	Клавиатура
+KEYBIND_OPEN	Изменить
+KEYBIND_HINT	Щёлкните по клавише, затем нажмите новую. Esc отменяет, Backspace очищает.
+KEYBIND_PRESS	Нажмите клавишу
+KEYBIND_COLUMN_ACTION	Действие
+KEYBIND_COLUMN_1	Клавиша
+KEYBIND_COLUMN_2	Вторая
+KEYBIND_RESET	Сброс
+KEYBIND_BACK	Назад
+KEYBIND_NOTICE_RESERVED	Клавишу %s нельзя назначить.
+KEYBIND_NOTICE_NO_MODIFIER	%s не поддерживает Ctrl, Alt и Shift.
+KEYBIND_NOTICE_CLEARED	У действия %s теперь нет клавиши.
+KEYBIND_NOTICE_SWAPPED	Клавиша %s была у действия %s, теперь у него %s.
+KEYBIND_NOTICE_TAKEN	Клавиша %s была у действия %s, теперь у него нет клавиши.
+KEYBIND_NOTICE_RESET	Все клавиши возвращены к стандартным.
+KEYBIND_SECTION_MOVEMENT	Движение
+KEYBIND_SECTION_CAMERA	Камера
+KEYBIND_SECTION_ACTIONS	Действия
+KEYBIND_SECTION_QUICKSLOTS	Быстрый доступ
+KEYBIND_SECTION_WINDOWS	Окна
+KEYBIND_SECTION_HORSE	Конь
+KEYBIND_SECTION_EMOTIONS	Эмоции
+KEYBIND_MOVE_UP	Вперёд
+KEYBIND_MOVE_DOWN	Назад
+KEYBIND_MOVE_LEFT	Влево
+KEYBIND_MOVE_RIGHT	Вправо
+KEYBIND_CAMERA_ROTATE_CW	Поворот по часовой
+KEYBIND_CAMERA_ROTATE_CCW	Поворот против часовой
+KEYBIND_CAMERA_ZOOM_OUT	Отдалить
+KEYBIND_CAMERA_ZOOM_IN	Приблизить
+KEYBIND_CAMERA_PITCH_DOWN	Смотреть вниз
+KEYBIND_CAMERA_PITCH_UP	Смотреть вверх
+KEYBIND_ATTACK	Атаковать
+KEYBIND_PICKUP	Подобрать предметы
+KEYBIND_NEXT_TARGET	Следующая цель, убийства в войне
+KEYBIND_SHOW_NAMES	Показывать имена
+KEYBIND_QUICK_PAGE_MODE	Страница ячеек (удерживать)
+KEYBIND_CHANNEL_SWITCH	Смена канала (удерживать)
+KEYBIND_QUICKSLOT_1	Ячейка 1
+KEYBIND_QUICKSLOT_2	Ячейка 2
+KEYBIND_QUICKSLOT_3	Ячейка 3
+KEYBIND_QUICKSLOT_4	Ячейка 4
+KEYBIND_QUICKSLOT_5	Ячейка 5
+KEYBIND_QUICKSLOT_6	Ячейка 6
+KEYBIND_QUICKSLOT_7	Ячейка 7
+KEYBIND_QUICKSLOT_8	Ячейка 8
+KEYBIND_CHARACTER	Персонаж
+KEYBIND_SKILLS	Навыки
+KEYBIND_EMOTIONS	Эмоции
+KEYBIND_QUESTS	Задания
+KEYBIND_INVENTORY	Инвентарь
+KEYBIND_SPECIAL_INVENTORY	Особый инвентарь
+KEYBIND_DRAGON_SOUL	Камни дракона
+KEYBIND_MINIMAP	Мини-карта
+KEYBIND_MESSENGER	Друзья
+KEYBIND_GUILD	Гильдия
+KEYBIND_CHAT_LOG	Лог чата
+KEYBIND_HELP	Помощь
+KEYBIND_PET	Питомец
+KEYBIND_SWITCHBOT	Свитчбот
+KEYBIND_DUNGEON_MANAGER	Менеджер подземелий
+KEYBIND_FAST_EQUIP	Быстрая экипировка
+KEYBIND_MINIMAP_ZOOM_IN	Мини-карта (+)
+KEYBIND_MINIMAP_ZOOM_OUT	Мини-карта (-)
+KEYBIND_QUEST_BUTTONS	Кнопки заданий
+KEYBIND_DS_DECK_1	Набор алхимии 1
+KEYBIND_DS_DECK_2	Набор алхимии 2
+KEYBIND_HORSE_SUMMON	Призвать коня
+KEYBIND_HORSE_FEED	Кормить коня
+KEYBIND_HORSE_BACK	Отослать коня
+KEYBIND_HORSE_RIDE	Ехать верхом
+KEYBIND_MOUNT	Сесть или спешиться
+KEYBIND_EMOTION_1	Эмоция 1
+KEYBIND_EMOTION_2	Эмоция 2
+KEYBIND_EMOTION_3	Эмоция 3
+KEYBIND_EMOTION_4	Эмоция 4
+KEYBIND_EMOTION_5	Эмоция 5
+KEYBIND_EMOTION_6	Эмоция 6
+KEYBIND_EMOTION_7	Эмоция 7
+KEYBIND_EMOTION_8	Эмоция 8
+KEYBIND_EMOTION_9	Эмоция 9

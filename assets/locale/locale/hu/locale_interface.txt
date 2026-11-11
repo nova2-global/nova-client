@@ -654,3 +654,85 @@ DUNGEON_MANAGER_RANK_DAMAGE	Damage
 DUNGEON_MANAGER_FILTER_GUARANTEED	Guaranteed
 DUNGEON_MANAGER_FILTER_COMMON	Common
 DUNGEON_MANAGER_FILTER_RARE	Rare
+KEYBIND_TITLE	Billentyűkiosztás
+KEYBIND_ROW	Billentyűzet
+KEYBIND_OPEN	Módosít
+KEYBIND_HINT	Kattints egy billentyűre, majd nyomd le az újat. Esc: mégse, Backspace: törlés.
+KEYBIND_PRESS	Nyomj meg egy gombot
+KEYBIND_COLUMN_ACTION	Művelet
+KEYBIND_COLUMN_1	Billentyű
+KEYBIND_COLUMN_2	Második
+KEYBIND_RESET	Standard
+KEYBIND_BACK	Vissza
+KEYBIND_NOTICE_RESERVED	Nem kiosztható billentyű: %s.
+KEYBIND_NOTICE_NO_MODIFIER	%s művelet nem használhat Ctrl, Alt vagy Shift gombot.
+KEYBIND_NOTICE_CLEARED	%s műveletnek most nincs billentyűje.
+KEYBIND_NOTICE_SWAPPED	%s billentyű eddig ehhez tartozott: %s. Annak új billentyűje: %s.
+KEYBIND_NOTICE_TAKEN	%s billentyű eddig ehhez tartozott: %s. Annak most nincs billentyűje.
+KEYBIND_NOTICE_RESET	Minden billentyű visszaállt az alapértelmezettre.
+KEYBIND_SECTION_MOVEMENT	Mozgás
+KEYBIND_SECTION_CAMERA	Kamera
+KEYBIND_SECTION_ACTIONS	Akciók
+KEYBIND_SECTION_QUICKSLOTS	Gyorsgombok
+KEYBIND_SECTION_WINDOWS	Ablakok
+KEYBIND_SECTION_HORSE	Ló
+KEYBIND_SECTION_EMOTIONS	Érzelmek
+KEYBIND_MOVE_UP	Előre
+KEYBIND_MOVE_DOWN	Hátra
+KEYBIND_MOVE_LEFT	Balra
+KEYBIND_MOVE_RIGHT	Jobbra
+KEYBIND_CAMERA_ROTATE_CW	Forgatás (órairány)
+KEYBIND_CAMERA_ROTATE_CCW	Forgatás (órairány ellen)
+KEYBIND_CAMERA_ZOOM_OUT	Távolítás
+KEYBIND_CAMERA_ZOOM_IN	Közelítés
+KEYBIND_CAMERA_PITCH_DOWN	Nézés lefelé
+KEYBIND_CAMERA_PITCH_UP	Nézés felfelé
+KEYBIND_ATTACK	Támadás
+KEYBIND_PICKUP	Tárgyak felvétele
+KEYBIND_NEXT_TARGET	Következő célpont, háborús ölések
+KEYBIND_SHOW_NAMES	Nevek mutatása
+KEYBIND_QUICK_PAGE_MODE	Gyorsgomb-oldal (tartsd)
+KEYBIND_CHANNEL_SWITCH	Csatornaváltás (tartsd)
+KEYBIND_QUICKSLOT_1	1-es hely
+KEYBIND_QUICKSLOT_2	2-es hely
+KEYBIND_QUICKSLOT_3	3-as hely
+KEYBIND_QUICKSLOT_4	4-es hely
+KEYBIND_QUICKSLOT_5	5-ös hely
+KEYBIND_QUICKSLOT_6	6-os hely
+KEYBIND_QUICKSLOT_7	7-es hely
+KEYBIND_QUICKSLOT_8	8-as hely
+KEYBIND_CHARACTER	Karakter
+KEYBIND_SKILLS	Készségek
+KEYBIND_EMOTIONS	Érzelmek
+KEYBIND_QUESTS	Küldetések
+KEYBIND_INVENTORY	Leltár
+KEYBIND_SPECIAL_INVENTORY	Különleges leltár
+KEYBIND_DRAGON_SOUL	Sárkánykövek
+KEYBIND_MINIMAP	Minitérkép
+KEYBIND_MESSENGER	Barátok
+KEYBIND_GUILD	Céh
+KEYBIND_CHAT_LOG	Csetlog
+KEYBIND_HELP	Segítség
+KEYBIND_PET	Házikedvenc
+KEYBIND_SWITCHBOT	Switchbot
+KEYBIND_DUNGEON_MANAGER	Dungeon-kezelő
+KEYBIND_FAST_EQUIP	Gyors felszerelés
+KEYBIND_MINIMAP_ZOOM_IN	Minitérkép (+)
+KEYBIND_MINIMAP_ZOOM_OUT	Minitérkép (-)
+KEYBIND_QUEST_BUTTONS	Küldetéstekercsek
+KEYBIND_DS_DECK_1	Alkímia-pakli 1
+KEYBIND_DS_DECK_2	Alkímia-pakli 2
+KEYBIND_HORSE_SUMMON	Ló hívása
+KEYBIND_HORSE_FEED	Ló etetése
+KEYBIND_HORSE_BACK	Ló elküldése
+KEYBIND_HORSE_RIDE	Lovaglás
+KEYBIND_MOUNT	Fel- vagy leszállás
+KEYBIND_EMOTION_1	Érzelem 1
+KEYBIND_EMOTION_2	Érzelem 2
+KEYBIND_EMOTION_3	Érzelem 3
+KEYBIND_EMOTION_4	Érzelem 4
+KEYBIND_EMOTION_5	Érzelem 5
+KEYBIND_EMOTION_6	Érzelem 6
+KEYBIND_EMOTION_7	Érzelem 7
+KEYBIND_EMOTION_8	Érzelem 8
+KEYBIND_EMOTION_9	Érzelem 9

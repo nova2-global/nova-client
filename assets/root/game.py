@@ -26,6 +26,8 @@ import datacache
 import exchange
 import ime
 import link_tokens
+# The key bindings' table (NOVA-121).
+import keybindings
 ## The advanced pet's module (NOVA-24, chunk C's PythonPetAdvanced.cpp).
 import pet
 
@@ -208,7 +210,7 @@ class GameWindow(ui.ScriptWindow):
 			self.testAlignment.SetOutline()
 			self.testAlignment.Show()
 
-		self.__BuildKeyDict()
+		self.__BuildKeyActions()
 		self.__BuildDebugInfo()
 
 		# PRIVATE_SHOP_PRICE_LIST
@@ -260,8 +262,7 @@ class GameWindow(ui.ScriptWindow):
 		if musicInfo.fieldMusic != "":
 			snd.FadeOutMusic("BGM/" + musicInfo.fieldMusic)
 
-		self.onPressKeyDict = None
-		self.onClickKeyDict = None
+		self.__DropKeyActions()
 
 		chat.Close()
 		snd.StopAllSound()
@@ -351,228 +352,175 @@ class GameWindow(ui.ScriptWindow):
 
 		print("---------------------------------------------------------------------------- CLOSE GAME WINDOW")
 
-	def __BuildKeyDict(self):
-		onPressKeyDict = {}
+	## The game keys (NOVA-121): one press and, for a hold action, one release
+	## per action of keybindings.ACTIONS; which key fires which action is the
+	## player's table (keybindings.current()). The calls are the fixed key
+	## dict's before the table, key for key. The keys no action takes keep
+	## their fixed job here (keybindings.RESERVED, RESERVED_BARE).
+	def __BuildKeyActions(self):
+		interface = lambda: self.interface
+		press = {
+			"move_up": self.MoveUp, "move_down": self.MoveDown, "move_left": self.MoveLeft, "move_right": self.MoveRight,
+			# The keypad keys were the "movie" camera's; outside the developers'
+			# free camera it is the same camera, so every key uses it.
+			"camera_rotate_cw": lambda: app.MovieRotateCamera(app.CAMERA_TO_POSITIVE),
+			"camera_rotate_ccw": lambda: app.MovieRotateCamera(app.CAMERA_TO_NEGATIVE),
+			"camera_zoom_out": lambda: app.MovieZoomCamera(app.CAMERA_TO_NEGATIVE),
+			"camera_zoom_in": lambda: app.MovieZoomCamera(app.CAMERA_TO_POSITIVE),
+			"camera_pitch_down": lambda: app.MoviePitchCamera(app.CAMERA_TO_NEGATIVE),
+			"camera_pitch_up": lambda: app.MoviePitchCamera(app.CAMERA_TO_POSITIVE),
+			"attack": self.StartAttack,
+			"pickup": self.PickUpItem,
+			"next_target": self.__PressTabKey,
+			"show_names": self.ShowName,
+			"quick_page_mode": self.__PressLeftShiftKey,
+			"channel_switch": lambda: self.__SetChannelSwitchMode(True),
+			"character": lambda: interface().ToggleCharacterWindow("STATUS"),
+			"skills": lambda: interface().ToggleCharacterWindow("SKILL"),
+			"emotions": lambda: interface().ToggleCharacterWindow("EMOTICON"),
+			"quests": lambda: interface().ToggleCharacterWindow("QUEST"),
+			"inventory": lambda: interface().ToggleInventoryWindow(),
+			# The special inventory (NOVA-16; OLD game.py:487-488).
+			"special_inventory": lambda: interface().ToggleExtraInventoryWindow(),
+			"dragon_soul": lambda: interface().ToggleDragonSoulWindowWithNoInfo(),
+			"minimap": lambda: interface().ToggleMiniMap(),
+			"messenger": lambda: interface().ToggleMessenger(),
+			"guild": lambda: interface().ToggleGuildWindow(),
+			"chat_log": lambda: interface().ToggleChatLogWindow(),
+			"help": lambda: interface().OpenHelpWindow(),
+			# The advanced pet (NOVA-24; OLD game.py:500-501).
+			"pet": lambda: interface().TogglePetWindow(),
+			# The switchbot (NOVA-43; OLD game.py:491).
+			"switchbot": lambda: self.ShowSwitchbot(),
+			# NOVA-25: the dungeon manager (OLD game.py:493).
+			"dungeon_manager": lambda: self.OpenTimerWindow(),
+			# NOVA-17 fast equip (OLD game.py:506).
+			"fast_equip": lambda: self.ToggleFastEquip(),
+			"minimap_zoom_in": lambda: interface().MiniMapScaleUp(),
+			"minimap_zoom_out": lambda: interface().MiniMapScaleDown(),
+			"quest_buttons": self.__ToggleQuestButtons,
+			# MR-3: Keyboard-enabled deck toggling
+			"ds_deck_1": lambda: self.__ActivateDeck(0),
+			"ds_deck_2": lambda: self.__ActivateDeck(1),
+			"horse_summon": lambda: net.SendChatPacket("/user_horse_ride"),
+			"horse_feed": lambda: net.SendChatPacket("/user_horse_feed"),
+			"horse_back": lambda: net.SendChatPacket("/user_horse_back"),
+			"horse_ride": lambda: net.SendChatPacket("/ride"),
+			"mount": self.__PressMountKey,
+		}
+		for n in range(1, 5):
+			press["quickslot_%d" % n] = (lambda number: lambda: self.__PressQuickSlotKey(number))(n)
+		for n in range(5, 9):
+			press["quickslot_%d" % n] = (lambda slot: lambda: self.__PressQuickSlot(slot))(n - 1)
+		for n in range(1, 10):
+			press["emotion_%d" % n] = (lambda number: lambda: self.__PressEmotion(number))(n)
 
-		##PressKey continuously applies while key is held.
-		
-		## Used for number shortcut quickslots (subsequent numbers also reserved for quickslots)
-		## F12 is client debug key, should not be used here.
-		onPressKeyDict[app.DIK_1]	= lambda: self.__PressNumKey(1)
-		onPressKeyDict[app.DIK_2]	= lambda: self.__PressNumKey(2)
-		onPressKeyDict[app.DIK_3]	= lambda: self.__PressNumKey(3)
-		onPressKeyDict[app.DIK_4]	= lambda: self.__PressNumKey(4)
-		onPressKeyDict[app.DIK_5]	= lambda: self.__PressNumKey(5)
-		onPressKeyDict[app.DIK_6]	= lambda: self.__PressNumKey(6)
-		onPressKeyDict[app.DIK_7]	= lambda: self.__PressNumKey(7)
-		onPressKeyDict[app.DIK_8]	= lambda: self.__PressNumKey(8)
-		onPressKeyDict[app.DIK_9]	= lambda: self.__PressNumKey(9)
-		onPressKeyDict[app.DIK_F1]	= lambda: self.__PressQuickSlot(4)
-		onPressKeyDict[app.DIK_F2]	= lambda: self.__PressQuickSlot(5)
-		onPressKeyDict[app.DIK_F3]	= lambda: self.__PressQuickSlot(6)
-		onPressKeyDict[app.DIK_F4]	= lambda: self.__PressQuickSlot(7)
-		# The switchbot (NOVA-43; OLD game.py:491).
-		onPressKeyDict[app.DIK_F5]	= lambda: self.ShowSwitchbot()
-		# NOVA-25: the dungeon manager (OLD game.py:493).
-		onPressKeyDict[app.DIK_F6]	= lambda: self.OpenTimerWindow()
-		# NOVA-17 fast equip (OLD game.py:506).
-		onPressKeyDict[app.DIK_F10]	= lambda: self.ToggleFastEquip()
+		release = {
+			"move_up": self.StopUp, "move_down": self.StopDown, "move_left": self.StopLeft, "move_right": self.StopRight,
+			"camera_rotate_cw": lambda: app.MovieRotateCamera(app.CAMERA_STOP),
+			"camera_rotate_ccw": lambda: app.MovieRotateCamera(app.CAMERA_STOP),
+			"camera_zoom_out": lambda: app.MovieZoomCamera(app.CAMERA_STOP),
+			"camera_zoom_in": lambda: app.MovieZoomCamera(app.CAMERA_STOP),
+			"camera_pitch_down": lambda: app.MoviePitchCamera(app.CAMERA_STOP),
+			"camera_pitch_up": lambda: app.MoviePitchCamera(app.CAMERA_STOP),
+			"attack": self.EndAttack,
+			"next_target": self.__ReleaseTabKey,
+			"show_names": self.HideName,
+			"quick_page_mode": self.__SetQuickSlotMode,
+			"channel_switch": lambda: self.__SetChannelSwitchMode(False),
+		}
+		self.keyDispatcher = keybindings.Dispatcher(press, release)
 
-		onPressKeyDict[app.DIK_LALT]		= lambda: self.ShowName()
-		onPressKeyDict[app.DIK_LCONTROL]	= lambda: self.ShowMouseImage()
-		onPressKeyDict[app.DIK_SYSRQ]		= lambda: self.SaveScreen()
-		onPressKeyDict[app.DIK_SPACE]		= lambda: self.StartAttack()
+		# The fixed keys: left Ctrl shows the mouse mode while held, Print
+		# Screen saves the screen, the comma opens the debug console, keypad 9
+		# resets the free camera. F12 is the client's debug key.
+		self.fixedKeyDown = {
+			app.DIK_LCONTROL: lambda: self.ShowMouseImage(),
+			app.DIK_SYSRQ: lambda: self.SaveScreen(),
+			app.DIK_COMMA: lambda: self.ShowConsole(),		# "`" key
+			app.DIK_NUMPAD9: lambda: app.MovieResetCamera(),
+		}
+		self.fixedKeyUp = {
+			app.DIK_LCONTROL: lambda: self.HideMouseImage(),
+		}
 
-		#Character movement keys
-		onPressKeyDict[app.DIK_UP]			= lambda: self.MoveUp()
-		onPressKeyDict[app.DIK_DOWN]		= lambda: self.MoveDown()
-		onPressKeyDict[app.DIK_LEFT]		= lambda: self.MoveLeft()
-		onPressKeyDict[app.DIK_RIGHT]		= lambda: self.MoveRight()
-		onPressKeyDict[app.DIK_W]			= lambda: self.MoveUp()
-		onPressKeyDict[app.DIK_S]			= lambda: self.MoveDown()
-		onPressKeyDict[app.DIK_A]			= lambda: self.MoveLeft()
-		# MR-3: Keyboard-enabled deck toggling
-		onPressKeyDict[app.DIK_D]			= lambda: self.__PressDKey()
-		# MR-3: -- END OF -- Keyboard-enabled deck toggling
+	def __DropKeyActions(self):
+		keybindings.CAPTURE.cancel()
+		self.keyDispatcher = None
+		self.fixedKeyDown = {}
+		self.fixedKeyUp = {}
 
-		onPressKeyDict[app.DIK_E]			= lambda: app.RotateCamera(app.CAMERA_TO_POSITIVE)
-		onPressKeyDict[app.DIK_R]			= lambda: app.ZoomCamera(app.CAMERA_TO_NEGATIVE)
-		#onPressKeyDict[app.DIK_F]			= lambda: app.ZoomCamera(app.CAMERA_TO_POSITIVE)
-		onPressKeyDict[app.DIK_T]			= lambda: app.PitchCamera(app.CAMERA_TO_NEGATIVE)
-		onPressKeyDict[app.DIK_G]			= lambda: self.__PressGKey()
-		onPressKeyDict[app.DIK_Q]			= lambda: self.__PressQKey()
+	## A key press: the keyboard page's capture first (it takes every key while
+	## it waits for one), then the fixed keys, then the table.
+	def __KeyDown(self, key):
+		if keybindings.capture_key_down(key):
+			return
+		fixed = self.fixedKeyDown.get(key)
+		if fixed:
+			fixed()
+		if self.keyDispatcher:
+			self.keyDispatcher.key_down(key)
 
-		onPressKeyDict[app.DIK_NUMPAD9]		= lambda: app.MovieResetCamera()
-		onPressKeyDict[app.DIK_NUMPAD4]		= lambda: app.MovieRotateCamera(app.CAMERA_TO_NEGATIVE)
-		onPressKeyDict[app.DIK_NUMPAD6]		= lambda: app.MovieRotateCamera(app.CAMERA_TO_POSITIVE)
-		onPressKeyDict[app.DIK_PGUP]		= lambda: app.MovieZoomCamera(app.CAMERA_TO_NEGATIVE)
-		onPressKeyDict[app.DIK_PGDN]		= lambda: app.MovieZoomCamera(app.CAMERA_TO_POSITIVE)
-		onPressKeyDict[app.DIK_NUMPAD8]		= lambda: app.MoviePitchCamera(app.CAMERA_TO_NEGATIVE)
-		onPressKeyDict[app.DIK_NUMPAD2]		= lambda: app.MoviePitchCamera(app.CAMERA_TO_POSITIVE)
-		onPressKeyDict[app.DIK_GRAVE]		= lambda: self.PickUpItem()
-		onPressKeyDict[app.DIK_Z]			= lambda: self.PickUpItem()
-		# MR-3: Keyboard-enabled deck toggling
-		onPressKeyDict[app.DIK_C]			= lambda: self.__PressCKey()
-		# MR-3: -- END OF -- Keyboard-enabled deck toggling
-		onPressKeyDict[app.DIK_V]			= lambda state = "SKILL": self.interface.ToggleCharacterWindow(state)
-		#onPressKeyDict[app.DIK_B]			= lambda state = "EMOTICON": self.interface.ToggleCharacterWindow(state)
-		onPressKeyDict[app.DIK_N]			= lambda state = "QUEST": self.interface.ToggleCharacterWindow(state)
-		onPressKeyDict[app.DIK_I]			= lambda: self.interface.ToggleInventoryWindow()
-		# The special inventory (NOVA-16; OLD game.py:487-488).
-		onPressKeyDict[app.DIK_U]			= lambda: self.interface.ToggleExtraInventoryWindow()
-		onPressKeyDict[app.DIK_O]			= lambda: self.interface.ToggleDragonSoulWindowWithNoInfo()
-		onPressKeyDict[app.DIK_M]			= lambda: self.interface.PressMKey()
-		#onPressKeyDict[app.DIK_H]			= lambda: self.interface.OpenHelpWindow()
-		onPressKeyDict[app.DIK_ADD]			= lambda: self.interface.MiniMapScaleUp()
-		onPressKeyDict[app.DIK_SUBTRACT]	= lambda: self.interface.MiniMapScaleDown()
-		onPressKeyDict[app.DIK_L]			= lambda: self.interface.ToggleChatLogWindow()
-		onPressKeyDict[app.DIK_COMMA]		= lambda: self.ShowConsole()		# "`" key
-		onPressKeyDict[app.DIK_LSHIFT]		= lambda: self.__PressLeftShiftKey()
-		onPressKeyDict[app.DIK_X]			= lambda: self.__SetChannelSwitchMode(True)
+	def __KeyUp(self, key):
+		if keybindings.capture_key_up(key):
+			return
+		fixed = self.fixedKeyUp.get(key)
+		if fixed:
+			fixed()
+		if self.keyDispatcher:
+			self.keyDispatcher.key_up(key)
 
-		onPressKeyDict[app.DIK_J]			= lambda: self.__PressJKey()
-		onPressKeyDict[app.DIK_H]			= lambda: self.__PressHKey()
-		onPressKeyDict[app.DIK_B]			= lambda: self.__PressBKey()
-		onPressKeyDict[app.DIK_F]			= lambda: self.__PressFKey()
-		## The advanced pet (NOVA-24; OLD game.py:500-501): P toggles the pet
-		## window; Tab previews the pet seal under the pointer (OLD's
-		## CWindowManager::RunPressTabKey, which NEW's exe lacks).
-		onPressKeyDict[app.DIK_P]			= lambda: self.interface.TogglePetWindow()
-		onPressKeyDict[app.DIK_TAB]			= lambda: self.interface.PressTabKey()
-		# The guild war top killers show while TAB is held (NOVA-29, OLD
-		# game.py:525-526 and 596).
-		onPressKeyDict[app.DIK_TAB]			= lambda: self.interface.OpenTopKillers()
+	# Quickslot keys 1-4: with the channel switch held, that channel (NOVA-49,
+	# OLD's default quick switch, game.py:1881-1890; the server checks the
+	# move); else the slot, or with the quick page mode held the page.
+	def __PressQuickSlotKey(self, num):
+		if self.channelSwitchMode:
+			net.SendChatPacket("/ch %d" % num)
+			return
+		self.pressNumber(num-1)
 
-		self.onPressKeyDict = onPressKeyDict
-
-		onClickKeyDict = {}
-		onClickKeyDict[app.DIK_UP] = lambda : self.StopUp()
-		onClickKeyDict[app.DIK_DOWN] = lambda : self.StopDown()
-		onClickKeyDict[app.DIK_LEFT] = lambda : self.StopLeft()
-		onClickKeyDict[app.DIK_RIGHT] = lambda : self.StopRight()
-		onClickKeyDict[app.DIK_SPACE] = lambda : self.EndAttack()
-		onClickKeyDict[app.DIK_TAB] = lambda : self.interface.CloseTopKillers()
-
-		onClickKeyDict[app.DIK_W] = lambda : self.StopUp()
-		onClickKeyDict[app.DIK_S] = lambda : self.StopDown()
-		onClickKeyDict[app.DIK_A] = lambda : self.StopLeft()
-		onClickKeyDict[app.DIK_D] = lambda : self.StopRight()
-		onClickKeyDict[app.DIK_Q] = lambda: app.RotateCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_E] = lambda: app.RotateCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_R] = lambda: app.ZoomCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_F] = lambda: app.ZoomCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_T] = lambda: app.PitchCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_G] = lambda: self.__ReleaseGKey()
-		onClickKeyDict[app.DIK_NUMPAD4] = lambda: app.MovieRotateCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_NUMPAD6] = lambda: app.MovieRotateCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_PGUP] = lambda: app.MovieZoomCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_PGDN] = lambda: app.MovieZoomCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_NUMPAD8] = lambda: app.MoviePitchCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_NUMPAD2] = lambda: app.MoviePitchCamera(app.CAMERA_STOP)
-		onClickKeyDict[app.DIK_LALT] = lambda: self.HideName()
-		onClickKeyDict[app.DIK_LCONTROL] = lambda: self.HideMouseImage()
-		onClickKeyDict[app.DIK_LSHIFT] = lambda: self.__SetQuickSlotMode()
-		onClickKeyDict[app.DIK_X] = lambda: self.__SetChannelSwitchMode(False)
-
-		#if constInfo.PVPMODE_ACCELKEY_ENABLE:
-		#	onClickKeyDict[app.DIK_B] = lambda: self.ChangePKMode()
-
-		self.onClickKeyDict=onClickKeyDict
+	def __PressEmotion(self, num):
+		if chrmgr.IsPossibleEmoticon(-1):
+			chrmgr.SetEmoticon(-1, int(num)-1)
+			net.SendEmoticon(int(num)-1)
 
 	# MR-3: Keyboard-enabled deck toggling
-	def __PressCKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			if self.interface.wndDragonSoul:
-				self.interface.wndDragonSoul.ActivateButtonClick(0)
+	def __ActivateDeck(self, deck):
+		if self.interface.wndDragonSoul:
+			self.interface.wndDragonSoul.ActivateButtonClick(deck)
+
+	def __PressMountKey(self):
+		if player.IsMountingHorse():
+			net.SendChatPacket("/unmount")
 		else:
-			self.interface.ToggleCharacterWindow("STATUS")
+			#net.SendChatPacket("/user_horse_ride")
+			if not uiPrivateShopBuilder.IsBuildingPrivateShop():
+				for i in range(player.INVENTORY_PAGE_SIZE):
+					if player.GetItemIndex(i) in (71114, 71116, 71118, 71120):
+						net.SendItemUsePacket(i)
+						break
 
-	def __PressDKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			if self.interface.wndDragonSoul:
-				self.interface.wndDragonSoul.ActivateButtonClick(1)
+	def __ToggleQuestButtons(self):
+		if 0==interfaceModule.IsQBHide:
+			interfaceModule.IsQBHide = 1
+			self.interface.HideAllQuestButton()
 		else:
-			self.MoveRight()
-	# MR-3: -- END OF -- Keyboard-enabled deck toggling
+			interfaceModule.IsQBHide = 0
+			self.interface.ShowAllQuestButton()
 
-	def __PressNumKey(self,num):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			
-			if num >= 1 and num <= 9:
-				if(chrmgr.IsPossibleEmoticon(-1)):				
-					chrmgr.SetEmoticon(-1,int(num)-1)
-					net.SendEmoticon(int(num)-1)
-		else:
-			# Hold X and press 1-4 to move to that channel (NOVA-49, OLD's
-			# default quick switch, game.py:1881-1890); the server checks the
-			# move.
-			if self.channelSwitchMode:
-				if num >= 1 and num <= 4:
-					net.SendChatPacket("/ch %d" % num)
-				return
-			if num >= 1 and num <= 4:
-				self.pressNumber(num-1)
+	# Tab: the next monster around the player (NOVA-126, OLD's
+	# ENABLE_TAB_NEXT_TARGET; C++ did it before the table), the pet seal under
+	# the pointer (NOVA-24, interface.PressTabKey) and, while held, the guild
+	# war's top killers (NOVA-29, OLD game.py:525-526 and 596).
+	def __PressTabKey(self):
+		selectNext = getattr(player, "SelectTabNextTarget", None)
+		if selectNext:
+			selectNext()
+		self.interface.PressTabKey()
+		self.interface.OpenTopKillers()
 
-	def __ClickBKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			return
-		else:
-			if constInfo.PVPMODE_ACCELKEY_ENABLE:
-				self.ChangePKMode()
-
-
-	def	__PressJKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			if player.IsMountingHorse():
-				net.SendChatPacket("/unmount")
-			else:
-				#net.SendChatPacket("/user_horse_ride")
-				if not uiPrivateShopBuilder.IsBuildingPrivateShop():
-					for i in range(player.INVENTORY_PAGE_SIZE):
-						if player.GetItemIndex(i) in (71114, 71116, 71118, 71120):
-							net.SendItemUsePacket(i)
-							break
-	def	__PressHKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			net.SendChatPacket("/user_horse_ride")
-		else:
-			self.interface.OpenHelpWindow()
-
-	def	__PressBKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			net.SendChatPacket("/user_horse_back")
-		else:
-			state = "EMOTICON"
-			self.interface.ToggleCharacterWindow(state)
-
-	def	__PressFKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			net.SendChatPacket("/user_horse_feed")	
-		else:
-			app.ZoomCamera(app.CAMERA_TO_POSITIVE)
-
-	def __PressGKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			net.SendChatPacket("/ride")	
-		else:
-			if self.ShowNameFlag:
-				self.interface.ToggleGuildWindow()
-			else:
-				app.PitchCamera(app.CAMERA_TO_POSITIVE)
-
-	def	__ReleaseGKey(self):
-		app.PitchCamera(app.CAMERA_STOP)
-
-	def __PressQKey(self):
-		if app.IsPressed(app.DIK_LCONTROL) or app.IsPressed(app.DIK_RCONTROL):
-			if 0==interfaceModule.IsQBHide:
-				interfaceModule.IsQBHide = 1
-				self.interface.HideAllQuestButton()
-			else:
-				interfaceModule.IsQBHide = 0
-				self.interface.ShowAllQuestButton()
-		else:
-			app.RotateCamera(app.CAMERA_TO_NEGATIVE)
+	def __ReleaseTabKey(self):
+		self.interface.CloseTopKillers()
 
 	def __SetQuickSlotMode(self):
 		self.pressNumber=ui.__mem_func__(self.__PressQuickSlot)
@@ -588,9 +536,10 @@ class GameWindow(ui.ScriptWindow):
 		if self.interface:
 			self.interface.OpenHoveredChestDrop()
 
-	# X pressed (True) or released (False): the channel quick switch (NOVA-49).
-	# OLD's X also jumped and flew (OnXIn); that is not ported. NEW has no
-	# key-binding table, so the key is fixed (OLD's rebindable slot 77).
+	# The channel switch key pressed (True) or released (False): the channel
+	# quick switch (NOVA-49), X unless the player moved it (NOVA-121, OLD's
+	# rebindable slot 77). OLD's X also jumped and flew (OnXIn); that is not
+	# ported.
 	def __SetChannelSwitchMode(self, isOn):
 		self.channelSwitchMode = isOn
 
@@ -1645,22 +1594,12 @@ class GameWindow(ui.ScriptWindow):
 			self.RequestDropItem(False)
 			constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(0)
 
-		try:
-			self.onPressKeyDict[key]()
-		except KeyError:
-			pass
-		except:
-			raise
+		self.__KeyDown(key)
 
 		return True
 
 	def OnKeyUp(self, key):
-		try:
-			self.onClickKeyDict[key]()
-		except KeyError:
-			pass
-		except:
-			raise
+		self.__KeyUp(key)
 
 		return True
 

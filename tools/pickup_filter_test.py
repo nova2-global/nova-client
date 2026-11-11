@@ -60,8 +60,10 @@ class PickUpKeys(unittest.TestCase):
 
     def test_z_and_the_backquote_still_call_pick_up_item(self):
         source = read(os.path.join(ROOT, "game.py"))
-        for key in ("DIK_GRAVE", "DIK_Z"):
-            self.assertRegex(source, r"onPressKeyDict\[app\.%s\]\s*=\s*lambda: self\.PickUpItem\(\)" % key)
+        self.assertIn('"pickup": self.PickUpItem,', source)
+        # ` and Z are its two default keys (NOVA-121's table).
+        self.assertIn('Action("pickup", "actions", "KEYBIND_PICKUP", "Pick up items", (key("GRAVE"), key("Z"))))',
+                      read(os.path.join(ROOT, "keybindings.py")))
         self.assertNotIn("player.PickCloseItem()", source)
 
 

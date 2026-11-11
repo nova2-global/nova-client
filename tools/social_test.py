@@ -1043,76 +1043,8 @@ class GameWarDeclare(unittest.TestCase):
 
 # --- change channel (NOVA-49) ----------------------------------------------------------------------
 
-class Keys(types.ModuleType):
-    """app with a stable number for every DIK_ name and the pressed keys."""
-
-    def __init__(self):
-        types.ModuleType.__init__(self, "app")
-        self.pressed = set()
-
-    def __getattr__(self, name):
-        if name.startswith(("DIK_", "CAMERA_")):
-            value = 1000 + len(self.__dict__)
-            setattr(self, name, value)
-            return value
-        raise AttributeError(name)
-
-    def IsPressed(self, key):
-        return key in self.pressed
-
-
-class ChannelQuickSwitch(unittest.TestCase):
-    def window(self):
-        self.log = []
-        self.app = Keys()
-        net = support.Recording("net", self.log)
-        chrmgr = support.Recording("chrmgr", self.log)
-        player = support.Recording("player", self.log)
-        cls = compiled("game.py", "GameWindow", ("__BuildKeyDict", "__SetChannelSwitchMode", "__PressNumKey",
-                                                 "__SetQuickSlotMode", "__SetQuickPageMode", "__SelectQuickPage",
-                                                 "__PressQuickSlot", "__PressLeftShiftKey"),
-                       {"app": self.app, "net": net, "chrmgr": chrmgr, "player": player,
-                        "ui": types.SimpleNamespace(__mem_func__=lambda f: f)})
-        window = cls()
-        window.channelSwitchMode = False
-        window.interface = None
-        self.slots = []
-        window.pressNumber = self.slots.append
-        window._GameWindow__BuildKeyDict()
-        return window
-
-    def sent(self):
-        return [args[0] for name, args in self.log if name == "net.SendChatPacket"]
-
-    def test_x_held_turns_1_to_4_into_channel_moves(self):
-        window = self.window()
-        window.onPressKeyDict[self.app.DIK_X]()
-        self.assertTrue(window.channelSwitchMode)
-        for key, number in ((self.app.DIK_1, 1), (self.app.DIK_4, 4), (self.app.DIK_5, 5)):
-            window.onPressKeyDict[key]()
-        self.assertEqual(self.sent(), ["/ch 1", "/ch 4"], "only 1-4, as OLD")
-        self.assertEqual(self.slots, [], "no quickslot while X is held")
-
-        window.onClickKeyDict[self.app.DIK_X]()
-        self.assertFalse(window.channelSwitchMode)
-        window.onPressKeyDict[self.app.DIK_2]()
-        self.assertEqual(self.slots, [1], "released, 2 is the quickslot again")
-        self.assertEqual(self.sent(), ["/ch 1", "/ch 4"])
-
-    def test_ctrl_keeps_the_emoticons_while_x_is_held(self):
-        window = self.window()
-        window.onPressKeyDict[self.app.DIK_X]()
-        self.app.pressed.add(self.app.DIK_LCONTROL)
-        window.onPressKeyDict[self.app.DIK_3]()
-        self.assertEqual(self.sent(), [])
-
-    def test_shift_does_not_end_the_channel_mode(self):
-        window = self.window()
-        window.onPressKeyDict[self.app.DIK_X]()
-        window.onPressKeyDict[self.app.DIK_LSHIFT]()
-        window.onClickKeyDict[self.app.DIK_LSHIFT]()
-        window.onPressKeyDict[self.app.DIK_2]()
-        self.assertEqual(self.sent(), ["/ch 2"])
+# Hold X and press 1-4 (NOVA-49): the keys are NOVA-121's table now, and
+# keybindings_game_test.Modes presses them through game.py's OnKeyDown.
 
 
 class LoginServer(unittest.TestCase):

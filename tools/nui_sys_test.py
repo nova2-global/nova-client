@@ -52,7 +52,8 @@ EFFECT_MODULES = ("net", "systemSetting", "snd", "background", "app", "chrmgr", 
                   "uiPrivateShopBuilder", "interface")
 QUESTION = "nui/windows/dialog-question/dialog-question.rml"
 LOADED_LEGACY = (("uiSelectMusic", "uiselectmusic.py"), ("uiCommon", "uicommon.py"),
-                 ("uiSystemOption", "uisystemoption.py"), ("uiGameOption", "uigameoption.py"),
+                 ("uiSystemOption", "uisystemoption.py"), ("keybindings", "keybindings.py"),
+                 ("uikeybindings", "uikeybindings.py"), ("uiGameOption", "uigameoption.py"),
                  ("uiSystem", "uisystem.py"), ("uiRestart", "uirestart.py"), ("uiHelp", "uihelp.py"),
                  ("uiPointReset", "uipointreset.py"))
 LOADED_NOVAUI = ("nui_dialog_kit", "nui_dialog_message", "nui_dialog_question", "nui_theme_picker", "nui_music_list",
@@ -1484,8 +1485,13 @@ class ShowSash(unittest.TestCase):
         # The buffi's row (NOVA-38) comes under it and grows the board once more.
         self.assertEqual(cls.HIDE_BUFFI_HEIGHT, cls.SHOW_SASH_HEIGHT + 25)
         self.assertEqual(cls.MOB_INFO_HEIGHT, cls.HIDE_BUFFI_HEIGHT + 50)  # NOVA-40's two rows
-        self.assertEqual(dialog.GetChild("board").size[1], cls.MOB_INFO_HEIGHT, "the board grown by its rows")
-        self.assertEqual(dialog.size[1], cls.MOB_INFO_HEIGHT, "the window with it")
+        # NOVA-121's Keyboard row comes last.
+        self.assertEqual(cls.KEYBOARD_ROW_Y, cls.MOB_INFO_AGGR_Y + 25)
+        self.assertEqual(cls.KEYBOARD_HEIGHT, cls.MOB_INFO_HEIGHT + 25)
+        self.assertEqual(self.place(dialog.keyboardLabel), (30, cls.KEYBOARD_ROW_Y + 2))
+        self.assertEqual(self.place(dialog.keyboardButton), (90, cls.KEYBOARD_ROW_Y))
+        self.assertEqual(dialog.GetChild("board").size[1], cls.KEYBOARD_HEIGHT, "the board grown by its rows")
+        self.assertEqual(dialog.size[1], cls.KEYBOARD_HEIGHT, "the window with it")
         self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
                          "the bottom margin under the last row kept")
 

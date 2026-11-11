@@ -336,22 +336,31 @@ class Result(object):
 		                                          self.other)
 
 
+def _format(name, english, args):
+	"""A locale string with its %s filled; English when the locale's has the
+	wrong placeholders."""
+	try:
+		return _locale(name, english) % args
+	except (TypeError, ValueError):
+		return english % args
+
+
 def notice(result):
 	"""The page's line after a change, in the client's locale."""
 	if result is None:
 		return ""
 	if result.status == "reserved":
-		return _locale("KEYBIND_NOTICE_RESERVED", "%s cannot be bound.") % key_name(result.binding)
+		return _format("KEYBIND_NOTICE_RESERVED", "%s cannot be bound.", (key_name(result.binding),))
 	if result.status == "no_modifier":
-		return _locale("KEYBIND_NOTICE_NO_MODIFIER", "%s takes no Ctrl, Alt or Shift.") % action_label(result.action)
+		return _format("KEYBIND_NOTICE_NO_MODIFIER", "%s takes no Ctrl, Alt or Shift.", (action_label(result.action),))
 	if result.status == "cleared":
-		return _locale("KEYBIND_NOTICE_CLEARED", "%s has no key now.") % action_label(result.action)
+		return _format("KEYBIND_NOTICE_CLEARED", "%s has no key now.", (action_label(result.action),))
 	if result.status == "swapped":
 		if result.other_binding:
-			return _locale("KEYBIND_NOTICE_SWAPPED", "%s was on %s, which now has %s.") % (
-				key_name(result.binding), action_label(result.other), key_name(result.other_binding))
-		return _locale("KEYBIND_NOTICE_TAKEN", "%s was on %s, which now has no key.") % (
-			key_name(result.binding), action_label(result.other))
+			return _format("KEYBIND_NOTICE_SWAPPED", "%s was on %s, which now has %s.",
+			               (key_name(result.binding), action_label(result.other), key_name(result.other_binding)))
+		return _format("KEYBIND_NOTICE_TAKEN", "%s was on %s, which now has no key.",
+		               (key_name(result.binding), action_label(result.other)))
 	if result.status == "reset":
 		return _locale("KEYBIND_NOTICE_RESET", "Every key is back to its default.")
 	return ""
@@ -725,3 +734,89 @@ def with_hotkeys(text, action_ids, bindings=None):
 	if not names:
 		return stripped
 	return "%s [%s]" % (stripped, "/".join(names))
+
+
+# --- the keyboard page, for both option windows --------------------------------------
+
+def hint():
+	return _locale("KEYBIND_HINT", "Click a key, then press the new one. Esc cancels, Backspace clears.")
+
+
+def press_text():
+	return _locale("KEYBIND_PRESS", "Press a key")
+
+
+class Page(object):
+	"""The state the legacy dialog and the NovaUI page share: which cell
+	waits for a key, the notice line, and the rows to show. `refresh()` is
+	called after every change of either (a key bound, a capture begun or
+	ended, a reset)."""
+
+	def __init__(self, refresh, bindings=None, pressed=None):
+		self.refresh = refresh
+		self.bindings = bindings
+		self.pressed = pressed
+		self.armed = None
+		self.notice = ""
+
+	def table(self):
+		return self.bindings or current()
+
+	def press(self, action_id, column):
+		"""A click on a key cell: wait for that cell's key; a second click on
+		the waiting cell stops waiting."""
+		if action_id not in ACTION or not 0 <= column < COLUMNS:
+			return
+		if self.armed == (action_id, column):
+			self.cancel()
+			return
+		if CAPTURE.is_armed():
+			CAPTURE.cancel()
+		self.armed = (action_id, column)
+		self.notice = ""
+		CAPTURE.begin(action_id, column, self._done, self.bindings, self.pressed)
+		self.refresh()
+
+	def _done(self, result):
+		self.armed = None
+		self.notice = notice(result)
+		self.refresh()
+
+	def cancel(self):
+		"""Stops waiting (Escape, the page or the window closing); True when a
+		cell was waiting."""
+		if self.armed is None:
+			return False
+		if CAPTURE.is_armed() and (CAPTURE.action, CAPTURE.column) == self.armed:
+			CAPTURE.cancel()
+		self.armed = None
+		self.refresh()
+		return True
+
+	def reset(self):
+		if CAPTURE.is_armed():
+			CAPTURE.cancel()
+		self.armed = None
+		self.notice = notice(self.table().reset())
+		self.refresh()
+
+	def notice_text(self):
+		return self.notice or hint()
+
+	def rows(self):
+		"""The page's rows in order: a section's header, then its actions."""
+		bindings = self.table()
+		out = []
+		for (sid, name, english) in SECTIONS:
+			out.append({"kind": "section", "id": sid, "label": section_label(sid), "k1": "", "k2": "",
+			            "cap1": False, "cap2": False, "changed": False})
+			for a in ACTIONS:
+				if a.section != sid:
+					continue
+				keys = bindings.keys(a.id)
+				out.append({"kind": "action", "id": a.id, "label": action_label(a.id),
+				            "k1": press_text() if self.armed == (a.id, 0) else key_name(keys[0]),
+				            "k2": press_text() if self.armed == (a.id, 1) else key_name(keys[1]),
+				            "cap1": self.armed == (a.id, 0), "cap2": self.armed == (a.id, 1),
+				            "changed": keys != list(a.defaults)})
+		return out

@@ -472,3 +472,61 @@ class Locales(unittest.TestCase):
 		bindings = kb.Bindings(opener=Files())
 		self.assertEqual(kb.notice(bindings.assign("inventory", 0, kb.key("M"))).replace("%s", ""),
 		                 (entries["KEYBIND_NOTICE_SWAPPED"] % ("M", "Minimap", "I")).replace("%s", ""))
+
+
+class Pages(Base):
+	def setUp(self):
+		Base.setUp(self)
+		self.refreshes = 0
+		self.page = self.kb.Page(self.refresh, self.bindings, self.keyboard)
+
+	def refresh(self):
+		self.refreshes += 1
+
+	def row(self, action):
+		return next(r for r in self.page.rows() if r["id"] == action and r["kind"] == "action")
+
+	def test_rows_are_sections_then_their_actions(self):
+		rows = self.page.rows()
+		self.assertEqual(len(rows), len(self.kb.ACTIONS) + len(self.kb.SECTIONS))
+		self.assertEqual([r["id"] for r in rows if r["kind"] == "section"], [s[0] for s in self.kb.SECTIONS])
+		self.assertEqual(rows[0]["label"], "Movement")
+		self.assertEqual(rows[1], {"kind": "action", "id": "move_up", "label": "Forward", "k1": "W", "k2": "Up",
+		                           "cap1": False, "cap2": False, "changed": False})
+
+	def test_a_click_waits_a_key_binds_and_the_notice_tells(self):
+		self.page.press("inventory", 0)
+		self.assertEqual(self.row("inventory")["k1"], "Press a key")
+		self.assertTrue(self.row("inventory")["cap1"])
+		self.kb.CAPTURE.key_down(self.dik("M"))
+		self.assertEqual(self.page.armed, None)
+		self.assertEqual(self.row("inventory")["k1"], "M")
+		self.assertTrue(self.row("inventory")["changed"])
+		self.assertEqual(self.row("minimap")["k1"], "I")
+		self.assertEqual(self.page.notice_text(), "M was on Minimap, which now has I.")
+		self.assertEqual(self.refreshes, 2)
+
+	def test_a_second_click_or_escape_or_another_cell_stops_waiting(self):
+		self.page.press("inventory", 0)
+		self.page.press("inventory", 0)
+		self.assertFalse(self.kb.CAPTURE.is_armed())
+		self.page.press("inventory", 0)
+		self.page.press("pet", 1)
+		self.assertEqual((self.kb.CAPTURE.action, self.kb.CAPTURE.column), ("pet", 1))
+		self.assertEqual(self.page.armed, ("pet", 1))
+		self.assertTrue(self.page.cancel())
+		self.assertFalse(self.page.cancel())
+		self.assertFalse(self.kb.CAPTURE.is_armed())
+
+	def test_reset(self):
+		self.bindings.assign("inventory", 0, self.kb.key("K"))
+		self.page.reset()
+		self.assertEqual(self.row("inventory")["k1"], "I")
+		self.assertEqual(self.page.notice_text(), "Every key is back to its default.")
+
+	def test_the_hint_shows_until_something_happens(self):
+		self.assertEqual(self.page.notice_text(),
+		                 "Click a key, then press the new one. Esc cancels, Backspace clears.")
+
+	def tearDown(self):
+		self.kb.CAPTURE.cancel()

@@ -23,8 +23,8 @@ including its quirks, so a test can tell what a file gives the game:
   shapes are lost: the reader's own ``continue`` before ``SetParentNode``.
 - A shape takes Model, then Local_SourceSkin/Local_TargetSkin,
   SourceSkin/TargetSkin and SourceSkin2/TargetSkin2 as skins (appended, so a
-  repeated index adds skins and its last Model wins). A hair needs Model,
-  SourceSkin and TargetSkin together.
+  repeated index adds skins and its last Model wins). A hair registers by its
+  Model (NOVA-177, as OLD's reader); SourceSkin with TargetSkin adds a skin.
 
 Keys the reader does not know (OLD's CommonTargetSkin*, SourceSkin3-8,
 CustomSpecular*, CustomOpacity*, CustomSpecularMask*, SpecularMask,
@@ -309,11 +309,14 @@ def _read_entries(race, node, kind, old_reader=False):
 					item[1].append((path + src, path + dst))
 			item[1].extend(_common_skins(entry, 5))
 		else:
+			# NOVA-177: a hair registers by its model, as OLD's reader does;
+			# SourceSkin with TargetSkin adds its skin.
 			model, src, dst = entry.string("model"), entry.string("sourceskin"), entry.string("targetskin")
-			if model is not None and src is not None and dst is not None:
+			if model is not None:
 				item = store.setdefault(index, [None, []])
 				item[0] = path + model
-				item[1].append((path + src, path + dst))
+				if src is not None and dst is not None:
+					item[1].append((path + src, path + dst))
 		race.entries.setdefault((kind, index), []).append((entry, path))
 		race.order[kind].append((index, entry, path))
 		cur = entry.parent

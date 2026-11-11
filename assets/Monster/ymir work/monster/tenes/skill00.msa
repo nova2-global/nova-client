@@ -1,0 +1,57 @@
+ScriptType               MotionData
+
+MotionFileName           "d:/ymir work/monster/tenes/attack04.gr2"
+MotionDuration           4.333333
+
+Group MotionEventData
+{
+    MotionEventDataCount     4
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.470425
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster/tenes/spin_neon_v2.mse"
+        EffectPosition       0.000000 0.000000 -90.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         1.917884
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster/tenes/spin_neon_v2.mse"
+        EffectPosition       0.000000 0.000000 -90.000000
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         0.416145
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "AXE"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster/tenes/firefollow.mse"
+        EffectPosition       110.000000 -140.000000 0.000000
+    }
+    Group Event03
+    {
+        MotionEventType      1
+        StartingTime         1.257481
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "AXE"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster/tenes/firefollow.mse"
+        EffectPosition       -90.000000 140.000000 -50.000000
+    }
+}

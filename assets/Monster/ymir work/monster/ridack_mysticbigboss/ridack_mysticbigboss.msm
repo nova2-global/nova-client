@@ -1,0 +1,72 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:/ymir work/monster/ridack_mysticbigboss/ridack_mysticbigboss.gr2"
+
+Group ShapeData
+{
+	PathName 		 ""
+	ShapeDataCount		 1
+	Group ShapeData00
+	{
+		ShapeIndex			0
+
+		Model				"D:\Ymir Work\monster\ridack_mysticbigboss\ridack_mysticbigboss.GR2"
+		SourceSkin			"D:\Ymir Work\monster\ridack_mysticbigboss\ridack_mysticbigboss.dds"
+		TargetSkin			"D:\Ymir Work\monster\ridack_mysticbigboss\ridack_mysticbigboss.dds"
+		SourceSkin2			"D:\Ymir Work\monster\ridack_mysticbigboss\ridack_mysticbigboss2.dds"
+		TargetSkin2			"D:\Ymir Work\monster\ridack_mysticbigboss\ridack_mysticbigboss2.dds"
+	}
+}
+Group AttachingData
+{
+    AttachingDataCount       3
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          0
+        AttachingModelIndex  0
+        AttachingBoneName    "Dummy01"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           265.000000
+            Position         0.000000 0.000000 150.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          0
+        AttachingModelIndex  0
+        AttachingBoneName    "Dummy01"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           274.000000
+            Position         0.000000 0.000000 150.000000
+        }
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    2
+        
+        isAttaching          0
+        AttachingModelIndex  0
+        AttachingBoneName    "bip01"
+        
+        EffectScriptName     "D:\ymir work\monster\ridack_mysticbigboss\ridack_effect.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+}

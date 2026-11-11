@@ -1,0 +1,67 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\violent_arachne\skill_02.GR2"
+MotionDuration           7.333333
+
+Group MotionEventData
+{
+    MotionEventDataCount     4
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.122477
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "ara_root"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/smoke_dirt1.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.122477
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "ara_root"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/smoke_dirt1.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         3.398747
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "ara_root"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/12_cow_s3_blow.mse"
+        EffectPosition       0.000000 0.000000 200.000000
+    }
+    Group Event03
+    {
+        MotionEventType      4
+        StartingTime         3.337509
+        DuringTime           1.000000
+        EnableHitProcess     0
+        
+        AttackType           1
+        HittingType          2
+        StiffenTime          0.000000
+        InvisibleTime        1.000000
+        ExternalForce        255.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           600.000000
+            Position         0.000000 0.000000 200.000000
+        }
+    }
+}

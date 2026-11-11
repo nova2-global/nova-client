@@ -1,0 +1,31 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\e_wind_mon_2\att1.GR2"
+MotionDuration           0.966667
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      4
+        StartingTime         0.371329
+        DuringTime           0.500000
+        EnableHitProcess     1
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.500000
+        ExternalForce        0.500000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           200.000000
+            Position         0.000000 -100.000000 100.000000
+        }
+    }
+}

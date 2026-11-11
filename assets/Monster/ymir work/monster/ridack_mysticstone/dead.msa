@@ -1,0 +1,20 @@
+ScriptType               MotionData
+
+MotionFileName           "D:/ymir work/monster/ridack_mysticstone/dead.gr2"
+MotionDuration           1.000000
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.300000
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    ""
+        FollowingEnable      1
+        EffectFileName       "D:/ymir work/monster/ridack_mysticstone/ridack_dead.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }

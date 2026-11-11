@@ -1,0 +1,31 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\ymir work\npc2\plechito_christmas2020\plechi_christmas2020_pet2\plechi_christmas2020_pet2.GR2"
+
+Group ShapeData
+{
+    PathName 		 ""
+    ShapeDataCount 		 0
+}
+Group AttachingData
+{
+    AttachingDataCount       1
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Spine1"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           30.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+}

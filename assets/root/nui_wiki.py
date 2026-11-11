@@ -314,6 +314,47 @@ def _wearer_race(item_module):
 	return None
 
 
+# NOVA-177: the part of a preview's model a page is about, as
+# modelpreview.GetState's meshes orders them. A model is made even when the
+# file its part names is not in the pack (tools/model_gaps.py), and draws
+# nothing there; the page then shows the icon, with no zoom mark and no
+# viewer. A preview that waits (the hover's dwell) has no meshes yet: it is
+# not judged, but an item or mob a page found empty is not hovered again.
+MESH_BODY, MESH_WEAPON, MESH_HAIR, MESH_SASH = 0, 1, 2, 3
+_NO_MESH = set()  # (kind, vnum, race) whose part draws nothing
+
+
+def _plan_part(plan):
+	"""The meshes index of the part preview_of's plan is about: the body for
+	a pet or mount, else the one part it sets."""
+	if plan[0] != "parts":
+		return MESH_BODY
+	parts = plan[2]
+	for index in (MESH_WEAPON, MESH_HAIR, MESH_SASH):
+		if parts[index]:
+			return index
+	return MESH_BODY
+
+
+def _draws(preview, name, part, key):
+	"""The preview's model has a mesh in `part`; True when the client cannot
+	say (an exe before NOVA-177, or a request still waiting)."""
+	get_state = getattr(preview, "GetState", None)
+	if get_state is None:
+		return True
+	try:
+		state = get_state(name)
+	except Exception:
+		return True
+	meshes = state.get("meshes") if isinstance(state, dict) else None
+	if meshes is None or state.get("pending") or not state.get("has_model"):
+		return True
+	if meshes[part]:
+		return True
+	_NO_MESH.add(key)
+	return False
+
+
 class _WikiBoard(nui_hud.RaisesOnPress, nui.Window):
 	"""The browser's document; its events go to the window. Every press that
 	follows a link passes its button: the window opens a middle press, or a
@@ -1609,16 +1650,24 @@ class WikiWindow(nui_facade.Facade, ui.Window, pages.TextPageWindow):
 	def _select_model(preview, name, kind, vnum):
 		"""Puts the model of a page in the preview `name`: a mob by its vnum,
 		an item by preview_of (its race, and the parts it is worn with).
-		False when there is none to show."""
+		False when there is none to show, or when the part the page is about
+		has no mesh to draw (NOVA-177: its file is not in the pack)."""
 		if kind == KIND_MOB:
-			return bool(preview.Select(name, vnum))
-		plan = preview_of(vnum)
-		if plan is None:
-			return False
-		shown = bool(preview.Select(name, plan[1]))
-		if shown and plan[0] == "parts":
-			shown = bool(preview.SetParts(name, *plan[2]))
-		return shown
+			key, part = (kind, vnum, vnum), MESH_BODY
+			if key in _NO_MESH:
+				return False
+			shown = bool(preview.Select(name, vnum))
+		else:
+			plan = preview_of(vnum)
+			if plan is None:
+				return False
+			key, part = (kind, vnum, plan[1]), _plan_part(plan)
+			if key in _NO_MESH:
+				return False
+			shown = bool(preview.Select(name, plan[1]))
+			if shown and plan[0] == "parts":
+				shown = bool(preview.SetParts(name, *plan[2]))
+		return shown and _draws(preview, name, part, key)
 
 	# --- the model viewer -------------------------------------------------------------
 

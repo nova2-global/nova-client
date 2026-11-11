@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\abomination_fusion\attack3.GR2"
+MotionDuration           2.166667
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         1.316284
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01-Prop1"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/impact4.mse"
+        EffectPosition       0.000000 -100.000000 -100.000000
+    }
+}

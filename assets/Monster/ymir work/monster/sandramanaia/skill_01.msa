@@ -1,0 +1,76 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\sandramanaia\skill_01.GR2"
+MotionDuration           3.000000
+
+Group MotionEventData
+{
+    MotionEventDataCount     5
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.563674
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bone_tooth_R01"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster/sandra1.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.670146
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01-L-Hand"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster/sandra_fireball.mse"
+        EffectPosition       0.000000 -150.000000 0.000000
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         1.941545
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "sandra_root"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster/sandra_fireball_splash.mse"
+        EffectPosition       0.000000 -1200.000000 0.000000
+    }
+    Group Event03
+    {
+        MotionEventType      4
+        StartingTime         1.941545
+        DuringTime           1.000000
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          2
+        StiffenTime          0.000000
+        InvisibleTime        0.000000
+        ExternalForce        500.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           1800.000000
+            Position         0.000000 -300.000000 0.000000
+        }
+    }
+    Group Event04
+    {
+        MotionEventType      2
+        StartingTime         1.885177
+        
+        DuringTime           1.100000
+        Power                700
+        AffectingRange       900
+    }
+}

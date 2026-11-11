@@ -1,0 +1,33 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\abomination_fusion\attack1.GR2"
+MotionDuration           2.000000
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         1.085595
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01-R-Finger1Nub"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/blast1.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         1.469729
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01-R-Finger1Nub"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/blast1.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

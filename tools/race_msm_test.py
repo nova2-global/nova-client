@@ -87,11 +87,13 @@ class Reader(unittest.TestCase):
 		self.assertEqual(race_msm.split_lines(b"a\xc3\xa9\nb"), [b"a\xc3\xa9", b"b"])
 		self.assertEqual(race_msm.split_lines(b"a\xbd\nb"), [b"a\xbd\nb"])
 
-	def test_a_hair_needs_its_model_and_both_skins(self):
+	def test_a_hair_registers_by_its_model_and_both_skins_add_its_skin(self):
 		hair = b'Group HairData\n{\n\tPathName "h/"\n\tHairDataCount 2\n\tGroup HairData00\n\t{\n\t\tHairIndex 1\n' \
 			b'\t\tModel "h.gr2"\n\t\tSourceSkin "s.dds"\n\t\tCommonTargetSkin "d:/c.dds"\n\t}\n\tGroup HairData01\n\t{\n' \
 			b'\t\tHairIndex 2\n\t\tModel "h.gr2"\n\t\tSourceSkin "s.dds"\n\t\tTargetSkin "t.dds"\n\t}\n}\n'
-		self.assertEqual(sorted(race_msm.load(self.HEAD + hair).hairs), [2])
+		# NOVA-177: NEW's reader registers hair 1 by its model too, as OLD's.
+		self.assertEqual(sorted(race_msm.load(self.HEAD + hair).hairs), [1, 2])
+		self.assertEqual(race_msm.load(self.HEAD + hair).hairs[1], ["h/h.gr2", []])
 		self.assertEqual(sorted(race_msm.load(self.HEAD + hair, old_reader=True).hairs), [1, 2])
 
 
@@ -166,7 +168,8 @@ class RaceFiles(unittest.TestCase):
 			shown_vnums += shows
 		counts = {"vnums": vnums, "vnums_shown": shown_vnums, "pairs": pairs, "pairs_shown": shown_pairs}
 		self.assertEqual(counts, self.fixture["old_only"])
-		self.assertEqual(counts, {"vnums": 3606, "vnums_shown": 2584, "pairs": 15072, "pairs_shown": 11374})
+		# NOVA-177: OLD's model-only hairs register (2584 vnums, 11374 pairs before).
+		self.assertEqual(counts, {"vnums": 3606, "vnums_shown": 3396, "pairs": 15072, "pairs_shown": 15007})
 
 
 if __name__ == "__main__":

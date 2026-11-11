@@ -13,6 +13,8 @@ skins of the race shapes (the msm files' WingData groups) their value 3 names.
 	python3 tools/old_art.py shop PACKER GRLIST
 	python3 tools/old_art.py rings-plan PACKER GRLIST
 	python3 tools/old_art.py rings PACKER GRLIST
+	python3 tools/old_art.py shining-plan PACKER GRLIST
+	python3 tools/old_art.py shining PACKER GRLIST
 
 	python3 tools/old_art.py files-plan PACKER GRLIST [STORE_PATH...]
 	python3 tools/old_art.py files PACKER GRLIST [STORE_PATH...]
@@ -734,6 +736,47 @@ def import_files(packer, grlist, names):
 	return place(packer, grlist, scratch, take, missing, index, folders)
 
 
+# --- the weapon's and the body's shining (NOVA-176) --------------------------
+
+# shining and shining-plan take the effects NEW's locale/common/shiningtable.txt
+# names that NEW's groups do not publish, and every file they name in turn.
+# They read NEW's groups from git's tree, as shop does.
+
+
+def shining_table_seeds(data, files):
+	"""The effects a shining table names (shining_seeds) that NEW's groups
+	do not publish, in order, each once."""
+	return [path for path in shining_seeds(data) if path not in files]
+
+
+def shining_gather(packer, grlist, scratch):
+	groups = _groups()
+	paths = tree_files()
+	files = tree_published(paths, groups)
+	index = packer_index(packer)
+	with open(SHINING_TABLE, "rb") as handle:
+		start = shining_table_seeds(handle.read(), files)
+	take, missing = closure(start, index, files, packer, grlist, scratch)
+	return take, missing, index, tree_group_folders(paths, groups)
+
+
+def plan_shining(packer, grlist):
+	take, missing, _, _ = shining_gather(packer, grlist, scratch_folder())
+	total = sum(os.path.getsize(os.path.join(packer, take[path])) for path in take)
+	for path in sorted(take):
+		print("  %s <- %s" % (path, take[path]))
+	print("would take %d files, %.1f MB; %d named but missing in OLD too:" % (len(take), total / 1048576.0, len(missing)))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path] or "shiningtable.txt"))
+	return 0
+
+
+def import_shining(packer, grlist):
+	scratch = scratch_folder()
+	take, missing, index, folders = shining_gather(packer, grlist, scratch)
+	return place(packer, grlist, scratch, take, missing, index, folders)
+
+
 def _main(argv):
 	if len(argv) == 5 and argv[0] == "import":
 		return import_art(*argv[1:])
@@ -750,6 +793,10 @@ def _main(argv):
 	if len(argv) >= 3 and argv[0] in ("files", "files-plan"):
 		names = list(argv[3:]) or default_files()
 		return (import_files if argv[0] == "files" else plan_files)(argv[1], argv[2], names)
+	if len(argv) == 3 and argv[0] == "shining":
+		return import_shining(*argv[1:])
+	if len(argv) == 3 and argv[0] == "shining-plan":
+		return plan_shining(*argv[1:])
 	print(__doc__)
 	return 2
 

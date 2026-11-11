@@ -252,6 +252,22 @@ class TreeGroups(unittest.TestCase):
 			"d:/ymir work/npc2/privateshop/privateshop.msm", "d:/ymir work/ui/pattern/board_base.tga", "icon/item/1.tga"})
 
 
+class ShiningSeeds(unittest.TestCase):
+	"""shining and shining-plan (NOVA-176): the effects NEW's shining table
+	names that NEW does not publish."""
+
+	def test_the_tables_effects_new_lacks_once_without_bones_or_quotes(self):
+		table = (b"12010~12049\tD:/ymir work/pc/common/effect/armor/armor-4-2-1.mse\t\t\n"
+			b"41971\tD:/ymir work/effect/hallowen_costume/body.mse\tD:/ymir work/effect/hallowen_costume/hand.mse#Bip01 L UpperArm"
+			b"\tD:/ymir work/effect/hallowen_costume/hand.mse#Bip01 R UpperArm\n"
+			b"42819\t\"d:/ymir work/effect/mehok/dragon_wind/armor.mse\"\n")
+		files = {"d:/ymir work/pc/common/effect/armor/armor-4-2-1.mse"}
+		self.assertEqual(old_art.shining_table_seeds(table, files), [
+			"d:/ymir work/effect/hallowen_costume/body.mse",
+			"d:/ymir work/effect/hallowen_costume/hand.mse",
+			"d:/ymir work/effect/mehok/dragon_wind/armor.mse"])
+
+
 class Manifest(unittest.TestCase):
 	"""The files tools/old_art.py took (tools/fixtures/old_art.tsv)."""
 
@@ -275,6 +291,15 @@ class Manifest(unittest.TestCase):
 				custom.append(path)
 		self.assertEqual(custom, [])
 		self.assertIn("converted", {row[3] for row in self.rows})
+
+	def test_the_shining_tables_effects_are_taken_or_were_shipped(self):
+		"""NOVA-176: every effect of NEW's table is in the manifest or was in
+		NEW before the wave's art."""
+		taken = {row[0] for row in self.rows}
+		with open(old_art.SHINING_TABLE, "rb") as handle:
+			effects = old_art.shining_seeds(handle.read())
+		self.assertIn("d:/ymir work/effect/hallowen_costume/body.mse", taken)
+		self.assertEqual([path for path in effects if path.startswith("d:/ymir work/effect/hallowen_costume/") and path not in taken], [])
 
 	def test_the_waves_extra_files_are_taken(self):
 		taken = {row[0] for row in self.rows}

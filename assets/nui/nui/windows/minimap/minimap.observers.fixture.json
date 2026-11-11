@@ -8,6 +8,9 @@
 		"observers": 3,
 		"observer_text": "3 observers",
 		"clock": "21:43",
-		"clock_next": 0.0
+		"clock_next": 0.0,
+		"fps_shown": false,
+		"fps_text": "",
+		"fps_next": 0.0
 	}
 }

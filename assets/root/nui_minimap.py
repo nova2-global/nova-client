@@ -21,11 +21,17 @@ it, constInfo.MINIMAP_POSITIONINFO_ENABLE); SetImprisonmentDuration, which
 nothing calls, sets the text once and counts nothing down; the hints open on
 hover; the server line shows the local clock in the modern skins (classic
 hides it), refreshed once a minute by a nui-countdown timer that ends at the
-next minute (clock_next), whose countdownend re-arms it."""
+next minute (clock_next), whose countdownend re-arms it.
+
+The FPS readout (NOVA-118, player_options): a line under the map, open or
+closed, while systemSetting.IsShowFPSCounter() is on; a nui-countdown ends
+each second (fps_next), and its countdownend reads app.GetRenderFPS() again,
+so no Python runs in between; turning the option off stops the timer."""
 
 import time
 import weakref
 
+import app
 import localeInfo
 import miniMap
 import net
@@ -40,6 +46,7 @@ except ImportError:  # an exe without the Wave 2b engine: nui_ready() is False
 import nui
 import nui_hud
 import nui_windows
+import player_options
 
 DOCUMENT = "nui/windows/minimap/minimap.rml"
 VIEW = "minimap"
@@ -66,11 +73,16 @@ class MiniMapBoard(nui.Window):
 
 	def initial_model(self):
 		return {"shown": False, "open": False, "can_see": True, "has_atlas": False, "server_info": "",
-		        "observers": 0, "observer_text": "", "clock": "", "clock_next": 0.0}
+		        "observers": 0, "observer_text": "", "clock": "", "clock_next": 0.0,
+		        "fps_shown": False, "fps_text": "", "fps_next": 0.0}
 
 	@nui.on("clock_tick")
 	def on_clock_tick(self):
 		self._owner.nui_clock_tick()
+
+	@nui.on("fps_tick")
+	def on_fps_tick(self):
+		self._owner.nui_fps_tick()
 
 	@nui.on("scale_up")
 	def on_scale_up(self, button):
@@ -118,7 +130,8 @@ class MiniMap(object):
 		self.atlasButton = False     # legacy binds the atlas button at its first load, when the map has an atlas
 		self.imprisonmentDuration = 0
 		self.state = {"shown": False, "open": False, "can_see": True, "has_atlas": False, "server_info": "",
-		              "observers": 0, "observer_text": "", "clock": "", "clock_next": 0.0}
+		              "observers": 0, "observer_text": "", "clock": "", "clock_next": 0.0,
+		              "fps_shown": False, "fps_text": "", "fps_next": 0.0}
 		# The engine first: an older exe keeps the legacy minimap, and this
 		# facade then makes no call and no atlas.
 		if not nui_hud.has_engine_2b():
@@ -136,6 +149,8 @@ class MiniMap(object):
 			if self.board._doc:
 				self.board.set(**self.state)
 			self._hover_format()
+			self._show_fps(player_options.is_on(player_options.FPS_COUNTER))
+			player_options.listen(self)
 		except Exception:
 			self.nui_discard()
 			raise
@@ -153,6 +168,7 @@ class MiniMap(object):
 
 	def nui_discard(self):
 		self._nui_discarded = True
+		player_options.forget(self)
 		atlas, self.AtlasWindow = self.AtlasWindow, None
 		if atlas is not None:
 			atlas.Destroy()
@@ -165,6 +181,7 @@ class MiniMap(object):
 		"""As uiminimap.py:366-374: the map hides, the atlas goes, then the
 		document."""
 		self.HideMiniMap()
+		player_options.forget(self)
 		atlas, self.AtlasWindow = self.AtlasWindow, None
 		if atlas is not None:
 			atlas.Destroy()
@@ -290,6 +307,24 @@ class MiniMap(object):
 		local = time.localtime(wall)
 		left = 60.0 - (wall % 60.0) + CLOCK_LATE
 		self._set(clock="%02d:%02d" % (local.tm_hour, local.tm_min), clock_next=nui.now() + left)
+
+	def nui_fps_tick(self):
+		"""The readout's second: the render FPS again and the next end; a
+		tick after the option went off reads nothing."""
+		if self.state["fps_shown"]:
+			self._set(fps_text=player_options.fps_text(app.GetRenderFPS()),
+			          fps_next=nui.now() + player_options.FPS_INTERVAL)
+
+	def _show_fps(self, show):
+		if show:
+			self._set(fps_shown=True)
+			self.nui_fps_tick()
+		else:
+			self._set(fps_shown=False, fps_next=0.0)
+
+	def OnPlayerOptionChanged(self, name):
+		if name == player_options.FPS_COUNTER:
+			self._show_fps(player_options.is_on(player_options.FPS_COUNTER))
 
 	def nui_atlas_button(self):
 		"""The atlas button: legacy binds its event only when the map had an

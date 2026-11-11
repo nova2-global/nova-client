@@ -10,33 +10,86 @@ import colorInfo
 import constInfo
 import background
 
+# NOVA-129: the boss and metin stone marks' hover lines, from the locale.
+# miniMap.SetAtlasMarkTexts takes them once per atlas window (this one and
+# nui_atlas.AtlasWindow); an exe without it (before protocol 10) is skipped.
+def AtlasMarkTexts():
+	return {
+		"boss": localeInfo.ATLAS_MARK_BOSS,
+		"king": localeInfo.ATLAS_MARK_KING,
+		"stone": localeInfo.ATLAS_MARK_STONE,
+		"level": localeInfo.BOSS_INFO_LEVEL,
+		"alive": localeInfo.BOSS_INFO_ALIVE,
+		"dead": localeInfo.BOSS_INFO_DEAD,
+		"respawn_in": localeInfo.BOSS_INFO_RESPAWN,
+		"period": localeInfo.ATLAS_MARK_RESPAWN_TIME,
+	}
+
+def SetAtlasMarkTexts():
+	setter = getattr(miniMap, "SetAtlasMarkTexts", None)
+	if setter:
+		setter(AtlasMarkTexts())
+
+# The lines a boss or stone mark the last GetAtlasInfo hit adds under its
+# name line ("" for anything else, or an exe without marks).
+def AtlasMarkHover():
+	getter = getattr(miniMap, "GetAtlasMarkHover", None)
+	if not getter:
+		return ""
+	return getter()
+
 class MapTextToolTip(ui.Window):
+	# NOVA-129: a boss or stone mark's hover has several lines ("\n"), each
+	# a text line of its own LINE_HEIGHT below the one before.
+	LINE_HEIGHT = 16
+
 	def __init__(self):
 		ui.Window.__init__(self)
 
+		self.textLine = self.__MakeLine()
+		self.extraLines = []
+		self.lineCount = 1
+
+	def __del__(self):
+		ui.Window.__del__(self)
+
+	def __MakeLine(self):
 		textLine = ui.TextLine()
 		textLine.SetParent(self)
 		textLine.SetHorizontalAlignCenter()
 		textLine.SetOutline()
 		textLine.SetHorizontalAlignRight()
 		textLine.Show()
-		self.textLine = textLine
+		return textLine
 
-	def __del__(self):
-		ui.Window.__del__(self)
+	def __Lines(self):
+		return [self.textLine] + self.extraLines[:self.lineCount - 1]
 
 	def SetText(self, text):
-		self.textLine.SetText(text)
+		lines = text.split("\n")
+		self.textLine.SetText(lines[0])
+		while len(self.extraLines) < len(lines) - 1:
+			self.extraLines.append(self.__MakeLine())
+		for i, line in enumerate(self.extraLines):
+			if i + 1 < len(lines):
+				line.SetText(lines[i + 1])
+				line.Show()
+			else:
+				line.Hide()
+		self.lineCount = len(lines)
 
 	def SetTooltipPosition(self, PosX, PosY):
-		if app.IsRTL():
-			w, h = self.textLine.GetTextSize()
-			self.textLine.SetPosition(PosX - w - 5, PosY)
-		else:
-			self.textLine.SetPosition(PosX - 5, PosY)
+		for i, line in enumerate(self.__Lines()):
+			y = PosY + i * self.LINE_HEIGHT
+			if app.IsRTL():
+				w, h = line.GetTextSize()
+				line.SetPosition(PosX - w - 5, y)
+			else:
+				line.SetPosition(PosX - 5, y)
 
 	def SetTextColor(self, TextColor):
-		self.textLine.SetPackedFontColor(TextColor)
+		for line in [self.textLine] + self.extraLines:
+			line.SetPackedFontColor(TextColor)
 
 	def GetTextSize(self):
 		return self.textLine.GetTextSize()
@@ -110,6 +163,7 @@ class AtlasWindow(ui.ScriptWindow):
 		self.Hide()
 
 		miniMap.RegisterAtlasWindow(self)
+		SetAtlasMarkTexts()
 
 	def Destroy(self):
 		miniMap.UnregisterAtlasWindow()
@@ -144,9 +198,15 @@ class AtlasWindow(ui.ScriptWindow):
 			sName = localeInfo.GUILD_EMPTY_AREA
 
 		if app.IsRTL() and sName[-1].isalnum():
-			self.tooltipInfo.SetText("(%s)%d, %d" % (sName, iPosX, iPosY))
+			text = "(%s)%d, %d" % (sName, iPosX, iPosY)
 		else:
-			self.tooltipInfo.SetText("%s(%d, %d)" % (sName, iPosX, iPosY))
+			text = "%s(%d, %d)" % (sName, iPosX, iPosY)
+		# NOVA-129: a boss or stone mark's kind and level, state and respawn
+		# time, under the name line.
+		detail = AtlasMarkHover()
+		if detail:
+			text += "\n" + detail
+		self.tooltipInfo.SetText(text)
 
 		(x, y) = self.GetGlobalPosition()
 		self.tooltipInfo.SetTooltipPosition(mouseX - x, mouseY - y)

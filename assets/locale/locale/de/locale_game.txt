@@ -1278,3 +1278,7 @@ WIKI_PAGE_ERROR	This part of the page could not be shown:
 WIKI_CLASS_ALL	All	
 WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
 WIKI_LIST_RANGE	%d-%d of %d	
+ATLAS_MARK_BOSS	Boss
+ATLAS_MARK_KING	Königsboss
+ATLAS_MARK_STONE	Metinstein
+ATLAS_MARK_RESPAWN_TIME	Wiedererscheinungszeit: %s

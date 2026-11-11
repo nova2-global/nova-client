@@ -30,6 +30,14 @@ and packer). As a script:
 
 	python3 tools/model_gaps.py audit FULL_REPO ITEM_PROTO MOB_PROTO PACKER OLD_ROOT OUT_TSV
 	python3 tools/model_gaps.py plan FULL_REPO ITEM_PROTO MOB_PROTO PACKER OLD_ROOT GRLIST AUDIT_TSV
+	python3 tools/model_gaps.py import PACKER OLD_ROOT GRLIST AUDIT_TSV BATCH
+	python3 tools/model_gaps.py item_list OLD_ROOT CUT_ITEM_PROTO
+
+import takes OLD's files for one of BATCHES (equipment, mobs, hair,
+costume_armor_1, costume_armor_2) into this worktree's groups through
+old_art.place (manifest rows in tools/fixtures/old_art.tsv); add them with
+`git add --sparse`. item_list then adds OLD's lines whose files now ship
+(old_content.py item_list, on git's tree).
 
 FULL_REPO is a full checkout of nova-client (its assets/ complete), ITEM_PROTO
 and MOB_PROTO the runtime's share/conf/*.txt, PACKER OLD's packer folder
@@ -135,8 +143,11 @@ class Pack(object):
 	"""NEW's published files: store path -> file on disk (the last group
 	that has it, as groups.txt orders them)."""
 
-	def __init__(self, repo):
+	def __init__(self, repo, fallback=None):
+		"""``fallback``: a full checkout of the same tree, read for a file a
+		sparse worktree lists but does not hold."""
 		self.repo = repo
+		self.fallback = fallback
 		assets = os.path.join(repo, "assets")
 		with open(os.path.join(assets, "groups.txt"), encoding="utf-8") as handle:
 			groups = [line for line in (raw.split("#")[0].strip() for raw in handle) if line]
@@ -153,20 +164,27 @@ class Pack(object):
 				store = "d:/" + store
 			if rank.get(store, -1) <= order[parts[1]]:
 				rank[store] = order[parts[1]]
-				self.files[store] = os.path.join(repo, path)
+				self.files[store] = path
 		self._tags = {}
+
+	def disk(self, store):
+		path = self.files[old_content.store_name(store)]
+		local = os.path.join(self.repo, path)
+		if os.path.exists(local) or not self.fallback:
+			return local
+		return os.path.join(self.fallback, path)
 
 	def has(self, store):
 		return old_content.store_name(store) in self.files
 
 	def read(self, store):
-		with open(self.files[old_content.store_name(store)], "rb") as handle:
+		with open(self.disk(store), "rb") as handle:
 			return handle.read()
 
 	def tag(self, store):
 		store = old_content.store_name(store)
 		if store not in self._tags:
-			with open(self.files[store], "rb") as handle:
+			with open(self.disk(store), "rb") as handle:
 				head = handle.read(72)
 			self._tags[store] = int.from_bytes(head[68:72], "little") if len(head) >= 72 else 0
 		return self._tags[store]
@@ -342,7 +360,11 @@ def load_old(packer, old_root):
 			races[race] = race_msm.load(race_msm.clean_old(handle.read()), old_reader=True)
 	with open(os.path.join(old_root, "root", "NpcList.py"), encoding="latin-1") as handle:
 		names, folders, _ = old_content.old_npclist(handle.read())
+	with open(os.path.join(old_root, "locale", "common", "item_list.txt"), "rb") as handle:
+		lines, _ = old_content.item_list_lines(handle.read())
+	item_list_lines = dict((vnum, old_content.split_tab(line)) for vnum, line in lines.items())
 	return {"index": old_art.packer_index(packer) if packer else {}, "item_list": item_list, "races": races,
+		"item_list_lines": item_list_lines,
 		"mob_names": names, "mob_folders": folders}
 
 
@@ -426,14 +448,119 @@ def _plan(repo, _item_proto, _mob_proto, packer, old_root, grlist, tsv):
 	return 0
 
 
+# The commits of the import (NOVA-177, Eddy approved the whole plan): each
+# well under 1 GB for GitHub; costume armor goes in two, by race folder.
+BATCHES = {
+	"equipment": (("weapon", "armor"), None),
+	"mobs": (("pet", "mount", "boss", "monster", "metin"), None),
+	"hair": (("costume_hair",), None),
+	"costume_armor_1": (("costume_armor",), ("/pc/warrior/", "/pc2/warrior/", "/pc/assassin/", "/pc2/assassin/")),
+	"costume_armor_2": (("costume_armor",), None),
+}
+MAX_FILE = 95 * 1048576
+
+
+def icon_seeds(rows, old):
+	"""The icons of OLD's item_list lines for the items whose line NEW lacks:
+	old_content.merge_item_list adds a line only when its icon ships."""
+	out = []
+	for row in rows:
+		if row[0] == "item" and row[6] in ("no_item_list",) and row[8] == "old":
+			line = old["item_list_lines"].get(int(row[7]))
+			if line:
+				out.append(old_content.store_name(line[2]))
+	return out
+
+
+def tree_destination(spellings):
+	"""old_art.destination for a sparse worktree: a folder git's tree has
+	keeps the tree's spelling (it may not be on disk), a new one OLD's."""
+	def destination(assets, group, spelling):
+		parts = spelling.replace("\\", "/").split("/")
+		if parts[0].lower() == "d:":
+			parts = parts[1:]
+		path = group
+		for part in parts[:-1]:
+			path = spellings.get((path + "/" + part).lower(), path + "/" + part)
+		return os.path.join(assets, path, parts[-1])
+	return destination
+
+
+def _import(packer, old_root, grlist, tsv, batch):
+	"""Takes OLD's files for one batch into this worktree's groups (git add
+	--sparse them afterwards), then merges OLD's item_list lines whose files
+	now ship."""
+	import old_art
+	categories, only = BATCHES[batch]
+	pack = Pack(old_content.REPO)
+	old = load_old(packer, old_root)
+	with open(tsv, encoding="utf-8") as handle:
+		rows = [line.split("\t") for line in handle.read().split("\n")[1:] if line]
+	rows = [row for row in rows if row[3] in categories]
+	if only:
+		rows = [row for row in rows if any(part in row[9] for part in only)]
+	elif batch == "costume_armor_2":
+		first = BATCHES["costume_armor_1"][1]
+		rows = [row for row in rows if not any(part in row[9] for part in first)]
+	start = seeds(rows, old, pack) + [path for path in icon_seeds(rows, old) if path in old["index"] and not pack.has(path)]
+	scratch = old_art.scratch_folder()
+	take, missing = old_art.closure(start, old["index"], set(pack.files), packer, grlist, scratch)
+	sizes = dict((path, os.path.getsize(os.path.join(packer, source))) for path, source in take.items())
+	big = sorted((size, path) for path, size in sizes.items())[-1:] if sizes else []
+	print("%s: %d files, %.1f MB, largest %s (%.1f MB)" % (batch, len(take), sum(sizes.values()) / 1048576.0,
+		big[0][1] if big else "-", big[0][0] / 1048576.0 if big else 0))
+	if big and big[0][0] > MAX_FILE:
+		print("STOP: a file over 95 MB")
+		return 3
+	groups = old_art._groups()
+	paths = old_art.tree_files()
+	spellings = {}
+	for path in paths:
+		parts = path.split("/")[1:-1]
+		for i in range(1, len(parts) + 1):
+			spellings.setdefault("/".join(parts[:i]).lower(), "/".join(parts[:i]))
+	old_art.destination = tree_destination(spellings)
+	code = old_art.place(packer, grlist, scratch, take, missing, old["index"], old_art.tree_group_folders(paths, groups))
+	return code
+
+
+def merge_item_list(old_root, cut_proto):
+	"""OLD's item_list lines for the cut's items NEW's list lacks, when the
+	files they name ship (old_content.merge_item_list's rule, on git's tree:
+	a sparse worktree's disk lacks most groups). They go after every line the
+	list has, so the lines added since the cut by hand (NOVA-20's glowing
+	sash models, NOVA-24's pet items) stay; the fixture's "added" grows."""
+	import old_art
+	with open(os.path.join(old_root, "locale", "common", "item_list.txt"), "rb") as handle:
+		old_data = handle.read()
+	with open(cut_proto, encoding="utf-8", errors="replace") as handle:
+		cut_vnums = old_content.cut_item_vnums(handle.read())
+	with open(old_content.ITEM_LIST, "rb") as handle:
+		current = handle.read()
+	files = old_art.tree_published(old_art.tree_files(), old_art._groups())
+	data, report = old_content.merge_item_list(current, old_data, cut_vnums, files)
+	entry = old_content.load_fixture()["item_list"]
+	entry["added"] = entry["added"] + report["added"]
+	with open(old_content.ITEM_LIST, "wb") as handle:
+		handle.write(data)
+	old_content.save_fixture("item_list", entry)
+	print("item_list: %d of OLD's lines added now, %d in all, %d withheld" % (
+		len(report["added"]), len(entry["added"]), report["withheld"]))
+	return 0
+
+
 def _main(argv):
 	if len(argv) == 8 and argv[0] == "plan":
 		return _plan(*argv[1:])
+	if len(argv) == 6 and argv[0] == "import":
+		return _import(*argv[1:])
+	if len(argv) == 3 and argv[0] == "item_list":
+		return merge_item_list(*argv[1:])
 	if len(argv) != 7 or argv[0] != "audit":
 		print(__doc__)
 		return 2
 	repo, item_proto, mob_proto, packer, old_root, out = argv[1:]
-	pack = Pack(repo)
+	pack = Pack(repo, os.environ.get("MODEL_GAPS_FALLBACK"))
 	with open(item_proto, encoding="utf-8", errors="replace") as handle:
 		items = proto_items(handle.read())
 	with open(mob_proto, encoding="utf-8", errors="replace") as handle:

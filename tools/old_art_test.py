@@ -273,6 +273,32 @@ class TreeGroups(unittest.TestCase):
 			"d:/ymir work/npc2/privateshop/privateshop.msm", "d:/ymir work/ui/pattern/board_base.tga", "icon/item/1.tga"})
 
 
+class NamedFiles(unittest.TestCase):
+	"""files and files-plan (NOVA-110): store paths named on the command
+	line, by default the chat's empire flags."""
+
+	def test_the_names_new_lacks_are_seeds_once_and_in_order(self):
+		files = {"d:/ymir work/ui/flags/empire_20x15/empire_2.png"}
+		got = old_art.files_seeds(["D:/Ymir Work/UI/flags/empire_20x15/empire_1.png",
+			"d:/ymir work/ui/flags/empire_20x15/empire_2.png", "d:/ymir work/ui/flags/empire_20x15/empire_1.png"], files)
+		self.assertEqual(got, ["d:/ymir work/ui/flags/empire_20x15/empire_1.png"])
+
+	def test_the_default_names_are_olds_three_shout_flags(self):
+		"""OLD PythonChat.cpp:578: empire_<bEmpire>.png for the empires 1 to 3."""
+		self.assertEqual(old_art.CHAT_FLAGS, tuple(
+			"d:/ymir work/ui/flags/empire_20x15/empire_%d.png" % empire for empire in (1, 2, 3)))
+
+	def test_the_language_flags_are_olds_for_the_seventeen_locales(self):
+		"""OLD PythonChat.cpp:574: flags_20x15/<language>.png (NOVA-51), for
+		the login screen's 17 locales (language_packets.h's codes)."""
+		codes = ("en", "ae", "br", "cz", "de", "dk", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+		self.assertEqual(old_art.CHAT_LANGUAGE_FLAGS, tuple(
+			"d:/ymir work/ui/flags/flags_20x15/%s.png" % code for code in codes))
+
+	def test_with_no_names_files_takes_both_kinds_of_chat_flag(self):
+		self.assertEqual(old_art.default_files(), list(old_art.CHAT_FLAGS + old_art.CHAT_LANGUAGE_FLAGS))
+
+
 class Manifest(unittest.TestCase):
 	"""The files tools/old_art.py took (tools/fixtures/old_art.tsv)."""
 
@@ -296,6 +322,14 @@ class Manifest(unittest.TestCase):
 				custom.append(path)
 		self.assertEqual(custom, [])
 		self.assertIn("converted", {row[3] for row in self.rows})
+
+	def test_the_chat_flags_are_taken(self):
+		taken = {row[0] for row in self.rows}
+		self.assertEqual([path for path in old_art.CHAT_FLAGS if path not in taken], [])
+
+	def test_the_chat_language_flags_are_taken(self):
+		taken = {row[0] for row in self.rows}
+		self.assertEqual([path for path in old_art.CHAT_LANGUAGE_FLAGS if path not in taken], [])
 
 	def test_the_waves_extra_files_are_taken(self):
 		taken = {row[0] for row in self.rows}

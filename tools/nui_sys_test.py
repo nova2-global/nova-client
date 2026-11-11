@@ -52,7 +52,8 @@ EFFECT_MODULES = ("net", "systemSetting", "snd", "background", "app", "chrmgr", 
                   "uiPrivateShopBuilder", "interface")
 QUESTION = "nui/windows/dialog-question/dialog-question.rml"
 LOADED_LEGACY = (("uiSelectMusic", "uiselectmusic.py"), ("uiCommon", "uicommon.py"),
-                 ("uiSystemOption", "uisystemoption.py"), ("uiGameOption", "uigameoption.py"),
+                 ("uiSystemOption", "uisystemoption.py"), ("keybindings", "keybindings.py"),
+                 ("uikeybindings", "uikeybindings.py"), ("uiGameOption", "uigameoption.py"),
                  ("uiSystem", "uisystem.py"), ("uiRestart", "uirestart.py"), ("uiHelp", "uihelp.py"),
                  ("uiPointReset", "uipointreset.py"))
 LOADED_NOVAUI = ("nui_dialog_kit", "nui_dialog_message", "nui_dialog_question", "nui_theme_picker", "nui_music_list",
@@ -1002,7 +1003,10 @@ class GameOptions(Pair):
             game.view_chat = False
             game.settings["show_damage"] = False
         legacy, novaui, a, b = self.pair(setup)
-        model = board(b).model
+        model = dict(board(b).model)
+        # The keys page (NOVA-121; nui_keyboard_page_test checks its rows).
+        self.assertEqual((model.pop("page"), len(model.pop("key_rows")) > 0, bool(model.pop("notice"))),
+                         ("main", True, True))
         # The pickup filter since NOVA-50 (uigameoption.py RefreshPickupFilter).
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
@@ -1369,7 +1373,7 @@ def kind(value):
 BOARDS = (("nui_system_menu", "SystemMenuBoard", "system-menu", ()),
           ("nui_system_options", "OptionBoard", "system-options", ("custom-scale",)),
           ("nui_music_list", "MusicListBoard", "music-list", ("empty", "selected")),
-          ("nui_game_options", "GameOptionsBoard", "game-options", ("blocked",)),
+          ("nui_game_options", "GameOptionsBoard", "game-options", ("blocked", "keys")),
           ("nui_restart", "RestartBoard", "restart", ()),
           ("nui_help", "HelpBoard", "help", ()))
 
@@ -1423,7 +1427,9 @@ class Fixtures(unittest.TestCase):
         # show_sash: Wave 6's row (SHOW_ACCE, NOVA-20). hide_buffi: the buffi's row (NOVA-38).
         self.assertEqual(set(game_options.nui_model()), {"name_color", "target_board", "pk_mode", "block", "blocked",
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
-                                                         "pickup", "hide_shops", "show_sash", "hide_buffi", "mob_level", "mob_ai"})
+                                                         "pickup", "hide_shops", "show_sash", "hide_buffi", "mob_level", "mob_ai",
+                                                         # NOVA-121: the keys page.
+                                                         "page", "key_rows", "notice"})
 
 
 class HideShops(unittest.TestCase):
@@ -1488,8 +1494,13 @@ class ShowSash(unittest.TestCase):
         # The buffi's row (NOVA-38) comes under it and grows the board once more.
         self.assertEqual(cls.HIDE_BUFFI_HEIGHT, cls.SHOW_SASH_HEIGHT + 25)
         self.assertEqual(cls.MOB_INFO_HEIGHT, cls.HIDE_BUFFI_HEIGHT + 50)  # NOVA-40's two rows
-        self.assertEqual(dialog.GetChild("board").size[1], cls.MOB_INFO_HEIGHT, "the board grown by its rows")
-        self.assertEqual(dialog.size[1], cls.MOB_INFO_HEIGHT, "the window with it")
+        # NOVA-121's Keyboard row comes last.
+        self.assertEqual(cls.KEYBOARD_ROW_Y, cls.MOB_INFO_AGGR_Y + 25)
+        self.assertEqual(cls.KEYBOARD_HEIGHT, cls.MOB_INFO_HEIGHT + 25)
+        self.assertEqual(self.place(dialog.keyboardLabel), (30, cls.KEYBOARD_ROW_Y + 2))
+        self.assertEqual(self.place(dialog.keyboardButton), (90, cls.KEYBOARD_ROW_Y))
+        self.assertEqual(dialog.GetChild("board").size[1], cls.KEYBOARD_HEIGHT, "the board grown by its rows")
+        self.assertEqual(dialog.size[1], cls.KEYBOARD_HEIGHT, "the window with it")
         self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
                          "the bottom margin under the last row kept")
 
@@ -1559,9 +1570,10 @@ class ShowSash(unittest.TestCase):
             found = re.search(rule % ("go-choice--sash-%d" % value), classic)
             self.assertEqual((found.group(1), found.group(2)), (str(x), str(cls.SHOW_SASH_ROW_Y)))
         heights = re.findall(r"height: (\d+)dp;", classic.split(".game-options__titlebar")[0])
-        self.assertEqual(heights, [str(cls.MOB_INFO_HEIGHT)], "the body as tall as legacy's board")
+        # Legacy's board grows by the Keyboard row (NOVA-121) after the sash's.
+        self.assertEqual(heights, [str(cls.KEYBOARD_HEIGHT)], "the body as tall as legacy's board")
         body = classic.split("body.skin-classic.game-options .game-options__body")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % cls.MOB_INFO_HEIGHT, body)
+        self.assertIn("height: %ddp;" % cls.KEYBOARD_HEIGHT, body)
 
     def test_the_label_is_in_every_locale_with_old_s_text(self):
         locales = [name for name in sorted(os.listdir(LOCALES))

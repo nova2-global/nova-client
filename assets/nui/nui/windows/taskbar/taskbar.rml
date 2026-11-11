@@ -123,8 +123,9 @@
 						data-class-taskbar-count--g="slot.count == 'g1' || slot.count == 'g2' || slot.count == 'g3' || slot.count == 'g4' || slot.count == 'g5' || slot.count == 'g6' || slot.count == 'g7' || slot.count == 'g8' || slot.count == 'g9' || slot.count == 'g10'"
 						data-class-taskbar-count--p="slot.count == 'p1' || slot.count == 'p2' || slot.count == 'p3' || slot.count == 'p4' || slot.count == 'p5' || slot.count == 'p6' || slot.count == 'p7' || slot.count == 'p8' || slot.count == 'p9' || slot.count == 'p10' || slot.count == 'p' || slot.count == 's'">{{ slot.count }}</span>
 					<nui-number class="nui-slot__digits" data-if="slot.count != ''" data-attr-value="slot.count"/>
-					<span class="nui-slot__key taskbar-key">{{ slot.index >= 4 ? 'F' + (slot.index - 3) : slot.index + 1 }}</span>
-					<span class="taskbar-key-art" data-class-taskbar-key-art--0="slot.index == 0" data-class-taskbar-key-art--1="slot.index == 1"
+					<span class="nui-slot__key taskbar-key" data-if="quick_keys[slot.index] != ''"
+						data-class-taskbar-key--custom="!quick_key_art[slot.index]">{{ quick_keys[slot.index] }}</span>
+					<span class="taskbar-key-art" data-class-taskbar-key-art--off="!quick_key_art[slot.index]" data-class-taskbar-key-art--0="slot.index == 0" data-class-taskbar-key-art--1="slot.index == 1"
 						data-class-taskbar-key-art--2="slot.index == 2" data-class-taskbar-key-art--3="slot.index == 3"
 						data-class-taskbar-key-art--4="slot.index == 4" data-class-taskbar-key-art--5="slot.index == 5"
 						data-class-taskbar-key-art--6="slot.index == 6" data-class-taskbar-key-art--7="slot.index == 7"></span>
@@ -135,12 +136,12 @@
 			<div class="taskbar-pager">
 				<div class="taskbar-pager__board"></div>
 				<button id="quick-page-up" class="taskbar-pager__up nui-has-tooltip"
-					data-event-mousedown="page_up(ev.button)"><span class="nui-glyph nui-glyph--chevron-up taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_PREV_QUICKSLOT</span></button>
+					data-event-mousedown="page_up(ev.button)"><span class="nui-glyph nui-glyph--chevron-up taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">{{ tip_prev_page }}</span></button>
 				<span id="quick-page" class="taskbar-pager__page" data-class-taskbar-pager__page--1="quick_page == 0"
 					data-class-taskbar-pager__page--2="quick_page == 1" data-class-taskbar-pager__page--3="quick_page == 2"
 					data-class-taskbar-pager__page--4="quick_page == 3">{{ quick_page + 1 }}</span>
 				<button id="quick-page-down" class="taskbar-pager__down nui-has-tooltip"
-					data-event-mousedown="page_down(ev.button)"><span class="nui-glyph nui-glyph--chevron-down taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_NEXT_QUICKSLOT</span></button>
+					data-event-mousedown="page_down(ev.button)"><span class="nui-glyph nui-glyph--chevron-down taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="nui-tooltip nui-anim taskbar-tip">{{ tip_next_page }}</span></button>
 			</div>
 		</div>
 
@@ -179,11 +180,11 @@
 		</div>
 
 		<button id="btn-character" class="taskbar-window taskbar-window--character nui-has-tooltip" data-class-is-open="open_character"
-			data-event-mousedown="button('character', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--character taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey">C</span><span class="nui-tooltip nui-anim taskbar-tip">@ui.TASKBAR_CHARACTER</span></button>
+			data-event-mousedown="button('character', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--character taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey" data-if="hotkey_character != ''">{{ hotkey_character }}</span><span class="nui-tooltip nui-anim taskbar-tip">{{ tip_character }}</span></button>
 		<button id="btn-inventory" class="taskbar-window taskbar-window--inventory nui-has-tooltip" data-class-is-open="open_inventory"
-			data-event-mousedown="button('inventory', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--inventory taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey">I</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_INVENTORY</span></button>
+			data-event-mousedown="button('inventory', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--inventory taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span><span class="taskbar-hotkey" data-if="hotkey_inventory != ''">{{ hotkey_inventory }}</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">{{ tip_inventory }}</span></button>
 		<button id="btn-messenger" class="taskbar-window taskbar-window--messenger nui-has-tooltip" data-class-is-open="open_messenger"
-			data-event-mousedown="button('messenger', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--community taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="taskbar-hotkey">F</span><span class="taskbar-badge" data-if="messenger_badge != ''">{{ messenger_badge }}</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_MESSENGER</span></button>
+			data-event-mousedown="button('messenger', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--community taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="taskbar-hotkey" data-if="hotkey_messenger != ''">{{ hotkey_messenger }}</span><span class="taskbar-badge" data-if="messenger_badge != ''">{{ messenger_badge }}</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">{{ tip_messenger }}</span></button>
 		<button id="btn-system" class="taskbar-window taskbar-window--system nui-has-tooltip" data-class-is-open="open_system"
 			data-event-mousedown="button('system', ev.button)"><span class="taskbar-open"></span><span class="nui-glyph nui-glyph--system taskbar-glyph"><span class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span><span class="taskbar-hotkey">Esc</span><span class="nui-tooltip nui-anim taskbar-tip taskbar-tip--end">@ui.TASKBAR_SYSTEM</span></button>
 

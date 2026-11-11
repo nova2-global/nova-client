@@ -479,7 +479,10 @@ class Hooks(unittest.TestCase):
 
     def test_game_toggles_on_f5_and_the_server_command_and_passes_the_refreshes(self):
         game = self.read("game.py")
-        self.assertIn('onPressKeyDict[app.DIK_F5]\t= lambda: self.ShowSwitchbot()', game)
+        self.assertIn('"switchbot": lambda: self.ShowSwitchbot()', game)
+        # F5 is its default key (NOVA-121's table).
+        self.assertIn('Action("switchbot", "windows", "KEYBIND_SWITCHBOT", "Switchbot", (key("F5"),))',
+                      self.read("keybindings.py"))
         self.assertIn('"ShowMeSwitchbot"\t\t: self.ShowSwitchbot,', game)
         for name in ("def ShowSwitchbot(self):", "def RefreshSwitchbotWindow(self):", "def RefreshSwitchbotItem(self, slot):"):
             self.assertIn(name, game)

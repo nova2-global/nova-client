@@ -47,6 +47,7 @@ try:
 except ImportError:  # an exe without the Wave 2b engine: nui_ready() is False
 	nuigame = None
 
+import keybindings
 import link_tokens
 import nui
 import nui_chat_view
@@ -422,7 +423,9 @@ class ChatBoard(nui.Window):
 		        "history_height": ChatWindow.HISTORY_HEIGHT, "view_chat": True,
 		        "lines_mode": "off" if nui_hud.has_engine_3a() else "view", "draft": "",
 		        # Wave 5 (NOVA-11): the shout color button and its picker.
-		        "shout_color_on": False, "shout_picker": False, "shout_colors": []}
+		        "shout_color_on": False, "shout_picker": False, "shout_colors": [],
+		        # NOVA-121: the chat log button's tooltip names the player's key.
+		        "tip_log": nui.plain_text(uiChat.ChatLogToolTip())}
 
 	def on_scale_changed(self, scale):
 		self._owner.nui_place()
@@ -593,6 +596,7 @@ class ChatWindow(object):
 			self.modeShim = add_mode_shim(self)
 			attach_feed()
 			self.attached = True
+			keybindings.current().listen(self)
 		except Exception:
 			self.nui_discard()
 			raise
@@ -621,7 +625,13 @@ class ChatWindow(object):
 		self.input.board = None
 		nui_hud.forget(self.KEY, self)
 
+	def OnKeyBindingsChanged(self):
+		"""The chat log button's tooltip follows its key (NOVA-121)."""
+		if self.board is not None:
+			self.board.set(tip_log=nui.plain_text(uiChat.ChatLogToolTip()))
+
 	def Destroy(self):
+		keybindings.current().forget(self)
 		self.nui_discard()
 		self.sendWhisperEvent = None
 		self.openChatLogEvent = None

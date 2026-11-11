@@ -659,3 +659,85 @@ DUNGEON_MANAGER_RANK_DAMAGE	Damage
 DUNGEON_MANAGER_FILTER_GUARANTEED	Guaranteed
 DUNGEON_MANAGER_FILTER_COMMON	Common
 DUNGEON_MANAGER_FILTER_RARE	Rare
+KEYBIND_TITLE	Αντιστοίχιση πλήκτρων
+KEYBIND_ROW	Πληκτρολόγιο
+KEYBIND_OPEN	Αλλαγή
+KEYBIND_HINT	Κάνε κλικ σε ένα πλήκτρο και πάτησε το νέο. Esc ακυρώνει, Backspace διαγράφει.
+KEYBIND_PRESS	Πάτησε ένα πλήκτρο
+KEYBIND_COLUMN_ACTION	Ενέργεια
+KEYBIND_COLUMN_1	Πλήκτρο
+KEYBIND_COLUMN_2	Δεύτερο
+KEYBIND_RESET	Επαναφορά
+KEYBIND_BACK	Πίσω
+KEYBIND_NOTICE_RESERVED	Το πλήκτρο %s δεν μπορεί να οριστεί.
+KEYBIND_NOTICE_NO_MODIFIER	%s: δεν επιτρέπονται Ctrl, Alt ή Shift.
+KEYBIND_NOTICE_CLEARED	%s: δεν έχει πλέον πλήκτρο.
+KEYBIND_NOTICE_SWAPPED	Το πλήκτρο %s ήταν στην ενέργεια %s, που τώρα έχει το %s.
+KEYBIND_NOTICE_TAKEN	Το πλήκτρο %s ήταν στην ενέργεια %s, που τώρα δεν έχει πλήκτρο.
+KEYBIND_NOTICE_RESET	Όλα τα πλήκτρα επανήλθαν στις προεπιλογές.
+KEYBIND_SECTION_MOVEMENT	Κίνηση
+KEYBIND_SECTION_CAMERA	Κάμερα
+KEYBIND_SECTION_ACTIONS	Ενέργειες
+KEYBIND_SECTION_QUICKSLOTS	Γρήγορη πρόσβαση
+KEYBIND_SECTION_WINDOWS	Παράθυρα
+KEYBIND_SECTION_HORSE	Άλογο
+KEYBIND_SECTION_EMOTIONS	Συναισθήματα
+KEYBIND_MOVE_UP	Μπροστά
+KEYBIND_MOVE_DOWN	Πίσω
+KEYBIND_MOVE_LEFT	Αριστερά
+KEYBIND_MOVE_RIGHT	Δεξιά
+KEYBIND_CAMERA_ROTATE_CW	Περιστροφή δεξιόστροφα
+KEYBIND_CAMERA_ROTATE_CCW	Περιστροφή αριστερόστροφα
+KEYBIND_CAMERA_ZOOM_OUT	Ζουμ έξω
+KEYBIND_CAMERA_ZOOM_IN	Ζουμ μέσα
+KEYBIND_CAMERA_PITCH_DOWN	Κοίτα κάτω
+KEYBIND_CAMERA_PITCH_UP	Κοίτα πάνω
+KEYBIND_ATTACK	Επίθεση
+KEYBIND_PICKUP	Μάζεμα αντικειμένων
+KEYBIND_NEXT_TARGET	Επόμενος στόχος, φόνοι πολέμου
+KEYBIND_SHOW_NAMES	Προβολή ονομάτων
+KEYBIND_QUICK_PAGE_MODE	Σελίδα θέσεων (κράτα)
+KEYBIND_CHANNEL_SWITCH	Αλλαγή καναλιού (κράτα)
+KEYBIND_QUICKSLOT_1	Θέση 1
+KEYBIND_QUICKSLOT_2	Θέση 2
+KEYBIND_QUICKSLOT_3	Θέση 3
+KEYBIND_QUICKSLOT_4	Θέση 4
+KEYBIND_QUICKSLOT_5	Θέση 5
+KEYBIND_QUICKSLOT_6	Θέση 6
+KEYBIND_QUICKSLOT_7	Θέση 7
+KEYBIND_QUICKSLOT_8	Θέση 8
+KEYBIND_CHARACTER	Χαρακτήρας
+KEYBIND_SKILLS	Ικανότητες
+KEYBIND_EMOTIONS	Συναισθήματα
+KEYBIND_QUESTS	Αποστολές
+KEYBIND_INVENTORY	Κατάλογος
+KEYBIND_SPECIAL_INVENTORY	Ειδικός κατάλογος
+KEYBIND_DRAGON_SOUL	Δρακόλιθοι
+KEYBIND_MINIMAP	Μικρός χάρτης
+KEYBIND_MESSENGER	Φίλοι
+KEYBIND_GUILD	Συντεχνία
+KEYBIND_CHAT_LOG	Ιστορικό συνομιλίας
+KEYBIND_HELP	Βοήθεια
+KEYBIND_PET	Κατοικίδιο
+KEYBIND_SWITCHBOT	Switchbot
+KEYBIND_DUNGEON_MANAGER	Διαχείριση μπουντρουμιών
+KEYBIND_FAST_EQUIP	Γρήγορος εξοπλισμός
+KEYBIND_MINIMAP_ZOOM_IN	Μικρός χάρτης (+)
+KEYBIND_MINIMAP_ZOOM_OUT	Μικρός χάρτης (-)
+KEYBIND_QUEST_BUTTONS	Προβολή αποστολών
+KEYBIND_DS_DECK_1	Σετ αλχημείας 1
+KEYBIND_DS_DECK_2	Σετ αλχημείας 2
+KEYBIND_HORSE_SUMMON	Κάλεσμα αλόγου
+KEYBIND_HORSE_FEED	Τάισμα αλόγου
+KEYBIND_HORSE_BACK	Διώξιμο αλόγου
+KEYBIND_HORSE_RIDE	Ιππασία
+KEYBIND_MOUNT	Ανέβασμα ή κατέβασμα
+KEYBIND_EMOTION_1	Συναίσθημα 1
+KEYBIND_EMOTION_2	Συναίσθημα 2
+KEYBIND_EMOTION_3	Συναίσθημα 3
+KEYBIND_EMOTION_4	Συναίσθημα 4
+KEYBIND_EMOTION_5	Συναίσθημα 5
+KEYBIND_EMOTION_6	Συναίσθημα 6
+KEYBIND_EMOTION_7	Συναίσθημα 7
+KEYBIND_EMOTION_8	Συναίσθημα 8
+KEYBIND_EMOTION_9	Συναίσθημα 9

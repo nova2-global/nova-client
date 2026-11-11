@@ -26,6 +26,670 @@
 			false
 		],
 		"mob_level": true,
-		"mob_ai": true
+		"mob_ai": true,
+		"key_rows": [
+			{
+				"kind": "section",
+				"id": "movement",
+				"label": "Movement",
+				"k1": "",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "move_up",
+				"label": "Forward",
+				"k1": "W",
+				"k2": "Up",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "move_down",
+				"label": "Backward",
+				"k1": "S",
+				"k2": "Down",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "move_left",
+				"label": "Left",
+				"k1": "A",
+				"k2": "Left",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "move_right",
+				"label": "Right",
+				"k1": "D",
+				"k2": "Right",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "section",
+				"id": "camera",
+				"label": "Camera",
+				"k1": "",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "camera_rotate_cw",
+				"label": "Rotate clockwise",
+				"k1": "E",
+				"k2": "Num 6",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "camera_rotate_ccw",
+				"label": "Rotate counterclockwise",
+				"k1": "Q",
+				"k2": "Num 4",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "camera_zoom_out",
+				"label": "Zoom out",
+				"k1": "R",
+				"k2": "Page Up",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "camera_zoom_in",
+				"label": "Zoom in",
+				"k1": "F",
+				"k2": "Page Down",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "camera_pitch_down",
+				"label": "Look down",
+				"k1": "T",
+				"k2": "Num 8",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "camera_pitch_up",
+				"label": "Look up",
+				"k1": "G",
+				"k2": "Num 2",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "section",
+				"id": "actions",
+				"label": "Actions",
+				"k1": "",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "attack",
+				"label": "Attack",
+				"k1": "Space",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "pickup",
+				"label": "Pick up items",
+				"k1": "`",
+				"k2": "Z",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "next_target",
+				"label": "Next target, war kills",
+				"k1": "Tab",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "show_names",
+				"label": "Show names",
+				"k1": "Left Alt",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quick_page_mode",
+				"label": "Quickslot page (hold)",
+				"k1": "Left Shift",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "channel_switch",
+				"label": "Change channel (hold)",
+				"k1": "X",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "section",
+				"id": "quickslots",
+				"label": "Quickslots",
+				"k1": "",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_1",
+				"label": "Quickslot 1",
+				"k1": "1",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_2",
+				"label": "Quickslot 2",
+				"k1": "2",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_3",
+				"label": "Quickslot 3",
+				"k1": "3",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_4",
+				"label": "Quickslot 4",
+				"k1": "4",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_5",
+				"label": "Quickslot 5",
+				"k1": "F1",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_6",
+				"label": "Quickslot 6",
+				"k1": "F2",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_7",
+				"label": "Quickslot 7",
+				"k1": "F3",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quickslot_8",
+				"label": "Quickslot 8",
+				"k1": "F4",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "section",
+				"id": "windows",
+				"label": "Windows",
+				"k1": "",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "character",
+				"label": "Character",
+				"k1": "C",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "skills",
+				"label": "Skills",
+				"k1": "V",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotions",
+				"label": "Emotions",
+				"k1": "B",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quests",
+				"label": "Quests",
+				"k1": "N",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "inventory",
+				"label": "Inventory",
+				"k1": "I",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "special_inventory",
+				"label": "Special inventory",
+				"k1": "U",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "dragon_soul",
+				"label": "Dragon stones",
+				"k1": "O",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "minimap",
+				"label": "Minimap",
+				"k1": "M",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "messenger",
+				"label": "Friends",
+				"k1": "Alt+M",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "guild",
+				"label": "Guild",
+				"k1": "Alt+G",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "chat_log",
+				"label": "Chat log",
+				"k1": "L",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "help",
+				"label": "Help",
+				"k1": "H",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "pet",
+				"label": "Pet",
+				"k1": "P",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "switchbot",
+				"label": "Switchbot",
+				"k1": "F5",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "dungeon_manager",
+				"label": "Dungeon manager",
+				"k1": "F6",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "fast_equip",
+				"label": "Fast equip",
+				"k1": "F10",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "minimap_zoom_in",
+				"label": "Minimap zoom in",
+				"k1": "Num +",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "minimap_zoom_out",
+				"label": "Minimap zoom out",
+				"k1": "Num -",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "quest_buttons",
+				"label": "Quest buttons",
+				"k1": "Ctrl+Q",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "ds_deck_1",
+				"label": "Alchemy deck 1",
+				"k1": "Ctrl+C",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "ds_deck_2",
+				"label": "Alchemy deck 2",
+				"k1": "Ctrl+D",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "section",
+				"id": "horse",
+				"label": "Horse",
+				"k1": "",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "horse_summon",
+				"label": "Summon horse",
+				"k1": "Ctrl+H",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "horse_feed",
+				"label": "Feed horse",
+				"k1": "Ctrl+F",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "horse_back",
+				"label": "Send horse back",
+				"k1": "Ctrl+B",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "horse_ride",
+				"label": "Ride",
+				"k1": "Ctrl+G",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "mount",
+				"label": "Mount or dismount",
+				"k1": "Ctrl+J",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "section",
+				"id": "emotions",
+				"label": "Emotions",
+				"k1": "",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_1",
+				"label": "Emotion 1",
+				"k1": "Ctrl+1",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_2",
+				"label": "Emotion 2",
+				"k1": "Ctrl+2",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_3",
+				"label": "Emotion 3",
+				"k1": "Ctrl+3",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_4",
+				"label": "Emotion 4",
+				"k1": "Ctrl+4",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_5",
+				"label": "Emotion 5",
+				"k1": "Ctrl+5",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_6",
+				"label": "Emotion 6",
+				"k1": "Ctrl+6",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_7",
+				"label": "Emotion 7",
+				"k1": "Ctrl+7",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_8",
+				"label": "Emotion 8",
+				"k1": "Ctrl+8",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			},
+			{
+				"kind": "action",
+				"id": "emotion_9",
+				"label": "Emotion 9",
+				"k1": "Ctrl+9",
+				"k2": "",
+				"cap1": false,
+				"cap2": false,
+				"changed": false
+			}
+		],
+		"page": "main",
+		"notice": "Click a key, then press the new one. Esc cancels, Backspace clears."
 	}
 }

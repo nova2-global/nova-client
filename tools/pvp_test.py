@@ -481,8 +481,9 @@ class Wiring(unittest.TestCase):
 		for line in ("self.interface.RefreshKillRank(int(type))",
 		             "self.interface.SetPersonalKillRank(rank, name, guildName, count)",
 		             "self.interface.UpdateTopKillers(guildId, pName, pRace, totalDamage, kills, deads, ping)",
-		             "onPressKeyDict[app.DIK_TAB]\t\t\t= lambda: self.interface.OpenTopKillers()",
-		             "onClickKeyDict[app.DIK_TAB] = lambda : self.interface.CloseTopKillers()"):
+		             # Tab held (NOVA-121's next_target, keybindings_game_test).
+		             "self.interface.OpenTopKillers()", "self.interface.CloseTopKillers()",
+		             '"next_target": self.__PressTabKey', '"next_target": self.__ReleaseTabKey'):
 			self.assertIn(line, source)
 
 	def read_nui(self, *parts):

@@ -10,6 +10,7 @@
 		"draft": "#nuiw2b meet at the well",
 		"shout_color_on": true,
 		"shout_picker": false,
-		"shout_colors": []
+		"shout_colors": [],
+		"tip_log": "@game.CHAT_LOG"
 	}
 }

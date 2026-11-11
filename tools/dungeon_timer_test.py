@@ -340,9 +340,12 @@ class Wiring(unittest.TestCase):
         for line in ('"SetQuestTime"			: self.SetQuestTime', '"QuestTimeReady"		: self.QuestTimeReady',
                      '"RefreshDungeonRank"	: self.RefreshDungeonRank',
                      '"SetPersonalDungeonRank"	: self.__SetPersonalDungeonRankPacked',
-                     "onPressKeyDict[app.DIK_F6]	= lambda: self.OpenTimerWindow()",
+                     '"dungeon_manager": lambda: self.OpenTimerWindow()',
                      "self.interface.UpdateTimer()"):
             self.assertIn(line, text)
+        # F6 is the dungeon manager's default key (NOVA-121's table).
+        self.assertIn('Action("dungeon_manager", "windows", "KEYBIND_DUNGEON_MANAGER", "Dungeon manager", (key("F6"),))',
+                      self.source("keybindings.py"))
 
     def test_the_packed_personal_rank_reaches_the_interface(self):
         seen = []

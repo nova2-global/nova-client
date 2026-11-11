@@ -1612,6 +1612,11 @@ class Game(object):
         it keeps memory only and writes nothing."""
         if name != "datacache" and "datacache" not in self.modules:
             self.load("datacache", "datacache.py")
+        # The key bindings' table (NOVA-121), which the option windows, the
+        # taskbars and the chats read: fresh for each world, config/keys.cfg
+        # the world's file (Game.files).
+        if name not in ("datacache", "keybindings") and "keybindings" not in self.modules:
+            self.load("keybindings", "keybindings.py")
         # The wiki imports its text pages (NOVA-139): the page format and the
         # page store come first unless the test loaded its own.
         for needed in WIKI_PAGE_MODULES if name == "nui_wiki" else ():
@@ -1631,7 +1636,7 @@ class Game(object):
         self.loaded[name] = module
         if name == "mouseModule":
             self._record_controller(module)
-        if name in ("uiTaskBar", "nui_taskbar"):
+        if name in ("uiTaskBar", "nui_taskbar", "keybindings"):
             module.open = self._open
         return module
 

@@ -92,6 +92,8 @@ class SelectSkillWindow(ui.ScriptWindow):
 	previewGear = None
 	previewView = None
 	previewShown = False
+	# The skill motion the preview was last set to (None: not set since it showed).
+	previewMotion = None
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -212,7 +214,11 @@ class SelectSkillWindow(ui.ScriptWindow):
 			preview.Select(PREVIEW, *gear)
 			preview.SetEye(PREVIEW, PREVIEW_EYE[0], PREVIEW_EYE[1])
 			self.previewGear = gear
-		preview.SetSkillMotion(PREVIEW, motion)
+			self.previewMotion = None
+		# The same skill again (the pointer moving within it) keeps its cast going (r42).
+		if motion != self.previewMotion:
+			preview.SetSkillMotion(PREVIEW, motion)
+			self.previewMotion = motion
 		preview.Show(PREVIEW, True)
 		self.previewShown = True
 
@@ -220,6 +226,7 @@ class SelectSkillWindow(ui.ScriptWindow):
 		if not self.previewShown:
 			return
 		self.previewShown = False
+		self.previewMotion = None
 		preview = model_preview()
 		if preview is not None:
 			preview.Show(PREVIEW, False)

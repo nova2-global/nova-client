@@ -162,3 +162,145 @@ body.game-options
 {
 	font-weight: normal;
 }
+
+/* NOVA-121: the Keyboard row's one button keeps a choice's width. */
+.go-row--keys .go-choice
+{
+	flex: 0 0 auto;
+	width: 140dp;
+}
+
+/* The keys page: the column heads, a list of fixed height that scrolls (a
+   section's head, then its actions, every other row on a sunken cell as the
+   main page's rows), the notice line and the buttons. A key cell that waits
+   for its key is selected (the accent); an action whose keys differ from the
+   defaults has its label in the accent's ink. The rows' texts take no
+   pointer, so a hover is the cell's alone. */
+.go-keys
+{
+	display: block;
+}
+.gk-head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 20dp;
+	padding: 0 22dp 0 8dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+.gk-head__action
+{
+	flex: 1 1 auto;
+}
+.gk-head__key
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 104dp;
+	margin-left: 6dp;
+	text-align: center;
+}
+.gk-list
+{
+	display: block;
+	height: 556dp;
+	margin-top: 4dp;
+	overflow-y: auto;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-lg);
+}
+.gk-row
+{
+	display: block;
+	height: 30dp;
+}
+.gk-row:nth-child(even)
+{
+	background-color: var(--surface-sunken);
+}
+.gk-section
+{
+	display: block;
+	padding: 0 8dp;
+	color: var(--accent);
+	font-size: var(--font-sm);
+	font-weight: bold;
+	line-height: 30dp;
+	pointer-events: none;
+}
+.gk-action
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 30dp;
+	padding: 0 6dp 0 14dp;
+}
+.gk-label
+{
+	display: block;
+	flex: 1 1 auto;
+	min-width: 0;
+	color: var(--text-muted);
+	font-size: var(--font-md);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
+}
+.gk-action.is-changed .gk-label
+{
+	color: var(--text);
+}
+.gk-cell
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 104dp;
+	height: 24dp;
+	margin-left: 6dp;
+	padding: 0 4dp;
+	font-size: var(--font-sm);
+	line-height: 22dp;
+	text-align: center;
+	tab-index: none;
+}
+.gk-cell.is-selected
+{
+	color: var(--accent);
+	border-color: var(--accent);
+}
+.gk-cell__text
+{
+	pointer-events: none;
+	white-space: nowrap;
+}
+.gk-notice
+{
+	display: block;
+	height: 34dp;
+	margin-top: 8dp;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	line-height: 17dp;
+}
+.gk-foot
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	gap: 8dp;
+	margin-top: 6dp;
+}
+.gk-foot .nui-button
+{
+	min-width: 96dp;
+	tab-index: none;
+}
+.gk-button__label
+{
+	pointer-events: none;
+}

@@ -7,7 +7,8 @@
    (61dp) 65 apart and the PvP choices small art (43dp) 45 apart, at y 40,
    65, 90, 115 and 140 (the block toggles' two rows), 165, 190, 215, 240,
    265 and 290 (the pickup filter's two rows, NOVA-50), 315 (hide shops,
-   NOVA-9), 340 (sashes, NOVA-20) and 365 (hide buffi, NOVA-38). Labels are centered over their art as
+   NOVA-9), 340 (sashes, NOVA-20), 365 (hide buffi, NOVA-38), 390 and 415
+   (the mob info, NOVA-40) and 440 (Keyboard, NOVA-121; the board 483 tall). Labels are centered over their art as
    legacy's text lines are, a wider one overflowing both ends. The choice in
    effect and a blocked request show the down art. The PvP hints are legacy
    button tooltips: outlined text above the button, without a board. */
@@ -15,7 +16,7 @@
 body.skin-classic.game-options
 {
 	width: 300dp;
-	height: 458dp;
+	height: 483dp;
 	min-width: 0;
 }
 /* z-index: the legacy rows below are positioned boxes placed from the
@@ -54,7 +55,7 @@ body.skin-classic.game-options .game-options__titlebar .nui-window__close
 body.skin-classic.game-options .game-options__body
 {
 	position: relative;
-	height: 458dp;
+	height: 483dp;
 	padding: 0;
 }
 body.skin-classic.game-options .go-row,
@@ -90,6 +91,8 @@ body.skin-classic.game-options .go-label--sash { top: 342dp; }
 body.skin-classic.game-options .go-label--buffi { top: 367dp; }
 body.skin-classic.game-options .go-label--mob-level { top: 392dp; }
 body.skin-classic.game-options .go-label--mob-ai { top: 417dp; }
+/* The Keyboard row (NOVA-121; legacy's KEYBOARD_ROW_Y 440, the board 483). */
+body.skin-classic.game-options .go-label--keys { top: 442dp; }
 
 body.skin-classic.game-options .go-choice
 {
@@ -153,6 +156,7 @@ body.skin-classic.game-options .go-choice--mob-level-1 { left: 90dp; top: 390dp;
 body.skin-classic.game-options .go-choice--mob-level-0 { left: 155dp; top: 390dp; }
 body.skin-classic.game-options .go-choice--mob-ai-1 { left: 90dp; top: 415dp; }
 body.skin-classic.game-options .go-choice--mob-ai-0 { left: 155dp; top: 415dp; }
+body.skin-classic.game-options .go-choice--keys-open { left: 90dp; top: 440dp; }
 
 /* The PvP choices on the small art; the choice in effect shows its down art,
    under the pointer too. */
@@ -201,4 +205,187 @@ body.skin-classic.game-options .go-label
 body.skin-classic.game-options .go-choice.is-selected
 {
 	color: var(--classic-button-text);
+}
+
+/* The keys page (NOVA-121): the legacy key bindings dialog's board
+   (uiscript keybindingsdialog.py, uikeybindings.py), 384 x 472, its title
+   bar at 8, 8 (368 wide); the column heads at y 36 (the action at x 20, the
+   keys centered over their cells); the list from y 56, a row every 22, the
+   key cells on the large art (88dp) at x 172 and 266, a section's head as
+   gold text at x 16, the action's label at x 20; legacy's scroll bar at
+   x 358, y 56, 352 tall (16 rows); the notice line at x 20, y 416; Defaults
+   at x 20, y 440, and Back (the legacy dialog closes by its title bar
+   instead) at x 303, y 440, both on the middle art. A waiting cell shows the
+   down art, as a held legacy button. */
+body.skin-classic.game-options.go-keys-page
+{
+	width: 384dp;
+	height: 472dp;
+}
+body.skin-classic.game-options.go-keys-page .game-options__body
+{
+	height: 472dp;
+}
+body.skin-classic.game-options.go-keys-page .game-options__titlebar,
+body.skin-classic.game-options.go-keys-page .game-options__handle
+{
+	width: 368dp;
+}
+body.skin-classic.game-options.go-keys-page .game-options__titlebar .nui-window__close
+{
+	left: 350dp;
+}
+body.skin-classic.game-options .go-keys
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 384dp;
+	height: 472dp;
+}
+body.skin-classic.game-options .gk-head
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 36dp;
+	width: 384dp;
+	height: 14dp;
+	padding: 0;
+	color: var(--text);
+	line-height: 14dp;
+}
+body.skin-classic.game-options .gk-head__action
+{
+	position: absolute;
+	left: 20dp;
+	top: 0;
+	white-space: nowrap;
+}
+body.skin-classic.game-options .gk-head__key
+{
+	position: absolute;
+	top: 0;
+	width: 88dp;
+	margin: 0;
+	white-space: nowrap;
+}
+body.skin-classic.game-options .gk-head__key--1 { left: 172dp; }
+body.skin-classic.game-options .gk-head__key--2 { left: 266dp; }
+body.skin-classic.game-options .gk-list
+{
+	position: absolute;
+	left: 16dp;
+	top: 56dp;
+	width: 357dp;
+	height: 352dp;
+	margin: 0;
+	border-width: 0;
+	border-radius: 0;
+	overflow-y: scroll;
+}
+body.skin-classic.game-options .gk-row
+{
+	position: relative;
+	height: 22dp;
+	background-color: transparent;
+}
+body.skin-classic.game-options .gk-section
+{
+	position: absolute;
+	left: 0;
+	top: 4dp;
+	padding: 0;
+	color: var(--tip-title);
+	font-weight: normal;
+	font-size: var(--font-md);
+	line-height: 14dp;
+	white-space: nowrap;
+}
+body.skin-classic.game-options .gk-action
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 342dp;
+	height: 22dp;
+	padding: 0;
+}
+body.skin-classic.game-options .gk-label
+{
+	position: absolute;
+	left: 4dp;
+	top: 4dp;
+	width: 148dp;
+	color: var(--text);
+	line-height: 14dp;
+}
+body.skin-classic.game-options .gk-action.is-changed .gk-label
+{
+	color: var(--text);
+}
+body.skin-classic.game-options .gk-cell
+{
+	position: absolute;
+	top: 0;
+	width: 88dp;
+	height: 21dp;
+	margin: 0;
+	padding: 0;
+	line-height: 21dp;
+	font-size: var(--font-md);
+}
+body.skin-classic.game-options .gk-cell--1 { left: 156dp; width: 88dp; }
+body.skin-classic.game-options .gk-cell--2 { left: 250dp; width: 88dp; }
+body.skin-classic.game-options .gk-cell.is-selected
+{
+	color: var(--classic-button-text);
+	border-color: transparent;
+}
+body.skin-classic.game-options .gk-notice
+{
+	position: absolute;
+	left: 20dp;
+	top: 416dp;
+	width: 344dp;
+	height: 14dp;
+	margin: 0;
+	color: var(--text);
+	line-height: 14dp;
+	white-space: nowrap;
+	overflow: hidden;
+}
+body.skin-classic.game-options .gk-foot
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+	margin: 0;
+}
+body.skin-classic.game-options .gk-foot .nui-button
+{
+	position: absolute;
+	width: 61dp;
+	min-width: 0;
+	height: 21dp;
+	padding: 0;
+	line-height: 21dp;
+}
+body.skin-classic.game-options .gk-reset { left: 20dp; top: 440dp; }
+body.skin-classic.game-options .gk-back { left: 303dp; top: 440dp; }
+/* A label centered over its art, a wider one overflowing both ends, as a
+   legacy button's text line; it takes no pointer. */
+body.skin-classic.game-options .gk-button__label
+{
+	position: absolute;
+	left: -40dp;
+	right: -40dp;
+	top: 0;
+	text-align: center;
+	pointer-events: none;
 }

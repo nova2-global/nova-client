@@ -1128,3 +1128,15 @@
 {
 	background-color: transparent;
 }
+
+/* The shout line's empire flag (NOVA-110; components/chat.rcss): OLD's
+   20 x 15 flags (OLD PythonChat.cpp:578, d:/ymir work/ui/flags/empire_20x15),
+   1dp to the legacy pixel, the text 4dp after it, as OLD's edit and log
+   boards place it. */
+.skin-classic .nui-chat__flag
+{
+	height: 15dp;
+}
+.skin-classic .nui-chat__flag--empire-1 { decorator: image("d:/ymir work/ui/flags/empire_20x15/empire_1.png"); }
+.skin-classic .nui-chat__flag--empire-2 { decorator: image("d:/ymir work/ui/flags/empire_20x15/empire_2.png"); }
+.skin-classic .nui-chat__flag--empire-3 { decorator: image("d:/ymir work/ui/flags/empire_20x15/empire_3.png"); }

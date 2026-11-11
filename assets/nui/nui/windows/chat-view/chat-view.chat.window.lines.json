@@ -34,5 +34,18 @@
 				"link": ""
 			}
 		]
+	},
+	{
+		"id": 104,
+		"type": 6,
+		"t": 0.8,
+		"empire": 3,
+		"runs": [
+			{
+				"text": "Shouter : selling a +9 sword",
+				"color": -1,
+				"link": ""
+			}
+		]
 	}
 ]

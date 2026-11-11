@@ -12,6 +12,14 @@ skins of the race shapes (the msm files' WingData groups) their value 3 names.
 	python3 tools/old_art.py shop-plan PACKER GRLIST
 	python3 tools/old_art.py shop PACKER GRLIST
 
+	python3 tools/old_art.py files-plan PACKER GRLIST [STORE_PATH...]
+	python3 tools/old_art.py files PACKER GRLIST [STORE_PATH...]
+
+files and files-plan take the store paths named (OLD's spelling, any case)
+and every file they name in turn; with none named, the empire flags of the
+chat's shout lines (NOVA-110, CHAT_FLAGS). They read NEW's groups from git's
+tree, as shop does.
+
 shop and shop-plan take the offline shop's decoration (NOVA-170) instead: the
 NPC models shop_deco.txt's type 1 rows name (by NEW's npclist folder for each
 vnum: the msm, its base model, motlist.txt and the motions it lists) and the
@@ -626,6 +634,48 @@ def import_shop(packer, grlist):
 	return place(packer, grlist, scratch, take, missing, index, folders, shop_group)
 
 
+# --- named files (NOVA-110: the shout line's empire flags) -------------------
+
+# OLD PythonChat.cpp:578 (AppendChat): the empire flag of a shout line.
+CHAT_FLAGS = tuple("d:/ymir work/ui/flags/empire_20x15/empire_%d.png" % empire for empire in (1, 2, 3))
+
+
+def files_seeds(names, files):
+	"""The store paths of `names` (OLD's spelling, any case) that NEW's
+	groups do not publish, in order, each once."""
+	out = []
+	for name in names:
+		path = old_content.store_name(name)
+		if path not in files and path not in out:
+			out.append(path)
+	return out
+
+
+def files_gather(packer, grlist, scratch, names):
+	groups = _groups()
+	paths = tree_files()
+	files = tree_published(paths, groups)
+	index = packer_index(packer)
+	take, missing = closure(files_seeds(names, files), index, files, packer, grlist, scratch)
+	return take, missing, index, tree_group_folders(paths, groups)
+
+
+def plan_files(packer, grlist, names):
+	take, missing, _, _ = files_gather(packer, grlist, scratch_folder(), names)
+	for path in sorted(take):
+		print("  %s <- %s" % (path, take[path]))
+	print("would take %d files; %d named but missing in OLD too:" % (len(take), len(missing)))
+	for path in sorted(missing):
+		print("  %s <- %s" % (path, missing[path] or "named"))
+	return 0
+
+
+def import_files(packer, grlist, names):
+	scratch = scratch_folder()
+	take, missing, index, folders = files_gather(packer, grlist, scratch, names)
+	return place(packer, grlist, scratch, take, missing, index, folders)
+
+
 def _main(argv):
 	if len(argv) == 5 and argv[0] == "import":
 		return import_art(*argv[1:])
@@ -635,6 +685,9 @@ def _main(argv):
 		return import_shop(*argv[1:])
 	if len(argv) == 3 and argv[0] == "shop-plan":
 		return plan_shop(*argv[1:])
+	if len(argv) >= 3 and argv[0] in ("files", "files-plan"):
+		names = list(argv[3:]) or list(CHAT_FLAGS)
+		return (import_files if argv[0] == "files" else plan_files)(argv[1], argv[2], names)
 	print(__doc__)
 	return 2
 

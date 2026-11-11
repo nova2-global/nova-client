@@ -212,6 +212,7 @@ A mismatch means a switch left part of the old theme behind, or started a transi
 - **The open chat** holds eight lines in its 138dp history, so the top line is clear and the next at half (legacy's ramp of a full history); the field holds `#` and text, under the yellow mark.
 - **`chat-no-view-chat`** is empty on purpose: with the view-chat option off, a closed chat shows no line, as legacy's.
 - **The chat log** is at its smallest size, 450 x 120dp at 20, 20, which holds three rows.
+- **The shout flags** (NOVA-110, 2026-11-11): every shout line in the feed stand-ins carries `empire`, so it starts with its empire's flag (the empire select's banners at 20 x 12dp in the modern looks, OLD's 20 x 15 flags in classic). The closed chat and the closed view gained a fourth line, a Jinno shout; the log's shout and whisper swapped places so the shout sits in its three rows. The 54 chat, chat-view and chat-log goldens that changed were written with `--write --optimize` by a Linux build of `nova-client-src` `feature/chat-flags` (the first `nuitool` whose `nui-chat-lines` builds the flag span).
 
 ## Wave 3a windows
 

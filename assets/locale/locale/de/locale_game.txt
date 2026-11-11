@@ -1283,3 +1283,8 @@ ATLAS_MARK_BOSS	Boss
 ATLAS_MARK_KING	Königsboss
 ATLAS_MARK_STONE	Metinstein
 ATLAS_MARK_RESPAWN_TIME	Wiedererscheinungszeit: %s
+SHOP_NOT_ENOUGH_ITEM	Du hast nicht genug Items.
+SHOP_TEXT_OR	oder
+SHOP_BUY_COUNT_TITLE	Anzahl kaufen (max. %d)
+DO_YOU_BUY_WITH_ITEM	Möchtest du %s für %s kaufen?
+SHOP_BULK_BUY_HINT	Shift + click: mehrere kaufen

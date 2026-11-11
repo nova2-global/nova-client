@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Jefe
 ATLAS_MARK_KING	Jefe rey
 ATLAS_MARK_STONE	Piedra Metin
 ATLAS_MARK_RESPAWN_TIME	Tiempo de reaparición: %s
+SHOP_NOT_ENOUGH_ITEM	No tienes los objetos necesarios.
+SHOP_TEXT_OR	o
+SHOP_BUY_COUNT_TITLE	Cantidad a comprar (máx. %d)
+DO_YOU_BUY_WITH_ITEM	¿Deseas comprar %s por %s?
+SHOP_BULK_BUY_HINT	Shift + click: comprar varios

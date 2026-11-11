@@ -692,6 +692,17 @@ def state_cases(items):
     add("anti-sell", "SetInventoryItem", anti_sell, sockets=[], attrs=[],
         shop={"open": True, "private": False, "price": 0}, sell_price=5000)
 
+    # NOVA-83: barter rows (OLD uiToolTip.py:869-876): every cost and the
+    # yang; any one of three costs and no yang; a player's shop's item (no
+    # bulk buy hint).
+    armor = 11290 if "11290" in items else sword
+    add("shop-barter-all", "SetShopItem", armor, sockets=[0, 0, 0], attrs=[],
+        shop={"open": True, "private": False, "price": 50000, "barter": [[25040, 3], [27001, 50]], "all": 1})
+    add("shop-barter-any", "SetShopItem", armor, sockets=[0, 0, 0], attrs=[],
+        shop={"open": True, "private": False, "price": 0, "barter": [[25040, 2], [27001, 20], [25040, 1]], "all": 0})
+    add("shop-private", "SetShopItem", sword, sockets=[0, 0, 0], attrs=[],
+        shop={"open": True, "private": True, "price": 700})
+
     # Wave 5: premium scrolls in their three server states, and an offline
     # shop item as a buyer, its owner, and a pending owner slot.
     premium = 50208 if "50208" in items else None
@@ -1734,6 +1745,11 @@ def fixtures():
         out[("item-tooltip", "shop")] = {"item_tooltip": _model_of(today, "item", [["SetShopItem", [0]]], {
             "vnum": 71145, "sockets": [CLOCK + 300, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
             "shop": {"open": True, "private": False, "price": 1250}})}
+        # NOVA-83: a barter row of any one of two costs and its yang, the
+        # bulk buy hint last.
+        out[("item-tooltip", "barter")] = {"item_tooltip": _model_of(today, "item", [["SetShopItem", [0]]], {
+            "vnum": 11290, "sockets": [0, 0, 0], "attrs": [], "player": player, "clock": CLOCK,
+            "shop": {"open": True, "private": False, "price": 50000, "barter": [[25040, 3], [27001, 50]], "all": 0}})}
         # Wave 4b (NOVA-81, NOVA-16): a stack of treasure chests in the bag
         # with seven opens left, the safebox open and a trade open: the
         # "Left" line, the multi-open hint and the safebox's and the trade's

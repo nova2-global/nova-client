@@ -15,8 +15,66 @@ import localeInfo
 import constInfo
 
 ###################################################################################################
+## Barter rows and bulk buys at an NPC shop (NOVA-83; OLD uiShop.py:1043-1110). Each choice is a
+## default Eddy is to confirm, kept in one constant here. An exe without the barter API (shop's
+## HasBarter, GetBarterCost, its constants; net.SendShopBuyCountPacket) buys one item at a time and
+## shows no costs, so an older client does not break.
+
+## Shift + click on an NPC shop item asks how many (OLD: left Shift only; either Shift here).
+BULK_BUY = True
+BULK_BUY_KEYS = ("DIK_LSHIFT", "DIK_RSHIFT")
+## The client's own constants where it has them, else these (the server's caps).
+BARTER_COST_MAX = 4          # shop.BARTER_COST_MAX: the costs of a row
+BUY_COUNT_MAX = 2000         # shop.BUY_COUNT_MAX: the rows one request buys
+BUY_UNSTACKED_MAX = 45       # shop.BUY_UNSTACKED_MAX: the rows of an item that does not stack
+ITEM_COUNT_MAX = 2000        # item.ITEM_COUNT_MAX: one stack
+ITEM_FLAG_STACKABLE = 4      # CItemData::ITEM_FLAG_STACKABLE, which the item module does not export
+
+def _Constant(module, name, default):
+	value = getattr(module, name, None)
+	if isinstance(value, bool) or not isinstance(value, int):
+		return default
+	return value
+
+def HasBarter(pos):
+	"""Whether the NPC shop row `pos` costs items (an exe without barter: never)."""
+	hasBarter = getattr(shop, "HasBarter", None)
+	return bool(hasBarter and hasBarter(pos))
+
+def GetBarterCosts(pos):
+	"""[(vnum, count)] of the items the row `pos` costs besides its yang, in row order."""
+	if not HasBarter(pos):
+		return []
+	costs = []
+	for i in range(_Constant(shop, "BARTER_COST_MAX", BARTER_COST_MAX)):
+		(vnum, count) = shop.GetBarterCost(pos, i)
+		if vnum and count > 0:
+			costs.append((vnum, count))
+	return costs
+
+def IsBarterAll(pos):
+	"""1: the row takes every cost; 0: any one of them (the first the player holds)."""
+	isBarterAll = getattr(shop, "IsBarterAll", None)
+	return bool(isBarterAll(pos)) if isBarterAll else True
+
+def GetBarterCostText(costs, isAll, times=1):
+	""""2x Battle Coin, 1x Dragon Scale" (every cost), or the costs joined by the translated "or"
+	(any one), each count times `times`. Selects each cost's item."""
+	parts = []
+	for (vnum, count) in costs:
+		item.SelectItem(vnum)
+		parts.append("%dx %s" % (count * times, item.GetItemName()))
+	if isAll:
+		return ", ".join(parts)
+	return (" %s " % localeInfo.SHOP_TEXT_OR).join(parts)
+
+###################################################################################################
 ## Shop
 class ShopDialog(ui.ScriptWindow):
+
+	## The count dialog of a bulk buy (NOVA-83); a class default, since ui.Window.__init__ may
+	## run a subclass's Hide before ours sets it.
+	buyCountDialog = None
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -26,6 +84,7 @@ class ShopDialog(ui.ScriptWindow):
 		self.questionDialog = None
 		self.popup = None
 		self.itemBuyQuestionDialog = None
+		self.buyCountDialog = None
 		self.interface = None
 
 		## The offline shop (NOVA-9): a view of a shop NPC or its owner's panel, in pages of
@@ -293,6 +352,7 @@ class ShopDialog(ui.ScriptWindow):
 			self.__SetOnTopWindow(player.ON_TOP_WND_SHOP)
 
 	def Close(self):
+		self.__CloseBuyCount()
 		if self.itemBuyQuestionDialog:
 			self.itemBuyQuestionDialog.Close()
 			self.itemBuyQuestionDialog = None		
@@ -499,8 +559,16 @@ class ShopDialog(ui.ScriptWindow):
 			return
 		if shop.IsPrivateShop():
 			self.AskBuyItem(selectedSlotPos)
+			return
+		## An NPC shop buys at once (NEW), but Shift asks how many and a barter row asks first
+		## (NOVA-83; OLD uiShop.py:988 asked through AskBuyItem).
+		pos = self.__GetRealIndex(selectedSlotPos)
+		if self.__AskBuyCount(pos):
+			return
+		if HasBarter(pos):
+			self.__AskBuy(pos)
 		else:
-			net.SendShopBuyPacket(self.__GetRealIndex(selectedSlotPos))
+			net.SendShopBuyPacket(pos)
 
 	def SelectItemSlot(self, selectedSlotPos):
 		if constInfo.GET_ITEM_QUESTION_DIALOG_STATUS() == 1:
@@ -519,9 +587,13 @@ class ShopDialog(ui.ScriptWindow):
 			if True == shop.IsMainPlayerPrivateShop():
 				return
 
+			## Shift asks how many instead of picking the item up (NOVA-83).
+			if self.__AskBuyCount(selectedSlotPos):
+				return
+
 			curCursorNum = app.GetCursor()
 			if app.BUY == curCursorNum:
-				self.AskBuyItem(selectedSlotPos)
+				self.__BuyAt(selectedSlotPos)
 
 			elif app.SELL == curCursorNum:
 				chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.SHOP_SELL_INFO)
@@ -543,24 +615,46 @@ class ShopDialog(ui.ScriptWindow):
 		if self.isOfflineShop:
 			self.__OfflineDropToInventory(attachedSlotPos)
 			return
-		self.AskBuyItem(attachedSlotPos)
+		## The attached slot is already the real index (SelectItemSlot), so it is not offset by
+		## the tab again (it was, before NOVA-83, on a second or third tab).
+		self.__BuyAt(attachedSlotPos)
 
 	def AskBuyItem(self, slotPos):
-		slotPos = self.__GetRealIndex(slotPos)
-		
-		itemIndex = shop.GetItemID(slotPos)
-		itemPrice = shop.GetItemPrice(slotPos)
-		itemCount = shop.GetItemCount(slotPos)
+		"""The buy question of the shown tab's cell `slotPos`."""
+		self.__BuyAt(self.__GetRealIndex(slotPos))
+
+	def __BuyAt(self, pos):
+		"""The buy question of the row `pos` (a real index), or with Shift the count first."""
+		if self.__AskBuyCount(pos):
+			return
+		self.__AskBuy(pos)
+
+	def __AskBuy(self, pos, count=1):
+		"""Asks to buy `count` rows of `pos`: the item, the total, and for a barter row every
+		cost and the yang (when above 0) times the count (NOVA-83)."""
+		itemIndex = shop.GetItemID(pos)
+		itemPrice = shop.GetItemPrice(pos)
+		itemCount = shop.GetItemCount(pos)
 
 		item.SelectItem(itemIndex)
 		itemName = item.GetItemName()
 
+		costs = GetBarterCosts(pos)
+		if costs:
+			price = GetBarterCostText(costs, IsBarterAll(pos), count)
+			if itemPrice > 0:
+				price = "%s + %s" % (price, localeInfo.NumberToMoneyString(itemPrice * count))
+			text = localeInfo.DO_YOU_BUY_WITH_ITEM % ("%dx %s" % (itemCount * count, itemName), price)
+		else:
+			text = localeInfo.DO_YOU_BUY_ITEM(itemName, itemCount * count, localeInfo.NumberToMoneyString(itemPrice * count))
+
 		itemBuyQuestionDialog = uiCommon.QuestionDialog()
-		itemBuyQuestionDialog.SetText(localeInfo.DO_YOU_BUY_ITEM(itemName, itemCount, localeInfo.NumberToMoneyString(itemPrice)))
+		itemBuyQuestionDialog.SetText(text)
 		itemBuyQuestionDialog.SetAcceptEvent(lambda arg=True: self.AnswerBuyItem(arg))
 		itemBuyQuestionDialog.SetCancelEvent(lambda arg=False: self.AnswerBuyItem(arg))
 		itemBuyQuestionDialog.Open()
-		itemBuyQuestionDialog.pos = slotPos
+		itemBuyQuestionDialog.pos = pos
+		itemBuyQuestionDialog.count = count
 		self.itemBuyQuestionDialog = itemBuyQuestionDialog
 		
 		constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
@@ -569,12 +663,92 @@ class ShopDialog(ui.ScriptWindow):
 
 		if flag:
 			pos = self.itemBuyQuestionDialog.pos
-			net.SendShopBuyPacket(pos)
+			count = getattr(self.itemBuyQuestionDialog, "count", 1)
+			if count > 1:
+				net.SendShopBuyCountPacket(pos, count)
+			else:
+				net.SendShopBuyPacket(pos)
 
 		self.itemBuyQuestionDialog.Close()
 		self.itemBuyQuestionDialog = None
 		
 		constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(0)
+
+	## Bulk buys (NOVA-83; OLD uiShop.py:1068-1079): Shift + click on an NPC shop's gold tab
+	## asks how many rows, up to what one request of the server buys.
+	def CanBuySeveral(self):
+		"""Whether this shop sells several rows at once: an NPC shop's gold tab, with an exe that
+		sends the count. A player's or offline shop and a secondary coin tab buy one."""
+		if not BULK_BUY or self.isOfflineShop or shop.IsPrivateShop():
+			return False
+		if shop.GetTabCoinType(self.tabIdx) != shop.SHOP_COIN_TYPE_GOLD:
+			return False
+		return hasattr(net, "SendShopBuyCountPacket")
+
+	def GetBuyCountCap(self, pos):
+		"""The most rows of `pos` one request buys: one stack of an item that stacks (at most
+		BUY_COUNT_MAX rows), else BUY_UNSTACKED_MAX."""
+		item.SelectItem(shop.GetItemID(pos))
+		if item.IsFlag(_Constant(item, "ITEM_FLAG_STACKABLE", ITEM_FLAG_STACKABLE)):
+			rowCount = max(1, shop.GetItemCount(pos))
+			stack = _Constant(item, "ITEM_COUNT_MAX", ITEM_COUNT_MAX)
+			return max(1, min(_Constant(shop, "BUY_COUNT_MAX", BUY_COUNT_MAX), stack // rowCount))
+		return max(1, _Constant(shop, "BUY_UNSTACKED_MAX", BUY_UNSTACKED_MAX))
+
+	def __IsBuyCountPressed(self):
+		for name in BULK_BUY_KEYS:
+			key = getattr(app, name, None)
+			if isinstance(key, int) and app.IsPressed(key):
+				return True
+		return False
+
+	def __AskBuyCount(self, pos):
+		"""With Shift held where several rows sell, opens the count dialog for the row `pos`
+		and answers True; else False."""
+		if not self.__IsBuyCountPressed() or not self.CanBuySeveral():
+			return False
+		if not shop.GetItemID(pos):
+			return False
+		cap = self.GetBuyCountCap(pos)
+		if cap <= 1:
+			return False
+
+		self.__CloseBuyCount()
+		buyCountDialog = uiCommon.InputDialog()
+		buyCountDialog.SetTitle(localeInfo.SHOP_BUY_COUNT_TITLE % cap)
+		buyCountDialog.SetNumberMode()
+		buyCountDialog.SetMaxLength(len(str(cap)))
+		buyCountDialog.SetAcceptEvent(ui.__mem_func__(self.__AcceptBuyCount))
+		buyCountDialog.SetCancelEvent(ui.__mem_func__(self.__CloseBuyCount))
+		buyCountDialog.Open()
+		buyCountDialog.pos = pos
+		buyCountDialog.cap = cap
+		self.buyCountDialog = buyCountDialog
+
+		constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(1)
+		return True
+
+	def __AcceptBuyCount(self):
+		"""The count typed: 0 or none buys nothing, more than the cap is the cap; then the buy
+		question names the total."""
+		buyCountDialog = self.buyCountDialog
+		if not buyCountDialog:
+			return True
+		text = buyCountDialog.GetText().strip()
+		count = int(text) if text.isdigit() else 0
+		(pos, cap) = (buyCountDialog.pos, buyCountDialog.cap)
+		self.__CloseBuyCount()
+		if count >= 1:
+			self.__AskBuy(pos, min(count, cap))
+		return True
+
+	def __CloseBuyCount(self):
+		if not self.buyCountDialog:
+			return True
+		self.buyCountDialog.Close()
+		self.buyCountDialog = None
+		constInfo.SET_ITEM_QUESTION_DIALOG_STATUS(0)
+		return True
 
 	def SetItemToolTip(self, tooltipItem):
 		self.tooltipItem = tooltipItem

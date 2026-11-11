@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Patron
 ATLAS_MARK_KING	Kral patron
 ATLAS_MARK_STONE	Metin taşı
 ATLAS_MARK_RESPAWN_TIME	Yeniden doğma süresi: %s
+SHOP_NOT_ENOUGH_ITEM	Yeterli eşyaya sahip değilsin.
+SHOP_TEXT_OR	veya
+SHOP_BUY_COUNT_TITLE	Satın alınacak adet (en fazla %d)
+DO_YOU_BUY_WITH_ITEM	Satın almak istiyor musun? Nesne: %s Fiyat: %s
+SHOP_BULK_BUY_HINT	Shift + click: birden fazla satın al

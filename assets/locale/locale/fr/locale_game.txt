@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Boss
 ATLAS_MARK_KING	Boss roi
 ATLAS_MARK_STONE	Pierre Metin
 ATLAS_MARK_RESPAWN_TIME	Temps de réapparition : %s
+SHOP_NOT_ENOUGH_ITEM	Vous n'avez pas assez d'objets.
+SHOP_TEXT_OR	ou
+SHOP_BUY_COUNT_TITLE	Quantité à acheter (max. %d)
+DO_YOU_BUY_WITH_ITEM	Voulez-vous acheter %s pour %s ?
+SHOP_BULK_BUY_HINT	Shift + click: acheter plusieurs

@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Босс
 ATLAS_MARK_KING	Король-босс
 ATLAS_MARK_STONE	Камень Метина
 ATLAS_MARK_RESPAWN_TIME	Время возрождения: %s
+SHOP_NOT_ENOUGH_ITEM	У вас недостаточно предметов.
+SHOP_TEXT_OR	или
+SHOP_BUY_COUNT_TITLE	Количество для покупки (макс. %d)
+DO_YOU_BUY_WITH_ITEM	Хотите купить %s за %s?
+SHOP_BULK_BUY_HINT	Shift + click: купить несколько

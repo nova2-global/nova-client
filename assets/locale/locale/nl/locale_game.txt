@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Baas
 ATLAS_MARK_KING	Koningsbaas
 ATLAS_MARK_STONE	Metinsteen
 ATLAS_MARK_RESPAWN_TIME	Respawntijd: %s
+SHOP_NOT_ENOUGH_ITEM	Je hebt niet genoeg van de benodigde voorwerpen.
+SHOP_TEXT_OR	of
+SHOP_BUY_COUNT_TITLE	Aantal te kopen (max. %d)
+DO_YOU_BUY_WITH_ITEM	Wil je %s voor %s kopen?
+SHOP_BULK_BUY_HINT	Shift + click: meerdere kopen

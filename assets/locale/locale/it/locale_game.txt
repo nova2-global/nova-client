@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Boss
 ATLAS_MARK_KING	Boss re
 ATLAS_MARK_STONE	Pietra Metin
 ATLAS_MARK_RESPAWN_TIME	Tempo di rinascita: %s
+SHOP_NOT_ENOUGH_ITEM	Non hai abbastanza oggetti.
+SHOP_TEXT_OR	oppure
+SHOP_BUY_COUNT_TITLE	Quantità da comprare (max. %d)
+DO_YOU_BUY_WITH_ITEM	Desideri comprare %s per %s?
+SHOP_BULK_BUY_HINT	Shift + click: compra più pezzi

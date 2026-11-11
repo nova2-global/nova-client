@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Αρχηγός
 ATLAS_MARK_KING	Βασιλικός αρχηγός
 ATLAS_MARK_STONE	Πέτρα Metin
 ATLAS_MARK_RESPAWN_TIME	Χρόνος επανεμφάνισης: %s
+SHOP_NOT_ENOUGH_ITEM	Δεν έχεις αρκετά αντικείμενα.
+SHOP_TEXT_OR	ή
+SHOP_BUY_COUNT_TITLE	Ποσότητα αγοράς (μέγ. %d)
+DO_YOU_BUY_WITH_ITEM	Θέλεις να αγοράσεις %s για %s;
+SHOP_BULK_BUY_HINT	Shift + click: αγορά πολλών

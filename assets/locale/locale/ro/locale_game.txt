@@ -1285,3 +1285,8 @@ ATLAS_MARK_BOSS	Boss
 ATLAS_MARK_KING	Boss rege
 ATLAS_MARK_STONE	Piatră Metin
 ATLAS_MARK_RESPAWN_TIME	Timp de reapariție: %s
+SHOP_NOT_ENOUGH_ITEM	Nu ai destule iteme.
+SHOP_TEXT_OR	sau
+SHOP_BUY_COUNT_TITLE	Cantitate de cumpărat (max. %d)
+DO_YOU_BUY_WITH_ITEM	Vrei să cumperi %s pentru %s?
+SHOP_BULK_BUY_HINT	Shift + click: cumpără mai multe

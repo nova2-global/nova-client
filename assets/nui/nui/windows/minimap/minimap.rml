@@ -2,8 +2,8 @@
 <head>
 	<!-- The minimap (uiminimap.py MiniMap, uiscript/minimap.py): the map view
 	     behind its round frame, the zoom, close and atlas buttons, the server
-	     line with the local clock (hours and minutes; classic has none) and
-	     the observer count; closed, only the show button. While the
+	     line with the local clock (hours and minutes; classic has none),
+	     the observer count and the FPS readout (NOVA-118); closed, only the show button. While the
 	     minimap flag is on, the Interface makes the facade
 	     nui_minimap.MiniMap (controller assets/root/nui_minimap.py), which
 	     makes the atlas too. The map image is a nui-view: C++ renders the
@@ -55,6 +55,14 @@
 			class="nui-tooltip nui-anim minimap__tip" data-if="can_see">@game.MINIMAP</span><span
 			class="nui-tooltip nui-anim minimap__tip" data-if="!can_see">@game.MINIMAP_CANNOT_SEE</span></span>
 	</div>
+	<!-- The FPS readout (NOVA-118): under the map, open or closed, while the
+	     option is on; outside the map's box so it stays when the map
+	     closes (modern: under the show button then). Its timer ends each
+	     second, and its end asks the controller for the render FPS. -->
+	<div id="minimap-fps" class="minimap__fps" data-if="shown &amp;&amp; fps_shown" data-class-minimap__fps--closed="!open"
+		data-class-minimap__fps--observers="open &amp;&amp; observers > 0"><div
+		class="minimap__line minimap__line--fps"><span id="minimap-fps-text" class="minimap__text">{{ fps_text }}</span></div></div>
+	<nui-countdown id="minimap-fps-timer" format="none" data-attr-end="fps_next" data-event-countdownend="fps_tick()"/>
 	<!-- The local clock's minute: a timer that ends at the next minute, whose
 	     end asks the controller for the time and the next end. -->
 	<nui-countdown id="minimap-clock-timer" format="none" data-attr-end="clock_next" data-event-countdownend="clock_tick()"/>

@@ -15,7 +15,9 @@ state), the fog systemSetting.SetFogLevel, the tiling choices three info
 lines each and Apply its line, background.EnableSoftwareTiling and
 net.ExitGame; Close puts the tiling choice back to the one in effect; the
 field of view slider (NOVA-116) systemSetting.SetPOV with a whole degree,
-saved at exit as the volumes. The
+saved at exit as the volumes; snowfall, the FPS counter and tips (NOVA-118)
+player_options.set_option, On (0) and Off (1) as legacy's pairs, saved at
+exit too. The
 Interface section is new: the theme (nui.set_theme), the UI scale (a row of
 choices, D12: auto, 75 to 200 percent, and a saved percent outside them as
 one more choice; nui.set_scale_percent), reduced motion
@@ -59,11 +61,15 @@ import nui
 import nui_hud
 import nui_music_list
 import nui_theme_picker
+import player_options
 
 DOCUMENT = "nui/windows/system-options/system-options.rml"
 MUSIC_FILENAME_MAX_LEN = 25   # uisystemoption.py:17
 FILE_NAME_LEN = 20            # uiselectmusic.py:6
 SCALE_CHOICES = (75, 100, 125, 150, 175, 200)
+# NOVA-118's rows: the model key (0 is On, 1 is Off) and its option.
+PLAYER_OPTIONS = (("snow", player_options.SNOWFALL), ("fps", player_options.FPS_COUNTER),
+                  ("tips", player_options.TIPS))
 PERCENT_CHOICES = {
 	"opacity": (100, 90, 80, 70, 60),
 	"overlay": (100, 75, 51, 40, 30),
@@ -220,7 +226,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 	@staticmethod
 	def empty_model():
 		return {"sound_volume": 0, "music_volume": 0, "music_file": "", "camera": 0, "fog": 0, "tiling": 0,
-		        "fov": 30, "fov_min": 30, "fov_max": 120,
+		        "fov": 30, "fov_min": 30, "fov_max": 120, "snow": 1, "fps": 1, "tips": 0,
 		        "interface": True, "themes": [], "theme": "", "scales": [], "scale": 0, "auto_percent": 100,
 		        "reduced_motion": False, "reduced_effects": False, "effects_available": False,
 		        "color_slots": [], "accent_hue": 0, "colors_adjusted": False}
@@ -297,6 +303,7 @@ class OptionDialog(nui_hud.LayoutCalls):
 		         "camera": constInfo.GET_CAMERA_MAX_DISTANCE_INDEX(), "fog": systemSetting.GetFogLevel(),
 		         "tiling": self.tilingMode, "interface": True}
 		model.update(self._field_of_view_model())
+		model.update(self._player_options_model())
 		model.update(self._interface_model())
 		model.update(self._colors_model())
 		return model
@@ -306,6 +313,11 @@ class OptionDialog(nui_hud.LayoutCalls):
 		"""The angle in whole degrees and the client's range (NOVA-116)."""
 		return {"fov": int(round(systemSetting.GetPOV())), "fov_min": int(systemSetting.FIELD_OF_VIEW_MIN),
 		        "fov_max": int(systemSetting.FIELD_OF_VIEW_MAX)}
+
+	@staticmethod
+	def _player_options_model():
+		"""NOVA-118's rows: 0 is On, 1 is Off, as legacy's pairs."""
+		return dict((key, 0 if player_options.is_on(option) else 1) for key, option in PLAYER_OPTIONS)
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -462,6 +474,9 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return systemSetting.GetFogLevel()
 		if what == "tiling":
 			return self.tilingMode
+		for key, option in PLAYER_OPTIONS:
+			if what == key:
+				return 0 if player_options.is_on(option) else 1
 		return None
 
 	def nui_choose(self, what, index):
@@ -485,6 +500,9 @@ class OptionDialog(nui_hud.LayoutCalls):
 			self.__NotifyChatLine(localeInfo.SYSTEM_OPTION_GPU_TILING_2)
 			self.__NotifyChatLine(localeInfo.SYSTEM_OPTION_GPU_TILING_3)
 			self.__SetTilingMode(1)
+		elif index in (0, 1) and what in dict(PLAYER_OPTIONS):
+			player_options.set_option(dict(PLAYER_OPTIONS)[what], index == 0)
+			self._set(**{what: index})
 
 	def __OnClickTilingApplyButton(self):
 		"""uisystemoption.py:136-143."""

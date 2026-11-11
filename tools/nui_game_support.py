@@ -1154,7 +1154,11 @@ class Game(object):
                          "pickup_filter": [True, True, True, True],
                          # The field of view in degrees (NOVA-116; POINT_OF_VIEW,
                          # FIELD_OF_VIEW_DEFAULT by default).
-                         "field_of_view": 30.0}
+                         "field_of_view": 30.0,
+                         # NOVA-118: snowfall, the FPS counter and tips
+                         # (CPythonSystem's SNOWFALL_DEFAULT, FPS_COUNTER_DEFAULT
+                         # and TIPS_DEFAULT: OLD's off, off, on).
+                         "snowfall": False, "fps_counter": False, "tips": True}
         self.pk_mode = 0         # player.GetPKMode
         self.guild_id = 0        # player.GetGuildID
         self.software_tiling = False  # background.IsSoftwareTiling
@@ -1542,6 +1546,12 @@ class Game(object):
         setting.FIELD_OF_VIEW_MIN, setting.FIELD_OF_VIEW_MAX, setting.FIELD_OF_VIEW_DEFAULT = 30, 120, 30
         getter("GetPOV", "field_of_view", float)
         setter("SetPOV", lambda value: settings.__setitem__("field_of_view", min(120.0, max(30.0, float(value)))))
+        # NOVA-118: an int each way, 1 is on (OLD's rule).
+        for key, getter_name, setter_name in (("snowfall", "IsEnableSnowFall", "SetEnableSnowFall"),
+                                              ("fps_counter", "IsShowFPSCounter", "SetShowFPSCounter"),
+                                              ("tips", "IsShowTips", "SetShowTips")):
+            getter(getter_name, key, int)
+            setter(setter_name, lambda value, key=key: settings.__setitem__(key, value == 1))
 
         background = modules["background"]
         background.IsSoftwareTiling = lambda: bool(game.software_tiling)
@@ -1605,6 +1615,11 @@ class Game(object):
         # The wiki imports its text pages (NOVA-139): the page format and the
         # page store come first unless the test loaded its own.
         for needed in WIKI_PAGE_MODULES if name == "nui_wiki" else ():
+            if needed not in self.modules:
+                self.load(needed, needed + ".py")
+        # The minimaps, the option windows and game.py share NOVA-118's
+        # options module (assets/root/player_options.py).
+        for needed in ("player_options",) if name in PLAYER_OPTIONS_USERS else ():
             if needed not in self.modules:
                 self.load(needed, needed + ".py")
         with self:
@@ -1689,6 +1704,9 @@ FALLBACK_BUILDINGS = (
     (14300, "OBJECT", "object_1", "Stone Lantern", 30, 30, 360, "500000", ["5", "0", "0"]),
     (14301, "OBJECT", "object_2", "Flag", 0, 0, 0, "100000", ["0", "5", "0"]),
 )
+
+
+PLAYER_OPTIONS_USERS = ("uiMiniMap", "nui_minimap", "uiSystemOption", "nui_system_options")
 
 
 def source_of(file_name, names, inside=None):

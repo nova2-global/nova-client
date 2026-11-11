@@ -14,6 +14,7 @@ import musicInfo
 import uiSelectMusic
 import background
 import nui_windows
+import player_options
 
 MUSIC_FILENAME_MAX_LEN = 25
 
@@ -37,6 +38,12 @@ class OptionDialog(ui.ScriptWindow):
 	# The field of view's row (NOVA-116, uiscript systemoptiondialog.py): the
 	# label 2 lower, the slider at x 110.
 	FIELD_OF_VIEW_ROW_Y = 210
+	# Snowfall, the FPS counter and tips (NOVA-118): OLD's On and Off pairs
+	# (uiSystemOption.py:145-154), On at x 110 and Off at 180, each row's
+	# uiscript name and its player_options option.
+	PLAYER_OPTION_ROW_Y = {"snow": 235, "fps": 260, "tips": 285}
+	PLAYER_OPTIONS = (("snow", player_options.SNOWFALL), ("fps", player_options.FPS_COUNTER),
+	                  ("tips", player_options.TIPS))
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -61,6 +68,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.tilingModeButtonList = []
 		self.ctrlShadowQuality = 0
 		self.ctrlFieldOfView = 0
+		self.playerOptionButtons = {}
 		
 	def Destroy(self):
 		self.ClearDictionary()
@@ -93,6 +101,8 @@ class OptionDialog(ui.ScriptWindow):
 			self.tilingModeButtonList.append(GetObject("tiling_gpu"))
 			self.tilingApplyButton=GetObject("tiling_apply")
 			self.ctrlFieldOfView = GetObject("fov_controller")
+			for name, option in self.PLAYER_OPTIONS:
+				self.playerOptionButtons[name] = [GetObject(name + "_on"), GetObject(name + "_off")]
 			#self.ctrlShadowQuality = GetObject("shadow_bar")
 		except:
 			import exception
@@ -131,6 +141,12 @@ class OptionDialog(ui.ScriptWindow):
 		self.tilingModeButtonList[1].SAFE_SetEvent(self.__OnClickTilingModeGPUButton)
 
 		self.tilingApplyButton.SAFE_SetEvent(self.__OnClickTilingApplyButton)
+
+		for name, option in self.PLAYER_OPTIONS:
+			buttons = self.playerOptionButtons[name]
+			buttons[0].SAFE_SetEvent(self.__OnClickPlayerOption, name, option, True)
+			buttons[1].SAFE_SetEvent(self.__OnClickPlayerOption, name, option, False)
+			self.__ClickRadioButton(buttons, 0 if player_options.is_on(option) else 1)
 
 		self.__SetCurTilingMode()
 
@@ -245,6 +261,11 @@ class OptionDialog(ui.ScriptWindow):
 
 	def OnChangeFieldOfView(self):
 		systemSetting.SetPOV(float(field_of_view_of_place(self.ctrlFieldOfView.GetSliderPos())))
+
+	# NOVA-118: saved at exit with the other options (OLD saved at each press).
+	def __OnClickPlayerOption(self, name, option, on):
+		player_options.set_option(option, on)
+		self.__ClickRadioButton(self.playerOptionButtons[name], 0 if on else 1)
 
 	def OnChangeShadowQuality(self):
 		pos = self.ctrlShadowQuality.GetSliderPos()

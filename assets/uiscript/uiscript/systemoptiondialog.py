@@ -15,7 +15,7 @@ window = {
 	"y" : 0,
 
 	"width" : 305,
-	"height" : 255,
+	"height" : 330,
 
 	"children" :
 	(
@@ -27,7 +27,7 @@ window = {
 			"y" : 0,
 
 			"width" : 305,
-			"height" : 255,
+			"height" : 330,
 
 			"children" :
 			(
@@ -280,6 +280,122 @@ window = {
 
 					"x" : 110,
 					"y" : 210,
+				},
+
+				## Snowfall, the FPS counter and tips (NOVA-118): OLD's On and
+				## Off pairs (uiSystemOption.py:145-154) under the field of view.
+				{
+					"name" : "snow_name",
+					"type" : "text",
+
+					"x" : 30,
+					"y" : 235+2,
+
+					"text" : uiScriptLocale.OPTION_SNOWFALL,
+				},
+
+				{
+					"name" : "snow_on",
+					"type" : "radio_button",
+
+					"x" : 110,
+					"y" : 235,
+
+					"text" : uiScriptLocale.NUI_SYSTEM_OPTIONS_ON,
+
+					"default_image" : ROOT_PATH + "Middle_Button_01.sub",
+					"over_image" : ROOT_PATH + "Middle_Button_02.sub",
+					"down_image" : ROOT_PATH + "Middle_Button_03.sub",
+				},
+
+				{
+					"name" : "snow_off",
+					"type" : "radio_button",
+
+					"x" : 110+70,
+					"y" : 235,
+
+					"text" : uiScriptLocale.NUI_SYSTEM_OPTIONS_OFF,
+
+					"default_image" : ROOT_PATH + "Middle_Button_01.sub",
+					"over_image" : ROOT_PATH + "Middle_Button_02.sub",
+					"down_image" : ROOT_PATH + "Middle_Button_03.sub",
+				},
+
+				{
+					"name" : "fps_name",
+					"type" : "text",
+
+					"x" : 30,
+					"y" : 260+2,
+
+					"text" : uiScriptLocale.OPTION_FPS_COUNTER,
+				},
+
+				{
+					"name" : "fps_on",
+					"type" : "radio_button",
+
+					"x" : 110,
+					"y" : 260,
+
+					"text" : uiScriptLocale.NUI_SYSTEM_OPTIONS_ON,
+
+					"default_image" : ROOT_PATH + "Middle_Button_01.sub",
+					"over_image" : ROOT_PATH + "Middle_Button_02.sub",
+					"down_image" : ROOT_PATH + "Middle_Button_03.sub",
+				},
+
+				{
+					"name" : "fps_off",
+					"type" : "radio_button",
+
+					"x" : 110+70,
+					"y" : 260,
+
+					"text" : uiScriptLocale.NUI_SYSTEM_OPTIONS_OFF,
+
+					"default_image" : ROOT_PATH + "Middle_Button_01.sub",
+					"over_image" : ROOT_PATH + "Middle_Button_02.sub",
+					"down_image" : ROOT_PATH + "Middle_Button_03.sub",
+				},
+
+				{
+					"name" : "tips_name",
+					"type" : "text",
+
+					"x" : 30,
+					"y" : 285+2,
+
+					"text" : uiScriptLocale.OPTION_TIPS,
+				},
+
+				{
+					"name" : "tips_on",
+					"type" : "radio_button",
+
+					"x" : 110,
+					"y" : 285,
+
+					"text" : uiScriptLocale.NUI_SYSTEM_OPTIONS_ON,
+
+					"default_image" : ROOT_PATH + "Middle_Button_01.sub",
+					"over_image" : ROOT_PATH + "Middle_Button_02.sub",
+					"down_image" : ROOT_PATH + "Middle_Button_03.sub",
+				},
+
+				{
+					"name" : "tips_off",
+					"type" : "radio_button",
+
+					"x" : 110+70,
+					"y" : 285,
+
+					"text" : uiScriptLocale.NUI_SYSTEM_OPTIONS_OFF,
+
+					"default_image" : ROOT_PATH + "Middle_Button_01.sub",
+					"over_image" : ROOT_PATH + "Middle_Button_02.sub",
+					"down_image" : ROOT_PATH + "Middle_Button_03.sub",
 				},
 
 				## 그림자

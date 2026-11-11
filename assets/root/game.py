@@ -26,6 +26,7 @@ import datacache
 import exchange
 import ime
 import link_tokens
+import player_options
 ## The advanced pet's module (NOVA-24, chunk C's PythonPetAdvanced.cpp).
 import pet
 
@@ -104,6 +105,12 @@ class GameWindow(ui.ScriptWindow):
 		self.wndMaintenance = None
 		# The aura level window (NOVA-23), made at the server's first GC::AURA.
 		self.auraWindow = None
+
+		# The xmas event's snowfall mode, kept so the player's choice can
+		# apply it later (NOVA-118); game.py hears the options through
+		# player_options (OnPlayerOptionChanged).
+		self.xmasSnowMode = "0"
+		player_options.listen(self)
 
 		self.stream = stream
 		self.interface = interfaceModule.Interface()
@@ -2176,7 +2183,11 @@ class GameWindow(ui.ScriptWindow):
 		self.interface.bigBoard.SetTip(message)
 
 	def BINARY_SetTipMessage(self, message):
-		self.interface.tipBoard.SetTip(message)		
+		# Tips off (NOVA-118, OLD game.py:2819): the tip board stays empty;
+		# C++ still puts the notice in the chat.
+		if not player_options.is_on(player_options.TIPS):
+			return
+		self.interface.tipBoard.SetTip(message)
 
 	def BINARY_AppendNotifyMessage(self, type):
 		if not type in localeInfo.NOTIFY_MESSAGE:
@@ -2467,17 +2478,30 @@ class GameWindow(ui.ScriptWindow):
 
 		self.__XMasSong_Enable(mode)
 
-		if "1"==mode:
+		self.xmasSnowMode = mode
+		self.__RefreshSnow()
+
+	# The event's snowfall on an xmas map, unless the player turned it off
+	# (NOVA-118, OLD game.py:3365); again when the player flips the option.
+	def __RefreshSnow(self):
+		if "1" == getattr(self, "xmasSnowMode", "0"):
 
 			if not self.__IsXMasMap():
 				return
 
-			print("XMAS_SNOW ON")
-			background.EnableSnow(1)
+			if player_options.snowfall_wanted(True, True):
+				print("XMAS_SNOW ON")
+				background.EnableSnow(1)
+			else:
+				background.EnableSnow(0)
 
 		else:
 			print("XMAS_SNOW OFF")
 			background.EnableSnow(0)
+
+	def OnPlayerOptionChanged(self, name):
+		if name == player_options.SNOWFALL:
+			self.__RefreshSnow()
 
 	def __XMasBoom_Enable(self, mode):
 		if "1"==mode:

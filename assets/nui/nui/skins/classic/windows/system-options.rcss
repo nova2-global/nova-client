@@ -1,10 +1,11 @@
 /* Classic skin overlay of nui/windows/system-options/system-options.rml:
    the legacy system options (uiscript systemoptiondialog.py) at 100%, 1dp
-   to the legacy pixel. The stone board is 305 wide; its legacy part is 232
+   to the legacy pixel. The stone board is 305 wide; its legacy part is 307
    tall above the Interface section, which grows the board downward (legacy
    has no such section: its layout is new, on legacy art). The title bar at
    8, 8 (284 wide) with the title centered over the whole bar and the close
-   button at 266, 3; the labels at x 30 (y 50, 75, 137, 162, 187, 212); the
+   button at 266, 3; the labels at x 30 (y 50, 75, 137, 162, 187, 212, and
+   237, 262 and 287 for NOVA-118); the
    sliders at 110, 50, 110, 75 and 110, 210 (the field of view, NOVA-116) (the sliderbar art, 175 x 12, with its 53
    wide cursor); Change at 20, 100 and the file name at 100, 102; the
    camera choices at 110 and 180, y 135 (middle art); the fog choices at
@@ -67,7 +68,7 @@ body.skin-classic.system-options .so-legacy
 {
 	display: block;
 	position: relative;
-	height: 232dp;
+	height: 307dp;
 }
 body.skin-classic.system-options .so-legacy .so-row,
 body.skin-classic.system-options .so-legacy .so-choices
@@ -92,6 +93,9 @@ body.skin-classic.system-options .so-label--camera { top: 137dp; }
 body.skin-classic.system-options .so-label--fog { top: 162dp; }
 body.skin-classic.system-options .so-label--tiling { top: 187dp; }
 body.skin-classic.system-options .so-label--fov { top: 212dp; }
+body.skin-classic.system-options .so-label--snow { top: 237dp; }
+body.skin-classic.system-options .so-label--fps { top: 262dp; }
+body.skin-classic.system-options .so-label--tips { top: 287dp; }
 
 body.skin-classic.system-options .so-music-file
 {
@@ -138,6 +142,14 @@ body.skin-classic.system-options .so-choice--fog-2 { left: 210dp; top: 160dp; }
 body.skin-classic.system-options .so-choice--tiling-0 { left: 110dp; top: 185dp; }
 body.skin-classic.system-options .so-choice--tiling-1 { left: 160dp; top: 185dp; }
 body.skin-classic.system-options .so-tiling-apply { left: 210dp; top: 185dp; }
+/* Snowfall, the FPS counter and tips (NOVA-118): On and Off at 110 and 180
+   (middle art), y 235, 260 and 285. */
+body.skin-classic.system-options .so-choice--snow-0 { left: 110dp; top: 235dp; }
+body.skin-classic.system-options .so-choice--snow-1 { left: 180dp; top: 235dp; }
+body.skin-classic.system-options .so-choice--fps-0 { left: 110dp; top: 260dp; }
+body.skin-classic.system-options .so-choice--fps-1 { left: 180dp; top: 260dp; }
+body.skin-classic.system-options .so-choice--tips-0 { left: 110dp; top: 285dp; }
+body.skin-classic.system-options .so-choice--tips-1 { left: 180dp; top: 285dp; }
 
 /* The small art of legacy's fog and tiling choices, and of the Interface
    section's scale choices: the default, over and down art; the choice in

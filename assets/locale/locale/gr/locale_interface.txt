@@ -216,6 +216,9 @@ OPTION_DELETE_MOBILE_BUTTON	Διαγραφή Νούμερου Κινητού Τ�
 OPTION_EFFECT	Χτυπήματα.
 OPTION_FOG	Ομίχλη
 OPTION_FIELD_OF_VIEW	Οπτικό πεδίο
+OPTION_FPS_COUNTER	Δείκτης FPS
+OPTION_SNOWFALL	Χιονόπτωση
+OPTION_TIPS	Συμβουλές
 OPTION_FOG_DENSE	Έντονη
 OPTION_FOG_LIGHT	Απαλή
 OPTION_FOG_MIDDLE	Μεσαία

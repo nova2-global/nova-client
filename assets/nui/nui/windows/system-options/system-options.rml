@@ -12,8 +12,9 @@
 	     the facade fills the model from the getters at each show. The legacy
 	     rows keep legacy's order and calls: the sound and music sliders, the
 	     background music and its Change button (the music list), the camera
-	     distance, the fog and the tiling choices with Apply, and the field of
-	     view slider (NOVA-116). The Interface
+	     distance, the fog and the tiling choices with Apply, the field of
+	     view slider (NOVA-116), and the snowfall, FPS counter and tips
+	     choices (NOVA-118). The Interface
 	     section applies each choice at once and saves it (nui.set_theme,
 	     set_scale_percent, set_reduced_motion); the scale is a row of
 	     choices, not a slider, so the window does not rescale under a drag
@@ -87,6 +88,29 @@
 				<input id="so-fov" type="range" class="nui-slider so-slider so-slider--fov" min="30" max="120" step="1"
 					data-attr-value="fov" data-event-change="fov(ev.value)"/>
 				<span id="so-fov-value" class="so-value">{{ fov }}&#176;</span>
+			</div>
+			<!-- Snowfall, the FPS counter and tips (NOVA-118): OLD's On and
+			     Off pairs (0 is On), player_options.set_option. -->
+			<div class="so-row so-row--snow">
+				<span id="so-snow-label" class="so-label so-label--snow">@ui.OPTION_SNOWFALL</span>
+				<div class="so-choices">
+					<button id="so-snow-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--snow-0" data-class-is-selected="snow == 0" data-event-mousedown="choose('snow', 0, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_ON</span></button>
+					<button id="so-snow-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--snow-1" data-class-is-selected="snow == 1" data-event-mousedown="choose('snow', 1, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_OFF</span></button>
+				</div>
+			</div>
+			<div class="so-row so-row--fps">
+				<span id="so-fps-label" class="so-label so-label--fps">@ui.OPTION_FPS_COUNTER</span>
+				<div class="so-choices">
+					<button id="so-fps-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--fps-0" data-class-is-selected="fps == 0" data-event-mousedown="choose('fps', 0, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_ON</span></button>
+					<button id="so-fps-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--fps-1" data-class-is-selected="fps == 1" data-event-mousedown="choose('fps', 1, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_OFF</span></button>
+				</div>
+			</div>
+			<div class="so-row so-row--tips">
+				<span id="so-tips-label" class="so-label so-label--tips">@ui.OPTION_TIPS</span>
+				<div class="so-choices">
+					<button id="so-tips-0" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--tips-0" data-class-is-selected="tips == 0" data-event-mousedown="choose('tips', 0, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_ON</span></button>
+					<button id="so-tips-1" class="nui-button nui-button--medium nui-anim so-choice so-choice--middle so-choice--tips-1" data-class-is-selected="tips == 1" data-event-mousedown="choose('tips', 1, ev.button)"><span class="so-choice__label">@ui.NUI_SYSTEM_OPTIONS_OFF</span></button>
+				</div>
 			</div>
 		</div>
 		<div id="so-interface" class="so-interface" data-if="interface">

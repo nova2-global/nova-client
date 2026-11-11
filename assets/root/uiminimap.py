@@ -9,6 +9,7 @@ import app
 import colorInfo
 import constInfo
 import background
+import player_options
 
 class MapTextToolTip(ui.Window):
 	def __init__(self):
@@ -200,6 +201,11 @@ class MiniMap(ui.ScriptWindow):
 		"metin2_map_devilsCatacomb" : False,
 	}
 
+	# The FPS readout (NOVA-118): an outlined line centered at the hidden
+	# position line's place (uiscript minimap.py), on the minimap itself so it
+	# stays while the map is closed; OLD put it at W - 70, 164 (game.py:2384).
+	FPS_LINE_POSITION = (70, 160)
+
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
 
@@ -249,6 +255,8 @@ class MiniMap(ui.ScriptWindow):
 		self.imprisonmentEndTimeText = ""
 		# END_OF_AUTOBAN
 
+		player_options.listen(self)
+
 	def __del__(self):
 		miniMap.Destroy()
 		ui.ScriptWindow.__del__(self)
@@ -272,6 +280,9 @@ class MiniMap(ui.ScriptWindow):
 		self.tooltipAtlasOpen = 0
 		self.tooltipInfo = None
 		self.serverInfo = None
+		self.fpsLine = None
+		self.fpsShown = False
+		self.fpsNext = 0.0
 
 	def SetMapName(self, mapName):
 		self.mapName=mapName
@@ -366,6 +377,13 @@ class MiniMap(ui.ScriptWindow):
 		(ButtonPosX, ButtonPosY) = self.AtlasShowButton.GetGlobalPosition()
 		self.tooltipAtlasOpen.SetTooltipPosition(ButtonPosX, ButtonPosY)
 
+		self.fpsLine = ui.TextLine()
+		self.fpsLine.SetParent(self)
+		self.fpsLine.SetPosition(*self.FPS_LINE_POSITION)
+		self.fpsLine.SetHorizontalAlignCenter()
+		self.fpsLine.SetOutline()
+		self.__ShowFps(player_options.is_on(player_options.FPS_COUNTER))
+
 		self.ShowMiniMap()
 
 	def Destroy(self):
@@ -393,7 +411,32 @@ class MiniMap(ui.ScriptWindow):
 		if self.serverInfo:
 			self.serverInfo.SetText(net.GetServerInfo())
 
+	# The FPS readout: shown or hidden by the option, its text read again
+	# once a second (the client counts the render FPS once a second).
+	def __ShowFps(self, show):
+		self.fpsShown = bool(show)
+		if not self.fpsLine:
+			return
+		if self.fpsShown:
+			self.__RefreshFps(True)
+			self.fpsLine.Show()
+		else:
+			self.fpsLine.Hide()
+
+	def __RefreshFps(self, force=False):
+		now = app.GetTime()
+		if force or now >= self.fpsNext:
+			self.fpsLine.SetText(player_options.fps_text(app.GetRenderFPS()))
+			self.fpsNext = now + player_options.FPS_INTERVAL
+
+	def OnPlayerOptionChanged(self, name):
+		if name == player_options.FPS_COUNTER:
+			self.__ShowFps(player_options.is_on(player_options.FPS_COUNTER))
+
 	def OnUpdate(self):
+		if self.fpsShown and self.fpsLine:
+			self.__RefreshFps()
+
 		(x, y, z) = player.GetMainCharacterPosition()
 		miniMap.Update(x, y)
 

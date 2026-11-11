@@ -486,6 +486,84 @@ def tree_destination(spellings):
 	return destination
 
 
+def race_seeds(rows, items, old, new_races, pack):
+	"""Every race's files for the armor, costume body and costume hair rows:
+	the audit's row names the first race that draws nothing, and each race
+	file names its own model for the same value 3 (NEW's entry, else OLD's),
+	with its skins and LOD models."""
+	start = []
+	for row in rows:
+		if row[0] != "item" or row[3] not in ("armor", "costume_armor", "costume_hair") or row[6] == OK:
+			continue
+		item = items.get(int(row[1]))
+		if item is None:
+			continue
+		kind = "hairdata" if row[3] == "costume_hair" else "shapedata"
+		for race in allowed_races(item[4]):
+			name = race_msm.RACES[race]
+			for data in (new_races[name], old["races"][name]):
+				look = (data.hairs if kind == "hairdata" else data.shapes).get(item[3])
+				if not look or not look[0]:
+					continue
+				model = old_content.store_name(look[0])
+				start.append(model)
+				start.extend(old_content.store_name(dst) for _, dst in look[1])
+				stem = model[:-4] if model.endswith(".gr2") else model
+				start.extend("%s_lod_%02d.gr2" % (stem, n) for n in (1, 2, 3))
+	seen, out = set(), []
+	for path in start:
+		if path not in seen and path in old["index"] and not pack.has(path):
+			seen.add(path)
+			out.append(path)
+	return out
+
+
+def _races(packer, old_root, grlist, tsv, item_proto, category, part, run):
+	"""import (or plan, run "plan") every race's files for one category's
+	rows, in two parts by race folder ("1": warrior and assassin, "2": the
+	rest, "all")."""
+	import old_art
+	pack = Pack(old_content.REPO)
+	old = load_old(packer, old_root)
+	with open(item_proto, encoding="utf-8", errors="replace") as handle:
+		items = proto_items(handle.read())
+	new_races = {}
+	for race in race_msm.RACES:
+		with open(os.path.join(old_content.ASSETS, "root", "msm", race + ".msm"), "rb") as handle:
+			new_races[race] = race_msm.load(handle.read())
+	with open(tsv, encoding="utf-8") as handle:
+		rows = [line.split("\t") for line in handle.read().split("\n")[1:] if line]
+	rows = [row for row in rows if row[3] == category]
+	start = race_seeds(rows, items, old, new_races, pack)
+	first = ("/pc/warrior/", "/pc2/warrior/", "/pc/assassin/", "/pc2/assassin/")
+	if part == "1":
+		start = [path for path in start if any(f in path for f in first)]
+	elif part == "2":
+		start = [path for path in start if not any(f in path for f in first)]
+	scratch = old_art.scratch_folder()
+	take, missing = old_art.closure(start, old["index"], set(pack.files), packer, grlist, scratch)
+	sizes = dict((path, os.path.getsize(os.path.join(packer, source))) for path, source in take.items())
+	big = max(sizes.items(), key=lambda kv: kv[1]) if sizes else ("-", 0)
+	print("%s %s: %d files, %.1f MB, largest %s (%.1f MB), %d named but missing in OLD too" % (
+		category, part, len(take), sum(sizes.values()) / 1048576.0, big[0], big[1] / 1048576.0, len(missing)))
+	if run == "plan":
+		for path in sorted(missing):
+			print("  %s <- %s" % (path, missing[path]))
+		return 0
+	if big[1] > MAX_FILE:
+		print("STOP: a file over 95 MB")
+		return 3
+	groups = old_art._groups()
+	paths = old_art.tree_files()
+	spellings = {}
+	for path in paths:
+		parts = path.split("/")[1:-1]
+		for i in range(1, len(parts) + 1):
+			spellings.setdefault("/".join(parts[:i]).lower(), "/".join(parts[:i]))
+	old_art.destination = tree_destination(spellings)
+	return old_art.place(packer, grlist, scratch, take, missing, old["index"], old_art.tree_group_folders(paths, groups))
+
+
 def _import(packer, old_root, grlist, tsv, batch):
 	"""Takes OLD's files for one batch into this worktree's groups (git add
 	--sparse them afterwards), then merges OLD's item_list lines whose files
@@ -552,6 +630,8 @@ def merge_item_list(old_root, cut_proto):
 def _main(argv):
 	if len(argv) == 8 and argv[0] == "plan":
 		return _plan(*argv[1:])
+	if len(argv) == 9 and argv[0] == "races":
+		return _races(*argv[1:])
 	if len(argv) == 6 and argv[0] == "import":
 		return _import(*argv[1:])
 	if len(argv) == 3 and argv[0] == "item_list":

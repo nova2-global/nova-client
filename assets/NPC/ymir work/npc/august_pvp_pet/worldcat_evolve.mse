@@ -1,0 +1,176 @@
+BoundingSphereRadius   0.000000
+BoundingSpherePosition 0.000000 0.000000 0.000000
+
+Group Particle
+{
+    StartTime           0.000000
+    List TimeEventPosition
+    {
+        0.000000 "MOVING_TYPE_DIRECT" 0.000000 0.000000 0.000000
+    }
+    
+    Group EmitterProperty
+    {
+        MaxEmissionCount        50
+    
+        CycleLength             0.500000
+        CycleLoopEnable         1
+        LoopCount               0
+    
+        EmitterShape            0
+        EmitterAdvancedType     0
+        EmitterEmitFromEdgeFlag  0
+        EmittingDirection       0.000000 0.000000 0.000000
+    
+        List TimeEventEmittingSize
+        {
+            0.000000 0.000000
+            0.000000 0.000000
+            0.000000 0.000000
+        }
+        List TimeEventEmittingAngularVelocity
+        {
+            0.000000 0.000000
+            0.000000 0.000000
+            0.000000 0.000000
+        }
+        List TimeEventEmittingDirectionX
+        {
+            0.000000 0.000000
+            0.000000 0.000000
+            0.000000 0.000000
+        }
+        List TimeEventEmittingDirectionY
+        {
+            0.000000 0.000000
+            0.000000 0.000000
+            0.000000 0.000000
+        }
+        List TimeEventEmittingDirectionZ
+        {
+            0.000000 0.000000
+            0.000000 0.000000
+            0.000000 0.000000
+        }
+        List TimeEventEmittingVelocity
+        {
+            0.000000 0.000000
+            0.000000 0.000000
+            0.000000 0.000000
+        }
+        List TimeEventEmissionCountPerSecond
+        {
+            0.000000 2.000000
+            0.500000 5.000000
+            1.000000 5.000000
+        }
+        List TimeEventLifeTime
+        {
+            0.000000 5.000000
+            0.000000 5.000000
+            1.000000 5.000000
+        }
+        List TimeEventSizeX
+        {
+            0.000000 64.000000
+            0.000000 64.000000
+            0.000000 64.000000
+        }
+        List TimeEventSizeY
+        {
+            0.000000 64.000000
+            0.000000 64.000000
+            0.000000 64.000000
+        }
+    }
+    
+    Group ParticleProperty
+    {
+        SrcBlendType                 5
+        DestBlendType                2
+        ColorOperationType           4
+        BillboardType                1
+        RotationType                 0
+        RotationSpeed                0.000000
+        RotationRandomStartingBegin  0
+        RotationRandomStartingEnd    0
+    
+        AttachEnable                 0
+        StretchEnable                1
+    
+        TexAniType                   0
+        TexAniDelay                  0.030000
+        TexAniRandomStartFrameEnable 0
+    
+        List TimeEventGravity
+        {
+        }
+        List TimeEventAirResistance
+        {
+        }
+        List TimeEventScaleX
+        {
+            0.000000 0.000000
+            1.000000 1.000000
+        }
+        List TimeEventScaleY
+        {
+            0.000000 0.000000
+            1.000000 1.000000
+        }
+        List TimeEventColorRed
+        {
+            0.287179 0.980392
+            0.697436 0.980392
+            0.802564 0.125490
+        }
+        List TimeEventColorGreen
+        {
+            0.287179 0.792157
+            0.697436 0.274510
+            0.802564 0.972549
+        }
+        List TimeEventColorBlue
+        {
+            0.287179 0.117647
+            0.697436 0.043137
+            0.802564 0.980392
+        }
+        List TimeEventAlpha
+        {
+            0.000000 0.200000
+            0.971795 0.050000
+        }
+        List TimeEventRotation
+        {
+            0.000000 0.000000
+            0.000000 0.000000
+            0.000000 0.000000
+        }
+        List TextureFiles
+        {
+            "detail_lens.dds"
+        }
+    }
+}
+Group Light
+{
+    StartTime           0.000000
+    List TimeEventPosition
+    {
+        0.000000 "MOVING_TYPE_DIRECT" 0.000000 0.000000 0.000000
+    }
+    
+    Duration            1.000000
+    LoopFlag            1
+    LoopCount           0
+    AmbientColor        0.929412 0.082353 0.082353 1.000000
+    DiffuseColor        0.921569 0.847059 0.592157 1.000000
+    MaxRange            50.000000
+    Attenuation0        0.000000
+    Attenuation1        0.100000
+    Attenuation2        0.000000
+    List TimeEventRange
+    {
+    }
+}

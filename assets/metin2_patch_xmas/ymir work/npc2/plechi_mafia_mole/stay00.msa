@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc2\plechi_mafia_mole\stay00.GR2"
+MotionDuration           13.333334
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         3.112571
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Dummy_Gun"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/npc2/plechi_mafia_mole/weapon_eff.mse"
+        EffectPosition       0.000000 0.000000 20.000000
+    }
+}

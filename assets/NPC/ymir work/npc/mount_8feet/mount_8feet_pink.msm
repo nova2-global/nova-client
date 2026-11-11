@@ -1,0 +1,83 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "d:/ymir work/npc/mount_8feet/mount_8feet.GR2"
+
+Group ShapeData
+{
+    PathName 		 ""
+    ShapeDataCount 		 1
+	Group ShapeData00
+	{
+		ShapeIndex			0
+
+		Model				"D:\Ymir Work\npc\mount_8feet\mount_8feet.GR2"
+		SourceSkin			"D:\Ymir Work\npc\mount_8feet\clisyeor.dds"
+		TargetSkin			"D:\Ymir Work\npc\mount_8feet\clisyeor_pink.dds"
+	}
+}
+Group AttachingData
+{
+    AttachingDataCount       4
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "old_Dummy_root"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           52.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "old_Dummy_root"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           48.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip002 Spine"
+        
+        EffectScriptName     "D:\ymir work\npc\kenta_mount\no.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData03
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip002 Spine1"
+        
+        EffectScriptName     "D:\ymir work\npc\kenta_mount\no.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+}

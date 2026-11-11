@@ -1,0 +1,33 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\fire_4\die.GR2"
+MotionDuration           3.333333
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.000000
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001 L Finger01"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/mehok/monster/die5.mse"
+        EffectPosition       0.000000 0.000000 400.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         1.962422
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001 L Finger01"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/mehok/monster/die5.mse"
+        EffectPosition       0.000000 0.000000 400.000000
+    }
+}

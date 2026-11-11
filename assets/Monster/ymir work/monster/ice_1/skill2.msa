@@ -1,0 +1,76 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\ice_1\att2.GR2"
+MotionDuration           2.366667
+
+Group MotionEventData
+{
+    MotionEventDataCount     5
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.612665
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001-L-Finger21"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/mehok/monster/hamza/49.mse"
+        EffectPosition       0.000000 0.000000 150.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.671956
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001-L-Finger21"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/mehok/monster/hamza/54.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         0.499026
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001-L-Finger21"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/mehok/monster/hamza/53.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event03
+    {
+        MotionEventType      2
+        StartingTime         0.523730
+        
+        DuringTime           0.600000
+        Power                2000
+        AffectingRange       1000
+    }
+    Group Event04
+    {
+        MotionEventType      4
+        StartingTime         0.558316
+        DuringTime           0.200000
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.300000
+        ExternalForce        0.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           600.000000
+            Position         0.000000 0.000000 150.000000
+        }
+    }
+}

@@ -1,0 +1,62 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\ymir work\monster2\plechito_christmas2024_dng\plechi_ch2024_dng_lowboss1\plechi_ch2024_dng_lowboss1.GR2"
+
+Group ShapeData
+{
+    PathName 		 ""
+    ShapeDataCount 		 0
+}
+Group AttachingData
+{
+    AttachingDataCount       3
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "bip01"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           189.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "bip01"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           222.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "effect_wp"
+        
+        EffectScriptName     "D:\ymir work\effect\plechito\monster\christmas2024\lowboss1_wand_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+}

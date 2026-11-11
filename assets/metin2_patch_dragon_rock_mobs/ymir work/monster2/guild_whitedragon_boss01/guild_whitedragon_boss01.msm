@@ -1,0 +1,460 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\Ymir Work\monster2\guild_whitedragon_boss01\guild_whitedragon_boss01.GR2"
+
+Group ShapeData
+{
+    PathName 		 ""
+    ShapeDataCount 		 1
+
+	Group ShapeData00
+	{
+		ShapeIndex			0
+
+		Model				"D:\Ymir Work\monster2\guild_whitedragon_boss01\guild_whitedragon_boss01.GR2"
+		SourceSkin			"D:\Ymir Work\monster2\guild_whitedragon_boss01\guild_whitedragon_boss01.dds"
+		TargetSkin			"D:\Ymir Work\monster2\guild_whitedragon_boss01\guild_whitedragon_boss01.dds"
+	}
+}
+
+Group FlyTargetAdjustPosition
+{
+	AdjustPosition	260.0 361.23 626.97
+}
+
+Group AttachingData
+{
+    AttachingDataCount       24
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Head"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           210.000000
+            Position         0.000000 -130.000000 60.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Head"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           230.000000
+            Position         0.000000 -130.000000 60.000000
+        }
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 R Hand"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           105.000000
+            Position         -30.000000 -70.000000 80.000000
+        }
+    }
+    
+    Group AttachingData03
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 L Hand"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           105.000000
+            Position         30.000000 -70.000000 80.000000
+        }
+    }
+    
+    Group AttachingData04
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 R Hand"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           115.000000
+            Position         -30.000000 -70.000000 80.000000
+        }
+    }
+    
+    Group AttachingData05
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 L Hand"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           115.000000
+            Position         30.000000 -70.000000 80.000000
+        }
+    }
+    
+    Group AttachingData06
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Spine1"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           370.000000
+            Position         0.000000 0.000000 -300.000000
+        }
+    }
+    
+    Group AttachingData07
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Spine1"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           360.000000
+            Position         0.000000 0.000000 -300.000000
+        }
+    }
+    
+    Group AttachingData08
+    {
+        AttachingDataType    1
+        
+        isAttaching          0
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           370.000000
+            Position         0.000000 0.000000 -150.000000
+        }
+    }
+    
+    Group AttachingData09
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           360.000000
+            Position         0.000000 0.000000 -150.000000
+        }
+    }
+    
+    Group AttachingData10
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_tail 002"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           200.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData11
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_tail 002"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           190.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData12
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_tail 003"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           200.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData13
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone_tail 003"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           190.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData14
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 L Foot"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           160.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData15
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 L Foot"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           150.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData16
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 R Foot"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           160.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData17
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 R Foot"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           150.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData18
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Neck"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           210.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData19
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Neck"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           200.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData20
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Neck1"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           210.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData21
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Neck1"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           200.000000
+            Position         0.000000 -100.000000 0.000000
+        }
+    }
+    
+    Group AttachingData22
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Spine1"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           500.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData23
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip01 Spine1"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           491.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+}

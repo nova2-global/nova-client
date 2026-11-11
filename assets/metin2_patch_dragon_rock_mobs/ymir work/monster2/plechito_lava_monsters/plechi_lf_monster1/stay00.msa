@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster2\plechito_lava_monsters\plechi_lf_monster1\stay00.GR2"
+MotionDuration           1.833333
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.017032
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "effect"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/plechito/monster/lava_fields/lf_monster1_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

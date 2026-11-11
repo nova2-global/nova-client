@@ -1,0 +1,33 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc2\plechito_halloween2020\plechi_halloween2020_pet3\stay01.GR2"
+MotionDuration           12.633333
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         6.961394
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Root"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/npc2/plechito_halloween2020/plechi_halloween2020_pet3/stay01_eff.mse"
+        EffectPosition       20.000000 -30.000000 45.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         7.220000
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Root"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/npc2/plechito_halloween2020/plechi_halloween2020_pet3/stay01_eff.mse"
+        EffectPosition       20.000000 -30.000000 45.000000
+    }
+}

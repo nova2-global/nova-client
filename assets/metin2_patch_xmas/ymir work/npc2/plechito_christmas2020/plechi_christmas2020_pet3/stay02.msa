@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc2\plechito_christmas2020\plechi_christmas2020_pet3\stay02.GR2"
+MotionDuration           2.600000
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.582571
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Root"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/npc2/plechito_christmas2020/plechi_christmas2020_pet3/stay02_eff.mse"
+        EffectPosition       0.000000 0.000000 60.000000
+    }
+}

@@ -1,0 +1,26 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc\plechito_easter2021_mounts\easter2021_mount3\dead.GR2"
+MotionDuration           1.733333
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      8
+        StartingTime         1.5800000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         1.630000
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Root"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/npc/plechito_easter2021_mounts/easter2021_mount3/dead_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

@@ -1,0 +1,22 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc2\plechito_halloween2020\plechi_halloween2020_pet2\stay02.GR2"
+MotionDuration           2.266667
+
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.691394
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "FX_Poi"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/npc2/plechito_halloween2020/plechi_halloween2020_pet2/stay02_effect.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

@@ -1,0 +1,114 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\ymir work\npc\plechi_christmas2019_mount3\plechi_christmas2019_mount3.GR2"
+
+Group ShapeData
+{
+    PathName 		 ""
+    ShapeDataCount 		 0
+}
+Group AttachingData
+{
+    AttachingDataCount       7
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip001-Spine1"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           65.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip001-Spine1"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           90.000000
+            Position         0.000000 0.000000 0.000000
+        }
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip001-R-Foot"
+        
+        EffectScriptName     "D:\ymir work\npc\plechi_christmas2019_mount3\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData03
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip001-L-Foot"
+        
+        EffectScriptName     "D:\ymir work\npc\plechi_christmas2019_mount3\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData04
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip001-L-Finger0"
+        
+        EffectScriptName     "D:\ymir work\npc\plechi_christmas2019_mount3\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData05
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bip001-R-Finger0"
+        
+        EffectScriptName     "D:\ymir work\npc\plechi_christmas2019_mount3\foot_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+    
+    Group AttachingData06
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "Bone07"
+        
+        EffectScriptName     "D:\ymir work\npc\plechi_christmas2019_mount3\bell_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+}

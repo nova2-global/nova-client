@@ -1,0 +1,52 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\undead_unchained\attack.GR2"
+MotionDuration           2.000000
+
+Group MotionEventData
+{
+    MotionEventDataCount     3
+    Group Event00
+    {
+        MotionEventType      4
+        StartingTime         1.327766
+        DuringTime           4.000000
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.600000
+        ExternalForce        4.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           1000.000000
+            Position         0.000000 0.000000 300.000000
+        }
+    }
+    Group Event01
+    {
+        MotionEventType      2
+        StartingTime         1.281837
+        
+        DuringTime           1.100000
+        Power                100
+        AffectingRange       900
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         1.311065
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Body"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/12_tiger_s3_blow.mse"
+        EffectPosition       600.000000 0.000000 0.000000
+    }
+}

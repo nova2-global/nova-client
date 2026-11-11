@@ -1,0 +1,33 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc2\plechi_summer2020_pet4\stay01.GR2"
+MotionDuration           6.366667
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         1.662571
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Gun"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/npc2/plechi_summer2020_pet4/stay_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         2.532571
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Gun"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/npc2/plechi_summer2020_pet4/stay_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\npc2\plechi_panda_pet2\stay01.GR2"
+MotionDuration           6.233334
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         5.401394
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01 Spine1"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/npc2/plechi_panda_pet2/stay01_eff.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

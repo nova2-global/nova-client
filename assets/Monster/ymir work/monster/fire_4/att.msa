@@ -1,0 +1,21 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster\fire_4\att.GR2"
+MotionDuration           1.466667
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.235769
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip001 L Finger01"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/mehok/monster/hamza/27.mse"
+        EffectPosition       0.000000 -700.000000 300.000000
+    }
+}

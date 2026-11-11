@@ -1,0 +1,6 @@
+ScriptType               MotionData
+
+MotionFileName           "D:/Ymir Work/npc/nova_pet_easter2020/walk.GR2"
+MotionDuration           0.500000
+Accumulation           0.00	0.00	0.00
+

@@ -1,0 +1,19 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster2\plechito_lava_monsters\plechi_lf_monster18\attack00.GR2"
+MotionDuration           1.800000
+
+Group MotionEventData
+{
+    MotionEventDataCount     1
+    Group Event00
+    {
+        MotionEventType      6
+        StartingTime         0.879303
+        
+        AttachingEnable      1
+        AttachingBoneName    "Bip01-R-Hand"
+        FlyFileName       "d:/ymir work/effect/plechito/monster/lava_fields/lf_monster13_attack.msf"
+        FlyPosition       0.000000 0.000000 0.000000
+    }
+}

@@ -1,0 +1,5 @@
+GENERAL WAIT stay00.msa 70
+GENERAL WAIT1 stay01.msa 30
+GENERAL WALK walk.msa 100
+GENERAL RUN run.msa 100
+

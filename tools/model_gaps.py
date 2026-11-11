@@ -408,7 +408,7 @@ def seeds(rows, old, pack):
 			start.extend("%s_lod_%02d.gr2" % (stem, n) for n in (1, 2, 3))
 		if path.endswith(".msm"):
 			folder = path.rsplit("/", 1)[0] + "/"
-			start.extend(store for store in old["index"] if store.startswith(folder))
+			start.extend(store for store in old["index"] if store.startswith(folder) and not store.endswith(".bak"))
 	seen, out = set(), []
 	for path in start:
 		if path not in seen and path in old["index"] and not pack.has(path):

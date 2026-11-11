@@ -1,0 +1,78 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster2\drugofix_boss\skill00.gr2"
+MotionDuration           2.000000
+
+Group MotionEventData
+{
+    MotionEventDataCount     6
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.037578
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip01 Prop1"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/drugofix_boss/skill.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.196242
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip02 R Hand"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/drugofix_boss/hands_fire.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         0.196242
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Bip02 L Hand"
+        FollowingEnable      1
+        EffectFileName       "d:/ymir work/effect/monster2/drugofix_boss/hands_fire.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event03
+    {
+        MotionEventType      1
+        StartingTime         0.676409
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip02 R Finger12"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/drugofix_boss/pt1.mse"
+        EffectPosition       0.000000 -180.000000 0.000000
+    }
+    Group Event04
+    {
+        MotionEventType      1
+        StartingTime         0.772443
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Bip02 R Finger12"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/drugofix_boss/pt2.mse"
+        EffectPosition       0.000000 -180.000000 0.000000
+    }
+    Group Event05
+    {
+        MotionEventType      2
+        StartingTime         0.722338
+        
+        DuringTime           0.300000
+        Power                150
+        AffectingRange       10
+    }
+}

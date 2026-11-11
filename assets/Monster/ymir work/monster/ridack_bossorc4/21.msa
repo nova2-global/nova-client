@@ -1,0 +1,43 @@
+ScriptType               MotionData
+
+MotionFileName           "D:/ymir work/monster/ridack_bossorc4/21.gr2"
+MotionDuration           2.166667
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         1.000000
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    ""
+        FollowingEnable      1
+        EffectFileName       "D:/ymir work/monster/ridack_bossorc4/ridack_skill.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      4
+        StartingTime         1.000000
+        DuringTime           2.166667
+        EnableHitProcess     0
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.300000
+        ExternalForce        0.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           800.000000
+            Position         0.000000 0.000000 100.000000
+        }
+    }
+}

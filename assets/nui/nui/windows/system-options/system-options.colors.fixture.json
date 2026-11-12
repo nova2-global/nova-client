@@ -12,6 +12,11 @@
 		"snow": 1,
 		"fps": 0,
 		"tips": 0,
+		"frame_rate": 60,
+		"frame_rate_label": "60",
+		"frame_rate_on": true,
+		"frame_rate_first": true,
+		"frame_rate_last": false,
 		"interface": true,
 		"themes": [
 			{"id": "modern-dark", "label": "@ui.THEME_MODERN_DARK"},

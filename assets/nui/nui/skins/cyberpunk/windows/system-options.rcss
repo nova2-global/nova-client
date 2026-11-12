@@ -46,6 +46,12 @@ body.skin-cyberpunk.system-options .so-legacy .so-choice
 {
 	padding: 0 7dp;
 }
+/* The frame rate's value cell (NOVA-214): square, as the board's cells. */
+body.skin-cyberpunk.system-options .so-step-value
+{
+	border-radius: 0;
+	letter-spacing: 0.5dp;
+}
 body.skin-cyberpunk.system-options .so-heading
 {
 	color: var(--accent);

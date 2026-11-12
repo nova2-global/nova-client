@@ -4,6 +4,9 @@ NovaUI), so the Interface can make one window either way. Nothing shows."""
 
 
 class UnavailableWindow(object):
+	# NOVA-192: no wiki, so the tooltips name no Shift + right-click.
+	AVAILABLE = False
+
 	def Hide(self):
 		pass
 

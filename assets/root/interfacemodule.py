@@ -306,7 +306,7 @@ class Interface(object):
 		                                          "nui_costume_preview.CostumePreview")
 		costume_preview.set_popup(self.wndCostumePreview)
 		# Shift + right-click opens an item in it, and the tooltips say so (NOVA-192).
-		item_shortcuts.set_wiki(not isinstance(self.wndWiki, uiWiki.UnavailableWindow))
+		item_shortcuts.set_wiki(getattr(self.wndWiki, "AVAILABLE", True))
 		# Its Link button pastes a page's link where the player types.
 		self.wndWiki.SetPasteLinkEvent(ui.__mem_func__(self.PasteWikiLink))
 

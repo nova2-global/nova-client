@@ -173,6 +173,13 @@ class MainStream(object):
 			newPhaseWindow.Open()
 			# NovaUI: the game phase queues its on-demand documents for a prewarm in calm frames.
 			nui_windows.start_phase(newPhaseWindow)
+			# NOVA-204: a warp re-arms the auto-shout; another phase, a
+			# channel change or another character switches it off.
+			try:
+				import autoshout
+				autoshout.on_phase(newPhaseWindow)
+			except Exception as error:
+				dbg.TraceError("networkModule: the auto-shout's phase check failed (%s)" % type(error).__name__)
 
 		self.curPhaseWindow=newPhaseWindow
 		

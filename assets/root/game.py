@@ -2325,6 +2325,9 @@ class GameWindow(ui.ScriptWindow):
 			"ClearBossInfo"			: self.__ClearBossInfo,
 			"AddBossInfo"			: self.__AddBossInfo,
 			"BossInfoLoadComplete"	: self.__BossInfoLoadComplete,
+
+			# NOVA-204: the auto-shout's state (the server sends it after every change and repeat).
+			"AutoShoutState"		: self.interface.AutoShoutState,
 		}
 
 		self.serverCommander=stringCommander.Analyzer()

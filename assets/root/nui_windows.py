@@ -139,6 +139,8 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("duel-rules", True),         # the duel rules a challenger ticks
 	("guild-war-top", True),      # the guild war top killers (TAB held)
 	("kill-rank", True),          # the kill ranking
+	# NOVA-204: the auto-shout window, in the social group.
+	("auto-shout", True),         # the auto-shout's message, Start/Stop and countdown
 	# NOVA-25: the dungeon manager, its drops panel and the dungeon ranking,
 	# in the dungeon group.
 	("dungeon-timer", True),      # the dungeon manager: the list, the cooldowns, the teleport
@@ -166,7 +168,7 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
-	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank"),
+	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank", "auto-shout"),
 	"dungeon": ("dungeon-timer", "dungeon-drops", "dungeon-rank"),
 	"mob-board": ("target-info",),
 }
@@ -269,6 +271,8 @@ ON_DEMAND_DOCUMENTS = (
 	# NOVA-27: the boss info panel and the damage count, each only while it shows.
 	("boss-info", ("boss-info",)),
 	("damage-count", ("damage-count",)),
+	# NOVA-204: the auto-shout window, only while it shows.
+	("auto-shout", ("auto-shout",)),
 	# P18: the maintenance countdown, only while it shows.
 	("maintenance", ("maintenance",)),
 )

@@ -252,8 +252,12 @@ class ChatInput(object):
 			# color goes with this shout only.
 			net.SendChatPacket(text, chat_type, _shout_color_index())
 			uiChat.SetShoutColorIndex(0)
+			uiChat.RememberShout(text)
 		else:
 			net.SendChatPacket(text, chat_type)
+			# NOVA-204: a sent shout is the character's auto-shout message.
+			if chat.CHAT_TYPE_SHOUT == chat_type:
+				uiChat.RememberShout(text)
 
 	def _send_prefixed(self, text, chat_type):
 		if 1 == len(text):
@@ -478,6 +482,11 @@ class ChatBoard(nui.Window):
 		if button == 0:
 			_call(self._owner.openChatLogEvent)
 
+	@nui.on("auto_shout")
+	def on_auto_shout(self, button):
+		if button == 0:
+			_call(self._owner.autoShoutEvent)
+
 	@nui.on("resized")
 	def on_resized(self, height):
 		self._owner.nui_resized(height)
@@ -569,6 +578,7 @@ class ChatWindow(object):
 		self.yLast = wndMgr.GetScreenHeight() - self.EDIT_LINE_HEIGHT - 37
 		self.sendWhisperEvent = None
 		self.openChatLogEvent = None
+		self.autoShoutEvent = None    # NOVA-204: the auto-shout button's event
 		self.input = ChatInput(None, "chat-input", self.USER_MAX, weak_event(self.CloseChat), weak_event(self.CloseChat))
 		self.input.focus_check = weak_event(self._link_focus)
 		# Legacy's state calls (uichat.py:540-544, :616-631) and its mode
@@ -635,6 +645,7 @@ class ChatWindow(object):
 		self.nui_discard()
 		self.sendWhisperEvent = None
 		self.openChatLogEvent = None
+		self.autoShoutEvent = None
 
 	# --- placement ------------------------------------------------------------------
 
@@ -717,6 +728,10 @@ class ChatWindow(object):
 
 	def SetOpenChatLogEvent(self, event):
 		self.openChatLogEvent = event
+
+	def SetAutoShoutEvent(self, event):
+		"""NOVA-204: the auto-shout button (legacy ChatWindow.SetAutoShoutEvent)."""
+		self.autoShoutEvent = event
 
 	# --- open and close -------------------------------------------------------------
 

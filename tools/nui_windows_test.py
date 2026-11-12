@@ -21,6 +21,8 @@ P18_HUD = ["maintenance"]
 W7_HUD = ["duel-rules"]
 W7_HUD2 = ["guild-war-top"]
 W7_SOCIAL = ["kill-rank"]
+# NOVA-204: the auto-shout window joins the social group, after the kill ranking.
+W7_SOCIAL = W7_SOCIAL + ["auto-shout"]
 # NOVA-27: the boss info panel and the damage count join the hud group, before
 # the maintenance countdown.
 NOVA27_HUD = ["boss-info", "damage-count"]

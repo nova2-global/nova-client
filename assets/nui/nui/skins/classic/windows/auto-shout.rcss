@@ -1,0 +1,134 @@
+/* Classic skin overlay of nui/windows/auto-shout/auto-shout.rml: the legacy
+   auto-shout window (uiscript autoshoutwindow.py, uiautoshout.py) at 100%,
+   1dp to the legacy pixel: the board with its title bar, 330 x 160; the
+   description at 15, 34 (room for two lines) and the message's label at
+   15, 64; the slot bar at 15, 80 (300 x 18, drawn 301 x 19) with the edit
+   line at 3, 3; the state at 15, 104 and the time to the next shout at 100,
+   104; Start or Stop on the large art (88 x 21) centered at y 130. NOVA-204
+   is new: OLD built its window in code with its own colors; the legacy look
+   here is NEW's uiscript's. */
+
+body.skin-classic.auto-shout
+{
+	width: 330dp;
+	height: 160dp;
+	min-width: 0;
+}
+body.skin-classic.auto-shout .auto-shout__title-icon
+{
+	display: none;
+}
+body.skin-classic.auto-shout .auto-shout__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 315dp;
+	margin: 0;
+	z-index: 1;
+	pointer-events: none;
+}
+body.skin-classic.auto-shout .auto-shout__handle, body.skin-classic.auto-shout .auto-shout__titlebar .nui-window__close
+{
+	pointer-events: auto;
+}
+body.skin-classic.auto-shout .auto-shout__titlebar .nui-window__close
+{
+	position: relative;
+	left: -3dp;
+}
+body.skin-classic.auto-shout .auto-shout__body
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 330dp;
+	height: 160dp;
+	padding: 0;
+}
+body.skin-classic.auto-shout .auto-shout__desc,
+body.skin-classic.auto-shout .auto-shout__label,
+body.skin-classic.auto-shout .auto-shout__state
+{
+	position: absolute;
+	left: 15dp;
+	margin: 0;
+	color: var(--text);
+	font-size: var(--font-md);
+	line-height: 14dp;
+}
+body.skin-classic.auto-shout .auto-shout__desc { top: 34dp; width: 300dp; white-space: normal; }
+body.skin-classic.auto-shout .auto-shout__label { top: 64dp; }
+body.skin-classic.auto-shout .auto-shout__slot
+{
+	position: absolute;
+	left: 15dp;
+	top: 80dp;
+	box-sizing: border-box;
+	width: 301dp;
+	height: 19dp;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	background-color: var(--classic-slot-fill);
+}
+body.skin-classic.auto-shout .auto-shout__field
+{
+	position: absolute;
+	left: 3dp;
+	top: 2dp;
+	width: 294dp;
+	height: 15dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	line-height: 13dp;
+}
+body.skin-classic.auto-shout .auto-shout__state
+{
+	top: 104dp;
+	display: block;
+	width: 300dp;
+	height: 14dp;
+	margin: 0;
+}
+body.skin-classic.auto-shout .auto-shout__dot
+{
+	display: none;
+}
+body.skin-classic.auto-shout .auto-shout__status,
+body.skin-classic.auto-shout .auto-shout__state.is-on .auto-shout__status
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	color: var(--text);
+}
+body.skin-classic.auto-shout .auto-shout__next
+{
+	position: absolute;
+	left: 85dp;
+	top: 0;
+	color: var(--text);
+}
+body.skin-classic.auto-shout .auto-shout__countdown
+{
+	color: var(--text);
+}
+body.skin-classic.auto-shout .auto-shout__footer
+{
+	position: absolute;
+	left: 121dp;
+	top: 130dp;
+	display: block;
+	margin: 0;
+	padding: 0;
+}
+body.skin-classic.auto-shout .auto-shout__toggle
+{
+	width: 88dp;
+	min-width: 0;
+	padding: 0;
+	color: var(--classic-button-text);
+}

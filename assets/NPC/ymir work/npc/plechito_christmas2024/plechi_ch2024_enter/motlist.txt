@@ -1,0 +1,2 @@
+GENERAL WAIT stay00.msa 92
+GENERAL WAIT1 stay01.msa 8

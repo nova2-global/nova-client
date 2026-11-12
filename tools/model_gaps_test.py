@@ -77,5 +77,26 @@ class Causes(unittest.TestCase):
 		self.assertEqual(self.cause(("weapon", "weapon", 999)), "model_unreadable")
 
 
+class Spawns(unittest.TestCase):
+	"""The races the server spawns (r44: the TreasureBox 55022 was invisible)."""
+
+	def test_m_g_and_r_lines_and_shop_npcs(self):
+		import tempfile
+		top = tempfile.mkdtemp()
+		os.makedirs(os.path.join(top, "map", "a1"))
+		with open(os.path.join(top, "map", "a1", "npc.txt"), "w") as handle:
+			handle.write("//type\tcx\n m\t683\t575\t0\t0\t0\t7\t1m\t100\t1\t55022\n".replace(" m", "m"))
+		with open(os.path.join(top, "map", "a1", "regen.txt"), "w") as handle:
+			handle.write("g\t1\t1\t1\t1\t0\t0\t5s\t100\t1\t104\nr\t1\t1\t1\t1\t0\t0\t5s\t100\t1\t101\n")
+		group = 'Group\tA\n{\n\tLeader\t"Alpha Wolf"\t103\n\tVnum\t104\n\t1\tWolf\t102\n}\nGroup\tB\n{\n\tLeader\tDog\t101\n\tVnum\t101\n}\n'
+		group_group = "Group\ta1_01\n{\n\tVnum\t101\n\t1\t101\t1\n}\n"
+		sql = os.path.join(top, "shops.sql")
+		with open(sql, "w") as handle:
+			handle.write("INSERT INTO player.shop (vnum, name, npc_vnum) VALUES\n  (605, 'TreasureBox Body', 55022),\n  (555, 'x', 0);\n")
+		where = model_gaps.spawned_races(os.path.join(top, "map"), group, group_group, [sql])
+		self.assertEqual(sorted(where), [101, 102, 103, 55022])
+		self.assertEqual(where[55022], {"a1/npc.txt", "shop 605"})
+
+
 if __name__ == "__main__":
 	unittest.main()

@@ -1,0 +1,67 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster2\new_mutant\attack1.GR2"
+MotionDuration           1.100000
+
+Group AttackingData
+{
+    AttackType           0
+    HittingType          2
+    StiffenTime          0.000000
+    InvisibleTime        0.100000
+    ExternalForce        0.000000
+    HitLimitCount        0
+    
+    MotionType           1
+    HitDataCount         1
+    Group HitData00
+    {
+        AttackingStartTime   0.218163
+        AttackingEndTime     0.305428
+        AttackingBone        "Mutant:RightHandPinky4"
+        WeaponLength         54.000000
+        List HitPosition
+        {
+            0.218163 -87.018051 -43.023273 152.010437 -74.976166 -99.428352 147.247681
+            0.226496 -82.744850 -57.968460 151.350983 -61.005505 -111.467552 147.547043
+            0.234830 -75.913269 -73.372154 150.845154 -45.043209 -122.255760 148.265244
+            0.243163 -66.176117 -88.681282 150.681473 -27.064253 -131.324081 149.644531
+            0.251496 -53.616657 -102.771301 149.609802 -7.483943 -137.693527 150.807281
+            0.259830 -38.651806 -114.927757 147.339310 12.858722 -140.958908 151.613495
+            0.268163 -21.238739 -124.928055 144.473282 33.710766 -141.096268 152.741470
+            0.276496 -1.342070 -132.304489 141.836487 54.725887 -137.905212 155.036453
+            0.284830 19.790495 -136.170532 140.646698 74.270905 -131.345337 159.562943
+            0.293163 40.971954 -136.186050 141.170319 91.067772 -121.814232 166.331421
+            0.301496 61.529732 -132.404282 143.166458 104.494736 -109.933998 174.762604
+        }
+    }
+}
+
+Group MotionEventData
+{
+    MotionEventDataCount     2
+    Group Event00
+    {
+        MotionEventType      1
+        StartingTime         0.236534
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Mutant:RightHand"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/hit/blow_electric/light_2_blow.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         0.036743
+        
+        IndependentFlag      0
+        AttachingEnable      1
+        AttachingBoneName    "Mutant:Hips"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/hit/blow_electric/light_body.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

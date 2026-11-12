@@ -33,6 +33,9 @@
 		</div>
 		<div class="nui-window__footer nui-dialog__footer">
 			<button id="dialog-question-cancel" class="nui-button nui-button--medium nui-anim" data-event-click="cancel()">{{ cancel_label }}</button>
+			<!-- QuestionDialog3's third button (NOVA-189, NOVA-201), between
+			     accept and cancel as legacy's. -->
+			<button id="dialog-question-middle" class="nui-button nui-button--medium nui-anim" data-if="middle_on" data-event-click="middle()">{{ middle_label }}</button>
 			<button id="dialog-question-accept" class="nui-button nui-button--medium nui-button--primary nui-anim" autofocus="autofocus" data-event-click="accept()">{{ accept_label }}</button>
 		</div>
 	</div>

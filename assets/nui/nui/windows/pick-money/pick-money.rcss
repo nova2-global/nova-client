@@ -71,3 +71,9 @@ input.pick-money__field
 	flex: 1 1 0;
 	min-width: 0;
 }
+/* NOVA-190: the "Split all" box of a stack's split, under the field. */
+.pick-money__split
+{
+	margin-top: var(--space-3);
+	align-self: center;
+}

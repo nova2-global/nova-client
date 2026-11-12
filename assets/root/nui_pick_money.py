@@ -13,6 +13,11 @@ accepts (the amount legacy's uiPickMoney.ConvertTextToMoney reads, capped
 at the maximum, goes to the accept event when it is above 0) and closes;
 Escape in the field, Cancel and the close button close it. See
 nui_dialog_kit.py for the shared rules.
+
+NOVA-190: a stack's split (SetItemMode before Open) shows legacy's "Split
+all" box under the field, unchecked at each Open; a left press on its row
+flips it, and the caller reads IsSplitAll in its accept event. Close takes
+the dialog back to its money layout.
 """
 
 import app
@@ -57,7 +62,7 @@ class PickMoneyWindow(kit.KindWindow):
 	FIELD = FIELD
 
 	def initial_model(self):
-		return {"title": "", "max": 6, "limit": " / 0"}
+		return {"title": "", "max": 6, "limit": " / 0", "split_on": False, "split_checked": False}
 
 	@nui.on("edit")
 	def on_edit(self, value, linebreak):
@@ -70,6 +75,12 @@ class PickMoneyWindow(kit.KindWindow):
 	@nui.on("cancel")
 	def on_cancel(self):
 		self.forward("_nui_cancel")
+
+	@nui.on("split")
+	def on_split(self, button):
+		"""A left press on the "Split all" row (NOVA-190)."""
+		if int(button) == 0:
+			self.forward("_nui_split")
 
 
 class PickMoneyDialog(kit.DialogFacade):
@@ -85,6 +96,8 @@ class PickMoneyDialog(kit.DialogFacade):
 		self._title = None
 		self._max = None
 		self._value = ""
+		self._split_on = False
+		self._split_checked = False
 		kit.DialogFacade.__init__(self)
 
 	def _limit(self):
@@ -95,6 +108,8 @@ class PickMoneyDialog(kit.DialogFacade):
 			"title": "@ui.PICK_MONEY_TITLE" if self._title is None else nui.plain_text(self._title),
 			"max": 6 if self._max is None else int(self._max),
 			"limit": nui.plain_text(self._limit()),
+			"split_on": self._split_on,
+			"split_checked": self._split_checked,
 		}
 
 	def _field_text(self):
@@ -112,6 +127,8 @@ class PickMoneyDialog(kit.DialogFacade):
 		legacy.SetAcceptEvent(self.eventAccept)
 		if self._max is not None:
 			legacy.SetMax(self._max)
+		if self._split_on:
+			legacy.SetItemMode()
 
 	# --- the legacy surface -----------------------------------------------------------
 
@@ -153,15 +170,41 @@ class PickMoneyDialog(kit.DialogFacade):
 		self.unitValue = unitValue
 		self.maxValue = maxValue
 		self._value = str(unitValue)
+		self._split_checked = False
 		if not self._show():
 			self._open_legacy(maxValue, unitValue)
 
 	def Close(self):
 		legacy = self._drop_legacy()
+		self._split_on = False
+		self._split_checked = False
 		if legacy is not None:
 			legacy.Close()
 			return
 		self._release()
+
+	# NOVA-190: the "Split all" box (uipickmoney.py SetItemMode).
+
+	def SetItemMode(self):
+		self._split_on = True
+		self._split_checked = False
+		if self._legacy is not None:
+			self._legacy.SetItemMode()
+		elif self._held():
+			self._window.set(split_on=True, split_checked=False)
+
+	def SetMoneyMode(self):
+		self._split_on = False
+		self._split_checked = False
+		if self._legacy is not None:
+			self._legacy.SetMoneyMode()
+		elif self._held():
+			self._window.set(split_on=False, split_checked=False)
+
+	def IsSplitAll(self):
+		if self._legacy is not None:
+			return self._legacy.IsSplitAll()
+		return self._split_on and self._split_checked
 
 	def SetPosition(self, x, y):
 		if self._legacy is not None:
@@ -205,6 +248,13 @@ class PickMoneyDialog(kit.DialogFacade):
 
 	def _nui_cancel(self):
 		self.Close()
+
+	def _nui_split(self):
+		if not self._split_on:
+			return
+		self._split_checked = not self._split_checked
+		if self._held():
+			self._window.set(split_checked=self._split_checked)
 
 	def _nui_escape(self):
 		self.Close()

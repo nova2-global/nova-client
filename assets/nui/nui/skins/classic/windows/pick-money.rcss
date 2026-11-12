@@ -42,3 +42,11 @@ body.skin-classic.pick-money .pick-money__action
 {
 	flex: 0 0 auto;
 }
+
+/* NOVA-190: legacy's item mode (uiPickMoney.SetItemMode): the box at 22, 58
+   of the 170 x 110 board, the buttons 20dp lower. A data-if element stays in
+   the tree while hidden, so the box takes the room itself (no sibling rule). */
+body.skin-classic.pick-money .pick-money__split
+{
+	margin: 4dp 0 -2dp 10dp;
+}

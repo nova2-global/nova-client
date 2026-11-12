@@ -40,6 +40,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.RefreshShowSash()
 		self.RefreshHideBuffi()
 		self.RefreshMobInfo()
+		self.RefreshSavedOptions()
 
 	def __del__(self):
 		ui.ScriptWindow.__del__(self)
@@ -68,6 +69,9 @@ class OptionDialog(ui.ScriptWindow):
 		self.keyboardLabel = None
 		self.keyboardButton = None
 		self.keyBindingsDialog = None
+		self.yangTextButtonList = []
+		self.countryFlagsButtonList = []
+		self.savedOptionLabels = []
 
 	def Destroy(self):
 		if self.keyBindingsDialog:
@@ -187,6 +191,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.__Load_HideBuffi()
 		self.__Load_MobInfo()
 		self.__Load_Keyboard()
+		self.__Load_SavedOptions()
 
 	## The offline shops' NPCs and signs, shown or hidden (NOVA-9; OLD
 	## uiGameOption.py:1169-1218, a "companions" checkbox there): a row under
@@ -389,6 +394,54 @@ class OptionDialog(ui.ScriptWindow):
 		if not self.keyBindingsDialog:
 			self.keyBindingsDialog = uikeybindings.KeyBindingsDialog()
 		self.keyBindingsDialog.Open()
+
+	## The yang pickup line (NOVA-211; OLD uiGameOption.py:974, 1024) and the
+	## country flags (NOVA-215; OLD settingsData.py:272): two Show/Hide rows
+	## under the Keyboard row, constInfo's saved options (config/
+	## game_options.cfg, saved at the press; the flags also reach C++).
+	YANG_TEXT_ROW_Y = KEYBOARD_ROW_Y + 25
+	COUNTRY_FLAGS_ROW_Y = YANG_TEXT_ROW_Y + 25
+	COUNTRY_FLAGS_HEIGHT = KEYBOARD_HEIGHT + 50
+
+	def __Load_SavedOptions(self):
+		board = self.GetChild("board")
+		board.SetSize(board.GetWidth(), self.COUNTRY_FLAGS_HEIGHT)
+		self.SetSize(self.GetWidth(), self.COUNTRY_FLAGS_HEIGHT)
+		self.yangTextButtonList = self.__SavedOptionRow(board, self.YANG_TEXT_ROW_Y, uiScriptLocale.OPTION_YANG_TEXT,
+		                                                constInfo.OPTION_YANG_TEXT)
+		self.countryFlagsButtonList = self.__SavedOptionRow(board, self.COUNTRY_FLAGS_ROW_Y,
+		                                                    uiScriptLocale.OPTION_COUNTRY_FLAGS, constInfo.OPTION_COUNTRY_FLAGS)
+
+	def __SavedOptionRow(self, board, rowY, text, name):
+		label = ui.TextLine()
+		label.SetParent(board)
+		label.SetPosition(30, rowY + 2)
+		label.SetText(text)
+		label.Show()
+		self.savedOptionLabels.append(label)
+		buttons = []
+		for (index, caption) in enumerate((uiScriptLocale.OPTION_SALESTEXT_VIEW_ON, uiScriptLocale.OPTION_SALESTEXT_VIEW_OFF)):
+			button = ui.RadioButton()
+			button.SetParent(board)
+			button.SetPosition(90 + 65 * index, rowY)
+			button.SetUpVisual("d:/ymir work/ui/public/middle_button_01.sub")
+			button.SetOverVisual("d:/ymir work/ui/public/middle_button_02.sub")
+			button.SetDownVisual("d:/ymir work/ui/public/middle_button_03.sub")
+			button.SetText(caption)
+			button.SAFE_SetEvent(self.__OnClickSavedOptionButton, name, 0 if index else 1)
+			button.Show()
+			buttons.append(button)
+		return buttons
+
+	def __OnClickSavedOptionButton(self, name, value):
+		constInfo.SET_SAVED_OPTION(name, value)
+		self.RefreshSavedOptions()
+
+	# Index 0 "Show" is down while the option is on, 1 "Hide" while it is off.
+	def RefreshSavedOptions(self):
+		self.__ClickRadioButton(self.yangTextButtonList, 0 if constInfo.GET_SAVED_OPTION(constInfo.OPTION_YANG_TEXT) else 1)
+		self.__ClickRadioButton(self.countryFlagsButtonList,
+		                        0 if constInfo.GET_SAVED_OPTION(constInfo.OPTION_COUNTRY_FLAGS) else 1)
 
 	def __ClickRadioButton(self, buttonList, buttonIndex):
 		try:

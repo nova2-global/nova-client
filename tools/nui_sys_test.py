@@ -56,7 +56,8 @@ LOADED_LEGACY = (("uiSelectMusic", "uiselectmusic.py"), ("uiCommon", "uicommon.p
                  ("uikeybindings", "uikeybindings.py"), ("uiGameOption", "uigameoption.py"),
                  ("uiSystem", "uisystem.py"), ("uiRestart", "uirestart.py"), ("uiHelp", "uihelp.py"),
                  ("uiPointReset", "uipointreset.py"))
-LOADED_NOVAUI = ("nui_dialog_kit", "nui_dialog_message", "nui_dialog_question", "nui_theme_picker", "nui_music_list",
+# settings_index: the options' search index (NOVA-213), which both option facades read.
+LOADED_NOVAUI = ("settings_index", "nui_dialog_kit", "nui_dialog_message", "nui_dialog_question", "nui_theme_picker", "nui_music_list",
                  "nui_system_options", "nui_game_options", "nui_system_menu", "nui_restart", "nui_help",
                  "nui_point_reset")
 
@@ -1011,7 +1012,10 @@ class GameOptions(Pair):
         self.assertEqual(model, {"name_color": 0, "target_board": 1, "pk_mode": 0, "block": 0, "blocked": [False] * 6,
                                  "view_chat": False, "always_show_name": True, "show_damage": False, "sales_text": True,
                                  "pickup": [True] * 4, "hide_shops": False, "show_sash": True, "hide_buffi": False,
-                                 "mob_level": True, "mob_ai": True})
+                                 "mob_level": True, "mob_ai": True,
+                                 # NOVA-211, NOVA-215: constInfo's saved options; NOVA-213: the search.
+                                 "yang_text": True, "country_flags": True, "searching": False, "results": [],
+                                 "found": "", "found_end": 0.0})
         self.assertEqual([button.down for button in a.pickupFilterButtonList], [True] * 4)
         self.assertEqual([button.down for button in a.viewChatButtonList], [False, True])
         self.assertEqual([button.down for button in a.showDamageButtonList], [False, True])
@@ -1418,7 +1422,9 @@ class Fixtures(unittest.TestCase):
                 # NOVA-116: the field of view and its range.
                 "fov", "fov_min", "fov_max",
                 # NOVA-118: snowfall, the FPS counter and tips (0 is On).
-                "snow", "fps", "tips"}
+                "snow", "fps", "tips",
+                # NOVA-213: the search's results and the found row.
+                "searching", "results", "found", "found_end"}
         self.assertEqual(set(options.nui_model()), keys)
         for variant in (None, "custom-scale", "colors", "no-effects"):
             self.assertEqual(set(fixture("system-options", variant)["system_options"]), keys, variant)
@@ -1429,7 +1435,10 @@ class Fixtures(unittest.TestCase):
                                                          "view_chat", "always_show_name", "show_damage", "sales_text",
                                                          "pickup", "hide_shops", "show_sash", "hide_buffi", "mob_level", "mob_ai",
                                                          # NOVA-121: the keys page.
-                                                         "page", "key_rows", "notice"})
+                                                         "page", "key_rows", "notice",
+                                                         # NOVA-211, 215: the saved options; NOVA-213: the search.
+                                                         "yang_text", "country_flags", "searching", "results",
+                                                         "found", "found_end"})
 
 
 class HideShops(unittest.TestCase):
@@ -1451,6 +1460,8 @@ class HideShops(unittest.TestCase):
 
 
 LOCALES = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "locale", "locale"))
+# The classic game options' search row under legacy's board (NOVA-213).
+CLASSIC_SEARCH_ROW = 17
 CLASSIC_GAME_OPTIONS = os.path.normpath(os.path.join(WINDOWS, "..", "skins", "classic", "windows", "game-options.rcss"))
 # OLD's label (settingsData.py:264, _L("OPTION_ACCE", "Shoulder Sash")) and
 # OLD's translations of it (Ol:<locale>/locale_interface.txt); OLD has no ae
@@ -1499,8 +1510,10 @@ class ShowSash(unittest.TestCase):
         self.assertEqual(cls.KEYBOARD_HEIGHT, cls.MOB_INFO_HEIGHT + 25)
         self.assertEqual(self.place(dialog.keyboardLabel), (30, cls.KEYBOARD_ROW_Y + 2))
         self.assertEqual(self.place(dialog.keyboardButton), (90, cls.KEYBOARD_ROW_Y))
-        self.assertEqual(dialog.GetChild("board").size[1], cls.KEYBOARD_HEIGHT, "the board grown by its rows")
-        self.assertEqual(dialog.size[1], cls.KEYBOARD_HEIGHT, "the window with it")
+        # The yang and country flag rows (NOVA-211, NOVA-215) come under it.
+        self.assertEqual(cls.COUNTRY_FLAGS_HEIGHT, cls.KEYBOARD_HEIGHT + 50)
+        self.assertEqual(dialog.GetChild("board").size[1], cls.COUNTRY_FLAGS_HEIGHT, "the board grown by its rows")
+        self.assertEqual(dialog.size[1], cls.COUNTRY_FLAGS_HEIGHT, "the window with it")
         self.assertEqual(cls.SHOW_SASH_HEIGHT - cls.SHOW_SASH_ROW_Y, cls.HIDE_SHOPS_HEIGHT - cls.HIDE_SHOPS_ROW_Y,
                          "the bottom margin under the last row kept")
 
@@ -1570,10 +1583,12 @@ class ShowSash(unittest.TestCase):
             found = re.search(rule % ("go-choice--sash-%d" % value), classic)
             self.assertEqual((found.group(1), found.group(2)), (str(x), str(cls.SHOW_SASH_ROW_Y)))
         heights = re.findall(r"height: (\d+)dp;", classic.split(".game-options__titlebar")[0])
-        # Legacy's board grows by the Keyboard row (NOVA-121) after the sash's.
-        self.assertEqual(heights, [str(cls.KEYBOARD_HEIGHT)], "the body as tall as legacy's board")
+        # Legacy's board grows by the Keyboard row (NOVA-121) after the sash's,
+        # then the yang and flag rows (NOVA-211, 215); classic adds the search
+        # field under them (NOVA-213, CLASSIC_SEARCH_ROW).
+        self.assertEqual(heights, [str(cls.COUNTRY_FLAGS_HEIGHT + CLASSIC_SEARCH_ROW)], "the body as tall as legacy's board")
         body = classic.split("body.skin-classic.game-options .game-options__body")[1].split("}")[0]
-        self.assertIn("height: %ddp;" % cls.KEYBOARD_HEIGHT, body)
+        self.assertIn("height: %ddp;" % (cls.COUNTRY_FLAGS_HEIGHT + CLASSIC_SEARCH_ROW), body)
 
     def test_the_label_is_in_every_locale_with_old_s_text(self):
         locales = [name for name in sorted(os.listdir(LOCALES))

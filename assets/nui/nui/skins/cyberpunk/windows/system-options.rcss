@@ -68,3 +68,10 @@ body.skin-cyberpunk.system-options .so-row--overlay
 	border-radius: 0;
 	background-color: var(--cyberpunk-holo-b);
 }
+
+/* A found row (NOVA-213) keeps the selection's fill over the raised rows. */
+body.skin-cyberpunk.system-options .so-row.is-found
+{
+	background-color: var(--selection);
+	decorator: none;
+}

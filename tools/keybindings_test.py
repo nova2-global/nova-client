@@ -116,9 +116,11 @@ class DefaultsReachTheirActions(Base):
 		          "NUMPAD2": "camera_pitch_up", "SPACE": "attack", "GRAVE": "pickup", "Z": "pickup",
 		          "TAB": "next_target", "LALT": "show_names", "LSHIFT": "quick_page_mode", "X": "channel_switch",
 		          "1": "quickslot_1", "2": "quickslot_2", "3": "quickslot_3", "4": "quickslot_4",
-		          "F1": "quickslot_5", "F2": "quickslot_6", "F3": "quickslot_7", "F4": "quickslot_8",
+		          "F2": "quickslot_6", "F3": "quickslot_7", "F4": "quickslot_8",
 		          "C": "character", "V": "skills", "B": "emotions", "N": "quests", "I": "inventory",
-		          "U": "special_inventory", "O": "dragon_soul", "M": "minimap", "L": "chat_log", "H": "help",
+		          "U": "special_inventory", "O": "dragon_soul", "M": "minimap", "L": "chat_log",
+		          # NOVA-217 (Eddy): the wiki on H, Help on F1 (quickslot 5 has none).
+		          "H": "wiki", "F1": "help",
 		          "P": "pet", "F5": "switchbot", "F6": "dungeon_manager", "F10": "fast_equip",
 		          "ADD": "minimap_zoom_in", "SUBTRACT": "minimap_zoom_out"}
 		for token, action in sorted(expect.items()):
@@ -135,11 +137,11 @@ class DefaultsReachTheirActions(Base):
 			self.assertEqual(self.pressed(), [action], (mod, token))
 
 	def test_a_combination_without_a_binding_falls_back_to_the_plain_key(self):
-		self.down("F1", "LALT")
+		self.down("F2", "LALT")
 		self.down("W", "LCONTROL")
 		self.down("1", "LSHIFT")
 		self.down("I", "RCONTROL")
-		self.assertEqual(self.pressed(), ["quickslot_5", "move_up", "quickslot_1", "inventory"])
+		self.assertEqual(self.pressed(), ["quickslot_6", "move_up", "quickslot_1", "inventory"])
 
 	def test_a_combination_with_a_binding_does_not_also_fire_the_plain_key(self):
 		self.down("1", "LCONTROL")

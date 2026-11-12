@@ -37,6 +37,10 @@
 		"effects_available": true,
 		"color_slots": [],
 		"accent_hue": 0,
-		"colors_adjusted": false
+		"colors_adjusted": false,
+		"searching": false,
+		"results": [],
+		"found": "",
+		"found_end": 0.0
 	}
 }

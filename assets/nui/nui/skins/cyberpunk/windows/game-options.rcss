@@ -27,3 +27,12 @@ body.skin-cyberpunk.game-options .go-label
 	font-size: var(--font-sm);
 	letter-spacing: 0.5dp;
 }
+
+/* A found row (NOVA-213) keeps the accent's edge and fill, over the
+   alternate rows' line. */
+body.skin-cyberpunk.game-options .go-row.is-found
+{
+	border-color: var(--accent);
+	background-color: var(--selection);
+	decorator: none;
+}

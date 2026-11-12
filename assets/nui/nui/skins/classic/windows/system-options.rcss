@@ -325,3 +325,58 @@ body.skin-classic.system-options .so-effects .nui-toggle__label
 {
 	width: auto;
 }
+
+/* The search (NOVA-213, no legacy original): the field under the legacy
+   rows at 20, 311 on the legacy edit line's look, the Interface section
+   moved down to make room; its results open downward over the section, on
+   the dark board legacy's lists use, a row every 18. A found row's label
+   takes the gold of legacy's headings until its timer ends. */
+body.skin-classic.system-options .system-options__body
+{
+	position: relative;
+}
+body.skin-classic.system-options .so-search
+{
+	position: absolute;
+	left: 20dp;
+	top: 311dp;
+	width: 265dp;
+	height: 20dp;
+	margin: 0;
+	z-index: 2;
+}
+body.skin-classic.system-options .so-search__field
+{
+	width: 265dp;
+	height: 20dp;
+}
+body.skin-classic.system-options .so-interface
+{
+	margin-top: 30dp;
+}
+body.skin-classic.system-options .so-results
+{
+	top: 24dp;
+	padding: 2dp;
+	border-radius: 0;
+	background-color: var(--surface-raised);
+}
+body.skin-classic.system-options .so-results__list
+{
+	height: 144dp;
+}
+body.skin-classic.system-options .so-result
+{
+	height: 18dp;
+	min-height: 0;
+	padding: 0 4dp;
+	border-radius: 0;
+}
+body.skin-classic.system-options .so-row.is-found
+{
+	background-color: transparent;
+}
+body.skin-classic.system-options .so-row.is-found .so-label
+{
+	color: var(--tip-title);
+}

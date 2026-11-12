@@ -188,6 +188,8 @@ class GameWindow(ui.ScriptWindow):
 		constInfo.SET_DEFAULT_CONVERT_EMPIRE_LANGUAGE_ENABLE()
 		constInfo.SET_DEFAULT_USE_ITEM_WEAPON_TABLE_ATTACK_BONUS()
 		constInfo.SET_DEFAULT_USE_SKILL_EFFECT_ENABLE()
+		# NOVA-215: the saved country flag choice.
+		constInfo.SET_DEFAULT_COUNTRY_FLAGS()
 
 		# TWO_HANDED_WEAPON_ATTACK_SPEED_UP
 		constInfo.SET_TWO_HANDED_WEAPON_ATT_SPEED_DECREASE_VALUE()
@@ -395,6 +397,8 @@ class GameWindow(ui.ScriptWindow):
 			"guild": lambda: interface().ToggleGuildWindow(),
 			"chat_log": lambda: interface().ToggleChatLogWindow(),
 			"help": lambda: interface().OpenHelpWindow(),
+			# NOVA-217: the ingame wiki (OLD game.py:788, H).
+			"wiki": lambda: interface().ToggleWiki(),
 			# The advanced pet (NOVA-24; OLD game.py:500-501).
 			"pet": lambda: interface().TogglePetWindow(),
 			# The switchbot (NOVA-43; OLD game.py:491).
@@ -1008,8 +1012,24 @@ class GameWindow(ui.ScriptWindow):
 	def RecvWhisper(self, name):
 		self.interface.RecvWhisper(name)
 
+	# The yang line obeys its game option (NOVA-211; OLD game.py:1463-1466).
 	def OnPickMoney(self, money):
-		chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GAME_PICK_MONEY % (money))
+		if constInfo.GET_SAVED_OPTION(constInfo.OPTION_YANG_TEXT):
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.GAME_PICK_MONEY % (money))
+
+	## The metin queue (NOVA-216; OLD game.py:3885-3893): C++ tells what a
+	## Shift+right-click did to the queue. Full with the premium hint says
+	## both lines. An older exe without the constants uses the contract's.
+	def BINARY_MetinQueueMessage(self, kind):
+		added = getattr(player, "METIN_QUEUE_ADDED", 1)
+		removed = getattr(player, "METIN_QUEUE_REMOVED", 2)
+		full = getattr(player, "METIN_QUEUE_FULL", 3)
+		hint = getattr(player, "METIN_QUEUE_FULL_PREMIUM_HINT", 4)
+		lines = {added: (localeInfo.METIN_QUEUE_ADDED,), removed: (localeInfo.METIN_QUEUE_REMOVED,),
+		         full: (localeInfo.METIN_QUEUE_FULL,),
+		         hint: (localeInfo.METIN_QUEUE_FULL, localeInfo.METIN_QUEUE_PREMIUM_HINT)}.get(kind, ())
+		for line in lines:
+			chat.AppendChat(chat.CHAT_TYPE_INFO, line)
 
 	def OnShopError(self, type):
 		try:

@@ -11,7 +11,7 @@ NovaUI game options' keyboard page), both taskbars and both chats.
 - Bindings: the player's table. `actions_for(dik, mod)` finds the action of
   a key press, falling back to the plain key when the combination has no
   binding (OLD's rule, e4cbb29, and NEW's before the table: Ctrl+W still
-  walks, Alt+F1 uses quickslot 5 on the page Alt shows). `assign()` swaps on
+  walks, Alt+F2 uses quickslot 6 on the page Alt shows). `assign()` swaps on
   a conflict (CONFLICT), refuses a reserved key or a modifier on a hold
   action, saves at once and tells the listeners.
 - Capture: the "press a key" state both pages share; game.py gives it every
@@ -31,6 +31,13 @@ import weakref
 
 PATH = "config/keys.cfg"
 FILE_HEADER = "# NOVA-121 key bindings: action<TAB>key<TAB>key, '-' for none; only keys that differ from the defaults."
+
+# NOVA-217 (Eddy): Help moved from H to F1, which was quickslot 5's default
+# key; F1 opens the action named here by default and the other has no
+# default key. "quickslot_5" undoes it (default, Eddy to confirm). A saved
+# table keeps what its player chose: a key the file gives an action stays
+# its own, and a new default that clashes with it is dropped at load.
+F1_DEFAULT = "help"
 
 # What a conflict does: "swap" (the other action takes this action's old key
 # in that column) or "clear" (the other action loses the key, OLD's rule).
@@ -198,8 +205,10 @@ def _actions():
 	for n in range(1, 5):
 		add(Action("quickslot_%d" % n, "quickslots", "KEYBIND_QUICKSLOT_%d" % n, "Quickslot %d" % n, (key(str(n)),)))
 	for n in range(5, 9):
-		add(Action("quickslot_%d" % n, "quickslots", "KEYBIND_QUICKSLOT_%d" % n, "Quickslot %d" % n,
-		           (key("F%d" % (n - 4)),)))
+		fkey = key("F%d" % (n - 4))
+		if n == 5 and F1_DEFAULT != "quickslot_5":
+			fkey = 0
+		add(Action("quickslot_%d" % n, "quickslots", "KEYBIND_QUICKSLOT_%d" % n, "Quickslot %d" % n, (fkey,)))
 	# Windows.
 	add(Action("character", "windows", "KEYBIND_CHARACTER", "Character", (key("C"),)))
 	add(Action("skills", "windows", "KEYBIND_SKILLS", "Skills", (key("V"),)))
@@ -212,7 +221,9 @@ def _actions():
 	add(Action("messenger", "windows", "KEYBIND_MESSENGER", "Friends", (alt("M"),)))
 	add(Action("guild", "windows", "KEYBIND_GUILD", "Guild", (alt("G"),)))
 	add(Action("chat_log", "windows", "KEYBIND_CHAT_LOG", "Chat log", (key("L"),)))
-	add(Action("help", "windows", "KEYBIND_HELP", "Help", (key("H"),)))
+	add(Action("help", "windows", "KEYBIND_HELP", "Help", (key("F1") if F1_DEFAULT == "help" else 0,)))
+	# The ingame wiki on H (NOVA-217; OLD game.py:788).
+	add(Action("wiki", "windows", "KEYBIND_WIKI", "Wiki", (key("H"),)))
 	add(Action("pet", "windows", "KEYBIND_PET", "Pet", (key("P"),)))
 	add(Action("switchbot", "windows", "KEYBIND_SWITCHBOT", "Switchbot", (key("F5"),)))
 	add(Action("dungeon_manager", "windows", "KEYBIND_DUNGEON_MANAGER", "Dungeon manager", (key("F6"),)))

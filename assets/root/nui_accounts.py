@@ -240,6 +240,28 @@ def note_game_start(login, played, slots):
 	return _write(saved, settings)
 
 
+# NOVA-205 (OLD introLogin.py:997-1001): F1 to F12 log in with the saved
+# account in that place of the list (accounts(), most recent first). The
+# DirectInput codes are not one run (F11 and F12 come after the keypad), so
+# the keys are named one by one; OLD counted on from F1 and so reached
+# NumLock and the keypad, never F11 or F12.
+SLOT_KEYS = ("DIK_F1", "DIK_F2", "DIK_F3", "DIK_F4", "DIK_F5", "DIK_F6", "DIK_F7", "DIK_F8", "DIK_F9", "DIK_F10",
+             "DIK_F11", "DIK_F12")
+
+
+def slot_of_key(key):
+	"""The list place a DirectInput key logs in with (0 for F1), or -1."""
+	for index, name in enumerate(SLOT_KEYS):
+		if getattr(app, name, None) == key:
+			return index
+	return -1
+
+
+def key_name(index):
+	"""The key of a list place as the lists show it ("F1"), "" past F12."""
+	return "F%d" % (index + 1) if 0 <= index < len(SLOT_KEYS) else ""
+
+
 def since(seconds, strings):
 	"""How long ago, as the login screen words it: strings maps "now",
 	"minutes", "hours", "yesterday" and "days" to locale texts, the last

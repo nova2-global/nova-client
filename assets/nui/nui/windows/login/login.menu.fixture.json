@@ -12,6 +12,7 @@
 			{
 				"name": "kalinka",
 				"sub": "Last played Kalinka · 2h ago",
+				"key": "F1",
 				"face": "/icon/face/warrior_w.tga",
 				"selected": false,
 				"chars": [
@@ -35,6 +36,7 @@
 			{
 				"name": "mirela",
 				"sub": "Last played Mirela · yesterday",
+				"key": "F2",
 				"face": "/icon/face/shaman_w.tga",
 				"selected": false,
 				"chars": [
@@ -48,6 +50,7 @@
 			{
 				"name": "shadowfox",
 				"sub": "Last played Vex · 5 days ago",
+				"key": "F3",
 				"face": "/icon/face/assassin_w.tga",
 				"selected": false,
 				"chars": [

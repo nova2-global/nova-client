@@ -58,6 +58,15 @@
 {
 	background-color: var(--classic-select);
 }
+/* The row's key (NOVA-205) in the legacy label look: square, no fill. */
+.skin-classic .login-acc__key
+{
+	border-radius: 0;
+	background-color: transparent;
+	color: var(--classic-label-white);
+	font-weight: normal;
+	font-effect: outline(1dp var(--classic-text-outline));
+}
 .skin-classic .login-acc__face
 {
 	width: 32dp;

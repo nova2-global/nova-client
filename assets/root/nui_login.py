@@ -108,6 +108,15 @@ PASSWORD_MAX = 16  # uiscript/loginwindow.py PW_LIMIT_COUNT
 EXCLUDED = "[]"    # intrologin.py keeps these out of the legacy EditLines
 # The Create account tab's fields, in their Enter order.
 REG_FIELDS = ("reg-user", "reg-email", "reg-password", "reg-confirm", "reg-code")
+# NOVA-205: F1 to F12 log in with saved account N. RmlUi's key identifiers of
+# F1 and F12 (Input.h KI_F1 = 107 ... KI_F12 = 118). A focused field takes
+# every key, so the Log in tab's own fields pass these on (they type nothing,
+# and the board always opens on one of them; OLD's ID line passed F1 to F4);
+# the Create account fields keep them. Default, Eddy to confirm: emptying
+# SLOT_KEY_FIELDS makes the keys work only while no field has the focus.
+KEY_F1 = 107
+KEY_F12 = 118
+SLOT_KEY_FIELDS = (ID_FIELD, PASSWORD_FIELD, PASSWORD_SHOWN)
 
 # The last decision open_board() made: "nui", or "legacy: <reason>".
 LAST_DECISION = ""
@@ -302,6 +311,8 @@ class LoginBoard(nui.Window):
 		for element_id in (ID_FIELD, PASSWORD_FIELD, PASSWORD_SHOWN) + REG_FIELDS:
 			self.element_on(element_id, "focus", self._on_field_focus)
 		self.element_on("", "mousedown", self._on_board_press)
+		for element_id in SLOT_KEY_FIELDS:
+			self.element_on(element_id, "keydown", self._on_slot_key)
 		self.reload_accounts()
 
 	def initial_model(self):
@@ -338,7 +349,7 @@ class LoginBoard(nui.Window):
 		           "hours": _text("NUI_LOGIN_HOURS"), "yesterday": _text("NUI_LOGIN_YESTERDAY"),
 		           "days": _text("NUI_LOGIN_DAYS")}
 		rows = []
-		for account in nui_accounts.accounts():
+		for index, account in enumerate(nui_accounts.accounts()):
 			played = account["played"]
 			last = None
 			for character in account["characters"]:
@@ -347,6 +358,7 @@ class LoginBoard(nui.Window):
 			sub = _text("NUI_LOGIN_LAST_PLAYED") % (played, nui_accounts.since(now - account["time"], strings)) \
 				if played else ""
 			rows.append({"name": nui.plain_text(account["login"]), "sub": nui.plain_text(sub),
+			             "key": nui_accounts.key_name(index),
 			             "face": nui_accounts.face_of(last["race"]) if last else "",
 			             "selected": account["login"] == self._user,
 			             "chars": [{"face": nui_accounts.face_of(c["race"]), "lv": str(c["level"]),
@@ -398,6 +410,46 @@ class LoginBoard(nui.Window):
 		self._fill_saved_account(self._saved_account(name))
 		self.set(tab="login", error="", error_on="")
 		self.focus(self._password_field())
+
+	# --- NOVA-205: F1 to F12 ------------------------------------------------------
+
+	def _on_slot_key(self, event):
+		"""F1 to F12 in a Log in field: that saved account (login_slot). The
+		key is kept, an empty place's too."""
+		key = event.get("key_identifier")
+		if not isinstance(key, int) or not KEY_F1 <= key <= KEY_F12:
+			return None
+		self.login_slot(key - KEY_F1)
+		return True
+
+	def login_slot(self, index):
+		"""Logs in with the saved account at `index` of the list (0 for F1),
+		as a press on its row then Log in: its server first when the menu
+		lists it, its name and stored password, then the card's log in. An
+		account without a stored password is filled and waits for it. Nothing
+		for an empty place, while the board is hidden (a legacy popup: a log
+		in runs, or a failure shows) or on the Create account tab. True when
+		it took the account."""
+		if not self.active or not self.is_visible() or self.get("tab") != "login":
+			return False
+		saved = nui_accounts.accounts()
+		if not 0 <= index < len(saved):
+			return False
+		account = saved[index]
+		server = account["server"]
+		same_server = server == self._server
+		if not same_server and any(row.get("id") == server for row in self.get("servers") or []):
+			choose = getattr(self._owner, "NuiChooseServer", None)
+			if choose is not None:
+				choose(server)
+				same_server = server == self._server
+		self._fill_saved_account(account)
+		self.set(tab="login", error="", error_on="", error_ok=False, menu_open=False)
+		if self._stored_password and self._password and same_server:
+			self._submit()
+		else:
+			self.focus(self._password_field())
+		return True
 
 	def pick_latest(self):
 		"""With no name typed, the most recent saved account fills the name
@@ -1107,6 +1159,16 @@ def after_popup(win, callback):
 		return None
 
 	return resume_then_call
+
+
+def slot_key(win, index):
+	"""LoginWindow.OnKeyDown, F1 to F12 while no NovaUI field has the focus
+	(NOVA-205): the board's login_slot. None without a board (the legacy
+	board's own rule runs)."""
+	board = _board(win)
+	if board is None:
+		return None
+	return board.login_slot(index)
 
 
 def focus_field(win, which):

@@ -142,7 +142,10 @@ class Widget(object):
         pass
 
     def SelectItem(self, index):
-        pass
+        self.selected = index
+
+    def GetSelectedItem(self):
+        return getattr(self, "selected", 0)
 
 
 class Popup(object):
@@ -238,12 +241,19 @@ class WindowBase(object):
     def _LoginWindow__DisconnectAndInputPassword(self):
         self.SetPasswordEditLineFocus()
 
+    def _LoginWindow__ShowSlotKeys(self, show):
+        """NOVA-205's legacy list (compiled on its own in SlotKeysLegacy)."""
+        self.slot_keys_shown = show
+
 
 # The intrologin.py methods the flows run, hooks included.
 COMPILED = ("SetIDEditLineFocus", "SetPasswordEditLineFocus", "OnConnectFailure", "OnLoginFailure",
             "Connect", "PopupDisplayMessage", "PopupNotifyMessage", "SameLogin_OpenUI", "EmptyFunc",
             "_LoginWindow__OpenLoginBoard", "_LoginWindow__OpenServerBoard", "_LoginWindow__SetServerInfo",
-            "OnExit")
+            "OnExit",
+            # NOVA-205: F1-F12 log in with a saved account.
+            "OnKeyDown", "_LoginWindow__SlotLogin", "_LoginWindow__OnClickLoginButton", "_LoginWindow__GetServerID",
+            "_LoginWindow__EditLine_OnKeyDown")
 
 
 def compile_login_window(nui_login):
@@ -268,6 +278,8 @@ def compile_login_window(nui_login):
         "nui_server_board": _stub_module("nui_server_board", **{name: (lambda *args: None) for name in (
             "open_board", "close_board", "enter", "leave", "refresh_servers", "refresh_channels")}),
         "localeInfo": LocaleInfo(),
+        "nui_accounts": nui_login.nui_accounts,
+        "ui": _stub_module("ui", EditLine=_stub_module("EditLine", OnKeyDown=lambda line, key: True)),
         "snd": _stub_module("snd", PlaySound=lambda name: None),
         "app": _stub_module("app", loggined=False, Exit=lambda: None),
         "net": _stub_module("net", SetServerInfo=lambda text: None, Disconnect=lambda: None),
@@ -1341,9 +1353,12 @@ class TheCard(OnePageTest):
         self.assertEqual((board._reg["password"], board._reg["confirm"]), ("", ""))
 
 
-class CredentialManager(ControllerTest):
+class SecretsTest(ControllerTest):
+    """The board over an executable with the credential API (a dict) and a
+    saved accounts file of its own."""
+
     def setUp(self):
-        super(CredentialManager, self).setUp()
+        super(SecretsTest, self).setUp()
         self.secrets = {}
         self.deleted = []
 
@@ -1370,6 +1385,8 @@ class CredentialManager(ControllerTest):
         self.store.remember_login(login, server, True)
         self.assertTrue(self.store.note_game_start(login, login.title(), [(login.title(), 4, 75)]))
 
+
+class CredentialManager(SecretsTest):
     def test_a_password_is_saved_only_after_authentication_is_accepted(self):
         win, board = self.open_board()
         win.NuiLogin = lambda *args: None
@@ -1449,6 +1466,193 @@ class CredentialManager(ControllerTest):
         board.on_submit()
         self.assertEqual(self.store._pending, {})
         self.assertEqual(self.secrets, {})
+
+
+
+# --- NOVA-205: F1-F12 log in with saved account N ------------------------------------
+
+# RmlUi's key identifiers for F1 and F12 (Input.h KI_F1 = 107 ... KI_F12 = 118),
+# and DirectInput's scan codes (F1-F10 are 0x3B-0x44, F11 and F12 0x57, 0x58).
+KI_F1, KI_F12 = 107, 118
+DIK = {"DIK_F%d" % (n + 1): code for n, code in enumerate(list(range(0x3B, 0x45)) + [0x57, 0x58])}
+
+
+class SlotKeys(SecretsTest):
+    """OLD introLogin.py:997-1001, 775-786: F<N> logs in with saved account N,
+    in the order the list shows; an empty slot does nothing."""
+
+    def setUp(self):
+        super(SlotKeys, self).setUp()
+        for name, code in DIK.items():
+            setattr(self.m.nui_accounts.app, name, code)
+        self.save_account("kalinka", 2)
+        self.save_account("mirela", 2)   # the newest: the list's first
+        self.secrets["2/kalinka"] = "kal-secret"
+        self.secrets["2/mirela"] = "mir-secret"
+        self.win, self.board = self.open_board()
+        self.logins = []
+        self.win.NuiLogin = lambda user, password, server, channel: self.logins.append((user, password, server))
+        self.board.set_servers([(1, "Nova"), (2, "Test")], 2, 1)
+
+    def test_the_keys_map_to_slots_and_other_keys_to_none(self):
+        store = self.m.nui_accounts
+        self.assertEqual([store.slot_of_key(DIK["DIK_F%d" % n]) for n in range(1, 13)], list(range(12)))
+        self.assertEqual(store.slot_of_key(0x45), -1, "OLD's F1 + 10 is NumLock, not F11")
+        self.assertEqual([store.key_name(i) for i in (0, 4, 11)], ["F1", "F5", "F12"])
+
+    def test_every_row_shows_its_key(self):
+        self.board.reload_accounts()
+        self.assertEqual([(row["name"], row["key"]) for row in self.board.get("accounts")],
+                         [("mirela", "F1"), ("kalinka", "F2")])
+
+    def test_f2_in_the_password_field_logs_in_with_the_second_account_and_keeps_the_key(self):
+        self.assertEqual(self.board.focused, PASSWORD_FIELD)
+        self.assertTrue(self.board.key(PASSWORD_FIELD, KI_F1 + 1))
+        self.assertEqual(self.logins, [("kalinka", "kal-secret", 2)])
+        self.assertEqual(self.board.get("user"), "kalinka")
+        self.assertNotIn("kal-secret", repr(self.board.model))
+
+    def test_the_key_from_the_phase_window_logs_in_too(self):
+        self.board.focus("login-submit")   # no text field has the focus
+        self.assertTrue(self.win.OnKeyDown(DIK["DIK_F1"]))
+        self.assertEqual(self.logins, [("mirela", "mir-secret", 2)])
+
+    def test_an_empty_slot_and_other_keys_do_nothing(self):
+        self.board.key(PASSWORD_FIELD, KI_F12)
+        self.win.OnKeyDown(DIK["DIK_F3"])
+        self.assertFalse(self.win.OnKeyDown(0x1E), "A is not a slot key")
+        self.assertEqual(self.logins, [])
+        self.assertEqual(self.board.get("user"), "mirela", "the list's selection stays")
+
+    def test_nothing_while_a_login_runs_or_on_the_create_account_tab(self):
+        self.win.Connect("someone", "pw")   # its popup suspends the board
+        self.win.OnKeyDown(DIK["DIK_F2"])
+        self.assertEqual(self.logins, [])
+        self.win.stream.popupWindow.Close()
+        self.board.set(can_register=True)
+        self.board.on_tab_press("register", 0)
+        self.win.OnKeyDown(DIK["DIK_F2"])
+        self.assertIsNone(self.board.handlers.get(("reg-user", "keydown")), "the Create account fields keep F-keys")
+        self.assertEqual(self.logins, [])
+
+    def test_an_account_without_a_stored_password_is_filled_and_waits_for_it(self):
+        del self.secrets["2/kalinka"]
+        self.board.key(PASSWORD_FIELD, KI_F1 + 1)
+        self.assertEqual(self.logins, [])
+        self.assertEqual((self.board.get("user"), self.board.focused), ("kalinka", PASSWORD_FIELD))
+
+    def test_an_account_of_another_listed_server_switches_to_it_first(self):
+        self.save_account("vex", 1)
+        self.secrets["1/vex"] = "vex-secret"
+        self.board.reload_accounts()
+        chosen = []
+        self.win.NuiChooseServer = lambda server: (chosen.append(server), self.board.set_servers(
+            [(1, "Nova"), (2, "Test")], server, 1))
+        self.board.key(PASSWORD_FIELD, KI_F1)
+        self.assertEqual((chosen, self.logins), ([1], [("vex", "vex-secret", 1)]))
+
+
+class SlotKeysLegacy(SecretsTest):
+    """The legacy login board (no NovaUI board): the same saved list and keys."""
+
+    def setUp(self):
+        super(SlotKeysLegacy, self).setUp()
+        for name, code in DIK.items():
+            setattr(self.m.nui_accounts.app, name, code)
+        self.save_account("kalinka", 2)
+        self.secrets["2/kalinka"] = "kal-secret"
+        self.win = self.Window(Stream())   # nuiBoard None
+        self.win._LoginWindow__OpenLoginBoard()
+        self.win.serverList.SelectItem(2)
+
+    def test_the_legacy_board_shows_the_key_list(self):
+        self.assertTrue(self.win.slot_keys_shown)
+        self.win._LoginWindow__OpenServerBoard()
+        self.assertFalse(self.win.slot_keys_shown)
+
+    def test_f1_logs_in_with_the_first_saved_account_through_the_login_button_path(self):
+        self.assertTrue(self.win.OnKeyDown(DIK["DIK_F1"]))
+        self.assertEqual(self.win.stream.login_info, [("kalinka", "kal-secret")])
+        self.assertEqual(self.win.idEditLine.GetText(), "kalinka")
+
+    def test_an_empty_slot_a_hidden_board_or_an_open_popup_do_nothing(self):
+        self.win.OnKeyDown(DIK["DIK_F2"])
+        self.win.loginBoard.Hide()
+        self.win.OnKeyDown(DIK["DIK_F1"])
+        self.win.loginBoard.Show()
+        self.win.stream.popupWindow.Open("busy")
+        self.win.OnKeyDown(DIK["DIK_F1"])
+        self.assertEqual(self.win.stream.login_info, [])
+
+    def test_another_server_s_account_only_fills_the_name(self):
+        self.win.serverList.SelectItem(1)
+        self.win.OnKeyDown(DIK["DIK_F1"])
+        self.assertEqual(self.win.stream.login_info, [])
+        self.assertEqual((self.win.idEditLine.GetText(), self.win.pwdEditLine.focused), ("kalinka", True))
+
+    def test_the_edit_lines_let_the_slot_keys_through(self):
+        on_key = self.win._LoginWindow__EditLine_OnKeyDown
+        self.assertFalse(on_key(DIK["DIK_F12"]), "F5-F12 reach the window as F1-F4 already did")
+        self.assertTrue(on_key(0x1E), "other keys stay legacy EditLine's")
+
+    def test_the_script_loader_binds_the_edit_lines(self):
+        with open(INTROLOGIN, encoding="utf-8") as file:
+            source = file.read()
+        self.assertIn("self.idEditLine.OnKeyDown = ui.__mem_func__(self.__EditLine_OnKeyDown)", source)
+        self.assertIn("self.pwdEditLine.OnKeyDown = ui.__mem_func__(self.__EditLine_OnKeyDown)", source)
+
+
+class SlotKeyList(unittest.TestCase):
+    """LoginWindow.__ShowSlotKeys: one line per saved account under the
+    legacy login board, "F<N>  <login>", under the saved accounts heading."""
+
+    def test_the_lines(self):
+        with open(INTROLOGIN, encoding="utf-8") as file:
+            source = file.read()
+        tree = ast.parse(source)
+        window = next(node for node in tree.body if isinstance(node, ast.ClassDef) and node.name == "LoginWindow")
+        node = next(n for n in window.body if isinstance(n, ast.FunctionDef) and n.name == "__ShowSlotKeys")
+        made = []
+
+        class TextLine(object):
+            def __init__(self):
+                self.text, self.shown = "", False
+                made.append(self)
+
+            def SetParent(self, parent):
+                pass
+
+            def SetPosition(self, x, y):
+                self.pos = (x, y)
+
+            def SetText(self, text):
+                self.text = text
+
+            def SetOutline(self):
+                pass
+
+            def Show(self):
+                self.shown = True
+
+            def Hide(self):
+                self.shown = False
+
+        accounts = [{"login": "mirela"}, {"login": "kalinka"}]
+        store = _stub_module("nui_accounts", accounts=lambda: accounts, key_name=lambda i: "F%d" % (i + 1))
+        namespace = {"ui": _stub_module("ui", TextLine=TextLine), "nui_accounts": store,
+                     "uiScriptLocale": _stub_module("uiScriptLocale", NUI_LOGIN_SAVED="Saved accounts")}
+        code = "class W(object):\n" + "\n".join(source.splitlines()[node.lineno - 1:node.end_lineno]) + "\n"
+        exec(compile(code, INTROLOGIN, "exec"), namespace)
+        win = namespace["W"]()
+        win.slotKeyLines = []
+        win.loginBoard = Widget()
+        win.loginBoard.GetLocalPosition = lambda: (100, 300)
+        win._W__ShowSlotKeys(True)
+        self.assertEqual([line.text for line in made], ["Saved accounts", "F1  mirela", "F2  kalinka"])
+        self.assertTrue(all(line.shown for line in made))
+        win._W__ShowSlotKeys(False)
+        self.assertFalse(any(line.shown for line in made))
+        self.assertEqual(win.slotKeyLines, [])
 
 
 class RegistrationRules(unittest.TestCase):

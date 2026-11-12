@@ -103,6 +103,31 @@ body.login button
 	background-color: var(--selection);
 	border-color: var(--accent);
 }
+/* The row's key (NOVA-205): F1 to F12 log in with that account. A small
+   keycap before the face; the row takes the presses. */
+.login-acc__key
+{
+	flex: 0 0 auto;
+	min-width: 20dp;
+	height: 18dp;
+	padding: 0 3dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 5dp;
+	background-color: var(--surface-sunken);
+	color: var(--text-muted);
+	font-size: var(--font-xs);
+	font-weight: bold;
+	line-height: 16dp;
+	text-align: center;
+	white-space: nowrap;
+	pointer-events: none;
+}
+.login-acc.is-selected .login-acc__key
+{
+	border-color: var(--accent);
+	color: var(--text);
+}
 .login-acc__face
 {
 	width: 36dp;

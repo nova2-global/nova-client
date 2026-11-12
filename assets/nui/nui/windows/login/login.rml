@@ -26,13 +26,16 @@
 <body template="nui" class="nui-anim nui-escape-keeps-focus login" data-model="login" data-class-login--keyboard="keyboard">
 	<div class="login-pair">
 		<!-- Saved accounts: one row per account, most recent first; a press
-		     picks it (its name in the card), the cross forgets it. Hidden
-		     while there is none. -->
+		     picks it (its name in the card), the cross forgets it. Each row
+		     starts with its key (NOVA-205: F1 to F12 log in with that
+		     account, nui_login.LoginBoard.login_slot). Hidden while there is
+		     none. -->
 		<div id="login-accounts" class="nui-window nui-fx nui-anim login-accounts login-r1" data-if="size(accounts) > 0">
 			<div class="nui-window__body login-accounts__body">
 				<span class="login-h">@ui.NUI_LOGIN_SAVED</span>
 				<div class="login-acc nui-anim" data-for="a : accounts" data-attr-id="'login-acc-' + it_index"
 				     data-class-is-selected="a.selected" data-event-mousedown="pick_account(a.name, ev.button)">
+					<span class="login-acc__key" data-if="a.key != ''">{{ a.key }}</span>
 					<img class="login-acc__face" data-if="a.face != ''" data-attr-src="a.face"/>
 					<span class="login-acc__id">
 						<span class="login-acc__name">{{ a.name }}</span>

@@ -6,6 +6,7 @@
 		{"page": "auto-shout", "variant": "off", "themes": "all", "except": ["classic"], "scales": [["100", "1", "480x360"]], "fixture": true, "time": 1},
 		{"page": "auto-shout", "variant": "off", "themes": ["classic"], "scales": [["100", "1", "350x180"]], "fixture": true, "roots": ["assets/ETC"], "time": 1},
 		{"page": "auto-shout", "variant": "waiting", "themes": "all", "except": ["classic"], "scales": [["100", "1", "480x360"]], "fixture": true, "time": 1},
+		{"page": "auto-shout", "variant": "waiting", "themes": ["classic"], "scales": [["100", "1", "350x180"]], "fixture": true, "roots": ["assets/ETC"], "time": 1},
 		{"page": "auto-shout", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "480x360"]], "fixture": true, "time": 1, "reduced_motion": true},
 		{"page": "auto-shout", "name": "no-effects", "themes": ["dark"], "scales": [["100", "1", "480x360"]], "fixture": true, "time": 1, "effects": "off"}
 	]

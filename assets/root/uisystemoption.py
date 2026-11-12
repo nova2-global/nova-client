@@ -6,6 +6,7 @@ import net
 import chat
 import app
 import localeInfo
+import uiScriptLocale
 import constInfo
 import chrmgr
 import player
@@ -44,6 +45,10 @@ class OptionDialog(ui.ScriptWindow):
 	PLAYER_OPTION_ROW_Y = {"snow": 235, "fps": 260, "tips": 285}
 	PLAYER_OPTIONS = (("snow", player_options.SNOWFALL), ("fps", player_options.FPS_COUNTER),
 	                  ("tips", player_options.TIPS))
+	# The frame rate limit (NOVA-214): the value between a previous and a next
+	# button, under tips; player_options holds the choices and the rules.
+	FRAME_RATE_ROW_Y = 310
+	FRAME_RATE_WIDGETS = ("frame_rate_name", "frame_rate_prev", "frame_rate_value", "frame_rate_next")
 
 	def __init__(self):
 		ui.ScriptWindow.__init__(self)
@@ -69,6 +74,7 @@ class OptionDialog(ui.ScriptWindow):
 		self.ctrlShadowQuality = 0
 		self.ctrlFieldOfView = 0
 		self.playerOptionButtons = {}
+		self.frameRateValue = 0
 		
 	def Destroy(self):
 		self.ClearDictionary()
@@ -103,6 +109,7 @@ class OptionDialog(ui.ScriptWindow):
 			self.ctrlFieldOfView = GetObject("fov_controller")
 			for name, option in self.PLAYER_OPTIONS:
 				self.playerOptionButtons[name] = [GetObject(name + "_on"), GetObject(name + "_off")]
+			self.frameRateValue = GetObject("frame_rate_value")
 			#self.ctrlShadowQuality = GetObject("shadow_bar")
 		except:
 			import exception
@@ -147,6 +154,8 @@ class OptionDialog(ui.ScriptWindow):
 			buttons[0].SAFE_SetEvent(self.__OnClickPlayerOption, name, option, True)
 			buttons[1].SAFE_SetEvent(self.__OnClickPlayerOption, name, option, False)
 			self.__ClickRadioButton(buttons, 0 if player_options.is_on(option) else 1)
+
+		self.__LoadFrameRate()
 
 		self.__SetCurTilingMode()
 
@@ -266,6 +275,30 @@ class OptionDialog(ui.ScriptWindow):
 	def __OnClickPlayerOption(self, name, option, on):
 		player_options.set_option(option, on)
 		self.__ClickRadioButton(self.playerOptionButtons[name], 0 if on else 1)
+
+	# NOVA-214: the frame rate limit; an exe without it shows no row.
+	def __LoadFrameRate(self):
+		if not player_options.has_max_fps():
+			for name in self.FRAME_RATE_WIDGETS:
+				self.GetChild(name).Hide()
+			return
+		self.GetChild("frame_rate_prev").SAFE_SetEvent(self.__OnClickFrameRate, -1)
+		self.GetChild("frame_rate_next").SAFE_SetEvent(self.__OnClickFrameRate, 1)
+		self.__RefreshFrameRate()
+
+	def __RefreshFrameRate(self):
+		self.frameRateValue.SetText(player_options.max_fps_label(player_options.max_fps(), self.__LocaleText))
+
+	@staticmethod
+	def __LocaleText(key):
+		return getattr(uiScriptLocale, key, key)
+
+	# Saved at exit with the other options; a press past an end does nothing.
+	def __OnClickFrameRate(self, step):
+		value = player_options.max_fps()
+		chosen = player_options.max_fps_step(value, step)
+		if chosen != value and player_options.set_max_fps(chosen):
+			self.__RefreshFrameRate()
 
 	def OnChangeShadowQuality(self):
 		pos = self.ctrlShadowQuality.GetSliderPos()

@@ -1160,7 +1160,10 @@ class Game(object):
                          # NOVA-118: snowfall, the FPS counter and tips
                          # (CPythonSystem's SNOWFALL_DEFAULT, FPS_COUNTER_DEFAULT
                          # and TIPS_DEFAULT: OLD's off, off, on).
-                         "snowfall": False, "fps_counter": False, "tips": True}
+                         "snowfall": False, "fps_counter": False, "tips": True,
+                         # NOVA-214: the frame rate limit (CPythonSystem's MAX_FPS,
+                         # 60 by default; 0 unlimited, -1 VSync).
+                         "max_fps": 60}
         self.pk_mode = 0         # player.GetPKMode
         self.guild_id = 0        # player.GetGuildID
         self.software_tiling = False  # background.IsSoftwareTiling
@@ -1554,6 +1557,12 @@ class Game(object):
                                               ("tips", "IsShowTips", "SetShowTips")):
             getter(getter_name, key, int)
             setter(setter_name, lambda value, key=key: settings.__setitem__(key, value == 1))
+        # The frame rate limit (NOVA-214): the seven choices in display order;
+        # anything else is stored as 60, as CPythonSystem::SetMaxFPS does.
+        setting.MAX_FPS_CHOICES, setting.MAX_FPS_UNLIMITED, setting.MAX_FPS_VSYNC = (60, 120, 144, 165, 240, 0, -1), 0, -1
+        getter("GetMaxFPS", "max_fps", int)
+        setter("SetMaxFPS", lambda value: settings.__setitem__(
+            "max_fps", value if value in setting.MAX_FPS_CHOICES else 60))
 
         background = modules["background"]
         background.IsSoftwareTiling = lambda: bool(game.software_tiling)

@@ -662,7 +662,10 @@ class OtherWindows(unittest.TestCase):
         world.game.give((EXTRA, 225 + 6), BEAN, 4)
         world.game.answer("shop", "IsPrivateShop", False)
         names = ("SellAttachedItem", "OnSellItem", "OnCloseQuestionDialog", "__OnClosePopupDialog")
-        window = compiled("uishop.py", "ShopDialog", names, self.namespace(world))()
+        namespace = self.namespace(world)
+        # The module's sell rule the method reads (uishop.SellPriceOf, NOVA-187).
+        exec(compile(support.source_of("uishop.py", ("SellPriceOf",)), "uishop.py", "exec"), namespace)
+        window = compiled("uishop.py", "ShopDialog", names, namespace)()
         window.questionDialog = None
         world.attach(SLOT_EXTRA, 225 + 6, BEAN, 4)
         with world, lf.quiet():

@@ -27,7 +27,7 @@
 		},
 		"uitooltip": {
 			"path": "assets/root/uitooltip.py",
-			"sha256": "9d9524c23a6c4029b7d566bc68f48aa168db20fd85bf473bbd848141f0d496af"
+			"sha256": "dadb9f27cd2121e1949ee61a7402c0c9c8d325bf3b7b209c407f43712e914dd3"
 		}
 	},
 	"items": {
@@ -40471,6 +40471,40 @@
 				"race": 0
 			},
 			"clock": 1700000000
+		},
+		{
+			"id": "skill-max-up-hint",
+			"context": "calls",
+			"kind": "skill",
+			"vnum": 0,
+			"calls": [
+				[
+					"SetSkillNew",
+					[
+						1,
+						1,
+						0,
+						5
+					]
+				],
+				[
+					"AppendSkillMaxUpHint",
+					[]
+				]
+			],
+			"player": {
+				"level": 120,
+				"race": 0
+			},
+			"clock": 1700000000,
+			"skill": {
+				"vnum": 1,
+				"slot": 1,
+				"grade": 0,
+				"level": 5,
+				"efficient": 0.5,
+				"next": 0.6
+			}
 		},
 		{
 			"id": "guild-war-type",

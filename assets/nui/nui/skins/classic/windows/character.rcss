@@ -870,3 +870,174 @@ body.skin-classic.char .char-tabs
 	border-radius: 0;
 	background-color: transparent;
 }
+
+/* --- The bonus details (NOVA-207; uicharacterdetails.py, OLD's
+   CharacterDetailsWindow.py) ------------------------------------------------------
+   The toggle is legacy's belt-inventory strip at the board's 240, 120
+   (btn_minimize opens, btn_expand closes); the panel is legacy's 200 x 364
+   board 3 over the window's right edge (at 250, 0), its title bar at 6, 7
+   with the close, and the rows from 37 every 24: a category on legacy's
+   horizontal bar, a row's white label and its value on a parameter slot
+   (50 x 17 at 112), legacy's scroll bar on the right. No hover look, as
+   legacy's rows. */
+
+body.skin-classic.char .char-details-toggle
+{
+	left: 240dp;
+	top: 120dp;
+	/* Its right edge meets the panel's left edge: it stays on top there. */
+	z-index: 1;
+	width: 10dp;
+	height: 108dp;
+	margin: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/belt_inventory/btn_minimize_normal.tga");
+}
+body.skin-classic.char .char-details-toggle:hover, body.skin-classic.char .char-details-toggle.is-hover
+{
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/game/belt_inventory/btn_minimize_over.tga");
+}
+body.skin-classic.char .char-details-toggle:active, body.skin-classic.char .char-details-toggle.is-active
+{
+	decorator: image("d:/ymir work/ui/game/belt_inventory/btn_minimize_down.tga");
+}
+body.skin-classic.char .char-details-toggle--shut
+{
+	decorator: image("d:/ymir work/ui/game/belt_inventory/btn_expand_normal.tga");
+}
+body.skin-classic.char .char-details-toggle--shut:hover, body.skin-classic.char .char-details-toggle--shut.is-hover
+{
+	decorator: image("d:/ymir work/ui/game/belt_inventory/btn_expand_over.tga");
+}
+body.skin-classic.char .char-details-toggle--shut:active, body.skin-classic.char .char-details-toggle--shut.is-active
+{
+	decorator: image("d:/ymir work/ui/game/belt_inventory/btn_expand_down.tga");
+}
+body.skin-classic.char .char-details
+{
+	display: block;
+	left: 250dp;
+	top: 0;
+	width: 200dp;
+	height: 364dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-board;
+}
+body.skin-classic.char .char-details.nui-fx
+{
+	box-shadow: none;
+}
+body.skin-classic.char .char-details__titlebar
+{
+	position: absolute;
+	left: 6dp;
+	top: 7dp;
+	width: 187dp;
+	margin: 0;
+}
+body.skin-classic.char .char-details__titlebar .nui-window__close
+{
+	position: absolute;
+	left: 169dp;
+	top: 3dp;
+	margin: 0;
+}
+body.skin-classic.char .char-details__title
+{
+	display: block;
+	width: 187dp;
+	height: 23dp;
+	line-height: 23dp;
+	text-align: center;
+}
+body.skin-classic.char .char-details__list
+{
+	position: absolute;
+	left: 10dp;
+	top: 37dp;
+	width: 183dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-details__viewport
+{
+	height: 316dp;
+}
+body.skin-classic.char .char-details__row
+{
+	display: block;
+	position: relative;
+	height: 24dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.char .char-details__row:hover
+{
+	background-color: transparent;
+}
+body.skin-classic.char .char-details__label
+{
+	position: absolute;
+	left: 6dp;
+	top: 2dp;
+	width: 104dp;
+	overflow: hidden;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	line-height: 14dp;
+}
+body.skin-classic.char .char-details__value
+{
+	position: absolute;
+	left: 112dp;
+	top: 0;
+	box-sizing: border-box;
+	width: 50dp;
+	min-width: 0;
+	height: 17dp;
+	padding: 0;
+	border-width: 1dp;
+	border-color: var(--classic-slot-dark) var(--classic-slot-light) var(--classic-slot-light) var(--classic-slot-dark);
+	border-radius: 0;
+	background-color: var(--classic-slot-fill);
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 15dp;
+	text-align: center;
+}
+/* A category: legacy's horizontal bar, 163 wide, its name centered on the
+   bar's 17 px (the art below it is the bar's shadow). */
+body.skin-classic.char .char-details__row--head, body.skin-classic.char .char-details__row--head:hover
+{
+	height: 24dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+}
+body.skin-classic.char .char-details__row--head .char-details__label
+{
+	left: 0;
+	top: 0;
+	width: 163dp;
+	height: 32dp;
+	decorator: char-hbar;
+	color: var(--classic-label-white);
+	font-size: var(--font-md);
+	font-weight: normal;
+	line-height: 17dp;
+	text-align: center;
+}

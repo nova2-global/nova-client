@@ -45,6 +45,10 @@ PET_EGG_HATCH_SOCKET = 1
 ## buys several (shop.BUY_COUNT_MAX). Default, Eddy to confirm.
 SHOP_BULK_BUY_HINT = True
 
+## NOVA-196: the tooltip of a job skill whose plus button shows ends with how Shift raises it
+## to the master level (the character window asks for it). Default, Eddy to confirm.
+SKILL_MAX_UP_HINT = True
+
 SASH_ABSORPTION_SOCKET = 0
 SASH_ABSORBED_SOCKET = 1
 
@@ -2910,6 +2914,12 @@ class SkillToolTip(ToolTip):
 			self.AppendSkillRequirement(skillIndex, skillLevel)
 
 		self.ShowToolTip()
+
+	def AppendSkillMaxUpHint(self):
+		"""NOVA-196: one line, how Shift + click raises the skill to its master level."""
+		if SKILL_MAX_UP_HINT:
+			self.AppendSpace(5)
+			self.AppendTextLine(localeInfo.SKILL_MAX_UP_HINT, self.CAN_LEVEL_UP_COLOR)
 
 	def __SetSkillTitle(self, skillIndex, skillGrade):
 		self.SetTitle(skill.GetSkillName(skillIndex, skillGrade))

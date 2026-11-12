@@ -1098,8 +1098,9 @@ class SageGrade(unittest.TestCase):
 		with world.game, quiet():
 			for slot in (1, 21, 41, 2, 22, 42, 23, 43, 24, 44, 25, 45):
 				window.OverInItem(slot)
+		# NOVA-196: skill 1's plus shows, so its tooltip ends with the hint.
 		self.assertEqual([
-			("SetSkillNew", 1, 1, 0, 1), ("SetSkillOnlyName", 1, 1, 1), ("SetSkillOnlyName", 1, 1, 3),
+			("SetSkillNew", 1, 1, 0, 1), ("AppendSkillMaxUpHint",), ("SetSkillOnlyName", 1, 1, 1), ("SetSkillOnlyName", 1, 1, 3),
 			("SetSkillOnlyName", 2, 2, 0), ("SetSkillOnlyName", 2, 2, 1), ("SetSkillNew", 2, 2, 4, 1),
 			("SetSkillNew", 3, 3, 1, 5), ("SetSkillOnlyName", 3, 3, 3),
 			("SetSkillNew", 4, 4, 2, 9), ("SetSkillOnlyName", 4, 4, 3),

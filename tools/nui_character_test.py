@@ -127,6 +127,10 @@ class World(object):
         if setup is not None:
             setup(game)
         with quiet():
+            # The details panel's row table and legacy window (NOVA-207), which
+            # the character window imports at the first expand.
+            game.load("characterdetails", "characterdetails.py")
+            game.load("uiCharacterDetails", "uicharacterdetails.py")
             game.load("uiCharacter", "uicharacter.py")
             for name in ("nui_limits", "nui_proxies", "nui_character"):
                 game.load(name, name + ".py")
@@ -557,7 +561,10 @@ class Flows(CharacterTest):
         self.assertEqual((model(b)["panel_emoticon"], model(b)["panel_status"], model(b)["panel_quest"]), ([1], [], []))
 
     def test_c3_c4_a_stat_point_spent_and_taken_back(self):
+        """One point a press with Ctrl held (NOVA-195: a press alone opens the
+        pick dialog, StatPick)."""
         def flow(world, window, input):
+            world.game.pressed.add(support.APP_CONSTANTS["DIK_LCONTROL"])
             for key in ("HTH", "INT", "STR", "DEX"):
                 input.button(key + "_Plus", "stat_plus", key)
                 input.button(key + "_Minus", "stat_minus", key)
@@ -1148,7 +1155,7 @@ def fixture(variant=None):
 
 class Fixtures(CharacterTest):
     VARIANTS = (None, "skill", "emoticon", "quest", "foundation", "skill-foundation", "emoticon-foundation",
-                "quest-foundation", "noguild", "hover")
+                "quest-foundation", "noguild", "hover", "details")
 
     def test_every_fixture_holds_the_model_s_keys_with_their_kinds(self):
         world = World(True)
@@ -1263,6 +1270,427 @@ class EdgePlace(CharacterTest):
             world.game.press_escape()
             window.Show()
         self.assertEqual(self.placed(window)[-1], ("set_position", 400.0, 120.0, (0.0, 0.0)))
+
+
+# --- NOVA-195: many stat points at once ---------------------------------------------------------------------
+
+def pick_dialogs(world):
+    return [dialog for dialog in world.game.dialogs if dialog._name == "uiPickMoney.PickMoneyDialog"]
+
+
+def stat_flow_calls(world, mark):
+    return [(name, args) for name, args in world.game.log[mark:]
+            if name.startswith("net.") or name.startswith("uiPickMoney.")]
+
+
+class StatPick(CharacterTest):
+    """NOVA-195: a press on a stat's plus opens the pick dialog (the dialog
+    kit's while `dialogs` is on) with the free points as its maximum and the
+    stat's title; its accept sends `/stat <st|dx|ht|iq> <n>`, n clamped to
+    the free points; Ctrl (left or right) sends one point at once; no dialog
+    without free points; the dialog closes with the window. The NovaUI
+    window's plus buttons reach legacy's handler, so both worlds make the
+    same calls."""
+
+    def both(self, flow, setup=warrior):
+        results = []
+        for world in self.worlds(setup):
+            window = world.open("STATUS")
+            mark = world.mark()
+            with world.game, quiet():
+                flow(world, window, Input(world, window))
+            results.append((stat_flow_calls(world, mark), window, world))
+        self.assertEqual(results[1][0], results[0][0])
+        return results
+
+    def test_a_plus_press_opens_the_dialog_and_its_accept_spends_the_amount(self):
+        def flow(world, window, input):
+            input.button("HTH_Plus", "stat_plus", "HTH")
+            pick_dialogs(world)[-1].accept(2)
+        results = self.both(flow)
+        locale = results[0][2].game.modules["localeInfo"]
+        self.assertEqual(results[0][0], [("uiPickMoney.PickMoneyDialog.SetMax", (1,)),
+                                         ("uiPickMoney.PickMoneyDialog.Open", (locale.STAT_PICK_TITLE_CON, 3)),
+                                         ("net.SendChatPacket", ("/stat ht 2",))])
+
+    def test_each_stat_has_its_title_and_command(self):
+        def flow(world, window, input):
+            for key in ("INT", "STR", "DEX"):
+                input.button(key + "_Plus", "stat_plus", key)
+                pick_dialogs(world)[-1].accept(1)
+        results = self.both(flow)
+        locale = results[0][2].game.modules["localeInfo"]
+        opened = [args[0] for name, args in results[0][0] if name.endswith(".Open")]
+        self.assertEqual(opened, [locale.STAT_PICK_TITLE_INT, locale.STAT_PICK_TITLE_STR, locale.STAT_PICK_TITLE_DEX])
+        self.assertEqual(len(set(opened)), 3)
+        sent = [args[0] for name, args in results[0][0] if name == "net.SendChatPacket"]
+        self.assertEqual(sent, ["/stat iq 1", "/stat st 1", "/stat dx 1"])
+        self.assertEqual(len(pick_dialogs(results[0][2])), 1, "one dialog, made once")
+
+    def test_ctrl_sends_one_point_at_once(self):
+        for key in ("DIK_LCONTROL", "DIK_RCONTROL"):
+            def flow(world, window, input, key=key):
+                world.game.pressed.add(support.APP_CONSTANTS[key])
+                input.button("STR_Plus", "stat_plus", "STR")
+                world.game.pressed.clear()
+            with self.subTest(key=key):
+                results = self.both(flow)
+                self.assertEqual(results[0][0], [("net.SendChatPacket", ("/stat st",))])
+
+    def test_the_accept_is_clamped_to_the_free_points_and_sends_nothing_at_zero(self):
+        def flow(world, window, input):
+            input.button("DEX_Plus", "stat_plus", "DEX")
+            pick_dialogs(world)[-1].accept(999)
+            input.button("DEX_Plus", "stat_plus", "DEX")
+            world.game.status[P["STAT"]] = 0
+            pick_dialogs(world)[-1].accept(2)
+            pick_dialogs(world)[-1].accept(0)
+        results = self.both(flow)
+        sent = [args[0] for name, args in results[0][0] if name == "net.SendChatPacket"]
+        self.assertEqual(sent, ["/stat dx 3"])
+
+    def test_no_dialog_without_free_points(self):
+        def setup(game):
+            warrior(game)
+            game.status[P["STAT"]] = 0
+        def flow(world, window, input):
+            window._CharacterWindow__OnClickStatusPlusButton("HTH")
+        results = self.both(flow, setup)
+        self.assertEqual(results[0][0], [])
+
+    def test_the_dialog_closes_when_the_window_closes_or_goes(self):
+        def flow(world, window, input):
+            input.button("HTH_Plus", "stat_plus", "HTH")
+            input.close()
+        results = self.both(flow)
+        self.assertEqual(results[0][0][-1], ("uiPickMoney.PickMoneyDialog.Close", ()))
+        for _, window, world in results:
+            dialog = pick_dialogs(world)[-1]
+            self.assertFalse(dialog.IsShow())
+            with world.game, quiet():
+                window.Show()
+                window._CharacterWindow__OnClickStatusPlusButton("INT")
+                self.assertTrue(dialog.IsShow())
+                window.OnPressEscapeKey()
+                self.assertFalse(dialog.IsShow(), "Escape closes the window and its dialog")
+                window._CharacterWindow__OnClickStatusPlusButton("INT")
+                window.Destroy()
+            self.assertFalse(dialog.IsShow())
+            self.assertIsNone(window.statPickDialog)
+
+
+# --- NOVA-196: Shift raises a skill to its master level --------------------------------------------------
+
+class SkillMaxUp(CharacterTest):
+    """NOVA-196: Shift (left or right) on a job skill's plus sends
+    `/skillup <vnum> max`, a press without it one level, as before; a horse
+    skill's plus stays one level; the tooltip of a job skill whose plus shows
+    ends with the hint (uiToolTip.SkillToolTip.AppendSkillMaxUpHint)."""
+
+    def sent(self, flow, setup=warrior):
+        (legacy, a, _), (novaui, b, _) = self.run_flow(flow, setup=setup)
+        legacy = [args[0] for name, args in legacy if name == "net.SendChatPacket"]
+        novaui = [args[0] for name, args in novaui if name == "net.SendChatPacket"]
+        self.assertEqual(novaui, legacy)
+        return legacy, a, b
+
+    def test_shift_sends_max(self):
+        for key in ("DIK_LSHIFT", "DIK_RSHIFT"):
+            def flow(world, window, input, key=key):
+                input.plus(1)
+                world.game.pressed.add(support.APP_CONSTANTS[key])
+                input.plus(2)
+                world.game.pressed.clear()
+                input.plus(2)
+            with self.subTest(key=key):
+                sent, _, _ = self.sent(flow)
+                self.assertEqual(sent, ["/skillup 1", "/skillup 2 max", "/skillup 2"])
+
+    def test_a_horse_skill_stays_one_level_with_shift(self):
+        def setup(game):
+            warrior(game, group=1, riding=(1, 5))
+            game.status[P["SKILL_HORSE"]] = 2
+        def flow(world, window, input):
+            input.button("Skill_Group_Button_3", "group_press", 2)
+            world.game.pressed.add(support.APP_CONSTANTS["DIK_LSHIFT"])
+            input.plus(1)
+        sent, a, _ = self.sent(flow, setup)
+        self.assertEqual(sent, ["/skillup 137"])
+        self.assertEqual(a.curSelectedSkillGroup, 3)
+
+    def test_the_tooltip_of_a_raisable_job_skill_ends_with_the_hint(self):
+        def flow(world, window, input):
+            input.over("skill", 1)      # grade 0, its plus shown
+            input.out("skill", 1)
+            input.over("skill", 23)     # skill 3 at the master grade: no plus
+            input.out("skill", 23)
+            input.over("skill", 2)
+        (_, a, _), (_, b, _) = self.run_flow(flow)
+        self.assertEqual(b.toolTipSkill.calls, a.toolTipSkill.calls)
+        calls = [call[0] for call in a.toolTipSkill.calls]
+        self.assertEqual(calls, ["SetSkillNew", "AppendSkillMaxUpHint", "HideToolTip", "SetSkillNew", "HideToolTip",
+                                 "SetSkillNew", "AppendSkillMaxUpHint"])
+
+    def test_no_hint_without_skill_points(self):
+        def setup(game):
+            warrior(game)
+            game.status[P["SKILL_ACTIVE"]] = 0
+        def flow(world, window, input):
+            input.over("skill", 1)
+        (_, a, _), (_, b, _) = self.run_flow(flow, setup=setup)
+        self.assertEqual(b.toolTipSkill.calls, a.toolTipSkill.calls)
+        self.assertEqual([call[0] for call in a.toolTipSkill.calls], ["SetSkillNew"])
+
+
+# --- NOVA-207: the bonus details panel ------------------------------------------------------------------------
+
+CHAR_H = "/home/eddy/new-project/new/port-w7/dungeon-boss/srv/src/game/char.h"
+LOCALES = ("ae", "br", "cz", "de", "dk", "en", "es", "fr", "gr", "hu", "it", "nl", "pl", "pt", "ro", "ru", "tr")
+DETAILS_VALUES = {43: 12, 147: 5, 118: 7, 40: 9, 145: 30}
+
+
+def details_setup(game):
+    warrior(game)
+    game.status.update(DETAILS_VALUES)
+
+
+def server_points():
+    """EPointTypes of NEW's server: POINT_<name> -> number."""
+    points, value = {}, -1
+    text = read(CHAR_H)
+    body = text[text.index("enum EPointTypes"):]
+    body = body[body.index("{") + 1:body.index("};")]
+    for line in body.splitlines():
+        line = line.split("//")[0].strip().rstrip(",")
+        match = re.match(r"(POINT_[A-Z0-9_]+)\s*(?:=\s*(\d+))?$", line)
+        if match:
+            value = int(match.group(2)) if match.group(2) else value + 1
+            points[match.group(1)] = value
+    return points
+
+
+def locale_keys(locale):
+    path = os.path.join(support.support.HERE, "..", "assets", "locale", "locale", locale, "locale_game.txt")
+    with open(path, encoding="utf-8", errors="replace") as handle:
+        return set(line.split("\t", 1)[0] for line in handle.read().splitlines())
+
+
+class DetailsTable(unittest.TestCase):
+    """The one row table (assets/root/characterdetails.py) both windows read."""
+
+    def table(self):
+        world = World(True)
+        return world.m("characterdetails")
+
+    def test_six_categories_and_every_row_one_line_with_its_point(self):
+        table = self.table()
+        self.assertEqual([key for key, _ in table.CATEGORIES], ["DETAILS_CATE_%d" % i for i in range(1, 7)])
+        rows = [row for _, rows in table.CATEGORIES for row in rows]
+        self.assertEqual(len(rows), 72)
+        self.assertEqual(len(set(row[3] for row in rows)), 72, "each point once")
+        for label, tooltip, name, point in rows:
+            self.assertTrue(label.startswith("DETAILS_") and tooltip.startswith("DETAILS_TOOLTIP_"), label)
+
+    @unittest.skipUnless(os.path.exists(CHAR_H), "NEW's server source")
+    def test_each_point_is_the_server_s(self):
+        points = server_points()
+        self.assertEqual(points["POINT_ATTBONUS_HUMAN"], 43)
+        self.assertEqual(points["POINT_ATTBONUS_DARK"], 167)
+        for _, rows in self.table().CATEGORIES:
+            for label, _, name, point in rows:
+                self.assertEqual(points.get("POINT_" + name), point, label)
+
+    def test_every_string_is_in_every_locale(self):
+        table = self.table()
+        keys = {"DETAILS_TITLE"}
+        for category, rows in table.CATEGORIES:
+            keys.add(category)
+            for label, tooltip, _, _ in rows:
+                keys.update((label, tooltip))
+        for locale in LOCALES:
+            with self.subTest(locale=locale):
+                self.assertEqual(keys - locale_keys(locale), set())
+
+    def test_the_lines_read_the_locale_and_the_points(self):
+        world = World(True, setup=details_setup)
+        table = world.m("characterdetails")
+        locale = world.game.modules["localeInfo"]
+        with world.game:
+            lines = table.lines(locale)
+            values = [table.value_text(line, world.game.modules["player"].GetStatus) for line in lines]
+        self.assertEqual(len(lines), 78)
+        self.assertEqual((lines[0]["head"], lines[0]["label"]), (True, locale.DETAILS_CATE_1))
+        self.assertEqual((lines[1]["head"], lines[1]["label"], lines[1]["tooltip"], lines[1]["point"]),
+                         (False, locale.DETAILS_1, locale.DETAILS_TOOLTIP_1, 43))
+        self.assertEqual(values[0], "")
+        self.assertEqual(values[1], "12")
+        self.assertEqual(values[2], "5", "the half humans' resistance: POINT_ANTI_HUMAN")
+        self.assertEqual(values[-1], "7", "the mall's gold bonus last")
+
+
+def legacy_details_values(window):
+    details = window.detailsWindow
+    return [text.GetText() if text is not None else "" for text in details.valueTexts]
+
+
+def novaui_details_values(window):
+    return [row["value"] for row in model(window)["details_rows"]]
+
+
+class Details(CharacterTest):
+    """NOVA-207: the expand button beside the character window opens the
+    details panel (legacy: uiCharacterDetails beside the window; NovaUI: the
+    side panel of the character document), its values player.GetStatus of
+    each row's point, refreshed by the window's RefreshStatus; the minimize
+    button closes it; the window's hide hides it and its next show reopens
+    it when it was open; a row's hover shows its tooltip."""
+
+    def toggle(self, world, window, which):
+        with world.game, quiet():
+            if world.nui_on:
+                press(window, "details_press", which, 0)
+            else:
+                button = window.detailsExpandButton if which == "expand" else window.detailsMinimizeButton
+                if button.IsShow():
+                    button.click()
+
+    def open_both(self, setup=details_setup):
+        worlds = []
+        for world in self.worlds(setup):
+            window = world.open("STATUS")
+            worlds.append((world, window))
+        return worlds
+
+    def test_the_expand_button_shows_and_the_panel_opens_with_the_values(self):
+        (lw, a), (nw, b) = self.open_both()
+        self.assertTrue(a.detailsExpandButton.IsShow())
+        self.assertFalse(a.detailsMinimizeButton.IsShow())
+        self.assertEqual((model(b)["details_expand"], model(b)["details_minimize"], model(b)["details_panel"]),
+                         (True, False, []))
+        self.assertIsNone(a.detailsWindow, "made at the first expand")
+        for world, window in ((lw, a), (nw, b)):
+            self.toggle(world, window, "expand")
+        self.assertTrue(a.detailsWindow.IsShow())
+        self.assertEqual((a.detailsExpandButton.IsShow(), a.detailsMinimizeButton.IsShow()), (False, True))
+        self.assertEqual((model(b)["details_expand"], model(b)["details_minimize"], model(b)["details_panel"]),
+                         (False, True, [1]))
+        legacy = legacy_details_values(a)
+        self.assertEqual(novaui_details_values(b), legacy)
+        self.assertEqual(legacy[1:3], ["12", "5"])
+        rows = model(b)["details_rows"]
+        self.assertEqual(len(rows), 78)
+        self.assertEqual(rows[0], {"index": 0, "head": True, "label": lw.game.modules["localeInfo"].DETAILS_CATE_1, "value": ""})
+        self.assertEqual(rows[1]["label"], lw.game.modules["localeInfo"].DETAILS_1)
+
+    def test_a_point_change_reaches_the_open_panel_through_refresh_status(self):
+        (lw, a), (nw, b) = self.open_both()
+        for world, window in ((lw, a), (nw, b)):
+            self.toggle(world, window, "expand")
+            world.game.status[43] = 25
+            world.game.status[118] = 0
+            with world.game, quiet():
+                window.RefreshStatus()
+        self.assertEqual(legacy_details_values(a)[1], "25")
+        self.assertEqual(legacy_details_values(a)[-1], "0")
+        self.assertEqual(novaui_details_values(b), legacy_details_values(a))
+
+    def test_minimize_closes_it(self):
+        (lw, a), (nw, b) = self.open_both()
+        for world, window in ((lw, a), (nw, b)):
+            self.toggle(world, window, "expand")
+            self.toggle(world, window, "minimize")
+        self.assertFalse(a.detailsWindow.IsShow())
+        self.assertEqual((a.detailsExpandButton.IsShow(), a.detailsMinimizeButton.IsShow()), (True, False))
+        self.assertEqual((model(b)["details_expand"], model(b)["details_panel"], model(b)["details_rows"]),
+                         (True, [], []))
+
+    def test_the_window_s_hide_hides_it_and_its_show_reopens_it(self):
+        for close in ("Hide", "Close", "OnPressEscapeKey"):
+            with self.subTest(close=close):
+                (lw, a), (nw, b) = self.open_both()
+                for world, window in ((lw, a), (nw, b)):
+                    self.toggle(world, window, "expand")
+                    with world.game, quiet():
+                        getattr(window, close)()
+                self.assertFalse(a.detailsWindow.IsShow())
+                for world, window in ((lw, a), (nw, b)):
+                    world.game.status[43] = 40
+                    with world.game, quiet():
+                        window.Show()
+                self.assertTrue(a.detailsWindow.IsShow())
+                self.assertEqual((a.detailsExpandButton.IsShow(), a.detailsMinimizeButton.IsShow()), (False, True))
+                self.assertEqual((model(b)["details_panel"], model(b)["details_minimize"]), ([1], True))
+                self.assertEqual(legacy_details_values(a)[1], "40", "refreshed at the reopen")
+                self.assertEqual(novaui_details_values(b), legacy_details_values(a))
+
+    def test_a_closed_panel_stays_closed_at_the_next_show(self):
+        (lw, a), (nw, b) = self.open_both()
+        for world, window in ((lw, a), (nw, b)):
+            self.toggle(world, window, "expand")
+            self.toggle(world, window, "minimize")
+            with world.game, quiet():
+                window.Hide()
+                window.Show()
+        self.assertFalse(a.detailsWindow.IsShow())
+        self.assertEqual(model(b)["details_panel"], [])
+
+    def test_a_row_s_hover_shows_its_tooltip(self):
+        (lw, a), (nw, b) = self.open_both()
+        tips = []
+        for world, window in ((lw, a), (nw, b)):
+            self.toggle(world, window, "expand")
+            with world.game, quiet():
+                if world.nui_on:
+                    fire(window, "details_over", 1)
+                    tip = window.detailsWindow.toolTip
+                    shown = tip.IsShow()
+                    fire(window, "details_out", 1)
+                    fire(window, "details_over", 0)
+                else:
+                    window.detailsWindow.rowAreas[1].OnMouseOverIn()
+                    tip = window.detailsWindow.toolTip
+                    shown = tip.IsShow()
+                    window.detailsWindow.rowAreas[1].OnMouseOverOut()
+                    window.detailsWindow.rowAreas[0].OnMouseOverIn()
+            tips.append((shown, list(tip.lines), tip.IsShow()))
+        self.assertEqual(tips[1], tips[0])
+        locale = lw.game.modules["localeInfo"]
+        self.assertEqual(tips[0], (True, [(locale.DETAILS_1, "title"), (locale.DETAILS_TOOLTIP_1, "description")], False),
+                         "a category's line has no tooltip")
+
+    def test_destroy_destroys_it(self):
+        (lw, a), (nw, b) = self.open_both()
+        for world, window in ((lw, a), (nw, b)):
+            self.toggle(world, window, "expand")
+            details = window.detailsWindow
+            with world.game, quiet():
+                window.Destroy()
+            self.assertIsNone(window.detailsWindow)
+            self.assertFalse(details.IsShow())
+
+    def test_the_legacy_panel_sits_right_of_the_window_and_follows_it(self):
+        world = World(False, setup=details_setup)
+        window = world.open("STATUS")
+        placed = []
+        window.GetGlobalPosition = lambda: (24, 250)
+        self.toggle(world, window, "expand")
+        window.detailsWindow.SetPosition = lambda x, y: placed.append((x, y))
+        with world.game, quiet():
+            window.OnMoveWindow(100, 120)
+        self.assertEqual(placed, [(100 + 250, 120)])
+        self.assertTrue(world.m("uiCharacterDetails").CharacterDetailsWindow, "the legacy window's class")
+
+    def test_the_kept_board_holds_no_rows_while_hidden(self):
+        world = World(True, setup=details_setup)
+        window = world.open("STATUS")
+        self.toggle(world, window, "expand")
+        kept = board(window)
+        with world.game, quiet():
+            window.Hide()
+        self.assertEqual((kept.get("details_panel"), kept.get("details_rows")), ([], []))
+        with world.game, quiet():
+            window.Show()
+        self.assertEqual(len(model(window)["details_rows"]), 78)
 
 
 if __name__ == "__main__":

@@ -723,6 +723,9 @@ What the color roles mean:
 | `--gauge-pink` | `#f5c060` | `#d79c19` | `#bc5296` |
 | `--gauge-purple` | `#e9a23b` | `#d98e1d` | `#8052bc` |
 | `--gauge-blue` | `#3f86f2` | `#2f6fe0` | `#5283bc` |
+| `--gauge-trail` | `#ff9b45` | `#f08a2c` | `#bc7a40` |
+| `--gauge-poison` | `#4fcf7d` | `#2fa85e` | `#52bc5a` |
+| `--gauge-burn` | `#f2cf3d` | `#e0b514` | `#bcab37` |
 | `--cooldown-shade` | `#00000080` | `#00000080` | `#00000080` |
 | `--slot-disabled` | `#ff6f6a38` | `#c4322b38` | `#ff00004d` |
 | `--slot-locked` | `#0000008c` | `#15171c66` | `#00000080` |
@@ -851,6 +854,7 @@ What the color roles mean:
 | `--classic-disabled-text` | classic | `#6e6e6e` |
 | `--classic-key-text` | classic | `#000000` |
 | `--classic-label-white` | classic | `#ffffff` |
+| `--classic-arrow-fill` | classic | `#d18047` |
 | `--classic-aura-exp-fill` | classic | `#44aaff` |
 | `--classic-chat-press` | classic | `#ffffff4d` |
 | `--classic-chat-log-fill` | classic | `#00000077` |

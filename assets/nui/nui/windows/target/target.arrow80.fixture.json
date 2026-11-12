@@ -1,0 +1,26 @@
+{
+	"target": {
+		"name": "Lv.23 (Boss) Wild Dog Leader",
+		"title": "(Boss) Wild Dog Leader",
+		"level": 23,
+		"hp": 0.62,
+		"show_hp": true,
+		"buttons": [],
+		"exchange_at": -1,
+		"in_range": false,
+		"portrait": "",
+		"subtitle": "",
+		"hp_values": "1.234 / 2.000",
+		"element": 6,
+		"element_name": "Dark",
+		"show_info": true,
+		"trail": 62,
+		"trail_snap": true,
+		"poisoned": false,
+		"burning": false,
+		"arrow_percent": 80,
+		"arrow_pre": "",
+		"arrow_post": " arrow damage",
+		"hint": ""
+	}
+}

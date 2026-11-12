@@ -104,3 +104,25 @@ body.skin-cyberpunk.target .target-board__element
 {
 	border-radius: 0;
 }
+/* Wave 10: the poison and burn tints keep the skin's segments and sheen
+   (NOVA-208), the damage trail is square, and so is the archer gauge
+   (NOVA-209). */
+body.skin-cyberpunk.target progress.target-board__gauge.is-poisoned fill,
+body.skin-cyberpunk.target progress.target-board__gauge.is-burning fill
+{
+	decorator: repeating-linear-gradient(90deg, transparent 0dp, transparent 6.9dp, var(--surface-sunken) 7dp, var(--surface-sunken) 7.9dp, transparent 8dp),
+		vertical-gradient(var(--sheen) var(--sheen-clear));
+}
+body.skin-cyberpunk.target .target-board__trail
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.target progress.target-arrow__gauge,
+body.skin-cyberpunk.target progress.target-arrow__gauge fill
+{
+	border-radius: 0;
+}
+body.skin-cyberpunk.target progress.target-arrow__gauge
+{
+	border-color: var(--cyberpunk-edge-dim);
+}

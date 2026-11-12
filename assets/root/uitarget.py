@@ -6,11 +6,14 @@ import wndMgr
 import messenger
 import guild
 import chr
+import chrmgr
+import item
 import nonplayer
 import localeInfo
 import constInfo
 import uiCommon
 import uiTargetInfo
+import uiToolTip
 import nui_windows
 import nui_numbers
 
@@ -19,6 +22,258 @@ import nui_numbers
 ELEMENT_NAME_KEY = {1: "TARGET_INFO_RACE_ELEC", 2: "TARGET_INFO_RACE_FIRE", 3: "TARGET_INFO_RACE_ICE",
                     4: "TARGET_INFO_RACE_WIND", 5: "TARGET_INFO_RACE_EARTH", 6: "TARGET_INFO_RACE_DARK"}
 ELEMENT_COLOR = {1: 0xffcdb3ff, 2: 0xffff8a4a, 3: 0xff7ec9ff, 4: 0xff9fffa6, 5: 0xffd6b16e, 6: 0xffc17bff}
+
+# NOVA-208 (OLD uiTarget.py:780-830, 1166-1173, 1595-1640): the HP gauge's
+# bar art by the target's state, and the orange damage trail that stays at
+# the HP before a hit and drains to the new HP in TRAIL_SECONDS. The green,
+# yellow and orange bars are the red one turned on the hue wheel, as the
+# legacy blue, pink and purple are.
+GAUGE_ART = "d:/ymir work/ui/pattern/gauge_%s.tga"
+GAUGE_RED = "red"
+GAUGE_POISONED = "green"
+GAUGE_BURNING = "yellow"
+GAUGE_TRAIL = "orange"
+TRAIL_SECONDS = 0.75
+
+
+def TrailPercent(start, end, startTime, now):
+	"""The trail's HP percent at `now`: from `start` (the HP before the hit)
+	to `end` (the HP after it), linearly over TRAIL_SECONDS from startTime."""
+	if end >= start:
+		return end
+	left = 1.0 - (now - startTime) / TRAIL_SECONDS
+	if left <= 0.0:
+		return end
+	return end + (start - end) * min(1.0, left)
+
+
+def GaugeColorOf(vid):
+	"""The bar's color for the target's affects: green while it is poisoned
+	(also while it burns too), yellow while it burns, red otherwise. An exe
+	without chrmgr.HasAffectByVID keeps red."""
+	hasAffect = getattr(chrmgr, "HasAffectByVID", None)
+	if not vid or hasAffect is None:
+		return GAUGE_RED
+	if hasAffect(vid, chr.AFFECT_POISON):
+		return GAUGE_POISONED
+	if hasAffect(vid, chr.AFFECT_FIRE):
+		return GAUGE_BURNING
+	return GAUGE_RED
+
+
+# NOVA-209 (OLD uiTarget.py:48-147): the bonus a bow's arrow gets at the
+# target's distance, as "+N% arrow damage" in the tooltip's positive color,
+# "0%" in its normal color, "-N%" in its negative color.
+ARROW_UP = "up"
+ARROW_EVEN = "even"
+ARROW_DOWN = "down"
+# uitooltip.ToolTip's POSITIVE_COLOR, NORMAL_COLOR and NEGATIVE_COLOR.
+ARROW_COLOR = {ARROW_UP: 0xff8ab98e, ARROW_EVEN: 0xffc2c2c2, ARROW_DOWN: 0xffe57976}
+
+
+def ArrowDamageText(percent):
+	"""(text, ARROW_UP / ARROW_EVEN / ARROW_DOWN) for an arrow damage percent."""
+	if percent > 100:
+		amount, role = "+%d%%" % (percent - 100), ARROW_UP
+	elif percent < 100:
+		amount, role = "-%d%%" % (100 - percent), ARROW_DOWN
+	else:
+		amount, role = "0%", ARROW_EVEN
+	text = getattr(localeInfo, "TARGET_ARROW_DAMAGE", "%s")
+	try:
+		return text % amount, role
+	except (TypeError, ValueError):
+		return amount, role
+
+
+def ArrowPercentOf(vid):
+	"""The arrow damage percent at the distance to `vid` while the main
+	character holds a bow (player.GetArrowDistancePercent, the shared rule
+	of bow_distance.h), else 0. An exe without the rule answers 0."""
+	rule = getattr(player, "GetArrowDistancePercent", None)
+	if not vid or rule is None or player.IsMainCharacterIndex(vid):
+		return 0
+	vnum = player.GetItemIndex(item.EQUIPMENT_WEAPON)
+	if not vnum:
+		return 0
+	item.SelectItem(vnum)
+	if item.GetItemType() != item.ITEM_TYPE_WEAPON or item.GetItemSubType() != item.WEAPON_BOW:
+		return 0
+	distance = player.GetCharacterDistance(vid)
+	if distance < 0:
+		return 0
+	return int(rule(distance))
+
+
+def MetinQueueHint(vnum):
+	"""NOVA-216 (OLD uiTarget.py:840): the attack queue hint for a metin
+	stone's race, "" for anything else or an exe without IsMonsterStone."""
+	isStone = getattr(nonplayer, "IsMonsterStone", None)
+	if not vnum or isStone is None or not isStone(vnum):
+		return ""
+	return getattr(localeInfo, "TARGET_METIN_QUEUE_HINT", "")
+
+
+class TargetHPGauge(ui.Gauge):
+	"""The legacy gauge (ui.Gauge) with the target's colors and the damage
+	trail: an orange bar from the HP to the trail, over the empty slot, which
+	stays at the HP before a drop and drains to the new HP (OnUpdate). A rise
+	or a new target moves it at once."""
+
+	# ui.Gauge's GAUGE_TEMPORARY_PLACE and GAUGE_WIDTH: the bar starts 12 px
+	# in from both ends and its art is 16 px wide.
+	BAR_INSET = 12
+	ART_WIDTH = 16
+
+	def __init__(self):
+		ui.Gauge.__init__(self)
+		self.trail = None
+		self.color = GAUGE_RED
+		self.gaugeWidth = 0
+		self.hpPercent = 0.0
+		self.trailStart = 0.0
+		self.trailEnd = 0.0
+		self.trailTime = 0.0
+
+	def MakeGauge(self, width, color):
+		ui.Gauge.MakeGauge(self, width, color)
+		self.gaugeWidth = max(48, width)
+		self.color = color
+		trail = ui.ExpandedImageBox()
+		trail.SetParent(self)
+		trail.LoadImage(GAUGE_ART % GAUGE_TRAIL)
+		trail.Hide()
+		self.trail = trail
+
+	def SetColor(self, color):
+		"""The bar's art; loaded only when it changes."""
+		if color == self.color:
+			return
+		self.color = color
+		self.imgGauge.LoadImage(GAUGE_ART % color)
+		ui.Gauge.SetPercentage(self, self.hpPercent, 100.0)
+
+	def ResetTrail(self):
+		"""A new target: the next HP sets the trail at once."""
+		self.hpPercent = 0.0
+		self.trailStart = self.trailEnd = 0.0
+		self.trailTime = 0.0
+		if self.trail:
+			self.trail.Hide()
+
+	def SetPercentage(self, curValue, maxValue):
+		ui.Gauge.SetPercentage(self, curValue, maxValue)
+		percent = min(100.0, max(0.0, 100.0 * float(curValue) / float(maxValue))) if maxValue > 0 else 0.0
+		if percent < self.hpPercent:
+			self.trailStart = self.hpPercent
+			self.trailTime = app.GetTime()
+		else:
+			self.trailStart = percent
+		self.trailEnd = percent
+		self.hpPercent = percent
+		self.__DrawTrail()
+
+	def GetTrailPercent(self):
+		return TrailPercent(self.trailStart, self.trailEnd, self.trailTime, app.GetTime())
+
+	def __DrawTrail(self):
+		if not self.trail:
+			return
+		span = self.gaugeWidth - self.BAR_INSET * 2
+		left = int(span * self.hpPercent / 100.0)
+		width = int(span * self.GetTrailPercent() / 100.0) - left
+		if width <= 0:
+			self.trail.Hide()
+			return
+		self.trail.SetPosition(self.BAR_INSET + left, 0)
+		self.trail.SetRenderingRect(0.0, 0.0, float(width) / self.ART_WIDTH - 1.0, 0.0)
+		self.trail.Show()
+
+	def OnUpdate(self):
+		self.__DrawTrail()
+
+
+class ArcherGauge(ui.Window):
+	"""NOVA-209 (OLD uiTarget.py:48-147): the archer distance gauge below the
+	target board, shown while the main character holds a bow. Its fill is
+	empty at LOW and full at HIGH percent arrow damage, with a mark at 100;
+	the tooltip says the bonus. OLD's art (archergauge/*.png) is not in
+	NEW's packs: code-drawn in the legacy gauge's colors."""
+
+	WIDTH = 14
+	HEIGHT = 84
+	LOW = 80
+	HIGH = 120
+	EDGE_COLOR = 0xff4c4c4c
+	TRACK_COLOR = 0xff0a0a0a
+	FILL_COLOR = 0xffd18047
+	MARK_COLOR = 0xffc7c7c7
+
+	# ui.Window.__init__ calls Hide before this class's __init__ runs.
+	toolTip = None
+	tipShown = False
+
+	def __init__(self):
+		ui.Window.__init__(self)
+		self.percent = 0
+		self.toolTip = None
+		self.tipShown = False
+		self.SetSize(self.WIDTH, self.HEIGHT)
+		self.edge = self.__MakeBar(0, 0, self.WIDTH, self.HEIGHT, self.EDGE_COLOR)
+		self.track = self.__MakeBar(2, 2, self.WIDTH - 4, self.HEIGHT - 4, self.TRACK_COLOR)
+		self.fill = self.__MakeBar(2, self.HEIGHT - 2, self.WIDTH - 4, 0, self.FILL_COLOR)
+		self.mark = self.__MakeBar(1, self.HEIGHT // 2, self.WIDTH - 2, 1, self.MARK_COLOR)
+
+	def __MakeBar(self, x, y, width, height, color):
+		bar = ui.Bar()
+		bar.SetParent(self)
+		bar.AddFlag("not_pick")
+		bar.SetPosition(x, y)
+		bar.SetSize(width, height)
+		bar.SetColor(color)
+		bar.Show()
+		return bar
+
+	def Destroy(self):
+		self.OnMouseOverOut()
+		self.toolTip = None
+		self.edge = self.track = self.fill = self.mark = None
+
+	def GetFill(self):
+		return min(1.0, max(0.0, float(self.percent - self.LOW) / (self.HIGH - self.LOW)))
+
+	def SetPercent(self, percent):
+		if percent == self.percent:
+			return
+		self.percent = percent
+		inner = self.HEIGHT - 4
+		height = int(round(inner * self.GetFill()))
+		self.fill.SetPosition(2, 2 + inner - height)
+		self.fill.SetSize(self.WIDTH - 4, height)
+		if self.tipShown:
+			self.__ShowToolTip()
+
+	def __ShowToolTip(self):
+		text, role = ArrowDamageText(self.percent)
+		self.toolTip.ClearToolTip()
+		self.toolTip.AppendTextLine(text, ARROW_COLOR[role])
+		self.toolTip.ResizeToolTip()
+		self.toolTip.ShowToolTip()
+		self.tipShown = True
+
+	def OnMouseOverIn(self):
+		if not self.toolTip:
+			self.toolTip = uiToolTip.ToolTip()
+		self.__ShowToolTip()
+
+	def OnMouseOverOut(self):
+		self.tipShown = False
+		if self.toolTip:
+			self.toolTip.HideToolTip()
+
+	def Hide(self):
+		ui.Window.Hide(self)
+		self.OnMouseOverOut()
 
 
 class TargetBoard(ui.ThinBoard):
@@ -78,6 +333,11 @@ class TargetBoard(ui.ThinBoard):
 
 	GRADE_NAME = {}
 	EXCHANGE_LIMIT_RANGE = 3000
+	# NOVA-216: a metin stone's board is this tall, its queue hint under the gauge.
+	HINT_BOARD_HEIGHT = 54
+
+	# ui.ThinBoard.__init__ calls Hide before this class's __init__ runs.
+	archerGauge = None
 
 	@staticmethod
 	def _RebuildLocaleStrings():
@@ -99,10 +359,21 @@ class TargetBoard(ui.ThinBoard):
 		name.SetOutline()
 		name.Show()
 
-		hpGauge = ui.Gauge()
+		# NOVA-208: the gauge tinted by the target's poison and fire, with the
+		# damage trail (TargetHPGauge).
+		hpGauge = TargetHPGauge()
 		hpGauge.SetParent(self)
-		hpGauge.MakeGauge(130, "red")
+		hpGauge.MakeGauge(130, GAUGE_RED)
 		hpGauge.Hide()
+
+		# NOVA-216 (OLD uiTarget.py:840): the attack queue hint of a metin stone.
+		metinHint = ui.TextLine()
+		metinHint.SetParent(self)
+		metinHint.SetOutline()
+		metinHint.SetWindowHorizontalAlignCenter()
+		metinHint.SetHorizontalAlignCenter()
+		metinHint.SetPosition(0, 33)
+		metinHint.Hide()
 
 		# NOVA-40 (OLD uiTarget.py:862, 1330-1391): the percent beside the gauge,
 		# the exact numbers over it, the element and the info button of a mob.
@@ -204,6 +475,9 @@ class TargetBoard(ui.ThinBoard):
 
 		self.name = name
 		self.hpGauge = hpGauge
+		self.metinHint = metinHint
+		# NOVA-209: the archer distance gauge, a window of its own below the board.
+		self.archerGauge = ArcherGauge()
 		self.hpPercent = hpPercent
 		self.hpValues = hpValues
 		self.elementText = elementText
@@ -244,6 +518,11 @@ class TargetBoard(ui.ThinBoard):
 		self.buttonDict = None
 		self.name = None
 		self.hpGauge = None
+		self.metinHint = None
+		if self.archerGauge:
+			self.archerGauge.Hide()
+			self.archerGauge.Destroy()
+			self.archerGauge = None
 		self.hpPercent = None
 		self.hpValues = None
 		self.elementText = None
@@ -352,6 +631,11 @@ class TargetBoard(ui.ThinBoard):
 		self.name.SetHorizontalAlignCenter()
 		self.name.SetWindowHorizontalAlignCenter()
 		self.hpGauge.Hide()
+		self.hpGauge.ResetTrail()
+		self.hpGauge.SetColor(GAUGE_RED)
+		self.metinHint.Hide()
+		if self.archerGauge:
+			self.archerGauge.Hide()
 		self.hpPercent.Hide()
 		self.hpValues.Hide()
 		self.elementText.Hide()
@@ -387,6 +671,15 @@ class TargetBoard(ui.ThinBoard):
 			self.infoButton.SetWindowHorizontalAlignLeft()
 			self.infoButton.Show()
 
+		# NOVA-216: a metin stone's board says how to queue it.
+		hint = MetinQueueHint(self.vnum)
+		if hint:
+			self.metinHint.SetText(hint)
+			self.metinHint.Show()
+			self.SetSize(self.GetWidth(), self.HINT_BOARD_HEIGHT)
+		else:
+			self.metinHint.Hide()
+
 	def GetTargetVID(self):
 		return self.vid
 
@@ -411,6 +704,7 @@ class TargetBoard(ui.ThinBoard):
 
 			self.name.SetWindowHorizontalAlignLeft()
 			self.name.SetHorizontalAlignLeft()
+			self.hpGauge.ResetTrail()
 			self.hpGauge.Show()
 			self.UpdatePosition()
 
@@ -435,6 +729,7 @@ class TargetBoard(ui.ThinBoard):
 			self.name.SetPosition(23, 13)
 			self.name.SetWindowHorizontalAlignLeft()
 			self.name.SetHorizontalAlignLeft()
+			self.hpGauge.ResetTrail()
 			self.hpGauge.Show()
 		self.hpGauge.SetPercentage(hpPercentage, 100)
 		self.__ShowHPText(hpPercentage, 0, 0)
@@ -713,7 +1008,32 @@ class TargetBoard(ui.ThinBoard):
 		self.SetSize(max(150, showingButtonCount * 75), 65)
 		self.UpdatePosition()
 
+	def Hide(self):
+		ui.ThinBoard.Hide(self)
+		if self.archerGauge:
+			self.archerGauge.Hide()
+
+	def __UpdateCombat(self):
+		"""NOVA-208: the gauge's color by the target's poison and fire;
+		NOVA-209: the archer gauge below the board while a bow is held."""
+		if self.hpGauge and self.hpGauge.IsShow():
+			self.hpGauge.SetColor(GaugeColorOf(self.vid))
+		if not self.archerGauge:
+			return
+		percent = ArrowPercentOf(self.vid)
+		if percent <= 0:
+			self.archerGauge.Hide()
+			return
+		self.archerGauge.SetPercent(percent)
+		x, y = self.GetGlobalPosition()
+		self.archerGauge.SetPosition(x + (self.GetWidth() - self.archerGauge.WIDTH) // 2, y + self.GetHeight() + 4)
+		if not self.archerGauge.IsShow():
+			self.archerGauge.Show()
+			self.archerGauge.SetTop()
+
 	def OnUpdate(self):
+		self.__UpdateCombat()
+
 		if self.isShowButton:
 
 			exchangeButton = self.buttonDict[self.BTN_EXCHANGE]

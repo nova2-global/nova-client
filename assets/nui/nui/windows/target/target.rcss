@@ -6,7 +6,10 @@
    ticks; another character's board holds its portrait, its name over its
    class and guild, and the relation buttons in a row below. Classic (the legacy thin board, the outlined whole name,
    the legacy gauge and the small thin buttons 68dp apart):
-   skins/classic/windows/target.rcss. */
+   skins/classic/windows/target.rcss.
+   Wave 10: the bar's orange damage trail (NOVA-208), drained by a
+   transition, its poison and burn tints, the metin stone hint under it
+   (NOVA-216) and the archer gauge below the board (NOVA-209). */
 
 body.target
 {
@@ -183,11 +186,17 @@ body.target
 	font-effect: shadow(0dp 1dp var(--text-outline));
 }
 /* The legacy gauge in the head is classic's; the modern bar is below. */
-progress.target-board__hp
+.target-board__hp-box
 {
 	display: none;
+	position: relative;
 	width: 130dp;
 	flex: 0 0 auto;
+}
+progress.target-board__hp
+{
+	display: block;
+	width: 100%;
 }
 .target-board__close
 {
@@ -295,6 +304,146 @@ nui-blink.nui-blink-off .target-board__sheen.nui-anim
 	88% { transform: translateX(72%) scaleX(1); }
 	100% { transform: translateX(80%) scaleX(0); }
 }
+/* NOVA-208: the bar's tint while the target is poisoned (also while it
+   burns too) or burns. */
+progress.target-board__gauge.is-poisoned fill
+{
+	background-color: var(--gauge-poison);
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-poison) 24%, var(--gauge-poison) 100%);
+}
+progress.target-board__gauge.is-burning fill
+{
+	background-color: var(--gauge-burn);
+	decorator: linear-gradient(180deg, var(--text-inverse) 0%, var(--gauge-burn) 24%, var(--gauge-burn) 100%);
+}
+/* NOVA-208: the damage trail, over the empty part from the HP (its left
+   edge, --target-hp, at once) to the HP it drains to (its right edge, a
+   class per percent): a drop keeps the transition, which drains it over
+   0.75 s from the HP before the hit (OLD's time); is-snap (a heal, a new
+   target) and reduced motion (base.rcss) move it at once. Classic draws
+   it over its legacy gauge, in the legacy orange art. */
+.target-board__trail
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	--target-hp: 0%;
+	left: var(--target-hp, 0%);
+	right: 100%;
+	border-radius: 0 9999dp 9999dp 0;
+	background-color: var(--gauge-trail);
+	pointer-events: none;
+}
+.target-board__trail.nui-anim
+{
+	transition: right 0.75s linear-in-out;
+}
+.target-board__trail.is-snap.nui-anim
+{
+	transition: none;
+}
+.target-board__trail--0 { right: 100%; }
+.target-board__trail--1 { right: 99%; }
+.target-board__trail--2 { right: 98%; }
+.target-board__trail--3 { right: 97%; }
+.target-board__trail--4 { right: 96%; }
+.target-board__trail--5 { right: 95%; }
+.target-board__trail--6 { right: 94%; }
+.target-board__trail--7 { right: 93%; }
+.target-board__trail--8 { right: 92%; }
+.target-board__trail--9 { right: 91%; }
+.target-board__trail--10 { right: 90%; }
+.target-board__trail--11 { right: 89%; }
+.target-board__trail--12 { right: 88%; }
+.target-board__trail--13 { right: 87%; }
+.target-board__trail--14 { right: 86%; }
+.target-board__trail--15 { right: 85%; }
+.target-board__trail--16 { right: 84%; }
+.target-board__trail--17 { right: 83%; }
+.target-board__trail--18 { right: 82%; }
+.target-board__trail--19 { right: 81%; }
+.target-board__trail--20 { right: 80%; }
+.target-board__trail--21 { right: 79%; }
+.target-board__trail--22 { right: 78%; }
+.target-board__trail--23 { right: 77%; }
+.target-board__trail--24 { right: 76%; }
+.target-board__trail--25 { right: 75%; }
+.target-board__trail--26 { right: 74%; }
+.target-board__trail--27 { right: 73%; }
+.target-board__trail--28 { right: 72%; }
+.target-board__trail--29 { right: 71%; }
+.target-board__trail--30 { right: 70%; }
+.target-board__trail--31 { right: 69%; }
+.target-board__trail--32 { right: 68%; }
+.target-board__trail--33 { right: 67%; }
+.target-board__trail--34 { right: 66%; }
+.target-board__trail--35 { right: 65%; }
+.target-board__trail--36 { right: 64%; }
+.target-board__trail--37 { right: 63%; }
+.target-board__trail--38 { right: 62%; }
+.target-board__trail--39 { right: 61%; }
+.target-board__trail--40 { right: 60%; }
+.target-board__trail--41 { right: 59%; }
+.target-board__trail--42 { right: 58%; }
+.target-board__trail--43 { right: 57%; }
+.target-board__trail--44 { right: 56%; }
+.target-board__trail--45 { right: 55%; }
+.target-board__trail--46 { right: 54%; }
+.target-board__trail--47 { right: 53%; }
+.target-board__trail--48 { right: 52%; }
+.target-board__trail--49 { right: 51%; }
+.target-board__trail--50 { right: 50%; }
+.target-board__trail--51 { right: 49%; }
+.target-board__trail--52 { right: 48%; }
+.target-board__trail--53 { right: 47%; }
+.target-board__trail--54 { right: 46%; }
+.target-board__trail--55 { right: 45%; }
+.target-board__trail--56 { right: 44%; }
+.target-board__trail--57 { right: 43%; }
+.target-board__trail--58 { right: 42%; }
+.target-board__trail--59 { right: 41%; }
+.target-board__trail--60 { right: 40%; }
+.target-board__trail--61 { right: 39%; }
+.target-board__trail--62 { right: 38%; }
+.target-board__trail--63 { right: 37%; }
+.target-board__trail--64 { right: 36%; }
+.target-board__trail--65 { right: 35%; }
+.target-board__trail--66 { right: 34%; }
+.target-board__trail--67 { right: 33%; }
+.target-board__trail--68 { right: 32%; }
+.target-board__trail--69 { right: 31%; }
+.target-board__trail--70 { right: 30%; }
+.target-board__trail--71 { right: 29%; }
+.target-board__trail--72 { right: 28%; }
+.target-board__trail--73 { right: 27%; }
+.target-board__trail--74 { right: 26%; }
+.target-board__trail--75 { right: 25%; }
+.target-board__trail--76 { right: 24%; }
+.target-board__trail--77 { right: 23%; }
+.target-board__trail--78 { right: 22%; }
+.target-board__trail--79 { right: 21%; }
+.target-board__trail--80 { right: 20%; }
+.target-board__trail--81 { right: 19%; }
+.target-board__trail--82 { right: 18%; }
+.target-board__trail--83 { right: 17%; }
+.target-board__trail--84 { right: 16%; }
+.target-board__trail--85 { right: 15%; }
+.target-board__trail--86 { right: 14%; }
+.target-board__trail--87 { right: 13%; }
+.target-board__trail--88 { right: 12%; }
+.target-board__trail--89 { right: 11%; }
+.target-board__trail--90 { right: 10%; }
+.target-board__trail--91 { right: 9%; }
+.target-board__trail--92 { right: 8%; }
+.target-board__trail--93 { right: 7%; }
+.target-board__trail--94 { right: 6%; }
+.target-board__trail--95 { right: 5%; }
+.target-board__trail--96 { right: 4%; }
+.target-board__trail--97 { right: 3%; }
+.target-board__trail--98 { right: 2%; }
+.target-board__trail--99 { right: 1%; }
+.target-board__trail--100 { right: 0%; }
 /* Ticks at every tenth (nine; 30dp apart on the 300dp bar). */
 .target-board__ticks
 {
@@ -363,4 +512,77 @@ nui-blink.nui-blink-off .target-board__sheen.nui-anim
 	font-weight: bold;
 	line-height: 18dp;
 	text-align: center;
+}
+/* NOVA-216: a metin stone's board says how to queue it, under the bar. */
+.target-board__hint
+{
+	display: block;
+	margin-top: var(--space-1);
+	color: var(--tip-normal);
+	font-size: var(--font-xs);
+	line-height: 14dp;
+	text-align: center;
+	font-effect: shadow(0dp 1dp var(--text-outline));
+}
+/* NOVA-209: the archer gauge, 6dp below the board's middle: a 12dp x 72dp
+   well filled from the bottom (80% arrow damage empty, 120% full) in the
+   accent, a mark at 100%; its tooltip at its right, in the tooltip's
+   positive color above 100%, its negative color below. */
+.target-arrow
+{
+	display: block;
+	position: absolute;
+	left: 50%;
+	top: 100%;
+	width: 12dp;
+	height: 72dp;
+	margin-left: -6dp;
+	margin-top: 6dp;
+}
+progress.target-arrow__gauge
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 9999dp;
+	background-color: var(--cooldown-shade);
+}
+progress.target-arrow__gauge fill
+{
+	border-radius: 9999dp;
+	background-color: var(--accent);
+}
+.target-arrow__mark
+{
+	display: block;
+	position: absolute;
+	left: -3dp;
+	right: -3dp;
+	top: 50%;
+	height: 1dp;
+	background-color: var(--text-inverse);
+	pointer-events: none;
+}
+.target-arrow__tip
+{
+	left: 100%;
+	top: 50%;
+	bottom: auto;
+	margin: -13dp -320dp 0 8dp;
+	color: var(--tip-normal);
+	font-weight: bold;
+}
+.target-arrow__tip.is-up
+{
+	color: var(--tip-positive);
+}
+.target-arrow__tip.is-down
+{
+	color: var(--tip-negative);
 }

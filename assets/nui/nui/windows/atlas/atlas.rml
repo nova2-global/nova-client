@@ -12,7 +12,10 @@
 	     (with the guild's mark over a guild area), so no Python runs per
 	     frame. The body is the window, movable by its title row; it never
 	     takes the focus, so the close button acts on mousedown. Escape closes
-	     it in its legacy place in the Escape chain (nui_hud.EscapeProxy). -->
+	     it in its legacy place in the Escape chain (nui_hud.EscapeProxy).
+	     NOVA-206: a left press on a boss or metin stone mark opens its wiki
+	     page (map_press with the pointer; C++ ends the mark's hover lines
+	     with "Click to open the wiki"). -->
 	<title>atlas</title>
 	<link type="text/template" href="../../nui.rtpl"/>
 	<link type="text/rcss" href="atlas.rcss"/>
@@ -31,7 +34,8 @@
 	</div>
 	<div class="atlas__body">
 		<div class="atlas__map">
-			<nui-view id="atlas-view" name="atlas" class="atlas__view nui-interactive"/>
+			<nui-view id="atlas-view" name="atlas" class="atlas__view nui-interactive"
+			          data-event-mousedown="map_press(ev.button, ev.mouse_x, ev.mouse_y)"/>
 			<div class="atlas__grid"></div>
 		</div>
 	</div>

@@ -274,6 +274,12 @@ class MiniMap(object):
 		if self.AtlasWindow is not None and not self.AtlasWindow.IsShow():
 			self.AtlasWindow.Show()
 
+	def SetOpenWikiMobEvent(self, event):
+		"""NOVA-206: the event a press on an atlas mark calls with its vnum
+		(legacy MiniMap.SetOpenWikiMobEvent)."""
+		if self.AtlasWindow is not None:
+			self.AtlasWindow.SetOpenWikiMobEvent(event)
+
 	def ToggleAtlasWindow(self):
 		if not miniMap.IsAtlas():
 			return

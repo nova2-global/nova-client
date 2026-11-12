@@ -35,7 +35,14 @@ NOVA-129: a boss or metin stone mark (GC::ATLAS_MARKS) hovers with its kind
 and level, its state (alive, the respawn countdown, dead) and its respawn
 time in lines under the name line; LoadWindow hands their strings to C++
 (uiMiniMap.SetAtlasMarkTexts), the view's label refreshes them once a second
-while it shows (nui-view), and C++ draws the marks into the atlas."""
+while it shows (nui-view), and C++ draws the marks into the atlas.
+
+NOVA-206: a left press on such a mark opens its wiki page through the event
+the minimap passes on (SetOpenWikiMobEvent, the Interface's OpenWikiMob):
+the view sends the press with the pointer, the facade asks miniMap at the
+view's own place in dp, as the view's label does (uiMiniMap.AtlasMarkVnumAt).
+The hint line ("Click to open the wiki") is C++'s, the last of the mark's
+lines, from the "wiki" string LoadWindow hands over."""
 
 import weakref
 
@@ -54,6 +61,7 @@ import nui_hud
 
 DOCUMENT = "nui/windows/atlas/atlas.rml"
 VIEW = "atlas"
+VIEW_ID = "atlas-view"
 HOVER_FORMAT = "{name}({x}, {y})"   # uiminimap.py:144
 
 
@@ -82,6 +90,11 @@ class AtlasBoard(nui.Window):
 		if button == 0:
 			self._owner.Hide()
 
+	@nui.on("map_press")
+	def on_map_press(self, button, x, y):
+		if button == 0:
+			self._owner.nui_map_press(x, y)
+
 
 class AtlasWindow(object):
 	"""uiMiniMap.AtlasWindow on NovaUI (MiniMap.AtlasWindow)."""
@@ -100,6 +113,7 @@ class AtlasWindow(object):
 		self.mapName = ""
 		self.title = ""
 		self.centerAdjust = None    # the offset C++ asked for, in screen pixels
+		self.openWikiMobEvent = None
 		if not nui_hud.has_engine_2b():
 			return
 		try:
@@ -215,3 +229,23 @@ class AtlasWindow(object):
 	def OnPressEscapeKey(self):
 		self.Hide()
 		return True
+
+	# --- NOVA-206: a press on a boss or stone mark --------------------------------------
+
+	def SetOpenWikiMobEvent(self, event):
+		self.openWikiMobEvent = event
+
+	def nui_map_press(self, x, y):
+		"""A left press on the view at (x, y) screen pixels: the mark's wiki
+		page, when a boss or stone mark lies there."""
+		board = self.board
+		box = board.element_box(VIEW_ID) if board is not None else None
+		if not self.openWikiMobEvent or not box:
+			return
+		s = nui.get_scale() or 1.0
+		try:
+			vnum = uiMiniMap.AtlasMarkVnumAt((float(x) - box[0]) / s, (float(y) - box[1]) / s)
+		except (TypeError, ValueError):
+			return
+		if vnum:
+			self.openWikiMobEvent(vnum)

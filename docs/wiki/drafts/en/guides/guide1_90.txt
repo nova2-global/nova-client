@@ -1,0 +1,161 @@
+---
+title: The start
+category: guides
+order: 191
+---
+![](d:/ymir work/ui/wiki/banners/thestart.png){align=center width=100%}
+
+--- {style=ornate}
+
+## General Information
+
+On your first login, you will receive an and along with a start at **Level 75!**
+
+![[item:50187]], ![[item:34270]]
+
+- These two chests will provide you with plenty of items to get you started in the world of Nova2.
+
+![](d:/ymir work/ui/wiki/images/item_list.png)
+
+\**Item Duration Description**
+\**7D Temp. Mount which can be re-crafted at **Lu Hao NPC****
+\**7D Temp. Pet which can be re-crafted at **Lu Hao NPC****
+\**14D Temp. Buffi which can be re-crafted at **Shima NPC****
+\**7D Temp. Lolly which can be re-crafted at **Shima NPC****
+\**7D Temp. Auto-Pickup which can be re-crafted at **Shima NPC****
+\**10H This item is **LIMITED!** Craft other versions at **Shima NPC****
+\**7D Temp. Amulet which can be re-purchased at **General Store****
+\**N/A Insta. Upgrade Skills to P. Re-purchased at **General Store****
+\**N/A Insta. Upgrade Skills to L from P. Craft more at **Shima NPC****
+
+![[item:52048]] x1, ![[item:53009]] x1, ![[item:91022]] x1, ![[item:71136]] x1, ![[item:70002]] x1, ![[item:72004]] x1, ![[item:71145]] x1, ![[item:50512]] x1, ![[item:50570]] x2
+
+- Additionally, you’ll be given all the essential potions so you can jump straight into action!
+
+- To top it all off, you will also receive a temporary **Hellfire Costume Set** or
+  **Beastman Costume Set**, both featuring perfect stats and lasting for a full **30 days!**
+
+--- {style=ornate}
+
+## The First Steps!
+
+- Starting on a new server can feel overwhelming, but we’re here to guide you every step of
+  the way! **Your very first recommendation is to familiarize yourself with the NPCs in Map 1/2.**
+
+- These NPCs will become your go-to friends for upgrading both PvM and PvP equipment,
+  crafting temporary items and buffs, and creating upgrade materials using the items you farm.
+
+- The next step is learning how to upgrade your equipment so you can continue progressing
+  through your PvM adventure.
+
+\**At the start, you will receive the following equipment:**
+
+- Lv 75+9 Weapon w/ 60% Avg. Damage + 20% Undead & Devil.
+- Lv 61+9 Armor **(recommended to add Absorb. HP)**
+- Lv 54 Heaven's Tear Earring, Bracelet and Necklace+9
+- Lv 41+9 Helmet **(recommended to add Poison Chance)**
+- Lv51 Nimbus Boots+9
+- Lv41 Black Round Shield+9
+
+- However, your main goal is to obtain the **Volcanic Equipment**
+  Set and upgrade it to +9.
+
+- It is also **highly recommended** that you remain at the
+  **maximum Level of 105** so you don’t miss out on level-capped
+  dungeons and Farming Maps that are essential for efficient
+  progression.
+
+![](d:/ymir work/ui/wiki/images/eq_ui.png)
+
+![[item:189]], ![[item:11289]], ![[item:17209]], ![[item:14209]], ![[item:16209]], ![[item:12249]], ![[item:15189]], ![[item:13049]]
+
+--- {style=ornate}
+
+## Where to Farm?
+
+Using your travel to Farm Maps and then head to **Akanta Field** or **Akanta Cave** at Lv90!
+![[item:70058]]
+
+This map is ideal for farming up to a **recommended level of 90** while you complete your
+\**guide quests**. It’s also the perfect place to begin working on your **Biology Quests**, as
+it provides the required drops to get you started.
+
+- **Click for additional information: or**
+  [[page:guides/guide_quests|**Guide quests**>]]
+  [[page:systems/advanced_pet|**Advanced Pet**>]]
+
+--- {style=ornate}
+
+### Important Item Drops:
+
+Below is a list of the items you will need to upgrade your Volcanic Equipment from the Starter Set
+to the Volcanic Set. If you have not yet evolved your items into Volcanic, you can do so by
+visiting the PvM Crafter in Map 1 or Map 2.
+
+![](d:/ymir work/ui/wiki/images/item_drops.png)
+
+\**Obtained from Metin Stones in Akanta Field/Cave or Dungeons.**
+
+\**Obtained from: Obtained from: Obtained from: Obtained from:**
+Demon Tower Aqua Dragon Solitary Temple Devil's Catacomb
+Spider Baroness
+
+![[item:34000]], ![[item:34001]], ![[item:34002]], ![[item:34003]], ![[item:34004]], ![[item:34005]], ![[item:34006]], ![[item:34007]], ![[item:34008]], ![[item:34009]], ![[item:27992]], ![[item:27993]], ![[item:27994]]
+
+![[item:34010]], ![[item:34013]], ![[item:34011]], ![[item:85001]], ![[item:34046]]
+
+--- {style=ornate}
+
+## Reccommended!
+
+At this stage, you have reached the **maximum level of 105.**
+It is strongly recommended that you do not level up any
+further unless you already have the required items shown on the
+right-hand side.
+
+You can obtain the by defeating the following bosses:
+
+\**King Wubba, King Crab, King of Lemures and King of Gnolls**
+
+### Important Note:
+
+If you wish to upgrade the belt to the highest rank of +9,
+you will also need to complete runs of **Nemeres** and **Ochao.**
+
+### Vote4Buff! (Recommended)
+
+Lastly, we recommend you to obtain a permanent buff that will boost your damage!
+When it comes to PvM, Strong against Monsters is the best option!
+[[page:guides/vote4buff|**Vote4Buff**>]]
+
+### 6/7 Bonuses:
+
+6/7 bonuses are an incredibly powerful way to achieve a massive damage increase. While these
+bonuses can drop in certain dungeons, your primary source will be in **Akanta Cave.**
+
+\**For PvM, the recommended bonuses for all classes are:**
+
+- Strong Against Monsters and Attack Value!
+
+### Optional Progression:
+
+If you choose to remain at this stage longer, you can also begin working on your **Advanced Pet.**
+This is entirely optional and up to your preference—you may either farm the materials yourself
+or purchase them at a later time.
+
+### Recommended Advanced Pet PvM Attributes:
+
+Strong Against Monsters, Strong Against Bosses & Strong Against Elemental.
+
+- **Click for additional information:**
+  [[page:systems/advanced_pet|**Advanced Pet**>]]
+
+![](d:/ymir work/ui/wiki/images/eq_ui.png)
+
+![[item:18010]]
+
+--- {style=ornate}
+
+Ready to go to the next stage?
+[[page:guides/guide90_110|**The Next Steps**>]]
+![[item:9299]], ![[item:19289]], ![[item:17609]], ![[item:14609]], ![[item:16609]], ![[item:12899]], ![[item:15489]], ![[item:13229]], ![[item:18014]]

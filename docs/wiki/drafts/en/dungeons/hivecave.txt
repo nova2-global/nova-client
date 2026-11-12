@@ -1,0 +1,46 @@
+---
+title: Hive Cave
+category: dungeons
+order: 133
+---
+![](d:/ymir work/ui/wiki/banners/hivecave.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+No ticket is needed to enter this dungeon.
+
+### Recommended Bonuses:
+
+Strong Against Devil
+
+--- {style=ornate}
+
+### Phase 1:
+
+Head to the end of the dungeon and defeat the Magic Monster to proceed to the next stage.
+
+### Phase 2:
+
+Destroy the Metin Cave Stone.
+
+### Phase 3:
+
+Find and slay the Bewitched Spider King.
+
+### Phase 4:
+
+Destroy all the Spider Eggs to summon the Enchanted Shaman Girl.
+Defeat her to move on to the next stage.
+
+### Phase 5:
+
+Eliminate all the monsters in the room and then Slay the Hive Queen in her lair.
+
+--- {style=ornate}
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+![[item:42342]]

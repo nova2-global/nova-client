@@ -724,6 +724,10 @@ class Modules(object):
             sys.modules[name] = module
 
     def load(self, name, file_name=None):
+        # The data cache (datacache.py), which the answer tables import, as a
+        # fresh client process has it: memory only until a data version is set.
+        if name != "datacache" and sys.modules.get("datacache") is None:
+            self.load("datacache", "datacache.py")
         path = os.path.join(ROOT, file_name or (name.lower() + ".py"))
         self.put(name, None)
         module = load_module(name, path)

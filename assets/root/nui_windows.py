@@ -87,6 +87,7 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("guild-building", True),     # the guild building placement window
 	("web", True),                # the web window around the WebView2 page (the mall)
 	("console", True),            # the developer console (only where legacy opens it)
+	("select-skill", True),       # the skill group's pick (NOVA-37)
 	("inventory", True),          # the inventory, its costume and belt windows (Wave 3b)
 	("tooltips", True),           # the Interface's item, skill and link tooltips
 	("refine", True),             # both refine dialogs
@@ -118,10 +119,14 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	# Wave 6 (NOVA-20, NOVA-23): the sash and aura windows, in the items group.
 	("sash", True),               # the sash combine and absorb windows
 	("aura", True),               # the aura level window
+	# Wave 8 (NOVA-42): the ingame wiki's browser, in the items group.
+	("wiki", True),               # the item and mob browser (no legacy window)
 	# Wave 7 (NOVA-18): the chest-drop preview, in the items group.
 	("chest-drop", True),         # what a chest can give, with each item's chance tier
 	# Wave 7 (NOVA-43): the switchbot, in the items group.
 	("switchbot", True),          # the switchbot's six slots, targets, cost and start/stop
+	# Wave 8 (NOVA-17): fast equip, in the items group.
+	("fastequip", True),          # the 10 saved gear sets
 	# Wave 7 (NOVA-24): the advanced pet's windows, in the items group.
 	("pet", True),                # the advanced pet (your own and a preview)
 	("pet-mini", True),           # the summoned pet's small window
@@ -139,6 +144,8 @@ WINDOWS = (            # (id, default) in this order; every window is on by defa
 	("dungeon-timer", True),      # the dungeon manager: the list, the cooldowns, the teleport
 	("dungeon-drops", True),      # the dungeon manager's drops panel
 	("dungeon-rank", True),       # the dungeon ranking
+	# Wave 8 (NOVA-40): the mob info board under the target board.
+	("target-info", True),        # a mob's stats and drops
 	# NOVA-27: the boss info panel and the damage count window, in the hud
 	# group (HUD windows of the game phase, beside the target board).
 	("boss-info", True),          # the current map's bosses at the left edge
@@ -153,14 +160,15 @@ GROUPS = {             # a group id names several windows in UI_NUI_WINDOWS
 	        "edge-buttons", "tip-board", "big-board", "map-name", "boss-info", "damage-count", "maintenance", "duel-rules"),
 	"hud2": ("chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war", "guild-war-top"),
 	"sys": ("system-menu", "system-options", "game-options", "restart", "help", "point-reset"),
-	"rest": ("quest", "guild-building", "web", "console"),
-	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop",
-	          "switchbot", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
+	"rest": ("quest", "guild-building", "web", "console", "select-skill"),
+	"items": ("inventory", "tooltips", "refine", "attach-metin", "select-item", "extra-inventory", "sash", "aura", "chest-drop", "wiki",
+	          "switchbot", "fastequip", "pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"),
 	"wave3c": ("character", "dragon-soul", "dragon-soul-refine"),
 	"trade": ("exchange", "shop", "private-shop", "safebox", "mall", "equipment-view", "gem-shop", "shop-search",
 	          "offline-shop-log", "shop-deco"),
 	"social": ("messenger", "whisper", "guild", "guild-war-dialogs", "guild-mark", "kill-rank"),
 	"dungeon": ("dungeon-timer", "dungeon-drops", "dungeon-rank"),
+	"mob-board": ("target-info",),
 }
 # "all": every window, so "-all" makes a legacy client (the live kit's legacy
 # runs), and "-all,+id" one with a single NovaUI window.
@@ -223,8 +231,12 @@ ON_DEMAND_DOCUMENTS = (
 	("shop-deco", ("shop-deco",)),
 	# Wave 7: the chest-drop preview, only while it shows.
 	("chest-drop", ("chest-drop",)),
+	# Wave 8 (NOVA-42): the wiki browser, only while it shows.
+	("wiki", ("wiki",)),
 	# Wave 7 (NOVA-43): the switchbot, only while it shows.
 	("switchbot", ("switchbot",)),
+	# Wave 8 (NOVA-17): fast equip, only while it shows.
+	("fastequip", ("fastequip",)),
 	("equipment-view", ("equipment-view",)),
 	("messenger", ("messenger",)),
 	("whisper", ("whisper",)),
@@ -248,8 +260,11 @@ ON_DEMAND_DOCUMENTS = (
 	("kill-rank", ("kill-rank",)),
 	# NOVA-25: the dungeon manager (and its ready notice), its drops panel and
 	# the ranking, each only while it shows.
+	("select-skill", ("select-skill",)),
 	("dungeon-timer", ("dungeon-timer", "dungeon-notice")),
 	("dungeon-drops", ("dungeon-drops",)),
+	# Wave 8: the mob info board, only while it shows.
+	("target-info", ("target-info",)),
 	("dungeon-rank", ("dungeon-rank",)),
 	# NOVA-27: the boss info panel and the damage count, each only while it shows.
 	("boss-info", ("boss-info",)),

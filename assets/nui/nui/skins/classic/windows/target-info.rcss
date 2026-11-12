@@ -1,0 +1,52 @@
+/* Classic skin overlay of nui/windows/target-info/target-info.rml: legacy's
+   InfoBoard (uitargetinfo.py), a thin board 250 wide, the lines 17dp apart
+   and a code-drawn separator; five 37dp drop rows at most, the list scrolling
+   past them. */
+
+body.skin-classic.target-info .target-info__wrap
+{
+	top: 56dp;
+}
+body.skin-classic.target-info .target-info__board
+{
+	width: 250dp;
+	padding: 7dp 8dp 8dp;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-thinboard;
+}
+body.skin-classic.target-info .target-info__line
+{
+	color: var(--classic-button-text);
+	line-height: 17dp;
+	font-size: var(--font-md);
+	font-effect: outline(1dp var(--classic-text-outline));
+}
+body.skin-classic.target-info .target-info__sep
+{
+	border-color: var(--classic-button-text);
+}
+body.skin-classic.target-info .target-info__row
+{
+	min-height: 37dp;
+	border-radius: 0;
+	padding: 0;
+}
+body.skin-classic.target-info .target-info__row:hover
+{
+	background-color: var(--selection);
+}
+body.skin-classic.target-info .target-info__icon
+{
+	width: 32dp;
+	height: 32dp;
+	margin-right: 5dp;
+	border-radius: 0;
+	background-color: transparent;
+}
+body.skin-classic.target-info .target-info__name, body.skin-classic.target-info .target-info__extra
+{
+	color: var(--classic-button-text);
+	font-effect: outline(1dp var(--classic-text-outline));
+}

@@ -1,0 +1,249 @@
+# wiki_convert_old.py: what each OLD page lost or kept from OLD's art
+desc.txt -> guides/old_format_notes.txt
+landingpage.txt -> guides/basic_guide.txt
+dungeons/ancient_pyramid.txt -> dungeons/ancient_pyramid.txt
+dungeons/aquadragon.txt -> dungeons/aquadragon.txt
+dungeons/azrael.txt -> dungeons/azrael.txt
+dungeons/baroness.txt -> dungeons/baroness.txt
+dungeons/crystal.txt -> dungeons/crystal.txt
+dungeons/demontower.txt -> dungeons/demontower.txt
+dungeons/duratusfield.txt -> dungeons/duratusfield.txt
+dungeons/fear.txt -> dungeons/fear.txt
+dungeons/guidorah_nest.txt -> dungeons/guidorah_nest.txt
+dungeons/hivecave.txt -> dungeons/hivecave.txt
+dungeons/jotun.txt -> dungeons/jotun.txt
+dungeons/mazel.txt -> dungeons/mazel.txt
+dungeons/meley.txt -> dungeons/meley.txt
+dungeons/mushroom.txt -> dungeons/mushroom.txt
+dungeons/nemere.txt -> dungeons/nemere.txt
+dungeons/razador.txt -> dungeons/razador.txt
+dungeons/ship_defense.txt -> dungeons/ship_defense.txt
+dungeons/solitary.txt -> dungeons/solitary.txt
+dungeons/white_tower.txt -> dungeons/white_tower.txt
+events/3v3pvpevent.txt -> events/3v3pvpevent.txt
+events/auction.txt -> events/auction.txt
+events/bossmetinspawn.txt -> events/bossmetinspawn.txt
+events/class_pvp_tournament.txt -> events/class_pvp_tournament.txt
+events/fishingevent.txt -> events/fishingevent.txt
+events/hide_and_seek.txt -> events/hide_and_seek.txt
+events/mixed_pvp_tournament.txt -> events/mixed_pvp_tournament.txt
+events/moonlight_chests.txt -> events/moonlight_chests.txt
+events/national_war.txt -> events/national_war.txt
+events/northernlight_event.txt -> events/northernlight_event.txt
+events/ox_event.txt -> events/ox_event.txt
+events/summer_2021.txt -> events/summer_2021.txt
+events/tanaka.txt -> events/tanaka.txt
+events/trivia_event.txt -> events/trivia_event.txt
+guides/guide110_130.txt -> guides/guide110_130.txt
+guides/guide130_140.txt -> guides/guide130_140.txt
+guides/guide1_90.txt -> guides/guide1_90.txt
+guides/guide90_110.txt -> guides/guide90_110.txt
+guides/guide_quests.txt -> guides/guide_quests.txt
+guides/itemshop.txt -> guides/itemshop.txt
+guides/pvp_ninja.txt -> guides/pvp_ninja.txt
+guides/pvp_shaman.txt -> guides/pvp_shaman.txt
+guides/pvp_sura.txt -> guides/pvp_sura.txt
+guides/pvp_warrior.txt -> guides/pvp_warrior.txt
+guides/upp_system.txt -> guides/upp_system.txt
+guides/vote4buff.txt -> guides/vote4buff.txt
+systems/battlepass.txt -> systems/battlepass.txt
+systems/biologist.txt -> systems/biologist.txt
+systems/buffi.txt -> systems/buffi.txt
+systems/costumes.txt -> systems/costumes.txt
+systems/dungeon_manager.txt -> systems/dungeon_manager.txt
+systems/gaya.txt -> systems/gaya.txt
+systems/gems.txt -> systems/gems.txt
+systems/infusiontable.txt -> systems/infusiontable.txt
+systems/multifarm.txt -> systems/multifarm.txt
+systems/shoulder_sash.txt -> systems/shoulder_sash.txt
+systems/skill_color.txt -> systems/skill_color.txt
+systems/stonesystem.txt -> systems/stonesystem.txt
+systems/treasurebox.txt -> systems/treasurebox.txt
+
+desc.txt:2: the banner d:/ymir work/ui/wiki/banners/patchnotes.png is OLD's art
+desc.txt:19: kept the image d:/ymir work/ui/wiki/detail_item.png (OLD's art: check whether NEW has it)
+desc.txt:22: kept the image d:/ymir work/ui/wiki/detail_item.png (OLD's art: check whether NEW has it)
+landingpage.txt:2: the banner d:/ymir work/ui/wiki/banners/basicguide.png is OLD's art
+dungeons/ancient_pyramid.txt:2: the banner d:/ymir work/ui/wiki/banners/ancientpyramid.png is OLD's art
+dungeons/aquadragon.txt:2: the banner d:/ymir work/ui/wiki/banners/aquadragon.png is OLD's art
+dungeons/azrael.txt:2: the banner d:/ymir work/ui/wiki/banners/azrael.png is OLD's art
+dungeons/baroness.txt:2: the banner d:/ymir work/ui/wiki/banners/baroness.png is OLD's art
+dungeons/crystal.txt:2: the banner d:/ymir work/ui/wiki/banners/crystaldungeon.png is OLD's art
+dungeons/demontower.txt:2: the banner d:/ymir work/ui/wiki/banners/demontower.png is OLD's art
+dungeons/duratusfield.txt:2: the banner d:/ymir work/ui/wiki/banners/duratusfield.png is OLD's art
+dungeons/fear.txt:2: the banner d:/ymir work/ui/wiki/banners/feardungeon.png is OLD's art
+dungeons/guidorah_nest.txt:2: the banner d:/ymir work/ui/wiki/banners/ghidorah.png is OLD's art
+dungeons/hivecave.txt:2: the banner d:/ymir work/ui/wiki/banners/hivecave.png is OLD's art
+dungeons/jotun.txt:2: the banner d:/ymir work/ui/wiki/banners/jotun.png is OLD's art
+dungeons/mazel.txt:2: the banner d:/ymir work/ui/wiki/banners/mazelrun.png is OLD's art
+dungeons/meley.txt:2: the banner d:/ymir work/ui/wiki/banners/meley.png is OLD's art
+dungeons/mushroom.txt:2: the banner d:/ymir work/ui/wiki/banners/mushroomdungeon.png is OLD's art
+dungeons/nemere.txt:2: the banner d:/ymir work/ui/wiki/banners/nemere.png is OLD's art
+dungeons/razador.txt:2: the banner d:/ymir work/ui/wiki/banners/razador.png is OLD's art
+dungeons/ship_defense.txt:2: the banner d:/ymir work/ui/wiki/banners/shipdefense.png is OLD's art
+dungeons/solitary.txt:2: the banner d:/ymir work/ui/wiki/banners/solitary.png is OLD's art
+dungeons/white_tower.txt:2: the banner d:/ymir work/ui/wiki/banners/whitetower.png is OLD's art
+events/3v3pvpevent.txt:2: the banner d:/ymir work/ui/wiki/banners/3v3pvp.png is OLD's art
+events/auction.txt:2: the banner d:/ymir work/ui/wiki/banners/auction.png is OLD's art
+events/auction.txt:20: kept the image d:/ymir work/ui/auction/open_01.png (OLD's art: check whether NEW has it)
+events/auction.txt:62: kept the image d:/ymir work/ui/auction/highest_bid_stamp.png (OLD's art: check whether NEW has it)
+events/bossmetinspawn.txt:2: the banner d:/ymir work/ui/wiki/banners/bossmetin_spawn.png is OLD's art
+events/class_pvp_tournament.txt:2: the banner d:/ymir work/ui/wiki/banners/classtourney.png is OLD's art
+events/class_pvp_tournament.txt:33: kept the image wiki/images/classpvp_tags.png (OLD's art: check whether NEW has it)
+events/fishingevent.txt:2: the banner d:/ymir work/ui/wiki/banners/fishing.png is OLD's art
+events/hide_and_seek.txt:2: the banner d:/ymir work/ui/wiki/banners/hidenseek.png is OLD's art
+events/mixed_pvp_tournament.txt:2: the banner d:/ymir work/ui/wiki/banners/mixedtourney.png is OLD's art
+events/moonlight_chests.txt:2: the banner d:/ymir work/ui/wiki/banners/moonlight.png is OLD's art
+events/national_war.txt:2: the banner d:/ymir work/ui/wiki/banners/nationalwar.png is OLD's art
+events/northernlight_event.txt:2: the banner d:/ymir work/ui/wiki/banners/northernlight.png is OLD's art
+events/ox_event.txt:2: the banner d:/ymir work/ui/wiki/banners/oxevent.png is OLD's art
+events/summer_2021.txt:2: the banner d:/ymir work/ui/wiki/banners/summer2021.png is OLD's art
+events/summer_2021.txt:20: kept the image d:/ymir work/ui/wiki/etna.png (OLD's art: check whether NEW has it)
+events/tanaka.txt:2: the banner d:/ymir work/ui/wiki/banners/tanaka.png is OLD's art
+events/trivia_event.txt:2: the banner d:/ymir work/ui/wiki/banners/trivia.png is OLD's art
+guides/guide110_130.txt:2: the banner d:/ymir work/ui/wiki/banners/guide110-130.png is OLD's art
+guides/guide110_130.txt:8: dropped the image d:/ymir work/ui/wiki/images/under_construction.gif (not a path the new format takes)
+guides/guide130_140.txt:2: the banner d:/ymir work/ui/wiki/banners/guide130-140.png is OLD's art
+guides/guide130_140.txt:8: dropped the image d:/ymir work/ui/wiki/images/under_construction.gif (not a path the new format takes)
+guides/guide1_90.txt:2: the banner d:/ymir work/ui/wiki/banners/thestart.png is OLD's art
+guides/guide1_90.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide1_90.txt:5: dropped a table of contents line: General Information
+guides/guide1_90.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide1_90.txt:7: dropped a table of contents line: Where To Farm
+guides/guide1_90.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide1_90.txt:9: dropped a table of contents line: The First Steps
+guides/guide1_90.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide1_90.txt:11: dropped a table of contents line: Recommended
+guides/guide1_90.txt:28: kept the image d:/ymir work/ui/wiki/images/item_list.png (OLD's art: check whether NEW has it)
+guides/guide1_90.txt:97: kept the image d:/ymir work/ui/wiki/images/eq_ui.png (OLD's art: check whether NEW has it)
+guides/guide1_90.txt:133: kept the image d:/ymir work/ui/wiki/images/item_drops.png (OLD's art: check whether NEW has it)
+guides/guide1_90.txt:214: kept the image d:/ymir work/ui/wiki/images/eq_ui.png (OLD's art: check whether NEW has it)
+guides/guide90_110.txt:2: the banner d:/ymir work/ui/wiki/banners/thenextsteps.png is OLD's art
+guides/guide90_110.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide90_110.txt:5: dropped a table of contents line: General Information
+guides/guide90_110.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide90_110.txt:7: dropped a table of contents line: Dungeon Difficulty
+guides/guide90_110.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide90_110.txt:9: dropped a table of contents line: The Goal
+guides/guide90_110.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+guides/guide90_110.txt:11: dropped a table of contents line: Drop Locations
+guides/guide90_110.txt:68: kept the image d:/ymir work/ui/wiki/images/eq_ui.png (OLD's art: check whether NEW has it)
+guides/guide90_110.txt:115: kept the image d:/ymir work/ui/wiki/images/drop_locations_large.png (OLD's art: check whether NEW has it)
+guides/guide_quests.txt:3: the banner d:/ymir work/ui/wiki/banners/guidequests.png is OLD's art
+guides/itemshop.txt:2: the banner d:/ymir work/ui/wiki/banners/guide130-140.png is OLD's art
+guides/pvp_ninja.txt:2: the banner d:/ymir work/ui/wiki/banners/ninjapvp.png is OLD's art
+guides/pvp_shaman.txt:4: the banner d:/ymir work/ui/wiki/banners/shamanpvp.png is OLD's art
+guides/pvp_sura.txt:2: the banner d:/ymir work/ui/wiki/banners/surapvp.png is OLD's art
+guides/pvp_warrior.txt:4: the banner d:/ymir work/ui/wiki/banners/warriorpvp.png is OLD's art
+guides/upp_system.txt:2: the banner d:/ymir work/ui/wiki/banners/guide130-140.png is OLD's art
+guides/vote4buff.txt:2: the banner d:/ymir work/ui/wiki/banners/vote4buff.png is OLD's art
+guides/vote4buff.txt:15: kept the image d:/ymir work/ui/vote4buff.png (OLD's art: check whether NEW has it)
+systems/battlepass.txt:2: the banner d:/ymir work/ui/wiki/banners/battlepass.png is OLD's art
+systems/battlepass.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/battlepass.txt:5: dropped a table of contents line: General Information
+systems/battlepass.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/battlepass.txt:7: dropped a table of contents line: Possible Tasks
+systems/battlepass.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/battlepass.txt:9: dropped a table of contents line: Tasks & Rewards
+systems/battlepass.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/battlepass.txt:11: dropped a table of contents line: 
+systems/battlepass.txt:27: kept the image d:/ymir work/ui/game/battle_pass/button_small_01.png (OLD's art: check whether NEW has it)
+systems/battlepass.txt:46: kept the image d:/ymir work/ui/wiki/images/battlepass.png (OLD's art: check whether NEW has it)
+systems/battlepass.txt:153: kept the image d:/ymir work/ui/game/battle_pass/button_small_01.png (OLD's art: check whether NEW has it)
+systems/biologist.txt:2: the banner d:/ymir work/ui/wiki/banners/biologyquests.png is OLD's art
+systems/biologist.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/biologist.txt:5: dropped a table of contents line: General Information
+systems/biologist.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/biologist.txt:7: dropped a table of contents line: High Lv. Quests
+systems/biologist.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/biologist.txt:9: dropped a table of contents line: Biology Quests
+systems/biologist.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/biologist.txt:11: dropped a table of contents line: Biologist Chests I & II
+systems/biologist.txt:48: kept the image d:/ymir work/ui/wiki/images/bio_quests.png (OLD's art: check whether NEW has it)
+systems/biologist.txt:125: kept the image d:/ymir work/ui/wiki/images/checkmarck.png (OLD's art: check whether NEW has it)
+systems/biologist.txt:126: kept the image d:/ymir work/ui/wiki/images/checkmarck.png (OLD's art: check whether NEW has it)
+systems/biologist.txt:127: kept the image d:/ymir work/ui/wiki/images/checkmarck.png (OLD's art: check whether NEW has it)
+systems/biologist.txt:128: kept the image d:/ymir work/ui/wiki/images/checkmarck.png (OLD's art: check whether NEW has it)
+systems/biologist.txt:129: kept the image d:/ymir work/ui/wiki/images/checkmarck.png (OLD's art: check whether NEW has it)
+systems/buffi.txt:2: the banner d:/ymir work/ui/wiki/banners/buffi_banner.png is OLD's art
+systems/buffi.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/buffi.txt:5: dropped a table of contents line: General Information
+systems/buffi.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/buffi.txt:7: dropped a table of contents line: 
+systems/buffi.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/buffi.txt:9: dropped a table of contents line: How to Upgrade
+systems/buffi.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/buffi.txt:11: dropped a table of contents line: 
+systems/costumes.txt: not in OLD's tree (inGameWikiConfig.py): titled from its file name
+systems/costumes.txt:8: the banner d:/ymir work/ui/wiki/banners/costumes.png is OLD's art
+systems/dungeon_manager.txt:2: the banner d:/ymir work/ui/wiki/banners/dungeon_manager.png is OLD's art
+systems/dungeon_manager.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/dungeon_manager.txt:5: dropped a table of contents line: General Information
+systems/dungeon_manager.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/dungeon_manager.txt:7: dropped a table of contents line: 
+systems/dungeon_manager.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/dungeon_manager.txt:9: dropped a table of contents line: 
+systems/dungeon_manager.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/dungeon_manager.txt:11: dropped a table of contents line: 
+systems/dungeon_manager.txt:34: kept the image d:/ymir work/ui/wiki/images/dungeon_manager.png (OLD's art: check whether NEW has it)
+systems/gaya.txt:2: the banner d:/ymir work/ui/wiki/banners/gaya.png is OLD's art
+systems/gaya.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/gaya.txt:5: dropped a table of contents line: General Information
+systems/gaya.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/gaya.txt:7: dropped a table of contents line: What to Buy
+systems/gaya.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/gaya.txt:9: dropped a table of contents line: How to Obtain
+systems/gaya.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/gaya.txt:11: dropped a table of contents line: 
+systems/gaya.txt:27: kept the image d:/ymir work/ui/gemshop/new/gemshop_gemicon.sub (OLD's art: check whether NEW has it)
+systems/gaya.txt:43: kept the image d:/ymir work/ui/gemshop/new/gemshop_gemicon.sub (OLD's art: check whether NEW has it)
+systems/gems.txt: not in OLD's tree (inGameWikiConfig.py): titled from its file name
+systems/gems.txt:2: the banner d:/ymir work/ui/wiki/banners/gaya.png is OLD's art
+systems/gems.txt:56: kept the image icon/item/39064.tga (OLD's art: check whether NEW has it)
+systems/infusiontable.txt:2: the banner d:/ymir work/ui/wiki/banners/infusion_table.png is OLD's art
+systems/infusiontable.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/infusiontable.txt:5: dropped a table of contents line: General Information
+systems/infusiontable.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/infusiontable.txt:7: dropped a table of contents line: 
+systems/infusiontable.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/infusiontable.txt:9: dropped a table of contents line: How to Upgrade
+systems/infusiontable.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/infusiontable.txt:11: dropped a table of contents line: 
+systems/infusiontable.txt:83: kept the image d:/ymir work/ui/pet/arrow.png (OLD's art: check whether NEW has it)
+systems/infusiontable.txt:84: kept the image d:/ymir work/ui/pet/arrow.png (OLD's art: check whether NEW has it)
+systems/infusiontable.txt:85: kept the image d:/ymir work/ui/pet/arrow.png (OLD's art: check whether NEW has it)
+systems/infusiontable.txt:86: kept the image d:/ymir work/ui/pet/arrow.png (OLD's art: check whether NEW has it)
+systems/multifarm.txt:2: the banner d:/ymir work/ui/wiki/banners/multifarming.png is OLD's art
+systems/multifarm.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/multifarm.txt:5: dropped a table of contents line: General Information
+systems/multifarm.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/multifarm.txt:7: dropped a table of contents line: 
+systems/multifarm.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/multifarm.txt:9: dropped a table of contents line: 
+systems/multifarm.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/multifarm.txt:11: dropped a table of contents line: 
+systems/shoulder_sash.txt:2: the banner d:/ymir work/ui/wiki/banners/shoulder.png is OLD's art
+systems/shoulder_sash.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/shoulder_sash.txt:5: dropped a table of contents line: General Information
+systems/shoulder_sash.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/shoulder_sash.txt:7: dropped a table of contents line: Upgrading Sashes
+systems/shoulder_sash.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/shoulder_sash.txt:9: dropped a table of contents line: Obtaining Sashes
+systems/shoulder_sash.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/shoulder_sash.txt:11: dropped a table of contents line: Sash Absorption
+systems/shoulder_sash.txt:99: kept the image d:/ymir work/ui/pet/arrow.png (OLD's art: check whether NEW has it)
+systems/shoulder_sash.txt:100: kept the image d:/ymir work/ui/pet/arrow.png (OLD's art: check whether NEW has it)
+systems/shoulder_sash.txt:101: kept the image d:/ymir work/ui/pet/arrow.png (OLD's art: check whether NEW has it)
+systems/skill_color.txt: not in OLD's tree (inGameWikiConfig.py): titled from its file name
+systems/skill_color.txt:2: the banner d:/ymir work/ui/wiki/banners/skilcolor.png is OLD's art
+systems/stonesystem.txt:2: the banner d:/ymir work/ui/wiki/banners/stone_system.png is OLD's art
+systems/stonesystem.txt:4: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/stonesystem.txt:5: dropped a table of contents line: General Information
+systems/stonesystem.txt:6: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/stonesystem.txt:7: dropped a table of contents line: Farming Stones
+systems/stonesystem.txt:8: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/stonesystem.txt:9: dropped a table of contents line: Upgrading Stones
+systems/stonesystem.txt:10: dropped the table of contents art d:/ymir work/ui/wiki/images/guide_tabs.png
+systems/stonesystem.txt:11: dropped a table of contents line: Adding Slots
+systems/treasurebox.txt: not in OLD's tree (inGameWikiConfig.py): titled from its file name
+systems/treasurebox.txt:9: the banner d:/ymir work/ui/wiki/banners/treasurebox.png is OLD's art

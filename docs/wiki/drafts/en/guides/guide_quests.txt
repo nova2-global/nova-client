@@ -1,0 +1,134 @@
+---
+title: Guide Quests
+category: guides
+order: 199
+---
+![](d:/ymir work/ui/wiki/banners/guidequests.png){align=center width=100%}
+
+## General Information
+
+In your first login you will receive a Level 75 Guide Quest,
+these quests will teach you the basics of Nova2 all the way until Level 135.
+
+--- {style=ornate}
+
+## Lv. 75 Quest
+
+- Task: Reach Lv.85.
+
+It is recommended to level up in Akanta Field to get you a good amount of materials
+for your first PvM Gear upgrade which you'll need at level 90.
+
+--- {style=ornate}
+
+### Reward: 50.000.000 Gold
+
+--- {style=ornate}
+
+## Lv. 85 Quest
+
+- Task: Reach Level 90 and destroy 50 Metinstones of Metin of Ember or Metin of Gloom.
+
+Both metin stones can be found in Farm Maps > Akanta Field.
+
+### Reward: 1x Sovereign Sash(Fine), 1x, Thief's Glove,
+
+### 5x Enhance Change Scroll+, 100x Clams & 75.000.000 Gold
+
+![[item:85012]], ![[item:72005]], ![[item:71052]], ![[item:27987]], ![[item:1]]
+
+--- {style=ornate}
+
+## Lv. 90 Quest
+
+- Task: Complete 15x Demon Tower and 15x Spider Baroness.
+
+You can quickly access these dungeons by clicking on your keyboard.
+
+Reward: 1x Lord Sash (noble), 1x Young Moa & 100.000.000 Gold
+
+![[item:85003]], ![[item:52108]], ![[item:80007]], **F6**
+
+--- {style=ornate}
+
+## Lv. 110 Quest
+
+- Task: Complete 20x Beran Seataou, 10x Devil's Catacomb, Razador, Nemere and Ochao and reach Lv. 115
+
+You can quickly access these dungeons by clicking on your keyboard.
+It is recommended you level to 115 by visiting the Lv.90 Maps.
+
+- (Cape Dragon Fire, Nephrite Bay, Thunder Mountains)
+
+Reward: 1x Lord Sash (noble), 5x Azrael's Horn, 5x Flame Stone,
+
+### 5x Ice Flame Stone, 5x Jotun's Horn, 100.000.000 Gold
+
+![[item:85003]], ![[item:34046]], ![[item:30524]], ![[item:30525]], ![[item:34045]], ![[item:80007]], **F6**
+
+--- {style=ornate}
+
+## Lv. 115 Quest
+
+- Task: Destroy 250x Metin of Demise, 3x Metin of Treasures, Reach Level 130
+
+You can find both Metin Stones in Lost Forest. Keep in Mind that Treasure Stones spawn in specific locations.
+It is recommended you level to 130 in Guatama Cliff.
+
+### Reward: 10x Multi-Crystal Fragment, 125.000.000 Gold
+
+![[item:34017]], ![[item:1]], ![[item:80007]]
+
+--- {style=ornate}
+
+## Lv. 130 Quest
+
+- Task: Complete 5x, Duratus Dungeon, 3x Fear Dungeon & Destroy 5x Metin of Treasures.
+
+You can quickly access these dungeons by clicking on your keyboard.
+You can find Treasure Stones in Lost Forest.
+Keep in Mind that they spawn in specific locations.
+
+### Reward: 15x Duratus Gem, 15x Fear Gem, 15x Treasure Gem,
+
+### 5x Multi-Crystal Fragment, 150.000.000 Gold
+
+![[item:34018]], ![[item:34019]], ![[item:34020]], ![[item:34017]], ![[item:80007]], ![[item:1]]
+
+**F6**
+
+--- {style=ornate}
+
+## Lv. 130 Quest (Part II)
+
+- Task: Destroy 150x Dark Beam Stone & Complete 10x Mazel Dungeons
+
+You can quickly access Mazel by clicking on your keyboard.
+You can find Beam Stones in Secret Wood.
+
+Reward: 50x Mazel Portal, 100x Charming Cube Chest, 3x Weapon Stone Token
+
+### 3x Armor Stone Token, 5x Mazel Heart, 250.000.000 Gold
+
+**F6**, ![[item:34035]], ![[item:34092]], ![[item:34033]], ![[item:34034]], ![[item:34040]], ![[item:1]]
+
+--- {style=ornate}
+
+## Lv. 135 Quest
+
+- Task: Destroy 50x Rubynized Metin of Orcs, Garnetized Metin of Orcs, Emeralded Metin of Orcs
+- Task: Destroy Sapphirized Metin of Orcs, Complete 2x Ship Defence, Ancient Pyramid,
+- Task:Ghidorah's Nest & White Tower.
+
+You can quickly access these dungeons by clicking on your keyboard.
+You can find all the Stones in Mythical Forest.
+
+### Reward: 3x Fire Infusion [I], 3x Water Infusion [I],
+
+### 3x Earth Infusion [I], 500.000.000 Gold
+
+**F6**, ![[item:55260]], ![[item:55261]], ![[item:55262]], ![[item:80007]]
+
+--- {style=ornate}
+
+![[item:1]]

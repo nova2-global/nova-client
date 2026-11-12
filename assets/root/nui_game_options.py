@@ -85,7 +85,8 @@ class GameOptionsBoard(nui.Window):
 			return model()
 		return {"name_color": 0, "target_board": 0, "pk_mode": 0, "block": 0, "blocked": [False] * BLOCK_COUNT,
 		        "view_chat": True, "always_show_name": True, "show_damage": True, "sales_text": True,
-		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False, "show_sash": True, "hide_buffi": False}
+		        "pickup": [True] * PICKUP_COUNT, "hide_shops": False, "show_sash": True, "hide_buffi": False,
+		        "mob_level": True, "mob_ai": True}
 
 	@nui.on("choose")
 	def on_choose(self, what, value, button):
@@ -166,7 +167,8 @@ class OptionDialog(nui_hud.LayoutCalls):
 		        "pk_mode": self.pkMode, "block": mask, "blocked": self.blocked(mask),
 		        "view_chat": bool(systemSetting.IsViewChat()), "always_show_name": bool(systemSetting.IsAlwaysShowName()),
 		        "show_damage": bool(systemSetting.IsShowDamage()), "sales_text": bool(systemSetting.IsShowSalesText()),
-		        "pickup": self.pickup(), "hide_shops": _hide_shops(), "show_sash": _show_sash(), "hide_buffi": _hide_buffi()}
+		        "pickup": self.pickup(), "hide_shops": _hide_shops(), "show_sash": _show_sash(), "hide_buffi": _hide_buffi(),
+		        "mob_level": bool(systemSetting.IsShowMobLevel()), "mob_ai": bool(systemSetting.IsShowMobAIFlag())}
 
 	def _board(self):
 		return self.demand.board() if self.demand is not None else None
@@ -296,6 +298,10 @@ class OptionDialog(nui_hud.LayoutCalls):
 			return int(_show_sash())
 		if what == "hide_buffi":
 			return int(_hide_buffi())
+		if what == "mob_level":
+			return int(bool(systemSetting.IsShowMobLevel()))
+		if what == "mob_ai":
+			return int(bool(systemSetting.IsShowMobAIFlag()))
 		return None
 
 	def nui_choose(self, what, value):
@@ -337,6 +343,13 @@ class OptionDialog(nui_hud.LayoutCalls):
 			# sashes, 0 hides them.
 			systemSetting.SetShowAcceFlag(bool(value))
 			self.RefreshShowSash()
+		elif what == "mob_level" and value in (0, 1):
+			# NOVA-40 (legacy's row: uiGameOption.__OnClickMobLevelButton).
+			systemSetting.SetShowMobLevel(value)
+			self._set(mob_level=bool(systemSetting.IsShowMobLevel()))
+		elif what == "mob_ai" and value in (0, 1):
+			systemSetting.SetShowMobAIFlag(value)
+			self._set(mob_ai=bool(systemSetting.IsShowMobAIFlag()))
 		elif what == "hide_buffi" and value in (0, 1):
 			# Legacy's row (uiGameOption.__OnClickHideBuffiButton): 0 shows the
 			# buffi, 1 hides them; the server answers with GC::BUFFI_HIDE.

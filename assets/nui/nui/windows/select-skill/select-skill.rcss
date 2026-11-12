@@ -1,0 +1,396 @@
+/* The select skill window's modern look (NOVA-37), Eddy's direction D, "Orbit"
+   (.nui-work/design/select-skill/pulled/D-orbit.dc.html and ss.css): 880 x 560dp. Each group's
+   side panel (its name, a "plays like" line, a rule, its skills by name with 20dp icons, its
+   Choose button at the bottom) flanks a ring 440dp across: an arc for each group, accent while
+   that group is active; the round preview, 300dp across, in its middle; the skills on the arcs;
+   under it a caption, the hovered skill's name and tag or the idle hint. A hovered side's group
+   is active and the other side and its ring skills dim. Centered at its first show, as legacy's
+   uiscript. Classic: skins/classic/windows/select-skill.rcss; cyberpunk's second group color:
+   skins/cyberpunk/windows/select-skill.rcss.
+
+   What differs from the design, since RmlUi 6.3 has no SVG: each arc is the ring's circle (a
+   2dp border, fully rounded) clipped by a rectangle to the part beyond 148dp from the ring's
+   center line, which is exactly the design's 112 to 248 degree arc (and 68 to -68 on the right),
+   with square ends where the design's are round. The round preview is a fully rounded box that
+   clips its view (overflow with border-radius: RmlUi's stencil clip, every frame while the
+   window shows). The side panel's dim is not faded (an opacity motion on a container rebuilds
+   every mesh under it on each frame); the ring's skills, small parts, fade in 0.2s. */
+
+body.select-skill
+{
+	left: 16dp;
+	top: 16dp;
+	box-sizing: border-box;
+	width: 880dp;
+	height: 560dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+	/* The second group's color (the design's --g2): told apart from the accent by lightness. */
+	--select-skill-group-2: var(--warning);
+}
+.select-skill button
+{
+	tab-index: none;
+	focus: none;
+}
+.select-skill__body
+{
+	box-sizing: border-box;
+	height: 521dp;
+	padding: 12dp;
+}
+.select-skill__content
+{
+	display: flex;
+	flex-direction: row;
+	gap: 12dp;
+	height: 100%;
+}
+
+/* --- The side panels ---------------------------------------------------------------- */
+
+.select-skill__side
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 0;
+	min-width: 0;
+	gap: 8dp;
+	padding: 12dp;
+	border-radius: var(--radius-lg);
+}
+.select-skill__side--2
+{
+	text-align: right;
+}
+.select-skill__side.is-active
+{
+	border-color: var(--accent);
+}
+.select-skill__side.is-dim
+{
+	opacity: 0.38;
+}
+.select-skill__head
+{
+	display: block;
+	font-size: 18dp;
+	font-weight: bold;
+	color: var(--accent);
+}
+.select-skill__side--2 .select-skill__head
+{
+	color: var(--select-skill-group-2);
+}
+.select-skill__plays
+{
+	display: block;
+	font-size: var(--font-xs);
+	line-height: 15dp;
+	color: var(--text-muted);
+}
+.select-skill__rule
+{
+	display: block;
+	flex: 0 0 auto;
+	height: 1dp;
+	background-color: var(--border);
+}
+.select-skill__mini
+{
+	display: block;
+}
+/* A skill's row: the whole row is its hover target (its parts take no pointer), and the rows
+   touch, so the pointer is always over one of them. */
+.select-skill__row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 6dp;
+	height: 26dp;
+	padding: 0 4dp;
+	box-sizing: border-box;
+	border-width: 1dp;
+	border-color: transparent;
+	border-radius: var(--radius-md);
+	white-space: nowrap;
+	overflow: hidden;
+}
+.select-skill__row.nui-anim
+{
+	transition: background-color border-color 0.1s cubic-out;
+}
+.select-skill__side--2 .select-skill__row
+{
+	flex-direction: row-reverse;
+}
+.select-skill__row.is-on
+{
+	background-color: var(--selection);
+	border-color: var(--accent);
+}
+.select-skill__row-icon
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 20dp;
+	height: 20dp;
+	pointer-events: none;
+}
+.select-skill__row-name
+{
+	display: block;
+	flex: 1 1 auto;
+	min-width: 0;
+	font-size: var(--font-md);
+	line-height: 22dp;
+	color: var(--text);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	pointer-events: none;
+}
+.select-skill__fill
+{
+	display: block;
+	flex: 1 1 auto;
+}
+.select-skill__pick
+{
+	display: block;
+	flex: 0 0 auto;
+	width: 100%;
+	height: 34dp;
+	line-height: 32dp;
+	padding: 0 8dp;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+/* --- The ring ------------------------------------------------------------------------ */
+
+.select-skill__center
+{
+	display: flex;
+	flex-direction: column;
+	flex: 0 0 auto;
+	gap: 8dp;
+	width: 440dp;
+}
+.select-skill__orb
+{
+	display: block;
+	position: relative;
+	flex: 0 0 auto;
+	width: 440dp;
+	height: 440dp;
+}
+/* Each arc: the ring's circle (center 220, 220, radius 192: the box 27 to 413, its 2dp border on
+   the radius) clipped to x <= 148: 112 to 248 degrees, and the right one (68 to -68) its mirror. */
+.select-skill__arc-clip
+{
+	display: block;
+	position: absolute;
+	top: 0;
+	width: 148dp;
+	height: 440dp;
+	overflow: hidden;
+	pointer-events: none;
+}
+.select-skill__arc-clip--1
+{
+	left: 0;
+}
+/* The left clip turned half a turn about the ring's center: RmlUi does not clip what overflows a
+   box to its left, so the right arc is the left one's mirror image rather than a circle shifted
+   left inside a box at 292dp. */
+.select-skill__arc-clip--2
+{
+	left: 0;
+	transform: rotate(180deg);
+	transform-origin: 220dp 220dp;
+}
+/* In the flow of its clip, not positioned: RmlUi clips a positioned child by its own containing
+   block's chain only. */
+.select-skill__arc
+{
+	display: block;
+	box-sizing: border-box;
+	width: 386dp;
+	height: 386dp;
+	margin-top: 27dp;
+	margin-left: 27dp;
+	border-width: 2dp;
+	border-color: var(--border);
+	border-radius: 193dp;
+}
+.select-skill__arc.nui-anim
+{
+	transition: border-color 0.2s cubic-out;
+}
+.select-skill__arc.is-active
+{
+	border-width: 3dp;
+	border-color: var(--accent);
+}
+.select-skill__core
+{
+	display: block;
+	position: absolute;
+	left: 70dp;
+	top: 70dp;
+	box-sizing: border-box;
+	width: 300dp;
+	height: 300dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 150dp;
+	background-color: var(--scene);
+	overflow: hidden;
+}
+.select-skill__view
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 298dp;
+	height: 298dp;
+	pointer-events: none;
+}
+.select-skill__mark
+{
+	--glyph-ink: var(--text-muted);
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -8dp;
+	margin-top: -8dp;
+}
+/* A group's skills: placed by the ring's count class and each skill's place class (the rules
+   at the end), centered on the design's points. The holder is a 0 x 0 box at the ring's corner,
+   so nothing but the cells takes the pointer. */
+.select-skill__ring
+{
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0;
+	height: 0;
+}
+.select-skill__cell
+{
+	position: absolute;
+	width: 36dp;
+	height: 36dp;
+	margin-left: -18dp;
+	margin-top: -18dp;
+	padding: 1dp;
+}
+.select-skill__cell.nui-anim
+{
+	transition: background-color border-color opacity 0.2s cubic-out;
+}
+.select-skill__cell.is-dim
+{
+	opacity: 0.38;
+}
+
+/* --- The caption --------------------------------------------------------------------- */
+
+.select-skill__caption
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 8dp;
+	height: 22dp;
+	font-size: var(--font-xs);
+	color: var(--text-muted);
+	white-space: nowrap;
+}
+.select-skill__now
+{
+	display: block;
+	flex: 0 0 auto;
+	padding: 0 8dp;
+	height: 20dp;
+	line-height: 20dp;
+	border-radius: 10dp;
+	background-color: var(--accent);
+	color: var(--accent-text);
+	font-weight: bold;
+}
+.select-skill__now.is-idle
+{
+	background-color: var(--surface-sunken);
+	color: var(--text-muted);
+}
+.select-skill__what
+{
+	display: block;
+	flex: 0 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+/* --- The ring's places: the design's pt() (center 220, 220, radius 192), rounded as Math.round.
+   Group 1 from 120 to 240 degrees, group 2 from 60 to -60, n skills 120 / (n - 1) apart. ------ */
+
+.select-skill__ring--1.select-skill__ring--n2 .select-skill__cell--k0 { left: 124dp; top: 54dp; }
+.select-skill__ring--1.select-skill__ring--n2 .select-skill__cell--k1 { left: 124dp; top: 386dp; }
+.select-skill__ring--1.select-skill__ring--n3 .select-skill__cell--k0 { left: 124dp; top: 54dp; }
+.select-skill__ring--1.select-skill__ring--n3 .select-skill__cell--k1 { left: 28dp; top: 220dp; }
+.select-skill__ring--1.select-skill__ring--n3 .select-skill__cell--k2 { left: 124dp; top: 386dp; }
+.select-skill__ring--1.select-skill__ring--n4 .select-skill__cell--k0 { left: 124dp; top: 54dp; }
+.select-skill__ring--1.select-skill__ring--n4 .select-skill__cell--k1 { left: 40dp; top: 154dp; }
+.select-skill__ring--1.select-skill__ring--n4 .select-skill__cell--k2 { left: 40dp; top: 286dp; }
+.select-skill__ring--1.select-skill__ring--n4 .select-skill__cell--k3 { left: 124dp; top: 386dp; }
+.select-skill__ring--1.select-skill__ring--n5 .select-skill__cell--k0 { left: 124dp; top: 54dp; }
+.select-skill__ring--1.select-skill__ring--n5 .select-skill__cell--k1 { left: 54dp; top: 124dp; }
+.select-skill__ring--1.select-skill__ring--n5 .select-skill__cell--k2 { left: 28dp; top: 220dp; }
+.select-skill__ring--1.select-skill__ring--n5 .select-skill__cell--k3 { left: 54dp; top: 316dp; }
+.select-skill__ring--1.select-skill__ring--n5 .select-skill__cell--k4 { left: 124dp; top: 386dp; }
+.select-skill__ring--1.select-skill__ring--n6 .select-skill__cell--k0 { left: 124dp; top: 54dp; }
+.select-skill__ring--1.select-skill__ring--n6 .select-skill__cell--k1 { left: 65dp; top: 107dp; }
+.select-skill__ring--1.select-skill__ring--n6 .select-skill__cell--k2 { left: 32dp; top: 180dp; }
+.select-skill__ring--1.select-skill__ring--n6 .select-skill__cell--k3 { left: 32dp; top: 260dp; }
+.select-skill__ring--1.select-skill__ring--n6 .select-skill__cell--k4 { left: 65dp; top: 333dp; }
+.select-skill__ring--1.select-skill__ring--n6 .select-skill__cell--k5 { left: 124dp; top: 386dp; }
+.select-skill__ring--1.select-skill__ring--n7 .select-skill__cell--k0 { left: 124dp; top: 54dp; }
+.select-skill__ring--1.select-skill__ring--n7 .select-skill__cell--k1 { left: 73dp; top: 97dp; }
+.select-skill__ring--1.select-skill__ring--n7 .select-skill__cell--k2 { left: 40dp; top: 154dp; }
+.select-skill__ring--1.select-skill__ring--n7 .select-skill__cell--k3 { left: 28dp; top: 220dp; }
+.select-skill__ring--1.select-skill__ring--n7 .select-skill__cell--k4 { left: 40dp; top: 286dp; }
+.select-skill__ring--1.select-skill__ring--n7 .select-skill__cell--k5 { left: 73dp; top: 343dp; }
+.select-skill__ring--1.select-skill__ring--n7 .select-skill__cell--k6 { left: 124dp; top: 386dp; }
+.select-skill__ring--2.select-skill__ring--n2 .select-skill__cell--k0 { left: 316dp; top: 54dp; }
+.select-skill__ring--2.select-skill__ring--n2 .select-skill__cell--k1 { left: 316dp; top: 386dp; }
+.select-skill__ring--2.select-skill__ring--n3 .select-skill__cell--k0 { left: 316dp; top: 54dp; }
+.select-skill__ring--2.select-skill__ring--n3 .select-skill__cell--k1 { left: 412dp; top: 220dp; }
+.select-skill__ring--2.select-skill__ring--n3 .select-skill__cell--k2 { left: 316dp; top: 386dp; }
+.select-skill__ring--2.select-skill__ring--n4 .select-skill__cell--k0 { left: 316dp; top: 54dp; }
+.select-skill__ring--2.select-skill__ring--n4 .select-skill__cell--k1 { left: 400dp; top: 154dp; }
+.select-skill__ring--2.select-skill__ring--n4 .select-skill__cell--k2 { left: 400dp; top: 286dp; }
+.select-skill__ring--2.select-skill__ring--n4 .select-skill__cell--k3 { left: 316dp; top: 386dp; }
+.select-skill__ring--2.select-skill__ring--n5 .select-skill__cell--k0 { left: 316dp; top: 54dp; }
+.select-skill__ring--2.select-skill__ring--n5 .select-skill__cell--k1 { left: 386dp; top: 124dp; }
+.select-skill__ring--2.select-skill__ring--n5 .select-skill__cell--k2 { left: 412dp; top: 220dp; }
+.select-skill__ring--2.select-skill__ring--n5 .select-skill__cell--k3 { left: 386dp; top: 316dp; }
+.select-skill__ring--2.select-skill__ring--n5 .select-skill__cell--k4 { left: 316dp; top: 386dp; }
+.select-skill__ring--2.select-skill__ring--n6 .select-skill__cell--k0 { left: 316dp; top: 54dp; }
+.select-skill__ring--2.select-skill__ring--n6 .select-skill__cell--k1 { left: 375dp; top: 107dp; }
+.select-skill__ring--2.select-skill__ring--n6 .select-skill__cell--k2 { left: 408dp; top: 180dp; }
+.select-skill__ring--2.select-skill__ring--n6 .select-skill__cell--k3 { left: 408dp; top: 260dp; }
+.select-skill__ring--2.select-skill__ring--n6 .select-skill__cell--k4 { left: 375dp; top: 333dp; }
+.select-skill__ring--2.select-skill__ring--n6 .select-skill__cell--k5 { left: 316dp; top: 386dp; }
+.select-skill__ring--2.select-skill__ring--n7 .select-skill__cell--k0 { left: 316dp; top: 54dp; }
+.select-skill__ring--2.select-skill__ring--n7 .select-skill__cell--k1 { left: 367dp; top: 97dp; }
+.select-skill__ring--2.select-skill__ring--n7 .select-skill__cell--k2 { left: 400dp; top: 154dp; }
+.select-skill__ring--2.select-skill__ring--n7 .select-skill__cell--k3 { left: 412dp; top: 220dp; }
+.select-skill__ring--2.select-skill__ring--n7 .select-skill__cell--k4 { left: 400dp; top: 286dp; }
+.select-skill__ring--2.select-skill__ring--n7 .select-skill__cell--k5 { left: 367dp; top: 343dp; }
+.select-skill__ring--2.select-skill__ring--n7 .select-skill__cell--k6 { left: 316dp; top: 386dp; }

@@ -1,0 +1,29 @@
+---
+title: Shoulder Sash
+category: systems
+---
+## General information
+- The shoulder sash is visible equipment, like your armor and weapon.
+- A sash can absorb the bonuses of an armor or a weapon.
+- Wearing a wing costume hides the sash, but its bonuses stay active.
+
+--- {style=ornate}
+
+## Upgrading sashes
+- You can **combine** shoulder sashes at Theowahdan.
+- Sashes of the same grade combine into a sash of a higher grade, even when their styles differ.
+- Upgrading a sash that holds an absorbed item also raises its bonuses.
+
+:::note
+Keep the sash you want to keep in the first sash slot.
+:::
+
+--- {style=ornate}
+
+## Bonus absorption
+| Grade | Absorbs | Sash |
+|---|---|---|
+| Basic | 1% | ![[item:85001]] |
+| Fine | 5% | ![[item:85002]] |
+| Noble | 10% | ![[item:85003]] |
+| The highest grade | 11% to 25% | ![[item:85004]] |

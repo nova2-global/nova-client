@@ -1,0 +1,15 @@
+{
+	"$comment": "Golden cases of fast equip (Wave 8, NOVA-17; tools/check_nui_snapshots.py), each fixture written from the facade's own model in the test world (tools/fastequip_test.py): set 0 selected with five worn-cell items, one item held elsewhere (the marked cell), and the buffi in a body and a weapon costume (two and three cells tall, Eddy r41); edit: the name and color panel open; empty: a fresh character; equipped: the set worn, the stripe on. Modern themes in every shipped theme but classic; classic is legacy's 460 x 375 board on its own canvas. The window centers at its first show; the sheet's place frames it here.",
+	"cases": [
+		{"page": "fastequip", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x820"], ["150", "1.5", "1230x1230"], ["200", "2", "1640x1640"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "variant": "edit", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x820"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "variant": "empty", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x820"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "variant": "equipped", "themes": "all", "except": ["classic"], "scales": [["100", "1", "820x820"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "themes": ["classic"], "scales": [["100", "1", "820x720"], ["150", "1.5", "1230x1080"], ["200", "2", "1640x1440"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "variant": "edit", "themes": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "variant": "empty", "themes": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "variant": "equipped", "themes": ["classic"], "scales": [["100", "1", "820x720"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null},
+		{"page": "fastequip", "name": "reduced-motion", "themes": ["dark"], "scales": [["100", "1", "820x820"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "reduced_motion": true},
+		{"page": "fastequip", "name": "no-effects", "themes": ["dark", "cyber"], "scales": [["100", "1", "820x820"]], "fixture": true, "roots": ["assets/ETC", "assets/icon"], "time": null, "effects": "off"}
+	]
+}

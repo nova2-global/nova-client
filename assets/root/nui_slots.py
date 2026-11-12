@@ -606,6 +606,16 @@ def _dragging():
 	return True if is_dragging is None else bool(is_dragging())
 
 
+def take_drag_release():
+	"""A left release on a window's drop area outside its cells (fast equip's
+	canvas): True when a press in a NovaUI grid attached what is held and
+	the pointer was dragged 10 px or more, as LegacySlotEvents.release asks
+	of a cell; the press is forgotten either way."""
+	global _press
+	pressed, _press = _press, None
+	return pressed is not None and attached() and _dragging()
+
+
 class SlotDrag(object):
 	"""Pick-and-place for one NovaUI grid (D4, D5). The window passes its
 	data events here; `pick(index)` answers (slot_type, slot_number,

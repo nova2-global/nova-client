@@ -1960,16 +1960,23 @@ class ModernDoll(unittest.TestCase):
         rail = board(window).model["rail"]
         self.assertEqual([(e["id"], e["glyph"], e["tip"], e["soon"]) for e in rail],
                          [(entry_id, glyph, tip, soon) for entry_id, glyph, tip, _, soon in module.BOARD_SHORTCUTS])
-        self.assertEqual([e["id"] for e in rail if not e["soon"]], ["offline_shop", "shop_search", "guide"],
-                         "the offline shop and its search exist since Wave 5; the guide opens the help")
+        self.assertEqual([e["id"] for e in rail if not e["soon"]], ["offline_shop", "shop_search", "ranking", "guide"],
+                         "the offline shop and its search exist since Wave 5; the ranking since wave 7 (NOVA-29); "
+                         "the guide opens the help")
         self.assertTrue(all(e["badge"] == "" for e in rail))
         self.assertEqual([e["id"] for e in rail if not e["enabled"]], ["offline_shop", "shop_search"],
                          "the offline shop's entries wait for the server's CONFIG, as legacy's buttons")
         with world.game:
-            for entry_id in ("offline_shop", "shop_search", "ranking", "events", "achievements"):
+            for entry_id in ("offline_shop", "shop_search", "events", "achievements"):
                 press(window, "rail_press", entry_id, 0)
         self.assertNotIn(("interface.OpenHelpWindow", ()), world.game.log, "a feature to come takes no press")
         self.assertNotIn(("interface.OpenSearchShop", ()), world.game.log, "a disabled entry takes no press")
+        self.assertNotIn(("interface.OpenKillRank", ()), world.game.log)
+        with world.game:
+            press(window, "rail_press", "ranking", 1)
+            press(window, "rail_press", "ranking", 0)
+        self.assertEqual(world.game.log.count(("interface.OpenKillRank", ())), 1,
+                         "a left press on the ranking opens the kill ranking (NOVA-29), as OLD's inventory button")
         with world.game:
             press(window, "rail_press", "guide", 1)
             press(window, "rail_press", "guide", 0)
@@ -2195,6 +2202,12 @@ class Wave4b(Pair):
 
     def test_shift_without_the_safebox_uses_the_item(self):
         self.same(self.pressing("DIK_LSHIFT")(4), expect=["net.SendItemUsePacket"])
+
+    def test_shift_opens_the_item_in_the_wiki_where_the_wiki_can_open(self):
+        def wiki(game):
+            game.wiki_opens = True
+        legacy, _, _ = self.same(self.pressing("DIK_LSHIFT")(4), wave4b(wiki), expect=["interface.OpenWikiItem"])
+        self.assertEqual(legacy[0][0], "interface.OpenWikiItem")
 
     def test_alt_opens_a_count_of_chests_from_a_stack(self):
         def chests(game):

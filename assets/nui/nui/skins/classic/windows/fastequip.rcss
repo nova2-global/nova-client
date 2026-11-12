@@ -1,0 +1,204 @@
+/* Classic skin overlay of nui/windows/fastequip/fastequip.rml: legacy's
+   fastequip window (uiscript fastequipwindow.py, OLD NewFastEquipWindow.py)
+   at 100%, 1dp to the legacy pixel: the thin board, 460 x 435; the 10 sets
+   as OLD's 88 x 21 rows from 16, 60, 23 apart (their colored bar, the edit
+   mark at the left); the name bar at 115, 36 with the equipped bar left of
+   it; the wear cells at OLD's slot positions from 111, 66; Switch and Clear
+   at 171 and 271, 290; the row of buffi and aura cells under the buttons,
+   the buffi's laid out as the costume window's (a tall weapon, the hair
+   over the body).
+   OLD's fast equip art is not shipped (as the legacy window's): the stock
+   slot and buttons stand in. */
+
+body.skin-classic.fastequip
+{
+	width: 460dp;
+	height: 435dp;
+	min-width: 0;
+}
+body.skin-classic.fastequip .fastequip__title-icon,
+body.skin-classic.fastequip .fastequip__equipped-stripe
+{
+	display: none;
+}
+body.skin-classic.fastequip .fastequip__titlebar
+{
+	position: absolute;
+	left: 8dp;
+	top: 7dp;
+	width: 445dp;
+	margin: 0;
+	z-index: 1;
+}
+body.skin-classic.fastequip .fastequip__body
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 460dp;
+	height: 435dp;
+	padding: 0;
+	display: block;
+}
+body.skin-classic.fastequip .fastequip__sets
+{
+	position: absolute;
+	left: 16dp;
+	top: 36dp;
+	width: 95dp;
+	margin: 0;
+}
+body.skin-classic.fastequip .fastequip__sets-head
+{
+	height: 23dp;
+	line-height: 23dp;
+	text-align: center;
+}
+body.skin-classic.fastequip .fastequip__set
+{
+	display: block;
+	position: relative;
+	width: 88dp;
+	height: 21dp;
+	margin: 0 0 2dp 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+}
+body.skin-classic.fastequip .fastequip__set-color
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 88dp;
+	height: 21dp;
+	margin: 0;
+	border-radius: 0;
+}
+body.skin-classic.fastequip .fastequip__set-name
+{
+	position: absolute;
+	left: 13dp;
+	top: 3dp;
+	width: 75dp;
+	line-height: 15dp;
+}
+body.skin-classic.fastequip .fastequip__set-edit
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 13dp;
+	height: 21dp;
+	margin: 0;
+}
+body.skin-classic.fastequip .fastequip__main
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 460dp;
+}
+body.skin-classic.fastequip .fastequip__title-bar
+{
+	position: absolute;
+	left: 115dp;
+	top: 36dp;
+	width: 327dp;
+	height: 23dp;
+	border-width: 0;
+	border-radius: 0;
+}
+body.skin-classic.fastequip .fastequip__set-title
+{
+	line-height: 23dp;
+}
+body.skin-classic.fastequip .fastequip__canvas
+{
+	position: absolute;
+	left: 111dp;
+	top: 66dp;
+	width: 336dp;
+	height: 360dp;
+	margin: 0;
+	border-width: 0;
+	background-color: transparent;
+}
+body.skin-classic.fastequip .fastequip__cell--w0 { left: 210dp; top: 52dp; width: 32dp; height: 64dp; nui-hit-outset: 4dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w1 { left: 210dp; top: 12dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 4dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w2 { left: 210dp; top: 170dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 4dp; }
+body.skin-classic.fastequip .fastequip__cell--w3 { left: 252dp; top: 86dp; width: 32dp; height: 32dp; nui-hit-outset: 1dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w4 { left: 168dp; top: 19dp; width: 32dp; height: 96dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w5 { left: 293dp; top: 87dp; width: 32dp; height: 32dp; nui-hit-outset: 1.5dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w6 { left: 293dp; top: 52dp; width: 32dp; height: 32dp; nui-hit-outset: 4dp 0dp 1.5dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w7 { left: 170dp; top: 170dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 4dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w8 { left: 254dp; top: 170dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w9 { left: 293dp; top: 12dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 4dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w10 { left: 252dp; top: 52dp; width: 32dp; height: 32dp; nui-hit-outset: 4dp 0dp 1dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w19 { left: 53dp; top: 54dp; width: 32dp; height: 64dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w20 { left: 53dp; top: 5dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w21 { left: 252dp; top: 12dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 4dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w22 { left: 11dp; top: 21dp; width: 32dp; height: 96dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w23 { left: 53dp; top: 133dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w24 { left: 2dp; top: 181dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 1dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w25 { left: 75dp; top: 181dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 1dp 0dp 3.5dp; }
+body.skin-classic.fastequip .fastequip__cell--w26 { left: 12dp; top: 133dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w27 { left: 97dp; top: 54dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w28 { left: 168dp; top: 129dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w29 { left: 252dp; top: 129dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w30 { left: 211dp; top: 129dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w31 { left: 97dp; top: 292dp; width: 32dp; height: 64dp; nui-hit-outset: 2dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w32 { left: 97dp; top: 256dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 2dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w33 { left: 55dp; top: 260dp; width: 32dp; height: 96dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w36 { left: 95dp; top: 5dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+body.skin-classic.fastequip .fastequip__cell--w37 { left: 36dp; top: 181dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 3.5dp 0dp 1dp; }
+body.skin-classic.fastequip .fastequip__cell--w38 { left: 109dp; top: 181dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 1dp; }
+body.skin-classic.fastequip .fastequip__cell--w39 { left: 235dp; top: 256dp; width: 32dp; height: 32dp; nui-hit-outset: 0dp 0dp 0dp 0dp; }
+
+/* Legacy's slot draws a tall item's icon from the cell's top. */
+body.skin-classic.fastequip .fastequip__cell
+{
+	display: block;
+	background-color: transparent;
+}
+body.skin-classic.fastequip .fastequip__row-label
+{
+	bottom: auto;
+}
+body.skin-classic.fastequip .fastequip__row-label--buffi
+{
+	left: 119dp;
+	top: 330dp;
+}
+body.skin-classic.fastequip .fastequip__row-label--aura
+{
+	left: 310dp;
+	top: 330dp;
+}
+body.skin-classic.fastequip .fastequip__buttons
+{
+	position: absolute;
+	left: 0;
+	top: 290dp;
+	display: block;
+	margin: 0;
+}
+body.skin-classic.fastequip .fastequip__switch
+{
+	position: absolute;
+	left: 171dp;
+	margin: 0;
+}
+body.skin-classic.fastequip .fastequip__clear
+{
+	position: absolute;
+	left: 271dp;
+}
+body.skin-classic.fastequip .fastequip__edit
+{
+	position: absolute;
+	left: 148dp;
+	top: 80dp;
+	z-index: 2;
+	background-color: var(--surface-sunken);
+}

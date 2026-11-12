@@ -46,6 +46,7 @@ import uiselectitem
 # The gaya market (NOVA-10; OLD interfaceModule.py:112-114).
 import uiGemShop
 import uiChestDrop
+import uiWiki
 import uiSash
 ## The advanced pet's windows (NOVA-24).
 import uiPet
@@ -54,8 +55,11 @@ import uiSearchShop
 import uiOfflineShopLog
 import uiKillRank
 import uiMyShopDecoration
+import uiSelectSkill
 # The switchbot (NOVA-43; OLD interfaceModule.py:90, 417).
 import uiSwitchbot
+# Fast equip (NOVA-17; OLD interfaceModule.py:93).
+import uiFastEquip
 # The dungeon manager and the dungeon ranking (NOVA-25).
 import uiTimerWindow
 import uiDungeonRank
@@ -106,6 +110,7 @@ class Interface(object):
 		self.wndGuildBuilding = None
 		self.wndGemShop = None
 		self.wndChestDrop = None
+		self.wndWiki = None
 		self.wndSashCombine = None
 		self.wndSashAbsorption = None
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:392-398).
@@ -118,7 +123,9 @@ class Interface(object):
 		self.wndSearchShop = None
 		self.wndOfflineShopLog = None
 		self.wndMyShopDeco = None
+		self.wndSelectSkill = None
 		self.wndSwitchbot = None
+		self.wndFastEquip = None
 		# NOVA-29: the kill ranking and the guild war top killers.
 		self.wndKillRank = None
 		self.wndTopKillers = None
@@ -284,6 +291,12 @@ class Interface(object):
 		# The chest-drop preview (NOVA-18; OLD interfaceModule.py:758-760).
 		self.wndChestDrop = nui_windows.make("chest-drop", uiChestDrop.ChestDropWindow, "nui_chest_drop.ChestDropWindow")
 		self.wndChestDrop.Hide()
+		# The ingame wiki's item and mob browser (NOVA-42). It has no legacy
+		# window: uiWiki.UnavailableWindow stands in when NovaUI cannot run.
+		self.wndWiki = nui_windows.make("wiki", uiWiki.UnavailableWindow, "nui_wiki.WikiWindow")
+		self.wndWiki.Hide()
+		# Its Link button pastes a page's link where the player types.
+		self.wndWiki.SetPasteLinkEvent(ui.__mem_func__(self.PasteWikiLink))
 
 		# The offline shop's search, log and decoration windows (NOVA-9) are the
 		# legacy controllers on NovaUI proxies.
@@ -295,11 +308,19 @@ class Interface(object):
 		self.wndMyShopDeco = nui_windows.make("shop-deco", uiMyShopDecoration.MyShopDecorationWindow,
 		                                      "nui_shop_deco.MyShopDecorationWindow")
 		self.wndMyShopDeco.BindInterface(self)
+		# NOVA-37 (OLD interfaceModule.py:752-754).
+		self.wndSelectSkill = nui_windows.make("select-skill", uiSelectSkill.SelectSkillWindow, "nui_select_skill.SelectSkillWindow")
+		self.wndSelectSkill.LoadWindow()
 
 		# The switchbot (NOVA-43; OLD interfaceModule.py:417): the legacy
 		# controller, on NovaUI proxies while the switchbot flag is on.
 		self.wndSwitchbot = nui_windows.make("switchbot", uiSwitchbot.SwitchbotWindow, "nui_switchbot.SwitchbotWindow")
 		self.wndSwitchbot.Hide()
+
+		# Fast equip (NOVA-17; OLD interfaceModule.py:520-524): the legacy
+		# controller, on NovaUI proxies while the fastequip flag is on.
+		self.wndFastEquip = nui_windows.make("fastequip", uiFastEquip.FastEquipWindow, "nui_fastequip.FastEquipWindow")
+		self.wndFastEquip.Hide()
 
 		# The kill ranking (NOVA-29, OLD interfaceModule.py:780-782) and the guild
 		# war top killers (OLD :279-280).
@@ -335,7 +356,9 @@ class Interface(object):
 		self.dlgSystem = nui_windows.make("system-menu", uiSystem.SystemDialog, "nui_system_menu.SystemDialog")
 		self.dlgSystem.LoadDialog()
 		self.dlgSystem.SetOpenHelpWindowEvent(ui.__mem_func__(self.OpenHelpWindow))
-		self.dlgSystem.SetOpenKillRankEvent(ui.__mem_func__(self.OpenKillRank))
+		# NovaUI's system menu only (nui_system_menu.SetOpenWikiEvent).
+		if hasattr(self.dlgSystem, "SetOpenWikiEvent"):
+			self.dlgSystem.SetOpenWikiEvent(ui.__mem_func__(self.ToggleWiki))
 
 		self.dlgSystem.Hide()
 
@@ -571,12 +594,16 @@ class Interface(object):
 
 		self.wndSafebox.SetItemToolTip(self.tooltipItem)
 		self.wndCubeRenewal.SetItemToolTip(self.tooltipItem)
+		# The wiki's items show this tooltip too (NovaUI's when it is on).
+		if self.wndWiki:
+			self.wndWiki.SetItemToolTip(self.tooltipItem)
 
 		# ITEM_MALL
 		self.wndMall.SetItemToolTip(self.tooltipItem)
 		# END_OF_ITEM_MALL
 
 		self.wndCharacter.SetSkillToolTip(self.tooltipSkill)
+		self.wndSelectSkill.SetSkillToolTip(self.tooltipSkill)
 		self.wndTaskBar.SetItemToolTip(self.tooltipItem)
 		self.wndTaskBar.SetSkillToolTip(self.tooltipSkill)
 		self.wndGuild.SetSkillToolTip(self.tooltipSkill)
@@ -590,6 +617,7 @@ class Interface(object):
 		self.privateShopBuilder.SetItemToolTip(self.tooltipItem)
 		self.wndGemShop.SetItemToolTip(self.tooltipItem)
 		self.wndSwitchbot.SetItemToolTip(self.tooltipItem)
+		self.wndFastEquip.SetItemToolTip(self.tooltipItem)
 		self.wndSashCombine.SetItemToolTip(self.tooltipItem)
 		self.wndSashAbsorption.SetItemToolTip(self.tooltipItem)
 		self.wndTimer.SetToolTip(self.tooltipItem)
@@ -597,12 +625,115 @@ class Interface(object):
 		self.__InitWhisper()
 		self.DRAGON_SOUL_IS_QUALIFIED = False
 
+	def ToggleWiki(self):
+		"""The ingame wiki (NOVA-42), from the system menu and the inventory."""
+		if self.wndWiki:
+			self.wndWiki.Toggle()
+
+	def OpenWikiItem(self, vnum):
+		"""True when the wiki opened on the item."""
+		return bool(self.wndWiki and self.wndWiki.OpenItem(vnum))
+
+	def OpenWikiMob(self, vnum):
+		return bool(self.wndWiki and self.wndWiki.OpenMob(vnum))
+
+	def OpenWikiList(self, path):
+		"""A list link (syswiki:list:<path>, NOVA-42): True when the wiki
+		opened that list."""
+		return bool(self.wndWiki and self.wndWiki.OpenList(path))
+
+	def OpenWikiPage(self, path):
+		"""A text page link (syswiki:page:<path>, NOVA-139): the wiki's
+		OpenPage, in front of every window. OpenPage comes with the text
+		pages (feature/wiki-pages); before that this opens nothing. True
+		when the page opened."""
+		wiki = self.wndWiki
+		if not wiki or not hasattr(wiki, "OpenPage"):
+			return False
+		if not wiki.OpenPage(path):
+			return False
+		wiki.SetTop()
+		return True
+
+	def OpenWikiLink(self, kind, ident):
+		"""The hook for every syswiki link kind __OpenWikiLink does not open
+		itself (not item, mob, list or page): the wiki's OpenLink, which
+		answers False for a kind it does not know. True when a page opened."""
+		opener = getattr(self.wndWiki, "OpenLink", None) if self.wndWiki else None
+		return bool(opener and opener(kind, ident))
+
+	def PasteWikiLink(self, link):
+		"""The wiki's Link button (NOVA-42): a page's syswiki link into the
+		whisper dialog whose input has the focus, else into the chat input,
+		which opens for it (an open one keeps its text). True when it went
+		in. A NovaUI whisper answers by its focus proxy (it holds wndMgr's
+		focus while its field has NovaUI's), a legacy one by its edit line.
+		The input shows the link's token and swaps it back on send
+		(PasteLink, link_tokens, round 3); a window without PasteLink takes
+		the raw link."""
+		import ime
+		target = None
+		for dlg in list(self.whisperDialogDict.values()):
+			if not dlg.IsShow():
+				continue
+			proxy = getattr(dlg, "focusProxy", None)
+			focused = proxy.has_focus() if proxy is not None else dlg.chatLine.IsFocus()
+			if focused:
+				dlg.chatLine.SetFocus()
+				target = dlg
+				break
+		if target is None:
+			if self.wndChat.IsEditMode():
+				self.SetChatFocus()
+			else:
+				self.ToggleChat()
+				if not self.wndChat.IsEditMode():
+					return False
+			target = self.wndChat
+		paste = getattr(target, "PasteLink", None)
+		if callable(paste):
+			paste(link)
+		else:
+			ime.PasteString(link)
+		return True
+
+	def WikiAnswer(self, *rows):
+		if self.wndWiki:
+			self.wndWiki.WikiAnswer(*rows)
+
 	def MakeHyperlinkTooltip(self, hyperlink):
 		tokens = hyperlink.split(":")
 		if tokens and len(tokens):
 			type = tokens[0]
 			if "item" == type:
 				self.hyperlinkItemTooltip.SetHyperlinkItem(tokens)
+			elif "syswiki" == type and len(tokens) >= 3:
+				# A list link's path holds ":" (syswiki:list:costumes:costume_hair).
+				self.__OpenWikiLink(tokens[1], ":".join(tokens[2:]).split("?")[0])
+
+	def __OpenWikiLink(self, kind, ident):
+		"""OLD's chat links, syswiki:<kind>:<ident>[?y=NNN] (interfaceModule.py:1154).
+		The browser opens "item" and "mob" links, and "list" links (a list,
+		the home page or a search, NOVA-42 round 3), and "page" links
+		(NOVA-139's text pages, OpenWikiPage). Any other kind goes to
+		OpenWikiLink whole."""
+		if kind == "list":
+			self.OpenWikiList(ident)
+			return
+		if kind == "page":
+			self.OpenWikiPage(ident)
+			return
+		if kind not in ("item", "mob"):
+			self.OpenWikiLink(kind, ident)
+			return
+		try:
+			vnum = int(ident)
+		except ValueError:
+			return
+		if kind == "item":
+			self.OpenWikiItem(vnum)
+		else:
+			self.OpenWikiMob(vnum)
 
 	## Make Windows & Dialogs
 	################################
@@ -723,6 +854,10 @@ class Interface(object):
 			self.wndChestDrop.Destroy()
 			self.wndChestDrop = None
 
+		if self.wndWiki:
+			self.wndWiki.Destroy()
+			self.wndWiki = None
+
 		if self.wndSashCombine:
 			self.wndSashCombine.Destroy()
 			self.wndSashCombine = None
@@ -758,6 +893,9 @@ class Interface(object):
 		if self.wndSwitchbot:
 			self.wndSwitchbot.Destroy()
 			self.wndSwitchbot = None
+		if self.wndFastEquip:
+			self.wndFastEquip.Destroy()
+			self.wndFastEquip = None
 
 		if self.wndOfflineShopLog:
 			self.wndOfflineShopLog.Destroy()
@@ -774,6 +912,11 @@ class Interface(object):
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Destroy()
 			self.wndMyShopDeco = None
+
+		# NOVA-37 (OLD interfaceModule.py:1580).
+		if self.wndSelectSkill:
+			self.wndSelectSkill.Destroy()
+			self.wndSelectSkill = None
 
 		# NOVA-27 (OLD interfaceModule.py:1489-1491, 1661-1662).
 		if self.wndBossInfo:
@@ -915,6 +1058,8 @@ class Interface(object):
 
 	def RefreshInventory(self):
 		self.wndTaskBar.RefreshQuickSlot()
+		if self.wndFastEquip:
+			self.wndFastEquip.RefreshInventory()
 		self.wndInventory.RefreshItemSlot()
 		self.wndExtraInventory.RefreshItemSlot()
 		if app.ENABLE_DRAGON_SOUL_SYSTEM:
@@ -1038,9 +1183,9 @@ class Interface(object):
 	def OfflineShopLog(self, rows, page, last):
 		self.wndOfflineShopLog.SetData(rows, page, last)
 
-	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the system
-	# menu's button toggles it (the temporary entry, PRODUCT-DECISIONS NOVA-29
-	# Q3, until the extra inventory's button of OLD); the answer refreshes it.
+	# The kill ranking (NOVA-29, OLD interfaceModule.py:4239-4246): the
+	# inventory's Ranking button toggles it (legacy's, and the NovaUI rail's
+	# entry), as OLD's extra inventory button; the answer refreshes it.
 	def OpenKillRank(self):
 		if not self.wndKillRank:
 			return
@@ -1086,6 +1231,10 @@ class Interface(object):
 
 	def OnSearchShopBuyResult(self, code, ownerPid, slot):
 		self.wndSearchShop.OnBuyResult(code, ownerPid, slot)
+
+	def OpenSelectSkillWindow(self):
+		"""NOVA-37: the letter's button (server command OpenSelectSkillWindow)."""
+		self.wndSelectSkill.Open()
 
 	def OpenMyShopDecoWnd(self):
 		self.wndMyShopDeco.Open()
@@ -1371,6 +1520,10 @@ class Interface(object):
 		## OLD interfaceModule.py:2761-2762 (NOVA-9).
 		if self.wndMyShopDeco:
 			self.wndMyShopDeco.Hide()
+
+		## NOVA-37: the select skill window goes with the others.
+		if getattr(self, "wndSelectSkill", None):
+			self.wndSelectSkill.Hide()
 
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:2735-2741).
 		for name in ("wndPetEggHatch", "wndPetRefineWindow", "wndPetEvolutionWindow", "wndPetInterfaceWindow",
@@ -1692,13 +1845,20 @@ class Interface(object):
 		## stand-in that has only the HUD windows.
 		if getattr(self, "wndMyShopDeco", None):
 			hideWindows += self.wndMyShopDeco,
+		## NOVA-37 (OLD interfaceModule.py:1594).
+		if getattr(self, "wndSelectSkill", None):
+			hideWindows += self.wndSelectSkill,
 		## OLD interfaceModule.py:3381-3382 (NOVA-18).
 		if getattr(self, "wndChestDrop", None):
 			hideWindows += self.wndChestDrop,
+		if getattr(self, "wndWiki", None):
+			hideWindows += self.wndWiki,
 
 		## The switchbot (NOVA-43; OLD interfaceModule.py:3384-3385).
 		if getattr(self, "wndSwitchbot", None):
 			hideWindows += self.wndSwitchbot,
+		if getattr(self, "wndFastEquip", None):
+			hideWindows += self.wndFastEquip,
 
 		## The advanced pet's windows (NOVA-24; OLD interfaceModule.py:3358-3364).
 		if getattr(self, "wndPetWindow", None):
@@ -1840,6 +2000,19 @@ class Interface(object):
 			self.wndSwitchbot.Close()
 		else:
 			self.wndSwitchbot.Open()
+
+	### Fast equip (NOVA-17; OLD interfaceModule.py:1564, 1763) ###
+	def ToggleFastEquipWindow(self):
+		if not self.wndFastEquip:
+			return
+		if self.wndFastEquip.IsShow():
+			self.wndFastEquip.Close()
+		else:
+			self.wndFastEquip.Open()
+
+	def RefreshFastEquip(self, setIndex, switched):
+		if self.wndFastEquip and self.wndFastEquip.IsShow():
+			self.wndFastEquip.RefreshFastEquip(setIndex, switched)
 
 	def RefreshSwitchbotWindow(self):
 		if self.wndSwitchbot and self.wndSwitchbot.IsShow():

@@ -31,9 +31,10 @@ on the window's left edge shows the entries features register here
 "soon" flag (a feature still to come) and a badge each; a press on one
 calls its callback. With none registered there is no rail. When the game's
 interface binds the window (BindInterfaceClass), the reviewed board's five
-entries are registered (register_board_shortcuts): the offline shop,
-ranking, events and achievements as features to come, and the guide, which
-opens the help window. The rail's fold button hides its entries for the
+entries are registered (register_board_shortcuts): the offline shop and
+its search, the ranking, which opens the kill ranking (NOVA-29, OLD's
+inventory button), events and achievements as features to come, and the
+guide, which opens the help window. The rail's fold button hides its entries for the
 rest of the session. The bag and the wear cells carry the refine level
 (their proxies opt in, nui_slots.REFINE_KEY), which the modern skins show as
 a "+N" badge and a lit wear cell; an empty unique, arrow or belt place
@@ -224,6 +225,16 @@ def _open_guide():
 		interface.OpenHelpWindow()
 
 
+def _open_kill_rank():
+	"""The ranking entry (NOVA-29): the kill ranking, through the interface
+	that bound the shown inventory (Interface.OpenKillRank), as OLD's
+	inventory button (OLD uiInventory.py:491-493, 1178-1179)."""
+	window = nui_hud.current(KEY)
+	interface = getattr(window, "interface", None)
+	if interface is not None:
+		interface.OpenKillRank()
+
+
 def _open_offline_shop():
 	"""The offline shop entry (Wave 5, NOVA-9): legacy's Offline Shop button,
 	ClickOfflineShopButton (MANAGE: the owner's panel, or the builder when
@@ -243,13 +254,13 @@ def _open_shop_search():
 
 # The reviewed inventory board's rail: (id, glyph, tooltip key, callback,
 # soon). The offline shop and its search are Wave 5's (on while the server's
-# offline shop CONFIG says enabled, as legacy's two buttons show); ranking,
-# events and achievements are features to come; the guide opens the help
-# window.
+# offline shop CONFIG says enabled, as legacy's two buttons show); the
+# ranking opens the kill ranking (NOVA-29); events and achievements are
+# features to come; the guide opens the help window.
 BOARD_SHORTCUTS = (
 	("offline_shop", "stall", "@ui.NUI_RAIL_OFFLINE_SHOP", _open_offline_shop, False),
 	("shop_search", "search", "@ui.SEARCH_SHOP_TITLE", _open_shop_search, False),
-	("ranking", "ranking", "@ui.NUI_RAIL_RANKING", None, True),
+	("ranking", "ranking", "@ui.NUI_RAIL_RANKING", _open_kill_rank, False),
 	("events", "events", "@ui.NUI_RAIL_EVENTS", None, True),
 	("achievements", "achievements", "@ui.NUI_RAIL_ACHIEVEMENTS", None, True),
 	("guide", "guide", "@ui.NUI_RAIL_GUIDE", _open_guide, False),
@@ -377,6 +388,18 @@ class _InventoryBoard(nui_hud.RaisesOnPress, nui.Window):
 		if button == 0 and self._owner.mallButton:
 			self._owner.mallButton.click()
 
+	@nui.on("fastequip_press")
+	def on_fastequip_press(self, button):
+		self.raise_for(button)
+		if button == 0 and self._owner.fastEquipButton:
+			self._owner.fastEquipButton.click()
+
+	@nui.on("wiki_press")
+	def on_wiki_press(self, button):
+		self.raise_for(button)
+		if button == 0:
+			self._owner.ClickWikiButton()
+
 	@nui.on("extra_press")
 	def on_extra_press(self, button):
 		self.raise_for(button)
@@ -472,8 +495,10 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			"has_costume": False,
 			"has_dss": False,
 			"has_mall": False,
+			"has_wiki": False,
 			# Wave 4b (NOVA-16): the special inventory's button.
 			"has_extra": False,
+			"has_fastequip": False,
 			# The board is placed from Python (inv--placed: the sheet's
 			# right and bottom give way to the placement's left and top).
 			"placed": False,
@@ -674,6 +699,10 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		# The special inventory (NOVA-16): legacy's uiscript has the button
 		# (legacy binds it with GetChild2, None on a board without it).
 		self.extraInventoryButton = nui_proxies.ButtonProxy()
+		self.fastEquipButton = nui_proxies.ButtonProxy()
+		# The kill ranking (NOVA-29): legacy's Ranking button; the rail's
+		# entry is the board's control.
+		self.rankingButton = nui_proxies.ButtonProxy()
 		self.inventoryTab = [nui_proxies.ButtonProxy() for _ in range(limits.INVENTORY_PAGE_COUNT)]
 		self.equipmentTab = [nui_proxies.ButtonProxy(), nui_proxies.ButtonProxy()]
 
@@ -741,9 +770,14 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			self.costumeButton.SetEvent(ui.__mem_func__(self.ClickCostumeButton))
 		if self.extraInventoryButton:
 			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
+		if self.fastEquipButton:
+			self.fastEquipButton.SetEvent(ui.__mem_func__(self.ClickFastEquipButton))
+		if self.rankingButton:
+			self.rankingButton.SetEvent(ui.__mem_func__(self.ClickRankingButton))
 		self.wndCostume = None
 		self._set(has_costume=bool(self.costumeButton), has_dss=bool(self.DSSButton), has_mall=bool(self.mallButton),
-		          has_extra=bool(self.extraInventoryButton))
+		          has_extra=bool(self.extraInventoryButton),
+		          has_fastequip=bool(self.fastEquipButton), has_wiki=True)
 
 		## Refresh
 		self.SetInventoryPage(0)

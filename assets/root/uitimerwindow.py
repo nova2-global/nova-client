@@ -35,6 +35,8 @@
 import re
 import time
 
+import datacache
+
 import app
 import ui
 import net
@@ -57,8 +59,22 @@ ORDERED_INDICES = []   # events (index 150 and above) first, then the others
 
 # What the server sent this session (OLD constInfo.DUNGEON_TIMER_LOADED and DUNGEON_DROP).
 TIMER_STATE = {"loaded": False}
-## DUNGEON_DROP = { dungeon index : { mob vnum : {"type": mob type, "items": [(vnum, count, chance)]} } }
-DUNGEON_DROP = {}
+
+
+def _fold_drop(table, dungeonIndex, row):
+	"""One GC::DUNGEON_DROP row into DUNGEON_DROP (also as the data cache reads it back)."""
+	mobVnum, mobType, itemVnum, itemCount, itemChance = row
+	mobs = table.setdefault(dungeonIndex, {})
+	if mobVnum not in mobs:
+		mobs[mobVnum] = {"type": mobType, "items": []}
+	mobs[mobVnum]["items"].append((itemVnum, itemCount, itemChance))
+
+
+## DUNGEON_DROP = { dungeon index : { mob vnum : {"type": mob type, "items": [(vnum, count, chance)]} } },
+## kept by the data cache (datacache.py: on disk per server and data version).
+DUNGEON_DROP = datacache.Table("dungeon_drop", fold=_fold_drop)
+## A set the data cache empties when the server's data version changes (the drops asked).
+asked_set = datacache.asked_set
 
 INFO_FILE = "locale/common/dungeon_info.txt"
 NOTICE_SECONDS = 3
@@ -317,11 +333,8 @@ def desc_line(line):
 
 
 def add_drop(dungeonIndex, mobVnum, mobType, itemVnum, itemCount, itemChance):
-	"""One GC::DUNGEON_DROP row (OLD game.BINARY_UpdateDungeonDrop)."""
-	mobs = DUNGEON_DROP.setdefault(dungeonIndex, {})
-	if mobVnum not in mobs:
-		mobs[mobVnum] = {"type": mobType, "items": []}
-	mobs[mobVnum]["items"].append((itemVnum, itemCount, itemChance))
+	"""One GC::DUNGEON_DROP row (OLD game.BINARY_UpdateDungeonDrop), written through."""
+	DUNGEON_DROP.append(dungeonIndex, (mobVnum, mobType, itemVnum, itemCount, itemChance))
 
 
 def reset_session():
@@ -918,6 +931,27 @@ def rarity_of(chance):
 	if percent >= 30:
 		return 2
 	return 1
+
+
+# The bands from best to worst when one item drops in several (D's grid keeps its best band).
+_BAND_ORDER = {3: 0, 1: 1, 2: 2}
+# The grid's order: guaranteed, then common, then rare.
+_GRID_ORDER = {3: 0, 2: 1, 1: 2}
+
+
+def merged_drops(dungeon_index):
+	"""Every mob's items of a dungeon as one list of (vnum, count, band), one row per vnum: a
+	vnum in several bands keeps the best one (guaranteed, then rare, then common), its first
+	row in that band; the rows are guaranteed, then common, then rare, each band in the
+	server's order."""
+	best = {}
+	for mob in DUNGEON_DROP.get(dungeon_index, {}).values():
+		for vnum, count, chance in mob["items"]:
+			band = rarity_of(chance)
+			if vnum not in best or _BAND_ORDER[band] < _BAND_ORDER[best[vnum][1]]:
+				best[vnum] = (count, band, len(best) if vnum not in best else best[vnum][2])
+	rows = sorted(((_GRID_ORDER[band], order, vnum, count, band) for vnum, (count, band, order) in best.items()))
+	return [(vnum, count, band) for _, _, vnum, count, band in rows]
 
 
 def rarity_text(band):

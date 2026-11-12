@@ -1,0 +1,359 @@
+/* The wiki's text pages (NOVA-139, nui_wiki_pages.py): headings, paragraphs,
+   lists, tables, images that float or align, separators, notes, warnings and
+   columns, and the decor pinned to the page's corners. Every size is dp and
+   every color a token, so a page follows the theme, the player's colors and
+   the scale; nothing is placed by pixel. A text page takes the list's room
+   (the list hides while one shows). Classic: skins/classic/windows/wiki.rcss.
+
+   Separator styles: --- {style=<name>} sets .wp__hr--<name>. A style is one
+   rule here (and its name in nui_wiki_page_format.SEPARATOR_STYLES); it may
+   draw with pack art through a decorator, the image listed in
+   nui/content-art.json (docs/wiki/WRITING.md, "Adding a separator style"). */
+
+.wiki__text
+{
+	position: relative;
+	flex: 1;
+	height: 440dp;
+}
+.wp__scroll #wiki-text
+{
+	height: 440dp;
+}
+.wp__page
+{
+	padding: var(--space-2) var(--space-3) var(--space-4);
+	color: var(--text);
+}
+.wp__title
+{
+	margin-bottom: var(--space-2);
+	padding-bottom: var(--space-1);
+	border-bottom-width: 1dp;
+	border-color: var(--accent-glow);
+	color: var(--accent);
+	font-size: var(--font-xl);
+}
+
+/* --- Decor: an image pinned to a corner of the page, under the text -------------- */
+
+/* A 160dp box in the corner (an absolute box would shrink to nothing
+   around its image); the image keeps to the box's outer corner. */
+.wp__decor
+{
+	position: absolute;
+	width: 160dp;
+	opacity: 0.85;
+	pointer-events: none;
+}
+.wp__decor-img
+{
+	display: block;
+	max-width: 160dp;
+	max-height: 160dp;
+}
+.wp__decor--top-right .wp__decor-img, .wp__decor--bottom-right .wp__decor-img
+{
+	margin-left: auto;
+}
+.wp__decor--top-left { left: 8dp; top: 8dp; }
+.wp__decor--top-right { right: 24dp; top: 8dp; }
+.wp__decor--bottom-left { left: 8dp; bottom: 8dp; }
+.wp__decor--bottom-right { right: 24dp; bottom: 8dp; }
+
+/* --- Text ------------------------------------------------------------------------ */
+
+.wp__text
+{
+	display: block;
+	margin-bottom: var(--space-2);
+	line-height: 1.35;
+}
+.wp__text--h1, .wp__text--h2, .wp__text--h3
+{
+	margin-top: var(--space-2);
+	margin-bottom: var(--space-1);
+	color: var(--accent);
+	line-height: 1.2;
+}
+.wp__text--h1
+{
+	font-size: var(--font-lg);
+	font-weight: bold;
+}
+.wp__text--h2
+{
+	font-size: var(--font-lg);
+}
+.wp__text--h3
+{
+	font-size: var(--font-md);
+	font-weight: bold;
+	color: var(--text);
+}
+.wp__run.is-bold
+{
+	font-weight: bold;
+}
+.wp__run.is-italic
+{
+	font-style: italic;
+}
+.wp__run.is-link
+{
+	color: var(--accent);
+	border-bottom-width: 1dp;
+	border-color: var(--accent-glow);
+}
+.wp__run.is-link:hover
+{
+	color: var(--accent-hover);
+	border-color: var(--accent);
+}
+.wp__run.is-bad
+{
+	color: var(--danger);
+}
+/* An embedded item (![[item:N]]): its icon in a small well before its name.
+   The run hears the pointer once (tp_over); its children take none. */
+.wp__run > *, .wp__embed > *
+{
+	pointer-events: none;
+}
+.wp__embed
+{
+	display: inline-block;
+	width: 26dp;
+	height: 26dp;
+	margin: 0dp 3dp 0dp 1dp;
+	vertical-align: middle;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+	text-align: center;
+}
+.wp__embed-icon
+{
+	height: 24dp;
+}
+.wp__run.is-embed:hover .wp__embed
+{
+	border-color: var(--accent);
+}
+
+/* --- Lists ----------------------------------------------------------------------- */
+
+.wp__list
+{
+	margin-bottom: var(--space-2);
+}
+/* Plain blocks with the marker in the padding (not flex rows), so items
+   flow beside a floating image as paragraphs do. */
+.wp__item
+{
+	display: block;
+	position: relative;
+	margin-bottom: 2dp;
+	padding-left: 20dp;
+	line-height: 1.35;
+}
+.wp__item--d1 { margin-left: 18dp; }
+.wp__item--d2 { margin-left: 36dp; }
+.wp__marker
+{
+	position: absolute;
+	left: 0dp;
+	top: 0dp;
+	color: var(--accent);
+}
+/* A bullet: a small accent dot, drawn in code. */
+.wp__marker.is-dot
+{
+	left: 4dp;
+	top: 7dp;
+	width: 6dp;
+	height: 6dp;
+	border-radius: 3dp;
+	background-color: var(--accent);
+}
+.wp__item-text
+{
+	display: block;
+}
+
+/* --- Tables ---------------------------------------------------------------------- */
+
+.wp__table
+{
+	display: table;
+	width: 100%;
+	margin-bottom: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	clear: both;
+}
+.wp__tr
+{
+	display: table-row;
+}
+.wp__tr:nth-child(even)
+{
+	background-color: var(--surface-sunken);
+}
+.wp__tr.is-head
+{
+	background-color: var(--selection);
+	color: var(--accent);
+	font-weight: bold;
+}
+.wp__td
+{
+	display: table-cell;
+	padding: 3dp var(--space-2);
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+}
+
+/* --- Images: natural size, a width in dp or percent, floating or aligned ----------- */
+
+/* --wp-w is the page's width option (data-style---wp-w), auto without one. */
+.wp__img
+{
+	--wp-w: auto;
+	display: block;
+	width: var(--wp-w);
+	max-width: 100%;
+	margin-bottom: var(--space-2);
+}
+.wp__img--left
+{
+	float: left;
+	margin-right: var(--space-3);
+}
+.wp__img--right
+{
+	float: right;
+	margin-left: var(--space-3);
+}
+.wp__img--center
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+.wp__img--end
+{
+	margin-left: auto;
+}
+
+/* --- Separators: the theme's line, and the named styles ---------------------------- */
+
+.wp__hr
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 12dp;
+	margin: var(--space-2) 0dp var(--space-3);
+	clear: both;
+}
+.wp__hr-line
+{
+	flex: 1;
+	height: 1dp;
+	background-color: var(--border);
+}
+.wp__hr-gem
+{
+	display: none;
+}
+/* ornate: two rules that fade out from an accent diamond. */
+.wp__hr--ornate .wp__hr-line
+{
+	height: 2dp;
+	decorator: linear-gradient(to right, transparent, var(--accent));
+}
+.wp__hr--ornate .wp__hr-line + .wp__hr-gem + .wp__hr-line
+{
+	decorator: linear-gradient(to right, var(--accent), transparent);
+}
+.wp__hr--ornate .wp__hr-gem
+{
+	display: block;
+	width: 8dp;
+	height: 8dp;
+	margin: 0dp var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent);
+	background-color: var(--selection);
+	transform: rotate(45deg);
+}
+
+/* --- Notes, warnings and columns ------------------------------------------------------ */
+
+.wp__box
+{
+	display: block;
+	margin-bottom: var(--space-2);
+	clear: both;
+}
+.wp__box--note, .wp__box--warn
+{
+	padding: var(--space-2) var(--space-3) 2dp;
+	border-left-width: 3dp;
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-raised);
+}
+.wp__box--note
+{
+	border-color: var(--accent);
+}
+.wp__box--warn
+{
+	border-color: var(--warning);
+}
+.wp__box-label
+{
+	margin-bottom: var(--space-1);
+	font-weight: bold;
+	color: var(--accent);
+}
+.wp__box--warn .wp__box-label
+{
+	color: var(--warning);
+}
+.wp__cols
+{
+	display: flex;
+	flex-direction: row;
+}
+.wp__col
+{
+	flex: 1;
+	min-width: 0;
+	display: flow-root;
+}
+.wp__col + .wp__col
+{
+	margin-left: var(--space-3);
+}
+
+/* --- An error: what could not be shown, where it was ------------------------------- */
+
+.wp__error
+{
+	margin-bottom: var(--space-2);
+	padding: var(--space-1) var(--space-2);
+	border-width: 1dp;
+	border-color: var(--danger);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+	color: var(--text-muted);
+	clear: both;
+}
+.wp__error-head
+{
+	margin-right: var(--space-1);
+	color: var(--danger);
+	font-weight: bold;
+}

@@ -1,0 +1,17 @@
+/* Cyberpunk overlay of the dungeon manager, direction D "Bestiary": square
+   corners on the deck's cards, its chips and the pane, as the board draws them. */
+
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__card,
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__pane
+{
+	border-radius: 2dp;
+}
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__chip,
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__filter,
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__arrow,
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__note,
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__seg,
+body.skin-cyberpunk.dungeon-timer .dungeon-timer__badge
+{
+	border-radius: 0;
+}

@@ -28,17 +28,19 @@ HUD = WAVE2A + NOVA27_HUD + P18_HUD + W7_HUD
 WAVE2B = ["chat", "chat-log", "minimap", "atlas", "player-gauge", "shop-signs", "guild-war"]
 HUD2 = WAVE2B + W7_HUD2
 WAVE3A = ["system-menu", "system-options", "game-options", "restart", "help", "point-reset"]
-WAVE5A = ["quest", "guild-building", "web", "console"]
+WAVE5A = ["quest", "guild-building", "web", "console", "select-skill"]  # select-skill: NOVA-37
 WAVE3B = ["inventory", "tooltips", "refine", "attach-metin", "select-item"]
 # The items group: the Wave 3b windows, wave 4b's extra inventory, Wave 6's
 # sash and aura windows (NOVA-20, NOVA-23) and Wave 7's chest-drop preview
 # (NOVA-18).
 WAVE6_ITEMS = ["sash", "aura"]
-ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop"]
+ITEMS = WAVE3B + ["extra-inventory"] + WAVE6_ITEMS + ["chest-drop", "wiki"]
 # Wave 7 (NOVA-43): the switchbot joins the items group, after Wave 6's sash
 # and aura.
 WAVE7_ITEMS = ["switchbot"]
 ITEMS = ITEMS + WAVE7_ITEMS
+# Wave 8 (NOVA-17): fast equip, after the switchbot.
+ITEMS = ITEMS + ["fastequip"]
 # Wave 7 (NOVA-24): the advanced pet's windows.
 WAVE7_PET = ["pet", "pet-mini", "pet-hatch", "pet-evolution", "pet-attr-refine"]
 ITEMS = ITEMS + WAVE7_PET
@@ -938,6 +940,25 @@ class Wave7Switchbot(WindowsTest):
         self.assertEqual(self.m.prewarm_documents(), ["nui/windows/switchbot/switchbot.rml"])
 
 
+class Wave8FastEquip(WindowsTest):
+    """Wave 8 (NOVA-17): fast equip is the id "fastequip", on by default, in
+    the items group, after the switchbot and before the maintenance
+    countdown; its document loads only while it shows and is prewarmed."""
+
+    def test_the_id_is_on_by_default_before_maintenance_and_in_the_items_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertLess(ids.index("switchbot"), ids.index("fastequip"))
+        self.assertLess(ids.index("fastequip"), ids.index("maintenance"))
+        self.assertIs(dict(self.m.WINDOWS)["fastequip"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "fastequip" in members and group != "all"],
+                         ["items"])
+
+    def test_the_document_is_on_demand_and_prewarmed(self):
+        self.assertIn(("fastequip", ("fastequip",)), self.m.ON_DEMAND_DOCUMENTS)
+        self.setting.windows = "+fastequip"
+        self.assertEqual(self.m.prewarm_documents(), ["nui/windows/fastequip/fastequip.rml"])
+
+
 if __name__ == "__main__":
     unittest.main()
 
@@ -946,6 +967,16 @@ if __name__ == "__main__":
 
 
 class Wave7ChestDrop(WindowsTest):
+    """The wiki browser (NOVA-42) is the id "wiki", on by default, in the
+    items group, with no legacy window, and its board is on demand."""
+
+    def test_the_wiki_window_is_on_by_default_in_the_items_group(self):
+        ids = [window_id for window_id, _ in self.m.WINDOWS]
+        self.assertLess(ids.index("wiki"), ids.index("maintenance"))
+        self.assertIs(dict(self.m.WINDOWS)["wiki"], True)
+        self.assertEqual([group for group, members in self.m.GROUPS.items() if "wiki" in members and group != "all"], ["items"])
+        self.assertIn(("wiki", ("wiki",)), self.m.ON_DEMAND_DOCUMENTS)
+
     """The chest-drop preview is the id "chest-drop", on by default, in the
     items group, its document on demand; inserted before the maintenance
     countdown, which stays last."""

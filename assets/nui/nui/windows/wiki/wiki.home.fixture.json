@@ -1,0 +1,310 @@
+{
+	"wiki": {
+		"tree": [
+			{
+				"cat": 0,
+				"label": "Equipment",
+				"open": false,
+				"subs": []
+			},
+			{
+				"cat": 1,
+				"label": "Chests",
+				"open": false,
+				"subs": []
+			},
+			{
+				"cat": 2,
+				"label": "Bosses",
+				"open": false,
+				"subs": []
+			},
+			{
+				"cat": 3,
+				"label": "Monsters",
+				"open": false,
+				"subs": []
+			},
+			{
+				"cat": 4,
+				"label": "Metin Stones",
+				"open": false,
+				"subs": []
+			},
+			{
+				"cat": 5,
+				"label": "Costumes",
+				"open": false,
+				"subs": []
+			}
+		],
+		"list": [],
+		"list_state": "",
+		"list_title": "",
+		"list_count": "",
+		"list_sel": -1,
+		"home": true,
+		"quick": [
+			{
+				"cat": 0,
+				"label": "Equipment",
+				"subs": [
+					{
+						"cat": 0,
+						"sub": 0,
+						"label": "Weapons"
+					},
+					{
+						"cat": 0,
+						"sub": 1,
+						"label": "Armor"
+					},
+					{
+						"cat": 0,
+						"sub": 2,
+						"label": "Helmets"
+					},
+					{
+						"cat": 0,
+						"sub": 3,
+						"label": "Shields"
+					},
+					{
+						"cat": 0,
+						"sub": 4,
+						"label": "Earrings"
+					},
+					{
+						"cat": 0,
+						"sub": 5,
+						"label": "Bracelets"
+					},
+					{
+						"cat": 0,
+						"sub": 6,
+						"label": "Necklaces"
+					},
+					{
+						"cat": 0,
+						"sub": 7,
+						"label": "Shoes"
+					},
+					{
+						"cat": 0,
+						"sub": 8,
+						"label": "Belts"
+					},
+					{
+						"cat": 0,
+						"sub": 9,
+						"label": "Rings"
+					}
+				]
+			},
+			{
+				"cat": 1,
+				"label": "Chests",
+				"subs": [
+					{
+						"cat": 1,
+						"sub": 0,
+						"label": "Boss Chests"
+					},
+					{
+						"cat": 1,
+						"sub": 1,
+						"label": "Event Chests"
+					},
+					{
+						"cat": 1,
+						"sub": 2,
+						"label": "Other Chests"
+					}
+				]
+			},
+			{
+				"cat": 2,
+				"label": "Bosses",
+				"subs": [
+					{
+						"cat": 2,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 2,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 2,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 3,
+				"label": "Monsters",
+				"subs": [
+					{
+						"cat": 3,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 3,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 3,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 4,
+				"label": "Metin Stones",
+				"subs": [
+					{
+						"cat": 4,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 4,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 4,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 5,
+				"label": "Costumes",
+				"subs": [
+					{
+						"cat": 5,
+						"sub": 0,
+						"label": "Weapon Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 1,
+						"label": "Armor Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 2,
+						"label": "Hair Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 3,
+						"label": "Pets"
+					},
+					{
+						"cat": 5,
+						"sub": 4,
+						"label": "Mounts"
+					},
+					{
+						"cat": 5,
+						"sub": 5,
+						"label": "Wings"
+					},
+					{
+						"cat": 5,
+						"sub": 6,
+						"label": "Masks"
+					},
+					{
+						"cat": 5,
+						"sub": 7,
+						"label": "Effects"
+					}
+				]
+			}
+		],
+		"recent": [
+			{
+				"i": 0,
+				"vnum": 19,
+				"mob": false,
+				"icon": "/icon/item/27992.tga",
+				"name": "Moon Blade",
+				"note": ""
+			},
+			{
+				"i": 1,
+				"vnum": 8002,
+				"mob": true,
+				"icon": "",
+				"name": "Wolf King",
+				"note": "Lv. 20"
+			},
+			{
+				"i": 2,
+				"vnum": 27001,
+				"mob": false,
+				"icon": "/icon/item/27001.tga",
+				"name": "Red Potion (S)",
+				"note": ""
+			}
+		],
+		"tabs": [
+			{
+				"i": 0,
+				"label": "Home",
+				"active": true
+			}
+		],
+		"tabs_full": false,
+		"can_back": false,
+		"can_forward": false,
+		"crumbs": [
+			{
+				"i": 0,
+				"label": "Home",
+				"last": true,
+				"link": false
+			}
+		],
+		"page_state": "",
+		"page_kind": "",
+		"page_vnum": 0,
+		"page_name": "",
+		"page_sub": "",
+		"page_icon": "",
+		"page_common": false,
+		"page_link": true,
+		"model_view": false,
+		"hover_view": false,
+		"menu": [],
+		"menu_x": 0.0,
+		"menu_y": 0.0,
+		"origins": [],
+		"chest": [],
+		"refine": [],
+		"drops": [],
+		"retry_at": 0.0,
+		"timeout_at": 0.0,
+		"tp_title": "",
+		"tp_blocks": [],
+		"tp_decor": [],
+		"tp_view": [],
+		"tp_open_at": 0.0,
+		"classes": [],
+		"viewer": false,
+		"viewer_name": "",
+		"list_range": "",
+		"list_prev": false,
+		"list_next": false
+	}
+}

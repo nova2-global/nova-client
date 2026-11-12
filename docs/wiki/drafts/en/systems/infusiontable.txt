@@ -1,0 +1,55 @@
+---
+title: Infusion System
+category: systems
+order: 112
+---
+![](d:/ymir work/ui/wiki/banners/infusion_table.png){align=center width=100%}
+
+--- {style=ornate}
+
+## General Information:
+
+- You can Upgrade your Infusions at the Infusion table in Mythical Forest.
+
+- The Elemental Gear is the only gear that can hold Infusions.
+
+- The success rate to infuse elemental gear is ranges from 100% to 70%.
+
+Infusion [I] & [II] **100% Success Rate** to add to equipment.
+
+Infusion [III] **90% Success Rate** to add to equipment.
+
+Infusion [IV] **80% Success Rate** to add to equipment.
+
+Infusion [V] **70% Success Rate** to add to equipment.
+
+- You can start by applying a lower-tier Infusion and upgrade it later to a higher tier,
+  though this isn’t necessary. If you prefer, you can place a [V] Infusion directly from the start.
+
+Note: The previous tier on the item will be **destroyed**
+
+- The Infusion system grants unlimited power and boosts your overall damage,
+  making it easier to clear elemental farm maps and dungeons.
+
+- Once your item is fully infused, you’ll also unlock the ability to freely recolor it!
+
+--- {style=ornate}
+
+## How to Upgrade Infusions:
+
+- Infusions offer a means to enhance your items in the game by upgrading them
+  from level [I] to level [V]. To perform these upgrades, you can
+  utilize the Infusion Table situated within the Mythical Forest.
+
+- You will need spciecifc items obtained from the Mythical Forest Map, along with
+  items obtained from Hydra, Ghidorah, White Tower, and Ancient Pyramid.
+
+![[item:55260]], ![[item:55270]], ![[item:55280]], ![[item:55290]], ![[item:55300]]
+
+![](d:/ymir work/ui/pet/arrow.png)
+
+![](d:/ymir work/ui/pet/arrow.png)
+
+![](d:/ymir work/ui/pet/arrow.png)
+
+![](d:/ymir work/ui/pet/arrow.png)

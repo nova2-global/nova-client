@@ -4,7 +4,14 @@
 		"target_board": 0,
 		"pk_mode": 2,
 		"block": 41,
-		"blocked": [true, false, false, true, false, true],
+		"blocked": [
+			true,
+			false,
+			false,
+			true,
+			false,
+			true
+		],
 		"view_chat": false,
 		"always_show_name": false,
 		"show_damage": true,
@@ -12,6 +19,13 @@
 		"hide_shops": true,
 		"show_sash": false,
 		"hide_buffi": true,
-		"pickup": [false, true, true, false]
+		"pickup": [
+			false,
+			true,
+			true,
+			false
+		],
+		"mob_level": true,
+		"mob_ai": true
 	}
 }

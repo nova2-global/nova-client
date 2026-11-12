@@ -22,8 +22,10 @@ import skill
 import messenger
 import localeInfo
 import constInfo
+import datacache
 import exchange
 import ime
+import link_tokens
 ## The advanced pet's module (NOVA-24, chunk C's PythonPetAdvanced.cpp).
 import pet
 
@@ -36,6 +38,7 @@ import uiAffectShower
 import uiPlayerGauge
 import uiCharacter
 import uiTarget
+import uiTargetInfo
 import uiMaintenance
 # The dungeon manager's data and drop list (NOVA-25).
 import uiTimerWindow
@@ -73,6 +76,7 @@ testAlignment = 0
 
 class GameWindow(ui.ScriptWindow):
 	def __init__(self, stream):
+		datacache.begin_session()
 		ui.ScriptWindow.__init__(self, "GAME")
 		self.SetWindowName("game")
 		net.SetPhaseWindow(net.PHASE_WINDOW_GAME, self)
@@ -112,6 +116,7 @@ class GameWindow(ui.ScriptWindow):
 
 		self.targetBoard = nui_windows.make("target", uiTarget.TargetBoard, "nui_target.TargetBoard")
 		self.targetBoard.SetWhisperEvent(ui.__mem_func__(self.interface.OpenWhisperDialog))
+		self.targetBoard.SetWikiItemEvent(ui.__mem_func__(self.interface.OpenWikiItem))
 		self.targetBoard.Hide()
 
 		self.console = nui_windows.make("console", consoleModule.ConsoleWindow, "nui_console.ConsoleWindow")
@@ -147,6 +152,9 @@ class GameWindow(ui.ScriptWindow):
 
 	def Open(self):
 		app.SetFrameSkip(1)
+
+		# NOVA-40: a new map, so the drops the server lists may differ.
+		uiTargetInfo.forget()
 
 		self.SetSize(wndMgr.GetScreenWidth(), wndMgr.GetScreenHeight())
 
@@ -367,6 +375,8 @@ class GameWindow(ui.ScriptWindow):
 		onPressKeyDict[app.DIK_F5]	= lambda: self.ShowSwitchbot()
 		# NOVA-25: the dungeon manager (OLD game.py:493).
 		onPressKeyDict[app.DIK_F6]	= lambda: self.OpenTimerWindow()
+		# NOVA-17 fast equip (OLD game.py:506).
+		onPressKeyDict[app.DIK_F10]	= lambda: self.ToggleFastEquip()
 
 		onPressKeyDict[app.DIK_LALT]		= lambda: self.ShowName()
 		onPressKeyDict[app.DIK_LCONTROL]	= lambda: self.ShowMouseImage()
@@ -915,20 +925,35 @@ class GameWindow(ui.ScriptWindow):
 	def __RefreshTargetBoard(self):
 		self.targetBoard.Refresh()
 		
-	def SetHPTargetBoard(self, vid, hpPercentage):
+	def SetHPTargetBoard(self, vid, hpPercentage, HP=0, MaxHP=0, bElement=0, currentAttackers=0):
 		if vid != self.targetBoard.GetTargetVID():
 			self.targetBoard.ResetTargetBoard()
 			self.targetBoard.SetEnemyVID(vid)
 			# NOVA-27 (OLD game.py:1361-1362): a new target closes the damage count.
 			self.__CloseDamageCount()
 
-		self.targetBoard.SetHP(hpPercentage)
+		self.targetBoard.SetHP(hpPercentage, HP, MaxHP)
+		self.targetBoard.SetElement(bElement)
+		self.targetBoard.SetAttackers(currentAttackers)
 		self.targetBoard.Show()
 
 		# NOVA-27 (OLD game.py:1373): the boss's HP in the damage count.
 		wndDamageCount = getattr(self.interface, "wndDamageCount", None) if self.interface else None
 		if wndDamageCount:
-			wndDamageCount.AddHPInfo(vid, hpPercentage)
+			wndDamageCount.AddHPInfo(vid, hpPercentage, HP, MaxHP)
+
+	# NOVA-40 (OLD game.py SetPCTargetBoard's HP path, Q3 b): a player target's
+	# percent, for the board already open on it.
+	def SetPCTargetHP(self, vid, hpPercentage):
+		# OLD uiTarget.py:1126: the player's own board has no bar.
+		if vid == self.targetBoard.GetTargetVID() and not player.IsMainCharacterIndex(vid):
+			self.targetBoard.SetPCHP(hpPercentage)
+
+	# GC::TARGET_INFO (NOVA-40, OLD game.py:2501-2544): a mob's drop rows, cached
+	# per race by uiTargetInfo.
+	def BINARY_SetTargetInfo(self, race, rows):
+		uiTargetInfo.store(race, rows)
+		self.targetBoard.RefreshInfoBoard(race)
 
 	def CloseTargetBoardIfDifferent(self, vid):
 		if vid != self.targetBoard.GetTargetVID():
@@ -1306,6 +1331,17 @@ class GameWindow(ui.ScriptWindow):
 	## (BINARY_AddChestDropInfo, game.py:1173-1176), so a second answer for a
 	## chest doubled its rows; the rows replace the known ones here. Then
 	## OLD's BINARY_RefreshChestDropInfo (:1178-1179) opens the window.
+	## The ingame wiki (NOVA-42): one page's rows, or a busy answer.
+	def BINARY_WikiAnswer(self, kind, status, vnum, flags, origins, chest, refine, drops):
+		if self.interface:
+			self.interface.WikiAnswer(kind, status, vnum, flags, origins, chest, refine, drops)
+
+	## GC::DATA_VERSION: the server's data version, at every login and when a
+	## reload changes it. The cached answers (datacache.py) are keyed by the
+	## address the player connected to and this version.
+	def BINARY_DataVersion(self, version):
+		datacache.set_version(self.stream.GetConnectAddr(), version)
+
 	def BINARY_SetChestDropInfo(self, chestVnum, rows):
 		constInfo.CHESTS_PREVIEW[chestVnum] = [tuple(row) for row in rows]
 		if self.interface:
@@ -1317,6 +1353,16 @@ class GameWindow(ui.ScriptWindow):
 	def ShowSwitchbot(self):
 		if self.interface:
 			self.interface.ToggleSwitchbotWindow()
+
+	## Fast equip (NOVA-17; OLD game.py:2496-2498): F10 toggles the window;
+	## GC::FAST_EQUIP reaches it from C++.
+	def ToggleFastEquip(self):
+		if self.interface:
+			self.interface.ToggleFastEquipWindow()
+
+	def RefreshFastEquip(self, setIndex, switched):
+		if self.interface:
+			self.interface.RefreshFastEquip(setIndex, switched)
 
 	def RefreshSwitchbotWindow(self):
 		if self.interface:
@@ -1673,7 +1719,7 @@ class GameWindow(ui.ScriptWindow):
 			if hyperlink:
 				if app.IsPressed(app.DIK_LALT):
 					link = chat.GetLinkFromHyperlink(hyperlink)
-					ime.PasteString(link)
+					link_tokens.paste(link)
 				else:
 					self.interface.MakeHyperlinkTooltip(hyperlink)
 				return
@@ -2238,6 +2284,9 @@ class GameWindow(ui.ScriptWindow):
 	## BINARY CALLBACK
 	######################################################################################
 
+	def OpenSelectSkillWindow(self):
+		self.interface.OpenSelectSkillWindow()
+
 	def __ServerCommand_Build(self):
 		serverCommandList={
 			"ConsoleEnable"			: self.__Console_Enable,
@@ -2253,6 +2302,8 @@ class GameWindow(ui.ScriptWindow):
 			"CloseMall"				: self.CommandCloseMall,
 			"ShowMeMallPassword"	: self.AskMallPassword,
 			"item_mall"				: self.__ItemMall_Open,
+			# NOVA-37 (OLD game.py:3054): the letter of the skill_group quest.
+			"OpenSelectSkillWindow"	: self.OpenSelectSkillWindow,
 			# END_OF_ITEM_MALL
 
 			"RefineSuceeded"		: self.RefineSuceededMessage,

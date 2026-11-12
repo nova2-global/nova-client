@@ -160,9 +160,33 @@ body.skin-classic.inv .inv-equip .inv-button--extra:active
 	decorator: image("d:/ymir work/ui/public/large_button_03.sub");
 	background-color: transparent;
 }
-body.skin-classic.inv .inv-button--extra .inv-button__label
+body.skin-classic.inv .inv-button--extra .inv-button__label,
+body.skin-classic.inv .inv-button--fastequip .inv-button__label
 {
 	display: inline;
+}
+/* Fast equip (NOVA-17): legacy's small button on the title bar at 14, 8. */
+body.skin-classic.inv .inv-equip .inv-button--fastequip
+{
+	left: 4dp;
+	top: -25dp;
+	z-index: 2;	/* above the title bar's handle (z-index 1) */
+	width: 43dp;
+	height: 21dp;
+	line-height: 21dp;
+	text-align: center;
+	color: var(--classic-button-text);
+	decorator: image("d:/ymir work/ui/public/small_button_01.sub");
+}
+body.skin-classic.inv .inv-equip .inv-button--fastequip:hover
+{
+	decorator: image("d:/ymir work/ui/public/small_button_02.sub");
+	background-color: transparent;
+}
+body.skin-classic.inv .inv-equip .inv-button--fastequip:active
+{
+	decorator: image("d:/ymir work/ui/public/small_button_03.sub");
+	background-color: transparent;
 }
 /* The active dragon soul: legacy's slot window over the button at 3.2, 0
    with the 13 frames of the slot active effect. */
@@ -460,4 +484,10 @@ body.skin-classic.inv .inv-money.inv-gem:hover
 {
 	top: 583dp;
 	margin-top: 0;
+}
+
+/* The wiki button is the modern skins'; classic keeps legacy's layout (NOVA-42). */
+body.skin-classic.inv .inv__wiki
+{
+	display: none;
 }

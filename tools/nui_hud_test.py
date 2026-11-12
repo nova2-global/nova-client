@@ -40,8 +40,8 @@ import nui_game_support as support  # noqa: E402
 ROOT = support.ROOT
 WINDOWS = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "nui", "nui", "windows"))
 CLASSIC_WINDOWS = os.path.normpath(os.path.join(support.support.HERE, "..", "assets", "nui", "nui", "skins", "classic", "windows"))
-HUD_MODULES = ("nui_affects", "nui_target", "nui_party", "nui_edge_buttons", "nui_tip_board", "nui_big_board", "nui_map_name")
-LEGACY_MODULES = (("uiAffectShower", "uiaffectshower.py"), ("uiTarget", "uitarget.py"), ("uiParty", "uiparty.py"),
+HUD_MODULES = ("nui_limits", "nui_proxies", "nui_facade", "nui_slots", "nui_affects", "nui_target_info", "nui_target", "nui_party", "nui_edge_buttons", "nui_tip_board", "nui_big_board", "nui_map_name")
+LEGACY_MODULES = (("nui_numbers", "nui_numbers.py"), ("uiAffectShower", "uiaffectshower.py"), ("uiTargetInfo", "uitargetinfo.py"), ("uiTarget", "uitarget.py"), ("uiParty", "uiparty.py"),
                   ("uiTip", "uitip.py"), ("uiMapNameShower", "uimapnameshower.py"), ("uiWhisper", "uiwhisper.py"))
 
 # --- the constants the legacy modules read (the client's values where it matters) --------
@@ -432,7 +432,8 @@ AFFECT_METHODS = ("ClearAffects", "SetAffect", "ResetAffect", "BINARY_NEW_AddAff
                   "SetHorseState", "ClearAllAffects", "SetPlayTime", "RefreshLocale", "Show", "Hide", "IsShow", "Destroy")
 AFFECT_CONSTANTS = ("MALL_DESC_IDX_START", "IMAGE_STEP", "AFFECT_MAX_NUM", "INFINITE_AFFECT_DURATION")
 TARGET_METHODS = ("SetWhisperEvent", "Hide", "Open", "RefreshByVID", "RefreshByName", "Refresh", "GetTargetVID",
-                  "ResetTargetBoard", "SetEnemyVID", "SetHP", "Show", "Close", "Destroy", "IsShow", "GetTargetName",
+                  "ResetTargetBoard", "SetEnemyVID", "SetHP", "SetPCHP", "SetElement", "SetAttackers",
+                  "RefreshInfoBoard", "OnPressedInfoButton", "Show", "Close", "Destroy", "IsShow", "GetTargetName",
                   "SetTargetVID", "SetTargetName", "ShowDefaultButton", "HideAllButton", "RefreshButton", "IsShowButton",
                   "OnPressedCloseButton", "OnPressEscapeKey", "UpdatePosition", "OnWhisper", "OnExchange", "OnPVP",
                   "OnAppendToMessenger", "OnPartyInvite", "OnPartyExit", "OnPartyRemove",

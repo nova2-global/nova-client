@@ -47,6 +47,7 @@ try:
 except ImportError:  # an exe without the Wave 2b engine: nui_ready() is False
 	nuigame = None
 
+import link_tokens
 import nui
 import nui_chat_view
 import nui_hud
@@ -148,6 +149,25 @@ class ChatInput(object):
 		self.lastSentenceStack = []
 		self.lastSentencePos = 0
 		self.lastValue = ""
+		# A pasted link shows as its token and is swapped back on send
+		# (link_tokens, NOVA-42 round 3); focus_check answers whether the
+		# field has the focus, set by the window that owns it.
+		self.linkTokens = link_tokens.LinkTokens()
+		self.focus_check = None
+		link_tokens.register(self)
+
+	# --- link tokens ------------------------------------------------------------
+
+	def link_tokens(self):
+		return self.linkTokens
+
+	def link_focused(self):
+		check = self.focus_check
+		return bool(check and check())
+
+	def PasteLink(self, raw):
+		"""A link at the caret, as its token."""
+		return link_tokens.paste(raw, target=self)
 
 	# --- the field --------------------------------------------------------------
 
@@ -164,7 +184,8 @@ class ChatInput(object):
 		hidden document's field, or a board not made yet (the chat log's
 		exists only while it shows), takes no text (the mode buttons cycle
 		every chat input, the hidden log's too, as legacy's), so it waits for
-		ShowText()."""
+		ShowText(). The link tokens go with the text it replaces."""
+		self.linkTokens.clear()
 		self.lastValue = text
 		self.pending = None
 		if self.board is None or not self.board.set_value(self.field, text, caret="end"):
@@ -222,6 +243,7 @@ class ChatInput(object):
 	# --- sending -----------------------------------------------------------------
 
 	def _send(self, text, chat_type):
+		text = self.linkTokens.expand(text)
 		if net.IsChatInsultIn(text):
 			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.CHAT_INSULT_STRING)
 		elif chat.CHAT_TYPE_SHOUT == chat_type and _shout_color_index() > 0:
@@ -288,11 +310,13 @@ class ChatInput(object):
 			return
 		if len(self.lastSentenceStack) > self.LAST_SENTENCE_STACK_SIZE:
 			self.lastSentenceStack.pop(0)
-		self.lastSentenceStack.append([text, _shout_color_index()])
+		self.lastSentenceStack.append([text, _shout_color_index(), self.linkTokens.snapshot()])
 
 	def _restore_sentence(self, sentence):
-		text, index = sentence
+		text, index = sentence[0], sentence[1]
 		self.SetText(text)
+		if len(sentence) > 2:
+			self.linkTokens.restore(sentence[2])
 		if hasattr(uiChat, "SetShoutColorIndex"):
 			uiChat.SetShoutColorIndex(index)
 
@@ -346,7 +370,7 @@ class ChatInput(object):
 		if not link:
 			return
 		if app.IsPressed(app.DIK_LALT):
-			ime.PasteString(chat.GetLinkFromHyperlink(link))
+			link_tokens.paste(chat.GetLinkFromHyperlink(link))
 		elif self.interface is not None:
 			try:
 				self.interface.MakeHyperlinkTooltip(link)
@@ -543,6 +567,7 @@ class ChatWindow(object):
 		self.sendWhisperEvent = None
 		self.openChatLogEvent = None
 		self.input = ChatInput(None, "chat-input", self.USER_MAX, weak_event(self.CloseChat), weak_event(self.CloseChat))
+		self.input.focus_check = weak_event(self._link_focus)
 		# Legacy's state calls (uichat.py:540-544, :616-631) and its mode
 		# button's insult filter (ChatModeButton.__init__).
 		for chat_type, rgb in ((chat.CHAT_TYPE_TALKING, colorInfo.CHAT_RGB_TALK), (chat.CHAT_TYPE_INFO, colorInfo.CHAT_RGB_INFO),
@@ -747,6 +772,15 @@ class ChatWindow(object):
 	def nui_refresh_chat_mode(self):
 		"""ChatInputSet.OnRefreshChatMode: the next mode, its prefix and name."""
 		self.input.ChangeChatMode()
+
+	# --- link tokens (NOVA-42 round 3) -------------------------------------------------
+
+	def _link_focus(self):
+		return bool(self.fieldFocused and self.IsEditMode())
+
+	def PasteLink(self, raw):
+		"""Interface.PasteWikiLink: a link into the chat input, as its token."""
+		return self.input.PasteLink(raw)
 
 	# --- the field's focus (D11 b) ----------------------------------------------------
 

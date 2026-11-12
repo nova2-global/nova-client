@@ -1234,13 +1234,19 @@ EXPECTED_SITES = {
                            ("make", "gem-shop", "uiGemShop.GemShopWindow", "nui_gem_shop.GemShopWindow"),
                            # Wave 7 (NOVA-18): the chest-drop preview.
                            ("make", "chest-drop", "uiChestDrop.ChestDropWindow", "nui_chest_drop.ChestDropWindow"),
+                           # Wave 8 (NOVA-42): the wiki browser, no legacy window.
+                           ("make", "wiki", "uiWiki.UnavailableWindow", "nui_wiki.WikiWindow"),
                            ("make", "shop-search", "uiSearchShop.SearchShopWindow", "nui_shop_search.SearchShopWindow"),
                            ("make", "offline-shop-log", "uiOfflineShopLog.OfflineShopLogWindow",
                             "nui_offline_shop_log.OfflineShopLogWindow"),
                            ("make", "shop-deco", "uiMyShopDecoration.MyShopDecorationWindow",
                             "nui_shop_deco.MyShopDecorationWindow"),
+                           # NOVA-37: the skill group's pick, the letter's window.
+                           ("make", "select-skill", "uiSelectSkill.SelectSkillWindow", "nui_select_skill.SelectSkillWindow"),
                            # Wave 7 (NOVA-43): the switchbot.
                            ("make", "switchbot", "uiSwitchbot.SwitchbotWindow", "nui_switchbot.SwitchbotWindow"),
+                           # Wave 8 (NOVA-17): fast equip.
+                           ("make", "fastequip", "uiFastEquip.FastEquipWindow", "nui_fastequip.FastEquipWindow"),
                            # Wave 7 (NOVA-29): the kill ranking and the guild war top killers.
                            ("make", "kill-rank", "uiKillRank.KillRankWindow", "nui_kill_rank.KillRankWindow"),
                            ("make", "guild-war-top", "uiGuild.TopWarPlayersDialog",
@@ -1301,8 +1307,11 @@ EXPECTED_SITES = {
                 ("make", "guild-war-dialogs", "uiGuild.AcceptGuildWarDialog", "nui_guild_war_accept.AcceptGuildWarDialog")],
     "uiwhisper.py": [("factory", "edge-buttons", "LegacyWhisperButton", "nui_edge_buttons.EdgeButton")],
     # Wave 7 (NOVA-28): the duel rules, made by the target board's Fight.
-    "uitarget.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
-    "nui_target.py": [("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    # NOVA-40: the mob info board comes first, made in the constructor.
+    "uitarget.py": [("make", "target-info", "uiTargetInfo.InfoBoard", "nui_target_info.InfoBoard"),
+                    ("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
+    "nui_target.py": [("make", "target-info", "uiTargetInfo.InfoBoard", "nui_target_info.InfoBoard"),
+                      ("make", "duel-rules", "uiDuel.DuelRulesDialog", "nui_duel_rules.DuelRulesDialog")],
     # NOVA-25: the dungeon manager makes its drops panel.
     "uitimerwindow.py": [("make", "dungeon-drops", "MobDropPopup", "nui_dungeon_drops.MobDropPopup")],
     "nui_taskbar.py": [("make", "gift-box", "uiTaskBar.GiftBox", "nui_gift_box.GiftBox")],

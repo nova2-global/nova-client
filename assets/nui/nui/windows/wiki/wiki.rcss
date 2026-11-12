@@ -1,0 +1,749 @@
+/* The ingame wiki browser's modern look (NOVA-42): a browser bar (Back,
+   Forward, Home, the trail, Link) and a tab strip over three columns on the
+   usual window frame. Every list scrolls in a viewport of a fixed height
+   (components/list.rcss: a viewport needs a height to scroll), so a long
+   list or an unfolded tree stays inside the window. Tokens and dp only.
+   Classic: skins/classic/windows/wiki.rcss. */
+
+body.wiki
+{
+	left: 16dp;
+	top: 16dp;
+	width: 860dp;
+	min-width: 0;
+	focus: none;
+	tab-index: none;
+}
+.wiki button
+{
+	tab-index: none;
+	focus: none;
+}
+/* The body takes no focus (a press on the window keeps another window's
+   caret) and RmlUi's focus is inherited, so the field asks for its own. The
+   home button parks the focus when the Link button pastes elsewhere. */
+.wiki .wiki__park
+{
+	focus: auto;
+}
+.wiki__title-icon
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 24dp;
+	height: 24dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--accent-glow);
+	border-radius: 7dp;
+	background-color: var(--selection);
+	vertical-align: middle;
+}
+.wiki__title-icon .nui-glyph
+{
+	--glyph-ink: var(--accent);
+	position: absolute;
+	left: 3dp;
+	top: 3dp;
+}
+.wiki__clock
+{
+	display: none;
+}
+.wiki__body
+{
+	display: flex;
+	flex-direction: column;
+	padding: 8dp 12dp 12dp;
+}
+
+/* --- The bar: Back, Forward, Home, the trail, Link ----------------------------------- */
+
+.wiki__bar
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 30dp;
+	margin-bottom: var(--space-2);
+}
+.wiki__nav
+{
+	width: 28dp;
+	height: 28dp;
+	margin-right: var(--space-1);
+	line-height: 26dp;
+}
+.wiki__trail
+{
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+	min-width: 0;
+	box-sizing: border-box;
+	height: 28dp;
+	margin-left: var(--space-1);
+	padding: 0 var(--space-2);
+	overflow: hidden;
+	white-space: nowrap;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 8dp;
+	background-color: var(--surface-sunken);
+	line-height: 26dp;
+}
+.wiki__crumb
+{
+	flex-shrink: 0;
+	color: var(--text-muted);
+}
+/* The separator is the next crumb's left border: nothing to press between them. */
+.wiki__crumb + .wiki__crumb
+{
+	margin-left: var(--space-2);
+	padding-left: var(--space-2);
+	border-left-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__crumb.is-link
+{
+	color: var(--accent);
+}
+.wiki__crumb.is-link:hover
+{
+	color: var(--text);
+}
+.wiki__crumb.is-last
+{
+	flex-shrink: 1;
+	color: var(--text);
+}
+.wiki__link
+{
+	margin-left: var(--space-2);
+}
+
+/* --- The tabs ------------------------------------------------------------------------- */
+
+.wiki__tabs
+{
+	display: flex;
+	flex-direction: row;
+	align-items: flex-end;
+	height: 28dp;
+	margin-bottom: var(--space-2);
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__tab
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	flex: 0 1 120dp;
+	min-width: 48dp;
+	box-sizing: border-box;
+	height: 26dp;
+	margin-right: 2dp;
+	padding-right: 3dp;
+	border-width: 1dp 1dp 0dp 1dp;
+	border-color: var(--border);
+	border-radius: 7dp 7dp 0dp 0dp;
+	background-color: var(--surface-sunken);
+}
+.wiki__tab:hover
+{
+	background-color: var(--surface-hover);
+}
+.wiki__tab.is-active
+{
+	border-color: var(--accent-glow);
+	background-color: var(--selection);
+}
+.wiki__tab-label
+{
+	flex: 1;
+	min-width: 0;
+	height: 25dp;
+	padding-left: var(--space-2);
+	overflow: hidden;
+	white-space: nowrap;
+	color: var(--text-muted);
+	line-height: 25dp;
+}
+.wiki__tab.is-active .wiki__tab-label
+{
+	color: var(--text);
+}
+.wiki__tab-close, .wiki__new-tab
+{
+	flex-shrink: 0;
+}
+.wiki__tab-close .nui-glyph
+{
+	--glyph-ink: var(--text-muted);
+	transform: scale(0.75);
+}
+.wiki__tab-close:hover .nui-glyph
+{
+	--glyph-ink: var(--text);
+}
+.wiki__new-tab
+{
+	margin-bottom: 3dp;
+	margin-left: var(--space-1);
+}
+
+/* --- The columns --------------------------------------------------------------------- */
+
+.wiki__main
+{
+	display: flex;
+	flex-direction: row;
+	position: relative;
+	height: 440dp;
+}
+.wiki__side
+{
+	display: flex;
+	flex-direction: column;
+	width: 190dp;
+	margin-right: var(--space-2);
+}
+.wiki__search
+{
+	width: 190dp;
+	margin-bottom: var(--space-2);
+	focus: auto;
+}
+.wiki__tree #wiki-tree
+{
+	height: 404dp;
+}
+.wiki__cat-button, .wiki__sub-button
+{
+	display: block;
+	width: 100%;
+	text-align: left;
+}
+.wiki__fold
+{
+	display: inline-block;
+	width: 6dp;
+	height: 6dp;
+	margin-right: var(--space-1);
+	background-color: var(--text-muted);
+}
+.wiki__fold.is-open
+{
+	background-color: var(--accent);
+}
+.wiki__sub-button
+{
+	margin-left: 12dp;
+	width: 164dp;
+	color: var(--text-muted);
+}
+.wiki__sub-button.is-selected
+{
+	color: var(--accent);
+}
+.wiki__list
+{
+	display: flex;
+	flex-direction: column;
+	width: 250dp;
+	margin-right: var(--space-2);
+}
+.wiki__list-head
+{
+	display: flex;
+	flex-direction: row;
+	height: 24dp;
+	padding: 0 var(--space-2);
+	border-bottom-width: 1dp;
+	border-color: var(--accent-glow);
+	line-height: 23dp;
+	white-space: nowrap;
+}
+.wiki__list-title
+{
+	flex: 1;
+	overflow: hidden;
+	color: var(--accent);
+}
+.wiki__list-count
+{
+	margin-left: var(--space-2);
+	color: var(--text-muted);
+}
+.wiki__rows #wiki-rows
+{
+	height: 415dp;
+}
+/* The class filter and the pager each take a 26dp row from the list. */
+.wiki__rows.has-classes #wiki-rows, .wiki__rows.has-pager #wiki-rows
+{
+	height: 389dp;
+}
+.wiki__rows.has-classes.has-pager #wiki-rows
+{
+	height: 363dp;
+}
+
+/* An equipment list's class filter (OLD's class buttons): one segment each. */
+.wiki__classes
+{
+	display: flex;
+	flex-direction: row;
+	height: 22dp;
+	margin: 4dp 0dp 0dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: var(--radius-sm);
+	background-color: var(--surface-sunken);
+}
+.wiki__class
+{
+	display: block;
+	flex: 1;
+	overflow: hidden;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	line-height: 20dp;
+	text-align: center;
+	white-space: nowrap;
+}
+.wiki__class + .wiki__class
+{
+	border-left-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__class:hover
+{
+	color: var(--text);
+	background-color: var(--surface-hover);
+}
+.wiki__class.is-selected
+{
+	color: var(--accent);
+	background-color: var(--selection);
+}
+
+/* A long list's pager: one page of rows is laid out at a time. */
+.wiki__pager
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 26dp;
+	border-top-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__pager-range
+{
+	flex: 1;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	text-align: center;
+	white-space: nowrap;
+}
+.wiki__row, .wiki__loot, .wiki__origin
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-sizing: border-box;
+	padding: var(--space-1) var(--space-2);
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+}
+/* RmlUi 6.3 bubbles mouseover and mouseout: a row's children take no
+   pointer (inherited), so entering a row onto its icon reports it once, and
+   the hover preview stays while the pointer crosses the row. */
+.wiki__row > *, .wiki__loot > *, .wiki__mat > *
+{
+	pointer-events: none;
+}
+.wiki__row:hover, .wiki__loot:hover, .wiki__origin.is-link:hover
+{
+	background-color: var(--surface-hover);
+}
+.wiki__row.is-selected
+{
+	background-color: var(--selection);
+}
+.wiki__well
+{
+	display: inline-block;
+	position: relative;
+	box-sizing: border-box;
+	width: 36dp;
+	height: 36dp;
+	margin-right: var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 4dp;
+	background-color: var(--surface-sunken);
+	flex-shrink: 0;
+}
+.wiki__icon
+{
+	position: absolute;
+	left: 2dp;
+	top: 2dp;
+	width: 32dp;
+	height: 32dp;
+}
+.wiki__mob-glyph
+{
+	--glyph-ink: var(--danger);
+	position: absolute;
+	left: 8dp;
+	top: 8dp;
+}
+.wiki__row-name
+{
+	flex: 1;
+	color: var(--text);
+}
+.wiki__row-note
+{
+	margin-left: var(--space-2);
+	color: var(--text-muted);
+}
+
+/* --- The home page ------------------------------------------------------------------- */
+
+.wiki__home
+{
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+}
+.wiki__home-cats
+{
+	flex: 1;
+	margin-right: var(--space-2);
+}
+.wiki__home-recent
+{
+	width: 230dp;
+}
+.wiki__home #wiki-home, .wiki__home #wiki-recent
+{
+	height: 440dp;
+}
+.wiki__quick
+{
+	display: flex;
+	flex-direction: row;
+	padding: var(--space-1) var(--space-2);
+	border-bottom-width: 1dp;
+	border-color: var(--border);
+}
+.wiki__quick-label
+{
+	width: 100dp;
+	flex-shrink: 0;
+	padding-top: 3dp;
+	color: var(--text-muted);
+}
+.wiki__chips
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	flex: 1;
+}
+.wiki__chip
+{
+	display: block;
+	box-sizing: border-box;
+	height: 24dp;
+	margin: 2dp 4dp 2dp 0dp;
+	padding: 0 var(--space-2);
+	border-width: 1dp;
+	border-color: var(--border);
+	border-radius: 12dp;
+	background-color: var(--surface-raised);
+	color: var(--text);
+	line-height: 22dp;
+	white-space: nowrap;
+}
+.wiki__chip:hover
+{
+	border-color: var(--accent);
+	background-color: var(--surface-hover);
+}
+.wiki__hint
+{
+	padding: var(--space-3) var(--space-2);
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+}
+
+/* --- The page ------------------------------------------------------------------------- */
+
+.wiki__page
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	position: relative;
+}
+.wiki__page-head
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 96dp;
+	margin-bottom: var(--space-2);
+}
+.wiki__preview
+{
+	position: relative;
+	width: 96dp;
+	height: 96dp;
+	margin-right: var(--space-3);
+}
+.wiki__preview > *
+{
+	pointer-events: none;
+}
+/* A model preview opens the model viewer on a press. */
+.wiki__preview.is-zoomable:hover
+{
+	background-color: var(--surface-hover);
+}
+.wiki__zoom-mark
+{
+	position: absolute;
+	right: 2dp;
+	bottom: 2dp;
+	width: 16dp;
+	height: 16dp;
+	color: var(--text-muted);
+	opacity: 0.7;
+}
+.wiki__preview.is-zoomable:hover .wiki__zoom-mark
+{
+	color: var(--accent);
+	opacity: 1;
+}
+
+/* --- The model viewer: over the content area; a press around the stage closes it --- */
+
+.wiki__viewer
+{
+	position: absolute;
+	left: 0dp;
+	top: 0dp;
+	right: 0dp;
+	bottom: 0dp;
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	/* No border: RmlUi paints the background inside it, so a translucent
+	   border lets the page's rules show through. */
+	background-color: var(--surface);
+}
+.wiki__viewer-bar
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 30dp;
+	padding: 0dp var(--space-1) 0dp var(--space-3);
+	border-bottom-width: 1dp;
+	border-color: var(--accent-glow);
+}
+.wiki__viewer-name
+{
+	color: var(--accent);
+	font-size: var(--font-lg);
+	white-space: nowrap;
+}
+.wiki__viewer-hint
+{
+	flex: 1;
+	margin-left: var(--space-3);
+	overflow: hidden;
+	color: var(--text-muted);
+	font-size: var(--font-sm);
+	white-space: nowrap;
+}
+/* The model's stage: a drag turns it (drag: drag sends dragstart, drag and
+   dragend), the wheel zooms it; its view takes no pointer. */
+.wiki__stage
+{
+	display: block;
+	width: 380dp;
+	height: 404dp;
+	margin: 0dp auto;
+	drag: drag;
+	background-color: var(--surface-sunken);
+}
+.wiki__stage > *
+{
+	pointer-events: none;
+}
+.wiki__viewer-view
+{
+	display: block;
+	width: 380dp;
+	height: 404dp;
+}
+.wiki__view
+{
+	display: block;
+	width: 96dp;
+	height: 96dp;
+}
+.wiki__view--hover
+{
+	width: 150dp;
+	height: 200dp;
+}
+.wiki__preview-well
+{
+	width: 96dp;
+	height: 96dp;
+}
+.wiki__preview-well .wiki__icon
+{
+	left: 32dp;
+	top: 32dp;
+}
+.wiki__head-text
+{
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+}
+.wiki__page-name
+{
+	font-size: var(--font-lg);
+	color: var(--text);
+}
+.wiki__page-sub, .wiki__page-common
+{
+	color: var(--text-muted);
+}
+.wiki__scroll #wiki-page
+{
+	height: 336dp;
+}
+.wiki__heading
+{
+	margin-top: var(--space-2);
+	padding: var(--space-1) var(--space-2);
+	color: var(--accent);
+	border-bottom-width: 1dp;
+	border-color: var(--accent-glow);
+}
+.wiki__origin-label
+{
+	width: 90dp;
+	color: var(--text-muted);
+}
+.wiki__origin-name
+{
+	flex: 1;
+	color: var(--text);
+}
+.wiki__origin.is-link .wiki__origin-name
+{
+	color: var(--accent);
+}
+.wiki__refine
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: var(--space-1) var(--space-2);
+}
+.wiki__refine-label
+{
+	width: 40dp;
+	color: var(--text-muted);
+}
+.wiki__mat
+{
+	position: relative;
+	width: 36dp;
+	height: 36dp;
+	margin-right: var(--space-1);
+}
+.wiki__mat-count
+{
+	position: absolute;
+	right: 2dp;
+	bottom: 0dp;
+	color: var(--text);
+}
+.wiki__refine-cost
+{
+	margin-left: auto;
+	color: var(--text);
+}
+.wiki__state
+{
+	padding: var(--space-3);
+	text-align: center;
+	color: var(--text-muted);
+}
+.wiki__state--left
+{
+	text-align: left;
+}
+.wiki__hover-preview
+{
+	position: absolute;
+	right: 0dp;
+	top: 0dp;
+	width: 150dp;
+	height: 200dp;
+	border-width: 1dp;
+	border-color: var(--border);
+	background-color: var(--surface-raised);
+	pointer-events: none;
+}
+
+/* --- The menu of a right press on a tab or a crumb ------------------------------------ */
+
+/* Placed by the controller under the pressed element (menu_x, menu_y in dp from
+   the window's border box), above everything in the window. Its look is the
+   nui-board's (window-frame.rcss) and the skins'. */
+.wiki__menu
+{
+	--wiki-menu-x: 0dp;
+	--wiki-menu-y: 0dp;
+	position: absolute;
+	left: var(--wiki-menu-x);
+	top: var(--wiki-menu-y);
+	z-index: 10;
+	display: flex;
+	flex-direction: column;
+	min-width: 150dp;
+	padding: var(--space-1);
+}
+.wiki__menu-item
+{
+	display: block;
+	height: 26dp;
+	padding: 0 var(--space-2);
+	border-radius: 6dp;
+	text-align: left;
+	line-height: 24dp;
+	white-space: nowrap;
+	color: var(--text);
+}
+.wiki__menu-item.is-off,
+.wiki__menu-item.is-off:hover
+{
+	background-color: transparent;
+	color: var(--text-muted);
+	opacity: 0.55;
+}

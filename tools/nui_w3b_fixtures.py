@@ -208,8 +208,10 @@ def inventory(limits, page, wear, bag, money, **rest):
         "has_costume": True,
         "has_dss": True,
         "has_mall": True,
+        "has_wiki": False,
         # Wave 4b (NOVA-16): the special inventory's button.
         "has_extra": True,
+        "has_fastequip": True,
         "placed": False,
         # P14b: nothing attached, so an anchor's box covers its item.
         "bag_attaching": False,
@@ -235,14 +237,14 @@ FIGURE_KNIGHT = "/nui/figures/knight.png"
 FIGURE_COSTUME = {"male": "/nui/figures/costume-male.png", "female": "/nui/figures/costume-female.png"}
 
 # The board's rail (nui_inventory.BOARD_SHORTCUTS): the offline shop and its
-# search (Wave 5, enabled by the server's CONFIG), the ranking and the
-# achievements as features to come, and the guide; the events entry stands
-# for a feature that exists, with a badge of three, as the reviewed board
-# shows it.
+# search (Wave 5, enabled by the server's CONFIG), the ranking (the kill
+# ranking, NOVA-29), the achievements as a feature to come, and the guide;
+# the events entry stands for a feature that exists, with a badge of three,
+# as the reviewed board shows it.
 SAMPLE_RAIL = [
     {"id": "offline_shop", "glyph": "stall", "tip": "@ui.NUI_RAIL_OFFLINE_SHOP", "enabled": True, "soon": False, "badge": ""},
     {"id": "shop_search", "glyph": "search", "tip": "@ui.SEARCH_SHOP_TITLE", "enabled": True, "soon": False, "badge": ""},
-    {"id": "ranking", "glyph": "ranking", "tip": "@ui.NUI_RAIL_RANKING", "enabled": True, "soon": True, "badge": ""},
+    {"id": "ranking", "glyph": "ranking", "tip": "@ui.NUI_RAIL_RANKING", "enabled": True, "soon": False, "badge": ""},
     {"id": "events", "glyph": "events", "tip": "@ui.NUI_RAIL_EVENTS", "enabled": True, "soon": False, "badge": "3"},
     {"id": "achievements", "glyph": "achievements", "tip": "@ui.NUI_RAIL_ACHIEVEMENTS", "enabled": True, "soon": True,
      "badge": ""},

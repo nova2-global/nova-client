@@ -38,6 +38,8 @@ import nui_hud
 import ui
 import uiCommon
 import uiTarget
+import uiTargetInfo
+import nui_numbers
 
 try:
 	import nuigame
@@ -108,7 +110,8 @@ class TargetBoardBoard(nui.Window):
 
 	def initial_model(self):
 		return {"name": "", "title": "", "level": 0, "hp": 0.0, "show_hp": False, "buttons": [], "exchange_at": -1,
-		        "in_range": False, "portrait": "", "subtitle": ""}
+		        "in_range": False, "portrait": "", "subtitle": "", "hp_values": "", "element": 0, "element_name": "",
+		        "show_info": False}
 
 	@nui.on("press")
 	def on_press(self, button_id, button):
@@ -119,6 +122,11 @@ class TargetBoardBoard(nui.Window):
 	def on_close(self, button):
 		if button == 0:
 			self._owner.OnPressedCloseButton()
+
+	@nui.on("info")
+	def on_info(self, button):
+		if button == 0:
+			self._owner.OnPressedInfoButton()
 
 
 class TargetBoard(object):
@@ -208,6 +216,11 @@ class TargetBoard(object):
 		# A player target's head (player_head): its portrait and subtitle.
 		self.nuiPortrait = ""
 		self.nuiSubtitle = ""
+		# NOVA-40: the numbers, the element, the info button and its board.
+		self.hpValues = ""
+		self.element = 0
+		self.vnum = 0
+		self.infoBoard = None
 		if not nui_hud.has_engine():
 			return
 		try:
@@ -217,6 +230,8 @@ class TargetBoard(object):
 			self.nui_discard()
 			raise
 		self.__Initialize()
+		import nui_windows
+		self.infoBoard = nui_windows.make("target-info", uiTargetInfo.InfoBoard, "nui_target_info.InfoBoard")
 		self.ResetTargetBoard()
 
 	def nui_ready(self):
@@ -250,6 +265,9 @@ class TargetBoard(object):
 		if self.duelRulesDialog:
 			self.duelRulesDialog.Destroy()
 			self.duelRulesDialog = None
+		if self.infoBoard:
+			self.infoBoard.Destroy()
+			self.infoBoard = None
 		self.eventWhisper = None
 		self.__Initialize()
 		self.nui_discard()
@@ -289,6 +307,8 @@ class TargetBoard(object):
 		_watch(0, 0)
 		self.__Initialize()
 		self.CloseDuelRules()
+		if self.infoBoard:
+			self.infoBoard.Close()
 		self.Hide()
 
 	def CloseDuelRules(self):
@@ -355,11 +375,21 @@ class TargetBoard(object):
 	def SetWhisperEvent(self, event):
 		self.eventWhisper = event
 
+	def SetWikiItemEvent(self, event):
+		"""Interface.OpenWikiItem, for the info board's drop rows."""
+		if self.infoBoard:
+			self.infoBoard.SetWikiItemEvent(event)
+
 	def ResetTargetBoard(self):
 		_watch(0, 0)
 		self.shownButtons = set()
 		self.__Initialize()
 		self.hpShown = False
+		self.hpValues = ""
+		self.element = 0
+		self.vnum = 0
+		if self.infoBoard:
+			self.infoBoard.Close()
 		self._sync()
 
 	def SetTargetVID(self, vid):
@@ -379,6 +409,9 @@ class TargetBoard(object):
 			nameFront += gradeFront
 		self.__nuiLabel = (level if -1 != level else 0, gradeFront + name)
 		self.SetTargetName(nameFront + name)
+		# NOVA-40: the info button of a monster (uiTarget.TargetBoard.SetEnemyVID).
+		self.vnum = uiTargetInfo.race_of_vid(vid)
+		self._sync()
 
 	def GetTargetVID(self):
 		return self.vid
@@ -393,10 +426,37 @@ class TargetBoard(object):
 		self.nuiLevel, self.nuiTitle = label if label is not None else (0, name)
 		self._sync()
 
-	def SetHP(self, hpPercentage):
+	def SetHP(self, hpPercentage, actualHP=0, maxHP=0):
 		self.hpShown = True
 		self.hp = min(1.0, max(0.0, float(hpPercentage) / 100.0))
+		self.hpValues = (nui_numbers.group(int(max(actualHP, 0))) + " / " + nui_numbers.group(int(maxHP))) if maxHP > 0 else ""
 		self._sync()
+
+	def SetPCHP(self, hpPercentage):
+		"""A player target's bar and percent (NOVA-40 Q3, uitarget.py SetPCHP)."""
+		self.SetHP(hpPercentage)
+
+	def SetElement(self, elementId):
+		if elementId == self.element:
+			return
+		self.element = elementId
+		self._sync()
+
+	def SetAttackers(self, count):
+		if self.vnum and uiTargetInfo.set_attackers(self.vnum, count) and self.infoBoard:
+			self.infoBoard.RefreshAttackerInfo()
+
+	def RefreshInfoBoard(self, race):
+		if self.infoBoard and self.vnum == race and self.infoBoard.IsShow():
+			self.infoBoard.Refresh()
+
+	def OnPressedInfoButton(self):
+		if self.infoBoard:
+			if self.infoBoard.IsShow():
+				self.infoBoard.Close()
+			elif self.vnum:
+				self.infoBoard.Open(self, self.vnum, self.GetTargetVID())
+		self.SetTop()
 
 	def ShowDefaultButton(self):
 		self.isShowButton = True
@@ -636,6 +696,9 @@ class TargetBoard(object):
 				if button_id == self.BTN_EXCHANGE:
 					exchange_at = len(buttons)
 				buttons.append({"id": button_id, "label": self.buttonLabels.get(button_id, "")})
+		element_key = uiTarget.ELEMENT_NAME_KEY.get(self.element)
 		self.board.set(name=nui.plain_text(self.nameString), title=nui.plain_text(self.nuiTitle), level=self.nuiLevel,
 		               hp=self.hp, show_hp=self.hpShown, buttons=buttons, exchange_at=exchange_at,
-		               portrait=self.nuiPortrait, subtitle=self.nuiSubtitle)
+		               portrait=self.nuiPortrait, subtitle=self.nuiSubtitle, hp_values=self.hpValues,
+		               element=self.element, element_name=nui_hud.locale_text(element_key) if element_key else "",
+		               show_info=bool(self.vnum))

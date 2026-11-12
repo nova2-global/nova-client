@@ -1161,3 +1161,122 @@ BOSS_INFO_RESPAWN	Verschijnt over %s
 BOSS_INFO_EXPAND	Bazen tonen
 BOSS_INFO_COLLAPSE	Bazen verbergen
 DAMAGE_COUNT_DAMAGE	Schade: %s(%s)
+FAST_EQUIP_TITLE	Snelle Uitrusting
+FAST_EQUIP_CLEAR_CONFIRM	Ben je zeker dat je deze pagina wilt wissen?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.
+FAST_EQUIP_NOT_FOR_SET	This item cannot be part of a set.
+FAST_EQUIP_WRONG_CHARACTER	Your character cannot wear this item.
+TARGET_INFO_DAMAGE	Schade : %s - %s
+TARGET_INFO_DEFENSE	Verdediging : %s
+TARGET_INFO_MAINRACE	Ras : %s
+TARGET_INFO_MAX_HP	Max. LP : %s
+TARGET_INFO_NO_ITEM_TEXT	Geen Voorwerpen droppeable.
+TARGET_INFO_NO_RACE	Geen
+TARGET_INFO_RACE_METIN	Steen
+TARGET_INFO_RACE_ANIMAL	Dier
+TARGET_INFO_RACE_DARK	Duisternis
+TARGET_INFO_RACE_DEVIL	Duivel
+TARGET_INFO_RACE_EARTH	Aarde
+TARGET_INFO_RACE_ELEC	Bliksem
+TARGET_INFO_RACE_FIRE	Vuur
+TARGET_INFO_RACE_HUMAN	Half Mens
+TARGET_INFO_RACE_ICE	Water
+TARGET_INFO_RACE_MILGYO	Mystiek
+TARGET_INFO_RACE_INSECT	Insect
+TARGET_INFO_RACE_DESERT	Woestijn
+TARGET_INFO_RACE_TREE	Boom
+TARGET_INFO_RACE_ORC	Orks
+TARGET_INFO_RACE_UNDEAD	Ondood
+TARGET_INFO_RACE_WIND	Wind
+TARGET_INFO_STONE_NAME	Geest Steen
+TARGET_INFO_SUBRACE	Ondersoort : %s
+TARGET_INFO_RESISTS	Weerstanden:
+TARGET_INFO_RESISTS_LINE0	Zwaard: %d%% Tweehand: %d%% Bel: %d%%
+TARGET_INFO_RESISTS_LINE1	Dolk: %d%% Waaier: %d%% Boog: %d%%
+TARGET_INFO_RESISTS_LINE2	Hit Damage: %d%% Skill Damage: %d%%
+TARGET_INFO_REGEN_INFO	Regeneer %d%% iedere %d sec.
+TARGET_INFO_GOLD_MIN_MAX	Goud: %s - %s
+TARGET_INFO_RACE_FLAG_ELEC	Elek
+TARGET_INFO_RACE_FLAG_WIND	Wind
+TARGET_INFO_RACE_FLAG_EARTH	Aarde
+TARGET_INFO_RACE_FLAG_DARK	Duisternis
+TARGET_INFO_RACE_FLAG_ATT_ELEC	Aanval Elek
+TARGET_INFO_RACE_FLAG_ATT_FIRE	Aanval Vuur
+TARGET_INFO_RACE_FLAG_ATT_ICE	Aanval Water
+TARGET_INFO_RACE_FLAG_ATT_WIND	Aanval Wind
+TARGET_INFO_RACE_FLAG_ATT_EARTH	Aanval Aarde
+TARGET_INFO_RACE_FLAG_ATT_DARK	Aanval Duister
+TARGET_INFO_RACE_FLAG_ELEMENTAL	Elementair
+TARGET_INFO_GUARANTEED_DAMAGE	 - Guaranteed with min. damage: %d%%
+TARGET_INFO_ATTACKERS_INACTIVE	 - Inactive
+TARGET_INFO_ATTACKERS_PROGRESS	%d/%d attackers needed
+TARGET_INFO_ATTACKERS_ABOVE_CAP	 - Inactive (%d/%d attackers)
+WIKI_TITLE	Wiki	
+WIKI_NOTHING_FOUND	No matches.	
+WIKI_PICK	Select an entry from the list.	
+WIKI_LOADING	Loading...	
+WIKI_LOAD_FAILED	Could not load this page. Reopen it to try again.	
+WIKI_ORIGINS	Obtained from	
+WIKI_CHEST_CONTENTS	Contents	
+WIKI_REFINE_COSTS	Refine costs	
+WIKI_DROPS	Drops	
+WIKI_NOTHING_KNOWN	No known source.	
+WIKI_COMMON_DROP	Common drop from monsters of the right level.	
+WIKI_ORIGIN_MOB	Dropped by	
+WIKI_ORIGIN_CHEST	Found in	
+WIKI_ORIGIN_CRAFT	Crafted at	
+WIKI_ORIGIN_SHOP	Sold by	
+WIKI_LEVEL	Lv. %d	
+WIKI_CAT_EQUIPMENT	Equipment	
+WIKI_CAT_CHESTS	Chests	
+WIKI_CAT_BOSSES	Bosses	
+WIKI_CAT_MONSTERS	Monsters	
+WIKI_CAT_METINS	Metin Stones	
+WIKI_CAT_COSTUMES	Costumes	
+WIKI_SUB_WEAPONS	Weapons	
+WIKI_SUB_ARMOR	Armor	
+WIKI_SUB_HELMETS	Helmets	
+WIKI_SUB_SHIELDS	Shields	
+WIKI_SUB_EARRINGS	Earrings	
+WIKI_SUB_BRACELETS	Bracelets	
+WIKI_SUB_NECKLACES	Necklaces	
+WIKI_SUB_SHOES	Shoes	
+WIKI_SUB_BELTS	Belts	
+WIKI_SUB_RINGS	Rings	
+WIKI_SUB_BOSS_CHESTS	Boss Chests	
+WIKI_SUB_EVENT_CHESTS	Event Chests	
+WIKI_SUB_ALT_CHESTS	Other Chests	
+WIKI_SUB_LV1_109	Lv. 1-109	
+WIKI_SUB_LV110_129	Lv. 110-129	
+WIKI_SUB_LV130	Lv. 130+	
+WIKI_SUB_COSTUME_WEAPONS	Weapon Costumes	
+WIKI_SUB_COSTUME_ARMOR	Armor Costumes	
+WIKI_SUB_COSTUME_HAIR	Hair Styles	
+WIKI_SUB_COSTUME_PETS	Pets	
+WIKI_SUB_COSTUME_MOUNTS	Mounts	
+WIKI_SUB_COSTUME_WINGS	Wings	
+WIKI_SUB_COSTUME_MASKS	Masks	
+WIKI_SUB_COSTUME_EFFECTS	Effects	
+WIKI_HOME	Home	
+WIKI_CATEGORIES	Categories	
+WIKI_RECENT	Recently viewed	
+WIKI_NO_RECENT	The pages you open show here.	
+WIKI_LINK	Link	
+WIKI_TABS_FULL	The wiki keeps at most %d tabs open. Close one first.	
+WIKI_SEARCH_HINT	Search items and monsters	
+WIKI_SEARCH_TRAIL	Search: %s	
+WIKI_TAB_HINT	Middle-click or Ctrl+click a link to open it in a new tab.	
+WIKI_MENU_CLOSE	Close	
+WIKI_MENU_CLOSE_OTHERS	Close other tabs	
+WIKI_MENU_NEW_TAB	Open in new tab	
+WIKI_CAT_GUIDES	Guides	
+WIKI_CAT_DUNGEONS	Dungeons	
+WIKI_CAT_SYSTEMS	Systems	
+WIKI_CAT_EVENTS	Events	
+WIKI_NOTE	Note	
+WIKI_WARNING	Warning	
+WIKI_PAGE_ERROR	This part of the page could not be shown:	
+WIKI_CLASS_ALL	All	
+WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
+WIKI_LIST_RANGE	%d-%d of %d	

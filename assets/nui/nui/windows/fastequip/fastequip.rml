@@ -1,0 +1,434 @@
+<rml>
+<head>
+	<!-- Fast equip (Wave 8, NOVA-17; legacy uifastequip.py FastEquipWindow,
+	     uiscript fastequipwindow.py, OLD root/uiFastEquip.py). While the
+	     fastequip flag is on, the Interface makes nui_fastequip.FastEquipWindow,
+	     a subclass of the legacy class on proxies: the 10 sets with their name
+	     and color, the selected set's wear cells (only the ones the server can
+	     use today, fastEquip.IsUsableCell), Switch, Clear and the edit panel.
+	     A cell's events go to legacy's handlers by its wear index; a press, a
+	     drag's release or a legacy drop on the canvas between the cells goes
+	     to legacy's DropAnywhere, which finds the item's cell (Eddy, r41). The
+	     name field takes the focus on a press (focus: auto under the body's
+	     focus: none) and its text never enters the model. The refresh timer
+	     is a nui-countdown so nothing runs per frame. The document exists
+	     only while the window shows and draws below the legacy UI layer. -->
+	<title>fastequip</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="fastequip.rcss"/>
+</head>
+<body template="nui" id="fastequip" class="nui-window nui-fx nui-anim nui-below-legacy-ui fastequip" data-model="fastequip"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar fastequip__titlebar">
+		<handle class="nui-window__handle fastequip__handle" move_target="#document">
+			<span class="fastequip__title-icon"><span class="nui-glyph nui-glyph--inventory"><span
+				class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></span>
+			<span class="nui-window__title fastequip__title">@ui.FAST_EQUIP_TITLE</span>
+		</handle>
+		<button id="fastequip-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim fastequip__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body fastequip__body">
+		<nui-countdown class="fastequip__timer" format="none" data-attr-end="refresh_end" data-event-countdownend="refresh_due()"/>
+		<div class="fastequip__sets">
+			<div class="fastequip__sets-head">@ui.FAST_EQUIP_SETS</div>
+			<div class="fastequip__set nui-anim" data-for="s : sets" data-attr-id="'fastequip-set-' + s.index" data-class-is-selected="s.selected"
+			     data-event-mousedown="set_press(s.index, ev.button)">
+				<div class="fastequip__set-color" data-style---fe-color="s.css"></div>
+				<span class="fastequip__set-name">{{ s.name }}</span>
+				<button class="nui-button nui-button--ghost nui-button--icon nui-anim fastequip__set-edit" data-attr-id="'fastequip-edit-' + s.index"
+				        data-event-mousedown="edit_press(s.index, ev.button)" data-event-click="edit_click(s.index)"><span class="fastequip__set-edit-mark">...</span></button>
+			</div>
+		</div>
+		<div class="fastequip__main">
+			<div class="fastequip__title-bar" data-class-is-equipped="equipped" data-style---fe-color="title_css">
+				<span class="fastequip__set-title">{{ title }}</span>
+				<div class="fastequip__equipped-stripe"></div>
+			</div>
+			<div id="fastequip-canvas" class="fastequip__canvas" data-class-is-attaching="attaching" data-class-nui-attach-right="attach_right"
+			     data-event-mousedown="canvas_press(ev.button)" data-event-mouseup="canvas_release(ev.button)"
+			     data-event-nuidrop="canvas_drop()">
+			<div id="fastequip-cell-0" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w0" data-if="cells[0].shown"
+			     data-class-is-empty="cells[0].kind == ''" data-class-is-target="cells[0].target == 'move'"
+			     data-class-is-blocked="cells[0].target == 'blocked'" data-class-is-disabled="cells[0].disabled"
+			     data-class-fastequip__cell--missing="cells[0].missing"
+			     data-event-mousedown="slot_press(0, ev.button)" data-event-mouseup="slot_release(0, ev.button)"
+			     data-event-dblclick="slot_use(0)" data-event-mouseover="slot_over(0)"
+			     data-event-mouseout="slot_out(0)" data-event-nuidrop="slot_drop(0)">
+				<img class="nui-slot__icon" data-if="cells[0].icon != ''" data-attr-src="cells[0].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[0].count != ''" data-attr-value="cells[0].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[0].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-1" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w1" data-if="cells[1].shown"
+			     data-class-is-empty="cells[1].kind == ''" data-class-is-target="cells[1].target == 'move'"
+			     data-class-is-blocked="cells[1].target == 'blocked'" data-class-is-disabled="cells[1].disabled"
+			     data-class-fastequip__cell--missing="cells[1].missing"
+			     data-event-mousedown="slot_press(1, ev.button)" data-event-mouseup="slot_release(1, ev.button)"
+			     data-event-dblclick="slot_use(1)" data-event-mouseover="slot_over(1)"
+			     data-event-mouseout="slot_out(1)" data-event-nuidrop="slot_drop(1)">
+				<img class="nui-slot__icon" data-if="cells[1].icon != ''" data-attr-src="cells[1].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[1].count != ''" data-attr-value="cells[1].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[1].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-2" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w2" data-if="cells[2].shown"
+			     data-class-is-empty="cells[2].kind == ''" data-class-is-target="cells[2].target == 'move'"
+			     data-class-is-blocked="cells[2].target == 'blocked'" data-class-is-disabled="cells[2].disabled"
+			     data-class-fastequip__cell--missing="cells[2].missing"
+			     data-event-mousedown="slot_press(2, ev.button)" data-event-mouseup="slot_release(2, ev.button)"
+			     data-event-dblclick="slot_use(2)" data-event-mouseover="slot_over(2)"
+			     data-event-mouseout="slot_out(2)" data-event-nuidrop="slot_drop(2)">
+				<img class="nui-slot__icon" data-if="cells[2].icon != ''" data-attr-src="cells[2].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[2].count != ''" data-attr-value="cells[2].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[2].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-3" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w3" data-if="cells[3].shown"
+			     data-class-is-empty="cells[3].kind == ''" data-class-is-target="cells[3].target == 'move'"
+			     data-class-is-blocked="cells[3].target == 'blocked'" data-class-is-disabled="cells[3].disabled"
+			     data-class-fastequip__cell--missing="cells[3].missing"
+			     data-event-mousedown="slot_press(3, ev.button)" data-event-mouseup="slot_release(3, ev.button)"
+			     data-event-dblclick="slot_use(3)" data-event-mouseover="slot_over(3)"
+			     data-event-mouseout="slot_out(3)" data-event-nuidrop="slot_drop(3)">
+				<img class="nui-slot__icon" data-if="cells[3].icon != ''" data-attr-src="cells[3].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[3].count != ''" data-attr-value="cells[3].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[3].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-4" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w4" data-if="cells[4].shown"
+			     data-class-is-empty="cells[4].kind == ''" data-class-is-target="cells[4].target == 'move'"
+			     data-class-is-blocked="cells[4].target == 'blocked'" data-class-is-disabled="cells[4].disabled"
+			     data-class-fastequip__cell--missing="cells[4].missing"
+			     data-event-mousedown="slot_press(4, ev.button)" data-event-mouseup="slot_release(4, ev.button)"
+			     data-event-dblclick="slot_use(4)" data-event-mouseover="slot_over(4)"
+			     data-event-mouseout="slot_out(4)" data-event-nuidrop="slot_drop(4)">
+				<img class="nui-slot__icon" data-if="cells[4].icon != ''" data-attr-src="cells[4].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[4].count != ''" data-attr-value="cells[4].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[4].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-5" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w5" data-if="cells[5].shown"
+			     data-class-is-empty="cells[5].kind == ''" data-class-is-target="cells[5].target == 'move'"
+			     data-class-is-blocked="cells[5].target == 'blocked'" data-class-is-disabled="cells[5].disabled"
+			     data-class-fastequip__cell--missing="cells[5].missing"
+			     data-event-mousedown="slot_press(5, ev.button)" data-event-mouseup="slot_release(5, ev.button)"
+			     data-event-dblclick="slot_use(5)" data-event-mouseover="slot_over(5)"
+			     data-event-mouseout="slot_out(5)" data-event-nuidrop="slot_drop(5)">
+				<img class="nui-slot__icon" data-if="cells[5].icon != ''" data-attr-src="cells[5].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[5].count != ''" data-attr-value="cells[5].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[5].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-6" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w6" data-if="cells[6].shown"
+			     data-class-is-empty="cells[6].kind == ''" data-class-is-target="cells[6].target == 'move'"
+			     data-class-is-blocked="cells[6].target == 'blocked'" data-class-is-disabled="cells[6].disabled"
+			     data-class-fastequip__cell--missing="cells[6].missing"
+			     data-event-mousedown="slot_press(6, ev.button)" data-event-mouseup="slot_release(6, ev.button)"
+			     data-event-dblclick="slot_use(6)" data-event-mouseover="slot_over(6)"
+			     data-event-mouseout="slot_out(6)" data-event-nuidrop="slot_drop(6)">
+				<img class="nui-slot__icon" data-if="cells[6].icon != ''" data-attr-src="cells[6].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[6].count != ''" data-attr-value="cells[6].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[6].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-7" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w7" data-if="cells[7].shown"
+			     data-class-is-empty="cells[7].kind == ''" data-class-is-target="cells[7].target == 'move'"
+			     data-class-is-blocked="cells[7].target == 'blocked'" data-class-is-disabled="cells[7].disabled"
+			     data-class-fastequip__cell--missing="cells[7].missing"
+			     data-event-mousedown="slot_press(7, ev.button)" data-event-mouseup="slot_release(7, ev.button)"
+			     data-event-dblclick="slot_use(7)" data-event-mouseover="slot_over(7)"
+			     data-event-mouseout="slot_out(7)" data-event-nuidrop="slot_drop(7)">
+				<img class="nui-slot__icon" data-if="cells[7].icon != ''" data-attr-src="cells[7].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[7].count != ''" data-attr-value="cells[7].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[7].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-8" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w8" data-if="cells[8].shown"
+			     data-class-is-empty="cells[8].kind == ''" data-class-is-target="cells[8].target == 'move'"
+			     data-class-is-blocked="cells[8].target == 'blocked'" data-class-is-disabled="cells[8].disabled"
+			     data-class-fastequip__cell--missing="cells[8].missing"
+			     data-event-mousedown="slot_press(8, ev.button)" data-event-mouseup="slot_release(8, ev.button)"
+			     data-event-dblclick="slot_use(8)" data-event-mouseover="slot_over(8)"
+			     data-event-mouseout="slot_out(8)" data-event-nuidrop="slot_drop(8)">
+				<img class="nui-slot__icon" data-if="cells[8].icon != ''" data-attr-src="cells[8].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[8].count != ''" data-attr-value="cells[8].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[8].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-9" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w9" data-if="cells[9].shown"
+			     data-class-is-empty="cells[9].kind == ''" data-class-is-target="cells[9].target == 'move'"
+			     data-class-is-blocked="cells[9].target == 'blocked'" data-class-is-disabled="cells[9].disabled"
+			     data-class-fastequip__cell--missing="cells[9].missing"
+			     data-event-mousedown="slot_press(9, ev.button)" data-event-mouseup="slot_release(9, ev.button)"
+			     data-event-dblclick="slot_use(9)" data-event-mouseover="slot_over(9)"
+			     data-event-mouseout="slot_out(9)" data-event-nuidrop="slot_drop(9)">
+				<img class="nui-slot__icon" data-if="cells[9].icon != ''" data-attr-src="cells[9].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[9].count != ''" data-attr-value="cells[9].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[9].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-10" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w10" data-if="cells[10].shown"
+			     data-class-is-empty="cells[10].kind == ''" data-class-is-target="cells[10].target == 'move'"
+			     data-class-is-blocked="cells[10].target == 'blocked'" data-class-is-disabled="cells[10].disabled"
+			     data-class-fastequip__cell--missing="cells[10].missing"
+			     data-event-mousedown="slot_press(10, ev.button)" data-event-mouseup="slot_release(10, ev.button)"
+			     data-event-dblclick="slot_use(10)" data-event-mouseover="slot_over(10)"
+			     data-event-mouseout="slot_out(10)" data-event-nuidrop="slot_drop(10)">
+				<img class="nui-slot__icon" data-if="cells[10].icon != ''" data-attr-src="cells[10].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[10].count != ''" data-attr-value="cells[10].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[10].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-19" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w19" data-if="cells[11].shown"
+			     data-class-is-empty="cells[11].kind == ''" data-class-is-target="cells[11].target == 'move'"
+			     data-class-is-blocked="cells[11].target == 'blocked'" data-class-is-disabled="cells[11].disabled"
+			     data-class-fastequip__cell--missing="cells[11].missing"
+			     data-event-mousedown="slot_press(19, ev.button)" data-event-mouseup="slot_release(19, ev.button)"
+			     data-event-dblclick="slot_use(19)" data-event-mouseover="slot_over(19)"
+			     data-event-mouseout="slot_out(19)" data-event-nuidrop="slot_drop(19)">
+				<img class="nui-slot__icon" data-if="cells[11].icon != ''" data-attr-src="cells[11].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[11].count != ''" data-attr-value="cells[11].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[11].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-20" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w20" data-if="cells[12].shown"
+			     data-class-is-empty="cells[12].kind == ''" data-class-is-target="cells[12].target == 'move'"
+			     data-class-is-blocked="cells[12].target == 'blocked'" data-class-is-disabled="cells[12].disabled"
+			     data-class-fastequip__cell--missing="cells[12].missing"
+			     data-event-mousedown="slot_press(20, ev.button)" data-event-mouseup="slot_release(20, ev.button)"
+			     data-event-dblclick="slot_use(20)" data-event-mouseover="slot_over(20)"
+			     data-event-mouseout="slot_out(20)" data-event-nuidrop="slot_drop(20)">
+				<img class="nui-slot__icon" data-if="cells[12].icon != ''" data-attr-src="cells[12].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[12].count != ''" data-attr-value="cells[12].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[12].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-21" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w21" data-if="cells[13].shown"
+			     data-class-is-empty="cells[13].kind == ''" data-class-is-target="cells[13].target == 'move'"
+			     data-class-is-blocked="cells[13].target == 'blocked'" data-class-is-disabled="cells[13].disabled"
+			     data-class-fastequip__cell--missing="cells[13].missing"
+			     data-event-mousedown="slot_press(21, ev.button)" data-event-mouseup="slot_release(21, ev.button)"
+			     data-event-dblclick="slot_use(21)" data-event-mouseover="slot_over(21)"
+			     data-event-mouseout="slot_out(21)" data-event-nuidrop="slot_drop(21)">
+				<img class="nui-slot__icon" data-if="cells[13].icon != ''" data-attr-src="cells[13].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[13].count != ''" data-attr-value="cells[13].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[13].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-22" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w22" data-if="cells[14].shown"
+			     data-class-is-empty="cells[14].kind == ''" data-class-is-target="cells[14].target == 'move'"
+			     data-class-is-blocked="cells[14].target == 'blocked'" data-class-is-disabled="cells[14].disabled"
+			     data-class-fastequip__cell--missing="cells[14].missing"
+			     data-event-mousedown="slot_press(22, ev.button)" data-event-mouseup="slot_release(22, ev.button)"
+			     data-event-dblclick="slot_use(22)" data-event-mouseover="slot_over(22)"
+			     data-event-mouseout="slot_out(22)" data-event-nuidrop="slot_drop(22)">
+				<img class="nui-slot__icon" data-if="cells[14].icon != ''" data-attr-src="cells[14].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[14].count != ''" data-attr-value="cells[14].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[14].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-23" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w23" data-if="cells[15].shown"
+			     data-class-is-empty="cells[15].kind == ''" data-class-is-target="cells[15].target == 'move'"
+			     data-class-is-blocked="cells[15].target == 'blocked'" data-class-is-disabled="cells[15].disabled"
+			     data-class-fastequip__cell--missing="cells[15].missing"
+			     data-event-mousedown="slot_press(23, ev.button)" data-event-mouseup="slot_release(23, ev.button)"
+			     data-event-dblclick="slot_use(23)" data-event-mouseover="slot_over(23)"
+			     data-event-mouseout="slot_out(23)" data-event-nuidrop="slot_drop(23)">
+				<img class="nui-slot__icon" data-if="cells[15].icon != ''" data-attr-src="cells[15].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[15].count != ''" data-attr-value="cells[15].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[15].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-24" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w24" data-if="cells[16].shown"
+			     data-class-is-empty="cells[16].kind == ''" data-class-is-target="cells[16].target == 'move'"
+			     data-class-is-blocked="cells[16].target == 'blocked'" data-class-is-disabled="cells[16].disabled"
+			     data-class-fastequip__cell--missing="cells[16].missing"
+			     data-event-mousedown="slot_press(24, ev.button)" data-event-mouseup="slot_release(24, ev.button)"
+			     data-event-dblclick="slot_use(24)" data-event-mouseover="slot_over(24)"
+			     data-event-mouseout="slot_out(24)" data-event-nuidrop="slot_drop(24)">
+				<img class="nui-slot__icon" data-if="cells[16].icon != ''" data-attr-src="cells[16].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[16].count != ''" data-attr-value="cells[16].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[16].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-25" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w25" data-if="cells[17].shown"
+			     data-class-is-empty="cells[17].kind == ''" data-class-is-target="cells[17].target == 'move'"
+			     data-class-is-blocked="cells[17].target == 'blocked'" data-class-is-disabled="cells[17].disabled"
+			     data-class-fastequip__cell--missing="cells[17].missing"
+			     data-event-mousedown="slot_press(25, ev.button)" data-event-mouseup="slot_release(25, ev.button)"
+			     data-event-dblclick="slot_use(25)" data-event-mouseover="slot_over(25)"
+			     data-event-mouseout="slot_out(25)" data-event-nuidrop="slot_drop(25)">
+				<img class="nui-slot__icon" data-if="cells[17].icon != ''" data-attr-src="cells[17].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[17].count != ''" data-attr-value="cells[17].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[17].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-26" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w26" data-if="cells[18].shown"
+			     data-class-is-empty="cells[18].kind == ''" data-class-is-target="cells[18].target == 'move'"
+			     data-class-is-blocked="cells[18].target == 'blocked'" data-class-is-disabled="cells[18].disabled"
+			     data-class-fastequip__cell--missing="cells[18].missing"
+			     data-event-mousedown="slot_press(26, ev.button)" data-event-mouseup="slot_release(26, ev.button)"
+			     data-event-dblclick="slot_use(26)" data-event-mouseover="slot_over(26)"
+			     data-event-mouseout="slot_out(26)" data-event-nuidrop="slot_drop(26)">
+				<img class="nui-slot__icon" data-if="cells[18].icon != ''" data-attr-src="cells[18].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[18].count != ''" data-attr-value="cells[18].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[18].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-27" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w27" data-if="cells[19].shown"
+			     data-class-is-empty="cells[19].kind == ''" data-class-is-target="cells[19].target == 'move'"
+			     data-class-is-blocked="cells[19].target == 'blocked'" data-class-is-disabled="cells[19].disabled"
+			     data-class-fastequip__cell--missing="cells[19].missing"
+			     data-event-mousedown="slot_press(27, ev.button)" data-event-mouseup="slot_release(27, ev.button)"
+			     data-event-dblclick="slot_use(27)" data-event-mouseover="slot_over(27)"
+			     data-event-mouseout="slot_out(27)" data-event-nuidrop="slot_drop(27)">
+				<img class="nui-slot__icon" data-if="cells[19].icon != ''" data-attr-src="cells[19].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[19].count != ''" data-attr-value="cells[19].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[19].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-28" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w28" data-if="cells[20].shown"
+			     data-class-is-empty="cells[20].kind == ''" data-class-is-target="cells[20].target == 'move'"
+			     data-class-is-blocked="cells[20].target == 'blocked'" data-class-is-disabled="cells[20].disabled"
+			     data-class-fastequip__cell--missing="cells[20].missing"
+			     data-event-mousedown="slot_press(28, ev.button)" data-event-mouseup="slot_release(28, ev.button)"
+			     data-event-dblclick="slot_use(28)" data-event-mouseover="slot_over(28)"
+			     data-event-mouseout="slot_out(28)" data-event-nuidrop="slot_drop(28)">
+				<img class="nui-slot__icon" data-if="cells[20].icon != ''" data-attr-src="cells[20].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[20].count != ''" data-attr-value="cells[20].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[20].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-29" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w29" data-if="cells[21].shown"
+			     data-class-is-empty="cells[21].kind == ''" data-class-is-target="cells[21].target == 'move'"
+			     data-class-is-blocked="cells[21].target == 'blocked'" data-class-is-disabled="cells[21].disabled"
+			     data-class-fastequip__cell--missing="cells[21].missing"
+			     data-event-mousedown="slot_press(29, ev.button)" data-event-mouseup="slot_release(29, ev.button)"
+			     data-event-dblclick="slot_use(29)" data-event-mouseover="slot_over(29)"
+			     data-event-mouseout="slot_out(29)" data-event-nuidrop="slot_drop(29)">
+				<img class="nui-slot__icon" data-if="cells[21].icon != ''" data-attr-src="cells[21].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[21].count != ''" data-attr-value="cells[21].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[21].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-30" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w30" data-if="cells[22].shown"
+			     data-class-is-empty="cells[22].kind == ''" data-class-is-target="cells[22].target == 'move'"
+			     data-class-is-blocked="cells[22].target == 'blocked'" data-class-is-disabled="cells[22].disabled"
+			     data-class-fastequip__cell--missing="cells[22].missing"
+			     data-event-mousedown="slot_press(30, ev.button)" data-event-mouseup="slot_release(30, ev.button)"
+			     data-event-dblclick="slot_use(30)" data-event-mouseover="slot_over(30)"
+			     data-event-mouseout="slot_out(30)" data-event-nuidrop="slot_drop(30)">
+				<img class="nui-slot__icon" data-if="cells[22].icon != ''" data-attr-src="cells[22].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[22].count != ''" data-attr-value="cells[22].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[22].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-31" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w31" data-if="cells[23].shown"
+			     data-class-is-empty="cells[23].kind == ''" data-class-is-target="cells[23].target == 'move'"
+			     data-class-is-blocked="cells[23].target == 'blocked'" data-class-is-disabled="cells[23].disabled"
+			     data-class-fastequip__cell--missing="cells[23].missing"
+			     data-event-mousedown="slot_press(31, ev.button)" data-event-mouseup="slot_release(31, ev.button)"
+			     data-event-dblclick="slot_use(31)" data-event-mouseover="slot_over(31)"
+			     data-event-mouseout="slot_out(31)" data-event-nuidrop="slot_drop(31)">
+				<img class="nui-slot__icon" data-if="cells[23].icon != ''" data-attr-src="cells[23].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[23].count != ''" data-attr-value="cells[23].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[23].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-32" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w32" data-if="cells[24].shown"
+			     data-class-is-empty="cells[24].kind == ''" data-class-is-target="cells[24].target == 'move'"
+			     data-class-is-blocked="cells[24].target == 'blocked'" data-class-is-disabled="cells[24].disabled"
+			     data-class-fastequip__cell--missing="cells[24].missing"
+			     data-event-mousedown="slot_press(32, ev.button)" data-event-mouseup="slot_release(32, ev.button)"
+			     data-event-dblclick="slot_use(32)" data-event-mouseover="slot_over(32)"
+			     data-event-mouseout="slot_out(32)" data-event-nuidrop="slot_drop(32)">
+				<img class="nui-slot__icon" data-if="cells[24].icon != ''" data-attr-src="cells[24].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[24].count != ''" data-attr-value="cells[24].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[24].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-33" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w33" data-if="cells[25].shown"
+			     data-class-is-empty="cells[25].kind == ''" data-class-is-target="cells[25].target == 'move'"
+			     data-class-is-blocked="cells[25].target == 'blocked'" data-class-is-disabled="cells[25].disabled"
+			     data-class-fastequip__cell--missing="cells[25].missing"
+			     data-event-mousedown="slot_press(33, ev.button)" data-event-mouseup="slot_release(33, ev.button)"
+			     data-event-dblclick="slot_use(33)" data-event-mouseover="slot_over(33)"
+			     data-event-mouseout="slot_out(33)" data-event-nuidrop="slot_drop(33)">
+				<img class="nui-slot__icon" data-if="cells[25].icon != ''" data-attr-src="cells[25].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[25].count != ''" data-attr-value="cells[25].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[25].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-36" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w36" data-if="cells[26].shown"
+			     data-class-is-empty="cells[26].kind == ''" data-class-is-target="cells[26].target == 'move'"
+			     data-class-is-blocked="cells[26].target == 'blocked'" data-class-is-disabled="cells[26].disabled"
+			     data-class-fastequip__cell--missing="cells[26].missing"
+			     data-event-mousedown="slot_press(36, ev.button)" data-event-mouseup="slot_release(36, ev.button)"
+			     data-event-dblclick="slot_use(36)" data-event-mouseover="slot_over(36)"
+			     data-event-mouseout="slot_out(36)" data-event-nuidrop="slot_drop(36)">
+				<img class="nui-slot__icon" data-if="cells[26].icon != ''" data-attr-src="cells[26].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[26].count != ''" data-attr-value="cells[26].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[26].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-37" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w37" data-if="cells[27].shown"
+			     data-class-is-empty="cells[27].kind == ''" data-class-is-target="cells[27].target == 'move'"
+			     data-class-is-blocked="cells[27].target == 'blocked'" data-class-is-disabled="cells[27].disabled"
+			     data-class-fastequip__cell--missing="cells[27].missing"
+			     data-event-mousedown="slot_press(37, ev.button)" data-event-mouseup="slot_release(37, ev.button)"
+			     data-event-dblclick="slot_use(37)" data-event-mouseover="slot_over(37)"
+			     data-event-mouseout="slot_out(37)" data-event-nuidrop="slot_drop(37)">
+				<img class="nui-slot__icon" data-if="cells[27].icon != ''" data-attr-src="cells[27].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[27].count != ''" data-attr-value="cells[27].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[27].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-38" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w38" data-if="cells[28].shown"
+			     data-class-is-empty="cells[28].kind == ''" data-class-is-target="cells[28].target == 'move'"
+			     data-class-is-blocked="cells[28].target == 'blocked'" data-class-is-disabled="cells[28].disabled"
+			     data-class-fastequip__cell--missing="cells[28].missing"
+			     data-event-mousedown="slot_press(38, ev.button)" data-event-mouseup="slot_release(38, ev.button)"
+			     data-event-dblclick="slot_use(38)" data-event-mouseover="slot_over(38)"
+			     data-event-mouseout="slot_out(38)" data-event-nuidrop="slot_drop(38)">
+				<img class="nui-slot__icon" data-if="cells[28].icon != ''" data-attr-src="cells[28].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[28].count != ''" data-attr-value="cells[28].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[28].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			<div id="fastequip-cell-39" class="nui-slot nui-anim nui-fx nui-has-tooltip fastequip__cell fastequip__cell--w39" data-if="cells[29].shown"
+			     data-class-is-empty="cells[29].kind == ''" data-class-is-target="cells[29].target == 'move'"
+			     data-class-is-blocked="cells[29].target == 'blocked'" data-class-is-disabled="cells[29].disabled"
+			     data-class-fastequip__cell--missing="cells[29].missing"
+			     data-event-mousedown="slot_press(39, ev.button)" data-event-mouseup="slot_release(39, ev.button)"
+			     data-event-dblclick="slot_use(39)" data-event-mouseover="slot_over(39)"
+			     data-event-mouseout="slot_out(39)" data-event-nuidrop="slot_drop(39)">
+				<img class="nui-slot__icon" data-if="cells[29].icon != ''" data-attr-src="cells[29].icon"/>
+				<nui-number class="nui-slot__number" data-if="cells[29].count != ''" data-attr-value="cells[29].count"/>
+				<div class="nui-slot__tint"></div>
+				<span class="nui-tooltip nui-anim fastequip__tip" data-if="cells[29].missing">@ui.FAST_EQUIP_MISSING</span>
+			</div>
+			</div>
+			<div class="fastequip__row-label fastequip__row-label--buffi" data-if="buffi_on">@ui.FAST_EQUIP_BUFFI</div>
+			<div class="fastequip__row-label fastequip__row-label--aura" data-if="aura_on">@ui.FAST_EQUIP_AURA</div>
+			<div class="fastequip__buttons">
+				<button id="fastequip-switch" class="nui-button nui-button--medium nui-anim fastequip__switch" data-event-mousedown="switch_press(ev.button)">@ui.FAST_EQUIP_SWITCH</button>
+				<button id="fastequip-clear" class="nui-button nui-button--medium nui-anim fastequip__clear" data-event-mousedown="clear_press(ev.button)">@ui.FAST_EQUIP_CLEAR</button>
+			</div>
+		</div>
+		<div id="fastequip-edit" class="nui-panel nui-fx fastequip__edit" data-if="edit_on">
+			<input id="fastequip-name" type="text" class="nui-input fastequip__name-input" maxlength="15"
+			       data-event-mousedown="name_press(ev.button)" data-event-change="name_typed(ev.value)"/>
+			<div class="fastequip__palette">
+				<div class="fastequip__swatch nui-anim" data-for="c : palette" data-attr-id="'fastequip-color-' + c.index" data-class-is-selected="c.selected"
+				     data-style---fe-color="c.css" data-event-mousedown="color_press(c.index, ev.button)"></div>
+			</div>
+			<div class="fastequip__edit-buttons">
+				<button id="fastequip-edit-ok" class="nui-button nui-button--medium nui-anim" data-event-mousedown="edit_ok(ev.button)">@game.UI_OK</button>
+				<button id="fastequip-edit-cancel" class="nui-button nui-button--medium nui-anim" data-event-mousedown="edit_cancel(ev.button)">@game.UI_CANCEL</button>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

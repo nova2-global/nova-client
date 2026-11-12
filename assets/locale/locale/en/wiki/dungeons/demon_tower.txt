@@ -1,0 +1,20 @@
+---
+title: Demon Tower
+category: dungeons
+---
+### Dungeon ticket
+No ticket is needed to enter this dungeon.
+
+### Bonus needed
+Strong against undead.
+
+--- {style=ornate}
+
+### Phase 1
+Destroy all the Metins of Ember and Gloom. Once the Metin is destroyed, you will be teleported to the next phase.
+
+### Phase 2
+Defeat the [[mob:1093]] to get the ![[item:30304]]. Use the key by right-clicking it or dragging it to the [[mob:20366|Sa-Soe Tomb]] to summon the [[mob:1094]]. Defeat the boss to move on to the next phase.
+
+### Phase 3
+The Blue Room is where you face the toughest challenge of the tower: the [[mob:1095]], ruler of the Demon Tower.

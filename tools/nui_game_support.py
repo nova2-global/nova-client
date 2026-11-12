@@ -68,6 +68,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_test_support as support  # noqa: E402
 
 ROOT = support.ROOT
+# The modules nui_wiki imports for its text pages (NOVA-139), in load order.
+WIKI_PAGE_MODULES = ("nui_wiki_page_format", "nui_wiki_pages")
 find_lines = support.find_lines
 
 GETTER_PREFIXES = ("Get", "Is", "Has", "Can", "LocalQuickSlotIndexTo", "Find")
@@ -1146,7 +1148,7 @@ class Game(object):
         self.element_counts = {}  # document -> elements, for nuigame.NuiStats (default 1)
         # Wave 3a (P11 spec 5.6): what the option windows read and write.
         self.settings = {"music_volume": 0.5, "sound_volume": 0.75, "fog_level": 1, "always_show_name": True,
-                         "show_damage": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0,
+                         "show_damage": True, "show_mob_level": True, "show_mob_ai": True, "ui_theme": "", "ui_scale_percent": 0, "ui_reduced_motion": 0,
                          # The pickup filter's four categories (NOVA-50; the
                          # client's PICKUP_FILTER_ALL by default).
                          "pickup_filter": [True, True, True, True]}
@@ -1337,6 +1339,9 @@ class Game(object):
             nui._nui.FollowPointer = lambda *args: True
             self.state.decorators.add("nui-cells")
         modules["nui"] = nui
+        # The real link tokens (NOVA-42 round 3), one module per client, so
+        # each world keeps its own registry of chat and whisper inputs.
+        modules["link_tokens"] = support.load_module("link_tokens", os.path.join(ROOT, "link_tokens.py"))
         return modules
 
     def _wave2b_modules(self, modules):
@@ -1516,6 +1521,10 @@ class Game(object):
         setter("SetFogLevel", lambda value: settings.__setitem__("fog_level", int(value)))
         setter("SetAlwaysShowNameFlag", lambda value: settings.__setitem__("always_show_name", bool(value)))
         setter("SetShowDamageFlag", lambda value: settings.__setitem__("show_damage", bool(value)))
+        getter("IsShowMobLevel", "show_mob_level", bool)
+        getter("IsShowMobAIFlag", "show_mob_ai", bool)
+        setter("SetShowMobLevel", lambda value: settings.__setitem__("show_mob_level", bool(value)))
+        setter("SetShowMobAIFlag", lambda value: settings.__setitem__("show_mob_ai", bool(value)))
         setter("SetViewChatFlag", lambda value: setattr(game, "view_chat", bool(value)))
         setter("SetShowSalesTextFlag", lambda value: setattr(game, "show_sales_text", bool(value)))
         setter("SetUITheme", lambda value: settings.__setitem__("ui_theme", value))
@@ -1579,7 +1588,17 @@ class Game(object):
 
     def load(self, name, file_name=None):
         """Imports assets/root/<file_name> as `name` over the stand-ins (and
-        keeps it in self.modules, so later loads import it)."""
+        keeps it in self.modules, so later loads import it). The data cache
+        (datacache.py, which the answer tables import) comes first, fresh for
+        each world, so a world is a client process; with no data version set
+        it keeps memory only and writes nothing."""
+        if name != "datacache" and "datacache" not in self.modules:
+            self.load("datacache", "datacache.py")
+        # The wiki imports its text pages (NOVA-139): the page format and the
+        # page store come first unless the test loaded its own.
+        for needed in WIKI_PAGE_MODULES if name == "nui_wiki" else ():
+            if needed not in self.modules:
+                self.load(needed, needed + ".py")
         with self:
             path = os.path.join(ROOT, file_name or (name.lower() + ".py"))
             sys.modules.pop(name, None)
@@ -2756,9 +2775,18 @@ def _wave3b_modules(game):
         def OpenHelpWindow(self):
             log.append(("interface.OpenHelpWindow", ()))
 
+        def OpenKillRank(self):
+            # NOVA-29: the inventory's Ranking (the rail's entry).
+            log.append(("interface.OpenKillRank", ()))
+
         def OpenSearchShop(self, vnum=0):
             # Wave 5 (NOVA-9): the inventory's Search button and Ctrl + click.
             log.append(("interface.OpenSearchShop", (vnum,) if vnum else ()))
+
+        def OpenWikiItem(self, vnum):
+            # NOVA-42: Shift + right-click; True when the wiki opened.
+            log.append(("interface.OpenWikiItem", (vnum,)))
+            return getattr(game, "wiki_opens", False)
 
     class DragonSoulRefine(object):
         shown = False

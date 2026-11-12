@@ -1,0 +1,85 @@
+---
+title: Shoulder Sash
+category: systems
+order: 110
+---
+![](d:/ymir work/ui/wiki/banners/shoulder.png){align=center width=100%}
+
+--- {style=ornate}
+
+## General Information:
+
+- The max. Absorption Rate is 25%.
+
+- Upgrading the Sash with an absorbed item will also enhance its stats.
+
+- The Shoulder Sash is a piece of visible equipment as the armour and weapon
+
+- Wearing Wing Costumes will hide the Sash used but the bonuses remain active
+
+- You can absorb armors or weapons to your Sash.
+
+- Absorbed items can be removed with certificate of reversal or certificate of reversal+
+
+![[item:85009]], ![[item:85010]]
+
+- Using this item will remove the item,
+  however it will **completely destroy** the item as well.
+
+- Using this item will remove the item,
+  however you will **keep the item** as well.
+
+--- {style=ornate}
+
+## Obtaining Sashes:
+
+- There are several types of Shoulder Sashes,
+  the difference between them is simply the look and the origin.
+
+\****Select** your preferred sash style to view its drop table.**
+
+![[item:85001]], ![[item:85011]], ![[item:85015]], ![[item:85005]]
+
+![[item:86005]], ![[item:86011]], ![[item:86015]], ![[item:86021]], ![[item:86025]], ![[item:86031]], ![[item:86035]], ![[item:86001]]
+
+![[item:86045]], ![[item:86051]], ![[item:86055]], ![[item:85021]], ![[item:86041]]
+
+Obtained from Bosses Obtained from Meley
+
+--- {style=ornate}
+
+## Upgrading Sashes:
+
+- You can **combine** Shoulder Sashes at Theowahdan.
+
+![[item:85001]], ![[item:85002]], ![[item:85003]], ![[item:85004]]
+
+![](d:/ymir work/ui/pet/arrow.png)
+
+![](d:/ymir work/ui/pet/arrow.png)
+
+![](d:/ymir work/ui/pet/arrow.png)
+
+- Sashes of the same grade can be combined to craft a higher quality Sash.
+
+- Same grade but different styles of Sashes can be combined together.
+
+- A custom sash can be improved by combining it with another custom Sash!
+
+\**Important:** Keep the Sash you want to keep in Sash 1 Slot.
+
+--- {style=ornate}
+
+## Bonus Absorption:
+
+- (Basic) Sashes absorb 1% of the bonus from armour or weapon.
+
+- (Fine) Sashes absorb 5% of the bonus from armour or weapon.
+
+- (Noble) Sashes absorb 10% of the bonus from armour or weapon.
+
+- (Custom) Sashes absorb 11 to 25% of the bonus from armour or weapon
+
+- Absorbed items can be removed with certificate of reversal or certificate of reversal+
+
+\**Note:** Certificate of Reversal will destroy your item, while Certificate of Reversal+ will not.

@@ -1,0 +1,82 @@
+/* Classic skin overlay of nui/windows/select-skill/select-skill.rml, direction D "Orbit" in the
+   Original theme (.nui-work/design/select-skill/pulled/ss.css, .t-classic): the classic skin's
+   real art on the window's 880 x 560 layout. The stone board, its title bar and close button are
+   the frame's (classic.rcss); the side panels are the thin board (nui-panel); the ring's skills sit
+   on the legacy slot art; each Choose button is the legacy XLarge_Button (180 x 25: the default,
+   over and down art) stretched to its panel's width, as the design does. The text is the legacy
+   font at its sizes, the second group's name in --classic-group-2. A hovered ring skill gets a
+   1dp accent line 1dp outside its slot (the design's outline): the cell is 36dp with the slot art
+   centered, and the line takes its place in the padding. */
+
+body.skin-classic.select-skill
+{
+	--select-skill-group-2: var(--classic-group-2);
+}
+/* The content below the title bar (which ends 30dp down): 22dp under it and 20dp in from the
+   board's edges, the design's 8dp of board and 12dp of padding. */
+body.skin-classic.select-skill .select-skill__body
+{
+	height: 530dp;
+	padding: 22dp 20dp 20dp;
+}
+body.skin-classic.select-skill .select-skill__side
+{
+	padding: 14dp;
+}
+body.skin-classic.select-skill .select-skill__head
+{
+	font-size: 13dp;
+	font-weight: normal;
+}
+body.skin-classic.select-skill .select-skill__rule
+{
+	background-color: var(--classic-separator);
+}
+body.skin-classic.select-skill .select-skill__row
+{
+	border-radius: 0;
+}
+body.skin-classic.select-skill .select-skill__pick
+{
+	height: 25dp;
+	line-height: 25dp;
+	padding: 0 4dp;
+	decorator: image("d:/ymir work/ui/public/xlarge_button_01.sub");
+	color: var(--text);
+}
+body.skin-classic.select-skill .select-skill__pick:hover
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_button_02.sub");
+	color: var(--accent);
+}
+body.skin-classic.select-skill .select-skill__pick:active
+{
+	decorator: image("d:/ymir work/ui/public/xlarge_button_03.sub");
+	color: var(--accent);
+}
+body.skin-classic.select-skill .select-skill__cell
+{
+	width: 36dp;
+	height: 36dp;
+	padding: 2dp;
+	decorator: image("d:/ymir work/ui/public/slot_base.sub" scale-none center center);
+}
+body.skin-classic.select-skill .select-skill__cell.is-selected
+{
+	padding: 1dp;
+	border-width: 1dp;
+	border-color: var(--accent);
+}
+body.skin-classic.select-skill .select-skill__now,
+body.skin-classic.select-skill .select-skill__now.is-idle
+{
+	padding: 0;
+	border-radius: 0;
+	background-color: transparent;
+	font-weight: normal;
+	color: var(--accent);
+}
+body.skin-classic.select-skill .select-skill__now.is-idle
+{
+	color: var(--text-muted);
+}

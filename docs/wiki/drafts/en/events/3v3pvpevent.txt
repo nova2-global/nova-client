@@ -1,0 +1,69 @@
+---
+title: 3vs3 Tournament
+category: events
+order: 173
+---
+![](d:/ymir work/ui/wiki/banners/3v3pvp.png){align=center width=100%}
+
+## 3v3 PvP Event — Team Up & Dominate!
+
+- **The 3v3 PvP Event is a competitive team-based tournament hosted**
+  bi-weekly. More information and announcements are provided on our **Discord**.
+
+- You can access the event through the Battle Bailiff located in Map 1 of each kingdom.
+
+- The tournament format is **single-elimination** — once your team loses, you're out!
+  Only two teams will battle at a time, ensuring fair and focused matches.
+
+- This is a PvP tournament designed **exclusively for level 150 characters**, where players of
+  the **same class** face off in one-on-one single-elimination duels.
+
+--- {style=ornate}
+
+## Event Rewards:
+
+- The (3) Players in the winning team will each receive and a special tag for 14 Days!
+
+--- {style=ornate}
+
+## Event Rules:
+
+- No potions are allowed.
+
+- No HP fishes are allowed.
+
+- No external buffs — only use buffs from your own character.
+
+- Any kind of temporary or permanent invisibility from items or fishes is not allowed.
+
+- Stealth (Dagger Ninja) skill is allowed, but using it for more than 20 seconds will result in a loss.
+
+- Starting the fight before the official announcement will result in disconnection and a loss.
+
+- Leaving the starting position early will result in disconnection and a loss.
+
+- The use of horses and mounts is not allowed.
+
+- Guild war skills are not allowed.
+
+- Forming or using groups is not allowed.
+
+- The use of bots, hacks, macros, or lag switches is strictly prohibited.
+
+- Running into the arena before your match is not permitted.
+
+- Sending friend requests, guild invites, or other interruptions to disrupt other players during the
+  event is strictly forbidden.
+
+--- {style=ornate}
+
+## Important Notes
+
+- All cases and disputes will be reviewed and decided by the staff team depending on the situation.
+
+- If the “Teleport back” button appears before your fight starts, **do not click it!**
+  It will teleport you out of the arena and result in automatic disqualification.
+
+- If you register for the tournament and then return to the city, you will **remain registered.**
+  However, if you are not present in the PvP Arena when it’s your turn, you will be **disqualified.**
+![[item:80017]]

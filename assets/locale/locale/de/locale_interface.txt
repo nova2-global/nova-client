@@ -608,3 +608,48 @@ DUNGEON_MANAGER_SHOW_HIDDEN	Show Hidden
 DUNGEON_MANAGER_NOTICE	Notify me when ready
 DUNGEON_RANK_LOADING	Loading...
 DUNGEON_MANAGER_NO_DROPS	No drops known for this dungeon.
+FAST_EQUIP_TITLE	Schnelles Equipment
+FAST_EQUIP_SWITCH	Wechseln
+FAST_EQUIP_CLEAR	Leeren
+FAST_EQUIP_SETS	Sets
+FAST_EQUIP_BUFFI	Buffi
+FAST_EQUIP_AURA	Aura
+FAST_EQUIP_BUTTON	FE
+FAST_EQUIP_MISSING	Not on this character
+OPTION_MOB_INFO	Monster info
+OPTION_MOB_INFO_AGGR	Aggressiv
+OPTION_MOB_INFO_LEVEL	Level
+SELECT_CLASS	Wählen Sie Ihre Klasse
+SELECT_SKILL_CHOOSE	Choose %s
+SELECT_SKILL_IDLE	Idle
+SELECT_SKILL_IDLE_HINT	Hover a skill or a side
+SELECT_SKILL_PLAYS_WARRIOR_1	Fast sword attacks on several enemies, with Berserk and Aura of the Sword for damage.
+SELECT_SKILL_PLAYS_WARRIOR_2	A sturdy front line: splash strikes, knockdowns and Strong Body for defense.
+SELECT_SKILL_PLAYS_ASSASSIN_1	Daggers up close: strike from behind or from stealth, then poison the crowd.
+SELECT_SKILL_PLAYS_ASSASSIN_2	An archer: volleys of fire and poison arrows at range, Feather Walk for speed.
+SELECT_SKILL_PLAYS_SURA_1	A cursed blade up close: Enchanted Blade, dark armor, and Fear to weaken foes.
+SELECT_SKILL_PLAYS_SURA_2	A dark caster: long-range dark and flame spells, with Dark Protection.
+SELECT_SKILL_PLAYS_SHAMAN_1	Dragon spells at range, plus Blessing, Reflect and Dragon's Strength for the party.
+SELECT_SKILL_PLAYS_SHAMAN_2	Lightning at range, plus Cure, Swiftness and Attack Up for the party.
+DUNGEON_MANAGER_DROPS_HEAD	Drops
+DUNGEON_MANAGER_READY	Ready
+DUNGEON_MANAGER_HIDDEN	Hidden
+DUNGEON_MANAGER_N_HIDDEN	%d hidden
+DUNGEON_MANAGER_DONE	Done
+DUNGEON_MANAGER_BOSS_LINE	Boss: %s
+DUNGEON_MANAGER_LEVEL_RANGE	Lv %d-%d
+DUNGEON_MANAGER_TICKET_NONE	None
+DUNGEON_MANAGER_WIKI	Wiki
+DUNGEON_MANAGER_N_OF_M	%d of %d
+DUNGEON_MANAGER_RUN	Run
+DUNGEON_MANAGER_PRACTICE	Practice
+DUNGEON_MANAGER_START_PRACTICE	Start practice
+DUNGEON_MANAGER_READY_IN	Ready in
+DUNGEON_MANAGER_PRACTICE_NOTE	Practice fight: boss only, no drops. Just to see if you can win.
+DUNGEON_MANAGER_RANK	Rank
+DUNGEON_MANAGER_RANK_TIME	Time
+DUNGEON_MANAGER_RANK_OVERALL	Overall
+DUNGEON_MANAGER_RANK_DAMAGE	Damage
+DUNGEON_MANAGER_FILTER_GUARANTEED	Guaranteed
+DUNGEON_MANAGER_FILTER_COMMON	Common
+DUNGEON_MANAGER_FILTER_RARE	Rare

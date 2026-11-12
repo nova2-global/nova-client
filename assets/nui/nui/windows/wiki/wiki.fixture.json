@@ -1,0 +1,352 @@
+{
+	"wiki": {
+		"tree": [
+			{
+				"cat": 0,
+				"label": "Equipment",
+				"open": true,
+				"subs": [
+					{
+						"cat": 0,
+						"sub": 0,
+						"label": "Weapons",
+						"selected": true
+					},
+					{
+						"cat": 0,
+						"sub": 1,
+						"label": "Armor",
+						"selected": false
+					}
+				]
+			},
+			{
+				"cat": 2,
+				"label": "Bosses",
+				"open": false,
+				"subs": []
+			}
+		],
+		"list": [
+			{
+				"i": 0,
+				"vnum": 19,
+				"mob": false,
+				"icon": "/icon/item/27992.tga",
+				"name": "Moon Blade",
+				"note": ""
+			},
+			{
+				"i": 1,
+				"vnum": 8002,
+				"mob": true,
+				"icon": "",
+				"name": "Wolf King",
+				"note": "Lv. 20"
+			}
+		],
+		"list_state": "ready",
+		"list_title": "Weapons",
+		"list_count": "2",
+		"list_sel": 0,
+		"home": false,
+		"quick": [
+			{
+				"cat": 0,
+				"label": "Equipment",
+				"subs": [
+					{
+						"cat": 0,
+						"sub": 0,
+						"label": "Weapons"
+					},
+					{
+						"cat": 0,
+						"sub": 1,
+						"label": "Armor"
+					},
+					{
+						"cat": 0,
+						"sub": 2,
+						"label": "Helmets"
+					},
+					{
+						"cat": 0,
+						"sub": 3,
+						"label": "Shields"
+					},
+					{
+						"cat": 0,
+						"sub": 4,
+						"label": "Earrings"
+					},
+					{
+						"cat": 0,
+						"sub": 5,
+						"label": "Bracelets"
+					},
+					{
+						"cat": 0,
+						"sub": 6,
+						"label": "Necklaces"
+					},
+					{
+						"cat": 0,
+						"sub": 7,
+						"label": "Shoes"
+					},
+					{
+						"cat": 0,
+						"sub": 8,
+						"label": "Belts"
+					},
+					{
+						"cat": 0,
+						"sub": 9,
+						"label": "Rings"
+					}
+				]
+			},
+			{
+				"cat": 1,
+				"label": "Chests",
+				"subs": [
+					{
+						"cat": 1,
+						"sub": 0,
+						"label": "Boss Chests"
+					},
+					{
+						"cat": 1,
+						"sub": 1,
+						"label": "Event Chests"
+					},
+					{
+						"cat": 1,
+						"sub": 2,
+						"label": "Other Chests"
+					}
+				]
+			},
+			{
+				"cat": 2,
+				"label": "Bosses",
+				"subs": [
+					{
+						"cat": 2,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 2,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 2,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 3,
+				"label": "Monsters",
+				"subs": [
+					{
+						"cat": 3,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 3,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 3,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 4,
+				"label": "Metin Stones",
+				"subs": [
+					{
+						"cat": 4,
+						"sub": 0,
+						"label": "Lv. 1-109"
+					},
+					{
+						"cat": 4,
+						"sub": 1,
+						"label": "Lv. 110-129"
+					},
+					{
+						"cat": 4,
+						"sub": 2,
+						"label": "Lv. 130+"
+					}
+				]
+			},
+			{
+				"cat": 5,
+				"label": "Costumes",
+				"subs": [
+					{
+						"cat": 5,
+						"sub": 0,
+						"label": "Weapon Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 1,
+						"label": "Armor Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 2,
+						"label": "Hair Costumes"
+					},
+					{
+						"cat": 5,
+						"sub": 3,
+						"label": "Pets"
+					},
+					{
+						"cat": 5,
+						"sub": 4,
+						"label": "Mounts"
+					},
+					{
+						"cat": 5,
+						"sub": 5,
+						"label": "Wings"
+					},
+					{
+						"cat": 5,
+						"sub": 6,
+						"label": "Masks"
+					},
+					{
+						"cat": 5,
+						"sub": 7,
+						"label": "Effects"
+					}
+				]
+			}
+		],
+		"recent": [],
+		"tabs": [
+			{
+				"i": 0,
+				"label": "Moon Blade",
+				"active": true
+			},
+			{
+				"i": 1,
+				"label": "Wolf King",
+				"active": false
+			},
+			{
+				"i": 2,
+				"label": "Home",
+				"active": false
+			}
+		],
+		"tabs_full": false,
+		"can_back": true,
+		"can_forward": false,
+		"crumbs": [
+			{
+				"i": 0,
+				"label": "Home",
+				"last": false,
+				"link": true
+			},
+			{
+				"i": 1,
+				"label": "Equipment",
+				"last": false,
+				"link": false
+			},
+			{
+				"i": 2,
+				"label": "Weapons",
+				"last": false,
+				"link": true
+			},
+			{
+				"i": 3,
+				"label": "Moon Blade",
+				"last": true,
+				"link": false
+			}
+		],
+		"page_state": "ready",
+		"page_kind": "item",
+		"page_vnum": 19,
+		"page_name": "Moon Blade",
+		"page_sub": "",
+		"page_icon": "/icon/item/27992.tga",
+		"page_common": false,
+		"page_link": true,
+		"model_view": false,
+		"hover_view": false,
+		"menu": [],
+		"menu_x": 0.0,
+		"menu_y": 0.0,
+		"origins": [
+			{
+				"i": 0,
+				"label": "Dropped by",
+				"name": "Wolf King",
+				"link": true
+			},
+			{
+				"i": 1,
+				"label": "Sold by",
+				"name": "Weaponsmith",
+				"link": false
+			}
+		],
+		"chest": [
+			{
+				"i": 0,
+				"vnum": 27001,
+				"icon": "/icon/item/27001.tga",
+				"name": "Red Potion (S)",
+				"count": "5"
+			}
+		],
+		"refine": [
+			{
+				"label": "+1",
+				"cost": "10,000 Yang",
+				"mats": [
+					{
+						"vnum": 30000,
+						"count": "3",
+						"icon": "/icon/item/27992.tga"
+					}
+				]
+			}
+		],
+		"drops": [],
+		"retry_at": 0.0,
+		"timeout_at": 0.0,
+		"tp_title": "",
+		"tp_blocks": [],
+		"tp_decor": [],
+		"tp_view": [],
+		"tp_open_at": 0.0,
+		"classes": [],
+		"viewer": false,
+		"viewer_name": "",
+		"list_range": "",
+		"list_prev": false,
+		"list_next": false
+	}
+}

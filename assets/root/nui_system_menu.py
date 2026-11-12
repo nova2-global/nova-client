@@ -57,7 +57,7 @@ class SystemDialog(nui_hud.LayoutCalls):
 		nui_hud.take_over(self.KEY, self)
 		self._nui_discarded = False
 		self.eventOpenHelpWindow = None
-		self.eventOpenKillRank = None
+		self.eventOpenWiki = None
 		self.systemOptionDlg = None
 		self.gameOptionDlg = None
 		# The change channel dialog (NOVA-49), made on its first open.
@@ -113,7 +113,6 @@ class SystemDialog(nui_hud.LayoutCalls):
 		if self.moveChannelDlg:
 			self.moveChannelDlg.Destroy()
 		self.eventOpenHelpWindow = None
-		self.eventOpenKillRank = None
 		self.systemOptionDlg = None
 		self.gameOptionDlg = None
 		self.moveChannelDlg = None
@@ -122,8 +121,8 @@ class SystemDialog(nui_hud.LayoutCalls):
 	def SetOpenHelpWindowEvent(self, event):
 		self.eventOpenHelpWindow = event
 
-	def SetOpenKillRankEvent(self, event):
-		self.eventOpenKillRank = event
+	def SetOpenWikiEvent(self, event):
+		self.eventOpenWiki = event
 
 	def OpenDialog(self):
 		self.Show()
@@ -182,10 +181,10 @@ class SystemDialog(nui_hud.LayoutCalls):
 				self.eventOpenHelpWindow()
 		elif what == "mall":
 			net.SendChatPacket("/in_game_mall")
-		elif what == "kill_rank":
-			# The kill ranking (NOVA-29), legacy's __ClickKillRankButton.
-			if self.eventOpenKillRank is not None:
-				self.eventOpenKillRank()
+		elif what == "wiki":
+			# The ingame wiki (NOVA-42).
+			if self.eventOpenWiki is not None:
+				self.eventOpenWiki()
 		elif what == "system_options":
 			if not self.systemOptionDlg:
 				self.systemOptionDlg = uiSystemOption.OptionDialog()

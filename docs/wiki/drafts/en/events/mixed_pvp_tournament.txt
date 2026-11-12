@@ -1,0 +1,77 @@
+---
+title: PvP Tournament
+category: events
+order: 172
+---
+![](d:/ymir work/ui/wiki/banners/mixedtourney.png){align=center width=100%}
+
+## Mixed PvP Tournament — Clash of All Classes!
+
+- **The Mixed PvP Tournament is a fierce combat event that currently takes**
+  place every **Sunday evening at 21:00 (Server Time)**.
+
+- You can access the event through the Battle Bailiff located in Map 1 of each kingdom.
+
+- This is a PvP tournament designed for **Lv131 - 150**, and unlike the Class Tournament,
+  you can face off against **any class** in thrilling, unpredictable battles!
+
+--- {style=ornate}
+
+## Event Rewards:
+
+- The rewards vary depending on your level bracket. Fight with honor and claim your prize!
+
+- **Level 131–150 is rewarded and !**
+
+The **Custom Costume Voucher** is a special reward granted only to the top-tier champions.
+It allows you to **recolour any skin of your choice!**
+
+- To claim your custom costume, simply **open a ticket on our Discord** and specify the costume
+  and color combination you’d like to receive.
+
+- **Note: The colors you request must be original and not already available in the game!**
+
+![[item:80017]], ![[item:75551]]
+
+--- {style=ornate}
+
+## Event Rules:
+
+- No potions are allowed.
+
+- No HP fishes are allowed.
+
+- No external buffs — only use buffs from your own character.
+
+- Any kind of temporary or permanent invisibility from items or fishes is not allowed.
+
+- Stealth (Dagger Ninja) skill is allowed, but using it for more than 20 seconds will result in a loss.
+
+- Starting the fight before the official announcement will result in disconnection and a loss.
+
+- Leaving the starting position early will result in disconnection and a loss.
+
+- The use of horses and mounts is not allowed.
+
+- Guild war skills are not allowed.
+
+- Forming or using groups is not allowed.
+
+- The use of bots, hacks, macros, or lag switches is strictly prohibited.
+
+- Running into the arena before your match is not permitted.
+
+- Sending friend requests, guild invites, or other interruptions to disrupt other players during the
+  event is strictly forbidden.
+
+--- {style=ornate}
+
+## Important Notes
+
+- All cases and disputes will be reviewed and decided by the staff team depending on the situation.
+
+- If the “Teleport back” button appears before your fight starts, **do not click it!**
+  It will teleport you out of the arena and result in automatic disqualification.
+
+- If you register for the tournament and then return to the city, you will **remain registered.**
+  However, if you are not present in the PvP Arena when it’s your turn, you will be **disqualified.**

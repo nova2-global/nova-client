@@ -19,7 +19,8 @@ stand-in world (nui_w4_world's, social), and both must do the same:
 - the top killers (uiguild.py TopWarPlayersDialog, nui_guild_war_top.py):
   the two sides, OLD's order, the MVP, the score, a line of a third guild
   ignored (OLD raised a KeyError), no show outside a war;
-- the system menu's Ranking button in both menus;
+- the ranking's entry: the inventory's (legacy's button, as OLD's, and the
+  NovaUI rail's), no system menu's;
 - every new key in all 17 locales, OLD's text where OLD's locale has it."""
 import os
 import sys
@@ -29,6 +30,8 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import nui_game_support as support  # noqa: E402
 import nui_w4_world as w4  # noqa: E402
 import social_test  # noqa: E402
+import legacy_foundation_test as lf  # noqa: E402
+import extra_inventory_test as xinv  # noqa: E402
 
 FLAGS = "+social,+duel-rules,+kill-rank,+guild-war-top"
 MODULES = w4.SOCIAL_MODULES + ("nui_duel_rules", "nui_kill_rank", "nui_guild_war_top")
@@ -458,17 +461,66 @@ class Wiring(unittest.TestCase):
 		             "onClickKeyDict[app.DIK_TAB] = lambda : self.interface.CloseTopKillers()"):
 			self.assertIn(line, source)
 
-	def test_the_system_menus_ranking_button(self):
+	def read_nui(self, *parts):
+		with open(os.path.join(support.ROOT, "..", "nui", "nui", *parts), encoding="utf-8") as handle:
+			return handle.read()
+
+	def test_no_system_menu_has_a_ranking_button(self):
+		"""OLD's system dialog has no Ranking: the menus are back to their
+		layout before wave 7 (318 high, the change channel at 147)."""
 		window = social_test.uiscript("systemdialog.py")
 		buttons = social_test.children(window, "board")
-		self.assertEqual(buttons["killrank_button"]["y"], 147)
-		self.assertEqual(buttons["killrank_button"]["text"], "SYSTEM_KILL_RANK")
-		self.assertEqual(buttons["cancel_button"]["y"], 307)
-		self.assertEqual(window["height"], 348)
-		self.assertIn('self.GetChild("killrank_button").SAFE_SetEvent(self.__ClickKillRankButton)', self.read("uisystem.py"))
-		self.assertIn('elif what == "kill_rank":', self.read("nui_system_menu.py"))
-		self.assertIn("self.dlgSystem.SetOpenKillRankEvent(ui.__mem_func__(self.OpenKillRank))",
-		              self.read("interfacemodule.py"))
+		self.assertNotIn("killrank_button", buttons)
+		self.assertEqual(buttons["movechannel_button"]["y"], 147)
+		self.assertEqual(buttons["cancel_button"]["y"], 277)
+		self.assertEqual(window["height"], 318)
+		for name in ("uisystem.py", "nui_system_menu.py"):
+			source = self.read(name)
+			self.assertNotIn("KillRank", source, name)
+			self.assertNotIn("kill_rank", source, name)
+		self.assertNotIn("SetOpenKillRankEvent", self.read("interfacemodule.py"))
+		self.assertNotIn("kill-rank", self.read_nui("windows", "system-menu", "system-menu.rml"))
+		self.assertNotIn("kill_rank", self.read_nui("windows", "system-menu", "system-menu.rml"))
+		classic = self.read_nui("skins", "classic", "windows", "system-menu.rcss")
+		self.assertNotIn("kill-rank", classic)
+		self.assertIn("height: 318dp;", classic)
+
+	def test_both_inventory_uiscripts_have_olds_ranking_button(self):
+		"""OLD's extra inventory strip had the Ranking (uiscript
+		extrainventorywindow.py:93-104, art NEW's packs lack): a stock text
+		button beside the special inventory's, inside the board."""
+		for path in (os.path.join(lf.UISCRIPT, "inventorywindow.py"),
+		             os.path.join(lf.LOCALES, "ae", "ui", "inventorywindow.py")):
+			with self.subTest(path=path):
+				world = xinv.World()
+				with world:
+					window = lf.read_uiscript(path)["window"]
+				board = lf.child(window, "board")
+				extra = lf.child(window, "ExtraInventoryButton")
+				ranking = lf.child(window, "RankingButton")
+				self.assertEqual(ranking["text"], "SYSTEM_KILL_RANK")
+				self.assertEqual(ranking["default_image"], "d:/ymir work/ui/public/middle_button_01.sub")
+				self.assertEqual(ranking["y"], extra["y"], "one row with the special inventory's button")
+				self.assertNotIn("horizontal_align", extra)
+				left, right = sorted((extra, ranking), key=lambda b: b["x"])
+				width = lambda b: 88 if b is extra else 61
+				self.assertGreaterEqual(right["x"], left["x"] + width(left), "side by side")
+				self.assertGreaterEqual(left["x"], 8)
+				self.assertLessEqual(right["x"] + width(right), board["width"] - 8)
+
+	def test_the_legacy_inventory_s_button_opens_the_ranking(self):
+		world = xinv.World()
+		world.game.interface.OpenKillRank = lambda: world.game.log.append(("interface.OpenKillRank", ()))
+		window = lf.make_inventory(world)
+		with world, lf.quiet():
+			window.rankingButton.Click()
+		self.assertEqual(world.game.calls("interface.OpenKillRank"), [("interface.OpenKillRank", ())])
+		self.assertIn("self.interface.OpenKillRank()", self.read("uiinventory.py"))
+
+	def test_the_novaui_rail_s_ranking_is_live(self):
+		source = self.read("nui_inventory.py")
+		self.assertIn('("ranking", "ranking", "@ui.NUI_RAIL_RANKING", _open_kill_rank, False),', source)
+		self.assertIn("interface.OpenKillRank()", source)
 
 
 class Locales(unittest.TestCase):

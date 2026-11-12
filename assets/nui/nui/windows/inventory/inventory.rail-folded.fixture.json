@@ -1384,7 +1384,9 @@
 		"has_costume": true,
 		"has_dss": true,
 		"has_mall": true,
+		"has_wiki": false,
 		"has_extra": true,
+		"has_fastequip": true,
 		"placed": false,
 		"bag_attaching": false,
 		"attach_right": true,
@@ -1423,7 +1425,7 @@
 				"glyph": "ranking",
 				"tip": "@ui.NUI_RAIL_RANKING",
 				"enabled": true,
-				"soon": true,
+				"soon": false,
 				"badge": ""
 			},
 			{

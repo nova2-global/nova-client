@@ -1,0 +1,33 @@
+---
+title: Aqua Dragon
+category: dungeons
+order: 127
+---
+![](d:/ymir work/ui/wiki/banners/aquadragon.png){align=center width=100%}
+
+### Dungeon Ticket:
+
+No ticket is needed to enter this dungeon.
+
+### Recommended Bonuses:
+
+Strong Against Devil
+
+--- {style=ornate}
+
+### Phase 1:
+
+In this phase, you can destroy the four Metin Stones to weaken the Dragon, but it’s optional.
+
+### Phase 2:
+
+Slay Beran Setaou.
+
+--- {style=ornate}
+
+### Lucky Boss:
+
+Lucky Bosses are rare enemies that appear after defeating the regular boss.
+They drop the same materials as the standard boss but also have a chance to
+reward you with an exclusive costume!
+![[item:42199]]

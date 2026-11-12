@@ -1,0 +1,95 @@
+{
+	"$comment": "Golden cases of the mob info board (NOVA-40): the drops list, and a mob with no drops.",
+	"cases": [
+		{
+			"page": "target-info",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"1280x560"
+				],
+				[
+					"150",
+					"1.5",
+					"1920x840"
+				],
+				[
+					"200",
+					"2",
+					"2560x1120"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "target-info",
+			"variant": "empty",
+			"themes": "all",
+			"except": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"1280x480"
+				]
+			],
+			"fixture": true,
+			"time": null
+		},
+		{
+			"page": "target-info",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"1280x560"
+				],
+				[
+					"150",
+					"1.5",
+					"1920x840"
+				],
+				[
+					"200",
+					"2",
+					"2560x1120"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		},
+		{
+			"page": "target-info",
+			"variant": "empty",
+			"themes": [
+				"classic"
+			],
+			"scales": [
+				[
+					"100",
+					"1",
+					"1280x480"
+				]
+			],
+			"fixture": true,
+			"roots": [
+				"assets/ETC"
+			],
+			"time": null
+		}
+	]
+}

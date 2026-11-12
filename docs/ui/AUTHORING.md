@@ -726,6 +726,8 @@ What the color roles mean:
 | `--slot-disabled` | `#ff6f6a38` | `#c4322b38` | `#ff00004d` |
 | `--slot-locked` | `#0000008c` | `#15171c66` | `#00000080` |
 | `--slot-picked` | `#a594ff38` | `#5a45e638` | `#ffffff80` |
+| `--dungeon-badge-ready` | `#6fd49a` | `#6fd49a` | `#8ab98e` |
+| `--dungeon-badge-cooldown` | `#ff8a85` | `#ff8a85` | `#ff8a85` |
 | `--notice-bar` | `#00000080` | `#00000080` | `#00000080` |
 | `--notice-text-big` | `#f2e7c1` | `#f2e7c1` | `#f2e7c1` |
 | `--edge-gm` | `#b9791c` | `#ffb547` | `#ffa200` |
@@ -865,6 +867,7 @@ What the color roles mean:
 | `--classic-gb-enough` | classic | `#c2c2c2` |
 | `--classic-gb-short` | classic | `#e67976` |
 | `--classic-skill-group-text` | classic | `#ffe3ad` |
+| `--classic-group-2` | classic | `#7ab4ff` |
 | `--classic-maintenance-label` | classic | `#f35637` |
 | `--classic-maintenance-time` | classic | `#dbad7b` |
 | `--classic-switchbot-idle` | classic | `#ff000033` |
@@ -1436,7 +1439,7 @@ Main's Wave 6 (NOVA-19 to NOVA-23: quivers, the sash, the weapon costume, the co
 Wave 7's PvP port (NOVA-28 duel rules, NOVA-29 kill ranking and guild war top killers) added three legacy windows, each with its NovaUI facade in the [Wave 4](#wave-4-windows) subclass pattern (`nui_facade.Facade`, the legacy loader overridden by its mangled name, proxies where the widgets were), so the commands sent, the rules and the rows are legacy's code, and none runs Python per frame:
 
 - **The duel rules** (`duel-rules`, in the `hud` group; `nui_duel_rules.DuelRulesDialog` over `uiduel.DuelRulesDialog`): the target board's Fight button (legacy's and `nui_target`'s) opens it; nine check rows (OLD's rules in OLD's order, `uiDuel.DUEL_FLAGS`; the advanced pet's rule waits for NOVA-24), Fight sends `/pvp <vid> <rules>`, Cancel and X close it; the ticked rules stay between opens, as OLD's. The board's `CheckBoxProxy` stands for `ui.CheckBox`. At legacy's place under the target board. The target board also gained Deny and Pardon (`/cancel_pvp <vid>`), and `game.py` says a challenge's rules whisper (`<<~N~>>`) as OLD's list.
-- **The kill ranking** (`kill-rank`, in the `social` group; `nui_kill_rank.KillRankWindow` over `uikillrank.KillRankWindow`): eight ranking tabs, the first ten places (gold, silver, bronze) and the player's own row (a dash without a place), from `GC::KILL_RANK` through `game.py`'s `RefreshKillRank` and `SetPersonalKillRank`. Legacy's walk-away (1500, in `OnUpdate`) is a `nuigame.WatchLeaveRange` watch under its key (`LEAVE_RANGE_KEYS`). The system menu's Ranking button opens it until the extra inventory carries OLD's button.
+- **The kill ranking** (`kill-rank`, in the `social` group; `nui_kill_rank.KillRankWindow` over `uikillrank.KillRankWindow`): eight ranking tabs, the first ten places (gold, silver, bronze) and the player's own row (a dash without a place), from `GC::KILL_RANK` through `game.py`'s `RefreshKillRank` and `SetPersonalKillRank`. Legacy's walk-away (1500, in `OnUpdate`) is a `nuigame.WatchLeaveRange` watch under its key (`LEAVE_RANGE_KEYS`). The inventory opens it, as OLD's: legacy's Ranking button beside the special inventory's, and the NovaUI rail's ranking entry (`Interface.OpenKillRank`); no system menu has the button.
 - **The guild war top killers** (`guild-war-top`, in the `hud2` group; `nui_guild_war_top.TopWarPlayersDialog` over `uiguild.TopWarPlayersDialog`): shown while TAB is held during a war; the player's guild on the left, the enemy's on the right, each its name and score, its MVP and ten rows (the modern looks add the race's portrait). Each `GC::GUILD_WAR_TOP` line reaches `Update` through `game.py`'s `BINARY_WarTop`.
 
 **Tests:** `tools/pvp_test.py` (each flow on legacy's window and the facade in one stand-in world, the board's model, the walk-away watch, the fixtures, the wiring, the locales). Goldens: `duel-rules`, `-none`; `kill-rank`, `-empty`; `guild-war-top`, `-start`; each with `reduced-motion` and `no-effects`.
@@ -1445,11 +1448,11 @@ Wave 7's PvP port (NOVA-28 duel rules, NOVA-29 kill ranking and guild war top ki
 
 NOVA-25's three windows follow the [Wave 4 windows](#wave-4-windows) pattern on the legacy classes of `uitimerwindow.py` and `uidungeonrank.py` (OLD's `uiTimerWindow.py` and `uiDungeonRank.py`, written for NEW: OLD's art is not in NEW's packs and its 3D boss preview waits for NOVA-137):
 
-- **The dungeon manager** (`dungeon-timer`, `nui_dungeon_timer.TimerWindow`, F6): the loader's proxies and two makers (`__MakeBoard`, a dungeon's row; `__MakeDescLine`, a description line) keep the list, hiding and showing, the chosen dungeon, the ticket's tooltip (`LegacySlotEvents` over the one cell), the teleport and the ranking and drops buttons legacy's. Legacy counts each row's re-entry clock in rounded-up minutes every frame (`game.OnUpdate`, `Interface.UpdateTimer`); here a row's clock is a `nui-countdown format="ms"` whose `countdownend` (`row_ready`) turns it ready, and `UpdateTime` does nothing. The clocks are kept per dungeon in the window (`endTimes`), so a hidden row keeps its clock. The ready notice of a checked dungeon is `nui_dungeon_notice.Notices`: a `dungeon-notice` overlay document, loaded only while a clock is watched or a box shows, whose hidden `nui-countdown format="none"` timers raise `timer_end` and, three seconds after a box shows, `toast_end`.
-- **The drops panel** (`dungeon-drops`, `nui_dungeon_drops.MobDropPopup`), made by the manager's `LoadWindow` through `make()`: the mobs in the server's order, a mob's items (icon, `"<count>x <name>"`, the chance band), the header back. The legacy board's own sizing and title calls do nothing under the facade.
+- **The dungeon manager** (`dungeon-timer`, `nui_dungeon_timer.TimerWindow`, F6): direction D "Bestiary" in every theme, classic included (820 x 540). The loader's proxies keep the list and its order, the chosen dungeon, the hidden-dungeon rule (`HIDDEN_DUNGEONS`, session and level; `HideDungeon`), the ticket's tooltip (`LegacySlotEvents` over the one cell), the teleport and the ranking commands legacy's. The board is a deck: every dungeon has a card (`cards`), its place a slot class (`--c`, `--r1`, `--l1`, `--r2`, `--l2`, `--r3`, `--l3`, `--out`; the sheet transitions `left top width height opacity` over 0.3 s) from the design's wrap-around; each visible card shows its boss through its own named preview `dungeon_boss_<idx>` (view `model-dungeon-boss-<idx>`, one view size scaled by the slot so a turn never resizes a render target), a monogram for a race without a model, and a badge (Ready, a `nui-countdown format="ms"` whose `countdownend` raises `card_ready`, Hidden). The previews are selected once per show (`Select` only when a card first comes into view, shown only while visible) and cleared when the window hides. The eye on the front card hides it (the next card takes the front; the last visible dungeon cannot be hidden), and the "N hidden" chip shows the hidden cards dashed and becomes Done. The drops of all the dungeon's mobs are one de-duplicated grid (`uiTimerWindow.merged_drops`: guaranteed, common, rare; a vnum keeps its best band) with filter chips; the drops request keeps the retry inside the server's one-a-second limit and the loading and empty states. Run or Practice: Run is Teleport (or `Ready in` the live clock, locked), Practice sends `/practice_dungeon <index>`, shows the note and dims the grid. The Wiki button calls `Interface.OpenWikiMob(boss vnum)` (NOVA-42) and is disabled without the wiki. The legacy window keeps its own layout.
+- **The drops panel** (`dungeon-drops`, `nui_dungeon_drops.MobDropPopup`), made by the manager's `LoadWindow` through `make()` and opened only by the legacy manager (`-dungeon-timer`; the NovaUI manager shows the drops inline): the mobs in the server's order, a mob's items (icon, `"<count>x <name>"`, the chance band), the header back. The legacy board's own sizing and title calls do nothing under the facade.
 - **The ranking** (`dungeon-rank`, `nui_dungeon_rank.DungeonRankWindow`): the loading line, ten rows and the own row are `RankImage` proxies that keep legacy's count rule (`count_text`); the walk-away (more than 1500 on either axis) is a leave-range watch (`LEAVE_RANGE_KEYS`).
 
-**Tests:** `tools/dungeon_timer_test.py` (the legacy windows, the data files, the wiring, the locales) and `tools/nui_dungeon_timer_test.py` (each flow on both sides, the boards, the notices, the factory and the registration), over `tools/dungeon_timer_support.py`.
+**Tests:** `tools/dungeon_timer_test.py` (the legacy windows, the data files, the wiring, the locales) and `tools/nui_dungeon_timer_test.py` (the deck, the bosses' previews, hiding, the details, the Wiki button, the merged drops and filters, Run and Practice, the notices, the ranking, the factory and the registration), over `tools/dungeon_timer_support.py`.
 
 ## The maintenance countdown
 
@@ -1534,6 +1537,7 @@ The countdown to a scheduled server shutdown (NOVA-58, P18; `maintenance`, in th
 | `kill-rank` | the kill ranking (wave 7, NOVA-29) | on |
 | `dungeon-timer` | the dungeon manager and its ready notice (NOVA-25) | on |
 | `dungeon-drops` | the dungeon manager's drops panel (NOVA-25) | on |
+| `target-info` | the mob info board under the target board: stats and drops (NOVA-40) | on |
 | `dungeon-rank` | the dungeon ranking (NOVA-25) | on |
 | `maintenance` | the maintenance countdown (NOVA-58, P18) | on |
 

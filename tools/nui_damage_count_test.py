@@ -38,7 +38,13 @@ class Target(object):
     def SetEnemyVID(self, vid):
         self.vid = vid
 
-    def SetHP(self, hp):
+    def SetHP(self, hp, actual=0, maximum=0):
+        pass
+
+    def SetElement(self, element):
+        pass
+
+    def SetAttackers(self, count):
         pass
 
     def Show(self):

@@ -33,6 +33,7 @@ import item
 import net
 import app
 import ime
+import link_tokens
 import mouseModule
 import localeInfo
 import constInfo
@@ -575,7 +576,7 @@ class SwitchbotWindow(ui.ScriptWindow):
 		if mouseModule.mouseController.isAttached():
 			mouseModule.mouseController.DeattachObject()
 		elif app.IsPressed(app.DIK_LALT):
-			ime.PasteString(player.GetItemLink(player.SWITCHBOT, slot))
+			link_tokens.paste(player.GetItemLink(player.SWITCHBOT, slot))
 		else:
 			itemVnum = player.GetItemIndex(player.SWITCHBOT, slot)
 			itemCount = player.GetItemCount(player.SWITCHBOT, slot)

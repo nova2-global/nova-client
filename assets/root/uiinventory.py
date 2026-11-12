@@ -17,6 +17,7 @@ import uiPrivateShopBuilder # Prevent ItemMove while private shop is open
 import localeInfo
 import constInfo
 import ime
+import link_tokens
 import wndMgr
 import nui_windows
 
@@ -648,6 +649,10 @@ class InventoryWindow(ui.ScriptWindow):
 			self.costumeButton = self.GetChild2("CostumeButton")
 			# The special inventory (NOVA-16); an older uiscript has no button.
 			self.extraInventoryButton = self.GetChild2("ExtraInventoryButton")
+			self.fastEquipButton = self.GetChild2("FastEquipButton")
+			# The kill ranking (NOVA-29), OLD's extra inventory button; an older
+			# uiscript has none.
+			self.rankingButton = self.GetChild2("RankingButton")
 
 			# One tab per inventory page (OLD uiInventory.py:884-889: five).
 			self.inventoryTab = []
@@ -733,6 +738,12 @@ class InventoryWindow(ui.ScriptWindow):
 		if self.extraInventoryButton:
 			self.extraInventoryButton.SetEvent(ui.__mem_func__(self.ClickExtraInventoryButton))
 
+		if self.fastEquipButton:
+			self.fastEquipButton.SetEvent(ui.__mem_func__(self.ClickFastEquipButton))
+
+		if self.rankingButton:
+			self.rankingButton.SetEvent(ui.__mem_func__(self.ClickRankingButton))
+
 		if self.offlineShopButton:
 			self.offlineShopButton.SetEvent(ui.__mem_func__(self.ClickOfflineShopButton))
 
@@ -776,6 +787,8 @@ class InventoryWindow(ui.ScriptWindow):
 		self.mallButton = None
 		self.DSSButton = None
 		self.extraInventoryButton = None
+		self.fastEquipButton = None
+		self.rankingButton = None
 		self.DSSButtonEffect = None
 		self.interface = None
 
@@ -838,12 +851,22 @@ class InventoryWindow(ui.ScriptWindow):
 		print("click_dss_button")
 		self.interface.ToggleDragonSoulWindow()
 
+	def ClickFastEquipButton(self):
+		"""Fast equip (NOVA-17; OLD uiInventory.py:1176)."""
+		self.interface.ToggleFastEquipWindow()
+
 	def ClickExtraInventoryButton(self):
 		self.interface.ToggleExtraInventoryWindow()
 
 	## The offline shop (NOVA-9; OLD uiInventory.py:482-501, the special
 	## inventory's side bar there): MANAGE answers with the owner's panel, or
 	## opens the builder when the player has no shop.
+	# The kill ranking (NOVA-29): OLD's OpenRanking and OpenKillRank
+	# (uiInventory.py:491-493, 1178-1179).
+	def ClickRankingButton(self):
+		if self.interface:
+			self.interface.OpenKillRank()
+
 	def ClickOfflineShopButton(self):
 		net.SendOfflineShopManagePacket()
 
@@ -1257,7 +1280,7 @@ class InventoryWindow(ui.ScriptWindow):
 
 			elif app.IsPressed(app.DIK_LALT):
 				link = player.GetItemLink(itemSlotIndex)
-				ime.PasteString(link)
+				link_tokens.paste(link)
 
 			elif app.IsPressed(app.DIK_LSHIFT):
 				itemCount = player.GetItemCount(itemSlotIndex)
@@ -1927,6 +1950,11 @@ class InventoryWindow(ui.ScriptWindow):
 			net.SendSafeboxCheckinPacket(player.INVENTORY, slotIndex, SafeboxCheckinCell(player.GetItemIndex(slotIndex)))
 			return True
 
+		## Shift + right-click opens the item in the wiki (NOVA-42; OLD :2509);
+		## where the wiki cannot open (no NovaUI) the item is used as before.
+		if isShift and self.interface and self.interface.OpenWikiItem(player.GetItemIndex(slotIndex)):
+			return True
+
 		if isControl:
 			import exchange # the client's; imported here, as the item windows' stand-ins have none
 			if exchange.isTrading():
@@ -1938,6 +1966,11 @@ class InventoryWindow(ui.ScriptWindow):
 				return True
 
 		return False
+
+	def ClickWikiButton(self):
+		## The inventory's wiki button (NOVA-42; OLD's wikiBtn, :470).
+		if self.interface:
+			self.interface.ToggleWiki()
 
 	def OpenMultiUseDialog(self, window, slotIndex, itemCount):
 		self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)

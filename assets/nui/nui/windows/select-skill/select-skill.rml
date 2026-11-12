@@ -1,0 +1,125 @@
+<rml>
+<head>
+	<!-- The select skill window (NOVA-37; legacy uiselectskill.py SelectSkillWindow, uiscript
+	     selectskillwindow.py). While the select-skill flag is on, the Interface makes
+	     nui_select_skill.SelectSkillWindow (controller assets/root/nui_select_skill.py), a
+	     subclass of the legacy class on proxies: the job's two groups of skills, their tooltips,
+	     the preview's model and motion, and the /select_skill it sends are legacy's code.
+	     The layout is Eddy's direction D, "Orbit" (.nui-work/design/select-skill/pulled/
+	     D-orbit.dc.html): each group's side panel (name, "plays like" line, its skills by name,
+	     its Choose button) on either side of a ring of the skills around the round preview, the
+	     nui-view "model-select-skill" (OLD's render target); a client without render targets
+	     shows a mark. Group 1's skills sit on the ring's left arc (120 to 240 degrees), group 2's
+	     on its right (60 to -60), spread evenly: a group of n (2 to 7) binds its ring's --n<n>
+	     class and each skill its --k<k> place (select-skill.rcss). Hovering a side makes its
+	     group active (side_over); hovering a skill, on the ring or in a list, lights it in both,
+	     names it under the ring and casts it (cell_over); the pointer leaving the content area
+	     (the content element's own mouseout, nui_select_skill) resets it all. A left or right
+	     press anywhere on the window raises it (board_press). -->
+	<title>select-skill</title>
+	<link type="text/template" href="../../nui.rtpl"/>
+	<link type="text/rcss" href="select-skill.rcss"/>
+</head>
+<body template="nui" id="select-skill" class="nui-window nui-fx nui-anim select-skill" data-model="select_skill"
+      data-event-mousedown="board_press(ev.button)">
+	<div class="nui-window__titlebar select-skill__titlebar">
+		<handle class="nui-window__handle select-skill__handle" move_target="#document">
+			<span class="nui-window__title select-skill__title">@ui.SELECT_CLASS</span>
+		</handle>
+		<button id="select-skill-close-x" class="nui-button nui-button--ghost nui-button--icon nui-window__close nui-anim select-skill__close-x"
+		        data-event-mousedown="close_press(ev.button)"><span class="nui-glyph nui-glyph--close"><span
+			class="nui-glyph__a"></span><span class="nui-glyph__b"></span></span></button>
+	</div>
+	<div class="nui-window__body select-skill__body">
+		<div id="select-skill-content" class="select-skill__content">
+			<div id="select-skill-side-1" class="nui-panel select-skill__side select-skill__side--1"
+			     data-class-is-active="active_group == 1" data-class-is-dim="active_group == 2"
+			     data-event-mouseover="side_over(1)">
+				<span class="select-skill__head">{{ groups[0].name }}</span>
+				<span class="select-skill__plays">{{ groups[0].plays }}</span>
+				<div class="select-skill__rule"></div>
+				<div class="select-skill__mini">
+					<div class="select-skill__row nui-anim" data-for="c : groups[0].cells" data-attr-id="'select-skill-row-1-' + c.index"
+					     data-class-is-on="hover_group == 1 &amp;&amp; hover_slot == c.index"
+					     data-event-mouseover="cell_over(1, c.index)" data-event-mouseout="cell_out(1, c.index)">
+						<img class="select-skill__row-icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+						<span class="select-skill__row-name">{{ c.name }}</span>
+					</div>
+				</div>
+				<div class="select-skill__fill"></div>
+				<button id="select-skill-pick-1" class="nui-button nui-button--primary nui-anim select-skill__pick"
+				        data-event-mousedown="pick_press(1, ev.button)">{{ groups[0].choose }}</button>
+			</div>
+			<div class="select-skill__center">
+				<div class="select-skill__orb">
+					<div class="select-skill__arc-clip select-skill__arc-clip--1">
+						<div class="select-skill__arc nui-anim" data-class-is-active="active_group == 1"></div>
+					</div>
+					<div class="select-skill__arc-clip select-skill__arc-clip--2">
+						<div class="select-skill__arc nui-anim" data-class-is-active="active_group == 2"></div>
+					</div>
+					<div class="select-skill__core">
+						<nui-view class="select-skill__view" name="model-select-skill" hover="none" data-if="model_view"></nui-view>
+						<span class="nui-glyph nui-glyph--sword select-skill__mark" data-if="!model_view"><span
+							class="nui-glyph__a"></span><span class="nui-glyph__b"></span><span class="nui-glyph__c"></span></span>
+					</div>
+					<div class="select-skill__ring select-skill__ring--1" data-class-nui-attach-right="attach_right"
+					     data-class-select-skill__ring--n2="groups[0].cells.size == 2" data-class-select-skill__ring--n3="groups[0].cells.size == 3"
+					     data-class-select-skill__ring--n4="groups[0].cells.size == 4" data-class-select-skill__ring--n5="groups[0].cells.size == 5"
+					     data-class-select-skill__ring--n6="groups[0].cells.size == 6" data-class-select-skill__ring--n7="groups[0].cells.size == 7">
+						<div class="nui-slot nui-anim nui-fx select-skill__cell" data-for="c : groups[0].cells" data-attr-id="'select-skill-cell-1-' + c.index"
+						     data-class-select-skill__cell--k0="it_index == 0" data-class-select-skill__cell--k1="it_index == 1"
+						     data-class-select-skill__cell--k2="it_index == 2" data-class-select-skill__cell--k3="it_index == 3"
+						     data-class-select-skill__cell--k4="it_index == 4" data-class-select-skill__cell--k5="it_index == 5"
+						     data-class-select-skill__cell--k6="it_index == 6"
+						     data-class-is-selected="hover_group == 1 &amp;&amp; hover_slot == c.index" data-class-is-dim="active_group == 2"
+						     data-event-mousedown="cell_press(1, c.index, ev.button)"
+						     data-event-mouseover="cell_over(1, c.index)" data-event-mouseout="cell_out(1, c.index)">
+							<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+						</div>
+					</div>
+					<div class="select-skill__ring select-skill__ring--2" data-class-nui-attach-right="attach_right"
+					     data-class-select-skill__ring--n2="groups[1].cells.size == 2" data-class-select-skill__ring--n3="groups[1].cells.size == 3"
+					     data-class-select-skill__ring--n4="groups[1].cells.size == 4" data-class-select-skill__ring--n5="groups[1].cells.size == 5"
+					     data-class-select-skill__ring--n6="groups[1].cells.size == 6" data-class-select-skill__ring--n7="groups[1].cells.size == 7">
+						<div class="nui-slot nui-anim nui-fx select-skill__cell" data-for="c : groups[1].cells" data-attr-id="'select-skill-cell-2-' + c.index"
+						     data-class-select-skill__cell--k0="it_index == 0" data-class-select-skill__cell--k1="it_index == 1"
+						     data-class-select-skill__cell--k2="it_index == 2" data-class-select-skill__cell--k3="it_index == 3"
+						     data-class-select-skill__cell--k4="it_index == 4" data-class-select-skill__cell--k5="it_index == 5"
+						     data-class-select-skill__cell--k6="it_index == 6"
+						     data-class-is-selected="hover_group == 2 &amp;&amp; hover_slot == c.index" data-class-is-dim="active_group == 1"
+						     data-event-mousedown="cell_press(2, c.index, ev.button)"
+						     data-event-mouseover="cell_over(2, c.index)" data-event-mouseout="cell_out(2, c.index)">
+							<img class="nui-slot__icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+						</div>
+					</div>
+				</div>
+				<div class="select-skill__caption">
+					<span class="select-skill__now is-idle" data-if="hover_group == 0">@ui.SELECT_SKILL_IDLE</span>
+					<span class="select-skill__what" data-if="hover_group == 0">@ui.SELECT_SKILL_IDLE_HINT</span>
+					<span class="select-skill__now" data-if="hover_group != 0">{{ caption_name }}</span>
+					<span class="select-skill__what" data-if="hover_group != 0">{{ caption_tag }}</span>
+				</div>
+			</div>
+			<div id="select-skill-side-2" class="nui-panel select-skill__side select-skill__side--2"
+			     data-class-is-active="active_group == 2" data-class-is-dim="active_group == 1"
+			     data-event-mouseover="side_over(2)">
+				<span class="select-skill__head">{{ groups[1].name }}</span>
+				<span class="select-skill__plays">{{ groups[1].plays }}</span>
+				<div class="select-skill__rule"></div>
+				<div class="select-skill__mini">
+					<div class="select-skill__row nui-anim" data-for="c : groups[1].cells" data-attr-id="'select-skill-row-2-' + c.index"
+					     data-class-is-on="hover_group == 2 &amp;&amp; hover_slot == c.index"
+					     data-event-mouseover="cell_over(2, c.index)" data-event-mouseout="cell_out(2, c.index)">
+						<img class="select-skill__row-icon" data-if="c.icon != ''" data-attr-src="c.icon"/>
+						<span class="select-skill__row-name">{{ c.name }}</span>
+					</div>
+				</div>
+				<div class="select-skill__fill"></div>
+				<button id="select-skill-pick-2" class="nui-button nui-button--primary nui-anim select-skill__pick"
+				        data-event-mousedown="pick_press(2, ev.button)">{{ groups[1].choose }}</button>
+			</div>
+		</div>
+	</div>
+</body>
+</rml>

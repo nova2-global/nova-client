@@ -1173,3 +1173,122 @@ BOSS_INFO_RESPAWN	Reaparece em %s
 BOSS_INFO_EXPAND	Mostrar os chefes
 BOSS_INFO_COLLAPSE	Ocultar os chefes
 DAMAGE_COUNT_DAMAGE	Dano: %s(%s)
+FAST_EQUIP_TITLE	Equipamento Rápido
+FAST_EQUIP_CLEAR_CONFIRM	Tens a certeza de que desejas limpar esta página?
+FAST_EQUIP_SET_NAME	Set %d
+FAST_EQUIP_ALREADY	This set is already equipped.
+FAST_EQUIP_NOT_FOR_SET	This item cannot be part of a set.
+FAST_EQUIP_WRONG_CHARACTER	Your character cannot wear this item.
+TARGET_INFO_DAMAGE	Dano : %s - %s
+TARGET_INFO_DEFENSE	Defesa : %s
+TARGET_INFO_MAINRACE	Raça : %s
+TARGET_INFO_MAX_HP	Maximo. HP : %s
+TARGET_INFO_NO_ITEM_TEXT	Nenhum item dropável.
+TARGET_INFO_NO_RACE	Nenhum
+TARGET_INFO_RACE_METIN	Pedra
+TARGET_INFO_RACE_ANIMAL	Animal
+TARGET_INFO_RACE_DARK	Trevas
+TARGET_INFO_RACE_DEVIL	Diabo
+TARGET_INFO_RACE_EARTH	Terra
+TARGET_INFO_RACE_ELEC	Relampago
+TARGET_INFO_RACE_FIRE	Fogo
+TARGET_INFO_RACE_HUMAN	Semi Humano
+TARGET_INFO_RACE_ICE	Água
+TARGET_INFO_RACE_MILGYO	Mitico
+TARGET_INFO_RACE_INSECT	Inseto
+TARGET_INFO_RACE_DESERT	Deserto
+TARGET_INFO_RACE_TREE	Arvos
+TARGET_INFO_RACE_ORC	Orcs
+TARGET_INFO_RACE_UNDEAD	Mortos-Vivos
+TARGET_INFO_RACE_WIND	Vento
+TARGET_INFO_STONE_NAME	Pedra Fantasma
+TARGET_INFO_SUBRACE	Subespecies : %s
+TARGET_INFO_RESISTS	Resistencias:
+TARGET_INFO_RESISTS_LINE0	Espadas: %d%% Duas-Mãos: %d%% Campainhas: %d%%
+TARGET_INFO_RESISTS_LINE1	Adagas: %d%% Leques: %d%% Arco: %d%%
+TARGET_INFO_RESISTS_LINE2	Dano de Ataque: %d%% Dano de Habilidade: %d%%
+TARGET_INFO_REGEN_INFO	Regeneração %d%% a cada %d segundo.
+TARGET_INFO_GOLD_MIN_MAX	Yang: %s - %s
+TARGET_INFO_RACE_FLAG_ELEC	Elec
+TARGET_INFO_RACE_FLAG_WIND	Vento
+TARGET_INFO_RACE_FLAG_EARTH	Terra
+TARGET_INFO_RACE_FLAG_DARK	Escuridão
+TARGET_INFO_RACE_FLAG_ATT_ELEC	Ataque Elec
+TARGET_INFO_RACE_FLAG_ATT_FIRE	Ataque Fogo
+TARGET_INFO_RACE_FLAG_ATT_ICE	Ataque Água
+TARGET_INFO_RACE_FLAG_ATT_WIND	Ataque Vento
+TARGET_INFO_RACE_FLAG_ATT_EARTH	Ataque Terra
+TARGET_INFO_RACE_FLAG_ATT_DARK	Ataque Escuridão
+TARGET_INFO_RACE_FLAG_ELEMENTAL	Elemental
+TARGET_INFO_GUARANTEED_DAMAGE	 - Guaranteed with min. damage: %d%%
+TARGET_INFO_ATTACKERS_INACTIVE	 - Inactive
+TARGET_INFO_ATTACKERS_PROGRESS	%d/%d attackers needed
+TARGET_INFO_ATTACKERS_ABOVE_CAP	 - Inactive (%d/%d attackers)
+WIKI_TITLE	Wiki	
+WIKI_NOTHING_FOUND	No matches.	
+WIKI_PICK	Select an entry from the list.	
+WIKI_LOADING	Loading...	
+WIKI_LOAD_FAILED	Could not load this page. Reopen it to try again.	
+WIKI_ORIGINS	Obtained from	
+WIKI_CHEST_CONTENTS	Contents	
+WIKI_REFINE_COSTS	Refine costs	
+WIKI_DROPS	Drops	
+WIKI_NOTHING_KNOWN	No known source.	
+WIKI_COMMON_DROP	Common drop from monsters of the right level.	
+WIKI_ORIGIN_MOB	Dropped by	
+WIKI_ORIGIN_CHEST	Found in	
+WIKI_ORIGIN_CRAFT	Crafted at	
+WIKI_ORIGIN_SHOP	Sold by	
+WIKI_LEVEL	Lv. %d	
+WIKI_CAT_EQUIPMENT	Equipment	
+WIKI_CAT_CHESTS	Chests	
+WIKI_CAT_BOSSES	Bosses	
+WIKI_CAT_MONSTERS	Monsters	
+WIKI_CAT_METINS	Metin Stones	
+WIKI_CAT_COSTUMES	Costumes	
+WIKI_SUB_WEAPONS	Weapons	
+WIKI_SUB_ARMOR	Armor	
+WIKI_SUB_HELMETS	Helmets	
+WIKI_SUB_SHIELDS	Shields	
+WIKI_SUB_EARRINGS	Earrings	
+WIKI_SUB_BRACELETS	Bracelets	
+WIKI_SUB_NECKLACES	Necklaces	
+WIKI_SUB_SHOES	Shoes	
+WIKI_SUB_BELTS	Belts	
+WIKI_SUB_RINGS	Rings	
+WIKI_SUB_BOSS_CHESTS	Boss Chests	
+WIKI_SUB_EVENT_CHESTS	Event Chests	
+WIKI_SUB_ALT_CHESTS	Other Chests	
+WIKI_SUB_LV1_109	Lv. 1-109	
+WIKI_SUB_LV110_129	Lv. 110-129	
+WIKI_SUB_LV130	Lv. 130+	
+WIKI_SUB_COSTUME_WEAPONS	Weapon Costumes	
+WIKI_SUB_COSTUME_ARMOR	Armor Costumes	
+WIKI_SUB_COSTUME_HAIR	Hair Styles	
+WIKI_SUB_COSTUME_PETS	Pets	
+WIKI_SUB_COSTUME_MOUNTS	Mounts	
+WIKI_SUB_COSTUME_WINGS	Wings	
+WIKI_SUB_COSTUME_MASKS	Masks	
+WIKI_SUB_COSTUME_EFFECTS	Effects	
+WIKI_HOME	Home	
+WIKI_CATEGORIES	Categories	
+WIKI_RECENT	Recently viewed	
+WIKI_NO_RECENT	The pages you open show here.	
+WIKI_LINK	Link	
+WIKI_TABS_FULL	The wiki keeps at most %d tabs open. Close one first.	
+WIKI_SEARCH_HINT	Search items and monsters	
+WIKI_SEARCH_TRAIL	Search: %s	
+WIKI_TAB_HINT	Middle-click or Ctrl+click a link to open it in a new tab.	
+WIKI_MENU_CLOSE	Close	
+WIKI_MENU_CLOSE_OTHERS	Close other tabs	
+WIKI_MENU_NEW_TAB	Open in new tab	
+WIKI_CAT_GUIDES	Guides	
+WIKI_CAT_DUNGEONS	Dungeons	
+WIKI_CAT_SYSTEMS	Systems	
+WIKI_CAT_EVENTS	Events	
+WIKI_NOTE	Note	
+WIKI_WARNING	Warning	
+WIKI_PAGE_ERROR	This part of the page could not be shown:	
+WIKI_CLASS_ALL	All	
+WIKI_VIEWER_HINT	Drag to turn, scroll to zoom, double-click to reset.	
+WIKI_LIST_RANGE	%d-%d of %d	

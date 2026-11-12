@@ -1,0 +1,48 @@
+---
+title: OX
+category: events
+order: 166
+---
+![](d:/ymir work/ui/wiki/banners/oxevent.png){align=center width=100%}
+
+## OX Event — True or False Challenge!
+
+- **The OX Event is a knowledge challenge where players must answer questions**
+  related to Nova with asimple **Yes** or **No** .
+
+- You can access the event map through Uriel when the event is active.
+
+- To answer **“Yes”**, move to the area marked with O.
+
+- To answer **“No”**, move to the area marked with X.
+
+- Players who choose the wrong answer are teleported to the spectator area.
+
+--- {style=ornate}
+
+## Event Rewards:
+
+- The last standing participant who answers all questions correctly will be declared
+  the winner and receive the reward!
+
+- In a **Normal OX Event**, the reward is a and a .
+
+- In a **Special OX Event**, the rewards may vary depending on the occasion.
+
+![[item:80015]], ![[item:71136]]
+
+--- {style=ornate}
+
+## Event Rules:
+
+- All in-game rules apply to the OX Event.
+
+- The use of horses and mounts is not allowed.
+
+- No insults or toxic behavior.
+
+- No spam in the chat.
+
+- The use of bots, hacks, or cheats (e.g., speedhack) is strictly prohibited.
+
+- The Stealth (Dagger Ninja) skill is not allowed.

@@ -7,6 +7,7 @@ legacy's 10 x 8 paged grid, questions, packets and owner panel directly --
 there is no second legacy dialog hidden behind the facade.
 """
 
+import localeInfo
 import nuigame
 import player
 import shop
@@ -154,6 +155,13 @@ class _ShopBoard(nui_hud.RaisesOnPress, nui.Window):
 		self.raise_for(button)
 		if button == 0:
 			self._owner.btnSell.press()
+
+	@nui.on("mark_sell_press")
+	def on_mark_sell_press(self, button):
+		"""The mark board's Sell (NOVA-187)."""
+		self.raise_for(button)
+		if button == 0:
+			self._owner.SellMarkedItems()
 
 	@nui.on("close_shop_press")
 	def on_close_shop_press(self, button):
@@ -321,6 +329,9 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 			"owner_time_end": 0.0,
 			"owner_lock_text": "",
 			"owner_close_shown": False,
+			# NOVA-187: the mark board (RefreshSellMarkBoard).
+			"mark_shown": False,
+			"mark_total": "",
 		}
 
 	# --- proxy callbacks ---------------------------------------------------------------
@@ -364,6 +375,13 @@ class ShopDialog(nui_facade.Facade, uiShop.ShopDialog):
 
 	def _on_attaching(self, flag):
 		self.nui_set(attaching=flag)
+
+	def RefreshSellMarkBoard(self):
+		"""Legacy's rule for the mark board (NOVA-187), shown as the window's panel instead of
+		legacy's SellMarkBoard: the marks' total, while the NPC shop is open and holds marks."""
+		shown = uiShop.IsSellMarkActive() and (uiShop.MARK_SELL_BOARD_ALWAYS or uiShop.HasSellMarks())
+		total = localeInfo.NumberToMoneyString(uiShop.GetSellMarkTotal()) if shown else ""
+		self.nui_set(mark_shown=bool(shown), mark_total=nui.plain_text(total))
 
 	def _on_buttons(self, button=None):
 		found = dict((name, getattr(self, name, None)) for name in ("btnBuy", "btnSell", "btnClose"))

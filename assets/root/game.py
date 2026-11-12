@@ -1757,7 +1757,7 @@ class GameWindow(ui.ScriptWindow):
 				questionText = localeInfo.HOW_MANY_ITEM_DO_YOU_DROP(dropItemName, attachedItemCount)
 
 				## Dialog
-				itemDropQuestionDialog = uiCommon.QuestionDialog()
+				itemDropQuestionDialog = self.__NewItemDropQuestion(dropItemIndex)
 				itemDropQuestionDialog.SetText(questionText)
 				itemDropQuestionDialog.SetAcceptEvent(lambda arg=True: self.RequestDropItem(arg))
 				itemDropQuestionDialog.SetCancelEvent(lambda arg=False: self.RequestDropItem(arg))
@@ -1799,7 +1799,7 @@ class GameWindow(ui.ScriptWindow):
 				questionText = localeInfo.HOW_MANY_ITEM_DO_YOU_DROP(dropItemName, attachedItemCount)
 
 				## Dialog
-				itemDropQuestionDialog = uiCommon.QuestionDialog()
+				itemDropQuestionDialog = self.__NewItemDropQuestion(dropItemIndex)
 				itemDropQuestionDialog.SetText(questionText)
 				itemDropQuestionDialog.SetAcceptEvent(lambda arg=True: self.RequestDropItem(arg))
 				itemDropQuestionDialog.SetCancelEvent(lambda arg=False: self.RequestDropItem(arg))
@@ -1848,6 +1848,62 @@ class GameWindow(ui.ScriptWindow):
 
 		net.SendItemDropPacketNew(itemInvenType, itemVNum, itemCount)
 	# END_OF_PRIVATESHOP_DISABLE_ITEM_DROP
+
+	# NOVA-189: Destroy in the drop question of a main or special inventory
+	# item (OLD game.py:2103-2108, 2197-2241). The buttons read Yes (drop),
+	# Destroy and No, as OLD's; Destroy asks again (DESTROY_ITEM_WARNING), and
+	# its Yes sends the destroy packet for the window, cell, vnum and count the
+	# drop question names (OLD sent the cell only and destroyed the whole
+	# stack). The server refuses an item that changed, and says why.
+	destroyQuestionDialog = None
+
+	def __NewItemDropQuestion(self, itemVnum):
+		import uiScriptLocale
+		dialog = uiCommon.QuestionDialog3()
+		dialog.SetMiddleText(uiScriptLocale.DESTROY)
+		dialog.SetMiddleEvent(ui.__mem_func__(self.__AskDestroyItem))
+		dialog.dropVnum = itemVnum
+		return dialog
+
+	def __AskDestroyItem(self):
+		if not self.itemDropQuestionDialog:
+			return
+
+		self.__CloseDestroyQuestion()
+		dialog = uiCommon.QuestionDialog()
+		dialog.SetText(localeInfo.DESTROY_ITEM_WARNING)
+		dialog.SetAcceptEvent(ui.__mem_func__(self.__AcceptDestroyItem))
+		dialog.SetCancelEvent(ui.__mem_func__(self.__CloseDestroyQuestion))
+		dialog.Open()
+		self.destroyQuestionDialog = dialog
+
+	def __CloseDestroyQuestion(self):
+		if self.destroyQuestionDialog:
+			self.destroyQuestionDialog.Close()
+		self.destroyQuestionDialog = None
+
+	def __AcceptDestroyItem(self):
+		dropDialog = self.itemDropQuestionDialog
+		if dropDialog:
+			window = {player.SLOT_TYPE_INVENTORY: player.INVENTORY,
+			          player.SLOT_TYPE_EXTRA_INVENTORY: player.EXTRA_INVENTORY}.get(dropDialog.dropType)
+			if window is not None and dropDialog.dropNumber != player.ITEM_MONEY:
+				self.__SendDestroyItemPacket(window, dropDialog.dropNumber, dropDialog.dropVnum, dropDialog.dropCount)
+
+		self.__CloseDestroyQuestion()
+		self.RequestDropItem(False)
+
+	def __SendDestroyItemPacket(self, window, cell, itemVnum, itemCount):
+		if uiPrivateShopBuilder.IsBuildingPrivateShop():
+			chat.AppendChat(chat.CHAT_TYPE_INFO, localeInfo.DROP_ITEM_FAILURE_PRIVATE_SHOP)
+			return
+
+		## A pick attaches the stack's count; a cell whose count is unknown
+		## destroys the whole stack the cell holds.
+		if itemCount <= 0:
+			itemCount = player.GetItemCount(window, cell)
+
+		net.SendItemDestroyPacket(window, cell, itemVnum, itemCount)
 
 	def OnMouseRightButtonDown(self):
 

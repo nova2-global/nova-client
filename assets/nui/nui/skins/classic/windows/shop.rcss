@@ -341,3 +341,70 @@ body.skin-classic.shop .shop__barter
 {
 	display: none;
 }
+
+/* NOVA-187: legacy's mark board (uiscript markwindow.py; OLD's position, x
+   and y + 328 of the shop): a 173 x 70 board right under the shop, the total
+   right-aligned in parameter_slot_05 at 28, 13 beside the coin at 9, 15, and
+   Sell (middle button art) centered at 38. No hint line: legacy's button
+   tooltip names the key. */
+body.skin-classic.shop .shop-marks
+{
+	display: block;
+	left: 0;
+	right: auto;
+	top: 328dp;
+	width: 173dp;
+	height: 70dp;
+	margin: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: classic-board;
+}
+body.skin-classic.shop .shop-marks__total
+{
+	display: block;
+	position: absolute;
+	left: 28dp;
+	top: 13dp;
+	width: 130dp;
+	height: 18dp;
+	min-height: 0;
+	padding: 0;
+	border-width: 0;
+	border-radius: 0;
+	background-color: transparent;
+	decorator: image("d:/ymir work/ui/public/parameter_slot_05.sub");
+}
+body.skin-classic.shop .shop-marks__total .nui-glyph
+{
+	position: absolute;
+	left: -19dp;
+	top: 2dp;
+	width: 16dp;
+	height: 16dp;
+	decorator: image("d:/ymir work/ui/game/windows/money_icon.sub");
+}
+body.skin-classic.shop .shop-marks__total .nui-glyph__a, body.skin-classic.shop .shop-marks__total .nui-glyph__b
+{
+	display: none;
+}
+body.skin-classic.shop .shop-marks__money
+{
+	position: absolute;
+	right: 3dp;
+	top: 2dp;
+	color: var(--text);
+}
+body.skin-classic.shop .shop-marks__sell
+{
+	position: absolute;
+	left: 56dp;
+	top: 38dp;
+	color: var(--classic-button-text);
+}
+body.skin-classic.shop .shop-marks__hint
+{
+	display: none;
+}

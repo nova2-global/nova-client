@@ -763,3 +763,22 @@ body.inv.inv--table-old .inv-button--mall { top: 224dp; }
 	opacity: 0.75;
 	font-size: var(--font-xs);
 }
+
+/* NOVA-187: an item marked to sell at the NPC shop (with_sell_marks' "sell"):
+   the cell itself in the warning gold, a 2dp border and a static glow, as an
+   active cell's accent; the icon keeps its place inside the thicker border.
+   Classic: legacy's gold icon tint (skins/classic/windows/inventory.rcss). */
+.inv-bag > .nui-slot.is-sell-marked
+{
+	border-width: 2dp;
+	border-color: var(--warning);
+}
+.nui-slot.is-sell-marked.nui-fx
+{
+	box-shadow: 0 0 6dp var(--warning);
+}
+.inv-bag > .nui-slot.is-sell-marked .nui-slot__icon
+{
+	left: 2dp;
+	top: 2dp;
+}

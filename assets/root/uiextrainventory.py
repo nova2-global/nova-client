@@ -267,7 +267,8 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 			elif 1 == itemCount:
 				itemCount = 0
 
-			self.wndItem.SetItemSlot(i, getItemVNum(player.EXTRA_INVENTORY, slotNumber), itemCount)
+			self.wndItem.SetItemSlot(i, getItemVNum(player.EXTRA_INVENTORY, slotNumber), itemCount,
+			                         uiInventory.SellMarkColor(player.EXTRA_INVENTORY, slotNumber))
 
 		self.RefreshMarkSlots()
 		self.wndItem.RefreshSlot()
@@ -362,6 +363,11 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 
 		itemSlotIndex = self.__InventoryLocalSlotPosToGlobalSlotPos(itemSlotIndex)
 
+		## NOVA-187: the NPC shop's sell marks take the press first (OLD read the inventory's
+		## item of the same number for the sell flag; this reads the cell's own).
+		if uiInventory.SellMarkPress(player.EXTRA_INVENTORY, itemSlotIndex, ui.__mem_func__(self.RefreshItemSlot)):
+			return
+
 		if mouseModule.mouseController.isAttached():
 			attachedSlotType = mouseModule.mouseController.GetAttachedType()
 			attachedSlotPos = mouseModule.mouseController.GetAttachedSlotNumber()
@@ -390,6 +396,7 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 				if itemCount > 1:
 					self.dlgPickMoney.SetTitleName(localeInfo.PICK_ITEM_TITLE)
 					self.dlgPickMoney.SetAcceptEvent(ui.__mem_func__(self.OnPickItem))
+					self.dlgPickMoney.SetItemMode()
 					self.dlgPickMoney.Open(itemCount)
 					self.dlgPickMoney.itemGlobalSlotIndex = itemSlotIndex
 
@@ -407,6 +414,8 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 
 	def OnPickItem(self, count):
 		itemSlotIndex = self.dlgPickMoney.itemGlobalSlotIndex
+		if uiInventory.SendSplitAll(self.dlgPickMoney, player.EXTRA_INVENTORY, itemSlotIndex, count):
+			return
 		selectedItemVNum = player.GetItemIndex(player.EXTRA_INVENTORY, itemSlotIndex)
 		mouseModule.mouseController.AttachObject(self, player.SLOT_TYPE_EXTRA_INVENTORY, itemSlotIndex, selectedItemVNum, count)
 
@@ -527,6 +536,10 @@ class ExtraInventoryWindow(ui.ScriptWindow):
 			return
 
 		slotIndex = self.__InventoryLocalSlotPosToGlobalSlotPos(slotIndex)
+
+		## NOVA-187: a marked item is not used.
+		if uiInventory.IsSellMarked(player.EXTRA_INVENTORY, slotIndex):
+			return
 
 		## A Dragon Bean (a material) into the open Dragon Soul refine window,
 		## as the inventory does for its own cells.

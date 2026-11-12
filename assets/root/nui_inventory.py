@@ -481,8 +481,10 @@ class InventoryWindow(uiInventory.InventoryWindow):
 			# The bag and the wear cells carry the refine level (the modern
 			# skins' "+N" badge; nui_slots.REFINE_KEY).
 			# Wave 4b: and the trade marks (nui_slots.MARK_KEYS).
-			"bag": nui_slots.with_marks(nui_slots.with_refine([nui_slots.empty_cell(i)
-			                                                   for i in range(limits.INVENTORY_PAGE_SIZE)])),
+			# NOVA-187: and the sell marks' "sell" (uiInventory.SellMarkCells).
+			"bag": [dict(cell, sell=False) for cell in
+			        nui_slots.with_marks(nui_slots.with_refine([nui_slots.empty_cell(i)
+			                                                    for i in range(limits.INVENTORY_PAGE_SIZE)]))],
 			"bag_cols": limits.INVENTORY_COLUMNS,
 			"wear": nui_slots.with_refine([dict(nui_slots.empty_cell(i), name=slot.name, marks=wear_marks(slot.name, ""))
 			                               for i, slot in enumerate(nui_limits.wear_group("equipment", limits))]),
@@ -635,10 +637,12 @@ class InventoryWindow(uiInventory.InventoryWindow):
 	def _on_bag(self, cells):
 		events = self._bag_events
 		states, picked = (events.states, events.picked) if events is not None else ({}, -1)
-		self._set(bag=nui_slots.with_states(cells, states, picked))
+		self._set(bag=uiInventory.SellMarkCells(nui_slots.with_states(cells, states, picked), player.INVENTORY,
+		                                        self._bag_position, refresh_board=True))
 
 	def _on_bag_states(self, states, picked):
-		self._set(bag=nui_slots.with_states(self.wndItem.cells(), states, picked))
+		self._set(bag=uiInventory.SellMarkCells(nui_slots.with_states(self.wndItem.cells(), states, picked),
+		                                        player.INVENTORY, self._bag_position))
 
 	def _on_bag_attaching(self, flag):
 		self._set(bag_attaching=flag)
@@ -784,6 +788,33 @@ class InventoryWindow(uiInventory.InventoryWindow):
 		self.SetEquipmentPage(0)
 		self.RefreshItemSlot()
 		self.RefreshStatus()
+
+	# --- NOVA-201: the storage choice -----------------------------------------------
+
+	storageQuestion = None
+
+	def OpenStorageChoice(self):
+		"""The dialog kit's three-button question in place of legacy's small
+		board (uiinventory.py OpenStorageChoice): Item Mall, Safebox and
+		Cancel, each closing it. Default 12, Eddy to confirm."""
+		import uiCommon
+		import uiScriptLocale
+		self.CloseStorageChoice()
+		question = uiCommon.QuestionDialog3()
+		question.SetText(uiScriptLocale.STORAGE_TITLE)
+		question.SetAcceptText(uiScriptLocale.SYSTEM_MALL)
+		question.SetMiddleText(uiScriptLocale.SAFE_TITLE)
+		question.SetCancelText(uiScriptLocale.CANCEL)
+		question.SetAcceptEvent(ui.__mem_func__(self.OpenItemMall))
+		question.SetMiddleEvent(ui.__mem_func__(self.OpenSafeboxAnywhere))
+		question.SetCancelEvent(ui.__mem_func__(self.CloseStorageChoice))
+		question.Open()
+		self.storageQuestion = question
+
+	def CloseStorageChoice(self):
+		if self.storageQuestion:
+			self.storageQuestion.Close()
+		self.storageQuestion = None
 
 	# --- what NovaUI changes (P14 spec 6.1's table) ------------------------------------
 

@@ -133,6 +133,8 @@ def grid(cols, rows, start, items, targets=None, unavailable=(), one=False, refi
         for cell in cells:
             for key in MARK_KEYS:
                 cell.setdefault(key, False)
+            # NOVA-187: the sell marks' "sell" (uiInventory.SellMarkCells).
+            cell.setdefault("sell", False)
     return cells
 
 
@@ -263,6 +265,15 @@ def today_bag(cols, rows, start):
         targets={21: "move", 26: "move"}, refine=True, marks=True)
 
 
+def sell_marks_bag(cols, rows, start):
+    """NOVA-187: today's bag with the sword, the glaive and the 200 potions
+    marked to sell at an NPC shop."""
+    cells = today_bag(cols, rows, start)
+    for index in (0, 2, 4):
+        cells[index]["sell"] = True
+    return cells
+
+
 def hover_bag(cols, rows, start):
     """P14b's hover goldens: a 1x3 glaive and, beside it, a 1x2 sword at the
     page's bottom edge, with 1x1 items around them."""
@@ -334,6 +345,7 @@ def fixtures():
         ("inventory", "empty"): inventory(TODAY, 0, {}, lambda cols, rows, start: grid(cols, rows, start, {}, refine=True,
                                                                                          marks=True), 0),
         ("inventory", "hover"): inventory(TODAY, 0, TODAY_WEAR, hover_bag, 1999999999),
+        ("inventory", "sell-marks"): inventory(TODAY, 0, TODAY_WEAR, sell_marks_bag, 1999999999, gem="12.500", gem_on=True),
         ("inventory", "rail"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL),
         ("inventory", "rail-folded"): inventory(TODAY, 0, TODAY_WEAR, today_bag, 1999999999, rail=SAMPLE_RAIL,
                                                 rail_folded=True),

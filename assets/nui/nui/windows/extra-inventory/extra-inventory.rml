@@ -58,7 +58,7 @@
 				     data-class-is-target="c.target == 'move'" data-class-is-blocked="c.target == 'blocked'"
 				     data-class-is-usable="c.target == 'usable'" data-class-is-unusable="c.target == 'unusable'"
 				     data-class-nui-slot--h2="c.h == 2" data-class-nui-slot--h3="c.h == 3"
-				     data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop"
+				     data-class-is-in-use="c.in_use" data-class-is-unusable-ontop="c.unusable_ontop" data-class-is-sell-marked="c.sell"
 				     data-event-mousedown="cell_press(it_index, ev.button)" data-event-mouseup="cell_release(it_index, ev.button)"
 				     data-event-dblclick="cell_use(it_index)" data-event-mouseover="cell_over(it_index)"
 				     data-event-mouseout="cell_out(it_index)" data-event-nuidrop="cell_drop(it_index)">

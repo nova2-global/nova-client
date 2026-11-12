@@ -1776,6 +1776,8 @@
 		"owner_time_text": "4 Day 00 Hour 00 Min",
 		"owner_time_end": 345601.0,
 		"owner_lock_text": "Unlock",
-		"owner_close_shown": true
+		"owner_close_shown": true,
+		"mark_shown": false,
+		"mark_total": ""
 	}
 }

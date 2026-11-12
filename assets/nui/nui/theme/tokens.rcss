@@ -399,6 +399,7 @@ body.skin-classic
 	--classic-separator-shadow: #111111;
 	--classic-text-outline: #000000;
 	--classic-disabled-tint: #8c8c8cff;
+	--classic-sell-mark-tint: #ffdf00ff;
 	--classic-disabled-text: #6e6e6e;
 	--classic-key-text: #000000;
 	--classic-label-white: #ffffff;

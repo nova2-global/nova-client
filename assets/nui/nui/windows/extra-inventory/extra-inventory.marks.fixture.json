@@ -21,7 +21,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": true,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 1,
@@ -43,7 +44,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": true
+				"unusable_ontop": true,
+				"sell": false
 			},
 			{
 				"index": 2,
@@ -65,7 +67,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 3,
@@ -87,7 +90,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": true,
-				"unusable_ontop": true
+				"unusable_ontop": true,
+				"sell": false
 			},
 			{
 				"index": 4,
@@ -109,7 +113,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 5,
@@ -131,7 +136,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 6,
@@ -153,7 +159,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 7,
@@ -175,7 +182,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 8,
@@ -197,7 +205,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": true
+				"unusable_ontop": true,
+				"sell": false
 			},
 			{
 				"index": 9,
@@ -219,7 +228,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 10,
@@ -241,7 +251,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 11,
@@ -263,7 +274,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 12,
@@ -285,7 +297,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 13,
@@ -307,7 +320,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 14,
@@ -329,7 +343,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 15,
@@ -351,7 +366,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 16,
@@ -373,7 +389,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 17,
@@ -395,7 +412,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 18,
@@ -417,7 +435,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 19,
@@ -439,7 +458,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 20,
@@ -461,7 +481,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 21,
@@ -483,7 +504,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 22,
@@ -505,7 +527,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 23,
@@ -527,7 +550,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 24,
@@ -549,7 +573,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 25,
@@ -571,7 +596,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 26,
@@ -593,7 +619,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 27,
@@ -615,7 +642,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 28,
@@ -637,7 +665,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 29,
@@ -659,7 +688,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 30,
@@ -681,7 +711,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 31,
@@ -703,7 +734,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 32,
@@ -725,7 +757,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 33,
@@ -747,7 +780,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 34,
@@ -769,7 +803,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 35,
@@ -791,7 +826,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 36,
@@ -813,7 +849,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 37,
@@ -835,7 +872,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 38,
@@ -857,7 +895,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 39,
@@ -879,7 +918,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 40,
@@ -901,7 +941,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 41,
@@ -923,7 +964,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 42,
@@ -945,7 +987,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 43,
@@ -967,7 +1010,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			},
 			{
 				"index": 44,
@@ -989,7 +1033,8 @@
 				"picked": false,
 				"unavailable": false,
 				"in_use": false,
-				"unusable_ontop": false
+				"unusable_ontop": false,
+				"sell": false
 			}
 		],
 		"cols": 5,

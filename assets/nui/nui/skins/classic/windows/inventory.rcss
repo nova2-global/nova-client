@@ -491,3 +491,17 @@ body.skin-classic.inv .inv__wiki
 {
 	display: none;
 }
+
+/* NOVA-187: a marked item's icon in OLD's mark gold (0xFFDF00, the legacy
+   icon's diffuse color, uiShop.MARK_SELL_COLOR); no border, as legacy. */
+body.skin-classic .inv-bag > .nui-slot.is-sell-marked
+{
+	border-width: 0;
+	box-shadow: none;
+}
+body.skin-classic .inv-bag > .nui-slot.is-sell-marked .nui-slot__icon
+{
+	left: 0;
+	top: 0;
+	image-color: var(--classic-sell-mark-tint);
+}

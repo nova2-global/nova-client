@@ -198,6 +198,15 @@ class ChangePasswordDialog(ui.ScriptWindow):
 # The page tabs' names (the safebox has at most safebox.SAFEBOX_PAGE_COUNT_MAX pages, 5).
 PAGE_NAMES = ("I", "II", "III", "IV", "V")
 
+## NOVA-191: the check-out cell that asks the server to pick one (the
+## protocol's SAFEBOX_CHECKOUT_ANY_CELL), the protocol's value where the exe
+## does not export it.
+SAFEBOX_CHECKOUT_ANY_CELL = 0xFFFF
+
+def SafeboxCheckoutAnyCell():
+	cell = getattr(net, "SAFEBOX_CHECKOUT_ANY_CELL", SAFEBOX_CHECKOUT_ANY_CELL)
+	return cell if isinstance(cell, int) else SAFEBOX_CHECKOUT_ANY_CELL
+
 class SafeboxWindow(ui.ScriptWindow):
 
 	BOX_WIDTH = 176
@@ -511,7 +520,20 @@ class SafeboxWindow(ui.ScriptWindow):
 				snd.PlaySound("sound/ui/pick.wav")
 
 	def UseItemSlot(self, slotIndex):
-		mouseModule.mouseController.DeattachObject()
+		"""A right press or a double click on a cell (NOVA-191; OLD
+		uiSafebox.py:575-586). With something attached it only drops the
+		attach (OLD also took the item out). On an item it takes it out to a
+		cell the server picks: the dragon soul inventory, the item's special
+		inventory category or the inventory's pages."""
+		if mouseModule.mouseController.isAttached():
+			mouseModule.mouseController.DeattachObject()
+			return
+
+		globalSlot = self.__LocalPosToGlobalPos(slotIndex)
+		if not safebox.GetItemID(globalSlot):
+			return
+
+		net.SendSafeboxCheckoutPacket(globalSlot, player.INVENTORY, SafeboxCheckoutAnyCell())
 
 	def __ShowToolTip(self, slotIndex):
 		if self.tooltipItem:

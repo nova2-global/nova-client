@@ -117,6 +117,8 @@ class TaskBarBoard(nui.Window):
 			"quick_keys": [""] * QUICK_SLOTS, "quick_key_art": [True] * QUICK_SLOTS,
 			"hotkey_character": "", "hotkey_inventory": "", "hotkey_messenger": "",
 			"tip_character": "", "tip_inventory": "", "tip_messenger": "", "tip_prev_page": "", "tip_next_page": "",
+			# NOVA-200: the anti-EXP switch on the EXP orbs (TaskBar.SetAntiExp).
+			"exp_frozen": False, "exp_hint": "@game.ANTI_EXP_FREEZE_HINT",
 		}
 
 	def on_theme_changed(self, theme_id):
@@ -187,6 +189,11 @@ class TaskBarBoard(nui.Window):
 	def on_mall_click(self, button):
 		if button == 0:
 			self._owner.nui_mall_click()
+
+	@nui.on("exp_press")
+	def on_exp_press(self, button):
+		if button == 0:
+			self._owner.nui_exp_press()
 
 
 class TaskBar(object):
@@ -441,6 +448,18 @@ class TaskBar(object):
 	## Gauge: fed from C++ (player.* feeds).
 	def RefreshStatus(self):
 		pass
+
+	## NOVA-200: the EXP orbs are the anti-EXP switch, as legacy's EXP gauge
+	## (uiTaskBar.TaskBar.SetAntiExp); the server's AntiExpState comes here.
+	antiExpOn = False
+
+	def SetAntiExp(self, on):
+		self.antiExpOn = bool(on)
+		self._set(exp_frozen=self.antiExpOn,
+			exp_hint="@game.ANTI_EXP_FROZEN_HINT" if self.antiExpOn else "@game.ANTI_EXP_FREEZE_HINT")
+
+	def nui_exp_press(self):
+		net.SendChatPacket("/anti_exp")
 
 	def RefreshStamina(self):
 		pass

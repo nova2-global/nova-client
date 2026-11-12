@@ -192,6 +192,19 @@ body.skin-classic.taskbar progress.taskbar-orb fill
 	border-radius: 0;
 	decorator: none;
 }
+/* NOVA-200: frozen EXP, a blue wash over the four legacy points (legacy
+   tints the points themselves, uitaskbar.TaskBar.SetAntiExp). */
+body.skin-classic.taskbar .taskbar-exp__frost
+{
+	left: 5dp;
+	top: 9dp;
+	right: auto;
+	bottom: auto;
+	width: 94dp;
+	height: 19dp;
+	border-radius: 0;
+	opacity: 0.4;
+}
 body.skin-classic.taskbar .taskbar-orb--1 { left: 5dp; }
 body.skin-classic.taskbar .taskbar-orb--2 { left: 30dp; }
 body.skin-classic.taskbar .taskbar-orb--3 { left: 55dp; }

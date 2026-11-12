@@ -1,0 +1,55 @@
+ScriptType               MotionData
+
+MotionFileName           "D:\ymir work\monster2\new_mutant\attack_jump.GR2"
+MotionDuration           2.166667
+
+Group MotionEventData
+{
+    MotionEventDataCount     3
+    Group Event00
+    {
+        MotionEventType      4
+        StartingTime         1.402227
+        DuringTime           1.000000
+        EnableHitProcess     1
+        
+        AttackType           0
+        HittingType          1
+        StiffenTime          0.000000
+        InvisibleTime        0.000000
+        ExternalForce        1.000000
+        HitLimitCount        0
+        CollisionType        4
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           300.000000
+            Position         0.000000 0.000000 50.000000
+        }
+    }
+    Group Event01
+    {
+        MotionEventType      1
+        StartingTime         1.402227
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Mutant:RightHandIndex4"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/monster2/12_dog_s2_blow.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+    Group Event02
+    {
+        MotionEventType      1
+        StartingTime         0.280445
+        
+        IndependentFlag      0
+        AttachingEnable      0
+        AttachingBoneName    "Mutant:RightFoot"
+        FollowingEnable      0
+        EffectFileName       "d:/ymir work/effect/etc/dust/dust.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+    }
+}

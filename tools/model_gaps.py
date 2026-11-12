@@ -632,9 +632,165 @@ def merge_item_list(old_root, cut_proto):
 	return 0
 
 
+# NOVA-177 follow-up (r44: the barter TreasureBox 55022 stood invisible): every
+# race the server spawns, not only the wiki's lists.
+SPAWN_FILES = ("npc.txt", "regen.txt", "boss.txt", "stone.txt")
+
+
+def _groups_of(text):
+	"""{group vnum: [member race vnums]} of a group.txt or group_group.txt:
+	each Group's Vnum, its Leader's and its numbered rows' last cell."""
+	groups, current, members = {}, None, []
+	for raw in text.split("\n"):
+		cells = [cell for cell in raw.strip().replace('"', " ").split() if cell]
+		if not cells:
+			continue
+		head = cells[0].lower()
+		if head == "group":
+			current, members = None, []
+		elif head == "vnum" and len(cells) > 1:
+			current = int(cells[1])
+			groups[current] = members
+		elif head == "leader" or head.isdigit():
+			if cells[-1].isdigit():
+				members.append(int(cells[-1]))
+	return groups
+
+
+def _group_group(text):
+	"""group_group.txt: {vnum: [group vnums]} (rows "n group_vnum weight")."""
+	groups, current = {}, None
+	for raw in text.split("\n"):
+		cells = raw.split()
+		if not cells:
+			continue
+		if cells[0].lower() == "group":
+			current = None
+		elif cells[0].lower() == "vnum" and len(cells) > 1:
+			current = int(cells[1])
+			groups[current] = []
+		elif cells[0].isdigit() and current is not None and len(cells) >= 2 and cells[1].isdigit():
+			groups[current].append(int(cells[1]))
+	return groups
+
+
+def spawned_races(map_dir, group_text, group_group_text, shop_sqls=()):
+	"""{race vnum: set of where it comes from} for every spawn line of every
+	map (m and s: the race; g: its group's members; r: the members of each
+	group of its group_group) and every shop row's NPC."""
+	import re
+	groups = {}
+	for vnum, members in _groups_of(group_text).items():
+		groups[vnum] = members
+	group_groups = _group_group(group_group_text)
+	where = {}
+
+	def add(race, origin):
+		if race:
+			where.setdefault(race, set()).add(origin)
+	for map_name in sorted(os.listdir(map_dir)):
+		for name in SPAWN_FILES:
+			path = os.path.join(map_dir, map_name, name)
+			if not os.path.isfile(path):
+				continue
+			with open(path, encoding="latin-1") as handle:
+				for line in handle:
+					cells = line.split()
+					if len(cells) < 11 or cells[0] not in ("m", "s", "g", "r") or not cells[10].isdigit():
+						continue
+					vnum, origin = int(cells[10]), "%s/%s" % (map_name, name)
+					if cells[0] in ("m", "s"):
+						add(vnum, origin)
+					elif cells[0] == "g":
+						for race in groups.get(vnum, ()):
+							add(race, origin)
+					else:
+						for group in group_groups.get(vnum, ()):
+							for race in groups.get(group, ()):
+								add(race, origin)
+	for sql in shop_sqls:
+		with open(sql, encoding="utf-8", errors="replace") as handle:
+			for vnum, npc in re.findall(r"\(\s*(\d+)\s*,\s*'[^']*'\s*,\s*(\d+)\s*\)", handle.read()):
+				add(int(npc), "shop %s" % vnum)
+	return where
+
+
+def _spawns(repo, map_dir, group, group_group, shop_sqls, packer, old_root, out):
+	pack = Pack(repo, os.environ.get("MODEL_GAPS_FALLBACK"))
+	with open(group, encoding="latin-1") as handle:
+		group_text = handle.read()
+	with open(group_group, encoding="latin-1") as handle:
+		group_group_text = handle.read()
+	where = spawned_races(map_dir, group_text, group_group_text, [path for path in shop_sqls.split(",") if path])
+	mobs = Mobs(pack)
+	old = load_old(packer, old_root)
+	rows = []
+	for race in sorted(where):
+		cause, detail = mobs.cause(race)
+		fix = old_has(cause, detail, "mob", race, None, old, pack) if cause != OK else ("-", "")
+		rows.append((race, mobs.names.get(race, ""), cause, detail) + tuple(fix) + (";".join(sorted(where[race]))[:300],))
+	with open(out, "w", encoding="utf-8", newline="\n") as handle:
+		handle.write("race\tnpclist_name\tcause\tdetail\tfix_in\tfix_from\tspawned_by\n")
+		for row in rows:
+			handle.write("\t".join(str(cell) for cell in row) + "\n")
+	counts = {}
+	for row in rows:
+		counts[(row[2], row[4])] = counts.get((row[2], row[4]), 0) + 1
+	print("%d races spawned or selling" % len(rows))
+	for key in sorted(counts):
+		print("%s, fix in %s\t%d" % (key[0], key[1], counts[key]))
+	return 0
+
+
+def _spawn_import(packer, old_root, grlist, tsv):
+	"""Takes OLD's folders for the spawned races OLD can fix (spawns TSV):
+	the msm's folder and its base model's."""
+	import old_art
+	pack = Pack(old_content.REPO)
+	old = load_old(packer, old_root)
+	with open(tsv, encoding="utf-8") as handle:
+		rows = [line.split("\t") for line in handle.read().split("\n")[1:] if line]
+	start = []
+	for row in rows:
+		if row[4] != "old":
+			continue
+		paths = [row[5]]
+		if row[2] in ("model_missing", "model_unreadable") and row[3]:
+			paths.append(old_content.store_name(row[3]))
+		for path in paths:
+			start.append(path)
+			folder = path.rsplit("/", 1)[0] + "/"
+			start.extend(store for store in old["index"] if store.startswith(folder) and not store.endswith(".bak"))
+	start = [path for path in dict.fromkeys(start) if path in old["index"] and not pack.has(path)]
+	scratch = old_art.scratch_folder()
+	take, missing = old_art.closure(start, old["index"], set(pack.files), packer, grlist, scratch)
+	sizes = dict((path, os.path.getsize(os.path.join(packer, source))) for path, source in take.items())
+	big = max(sizes.items(), key=lambda kv: kv[1]) if sizes else ("-", 0)
+	print("spawns: %d files, %.1f MB, largest %s (%.1f MB)" % (len(take), sum(sizes.values()) / 1048576.0, big[0], big[1] / 1048576.0))
+	if os.environ.get("MODEL_GAPS_PLAN"):
+		for path in sorted(missing):
+			print("  %s <- %s" % (path, missing[path]))
+		return 0
+	if big[1] > MAX_FILE or sum(sizes.values()) > 500 * 1048576:
+		print("STOP: over 95 MB a file or 500 MB in all")
+		return 3
+	paths = old_art.tree_files()
+	spellings = {}
+	for path in paths:
+		parts = path.split("/")[1:-1]
+		for i in range(1, len(parts) + 1):
+			spellings.setdefault("/".join(parts[:i]).lower(), "/".join(parts[:i]))
+	old_art.destination = tree_destination(spellings)
+	return old_art.place(packer, grlist, scratch, take, missing, old["index"], old_art.tree_group_folders(paths, old_art._groups()))
+
+
 def _main(argv):
 	if len(argv) == 8 and argv[0] == "plan":
 		return _plan(*argv[1:])
+	if len(argv) == 9 and argv[0] == "spawns":
+		return _spawns(*argv[1:])
+	if len(argv) == 5 and argv[0] == "spawn-import":
+		return _spawn_import(*argv[1:])
 	if len(argv) == 9 and argv[0] == "races":
 		return _races(*argv[1:])
 	if len(argv) == 6 and argv[0] == "import":

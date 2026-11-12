@@ -7075,6 +7075,28 @@ d:/ymir work/monster2/metinstone_whitedragon_wind/metinstone_whitedragon_wind.gr
 d:/ymir work/monster2/metinstone_whitedragon_wind/metinstone_whitedragon_wind.msm	metin2_patch_dragon_rock_mobs/ymir work/monster2/metinstone_whitedragon_wind/metinstone_whitedragon_wind.msm	source/nv_43/ymir work/monster2/metinstone_whitedragon_wind/metinstone_whitedragon_wind.msm	copied
 d:/ymir work/monster2/metinstone_whitedragon_wind/motlist.txt	metin2_patch_dragon_rock_mobs/ymir work/monster2/metinstone_whitedragon_wind/motlist.txt	source/nv_43/ymir work/monster2/metinstone_whitedragon_wind/motlist.txt	copied
 d:/ymir work/monster2/metinstone_whitedragon_wind/wind.dds	metin2_patch_dragon_rock_mobs/ymir work/monster2/metinstone_whitedragon_wind/wind.dds	source/nv_43/ymir work/monster2/metinstone_whitedragon_wind/wind.dds	copied
+d:/ymir work/monster2/new_mutant/attack.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/attack.GR2	source/nv_14/monster2/new_mutant/attack.GR2	converted
+d:/ymir work/monster2/new_mutant/attack.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/attack.msa	source/nv_14/monster2/new_mutant/attack.msa	copied
+d:/ymir work/monster2/new_mutant/attack1.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/attack1.GR2	source/nv_14/monster2/new_mutant/attack1.GR2	converted
+d:/ymir work/monster2/new_mutant/attack1.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/attack1.msa	source/nv_14/monster2/new_mutant/attack1.msa	copied
+d:/ymir work/monster2/new_mutant/attack_jump.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/attack_jump.GR2	source/nv_14/monster2/new_mutant/attack_jump.GR2	converted
+d:/ymir work/monster2/new_mutant/attack_jump.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/attack_jump.msa	source/nv_14/monster2/new_mutant/attack_jump.msa	copied
+d:/ymir work/monster2/new_mutant/damage.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/damage.GR2	source/nv_14/monster2/new_mutant/damage.GR2	converted
+d:/ymir work/monster2/new_mutant/damage.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/damage.msa	source/nv_14/monster2/new_mutant/damage.msa	copied
+d:/ymir work/monster2/new_mutant/death.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/death.GR2	source/nv_14/monster2/new_mutant/death.GR2	converted
+d:/ymir work/monster2/new_mutant/death.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/death.msa	source/nv_14/monster2/new_mutant/death.msa	copied
+d:/ymir work/monster2/new_mutant/motlist.txt	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/motlist.txt	source/nv_14/monster2/new_mutant/motlist.txt	copied
+d:/ymir work/monster2/new_mutant/mutant_diffuse.dds	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/Mutant_diffuse.dds	source/nv_14/monster2/new_mutant/Mutant_diffuse.dds	copied
+d:/ymir work/monster2/new_mutant/new_mutant.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/new_mutant.GR2	source/nv_14/monster2/new_mutant/new_mutant.GR2	converted
+d:/ymir work/monster2/new_mutant/new_mutant.msm	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/new_mutant.msm	source/nv_14/monster2/new_mutant/new_mutant.msm	copied
+d:/ymir work/monster2/new_mutant/run.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/run.GR2	source/nv_14/monster2/new_mutant/run.GR2	converted
+d:/ymir work/monster2/new_mutant/run.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/run.msa	source/nv_14/monster2/new_mutant/run.msa	copied
+d:/ymir work/monster2/new_mutant/wait.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/wait.GR2	source/nv_14/monster2/new_mutant/wait.GR2	converted
+d:/ymir work/monster2/new_mutant/wait.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/wait.msa	source/nv_14/monster2/new_mutant/wait.msa	copied
+d:/ymir work/monster2/new_mutant/wait1.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/wait1.GR2	source/nv_14/monster2/new_mutant/wait1.GR2	converted
+d:/ymir work/monster2/new_mutant/wait1.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/wait1.msa	source/nv_14/monster2/new_mutant/wait1.msa	copied
+d:/ymir work/monster2/new_mutant/walk.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/walk.GR2	source/nv_14/monster2/new_mutant/walk.GR2	converted
+d:/ymir work/monster2/new_mutant/walk.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/new_mutant/walk.msa	source/nv_14/monster2/new_mutant/walk.msa	copied
 d:/ymir work/monster2/plechi_duratus_boss/attack00.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/plechi_duratus_boss/attack00.gr2	source/nv_2/monster2/plechi_duratus_boss/attack00.gr2	converted
 d:/ymir work/monster2/plechi_duratus_boss/attack00.msa	metin2_patch_dragon_rock_mobs/ymir work/monster2/plechi_duratus_boss/attack00.msa	source/nv_2/monster2/plechi_duratus_boss/attack00.msa	copied
 d:/ymir work/monster2/plechi_duratus_boss/damage.gr2	metin2_patch_dragon_rock_mobs/ymir work/monster2/plechi_duratus_boss/damage.gr2	source/nv_2/monster2/plechi_duratus_boss/damage.gr2	converted
@@ -8845,6 +8867,17 @@ d:/ymir work/npc/august_pvp_pet/wait2.msa	NPC/ymir work/npc/august_pvp_pet/wait2
 d:/ymir work/npc/august_pvp_pet/walk.gr2	NPC/ymir work/npc/august_pvp_pet/walk.GR2	source/nv_12/npc/august_pvp_pet/walk.GR2	converted
 d:/ymir work/npc/august_pvp_pet/walk.msa	NPC/ymir work/npc/august_pvp_pet/walk.msa	source/nv_12/npc/august_pvp_pet/walk.msa	copied
 d:/ymir work/npc/august_pvp_pet/worldcat_evolve.mse	NPC/ymir work/npc/august_pvp_pet/worldcat_evolve.mse	source/nv_12/npc/august_pvp_pet/worldcat_evolve.mse	copied
+d:/ymir work/npc/aurora/aurora.gr2	NPC/ymir work/npc/aurora/aurora.GR2	source/nv_11/npc/aurora/aurora.GR2	converted
+d:/ymir work/npc/aurora/aurora.msm	NPC/ymir work/npc/aurora/aurora.msm	source/nv_11/npc/aurora/aurora.msm	copied
+d:/ymir work/npc/aurora/dress.dds	NPC/ymir work/npc/aurora/dress.dds	source/nv_11/npc/aurora/dress.dds	copied
+d:/ymir work/npc/aurora/face.dds	NPC/ymir work/npc/aurora/face.dds	source/nv_11/npc/aurora/face.dds	copied
+d:/ymir work/npc/aurora/motlist.txt	NPC/ymir work/npc/aurora/motlist.txt	source/nv_11/npc/aurora/motlist.txt	copied
+d:/ymir work/npc/aurora/wait.gr2	NPC/ymir work/npc/aurora/wait.GR2	source/nv_11/npc/aurora/wait.GR2	converted
+d:/ymir work/npc/aurora/wait.msa	NPC/ymir work/npc/aurora/wait.msa	source/nv_11/npc/aurora/wait.msa	copied
+d:/ymir work/npc/aurora/wait2.gr2	NPC/ymir work/npc/aurora/wait2.GR2	source/nv_11/npc/aurora/wait2.GR2	converted
+d:/ymir work/npc/aurora/wait2.msa	NPC/ymir work/npc/aurora/wait2.msa	source/nv_11/npc/aurora/wait2.msa	copied
+d:/ymir work/npc/aurora/wait3.gr2	NPC/ymir work/npc/aurora/wait3.GR2	source/nv_11/npc/aurora/wait3.GR2	converted
+d:/ymir work/npc/aurora/wait3.msa	NPC/ymir work/npc/aurora/wait3.msa	source/nv_11/npc/aurora/wait3.msa	copied
 d:/ymir work/npc/bls_pet/apron.dds	NPC/ymir work/npc/bls_pet/apron.dds	source/nv_21/npc/bls_pet/apron.dds	copied
 d:/ymir work/npc/bls_pet/apron_2.dds	NPC/ymir work/npc/bls_pet/apron_2.dds	source/nv_21/npc/bls_pet/apron_2.dds	copied
 d:/ymir work/npc/bls_pet/black.dds	NPC/ymir work/npc/bls_pet/black.dds	source/nv_21/npc/bls_pet/black.dds	copied
@@ -8928,6 +8961,14 @@ d:/ymir work/npc/demon_metin/loop.gr2	NPC/ymir work/npc/Demon_Metin/loop.GR2	sou
 d:/ymir work/npc/demon_metin/loop.msa	NPC/ymir work/npc/Demon_Metin/loop.msa	source/npc/Demon_Metin/loop.msa	copied
 d:/ymir work/npc/demon_metin/motlist.txt	NPC/ymir work/npc/Demon_Metin/motlist.txt	source/npc/Demon_Metin/motlist.txt	copied
 d:/ymir work/npc/demon_metin/wall.dds	NPC/ymir work/npc/Demon_Metin/Wall.dds	source/npc/Demon_Metin/Wall.dds	copied
+d:/ymir work/npc/drugo15/drugo15.gr2	NPC/ymir work/npc/drugo15/drugo15.GR2	source/npc/drugo15/drugo15.GR2	converted
+d:/ymir work/npc/drugo15/drugo15.msm	NPC/ymir work/npc/drugo15/drugo15.msm	source/npc/drugo15/drugo15.msm	copied
+d:/ymir work/npc/drugo15/drugo15_2.msm	NPC/ymir work/npc/drugo15/drugo15_2.msm	source/nv_31/ymir work/npc/drugo15/drugo15_2.msm	copied
+d:/ymir work/npc/drugo15/motlist.txt	NPC/ymir work/npc/drugo15/motlist.txt	source/npc/drugo15/motlist.txt	copied
+d:/ymir work/npc/drugo15/w12ca_philo_d.dds	NPC/ymir work/npc/drugo15/w12ca_Philo_d.dds	source/npc/drugo15/w12ca_Philo_d.dds	copied
+d:/ymir work/npc/drugo15/w12ca_philo_d_2.dds	NPC/ymir work/npc/drugo15/w12ca_Philo_d_2.dds	source/nv_31/ymir work/npc/drugo15/w12ca_Philo_d_2.dds	copied
+d:/ymir work/npc/drugo15/wait.gr2	NPC/ymir work/npc/drugo15/wait.GR2	source/npc/drugo15/wait.GR2	converted
+d:/ymir work/npc/drugo15/wait.msa	NPC/ymir work/npc/drugo15/wait.msa	source/npc/drugo15/wait.msa	copied
 d:/ymir work/npc/drugo_devil/drugo_devil.gr2	NPC/ymir work/npc/drugo_devil/drugo_devil.GR2	source/nv_3/npc/drugo_devil/drugo_devil.GR2	converted
 d:/ymir work/npc/drugo_devil/drugo_devil.msm	NPC/ymir work/npc/drugo_devil/drugo_devil.msm	source/nv_3/npc/drugo_devil/drugo_devil.msm	copied
 d:/ymir work/npc/drugo_devil/lava demon.dds	NPC/ymir work/npc/drugo_devil/lava demon.dds	source/nv_3/npc/drugo_devil/lava demon.dds	copied
@@ -8998,6 +9039,22 @@ d:/ymir work/npc/horse_event1/horse_pepsi.dds	patch2/ymir work/npc/horse_event1/
 d:/ymir work/npc/horse_event1/horse_pepsi.msm	patch2/ymir work/npc/horse_event1/horse_pepsi.msm	source/npc/horse_event1/horse_pepsi.msm	copied
 d:/ymir work/npc/horse_event1/horse_pepsi_1.dds	patch2/ymir work/npc/horse_event1/horse_pepsi_1.dds	source/npc/horse_event1/horse_pepsi_1.dds	copied
 d:/ymir work/npc/horse_event1/horse_pepsi_2.dds	patch2/ymir work/npc/horse_event1/horse_pepsi_2.dds	source/npc/horse_event1/horse_pepsi_2.dds	copied
+d:/ymir work/npc/infusion_table/20.png	NPC/ymir work/npc/infusion_table/20.png	source/nv_17/ymir work/npc/infusion_table/20.png	copied
+d:/ymir work/npc/infusion_table/cap_s90_i.dds	NPC/ymir work/npc/infusion_table/cap_s90_i.dds	source/nv_17/ymir work/npc/infusion_table/cap_s90_i.dds	copied
+d:/ymir work/npc/infusion_table/infusion_effect.mse	NPC/ymir work/npc/infusion_table/infusion_effect.mse	source/nv_17/ymir work/npc/infusion_table/infusion_effect.mse	copied
+d:/ymir work/npc/infusion_table/infusion_table.dds	NPC/ymir work/npc/infusion_table/infusion_table.dds	source/nv_17/ymir work/npc/infusion_table/infusion_table.dds	copied
+d:/ymir work/npc/infusion_table/infusion_table.gr2	NPC/ymir work/npc/infusion_table/infusion_table.GR2	source/nv_17/ymir work/npc/infusion_table/infusion_table.GR2	converted
+d:/ymir work/npc/infusion_table/infusion_table.msm	NPC/ymir work/npc/infusion_table/infusion_table.msm	source/nv_17/ymir work/npc/infusion_table/infusion_table.msm	copied
+d:/ymir work/npc/infusion_table/motlist.txt	NPC/ymir work/npc/infusion_table/motlist.txt	source/nv_17/ymir work/npc/infusion_table/motlist.txt	copied
+d:/ymir work/npc/infusion_table/upgrade core_blue.dds	NPC/ymir work/npc/infusion_table/upgrade core_blue.dds	source/nv_17/ymir work/npc/infusion_table/upgrade core_blue.dds	copied
+d:/ymir work/npc/infusion_table/upgrade core_frame.dds	NPC/ymir work/npc/infusion_table/upgrade core_frame.dds	source/nv_17/ymir work/npc/infusion_table/upgrade core_frame.dds	copied
+d:/ymir work/npc/infusion_table/upgrade core_gold.dds	NPC/ymir work/npc/infusion_table/upgrade core_gold.dds	source/nv_17/ymir work/npc/infusion_table/upgrade core_gold.dds	copied
+d:/ymir work/npc/infusion_table/upgrade core_green.dds	NPC/ymir work/npc/infusion_table/upgrade core_green.dds	source/nv_17/ymir work/npc/infusion_table/upgrade core_green.dds	copied
+d:/ymir work/npc/infusion_table/upgrade core_red.dds	NPC/ymir work/npc/infusion_table/upgrade core_red.dds	source/nv_17/ymir work/npc/infusion_table/upgrade core_red.dds	copied
+d:/ymir work/npc/infusion_table/wait.gr2	NPC/ymir work/npc/infusion_table/wait.GR2	source/nv_17/ymir work/npc/infusion_table/wait.GR2	converted
+d:/ymir work/npc/infusion_table/wait.msa	NPC/ymir work/npc/infusion_table/wait.msa	source/nv_17/ymir work/npc/infusion_table/wait.msa	copied
+d:/ymir work/npc/infusion_table/wait1.gr2	NPC/ymir work/npc/infusion_table/wait1.GR2	source/nv_17/ymir work/npc/infusion_table/wait1.GR2	converted
+d:/ymir work/npc/infusion_table/wait1.msa	NPC/ymir work/npc/infusion_table/wait1.msa	source/nv_17/ymir work/npc/infusion_table/wait1.msa	copied
 d:/ymir work/npc/jule_aviator/jule_aviator.gr2	NPC/ymir work/npc/jule_aviator/jule_aviator.GR2	source/nv_11/npc/jule_aviator/jule_aviator.GR2	converted
 d:/ymir work/npc/jule_aviator/jule_aviator_1.msm	NPC/ymir work/npc/jule_aviator/jule_aviator_1.msm	source/nv_11/npc/jule_aviator/jule_aviator_1.msm	copied
 d:/ymir work/npc/jule_aviator/jule_aviator_2.msm	NPC/ymir work/npc/jule_aviator/jule_aviator_2.msm	source/nv_11/npc/jule_aviator/jule_aviator_2.msm	copied
@@ -9234,6 +9291,15 @@ d:/ymir work/npc/nova_baby_yoda/wait_2.gr2	NPC/ymir work/npc/nova_baby_yoda/wait
 d:/ymir work/npc/nova_baby_yoda/wait_2.msa	NPC/ymir work/npc/nova_baby_yoda/wait_2.msa	source/nv_16/npc/nova_baby_yoda/wait_2.msa	copied
 d:/ymir work/npc/nova_baby_yoda/walk.gr2	NPC/ymir work/npc/nova_baby_yoda/walk.GR2	source/nv_16/npc/nova_baby_yoda/walk.GR2	converted
 d:/ymir work/npc/nova_baby_yoda/walk.msa	NPC/ymir work/npc/nova_baby_yoda/walk.msa	source/nv_16/npc/nova_baby_yoda/walk.msa	copied
+d:/ymir work/npc/nova_bday_cake/blank image.jpg	NPC/ymir work/npc/nova_bday_cake/Blank image.jpg	source/nv_12/npc/nova_bday_cake/Blank image.jpg	copied
+d:/ymir work/npc/nova_bday_cake/candy_text_ornament.jpg	NPC/ymir work/npc/nova_bday_cake/candy_text_ornament.jpg	source/nv_12/npc/nova_bday_cake/candy_text_ornament.jpg	copied
+d:/ymir work/npc/nova_bday_cake/motlist.txt	NPC/ymir work/npc/nova_bday_cake/motlist.txt	source/nv_12/npc/nova_bday_cake/motlist.txt	copied
+d:/ymir work/npc/nova_bday_cake/nova_bday_cake.gr2	NPC/ymir work/npc/nova_bday_cake/nova_bday_cake.GR2	source/nv_12/npc/nova_bday_cake/nova_bday_cake.GR2	converted
+d:/ymir work/npc/nova_bday_cake/nova_bday_cake.msm	NPC/ymir work/npc/nova_bday_cake/nova_bday_cake.msm	source/nv_12/npc/nova_bday_cake/nova_bday_cake.msm	copied
+d:/ymir work/npc/nova_bday_cake/wait.gr2	NPC/ymir work/npc/nova_bday_cake/wait.GR2	source/nv_12/npc/nova_bday_cake/wait.GR2	converted
+d:/ymir work/npc/nova_bday_cake/wait.msa	NPC/ymir work/npc/nova_bday_cake/wait.msa	source/nv_12/npc/nova_bday_cake/wait.msa	copied
+d:/ymir work/npc/nova_bday_cake/wait1.gr2	NPC/ymir work/npc/nova_bday_cake/wait1.GR2	source/nv_12/npc/nova_bday_cake/wait1.GR2	converted
+d:/ymir work/npc/nova_bday_cake/wait1.msa	NPC/ymir work/npc/nova_bday_cake/wait1.msa	source/nv_12/npc/nova_bday_cake/wait1.msa	copied
 d:/ymir work/npc/nova_december_mount/acc_074_a_diff.dds	NPC/ymir work/npc/nova_december_mount/Acc_074_A_diff.dds	source/nv_16/npc/nova_december_mount/Acc_074_A_diff.dds	copied
 d:/ymir work/npc/nova_december_mount/damage.msa	NPC/ymir work/npc/nova_december_mount/damage.msa	source/nv_16/npc/nova_december_mount/damage.msa	copied
 d:/ymir work/npc/nova_december_mount/death.msa	NPC/ymir work/npc/nova_december_mount/death.msa	source/nv_16/npc/nova_december_mount/death.msa	copied
@@ -10274,6 +10340,14 @@ d:/ymir work/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/stay0
 d:/ymir work/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/stay02.msa	NPC/ymir work/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/stay02.msa	source/nv_16/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/stay02.msa	copied
 d:/ymir work/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/walk.gr2	NPC/ymir work/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/walk.gr2	source/nv_16/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/walk.gr2	converted
 d:/ymir work/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/walk.msa	NPC/ymir work/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/walk.msa	source/nv_16/npc/plechito_christmas2020_mounts/plechi_christmas2020_mount3/walk.msa	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/motlist.txt	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/motlist.txt	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/motlist.txt	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechi_ch2024_enter.gr2	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechi_ch2024_enter.gr2	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechi_ch2024_enter.gr2	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechi_ch2024_enter.msm	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechi_ch2024_enter.msm	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechi_ch2024_enter.msm	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechito_tex.dds	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechito_tex.dds	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/plechito_tex.dds	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay00.gr2	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay00.gr2	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay00.gr2	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay00.msa	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay00.msa	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay00.msa	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay01.gr2	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay01.gr2	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay01.gr2	copied
+d:/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay01.msa	NPC/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay01.msa	source/nv_46/ymir work/npc/plechito_christmas2024/plechi_ch2024_enter/stay01.msa	copied
 d:/ymir work/npc/plechito_easter2021_mounts/easter2021_mount2/attack.gr2	NPC/ymir work/npc/plechito_easter2021_mounts/easter2021_mount2/attack.gr2	source/nv_19/npc/plechito_easter2021_mounts/easter2021_mount2/attack.gr2	converted
 d:/ymir work/npc/plechito_easter2021_mounts/easter2021_mount2/attack.msa	NPC/ymir work/npc/plechito_easter2021_mounts/easter2021_mount2/attack.msa	source/nv_19/npc/plechito_easter2021_mounts/easter2021_mount2/attack.msa	copied
 d:/ymir work/npc/plechito_easter2021_mounts/easter2021_mount2/body_tex.dds	NPC/ymir work/npc/plechito_easter2021_mounts/easter2021_mount2/body_tex.dds	source/nv_19/npc/plechito_easter2021_mounts/easter2021_mount2/body_tex.dds	copied
@@ -10387,6 +10461,25 @@ d:/ymir work/npc/ridack_mountchi15/ridack_effect.dds	NPC/ymir work/npc/ridack_mo
 d:/ymir work/npc/ridack_mountchi15/ridack_effect.mse	NPC/ymir work/npc/ridack_mountchi15/ridack_effect.mse	source/nv_21/npc/ridack_mountchi15/ridack_effect.mse	copied
 d:/ymir work/npc/ridack_mountchi15/ridack_mountchi15.gr2	NPC/ymir work/npc/ridack_mountchi15/ridack_mountchi15.gr2	source/nv_21/npc/ridack_mountchi15/ridack_mountchi15.gr2	converted
 d:/ymir work/npc/ridack_mountchi15/ridack_mountchi15.msm	NPC/ymir work/npc/ridack_mountchi15/ridack_mountchi15.msm	source/nv_21/npc/ridack_mountchi15/ridack_mountchi15.msm	copied
+d:/ymir work/npc/scholar_beige_m/dead.gr2	NPC/ymir work/npc/scholar_beige_m/dead.gr2	source/npc/scholar_beige_m/dead.gr2	converted
+d:/ymir work/npc/scholar_beige_m/dead.msa	NPC/ymir work/npc/scholar_beige_m/dead.msa	source/npc/scholar_beige_m/dead.msa	copied
+d:/ymir work/npc/scholar_beige_m/motlist.txt	NPC/ymir work/npc/scholar_beige_m/motlist.txt	source/npc/scholar_beige_m/motlist.txt	copied
+d:/ymir work/npc/scholar_beige_m/run.gr2	NPC/ymir work/npc/scholar_beige_m/run.gr2	source/npc/scholar_beige_m/run.gr2	converted
+d:/ymir work/npc/scholar_beige_m/run.msa	NPC/ymir work/npc/scholar_beige_m/run.msa	source/npc/scholar_beige_m/run.msa	copied
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m.gr2	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m.gr2	source/npc/scholar_beige_m/scholar_beige_m.gr2	converted
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m.msm	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m.msm	source/npc/scholar_beige_m/scholar_beige_m.msm	copied
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m1.dds	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m1.dds	source/npc/scholar_beige_m/scholar_beige_m1.dds	copied
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m1.msm	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m1.msm	source/npc/scholar_beige_m/scholar_beige_m1.msm	copied
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m1_weapon1.dds	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m1_weapon1.dds	source/npc/scholar_beige_m/scholar_beige_m1_weapon1.dds	copied
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m2.dds	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m2.dds	source/npc/scholar_beige_m/scholar_beige_m2.dds	copied
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m2.msm	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m2.msm	source/npc/scholar_beige_m/scholar_beige_m2.msm	copied
+d:/ymir work/npc/scholar_beige_m/scholar_beige_m2_weapon1.dds	NPC/ymir work/npc/scholar_beige_m/scholar_beige_m2_weapon1.dds	source/npc/scholar_beige_m/scholar_beige_m2_weapon1.dds	copied
+d:/ymir work/npc/scholar_beige_m/wait.gr2	NPC/ymir work/npc/scholar_beige_m/wait.gr2	source/npc/scholar_beige_m/wait.gr2	converted
+d:/ymir work/npc/scholar_beige_m/wait.msa	NPC/ymir work/npc/scholar_beige_m/wait.msa	source/npc/scholar_beige_m/wait.msa	copied
+d:/ymir work/npc/scholar_beige_m/wait1.gr2	NPC/ymir work/npc/scholar_beige_m/wait1.gr2	source/npc/scholar_beige_m/wait1.gr2	converted
+d:/ymir work/npc/scholar_beige_m/wait1.msa	NPC/ymir work/npc/scholar_beige_m/wait1.msa	source/npc/scholar_beige_m/wait1.msa	copied
+d:/ymir work/npc/scholar_beige_m/walk.gr2	NPC/ymir work/npc/scholar_beige_m/walk.gr2	source/npc/scholar_beige_m/walk.gr2	converted
+d:/ymir work/npc/scholar_beige_m/walk.msa	NPC/ymir work/npc/scholar_beige_m/walk.msa	source/npc/scholar_beige_m/walk.msa	copied
 d:/ymir work/npc/spirit_nature_pet/motlist.txt	NPC/ymir work/npc/spirit_nature_pet/motlist.txt	source/nv_13/npc/spirit_nature_pet/motlist.txt	copied
 d:/ymir work/npc/spirit_nature_pet/pet_spiritofnature_a_diff.dds	NPC/ymir work/npc/spirit_nature_pet/Pet_SpiritofNature_A_diff.dds	source/nv_13/npc/spirit_nature_pet/Pet_SpiritofNature_A_diff.dds	copied
 d:/ymir work/npc/spirit_nature_pet/run.gr2	NPC/ymir work/npc/spirit_nature_pet/run.GR2	source/nv_13/npc/spirit_nature_pet/run.GR2	converted
@@ -10421,6 +10514,16 @@ d:/ymir work/npc/trans_lion_metal/wait2.gr2	NPC/ymir work/npc/trans_lion_metal/w
 d:/ymir work/npc/trans_lion_metal/wait2.msa	NPC/ymir work/npc/trans_lion_metal/wait2.msa	source/nv_13/npc/trans_lion_metal/wait2.msa	copied
 d:/ymir work/npc/trans_lion_metal/walk.gr2	NPC/ymir work/npc/trans_lion_metal/walk.GR2	source/nv_13/npc/trans_lion_metal/walk.GR2	converted
 d:/ymir work/npc/trans_lion_metal/walk.msa	NPC/ymir work/npc/trans_lion_metal/walk.msa	source/nv_13/npc/trans_lion_metal/walk.msa	copied
+d:/ymir work/npc/treasure_box/motlist.txt	NPC/ymir work/npc/treasure_box/motlist.txt	source/nv_9/npc/treasure_box/motlist.txt	copied
+d:/ymir work/npc/treasure_box/mysterybox_diff.dds	NPC/ymir work/npc/treasure_box/MysteryBox_diff.dds	source/nv_9/npc/treasure_box/MysteryBox_diff.dds	copied
+d:/ymir work/npc/treasure_box/treasure_box.gr2	NPC/ymir work/npc/treasure_box/treasure_box.GR2	source/nv_9/npc/treasure_box/treasure_box.GR2	converted
+d:/ymir work/npc/treasure_box/treasure_box.msm	NPC/ymir work/npc/treasure_box/treasure_box.msm	source/nv_9/npc/treasure_box/treasure_box.msm	copied
+d:/ymir work/npc/treasure_box/wait.gr2	NPC/ymir work/npc/treasure_box/wait.GR2	source/nv_9/npc/treasure_box/wait.GR2	converted
+d:/ymir work/npc/treasure_box/wait.msa	NPC/ymir work/npc/treasure_box/wait.msa	source/nv_9/npc/treasure_box/wait.msa	copied
+d:/ymir work/npc/treasure_box/wait_still.gr2	NPC/ymir work/npc/treasure_box/wait_still.GR2	source/nv_9/npc/treasure_box/wait_still.GR2	converted
+d:/ymir work/npc/treasure_box/wait_still.msa	NPC/ymir work/npc/treasure_box/wait_still.msa	source/nv_9/npc/treasure_box/wait_still.msa	copied
+d:/ymir work/npc/treasure_box/wait_still2.gr2	NPC/ymir work/npc/treasure_box/wait_still2.GR2	source/nv_9/npc/treasure_box/wait_still2.GR2	converted
+d:/ymir work/npc/treasure_box/wait_still2.msa	NPC/ymir work/npc/treasure_box/wait_still2.msa	source/nv_9/npc/treasure_box/wait_still2.msa	copied
 d:/ymir work/npc/valentine_pet_1/motlist.txt	NPC/ymir work/npc/valentine_pet_1/motlist.txt	source/nv_18/npc/valentine_pet_1/motlist.txt	copied
 d:/ymir work/npc/valentine_pet_1/run.gr2	NPC/ymir work/npc/valentine_pet_1/run.GR2	source/nv_18/npc/valentine_pet_1/run.GR2	converted
 d:/ymir work/npc/valentine_pet_1/run.msa	NPC/ymir work/npc/valentine_pet_1/run.msa	source/nv_18/npc/valentine_pet_1/run.msa	copied
@@ -10455,6 +10558,20 @@ d:/ymir work/npc/valentine_pet_5/valentine_pet_5.gr2	NPC/ymir work/npc/valentine
 d:/ymir work/npc/valentine_pet_5/valentine_pet_5.msm	NPC/ymir work/npc/valentine_pet_5/valentine_pet_5.msm	source/nv_18/npc/valentine_pet_5/valentine_pet_5.msm	copied
 d:/ymir work/npc/valentine_pet_5/wait.gr2	NPC/ymir work/npc/valentine_pet_5/wait.GR2	source/nv_18/npc/valentine_pet_5/wait.GR2	converted
 d:/ymir work/npc/valentine_pet_5/wait.msa	NPC/ymir work/npc/valentine_pet_5/wait.msa	source/nv_18/npc/valentine_pet_5/wait.msa	copied
+d:/ymir work/npc/wolfman_jokjang/dead.gr2	NPC/ymir work/npc/wolfman_jokjang/dead.gr2	source/npc/wolfman_jokjang/dead.gr2	converted
+d:/ymir work/npc/wolfman_jokjang/dead.msa	NPC/ymir work/npc/wolfman_jokjang/dead.msa	source/npc/wolfman_jokjang/dead.msa	copied
+d:/ymir work/npc/wolfman_jokjang/motlist.txt	NPC/ymir work/npc/wolfman_jokjang/motlist.txt	source/npc/wolfman_jokjang/motlist.txt	copied
+d:/ymir work/npc/wolfman_jokjang/run.gr2	NPC/ymir work/npc/wolfman_jokjang/run.gr2	source/npc/wolfman_jokjang/run.gr2	converted
+d:/ymir work/npc/wolfman_jokjang/run.msa	NPC/ymir work/npc/wolfman_jokjang/run.msa	source/npc/wolfman_jokjang/run.msa	copied
+d:/ymir work/npc/wolfman_jokjang/wait.gr2	NPC/ymir work/npc/wolfman_jokjang/wait.gr2	source/npc/wolfman_jokjang/wait.gr2	converted
+d:/ymir work/npc/wolfman_jokjang/wait.msa	NPC/ymir work/npc/wolfman_jokjang/wait.msa	source/npc/wolfman_jokjang/wait.msa	copied
+d:/ymir work/npc/wolfman_jokjang/wait1.gr2	NPC/ymir work/npc/wolfman_jokjang/wait1.gr2	source/npc/wolfman_jokjang/wait1.gr2	converted
+d:/ymir work/npc/wolfman_jokjang/wait1.msa	NPC/ymir work/npc/wolfman_jokjang/wait1.msa	source/npc/wolfman_jokjang/wait1.msa	copied
+d:/ymir work/npc/wolfman_jokjang/walk.gr2	NPC/ymir work/npc/wolfman_jokjang/walk.gr2	source/npc/wolfman_jokjang/walk.gr2	converted
+d:/ymir work/npc/wolfman_jokjang/walk.msa	NPC/ymir work/npc/wolfman_jokjang/walk.msa	source/npc/wolfman_jokjang/walk.msa	copied
+d:/ymir work/npc/wolfman_jokjang/wolfman_jokjang.dds	NPC/ymir work/npc/wolfman_jokjang/wolfman_jokjang.dds	source/npc/wolfman_jokjang/wolfman_jokjang.dds	copied
+d:/ymir work/npc/wolfman_jokjang/wolfman_jokjang.gr2	NPC/ymir work/npc/wolfman_jokjang/wolfman_jokjang.gr2	source/npc/wolfman_jokjang/wolfman_jokjang.gr2	converted
+d:/ymir work/npc/wolfman_jokjang/wolfman_jokjang.msm	NPC/ymir work/npc/wolfman_jokjang/wolfman_jokjang.msm	source/npc/wolfman_jokjang/wolfman_jokjang.msm	copied
 d:/ymir work/npc/xmas_alpaca/alpaca1_d.dds	NPC/ymir work/npc/xmas_alpaca/alpaca1_d.dds	source/nv_4/npc/xmas_alpaca/alpaca1_d.dds	copied
 d:/ymir work/npc/xmas_alpaca/alpaca2_d.dds	NPC/ymir work/npc/xmas_alpaca/alpaca2_d.dds	source/nv_4/npc/xmas_alpaca/alpaca2_d.dds	copied
 d:/ymir work/npc/xmas_alpaca/alpaca_d.dds	NPC/ymir work/npc/xmas_alpaca/alpaca_d.dds	source/nv_4/npc/xmas_alpaca/alpaca_d.dds	copied

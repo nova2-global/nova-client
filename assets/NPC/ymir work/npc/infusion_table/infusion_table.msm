@@ -1,0 +1,99 @@
+ScriptType            RaceDataScript
+
+BaseModelFileName     "D:\Ymir Work\npc\infusion_table\infusion_table.GR2"
+
+Group ShapeData
+{
+	PathName 		 ""
+	ShapeDataCount		 1
+	Group ShapeData00
+	{
+		ShapeIndex			0
+
+		Model				"D:\Ymir Work\npc\infusion_table\infusion_table.GR2"
+		CustomSpecular		1
+		SourceSkin			"D:\Ymir Work\npc\infusion_table\cap_s90_i.dds"
+		CommonTargetSkin	"D:\Ymir Work\npc\infusion_table\cap_s90_i.dds"
+		SourceSkin2			"D:\Ymir Work\npc\infusion_table\upgrade core_blue.dds"
+		CommonTargetSkin2	"D:\Ymir Work\npc\infusion_table\upgrade core_blue.dds"
+		SourceSkin3			"D:\Ymir Work\npc\infusion_table\upgrade core_frame.dds"
+		CommonTargetSkin3	"D:\Ymir Work\npc\infusion_table\upgrade core_frame.dds"
+		SourceSkin4			"D:\Ymir Work\npc\infusion_table\upgrade core_gold.dds"
+		CommonTargetSkin4	"D:\Ymir Work\npc\infusion_table\upgrade core_gold.dds"
+		SourceSkin5			"D:\Ymir Work\npc\infusion_table\upgrade core_green.dds"
+		CommonTargetSkin5	"D:\Ymir Work\npc\infusion_table\upgrade core_green.dds"
+		SourceSkin6			"D:\Ymir Work\npc\infusion_table\upgrade core_red.dds"
+		CommonTargetSkin6	"D:\Ymir Work\npc\infusion_table\upgrade core_red.dds"
+	}
+}
+Group AttachingData
+{
+    AttachingDataCount       4
+    
+    Group AttachingData00
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "o_root_Dummy"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           45.000000
+            Position         0.000000 0.000000 30.000000
+        }
+    }
+    
+    Group AttachingData01
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "o_root_Dummy"
+        
+        CollisionType        3
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           56.000000
+            Position         0.000000 0.000000 40.000000
+        }
+    }
+    
+    Group AttachingData02
+    {
+        AttachingDataType    1
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "o_root_Dummy"
+        
+        CollisionType        1
+        
+        SphereDataCount      1
+        Group SphereData00
+        {
+            Radius           50.000000
+            Position         0.000000 0.000000 40.000000
+        }
+    }
+    
+    Group AttachingData03
+    {
+        AttachingDataType    2
+        
+        isAttaching          1
+        AttachingModelIndex  0
+        AttachingBoneName    "o_root_Dummy"
+        
+        EffectScriptName     "D:\ymir work\npc\infusion_table\infusion_effect.mse"
+        EffectPosition       0.000000 0.000000 0.000000
+        EffectRotation       0.000000 0.000000 0.000000
+    }
+}

@@ -1290,3 +1290,6 @@ SHOP_TEXT_OR	nebo
 SHOP_BUY_COUNT_TITLE	Počet ke koupi (max. %d)
 DO_YOU_BUY_WITH_ITEM	Chceš koupit %s za %s?
 SHOP_BULK_BUY_HINT	Shift + click: koupit více kusů
+DESTROY_ITEM_WARNING	Opravdu chcete tuto položku trvale zničit?
+ITEM_SPLIT_ALL	Rozdělit vše
+SHOP_MARK_SELL_HINT	Tab + klik: označit k prodeji

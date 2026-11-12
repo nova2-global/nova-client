@@ -1290,3 +1290,6 @@ SHOP_TEXT_OR	of
 SHOP_BUY_COUNT_TITLE	Aantal te kopen (max. %d)
 DO_YOU_BUY_WITH_ITEM	Wil je %s voor %s kopen?
 SHOP_BULK_BUY_HINT	Shift + click: meerdere kopen
+DESTROY_ITEM_WARNING	Weet je zeker dat je dit item definitief wilt vernietigen?
+ITEM_SPLIT_ALL	Alles splitsen
+SHOP_MARK_SELL_HINT	Tab + klik: markeren om te verkopen

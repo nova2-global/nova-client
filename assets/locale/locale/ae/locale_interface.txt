@@ -765,3 +765,5 @@ KEYBIND_EMOTION_6	رمز المشاعر 6
 KEYBIND_EMOTION_7	رمز المشاعر 7
 KEYBIND_EMOTION_8	رمز المشاعر 8
 KEYBIND_EMOTION_9	رمز المشاعر 9
+DESTROY	تدمير
+STORAGE_TITLE	التخزين

@@ -1290,3 +1290,6 @@ SHOP_TEXT_OR	lub
 SHOP_BUY_COUNT_TITLE	Ilość do kupienia (maks. %d)
 DO_YOU_BUY_WITH_ITEM	Czy chcesz kupić %s za %s?
 SHOP_BULK_BUY_HINT	Shift + click: kup kilka
+DESTROY_ITEM_WARNING	Czy na pewno chcesz trwale zniszczyć ten przedmiot?
+ITEM_SPLIT_ALL	Podziel wszystko
+SHOP_MARK_SELL_HINT	Tab + klik: zaznacz do sprzedaży

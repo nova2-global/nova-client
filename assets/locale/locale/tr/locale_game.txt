@@ -1290,3 +1290,6 @@ SHOP_TEXT_OR	veya
 SHOP_BUY_COUNT_TITLE	Satın alınacak adet (en fazla %d)
 DO_YOU_BUY_WITH_ITEM	Satın almak istiyor musun? Nesne: %s Fiyat: %s
 SHOP_BULK_BUY_HINT	Shift + click: birden fazla satın al
+DESTROY_ITEM_WARNING	Bu eşyayı kalıcı olarak yok etmek istediğinden emin misin?
+ITEM_SPLIT_ALL	Hepsini böl
+SHOP_MARK_SELL_HINT	Tab + tıklama: satmak için işaretle

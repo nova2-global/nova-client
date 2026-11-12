@@ -1290,3 +1290,6 @@ SHOP_TEXT_OR	vagy
 SHOP_BUY_COUNT_TITLE	Vásárolandó mennyiség (max. %d)
 DO_YOU_BUY_WITH_ITEM	Szeretnél %s-t vásárolni %s-ért?
 SHOP_BULK_BUY_HINT	Shift + click: több vásárlása
+DESTROY_ITEM_WARNING	Biztos, hogy véglegesen el akarod pusztítani ezt a tárgyat?
+ITEM_SPLIT_ALL	Összes felosztása
+SHOP_MARK_SELL_HINT	Tab + kattintás: megjelölés eladásra

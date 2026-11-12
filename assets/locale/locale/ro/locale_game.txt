@@ -1290,3 +1290,6 @@ SHOP_TEXT_OR	sau
 SHOP_BUY_COUNT_TITLE	Cantitate de cumpărat (max. %d)
 DO_YOU_BUY_WITH_ITEM	Vrei să cumperi %s pentru %s?
 SHOP_BULK_BUY_HINT	Shift + click: cumpără mai multe
+DESTROY_ITEM_WARNING	Ești sigur că vrei să distrugi definitiv acest obiect?
+ITEM_SPLIT_ALL	Împarte tot
+SHOP_MARK_SELL_HINT	Tab + clic: marchează pentru vânzare

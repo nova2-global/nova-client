@@ -1382,3 +1382,6 @@ SHOP_TEXT_OR	أو
 SHOP_BUY_COUNT_TITLE	عدد القطع للشراء (حد أقصى %d)
 DO_YOU_BUY_WITH_ITEM	هل ترغب في شراء %s مقابل %s؟
 SHOP_BULK_BUY_HINT	Shift + click: لشراء عدة قطع
+DESTROY_ITEM_WARNING	هل أنت متأكد من أنك تريد تدمير هذا العنصر بشكل دائم؟
+ITEM_SPLIT_ALL	تقسيم الكل
+SHOP_MARK_SELL_HINT	Tab + نقرة: تحديد للبيع

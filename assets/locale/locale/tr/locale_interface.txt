@@ -741,3 +741,41 @@ KEYBIND_EMOTION_6	Duygu 6
 KEYBIND_EMOTION_7	Duygu 7
 KEYBIND_EMOTION_8	Duygu 8
 KEYBIND_EMOTION_9	Duygu 9
+OPTION_YANG_TEXT	Yang Kaydı
+OPTION_COUNTRY_FLAGS	Bayraklar
+OPTION_SEARCH_HINT	Seçenek ara
+OPTION_SEARCH_NONE	Eşleşen seçenek yok.
+OPTION_BGM	Arka plan müziği
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	isim renk krallık imparatorluk
+OPTION_KEYWORDS_TARGET_BOARD	hedef menü düşman
+OPTION_KEYWORDS_PK	pvp savaş barış düşman lonca serbest
+OPTION_KEYWORDS_BLOCK	engelle ticaret grup lonca fısıltı arkadaş istek
+OPTION_KEYWORDS_VIEW_CHAT	sohbet balon
+OPTION_KEYWORDS_ALWAYS_NAME	isim her zaman
+OPTION_KEYWORDS_DAMAGE	hasar vuruş sayılar
+OPTION_KEYWORDS_SALES	dükkan tabela satış
+OPTION_KEYWORDS_PICKUP	toplama ganimet filtre eşya iksir
+OPTION_KEYWORDS_SHOPS	dükkanlar çevrimdışı tüccar
+OPTION_KEYWORDS_SASH	kuşak omuz kostüm
+OPTION_KEYWORDS_BUFFI	buffi yoldaş destek
+OPTION_KEYWORDS_MOB_LEVEL	canavar seviye bilgi
+OPTION_KEYWORDS_MOB_AI	canavar saldırgan yıldız
+OPTION_KEYWORDS_KEYS	tuş klavye kısayol
+OPTION_KEYWORDS_YANG	yang altın para toplama mesaj
+OPTION_KEYWORDS_FLAGS	bayrak ülke ulus dil
+OPTION_KEYWORDS_SOUND	ses efekt seviye
+OPTION_KEYWORDS_MUSIC	müzik ses
+OPTION_KEYWORDS_BGM	müzik arka plan şarkı
+OPTION_KEYWORDS_CAMERA	kamera yakınlaştırma mesafe uzak yakın
+OPTION_KEYWORDS_FOG	sis görüş mesafesi
+OPTION_KEYWORDS_TILING	grafik
+OPTION_KEYWORDS_FOV	görüş alanı açı
+OPTION_KEYWORDS_SNOW	kar kar yağışı hava noel
+OPTION_KEYWORDS_FPS	fps kare sayaç performans
+OPTION_KEYWORDS_TIPS	ipuçları ipucu yardım
+OPTION_KEYWORDS_THEME	tema görünüm stil koyu açık klasik
+OPTION_KEYWORDS_SCALE	ölçek boyut arayüz
+OPTION_KEYWORDS_MOTION	hareket animasyon
+OPTION_KEYWORDS_EFFECTS	efektler bulanıklık gölge
+OPTION_KEYWORDS_COLORS	renkler vurgu panel opaklık

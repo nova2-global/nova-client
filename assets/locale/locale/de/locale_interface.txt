@@ -739,3 +739,41 @@ KEYBIND_EMOTION_6	Emotion 6
 KEYBIND_EMOTION_7	Emotion 7
 KEYBIND_EMOTION_8	Emotion 8
 KEYBIND_EMOTION_9	Emotion 9
+OPTION_YANG_TEXT	Yang-Anzeige
+OPTION_COUNTRY_FLAGS	Flaggen
+OPTION_SEARCH_HINT	Optionen suchen
+OPTION_SEARCH_NONE	Keine passende Option.
+OPTION_BGM	Hintergrundmusik
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	name farbe reich
+OPTION_KEYWORDS_TARGET_BOARD	ziel menü gegner
+OPTION_KEYWORDS_PK	pvp kampf frieden feindlich gilde frei
+OPTION_KEYWORDS_BLOCK	blockieren handel gruppe gilde flüstern freund anfrage
+OPTION_KEYWORDS_VIEW_CHAT	chat sprechblase
+OPTION_KEYWORDS_ALWAYS_NAME	name immer
+OPTION_KEYWORDS_DAMAGE	schaden treffer zahlen
+OPTION_KEYWORDS_SALES	laden schild verkauf
+OPTION_KEYWORDS_PICKUP	aufheben beute filter gegenstände tränke
+OPTION_KEYWORDS_SHOPS	läden offline händler
+OPTION_KEYWORDS_SASH	schulterband kostüm
+OPTION_KEYWORDS_BUFFI	buffi begleiter unterstützung
+OPTION_KEYWORDS_MOB_LEVEL	monster stufe info
+OPTION_KEYWORDS_MOB_AI	monster aggressiv stern
+OPTION_KEYWORDS_KEYS	tasten tastatur tastenbelegung kürzel
+OPTION_KEYWORDS_YANG	yang gold geld aufheben nachricht
+OPTION_KEYWORDS_FLAGS	flagge land nation sprache
+OPTION_KEYWORDS_SOUND	ton effekte lautstärke
+OPTION_KEYWORDS_MUSIC	musik lautstärke
+OPTION_KEYWORDS_BGM	musik hintergrund lied
+OPTION_KEYWORDS_CAMERA	kamera zoom abstand weit nah
+OPTION_KEYWORDS_FOG	nebel sichtweite
+OPTION_KEYWORDS_TILING	grafik
+OPTION_KEYWORDS_FOV	sichtfeld blickwinkel
+OPTION_KEYWORDS_SNOW	schnee schneefall wetter weihnachten
+OPTION_KEYWORDS_FPS	fps bilder zähler leistung
+OPTION_KEYWORDS_TIPS	tipps hinweis hilfe
+OPTION_KEYWORDS_THEME	thema design aussehen dunkel hell klassisch
+OPTION_KEYWORDS_SCALE	skalierung größe oberfläche
+OPTION_KEYWORDS_MOTION	bewegung animation
+OPTION_KEYWORDS_EFFECTS	effekte unschärfe schatten
+OPTION_KEYWORDS_COLORS	farben akzent fenster deckkraft

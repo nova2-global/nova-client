@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	or
 SHOP_BUY_COUNT_TITLE	Items to buy (max. %d)
 DO_YOU_BUY_WITH_ITEM	Do you want to buy %s for %s?
 SHOP_BULK_BUY_HINT	Shift + click: buy several
+ATLAS_MARK_WIKI_HINT	Click to open the wiki
+METIN_QUEUE_ADDED	[Metin Queue] The stone is now in your attack queue.
+METIN_QUEUE_REMOVED	[Metin Queue] The stone has left your attack queue.
+METIN_QUEUE_FULL	[Metin Queue] Your attack queue is full.
+METIN_QUEUE_PREMIUM_HINT	[Metin Queue] A premium membership lets you queue more stones.
+AUTO_SHOUT_TOOLTIP	Auto Shout
+AUTO_SHOUT_TITLE	Auto Shout
+AUTO_SHOUT_DESC	Repeats your shout every 30 s (16 s with premium).
+AUTO_SHOUT_MESSAGE	Message
+AUTO_SHOUT_STATUS_OFF	Off
+AUTO_SHOUT_STATUS_WAITING	Starting...
+AUTO_SHOUT_STATUS_ON	On
+AUTO_SHOUT_NEXT	Next shout in
+AUTO_SHOUT_START	Start
+AUTO_SHOUT_STOP	Stop
+AUTO_SHOUT_NO_MESSAGE	Type a message for the auto shout first.
+TARGET_ARROW_DAMAGE	%s arrow damage
+TARGET_METIN_QUEUE_HINT	Shift + right-click: add to the attack queue

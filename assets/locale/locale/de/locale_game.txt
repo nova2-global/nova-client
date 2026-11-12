@@ -1288,3 +1288,21 @@ SHOP_TEXT_OR	oder
 SHOP_BUY_COUNT_TITLE	Anzahl kaufen (max. %d)
 DO_YOU_BUY_WITH_ITEM	Möchtest du %s für %s kaufen?
 SHOP_BULK_BUY_HINT	Shift + click: mehrere kaufen
+ATLAS_MARK_WIKI_HINT	Klicken, um das Wiki zu öffnen
+METIN_QUEUE_ADDED	[Metin-Warteschlange] Der Metin wurde zur Warteschlange hinzugefügt.
+METIN_QUEUE_REMOVED	[Metin-Warteschlange] Der Metin wurde aus der Warteschlange entfernt.
+METIN_QUEUE_FULL	[Metin-Warteschlange] Du hast die maximale Warteschlangenlänge erreicht.
+METIN_QUEUE_PREMIUM_HINT	[Metin-Warteschlange] Mit Premium kannst du mehr Metins einreihen.
+AUTO_SHOUT_TOOLTIP	Auto-Ruf
+AUTO_SHOUT_TITLE	Auto-Ruf
+AUTO_SHOUT_DESC	Wiederholt deinen Ruf alle 30 s (16 s mit Premium).
+AUTO_SHOUT_MESSAGE	Nachricht
+AUTO_SHOUT_STATUS_OFF	Aus
+AUTO_SHOUT_STATUS_WAITING	Startet...
+AUTO_SHOUT_STATUS_ON	An
+AUTO_SHOUT_NEXT	Nächster Ruf in
+AUTO_SHOUT_START	Starten
+AUTO_SHOUT_STOP	Stoppen
+AUTO_SHOUT_NO_MESSAGE	Gib zuerst eine Nachricht für den Auto-Ruf ein.
+TARGET_ARROW_DAMAGE	%s Pfeilschaden
+TARGET_METIN_QUEUE_HINT	Umschalt + Rechtsklick: zur Angriffswarteschlange hinzufügen

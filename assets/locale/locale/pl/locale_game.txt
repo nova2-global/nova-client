@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	lub
 SHOP_BUY_COUNT_TITLE	Ilość do kupienia (maks. %d)
 DO_YOU_BUY_WITH_ITEM	Czy chcesz kupić %s za %s?
 SHOP_BULK_BUY_HINT	Shift + click: kup kilka
+ATLAS_MARK_WIKI_HINT	Kliknij, aby otworzyć wiki
+METIN_QUEUE_ADDED	[Kolejka Metin] Metin został dodany do kolejki.
+METIN_QUEUE_REMOVED	[Kolejka Metin] Metin został usunięty z kolejki.
+METIN_QUEUE_FULL	[Kolejka Metin] Osiągnąłeś maksymalny rozmiar kolejki.
+METIN_QUEUE_PREMIUM_HINT	[Kolejka Metin] Z Premium możesz dodać więcej metinów do kolejki.
+AUTO_SHOUT_TOOLTIP	Auto-krzyk
+AUTO_SHOUT_TITLE	Auto-krzyk
+AUTO_SHOUT_DESC	Powtarza twój krzyk co 30 s (16 s z premium).
+AUTO_SHOUT_MESSAGE	Wiadomość
+AUTO_SHOUT_STATUS_OFF	Wyłączony
+AUTO_SHOUT_STATUS_WAITING	Uruchamianie...
+AUTO_SHOUT_STATUS_ON	Włączony
+AUTO_SHOUT_NEXT	Następny krzyk za
+AUTO_SHOUT_START	Start
+AUTO_SHOUT_STOP	Stop
+AUTO_SHOUT_NO_MESSAGE	Najpierw wpisz wiadomość dla auto-krzyku.
+TARGET_ARROW_DAMAGE	%s obrażeń od strzał
+TARGET_METIN_QUEUE_HINT	Shift + prawy przycisk: dodaj do kolejki ataku

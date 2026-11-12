@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	vagy
 SHOP_BUY_COUNT_TITLE	Vásárolandó mennyiség (max. %d)
 DO_YOU_BUY_WITH_ITEM	Szeretnél %s-t vásárolni %s-ért?
 SHOP_BULK_BUY_HINT	Shift + click: több vásárlása
+ATLAS_MARK_WIKI_HINT	Kattints a wiki megnyitásához
+METIN_QUEUE_ADDED	[Metin sor] A kő bekerült a támadási sorba.
+METIN_QUEUE_REMOVED	[Metin sor] A kő kikerült a támadási sorból.
+METIN_QUEUE_FULL	[Metin sor] A támadási sorod megtelt.
+METIN_QUEUE_PREMIUM_HINT	[Metin sor] Prémium tagsággal több követ állíthatsz sorba.
+AUTO_SHOUT_TOOLTIP	Automatikus kiáltás
+AUTO_SHOUT_TITLE	Automatikus kiáltás
+AUTO_SHOUT_DESC	30 mp-enként megismétli a kiáltásod (prémiummal 16 mp).
+AUTO_SHOUT_MESSAGE	Üzenet
+AUTO_SHOUT_STATUS_OFF	Ki
+AUTO_SHOUT_STATUS_WAITING	Indul...
+AUTO_SHOUT_STATUS_ON	Be
+AUTO_SHOUT_NEXT	Következő kiáltás:
+AUTO_SHOUT_START	Indítás
+AUTO_SHOUT_STOP	Leállítás
+AUTO_SHOUT_NO_MESSAGE	Előbb írj üzenetet az automatikus kiáltáshoz.
+TARGET_ARROW_DAMAGE	%s nyílsebzés
+TARGET_METIN_QUEUE_HINT	Shift + jobb klikk: hozzáadás a támadási sorhoz

@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	oppure
 SHOP_BUY_COUNT_TITLE	Quantità da comprare (max. %d)
 DO_YOU_BUY_WITH_ITEM	Desideri comprare %s per %s?
 SHOP_BULK_BUY_HINT	Shift + click: compra più pezzi
+ATLAS_MARK_WIKI_HINT	Clicca per aprire la wiki
+METIN_QUEUE_ADDED	[Coda Metin] La pietra è stata aggiunta alla coda.
+METIN_QUEUE_REMOVED	[Coda Metin] La pietra è stata rimossa dalla coda.
+METIN_QUEUE_FULL	[Coda Metin] La tua coda di attacco è piena.
+METIN_QUEUE_PREMIUM_HINT	[Coda Metin] Con un abbonamento premium puoi accodare più pietre.
+AUTO_SHOUT_TOOLTIP	Grido automatico
+AUTO_SHOUT_TITLE	Grido automatico
+AUTO_SHOUT_DESC	Ripete il tuo grido ogni 30 s (16 s con premium).
+AUTO_SHOUT_MESSAGE	Messaggio
+AUTO_SHOUT_STATUS_OFF	Spento
+AUTO_SHOUT_STATUS_WAITING	Avvio...
+AUTO_SHOUT_STATUS_ON	Attivo
+AUTO_SHOUT_NEXT	Prossimo grido tra
+AUTO_SHOUT_START	Avvia
+AUTO_SHOUT_STOP	Ferma
+AUTO_SHOUT_NO_MESSAGE	Scrivi prima un messaggio per il grido automatico.
+TARGET_ARROW_DAMAGE	%s danni delle frecce
+TARGET_METIN_QUEUE_HINT	Maiusc + clic destro: aggiungi alla coda di attacco

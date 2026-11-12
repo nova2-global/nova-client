@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	или
 SHOP_BUY_COUNT_TITLE	Количество для покупки (макс. %d)
 DO_YOU_BUY_WITH_ITEM	Хотите купить %s за %s?
 SHOP_BULK_BUY_HINT	Shift + click: купить несколько
+ATLAS_MARK_WIKI_HINT	Нажмите, чтобы открыть вики
+METIN_QUEUE_ADDED	[Очередь метинов] Камень добавлен в очередь.
+METIN_QUEUE_REMOVED	[Очередь метинов] Камень убран из очереди.
+METIN_QUEUE_FULL	[Очередь метинов] Очередь заполнена.
+METIN_QUEUE_PREMIUM_HINT	[Очередь метинов] С премиумом можно добавить больше камней.
+AUTO_SHOUT_TOOLTIP	Автокрик
+AUTO_SHOUT_TITLE	Автокрик
+AUTO_SHOUT_DESC	Повторяет твой крик каждые 30 с (16 с с премиумом).
+AUTO_SHOUT_MESSAGE	Сообщение
+AUTO_SHOUT_STATUS_OFF	Выкл.
+AUTO_SHOUT_STATUS_WAITING	Запуск...
+AUTO_SHOUT_STATUS_ON	Вкл.
+AUTO_SHOUT_NEXT	Следующий крик через
+AUTO_SHOUT_START	Начать
+AUTO_SHOUT_STOP	Стоп
+AUTO_SHOUT_NO_MESSAGE	Сначала введи сообщение для автокрика.
+TARGET_ARROW_DAMAGE	%s урона стрелами
+TARGET_METIN_QUEUE_HINT	Shift + ПКМ: добавить в очередь атаки

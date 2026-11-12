@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	nebo
 SHOP_BUY_COUNT_TITLE	Počet ke koupi (max. %d)
 DO_YOU_BUY_WITH_ITEM	Chceš koupit %s za %s?
 SHOP_BULK_BUY_HINT	Shift + click: koupit více kusů
+ATLAS_MARK_WIKI_HINT	Kliknutím otevřete wiki
+METIN_QUEUE_ADDED	[Fronta Metinů] Kámen byl přidán do fronty.
+METIN_QUEUE_REMOVED	[Fronta Metinů] Kámen byl odebrán z fronty.
+METIN_QUEUE_FULL	[Fronta Metinů] Tvoje fronta útoků je plná.
+METIN_QUEUE_PREMIUM_HINT	[Fronta Metinů] S prémiovým členstvím můžeš zařadit více kamenů.
+AUTO_SHOUT_TOOLTIP	Automatické volání
+AUTO_SHOUT_TITLE	Automatické volání
+AUTO_SHOUT_DESC	Opakuje tvé volání každých 30 s (16 s s prémiem).
+AUTO_SHOUT_MESSAGE	Zpráva
+AUTO_SHOUT_STATUS_OFF	Vypnuto
+AUTO_SHOUT_STATUS_WAITING	Spouští se...
+AUTO_SHOUT_STATUS_ON	Zapnuto
+AUTO_SHOUT_NEXT	Další volání za
+AUTO_SHOUT_START	Spustit
+AUTO_SHOUT_STOP	Zastavit
+AUTO_SHOUT_NO_MESSAGE	Nejprve napiš zprávu pro automatické volání.
+TARGET_ARROW_DAMAGE	%s poškození šípy
+TARGET_METIN_QUEUE_HINT	Shift + pravé tlačítko: přidat do fronty útoků

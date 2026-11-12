@@ -1291,3 +1291,21 @@ SHOP_TEXT_OR	ou
 SHOP_BUY_COUNT_TITLE	Quantidade a comprar (máx. %d)
 DO_YOU_BUY_WITH_ITEM	Deseja comprar %s por %s?
 SHOP_BULK_BUY_HINT	Shift + click: comprar vários
+ATLAS_MARK_WIKI_HINT	Clique para abrir a wiki
+METIN_QUEUE_ADDED	[Fila de Metins] O Metin foi adicionado à fila.
+METIN_QUEUE_REMOVED	[Fila de Metins] O Metin foi removido da fila.
+METIN_QUEUE_FULL	[Fila de Metins] Você atingiu o tamanho máximo da fila.
+METIN_QUEUE_PREMIUM_HINT	[Fila de Metins] Com uma assinatura premium você pode enfileirar mais Metins.
+AUTO_SHOUT_TOOLTIP	Grito automático
+AUTO_SHOUT_TITLE	Grito automático
+AUTO_SHOUT_DESC	Repete seu grito a cada 30 s (16 s com premium).
+AUTO_SHOUT_MESSAGE	Mensagem
+AUTO_SHOUT_STATUS_OFF	Desligado
+AUTO_SHOUT_STATUS_WAITING	Iniciando...
+AUTO_SHOUT_STATUS_ON	Ligado
+AUTO_SHOUT_NEXT	Próximo grito em
+AUTO_SHOUT_START	Iniciar
+AUTO_SHOUT_STOP	Parar
+AUTO_SHOUT_NO_MESSAGE	Digite primeiro uma mensagem para o grito automático.
+TARGET_ARROW_DAMAGE	%s dano de flecha
+TARGET_METIN_QUEUE_HINT	Shift + clique direito: adicionar à fila de ataque

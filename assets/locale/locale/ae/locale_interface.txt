@@ -765,3 +765,41 @@ KEYBIND_EMOTION_6	رمز المشاعر 6
 KEYBIND_EMOTION_7	رمز المشاعر 7
 KEYBIND_EMOTION_8	رمز المشاعر 8
 KEYBIND_EMOTION_9	رمز المشاعر 9
+OPTION_YANG_TEXT	سجل اليانغ
+OPTION_COUNTRY_FLAGS	الأعلام
+OPTION_SEARCH_HINT	البحث في الخيارات
+OPTION_SEARCH_NONE	لا يوجد خيار مطابق.
+OPTION_BGM	موسيقى الخلفية
+KEYBIND_WIKI	الويكي
+OPTION_KEYWORDS_NAME_COLOR	اسم لون مملكة
+OPTION_KEYWORDS_TARGET_BOARD	هدف قائمة عدو
+OPTION_KEYWORDS_PK	قتال سلام عدائي نقابة حر
+OPTION_KEYWORDS_BLOCK	حظر تبادل مجموعة نقابة همس صديق طلب
+OPTION_KEYWORDS_VIEW_CHAT	دردشة فقاعة
+OPTION_KEYWORDS_ALWAYS_NAME	اسم دائما
+OPTION_KEYWORDS_DAMAGE	ضرر ضربة أرقام
+OPTION_KEYWORDS_SALES	متجر لافتة بيع
+OPTION_KEYWORDS_PICKUP	التقاط غنائم مرشح أغراض جرعات
+OPTION_KEYWORDS_SHOPS	متاجر غير متصل تاجر
+OPTION_KEYWORDS_SASH	وشاح كتف زي
+OPTION_KEYWORDS_BUFFI	بافي رفيق دعم
+OPTION_KEYWORDS_MOB_LEVEL	وحش مستوى معلومات
+OPTION_KEYWORDS_MOB_AI	وحش عدواني نجمة
+OPTION_KEYWORDS_KEYS	مفاتيح لوحة اختصار
+OPTION_KEYWORDS_YANG	يانغ ذهب مال التقاط رسالة
+OPTION_KEYWORDS_FLAGS	علم بلد أمة لغة
+OPTION_KEYWORDS_SOUND	صوت مؤثرات مستوى
+OPTION_KEYWORDS_MUSIC	موسيقى مستوى
+OPTION_KEYWORDS_BGM	موسيقى خلفية أغنية
+OPTION_KEYWORDS_CAMERA	كاميرا تكبير مسافة بعيد قريب
+OPTION_KEYWORDS_FOG	ضباب مدى الرؤية
+OPTION_KEYWORDS_TILING	رسوميات
+OPTION_KEYWORDS_FOV	مجال الرؤية زاوية
+OPTION_KEYWORDS_SNOW	ثلج تساقط طقس عيد
+OPTION_KEYWORDS_FPS	إطارات عداد أداء
+OPTION_KEYWORDS_TIPS	نصائح تلميح مساعدة
+OPTION_KEYWORDS_THEME	سمة مظهر نمط داكن فاتح كلاسيكي
+OPTION_KEYWORDS_SCALE	مقياس حجم واجهة
+OPTION_KEYWORDS_MOTION	حركة رسوم متحركة
+OPTION_KEYWORDS_EFFECTS	مؤثرات تمويه ظل
+OPTION_KEYWORDS_COLORS	ألوان تمييز لوحة شفافية

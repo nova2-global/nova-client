@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	ou
 SHOP_BUY_COUNT_TITLE	Quantité à acheter (max. %d)
 DO_YOU_BUY_WITH_ITEM	Voulez-vous acheter %s pour %s ?
 SHOP_BULK_BUY_HINT	Shift + click: acheter plusieurs
+ATLAS_MARK_WIKI_HINT	Cliquez pour ouvrir le wiki
+METIN_QUEUE_ADDED	[File de Metin] La pierre a été ajoutée à la file.
+METIN_QUEUE_REMOVED	[File de Metin] La pierre a été retirée de la file.
+METIN_QUEUE_FULL	[File de Metin] Ta file d'attaque est pleine.
+METIN_QUEUE_PREMIUM_HINT	[File de Metin] Un abonnement premium permet d'ajouter plus de pierres.
+AUTO_SHOUT_TOOLTIP	Cri automatique
+AUTO_SHOUT_TITLE	Cri automatique
+AUTO_SHOUT_DESC	Répète ton cri toutes les 30 s (16 s avec premium).
+AUTO_SHOUT_MESSAGE	Message
+AUTO_SHOUT_STATUS_OFF	Arrêté
+AUTO_SHOUT_STATUS_WAITING	Démarrage...
+AUTO_SHOUT_STATUS_ON	Actif
+AUTO_SHOUT_NEXT	Prochain cri dans
+AUTO_SHOUT_START	Démarrer
+AUTO_SHOUT_STOP	Arrêter
+AUTO_SHOUT_NO_MESSAGE	Écris d'abord un message pour le cri automatique.
+TARGET_ARROW_DAMAGE	%s de dégâts des flèches
+TARGET_METIN_QUEUE_HINT	Maj + clic droit : ajouter à la file d'attaque

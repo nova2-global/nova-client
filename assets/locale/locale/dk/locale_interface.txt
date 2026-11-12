@@ -741,3 +741,41 @@ KEYBIND_EMOTION_6	Følelse 6
 KEYBIND_EMOTION_7	Følelse 7
 KEYBIND_EMOTION_8	Følelse 8
 KEYBIND_EMOTION_9	Følelse 9
+OPTION_YANG_TEXT	Yang-log
+OPTION_COUNTRY_FLAGS	Flag
+OPTION_SEARCH_HINT	Søg indstillinger
+OPTION_SEARCH_NONE	Ingen indstilling passer.
+OPTION_BGM	Baggrundsmusik
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	navn farve rige
+OPTION_KEYWORDS_TARGET_BOARD	mål menu fjende
+OPTION_KEYWORDS_PK	pvp kamp fred fjendtlig klan fri
+OPTION_KEYWORDS_BLOCK	bloker handel gruppe klan hvisk ven anmodning
+OPTION_KEYWORDS_VIEW_CHAT	chat boble
+OPTION_KEYWORDS_ALWAYS_NAME	navn altid
+OPTION_KEYWORDS_DAMAGE	skade slag tal
+OPTION_KEYWORDS_SALES	butik skilt salg
+OPTION_KEYWORDS_PICKUP	saml bytte filter genstande eliksirer
+OPTION_KEYWORDS_SHOPS	butikker offline købmand
+OPTION_KEYWORDS_SASH	skærf skulder kostume
+OPTION_KEYWORDS_BUFFI	buffi følgesvend støtte
+OPTION_KEYWORDS_MOB_LEVEL	monster niveau info
+OPTION_KEYWORDS_MOB_AI	monster aggressiv stjerne
+OPTION_KEYWORDS_KEYS	taster tastatur genvej
+OPTION_KEYWORDS_YANG	yang guld penge saml besked
+OPTION_KEYWORDS_FLAGS	flag land nation sprog
+OPTION_KEYWORDS_SOUND	lyd effekter lydstyrke
+OPTION_KEYWORDS_MUSIC	musik lydstyrke
+OPTION_KEYWORDS_BGM	musik baggrund sang
+OPTION_KEYWORDS_CAMERA	kamera zoom afstand langt tæt
+OPTION_KEYWORDS_FOG	tåge sigtbarhed
+OPTION_KEYWORDS_TILING	grafik
+OPTION_KEYWORDS_FOV	synsfelt vinkel
+OPTION_KEYWORDS_SNOW	sne snefald vejr jul
+OPTION_KEYWORDS_FPS	fps billeder tæller ydelse
+OPTION_KEYWORDS_TIPS	tips råd hjælp
+OPTION_KEYWORDS_THEME	tema udseende stil mørk lys klassisk
+OPTION_KEYWORDS_SCALE	skala størrelse brugerflade
+OPTION_KEYWORDS_MOTION	bevægelse animation
+OPTION_KEYWORDS_EFFECTS	effekter sløring skygge
+OPTION_KEYWORDS_COLORS	farver accent panel opacitet

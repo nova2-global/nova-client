@@ -740,3 +740,41 @@ KEYBIND_EMOTION_6	Emotion 6
 KEYBIND_EMOTION_7	Emotion 7
 KEYBIND_EMOTION_8	Emotion 8
 KEYBIND_EMOTION_9	Emotion 9
+OPTION_YANG_TEXT	Yang Log
+OPTION_COUNTRY_FLAGS	Country Flags
+OPTION_SEARCH_HINT	Search options
+OPTION_SEARCH_NONE	No option matches.
+OPTION_BGM	Background Music
+KEYBIND_WIKI	Wiki
+OPTION_KEYWORDS_NAME_COLOR	name color colour empire kingdom
+OPTION_KEYWORDS_TARGET_BOARD	target board menu enemy empire
+OPTION_KEYWORDS_PK	pvp pk peace hostile revenge guild free fight
+OPTION_KEYWORDS_BLOCK	block trade exchange party group guild whisper friend request
+OPTION_KEYWORDS_VIEW_CHAT	chat bubble talk speech line
+OPTION_KEYWORDS_ALWAYS_NAME	name always limited show
+OPTION_KEYWORDS_DAMAGE	damage hit numbers effect
+OPTION_KEYWORDS_SALES	shop name sign private store sales
+OPTION_KEYWORDS_PICKUP	pickup pick loot filter items equipment special potions others
+OPTION_KEYWORDS_SHOPS	offline shop shops hide npc
+OPTION_KEYWORDS_SASH	sash shoulder acce costume
+OPTION_KEYWORDS_BUFFI	buffi buff companion support shaman
+OPTION_KEYWORDS_MOB_LEVEL	monster mob level info
+OPTION_KEYWORDS_MOB_AI	monster mob aggressive star ai info
+OPTION_KEYWORDS_KEYS	key keys keyboard bind binding hotkey shortcut
+OPTION_KEYWORDS_YANG	yang gold money pickup chat message log
+OPTION_KEYWORDS_FLAGS	flag flags country nation language name
+OPTION_KEYWORDS_SOUND	sound effects volume audio sfx
+OPTION_KEYWORDS_MUSIC	music volume audio bgm
+OPTION_KEYWORDS_BGM	music background bgm song track change
+OPTION_KEYWORDS_CAMERA	camera zoom distance far close view
+OPTION_KEYWORDS_FOG	fog view distance dense light
+OPTION_KEYWORDS_TILING	graphic graphics tiling cpu gpu
+OPTION_KEYWORDS_FOV	field view fov angle camera
+OPTION_KEYWORDS_SNOW	snow snowfall weather christmas xmas
+OPTION_KEYWORDS_FPS	fps frames counter performance
+OPTION_KEYWORDS_TIPS	tips tip hint help notice
+OPTION_KEYWORDS_THEME	theme skin look style dark light classic cyberpunk
+OPTION_KEYWORDS_SCALE	scale size zoom interface ui
+OPTION_KEYWORDS_MOTION	motion animation reduced
+OPTION_KEYWORDS_EFFECTS	effects blur shadow reduced
+OPTION_KEYWORDS_COLORS	colors colour accent panel opacity highlight

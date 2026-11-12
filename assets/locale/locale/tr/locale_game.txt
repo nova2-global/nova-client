@@ -1290,3 +1290,21 @@ SHOP_TEXT_OR	veya
 SHOP_BUY_COUNT_TITLE	Satın alınacak adet (en fazla %d)
 DO_YOU_BUY_WITH_ITEM	Satın almak istiyor musun? Nesne: %s Fiyat: %s
 SHOP_BULK_BUY_HINT	Shift + click: birden fazla satın al
+ATLAS_MARK_WIKI_HINT	Wikiyi açmak için tıkla
+METIN_QUEUE_ADDED	[Metin Sırası] Taş saldırı sırasına eklendi.
+METIN_QUEUE_REMOVED	[Metin Sırası] Taş saldırı sırasından çıkarıldı.
+METIN_QUEUE_FULL	[Metin Sırası] Saldırı sıran dolu.
+METIN_QUEUE_PREMIUM_HINT	[Metin Sırası] Premium üyelikle sıraya daha fazla taş ekleyebilirsin.
+AUTO_SHOUT_TOOLTIP	Otomatik bağırma
+AUTO_SHOUT_TITLE	Otomatik bağırma
+AUTO_SHOUT_DESC	Bağırmanı her 30 sn'de tekrarlar (premium ile 16 sn).
+AUTO_SHOUT_MESSAGE	Mesaj
+AUTO_SHOUT_STATUS_OFF	Kapalı
+AUTO_SHOUT_STATUS_WAITING	Başlatılıyor...
+AUTO_SHOUT_STATUS_ON	Açık
+AUTO_SHOUT_NEXT	Sonraki bağırma:
+AUTO_SHOUT_START	Başlat
+AUTO_SHOUT_STOP	Durdur
+AUTO_SHOUT_NO_MESSAGE	Önce otomatik bağırma için bir mesaj yaz.
+TARGET_ARROW_DAMAGE	%s ok hasarı
+TARGET_METIN_QUEUE_HINT	Shift + sağ tık: saldırı sırasına ekle
